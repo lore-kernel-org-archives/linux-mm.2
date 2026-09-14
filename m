@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E631C88E72
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 13:57:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F407C88E72
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 13:59:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4A7AA6B0088; Mon, 14 Sep 2026 09:57:19 -0400 (EDT)
+	id 918F36B0095; Mon, 14 Sep 2026 09:59:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 431546B0095; Mon, 14 Sep 2026 09:57:19 -0400 (EDT)
+	id 8A2B26B00A1; Mon, 14 Sep 2026 09:59:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2FA106B00A1; Mon, 14 Sep 2026 09:57:19 -0400 (EDT)
+	id 75BDA6B00A2; Mon, 14 Sep 2026 09:59:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 01DBF6B0088
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 09:57:18 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4587A16011C
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:57:18 +0000 (UTC)
-X-FDA: 85212519756.02.CB32681
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 59CCD80002
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:57:16 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K20TONwx;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4A9EA6B0095
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 09:59:10 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D78091A015E
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:59:09 +0000 (UTC)
+X-FDA: 85212524418.29.E96D59C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 228B01C0002
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:59:07 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CibaVAqP;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789394236;
-	b=jp105rwie5pOfu0mqBWq8KgqxOQTzwO0oW4dCfRi06yMMuqJogQ30GQWEXRFTiWNaCLh53
-	ZX32E1KoRC5JSp3L5oISfINgWG+hX717kLCzXhwHzgPjp4LFszlB9RaIDnaZdNQbLuFBMZ
-	iNaMK7WVoszxoFclAx4fEKjs+h2Ye2Y=
+	t=1789394348;
+	b=PDkZavyGB4NzwIv+mTCwbZsyNsOp7tvvln1aVDJVp5+bZbVhnNpr2Rzm/IdaavwPrwI47i
+	z1S1s9L6GKFDThTlX8RmoNfw03IuVrPG/RvM1aBANxuuEvHTelyPBiEMhI6nQn0pjXIbuu
+	1pcM6lRURXlARrEi4Zh0oGSFFbv4pfw=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K20TONwx;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CibaVAqP;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789394236;
+	s=arc-20220608; t=1789394348;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q3jTCo5Zrmr3wVVQs4J2MuJx8Av/2jYs7lg8QKqp49E=;
-	b=G7L8lqzVS4BIjAScK5VAO2GOeDmY7go3r1d3nusCmbj1NSI3IwkQp/hQKtEa8o3xKhY0VE
-	7W03pTe18I7o+CwFH2m5ykdI/OFNDjYFNJL5IZyg2fN2awLN98fkeNSNFkWA+20/cAXruy
-	YxUc4NQJdAJEUS2SwNG6YSJ8XEc9+Ck=
+	bh=9DEU6QsyXChy/GNzbkJuNaSb8Hkm06ZCmsscDaeUHKc=;
+	b=nEWUQGYh4LeBlqe9SbcW6Lye/i5en8qMxsnNO0GOHwtDv2/TmIyOs8s5WAOKHdLxTOCMgX
+	LXo3pw73OUyXH6mgSIVkIatNnjgUlzj+1xMGXWuYUxEzz+ywlI22NfaJmzXSclwoCmaRli
+	3foYJbpY6kqPz5HTEsgmjgv+GoL/twI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7AB574034C;
-	Mon, 14 Sep 2026 13:57:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B49541F000FF;
-	Mon, 14 Sep 2026 13:57:06 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 63A7860120;
+	Mon, 14 Sep 2026 13:59:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22DA81F000FF;
+	Mon, 14 Sep 2026 13:58:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789394235;
-	bh=Q3jTCo5Zrmr3wVVQs4J2MuJx8Av/2jYs7lg8QKqp49E=;
+	s=k20260515; t=1789394347;
+	bh=9DEU6QsyXChy/GNzbkJuNaSb8Hkm06ZCmsscDaeUHKc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=K20TONwxzBEU1Zu7mkOTxd5YED8e+Y59q7/Yo0oiBrkANvddumCkJS+TvSxyNaeIF
-	 H45l9C8qjM7zl5GyjASyOdXb6m8/wN+FaFnD2IaNwzKJOyajVYG3F8spJMUf2M/1oc
-	 yE1+/JgGFYg5HMgg1xYmgJ2j3Am/tt+OrGB9kq9EG/CU6kFxYHpCzaEPe3qRa+EZSx
-	 eHv08z08nJgSYyJ3itkk5py9mOenvfgjWjLJ4vwXKO3M90FrXVf1oz0280tjyTghcA
-	 AixxEX7dmnMCpPNluxp6KPGtAoYGKi8oG8WkCbbWBEO11HtFE/kEFNPxuHOyZ/UB4q
-	 5Q6xl0UDo3zMw==
-Message-ID: <9f28f634-9015-4b62-a197-0414122ddd4c@kernel.org>
-Date: Mon, 14 Sep 2026 15:57:02 +0200
+	b=CibaVAqPIiF/6RRTs79s4K8eiz9mDHOvYrBjBHoXQXg8uD7COKeiH4kxt+ve1ygC4
+	 3FLhWybNVg2rVs2eI1XbR4YbzHvFgLPoMDvZrVtj9NVzbW0RXnza0/gpGUUFo1rt6b
+	 v1JwZn4gW4Lk1DCw7J94hAR4e3GdJwqi1OJ784ONbUCMH1n+fvFmG6h2BqoQBWjEDm
+	 szq3ulHIdtoVvM+L74W4URViePKeV6PCkoFHEQwqrQX7nM+gr8HRq0H4LwIbHzthNe
+	 CBZU4qXHOZKE9nkzph7NzQ0e/3PbYeJrBJibvyglzdMJ/pr781zvji8od5RYSUIeq5
+	 /pB1vNK2fpVsQ==
+Message-ID: <56f1171f-b7c3-47f5-8fee-0320eafcfd2d@kernel.org>
+Date: Mon, 14 Sep 2026 15:58:54 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 06/12] mm/sparse: rename __highest_present_section_nr to
- __highest_used_section_nr
+Subject: Re: [PATCH 00/12] mm/sparse: remove SECTION_MARKED_PRESENT and
+ further cleanups
 To: Mike Rapoport <rppt@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
  Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
@@ -89,8 +89,7 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-cxl@vger.kernel.org,
  driver-core@lists.linux.dev, linux-fsdevel@vger.kernel.org
 References: <20260909-b4-sparsemem_cleanups-v1-0-008fc8d579fe@kernel.org>
- <20260909-b4-sparsemem_cleanups-v1-6-008fc8d579fe@kernel.org>
- <178937914266.4188640.6188797346240816067.b4-review@b4>
+ <178937914266.4188640.7965323974267420342.b4-review@b4>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -137,17 +136,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <178937914266.4188640.6188797346240816067.b4-review@b4>
+In-Reply-To: <178937914266.4188640.7965323974267420342.b4-review@b4>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 59CCD80002
 X-Rspam-User: 
-X-Stat-Signature: xfhim4tx74expmagh3u8m8rh6ap81btm
-X-HE-Tag: 1789394236-453161
-X-HE-Meta: U2FsdGVkX1/tChinGXBuutlWqc0hKgGCGWVuJI7f/Ot3khEF8WujosFQF0IC+s7tOwg7umTEnXoXda1awz8HxSLbIoCk7nOxfd9z+rKTj68FNbpexkHnbWglboo4OXMIpBvItRU2g4ZkvFO17nQNojabHcnkHtH9L1bZRPkVqtKmVavFj+jePrqbrSa/89yZYRXgj22cvDlyuVwgFEnt/QsrZOyKqglV7O4Fb6nkA2yyuwT94ZO15epoao7raK7xY8QSJC+OIboMOn7+pi1o6jQkQTyuAUHGssijH3cL1lGYKiR3LBBUZBlYFMdkqewsVwnVcg7neIYT9dJV9LMZC4+agDDKjR8Qmexo9lsnF3ajTWDaGc0uLJ/XRBHGf9P2/fSH+lEUF4XQzK0DkFn+FMZGv4fikXgs4zcBQXRn6j+JRgXyKY1gbIorD1koWCSuKbCj16X7+y0jv7lxQuEVHaBBtr6fxsmM7jFxX13idCZcCc4kzjZ1MEv8Vo0JJIbxYNC9J6AxDv+LesEc0KbeMYfIP1fwojgIwT4v8hUqOxDoJBxxoqw9AQz+LluKcM1gfflTGT+fohR+uZ6zS9Ad1YMrpukv8OiKxoFoqPLLJsZXmDvNdwowvDDYeO7DnnG/3Vd+bOUUZo/DHlTMy2ARO71i5lhyiiAg1XaYobeeL6FzLIW4F5ldmcl50gg5E/n4Nh0hv6KHmn4QEgWlVo3gQGm3KhAkjJSPvqVw6RuQApnTiJBbN5FrXP7G90AhoP1bCVT6X4t2WgMAzSSUTz2Y/N3pyz5Jf6VLRQT5N96rD5kXuaW9B15qVTAHC1JWSqEktYbadchUFxkkb/JqO4KW9QszJueViSCCuOjWqSiOlotVYfhz3qdQa5BiaiNRu8frC+xA2OICx+OhfICA01GOeie0vLQmA1FCfXw0M3u495ecORyT/11KeWY0EA8vig79MLJeUzjavMFoOvKWGor
- V5BMkMK0
- YhaHdbA4nhrl+C45Cat+zhomcGdoT+bpaYVAqDX9c++CDrqtkdiZ1mUMER9o1V+fM9BbW35p6zGlzjivQL0AA9CjsKXRK1EGL5j6wQLOaTRvAt+RuNS0in+q1aL9GFdhuJ3bk2PwrrObQ5Sc6DJF0GuGW4cT/Rg/onR73xv0J5f4KWRAZ2M/1Tc8lknfLCHBJTlLejNmEeo6t4N8veWOiEIFhMKWueEDl0sSeRtRRgSsm+abDOLLy9wTvCyXyD2ZvDdjQT6kYO4MQUjMYXpU9QiUrLvDY+zNBBNfC/Ke06FtxUc/UZlQ268d7Yg==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 228B01C0002
+X-Stat-Signature: 6bsb81f43tuhyq5x4js1r8tgqk3xzzas
+X-HE-Tag: 1789394347-688029
+X-HE-Meta: U2FsdGVkX1/XPeXTds2NSf/jk7kAmcK+pT3yQ86cAfIMa8h9sbJV7mp94Mwma+XfgVS8lAZgJ6uVBoHuaxG2UpQ1HuOKTvSnN3jfVF0HtS41VgFgrn26TY05zl7URmTTen7vfGUrixe54wKe4ciy3Lio0rwx5Gbq00nIj1gsQuZrdhr45sJWHo23ZvTYIzK+eofnj/jH46s2RYEyWuztuGRZbncm/0tSi3tItej5LKmBHxp0IsasXrkEupPc9L1wTO8Fy0GR6p4zrl4N2wvRad/FfWpbWSnZ631XBa3WrvOk7xAvDyWKF6DcXojhCpVYETE9OOlVk4QAktrggHjODFUc5T8lkwm5dMyVbaf6viRw2n3BlJom8tFZf6qVP4owaMsLhbK92lYT89TDm62xlAe4wUnGaR1e57COTqeCZzLJzD5YUrJOymL1gB87IZwro7mrsNVQ1idlsTndOK575FLGPrvAulqRMx2Vw2lo5isQLNlB+sOCJByuyYIgUZzm2aOQpcfLaKnfRiorYWwDv7BLlIw/1xrqlTuIWP0UAVsdVCN9XpQnTJ7I1FejQAZOWX67ibYR8J3xmHRU0zpOIZX4Xl/hvXfUKAKqJuhwlCqgxznrWdY1n4xHquz9N0fk78atPVc1PuQ3JcHo4Cgb9bYl7aNC/Dhm/Z5PVp8eP6uICrygYjogQMmzBaBN/QLPnaTpglbBz5WGZI6HC6pr6TGG1PE5sc+X0BVyl6j7riqcKXqjcOJ3LUDzAOtcPEHzjTBQHnxHGND4dDsZWS+LbAiKvZA0l/eUQXOf5ept4rPctQZjctrkWVluP2uBpXQp+eK95Ihd+JfxtADPYx4Mo1+gmXj+QHS0DYwi4DQ+nJOo4m1r+q2qSpbLpKswsleoLSIKdSK0tA5Qs9HR+QsAGS32JNr/j+mlc1XoYLDZ3MhpqlDMy1Juy/hKQcftMdvxustXi/dFpSzyS+yg3ge
+ L1xA0GPb
+ BHhD0DeMahVck6dN+t+0RAJAaTA5fUMOIYVcvnAwSrdbqP+4cH7GGUJ5eX4eBBtn989utWlGAtbLIciXRQqPN4GWBO6Mt5Jo3+gj7BBqZzBQOuuTp9CN41g6yXGG8DeMPUzEQi+2Z7BZxV6tf6UV4tZ/erS8DRxfGQ9ueS+90Gcx0b5MspAbDNukil/bWT8cplfdqlJtGlngt8MD+JDw2UtXs1XFiTlKqqDTkKMTOOHjnPPOHcZLb/oPM0aYc7Kc2G2WxAcgwg5jlwQQlNFEosihC4OhuAVfdlxARNcR1nFteR+EFxwvyEOnMUa9QQJ6uWwXfiiJfR85+PT0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,18 +155,22 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 9/14/26 11:45, Mike Rapoport wrote:
->>  /*
->> - * There are a number of times that we loop over NR_MEM_SECTIONS,
->> - * looking for section_present() on each.  But, when we have very
->> - * large physical address spaces, NR_MEM_SECTIONS can also be
->> - * very large which makes the loops quite long.
->> - *
->> - * Keeping track of this gives us an easy way to break out of
->> - * those loops early.
->> + * Looping over all memory sections is expensive, especially if NR_MEM_SECTIONS
-> ... all possible ... maybe?
+> On Wed, 09 Sep 2026 15:32:53 +0200, David Hildenbrand (Arm) <david@kernel.org> wrote:
+>> mm/sparse: remove SECTION_MARKED_PRESENT and further cleanups
+>>
+>> SECTION_MARKED_PRESENT is really only needed during boot, where we
+>> can instead just rely on SECTION_IS_EARLY_BIT by setting that flag
+>> earlier.
+>>
+>> Some preparations for doing that conversion and some cleanups in the same
+>> (sparse) area.
+>>
+>> [...]
+> 
+> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> 
 
-Ack, thanks!
+Thanks for the review!
 
 -- 
 Cheers,
