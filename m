@@ -4,84 +4,155 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 319F8C88E50
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 04:18:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C1CBC88E64
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 04:21:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 18D1C6B0092; Mon, 14 Sep 2026 00:18:46 -0400 (EDT)
+	id 69BC16B0093; Mon, 14 Sep 2026 00:21:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 117746B0093; Mon, 14 Sep 2026 00:18:46 -0400 (EDT)
+	id 64DD46B0095; Mon, 14 Sep 2026 00:21:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F23ED6B0095; Mon, 14 Sep 2026 00:18:45 -0400 (EDT)
+	id 53B1B6B0096; Mon, 14 Sep 2026 00:21:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C3C906B0092
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 00:18:45 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3F31F1C2B78
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 04:18:45 +0000 (UTC)
-X-FDA: 85211061810.16.4F46E3D
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 275206B0093
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 00:21:40 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9F6E3C0FE4
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 04:21:39 +0000 (UTC)
+X-FDA: 85211069118.18.BC29D8A
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 2C2D9180007
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 04:18:43 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=v2bylMmI;
-	spf=pass (imf06.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	by imf07.hostedemail.com (Postfix) with ESMTP id DD21340003
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 04:21:37 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="VHq/c8Pp";
+	spf=pass (imf07.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789359523;
-	b=pQtbof3lfabusdT9ZuhwVri2w/bXDjd1gNrbefWl2EoAe0VRmNkSzzYZ5Syhd9kqwea4dD
-	qz9KfqqFBqyiPrM3/1KceGaKMavdKCmLHIHKU08q56hGsBYaD1JuLepZEZTFqwlhGYeKES
-	690G3O4WgoEfKF8i0+UdYb8FsRq7Uic=
+	t=1789359697;
+	b=6N7oY1QMeHQbMrIBE8p3XvpTMxQJG1pXzt/Ugb1gSQEa/Ba7hFuMc20C9L/Yg8uQNVF5Jc
+	O2PXWwQALmv+SgRKpD0dJcQd7pkOhDzLrRlnJK/faoD/sQMfmz0Ssb1hJIkD6MsOpJ2Zg+
+	uwZUCJ7NTKi2WGXoN1IuM3UeiSOWIOE=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=v2bylMmI;
-	spf=pass (imf06.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	imf07.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="VHq/c8Pp";
+	spf=pass (imf07.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789359523;
+	s=arc-20220608; t=1789359697;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HOiZiTTcnOGDiQNW6U8572Zud0tx8Q1ZcO5S5HNlCAo=;
-	b=1RI1k48f0LTFGzRpWMGtd2jx1e5rvL/mejW5kO8jv7HWDjBrpMPTRu+7WcCP1ryXRtd7LW
-	DL+ZxAhzDpb7I3htLOGVtO76NkFbxqIXiNzVprqvLaLxDiHS3Z9ZWKgSrI+tjJUby9QpKf
-	VtBcR5S20zs/XyLC7+IAhHdYhGio7lE=
+	bh=XIa/QTT2Vtv8NiYChAuw57Ae+l0UAwkEY31SNMwQavs=;
+	b=klEJOXZ4cv1wU2SH0uZ51iXxRZP15Dc3RYlyVHheQgy37RFZSbsun127sMftVYOFQUYpVx
+	jfPWlX4GMvSfZbeBDaQ0NEds/P7iYh8e9NniTcu7yU1lHod+URKcjpdo84m7cvX/L+4ybd
+	5wIiZdQ7XXAS0jNIYhS22aF5RB2JM1E=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=HOiZiTTcnOGDiQNW6U8572Zud0tx8Q1ZcO5S5HNlCAo=; b=v2bylMmILt3EvBjj6MUA9IPF+K
-	rDN/3MxBs4Akwii0ZCS5VDYTTgvAiu4KSvdAqErQoMAz+Cfz3+Sgpsn93up2dXEDkH61BOU9oOFZr
-	6MdDqhsWD9VSXJ1vGG+UHCWROHwJdGmLsWW6+e2b1ccAtsVuHSXsyXfTYwyO3fbtTTaUDIjVm0YHE
-	D7h3pjglRTpo998zzlJeY7W2/y2DT4osN0xzJOfzYerPjh4EhE8IgDeamAdjfvgtn2/fes1WmK5AK
-	aYfg1Ms6SK2oQz54LcjDp7ZCYUh3q1uQlE6L/9aVEOgfl1WKlLt6EQe+AQNrNfReUGvd/NW08qcJp
-	DltpjGkw==;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=XIa/QTT2Vtv8NiYChAuw57Ae+l0UAwkEY31SNMwQavs=; b=VHq/c8Pp7UCdPy63XwI1Y7/evy
+	Zs6wNzMUH3y9lsWgsWNb5RSGYeSQu3+dwRZdgXhGjQadm2skLDAn/gsZQSr0RPAMMeECDGpa+etFJ
+	GZ9W0qUhgJ+QpqD56J7NZ5uRTrraPD2HDAatD107Dp3uDh0n+iOUAQepIYxNbT07CT1OivKUu4rqR
+	9T7pMp18HVSaFbknP5sOsW0VTb6JH/cNVnoDNqHZ/wAn8VlL9cIRO8bUeAaRAYVhxkupw1SgasBjf
+	4D0IoMEvGnWlzdIMpEsme0E/QLtp6CUPuirl9Z1VPsWGxuq6MgoCtKLvy6o4mAhIx6zXHL2D24MjY
+	lZwDMIbg==;
 Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x5y9K-00000008hGx-28L0;
-	Mon, 14 Sep 2026 04:18:34 +0000
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+	id 1x5yBr-00000008huW-1WeH;
+	Mon, 14 Sep 2026 04:21:11 +0000
+Date: Mon, 14 Sep 2026 05:21:11 +0100
+From: Matthew Wilcox <willy@infradead.org>
 To: Zi Yan <ziy@nvidia.com>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	linux-raid@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 2/3] md: Use folio APIs in free_page()
-Date: Mon, 14 Sep 2026 05:18:09 +0100
-Message-ID: <20260914041830.2072626-2-willy@infradead.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260913-remove-pg_private-v4-0-848550f7574e@nvidia.com>
+Cc: David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Kairui Song <kasong@tencent.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Minchan Kim <minchan@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	James Clark <james.clark@linaro.org>,
+	"H. Peter Anvin" <hpa@zytor.com>, linux-perf-users@vger.kernel.org,
+	Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	xen-devel@lists.xenproject.org, Eric Biggers <ebiggers@kernel.org>,
+	"Theodore Y. Ts'o" <tytso@mit.edu>,
+	Jaegeuk Kim <jaegeuk@kernel.org>, linux-fscrypt@vger.kernel.org,
+	Oscar Salvador <osalvador@suse.de>, Chao Yu <chao@kernel.org>,
+	linux-f2fs-devel@lists.sourceforge.net,
+	Tal Zussman <tz2294@columbia.edu>, Gao Xiang <xiang@kernel.org>,
+	Jan Kara <jack@suse.cz>, Yue Hu <zbestahu@gmail.com>,
+	Jeffle Xu <jefflexu@linux.alibaba.com>,
+	Sandeep Dhavale <dhavale@google.com>,
+	Hongbo Li <hongbohbli@tencent.com>,
+	Chunhai Guo <guochunhai@vivo.com>, linux-erofs@lists.ozlabs.org,
+	linux-fsdevel@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	linux-trace-kernel@vger.kernel.org,
+	Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>, linux-nfs@vger.kernel.org,
+	Ilya Dryomov <idryomov@gmail.com>,
+	Alex Markuze <amarkuze@redhat.com>,
+	Viacheslav Dubeyko <slava@dubeyko.com>, ceph-devel@vger.kernel.org,
+	Song Liu <song@kernel.org>, Yu Kuai <yukuai@fygo.io>,
+	Li Nan <magiclinan@didiglobal.com>, Xiao Ni <xiao@kernel.org>,
+	linux-raid@vger.kernel.org, Richard Weinberger <richard@nod.at>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	linux-mtd@lists.infradead.org, Baoquan He <baoquan.he@linux.dev>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Dave Young <ruirui.yang@linux.dev>,
+	Shuah Khan <skhan@linuxfoundation.org>, kexec@lists.infradead.org,
+	linux-doc@vger.kernel.org
+Subject: Re: [PATCH v4 00/16] Remove PG_private by using page/folio->private
+ checks instead
+Message-ID: <aqd2N1J3ui1llWWG@casper.infradead.org>
 References: <20260913-remove-pg_private-v4-0-848550f7574e@nvidia.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260913-remove-pg_private-v4-0-848550f7574e@nvidia.com>
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 2C2D9180007
-X-Stat-Signature: 1ku6ni8jyiptmz54c4gxaws6fuewb15a
-X-HE-Tag: 1789359523-501295
-X-HE-Meta: U2FsdGVkX1/csCJThD+hLs5kqXLUp3yqWwHkQFuV0MYlQS5RfxTEAsAj7tiiDk4lSiCfdy2zDysFGsSrJ3Ml/9bXpN9tLJPpTzcc9ppApH+lCDalwb8DqnhReBQvWjsxy8cOyekWXhHZfVSslldbxaZk3wGUOv0PqOUkWrBPzDu2D5Ux61S0iI5xFupzK/FFnCGMSEg2mCs3ah1PyasJTUj3/a/PICyRHtusXcZpCbFgRGCLUT+9N/f56O6u09+dNGbMLWVSqARTq1hJOK+rJrZTVybWDiySwQS8zhaJxfu/TYkdTlPNpW1Et0M+ppbo0hZkWxvVIiv1MmQyuCr8PkFUtO5B5kM/csgYXSKLm8bhpihOhAjfxvoi7+oHCzc3eN40R+bSkPkooRmu8tt8bjts5IBn5CcIRg97Paq/6WIlF7DT8S1Vng7UJReG8EyHXAcxD6zJ6bRYgo7B5HCiSs/pweXq0bIiR14ai9eWWle3wpfIESUtcnlqxODKu3NiaT/6p36IAzWPP3J4/A370j/2eoKpHREsxXOBGmo2JcCVwc+5ExIntCMCi1PB2LbI9pi81mGiQqYaGNSvDBx/7NKlod2lOhCnddqgQWoEpQHZLozCM40sGRzwhLXCJlX46ihF1zMD8o3d4nEqwb1jdf2sOGBvb+r84rP0VAH1jMUNlYBrVeqhes4HFU+yTQLtUlJ8WoMG+lWNn14C9+QcyzgE3QbpaB6IAc46klyTLiS5stmsHOPDVRT3X3CVvW+/ViioomFjOLEct8jTfN2jB7yU9plOix7Nb0UPID5/NFbgb4ViVaPTCnfg2tMhPNgJ3GHAsCmFMHwf5rN70LEqdIufyDYUm3dLNvvWLW9CC4N12WzZBtGPMOe/5QTUKJhIr9BKxRT3QnN7Y2V9C3HAHbCAkMEjhu4/3nDyxVwmjl7ejgBiv1pMZx0QXWic9AymlZCQlIpeDB7Gj2aehjm
- dEnMbbdP
- UAym1mUwb50Ux0Qv3WzaJaA2pw2bzY/0umUQNCovlMbfFuxAzhOlcbVe1TdYicPk56DDrbaiEch4NOrx5IHHFkKKKAOD07O5S99WLvEdwey7M05CW7e5Cvgq+u05KfxVUgHD8L1pmXO+1aQmI3CtqXyP68xlvD/ByftFJJ70Bs/izdSw3Iedj/IV0J6LDWsq71eaoZ0EqXJkZ6Wt1TkZXRaJKAd8siUPP5wKzUAqFZeuQ6c7YxvcDF7TbOENxZgf7hc3wyjXw07IkQU6E7jm7VNaLEHiNzv+PdtIf7nyui6ryQQw=
+X-Rspamd-Queue-Id: DD21340003
+X-Stat-Signature: tzm4y6touopqonxwwqm9hwee3zaqkdte
+X-HE-Tag: 1789359697-259553
+X-HE-Meta: U2FsdGVkX1/dXxh7M5WIJLLa32hJEKA3Bkj2PyABIQK9LVHFq3IxLh7aXUDdvNVvbz60Iglye/+2HHBlhLmM/AS+dTQpjMI7qa9PfyEFg17rCTizSJrZSu6uetRQI+f3ghVEYCnugFNBMyuXCGuqX2RIeWNyfxp8gviL04gWfcJDHUn27STW7Nk5zh4lJDwUm+9QLQq0lcDCO6u2uVBjlGwWCXpunc3bBu/cB7REru5XqJ0Qb+WaOdkVaMMyCXV0ov6P3gV99d0XcRQGKo8uLmNBZ+wvOg5fXuZrQbQuqi8ZqZcfMvidLSvwxVjurxBE52uABGn7vq7Nu743nZ4gLO0H2c2QZvT9FNjr0cQR5k7wbfWYonEn74B69Q/jN50XMEoGkL437TM6PCrSBspxKTvSbYpKiJbhxWGrzzP8Xotafhm44CQd46GyL8117dgU5upy2EDWGbHj4HeQl9HdVoJCRVFEBKtpiZxxT2bj16oKRPjYVtEmtAV2C9SmMemQx0pbr/H9y+ERmKvAVhcYiaFL195G4JudCBgmjDhEOoUN58LjF3S1Jr5k/wgguWcwCFhjy4wHyaydSqKL9BPOkh2YsdQiWAOsRR+9YXNOh3nWZVibaayq9wLSoOzRftlm4g67alla2M8ehLmtz7V5zmdD79wbaqogWMzA6oJq0UfXYr7e8SEArjuPPC4NONIcg19OU2D7TWwwT45AFWjmWNL+jO14Q40YjMiFTRzfsuJsazCfaDMoZlhSW0LzGxYF5ob1K9nQuOV7pEq8krymM1tuBv1WjOA3q7kGyedAUmr+4X3kYnwjOMa8hJ3HUPhbqtRHrNE80kgDbQuRY/bCUcJTeDJHLPnltarC+fpTTu5nfRlmY9osKi7gX1Zo1vcW9DLGufLzjkYdKfbYjpp4Pf7AklkGW7TKg9kRTCYTdCY3MMcwx3x773flyZMoZrv+JZyohTjS/fERSFU+znj
+ 4djAyLGl
+ +q6+bgPkyuYEt+p1yiQP4AfAobPetnxthFl6nQSwiERX3BhKo260KQ0icIVx7TLaLWH6AVBYslkeMBI3SP0+rHTUcRvUS7UyCeIAaRxDh1GvM7bV1/kmDEtHyIRx9cNnn5W6XuEnvJE5/j60gCjxvLZvE8HBjyDeGCt8v76eofrDZ8IbrMrsdo5K7Z9kO8huoSnrXkDWqNidHQzCKAlHuVbwMrrXl1yPx+k2n/t5NPKQsATinofQCsbyAQcV+eBw6YngcokLMhZz9m7z0KA/mJ8uzqoMs109IguIH/4Pk6uSS79kkNvxRUNrpDRhy7gASGWyaxIUqVdHFciktxrMHBMCxlhPwNcm/ZnAnygiQNIkTfhzP9T6Xj/rtghidCw7/JkV8XtODcMhLVLM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,44 +160,10 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Convert the page to a folio.  This removes some of the last uses of a
-few page APIs (detach_page_private(), page_buffers()).  Replaces two
-calls to compound_head() with one.
+On Sun, Sep 13, 2026 at 10:23:58PM -0400, Zi Yan wrote:
+>       md/md-bitmap: replace PagePrivate() with page_private()
+>       buffer: replace page_buffer() with page_private() and delete it
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
----
- drivers/md/md-bitmap.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/md/md-bitmap.c b/drivers/md/md-bitmap.c
-index 5f1637f974c1..7b42db87d536 100644
---- a/drivers/md/md-bitmap.c
-+++ b/drivers/md/md-bitmap.c
-@@ -533,19 +533,18 @@ static void write_file_page(struct bitmap *bitmap, struct page *page, int wait)
- 
- static void free_buffers(struct page *page)
- {
--	struct buffer_head *bh;
-+	struct folio *folio = page_folio(page);
-+	struct buffer_head *bh = folio_detach_private(folio);
- 
--	if (!PagePrivate(page))
-+	if (!bh)
- 		return;
- 
--	bh = page_buffers(page);
- 	while (bh) {
- 		struct buffer_head *next = bh->b_this_page;
- 		free_buffer_head(bh);
- 		bh = next;
- 	}
--	detach_page_private(page);
--	put_page(page);
-+	folio_put(folio);
- }
- 
- /* read a page from a file.
--- 
-2.47.3
-
+Sorry, looks like I screwed up git send-email usage.  I'm proposing
+replacing these two patches wth the three I sent.
 
