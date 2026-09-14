@@ -4,70 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05D37C88E72
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 13:52:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55BDFC88E64
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 13:52:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE1296B0096; Mon, 14 Sep 2026 09:52:18 -0400 (EDT)
+	id 4EC476B0098; Mon, 14 Sep 2026 09:52:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A92616B0098; Mon, 14 Sep 2026 09:52:18 -0400 (EDT)
+	id 4C4FC6B0099; Mon, 14 Sep 2026 09:52:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9CDF26B0099; Mon, 14 Sep 2026 09:52:18 -0400 (EDT)
+	id 3DB5F6B009B; Mon, 14 Sep 2026 09:52:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7BECA6B0096
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 09:52:18 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2203E6B0098
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 09:52:19 -0400 (EDT)
 Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0FA6E40113
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:52:15 +0000 (UTC)
-X-FDA: 85212507030.19.5037D12
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B0487A00AE
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:52:18 +0000 (UTC)
+X-FDA: 85212507156.19.F60DA86
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 3D4BF16000E
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:52:13 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Pfzm5hJ3;
-	spf=pass (imf08.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789393933;
-	b=EtTNG30Xi4KvsX0uCqUGFc4iemo1H3GnnK/JRAqNYdel9Nhd9ppQ6fA53G5utdX6S0I8Wt
-	9xteBJ9B4fYpINtL5lc2Px85+ACr7tMnKghuaNicXXRcPc+JfQBblNbHZ42OwISWW2ea/B
-	gpMUsY0a9E1QkVo8dk235Lnc7KoHNwc=
+	by imf19.hostedemail.com (Postfix) with ESMTP id DCC041A0003
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:52:16 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=gzbKM8Ca;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf19.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Pfzm5hJ3;
-	spf=pass (imf08.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf19.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=gzbKM8Ca;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf19.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789393937;
+	b=GOAWMmXyTJzQ+xHeOUDkZiG4Qep5KyOcT//HXViZeyJlLY6gIMUWo4Q3j/gVrlE8/5j9Ik
+	k/3e7VJ3F68jZDIsRAP6CQhh6exP8Hav54ADVsLvlEy4X9oEjeSYhNxDdVVQLDLn5NJwLs
+	mYcp2Dba/+QJvbbudQCDzI6cFD10jtQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789393933;
+	s=arc-20220608; t=1789393937;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5c+7YKxbb37QN6+/DrU0zqhCjEWNxIf9vXbIaiDob8I=;
-	b=Zp4qG38zdLznzJhWV/5E0lx7Dn9V0/AOKfke1+VJT4h0M/xpZdAYFo7O+tLC6M3v8YTTkg
-	UIZUA258MEsSY9q19CoEI4drHFI9U7bnnSHpIwlbWmWhceiAahnAXpkptVSjKEAKrJ9l7g
-	1pxn6Qy093SrGywEWc7q6skpijrjFa8=
+	bh=rvR7yrUSwk1xcghd++XGcB+fD9fDR6mY3VUkLEOBRnU=;
+	b=PxNfGXqWp4VCOFfmbk0+3JY+6s8U5+vh7TwaiR0SLw00R2gijPtS2Bb7ALMj9lmkMJVr4y
+	9QioXLLK+NY+gYAnhoaDXnpZ9t3WVqpS7xqHJjxLQIcuhpHXp2rdLLhFW0Eq4ECZhSmIbS
+	pG2arnIpgr1qaedFuNXcI7e4hILg/XI=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C4A051570;
-	Mon, 14 Sep 2026 06:52:08 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 544C41576;
+	Mon, 14 Sep 2026 06:52:12 -0700 (PDT)
 Received: from [127.0.1.1] (e142334-100.cambridge.arm.com [10.2.198.93])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2F60A3F882;
-	Mon, 14 Sep 2026 06:52:09 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B236F3F882;
+	Mon, 14 Sep 2026 06:52:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789393932; bh=a0XPwGbhmPF/8HQB5tl0tfRDc3dHm2jdpy2fD9dIAOw=;
+	t=1789393935; bh=yv6552mFvvf13JAoUBxhYSH5LMmG+s9tUQsoS51fbNQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Pfzm5hJ3feethkE3Lt+/Yi0zFezDiFNBYm62UaeS/yrfFexyWZ5fbgJcnY5dDxP/0
-	 2T9TOcPMJpLUxmKN/g4RlGweBDexJjW+SpVe4eoyBWvQbUpGj2MaSFuD6QqTOaw7RS
-	 AGhWCYfmKhKFpjN5exzGFjhmlpyiygeQNVXzo1rM=
+	b=gzbKM8Ca28zZ5K6P5ERV+/fCGpEVK/cv9jlKFw2gr9//PfYHgZprGWfo191uCCc6z
+	 Cf7m0v8/apWMpqmmgMHBA6J9VkXnoRe1GIpcuZ12FSGnPYjHDPuGZmC5Cob7BBesv6
+	 pyrAeo+x1fR1GNNgGI02k3iSQRVZhxr9ZAy5zTgQ=
 From: Muhammad Usama Anjum <usama.anjum@arm.com>
-Date: Mon, 14 Sep 2026 14:51:32 +0100
-Subject: [PATCH 2/6] arm64: use hw_pte_val for HW PTE atomics
+Date: Mon, 14 Sep 2026 14:51:33 +0100
+Subject: [PATCH 3/6] arm64: convert between HW PTEs and SW PTE values
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260914-pte0_arm-v1-2-bb53b663e396@arm.com>
+Message-Id: <20260914-pte0_arm-v1-3-bb53b663e396@arm.com>
 References: <20260914-pte0_arm-v1-0-bb53b663e396@arm.com>
 In-Reply-To: <20260914-pte0_arm-v1-0-bb53b663e396@arm.com>
 To: Catalin Marinas <catalin.marinas@arm.com>, 
@@ -88,13 +88,13 @@ Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
  Muhammad Usama Anjum <usama.anjum@arm.com>
 X-Mailer: b4 0.16.0
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 3D4BF16000E
-X-Stat-Signature: nrgjshwazp9xhx3wd6mkdnnwx5aa9m37
-X-HE-Tag: 1789393933-405658
-X-HE-Meta: U2FsdGVkX1/ZEQUdpZ2C9J1jeURoqeHCKE67JuTuasYDo7lQkY1b2HVNpYcb+Xntmi5U00BIf2XoEBKE4zMAqP4zI7kIEBwBbI0atOWXe6WgQQyrZFLvb6Nd6nn/GPV6G9ZkwxTM/ZUFJeqd+773g7+zHktqBlq82uGY67EjHh1oR3bfsDrKOguOHRvlGZw3P8vUll+gHcqHW0Sf4mEXwfKQRtsBUbmSrwPLlkrMgpbuG8+2MzcOx7/sKIo0ETjenTf0qD4TtNJfYqx9yoZsvPcO5axYUDrh3e4lRNZCOoa4SK4JZ6nxr7J6LLW8f+t8AjtnlVaeqb+N98ToVhJHNBoV/my0+47qbbhmfwTdqJQLYQMYSj+Nhj34K+yh5A6LVwXGsB7jtQu4aLlLpgScO6m0vsSf9ak6SEM3FpRnjdcJdQJHKN04zdXRIyI5oQi+dPUNtKuMSQZEwOnE2vGl1u4EvNplG53R1wVz1E1znWNK1c66Y1Yp/rrQA16d8XK7ribV3defrUXNOwjf5El3XVa0LVsKAEBOTlHdFFPOEzGlgu6MEojNXYjOg3fTZbsM08dK8rHO3f7O15UJK/AzV+LPolkNXOqgkB74fHLIvIENkuq7CsXYdyEvHkMh703RUa7okthjgw6lKpAEmDP0jjv/0aNETQ0IziZqljo7TZKxh/cbDYJLPrjiqYwBjPx4512q6GPEXQfx5uE5/rbN8qCysVTkJPLtvh03oi+cM+dDrwnIwVCVsx9WG2SgGUx6ZdeYfDt/kQzjR3X32tONHn0pY66zrMxLtw8yZgpW/idzAzNMQJedpYe7CTlj/gBvuVStsHeAZ13BIVzl8V5qcaNO/ssOjyWYjm+b38WZZzaK8xV5iY2YyzPBV0oBWbnFBDFgBVE8Y8oegwtAhtNDkpFY8LPc8Frt2KduuJ9woiIWk3RUxf6Pc+RUZ/20rZ6Hhwrx2n3wIxjuiSO8EZ6
- B/ZA8S8M
- FQclvgodh/sVz2ekjYmoWXppThFES6VkOHag9V/hwbtVu8Y67qf+HZJ8NLyGYS+iY1RgMsn2vK+Y0p1sC13dtXofUgZ+qBYParsLak5Suh8Cjixl2VOOYA790JNena+YROOyh1kL9mU7VP8w6TU9JGGUW2s+3y3octW+0ANKrC9FvYFXEfNW4rMTLmrg5ITz74EHJ0+wLL/pOMAWnvIavqPx5XbH0SeCqXOYtv9bVkTkRoB46baxRCZjL7RBQtFfFiT+osMoRzCrDq9xPzG7u/kr1HoT344wgAwBooPIZiUHt+jMxbNA6l9r6kQBPmBBLp4gxIF0oMAhR9N8Ni8VH+i+fr1Q1i1pSd3EMRoEUtFazx6xhugWrrWdLWQCzzkXiso7W
+X-Rspamd-Queue-Id: DCC041A0003
+X-Stat-Signature: zi9qm39zoyh5k98m33jzubt6fu9woj9t
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789393936-688493
+X-HE-Meta: U2FsdGVkX1+ng8DqohKqlVfmASAxo/C1CyBsIdED+kr1AzqBllV2Fjq4zueYaiWvjF3zodlyUx7AVUCZ9uzHtRI7tAu24xgpuKOXG2dRaF07LnEX0e3TSttJT4dKg5t3iBW+HRat/LedzPIy9D7pTAfus8WE3zvl0oxFJLZRdgssMQ++w0TBq7XCfWyvjg2GgFXj+20OUOpmiVadb4pBnGESFyl1PiN6hPbH4tnYYKhsMZOuoE4We/F6GniF8l4R3wBqzXJTWp4OcyYs5SPcYGlADm39ItF6/jxKiA0jm3UzKZ7FD271TGzvTlTaxDf+pleX9NxZnWO9zaea1X6A20Gb20WGvmBqfbcuqEMJr9CFnY/cFzRE702EzESCs9JQ3r+1wmd+6IjQyh5wYE29VbwWqQAnaHuj/Q0NNb5owQ1jxMP8eNwGAG2T1Y/hCGqm6M4Fd1DlK6G8hZjUkmcecLkIEgLIC4DcWghbl0EVijIjXI+5nyHMl+A2wzyIpmnoklyxTr+B7LpzjIRAXJ7d+FER151COy86IZRW4OY6CrchJQiMarIgCjq7/rxRkN1U1V0XmY0rymYkyRBzYo4HOSN4ZaYJL4Pqyorf918YKsNgXy+R5XEnQS1+IYwwTsygLpPhFBkfxpPHBh2gSFKxF8N6kPiztzRU/uWNM2AOfrnmpn2Cx5aJyWivI0+yejEn/fYf5SEMSufXhBwExfDgBqDBHPyUSyvAEMEtK7yRvtP1kPET3qzErkbPZgE5QdlONmS/F4CnfjhyrxQakZSqQY1D0qxtXFkPj1QRRzG20riUewqlHmo+0r6FsEPatN2MAuhKprfhGOaGxpROzP0Umn3+XEGwUlP9B9KMezFfBQKm5OiH+sYpUwUGADNzt8L4dIj55f34/8lYF51Yic4yNntUj7+aMtfoBeIlsAo2BMCBlzh2/k3H7aULA741sd6wE+PVWuOgj9vY13Fxfbk
+ RoYdljRw
+ eg2ycvWBv23tgMZUQy/9SbsLBrWMo2EdsCop7HsMkytFAneAY6jtXSIrf5NhFey8RqO8khA5Q0a1ZHzx7kVGyx0prV/izuMk5dVO8kGiImAvrS2qNnr8Fp9rDGTKmRSYt3dJzKD+pGUf6cTGmjTQFuFlDQOL5D/E7cz9pcCq/Q1j2UJpIlY59dKApQ6hyUyMV/ycMyP4WJ6+Qd+3WnzD0JcwoVXzzxJjTfbBepPC6+G8PlOXLAbkNFl6TmkCLo3GgD+iwLOQltDy8DwLQ6Kq1yVHBFptw2kYte0tdxHximOw1DpHwcuWFd/R/10JAgc8fMyL4rEJ+ghjw4K8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,113 +102,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add hw_pte_val() to preserve an lvalue for the HW PTE bits, so atomic
-updates can take their address. pte_val() expects a SW PTE value and
-cannot operate directly on a distinct hw_pte_t.
+__ptep_get() returns a SW PTE value, and __set_pte_nosync() accepts one.
+When HW PTEs use a distinct hw_pte_t, directly reading or writing *ptep
+as a SW PTE value no longer satisfies those interfaces.
 
-With ARCH_HAS_HW_PTE_T, use pte_val() on the wrapper's __pte member;
-otherwise, use pte_val() directly.
+Use __pte_from_hw after READ_ONCE() to obtain a SW PTE value and add
+__hw_pte before WRITE_ONCE() to form an HW PTE.
 
-The atomic operations and their ordering are unchanged.
+Define __hw_pte for both the wrapper and alias configurations so the
+same accessor code works in either case.
 
 Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 ---
- arch/arm64/include/asm/pgtable.h | 10 +++++-----
- arch/arm64/mm/fault.c            |  6 +++---
- include/linux/pgtable_types.h    |  4 ++++
- 3 files changed, 12 insertions(+), 8 deletions(-)
+ arch/arm64/include/asm/pgtable.h | 4 ++--
+ include/linux/pgtable_types.h    | 2 ++
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index 652ce413be389..4768ec59de555 100644
+index 4768ec59de555..67c4a6179e154 100644
 --- a/arch/arm64/include/asm/pgtable.h
 +++ b/arch/arm64/include/asm/pgtable.h
-@@ -1303,7 +1303,7 @@ static inline bool __ptep_test_and_clear_young(struct vm_area_struct *vma,
- 	do {
- 		old_pte = pte;
- 		pte = pte_mkold(pte);
--		pte_val(pte) = cmpxchg_relaxed(&pte_val(*ptep),
-+		pte_val(pte) = cmpxchg_relaxed(&hw_pte_val(*ptep),
- 					       pte_val(old_pte), pte_val(pte));
- 	} while (pte_val(pte) != pte_val(old_pte));
+@@ -360,7 +360,7 @@ static inline pte_t pte_clear_uffd(pte_t pte)
  
-@@ -1346,7 +1346,7 @@ static inline pte_t __ptep_get_and_clear_anysz(struct mm_struct *mm,
- 					       hw_pte_t *ptep,
- 					       unsigned long pgsize)
+ static inline void __set_pte_nosync(hw_pte_t *ptep, pte_t pte)
  {
--	pte_t pte = __pte(xchg_relaxed(&pte_val(*ptep), 0));
-+	pte_t pte = __pte(xchg_relaxed(&hw_pte_val(*ptep), 0));
- 
- 	switch (pgsize) {
- 	case PAGE_SIZE:
-@@ -1422,7 +1422,7 @@ static inline void ___ptep_set_wrprotect(struct mm_struct *mm,
- 	do {
- 		old_pte = pte;
- 		pte = pte_wrprotect(pte);
--		pte_val(pte) = cmpxchg_relaxed(&pte_val(*ptep),
-+		pte_val(pte) = cmpxchg_relaxed(&hw_pte_val(*ptep),
- 					       pte_val(old_pte), pte_val(pte));
- 	} while (pte_val(pte) != pte_val(old_pte));
+-	WRITE_ONCE(*ptep, pte);
++	WRITE_ONCE(*ptep, __hw_pte(pte));
  }
-@@ -1460,7 +1460,7 @@ static inline void __clear_young_dirty_pte(struct vm_area_struct *vma,
- 		if (flags & CYDP_CLEAR_DIRTY)
- 			pte = pte_mkclean(pte);
  
--		pte_val(pte) = cmpxchg_relaxed(&pte_val(*ptep),
-+		pte_val(pte) = cmpxchg_relaxed(&hw_pte_val(*ptep),
- 					       pte_val(old_pte), pte_val(pte));
- 	} while (pte_val(pte) != pte_val(old_pte));
- }
-@@ -1830,7 +1830,7 @@ static inline bool ptep_try_set(hw_pte_t *ptep, pte_t new_pte)
+ static inline void __set_pte_complete(pte_t pte)
+@@ -381,7 +381,7 @@ static inline void __set_pte(hw_pte_t *ptep, pte_t pte)
+ 
+ static inline pte_t __ptep_get(hw_pte_t *ptep)
  {
- 	pteval_t old = 0;
+-	return READ_ONCE(*ptep);
++	return __pte_from_hw(READ_ONCE(*ptep));
+ }
  
--	if (!try_cmpxchg(&pte_val(*ptep), &old, pte_val(new_pte)))
-+	if (!try_cmpxchg(&hw_pte_val(*ptep), &old, pte_val(new_pte)))
- 		return false;
- 
- 	/*
-diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-index b77f4be88e3ea..7d6c30f27214e 100644
---- a/arch/arm64/mm/fault.c
-+++ b/arch/arm64/mm/fault.c
-@@ -225,8 +225,8 @@ int __ptep_set_access_flags_anysz(struct vm_area_struct *vma,
- 	/*
- 	 * Setting the flags must be done atomically to avoid racing with the
- 	 * hardware update of the access/dirty state. The PTE_RDONLY bit must
--	 * be set to the most permissive (lowest value) of *ptep and entry
--	 * (calculated as: a & b == ~(~a | ~b)).
-+	 * be set to the most permissive (lowest value) of the current PTE and
-+	 * entry (calculated as: a & b == ~(~a | ~b)).
- 	 */
- 	pte_val(entry) ^= PTE_RDONLY;
- 	pteval = pte_val(pte);
-@@ -235,7 +235,7 @@ int __ptep_set_access_flags_anysz(struct vm_area_struct *vma,
- 		pteval ^= PTE_RDONLY;
- 		pteval |= pte_val(entry);
- 		pteval ^= PTE_RDONLY;
--		pteval = cmpxchg_relaxed(&pte_val(*ptep), old_pteval, pteval);
-+		pteval = cmpxchg_relaxed(&hw_pte_val(*ptep), old_pteval, pteval);
- 	} while (pteval != old_pteval);
- 
- 	/*
+ extern void __sync_icache_dcache(pte_t pteval);
 diff --git a/include/linux/pgtable_types.h b/include/linux/pgtable_types.h
-index d6c5a7548550b..ee4eace5c3e1c 100644
+index ee4eace5c3e1c..b5862a16aa497 100644
 --- a/include/linux/pgtable_types.h
 +++ b/include/linux/pgtable_types.h
-@@ -9,9 +9,13 @@
+@@ -9,11 +9,13 @@
  #ifdef CONFIG_ARCH_HAS_HW_PTE_T
  typedef struct __hw_pte_t { pte_t __pte; } hw_pte_t;
  #define __pte_from_hw(pte)	((pte).__pte)
-+
-+#define hw_pte_val(x)  pte_val((x).__pte)
++#define __hw_pte(pte)  ((hw_pte_t) { (pte) })
+ 
+ #define hw_pte_val(x)  pte_val((x).__pte)
  #else
  #define hw_pte_t pte_t
  #define __pte_from_hw(pte)	(pte)
-+
-+#define hw_pte_val(x)  pte_val(x)
- #endif
++#define __hw_pte(pte)  (pte)
  
- #endif /* !__ASSEMBLY__ */
+ #define hw_pte_val(x)  pte_val(x)
+ #endif
 
 -- 
 2.47.3
