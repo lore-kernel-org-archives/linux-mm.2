@@ -4,86 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0C55C88E5C
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 02:24:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 546FDC88E5C
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 02:24:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 598136B0096; Sun, 13 Sep 2026 22:24:33 -0400 (EDT)
+	id C27386B0098; Sun, 13 Sep 2026 22:24:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4FA1B6B0098; Sun, 13 Sep 2026 22:24:33 -0400 (EDT)
+	id BD7DB6B0099; Sun, 13 Sep 2026 22:24:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 39CA76B0099; Sun, 13 Sep 2026 22:24:33 -0400 (EDT)
+	id A7A3B6B009B; Sun, 13 Sep 2026 22:24:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id F119D6B0096
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 22:24:32 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E9FBEA0DD4
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 02:24:31 +0000 (UTC)
-X-FDA: 85210773942.28.AE73197
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013010.outbound.protection.outlook.com [40.93.201.10])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 0F2CD18000D
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 02:24:28 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=tgTgabpy;
-	spf=pass (imf06.hostedemail.com: domain of ziy@nvidia.com designates 40.93.201.10 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5F4796B0098
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 22:24:34 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0335980E6C
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 02:24:32 +0000 (UTC)
+X-FDA: 85210774026.25.78AD322
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012044.outbound.protection.outlook.com [52.101.43.44])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 2FC1A120006
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 02:24:30 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Td+0Uxeu;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf29.hostedemail.com: domain of ziy@nvidia.com designates 52.101.43.44 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789352669;
+	s=arc-20220608; t=1789352670;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zUjuXILVzjba9z+thh3HvZCbjHvrFmluDi/6zJAquZA=;
-	b=N9bepIoaXEQaL0k2zSG61Wz6EVCE3cgcYDLXzjHxb9w0EaVKn5V4RiAW8/ZHA2db6eNN2b
-	SJ0G9cA+toejETOSWac7CvAL479PKf26BCd2rRD2F7cgkSF4fDbUCStZUbVlr8KDdTSdWe
-	UujSPM5RbMk6sRcGs6WN/YW/h68sSZI=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=tvB0TSP3lu5xd3D2C+aiQSNa7p4jdAISkxA9X3SgoOc=;
+	b=p02WVWYGSOfaZ2mJG8nB8sRq8c+gJ+wr4YV6C2z5SWzSgi0hQAm1b62IQ1nHxl2tBzcreV
+	6NSOhcG1Zm0nzGLc6ddZ3dD4vv9UDiDk1MEbgGqFycDDE09FtLuMBjIwgO9Xw7u8u96f6i
+	FNzLBfUUOFpYf14jST/JcRyx/QGS7tA=
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789352669;
-	b=yq+XYMtvEb/2Gb3ed9CTrQgZMx7GZ04s18nFijUtD8FZBRRQIjutMgm7Hh0h/nAyTJPVcj
-	lEBi/phDjAM7q0DkIU5P5NFStofrwdkN3E5vAB/W5jPm4x9ixJfFHJblCVs9dPVmds0+SE
-	DJfon12Qd05VgG/QmvfB0CQ+VAo6sYo=
+	t=1789352670;
+	b=scm5IPCql5JWw5aNJjXn0jHZkTalMaENmYFkYU5CFYJARXYMqfDswiE/UgfDIvsXm+zEIY
+	4teeIQA5S9LkWK5pREjtSiNEwJZOVO1/x0v69QH3rswkhCaTnn8S1YYjU4PZjKMSZCDepw
+	r+CG4/GBfKm1755vS8b4wwSSz7ssK+o=
 ARC-Authentication-Results: i=2;
-	imf06.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=tgTgabpy;
-	spf=pass (imf06.hostedemail.com: domain of ziy@nvidia.com designates 40.93.201.10 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
+	imf29.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Td+0Uxeu;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf29.hostedemail.com: domain of ziy@nvidia.com designates 52.101.43.44 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Sp7a8N+W7oK58Yehu//myQNUCEHc92N00qTl7DWhS6ZgaVp3rm9mH4wVZ4kamCZuFW+GhJHHvuOL5XY03V/qqD57s1xEq7tUkGZJ+Wk9dtuCjMuDHmenCi/jcMxL65PCZC7jIz97Q17pEztE6F/6BdK/8UmDH5UlVdqi3w6XDDfXNRsyex9A7LFj1h3j3pG9GsQHO2enNWIxUF0CytI+5wYJFWxaEnOkQvUuMT8TyYK0qdavlbRiaoiZy9pA/fLAUpzWYIiiJYocriY8ewSci9lNcKud1Bvh6pd9IuN0srN/deH3+Ux2Kf9lFKxXyd6gpKNDwbOaCCmTdEQ+mhOJrQ==
+ b=RuH9vyjuYaid+zILzXrJrBV7OItP/6/TaUIQi0nBptyYKtiDiU/aolayw+RQamS95Fzg9hJ6tj6E5nnFpjx5vvopnryJhmJ/+n061jItD35cETPUHbqOqfhf5MIvs49CafSFXVPZnOoYnJouAGWDLqSho58fJBO0PcquMXI0euhFhzTQsku/Qo5aEvg9c14MP3C83Dgb/Uhmjg5HZfnuz26Ifc4kOLbv+loMFfym5nP9J0SI+3qVsn2OCyXQJ71UfJjLex3EuLoSFZdQSiAJ/Afo9RUzfonQcB76hxwBdexq+vWQfWPF01QPSJiK4l88NaGaRwRmxWcJLALRBUV9cQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zUjuXILVzjba9z+thh3HvZCbjHvrFmluDi/6zJAquZA=;
- b=FWDgr3fAx2uhKI0H/zwX6hCAP85EASuBYBwbUAZ9do28DW3Zch4cQF9EdDp2FZqUwp/8tOyF4xnmDk22PwTvG5q++i2fBpyrAObzieiodpsWDQGvNz0aLHFAYuNubuySRLeJQAB+WcTlsMaCDmafgLq+tNz+ZVPbv4mfRx7GU8Y4FIy+8T/tMwbWa3apqA8Zkii1S8RDVSldX0TaYOXtycda33UQvtOzYOD/MxSUHZJ4oBI9lr7iarVo7GLWlaKU9RHIlYx7+sxAWOf1zT7er+/OEQk3fZ9aM3B8GYRZCm+/s8/UAXWpszDSWYhXBGM/IBCX5uFdhMZcEKCQHkvLqQ==
+ bh=tvB0TSP3lu5xd3D2C+aiQSNa7p4jdAISkxA9X3SgoOc=;
+ b=FOpKPUalL+ZKzBHLhfZ6Vue1SUn7Ley72wD6mi9CUAnfuPPzx9CTOO1SR6fgAxg2eVtO5b4OtARRGMH5N0JbmPuD8iWTXstNQLCC+VTxJKQ01ZVpx5UIh/epZcbcvHAN2Qex4LEG2TDr6QssdKXd8QD+OYIdnb9h3CNv58N0nTnKmkk3GjUAFAzeqJZ6ZKOUZyOKMg3wpUcwc+guOMS2GBxH6i6wFh/HAeFA1E7RL3+6Ne3qX6en6lR7P8L6zLtvmBaZDX+VXKTtXRkaf+NrVlMoravfYWsgsASnrX2SgNY35bqi6vu+x/nrpXaxhihfligXJywRwWgr6N5D+rubDA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zUjuXILVzjba9z+thh3HvZCbjHvrFmluDi/6zJAquZA=;
- b=tgTgabpyBmDE0mCjoSaz7la/NJHpLJTA0QNH8L/8JGOH/adKuXwr99veXr6SGMiuvlV0V6m07iB3Nh2WHjkXuLGoC4FsaMZvcc4M3uArrl6yOCiuTzPT1zwPqvCjvNyBmcZwHw67y2gKDu/AlQhrhITRjCoYCZycgjANQLBHkGipxhW/XJpfvBXiBFQ57DRQqDbi/IZTe5cpWZrS8pAqzHRHqm83h6AAgQ1Z0ltHLJ9V2o7hWVoTHh1XocrzjJaHD2p1KTNLfKnLJ+HSNNpoyJN6SL9F+cbrG138oVtt/i/eVg1fxbDZD/26wMNE/RsjnZZoWft6maCaDTSbX/MMfQ==
+ bh=tvB0TSP3lu5xd3D2C+aiQSNa7p4jdAISkxA9X3SgoOc=;
+ b=Td+0UxeuJ5XwD7k8zm6yDw1VXgIgLHuCWQhFVM0O1fEgKvCkktTrsRpHLTuSQFlSJglYmy98LGI99hAxpqXe7mdib/USXhShZhS7ejHTM/BwxeVdP3y7eyJREk10ljuqn/2p+9n3imx+Is67VykaGznn6nkpqMNl4VSJ1+8uuBCf2M7tRERmW1dbcVsKpUD96sRdWN6pd1aPBwaLZGlIy4Bea7yg5DlsUxfwxG3d/JXD+DuA/75bsdMcT/CSgVYGg8lp36cb0PH/voalbuwPTeiopxpxLOXIIE3SqB7M05KKlsIioUu6M4TiRWxfkahYS7u8ipHzxbfcsNDtlylJBA==
 Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
  by DS0PR12MB6486.namprd12.prod.outlook.com (2603:10b6:8:c5::21) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Mon, 14 Sep
- 2026 02:24:17 +0000
+ 2026 02:24:14 +0000
 Received: from IA0PR12MB8374.namprd12.prod.outlook.com
  ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
  ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0406.007; Mon, 14 Sep 2026
- 02:24:17 +0000
+ 02:24:14 +0000
 From: Zi Yan <ziy@nvidia.com>
-Date: Sun, 13 Sep 2026 22:24:01 -0400
-Subject: [PATCH v4 03/16] xen/grant-table: stop setting PG_private on pages
- for grant mapping
+Subject: [PATCH v4 00/16] Remove PG_private by using page/folio->private
+ checks instead
+Date: Sun, 13 Sep 2026 22:23:58 -0400
+Message-Id: <20260913-remove-pg_private-v4-0-848550f7574e@nvidia.com>
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260913-remove-pg_private-v4-3-848550f7574e@nvidia.com>
-References: <20260913-remove-pg_private-v4-0-848550f7574e@nvidia.com>
-In-Reply-To: <20260913-remove-pg_private-v4-0-848550f7574e@nvidia.com>
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/23OzQrCMAzA8VcZPVtZU+2HJ99DRGqXbTlsHd0oi
+ uzdrUMY4o7/QH7Ji40YCUd2Kl4sYqKRQp/jsCuYb13fIKcqN4MSVKnB8IhdSMiH5jZESm5C7mu
+ 0oLyujfQs7w0Ra3os5uWau6VxCvG5nEjiM/1qUmxoSfCSiwN4q+9OHhWc+0QVub0PHftwCVbCb
+ BOQCamUEUfrK4vmj5ArYUu9RchMKIcAta0s6N8v5nl+AwHWcy45AQAA
+X-Change-ID: 20260728-remove-pg_private-cfe926c7f83c
 To: David Hildenbrand <david@kernel.org>, 
  "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
  Andrew Morton <akpm@linux-foundation.org>, 
@@ -100,86 +102,125 @@ To: David Hildenbrand <david@kernel.org>,
  Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
  Kairui Song <kasong@tencent.com>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Zi Yan <ziy@nvidia.com>, Juergen Gross <jgross@suse.com>, 
+ Zi Yan <ziy@nvidia.com>, Minchan Kim <minchan@kernel.org>, 
+ Sergey Senozhatsky <senozhatsky@chromium.org>, 
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+ Arnaldo Carvalho de Melo <acme@kernel.org>, 
+ Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+ x86@kernel.org, Mark Rutland <mark.rutland@arm.com>, 
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
+ Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
+ Adrian Hunter <adrian.hunter@intel.com>, 
+ James Clark <james.clark@linaro.org>, "H. Peter Anvin" <hpa@zytor.com>, 
+ linux-perf-users@vger.kernel.org, Juergen Gross <jgross@suse.com>, 
  Stefano Stabellini <sstabellini@kernel.org>, 
  Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, 
- xen-devel@lists.xenproject.org
+ xen-devel@lists.xenproject.org, Eric Biggers <ebiggers@kernel.org>, 
+ "Theodore Y. Ts'o" <tytso@mit.edu>, Jaegeuk Kim <jaegeuk@kernel.org>, 
+ linux-fscrypt@vger.kernel.org, Oscar Salvador <osalvador@suse.de>, 
+ Chao Yu <chao@kernel.org>, linux-f2fs-devel@lists.sourceforge.net, 
+ Tal Zussman <tz2294@columbia.edu>, Gao Xiang <xiang@kernel.org>, 
+ Jan Kara <jack@suse.cz>, Yue Hu <zbestahu@gmail.com>, 
+ Jeffle Xu <jefflexu@linux.alibaba.com>, 
+ Sandeep Dhavale <dhavale@google.com>, Hongbo Li <hongbohbli@tencent.com>, 
+ Chunhai Guo <guochunhai@vivo.com>, linux-erofs@lists.ozlabs.org, 
+ linux-fsdevel@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, 
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+ Matthew Brost <matthew.brost@intel.com>, 
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
+ Byungchul Park <byungchul@sk.com>, 
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+ Wei Xu <weixugc@google.com>, linux-trace-kernel@vger.kernel.org, 
+ Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
+ linux-nfs@vger.kernel.org, Ilya Dryomov <idryomov@gmail.com>, 
+ Alex Markuze <amarkuze@redhat.com>, Viacheslav Dubeyko <slava@dubeyko.com>, 
+ ceph-devel@vger.kernel.org, Song Liu <song@kernel.org>, 
+ Yu Kuai <yukuai@fygo.io>, Li Nan <magiclinan@didiglobal.com>, 
+ Xiao Ni <xiao@kernel.org>, linux-raid@vger.kernel.org, 
+ Richard Weinberger <richard@nod.at>, Zhihao Cheng <chengzhihao1@huawei.com>, 
+ linux-mtd@lists.infradead.org, Baoquan He <baoquan.he@linux.dev>, 
+ Pasha Tatashin <pasha.tatashin@soleen.com>, 
+ Pratyush Yadav <pratyush@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+ Dave Young <ruirui.yang@linux.dev>, Shuah Khan <skhan@linuxfoundation.org>, 
+ kexec@lists.infradead.org, linux-doc@vger.kernel.org
 X-Mailer: b4 0.16.0
-X-ClientProxiedBy: MN0PR03CA0020.namprd03.prod.outlook.com
- (2603:10b6:208:52f::27) To IA0PR12MB8374.namprd12.prod.outlook.com
+X-ClientProxiedBy: MN0PR05CA0019.namprd05.prod.outlook.com
+ (2603:10b6:208:52c::26) To IA0PR12MB8374.namprd12.prod.outlook.com
  (2603:10b6:208:40e::7)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|DS0PR12MB6486:EE_
-X-MS-Office365-Filtering-Correlation-Id: 982e5414-cdc7-43f1-3bd0-08df12074690
+X-MS-Office365-Filtering-Correlation-Id: 58b806a8-7031-4f61-010f-08df120744e8
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|7416014|366016|376014|1800799024|22082099003|18002099003|921020|10067099003|56012099006|11063799006;
+	BCL:0;ARA:13230040|23010399003|7416014|366016|376014|1800799024|6133799003|18002099003|3023799007|921020|10067099003|56012099006|11063799006|5023799004;
 X-Microsoft-Antispam-Message-Info:
-	z/p1/yzLc53JZYZ53rmd6dC7B8L8w49/gMQIhGR5QrVHUh2j7O2ONa48qlZznHbJHHion+Ak5rQoMEcxqjOhfla0nLfQWree90L1bause5fzWfCVNwirnthORJ/vBOEdWOo/WN0TvQ28YG7CsUhHx3biEDWDj/LZvwryd8xnuJS7ils5oqyvcwMcg2G8ICND4SdpKu1YVKrgJOeOioarOycaux98PW1Q0BJheuya+ZsQ1mjgx1xgoIOxqChcGDYp+Txu5XZiGLY8rPLk83FChwpnRooWCdqHKN7XAzLsM4b4ZFhJx/H6iYIQDqpxo0lcYijMmvsmuu6LlVFe8nTS5YoJQBlBT3B0Zy9xoBfqDzWTzPrq45OxQz/7Ni+ec0Tr2matRDgbNGlwXnaoXREkaICDQpmzBrMBp4fdtLBWw9ALUbLeOTwxrovQdO1P+ruGEnbuUtFF+kv3jcyklVGeIxpcivXGGuRamiLh9EFo3fhAvQIt9RU4+3VFWJyMKFgJ15BTNiVw6cYbIQ3U4pmb5krdyStnzoiVVxo0MmJqKkZ3bS6q0Zv53zw1EvqdXQ8AhvzUhbMEq/Hav4OeRn6ODjh+00SWRsjdsOZj6/3PbNYdsw2lv03YYQ9IBWKYLY6htsIyyCu67XGkVVFqJdacMGqIGIz9obMZadbHmiBqPcI1VqKXA5qIfBWvUUfSIHrqPg0beVreRPsMdUy3scJ3zQ==
+	uw4TP9xiaMyZIvIwMa32j3fGc17IpO2wUcD60ElgnQhs73y/FOYE9fUIpBI2nR3HVAx0lKAhr8hTl8TUpmTVMGYTd/m/IRrjtnotO5ehj8wSa//D08/3w7mB0CqGBcpCdTY3tPsjF6LFG2apQV1iMR7g6pv/cTa6H7tdPrVUlQeTFRQtxKuzQ5cYY+KjqTYdsg4m/BpegV51Mwxz0r4EO47yuY5hA++MKhLFwEB/+CGnICKvyQgX7A7/vEY9Qv0xC0+Ygz3u7a7D6mTQ3osA0DXA6L9ob0JUVXukEC19ue6PifLZsltomqqCyHZQsgym7Iz1W7HFSFJx9AANsJVeLzLDc3V4IicoGoPiE8VvinUHc3rRAwKqovz9D+OrIpnbgYVZbHWqRM5bDv6jjWxHNKR9RWZ9LFb5h94xE8B+cWFSohjx6aEM2HMcCCBt8HXucScSnmJ5NdIXWhLdQmn1SDa3I8ST5wrPmqIV4BY9jQX/hKmb5ylNHKxnmEPA4etqr3+9nc8zTiKWTWmvgbxrgZNeNQPpNbOQQ9mQ9f+WoNAr1vrpCOMnuwc+GmFtNrAqvjiSsuLP2bNLva5KUUfMq+qpW7DMW2Z6Rj157qLyOHER+4D7xk7Um0MkJSrx1AVZZPP80xAZxfSp3CQB/SfqHfGhHvsVgxoZinU7ICq2+OnMnm2hIUTR7/V5xpN9dodcyWjDo0UgPBbljPBHIMa5Kg==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(366016)(376014)(1800799024)(22082099003)(18002099003)(921020)(10067099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(366016)(376014)(1800799024)(6133799003)(18002099003)(3023799007)(921020)(10067099003)(56012099006)(11063799006)(5023799004);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?d0dPWnF2NWlvUmZxaW5RcnRkWDRxUU1jOTA3Z2l5eVF6cDBHalkzaDQ5cXlP?=
- =?utf-8?B?a2JBUUlRTUtJM3F3R01BWHdBZkRNa0paMFN2b1BQckJjNGxaUmJnb053YVJG?=
- =?utf-8?B?bU5IbWxJb1M4N1RnaWlndmIrdVVyMWhLS1hNbEk4ZGh4TGN0N3M5bk1uSjNP?=
- =?utf-8?B?V01XWVNxSkh2bFVOZm5pWGtIVUttQ1d5a0hMQy95dGt5QWZGVUNzOGplTWhF?=
- =?utf-8?B?U2NabUxSdE9GemxsdlMzdjNVMFZqS2ZiN2d2ZUljekQ4NUZXTmRpSzZqZmMz?=
- =?utf-8?B?Um1GM013YmhINUd0Q0d1aHl3ZVFBWnFOVnpJSGJIUEZrWkVWTzFhdnJZZVNs?=
- =?utf-8?B?UGlrdmRncEFDOW13Y25LOXZQRmlwaTdFbHhqTGY4MTRrT1BLSnNLams5SEdU?=
- =?utf-8?B?a1VlTlduLy8vZmRkeXNpTm5VTDU5MFRmS2JPUkZ0YzJ6bGNJNnBiVmtkMjJY?=
- =?utf-8?B?RjcxdGphRjZ2M0lSTFY3UVN4cTA2SVhRUG5QWDdmaTk4cTlnRVMwUGtTamlr?=
- =?utf-8?B?TUFETjY2UVllTVFTRFlCQUlGTG9KdHpzdUdVeGhPRjNwMFl2RzB0Mkk3UVg0?=
- =?utf-8?B?bHlNT1hVMGRhZEtwVTRub1A3VjZkMjBhc0VmdG94L2xseW8wZFN4bnZtd1Qr?=
- =?utf-8?B?MGIxS2JJZXROSHFvNElvYjZMVVJFeTlPWWNVUndjRnB1UGZxMXNXb20wNVFw?=
- =?utf-8?B?V3laUnZBQk03ZzQxRGUxODRDSXFLTnErcEZEcFZBUHZZbVlwMnk5UWRVZXRk?=
- =?utf-8?B?b2F2L055K00wYVB3VHhvTy9JaUhOME8xWFlIVDZBZTRidUsvNm9iak8rYy93?=
- =?utf-8?B?NUdCTDhEUzVVQzZCUnpCMzJzN1phaWxtai94dkYxZS9BTENTbUM2ZElVMkpY?=
- =?utf-8?B?NlFTQm1CQ0w3SjdVcWYwVFcrL3ZXdmJvZy81YnpMZEpFRFc5Rm5ZU0FUcC8w?=
- =?utf-8?B?Qk8rQmRYc0tiaVdVUmFleXFjZytPMUlGRGZpbGlMdHR1dElVU2VXTEtQcE1Q?=
- =?utf-8?B?dDFxa1ZiNEVhN0pVcUxodnY0QXFOZFFmQ1cySEtnWlVSb25ieGsxUWhxUWtE?=
- =?utf-8?B?anNQdEdQRHk5Ymt2aWl3K0Vkb1ROVnJMOVdxVFhwZG9uTmVqUTE5eVRZbkNv?=
- =?utf-8?B?bGliQ3VpVDZlTnl2NDZXTFE5RTRqRHMyQnBjUVgwZnpwdUFCNWg2WEMxazAx?=
- =?utf-8?B?U2I3V0tEajNHNS9jVDZxVTA2UlZPM0VCWWhlaDNkanBQc1JDaWhHWktaellz?=
- =?utf-8?B?eE5JMEVVYSt5eGxGL0JUMnNOQnBJRXJ0NU13SWpYaGN0Tml0WU14YWh2dGU2?=
- =?utf-8?B?d2tSU1RmS1VDS2VTREJRSkJGSWt6TXl0V3BBd054d0VaQVlySVVKcHoxNFBi?=
- =?utf-8?B?VlAxSWE4NklwYllYV051SC9xQXJGZ3MzMi9OOG1rVlpBK2YwOUJFSHh0RURX?=
- =?utf-8?B?bUx4Z1RLd1p3dnhBUDRUZFV3bGNodFJjZWNOSW0zM21aMENldlZGYUNUNHhW?=
- =?utf-8?B?cmtkRHdKZTcyMHFkeEdpVWJiQlpWaHRLUjJja0sxYmNudFB0WU1ZS0VNKzdN?=
- =?utf-8?B?U2h3ZjV5VW0xQVVBRmlmaEtnRk1IRW1teGE3ODF4b1ZPRWh1TXVGUnFyTndv?=
- =?utf-8?B?cE9CYWhxU2lWOTJTb1ZzTjE0M3J5NW16ZGJlK050Rzd5blQ2ZGhvTDJObTd6?=
- =?utf-8?B?blJlNm5naGpmdnpOZHM3NzdsQkVPZTZCa1RwSjYzVnNCODRtSGpOMHJFVmZ2?=
- =?utf-8?B?cWpRUEozcGR1RkJ0Rm5ERzNINHJZVFZqd2N2VzFLbzY3V0p3R0ttNDIrSzlt?=
- =?utf-8?B?OTNWVFNOKzFXNzZjMlhuWGZrejBZd1ROQ0Q0RnFyak96TGtuZ1RFdmdUdVNr?=
- =?utf-8?B?RWc0d09vZ1VjNGQ1UFJQb3l2VlV2RVJoR1lnUmswUjFYZURUUVhXVmE1QU1O?=
- =?utf-8?B?QU50V1F2NG5oS3NpQ0xkek40RkFnQVV6cVBKdFJSV3Fod2hwQkNIKzVWQzBR?=
- =?utf-8?B?QStNTDJSZ00velBQKzNMVXQvYlpRYUY1ZWtVQTJCVjBQK3ZvLytMRVNhRkt0?=
- =?utf-8?B?QzBiaDJZZHhGNWtreFZyemw0UkZGS1htRjZXZzRZaEk4Rys3bUlObWZGWjVX?=
- =?utf-8?B?eEttRGVDYkUyRFgwREJrZVpTTWhoK2RYWlhVQ2xlZlVEdlYzNlFGSldhWG5w?=
- =?utf-8?B?M0dMbFR5dWVZZGZIeWt5aWFqeVNheXczM2k0dUdFQ2VrMkU4VzBWSU02dU04?=
- =?utf-8?B?Tit5QU9UeWx1VGptSHFMd2EzcElRaHEwVUpJbS8xNXV0TllYMGhNMGxUOXpn?=
- =?utf-8?Q?ja6n8QxfWm22fveCv8?=
+	=?utf-8?B?SFQvOVdTcHVpdDRzNkM3WWVxcWx1cE45czRqZjhXSXppYVlYVkUyYTAyeFYr?=
+ =?utf-8?B?ejI1a2JON0I1RkNuOHJwWVlWbzVLLzRQTEpKNmJFYnVFRTE5NkFIQzZlVGtI?=
+ =?utf-8?B?Qkpqbno5MGJkRzRWYnl5VG44ZmMyUWU0d3pqLzFZeTRsZFFIQ1NVMVhIeXFk?=
+ =?utf-8?B?UFA2Nk5NYXl4MHErd0NpVVgvUEhkcGptVjZFVnJVcVN2MnRZVndOMUhaWXp3?=
+ =?utf-8?B?ZlgyNWlpV3JjK0hhbDVNZTJRYllQN2d5MUpOZU00SllmaUVtbkVBcEgrNmZz?=
+ =?utf-8?B?M1FhZFNNSHlZUUx3ZXF2R1A0NmYzalpiZk82anp3WlRYU2lzdTdVbDJEKzRS?=
+ =?utf-8?B?QzBCZUdJWFFLOWZjbm8xTFl2TkE1Q2Y3L25PSUVwUC9zbkIzM1JWVDVFVmhJ?=
+ =?utf-8?B?QkRvUTJxZFlXSDh1WGNCUGI1WGZLTnZqVk9HMC9ZTGc0aEJEeE5UTXVKZ2ZG?=
+ =?utf-8?B?dkIwaEljTVFpTnZiUXlXU2ZRRnhpNUNlTTVOcTQ2a2piNHo2SEFHTGxWVWF6?=
+ =?utf-8?B?a1hmVmlydko0L3FEUmhFOXhwR3Q1NnZvTzJGRmJKWlQ0elZ5OHg3R0JzT0dv?=
+ =?utf-8?B?RkoxSm4rWmRrTXQvRXR3Vkh4aCsydGkvNnIrR0lRNHI3ODFVQUdmb1V4LzNr?=
+ =?utf-8?B?TzViVDRmaWI4b24rRUdncHVyMXUwdzFiSE5jcUcveTZVTDNuKzd6aDdQSTBm?=
+ =?utf-8?B?U1EzTGliZnh4U3BubVdBZWhMK2dLRmp4TlBRRFFqTnZieCtHN3FZUThsRVhN?=
+ =?utf-8?B?Zm1wRk55ajlkOWtRQXNmdU5kb1RhYmJyalNMMmFydFk5R0JJVE94Ym9LL2NZ?=
+ =?utf-8?B?NHBXMEZZWEJsZ0trbFNLVG1DZTdNOHB6WEIrdGh4bkNLMDhBbmlXUVBiTGJy?=
+ =?utf-8?B?V1VJc1F3OTRNazZabjIrdDIvUzFyeHA4cVZQcGZZM3hGTkZDT2plczVvQTJl?=
+ =?utf-8?B?UnRaRFBVOGpFS3hYM1dFMXY5RUM0UVE2Rm8wd2RtK1dmU0w4L1hRS3RRblBU?=
+ =?utf-8?B?cTJwWXdTZ3ZWaThIcE5qbnlEcHE5am5zZkJNdjFYT0hHa2JDbDFlSG5tS3No?=
+ =?utf-8?B?Mi8xa3hVRThWY3ZrcC82MThWY2lIY3FkdlN2TStjcjc2d3p1eVFiYzl6cTl4?=
+ =?utf-8?B?L0ZML0s5U0pJeFpLTytRSklzdzhEeVFVV2lOOTVhSTdielB1ejVEZTN6SVRG?=
+ =?utf-8?B?VFRSN0F0ZUU0RlFqS045RWp2QVNVZXRTUkU5RFdUVzdRdFJUNDJlNHdnSStN?=
+ =?utf-8?B?Ull5eWdMeDNRWEFjdDhyTXB6Sm9ISXB0QU9kaEtTMmYyYm9VcElXMU9mYTdy?=
+ =?utf-8?B?ZUV3ZlJFSFBCSlpnNkJQZXpQRmFzNGo2OXB6dUo1V3dRSEs3YmRqTjEyOVVp?=
+ =?utf-8?B?V0h4dENzQWE1QlR2aFNOTEJTdjYrWU4vTC9DMjd2dDFVYllaa3JiRnBRNE1m?=
+ =?utf-8?B?a2RFRW9tOXNDbDd1OW1LVFNPWEMzOW9BUlViNXB4ZmU4bXhzaHlCVWhNUnJk?=
+ =?utf-8?B?bjVFc3RBdkgxM2w2d3ZPT0RITEk5SXNiek8zcmw3aitXWFBrbjZsdWxLRVR4?=
+ =?utf-8?B?VUQrTlhvTVlQeGJ6Y1hPYnBjYXNBK0NWWmlKeXQrMy9EOUc4L2YvN1FxL0dM?=
+ =?utf-8?B?N0FueGRwN0d6d3dnMkRvaHRIS2UzYytsN2Q5dlQ2RXJsS3NCRnZmUFZjY1o4?=
+ =?utf-8?B?Zm9Tc3UvVVZDVUhWU2d3cDhMZTFCc2oyM1kxcFhBdE4vUUZQY25ZamQ0OUM3?=
+ =?utf-8?B?bUZUa09Mc1VsUis0akR2dDJ0UjBqM2dwTUxDNUFuRkZOL1FNK0pPY1ZIYjZB?=
+ =?utf-8?B?OUpUUm9TWWIxbi93Tnc4ZUZQRHJFNGVTK1F3dzREN3FrWmFzemZYN1BNcWVq?=
+ =?utf-8?B?K3NvS3lzbFJVZ2ZQcWJXcjE4SSttZzJPN3BJQzJuWEYvT29NbVB5NUJXbkJv?=
+ =?utf-8?B?Y0dDK2pKbGRIWXNBSTVVTjUwY0ZKQm5VdDE4Rk1GbjFQdGhmeTdLaG9Mc2VQ?=
+ =?utf-8?B?R3JFTjRkL3FOUmhBQ1owZDNFRE1LbEJGWjVTaU5OaDROUEx3RExuWWk0MXRo?=
+ =?utf-8?B?bmx5cWF2b05KWVppOGcyNkxBN1loY1hWYlpVTElBRkJaa3lHUkM3WmpjcU10?=
+ =?utf-8?B?QmJ1ZzJ3YlcvbndqOXpSSGx3M01FVGdRczh1WGpwaDJYdHp6UmVaT0VtRW14?=
+ =?utf-8?B?VHc2cEJrRi9aSEJoVjJMZ0dGSkQxb3F2enJhWnpYMlNoTzlEUnd1NkhIcjlW?=
+ =?utf-8?B?Tm9WVHdodVFxbFJ4elF2SGJ1OFhGNXZQM0hTUjZTMU1yOHkwLzk0MkxycElV?=
+ =?utf-8?Q?4B0cEUcbG9+81FWeZZ?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 982e5414-cdc7-43f1-3bd0-08df12074690
+X-MS-Exchange-CrossTenant-Network-Message-Id: 58b806a8-7031-4f61-010f-08df120744e8
 X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2026 02:24:16.8986
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2026 02:24:14.1529
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: To3O9zZcW/LMdCtzpMacLnBBGk++x3Djb34juhRZC6KxlJaWhOUdimgBAOw6n/v2
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5QuzN4mEfAUXhsNUNhNjvq1VqrMux8K6U5WQLP8azuRWxVympQ+TSMu0urb+FhBH
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6486
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 0F2CD18000D
-X-Stat-Signature: w9yyt71tir113adoz4odok37zk6rh7u4
 X-Rspam-User: 
-X-HE-Tag: 1789352668-304036
-X-HE-Meta: U2FsdGVkX1/QYP4Pgfr/4w4OIqYnFIbdaCU4qOZrI/eXoa2AgY4IkeiqudD0WkZzBD+7hcpCqxoj4tiJbsekiKUoKav6nZi8qPAgk+pIewKUPIyVX/1xZYi4K0RgA3tNOU5cWRe/Plk5+jrpGt4UN+kQpHPV6O05JpbvzqzxFQJP9uXATMjmf/xcXGBFkTDtjpGRl7/qwEMISmGe8QhK0YGf0YiQO/rGyFJOI6GTUfGmn94jrQ1eK9KHXefT2iqxqv4aDw9PpoNu1Rx4F7zm2NrgxYTU5K4/+YzTzebgXNh6KG5SpLQcQ81ie8ilu9YCMhZT2wZbYFoLKuPkrw7dc6GFyNR0mM/AzVZLEqhdelgoVy5ApUVdi1OPW880JFHkhWe5ASMDeOCR2IBJolnMA1nHhwvCpndIqlkjiN28uoPvF/u0cT/ZlWiJ4k0+Hp5GPM6669k02EmBs6CwGolliMcqkv8VM/Lfqpuj1KEHw2NLOwYzXv/ktwOj8iYzBmGrYLsYh5+bHG4QlZlwC+QICG8BRNXu4UAfcpS5RQUr8SofSTWHvaTMQ/pnLtzTb7EHMNtmebPfQlggy1AOK8uOPyrhIx08UkLkzE1CQnqSN7dX0FryfVPMgGmQ/m/Z6lAAGY6fhypiEGaZmgWVGPBGpaGH7Uak9keSJo0G8uAJJOYrZjD5bjqnG/EsPFBI5Vj+EoQyECbvvOVRr/A1PBYaphEF87kLqvsOkiRHksqKeFh1tc9f7ZNUaaKcygfBvGasR0skaOA34EXmv3f4bDvsFex3oW7urRMa5E7RKlnjJjH4nmg9ie5Okcv2KPmkvsii5MXOtQR8p75VwPBFP/uM3UOg3Q2ubKlo/DrpO5Q1uDEVsBv5OlA4tTsiAs8kotzuyIuxxflW0iInHVxdalR24yGZEzh8XsZIBgW50kZO57YxhR8MsK9Ib8qGDLrpo6RbDUtn50lOtxUutlnYyHr
- sPPdGFSC
- FGPKQ9WOwRkVYsLfFKwVCDZolb+uNUheezkObxuOBOeTyemi/Ft0C9peH0GwfIrvGSoOtoFJ/WeHphoeFwvcoyHgVi6F0EsPHg+1r0AlQjLptUv5FwX1MrHQInVsyWnwz35aX88Tg0MBsTsFsAK1hGcHHO05FssEnciOwaMaB1hWs2yrwH1LtAUu2fub8z1Bt2d83YlnU74hMZmprTFC1yiPStjRFwJv4kjjqbtvisTjbfctsA2crGa8BBLB7uIjrU2C7ZYyLp2AQWZKjPem+AsuYj0Gsu8ZFOVf++Qm/Dprxtn/84egrJ4QVQ4sVW6H1UYvham8Ob3RJ6aivGNU/bHbTML7mzWeJkB9HhU3jw7IaKZ2Gnlaf0u3sh8oGRSji3waHyKpG/Hb/cc4EY+me65aXdAB63XJqUFfZyRkNUIlJA2bUDyJYlu/kz55nbKmGFXuTGeGP9Ff8Yg64W5n7eUTKijs0o9Ulud9XOYFxelWNwUfJmYfvCh9V8nidF8HM5NTJmrHZ8Q+EboqUmWH6Wgj1S52wjvA2fd6gm+M7UchMJVLM3ILShBO/zDxuqCwerZ2q6s+6vn7Cfx2yDS8V3Cq1c8f2YAniYAXy
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 2FC1A120006
+X-Stat-Signature: 78czwhioohmswp8z1reuz6gk3tztwf8o
+X-HE-Tag: 1789352670-923705
+X-HE-Meta: U2FsdGVkX19Fdskgh/YHS4qE/qABYzLKfv14zmgs15dRyuuaFGw0DNj5QBH2pI2Rc4eGZwv0Y2nds6rAbOrA746BCHPipbIR1imy/hCIRXBUVAr9ID8WFgu0M3LtcSnrcijQV6sbOs5Niep2OaX4lBKPrUJ//3s4Qm1HO4MJv86qHfHmJK3V2ofekvLaBY629s9hPG+poNaeqPeYDSRFv0IKANQx7HIfNOflBBw+USMAP4VbyoISnQ6N9XHaRJ5CvMHgnGWQqf4hw8X6S6/HS4quKB5sLKsHmXOaMWRYaR89ELkPJRqAm2yjc35sz5N+IKyAuo0BCsyAGnUSewf/7gIHgBYUHm0WVvJfJwYLoVOZywYYUK/BYIe+UfGNIuZyx3rMGw7w4w7Q+r3rNiC7F/QG3iVIMEyEmpEyQ5g4eSue91ZnPEIsrwYaCpBRPgz40aHxNtm+ReUQILprXMhFNJPfaUd9Bai/W1J4iFwrxJ6/jbJGzXZQ/3QQVm7FGtyUVXi7EAJCqtrqWMWzykhucuochcmWAppbEco4Q3QShh0pCFWCGZsWBYahpmQNxPoqB8bJXlk/kBavULU+1YKTYkBK41ef7c2cOieNhpgTghFOjgOsjl/7NL4Tv1mgd6rWwGKnj/MVBNgKS1wXWvLjhgip1y+mRecwgVsQXZ/o0w/0by0mQtkpnSX653PA08ZbujIWlmW44HDnAL62CZveqxtaCkrvExL7glD2lhkg5acXsLgvKuHjl9VaNMVi/EVGmty38r5HzHhnqULvEKkS8ZlErnkecaEEPmEhzQio/cDMgcKr1mwNbxa1v8nwLJSvktONGHYbsBWIdexYwYnnGL+93wezXS5uvQHKP2puQA5YP38uVNNZoRPzDmvGe+MJqlfqXJogWRTiz0bpx1ZQVLreItseqxhu3CwNiDOJQF0AglQbNzg36NrNXZT2TFuET5waz+h0KXFLy8h9Tfv
+ zX/bbdjj
+ yotDejREVxmP1nIDDed+5LgWaKUkzaP7RYGwGNtB2Qxd075GWMayOc6JkwwepAGua6YxsuKigLZjFMpshvsaX/wMs9Df0FkrwfF5tyXLK0Ii1Oj66vtB6JPwSI42eAme3VBnHKdJfS6FbGIOPirFq7aoKlo8R1y45cTzUTaFTm7QzNghqf6Escz0dstZymzX8Tuc15jgNM+HqYtgst97Ck2nsh43zYbpdZKDzAcwJjXTyq0CUGuiIU9hnApZ22IDhpDNeZouSEqcHHXPEe5Gc9rhY6PFXid8RKt052ETMXGBT/Yu4iqho934xfqIFdsVz/J53eRz91+gPkVyn5GJ4PuSiqCmBCpY4MkbWhWdf7+rrKyhgCJ90bMx94Df3cuAUb3Z+foXEhBrgO+58rebtHjEcTVyTHLGfoRhh2k7M4JU9Z1TXYhUXgONpfqYYougUTkzbK1XoTSiL6tCBAIdHV7B9Pk6jo69ADPQBJfKM/qWuHTxX7GiqqDe3AlKISE+29sUp/88cabC+mU+hnL4+MlJNKa5nmDzk+ZBJSMlwlth1EpIQRhiI3j3AUHd/CFDbpQxJG7OdOGUga045adgSRapGR0RetLRN0r2VyH9lRdQR0uCNwCIR4ZNAfzXUik+7VscGGQIbAeNNYxu6KGOX7fIR66hQHcnxuUnBoSzZICmvTvzVjc9P62Faq3BZE62bB+L7dsYzLOARAS3kBV/dG9Mp3ggx2lVlBukHe5B8x5yQdX1yD40H37J8Cg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -187,72 +228,254 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-gnttab_alloc_pages() stores xen_page_foreign in page->private. On 32-bit, a
-pointer to an allocated xen_page_foreign is stored; on 64-bit,
-xen_page_foreign is stored inline. Checking page->private != NULL is enough
-to tell whether a xen_page_foreign needs to be freed on 32-bit and
-page->private is zeroed unconditionally on 64-bit.
+Hi all,
 
-It prepares for a future commit that remove PG_private.
+This patchset removes PG_private to make space for upcoming PG_folio for
+identifying pages from a folio (more details in Note below). Instead of
+checking PG_private, all code is changed to check page/folio->private !=
+NULL instead.
 
-No functional change intended.
+MM people are cc'd on all patches and subsystem people are cc'd on the
+cover letter and corresponding patches.
+
+Patch 6 is picked up separately in f2fs tree, but since mm-new does not
+have it yet, it is sent for MM testing.
+
+Overview
+===
+Most code uses folio_attach/detach/change_private() functions, so folio
+refcount is increased and decreased when folio->private is set and reset,
+respectively. There is no need to change them.
+
+Changes are needed for exceptional users:
+1. zsmalloc uses PG_private to indicate first component zpdesc page and
+   page->private is used to store zspage in zpdesc. To remove PG_private,
+   is_first_zpdesc() is replaced by pointer comparison.
+
+2. kernel/events/ring_buffer.c stores page order in page->private.
+   Replacing PG_private with page->private != NULL works.
+
+3. drivers/xen/grant-table.c stores xen_page_foreign in page->private,
+   where on 32-bit, a pointer to xen_page_foreign is stored; on 64-bit,
+   page->private is used as xen_page_foreign. PG_private check is replaced
+   by page->private != NULL on 32-bit for xen_page_foreign deallocation.
+   On 64-bit, page->private is cleared unconditionally since {domid=0,
+   gref=0} (xen_page_foreign can be 0) is valid.
+
+4. fs/crypto/crypto.c stores a folio pointer in page->private, PG_private
+   checks are replaced by page->private != NULL.
+
+5. fs/erofs has two different uses:
+
+    5a. folio->private is used to form a reversed list of
+    the outputs of readahead_folio(). readahead_folio_last() is added to
+    output folios in reversed order, so that ->private is no longer needed.
+
+    5b. folio->private is used as an in-flight I/O counter. Convert the
+    code to use folio_attach/detach/get_private() and add bias==1 to the
+    counter to avoid folio->private being zero.
+
+6. fs/nfs/write.c: folio refcount maintenance is in a bigger scope than
+   folio->private. So folio_attach/detach/get_private() is not used.
+   Nothing to change.
+
+7. fs/f2fs uses attach_page_private() to first reset folio->private then
+   immediately sets PAGE_PRIVATE_NOT_POINTER bit on it. Change it to use
+   attach_page_private() to set PAGE_PRIVATE_NOT_POINTER bit directly to
+   avoid folio->private == NULL gap inside set_page_private_##name().
+
+8. hugetlb uses folio_change_private(folio, NULL) without folio refcount
+   maintenance. Change it to folio->private = NULL.
+
+After the above changes, PG_private ops are converted to
+page/folio->private ops.
+
+folio_has_attached_private() is added to check filesystem-only private data
+by excluding swapcache and hugetlb folios, because swapcache folios overlap
+swp_entry_t swap with ->private and hugetlb sets its own flags in
+->private.
+
+Note
+===
+1. KPF_PRIVATE is removed after PG_private is removed.
+
+2. Documentation/mm/hugetlbfs_reserv.rst is outdated, so I did not remove
+   PG_private related text. It should be rewritten.
+
+3. PG_folio is planned to be set on every page from a folio in
+   page_rmappable_folio(), so folios with any order (currently
+   PG_large_rmappable is used to identify >0 order folios, but not order-0
+   folios) can be identified. Then vm_insert_*() can correctly reject all
+   folios and rmap code will only see folios. Eventually, page_folio()
+   will return NULL for non-folio pages by checking PG_folio, but before
+   that all existing users that treat compound pages as folios will need
+   to be converted.
+
+Tests
+===
+1. allmodconfig build passed.
+
+2. zsmalloc is tested using ext4 on a 1GB lz4 zram:
+    2a. zram load + zsmalloc compaction;
+    2b. concurrent zspage migration via memory compaction;
+    2c. confirmed that multi-page zspages actually formed.
+
+    Details: https://github.com/x-y-z/linux-dev/blob/b4/remove-pg_private/test_zsmalloc.md
+
+3. erofs is tested on images created with -C4096 and lz4hc, lzma,
+   deflate, and zstd algorithms:
+   3a. cold read of all files, verify checksums match source;
+   3b. readahead + reclaim/migration race.
+
+   Details: https://github.com/x-y-z/linux-dev/blob/b4/remove-pg_private/test_erofs.md
+
+4. fscrypt is tested on software-encrypted ext4 with writes to exercise
+   bounce pages.
+
+   Details: https://github.com/x-y-z/linux-dev/blob/b4/remove-pg_private/test_fscrypt.md
+
+5. f2fs is tested on an image with inline_data,compress_algorithm=lz4:
+    5a. INLINE_INODE — lots of tiny files;
+    5b. REF_RESOURCE + general writeback — buffered write churn with fsync;
+    5c. ONGOING_MIGRATION — force GC / page migration;
+    5d. ATOMIC_WRITE — atomic-write ioctl path.
+
+    Details: https://github.com/x-y-z/linux-dev/blob/b4/remove-pg_private/test_f2fs.md
+    (I did not run xfstests)
+
+6. MM selftests passed.
+
+LLM use
+===
+Claude was used to form a concrete plan on what code needs to be changed
+and how to change them. The plan was reviewed by Codex until no issue was
+spotted.
+
+Plan is at: https://github.com/x-y-z/linux-dev/blob/b4/remove-pg_private/plan.md
+
+I then followed the plan to make code changes. I did bounce ideas with
+Claude how to change fs/erofs, since I did not like the original idea.
+After each change, I asked Claude to review my code and git commit message.
+I also asked Claude to give me test plans (see above).
+
+At last, Codex was used to review all patches.
+
+Comments and suggestions are welcome. Thanks.
 
 Assisted-by: LLM
 Signed-off-by: Zi Yan <ziy@nvidia.com>
-To: Juergen Gross <jgross@suse.com>
-To: Stefano Stabellini <sstabellini@kernel.org>
-Cc: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
-Cc: xen-devel@lists.xenproject.org
-Cc: linux-kernel@vger.kernel.org
 ---
- drivers/xen/grant-table.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+Changes in v4:
+1. dropped set_page_private(0) in balloon_retrieve(), since page->private
+   is cleared at that point.
+2. simplified the comment in add_hugetlb_folio().
+3. additional cleanup for f2fs to remove fio->page uses and convert
+   PAGE_PRIVATE_* flags and helper to folio-only.
+4. added a comment for __readahead_advance().
+5. added core-mm split/migration interaction information on newly added
+   folio_attach/detach_private() for erofs.
+6. renamed folio_test_fs_private() to folio_has_attached_private() and
+   merged the commit introducing folio_test_fs_private() into its prior
+   commit.
+7. adjusted the patch subject: "treewide: remove folio_set/clear_private()
+   *usage*"
+8. split "treewide: replace PagePrivate() with page_private()" into three.
+9. moved some comments in "treewide: remove PagePrivate() and PG_private
+   from comments and docs" to prior patches along with code changes.
+10. used PG_folio instead of __PG_folio to avoid additional
+    code change in __def_pageflag_names().
+- Link to v3: https://patch.msgid.link/20260907-remove-pg_private-v3-0-6ae22f9d9272@nvidia.com
 
-diff --git a/drivers/xen/grant-table.c b/drivers/xen/grant-table.c
-index 69922be28b54c..993f89f048e21 100644
---- a/drivers/xen/grant-table.c
-+++ b/drivers/xen/grant-table.c
-@@ -863,10 +863,10 @@ EXPORT_SYMBOL_GPL(gnttab_free_auto_xlat_frames);
- 
- int gnttab_pages_set_private(int nr_pages, struct page **pages)
- {
-+#if BITS_PER_LONG < 64
- 	int i;
- 
- 	for (i = 0; i < nr_pages; i++) {
--#if BITS_PER_LONG < 64
- 		struct xen_page_foreign *foreign;
- 
- 		foreign = kzalloc_obj(*foreign);
-@@ -874,9 +874,9 @@ int gnttab_pages_set_private(int nr_pages, struct page **pages)
- 			return -ENOMEM;
- 
- 		set_page_private(pages[i], (unsigned long)foreign);
--#endif
--		SetPagePrivate(pages[i]);
- 	}
-+#endif
-+	/* Data is stored in page->private on 64-bit */
- 
- 	return 0;
- }
-@@ -1031,12 +1031,11 @@ void gnttab_pages_clear_private(int nr_pages, struct page **pages)
- 	int i;
- 
- 	for (i = 0; i < nr_pages; i++) {
--		if (PagePrivate(pages[i])) {
- #if BITS_PER_LONG < 64
-+		if (page_private(pages[i]))
- 			kfree((void *)page_private(pages[i]));
- #endif
--			ClearPagePrivate(pages[i]);
--		}
-+		set_page_private(pages[i], 0);
- 	}
- }
- EXPORT_SYMBOL_GPL(gnttab_pages_clear_private);
+Changes in v3:
+1. changed folio_test_fs_private() to check PG_swapbacked instead of
+   PG_swapcache for excluding swapcache folios. Because folio->private and
+   PG_swapcache are not set as a whole, making folio_test_fs_private() give
+   false positive, whereas PG_swapbacked is always set for swapcache
+   folios.
+2. added __DEF_PAGEFLAG_NAME() to show __PG_folio instead of open code.
+3. f2fs change is picked up at
+   https://git.kernel.org/jaegeuk/f2fs/c/5ad9409a9533, mm-new currently
+   does not have it, so the patch is sent for MM testing purpose.
+- Link to v2: https://patch.msgid.link/20260831-remove-pg_private-v2-0-3668159cd9e8@nvidia.com
 
--- 
-2.53.0
+Changes in v2:
+1. removed is_first_zpdesc() in patch 1 and open coded the checks.
+2. fixed wording in patch 2's commit message and clarified page_private()
+   also works when ring buffer's AUX page order is 0.
+3. removed the empty loop in 64-bit gnttab_pages_set_private().
+4. clarified folio->private will be reset to NULL by
+   fscrypt_free_bounce_page() in the commit message.
+5. clarified why hugetlb needs to restore hugetlb_vmemmap_optimized.
+6. renamed readahead_folio_reverse() readahead_folio_last() and
+   reimplemented readahead_folio_last() by adding a new readahead_control
+   private member, _forward, and a new helper __readahead_advance().
+7. added a bias, 1, to erofs I/O counter, so that folio->private stays non
+   NULL between folio_attach_private() and folio_detach_private().
+8. converted more call sites to use folio_test_fs_private().
+- Link to v1: https://lore.kernel.org/r/20260731-remove-pg_private-v1-0-142c97ba3562@nvidia.com
+
+---
+Zi Yan (16):
+      mm/zsmalloc: replace PG_private with pointer comparison
+      perf/ring_buffer: stop using PG_private as AUX page high-order marker
+      xen/grant-table: stop setting PG_private on pages for grant mapping
+      fscrypt: stop setting PG_private on bounce page
+      mm/hugetlb: use direct assignment instead of folio_change_private()
+      f2fs: stop using PG_private
+      f2fs: convert the ->private flag helpers to folio-only
+      erofs: mm/pagemap: add readahead_folio_last() to avoid folio->private
+      erofs: use folio_attach/detach_private() instead of direct assignment
+      mm/page-flags: check page/folio->private instead of PG_private
+      treewide: remove folio_set/clear_private() usage
+      ceph: replace PagePrivate() with page_private()
+      md/md-bitmap: replace PagePrivate() with page_private()
+      buffer: replace page_buffer() with page_private() and delete it
+      treewide: remove PagePrivate() and PG_private from comments and docs
+      mm/page-flags: remove PG_private
+
+ Documentation/admin-guide/kdump/vmcoreinfo.rst |  2 +-
+ Documentation/filesystems/vfs.rst              |  6 +-
+ arch/x86/events/intel/bts.c                    |  3 -
+ arch/x86/events/intel/pt.c                     |  6 +-
+ drivers/md/md-bitmap.c                         |  7 +-
+ drivers/xen/grant-table.c                      | 11 ++-
+ fs/ceph/addr.c                                 |  8 +--
+ fs/crypto/crypto.c                             |  2 -
+ fs/erofs/data.c                                | 16 +++--
+ fs/erofs/zdata.c                               | 13 +---
+ fs/f2fs/compress.c                             | 35 +++++----
+ fs/f2fs/data.c                                 |  2 +-
+ fs/f2fs/f2fs.h                                 | 99 ++++++++++----------------
+ fs/f2fs/segment.c                              |  2 +-
+ fs/nfs/file.c                                  |  4 +-
+ fs/nfs/write.c                                 |  2 -
+ fs/proc/page.c                                 |  1 -
+ fs/ubifs/file.c                                |  8 +--
+ include/linux/buffer_head.h                    |  6 --
+ include/linux/kernel-page-flags.h              |  1 -
+ include/linux/mm.h                             | 35 +++++----
+ include/linux/mm_types.h                       |  4 +-
+ include/linux/page-flags.h                     | 43 ++++++++---
+ include/linux/pagemap.h                        | 64 ++++++++++++++---
+ include/trace/events/mmflags.h                 |  2 +-
+ include/trace/events/pagemap.h                 |  3 +-
+ kernel/events/ring_buffer.c                    |  7 +-
+ kernel/vmcore_info.c                           |  1 -
+ mm/huge_memory.c                               |  3 +-
+ mm/hugetlb.c                                   |  7 +-
+ mm/migrate.c                                   |  3 +-
+ mm/page-writeback.c                            |  3 +-
+ mm/vmscan.c                                    |  2 +-
+ mm/zpdesc.h                                    |  2 +-
+ mm/zsmalloc.c                                  | 24 ++-----
+ tools/mm/page-types.c                          |  2 -
+ 36 files changed, 228 insertions(+), 211 deletions(-)
+---
+base-commit: 3833e2f6aa6bf6af169f78a27843dfa2804be5a6
+change-id: 20260728-remove-pg_private-cfe926c7f83c
+
+Best regards,
+--  
+Yan, Zi
 
 
