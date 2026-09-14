@@ -4,97 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB796C88E5C
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 03:04:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8167FC88E64
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 03:09:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5DC756B0092; Sun, 13 Sep 2026 23:04:08 -0400 (EDT)
+	id 7746A6B0088; Sun, 13 Sep 2026 23:09:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 566A66B0093; Sun, 13 Sep 2026 23:04:08 -0400 (EDT)
+	id 71EFF6B008C; Sun, 13 Sep 2026 23:09:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 42F026B0095; Sun, 13 Sep 2026 23:04:08 -0400 (EDT)
+	id 634D66B0095; Sun, 13 Sep 2026 23:09:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0225D6B0092
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 23:04:07 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E41B7120F00
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 03:04:06 +0000 (UTC)
-X-FDA: 85210873692.18.46C60BC
-Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 752004000B
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 03:04:03 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=AWQVK5l2;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf01.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=AWQVK5l2;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf01.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 39BCF6B0088
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 23:09:21 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A1133160F4F
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 03:09:20 +0000 (UTC)
+X-FDA: 85210886880.04.F6D972E
+Received: from mta0.migadu.com (out-221.mta0.migadu.com [91.218.175.221])
+	by imf02.hostedemail.com (Postfix) with ESMTP id E150A80003
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 03:09:16 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="XMm5I/3W";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf02.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.221 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789355045;
-	b=PNUyY5PoxYzlsqJabJ5cTvL17EdxYxQsqb3YNlw5hrF6pWkj9VF1o44d+yIBbc6r/Ub8eG
-	cqj/le7OBUgKDBq8ljvJ4yodUSVUr1icKfiNkzEC/B0YLdixkvT8DOzEE35TjxnR/ouXgU
-	xVM0m5mf/zfKI1vDibCkvgpMqWmUC1M=
+	t=1789355358;
+	b=e7jTyKH4Y/Pg0QgElJTIDkez2puFt6jXSs1Bqzt6+qCsKYZvKHA9eUHSGmDcZt28jZ5HU1
+	C8VmdJaNZxEhTk1OKETCYJ6ac08+NCLTqS6uMW5f3NNo1LHE894DKxhFQ6wIWKth/gJHta
+	izqZc8KMtyunhlAj0JAy68liuOQrpH4=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="XMm5I/3W";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf02.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.221 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789355045;
+	s=arc-20220608; t=1789355358;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QbEkjRvDTT9Ap9hbZxOwJdBfJpMC1NbhJsmL6dREPI0=;
-	b=bIf0XH0xMAGBmHSSuEa4doDekEdWyvpBcsuLEV8MyqunkpE+I/zy1SeOcvqDLRGElsnbh2
-	8Ffr1NVngciXJNtokuyuC3mZeNVnzSgwOakHSVujJi4idpOe1DVVvvtHQOuAxXTyTp3htC
-	py90Rg7+X88TmD9N3JmTEuiyqNLLXWk=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=QbEkjRvDTT9Ap9hbZxOwJdBfJpMC1NbhJsmL6dREPI0=;
-	b=AWQVK5l2K6Dpg0gktWDL2TJvnP5Ac0hQYTpF5TUw9YTxGcbFv2O2SvIIxShFtx6UWLkKTYsAa
-	+V/nj3qjjhqxQP4g3ap+H+yDLiMZhmRWiOeUgGhcWOG8NgkRXke+5Io8BC0dB9ayefXkhG/rV1G
-	tIkK3g5vXP6BxnAuPXq1OWk=
-Received: from mail.maildlp.com (unknown [172.19.163.0])
-	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4hjqSM4PQQz1T4JM;
-	Mon, 14 Sep 2026 10:52:19 +0800 (CST)
-Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id D9B3040537;
-	Mon, 14 Sep 2026 11:03:57 +0800 (CST)
-Received: from [10.174.178.9] (10.174.178.9) by kwepemr500001.china.huawei.com
- (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Mon, 14 Sep
- 2026 11:03:56 +0800
-Message-ID: <a19a0c1d-d2bf-4c40-9308-e815f925f87a@huawei.com>
-Date: Mon, 14 Sep 2026 11:03:56 +0800
+	bh=uz0d7EYrq3EnDsOvPXSg61OYp8UXkLTPBLsdiBFKdo4=;
+	b=jOrevL6sM2Hb5OPnZh6XxV4K5QCOOfLnOG2nzfsJN04rBIrA5biQqjZqk6ROVE4wTW+3c8
+	gS7VzTOxaJObaEAnOEsLESzdTUmJUnGMmSkZMCmisEMdN9qErONI17njfCtZWCyb2dJJfy
+	fIqB5PgFISfa0rFoPsd0oTcULhKRmqY=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=m+foVBAoalhqLlq2Og+IWuwZmX9gvSN2FL3MD01und4=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789355355; v=1; x=1789960155;
+ b=XMm5I/3WfwV828PwC0hisoEi0O+4sNAvlHcX6SGKGQSYvbvuRNCg4cf+v0dJ9YDn0UCzV5V8
+ f4Kvd1b1SNl7KeAZqntkIJXPNF+Kjbc7DZFO2Ze5yhHO9LVcCqghfLh/w10zoXjJFQlT0n08JJY
+ PWbhP/ADe60L18QKKEERwHYs=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id ab92a83b59a5437d;
+	Mon, 14 Sep 2026 03:09:15 +0000
+X-Mizu-Trace-ID: ab92a83b59a5437d
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <e21370f7-f95a-4f07-ada4-7c139628370a@linux.dev>
+Date: Mon, 14 Sep 2026 11:09:08 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] mm/ksm: use per-VMA locking for find_mergeable_vma()
-To: <xu.xin16@zte.com.cn>, <akpm@linux-foundation.org>, <david@kernel.org>,
-	<liam@infradead.org>, <surenb@google.com>, <rppt@kernel.org>,
-	<ziy@nvidia.com>, <baolin.wang@linux.alibaba.com>, <nico.pache@linux.dev>,
-	<dev.jain@arm.com>, <baohua@kernel.org>, <lance.yang@linux.dev>,
-	<chengming.zhou@linux.dev>, <usama.arif@linux.dev>, <gourry@gourry.net>,
-	<harry@kernel.org>, <vbabka@kernel.org>, <peterz@infradead.org>,
-	<borntraeger@linux.ibm.com>
-CC: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
-References: <20260913121716693wiN5osmShywgtitghSm7G@zte.com.cn>
-From: Jinjiang Tu <tujinjiang@huawei.com>
-In-Reply-To: <20260913121716693wiN5osmShywgtitghSm7G@zte.com.cn>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.178.9]
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemr500001.china.huawei.com (7.202.194.229)
+Subject: Re: [PATCH v2] mm: shmem: ignore sysfs configs for shmem forced
+ collapse
+To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org,
+ hughd@google.com, david@kernel.org
+Cc: ziy@nvidia.com, liam@infradead.org, nico.pache@linux.dev,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ lance.yang@linux.dev, usama.arif@linux.dev, kas@kernel.org, ljs@kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <063f655b4d6c4234f3aa27ed6ecab10283ecb880.1789351825.git.baolin.wang@linux.alibaba.com>
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <063f655b4d6c4234f3aa27ed6ecab10283ecb880.1789351825.git.baolin.wang@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 752004000B
-X-Stat-Signature: 5xesotp14mxy4cnzh8qayko879dqax7c
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789355043-272449
-X-HE-Meta: U2FsdGVkX1+N2p/gdceBnmdx3IGHGCcv6mcBcqnSTg+6JE/HmMPHBTOsgYefZuPR3U7IyEid8rpYevTjWwzOey+Mn4dHJeBXTxPEbKlrZoWxFRUKE4uUhcJ4dawAyDM03TisuFyxKyN9GjIhWRcH6IfYPs6Q1gNnoyxnzwzJWKgwk//jKlOrA75ssFa329k2RK8tJRzpiQ/OdUyGuy52Jshi5BcH/PzPYjtRM3Hd+1SJNTzBfOrV8Wqp9kenW3XJDxiA5kquLEs3+Tg1lMF5bEEkMVnXnab/oq0AE8SdAMFurl+Lv1yukQRV7YcwMfbYqSUquWryPiqNI687sUaXFMDL59HyG9dQhSIRcCZKrnZSPe1yZiMtL1OSFfnwqi3/g2nic6E2diNOGqm29fKnX2tfoWhIhvLWPOVYFzsNvHC8Ltt+GBTAuvzEo7l/ibjT7a3BzR32l5xUVNy4P8LmbcDPbE++N4k3GT6xSIidsdbkIj9ldIruPI78IDXxwIgQFqp09ozyObdNrq+WTAHoQ2N3er1t2XSxSBVRb1vPIxh6K6dfXPGDNnG3OKVhWaWB3xVfXRTca/KcDOJrY1OPwUJ6jtIssSOPDTlrzlqZAHr/oV546CO1IIqifd67aWXatfzJgmsIwUOsjuOsza+2LUPBn2CESGCJoqaDrtDxd+G1v4Fk01yeE0qedt6oyhjt7YP1yF4VYIt9RPyBpNV8G5Yn2ZNX7WBzZbM7NwtDRn0iZsuIv4mVl25SpPrSiDymlRTjLmeGvFcNjY++vVpojXH3UWjTxkJhcL6TK89P2JGhj2Tn8WH8KK2AT4v2CrDrTsfgj1EvKvQaZ16oi9Z3oWV5KzFP7wWZ44etflaX8RMTF1WuNyGKrI5AElouADPQ0bB1OYbmhE5LzYmLCS2vP4vkJFxp9BC2MagUPa79Ak5hqAHYDwtirRTw9R0zRBPqJr6VvBk2ZMaJi1xz62q
- Un24NUpN
- mrxI3PihULnumwVksM1BuXN54P8ULvfXiq+6VyyB2jJ/BiogcjiWtONMMC2B0iMWftMHheOfRJusymZOyjc3zC2r9/hlTuULdWl+BAYkHVYYZ3NK5dkdp8ncWD/Pe5mg4lkIM67fD7Gg46GsKJajsPiWZ7lTd8E99AtHvAhrcOQxp1geN6xzH2IF10zpJ2IjABv2S6OaafFYqY8nnah7LOwT4VW+8hL8dSQiVhNy3wUXfLunxFZWSpYMtKwg5I4ZpbveBXShGhGTgE07jpBvm0lBzFJEtWK5bRKL6rPA1FMdOc54Am+lWIfdlxtdZC/LRV0jI4SN27i1EsouqU6s886hqjcX19qKKF8CCr/NpXpycTM6n4VbjPzYw1Uj4nyRReK9RzyB961rUo6aTXx516VBWf9q8xCxH+ZnA3uo7xVPSUValukhUOZvVx4VfjYQ/m8TR
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: E150A80003
+X-Stat-Signature: dx9ec8e6t9zhi7emi6uybny5rfiwwhk7
+X-HE-Tag: 1789355356-179781
+X-HE-Meta: U2FsdGVkX1/4yTBG8WbAXDvjJCyWMyVmns/okwKA+m83qWMjr+uooTItoZr5WcjroAIYKonzrjCdbzj768+mVwIubMioH/r/3hEnqVOv+78VJE4v1Gaz2C7CJVaVrdBFW1tBKD2Fvr4oMp9x8JGJt9bf4KShfsTiJqwVrfjO3FYO40UuNbT7MnIdxk1U0gAItZ9hj02Ixvok6kSNril2zKKG4BybNygFPFIAuH4BBqCzCukRR1P8spLH4FqzeuEcAFhRauQDaDQN4XkhJp1qAbb5tY69vWkdDQXb2GrN7S24FXa8HPrkFicZF3YP5lY1ZvMgfudzVsMeo3AAZJIWAam3GIU+gSgy9HcxC9EEd0qXNh//LDAeITMNZv+bIgqd0aHbqaNFNOgZM/yWGw2NUxTv12Ts/I0kp1AETg1llCVbKn+Xqn78SGBB9mtLGNTFsuIM0Xpwn9j21igQ/xkf+jhYGuH8AYqBJaXHWIMhsf4kebsKD1ov2SnzRupQ3xAW+qoE6b9RqufYRyudh5x14naZ502tb1AZeIY+wQBCDv0eHn5h4WutDIegmEeEPEczttJ/Du8ImL8YJcSKCds+BZtLFKNIJDGNwAde9sQx/emZJJQwq89jM8IuEYgOYxPvOGzBX0u8wUW5mY1tNy7U5qy+geM5+gp191z++AXIJPRN8L4QAuuXQPVX9ghVa81c4wPrEIRenKGguweo7YNs/aGhjNREC09v/uYEA4PsgCgRxhJPk86yB9/yLAQaNfENOBTG9sDoffol9F4I2nXiVDUOf7bYWBfYva2GBeUIokqqCwg0cfYJ5yFsWbn3eRgxdSz5DSeTyAmUutjxVwYIV4GwqrS6EGEmsgotv2lF4owtG5lQEIvL4AbZs3dLaDqzcLhfGZJJKqzpbmtnTvIeIAn5kD2TPZQJa0mVSRRRUC80FtsMx/oUiZGQjJAhcMtlQ75UD+13JPgoozKqHlB
+ qV8f7ab0
+ sUXB6yPpS/2WqSkY6YF/lJvm8KnIYk95AvBody4nu5qBPBH/hWlbFsg8OTJCNuuwYqK+y1/uHIBDImCTk5HKuMasNNtDyz2EI9mCikumI0Ofm/f+ssG1ofm3c7SpxsEqWThK3lJmT4xEnSlVGaCaXnUdEqrxvAkmUWPDOMUQqpVhwa8mvBQN65cVNpzbZlFALBqyESuX3dQKWorWlqe1BULLIfdkkVz3PWkKdrut5pOmmKrsDvhzn2CkP1hQ7eM5141TVsPSGKZwVWu2fm8AW+b4COiqrbeh8vQ/O8KGgQMjFSMQ/4aUios0Uw2EWKHqU6njUp7UU/+74p0uXdGCLa8QOsLEx3MSK2deh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,87 +95,59 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-在 2026/9/13 12:17, xu.xin16@zte.com.cn 写道:
->>>     Patch 1 removes an unused 'vma' member from struct folio_walk.  It has
->>>     never been used since its introduction and is pure cleanup.
->>>
->>>     Patch 2 adds a 'walk_lock' member to struct folio_walk and extends
->>>     folio_walk_start() to assert the required locking mode.  Existing
->>>     callers are converted to pass PGWALK_RDLOCK, so there is no functional
->>>     change.  This prepares folio_walk_start() for callers that hold a
->>>     per-VMA read lock instead of mmap_read_lock(), which is needed by the
->>>     Patch 4. No functional change.
->>>
->>>     Patch 3 tranforms the boolean 'lock_vma' into the enum 'page_walk_lock'
->>>     without any behavior changed, which is prepared for the Patch 4 to use
->>>     per-VMA locking. No functional change.
->>>
->>>     Patch 4 introduces find_mergeable_vma_locked(), which uses the
->>>     universal per-VMA locking helper vma_start_read_unlocked() to look up
->>>     and read-lock a VM_MERGEABLE VMA without taking mmap_read_lock().  All
->>>     KSM call sites that previously used find_mergeable_vma() under
->>>     mmap_read_lock() are converted to the new helper, and the locking in
->>>     get_mergeable_page() is switched to PGWALK_VMA_RDLOCK_VERIFY so that
->>>     folio_walk_start() can verify the per-VMA lock is held.
->>>
->>> A microbenchmark was run to measure the time KSM takes to merge a
->>> victim region under mmap_lock contention. Under interference from 4 churner
->>> threads, the merge time of the per-VMA KSM-optimized kernel is
->>> significantly reduced by 50%.
->> Hi.
->>
->> During task exiting, __ksm_exit() uses mmap_write_lock() to synchronize with ksmd.
->> see the comment of ksm_test_exit().
->>
->> void __ksm_exit(struct mm_struct *mm)
->> {
->>     ...
->>
->> 	if (easy_to_free) {
->> 		mm_slot_free(mm_slot_cache, mm_slot);
->> 		mm_flags_clear(MMF_VM_MERGE_ANY, mm);
->> 		mm_flags_clear(MMF_VM_MERGEABLE, mm);
->> 		mmdrop(mm);
->> 	} else if (mm_slot) {
->> 		mmap_write_lock(mm);
->> 		mmap_write_unlock(mm);
->> 	}
->>
->> }
->>
->> When ksmd currently is scanning the exiting mm, we should guarantee the mm pagetable
->> still valid (i.e., mm_users > 0). However, ksm_mm_slot only holds mm_count, which only
->> guarantees the mm_strcut isn't freed. So, __ksm_exit() uses mmap write lock to synchronize
->> with ksmd.
->>
->> IIUC, vma_read_lock cannot be exclusive with mmap_write_lock().
->>
-> Nice catch. Thanks for pointing this out. Indeed, the original exclusion between
-> __ksm_exit() and ksmd relied on mmap_write_lock() blocking mmap_read_lock(),
-> and per-VMA read locks do not provide that exclusion.
->
-> A possible approach to restore the necessary guarantee is to pin mm_users while
-> ksmd is walking the page tables:
->
-> Before scanning a given mm, try to take a reference with mmget_not_zero(mm).
-> If it fails, the mm is exiting, so we skip it.
->
-> Hold that reference for the entire duration of scanning that mm (not per-VMA),
-> and drop it with mmput() when done.
->
-> On the fallback path where we need to acquire mmap_read_lock(), drop the mm_users
-> reference before waiting, to avoid delaying an exiting mm.
 
-We should avoid holding mm_users ref too long. Otherwise, when the task being scanned
-by ksmd is OOM-skilled, even though the victim task has responsed SIGKILL signal and
-exited, the mmaps aren't released due to mm_user > 0.
+On 9/14/26 10:12 AM, Baolin Wang wrote:
+> According to Documentation/mm/transhuge.rst, MADV_COLLAPSE is expected to
+> ignore any THP or mTHP interface settings.
+> 
+> However, after commit 26c7d8413aaf ("mm: thp: support "THPeligible" semantics
+> for mTHP with anonymous shmem"), performing MADV_COLLAPSE on shmem will
+> depend on /sys/.../hugepages-2048kB/shmem_enabled being set to "inherit"
+> (although that is the default), which can cause MADV_COLLAPSE to fail
+> unexpectedly.
+> 
+> Fix this by returning the result of shmem_huge_global_enabled() directly
+> when MADV_COLLAPSE is requested, allowing PMD-order collapse while ignoring
+> shmem THP/mTHP settings.
+> 
+> Fixes: 26c7d8413aaf ("mm: thp: support "THPeligible" semantics for mTHP with anonymous shmem")
+> Reported-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Closes: https://lore.kernel.org/all/20260908125105.1510704-7-kirill@shutemov.name/
+> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Acked-by: Zi Yan <ziy@nvidia.com>
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> ---
+> Changes from v1:
+>   - Use the correct fixes tag (per Kiryl).
+>   - Collect reviewed tags from Kiryl, Zi and Lance. Thanks.
+> ---
+>   mm/shmem.c | 7 +++++--
+>   1 file changed, 5 insertions(+), 2 deletions(-)
 
-We should check whether the mm_user has dropped to 1 during scanning, like what
-ksm_test_exit() has done.
+Acked-by: Qi Zheng <qi.zheng@linux.dev>
 
->
-> This directly guarantees that mm_users > 0 while ksmd is accessing the page tables,
-> so __mmput() cannot reach exit_mmap() and free them. It is more precise than the
-> old mmap_write_lock() synchronization and should not introduce noticeable delay,
-> since the reference is only held for the scan duration.
+Thanks,
+Qi
+
+> 
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index c92ed17dbc4a..b572c60f2af8 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -2049,8 +2049,11 @@ unsigned long shmem_allowable_huge_orders(struct inode *inode,
+>   
+>   	global_orders = shmem_huge_global_enabled(inode, index, write_end,
+>   						  shmem_huge_force, vma, vm_flags);
+> -	/* Tmpfs huge pages allocation */
+> -	if (!vma || !vma_is_anon_shmem(vma))
+> +	/*
+> +	 * Tmpfs huge pages allocation or forced collapse ignores
+> +	 * sysfs configs.
+> +	 */
+> +	if (!vma || !vma_is_anon_shmem(vma) || shmem_huge_force)
+>   		return global_orders;
+>   
+>   	/*
+
 
