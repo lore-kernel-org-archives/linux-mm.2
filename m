@@ -4,88 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FB98C88E72
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 14:08:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37B51C88E72
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 14:08:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4E3DC6B0099; Mon, 14 Sep 2026 10:08:19 -0400 (EDT)
+	id 2E8DB6B009E; Mon, 14 Sep 2026 10:08:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 494CA6B009B; Mon, 14 Sep 2026 10:08:19 -0400 (EDT)
+	id 29ACA6B009F; Mon, 14 Sep 2026 10:08:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 386886B009E; Mon, 14 Sep 2026 10:08:19 -0400 (EDT)
+	id 1B2EB6B00A0; Mon, 14 Sep 2026 10:08:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 03F756B0099
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 10:08:18 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5CDC980174
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 14:08:18 +0000 (UTC)
-X-FDA: 85212547476.30.8CDCFFE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 8A331140017
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 14:08:16 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Yc6puxwy;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E51AB6B009E
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 10:08:44 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 497DDA0166
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 14:08:44 +0000 (UTC)
+X-FDA: 85212548568.09.7156916
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 870BD140017
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 14:08:42 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UzEF7Zb3;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789394896;
+	s=arc-20220608; t=1789394922;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k1MgQ4YkjRCW7c7SjK50zV8Sm2h6ALPWZtu7yelOo0s=;
-	b=ORTeJ+CfKKUZ8G3//h1gfqCKU5oMnTWq6fArJrSXycyfclhNnTFcttIo1JVkt4XirtBPcn
-	uOVw5jpjZvV0lrbDJ1u4IZKQY8GDfpzuTUBSReLjXYq0lkHPj/iVZxgXNUGMrcam3STFmo
-	AhUsj7bJn0htpburpeHCVDGGdF9XCZE=
+	bh=AaKFw710LgRLsyJ/sC56wEF2fzSq0uylE86NbWhDQFk=;
+	b=cBCznt1MR6a1ypXPfLsWn2UB7/6Ia2M2M/Vu8wWANipk/vrDoy0VD2eR45ie+8919EGWox
+	qvTNueSXsVCx9qr9C3Q/sX9G8EedAKbEFnwH+P3mQujTNhj/+nthPudxEkn8dxhG/5tMzW
+	XTDhcrQ6a7m+MFg0xJ4CggytXKW/vKA=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Yc6puxwy;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UzEF7Zb3;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789394896;
-	b=7UMzk//DjyKS0j7SsXuvqFrBiuNrTrxs6NG/ujAeRbO1UuBxbSEYaQkDrplsxQq+EFf86E
-	KaaD9v+DBs5kIuxQ7Pv/1SorSOY21i2I41bcqxku4e8uNc1SBBqTMFGmDr0MIbDMjSFwxH
-	ytwTQ8hmqXwGwkcS2tI77sP+wpl/wrU=
+	t=1789394922;
+	b=ly0O0Iqjqn/LLXcMi4hrRcZyAl3xgkLr/RxU5YUFkn49UNC5mssxF/n1nzOVvij+v+oVdI
+	xiEVUbAn32LNfqiak6fH6t6x0XB1xEzF4IxCm82vDJ7ilGr9aRYsuxV36RsKDOCbMMFroC
+	FROUYy7zWJCOJu/IceCHCk/7CLsVkws=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 76E5C41771;
-	Mon, 14 Sep 2026 14:08:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0828A1F000FF;
-	Mon, 14 Sep 2026 14:08:07 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 116D6601DE;
+	Mon, 14 Sep 2026 14:08:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C7751F00893;
+	Mon, 14 Sep 2026 14:08:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789394895;
-	bh=k1MgQ4YkjRCW7c7SjK50zV8Sm2h6ALPWZtu7yelOo0s=;
+	s=k20260515; t=1789394921;
+	bh=AaKFw710LgRLsyJ/sC56wEF2fzSq0uylE86NbWhDQFk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Yc6puxwy6rANj0lip7bIhBodmX1qJbjM7I+eZjazdFIQgAemi/LuQ/7RNRagtnNYA
-	 kL/jlNMvO0jZZrmkjZPX1AvXnzQrWtFRMkeMrp+JxEZ3hI0sd+/5uBronsBq3KPWNp
-	 ccFHv2YRryjKhdQe2NNuGHsKZnZV4qc+g1yWE+sfNKT32zVC/pZqOI7UNqvqlCeJRH
-	 Ch1W0FCUb21LyLByzEO2iQZwQPorZmXrlsdBknrOviWNrA+vaLvetPBWqP/rcVPTmm
-	 Pc/JZzqv1Sws6ZkzQF9W/qkTOKyUeuh+cSMn3d0JraAGtN+iuO/RXRmrJEPzds6d1n
-	 mKxTDI+qlHl/w==
-Message-ID: <08d3313b-d891-4202-b460-c5cefa96bbce@kernel.org>
-Date: Mon, 14 Sep 2026 16:08:03 +0200
+	b=UzEF7Zb3UJGxecxEcgSsAz99wwyiMM5BiGcoPMbkAEDPDmqMuQ9UFozqJYWHlZdBC
+	 OtsX63NB76meK0n19FgNlFs8oxWKYI39jRpq6yoATZg8qBlLhYWS2YNURkSYoQ5xm0
+	 w550wwCy4R+AOte8TAFL5aCiNtQUOBFzaGeeMsYtCNey2DPwJS8qa5suW1YjHwMa8j
+	 ZVAJhp3SV69xE5m+FWqpS796HgzjC0SiF0GMEclJfrwGOL+gcyuE6m98mwBoPHfNbX
+	 Sgk094fdDxzGYU9Y1iusw2d7abhC1Ah681lUPNzc6QT2SBdnwLG0yQy+iN9+PDNzxR
+	 dBhfuHWyc+ZyQ==
+Message-ID: <c60fa1c7-ac83-4e41-9911-a426c6b42191@kernel.org>
+Date: Mon, 14 Sep 2026 16:08:30 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/3] kselftest: mm: remove HPAGE_SIZE and HPAGE_SHIFT
- macro
-To: Yeoreum Yun <yeoreum.yun@arm.com>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
+Subject: Re: [PATCH v3 3/3] kselftest: mm: introduce size_to_shift() helper
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
  Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
  Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
  Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
  Kiryl Shutsemau <kas@kernel.org>, Peter Xu <peterx@redhat.com>,
  linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
- Sarthak Sharma <sarthak.sharma@arm.com>
+ linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Shuah Khan <shuah@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Leon Romanovsky <leon@kernel.org>, Sarthak Sharma <sarthak.sharma@arm.com>
 References: <20260914-fix_hpage_macro-v3-0-c9a305a01d39@arm.com>
- <20260914-fix_hpage_macro-v3-2-c9a305a01d39@arm.com>
+ <20260914-fix_hpage_macro-v3-3-c9a305a01d39@arm.com>
+ <b88f4ec0-61a8-47b0-901a-d63db115936c@kernel.org>
+ <aqf_XGKDq6jH6pJW@e129823.arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,17 +132,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260914-fix_hpage_macro-v3-2-c9a305a01d39@arm.com>
+In-Reply-To: <aqf_XGKDq6jH6pJW@e129823.arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 8A331140017
-X-Stat-Signature: sudyqz1zjnajuq6x48suqdr6foemn5d6
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 870BD140017
+X-Stat-Signature: yb36nzf7w5uk64onxndkxepcwywknafi
 X-Rspam-User: 
-X-HE-Tag: 1789394896-351612
-X-HE-Meta: U2FsdGVkX191w9EH8DB70x1fjhj/3UssyNq+i8OgE3Pg0/wtOO5qVsLyqkj1d/i0wRgC7m1lPtDg2RqAo4KmORNx9iXUoLt7hYoOoxwWGWE3+fGaWgRmlseEp0nzwOEhVArshlZ9cBdxF9I12GkeSD7d2YkNm9Qf8l0rUs0rBg51J1qHaT2ngwJm7rZFJRGBXHzDmvrWai1VOxFSmozfpTLSHDrTjLEA1WQAKnPyoAE292+WgbL9PUFHKRvyh3FvcUob6V/n6Co1Gs7kPLA7kQAtiz49n1EIGSeREK3fbojSO9lXsZVRFnc41FF2ZOYR0FFV82tR1K3A564syGEyMRmVEm67adysarE53qwqBUuFvxniVS5Lau0DBEDJmQyakUCsQR6XUSTb+e1V60WVBvMw4m/iDd6ixGe4UONylS2/2s0Cu/EmntOuMCOYOYqDv8ZxwNYJz81tdl91POs5LMDsO9gxDkTCMFFt53C38eB4LKGXBYHA/8MqIY7EmwuaPZb/2UBQRXsXp4U+Fw+rfTWugyAV/56lNbN2UfBLNHj+rSoFtua2qiIjv0IHN1Zp8CcfofwpXgzEUIteboRqr69oAVIjO+qg1DeWZciDumWr8wIj7rv8nMDzyEwNWX01ZomD3lh9TrNddGxwJuVYegodndM26Zk7AKfcM2SWgE7pCb0KzaL54TytWHjOy/mWgvgUusvtd+U3kmR4kdyqJQpTd+rlmXWz0HIfRUwGpUe2fcm0g5S4LD+OJQELF/hB/JVBL5FGKTns6ibNi6LOht7diH59SX/olMdymUX//t/pXV6qWM7/BoMjCK4K7/JNH9ia2lKdMo5n/4oyaeUDH0mI51mdhs/obymQr7KIzxAxUELgXwMrHGhBusZy4qvIvZTKjR85n6h3FvG5hcYBJhFe4lw1WcdERHhLw69u3Rj8eyeYgFCM/gX/hp5C16sTVv5QeaVKBttpkSvyFJS
- l8+3iJO7
- zcqXBhK7N6TVnvPbddkIvzxOEWfzk56tTY5Mx9VoDI16n8PygbuVxP1rlYFz2WY3zSa/WJpzM4ml9jwZ9bB8udn7EE9VnpTXOFykigheWcRVmPYSlm2gJCcvA6tP56UFv+UCI/Z4raFIsaP61atQzLp5Fq2afnLCeKAY/SjY8MMv56sb9Hni22NWptQ0SK51SxuAA13Ikz8OjFso+bQk5rnoJKm1qm2acZpPOEB+muzocrHcowQHbbIoKb80FcIXoG2wal2WwYpk6qP5MECZuOB2s7oZWJchmvusjG6d3XrsjcMaP3eI16UNMO8gX1/OJJYSemJCerd9ohP5GdAPUfEuw28iNdQ+nGXcCo/brnOAkYpFUmge3JzN1xWx1AxK7BjehFV0gfuAyX7w=
+X-HE-Tag: 1789394922-414296
+X-HE-Meta: U2FsdGVkX1/JYeQunIGAYpifVolXYfuhy/4vChd3EDf09xzVOkUCG+HKm/Auv+niToYDMVVHdPXX3OnoeGirHefKCku7MGgQ6FXzOGlcPzx9xPn4ZZg/B9g4BQKR5R+qLSMkLLoQmBL6Kd4EYXtV0nnqF7+Yv9NeIYqrSfGsE2YIEhuTqeBrGSvBY9z1COIfGh2aBcPpLICFEpAkNoMbMKpJDQj57p3a94JleVVQ8vjh9SppbeIPTQDf6ujel6QxDwMivNuspCHr3LC3VJM0yfGdKSXp1QsFDar4vUEo8L5WxY0hlvEJ8XdDEDpmh2el9wc7elx3Asy/TrdQwk5zKaLA2IcJerlhEvEI5Hb20OQJUTBAtnVmh/d+lqS4Y+3IsTGW9nc11tmuB1ipatYCPTiSmXJGdXCMZS+HWxmmlxH99xXuwKh7Yq+sS6RWbykaaFSYABnSN/PycQrKZna26c2H/UaE3CWqL5nASuEr235tABmn/nnkc5ZE8a4AxcDtGlsm5bT6BsJTN2hA9pg5BCPuT+Xje+f7PjbIK40JjCfMc6L8cVSDgFDFtAs1sf1l5pp9MpytXsXzivv7s0Cyb8794Iu5r0QIOJUBAzeC7GU00ZR8BuMlUR3om60/HdwbYhQ+36RIqcfLdMJiY6a+9egmk6XqyFLUVaa+Z4/ehs8gR9qF91jeDQWFGZZwvN7TvJOSfq/VC3Z5uWo/cZuGxXT9BToY/FcbJvA7TVN8vmkH9fIyXLLmVheihRkQ0bEsR64FZRbegLE1oDxXeS+9VOTWXNNrX9gg/USSKdJoL/W0SMKNPjilQmA8T+gVC2CKrWJwR2g3At8jY4vYy/t3OvknyCPvMz71mDmfRZLcHAZFKlGmFnTv3Cd5XA4bB6RK5/Pt4wdlaqbuDy6ED5JcNDaRl2wp85DJAhQpWKGcSTu8Trv2LlFWCH17zO75a1Xsfe8Sg/17jvaPud1BQjq
+ 4KOSWYM3
+ S9QlJKgsQXYCVYXcKNYlTSVGfWWhUomKAmXN4d2tQOtp6rTuXc+tnU/4nI+gEmaNFmOwVFdq9zL67JTDN8E/JEuLMMKaRioanUOS1LBlqoFWdiyj3UqDUDDW3EUuQPrbZxEj58qsN67EgLswNaZf+sTd0gEOjCrxdVVuG9buRb4GRvcuexo647oLGMK4Upi4fFq97kUxznKNScWFluT49GUW8QVDnitzuK4VUuueA96HeGJuZyM9FF4m2CTuHYSpFFE0VOH8+vGwL9VaPurkHBfFP4onMJ2OpFB775Xijd33QPHC2ZwB/p/cyXkkuCXN/hVdGFwAwy59zWNspS2OM0JoRViDcMJqL/MzbwBEpo8WUiOYW2ODM3K153kqnwpUkCO+XqK9ZNhvOePc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,85 +150,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/14/26 09:30, Yeoreum Yun wrote:
-> HPAGE_SIZE and HPAGE_SHIFT macro is written based on the 4KB PAGE_SIZE.
-> When this macro is used in some test, test result would be strange in
-> the system where PAGE_SIZE is more then 4KB.
+On 9/14/26 16:06, Yeoreum Yun wrote:
+> On Mon, Sep 14, 2026 at 04:01:02PM +0200, David Hildenbrand (Arm) wrote:
+>> On 9/14/26 09:30, Yeoreum Yun wrote:
+>>> Introduce size_to_shift() for future users that need to
+>>> obtain shift of a huge-page which is other than pmd_psize().
+>>>
+>>> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+>>> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+>>> ---
+>>>  tools/testing/selftests/mm/vm_util.c | 10 +++++++++-
+>>>  tools/testing/selftests/mm/vm_util.h |  1 +
+>>>  2 files changed, 10 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
+>>> index fd1432dc6152..1fef1266429f 100644
+>>> --- a/tools/testing/selftests/mm/vm_util.c
+>>> +++ b/tools/testing/selftests/mm/vm_util.c
+>>> @@ -157,6 +157,14 @@ bool check_for_pattern(FILE *fp, const char *pattern, char *buf, size_t len)
+>>>  	return false;
+>>>  }
+>>>  
+>>> +uint64_t size_to_shift(uint64_t size)
+>>> +{
+>>> +	if (__builtin_popcountll(size) != 1)
+>>> +		return 0;
+>>> +
+>>> +	return ffsl(size) - 1;
+>>> +}
+>>
+>> Could likely just be an inline helper?
 > 
-> Here is the example with transhuge-stress test with 16KB PAGE_SIZE:
+> Okay. If there is no comments on today, I'll post tomorrow with this.
 > 
->   transhuge-stress: allocate 61073 transhuge pages, using 122146 MiB virtual memory and 1908 MiB of ram
->     3.292 s/loop, 0.054 ms/page,  37106.002 MiB/s	2566 succeed, 58507 failed, 2566 different pages
->     0.591 s/loop, 0.010 ms/page, 206850.792 MiB/s	   0 succeed, 61073 failed,    0 different pages
->     0.527 s/loop, 0.009 ms/page, 231895.107 MiB/s	   0 succeed, 61073 failed,    0 different pages
->     0.527 s/loop, 0.009 ms/page, 231839.704 MiB/s	   0 succeed, 61073 failed,    0 different pages
->     0.528 s/loop, 0.009 ms/page, 231544.782 MiB/s	   0 succeed, 61073 failed,    0 different pages
->     0.528 s/loop, 0.009 ms/page, 231462.074 MiB/s	   0 succeed, 61073 failed,    0 different pages
->     0.527 s/loop, 0.009 ms/page, 231770.300 MiB/s	   0 succeed, 61073 failed,    0 different pages
->     ...
->   ok 1 Completed
-> 
-> Remove the HPAGE_SIZE and HPAGE_SHIFT macro and introduce pmd_pshift()
-> helper to get the HPAGE_SHIFT properly. For HPAGE_SIZE, use pre-existing
-> helper, pmd_psize().
-> 
-> Also, run the KSM_MERGE_TIME_HUGE_PAGES test with a size of 512 MiB,
-> which is the least common multiple of the PMD sizes for 4 KiB, 16 KiB,
-> and 64 KiB base pages. Since allocate_transhuge() allocates mappings in
-> PMD-sized units, the test may fail with the previous size of 100 MiB,
-> which is not a multiple of the PMD size when the base page size is
-> 16 KiB or 64 KiB.
-> 
-> After this patch, output of transhuge-stress:
-> 
->   transhuge-stress: allocate 3817 transhuge pages, using 122146 MiB virtual memory and 119 MiB of ram
->     2.558 s/loop, 0.670 ms/page,  47755.759 MiB/s	2585 succeed, 1232 failed, 2585 different pages
->     2.640 s/loop, 0.692 ms/page,  46268.432 MiB/s	2585 succeed, 1232 failed, 2585 different pages
->     2.635 s/loop, 0.690 ms/page,  46360.298 MiB/s	2585 succeed, 1232 failed, 2585 different pages
->     2.782 s/loop, 0.729 ms/page,  43899.795 MiB/s	2616 succeed, 1201 failed, 2616 different pages
->     2.692 s/loop, 0.705 ms/page,  45380.876 MiB/s	2627 succeed, 1190 failed, 2627 different pages
->     2.612 s/loop, 0.684 ms/page,  46765.812 MiB/s	2628 succeed, 1189 failed, 2628 different pages
->     2.683 s/loop, 0.703 ms/page,  45520.990 MiB/s	2630 succeed, 1187 failed, 2630 different pages
->     2.727 s/loop, 0.714 ms/page,  44789.321 MiB/s	2631 succeed, 1186 failed, 2631 different pages
->     ...
->   ok 1 Completed
-> 
-> Suggested-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-> ---
 
-[...]
-
-> index e712a980851c..fd1432dc6152 100644
-> --- a/tools/testing/selftests/mm/vm_util.c
-> +++ b/tools/testing/selftests/mm/vm_util.c
-> @@ -21,6 +21,8 @@
->  
->  unsigned int __page_size;
->  unsigned int __page_shift;
-> +uint64_t __pmd_psize;
-> +uint64_t __pmd_pshift;
->  
->  uint64_t pagemap_get_entry(int fd, char *start)
->  {
-> @@ -161,6 +163,9 @@ uint64_t pmd_psize(void)
->  	char buf[20];
->  	ssize_t num_read;
->  
-> +	if (__pmd_psize)
-> +		return __pmd_psize;
-
-The only suboptmial thing about these functions is that we keep querying
-repeatedly in case of failure.
-
-If it failed once, it will fail always.
-
-You could either add a new variable for "queried" or encode it in the variables like
-
-uint64_t __pmd_psize = -1ull;
-uint64_t __pmd_pshift = -1ull;
-
-To then set them to 0 or the actual value after we queried.
+No need to rush, leave some more days for people to catch up.
 
 -- 
 Cheers,
