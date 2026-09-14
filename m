@@ -4,188 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8117C88E50
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 13:11:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E55DBC88E64
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 13:12:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 69DCC6B0088; Mon, 14 Sep 2026 09:11:28 -0400 (EDT)
+	id D53CE6B008C; Mon, 14 Sep 2026 09:12:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 675D36B008C; Mon, 14 Sep 2026 09:11:28 -0400 (EDT)
+	id D05D06B0092; Mon, 14 Sep 2026 09:12:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 562EB6B0092; Mon, 14 Sep 2026 09:11:28 -0400 (EDT)
+	id C1FD56B0093; Mon, 14 Sep 2026 09:12:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D3526B0088
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 09:11:28 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BE0EE1C02DA
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:11:27 +0000 (UTC)
-X-FDA: 85212404214.05.F24649B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id F11E3100007
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:11:25 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CJKJt+kI;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789391486;
-	b=WLCUYqF9WfuNgtsBrU+AqJWzq2UhjS2Qs2SwG+H5Ut7rzKIFjDrZwdgx34j7NhwpNfVGqi
-	kk7vLAVKWk5yxauOd1Yqi9o6Mx82rZkiHeVc9iXKEZv8xWFVxTcrW5UgAT6MK3urLBojeq
-	YZWxq9amtL+kPB2+aDVOv5fpais3+fs=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CJKJt+kI;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B9F66B008C
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 09:12:06 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2B031A012F
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:12:06 +0000 (UTC)
+X-FDA: 85212405852.23.0D4557D
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+	by imf30.hostedemail.com (Postfix) with ESMTP id AC21A80006
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:12:02 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=VQH5GkM1;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf30.hostedemail.com: domain of xiangzao@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=xiangzao@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789391486;
+	s=arc-20220608; t=1789391524;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HMEr8VxikyVfU6qvEUZWpmfPP3XV/5sFL4uxF81JxCA=;
-	b=WU/lqLI9Ez4K/zn5/p5OlvLzfxe17uKyvwHmuLMPrR/GUo8AHPpz13pbLC89rwdwEETXV3
-	/ND6yoP/JJAOpPDjaoj4rTeu+X/WfmzUxLjaQSvx6jE4H+F2XZ33A6EVCtUAQlec1FCZ0u
-	BptDlo/JKSeXz2QBYrUGlKB22aX2p60=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0A94E40332;
-	Mon, 14 Sep 2026 13:11:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65F6B1F000FF;
-	Mon, 14 Sep 2026 13:11:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789391484;
-	bh=HMEr8VxikyVfU6qvEUZWpmfPP3XV/5sFL4uxF81JxCA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=CJKJt+kIe+hjf+CMIokL8p95jJbZP9ztsmmxzZVo1NFVjWTN+jeWfJ8gkpM0krJT8
-	 Utjnt2XRl1o23z+XgGILQt1K7qKpVap9QKwfAQ3Pbw7Nb1qdciasZLG+bCxX6W8crk
-	 mB6ySTVDkFOyHlizGE9wPiKXzd5ZoeQzUUHq4GK3Az9uzbVLKJs+jLvaWj//Z7s9yJ
-	 26BLl4l4JsAZDlTiLo0F5mBC0VkJP+XRzFeBS+pwUeA7vgq+fA4Y2VALNJVCMnpA9v
-	 1Oa2VfL25A9Rb97s1Afe8qFm5GadjQrDawLd5iUENfXkRUR76/6j5S6iZTu65TIRWr
-	 3oGpW4Ax822zA==
-Message-ID: <066c3b3b-e5a7-4cbb-b077-26c78cfc07ac@kernel.org>
-Date: Mon, 14 Sep 2026 15:10:57 +0200
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=SFehRpd2rZ3Hk+RSfjBKOtJNx6as9iMcZitFgLIojdU=;
+	b=Cj8hQVAKiKRebIjhVBpGw2z7jIdKyu89U6Xs8H4CHPwPsZ+JVLGmUbOnVz+fZF5zy5cgHu
+	to1ok+AcF95IFioYlSIWe3suvAtDnUpKd62LKYEQWl00gGgmjYPbgDHsD0v6Al/MRmhBrf
+	PifDaxf41NoKOkA4L04jR/dN3LB794s=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789391524;
+	b=mWqyts+XZX48LMgeQZrh2KrkI0xiLoKwdPQy2TcvpWLUveX9l9WXbzRRucwpCK6NvOzfuU
+	5izfHwWLiCOUUimLJt2kFQsk/tZQKk2dqftgkhXAehBGn1zENB2DPX18Rvc0PZu7lpV39M
+	jkmoC6cBDkoLn4a24YEJUzx84KMUQ5o=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=VQH5GkM1;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf30.hostedemail.com: domain of xiangzao@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=xiangzao@linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1789391519; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=SFehRpd2rZ3Hk+RSfjBKOtJNx6as9iMcZitFgLIojdU=;
+	b=VQH5GkM17IOZ723PkXndH5INRc3doJDzl0dculZskyZMwYP9VH9TjqDb5O6hL56li0eAn7lhnuuTw7IpOhB2tjLWcsd7GjzDDes+Tkd+PKBJl9Dcyzo3J2y6+4f0Xy6KrFqwdd30vtG3AWw6rTJHQDL9F0M85u4sO0ao9GHTi2o=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=xiangzao@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0XAxUaA9_1789391505;
+Received: from banye.tbsite.net(mailfrom:xiangzao@linux.alibaba.com fp:SMTPD_---0XAxUaA9_1789391505 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 14 Sep 2026 21:11:58 +0800
+From: Yuanhe Shu <xiangzao@linux.alibaba.com>
+To: akpm@linux-foundation.org,
+	vbabka@kernel.org,
+	mgorman@techsingularity.net,
+	linux-mm@kvack.org
+Cc: surenb@google.com,
+	mhocko@suse.com,
+	brendan.jackman@linux.dev,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	linux-kernel@vger.kernel.org,
+	Yuanhe Shu <xiangzao@linux.alibaba.com>,
+	stable@vger.kernel.org,
+	Henry Willard <henry.willard@oracle.com>,
+	David Hildenbrand <david@kernel.org>
+Subject: [PATCH] mm/page_alloc: do not boost watermarks in kdump capture kernels
+Date: Mon, 14 Sep 2026 21:11:42 +0800
+Message-ID: <20260914131142.2984623-1-xiangzao@linux.alibaba.com>
+X-Mailer: git-send-email 2.43.7
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 00/16] Remove PG_private by using page/folio->private
- checks instead
-To: Matthew Wilcox <willy@infradead.org>, Zi Yan <ziy@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Minchan Kim <minchan@kernel.org>,
- Sergey Senozhatsky <senozhatsky@chromium.org>,
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, Mark Rutland <mark.rutland@arm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
- Adrian Hunter <adrian.hunter@intel.com>, James Clark
- <james.clark@linaro.org>, "H. Peter Anvin" <hpa@zytor.com>,
- linux-perf-users@vger.kernel.org, Juergen Gross <jgross@suse.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
- xen-devel@lists.xenproject.org, Eric Biggers <ebiggers@kernel.org>,
- "Theodore Y. Ts'o" <tytso@mit.edu>, Jaegeuk Kim <jaegeuk@kernel.org>,
- linux-fscrypt@vger.kernel.org, Oscar Salvador <osalvador@suse.de>,
- Chao Yu <chao@kernel.org>, linux-f2fs-devel@lists.sourceforge.net,
- Tal Zussman <tz2294@columbia.edu>, Gao Xiang <xiang@kernel.org>,
- Jan Kara <jack@suse.cz>, Yue Hu <zbestahu@gmail.com>,
- Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep Dhavale
- <dhavale@google.com>, Hongbo Li <hongbohbli@tencent.com>,
- Chunhai Guo <guochunhai@vivo.com>, linux-erofs@lists.ozlabs.org,
- linux-fsdevel@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Axel Rasmussen
- <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, linux-trace-kernel@vger.kernel.org,
- Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
- linux-nfs@vger.kernel.org, Ilya Dryomov <idryomov@gmail.com>,
- Alex Markuze <amarkuze@redhat.com>, Viacheslav Dubeyko <slava@dubeyko.com>,
- ceph-devel@vger.kernel.org, Song Liu <song@kernel.org>,
- Yu Kuai <yukuai@fygo.io>, Li Nan <magiclinan@didiglobal.com>,
- Xiao Ni <xiao@kernel.org>, linux-raid@vger.kernel.org,
- Richard Weinberger <richard@nod.at>, Zhihao Cheng <chengzhihao1@huawei.com>,
- linux-mtd@lists.infradead.org, Baoquan He <baoquan.he@linux.dev>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- Pratyush Yadav <pratyush@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Dave Young <ruirui.yang@linux.dev>, Shuah Khan <skhan@linuxfoundation.org>,
- kexec@lists.infradead.org, linux-doc@vger.kernel.org
-References: <20260913-remove-pg_private-v4-0-848550f7574e@nvidia.com>
- <aqd2N1J3ui1llWWG@casper.infradead.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <aqd2N1J3ui1llWWG@casper.infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: F11E3100007
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: 9aygozeb3jqzbqimctc6tkz57xzw9mp8
-X-HE-Tag: 1789391485-374260
-X-HE-Meta: U2FsdGVkX1/6+3/jnraiA7ACz8QV53qTw0p9ZyoBY+RBMus9JxjZwnBwrNQyQi2yF9B5bixHt//xXZ57lhXi26Fbbad4HlfFcTywNfivWMY+eu+1Q7nqA5mDw1rmGi+5VDKa/r4yHZFnDh6dapj3WClLlQbb1NhnrkOjMZ71bkVGg/oWUVHF6trs9q374Ibk6SjZiYI6TaSceu8s6B6/iTlHZvukpvABfmQ+z8aw3f94HQQsa/lS1eChSfdFD3Xjy6TEUo0FKFYQRM2RlYEQZ02fGUBd+ANd1fB4mPqyi2CS4pgdx5fc77Bs4d9gzl1tqYXX0EDxuRPv0lpyqYKHPo+JC7TVlM8gz1hOVIakxIHfKkrpu8NSH/p1ZOePnJD1SbBGCfplXVKLBQXVVUQ7VKdtXnjLfKEpFC/SPdKPuVLyDP4JatwR/3ZkrmqLo6AHF+5xPrwFhjiOTkbk3D/pUWw2snNYYoHPNd1IntvK1yZ7NNg4d+2n2dDxC2Trl9U1Eo2uVHPRVzja8iVwZ58nc1Qrj23vp/7DyIY9dzBFhpoX4vGQ8jzKVyS7FiBjvWlttSa2ny0AlYZoMGaBEPXsEiz+xgEGXadYbe4z4epXRSZgntyZB1CrCV1whr2mHnNFgLOJp0Fvha3pK1rFgcuA2rbaJ/tRHjmfkMDU7/QnEc8zGt0aLJtz60O45eiZatuc+EX8Jmy4K+Y16ivJ2sV4DAfgKICJZayiVr+lnYcrzCY4lgyVFG/XStDAqvaTCFsnEqgxtG7uKca9KAkH3sB8mmnhd4DlLTRCePajE1qBV2EWQA5HcTXeQSfjNIxMUN0VJzXYQ3NH+oB6lgtpptx6ATvs3mFz7Q5xM//xw2zk051HIHFcInvCNqUBCFWYsE7XH/bJg9r2U32iUWKBCeOMlwUxiwuD1GdO7X5tNDe7IU8VQBfuSyS5YM1ZuyD0Idd+izon1BCl0KN1dJZE7Zf
- PhSHl2Hu
- ZATqSAciSFRN2zwLHwIAPoW+9trFZAnBei5qi+2zMUxA4gUfVDLZwLvEsjTECG7b++1ro47NHn5WcxcqcHlqN7q4OL8N+WnkNbYhSQmwyfHP2wW/4cSRmM0ekPX7FWQu+SybbmX0rIXHxqqdweHajgj5EyNL6/WZs6pevWOhzBFSR/EwsBzixt+7oxm7c9gbyg60eBoKGgLD2t2c6nH6Cg6X3ranRP+0fWcARMC+knE+RTPsGYRtGOpqasZnfBqkjzROLb7JPQ3z5PUY2igJXKoqoP+wN8nJxyej4ymlu0v1oxwZ/RS+190LSFDtlzsdgeJG7UP9CPuEVg5oRzReik8b2cVYKhDe349YSFEdh9NeOCtn53fpd2jWcunyFzfzx4K1AJjmNy+nCESlUqxjpxTYqw4IlRxWAlGvwjBNKMdIicBuHuugwitu+4jc8Bz0Deno8KgviUfsw7oob3zrzoMKYRw==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: AC21A80006
+X-Stat-Signature: 3unz8zm9wiazbs5s3zur1sokhefbogmw
+X-HE-Tag: 1789391522-865563
+X-HE-Meta: U2FsdGVkX1+O3RDfPNaBxq9BgGUXvj7lQPEWo6meXsPewMGKd7IIB6QV9Dd26Y2tvKn+IMKRTMJWlqlTDX+8W727YaAOc9UIn143/ciRcD347GLWOUJTMlEg4gt9uu5pvTs4oaY3jkcsrcJ3lT7Jt6wPCxfZDlSk6bXd6HI+L3C+LElrtgVShbV4a/m2FYOgOkSMXNyB82CrH/MyIK+wW8GVLEsetJtG78UB8Oregi4Obv52gl67pIxhnzLgxE1fNCLKkiyPzC10+z49jbJUmAt9WhliJ4qwprmH3YdfLkmpdR7OGOr0LcRoZ3nidCzpEP8fz+oyBoswpu/gLu/5xEJTNEHShCPDLcEau95IYUTDjR/3pQuTrxeyhdYUE0Eds+UoSXP5DUczA2vRpCxksSQpuHlniT6j9D0lEeBJkTmv7wpcnLj//rIl1SawoLLuoDWsqFnzrNKcq4aXA+yfknsb50XHzkgItkk8c08zg+17Qy+W3Z4IlESi+lOnyfB78ZkBkbDA9I8V9QxTKtu8UkbEZZ9xxFPs0bb4ZitccFNie3ic4KUGYDanmrtuRPr5ZZJVJbwLSGArROkx2onbBMQuUzogq4aSDIRocaGutTkpRSOsVbv9KHtBH5B57gUETOrhuCINH9rYAZQDmMn4HKlyQI6Tz9bDjOPIs4a1VdoMggYbU81cmVJSKyRP4QMGLEsY+/VoT9zTocu5poHKC8KSs20nh9Vb/tF5n5hjCH2w6U8c3rmeASmC8kXMflVU8XdPRx7XbxiULXfErWZSnwuMJXEMLxARvxmYYvu5x/N5KOlvdyZidh/m0kW+9ffEBTdZeHVavX5KEroltgL6QcXxjVmM6jMf4GG2MacS+kC5Rthd62OisFGt9KWzODMDMX7Xy5qOcl+CcefMQNqBSmNYsw2EZgYNRoqK5ZFrUu9B6GioPoVqXdnwH58bNvut4VgXXFLkm2hORY1EqFn
+ JmI1FB9D
+ eHCL0FiFT2RAu3caQ5onLL9MjCbNJMTWjYPViPa/d29qSFgIogZ27zVtYnEayqEdQmBNPwv7AZfVzcz/0eDjJ1bDXNEiqHp1UGv0tqNubwFhIJqq4Oc0Dyz23NXgI+y3CJg89ZDNvmuf8vjQ3ILDzeah/X5nSrhpyDVq432Pmq/NV0x6fnUOpvES6LkOLr79lzEqp0Bqq16XrOT/gyeJGnoquKF7poGtzsTSfI+a76TIPIu2IuZ0KWGoolsxHa/gHWQfoJbOhKXT/2rz8FZ9zd0snYiSM3kIv4D+pRhhywhDh1+rI+vMTMeOIMzIpbl95C/vB5V+tJwv+X0C96LqWjCUioQlFoDrm96GN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -193,22 +93,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/14/26 06:21, Matthew Wilcox wrote:
-> On Sun, Sep 13, 2026 at 10:23:58PM -0400, Zi Yan wrote:
->>       md/md-bitmap: replace PagePrivate() with page_private()
->>       buffer: replace page_buffer() with page_private() and delete it
-> 
-> Sorry, looks like I screwed up git send-email usage.  I'm proposing
-> replacing these two patches wth the three I sent.
+A watermark boost is not confined to one watermark: wmark_pages() adds
+it to min, low and high alike, so every watermark check sees it,
+including should_reclaim_retry() and the last ditch ALLOC_WMARK_HIGH
+attempt in __alloc_pages_may_oom().  Once the boost exceeds the memory
+still free the allocator gives up and invokes the OOM killer, and a
+capture kernel that is still booting has nothing to kill: the boot
+panics and the vmcore is lost.
 
-For everybody CCed wondering "which patches":
+Seen on an arm64 machine with 64K pages, CONFIG_PAGE_BLOCK_MAX_ORDER=10
+(pageblock = 64M) and crashkernel=512M, running a distribution kernel
+based on 7.0.14.  A high order UNMOVABLE allocation fell back to a
+MOVABLE pageblock while the capture kernel was still in do_initcalls():
 
-https://lore.kernel.org/r/20260914041830.2072626-1-willy@infradead.org
-https://lore.kernel.org/r/20260914041830.2072626-2-willy@infradead.org
-https://lore.kernel.org/r/20260914041830.2072626-3-willy@infradead.org
+  Node 0 DMA free:68096kB boost:65536kB min:68160kB
+  low:68800kB high:69440kB managed:479168kB
+  Out of memory and no killable processes...
+  Kernel panic - not syncing: System is deadlocked on memory
 
+The zone was not short of memory.  Subtracting the boost gives
+min:2624kB low:3264kB high:3904kB, so the 68096kB still free sat 17
+times above the high watermark and the allocator would not even have
+entered its slow path.  The boost supplied 65536kB of the 68160kB min
+and by itself put the zone 64kB under water.  It is that large because
+boost_watermark() clamps it with max(pageblock_nr_pages, max_boost);
+watermark_boost_factor alone would have allowed 5824kB.
+
+Commit 14f69140ff9c ("mm: limit boost_watermark on small zones") already
+tried to protect capture kernels, but it infers them from the zone size
+and skips the boost only below four pageblocks.  arm64 64K pageblocks
+were 512M then, so the guard reached zones up to 2G;
+CONFIG_PAGE_BLOCK_MAX_ORDER can cap them at 64M, which shrinks the guard
+to zones under 256M and lets this 468M zone through.
+
+kdump is a property of the kernel, not of the zone, so test for it
+directly.  A capture kernel exits within seconds and never uses the
+fragmentation avoidance the boost buys.  Normal kernels are unaffected:
+the size based check still covers their genuinely tiny zones.
+
+Passing sysctl.vm.watermark_boost_factor=0 to the capture kernel does
+not cover this window: sysctl.* parameters are written through procfs
+by do_sysctl_args(), which runs after do_initcalls() where the panic
+above happened, and watermark_boost_factor has no early_param of its
+own.
+
+Fixes: 1c30844d2dfe ("mm: reclaim small amounts of memory when an external fragmentation event occurs")
+Cc: stable@vger.kernel.org # v5.0
+Cc: Henry Willard <henry.willard@oracle.com>
+Cc: David Hildenbrand <david@kernel.org>
+Signed-off-by: Yuanhe Shu <xiangzao@linux.alibaba.com>
+---
+Build tested with CONFIG_CRASH_DUMP=y and =n.
+
+Tested on the affected machine with the original crashkernel=512M and
+capture kernel command line.  Without this patch both capture boots
+panicked at 7.9s inside do_initcalls() with a 64M boost in place.  With
+it, and with boost_watermark() instrumented, every call was suppressed -
+including those inside do_initcalls(), where the panics happened - free
+memory came down to within 64kB of the min watermark, where a single
+boost would have put it 65472kB under, and the dump completed.
+---
+ mm/page_alloc.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 12fac9084c48..276fa7169b99 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -37,6 +37,7 @@
+ #include <linux/vmstat.h>
+ #include <linux/fault-inject.h>
+ #include <linux/compaction.h>
++#include <linux/crash_dump.h>
+ #include <trace/events/kmem.h>
+ #include <trace/events/oom.h>
+ #include <linux/prefetch.h>
+@@ -2178,6 +2179,14 @@ static inline bool boost_watermark(struct zone *zone)
+ 
+ 	if (!watermark_boost_factor)
+ 		return false;
++
++	/*
++	 * A kdump capture kernel exits before a boost can pay off, while
++	 * the raised watermark can exceed the memory left for the dump.
++	 */
++	if (is_kdump_kernel())
++		return false;
++
+ 	/*
+ 	 * Don't bother in zones that are unlikely to produce results.
+ 	 * On small machines, including kdump capture kernels running
+
+base-commit: 704340f1cd0dcef829eb62f5b48ae95a2ce17bdf
 -- 
-Cheers,
+2.43.7
 
-David
 
