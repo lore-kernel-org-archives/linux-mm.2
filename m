@@ -4,94 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47738C88E70
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 13:36:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1AADC88E72
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 13:37:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3D4466B0088; Mon, 14 Sep 2026 09:36:35 -0400 (EDT)
+	id 015496B008C; Mon, 14 Sep 2026 09:37:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 347046B008C; Mon, 14 Sep 2026 09:36:35 -0400 (EDT)
+	id F09436B0093; Mon, 14 Sep 2026 09:37:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E7DA6B0092; Mon, 14 Sep 2026 09:36:35 -0400 (EDT)
+	id DD7326B008C; Mon, 14 Sep 2026 09:37:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E868C6B0088
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 09:36:34 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0AD49C0142
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:36:34 +0000 (UTC)
-X-FDA: 85212467508.01.2F29A15
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 25566C000B
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:36:32 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CbRqgriI;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B5E9A6B008C
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 09:37:50 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 558CB40163
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:37:50 +0000 (UTC)
+X-FDA: 85212470700.19.F297C6E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id A017D80002
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:37:48 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dzWThbVG;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789392992;
+	s=arc-20220608; t=1789393068;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Xz1lKKAPTU49kJE/WKFp+pM2D18qghdO/ykaxL8bDYI=;
-	b=c4F+juxlHQ58rXeizP3+3jD8UH4Lab51Jd7xwWXOleJmpaMJGZhVVYN9NxBitdSMUN/Y6I
-	1ifWZ4acA/al4QtiYCAmWGJFz4PzcgGuwIVtCEnTwZnqknPtlUiabsZrOC39/8iUsQiXXv
-	8dxHq1R75fAL5gt5AXDk1p2iSelYkg8=
+	bh=teIDwwfXFah8NBFRWQRZ+eTRmrLAr0rfuoGSkmAAKdA=;
+	b=4tJiwNa2Ieo0cvDa7woRUWhboatw9UD+nbkZOa5A4590RGZmSEEIkfteV/Kn0w26nKurOv
+	hMo1bB+sOadzI+G5MqKGs0VNJGgh/YcCZgqFBTU6qICHNLgTaQbXE53ltMl5tqKLBOyyL8
+	XnYE1biaVzEND6J07NvDVnvFwJtOaUg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789392992;
-	b=vkf5ukDRWFEnm3/Y4Z3RrkiWotK9M1ibiEQFCgziEfUzON5fUe2PZFre/F5SJwXpd9Fwkn
-	5/PfJJp6SX1Xww6rpcC1yeTefQMTn6zA0BgbvIo5K7YjrXtzHrGJI50HpIZqSEAVCC7IPy
-	Xgt1RhCm+Xldm27LLczMILLiQEg5W08=
+	t=1789393068;
+	b=k4zzffdIShKzA0ED3IGYBxN7kTBV/jTEX22gLf/cQjB0toOGtRc1LOhpTnFcekyiOmfKGd
+	j/E9JtZVf7wMCED3k0mgYLl0j3yupXFFsm9WbitqjhXT5TFR6+I2dKP4Nvx3wf3R7YVd+3
+	RqmWtdd4r8XsVGx3ubbvjxWbD/nlipA=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CbRqgriI;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dzWThbVG;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8074443C10;
-	Mon, 14 Sep 2026 13:36:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DEF31F000FF;
-	Mon, 14 Sep 2026 13:36:21 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7ACEB601DE;
+	Mon, 14 Sep 2026 13:37:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F7921F000FF;
+	Mon, 14 Sep 2026 13:37:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789392990;
-	bh=Xz1lKKAPTU49kJE/WKFp+pM2D18qghdO/ykaxL8bDYI=;
+	s=k20260515; t=1789393067;
+	bh=teIDwwfXFah8NBFRWQRZ+eTRmrLAr0rfuoGSkmAAKdA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=CbRqgriIm2+dHG7z6Akep3ysV1FyvxsE2dnAwFVmaoQQHtS5nlrG0D7rbFVWtzUoC
-	 K4kbWPgrM7PKtYOvf0MVr8HkY5u74RMXRBXQGbMazI+LLLvP+OnHmDOtATrBLYtiwt
-	 YV5N6bYLBsWjS+INkT1q9S/FfLMqFUdJhrvRLX0Mn8i6wM78b94MDbNesfrrio4IB9
-	 wlMOEJunVKOV9fu8xZqa2FVKfn2VOZUE0e39ujABM/NNfy+31kj/QhRxFZM299eFjx
-	 NMExfhQTHbGkO9gi7GzeJhfgmP9LUPL2WnBBvO+H6JcAWg4Pv9Ltj8wmL8mhd9PMJf
-	 L/NFO+JlD1uNw==
-Message-ID: <379c3f9a-6a07-4128-b776-1a0d17b674c3@kernel.org>
-Date: Mon, 14 Sep 2026 15:36:17 +0200
+	b=dzWThbVGDiP+7Kh8Mlz1jnGM9uDygrrjPE0PznQPTZeVLeOHQQlSlJWZOsJOs45GF
+	 0M3ZJK/UHFqpgFIn641k4+JS6FomgiWbSlwEFgmxqW/sLcDbLuBDYrd48YgMxV3hnT
+	 fW+WwewWkWuc2f2sdLu2PHIMXhJpCUJcwYUqSmDF6X5/LpE4P1c2tiVnBGZPtJeFLo
+	 QOHoDP0xqfahJpUiBNiYyltu61DX+V61cCJKBC9t9vQPXCsNCUWimBhiHPG4u7vq4E
+	 A3a1S/3q5lxM9EP8DPj5nGEAVcSD+fgtwFCeLDku8ld4Bn1g4GLsxWZVJMPFL3CO0Z
+	 doE/NDERw9ycQ==
+Message-ID: <76d8c9ee-b994-47a9-b5f3-87d257194eea@kernel.org>
+Date: Mon, 14 Sep 2026 15:37:33 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 15/16] treewide: remove PagePrivate() and PG_private
- from comments and docs
-To: Zi Yan <ziy@nvidia.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Ilya Dryomov <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>,
- Viacheslav Dubeyko <slava@dubeyko.com>, Trond Myklebust
- <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
- Richard Weinberger <richard@nod.at>, Zhihao Cheng <chengzhihao1@huawei.com>,
- ceph-devel@vger.kernel.org, linux-nfs@vger.kernel.org,
- linux-mtd@lists.infradead.org
+Subject: Re: [PATCH v4 16/16] mm/page-flags: remove PG_private
+To: sashiko-reviews@lists.linux.dev, Qi Zheng <qi.zheng@linux.dev>,
+ Lorenzo Stoakes <ljs@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Kairui Song <kasong@tencent.com>,
+ Alistair Popple <apopple@nvidia.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Gregory Price <gourry@gourry.net>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Dev Jain
+ <dev.jain@arm.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Michal Hocko <mhocko@suse.com>,
+ Lance Yang <lance.yang@linux.dev>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Zi Yan <ziy@nvidia.com>,
+ Muchun Song <muchun.song@linux.dev>, Mike Rapoport <rppt@kernel.org>,
+ Barry Song <baohua@kernel.org>, Nico Pache <nico.pache@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>
+Cc: Steven Rostedt <rostedt@goodmis.org>, Jan Kara <jack@suse.cz>,
+ Baoquan He <baoquan.he@linux.dev>, linux-mm@kvack.org,
+ kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Masami Hiramatsu <mhiramat@kernel.org>, linux-fsdevel@vger.kernel.org,
+ Pratyush Yadav <pratyush@kernel.org>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Dave Young <ruirui.yang@linux.dev>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, linux-trace-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org
 References: <20260913-remove-pg_private-v4-0-848550f7574e@nvidia.com>
- <20260913-remove-pg_private-v4-15-848550f7574e@nvidia.com>
+ <20260913-remove-pg_private-v4-16-848550f7574e@nvidia.com>
+ <20260914024800.087EF1F000FF@smtp.kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -138,17 +143,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260913-remove-pg_private-v4-15-848550f7574e@nvidia.com>
+In-Reply-To: <20260914024800.087EF1F000FF@smtp.kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
+X-Stat-Signature: 68nnut866hqjcu537y8idsngooegr6s1
 X-Rspam-User: 
-X-Stat-Signature: 4o64cz13u7driiskhxi1wadetcb6hmxp
-X-Rspamd-Queue-Id: 25566C000B
-X-HE-Tag: 1789392992-387914
-X-HE-Meta: U2FsdGVkX18O0G+lhnQEz+nx5l6TSovnMORs2O5BuvsUVMYzsp6in9/98p2eNkWZ4Horma4P74jb7JpCDspgztRVTiqYt2O/XTfxt+iWINaxj/AzNp46gQkO8A29y0g5MbWjInawtbnnBDmFGW/JphyHr0NBz+zKdOkgtlajujZmCgZ8+sJc5pRrdu8woLQV/GPZkavWMFbj9VcfnTYl4cmHd+671Wv4fI212wvOUOBOIL/Fk2I4GogtakU38xc1tlytkeBriBqNewtl/Zhb8w46cKmO/6ABogg3DyZgXPXratUZJhAG5xixo9f3XmLto4OFKiqWG9CqcxtZTGbtQjUsLXrUwNV7FkDSzFZjclr8hcDarEIETRtft5Uz4XUIECISLkTjRXURoLJhDMsTvU3OFc0f4WyG602D37ESLN9PEw7TjWP99cRdq49dcgAxwvGaYPkahiuPKXMfXRSel6pSgcpxVj/+jGRr/+cCn5ktr3Gk8JGOBo/YcDwPzoCDYWLgMkpVaM9mDlJO5CI/CdNMv4CXS5I87zFoi6ypcsvcuVSsYTEqhzb+1BZKofN2ODfKdUCor3ff+yGisuK+sL3UwNiNhJE0ud6ImUCFjOMmvgChDN0Z20X4fzXxrBOJV4EZ2qxHZHPNI/A5oHfYAFiT6Wvla6YjkVbtqOqKgLao2aYqi8BGSEzkXJ7ert7TlhdK9YOpyD6mrBdokvPPbuoaJxK1qiqvX05kfm+NMOr3SJA308F8MG85JMYDBD8VcoUzA6TW2Ql7ON6xS0KCHNB9C1PS/w6uEZRbescji5gtsadtSANB1F0DMTq5dljHW8E4VutoisXcSb4UHN2lWfu/fQ+9nLoOM9KgFF7phej3+GJ5SZ7ZmrN0HH/1k0AP0m81X/CgWkrfez4oXqAkxv0w56pHifMrLy33L0D0N8asXdJNsRE8N2DfQGtnIrEHG6xAS/dzbIIRd7kmQpF
- M/vpMnkb
- 929GVmGQ7vZOejEbqLeSI4VXfydiZ3tnBdB+dbzl2y3afX6cK/U9CvH8KhcT8WjXfJMHi4uqC//yhkbDfwrOi4bZwroYAiNmlQDJoNlD/xwuc/4frANBt/7Ct3digW5qM85mYDiT3VB7HsbNB0V/fEo/iatvK2Dx1Lc/ATh9oXPlkcllKdFxy4AJsA/oJADrzLZGtX5n3YZDGtiUnsKsGPNNHMeiBv+S3A3HAty7rj8sWbuwuihXBz5GIaKktqc3/joO7mPaFvOi7/eu8LGThCoBVwLaF92EiKLoYBlR9lTamXLBfsD4LjwPnFschjjkoYnkIQyUVSmU9U8/fD+t964JDvOealuDjOa4czZ9miVeNz2YylzLSvBeHP9cO7Naj1RvKygnNQ1/aHc8gLfEbCm/Llz0DVOxWpN29S+1eOnsyrd7dRKXH4i9NgsroqO3yV58QTc3KqBiAOQq9SRM590coKXgFNIETdb1YmGwzq2ISey3dimGsWkx4JkGEAnr0V4WpSsF4otPP6M7dSDprdlww7S8BhxzQb0h6owJnFqxbqqD54L8l2/XjVRRarCmtWVJnkbVpNPhoQOhLcOUT7bPI5WErbZDbWQYa4xXw8ID/Ihk/HBk1fzjvVPRZgUPOGbVrG/V+ltjzxw0gkKsscEFI0cEGB8ZBNXTEbkfDq4knwlBQqSSbCUuXmrOAlvYMIua1eLAeD5Wuq4cqmNFltoS1+dlERNjA4tONp1/l+X5jjyQ=
+X-Rspamd-Queue-Id: A017D80002
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789393068-424797
+X-HE-Meta: U2FsdGVkX1/vfP+TtZKhbEHiiQOlDBm5venl+hhYY4JzcHRTwuBgJ7nx6bESODQvPhaz7646KwgqKbNMLP8lxn7Npnn0pwBrvOeT/8Ny746aZETIL7edzZ5LAHEx5NhIR3i6IngSiBUSPlydcLuHAEwd0K4fadryfst5hM92jK5WHcerg98FP6283/tZK3OgKZD/KtEpKZ1aldNf5UBNo8YLvHo7oWftg2iFfFvUIxNeDfg+NuksbxmtoC1mQxsIMk4FTB9ta/kdh5ZW86yOD+v/zhGKhrTVNS0L5yZaI8gdPTaZgW/Qwqlk+QEPq0q2qJ0zZYlhqpWECrdljul5kPx6ZYZ9g6b4mf/OTISX6xI2nMNSnKBpLosL7Ae2fFV/m4ISr5BlgXH3u71A9ADiJfj0chaIJa/EMZaeCcQgOUEeLRE6NYi+vPFFyvRyb9XxiHax011iqZLrK3spNs9AF/u8eUer4pWjRRkQvs9bfAbIU5lugMeEpHZrOI5y4jPTpV2y9U7/vAeu8fMPOvQDxrodwWcJUaW3Br8NKHl7AAQNKJ6ExGZNfW+mAhIG3bVLRGvGf/ZaSIDmCsUHxlcNhkz6p8lWh6ou+Fvm6AQIyjzBcvq+SIP6fgCUiI2ZIIdUxbPjfGNW2OUSHhOPWbbOBmUhTpd0xzeH/G8uWUAEF966J+9ohTOu+oD+xp9r2hpx2PIl/JWkoOpUxjvmIVYYhaq/W6nvRRL/nYltGObMZ+LjCjl0lmSBEb1ML7njT0YV3q3eMuomRRsJrFu6mLv2LVPGym21PEKKWUx0plBG8Z0/PYVBzERXH1uP4r6VnaxLI0Na+5xM2s5E6jyq9lqsbMausEXyzdOlE/ArvBWCIt9WmBRhJzPb+IA6F2x2cMg+5fms9+lQqXRG9kZyjFLHSbInD3fUPh8QQSR08LshlYvbrE5j3lEEKAstnbDkZcxiM3AAOsegADcellBMdct
+ zSTohnTf
+ p+LhNsFvfYzyRiTcN8/enJz+OV4e2bwJaT2GetTDxiczxPbI6QQDlFk/En5YYW3VOE6+lW+v17Y1g0dtjlNg8wqAYdfmaciPJAqme5c0n/BvGjLPKeypsD9cSlqBYZLm1FBHR/2T0zeWJ1nCEBAHb4wUxI8G2WCECYzPXIgf5gbJsgaFRGSHIFtLL948QvdlWbdoEUuXkwGQbeKGmGuzCHqxT+b2ASW101LPHZBOu0IjPdUoIL0QnArK18A5ckZuRNKElqiEpkwdxHm9lYkQGs8VJedwJmBWmPGTADA+BWt3iDsRlIBDwuFX+UPO5OMQjCkFakueOV6JlzomhlILwQs5MRt7KBqfC5HJ8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,38 +161,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/14/26 04:24, Zi Yan wrote:
-> PG_private and PagePrivate() are no longer used. Adjust related comments
-> and documentations to refer to page/folio->private instead.
+On 9/14/26 04:47, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [High] Silent memory leak of folio private data due to missing check for leaked `folio->private` data when a head page is freed.
+> --
 > 
-> hugetlbfs_reserv.rst is outdated and left unchanged. It should be
-> rewritten.
+> commit ebe4dd474a496c46897e3f790e03a43cc0508eaf
+> Author: Zi Yan <ziy@nvidia.com>
 > 
-> Assisted-by: LLM
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> To: Ilya Dryomov <idryomov@gmail.com>
-> To: Alex Markuze <amarkuze@redhat.com>
-> To: Viacheslav Dubeyko <slava@dubeyko.com>
-> To: Trond Myklebust <trondmy@kernel.org>
-> To: Anna Schumaker <anna@kernel.org>
-> To: Richard Weinberger <richard@nod.at>
-> To: Andrew Morton <akpm@linux-foundation.org>
-> To: David Hildenbrand <david@kernel.org>
-> Cc: Zhihao Cheng <chengzhihao1@huawei.com>
-> Cc: Lorenzo Stoakes <ljs@kernel.org>
-> Cc: "Liam R. Howlett" <liam@infradead.org>
-> Cc: Vlastimil Babka <vbabka@kernel.org>
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Cc: Suren Baghdasaryan <surenb@google.com>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: ceph-devel@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-nfs@vger.kernel.org
-> Cc: linux-mtd@lists.infradead.org
-> Cc: linux-mm@kvack.org
-> ---
+> mm/page-flags: remove PG_private
+> 
+> folio->private != NULL indicates a folio carries private data, replacing
+> PG_private. All PG_private users are converted. Remove PG_private and
+> reserve the space as PG_folio for future use. Unused PG_private functions
+> are removed too.
+> 
+>> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+>> index 08988877331ba..10f4ad075ea48 100644
+>> --- a/include/linux/page-flags.h
+>> +++ b/include/linux/page-flags.h
+> 
+> [ ... ]
+> 
+>> @@ -105,7 +101,7 @@ enum pageflags {
+>>  	PG_owner_2,		/* Owner use. If pagecache, fs may use */
+>>  	PG_arch_1,
+>>  	PG_reserved,
+>> -	PG_private,		/* If pagecache, has fs-private data */
+>> +	PG_folio,		/* Do not use: reserved for folio identification */
+> 
+> [Severity: High]
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+"High" lol
 
 -- 
 Cheers,
