@@ -4,70 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55BDFC88E64
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 13:52:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 807D0C88E73
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 13:52:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4EC476B0098; Mon, 14 Sep 2026 09:52:19 -0400 (EDT)
+	id 366AA6B009D; Mon, 14 Sep 2026 09:52:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C4FC6B0099; Mon, 14 Sep 2026 09:52:19 -0400 (EDT)
+	id 316B86B009E; Mon, 14 Sep 2026 09:52:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3DB5F6B009B; Mon, 14 Sep 2026 09:52:19 -0400 (EDT)
+	id 22E266B009F; Mon, 14 Sep 2026 09:52:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2203E6B0098
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 09:52:19 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B0487A00AE
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:52:18 +0000 (UTC)
-X-FDA: 85212507156.19.F60DA86
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EE1A46B009D
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 09:52:22 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3FD6680156
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:52:22 +0000 (UTC)
+X-FDA: 85212507324.13.56636D7
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf19.hostedemail.com (Postfix) with ESMTP id DCC041A0003
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:52:16 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=gzbKM8Ca;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf19.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=gzbKM8Ca;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf19.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789393937;
-	b=GOAWMmXyTJzQ+xHeOUDkZiG4Qep5KyOcT//HXViZeyJlLY6gIMUWo4Q3j/gVrlE8/5j9Ik
-	k/3e7VJ3F68jZDIsRAP6CQhh6exP8Hav54ADVsLvlEy4X9oEjeSYhNxDdVVQLDLn5NJwLs
-	mYcp2Dba/+QJvbbudQCDzI6cFD10jtQ=
+	by imf31.hostedemail.com (Postfix) with ESMTP id 5933520008
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:52:20 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=VxM1nVkm;
+	spf=pass (imf31.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789393937;
+	s=arc-20220608; t=1789393940;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rvR7yrUSwk1xcghd++XGcB+fD9fDR6mY3VUkLEOBRnU=;
-	b=PxNfGXqWp4VCOFfmbk0+3JY+6s8U5+vh7TwaiR0SLw00R2gijPtS2Bb7ALMj9lmkMJVr4y
-	9QioXLLK+NY+gYAnhoaDXnpZ9t3WVqpS7xqHJjxLQIcuhpHXp2rdLLhFW0Eq4ECZhSmIbS
-	pG2arnIpgr1qaedFuNXcI7e4hILg/XI=
+	bh=6uBN0ZQwvtsGp1jKgpj+hxjeJ464MZfPKqor1IPMdG4=;
+	b=HfjH/MjAmtjdbOjI5q5ql2+izKVZrxlZrlX/Q2jFocXrhdY9ZXvzglLupHUY8PDBuzjL4j
+	MMpfGMkg36aZtjjqvZan0Tuo2zmE4lvOzU4LAI/mTEL6nYiF6ECItHaOcmnHc564XNxdOd
+	dch+qjCN32sxYm123QBKMtwIkheIWjg=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789393940;
+	b=ZG0vjrXuIJidvYdXE5gxo/we2fRRZObim6ihZb4TQGJqJ7rtkkCRgBcDR6ga4fOQ/4z3rv
+	rBZa07gG6oA8xebeh3kRkO0SfAjo8pCqkCiI6z24jkUR7ESnsixVrYjPZoPst4TnPNgSXE
+	HlAWhp2J9GGOYqBRhJOrRLAUmQrOva0=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=VxM1nVkm;
+	spf=pass (imf31.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 544C41576;
-	Mon, 14 Sep 2026 06:52:12 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D668A1570;
+	Mon, 14 Sep 2026 06:52:15 -0700 (PDT)
 Received: from [127.0.1.1] (e142334-100.cambridge.arm.com [10.2.198.93])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B236F3F882;
-	Mon, 14 Sep 2026 06:52:12 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3FF1A3F882;
+	Mon, 14 Sep 2026 06:52:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789393935; bh=yv6552mFvvf13JAoUBxhYSH5LMmG+s9tUQsoS51fbNQ=;
+	t=1789393939; bh=shLHKCHn3ZdXre7hsjCS5Jwr6cqRreukZfraeH8Cy3s=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=gzbKM8Ca28zZ5K6P5ERV+/fCGpEVK/cv9jlKFw2gr9//PfYHgZprGWfo191uCCc6z
-	 Cf7m0v8/apWMpqmmgMHBA6J9VkXnoRe1GIpcuZ12FSGnPYjHDPuGZmC5Cob7BBesv6
-	 pyrAeo+x1fR1GNNgGI02k3iSQRVZhxr9ZAy5zTgQ=
+	b=VxM1nVkmYNPpjHBF/3TyegZsi3gXy2y2TPeff4ji5cA2NOgdRBg5Ne4BamFW32epl
+	 YgRiY41HrMSGBYlXBxqXq02UzbkG0f0IOxJzTyytmQEgFIuWVkudJF3DN5r+KpdL8C
+	 9EM6umX4vRSY4FuskG1d6abnjmKoyuwOeT6yCXww=
 From: Muhammad Usama Anjum <usama.anjum@arm.com>
-Date: Mon, 14 Sep 2026 14:51:33 +0100
-Subject: [PATCH 3/6] arm64: convert between HW PTEs and SW PTE values
+Date: Mon, 14 Sep 2026 14:51:34 +0100
+Subject: [PATCH 4/6] arm64: use hw_pte_t for fixmap HW PTEs
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260914-pte0_arm-v1-3-bb53b663e396@arm.com>
+Message-Id: <20260914-pte0_arm-v1-4-bb53b663e396@arm.com>
 References: <20260914-pte0_arm-v1-0-bb53b663e396@arm.com>
 In-Reply-To: <20260914-pte0_arm-v1-0-bb53b663e396@arm.com>
 To: Catalin Marinas <catalin.marinas@arm.com>, 
@@ -87,14 +87,14 @@ Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
  linux-efi@vger.kernel.org, kasan-dev@googlegroups.com, linux-mm@kvack.org, 
  Muhammad Usama Anjum <usama.anjum@arm.com>
 X-Mailer: b4 0.16.0
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 5933520008
+X-Stat-Signature: 1hp5ikidcc53bjk3gd3nrqor9u8r4pwo
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DCC041A0003
-X-Stat-Signature: zi9qm39zoyh5k98m33jzubt6fu9woj9t
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789393936-688493
-X-HE-Meta: U2FsdGVkX1+ng8DqohKqlVfmASAxo/C1CyBsIdED+kr1AzqBllV2Fjq4zueYaiWvjF3zodlyUx7AVUCZ9uzHtRI7tAu24xgpuKOXG2dRaF07LnEX0e3TSttJT4dKg5t3iBW+HRat/LedzPIy9D7pTAfus8WE3zvl0oxFJLZRdgssMQ++w0TBq7XCfWyvjg2GgFXj+20OUOpmiVadb4pBnGESFyl1PiN6hPbH4tnYYKhsMZOuoE4We/F6GniF8l4R3wBqzXJTWp4OcyYs5SPcYGlADm39ItF6/jxKiA0jm3UzKZ7FD271TGzvTlTaxDf+pleX9NxZnWO9zaea1X6A20Gb20WGvmBqfbcuqEMJr9CFnY/cFzRE702EzESCs9JQ3r+1wmd+6IjQyh5wYE29VbwWqQAnaHuj/Q0NNb5owQ1jxMP8eNwGAG2T1Y/hCGqm6M4Fd1DlK6G8hZjUkmcecLkIEgLIC4DcWghbl0EVijIjXI+5nyHMl+A2wzyIpmnoklyxTr+B7LpzjIRAXJ7d+FER151COy86IZRW4OY6CrchJQiMarIgCjq7/rxRkN1U1V0XmY0rymYkyRBzYo4HOSN4ZaYJL4Pqyorf918YKsNgXy+R5XEnQS1+IYwwTsygLpPhFBkfxpPHBh2gSFKxF8N6kPiztzRU/uWNM2AOfrnmpn2Cx5aJyWivI0+yejEn/fYf5SEMSufXhBwExfDgBqDBHPyUSyvAEMEtK7yRvtP1kPET3qzErkbPZgE5QdlONmS/F4CnfjhyrxQakZSqQY1D0qxtXFkPj1QRRzG20riUewqlHmo+0r6FsEPatN2MAuhKprfhGOaGxpROzP0Umn3+XEGwUlP9B9KMezFfBQKm5OiH+sYpUwUGADNzt8L4dIj55f34/8lYF51Yic4yNntUj7+aMtfoBeIlsAo2BMCBlzh2/k3H7aULA741sd6wE+PVWuOgj9vY13Fxfbk
- RoYdljRw
- eg2ycvWBv23tgMZUQy/9SbsLBrWMo2EdsCop7HsMkytFAneAY6jtXSIrf5NhFey8RqO8khA5Q0a1ZHzx7kVGyx0prV/izuMk5dVO8kGiImAvrS2qNnr8Fp9rDGTKmRSYt3dJzKD+pGUf6cTGmjTQFuFlDQOL5D/E7cz9pcCq/Q1j2UJpIlY59dKApQ6hyUyMV/ycMyP4WJ6+Qd+3WnzD0JcwoVXzzxJjTfbBepPC6+G8PlOXLAbkNFl6TmkCLo3GgD+iwLOQltDy8DwLQ6Kq1yVHBFptw2kYte0tdxHximOw1DpHwcuWFd/R/10JAgc8fMyL4rEJ+ghjw4K8=
+X-HE-Tag: 1789393940-427766
+X-HE-Meta: U2FsdGVkX1/+9kCznQKtr4TcxkLYEjlZTx+dHjhHsoiCTpjXAq0PAUi0Y51j9WiEXa+bn+DooyeGw5IrjksQDDAbVaNN1O0JAGr7FVE/p5BQlmnUMJm+m+rJ8fFmQI5w0myHplBr66QabUX7eIZny6nBglKUQPOf+3WjZ/akw8oJORplwuA3BuccnISt2CkLFNMFA9s7GWVsecu9OKtqkqgB9B7Io0SgPxTW/WWO65aIUsEbDpr3wt8v51xTakavU//wPJk4JY9QSC0VtSzWeK1o1Q6BoNUZq5HdgwZ/lJjjXYwKDeK31kmv2UEclREGEx4udaZTuJFM8w02ToeRsLeRzptjVTvEO0WaGp2uHTxUgHKCd8PEeNrI2nOyTiPHrIm35tWriuzwudMg491oIj1JOIwwi+XhgcjWo+OFgWNkvaS7fVmuU4qbs78LBuexCZ3cbFOj03svyLreq4ROU9WkJVHBHnggTkD5tnQREpAhDgngdy+2L6uYnmRKvYIoa9tJ+hpo573+02zGdG3Xt1if4u6WNePyc8FO0mB3M/gLFqUoiDzysi2G/MZDp4/qFp8OSEcOJc/ZasgWA69GqDdiqMCbAetkMFo1goKZXUJpoubzx5nUIEKv4mQW9I6qCOtZTNgvsBTcUK0fSwuTHGph1UVvEjnZjculEahmRbWWf61ZntepCEr+Hc2lsbS7p24BkWztbNys7eurJ+oSXy5MbozXDKNwzuSEvyfZqejHUxgL5j3YG8HaCQUtvo1pNlcry4J08OZbbPp1tYavTz3Fg5IopHfGIB4E3EGtKAlMNSE+YyXWhWcQmtcKFkpHO0a+EuKh1FQ9rYkIe+m+tu9Mt9ZolotbTjxo5gUf+le/jvKMY84jA/9S4z2utrZW685wyMkhjSBspMDZUUbeCok8xISoJtBtgf6j8/LHxsa7LqmLYrfOSJDsGue4NKZRpvJJBUngx7X9tVcqll3
+ 3VAonUpE
+ 4PGAk1CenAKfvs4sMTgXTfzx/+R2Yp8pMnXAwgYgy+MS7iO7q+Vbn8+BbCUtwdJxvl1fIGmKF4Cw7sres7px8r11621d3q94iWCpQZjmyX/aZMWB95aImKgK5IxxNcJkInXCTBAD2jh0n4r8t5X1/CUle/JittuYk8Jpokr0hGtqwKftCzYzADu1FhJshqpz7tUaKxJHF6pELg/mqBdJJV0v+N3QX8cEqcUoSsgs+O+Xv4jmcqMgeWwMU7RX4QHe/OlQHN0UUnYaTd/6NOWEny/syV1KuGEhqbdSv65PIJ6HHWigRmLoJvcXHr6r+Q9w/x3La1NYiEGIB6eloi8WMUDGR6aoncf9ip4Tr/WY4ZA7R5aU6QaEmZP99mg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,62 +102,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-__ptep_get() returns a SW PTE value, and __set_pte_nosync() accepts one.
-When HW PTEs use a distinct hw_pte_t, directly reading or writing *ptep
-as a SW PTE value no longer satisfies those interfaces.
+fixmap_pte() returns a pointer into bm_pte, and early_fixmap_init_pte()
+installs those arrays as page tables. Their elements are therefore
+HW PTEs.
 
-Use __pte_from_hw after READ_ONCE() to obtain a SW PTE value and add
-__hw_pte before WRITE_ONCE() to form an HW PTE.
-
-Define __hw_pte for both the wrapper and alias configurations so the
-same accessor code works in either case.
+Change the element type of bm_pte to hw_pte_t so it matches the HW PTE
+pointers returned and passed to the accessors. This is needed before
+ARCH_HAS_HW_PTE_T makes HW PTEs and SW PTE values distinct types; the
+array dimensions and placement are unchanged.
 
 Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 ---
- arch/arm64/include/asm/pgtable.h | 4 ++--
- include/linux/pgtable_types.h    | 2 ++
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ arch/arm64/mm/fixmap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index 4768ec59de555..67c4a6179e154 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -360,7 +360,7 @@ static inline pte_t pte_clear_uffd(pte_t pte)
+diff --git a/arch/arm64/mm/fixmap.c b/arch/arm64/mm/fixmap.c
+index 237a9136bc73b..709a97fe327d8 100644
+--- a/arch/arm64/mm/fixmap.c
++++ b/arch/arm64/mm/fixmap.c
+@@ -31,7 +31,7 @@ static_assert(NR_BM_PMD_TABLES == 1);
  
- static inline void __set_pte_nosync(hw_pte_t *ptep, pte_t pte)
- {
--	WRITE_ONCE(*ptep, pte);
-+	WRITE_ONCE(*ptep, __hw_pte(pte));
- }
+ #define BM_PTE_TABLE_IDX(addr)	__BM_TABLE_IDX(addr, PMD_SHIFT)
  
- static inline void __set_pte_complete(pte_t pte)
-@@ -381,7 +381,7 @@ static inline void __set_pte(hw_pte_t *ptep, pte_t pte)
+-static pte_t bm_pte[NR_BM_PTE_TABLES][PTRS_PER_PTE] __bss_pgtbl;
++static hw_pte_t bm_pte[NR_BM_PTE_TABLES][PTRS_PER_PTE] __bss_pgtbl;
+ static pmd_t bm_pmd[PTRS_PER_PMD] __bss_pgtbl __maybe_unused;
+ static pud_t bm_pud[PTRS_PER_PUD] __bss_pgtbl __maybe_unused;
  
- static inline pte_t __ptep_get(hw_pte_t *ptep)
- {
--	return READ_ONCE(*ptep);
-+	return __pte_from_hw(READ_ONCE(*ptep));
- }
- 
- extern void __sync_icache_dcache(pte_t pteval);
-diff --git a/include/linux/pgtable_types.h b/include/linux/pgtable_types.h
-index ee4eace5c3e1c..b5862a16aa497 100644
---- a/include/linux/pgtable_types.h
-+++ b/include/linux/pgtable_types.h
-@@ -9,11 +9,13 @@
- #ifdef CONFIG_ARCH_HAS_HW_PTE_T
- typedef struct __hw_pte_t { pte_t __pte; } hw_pte_t;
- #define __pte_from_hw(pte)	((pte).__pte)
-+#define __hw_pte(pte)  ((hw_pte_t) { (pte) })
- 
- #define hw_pte_val(x)  pte_val((x).__pte)
- #else
- #define hw_pte_t pte_t
- #define __pte_from_hw(pte)	(pte)
-+#define __hw_pte(pte)  (pte)
- 
- #define hw_pte_val(x)  pte_val(x)
- #endif
 
 -- 
 2.47.3
