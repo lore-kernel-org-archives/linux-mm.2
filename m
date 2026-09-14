@@ -4,72 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27776C88E50
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 13:26:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFAC3C88E64
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 13:27:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 299F96B008C; Mon, 14 Sep 2026 09:26:48 -0400 (EDT)
+	id BC26C6B0096; Mon, 14 Sep 2026 09:27:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 24AF56B0096; Mon, 14 Sep 2026 09:26:48 -0400 (EDT)
+	id B99DF6B0099; Mon, 14 Sep 2026 09:27:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 13A7F6B0099; Mon, 14 Sep 2026 09:26:48 -0400 (EDT)
+	id AA3E96B009B; Mon, 14 Sep 2026 09:27:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E66B46B008C
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 09:26:47 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7143C140143
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:26:47 +0000 (UTC)
-X-FDA: 85212442854.29.F649BED
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 830E66B0096
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 09:27:10 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D33BC1A0007
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:27:09 +0000 (UTC)
+X-FDA: 85212443778.27.60E3D74
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 96F0F180015
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:26:45 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LVfA7IiV;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf03.hostedemail.com (Postfix) with ESMTP id 1312B2000B
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:27:07 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RM84QL+o;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789392405;
+	s=arc-20220608; t=1789392428;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YlYwFRzA7o/DVEj1e1cnP7ktHjtNeLhR3AAaGHH8Ug0=;
-	b=Tm1mdpF8AiXlfDbnUREt/IHkIMfc47399sSaI2Z20X0icxdndxjR+aRvDwJIIFJIapjFCW
-	XXxoBidY2t/f+rTtZNFsnb/vw/oMLWKJR0kmvTSSNL4gsAZvDg2QBHmN9DbDrpefyROlc0
-	EcQQO1JSs5CxFi8nIw8tfNKD+q8YidU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789392405;
-	b=hW5t8hQu7U6YGKMi0s4hbi6vrB7iLSc7PPDL5p7taKUFYrF5+fkjW+9pJBLz0cfXMcWllT
-	VdHjhwtd+N83CFbemTnBEFAt0s9J8XKs6or68J48bJ6L8OZ6JZMCntgLDWESriYjWRi5AQ
-	tIFBdoCyPZVn4+VP7N7U1pFj9dmQqIc=
+	bh=NpRwt7i/NEaYzQzVZpXNFvHSKbVAP8S8q6HFwAhP4SE=;
+	b=c8PpM3eL44coryXW54gccHXJgI5YpvEUojN3O2MR0FoBQ9BM3lOZJwE06V91whr6jeNlVI
+	9+97hHbehcC3VA5xAR8DaMKkD4qjfdVegnokRw/WsNm+1Nf2UNIHt7I3+L//8pbjPuDpsm
+	M8wdbQB7BtVcrXVUaKepTXizhNvw2Mw=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LVfA7IiV;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RM84QL+o;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789392428;
+	b=KnCYD+XqiMfAqlfjmS0KtyH6wWW+eR5oCCEhVwu/j9eckzyq1Pd38AhfAbN+gDNGvwUDS/
+	6HjEaXA1s/hq29lp/pdWdG4fWN80BMJNu5oCM1xuUDrwQL6YVGm/ZbjQvb7YEwfM7v6MON
+	1ZUYmfZHMb0gQk5cDV9ImrES1hbx8C8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DADA341FFD;
-	Mon, 14 Sep 2026 13:26:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DD861F000FF;
-	Mon, 14 Sep 2026 13:26:35 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6778E437B3;
+	Mon, 14 Sep 2026 13:27:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4D871F00898;
+	Mon, 14 Sep 2026 13:27:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789392404;
-	bh=YlYwFRzA7o/DVEj1e1cnP7ktHjtNeLhR3AAaGHH8Ug0=;
+	s=k20260515; t=1789392427;
+	bh=NpRwt7i/NEaYzQzVZpXNFvHSKbVAP8S8q6HFwAhP4SE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=LVfA7IiVasTAzRSrRiQszUUtDWQYqay80S/mtUAUne2QZDkIdnbFlLxSzuw89mGL2
-	 kzFDYBDe3UKTXgb2xTp5/yrZ00NOM8y1SB3368cKIYF98nTIPL2FKjONdAtxkxUEuv
-	 5eGR1Q1I2RYvrXYTaGWW6KJWotvtq7YNnFqeRz7jffklbi9fqKi9Uzsn5YosJfcQLt
-	 j4p23sZ8KdrtPEGIdDa6u0v/vp3uWj7kUL0H9qWQdLZKrKbU5g6b59w8EXk5VIyasd
-	 9ibkY0UkNJyk5bb+Zf2ReOn1IQYH8x1PxVPvY0Ce5u+/9OmmwJ3w6Dmb3gQHicSR3Y
-	 E1XcXKJKkRGJg==
-Message-ID: <37f9a01c-4f6f-429d-b221-73ceffd55369@kernel.org>
-Date: Mon, 14 Sep 2026 15:26:32 +0200
+	b=RM84QL+ofuLT8RnZxRCOTmGDby/HILSF7gI3BLkavXarGVjZVGkZbFv2ZE/xklBzo
+	 IYb6n0Yhq4hHj1tpt1f94HTkNr7MoBOPWNBkMKtHJ++0ZB+5IQT1rs1zWQJq1KxoxR
+	 w6NzOEsTtrnTfGdk7Os6BO4v4ovEMPVwyyfQoTltJSIoVDYTxMsE+g02X3PQkW3BSp
+	 5CVo2Pw2F50LICzm9KMOgLIbHIOVsdd1SnoxT31sj/CFkQpQYp49Ji0qy4zIZhO2zG
+	 IYRbL5bWln/utqSRWCr8FWtAjbDMYZaXwce501f9+8Y38DpYHdk1T9EMCCizwdS3cG
+	 09xVKy+80x49A==
+Message-ID: <29dd1adf-4d5e-4ac2-9df3-9174d4ced02d@kernel.org>
+Date: Mon, 14 Sep 2026 15:26:56 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 10/16] mm/page-flags: check page/folio->private instead
- of PG_private
+Subject: Re: [PATCH v4 12/16] ceph: replace PagePrivate() with page_private()
 To: Zi Yan <ziy@nvidia.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
  Andrew Morton <akpm@linux-foundation.org>,
  Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
@@ -84,17 +83,10 @@ To: Zi Yan <ziy@nvidia.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
  Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>,
  Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Jan Kara <jack@suse.cz>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Axel Rasmussen
- <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, linux-fsdevel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org
+ Ilya Dryomov <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>,
+ Viacheslav Dubeyko <slava@dubeyko.com>, ceph-devel@vger.kernel.org
 References: <20260913-remove-pg_private-v4-0-848550f7574e@nvidia.com>
- <20260913-remove-pg_private-v4-10-848550f7574e@nvidia.com>
+ <20260913-remove-pg_private-v4-12-848550f7574e@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -141,17 +133,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260913-remove-pg_private-v4-10-848550f7574e@nvidia.com>
+In-Reply-To: <20260913-remove-pg_private-v4-12-848550f7574e@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: knkn9zhn1q13j83m5agscnj1buncct1a
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 96F0F180015
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789392405-442775
-X-HE-Meta: U2FsdGVkX18Bv+BK8wCgEMwwBl1NxOCVczcXCWiGrr94RuIHF5fr+/QZavmgwxFMoX9PrzIUcdyc5rnFfnLpKy1++QABVjviQv6j0uZ+Y0MrWXRDGLaQBiS7q83J9BSrKYKfUYEnDLiT/AN8QvZ3AHAslDmvZtsdcMp+WOyiBpO4rED7pApdIhEAqMqA1RC6CU/j+Zdv1G3W+eC94J/gfyl03AONuyA2IBzhYH+KLP/Xr0TkmuZ9rzzZGUvvrAWW5kcrz9pQIb7tx2MgYBmlDg+tlotJLOp52D1rkkZZUt39iCs3jJ7xdLjMaQi93lMfg1dnZ/RqldV5NA38R1gIkSuE1ndPP5emZMAULg29vfTLqULaSrW7ORxyAwDvwf5oI3ZEj7GloMB9Cr+W7TI39jHznobYB0SEYz2p7Afe7GQC5t9CRhUmsG58fAKnycSINKkXvVi5bnB+Ei48Nh97Ig9SAx4JqdTh97YFh1pz6nRsFBh7FcAfKivaVdaW3pFlNNd6oCY2XVMDWORQbPefnLioN4Om3F4tXcFxuVzXufOCYaU7yYuTacyBjsZFnquWIfMz7FrSI0enDtM0/BehzxXed69LDFrEGme+uiIJ9eoWCXEUVF4Gw/+Oih8btD1zZkF208zmLCn0c+yPEZlMhvbEfBeY8FMJtk47U9CrY/Otrg3zpFnpdhZoQnWp02pkQov4kQSTVsFSgPoz/3hicWqf1VpGHB2EjyjitJigm/2ab4JFwKVGVJW9zZBjQiF+QqMxjW9JPzpTpYcvpcdYmnDXvYnrlifL0FhH3RtXexQSH1AxIji57jSOnUB67qWUEIhVKfUDjC7o2y7wc0R0AFilLqzxekR1qIRjXZo/2v6SvKi1D8xEIj/0f73zQKcKGWdYZqxeSll9D0wvDOwyak7X+vCWD5IQk12uuKYtbA7QjRKrNaN3vSjALvO7uqGrrOUt/roHH3d/vJggYX5
- yifEftKW
- XVXak+qYD+//eeBZgGj2w54RrT5dItetyxBm2Blqs7mVwvcFrIrFJqkEOxJF5yqAPORpC41WB2OvHL2/IIXrVqXv/Besbox2rcQegnFh18Y3lEIbfawtGll3imOcOwuN+aFXD9BG3oJrYrLqRDmYZbCS7co9vQaARAT8gMSzkMFA6dIamY5jqk+3ilJdQ4z0aHumZtAXJS1kaiMfEv00YIjXi81Dd+Yy/7cLZ0WUrwznC585/3pXwUKIAQjKxGYiIRMfv1HOi5YyydlC2okVRk/O/29Mv+HEyJvTYUG2oDubLIjdEBxcZ5MfwlCXezitJNCtkx8FoSQq8KSS8dc2n4lzZAkwhfr9erLeHCEAwHRzBcjmJSagAAohFzHryrVajprnn
+X-Stat-Signature: xeupuaqmgozgazaaohiqft3gmh7fhk6o
+X-Rspamd-Queue-Id: 1312B2000B
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789392427-545504
+X-HE-Meta: U2FsdGVkX19TQjrThKrjHYZ4OX78k5/j7xhDNrlGAVascyHadbgFGly/ena606qrrrwtKMNx/KAKcinBmhhkYv9RbPH2umb2xJKNz+l6MoTJaTLL2ef8hTYEPBIUSQSO/aXLrNxmmKRAr/rZypqwggiNaKU/RTpHAaYjS/AYauBZdP6oBLzUhNkAIMglympGw94DSmtn0a7hwNDf3Zx4YbDYRmB0MwRQR2Z8G7ch/O2JIxBrKnI6YiyNmZuRzOXaXEoHAnSpNHrEdhDTcCvm0EdEvsXpw9Qz9L9O8T2w6FEQ/q94FGtTeg/DsyM9OsYtTgmo5e5Uq9a2mmDfMdgUSiWxyrZB/n2kTzaI/7Hx3PylMBGJP0G/uVnME7QQZjUZPYxFjMW9nLmWTnNw1iKK/Z4PgIfCEONeCJThaWzwsH56KjkxERZDcqhwh8g/CTnOW17rPI3kp/aWhDir+KBHDxdJCvvjHnIQS7lbuAoBd++YJrq04Sx4I0ALujEsJA1tIifFDOsSnkd5d0kfmjQFlhz6FTdHVcKtStdOyBpY6z/Z0cM13fhEs5/IfUKaI5uoSfn4/W2tOPeYOlokoOKbRkR4fDqQLBGQpsAbfNY0roiWp27lsuHze4iNum9Nn2bkG7by55gVlUrVF9JO3rHbfB84Ym2gLV+GwHaSH8TSg1Gkym8/bo/RzwxaCb8KY07DSc6dayxg4G5zdTuWJ4XPU/ro7QTem6v0dIh9H+nFxDA2V4lju5/CGWuWkZspjBqgbm6MbAZ0z+jL60wMChDK4FnqdPi2SCoHvRrbtw2zxOzak62zDtd9JSt2Iy5V0XY89qdWFhRfuZucNi0pWJApQQ4J4OEUHVPBEhJIirpKbK3Ni1CuFwK38jDWrUAZkuac6OyG31o0ppwMPW6RVEdmlrtI2zD5QXTmfvzYVWVX2hUy4YRZIyj/jZJr2iCDC+7+rEMlGIAK7OdhJ9n5lcy
+ WtIA8urL
+ G10zzfntEBDq8V03COLGHgGrdBIwjm91RjIwwO/0PDYrO7Fxjt9tE1TUitwlyJn5VVa0G0CgQXrF1cWF3b1VChLuumsBCUwnA5TRlZJeAC1aOrky9qgyidvx9Nvj1iHxCdbYF1iHUDEHxC2iqe2SJGl0cHs9bE40jgK3b38JooTR0zthQWQVStfSsFZobkRGcb66A5xlbt4coyP+/sE6bk7N5MrUr0ZZ0u3NsB6pyB3fbSY9Y6W69WCfY5roesADQWxP6hn24sUHTKUYHaXGwKgA5vXWicZUs6FzfVyZtyRuMiYitti8DmPPmCJwhO2NZc7Jg5Cz++oshD+2Zyl3YUhBgEnHgCGcL+N0fza/6l47Cd/o8jVGf0iX1N5fUdkd2ZRQNSkXUGVIycbJCn5uqriH8JbAXZDVGwzDSss0iVSIsP00D1sNCQ0etl0dUHVbBpFGEr8QZX5a2FC8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,118 +152,19 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 9/14/26 04:24, Zi Yan wrote:
-> After the changes of the prior commits, page/folio->private != NULL is now
-> equivalent to checking PG_private.
+> PagePrivate() is going to be removed along with PG_private and its
+> implementation is the same as page_private().
 > 
-> Stop checking PG_private on pages and folios and use page/folio->private
-> instead, except swapcache and hugetlb folios, because the former uses a
-> field (swp_entry_t swap) overlapping with ->private and the latter sets its
-> flags in ->private. Exclude swapcache and hugetlb when the code is meant to
-> check PG_private only. PG_swapcache and folio->swap.val cannot be set/clear
-> as a whole, so excluding swapcache with folio_test_swapcache() is not
-> reliable. Instead, use folio_test_swapbacked(), since PG_swapbacked is
-> stable when a folio is added to/removed from swapcache. Add a helper,
-> folio_has_attached_private(), for this check.
-> 
-> folio_expected_ref_count() can be called without folio lock, so annotate
-> folio_test_private() with data_race() to avoid triggering race condition
-> checks. While at it, annotate folio->mapping too. Add data_race()
-> annotation for other lockless callers too.
+> Assisted-by: LLM
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> To: Ilya Dryomov <idryomov@gmail.com>
+> To: Alex Markuze <amarkuze@redhat.com>
+> To: Viacheslav Dubeyko <slava@dubeyko.com>
+> Cc: ceph-devel@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> ---
 
-Shouldn't we just move the data_race() into folio_has_attached_private() and
-document there, that it can be called without the folio lock as well? Having the
-data_race in multiple callers looks odd.
-
-> 
-> folio_set/clear_private() and Set/ClearPagePrivate() become no-ops.
-> PG_private is no longer checked at page free time.
-
-You can mention here that we will clean this part up next, to remove these
-helpers entirely.
-
-[...]
-
->  	}
->  
->  	/* One reference per page table mapping. */
-> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-> index 462e89e055485..08988877331ba 100644
-> --- a/include/linux/page-flags.h
-> +++ b/include/linux/page-flags.h
-> @@ -577,7 +577,23 @@ FOLIO_FLAG(swapbacked, FOLIO_HEAD_PAGE)
->   * for its own purposes.
->   * - PG_private and PG_private_2 cause release_folio() and co to be invoked
->   */
-> -PAGEFLAG(Private, private, PF_ANY)
-> +
-> +static __always_inline bool folio_test_private(const struct folio *folio)
-> +{
-> +	return folio->private;
-> +}
-> +
-> +static __always_inline int PagePrivate(const struct page *page)
-> +{
-> +	return !!page->private;
-> +}
-> +
-> +/* no-ops during transition */
-> +static __always_inline void folio_set_private(struct folio *folio) { }
-> +static __always_inline void folio_clear_private(struct folio *folio) { }
-> +static __always_inline void SetPagePrivate(struct page *page) { }
-> +static __always_inline void ClearPagePrivate(struct page *page) { }
-> +
->  FOLIO_FLAG(private_2, FOLIO_HEAD_PAGE)
->  
->  /* owner_2 can be set on tail pages for anon memory */
-> @@ -1169,7 +1185,7 @@ static __always_inline void __ClearPageAnonExclusive(struct page *page)
->   */
->  #define PAGE_FLAGS_CHECK_AT_FREE				\
->  	(1UL << PG_lru		| 1UL << PG_locked	|	\
-> -	 1UL << PG_private	| 1UL << PG_private_2	|	\
-> +	 1UL << PG_private_2	|				\
->  	 1UL << PG_writeback	| 1UL << PG_reserved	|	\
->  	 1UL << PG_active 	|				\
->  	 1UL << PG_unevictable	| __PG_MLOCKED | LRU_GEN_MASK)
-> @@ -1193,8 +1209,28 @@ static __always_inline void __ClearPageAnonExclusive(struct page *page)
->  	(0xffUL /* order */		| 1UL << PG_has_hwpoisoned |	\
->  	 1UL << PG_large_rmappable	| 1UL << PG_partially_mapped)
->  
-> -#define PAGE_FLAGS_PRIVATE				\
-> -	(1UL << PG_private | 1UL << PG_private_2)
-> +/**
-> + * folio_has_attached_private - check if the folio has private data attached
-> + * @folio: The folio to check.
-> + *
-> + * Use this in code that may encounter swapcache or hugetlb folios but only
-> + * wants to detect attached private data. Swapcache stores swp_entry_t in
-> + * folio->swap, a union with folio->private, and hugetlb stores its own flags
-> + * in folio->private; both are excluded.
-
-This is an implementation detail that is irrelevant for callers. Move that above
-the actual checks in the code below.
-
-> + *
-> + * NOTE: For swapcache, folio->swap.val PG_swapcache are not set as a whole,
-> + * so folio_test_swapcache() is not reliable to exclude swapcache.
-> + * Use folio_test_swapbacked() instead, since it remains set when a folio is
-> + * added to/removed from swapcache.
-
-Dito, a caller of this function doesn't care.
-
-> + *
-> + * Return: true if folio->private is set and the folio is neither swapcache
-> + * nor hugetlb.
-
-Can we remove these implementation details here instead and talk about "true if
-the folio has private data attached" ?
-
-> + */
-> +static inline bool folio_has_attached_private(const struct folio *folio)
-> +{
-> +	return folio_test_private(folio) && !folio_test_swapbacked(folio) &&
-> +	       !folio_test_hugetlb(folio);
-> +}
-Apart from that LGTM.
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
