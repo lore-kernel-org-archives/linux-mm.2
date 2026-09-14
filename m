@@ -4,88 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18DA6C88E5C
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 02:43:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74A08C88E5C
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 02:46:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 19A766B0088; Sun, 13 Sep 2026 22:43:32 -0400 (EDT)
+	id 595176B008C; Sun, 13 Sep 2026 22:46:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 125B06B008C; Sun, 13 Sep 2026 22:43:32 -0400 (EDT)
+	id 545D06B0092; Sun, 13 Sep 2026 22:46:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0130B6B0093; Sun, 13 Sep 2026 22:43:31 -0400 (EDT)
+	id 45B226B0093; Sun, 13 Sep 2026 22:46:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CCB426B0088
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 22:43:31 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0BFF3C0D62
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 02:43:31 +0000 (UTC)
-X-FDA: 85210821822.05.B1EF328
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 530F640005
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 02:43:29 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=mZGrVUx3;
-	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789353809;
-	b=S6tAJn7SH+nYmKLFnDa0MFBWsGzZgVHnOK75ergF/EVVhdbJeqLs9E/0nJf49vV7+hVmLD
-	8dKtE2W2NibxcvhvEDWSTlrblc7QNyFmRVSx4jKCBBG1BnjeseKvp+M8HXQ9z7KUhsSVlR
-	Dpw/R5B4VCx2Xc/Ujd8OKkbnJaOSDRU=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=mZGrVUx3;
-	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 171946B008C
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 22:46:10 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 91A4A80EA1
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 02:46:09 +0000 (UTC)
+X-FDA: 85210828458.18.13B3F42
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 59E57A0007
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 02:46:05 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	spf=pass (imf15.hostedemail.com: domain of liuqiqi@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=liuqiqi@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789353809;
+	s=arc-20220608; t=1789353967;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GPlyuX4J8yVFynRki86eS8wk2g+3emdQ6rxuxVS462s=;
-	b=ZqnijPLPkgMMjJt4AEccf7Z00vuZ24MXCPkVt0BwrUdVyAzxjv+cDxM2SbRicgT+dvp2x4
-	JN0olRavlaIOEG8HKRanIve3ms3tVdv+PaDgVTOy5ujjOVbnPQfww5K7dYbbo8YdkJXnCu
-	b5MdyHF7CewVagNUDksWZyW3GtPiqgA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 937A46109E;
-	Mon, 14 Sep 2026 02:43:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7CCA1F000FF;
-	Mon, 14 Sep 2026 02:43:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1789353808;
-	bh=GPlyuX4J8yVFynRki86eS8wk2g+3emdQ6rxuxVS462s=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=mZGrVUx3DEBnxNLMA2Y+MW04SIp2tP/blTyUA/uLcUt4gRgO2HXiwHIwtT7CAV1wd
-	 JcNAjtANaSLbKoycdA2J/acacoXg0TXN8MxrqEgjdbq86A+KsrIW3YxOgJUxADMdXz
-	 08Ssf3Vulb9ZpmV5GeHKclrnsPhxNGuiSs8Qqr6A=
-Date: Sun, 13 Sep 2026 19:43:27 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: hughd@google.com, david@kernel.org, ziy@nvidia.com, liam@infradead.org,
- nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com,
- baohua@kernel.org, lance.yang@linux.dev, usama.arif@linux.dev,
- kas@kernel.org, ljs@kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm: shmem: ignore sysfs configs for shmem forced
- collapse
-Message-Id: <20260913194327.019b3db96ea9b0719fc147f7@linux-foundation.org>
-In-Reply-To: <063f655b4d6c4234f3aa27ed6ecab10283ecb880.1789351825.git.baolin.wang@linux.alibaba.com>
-References: <063f655b4d6c4234f3aa27ed6ecab10283ecb880.1789351825.git.baolin.wang@linux.alibaba.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=2+Ar385qYLGHnkpqpRXsQxijh/WUqSm2AZzcE8JmdP4=;
+	b=Yb6R9U+9LVj5k83BaBHHx2b8Q/LcfZBXTmec/B3I0FdpQAj6TGLdLdHYWJ5Hpkx5wipNiu
+	rcS1o9ZIL1vsjFoiLtVAl9eS1qaWd9WYPuc3zbGlkiuj7saibjPtmTj0HN/s9hMov57qbO
+	zD4tZ7kObhkfTpLkS+iFR+pwJtd4Htc=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=none;
+	spf=pass (imf15.hostedemail.com: domain of liuqiqi@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=liuqiqi@kylinos.cn;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789353967;
+	b=68ZWMVXKlz3Xg/5nr97/qFSmUATYG+IRmkPyZSaJwJ47Xwy1PuBtsp1AdjZC7hnzC3G+h7
+	i/xA6/l82lGc16Mq4igvowzmhBwzg28HMpuYObC5cH7PoR/3PPLuSfLTkfDtvxn9UgT4O9
+	oAvaXS0FuNZUiTaVKW38m0LXjp3k58w=
+X-UUID: 6ad32522afe611f19a56ed5b684f684d-20260914
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:bbe0c4a3-3b29-4f5b-9302-20e446aab4f0,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:7db8b62,CLOUDID:828b17566f75bd7eb8976c8866957840,BulkI
+	D:nil,BulkQuantity:0,SF:102|850|865|898,TC:nil,Content:0|15|50|99,EDM:-3,I
+	P:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0
+	,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 6ad32522afe611f19a56ed5b684f684d-20260914
+X-User: liuqiqi@kylinos.cn
+Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <liuqiqi@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1935826873; Mon, 14 Sep 2026 10:45:59 +0800
+From: Qiqi Liu <liuqiqi@kylinos.cn>
+To: akpm@linux-foundation.org,
+	vbabka@kernel.org
+Cc: surenb@google.com,
+	mhocko@suse.com,
+	brendan.jackman@linux.dev,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Qiqi Liu <liuqiqi@kylinos.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] mm/page_alloc: apply per-task GFP context in bulk allocator
+Date: Mon, 14 Sep 2026 10:45:55 +0800
+Message-Id: <20260914024555.138125-1-liuqiqi@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 530F640005
-X-Stat-Signature: qijudubizsj51bor49h3q4zqrtsn9qjc
-X-HE-Tag: 1789353809-321696
-X-HE-Meta: U2FsdGVkX18kbUoISu7sR//1KNBlrXKlyDBveQjem6/04VsXmnmcVKV7Ht+TiqucM4ka0cj+CY9cLVaDYCwd1sm8+K7h2ee5QR9SLsFi0kiUU9Z/Hou1aSftGV+b8ToJu0YqVOkqh3i0/Q9eqv/tSG+4JdnHTShZDJ6Fux953wxLJY4PsItU4Evkgzws/DJgxJTdXUaqHhsGF/hf68C3RnMRWIUz2Jqk6tBIsptWU9F6fXOgRxRmrlMisBFT2mrcU+P0WRUleRuRD0MRWvAMyylZfdJvoLu0wWQckCUzB2gl3iiEDGCvEO4JMz/5IdhXv57SDLPRGwe7JrrUYj8kzTjfrbP2ZVbGgnGCOTnQOPxkpE3zjht+8Sbn7IIvZscbOHWt9AutDV9Ebe77RlzyHfJIGny5avfy+hMnWckMN9Y2uexGi2o9ORBMxmwEXeyveaQ5Rs1ecdFEchqS4y/Dq5AhvrzYcXmPdeUMf+2lE9rXHkEiNGP1p/L+5c9YA/jVgDWLSXUFbwpvwLl6eXo4s27Cu5Cmf2yZ6z+QHzrw8n1+NBae8a9Q69G6JPYZ3cdHpXVQGKJ77k3PSZrbdWdUiN/v+ubJnZze8LxSLraNL0CIQmd517Lc6tz6t8PINHdUQ+SM9+7/xuFRnr/FoxnKSxm1JiJtAZcpwwWcoHHJD0suHWsXCo8q+IQPSbMwDWje16qpmZAvigONz079i8TKJLJdxrYM18a/KmgiOpaHZfUMuDFYaWyAdK8o6eErdHQsbOMChYS8tdtTAd/6AOcTUHAAqPXNkPLVf7w9x/a5Z1yyxtk5V/X2PwdJBPACFFLiYo2fhkmJbjs8uDV4AZwRlJqJqTFBPiakUfLPvn+SqPcSyX58fOFnFyY24YikG8kDHc54u98RbcLgm19k3UeipWMijCH/jRnM56xrS8JAZeIlmwH81V3qTLuCN3gA65EdKxIN3v7rQGWMk5CnAYT
- YJVZL5hh
- mKFjoW18MWV6NSvpCKxrbewoxYs0qQVxdp+7V7wrEvNCkks8gDUs+7FD0YNN22Uxoaqt4KdPfJ3aPm8IXGppb3RJbJ3KeUFx3wxdY7zEHwb792jemWBF3ojtQK5xbUw9av5T1zp9g8m78uOR7PMz+I+Y/CyLkDc9tjSHDYT5FM8Jv4MJRHxlM+36NI0bGQzijxxYi2Hne4knjW28ttM1VunjTsiV7lsHi7kgu5Id71Ug7mHazun8gD8oNXHa2cPlytVS/H2lm4+AJ6bNVtx8Xe+doPsAxwy4lymZn8GtGtOtvyZk=
+X-Stat-Signature: i7exy9h3fti9khapnm3k8rf1qsdwjemf
+X-Rspamd-Queue-Id: 59E57A0007
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789353965-23794
+X-HE-Meta: U2FsdGVkX18Gcu8DVcNZ8kiaGd5mjwIgpq2TDY+D4Ad4j2GNtJFQuHDHyVhk4BmVLwK3NioERkZXD1wqnMXneJiHDke2KHFf4ix5mPp0oBP2KH712s53iZf8ZUct5ObfQ9iM+dIEvMKIi61HMRW2WFdbdpvzGOuoZOQkUAhSIjeCqbnGuAeuLyz1/bBZtibNjQsAfgcX/N82Xiwvnjvzuq778Ocz0IyKeEmDXxC6AGeZ+HWDcQdjdBsWbPnh93qxS3ICp4zGAwdh2G2dkWOmRc6b491Dp03EncY1sYeaMRPW1s3trhcgLhxO0uq6hMwSNIs37i0J4pM1txtVbZQSnesA0hy3CLwaRtINpB+hC94MSsBAgXOhZV9E1Z+OWy8kvKgMnDSnj5LSX12Kz1eeM+GDr2swjdltGJKIcGa8HxGQGPNFH9mutH3wfRkzwc+F9rhwJE2wfI83/JL1xyviK0uLcIUEIb1aW/DDTmuJEs/7Bq5OUhvpQ3N2LmOWpbGyDv7iSOKXIRzV62Zor2PI47jbVUD1FJ0VoWtf+WyvibFdClwmY/1OlxTieSvzv41GRFdcqUBAOPC/LVOkupDaw5MQ6UgnOraJDjOGnUIOeTlfbgsmV188Updnv0SIZHWt8A1uHRZvb8act2kr6tMsMJoPjXYWLfvEO47uL5MUuP0r51zqtigdHzXkhTpNcMGQuMStMbD7NvLPmLRPS7OPKBg3Up6y41Bu2ym4iV3K2dDT1i/mFW77CRLUibDTW10h/a5WXyPIq6MAkzh9KOYiaXBa4PfkqDYKNSRSbxw8GDlOUNdy5GWdnx8dinMn0390TvOE77IjHiTVqHgDYqppEdZVpPKlYO1/PhGR0iP7ExNMKV93+owbmgkNaVTCydEQ338g3cJLV8vCEqZHkwmcJJ6OtBzPRWp09R8w/SScwquTrasc+3CdW4ST59vEsCssY+2ToQaRnePOI/TaA8P
+ aNdEyTlo
+ GEDKBtBT1sUEHvqHdFNzcPEUbrQwQWh+fLekOUQ4hQ7t4mEPlPwKd2mZ7wX0ZZQsNAiRC1s8Vh3gDcI4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,26 +97,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 14 Sep 2026 10:12:41 +0800 Baolin Wang <baolin.wang@linux.alibaba.com> wrote:
+alloc_pages_bulk_noprof() does not call current_gfp_context(), so
+per-task scoped allocation constraints (PF_MEMALLOC_NOIO,
+PF_MEMALLOC_NOFS, PF_MEMALLOC_PIN) are not applied on the bulk fast
+path.
 
-> According to Documentation/mm/transhuge.rst, MADV_COLLAPSE is expected to
-> ignore any THP or mTHP interface settings.
-> 
-> However, after commit 26c7d8413aaf ("mm: thp: support "THPeligible" semantics
-> for mTHP with anonymous shmem"), performing MADV_COLLAPSE on shmem will
-> depend on /sys/.../hugepages-2048kB/shmem_enabled being set to "inherit"
-> (although that is the default), which can cause MADV_COLLAPSE to fail
-> unexpectedly.
+The most direct consequence is PF_MEMALLOC_PIN: without clearing
+__GFP_MOVABLE, prepare_alloc_pages() selects MIGRATE_MOVABLE for the
+PCP list, and a task under memalloc_pin_save() receives movable
+pages from the bulk allocator.
 
-Userspace-visible runtime regression?
+Fixes: 387ba26fb1cb ("mm/page_alloc: add a bulk page allocator")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qiqi Liu <liuqiqi@kylinos.cn>
+---
+ mm/page_alloc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-> Fix this by returning the result of shmem_huge_global_enabled() directly
-> when MADV_COLLAPSE is requested, allowing PMD-order collapse while ignoring
-> shmem THP/mTHP settings.
-> 
-> Fixes: 26c7d8413aaf ("mm: thp: support "THPeligible" semantics for mTHP with anonymous shmem")
-
-Should we backport?
-
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 12fac9084c48..3be7288a1aa7 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -5207,6 +5207,7 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+ 
+ 	/* May set ALLOC_NOFRAGMENT, fragmentation will return 1 page. */
+ 	gfp &= gfp_allowed_mask;
++	gfp = current_gfp_context(gfp);
+ 	if (!prepare_alloc_pages(gfp, 0, preferred_nid, nodemask, &ac, &gfp, &alloc_flags))
+ 		goto out;
+ 
+-- 
+2.25.1
 
 
