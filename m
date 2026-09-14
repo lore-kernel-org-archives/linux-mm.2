@@ -4,144 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68D14C88E77
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 14:19:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4EE5C88E72
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 14:20:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 522016B0092; Mon, 14 Sep 2026 10:19:25 -0400 (EDT)
+	id C9BFD6B0096; Mon, 14 Sep 2026 10:20:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D1796B0093; Mon, 14 Sep 2026 10:19:25 -0400 (EDT)
+	id C254A6B0098; Mon, 14 Sep 2026 10:20:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 39D586B0096; Mon, 14 Sep 2026 10:19:25 -0400 (EDT)
+	id AEDDF6B0099; Mon, 14 Sep 2026 10:20:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F09A66B0092
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 10:19:24 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 60C321C033E
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 14:19:24 +0000 (UTC)
-X-FDA: 85212575448.10.4CEC69E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 9515020009
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 14:19:22 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="U/iC27fy";
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8AAAD6B0096
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 10:20:03 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 10613C0171
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 14:20:03 +0000 (UTC)
+X-FDA: 85212577086.22.FC2654E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 9542E1C0007
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 14:20:01 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aOxl9EV4;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789395562;
+	s=arc-20220608; t=1789395601;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=10wyQv57KEE9SMXNGbyIiW8Kh9XTq71YhEymhF3vAwk=;
-	b=CRDcK0vHL98WOt80yQG+CnirPdCyrsZ291X/oGEmBjBlzldIhNWSNb+kubUzAXNglCBJw1
-	t8YBJUGODJPfEnPdV9g0VbaZP2y39rOyc3U0eXuU+MjIn7dKUpb1SfQ2gqw0IR0UkLnNx3
-	eSoPOqMwJCu5QMzP2W/Prsof+J8be0E=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Xe9pCAP7+znsH3YX32HlW65HgZEqytv0rSrycprzx2U=;
+	b=zZ+jRua0v839zB1Sspo39Rzcjosvq+3nEUXV0Vtag3g4aJZ932cZfzbJahkRIprsmpYh0W
+	3+0m0FL9/7qnhLpQtkyrQGnkA+yCDN6SXcjt/9nGCENKPw2aMetYUq/IKsnwo9GmpgvjkT
+	Em2SmEgtuczUpe/CP2exFbVGpabhRE0=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="U/iC27fy";
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aOxl9EV4;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789395562;
-	b=tgJLe+4RjtT2s12W3PI3V4chwW7rxeHAGZ5nNW+WJPIpVSy/O2TviWtS8E2VS6j3vKLOnU
-	tV+MVVkdQW2AasiZBu/I/yNkhqOaayxrEvBTdkX8Yo1ZJd53xYI9uThXzofBlsocMVi8p0
-	291I4DmMJjUXm+c9iXGIdflY7Jw+msE=
+	t=1789395601;
+	b=jqaAJM+Q2T5yKuy7WcLroZxvud2KSUey8N7s0HYZwlz3xLAo5xuKGQ1pO116UOYfTclIf2
+	P3jlzKxyoZzX301d1a9hQCx81UyKHWepdPKE0lKYDY8aMEp+xrMkTXCux6sRDzoYHa4H3W
+	AKsuRmF+TBDX86PhJGnikRJlXswPRFE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C2B2A4192E;
-	Mon, 14 Sep 2026 14:19:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 160C81F000FF;
-	Mon, 14 Sep 2026 14:19:15 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 17BA3601EF;
+	Mon, 14 Sep 2026 14:20:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDF401F000FF;
+	Mon, 14 Sep 2026 14:19:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789395561;
-	bh=10wyQv57KEE9SMXNGbyIiW8Kh9XTq71YhEymhF3vAwk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=U/iC27fyYo0NPgeyFOP9BJKiSUvPwYxMYnTV89LUYfkhdwEmfDiyojfMr3GWRDzIE
-	 K4lAh3RyhH3m933a2edNrwxqagBPjvV2ryDAzqrpr4iMNO+O/MX7EWQmV4JJCURfeu
-	 XVkCpCY8AIULJn3mqtnkUwC0Ke43LA5VTMGIiL9jjbLxSJxbugnQJkN/huizL1v3d7
-	 ClWriOS3JzN80e4ZFPcSUL6YPhHHS/cHeYb4uaFdOMM9NbXZ6CShf5uhBjYvqg5VV3
-	 YckvqbwUn3qQt8Pa2JjAcLR0Cae5cNHcx7d8usO+OZTlCfsu/hNdH9d0gyUOm7TQVS
-	 dcLMIRq4lr0QA==
-Message-ID: <00dcd8d2-67f3-4ecd-bd7f-06ba1f9c106a@kernel.org>
-Date: Mon, 14 Sep 2026 16:19:11 +0200
+	s=k20260515; t=1789395600;
+	bh=Xe9pCAP7+znsH3YX32HlW65HgZEqytv0rSrycprzx2U=;
+	h=From:To:Cc:Subject:Date;
+	b=aOxl9EV4HfSn4CW4ndI8Yc7wmc+68nQ/AG7gNNVkiYH+WZ/fZX/7xfou5DflqaULS
+	 lcLmDByziVNq0IgTmy0cqm9KA5KSuXP+p1WglgvPGKksP5/7kx4kEAmyPW5UyheGNI
+	 C/XgdTjlg0zYIIFnR69ygbDwuI4DUke3vlA46dbWm8RBXjz3ZC3FtyiISJhTXHcXtd
+	 LG8nJFRUTA5UBX+nMAViIamKQ/ShECpxvjzgvLm2u6UgOgFpYhzIxIXLWda3ZXu0gT
+	 5L1YRjxd7+KUUPCyMoTJjDYgQ+8U/M3+uvoCct07REl1W6f37ygGoq4imEEiHkAhOg
+	 yRh0Y/qG6F0ug==
+From: SJ Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SJ Park <sj@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@davidgow.net>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Sang-Heon Jeon <ekffu200098@gmail.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	damon@lists.linux.dev,
+	kunit-dev@googlegroups.com,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH 0/6] mm/damon: misc improvements in tests and documents
+Date: Mon, 14 Sep 2026 07:19:45 -0700
+Message-ID: <20260914141952.91465-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] khugepaged: hold invalidate_lock across
- collapse_file() readahead
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>, Zi Yan
- <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R . Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Matthew Wilcox <willy@infradead.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Jan Kara <jack@suse.cz>, Hugh Dickins <hughd@google.com>,
- Mike Rapoport <rppt@kernel.org>
-References: <DLEBZ0GIGNQ8.17U563YYJ37AA@nvidia.com>
- <20260913163644.122133-1-ngocthang2710.1999@gmail.com>
- <20260913111700.6de78b5834842f7dd3f12d07@linux-foundation.org>
- <aqbvFtlXd3Jdnfbm@gremlin>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <aqbvFtlXd3Jdnfbm@gremlin>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 9515020009
-X-Stat-Signature: rbiu4teemufj53bdz77cmrmbk1xozgua
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 9542E1C0007
+X-Stat-Signature: 9z4p7pmba1pfw9zsujyj71w8btseokin
 X-Rspam-User: 
-X-HE-Tag: 1789395562-366687
-X-HE-Meta: U2FsdGVkX1/1Jdo3QaSzbGjAN5c++Hm2PRioktEyetnwXTzkY4MvU3pLVMShhYG/JgLYci5sz5FH9A4Aw8UaJXyYSYziI6H1jjCL+NEBLdScbbGEDDcp4wu1qwMke/lhbdGZZEF7enuX8C1sDPIFk36n0hfjo0bB/tU+gL+jMomSESNN7aZ9ciF4YxGzTIivhVRVq+cU29oBWAUyjZSSCyqD5t9MyfSlsaHdTvh+PG1+cuw5vSLxrObLejonc640zEj1XIEHNF3/Aw+Mz9AsJ9uMrQ6ivmMQpXe5OWmveVZOVkELxWgV7w7DcA2I/OCxZrJYd/3FXD4QmiJxvF7Ti5ih0IeIA7diZM27gVY4VDuaAd0Im8zpf41kaKPWoR6uhqDLqM+tEIF9axMIG+t8qaghJM3meBGJD65jM4MUieOiaKPT0pd/VrydYceWzBoWwBAJvfjhdnPK60cAMIe7emOAhHc1Az0l/9yWTM+An6rxP+Bk40Kep4FodWEs02PYGkoJ9Zi6bSaXXOfpggL7/phoUA7k3HQ+2Lo7z33D94gCCrmw1K+QCse9+Z8jw4m4szb9lGJCe3FndQtn8gKVvN3VaObKvsvj1leqYOowXD6AjO9jWMWTkw06f+g/bLe0hCvn3DAOCmq+w5pHJ7dKgt016vf8tqh2lXG8pBvloqURdMYTVlwJTPwM24/sm0HL4rHqE0Q8qRU51SU8jv4QMbM0VevSAnvqC6+5VlYVkQKQaCqIJz5Kgso/n5cbcbXwKx0Gc/BfItTbPykijCmvfjYVtcxAS9r5nlyW7oZes6e+phquFi9jDAgTsBN/tRR7nYktI5ujMSBn2Zkc3Ma2b4iF4dAf5kHGt4Ek8ZR3bS5Px1cHHOvG5V70q8I8UHay0hG1doQdlZ8kpsJO/0TvLctFTgiJFIyrSjwaetH9NPiPC55hKguasudGlNlQZ9d5252PHstygVFOx8yxVpC
- iVh8uasp
- x2Pa6URs5wvDUcJsDfBmDJqQQ/t4lfciEK9MbxcEBQIoLnM9+I8svMJRvavCW1jxqdZ4LoEuLdAuZVvYNkPBXGJDjdYWM9XDiJIAoJ+OKsHgTxbo8DsdqUSPqAf3M+XZQT7GumTxqcwwEL9fO+t3vWbpj4z75lCO/zF7ulpqY8c8IpNV9SEVdbIwRpbvfDAMdnlOmtRKCesvMGOMRu2ahSk0p+3a/FtWRXyAoAyZseUW4PYnH8gjJdXjcd6mYS4mH3gakK+yKv6m181KSLTtuQ7U8bcJbaV+1gSu04npiiHNT31lCjI42QsB32A0Cl9jJgmfl2xl0DQ1dgx7EdrVtFZbx7xqdtm5vLlCRacOoc4CV7daxd30jnPkdX3iL8bJMaCwDpdkasEFcBPPLgcFt2pmXhMyHl+LJz7X7DTTjfSFFZW98sCtpMH8pryjdo6J09NxntBbz87gQ4cJceLnVpSGZSufAHYeIrNIFTM4Wps/jciZMB/OfbqA9WEkRce/henY9sPoGtG7kn5ZaffESpCCAyLZZnAqCQhIx
+X-HE-Tag: 1789395601-144065
+X-HE-Meta: U2FsdGVkX1+4y5lUNOVPSb5nSoskUQ31EQx6eYbfBK7/BSMqt3Cr96CkeoZhQVTuphLqzt2uMnVY/AmWpjglTZ8VvhU1hjK+sDd5ScJ57CcP69WKv/qDTg+2UTOlrqUNKRpGRO59QmYG4YkCeJulC9nxm5mGX0ebEgQyo8585gG9KofBteyNWvTtDUCP05Ct8Xt1F/Wz6U34+NPHtgYVuYbWROQHxCOS3xI0XppW7Xi6XayYNttickgDfWR2TvFHcT1KR633jrRziV3tWqdBHZxCFO4oSH9a+tUeZoXmSKYp5puf45cPsK+cYYZ7bmk+5Peu0RUEF3Enees6CsLI/SIDQi4DmkPkVHkRdXj/eL5HC3NtROxW34aAzUo5hdXhr85Epyaqz/n/jl1puzJmcRhXoOFzPBxtQQVIJhPbfAtOW8tcmbFsNvVsWyDF2Tly2jCIKepnPa4MDZmKLD2N4UdEIoJjdNKGT3JBp9HOfAtnjTKG5Gw4vPkXrVjGBxLNky/+Txin6STfDgDaHyn8eSJeAM5eweWtAFVX1jt4h5W+2JPfq/P2waNLYugiVHDrZUGS2muagZxqPZro2S1QYI1z0pkeb6gUxb5d7vvtRKC4jbOXl7kN2lVihTsfmiVTdyojSYe/Pp3cFoRRVC5J1TEsazJT8SU80pFedD4PVcpjdmRbttw2azBBg9vRckVanIhvJHeLlM4aPInvacMxPmHiILTEpWlJQJcb66fu5Stm2PmhUrx+0/eYMYqAdwW+XuXQ1uGWGOr8639oeZu8iGoNJk4pN3XmsfyeEHkf2EcMRMTTZgamoQZnWTGtj3UyIJXUm2t/H13oDSCue9L4uQLHKt7DCpHXvjGUJ5585heYV0MZR5G/1Kat/oly97WhZ/aH/jwk5UfvY6poeFiHeOeFXbW5ZwvzEVyzxNEMTkTN88iKugnAs//o8X/YW0v3FzEzsUmyCK9Ks5CM2v8
+ 7+V9/6wy
+ 4h7csbA0wEcA4Jz2Yaqc+ZYFzT+RPQdQnGwbTxVzKPY7gFU9cwsDgxum4EVfooAM1rjC6xG4FaCTvrZvQ/Ui8n8iyEjoQth0Nt1NB9FvxfVtS/3c7BnQjkLzdqlmozR3v2BD9GN9gR0yknti6UX7GXquFTM56ZgJ0J2UywLo7PqI2HTSwCizkasKnmvPu3ke96hQm8quiwcZtfLY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,82 +107,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/13/26 20:48, Lorenzo Stoakes (ARM) wrote:
-> (Nguyen - do not send v2 in reply to v1, look across mm and see how things are
-> done here).
-> 
-> somebody who has a
-> 
-> On Sun, Sep 13, 2026 at 11:17:00AM -0700, Andrew Morton wrote:
->> On Sun, 13 Sep 2026 23:36:44 +0700 Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com> wrote:
->>
->>> collapse_file() calls page_cache_sync_readahead() to fault in missing
->>> pages before collapsing them into a THP. That helper takes
->>> mapping->invalidate_lock itself for the duration of the call, then
->>> drops it -- but truncate (e.g. ext4_setattr() -> truncate_pagecache())
->>> takes invalidate_lock and then waits on each page's folio lock while
->>> holding it. If collapse_file() has already locked one of those folios
->>> by the time truncate reaches it, and then tries to acquire
->>> invalidate_lock again (e.g. on the first readahead call, since
->>> invalidate_lock is not yet held at that point), the two paths can
->>> deadlock/hang on each other's lock: truncate blocked on the folio lock
->>> collapse holds, and collapse blocked waiting for invalidate_lock that
->>> truncate holds.
->>>
->>> Reproducing this over ~150,000 collapse iterations with truncate
->>> racing concurrently reliably hits hung_task: blocked tasks within
->>> about 20 seconds on an unpatched kernel.
->>>
->>> Fix it by taking invalidate_lock_shared once for the whole scan, after
->>> alloc_charge_folio() succeeds and before locking any folio, and using
->>> page_cache_ra_unbounded() directly in the readahead call site instead
->>> of page_cache_sync_readahead(), since the latter would try to retake
->>> the lock we already hold. page_cache_ra_unbounded() does not clamp to
->>> EOF like the helper it replaces, so clamp the requested range
->>> explicitly.
->>>
->>> 730633f0b7f9 added invalidate_lock acquisition around readahead but
->>> missed collapse_file(), which already locks pages while calling
->>> readahead; later filesystem conversions made the deadlock reachable by
->>> taking invalidate_lock before waiting on page locks during truncate.
->>>
->>> Reported-by: syzbot+16bf7cd0ebeb1de93aa5@syzkaller.appspotmail.com
->>> Closes: https://syzkaller.appspot.com/bug?extid=16bf7cd0ebeb1de93aa5
->>> Fixes: 730633f0b7f9 ("mm: Protect operations adding pages to page cache with invalidate_lock")
->>
->> (You forgot to cc the original author)
-> 
-> Also a change log, and that mm doesn't like sending a respin in-reply-to a
-> previous version. Which is all consistent with somebody using e.g. openclaw to
-> pepper generated patches across the kernel...
-> 
->>
->> Five years.
->>
->> I wonder why this hasn't been discovered by lockdep, AI, syzbot or any
->> other of the tools we've been using for so long.
->>
->> Thanks for doing all this.
-> 
-> See https://lore.kernel.org/linux-mm/aqbtfms0_2ULBIT7@gremlin/
-> 
-> I am not really entirely happy with somebody who has sent a flurry of patches
-> across disparate subsystems with no previous track record being in charge of a
-> potentially backported fix.
-> 
-> It's David's decision but I think this fix should be taken over by somebody
-> else.
+Add various improvements to DAMON tests and documents.
 
-IIUC, this patch might be responsible for random CI failures (Mike still
-investigating).
+Patch 1 and 2 from Zenghui Yu (Huawei) let DAMON selftest to clean up
+its state and output after running the tests.  Patch 3 from Eva
+Kurchatova makes a few selftest be able to run with Python's safe path
+mode.  Patch 4 from Kunwu Chan improves coverage of DAMON kunit tests.
+Finally, patches 5 and 6 from Liew Rui Yan clarify and fix typos on
+documents for DAMOS quota behaviors.
 
-So I'd prefer if this is taken over by someone familiar with that code.
+Below are notes that can be removed in the final commit message.
 
-@Willy, @Zi, @Lance?
+This is a batched repost of DAMON patches that were individually posted.
+Please refer to each patch for changelog.
+
+Eva Kurchatova (1):
+  selftests/damon: add script dir to sys.path for PYTHONSAFEPATH
+    compatibility
+
+Kunwu Chan (1):
+  mm/damon/tests/core-kunit: improve nr_samples_per_aggr test isolation
+
+Liew Rui Yan (2):
+  Docs/mm/damon/design: clarify when qt_exceeds increases
+  Docs/mm/damon/design: fix typos in temporal auto-tuning algorithm
+    section
+
+Zenghui Yu (Huawei) (2):
+  selftests/damon: stop kdamond on error exits of no-op commit test
+  selftests/damon: ignore test-generated damon_dump_output
+
+ Documentation/mm/damon/design.rst             |  8 +++--
+ mm/damon/tests/core-kunit.h                   | 19 +++++++---
+ tools/testing/selftests/damon/.gitignore      |  1 +
+ .../selftests/damon/damon_nr_regions.py       |  3 ++
+ .../selftests/damon/damos_apply_interval.py   |  3 ++
+ tools/testing/selftests/damon/damos_quota.py  |  3 ++
+ .../selftests/damon/damos_quota_goal.py       |  3 ++
+ .../selftests/damon/damos_tried_regions.py    |  3 ++
+ .../damon/sysfs_no_op_commit_break.py         | 35 ++++++++++---------
+ ...sysfs_update_schemes_tried_regions_hang.py |  3 ++
+ ...te_schemes_tried_regions_wss_estimation.py |  3 ++
+ 11 files changed, 60 insertions(+), 24 deletions(-)
 
 
+base-commit: d1153a22117b5c6171bdf24d32b7f6c314887d23
 -- 
-Cheers,
-
-David
+2.47.3
 
