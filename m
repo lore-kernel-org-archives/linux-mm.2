@@ -4,186 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C14DC88E64
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 10:45:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B18F4C88E65
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 10:45:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8288D6B009B; Mon, 14 Sep 2026 06:45:32 -0400 (EDT)
+	id 9622D6B009D; Mon, 14 Sep 2026 06:45:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7FF406B009D; Mon, 14 Sep 2026 06:45:32 -0400 (EDT)
+	id 938416B009E; Mon, 14 Sep 2026 06:45:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C8106B009E; Mon, 14 Sep 2026 06:45:32 -0400 (EDT)
+	id 829446B009F; Mon, 14 Sep 2026 06:45:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A6F96B009B
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 06:45:32 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 38F7480280
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 10:45:31 +0000 (UTC)
-X-FDA: 85212036462.08.036B868
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 53D496B009D
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 06:45:35 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BD9BD1202A3
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 10:45:34 +0000 (UTC)
+X-FDA: 85212036588.10.9B5218B
 Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 5F0B7140011
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 10:45:29 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Uh9AXBKA;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of matthias.goergens@gmail.com designates 74.125.228.12 as permitted sender) smtp.mailfrom=matthias.goergens@gmail.com
+	by imf18.hostedemail.com (Postfix) with ESMTP id D303D1C0004
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 10:45:32 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="rJE/gfP/";
+	spf=pass (imf18.hostedemail.com: domain of matthias.goergens@gmail.com designates 74.125.228.12 as permitted sender) smtp.mailfrom=matthias.goergens@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789382729;
+	s=arc-20220608; t=1789382732;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D8VW5W+UzT0ktmX9k+Qun+Nqem9Z8cI3ixM8qiW4isQ=;
-	b=aNaqmfP+oae+2n/M/vXq4iAg54p6D14Kvv6SJD6AGLpwpuBlDcI0Ht9Ym6m+eMGcbJqC1Y
-	gT5R0vwJPzHOPYA70KPFLjL8J1gkKQA6SrOdgHum2xwI578q6+jRfAiDEP6OaFlLGM7/Ah
-	ALr51D9nto3+YDuClWOzfl+W8bKg0p8=
+	bh=4PlFr1YMTYrZSbX9/Z8mAxWcnKUTDDEqGR2N9kN/Q2g=;
+	b=KdLu0FOnnOAHGG2fqW/jPAxlIyHoeapQAEnAN4QkiaV8S4NolVBR7Um6Qvy7Theq2jA3EC
+	zQCT2KT0gUAFJZSRoFEflLR3DMRHpDU36ksawx5Oo7zz0vOxd5dS7dk+jBd/LSpozpH9O5
+	zkTuNCzylRysCOB22pWC0jK/cNaCP4U=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789382729;
-	b=nj4EcqirnazKT35wCofJyyc5l3J5J+EKQltGLaK8LbcBWa2WCP55BE+Pz/wSTmXiqUzSe5
-	tIOsk3e2kbtpMl+QDH1skKysoDb8u95FO+hoQ3Jt7L6aRsZQ8sheS9aFhIkgalqvSQZ/pw
-	ybeHAD3XB/sgEYIw7gqefR6yVsOVvVY=
+	t=1789382732;
+	b=F46KfJ43fWC3h1Wi0OJlbYEA/tsIBVHYTFmiR3m9VLnZlzxOONYUzH5xZaPa3ym2WQ2dGA
+	GIRY0DU4xqIvRyy1LmNwMrGesBaOTJYZdrsHQcBZKAhsI2eqVOFDbgy0iSZzkrBZEKee+s
+	SPjzLg35glJTXWtjSElzK6P6oLA3rd8=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Uh9AXBKA;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of matthias.goergens@gmail.com designates 74.125.228.12 as permitted sender) smtp.mailfrom=matthias.goergens@gmail.com
-Received: by mail-pz2-f12.google.com with SMTP id d2e1a72fcca58-8693af0d7c4so2435071b3a.3
-        for <linux-mm@kvack.org>; Mon, 14 Sep 2026 03:45:29 -0700 (PDT)
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="rJE/gfP/";
+	spf=pass (imf18.hostedemail.com: domain of matthias.goergens@gmail.com designates 74.125.228.12 as permitted sender) smtp.mailfrom=matthias.goergens@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pz2-f12.google.com with SMTP id d2e1a72fcca58-85469b2e1d5so1986407b3a.1
+        for <linux-mm@kvack.org>; Mon, 14 Sep 2026 03:45:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789382728; x=1789987528; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1789382732; x=1789987532; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=D8VW5W+UzT0ktmX9k+Qun+Nqem9Z8cI3ixM8qiW4isQ=;
-        b=Uh9AXBKAuNtM7+S24QUV8ArnFFKq+o4AtV/XCJRS+6cfAhu9NCL7YUFTFWnxaUKqrA
-         skvKkWBvaLtjGDo+rXbcAU2Wt+kf6EbbYbI0yZ9f28Jd6Bp0+RfADE3wuE2eQLCBA7JB
-         ff6+eOoxZ03aIvapXVxaf3jDiEQiiL0EY6Tb7u5kxLJ1+RkFKxJTTVEDMer3dy4MvZO2
-         5TIjgu5n5AIo6TXF4YfwKQNBbX0XIX7daZqcGPDU2QBppsl5iJmTAz4EFIXvKnw6yh3w
-         pgQhr/ysfRSqymDYaolnteLPeBBRK91nTOYeb0GvDu6qjgY/8TimwEc21PbT5cdhSE7L
-         KoFQ==
+        bh=4PlFr1YMTYrZSbX9/Z8mAxWcnKUTDDEqGR2N9kN/Q2g=;
+        b=rJE/gfP/4aDtMJr4XLDBbyK+uTEAA5V8YYTHOpzbAxwsH/m1SG2qaP12ihCrR5br1Q
+         HYU4aOTqxRGaqfp91dmIshEgjyYt3RwAsUuBw2IJpwsys7iQEjaFCiXhzGAWR4y8+ASw
+         DjjauqHOD8A6CfjkQwzqx85vzDXj9Aip9nthAVUyomxknFNA7sE4rEfBTWiSpN2PEolp
+         tc0d3f+yai/uhZzUU4OjlprExnjfy/Iefe5wzkse0cYEyDLFpq5WxG9uMp3mX4g530Ec
+         Bv7yLFTjuAK0qhkXG1TGILEumE1g35WtqyY27KI5W+o9yR7FSg3sVDDupP31QVgc3+oG
+         0oyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789382728; x=1789987528;
+        d=1e100.net; s=20251104; t=1789382732; x=1789987532;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=D8VW5W+UzT0ktmX9k+Qun+Nqem9Z8cI3ixM8qiW4isQ=;
-        b=QPfPwc6CWl27EBu4ge6xKlgrxTqUYB/QAhV/KTvYihXnkFs1C1qjtUro0iSXlkjSkb
-         c4wYj6baAuxNamzM+G/NObLn4XDt1TB4vXXLBLUkOZt9+07QGtvnZnNY8uqijvI6XR/H
-         dbHn3sF8As59g1DxUG2REwUB6lkkCVw0gnBnNcOYaPegDEW+rCikWgM8w5fxr2yAjzzB
-         gH36ohXGoZHwr4zEnNwyaAntIddrWBGEdhWlGX6BrfZrQqYNedreSmAbyrgn3jgPV9WA
-         1ev1zm7fS4E0151iJKI5SRKFC9h1rcq2ukhvsmhvSeruS+uVS6h6EuZX0M/HcrbfnVVN
-         xyPA==
-X-Forwarded-Encrypted: i=1; AKwUvByd2GbKFhZ4wYlefAXvtCVCgLSCnBN0lZhTKBFKgpnYAOQCZ9SVycs3FZSIKhdi+7CjokNv4/OO1A==@kvack.org
-X-Gm-Message-State: AFuF++nYkZiS/YTx3BvoJ3nlto1ZlZptht9qG2zOr/83ZG5kEe1yhqcD
-	fZ/QKmnLjB2L3YUMY/C6YlGMsJ9fXqX0w3+uJyDfY8hdAYZHYbK9jWpd
-X-Gm-Gg: AYBFou3hm4BfSkKW81Igxs8RXi1Spo9JuZC7K1pcgjinskmnv8D5Q1du7TOTlz3D507
-	1cjfqI51XFh6wY4mvp6qlgoTsLE94A1Ju2aExDWbzf5d4MGbY9Fcu0zvQ7XRsohwxqtv2UYX5lw
-	OwkTJz5+NtxWxtMip/Iy11HePo23R/LcieL1PHIef5iJLHK0MoXzXO5uvZpjC0z0PdErzczHWUq
-	LDOXDo65wR4d9atC1kojGxotAliVZeXVgKh14mvpGr2nLMUN2gLeWFQCM8L5OOQOW5doTn4AgtT
-	fZ6LBRHud6diu3IkF09+LPlTA0py7qWZwGkistCxZLwbjv8rNVoTg2fCE97kOoeLl9d4dAbuVxl
-	jKBW/95tZ9k2AVoIQHluNuaqOw/S/fZiORWuRRgynsG5DlZtVX4+mW40Oxw0uxW5F8X8ObOqE/S
-	88s7woV+2mC6vSma+OplAvfg5i3Rzy88QHUUvq1N7c/q6YlTQ+8OQixhOn9DNr0W2T9oxm3UjPr
-	ImYm7uXM0KAs6tG7MYNSRW6FHpqzVPl+dIRRcNsr2dFgOPJlfoJqDEj58QnxHj5loWbbcE2jPTV
-	mdMqGrbgwp+KWKcsypeyd+56Mav9lWAjJjJvcgnPck6hxJ4dUR+PeT/WfmXIASjhF3FdJSIkLg=
-	=
-X-Received: by 2002:a05:6a00:35c8:b0:857:72ba:ff0d with SMTP id d2e1a72fcca58-86f85ce3d75mr5244316b3a.21.1789382727833;
-        Mon, 14 Sep 2026 03:45:27 -0700 (PDT)
+        bh=4PlFr1YMTYrZSbX9/Z8mAxWcnKUTDDEqGR2N9kN/Q2g=;
+        b=r4UBdCwYQ6QkHNnOiY7qizEBzpx+anE3j86p7+oss7wER9uuzRR8mcll4/JQ2tSLTd
+         JlHSCk5H/V+9cK6K8HaCpe+10hN9b7IFH8GnNadEvzd/J5ykh97PMJ/9kMJ30r/q53EF
+         uyRmxA30LgGYU+jobL804lKSqL2Q3Cwl1SKPGfk1dWZiuz2zfwzUc5jjBkb4rJR+FG2a
+         BiH9sa3kJBd7ACFxore/R2dx5dqSYWkCjPC+YI5iSc0Cpvgl2qCdC1JYsDoDTaUHwCp7
+         b7cOHrvTKmfN/50wm5hwAZPd2+UBqcB16U3hQbasAgRHi6j75E0RUeNpRarY/3Iydw5o
+         FCkg==
+X-Forwarded-Encrypted: i=1; AKwUvBw+60D6+GSCmeHDVa6hicw4V6Pb9dzpTu+qXXgjt1xZ8hLq0+c6EDkpFn53ei+MH2vAVYHCmEGDJA==@kvack.org
+X-Gm-Message-State: AFuF++l79VJ54MF3TqHmwy+/rTDZTdBle21rj+U5UBih+13XUYbW/G5q
+	8rT0gOcGph0sjHBwAGJO/TVOBVFqxUs67utRbkUCCGAxkMO877ojk7lJ
+X-Gm-Gg: AYBFou38wFafcqE1XgofcSKnn7kV1NA+EMjb25/qSo1xl4XcvL9KL5n/NLc2b7tu/Dd
+	HhtD12AIYsbdZQn1RIvG2KTI+7lNvOBb/fuDXIwAUQFUgBMXV31Vs1/q0NMqjY50eJ1ur9+co1k
+	p5U1kio3OqPnmIfK1uROrucuU/GW4YxEw/+hb3c9S7ztt6R9+oTPekLHnSYo+DEb/8dAe0gDhSa
+	KubnDq5fmhXs3Gq7T8TCgojI1sOZus/K0MeXVnwoEfMJouKuA5+XoztGs+POAI/e0X8j7F5fOwn
+	EmW/kVXm9fW1KNbuVTWDhM3ffR11QioXmFuje1qR2oknWR/CY81BlLIhO6snyrOZ5fRJzqUYPqq
+	sM6yqLOoCH+zmuHHcm/lCoxoH9C9p267SuKf16K42OS+4mhB1Wk9O3T/lEGKK2sXwZtmjUlcdg+
+	tCOpbpMBkE5jDoBiorFFWvEZmarx/Dwt/SShQtoJo9Y1uB2dUcwJxO6L43GqrwifAuf3ywvQUjz
+	fd8Pt9fxes6ZwermH2IVSnTB2zfe7qztft/IeCSYHcmeIyyC+qpT8fKMt8Ea4KN6ChKMyC0q3EJ
+	aujrbdY9ipmv8hkEfp9wprrArEKuJ26MzO3qJbtnj8muW2CW34QFMQoHovVQ8Mo=
+X-Received: by 2002:a05:6a00:440d:b0:868:eabf:e07a with SMTP id d2e1a72fcca58-86f83b3e869mr5077903b3a.10.1789382731514;
+        Mon, 14 Sep 2026 03:45:31 -0700 (PDT)
 Received: from spider.bream-herring.ts.net ([103.252.203.158])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-86b28fd0e0dsm4234386b3a.26.2026.09.14.03.45.12
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-86b28fd0e0dsm4234386b3a.26.2026.09.14.03.45.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2026 03:45:27 -0700 (PDT)
+        Mon, 14 Sep 2026 03:45:31 -0700 (PDT)
 From: Matthias Goergens <matthias.goergens@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
+To: Shuah Khan <shuah@kernel.org>
 Cc: Matthias Goergens <matthias.goergens@gmail.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <shuah@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Dmitry Baryshkov <lumag@kernel.org>,
-	Abhinav Kumar <abhinav.kumar@linux.dev>,
-	Jessica Zhang <jesszhan0024@gmail.com>,
-	Sean Paul <sean@poorly.run>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Steven Price <steven.price@arm.com>,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Christian Koenig <christian.koenig@amd.com>,
-	Huang Rui <ray.huang@amd.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Minchan Kim <minchan@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
 	Chris Li <chrisl@kernel.org>,
 	Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
 	Johannes Weiner <hannes@cmpxchg.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	linux-mm@kvack.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	intel-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	linux-arm-msm@vger.kernel.org,
-	freedreno@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org,
-	cgroups@vger.kernel.org,
-	linux-api@vger.kernel.org,
-	linux-man@vger.kernel.org,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Pavel Machek <pavel@kernel.org>,
-	linux-pm@vger.kernel.org,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
 	Yosry Ahmed <yosry@kernel.org>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Alejandro Colomar <alx@kernel.org>,
-	Karel Zak <kzak@redhat.com>,
-	util-linux@vger.kernel.org
-Subject: [RFC PATCH 1/3] mm: restrict offload-only swap to proactive reclaim
-Date: Mon, 14 Sep 2026 18:44:59 +0800
-Message-ID: <20260914104501.3960616-2-matthias.goergens@gmail.com>
+	Nhat Pham <nphamcs@gmail.com>,
+	linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [RFC PATCH 2/3] selftests: zram: cover offload-only swap policy
+Date: Mon, 14 Sep 2026 18:45:00 +0800
+Message-ID: <20260914104501.3960616-3-matthias.goergens@gmail.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260914104501.3960616-1-matthias.goergens@gmail.com>
 References: <20260914104501.3960616-1-matthias.goergens@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 5F0B7140011
-X-Stat-Signature: kz866jm9xgnwy5kmm1jpsn5i4qyyzu4a
-X-HE-Tag: 1789382729-442497
-X-HE-Meta: U2FsdGVkX185eFloFaOOqLZiITfvxNyFA6Zv8xR0si3JmZQmJNwwkMne+JUDERSoyWvxwpEHJnfAYllLoml7cK96T2r6Ea0HQ7g1rICmpGiT2T66tNG21fxkSEbMIi2M+4bjh6UywjMry+Hpo0xF4QwI6cK6rLy72hBnznAqNsjbxxW7MY7EPxj48mF0auevSrB7/Az1aFjvBQxQu2mu6BGzfpDo0YGwmsrXyWdVFnIOFmQDlpLH6XdtN67V47ee5FkBpZR3CVCOpFBp7Tw+/Oc6Krqg/KsVScU1pjqOrO91JfgEQSbIWy/bqF0vfni7PZD28kw4cnGsAKsiNAxq5YMxrF+6uBjPZ9wNb1PAMeVSwQGwj1dub5kwfauw2CkuiFwnULyEwiCen+hLUObR7xyMJCAHgVfmpgNRMfI/k10055ztc1Nv0Wd3Gw1r135erYGuIaa40xuNc84zpQi3c5oBL7CcCkxwvcYVl4WWVTOo7CrotWpov7Q5T73OX+3ZVcNyFUBJHxLviDFHj7xq2or6yBgDvyveTR8R277liIwRLGzlAqiafo8odW8yE/+j9tWqhLxovz/48WAsLtSeGQl8ZDXl2p2zswvLEkB8cg28UuOk0JG1QzzaEp7MH39kiqTtjXqzdcW4ncSJhP/7KbMshQt+CcdeHkx0nk9sPEVWyEhaLv04dOj/VymCpKVP3F0akJicCJyg8UiFoUVAqKHsfcjYEZhvocCabMcjmCFI+ovQd4TosUQXMGqh2wjnyr7a0G1CokV4UvOIJsXPL5+KAA6uYqFmm/1kAB1CVnlyeZnKcUrkIBa+TM5tX2AyU8aRk7PU+EgNZq8Mv27oMpa6W46E/RaoSYzyhPXQcmu0qWsCIXnQejwD5J6kq8M1Ivi3pmMKJRHKvALd3MrUqHdKDAJgPNn4IjGXZfgF1Z09AdikAT1osXh8cHi4Yc00vSkl4oXa6VIjTVe9xf2
- 7LkTBlNw
- +vzWfZ10ZapNcyDfoVaHejF5BrGSXXsgK/EzYwrAGDB2MBvIGnkSlkiheJDyya4AnkWH1ZYdxpVO3VHEGOnvRUPEWULV98jLO8tCttzpnbhPsSZD8OFuONJqj/zZ4fabELT213iHf07yeYNI7TrLDlHXoZgoM+3PS3PZVZPewdCHNDr1hWinUJbeeyucZhI0tsiy9Lh5oGPOqj/L9C/x/08bfceNvN058M4nqks9PLBzn16za8g3gQRgDQ21XO15Hdo7yy/ikJUzoWz34mAeAoSQteyn5YA830I1yjSk03ASyYa1Uy+/Y84riuewUZTI/eJBSkLD8My3XRNddW1DN6uoQl7SFXc40VtSlGhDZgzwU/qMFjah0b0ajDwfGriIPC5Zqs4QrF+JPx2TSDgJGihzvD/ynjtc5tP3hIq6+o+5YeBH+uldnUQ3YldrC82/CZuXpXc5XHMOFHt4RaqhXt12y8wvNQLfLNv74VJzppruc/oM=
+X-Stat-Signature: zecq38o1f4yn1zm8mnaiw9okha4zio4h
+X-Rspamd-Queue-Id: D303D1C0004
+X-HE-Tag: 1789382732-747496
+X-HE-Meta: U2FsdGVkX19RVgqcbYapaepMw74R1RCGwUdD5q8TjDBJEWng7wN5l2V0mcn6LEIwX3U8Kn4N79TxOLJddBHG29yM6jDeEh2wxUyLHmwl2W3Svd8UIpTkea2lazYHrk+IwYkfaSC2okRxDymQq7BgijJtSLwuJp84lr2zxW09nkBnASecbLQI24nHXM0MDuQ9T6QM9lamFJo5wDgKMJZ8BsvweVrkqC5Qj5k/7VdMAkdKsPLLm4whHw42x/Unsd36ARHGDbjVYDpSSOq1Hk+G02d6m+23uPViaKcRyaWefUspWMoKfZlgQGbLkPGyKrZj7abuCH80xvwcDbOXxJoAnpEBynQAzMljcMFZtqu0iFYW0F9yZDHRFL5B48Aj7oYo02ZRakBoFPJoqTw6mFLGMgKdxLrp/MQAVgZYX2HFPdJ4ITx5ZnSqOLoOhJFWq10g023ZDjBOaoyohk5r+Y3KbsXrSNHILkASPJN+XZN4zVB0RGTtZBCtejZHuAMw0QtRZgF7IKtAlQhItcpABVHPQctApeketzUauUFtB1WEvqo4GEmdSS5g3teDdvIv5GhQE49S2rjvvC2qlOavY6PcKz5pHwtqlIdvjz7KDg/L4A0lxCMe3tm0ZrPLFnU1N/IdqLOwpuP8wnDNA79ozux8S/bjH993fvpDN1hrC1e2EryIciE3aLS8EtZcRI3dPDoC0unwctVs8r5IO3PS2gdWrHJgEcmKgQ/cfhTGoS74xZD0Nn+cAUHwzPEUSvHFoQMtNUlWBbAxunaYWaT2zuZjeMWkTD/pCxlvZhzs4cyvCq7bRhW65zbpxcAoaM0xSZoww2IvraqGaMKTtMmT4rjmSsMa/bkVO5XYwmAqjcem8Yp3taDRNPYRfYKW1brYW5Wglk4vMwltH6IOAj+uxthPPidH8XXJC433htWAKesAEViRu0dRbR2sJr6Cb3vCFzPqXH/ezFAsOyMgxHy42XZ
+ vqcCSlxg
+ Sa9A+ZDtxf6dEkjkNC7JZP5HSYUlprDeWFV3gYblYJ+LVtnYgbFrhOVY/OJZd++/KQjfrTYP1CKiCrSIdb0s2458BFFfG2zLvAAJ3WJIziUubdFJRKuSYhVrF+rGK5InPALs8VVTbZ8PO6UZTVjTErzCp18zWtpL6bcP+UmjiCYysetgdCz/ZaiVIIFac98tBP7iL23WkrZA8RmYIc38u5bAIw7HnhgDghbxgBjm0i42MJ4r27ix7ugTWUYPiRmV8SEnVDJUzNb/pM63GWZpUIVDiLny+hZQrYVb4PvJMYyM/ECjNXLQEBHvvsIYy0YZ8QPkh75OMtve8BqC4QjKjZNIw3YrdVbkxkH1jPAAsZgoJy/60jIHj38FbkUNurbgSe/Re1ssqDudXRkAJate+SrOPLB1cpHutID1l3n16rsBGeEA+dysZM4M4PWYT9PJ+SlgVj48q8croLPmk0dW7TDTnKu8QnYgKEwG1At+wnevu1T4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -191,899 +129,888 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Some swap backends need memory to accept writes, making them useful for
-deliberate cold-page offload but unsuitable dependencies for reclaim under
-acute memory pressure.
+Add zram tests for proactive offload, fallback to conventional swap under
+ordinary pressure, zswap bypass, discard policy and data recovery after
+swapoff. Pin reclaim transitions to one CPU to exercise cached-cluster
+eligibility changes, and use conventional swap as a positive zswap control.
+Check that discard-once takes precedence when both discard modes are set.
 
-Add SWAP_FLAG_OFFLOAD_ONLY to reserve a swap area for explicitly admitted
-reclaim. Cgroup v2 memory.reclaim, per-node reclaim and manual MGLRU
-eviction establish admission; ordinary reclaim cannot initiate new,
-non-zero backend writes to the area.
+Check that offload-only capacity preserves file workingset activation
+with a calibrated refault workload. Wait for memory.stat to reflect the
+initial footprint before reclaim, and distinguish insufficient calibration
+from helper failures.
 
-Keep admission separate from scan_control.proactive so future proactive
-callers do not inherit it accidentally. The MGLRU debugfs interface is
-not stable ABI.
-
-Filter swap allocation and reclaim capacity by eligibility, including
-cached clusters and recovery of unused conventional swap-cache entries.
-Preserve physical free-space reporting and workingset accounting.
-
-Allocation filtering alone is insufficient: a partially swapped-in large
-folio can retain its swap entry and reach writeout without allocating a
-new slot. Refuse such ordinary-reclaim writes by redirtying and activating
-the folio. Preserve architecture metadata before refusal, since sibling
-faults can restore swap-indexed tags into the resident folio.
-
-Bypass zswap and reject asynchronous page-cluster discard so later writes
-cannot escape the admitting context. Exclude marked areas from hibernation
-selection. Reads, swapoff and queued or in-flight I/O remain unaffected.
-
-Refusing retained-entry writes can cause repeated reclaim or OOM; moving
-these entries to conventional swap would require swap-entry migration.
+Skip unsupported kernels and cgroup setups. Restore swap devices,
+controller delegation and modified zswap/MGLRU settings on exit. These
+tests require an exclusive environment because swap priorities and some
+of the settings are global.
 
 Signed-off-by: Matthias Goergens <matthias.goergens@gmail.com>
 ---
- Documentation/mm/swap.rst                     |  87 ++++++++++++
- drivers/gpu/drm/i915/gem/i915_gem_shrinker.c  |   2 +-
- .../gpu/drm/i915/gem/selftests/huge_pages.c   |   6 +-
- drivers/gpu/drm/msm/msm_gem_shrinker.c        |   2 +-
- drivers/gpu/drm/panthor/panthor_gem.c         |   2 +-
- drivers/gpu/drm/ttm/ttm_backup.c              |   2 +-
- drivers/gpu/drm/xe/tests/xe_bo.c              |   2 +-
- include/linux/swap.h                          |  29 +++-
- include/linux/vm_event_item.h                 |   1 +
- mm/memcontrol.c                               |  20 ++-
- mm/page_io.c                                  |  24 +++-
- mm/swapfile.c                                 | 126 ++++++++++++++++--
- mm/vmscan.c                                   |  31 +++--
- mm/vmstat.c                                   |   1 +
- 14 files changed, 296 insertions(+), 39 deletions(-)
+ tools/testing/selftests/zram/.gitignore       |   2 +
+ tools/testing/selftests/zram/Makefile         |   4 +-
+ tools/testing/selftests/zram/config           |   6 +-
+ tools/testing/selftests/zram/swap_offload.c   | 222 ++++++++++++++++++
+ .../selftests/zram/workingset_offload.c       | 206 ++++++++++++++++
+ tools/testing/selftests/zram/zram03.sh        | 166 +++++++++++++
+ tools/testing/selftests/zram/zram04.sh        | 149 ++++++++++++
+ tools/testing/selftests/zram/zram_lib.sh      |  28 +++
+ 8 files changed, 780 insertions(+), 3 deletions(-)
+ create mode 100644 tools/testing/selftests/zram/swap_offload.c
+ create mode 100644 tools/testing/selftests/zram/workingset_offload.c
+ create mode 100755 tools/testing/selftests/zram/zram03.sh
+ create mode 100755 tools/testing/selftests/zram/zram04.sh
 
-diff --git a/Documentation/mm/swap.rst b/Documentation/mm/swap.rst
-index 78819bd4d745..7d5bbd65e616 100644
---- a/Documentation/mm/swap.rst
-+++ b/Documentation/mm/swap.rst
-@@ -3,3 +3,90 @@
- ====
- Swap
- ====
-+
-+Offload-only swap areas
-+-----------------------
-+
-+``SWAP_FLAG_OFFLOAD_ONLY`` marks a swap area as a destination for explicit
-+userspace proactive reclaim.  The stable qualifying interfaces are cgroup v2
-+``memory.reclaim`` and ``/sys/devices/system/node/nodeX/reclaim``.  The swap
-+allocator excludes such an area from kswapd, direct reclaim, and other
-+pressure-driven swap allocation.  Normal swap priority ordering still applies
-+among the areas eligible for the current reclaim context.
-+
-+The MGLRU debugfs eviction interface currently establishes the same internal
-+proactive-reclaim provenance and can therefore use an offload-only area.
-+Debugfs is not a stable userspace ABI, however, so that behaviour is not part
-+of this interface's permanent contract.
-+
-+This permits a system to combine a small conventional swap area, which is
-+engineered for forward progress in emergency reclaim, with a larger or more
-+complex area used for ordinary cold-page offload.  For example, the latter may
-+be RAM-compressed or may use a filesystem with compression, checksums, or
-+redundancy.  Making every such write path safe in direct reclaim can require
-+backend-specific reserves, preallocation, non-blocking allocation, and
-+recursion rules.  Excluding new pressure-reclaim writes can reduce that
-+requirement and its complexity.
-+
-+For a RAM-compressed area such as zram, unused logical slots also do not imply
-+that enough physical memory remains to store their future contents.  Static
-+swap priority cannot express that distinction or provide late fallback after a
-+selected area's write fails.
-+
-+The policy is attached to an activated swap area, not to its underlying
-+physical storage.  A raw swap partition and a filesystem swapfile on the same
-+device are separate areas and may use different policies.  The kernel does not
-+infer this policy from the block driver, filesystem, or swap priority.
-+
-+This is a reclaim-provenance policy, not a measurement of current memory
-+headroom.  Userspace should only request proactive offload while its own
-+watermark or PSI policy considers memory pressure low.
-+
-+DAMON reclaim and ``MADV_PAGEOUT`` do not currently establish the proactive
-+reclaim context, so they cannot allocate slots from an offload-only area.
-+Offload-only areas are also ineligible for hibernation image allocation.
-+
-+Offload-only areas bypass zswap stores.  Zswap writeback may run after the
-+proactive context which selected the slot has ended, so admitting the folio to
-+zswap would otherwise defer the backend write beyond that context.  The
-+hierarchical cgroup v2 ``memory.zswap.writeback=0`` policy remains
-+authoritative: when zswap is enabled, it also refuses direct proactive writes
-+to an offload-only area.  Marking an area offload-only does not override a
-+cgroup policy which disables all swapping attempts to devices.
-+
-+The flag controls both allocation of new swap slots and newly initiated
-+non-zero backend writes.  A folio can retain its swap entry after swapin.  If
-+ordinary reclaim later tries to rewrite such an offload-only entry, the VM
-+redirties and activates the folio instead; proactive reclaim may retry the
-+write.  Zero-filled folios may still update the in-memory swap zeromap without
-+backend I/O.
-+
-+The flag does not prevent reads, swapoff, or writes which are already queued or
-+in flight.  It therefore does not by itself provide a forward progress
-+guarantee for an I/O path which allocates memory: earlier writes must still be
-+able to complete, and reads must remain reclaim-safe.  Repeatedly refusing
-+retained-entry writes can also reduce reclaim efficiency and lead to OOM while
-+the dirty folios remain resident.
-+
-+Page-cluster discard is incompatible with an offload-only area because its
-+work item can run after the context which freed the entries has ended.  Swapon
-+therefore rejects a resolved page-cluster discard policy combined with
-+``SWAP_FLAG_OFFLOAD_ONLY``.  Swapon-time discard is permitted because it
-+completes synchronously during activation.  The existing discard precedence
-+still applies: requesting both discard-once and discard-pages selects
-+discard-once.  Discard requests which the swap area does not support remain
-+ignored.
-+
-+Architecture-specific swap metadata preparation still runs before a retained
-+write is refused, so that metadata remains coherent with the dirty resident
-+folio.  This policy controls swap-backend I/O; it does not promise that core VM
-+or architecture preparation performs no allocation.
-+
-+``/proc/vmstat`` reports ``swpout_offload_refused`` in base pages.  The counter
-+advances when ordinary reclaim refuses a newly initiated write through a
-+retained offload-only entry.  It can reveal repeated activation of such folios,
-+but it is not a count of skipped areas during new-slot allocation.
-+
-+An offload-only area should therefore be configured with a reclaim-safe swap
-+area as fallback.  If no eligible swap space remains, swap allocation fails
-+and the existing reclaim and OOM policy applies.
-diff --git a/drivers/gpu/drm/i915/gem/i915_gem_shrinker.c b/drivers/gpu/drm/i915/gem/i915_gem_shrinker.c
-index e0d1f369a163..b58e61f15ab1 100644
---- a/drivers/gpu/drm/i915/gem/i915_gem_shrinker.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_shrinker.c
-@@ -21,7 +21,7 @@
+diff --git a/tools/testing/selftests/zram/.gitignore b/tools/testing/selftests/zram/.gitignore
+index 088cd9bad87a..74b0217c60f0 100644
+--- a/tools/testing/selftests/zram/.gitignore
++++ b/tools/testing/selftests/zram/.gitignore
+@@ -1,2 +1,4 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ err.log
++swap_offload
++workingset_offload
+diff --git a/tools/testing/selftests/zram/Makefile b/tools/testing/selftests/zram/Makefile
+index 7f78eb1b59cb..781d10a20e56 100644
+--- a/tools/testing/selftests/zram/Makefile
++++ b/tools/testing/selftests/zram/Makefile
+@@ -1,9 +1,9 @@
+ # SPDX-License-Identifier: GPL-2.0
+ all:
  
- static bool swap_available(void)
- {
--	return get_nr_swap_pages() > 0;
-+	return get_nr_swap_pages_eligible() > 0;
- }
+-TEST_PROGS := zram.sh
++TEST_GEN_FILES := swap_offload workingset_offload
++TEST_PROGS := zram.sh zram03.sh zram04.sh
+ TEST_FILES := zram01.sh zram02.sh zram_lib.sh
+ EXTRA_CLEAN := err.log
  
- static bool can_release_pages(struct drm_i915_gem_object *obj)
-diff --git a/drivers/gpu/drm/i915/gem/selftests/huge_pages.c b/drivers/gpu/drm/i915/gem/selftests/huge_pages.c
-index 44718e728291..73b62b065510 100644
---- a/drivers/gpu/drm/i915/gem/selftests/huge_pages.c
-+++ b/drivers/gpu/drm/i915/gem/selftests/huge_pages.c
-@@ -1895,8 +1895,8 @@ static int igt_shrink_thp(void *arg)
- 	i915_gem_context_unlock_engines(ctx);
- 	/*
- 	 * Nuke everything *before* we unpin the pages so we can be reasonably
--	 * sure that when later checking get_nr_swap_pages() that some random
--	 * leftover object doesn't steal the remaining swap space.
-+	 * sure that when later checking get_nr_swap_pages_eligible() that some
-+	 * random leftover object doesn't steal the remaining swap space.
- 	 */
- 	i915_gem_shrink(NULL, i915, -1UL, NULL,
- 			I915_SHRINK_BOUND |
-@@ -1910,7 +1910,7 @@ static int igt_shrink_thp(void *arg)
- 	 * Now that the pages are *unpinned* shrinking should invoke
- 	 * shmem to truncate our pages, if we have available swap.
- 	 */
--	should_swap = get_nr_swap_pages() > 0;
-+	should_swap = get_nr_swap_pages_eligible() > 0;
- 	i915_gem_shrink(NULL, i915, -1UL, NULL,
- 			I915_SHRINK_BOUND |
- 			I915_SHRINK_UNBOUND |
-diff --git a/drivers/gpu/drm/msm/msm_gem_shrinker.c b/drivers/gpu/drm/msm/msm_gem_shrinker.c
-index 9d2788f79ace..da6a66b747b0 100644
---- a/drivers/gpu/drm/msm/msm_gem_shrinker.c
-+++ b/drivers/gpu/drm/msm/msm_gem_shrinker.c
-@@ -21,7 +21,7 @@ module_param(enable_eviction, bool, 0600);
- 
- static bool can_swap(void)
- {
--	return enable_eviction && get_nr_swap_pages() > 0;
-+	return enable_eviction && get_nr_swap_pages_eligible() > 0;
- }
- 
- static bool can_block(struct shrink_control *sc)
-diff --git a/drivers/gpu/drm/panthor/panthor_gem.c b/drivers/gpu/drm/panthor/panthor_gem.c
-index 72908be5e144..23488f417cf7 100644
---- a/drivers/gpu/drm/panthor/panthor_gem.c
-+++ b/drivers/gpu/drm/panthor/panthor_gem.c
-@@ -1371,7 +1371,7 @@ panthor_dummy_bo_create(struct panthor_device *ptdev)
- 
- static bool can_swap(void)
- {
--	return get_nr_swap_pages() > 0;
-+	return get_nr_swap_pages_eligible() > 0;
- }
- 
- static bool can_block(struct shrink_control *sc)
-diff --git a/drivers/gpu/drm/ttm/ttm_backup.c b/drivers/gpu/drm/ttm/ttm_backup.c
-index 0c2d53a13b2a..bf9d41bdf652 100644
---- a/drivers/gpu/drm/ttm/ttm_backup.c
-+++ b/drivers/gpu/drm/ttm/ttm_backup.c
-@@ -206,7 +206,7 @@ u64 ttm_backup_bytes_avail(void)
- 	 * number also depends on shmem actually swapping out backed-up
- 	 * shmem objects without too much buffering.
- 	 */
--	return (u64)get_nr_swap_pages() << PAGE_SHIFT;
-+	return (u64)get_nr_swap_pages_eligible() << PAGE_SHIFT;
- }
- EXPORT_SYMBOL_GPL(ttm_backup_bytes_avail);
- 
-diff --git a/drivers/gpu/drm/xe/tests/xe_bo.c b/drivers/gpu/drm/xe/tests/xe_bo.c
-index 6a17e13d58cf..14d6bb8e41c9 100644
---- a/drivers/gpu/drm/xe/tests/xe_bo.c
-+++ b/drivers/gpu/drm/xe/tests/xe_bo.c
-@@ -695,7 +695,7 @@ static int shrink_test_run_device(struct xe_device *xe)
- 	}
- 	to_alloc = ram * 2;
- 
--	ram_and_swap = ram + get_nr_swap_pages() * PAGE_SIZE;
-+	ram_and_swap = ram + get_nr_swap_pages_eligible() * PAGE_SIZE;
- 	if (to_alloc > ram_and_swap)
- 		purgeable = to_alloc - ram_and_swap;
- 	purgeable += div64_u64(purgeable, 5);
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index 78974da6810e..75350c450c47 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -21,10 +21,11 @@
- #define SWAP_FLAG_DISCARD	0x10000 /* enable discard for swap */
- #define SWAP_FLAG_DISCARD_ONCE	0x20000 /* discard swap area at swapon-time */
- #define SWAP_FLAG_DISCARD_PAGES 0x40000 /* discard page-clusters after use */
-+#define SWAP_FLAG_OFFLOAD_ONLY  0x80000 /* only use for proactive reclaim */
- 
- #define SWAP_FLAGS_VALID	(SWAP_FLAG_PRIO_MASK | SWAP_FLAG_PREFER | \
- 				 SWAP_FLAG_DISCARD | SWAP_FLAG_DISCARD_ONCE | \
--				 SWAP_FLAG_DISCARD_PAGES)
-+				 SWAP_FLAG_DISCARD_PAGES | SWAP_FLAG_OFFLOAD_ONLY)
- /*
-  * MAX_SWAPFILES defines the maximum number of swaptypes: things which can
-  * be swapped to.  The swap type and the offset into that swap type are
-@@ -140,12 +141,20 @@ union swap_header {
- struct reclaim_state {
- 	/* pages reclaimed outside of LRU-based reclaim */
- 	unsigned long reclaimed;
-+	/* this reclaim context may use offload-only swap */
-+	bool allow_offload_swap;
- #ifdef CONFIG_LRU_GEN
- 	/* per-thread mm walk data */
- 	struct lru_gen_mm_walk *mm_walk;
- #endif
- };
- 
-+static inline bool current_reclaim_allows_offload_swap(void)
-+{
-+	return current->reclaim_state &&
-+	       current->reclaim_state->allow_offload_swap;
-+}
-+
- /*
-  * mm_account_reclaimed_pages(): account reclaimed pages outside of LRU-based
-  * reclaim
-@@ -201,6 +210,7 @@ enum {
- 	SWP_STABLE_WRITES = (1 << 11),	/* no overwrite PG_writeback pages */
- 	SWP_SYNCHRONOUS_IO = (1 << 12),	/* synchronous IO is efficient */
- 	SWP_HIBERNATION = (1 << 13),	/* pinned for hibernation */
-+	SWP_OFFLOAD_ONLY = (1 << 14),	/* proactive-reclaim swap only */
- 					/* add others here before... */
- };
- 
-@@ -389,6 +399,9 @@ static inline long get_nr_swap_pages(void)
- 	return atomic_long_read(&nr_swap_pages);
- }
- 
-+long get_nr_swap_pages_eligible(void);
-+bool folio_swap_full(struct folio *folio);
-+
- extern void si_swapinfo(struct sysinfo *);
- extern int pin_hibernation_swap_type(dev_t device, sector_t offset);
- extern void unpin_hibernation_swap_type(int type);
-@@ -443,10 +456,16 @@ static inline void put_swap_device(struct swap_info_struct *si)
- }
- 
- #define get_nr_swap_pages()			0L
-+#define get_nr_swap_pages_eligible()		0L
- #define total_swap_pages			0L
- #define total_swapcache_pages()			0UL
- #define vm_swap_full()				0
- 
-+static inline bool folio_swap_full(struct folio *folio)
-+{
-+	return false;
-+}
-+
- #define si_swapinfo(val) \
- 	do { (val)->freeswap = (val)->totalswap = 0; } while (0)
- #define free_folio_and_swap_cache(folio) \
-@@ -531,6 +550,7 @@ static inline void mem_cgroup_uncharge_swap(unsigned short id, unsigned int nr_p
- 
- long mem_cgroup_get_folio_swap_margin(struct folio *folio);
- extern long mem_cgroup_get_nr_swap_pages(struct mem_cgroup *memcg);
-+long mem_cgroup_get_nr_swap_pages_eligible(struct mem_cgroup *memcg);
- extern bool mem_cgroup_swap_full(struct folio *folio);
- #else
- static inline int mem_cgroup_try_charge_swap(struct folio *folio)
-@@ -553,9 +573,14 @@ static inline long mem_cgroup_get_nr_swap_pages(struct mem_cgroup *memcg)
- 	return get_nr_swap_pages();
- }
- 
-+static inline long mem_cgroup_get_nr_swap_pages_eligible(struct mem_cgroup *memcg)
-+{
-+	return get_nr_swap_pages_eligible();
-+}
-+
- static inline bool mem_cgroup_swap_full(struct folio *folio)
- {
--	return vm_swap_full();
-+	return folio_swap_full(folio);
- }
- #endif
- 
-diff --git a/include/linux/vm_event_item.h b/include/linux/vm_event_item.h
-index 2628ccda076a..fc8458b314a5 100644
---- a/include/linux/vm_event_item.h
-+++ b/include/linux/vm_event_item.h
-@@ -32,6 +32,7 @@
- 	HIGHMEM_ZONE(xx) xx##_MOVABLE, DEVICE_ZONE(xx)
- 
- enum vm_event_item { PGPGIN, PGPGOUT, PSWPIN, PSWPOUT,
-+		SWPOUT_OFFLOAD_REFUSED,
- 		FOR_ALL_ZONES(PGALLOC)
- 		FOR_ALL_ZONES(ALLOCSTALL)
- 		FOR_ALL_ZONES(PGSCAN_SKIP)
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 1460cba53588..1412084d2f43 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -6002,16 +6002,28 @@ void __mem_cgroup_uncharge_swap(unsigned short id, unsigned int nr_pages)
- 	rcu_read_unlock();
- }
- 
--long mem_cgroup_get_nr_swap_pages(struct mem_cgroup *memcg)
-+static long
-+mem_cgroup_get_nr_swap_pages_with_limit(struct mem_cgroup *memcg,
-+					long nr_swap_pages)
- {
--	long nr_swap_pages = get_nr_swap_pages();
+ include ../lib.mk
 -
- 	if (!mem_cgroup_disabled() && !do_memsw_account())
- 		nr_swap_pages = min(nr_swap_pages, page_counter_margin(&memcg->swap));
- 
- 	return nr_swap_pages;
- }
- 
-+long mem_cgroup_get_nr_swap_pages(struct mem_cgroup *memcg)
-+{
-+	return mem_cgroup_get_nr_swap_pages_with_limit(memcg,
-+			get_nr_swap_pages());
-+}
+diff --git a/tools/testing/selftests/zram/config b/tools/testing/selftests/zram/config
+index e0cc47e2c7e2..c59b8c3806a5 100644
+--- a/tools/testing/selftests/zram/config
++++ b/tools/testing/selftests/zram/config
+@@ -1,2 +1,6 @@
++CONFIG_CGROUPS=y
++CONFIG_MEMCG=y
++CONFIG_SWAP=y
+ CONFIG_ZSMALLOC=y
+-CONFIG_ZRAM=m
++CONFIG_ZRAM=y
++CONFIG_ZSWAP=y
+diff --git a/tools/testing/selftests/zram/swap_offload.c b/tools/testing/selftests/zram/swap_offload.c
+new file mode 100644
+index 000000000000..b2b94cd6ee3a
+--- /dev/null
++++ b/tools/testing/selftests/zram/swap_offload.c
+@@ -0,0 +1,222 @@
++// SPDX-License-Identifier: GPL-2.0
++#define _GNU_SOURCE
 +
-+long mem_cgroup_get_nr_swap_pages_eligible(struct mem_cgroup *memcg)
-+{
-+	return mem_cgroup_get_nr_swap_pages_with_limit(memcg,
-+			get_nr_swap_pages_eligible());
-+}
++#include <errno.h>
++#include <fcntl.h>
++#include <sched.h>
++#include <signal.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <sys/mman.h>
++#include <sys/syscall.h>
++#include <unistd.h>
 +
- /**
-  * mem_cgroup_get_folio_swap_margin - get a folio's memcg swap margin
-  * @folio: folio whose memcg margin is queried
-@@ -6042,7 +6054,7 @@ bool mem_cgroup_swap_full(struct folio *folio)
- 
- 	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
- 
--	if (vm_swap_full())
-+	if (folio_swap_full(folio))
- 		return true;
- 	if (do_memsw_account() || !folio_memcg_charged(folio))
- 		return ret;
-diff --git a/mm/page_io.c b/mm/page_io.c
-index 1da4ff484f09..1b281a1d6df0 100644
---- a/mm/page_io.c
-+++ b/mm/page_io.c
-@@ -203,6 +203,7 @@ static void swap_zeromap_folio_clear(struct folio *folio)
-  */
- int swap_writeout(struct swap_io_ctx *ctx, struct folio *folio)
- {
-+	struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
- 	int ret = 0;
- 
- 	if (folio_free_swap(folio))
-@@ -210,7 +211,9 @@ int swap_writeout(struct swap_io_ctx *ctx, struct folio *folio)
- 
- 	/*
- 	 * Arch code may have to preserve more data than just the folio
--	 * contents, e.g. memory tags.
-+	 * contents, e.g. memory tags.  Do this before refusing a retained
-+	 * offload-only entry below: a later sibling swap-PTE fault can restore
-+	 * swap-indexed metadata into this resident folio.
- 	 */
- 	ret = arch_prepare_to_swap(folio);
- 	if (ret) {
-@@ -228,6 +231,18 @@ int swap_writeout(struct swap_io_ctx *ctx, struct folio *folio)
- 		goto out_unlock;
- 	}
- 
-+	/*
-+	 * A folio can retain an existing swap entry after swapin.  Do not let
-+	 * ordinary reclaim use an offload-only entry through that path.
-+	 */
-+	if ((READ_ONCE(sis->flags) & SWP_OFFLOAD_ONLY) &&
-+	    !current_reclaim_allows_offload_swap()) {
-+		count_vm_events(SWPOUT_OFFLOAD_REFUSED,
-+				folio_nr_pages(folio));
-+		folio_mark_dirty(folio);
-+		return AOP_WRITEPAGE_ACTIVATE;
++#define SWAP_FLAG_PREFER	0x8000
++#define SWAP_FLAG_DISCARD	0x10000
++#define SWAP_FLAG_DISCARD_ONCE	0x20000
++#define SWAP_FLAG_DISCARD_PAGES	0x40000
++#define SWAP_FLAG_OFFLOAD_ONLY	0x80000
++
++static int activate(const char *path, int priority, int discard_flags)
++{
++	int flags = SWAP_FLAG_PREFER | SWAP_FLAG_OFFLOAD_ONLY |
++		priority | discard_flags;
++
++	if (syscall(SYS_swapon, path, flags)) {
++		perror("swapon");
++		return 1;
 +	}
 +
- 	/*
- 	 * Clear bits this folio occupies in the zeromap to prevent zero data
- 	 * being read in from any previous zero writes that occupied the same
-@@ -235,7 +250,12 @@ int swap_writeout(struct swap_io_ctx *ctx, struct folio *folio)
- 	 */
- 	swap_zeromap_folio_clear(folio);
- 
--	if (zswap_store(folio)) {
-+	/*
-+	 * Zswap writeback can happen much later from pressure reclaim or its
-+	 * shrinker workqueue.  Do not let it defer an offload-only backend write
-+	 * beyond the proactive reclaim context which admitted the swap slot.
-+	 */
-+	if (!(READ_ONCE(sis->flags) & SWP_OFFLOAD_ONLY) && zswap_store(folio)) {
- 		count_mthp_stat(folio_order(folio), MTHP_STAT_ZSWPOUT);
- 		goto out_unlock;
- 	}
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 280dd906eb18..256617059f30 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -65,13 +65,17 @@ static void move_cluster(struct swap_info_struct *si,
-  */
- static DEFINE_SPINLOCK(swap_lock);
- static unsigned int nr_swapfiles;
--atomic_long_t nr_swap_pages;
- /*
-  * Some modules use swappable objects and may try to swap them out under
-  * memory pressure (via the shrinker). Before doing so, they may wish to
-  * check to see if any swap space is available.
-+ *
-+ * This remains the raw free-space counter for accounting users. Reclaim
-+ * decisions subtract nr_swap_pages_offload_only below when necessary.
-  */
-+atomic_long_t nr_swap_pages;
- EXPORT_SYMBOL_GPL(nr_swap_pages);
-+static atomic_long_t nr_swap_pages_offload_only;
- /* protected with swap_lock. reading in vm_swap_full() doesn't need lock */
- long total_swap_pages;
- #define DEF_SWAP_PRIO  -1
-@@ -120,6 +124,7 @@ atomic_t nr_rotate_swap = ATOMIC_INIT(0);
- struct percpu_swap_cluster {
- 	struct swap_info_struct *si[SWAP_NR_ORDERS];
- 	unsigned long offset[SWAP_NR_ORDERS];
-+	bool allow_offload_swap[SWAP_NR_ORDERS];
- 	local_lock_t lock;
- };
- 
-@@ -163,6 +168,31 @@ static long swap_usage_in_pages(struct swap_info_struct *si)
- 	return atomic_long_read(&si->inuse_pages) & SWAP_USAGE_COUNTER_MASK;
- }
- 
-+static bool swap_area_needs_reclaim(struct swap_info_struct *si)
-+{
-+	if (vm_swap_full())
-+		return true;
-+
-+	/*
-+	 * Free offload-only slots must not keep a full conventional area
-+	 * pinned in swapcache.  Recover that area's unused cache entries
-+	 * even when the raw pool is not full.  This is independent of the
-+	 * current task: proactive reclaim can fill the conventional area too.
-+	 */
-+	return !(READ_ONCE(si->flags) & SWP_OFFLOAD_ONLY) &&
-+		atomic_long_read(&nr_swap_pages_offload_only) > 0 &&
-+		swap_usage_in_pages(si) == si->pages;
++	return 0;
 +}
 +
-+/* The caller must hold the lock on a folio in swapcache. */
-+bool folio_swap_full(struct folio *folio)
++static int reject_page_discard(const char *path, int priority)
 +{
-+	VM_WARN_ON_FOLIO(!folio_test_locked(folio), folio);
-+	VM_WARN_ON_FOLIO(!folio_test_swapcache(folio), folio);
++	int flags = SWAP_FLAG_PREFER | SWAP_FLAG_OFFLOAD_ONLY |
++		SWAP_FLAG_DISCARD | SWAP_FLAG_DISCARD_PAGES | priority;
++	int ret;
 +
-+	return swap_area_needs_reclaim(__swap_entry_to_info(folio->swap));
-+}
-+
- /* Reclaim the swap entry anyway if possible */
- #define TTRS_ANYWAY		0x1
- /*
-@@ -903,7 +933,7 @@ static bool cluster_scan_range(struct swap_info_struct *si,
- 		if (swp_tb_is_null(swp_tb))
- 			continue;
- 		if (swp_tb_is_folio(swp_tb) && !__swp_tb_get_count(swp_tb)) {
--			if (!vm_swap_full())
-+			if (!swap_area_needs_reclaim(si))
- 				return false;
- 			*need_reclaim = true;
- 			continue;
-@@ -1014,6 +1044,8 @@ static unsigned int alloc_swap_scan_cluster(struct swap_info_struct *si,
- 	if (si->flags & SWP_SOLIDSTATE) {
- 		this_cpu_write(percpu_swap_cluster.offset[order], next);
- 		this_cpu_write(percpu_swap_cluster.si[order], si);
-+		this_cpu_write(percpu_swap_cluster.allow_offload_swap[order],
-+			       current_reclaim_allows_offload_swap());
- 	} else {
- 		si->global_cluster->next[order] = next;
- 	}
-@@ -1161,7 +1193,7 @@ static unsigned long cluster_alloc_swap_entry(struct swap_info_struct *si,
- 	}
- 
- 	/* Try reclaim full clusters if free and nonfull lists are drained */
--	if (vm_swap_full())
-+	if (swap_area_needs_reclaim(si))
- 		swap_reclaim_full_clusters(si, false);
- 
- 	if (order < PMD_ORDER) {
-@@ -1315,9 +1347,11 @@ static void swap_range_alloc(struct swap_info_struct *si,
- 			     unsigned int nr_entries)
- {
- 	if (swap_usage_add(si, nr_entries)) {
--		if (vm_swap_full())
-+		if (swap_area_needs_reclaim(si))
- 			schedule_work(&si->reclaim_work);
- 	}
-+	if (si->flags & SWP_OFFLOAD_ONLY)
-+		atomic_long_sub(nr_entries, &nr_swap_pages_offload_only);
- 	atomic_long_sub(nr_entries, &nr_swap_pages);
- }
- 
-@@ -1346,6 +1380,8 @@ static void swap_range_free(struct swap_info_struct *si, unsigned long offset,
- 	 * only after the above cleanups are done.
- 	 */
- 	smp_wmb();
-+	if (si->flags & SWP_OFFLOAD_ONLY)
-+		atomic_long_add(nr_entries, &nr_swap_pages_offload_only);
- 	atomic_long_add(nr_entries, &nr_swap_pages);
- 	swap_usage_sub(si, nr_entries);
- }
-@@ -1366,6 +1402,31 @@ static bool get_swap_device_info(struct swap_info_struct *si)
- 	return true;
- }
- 
-+static bool swap_area_eligible(struct swap_info_struct *si)
-+{
-+	if (!(READ_ONCE(si->flags) & SWP_OFFLOAD_ONLY))
-+		return true;
-+
-+	return current_reclaim_allows_offload_swap();
-+}
-+
-+long get_nr_swap_pages_eligible(void)
-+{
-+	long nr_pages;
-+
-+	if (current_reclaim_allows_offload_swap())
-+		return get_nr_swap_pages();
-+
-+	/*
-+	 * The reads are intentionally unpaired.  This is a capacity hint; the
-+	 * allocator enforces eligibility.  Clamp a transient negative result.
-+	 */
-+	nr_pages = get_nr_swap_pages() -
-+		   atomic_long_read(&nr_swap_pages_offload_only);
-+	return max(nr_pages, 0L);
-+}
-+EXPORT_SYMBOL_GPL(get_nr_swap_pages_eligible);
-+
- /*
-  * Fast path try to get swap entries with specified order from current
-  * CPU's swap entry pool (a cluster).
-@@ -1385,6 +1446,20 @@ static bool swap_alloc_fast(struct folio *folio)
- 	offset = this_cpu_read(percpu_swap_cluster.offset[order]);
- 	if (!si || !offset || !get_swap_device_info(si))
- 		return false;
-+	if (!swap_area_eligible(si)) {
-+		put_swap_device(si);
-+		return false;
++	errno = 0;
++	ret = syscall(SYS_swapon, path, flags);
++	if (ret == -1 && errno == EINVAL)
++		return 0;
++	if (!ret) {
++		syscall(SYS_swapoff, path);
++		fprintf(stderr, "offload-only page discard was accepted\n");
++	} else {
++		fprintf(stderr, "swapon returned unexpected error: %s\n",
++			strerror(errno));
 +	}
-+	/*
-+	 * Pressure reclaim may cache a lower-priority conventional area while
-+	 * an offload-only area is ineligible.  Drop that cache on a context
-+	 * change so proactive reclaim returns to the normal priority search.
-+	 */
-+	if (this_cpu_read(percpu_swap_cluster.allow_offload_swap[order]) !=
-+	    current_reclaim_allows_offload_swap()) {
-+		put_swap_device(si);
-+		return false;
++	return 1;
++}
++
++static int accept_discard_once_pages(const char *path, int priority)
++{
++	int flags = SWAP_FLAG_PREFER | SWAP_FLAG_OFFLOAD_ONLY |
++		SWAP_FLAG_DISCARD | SWAP_FLAG_DISCARD_ONCE |
++		SWAP_FLAG_DISCARD_PAGES | priority;
++
++	if (syscall(SYS_swapon, path, flags)) {
++		perror("swapon discard-once+discard-pages");
++		return 1;
 +	}
- 
- 	ci = swap_cluster_lock(si, offset);
- 	if (cluster_is_usable(ci, order)) {
-@@ -1407,6 +1482,9 @@ static void swap_alloc_slow(struct folio *folio)
- 	spin_lock(&swap_avail_lock);
- start_over:
- 	plist_for_each_entry_safe(si, next, &swap_avail_head, avail_list) {
-+		if (!swap_area_eligible(si))
-+			continue;
++	if (syscall(SYS_swapoff, path)) {
++		perror("swapoff discard-once+discard-pages");
++		return 1;
++	}
++	return 0;
++}
 +
- 		/* Rotate the device and switch to a new cluster */
- 		plist_requeue(&si->avail_list, &swap_avail_head);
- 		spin_unlock(&swap_avail_lock);
-@@ -1450,7 +1528,8 @@ static bool swap_sync_discard(void)
- 	plist_for_each_entry_safe(si, next, &swap_active_head, list) {
- 		spin_unlock(&swap_lock);
- 		if (get_swap_device_info(si)) {
--			if (si->flags & SWP_PAGE_DISCARD)
-+			if (swap_area_eligible(si) &&
-+			    (si->flags & SWP_PAGE_DISCARD))
- 				ret = swap_do_scheduled_discard(si);
- 			put_swap_device(si);
- 		}
-@@ -1738,8 +1817,8 @@ static int swap_dup_entries_cluster(struct swap_info_struct *si,
-  *
-  * Context: Caller needs to hold the folio lock.
-  * Return: %0 on success, %-E2BIG if splitting the folio might allow swapout,
-- * %-ENOSPC if no global swap space is available, or %-ENOMEM if splitting
-- * would not help.
-+ * %-ENOSPC if no global swap space is eligible for the caller, or %-ENOMEM
-+ * if splitting would not help.
-  */
- int folio_alloc_swap(struct folio *folio)
- {
-@@ -1790,7 +1869,7 @@ int folio_alloc_swap(struct folio *folio)
- 	return 0;
- 
- failed:
--	if (get_nr_swap_pages() <= 0)
-+	if (get_nr_swap_pages_eligible() <= 0)
- 		return -ENOSPC;
- 	if (mem_cgroup_get_folio_swap_margin(folio) <= 0)
- 		return -ENOMEM;
-@@ -2180,7 +2259,7 @@ swp_entry_t swap_alloc_hibernation_slot(int type)
- 	struct swap_cluster_info *ci;
- 	swp_entry_t entry = {0};
- 
--	if (!si)
-+	if (!si || (si->flags & SWP_OFFLOAD_ONLY))
- 		goto fail;
- 
- 	/*
-@@ -2247,7 +2326,8 @@ static int __find_hibernation_swap_type(dev_t device, sector_t offset)
- 	for (type = 0; type < nr_swapfiles; type++) {
- 		struct swap_info_struct *sis = swap_info[type];
- 
--		if (!(sis->flags & SWP_WRITEOK))
-+		if (!(sis->flags & SWP_WRITEOK) ||
-+		    (sis->flags & SWP_OFFLOAD_ONLY))
- 			continue;
- 
- 		if (device == sis->bdev->bd_dev) {
-@@ -2434,7 +2514,8 @@ int find_first_swap(dev_t *device)
- 	for (type = 0; type < nr_swapfiles; type++) {
- 		struct swap_info_struct *sis = swap_info[type];
- 
--		if (!(sis->flags & SWP_WRITEOK))
-+		if (!(sis->flags & SWP_WRITEOK) ||
-+		    (sis->flags & SWP_OFFLOAD_ONLY))
- 			continue;
- 		*device = sis->bdev->bd_dev;
- 		spin_unlock(&swap_lock);
-@@ -2474,7 +2555,8 @@ unsigned int count_swap_pages(int type, int free)
- 		struct swap_info_struct *sis = swap_info[type];
- 
- 		spin_lock(&sis->lock);
--		if (sis->flags & SWP_WRITEOK) {
-+		if ((sis->flags & SWP_WRITEOK) &&
-+		    !(sis->flags & SWP_OFFLOAD_ONLY)) {
- 			n = sis->pages;
- 			if (free)
- 				n -= swap_usage_in_pages(sis);
-@@ -3083,6 +3165,8 @@ static int setup_swap_extents(struct swap_info_struct *sis,
- 
- static void _enable_swap_info(struct swap_info_struct *si)
- {
-+	if (si->flags & SWP_OFFLOAD_ONLY)
-+		atomic_long_add(si->pages, &nr_swap_pages_offload_only);
- 	atomic_long_add(si->pages, &nr_swap_pages);
- 	total_swap_pages += si->pages;
- 
-@@ -3231,6 +3315,8 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
- 	spin_lock(&p->lock);
- 	del_from_avail_list(p, true);
- 	plist_del(&p->list, &swap_active_head);
-+	if (p->flags & SWP_OFFLOAD_ONLY)
-+		atomic_long_sub(p->pages, &nr_swap_pages_offload_only);
- 	atomic_long_sub(p->pages, &nr_swap_pages);
- 	total_swap_pages -= p->pages;
- 	spin_unlock(&p->lock);
-@@ -3727,7 +3813,6 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
- 
- 	if (swap_flags & ~SWAP_FLAGS_VALID)
- 		return -EINVAL;
--
- 	if (!capable(CAP_SYS_ADMIN))
- 		return -EPERM;
- 
-@@ -3841,6 +3926,9 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
- 	if (error)
- 		goto bad_swap_unlock_inode;
- 
-+	if (swap_flags & SWAP_FLAG_OFFLOAD_ONLY)
-+		si->flags |= SWP_OFFLOAD_ONLY;
++static int join_cgroup(const char *procs)
++{
++	char pid[32];
++	int fd, len;
 +
- 	if ((swap_flags & SWAP_FLAG_DISCARD) &&
- 	    si->bdev && bdev_max_discard_sectors(si->bdev)) {
- 		/*
-@@ -3863,6 +3951,18 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
- 		else if (swap_flags & SWAP_FLAG_DISCARD_PAGES)
- 			si->flags &= ~SWP_AREA_DISCARD;
- 
-+		/*
-+		 * Cluster discard can run later from discard_work, after the
-+		 * context which freed the entries has ended.  Swapon-time discard
-+		 * is explicit and synchronous, but page discard cannot honour
-+		 * offload provenance.
-+		 */
-+		if ((si->flags & SWP_OFFLOAD_ONLY) &&
-+		    (si->flags & SWP_PAGE_DISCARD)) {
-+			error = -EINVAL;
-+			goto bad_swap_unlock_inode;
++	fd = open(procs, O_WRONLY);
++	if (fd < 0) {
++		perror("open cgroup.procs");
++		return 1;
++	}
++
++	len = snprintf(pid, sizeof(pid), "%d\n", getpid());
++	if (write(fd, pid, len) != len) {
++		perror("write cgroup.procs");
++		close(fd);
++		return 1;
++	}
++	close(fd);
++	return 0;
++}
++
++static int pin_to_one_cpu(const char *pid_arg)
++{
++	cpu_set_t allowed, selected;
++	char *end;
++	long pid;
++	int cpu;
++
++	errno = 0;
++	pid = strtol(pid_arg, &end, 10);
++	if (errno || *end || pid <= 0) {
++		fprintf(stderr, "invalid pid: %s\n", pid_arg);
++		return 1;
++	}
++
++	if (sched_getaffinity(pid, sizeof(allowed), &allowed)) {
++		perror("sched_getaffinity");
++		return 1;
++	}
++	for (cpu = 0; cpu < CPU_SETSIZE; cpu++)
++		if (CPU_ISSET(cpu, &allowed))
++			break;
++	if (cpu == CPU_SETSIZE) {
++		fprintf(stderr, "pid %ld has no allowed CPU\n", pid);
++		return 1;
++	}
++
++	CPU_ZERO(&selected);
++	CPU_SET(cpu, &selected);
++	if (sched_setaffinity(pid, sizeof(selected), &selected)) {
++		perror("sched_setaffinity");
++		return 1;
++	}
++	return 0;
++}
++
++static int allocate(const char *size_arg, const char *procs,
++		    const char *ready, const char *verified)
++{
++	unsigned char *memory;
++	unsigned long size;
++	unsigned long page_size;
++	char *end;
++	sigset_t signals;
++	int signal;
++	int fd;
++
++	errno = 0;
++	size = strtoul(size_arg, &end, 0);
++	if (errno || *end || !size) {
++		fprintf(stderr, "invalid allocation size: %s\n", size_arg);
++		return 1;
++	}
++	if (join_cgroup(procs))
++		return 1;
++
++	memory = mmap(NULL, size, PROT_READ | PROT_WRITE,
++		      MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
++	if (memory == MAP_FAILED) {
++		perror("mmap");
++		return 1;
++	}
++
++	page_size = getpagesize();
++	for (unsigned long i = 0; i < size; i += page_size)
++		memset(memory + i, i / page_size % 251 + 1,
++		       page_size < size - i ? page_size : size - i);
++	if (mprotect(memory, size, PROT_READ)) {
++		perror("mprotect");
++		return 1;
++	}
++
++	sigemptyset(&signals);
++	sigaddset(&signals, SIGUSR1);
++	if (sigprocmask(SIG_BLOCK, &signals, NULL)) {
++		perror("sigprocmask");
++		return 1;
++	}
++
++	fd = open(ready, O_WRONLY | O_CREAT | O_EXCL, 0600);
++	if (fd < 0) {
++		perror("create ready file");
++		return 1;
++	}
++	close(fd);
++
++	errno = sigwait(&signals, &signal);
++	if (errno) {
++		perror("sigwait");
++		return 1;
++	}
++	for (unsigned long i = 0; i < size; i++) {
++		unsigned char expected = i / page_size % 251 + 1;
++
++		if (memory[i] != expected) {
++			fprintf(stderr,
++				"data mismatch at %lu: got %u, expected %u\n",
++				i, memory[i], expected);
++			return 1;
 +		}
++	}
 +
- 		/* issue a swapon-time discard if it's still required */
- 		if (si->flags & SWP_AREA_DISCARD) {
- 			int err = discard_swap(si);
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index aaceed4759ee..0633feb5d88b 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -123,6 +123,9 @@ struct scan_control {
- 	/* Proactive reclaim invoked by userspace */
- 	unsigned int proactive:1;
++	fd = open(verified, O_WRONLY | O_CREAT | O_EXCL, 0600);
++	if (fd < 0) {
++		perror("create verified file");
++		return 1;
++	}
++	close(fd);
++
++	for (;;)
++		pause();
++}
++
++int main(int argc, char **argv)
++{
++	if (argc == 4 && !strcmp(argv[1], "activate"))
++		return activate(argv[2], atoi(argv[3]),
++				SWAP_FLAG_DISCARD | SWAP_FLAG_DISCARD_ONCE);
++	if (argc == 4 && !strcmp(argv[1], "reject-page-discard"))
++		return reject_page_discard(argv[2], atoi(argv[3]));
++	if (argc == 4 && !strcmp(argv[1], "accept-discard-once-pages"))
++		return accept_discard_once_pages(argv[2], atoi(argv[3]));
++	if (argc == 3 && !strcmp(argv[1], "pin"))
++		return pin_to_one_cpu(argv[2]);
++	if (argc == 6 && !strcmp(argv[1], "allocate"))
++		return allocate(argv[2], argv[3], argv[4], argv[5]);
++
++	fprintf(stderr,
++		"usage: %s activate DEVICE PRIORITY | reject-page-discard DEVICE PRIORITY | accept-discard-once-pages DEVICE PRIORITY | pin PID | allocate BYTES CGROUP.PROCS READY VERIFIED\n",
++		argv[0]);
++	return 1;
++}
+diff --git a/tools/testing/selftests/zram/workingset_offload.c b/tools/testing/selftests/zram/workingset_offload.c
+new file mode 100644
+index 000000000000..6d41badb8d0b
+--- /dev/null
++++ b/tools/testing/selftests/zram/workingset_offload.c
+@@ -0,0 +1,206 @@
++// SPDX-License-Identifier: GPL-2.0
++#define _GNU_SOURCE
++
++#include <errno.h>
++#include <fcntl.h>
++#include <signal.h>
++#include <stdbool.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <sys/mman.h>
++#include <sys/stat.h>
++#include <unistd.h>
++
++#define ANON_SIZE (64UL << 20)
++#define TARGET_SIZE (16UL << 20)
++#define FILLER_SIZE (32UL << 20)
++
++static int join_cgroup(const char *path)
++{
++	char pid[32];
++	int fd, len;
++
++	fd = open(path, O_WRONLY);
++	if (fd < 0)
++		return -1;
++	len = snprintf(pid, sizeof(pid), "%d\n", getpid());
++	if (write(fd, pid, len) != len) {
++		close(fd);
++		return -1;
++	}
++	return close(fd);
++}
++
++static int create_file(const char *path, size_t size)
++{
++	unsigned char page[4096];
++	size_t offset;
++	int fd;
++
++	fd = open(path, O_CREAT | O_TRUNC | O_RDWR, 0600);
++	if (fd < 0)
++		return -1;
++	memset(page, 0xa5, sizeof(page));
++	for (offset = 0; offset < size; offset += sizeof(page)) {
++		if (pwrite(fd, page, sizeof(page), offset) != sizeof(page)) {
++			close(fd);
++			return -1;
++		}
++	}
++	if (fsync(fd) || posix_fadvise(fd, 0, size, POSIX_FADV_DONTNEED)) {
++		close(fd);
++		return -1;
++	}
++	return fd;
++}
++
++static int cache_file(int fd, size_t size)
++{
++	unsigned char byte;
++	size_t offset;
++
++	if (posix_fadvise(fd, 0, size, POSIX_FADV_RANDOM))
++		return -1;
++	for (offset = 0; offset < size; offset += getpagesize())
++		if (pread(fd, &byte, 1, offset) != 1)
++			return -1;
++	return 0;
++}
++
++static unsigned long memory_stat(const char *path, const char *key)
++{
++	unsigned long value;
++	char name[64];
++	FILE *file;
++
++	file = fopen(path, "r");
++	if (!file)
++		return 0;
++	while (fscanf(file, "%63s %lu", name, &value) == 2) {
++		if (!strcmp(name, key)) {
++			fclose(file);
++			return value;
++		}
++	}
++	fclose(file);
++	return 0;
++}
++
++static int touch_ready(const char *path)
++{
++	int fd = open(path, O_WRONLY | O_CREAT | O_EXCL, 0600);
++
++	if (fd < 0)
++		return -1;
++	return close(fd);
++}
++
++static bool calibration_sufficient(size_t pages, unsigned long selected,
++				   unsigned long refaulted,
++				   unsigned long anon)
++{
++	return selected >= pages / 2 && refaulted >= selected * 3 / 4 &&
++	       anon >= TARGET_SIZE;
++}
++
++int main(int argc, char **argv)
++{
++	unsigned long refault_before, refault_after;
++	unsigned long activate_before, activate_after;
++	unsigned long anon, selected = 0;
++	unsigned char *resident, *anon_memory;
++	unsigned char byte, checksum = 0;
++	char stat_path[4096];
++	sigset_t signals;
++	size_t pages, i;
++	void *mapping;
++	int target_fd, filler_fd, signal;
++
++	if (argc != 6) {
++		fprintf(stderr, "usage: %s CGROUP.PROCS TARGET FILLER READY GO\n",
++			argv[0]);
++		return 1;
++	}
++	if (join_cgroup(argv[1])) {
++		perror("join cgroup");
++		return 1;
++	}
++
++	anon_memory = mmap(NULL, ANON_SIZE, PROT_READ | PROT_WRITE,
++			   MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
++	if (anon_memory == MAP_FAILED) {
++		perror("mmap anonymous");
++		return 1;
++	}
++	for (i = 0; i < ANON_SIZE; i += getpagesize())
++		anon_memory[i] = i / getpagesize() % 251 + 1;
++
++	target_fd = create_file(argv[2], TARGET_SIZE);
++	filler_fd = create_file(argv[3], FILLER_SIZE);
++	if (target_fd < 0 || filler_fd < 0) {
++		perror("create files");
++		return 1;
++	}
++	if (cache_file(target_fd, TARGET_SIZE) ||
++	    cache_file(filler_fd, FILLER_SIZE)) {
++		perror("populate page cache");
++		return 1;
++	}
++
++	sigemptyset(&signals);
++	sigaddset(&signals, SIGUSR1);
++	if (sigprocmask(SIG_BLOCK, &signals, NULL) || touch_ready(argv[4])) {
++		perror("prepare signal");
++		return 1;
++	}
++	if (sigwait(&signals, &signal)) {
++		perror("sigwait");
++		return 1;
++	}
++
++	mapping = mmap(NULL, TARGET_SIZE, PROT_READ, MAP_SHARED, target_fd, 0);
++	if (mapping == MAP_FAILED) {
++		perror("mmap target");
++		return 1;
++	}
++	pages = TARGET_SIZE / getpagesize();
++	resident = calloc(pages, 1);
++	if (!resident || mincore(mapping, TARGET_SIZE, resident)) {
++		perror("mincore");
++		return 1;
++	}
++	munmap(mapping, TARGET_SIZE);
++
++	snprintf(stat_path, sizeof(stat_path), "%.*s/memory.stat",
++		 (int)(strlen(argv[1]) - strlen("/cgroup.procs")), argv[1]);
++	refault_before = memory_stat(stat_path, "workingset_refault_file");
++	activate_before = memory_stat(stat_path, "workingset_activate_file");
++	for (i = 0; i < pages; i++) {
++		if (resident[i] & 1)
++			continue;
++		if (pread(target_fd, &byte, 1, i * getpagesize()) != 1) {
++			perror("refault target");
++			return 1;
++		}
++		selected++;
++	}
++	refault_after = memory_stat(stat_path, "workingset_refault_file");
++	activate_after = memory_stat(stat_path, "workingset_activate_file");
++	anon = memory_stat(stat_path, "active_anon") +
++	       memory_stat(stat_path, "inactive_anon");
++
++	for (i = 0; i < ANON_SIZE; i += getpagesize())
++		checksum ^= anon_memory[i];
++	printf("selected=%lu refault=%lu activate=%lu anon=%lu checksum=%u\n",
++	       selected, refault_after - refault_before,
++	       activate_after - activate_before, anon, checksum);
++
++	free(resident);
++	close(filler_fd);
++	close(target_fd);
++	if (!calibration_sufficient(pages, selected,
++				    refault_after - refault_before, anon))
++		return 2;
++	return (activate_after - activate_before) * 100 < selected * 80;
++}
+diff --git a/tools/testing/selftests/zram/zram03.sh b/tools/testing/selftests/zram/zram03.sh
+new file mode 100755
+index 000000000000..3ccc9a135f99
+--- /dev/null
++++ b/tools/testing/selftests/zram/zram03.sh
+@@ -0,0 +1,166 @@
++#!/bin/sh
++# SPDX-License-Identifier: GPL-2.0
++# Test proactive-only swap allocation and pressure fallback.
++
++set -eu
++
++# shellcheck source=zram_lib.sh
++. ./zram_lib.sh
++
++TCID="zram03"
++cg="/sys/fs/cgroup/zram-offload-$$"
++cgroup_root="/sys/fs/cgroup"
++ready="/tmp/zram-offload-ready-$$"
++verified="/tmp/zram-offload-verified-$$"
++allocator_pid=""
++offload=""
++zswap_enabled=""
++zswap_writeback=""
++
++fail()
++{
++	echo "$TCID: [FAIL] $*" >&2
++	exit 1
++}
++
++skip()
++{
++	echo "$TCID: [SKIP] $*" >&2
++	exit "$ksft_skip"
++}
++
++cleanup()
++{
++	set +e
++	if [ -n "$allocator_pid" ]; then
++		kill "$allocator_pid"
++		wait "$allocator_pid"
++	fi
++	rm -f "$ready" "$verified"
++	rmdir "$cg"
++	cgroup_disable_memory_controller "$cgroup_root"
++	if [ -n "$offload" ] && [ "$dev_makeswap" -lt "$dev_end" ]; then
++		swapoff "$offload" >/dev/null 2>&1
++	fi
++	if [ "$dev_end" -ge "$dev_start" ]; then
++		zram_cleanup
++	fi
++	if [ -n "$zswap_enabled" ]; then
++		echo "$zswap_enabled" > /sys/module/zswap/parameters/enabled
++	fi
++}
++
++swap_used_kb()
++{
++	awk -v device="$1" '$1 == device { print $4 }' /proc/swaps
++}
++
++zram_orig_data_size()
++{
++	awk '{ print $1 }' "/sys/block/${1##*/}/mm_stat"
++}
++
++wait_file()
++{
++	for _ in $(seq 1 400); do
++		[ -e "$1" ] && return 0
++		sleep 0.05
++	done
++	return 1
++}
++
++check_prereqs
++# The feature marker also requires CONFIG_VM_EVENT_COUNTERS.
++grep -q '^swpout_offload_refused ' /proc/vmstat ||
++	skip "offload refusal counters are unavailable"
++[ -x ./swap_offload ] || skip "swap_offload helper is unavailable"
++[ -e /sys/fs/cgroup/cgroup.controllers ] || skip "cgroup v2 controllers are unavailable"
++grep -qw memory /sys/fs/cgroup/cgroup.controllers || skip "memory controller is unavailable"
++[ -e /sys/module/zswap/parameters/enabled ] || skip "zswap is unavailable"
++zswap_enabled=$(cat /sys/module/zswap/parameters/enabled)
++
++# Keep every reclaim transition on one CPU.  This makes the test exercise the
++# cached-cluster provenance mismatch rather than relying on scheduler placement.
++./swap_offload pin "$$" || skip "cannot pin test to one allowed CPU"
++
++# Swap priorities are global. Put both test areas ahead of any existing swap
++# so distro-managed zram or another high-priority area cannot absorb the test
++# allocations and make the routing assertions fail spuriously.
++max_prio=$(awk 'BEGIN { max = -1 } NR > 1 && $5 > max { max = $5 } END { print max }' /proc/swaps)
++[ "$max_prio" -le 32765 ] || skip "cannot outrank existing swap priority $max_prio"
++safe_prio=$((max_prio + 1))
++offload_prio=$((max_prio + 2))
++
++dev_num=2
++zram_sizes="67108864 67108864"
++trap cleanup EXIT
++trap 'exit 129' HUP
++trap 'exit 130' INT
++trap 'exit 143' TERM
++zram_load
++echo Y > /sys/module/zswap/parameters/enabled || skip "cannot enable zswap"
++zram_set_disksizes
++
++safe="/dev/zram${dev_start}"
++offload="/dev/zram$((dev_start + 1))"
++mkswap "$safe" >/dev/null
++mkswap "$offload" >/dev/null
++swapon -p "$safe_prio" "$safe"
++dev_makeswap=$dev_start
++./swap_offload reject-page-discard "$offload" "$offload_prio" ||
++	fail "offload-only page discard was accepted"
++./swap_offload accept-discard-once-pages "$offload" "$offload_prio" ||
++	fail "resolved offload-only discard-once was rejected"
++./swap_offload activate "$offload" "$offload_prio"
++dev_makeswap=$dev_end
++
++cgroup_enable_memory_controller "$cgroup_root" ||
++	skip "cannot enable the cgroup v2 memory controller"
++mkdir "$cg" || skip "cannot create test cgroup"
++[ -e "$cg/memory.max" ] || skip "cgroup v2 memory controller is unavailable"
++echo max > "$cg/memory.swap.max"
++echo 1 > "$cg/memory.zswap.writeback" ||
++	skip "cannot enable zswap writeback for test cgroup"
++read -r zswap_writeback < "$cg/memory.zswap.writeback"
++[ "$zswap_writeback" -eq 1 ] ||
++	skip "an ancestor disables zswap writeback"
++
++./swap_offload allocate 67108864 "$cg/cgroup.procs" "$ready" "$verified" &
++allocator_pid=$!
++wait_file "$ready" || fail "allocator did not become ready"
++
++echo "16M swappiness=max" > "$cg/memory.reclaim" ||
++	fail "proactive reclaim failed"
++offload_before=$(swap_used_kb "$offload")
++safe_before=$(swap_used_kb "$safe")
++offload_orig=$(zram_orig_data_size "$offload")
++[ "${offload_before:-0}" -gt 0 ] || fail "proactive reclaim missed offload area"
++[ "${safe_before:-0}" -eq 0 ] || fail "proactive reclaim used lower-priority safe area"
++[ "$((offload_orig + 1048576))" -ge "$((offload_before * 1024))" ] ||
++	fail "zswap deferred the offload-only backend write"
++
++echo 24M > "$cg/memory.max"
++sleep 1
++offload_pressure=$(swap_used_kb "$offload")
++safe_pressure=$(swap_used_kb "$safe")
++safe_orig=$(zram_orig_data_size "$safe")
++[ "${safe_pressure:-0}" -gt 0 ] || fail "pressure reclaim missed safe fallback"
++[ "$offload_pressure" -le "$offload_before" ] ||
++	fail "pressure reclaim allocated offload-only slots"
++[ "$safe_orig" -lt "$((safe_pressure * 1024))" ] ||
++	fail "zswap did not retain any unmarked safe-area pages"
++
++echo max > "$cg/memory.max"
++echo "4M swappiness=max" > "$cg/memory.reclaim" ||
++	fail "second proactive reclaim failed"
++offload_after=$(swap_used_kb "$offload")
++[ "$offload_after" -gt "$offload_pressure" ] ||
++	fail "proactive priority was not restored after pressure reclaim"
++
++swapoff "$offload" || fail "swapoff could not recover offloaded pages"
++kill -USR1 "$allocator_pid" || fail "cannot request data verification"
++wait_file "$verified" || fail "allocator did not verify recovered data"
++kill -0 "$allocator_pid" || fail "allocator died during swapoff"
++dev_makeswap=$dev_start
++
++echo "$TCID: [PASS]"
+diff --git a/tools/testing/selftests/zram/zram04.sh b/tools/testing/selftests/zram/zram04.sh
+new file mode 100755
+index 000000000000..a8f52a82e774
+--- /dev/null
++++ b/tools/testing/selftests/zram/zram04.sh
+@@ -0,0 +1,149 @@
++#!/bin/sh
++# SPDX-License-Identifier: GPL-2.0
++# Reproduce offload-only swap leaking into the workingset refault heuristic.
++
++set -eu
++
++# shellcheck source=zram_lib.sh
++. ./zram_lib.sh
++
++TCID="zram04"
++cg="/sys/fs/cgroup/zram-workingset-$$"
++cgroup_root="/sys/fs/cgroup"
++tmp="${TMPDIR:-/var/tmp}/zram-workingset-$$"
++ready="$tmp/ready"
++worker=""
++tmp_fs=""
++mglru=""
++zswap_enabled=""
++
++fail()
++{
++	echo "$TCID: [FAIL] $*" >&2
++	exit 1
++}
++
++skip()
++{
++	echo "$TCID: [SKIP] $*" >&2
++	exit "$ksft_skip"
++}
++
++cleanup()
++{
++	set +e
++	[ -n "$worker" ] && kill "$worker"
++	[ -n "$worker" ] && wait "$worker"
++	rm -rf "$tmp"
++	rmdir "$cg"
++	cgroup_disable_memory_controller "$cgroup_root"
++	[ "$dev_end" -ge "$dev_start" ] && zram_cleanup
++	[ -n "$mglru" ] && echo "$mglru" > /sys/kernel/mm/lru_gen/enabled
++	[ -n "$zswap_enabled" ] &&
++		echo "$zswap_enabled" > /sys/module/zswap/parameters/enabled
++}
++
++wait_helper_ready()
++{
++	for _ in $(seq 1 400); do
++		[ -e "$ready" ] && return 0
++		worker_state=$(awk '{ print $3 }' "/proc/$worker/stat" \
++			2>/dev/null || :)
++		if ! kill -0 "$worker" 2>/dev/null ||
++		   [ "$worker_state" = Z ]; then
++			if wait "$worker"; then
++				status=0
++			else
++				status=$?
++			fi
++			worker=""
++			[ "$status" -eq 2 ] &&
++				skip "workingset calibration was insufficient"
++			fail "workingset helper exited with status $status before readiness"
++		fi
++		sleep 0.05
++	done
++	fail "workingset helper timed out before readiness"
++}
++
++check_prereqs
++# The feature marker also requires CONFIG_VM_EVENT_COUNTERS.
++grep -q '^swpout_offload_refused ' /proc/vmstat ||
++	skip "offload refusal counters are unavailable"
++[ -x ./swap_offload ] || skip "swap_offload helper is unavailable"
++[ -x ./workingset_offload ] || skip "workingset helper is unavailable"
++[ -e /sys/fs/cgroup/cgroup.controllers ] || skip "cgroup v2 is unavailable"
++grep -qw memory /sys/fs/cgroup/cgroup.controllers ||
++	skip "cgroup v2 memory controller is unavailable"
++[ "$(awk 'END { print NR }' /proc/swaps)" -eq 1 ] ||
++	skip "test requires no pre-existing swap"
++tmp_fs=$(stat -f -c %T "${TMPDIR:-/var/tmp}") ||
++	skip "cannot identify the test filesystem"
++[ "$tmp_fs" != tmpfs ] ||
++	skip "test files require a disk-backed filesystem"
++
++[ -e /sys/kernel/mm/lru_gen/enabled ] &&
++	mglru=$(cat /sys/kernel/mm/lru_gen/enabled)
++[ -e /sys/module/zswap/parameters/enabled ] &&
++	zswap_enabled=$(cat /sys/module/zswap/parameters/enabled)
++trap cleanup EXIT
++trap 'exit 129' HUP
++trap 'exit 130' INT
++trap 'exit 143' TERM
++[ -n "$mglru" ] && echo 0 > /sys/kernel/mm/lru_gen/enabled
++[ -n "$zswap_enabled" ] && echo N > /sys/module/zswap/parameters/enabled
++
++dev_num=1
++zram_sizes="134217728"
++zram_load
++zram_set_disksizes
++offload="/dev/zram${dev_start}"
++mkswap "$offload" >/dev/null
++./swap_offload activate "$offload" 1
++dev_makeswap=$dev_end
++
++cgroup_enable_memory_controller "$cgroup_root" ||
++	skip "cannot enable the cgroup v2 memory controller"
++mkdir "$cg" || skip "cannot create test cgroup"
++[ -e "$cg/memory.max" ] || skip "cgroup v2 memory controller is unavailable"
++echo max > "$cg/memory.max"
++echo max > "$cg/memory.swap.max"
++mkdir "$tmp"
++
++./workingset_offload "$cg/cgroup.procs" "$tmp/target" "$tmp/filler" \
++	"$ready" unused &
++worker=$!
++wait_helper_ready
++
++# Shadow retention uses local LRU/slab statistics updated by memcg flushing.
++# Check that the 64 MiB anonymous and 48 MiB file setup is visible before
++# evicting file pages.
++stats_ready=0
++for _ in $(seq 1 50); do
++	if awk '
++		$1 == "active_anon" || $1 == "inactive_anon" { anon += $2 }
++		$1 == "file" { file = $2 }
++		END { exit !(anon >= 67108864 && file >= 50331648) }
++	' "$cg/memory.stat"; then
++		stats_ready=1
++		break
++	fi
++	sleep 0.1
++done
++[ "$stats_ready" -eq 1 ] ||
++	skip "initial working-set statistics did not become visible"
++
++echo "48M swappiness=0" > "$cg/memory.reclaim" ||
++	skip "file-only proactive reclaim failed"
++kill -USR1 "$worker"
++if wait "$worker"; then
++	worker=""
++	echo "$TCID: [PASS]"
++	exit 0
++else
++	status=$?
++fi
++worker=""
++[ "$status" -eq 2 ] && skip "workingset calibration was insufficient"
++echo "$TCID: [FAIL] refaulted file pages were not activated" >&2
++exit 1
+diff --git a/tools/testing/selftests/zram/zram_lib.sh b/tools/testing/selftests/zram/zram_lib.sh
+index 0d44d83888f9..f14966d3820d 100755
+--- a/tools/testing/selftests/zram/zram_lib.sh
++++ b/tools/testing/selftests/zram/zram_lib.sh
+@@ -17,6 +17,10 @@ kernel_version=`uname -r | cut -d'.' -f1,2`
+ kernel_major=${kernel_version%.*}
+ kernel_minor=${kernel_version#*.}
  
-+	/* This reclaim context may use offload-only swap */
-+	unsigned int allow_offload_swap:1;
++# Whether this test enabled the memory controller on its cgroup parent.  Tests
++# must leave a delegation which was already present alone.
++cgroup_memory_controller_enabled=0
 +
- 	/*
- 	 * Cgroup memory below memory.low is protected as long as we
- 	 * don't threaten to OOM. If any cgroup is reclaimed at
-@@ -291,14 +294,18 @@ static inline bool is_exec_file_folio(const struct folio *folio,
+ trap INT
+ 
+ check_prereqs()
+@@ -30,6 +34,30 @@ check_prereqs()
+ 	fi
  }
  
- static void set_task_reclaim_state(struct task_struct *task,
--				   struct reclaim_state *rs)
-+				   struct scan_control *sc)
++cgroup_enable_memory_controller()
++{
++	local cgroup_root=$1
++
++	if grep -qw memory "$cgroup_root/cgroup.subtree_control"; then
++		return 0
++	fi
++
++	if ! echo +memory > "$cgroup_root/cgroup.subtree_control"; then
++		return 1
++	fi
++
++	cgroup_memory_controller_enabled=1
++}
++
++cgroup_disable_memory_controller()
++{
++	local cgroup_root=$1
++
++	[ "$cgroup_memory_controller_enabled" -eq 1 ] || return 0
++	echo -memory > "$cgroup_root/cgroup.subtree_control" || return 1
++	cgroup_memory_controller_enabled=0
++}
++
+ kernel_gte()
  {
-+	struct reclaim_state *rs = sc ? &sc->reclaim_state : NULL;
-+
- 	/* Check for an overwrite */
- 	WARN_ON_ONCE(rs && task->reclaim_state);
- 
- 	/* Check for the nulling of an already-nulled member */
- 	WARN_ON_ONCE(!rs && !task->reclaim_state);
- 
-+	if (rs)
-+		rs->allow_offload_swap = sc->allow_offload_swap;
- 	task->reclaim_state = rs;
- }
- 
-@@ -418,7 +425,7 @@ static inline bool can_reclaim_anon_pages(struct mem_cgroup *memcg,
- 		 * And under GFP_NOIO, is there enough swapcached anon to make
- 		 * scanning anon worthwhile?
- 		 */
--		if (get_nr_swap_pages() > 0 &&
-+		if (get_nr_swap_pages_eligible() > 0 &&
- 		    !reclaimable_anon_is_low(memcg, nid, sc))
- 			return true;
- 	} else {
-@@ -426,7 +433,7 @@ static inline bool can_reclaim_anon_pages(struct mem_cgroup *memcg,
- 		 * Is the memcg below its swap limit, and under GFP_NOIO does
- 		 * it have enough swapcached anon to make scanning worthwhile?
- 		 */
--		if (mem_cgroup_get_nr_swap_pages(memcg) > 0 &&
-+		if (mem_cgroup_get_nr_swap_pages_eligible(memcg) > 0 &&
- 		    !reclaimable_anon_is_low(memcg, nid, sc))
- 			return true;
- 	}
-@@ -2853,7 +2860,7 @@ static int get_swappiness(struct lruvec *lruvec, struct scan_control *sc)
- 		return 0;
- 
- 	if (!can_demote(pgdat->node_id, sc, memcg) &&
--	    mem_cgroup_get_nr_swap_pages(memcg) < MIN_LRU_BATCH)
-+	    mem_cgroup_get_nr_swap_pages_eligible(memcg) < MIN_LRU_BATCH)
- 		return 0;
- 
- 	return swappiness;
-@@ -5926,6 +5933,7 @@ static ssize_t lru_gen_seq_write(struct file *file, const char __user *src,
- 		.reclaim_idx = MAX_NR_ZONES - 1,
- 		.gfp_mask = GFP_KERNEL,
- 		.proactive = true,
-+		.allow_offload_swap = true,
- 	};
- 
- 	buf = kvmalloc(len + 1, GFP_KERNEL);
-@@ -5937,7 +5945,7 @@ static ssize_t lru_gen_seq_write(struct file *file, const char __user *src,
- 		return -EFAULT;
- 	}
- 
--	set_task_reclaim_state(current, &sc.reclaim_state);
-+	set_task_reclaim_state(current, &sc);
- 	flags = memalloc_noreclaim_save();
- 	blk_start_plug(&plug);
- 	if (!set_mm_walk(NULL, true)) {
-@@ -6941,7 +6949,7 @@ unsigned long try_to_free_pages(struct zonelist *zonelist, int order,
- 	if (throttle_direct_reclaim(sc.gfp_mask, zonelist, nodemask))
- 		return 1;
- 
--	set_task_reclaim_state(current, &sc.reclaim_state);
-+	set_task_reclaim_state(current, &sc);
- 	trace_mm_vmscan_direct_reclaim_begin(sc.gfp_mask, order, NULL);
- 
- 	nr_reclaimed = do_try_to_free_pages(zonelist, &sc);
-@@ -6974,6 +6982,8 @@ unsigned long try_to_free_mem_cgroup_pages(struct mem_cgroup *memcg,
- 		.may_unmap = 1,
- 		.may_swap = !!(reclaim_options & MEMCG_RECLAIM_MAY_SWAP),
- 		.proactive = !!(reclaim_options & MEMCG_RECLAIM_PROACTIVE),
-+		.allow_offload_swap =
-+			!!(reclaim_options & MEMCG_RECLAIM_PROACTIVE),
- 	};
- 	/*
- 	 * Traverse the ZONELIST_FALLBACK zonelist of the current node to put
-@@ -6982,7 +6992,7 @@ unsigned long try_to_free_mem_cgroup_pages(struct mem_cgroup *memcg,
- 	 */
- 	struct zonelist *zonelist = node_zonelist(numa_node_id(), sc.gfp_mask);
- 
--	set_task_reclaim_state(current, &sc.reclaim_state);
-+	set_task_reclaim_state(current, &sc);
- 	trace_mm_vmscan_memcg_reclaim_begin(sc.gfp_mask, 0, memcg);
- 	noreclaim_flag = memalloc_noreclaim_save();
- 
-@@ -7272,7 +7282,7 @@ static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
- 
- 	trace_mm_vmscan_balance_pgdat_begin(pgdat->node_id, order,
- 					    highest_zoneidx);
--	set_task_reclaim_state(current, &sc.reclaim_state);
-+	set_task_reclaim_state(current, &sc);
- 	psi_memstall_enter(&pflags);
- 	__fs_reclaim_acquire(_THIS_IP_);
- 
-@@ -7769,7 +7779,7 @@ unsigned long shrink_all_memory(unsigned long nr_to_reclaim)
- 
- 	fs_reclaim_acquire(sc.gfp_mask);
- 	noreclaim_flag = memalloc_noreclaim_save();
--	set_task_reclaim_state(current, &sc.reclaim_state);
-+	set_task_reclaim_state(current, &sc);
- 
- 	nr_reclaimed = do_try_to_free_pages(zonelist, &sc);
- 
-@@ -7950,7 +7960,7 @@ static unsigned long __node_reclaim(struct pglist_data *pgdat,
- 	 * We need to be able to allocate from the reserves for RECLAIM_UNMAP
- 	 */
- 	noreclaim_flag = memalloc_noreclaim_save();
--	set_task_reclaim_state(p, &sc->reclaim_state);
-+	set_task_reclaim_state(p, sc);
- 
- 	do {
- 		shrink_node(pgdat, sc);
-@@ -8136,6 +8146,7 @@ int user_proactive_reclaim(char *buf,
- 				.may_unmap = 1,
- 				.may_swap = 1,
- 				.proactive = 1,
-+				.allow_offload_swap = 1,
- 			};
- 
- 			if (test_and_set_bit_lock(PGDAT_RECLAIM_LOCKED,
-diff --git a/mm/vmstat.c b/mm/vmstat.c
-index a3e809c57f29..b924c715886e 100644
---- a/mm/vmstat.c
-+++ b/mm/vmstat.c
-@@ -1331,6 +1331,7 @@ const char * const vmstat_text[] = {
- 	[I(PGPGOUT)]				= "pgpgout",
- 	[I(PSWPIN)]				= "pswpin",
- 	[I(PSWPOUT)]				= "pswpout",
-+	[I(SWPOUT_OFFLOAD_REFUSED)]		= "swpout_offload_refused",
- 
- #define OFF (NR_VM_ZONE_STAT_ITEMS + NR_VM_NUMA_EVENT_ITEMS + \
- 	     NR_VM_NODE_STAT_ITEMS + NR_VM_STAT_ITEMS)
+ 	major=${1%.*}
 -- 
 2.55.0
 
