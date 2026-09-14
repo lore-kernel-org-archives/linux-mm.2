@@ -4,136 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5ACFFC88E6F
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 16:46:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E077BC88E72
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 16:46:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 59FC36B0088; Mon, 14 Sep 2026 12:46:08 -0400 (EDT)
+	id CA6286B008C; Mon, 14 Sep 2026 12:46:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 52A226B008C; Mon, 14 Sep 2026 12:46:08 -0400 (EDT)
+	id C2F936B0092; Mon, 14 Sep 2026 12:46:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3CB3D6B0092; Mon, 14 Sep 2026 12:46:08 -0400 (EDT)
+	id B1E2D6B0093; Mon, 14 Sep 2026 12:46:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 091386B0088
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 12:46:08 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id DD1B2A01AD
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 16:46:06 +0000 (UTC)
-X-FDA: 85212945132.17.99F0A10
-Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 15290160010
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 16:46:04 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=mWMg+KKL;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf08.hostedemail.com: domain of dmatlack@google.com designates 74.125.228.12 as permitted sender) smtp.mailfrom=dmatlack@google.com
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=mWMg+KKL;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf08.hostedemail.com: domain of dmatlack@google.com designates 74.125.228.12 as permitted sender) smtp.mailfrom=dmatlack@google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789404365;
-	b=UKNLkk+X2giSJoci5lobpkvchroaGYUQuALJVDgGhcdWqlZKovJrZrwwNe3rz3CEZzmke2
-	OS4Jct4TyBf0hOBUaR8RuPZju1h7g8rSKYfWxTQo8yKzkCksy2cgAHeyNVRqCEFQECpu+A
-	iZGoBwi1XbnOxi/YAQvq7jCuweEbPhk=
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 854DA6B008C
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 12:46:45 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0FCEF1C1556
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 16:46:45 +0000 (UTC)
+X-FDA: 85212946770.16.D4A927E
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 14BDF14000B
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 16:46:42 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=uQlLzw5h;
+	spf=pass (imf23.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789404365;
+	s=arc-20220608; t=1789404403;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vaEn4gJaLG6//UlaQV046R50HUoC/N5LfAqjMif4QV0=;
-	b=revzkPS8Mq96qwDW27bGkxYmJYeh6/G65DztHFav44ucOIZhV/RFBGjkhtxBMtXvE0FHDJ
-	msn/dRvqodWvEOgRZTpYmnWPFWzoPE9iE29Wgd5s5v1gmTolCM/l5pWrXJuy56o8FUqr+q
-	7ylERzxBr5Iu290YDkJ6j/dIserDvaI=
-Received: by mail-pz2-f12.google.com with SMTP id d2e1a72fcca58-85469a3490bso2111458b3a.3
-        for <linux-mm@kvack.org>; Mon, 14 Sep 2026 09:46:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789404364; x=1790009164; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=vaEn4gJaLG6//UlaQV046R50HUoC/N5LfAqjMif4QV0=;
-        b=mWMg+KKLxf8apKVQ4ekhJu/F4vqlBCxIrL/aCglBdDEMHa+uLhFMoaLpybwoj0wH8R
-         DZN3DdCmHMLwxofjPlhdaPTI5wB1NEm1GeNUYAwsNOmVmupOkpXPaTNtMeWtP/NHvt37
-         9b6Ul6QDz2hLcoCMQ9sMLm/XDQ9BtFY2vSJKsZbOYUeHWtZvRpSpRrQbhn2I5SbPEkbE
-         fxWygN/hHpbYYlx0N1cxNnMOj5RrkvyFk9zd3YkH+sBJ+TStMuL2oOqoW5gq6cJlQxwW
-         o9fnXYaSV7D/3eLfBurqR+EJj5wk/zRbLM3ceyLh5Es4j2l/z8c7GU2EZqB37+HqUKZa
-         Ke7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789404364; x=1790009164;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=vaEn4gJaLG6//UlaQV046R50HUoC/N5LfAqjMif4QV0=;
-        b=HYlbs/tCIgVdnSmXPol/sRkuFIZ6QlmnZSbzggJUpB1z2h7s6NwT7XETv2GN1pxUCz
-         IG5lf69BwQTCziZU4wIpsWvmtm73M/UvRLlgZKOytbxuEphNARXsOV63WCWwgZmhvExe
-         xHIPdXU0OwKa/gPZZOzevbk9P2UertUfr+VzwViWpWa10KPacEh2kKZ63ltZMnxe9K5m
-         IblDqrEivhitDv+8Tzf30QUdLySdHG97jifV0uJOURI1cy5JR9JrMlMeNiLzNSBvaIoq
-         YzlersFWUOJRx5lnZBaRiVf5zR0jnd/E6P0+6/lnjBq2dDsrz9vEmM+Wo4JLwAktNVfY
-         nXew==
-X-Forwarded-Encrypted: i=1; AKwUvBzFfk6yjTENvKJ0UX/zVUmE+Ajr9yi0iWgWmvsGKJMFFb9XDV8o9YQd+A1LdeJV5mfMJF518FPdYQ==@kvack.org
-X-Gm-Message-State: AFuF++mQQJqWrALa5lHIihuZLOiFznndtAIy3VIU4aEFcQAdUP+JZwit
-	aLULan3HiBUHXcIciz4gvBGxq0x6mPoUWfHl5tcEtV9VOPG8wIg6rWef8oe5V5RV8Q==
-X-Gm-Gg: AYBFou083a5wj44SHfq5jUQpKj+Na9U5UBHNvTCxvnprf+gR7eNdyHEsE7dVR+pkepK
-	3oN72PmjlPb99LiITIHD8C66VrPCeb73kYKBDGCzvL2zxw19935yLJyugHXNNZropDfzLTjW65k
-	ZPFltmmV30HCoYPs1s/III7T7lNUy0GjAcN8CVcEH2xiK5CMtw0LFh94Bo+Zk3yUIiPGgsR8Dqg
-	h+rQgdMYMFtvTOEsukvY0qfedfPH32+oRw00cXrvXXWvfd3CHxiV00H9qlejPD+Z3sL+JxRnerp
-	sXF3KDLd0qExw1QDkBKmbExYq1Y42+brY22Gl5fENck6DBYz86OP422stqow4YnCP3cIo745Bep
-	o40n4zzQI5yPcOxOxGzK2W7E+y8BlzL6P0hQOIRaQBqdGWKrztb4xlDKjMTP2Wd7nzSZio9h3Oy
-	2yX19XqhEJcxcwDmWJbNJ3FSzjion1V2gAmq/VWQNUxoP12uQlUoq4LNNQ2EtmGHgC49XGmlMcU
-	lyISFEgSdf9CuT3r8Abcz25F3ETqFHWMAaFiewP
-X-Received: by 2002:a05:6a00:2992:b0:857:7337:5db9 with SMTP id d2e1a72fcca58-86f860d2bdfmr7633241b3a.23.1789404363216;
-        Mon, 14 Sep 2026 09:46:03 -0700 (PDT)
-Received: from google.com (132.200.185.35.bc.googleusercontent.com. [35.185.200.132])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-86b21f0597dsm4930607b3a.0.2026.09.14.09.46.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2026 09:46:02 -0700 (PDT)
-Date: Mon, 14 Sep 2026 16:45:58 +0000
-From: David Matlack <dmatlack@google.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-pci@vger.kernel.org,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Alexander Graf <graf@amazon.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
-	Josh Hilke <jrhilke@google.com>,
-	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
-	Yi Liu <yi.l.liu@intel.com>
-Subject: Re: [PATCH v8 08/12] PCI: liveupdate: Adopt ACS controls in incoming
- preserved devices
-Message-ID: <aqgkxmXlhfqsdfAa@google.com>
-References: <20260728221007.2098560-9-dmatlack@google.com>
- <20260910235149.GA364189@bhelgaas>
- <aqRJF8OME7hn7CJr@google.com>
+	bh=v5QcKmeyAMwJjFlRZ2LyOKih81w4kFzaKRYI/GcEvuA=;
+	b=Rw2vI1Gkdtd/vs+52kb3RpH0b54jd/u1i8RERObapponIWWFscbKdU5Ba61B0r4gG2/qGF
+	2qkew0IXut1eVFbdNFsNRS/9SM8CNlPfyLZ4dvTzbTbC8fvfa24Y08X8PxBdpae5M1sD7N
+	5ZaYsf2wnZGPs033V1vdU6CQfMNqpew=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789404403;
+	b=U92OeR9e3JSJ3vGqrZYEx0uBIrAsEuZhOSdXX0GE9RJLFPWJbLZGBLo57yUeGRuprBnMUy
+	sL1DrjoolFkhK1cLov6D+WEwvKMIRE5H3N+TqZORb49qgfYpV8UEodhAmpJ3Jb99GS3wc2
+	ec03m4LkbPqQ+Tm1AapZqIHrsS70kWU=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=uQlLzw5h;
+	spf=pass (imf23.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 64B02153B;
+	Mon, 14 Sep 2026 09:46:38 -0700 (PDT)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F2B093F86F;
+	Mon, 14 Sep 2026 09:46:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1789404402; bh=1r0rw5uXWXH7+bTv+MSPJvopnTN1PMSJsWeAueQ3OIw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uQlLzw5hH4+y/inqoVF5LI/F5v/0OKn3hBu6YiJiF5RclJSOU30kwx8YQiz+Vd6PF
+	 Kv7GPxXOdE5fNGfmy84Lk4zDUWKwNpomuiIOPLKBUe5upqoT8HCMnT9CQccy6wU2yp
+	 spL1qj8fM3HA59WNxLYe00SO/h32opTmY4jE0wkM=
+Date: Mon, 14 Sep 2026 17:46:36 +0100
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+	Peter Xu <peterx@redhat.com>, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Shuah Khan <shuah@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sarthak Sharma <sarthak.sharma@arm.com>
+Subject: Re: [PATCH v3 2/3] kselftest: mm: remove HPAGE_SIZE and HPAGE_SHIFT
+ macro
+Message-ID: <aqgk7EVV1K_3Pc86@e129823.arm.com>
+References: <20260914-fix_hpage_macro-v3-0-c9a305a01d39@arm.com>
+ <20260914-fix_hpage_macro-v3-2-c9a305a01d39@arm.com>
+ <08d3313b-d891-4202-b460-c5cefa96bbce@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aqRJF8OME7hn7CJr@google.com>
+In-Reply-To: <08d3313b-d891-4202-b460-c5cefa96bbce@kernel.org>
+X-Stat-Signature: weoju5yj41suei9aytchs443cbhzkpnp
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 15290160010
-X-Stat-Signature: 8kh78wuigk647uxskz9xq59s1he7xzif
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789404364-661939
-X-HE-Meta: U2FsdGVkX1+f3bylwPVYCqpE+LRWENzaAIa/tJJqyT1x/wn8el3sGRG5wezbiTNDHo/Ph2PzpzQAG6MSxdT00+wO7xzAHKyqROJsKFT22OQIULReOJcX00ScYyOE3wyFiBd3eLFkCYCIqXsjgy+Db4e547f2m3OgI89VO3y3q3PklHUBAXOAHNWIBISTv+9zLyrIURpnwu8R2pzswKzeKmnrZzVpyPMJW1eHn75R5BSIQjyRm4DF0cm7vUlIN1RaD48VQ74rdBtHpap9FO0ql4IfYWQMVhVLPsYAmKIZb+2K0ygs3UnIXKVM8WGb1G9FLFcBHak9NbH+kiQJR3GPFmqwKiPBci2GU9ZQOjeiRD3NfRNbj0cGwwFEODgvA7MurIZQXRyDCwynsgXvVuo08/iW/RH6RzjWqLVLPoDAj73QYBIf3OANYLiRrTaSYjYf7TBZHbYJExOn8dHpyI9rz08BDZq2N3jJDiT+T9/E6A8xzGnrQRx/0m6Uxfl2Irirg7x1NXbp9eVEDXci5Dx/zBJhVXbKI6h7WK2hp63VilAVPW/rAuyxL6giIvkiGLbTR4Fij9molqRTloLKB1hz2LQQQ8zmww2f7dSQjG0vtavf7J5B/80ZN1kxR2sgpuqV9GYbIuO0YfOGLAEy64Zn6oKj6mf5Cgw92YHNnVmpdTji7QwSs52Xf2v0CCzQT6z1s1qWsems7s/aWllKmtbIfTjZ0Wba0d/GlWJmHWYQax73MBXkigP47NsOfmThsHs+x6659OhyJPRPIdvDHP/q/FwqdRsH/Q2MW8UVN6xYlhu6tzv2HzuvjmZRf2ASz0nTbFWGNM2hz+mAin33TQTftRGplbS3ihz8eSXCl3eyPqruRNcRklr+UqyqoARyTq8HPXj07JJrSpfRnG0q66lCVMZJTXxKiOseqJOpks6VBtAb6wmpXJ4SGHPOOy0WneuIzZPu4baBdoiY+bp087H
- vkMYhJlg
- nfNMeDqVoVG1CWoGpGPwmD4sRrO0kP5N+Q7nvZVv6K+5qWMCVabkXC3pLS9hm84bXPehjqRxZoeh1LLydlwajbRPX8x86bvhbkAYo38GNRLGG5+E3MuEe18qqG2jlFTm++FDP2VC7ePtARcy046HXG0zubzPJJg67SMhNVYg7m1U/fYiGf9r32t47cBnMxXZE0yjkix7f2COYqgKucHMxTXpcrWypNjLWIAczJQcPoWTRGTLs3tkDQQMnDzFeoW6LIx/0b3I/viJzOr9Bdj/F22p9iYJ6XKtAQKsV49aaKeMd82mMVoTkGgoHWnmjbnCVOOWSraxhdBt7PfQdFEAxALTaoGrMVlm/WRsU
+X-Rspamd-Queue-Id: 14BDF14000B
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789404402-237346
+X-HE-Meta: U2FsdGVkX18xqSM3KzwDq6sE4w5Kda+ZYLpEBKeZSql5ipQQCJLFfcYUS8DL835khhccSe3Eb0wHXKxIWU2wp1zf3dhpvNRBbDvZa1c15/oiHjxX7ub6falGfFfxMH8i43I7qWYPMx3DYIv4rBE54V4Er2jacfgD0UYG1/ZVb9DJz8OWlwSsfkMS8p5PM0klhz90IDYbfPp3vwia+gKb9VnjBc10q/LuAfc325ZnFzDERDAhYi6tc5RLd0fAAvi0RibO0qxN/rPtpYs9/Yf6t8u8J/MARky3cbyOG2Yhcb/saDP2M/prOicTrzEK6UoowQSWE6h4oQFBqiRpiEffw6E0NBjVDyWEbiJADu53vCcuyaggLWm2lGetQzBsTXtCRwv4ooP73GqvgCV6YuptAMf2iVCV8mShwr0D+Z12nt7A4B6FDBYQGfG0xLpQOcjukrPbt4wTeAw/gZQ2x+4ZbdAURJEQGHBjksfDgvyyRD5LrfJjhqQ1jFRXf+NTp0gRwSiNrhQt6orQN2r8oC/JbNDmelg5jeNM81TehtBlJ0r+7jQf0Ia7ooLYU7IYg56jnIEYv3ce0UZHvFdFs9cKpnwfbvP5q6cy9KzCb4SXiI7gzC+oNp6nJgUk5Y6DNomsXK802gEjCrYmusdeyMl8OizuOCmzIr4FrLG05/8pe7F2fAXxXlSNDCVXY6Hke8CgrRqmcR3bfsS4qFNMCJzgl1qVa/nIomjSjublrKb2P/AN11PAcJsu+epdDFRH6F1yN9DU5la4GqfOeNjRrR20jDoZYAuWCxa80H+h9irMLKHR2mw6LGHoge/YLo+P7IoAvbuoikFCm/6iC76Bf2vPWxeQreXe9OZCUvVd3EcjpuLDs36B7WE6f+OmJmu/CibaI5mEoujmEp2VtpSyiQKAPC7rw+aV1R1miaYsiZqLmvxgrxTLfGY6gWBFeMwHZgUMlSZ8kehssqldhoErA48
+ zdpret0N
+ 5bD7teSjmNg6uAFLl8fp0sPJK1k/h8hFcv/BQ5ssg1XY8nufYv6MXOoshSCz/AJ4s5JCfSMbOrNyAEbErXDpuWukJJrOJvk9uv9FiIDXH9yGZRbewlhJcX5fzPpEO0nxE5ScY0LMbCaYvmpAQR8kFMVYTNXWyl1rLcABTWro35+zIiuavyq7146WAS3/vDoaVT+H/o4lr1pPQa5Oc9VFI9iCfrBcqYV90ddulqfGgmCpz6KQ8qnAWERDXOrosoFeuMciS9WLqwR+sGY89sXospL7GgrCLJoh5evwqH2chVpwUn1HBVwUW4/VIB3p5RyG6cBgCulqHaLcjF7dEmGRCz0XnY8zO2FPdNhr3a+63RskelMISK12MgOa95g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,227 +105,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-09-11 06:31 PM, David Matlack wrote:
-> On 2026-09-10 06:51 PM, Bjorn Helgaas wrote:
+On Mon, Sep 14, 2026 at 04:08:03PM +0200, David Hildenbrand (Arm) wrote:
+> On 9/14/26 09:30, Yeoreum Yun wrote:
+> > HPAGE_SIZE and HPAGE_SHIFT macro is written based on the 4KB PAGE_SIZE.
+> > When this macro is used in some test, test result would be strange in
+> > the system where PAGE_SIZE is more then 4KB.
+> > 
+> > Here is the example with transhuge-stress test with 16KB PAGE_SIZE:
+> > 
+> >   transhuge-stress: allocate 61073 transhuge pages, using 122146 MiB virtual memory and 1908 MiB of ram
+> >     3.292 s/loop, 0.054 ms/page,  37106.002 MiB/s	2566 succeed, 58507 failed, 2566 different pages
+> >     0.591 s/loop, 0.010 ms/page, 206850.792 MiB/s	   0 succeed, 61073 failed,    0 different pages
+> >     0.527 s/loop, 0.009 ms/page, 231895.107 MiB/s	   0 succeed, 61073 failed,    0 different pages
+> >     0.527 s/loop, 0.009 ms/page, 231839.704 MiB/s	   0 succeed, 61073 failed,    0 different pages
+> >     0.528 s/loop, 0.009 ms/page, 231544.782 MiB/s	   0 succeed, 61073 failed,    0 different pages
+> >     0.528 s/loop, 0.009 ms/page, 231462.074 MiB/s	   0 succeed, 61073 failed,    0 different pages
+> >     0.527 s/loop, 0.009 ms/page, 231770.300 MiB/s	   0 succeed, 61073 failed,    0 different pages
+> >     ...
+> >   ok 1 Completed
+> > 
+> > Remove the HPAGE_SIZE and HPAGE_SHIFT macro and introduce pmd_pshift()
+> > helper to get the HPAGE_SHIFT properly. For HPAGE_SIZE, use pre-existing
+> > helper, pmd_psize().
+> > 
+> > Also, run the KSM_MERGE_TIME_HUGE_PAGES test with a size of 512 MiB,
+> > which is the least common multiple of the PMD sizes for 4 KiB, 16 KiB,
+> > and 64 KiB base pages. Since allocate_transhuge() allocates mappings in
+> > PMD-sized units, the test may fail with the previous size of 100 MiB,
+> > which is not a multiple of the PMD size when the base page size is
+> > 16 KiB or 64 KiB.
+> > 
+> > After this patch, output of transhuge-stress:
+> > 
+> >   transhuge-stress: allocate 3817 transhuge pages, using 122146 MiB virtual memory and 119 MiB of ram
+> >     2.558 s/loop, 0.670 ms/page,  47755.759 MiB/s	2585 succeed, 1232 failed, 2585 different pages
+> >     2.640 s/loop, 0.692 ms/page,  46268.432 MiB/s	2585 succeed, 1232 failed, 2585 different pages
+> >     2.635 s/loop, 0.690 ms/page,  46360.298 MiB/s	2585 succeed, 1232 failed, 2585 different pages
+> >     2.782 s/loop, 0.729 ms/page,  43899.795 MiB/s	2616 succeed, 1201 failed, 2616 different pages
+> >     2.692 s/loop, 0.705 ms/page,  45380.876 MiB/s	2627 succeed, 1190 failed, 2627 different pages
+> >     2.612 s/loop, 0.684 ms/page,  46765.812 MiB/s	2628 succeed, 1189 failed, 2628 different pages
+> >     2.683 s/loop, 0.703 ms/page,  45520.990 MiB/s	2630 succeed, 1187 failed, 2630 different pages
+> >     2.727 s/loop, 0.714 ms/page,  44789.321 MiB/s	2631 succeed, 1186 failed, 2631 different pages
+> >     ...
+> >   ok 1 Completed
+> > 
+> > Suggested-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> > Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+> > ---
 > 
-> > > diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-> > > index 77b17b13ee61..22001bdf4c97 100644
-> > > --- a/drivers/pci/pci.c
-> > > +++ b/drivers/pci/pci.c
-> > > @@ -34,6 +34,8 @@
-> > >  #include <linux/aer.h>
-> > >  #include <linux/bitfield.h>
-> > >  #include <linux/suspend.h>
-> > > +
-> > > +#include "liveupdate.h"
-> > >  #include "pci.h"
-> > >  
-> > >  DEFINE_MUTEX(pci_slot_mutex);
-> > > @@ -1008,6 +1010,9 @@ void pci_enable_acs(struct pci_dev *dev)
-> > >  	bool enable_acs = false;
-> > >  	int pos;
-> > >  
-> > > +	if (!pci_liveupdate_enable_adopted_acs_controls(dev))
-> > > +		return;
-> > 
-> > Ugh.  The asymmetry between pci_save_state(), which does nothing
-> > ACS-related, and pci_restore_state(), which enables it, is sort of
-> > sketchy to begin with.
-> > 
-> > The command-line parsing in this path feels like kind of a wart (not
-> > that you're touching it).
-> > 
-> > It just seems like this path is already hard to analyze, and
-> > liveupdate is making it harder.
-> > 
-> > If we could save/restore the ACS state around the reset, wouldn't that
-> > solve this without any liveupdate specials here?
+> [...]
 > 
-> Yeah that would simplify the liveupdate support greatly. Let me work on
-> that for v9.
+> > index e712a980851c..fd1432dc6152 100644
+> > --- a/tools/testing/selftests/mm/vm_util.c
+> > +++ b/tools/testing/selftests/mm/vm_util.c
+> > @@ -21,6 +21,8 @@
+> >  
+> >  unsigned int __page_size;
+> >  unsigned int __page_shift;
+> > +uint64_t __pmd_psize;
+> > +uint64_t __pmd_pshift;
+> >  
+> >  uint64_t pagemap_get_entry(int fd, char *start)
+> >  {
+> > @@ -161,6 +163,9 @@ uint64_t pmd_psize(void)
+> >  	char buf[20];
+> >  	ssize_t num_read;
+> >  
+> > +	if (__pmd_psize)
+> > +		return __pmd_psize;
+> 
+> The only suboptmial thing about these functions is that we keep querying
+> repeatedly in case of failure.
+> 
+> If it failed once, it will fail always.
+> 
+> You could either add a new variable for "queried" or encode it in the variables like
+> 
+> uint64_t __pmd_psize = -1ull;
+> uint64_t __pmd_pshift = -1ull;
+> 
+> To then set them to 0 or the actual value after we queried.
 
-Here's the patch I have prepped for v9 to save/restore ACS controls
-around reset:
+Okay. I'll respin it with above.
 
-From 0c69424454de0c569aca67bc69f496db915a9bcf Mon Sep 17 00:00:00 2001
-From: David Matlack <dmatlack@google.com>
-Date: Fri, 11 Sep 2026 20:05:04 +0000
-Subject: [PATCH] PCI: Save and restore the ACS Control register
+Thanks.
 
-Save the ACS Control register in pci_save_state() and write it back
-in pci_restore_state(), instead of recomputing the ACS controls from
-scratch with pci_enable_acs().
 
-This makes ACS symmetric with the rest of a device's saved state. Today
-pci_save_state() ignores ACS entirely and pci_restore_state() re-enables
-the ACS controls from the kernel's current ACS policy. As a result, a
-device can come out of a reset with different ACS controls than it went
-in with, e.g. any controls programmed outside of pci_enable_acs() are
-silently dropped.
-
-pci_enable_acs() runs when a driver binds to a device
-(pci_dma_configure()), i.e. after pci_bus_add_device() has already saved
-the device's state. Refresh the saved ACS Control register there as
-well, otherwise a subsequent reset would revert ACS back to the
-configuration left behind by firmware.
-
-Devices that rely on device-specific quirks to enable an ACS equivalent
-keep that configuration outside of the ACS Control register, so keep
-configuring ACS from scratch for them. Do the same for devices that have
-no saved ACS state at all.
-
-Assisted-by: Claude:claude-opus-5
-Signed-off-by: David Matlack <dmatlack@google.com>
----
- drivers/pci/pci.c    | 66 +++++++++++++++++++++++++++++++++++++++++++-
- drivers/pci/pci.h    |  5 ++++
- drivers/pci/quirks.c |  7 +++++
- 3 files changed, 77 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index b2879a6be5f8..dd25c01736b4 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -1021,6 +1021,55 @@ static void pci_std_enable_acs(struct pci_dev *dev, struct pci_acs *caps)
- 		caps->ctrl |= (dev->acs_capabilities & PCI_ACS_TB);
- }
- 
-+/**
-+ * pci_save_acs_state - save the ACS Control register
-+ * @dev: the PCI device
-+ *
-+ * Record the ACS controls currently programmed in hardware so that
-+ * pci_restore_acs_state() can reapply them after a reset.
-+ */
-+static void pci_save_acs_state(struct pci_dev *dev)
-+{
-+	struct pci_cap_saved_state *save_state;
-+
-+	if (!dev->acs_cap)
-+		return;
-+
-+	save_state = pci_find_saved_ext_cap(dev, PCI_EXT_CAP_ID_ACS);
-+	if (!save_state)
-+		return;
-+
-+	pci_read_config_word(dev, dev->acs_cap + PCI_ACS_CTRL,
-+			     (u16 *)&save_state->cap.data[0]);
-+}
-+
-+/**
-+ * pci_restore_acs_state - restore the ACS Control register
-+ * @dev: the PCI device
-+ */
-+static void pci_restore_acs_state(struct pci_dev *dev)
-+{
-+	struct pci_cap_saved_state *save_state = NULL;
-+
-+	if (dev->acs_cap && !pci_need_dev_specific_enable_acs(dev))
-+		save_state = pci_find_saved_ext_cap(dev, PCI_EXT_CAP_ID_ACS);
-+
-+	/*
-+	 * Devices that rely on device-specific quirks to enable an ACS
-+	 * equivalent keep that configuration outside of the ACS Control
-+	 * register, so there is nothing useful to restore for them. Configure
-+	 * ACS from scratch instead, which also covers devices that have no
-+	 * saved ACS state at all.
-+	 */
-+	if (!save_state) {
-+		pci_enable_acs(dev);
-+		return;
-+	}
-+
-+	pci_write_config_word(dev, dev->acs_cap + PCI_ACS_CTRL,
-+			      *(u16 *)&save_state->cap.data[0]);
-+}
-+
- /**
-  * pci_enable_acs - enable ACS if hardware support it
-  * @dev: the PCI device
-@@ -1057,6 +1106,15 @@ void pci_enable_acs(struct pci_dev *dev)
- 	__pci_config_acs(dev, &caps, config_acs_param, 0, 0);
- 
- 	pci_write_config_word(dev, pos + PCI_ACS_CTRL, caps.ctrl);
-+
-+	/*
-+	 * pci_enable_acs() runs when a driver binds to the device, i.e. after
-+	 * pci_bus_add_device() has already saved the device's state. Refresh
-+	 * the saved ACS Control register so that a subsequent reset restores
-+	 * the controls programmed here rather than the ones left behind by
-+	 * firmware.
-+	 */
-+	pci_save_acs_state(dev);
- }
- 
- /**
-@@ -1800,6 +1858,7 @@ int pci_save_state(struct pci_dev *dev)
- 	pci_save_aer_state(dev);
- 	pci_save_ptm_state(dev);
- 	pci_save_tph_state(dev);
-+	pci_save_acs_state(dev);
- 	return pci_save_vc_state(dev);
- }
- EXPORT_SYMBOL(pci_save_state);
-@@ -1877,7 +1936,7 @@ void pci_restore_state(struct pci_dev *dev)
- 	pci_restore_msi_state(dev);
- 
- 	/* Restore ACS and IOV configuration state */
--	pci_enable_acs(dev);
-+	pci_restore_acs_state(dev);
- 	pci_restore_iov_state(dev);
- 
- 	dev->state_saved = false;
-@@ -3532,6 +3591,11 @@ void pci_allocate_cap_save_buffers(struct pci_dev *dev)
- 	if (error)
- 		pci_err(dev, "unable to allocate suspend buffer for LTR\n");
- 
-+	error = pci_add_ext_cap_save_buffer(dev, PCI_EXT_CAP_ID_ACS,
-+					    sizeof(u16));
-+	if (error)
-+		pci_err(dev, "unable to allocate suspend buffer for ACS\n");
-+
- 	pci_allocate_vc_save_buffers(dev);
- }
- 
-diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-index ba3c3fddddc2..037c1674f164 100644
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -1095,6 +1095,7 @@ void pci_acs_init(struct pci_dev *dev);
- void pci_enable_acs(struct pci_dev *dev);
- #ifdef CONFIG_PCI_QUIRKS
- int pci_dev_specific_acs_enabled(struct pci_dev *dev, u16 acs_flags);
-+bool pci_need_dev_specific_enable_acs(struct pci_dev *dev);
- int pci_dev_specific_enable_acs(struct pci_dev *dev);
- int pci_dev_specific_disable_acs_redir(struct pci_dev *dev);
- void pci_disable_broken_acs_cap(struct pci_dev *pdev);
-@@ -1105,6 +1106,10 @@ static inline int pci_dev_specific_acs_enabled(struct pci_dev *dev,
- {
- 	return -ENOTTY;
- }
-+static inline bool pci_need_dev_specific_enable_acs(struct pci_dev *dev)
-+{
-+	return false;
-+}
- static inline int pci_dev_specific_enable_acs(struct pci_dev *dev)
- {
- 	return -ENOTTY;
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 7aee30734303..e500c202d2ec 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -5476,6 +5476,13 @@ static const struct pci_dev_acs_ops *pci_dev_acs_ops_get(struct pci_dev *dev)
- 	return NULL;
- }
- 
-+bool pci_need_dev_specific_enable_acs(struct pci_dev *dev)
-+{
-+	const struct pci_dev_acs_ops *p = pci_dev_acs_ops_get(dev);
-+
-+	return p && p->enable_acs;
-+}
-+
- int pci_dev_specific_enable_acs(struct pci_dev *dev)
- {
- 	const struct pci_dev_acs_ops *p = pci_dev_acs_ops_get(dev);
+-- 
+Sincerely,
+Yeoreum Yun
 
