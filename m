@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0632C88E75
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 15:04:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 102E5C88E72
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 15:04:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3505D6B00B5; Mon, 14 Sep 2026 11:04:08 -0400 (EDT)
+	id 1A7C96B00B7; Mon, 14 Sep 2026 11:04:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D9176B00B7; Mon, 14 Sep 2026 11:04:08 -0400 (EDT)
+	id 159886B00B9; Mon, 14 Sep 2026 11:04:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1094C6B00B8; Mon, 14 Sep 2026 11:04:08 -0400 (EDT)
+	id 0204E6B00BA; Mon, 14 Sep 2026 11:04:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CBAAC6B00B5
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 11:04:07 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5F59914018D
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 15:04:07 +0000 (UTC)
-X-FDA: 85212688134.24.B94BD64
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 890E240004
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 15:04:05 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O+2yR+Gz;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C3EDA6B00B7
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 11:04:35 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 663B84018D
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 15:04:35 +0000 (UTC)
+X-FDA: 85212689310.06.A0F3C6C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 56C34180012
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 15:04:33 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d8UAMgRj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789398273;
+	b=m5B5i7rQywfUQhGs9YbaO4NicjTUSzoV8ZBS2DGndVBBKF+Tav1FHieju7LXNLC2HaQoXC
+	o+n4jTXu/YDKAYuTBe90n0NJlG8N9hdVIuVUrEoXeLFaHtifUdmyCmbyf87xPFsIw+Ttki
+	e1XehTCGPJArOphcOm+2M3x+PkfDY14=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d8UAMgRj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789398245;
+	s=arc-20220608; t=1789398273;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3NscFRoiSw0VLcsrcN7WIQlCyh4L7cg6MA64F9Bvckc=;
-	b=uN++KoD1cZQiCYQJARkHPXJ6IQRdAXl/l1Q13aM+2dGyRLQnvgpptJajiUKKfSbw310/5C
-	LXVvypt7jTMQtdbQJLqIst/m+0TOIYYspoZOfJMmv/aVCrPa1ECDoyCoh0aV+q0C00U3et
-	3Tznw42pej7gXCVNLK5pVudUGp3HKqg=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O+2yR+Gz;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789398245;
-	b=1Z1okHih1InjprPCJljrsET/MrlfwbkgkU3wT81JrX9VFrsJ/0ICRIZOaa4CLUFIfQ9msZ
-	8+yEZsmKc1uMjvpbXxe+tTazfaQh9PzP62mruNvPF03AdwDDCsQGTC9wtbrBm6eJ4cx7Pe
-	9p6kCJhsuo0u/Zps3s5Om+0qW16JNRg=
+	bh=10L90PzOXSgbgk2Yp7RVeipj6WjV7mej+Ed4jbhmuXc=;
+	b=iVBG0jxve5dR1CARaMMFU9jGmcVE0g6rphQLesBDt85mUENjMaA7kIhIuOR11BZba+krpj
+	8xNypQqyAaXwUXYd5WREHihkfVmHC8PJy28Lix55zkbKPqh96NSseDpS3oLHPg+ONc3AbS
+	2GFj1JWXd8rR73Q0IbztqcSkeenf25Q=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0F40060252;
+	by sea.source.kernel.org (Postfix) with ESMTP id 60BE943CEF;
+	Mon, 14 Sep 2026 15:04:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3978A1F000FF;
 	Mon, 14 Sep 2026 15:04:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D1A41F00893;
-	Mon, 14 Sep 2026 15:03:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789398244;
-	bh=3NscFRoiSw0VLcsrcN7WIQlCyh4L7cg6MA64F9Bvckc=;
+	s=k20260515; t=1789398272;
+	bh=10L90PzOXSgbgk2Yp7RVeipj6WjV7mej+Ed4jbhmuXc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=O+2yR+GzyvNY1voG7/f8ZVHT93rVxgpL8XsI+IF8jWob+9y4QJLs9WNbvI5u2uZI4
-	 8jwm80J4TEPRKHMI/fF9JwIyD4KMVWTZYa9Xa1Q6jP2pjrfmh+3R5rOcDV6+tFh0qk
-	 BPMaPLVOOx/1bR23u2+g31dBlFWlYoNrA/qO3GUmKZlEes/wEhZX6g937fjftPF1rd
-	 Gh0nLKzieDlOC4lnc+IlLrFQ3ajJZq7ozkNKzEmlgjCgElroomjCystDaYutw8WEcC
-	 pTndPiVROmqPhUP2X5CCNeqKIlShLBEE41NDxrUMltsx/QwjYt91IwWq0ysLkZiMCG
-	 kTmtQdKuZAiqg==
+	b=d8UAMgRj6PgQ53/smtxw4DHQKRNh+18yk0qKHcSvJNn0G5z0EifIOn0OASdCFbr8X
+	 CjXma6sDoRLr7JXSD2DmbuLfmxmbBz0mAVtVwgeLijE/Wq8ZQ2kYl43IFvFf2AwMXy
+	 gjKI9yclJGgXaEXCrXQUihVyFfoSmoiN+hB3UeBp8WRBJNYj26yTsvR3g/SOP8zmiB
+	 zck3UKhesjAyeUvz0ZwISNpUk6ue3dohMXjfY+05LDAhwGPIjjxIRphX+IRxXWes9p
+	 91PtBVbi4/LvVNdYVuwQramdMFWxPLbQO5o2/TMCif3NQ6boGBTs00nJHtXJ9+V3Gb
+	 wlElXOk0MM+xg==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Mon, 14 Sep 2026 15:57:30 +0100
-Subject: [PATCH v2 10/40] drivers/usb/mon: update to use mmap_prepare + map
- kernel pages
+Date: Mon, 14 Sep 2026 15:57:31 +0100
+Subject: [PATCH v2 11/40] infiniband: update hfi1 to use
+ remap_vmalloc_range()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260914-b4-mmap-prepare-vma-flag-sanify-v2-10-7d9781ed5361@kernel.org>
+Message-Id: <20260914-b4-mmap-prepare-vma-flag-sanify-v2-11-7d9781ed5361@kernel.org>
 References: <20260914-b4-mmap-prepare-vma-flag-sanify-v2-0-7d9781ed5361@kernel.org>
 In-Reply-To: <20260914-b4-mmap-prepare-vma-flag-sanify-v2-0-7d9781ed5361@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -155,28 +155,28 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, 
  fuse-devel@lists.linux.dev, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6221; i=ljs@kernel.org;
- h=from:subject:message-id; bh=GUpTHNxmxWarSVjd88RVgsA6FQygd+NcCuy3YFJiswg=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLJWcK/vn/Vj/uFpybwPt1Wx+5eeLFooMnOba09gtZWKx
- 4RPk3gEOkpZGMS4GGTFFFmefxHfHyQSNq/zgr8bzBxWJpAhDFycAjCR3GqGfzYp/OHeXgvyb/yY
- 9mx31+f7vswLnO8ZVmhY2ilxTiiSP8XI8I219qVawpriGQGOdl9/i/rqzBXwj7zDseal3NpVz85
- KswAA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=10306; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=t2zMqz7GwrO9LwCoKVbfTLpQhoUUcOpzKx1NKvIhX3o=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLJWcK/fe8KnXOfZ5zxzlphrF3bNicr173zyyGubnX5P4
+ T/eoqbpHaUsDGJcDLJiiizPv4jvDxIJm9d5wd8NZg4rE8gQBi5OAZjIlSBGhvvVZwMXmSeUcNem
+ P4lR6n2RszChb++GcjXufWaufmH3ORl+MTf3Z8Z3n1hzjqk87pPjG8F1b7a0OS588sU0auZ/iYN
+ 1HAA=
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 890E240004
-X-Stat-Signature: pxr47wd83kwqxxpnirnisx4dic38yxua
 X-Rspam-User: 
-X-HE-Tag: 1789398245-644147
-X-HE-Meta: U2FsdGVkX1+zXuukAEHVpX5XwVIyUTwP3+tOagNRMcA9YHwKnGM8mxm7kb7QCY2tr9XLlAzVwLhf9cJi3xkkfMeLdWoPQt5Da5LM/d3n2NvSieqhNbpOZ1G01MRgsgZT/gQrDNYeojk8bBb0LlKi5yLRHbJ1oqa01u22RSMGti6HhFToRJqb/sVbMxS0bdMPQyLEbEV3ibnAkhGTuJX3XetciOwsRZEmOSTUb2FEinQh77UrgjyiI+08yPx+FhGB12asXW3Dka+fKeo7SbDRmBZcDY6/xhJwHpZw7a/hHyv129ZfxRfHTeCpbQcbuA2jDWUTw5OWgKbZyeIjr1ksw4Mo/T2C3FNa4d5rEeaPlI1GJc2Vv2jnd1NtKv3X97AkLMaFBF2R/8qrAPefOHjCimn8OxPxcbU2+p55rfLyH1y2qY7pwUgLLdbRCdg9TQCug2aEnnYe0RjoK1jtq7ZcjFSL0st+eM4EV2ZdXrr44LPxE6Zju6K22KBiP3d18H8mrFoYLBgUJv3GODEIiS2Sw3/mDTWAfAWGpsyW0rXgadOMZ4BLziAs5UqmAJbHwvxqTpMWt1zWgEV42yXR0vLVgyyXjF+GDIX6ReBoAFZROTtF8YuZebyXyV9YGqv5aeiUXNQhFgxSJ+otTJWhC+lcCVwJNivniPInTYtFTJ7B7RGg9BGH8k2m4LdN5hfhZ4+MWn1lhELnIkav82tA+fVaO7uSTztm83NNhWNpzCK7w/s+N/ngmfxoxMU2EBwX/9KW17btvOrreFeFjP14z67jia+c2+dT0LJy74Eb6Sm3RiiGA0h/YQHDaFMiy60rBQzPoQjVFJQxp2nHwVWE1S6frlob7UND716h9EKeJ8/bMl/6SbN5rOW9Ca+5rEW5oymzQDtSb2nMWSoZWEkHs6rirrB4cWNtvOPoTyK3/u+9hZazG/ub1Xmayt4Kg41W2RLxZG30vd4/B0JtRfo2qfh
- k1sxL2dF
- bFO4DTJ6EVty+pR27M6U+5GUzugJZWwILoIIXuiXajtZjsPTrc3BDvVj3m27cn558cknnHWGLuJDJqeLv72UZruOBVlFPpC881SIq1K2TBuuXnmT2OUtM0s/ayUQo/xwdaSv47Ca5MvAy8biXP5h5miOMN23h3ZigwAW4B1/6I1La6EPOLh2CWrCqpk0Zq0m3y+P48utDX0LivkundAPMdNozI+aL3disJ4aFQEM6uyiPHo8/K7ksYiym1GLNNRlGwmcVKbL/DUuYLl2tsBA3+wUaGCkOdD9OgoAWpiiJ/D/Ms+M8r++5+/DHymJ+Smz6oqn+5KvRhbg/gKKhg+frlZrX+oN8k9ospSp4kdsFPMEjiXBNJIMyThgdSKGA8NsN22t9wxprQLbh1P8Ri5rQ9RspNTF5VlMXS4OZcGvKBx6d2loCL2w3PA5sLqH06u3nAgutps/MBHRUUahj7v3M3wy1x6VQHKaST+Bz/BbulDoGFi5B3UTjHXIHn46dTXVExCcmxXrHmCysqPcqKzU8rA0PblYz/2FPb5/2GEhMZltzVZ2sfXukhEFlSnIBKDhkNBEkn0aJzHszoN7w+G7qxRENoF2TnChKw4h5R7AFyOchLR0bjXaWQV7bXLAFCuJmNDUARudICJn0HoatIh64VroCR4ZuIGx+hs09rU2zGceri795xIlmd8PzhJiyfqiWTIj2+gj0o1m+o7+pEH6ozSbABEPJYcyUW8iz7HEeAQ2c7BJ/f++9RmjsdPMsd/JxOiiA+uXjXL82p1PF7PpHXdMdEkSyxFau81QkTLwPNGYYXBOvopJD0jckdKykkzr/56+Z88098xdYh3iUUU7iB9gcU2Tl8L569+m9z37N9fxH3Wrof9PLGhI53vDc6zMOuldIM4xSndfbCkFY87ixXXvSP6cFUmbp2003DDUe3UAb00lsKucAn6gtXBNaamn2n499dnSsNHg3oF/KqLDwO2ZFDno9
- 0fEGx0np
- Zw7MsJyE+JI0o9tCgV6VsKPZpqq22YeYNsizblUfYLqbhszmYXmBiZaAUf3rhKQXktwpX1hneR8Af9hdz7+zNbQKwZ01ztRPdCvX8/m1dRwlyiOubUfx++3l53JQFZB2WwQ7shxdDnn/G1vSe29WUTUTcW+9t2Orm4W5jSWNPPBuOunUzA/9R37cMvidSgAwtSzJF3SLoal7TXSAxG3KJIPH0kXm8zqYVho9Ei+tC29dw4LjioQfLCPHn11goisW7RR4ZvsCEqCYbu1oaNid1jV9M7Vu+U30too3l/x8UP5vAcxevISnz+szQfwSKjcJMHesfd3SQOsl1DT7zF89KqZ3H810Xf/mmAzTnu5ofruhwOW332qcIRumMR2Oik8biAX95UihFGwaH2ZULpN/sjdPpDm/7eakF5JGWv5+mW1RQtetcVbMpzcpxiq9NW99wwj9jRTNEDU8RAeFvBYgoXtXhKrfPBRE+Sshtj1/Jqc/XGwR4oixTJWkmaagtgMdaPyoMv1XiSmVrGm6V7EWXStktDUuCeqjyB3fiTvxPHZz8emD4IPB1ycnFb4htHhZbLV3NneURMHUWLKhNg7BndSWmrMjxGdIwp4alAuMMIXIRkJLR8RSetFoVjpakLI1Edllh9OJV0C0NvJQANxy0mZ17QY92Dny4p9SYZu7L7KzxbwH+uakt9VN8NlCPwj+L+TX4wuiq+0pjw/Sd4tIAdP92mAybtKrWeL+7hc2myhg8Hep8m8lbpaQvNn/Goz0l9HVW2edNJhV4Mc5nEgIVFHwS3ujJytKtH4ufpB146HAUe8Su9EKEp8QeAiwlZ/dZG2kprCGx6wMLjOuyHYR/MibRUK9w2g284dzst6gHsd81XEJXrDNVUfDPABZo/VV2O/aroGJ96PL6NNf8kbpu30LTLJ+p/0u2w4e0iuu+F4vQM1iUJChX8xW+hzciLIBqK1x0IpK8kjExg2Pl4smLGx6Ct1Kr
- +RXIMVFX
- 6zUtuf/1qTMcYkverXqJlBywDiVDSSYEJ1hVgep4upCzLY7b44MQbWBTQsTvF8jM6+F9RgNKAMPcEXo39onS6cpUNclLaG36BQCyFxGCrdZaeQITgyTySTb/eXOpOJZmv8A9j66nORdMyuH/DFBMDuP535ALxkaF7NkJ1Eb36f9fyU27V1lXHYXIl9Ia9piXjHkoVzsDOnRgFzs5YZat0i3uaFuMNSbwQkXqsBAGjF1ojtWT7gkcvAmVj6sv78RGwX3Zrq2vNuwXvCgn5iX6TS6x8fhaivRZupOqi9LSTx/+BFW7hUzSke6moz/H9NPiXcE8Og+8QkRGZxPRQVnEKbFtgG3TyctVEXC4EUgjg/oZpVfFxwA/Lr1WgelU7X3oDL63kBNcvXjnjtAt0xcklWoSDbjZlTtA61Qir9IcNUUf5aQo98vtDKZTU7ILHd5yJtts3aMTOlIBITBWWuVJG0UUvj5rV0Yf6faqByHVGz/Y4O2HVlh9DsBxvaEA7sZ1PhBngP8WN3Yr8EXmRf8U9PcgLbvUNr4jJEbjMdPZXz9Y9Fg4Q9ojfZNVNMqUx8jYyvJ0y9Vot+dv5NdqJvZDLzeWbKFsCiCW68sXJIl1KEb2Rk9cvWGfIa3GRexxTCsA42e8njrLtFf0RS412ZeT+y5Iq6unBFxmZ+hm3l5GcBbEbKyGtmDI8kaOj4h0+Qo59yvnktgTJENpU2K7TpTuRmBISFx1NHbw0sCr2F0hcbsTGqAiZsb6jwWPA/qNQ8CvtO4U1+qK+7TRVpLyHbOzjCf5cNJoo17XN8pOzU0Zqs/XfdZnehUJy+G1bTA8KDjpv+IoamrJ7jpXZgU23AnTr+wzyOXJ6f7c7Z60znpXCPQXr0M7jiQV3gkn3NwyvmdkJL0q87c4kZjpcKiymE4Fu2T5JgsPXhml10XS4HG4aCnbMJdNr64ooewS7IB1Rcgsbe/KLf6BMSOY4Eurgwk6kDb2r20U4
- g//37R5u
- IjQjlVJGn45i2h5Vqn2Lqw3z7fX7xa4yvXlx0LWvzVELgHqsSVKLosf2xpFqnxnQlMPaTDpuMJCEHoZ/JQXLaDXNQa9SKGKBPxyGJqhK+m0sl7sV+oiyvwJzLT+nZnpr3AwEWtcboZI9x9FuulsM5lXzdileIMrPE5bLYcjmSyfKLAoG5/A3Z0XhKqrDdGiZwFWKnw434MRsxtJeBcuiJ/hKbNvNvfJ2m0NB0aqSXFSArnI01CLni6YWvHUooJmelRbH+YJ7UuZYSjMOaDUcmbfanQlj/9ARqQQrBw1dN9n0jApYTNAmnPWqMwulhpVipIIV0gwOjetUO6EMweEXWWMuq/uXQMm38hthEQHQvFUD2P4BQ3l3j1QCmQ0XzaOWGmQ9nFXB8Wlw==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 56C34180012
+X-Stat-Signature: p3xpm4s4a8t8mw6i3fifhkgercg4cpz6
+X-HE-Tag: 1789398273-550793
+X-HE-Meta: U2FsdGVkX19iOMoObwcjCNXEoMjdX/XA120hDzvGe+WGAy10pX+2ZVbgNewUsoexB/+TqZI95wmLU3I494An+Bl35Hb0OymVgVLhn6ArXb9hKZ12N++7C82HvUXwX2a1W2a/DCHDtpodAt7+bj1RLushLjwx9Zj2BvtnFk6gFg8tGl2oceWG8xBB1/5klGNVwaARR+oP5MPumG7oyPygQ5niYr1dOD4lO5HJ8IyuDEW5RqOd612y66X3RoyfxuSTav5587eg6CWfqYZioZZvI5VSpBodG9kiYvzohttunl4fZLiHop8txLc4EQXUYTsukqxT2RPTVChYW/5g8g5ixOTUM8tiXxcIISFgmfbZRamfU6RnbXc8HehXv/+xhXbU9eMxL3Aph6TJ1wraSE2XMcVWDDUTJsgj+FLlia3HZKvBhGcC1JtLjvTuGQERsYgaEjY3b8nsx1XelpBLwsmd/dzYpd72Ae5lCKektdWFd8C1fP6DH73QX/ZGflYj8ltA+AXgZMuvSYdVDRFGlp5PPcYekeFFYf9cTLd3+2HkIa2zZGWoxQ0ohTQ7GDeOg5yhRw+S+YxgGZoTBPZZL3sSZc5+RkkyWMy3rRc1Tm862WzRcOAWYYuu9p07GrhAdh9mR/SBRWbumBt6DgafRGY7Q+LSnVSPWLECHZLUFiq9GsauJMGwaFxAl/wR91gUOmQMqD5YDVhsnrOZZhiYJeGzppQhD7RIdPIBnsyBwKTX7NJoR4JYFi+bnpxhddPNssgKYG4LxPWZxb7gm5XlVcMNjNvo0Ev7dvbvSZaME00X8SWJ9CXdxpwMfLEIr6OJFEddO/wU2C8t+doHaxPR4S/WvqXXIbqiRtZj6YRQOKqrKrmvafNablErqcn8zV69mJLwv1+smd/2RsmneO2ecv3Lf/ytcQ/fthmBFhYK+KgIKgR2JaeXct840iF6I4uUDkP+AvxuF00XiyzPiJR1pc6
+ fbfe9eY1
+ hwSLnNSOOdvDBB0zw292rxkI3iET7jaShX3FC5bB5MwtkS/Znhsv83h2bGSmg7Q+B4wf9oC1QuO4IIJcjE/GIR24zhWEXdvxR+5XKC8U4BTVGfkVrA7hrXauV5BJC8Mqb8htMOYLKFZPtZiMnpsQCddV84rfzBKrgnDd1U7TytSXC+uLVa6l5UkzJRdy83sc9AErScStWkCEVFFjemB1HU4weDYQ2yHd0J20TFbrAWfYJKtxdWyunt+cGutPT60ZoJvriGGGa5DVNKK/DgvOaXDLsRIMUkPyMDg+FD52SDmNBxwvTYuzhGMZHj7k3ENqGqId8MCrL0vTqOmzGVYBJPtqfpFnyv0R0+Dqq9kjc9of5HQ8NBsFvNW7FmsK49meyRqvJPuPitgAWl7DdPj6cJnpW/0DfKdmb/idSeXpj+4oygH+sAy6D/QZ+3OsDZwXWmQsqq7z5f1D4+mTUV5CWmjlDFowdQdFbGilWVG1WKSaEBefZIuxWCLZNaSkXSfZ6V+SqIQZA895f9NTX06Bp8vMWuOzEnWWjA2xb5YVGNSUAuwFtj8lcqWaq6A7xibMIXVmyj7mfJoIYcwFupX36GWBBEGIU2sqTHUY/ocVBcy5gX6gDKf0fYI3tTro36hH/ogfsgGT/5WAre8iyX6388RW6nl+BiG53ojEyCQwdK/joQvSDDhTLSuoKRN/J61xsyTLl0EdXX9/Y3f0dLxtMouBc1eSD4pYYY9+MRPyb6GtZ0eABvPykAxSxZfU2nwvKomHleE7O7VtEJCSlLQpekVlefGRl9pVLOIg4z4z36vrtZoKGqFyxL/89rvU9D7vCgEj7V29jewbgDV86bhIKGl3mIq4Cuxr4hxtDGPGCUEGF6uNWZsqpVTDzDM5qsw/Rr1BQGI0Fq4VTIvq+FUOcQBggnmMff0u7lsaT2HTlBDmE6ujMJ88+kRYDYBolc22aihABMUKN/ffzA0FTK6aNo0rfR2WC
+ 8MMUzOHV
+ 8tFkWuNWBH2KDN3S+KfcPSGkCTTpcICWs7lFsKtKuufa7seOtVmSVOeO+XERbWgWWcLBGbn5xapHjZjEsjjEMI3nG0h7KdaFsngEOBywipF+mvzwCkc8q0eG4c6kVxVjsr2hugiOX8qE/0fYCTtET+1DoZ9IgU9K2dQP+11aaXBREr6F2sfJnE9tB3pzhskFcRhjo4e/7NsxIsZejPgMCG76Kcl5B+U2MNkHsZZdjP0F5FrTEmbZ+4/ViFVFEaqR2Wf55ZPeUJ8b/J3hO781GaF4n/yDVuZREDPAJJQAjD5z48kVLWqrR5il//EZjzg6JqGXAz74CW1u/eelMbyQzsUtgaR98dVjnW7NdjrA8oMETn3EBiieM7uZriktrstZLQNJJcDGLoX9hXWZDgLK2xthhw6j2wisLVvrzeb2I8/oxaM3WRUSm/kNYTWte9cp0hv1pmQxvRjPKZzZjNaHhQFMfjnsprmCvkJb5ko93xQvDLSM+EsD97RIJUhi/iWZMZTuazjaPyI/y/oiL/5PP7zpVWFw441OlSDrl53d5dxhoPTDvSGpkG4baeIyCb83nmrAT/LgMWf2KhQFV0oUMdQPgb8eZ9UUc0rU3xhSpJTmod6iWsLWXAnbJ7DgWxnYi0nCA7XGbQSIooAZRvGCXnmhASbti20RCqlA7cgbvCFwP9z7Fi7HihUWtyn78trvFIYYaA354zleZdbAzh/aUr2/nbdELJKGrfdyMZGSMGox3pQjZP0AYLqyjk5JsKUfvLzW1Q5KTVA7gNGbG0eBTq67QmmsUvd4BumjRJAOrQ0EMVl9VDC2CHwaTyoS7HjB26Ph2WzajnKrrJdowmqMQ54RO9hkkoycMjXV4pgncmYmhqBSISRpP8U+ZSPbh4y4oBRQJsfii5tigw4iVbU0yh8Qb8WCmPLFrj0sP0n+tQM6S5mke0rDkiEzsRDyQUQtSzzldadk+Fs385LZX+PRoiOWkJ1/A
+ NlHbwIRc
+ qCj1IWsMrhjd9RO4Y/g+HZh42UJVK5a7KpBNm9rVDCBkX4dLlk1FTCorbDG06eC6DL9ameib6Kf2q9UH2UM8/dVRyWHFfcvhxQttfj9TuUiQtG4hwMBXoZlPxDtTa/HiJdQ6nlRmkvm0XDurpRox9zV4gy6jfEnnnH9SNVcQp0IAW+hZ2zqO2U+4PL1065/c7KjXIfL/hF+nC/OUCAQnf3axPU9UxpdbvFSq12C/OcGJSnvIXRrnTvVlzz1N6hdCrlPnGksATgkSaNiGYWBqENCf8thuMeBUk8N84ggOWBL0IzSYOfNix0JWOILUOIwgHoImFV5o2mcL9v4eF+sGWS0CrSo+8URoH0ytPFrSuDYBwepRhY14usS6HC78Z1S8/rouv6xIw06vNH2STWoODuV1a9mEJQtp66ksoR1sBUvv20BEcABDTks2r7GG774S79NViezHjqWmnftWjaXgPgaJn6IYg7a6lB+flZoRCdaY/Dge2etcrkA9IkmyH7kvYRCqvEgE6MAnJM4Y1paMYW1OIPCr+q2iD8+QDIrzhhe3gRAZqeD4sj4StUSr1e0cHqFdsUHZL6HECKokyikSBGRhswOoeqWsxK1pxQo+4br6dv9yv2f203LBKUEsf8ss4qI6aVVRz/GfvJryohFzZKSLp7Gp21t09ldqGO1YcFeJlZzquy4hKF6Y9hOMsjdW7nk4kh3WKaZh0go7wGrulX3xbeQOuu8R3+uNi4AOi8l79NrVBTvfYlYvsc5i2RNqyw9DrLKXCoXOYYPaEk/12EkIrH6dVVTbTRQ/xGRUl4F2IPn+QVm7UjFLrWkXYmWCHQ0tXtUwLz1tRftX+pzIMtbbyRo+BHxo/gssnfVq5cWussIeqkslhe7siu91v/btvmxT3bc4SObJxXosFk1OeMRG2d+NQlF+bBuPopKusfdNAASRAWzVH5JKYqIAKZD/HGxJPTrvw2v0GzBBkH0+H4aUdnBkO
+ NE0yytdN
+ iib0l1bt7IPgci04jlk3/GSp1qdxJVVCVZTz5KUoQhd9Cvw6LFgHLJEYqT8p+/grFDhDvWLXvd6+4ot/WQoMKO/FubI21bM2+Tan1o+ITaqBifRSR4wIS5rG0vCTGswDRjK9teOGHaH99NLluW+W7BhsIc9rxdnQBCFbwtB+dQAVfTP28ie5/wgfraCObmd//eOom0IaTocQkbCoNQECY2EKn4kOESc1LidcIEwtNFkb/9mKtpk4h/h9a7F5us0qhEreuALkgOX+nzSrXfjiGN9pi/r2C7pyb13zodCGrQ5sNIfBXROeU9wdgmVUJ6oDd51BhiOCi+ATp67Gw4gd0w
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -184,184 +184,281 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Replace the deprecated .mmap hook with its replacement .mmap_prepare. As
-part of this change, additionally take the approach of mapping pages upon
-mmap rather than providing a fault handler.
+In cases which map chip memory from vmalloc()'d ranges, the hfi1 infiniband
+drivers currently installs a fault handler, and then smuggles the kernel
+virtual address of this range in vma->vm_pgoff.
 
-The page span cannot be mutated when an mmap mapping is in place, so this
-is safe to do in advance (the MON_IOCT_RING_SIZE ioctl operation exits
--EBUSY if it's attempted, gated by the rp->mmap_active reference count).
+This is exposing KASLR-sensitive internal kernel state in the VMA, and is
+entirely unnecessary.
 
-Utilise the newly introduced mmap_action_map_discontig_kernel_pages() to do
-this, which allows for iteration over pages in mon_bin_discontig_get().
+Instead, use remap_vmalloc_range() to remap the VMA to the span, and
+eliminate the fault handler altogether.
 
-mon_bin_discontig_init() increments the rp->mmap_active reference count to
-stabilise page spans. Should an error arise the core unmaps the VMA and
-mon_bin_vma_close() drops the reference again.
+remap_vmalloc_range() checks that the VMA does not extend beyond the
+vmalloc area, and the driver already requires the VMA to exactly match the
+span of the memory being mapped, so this has no impact.
 
-The vm_ops->close hook implemented in mon_bin_vma_close() will ensure
-correct reference count arithmetic upon unmap (with mon_bin_vma_open()
-accounting for splitting).
+The memory is all preallocated so not having a fault handler has no impact
+either, other than pre-mapping the ranges which is beneficial.
 
-The existing semantics are all retained, including not mapping past the
-range of available pages, with a SIGBUS being raised in a userland process
-that attempts to access past this point.
+We also remove the VM_IO flag as it's not appropriate here, and the
+VM_DONTEXPAND flag as remap_vmalloc_range() will set it (and also mark the
+range correctly as a mixed map).
 
-Ultimately insert_page() is invoked to insert each page, which increments
-the reference count on each mapped page. This mimics what was being done
-previously, only we pre-map the entire range rather than doing so on
-demand.
+We also update the vmalloc paths to place the virtual kernel address in
+memvirt, rather than overloading the physical address memaddr. We predicate
+the vmalloc handling on the vmalloc flag before we check memvirt for the
+virtual address-derived PFN remap path, so this works fine.
 
-The existing fault handler did nothing that required demand paging, and was
-presumably implemented this way for historical reasons.
+remap_vmalloc_range() requires that the vmalloc()'d areas were all
+allocated using vmalloc_user() - each of cq->comps,
+uctxt->subctxt_rcvegrbuf, uctxt->subctxt_rcvhdr_base,
+uctxt->subctxt_uregbase and dd->events were allocated this way, so that
+requirement is satisfied.
 
-One behavioural difference: pages are no longer faulted in on demand, so a
-page discarded with MADV_DONTNEED is not repopulated and a subsequent
-access raises SIGBUS, as with other pre-populated kernel mappings.
+We also remove VM_IO and VM_DONTEXPAND from the STATUS command, as these
+are both set on remap.
 
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Finally, we remove VM_DONTEXPAND from the PIO_BUFS, PIO_BUFS_SOP and UREGS
+commands, as these are also all set on remap. PIO_CRED retains it, as
+dma_mmap_coherent() may map via vm_insert_page() on the IOMMU-DMA path,
+which sets only VM_MIXEDMAP. The RCV_HDRQ, RCV_EGRBUF and RTAIL commands
+also map via dma_mmap_coherent() and never set VM_DONTEXPAND, so set it for
+them for the same reason.
+
+Note that we retain expected behaviour throughout - the vmalloc remapped
+ranges set VM_MIXEDMAP | VM_DONTDUMP | VM_DONTEXPAND for each range.
+
+VM_IO was never appropriate as the ranges are explicitly not MMIO, and the
+reference to the v3.7 VM_RESERVED semantics map on to VM_MIXEDMAP |
+VM_DONTDUMP | VM_DONTEXPAND correctly - no core dump, unmergeable, no
+normal vm page for purposes of reclaim/migration/etc.
+
+There is a change in behaviour in that pages mapped using
+remap_vmalloc_range() will now have normal GUP-able pages, however this
+should have no impact as there is no reason not to allow this.
+
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- drivers/usb/mon/mon_bin.c | 82 ++++++++++++++++++++++++++++++-----------------
- 1 file changed, 53 insertions(+), 29 deletions(-)
+ drivers/infiniband/hw/hfi1/file_ops.c | 83 +++++++++++------------------------
+ 1 file changed, 25 insertions(+), 58 deletions(-)
 
-diff --git a/drivers/usb/mon/mon_bin.c b/drivers/usb/mon/mon_bin.c
-index 687f6a8981f3..9d00b21a8153 100644
---- a/drivers/usb/mon/mon_bin.c
-+++ b/drivers/usb/mon/mon_bin.c
-@@ -1219,6 +1219,15 @@ mon_bin_poll(struct file *file, struct poll_table_struct *wait)
- 	return mask;
- }
+diff --git a/drivers/infiniband/hw/hfi1/file_ops.c b/drivers/infiniband/hw/hfi1/file_ops.c
+index dc548e6802e2..b02d1f1dbb27 100644
+--- a/drivers/infiniband/hw/hfi1/file_ops.c
++++ b/drivers/infiniband/hw/hfi1/file_ops.c
+@@ -70,7 +70,6 @@ static int set_ctxt_pkey(struct hfi1_ctxtdata *uctxt, unsigned long arg);
+ static int ctxt_reset(struct hfi1_ctxtdata *uctxt);
+ static int manage_rcvq(struct hfi1_ctxtdata *uctxt, u16 subctxt,
+ 		       unsigned long arg);
+-static vm_fault_t vma_fault(struct vm_fault *vmf);
+ static long hfi1_file_ioctl(struct file *fp, unsigned int cmd,
+ 			    unsigned long arg);
  
-+static void __mon_bin_vma_open(struct mon_reader_bin *rp)
-+{
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&rp->b_lock, flags);
-+	rp->mmap_active++;
-+	spin_unlock_irqrestore(&rp->b_lock, flags);
-+}
-+
+@@ -85,10 +84,6 @@ static const struct file_operations hfi1_file_ops = {
+ 	.llseek = noop_llseek,
+ };
+ 
+-static const struct vm_operations_struct vm_ops = {
+-	.fault = vma_fault,
+-};
+-
  /*
-  * open and close: just keep track of how many times the device is
-  * mapped, to use the proper memory allocation function.
-@@ -1226,64 +1235,79 @@ mon_bin_poll(struct file *file, struct poll_table_struct *wait)
- static void mon_bin_vma_open(struct vm_area_struct *vma)
- {
- 	struct mon_reader_bin *rp = vma->vm_private_data;
--	unsigned long flags;
- 
--	spin_lock_irqsave(&rp->b_lock, flags);
--	rp->mmap_active++;
--	spin_unlock_irqrestore(&rp->b_lock, flags);
-+	__mon_bin_vma_open(rp);
+  * Types of memories mapped into user processes' space
+  */
+@@ -304,13 +299,13 @@ static ssize_t hfi1_write_iter(struct kiocb *kiocb, struct iov_iter *from)
+ 	return reqs;
  }
  
--static void mon_bin_vma_close(struct vm_area_struct *vma)
-+static void __mon_bin_vma_close(struct mon_reader_bin *rp)
+-static inline void mmap_cdbg(u16 ctxt, u8 subctxt, u8 type, u8 mapio, u8 vmf,
++static inline void mmap_cdbg(u16 ctxt, u8 subctxt, u8 type, u8 mapio, u8 is_vmalloc,
+ 			     u64 memaddr, void *memvirt, dma_addr_t memdma,
+ 			     ssize_t memlen, struct vm_area_struct *vma)
  {
- 	unsigned long flags;
+ 	hfi1_cdbg(PROC,
+-		  "%u:%u type:%u io/vf/dma:%d/%d/%d, addr:0x%llx, len:%lu(%lu), flags:0x%lx",
+-		  ctxt, subctxt, type, mapio, vmf, !!memdma,
++		  "%u:%u type:%u io/vmalloc/dma:%d/%d/%d, addr:0x%llx, len:%lu(%lu), flags:0x%lx",
++		  ctxt, subctxt, type, mapio, is_vmalloc, !!memdma,
+ 		  memaddr ?: (u64)memvirt, memlen,
+ 		  vma->vm_end - vma->vm_start, vma->vm_flags);
+ }
+@@ -325,7 +320,7 @@ static int hfi1_file_mmap(struct file *fp, struct vm_area_struct *vma)
+ 		memaddr = 0;
+ 	void *memvirt = NULL;
+ 	dma_addr_t memdma = 0;
+-	u8 subctxt, mapio = 0, vmf = 0, type;
++	u8 subctxt, mapio = 0, is_vmalloc = 0, type;
+ 	ssize_t memlen = 0;
+ 	int ret = 0;
+ 	u16 ctxt;
+@@ -347,7 +342,7 @@ static int hfi1_file_mmap(struct file *fp, struct vm_area_struct *vma)
+ 	/*
+ 	 * vm_pgoff is used as a buffer selector cookie.  Always mmap from
+ 	 * the beginning.
+-	 */ 
++	 */
+ 	vma->vm_pgoff = 0;
+ 	flags = vma->vm_flags;
  
--	struct mon_reader_bin *rp = vma->vm_private_data;
- 	spin_lock_irqsave(&rp->b_lock, flags);
- 	rp->mmap_active--;
- 	spin_unlock_irqrestore(&rp->b_lock, flags);
+@@ -366,7 +361,7 @@ static int hfi1_file_mmap(struct file *fp, struct vm_area_struct *vma)
+ 		 */
+ 		memlen = PAGE_ALIGN(uctxt->sc->credits * PIO_BLOCK_SIZE);
+ 		flags &= ~VM_MAYREAD;
+-		flags |= VM_DONTCOPY | VM_DONTEXPAND;
++		flags |= VM_DONTCOPY;
+ 		vma->vm_page_prot = pgprot_writecombine(vma->vm_page_prot);
+ 		mapio = 1;
+ 		break;
+@@ -401,6 +396,7 @@ static int hfi1_file_mmap(struct file *fp, struct vm_area_struct *vma)
+ 		memlen = rcvhdrq_size(uctxt);
+ 		memvirt = uctxt->rcvhdrq;
+ 		memdma = uctxt->rcvhdrq_dma;
++		flags |= VM_DONTEXPAND;
+ 		break;
+ 	case RCV_EGRBUF: {
+ 		unsigned long vm_start_save;
+@@ -422,7 +418,7 @@ static int hfi1_file_mmap(struct file *fp, struct vm_area_struct *vma)
+ 			ret = -EPERM;
+ 			goto done;
+ 		}
+-		vm_flags_clear(vma, VM_MAYWRITE);
++		vm_flags_mod(vma, VM_DONTEXPAND, VM_MAYWRITE);
+ 		/*
+ 		 * Mmap multiple separate allocations into a single vma.  From
+ 		 * here, dma_mmap_coherent() calls dma_direct_mmap(), which
+@@ -438,7 +434,7 @@ static int hfi1_file_mmap(struct file *fp, struct vm_area_struct *vma)
+ 			memvirt = uctxt->egrbufs.buffers[i].addr;
+ 			memdma = uctxt->egrbufs.buffers[i].dma;
+ 			vma->vm_end += memlen;
+-			mmap_cdbg(ctxt, subctxt, type, mapio, vmf, memaddr,
++			mmap_cdbg(ctxt, subctxt, type, mapio, is_vmalloc, memaddr,
+ 				  memvirt, memdma, memlen, vma);
+ 			ret = dma_mmap_coherent(&dd->pcidev->dev, vma,
+ 						memvirt, memdma, memlen);
+@@ -467,7 +463,7 @@ static int hfi1_file_mmap(struct file *fp, struct vm_area_struct *vma)
+ 		 * user registers.
+ 		 */
+ 		memlen = PAGE_SIZE;
+-		flags |= VM_DONTCOPY | VM_DONTEXPAND;
++		flags |= VM_DONTCOPY;
+ 		vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
+ 		mapio = 1;
+ 		break;
+@@ -476,15 +472,10 @@ static int hfi1_file_mmap(struct file *fp, struct vm_area_struct *vma)
+ 		 * Use the page where this context's flags are. User level
+ 		 * knows where it's own bitmap is within the page.
+ 		 */
+-		memaddr = (unsigned long)
+-			(dd->events + uctxt_offset(uctxt)) & PAGE_MASK;
++		memvirt = dd->events + uctxt_offset(uctxt);
++		memvirt = (void *)(((uintptr_t)memvirt) & PAGE_MASK);
+ 		memlen = PAGE_SIZE;
+-		/*
+-		 * v3.7 removes VM_RESERVED but the effect is kept by
+-		 * using VM_IO.
+-		 */
+-		flags |= VM_IO | VM_DONTEXPAND;
+-		vmf = 1;
++		is_vmalloc = 1;
+ 		break;
+ 	case STATUS:
+ 		if (flags & VM_WRITE) {
+@@ -493,7 +484,6 @@ static int hfi1_file_mmap(struct file *fp, struct vm_area_struct *vma)
+ 		}
+ 		memaddr = kvirt_to_phys((void *)dd->status);
+ 		memlen = PAGE_SIZE;
+-		flags |= VM_IO | VM_DONTEXPAND;
+ 		break;
+ 	case RTAIL:
+ 		if (!HFI1_CAP_IS_USET(DMA_RTAIL)) {
+@@ -512,25 +502,23 @@ static int hfi1_file_mmap(struct file *fp, struct vm_area_struct *vma)
+ 		memvirt = (void *)hfi1_rcvhdrtail_kvaddr(uctxt);
+ 		memdma = uctxt->rcvhdrqtailaddr_dma;
+ 		flags &= ~VM_MAYWRITE;
++		flags |= VM_DONTEXPAND;
+ 		break;
+ 	case SUBCTXT_UREGS:
+-		memaddr = (u64)uctxt->subctxt_uregbase;
++		memvirt = uctxt->subctxt_uregbase;
+ 		memlen = PAGE_SIZE;
+-		flags |= VM_IO | VM_DONTEXPAND;
+-		vmf = 1;
++		is_vmalloc = 1;
+ 		break;
+ 	case SUBCTXT_RCV_HDRQ:
+-		memaddr = (u64)uctxt->subctxt_rcvhdr_base;
++		memvirt = uctxt->subctxt_rcvhdr_base;
+ 		memlen = rcvhdrq_size(uctxt) * uctxt->subctxt_cnt;
+-		flags |= VM_IO | VM_DONTEXPAND;
+-		vmf = 1;
++		is_vmalloc = 1;
+ 		break;
+ 	case SUBCTXT_EGRBUF:
+-		memaddr = (u64)uctxt->subctxt_rcvegrbuf;
++		memvirt = uctxt->subctxt_rcvegrbuf;
+ 		memlen = uctxt->egrbufs.size * uctxt->subctxt_cnt;
+-		flags |= VM_IO | VM_DONTEXPAND;
+ 		flags &= ~VM_MAYWRITE;
+-		vmf = 1;
++		is_vmalloc = 1;
+ 		break;
+ 	case SDMA_COMP: {
+ 		struct hfi1_user_sdma_comp_q *cq = fd->cq;
+@@ -539,10 +527,9 @@ static int hfi1_file_mmap(struct file *fp, struct vm_area_struct *vma)
+ 			ret = -EFAULT;
+ 			goto done;
+ 		}
+-		memaddr = (u64)cq->comps;
++		memvirt = cq->comps;
+ 		memlen = PAGE_ALIGN(sizeof(*cq->comps) * cq->nentries);
+-		flags |= VM_IO | VM_DONTEXPAND;
+-		vmf = 1;
++		is_vmalloc = 1;
+ 		break;
+ 	}
+ 	default:
+@@ -559,12 +546,10 @@ static int hfi1_file_mmap(struct file *fp, struct vm_area_struct *vma)
+ 	}
+ 
+ 	vm_flags_reset(vma, flags);
+-	mmap_cdbg(ctxt, subctxt, type, mapio, vmf, memaddr, memvirt, memdma, 
++	mmap_cdbg(ctxt, subctxt, type, mapio, is_vmalloc, memaddr, memvirt, memdma,
+ 		  memlen, vma);
+-	if (vmf) {
+-		vma->vm_pgoff = PFN_DOWN(memaddr);
+-		vma->vm_ops = &vm_ops;
+-		ret = 0;
++	if (is_vmalloc) {
++		ret = remap_vmalloc_range(vma, memvirt, 0);
+ 	} else if (memdma) {
+ 		ret = dma_mmap_coherent(&dd->pcidev->dev, vma,
+ 					memvirt, memdma, memlen);
+@@ -588,24 +573,6 @@ static int hfi1_file_mmap(struct file *fp, struct vm_area_struct *vma)
+ 	return ret;
  }
  
 -/*
-- * Map ring pages to user space.
+- * Local (non-chip) user memory is not mapped right away but as it is
+- * accessed by the user-level code.
 - */
--static vm_fault_t mon_bin_vma_fault(struct vm_fault *vmf)
-+static void mon_bin_vma_close(struct vm_area_struct *vma)
- {
--	struct mon_reader_bin *rp = vmf->vma->vm_private_data;
-+	struct mon_reader_bin *rp = vma->vm_private_data;
-+
-+	__mon_bin_vma_close(rp);
-+}
-+
-+static const struct vm_operations_struct mon_bin_vm_ops = {
-+	.open =     mon_bin_vma_open,
-+	.close =    mon_bin_vma_close,
-+};
-+
-+static int mon_bin_discontig_init(void *vm_private_data, void **private)
-+{
-+	struct mon_reader_bin *rp = vm_private_data;
-+
-+	/* Dropped by mon_bin_vma_close() on unmap, including on error. */
-+	__mon_bin_vma_open(rp);
-+	return 0;
-+}
-+
-+static int mon_bin_discontig_get(struct discontig_kernel_page_state *state)
-+{
-+	struct mon_reader_bin *rp = state->vm_private_data;
- 	unsigned long offset, chunk_idx;
--	struct page *pageptr;
- 	unsigned long flags;
- 
- 	spin_lock_irqsave(&rp->b_lock, flags);
--	offset = vmf->pgoff << PAGE_SHIFT;
-+
-+	offset = state->pgoff << PAGE_SHIFT;
- 	if (offset >= rp->b_size) {
- 		spin_unlock_irqrestore(&rp->b_lock, flags);
+-static vm_fault_t vma_fault(struct vm_fault *vmf)
+-{
+-	struct page *page;
+-
+-	page = vmalloc_to_page((void *)(vmf->pgoff << PAGE_SHIFT));
+-	if (!page)
 -		return VM_FAULT_SIGBUS;
-+		discontig_kernel_map_abort(state);
-+		return 0;
- 	}
- 	chunk_idx = offset / CHUNK_SIZE;
--	pageptr = rp->b_vec[chunk_idx].pg;
--	get_page(pageptr);
--	vmf->page = pageptr;
-+	discontig_kernel_map_page(state, rp->b_vec[chunk_idx].pg);
-+
- 	spin_unlock_irqrestore(&rp->b_lock, flags);
- 	return 0;
- }
- 
--static const struct vm_operations_struct mon_bin_vm_ops = {
--	.open =     mon_bin_vma_open,
--	.close =    mon_bin_vma_close,
--	.fault =    mon_bin_vma_fault,
-+static const struct discontig_kernel_page_ops mon_discontig_ops = {
-+	.init = mon_bin_discontig_init,
-+	.get = mon_bin_discontig_get,
- };
- 
--static int mon_bin_mmap(struct file *filp, struct vm_area_struct *vma)
-+static int mon_bin_mmap_prepare(struct vm_area_desc *desc)
+-
+-	get_page(page);
+-	vmf->page = page;
+-
+-	return 0;
+-}
+-
+ static __poll_t hfi1_poll(struct file *fp, struct poll_table_struct *pt)
  {
--	/* don't do anything here: "fault" will set up page table entries */
--	vma->vm_ops = &mon_bin_vm_ops;
-+	const struct file *filp = desc->file;
- 
--	if (vma->vm_flags & VM_WRITE)
-+	if (vma_desc_test(desc, VMA_WRITE_BIT))
- 		return -EPERM;
- 
--	vm_flags_mod(vma, VM_DONTEXPAND | VM_DONTDUMP, VM_MAYWRITE);
--	vma->vm_private_data = filp->private_data;
--	mon_bin_vma_open(vma);
-+	desc->vm_ops = &mon_bin_vm_ops;
-+	vma_desc_clear_flags(desc, VMA_MAYWRITE_BIT);
-+	vma_desc_set_flags(desc, VMA_DONTEXPAND_BIT, VMA_DONTDUMP_BIT);
-+	desc->private_data = filp->private_data;
-+
-+	mmap_action_map_discontig_kernel_pages(desc, NULL, &mon_discontig_ops);
- 	return 0;
- }
- 
-@@ -1298,7 +1322,7 @@ static const struct file_operations mon_fops_binary = {
- 	.compat_ioctl =	mon_bin_compat_ioctl,
- #endif
- 	.release =	mon_bin_release,
--	.mmap =		mon_bin_mmap,
-+	.mmap_prepare = mon_bin_mmap_prepare,
- };
- 
- static int mon_bin_wait_event(struct file *file, struct mon_reader_bin *rp)
+ 	struct hfi1_ctxtdata *uctxt;
 
 -- 
 2.55.0
