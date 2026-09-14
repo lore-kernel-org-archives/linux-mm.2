@@ -4,91 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D7CFC88E73
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 14:24:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31796C88E73
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 14:25:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 54EFC6B00AB; Mon, 14 Sep 2026 10:23:41 -0400 (EDT)
+	id 4BED46B00AF; Mon, 14 Sep 2026 10:25:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E04B6B00AC; Mon, 14 Sep 2026 10:23:41 -0400 (EDT)
+	id 48E2B6B00B0; Mon, 14 Sep 2026 10:25:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C79E6B00AD; Mon, 14 Sep 2026 10:23:41 -0400 (EDT)
+	id 3A4A56B00B1; Mon, 14 Sep 2026 10:25:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0936E6B00AC
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 10:23:41 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 97022A3BE1
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 14:23:40 +0000 (UTC)
-X-FDA: 85212586200.25.10CD875
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id E1FD5100005
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 14:23:38 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dh500tXi;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 112816B00AF
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 10:25:04 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7D5268011A
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 14:25:03 +0000 (UTC)
+X-FDA: 85212589686.09.BDD96D7
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 45E3A120008
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 14:25:01 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=B7TumlXZ;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=x9CZQ0Pj;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=vaaBcSqQ;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Uwq1rmkf;
+	spf=pass (imf29.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789395901;
+	b=fASp4rLPLWNsIt6VkE4rGEygJquMDJRVm3w2okvvJePVr9dmkQbshFxAZeSO49jTxD/mB7
+	xpgDumjvXhOqG7FiOzr2Y6a2pz7MFHo6ndwNDbUZ/p8mZlLaHU5sZMlWKwicufjuGDzqQ3
+	ChZcbQ7CZ/37Do1mjFLoJvsQSfMbEeU=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=B7TumlXZ;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=x9CZQ0Pj;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=vaaBcSqQ;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Uwq1rmkf;
+	spf=pass (imf29.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789395819;
+	s=arc-20220608; t=1789395901;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nqfaQq4DYDAwDcS6eX/vnZ8ZZiveWwkFxlbgk1mGGIc=;
-	b=w0hDJNSHmkGw/lgMMQkR3jD43p7gxT6JCqZHolwdTNllyF7B0Z26JWdxkmuduuqza64wZ4
-	BIPg5ADE8aGJMgeSYha0kETtQKnC/vEnY9cg5niYtYENSJfg7Hts4dEG+7ioTaC3OUdvxI
-	1g5W8NSutAGck/EaGGzCJFElDYMTo8s=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789395819;
-	b=NShJOa7WC/SZdkZ0Rf+Ce96C+9k4Q1AXqtFwdSRkfbjXHBwIvr6hVIMDWfDoosrwDgGtOR
-	dbw011DrQBPIEM+KLSTv5Ub3BGTqSDYiiqoU5eRdZ26TiP7Hbl6ZSzs7yyqO0tf5QkwyQ1
-	aY2eeR/pIVvWzptXHjoNgFYHjwXndS8=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dh500tXi;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CFD0D43D84;
-	Mon, 14 Sep 2026 14:23:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F3481F00899;
-	Mon, 14 Sep 2026 14:23:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789395817;
-	bh=nqfaQq4DYDAwDcS6eX/vnZ8ZZiveWwkFxlbgk1mGGIc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dh500tXimlxoBgg5rmkLqh2JXQwAtfrB2fcHhfvhYra2wqHmzL6zZ92B2oLiF2bsc
-	 uzfShF5jhQ4mZaR3Q5gRxbyoIwm896GC9ssfXY3VckSlL/3oq/5ySY8ttzU8XIPeTw
-	 imK4yl26UHt5hfSORx/4fWGJnlUA0QY6IoV0forPtiK2tbRqPVVItsTJpwqGNXZvD4
-	 hupCQOCA43vaa9sqpeoPZMMxmLynbWnQcRdB3yBVl7x7sqv2pvDMwTfpnqVVu3/RvZ
-	 glMsKbsvjQePceor5rfYl+xzGxK6Eh/LtajRzUwTvwOGEEHYyxpqn2xM9aRDYuqyP+
-	 GP4fpcCeegnuw==
-From: SJ Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SJ Park <sj@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@davidgow.net>,
-	damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 7/8] mm/damon/core-kunit: extend damos_commit_filter_for() for wrong input
-Date: Mon, 14 Sep 2026 07:23:24 -0700
-Message-ID: <20260914142327.92510-8-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260914142327.92510-1-sj@kernel.org>
-References: <20260914142327.92510-1-sj@kernel.org>
+	bh=8uOj8JF+OXNiF3/lX/wOUKSXh6iShm8a7pD7w4hGuZU=;
+	b=EDhi8e5UQfW5GYlMSTwgpL7cdDyohba4K4ARS0cVUWYWjRc7UVBM1XViW3riZ0pwfgSxmY
+	zv9/tf9LCRkIr37uW15r84owlnBxEXTP2Tw3q5OVzfOdiITKtdGw98f9aZvjdAM7M5OOLf
+	LsHb+n7AawNOFm4Lwwl+vet7IzZyTOE=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 961E11F7CC;
+	Mon, 14 Sep 2026 14:24:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1789395895; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8uOj8JF+OXNiF3/lX/wOUKSXh6iShm8a7pD7w4hGuZU=;
+	b=B7TumlXZuUgGz8VjLurNKO7izc1TfFv8NJEctpHJOPJRHufMNEv+HX8LtLk2B5BmqwbNlZ
+	pyzkJgH9qhorq/wGPsDhexgsy55RMMXLnXXN0xjbIoCv7+QBM+6owxs+cbM/iMp83jYHV0
+	XTwMzblBD335lpftNi9itDFC+KyykCc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1789395895;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8uOj8JF+OXNiF3/lX/wOUKSXh6iShm8a7pD7w4hGuZU=;
+	b=x9CZQ0PjijFGqKV1O9k+iefqFpgaoZ2l7WtaiYGwo7DysyBEL3RmV//+q4sr2Qr8nO2BWO
+	S/3Do4AyKibBDoAQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1789395891; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8uOj8JF+OXNiF3/lX/wOUKSXh6iShm8a7pD7w4hGuZU=;
+	b=vaaBcSqQj8snDhc8qRaxmqEJZKhXIBMTOp+PgxtOIVcSkarXJTFuTa4y3nu0Sf1b5Uxau2
+	lVxae7lr2QKHS5nusb5UGz7BhMmTdV58KvmNE1Y49OqiIGzjAzkXVWlc3rBxKz3cjWNivw
+	JMtn+BrUxNlPSFPRrGH22rd2EI14nso=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1789395891;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8uOj8JF+OXNiF3/lX/wOUKSXh6iShm8a7pD7w4hGuZU=;
+	b=Uwq1rmkfn+6a1S2IjEA6QTh2AIoOJNYhyciTeu5akf3wNltNhSX6cY0DjRksGKyTK/It9M
+	dpjQbr9nRMHC71BA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6081513515;
+	Mon, 14 Sep 2026 14:24:49 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id bylAFLEDqGodHwAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Mon, 14 Sep 2026 14:24:49 +0000
+Date: Mon, 14 Sep 2026 15:24:47 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	Jann Horn <jannh@google.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Youngjun Park <youngjun.park@lge.com>, Peter Xu <peterx@redhat.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+Subject: Re: [PATCH v2] mm: implement and use vma_anon_tracked(), silence
+ KCSAN
+Message-ID: <aqgC9iVHtB1fMWS2@pedro-suse.tail5790ac.ts.net>
+References: <20260910-vma-is-faulted-v2-1-e81ebc7d146b@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: unxqdgjiqe9rgf9bc9cdx9p7umg55hmj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260910-vma-is-faulted-v2-1-e81ebc7d146b@kernel.org>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 45E3A120008
+X-Stat-Signature: 9ty1m5s8ww8qrsjqgortxqektqur1df6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E1FD5100005
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789395818-889052
-X-HE-Meta: U2FsdGVkX19xqpHdlcbF1SEZy2CNySTfTquZ/ptI3LX9myeNvuT6ZwPEjtxaVvzdX0aBegP9TzbNeLTZqOvSwtgukx8jsXkX8XOG9ONebf0jknh7lp2zIfzx9qQoB4VP7SidPhLaAgAGnAxoVRpk1N+wNUw0BEQv/68h1ETUaKJ5eaMzFynH4iBpEHwxmMlsuYW5Lp3v0GhcVLVelrgt39pGBoYG1z4y4gsABgecnwgvze+8WVSDCIbOLt329FUiQfRfkgtREiaJJj1CMoUx2aOjQ5F7ZgOtYEvy0gK73/PJHgUd/02PRw2/6N5UObq07A3vHr8bjFohHOTf+gQ1oB8OAGviBCLrqRuI+d5DYmvFVx0QCA3+eudSF7B2lsUTCc/bn01XAdCN1WjRgu49+nFwNgayhbKOxZuLJ+zSXFgFFzQ2NCTGMJxKLvp2FfUB1+nBBbtS2AZQmX4IpCObovf+VdXaLrHGYY8bmXeN+DWixpwy6Bu8gXHkv0k8HJlFKuv67KPdtunS/lKPAqoLTk2BNK3PlbrElT+NftZ/I7RXs8Th2wzax2FNB9xmfIcXKyM6BM41dgf9TjGTQgc+dDyY6GzsXQpBt7hDlnM4sOnHCFP33kwkGIjq7djcuAZdcGvrd8XVblOlvGlm+aBZkQH7UMoths26qT1pzEO6TXGZA3+Snr1q33eV4GqPPsjybKW9qd24DcL4zUGR7YPg+nqdGVE+sCjNS+J1dnFlyn2G7WMve2hUAfzLxIa7FXAiqYuF3cQy5Hn1BbvglM2SW9Lb+R5XgL0fLDjzAUkVnsmrlSXPRb2ebkJRNEQdKlZ+v+u2hY/OZ4mLRkExV4wlded6+2HO73IRIZ0R9rgltJb0L4pd7AIWoeKW+Ygk7/ZZNgPc+mzGpk1PnFSultWCgsCOOamMoWszDjqw6QB3B6sd2VjBPFNE3VJbZ+t68Jx01SKbbs/YZxMuf7hfHIp
- HxvqQl2l
- K45vDVqW1LTEHoSu6y03BQkfj6htborBQ8nJPE+hwC9NIFnD/R0zYbaXd667s4IbeOHUrCjIXqiJUWinxLtDDyNf0ify9zc4ftqV3Op/tkD/zvA9frGaR8m4lSsugNJknMwdXu0rB7lGrIHGrBHrGl9VTLbyCKxFqktbdcLAdvKW4Qv/W3PoDxBvg96PhfFpsyqBrEfEKG9BOss8PjM41pR7/KE0bIPoGNieiosB4UfYv4rxBCIGOHR/52NXSodYhBT4kqpLMsa9bi9CVj5hr8IAw7w==
+X-HE-Tag: 1789395901-652
+X-HE-Meta: U2FsdGVkX190857xKCPqbAs2opTOC6nuUN0ajZLjz2p0NgcC1DqoV57NrNuGISpl5PI+M8pSxOE9sTyDgeAGSS08kibIxMW8g+2jXFr8c9hr2by80ah7R790LqyQpEP18InlEi5W/+YA3OA/UrPglBb+GVo4nPCLROusuwRe2kwv4YcAPhjrRJVMPE+7OIXg0QTd1tv5TkzZDLyn/4gbvJuGJM/dEKLCxTdojM8hddtpcVET4bHtkXnrVHZHrr57KA/hICOuC4KY70PqnBUSlRAARw9ebBLq2TEk81Jgr6DBVHvtgtjgHvvelWS9IP+1MIEsQHDl13c1jA3q/8rtQaUnAsKws7TypeRo2JqaNFMTTwbPPYivZnjMz/l9oBbKPW1Cxt86Npesjz0QTecOXajgCqS2A8cf2VYPGy7zxiav99k7Z5xwWi5w2tI/YkHy2QrG7eqvGfJBIfFoRT2BUNxMsYPuE0fanQzoP0A/EPRR5GrOhbP7uLgt6mppOHpkmPrCKhTov+BOJlzhj/lhkihq2jTPy9ZtoZ7UfDHYGPF2sHZdX4TQ7g+8PVjz1j9md3OOkTlXmNqGE4sj/jaEpq5eNLmOawVCvo51bMlN0n/5SijFPXy361zpNbSZolI9ypsH0zRyZOBQcbrJCkM0EPvkuZg9yV2tH/uGomAY/X9enIJeHzWwm8Dltn/KnFNCPrlT0WITddibXJLscpWG2aA3j/8EBi0uxhrH/LqA51cAAtx0iOu3Z931l7aeV/+FyItlD49n7JzDNUNtC/yp/NKDfF6MpgOzSDtVNIfzT+HkPMKIADLpkXFcbhm3cKQqvsIGw7NnVPh6Lj+765UzNplcICJdToVQ3h8hNn/y/PeZ9hklhNwgUfvZk0gis80zJAsRc7dR7d8ZQeKJ9ze98cNTbmHLaK0emxZxlHdwDtttEU9wqFnMJeVnCGno9aJeHZKkDv9VryIKaO9tMJX
+ 5nYZfSbT
+ ytvsC8YipoFzyt09ngI8cS/ikwUiasJid7Z67+wcjaz3fBP8D6rP6/vxOw32kPdxaXGYv8Hpghpq2gEVsJWNpgDYWSu98giXg0hDyXPbfeCZ/Iz25vRX7Rq1EDzsjLJziQDsA8SuXxegsyZ57bKwgp2aG/u93dPTBSM4eSjiypC6pPjhYbudjRlo28jMpWYMVPdI63zHgp4gcLGsM+ucoKF9KTPy9Q4a6Y1GryDZ5JgyPpb2QCBUBxLU0IlHwdEZqBn9+mUETM6mwOa6ZBdnh1Kk5aJq6+Wm19YOSq/T6JeTcxO93P/wN1g8c1jhl2wirqRpBEHno+vDbvoE54i7R/P973fT9mZF+F3MVpv8EpybdSBE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,94 +142,144 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damos_commit_filter_for() supposes damos_commit_filter() to always
-succeed with given inputs.  damos_commit_filter() could return an error
-for invalid inputs.  Existing callers always pass only valid inputs, but
-they may pass invalid inputs in future, for test purposes.  Extend the
-function to be able to be used for wrong inputs-caused error testing.
+On Thu, Sep 10, 2026 at 02:18:35PM +0100, Lorenzo Stoakes (ARM) wrote:
+> Provide a function to abstract the common task of checking whether
+> a VMA is faulted in or not.
+> 
+> A VMA or mmap lock must be held when calling this function. For an attached
+> VMA the transitions between unfaulted/faulted state are:
+> 
+>        Transition        |              VMA/mmap Lock state
+>  ------------------------|-----------------------------------------------
+>    unfaulted to faulted  | write lock OR read lock + mm->page_table_lock
+>    faulted to unfaulted  | write lock
+> 
+> So vma_anon_tracked() never provides a false positive (the lock precludes
+> it), but if only a read lock is held, a negative result must be re-checked
+> with mm->page_table_lock held.
+> 
+> Detached VMAs cannot be concurrently manipulated as they are removed from
+> the maple tree so require no guarantees.
+> 
+> Use data_race() to silence KCSAN about non-existent data races between
+> concurrent vma->anon_vma read/write on optimistic fault tests.
+> 
+> Also while here, const-ify vma_is_attached(), vma_assert_stabilised() and
+> dependants.
+> 
+> Finally, update the core VMA merge/split, rmap, mremap, KSM and fault
+> preparation callers which test vma->anon_vma directly to use
+> vma_anon_tracked() instead.
+> 
+> Note that the lockless read in reusable_anon_vma() is doing more than
+> checking whether the VMA is faulted - it is returning the anon_vma to be
+> used on fault, so this check is not altered.
+> 
+> There is one odd one out - file_backed_vma_is_retractable() - which holds
+> neither a VMA nor mmap lock and is stabilised by the file rmap lock only.
+> 
+> Therefore just add a comment to explain why the direct vma->anon_vma check
+> is required.
+> 
+> Reported-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+> Closes: https://lore.kernel.org/all/20260829100034.423064-1-trintaeoitogc@gmail.com/
+> Closes: https://lore.kernel.org/all/20260909115723.528501-1-trintaeoitogc@gmail.com/
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> ---
+> v2:
+> - Renamed vma_is_faulted() to vma_anon_tracked() as per David.
+> 
+> v1:
+> https://lore.kernel.org/r/20260909-vma-is-faulted-v1-1-3a701f48984a@kernel.org
+> ---
+>  include/linux/mmap_lock.h         | 12 ++++++------
+>  mm/huge_memory.c                  |  4 ++--
+>  mm/internal.h                     |  2 +-
+>  mm/khugepaged.c                   |  3 +++
+>  mm/ksm.c                          | 10 +++++-----
+>  mm/madvise.c                      |  4 ++--
+>  mm/memory.c                       |  2 +-
+>  mm/mprotect.c                     |  2 +-
+>  mm/mremap.c                       |  4 ++--
+>  mm/rmap.c                         | 22 +++++++++++-----------
+>  mm/swapfile.c                     |  2 +-
+>  mm/userfaultfd.c                  |  2 +-
+>  mm/vma.c                          | 29 +++++++++++++++--------------
+>  mm/vma.h                          | 22 +++++++++++++++++++++-
+>  tools/testing/vma/include/dup.h   |  2 +-
+>  tools/testing/vma/include/stubs.h |  4 ++++
+>  16 files changed, 77 insertions(+), 49 deletions(-)
+> 
+> diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
+> index 00eae65b74bd..03e1eb136111 100644
+> --- a/include/linux/mmap_lock.h
+> +++ b/include/linux/mmap_lock.h
+> @@ -273,7 +273,7 @@ static inline void vma_end_read(struct vm_area_struct *vma)
+>  	vma_refcount_put(vma);
+>  }
+>  
+> -static inline unsigned int __vma_raw_mm_seqnum(struct vm_area_struct *vma)
+> +static inline unsigned int __vma_raw_mm_seqnum(const struct vm_area_struct *vma)
+>  {
+>  	const struct mm_struct *mm = vma->vm_mm;
+>  
+> @@ -288,7 +288,7 @@ static inline unsigned int __vma_raw_mm_seqnum(struct vm_area_struct *vma)
+>   *
+>   * Returns true if write-locked, otherwise false.
+>   */
+> -static inline bool __is_vma_write_locked(struct vm_area_struct *vma)
+> +static inline bool __is_vma_write_locked(const struct vm_area_struct *vma)
+>  {
+>  	/*
+>  	 * current task is holding mmap_write_lock, both vma->vm_lock_seq and
+> @@ -344,7 +344,7 @@ int vma_start_write_killable(struct vm_area_struct *vma)
+>   * vma_assert_write_locked() - assert that @vma holds a VMA write lock.
+>   * @vma: The VMA to assert.
+>   */
+> -static inline void vma_assert_write_locked(struct vm_area_struct *vma)
+> +static inline void vma_assert_write_locked(const struct vm_area_struct *vma)
+>  {
+>  	if (!IS_ENABLED(CONFIG_MMU)) {
+>  		mmap_assert_write_locked(vma->vm_mm);
+> @@ -359,7 +359,7 @@ static inline void vma_assert_write_locked(struct vm_area_struct *vma)
+>   * lock and is not detached.
+>   * @vma: The VMA to assert.
+>   */
+> -static inline void vma_assert_locked(struct vm_area_struct *vma)
+> +static inline void vma_assert_locked(const struct vm_area_struct *vma)
+>  {
+>  	unsigned int refcnt;
+>  
+> @@ -410,7 +410,7 @@ static inline void vma_assert_locked(struct vm_area_struct *vma)
+>   * With lockdep disabled we may sometimes race with other threads acquiring the
+>   * mmap read lock simultaneous with our VMA read lock.
+>   */
+> -static inline void vma_assert_stabilised(struct vm_area_struct *vma)
+> +static inline void vma_assert_stabilised(const struct vm_area_struct *vma)
+>  {
+>  	/*
+>  	 * If another thread owns an mmap lock, it may go away at any time, and
+> @@ -445,7 +445,7 @@ static inline void vma_assert_stabilised(struct vm_area_struct *vma)
+>  	vma_assert_locked(vma);
+>  }
+>  
+> -static inline bool vma_is_attached(struct vm_area_struct *vma)
+> +static inline bool vma_is_attached(const struct vm_area_struct *vma)
+>  {
+>  	return refcount_read(&vma->vm_refcnt);
+>  }
 
-Signed-off-by: SJ Park <sj@kernel.org>
----
- mm/damon/tests/core-kunit.h | 24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+nit: I would suggest you do all of this constification in a separate patch,
+otherwise it can become tricky for backports. Things can naturally start depending
+on const correctness, and you either need to manually adjust those future patches,
+or try to backport this one.
 
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index a47a5cdf285c8..c9941f3bfb42b 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -1127,9 +1127,15 @@ static void damos_test_commit_dests(struct kunit *test)
- }
- 
- static void damos_test_commit_filter_for(struct kunit *test,
--		struct damos_filter *dst, struct damos_filter *src)
-+		struct damos_filter *dst, struct damos_filter *src,
-+		bool expect_fail)
- {
--	damos_commit_filter(dst, src);
-+	int err;
-+
-+	err = damos_commit_filter(dst, src);
-+	KUNIT_EXPECT_EQ(test, err != 0, expect_fail);
-+	if (expect_fail)
-+		return;
- 	KUNIT_EXPECT_EQ(test, dst->type, src->type);
- 	KUNIT_EXPECT_EQ(test, dst->matching, src->matching);
- 	KUNIT_EXPECT_EQ(test, dst->allow, src->allow);
-@@ -1168,47 +1174,47 @@ static void damos_test_commit_filter(struct kunit *test)
- 			.type = DAMOS_FILTER_TYPE_ANON,
- 			.matching = true,
- 			.allow = true,
--			});
-+			}, false);
- 	damos_test_commit_filter_for(test, &dst,
- 			&(struct damos_filter){
- 			.type = DAMOS_FILTER_TYPE_MEMCG,
- 			.matching = false,
- 			.allow = false,
- 			.memcg_id = 123,
--			});
-+			}, false);
- 	damos_test_commit_filter_for(test, &dst,
- 			&(struct damos_filter){
- 			.type = DAMOS_FILTER_TYPE_YOUNG,
- 			.matching = true,
- 			.allow = true,
--			});
-+			}, false);
- 	damos_test_commit_filter_for(test, &dst,
- 			&(struct damos_filter){
- 			.type = DAMOS_FILTER_TYPE_HUGEPAGE_SIZE,
- 			.matching = false,
- 			.allow = false,
- 			.sz_range = {.min = 234, .max = 345},
--			});
-+			}, false);
- 	damos_test_commit_filter_for(test, &dst,
- 			&(struct damos_filter){
- 			.type = DAMOS_FILTER_TYPE_UNMAPPED,
- 			.matching = true,
- 			.allow = true,
--			});
-+			}, false);
- 	damos_test_commit_filter_for(test, &dst,
- 			&(struct damos_filter){
- 			.type = DAMOS_FILTER_TYPE_ADDR,
- 			.matching = false,
- 			.allow = false,
- 			.addr_range = {.start = 456, .end = 567},
--			});
-+			}, false);
- 	damos_test_commit_filter_for(test, &dst,
- 			&(struct damos_filter){
- 			.type = DAMOS_FILTER_TYPE_TARGET,
- 			.matching = true,
- 			.allow = true,
- 			.target_idx = 6,
--			});
-+			}, false);
- }
- 
- static void damos_test_help_initailize_scheme(struct damos *scheme)
+The rest looks vaguely good to me. I admit I'm not a gigantic fan of the name,
+but I suspect it fits better with your future anon rmap ideas :)
+
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+
+
 -- 
-2.47.3
+Pedro
 
