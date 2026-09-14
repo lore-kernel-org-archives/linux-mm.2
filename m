@@ -4,94 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62F57C88E5C
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 02:39:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18DA6C88E5C
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 02:43:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 42A9B6B0092; Sun, 13 Sep 2026 22:39:13 -0400 (EDT)
+	id 19A766B0088; Sun, 13 Sep 2026 22:43:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 403746B0093; Sun, 13 Sep 2026 22:39:13 -0400 (EDT)
+	id 125B06B008C; Sun, 13 Sep 2026 22:43:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 356B46B0095; Sun, 13 Sep 2026 22:39:13 -0400 (EDT)
+	id 0130B6B0093; Sun, 13 Sep 2026 22:43:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1262F6B0092
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 22:39:13 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 64510C0EDF
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 02:39:12 +0000 (UTC)
-X-FDA: 85210810944.08.45194D0
-Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 3DB29C0002
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 02:39:09 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf28.hostedemail.com: domain of xu.xin16@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
+	by kanga.kvack.org (Postfix) with ESMTP id CCB426B0088
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 22:43:31 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0BFF3C0D62
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 02:43:31 +0000 (UTC)
+X-FDA: 85210821822.05.B1EF328
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 530F640005
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 02:43:29 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=mZGrVUx3;
+	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789353809;
+	b=S6tAJn7SH+nYmKLFnDa0MFBWsGzZgVHnOK75ergF/EVVhdbJeqLs9E/0nJf49vV7+hVmLD
+	8dKtE2W2NibxcvhvEDWSTlrblc7QNyFmRVSx4jKCBBG1BnjeseKvp+M8HXQ9z7KUhsSVlR
+	Dpw/R5B4VCx2Xc/Ujd8OKkbnJaOSDRU=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=mZGrVUx3;
+	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789353550;
+	s=arc-20220608; t=1789353809;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9VoQF7u87fdxE0UavgnagGXUZDuzr9mLcAzX3yBiMY0=;
-	b=rIqmQAlujFYIAk5qougiAAngikKxoW9RGtldrgBAYdFc6oUUCiECcNkKoJsBebs0NfUGrG
-	Z8FPMMiuNdoZz0VN5gDXmEm8AUtJB5zvpVGC+Yo7n5u0QVs5Vp/OqFBBDwOVNSwXuymzr5
-	7OZSqX8/fUpBeIvncDiM7NQCdJ6B0UI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789353550;
-	b=3BQpgAArthZ/2tg3HftflK7MUjD4IVRDAcyCe23/HmkKa1JuaSmNfAbk0VQy9rkn8sXhol
-	KxGOgD0jkUXhb4HbZV20o6+XHJmbr4AoQDZNdJsmJMRLGdXSKz53wEhCgwR9wmP5qr7dhP
-	DzQ4uYGKZYWBxmPvsS6CZQthS+5VLAs=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf28.hostedemail.com: domain of xu.xin16@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxct.zte.com.cn (FangMail) with ESMTPS id 4hjq911jHXz5B13b;
-	Mon, 14 Sep 2026 10:39:01 +0800 (CST)
-Received: from xaxapp04.zte.com.cn ([10.99.98.157])
-	by mse-fl2.zte.com.cn with SMTP id 68E2cu3o020377;
-	Mon, 14 Sep 2026 10:38:56 +0800 (+08)
-	(envelope-from xu.xin16@zte.com.cn)
-Received: from mapi (xaxapp02[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Mon, 14 Sep 2026 10:38:57 +0800 (CST)
-X-Zmail-TransId: 2afa6aa75e413e0-9f4f4
-X-Mailer: Zmail v1.0
-Message-ID: <20260914103857462iSBgwGihbRU3F3tXr8zwW@zte.com.cn>
-In-Reply-To: <20260914020944.664339-1-xialonglong2025@163.com>
-References: 20260911160421076_KNXun8Mpp9Xj7fxHG0i7@zte.com.cn,20260911161333316ISAQaj9yJhmglKT5A9OnK@zte.com.cn,20260914020944.664339-1-xialonglong2025@163.com
-Date: Mon, 14 Sep 2026 10:38:57 +0800 (CST)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=GPlyuX4J8yVFynRki86eS8wk2g+3emdQ6rxuxVS462s=;
+	b=ZqnijPLPkgMMjJt4AEccf7Z00vuZ24MXCPkVt0BwrUdVyAzxjv+cDxM2SbRicgT+dvp2x4
+	JN0olRavlaIOEG8HKRanIve3ms3tVdv+PaDgVTOy5ujjOVbnPQfww5K7dYbbo8YdkJXnCu
+	b5MdyHF7CewVagNUDksWZyW3GtPiqgA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 937A46109E;
+	Mon, 14 Sep 2026 02:43:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7CCA1F000FF;
+	Mon, 14 Sep 2026 02:43:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1789353808;
+	bh=GPlyuX4J8yVFynRki86eS8wk2g+3emdQ6rxuxVS462s=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=mZGrVUx3DEBnxNLMA2Y+MW04SIp2tP/blTyUA/uLcUt4gRgO2HXiwHIwtT7CAV1wd
+	 JcNAjtANaSLbKoycdA2J/acacoXg0TXN8MxrqEgjdbq86A+KsrIW3YxOgJUxADMdXz
+	 08Ssf3Vulb9ZpmV5GeHKclrnsPhxNGuiSs8Qqr6A=
+Date: Sun, 13 Sep 2026 19:43:27 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: hughd@google.com, david@kernel.org, ziy@nvidia.com, liam@infradead.org,
+ nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com,
+ baohua@kernel.org, lance.yang@linux.dev, usama.arif@linux.dev,
+ kas@kernel.org, ljs@kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] mm: shmem: ignore sysfs configs for shmem forced
+ collapse
+Message-Id: <20260913194327.019b3db96ea9b0719fc147f7@linux-foundation.org>
+In-Reply-To: <063f655b4d6c4234f3aa27ed6ecab10283ecb880.1789351825.git.baolin.wang@linux.alibaba.com>
+References: <063f655b4d6c4234f3aa27ed6ecab10283ecb880.1789351825.git.baolin.wang@linux.alibaba.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
-From: <xu.xin16@zte.com.cn>
-To: <xialonglong2025@163.com>
-Cc: <xialonglong2025@163.com>, <david@kernel.org>, <akpm@linux-foundation.org>,
-        <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-        <vbabka@kernel.org>, <baohua@kernel.org>, <ljs@kernel.org>,
-        <ziy@nvidia.com>, <xialonglong@kylinos.cn>
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCA0LzRdIG1tL2tzbTogYWRkIGZpbmRfbWVyZ2VhYmxlX3ZtYV9sb2NrZWQoKSB0byB1c2UgcGVyLVZNQSBsb2NraW5n?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl2.zte.com.cn 68E2cu3o020377
-X-TLS: YES
-X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
-X-SOURCE-IP: 10.5.228.133 unknown Mon, 14 Sep 2026 10:39:01 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6AA75E45.000/4hjq911jHXz5B13b
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 3DB29C0002
-X-Stat-Signature: xop1eo1skzh14fuus89dod7iugiq9jpi
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1789353549-980254
-X-HE-Meta: U2FsdGVkX18EGdDW3j2KUajEim7jZi2soOCyENgcrYRXJ8GKS1r8KeFD3GwpeDKareglCvLX7iAupJUH3UHr1GbFad30ViLXiOeT9I6ZopEG4eZWfgnLX5DK6Gxg/BhSerhKXCw0vXtJpmwiqgtPIPVSoptottClDq6rATRzVUK971DC9W9EvGhJSE3Ijkr96sobTOacPeFRNBlCS4wcvifmhIJIq0GsYxyBAuEZEP+x0c8Po5qiI/ja5BRJjFC5iRtCj+aW7atuJIuPDJttGiy7/PcEmAsb84rx7S/c63jOzdHlI8NxrDz8sJEugiXQgRvn7CMyRB47qvZcGOjk1K/wyWYaPjQu9NKAGgEi06vO8bF7o0ucwlXqtzDgVwciJ/vbP8Af25XlwuUTNBMpl1kSV3azOYhXS1cZ66hFKnbcpFmaiyfUMJYnuzo4q39js6ryVzhF4+NCpRGVZwv8STo/ORAX3/iyyYoI1kAi1kut6s64DnST6ogEeVemOT7CnkQjENsUCcYG4Uq2sVGhtDtYf7z1vvjHrTwxDXAlQXnc2gttECpRqg438uXbNUyImwlTBh+nfF67NXtqaL8x068F/UnsLDOFA+WbLlffPEcsaVYmZWBmCNB3L8aTLUTWd+rjVm3ynf3PfIxVbVxkTUYe4tWiw4Uwzk+qeCTr1ZiZi/8vNzSXbm2RBYzHvAUfT4hSKbhJnE5t4mpe6LCsZTgbwiJiWMoGc2IZnAaWwyw8U9UcRFmiRS2NV8gqN1bM3fhvYtAwt5g7ttvsTCR2BvBRmrCGaioYnwq8Wa4tqwKuc2ISOzv7rDu0+aoI5r4q+D+OTLHWJzPATnAkoVnbQZu+55Gkhnk//DleXCTMJp/bp57iBBFjRtOo4p/WYz+cPD5L2NSC9Q7dDQZRQ38buiQkueAr6vAaAtkRbnDK6ElJZCQ1/zBKpwNUcVWMkNqM7H5LuLFz9n0pH1VTWGk
- we5xj+8p
- aLfaLxp3SLHyXKdX2v0mkmY/TT9oT3D1N/koj8hDqlJ4Kbkhz44mN1xsDQ/YeQuLRV2Y7AOCC9KmC6Je0KncDkZ4F2UF68F+fPjkLwgD7h8DBi5S6UyJZiBwb3mmyQ663A5/DOXOJGf9mIlWFmR6Vgnfm2msGdyD1qWeUVwwK+0RN3L8smJor8gh2yq+LsTpuvfQLMXY1HKigbTtX8DD/h0SLEdSl7pKIg8dODHh0MiAaK3Bj++sl7VvE4VHicHTWOiqV
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 530F640005
+X-Stat-Signature: qijudubizsj51bor49h3q4zqrtsn9qjc
+X-HE-Tag: 1789353809-321696
+X-HE-Meta: U2FsdGVkX18kbUoISu7sR//1KNBlrXKlyDBveQjem6/04VsXmnmcVKV7Ht+TiqucM4ka0cj+CY9cLVaDYCwd1sm8+K7h2ee5QR9SLsFi0kiUU9Z/Hou1aSftGV+b8ToJu0YqVOkqh3i0/Q9eqv/tSG+4JdnHTShZDJ6Fux953wxLJY4PsItU4Evkgzws/DJgxJTdXUaqHhsGF/hf68C3RnMRWIUz2Jqk6tBIsptWU9F6fXOgRxRmrlMisBFT2mrcU+P0WRUleRuRD0MRWvAMyylZfdJvoLu0wWQckCUzB2gl3iiEDGCvEO4JMz/5IdhXv57SDLPRGwe7JrrUYj8kzTjfrbP2ZVbGgnGCOTnQOPxkpE3zjht+8Sbn7IIvZscbOHWt9AutDV9Ebe77RlzyHfJIGny5avfy+hMnWckMN9Y2uexGi2o9ORBMxmwEXeyveaQ5Rs1ecdFEchqS4y/Dq5AhvrzYcXmPdeUMf+2lE9rXHkEiNGP1p/L+5c9YA/jVgDWLSXUFbwpvwLl6eXo4s27Cu5Cmf2yZ6z+QHzrw8n1+NBae8a9Q69G6JPYZ3cdHpXVQGKJ77k3PSZrbdWdUiN/v+ubJnZze8LxSLraNL0CIQmd517Lc6tz6t8PINHdUQ+SM9+7/xuFRnr/FoxnKSxm1JiJtAZcpwwWcoHHJD0suHWsXCo8q+IQPSbMwDWje16qpmZAvigONz079i8TKJLJdxrYM18a/KmgiOpaHZfUMuDFYaWyAdK8o6eErdHQsbOMChYS8tdtTAd/6AOcTUHAAqPXNkPLVf7w9x/a5Z1yyxtk5V/X2PwdJBPACFFLiYo2fhkmJbjs8uDV4AZwRlJqJqTFBPiakUfLPvn+SqPcSyX58fOFnFyY24YikG8kDHc54u98RbcLgm19k3UeipWMijCH/jRnM56xrS8JAZeIlmwH81V3qTLuCN3gA65EdKxIN3v7rQGWMk5CnAYT
+ YJVZL5hh
+ mKFjoW18MWV6NSvpCKxrbewoxYs0qQVxdp+7V7wrEvNCkks8gDUs+7FD0YNN22Uxoaqt4KdPfJ3aPm8IXGppb3RJbJ3KeUFx3wxdY7zEHwb792jemWBF3ojtQK5xbUw9av5T1zp9g8m78uOR7PMz+I+Y/CyLkDc9tjSHDYT5FM8Jv4MJRHxlM+36NI0bGQzijxxYi2Hne4knjW28ttM1VunjTsiV7lsHi7kgu5Id71Ug7mHazun8gD8oNXHa2cPlytVS/H2lm4+AJ6bNVtx8Xe+doPsAxwy4lymZn8GtGtOtvyZk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,21 +93,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Thanks for working on this.
-> 
-> Patch 4 addresses the mmap_lock contention problem in
-> get_mergeable_page() that I reported in [1]. In that thread, David
-> suggested switching to per-VMA locking [2].
-> 
-> Could you please consider adding the following tags to the commit
-> message of patch 4/4 in the next revision?
-> 
-> Reported-by: Longlong Xia <xialonglong@kylinos.cn>
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> 
-> It would also be helpful to reference the original discussion in the
-> commit message.
+On Mon, 14 Sep 2026 10:12:41 +0800 Baolin Wang <baolin.wang@linux.alibaba.com> wrote:
 
-Of course. But the series is still under review at the moment, so let's
-hold off and see what other maintainers have to say.
+> According to Documentation/mm/transhuge.rst, MADV_COLLAPSE is expected to
+> ignore any THP or mTHP interface settings.
+> 
+> However, after commit 26c7d8413aaf ("mm: thp: support "THPeligible" semantics
+> for mTHP with anonymous shmem"), performing MADV_COLLAPSE on shmem will
+> depend on /sys/.../hugepages-2048kB/shmem_enabled being set to "inherit"
+> (although that is the default), which can cause MADV_COLLAPSE to fail
+> unexpectedly.
+
+Userspace-visible runtime regression?
+
+> Fix this by returning the result of shmem_huge_global_enabled() directly
+> when MADV_COLLAPSE is requested, allowing PMD-order collapse while ignoring
+> shmem THP/mTHP settings.
+> 
+> Fixes: 26c7d8413aaf ("mm: thp: support "THPeligible" semantics for mTHP with anonymous shmem")
+
+Should we backport?
+
+
 
