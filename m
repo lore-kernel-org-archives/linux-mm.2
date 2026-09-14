@@ -4,93 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5594BC88E50
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 07:47:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 785BCC88E50
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 07:48:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6DA186B008C; Mon, 14 Sep 2026 03:47:53 -0400 (EDT)
+	id 700976B0092; Mon, 14 Sep 2026 03:48:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B18C6B0092; Mon, 14 Sep 2026 03:47:53 -0400 (EDT)
+	id 6D9376B0093; Mon, 14 Sep 2026 03:48:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5EF606B0093; Mon, 14 Sep 2026 03:47:53 -0400 (EDT)
+	id 616DA6B0095; Mon, 14 Sep 2026 03:48:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3EC6B6B008C
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 03:47:53 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9F654A686A
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 07:47:52 +0000 (UTC)
-X-FDA: 85211588784.20.6C84BA7
-Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
-	by imf07.hostedemail.com (Postfix) with ESMTP id B0E2F40003
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 07:47:48 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=bQ83riAl;
-	spf=pass (imf07.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2FCCD6B0092
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 03:48:27 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id ACC32C120E
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 07:48:24 +0000 (UTC)
+X-FDA: 85211590128.10.746D2D3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 1331720006
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 07:48:22 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oWbdszQA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oWbdszQA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789372103;
+	b=yIV1L+zLYGP3bHuwWgWzCBXFpGi2QVdKCNNDfQIaCfcQULCwr/o0WzncgaSvGGhrTAwAsa
+	Hx3HwfBBy1bC1V/gzrWWIJMgR67hmmRU+GPk442ZPoAb+1pefr4phcGwMdaQWu19Q7VnbV
+	qGvVtBFDdeZJHxo8Iz03DQyL5cQmPQw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789372070;
+	s=arc-20220608; t=1789372103;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sXl5SrD59PL5uo/0jpXBuV8d/KfS78Pkn/98KycEw6E=;
-	b=THeJ5y92apNyb2M+xobYnbaPl1TpHAHZXpNayNaI4pOGx9RTrEPF3W02YbiB0Ci9kMJ/Vs
-	8coCidI+X4cheO5XSNItMmQhPciaeOqw9T+IOVijlEOBIQ4YxJeKgbsKs7w70fDh/ujXa+
-	LjoaS3uYjEOPTRxFughdWIP16ArTRj8=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=bQ83riAl;
-	spf=pass (imf07.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789372070;
-	b=QF0TCFEuowHTtnUNZOEae2n5sOEZOuldVA/dTWfq/3Mb1leiuoxM4enp+pcpzfzWaU0fn2
-	TIo24t5ZASBke24H8Z2tU1Pc+nLHOHMWqkzxsqTTb93kNc/7Zvh/wQsgrA5+C2agcjz5CV
-	jQ52yAMyOFp4jxEGMZ1NyuuWvqWbf8o=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1789372066; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=sXl5SrD59PL5uo/0jpXBuV8d/KfS78Pkn/98KycEw6E=;
-	b=bQ83riAl7oNHlOotPoqu5mWvOrwCjni4hX7wRsPqxef2FYsvC1hMCr1M2VoTVWjTT4izP6sPWpInqFhC17+qsIf3ZXnBg/Wn81PP3JyZKqQ6xikWEYJkdCtVYIZIpmUBwlF4m0uUfB3ltDB9WUreCcwSqwq1eAMwfJbVqlNA8IQ=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0XAtKirq_1789372064;
-Received: from 30.74.144.134(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XAtKirq_1789372064 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 14 Sep 2026 15:47:45 +0800
-Message-ID: <9c8c7c91-b159-4342-8af7-3a8171e85389@linux.alibaba.com>
-Date: Mon, 14 Sep 2026 15:47:43 +0800
+	bh=/n4jJya1prgN2dgSLwbe0z8ok1AwZZQSKHus8wzgars=;
+	b=3MNLksqLEOHn8AvEPXG7I0QtQoFSWu9CuBgilxqVe530C7tDN/oUwf/OwMtTa+290g8MhZ
+	BJZ0GU2S0OX2bbO11CYsWgVCzfV3LIAuCYr8PMLFFbDiB16fuLkgZBsfJ8F9d4EoCbyLbk
+	3WHlTaUsBP2gXuT4jJB1B7JAxLYSiA4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2A469601F6;
+	Mon, 14 Sep 2026 07:48:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06EAE1F00893;
+	Mon, 14 Sep 2026 07:48:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789372101;
+	bh=/n4jJya1prgN2dgSLwbe0z8ok1AwZZQSKHus8wzgars=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=oWbdszQAd9TfvfSdxVo0ei1jr7TWFdO8PW6YUfAIgVPGAcAdqW0Cin0CapR33m0Ik
+	 5ljlDtHfpvuV5Hirmw3LPZRghnK+ogBXDQ3l9/ZKG9HC153vQigjP0zE5BAfBBymWo
+	 fOxTfBWesTiO4i2LmC11BYWyV/ODpDdx/BjuvfVT3h1Dj8PAxlbdUpiAlWIk6hpWfB
+	 5NJbIPIExI1MB0Qlh2ITMEzokDQkftL8snyoTso0fTcKwkUydwAmddsoV6UH7HDgaH
+	 HySIopvR/79X02ohoxbp2OleIUnnEqc9+VgzavjQzxdEgJSN1qG5NhqNqKI9vD/msx
+	 e8m+2Quks4mJg==
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] mm/mglru: add tracepoint for scan_folios()
-To: Ridong Chen <ridong.chen@linux.dev>, Steven Rostedt
- <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
- David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org,
- "open list:MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)" <linux-mm@kvack.org>,
- Ridong Chen <chenridong@xiaomi.com>
-References: <20260911102939.2485750-1-ridong.chen@linux.dev>
- <20260911102939.2485750-3-ridong.chen@linux.dev>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260911102939.2485750-3-ridong.chen@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v3 01/11] mm/sparse-vmemmap: introduce
+ CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION
+From: Mike Rapoport <rppt@kernel.org>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>, 
+ Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Jonathan Corbet <corbet@lwn.net>, 
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ linuxppc-dev@lists.ozlabs.org, linux-doc@vger.kernel.org, 
+ Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
+ Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>, 
+ Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20260911050228.58884-2-songmuchun@bytedance.com>
+References: <20260911050228.58884-1-songmuchun@bytedance.com>
+ <20260911050228.58884-2-songmuchun@bytedance.com>
+Date: Mon, 14 Sep 2026 10:48:14 +0300
+Message-Id: <178937209455.4188640.17761540933640972197.b4-review@b4>
+X-Mailer: b4 0.17-dev
 X-Rspam-User: 
-X-Stat-Signature: ahbgh3f9tz1beyaax6jthhzxr9hn7dhd
-X-Rspamd-Queue-Id: B0E2F40003
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789372068-686843
-X-HE-Meta: U2FsdGVkX195IbrBNvm5h4UwV6Mb9tt5dSioBcaQ5IXRhJsbxjI9DRGaxquKJ6nP+31HVj3VuQv+Gfavcn2fs7hFSLs2qEEEh64avR/Nl9WFy7GU8Nmndk0hSAO+och4b3zznt9yr9l25XQk3D7hV/GguhpnWNYq9Gnl9D2Zoy+ID+GpIHSvBDCtlGE6AwTUpVncMa7lzqufqbagWdPbtIc3SwL3uEvQvN3P8YmEBj6z4XhEHw7cryo9xuAfqDvEW2cz/MKew/Is1+gS0IOopQMHWEqCcj3ZKteheImaGdmSZ2ivXvyA/yvkpmZ40RZhsIsmcoRg0rsUTwKtIXXPUF8OU+k1vtwNu1iMhdw/5+ltRIQ0n/87to+4QnJ9WfS4yhaOKWxXU3Xv5c8yO2dTf/6p5IF4gmQn+jNN1dpro9IUcKWM9SL3JzhrSdMH8/J6y7FLPvxlq4K2zd6wzE0dP+lhf2y810dKB/6xZlUP4YNo3+nF4etPhMOXKiKD0c6iOOMkz4YRnJtJAfJ4bzdxOdEp6DD21eEjkTtAsUa9guEh3QMXNTxFLdVkeNa58BVqbeg4CdMKR9cI2Mr3LDCAMyCVzk1jNRxfOYLEm7jAfRovPMwcwu5fADYqaTeXI96xIl+Ty2bU6z7XjKYlSsBWTDkKPPPKK5OqKINO8Mc5GWqeOI9/FM+tSTLcKn6ORNx1RIXoWhAJQ1VrhiPEbyZynOPo2NRzSS8QiP26CUwW9woI+1xxejK5rr4Y3YJpQLKCLyqTE2hdzre9RpF9QuPdLGrvBHPW8RbD90QZBtiYdz6Cc62pg3sQ08aJ3hvCQIq9iSywap2rC+W9c1A2UNisx094emdMgAmY+xvZWyHE5vzvNgmOrVP+VBODWY2TsSbz72KPFxYrgadj0PTL17tFv6nCm9TouWlDxM+NS2ZSddrinTEMIcP9Lall0ZMnlLWFNCWgddKqX4CFtxkD4DG
- VkEV68+0
- oAkkzKJFhjEnhs/9MeaMq/TagLhEwDgMBo+FHJh7kH+ZNaSaNL0epSpSUiyhuCvQ63X3fylCTNUWbFN9mvtdnhxemVkf2a+3LNEmgm+wLRBkveQCDal3hxrsd0lAdHqU6LldxC49A5kVdOAVL0vWQdhBtylowKxCM0n/6XX9K6P/vIsb1MJwKkMaCUjHF3P9gKEg26Vh+Ykm+BDjr8b1qGrdDOm9s+ygmm96U4xEf2kNTZNUXRgHVJezooPSaUmwAKdT17AZy3fdOknBwXzHAKI1SpU+LLjdAIRcXsE6qX5DFgt0kcDG3epgXzqPKQRMO3CDnQsGJy+5Np2bQaHDQIRLvnfV1fNoPw4CS1Kv/ZDYSEEDrgZ1PXiA87HyT3E0Kq1lz
+X-Rspamd-Queue-Id: 1331720006
+X-Stat-Signature: juyewgtamegec6wfs9gxa4hgy911qcps
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789372102-161649
+X-HE-Meta: U2FsdGVkX19jJzCeeVQVXmk9POLPnQBQnhxIlyaQjyTdW7n3DVcs+rTZqgnA6kII5kWeG81DeOoATK5o2rUlEhSLubT4h14bziw/pCxaEprNTlVkcrYWcvInEltP8HwL8dO8KmLr8UVe44aLqT46178LId958CSg2MBPCLtqDxUq5cLBEop0+8v8O16zQCuMd+AseGhQJVh4V+cP4YOmRinEC0ZOay3rSqiQC6KaZ4xnP5+3/jwakd5dmt9b6jkvcf2OLEQ/Z5fVWTNlWGWf58lfja8vrGLobmFjfGaty92SKZQVDIctg/Qvp5hpQmXG6CYrnCIFChpzIAA2hDL/CO4egj3ZUl1rJM344sNzJKCLb/ZtM072Xjs3zZcNW7xfE4ML8av5brql+YtBAlFxc/5DSidTFLV7ZvgnQKZBDeTD0bHI5ZHdPtObK4e3WMAxbdGkr4C2Npd8IR2RxBY1L1WSZDPFtOf2iK5R/MzM7vnNxsAGo6R8HVxTVQQE3+fsiCj1jYBhS+BEjnAObThKzUW0MFe4c8CZcwJujbki2+tjMnPajrr3czm9liYfH6wqos5X9GiazD7F4/R3nG3uloorKTgeCCK+yRwYqtTir0B14Was4HfxJHf4rG7AGOr9ZSm5W6y2KG5124pPytYI/wSq9Ke47PO0HYzhn6GejiIUE0YhYDUkPTtRl6LQr8gZCxQhjUFDkKw7nsGOEGeB1hCbOpV/e6aH7uwNx1wqKZIIBkoqk2uf9Yh6geKlSLUqXaiToEbMtJN6daNbcku1WOEB0lfTss7qWxz7tHA5fRJbNYPKejt4+U6aNBHrCHrzgaSryDHBOky0x+cnV80rdacRaZPz9WoD+fxk4yh1RRYUOFT7z6w/RATFyJEJ4i4LatUI2zb6sCmekqJEJzVacUUz81klsMAEbynIN1SiK1u47I8wCWeFR/afWTCWunanpmLSJv2GHrUVM7FBP19
+ HdA+3jwg
+ RGfpStcxmoRG4R71b1maaFJwPZSj7FJ0Kh/99/OsLoSyeJNLoI2Q+wW/CBbHzOVA4v2o6SDvjH+MEn7zRlXXsIqTtGkgGgdaT0dZTpNzBwLHaEyLghIT326BuxnTqw1CZXN0+3jUlRGydR7bvg+gsN+77JfcwKH1cu2NLAXVuLu1gAAbJFqttzrdfkvNxgb8usSWUCV4DjpuYAPs8PF/IrGEa4TR8CYYZI3Zd8cM7SiUyKNZXS0l53YtUJ/gnRwZEvwxvXkPVy5Fc/r8RbbmF5DhXZwM0uQJEfM+fwLcJQforE1+TFST2jAwiTA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,65 +102,185 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi,
 
+> The section-based vmemmap optimization infrastructure is still guarded by
+> CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP, but it also can be used by device
+> DAX. Introduce CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION as a common config
 
-On 9/11/26 6:29 PM, Ridong Chen wrote:
-> From: Ridong Chen <chenridong@xiaomi.com>
+CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION is a bit mouthful :)
+
+I think that dropping _SPARSEMEM won't hurt readability.
+
+> for the shared infrastructure.
 > 
-> MGLRU's scan_folios() emits the classic-LRU tracepoint
-> trace_mm_vmscan_lru_isolate(), which predates MGLRU. It reports the
-> scan/isolate counts and the LRU type, but carries no generation or
-> memcg context, so a trace of an MGLRU run cannot tell which memcg a
-> given scan belongs to, nor how far reclaim has progressed through the
-> generations.
+> Select the new option from HUGETLB_PAGE_OPTIMIZE_VMEMMAP and from
+> DEV_DAX when the architecture opts in to DAX vmemmap optimization, and
+> use it to guard the generic sparse-vmemmap state and helpers.
 > 
-> Add mm_mglru_scan_folios next to it, reporting the same counters plus
-> nr_sorted (folios moved to a younger generation by sort_folio()) and
-> the MGLRU context the classic tracepoint lacks: the memcg id, and the
-> max_seq, tier and min_seq of the type being scanned.
-> 
-> scan_folios() is the MGLRU-specific layer where folios are actually
-> scanned, so it has no classic-LRU counterpart. That the classic
-> trace_mm_vmscan_lru_isolate() has lived here stably shows this is a
-> long-lived place to hook, and the new tracepoint can be enabled on its
-> own to observe the MGLRU-specific information. The existing tracepoint
-> is left unchanged.
-> 
-> Assisted-by: Claude:claude-opus-4-8
-> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
-> ---
->   include/trace/events/vmscan.h | 63 +++++++++++++++++++++++++++++++++++
->   mm/vmscan.c                   |  6 ++++
->   2 files changed, 69 insertions(+)
-> 
-> diff --git a/include/trace/events/vmscan.h b/include/trace/events/vmscan.h
-> index 8a872990b4be..5defa8f6719c 100644
-> --- a/include/trace/events/vmscan.h
-> +++ b/include/trace/events/vmscan.h
-> @@ -392,6 +392,69 @@ TRACE_EVENT(mm_vmscan_lru_isolate,
->   		__print_symbolic(__entry->lru, LRU_NAMES))
->   );
->   
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> Acked-by: Qi Zheng <qi.zheng@linux.dev>
+>
+> diff --git a/arch/x86/entry/vdso/vdso32/fake_32bit_build.h b/arch/x86/entry/vdso/vdso32/fake_32bit_build.h
+> index bc3e549795c3f..5f8424eade2bd 100644
+> --- a/arch/x86/entry/vdso/vdso32/fake_32bit_build.h
+> +++ b/arch/x86/entry/vdso/vdso32/fake_32bit_build.h
+> @@ -11,7 +11,7 @@
+>  #undef CONFIG_PGTABLE_LEVELS
+>  #undef CONFIG_ILLEGAL_POINTER_VALUE
+>  #undef CONFIG_SPARSEMEM_VMEMMAP
+> -#undef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
+> +#undef CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION
+>  #undef CONFIG_NR_CPUS
+>  #undef CONFIG_PARAVIRT_XXL
+>  
+> diff --git a/drivers/dax/Kconfig b/drivers/dax/Kconfig
+> index 602f9a0839a91..6250954b0fa7a 100644
+> --- a/drivers/dax/Kconfig
+> +++ b/drivers/dax/Kconfig
+> @@ -8,6 +8,8 @@ if DAX
+>  config DEV_DAX
+>  	tristate "Device DAX: direct access mapping device"
+>  	depends on TRANSPARENT_HUGEPAGE
+> +	depends on ZONE_DEVICE
+> +	select SPARSEMEM_VMEMMAP_OPTIMIZATION if ARCH_WANT_OPTIMIZE_DAX_VMEMMAP
+>  	help
+>  	  Support raw access to differentiated (persistence, bandwidth,
+>  	  latency...) memory via an mmap(2) capable character
+> diff --git a/fs/Kconfig b/fs/Kconfig
+> index d1c210c6508f0..9b32ce79cc805 100644
+> --- a/fs/Kconfig
+> +++ b/fs/Kconfig
+> @@ -278,6 +278,7 @@ config HUGETLB_PAGE_OPTIMIZE_VMEMMAP
+>  	def_bool HUGETLB_PAGE
+>  	depends on ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP
+>  	depends on SPARSEMEM_VMEMMAP
+> +	select SPARSEMEM_VMEMMAP_OPTIMIZATION
+>  
+>  config HUGETLB_PMD_PAGE_TABLE_SHARING
+>  	def_bool HUGETLB_PAGE
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index c49ef99b4413b..a2ebe87e76546 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -5175,6 +5175,9 @@ static inline bool __vmemmap_can_optimize(struct vmem_altmap *altmap,
+>  	unsigned long nr_pages;
+>  	unsigned long nr_vmemmap_pages;
+>  
+> +	if (!IS_ENABLED(CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION))
+> +		return false;
+> +
+>  	if (!pgmap || !is_power_of_2(sizeof(struct page)))
+>  		return false;
+>  
+> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> index acd94cecc0d39..97511f651ebc0 100644
+> --- a/include/linux/mmzone.h
+> +++ b/include/linux/mmzone.h
+> @@ -102,9 +102,9 @@
+>   *
+>   * HVO which is only active if the size of struct page is a power of 2.
+>   */
+> -#define MAX_FOLIO_VMEMMAP_ALIGN \
+> -	(IS_ENABLED(CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP) && \
+> -	 is_power_of_2(sizeof(struct page)) ? \
+> +#define MAX_FOLIO_VMEMMAP_ALIGN					\
+> +	(IS_ENABLED(CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION) &&	\
+> +	 is_power_of_2(sizeof(struct page)) ?			\
+>  	 MAX_FOLIO_NR_PAGES * sizeof(struct page) : 0)
+>  
+>  /* The number of retained vmemmap pages with HVO enabled. */
+> @@ -116,7 +116,8 @@
+>  #define __VMEMMAP_OPTIMIZATION_NR_ORDERS	\
+>  	(MAX_FOLIO_ORDER - VMEMMAP_OPTIMIZATION_MIN_ORDER + 1)
+>  #define VMEMMAP_OPTIMIZATION_NR_ORDERS		\
+> -	(__VMEMMAP_OPTIMIZATION_NR_ORDERS > 0 ? __VMEMMAP_OPTIMIZATION_NR_ORDERS : 0)
+> +	((__VMEMMAP_OPTIMIZATION_NR_ORDERS > 0 &&	\
+> +	  IS_ENABLED(CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION)) ? __VMEMMAP_OPTIMIZATION_NR_ORDERS : 0)
+>  
+>  enum migratetype {
+>  	MIGRATE_UNMOVABLE,
+> @@ -1155,7 +1156,7 @@ struct zone {
+>  	/* Zone statistics */
+>  	atomic_long_t		vm_stat[NR_VM_ZONE_STAT_ITEMS];
+>  	atomic_long_t		vm_numa_event[NR_VM_NUMA_EVENT_ITEMS];
+> -#ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
+> +#ifdef CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION
+>  	struct page *vmemmap_tails[VMEMMAP_OPTIMIZATION_NR_ORDERS];
+>  #endif
+>  } ____cacheline_internodealigned_in_smp;
+> @@ -2019,7 +2020,7 @@ struct mem_section {
+>  	unsigned long section_mem_map;
+>  
+>  	struct mem_section_usage *usage;
+> -#ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
+> +#ifdef CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION
+>  	/*
+>  	 * Normally, sections hold regular (order-0) pages. However, for
+>  	 * sections with HVO enabled, this tracks the compound page order
+> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+> index 86dd0470da117..462e89e055485 100644
+> --- a/include/linux/page-flags.h
+> +++ b/include/linux/page-flags.h
+> @@ -208,14 +208,13 @@ enum pageflags {
+>  static __always_inline bool compound_info_has_mask(void)
+>  {
+>  	/*
+> -	 * Limit mask usage to HugeTLB vmemmap optimization (HVO) where it
+> -	 * makes a difference.
+> +	 * Limit mask usage to HVO where it makes a difference.
+>  	 *
+>  	 * The approach with mask would work in the wider set of conditions,
+>  	 * but it requires validating that struct pages are naturally aligned
+>  	 * for all orders up to the MAX_FOLIO_ORDER, which can be tricky.
+>  	 */
+> -	if (!IS_ENABLED(CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP))
+> +	if (!IS_ENABLED(CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION))
+>  		return false;
+>  
+>  	return is_power_of_2(sizeof(struct page));
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index bc7befafb47b5..c180d40cd6712 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -461,6 +461,10 @@ config SPARSEMEM_VMEMMAP
+>  	  pfn_to_page and page_to_pfn operations.  This is the most
+>  	  efficient option when sufficient kernel resources are available.
+>  
+> +config SPARSEMEM_VMEMMAP_OPTIMIZATION
+> +	bool
+> +	depends on SPARSEMEM_VMEMMAP
+> +
+>  #
+>  # Select this config option from the architecture Kconfig, if it is preferred
+>  # to enable the feature of HugeTLB/dev_dax vmemmap optimization.
+> diff --git a/mm/sparse.h b/mm/sparse.h
+> index d3a71ef4fad0f..3151d4db75753 100644
+> --- a/mm/sparse.h
+> +++ b/mm/sparse.h
+> @@ -10,7 +10,7 @@
+>  
+>  #include <linux/mmzone.h>
+>  
+> -#ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
+> +#ifdef CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION
+>  static inline unsigned int section_compound_order(const struct mem_section *section)
+>  {
+>  	return section->compound_page_order;
+> @@ -75,7 +75,7 @@ static inline bool vmemmap_optimizable_pfn(unsigned long pfn)
+>  
+>  static inline bool vmemmap_optimizable_order(unsigned int order)
+>  {
+> -	if (!IS_ENABLED(CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP))
+> +	if (!IS_ENABLED(CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION))
+>  		return false;
+>  
+>  	if (!is_power_of_2(sizeof(struct page)))
 
-[snip]
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 2554a6513aa8..67f59aa73fb9 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -4876,6 +4876,12 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->   	trace_mm_vmscan_lru_isolate(sc->reclaim_idx, sc->order, nr_to_scan,
->   				scanned, skipped, isolated,
->   				type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
-> +	trace_mm_mglru_scan_folios(lruvec,
-> +				   sc->reclaim_idx, sc->order, nr_to_scan,
-> +				   scanned, sorted, skipped, isolated,
-> +				   type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON,
-> +				   lrugen->max_seq, tier,
-> +				   lrugen->min_seq[type]);
+-- 
+Sincerely yours,
+Mike.
 
-Both tracepoints will print some duplicated content, and I'm not sure 
-it's worth a new tracepoint just to trace max_seq and min_seq.
-
-Anyway, I'm not against this patch, but I'd like to hear others' opinions.
 
