@@ -4,125 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85B54C88E70
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 11:43:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE916C88E64
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 11:43:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5FC7C6B0093; Mon, 14 Sep 2026 07:42:59 -0400 (EDT)
+	id 75E386B0088; Mon, 14 Sep 2026 07:43:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D4CF6B0096; Mon, 14 Sep 2026 07:42:59 -0400 (EDT)
+	id 735246B0095; Mon, 14 Sep 2026 07:43:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E9AF6B0098; Mon, 14 Sep 2026 07:42:59 -0400 (EDT)
+	id 64C556B0098; Mon, 14 Sep 2026 07:43:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2FE666B0093
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 07:42:59 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4BEBA120360
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 11:42:58 +0000 (UTC)
-X-FDA: 85212181236.18.670E028
-Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 83A6A180003
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 11:42:56 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=LNvkTpVB;
-	spf=pass (imf16.hostedemail.com: domain of aa9736195201@gmail.com designates 74.125.227.141 as permitted sender) smtp.mailfrom=aa9736195201@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 413116B0088
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 07:43:38 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6BC0DC0330
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 11:43:37 +0000 (UTC)
+X-FDA: 85212182874.07.434A8BB
+Received: from mta0.migadu.com (out-248.mta0.migadu.com [91.218.175.248])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 4812A40007
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 11:43:35 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=uoLJw7eY;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf11.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.248 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789386215;
+	b=jNySMHpdC90H87+bRVM1xYUnOlpQqGKruLvqHQRMjVjQqwAgBn/S9K2xOZODiUApiuZ9/v
+	qWgw33r3fjN5lra9fAwM0z92c7aKpkgAeCJaJf7sZpSOQxuVrYB6b1EaE5QDkBSxjGJi/l
+	qvh9jPYEKlEb6wG84nf+zgwPNF31ePc=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=uoLJw7eY;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf11.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.248 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789386176;
+	s=arc-20220608; t=1789386215;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o4McCO5QA5RDLTkl/ISRPyM2FuR98SEf9b6QSmXRjYA=;
-	b=Bd5weNzvZ81TxXRyAUg4FpR/98PVQmK6qCjYbsSb/7R9cHW/+5OsgF9vUgL/738YGWMBw1
-	XEzOeO3oPJiFblROFDpUaay8nx1AXnvwD3xhpBTWmIQA4DdFq+PjL5KNUOAXcRnOT3BB/A
-	Vt9ukhtw/EgW7sGHZEg8eekYHHccIqc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789386176;
-	b=OTCpkOlf3R4InPvJ6t1fYI3sZKtA0i96QYniikQvAzK6Ku30lXB2nUUY6SfJJzN9lkrQcN
-	frq+n8Ayse0Ym4V0/Moq8xBOhd7WIrse1AAMkk1Hrehgt/HBXfUkEMmob1i0YYXlJFmEGa
-	AUyCNxTYWLa1scYqZlMVfvWRxiabZwY=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=LNvkTpVB;
-	spf=pass (imf16.hostedemail.com: domain of aa9736195201@gmail.com designates 74.125.227.141 as permitted sender) smtp.mailfrom=aa9736195201@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj2-f13.google.com with SMTP id d9443c01a7336-2d8fb334e72so18766895ad.1
-        for <linux-mm@kvack.org>; Mon, 14 Sep 2026 04:42:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789386175; x=1789990975; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=o4McCO5QA5RDLTkl/ISRPyM2FuR98SEf9b6QSmXRjYA=;
-        b=LNvkTpVBVLtnmmEXCtcMjxSmvw7Zm2wtcBoFNXXltnML/6vsL4BTXv2dp5PGbvPZ2q
-         jXMs9HnzOLWNwngFRtxwgyJJp3gKzS+3nZ2jFYLHXWYSqf7VVXqsjtQuYyk1IuK4tH8Y
-         NQDSc5Dx/kLx6QNjD1knkyQ3JxJpDKZLxrbG3W3MoHDhYVy716uZNszmn+iQxgW3vLD/
-         u1CIUV/6kSvIE8ITW28aPhcndZoWsztOtrRQ54iytj4ukdJ7aiTiyULk6iMzQ8c0Ac+m
-         Q2UE5b54/Vc4eLOt4tL+YsAwL1IfbWwgymBqq9LCO5TB9RdnEs5s6Zb5polDXG/oEf9d
-         m9zw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789386175; x=1789990975;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=o4McCO5QA5RDLTkl/ISRPyM2FuR98SEf9b6QSmXRjYA=;
-        b=fHB/1A0pMvZ0A1r7sYCxwYUkPvIb1rxOF3luXHQA2ahSpDuc18oa+ke7xI49s+g/EQ
-         YYugRY2elM+riUkFvrCiGrnsie2LmZxSXXQoet6EvmW7AmG56yukZC51eBKis/7WN9K2
-         01+cFFKSiQvzXkFws7cocQqoqPf6EGYTpi88rKSvOCH4uGjfyAWXoS0M6yikzlMql64x
-         JrsCD03HFLH2V9rvzJSuiwVXAtZkMJyw8dtPSwd1CAjHNp808T4Xdi6IuwPxiIy/JSn5
-         sOvCTOIdld/C2R0TkgGRFYOzegBuA6mjLuyMMvMwztcpiAxrNxf/bvy+QUaADutBaM2i
-         l9mQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwSKuvFH6Rwuoy/QBwL2V0ZFxZ8GIcpv1IDePdehG2g2XqTqouyI1P3Kkg5Sr5JJB6IjjmdecrmGQ==@kvack.org
-X-Gm-Message-State: AFuF++mb+yH7efB8QaA+3RedFXZgcJttap75e/jBUzP81mROTimolcCl
-	Zg6il/w/YaIp5FwYclHSr11VF2722jvLr+Eqt/bHSil00FO6nYDXsQdn
-X-Gm-Gg: AYBFou1PBE5QQ950nddiix6zxgFXBoC5sQBCS3VpQ2sDuikiZZtUDjz2uhb58KL8631
-	BLqqNAKc9CTivbM8f/OvCuc5aRdc18Bdv704W1IdIRqSU0cznQioiL1z7j6pQ0uySuvGJqSx3Hu
-	rWSP+bXpIKNKpq66HIcm4pqG8MBzErcKx4VE7CWPYBVwk5M1iszNnPs6jsOdYRRItaMnpf/G6XZ
-	EdcOpwjKUTXbVutdS48Fe5m+zuzM60RFE3Q39ObCVn4yaqwmHahwPMs/up3KpgCozI7KMwCw7GW
-	A259svNNMQ7udCTtHqA/NbY7NvRclDoQzkQc5sc/3QFmeVocfD/TAnmC4kXXf64W75dLRemJKDM
-	ikZ4hB4CdoxSwNo8tVqF51Z4oqWIb/u1z3y17gRL0IM5OY/BBGTour1PQSdBGPVM2sLHc0+20YC
-	Lu8O7GjkmKewcKZEzudVdn4dSgZV7zTlW+aNHV0rlTQNGRpMJ40OSekua9xs6qFIa2mn97BUWqh
-	AlHC+cpVpmlcGNYSiLQivRQRqI/b1v+fsiFLL4qJJ9qQSU1fr8g/4N5QtIrEgBwOx0PYPjFKpS9
-	Y53gYxFxgePHgNoW6aMbu0EzyA==
-X-Received: by 2002:a17:903:240d:b0:2d8:d4cc:be68 with SMTP id d9443c01a7336-2dd6c75858dmr51731475ad.21.1789386175200;
-        Mon, 14 Sep 2026 04:42:55 -0700 (PDT)
-Received: from DESKTOP-TJS95SS.tail460ce2.ts.net (114-38-150-193.dynamic-ip.hinet.net. [114.38.150.193])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dd34c7f976sm44032275ad.81.2026.09.14.04.42.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2026 04:42:54 -0700 (PDT)
-From: Yuan-Hao Hsu <aa9736195201@gmail.com>
-To: Miklos Szeredi <miklos@szeredi.hu>
-Cc: Matthew Wilcox <willy@infradead.org>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Jann Horn <jannh@google.com>,
-	David Hildenbrand <david@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jinjiang Tu <tujinjiang@huawei.com>,
-	linux-unionfs@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ovl: implement ->get_unmapped_area()
-Date: Mon, 14 Sep 2026 19:42:49 +0800
-Message-ID: <20260914114249.663-1-aa9736195201@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <CAJfpeguhxCEs3pZuqAZ-gpG5gm7NV-TuzniSkCCrgAQ-TV6ZpA@mail.gmail.com>
-References: <20260827170718.497-1-aa9736195201@gmail.com> <CAOQ4uxjxDV0U9yrDA_StN968P_6cpjRAN2mBCx1c_RYd7BF4Og@mail.gmail.com> <apGCDtf-gE1osJqE@casper.infradead.org> <CAJfpeguhxCEs3pZuqAZ-gpG5gm7NV-TuzniSkCCrgAQ-TV6ZpA@mail.gmail.com>
+	bh=dh2CaV3HTSL+pXGerZZn+jJw5LbMQzFJUQAW2lEC2Zo=;
+	b=1ISMBUlRGaFlL4trbxnODjo9PnfWIgRE5pjsSTXfNVjODR5EAQAi/kVbThNbu7pPtj8dtX
+	uHBe5OJ/JoDVFxT6Wy6R3FVGaH9ejoTpHt333ictPHromwuTeMjNfhBgmg+UQOImlZFDKo
+	pH7wTfy2mRaDrQyNmzwQM+F0CLahc08=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=tuISWPJ3M4ynpVPzFp7v67YsNxfpcndtSeOMAgkqq08=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789386213; v=1; x=1789991013;
+ b=uoLJw7eYjl6XgvWe0bv+jIg0e6AbExYlbWiRbgMS1AYSGQPz8RRi7VpCz+4Nv0kixfXx3dBc
+ xKkuVm8bt5VEHZtOytQigsg3/dnukdIF7BRHCHRfdAVSRRPt8T0W7FncQm98mLwYjcQo235Im5S
+ IQCGJelh1Eorz9DOg2te0sek=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta11.migadu.com with ESMTPS id bed498ec3e35e2b2;
+	Mon, 14 Sep 2026 11:43:33 +0000
+X-Mizu-Trace-ID: bed498ec3e35e2b2
+X-Migadu-Flow: FLOW_OUT
+From: Usama Arif <usama.arif@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	david@kernel.org,
+	chrisl@kernel.org,
+	kasong@tencent.com,
+	ljs@kernel.org,
+	ziy@nvidia.com,
+	linux-mm@kvack.org
+Cc: ying.huang@linux.alibaba.com,
+	Baoquan He <baoquan.he@linux.dev>,
+	willy@infradead.org,
+	youngjun.park@lge.com,
+	hannes@cmpxchg.org,
+	riel@surriel.com,
+	shakeel.butt@linux.dev,
+	alex@ghiti.fr,
+	kas@kernel.org,
+	baohua@kernel.org,
+	dev.jain@arm.com,
+	baolin.wang@linux.alibaba.com,
+	Nico Pache <nico.pache@linux.dev>,
+	Liam R. Howlett <liam@infradead.org>,
+	ryan.roberts@arm.com,
+	Vlastimil Babka <vbabka@kernel.org>,
+	lance.yang@linux.dev,
+	linux-kernel@vger.kernel.org,
+	nphamcs@gmail.com,
+	shikemeng@huaweicloud.com,
+	yosry@kernel.org,
+	qi.zheng@linux.dev,
+	luizcap@redhat.com,
+	kernel-team@meta.com,
+	Usama Arif <usama.arif@linux.dev>
+Subject: [PATCH v7 01/29] mm: rename pmd_to_softleaf_folio() to pmd_softleaf_to_folio()
+Date: Mon, 14 Sep 2026 04:41:53 -0700
+Message-ID: <20260914114320.12988-2-usama.arif@linux.dev>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260914114320.12988-1-usama.arif@linux.dev>
+References: <20260914114320.12988-1-usama.arif@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 83A6A180003
-X-Stat-Signature: toxssd45gr5c3xa9gxzdwp9r3na94gg8
 X-Rspam-User: 
-X-HE-Tag: 1789386176-863274
-X-HE-Meta: U2FsdGVkX19NoIXZ+2NjiH2zJ8UXCSMmZ/7Ss4SNUoAbXlFjjfEi0lMvnaVRMmpZpyDxlqVPA5fkmkWd0S3aPEnQniClMrfV/Cnj28gvwDGtnu1UYyt8hpEejh5iKGMfgsQaexxa8RNU8KpOLX6pSibwDLGePUHZbkfIikCU/C0ZEpZOksoS4n/E4MmzdB3uigOHu798JBciOXGGKwtBJSjEjTzd1eV8gwtNFcm7iu/H5uHzovn562HuVCxBFRyEanTiHR3+PfzFFz1o52TOdq94pli5e3Rc3a10CI33V+H9RtPxYhbBIga1ItV9zpQCc7tNPIyFL3qS/QrgfStC7N2qZAB13Dy5/LtDcXWDPXMP4WXSQUdmqCD0gh658nYFPvnU18KFXuhZUZKQNRoMMPVMVEViEb41iLGbrFs3aQI/ByAVImPcfEJeYfPn8PGxu6dkke206u0pk/PBS7i6IJe4uGMnCLchRgTPqbQHZcILPJ2Sv/k/K+V3B9plkyMShUANVqUNGsVFll6ISdNWf/OA02RHaW+4vLrmhgpZWXaUR0DQ1PDWYU9sNPT2RdvbSKyhklppO59CaZvJoX7QPnfbbFN/c+5FLfc3xTtRVpXnsCfsLnjJQ8pXOk/akGjSHUO5kMDYU/o6vsG0M2nH8XDRv4qyHJhsvpuJZXvPj3msFRHGpScF6sm/r9o6GbJOvYr7yWafxoBvRHRNksd+O0xkh5wWQNS/SKMzTJYhPiTR/m1Fj+dKKoV616EjLVuyY0gwi/i4SkrJOzjEecSICmi9H2wm6qh5kelN2c+cFizbx5ag7odYzLlD1UvkfYNRqRjDFweCZvJ+4fJptCG5BxI96rhf2v67RtX+voJ72NtiTAnsF0uSWxJB8J73IOHsP6RSSUa+r+dy6HzgP4djbBFCYR6gimaThSojPQSIZ7sQwkdZLnNNjyb+zkbLhn+SXevE7GPvNEAQRdMgeZD
- AKfOu0zl
- eenFsK3eKGOSz98FOPRQSNsMnUH697jUoqkVXgQJJYxoQb2JqliXcJqScsZDcKPTZv4L/x9oIZNUKqL7OFJZjIUKhbuIqaj0DNigavjaf5x2ffq0FnygP65Ij83KsdoHUjJDOW8fL2V/AvHXgcj73lHR1tjSSnCAGk251WXQ3a1aM6SWr+VDzJd6g33YbAw1jzuJG8IzaF0OIOBBYbLn1Gd7rPsJ/6x2T8IOlYKdBqPoNR5qdxaWFMTxu9QXQnpkrT6lhJsGenSOz+q4oku98ZJv9w38EQDvsytX8jURn1e06lNRA/B3X+99hgTt51JjCoSxwCEEDJU3f7Z5n+em9dr426sR89fdUUl19haQlw4IwPpBzzcVLprsNuoHVbBxu45R93EjTqrdE83C1VX2Y8hf2CeyOavNde0F1dLtSyAOt05PhvigwY+mJXQ==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 4812A40007
+X-Stat-Signature: ng6zcw1tiuhwbds7id8te3rb1wtdgbay
+X-HE-Tag: 1789386215-263900
+X-HE-Meta: U2FsdGVkX18SvpAKJ3g7n63ksXaY+H1cvDbn1KmRIGeajvZVzDJS2d9GeHJIgYAhQWNa1taPsh5iiNn1tB64tkDZ/CpyXA89qbHVHV527f1gm+m8xcuHqBHuzPs7IIZ8aB87mbcOQwepPsw8Biut45eJBkbslk8A59fJXnlPqzM969acklJFKr0ExVlG9kpV+c+HaHUy0jU60CEfwOOz3IAmRVTxrhUlInlUUKvsp7m7ruD8VqNMKN7QVAfrYHCECTU66TotrWsXBdPm9wNg1AsitrQJKrcRy57qa24nI0PQIyXUrlIo2pTGMqRoJm0WvnFjZHqmizEfI1R3r98yjK7fSmmjoD9vMHFIUDIh65oaRFwftwQBzhn4wpDG5jvpm8WIItjuWq3eaj/zr0444TJfPQKOjZveqI6Jojk5uqzlTOIOIddyUik69Y7fRDd1dSxJyw/LnWF1+jIdUKia6m/DvXXauiYXkM0WedKHVxHJAONWU4O4zzSjzZXRIQqw/RWYl1a41ic1/FzLolpjUw5cq+3DQGvUTFRxc/xJiih+xZznP78czMtMEbOcdpfBD0/fhyrbr7cvwPkypPwN/1wwQ8NdaxpA25gF9L8CHFASiJcvAL6WjaVS71joU+VXW/CeGIcYFLw+pzN+PcBboPD9Z6ILOZKDCa4aBm7arEvDh1hSGqDn5XZPl7VtQfAne9bysAPxyGQB6hXMAMlUNoupORNU6YxQUrj/IRhepGKwzHFHfsnr65l85avWeaXwavfC+i5vYHG8/PWlqEHTwpHB1Mt8lsxso+3pEu0tQla89+wQzlICI1aaabAGRhJKP4uccP4liRC1EM4t/wc65RiO7zCitm7xo2by1irMx/Zy13mdl4AOsruVMFcbhFEtIGzmf8yWbbQdejrmDHTGiSFBZ9ZYTtwco9dXUhSmBvBuBBly1/wTRlyIe8Cz0+u9bMfVgfDRR7JwPZQV0ef
+ Wuv7OZiM
+ yc3qGhlp6NdVhgT2FRVNPPAXn+y1lFmNrFS7/79zOwNGLbf4aZO+rP7Z+tRnqUKgRfgCUoUo47NR8XHTEaN2/NdS/lpCN4BT0lxp6s0TAgXnp7n1bVKxbTK+wnLAlXafEbiZ73xfdOsdBK9svjaF/6hwSjDZ/FxP+Fp8zr9SwGSZsBufFcfu5I0OiA2q6UTx5FTCX4NTsjss9W/4Rk9NN3FxM0CDJ8wQ9XSPOVFNMBtyC0jvoiV4dzIwUg1XU/eRn8MmHtAfgnJlNbmxzPXm955jBQMJw1rqyRXLhws7b0RRhqXDGJYGiS2nphP4BFWlMRdp1T0Vd4y/KvoCknfvgJO4njLKkDC88UisyVDVQ2Jgywl9SflliDZIC/ZvuHRGEQFzt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,37 +117,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 31 Aug 2026 at 16:18, Miklos Szeredi <miklos@szeredi.hu> wrote:
-> There seems to be a logical fallacy in saying thp_get_unmapepd_area is
-> the most suitable value, yet not making it the default for all
-> filesystems.
->
-> Saying this without any understanding of the subtle difference between
-> setting .get_unmapepd_area to NULL and to thp_get_unmapepd_area.   All
-> I can see that the difference is indeed subtle.
->
-> Can you please explain?
+pmd_to_softleaf_folio() reads as if it converted a PMD into a folio. What
+it does is decode the softleaf entry stored in the PMD and return the
+folio that entry references - the direction softleaf_to_folio() already
+spells out.
 
-I had a look at this.  thp_get_unmapped_area() aligns anything with
-room for a whole PMD in it; nothing asks whether the file can use it.
-NULL means no alignment at all, and 34d7cf637c43 kept files there to
-avoid "unnecessary VMA fragmentation and potentially worse performance
-on filesystems that do not actually support THPs".  The case where
-that matters is a lower without large folios.  32 x 3M files,
-mmap(NULL, ...):
+No functional change intended.
 
-                          ovl over ext4           ovl over squashfs
-  NULL (today)          16/32 aligned, no gaps  16/32 aligned, no gaps
-  delegate (v1)         32/32, 31744K of gaps   16/32, no gaps
-  thp_get_unmapped_area 32/32, 31744K of gaps   32/32, 31744K of gaps
+Suggested-by: Dev Jain <dev.jain@arm.com>
+Signed-off-by: Usama Arif <usama.arif@linux.dev>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+---
+ include/linux/leafops.h | 4 ++--
+ mm/huge_memory.c        | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-squashfs has no large folios, so the alignment buys nothing there
-(fault counts were identical) and costs 1M of address space per
-mapping.  v1 only avoids that by inheriting the lower's choice.  fuse
-passthrough already pays the same, as Jann noted in the 2024 thread.
+diff --git a/include/linux/leafops.h b/include/linux/leafops.h
+index 4c1476ae32343..7c13c58a5e218 100644
+--- a/include/linux/leafops.h
++++ b/include/linux/leafops.h
+@@ -657,7 +657,7 @@ static inline bool pmd_is_valid_softleaf(pmd_t pmd)
+ }
+ 
+ /**
+- * pmd_to_softleaf_folio() - Convert the PMD entry to a folio.
++ * pmd_softleaf_to_folio() - Convert the PMD softleaf entry to a folio.
+  * @pmd: PMD entry.
+  *
+  * The PMD entry is expected to be a valid PMD softleaf entry.
+@@ -665,7 +665,7 @@ static inline bool pmd_is_valid_softleaf(pmd_t pmd)
+  * Returns: the folio the softleaf entry references if this is a valid softleaf
+  * entry, otherwise NULL.
+  */
+-static inline struct folio *pmd_to_softleaf_folio(pmd_t pmd)
++static inline struct folio *pmd_softleaf_to_folio(pmd_t pmd)
+ {
+ 	const softleaf_t entry = softleaf_from_pmd(pmd);
+ 
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 7140a1031fb2e..ee8d46827ffdc 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -2518,7 +2518,7 @@ static struct folio *normal_or_softleaf_folio_pmd(struct vm_area_struct *vma,
+ 
+ 	if (!thp_migration_supported())
+ 		WARN_ONCE(1, "Non present huge pmd without pmd migration enabled!");
+-	return pmd_to_softleaf_folio(pmdval);
++	return pmd_softleaf_to_folio(pmdval);
+ }
+ 
+ static bool has_deposited_pgtable(struct vm_area_struct *vma, pmd_t pmdval,
+-- 
+2.53.0-Meta
 
-Hope this helps.
-
-Thanks,
-Yuan-Hao Hsu
 
