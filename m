@@ -4,182 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9AB8C88E64
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 07:51:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12FDCC88E64
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 07:52:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D1E186B0088; Mon, 14 Sep 2026 03:51:00 -0400 (EDT)
+	id 1D5C26B009B; Mon, 14 Sep 2026 03:52:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CCED76B0099; Mon, 14 Sep 2026 03:51:00 -0400 (EDT)
+	id 1ADCF6B009D; Mon, 14 Sep 2026 03:52:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B97276B009B; Mon, 14 Sep 2026 03:51:00 -0400 (EDT)
+	id 0C4516B009E; Mon, 14 Sep 2026 03:52:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 94E1F6B0088
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 03:51:00 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0E2AE1A1223
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 07:51:00 +0000 (UTC)
-X-FDA: 85211596680.23.BAA4700
-Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
-	by imf22.hostedemail.com (Postfix) with ESMTP id A82EAC0009
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 07:50:57 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=meta.com header.s=pps82601-s2048-2026-q3 header.b=WCFguKN3;
-	spf=pass (imf22.hostedemail.com: domain of "prvs=77172c0111=alexghiti@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=77172c0111=alexghiti@meta.com";
-	dmarc=pass (policy=reject) header.from=meta.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:google.com:reject}")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789372257;
+	by kanga.kvack.org (Postfix) with ESMTP id CA7596B009B
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 03:52:02 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4C9F84116D
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 07:52:02 +0000 (UTC)
+X-FDA: 85211599284.26.E526FF0
+Received: from mta0.migadu.com (out-12.mta0.migadu.com [91.218.175.12])
+	by imf05.hostedemail.com (Postfix) with ESMTP id E61CD100007
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 07:51:59 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BwcSvFdE;
+	spf=pass (imf05.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.12 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789372320;
+	b=LzEMH4T2YUmgV7G1f2CGcJ388zsKrjmoVxgvo3yboIVnAjFGXzGLkF9+UBvWOEvoBQyeSF
+	QUwXWQZMvObo4u5vKS9ATjlDaaCsrsN7vRhGPRM7vNZOLYIbmS4HjWaBb5SoRCfpFfszFQ
+	SFVgaUiJTz/gMc8+xyn+yc14yMFoIOI=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BwcSvFdE;
+	spf=pass (imf05.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.12 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789372320;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NDOIHgRCA92fBXr4xcQP2Sz2dW6sDDwTFYVMgoMYlcs=;
-	b=oNNcC9mTPKT4ZbHnYUFdFStxva/2sgNJmMu2ZvdoTSNC+q0BfPaCyLR6+e+ovjxDKSuZMH
-	lR24DmaozZtpeLAB0ctCNc3wdzXELaDbclCg+3m/4aJ9W8hInlQR21kPtFlDWIGl6e2U2I
-	kinc2W7FR3DN/PLBmFNqOy8QJbYEHEw=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=meta.com header.s=pps82601-s2048-2026-q3 header.b=WCFguKN3;
-	spf=pass (imf22.hostedemail.com: domain of "prvs=77172c0111=alexghiti@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=77172c0111=alexghiti@meta.com";
-	dmarc=pass (policy=reject) header.from=meta.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:google.com:reject}")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
-	t=1789372257;
-	b=oziQYZh4CaHTYhaE5dUxYhEHep6W6LItufRtAsLgksZZIMCTmgP6whYTDMKbuXH8cZ5ZpG
-	QvEdT8mbUZVHwNqKKGlkwUF3hWHTpaRKKGd2St0J4VRbFsGndcvzXVaSJ48w4FYeUEwJkd
-	jHU/IT4gu4LWmTbZDIYr5BFSETEyc8U=
-Received: from pps.filterd (m0148460.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68E5ib2k800639
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 00:50:56 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	pps82601-s2048-2026-q3; bh=NDOIHgRCA92fBXr4xcQP2Sz2dW6sDDwTFYVMg
-	oMYlcs=; b=WCFguKN3aEEwflv8ror5uZKo6cmU7rFOYUyrhkHaXhwbfgu/10bre
-	/RIqLx6XQ+UfkHiamM4+KrEiC1lluU6TZHEe2VjYHcoaHewvVPaqDqon4tUihXRf
-	DzKB4y/+twXTjzgrGKbAihp11yQ2bDHSASDcjU/v4pNk2XUQz8a1R5jkXJzefoeD
-	7/DL8aTU7Uqc4PO15WwNgw72HZVFuBGWWDBixr6v6R0NIADx0h4A00KlL4dZEoR6
-	PtDTyRr/V+9mKFbdX687c2fMWBJWhVVmg+yiQXPlJrpXIfi9KxmKWFqu0FP6N3of
-	7J3S/+7uEydaQ6N+VnHXGaFVFF0Hc2/Sg==
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com [209.85.218.69])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4gn48br1c7-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 00:50:56 -0700 (PDT)
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c25edb54d22so57852166b.1
-        for <linux-mm@kvack.org>; Mon, 14 Sep 2026 00:50:56 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789372255; cv=none;
-        d=google.com; s=arc-20260327;
-        b=LkqJ2HNTuYXf4q7y2pevzzHVavUlgv08xoOzPnZM/SoxtCQ9AUdxLF/jYlhip67B+a
-         hD/3pjuUzwfI2GV9XsFCUItFUEunHTk63rCl8lypw6lBUxCLT6ZoRI2E2aZ+qoRcoC7C
-         VG86rGyfkka6zppQBQ+umOrNmfVtbYn4fMh0+72d1ssBzi395kjD/JPnEh/tLNQe38G2
-         jr4kpqDpZfJS7KmP7iYqMHCJMvueyqRIqfiBQLCinkiNRKSSPJ6DN83fwfleEbht4DJV
-         RwJD5GN82RA8yUiXi85yl5n+kJNQBxD8NBa0ZZp/n38cNGvYBr9DBuXiwe5x9ScNMCsM
-         xm4A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version;
-        bh=b5IHm3fbXcJn7XNfv0FO+D+UbV/ZMp7hfv/7cooIizg=;
-        fh=QYhuE9m57ZBO6lsdik3cdJb6AXIHXnPNnh2IxqMCZd4=;
-        b=KUuMxYxtUxy0pngnRn/wB80HP9Mo2LPgFM0PKuyDoXfoHrYQWlcEqnpNoY5tgAU/cf
-         +tEy8GNWSrMUm2Vz5P72U6LbNrzLcPuwyiTYlJP8HGlkaK/62Q8kIx+1db+mG6dq2KVU
-         zcAZGvkdJmai/h7MbkGmxc7nXYBMbysv9y2RoBskzayiCyQfjrmbRf4YI7lRjg6DGzdb
-         5Gu0tIKy5qqQ1QNziX9DjByeCPhIIPRY7Lix6F6R+I23b736rA+oHsKGqP8rICNTqGsC
-         FR6WiL8/ZNMSl9mvzrmnyNDIskGcF4psWwJxaxyhrDW45LBQ/hQfru7mvOcCk18+bQzM
-         WYnA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789372255; x=1789977055;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=b5IHm3fbXcJn7XNfv0FO+D+UbV/ZMp7hfv/7cooIizg=;
-        b=cdrosKxE2xy9ZXeVEImSaQyQsk5lD/+zoWO+mkkvIRWjlVdbLe2n4a/nCGsOgKj6je
-         0/i4NZ7hcxiFi2lxwvFsl3bFWV5LZn2alBaBnm6WucmUe4VL/eT4XW0sFjPLc8aDRAD0
-         8Y2JTrjizisDmk7i7kNnL/nPurz3pzZDr56IB4S9kbtF/KYW9PcyVPsqoUmpQq6HydMF
-         vRZe2GBhj+pt5UqNctgiYYYKjsnD/MGR3oRtUwbQ3BlZ1+ITfllSBbwFshnlIks5vhDf
-         ZadbCMZ9zpn/qkvMuEZI579plQLt0aAjfvuTAT6z1RWiVfEbG45CpN1DKLldA9k0nxZs
-         QdTQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwFnXXIZUWjXESlIEj+YDvEV9JVBUNMPEKBYcYhRmep1G+vjCuNNdjBQiVoN5EqfEdrIGv+MwEkVA==@kvack.org
-X-Gm-Message-State: AFuF++nEmAJOHdKawOMBIZ639IrMLiQxMRHYtV7vjpUyclxOJpD7OyHm
-	a/vxPz3IbV/Mtc6sb9gvwC0zbdkiVOJaWLz7YUb9ro37kNd/k7LwvhPC90WAG9Cdze7spz2kV4z
-	XZuhhSYn/vBjVEP9btSrCHOXm/wslMqeCaT3nJLBLHgCJfpKyCbCgRKevUNJ01aHLcknaUdr8Xh
-	T8Wbu8a8dHlu/pBap7A9h3mOi5Pw==
-X-Gm-Gg: AYBFou38tMf992cWVUIFQHE1y3UmLAVTVeHsoXC9pshGPq5qy/5BPOhmvatWrsSZ6eA
-	NqAIGe+5PPMZMXE5Q3sfjHC2a96VG74pvk5VLLnZAySF6PxcivegP73CRY6DVklzAgJ7kGreKqZ
-	IQ/CI8g3yL01gHxUlmWKZ1k6TdeCuH/e4z3wre7ghI3vL6pwfheE6ln0GZjavyVYbyoZDJvWQIP
-	CbL0X5ML7KDimP9kw==
-X-Received: by 2002:a17:907:c18:b0:c25:8e53:45ca with SMTP id a640c23a62f3a-c29b87655b6mr140824666b.21.1789372255347;
-        Mon, 14 Sep 2026 00:50:55 -0700 (PDT)
-X-Received: by 2002:a17:907:c18:b0:c25:8e53:45ca with SMTP id
- a640c23a62f3a-c29b87655b6mr140819366b.21.1789372254932; Mon, 14 Sep 2026
- 00:50:54 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260911121341.178028-1-alex@ghiti.fr> <20260911121341.178028-3-alex@ghiti.fr>
- <CAGsJ_4z3bSfMTKvkXsKAz=+dzhmdGOerSfL33t2RkN0CXZV-hw@mail.gmail.com>
-In-Reply-To: <CAGsJ_4z3bSfMTKvkXsKAz=+dzhmdGOerSfL33t2RkN0CXZV-hw@mail.gmail.com>
-From: Alexandre Ghiti <alexghiti@meta.com>
-Date: Mon, 14 Sep 2026 09:50:43 +0200
-X-Gm-Features: AcwNN1U5dS5EtcARkFGKnblzleHf1kNpbwhWpFFrqeypIiGrF-7Hdyx4M88AHOc
-Message-ID: <CAEmasaX64UPFX=OTQ6pC_XqjMqiuj+fD76-7TFWBaZFE+LODew@mail.gmail.com>
-Subject: Re: [PATCH v5 2/3] mm: swap: drop dropbehind swap cache folios on
- writeback completion
-To: Barry Song <baohua@kernel.org>
-Cc: Alexandre Ghiti <alex@ghiti.fr>, Johannes Weiner <hannes@cmpxchg.org>,
-        Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-        Kairui Song <ryncsn@gmail.com>,
-        Chengming Zhou <chengming.zhou@linux.dev>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Jan Kara <jack@suse.cz>, Kemeng Shi <shikemeng@huaweicloud.com>,
-        Baoquan He <baoquan.he@linux.dev>,
-        Youngjun Park <youngjun.park@lge.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>,
-        David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-        Michal Hocko <mhocko@kernel.org>,
-        Axel Rasmussen <axelrasmussen@google.com>,
-        Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
-        Wei Xu <weixugc@google.com>, Yuanchu Xie <yuanchu@google.com>,
-        Kunwu Chan <kunwu.chan@gmail.com>, Tal Zussman <tz2294@columbia.edu>,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+	bh=KZA90kbLQ1wUmr27u9GbyrLVr6ugUDDJBQ4ttjd6f5Q=;
+	b=CoWPjko4oaw8HYgB25tIFXbjFGqKEEDQUhm5s9BUMAWPI41Riq+vKkGRHmtp4g9kG8YWtm
+	QLBszZXt1PwK0+2lQeVlwkY7auNgUyiTZKc0SzFz8+C/1PV04fW/+C/4RlkdD1S70jwdcJ
+	NCfcH+mof5+Ik9CQvGIbK4IWbyh+TSw=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=nXlIXZyzZAmUaaXn6/AG1Qoa90qlZRNpDV2IZ5Xt6I8=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789372317; v=1; x=1789977117;
+ b=BwcSvFdElIUHCrFEATDcx/wtsn0aU0ZDfA152keO1eLQwSqs7cgfZjS6XOj/O2ewQoTZk+NR
+ vu0Rr6gGGPGWkmw1sN4Cz1OpiABBGEKw4wxU4B61n5wXki9xHdFycd2PvCiIAM/OllaDj3VeFwh
+ tI56Kt+FFaGgM9I1Cu4XAT8Y=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id 7f6bbc8e5bf97846;
+	Mon, 14 Sep 2026 07:51:57 +0000
+X-Mizu-Trace-ID: 7f6bbc8e5bf97846
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.700.51.1.1\))
+Subject: Re: [PATCH v3 01/11] mm/sparse-vmemmap: introduce
+ CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <178937209455.4188640.17761540933640972197.b4-review@b4>
+Date: Mon, 14 Sep 2026 15:51:40 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Jonathan Corbet <corbet@lwn.net>,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org,
+ linux-doc@vger.kernel.org,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ Qi Zheng <qi.zheng@linux.dev>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <chleroy@kernel.org>,
+ Randy Dunlap <rdunlap@infradead.org>
 Content-Transfer-Encoding: quoted-printable
-X-Authority-Analysis: v=2.4 cv=JMCuIMKb c=1 sm=1 tr=0 ts=6aa7a760 cx=c_pps
- a=jJvPsHQLKLf2UdvVr97r4g==:117 a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=JnKecZnUtZousrUlYMGU:22
- a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=ufHFDILaAAAA:8 a=TYz18Bk7nizorY65d84A:9
- a=QEXdDO2ut3YA:10 a=q7aydO1c4wibL4nb3gNS:22 a=ZmIg1sZ3JBWsdXgziEIF:22
-X-Proofpoint-GUID: cgPCbh8ZEtVch1rSzBnrdabo2jaUAYk3
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE0MDEwOSBTYWx0ZWRfX4P1OJkYaUHe4
- L864Wly9AFDPJvvlGg8ppCdQLGEXuAL2EAesuOgPqWVC8syfmorVdR2vwnCIjSIMb8xt90XoeD5
- +hYuwaT7zb3fEQhJEP7AKqrGdLhng0s=
-X-Proofpoint-ORIG-GUID: cgPCbh8ZEtVch1rSzBnrdabo2jaUAYk3
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE0MDEwOSBTYWx0ZWRfXz1RV+omlhOAp
- T5Dt3LZs4m/HEfLLMndozVw9l2RRFE46EeSLdqviExpKVmmhiMRycqSNKLG4DgH7PdNBggOXRKG
- tdSq7/vdnEFMprK6vUigT2yAP3qte7sMO8BSTc0hSdGr7rTyBHRxKR9vAZS/eMOw0H9nL+8S/pX
- F3tR7ngJfluHYkKfZpkG3Dquf+/M1U/hv29mIatsHBFa3dX7ze7MVxjJR4G5nmofzOm5VNOEnYj
- bVDXpwfkT52Srn3FHr5sjtubc+Wp/9kIXnx0aMYx3zWwgqA2qUX9q4yd5qWsE8Ry278ZHMBZZ4W
- LettgRBdRAroNBD5h6VP2P88Z57gN4biSpqR6PEt69qPhlW8GaJuUflzTLW2fZ9QwkrW8Yg0Bj9
- I3XaOsf6LCQwUuJXXWFVojHLyQA/xQViy7W+VH2SDJ7PeJS4lmgtE08wXeE5mSu/WvOuJ+vy+zG
- g8+fUFs2ZjeoYz3wlYA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-14_02,2026-09-13_01,2025-10-01_01
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: A82EAC0009
-X-Stat-Signature: 7ghffpfiia3t1nr4jgg8nqkf45e756dy
+Message-Id: <42F502DE-9DEE-447B-9323-0CBB2300FAFE@linux.dev>
+References: <20260911050228.58884-1-songmuchun@bytedance.com>
+ <20260911050228.58884-2-songmuchun@bytedance.com>
+ <178937209455.4188640.17761540933640972197.b4-review@b4>
+To: Mike Rapoport <rppt@kernel.org>
+X-Mailer: Apple Mail (2.3864.700.51.1.1)
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E61CD100007
 X-Rspam-User: 
-X-HE-Tag: 1789372257-680242
-X-HE-Meta: U2FsdGVkX1/1igpdfginRqv6IxF2Y9RPAtGA7GMtLrGfDQ2CkR7cHjidp9sONHbaxqZwTgkXMrDdY+DU9If5qa1N5EzIJZ1dkUNjJ5qo+/Pq5DC5YG3rc9JcRfVXJAZ0RSTrKQ1lPa9rb6l2RXLTjA4i88TRTFDQLcF6hc1cFiWSMGp+65praXXi7wffu4n44sGICrnOtoECsx4bpTpun2Pb55p5Vo/bxKDEaxIda2+h/Wvw+cF1sAkeKxuQsb+PgGzlky/mLggo8Exh91oMzpSc62d3VY4S/DpjIb1hCIGx/4PSyblo5oS7hTC3q+QWnyGvHhsqmXSOvqeBrCquyIBBovWT692otHv9G82U05dMqEi/ZM7g56pzaCLJQsHHE9BM1CAD3M8GGPpSc6KJHC0PVTYyf9InYc29jOh5qFuxv9ZcQkDQEZYSOypYCH5A/R3/k1QTY8ySzAagxYn0lnnPsEYBHPJ9CaD7+98MybQbHY0XVb0wJtzUlSRSupXYTv/ptU++WKKHnH/QS4k8SHCVTaX5c82WIATliEk3hOWrnOeUuvIyGN7HyJV1fWZ4C0MzwlMkRjgApuV022MynCpZvspu7QwUuAKZZmx4/0wL4RgXEuGFthdBD8T9LebghkSurnkOMpD78ag6zrpoVmlEfvQw/F8lyBZ30RCOJgL0nHdIB+FfmGCvju3WrkECkGT+wtPtQsjDGayNwjFr44d+6qmEPkd9ho36VMRiP3cCwj/jqm5s0WGNj//JG+OdTrGfQuyndyd7+j933AY8iEhFmRM4S+jSVPnRtN6l54AeGNC/rgoKBEgP6xgoU4zJU4pDzHUvYG7K3KU9XRioU34jTAW23U2YdyBWh5AaMjDbFTSLeUQ+f90HtJmakomyre1maC6Z2BYX8YQm7nc0bjMKaMEfHrGMKsXIl3hxuu6fuZq77i4mUC9EF2lRIZ4Ka9oLdRo+Yi8XA6xjsYY
- dBuhAMQd
- 8yfJFOQZa+0BTTEUSYNe8QagKUHF7UwKtIWdAtANeDvcVJXCQH8CpTuJ+WLIiD11kbgJCPG4Ky07k9Y7ARcskyFbHDZ5n5dDO97Dd21C63OQ3f4bB4u0xeRRZnmCbsxrRfobTBfv/CcUnpWMJruEnKfzWK26jQKHWhQKm/0xFZpI2rqOu2dk4LzgObto93Zcr5haraYvbkepVrMhRwiUdhWvb93IgZILhfhyuniAOeoda+lpRhpW4nZC+5ssu/izcSwngR9rEn7xoHptC55LBmstLVGEtB8NJ3Ea5VGSf6QgrRC5uCSAIcYLOoIAKkAMluutdDKGqP3csf9ImMkSExKHwSOBfViHwUDPxwREtic6zzJQiyhG+TJtOUo47vfprF9KRYDBJqh0kEnEmvQvI+ZbRaVSi7ijTbZzdfC62L7dOXa3yAcs8FBgcMWOrWtZP9eBk7cOBFkgGunLaSlY9ffisnUdzAWkqT50F59OqAmu2eE051CQaJWzaJLPGAQQKVz/JNY3mxG4ARFiJ2fw/UZ38LC1zS/T1Hr29NAfgY7R3/T6vbRXip5dyalwemcnNgF5wfyJyL/A/FZswLn5nKD1q4Mdbfpjsfbz6k6N6wHnpG9Z6bXO7TrjMyWTZ/7H1Jx1XSql7swg9GUbS0hZ4wMfUwIsASWi6/wFv
+X-Stat-Signature: uuwyiu1uqhoyawi5mqgbu9ce4twa16h8
+X-HE-Tag: 1789372319-196555
+X-HE-Meta: U2FsdGVkX1+2tvVGFwdcfnUy9oeuoqWtbli6OQURfOf9LaMCyTDE0fFlo3Zu/lQzhFx+/2aUMYBv3D8h1w+qzxTdneVjNfK/NRCpZriAzLrMrYudFsV+UEDQmmb6W8Ht845rvgYF/6dus7+d1u96Ai1tffxppqL6c8rKYPbnF6xZr/MthMEf+4yeo1ScVvV2Xh6YnEFUWFiXWp0dKcc5wjZlkdNvdccB7yvNnd7D2EX9Zo9oHHk3vkQq+cya7+qV4NyL3KOEU3aIOTHY/3siPzlv3p0Eek1UtA8p1Vq+o3X7b68ONcrSq0RFg3BGWV2/8IyR3r8/y6u4ti3kfXPjaW4h8U5lDfTmHNBVNYwXxhFiz8KwOQpdVnwxOGkzj3tRr8snJqSjd677owaIVW1mBH5IrDcq0T1qWWU0yuJIhx8VDYODBKFFvnSMkkrOoKYdxN95y2gqmBx2DRiMcbutG8dbK/pnCRkmFOT6KqLEMpSVKIeWzBPUE9Qv3+VZ60pe70GPdFCQxGfvn7MEXlpqJMQG/cQX9X6XiHUqt/tCvXlY0srUehbz2kERrKi7N00FPRx30GAe+N6xn0UtT78jksrNtJdj5ie3a6u8bOad3M+6RgHTCH182eMPrxqRdoMFq0/qPCClYzODedqlN5xzxhNLfDICEF8ykU6HpVx4Zs6PdBg8lhsQjesQZn7mtPs+bZ4SVy1NTD268HsWU/ln6d3koJ6yJX7KgklwpHdW+yb+hhpual/15/C/oH0CW2b7LxEC5gAxc1L1OJ8zCM6jJBYKCWQ+r1Y2tXjjRv5BGQBtBiA+L5IomAtkPeg0ep0wyGPB0f90oZdN8jWG/WMbCLU+xWC7hs21Cef+ZT0ImeIQN13awwG5S2YW10znUEz02njvNvoaHVoiqylTxQBNE2YUhstCepCQGA+BpcuXEO4J3LNSZvzvOJSAeGQFE2tFzgwLLwmfid+lgnnSg4h
+ izXyrRo6
+ zT9JpM/5+tbPhSCJIABM4UNDIuAIzO647X09tOnSNGuEIOxs9lXvCPcPoU3NDoCsFYjpra2xZRIw0cA6n12QaXnGvg2l6Bru4DDmHesJ8usX5lMR9Zn3rszqJPrL3zCzxaX3cCrHFXAmRPGYh61Y/ba7iYuc1IlBG918vtc0mH7mljqxT4XTPv3L1sKfx6x1EdNkoc90LVBPFjq1gDHkXZfUU0GESN2K+jl7w/8N8Doi5K1Y0OeDQbMt5ULzVN+WwzDS+sPfXaR6p+MA9crCFLSNPS43DQ1cxPHLsuN20iSZhcHJ7mX4CH4KgDaTHwM5foAxSCxbF8ofsnoeVvpu+2e3nFMXyX8a8cPsbyDfO6HWUN2k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -187,86 +108,212 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Barry,
 
-On Mon, Sep 14, 2026 at 1:01=E2=80=AFAM Barry Song <baohua@kernel.org> wrot=
-e:
->
-> >
-> On Fri, Sep 11, 2026 at 8:16=E2=80=AFPM Alexandre Ghiti <alex@ghiti.fr> w=
-rote:
-> >
-> > A PG_dropbehind folio is dropped from its cache once writeback completes
-> > rather than left for reclaim to find later; this is implemented for file
-> > folios in folio_end_dropbehind(). Extend it to swap cache folios.
-> >
-> > The drop takes the folio and swap cluster locks and may sleep, so it
-> > cannot run in interrupt context. Set BIO_COMPLETE_IN_TASK on the write,
-> > as the file dropbehind paths do, and drop the folio directly from
-> > folio_end_writeback().
-> >
-> > Suggested-by: Yosry Ahmed <yosry@kernel.org>
-> > Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
-> > Suggested-by: Nhat Pham <nphamcs@gmail.com>
-> > Reviewed-by: Nhat Pham <nphamcs@gmail.com>
-> > Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
-> > Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
-> > ---
-> [...]
->
-> > diff --git a/mm/page_io.c b/mm/page_io.c
-> > index 88962571cb93..52eae99de6e3 100644
-> > --- a/mm/page_io.c
-> > +++ b/mm/page_io.c
-> > @@ -602,6 +602,15 @@ static void swap_bdev_submit_write(struct swap_io_=
-ctx *ctx)
-> >                 submit_bio_wait(bio);
-> >                 end_swap_bio_write(bio);
-> >         } else {
-> > +               int p;
-> > +
-> > +               for (p =3D 0; p < sio->nr_bvecs; p++) {
-> > +                       if (folio_test_dropbehind(bvec_folio(&sio->bvec=
-s[p]))) {
-> > +                               bio_set_flag(bio, BIO_COMPLETE_IN_TASK);
->
-> Thanks very much, Alexandre. I find the code is really much,
-> much better, but I=E2=80=99m still struggling to understand why we need a
-> sleepable context after Wenjian=E2=80=99s commit:
->
-> https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git/commit/?id=3D=
-848d2ce2fce15fbdc083fbf9691bfa72911033c4
->
-> With this question:
->
-> https://lore.kernel.org/linux-mm/CAGsJ_4wj6XvPB+QF+_X1BJ_8Y2sZEEFAw6RaJJz=
--cHaDWLkxaQ@mail.gmail.com/T/#u
->
-> In short, it still feels a little strange to me that we need a
-> sleepable context, especially now that we no longer call
-> `folio_unmap_invalidate()` for unmapped folios.
 
-The thing is the zswap writeback folios are not on lru: that's because
-if we put them on lru at allocation, the perpcu lru cache holds a
-reference and it prevents remove_mapping() from freeing the folio (I
-measured that with on-lru folios, the freed rate collapses from 99.9%
-to ~3%).
+> On Sep 14, 2026, at 15:48, Mike Rapoport <rppt@kernel.org> wrote:
+>=20
+> Hi,
 
-So if we use the folio_trylock() approach, we'd need to put the folio
-back on lru otherwise it would be "lost". But I don't think we can do
-that while someone else holds the folio lock.
+Hi,
 
-That's why I use folio_lock() which can sleep and then needs the
-sleepable context.
+>=20
+>> The section-based vmemmap optimization infrastructure is still =
+guarded by
+>> CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP, but it also can be used by =
+device
+>> DAX. Introduce CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION as a common =
+config
+>=20
+> CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION is a bit mouthful :)
+>=20
+> I think that dropping _SPARSEMEM won't hurt readability.
 
-What do you think?
+Yes, I'll simplify it in v4.
 
-Thanks,
+>=20
+>> for the shared infrastructure.
+>>=20
+>> Select the new option from HUGETLB_PAGE_OPTIMIZE_VMEMMAP and from
+>> DEV_DAX when the architecture opts in to DAX vmemmap optimization, =
+and
+>> use it to guard the generic sparse-vmemmap state and helpers.
+>>=20
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>> Acked-by: Qi Zheng <qi.zheng@linux.dev>
+>>=20
+>> diff --git a/arch/x86/entry/vdso/vdso32/fake_32bit_build.h =
+b/arch/x86/entry/vdso/vdso32/fake_32bit_build.h
+>> index bc3e549795c3f..5f8424eade2bd 100644
+>> --- a/arch/x86/entry/vdso/vdso32/fake_32bit_build.h
+>> +++ b/arch/x86/entry/vdso/vdso32/fake_32bit_build.h
+>> @@ -11,7 +11,7 @@
+>> #undef CONFIG_PGTABLE_LEVELS
+>> #undef CONFIG_ILLEGAL_POINTER_VALUE
+>> #undef CONFIG_SPARSEMEM_VMEMMAP
+>> -#undef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
+>> +#undef CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION
+>> #undef CONFIG_NR_CPUS
+>> #undef CONFIG_PARAVIRT_XXL
+>>=20
+>> diff --git a/drivers/dax/Kconfig b/drivers/dax/Kconfig
+>> index 602f9a0839a91..6250954b0fa7a 100644
+>> --- a/drivers/dax/Kconfig
+>> +++ b/drivers/dax/Kconfig
+>> @@ -8,6 +8,8 @@ if DAX
+>> config DEV_DAX
+>> tristate "Device DAX: direct access mapping device"
+>> depends on TRANSPARENT_HUGEPAGE
+>> + depends on ZONE_DEVICE
+>> + select SPARSEMEM_VMEMMAP_OPTIMIZATION if =
+ARCH_WANT_OPTIMIZE_DAX_VMEMMAP
+>> help
+>>  Support raw access to differentiated (persistence, bandwidth,
+>>  latency...) memory via an mmap(2) capable character
+>> diff --git a/fs/Kconfig b/fs/Kconfig
+>> index d1c210c6508f0..9b32ce79cc805 100644
+>> --- a/fs/Kconfig
+>> +++ b/fs/Kconfig
+>> @@ -278,6 +278,7 @@ config HUGETLB_PAGE_OPTIMIZE_VMEMMAP
+>> def_bool HUGETLB_PAGE
+>> depends on ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP
+>> depends on SPARSEMEM_VMEMMAP
+>> + select SPARSEMEM_VMEMMAP_OPTIMIZATION
+>>=20
+>> config HUGETLB_PMD_PAGE_TABLE_SHARING
+>> def_bool HUGETLB_PAGE
+>> diff --git a/include/linux/mm.h b/include/linux/mm.h
+>> index c49ef99b4413b..a2ebe87e76546 100644
+>> --- a/include/linux/mm.h
+>> +++ b/include/linux/mm.h
+>> @@ -5175,6 +5175,9 @@ static inline bool =
+__vmemmap_can_optimize(struct vmem_altmap *altmap,
+>> unsigned long nr_pages;
+>> unsigned long nr_vmemmap_pages;
+>>=20
+>> + if (!IS_ENABLED(CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION))
+>> + return false;
+>> +
+>> if (!pgmap || !is_power_of_2(sizeof(struct page)))
+>> return false;
+>>=20
+>> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+>> index acd94cecc0d39..97511f651ebc0 100644
+>> --- a/include/linux/mmzone.h
+>> +++ b/include/linux/mmzone.h
+>> @@ -102,9 +102,9 @@
+>>  *
+>>  * HVO which is only active if the size of struct page is a power of =
+2.
+>>  */
+>> -#define MAX_FOLIO_VMEMMAP_ALIGN \
+>> - (IS_ENABLED(CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP) && \
+>> - is_power_of_2(sizeof(struct page)) ? \
+>> +#define MAX_FOLIO_VMEMMAP_ALIGN \
+>> + (IS_ENABLED(CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION) && \
+>> + is_power_of_2(sizeof(struct page)) ? \
+>> MAX_FOLIO_NR_PAGES * sizeof(struct page) : 0)
+>>=20
+>> /* The number of retained vmemmap pages with HVO enabled. */
+>> @@ -116,7 +116,8 @@
+>> #define __VMEMMAP_OPTIMIZATION_NR_ORDERS \
+>> (MAX_FOLIO_ORDER - VMEMMAP_OPTIMIZATION_MIN_ORDER + 1)
+>> #define VMEMMAP_OPTIMIZATION_NR_ORDERS \
+>> - (__VMEMMAP_OPTIMIZATION_NR_ORDERS > 0 ? =
+__VMEMMAP_OPTIMIZATION_NR_ORDERS : 0)
+>> + ((__VMEMMAP_OPTIMIZATION_NR_ORDERS > 0 && \
+>> +  IS_ENABLED(CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION)) ? =
+__VMEMMAP_OPTIMIZATION_NR_ORDERS : 0)
+>>=20
+>> enum migratetype {
+>> MIGRATE_UNMOVABLE,
+>> @@ -1155,7 +1156,7 @@ struct zone {
+>> /* Zone statistics */
+>> atomic_long_t vm_stat[NR_VM_ZONE_STAT_ITEMS];
+>> atomic_long_t vm_numa_event[NR_VM_NUMA_EVENT_ITEMS];
+>> -#ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
+>> +#ifdef CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION
+>> struct page *vmemmap_tails[VMEMMAP_OPTIMIZATION_NR_ORDERS];
+>> #endif
+>> } ____cacheline_internodealigned_in_smp;
+>> @@ -2019,7 +2020,7 @@ struct mem_section {
+>> unsigned long section_mem_map;
+>>=20
+>> struct mem_section_usage *usage;
+>> -#ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
+>> +#ifdef CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION
+>> /*
+>> * Normally, sections hold regular (order-0) pages. However, for
+>> * sections with HVO enabled, this tracks the compound page order
+>> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+>> index 86dd0470da117..462e89e055485 100644
+>> --- a/include/linux/page-flags.h
+>> +++ b/include/linux/page-flags.h
+>> @@ -208,14 +208,13 @@ enum pageflags {
+>> static __always_inline bool compound_info_has_mask(void)
+>> {
+>> /*
+>> - * Limit mask usage to HugeTLB vmemmap optimization (HVO) where it
+>> - * makes a difference.
+>> + * Limit mask usage to HVO where it makes a difference.
+>> *
+>> * The approach with mask would work in the wider set of conditions,
+>> * but it requires validating that struct pages are naturally aligned
+>> * for all orders up to the MAX_FOLIO_ORDER, which can be tricky.
+>> */
+>> - if (!IS_ENABLED(CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP))
+>> + if (!IS_ENABLED(CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION))
+>> return false;
+>>=20
+>> return is_power_of_2(sizeof(struct page));
+>> diff --git a/mm/Kconfig b/mm/Kconfig
+>> index bc7befafb47b5..c180d40cd6712 100644
+>> --- a/mm/Kconfig
+>> +++ b/mm/Kconfig
+>> @@ -461,6 +461,10 @@ config SPARSEMEM_VMEMMAP
+>>  pfn_to_page and page_to_pfn operations.  This is the most
+>>  efficient option when sufficient kernel resources are available.
+>>=20
+>> +config SPARSEMEM_VMEMMAP_OPTIMIZATION
+>> + bool
+>> + depends on SPARSEMEM_VMEMMAP
+>> +
+>> #
+>> # Select this config option from the architecture Kconfig, if it is =
+preferred
+>> # to enable the feature of HugeTLB/dev_dax vmemmap optimization.
+>> diff --git a/mm/sparse.h b/mm/sparse.h
+>> index d3a71ef4fad0f..3151d4db75753 100644
+>> --- a/mm/sparse.h
+>> +++ b/mm/sparse.h
+>> @@ -10,7 +10,7 @@
+>>=20
+>> #include <linux/mmzone.h>
+>>=20
+>> -#ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
+>> +#ifdef CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION
+>> static inline unsigned int section_compound_order(const struct =
+mem_section *section)
+>> {
+>> return section->compound_page_order;
+>> @@ -75,7 +75,7 @@ static inline bool vmemmap_optimizable_pfn(unsigned =
+long pfn)
+>>=20
+>> static inline bool vmemmap_optimizable_order(unsigned int order)
+>> {
+>> - if (!IS_ENABLED(CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP))
+>> + if (!IS_ENABLED(CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION))
+>> return false;
+>>=20
+>> if (!is_power_of_2(sizeof(struct page)))
+>=20
+> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-Alex
+Thank you Mike.
 
->
-> Best Regards
-> Barry
->
+>=20
+> --=20
+> Sincerely yours,
+> Mike.
+>=20
+
 
