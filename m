@@ -4,72 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5624FC88E75
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 13:59:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBF3AC88E72
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 14:01:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 634BB6B00A1; Mon, 14 Sep 2026 09:59:54 -0400 (EDT)
+	id E3ECC6B0092; Mon, 14 Sep 2026 10:01:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E3E56B00A2; Mon, 14 Sep 2026 09:59:54 -0400 (EDT)
+	id DD6E46B0099; Mon, 14 Sep 2026 10:01:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4ACE26B00A3; Mon, 14 Sep 2026 09:59:54 -0400 (EDT)
+	id CC5DA6B00A3; Mon, 14 Sep 2026 10:01:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2CD3E6B00A1
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 09:59:54 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C124E16015E
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:59:53 +0000 (UTC)
-X-FDA: 85212526266.28.02FE57A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 2109CC0006
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:59:52 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iINFG8IO;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A922D6B0092
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 10:01:15 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 572D5120187
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 14:01:15 +0000 (UTC)
+X-FDA: 85212529710.18.D5EFE8C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 501F9140024
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 14:01:13 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Inq1X2UO;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789394473;
+	b=xG3RfFHY48SAJqEKNk6WDITjV+KO7oJJpsh15lYhDq560M3orpPHeWNeH+qUu4yhAkGu0n
+	qoLIDl/fXkvsmFTwn58qKeFfvsfwSn7e8W9pKk4OQfHYiYVEP1H+jb5fh/njKZD76Prdhg
+	Rzu0qeTBXVuewNn1W8A/J0epqbInWtw=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Inq1X2UO;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789394392;
+	s=arc-20220608; t=1789394473;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+PYFX9H0MkQu60EdSBrCrp/9ixn5ThWGWT8A6TrJ9xo=;
-	b=jfB+RKD6yoqbJPjkEO2BW25Qgz+sqGw6QHXVDPjjfHQf2LmGpkzJpXXvgSAvTKuTLTaiCK
-	NQ+0XP6AD6/RLiZmynNAorhHEZ1XIpLwpaSSPeExdK5+kHvB9toqp8XpH9DM1zwA6e0bcf
-	JArkE6nLIPceIcaWG3+GnzFjd/vDUcs=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iINFG8IO;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789394392;
-	b=vwLaqUp0XNQs5Wblz450Eqi1k04C4xZNMLz9BAfmans/qFojOEChgtzH+YhFSEzGtd7MB7
-	lTs88IsdhnrBVWMc2q86bML5UGmVRVshuxiUNG9KvxCvJR0lC/0Ody+inhVbE8OFA25VTy
-	hOH+WJ1BsJcOL5TzqsYKNIKsssogaLE=
+	bh=P/rpbFlDLr3/FaI9P7Zg1rDlT67APBG9Z4kueW2XMzo=;
+	b=VBtuy841lUmoxekiMgBcMWbsc/qdp73tqmqori9YDODy1FEDXDvr69Yn0vjmT5gCLpLIIW
+	Ou1SdYCNWglp25wnJujfiPH4CmWdLarsMuYs4ZTsWyOKxuOwjUe1CALvf8GehHw2Yg1MUG
+	ghBbhPERT2Dkk47llQNnvyV4YDF4HTQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9EDC060142;
-	Mon, 14 Sep 2026 13:59:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE6BF1F000FF;
-	Mon, 14 Sep 2026 13:59:43 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6FF1941AC2;
+	Mon, 14 Sep 2026 14:01:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 073C41F000FF;
+	Mon, 14 Sep 2026 14:01:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789394391;
-	bh=+PYFX9H0MkQu60EdSBrCrp/9ixn5ThWGWT8A6TrJ9xo=;
+	s=k20260515; t=1789394472;
+	bh=P/rpbFlDLr3/FaI9P7Zg1rDlT67APBG9Z4kueW2XMzo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=iINFG8IO7eWQH45Ih7otbKXDMJjCXcVkCZvZV6h4eBWHQHgx01x1kZ+JMQpUnfiNh
-	 4D0aEp97w9opqviUKNwUy1EM2vxCihp7GCPu3/PL+7UYOYqmeu0d+869TS/ZbTsGh4
-	 MZ0Z7xGt88jPPzPbFhanR//dWwDsbm6W3YYOqUXjyrTlNg5pUBS1nPIAuggWpss7jl
-	 0oeanG2cEJuUlwnrwSsKPrIyElxLDLw9x1L00eDBYqcxsNmANUFibFj1+w5WdGtdOS
-	 PfKXiAjk0QVVHX+yPUZr1MN8crf4UgwUSZOiZ+f7QsAC9XKapGC3F95qBHFVQytpm8
-	 25UUd1jMG0pFg==
-Message-ID: <5bc1eb42-2901-48ad-89a0-0cc4e8859bad@kernel.org>
-Date: Mon, 14 Sep 2026 15:59:39 +0200
+	b=Inq1X2UOe1dBhqTmIsSdhFCoEPP5h5w5NuyR1I1U6PjQPPOd2m6RFBkaNpDcjUbY2
+	 pqXWwyHqJqaCGHDSGNe9aFIHx1PIJVlhpQze9fMhh79oIEeMbKRCBxtPy+lCeCP15u
+	 AM19x+EJoBxioMpAH0c4frPKP8AFlyIVnzKkd74olaoF/m3+ki0PAgYpI/t85ulbX7
+	 DFOnIwsL38o7geYbyrF4iu4VIvqLttzbbjlb/lEXYCp77jTEDw/kw9zc34P4m0SwY6
+	 60BUGjq36GfUR3br292pkxd1YX4XGcbBY6xgGZeVkOJhXL08ayfMPFapMa6JuDPqBN
+	 T+XwUhJeW/MXg==
+Message-ID: <b88f4ec0-61a8-47b0-901a-d63db115936c@kernel.org>
+Date: Mon, 14 Sep 2026 16:01:02 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/3] kselftest: mm: rename read_pmd_pagesize() to
- pmd_psize()
+Subject: Re: [PATCH v3 3/3] kselftest: mm: introduce size_to_shift() helper
 To: Yeoreum Yun <yeoreum.yun@arm.com>, Lorenzo Stoakes <ljs@kernel.org>,
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
  Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
@@ -85,7 +84,7 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
  Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
  Sarthak Sharma <sarthak.sharma@arm.com>
 References: <20260914-fix_hpage_macro-v3-0-c9a305a01d39@arm.com>
- <20260914-fix_hpage_macro-v3-1-c9a305a01d39@arm.com>
+ <20260914-fix_hpage_macro-v3-3-c9a305a01d39@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,17 +131,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260914-fix_hpage_macro-v3-1-c9a305a01d39@arm.com>
+In-Reply-To: <20260914-fix_hpage_macro-v3-3-c9a305a01d39@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 501F9140024
+X-Stat-Signature: o1w3j1ui39grajf1kodudc9at3qorwf4
 X-Rspam-User: 
-X-Stat-Signature: m7nrc6smjeq1jep67fpo4nke5rbbma18
-X-Rspamd-Queue-Id: 2109CC0006
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789394392-984518
-X-HE-Meta: U2FsdGVkX18mfdOvy3t04hQNGf9osPeYxZmtE/QLORb7ldWpPQChDKsF6zLI1mpaVsXehdTcN1FFWPf74pPXLg507+zqBCFTv8cDtxdJrXJnskOn8FqcDp909/DKoN6jFTIuWLR3yTlIuSoxDoD1WMni7yOUtMhGSeuAE//ql5WNuG0o/x0hv1t2v1dbc1gjnmtvzLFuDve1Ca1AviGmxKD2stcE0y95J1xjKRbymsBHY9YKO1EXFFef/xS87yVjE02eW68Lj0fQ35M6QTQ0CfstRv6QfqQBJ5aIah44eQGVv6zXFbmxQaGOdC5MiVfQOH6QaZ2hyHP7TVWC23Otcldg8wC9MfJz9U0iq8plUp1fY4LvlxW8rXGj22Jokz1nRf5sbrkQ6Pth++ggF1LNYhev53r0nfkLmTvXTI6pXntPMPzTfElO9j1HJcNnf9le5DKx4Kl2ghNqerW2CIn8YKvBqcqtVnKX3MrB9ekoAKdFriXw92oAaSZvGcO4inUujISRnpLngT6GqwpfH7SAw5cy310OAkqs11ZU6VOawAKK+IYep22J2o9B1SfeQOgh397wigjpPMryeB6CrQD9bRlXUJYPyFRKuRLJKXpnJ6Qr1m7vchBv2+3eiqzF+hLp74pSxwBmVY+eKTOi8NI2zZFE4Fbb7vk7A8i/1YWTCFt3vdcUI+Bn+ucThwzS/aj7G8NopWcIAyteG5jIXw4Ci8l2wdV6gxUUHzJ3rnEWd67v410E9Orj2k1ZWRft9uW1hLBNhfpWb7hPpDM6D1HYCK4kgEgzwMUqaCS45jKsHL74j68Bg1VzIzI3DQiK8J++L1rvPNzOOPz2/VJR40EHKqJ6PaNp15vk7NGAq3x0qVo8iuxCJWDEOx7Yzn9AlOaEBgmdnM1lnnqoUYr6Ua4lFpmk1YLyvzp0dPyhqK4u6H0Byyic/Ga+x5JVW9bXr4DrPlij1w1W2fdzbG6HEAF
- 1AvRgExu
- AGdJEH27qtIgjmzf66XisFJNuuXI5uMK0lhG6MUpHuS9enr+d4CW0z61mTfarOgTqlVQspSml6dlrL53wb+bY3S5NQxzv+a0GMfJE/y3uKAA5VUOQKfc+wA6K4/Qhl9qxecaNQs2UVR4Qf3jIveyNv/Jx1NSTavZPgATW6bLhajFZu/C97qde6gKdAMrsRKUrWbvKXik9AJ0tpTjhlFfz7oQDBzxSc6zNeWNyqDdIxNyJFPpwGhIS5slOJN6dC5xe5t4MyX0JEaZ7cVhtq7TGWJfO7rgjGtQZAORbR+Hj/2vcF1YRC/QTwBgrp1yPz2wQpR5klcjV6+0MaFF79nA+Vfl3dpRHWVvwA2Emf2jv9iYUm2855Tk3qT1k9S4PCF31EmyEfjDWeZroJq8=
+X-HE-Tag: 1789394473-385335
+X-HE-Meta: U2FsdGVkX1+EJygVVWstcKa6I0lQy6Y2bkqUqedA90ZkAnR+OS8to2tx9KvUUQ9OsR0T7UX9vK4SgttFVaSHhTb7Vft87samUVU9Mlb/2SkIWEaOuIT+ZkJHosMsklVXbd47fhMd5flSIyFxNZG7hkSuCP0np0XHPuo8V/gq2pEKkg09g2fAx4Ky0J0ErKDGSy19/iiOA/AiHnhVYsSeoMpKSfkGgOgYQU4fBC+ecgTju/k7cipn4FzDWKfib3Ct3mGgNyedEEE4B01loZ+eHYlAaDUxFLGSQIv6QL2f/yELorvwKjnGgBxTiv3NHJGzilwyEANN5J4A62B4RNL87S7a3VAA+/a/2zSPv4NzYe27GvfthF+bvuSLnL1XmdR0EGtatC152KajlIaWYUljaTku4o8b5JQeGj6cTFLhBdAc0/Kx26/yLNgXD9Mx/Hxfs5PL8XdrBuz0lVIuUQiG4SJ4Qutc2hcLUh6fN+AIjcdMGLxVSQTeXXRayGQRVW/HrUAWETjgClgPxeRrSGfrbv/HbbcjsCesICKr4rPxNvR4Bvw8B7WnF/BUBBRewSumaUMFsMedGmdbi0NrEFnmUAONW3SlwGZVTOzltLlGsNhBcHOnI+OZ9gZyVo9z/9APYnSbiex+yQ532PfY4RrGYP9wMaOsCwwkNYwcMelABPYHmebwiWOo5gJTvWtjt2l4csm2euY2mtXkNgDrhaBJHWBoBkssB3XDh8p4RyDVAD6lYNOTJtSAyKrbwo01nYOvdUzgbLaQP3Zs2k86BxwRjsUpcEu+yHO0IM5Pi7tSe4/gG1u0c4daM9M355YZJ4cyj6k6W5qKd7iJWLgwZ4c+d+U2IU2EpkChwYGKWNoD458eIm43QcN6EB3wceQyzUrlTcWvQAzDNu+FzgaGkx765sOTRnjVwBprTRSjQyAOyLJjg+mAwfIb0/YG0rUUjd624eYPEofZFrvEGSTeQ28
+ wt5QRkNV
+ OMbILt4sVY5JdWLHoHkwPNQCgD2uPI851QKbK8ojP8QvLewT9VbpACpuqsPBfv1vt0qtM5YqHiNhBrkx6wGLsdwJRNhzm5L7IGVN7IfS8zixcqbXKOwj9B83EfRzj4fLsaDeC/dSwqZ0F8Hh+RoqTanclbvRlCnS9X50LSlWVfqBKVOzpR+//yfG/2yWPfGf5UwxeQYrWC9JvGOScx3aujgden7d1sdxddzz/Z14SvKttXr4R+bF+dS8qSFYZWHnidimKSM0JaV1jfpLzcGqxPSVdf7TbefX/sl/7BFhjQHIwLw98g22+WfnF8ZwyuvtNntuZ1/+AUsbPGwWWv8JzJYG5m80BCClSesbcrqmmYZqcxXJrXh8pqgH/8BKgUNw6HLUi9j6nxqfJjhY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,14 +150,33 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 9/14/26 09:30, Yeoreum Yun wrote:
-> For consistency with psize(), rename read_pmd_pagesize() to
-> pmd_psize(). There is no functional change.
+> Introduce size_to_shift() for future users that need to
+> obtain shift of a huge-page which is other than pmd_psize().
 > 
 > Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
 > Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
 > ---
+>  tools/testing/selftests/mm/vm_util.c | 10 +++++++++-
+>  tools/testing/selftests/mm/vm_util.h |  1 +
+>  2 files changed, 10 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
+> index fd1432dc6152..1fef1266429f 100644
+> --- a/tools/testing/selftests/mm/vm_util.c
+> +++ b/tools/testing/selftests/mm/vm_util.c
+> @@ -157,6 +157,14 @@ bool check_for_pattern(FILE *fp, const char *pattern, char *buf, size_t len)
+>  	return false;
+>  }
+>  
+> +uint64_t size_to_shift(uint64_t size)
+> +{
+> +	if (__builtin_popcountll(size) != 1)
+> +		return 0;
+> +
+> +	return ffsl(size) - 1;
+> +}
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Could likely just be an inline helper?
 
 -- 
 Cheers,
