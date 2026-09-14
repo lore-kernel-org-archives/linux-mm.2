@@ -4,136 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83C20C88E64
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 10:46:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 420EBC88E66
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 10:56:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B0276B00A0; Mon, 14 Sep 2026 06:46:04 -0400 (EDT)
+	id 270756B0088; Mon, 14 Sep 2026 06:56:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 913746B00A1; Mon, 14 Sep 2026 06:46:04 -0400 (EDT)
+	id 247E56B008C; Mon, 14 Sep 2026 06:56:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 801BB6B00A2; Mon, 14 Sep 2026 06:46:04 -0400 (EDT)
+	id 15F1F6B0092; Mon, 14 Sep 2026 06:56:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B5006B00A0
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 06:46:04 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2D46E1202A2
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 10:46:03 +0000 (UTC)
-X-FDA: 85212037806.26.DB5EEDD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 72B301C0007
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 10:46:01 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UpMcaT+e;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789382761;
-	b=8P+l0W+a2dh3ixzER0uS57aW7NLojcjO8DEtQXrX/56wx3SlZVeaKx4lJnQcHvnC4BWEBn
-	DlT/nyLB74R47Ls0Y56Vum1smJiYc3Ev0DqxM0MDFpl9vkXGlBbDaQoR31dMsNxljlHScJ
-	Mcsygxfu5C3lRkZs5YfEAojKb8mjHD0=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UpMcaT+e;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DBC056B0088
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 06:56:15 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C8E4A1C1D51
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 10:56:14 +0000 (UTC)
+X-FDA: 85212063468.20.0205323
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 22AEAA0005
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 10:56:12 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=gtSwxlj1;
+	spf=pass (imf15.hostedemail.com: domain of matthias.goergens@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=matthias.goergens@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789382761;
+	s=arc-20220608; t=1789383373;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0hmu5z+eGTrnEF+isJsclBbqWJSTluvRzEiyOmJ/sGc=;
-	b=KxeDPfOm05lX2TEwBDRsBQRjxMyrqUHx6p8NlukDBGJECrsVvKxCPRJsv6Zm0N9mNa6jRY
-	GXb69zmLDyktWsuFXWOL1REn7F8eb7cd9dtwK1JkThWEBHVTZlTkLQqiv4uPKCQDbv+Gfi
-	J/6qbdHO2oLXBCuFkn90uhDpgzHAVI0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C6D0B601DE;
-	Mon, 14 Sep 2026 10:46:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD77E1F00893;
-	Mon, 14 Sep 2026 10:45:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789382760;
-	bh=0hmu5z+eGTrnEF+isJsclBbqWJSTluvRzEiyOmJ/sGc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=UpMcaT+eBECzjsINizlIEKJdaADhIHQsa7usGEGZ+wpyw/sU6X/Yvgw6bf8m/8gMs
-	 F7mt8ynEYSwvsePo1oNBArXMOg1GSXCebj9SkjcU0T2rnSCnsD4odhfA2Bom9WchMY
-	 2JmuIuJ6RPGQANeE6zSjAIAQ6Ut363/jQ+yyejxyiCFq8A58EY6eByLR7DVQBsdyss
-	 cDEnANAJRPwsexTbXjps5UC75cS5zpTRyO92bZUiadIFDejzqxkiNRA7eA+8nbYt05
-	 kByFwQvRJ4lP9Z4H2i/jzphJUGX7tCVdcWd+KyLw71RyhEAw3em7dujFY+rTQEuJeA
-	 LaeHg1bBVfSXg==
-Message-ID: <88ded4c5-9181-41fe-9f31-e76910e58f85@kernel.org>
-Date: Mon, 14 Sep 2026 12:45:52 +0200
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Gj8h2lt98zX4NzJl96Knw548gSSkkGwsjExtVdozT0A=;
+	b=IBToZ94Q8lPS3A4WugJfZDiNVBeBkuwvbKkkcjE9pY9eWXcE1+8w1HO2AbSYfYsggipLwy
+	j/Xf2F7ZU5peeJHuDChAvgzQDSwPHRjinRDokdsokaZF93AhL/7Xf5FbFh+Y6hbft/zFug
+	NiraIlR9/8rR38UZyUB0Q6/RW3W32dI=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789383373;
+	b=NNB4Vy5UGMr+IfhPp+RjCgG7E+cz/U8v90cxLbVSSmHR0Ak6yr4ij9saOzlDGjIuoxkmCE
+	jzOyaK9KoZuzuBSB0TFXWXLz9iBAZwX8sceCxUAysTeJAW6oi79qw3UwWBCH2g3HVZEdUZ
+	8xPA5krRMbfnjMCgPpCP1Vo+D+V6Xnw=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=gtSwxlj1;
+	spf=pass (imf15.hostedemail.com: domain of matthias.goergens@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=matthias.goergens@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8692be1cda4so2496014b3a.1
+        for <linux-mm@kvack.org>; Mon, 14 Sep 2026 03:56:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789383372; x=1789988172; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Gj8h2lt98zX4NzJl96Knw548gSSkkGwsjExtVdozT0A=;
+        b=gtSwxlj1EMKnzkTvtMEv72CgZhAGtXkpI8AUtbX1ZC3jbv6uIAnbd9rm5WB11V1HeO
+         dTmYEaP/uAgAwVfPCIezyiQ4gyycHqSXl1uVMc63Zx39rqFRQ7+TqhV/HhYjWB9brPn0
+         +JdtumBqYmH3ESKrFlCGfrwhZPTlnOoBZc6nrK4ltVqiITmuQU0QcM5asncxoR+ZQrpJ
+         hBsUQDmqtU12LMkC8tSDzNIBxmt5+MhdBiO6xMyenJlFsTnyXwnhCaSedlM7iuU7WjsU
+         MtZB+6CYVBtERlru/q/oVBayNx2Mt7V7YnC7yjtAOKGoxuc2OMYrXhu8ws16HYU4NWo+
+         mMTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789383372; x=1789988172;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Gj8h2lt98zX4NzJl96Knw548gSSkkGwsjExtVdozT0A=;
+        b=durtvZbdqnSE8Rdi0eCPwOEc+rEEY+a7n8Ylt/KTkc+L9AEd61kvWHQJ01GLOFsMw+
+         qNLyvMAysKHsPIMdM6XhysW7AkphRG5U+JcO6apEkAnOT2TD7pYr1tMZo+vmtUQHemfT
+         G3gxc5n7GQoMfcCbu0V+f7OfpN2KL+b5iNdKa94IRcgPU55wiNmpVos5osixnZgFUHrb
+         Uc8mnm/LdhH7hE4SM8bqbMriCr0EktSVI5mPra4sWvItBVcDX5jydgpySeAk8PyluowY
+         xBn9ZsqQ+cABnGEhN2PMR3F9z5rgFKP7kSeNKmEL/7RP8dHb6JLFImWq0AbKhdosoJNs
+         eTiQ==
+X-Forwarded-Encrypted: i=1; AKwUvBw4npx7cuh20uyMcV2FuAfCgFhTICqOKq8FobWnKEvEL6StmInK7Ekf//4HZwprY4IoY7vGFiKcgg==@kvack.org
+X-Gm-Message-State: AFuF++njIYr/iHhRBhg84O+vffAM27eweaVNBsC5PogY/I6q84WxhYOi
+	VFRaAmP1z2m9Dhcj6m2gx2zXyfa1VbLNHF5qjUntTvRaOv5tIrC5qJ0o
+X-Gm-Gg: AYBFou0z7wkZ1Mc7/VwwODOkjgYhNuWgrLlWDQ6eyHxNH71K65ElRxKcN50b6FXoT5E
+	tpbcgGg8SS29TzPJfAjmMzABDrY9dtJFns/AVAWWprsFaCKWR0NiuFqlsC5C7fyEqBEWDgGr6kw
+	hFdM+t158plQ2gS+RuWGVCPwqNhWE9sABY+mJ3abmTCr6Oi/XoXbS2p43ZvG+FqrerJTM293Dnl
+	d0rJwo5/N6mLTexZQE+x+aQsyGUVC+6d2QeMtMUoXswHiU+ODs47ZBXcwRietqTVo2uQy06ZLU1
+	0gm0izOuC9dCTxo0busNKZZvkgpWWWNp13k7P2QfmqcnYnViBN6KL46XSZtQAxBW80Wx/IsoPGd
+	phUbzwYjsXfwpCRJ5jcSUdNH3dSFKNwY0n52OnH3GkHuLwXVFB0x26/yrIexILG2vxM3lccsoh1
+	PApxP2/7cem9x3989Na/t68Ax2Q/Oze3fF/EBNQN1YT+ZGJ5LAhprLvxcZZ8UaJW0JRvHfvDpEo
+	K+WC7Upgyvtt2uDD8R9BqLZXG0Mcelaq7qFFXyC07A/uV3lBQKBGagduCrfsQoWrEnbMO2KFrsF
+	8CgieRBQ/Yl25DUkMS2JOynLji/0XhFj1yr+YKfHxzGVCWq4QhpiRPGL/8jQEPU=
+X-Received: by 2002:a05:6a00:438d:b0:86a:9be:6bf9 with SMTP id d2e1a72fcca58-86f85108442mr4695374b3a.12.1789383371846;
+        Mon, 14 Sep 2026 03:56:11 -0700 (PDT)
+Received: from spider.bream-herring.ts.net ([103.252.203.158])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-86b287c481asm4589354b3a.11.2026.09.14.03.56.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Sep 2026 03:56:11 -0700 (PDT)
+From: Matthias Goergens <matthias.goergens@gmail.com>
+To: Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>
+Cc: Matthias Goergens <matthias.goergens@gmail.com>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Christian Brauner <brauner@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	intel-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/i915: unlock shmem folios after skipped writeback
+Date: Mon, 14 Sep 2026 18:56:06 +0800
+Message-ID: <20260914105606.3997649-1-matthias.goergens@gmail.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 0/2] mm/memory_hotplug: optimize zone contiguous check
- when changing pfn range
-To: Yuan Liu <yuan1.liu@intel.com>, Oscar Salvador <osalvador@suse.de>,
- Mike Rapoport <rppt@kernel.org>, Wei Yang <richard.weiyang@gmail.com>
-Cc: linux-mm@kvack.org, Nanhai Zou <nanhai.zou@intel.com>,
- Chen Zhang <zhangchen.kidd@jd.com>, Jason Zeng <jason.zeng@intel.com>,
- Chen Yu <yu.c.chen@intel.com>, Pan Deng <pan.deng@intel.com>,
- Tianyou Li <tianyou.li@intel.com>, linux-kernel@vger.kernel.org
-References: <20260914072929.1883794-1-yuan1.liu@intel.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260914072929.1883794-1-yuan1.liu@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 72B301C0007
-X-Stat-Signature: dh1stxsazsxuawai3fxn6t7rnf34e3f4
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1789382761-285327
-X-HE-Meta: U2FsdGVkX1/obG28fPluI8z/Ji7ucoIkLkWxuXQETPFxZAqSQqaTGU36CijFzCyU4HG1oJCDv5SRptq6kqY1tpYBu87CJc7wQOMBw6KjT08EebMfgztBoZnTs/BUnNLUQjdjuCcKw3wTTW0UfAqFcOlRp0XmXTdyjYvrIBZb1ss5a1S8BoGt+LYN6kYbf933vvxjR85t0GfNZuZbpOAxYtLnh9J4CWJ/IpQTUrQnbXolvD0tDe9vEDUsWEgHFmr0t5iGdsKveBo5WHF5sPuGKAEcqYDZhA36fqY5l+/AzaqQRmSKOy3US/S1g5SmQ4p9/kIHZXUjnt/wykYf3DyD7sqLpJFImKewLG+To4o11k5ns0gLPBvFA55fETPR21Cs7Vrz6yItIvLfC8poRljDjcvmPFhjikRV7clMGlc60KfSH+ysHXeag6gBoDgNJaaN/xhj+6c6tClxJRFzdOSYNCb/mZVgZlah2H7v5O+E7MduRNGE41C2ctrfUbOy6saOLf1mKSbygnXsRUvcxLURxV2y24qEYHWTyqJlPYyulwFBKGCr9FJV+UEk8oR5+V1WoJYK6trkb0smovyhHzTpDvxT5xWtl69HEG5bkn5nCCJY7TS04Poo15NE4NUEhMUyoTovhIHUJNj5LUJ9bfT2YvjqAgRxB4cDpfdTbXkNlNQP/WfImECFt1okZNS6LjdOQW1aEWNpKVp3X49E/fOr6jlAESA93FIxARiiYN0O/8VVB7ThNlzuC4sbj3+MQfkVJYFhe3UNiD5zUnWuFFZGjfJqOX1xKq7h8VghCVaRHSGoyLYyYg7nxCrUFQcWIL+EBhmD9cr04K9cjwNp8xLANV3vlMUNtPfsGJ52DJ5saWP26WmDdDf4lB60Zl89Mp1lhndjQzqro6zCl0BQrORlrDqoSzIOkwDP2IXahF+9oZzHchtMi/BKEYfnduoySGPmdC9BhLORBg9khY/+WLN
- jdLioUvD
- xjTp2asv5RUb2ZB2jFgnXDnGpC+xkM18e/X9c6rEx9Jt1om7l+Ip4DJaQ4qbs4xQzr2w5f6SaUyhUy36O80II+xrAYR7gVT1zDnv62wJmI2XvdQElxWPJZlyBdfkXEWEzcKCeouEL5SpJE2ee2p8pjGQgcNGv6IC8cbhS+1zZbFVtQbr/GCn13KnPz2/jg6pQgo/ghSoU/ss/TU9C4WeM0rE8lcyL78oU05CHqHJeQE8t8yylD3N+8x45h8jOPWwfaJmH1UDeMPGOWSi1PXGy+/rgRd7ae+yxPveIzIkPjbPARa9uXPvREImhc+rVtVj3OVjzXcKB5l/8o3coArOwNGwwOGWJMRDPrjvy3NPN/huLV/2ObpHF/zdVDDH2iNAf4+tboTmul8io3rogqpH2+qJY3A==
+X-Stat-Signature: xakoj7ne41nf81st6jmtikjjumy14rs7
+X-Rspamd-Queue-Id: 22AEAA0005
+X-HE-Tag: 1789383372-250424
+X-HE-Meta: U2FsdGVkX1/R1z30iwee+c9GtuQHW8CTj0iLGZvCZxHRyOfUH/y7kryUtmmxPJZy/mfORkt6VdBewvmoH02LksjlJs4WiusRKUOsXKD9Axl5qrPqnzr2UpOglWz+t+53ib4eRbaBFBw6Va5VXrwXTiZA7UL1kMYHBRRO8Anh7XLuN+XWjr+CWM3mlWpHughckFlja0iOOemyKMyz3jK6ott0z3M6VykE2+npAHJbUkKGYITkUAkgxGwbDBEBqirgVIsraiF5incOPopJargOxd5JK+L2EJabNriFQ/Kkxcdsfr75gaRsd6sipnk9Kc1kvvR361kEgrayL77vhCwL7ANEYJyPqEg9gUIB9EyjOtbgAf5saaAR++bwX+wNGWWJp5x7acNsOQrCOlqB0bZBn8PdlQxuh0IicPZgZOJbDquEnDt+NxaLanyia1S/7S5vaqx4om1EnosS5e46LG3WNOw9pQpmkidlo7gpsqYcTX9byVvTXxgUoeRn4AabVZYSlCk5OFraD545a22aiUQXr9FKp+dfoLk88zeNYEE4GP/3PDgylx5kP/AYm2GGamA19iWbrhV1SfRYL+1tVWVDMbnXl7EG+bP26aOxes13bcK1vHddipdBK27nZPPciERYaktYPyZ7ENysekTuPOng+8xeIU5fMknuJglWxT2nOkk9MeIQWGum98p64PyO5A47wuft7dbmesZgT7VKIlDvZRRIWEmzkxME1vv0cjrP28rLx61/ZNZM7iY72uV9CXt1ejskh3TKE2kqwTt3btSfFToMUNld6oGMZCKCxFoGL4HBHaT6fDDLz3Q4e/rrf2TEKIObd7g2ZUCJvvVBsYeU9+U9Dl8fOdMuwMs/bqrCDY9aLdSc7IRtdQdjUdm95yBTB1wAcBM3DagWc0IG45MB2no5OjqEYnOjKYa2hB4+Op4PE27p3T8QTKGDWBC2sLD96M0OyZ+1dz4PD4PobQR
+ 5iIa78mv
+ jJ3BS0np2fsSGDmfV2YTJjBLZ0WNwj/Erzst6H3rwBOLAW425TGtzCytWpCjSC4dpkl4SO/DAbsVHokq6jGhxGjSIu1S7SHxIsjxzMJvIAqT1s9QgUPn8qbtdQhQib2cqVNVZ6fCqZlY+M7YWiyNc2H7h4FVdU3AXDPipocOPkkUr0JS5rATaHwl6ehr9nioy/TN7wVpBgZVk+JGNOxS6FtLWoICiY5bwX1hNNpewxfZpHHLw/+Y2C1YB0e1tbmbWTR3IGnGLlMKONO/FI48phdtBAkrIBPQp/MDwPZ8ctcymzyxfh9/8LDLem6wES5BZBX8wcKswgAJ9YUomsmz/LIg7XZ64ODLhqLnkvCwk1IokLvejc6cziZI7hwDpATkw3aWO7tUVCjkVvu8Xe0bHTAApwaXY/yXlEzjw+9Y3dPjmUmVn4hDJuwFxIr9bDWVZR8+yJW6z1e3A2qR9NYrnfbiac3VPhDh8Mktu3lKT57rIFVdP3CRZbY7yA5AXvq8KInHLQpFnpqkPsuo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,76 +128,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/14/26 09:29, Yuan Liu wrote:
-> This series introduces a pages_with_online_memmap member into struct
-> zone to avoid pageblock-by-pageblock scans across the entire zone and
-> improve memory hotplug performance.
-> 
-> Approach
-> ========
-> Add a new zone member, pages_with_online_memmap, that tracks the
-> number of pages within the zone span that have an online memory map,
-> including present pages and memory holes whose memory map has been
-> initialized and for which pfn_to_online_page() succeeds.
-> 
-> For early boot memory, pages_with_online_memmap is calculated in
-> memmap_init_zone_range(). PFNs initialized by memmap_init_range() are
-> included in pages_with_online_memmap, and hole PFNs for which
-> pfn_to_online_page() succeeds are also counted in
-> init_unavailable_range(). For hotplugged memory,
-> pages_with_online_memmap is updated through adjust_present_page_count(),
-> which is called during memory online and offline operations. When
-> spanned_pages == pages_with_online_memmap, every PFN in the zone span
-> has a valid memmap entry, so pfn_to_page() can be called for any PFN
-> within the zone span without an additional pfn_valid() check.
-> 
-> The counter may temporarily undercount when pages with an online
-> memory map exist outside the current zone span. This can only happen
-> during boot, when initializing the memory map of pages that do not
-> fall into any zone span. Growing the zone to cover such pages and
-> later shrinking it back may result in a value that is too small.
-> This is safe, as it merely prevents detecting a contiguous zone.
-> 
-> The contiguity check using pages_with_online_memmap is stricter than
-> the old pageblock-by-pageblock scan. The old set_zone_contiguous()
-> iterated at pageblock granularity via pageblock_pfn_to_page(), so a
-> zone could be marked contiguous even if a subsection-sized hole
-> existed within a pageblock. The new check requires
-> spanned_pages == pages_with_online_memmap, meaning every PFN in the
-> zone span must satisfy pfn_to_online_page().
-> 
-> Performance
-> ===========
-> 1. For VM hotplug performance data, please refer to Patch 2.
-> 2. This series also benefits CXL hotplug. Performance results are
->    as follows
->    https://lore.kernel.org/all/20260409023552.GA2807@AE/
-> 
-> Tested cases
-> ============
-> 1. Hotplug/unplug correctness with both online_movable and online
->    policies, including partial unplug, middle-block offline gaps, and
->    edge-block span shrink.
-> 2. Large scale (256G/512G) plug/unplug performance.
-> 3. Boot-time subsection holes (aligned/unaligned, in-zone and
->    cross-zone) with correct pages_with_online_memmap accounting.
-> 4. kernelcore=mirror: verified no overcounting.
-> 
-> Patch overview
-> ==============
-> Patch 1 makes shrink_zone_span() more robust when memory/hole boundary
-> falls within a subsection. It checks the full subsection range to avoid
-> incorrectly shrinking the zone span during memory unplug.
-> 
-> Patch 2 introduces pages_with_online_memmap to replace
-> pageblock-by-pageblock scans across the entire zone for zone contiguity
-> checks.
+writeback_iter() returns a locked folio.  The mapped-folio path redirties
+the folio without unlocking it, so shrinking can leave the folio locked
+indefinitely.
 
-Sashiko seems to be heavy. I'll wait some more to get more review feedback (and
-an Ack from Mike on the mm-init things) before I'll pick this up.
+shmem_write_folio() can also return AOP_WRITEPAGE_ACTIVATE with the folio
+locked.  Passing that positive control value back to writeback_iter()
+triggers its warning, stops asynchronous writeback, and leaves the folio
+locked.  This can occur when zswap rejects a folio while memcg zswap
+writeback is disabled.
 
+Unlock folios on both paths and consume AOP_WRITEPAGE_ACTIVATE so the
+best-effort writeback scan can continue.
+
+Fixes: 776a853a43c9 ("i915: Use writeback_iter()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Matthias Goergens <matthias.goergens@gmail.com>
+---
+ drivers/gpu/drm/i915/gem/i915_gem_shmem.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c b/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
+index ef9440166295..e7b18f7f9644 100644
+--- a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
++++ b/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
+@@ -322,10 +322,16 @@ void __shmem_writeback(size_t size, struct address_space *mapping)
+ 	 * as normal.
+ 	 */
+ 	while ((folio = writeback_iter(mapping, &wbc, folio, &error))) {
+-		if (folio_mapped(folio))
++		if (folio_mapped(folio)) {
+ 			folio_redirty_for_writepage(&wbc, folio);
+-		else
++			folio_unlock(folio);
++		} else {
+ 			error = shmem_write_folio(folio);
++			if (error == AOP_WRITEPAGE_ACTIVATE) {
++				folio_unlock(folio);
++				error = 0;
++			}
++		}
+ 	}
+ }
+ 
+
+base-commit: cbd3dafc2003db679ccd2f6c6a2551db79657049
 -- 
-Cheers,
+2.55.0
 
-David
 
