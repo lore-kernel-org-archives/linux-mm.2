@@ -4,88 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37B51C88E72
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 14:08:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABEF3C88E72
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 14:11:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2E8DB6B009E; Mon, 14 Sep 2026 10:08:45 -0400 (EDT)
+	id A8F2E6B0088; Mon, 14 Sep 2026 10:11:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 29ACA6B009F; Mon, 14 Sep 2026 10:08:45 -0400 (EDT)
+	id A67066B008C; Mon, 14 Sep 2026 10:11:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B2EB6B00A0; Mon, 14 Sep 2026 10:08:45 -0400 (EDT)
+	id 97C5F6B0092; Mon, 14 Sep 2026 10:11:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E51AB6B009E
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 10:08:44 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 497DDA0166
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 14:08:44 +0000 (UTC)
-X-FDA: 85212548568.09.7156916
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 729CA6B0088
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 10:11:02 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id F0A838016C
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 14:11:01 +0000 (UTC)
+X-FDA: 85212554322.27.88F0174
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 870BD140017
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 14:08:42 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UzEF7Zb3;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf17.hostedemail.com (Postfix) with ESMTP id 3DA304000A
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 14:11:00 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oPBPyfc1;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789395060;
+	b=ZVCbsUTkSNYdNdHZruJFtSighwSoiwoSTZZnlQlCIU8ymf1VxvbyTtIsNjo6a/vRgyupsY
+	KgmPNV6ZBvItHRwa/N/cdcf4ZOMZkHdlcslU1YAR9q1evPedKdk0W9nuKz4NNHv4GMMI5h
+	fxuznSg+S8exQudFk3xfxllHt/1U6tA=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oPBPyfc1;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789394922;
+	s=arc-20220608; t=1789395060;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AaKFw710LgRLsyJ/sC56wEF2fzSq0uylE86NbWhDQFk=;
-	b=cBCznt1MR6a1ypXPfLsWn2UB7/6Ia2M2M/Vu8wWANipk/vrDoy0VD2eR45ie+8919EGWox
-	qvTNueSXsVCx9qr9C3Q/sX9G8EedAKbEFnwH+P3mQujTNhj/+nthPudxEkn8dxhG/5tMzW
-	XTDhcrQ6a7m+MFg0xJ4CggytXKW/vKA=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UzEF7Zb3;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789394922;
-	b=ly0O0Iqjqn/LLXcMi4hrRcZyAl3xgkLr/RxU5YUFkn49UNC5mssxF/n1nzOVvij+v+oVdI
-	xiEVUbAn32LNfqiak6fH6t6x0XB1xEzF4IxCm82vDJ7ilGr9aRYsuxV36RsKDOCbMMFroC
-	FROUYy7zWJCOJu/IceCHCk/7CLsVkws=
+	bh=XJFM6JwTF7dpDjv5GxNtlQIn3Xtc8gdA5oCQUi1dIq8=;
+	b=IQrPueITcHXruN3Onnv29ycY2QvQv13sfaCBf/7KaA2/ZXx+enAfE/gMWbrAMnW7JNeRNw
+	l9eXEZJAXhAl5trzVha/CgQ/VZ5cHA9ZR/Z8SvGkSQfohVjqCMKAFTitmJ5VKqSeK1aZZv
+	BrxAjjC17vl5LNkLno+ZimtpjSAMaF0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 116D6601DE;
-	Mon, 14 Sep 2026 14:08:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C7751F00893;
-	Mon, 14 Sep 2026 14:08:33 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id AD9E460142;
+	Mon, 14 Sep 2026 14:10:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AD801F000FF;
+	Mon, 14 Sep 2026 14:10:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789394921;
-	bh=AaKFw710LgRLsyJ/sC56wEF2fzSq0uylE86NbWhDQFk=;
+	s=k20260515; t=1789395059;
+	bh=XJFM6JwTF7dpDjv5GxNtlQIn3Xtc8gdA5oCQUi1dIq8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=UzEF7Zb3UJGxecxEcgSsAz99wwyiMM5BiGcoPMbkAEDPDmqMuQ9UFozqJYWHlZdBC
-	 OtsX63NB76meK0n19FgNlFs8oxWKYI39jRpq6yoATZg8qBlLhYWS2YNURkSYoQ5xm0
-	 w550wwCy4R+AOte8TAFL5aCiNtQUOBFzaGeeMsYtCNey2DPwJS8qa5suW1YjHwMa8j
-	 ZVAJhp3SV69xE5m+FWqpS796HgzjC0SiF0GMEclJfrwGOL+gcyuE6m98mwBoPHfNbX
-	 Sgk094fdDxzGYU9Y1iusw2d7abhC1Ah681lUPNzc6QT2SBdnwLG0yQy+iN9+PDNzxR
-	 dBhfuHWyc+ZyQ==
-Message-ID: <c60fa1c7-ac83-4e41-9911-a426c6b42191@kernel.org>
-Date: Mon, 14 Sep 2026 16:08:30 +0200
+	b=oPBPyfc1kHNDvV0t/B1lkdFZs+ykyqVI5bNShXTsSoiQVPf8xN6UWdeaObkeQkREf
+	 8ax7+UL2K7yPDdNetSNNdnqq1r88THf9AVo5p5sdW1Ownwmcuki3zEqP5aiWaSKTeN
+	 6zOeoXVmj8F4SLG6slvFY6AwSDHrk49C9taLXYmMIheTH6WaLP/m8zcW7QZ4yv2a5E
+	 8OxZ7GYqSX8emFAKM6mBmbyseOobDkc6p+LpVU8sgteRScfG0FL26cn4oqeOXL94iz
+	 /G6AKbJD1WYbbubI/tn/N3hHaJ+nfnz7gxB3tz2xWH9YedGquHzsWHSCIIyw6oNo5l
+	 sM/ZM4ix02ztA==
+Message-ID: <6c9727cb-6cfa-4d0a-b8d8-077cbeb5cf4f@kernel.org>
+Date: Mon, 14 Sep 2026 16:10:49 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/3] kselftest: mm: introduce size_to_shift() helper
-To: Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+Subject: Re: [PATCH v6 2/3] kselftest: mm: replace usage of /proc/self/smaps
+ for check_huge_xxx() helper
+To: Yeoreum Yun <yeoreum.yun@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
  Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Peter Xu <peterx@redhat.com>,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Shuah Khan <shuah@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- Leon Romanovsky <leon@kernel.org>, Sarthak Sharma <sarthak.sharma@arm.com>
-References: <20260914-fix_hpage_macro-v3-0-c9a305a01d39@arm.com>
- <20260914-fix_hpage_macro-v3-3-c9a305a01d39@arm.com>
- <b88f4ec0-61a8-47b0-901a-d63db115936c@kernel.org>
- <aqf_XGKDq6jH6pJW@e129823.arm.com>
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+ Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260914-fix_split-v6-0-16ed7123800b@arm.com>
+ <20260914-fix_split-v6-2-16ed7123800b@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,17 +130,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aqf_XGKDq6jH6pJW@e129823.arm.com>
+In-Reply-To: <20260914-fix_split-v6-2-16ed7123800b@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 870BD140017
-X-Stat-Signature: yb36nzf7w5uk64onxndkxepcwywknafi
 X-Rspam-User: 
-X-HE-Tag: 1789394922-414296
-X-HE-Meta: U2FsdGVkX1/JYeQunIGAYpifVolXYfuhy/4vChd3EDf09xzVOkUCG+HKm/Auv+niToYDMVVHdPXX3OnoeGirHefKCku7MGgQ6FXzOGlcPzx9xPn4ZZg/B9g4BQKR5R+qLSMkLLoQmBL6Kd4EYXtV0nnqF7+Yv9NeIYqrSfGsE2YIEhuTqeBrGSvBY9z1COIfGh2aBcPpLICFEpAkNoMbMKpJDQj57p3a94JleVVQ8vjh9SppbeIPTQDf6ujel6QxDwMivNuspCHr3LC3VJM0yfGdKSXp1QsFDar4vUEo8L5WxY0hlvEJ8XdDEDpmh2el9wc7elx3Asy/TrdQwk5zKaLA2IcJerlhEvEI5Hb20OQJUTBAtnVmh/d+lqS4Y+3IsTGW9nc11tmuB1ipatYCPTiSmXJGdXCMZS+HWxmmlxH99xXuwKh7Yq+sS6RWbykaaFSYABnSN/PycQrKZna26c2H/UaE3CWqL5nASuEr235tABmn/nnkc5ZE8a4AxcDtGlsm5bT6BsJTN2hA9pg5BCPuT+Xje+f7PjbIK40JjCfMc6L8cVSDgFDFtAs1sf1l5pp9MpytXsXzivv7s0Cyb8794Iu5r0QIOJUBAzeC7GU00ZR8BuMlUR3om60/HdwbYhQ+36RIqcfLdMJiY6a+9egmk6XqyFLUVaa+Z4/ehs8gR9qF91jeDQWFGZZwvN7TvJOSfq/VC3Z5uWo/cZuGxXT9BToY/FcbJvA7TVN8vmkH9fIyXLLmVheihRkQ0bEsR64FZRbegLE1oDxXeS+9VOTWXNNrX9gg/USSKdJoL/W0SMKNPjilQmA8T+gVC2CKrWJwR2g3At8jY4vYy/t3OvknyCPvMz71mDmfRZLcHAZFKlGmFnTv3Cd5XA4bB6RK5/Pt4wdlaqbuDy6ED5JcNDaRl2wp85DJAhQpWKGcSTu8Trv2LlFWCH17zO75a1Xsfe8Sg/17jvaPud1BQjq
- 4KOSWYM3
- S9QlJKgsQXYCVYXcKNYlTSVGfWWhUomKAmXN4d2tQOtp6rTuXc+tnU/4nI+gEmaNFmOwVFdq9zL67JTDN8E/JEuLMMKaRioanUOS1LBlqoFWdiyj3UqDUDDW3EUuQPrbZxEj58qsN67EgLswNaZf+sTd0gEOjCrxdVVuG9buRb4GRvcuexo647oLGMK4Upi4fFq97kUxznKNScWFluT49GUW8QVDnitzuK4VUuueA96HeGJuZyM9FF4m2CTuHYSpFFE0VOH8+vGwL9VaPurkHBfFP4onMJ2OpFB775Xijd33QPHC2ZwB/p/cyXkkuCXN/hVdGFwAwy59zWNspS2OM0JoRViDcMJqL/MzbwBEpo8WUiOYW2ODM3K153kqnwpUkCO+XqK9ZNhvOePc=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 3DA304000A
+X-Stat-Signature: enmp9b3htp3z8puuo9d1iubbt3gw9wak
+X-HE-Tag: 1789395060-129862
+X-HE-Meta: U2FsdGVkX19RAa0+G3W3WKOPQq9R/edrcL2Og570Z7opV930y61bTPNxY1bVNdnLf4NKJTArXW0Xj/TnYDod0Bo4AvidxuCoC56Gwb1RQMvE/7AElBpof41hQ06JlwtfAPZN94GSRAMFB54FQt623OynX8GnP7mIgHiE0/PGXWhHPRWlJ7JsKnKExdEoSowAjOVuFmzHxM0mWBXypV2gDfcrkYNKnG+LpakHqA2jZ86g0+IqSur9PyzTazfFJRGP2s1ZEWvdTcQYeVJO5V7d8Mg7A5StCKgETZQJCc+1y4L2s5ZaId8DSjqh46ryO/eWs8MO0C+ZvEw469yCe42wNGsfJqLckd1PCeFzYJaq+Y4wFCIY3HXAkyqW3ZwmDaJxh/Y/NqQ2ICmxuL7no8Xos5iQhFuerS/QVEjcp4o61vvFVhyNEYsLfxtVd72KWctt68mI+j8ut3JN0IT9uxup3Scd4hTXc3vHHPI2pmynpVBLT6tNy+LwAanUTZgbds2OlqZ6l813YBaWCiQU2yZMdPUnOoWCVM2v/WE6kZL+RinMhHpuWq5yN2sLKBlq5zntSGS3NU5OpY9pDav81u3JPDPXJvpzCr/sXWJTpiIe0TSWIj1J57xJHLFOQDIy/PzHYKUPzGGVGEjnP+w+r6BrlbdfWpuFMss4DJcCXUf9L1mowYpN/bJLgUqNaU4eBR2NQyz6mG2DjLOlZq0b73tJKYXlfphUuSAPaJIOzuKQcC+EWDwwSaufEifhMLP7TnL/pCfUPd1cGhJ1uwR9Q3xly3/N82JHkJkg1kHQB0EL2uPpxwXv/4C8sX7Ufa9+29xCkssd2E9uMvphKTOrqp6alaSyaTGiGswwXzTiMnFKMsA39yYOlNoX3DAL21vG0ddzkCQLlj5h/d1/ceFS5JskCHkUjmqEQcQg/5s6LeMXxvvGiQ8NTU9HYHsowmJa+J+N4HIFm5oeMWFvBqZmkOL
+ EV9n7VaW
+ 5xQ51nflHKtWcI+bAqS1DZxDPd7CNEZYThS/eqv1SoMh1xxRGl8dqXT28ghQvKmgjYU1I48vODSvaHT3LxP47MH4xPznQFhfnD3+gEGeMR3g9V7GllE62ZunsySBQp6kxAwgfjf+XWR0KFdHXx+4OJkvx55ExtCNVzIuDKCUBCwmIybd21IcechMk9OU0n4FwHCDJ/wngxei18BR5lHMMcSrAa0ekeq7lNPMfuYcS4h0+1CNvBMHXOI96JcfrO025Rau42vTnNm4dRL/1g4xpxUnMebZCNWZ6Ve5hYsJsh1/FirHYjVdPES/btA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,41 +148,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/14/26 16:06, Yeoreum Yun wrote:
-> On Mon, Sep 14, 2026 at 04:01:02PM +0200, David Hildenbrand (Arm) wrote:
->> On 9/14/26 09:30, Yeoreum Yun wrote:
->>> Introduce size_to_shift() for future users that need to
->>> obtain shift of a huge-page which is other than pmd_psize().
->>>
->>> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
->>> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
->>> ---
->>>  tools/testing/selftests/mm/vm_util.c | 10 +++++++++-
->>>  tools/testing/selftests/mm/vm_util.h |  1 +
->>>  2 files changed, 10 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
->>> index fd1432dc6152..1fef1266429f 100644
->>> --- a/tools/testing/selftests/mm/vm_util.c
->>> +++ b/tools/testing/selftests/mm/vm_util.c
->>> @@ -157,6 +157,14 @@ bool check_for_pattern(FILE *fp, const char *pattern, char *buf, size_t len)
->>>  	return false;
->>>  }
->>>  
->>> +uint64_t size_to_shift(uint64_t size)
->>> +{
->>> +	if (__builtin_popcountll(size) != 1)
->>> +		return 0;
->>> +
->>> +	return ffsl(size) - 1;
->>> +}
->>
->> Could likely just be an inline helper?
-> 
-> Okay. If there is no comments on today, I'll post tomorrow with this.
-> 
 
-No need to rush, leave some more days for people to catch up.
+>  
+> -	if (hpage_size == pmd_pagesize)
+> -		return __check_pmd_huge(addr, "AnonHugePages: ", nr_hpages, hpage_size);
+> +static bool check_huge_type(uint64_t categories, uint64_t kpageflags,
+> +			    enum check_huge_type type)
+> +{
+> +	const bool file = categories & PAGE_IS_FILE;
+> +	const bool swapbacked = kpageflags & KPF_SWAPBACKED;
+> +
+> +	switch (type) {
+> +	case CHECK_HUGE_ANON:
+> +		return !file;
+> +	case CHECK_HUGE_FILE:
+> +		return file && !swapbacked;
+> +	case CHECK_HUGE_SHMEM:
+> +		return file && swapbacked;
+> +	}
+
+I wasn't probably clear. Don't add an intermediate CHECK_HUGE_SHMEM. Make
+check_huge_shmem() simply use CHECK_HUGE_FILE and remove the function then in
+patch #3.
 
 -- 
 Cheers,
