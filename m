@@ -4,29 +4,39 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8C6BC88E73
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 14:20:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C558C88E73
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 14:20:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 19EC16B0098; Mon, 14 Sep 2026 10:20:05 -0400 (EDT)
+	id 6771D6B0099; Mon, 14 Sep 2026 10:20:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E1E46B009B; Mon, 14 Sep 2026 10:20:05 -0400 (EDT)
+	id 5C2E16B00A0; Mon, 14 Sep 2026 10:20:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EBCFB6B009B; Mon, 14 Sep 2026 10:20:04 -0400 (EDT)
+	id 45D3D6B009D; Mon, 14 Sep 2026 10:20:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C1F9F6B0098
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 08EA26B0099
 	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 10:20:04 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id ED84212015F
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 14:20:03 +0000 (UTC)
-X-FDA: 85212577086.27.C4AA861
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 349B4100009
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 736D4A0165
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 14:20:04 +0000 (UTC)
+X-FDA: 85212577128.12.EE6C6AC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id D0F88140009
 	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 14:20:02 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NO20yQc6;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QJpoxhar;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789395602;
+	b=h6nf67Apn2W04ffPdseUckA+htb8UUbEN492QKXdkCDwPAA7+Kr5rodcB1edNAVQcpI6tr
+	0N0/Nx1zHRFx6eISm1o5lb/raEVFT+FAbhTgwK2K1dRK3ocWSr/Gkm9BvfB2g76LrLiqPf
+	hZNk9N95zQkCaXtU3I8SQOvsPmb8ih0=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QJpoxhar;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1789395602;
@@ -34,61 +44,50 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1oWEcWOiJS4U7UoQkNpC5ifxai4TnwShrWzXzWihbqc=;
-	b=b+UooJ5PFhDQO1906Luxawjy/XWI0kcGjByFvIKZdTh2Uns3NB5g8mqVs8vBGmZwcOWygi
-	2UZ/jYbJa6HYJCJJ2jeR3QmOcIu9z4XNQLqm2VhGbw4Tuy1vnJ1ugLfsILbYoMrWGIcELN
-	4pW22tPvRmwk55g6lE+EGk0w0wOlsgM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789395602;
-	b=EZJB/3ShRnyYzrjO6cwkkhATEbBdxx4O+vYolMbz1uTbxZWijL+4Re5QS8GjE+tdTMHfFm
-	r8FuWdygbGrLO0Y3qCLy/J4r+7RjCEHfAayvQ+FWLWUgpcQ6qXKAY3jkiRcwkarIoq8pBY
-	IEv8RUilA1tdbTw1y4YGjJ46Uema7Kk=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NO20yQc6;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=iMSM+RY05r6OH+v1CtMIxEVXYlWKzTDj5y/6JWGPvKc=;
+	b=DTP+Xy1KT8gSuMciHMPeY43drNSfTfL8eqWXAL8CSLeUW00/Nh9xyJ9a284z6VjXOIOT5m
+	Egm2n3w8qSe2/kOgECgoi9TyB35/wCHKqVt6ECpoADvXwwcBbtDrbYabvZrjpUvIhf5Riq
+	c1EhzCs2pVAlyK8QMqVbWYHQ5sFlENk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 60AC243D5E;
+	by tor.source.kernel.org (Postfix) with ESMTP id 7849C601FF;
+	Mon, 14 Sep 2026 14:20:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5F381F0089A;
 	Mon, 14 Sep 2026 14:20:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB2811F00898;
-	Mon, 14 Sep 2026 14:20:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789395601;
-	bh=1oWEcWOiJS4U7UoQkNpC5ifxai4TnwShrWzXzWihbqc=;
+	s=k20260515; t=1789395602;
+	bh=iMSM+RY05r6OH+v1CtMIxEVXYlWKzTDj5y/6JWGPvKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NO20yQc61hDX4N6lEy0ZsVRFihbtdYpFcBa0+s2k1rLQM8gvTKtjszXCbeuDDTz15
-	 76VDqJeJFu2flLbl5M6wRt2uYT6yE8r1Gw+GzCyEiUJ35E8kO2r7FD7Eby8HCqK+mg
-	 ZJk9EKrPkgBUPLi6JvDaST2ejDcelGSk2FqJH1oKMIatw0pH8CQnD925cmRy6xSrbW
-	 Hx8/7t+ZogRMXXmgXMDApbAD2otaf3Ot0U5pVNhdDx7tQOvQTh+PftyYC1ZklqoLzi
-	 xq8AO1fYBApaNkjQlyQz8JHhj7ppcX6PpOYaip//+GOsz0R7YNRUbFJzHY83BJnO0x
-	 fguS+r5Extt5Q==
+	b=QJpoxhar5EcAr9Tj32UEKCjB7ygUKbu+YQU2MwEULu89BluCAJAvbiz8D9aLFe3YG
+	 m4O61hGCSQ0UYdO8yIgUDixQlB/et1Zirheejfmo2ktwuCi9r78kzt8BPtFgRqgAaK
+	 +V13J3DqhduxvjoE1QY0FHOAfyKFB+Pz/Ig249foADiDCtx+eEA3yPQT2WcsNgafrD
+	 OoAJudEDwKaYMoCTZQ44t5loXVYBMqre193GtpoUpCzRikHp8b7PTkneOrR/PF55Cr
+	 eRw7wbeExZ967wBmO1MYstDrdkz3rC5DwnrmueWTUku27UgrfALTFxxvXDiCtCobf3
+	 dzdsJmnzyR7Fw==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: "Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>,
+Cc: Eva Kurchatova <eva.kurchatova@virtuozzo.com>,
 	SJ Park <sj@kernel.org>,
-	Sang-Heon Jeon <ekffu200098@gmail.com>,
 	Shuah Khan <shuah@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 1/6] selftests/damon: stop kdamond on error exits of no-op commit test
-Date: Mon, 14 Sep 2026 07:19:46 -0700
-Message-ID: <20260914141952.91465-2-sj@kernel.org>
+Subject: [PATCH 3/6] selftests/damon: add script dir to sys.path for PYTHONSAFEPATH compatibility
+Date: Mon, 14 Sep 2026 07:19:48 -0700
+Message-ID: <20260914141952.91465-4-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260914141952.91465-1-sj@kernel.org>
 References: <20260914141952.91465-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: xaqb3ty3hma8bo4i7tewhdkmradpqr9t
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: D0F88140009
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 349B4100009
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789395602-24664
-X-HE-Meta: U2FsdGVkX18eHs5MDckIVly2MlhLHvyUSigZYyfTWT+NKkS9SXERRqE3EymDYRmeAkQ6njKmz8yJcgOAnrTaApUTl/iijIc1bWzQ1Er8xByBf6ShLAn/Ch4gZFXurGC4J8VThOp9Ji8OfoYmBPL/paSGFluYDm+uLsv+jgWBo1/NEtTyJkSPfeNHslpHMK4TIZ+nJ2HBZSEDdgF7ahd9eZ38vSqSx4UXaAOW16S7/2W0F5eh1JWA54yeYo8LNcLYdPWrhtXlgiz1/MF9OQUqU0mGBvvs3WHc0aARGAmvZ5qT+rW+P22SO3HyP3BU2pvbfyvhHYzxObbJB1Q166Xfx/8bXG9O1GZG/wxNgPbOX6KUdrb56Q9E7+AQ3/FSFEoSeQq2gyhBkt4TJDyC2fE4R8LHHCl4oty8y9k72Lls8yUAzdB/+Zm+lIt87SNnz3moqIPKJeV4qbCIIKfWWp1BOqSgOcGnzQ/fDhjQseHLf7Cn0LiHdFVjhB7zei17UO0YMcwuKTpX2tHDUUeKqOrafxC9HtfX1ixNe2arJiiK48bOW/XHjBCeeePiH4wgZtI8i/uM1o/q/OW1lXSUyYHPn5eBDJSLZhkecCEN3lB06fBGx9nxU1I0yG7l119rofu5d6KsrNNgpU3BNBFCY1g9TEY31Nh/X2pexn2jol+0GTXzRTksnMhX+GPypAFrjmTw9Us2aWu6HHniNdjaufYkEL48Qjw9JasyywkR29DwXbSPSGKShHSG5aKfM5dscorFgKIECvmxd5/Syjgp5K7QJgLUSLNFlEE7ghxDEMymvkFmwSX6zJH9ehzTooT/5Sm10QcEvXpdUlxl76fie4nPoojD6Qmh0psKsVRyWKLCj7e9i3AJqOpIMsuQMrYSAFPEBCWlaOgDueRToqr/ylwB03jzTPr8x8bmNCF09qc0lynayJ31aB760oDCSrGQZLQutlut/7iyuNr0WK/fdUu
- +xgt1tKQ
- ipbZi0zYocR1XVZMH4hiQMyg5Pr5hMKR0kHOO5OYT44IV722WE25BPs+36u7u9GuHyOFX28ADAsNytNrwPtbHdkYRAGTUdjAhaiEwBcGJti7So8abwP+sTia39NTQd94wwVHN1ieQ0ZT0f0MQ3Zs91/zKNIjrcOO2QkhkQrCNhOrPnjWtCD0kjWRgFCV7SP0PEFhjESPhoHcMZIOThCt2yfE0G2jlzB6ExZUpINk/hWZMFKU=
+X-Stat-Signature: 5zjsbqxcdd1u41hj3c331ky3trjsk9yt
+X-HE-Tag: 1789395602-811827
+X-HE-Meta: U2FsdGVkX1/DHvK5O4HhAJ022A+gyqWJ21ySdZLrwK/G6KN2WoyXPnoLNayODVyuLmoCZtAuBz0ADtvf08qbsWlInQujgNbse92nEAIMc6tJYjRW7e3/6rIjMhjOwu6RrZ6yLYsaPfKS6RIbjPdiv6GlO3u/NKq+jdhcTBY+vuEs2KXefwJGPjHHCzmKLmoI+m4F8YtMoHbLtn/NFb84A97Z95MnksNq3mr+Abvk6kBeC+FjqxEe5DABlNq/XTEcqkVKvyZMirrUl5bExBZHXKCzGSscAqjvawBRNUFcpS5ase5SZhR7tQPJyxX4NNBJmwVWB+x3/M7dAbovyQDVB5EsHQGtwZuZpMddkg2BGi9D1R4eRNyBBOjur3wxaDdp/00stjdwoq0IMgBkm6he4wX3dktofxUjME43r/rpbDZvL2KW8a6gUxVSOG21LxurTubu6wOgEhE6yub6lqRU7Zgxae5qjGWNCDKSeBDOa4doIPFWIBDuFAUIUfcsUqcx4zLsbN+U0ndqJT1U4WfeUtemz9i6pFAIJELXLYEXvO8JbLYg8ap3aYqcDSPMLw08P9/hotpkkW/8dufcs9uZC7YZGSeCiCsndgr10S4A7JaYFIrmyUhIq0WFhoyQoekDw20v/S+rw5P5jDvZm2uL5+OpYqzJcUKJbKFpojklXl48NMCBQKPFsMog4fNkEsj4fAWWNIPiJLKsJnbeIuonDwDH/qnNh+Dv9MT1tX7mnSJm78O0mJcUtnZLYhMdtRZ9sNuBuTMLmqkoQt4RWmuf6s2gevHIFDx1V9Zn1+sKDhOfZc1KV6NcXWe4H+NVvy+k7VLPiPvuDi0UNkAw9ud6lLUqUujqU0A/8lye9vBhUxrxmNuLnG8RtEjKzoEQ4a21RyjvEEUGsVxQQLgFszaVF2Ye46oM4x2Dmt6sYMDc+1NDkN0hg2yXuE60t+RmVAivjMYCkngI0WGrcvEcN+h
+ Bock/wv4
+ LTUEgzT/KsTbgkfmAW89ow72Ei82ROiqz/BGInZ4yMqIvUfF/p/wYS4wHvwgqxz8tpsHuVUIoKVkDQVDdmdFdouUi08l3oJwTNGo5+4U4RF+oGxLKJgl5etPINj5+h1P5QOD78EcQzNBAYe8oETu1HFNGU7NMIrUczyCIpowXdLtszeXOMA1vbJcSbOE3cAMfIZOwYH+D8GloA/tQ0Lh+25gBwCt76BuWCrcJVGaAij0n46zbfCzwDLcWfqI1mA4VCRmOhruCg2JMu7ihFQuwPRJxBrdpljJMQR3C
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,79 +95,160 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
+From: Eva Kurchatova <eva.kurchatova@virtuozzo.com>
 
-The sysfs_no_op_commit_break test starts a kdamond via sysfs, but its error
-paths (e.g., drgn not installed) exit without stopping it.  The leaked
-kdamond then makes subsequent tests, e.g. lru_sort.sh and reclaim.sh, skip
-with "Another kdamond is running".
+Running these tests under Python's safe path mode, either with -P on the
+interpreter command line or with PYTHONSAFEPATH set in the environment,
+stops the script's own directory being prepended to sys.path. Some
+distributions (RHEL, for example) build the tests with -P in the shebang.
 
-Wrap the post-start logic in try-finally so that kdamonds.stop() is
-executed on every exit path.
+This breaks all 7 DAMON Python selftests that import the _damon_sysfs
+helper module located in the same directory:
 
-Fixes: 10725cd2b09a ("selftests/damon: test no-op commit broke DAMON status")
-Assisted-by: GLM-5.3 OpenCode
-Signed-off-by: Zenghui Yu (Huawei) <zenghui.yu@linux.dev>
+  ModuleNotFoundError: No module named '_damon_sysfs'
+
+Fix this by explicitly adding the script's directory to sys.path before
+importing _damon_sysfs, following the same pattern used in commit
+c3b3eb565bd7 ("tools: ynl: add script dir to sys.path") which fixed the
+identical issue for the YNL tools.
+
+Signed-off-by: Eva Kurchatova <eva.kurchatova@virtuozzo.com>
 Reviewed-by: SJ Park <sj@kernel.org>
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
 Changes from v1
-- v1: https://lore.kernel.org/20260907123455.67246-1-zenghui.yu@linux.dev
+- v1: https://lore.kernel.org/20260908214238.2680324-1-eva.kurchatova@virtuozzo.com
 - Collect R-b: from SJ.
 - Rebase to latest mm-new.
 
- .../damon/sysfs_no_op_commit_break.py         | 35 ++++++++++---------
- 1 file changed, 18 insertions(+), 17 deletions(-)
+ tools/testing/selftests/damon/damon_nr_regions.py              | 3 +++
+ tools/testing/selftests/damon/damos_apply_interval.py          | 3 +++
+ tools/testing/selftests/damon/damos_quota.py                   | 3 +++
+ tools/testing/selftests/damon/damos_quota_goal.py              | 3 +++
+ tools/testing/selftests/damon/damos_tried_regions.py           | 3 +++
+ .../selftests/damon/sysfs_update_schemes_tried_regions_hang.py | 3 +++
+ .../damon/sysfs_update_schemes_tried_regions_wss_estimation.py | 3 +++
+ 7 files changed, 21 insertions(+)
 
-diff --git a/tools/testing/selftests/damon/sysfs_no_op_commit_break.py b/tools/testing/selftests/damon/sysfs_no_op_commit_break.py
-index 2c65cffe6b545..81774ddc55ac4 100755
---- a/tools/testing/selftests/damon/sysfs_no_op_commit_break.py
-+++ b/tools/testing/selftests/damon/sysfs_no_op_commit_break.py
-@@ -47,26 +47,27 @@ def main():
-         print('kdamond start failed: %s' % err)
-         exit(1)
+diff --git a/tools/testing/selftests/damon/damon_nr_regions.py b/tools/testing/selftests/damon/damon_nr_regions.py
+index 58f3291fed12a..e55239813c654 100755
+--- a/tools/testing/selftests/damon/damon_nr_regions.py
++++ b/tools/testing/selftests/damon/damon_nr_regions.py
+@@ -1,9 +1,12 @@
+ #!/usr/bin/env python3
+ # SPDX-License-Identifier: GPL-2.0
  
--    before_commit_status, err = \
--        dump_damon_status_dict(kdamonds.kdamonds[0].pid)
--    if err is not None:
--        print('before-commit status dump failed: %s' % err)
--        exit(1)
-+    try:
-+        before_commit_status, err = \
-+            dump_damon_status_dict(kdamonds.kdamonds[0].pid)
-+        if err is not None:
-+            print('before-commit status dump failed: %s' % err)
-+            exit(1)
++import os
+ import subprocess
++import sys
+ import time
  
--    kdamonds.kdamonds[0].commit()
-+        kdamonds.kdamonds[0].commit()
++sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+ import _damon_sysfs
  
--    after_commit_status, err = \
--        dump_damon_status_dict(kdamonds.kdamonds[0].pid)
--    if err is not None:
--        print('after-commit status dump failed: %s' % err)
--        exit(1)
--
--    if before_commit_status != after_commit_status:
--        print(f'before: {json.dumps(before_commit_status, indent=2)}')
--        print(f'after: {json.dumps(after_commit_status, indent=2)}')
--        exit(1)
-+        after_commit_status, err = \
-+            dump_damon_status_dict(kdamonds.kdamonds[0].pid)
-+        if err is not None:
-+            print('after-commit status dump failed: %s' % err)
-+            exit(1)
+ def test_nr_regions(real_nr_regions, min_nr_regions, max_nr_regions):
+diff --git a/tools/testing/selftests/damon/damos_apply_interval.py b/tools/testing/selftests/damon/damos_apply_interval.py
+index 0f2f36584e48c..0bf7768b2006a 100755
+--- a/tools/testing/selftests/damon/damos_apply_interval.py
++++ b/tools/testing/selftests/damon/damos_apply_interval.py
+@@ -1,9 +1,12 @@
+ #!/usr/bin/env python3
+ # SPDX-License-Identifier: GPL-2.0
  
--    kdamonds.stop()
-+        if before_commit_status != after_commit_status:
-+            print(f'before: {json.dumps(before_commit_status, indent=2)}')
-+            print(f'after: {json.dumps(after_commit_status, indent=2)}')
-+            exit(1)
-+    finally:
-+        kdamonds.stop()
++import os
+ import subprocess
++import sys
+ import time
  
- if __name__ == '__main__':
-     main()
++sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+ import _damon_sysfs
+ 
+ def main():
+diff --git a/tools/testing/selftests/damon/damos_quota.py b/tools/testing/selftests/damon/damos_quota.py
+index 57c4937aaed28..879115a499bf8 100755
+--- a/tools/testing/selftests/damon/damos_quota.py
++++ b/tools/testing/selftests/damon/damos_quota.py
+@@ -1,9 +1,12 @@
+ #!/usr/bin/env python3
+ # SPDX-License-Identifier: GPL-2.0
+ 
++import os
+ import subprocess
++import sys
+ import time
+ 
++sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+ import _damon_sysfs
+ 
+ def main():
+diff --git a/tools/testing/selftests/damon/damos_quota_goal.py b/tools/testing/selftests/damon/damos_quota_goal.py
+index 661e4ba4765ae..fed033a0afdf9 100755
+--- a/tools/testing/selftests/damon/damos_quota_goal.py
++++ b/tools/testing/selftests/damon/damos_quota_goal.py
+@@ -1,9 +1,12 @@
+ #!/usr/bin/env python3
+ # SPDX-License-Identifier: GPL-2.0
+ 
++import os
+ import subprocess
++import sys
+ import time
+ 
++sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+ import _damon_sysfs
+ 
+ def main():
+diff --git a/tools/testing/selftests/damon/damos_tried_regions.py b/tools/testing/selftests/damon/damos_tried_regions.py
+index d6472e6a6e082..6941f87c10b1c 100755
+--- a/tools/testing/selftests/damon/damos_tried_regions.py
++++ b/tools/testing/selftests/damon/damos_tried_regions.py
+@@ -1,9 +1,12 @@
+ #!/usr/bin/env python3
+ # SPDX-License-Identifier: GPL-2.0
+ 
++import os
+ import subprocess
++import sys
+ import time
+ 
++sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+ import _damon_sysfs
+ 
+ def main():
+diff --git a/tools/testing/selftests/damon/sysfs_update_schemes_tried_regions_hang.py b/tools/testing/selftests/damon/sysfs_update_schemes_tried_regions_hang.py
+index 28c887a0108fd..625761c243b58 100755
+--- a/tools/testing/selftests/damon/sysfs_update_schemes_tried_regions_hang.py
++++ b/tools/testing/selftests/damon/sysfs_update_schemes_tried_regions_hang.py
+@@ -1,9 +1,12 @@
+ #!/usr/bin/env python3
+ # SPDX-License-Identifier: GPL-2.0
+ 
++import os
+ import subprocess
++import sys
+ import time
+ 
++sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+ import _damon_sysfs
+ 
+ def main():
+diff --git a/tools/testing/selftests/damon/sysfs_update_schemes_tried_regions_wss_estimation.py b/tools/testing/selftests/damon/sysfs_update_schemes_tried_regions_wss_estimation.py
+index 16fdc6e7fc566..36e7ae5f826d8 100755
+--- a/tools/testing/selftests/damon/sysfs_update_schemes_tried_regions_wss_estimation.py
++++ b/tools/testing/selftests/damon/sysfs_update_schemes_tried_regions_wss_estimation.py
+@@ -1,9 +1,12 @@
+ #!/usr/bin/env python3
+ # SPDX-License-Identifier: GPL-2.0
+ 
++import os
+ import subprocess
++import sys
+ import time
+ 
++sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+ import _damon_sysfs
+ 
+ def pass_wss_estimation(sz_region):
 -- 
 2.47.3
 
