@@ -4,92 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25E40C88E69
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 05:59:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75DE2C88E50
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 06:28:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F04916B0088; Mon, 14 Sep 2026 01:59:22 -0400 (EDT)
+	id 10B916B0088; Mon, 14 Sep 2026 02:27:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDCEA6B008C; Mon, 14 Sep 2026 01:59:22 -0400 (EDT)
+	id 0BE146B008C; Mon, 14 Sep 2026 02:27:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E1C6E6B0092; Mon, 14 Sep 2026 01:59:22 -0400 (EDT)
+	id EED506B0092; Mon, 14 Sep 2026 02:27:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B640E6B0088
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 01:59:22 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 40C8440CC8
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 05:59:21 +0000 (UTC)
-X-FDA: 85211315322.23.5119FD8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 8A083A0003
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 05:59:19 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C75946B0088
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 02:27:58 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2FD7A16115B
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 06:27:57 +0000 (UTC)
+X-FDA: 85211387394.15.15FE804
+Received: from mta0.migadu.com (out-156.mta0.migadu.com [91.218.175.156])
+	by imf15.hostedemail.com (Postfix) with ESMTP id A7A44A0002
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 06:27:53 +0000 (UTC)
 Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DYOs2YZu;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789365559;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HwgDrDnEblWNsNQxUseFgLL3m5bnPaTZRpQzIjhhgW4=;
-	b=GNMPf5BFknvXirfy8JmO59mqX//5p8X5Yc33hb+sR3kIwUEFoJuKKyIms+V/vUWl8kIJSL
-	g2xo+uKBoKwJnq8IJMr2CKJzDzcr3GpIfniDX3KpOmqAWWmy6Z7qfrpTXk+aHPDnKB/mBq
-	O7SRG2nHvASegTtPdUUIPEdBcFrqanc=
+	dkim=pass header.d=linux.dev header.s=key1 header.b=OwWlXJDt;
+	spf=pass (imf15.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.156 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789367275;
+	b=Zl8VdsrSaDCYD5/r9D0Nb8ngcO4JVv8O22NFoSihaKypZ/bcduX9e3Y2pKRkktLrEhdii+
+	Tb5vnf0jmaD3YdEhkwgVlsqxMb9Wc1sC57D0HyR+yyrSN9QNnqax3AbtLdqYz7IDvVjqpb
+	gBAs07AaKiu8n7VZswetaY7TZKWNlCQ=
 ARC-Authentication-Results: i=1;
 	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DYOs2YZu;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789365559;
-	b=PX+y9UpcpVkaX81fd6UIPLgDwfaGPjRxX0ccEsClmVRsDD6avef/exHUlMQErSrM31F1dy
-	mLyt15TAyKFtClrYhCzjw+G5MhZVWck1mxPZe6FfFuTF81UVS+LjqZbZryyIenEMrTuZfn
-	Ul2GGui0R4WJOy/i84a3A9y+4BhYhU8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0053343474;
-	Mon, 14 Sep 2026 05:59:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C78291F000FF;
-	Mon, 14 Sep 2026 05:59:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789365557;
-	bh=HwgDrDnEblWNsNQxUseFgLL3m5bnPaTZRpQzIjhhgW4=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=DYOs2YZuT0+Mxf3rfQU2AC8D9wUnr9Dv5XkagKJFBm6H/vdGfb4pyryeRsY6wvk/L
-	 BMAYEEjQWMOqNvf7kxPafTXsBN4hLTchDtouZI2R5DGxCaZuVdMT5QRR1jU04OGmtK
-	 Tj22GgN05jvO77EO4Sz/oxdR+qdjNmxEclHBpLYM7l77sZ3SszCWkeIBeioToE4/iT
-	 Q2U0c8MUdjsqSUXkHuZjnoUzLxEf44WnRW1gbpNqlnTjlnmqLk4D/AoJtaIb/Na0bK
-	 xg/b7GTDy7XqYcZU86lwN6FEmC07Cx+RDajeIp0Wlj4s+pjuAfqlS1yf7d8KKq3HJh
-	 MU/AD5w0odFKQ==
-From: Mike Rapoport <rppt@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>, 
- Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>, 
- Samiullah Khawaja <skhawaja@google.com>
-Cc: David Matlack <dmatlack@google.com>, tarunsahu@google.com, 
- open list <linux-kernel@vger.kernel.org>, 
- "open list:KEXEC HANDOVER (KHO)" <kexec@lists.infradead.org>, 
- "open list:KEXEC HANDOVER (KHO)" <linux-mm@kvack.org>
-In-Reply-To: <20260910173659.1945246-1-skhawaja@google.com>
-References: <20260910173659.1945246-1-skhawaja@google.com>
-Subject: Re: [PATCH v2 0/1] liveupdate: Add documentation for file
- dependencies
-Message-Id: <178936555084.3691424.8106623729087785082.b4-ty@b4>
-Date: Mon, 14 Sep 2026 08:59:10 +0300
+	dkim=pass header.d=linux.dev header.s=key1 header.b=OwWlXJDt;
+	spf=pass (imf15.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.156 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789367275;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=wZJIPhB2hFKIKKFc0hQTX/8fkaz+FMMu2g7R8NBGffE=;
+	b=S1wiI24KCzS+RXeWNvCZEn235a8+GUVMnEcJy9OWrl1xa06tXo14sSBnshCrq9CIOIAUSn
+	T0pVGwhQ9gIFgF7EmK0rGYJyJMELdsNOXQvtAUjOUye3QrfHqpnWo+A1eGWu5F3Ngay6cg
+	bLP4tK0JCa7oNhV6WxTmlPFPDgjeGak=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=djNIl/KI66JahUpFMSuKlhJQe7ZFtgYzMuSNU7iNmpY=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789367270; v=1; x=1789972070;
+ b=OwWlXJDt7sfSLhJLsxHmFJEce+o+jumojbBilsHuNLqw8QX3jz0sPeP2uelItj1kNB7HVWsH
+ Tc1eiXsXaAhLHDO03RCDr5yOGbSAxiK6t2Jo3fJvhwO/NZCHjSOjAILbif5e+cnsiZTckeV2bCP
+ XW+F+bW4H6GtcfZf5ZkrfsSs=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id 9725185ab10d7887;
+	Mon, 14 Sep 2026 06:27:40 +0000
+X-Mizu-Trace-ID: 9725185ab10d7887
+X-Migadu-Flow: FLOW_OUT
+Date: Mon, 14 Sep 2026 14:27:28 +0800
+From: Baoquan He <baoquan.he@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Baoquan He <hebaoquan@kylinos.cn>, hannes@cmpxchg.org, yosry@kernel.org,
+	nphamcs@gmail.com, chengming.zhou@linux.dev, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, kasong@tencent.com, chrisl@kernel.org
+Subject: Re: [PATCH] mm: zswap: return -ENOENT when the swap device is gone
+Message-ID: <aqeT0FkVptyVLaDV@fedora>
+References: <20260913063031.1689420-1-hebaoquan@kylinos.cn>
+ <20260913004831.884d37afd92249d763b7f1da@linux-foundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.17-dev
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 8A083A0003
-X-Stat-Signature: rj4mjgaq1tmk479iedz67icg95r5qfum
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260913004831.884d37afd92249d763b7f1da@linux-foundation.org>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: A7A44A0002
 X-Rspam-User: 
-X-HE-Tag: 1789365559-868985
-X-HE-Meta: U2FsdGVkX18PD1r9dJge5jUNv8nx3FFDHnLpQFJe2KtK5TwSVvEplhKYMaKVCxbwcZJ6Uh6ErH3dHayhkKiz6vcjk9BuVmvAyy6wJBrrtNz87jqHlceGbMXjieGPD1rlZyiVfKaVYL6k52ZnL6kCPlBLIbKlB31a4cVIi2CkfZgckMDxcn5nxTTsl99l1SvD8fQ87uxftzAPvwzdkSzDNphCv+OeOOg2vOh4vj6bjFXPtV3LoQylzC8+N/REcd8F2tOJoHVoRcl2VWJxPDdPBwn/Snpbpr7/4xfAvAsxASCvJwJ+IwBMlsyZkKil6ZMOB2j3G15y917iNY4n3jkw3yPKPnRTKZvdUOi+TFzyrhcvgx3AtMm/jkJkYCYONmKYLuQ295kTkqwPEr3a0jVGqqeOf+sMNwa9HD/Ye5nGy6OU1s5TALygjUvPBADvojMKdGNFXkt9kMX5QB9RjkkwIHg1Uvx0mrUjTBcv3sKcKkbm4ckExMOLcvSFXXx0M9WAcliWxHc/iPYqNuVGGfkJt7OXn6EAkmktHDbB7amVj9HhB4a2uoNykhktd/yozeLkrFvjCHN0u7C1mVoBRios2jxyuN0orJ8CMRtOb+3Q5cSaMLC3GH11RzPyzV/9SflqMewjgtlvHxd3A5i5O0OSSiQjbodFmyjYnMPSm+U8BPclFG9wybRZq/QC5T5cMsJtb5L3IY4qR86eOp3QgeaqSVvt1fKGgU2+nyyUe7w5b+v+jFnL6pj0DTIJagHeMG8wUMia4wtsEyg6FRU3bXXj5E9JyLQNW5PBEpfPERpeh4H1R3QySSndMb1r3CSY9HItlNJlcXmm9AmMCdHbvEgO901phHgqDw3XgbnQAcceEMKk97uv+C3w7gxlO7yJ1yY/4C0e4WWRJR5g936bcxnIZTXUy68PwgoS1RsEH+oWwqj/H6D+H55PxEbKF+Qb0MnVlGhM5Mw3p/KJmuIGxQY
- DEUK3FoD
- L0Fxb1Mt7LzU2D6BTczPwVq59z7Yt9eOj0RKvK7z9IvpZzSBA+RDN9TBonTrZsUzHrQerRYwTMusTQZ1ANr5x6n32cH7L0sciavQ8oV8jIa8ImQ1dmdmfgusZODFPKMnp2KLu6+Rf5YkXsQ/MO5m8Jlby1hV7sFcCoYLb84QTywC8v/c+19PztDiYi1zHiwmnLWXQ3YGVjIl+Zzili9c485OdPsWpw6i6IvkC21N75kSAQ9YXWNBdbtlaZmijK/2ilbAYKxaZs1IrePs=
+X-Stat-Signature: 7fj1ne3tf5kiimsbhf6xo5pb89ctbpai
+X-HE-Tag: 1789367273-435187
+X-HE-Meta: U2FsdGVkX19EHfX597HlEc/Kd4T0AQzeZWiRJ4plGyBkqahCWrOhvCxSo4ogeU6ymBM7kKIV83e6Vv8by2o5bNol/4nlNtdnvpAUhG0X+ovOOUx/z8jaOoyEq0OnHcMug1nY03CVXM+ONZqkt83Vqvt5+uHMKknk5PE6NoMG7QwVB/u3GzPY75z3Xwl+yLgnOnnlenjjbZ96p+xvqKbkTu16lMAcGo4XCMhWodHxnzGElZQsi1WSmS04opc6Utfddpg6rqfJkYInZarKs5UUN/4uyYQ83A/a3a7dyj/7CsW8SrSaqJuPTWvrHf7y/5VbUvEg5uoxR3O1qGmbS//wChVWMaB+a0KRwb7G1fcYaITjULqzEpkMMb0D96Wg9fidt6iVfPJkEBh4yQqSPvodSa5YS3MDdkJsaqNet0rH2A195cCOZEBEJc6e/D8zrpjokLu9AU8BHz2mk4w4MY+FDKgsTnqzXwS4WVHuYkmZwlnWvybkg2rmvYWw3GDQQbYNDfanjJlmyeeh2uf6qZ/l5F5gm7mNI9sYQkXi0xGVk1tSAXHUxjeNI1yuhyCUpkMSitvk538Wjj3QEtZSzumbGDzh4SmhqvBRXzRjoF4gHgTVxzLRdhoVid6jpGkv9sC3QXVH1b64QcUz0luf4LVemjYaRpXnrScJZtcJG1fc+NOl1qiUBdMLxY3NYmeCqZlAMhYfPLN+n+EGi/zfKT+qk73LdL8uyFXlHM96ssUninzR4jPNr7ulQNagh24rm0eqsHQFGkfLh6RTGR7r+sJYThwASKFxecm+FOjfdIhmZgoRUhkvIn2pH9Oa5psGC2aSlMMwPmHQ9pDmOZyAxUHiPaZWWTrVb8JCdGloYaeXATRP1lOaJhHS/o2XpDjfjsgxPuO7GZDmgNm7v4YxrIx7GGUJOh06/Sezlcn8I3dHC0hKINMqVSUOkondPHqGLv0aRq8jbATdNqL3dQrJ06J
+ FCtrMqyk
+ dRdsCg9vCOsYa/Tj68cezR4cQ1NSnQRoDSVZBMqqHHhoPgWrUNZnN63hDcIjEjG0zmPe9h7PHGx8n5mNjZxG0V3dTbeWAGbgZQGkaiis6ePO8QyyWRCFWBASZdnQpXqBwMyZSB+zkgobxGME+qw2lpSBj6TM2be3OMyAlEm4SjNC4CaMb7TOZ1GS+wucj1tdPJmM2fWonG9vCtCXaXpczpZL+TgCVKMIUSz3OTUJDf/EBaaB7KkBHm965yu32gyQnwkMS6mjt+TtADJI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,28 +90,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 10 Sep 2026 17:36:58 +0000, Samiullah Khawaja wrote:
-> liveupdate: Add documentation for file dependencies
+On 09/13/26 at 12:48am, Andrew Morton wrote:
+> On Sun, 13 Sep 2026 14:30:31 +0800 Baoquan He <hebaoquan@kylinos.cn> wrote:
 > 
-> I sent out v3 of liveupdate_get_file_incoming() and
-> liveupdate_get_token_outgoing() series to add documentation for
-> dependencies.
+> > zswap_writeback_entry() returns -EEXIST when get_swap_device() finds no
+> > device.  -EEXIST is the shrinker's "page already in swap cache" signal,
+> > which makes zswap_shrinker_scan() stop shrinking entirely.  A NULL
+> > get_swap_device() instead means the device is being swapped off, so the
+> > entry is simply stale.
+> > 
+> > Return -ENOENT so the shrinker skips the stale entry and keeps scanning.
+> > Independent of xswap; affects all swap devices.
 > 
-> https://lore.kernel.org/all/20260820191854.1642931-1-skhawaja@google.com/
+> I'm struggling to understand the userspace-visible runtime effects of this.
 > 
-> [...]
+> I see that reclaim will prematurely abort, but is this a once-off thing
+> which will resolve on the next reclaim attempt, or will the reclaim
+> failure persist for a significant period?
 
-Applied to luo-internal-api branch of liveupdate/linux.git tree, thanks!
+Not a one-off, and not permanent either: it lasts the whole swapoff.
 
-[1/1] liveupdate: luo_file: Add documentation for dependencies
-      commit: 38dd32f08d19beb441f202e61d9dfede3b7f055b
+Assume I have two swap disks. zswap is enabled. By default 20% of RAM is
+the zswap upper limit. So now if I swapoff /dev/vdb, at the same time
+reclaimer call shrinker to writeback, -EEXIST makes shrink_memcg_cb()
+return LRU_STOP, which ends the shrink pass right there. get_swap_device()
+returns NULL for an entry whose device is gone, so every such entry still
+on the zswap LRU stops a pass where it stands. The pool gets almost nothing
+written back for the length of the swapoff.
 
-tree: https://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux
-branch: luo-internal-api
+# swapon
+NAME     TYPE      SIZE USED PRIO
+/dev/vdb partition   4G   0B   -1
+/dev/vdc partition   2G   0B   -1
 
---
-Sincerely yours,
-Mike.
+The entry is rotated before writeback, so later passes get past it. It is
+a throughput collapse, not a deadlock.
 
+static enum lru_status shrink_memcg_cb(struct list_head *item, struct list_lru_one *l,
+                                       void *arg)
+{
+	......
+	list_move_tail(item, &l->list);
+	......
+	writeback_result = zswap_writeback_entry(entry, swpentry);
+	......
+}
+
+I can't reproduce it now. And I forget how I met this, just did too many
+tiems of testing and code change. this probably comes from reading the
+code. So this may be a logic bug that rarely happens rather than a easily
+seen regression.
+
+Thanks
+Baoquan
 
 
