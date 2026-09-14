@@ -4,80 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4312C88E6E
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 15:31:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAD0CC88E7A
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 15:31:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CDBEC6B0098; Mon, 14 Sep 2026 11:31:25 -0400 (EDT)
+	id C5F766B0099; Mon, 14 Sep 2026 11:31:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CAB906B0099; Mon, 14 Sep 2026 11:31:25 -0400 (EDT)
+	id BA2616B009B; Mon, 14 Sep 2026 11:31:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC2866B009B; Mon, 14 Sep 2026 11:31:25 -0400 (EDT)
+	id AB0016B009D; Mon, 14 Sep 2026 11:31:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9CD166B0098
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 11:31:25 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D495BC01B6
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 15:31:24 +0000 (UTC)
-X-FDA: 85212756888.06.8FFF9E3
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 863C16B0099
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 11:31:26 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 11A10801A2
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 15:31:26 +0000 (UTC)
+X-FDA: 85212756972.03.8AE96E3
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 1A3E7A0012
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 15:31:22 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oafm7V4R;
-	spf=pass (imf15.hostedemail.com: domain of patchwork-bot+f2fs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=patchwork-bot+f2fs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789399883;
-	b=fS9NzVYOlW58Qq+IJvG73/oetgyKXEN9KNrwMSVwmEGHdQ0mnddsmpyCnOj6I+wgH+ZJ21
-	I/vGHROGqeOmZ1bU10h5wSLtHstkMDVQvJ2jL1tCfeBtcq6LFeqrx8GTNiXv1L2ahNoMCU
-	SYH4Csk8q27k0BdYC0JoIg1kF6tUqkw=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oafm7V4R;
-	spf=pass (imf15.hostedemail.com: domain of patchwork-bot+f2fs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=patchwork-bot+f2fs@kernel.org;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 5ADAA120013
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 15:31:24 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RbCEKtn4;
+	spf=pass (imf29.hostedemail.com: domain of patchwork-bot+f2fs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=patchwork-bot+f2fs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789399883;
+	s=arc-20220608; t=1789399884;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6YNBDNqtv3G7fIIrCWxRo+R7rFxECIiWXZYEw0TsCm8=;
-	b=Td8mPmsKGbe9h/sqVZ877azPuk91hqmxJozJIyidNj9zVI6oKpmQ2BCnvRsLUyqkX83vCr
-	zTxaDun8dih+sdj/Ztfkm6TQ11+PrKw+tkUJqYgJi4d02Yu2i1mHY/fShT2s9UbNij1MP9
-	MHEStJBxeZGfs8MlxBBVW87Z4GgXGZk=
+	bh=nR/vh4GvI0WOU5I3SDjzgrYVoTA8r4/N125W3zwVcoM=;
+	b=bO1aCj6WM3OY/KzfkYO9I1ghdZMNy5FsgM1fi2OD62T9Cev1bpaMAEaYnlnqvYmuS61yNV
+	T4HIV5ZaVROr74b2Hc/hqXIl46S7BiDSb6H3BqLZSc83C0e1WYnNEqSPyC6SDqPxaSJP0O
+	KCY3vrW4J1XzQd7iV4UZd3GuFttWd/M=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789399884;
+	b=Q/5jFmQ9BTOKH7DdDmyMb+gStNiiBfMwt61+VWMYEo2CEW296gtW+hJlZ6ZeE1aSBFrt5J
+	57IQASsvQajo5e+vFd9UdRokmYUN/DHHJEUcF2ue0l6YCifDwnM0R4Ywn6dkLe/iFf2MPm
+	u1XrcYRd6gc+AImTMzjTBimZrCJxbwQ=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RbCEKtn4;
+	spf=pass (imf29.hostedemail.com: domain of patchwork-bot+f2fs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=patchwork-bot+f2fs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 33F9E419BC;
-	Mon, 14 Sep 2026 15:31:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEF841F000FF;
-	Mon, 14 Sep 2026 15:31:21 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A06A743D75;
+	Mon, 14 Sep 2026 15:31:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 745511F0089B;
+	Mon, 14 Sep 2026 15:31:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789399882;
-	bh=6YNBDNqtv3G7fIIrCWxRo+R7rFxECIiWXZYEw0TsCm8=;
+	s=k20260515; t=1789399883;
+	bh=nR/vh4GvI0WOU5I3SDjzgrYVoTA8r4/N125W3zwVcoM=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=oafm7V4RKsPy/Q1nCVBWDqYf7CzIKQWwzaAUfYXO4K5blgVLNKT30EOhNjyiJ68b4
-	 EmE0pg7kCS+rsBO2hQhqAcC1jDNgaAjoHfS35HWN3j5jboLSqfna8lVYkkpRTOVBLm
-	 z7XrVJIhN7zqa0ZqIGC7moq0IJyRMgoMb82ImK4Ze2REEcVBWDrF/nBND+suW7cTj+
-	 wRFmHT2zlonTyo+1brM1i34j0QTrbmA5FknqN7kXJ9bimmAF15wqhMttnovE1K17hY
-	 mCHO/L8QQoVL9DoTMRTdTxGNm4LGmdWMH05qUrovm9ES8pb0mcHRy3YO183W8YwGVi
-	 tCv3P8ki+lNgA==
+	b=RbCEKtn4AO+w1y1Nm4+9OPjd3F5HeNMHAg3uez+4FdxFCGDSSpv7EiKf+nOYlAqRD
+	 WpbEgLLqAW4/l8pXzRAprjeTjPg5iYhCGnBEarYYppZgnkrHtBmnFS9mupbuYxw5uF
+	 9IaiI70goJcN/QHzRT88UUSpAI4Re7c2DETfrByKeR3s4TjTlq6nG8lVpXAeCBJkvv
+	 0JK4xXezKzgYlQ+Oc3bwKs3QN943NILxYGwTYwEDkh+jk8qAJukkZVAb2U57/OORtM
+	 maeohl2NdOmJIEX01jxCO7utzNVfC1W0jyXsjrJ+AH6xFXa9Zfjke3MaE5gkTOu/bL
+	 U9AI6BB36tibg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56B213924A79;
-	Mon, 14 Sep 2026 15:30:18 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D092A3924A79;
+	Mon, 14 Sep 2026 15:30:19 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [f2fs-dev] [PATCH v3 00/14] Remove PG_private by using
+Subject: Re: [f2fs-dev] [PATCH v4 00/16] Remove PG_private by using
  page/folio->private checks instead
 From: patchwork-bot+f2fs@kernel.org
 Message-Id: 
- <178939981687.647967.15609695091265022344.git-patchwork-notify@kernel.org>
-Date: Mon, 14 Sep 2026 15:30:16 +0000
-References: <20260907-remove-pg_private-v3-0-6ae22f9d9272@nvidia.com>
-In-Reply-To: <20260907-remove-pg_private-v3-0-6ae22f9d9272@nvidia.com>
+ <178939981839.647967.9641554131485178993.git-patchwork-notify@kernel.org>
+Date: Mon, 14 Sep 2026 15:30:18 +0000
+References: <20260913-remove-pg_private-v4-0-848550f7574e@nvidia.com>
+In-Reply-To: <20260913-remove-pg_private-v4-0-848550f7574e@nvidia.com>
 To: Zi Yan <ziy@nvidia.com>
 Cc: david@kernel.org, willy@infradead.org, akpm@linux-foundation.org,
  muchun.song@linux.dev, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
@@ -91,10 +91,11 @@ Cc: david@kernel.org, willy@infradead.org, akpm@linux-foundation.org,
  amarkuze@redhat.com, peterz@infradead.org, kexec@lists.infradead.org,
  dave.hansen@linux.intel.com, ruirui.yang@linux.dev, adrian.hunter@intel.com,
  linux-mm@kvack.org, hongbohbli@tencent.com, hpa@zytor.com,
- guochunhai@vivo.com, skhan@linuxfoundation.org, ceph-devel@vger.kernel.org,
+ guochunhai@vivo.com, skhan@linuxfoundation.org, tz2294@columbia.edu,
  baoquan.he@linux.dev, matthew.brost@intel.com, anna@kernel.org,
  sstabellini@kernel.org, zbestahu@gmail.com, rakie.kim@sk.com,
- minchan@kernel.org, richard@nod.at, x86@kernel.org, ebiggers@kernel.org,
+ minchan@kernel.org, richard@nod.at, x86@kernel.org,
+ ceph-devel@vger.kernel.org, ebiggers@kernel.org,
  alexander.shishkin@linux.intel.com, mingo@redhat.com, slava@dubeyko.com,
  weixugc@google.com, yukuai@fygo.io, xen-devel@lists.xenproject.org,
  xiang@kernel.org, magiclinan@didiglobal.com, mhiramat@kernel.org,
@@ -112,14 +113,14 @@ Cc: david@kernel.org, willy@infradead.org, akpm@linux-foundation.org,
  linux-fsdevel@vger.kernel.org, mathieu.desnoyers@efficios.com,
  linux-trace-kernel@vger.kernel.org, linux-erofs@lists.ozlabs.org,
  trondmy@kernel.org
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 1A3E7A0012
-X-Stat-Signature: txacwqxruur9hkzfos5p7qoxrmyw5w5u
-X-HE-Tag: 1789399882-560218
-X-HE-Meta: U2FsdGVkX19oBlhennGBc+W3bSkkCUdEd0aZGqB52Is0WSw+nwu24z/Cvt9oIna6Qvcv7h3DGa5Wbncxx2cSn4SHyTy5FboZcQR9UFwt+HVwlhYeYNmI140JssdjMrsITo+cCuzYh5TPEJ1TMQhgrSU1mVjV8FSrLBiVRvt4hNvWdzCUiMAkL0CejaPe7rQV1AURNDJRK/vI7quN9dwFS9M6jtFXWPqq+e3ephG+dflnLrzsVt3u+9pU619uSboiuA756ikOUs8pcjQL1Zxe5PkVQF4pbJIzlxI4/RqiZ9xD+LVbmt5Ja3oekpB9RJWNmSHca/5HMA7hRlYcVvGxkHkYggo9naWLIGHapoOSSZC59ueCCb4dhKBq4jRSFP3hxJ+v+uIeaWGg2iMmoy2w/etATUwQTIQzeoeYUMCnWScxxqnKndIhDcH0Z2oBslI+VNJooBCto3CJGg0IOlgnV4GJ5qbK8k5FISmSPun6N2g6TDHw6P1whNHuG9ZDvMaIFhgiB03ope04HWWQ+dyAjiveJDGUT/RC1wkIKIJ8msIPuJgbFQqM+yfbwYxetX+ihmDJV98B5NSGm9uq4v6b2Vw+biJ+ET/7WfvrZ+shkwdZhUnNuVHdkJQ4cqbR2oCMDbyInGI5mk5Olbs0xqTFfvZoa79JO2YgpMtmOBiVtcGQjRdVHb8qCJgsKnLOG2IAoLa3rsvIrV8pzCMKy5ydsGd8wCGjnNJRVvrTGzQLapmOfmpsq8RszRqnJtolac/b4hOOdW6FwK0IwwCvnh8Bb4qKDS7iwtrVy9T15zSHWuI+Sj1r0eskB4tuC9PuQ5l2gNsNIHjC6y33QY5TcrLCvJfTjupnF2btLq+89OqHsOMoXoIa+PTR7NrW7YwEK/Or0jwxfPNhp70MAQvAD4MdFFOUG7AiVHhWkrzac5yuQVVD+fb9UeRvTlPkfXS14jn4GmKigsYwx2stf/mIwk4
- DqZ1hrzx
- kJiASuBiu86eR3QwCM9ZKfQUTqCkA4VpElGJCG1oXzIiRaze3nePuis/4vMxHs3gLBPmn8fONaMAk/Ve0jZKiW2Yi0ss263pLU3EiU3VoN/TgZmNmWdzleCUEl6IvIrEHCZRJtkJAKcQdwwnV9Il1/G+8Yx+c3kXggXFlVjwtGlv4ISpTdcJdgOBfSbr83+fD/xHdiENUQFRTAnB6TwgzlO/fNmSlDDZc6NnNAowBLLT9XJJyVQMIfnY4ZEIoRPwlTEMdsCtiDF+1rMEAovi5ESZEF2jtbv0DmWiNb4+KknCNMSQt6OrvWtObrQ6ZPoIzTlPWB8XOb9UZJzqQGYnxBIUy1su57+Uwimh+Yn/NZcmCYv0FpdQsu7AgBSD3kw5KwVpHJrRzOhO5AwDDlNe4xKfqq7N5MMUkXeWlGSZEH9NbDLfu9Q717Akm2lyj/5u5VkrgA+GFGmbO7tSNcTCZEjdeenqXxAFaUUPQ46nvL1e2l3lbW1cNLQVVQ94uG//LsB9J
+X-Stat-Signature: 9eg86teqbeq9b1ee7mqc8bdetehadw1d
+X-Rspamd-Queue-Id: 5ADAA120013
+X-HE-Tag: 1789399884-34715
+X-HE-Meta: U2FsdGVkX1++UANEodkFm7rdCO90rOZRBXzHPyd7wp30QRrDZcokIBEddU52Uv72SnCnacbKcK6LYbdMSPS8W7Rx5zw5sHvMkAaLR2hSDjlmArT1lJ1DNFBIVJpc2N/zK75XpJHEHzXCIK8aKUfml4JEhmt2bY1hn2dhR19VIGk0LRyEDnQqOnV1vN/Ao0KcDEmhx5r9E1se3amknUAh/lKD3fk0bXr45q8I1H6I1caCJujVHQbclG0pagE7bkulzdBYEGHIxo5HQHCjv9qRFCV1+7IxHXVh67iAKE5skob1d8AJdAtz67IgcXpjT58arASYehd4s6Y5FFiop+ZQ7PSiuKomxONfHN4FIKtC10xV5Qvn0Fb5oN6LG/o4C49JiGZh7zR/4TF6Pc9ljtUwSiZmZCt+kaXrpBqdtmWaxnoANxL0gkhoUpoLbGygEIOPYW9roZhMnARSCaXVnW2IGEzzNxO+1XB48QrwVkKZP3ynv9Y5ZoYeOfqPDrhc2JVjd0LBKYpmrmiIeAiUZJaAqDWyANvc7OxEIn3BaxOHwrI9VvzQoBOnWttsp9CMVrJcthEEcgsndWGEhJu+aMzmRniC4uU/8zkzZUA1XsEvXQdyGvGvynUWVXO93kHKR5iPoDSiXCzK6UcJb9R7TDVyEkMxmrPMcF8AIopu3EnmhAE09ymQXjj7TaWFFIBhQ4yzd9oS8l8Msq3GKQZnx8b9jRTUGwZPGZEUSGnKGIUzVCNO8hIweLHr+5Df/eQv8U8bhQWgf37HlBBsI2SlVQVrfYW57VI7ViwFLW6cE1t+XufXjC1NW5d706gimz2K0txfxmyUJXdLP8FjQM2OvEP8EfFCoYOqVWJMC2xbX2vN78IIvb126fmEde+CzP3B9dpVZvCRJug3KSVbozz7/TmwYJ5+yFEApNAnWr2c9uNL4Y9Gu95OG2SrFI8tp9SSWKfbEtieeEMbDUOKQ18c/Yr
+ dgRYQwBM
+ Xrn7af/Bw5MgmimPXcskAiw0GDz9dhh/CXlz8gDUGKm+50QHFoIQSbo8U03SlHnuGB3qCm+kUTCualmk6kTY01iOny8Wqa0uwWWc9aiNlX+sBuIWBh6UowDHZKpLvPzJ8qmMpxvIOJJffkO41ImkMxXbsCpFEfUzcZxPlp2xFjsD2nGeiLNxjg15m6O2MsC9kBaRjZHOvEd46nkkfcyY9lfR8M/jL9v81qmwcvVu/Ik+5WMmIVc+BTSgXwymKRQddOLIua1eFTA1lPVyzs91/bJrVtg/d5O/1HqT9UjZwR/2tDhbn+BnRPfdJU4wyn1oWq5HxmVuYFExYA8f77PPJjgCvMLxY0K+DP380aTFxpvf6raf8j7pkbRC29oxIH23gDinjbliQ687X+SjI+QzrWqrGvYjeG39f28tLDiPx5BzIbN7zkj5Oy+XEM/phgXBF1fry2X/gn003t7TCVnBUIHcf/zAGexbeXbGL0m0PrfiFsKxjlIEnOcfTsSJ4AEDioEvo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,22 +130,24 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Hello:
 
-This patch was applied to jaegeuk/f2fs.git (dev)
+This series was applied to jaegeuk/f2fs.git (dev)
 by Jaegeuk Kim <jaegeuk@kernel.org>:
 
-On Mon, 07 Sep 2026 22:56:07 -0400 you wrote:
+On Sun, 13 Sep 2026 22:23:58 -0400 you wrote:
 > Hi all,
 > 
-> This patchset removes PG_private to make space for upcoming PG_folio
-> (reserved as __PG_folio) for identifying pages from a folio (more details
-> in Note below). Instead of checking PG_private, all code is changed to
-> check page/folio->private != NULL instead.
+> This patchset removes PG_private to make space for upcoming PG_folio for
+> identifying pages from a folio (more details in Note below). Instead of
+> checking PG_private, all code is changed to check page/folio->private !=
+> NULL instead.
 > 
 > [...]
 
 Here is the summary with links:
-  - [f2fs-dev,v3,06/14] f2fs: stop using PG_private
+  - [f2fs-dev,v4,06/16] f2fs: stop using PG_private
     https://git.kernel.org/jaegeuk/f2fs/c/60105162524e
+  - [f2fs-dev,v4,07/16] f2fs: convert the ->private flag helpers to folio-only
+    (no matching commit)
 
 You are awesome, thank you!
 -- 
