@@ -4,90 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1531BC88E5C
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 03:14:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3142C88E50
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 03:23:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB9276B0088; Sun, 13 Sep 2026 23:14:47 -0400 (EDT)
+	id 8CB186B0088; Sun, 13 Sep 2026 23:23:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D69C66B0092; Sun, 13 Sep 2026 23:14:47 -0400 (EDT)
+	id 8720F6B008C; Sun, 13 Sep 2026 23:23:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C80516B0093; Sun, 13 Sep 2026 23:14:47 -0400 (EDT)
+	id 787F06B0092; Sun, 13 Sep 2026 23:23:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A41116B0088
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 23:14:47 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F2266B0088
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 23:23:18 -0400 (EDT)
 Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0D4EC120EAD
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 03:14:47 +0000 (UTC)
-X-FDA: 85210900614.29.B2345B5
-Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
-	by imf26.hostedemail.com (Postfix) with ESMTP id D33B3140007
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 03:14:43 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=bWC7ZaYm;
-	spf=pass (imf26.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 422E71A08DD
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 03:23:17 +0000 (UTC)
+X-FDA: 85210922034.29.5F683C7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 8A7D414000A
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 03:23:15 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=AzmM2RxT;
+	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789356195;
+	b=MPL62az4zOK4UF1edHVYI26IVr35sXrKdTFycxLrDQjgtJ7TqJtqc7h4vqL9rGosYhKZrH
+	ruaYuWZ5r3VjbDkDO27R33eSKJw6R5pg4leEEm+0y/uNPDVBPE9YR/xnvJpr2bjeewG40m
+	9QRJD/ud4vwhjVzJ8oICYyM9l/8g9kc=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=AzmM2RxT;
+	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789355685;
+	s=arc-20220608; t=1789356195;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aVhxsMXkoOh4go6lqUh1XBFzQPqM1DF7VxUa3Bcntmw=;
-	b=0rM0ZFsS2CnoW5THXyZ1HFRQ5jvedoYVoYtBErrvSKxprcq3fRI/+qdOB0khASw17Y6y1O
-	qFL1tNyndWW1PQ6uvfvrBYxClUJ1gCaMKnLFbOLJltwC1F3ikVxMhtSKoM5S3fPN4s06M/
-	1lYQexz+QO2uhsLYxNn/08JulEeebvM=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=bWC7ZaYm;
-	spf=pass (imf26.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789355685;
-	b=HoQo7nkpVevzwRvlaTsC22xPcrBZJhPJgITgMxKsazgL57xd9ut/mmwupx6l6A4oNDeAAh
-	7rf698TsrbaVG8LA15j4GU0AB20aYS2cptkeSCMnLcjVKSfNgP/AHDgSwPgWY+PUy9IKe1
-	6NLvp/i6fXtrZ3gCytEH25t1OfW+5z8=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1789355680; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=aVhxsMXkoOh4go6lqUh1XBFzQPqM1DF7VxUa3Bcntmw=;
-	b=bWC7ZaYmPOJANY0Fgdw3I+jgafyBJzAMm55SeaxcFpOShYihKnAYjRNyhRvg0mnLXmCgp5cJNQC38byA0zig+FtRjG4Q0NFUxWxSjx9D9dHfmWaz7lKuuQ3s+wy2QbBXmJ1rxBMlyHJph2upXmzNNEZwNeJ6nEG4PcPR74fjeec=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0XAqABCh_1789355678;
-Received: from 30.74.144.134(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XAqABCh_1789355678 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 14 Sep 2026 11:14:39 +0800
-Message-ID: <8fbfb29d-ecbb-4561-990d-4e1a1b677d75@linux.alibaba.com>
-Date: Mon, 14 Sep 2026 11:14:37 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] khugepaged: hold invalidate_lock across
- collapse_file() readahead
-To: Matthew Wilcox <willy@infradead.org>,
- Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Zi Yan <ziy@nvidia.com>, "Liam R . Howlett" <liam@infradead.org>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+	bh=sg3f98BxUMWsi0jHBDrkEMS50jrFIb0Q1qn6f4dy2+U=;
+	b=d9hyZhLNatNszfJWOrhkUUH79I+x4xHzgzJg+baxV7atOTHkA9woUUgOOr5R194U8dzG5Z
+	Q6Nppyi9V2VJqjGZh7GmZL2nOw5oPdOAbc2jtT1DNGBVkkuYNp2ODG762sjHb72bYqhsuA
+	DvkD4hjx6izrLQtyC3sIm9zL38Ofwp0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0695B60AA6;
+	Mon, 14 Sep 2026 03:23:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 618721F000FF;
+	Mon, 14 Sep 2026 03:23:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1789356194;
+	bh=sg3f98BxUMWsi0jHBDrkEMS50jrFIb0Q1qn6f4dy2+U=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=AzmM2RxTMzOeloRCcPj3pFvD/yvKblAnyPrFI6Z9Md5JhDeA+WTxOvXz2EDDjwCrR
+	 3YvQsujETxFUV/8J6j/GCLTTozaLIIBk5hn2qNG+snxduDo9vW7EWEtB72igXqQt6Z
+	 R+zE6wrRJNPvi9Bd03F2gJI7/oTmETzwQirgN4/w=
+Date: Sun, 13 Sep 2026 20:23:13 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Qiqi Liu <liuqiqi@kylinos.cn>
+Cc: vbabka@kernel.org, surenb@google.com, mhocko@suse.com,
+ brendan.jackman@linux.dev, hannes@cmpxchg.org, ziy@nvidia.com,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <DLEBZ0GIGNQ8.17U563YYJ37AA@nvidia.com>
- <20260913163644.122133-1-ngocthang2710.1999@gmail.com>
- <aqck8rfGByZhdtqT@casper.infradead.org>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <aqck8rfGByZhdtqT@casper.infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH] mm/page_alloc: apply per-task GFP context in bulk
+ allocator
+Message-Id: <20260913202313.6c9bf636f773fcacf573af03@linux-foundation.org>
+In-Reply-To: <20260914024555.138125-1-liuqiqi@kylinos.cn>
+References: <20260914024555.138125-1-liuqiqi@kylinos.cn>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: D33B3140007
-X-Stat-Signature: dt35qjjarqtb79mepgq1xohzptwaessq
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 8A7D414000A
 X-Rspam-User: 
-X-HE-Tag: 1789355683-682239
-X-HE-Meta: U2FsdGVkX1/p70syARtRTrr8lw6j7SeH8tlNRCltxvqRIe+Tq1RU7CkRBBNNmxcVFi5RwsELJldBGM99y6HQeM/S7QZ6od/pPeWL+lTpFg9R6pDKRXPILHAAyeBzdx8ZcT8cB1/VieTqtLjIC+ZzzbCJy0j28ofseRZw00y1eJBv5PDlhCIzC2e37I2X9Jdr/TvmiO3uMXAVV02fl5ZLEbon78hfvrr6abQcGUTrcNR9+lUl98BNiQ+7EszxD0RXjjqIGSwnHSxfc97JYh8fOOD6mDZYBUGkzQm3/pLJiPCKZOYYnyMIDUg/qz4aTJqhY6BIQTPkpSsratdSb11YLe1cg2enWzp/lXNKoSsVzBOE6DPFeNzWuglW9wBtBYj2G6FDhHf8s7UrIcCYRPCjZe9Aft7bcof+UopzQFZVtjcA0rzfMK7W+Jwe84+Re/4DajUQlS2h6jo2zturPubOPLNmjl5C6+lr3Fzk/lXE6PONl79uDRggtn3/iuevd6CZNcF0xnFGk0m5p1PMNruZw8u4AY1rQkGdtQywRA+ebwH7npFe0eYBrDz/knBGK172nWhhylhPieVWBzoTfuVPXCebN6Q2vmBl4gejtiTUjZ7C65/HE2COTe8n+loOjFo6yZEIfYzJ3BdLR1TtNuzpauiSyUkGL/MAXkoXGgd5SJL3pTLIpiwJyCiStnDfZWKmmxim1wO593m0GlI29AlKzKEX5laSv0zdaZkGxiwjy/zBMyiyROJH/fs8XGG7dDsMzKUcnKhbb/GXIVvGu83TJ0ZzsCZVQZiHyJ5FaYHEDNEhZYHyKEncTbBbpzKbd/fQtzxHO3/I39JhxjLlF8XMU3g/CKgjqmLstKlORVdF9wI/DiBGygfAXEFVL1gK3sD5+5LkW3mViP767VSOp3XCxzSmNwV88nGK/eMZMD0KCOh66V612MSSYFILHPl6+RKSn+ZFy13uhSbL1Lt1aUX
- btOtz2fy
- /kpjzqh2UOA42gknD+u4O3H89gc2L2+M1etgQ9u8OxWPyygPISDUBYdse3maJFqKdNP9re2fDiNrnW5/hvRV9BievrH649ywDxK1m4hdbtOKikufkHNhs/GHPi/wycfC9JpfSuSc3dQ29paL5TJ07H2pxiwoMT71gKTnQitMuWzNPmiLd/BZUzmx5TzWCZZIXq2ORCGlJFDiR9XvayRWsO1bs4QjSegGnDmGY92yFkABc+8qHJtMCXr1Js8TcWmH7LokhwMs89xrwG5M4v+fvekJ+kuO9C7m51UyW/b2r4c8WDYab5ULAH97DN1CI8hDjaJjP9UOyWAfa6cJqdwx4RFSW9/K63TBoAL6pHpv6PFWvadLFABr6Fx36BCmrsgul9w1R3iV/ObXpDxrFQXDOtIGfclFT9f/UqPf0TVOaKDvCB1PWiFsLV0iZhQ==
+X-Stat-Signature: 5pqfxg3w8ozpjs1aimirdsqko9i96q7e
+X-HE-Tag: 1789356195-256286
+X-HE-Meta: U2FsdGVkX1/KrDogTIwd7a3LAsVxj+K2oluVBNJ4aO8OsEwFboeeNSgMV5kZ1AYHk5GsQ/83ZpytONadwV0u3kTTQFDyl4hf5A9wn9DLUmNSTYZPZzKDxVhPx2W9Rrz8vpvvm/xEMgC+/xASrrcirM70ky+IaU/as9TAq2HmfGoy4hIJtb/lCiFE0c7SHt/VftQbth9weG/9IWBcRM6k/9x/Ck55uwrpAIt5YEzKhOd1LKiczcRrw5TxZx+zN80YA4LP3FcLrQF1vAgbzrJdS8zmB/jmXetyGXOqSDFM224BnE32uG8Liq2wRoYByqpRi3szo7E5xiwetIVcH7GmgJG4Yr18VFacx17hF/pZOtTA/X6yxhWN/kHtgSaE19tqFOQPxOBBFZ6m6bxTnrQ6x+uaiiXFYusHhci7i9F3DFU93XJ6I59v2qj3X8xOWpB4alHit7xJzD8mEK1nviP6AOe4x8VSz2NiFzgon1exZoVOKZWXkTmTmNtH222LcE0zg+StfXC7MXO3sa11OP1j4i52rF9lPVGFVT5wbw/+xHcFvFCV3gkT7angX3hILODFXfb01jeEtZH3MCF9NpSrpA7sIU0o59fz88BTYeTScYQQmi2FSGWMCDlRoS9kIl7VoyYUGUtIbe3HxlftWbZdD2FWXSD+OSvC5ZEvbGV8JWhqg/30UxfuFO24spAczBZzzfB44OWJXWkc8bdv5Uo2CDpG+Ww4egX8vkfs+ll2FI/E/KtQpYOp672EFbBhnVAs3rtl3Zry47FjcUXav/x8cwq9EhCZXLlGOr9t7fOVb0ilQpaDL6afUq7TPPNaiuGgzZ/B0qwo8t9FG2uiE+1k1xHL9mTvUXQEzqyx53JtZWaQahzgkPVPudu2pZX9Ulmfo8ZAGGAIpN4XdHziwEqvZ9cSMS0J81uO3j7O9ZO7FsXVvdHq963SrNgyal9R2P0C+H+Y2wGpYpAOxiJHT0D
+ iRb3tVVf
+ byrxMQdLFD94DtMk+rGXYcdI4zZXksjHFcWXMLqj/tec87ZLbcRzc5qpYb31w8XkHdW4ln5+E3z3CTSs3h6pmIiGkAVqP80VL+x1SCHHjuBa+NljQdnZEfEOr0hE4YDJGxUJVHQYDEwN1mpHPx43kwCz8BbDHUwnfEUBxw3pA7RrXwCcDRlA7v+uoEgEryrSalTRPXip57JVv4xrEpePXetMJcDwDrMImGQUTvtCR6xAPopVp7SUsIe6omty+Yb6iAoLl3Jl+bLrk4LjHBkULK+t68BpNUp4XlXb/Ie4N00uJsQSAbF1M4FaE5nGnsN0OKYvG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,40 +91,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, 14 Sep 2026 10:45:55 +0800 Qiqi Liu <liuqiqi@kylinos.cn> wrote:
 
-
-On 9/14/26 6:34 AM, Matthew Wilcox wrote:
-> On Sun, Sep 13, 2026 at 11:36:44PM +0700, Nguyen Ngoc Thang wrote:
->> @@ -2271,6 +2272,15 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
->>   	if (result != SCAN_SUCCEED)
->>   		goto out;
->>   
->> +	/*
->> +	 * Take invalidate_lock before any folio lock: the readahead below
->> +	 * needs it, and truncate holds it while waiting on folio locks.
->> +	 */
->> +	if (!is_shmem) {
->> +		filemap_invalidate_lock_shared(mapping);
->> +		need_unlock = true;
->> +	}
+> alloc_pages_bulk_noprof() does not call current_gfp_context(), so
+> per-task scoped allocation constraints (PF_MEMALLOC_NOIO,
+> PF_MEMALLOC_NOFS, PF_MEMALLOC_PIN) are not applied on the bulk fast
+> path.
 > 
-> I'm not a fan of all this surplus commentary.  And what happens if e
-> simultaeneously truncate a shmem file and collapse it at the same time?
-> I know it doesn't use the invalidate lock, but does it go wrong in some
-> other way?
+> The most direct consequence is PF_MEMALLOC_PIN: without clearing
+> __GFP_MOVABLE, prepare_alloc_pages() selects MIGRATE_MOVABLE for the
+> PCP list, and a task under memalloc_pin_save() receives movable
+> pages from the bulk allocator.
 
-IIUC, shmem uses the folio lock to synchronize truncate and collapse. It 
-will check whether truncation has occurred after taking the folio lock 
-in shmem_get_folio_gfp():
-	
-	folio_lock(folio);
+Thanks.
 
-	/* Has the folio been truncated or swapped out? */
-	if (unlikely(folio->mapping != inode->i_mapping)) {
-		folio_unlock(folio);
-		folio_put(folio);
-		goto repeat;
-	}
+When fixing a bug, please ensure that the changelog fully describes the
+userspace-visible runtime effects of the bug.
 
-So shmem looks safe here, unless I'm missing something.
+> Fixes: 387ba26fb1cb ("mm/page_alloc: add a bulk page allocator")
+> Cc: stable@vger.kernel.org
+
+Especially when proposing a backport.
+
+
+
+I asked $LLM this question and was told
+
+> This can increase fragmentation and interfere with compaction or
+> contiguous-memory allocations, eventually surfacing as higher
+> allocation latency or allocation failures under memory pressure.
+
+which wasn't so hard.  Please update your organization's prompts to
+ensure that this information is always included in changelogs.  And, as
+always, carefully review the LLM's output.
+
+Other useful info to include in bugfix changelogs:
+
+- how was this detected?
+- is there a report from a real-world user?  Reported-by:/Closes:
+- is there a reproducer/test-case?  Did the patch fix it?
 
