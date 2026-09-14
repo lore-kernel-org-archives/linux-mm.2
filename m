@@ -4,110 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3633C88E78
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 15:36:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0867CC88E6E
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 15:36:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EDA036B0093; Mon, 14 Sep 2026 11:36:30 -0400 (EDT)
+	id DC83E6B0095; Mon, 14 Sep 2026 11:36:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E8B046B0095; Mon, 14 Sep 2026 11:36:30 -0400 (EDT)
+	id DA6C86B009E; Mon, 14 Sep 2026 11:36:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC8A56B009E; Mon, 14 Sep 2026 11:36:30 -0400 (EDT)
+	id CB6406B009F; Mon, 14 Sep 2026 11:36:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BD4216B0093
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 11:36:30 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 21363A0184
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 15:36:30 +0000 (UTC)
-X-FDA: 85212769740.24.3BCDDF5
-Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 622F440006
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 15:36:28 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=NtTPJasx;
-	spf=pass (imf01.hostedemail.com: domain of aethernet65535@gmail.com designates 74.125.228.12 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789400188;
-	b=qsNQxKsuELXGDogbDa7VZr3q4IqwnvWFlLIpLLBahnn1y6yrfaJ/XPWFylMxKf7v0Y+fUs
-	SOqO3fgeM1jaLIi2obRqLdH/iQXjuv66TFFZVPAAuuh77+dDEjkGPcSQyBPjVjNmGSUkS+
-	NRGHkb0agd6r5st080YHjf3dYiakyLU=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=NtTPJasx;
-	spf=pass (imf01.hostedemail.com: domain of aethernet65535@gmail.com designates 74.125.228.12 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 96C606B0095
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 11:36:32 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1F7EDA01A5
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 15:36:32 +0000 (UTC)
+X-FDA: 85212769824.23.4025AD3
+Received: from smtp4-g21.free.fr (smtp4-g21.free.fr [212.27.42.4])
+	by imf25.hostedemail.com (Postfix) with ESMTP id C3960A0007
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 15:36:27 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=morinfr.org header.s=20170427 header.b=DFevq27h;
+	spf=pass (imf25.hostedemail.com: domain of guillaume@morinfr.org designates 212.27.42.4 as permitted sender) smtp.mailfrom=guillaume@morinfr.org;
+	dmarc=pass (policy=quarantine) header.from=morinfr.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1789400188;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=ZuYma/Mvt8YazFkYyYSaJ6fwaVS0ky7SQWLme5KxC8I=;
-	b=YJ+G7rMHR3/uGhMQq2yvQwVGbqyx3h4EUQi2nePbMNSvO32Krt+sB/u2T+rp47THZD9aIr
-	X7cA74IhhWcKb/X5ZssXiYqH3PpSweStQ2p7mhDg+x+OfDHjM94GVsh4FsZehtIOQWq54g
-	tu/ba8lVaxHkrlDfQEJtc1erM4N+oNk=
-Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc4d04d73b8so1656805a12.1
-        for <linux-mm@kvack.org>; Mon, 14 Sep 2026 08:36:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789400187; x=1790004987; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ZuYma/Mvt8YazFkYyYSaJ6fwaVS0ky7SQWLme5KxC8I=;
-        b=NtTPJasxcsTqnI9JULaR2mzeR7wfKKBTxh7XRMY30BOrkL6OkBlyv+KrIQsJ9nezPS
-         wTU3F8ylsiunqQDXEPpuj4Kq2/qBFRKOgyWdlcFo7tK83yzzwJXQq3+UV7GP5Mboyv3x
-         y+RYVNE3yOVkMTTvzvYh3+7zK3QmRI04hyDAZ4s6B7xjdNCO/G9nC+PWR/wlaoKEkZWV
-         HYzZbCp7D7fvwJ7/0dvO8NXuzR93ZzB/5onCiofrMvXlN07AHAglGK6HpsuuXsmkYNT0
-         rnDaqztAYpzXI+zQS2JjhXqViy6t61MRJqZDAt0eAduD/XNl5pAtH/2g/cy5vXF7F2yp
-         7pqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789400187; x=1790004987;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ZuYma/Mvt8YazFkYyYSaJ6fwaVS0ky7SQWLme5KxC8I=;
-        b=Gr1xcakdRn0FNzvL7w0HtYf9wuiT9FryBhI1oEYowwmtYQaN+LnrSZ5Lgg4azwESOx
-         lpTQG3Ky2v/t/n9W0Grd/5zSDEqDa13KOf/bp5V0m52ByGHNZUB7ZiLiUukPe+z+8mdh
-         9U4nQjiG9/l8S8Idpd2WWuWkO5mbeNz7fBbggIX2W66DKkPp+zjgYHL3aGUpdzOSacCQ
-         D5KWcCU1jUcxqhn48V2XncR9J7nksZMxUa63X/jcTZ/jbnm/UAf4FbJwWwGcuICUshku
-         WQ4LRaoKQAxLUlNAlwNnZmZr2inQjBQd4H8k69AF2YI/4t/jfjjNek9mT6IQy01OgIu8
-         +66g==
-X-Forwarded-Encrypted: i=1; AKwUvBxsukjlPpRXzhov9YiEbgCRvxnifIEOF5hPpmyH1/RMx08wZtkXkjCMmIF5ajNZnd9NAHRGvJOYJg==@kvack.org
-X-Gm-Message-State: AFuF++nJCYNTZDc6krztRk0VnU8HaR90DqqUsmSXL0x1xj9i80C8hHc7
-	lQfbd3f8++hmkiKWzrqEjwWXzEQtTFBpUK2f2DmX5RxY+1WbGHBcTN2o
-X-Gm-Gg: AYBFou0wkIu6BF3ZR6OCZFv+speIasd2HoEOMcaKgqFNgKq8Y9ESAoSlCtNl9eGyXdB
-	Xr0FbRW6Qdw03xCBkXrE6+ET55tMvryVWTW+Pizk0z5FUhiwCZytHN2/GvarL+wQlYnOC4zBd3W
-	0A9ei8YM5PmNu03sF0KJyYM31F4lyb6kAVg9801qRl93Xp4ta5ZWB+R/+UVZI5KJ+Pekx3a/Det
-	DslJhQGW4DMetJdmmCV4yymSP8nLNcY/uNpauhkRc76WnUXsi3xiWFgTL2dVWU13NHVDpsESWK7
-	RPOm6tVoL91EQRVP41bsSXpBP3+xbPeYI+VJP1aZAF9pQ/1ZEfqBIopJ+cymBXRpGewdE6qQi4c
-	HznpJXTdJdju4Y4ZpANGxyRxyl7FCbjrXf0KoahIUwLpFzzPuc/G4cXQ4ENh0wtDJ3+oSwMLynZ
-	vBP4z9U1GSr9Ns87uY1A1phawAfcF+McyNf1uyL12FnDwJYLpZU0tTkqT+gVmc0Q4N6pj1N5kd4
-	cc=
-X-Received: by 2002:a17:90a:1002:b0:39d:eca2:5c81 with SMTP id 98e67ed59e1d1-39deca25ea7mr3712535a91.8.1789400186941;
-        Mon, 14 Sep 2026 08:36:26 -0700 (PDT)
-Received: from celestia ([2402:1980:8858:8cc0:7bda:d54a:257:22ec])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39dfd6b9687sm119410a91.0.2026.09.14.08.36.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2026 08:36:26 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: SJ Park <sj@kernel.org>
-Cc: damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: [RFC/Discussion] mm/damon: Implementation for paused kdamond
-Date: Mon, 14 Sep 2026 23:35:10 +0800
-Message-ID: <20260914153640.8481-1-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=XijXhIvSeP8ZpB+BL+DisRiFWyRHQETu+uNwniewtOw=;
+	b=GoLqi8aibDKobhc75y3oxD9BSPCTKsZGTNmvadHMvNsSevRIRhp/Q8nZL/mBBH48Ra9N4t
+	GfNALzAuM+0h1qQX3lgmlrbdZ8tGMtq5t4p0ESBamyOqhmT20tFzeCluK55mzLLZTXrEcN
+	O3TPANX21aV6w/7+7E0lo+/c3jlSKqQ=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789400188;
+	b=tVCvN1kFirH8626gB1wxAOHn80FtoI9lgWJNNmzRI+kEVQ96r7uStEEpceBuMbMBbswQrn
+	hstvIZZ7UAQ48ny6KJHnKXq5tJaK/bHZAmKo8GL4jXK0f6zheBVnQr6/CoMPkENk+CUCqM
+	E4PTpHe2uv+j4Efhs3pTSTGPx8ujA50=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=morinfr.org header.s=20170427 header.b=DFevq27h;
+	spf=pass (imf25.hostedemail.com: domain of guillaume@morinfr.org designates 212.27.42.4 as permitted sender) smtp.mailfrom=guillaume@morinfr.org;
+	dmarc=pass (policy=quarantine) header.from=morinfr.org
+Received: from bender.morinfr.org (unknown [82.66.66.112])
+	by smtp4-g21.free.fr (Postfix) with ESMTPS id BAC3C19F5B2;
+	Mon, 14 Sep 2026 17:36:22 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=morinfr.org
+	; s=20170427; h=Content-Type:MIME-Version:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-Transfer-Encoding:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=XijXhIvSeP8ZpB+BL+DisRiFWyRHQETu+uNwniewtOw=; b=DFevq27hwxd/YVgJbls82NISEH
+	68/0JjFfjMYFjbB9BHE6am8/E9ZFYAj4ioeeaujSl0Tf1Lp+n7pRRg1TV3Ke40xGzQqXmg5k7RB+f
+	Ma62jula8HxOKC3X1+TnOpSd1HlheQGaWpn8z7N+uzdhlxFqUW+7PcgsQ29izgEH0Fzg=;
+Received: from guillaum by bender.morinfr.org with local (Exim 4.98.2)
+	(envelope-from <guillaume@morinfr.org>)
+	id 1x68jF-00000007zFJ-2vMg;
+	Mon, 14 Sep 2026 17:36:21 +0200
+Date: Mon, 14 Sep 2026 17:36:21 +0200
+From: Guillaume Morin <guillaume@morinfr.org>
+To: linux-mm@kvack.org
+Cc: leitao@debian.org, guillaume@morinfr.org, rppt@kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH v5] selftests/mm: hugetlb_madv_vs_map: add underflow test
+Message-ID: <aqgUdbtumaO8RiIb@bender.morinfr.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 622F440006
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C3960A0007
+X-Stat-Signature: pye3nnhoasftpuwjadmd7xre31mx89ds
 X-Rspam-User: 
-X-Stat-Signature: urqdwpzg1n89af7xczq511dy3kmmpzge
-X-HE-Tag: 1789400188-980445
-X-HE-Meta: U2FsdGVkX19yv55tb4jAOYXWtefaDK867FcS707/yCPApeSQ8Tu+JFyRB7fq+Vzw2sreLgOw2LVsHDrkXw5N9c2R0HRPP5UGYbTYH8SUfKKXpDCb9G1e1o9PFPzUXEDn36X07L9a7mvMoXo/wOJ6jBTZgEbC1da86nXtRNBqUx6u97oDVaVf/hKzCO8b/9BUVC3hVkF2hYqvOLupealWPGeqbzC2uq/teN1YbcFK5emvvFzb/b7hwaRDOqwKJgDnS8qgkwJJAzdaRnUg6lIz4bAh5/fWGtZzIly6tEDa66w1OKBRduxweIH/p4nIThewE+gTRqfnZzajje5OpB8PENd52qKQ44wkvt7F/DPkliVs3iUo+gaZyUBdkSCHM1WHBS1ot3qIuZmIB1W2KaG/UBJjrcPabN2+oMyknJ1fZ0k/wnu2W6D+qCAiIDEwy6G6bYB7n2a4wnkXvzs6S+6IC+yeLjlOSkEt4qUEt7Vr5dUIwwYME1XNbNwXDxBcLg/ReYwYUUDffaH7PncZWG/wNjEVNp+ubHUQo4NoX7URzDqJZp3mtrCYe4/pK5Cf5l5BuF65smdzaNTHtrMzdL3hUY2G3vUBl2L1fOL+Akqfvfnqhj5qUpOJvtxJH+o18L5t6SjTz44mBdDR9oD2Ssi4xSHET28Zp2WpxxM4xi5qMT2LTinw982jTObPY/v/WdkETYBP6QBjBAeoJph02jcqlopLgLinBsHsiPXRlWQdgtbIe2ah/iJ+VIX5zIQog8M2uNKPZyi28mrxIKIUo+/+dHS9Uj1mCKCTeSiX2/cadSel2lXVyDy625KoHZZaP1MOxue4lkwYTo/M+BCPYPJOx26WIx+uwOchaOEx59AQGobWE5iztKjPzrpxGooOPb/H7LxEoHK1n7qY4NQeY5b9t0kqAbZW90T6hOQo5nT5GewVF2htljd8yH7Q/ND2c1QtLcIR7gU5/c++7N6Ut3q
- vXClhf2y
- O1Cz8DNU73qv+O/ZA5hFdDfGykIRlkrC8E+Ifb4h5oJ6GVcXuex2z3CIy3wfOLy5dQMUV3SfSE8nKKA84iQLzyzAo3cdnzBVRWzd2CQi2mZ3hB5J2sSlKshWFBqCp9LTr09ujNz5xqK8mAotIGLL4nCfjiBJYnjw1xigjw0DbQzdodHnV0Vk4gUBp1YV2iAGhm/kxxe3zHx3uimFBoJIFcToDpTo0Lh8JtchBq1gN9FZQuCbL56SynNVlJ6a0FfkKh6npJNLBAAeUOJzkohwZ3Ly2fXZSeJEfBsosSfCi37otmzA7vl58TlST24oH/c/gF2fyf8G5AIGo5LHHD16Cy+r94tN17EbA8Sb/ID8bsSxEY5pWOpT+vuZG10yMCZX0DLZrZXyJ1a6lduo1KPV4u+1Y7EdEtolLFwTvcbJ0u/C3/ORw40SsFXcdizH7lGZwO7VhVnsnuSYrZxs=
+X-HE-Tag: 1789400187-764131
+X-HE-Meta: U2FsdGVkX19oR+DpJLRAEbIJxNA/3vtDKQegZPjtndaJUMMFt6GatnDWXiIC8nDQU+zyynavVLQ7tPkVqanmBnAsCU1jLuuJb14cqxFYRhlRwsrvYWJPMx4AyVcsBMXrkBJTalVsfRHgS/USL0G5OgyATU1XPXbUeyqUU8MH5cqt7W4n0zOk6zZz/7EJzUhUX0DPEfOGN9uWyOKs/llYHB564AWncrc8dMvOwkyinsGLH2WW7LCA+oFo/aqebiRKvF8K86GxLi0tlK/wZlN7S5r9uc2jkzJZUZ7Bde0IkJMtWosPtUdXzAZh8kzNRmnIGoDhbCNO8RCJqLtsq8u8UFHgJSAksUzeo3X9xL+fF4LI+KjWW8ui3zJUjhVHjOrRixyYiuRxlZ2eiIOuhHHezXoISZDhIYsrYugsxV3vAU7EVtoDaMOiixNPJjLh3/DZxhgAoIFrspAASHsAVE7verNB79IPiJ9FJnTiagufrOzKb7G/H8i9gph9GUIjI/cIrsf0rnRk+2oUNfOLAXKSqCust60IOo1+0vHvbUZr8draqnIORp81V3tMwA0OaD4zqZJuoq/MDap4sjaVG/Q3XLZMkLqTKUD01i8MFMYR0+ZbasPgrXzbZ/rwFr3xFbByLJDuzvHB9Q6yTgECwAzkAy2x2dopYmqfo5o9rxaJtRz6vSr70BDL4GEASNLS6OenB5hLgcDfOkfKlP2C6980af/QjJ9Elfq80NG15UIiPBuRM1MXBiAlWShK0p6SgES+g0ykm9FjM4pKsnDs7Mf600ixXS2do23XNtcvyR3sEzlkj6Yz5qbk3GekFuOWC2b4I/0xBa29Q1dGrh1dArkDvY0dxWWxxx3HfOeN6alzZhqdCBuG8sOQRyFsLnepcKq5NBXFAkHNkgFjFyZFCWaL2VlFA22YwesBZc+ksZ4oTXYtmcKnr0GFZOAhZo1TXX3xJmdBNgLJBeav3Yzwrj4
+ 6Ztz2Uom
+ IZ3QqHNTrLx0+7cmOarBfrS/GsLPbZHTHE4B/dvOFAYxAD/oz1xcrODc2a1X1Vku6AcbL0B2nQsuhwtmtURqfDttzf/IgI6LzmzhXo4vXs/dFCAU13aHnIm0dtEn2jZN/j8UkcU1tWGtTMV8GOPwV8fQ4PDHWDWzFx32aGRfJZPwPEqON21kgjT+hLsW8o6aBqJ7GZ2JGBLDSAkSv+R2u2WMmFHMRhoyYOWPbve736mYHemihBFMsuzqqqbfe/WvByaiT5+CC6BrLJsFdilLrX0DC6fBa0BUpjofZ6c+g9e7rLYN+5eq5mifQu2Qi7es1zpmCXP+LLAyUDXqJKpYxEX89ehsNMnCfTlIvz3YsECDK220HpSFdf84Wh9cbI7SB7po/j8glBZN3d0leRXYDkSWhRVMA6ATLmwE2FKTRkyRhQOHTXQi07xNwnvAzdBZHvfQr4ES2n2WDu0cIm+ZCYp4qXw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,45 +88,249 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi SJ,
+Add a test that checks for underflows when a parent unmaps the page
+first. Also check that when the child exits the reserve count is
+correct.
 
-I noticed that the current implementation for paused kdamond is
-periodically applies online parameter updates by kdamond_usleep().
+Link: https://lore.kernel.org/all/alEJkwn5VlTTH_ZX@bender.morinfr.org/
+Signed-off-by: Guillaume Morin <guillaume@morinfr.org>
+Reviewed-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Mike Rapoport <rppt@kernel.org>
+Cc: Breno Leitao <leitao@debian.org>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+---
+v5: address Mike and Breno's comments
+v4: address Mike's comments
+v3: address Mike's comments
+v2: refactor tests into 2 functions
 
-I'd like to know if we should change it to waitqueue to achieve a lower
-power consumption?
+ .../testing/selftests/mm/hugepage_settings.c  |   9 ++
+ .../testing/selftests/mm/hugepage_settings.h  |   1 +
+ .../selftests/mm/hugetlb_madv_vs_map.c        | 141 +++++++++++++++---
+ 3 files changed, 130 insertions(+), 21 deletions(-)
 
-Previous Discussion
-===================
+diff --git a/tools/testing/selftests/mm/hugepage_settings.c b/tools/testing/selftests/mm/hugepage_settings.c
+index d7917dce3aba..584054736ce9 100644
+--- a/tools/testing/selftests/mm/hugepage_settings.c
++++ b/tools/testing/selftests/mm/hugepage_settings.c
+@@ -449,6 +449,15 @@ unsigned long hugetlb_free_pages(unsigned long size)
+ 	return read_num(path);
+ }
+ 
++unsigned long hugetlb_nr_resv_pages(unsigned long size)
++{
++	char path[PATH_MAX];
++
++	hugetlb_sysfs_path(path, sizeof(path), size, "resv_hugepages");
++
++	return read_num(path);
++}
++
+ static bool __hugetlb_setup(unsigned long size, unsigned long nr)
+ {
+ 	unsigned long free = hugetlb_free_pages(size);
+diff --git a/tools/testing/selftests/mm/hugepage_settings.h b/tools/testing/selftests/mm/hugepage_settings.h
+index 726c73c43c05..548e9d288d1d 100644
+--- a/tools/testing/selftests/mm/hugepage_settings.h
++++ b/tools/testing/selftests/mm/hugepage_settings.h
+@@ -98,6 +98,7 @@ unsigned long default_huge_page_size(void);
+ unsigned long hugetlb_nr_pages(unsigned long size);
+ void hugetlb_set_nr_pages(unsigned long size, unsigned long nr);
+ unsigned long hugetlb_free_pages(unsigned long size);
++unsigned long hugetlb_nr_resv_pages(unsigned long size);
+ 
+ static inline void hugetlb_save_settings(void)
+ {
+diff --git a/tools/testing/selftests/mm/hugetlb_madv_vs_map.c b/tools/testing/selftests/mm/hugetlb_madv_vs_map.c
+index f94549efcc6f..0f15eff1da04 100644
+--- a/tools/testing/selftests/mm/hugetlb_madv_vs_map.c
++++ b/tools/testing/selftests/mm/hugetlb_madv_vs_map.c
+@@ -3,18 +3,6 @@
+  * A test case that must run on a system with one and only one huge page available.
+  *	# echo 1 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
+  *
+- * During setup, the test allocates the only available page, and starts three threads:
+- *  - thread1:
+- *	* madvise(MADV_DONTNEED) on the allocated huge page
+- *  - thread 2:
+- *	* Write to the allocated huge page
+- *  - thread 3:
+- *	* Try to allocated an extra huge page (which must not available)
+- *
+- *  The test fails if thread3 is able to allocate a page.
+- *
+- *  Touching the first page after thread3's allocation will raise a SIGBUS
+- *
+  *  Author: Breno Leitao <leitao@debian.org>
+  */
+ #include <pthread.h>
+@@ -22,6 +10,7 @@
+ #include <stdlib.h>
+ #include <sys/mman.h>
+ #include <sys/types.h>
++#include <sys/wait.h>
+ #include <unistd.h>
+ 
+ #include "vm_util.h"
+@@ -74,7 +63,21 @@ void *map_extra(void *unused)
+ 	return NULL;
+ }
+ 
+-int main(void)
++/* During setup in main, the only available page was allocated. This test then
++ * starts three threads:
++ *
++ * - thread1:
++ *	* madvise(MADV_DONTNEED) on the allocated huge page
++ *  - thread 2:
++ *	* Write to the allocated huge page
++ *  - thread 3:
++ *	* Try to allocated an extra huge page (which must not available)
++ *
++ *  The test fails if thread3 is able to allocate a page.
++ *
++ *  Touching the first page after thread3's allocation will raise a SIGBUS
++ */
++void test_madv_vs_map(void)
+ {
+ 	pthread_t thread1, thread2, thread3;
+ 	void *ret;
+@@ -85,13 +88,6 @@ int main(void)
+ 	 */
+ 	int max = 10;
+ 
+-	ksft_print_header();
+-	ksft_set_plan(1);
+-
+-	if (!hugetlb_setup_default_exact(1))
+-		ksft_exit_skip("This test needs one and only one page to execute. Got %lu\n",
+-			       hugetlb_free_default_pages());
+-
+ 	mmap_size = default_huge_page_size();
+ 
+ 	while (max--) {
+@@ -100,7 +96,7 @@ int main(void)
+ 				-1, 0);
+ 
+ 		if ((unsigned long)huge_ptr == -1)
+-			ksft_exit_fail_msg("Failed to allocate huge page\n");
++			ksft_exit_fail_perror("Failed to allocate huge page");
+ 
+ 		pthread_create(&thread1, NULL, madv, NULL);
+ 		pthread_create(&thread2, NULL, touch, NULL);
+@@ -120,5 +116,108 @@ int main(void)
+ 	}
+ 
+ 	ksft_test_result_pass("No unexpected huge page allocations\n");
++}
++
++/*  We create a child process, then unmap the page in the parent while the child
++ *  waits and verify that there is no underflow of the reserved count. We also
++ *  verify that after the child exits, the reserved count is properly restored.
++ */
++void test_underflow(void)
++{
++	pid_t pid;
++	int pipe_fds[2];
++	unsigned long nr_reserved = 0;
++
++	huge_ptr = mmap(NULL, mmap_size, PROT_READ | PROT_WRITE,
++			MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB, -1, 0);
++
++	if ((unsigned long)huge_ptr == -1)
++		ksft_exit_fail_perror("Failed to allocate huge page");
++
++	nr_reserved = hugetlb_nr_resv_pages(default_huge_page_size());
++	if (nr_reserved != 1)
++		ksft_exit_fail_msg("Unexpected number of reserved pages: %lu, expected 1\n",
++				   nr_reserved);
++
++	/* Force the fault to ensure the reservation is consumed */
++	*huge_ptr = 0;
++	nr_reserved = hugetlb_nr_resv_pages(default_huge_page_size());
++	if (nr_reserved != 0)
++		ksft_exit_fail_msg("Unexpected number of reserved pages: %lu, expected 0\n",
++				   nr_reserved);
++
++	if (pipe(pipe_fds) != 0)
++		ksft_exit_fail_perror("pipe failed");
++
++	pid = fork();
++	if (pid < 0)
++		ksft_exit_fail_perror("fork failed");
++
++	if (pid == 0) {
++		/* Child: Simply wait for the parent */
++		char b;
++
++		close(pipe_fds[1]);
++		if (read(pipe_fds[0], &b, 1) < 0)
++			ksft_perror("child read failed");
++		/* Let the parent do the cleanup */
++		_exit(0);
++	}
++
++	/* Parent */
++	close(pipe_fds[0]);
++
++	/* First unmap, this will close the vma */
++	if (munmap(huge_ptr, mmap_size) != 0) {
++		ksft_perror("munmap failed");
++		goto err_cleanup;
++	}
++
++	nr_reserved = hugetlb_nr_resv_pages(default_huge_page_size());
++	if (nr_reserved == 0) {
++		ksft_test_result_pass("Underflow not present!\n");
++	} else {
++		ksft_test_result_fail("Unexpected HugePages_Rsvd=%ld after munmap, should be 0\n",
++				      nr_reserved);
++		goto err_cleanup;
++	}
++	/* Make the child exit, this should restore HugePages_Rsvd to 0 */
++	if (write(pipe_fds[1], &nr_reserved, 1) < 0) {
++		/* If write failed, the child is likely already gone */
++		ksft_exit_fail_perror("write failed");
++	}
++	close(pipe_fds[1]);
++	if (waitpid(pid, NULL, 0) <= 0)
++		ksft_exit_fail_msg("waitpid failed\n");
++
++	nr_reserved = hugetlb_nr_resv_pages(default_huge_page_size());
++	if (nr_reserved == 0)
++		ksft_test_result_pass("After the child dies, HugePages_Rsvd is properly set to 0\n");
++	else
++		ksft_exit_fail_msg("Unexpected HugePages_Rsvd=%ld after the child termination munmap, should be 0\n", nr_reserved);
++
++	return;
++
++err_cleanup:
++	if (write(pipe_fds[1], &nr_reserved, 1) < 0)
++		ksft_exit_fail_perror("write failed");
++	if (waitpid(pid, NULL, 0) <= 0)
++		ksft_exit_fail_perror("waitpid failed");
++
++	ksft_exit_fail();
++}
++
++int main(void)
++{
++	ksft_print_header();
++	ksft_set_plan(3);
++
++	if (!hugetlb_setup_default_exact(1))
++		ksft_exit_skip("This test needs one and only one page to execute. Got %lu\n",
++			       hugetlb_free_default_pages());
++
++	test_madv_vs_map();
++	test_underflow();
++
+ 	ksft_finished();
+ }
+-- 
+2.39.1
 
-I noticed that when you introduced ctx->pause [1], Sashiko asked the
-same question, and your response at the time was:
-
-    "sample internval is 5ms by default and recommended auto-tuning
-    setup makes it hundreds of milliseconds.  So I don't think such
-    change is required."
-
-I'm curious that, did you think it wasn't neccessary to change it to
-waitqueue when it was introduced, or it wasn't neccessary to do so even
-after it had been introduced?
-
-Asussmption
-===========
-
-This is just my assumption, not a real use case I knew:  When 'pause' is
-set on an Android device, user might want DAMON to stop running
-completely when the screen is off, thereby reducing the load on the CPU
-without losing important information such as regions and age.
-
-The current polling may make it harder for the phone to enter idle mode,
-resulting in some unnecessary power consumption.
-
-However, pause feature is only present in the stable version v7.2 or
-higher, and since the latest Android kernel is 6.18, this highly
-unlikely will affect any Android users.
-
-[1] https://lore.kernel.org/damon/20260321202858.98091-1-sj@kernel.org
-
-Best regards,
-Rui Yan
+-- 
+Guillaume Morin <guillaume@morinfr.org>
 
