@@ -4,117 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C12DBC88E6F
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 17:10:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8633C88E72
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 17:15:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 99DF66B0093; Mon, 14 Sep 2026 13:10:44 -0400 (EDT)
+	id BD0D46B0092; Mon, 14 Sep 2026 13:15:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 94EE46B0095; Mon, 14 Sep 2026 13:10:44 -0400 (EDT)
+	id B38226B0098; Mon, 14 Sep 2026 13:15:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83E8F6B0096; Mon, 14 Sep 2026 13:10:44 -0400 (EDT)
+	id A222B6B0096; Mon, 14 Sep 2026 13:15:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 524316B0093
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:10:44 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D5C021A01B4
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 17:10:43 +0000 (UTC)
-X-FDA: 85213007166.28.C93D4C6
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 0C54A40004
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 17:10:41 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=qDgqOjNB;
-	spf=pass (imf01.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7688A6B0088
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:15:57 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 98F7CA438C
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 17:15:56 +0000 (UTC)
+X-FDA: 85213020312.15.B6F6912
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id A6F86A0012
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 17:15:54 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZcpAzItZ;
+	spf=pass (imf15.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789405842;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1789406154;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s10O26OyymXqv9mIGwISr+cwCeJfHQLeL7WGGnIH+sE=;
-	b=SeYzQhbFvdg/39oLsWjORfxlOA2DFbgxUSgMwHpVfUWdUYGYF6XGy1jeKgKdUBHmsZ3ZVY
-	hSy0u6oUFXKO6/Ouzuhp0lxh7bbM8y82hgwT0Tlwi4yklXu3sYhjuUSZqyps8gkmXIsoxG
-	tfItWPA3QHUEPen2y79WC91fvoOKVZY=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=rG93emdIjPs97mrDSHLlyRwQdcO6GC6YOonbSG4OpeA=;
+	b=6pjb7Et37edX/5SaqYzu7VWS5iLjJaUMLB9cByuwwmgFZmIrKYr/5ljmo3SHou87FdXoP5
+	pinAkgB5+wtaQAxbWjX9CNdSPoQ7bfkQr/qOC5nNJqgbvczJTRnUGq8aBFNCenZ2HrTWiV
+	Oi2sNFPacnIVckA11e90kDcIq/Y2010=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=qDgqOjNB;
-	spf=pass (imf01.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZcpAzItZ;
+	spf=pass (imf15.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789405842;
-	b=ZWO6hB7Rd8fUvkpoRrq/uwR3ikgH9BDICaUjMdHmUVENZU5tOqL4P5W3hIX9EHocuRxVla
-	sVCsRUwVxChxy+1tYEXVxbIv3/ANYTOV8gSEs9w7HA3Hf0GGlGx9UIZh67VcaYWLUUIWr1
-	NZsXIJNi0fLeXRd+XfmQTOLZn9Fe0fg=
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-69fab5a852cso5018816a12.0
-        for <linux-mm@kvack.org>; Mon, 14 Sep 2026 10:10:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789405840; x=1790010640; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=s10O26OyymXqv9mIGwISr+cwCeJfHQLeL7WGGnIH+sE=;
-        b=qDgqOjNB8O5Ri4kEI2sbqWvkSbxmM4nYM22ADFifuPdwR6zpbBuTwBimmSRk+rymts
-         mpkZ6DW4MsB6N5kCtzl3B2hpImKhIr0awWS1CeMMg8A3bIrQJp+NMW7t132rg+9Uz7nQ
-         ZzKXbFYR/wi+5+XRC3zKcsK0fXIRpTnUNAzcLcT/PoqN4sE59fxAq5gXg/fr2exv5P2P
-         nYaEzPUDNMfeuTnGmNuYil2xWNhAa1gnB7Mx2HPfH/YelAu3GTFJc/aA0EeZ9X7N+zj4
-         saTV+TloIN0x16mnTEoJgcJDOIYXOMk83ifGph6Ma0mnho/t+i3UJ2Ij57WiFkDik/Bw
-         2BPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789405840; x=1790010640;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=s10O26OyymXqv9mIGwISr+cwCeJfHQLeL7WGGnIH+sE=;
-        b=yt/vXqxNkqHAP2lLlMamfSr0FTxnHud9zMKbJxz4FBHKmKz7Rx8DjH5UCEexQcmQM5
-         CPfEwHetCebGan7Kv18ZZJ8bNJtao/9Px1vQ4Omxw4oxKVXKUHwgat5li4meU+qIy0I1
-         nH44o5CTShOq9hrrMwYOyTWXQoc1nJuMqdhh+oqLVaCcUAS/Ygjk5nNIpJqValRK3EKh
-         VcPnnfXA2PxVXeg39y0hI32vZi7U5C2DwMNXGT0o9KZnHRzVbNuyP6heDzTrGzC5yngT
-         xDCIdJbd5asFJ0Adm0W3dX4NsOfNTk4FBPmGAQi1QDz0PP31PuXTZzuJOrmfj7qcs2cF
-         cp/Q==
-X-Forwarded-Encrypted: i=1; AKwUvByj5KA2D1HG9SYdFt568nGBl6XwV5egRnmHNqCWCAt7uQau5KZDpc70Q2yt+Zgjf1ekxRLLjuGMaA==@kvack.org
-X-Gm-Message-State: AFuF++lG6iIOXJvh130I0LoEtOs0xBdqlBU30a1Q2UrkPKdzm1WKPfdJ
-	BOrQXRE/a4Srh2By8w0nDTRLl87ZWNARW7bK0OtXiqSPxy1JdJhf6QzH
-X-Gm-Gg: AYBFou0k4cCDOE0CzQYaHFoDxegovDNW6xGSt9djiHWedGlNU9YDUl879ugKmnIOaMK
-	skzcTszQ4ia05n6D3XtpeB/WeiDGkrlE6ls5AHyQ2/dhOh+xJWx/j/JLbY4zP2LmvB5azmQwLIt
-	F1xHKV0Z2NWjy2oFQ8uSI47F/YriFY/ufCZtmT9iQ6R1/qym/iWw7+pYLcdJk49sptCKSUtv1+y
-	TyY4zwcHmN9EYYYj+8lZkvkxa4Dt/PmAalZspy5YCQ+ivNKhi0utMjIw3anq19LICPh2PToGM3M
-	kt9F4eUdEG+U7gWQZwFI8Or5Vzl3ploqXAA+nimq4RxWlNI9Vt9K60doqh9lsecNXQNv7LwcVnH
-	vCLGAjtbZx/eq63j4XsOKqq9f6YETDCxj8rzTxEeX/fYoaKLYjcHHp3l3RyhycBXMQFohS2gWJb
-	qPnT6UUJLhX5fnykrPkdU6Q8F4NYlmEtcnbIcA
-X-Received: by 2002:a05:6402:4615:b0:6a6:4004:4ae6 with SMTP id 4fb4d7f45d1cf-6a9f62132bcmr2007106a12.5.1789405840183;
-        Mon, 14 Sep 2026 10:10:40 -0700 (PDT)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a9b5920f4asm4474021a12.16.2026.09.14.10.10.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2026 10:10:39 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Mon, 14 Sep 2026 19:10:37 +0200
-To: Ye Liu <ye.liu@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Ye Liu <liuye@kylinos.cn>
-Subject: Re: [PATCH 3/3] mm/vmalloc: extract show_busy_info from
- vmalloc_info_show
-Message-ID: <aqgqjRJ8qpYmx04v@milan>
-References: <20260914-vmalloc_study-v1-0-526f68559706@linux.dev>
- <20260914-vmalloc_study-v1-3-526f68559706@linux.dev>
+	t=1789406154;
+	b=bF46zG+rbKzXALy1tlpiMneRPJNs0JqMbHbP9Qk3LjQKP8OFHsWl6heumV1XQrUpoWLv2j
+	z2fSVOuxh+0vZ5jW9WJdLeMgzW4f6MZBwAWQIEigOxldiebU8V33bOJY9rRidr0BqQA3g4
+	Vud9cmrPuZ3AAVCh1ub8Hqkf4ulh5YI=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id D741E6022A;
+	Mon, 14 Sep 2026 17:15:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7E294C2BCB8;
+	Mon, 14 Sep 2026 17:15:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1789406153;
+	bh=nC8VguaT94phisv0ka20gk/RJPeIjp9sWwfJEtDSKJk=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=ZcpAzItZf8WyMBjErEkFJNyW2B4A6pjeKXIkNDZk/XSp83/vWfuiOqc68AzgWCx5y
+	 FgvZ8APd09lGRLvxA/gE3PkSHSvXkOuWDbtXhbD0kDLlXkFUI7R4/jtojG5a1VT3Lb
+	 v+zKWeFvTI1fGHM5x4ArzyRH+xDIZS4FTghSwOoZvGm9jdacqtB4trbyqLTRpj+mqd
+	 M6UtNncZWJWw15ud1oxGoOjXqVGdhV02jhUVP63MkNaouL+GR6YFEhVc5y969XiIgr
+	 LyDaBm2IbXkimGn09BATDsNnWjbyy1jyDu8TK+NgEobceQQqkncBunYISAmJ8OXiVr
+	 4flp+Y5dRwcNA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 53FEEC88E73;
+	Mon, 14 Sep 2026 17:15:53 +0000 (UTC)
+From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
+Subject: [PATCH v5 00/17] mm/huge_memory: clean up and decouple the anon
+ and file split helpers
+Date: Tue, 15 Sep 2026 01:14:41 +0800
+Message-Id: <20260915-swap-thp-cleanup-v5-0-39878b37dfb0@tencent.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260914-vmalloc_study-v1-3-526f68559706@linux.dev>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 0C54A40004
-X-Stat-Signature: wmghw4f3j933xrw9zhuq1t7d8ztatacw
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/23PQU7DMBAF0KtUXmNkzziuzYp7IBbOdEKMwIliN
+ 4Cq3B2nCFGULL/0533NRWSeImfxcLiIieeY45BqaO4OgvqQXljGU80CFFjllJH5I4yy9KOkNw7
+ pPEpLDC1b6rB1op6NE3fx80o+Pf/kfG5fmcrqrI0+5jJMX9fNWa+9X95t+VlLJa3zHn04EhE+F
+ k7EqdzT8C7WgRluCI07BFTiBMzGkQ3B+C2BNwToHQIr4VuDXaMtArotYf4Iv/uIqUTbIATsQPF
+ R/yeWZfkGCQxUSo0BAAA=
+X-Change-ID: 20260804-swap-thp-cleanup-6ce2be6cf3b8
+To: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+ Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
+ Yeoreum Yun <yeoreum.yun@arm.com>, 
+ "Kiryl Shutsemau (Meta)" <kas@kernel.org>, 
+ Shivam Kalra <shivamkalra98@zohomail.in>, Kairui Song <kasong@tencent.com>, 
+ Kairui Song <ryncsn@gmail.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1789406149; l=6208;
+ i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
+ bh=nC8VguaT94phisv0ka20gk/RJPeIjp9sWwfJEtDSKJk=;
+ b=nujeGiQo38WYNQObayt+D3hvinyRBHya+/hXQ8SpPWqz+uniU9+ITC3tIFJu93b2IdPZGKSho
+ bbYUBE3Z2iaA4+bWY/Pnw3AFT63lWptVgYzgoLOLnPH4+0c1EjdqilA
+X-Developer-Key: i=kasong@tencent.com; a=ed25519;
+ pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
+X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
+ with auth_id=562
+X-Original-From: Kairui Song <kasong@tencent.com>
+Reply-To: kasong@tencent.com
 X-Rspam-User: 
-X-HE-Tag: 1789405841-889565
-X-HE-Meta: U2FsdGVkX1/gcKp1rip/AavlkqV2M+il0VXkog4fmLfGbnC4P3F5Po3s2qAy3ReC//v5YwDBIQi7lR6eKJleJcpDT0ydSYhwhHUlFjk2QPByt5DVah2UQP0miqnPhNMF3yiYIS2/Vn/vOYSP2iisRQ+VY304dSZPejK6sDPABiwQtwFKd6bDOqRNYEbcKekisPPI+k2QtfiThwizLbTOCiCtph6ngN0cLur1aCpU768WznZeqLo5d8TZy3O8Th460IBwwc3X/TAVC/EC8euxVZulpecQFA6EvZjv37ZJzsrY+pPrUtIdmHDEaMt/Tbkv9lGW7xZONTMt/jNKHPWIeAAZ12a0TfB4qdwlnSBwLmgR9sqtwORk+c4Y09m1Te+7l/LR7A6M4fzkLhYH7L9mON61vt5hbpAgFeBWrbAFr8qxj0ms6Asm8kE4bqhtqyJ7yOfq3DVsU9c0XCClzhZwbgdvqhR4l+85tO/RTnldS78jddw4IDkjyhfTr6PZnUf4aT/0W722iLbQ8C85ysy6bzmrLK2GskSo2pvmCwBDvlFqZHORKDKPjSi3wpAwpL7JsygPFxJa6WnmNuTkWMbrMPx+pPZKRg4p2Ig0PFHQmFs+mBUWhPMCvf5X3Tss8Wzi7mo9BxKy6MbRlCMB6nf/ePnKwMFYrcREP+FMWee8oHgZPIpriLidiBbyDZN+5XPF3zcyoVV/XGkeNsbmasr4/lFu8zvR7T6+fpDidosVxIamqRxzRUTp6Om/KVgP0LM8Ev/ZsJ3fqN812KaLOMMZif3a2543qR+QPkIKpNf/5XEA7Chlq+bPVkrMMJ5U42AdJX+QwYPwj173uwmyzG2V5KWIR20cPFtZL8VtRKfB23oesqyIaL/omlLviLPpEK+lVq+V8syP43a3KqCgzJnGGRpVsAtl9+QmLPjCPbjzReDBy+fpxRwiInE6BgoCfgswIVhEJUa3BzKGdKen39Q
- joYPwcWF
- hiljRznFdI86dss/n4IcSvzund/8rRbQKRtzqsItyTtFg7NSB1pUJ+cCYrUqWC5DslTxyf7F8tvlnlLHw6ZzcGWcPQdbkHLD/54+nSkLV5VWzNGpqVqQCaMsAkPKG5SBxEDXGXrziRacJl50L15l44gbR/MxO64FJBoDd+iGPYGm7oszvdXolSDRTQrfl7LMN5V1GF6sOjM3A2fWQ9uiAYzdVZir/hPe3o7V9cU7BnKyaSaFiSV2eXCo/yq0zrdkgbR09Q9BN/D1BPfkht4Qafkndq2DhEUaeTJvc/zWg6OamESrqH7mPX1KSKXC37xprUEcheTsFYglar8a2oSoFGVoQQO27EuBaQdKdfD/Smg/gs/mJXw87pOSti9dJpvqvZ8OgFJKZ/gGpalaz7NQbXRxZ2Xt9tA6POVG2i1P7BCdm++sxVqARN6b+35/BCHKCXXNNsoFbHsoebkDaIzrgp/1DnkzTBHv7FkwCRGawCWMZfoAkOjm6HCe4Pag/YpCurqcA
+X-Stat-Signature: dc8775zg3ibt4eaqobqn176e8mitfox1
+X-Rspamd-Queue-Id: A6F86A0012
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789406154-827665
+X-HE-Meta: U2FsdGVkX19O6nWb2ZTYgWyX63228PphyNmY7jmGEhFM9UBRC9qc/RWbUfdtMGqsKvEeCFgZ7HLs3QWLUAtgLMU0Z2xQc7iRpvg/cFKZ6bg4QLizLUpazm7QJFyYDORXQ99CvTR9sUrAcN8fGlOb5i8tKgxegrD2sgnWL3jr+hNIcTeT505qiQH/t+1PjFYud/my1bV9jwtYu3TwsaL2C7HdX/9u3wEIjNVkOiYmgGV4h44ymX/EmuG9Wypx6w2CAQBaxzXMt6eBCRgYw1Ovqpa0v+uqUwHk0pDA4JY0tXTYyoKHZCgoc0H9VYUg/mkc/5zk0DSXnDWevXrk2EAQyfIHqfNb7mpNcepcHrP/SRIjyTXyyh3txxNl5iV21SiBI/T1wsAx0tVKNIKRwhZLl5yJ7KQNKYwA03fhXAjy36Y84UTqXjReYY+SGaBU8jAEK/Op1XtvNCvn7Ak8tHCvOQ3ytp9tolSQau2DJcRashtBqpLVywLjqh/wEGGgEPGTqsK8QL1niUgSY+ZkU9QgyAwP2TzRohaFSY8LuPhQmXci2degaK+NSdXlyBk5NVKrhED1YuW2cg9lQnf/LDD7Sff7kOJ8+4X2y5gqn36L5Tk2eeXV/3lyiTALM6KBag7U4ZGvKnyzvK9CVjcCd0UwEReGbi6Vwq6qrH9jbW5+8WhGiLjNwx6yWVZeybnm45o9CejPVDocKqhyvp3Bspxcb4q7B/rnw4aoJtvKrRk3WwM78co2960FM3LPpDbuZF/KCbEH9itSXUU6mdTgMBArjgxkLf9lqpUymnucqy81DZT+E8sywHWsyMxT52FkcR/SQJhQr5TTR28IgzPCcrBJCkeMEnHawptOhVoP6fwXlMRI4Uv/InlOH4YvmpksycUR6jcwNF2bad+7lldsrvADwVhIIFB0U+f+GB7/hX64mughIucM3t/k+4HlTen6XAzxMH9Ul/DSVcvj4Ert6Th
+ AWLDX/44
+ RlVTg75vhqPWTU7aX6TW9aCJ7AbKOReR0vOVcjocDTmORzLNthwNXI+1Hr5pJnpJyqBTbV71oc6K2sH12rcHkBpmAClV5jY50UYWrOhKgqPCtl+9KxpS/ZPqnZRfm7R2BHSgZlv+jCYScBa5zSyZPtLSEl7klOTy14jbO3tGU+xQhDS31cztGoUJ34VVRTui/Cihf/mj4momCKn9RVIMOUMdLtLQAbvMp3A8kCLtIokEdqpYNcq3cbPgo2GrsAtpLIL1l+JdyVwjpDcdkPQUPdzjphERgSE8NZZTAK0RRKc4pUvSDFdaD2KQWQzN+2G10mPXszDKE2RNZp9vfCW1APDRMpr5rnPX9O5PMXUBvi90GLB2Th5K8kSFTiVLJcQt4BsaIcq3e18LdgBTiSC+kVFouG+Ow+jmZ4RlEKb8uj/AhNkeCmRvAt4FpBYSdBrzG5dRoQ1RVu/280ex2SUyZJzg2oE/BshPaKVVXAUNL7oI7Q/vsCavKZT2TLVnnHpG52mdIzBZsEcjupDkdvdN+Pqdr7e/Ek4qVIzMK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,40 +123,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 14, 2026 at 11:34:02AM +0800, Ye Liu wrote:
-> From: Ye Liu <liuye@kylinos.cn>
-> 
-> Extract the busy vmap area iteration into show_busy_info, mirroring
-> the existing show_purge_info pattern.
-> 
-> Signed-off-by: Ye Liu <liuye@kylinos.cn>
-> ---
->  mm/vmalloc.c | 14 ++++++++++----
->  1 file changed, 10 insertions(+), 4 deletions(-)
-> 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 797933ba9451..7638845377f5 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -5345,12 +5345,12 @@ static void show_purge_info(struct seq_file *m)
->  	}
->  }
->  
-> -static int vmalloc_info_show(struct seq_file *m, void *p)
-> +static void show_busy_info(struct seq_file *m)
->  {
->  	struct vmap_node *vn;
->  	struct vmap_area *va;
->  	struct vm_struct *v;
-> -	unsigned int *counters;
-> +	unsigned int *counters = NULL;
->
-Is setting counters setting to NULL odd here?
+The folio split path handles anon, page cache and swap cache folios in
+one routine.  That mixing is what makes the swap cache split
+restrictions hard to lift and to review. We now support uniform split to
+order-0 only, and no mappingless swap cache folios. And it has left a fair
+number of dead or redundant checks behind.
 
-Other than that, LGTM:
+This series prepares for lifting those restrictions by cleaning up the
+code first: split the routine into an anon and a file helper, and keep
+all swap cache handling in the anon helper.  The file helper never sees
+a swap cache folio, folio_check_splittable() rejects them up front.
 
-Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Apart from two bug fixes (patch 1 and 2) and a slight adjustment of anon
+splitting (patch 12), this is a pure cleanup.
 
---
-Uladzislau Rezki
+Testing:
+
+The in-tree split_huge_page_test selftest (uniform, non-uniform and
+in-folio-offset splits of anon and pagecache folios) passes 62/62 over
+600 runs on the patched kernel.
+
+ftrace function_graph tracing filtered on __folio_split() was used to
+compare per-call durations between the base and the patched kernel on
+the same x86-64 box (interleaved runs across alternating reboots.
+135 split calls per run, 600 test runs):
+
+Before: 68.52 us, stddev: 1.58
+After:  67.38 us, stddev: 1.33
+
+The patched kernel is slightly faster. The stack usage and object size
+change as the config and compiler change, but in general the stack
+usage is reduced and object size is basically unchanged.
+
+Signed-off-by: Kairui Song <kasong@tencent.com>
+---
+Changes in v5:
+- Rebase onto mm-new.
+- Rename remap_folio() to remap_anon_folio(), and reword the changelog
+  to explain why only anon folios are remapped. [David Hildenbrand,
+  Kiryl Shutsemau]
+- Expand the folio_mapped() comment in the anon helper, and drop the
+  folio_lock_anon_vma_read() reference from the changelog.
+  [Zi Yan, Kiryl Shutsemau]
+- Kept the old test result and the code change is identical, and initial
+  test matches previous results.
+- Clarify the after-split folio freeing changelog.
+- Collect Reviewed-by/Acked-by tags.
+- Link to v4: https://patch.msgid.link/20260908-swap-thp-cleanup-v4-0-b532a3f20e71@tencent.com
+
+Changes in v4:
+- Rebase on top of mm-unstable, also mergable on mm-new now.
+- Patch 12 might need some attention as we can skip anon_vma locking for
+  unmapped anon folio now due to further cleanup, including unmapped anon
+  swap cache (not mappingless swap cache).
+- Drop the two swap cache behavior changes, will be sent separately once
+  this lands, so it gets its own attention. Also drop related doc
+  updates. [ David Hildenbrand ]
+- Rename the split helpers to __folio_freeze_split_anon() and
+  __folio_freeze_split_file(), frozen implies unmapped.
+  [ Kiryl Shutsemau, David Hildenbrand ]
+- Keep zone_device_private_split_cb() in the anon helper only, and add
+  VM_WARN_ON_ONCE_FOLIO(folio_is_device_private()) to the file helper:
+  device private folios can only back anonymous memory.
+  [ Kiryl Shutsemau ]
+- Replace the "bool unmap" parameter with a folio_mapped(), rename
+  remap_page() to remap_folio() and document it. [ David Hildenbrand ]
+- Move the racy folio_expected_ref_count() check into unmap_folio()
+  instead of duplicating it.
+- Make more locals const.
+- Reword the mm/swap off-by-one fix: non-uniform swap cache split is not
+  enabled yet, so the bogus sanity check is currently dead code.
+- Collect Reviewed-by/Acked-by tags.
+- Link to v3: https://patch.msgid.link/20260821-swap-thp-cleanup-v3-0-9b43f5163238@tencent.com
+
+Changes in v3:
+- Get rid of for_each_folio_safe and open code it.
+- Check if the folio is mapped before freeing it swap cache to avoid
+  potential performance lose.
+- Initial test and binary analyze showed everything is very similiar to
+  previously series.
+- Drop the redundant mapping argument of __split_frozen_folio
+- Link to v2: https://patch.msgid.link/20260813-swap-thp-cleanup-v2-0-d2ee48c6aa49@tencent.com
+
+Changes in v2:
+- Return -EBUSY instead of -EINVAL for swap cache & shmem folio split
+  attempt.
+- Introduce a for_each_folio_safe macro to dedupliate the code and
+  hightlight the reason we need to keep the iterate safe from folio
+  freeing. [ Zi Yan ]
+- Rename __split_unmapped_folio() to __split_frozen_folio [ Zi Yan ]
+- Rename __folio_freeze_split_unmap_anon. [ Zi Yan ]
+- Several comment improments [ Zi Yan ]
+- Drop an unused do_lru argument.
+- Previouse test results are basically unchanged, stack usage reduced,
+  object very slightly larger.
+- Link to v1: https://patch.msgid.link/20260808-swap-thp-cleanup-v1-0-689939a7ccc3@tencent.com
+
+---
+Kairui Song (17):
+      mm/swap: fix off-by-one in swap cache replace sanity check
+      mm/huge_memory: fix rejection of swap cache folios with a mapping
+      mm/huge_memory: invert folio_ref_freeze() check to reduce indentation
+      mm/huge_memory: split the routine for splitting anon and file folio
+      mm/huge_memory: rename __split_unmapped_folio() to __split_frozen_folio()
+      mm/huge_memory: consolidate irq and locking for folio split
+      mm/huge_memory: move EOF trimming into the file split helper
+      mm/huge_memory: move unmap and remap into the split helpers
+      mm/huge_memory: rename remap_page() to remap_anon_folio()
+      mm/huge_memory: move the racy refcount check into unmap_folio()
+      mm/huge_memory: move filemap management into the file split helper
+      mm/huge_memory: move anon_vma handling into the anon split helper
+      mm/huge_memory: move memcg switch into the file split helper
+      mm/huge_memory: drop the unused do_lru argument of the file split helper
+      mm/huge_memory: clean up after-split folio freeing in __folio_split
+      mm/huge_memory: count only swap cache refs in anon folio split
+      mm/huge_memory: drop the redundant mapping argument of __split_frozen_folio
+
+ mm/huge_memory.c | 585 +++++++++++++++++++++++++++++--------------------------
+ mm/swap_state.c  |   3 +-
+ 2 files changed, 307 insertions(+), 281 deletions(-)
+---
+base-commit: baa8de2f3448d1466a888a805c18d01c998fe052
+change-id: 20260804-swap-thp-cleanup-6ce2be6cf3b8
+
+Best regards,
+--  
+Kairui Song <kasong@tencent.com>
+
+
 
