@@ -4,135 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28593C88E6F
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 20:29:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 998E0C88E73
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 20:36:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F25F06B0088; Mon, 14 Sep 2026 16:29:18 -0400 (EDT)
+	id 263846B0088; Mon, 14 Sep 2026 16:36:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED68C6B008C; Mon, 14 Sep 2026 16:29:18 -0400 (EDT)
+	id 213606B008C; Mon, 14 Sep 2026 16:36:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC4E56B0092; Mon, 14 Sep 2026 16:29:18 -0400 (EDT)
+	id 1298F6B0092; Mon, 14 Sep 2026 16:36:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A55226B0088
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 16:29:18 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8B5111A0251
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 20:29:17 +0000 (UTC)
-X-FDA: 85213507554.12.A72E849
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
-	by imf01.hostedemail.com (Postfix) with ESMTP id B470640005
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 20:29:15 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="hnhX/uo8";
-	spf=pass (imf01.hostedemail.com: domain of isaacmanjarres@google.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=isaacmanjarres@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E94886B0088
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 16:36:53 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 70038A024B
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 20:36:53 +0000 (UTC)
+X-FDA: 85213526706.30.BF6E672
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id CADF1C0002
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 20:36:51 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EFUlY8Zx;
+	spf=pass (imf22.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789417755;
+	s=arc-20220608; t=1789418211;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M1RB04FVKilnMj3CUMQjbhrQYe/qiVYK3aULFxVnZe0=;
-	b=Cq0zHqpKv7LY2Rvy8BOGlZZauCf6DjnznTwzQC+H3zjrRN3ok0PbbO34zl4Da45FfcFMVI
-	WB/kT45ntCnPEye5NVT0MV1UeEezneX5HCx9eobe7E+MJmOSMm3LInguCzAINrk/P/Unfk
-	3Q1Kv54uzVzLSWxv7oZkp0oKTfYuIiE=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=bcOX7r1Cj9VeZWKm8zDkuf0BISjIkiCvFWWoInxB8sU=;
+	b=jdt2VeqG8i3tfoYLL/jAB4rMGU+JBGzXuM8RLQOU4fctOL9ICjiDJGNVTdxuW/BJKmIjOx
+	ywcV6RyB1cqzpYjtNVK0CF0TvcWaFeAHsoR467ZQoJkxfNa1wwn8yH42D1GgtESVMN26rV
+	cwFdLuOzFRE22x7bbcUCXT0EFgSYZYo=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="hnhX/uo8";
-	spf=pass (imf01.hostedemail.com: domain of isaacmanjarres@google.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=isaacmanjarres@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EFUlY8Zx;
+	spf=pass (imf22.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789417755;
-	b=GO2iCuzAfE+RYdeCDGiIWcISS4Xf6QoH/4fXZObBcGey569zLNP40AOl/z1khv08nmD1TE
-	lgDuZ/0+foViZKqx/Xn4AkMT22enDjiL+AO27UFtpHSMSlz6unMCZXVL6LvpnV9SLJVaiT
-	aPKNKrYrkj4N1PzWfdoScS2Szz173ao=
-Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2db425c9050so195825ad.0
-        for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:29:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789417754; x=1790022554; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=M1RB04FVKilnMj3CUMQjbhrQYe/qiVYK3aULFxVnZe0=;
-        b=hnhX/uo8/2sMBTGPzFAWmMy2OdLIuZc3MvQdRcKf1+v0CLU51cgdrs0NWaZmi2AOZy
-         995/wPxeIE61t/UL1Kw7j7H+tGe5tpociboaqud0Vnm5COLbf2xu+xcPnMhlSc6araqQ
-         yiagVjU+5oebbthAvpZoTxVWGMDUO+1UgXInBD+UBr31Im7I8JRNODrO/Pw87WFdNqa+
-         iXpkqPiUuyxxlN68K9I+fulL0DpkFhP0v7ERwAhpzlTiOTpxX1hbdTfXV2OdPAcwn3/+
-         MYtqP4IjyPMP4gQVJDNLmgpOPNoioLfoAkpbUoTTPTyL8Sn+W0pHFuQ0vm8d2VwfpT+w
-         R71g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789417754; x=1790022554;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=M1RB04FVKilnMj3CUMQjbhrQYe/qiVYK3aULFxVnZe0=;
-        b=CVG3uPaPU7DAA1+jVyLIJgWhX/q6ueEV3A1WZbeGdgMdrE0/1sHFSaFXtfPKlS7uuO
-         OsZe6sMDZD+II+Q881EWI+MQ5hiKP+04aUqB2BoxEaBD+iJ0CQsWfi3Cr0DMzDqXq75w
-         35xtAi5K/jqHjq5qUQc6BKPwfsJ4ElOCkUyAI9KODZb9KoNPy3RvMR73zQRfZ/+gjAmX
-         lfui1lnW3lIk6aHX0GvmioRNp17QJEGhGARa01WZG1/biHbowNs/QXJX+yzWWaQ/w56V
-         +IcTz/VkcnoW3DHqG4xuQC5J4lxj6Pm54cgZarTfEEcMVC/zMm33fcQeT2A/pVGYOlOw
-         bETg==
-X-Forwarded-Encrypted: i=1; AKwUvBwhctIkn2sOlWSdFaeA4yYfte/YU4Em7iuBDrcWilly7Du7jnfE1LrFUX8ru5aVZw6rJKYQcMFOHw==@kvack.org
-X-Gm-Message-State: AFuF++kTG76eawIYUyL8955u94r9fNLhr1rfYK7q9n1/lBr6BWSyV0gT
-	YzePlOfju08D3n8B4JfM2inY31WD2ncllmqjzK7PMWGNp0CwhI/d2D/3m8xaz7MJKw==
-X-Gm-Gg: AYBFou1wy62VrGPeM7iK0UV2+RUiuy4CBewCFmyCn7nUTanhCTdCtQnPVEK4IOyP6R2
-	da/m0eyPrmBeI+Io8vY0/P6OzozojvGiNHMSSWzKQxxs8cTckdySH/QpBc9qPhQbVuZNAdpgdHs
-	vR/VzlZ2/GBtI1AlDay1vxMA5HxrKVac7je3kxpUIkSZEIJ9tSwkLfgfBI5rO0cPqIpadJ7Cm/z
-	Hlk3rej1/egHONfqfxpx07Tmz3GtsPaadcO29DNIwTdaDoUaZaaHZqEIkmOxStZll1+cZHr3g+z
-	9uv/ehRb3qy+v02ECL8C7dTdGBoX9GrccBixCWlQ9+0zJYfhoH8+nhTu3EBZzRKxXtcBrKQBwSw
-	tlbozmriuIwkhfII3G2REWW+tV+mfGfAT97HGYhxXfpD20Q7SiXoIB3U89N34bBxUtJT2iIrY2j
-	UgPum2O/JQhkrHNqH9MdEkGTrCNA2Qov5w6hWSeMmtBNZwoEph5GSXQ+0mv8C4NuwqBPVNXkxMf
-	OpeY1ZO93X2ta0dvopB94f1EnGHpbZxUiWQzg==
-X-Received: by 2002:a17:903:1b63:b0:2d5:cad1:a2e8 with SMTP id d9443c01a7336-2dd76b014dcmr2269015ad.6.1789417754079;
-        Mon, 14 Sep 2026 13:29:14 -0700 (PDT)
-Received: from google.com ([2a00:79e0:2e51:8:9e:b709:96a2:f1d6])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-14365b348cbsm27582654c88.3.2026.09.14.13.29.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2026 13:29:12 -0700 (PDT)
-Date: Mon, 14 Sep 2026 13:29:06 -0700
-From: Isaac Manjarres <isaacmanjarres@google.com>
-To: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Cc: =?utf-8?B?6auY57+U?= <gaoxiang17@xiaomi.com>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Xiang Gao <gxxa03070307@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	=?utf-8?B?5Y2w6Zev?= <yinchuang1@xiaomi.com>,
-	"bpf@vger.kernel.org" <bpf@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"Lorenzo Stoakes (Arm)" <ljs@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>
-Subject: Re: [External Mail]Re: [RFC] bpf: account ring buffer backing pages
- separately from Lost RAM
-Message-ID: <aqhZEuQTu394hYB6@google.com>
-References: <20260815091819.3651099-1-gaoxiang17@xiaomi.com>
- <04f3ce2f-67f5-4829-9551-a69b9df29854@kernel.org>
- <CAEf4BzbwZkoacX-iP1j4+p8YNbWsq0pc3eTermh2uT5ir66zbw@mail.gmail.com>
- <8d2e20842c24460296e4c83e6dc0dde3@xiaomi.com>
- <CAEf4BzYQvhSVN=Hggg5FHzFdkRr4UNBD6yXaBsOaAwbsRpXpsw@mail.gmail.com>
- <aqSNkbhIuaB5D0H0@google.com>
- <CAEf4BzbAOgwQqsRQnY4yxvubLtioQNL_BBHer4ExvNF7Rvvu4w@mail.gmail.com>
+	t=1789418211;
+	b=jTm2KO8Yr6xUh31/5Kx468qnW00HUmx7ZPBIaBTRqknOGx+5FsCW/uqQzuY5eLDD5LGYj4
+	GOyy/Z/itrsxt+pQh/v+QE+UuwY3lpkE1KJGyW+jOfQprd0ZjoqdJm6yKe2RWETn+5oof3
+	4EzvGE2lOIGjx+2ToHTbR40QepjnZhU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 66BF760142;
+	Mon, 14 Sep 2026 20:36:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65B521F000FF;
+	Mon, 14 Sep 2026 20:36:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789418210;
+	bh=bcOX7r1Cj9VeZWKm8zDkuf0BISjIkiCvFWWoInxB8sU=;
+	h=From:Date:Subject:To:Cc;
+	b=EFUlY8Zxcn4IMHCDhXLwi3lLqS8BIc4GDHJBEys/ooFDVHK5zIcC03PPr+MAyT+r+
+	 udFBWZMIvzD3eqXcutwtyBDBRvrZB+8Bqf9XyNfqHr1+2o1mATnzDnWIuf1/GiT/H4
+	 rnargqIQ7Cnr9tdTSfBmfshE/xxfklIxUx2ODBp47Pb/oma7CNe6byrx6a3F7XqR6F
+	 BT9KW0AChvQ21t7etBW5/bd3balwiTVChKV6+qY8Yl9fln6W1PysJ6YrNTSO1LnqP1
+	 gRxJOPZhf/qNM+DTKPrA9KGz0Y74qHaabIOoTPArxd4+wFTmfXhXE3kCulfgods8ie
+	 C3WavO0elK6zg==
+From: "Harry Yoo (Meta)" <harry@kernel.org>
+Date: Mon, 14 Sep 2026 21:36:39 +0100
+Subject: [PATCH] selftests/cgroup: ignore memory.reclaim -EAGAIN for zswap
+ writeback test
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAEf4BzbAOgwQqsRQnY4yxvubLtioQNL_BBHer4ExvNF7Rvvu4w@mail.gmail.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B470640005
-X-Stat-Signature: 4bsj38ji881b3wbhj5hd4qy64abkbynt
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260914-test-zswap-wb-ignore-eagain-v1-1-6fb715c22cd8@kernel.org>
+X-B4-Tracking: v=1; b=H4sIANZaqGoC/yXMwQ6CMAwA0F8hPdtkQyEZv2I8lFFHOQyyDjES/
+ p2px3d5OygnYYWu2iHxS1TmWGAvFfiRYmCUoRhqU7fG2Rtm1owf3WjBrUcJcU6MTIEkorGu8de
+ WiJyBMiyJn/L+7ffH37r2E/v8LeE4TpUhhdJ/AAAA
+X-Change-ID: 20260914-test-zswap-wb-ignore-eagain-0195c36aaa90
+To: Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, 
+ Nhat Pham <nphamcs@gmail.com>, Usama Arif <usamaarif642@gmail.com>, 
+ Chengming Zhou <chengming.zhou@linux.dev>, Tejun Heo <tj@kernel.org>, 
+ =?utf-8?q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+ Shuah Khan <shuah@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Kiryl Shutsemau <kas@kernel.org>
+Cc: linux-mm@kvack.org, cgroups@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ "Harry Yoo (Meta)" <harry@kernel.org>
+X-Mailer: b4 0.15.2
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: CADF1C0002
+X-Stat-Signature: i35nam4k4mn8d5e3u8thp9d9b9jqh7aq
 X-Rspam-User: 
-X-HE-Tag: 1789417755-504508
-X-HE-Meta: U2FsdGVkX18s846j5TdHgY7ch+lRaaQnKoUhcj+Y83i4tCW3zucQRkT9lePcPXR+t8fJ1KwcyKdA7w4ak7BHF3sfCc4F+WrCFu8XPQ/5bAPETpnEfbknKocIecZeuBXL2J0fymB6k0xo/mg4ggkfXUe2G1Hx2gtb3cmxHIlbNiXeGFn81O4MidVpZ7FIcIS66Uko47A/w/GO3m5siFxU42qKFf4bfr+uR52pa+5v0K7oSZ/U5JJUFJN56nyIjMPF52Ig3pTzO5QKCtxh5+PhTcL3XsICSLVwCFXc/C1FlUf/AE+lDwuZiStWkAwVYXRz7wx809+sNXVl9tvVn2kGQJNZ3eV70YVcujQaFeixF4tfjO9sJqOE0qTIpWCE22N3pbgq00rebkFqn7veUZOzp01arAALl/MDCbUguY6/3xxLO+CISpYQu8li4HBllKHAX9Zs8GucTD6p7t9rt5Ntrp1ohrYt45F/R6BAY2v5Ih9qySdui/aPR4vQp4Nxbx/0toA7wboAoPbj7KmVyqnsyBr0BLcuRcPfK00okc0oOisskEGbIN/yfz21DUKh7puK2G16Qu47wuFfagZ4yrhct5c74YqkAUJ+NbsKlqYffl87fvo7fF3IWgZ6VMEjPGa+G46GxpjGP2No6xLZUeP9JBh7TDJ0daCjSNUuNeVDvhEcKlJNj11I/346LRP0OBz/QgE3fdbR0B1qGQUllHQ2b0wdR9cdnS/KoJ0PIsXx10J6MMcZieCloWVFNeq5A5/V7xHlQASGWO2ZbdiEPnZPEH9vzP/ZW5QaRYtyZln1QaJN/S36EhGQFBBc4464Yi0B3Navu1Mm/AYnz7RKH0Dj+OaEK107LnGCoe9awDCvZH1Giu4Dm9kNXnejlT4X8d3DhtYv5Kdcl+IZSMk8ac6MZOXpAMcCIwJnQq1PFjUCLzm3DaaDCvvoXR1JMoy0L0XJIp5WrzDB3cLHCviUDv0
- 8ubRRfVM
- kR6LM/tyJT/oCQH6fDKFBEDj+qXR2JtcWScOfWeYL8yhyWW4gKyE+1Lg7pkEee3VA163o4wo+8MFlv4P7KkRfwcqjwrMxpEfKAXBBMsa/tQZKV0zD4xqGrMje9zIqiXhCqYP4ELVq5K5/Z9Vv0m31BVVS7FZv91D0UrrEUr1mqyYxKgheUwS+zQ5X0OMxAXo3Jsk+siBzFaMkrAlKPfaOC45Gim7BlZryLgi5QvCwyPCG+nAgzJrHtdN6tdYJvmbdqii3yPq896xhWl23UjpNdy+oHNFo9KBk/kHCjehfTpyTcnWfiaVhBhjvQO/UwA74xR5R2zu6CQjyuMCdpYvFtk+VLeN027UzYX29ThetQV/nSeM9Y67gXx8+VWpnqM6SrLc20eiUaTfGkckG4rfm2IkIWW4ty5XBkBAICLV4ZmhPSD/hHcZF4i59I2Oj6zTtHSo45kQlZTKNOieu+T0tgYcl+cVdA73B+dT+XvHf7/mrPm7Re28oQ2IUONwEfw0mqbck26Xo/9T08oQ=
+X-HE-Tag: 1789418211-634604
+X-HE-Meta: U2FsdGVkX1++FfeA/2Id4knriXxSLW2l2uPm/Inb5a8gdLcvrsDUo2iMqHwDGp27NVEe3NRudg6mwtvmfkGURUR/196NGnq9z1OKGiTwNFvGrKBxohbogI4d0w1fNhlprpZkrvWhUDI+en+8bnn0Mq6he+OsewjH1N8BzN27le/Z4J6WfIzzDu75RqtogzxSpKWIYEingheFDEGiBURRM5lw3xZiqdVVEebbko2zcaALNbM/xd/5C/2Vh/81XeATSMzh7pvODDG/Bj6NLREFMF6Ydp/bl0tKQSEzoemITM3o0Oe/LEVbn40OsvqBKh3Tu0CRzsm5z0hDONIz10Q7I3hm/nZ3m2yc3wlpRgnaJ45B4Pr6v5xKO6OXlG8z6nK3xWVd3BYyBi2wf2vDrZ6jEZVVzufGA8pLcukbzg8vN7dC5mwfgAbq+CG7ZyNSdq72QE1iXM2aKfOiBZoScjTLtwDVPFBN3FyHdnDgy7HE9FnDIl95bJlkuK+1aHq/mlM6mwpqgC0+nV8JFFwJVjUgWllbAUfdDT7E3WMCcVrQkiBIFWaVj7jd1NcOeH/GGPe905/xe1O+ti9iJgdFeZtuDGzmjFC9hyiLx/7qU+PAEy1nzyklSd8/4T4Y5hqVD3E9OTscAQnGJs8kVd3MzO1MdYRzC6OvZLh13VbL4JN4V8RRbfWTlHxwhOOcJdQD1mkYJ78Re03N+vCx1DGMnFKxSOfVwphe0lzTinXXlPClPzbGGLKzyw3GXsvs0ocPAVeKmat+F3hFN4dZf/IreudH4mSqCH8Dm5MyHcNmd3pm17SZpxa+NVJSZ3Yz0Tmy4+FvZ9YRNBjc8SHbV1RrXLqoVZdjBRh9q384bQ+xEJCRK2oAiG9QxFnkRVhFkNg9lTRwgC/QYx5tWQYPGvR4bkrs7zbYmjVmjSY+xBK7pucWMLdSooKi9qGDxAFOxnrftEP08rejTDc0ALB33wjmcbJ
+ KbjDoptx
+ 2yS1FDt6awLZaCi5UzqlVCGs8TDsxlEZkHUsk9KAr/IZQH0U1z6v906VzhExA5RCizCOckyhEwO8Hx3jVt84wrDJ8zLRnP/mMuLhyRPCs8aAJ4PcKsTI4rVgY7UxN1dPkuyfnnBC9GRjDQXwF2hBnR8vG5hqJxdwZf8ytMgdPkzHYGltXy3PRqxroL/uIiJ2rErAccxyVLeR20BYaNXbl1xn2hqUed0EW6E6e5YIaGBVIU1v2QetrZG+EbJJBeLCehURIJtvdelXj4V54vW0FaFtKWOgjyDVrxOU05SWH9guONFuoe0o44E5v+VCei6cHs25y
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,76 +100,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 11, 2026 at 05:04:55PM -0700, Andrii Nakryiko wrote:
-> On Fri, Sep 11, 2026 at 4:24 PM Isaac Manjarres
-> <isaacmanjarres@google.com> wrote:
-> >
-> > On Wed, Aug 19, 2026 at 10:24:28AM -0700, Andrii Nakryiko wrote:
-> > > On Tue, Aug 18, 2026 at 6:46 AM 高翔 <gaoxiang17@xiaomi.com> wrote:
-> > > >
-> > > > Thanks for the pointer. Understood — no new NR_* counter or
-> > > > /proc/meminfo entry.
-> > > >
-> > > >
-> > > > The remaining question is on the consumer side: Android's Lost RAM
-> > > > accounting would need to enumerate all live BPF ringbuf maps
-> > > > (BPF_MAP_GET_NEXT_ID) and read each map's fdinfo memlock to sum them.
-> > > >
-> > >
-> > > For BPF ringbufs specifically, you should be fine just iterating all
-> > > map with BPF_MAP_GET_NEXT_ID, getting its FD with
-> > > BPF_BTF_GET_FD_BY_ID, and then passing that fd to
-> > > BPF_OBJ_GET_INFO_BY_FD to get map's size.
-> > >
-> > Hi Andrii,
-> >
-> > Thanks for the suggestion on this! I did want to express a couple of
-> > concerns with this:
-> >
-> > Scalability
-> >
-> > I counted the number of maps on one of our devices, and there are 112
-> > maps, meaning that there will be between 224-336 syscalls with this
-> > approach. eBPF is becoming more popular, so I'm concerned about how well
-> > this will scale, if we have to invoke 2-3 syscalls per map.
-> >
-> > I had a test program that implemented your suggestion, and it took about
-> > 2 ms to identify 39/112 ringbufs. As the number of maps in the system
-> > grows, I'm concerned that the latency associated with computing the
-> > memory usage from ringbufs will become even more expensive. This is
-> > something we had an issue with before on Android, where we had to
-> > iterate through various sysfs files to gather wakeupsource metrics [1].
-> >
-> > To improve on this, I was wondering if we could expose the ringbuf
-> > memory usage and potentially other bpf stats through bpffs
-> > (/sys/fs/bpf/stats)? This counter could be a lightweight counter that is
-> > incremented/decremented on ringbuf allocation/freeing so that when it is
-> > read, there aren't any expensive computations.
-> >
-> > For this specific metric, we could just use a counter to track how much
-> > memory is being used by ringbufs and have userspace read that. That also
-> > brings me to my next point.
-> >
-> 
-> I just don't see a good enough reason to single out ringbuf maps
-> specifically. other map types also use memory, why would they be
-> excluded?
+The zswap_writeback_enabled test fails when a write to memory.reclaim
+returns -EAGAIN, which means less than the requested amount was
+reclaimed. attempt_writeback() propagates the -EAGAIN to the caller,
+and the test case is marked as failed even when zswap writeback did
+happen.
 
-I was looking at ringbuf maps specifically because they allocate memory
-for the ringbuf via alloc_pages() and aren't attributed to any counter
-that is exposed to userspace. The other maps use either the slab
-allocator or vmalloc() to allocate memory, and those entries are visible
-via /proc/meminfo.
+This heavily depends on the performance of the backing swap device.
+Reclaim does not wait for writeback (on cgroup v2), does not count pages
+that are under writeback as reclaimed, and memory.reclaim gives up after
+MAX_RECLAIM_RETRIES passes without making progress. On a slow device
+where reclaim does not make any progress before writeback completes,
+a write to memory.reclaim fails.
 
-> If you are worried about too many syscalls, look into map iterator
-> program types (grep for SEC("iter/bpf_map") in selftests). That will
-> be super fast and way more generic than what you propose. You can ping
-> such program in bpffs and that will be you custom /sys/fs/bpf/stats
-> implementation that you have full control and customizability of
-> 
+On a VM with zswap enabled, where IO delay was injected via dm-delay,
+the success rate of the zswap writeback test drops dramatically once
+the delay reaches 11 ms: 7% failures at 10 ms and 79% failures at 11 ms,
+n = 100.
 
-Thanks for the suggestion; I'll look into this and let you know if I
-have any questions!
+When zswap writeback is enabled, ignore -EAGAIN from memory.reclaim and
+determine pass/fail based on the zswpwb counter because that is what
+zswap_writeback_enabled actually wants to test.
 
---Isaac
+With this change, the test reliably passes even on a slow swap device
+(tested up to 1000 ms delay). This makes the test resilient against
+the performance of the swap device.
+
+Assisted-by: LLM
+Fixes: 158863e5d7cc ("selftests: cgroup: add tests to verify the zswap writeback path")
+Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
+---
+- Huge thanks to Joshua Hahn who kindly helped the investigation and
+  the discussion of the problem.
+
+- LLM was used to perform experiments with injected IO delay and
+  to investigate why memory.reclaim fails (and verified by Harry Yoo).
+  Everything else was handcrafted by Harry Yoo.
+---
+ tools/testing/selftests/cgroup/test_zswap.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/tools/testing/selftests/cgroup/test_zswap.c b/tools/testing/selftests/cgroup/test_zswap.c
+index 1ac779072775..d50acc1b83ac 100644
+--- a/tools/testing/selftests/cgroup/test_zswap.c
++++ b/tools/testing/selftests/cgroup/test_zswap.c
+@@ -346,7 +346,16 @@ static int attempt_writeback(const char *cgroup, void *arg)
+ 	 * it can't writeback to swap.
+ 	 */
+ 	ret = cg_write_numeric(cgroup, "memory.reclaim", memsize);
+-	if (!wb_enabled)
++
++	/*
++	 * When writeback is enabled, memory.reclaim may still fail to reclaim
++	 * the requested amount of memory due to a slow swap device.
++	 * Ignore -EAGAIN here. The caller determines pass/fail based on the
++	 * zswap writeback counter.
++	 */
++	if (wb_enabled && ret == -EAGAIN)
++		ret = 0;
++	else if (!wb_enabled)
+ 		ret = (ret == -EAGAIN) ? 0 : -1;
+ 
+ out:
+
+---
+base-commit: baa8de2f3448d1466a888a805c18d01c998fe052
+change-id: 20260914-test-zswap-wb-ignore-eagain-0195c36aaa90
+
+Best regards,
+--  
+Cheers,
+Harry / Hyeonggon
+
 
