@@ -4,83 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0867CC88E6E
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 15:36:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02C5FC88E6E
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 15:51:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC83E6B0095; Mon, 14 Sep 2026 11:36:32 -0400 (EDT)
+	id E70D86B008C; Mon, 14 Sep 2026 11:51:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA6C86B009E; Mon, 14 Sep 2026 11:36:32 -0400 (EDT)
+	id E0A6A6B0092; Mon, 14 Sep 2026 11:51:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB6406B009F; Mon, 14 Sep 2026 11:36:32 -0400 (EDT)
+	id D20AD6B0093; Mon, 14 Sep 2026 11:51:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 96C606B0095
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 11:36:32 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1F7EDA01A5
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 15:36:32 +0000 (UTC)
-X-FDA: 85212769824.23.4025AD3
-Received: from smtp4-g21.free.fr (smtp4-g21.free.fr [212.27.42.4])
-	by imf25.hostedemail.com (Postfix) with ESMTP id C3960A0007
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 15:36:27 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=morinfr.org header.s=20170427 header.b=DFevq27h;
-	spf=pass (imf25.hostedemail.com: domain of guillaume@morinfr.org designates 212.27.42.4 as permitted sender) smtp.mailfrom=guillaume@morinfr.org;
-	dmarc=pass (policy=quarantine) header.from=morinfr.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A8E1C6B008C
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 11:51:21 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3CE74801AF
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 15:51:21 +0000 (UTC)
+X-FDA: 85212807162.16.8C88499
+Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 834B780004
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 15:51:19 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=ncVV43Vo;
+	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.205 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789400188;
+	s=arc-20220608; t=1789401079;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=XijXhIvSeP8ZpB+BL+DisRiFWyRHQETu+uNwniewtOw=;
-	b=GoLqi8aibDKobhc75y3oxD9BSPCTKsZGTNmvadHMvNsSevRIRhp/Q8nZL/mBBH48Ra9N4t
-	GfNALzAuM+0h1qQX3lgmlrbdZ8tGMtq5t4p0ESBamyOqhmT20tFzeCluK55mzLLZTXrEcN
-	O3TPANX21aV6w/7+7E0lo+/c3jlSKqQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789400188;
-	b=tVCvN1kFirH8626gB1wxAOHn80FtoI9lgWJNNmzRI+kEVQ96r7uStEEpceBuMbMBbswQrn
-	hstvIZZ7UAQ48ny6KJHnKXq5tJaK/bHZAmKo8GL4jXK0f6zheBVnQr6/CoMPkENk+CUCqM
-	E4PTpHe2uv+j4Efhs3pTSTGPx8ujA50=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=eU9VXoF1KJeJ9qFFfIMdTfngvLjdefOLFWals6AtDzc=;
+	b=NCPh+LrimRAuBQVHF4KcpMALJfxL8F8zU6MaQo5HHAelAtIDj+018DjHe4BnQOreiYgW48
+	4/FxC404sqnGHcEDh8K8B7eT7kLBlrpmMfra8tYdDUT7MZzFS3Fk0b7jK1pZsyZNgu2WWb
+	RbEyiOivFtcmBN9cnoje7dWqZZFg+7o=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=morinfr.org header.s=20170427 header.b=DFevq27h;
-	spf=pass (imf25.hostedemail.com: domain of guillaume@morinfr.org designates 212.27.42.4 as permitted sender) smtp.mailfrom=guillaume@morinfr.org;
-	dmarc=pass (policy=quarantine) header.from=morinfr.org
-Received: from bender.morinfr.org (unknown [82.66.66.112])
-	by smtp4-g21.free.fr (Postfix) with ESMTPS id BAC3C19F5B2;
-	Mon, 14 Sep 2026 17:36:22 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=morinfr.org
-	; s=20170427; h=Content-Type:MIME-Version:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-Transfer-Encoding:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=XijXhIvSeP8ZpB+BL+DisRiFWyRHQETu+uNwniewtOw=; b=DFevq27hwxd/YVgJbls82NISEH
-	68/0JjFfjMYFjbB9BHE6am8/E9ZFYAj4ioeeaujSl0Tf1Lp+n7pRRg1TV3Ke40xGzQqXmg5k7RB+f
-	Ma62jula8HxOKC3X1+TnOpSd1HlheQGaWpn8z7N+uzdhlxFqUW+7PcgsQ29izgEH0Fzg=;
-Received: from guillaum by bender.morinfr.org with local (Exim 4.98.2)
-	(envelope-from <guillaume@morinfr.org>)
-	id 1x68jF-00000007zFJ-2vMg;
-	Mon, 14 Sep 2026 17:36:21 +0200
-Date: Mon, 14 Sep 2026 17:36:21 +0200
-From: Guillaume Morin <guillaume@morinfr.org>
+	imf30.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=ncVV43Vo;
+	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.205 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789401079;
+	b=PTSr62XXTO5qALLYhUfBNnb4vz5Fk/lv1qEWQ0Kk64tGbmeqtj/XnW/TCPCvrfoNoEVchv
+	O62NjOYnLAu9QRy2n7entEadTLEi9EYnZ4UX8zVIOXFz3iSqBWlH9gV2uBhHrCmCU0iP8h
+	jNplMRCfhvXQod0FBfHcchpI8jTEdHk=
+Received: by mail-qk2-f13.google.com with SMTP id af79cd13be357-939656ff6d9so254986585a.1
+        for <linux-mm@kvack.org>; Mon, 14 Sep 2026 08:51:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1789401078; x=1790005878; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=eU9VXoF1KJeJ9qFFfIMdTfngvLjdefOLFWals6AtDzc=;
+        b=ncVV43VorP7JU9gNMQ6z3L69vSPC4oQIq+pAe6fDN+hvzHPBsY/xjeETaO0yC53rzY
+         K4SGi4C9RSCtTOyVOFxXImrYA7ZUPVbdoHiWpS7C2+jVN+nBdV+Vq/FQH6Vuzh4K/af7
+         LCmqdNGjsCe6cVVohKzP/u19LxjoCTW1cIo6C6x4G3Tkl3IFJnJN6JpRBHbNGiKGjURf
+         9FSBtXvoQMpSnUY/wBL2XCfLM50DrXY++oqK8EuTX+2pU3KYbEJEngb9nIBHmCVKQ1vy
+         0Nir2FIwRZ6l7h4vDx8jVnDvKEV45yIbG65BBnGYhmScXVnbkA/ksmGo4/QHvdHgL3Rg
+         Qvhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789401078; x=1790005878;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=eU9VXoF1KJeJ9qFFfIMdTfngvLjdefOLFWals6AtDzc=;
+        b=a52gwcodG3r3kvPE8PTjDk122H5jIFw3y3RBdLdgQU19DI98BMntAajBE9tjVPtEp5
+         skDjk7vlos1Z9UAkwSIpCm6XfoeZzqfyskSzldus2iIoVE7YlQm6tKhO5U9UEPt/Zs1g
+         FQhOtMD9JiSR/rQZCPjbG3/y7pbBrX8Rxj5PsSFoghgdRAnZu2QHZBzTdk8smx219Xwv
+         +v5T+p4V97L0mwQifuKFrWsgOshv3tEGlgrRZ5m3vqI3GCKrgayAxvmxpPxLee7umczj
+         NA2TyHBb/HJjwOXJdcTcclGSI9NEgP3y7/O/k3eUiI7g2HWk9cRYJVGpdd7lRayl1XVB
+         ULVg==
+X-Gm-Message-State: AFuF++mC8A7OSKmeJ4++ZE2JlyhqOfrU6A/A5ZYKnyJWo3+bRRBmrP/u
+	eJWGIgoEbgP8t2ts1cXx1GKhZip67EuP4sVR1pIR6xltygfa/JVqDkJAGp5uQjaEZUIQOI2YA0c
+	rhlVh
+X-Gm-Gg: AYBFou3Of85A265cA4Kx2xLFQnM5BqWyZbtSs4wcADdeO8R1O1BQIkvcadZqskoY61w
+	TPCBJ3/wotUq30VNl1JUkCz/TPaFPaVvqhU6H4RAmqMqfwPZvxK3z9k5pzmoSL1tZKWZhCPGuvm
+	LyOJFtq9MR1utTCTSkFs3M4UqPMrUAb7lFXImM8KvCAAnC3hBSEPlXFMyQBBmCU13MEazTCi+pQ
+	iOqmPGqJQXOTbdyunNKafo7fJ7pPhT8V9yJFb/jN5h9AbY/XznREEofq6uNMXQU5/Rdw3U93txT
+	+R/C/2AFzETDcIAa36u/SHT2lHCKZgJh/YIbdSrMYJQqBfBWK6bKrxikQ5CGc0ao4RQdf5jcrdo
+	kBW2hf1c7w2L8+m5Dla4RyqtK9IWa2iRYITXeRCgOJdYQWCh9eRHdalDdy0dtJKj3GdkGU9C+l/
+	UyazuMk20W4HNoYStKEu0VfVX6xJC7ikzsDZC7pn3BPcYkYAwhONWt52LFTjG6ninnDbeeBxadT
+	uWCjp818ZzhCSKMCgTIHHtstB/93WB4R7U33hn/pOLdq68eBJBVLKQCp4x8zuTXIMkKByw=
+X-Received: by 2002:a05:620a:4626:b0:939:e6a7:dc with SMTP id af79cd13be357-93a29bfd291mr439988785a.52.1789401078460;
+        Mon, 14 Sep 2026 08:51:18 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93a2d4514c7sm155963085a.28.2026.09.14.08.51.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Sep 2026 08:51:18 -0700 (PDT)
+From: Gregory Price <gourry@gourry.net>
 To: linux-mm@kvack.org
-Cc: leitao@debian.org, guillaume@morinfr.org, rppt@kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v5] selftests/mm: hugetlb_madv_vs_map: add underflow test
-Message-ID: <aqgUdbtumaO8RiIb@bender.morinfr.org>
+Cc: linux-kernel@vger.kernel.org,
+	kernel-team@meta.com,
+	akpm@linux-foundation.org,
+	vbabka@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	brendan.jackman@linux.dev,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	rppt@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	nico.pache@linux.dev,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	usama.arif@linux.dev,
+	kas@kernel.org,
+	matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com,
+	byungchul@sk.com,
+	gourry@gourry.net,
+	ying.huang@linux.alibaba.com,
+	apopple@nvidia.com
+Subject: [PATCH] mm/page_alloc: let the bulk and folio allocators carry alloc_flags
+Date: Mon, 14 Sep 2026 11:51:14 -0400
+Message-ID: <20260914155115.439742-1-gourry@gourry.net>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C3960A0007
-X-Stat-Signature: pye3nnhoasftpuwjadmd7xre31mx89ds
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 834B780004
+X-Stat-Signature: zqz5nkqbwgpoh8gsfh535axjqp98qzgm
 X-Rspam-User: 
-X-HE-Tag: 1789400187-764131
-X-HE-Meta: U2FsdGVkX19oR+DpJLRAEbIJxNA/3vtDKQegZPjtndaJUMMFt6GatnDWXiIC8nDQU+zyynavVLQ7tPkVqanmBnAsCU1jLuuJb14cqxFYRhlRwsrvYWJPMx4AyVcsBMXrkBJTalVsfRHgS/USL0G5OgyATU1XPXbUeyqUU8MH5cqt7W4n0zOk6zZz/7EJzUhUX0DPEfOGN9uWyOKs/llYHB564AWncrc8dMvOwkyinsGLH2WW7LCA+oFo/aqebiRKvF8K86GxLi0tlK/wZlN7S5r9uc2jkzJZUZ7Bde0IkJMtWosPtUdXzAZh8kzNRmnIGoDhbCNO8RCJqLtsq8u8UFHgJSAksUzeo3X9xL+fF4LI+KjWW8ui3zJUjhVHjOrRixyYiuRxlZ2eiIOuhHHezXoISZDhIYsrYugsxV3vAU7EVtoDaMOiixNPJjLh3/DZxhgAoIFrspAASHsAVE7verNB79IPiJ9FJnTiagufrOzKb7G/H8i9gph9GUIjI/cIrsf0rnRk+2oUNfOLAXKSqCust60IOo1+0vHvbUZr8draqnIORp81V3tMwA0OaD4zqZJuoq/MDap4sjaVG/Q3XLZMkLqTKUD01i8MFMYR0+ZbasPgrXzbZ/rwFr3xFbByLJDuzvHB9Q6yTgECwAzkAy2x2dopYmqfo5o9rxaJtRz6vSr70BDL4GEASNLS6OenB5hLgcDfOkfKlP2C6980af/QjJ9Elfq80NG15UIiPBuRM1MXBiAlWShK0p6SgES+g0ykm9FjM4pKsnDs7Mf600ixXS2do23XNtcvyR3sEzlkj6Yz5qbk3GekFuOWC2b4I/0xBa29Q1dGrh1dArkDvY0dxWWxxx3HfOeN6alzZhqdCBuG8sOQRyFsLnepcKq5NBXFAkHNkgFjFyZFCWaL2VlFA22YwesBZc+ksZ4oTXYtmcKnr0GFZOAhZo1TXX3xJmdBNgLJBeav3Yzwrj4
- 6Ztz2Uom
- IZ3QqHNTrLx0+7cmOarBfrS/GsLPbZHTHE4B/dvOFAYxAD/oz1xcrODc2a1X1Vku6AcbL0B2nQsuhwtmtURqfDttzf/IgI6LzmzhXo4vXs/dFCAU13aHnIm0dtEn2jZN/j8UkcU1tWGtTMV8GOPwV8fQ4PDHWDWzFx32aGRfJZPwPEqON21kgjT+hLsW8o6aBqJ7GZ2JGBLDSAkSv+R2u2WMmFHMRhoyYOWPbve736mYHemihBFMsuzqqqbfe/WvByaiT5+CC6BrLJsFdilLrX0DC6fBa0BUpjofZ6c+g9e7rLYN+5eq5mifQu2Qi7es1zpmCXP+LLAyUDXqJKpYxEX89ehsNMnCfTlIvz3YsECDK220HpSFdf84Wh9cbI7SB7po/j8glBZN3d0leRXYDkSWhRVMA6ATLmwE2FKTRkyRhQOHTXQi07xNwnvAzdBZHvfQr4ES2n2WDu0cIm+ZCYp4qXw==
+X-HE-Tag: 1789401079-537770
+X-HE-Meta: U2FsdGVkX19k8Kdo35gNlZtLoXpTTQ7wml5U9LFIRjeleQaCOJOo8s7Mutdur8JyX0Ahjko+BqdK6ssAyFjpljnZdGbJODaWeXDPzO9NwwmQQe52W5nr70iYOHzSUb7fiRgj84vDN4KQjxxayg1rH7iRZUmM2dHTOcHaviR7zZz3bXTgPpQe28iUBNnIg+zXX/pSHTOUo/I8nlCQcJOR3XUlt7wyz4f00D4tf5s3hbFzdbb99eARKWXwg3R+XR630uaAzfSe3jO1JMn0U6zKt3NLMvGyAM6tn7TmSA0s1w/M40rl09cbW7vrzn0wzLAiDNMvpeWmrtmPyYO5Zy4py8VOhbIfVl6ltDmA4j+aJbyWlub1Xe4OpSfjbDATrBL1qwZLTcHX6qkPSg0pEeg3HGHfQWR4iNUWRctSRqeNLae+KDjO0F/uynrYqpmovYxNH4tGcapDF77fm2G/8PFBINF4/C/llQJTfE+k2FtS0EAXhow7K74q2FYf6r9KyilYcWYL6ZaRwT6EWrqj7eIrMWrCRy/2mVV+MVH6UNE80h/zzfs3miXNSkCYwyun+yKgLxmOE+MU5wfCDGoidtvDiIjEqvsX5TrUp2yXHnyVqVCIZwcAOGT8funb5d7cvXZO7zUfkMDpPJrN0QzY/LDpKMd3f1XLb2HHo3aJNq425NKEf3jibRiWBasRtl2tj+1t/tCZg6cF4ecLERxFi4xaLrFyruTAJVRCe0oGC1jF8/V4hUPqU6IW6b3K/thBkUtafT+pSi+mwFtL65E4L8f0fWc24Mptpue5ddn4bd/y1FXiRBNyymu0qefqFlZ+O2Y5KmICW4n/btyNwSGNVUC7OCmHMSdrJvJZ7uUTgnS8lx3jAIYDAv5CQ6QDVhPJbVMDJ7Vrbnk1+LuVhOCQuDP84Tr7Z+Y4Czkf3j4dQAFawgayBO03Mls+fn/2rh9WkaS6vnNhY87OCMraeFVI7lz
+ 8toRm2o5
+ RIL7J0jFKU7HOGU9TgIu3RdtEOOYaN8pNxkRYZpqlAVhue6xsPYVGTMC8JBdlH8E3woHhKrr0aaa2g4iB3C/4yKyhr5cJFHwOtOHKE1XM8ug5wF1HYL+AtU15/7DL/6Oa/6sKngLmHclTlRqXg/pl+pQEm145c3khAofDjYVp1oN371PFawdchyRVaCcCtEN1HJYVuZYl4CN5r/q0aUp709oeNyeoh6utZ1HpBJ1aw2+g/rDS1AUwcw329a/hHBtxmjGYRs3ZzTqFOIJZJL1tMdpQ+QJG4mCXLrpYEjlc2Zx3AFyLuPPT5Np5vrB949p9IzzF5Jr9c3eRL7ohImi1b+/t3/kIZHyAtsmQy0fyjZgEmaX1G3IYpEn/gKlT/aBqcWxrSwqr2PGdpCXX/GY/fFEYKgG+huMkSfs6B00vSv9Agv33ehiYmnfjP4ZKvTuCzpms10GEnC/k1PkW0iB1noS+4g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,249 +141,237 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a test that checks for underflows when a parent unmaps the page
-first. Also check that when the child exits the reserve count is
-correct.
+__alloc_pages_noprof() takes an explicit alloc_flags, but the bulk and
+folio entry points do not, so callers cannot select allocator behaviour
+(e.g. an alternate zonelist) through them.
 
-Link: https://lore.kernel.org/all/alEJkwn5VlTTH_ZX@bender.morinfr.org/
-Signed-off-by: Guillaume Morin <guillaume@morinfr.org>
-Reviewed-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Mike Rapoport <rppt@kernel.org>
-Cc: Breno Leitao <leitao@debian.org>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
+Thread alloc_flags through both, matching __alloc_pages_noprof(), and
+keep the flag-carrying primitives mm-internal (page_alloc.h) so the
+public gfp.h wrappers stay flag-free:
+
+ - add __alloc_pages_bulk_noprof(gfp, ..., alloc_flags) in page_alloc.h
+   alloc_pages_bulk_noprof() becomes a wrapper passing ALLOC_DEFAULT
+
+ - give __folio_alloc_noprof() an alloc_flags parameter and moves
+   __folio_alloc_node_noprof() moves into page_alloc.h
+   __folio_alloc_noprof() is no longer exported
+
+No functional change: every caller passes ALLOC_DEFAULT.
+
+Cc: Brendan Jackman <brendan.jackman@linux.dev>
+Signed-off-by: Gregory Price <gourry@gourry.net>
 ---
-v5: address Mike and Breno's comments
-v4: address Mike's comments
-v3: address Mike's comments
-v2: refactor tests into 2 functions
 
- .../testing/selftests/mm/hugepage_settings.c  |   9 ++
- .../testing/selftests/mm/hugepage_settings.h  |   1 +
- .../selftests/mm/hugetlb_madv_vs_map.c        | 141 +++++++++++++++---
- 3 files changed, 130 insertions(+), 21 deletions(-)
+Brendan this will conflict mildly with your ALLOC_UNMAPPED work,
+because you add an init_alloc_flags call in alloc_pages_bulk_noprof :
+https://lore.kernel.org/linux-mm/20260726-page_alloc-unmapped-v3-20-6f5729aa9832@google.com/
 
-diff --git a/tools/testing/selftests/mm/hugepage_settings.c b/tools/testing/selftests/mm/hugepage_settings.c
-index d7917dce3aba..584054736ce9 100644
---- a/tools/testing/selftests/mm/hugepage_settings.c
-+++ b/tools/testing/selftests/mm/hugepage_settings.c
-@@ -449,6 +449,15 @@ unsigned long hugetlb_free_pages(unsigned long size)
- 	return read_num(path);
+I wanted to pull this out ahead to try to deal with the conflict.
+
+ include/linux/gfp.h | 13 +------------
+ mm/khugepaged.c     |  2 +-
+ mm/migrate.c        |  2 +-
+ mm/page_alloc.c     | 46 ++++++++++++++++++++++++++++++---------------
+ mm/page_alloc.h     |  8 ++++++++
+ 5 files changed, 42 insertions(+), 29 deletions(-)
+
+diff --git a/include/linux/gfp.h b/include/linux/gfp.h
+index 872bc53f32ec..a327e58c313f 100644
+--- a/include/linux/gfp.h
++++ b/include/linux/gfp.h
+@@ -204,10 +204,6 @@ static inline void arch_free_page(struct page *page, int order) { }
+ static inline void arch_alloc_page(struct page *page, int order) { }
+ #endif
+ 
+-struct folio *__folio_alloc_noprof(gfp_t gfp, unsigned int order, int preferred_nid,
+-		nodemask_t *nodemask);
+-#define __folio_alloc(...)			alloc_hooks(__folio_alloc_noprof(__VA_ARGS__))
+-
+ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+ 				nodemask_t *nodemask, int nr_pages,
+ 				struct page **page_array);
+@@ -252,14 +248,7 @@ static inline void warn_if_node_offline(int this_node, gfp_t gfp_mask)
+ 	dump_stack();
  }
  
-+unsigned long hugetlb_nr_resv_pages(unsigned long size)
-+{
-+	char path[PATH_MAX];
-+
-+	hugetlb_sysfs_path(path, sizeof(path), size, "resv_hugepages");
-+
-+	return read_num(path);
-+}
-+
- static bool __hugetlb_setup(unsigned long size, unsigned long nr)
- {
- 	unsigned long free = hugetlb_free_pages(size);
-diff --git a/tools/testing/selftests/mm/hugepage_settings.h b/tools/testing/selftests/mm/hugepage_settings.h
-index 726c73c43c05..548e9d288d1d 100644
---- a/tools/testing/selftests/mm/hugepage_settings.h
-+++ b/tools/testing/selftests/mm/hugepage_settings.h
-@@ -98,6 +98,7 @@ unsigned long default_huge_page_size(void);
- unsigned long hugetlb_nr_pages(unsigned long size);
- void hugetlb_set_nr_pages(unsigned long size, unsigned long nr);
- unsigned long hugetlb_free_pages(unsigned long size);
-+unsigned long hugetlb_nr_resv_pages(unsigned long size);
+-static inline
+-struct folio *__folio_alloc_node_noprof(gfp_t gfp, unsigned int order, int nid)
+-{
+-	warn_if_node_offline(nid, gfp);
+-
+-	return __folio_alloc_noprof(gfp, order, nid, NULL);
+-}
+-
++struct folio *__folio_alloc_node_noprof(gfp_t gfp, unsigned int order, int nid);
+ #define  __folio_alloc_node(...)		alloc_hooks(__folio_alloc_node_noprof(__VA_ARGS__))
  
- static inline void hugetlb_save_settings(void)
- {
-diff --git a/tools/testing/selftests/mm/hugetlb_madv_vs_map.c b/tools/testing/selftests/mm/hugetlb_madv_vs_map.c
-index f94549efcc6f..0f15eff1da04 100644
---- a/tools/testing/selftests/mm/hugetlb_madv_vs_map.c
-+++ b/tools/testing/selftests/mm/hugetlb_madv_vs_map.c
-@@ -3,18 +3,6 @@
-  * A test case that must run on a system with one and only one huge page available.
-  *	# echo 1 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
-  *
-- * During setup, the test allocates the only available page, and starts three threads:
-- *  - thread1:
-- *	* madvise(MADV_DONTNEED) on the allocated huge page
-- *  - thread 2:
-- *	* Write to the allocated huge page
-- *  - thread 3:
-- *	* Try to allocated an extra huge page (which must not available)
-- *
-- *  The test fails if thread3 is able to allocate a page.
-- *
-- *  Touching the first page after thread3's allocation will raise a SIGBUS
-- *
-  *  Author: Breno Leitao <leitao@debian.org>
+ /*
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 0d8cd44b14c5..431c2e610b39 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -1193,7 +1193,7 @@ static enum scan_result alloc_charge_folio(struct folio **foliop, struct mm_stru
+ 	int node = collapse_find_target_node(cc);
+ 	struct folio *folio;
+ 
+-	folio = __folio_alloc(gfp, order, node, &cc->alloc_nmask);
++	folio = __folio_alloc(gfp, order, node, &cc->alloc_nmask, ALLOC_DEFAULT);
+ 	if (!folio) {
+ 		*foliop = NULL;
+ 		count_collapse_event(order, THP_COLLAPSE_ALLOC_FAILED,
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 7e3a81f06974..8e1c25a6f750 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -2229,7 +2229,7 @@ struct folio *alloc_migration_target(struct folio *src, unsigned long private)
+ 	if (is_highmem_idx(zidx) || zidx == ZONE_MOVABLE)
+ 		gfp_mask |= __GFP_HIGHMEM;
+ 
+-	return __folio_alloc(gfp_mask, order, nid, mtc->nmask);
++	return __folio_alloc(gfp_mask, order, nid, mtc->nmask, ALLOC_DEFAULT);
+ }
+ 
+ #ifdef CONFIG_NUMA_MIGRATION
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index d977b8bf7245..f4ceec8cf77e 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -5151,8 +5151,8 @@ static inline bool prepare_alloc_pages(gfp_t gfp_mask, unsigned int order,
+  * @page_array were set to %NULL on entry, the slots from 0 to the return value
+  * - 1 will be filled.
   */
- #include <pthread.h>
-@@ -22,6 +10,7 @@
- #include <stdlib.h>
- #include <sys/mman.h>
- #include <sys/types.h>
-+#include <sys/wait.h>
- #include <unistd.h>
- 
- #include "vm_util.h"
-@@ -74,7 +63,21 @@ void *map_extra(void *unused)
- 	return NULL;
- }
- 
--int main(void)
-+/* During setup in main, the only available page was allocated. This test then
-+ * starts three threads:
-+ *
-+ * - thread1:
-+ *	* madvise(MADV_DONTNEED) on the allocated huge page
-+ *  - thread 2:
-+ *	* Write to the allocated huge page
-+ *  - thread 3:
-+ *	* Try to allocated an extra huge page (which must not available)
-+ *
-+ *  The test fails if thread3 is able to allocate a page.
-+ *
-+ *  Touching the first page after thread3's allocation will raise a SIGBUS
-+ */
-+void test_madv_vs_map(void)
+-unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+-			nodemask_t *nodemask, int nr_pages,
++unsigned long __alloc_pages_bulk_noprof(gfp_t gfp, unsigned int alloc_flags,
++			int preferred_nid, nodemask_t *nodemask, int nr_pages,
+ 			struct page **page_array)
  {
- 	pthread_t thread1, thread2, thread3;
- 	void *ret;
-@@ -85,13 +88,6 @@ int main(void)
- 	 */
- 	int max = 10;
+ 	struct page *page;
+@@ -5160,8 +5160,8 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+ 	struct zoneref *z;
+ 	struct per_cpu_pages *pcp;
+ 	struct list_head *pcp_list;
+-	struct alloc_context ac;
+-	unsigned int alloc_flags = ALLOC_WMARK_LOW;
++	struct alloc_context ac = { .alloc_flags = alloc_flags };
++	unsigned int fastpath_alloc_flags = alloc_flags | ALLOC_WMARK_LOW;
+ 	int nr_populated = 0, nr_account = 0;
  
--	ksft_print_header();
--	ksft_set_plan(1);
--
--	if (!hugetlb_setup_default_exact(1))
--		ksft_exit_skip("This test needs one and only one page to execute. Got %lu\n",
--			       hugetlb_free_default_pages());
--
- 	mmap_size = default_huge_page_size();
+ 	/*
+@@ -5202,7 +5202,7 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+ 	/* May set ALLOC_NOFRAGMENT, fragmentation will return 1 page. */
+ 	gfp &= gfp_allowed_mask;
+ 	gfp = current_gfp_context(gfp);
+-	if (!prepare_alloc_pages(gfp, 0, preferred_nid, nodemask, &ac, &gfp, &alloc_flags))
++	if (!prepare_alloc_pages(gfp, 0, preferred_nid, nodemask, &ac, &gfp, &fastpath_alloc_flags))
+ 		goto out;
  
- 	while (max--) {
-@@ -100,7 +96,7 @@ int main(void)
- 				-1, 0);
+ 	/* Find an allowed local zone that meets the low watermark. */
+@@ -5210,7 +5210,7 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+ 	for_next_zone_zonelist_nodemask(zone, z, ac.highest_zoneidx, ac.nodemask) {
+ 		unsigned long mark;
  
- 		if ((unsigned long)huge_ptr == -1)
--			ksft_exit_fail_msg("Failed to allocate huge page\n");
-+			ksft_exit_fail_perror("Failed to allocate huge page");
+-		if (cpusets_enabled() && (alloc_flags & ALLOC_CPUSET) &&
++		if (cpusets_enabled() && (fastpath_alloc_flags & ALLOC_CPUSET) &&
+ 		    !__cpuset_zone_allowed(zone, gfp)) {
+ 			continue;
+ 		}
+@@ -5220,16 +5220,17 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+ 			goto failed;
+ 		}
  
- 		pthread_create(&thread1, NULL, madv, NULL);
- 		pthread_create(&thread2, NULL, touch, NULL);
-@@ -120,5 +116,108 @@ int main(void)
- 	}
+-		cond_accept_memory(zone, 0, alloc_flags);
++		cond_accept_memory(zone, 0, fastpath_alloc_flags);
+ retry_this_zone:
+-		mark = wmark_pages(zone, alloc_flags & ALLOC_WMARK_MASK) + nr_pages - nr_populated;
++		mark = wmark_pages(zone, fastpath_alloc_flags & ALLOC_WMARK_MASK) +
++		       nr_pages - nr_populated;
+ 		if (zone_watermark_fast(zone, 0,  mark,
+ 				zonelist_zone_idx(ac.preferred_zoneref),
+-				alloc_flags, gfp)) {
++				fastpath_alloc_flags, gfp)) {
+ 			break;
+ 		}
  
- 	ksft_test_result_pass("No unexpected huge page allocations\n");
-+}
-+
-+/*  We create a child process, then unmap the page in the parent while the child
-+ *  waits and verify that there is no underflow of the reserved count. We also
-+ *  verify that after the child exits, the reserved count is properly restored.
-+ */
-+void test_underflow(void)
-+{
-+	pid_t pid;
-+	int pipe_fds[2];
-+	unsigned long nr_reserved = 0;
-+
-+	huge_ptr = mmap(NULL, mmap_size, PROT_READ | PROT_WRITE,
-+			MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB, -1, 0);
-+
-+	if ((unsigned long)huge_ptr == -1)
-+		ksft_exit_fail_perror("Failed to allocate huge page");
-+
-+	nr_reserved = hugetlb_nr_resv_pages(default_huge_page_size());
-+	if (nr_reserved != 1)
-+		ksft_exit_fail_msg("Unexpected number of reserved pages: %lu, expected 1\n",
-+				   nr_reserved);
-+
-+	/* Force the fault to ensure the reservation is consumed */
-+	*huge_ptr = 0;
-+	nr_reserved = hugetlb_nr_resv_pages(default_huge_page_size());
-+	if (nr_reserved != 0)
-+		ksft_exit_fail_msg("Unexpected number of reserved pages: %lu, expected 0\n",
-+				   nr_reserved);
-+
-+	if (pipe(pipe_fds) != 0)
-+		ksft_exit_fail_perror("pipe failed");
-+
-+	pid = fork();
-+	if (pid < 0)
-+		ksft_exit_fail_perror("fork failed");
-+
-+	if (pid == 0) {
-+		/* Child: Simply wait for the parent */
-+		char b;
-+
-+		close(pipe_fds[1]);
-+		if (read(pipe_fds[0], &b, 1) < 0)
-+			ksft_perror("child read failed");
-+		/* Let the parent do the cleanup */
-+		_exit(0);
-+	}
-+
-+	/* Parent */
-+	close(pipe_fds[0]);
-+
-+	/* First unmap, this will close the vma */
-+	if (munmap(huge_ptr, mmap_size) != 0) {
-+		ksft_perror("munmap failed");
-+		goto err_cleanup;
-+	}
-+
-+	nr_reserved = hugetlb_nr_resv_pages(default_huge_page_size());
-+	if (nr_reserved == 0) {
-+		ksft_test_result_pass("Underflow not present!\n");
-+	} else {
-+		ksft_test_result_fail("Unexpected HugePages_Rsvd=%ld after munmap, should be 0\n",
-+				      nr_reserved);
-+		goto err_cleanup;
-+	}
-+	/* Make the child exit, this should restore HugePages_Rsvd to 0 */
-+	if (write(pipe_fds[1], &nr_reserved, 1) < 0) {
-+		/* If write failed, the child is likely already gone */
-+		ksft_exit_fail_perror("write failed");
-+	}
-+	close(pipe_fds[1]);
-+	if (waitpid(pid, NULL, 0) <= 0)
-+		ksft_exit_fail_msg("waitpid failed\n");
-+
-+	nr_reserved = hugetlb_nr_resv_pages(default_huge_page_size());
-+	if (nr_reserved == 0)
-+		ksft_test_result_pass("After the child dies, HugePages_Rsvd is properly set to 0\n");
-+	else
-+		ksft_exit_fail_msg("Unexpected HugePages_Rsvd=%ld after the child termination munmap, should be 0\n", nr_reserved);
-+
-+	return;
-+
-+err_cleanup:
-+	if (write(pipe_fds[1], &nr_reserved, 1) < 0)
-+		ksft_exit_fail_perror("write failed");
-+	if (waitpid(pid, NULL, 0) <= 0)
-+		ksft_exit_fail_perror("waitpid failed");
-+
-+	ksft_exit_fail();
-+}
-+
-+int main(void)
-+{
-+	ksft_print_header();
-+	ksft_set_plan(3);
-+
-+	if (!hugetlb_setup_default_exact(1))
-+		ksft_exit_skip("This test needs one and only one page to execute. Got %lu\n",
-+			       hugetlb_free_default_pages());
-+
-+	test_madv_vs_map();
-+	test_underflow();
-+
- 	ksft_finished();
+-		if (cond_accept_memory(zone, 0, alloc_flags))
++		if (cond_accept_memory(zone, 0, fastpath_alloc_flags))
+ 			goto retry_this_zone;
+ 
+ 		/* Try again if zone has deferred pages */
+@@ -5261,7 +5262,7 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+ 			continue;
+ 		}
+ 
+-		page = __rmqueue_pcplist(zone, 0, ac.migratetype, alloc_flags,
++		page = __rmqueue_pcplist(zone, 0, ac.migratetype, fastpath_alloc_flags,
+ 								pcp, pcp_list);
+ 		if (unlikely(!page)) {
+ 			/* Try and allocate at least one page */
+@@ -5289,11 +5290,19 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+ 	return nr_populated;
+ 
+ failed:
+-	page = __alloc_pages_noprof(gfp, 0, preferred_nid, nodemask, ALLOC_DEFAULT);
++	page = __alloc_pages_noprof(gfp, 0, preferred_nid, nodemask, alloc_flags);
+ 	if (page)
+ 		page_array[nr_populated++] = page;
+ 	goto out;
  }
++
++unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
++			nodemask_t *nodemask, int nr_pages,
++			struct page **page_array)
++{
++	return __alloc_pages_bulk_noprof(gfp, ALLOC_DEFAULT, preferred_nid,
++					 nodemask, nr_pages, page_array);
++}
+ EXPORT_SYMBOL_GPL(alloc_pages_bulk_noprof);
+ 
+ /*
+@@ -5484,13 +5493,20 @@ struct page *alloc_pages_node_noprof(int nid, gfp_t gfp_mask, unsigned int order
+ EXPORT_SYMBOL(alloc_pages_node_noprof);
+ 
+ struct folio *__folio_alloc_noprof(gfp_t gfp, unsigned int order, int preferred_nid,
+-		nodemask_t *nodemask)
++		nodemask_t *nodemask, unsigned int alloc_flags)
+ {
+ 	struct page *page = __alloc_pages_noprof(gfp | __GFP_COMP, order,
+-					preferred_nid, nodemask, ALLOC_DEFAULT);
++					preferred_nid, nodemask, alloc_flags);
+ 	return page_rmappable_folio(page);
+ }
+-EXPORT_SYMBOL(__folio_alloc_noprof);
++
++struct folio *__folio_alloc_node_noprof(gfp_t gfp, unsigned int order, int nid)
++{
++	warn_if_node_offline(nid, gfp);
++
++	return __folio_alloc_noprof(gfp, order, nid, NULL, ALLOC_DEFAULT);
++}
++EXPORT_SYMBOL(__folio_alloc_node_noprof);
+ 
+ /*
+  * Common helper functions. Never use with __GFP_HIGHMEM because the returned
+diff --git a/mm/page_alloc.h b/mm/page_alloc.h
+index b9259deddb59..23fc79ce97b6 100644
+--- a/mm/page_alloc.h
++++ b/mm/page_alloc.h
+@@ -258,6 +258,14 @@ struct page *__alloc_pages_noprof(gfp_t gfp, unsigned int order, int preferred_n
+ 		nodemask_t *nodemask, unsigned int alloc_flags);
+ #define __alloc_pages(...)			alloc_hooks(__alloc_pages_noprof(__VA_ARGS__))
+ 
++struct folio *__folio_alloc_noprof(gfp_t gfp, unsigned int order, int preferred_nid,
++		nodemask_t *nodemask, unsigned int alloc_flags);
++#define __folio_alloc(...)			alloc_hooks(__folio_alloc_noprof(__VA_ARGS__))
++
++unsigned long __alloc_pages_bulk_noprof(gfp_t gfp, unsigned int alloc_flags,
++		int preferred_nid, nodemask_t *nodemask, int nr_pages,
++		struct page **page_array);
++
+ extern void zone_pcp_reset(struct zone *zone);
+ extern void zone_pcp_disable(struct zone *zone);
+ extern void zone_pcp_enable(struct zone *zone);
 -- 
-2.39.1
+2.55.0
 
--- 
-Guillaume Morin <guillaume@morinfr.org>
 
