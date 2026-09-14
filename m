@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 092E0C88E50
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 13:15:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42071C88E50
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 13:16:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2397C6B009D; Mon, 14 Sep 2026 09:15:51 -0400 (EDT)
+	id 34C936B009F; Mon, 14 Sep 2026 09:16:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E9636B009E; Mon, 14 Sep 2026 09:15:51 -0400 (EDT)
+	id 2D5EC6B00A0; Mon, 14 Sep 2026 09:16:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0B4CF6B009F; Mon, 14 Sep 2026 09:15:51 -0400 (EDT)
+	id 19E566B00A1; Mon, 14 Sep 2026 09:16:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D8B946B009D
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 09:15:50 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id F0ABCC013E
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:15:49 +0000 (UTC)
-X-FDA: 85212415218.04.956B386
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 35E74A0006
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:15:48 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nrUcY1Z6;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DBC656B009F
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 09:16:46 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6C9AF1A0150
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:16:46 +0000 (UTC)
+X-FDA: 85212417612.22.D6500A8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 96C701A0002
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:16:44 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="D1ns/Acl";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789391748;
-	b=llKE8mSFTygvnGTyY6mgHXYlbeJDy6Sb/LZsYiT9PNlpb3BCxRzAPHu4J5/a2ql6LfpihN
-	oFRweZgsVA0UmDLTzttHHwuTVSvXSzT1QoTDRinxJYU+nZsC8e4/2mIVhoAGP2F6Vbd+22
-	scTij/9Pr0oesUSgmaO7bj6Dg7B3nHc=
+	t=1789391804;
+	b=hLAFLZQ49DJiVOr+htwnOl95fW8QRiw9ZgchGkUhz3Anxpw2cLm1GNV0vieDedn3yjCw/b
+	3axloTOHY7EM1JE/RmNJwFYovnDi/N1ogkdAmf1R0PkWCJI2ULRAvj0EI4zPtJFP2f2GfN
+	NKpLS68s5dNZDsMlTSvJrRgwfkgVsCk=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nrUcY1Z6;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="D1ns/Acl";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789391748;
+	s=arc-20220608; t=1789391804;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7MgZNxAm6rLbdWEaG1tKVLSEArg8sJOE28H+A/hGdqY=;
-	b=5i0Q8gLzPJfneyaIWIf3+P2a7wqpc2YNzhcEDbYnM5PhYC46zCnD/rZaFb74beTOhaUo+o
-	Uxif6FYfGTU3FDrxz6lN5LlQNwyj4EPIckpb60JV/1m06rRixJsTCbR7GVbihexetLteA/
-	c6MkA+K9KF/pJbjgQJ/A5Z22nYC+bl8=
+	bh=GBiUgvbmJL61I74QM9PSZC/060GcMY573CBk0CxwPMI=;
+	b=WRF5C5BAZlcUf8a8RqZWBuiC0iFJ+HIumX/l9OOunYWfcfLPdjZelrIBiu53iGPEQC0rD9
+	qMCjiQ1rb3dDJhJPVCmtb/8PLxQ5Dk5yNhYNnLU9Hma3aV3ZBj3V6SR6ZYP6s85JOT9fPA
+	3hZS6x2DegqR79z7h/Vp2dNFZbJt+vg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A339460120;
-	Mon, 14 Sep 2026 13:15:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BC7B1F000FF;
-	Mon, 14 Sep 2026 13:15:40 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C6E83418BD;
+	Mon, 14 Sep 2026 13:16:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 596371F000FF;
+	Mon, 14 Sep 2026 13:16:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789391747;
-	bh=7MgZNxAm6rLbdWEaG1tKVLSEArg8sJOE28H+A/hGdqY=;
+	s=k20260515; t=1789391803;
+	bh=GBiUgvbmJL61I74QM9PSZC/060GcMY573CBk0CxwPMI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=nrUcY1Z6EE9Yx3XyardKgLAilyIh7MG7IgdjNN9c8v3syQj4OF+ECl1T9O/tXLQCv
-	 UVtqX/wTf76sh1GACfeMRusPbe6Vj5/1dvuMmVo4YB1cwMZck8rrjeFPyGMyokvA0O
-	 iAlby2CTO5yt/kB3WNF3NjgTOYDx48nsnszifQkqaqFLCmXQx3e63oyIez2RDF8qmX
-	 ml8aUvxpYcLKp85j9j2nc82pVP/v0RMqMq4ZSDblHPVUXXQqzi/VYRtpwP/4EpgwAC
-	 VT051wV3YVZ0kc2khK+T8fxTqk4DrLkiyLpI1qQvmkX9U2Hn2fRZDlzVSwfbOGtvgz
-	 xUjfBKk257kqg==
-Message-ID: <ce7cc93a-a752-463e-a551-fbf138c29916@kernel.org>
-Date: Mon, 14 Sep 2026 15:15:36 +0200
+	b=D1ns/Acl8NlyCRfAMuWBdUlk9ePUqsUljWh5lM0l3HYkKNbt99m30YPVy3XXTB0X9
+	 g6QifLZRIQ55Gep84FzTXk+L9VwsWHjuH5uNzAtcDxgSMgbUoYFMjJ2fEKemqdKp0e
+	 32Q3xIJ0TpxMTJP0yJJGNiwIdY4eJKc+wkw84y/1drlSwMSYM4G8gpR4BWr7nksKmz
+	 uboaHlq1lPNdhJv25gZzpl/XDiVuaZYqok5NGNEYa+OMHNPMJYG4WN4i3dlxcbwQ5c
+	 QHL9/Z8evXRsbBQ3TRNDWEgr8AfvtxjYqzhl+Vn4asvB2Xsf4/2sdNodFsSNn6d3sC
+	 Xy18WgXGzq1nA==
+Message-ID: <a373d76c-6ff0-4ba7-895e-343eca9c564e@kernel.org>
+Date: Mon, 14 Sep 2026 15:16:33 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 03/16] xen/grant-table: stop setting PG_private on
- pages for grant mapping
+Subject: Re: [PATCH v4 05/16] mm/hugetlb: use direct assignment instead of
+ folio_change_private()
 To: Zi Yan <ziy@nvidia.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
  Andrew Morton <akpm@linux-foundation.org>,
  Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
@@ -84,12 +84,9 @@ To: Zi Yan <ziy@nvidia.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
  Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>,
  Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Juergen Gross <jgross@suse.com>, Stefano Stabellini
- <sstabellini@kernel.org>,
- Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
- xen-devel@lists.xenproject.org
+ Oscar Salvador <osalvador@suse.de>
 References: <20260913-remove-pg_private-v4-0-848550f7574e@nvidia.com>
- <20260913-remove-pg_private-v4-3-848550f7574e@nvidia.com>
+ <20260913-remove-pg_private-v4-5-848550f7574e@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -136,17 +133,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260913-remove-pg_private-v4-3-848550f7574e@nvidia.com>
+In-Reply-To: <20260913-remove-pg_private-v4-5-848550f7574e@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 35E74A0006
-X-Stat-Signature: i3urtefgb5i9sfti8iufb7is81c5agbn
-X-HE-Tag: 1789391748-513970
-X-HE-Meta: U2FsdGVkX18S9CR3alVa7oJ6oUSnlBlzuiH7h0hGbJmEpEVQ0t+XUEliVFTx8dyT7qzRwaRrOgQ6k6TLT6/qbi2iSmr30wWTT+xeCH6AsCzQzurGm0nJqpCvA3BEUK5sRRpoVQY9j2vHiVZkszU2qNEmVhaifuxnGsZ5ZrImESbm9wBDfQh00FQ+I70nvvJeodQVnKn7zjrsnw44z5/8tqFzmze83/UHWHyXpMPmsasO7K+tY1uLW8AUSqE/qVcGA/u2ZGOXAXYErNik2kqrxbfFKPy0UQjZ5eQ1nRv9pJaYr4R2ttJPhMtt4vpd3V5w3xx5pzLLtUkt4iNT6ozhksxLFrX8O5XMIU6SfCcppteiV8DsRifoEEzNMYqRvpI1ve6s8cZI6tjxTuPYUZ0TVNbiZ6qvTgC38gTuoc574kkGxwJbTNlkP0D/jgMKtUY3hAUidTWxNax/57Y926VHTYFqt3ugECV5MNsVkeVUwH9kqu3w0gdd3zGz5kBP+gXo4iQvEFQY3foV6J+WdDCZ/1pCtsh3EbyscolIbP4esSUMeQj7w8Mi23145m2pRuhEqSiG+t0NR+9RWgU3IR3OeocNqGzm+dzInArXEA7IupB0/YsQisg6nwuZtYg18uTZL3cK7CbnYvXQvkHGQX2lgzV/EWj7r5HmVp26i+efKpUXHzVWNAkivvwE428JwZbV2JOebF3IrwIHhQtp/Y4uRM2AicchwuRUnbNeRmREmjMvRkA/RWmrsncoNQ5Rx6hAov6d3d4c/63rwBi/wsZ9hdTLa/JF3HcBCouBpXJdgoEMQGESjhZvipjCcve4FHiTAoDAgAXzv2O39XZbeJvOHN8cbLNIxWYLUQeDE38gwErtRLmjGokUlhq6WIGzd63Ycx5Rl46JxU+TFW74ONTcDevbWP9fiQg7d6+q+bye5d9T6fGJxJ4T0aLsIjSJEIe7nhIEDPjrR4mZ79xO1T1
- cdw2dJ4C
- G3I89xX2GDWHMvwL1DtidQjhvBUhWrgoKFryU6zF0DIwFgh1zHFuIVDlUEetiRbPv2mgtRNZEEuBX2wKWuG1EWXIESjdKO6H7a5n3QnPVdofBcJPHll+QlL22JbhX2ne2bi13XPByjajeXVBoxeYy6gUJjb4uvebj44yof1plkc37S9zuL+GfBoZSjOE2/JbW6rTXkkQr7m4gbYRLIUharOG3sfZIwvl1P0Z6UrNKbk4OftbDfxVyP+ao0Q5tCL1FPNOYVTYtBQh6kUhM1y9AkJ9uQ37ewPMLVZhrJe5YsD4Vvs24rDUNZZqKIPaYwqIdgCRgDKlxfrAH6NdH+ztt8levTlwipbYz2FWtQ7vCH7IwsbmQuk4gWZz7tQioSnCWd4v0ujr3+Bm1qlBqV+tBOWayCe2Pq6RyWK9cNkwRcz4CKcNAuovZY38Nj1apN6mwkYNFWQzH7cy0ylODBuDyZK0aF+GdNzwZHwQsbHr9fZyWHfQ6GG5RL212QwNjfzeUimQ8mEwTLsrz2lo=
+X-Rspamd-Queue-Id: 96C701A0002
+X-Stat-Signature: wb4zipc67btuu7ptytre5sshwbxr47dk
+X-HE-Tag: 1789391804-236080
+X-HE-Meta: U2FsdGVkX18DDcomidpy3Ck2wx05TILMnwgUvo5UJI4utnIHLkRsoha0YqSwLk2nTzIB+6DYfr+/wrO3BaQCj2dfBNLV0bS9NCN7CA0yI3bbJuJyC9CbQvSkc2LM//0HludJGjv+D1yPrC7+DN8DsiUCX9VcCLubz0hFJwBtwSqnm1g1LeIQr+bbTkV+UGblgy17Hxflo59quqvT/ZBpAuoZ1lHVV7/jd9qmGlkIlFd/RDmezvrZWHnQ3vLWPF3rME7ETVYV4JBljEdade6DSml7+Ke5L4Em/7xI7Ul7HUQcxxRED4aUYFfzAgTD1wj7nwwgt5kPp6Bd79Lb/un457WyY8m81oaBAzEJtkM6kJInsI9XTNh8KEQrjd2z5vN5YQ99vcl/HldM+UyT0sbpyZHv5r3npe1AmwShI0oq5P53Qe4Gcy/xS91UzgufSD6HmdNPfFYiOhL7MiWvcgvbsmE7swuAPKrHWsYEKRTJsI/BLeWTQVhgEhK60NWX87cOXtXZiCE5uTZpqIeICQ2TdCZlGGgiQ70rZ/kMas6kJwTP3ic4vuQn3rPxHTI7QWPMJZgFV3QDtel2faQ4Q5JJz3CYCwE25/tDNEO3BkbGpnMDZxomNCDBO280ixyei3CHVroJFcOpeQ8a1dvppHDr9jZgxxXYJh9l97whN64wcoYnmh8HROemD4pKGggNSCjXvTBQfncvIBJj7A9UF+4wRgBIgrN9MizGWAaWK0F7Cc1iom1jLs8EZAXVQqT/4BBPitYoRvDYgIxBbqlrBWOpEI1o9p9Ek6D1mNnG016MGfPZMJlHZEJpdTZxvX8Pv6X3I4q4rsRGo+VyWQmJQ5Ih+xHenQy7t9s1MfUru5CfU6R6RYwh2tTB5kioIOVWNOKRBOUVVObLrz48ze+gyz4mpw78oILGEucd2VckNpExQtI8YwmJRw5QlByr2Xz3JYwfOrILsHfn7lTIO05NTej
+ gQ2GbT5o
+ Rv9na+9B68MvK5t7f9p7fIJsylTjqj5M0pUQYepZ/q+WBVnksVLeqPk2NHDpRqYcm8qk4U/SU7Vd9zZA5WcWFBtdf2GXzEwSgVEYC2jsEYt23JNQ0je6wDAK7CZAdNQpPvjNc45R0nwvEq2GtG5pb6p5f8zTeexhTl5wJnLvC2qzOynLcyaH1TQiMZvNJbK6eMOs5vKAH2StuavzlF1um5TAoik8wAzRe2tIu9Q2F0QnRZcEtU3hrlPEpjR+bP/UvQXoxS1itX1qwWEilELr/gOpxfbLl9TQaA8zags8t/5S7MwWz3Z1ZvTT19O3bGi4tnPTqxuhEHc6BMzRS5H3uocTm5M2B71LWjTblPSby/sNIcjwukerJ+30sumThsMKs8+7BA14ocgUO96jXKfeU2MI7kd2l9Hgf34LSSqz2UZJUP4xn4Ko/yXRs9xtxUT+sPne+xQxp2nd4n//VPJRLGFGrtz+fUKGY4NIM/Ss9g84CjV18326YHT3TZ1hMJOb11qbzWlp22rWDKwWW8Sc8khJHUg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,26 +152,54 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 9/14/26 04:24, Zi Yan wrote:
-> gnttab_alloc_pages() stores xen_page_foreign in page->private. On 32-bit, a
-> pointer to an allocated xen_page_foreign is stored; on 64-bit,
-> xen_page_foreign is stored inline. Checking page->private != NULL is enough
-> to tell whether a xen_page_foreign needs to be freed on 32-bit and
-> page->private is zeroed unconditionally on 64-bit.
+> folio_change_private() should be used along with folio_attach_private() and
+> folio_detach_private(), where adding and remove ->private content requires
+> folio refcount change. add_hugetlb_folio() simply sets folio->private to
+> NULL without refcount manipulation. Change it to direct assignment to avoid
+> semantic confusion.
 > 
 > It prepares for a future commit that remove PG_private.
+
+s/remove/removes/
+
 > 
 > No functional change intended.
 > 
 > Assisted-by: LLM
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> To: Juergen Gross <jgross@suse.com>
-> To: Stefano Stabellini <sstabellini@kernel.org>
-> Cc: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
-> Cc: xen-devel@lists.xenproject.org
+> To: Muchun Song <muchun.song@linux.dev>
+> To: Oscar Salvador <osalvador@suse.de>
+> To: Andrew Morton <akpm@linux-foundation.org>
+> Cc: David Hildenbrand <david@kernel.org>
+> Cc: linux-mm@kvack.org
 > Cc: linux-kernel@vger.kernel.org
+> Acked-by: Usama Arif <usama.arif@linux.dev>
+> Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
 > ---
+>  mm/hugetlb.c | 7 ++-----
+>  1 file changed, 2 insertions(+), 5 deletions(-)
+> 
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index d3a0650ff6905..8d551cdaef9db 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -1446,11 +1446,8 @@ void add_hugetlb_folio(struct hstate *h, struct folio *folio,
+>  	}
+>  
+>  	__folio_set_hugetlb(folio);
+> -	folio_change_private(folio, NULL);
+> -	/*
+> -	 * We have to set hugetlb_vmemmap_optimized again as above
+> -	 * folio_change_private(folio, NULL) cleared it.
+> -	 */
+> +	/* Clear all folio->private flags except hugetlb_vmemmap_optimized. */
+> +	folio->private = NULL;
+>  	folio_set_hugetlb_vmemmap_optimized(folio);
+>  
+>  	arch_clear_hugetlb_flags(folio);
+> 
 
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
