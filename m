@@ -4,149 +4,156 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CD07C88E6E
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 16:03:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFCD1C88E72
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 16:10:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 152A36B0088; Mon, 14 Sep 2026 12:03:55 -0400 (EDT)
+	id A8F5B6B0088; Mon, 14 Sep 2026 12:10:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0DD5D6B0093; Mon, 14 Sep 2026 12:03:55 -0400 (EDT)
+	id A3A6A6B008C; Mon, 14 Sep 2026 12:10:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EBF206B0096; Mon, 14 Sep 2026 12:03:54 -0400 (EDT)
+	id 9017C6B0092; Mon, 14 Sep 2026 12:10:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BE3886B0088
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 12:03:54 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 55E50801CA
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 16:03:54 +0000 (UTC)
-X-FDA: 85212838788.21.2F32155
-Received: from mail-qv2-f12.google.com (mail-qv2-f12.google.com [74.125.230.140])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 0E93720015
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 16:03:51 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 630516B0088
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 12:10:55 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CE66AA01C9
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 16:10:53 +0000 (UTC)
+X-FDA: 85212856386.27.01021F9
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+	by imf03.hostedemail.com (Postfix) with ESMTP id DC34B2000F
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 16:10:51 +0000 (UTC)
 Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=BktPHSnp;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf03.hostedemail.com: domain of ackerleytng@google.com designates 74.125.230.140 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="BRRxpu/w";
+	spf=pass (imf03.hostedemail.com: domain of nphamcs@gmail.com designates 74.125.225.141 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789401832;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Lykhn1ziLcNrm34dqlEZxk1CMrWoLDAjyXD14b56Sf8=;
-	b=QkdY0TPdzFkAG0iyZvU3Dzm8Vbl927Laj+x8n29D/En+BeftHO6odELsQKkmItUszVda0U
-	TWhjS+yYi0q59QdGk+yysdzE99+Y70/MxxSjjBpc8Hw6Kp5LnAymLK8XlAU/iEXZG+T5z5
-	+UtHATqgxsDU4N8Bud7jyfKYfhFaxlQ=
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789401832;
-	b=Q0AR3YEgZ12RB+rFSBEeKqMQQnfuenVlk0RWWkv9Xe5mI7nCAOEfQc5YXJAiWkAOOTHyvG
-	IuDpeCeotrq4wUiuYk4Rkyy+QOleij8jNjaamMH1hrP0mTNDY3IJnnJR/jDfFwQUqYKKPN
-	uWwQhhzzjrsZ1LrxVVYhDqbyNVC8NuQ=
+	t=1789402251;
+	b=JUHaqvaj7TTFghooAfLEeINcSea2nze8NEH0aI9df+tkmv1NRwQAmuB7qbYLUjOQvB0Y5w
+	8NhHz1evcs361+5j3J202clJSQveUxq6uIHBeX/zJsUgISiOVOpZ5FXKy8CC67lFCUNDra
+	TewlL8GnHnQNIN6Y6OKZN1MU7uEtyKo=
 ARC-Authentication-Results: i=2;
 	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=BktPHSnp;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf03.hostedemail.com: domain of ackerleytng@google.com designates 74.125.230.140 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="BRRxpu/w";
+	spf=pass (imf03.hostedemail.com: domain of nphamcs@gmail.com designates 74.125.225.141 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-qv2-f12.google.com with SMTP id 6a1803df08f44-91058dd77a2so34900076d6.3
-        for <linux-mm@kvack.org>; Mon, 14 Sep 2026 09:03:51 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789401831; cv=none;
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789402251;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=JVDJIFTFgLvCCjRsRRk9CSdls4G/cg4o7is/ZxTdK6I=;
+	b=YXdghZgSUycp3GJiFM05jC2VYsnpxCRgPCHuYPYy5JXtsCbIeoR3daKnjX59Q5FJYO2toF
+	HAwYS1fxQSLPVCMJIBqW26sgxCX/PC3EMzOmr+/ogRpt7FNi+/9ZGcVOoERyCbH+8M0Mo/
+	GkivIodFcS5aAr9GOo7avZPpsJuupWw=
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e71cdb22bso13271445e9.2
+        for <linux-mm@kvack.org>; Mon, 14 Sep 2026 09:10:51 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789402250; cv=none;
         d=google.com; s=arc-20260327;
-        b=h5h1i6sh3l0G3JUnphRBc/F5+pOnsD+2geyyvyYSDqAU4wdfgmpa0hywABPF+RnIM2
-         qpnG/HsVDEGIYNrAsUTQi/wZjIRYQwCfEs2phd2aR0dsOTDNcPm1ZpVneckJ3irYdwc6
-         9sVaBN+TeP01VMp93s4iyIcG1h8fpJk9150QdeA8Cb0earyJX8e9FFEJwY/INtulX+75
-         Q1XoxuevsfCFzo7mIjGVz3Hq6afE0Ek7ZgjFhUhtj/3qdaV6PpZ+/T5CwdccLBgqAwYN
-         Rp4ptHFym2qzuwo/WatfBPYcb2uzAEGJZKfJ2EUPbxTt4T5eNkBwYWNd/xSX5lbeOz31
-         q1sg==
+        b=nLYfb+qAJMmKSRIsqCScI724DRj583iU1Ah5aM+kzSSb3bQs8stE4QxIDJ5oxyhKyH
+         w52R7x1naNeRsvTUodw9euIyalOp3P4gT0m3+EGqme7o6MusQcZtbnedFUK84yFOe4KU
+         hFOPONi5R2RKwK3XdV+qV8Yj9RWiiYgW7/LTegavwD2mvMjUWVmp3FLH0frJv8BA2ndt
+         mnGZWKYaubUWxbzMBkIrgddHndGI+M0xosmMcL/1meuKa96czMILPuRYHziv53L4QA/l
+         NIpBpLY41S51FgA0jZp+5ZrL9elR3YRpkXJZF1rXnz3qDcoUa9YPDYnngXurqHjtHz1Y
+         PDsQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=Lykhn1ziLcNrm34dqlEZxk1CMrWoLDAjyXD14b56Sf8=;
-        fh=tskKSt/0oK/CBgKiAQ8I+WbClwCB9zqLVlkPu9DINeI=;
-        b=imDgt9NEw2e9PVFq6J31zoWVC/EusRzpjasK353tRxYrhFXGcHGRiMKPsajtqF30Kx
-         JhRFryCsGexN9aV67RFeaCZyVOk/GW5FoEGs50EXCxmHN4tPEG26eErMGtMKpylPL4P+
-         avjJlQnLdJZWXaB1TqoSvAgytR6eEiE1Lskj2giOqPepiJamqwo/CqHAmH4bBK3iOqgn
-         4hA1xUiF2pRm0kJHbdqB/v7WNydT3aNPAVUWFMkenLTw16wXTAMQMyoBhaoX2/Trhcrr
-         J6xGKFaEzpW+1ndrQllOder7qpJX9g0J33bGcTFFFO2uvewz1u30W8bYrB7RAAJA3cEI
-         JRyA==;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=JVDJIFTFgLvCCjRsRRk9CSdls4G/cg4o7is/ZxTdK6I=;
+        fh=AZnbHWdryQmtvXaCR57vW2B1gkj31NhwJcy0vISc3MI=;
+        b=TCl68Ri/myw2CeADFfxWdEN84HwwE7ZS6amT4TOIdIsB8HP4EFkpC1Xw5QooYvp+BN
+         muqTZxE6OLvGSJvZjcV6F8cfA5zuf89EDr+5H3/UTcB8ER7P5XHkWgeWMJAHgO/HiOM+
+         Cr4nqhYFwZwzDRmyLcbjArBJmiKid2TXrdwjBEnPOYrI8VhWll8JRFbAvodVNK+cVufg
+         1zfRlm/gdup/kxxSfdvYBkHHdYjM+m69kwQtwNvIowzxVEaoaqUdgA0lRAd+Oa0HU/Gh
+         ioeRnB9KgR5w1ZY8CRJk7EKTL3PD1BdcuBMwRbmd6t1OSShB70qsyWwHeTzLgq22ct2R
+         TBjQ==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789401831; x=1790006631; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Lykhn1ziLcNrm34dqlEZxk1CMrWoLDAjyXD14b56Sf8=;
-        b=BktPHSnpBYfJRpG39eeG6t1DYSNgQkYwn4uEozzCIGcEiMFRUasJhvG460/I5vrkO5
-         3qnJlGUEUX0tBW5Dz8gJD3rjx5ai+VXYBgPs/u56YqrLmw38+pQSqY/LOT66DS6z4M8Z
-         Np76D64MHAxrlF9imGUTZK51nxjrv5gwOwL/Rk+8/jilooSuNH9kFUtYBXaBJS9r5QMc
-         eUW5T/YN1YOkrlW7+iqYLnOzz8VL6jsV3YAqQEO9A9w3IM/D63u51kOH2xtPuNKmECu5
-         qhJqxb34rc/uPz3xzN1QgPIrS2Fab7gcTaqwBMR7+WBQnRFuWf/HB8In65mhgDk7osP4
-         oBxA==
+        d=gmail.com; s=20251104; t=1789402250; x=1790007050; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=JVDJIFTFgLvCCjRsRRk9CSdls4G/cg4o7is/ZxTdK6I=;
+        b=BRRxpu/w+HzW0XMmP6GpgRLIQ9d6YH/Bg8McKFg1xwAsyQumhHcDPdrAbolQ6J5Z5S
+         37BgXjUE+NsYp8G0UKRq5YxQ4vpo8FKHItzUbQ5oB+t64oj2/Pwo/aHV+NXWECjis7uo
+         4JHo4feJyTdItGsYiTWF4kRKh0Gn1NmNOC9D/ubh43Z37jgmTtgMrnUSB2vkzZKcX0UE
+         zg6zGYkTsbfbh2XkjaZvcBdZc+YI5b4TqQ1TT/rywRsKR2UQpNKi9UYSkQZU16hb1aX9
+         1YhU9hsJ52+UK+2viX3o1RkPl5EKSQM8h1gmShraK5UOFW5iZM48bChiwkxG0AzgFJNn
+         Qn1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789401831; x=1790006631;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Lykhn1ziLcNrm34dqlEZxk1CMrWoLDAjyXD14b56Sf8=;
-        b=QtrFOmsoYtQ6nfelhmhJZ+miluvmaGr/+czZyPoJIi/smqqlrQ/dSjKqBu1zuqb3/C
-         qEoWehPn+6qJeXAO9aDfG4QDUjtPqhlbCb6zNtT0/cj9zG0BcbQ9+BwehgpChogYFtYT
-         jfYLP97XLM3txuTiqenPYwha3eY/3Ri98k8LU1dukdAwfgm0iG9cWz5jmJPcW4LrmvLu
-         ZH7QTaMQmm6plRsFWInMlbkNZWcjbxSzHl69yOM+qylzbXQ2v3IFmoFgf3JmMiTxxpXV
-         qlj66L+qHHilLeLA0fBp+0Ecsj74mfgx+jfHCF7XxZL6dkyeK3X67lkZH/+GImFtonp1
-         KFNw==
-X-Forwarded-Encrypted: i=1; AKwUvBw6AF/vRz15XBhQ70hW35kGA92Q5v7MP3o3728TwN4PMN7PM6jsDAr2sismBmiAjQ+3tBYXymU9aQ==@kvack.org
-X-Gm-Message-State: AFuF++lDXpsqna7jF/uP23pDCDsB/bQTRWh+MaJAc4OYYufsZ5HCBGU0
-	w/h/pt1kCWKm3H5w/GTdK1L6zxdW9Q5IkqfCr7sKntQLOa4maF1ZNyHbRhxeXnBFUL0E/H2/nVY
-	FRzgCkMcu/aH9W3blJYl8g87eMHbh9yLak4NU8stl
-X-Gm-Gg: AYBFou2z6uUwAoutaI6PTSRjLFzxcmeiDmA5TZ18vCvJdso/nYcCZZoshmXksGu1mnp
-	dQlqH0t03hBHS4ArwOtIayeI93gDFY4bbxbUWgGPyZk6iE+IYB2qGJ8BIXdDjpkyt2RN0SkRDlX
-	zyz2ba9r6LfwU+Nny6zaFPbq/aJ4ksr2xS4w661BjWskDb+DtjTWkLl4m2JIiIL6q4Zdyj7Mur3
-	ZgrzBN7t3W7FGGB11MSStHKRSNcCM8BjJnTD43NdDJw7g5uZiPRx4UbCPI+vPaGBI3PWOCobsc7
-	umMDS5/IWzS2MIINa9nKUgpEzy++b95wX6SIF31OWdZd8w+0vP2PIY+GiaoQhA/yCKxiSVV2nlq
-	9IxF97gaXtf3WWW8WBHGD
-X-Received: by 2002:a05:6214:e88:b0:912:1fca:531d with SMTP id
- 6a1803df08f44-9122e4cf515mr54297366d6.2.1789401828963; Mon, 14 Sep 2026
- 09:03:48 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 14 Sep 2026 09:03:48 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 14 Sep 2026 09:03:47 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260911145000.3881046-1-joshua.hahnjy@gmail.com>
-References: <20260911145000.3881046-1-joshua.hahnjy@gmail.com>
+        d=1e100.net; s=20251104; t=1789402250; x=1790007050;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=JVDJIFTFgLvCCjRsRRk9CSdls4G/cg4o7is/ZxTdK6I=;
+        b=c7t5axoMrok58PZQYgSxbcxTs2x04jnsBc4q5F4Z7IlRfGFMOKPRzDO5S5n6TCB5C0
+         xBK3UM9lhDELdIauFOn88+TKE01ehAMBbMLS/VMhvN6LhBTePE0RfEa4Tt2d0MfzGJeE
+         XnEOiUj4ypWHOTs/tz7oXZUY4VQZ1WIuI6AQSgTOkgiqBucq+ht2rfEgQ3Lg07Nrbnk1
+         jam/AWFL8P1gEqb45VqF2AlbounJbvdBj5pS4lpEx/0JQkTL8wywkPO69vfJO8R6S0JB
+         G58VvbOj0n8WLuMGtmBhMarSNv0meSjYq1I75g355vLQxQBW8ca92WIuMCqJerDw7W66
+         03Dg==
+X-Forwarded-Encrypted: i=1; AKwUvBxLrazpny81C1fLWWkkTXPPkK5uFYlNsnsonYyxzSYNTCi41zB/+afEo1gNHJAZAHgD1HFnCYr/DA==@kvack.org
+X-Gm-Message-State: AFuF++ngEKPOmDPZqvhSTfCiH+qNbDw8O/852CegFP8Bnx6rSXYUZuaa
+	PVUFOgfVpvU/0r3l48+A54E0eETfB7pJfq2okUxbDJ1VxCov0kYny7rxdYFmPQGR5N6VrBFg6r/
+	EvauARU+1rWtjgkqWNhHgoWay0TvE9Vs=
+X-Gm-Gg: AYBFou3j37/hGXWKvGDcQxdVw/CvSdcmf0+dm735INTobTuFfy+Vts2JTn5aMiz62rL
+	67MvhQjHy2o0o1GrOsVuoHFpDbu2b43JHwqL6yHndfofrK2BaaGJNEOXzsjPD7SudabUkDObppq
+	QFfm6Fi/WdLbHG6q0L2v5XC2a2+CqQTutxTD6rFF6OzK0NjkEVXfhtBMZmZU33emEtkYr90tgAY
+	c6qOWKY/Jm04aUdQyanm3fhOQuiLsBk3OkXIWkq/Sdmy44LiszVtQjBfhEy4JjcVB9dAg9yM9oa
+	7LNaxuJSxn4nWC4ryfEgcju643YgEWxV8/iavWxZeMXZYGhVUN2xZtPMmhI61g4A5t+I3oCFOgk
+	aOJgbCpUlrXsMlIrOs5Ga4Q==
+X-Received: by 2002:a05:600c:37cd:b0:49c:fa20:cc08 with SMTP id
+ 5b1f17b1804b1-49e7a67cdcfmr47809235e9.31.1789402250147; Mon, 14 Sep 2026
+ 09:10:50 -0700 (PDT)
 MIME-Version: 1.0
-Date: Mon, 14 Sep 2026 09:03:47 -0700
-X-Gm-Features: AcwNN1WkNy6DDp-4PGpy28TjQCRTCMJrc6530qqWtllOnWQcoumOeBgfLZrmLZs
-Message-ID: <CAEvNRgF7-zY5CRaUHfswRW-31v147SbTHRzMKGdV4e+Gd3Uy8Q@mail.gmail.com>
-Subject: Re: [PATCH v2 4/4] mm: hugetlb: Avoid re-allocating global
- reservations on region add failure
-To: Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Dongliang Mu <dzm91@hust.edu.cn>, Hongxiang Lou <louhongxiang@huawei.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>, 
-	"Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Michal Hocko <mhocko@kernel.org>, Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-	Nhat Pham <nphamcs@gmail.com>, Oscar Salvador <osalvador@suse.de>, Peter Xu <peterx@redhat.com>, 
-	Randy Dunlap <rdunlap@infradead.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Usama Arif <usama.arif@linux.dev>, 
-	Vlastimil Babka <vbabka@kernel.org>, Wupeng Ma <mawupeng1@huawei.com>, 
-	Yanteng Si <si.yanteng@linux.dev>, fvdl@google.com, jthoughton@google.com, 
-	rientjes@google.com, vannapurve@google.com, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
+ <CAMgjq7AHRzBsbmGOx0s=TQFBwcn=DEU1naR443sO6x+pJd6hAg@mail.gmail.com>
+ <aqBT_35E-eSoN_zj@cmpxchg.org> <CAKEwX=N4aaq_oD2agTUNrUNXhaYGeQ9vxu+dywFvEFgWFi4uQg@mail.gmail.com>
+ <CAMgjq7AfNBUpMamcv29JFzpX=7ApNYVLtPjWT4Sm8cXjSLYL9g@mail.gmail.com>
+In-Reply-To: <CAMgjq7AfNBUpMamcv29JFzpX=7ApNYVLtPjWT4Sm8cXjSLYL9g@mail.gmail.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Mon, 14 Sep 2026 09:10:38 -0700
+X-Gm-Features: AcwNN1UhGBQM2G8axnieeGvN4-f-Y8NhL0mjIZlCfhdtBbLfiYUWAueMcYwHRoQ
+Message-ID: <CAKEwX=NZo8DNg70uhhd6CM0BfHH1RAkfuSQwVeTg+77a5-r5DA@mail.gmail.com>
+Subject: Re: Path forward for Virtualized Swap?
+To: Kairui Song <ryncsn@gmail.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Chris Li <chrisl@kernel.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry@kernel.org>, 
+	David Hildenbrand <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Barry Song <baohua@kernel.org>, YoungJun Park <youngjun.park@lge.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	=?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?= <surenb@google.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Rik van Riel <riel@surriel.com>, 
+	Gregory Price <gourry@gourry.net>, Wenchao Hao <haowenchao22@gmail.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, 
+	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, 
+	Meta kernel team <kernel-team@meta.com>, Linux Memory Management List <linux-mm@kvack.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org, 
+	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 0E93720015
-X-Stat-Signature: 9de348zerk678zoaxknhg7x91zk43zgt
-X-HE-Tag: 1789401831-233654
-X-HE-Meta: U2FsdGVkX18lYhNYXslJCZn0gchrdA6EPQ0Spcc/PvLNiw0B3OSYKr6AngNoOqSHuTz+bQ4aglyisvNqRxcVvil+0+jKdRmwclKxyou7IDHX63InNsB4WyQgmwk1PMdMLPbageHhWHpH/5fwiGkTnT/1NBPz7lY60+ch/xFlByaEQImDSc4kgXUBjl9puMslHJAVDD01PldRSSyGzSnnSmM8oXsHjD8y+8ryVH8xDJN1tsZcWtTFV2ZLEAQO0IYZuWwn8QbLs2a/mMm/jHcn/lz5uNPDrrOmbkWNmvw4gKD5o3NH7LzyDIMkUPDWJuxa1ShMytLhyJlB/PI8f/GK/ZCeVNiKJW8nXBS8yzgbRMatxCGCNRsccs3N/xzkrpqTJwLUzvK4//YC99iWAgjzbHU2qfAB3C2RbXwQ/0RN8n0At/hjkDuQ8j5zlJEIXcUiZg+sHbIg40skR956qHuDarFDjg87+Uxj4wLmRTL/YEVAK7gjtXbo+ji9g5vbR6h4VmPqGv+6TrA/X1WcHLFFtnuMdZI54/QA3HZUXJICmvE48ZvBzkno0QKDQR2Ia4igiY8sLn23UkvNdG9DQvZjD9117ge0p5CuV/Qgsu+PbM1DLr3kQClR2S1O0Si/+ShHQCm7Q9/5BLDDGKOKOshVpTQKo+qTA/Rvyyz/4dzUkARR8XGCbqwjH2XzoiW4G2pN9Bk1WCBB4NdV4k+LILPwZPCvGyhwQbFR9DEeQmFtZ8JsPolfFCnzDJ6TXk7HE/sAwVjU5MezHNW4PNeVcz15cDPNx33pC3DdG0imM3XAzk2zZftIaBolRQqdY9xq3jKHWor9kr0ZctQpZS9WuQuialFVzIuGU8G3RXUsCMzLUsbf94VuP4OxLDv7vQaXSZUy1++fKz9YdS9BncxK9I58a1CerDC0+wfqAfpjFj+ZKrfAtev4vrsoXUHdICY2yrkRjJBZT2Xu0MrNhoMgn9Z
- TYSoEE05
- lpjJ0+XFsW8GcQ+2+nr+MAEt7zHB4ezGUx7C7RiPQLoWHa9RAZJ5xvb8fQL1v99j+m99bQXGRWlUtlbeBAJW2US63X0z/AEElXwRuItz9UvILpc3usOE3obdMvWPAim5FNRIV/gvNb5DiSsVzek00cQtYAnw75dsnKdWbRArOv/bSIkCoCNFQqbO4zGxdkg6SbhstddpVblUB34ozqGuSHOWKK8Ya66ffWcUT5ElacyGSZAa6RFSWzIoVxZVOO78UxSTrLIjY7cNgjaTOSwjibEX6gAasADcIBsKVo8RW4x7tnuOBrskFe5U/4Fko2lt8lCez6EVAXAvXTl1CJEKT+wyTwFl7qm3ZJ4yTj9qjD7ufQDVaDtIwHZ61EJwRFBe2v+cps1YqDozk+wYH5dxFEe9UNtmpqGYLnTjPSMm4svMHjcVghqekGr2w4kyCB2wgrAlD6LmzOirenh0tKHlLeZAEbg==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: DC34B2000F
+X-Stat-Signature: tc71z8pwgc79esa74hjdtewcuoj7t3kk
+X-HE-Tag: 1789402251-800543
+X-HE-Meta: U2FsdGVkX1//ZDOVn+9ENfMynI35GWqCAoKsdEWryhTRXZYVdXPz6gcg/m7/A6yD1FOeeaM8OOPpMQSLBzwKR+IXMYUZnCj7mJVGHCLGb6nOdgtEhVlT4X3idTt3gjEdoWNm4g3GUSCKz/7vDOSBwzyqJ/9ChNgUv3Ts+9tTP6kuaQZpIJTcXuiAf7CsBwyGZQbZbOCn0mvOpozOus8PR5VFW5VCcylE/QudZOyHRUiylrmEts3gQLYcA/kMyJ7Nt3IhnZK0fmdLfAtSURDQd2KdbTD8mmDHJzKB9uKGBRA2ymq+Am9joTeaWrk44bnd1uP7PqMh81KzWLm6aPmRvF5mgfmjT4Q/uBHlSRXUZGQKNSPfCm6zejbihd8K4BNGgtQt4MH9rFknfOWWGmdub3RCg3DwTifvVse6J93KV/3woNpT9l+m6Zt3FBqOtvAfe2HP0qZgxWYcERhhNs9sNve3Kh3+wyA6t2TzAM2lCOkegU5JO1lLiH2fRG/F5B7W2TNJVL11toms4bm6WagNJjo5d1jD2dCVb4HfHzjesOSVQ5cRZ/mpA696gT4fe+I7B6L5J0ZvFoIRTWlWOeUbLIH3TSSluaS1NOumlerWwtJxiT6op5VVPoz79BjaXE221j1uw273Wa/GQ/xOczrnnoSEhbzrFhjs+WV4f8854P0LOPCZweWv8rnVFa8VmB0FF/i5w17dGZBgeuyYJPyB6IeSdAPy3HSzSNkdmQoHPqfAmfx55eAI3qWs8kGAtZG09eB2cgEJxVFCWAUi94aE0zpV9i40TAWHuC5yKHffMlu11YzJ976S32El57u2mqysRncV+TBjrpjPSEfdw+rVA+jcEKVhrKOZwtZK3R7MEB2KfbE+hamZu2QW7HDE/dNiwXGwR5a08SGgoFOf9XjwTjkLjhUKdpFIp5WEB1ITSvZ5LI3dF/23bTs5ki8RQ4TvTEr4MyqMDB/rZb5EU2z
+ WRtsIzgX
+ q1gCTm4yylfCG/cM/1YsPV3YrzNlkfdKc5TP+yUvIDqLkT3nPwP9xJPuhGa87TCVrm+j1QnCyT7Llu5xvUNnhj1qG54dTio7Ct0dN9w/xuP73Z6mf1C9WWZz69Vkrb8jImjCzVso4rUSTkMqfMb5s4UG6GReUH5YOGA9NUD25roWHzzgBLy5IXcVbaPnGWBWpXg+0auVYJYNE/Q27EM8CWvXWsgs2oupsccNhJH4Y2FjoDE9R/3zscVVSRkl1njbSn/9X1gLjEbnOxG8WhJyMwgrvActlIRJaMv0XslOXyJOXMs4F79agoboK15OduE1Da6T6q9ENxn11VSTx9Kr9zcjqpp0LamE4VJoeKhzaTVhMircOdw5eUPfzx9wfrZMuYlCqmRV62AAkQQvbzZcmzX2vrYLH9TBWF7TPKrscHALbJpFKCjdiQJpJvcFSgnNxrGcO5dWmIlxGc3DtaaGpJ57oAi0D5N71+Z0fwRFYM3baoY1dfddBUr+mP8V7AdPJrM2W71N4hlyqlga9jN87xDzchLO+0PYOn6wgnW01Q3TntNQV8dE5SnuCtLZhqQbWj8ow/bIz5H7stegpGiXWJqnxL6Q/C6HyD7kX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,104 +161,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Joshua Hahn <joshua.hahnjy@gmail.com> writes:
-
-> On Wed, 09 Sep 2026 14:49:29 -0700 Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org> wrote:
+On Sat, Sep 12, 2026 at 2:01=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wrot=
+e:
 >
->> From: Ackerley Tng <ackerleytng@google.com>
->>
->> When reserving huge pages for a shared mapping, reservations are first
->> requested from the subpool, and any remainder is accounted in global
->> reservations. When adding the file region entries fails later in the
->> process, the reservation attempt must be rolled back.
->>
->> Previously, this error path explicitly dropped the global reservations
->> that were just acquired before jumping to the cleanup label. The cleanup
->> label then returned the pages to the subpool. If concurrent activity in
->> the subpool allowed the subpool to absorb more reservations upon return
->> than it supplied initially, the cleanup label calculated a positive
->> difference and attempted to allocate new global reservations from scratch.
->>
->> This premature release was completely unnecessary because all requested
->> pages were already backed globally: partly by the mount guarantee and
->> partly by the global reservations just acquired. Prematurely dissolving
->> those reservations forced the cleanup path to attempt fresh buddy
->> allocations that could fail under memory pressure.
->>
->> Instead, track the number of global reservations actually accounted so
->> far. In the cleanup label, subtract the already-accounted amount from the
->> difference between requested and returned reservations. This ensures
->> that when global reservations were already acquired, the adjustment is
->> purely non-positive, dropping excess reservations without ever attempting
->> fresh allocations.
->>
->> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
->> ---
->>  mm/hugetlb.c | 8 +++++---
->>  1 file changed, 5 insertions(+), 3 deletions(-)
->>
->> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
->> index 652cfb55c6e6e..1151ad959ffd5 100644
->> --- a/mm/hugetlb.c
->> +++ b/mm/hugetlb.c
->> @@ -6678,6 +6678,7 @@ long hugetlb_reserve_pages(struct inode *inode,
->>  	struct hugepage_subpool *spool = subpool_inode(inode);
->>  	struct resv_map *resv_map;
->>  	struct hugetlb_cgroup *h_cg = NULL;
->> +	long gbl_resv_accted = 0;
+> On Thu, Sep 10, 2026 at 12:42=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wr=
+ote:
+> >
+> > On Tue, Sep 8, 2026 at 11:30=E2=80=AFAM Johannes Weiner <hannes@cmpxchg=
+.org> wrote:
+> > >
+> > > On Mon, Sep 07, 2026 at 01:51:31PM +0800, Kairui Song wrote:
+> > > > Where I've ended up is that unbounded growth is a real concern. On =
+a
+> > > > host with no memcg limit (root cgroup, and most desktop and embedde=
+d
+> > > > setups), an unlimited pool means usage can keep growing, with no
+> > > > admin visible ceiling at all. I'm not attached to xswap's percent o=
+f RAM
+> > > > knob specifically, but I do think some kind of bound makes sense.
+> > >
+> > > Swap space is just process virtual address space, no?
+> > >
+> > > Swap entries already have one or more page table entries pointing to
+> > > them, which in turn are managed by trees of vm_area_structs. That
+> > > means rlimits apply, overcommit protection applies, and OOM killer
+> > > attribution works as well (oom_badness()).
+> >
+> > I tested this theory. I spinned up a process, and let it spam 0-filled
+> > memory + swap these pages out continually.
+> >
+> > As you predicted, oom-killer picked it up eventually. The host was
+> > (and is) intact otherwise :)
 >
-> Sorry, I think I have a hard time with this variable name ;p (I know,
-> even though the function is called huetlb_acct_memory) I get a little
-> bit confused because I can't tell if it's meant to be "accepted"
-> or "accounted".
+> Good to know the kill path works. But I think the accounting side cuts th=
+e
+> other way? Won't that conversely underestimate the host's ability to
+> handle memory alloc? Not to mention a lot of application are
+> swap  space aware, some built in logics like e.g. with vm_enough_memory:
 >
-
-Haha, didn't make the link between accted and accepted! In the next
-revision I'll use gbl_resv_accounted instead.
-
-> I know it puts the line below at 81 columns :p but maybe we can just
-> split it across 2 lines?
+> On a 1G machine with vswap enabled:
+> [    0.241906] vswap: created virtual swap device (2199023255040 pages)
 >
+> a 2G sparse anonymous allocation fails:
+> [   46.044002] __vm_enough_memory: pid: 1129, comm: search_agent,
+> bytes: 2147483648 not enough memory for the allocation.
+>
+> The default "Heuristic overcommit handling" policy is meant to handle
+> seriously wild allocation (as documented, and it's named as
+> OVERCOMMIT_GUESS).
+> totalram_pages() + total_swap_pages
+>
+> Is the limit, the heuristic exists only to make "a seriously wild
+> allocation fail" (as documented). But on a vswap-only machine,
+> reasonable allocations fail. Common swap devices, zram, or xswap don't
+> have this problem. One could argue that the size there is just an
+> optimistic guess, the compression ratio is not controllable. But that
+> heuristic is a guess by design, and a plausible number serves it fine.
+> "Unlimited" seems break that.
 
-I think this counts as an exception (more readable) so 1 line is okay?
-Either way line wrapping shouldn't be a reason for using accted. I just
-didn't make the connection between accted and accepted.
+Oh yeah that needs fixing - thanks for digging that one out!
 
-Thanks for reviewing!
+I'm not sure the answer is keeping "totalram_pages() +
+total_swap_pages" though. That makes some amount of sense when the
+backend is disk swap - 1 swap slot =3D=3D 1 page in memory, so it
+represents a concrete amount. With compression swap backend in the
+picture it's very murky.
 
->>  	long regions_needed = 0;
->>  	long gbl_resv_get;
->>  	long gbl_resv_put;
->> @@ -6768,6 +6769,7 @@ long hugetlb_reserve_pages(struct inode *inode,
->>  	err = hugetlb_acct_memory(h, gbl_resv_get);
->>  	if (err < 0)
->>  		goto out_put_pages;
->> +	gbl_resv_accted = gbl_resv_get;
->>
->>  	/*
->>  	 * Account for the reservations made. Shared mappings record regions
->> @@ -6784,7 +6786,6 @@ long hugetlb_reserve_pages(struct inode *inode,
->>  		add = region_add(resv_map, from, to, regions_needed, h, h_cg);
->>
->>  		if (unlikely(add < 0)) {
->> -			hugetlb_acct_memory(h, -gbl_resv_get);
->>  			err = add;
->>  			goto out_put_pages;
->>  		} else if (unlikely(chg > add)) {
->> @@ -6831,9 +6832,10 @@ long hugetlb_reserve_pages(struct inode *inode,
->>  	 * There may be a difference between the number of
->>  	 * reservations to consume and the number to restore now if
->>  	 * there are multiple threads interacting with the subpool -
->> -	 * restore the difference.
->> +	 * restore the difference, taking into account any global
->> +	 * reservations already acquired.
->>  	 */
->> -	hugetlb_acct_memory(h, gbl_resv_get - gbl_resv_put);
->> +	hugetlb_acct_memory(h, gbl_resv_get - gbl_resv_put - gbl_resv_accted);
->>
->>  out_uncharge_cgroup:
->>  	hugetlb_cgroup_uncharge_cgroup_rsvd(hstate_index(h),
->>
->> --
->> 2.55.0.1007.g17ff1f9808-goog
+I think what Johannes proposed makes a lot of sense. Maybe also
+keeping physical swap pages in:
+
+pages =3D totalram_pages() + total_swap_pages
+if (vswap_is_enabled() && zswap_is_enabled())
+   pages +=3D 2 * totalram_pages();
+
+i.e just RAM x 3 + physical swap pages. I think this is a
+"good-enough" gate. If users truly believe their memory is more
+compressible than that (and for some reason they really need big
+allocations like this), yes I think they should with the overcommit
+mode :)
+
+I'll include this heuristics in v5.
 
