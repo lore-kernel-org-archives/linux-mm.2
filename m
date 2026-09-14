@@ -4,72 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42071C88E50
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 13:16:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AE30C88E50
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 13:17:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 34C936B009F; Mon, 14 Sep 2026 09:16:47 -0400 (EDT)
+	id 2D8A06B0088; Mon, 14 Sep 2026 09:17:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D5EC6B00A0; Mon, 14 Sep 2026 09:16:47 -0400 (EDT)
+	id 260836B00A0; Mon, 14 Sep 2026 09:17:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 19E566B00A1; Mon, 14 Sep 2026 09:16:47 -0400 (EDT)
+	id 12AF16B00A1; Mon, 14 Sep 2026 09:17:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DBC656B009F
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 09:16:46 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6C9AF1A0150
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:16:46 +0000 (UTC)
-X-FDA: 85212417612.22.D6500A8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 96C701A0002
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:16:44 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="D1ns/Acl";
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DF4FD6B0088
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 09:17:40 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 70346140132
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:17:40 +0000 (UTC)
+X-FDA: 85212419880.27.409418C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 9FBC420011
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:17:38 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kik6WOQK;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789391804;
-	b=hLAFLZQ49DJiVOr+htwnOl95fW8QRiw9ZgchGkUhz3Anxpw2cLm1GNV0vieDedn3yjCw/b
-	3axloTOHY7EM1JE/RmNJwFYovnDi/N1ogkdAmf1R0PkWCJI2ULRAvj0EI4zPtJFP2f2GfN
-	NKpLS68s5dNZDsMlTSvJrRgwfkgVsCk=
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="D1ns/Acl";
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kik6WOQK;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789391858;
+	b=XeOeCu8ySFJ3TSaDd90pn2jVmUdZar9FTAeNj+a65puZv03JxSlL3THmQo0wCKb2cGRyPa
+	K7ruUrcpOHbZKhnyuVqr+Y1iFnB5iM7G8mpCPYObGTiEg5fA2Ov7v7UTz6ANLjklofIV3q
+	cmE5b59TRjage6o2gPg01vWczpdMwMU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789391804;
+	s=arc-20220608; t=1789391858;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GBiUgvbmJL61I74QM9PSZC/060GcMY573CBk0CxwPMI=;
-	b=WRF5C5BAZlcUf8a8RqZWBuiC0iFJ+HIumX/l9OOunYWfcfLPdjZelrIBiu53iGPEQC0rD9
-	qMCjiQ1rb3dDJhJPVCmtb/8PLxQ5Dk5yNhYNnLU9Hma3aV3ZBj3V6SR6ZYP6s85JOT9fPA
-	3hZS6x2DegqR79z7h/Vp2dNFZbJt+vg=
+	bh=hhUbJrfw6vW2Rpyvmw88xbSS4WfUjxj+d6KMf+zk/XA=;
+	b=cVt7SsH+OxKH1z/Z27hfooPUpAjNJHcIFyjlqkig9jsBI9LPCkKVGslh2Q1Y4gv8DSnwOu
+	rN1W9zaD06PQmbtSejIeNEOc/J6grLURkBSiD24EK/eUdvV1+SUBEA45nUMHbOnvu9XpBY
+	szXlVjR2Ku7al9ayEJI14tQR4gdMBRQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C6E83418BD;
-	Mon, 14 Sep 2026 13:16:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 596371F000FF;
-	Mon, 14 Sep 2026 13:16:37 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 24C4060120;
+	Mon, 14 Sep 2026 13:17:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC1DB1F000FF;
+	Mon, 14 Sep 2026 13:17:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789391803;
-	bh=GBiUgvbmJL61I74QM9PSZC/060GcMY573CBk0CxwPMI=;
+	s=k20260515; t=1789391857;
+	bh=hhUbJrfw6vW2Rpyvmw88xbSS4WfUjxj+d6KMf+zk/XA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=D1ns/Acl8NlyCRfAMuWBdUlk9ePUqsUljWh5lM0l3HYkKNbt99m30YPVy3XXTB0X9
-	 g6QifLZRIQ55Gep84FzTXk+L9VwsWHjuH5uNzAtcDxgSMgbUoYFMjJ2fEKemqdKp0e
-	 32Q3xIJ0TpxMTJP0yJJGNiwIdY4eJKc+wkw84y/1drlSwMSYM4G8gpR4BWr7nksKmz
-	 uboaHlq1lPNdhJv25gZzpl/XDiVuaZYqok5NGNEYa+OMHNPMJYG4WN4i3dlxcbwQ5c
-	 QHL9/Z8evXRsbBQ3TRNDWEgr8AfvtxjYqzhl+Vn4asvB2Xsf4/2sdNodFsSNn6d3sC
-	 Xy18WgXGzq1nA==
-Message-ID: <a373d76c-6ff0-4ba7-895e-343eca9c564e@kernel.org>
-Date: Mon, 14 Sep 2026 15:16:33 +0200
+	b=kik6WOQKTvM9ZwoIKKjJrNrdc7isnaDKhleSp9hWvx3NYkGsF9cz9od8V/H6jOhUv
+	 vQTWoqiWmQ3IlCDiOL8EEKkH6rkAFkOsEkx6s5wnLGmh1RFtOi7dkkyhdjTrkEaFn9
+	 WdA0z/hrNNcDVgDGiGqcvC5/EDKdQCdRRvI8Z/0d2o+OrWjKcMslgW2PiKVk4d+Qw8
+	 N1l4+y4mgKDbZhzCTyxCOWBnV9FkqB7AQBpV+ajBYEcexVj3HVishW7GUcTUpHcanC
+	 kcz6rGf9oj+GggO1Pt2IJPUVaEiytEp1en8fLo+jtDoCNA/OvuSJnOdIl0aAwy88ZI
+	 PYbtbl+vtbsXg==
+Message-ID: <3c82cbf0-0f4b-4ced-8f88-5106c4dbf212@kernel.org>
+Date: Mon, 14 Sep 2026 15:17:26 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 05/16] mm/hugetlb: use direct assignment instead of
- folio_change_private()
+Subject: Re: [PATCH v4 06/16] f2fs: stop using PG_private
 To: Zi Yan <ziy@nvidia.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
  Andrew Morton <akpm@linux-foundation.org>,
  Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
@@ -84,9 +83,10 @@ To: Zi Yan <ziy@nvidia.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
  Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>,
  Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Oscar Salvador <osalvador@suse.de>
+ Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>,
+ linux-f2fs-devel@lists.sourceforge.net
 References: <20260913-remove-pg_private-v4-0-848550f7574e@nvidia.com>
- <20260913-remove-pg_private-v4-5-848550f7574e@nvidia.com>
+ <20260913-remove-pg_private-v4-6-848550f7574e@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -133,17 +133,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260913-remove-pg_private-v4-5-848550f7574e@nvidia.com>
+In-Reply-To: <20260913-remove-pg_private-v4-6-848550f7574e@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 96C701A0002
-X-Stat-Signature: wb4zipc67btuu7ptytre5sshwbxr47dk
-X-HE-Tag: 1789391804-236080
-X-HE-Meta: U2FsdGVkX18DDcomidpy3Ck2wx05TILMnwgUvo5UJI4utnIHLkRsoha0YqSwLk2nTzIB+6DYfr+/wrO3BaQCj2dfBNLV0bS9NCN7CA0yI3bbJuJyC9CbQvSkc2LM//0HludJGjv+D1yPrC7+DN8DsiUCX9VcCLubz0hFJwBtwSqnm1g1LeIQr+bbTkV+UGblgy17Hxflo59quqvT/ZBpAuoZ1lHVV7/jd9qmGlkIlFd/RDmezvrZWHnQ3vLWPF3rME7ETVYV4JBljEdade6DSml7+Ke5L4Em/7xI7Ul7HUQcxxRED4aUYFfzAgTD1wj7nwwgt5kPp6Bd79Lb/un457WyY8m81oaBAzEJtkM6kJInsI9XTNh8KEQrjd2z5vN5YQ99vcl/HldM+UyT0sbpyZHv5r3npe1AmwShI0oq5P53Qe4Gcy/xS91UzgufSD6HmdNPfFYiOhL7MiWvcgvbsmE7swuAPKrHWsYEKRTJsI/BLeWTQVhgEhK60NWX87cOXtXZiCE5uTZpqIeICQ2TdCZlGGgiQ70rZ/kMas6kJwTP3ic4vuQn3rPxHTI7QWPMJZgFV3QDtel2faQ4Q5JJz3CYCwE25/tDNEO3BkbGpnMDZxomNCDBO280ixyei3CHVroJFcOpeQ8a1dvppHDr9jZgxxXYJh9l97whN64wcoYnmh8HROemD4pKGggNSCjXvTBQfncvIBJj7A9UF+4wRgBIgrN9MizGWAaWK0F7Cc1iom1jLs8EZAXVQqT/4BBPitYoRvDYgIxBbqlrBWOpEI1o9p9Ek6D1mNnG016MGfPZMJlHZEJpdTZxvX8Pv6X3I4q4rsRGo+VyWQmJQ5Ih+xHenQy7t9s1MfUru5CfU6R6RYwh2tTB5kioIOVWNOKRBOUVVObLrz48ze+gyz4mpw78oILGEucd2VckNpExQtI8YwmJRw5QlByr2Xz3JYwfOrILsHfn7lTIO05NTej
- gQ2GbT5o
- Rv9na+9B68MvK5t7f9p7fIJsylTjqj5M0pUQYepZ/q+WBVnksVLeqPk2NHDpRqYcm8qk4U/SU7Vd9zZA5WcWFBtdf2GXzEwSgVEYC2jsEYt23JNQ0je6wDAK7CZAdNQpPvjNc45R0nwvEq2GtG5pb6p5f8zTeexhTl5wJnLvC2qzOynLcyaH1TQiMZvNJbK6eMOs5vKAH2StuavzlF1um5TAoik8wAzRe2tIu9Q2F0QnRZcEtU3hrlPEpjR+bP/UvQXoxS1itX1qwWEilELr/gOpxfbLl9TQaA8zags8t/5S7MwWz3Z1ZvTT19O3bGi4tnPTqxuhEHc6BMzRS5H3uocTm5M2B71LWjTblPSby/sNIcjwukerJ+30sumThsMKs8+7BA14ocgUO96jXKfeU2MI7kd2l9Hgf34LSSqz2UZJUP4xn4Ko/yXRs9xtxUT+sPne+xQxp2nd4n//VPJRLGFGrtz+fUKGY4NIM/Ss9g84CjV18326YHT3TZ1hMJOb11qbzWlp22rWDKwWW8Sc8khJHUg==
+X-Rspamd-Queue-Id: 9FBC420011
+X-Stat-Signature: skxjxkoogubzfezeux9m5htxpi8zezku
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789391858-575239
+X-HE-Meta: U2FsdGVkX18ob+nIPnbVOqKNTVWrmkiz37od6VsHhkBY333roq/biz9cYEVt0kr11Zx4HtddLvvdqkFNEreO2HpCfV/0UmtQrY8dz/hAJfII9vs59wAuNuMtYOOexNcAjZaouwYhrZ9NgiBafexUtvCRZRlP0DD42bOFIYRyraOptkWge595UNkwQ5ZmcMpAAB7x2rZl7EFSPDfg4ADNm8x4IXzbBNMPjZYcWEj3Z3fJOp995+7YTV26auAVUt6xYpbh3adYfe6JfWiab8lq8T3xI1pJXrUPqQuyB/6eMtHWzv36uQjAkbCJ0Afzm/Sn0D/SQs7ZIMCHrRVpak754xHnRlTRfFiCaxuhutDQOQVdN5WMe45cOXjpa3PfdTCkW5kORjTi9n5spdCyxGaoTsaxw2PMIlKp0V/6momG7Q5uFX0OwlYvTP99BxSTi5qcdpj0FeJJsxbDMPsr+iF+LngiQ061H8TwM8YDLVpIDxZsW8vfFEV8JD84CIJLQbFCoCHigObRsy+fEi1LiqeiySr3sclt0cWRRgPBlbtWXwKBj078f/k7LK217nlzK0h4QVfjLCNs1a96H8JhbnKDc2CfHAd6xKxMrI7DhbHwUax+8+ooKAFYzKlrshm/wCggt9l2cd1C01trZUiQK8C9ZGSeGXtlNiGcAnPxfGsU5x2opX22D9rVuq4OYqm8W3XAhzWZfxiPLLY2EBXg11ZB8QFAxgTDLdmTqCdk6Q0dBvTmgX55aQ8i0aUTlOjzTuqmEOosKIe+V5fUdpkNB9QqSxm2ayn1x3whqZvRYNdEI9G8Owbh+ItG28KcKdFKaKElvEzZeFM4uJsNQPZlNioE5kPtqyx7v9rusyjXLSHhXXXmHS6RRNjK+5MkkN5U+8FT4Rrkvi1e3G2O6F4JIyEHAG86ThZ3urxTerO8j0JFRIQVb/w24p/wnPrqgYh0rTj/OJYOBftYpgbvJWlqVuc
+ 6o9RAuPE
+ 57RjqL07VOuWQkAABMRyGc/hqRaLQ2nH2A2h9d40839YlZBodCJJtkl3vzu8uGkbArBZvjiveE9d47aOaSI6GfJePch1ZMeXxHCcnnQaMddQIWoAkzUMD1uOHtjISVuLq6nA1mbElhfiCxpEUNUej01FYSrfuahOizjwbfSEoH4dihFrF+bHt6qJ3w5yJF4wXEUB5PC3mRDgHNhsOmSuqmIhrynoOCCAkYsVTH6aXdWoPT59ailos8t+FQh9ZPte3xLUOPu/wnKnp+xFok6THsrmos/0zuoD4JtajvSU/gAq15Zp+IALLUotXfmQIotsuVajsA01ZMuAElaX+7SGiIk3uFbv/x37PJZYv++602fsI/uFuTey2fCsYM22bp9NVWGmw
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,54 +152,30 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 9/14/26 04:24, Zi Yan wrote:
-> folio_change_private() should be used along with folio_attach_private() and
-> folio_detach_private(), where adding and remove ->private content requires
-> folio refcount change. add_hugetlb_folio() simply sets folio->private to
-> NULL without refcount manipulation. Change it to direct assignment to avoid
-> semantic confusion.
+> f2fs sets its PAGE_PRIVATE_* flags in page->private and checking
+> page->private != NULL is equivalent to checking PG_private. Change
+> PagePrivate() to page_private(). Meanwhile, in set_page_private_##name(),
+> page->private is first set to 0/NULL before an PAGE_PRIVATE_* flag is set,
+> but it can cause confusion when PG_private is removed and
+> page->private != NULL is used instead. Change it to initialize
+> page->private to PAGE_PRIVATE_NOT_POINTER instead and retain the original
+> semantics.
 > 
-> It prepares for a future commit that remove PG_private.
-
-s/remove/removes/
-
+> It prepares for a future commit that removes PG_private.
 > 
 > No functional change intended.
 > 
 > Assisted-by: LLM
-> To: Muchun Song <muchun.song@linux.dev>
-> To: Oscar Salvador <osalvador@suse.de>
-> To: Andrew Morton <akpm@linux-foundation.org>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: linux-mm@kvack.org
+> To: Jaegeuk Kim <jaegeuk@kernel.org>
+> To: Chao Yu <chao@kernel.org>
+> Cc: linux-f2fs-devel@lists.sourceforge.net
 > Cc: linux-kernel@vger.kernel.org
 > Acked-by: Usama Arif <usama.arif@linux.dev>
-> Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+> Acked-by: Chao Yu <chao@kernel.org>
 > Signed-off-by: Zi Yan <ziy@nvidia.com>
 > ---
->  mm/hugetlb.c | 7 ++-----
->  1 file changed, 2 insertions(+), 5 deletions(-)
-> 
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index d3a0650ff6905..8d551cdaef9db 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -1446,11 +1446,8 @@ void add_hugetlb_folio(struct hstate *h, struct folio *folio,
->  	}
->  
->  	__folio_set_hugetlb(folio);
-> -	folio_change_private(folio, NULL);
-> -	/*
-> -	 * We have to set hugetlb_vmemmap_optimized again as above
-> -	 * folio_change_private(folio, NULL) cleared it.
-> -	 */
-> +	/* Clear all folio->private flags except hugetlb_vmemmap_optimized. */
-> +	folio->private = NULL;
->  	folio_set_hugetlb_vmemmap_optimized(folio);
->  
->  	arch_clear_hugetlb_flags(folio);
-> 
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
