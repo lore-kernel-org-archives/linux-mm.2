@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33583C88E6F
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 17:27:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC74AC88E72
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 17:28:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E77D66B0088; Mon, 14 Sep 2026 13:27:34 -0400 (EDT)
+	id A813A6B0092; Mon, 14 Sep 2026 13:28:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E01316B0092; Mon, 14 Sep 2026 13:27:34 -0400 (EDT)
+	id A31CC6B0093; Mon, 14 Sep 2026 13:28:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C7A5E6B0093; Mon, 14 Sep 2026 13:27:34 -0400 (EDT)
+	id 920D76B0095; Mon, 14 Sep 2026 13:28:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8BC1A6B0088
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:27:34 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 13DDD1C1900
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 17:27:34 +0000 (UTC)
-X-FDA: 85213049628.17.E16EFD1
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 66F046B0092
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:28:25 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D2E631401FE
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 17:28:24 +0000 (UTC)
+X-FDA: 85213051728.27.4114D9D
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 23EE62000A
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 17:27:31 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=cLl5svWQ;
-	spf=pass (imf13.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	by imf05.hostedemail.com (Postfix) with ESMTP id 08886100003
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 17:28:22 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=iqVO95GG;
+	spf=pass (imf05.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789406852;
+	s=arc-20220608; t=1789406903;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PFrka7gihK6XeoItmx56OonB9Uz/2EOErxS+Lpbel1g=;
-	b=4RK9B0uwuD3cbe4i20zIPfizpMyRc3F2lDq7lleidK4s8R0Ijr1GuyujgBXEg4sj2oMZDP
-	CSuKkn9ZBXgfBfJze3S2kMjEr9vayoILd640YIDHi/50an8ZzdEJwYAmLA06l4XY6rjWZL
-	2PZWXCVIBkX8B3TPqoL8WyjcKUh7VGc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789406852;
-	b=b1aVrC9nLfFxula6r4+MJLtrRu2INBKdbuhnDuKVUpCZ8j+8H9MdVo450Xq0jgY4A9goaC
-	ALsK1pnjPkEdrKW5hfoYZwrKnqPLavxlPTaP1WTHyci1RnFZb1eKlixOZ1L0gXPsGm+EEV
-	HJlTXuguHO1JkLTKEFx4NqfmrPWCmTk=
+	bh=TPz2NgQD4wYwpoMlETyAHGpiKwnwmssFQ3zvMqGt37o=;
+	b=bxRHP5w3UcDDXkSRiK/xC66jRmv2WWPr3CLMlSeUB92reQsSUNU6l/9MisHPAiHbEZePiF
+	yjJ8qUo2ZwiL1deFGiDLleYTERpvM5hvNknEpq++OGMH/X/SO1XLGKRHUOWfvH8grq/dfR
+	pfABpo31p660oiQlJLYwkzgi4kvUxSE=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=cLl5svWQ;
-	spf=pass (imf13.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	imf05.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=iqVO95GG;
+	spf=pass (imf05.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789406903;
+	b=UfuT/L1qTZCZtuER/lVTVqURO7ZHWH67m3PlGdiaCLDNENP5r5z5enKIQSx6c1zrhlw4Ry
+	ipUGqSDWKE6LoDqac3JUBjq8mRhEqr8x1DlMVcKVVTgyuAgRc/7uTFykf+JiODCrdJ7wAG
+	BfRPBUTmuBVCu0zETafTGY0LB+SVpTA=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8C7361CC4;
-	Mon, 14 Sep 2026 10:27:27 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4F2CB1570;
+	Mon, 14 Sep 2026 10:28:18 -0700 (PDT)
 Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E52B93F882;
-	Mon, 14 Sep 2026 10:27:27 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 104EA3F882;
+	Mon, 14 Sep 2026 10:28:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789406851; bh=QG6jcvw1X86kFU69w3hcseX3yObcaV7LewqsMepKLY0=;
+	t=1789406901; bh=iWelEh5WTFtiuhjvHXqEJk6UgYv+6dS3Y9MFxXTD4gw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cLl5svWQM78Nu1mtOguvBASEnuYlWiNoPYp5zPrR2HVZtKfLqbWtwfMxly4tHb6EM
-	 Kkq/iQ1zFUwR/cnZ4RElSK7pFwgLsMPp8b583drvfda8unRK1CFTSGODugo0S6x9Hn
-	 6p6T1iWmLXkWiipqF9x/WwqIlWY1O4FnkqnKYcg8=
-Date: Mon, 14 Sep 2026 18:27:25 +0100
+	b=iqVO95GG/lAzGR+I07S9/5tlA29acYiZ/DZ5aBXzX2+E7SEpYUgg7Vv4VlcTWkfGH
+	 Gl3JT9xnFYPbTnJ+hGrmwfzrrCGuR+NhASmSfHwBa84Z+UrTtvm6msFhiSGiAhB8yX
+	 DmomfBtMw/bRPNL9c7SCisQUO9WKy6Nsc5ZIHJnM=
+Date: Mon, 14 Sep 2026 18:28:15 +0100
 From: Yeoreum Yun <yeoreum.yun@arm.com>
 To: kasong@tencent.com
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
@@ -85,23 +85,23 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
 	"Kiryl Shutsemau (Meta)" <kas@kernel.org>,
 	Shivam Kalra <shivamkalra98@zohomail.in>,
 	Kairui Song <ryncsn@gmail.com>
-Subject: Re: [PATCH v5 12/17] mm/huge_memory: move anon_vma handling into the
- anon split helper
-Message-ID: <aqgufcIGKrQLtXua@e129823.arm.com>
+Subject: Re: [PATCH v5 09/17] mm/huge_memory: rename remap_page() to
+ remap_anon_folio()
+Message-ID: <aqgur6-4y2tpEGh6@e129823.arm.com>
 References: <20260915-swap-thp-cleanup-v5-0-39878b37dfb0@tencent.com>
- <20260915-swap-thp-cleanup-v5-12-39878b37dfb0@tencent.com>
+ <20260915-swap-thp-cleanup-v5-9-39878b37dfb0@tencent.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260915-swap-thp-cleanup-v5-12-39878b37dfb0@tencent.com>
-X-Stat-Signature: h9jfjr7zow567okwtp8m1qqfxoizhuw4
+In-Reply-To: <20260915-swap-thp-cleanup-v5-9-39878b37dfb0@tencent.com>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 08886100003
+X-Stat-Signature: br95ehugmq7edeyzqpi7whcxes9hxif1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 23EE62000A
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789406851-415586
-X-HE-Meta: U2FsdGVkX19MB0+bWVZoi93UG6pnyqHufde5rWQKraWtbJRfLDoPknxyqIkF/6/+7azFZ/THy9WF9ZsrvOP8W0Zp/ZQyNXtq92Xd2SfiaXufestg7JcHYE5j1M9TB0ArY9QYhwr7/gmmxd5xQK/L3ipE2Hak0nMz4p2YZtDkS0X3YXJUL3qcDGFGYtrbFiWmh+c4EuDmdqjZDR0xAWs0DBRTuyaovI8xUtTPJf284rZMdSTWTQR9GJwFTMyQ5u0oyG0Dw4Eqs4gU5tVxH4AdUosAFwljxjsvAyhWrD68g+ylvtrNGjIMNvZNO4wBFc0Odx99uhrY5UqaqlvE6HuNHlyiq8iWLcQWJYLrZK21w4LTXpHVS8aAbY9VB7ZlyR0Yr6ORSYjk8VpGkA3YJftMqSam3S1z2+92kw3iOSj4OHGmopuJ1wQTaSK/Sy7DM22R2XTR19RYQYNlKw+uWF22WiN84hOD/IVlpog3S04RvK2lbiGNcfzGt/GsEfh2XVOeTj+4skk3C5BFDR+UcEiZjQX/5xKM5amxcqbHlJpbhGbhQbUFebg5QvQe/qoSVu+PwPlLuckXXeM0CLIh6R/QUsLhQsqO2tz0nuL3msOX2qbSa5qj6YQ/DOAKcJy4YpVIwxiVBCi+1c9lqInoUK8y68ZR4i9tS2kNre9QrYi1TYHJYxJOCAYCI/bhBxwVK2OkYFpphkYM9YoYyNkQcjr3QdHcKPnj0M4DNLp+oiB4OmVjzjSAYZJwR6UpR5omesarHaUNZUsaXaD+2EfNCg1yErvIHqcFrz1KjKDyKZd/TsLU31XZg8VbUP0PCrGhtjzi4g31TPbAfpilP8quqs5iQH2FbtO9b9bVc4YryA9kkkwXXl+9pJ4CJaDveBvQAiCO2rMS5z2jhLXi7FP6EU1OUeggq+mVA6ELyny1IEVekyTtHudUCooSOK4ivjI6Mo/t8K3gqKEvgOEMNMLh5Z2
- YgU31MUR
- YUfOSS2ePXsxNU6+7OFnBjTq2Jyhne7Oo24xHluXdQ6Os+4sK9Bxw0bc1rq6SHR4tJYNnaK13YKzLiBMV1W7m4rRlk/JKQ+FHbswuYnOtwu/higYJUPe/9xB/AKuVqjvYKCDXvTbIwGRJF1IJeEtrCDggAZdr8rugqFA1aKZ52Ns0thbQImLRSUN/0TmOG6FxSaHMvSrSHckH/5hoJKmExRsz6fop3/W7/xBSij72X10H9UVi3Gria3o01Z957eD3lQlo9BkIHWoQO04KP95eyEGIJJGWK0mTxly0IHHCMDvmRzD5S3ZmryJdkEF3QvDbZgLOC6bHHRpQlz7myqdk8Ajy4VRyZ5ZuRoJ2zX853JMtQgkInW1od2zhKze4m9log7pkLa+kBCMjCbc=
+X-HE-Tag: 1789406902-793405
+X-HE-Meta: U2FsdGVkX194dY+h9GnaEp1gIQCKwBqgorRxFtNQRC/H+zKY6HsBKr+oq7rEkM3nZgsWtSIiq3h2BwgLQaplFt6VkWxxx7zWghN0AT/d2HKafjFvoFUyamaC5NLIYa+KHuax0M5pJcm9S8FJLCfxMuqV0orBpT/6nech+Q2scKekWepuPb3QBEccCUtIZIMP0ATPizZ7jjIzBt1fYPpyMul8tPKFv+ewytTY5Ipf5VtO4tsFDKYdNJqBR5BKJ5ztZpDvUZ8B6jmByBA3mbjJS847pnNFVDjd+vDI6Am6wos2iwdwB5p33aklmDpVlMbPyXC2vWDuxn7phyHpMvTCAsWDID3QPKu1/4M0OpAdZaNiRBxagofoIx/ZXBlgrpe3mywHyCDrh/x7Wd8FPV8f8N8OPyotEMSKqrOk6OYDUD9L9jOI7Dh0XSfLgjdRB9O62h7r3UKhOGeMSmxRJXEg6Qda7z+dN+Q8h6XRpRFEFoQsAUvX7988cxymQXv5wuxXe9Ige1vYMvtuu2hoDLrFdjzj1CcPjDdKbvjGwvfHRM+L8qcGPnS/KO1v/y3sQAF36jIizAhGDCabT5MLETZarYf7gK3+aHziovBEXRCNC6CH9xqdmbh2KwRTA5DZhudzwqrP9mOVLP9u04R8qNDwoWY+xspuzpjUZ3g35WEPgPUgZjK9J8y29g5M0jgBISh7M70LOeFaymXpvTGXbizmYAN3hDlTVexn7ymTHhe72A7yFdNC04OGE4TsIoPqawzhMgXaSOhZ8GzVXxEyadtjkXcxW66jtWXJZ2usw9CPIDst5KQGZehOn5TFGYB8qRCBRcG5j86u6h0N26j4XWEJQRZGI1sztM93Q1NtahfKVEPQJ2RDgXwV9xR01uLLgzTINrljB9a0KYaLoLOtRfhoiToMkgY6iMSrXp0Q3DZ7SsQG31v+5aknCSyvQpe+mrhnb4F8ukkYh8IjLfWPQSC
+ +WiD09x0
+ PeNWnbqdoTve+uIt+YCahqvaqdQEr1uty1XnDcn//aXZWHEUxBGFdZNYUQSFYWiDyuIWfzpBgVDt1jYgmtqIHQq+yScYQjSW3c7u9M+DIk+rV0dSmzNMAS4J9F+aUsn2b1kUW8BR+XvkHC/Jn45+Fu6k7+HuWK4VIuRqM9xXhPybzTuZFBc5p99cmtwaL6owCiz3ePgHeJQT+XsP7PuKFYXcOG/O1J2Rx703FsV31/ZmpA2CGW17tt+5f7+d6KAMs68tr8ZZKQuiIn48DIsRKmg210YNlZ1XDgyyVtWiFn9eF0DDhBukYKPwXS438+bznWdYyYXpY9xa3Ax5g988XFP/x4Zw2DwRC0dIOoiQoMh72C6jjfe5wrqfhhcdOj28bZMROWESFR6Z3JGOW+8Ho7CpHpZMB4q80fXg1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,158 +115,80 @@ Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
 
 > From: Kairui Song <kasong@tencent.com>
 > 
-> Only anon split needs the anon_vma, and it only needs it to unmap and
-> remap.  Move the folio_get_anon_vma()/anon_vma_lock_write() pair out of
-> __folio_split() into the anon helper next to the folio_mapped()
-> check that already gates unmap_folio().
+> remap_page() now only has one caller, __folio_freeze_split_anon(),
+> and is only ever called for anon folios: unmap_folio() currently
+> leaves file folios unmapped after the split, so they need no
+> remapping.
 > 
-> This makes the anon_vma conditional on folio_mapped(), which is a
-> behaviour change but should be fine.  folio_get_anon_vma() returns
-> NULL whenever !folio_mapped(), so an anon folio with
-> folio_mapcount() == 0 used to get -EBUSY from split_huge_page() and is
-> now split instead.  A realistic case is a THP that has been fully
-> swapped out and is still in the swap cache: swap PTEs do not contribute
-> mapcount, so it is !folio_mapped() but still alive.
-> 
-> That should be safe and right to have because:
-> 
-> - folio_ref_freeze() below still rejects a folio that picked up any
->   reference, a mapping or a GUP pin, in the meantime.
-> 
-> - A parallel split is excluded by the folio lock.  The anon_vma
->   write lock was added to serialize split in commit 062f1af2170a
->   ("mm: thp: acquire the anon_vma rwsem for write during split"), when
->   split_huge_page() did not hold the folio lock throughout. commit
->   e9b61f19858a ("thp: reintroduce split_huge_page()") later made the
->   folio lock a caller requirement and added the folio_ref_freeze()
->   scheme, so that has been covered ever since.
-> 
-> - Unmapped path is already exercised by folio_split_unmapped(),
->   and the swap cache split already runs well for a partially
->   swapped-out mapped THP.
-> 
-> - A !folio_mapped() folio cannot become mapped meanwhile: mapping it
->   requires the folio lock.
-> 
-> For mapped folios the anon_vma write lock is now released before
-> __folio_split() unlocks the after-split sub-folios, where previously it
-> was held across that loop; that window is harmless as the sub-folios
-> stay folio-locked and referenced until it.
+> Rename it to remap_anon_folio() to make that explicit, and add a
+> VM_WARN_ON_FOLIO() documenting it.
 > 
 > Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 > Signed-off-by: Kairui Song <kasong@tencent.com>
 > ---
->  mm/huge_memory.c | 58 ++++++++++++++++++++++++++++++--------------------------
->  1 file changed, 31 insertions(+), 27 deletions(-)
+>  mm/huge_memory.c | 17 ++++++++++++-----
+>  1 file changed, 12 insertions(+), 5 deletions(-)
 > 
 > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 8fc1dd5b8354..a4c2e38f4a6d 100644
+> index 1749905ade6a..77bf68c9b9af 100644
 > --- a/mm/huge_memory.c
 > +++ b/mm/huge_memory.c
-> @@ -4029,16 +4029,38 @@ static int __folio_freeze_split_anon(struct folio *folio,
->  	struct swap_cluster_info *ci = NULL;
->  	int old_order = folio_order(folio);
->  	struct folio *new_folio, *next;
-> +	struct anon_vma *anon_vma = NULL;
->  	enum ttu_flags ttu_flags = 0;
->  	struct lruvec *lruvec;
-> -	bool need_remap = false;
->  	int ret = 0;
+> @@ -3552,7 +3552,7 @@ static void unmap_folio(struct folio *folio)
+>  	/*
+>  	 * Anon pages need migration entries to preserve them, but file
+>  	 * pages can simply be left unmapped, then faulted back on demand.
+> -	 * If that is ever changed (perhaps for mlock), update remap_page().
+> +	 * If that is ever changed (perhaps for mlock), update remap_anon_folio().
+>  	 */
+>  	if (folio_test_anon(folio))
+>  		try_to_migrate(folio, ttu_flags);
+> @@ -3637,10 +3637,17 @@ bool unmap_huge_pmd_locked(struct vm_area_struct *vma, unsigned long addr,
+>  	return __discard_anon_folio_pmd_locked(vma, addr, pmdp, folio);
+>  }
+>  
+> -static void remap_page(struct folio *folio, unsigned long nr, int flags)
+> +static void remap_anon_folio(struct folio *folio, unsigned long nr, int flags)
+>  {
+>  	int i = 0;
 >  
 > +	/*
-> +	 * Unmap/remap needs the anon_vma, so we first take a reference on
-> +	 * it to prevent it from disappearing, and lock it for write here,
-> +	 * letting unmap_folio() walk the rmap with TTU_RMAP_LOCKED.
-> +	 *
-> +	 * folio_mapped() is not stable here, but it can only change in
-> +	 * one direction while the folio is locked. The mapcount can drop
-> +	 * to zero at any time, zap_pte_range() takes no folio lock. It
-> +	 * cannot go up: swapin, migration and uffd move all lock the folio
-> +	 * before mapping it, and fork only copies PTEs that already exist.
-> +	 *
-> +	 * So if we see the folio mapped, the worst case is an empty rmap
-> +	 * walk. If we see it unmapped, it stays unmapped and needs neither
-> +	 * the reference nor the lock. Anything else needs a reference
-> +	 * first and folio_ref_freeze() below catches it.
-> +	 *
-> +	 * Note a swapped-out THP counts as unmapped here as swap PTEs do
-> +	 * not contribute mapcount, and they are splittable.
+> +	 * unmap_folio() installs migration entries only for anon folios,
+> +	 * so currently only anon folios need to be remapped. File folios
+> +	 * stay unmapped after the split and are faulted back on demand.
 > +	 */
->  	if (folio_mapped(folio)) {
-> -		need_remap = true;
-> +		anon_vma = folio_get_anon_vma(folio);
-> +		if (!anon_vma)
-> +			return -EBUSY;
-> +		anon_vma_lock_write(anon_vma);
->  		ret = unmap_folio(folio);
->  		if (ret)
-> -			return ret;
-> +			goto out_unlock;
->  	}
->  
->  	local_irq_disable();
-> @@ -4096,11 +4118,16 @@ static int __folio_freeze_split_anon(struct folio *folio,
->  		swap_cluster_unlock(ci);
->  out_no_split:
->  	local_irq_enable();
-> -	if (need_remap) {
-> +	if (anon_vma) {
+> +	VM_WARN_ON_FOLIO(!folio_test_anon(folio), folio);
+> +
+>  	for (;;) {
+>  		remove_migration_ptes(folio, folio, TTU_RMAP_LOCKED | flags);
+>  		i += folio_nr_pages(folio);
+> @@ -3724,7 +3731,7 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
+>  		 *
+>  		 * Note that for mapped sub-pages of an anonymous THP,
+>  		 * PG_anon_exclusive has been cleared in unmap_folio() and is stored in
+> -		 * the migration entry instead from where remap_page() will restore it.
+> +		 * the migration entry instead from where remap_anon_folio() will restore it.
+>  		 * We can still have PG_anon_exclusive set on effectively unmapped and
+>  		 * unreferenced sub-pages of an anonymous THP: we can simply drop
+>  		 * PG_anon_exclusive (-> PG_mappedtodisk) for these here.
+> @@ -4084,7 +4091,7 @@ static int __folio_freeze_split_anon(struct folio *folio,
+>  	if (need_remap) {
 >  		if (!ret && !folio_is_device_private(folio))
 >  			ttu_flags = TTU_USE_SHARED_ZEROPAGE;
->  		remap_anon_folio(folio, 1 << old_order, ttu_flags);
+> -		remap_page(folio, 1 << old_order, ttu_flags);
+> +		remap_anon_folio(folio, 1 << old_order, ttu_flags);
 >  	}
-> +out_unlock:
-> +	if (anon_vma) {
-> +		anon_vma_unlock_write(anon_vma);
-> +		put_anon_vma(anon_vma);
-> +	}
 >  
 >  	return ret;
->  }
-> @@ -4295,7 +4322,6 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->  	struct folio *end_folio = folio_next(folio);
->  	bool is_anon = folio_test_anon(folio);
->  	struct mem_cgroup *memcg, *old_memcg;
-> -	struct anon_vma *anon_vma = NULL;
->  	int old_order = folio_order(folio);
->  	struct folio *new_folio, *next;
->  	int ret;
-> @@ -4326,23 +4352,6 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->  	memcg = get_mem_cgroup_from_folio(folio);
->  	old_memcg = set_active_memcg(memcg);
->  
-> -	if (is_anon) {
-> -		/*
-> -		 * The caller does not necessarily hold an mmap_lock that would
-> -		 * prevent the anon_vma disappearing so we first we take a
-> -		 * reference to it and then lock the anon_vma for write. This
-> -		 * is similar to folio_lock_anon_vma_read except the write lock
-> -		 * is taken to serialise against parallel split or collapse
-> -		 * operations.
-> -		 */
-> -		anon_vma = folio_get_anon_vma(folio);
-> -		if (!anon_vma) {
-> -			ret = -EBUSY;
-> -			goto out;
-> -		}
-> -		anon_vma_lock_write(anon_vma);
-> -	}
-> -
->  	if (is_anon)
->  		ret = __folio_freeze_split_anon(folio, new_order, split_at,
->  						true, list, split_type);
-> @@ -4369,11 +4378,6 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->  		free_folio_and_swap_cache(new_folio);
->  	}
->  
-> -	if (anon_vma) {
-> -		anon_vma_unlock_write(anon_vma);
-> -		put_anon_vma(anon_vma);
-> -	}
-> -out:
->  	/* restore to caller's old_memcg */
->  	set_active_memcg(old_memcg);
->  	mem_cgroup_put(memcg);
+> @@ -4206,7 +4213,7 @@ static int __folio_freeze_split_file(struct folio *folio,
+>  fail:
+>  	/*
+>  	 * If we want to use try_to_migrate() on file in unmap_folio,
+> -	 * remember to add remap_page() and adapt it.
+> +	 * remember to add remap_anon_folio() and adapt it.
+>  	 */
+>  	xas_unlock_irq(xas);
+>  	if (nr_shmem_dropped)
 > 
 > -- 
 > 2.55.0
