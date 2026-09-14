@@ -4,75 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB667C88E50
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 13:14:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 092E0C88E50
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 13:15:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 19A296B009B; Mon, 14 Sep 2026 09:14:28 -0400 (EDT)
+	id 2397C6B009D; Mon, 14 Sep 2026 09:15:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14C5A6B009D; Mon, 14 Sep 2026 09:14:28 -0400 (EDT)
+	id 1E9636B009E; Mon, 14 Sep 2026 09:15:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 03C066B009E; Mon, 14 Sep 2026 09:14:27 -0400 (EDT)
+	id 0B4CF6B009F; Mon, 14 Sep 2026 09:15:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D91056B009B
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 09:14:27 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3E799160139
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:14:27 +0000 (UTC)
-X-FDA: 85212411774.17.59F1D5F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 7780F80002
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:14:25 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PhuLvABD;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D8B946B009D
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 09:15:50 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id F0ABCC013E
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:15:49 +0000 (UTC)
+X-FDA: 85212415218.04.956B386
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 35E74A0006
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:15:48 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nrUcY1Z6;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789391748;
+	b=llKE8mSFTygvnGTyY6mgHXYlbeJDy6Sb/LZsYiT9PNlpb3BCxRzAPHu4J5/a2ql6LfpihN
+	oFRweZgsVA0UmDLTzttHHwuTVSvXSzT1QoTDRinxJYU+nZsC8e4/2mIVhoAGP2F6Vbd+22
+	scTij/9Pr0oesUSgmaO7bj6Dg7B3nHc=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nrUcY1Z6;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789391665;
+	s=arc-20220608; t=1789391748;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Mg65sQYISbsc6y7xV5HAfG8679PrSCSCwP75uEHGxBU=;
-	b=c4Ao1lcK3+myfKkWM+meKK7cuoEJZF/ffTBmRLCj1LLbBsMQWZmV2gjTHmR64HaH5nqsJD
-	8PM3KQ1oLxdb1X4o/3f/IFiQ1tWtr/G0w8hlqewTMIM4hbQMpiJfJ5h7znvQw17hqnHliA
-	xa0cln9OiAZ7NMHCc8W6Cwb53lCs6UM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789391665;
-	b=FRrYXf2mDmrcApiu4aycbwq8r/fl2m+R+6JwqGNf2HkQdTG/bHjUYnbY28Iv1vRgp/0tZs
-	e2ROWFB5GOvG+zhPOxDgZGmT7YyKmFP9La4TpbpLo4Vh52ICkG7NGOQQ8QM+AxajJDjlmE
-	YuSiuVQDw3+/RBv1XOeEGb7fYjsxRJU=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PhuLvABD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=7MgZNxAm6rLbdWEaG1tKVLSEArg8sJOE28H+A/hGdqY=;
+	b=5i0Q8gLzPJfneyaIWIf3+P2a7wqpc2YNzhcEDbYnM5PhYC46zCnD/rZaFb74beTOhaUo+o
+	Uxif6FYfGTU3FDrxz6lN5LlQNwyj4EPIckpb60JV/1m06rRixJsTCbR7GVbihexetLteA/
+	c6MkA+K9KF/pJbjgQJ/A5Z22nYC+bl8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CF288429F3;
-	Mon, 14 Sep 2026 13:14:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FD061F000FF;
-	Mon, 14 Sep 2026 13:14:23 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A339460120;
+	Mon, 14 Sep 2026 13:15:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BC7B1F000FF;
+	Mon, 14 Sep 2026 13:15:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789391664;
-	bh=Mg65sQYISbsc6y7xV5HAfG8679PrSCSCwP75uEHGxBU=;
+	s=k20260515; t=1789391747;
+	bh=7MgZNxAm6rLbdWEaG1tKVLSEArg8sJOE28H+A/hGdqY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=PhuLvABDdh6gVR9eE3ikwDgvdiwZ29gA6RyqDBBm13X4hKERVRaqy5W5w2bpzPY7m
-	 2e5SgXRCywW3cMgkz+T3Cm3pZohRqA0pF1GQlJa8gT7QsjfEG68ix0Fk2fOr69rgTU
-	 4gMvbm8e7B2rNF4lV/Ad3oZ5NFnCmiKt0SACK4jqzJi3Bq7D/jwswLxUSy+FikcyFF
-	 xzeSx50rmEnsLP7CCkaiiritAgRvLTyFHy7dpZASZVK+M5w8Y3xlLio/xXhhdGQK8F
-	 jAEv8WodNU4D2abpuc4mCCiZsJfhM+clJJoEHAvtFV1Noy/ovZDrvK+VQUNhFK9Fx6
-	 qI7Z/uh7MenrA==
-Message-ID: <d717f781-0c13-429f-a8df-ee7e59a2fb56@kernel.org>
-Date: Mon, 14 Sep 2026 15:14:19 +0200
+	b=nrUcY1Z6EE9Yx3XyardKgLAilyIh7MG7IgdjNN9c8v3syQj4OF+ECl1T9O/tXLQCv
+	 UVtqX/wTf76sh1GACfeMRusPbe6Vj5/1dvuMmVo4YB1cwMZck8rrjeFPyGMyokvA0O
+	 iAlby2CTO5yt/kB3WNF3NjgTOYDx48nsnszifQkqaqFLCmXQx3e63oyIez2RDF8qmX
+	 ml8aUvxpYcLKp85j9j2nc82pVP/v0RMqMq4ZSDblHPVUXXQqzi/VYRtpwP/4EpgwAC
+	 VT051wV3YVZ0kc2khK+T8fxTqk4DrLkiyLpI1qQvmkX9U2Hn2fRZDlzVSwfbOGtvgz
+	 xUjfBKk257kqg==
+Message-ID: <ce7cc93a-a752-463e-a551-fbf138c29916@kernel.org>
+Date: Mon, 14 Sep 2026 15:15:36 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] md: Remove the last use of page_buffers()
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>, Zi Yan <ziy@nvidia.com>
-Cc: linux-raid@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v4 03/16] xen/grant-table: stop setting PG_private on
+ pages for grant mapping
+To: Zi Yan <ziy@nvidia.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Juergen Gross <jgross@suse.com>, Stefano Stabellini
+ <sstabellini@kernel.org>,
+ Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+ xen-devel@lists.xenproject.org
 References: <20260913-remove-pg_private-v4-0-848550f7574e@nvidia.com>
- <20260914041830.2072626-3-willy@infradead.org>
+ <20260913-remove-pg_private-v4-3-848550f7574e@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -119,17 +136,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260914041830.2072626-3-willy@infradead.org>
+In-Reply-To: <20260913-remove-pg_private-v4-3-848550f7574e@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 7780F80002
-X-Stat-Signature: oicoa469q7ozujyzz5s9r7bcask4t5c6
-X-HE-Tag: 1789391665-644342
-X-HE-Meta: U2FsdGVkX1/j/9SxKPoJIygx6jaD+aQwqZEVnoQc05fOXB1Px5Hv5r554jyQ1s73drXNOlppeW7XbXodxX4FSJsTRFsrutOmEpF3nhWeIHIFJ/ip7FL03U56gK/pIkHsbgPJe4vOkn5+cTp7eEDVY41mw+iwmPbXF5Bdse2g1mt7a74r2ZaoiEQmkF9UODJbEcx6X/k1N4NU8Y7M82iNeJomf7YRQW18ymioM+uKzzQCfaKznKx1Q0cMhnjdgq7D0GVpdt14a57YwwrV+Yga+S0EKg9sWc5nG1B115JfN5+QPJ+vnMrMKBtlGqBP0hNKboyz7kYot7CIrYgWcB+kaMQjvIoWRIMyB683GkxPU6aNG0sj9q8R31F5NK2ANLcBymtW2vsdDbqqcXycdUkGYus8gwMDALMSWeumLdh6htRDJsPJ1MvE+q0HX/o2BHanCHyL0NfHziEtxZYYNIUppefoRdVWo64JByMONqfs/chObnNlXmEu6fV3ypyTpgZlM7/ycdhUDRmnnXUI7a0PDHAYDS1O1kMyfdbslELGpkPmmoy/J/JnWNZaUQIIuwfqmrUXYn2ih3wKuvx0KXv7/2cJpI+n+RJLsTc+tUcRvU47fqsYh+OojUJkT/ZPNisSHARPXJKK/d6vHf21p4wcWzDxpzElUl4tZt4OBL+xMEzap5EH4dM6qvp0Wbx72XbOWtWHUcW1y0XOpYQBOR2PD5A57LNIt/UrjYTvR3izc8AfqPUQfP2OBuaJhtLxffbrc6Ifx1IsUGbLlLqsU/FGKE3ZcYyaOHeBs4Lx5quZAXr/38GabJJWypdlH+EY7qFitqUN1Bo6sJyc3Z6qUffKdELfFBgKOtJyFGx08SLQ3pnHhZLPUly5QplHOSm6bDqS/mHb0UIotJAsyEqzcykC27Lh+uwKx24nRJkxzpnHmdpxIWxaNiuS4seMMhbpA4AP7q59jMKEaHKWD+llug+
- pknsz2zD
- A75cjiknziDtzFNPaYtih8sCvrbm7sFJvjy4YSoIypSiuEagf3K2j6N6H4YX/gGfKBWyBD0bIeR00gAm9NMjr3J64gZOk8/tbSqjARU9V1r46Dg0Lilpkemm4v2KwON2JrrFhNK1daHdAUSctY7sFqaFPXi8CsTZU7t7bJkEY/bZYtkc1a7fIn82qTKlr80MuNafKm/nYUiPQ9+hA+Co2NxDtHDZ+zipdneS7ArHliTlVIF0CFPh6ejslC1RxyvJ3Rgr/hJnA0i0RCPHzG4Bi0u52PT9NTVSTpW5SZAz5rns8+CgKP7G63WgEs4MTJDLOhR728WPh6ZeNpqdt4zXHLJkrhAMV1CIujpVoIr1MruZB2dfE6tc3uf6LatddnzOsxUAYSxDh4FX/1bE=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 35E74A0006
+X-Stat-Signature: i3urtefgb5i9sfti8iufb7is81c5agbn
+X-HE-Tag: 1789391748-513970
+X-HE-Meta: U2FsdGVkX18S9CR3alVa7oJ6oUSnlBlzuiH7h0hGbJmEpEVQ0t+XUEliVFTx8dyT7qzRwaRrOgQ6k6TLT6/qbi2iSmr30wWTT+xeCH6AsCzQzurGm0nJqpCvA3BEUK5sRRpoVQY9j2vHiVZkszU2qNEmVhaifuxnGsZ5ZrImESbm9wBDfQh00FQ+I70nvvJeodQVnKn7zjrsnw44z5/8tqFzmze83/UHWHyXpMPmsasO7K+tY1uLW8AUSqE/qVcGA/u2ZGOXAXYErNik2kqrxbfFKPy0UQjZ5eQ1nRv9pJaYr4R2ttJPhMtt4vpd3V5w3xx5pzLLtUkt4iNT6ozhksxLFrX8O5XMIU6SfCcppteiV8DsRifoEEzNMYqRvpI1ve6s8cZI6tjxTuPYUZ0TVNbiZ6qvTgC38gTuoc574kkGxwJbTNlkP0D/jgMKtUY3hAUidTWxNax/57Y926VHTYFqt3ugECV5MNsVkeVUwH9kqu3w0gdd3zGz5kBP+gXo4iQvEFQY3foV6J+WdDCZ/1pCtsh3EbyscolIbP4esSUMeQj7w8Mi23145m2pRuhEqSiG+t0NR+9RWgU3IR3OeocNqGzm+dzInArXEA7IupB0/YsQisg6nwuZtYg18uTZL3cK7CbnYvXQvkHGQX2lgzV/EWj7r5HmVp26i+efKpUXHzVWNAkivvwE428JwZbV2JOebF3IrwIHhQtp/Y4uRM2AicchwuRUnbNeRmREmjMvRkA/RWmrsncoNQ5Rx6hAov6d3d4c/63rwBi/wsZ9hdTLa/JF3HcBCouBpXJdgoEMQGESjhZvipjCcve4FHiTAoDAgAXzv2O39XZbeJvOHN8cbLNIxWYLUQeDE38gwErtRLmjGokUlhq6WIGzd63Ycx5Rl46JxU+TFW74ONTcDevbWP9fiQg7d6+q+bye5d9T6fGJxJ4T0aLsIjSJEIe7nhIEDPjrR4mZ79xO1T1
+ cdw2dJ4C
+ G3I89xX2GDWHMvwL1DtidQjhvBUhWrgoKFryU6zF0DIwFgh1zHFuIVDlUEetiRbPv2mgtRNZEEuBX2wKWuG1EWXIESjdKO6H7a5n3QnPVdofBcJPHll+QlL22JbhX2ne2bi13XPByjajeXVBoxeYy6gUJjb4uvebj44yof1plkc37S9zuL+GfBoZSjOE2/JbW6rTXkkQr7m4gbYRLIUharOG3sfZIwvl1P0Z6UrNKbk4OftbDfxVyP+ao0Q5tCL1FPNOYVTYtBQh6kUhM1y9AkJ9uQ37ewPMLVZhrJe5YsD4Vvs24rDUNZZqKIPaYwqIdgCRgDKlxfrAH6NdH+ztt8levTlwipbYz2FWtQ7vCH7IwsbmQuk4gWZz7tQioSnCWd4v0ujr3+Bm1qlBqV+tBOWayCe2Pq6RyWK9cNkwRcz4CKcNAuovZY38Nj1apN6mwkYNFWQzH7cy0ylODBuDyZK0aF+GdNzwZHwQsbHr9fZyWHfQ6GG5RL212QwNjfzeUimQ8mEwTLsrz2lo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,12 +154,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/14/26 06:18, Matthew Wilcox (Oracle) wrote:
-> Convert the page to a folio and use folio_buffers() instead.  This
-> does introduce one extra call to compound_head(), but will simplify a
-> later conversion of md-bitmap to use folios instead of pages.
+On 9/14/26 04:24, Zi Yan wrote:
+> gnttab_alloc_pages() stores xen_page_foreign in page->private. On 32-bit, a
+> pointer to an allocated xen_page_foreign is stored; on 64-bit,
+> xen_page_foreign is stored inline. Checking page->private != NULL is enough
+> to tell whether a xen_page_foreign needs to be freed on 32-bit and
+> page->private is zeroed unconditionally on 64-bit.
 > 
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> It prepares for a future commit that remove PG_private.
+> 
+> No functional change intended.
+> 
+> Assisted-by: LLM
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> To: Juergen Gross <jgross@suse.com>
+> To: Stefano Stabellini <sstabellini@kernel.org>
+> Cc: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+> Cc: xen-devel@lists.xenproject.org
+> Cc: linux-kernel@vger.kernel.org
 > ---
 
 Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
