@@ -4,146 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0522C88E72
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 17:38:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B727C88E6F
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 18:00:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C91396B0088; Mon, 14 Sep 2026 13:38:28 -0400 (EDT)
+	id 4A16C6B0088; Mon, 14 Sep 2026 14:00:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C574D6B008C; Mon, 14 Sep 2026 13:38:28 -0400 (EDT)
+	id 452386B008C; Mon, 14 Sep 2026 14:00:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B564C6B0092; Mon, 14 Sep 2026 13:38:28 -0400 (EDT)
+	id 340A06B0092; Mon, 14 Sep 2026 14:00:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8CBBB6B0088
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:38:28 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D2B89A4202
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 17:38:27 +0000 (UTC)
-X-FDA: 85213077054.26.1CB0375
-Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
-	by imf25.hostedemail.com (Postfix) with ESMTP id D833EA0004
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 17:38:25 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=brwPMXWT;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf25.hostedemail.com: domain of nphamcs@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=brwPMXWT;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf25.hostedemail.com: domain of nphamcs@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789407505;
-	b=fdMBaEeALoDeHF566Njfh4mbRLazhdQhutg6m+W31DQKdJYXsHQklSjxwpAhWERBdYjWDR
-	xX82p7QcHetdYGwXS6hCBi6AqlUzKmqoL4MiJYlYRBROJf4+iJpgFaiJ48SBE2BejskojL
-	inXxSzgpzomC1DPWu5B/AkiumSb4Jec=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789407505;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 079106B0088
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 14:00:05 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id F1DFEC022E
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 18:00:03 +0000 (UTC)
+X-FDA: 85213131486.25.1DCBF2F
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 8B26040002
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 18:00:01 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=CQFL0ieY;
+	spf=pass (imf07.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=hca@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789408801;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sEeztLbuGFyF1dhhheCGiQ+SCiNVAWKx2wrJ88/WhXE=;
-	b=NPVXSjdGZBi1fIIS1uQz3V587zdTxfVbtWqJgsSUYRugHzKWLS1h028zc4cI3lla918ctY
-	SlDRrJH14vlDZEluSqWgTH20Ts2S/PSIZQkc8sRz/yQPGQafYM1Vlf8i/9PhcKjfru1n2b
-	RwMPh9JW/Ubzf4QRjqzbUA/FODOoXVU=
-Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-4834977ae75so1299202f8f.3
-        for <linux-mm@kvack.org>; Mon, 14 Sep 2026 10:38:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789407504; cv=none;
-        d=google.com; s=arc-20260327;
-        b=fcJ9eZGDJX4zARmz1I+ucLs2tC87WKkhtw14oKU0cZqkUIZePYjSO/qms3DwDrj7LY
-         9MDruUFSu0ldPBa68WsqJwOBh7if+dSxhh93h+UNnD+/zaG71ot4v5TIQqftVuNk99Ux
-         WeINo+f51ztW/EpkRYHi9D/4GjiMKDFXiVcnObd/B4pSWpKcVuELDUL07o2g+lqLfJHh
-         blpUFx7Jhl542HTwjBGHSekyNwyhsVKVLR9RvMcXk+67r8n4h3k9+dZDS8Q8CP3Thu6v
-         UgCcRSlL72kDjsDO/hhIqrRrXyLU6mxwrgVF8KtmlFhtBw5fs6iVCwkgKL8/JQQ+KqBe
-         w0XQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=sEeztLbuGFyF1dhhheCGiQ+SCiNVAWKx2wrJ88/WhXE=;
-        fh=e8QckgEDOKMl8mOmQTxw+nz+q/sHdsdTajkB115/GRg=;
-        b=TwcW37qcis952v5zbCldMWh3ttrz/Q3ALc8yVoim9A9N+OOrqc3QgZsXpy2dENs8Tm
-         KZpWZvgLT14qx+gK2hbw9BT1V0bjNNRoLLlUAGr06f29R5D2DYmshBkeBMUbebh1L2JM
-         Lm7LaHTWDRhuun7YHWehAayCJPmQusUMoz8aihTjwTb+2UzWON3GIMJHo6jyqz0e9JPO
-         H49wRyN8l5emz7k9r2N62XwgoA/VEbCLUmyHOdaYUNdl4vpeWDkmrRsG3iXzi7FhpOPE
-         /ubBQuTfLeNsbp24hI115dIxcMXxWJXq5XcjKN9Imowo7oG7mhr7xGw+zLyGBeNvv8H2
-         10XA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789407504; x=1790012304; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=sEeztLbuGFyF1dhhheCGiQ+SCiNVAWKx2wrJ88/WhXE=;
-        b=brwPMXWTuKbfKtY/CyclijGq2SYn2gU0qfUEp4cxALKUHJXp3ci8XAa+Wtlq/ueLem
-         IEeUBpEWbCLDl6Rav43C3oyZgXYpV91vVk6wSLzzngEAz4dDAeRL+PYxPtdlaU0AUWuI
-         4gHodBA8HviktNSG2rHJQ+HRIiM5qDU3xu/SXxG175YweAJwrMfOF1j5lH3Hd8ihNwjw
-         PIQkpa5M9zRLVMs107kL9PsPK65hciOT4Fg0MjLWWoWsly08ZtdLOMvtp22FlNnA1dYb
-         UfbpznBHdIUZDW/3UEZwDuNJwNLfGQhvs88HSY5lCEs40z7hoW2bGJdG7ygMkCUAkrhC
-         zPlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789407504; x=1790012304;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=sEeztLbuGFyF1dhhheCGiQ+SCiNVAWKx2wrJ88/WhXE=;
-        b=Sxofy3Ck1LvdXcK/n/NnqYRMA+fexnrDbfpPwXkfgAiZlX0s0F8mesQzm+hdy+eH+b
-         hu5HuB1cqScD5FP8h/O6tPmGGxNhJXMCoecjinIyJgrd8DE7FW5zfQcfdN7Nkgi9WOlS
-         MhoPrVu0HO9grNyMrvLelbtC7/SsL1Qj0YSV6NHBjO4FJNMKn9CFTSh3UAQvDzcq9JwN
-         1wGM9gvnsC8jjT62YUKffTfliiXg/BvKd6I9uOj3Hyzw5NW6ymGbQs1f09TTD1v12To3
-         TYC8h7U6rnFHS6kUYbV9lcoUNE2y76x+WZ0UAcePs6ASQKdsH7mGPfkkdjXPGt+9fvw/
-         89OA==
-X-Forwarded-Encrypted: i=1; AKwUvBzQzW5xyDGKK7sq/zl0Y1EUK7QdowM8Cdhy2xHbTJimR95a2JnIJYNclds0fEPICfvW74KOShk/qA==@kvack.org
-X-Gm-Message-State: AFuF++mwcHG1+1Ix+IrSrxqODf4sXUz2hurO2US7moJY/ATnV+3TVzkq
-	wD59DJrJVCX4Pjkw+9yypkZMuxrbYVUqdCYbKxKtVzRw8ECwMTDTTSwPg/Dl5ev0QLvqrKNcm81
-	r48TOqlX49eIBDxEwRS6/s4nDPOiSiaI=
-X-Gm-Gg: AYBFou0QArd7K3VKvQubfRC2Zyu5dgRCy/knZwceVc46nGCSPlH4sO2FRddAFsz1+oF
-	c+nZ6QH4xmhgw+alGEh3SYiguBNBJari2pyhpq8JrLQHOrfna3AA4fzRrLuPoVsPP7EU802pV54
-	klCfrmsqlvWZ6ysc6pubZxswTEBqu3glEqyFV13s15otU6U4YYEba4nAbe/r/wWfph3M/QvNuU7
-	8cytYaXEMZcvZXk6HR3lqTn7vScqlIiO/eTvbsSxuERebpziWPSRTWHPgyLu3T2jjalQ5tQfinm
-	cSo/1qiws2tpqpukDVz8/WEUJC5ahJ9Q8tHpcvTNJYXxy6jKkCREbmLz1KxoCm+WSpNreJuwsB8
-	nM4KcK3FG+FU=
-X-Received: by 2002:a05:6000:41c3:b0:484:3310:710c with SMTP id
- ffacd0b85a97d-48702b30ad7mr9667975f8f.24.1789407504318; Mon, 14 Sep 2026
- 10:38:24 -0700 (PDT)
+	bh=n6XWvEkjUJhke/eXYBmSDyCZt3sChRVssS0jrboyjOE=;
+	b=YcPqATorDHwz4dNYD2QNMXWBJaB62jCueQqXkpe21qCe/1nEk74w0vkNBkinNR+h7e3msK
+	hoEkGtc08K3VCaxHbYuIKfUhccnPX7DEHcrS80j3FzdwNegCDnNu6TawIf9uEPxsPP0E/0
+	3uE8R2ZNMIe93Xm7kyBdC8ZQFyPkHQM=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789408801;
+	b=WrGo5bozoN8wRtExS1QRRKLmLCQzzdeejP7akVwE6lgeEDsRd42DYNiXa4i6kQTWTxShJW
+	hEPanqOLSLm1jvzcxPALmGQ0+ZiExYAIH5pSZUrrr9pxEABkbEImDv7TAf7CgV6fvtkRsu
+	6EqPCOhplHqj4EO74tv2NUGmSquvPkw=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=CQFL0ieY;
+	spf=pass (imf07.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=hca@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68EFvoxw2495162;
+	Mon, 14 Sep 2026 17:59:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=n6XWvEkjUJhke/eXYBmSDyCZt3sChR
+	VssS0jrboyjOE=; b=CQFL0ieYaPas4IYdV09CQtevlNKjrDVFKrgYocAup/KyrO
+	KXLBYiDsue7gh1DvI/djTq7k6OB0oOFEHmBH8LXl8WzmsdqFqds7uuD/vmQC26MP
+	sNe7OaM8xaxkgvhMYPK6zYfEjVHI/MOVH2zdsy4i0OwOPLnxy0rnWrgVTqHrQOQ5
+	t0wzfOP+lOQGH2dB+acDHIltiAHWlDvMZ0iKGEyT3cwqv1F7UqU38U0qTEgfsO/y
+	DUczkLh/G6azIqmtJHe+i5MzHXjb/hoLoZgMOa1UkAJ54AQ+p6mWPl0fUX/np2aG
+	Kw9T7/a/TwhlTEKYMIyogrHnlXe9lSrYIoO1vdlw==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gmxf4u46g-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 14 Sep 2026 17:59:59 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68EGVNK82359957;
+	Mon, 14 Sep 2026 17:59:58 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gnh2pykx1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 14 Sep 2026 17:59:58 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68EHxsXj50659592
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 14 Sep 2026 17:59:54 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 278ED20043;
+	Mon, 14 Sep 2026 17:59:54 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B817420040;
+	Mon, 14 Sep 2026 17:59:53 +0000 (GMT)
+Received: from osiris (unknown [9.87.150.220])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 14 Sep 2026 17:59:53 +0000 (GMT)
+Date: Mon, 14 Sep 2026 19:59:52 +0200
+From: Heiko Carstens <hca@linux.ibm.com>
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+        Vineeth Vijayan <vneethv@linux.ibm.com>,
+        Peter Oberparleiter <oberpar@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Vlastimil Babka <vbabka@kernel.org>, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2 06/13] s390/cmf: Use kmalloc() for the CMB area
+Message-ID: <20260914175952.14910Fc6-hca@linux.ibm.com>
+References: <20260910-s390-cio-ready-v2-0-e931086fdde1@kernel.org>
+ <20260910-s390-cio-ready-v2-6-e931086fdde1@kernel.org>
 MIME-Version: 1.0
-References: <20260911121341.178028-1-alex@ghiti.fr> <20260911121341.178028-4-alex@ghiti.fr>
-In-Reply-To: <20260911121341.178028-4-alex@ghiti.fr>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Mon, 14 Sep 2026 10:38:11 -0700
-X-Gm-Features: AcwNN1VP2kc_faYmAYrbA6jzrQN4BV6EV-vGstKi49hd1f6QiPh8-BHVVwhcRhE
-Message-ID: <CAKEwX=OpSG=fsw_7UsyA753cUTPTAjN3E8iRcfCzdO=Pw-xjAA@mail.gmail.com>
-Subject: Re: [PATCH v5 3/3] mm: zswap: drop cold writeback folios via swap dropbehind
-To: Alexandre Ghiti <alex@ghiti.fr>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kairui Song <ryncsn@gmail.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Wei Xu <weixugc@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Kunwu Chan <kunwu.chan@gmail.com>, 
-	Tal Zussman <tz2294@columbia.edu>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260910-s390-cio-ready-v2-6-e931086fdde1@kernel.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: iVRITbDW7x6rY8UOuc8lzGASFfpPHKxm
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE0MDI0OCBTYWx0ZWRfX/jZQYnZDbspo
+ eLajtSQuqN9l0P5gCRh/QYG+6NNOuVHNNhWcfApZ8JRauj6x4zbcS1VY8XIapyH2h6wAZV6+KIJ
+ QZiLrt26q8/G/CsYkXX0vlPXiuiBqn4=
+X-Authority-Analysis: v=2.4 cv=cvgOAF4i c=1 sm=1 tr=0 ts=6aa8361f cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=w3GGswcpYwqc3GNkgiYA:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-ORIG-GUID: iVRITbDW7x6rY8UOuc8lzGASFfpPHKxm
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE0MDI0OCBTYWx0ZWRfXwret4GbqXc8u
+ 3ZDt6AjnA37okgOmgPCEI6KAKhAXtude1C8F0ksDzCP32Hh0Jx4cpLaLXyD0SiyEtZRc9DGo9xx
+ J+r0m4wIdtZdU/LCRe8GBktgpoSju0CCH1+qOCxOskrOKMLh71r96gNjw1ibURKfEaPqo8egtZV
+ 8Xr6y2f5gLKJkNRyRTjfmyTyg8PIwnDBDERTZUZ3qQMmf8XR0BbbKTXDiNYZcFv/q6Bf4W0Vxue
+ LejoyLKTfAu5zXUvKUwD/7XjzCaREtVsQBaov2DwTqQOWItmFn1yS00ike1VZVeFV+O0bsBLN9s
+ L6wbcfy3CJUzY+qPoMzb3JfTx+VsgyVYWBhnKU8y2L1Yp8auH9Tlb6jLGhEZNkepxoiTzx429fj
+ bJKEHPRyjRPRL+hv7A2cqcjA4D89mHaElKGt9Wmg8/n/TJVZGDBlbaX8h8kFmWYE50Evn0gTz0F
+ s5/yXqW9BoTmKZdP2jA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-14_03,2026-09-14_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 lowpriorityscore=0 clxscore=1015 priorityscore=1501
+ suspectscore=0 bulkscore=0 impostorscore=0 phishscore=0 spamscore=0
+ adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
+ definitions=main-2609140248
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D833EA0004
-X-Stat-Signature: d7o5aiyuxz9bdwjnrs4u4y6feaje1mog
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789407505-191575
-X-HE-Meta: U2FsdGVkX1+nvvYt1Z3Z7G4RXdWTpC5dXr7oTAVFqi2zlnONA1wLdU3HOF+NyC/TPSt5x5TXwIvwnJ70dY0ZjYEh/YEWzPSDGbbdIdeQhf6plOfVq6j98/Qt6pi+qk5Id9GpewpPA9o6AcYhMNHFoByvqJ7AcyW0Nu6rDLDyS4RVrivj+ysFCQQCveDC6uZYmByAnhk1wUO9SbrV+El54ns9T+GrlyOLrTDox8CsBXAEB6N1+n6JgNMr7MKTTuCwi1XmE0l+uyvLlU++tCOFQg6dt8m5mWXYK0oZQnWbrnmBQ6JTggqiKHWAtFAshOKMAg67HmpmIzO4/IkAsf15i2fGHUzQ2AjRXAZiqhfsGIQAAL/htvXhxx6PZF7B8TtFDsYWGCfteO5mHqgZdNDqLIr58tg1zN5bTHUEISmrqsJ/0kMTrFuK3Q3/kXPGiPhqQC+kieDD3FRr4dS+pcvAhFNYRiA/oCEF+wdBdkVSwYxcSiJocgfUHiK60bZJADhkrsxIxr1uIcgs6filEF6im8v70Vj83/YFsLTpF++aJKBJeF5UdcvN5G0hHmrE4UPyHnV6RKKdoj8ZbnsjI54i67I5+yMtB530U+cHv9TmvKHfXescbnyYVLRoRMiZJS2UpCIHs0iLZxNsLdC+QxokfiHwYBE6CSUm7sJobcl1zI94MzjHOPKtMSH4YHW18jZJ/QFBLVU1uJbOKdI9gg2IU2LS+grSSl9yRe4yQFCmzoZEXHs1OFmdPQMaJBNLWcPS/D7H7dRfbPvm18O0aHXOaRj5663G7+VNYLnR894StIi9YZg1+OaUlRXyWwCyIK8JcwXjiVcWMyN23TQCgGa/TsN6PkD904uc/jL8Euo5qF5N8aC4s7+QB0HfWdU46j5KZGlcY4HOQ+hT4EHSL4lncKQEAqKPC2SCJ5QM/9f1bRGNR2aiFao+q/GsG+WnyaBxdm1q/48+6ARpbQ3OiUC
- nQlw+1yF
- DeRZA7J0BBzQ6SLRDYTsI5iZxfPRVFUMezi884ykMgiaTESNkwdSRuGs8LaoYj9SQ7j04EkwTAaouFmo/6wr64WupE1woVMyKAfsm88eeVtrYPTQG8cRg2MwCK5m3SBXmyfJuMVbovc8TP2HsczpvE17rk2Up3tqXDQLiwNombKfwMW8XFOMXKB/GPLQTTz4ufF6M5UwsOlMLltfVyPbFoMKC7NyZ5YZymLBTqpH1GnRPq8KmQPZL2AoOZrWbKOXs0cxU7rq7J1vTHhEYcNeyI0Nfrxm0S3t/vRNj7cDGLJIGkWzmEUUMmuolYAJPMRCSatxLjHWbqZI//TmCW5Xbjs76SdMbPxh3Tc8nHYJG5DtJjmXNmwipEL/VbX8ApzsYr/RVUYN9GQODe6o24scKlZsyQ2yz+h1rUK6sgIXvwa1GUueITpeeb3Ov613lzYXgWwZmEmdUeyEsfcR9yIZ3EkfimDxGOs4sz/iAhoF6mC8TrNXwummScqMDl/V4m5ZkF7G6zddDVJHd6qbC/vSUjxVvnRNDLtaksI/WCSCupp3F0x/dftaPYfeUqvcGWhEqXPKsKvL8fJdM7zs=
+X-Stat-Signature: no7zd9oyrre83kq6sxk7dbn4sfhjbs5j
+X-Rspamd-Queue-Id: 8B26040002
+X-HE-Tag: 1789408801-990384
+X-HE-Meta: U2FsdGVkX1+2I2F2soFvtD5i5SmOM0zsVw60fswrwd0MbnRVEXjZMsGpyO6/oBb5AtMiXtPz7XdrMA1psCBZQcAkI2tM+0XWnH7VTyjPCKQ3xBMhO2ImYUmiYEuA1pchJyohzifF9nySFLjSLF5pItY6X925nqYUYBKS3cNJwmj9TK7kfoVb93hfrNvCr7bThx7ld0YL5ykWfnKvfGoC0kH0B+4efpV+smjlFZ/qtb4vDUAwOX3s0hm7qfSUI/2huzd0VPtejkybigkpwSRj7HKpkMKqLCSd/aByYleYTO+Jb6p0HoIvPwafqbNa5AX8ZyuvIgZwhQG7IHth+aNKDR0DPRygyoyA5SyneyxgVv7ipy/yNdUlxCbeSt9q8dPC+QBZ6rtDn49LHUK0geit56HsqrMqpQ7l9+jP1C3W8jw+633Dy7MA2VwjuD4GB7jnqLIsikJzH0MMyqXDowjIGW2acg64iyz9k8IzO+ZzJGGrqWkbu9AZaqM5CyFvoWGcxXT2YJmPcpulQCpnLBZeBpKUDqlaSGbMgmf+G6VjRCe65cNc2cX0OpVWaV/JFsxsx6NjAyPyilqx8bYCPwItJMej13gm0vUCbC11PPbMFG/QHFSYh2G9dV14O+ZBUsB9HB7j/3Jt62xrBHLypXNoopWOVK60VmKbWX2nmPiabtcPCpoMMoG1ptVJYNoc3UREOqw6odllKtV67h++EtMHY6RmS7CiX37HEU7u5j+lpS/xmxxdtF0Bv1Rx2FZCYMvhk6YR0VKmm08MBzy6FKf2HfFK8FzhtB12qLl8Xvt1QVvRmJMYS36zq39FmBJVM0BkrpQ/8g/dU/SC0Gsy1jLkHP4ANBn4c405CqjmvQEWkiYw4BE+lTlsNE9VbEeLfxdpNqVNYyDyzKFVH+L09vqIVxkz+o5UwO66W81D4mjo+h9OMilGjT4fz9pnyVp3IPMcEIIeKIV3wizyCDqp0nP
+ F2izp/Yo
+ FsxGqsRputUsf5FHL/FOeUMzDnsGUIHy2RJnjwtKeatR3AF3U03aZm6NPsAS3P31ij7t5kRw5znaLxGv/wEpWvMj8sbZVjnh8i4jYngWblpEbuBaX2Z0yL3V/ZBZy2lCpjb/v7N/FhQgNnkFDle+SfN3OEWFaaOafdshyfLOO5lCUkVzN+cFC95U4c9JMwMqfnzPBJsglfYYCXKSHj52Q9hpfJX6daHcvVEY5G5UD3l5amxVuu88Huq62qgke/nTgyVLJPHwfXoQrdVkZ21ke/+UQ43HIdlAvLG2kvCP5XEhPeRVcSNlBGptdWg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,37 +146,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 11, 2026 at 5:17=E2=80=AFAM Alexandre Ghiti <alex@ghiti.fr> wro=
-te:
->
-> zswap writeback decompresses an entry into a fresh swap cache folio and
-> writes it back. The folio is cold by construction, yet it is left on the
-> LRU for reclaim to find and free later, wasting a reclaim scan and keepin=
-g
-> cold memory resident longer than necessary.
->
-> Allocate the folio off the LRU and mark it PG_dropbehind so the swap
-> dropbehind path frees it from the swap cache once writeback completes.
->
-> __swap_cache_alloc_folio() evaluates a refault on the new folio, and
-> workingset_refault() sets PG_active when it looks recent. Until now
-> folio_add_lru() consumed that flag and __page_cache_release() cleared it
-> once the folio left the LRU. This folio never reaches the LRU, so nothing
-> would clear PG_active and the folio would be freed with a
-> PAGE_FLAGS_CHECK_AT_FREE flag set, tripping bad_page() under
-> CONFIG_DEBUG_VM. Clear it after allocation.
->
-> That is a workaround: the refault should not be evaluated on a writeback
-> buffer at all. A fix for that is on the mailing list [1].
->
-> Link: https://lore.kernel.org/linux-mm/20260911092012.92399-1-alex@ghiti.=
-fr/ [1]
-> Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
-> Suggested-by: Nhat Pham <nphamcs@gmail.com>
-> Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
-> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+On Thu, Sep 10, 2026 at 02:00:08PM +0300, Mike Rapoport (Microsoft) wrote:
+> alloc_cmb() allocates the channel measurement block area shared by
+> devices using the basic channel measurement format.
+...
+> The measurement block origin must be 32-byte aligned. Each CMB is
+> 32 bytes, so kmalloc() provides the required alignment without rounding
+> the allocation to a power-of-two number of pages. Reject an empty area
+> before allocating it.
+> 
+> Replace use of __get_free_pages() with kmalloc() and free_pages() with
+> kfree().
+...
+>  		spin_unlock(&cmb_area.lock);
+> -		mem = (void *)__get_free_pages(GFP_KERNEL, get_order(size));
+> +		mem = kmalloc(size, GFP_KERNEL);
+>  		spin_lock(&cmb_area.lock);
+>  
+>  		if (cmb_area.mem) {
+>  			/* ok, another thread was faster */
+> -			free_pages((unsigned long)mem, get_order(size));
+> +			kfree(mem);
+>  		} else if (!mem) {
+>  			/* no luck */
+>  			ret = -ENOMEM;
 
-LGTM!
+This is the only patch which made me raise an eyebrow, since the allocated
+area is smaller. But it looks all good according to the architecture.
+Since the allocation changed anyway, it might also make sense to switch to
+kzalloc() and get rid of the subsequent memset() (not in the context of the
+above diff).
+But... I doubt it is worth it to send yet another version just for this.
 
-Reviewed-by: Nhat Pham <nphamcs@gmail.com>
+The whole series looks good to me. Vineeth, Peter, any thoughts?
 
