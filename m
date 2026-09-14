@@ -4,114 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F31A6C88E50
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 07:43:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5594BC88E50
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 07:47:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD4726B0088; Mon, 14 Sep 2026 03:43:39 -0400 (EDT)
+	id 6DA186B008C; Mon, 14 Sep 2026 03:47:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D869F6B0092; Mon, 14 Sep 2026 03:43:39 -0400 (EDT)
+	id 6B18C6B0092; Mon, 14 Sep 2026 03:47:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C74DB6B0095; Mon, 14 Sep 2026 03:43:39 -0400 (EDT)
+	id 5EF606B0093; Mon, 14 Sep 2026 03:47:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9516C6B0088
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 03:43:39 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id CFBC6120BF1
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 07:43:36 +0000 (UTC)
-X-FDA: 85211578032.16.11D9C97
-Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 24D6F40008
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 07:43:35 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=St45ENHK;
-	spf=pass (imf27.hostedemail.com: domain of louis2665573906@gmail.com designates 74.125.228.12 as permitted sender) smtp.mailfrom=louis2665573906@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3EC6B6B008C
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 03:47:53 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9F654A686A
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 07:47:52 +0000 (UTC)
+X-FDA: 85211588784.20.6C84BA7
+Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
+	by imf07.hostedemail.com (Postfix) with ESMTP id B0E2F40003
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 07:47:48 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=bQ83riAl;
+	spf=pass (imf07.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789371815;
+	s=arc-20220608; t=1789372070;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=nYJD7VTts/AH4L8FmbbSGUiWjAUaPCR6VveqwEnLy7U=;
-	b=4opx/SucJCxRg8WEnyVUfgnyQO0uSaQ1cXyv/EbkAhqglhsGCF/vUzBiQ8nEyyBDf5xw9C
-	HwmfS6g7HdaVBfiNisChtqPn23mmyTOJ3E01LHT/QlQ+na9YGDeZ0ee9wcnqkKAoGvYs1d
-	c4Uo4MWH89ytGRKIHhsjZnWPhwP+Ap4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789371815;
-	b=UyAUb2fWKYO53rl83KXIvHLWotTpdWxCd2VX84N10phXOuMQuPPE4m+ms+nnu1MzSr7H6Z
-	KYwV33CgEX9LDiXOFLtn4ho5zBzfnpbJgGkQxBwu8mStPsj6B6I7lIrrTgH2Yj1nz8fzWQ
-	IWKxcXsAxrlvTFnKttEnm7M8qBQn3eg=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=sXl5SrD59PL5uo/0jpXBuV8d/KfS78Pkn/98KycEw6E=;
+	b=THeJ5y92apNyb2M+xobYnbaPl1TpHAHZXpNayNaI4pOGx9RTrEPF3W02YbiB0Ci9kMJ/Vs
+	8coCidI+X4cheO5XSNItMmQhPciaeOqw9T+IOVijlEOBIQ4YxJeKgbsKs7w70fDh/ujXa+
+	LjoaS3uYjEOPTRxFughdWIP16ArTRj8=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=St45ENHK;
-	spf=pass (imf27.hostedemail.com: domain of louis2665573906@gmail.com designates 74.125.228.12 as permitted sender) smtp.mailfrom=louis2665573906@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pz2-f12.google.com with SMTP id d2e1a72fcca58-85469b355ffso920383b3a.1
-        for <linux-mm@kvack.org>; Mon, 14 Sep 2026 00:43:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789371814; x=1789976614; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=nYJD7VTts/AH4L8FmbbSGUiWjAUaPCR6VveqwEnLy7U=;
-        b=St45ENHKhAI5rPQGl7IgiofNCrub6gQx1ruydZeHx3X6iZIO6I3u0wVerCmSXwsySZ
-         rShE0XknHJk+H2fCSkYz76aU2oQVkJP2sZtHbyj98Im0smCNbNy5LZW9qlFk07LcN6CZ
-         ZHE1E187AcNixHXHrglb93Rl2FauMC4oEzxbl9wPaD1g6kGZqiTL6wz0+4Gqr6cOdH6s
-         rfWYXihXakT1JoBepOwu+Olvp+Zy7ZGDYI6X2dghjErqM+BwhNeHaFmVkFRGY1RSUDBl
-         pQrHCQZli7TqValrLJAKqIR1hPp28vu9Upnq7bEFZ9SVy2r0+NyjqTMicdjbUEIPcPUu
-         3sOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789371814; x=1789976614;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=nYJD7VTts/AH4L8FmbbSGUiWjAUaPCR6VveqwEnLy7U=;
-        b=LymQ+BVDQtjUPv0DGVcHdSOz46uERBhDfOCcb/QA7/5yJjnxkbOtMjOI/pGxkLuGqM
-         n5uIShmHTnhWm3pPoKwZdBM0QQtJWSjQCks6Ay5goTAl5k3a2DWXpsQNTuDVxz83GMAO
-         d9DKhOcgYmjgFlwq3S4mKbDALr8j80BsaW+XAtA6JDIKPLDb5AnagDx3P2qLxupIh6qP
-         Ln5XpUzT6qPw0t2NFu9Kd5U0q9BtQTkZ8CEcZXREz88B5D8pMDtH421XPLnw1ShuqbA1
-         Ckn0BzdWPie34/mkiJtCIQw+yJ/vNiDtjU653dItZBVnIK3O7rgBc74DBnpxaP1vvOQv
-         5qfQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxsIxMRwok/H8bJ7ygQKPPff/ipOU9pJsUf3w1tLiM3CiUfAAl37gwAL+BES28bfxV/fRFO15Q0Lw==@kvack.org
-X-Gm-Message-State: AFuF++mxxVmFoerNDQk3sNjHJ9A2KKzBdSFt6VpQh006jkgLhAPzBkh0
-	+5KnKFdC9vQKCelYTXuxfs7+17/TesWw+3H/PDfGCSxuctjRTpBNWl7k
-X-Gm-Gg: AYBFou1u0qMKMLmhmVMfuiA/khNQMBAeikIdvNxtJOrZtsrUFeQ08dgxHoSU1OASE0T
-	qIyjhsOpaZjR7n3NTo9dXaTRLDrPkiNFUADjkumLGX7t34uJLRto2z+VbuYL2AOi5Ji9sRwXtQu
-	sEWUy4KtU/xxc6xkE8J09TVHAolzinlt61e4EENfODvWUArN8q5HPT4eSrxwVP1GPQRdLDTO5XS
-	1JpGuuW4ePOlcO+fJ/a/z2MBfz4eCapGKOmWdWLpFsQ8WjidouQq9TRBBhSRIvdiNZGt8gmIkHA
-	Rs5T5zY1w/ZxRdmF6GgHqXrQwtUck2PeEXYwSlyo0Qv9OJ6KRyhsz4fCeAErurF19npHsP92NAb
-	0xqbzHINOPt7uMXQdoQ1UJgdn4JY+9xT6KQ6iWt/TX9ya7NZoTaMZrTYelsD4NgDp0/dxsNSDld
-	BLsDd8UH8hJkYKO2vpDYxbwCpRHNiXLMlVL5OYoZqBNMkuofj7KFukLCdV3JUHuu+VaAMZTYA+2
-	ca/xGaPpdLPXWByvH0Pi3ASNqGlVWQE+gDZ4xc=
-X-Received: by 2002:a05:6a00:4c9c:b0:85f:b00b:8760 with SMTP id d2e1a72fcca58-86f82a5efbamr3533434b3a.5.1789371813846;
-        Mon, 14 Sep 2026 00:43:33 -0700 (PDT)
-Received: from a317-tower1.tail2eac45.ts.net ([59.72.109.34])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-86b250c544bsm4088751b3a.1.2026.09.14.00.43.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2026 00:43:32 -0700 (PDT)
-From: "Zimo.Lu" <louis2665573906@gmail.com>
-To: Gregory Price <gourry@gourry.net>
-Cc: David Hildenbrand <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org,
-	linux-cxl@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH] mm/memory_hotplug: use public nodes for migration targets
-Date: Mon, 14 Sep 2026 15:43:22 +0800
-Message-ID: <20260914074323.3567923-1-louis2665573906@gmail.com>
-X-Mailer: git-send-email 2.54.0
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=bQ83riAl;
+	spf=pass (imf07.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789372070;
+	b=QF0TCFEuowHTtnUNZOEae2n5sOEZOuldVA/dTWfq/3Mb1leiuoxM4enp+pcpzfzWaU0fn2
+	TIo24t5ZASBke24H8Z2tU1Pc+nLHOHMWqkzxsqTTb93kNc/7Zvh/wQsgrA5+C2agcjz5CV
+	jQ52yAMyOFp4jxEGMZ1NyuuWvqWbf8o=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1789372066; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=sXl5SrD59PL5uo/0jpXBuV8d/KfS78Pkn/98KycEw6E=;
+	b=bQ83riAl7oNHlOotPoqu5mWvOrwCjni4hX7wRsPqxef2FYsvC1hMCr1M2VoTVWjTT4izP6sPWpInqFhC17+qsIf3ZXnBg/Wn81PP3JyZKqQ6xikWEYJkdCtVYIZIpmUBwlF4m0uUfB3ltDB9WUreCcwSqwq1eAMwfJbVqlNA8IQ=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0XAtKirq_1789372064;
+Received: from 30.74.144.134(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XAtKirq_1789372064 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 14 Sep 2026 15:47:45 +0800
+Message-ID: <9c8c7c91-b159-4342-8af7-3a8171e85389@linux.alibaba.com>
+Date: Mon, 14 Sep 2026 15:47:43 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/3] mm/mglru: add tracepoint for scan_folios()
+To: Ridong Chen <ridong.chen@linux.dev>, Steven Rostedt
+ <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
+ David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org,
+ "open list:MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)" <linux-mm@kvack.org>,
+ Ridong Chen <chenridong@xiaomi.com>
+References: <20260911102939.2485750-1-ridong.chen@linux.dev>
+ <20260911102939.2485750-3-ridong.chen@linux.dev>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260911102939.2485750-3-ridong.chen@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: 5uani17um9h7xm45mj3onf1fbuo3ga6t
-X-Rspamd-Queue-Id: 24D6F40008
-X-HE-Tag: 1789371815-729089
-X-HE-Meta: U2FsdGVkX1/MDwaW5TMpNULO+zHFdP26tZrSQYeGKENAQ5zSr+KWtt+JZl6G9VpmeULLBur9gui2BglAgrGzJAhBjdZIKtq4WXb2wewXsrsv7kgtO1Hv5yl9rg0Fs32Hg5krgdAakLXDyu09tZLI5bKYyJbeMBKEoh10dCviqr98eWjx0GKL6593rladajVriKUiw6cE0HYzZTHHhasB9jrMpsDHdIfG7+uSoTGaUn5r/bb4fZpl5U36cbvw8EugNOIjrQrm+xs9m4zg19LjU3rHgYVLL69HN0JRod5YywclFi0CHU04q5ni5qZryykwkU7bgyHOrFvP2Bkmq5Ii/LexWWW3BoqHmsc/ZjyVW5qynQF4riYA4/Yv/SQDhD9aPYZI7tTJYZsTWdZ7M1l1EXD3mps5rEDK7bFlvkx9r6oo7eL1o3Z8FEzNR1Y41kqu2/gX2PpCe0FPvuYYliiyA6/TuVGaiiPZEE2JZ/nlGqYi1CJPqqQla+qlRdA7hu41Ge71XMxvuNsbesZESkzIHSaetXj/KmDDtUKnuHtmMyOiMf54E9iKjqr+kTOoVi/g8W1x8xUlMK94k5dBBqMVEtucuPPwBT5GyUtlRPiBajVLpntKgvt0KYUNSWaLni4u5Fqv9O48MM9InD4xzPYUQb5e0KkugRAqEpv5lftcbftoqg4hOZG4TC7Du01uE+xuqKG+yZGDvorquexkqhLlOfFasycyn7OxLCd+7/uVdDC36TQWmnyvXChQMEY4l6IKqKUmzI1vn2PheVHVShQqcxlIOcxfEXLPFYqo+FiPWFQaPNjFlJNtgboZiS9Y7nxOZ/LIc0/1WSXxunlyJEb+OfMLbIFD/XND0i/G/buKpxRHvBx4uKC5CyZJOXQnbHOSSLYMxhtp+64js+joCaYdnw2yNnplvv3/TUAr+DWW6vrPbSZ6sQXJbqYxniWN65VnDtD/4/7jNGn+FuMAAZK
- w6dLyhsR
- jLg9KssZ8MRSLSRhyv+KqZ9kJEQcNQ7zl76rBx8dCKAEFHEg4ZUJli5HtvhvsFgByVM/nQuD84SCYaIo6U0bumsIk5qUkszV7iSW51MkjNFW0PeCv71yjHTmVMFlF4jRgMcrvMTjHPaQgIVbqWC5d1CpEDzxtT9K5i/4/MC8Z7H7bXOXYByt8Qeym41OeOg+3ZfUsGQIsmdk0Zrqt8I2zP+r05zjnZrDdrfqlV3q1AZHfAHO9/MLAFw3rO+WC10FofmWZ+PEKb8LAfsRPBwYea3FG4OduM2ILvD9rmlJCnVighJyi31toMP5/Y1Nci/KpBV+BofxQs3ghkVWKe0bZW+dZ6MGjuOnCeIpWOUYXnt1RwXj7pgJHt+oleOosBwDrBO7WyJ1FbwTwT0MDohp798MzUG4j86qXrBLCeHejmy6q/MAfxTTT7KctuhtbIu8qAGrGnJYUtOjwT5c=
+X-Stat-Signature: ahbgh3f9tz1beyaax6jthhzxr9hn7dhd
+X-Rspamd-Queue-Id: B0E2F40003
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789372068-686843
+X-HE-Meta: U2FsdGVkX195IbrBNvm5h4UwV6Mb9tt5dSioBcaQ5IXRhJsbxjI9DRGaxquKJ6nP+31HVj3VuQv+Gfavcn2fs7hFSLs2qEEEh64avR/Nl9WFy7GU8Nmndk0hSAO+och4b3zznt9yr9l25XQk3D7hV/GguhpnWNYq9Gnl9D2Zoy+ID+GpIHSvBDCtlGE6AwTUpVncMa7lzqufqbagWdPbtIc3SwL3uEvQvN3P8YmEBj6z4XhEHw7cryo9xuAfqDvEW2cz/MKew/Is1+gS0IOopQMHWEqCcj3ZKteheImaGdmSZ2ivXvyA/yvkpmZ40RZhsIsmcoRg0rsUTwKtIXXPUF8OU+k1vtwNu1iMhdw/5+ltRIQ0n/87to+4QnJ9WfS4yhaOKWxXU3Xv5c8yO2dTf/6p5IF4gmQn+jNN1dpro9IUcKWM9SL3JzhrSdMH8/J6y7FLPvxlq4K2zd6wzE0dP+lhf2y810dKB/6xZlUP4YNo3+nF4etPhMOXKiKD0c6iOOMkz4YRnJtJAfJ4bzdxOdEp6DD21eEjkTtAsUa9guEh3QMXNTxFLdVkeNa58BVqbeg4CdMKR9cI2Mr3LDCAMyCVzk1jNRxfOYLEm7jAfRovPMwcwu5fADYqaTeXI96xIl+Ty2bU6z7XjKYlSsBWTDkKPPPKK5OqKINO8Mc5GWqeOI9/FM+tSTLcKn6ORNx1RIXoWhAJQ1VrhiPEbyZynOPo2NRzSS8QiP26CUwW9woI+1xxejK5rr4Y3YJpQLKCLyqTE2hdzre9RpF9QuPdLGrvBHPW8RbD90QZBtiYdz6Cc62pg3sQ08aJ3hvCQIq9iSywap2rC+W9c1A2UNisx094emdMgAmY+xvZWyHE5vzvNgmOrVP+VBODWY2TsSbz72KPFxYrgadj0PTL17tFv6nCm9TouWlDxM+NS2ZSddrinTEMIcP9Lall0ZMnlLWFNCWgddKqX4CFtxkD4DG
+ VkEV68+0
+ oAkkzKJFhjEnhs/9MeaMq/TagLhEwDgMBo+FHJh7kH+ZNaSaNL0epSpSUiyhuCvQ63X3fylCTNUWbFN9mvtdnhxemVkf2a+3LNEmgm+wLRBkveQCDal3hxrsd0lAdHqU6LldxC49A5kVdOAVL0vWQdhBtylowKxCM0n/6XX9K6P/vIsb1MJwKkMaCUjHF3P9gKEg26Vh+Ykm+BDjr8b1qGrdDOm9s+ygmm96U4xEf2kNTZNUXRgHVJezooPSaUmwAKdT17AZy3fdOknBwXzHAKI1SpU+LLjdAIRcXsE6qX5DFgt0kcDG3epgXzqPKQRMO3CDnQsGJy+5Np2bQaHDQIRLvnfV1fNoPw4CS1Kv/ZDYSEEDrgZ1PXiA87HyT3E0Kq1lz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,58 +98,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-do_migrate_range() excludes the source node from node_states[N_MEMORY]
-and adds it back only when the nmask is empty. With private nodes in
-N_MEMORY, this can leave a nonempty nmask containing only private nodes,
-when the system has only one public node and others are private nodes.
-Ordinary migration allocations use the public fallback zonelist, so none
-of those nodes can satisfy the allocation.
 
-Build the nmask from N_MEMORY_PUBLIC so that private nodes do not prevent
-this fallback.
 
-For HugeTLB migration during memory offlining, this also excludes other
-private nodes from the nmask when the source node is private and public
-nodes are present.
+On 9/11/26 6:29 PM, Ridong Chen wrote:
+> From: Ridong Chen <chenridong@xiaomi.com>
+> 
+> MGLRU's scan_folios() emits the classic-LRU tracepoint
+> trace_mm_vmscan_lru_isolate(), which predates MGLRU. It reports the
+> scan/isolate counts and the LRU type, but carries no generation or
+> memcg context, so a trace of an MGLRU run cannot tell which memcg a
+> given scan belongs to, nor how far reclaim has progressed through the
+> generations.
+> 
+> Add mm_mglru_scan_folios next to it, reporting the same counters plus
+> nr_sorted (folios moved to a younger generation by sort_folio()) and
+> the MGLRU context the classic tracepoint lacks: the memcg id, and the
+> max_seq, tier and min_seq of the type being scanned.
+> 
+> scan_folios() is the MGLRU-specific layer where folios are actually
+> scanned, so it has no classic-LRU counterpart. That the classic
+> trace_mm_vmscan_lru_isolate() has lived here stably shows this is a
+> long-lived place to hook, and the new tracepoint can be enabled on its
+> own to observe the MGLRU-specific information. The existing tracepoint
+> is left unchanged.
+> 
+> Assisted-by: Claude:claude-opus-4-8
+> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+> ---
+>   include/trace/events/vmscan.h | 63 +++++++++++++++++++++++++++++++++++
+>   mm/vmscan.c                   |  6 ++++
+>   2 files changed, 69 insertions(+)
+> 
+> diff --git a/include/trace/events/vmscan.h b/include/trace/events/vmscan.h
+> index 8a872990b4be..5defa8f6719c 100644
+> --- a/include/trace/events/vmscan.h
+> +++ b/include/trace/events/vmscan.h
+> @@ -392,6 +392,69 @@ TRACE_EVENT(mm_vmscan_lru_isolate,
+>   		__print_symbolic(__entry->lru, LRU_NAMES))
+>   );
+>   
 
-Signed-off-by: Zimo.Lu <louis2665573906@gmail.com>
-Assisted-by: LLM
----
-Should we use public targets for private-source HugeTLB migration during
-memory offlining as well, or should this fix be limited to the same-node
-fallback problem on a public source node?
+[snip]
 
-Based on the author's node_features_v6 WIP snapshot (base below).
-This is not a patch against mainline or the posted v5 series.
-Private-source HugeTLB migration has not been tested.
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 2554a6513aa8..67f59aa73fb9 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -4876,6 +4876,12 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>   	trace_mm_vmscan_lru_isolate(sc->reclaim_idx, sc->order, nr_to_scan,
+>   				scanned, skipped, isolated,
+>   				type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
+> +	trace_mm_mglru_scan_folios(lruvec,
+> +				   sc->reclaim_idx, sc->order, nr_to_scan,
+> +				   scanned, sorted, skipped, isolated,
+> +				   type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON,
+> +				   lrugen->max_seq, tier,
+> +				   lrugen->min_seq[type]);
 
- mm/memory_hotplug.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Both tracepoints will print some duplicated content, and I'm not sure 
+it's worth a new tracepoint just to trace max_seq and min_seq.
 
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index 22d20ee96bb1..8a95ba26552d 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -1937,7 +1937,7 @@ put_folio:
- 		folio_put(folio);
- 	}
- 	if (!list_empty(&source)) {
--		nodemask_t nmask = node_states[N_MEMORY];
-+		nodemask_t nmask = node_states[N_MEMORY_PUBLIC];
- 		struct migration_target_control mtc = {
- 			.nmask = &nmask,
- 			.gfp_mask = GFP_KERNEL | __GFP_MOVABLE | __GFP_RETRY_MAYFAIL,
-@@ -1953,8 +1953,8 @@ put_folio:
- 
- 		/*
- 		 * try to allocate from a different node but reuse this node
--		 * if there are no other online nodes to be used (e.g. we are
--		 * offlining a part of the only existing node)
-+		 * if there are no other public nodes to be used (e.g. we are
-+		 * offlining a part of the only public node)
- 		 */
- 		node_clear(mtc.nid, nmask);
- 		if (nodes_empty(nmask))
-
-base-commit: 38c7f48162aa282dc6a9edfb7011378594057c10
+Anyway, I'm not against this patch, but I'd like to hear others' opinions.
 
