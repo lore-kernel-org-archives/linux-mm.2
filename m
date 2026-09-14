@@ -4,72 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABEF3C88E72
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 14:11:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32D4FC88E75
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 14:16:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A8F2E6B0088; Mon, 14 Sep 2026 10:11:02 -0400 (EDT)
+	id 20FB76B0088; Mon, 14 Sep 2026 10:16:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A67066B008C; Mon, 14 Sep 2026 10:11:02 -0400 (EDT)
+	id 1E77C6B0092; Mon, 14 Sep 2026 10:16:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 97C5F6B0092; Mon, 14 Sep 2026 10:11:02 -0400 (EDT)
+	id 108A66B0093; Mon, 14 Sep 2026 10:16:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 729CA6B0088
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 10:11:02 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id F0A838016C
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 14:11:01 +0000 (UTC)
-X-FDA: 85212554322.27.88F0174
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 3DA304000A
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 14:11:00 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oPBPyfc1;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789395060;
-	b=ZVCbsUTkSNYdNdHZruJFtSighwSoiwoSTZZnlQlCIU8ymf1VxvbyTtIsNjo6a/vRgyupsY
-	KgmPNV6ZBvItHRwa/N/cdcf4ZOMZkHdlcslU1YAR9q1evPedKdk0W9nuKz4NNHv4GMMI5h
-	fxuznSg+S8exQudFk3xfxllHt/1U6tA=
+	by kanga.kvack.org (Postfix) with ESMTP id D090E6B0088
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 10:16:54 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 17C2FA395B
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 14:16:54 +0000 (UTC)
+X-FDA: 85212569148.09.C55A975
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 75101160004
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 14:16:51 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dL0j20gf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oPBPyfc1;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dL0j20gf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789395411;
+	b=7ZA6YBZs3xBeDfoCzRjxtggABU5eETL+CwGXSe1KVYp8eDc0niE8SOnd0Nvz8knwqhOzL5
+	PAs8C/yRcQm/kvMwPBF2OpZA7WoDy8KXJafbU/5lIHPwLpN9bB4uwSRLvhnAyPiDhOH7rT
+	2oE9KVt7oiNrUAlNl6S4VUuq3pixbw4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789395060;
+	s=arc-20220608; t=1789395411;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XJFM6JwTF7dpDjv5GxNtlQIn3Xtc8gdA5oCQUi1dIq8=;
-	b=IQrPueITcHXruN3Onnv29ycY2QvQv13sfaCBf/7KaA2/ZXx+enAfE/gMWbrAMnW7JNeRNw
-	l9eXEZJAXhAl5trzVha/CgQ/VZ5cHA9ZR/Z8SvGkSQfohVjqCMKAFTitmJ5VKqSeK1aZZv
-	BrxAjjC17vl5LNkLno+ZimtpjSAMaF0=
+	bh=o/3IRmLFAEksJkCPHyaGPKVzpnZlgfypBxMxwnYS0Xs=;
+	b=2QaMJq0VisxnYLxTXaVyLntkzFcXRY6Myj6ADLsgjPKLeASpDDb4qJ417v6dDNeF8uRKZT
+	SAd8hur2KZeLXJZenjtISvQ5lsiQzrC9iq2lLhRYw2TK5J4OH/HUbe8qrs4ubR3ju1bSs9
+	bhK+UN6FaRdwoZDQvJX6DXbIvNHpdMw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id AD9E460142;
-	Mon, 14 Sep 2026 14:10:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AD801F000FF;
-	Mon, 14 Sep 2026 14:10:53 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9EF6540890;
+	Mon, 14 Sep 2026 14:16:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C94C71F000FF;
+	Mon, 14 Sep 2026 14:16:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789395059;
-	bh=XJFM6JwTF7dpDjv5GxNtlQIn3Xtc8gdA5oCQUi1dIq8=;
+	s=k20260515; t=1789395410;
+	bh=o/3IRmLFAEksJkCPHyaGPKVzpnZlgfypBxMxwnYS0Xs=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=oPBPyfc1kHNDvV0t/B1lkdFZs+ykyqVI5bNShXTsSoiQVPf8xN6UWdeaObkeQkREf
-	 8ax7+UL2K7yPDdNetSNNdnqq1r88THf9AVo5p5sdW1Ownwmcuki3zEqP5aiWaSKTeN
-	 6zOeoXVmj8F4SLG6slvFY6AwSDHrk49C9taLXYmMIheTH6WaLP/m8zcW7QZ4yv2a5E
-	 8OxZ7GYqSX8emFAKM6mBmbyseOobDkc6p+LpVU8sgteRScfG0FL26cn4oqeOXL94iz
-	 /G6AKbJD1WYbbubI/tn/N3hHaJ+nfnz7gxB3tz2xWH9YedGquHzsWHSCIIyw6oNo5l
-	 sM/ZM4ix02ztA==
-Message-ID: <6c9727cb-6cfa-4d0a-b8d8-077cbeb5cf4f@kernel.org>
-Date: Mon, 14 Sep 2026 16:10:49 +0200
+	b=dL0j20gfGBQmg5awWBbdF5fL/EH5b8s8ec0E0HvyyjR8q++TGEItDKFOzaAhuM9L4
+	 FtzWIcsbBq5yn8LkP68emA2wr/CpECfLPrU4RSqVn5cutqiss1hS5jKWLbMzHo0rYg
+	 gIUnfV+HekT/x1yzaZfiy6uAak5hcEf0hx9dOqa79qqGgFTZDaNxA1lHblr9ychJ87
+	 V1WdIBQkk293e/YBfYYgTKgMovRiL1rlpcHomv0+1wY7OPxlDkEAgGNGIvqq94rRBd
+	 ziSueEAIEgfUEiUU4HHeXyBXNtBtYo4bmiKY5S3vaK6lUs/s0h8tiHjo0ugHO7yeBf
+	 10YqmeaZotnBA==
+Message-ID: <1be327b0-aec3-4b46-9a96-c701e87d3c3a@kernel.org>
+Date: Mon, 14 Sep 2026 16:16:40 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 2/3] kselftest: mm: replace usage of /proc/self/smaps
- for check_huge_xxx() helper
+Subject: Re: [PATCH v6 3/3] kselftest: mm: remove check_huge_shmem()
 To: Yeoreum Yun <yeoreum.yun@arm.com>,
  Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
  Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
@@ -83,7 +82,7 @@ To: Yeoreum Yun <yeoreum.yun@arm.com>,
 Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
  linux-kernel@vger.kernel.org
 References: <20260914-fix_split-v6-0-16ed7123800b@arm.com>
- <20260914-fix_split-v6-2-16ed7123800b@arm.com>
+ <20260914-fix_split-v6-3-16ed7123800b@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -130,17 +129,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260914-fix_split-v6-2-16ed7123800b@arm.com>
+In-Reply-To: <20260914-fix_split-v6-3-16ed7123800b@arm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 3DA304000A
-X-Stat-Signature: enmp9b3htp3z8puuo9d1iubbt3gw9wak
-X-HE-Tag: 1789395060-129862
-X-HE-Meta: U2FsdGVkX19RAa0+G3W3WKOPQq9R/edrcL2Og570Z7opV930y61bTPNxY1bVNdnLf4NKJTArXW0Xj/TnYDod0Bo4AvidxuCoC56Gwb1RQMvE/7AElBpof41hQ06JlwtfAPZN94GSRAMFB54FQt623OynX8GnP7mIgHiE0/PGXWhHPRWlJ7JsKnKExdEoSowAjOVuFmzHxM0mWBXypV2gDfcrkYNKnG+LpakHqA2jZ86g0+IqSur9PyzTazfFJRGP2s1ZEWvdTcQYeVJO5V7d8Mg7A5StCKgETZQJCc+1y4L2s5ZaId8DSjqh46ryO/eWs8MO0C+ZvEw469yCe42wNGsfJqLckd1PCeFzYJaq+Y4wFCIY3HXAkyqW3ZwmDaJxh/Y/NqQ2ICmxuL7no8Xos5iQhFuerS/QVEjcp4o61vvFVhyNEYsLfxtVd72KWctt68mI+j8ut3JN0IT9uxup3Scd4hTXc3vHHPI2pmynpVBLT6tNy+LwAanUTZgbds2OlqZ6l813YBaWCiQU2yZMdPUnOoWCVM2v/WE6kZL+RinMhHpuWq5yN2sLKBlq5zntSGS3NU5OpY9pDav81u3JPDPXJvpzCr/sXWJTpiIe0TSWIj1J57xJHLFOQDIy/PzHYKUPzGGVGEjnP+w+r6BrlbdfWpuFMss4DJcCXUf9L1mowYpN/bJLgUqNaU4eBR2NQyz6mG2DjLOlZq0b73tJKYXlfphUuSAPaJIOzuKQcC+EWDwwSaufEifhMLP7TnL/pCfUPd1cGhJ1uwR9Q3xly3/N82JHkJkg1kHQB0EL2uPpxwXv/4C8sX7Ufa9+29xCkssd2E9uMvphKTOrqp6alaSyaTGiGswwXzTiMnFKMsA39yYOlNoX3DAL21vG0ddzkCQLlj5h/d1/ceFS5JskCHkUjmqEQcQg/5s6LeMXxvvGiQ8NTU9HYHsowmJa+J+N4HIFm5oeMWFvBqZmkOL
- EV9n7VaW
- 5xQ51nflHKtWcI+bAqS1DZxDPd7CNEZYThS/eqv1SoMh1xxRGl8dqXT28ghQvKmgjYU1I48vODSvaHT3LxP47MH4xPznQFhfnD3+gEGeMR3g9V7GllE62ZunsySBQp6kxAwgfjf+XWR0KFdHXx+4OJkvx55ExtCNVzIuDKCUBCwmIybd21IcechMk9OU0n4FwHCDJ/wngxei18BR5lHMMcSrAa0ekeq7lNPMfuYcS4h0+1CNvBMHXOI96JcfrO025Rau42vTnNm4dRL/1g4xpxUnMebZCNWZ6Ve5hYsJsh1/FirHYjVdPES/btA==
+X-Rspamd-Queue-Id: 75101160004
+X-Stat-Signature: sn84howg5d3jf71kntzx17phb18et1rr
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789395411-102177
+X-HE-Meta: U2FsdGVkX18caJHyCc9tMcTxeh2PO5XsxCxtxYQTkQTH5nV3uQKWakLBYNKXl0uE6suQvYbnZM6+hYzN+fLz2KgTEBZMhgkQsAZW8pV9aa3FpFkLIjyPRVBfmetAcc7potU4G/fp66pZo4lBFqmHUact6PkLSxQIjHoB9Avdp88goS4CGHeST8v7P1X7gtdJc6t6W5LTD/VFfAg1YIiMo6gkU08gmZsqprr9JRvKdviWTellJjUrI4SqR/7+61g38JlHNiz/gCuqm9aLehwcLZ2P9lF4alKvWU9Fba5gytJU5t64SE/DjCTA8TV4DBDlPgRtpDsbbGSjSAyMEIs/0zWKgY4Eh55fHY0f7nI8l/MVYgfY1aVfqq3UMlwf35X6pAp3iKKdiUSlho+i5Vg5xGpjC/iWWya785Zq4gy5wqfWfgmZjZAylY5e1sxiW5BJsYLbdQdLXkhQWlHxmVRqWRdJL5srbafskd4EV2lH5FkO6mh7PTPp9ziCc6cshSYLu6pmkKV1+IEXO4M4AVHH2p+YGELqAEMVT9UTEpOhQukOuyBoIrzT+OyuP8SRqqdpMU7PaMozdC71wzjuZcvD2f1KburyM1vPIH/ljmCyg/9JXGsKRxYxmbZAWJqFsKoN5AgU8UtwEsiM7GVDEGnbk6qEVxlxa6fDYy707+I787ms6VeIvqRe9LaWhE7p8H54if8yei/lL8l0C824rEsNgwaegyCMLCqTzorVhc0Tasn9YwXGdPJkiOFjDrN0PyvX0Q6lBcHuPm+7w7BHVwqpnzbQ++Au1bhZWDULenbkb0biTRIe8fzcIhKE3qmH4/r1lFJnMyrD7Na/sEK5WfQOyiGYuGFT6Rslc7Z8kTUuYHAoq7alacXRPiTgLosiHMZSJq17Cr9d7atmBAVESyoNu8unWGzuxR+JAE2HBMBfNOdSCdvS5AXsf1CVx5QWStx/Ey7pgPg1ixQEvL3/yNE
+ 6DPuyROk
+ aO8cyGEPcp3Vi4v9Cdy/I1/7/CStwmihBe1+VxhUKMwD+ZEBiatuvA7WC2d9X3gRCvzpV2m0U2zFBc5gz0zHhXwOde9YePzi/Psd7CIGLPiM7LeL5RP46Csvd4ZhTrCZecXoytPiteqlbVl4coTRXtagCF1W4yr1NVU79jbdvARqAR/D7n5KbLypuGir2pAq7OOhmP8BbY6IB3TGNGm278ic+Jhn37AfymzpF8TWLC1Kr2u9kYBnB36aHutdyxE/OOCSgc3PrT4d4Oe7UqqD6xWnXdo41HSCqOumS87UU1q/y9DaHuKdor6+ON1014VtrryZFqofOiw3xXb+qPcuSa0fMRw+RYZWyaeRThQScDGdi5efEUbjwVKIIns5SmDbl/WiaUwxVF885uSNzR442g3JPTg9V8iQ+DaZZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,28 +147,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
+On 9/14/26 09:30, Yeoreum Yun wrote:
+> check_huge_shmem() was required to distinguish shmem huge pages because
+> /proc/self/smaps reports them using a dedicated “ShmemPmdMapped” entry,
+> as opposed to “FilePmdMapped” for file-backed huge pages.
+> 
+> Now that /proc/self/smaps is no longer used to detect huge pages and
+> /proc/kpageflags is used instead, it is sufficient to distinguish
+> between file-backed and anonymous pages since the ShmemPmdMapped is also
+> kind of file-backed.
+> 
+> Therefore, remove check_huge_shmem() and use check_huge_file() instead.
+> 
+> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+> ---
+>  tools/testing/selftests/mm/folio_split_race_test.c |  2 +-
+>  tools/testing/selftests/mm/khugepaged.c            |  5 ++---
+>  tools/testing/selftests/mm/uffd-common.c           |  4 ++--
+>  tools/testing/selftests/mm/vm_util.c               | 11 +----------
+>  tools/testing/selftests/mm/vm_util.h               |  2 --
+>  5 files changed, 6 insertions(+), 18 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/mm/folio_split_race_test.c b/tools/testing/selftests/mm/folio_split_race_test.c
+> index 1960635a953e..4c0d3b6a411b 100644
+> --- a/tools/testing/selftests/mm/folio_split_race_test.c
+> +++ b/tools/testing/selftests/mm/folio_split_race_test.c
+> @@ -182,7 +182,7 @@ static uint64_t run_iteration(void)
+>  	for (i = 0; i < TOTAL_PAGES; i++)
+>  		fill_page(mmap_base, i);
 >  
-> -	if (hpage_size == pmd_pagesize)
-> -		return __check_pmd_huge(addr, "AnonHugePages: ", nr_hpages, hpage_size);
-> +static bool check_huge_type(uint64_t categories, uint64_t kpageflags,
-> +			    enum check_huge_type type)
-> +{
-> +	const bool file = categories & PAGE_IS_FILE;
-> +	const bool swapbacked = kpageflags & KPF_SWAPBACKED;
-> +
-> +	switch (type) {
-> +	case CHECK_HUGE_ANON:
-> +		return !file;
-> +	case CHECK_HUGE_FILE:
-> +		return file && !swapbacked;
-> +	case CHECK_HUGE_SHMEM:
-> +		return file && swapbacked;
-> +	}
+> -	if (!check_huge_shmem(mmap_base, FILE_SIZE, NR_PMD_PAGE, pmd_pagesize))
+> +	if (!check_huge_file(mmap_base, FILE_SIZE, NR_PMD_PAGE, pmd_pagesize))
+>  		ksft_exit_fail_msg("No shmem THP is allocated\n");
+>  
+>  	if (pthread_barrier_init(&ctl.barrier, NULL, NUM_READER_THREADS + 1) != 0)
+> diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
+> index f82673f5f6b4..6cd1effea465 100644
+> --- a/tools/testing/selftests/mm/khugepaged.c
+> +++ b/tools/testing/selftests/mm/khugepaged.c
+> @@ -416,9 +416,8 @@ static bool file_check_huge(void *addr, size_t len, int nr_hpages,
+>  {
+>  	switch (finfo.type) {
+>  	case VMA_FILE:
+> -		return check_huge_file(addr, len, nr_hpages, hpage_size);
+>  	case VMA_SHMEM:
+> -		return check_huge_shmem(addr, len, nr_hpages, hpage_size);
+> +		return check_huge_file(addr, len, nr_hpages, hpage_size);
+>  	default:
+>  		ksft_exit_fail_msg("Unknown VMA type\n");
+>  		return false;
 
-I wasn't probably clear. Don't add an intermediate CHECK_HUGE_SHMEM. Make
-check_huge_shmem() simply use CHECK_HUGE_FILE and remove the function then in
-patch #3.
+
+Assuming we do:
+
+diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
+index f82673f5f6b47..9542173a748e2 100644
+--- a/tools/testing/selftests/mm/khugepaged.c
++++ b/tools/testing/selftests/mm/khugepaged.c
+@@ -53,7 +53,7 @@ struct mem_ops {
+        void *(*setup_area)(int nr_hpages);
+        void (*cleanup_area)(void *p, unsigned long size);
+        void (*fault)(void *p, unsigned long start, unsigned long end);
+-       bool (*check_huge)(void *addr, size_t len, int nr_hpages, unsigned long hpage_size);
++       bool (*check_huge)(void *addr, size_t len, int nr_hpages, uint64_t hpage_size);
+        const char *name;
+ };
+
+
+Could we then simply use check_huge_anon/check_huge_file directly and get rid of
+these helpers anon_check_huge + check_huge_file entirely?
 
 -- 
 Cheers,
