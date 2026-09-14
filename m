@@ -4,138 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FBF9C88E6F
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 20:19:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28593C88E6F
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 20:29:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A60F6B0088; Mon, 14 Sep 2026 16:19:45 -0400 (EDT)
+	id F25F06B0088; Mon, 14 Sep 2026 16:29:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 12FF36B008C; Mon, 14 Sep 2026 16:19:45 -0400 (EDT)
+	id ED68C6B008C; Mon, 14 Sep 2026 16:29:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 00F376B0092; Mon, 14 Sep 2026 16:19:44 -0400 (EDT)
+	id DC4E56B0092; Mon, 14 Sep 2026 16:29:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C8A8C6B0088
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 16:19:44 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A55226B0088
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 16:29:18 -0400 (EDT)
 Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id ED336C021E
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 20:19:43 +0000 (UTC)
-X-FDA: 85213483446.12.E6D6810
-Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 3A6E31A0009
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 20:19:42 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="DLw73bm/";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf19.hostedemail.com: domain of hughd@google.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=hughd@google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789417182;
-	b=7JvIlV2B6HCx6IeScl95Xx7gCJINlsvqicrjZhStc3wZJWGjWldSbXCl0fUzQZOim/F7Gl
-	BJWQkuyAO7ImpxJXqB/4lPWf/3+UiQAXwMqWDITRGnX0RckZzMgREK1PghrHk1JEqKbUO3
-	lkxMdGO0+Ln/5+n3fu8zB1WJchAULls=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="DLw73bm/";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf19.hostedemail.com: domain of hughd@google.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=hughd@google.com
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8B5111A0251
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 20:29:17 +0000 (UTC)
+X-FDA: 85213507554.12.A72E849
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+	by imf01.hostedemail.com (Postfix) with ESMTP id B470640005
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 20:29:15 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="hnhX/uo8";
+	spf=pass (imf01.hostedemail.com: domain of isaacmanjarres@google.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=isaacmanjarres@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789417182;
+	s=arc-20220608; t=1789417755;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+AktPzAMD7v7+puIIygBX5NaQs925spQsBYks3yq6yc=;
-	b=bsC11ACW78+dCf8VUgYGxBSIpoE00qqInM3Y8XzS7sYXM/CCl7GCXWx7QP/+AtQRdBub2t
-	FPraLe/Gr4wxgm/v95banRY4ODfl9c5lu8V5ULiJTTcY4tZddKWZRMnu6+bgElb4JGdCNo
-	eGkYsCPHmJckMvC7JZ3ftsFXwKqA4gU=
-Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-482f633cd78so1257029f8f.1
-        for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:19:41 -0700 (PDT)
+	bh=M1RB04FVKilnMj3CUMQjbhrQYe/qiVYK3aULFxVnZe0=;
+	b=Cq0zHqpKv7LY2Rvy8BOGlZZauCf6DjnznTwzQC+H3zjrRN3ok0PbbO34zl4Da45FfcFMVI
+	WB/kT45ntCnPEye5NVT0MV1UeEezneX5HCx9eobe7E+MJmOSMm3LInguCzAINrk/P/Unfk
+	3Q1Kv54uzVzLSWxv7oZkp0oKTfYuIiE=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="hnhX/uo8";
+	spf=pass (imf01.hostedemail.com: domain of isaacmanjarres@google.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=isaacmanjarres@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789417755;
+	b=GO2iCuzAfE+RYdeCDGiIWcISS4Xf6QoH/4fXZObBcGey569zLNP40AOl/z1khv08nmD1TE
+	lgDuZ/0+foViZKqx/Xn4AkMT22enDjiL+AO27UFtpHSMSlz6unMCZXVL6LvpnV9SLJVaiT
+	aPKNKrYrkj4N1PzWfdoScS2Szz173ao=
+Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2db425c9050so195825ad.0
+        for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:29:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789417181; x=1790021981; darn=kvack.org;
-        h=content-type:mime-version:references:message-id:in-reply-to:subject
-         :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+AktPzAMD7v7+puIIygBX5NaQs925spQsBYks3yq6yc=;
-        b=DLw73bm/ekU2r4BeTvh/pwDY4uKFEKll4udkSOhJv9VEuj310baE5vHlr85RW/efQA
-         5c2CYxRZaZLWgi8w6BtNe/34FqowTBrdSNtRaOWOZ1f1n1yI5pbqW+dWo793ubppns3M
-         hx2Tf//sycJrVHRLgOXIm0Uuoh5V0z/nTdn4erydzOQO8DbMXmBt4UmcgJI0QnUXd0XR
-         dSVsQiNsiG2ZEitzsCiXYb9+IwFDTUGJll7u6rdTzDB9ntFu5RYDklbR5OwLYViYTvOL
-         lQpbqfP7aUu5oxZm4Jd959mM1BXSOocjDToggzVOTLylB5h3cbVXBX3W9978yKr1r2qK
-         RTqQ==
+        d=google.com; s=20251104; t=1789417754; x=1790022554; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=M1RB04FVKilnMj3CUMQjbhrQYe/qiVYK3aULFxVnZe0=;
+        b=hnhX/uo8/2sMBTGPzFAWmMy2OdLIuZc3MvQdRcKf1+v0CLU51cgdrs0NWaZmi2AOZy
+         995/wPxeIE61t/UL1Kw7j7H+tGe5tpociboaqud0Vnm5COLbf2xu+xcPnMhlSc6araqQ
+         yiagVjU+5oebbthAvpZoTxVWGMDUO+1UgXInBD+UBr31Im7I8JRNODrO/Pw87WFdNqa+
+         iXpkqPiUuyxxlN68K9I+fulL0DpkFhP0v7ERwAhpzlTiOTpxX1hbdTfXV2OdPAcwn3/+
+         MYtqP4IjyPMP4gQVJDNLmgpOPNoioLfoAkpbUoTTPTyL8Sn+W0pHFuQ0vm8d2VwfpT+w
+         R71g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789417181; x=1790021981;
-        h=content-type:mime-version:references:message-id:in-reply-to:subject
-         :cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=+AktPzAMD7v7+puIIygBX5NaQs925spQsBYks3yq6yc=;
-        b=IwFDMmspUXKXnwYi6ylSLsprqjv9W9YNJsel6KsSfHesVHPcvww7U/od3rcmD6vuGA
-         uMb1aDBZsKZh8hg211eGjXmo9BzO66p1zuQt8pjbWXC+4zvzxM6M04p2Ty6MetCLkK38
-         7llvaNFOYV0Y0MTs780CjI/YOzISB4nbhPJbgMI2i1pVFE9kZPfDxuznPByFbb4v+Xpf
-         9sI9SKNhjARbA/o3YBceB6t1MHivacBTzq57N0OSnWE/0Pba6zuhDs5TDGV+Wcg9bj7M
-         n+CMIC+QqwDSdaqZQqPpDto7DEaEdX4hvATulu5Zn93Stx0HfrhBJbHNIv7z52q2DhdD
-         4vxg==
-X-Forwarded-Encrypted: i=1; AKwUvByyXFKVLlHZF+0kjzcmbUDvcVLpsZZdsF+0hdkIhnR2Wjz9Ger+LMRMcz9nQ4+pAAX87GQ8kTsklQ==@kvack.org
-X-Gm-Message-State: AFuF++l4n3TR2+nYwYeUfgXSiKRhWM8pnGHDETOejpdrc1pEOQaw293Z
-	21ax5121rIi0QwJCPhfHZ0yegf2IVFosj7eg7SU+vohWJSgGbuPLrl6a4KRoxwuWkQ==
-X-Gm-Gg: AYBFou2bGvzOOw3cFK9SkYI5IxiUuY7/cRrIlxJvLVfe6QG7cX9DTqE4R/ulYg5Lvh+
-	56iklkQsy84xiyXZh6wPdWpXysgMLGUS0b0+0HV6n1SO/SE6jbbRKB8a7FOqduw848EAn2lWV1v
-	5YnkgVHur/r/GpHOpodmXhyl14VAajofFes4YGkNj06vzg7vWxtJzRE0fwlv7FIo7tWUTfUYXU6
-	08XnnTDt8nekfkX/OJXrsVXmlH5tsizpqyPoFfDhVPu6rRB34+Os8oDteMXbaobjbMzNJKoqvNN
-	J9EVANanjJLqHhqn3MQsJqUAXd9B3VgbGhWw16RtVWE669a64LngIyt7x464osVoUu7lDhb6xdE
-	RsFF0EI2rkErfuo5KRY8HJ5GMtdBEbb2p8gEHv8SJdnCKLF9q23Pn402O41KPaUWEChoF8irKBg
-	5rBc5Z4zH4MF/vbzze8Ws6dKvxnUISELq03hmDrxpWKD7Xw7dpPLv3H/KzMncgzT3yuNa01s0LO
-	uSmIBhHgT0stK1khp5KDA==
-X-Received: by 2002:a05:6000:4b13:b0:485:4277:fbab with SMTP id ffacd0b85a97d-48702b3df5cmr4952883f8f.27.1789417179939;
-        Mon, 14 Sep 2026 13:19:39 -0700 (PDT)
-Received: from darker.lan (104.157.125.91.dyn.plus.net. [91.125.157.104])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-486eb32d3c7sm27112352f8f.10.2026.09.14.13.19.38
+        d=1e100.net; s=20260707; t=1789417754; x=1790022554;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=M1RB04FVKilnMj3CUMQjbhrQYe/qiVYK3aULFxVnZe0=;
+        b=CVG3uPaPU7DAA1+jVyLIJgWhX/q6ueEV3A1WZbeGdgMdrE0/1sHFSaFXtfPKlS7uuO
+         OsZe6sMDZD+II+Q881EWI+MQ5hiKP+04aUqB2BoxEaBD+iJ0CQsWfi3Cr0DMzDqXq75w
+         35xtAi5K/jqHjq5qUQc6BKPwfsJ4ElOCkUyAI9KODZb9KoNPy3RvMR73zQRfZ/+gjAmX
+         lfui1lnW3lIk6aHX0GvmioRNp17QJEGhGARa01WZG1/biHbowNs/QXJX+yzWWaQ/w56V
+         +IcTz/VkcnoW3DHqG4xuQC5J4lxj6Pm54cgZarTfEEcMVC/zMm33fcQeT2A/pVGYOlOw
+         bETg==
+X-Forwarded-Encrypted: i=1; AKwUvBwhctIkn2sOlWSdFaeA4yYfte/YU4Em7iuBDrcWilly7Du7jnfE1LrFUX8ru5aVZw6rJKYQcMFOHw==@kvack.org
+X-Gm-Message-State: AFuF++kTG76eawIYUyL8955u94r9fNLhr1rfYK7q9n1/lBr6BWSyV0gT
+	YzePlOfju08D3n8B4JfM2inY31WD2ncllmqjzK7PMWGNp0CwhI/d2D/3m8xaz7MJKw==
+X-Gm-Gg: AYBFou1wy62VrGPeM7iK0UV2+RUiuy4CBewCFmyCn7nUTanhCTdCtQnPVEK4IOyP6R2
+	da/m0eyPrmBeI+Io8vY0/P6OzozojvGiNHMSSWzKQxxs8cTckdySH/QpBc9qPhQbVuZNAdpgdHs
+	vR/VzlZ2/GBtI1AlDay1vxMA5HxrKVac7je3kxpUIkSZEIJ9tSwkLfgfBI5rO0cPqIpadJ7Cm/z
+	Hlk3rej1/egHONfqfxpx07Tmz3GtsPaadcO29DNIwTdaDoUaZaaHZqEIkmOxStZll1+cZHr3g+z
+	9uv/ehRb3qy+v02ECL8C7dTdGBoX9GrccBixCWlQ9+0zJYfhoH8+nhTu3EBZzRKxXtcBrKQBwSw
+	tlbozmriuIwkhfII3G2REWW+tV+mfGfAT97HGYhxXfpD20Q7SiXoIB3U89N34bBxUtJT2iIrY2j
+	UgPum2O/JQhkrHNqH9MdEkGTrCNA2Qov5w6hWSeMmtBNZwoEph5GSXQ+0mv8C4NuwqBPVNXkxMf
+	OpeY1ZO93X2ta0dvopB94f1EnGHpbZxUiWQzg==
+X-Received: by 2002:a17:903:1b63:b0:2d5:cad1:a2e8 with SMTP id d9443c01a7336-2dd76b014dcmr2269015ad.6.1789417754079;
+        Mon, 14 Sep 2026 13:29:14 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2e51:8:9e:b709:96a2:f1d6])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-14365b348cbsm27582654c88.3.2026.09.14.13.29.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2026 13:19:39 -0700 (PDT)
-Date: Mon, 14 Sep 2026 13:19:37 -0700 (PDT)
-From: Hugh Dickins <hughd@google.com>
-To: Kiryl Shutsemau <kas@kernel.org>
-cc: Hugh Dickins <hughd@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-    Ackerley Tng <ackerleytng@google.com>, 
-    Alexander Viro <viro@zeniv.linux.org.uk>, Alexandre Ghiti <alex@ghiti.fr>, 
-    Baolin Wang <baolin.wang@linux.alibaba.com>, 
-    Barry Song <baohua@kernel.org>, Binbin Wu <binbin.wu@linux.intel.com>, 
-    Christian Brauner <brauner@kernel.org>, Christoph Hellwig <hch@lst.de>, 
-    Christoph Lameter <cl@gentwo.org>, 
-    Claudio Imbrenda <imbrenda@linux.ibm.com>, 
-    David Hildenbrand <david@kernel.org>, JP Kobryn <jp.kobryn@linux.dev>, 
-    Jan Kara <jack@suse.cz>, Jens Axboe <axboe@kernel.dk>, 
-    Johannes Weiner <hannes@cmpxchg.org>, Kairui Song <ryncsn@gmail.com>, 
-    Lance Yang <lance.yang@linux.dev>, Leonardo Bras <leobras.c@gmail.com>, 
-    Lorenzo Stoakes <ljs@kernel.org>, Marcelo Tosatti <mtosatti@redhat.com>, 
-    Matthew Wilcox <willy@infradead.org>, 
-    Mel Gorman <mgorman@techsingularity.net>, 
-    Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@suse.com>, 
-    Minchan Kim <minchan@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-    Oscar Salvador <osalvador@suse.de>, Peter Zijlstra <peterz@infradead.org>, 
-    Qi Zheng <qi.zheng@linux.dev>, Rik van Riel <riel@surriel.com>, 
-    Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-    Shakeel Butt <shakeel.butt@linux.dev>, 
-    Suren Baghdasaryan <surenb@google.com>, 
-    Vlastimil Babka <vbabka@kernel.org>, 
-    Yang Shi <yang@os.amperecomputing.com>, Yu Zhao <yuzhao@google.com>, 
-    Zach O'Keefe <zokeefe@google.com>, Zi Yan <ziy@nvidia.com>, 
-    linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-    linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 07/26] mm/fbatch: LRU_NEXT_ACTIVATE bit to optimize
- folio_activate()
-In-Reply-To: <84fecd13-f1e4-7d40-94c9-963f5c2f7aee@google.com>
-Message-ID: <5bd863e9-30a3-c01a-dc8c-c3802b864a6c@google.com>
-References: <e28f9a94-4339-f8ac-8301-6be3c9b5b7ce@google.com> <c44a34f8-ea3c-48cd-27d5-02df129be685@google.com> <aqLaa4QvXMbQaIWG@thinkstation> <84fecd13-f1e4-7d40-94c9-963f5c2f7aee@google.com>
+        Mon, 14 Sep 2026 13:29:12 -0700 (PDT)
+Date: Mon, 14 Sep 2026 13:29:06 -0700
+From: Isaac Manjarres <isaacmanjarres@google.com>
+To: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Cc: =?utf-8?B?6auY57+U?= <gaoxiang17@xiaomi.com>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Xiang Gao <gxxa03070307@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	=?utf-8?B?5Y2w6Zev?= <yinchuang1@xiaomi.com>,
+	"bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"Lorenzo Stoakes (Arm)" <ljs@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: [External Mail]Re: [RFC] bpf: account ring buffer backing pages
+ separately from Lost RAM
+Message-ID: <aqhZEuQTu394hYB6@google.com>
+References: <20260815091819.3651099-1-gaoxiang17@xiaomi.com>
+ <04f3ce2f-67f5-4829-9551-a69b9df29854@kernel.org>
+ <CAEf4BzbwZkoacX-iP1j4+p8YNbWsq0pc3eTermh2uT5ir66zbw@mail.gmail.com>
+ <8d2e20842c24460296e4c83e6dc0dde3@xiaomi.com>
+ <CAEf4BzYQvhSVN=Hggg5FHzFdkRr4UNBD6yXaBsOaAwbsRpXpsw@mail.gmail.com>
+ <aqSNkbhIuaB5D0H0@google.com>
+ <CAEf4BzbAOgwQqsRQnY4yxvubLtioQNL_BBHer4ExvNF7Rvvu4w@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAEf4BzbAOgwQqsRQnY4yxvubLtioQNL_BBHer4ExvNF7Rvvu4w@mail.gmail.com>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: B470640005
+X-Stat-Signature: 4bsj38ji881b3wbhj5hd4qy64abkbynt
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 3A6E31A0009
-X-Stat-Signature: 94oj9ubsc8jza9bhfxq9y1goe4kktrsj
-X-HE-Tag: 1789417182-663471
-X-HE-Meta: U2FsdGVkX1/gQIqvFfmM3TKp2wFcgi6P508d2BcgIz87jo3tdoOnpi+NA/IOp+uHsSSvjIgYtjbRR47YJSx7O4W5L3gnTEC04OlKhCB9gNLDVeHHu3NOCHA70QWztjbkm7b2Rz7gCU2kQdjzNZVfNmXKdsoXViKigKGb3nyJ7/MY7FTEzpHln+PeP4H9c7hoAo/cFky5Thw+92z1ftc3+v3Kp2s1kqlS9HDetjT6Bx2aKLgSeJ4ojr53fdzxUZIHcfRktudv4URlbG4QO75iefKcUQN+uPuANZexNO47BDZJohIOWZtRbwEAp+ywJ1uhRs8/ymS0d2op6OQ+1B2HUohZzAoE+b4eW268RlZBe1yerQuuCxRG2olpzqO688MUaPO3tHMN9tr1ExuyY8QamzHOXQ1dkDeI4aeNlYAYoTPTgbiV/2ChiCvwe2k7N3VX5xD08aIuOiXy9m14L8dXecREFKTZY0pLfFlQLm8DXRkEfFqlre4gJX5guS4l4cnN8HJQ2XKt7dHABHYskHssY2VWWkvq7MuRUjKQfvkr5M5nnEbE94GPe0b8tI8xRjHhCEiCBcHwVvwfpaKWFiHn6dRoDJq6tR75iMC5ePdXn4zjVejI9Z/VQd4Ocl5OmlfsQHZUKdqUOTR2xbGW2l8wg8peLWajKjn1s6pj20shaapNNJ//n4NcE3jra62UE54mVGo1pF0M3uPO7EY2cSsg9wXcrBLCfsNtzunwMu6Slr96f3bW8fAeuMAo79gVez5fl1jS1WvZ8DhDGmBY0semBZcSGIBJpAXcn4DEQps/zT7PLv3UEZioKboXr+ErfP8T8+yhv3eV5m9RURjrOd/3iOt2nre+McjvrS3WuGx2Oh9nM4msjE3PjN9v4WZT3mqzV/Gz2UrhqkdFWDeIUo1VkJ0DbL0auZIaSMrE4mPodx+MkTm/KtmrscPV5hH/SIuLqZp3EBU96OCrpb5Ly0Y
- USnfgJ+B
- JIBxfRBUnRW/L0gjDjh3S/LK/emZoqVbwY7J0+74I41goYsZNvllzlhWy/fUNjm09Ty45EVQDHdhkaDh8h0o4HTNE0A5AwFa7xZa+riSvCKSaCrH867QsFi5Ss591QlCEzKlYIFDGO7luZEPCueBBLz2jfFe63FZlgvFenb7ME/rc8iiaqtKi5jBlrxV6bDFGtjyGSYVvjDPleKEIU0kX998CvPZgiHx7Tx/Nr4cQumbL8geF/AMdFaHBwOU7upaQ0aQE2IMvjlGUPW4oJeHUZizvHh3lL5TD96ChFFa6Z5QtSLYzyTiQjTIdo6CKJzd1lHWM95Vy/SkIvV7pqXn1v1Yh7kQP+/lzmXfuD5Ydt5wVY3LvPlKqnWW/Zu+DPeg2M6XDyKo0dbZgrAX2CyDFZND4cuyzZdTJqy2jhPe9Ubi4DNqXV0WiQkgTaXl0DpE/HgldxZleNxQRXUlEcx8sOqrAOfSUc3AI/lhLu6yYNLX4xlI=
+X-HE-Tag: 1789417755-504508
+X-HE-Meta: U2FsdGVkX18s846j5TdHgY7ch+lRaaQnKoUhcj+Y83i4tCW3zucQRkT9lePcPXR+t8fJ1KwcyKdA7w4ak7BHF3sfCc4F+WrCFu8XPQ/5bAPETpnEfbknKocIecZeuBXL2J0fymB6k0xo/mg4ggkfXUe2G1Hx2gtb3cmxHIlbNiXeGFn81O4MidVpZ7FIcIS66Uko47A/w/GO3m5siFxU42qKFf4bfr+uR52pa+5v0K7oSZ/U5JJUFJN56nyIjMPF52Ig3pTzO5QKCtxh5+PhTcL3XsICSLVwCFXc/C1FlUf/AE+lDwuZiStWkAwVYXRz7wx809+sNXVl9tvVn2kGQJNZ3eV70YVcujQaFeixF4tfjO9sJqOE0qTIpWCE22N3pbgq00rebkFqn7veUZOzp01arAALl/MDCbUguY6/3xxLO+CISpYQu8li4HBllKHAX9Zs8GucTD6p7t9rt5Ntrp1ohrYt45F/R6BAY2v5Ih9qySdui/aPR4vQp4Nxbx/0toA7wboAoPbj7KmVyqnsyBr0BLcuRcPfK00okc0oOisskEGbIN/yfz21DUKh7puK2G16Qu47wuFfagZ4yrhct5c74YqkAUJ+NbsKlqYffl87fvo7fF3IWgZ6VMEjPGa+G46GxpjGP2No6xLZUeP9JBh7TDJ0daCjSNUuNeVDvhEcKlJNj11I/346LRP0OBz/QgE3fdbR0B1qGQUllHQ2b0wdR9cdnS/KoJ0PIsXx10J6MMcZieCloWVFNeq5A5/V7xHlQASGWO2ZbdiEPnZPEH9vzP/ZW5QaRYtyZln1QaJN/S36EhGQFBBc4464Yi0B3Navu1Mm/AYnz7RKH0Dj+OaEK107LnGCoe9awDCvZH1Giu4Dm9kNXnejlT4X8d3DhtYv5Kdcl+IZSMk8ac6MZOXpAMcCIwJnQq1PFjUCLzm3DaaDCvvoXR1JMoy0L0XJIp5WrzDB3cLHCviUDv0
+ 8ubRRfVM
+ kR6LM/tyJT/oCQH6fDKFBEDj+qXR2JtcWScOfWeYL8yhyWW4gKyE+1Lg7pkEee3VA163o4wo+8MFlv4P7KkRfwcqjwrMxpEfKAXBBMsa/tQZKV0zD4xqGrMje9zIqiXhCqYP4ELVq5K5/Z9Vv0m31BVVS7FZv91D0UrrEUr1mqyYxKgheUwS+zQ5X0OMxAXo3Jsk+siBzFaMkrAlKPfaOC45Gim7BlZryLgi5QvCwyPCG+nAgzJrHtdN6tdYJvmbdqii3yPq896xhWl23UjpNdy+oHNFo9KBk/kHCjehfTpyTcnWfiaVhBhjvQO/UwA74xR5R2zu6CQjyuMCdpYvFtk+VLeN027UzYX29ThetQV/nSeM9Y67gXx8+VWpnqM6SrLc20eiUaTfGkckG4rfm2IkIWW4ty5XBkBAICLV4ZmhPSD/hHcZF4i59I2Oj6zTtHSo45kQlZTKNOieu+T0tgYcl+cVdA73B+dT+XvHf7/mrPm7Re28oQ2IUONwEfw0mqbck26Xo/9T08oQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,135 +140,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 12 Sep 2026, Hugh Dickins wrote:
-> On Thu, 10 Sep 2026, Kiryl Shutsemau wrote:
-> > On Wed, Sep 09, 2026 at 02:55:41AM -0700, Hugh Dickins wrote:
-...
-> > > diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-> > > index 8420b1276535..8f5efadf9c7c 100644
-> > > --- a/include/linux/mm_inline.h
-> > > +++ b/include/linux/mm_inline.h
-> > > @@ -346,6 +346,7 @@ static inline void folio_migrate_refs(struct folio *new, const struct folio *old
-> > >  enum {
-> > >  	LRU_NEXT_NEVER_TAIL = 0,	/* Used by a tail's compound_head */
-> > >  	LRU_NEXT_BATCHED = 1,		/* Not used by any aligned pointer */
-> > > +	LRU_NEXT_ACTIVATE,
-> > >  	NR_LRU_NEXT_FLAGS
-> > >  };
-> > >  
-> > > @@ -358,6 +359,9 @@ bool lru_add_del_folio(struct folio *folio)
-> > >  	if (!(lru_next & BIT(LRU_NEXT_BATCHED)))
-> > >  		return false;
-> > >  
-> > > +	if (lru_next & BIT(LRU_NEXT_ACTIVATE))
-> > > +		folio_set_active(folio);
-> > > +
-> > >  	WRITE_ONCE(folio->lru.next, LIST_POISON1);
-> > >  	/* BUG_ON(folio->lru_next & BIT(LRU_NEXT_BATCHED)); */
-> > >  
-> > > diff --git a/mm/folio.c b/mm/folio.c
-> > > index a18d8ef6afd5..0b75c3b69d5a 100644
-> > > --- a/mm/folio.c
-> > > +++ b/mm/folio.c
-> > > @@ -256,15 +256,32 @@ static void lru_activate(struct lruvec *lruvec, struct folio *folio)
-> > >  
-> > >  void folio_activate(struct folio *folio)
-> > >  {
-> > > +	unsigned long lru_next;
-> > > +
-> > >  	if (folio_test_active(folio) || folio_test_unevictable(folio) ||
-> > >  	    !folio_test_lru(folio))
-> > >  		return;
-> > >  
-> > >  	/*
-> > > -	 * XXX: It is curiously difficult to recreate safely the old
-> > > -	 * __lru_cache_activate_folio() optimization (folio_set_active()
-> > > -	 * directly if it's on the local lru_add fbatch): revisit later.
-> > > +	 * This optimization is intended for the common case of folio
-> > > +	 * having been recently added to this CPU's lru_add fbatch.
-> > > +	 * But since other CPUs can now take it at any instant (after
-> > > +	 * a folio_test_clear_lru()), and we may be migrated to another
-> > > +	 * CPU, it is simplest just to extend the optimization to all CPUs.
-> > > +	 *
-> > > +	 * folio_set_active() would be unsafe without the lruvec lock, and
-> > > +	 * a folio_test_clear_lru() here might cause a racing drain of the
-> > > +	 * lru_add fbatch to skip its lru_add(): so use try_cmpxchg().
-> > >  	 */
-> > > +	lru_next = READ_ONCE(folio->lru_next);
-> > > +	while (lru_next & BIT(LRU_NEXT_BATCHED)) {
-> > > +		if (lru_next & BIT(LRU_NEXT_ACTIVATE))
-> > > +			return;
-> > > +		if (try_cmpxchg(&folio->lru_next, &lru_next,
-> > > +				lru_next | BIT(LRU_NEXT_ACTIVATE)))
-> > > +			return;
-> > 
-> > Hm. What prevents the folio from becoming unevictable under us here?
-> > I don't see anything.
-> > 
-> > __folio_add_lru() wouldn't like it:
-> > 
-> > 	VM_BUG_ON_FOLIO(folio_test_active(folio) &&
-> > 			folio_test_unevictable(folio), folio);
-> > 
-> > folio_lru_list() has the VM_BUG() too.
+On Fri, Sep 11, 2026 at 05:04:55PM -0700, Andrii Nakryiko wrote:
+> On Fri, Sep 11, 2026 at 4:24 PM Isaac Manjarres
+> <isaacmanjarres@google.com> wrote:
+> >
+> > On Wed, Aug 19, 2026 at 10:24:28AM -0700, Andrii Nakryiko wrote:
+> > > On Tue, Aug 18, 2026 at 6:46 AM 高翔 <gaoxiang17@xiaomi.com> wrote:
+> > > >
+> > > > Thanks for the pointer. Understood — no new NR_* counter or
+> > > > /proc/meminfo entry.
+> > > >
+> > > >
+> > > > The remaining question is on the consumer side: Android's Lost RAM
+> > > > accounting would need to enumerate all live BPF ringbuf maps
+> > > > (BPF_MAP_GET_NEXT_ID) and read each map's fdinfo memlock to sum them.
+> > > >
+> > >
+> > > For BPF ringbufs specifically, you should be fine just iterating all
+> > > map with BPF_MAP_GET_NEXT_ID, getting its FD with
+> > > BPF_BTF_GET_FD_BY_ID, and then passing that fd to
+> > > BPF_OBJ_GET_INFO_BY_FD to get map's size.
+> > >
+> > Hi Andrii,
+> >
+> > Thanks for the suggestion on this! I did want to express a couple of
+> > concerns with this:
+> >
+> > Scalability
+> >
+> > I counted the number of maps on one of our devices, and there are 112
+> > maps, meaning that there will be between 224-336 syscalls with this
+> > approach. eBPF is becoming more popular, so I'm concerned about how well
+> > this will scale, if we have to invoke 2-3 syscalls per map.
+> >
+> > I had a test program that implemented your suggestion, and it took about
+> > 2 ms to identify 39/112 ringbufs. As the number of maps in the system
+> > grows, I'm concerned that the latency associated with computing the
+> > memory usage from ringbufs will become even more expensive. This is
+> > something we had an issue with before on Android, where we had to
+> > iterate through various sysfs files to gather wakeupsource metrics [1].
+> >
+> > To improve on this, I was wondering if we could expose the ringbuf
+> > memory usage and potentially other bpf stats through bpffs
+> > (/sys/fs/bpf/stats)? This counter could be a lightweight counter that is
+> > incremented/decremented on ringbuf allocation/freeing so that when it is
+> > read, there aren't any expensive computations.
+> >
+> > For this specific metric, we could just use a counter to track how much
+> > memory is being used by ringbufs and have userspace read that. That also
+> > brings me to my next point.
+> >
 > 
-> You're right, thank you. I thought I had deleted all such VM_BUG_ONs:
-> and indeed I had, but only in a patch I later decided was too much for
-> this series (removing PG_unevictable, using !folio_evictable() in some
-> places, or folio_test_unevictable() testing another POISON in lru_next).
+> I just don't see a good enough reason to single out ringbuf maps
+> specifically. other map types also use memory, why would they be
+> excluded?
+
+I was looking at ringbuf maps specifically because they allocate memory
+for the ringbuf via alloc_pages() and aren't attributed to any counter
+that is exposed to userspace. The other maps use either the slab
+allocator or vmalloc() to allocate memory, and those entries are visible
+via /proc/meminfo.
+
+> If you are worried about too many syscalls, look into map iterator
+> program types (grep for SEC("iter/bpf_map") in selftests). That will
+> be super fast and way more generic than what you propose. You can ping
+> such program in bpffs and that will be you custom /sys/fs/bpf/stats
+> implementation that you have full control and customizability of
 > 
-> That excuse is not enough for this series! Yes, I must send a fixup,
-> but not today.
-> 
-> > 
-> > I am not sure what the right fix is.
-> > 
-> > Maybe lru_add_del_folio() should only call folio_set_active() on
-> > !folio_test_unevictable() folios?
 
-I was writing the commit message to a 7.1/26 fixup patch,
-when I found I just could not describe any possible race here.
+Thanks for the suggestion; I'll look into this and let you know if I
+have any questions!
 
-(And I was using your first suggestion, above: in the longer term I
-prefer what I chose below, but decided it was better not to get into
-that now: deleting various VM_BUG_ON_FOLIOs is better argued elsewhere.
-There's another of them in folio_migrate_flags().)
-
-folio_activate() has just checked !folio_test_unevictable(), so
-it would have to be a race with something which sets the unevictable
-flag on this folio at the same time as we find it's LRU_NEXT_BATCHED.
-
-!folio_evictable() might become true at any instant,
-but folio_test_unevictable()?
-
-I cannot see what the racer could be: can you? I can see lru_add()
-making it unevictable afterwards; and I can see folio migration
-(successful or not) carrying unevictable forwards (or setting it
-on a freshly allocated folio). But I cannot see any risky race
-for folio_activate() or folio_mark_accessed() here.
-
-Hugh
-
-> > 
-> > Or should we allow occasional active+unevictable
-> 
-> Yes, that's what I did, just removed the VM_BUG_ONs: but I'll need
-> to check again whether that other patch also had to fix any ordering
-> of checks. Offhand, probably not: once the "Unevictable LRU" became
-> an oopsing fiction, it was important to check unevictable first:
-> unevictable must take precedence, and then it really doesn't matter
-> whether active is set or not.
-> 
-> > so if they are
-> > munlocked, they will go directly to active list?
-> 
-> I didn't think of that, but I don't think that "active", set racily
-> back when the folio was assigned "unevictable", bears much relation
-> to whether it ought to be put on active or inactive list when later
-> made evictable again. We should probably be consistent, and
-> consistent with existing behaviour, that they go to inactive when
-> made evictable. (I'm not looking at that other patch at present,
-> I don't recall where active got cleared in it.)
-> 
-> Hugh
+--Isaac
 
