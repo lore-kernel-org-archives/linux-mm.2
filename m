@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC871C88E66
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 12:31:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7ADE1C88E50
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 12:31:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A73CD6B00AF; Mon, 14 Sep 2026 08:31:45 -0400 (EDT)
+	id A03646B00B1; Mon, 14 Sep 2026 08:31:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A4B8B6B00B0; Mon, 14 Sep 2026 08:31:45 -0400 (EDT)
+	id 9D29F6B00B2; Mon, 14 Sep 2026 08:31:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 988856B00B1; Mon, 14 Sep 2026 08:31:45 -0400 (EDT)
+	id 8ED7B6B00B3; Mon, 14 Sep 2026 08:31:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 721986B00AF
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 08:31:45 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0499B40351
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 12:31:44 +0000 (UTC)
-X-FDA: 85212304170.06.AD7CD64
-Received: from mta0.migadu.com (out-141.mta0.migadu.com [91.218.175.141])
-	by imf25.hostedemail.com (Postfix) with ESMTP id E6D19A0009
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 12:31:42 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=d9WjUnY2;
-	spf=pass (imf25.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.141 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	by kanga.kvack.org (Postfix) with ESMTP id 700436B00B1
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 08:31:49 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A546540384
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 12:31:48 +0000 (UTC)
+X-FDA: 85212304296.09.9F1B778
+Received: from mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+	by imf29.hostedemail.com (Postfix) with ESMTP id C582312000D
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 12:31:46 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cUeMcohk;
+	spf=pass (imf29.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789389103;
+	s=arc-20220608; t=1789389107;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5EMnGpXZdVV6iEqnxYfgPDtCGjl3w3zfhlKb+toiygw=;
-	b=5l3IlP0T9pzxJS+kwcpaPfj+dKlwP16QQg9FJwiWUj5PsyDrFKPlvcVZ9A5aw9eNUAP813
-	xmXlrr6QbdMfbTCvRuJRty04i9fd2rglIyIS07w/A4jbF2L5yYXMJPplvOlJfIfPkECM42
-	QzwzLjgq4Gz7mQMYG/FlCQbn1WNYVxQ=
+	bh=8DfEuMnDdiaQOe0byM3OiL0at6IqDBDnaJpEqVz4P9Q=;
+	b=KQCaWOHC239nuibBb8SFCYNfXaiEc0tV/hlw5atDttH/GVzas5SYGX5zpJRuaumi2DNLdz
+	EvwJ5JxOYlXRptW7k0ugQnK5pvyr/Wu0JNiBUhmsLPQm3Q0IAwXrA4w2JHkf6S+rjWik8u
+	5InBT7JnW+OWD5wdh8xqrxQwZoWprGM=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=d9WjUnY2;
-	spf=pass (imf25.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.141 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cUeMcohk;
+	spf=pass (imf29.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789389103;
-	b=dV2gef11M6LyXydhVQKUBh6/p/O41AQ6sO+wd2AxEdSsgDMzHiA6XvBIuuMAkOuO0HaAWW
-	6xPTBWkWiQdPpgZmAQYXSJbhXTv0pHTHtgMixpYANz0QS/XqxeOyiC64pxA2DZMn3g0ICy
-	zn+nRID+bVWyqGFqRCnRkL4rHPwo8nA=
+	t=1789389107;
+	b=SJt4LP/6xxWLQRDu4J07cy899a+YUugYbSTj5IcHjQQ3qYaxzlSxy2gqFQA3trG3jQqh+N
+	qEuhOLzYnqSgN7zRN8AQZtyGeDAWMWOR0UV5CWquSLoc/t80MvKNRkjsGhbfPBRnK7ba6I
+	NEkCybeS7vTLRxMTz6zJ/2wOcipjOuY=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=2eHW0y7y7uGyU1RGoY9G808x9f5l4A7c7aMBHiLQq+A=;
+DKIM-Signature: a=rsa-sha256; bh=0pxvz2tA8d/MqnhA+ARBMVfrRyK0IVtO3kcKq5jVvyM=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789389101; v=1; x=1789993901;
- b=d9WjUnY2evR8QgKHUj2PVKmLVy6KFGm5/nWQiO0iGSkyD3UtI0fv63IVqfX7onGpMML8L+Yp
- 7SoPe0qwjpykcWqmwS2FAxk3gfajIMB+7e8/gKa0dSKCQk7ti3/Dukkh2Fj3sLJvpo4PYJKyChz
- 1U87qA7KSWfsxxkobuDzjx1Q=
+ t=1789389105; v=1; x=1789993905;
+ b=cUeMcohkP1jsBtxE6fis2Pimxgeg45wvpSINk23Rh9u406i7JrWBmjRGOU3FLpGJil5tQs34
+ Y27hM6JDd30TjiXdkGpgQR2wCV/TAZjVMnElrtxK+mKnmfvZQax78mkl+4MNh4kAKDzHPp8pMWQ
+ LVFNKoDG/PvexTPaz3c7SExU=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id d75a3d950def4de7;
-	Mon, 14 Sep 2026 12:31:41 +0000
-X-Mizu-Trace-ID: d75a3d950def4de7
+Received: by mta10.migadu.com with ESMTPS id a8f2f31ac8e52b34;
+	Mon, 14 Sep 2026 12:31:45 +0000
+X-Mizu-Trace-ID: a8f2f31ac8e52b34
 X-Migadu-Flow: FLOW_OUT
 From: Usama Arif <usama.arif@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
@@ -94,22 +94,22 @@ Cc: ying.huang@linux.alibaba.com,
 	luizcap@redhat.com,
 	kernel-team@meta.com,
 	Usama Arif <usama.arif@linux.dev>
-Subject: [RESEND v7 16/29] mm: handle soft-dirty and uffd-wp on PMD swap entries
-Date: Mon, 14 Sep 2026 05:28:06 -0700
-Message-ID: <20260914122950.3283997-17-usama.arif@linux.dev>
+Subject: [RESEND v7 18/29] mm: free PMD swap entries in zap_huge_pmd()
+Date: Mon, 14 Sep 2026 05:28:08 -0700
+Message-ID: <20260914122950.3283997-19-usama.arif@linux.dev>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260914122950.3283997-1-usama.arif@linux.dev>
 References: <20260914122950.3283997-1-usama.arif@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C582312000D
+X-Stat-Signature: nut9k3nwh4h3ccbfeq8pnsdz81ozghji
 X-Rspam-User: 
-X-Stat-Signature: s5yofp8yee133dwnuiqpeqxrp4tnd9ya
-X-Rspamd-Queue-Id: E6D19A0009
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789389102-868863
-X-HE-Meta: U2FsdGVkX18LMLMwMDE0SWc69PZfHQwOvBOswFAL48slBB2X6V5iTIco/rrxB1ih7XzYgc9HJ7CQL4BvdKoeeiui35kXg+dOYJuuMpHVDpH4fWJfW1od+k8Kz8kxbzBgQmU7sCZt4hUvT1J/XHip3TSw3FcuNZyIOc7Lwvy7phH+DQ9uDFdzOEAzIke21mEt9L46mo8TdyiXJSIZGSykM53OTF6IAHaXgUYMiAiusHQUpAh+wsY/sGC7ZApiSkJPlXO/fNNPvFXSxNjhzDZTFIG3CM8uP5EKyzH1g+o0Xn9MhQjp3v154YfYjEeJJTNOjPSYkgdhQ8yMvqp92J4S7LUDsXN5TsZjEKTDVAN+RD1dRK0U74jWMzmOax8amCZ31vpZ7B0C3REJrtexoOV8ZTr5ka0YZaZ3GjFWjZmWaI3TkQAFizY4dohBrPu02159Fu23MWtpgJeDwKL57CcKgzCQbMXWm+62AvFpPeEI33jE4GxFP+rkakq/8Av3z0D8h8s1ghDXlfykUipcD01N7wjlD7oTetkcUgxoVHepqd1b2evqo7+hkq75VarBG6QC2F1qk1/TY0b9huAvcqITc1RZJpYhdJyOEDvsjFWbdvDkFjQJhUSWt1E4JPaOA6w7xiLI2YlfSUKT9e6JkDqEuz5nXUyzUUv2zQnKM3bSiOsddqBHsKPzQ7vuBhnjyVULeY1o/cWiAT0qKeta+by7Fh6KmlXxGsrAeVWjOCCWp8zrx0MCjMYvclAvOkIwiKJDpJUdq27F2lsEteqtC4BdlKtPSv9THANpAsuKwZ7Vdepwt+YAxm5zfDh9jlP2gSA7mrR5VX5EVRkJIeHveb1QE/MerbsgLOtmVvk8r900XM7hMnfwq7tPNKgJcjXzXSLlZtsadLPpl942x2IhmE2ZxMb1HyyEWlvLdr6ooYY/pF/pOL5crQCxWTyCMV0HkgnIsK3fJiAFR8HdcZpnH0M
- bBRiQf/j
- 3EwoTwu+9JOM/hFx6hGxQTjfN+zWkwqYpybJzYEG564j11sKWOeaAk8KaegP5GaFkl3g10WCqbstEFa9Qz02rXFPqBOa8S4h+9YKTjst0A3cX1txpketgTwSOsg3xGQbrJ5D1RT4PSdtF9/v4A060wEHSPq5EYkVxirN189brEsfXc0NhjKfERfcWzV9Y8REzpMrng4toHYVWKXNRUM/jRqMR4Sn/ypjntRXR6K0tnelRrXs=
+X-HE-Tag: 1789389106-835
+X-HE-Meta: U2FsdGVkX18YUCfUZdy7jS38maFLYhZG3AE45lsHQHHwt5y2D4Estn43aEFDEbof4znwmFh6sxwmK5e7nj68zItIlz+Q83XuFIWyCNDhCYKlCpTuG5yUNxwN+OsNVZuKSAtqgJDsbw4TK4tW0igVtVEqvvZwr1XGX4Hw9UVgtZCmLn8e48uTDWJ5ZrvLfRsSiz6Bf9ZDcEiKpdcownC4XAWEZ4RQ7tVainlyhCoRZ93r7LT2dU4t2d0XWMp+742FuYpdslQTzF2PWz64pjF3NEWXKXB+eG0k2L54TpewpPrGgqP71nN0TALmxCJfnHp5B4LmvidnLgFvbtXol5tqDFOnXbxlpiGYHYQWEEEMeatsK5gG5wZRpbDokR2bV/fXxv1neVDWve9avANHMGx+L+khDEA192LEWPzV4dITWg6h8n21CH19AzAwRs5JUTchQjrUOLC8VgqNIBmbQqZdmC0XYA34fn9c2TTZxEmyvigijHbTXjBPwGpLcQo8hgk9lEuskMUEN8Ufm02NKc0E4gmORNdYjeGV71KquR7FLNI7JEGg6ph0gEsFB8kvv4KCin7VSmvd/zsHWB2l5T3CvhAP/FXVwk7UtSZ3yniOTVVrxfnquFZTMABZZ2JGgMKFFSpGEFdKp0+nLJ7rAJEG2YRr+0RM//V8t6zoZnzYuyDSAt8O3V8Z/l7H3HLBMWoAs/acOgIXJFw3T/41yXMj0/5SIlKW/zo7CuE/jP3YxWkkMnIkACorPT6DX76GIJX8WlKkLeBav1GRiTfDp3aQztM3THmKfukanl+dz4YhHigEmQsEFYQzzP8SvpTjqa06JcEG3fJHltigqUZMCqmtStyS33tLnsOaP9WHG5u5xanKRCQ/nLDmLq5fMQpdCWp3mJpdsNVYrlcDHdy2Yy5c52q8TCR/Rjg9e/4fE7dufeZm/sfdCQXmg85cxtmlKYEjw0QFINqzRiKaCymFiCN
+ 6XAftwqD
+ yeHD3R4/4x0A74cZk2Zxwb9SAcRCc71Y1C2YWrRNuLVejosHuF7NsNFTz28wrhQ4d8C9CMMpw+x7UwVjO85auxA19lLZWQ+JJY2jlb22r8lpqtHwOOZPNnTjySZ5/BkoQ+wUIRfQbpwmU+IrpWLjzT8ZUtB0REXY32tMoMgDYnwtGm4qx6A+007NtXm/hqCf0ZwkpCqvt6YYwvZvMt0fH9XlfZbo2A33/2Z/gA9ki7zFPju62GynLg9D9w4n/+bPjKGdNUajk6E/tD8lYHVnApodyDw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,81 +117,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Soft-dirty and uffd-wp live in the PMD, not in the swap entry, so every
-path that manipulates them for a PMD migration entry has to do the same for
-a PMD swap entry. Otherwise clearing soft-dirty skips a swapped-out THP,
-UFFDIO_WRITEPROTECT does not arm it, and mremap does not mark the
-destination.
+zap_huge_pmd() assumes any non-present PMD it clears references a folio, so
+a PMD swap entry would reach normal_or_softleaf_folio_pmd() and warn.
+Worse, nothing would release the slots it points at: unmapping a
+swapped-out THP would leak the whole PMD's worth of swap.
 
-change_huge_pmd() needs nothing beyond dropping its
-thp_migration_supported() gate: a PMD swap entry encodes no write
-permission, so it falls into the default arm of
-change_non_present_huge_pmd() and picks up only the uffd-wp update.
+Handle it before the folio lookup, as zap_pte_range() already does for a
+PTE swap entry.
 
 Signed-off-by: Usama Arif <usama.arif@linux.dev>
 ---
- fs/proc/task_mmu.c |  4 ++--
- mm/huge_memory.c   | 11 +++++++++--
- 2 files changed, 11 insertions(+), 4 deletions(-)
+ mm/huge_memory.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index aa3f4d54a8580..ad0d4c7f0988b 100644
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -1654,7 +1654,7 @@ static void clear_soft_dirty_pmd(struct vm_area_struct *vma,
- 		pmd = pmd_clear_soft_dirty(pmd);
- 
- 		set_pmd_at(vma->vm_mm, addr, pmdp, pmd);
--	} else if (pmd_is_migration_entry(pmd)) {
-+	} else if (pmd_is_migration_entry(pmd) || pmd_is_swap_entry(pmd)) {
- 		pmd = pmd_swp_clear_soft_dirty(pmd);
- 		set_pmd_at(vma->vm_mm, addr, pmdp, pmd);
- 	}
-@@ -2480,7 +2480,7 @@ static void make_uffd_wp_pmd(struct vm_area_struct *vma,
- 		old = pmdp_invalidate_ad(vma, addr, pmdp);
- 		pmd = pmd_mkuffd(old);
- 		set_pmd_at(vma->vm_mm, addr, pmdp, pmd);
--	} else if (pmd_is_migration_entry(pmd)) {
-+	} else if (pmd_is_migration_entry(pmd) || pmd_is_swap_entry(pmd)) {
- 		pmd = pmd_swp_mkuffd(pmd);
- 		set_pmd_at(vma->vm_mm, addr, pmdp, pmd);
- 	}
 diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 6dfe8ef6dd371..d3d0fec9a5ff3 100644
+index d3d0fec9a5ff3..689a1f4286471 100644
 --- a/mm/huge_memory.c
 +++ b/mm/huge_memory.c
-@@ -2660,7 +2660,8 @@ static inline int pmd_move_must_withdraw(spinlock_t *new_pmd_ptl,
- static pmd_t move_soft_dirty_pmd(pmd_t pmd)
- {
- 	if (pgtable_supports_soft_dirty()) {
--		if (unlikely(pmd_is_migration_entry(pmd)))
-+		if (unlikely(pmd_is_migration_entry(pmd) ||
-+			     pmd_is_swap_entry(pmd)))
- 			pmd = pmd_swp_mksoft_dirty(pmd);
- 		else if (pmd_present(pmd))
- 			pmd = pmd_mksoft_dirty(pmd);
-@@ -2752,6 +2753,12 @@ static void change_non_present_huge_pmd(struct mm_struct *mm,
- 	pmd_t newpmd;
+@@ -2628,6 +2628,16 @@ bool zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+ 	arch_check_zapped_pmd(vma, orig_pmd);
+ 	tlb_remove_pmd_tlb_entry(tlb, pmd, addr);
  
- 	VM_WARN_ON(!pmd_is_valid_softleaf(*pmd));
++	if (pmd_is_swap_entry(orig_pmd)) {
++		softleaf_t entry = softleaf_from_pmd(orig_pmd);
 +
-+	/*
-+	 * Note that a PMD swap entry falls into the default branch below: it
-+	 * does not encode write permission in the entry type, so only the
-+	 * uffd_wp flag update at the end applies to it.
-+	 */
- 	if (softleaf_is_migration_write(entry)) {
- 		const struct folio *folio = softleaf_to_folio(entry);
- 
-@@ -2812,7 +2819,7 @@ int change_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 	if (!ptl)
- 		return 0;
- 
--	if (thp_migration_supported() && pmd_is_valid_softleaf(*pmd)) {
-+	if (pmd_is_valid_softleaf(*pmd)) {
- 		change_non_present_huge_pmd(mm, addr, pmd, uffd_prot,
- 					    uffd_prot_resolve);
- 		goto unlock;
++		zap_deposited_table(mm, pmd);
++		spin_unlock(ptl);
++		swap_put_entries_direct(entry, HPAGE_PMD_NR);
++		add_mm_counter(mm, MM_SWAPENTS, -HPAGE_PMD_NR);
++		return true;
++	}
++
+ 	is_present = pmd_present(orig_pmd);
+ 	folio = normal_or_softleaf_folio_pmd(vma, addr, orig_pmd, is_present);
+ 	has_deposit = has_deposited_pgtable(vma, orig_pmd, folio);
 -- 
 2.53.0-Meta
 
