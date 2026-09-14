@@ -4,87 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC382C88E64
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 03:34:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A89EFC88E65
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 03:34:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 864CB6B0088; Sun, 13 Sep 2026 23:34:14 -0400 (EDT)
+	id 555906B008C; Sun, 13 Sep 2026 23:34:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8133A6B008C; Sun, 13 Sep 2026 23:34:14 -0400 (EDT)
+	id 4DE496B0092; Sun, 13 Sep 2026 23:34:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 728A76B0092; Sun, 13 Sep 2026 23:34:14 -0400 (EDT)
+	id 3F57F6B0093; Sun, 13 Sep 2026 23:34:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F0F36B0088
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 23:34:14 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C922F80F2B
+	by kanga.kvack.org (Postfix) with ESMTP id 111646B008C
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 23:34:16 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 83967140F7B
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 03:34:15 +0000 (UTC)
+X-FDA: 85210949670.23.42901A9
+Received: from mta0.migadu.com (out-1.mta0.migadu.com [91.218.175.1])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 52181140008
 	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 03:34:13 +0000 (UTC)
-X-FDA: 85210949586.30.2090F45
-Received: from mta0.migadu.com (out-251.mta0.migadu.com [91.218.175.251])
-	by imf06.hostedemail.com (Postfix) with ESMTP id B93AB180007
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 03:34:11 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="pk0/Pa+r";
-	spf=pass (imf06.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.251 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789356852;
-	b=3nVef4JsFRhTdLGk/EKWnepz6CB823qPj2WOY+17FgOCygTKYvezs8NVYRrk6SfKoCO8m8
-	OfgvVoo8mF3fiDaEbUVyALwEIIcjKZ07W/e6v4v/kjPWka9KpwfPHSlX2wcqA181aUBD5x
-	mZxLV4tsUDoEb+d12sJf5D+Q3WVSmq4=
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=frhkQO5L;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf23.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.1 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="pk0/Pa+r";
-	spf=pass (imf06.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.251 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=frhkQO5L;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf23.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.1 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789356853;
+	b=CRhUZRrYANiXQDoMyVcjr56vQfg8DvQ4OV+es5b4QwKRw89ymIJYd6Y4rIulvkSAKH9k0Y
+	6hC6pXlNzU7Blsb/+r5G9cVa9ocM0LneJq2qe3yF5YZ1QYyOo9VJxT8g1bYkdxTUmq3GTt
+	3isOwft4vehYMdg3axumh97uUtlcakQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789356852;
+	s=arc-20220608; t=1789356853;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=tYGxwFQOT5ACuv1riYGzPZ4lpT0UYkgTDkA6072mTQg=;
-	b=6Mxg38cvMSbYCKQoRASUzO4vQMHftY3qrAbVG6KV3I1PhJnsf7yOpsT20CEHcFq/wPiupA
-	uyZ52IKj0y4v5XulfOCzzZ1b0tyRmD7Op9dHAhp63fAKWt7Itd1iZLYMSzFN1D8DijWNNI
-	9kSAUx7E7Q1DYb0Kdn59RSwlaATepKk=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=i0olC3sddbUYH4r4fEmZAnViCYxNOnstF/A7G/8yUnU=;
+	b=DfsWAmcmsnuKA1DFd6ojLVF+OyaTbccc2lT+trcfzjJsgy/XogvfFfxlGtWuKTbV1sMqQI
+	mMbmluXLXwPPw1qYoHtHtM+qUS0h2uW7u92L3rSGG5PC+uVlItwx1L0VEK4Ay4zNhuigbB
+	kZfdF6lSxi1uLLp0K9p2C1HxkKKryEA=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=1JX6OxGw6Fen5q/U+UOj7/291svvQ/6DqcLx9AxyrxE=;
+DKIM-Signature: a=rsa-sha256; bh=0ZUsP0LswRkkip9tShGsyYFmjM0FkrhaBvJDLod4oH4=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789356850; v=1; x=1789961650;
- b=pk0/Pa+r9mOLiQQBK7V0hbCUvySlkwAqzNzUrObbc7GDWkGBCzm800KqmKT3ooULSdjR4ee2
- Mpcg/Fn5r92bk0Lk+7jLdJGWuhFPiGvIBd/z60aKIAzHwhYrOinUnMTTCIP3kBOkVYPLBSa5KQl
- QPPXaz4t44ohfzJiT8HCX1NI=
+ t=1789356851; v=1; x=1789961651;
+ b=frhkQO5LtdWunzsKyZlnoLMs62oBHjdMfCTPAklKUW5P9QGe1PVHKCnRQ3OpsYzBIJIX3VT3
+ 1SHlrmu4hxM7kWsm1SwvExnH9b4UderxbW9qC/bHHvrByOJnXBVEQ/5oQsBurL1fJI6OYtz96qN
+ 2Ik8uet51XreKvmvdSPAwpNI=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 135d90a541b7fc0b;
-	Mon, 14 Sep 2026 03:34:10 +0000
-X-Mizu-Trace-ID: 135d90a541b7fc0b
+Received: by smtp.migadu.com with ESMTPS id 57ee228aeb5f01e7;
+	Mon, 14 Sep 2026 03:34:11 +0000
+X-Mizu-Trace-ID: 57ee228aeb5f01e7
 X-Migadu-Flow: FLOW_OUT
 From: Ye Liu <ye.liu@linux.dev>
-Subject: [PATCH 0/3] mm/vmalloc: minor cleanups
-Date: Mon, 14 Sep 2026 11:33:59 +0800
-Message-Id: <20260914-vmalloc_study-v1-0-526f68559706@linux.dev>
+Date: Mon, 14 Sep 2026 11:34:00 +0800
+Subject: [PATCH 1/3] mm/vmalloc: group xa_init with vbq field
+ initializations
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIACdrp2oC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDS0MT3bLcxJyc/OT44pLSlErdJOO0VPNkc2OLNKNEJaCegqLUtMwKsHn
- RsbW1ABo2iYlfAAAA
-X-Change-ID: 20260914-vmalloc_study-b3fe7c738f2a
+Message-Id: <20260914-vmalloc_study-v1-1-526f68559706@linux.dev>
+References: <20260914-vmalloc_study-v1-0-526f68559706@linux.dev>
+In-Reply-To: <20260914-vmalloc_study-v1-0-526f68559706@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>, 
  Uladzislau Rezki <urezki@gmail.com>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  Ye Liu <liuye@kylinos.cn>
 X-Mailer: b4 0.14.3
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: B93AB180007
-X-Stat-Signature: fdwt767asm4rbek6disdejym9yr8qjjd
-X-HE-Tag: 1789356851-766262
-X-HE-Meta: U2FsdGVkX1/Kow8kWhD8z6bRDlst+o1C23WJHp5fvFGz/pAyzqy2h1LIl14ekPUPbsASfH8i6KZm1Q4Pc0lrzaTwPMf1enC17cW0OM/FWPAPJl65+mP49OB0VlYxBZvP+NRF/AggXplV7YN4Z5XAwxJGxWWz6TIYMTSv5pr7acnmbzNoJL11wY6kr2sw3WC7IxDprHTCB4AWuC5rwbDNV9FilBLTVS9N/3UdpznKmuey00AFnFyDD86FSKUHHg/iCcsAvk6r6Bl/vHrClzoXDgPwVwbxbGS3y5zxytlIUY80cQJf2gDWaovHLQSOZkvYFTtHOU7ajavbeumjtt6JLUUX1Sxx6YpMs2/aZBD6LTtAAxxnMEqa6akYBeAynG3RuSgN8WFrlSKTEjsiV3F9xhrkD0BvrDfc254fDPKY/ZOX9Ei8UaotJl9m9hAd9HdKMA1s5Q+JBlFWc2rNF2Z5lFFnn2OaOaoKSf7XdoAYe++vhV3ycNpqb1iJvFp7SH05bnAtGaKMp9hwo94yzARBxpCm7e/UXZ2Y7cpL7CRSov8TqtB961DxCLxFwu2F6cbqqh7atLX0s1yWpkCgY6+h1sNhGNgs/fK0cIDAaW+Mj9T+9B7Agf34vLExpv2pQZ+GJH3yZyfFQB82gqTTV0bVva09Jmfs7On5dFFTSv7Zwn3OorAl6IqAgl3yCwVErdeolfP84XKyKzVTldLFM7CqXqSYq/3rqZOqf9euLiTz2bOtJjQ/IbGmGp2T7C7IDkjAV7KqE0ZP0VZM3SsmVgj6eTDfqjpnbyD8LtnWD+182qZuvakNHVHkkNCh8Fgwd/I78HEBxMYP1CxWis4x3I1NOPt79jUyreOmbiXff2jQY6FMAG4Xw9B+os0g09eDzmTG6Di1kreVASUzz9oMZoZx9kpNSfid5iztgI01TjLY4Plk7AvlAsGXpI4YQRyQZnIUZiBxl8sgn2HJyFpV/7n
- jMEvU+s/
- a3PZxH7JLm0jcon3bgHPwbiqPhaJWiZBb/zvLMNHzZ8FMqD2DfQjjSPG23b9Ozbpv12I93FfMAgVtwDS2VHV80rGTlMNEq+zMNfSYRsx6zgMMwSBR54bp4No3+AbSGdu7O3TfjkuA2aLTzyrYisZBD+eqKaCNqeL/i4HZ8Ko/z0w/0CBIOfoZILzOqiC6/PazkLswkaqPFrrVLX2FFVbmIbkh1evK9EdAeyZR2oJo+j7HgrA=
+X-Rspamd-Queue-Id: 52181140008
+X-Stat-Signature: m65hs5mxj5b5p3iboit5ekw61rbxeofp
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789356853-130451
+X-HE-Meta: U2FsdGVkX183P59/dJzsj4e3ifrBCQapNt6am/xF0rLOKu+jgXDlR1tKQXfxsgWchSZfqVBlV13eGKcDM1seVZfunTY5cXShRMGduSWdoGv3NE7GVVhOXl1O71kqHQ3zs2vca1UqFA0w1/pMZpQ0fQWgrxhb+0RNx+zxQZEIvL+X4fvLdBu/nhmxOtVRjS2dDs4ZjHjW/HL2yXyS0c+kuBZATrqINa4HlR+tgReUHSVaBFsrBiMBERmiZ/bZ00xx3/iYgrfU6n/kROtW4h4wRALl7/Kg062umR4f5u62t1aCApoLFRKTqg77TGf1CSC3j1KEA7vSZ9iuN3C8Aq1lFECayIDw52Ol3Bs+vkEXM6ZWZykE7seUV9noeHrwHMYFiOhdz4CwFLGiM3obQonObcaTHMJmab6zoO5fC0bq45AF058Gwj6RQ/kCqTrRyeOjlQmWYwdGLBOV6pVQpV5cEv9+PyiR3iNfMLnLZpzaibwCG2oWQBVUPAuVOgcILa6ARmu3tHzFUkEkb6IM9jBU3Dee+1rhaonAgxAN3QEyS4ef6r1On9T3gGWuNkLWUAAdVMdUJ+MJugy3EM5DuMrhxRC3X2Oy7EduQnbqxn3m/cOVopA/65QMKoWpXVLnEmnEKKbUJ2l70U4nDfDa1IhSc2C0LdsY3IrxBl7s9M1JNjlq/Awvf3iMdYtU69+FoqKWllJvN01+FByP6p3HyOgtTaFkGlChRYTfkt99oS/1ZUSglj8/P5Km+vbKBXJwy1FLGpkyFvxkwBClaSKRsQY3r9HHiEhY1q+N+w8mLMQq1v9FlLIxpn2L6n5BDfkRd89d80oJsqcBmKR0CLuBIGf4JYanpcCFkGyZTQf1PUjhEL1oRqWTjSPU8mjATP9Qvfz978rD66Qn1nsY1YmIC8RUN+dmYz9of56eU0VxQ4HLt1O3ECRfxP8SX305B8ATYG2pGCzImiYApRbkeT3Dqs6
+ AjI7+BEZ
+ 07RimSkxifIbY9xNm3bYp+Ot39tJdFuoSZfz3tHIpMTNf6WvonqnO2wyb/M/oC2VZHmkoz66gQJw3sZFGsaGasn0G6BWPeC63v2LeBVrFhV4DC+bR0XaRBpuISzhi9jvK4PK2srhdECvWkmLMz3BnJTYIGyN8Sji1JIygaJ06aQoBXM1yn8ySu1Wxo+Gx11YBHGxfyobAvb+IbE37jkU4WdTUs8smYCfNyZsmS/gAjaTm8pxOl/3U3zGYFvQUg02AE8ZsCmkobofxzB5beI7u9vYNdg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,34 +92,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Small cleanup series for mm/vmalloc.c, no functional changes:
+From: Ye Liu <liuye@kylinos.cn>
 
-- Group xa_init() with the other vmap_block_queue field initializations
-  in vmalloc_init(), instead of after the unrelated vfree_deferred setup.
-
-- Extract vmap_insert_free_area() helper to deduplicate the allocate-
-  and-insert pattern that appeared both inside the loop body and after
-  the loop in vmap_init_free_space().
-
-- Extract show_busy_info() from vmalloc_info_show(), mirroring the
-  existing show_purge_info() pattern, so the top-level show function
-  only orchestrates the two data sources.
+Move xa_init() next to the other vbq field initializations instead of
+after the unrelated vfree_deferred setup.
 
 Signed-off-by: Ye Liu <liuye@kylinos.cn>
 ---
-Ye Liu (3):
-      mm/vmalloc: group xa_init with vbq field initializations
-      mm/vmalloc: extract vmap_insert_free_area helper
-      mm/vmalloc: extract show_busy_info from vmalloc_info_show
+ mm/vmalloc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
- mm/vmalloc.c | 58 ++++++++++++++++++++++++++++++----------------------------
- 1 file changed, 30 insertions(+), 28 deletions(-)
----
-base-commit: 68142f986ff04b2b70b31db00f719bf690f64a9a
-change-id: 20260914-vmalloc_study-b3fe7c738f2a
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 859e6d2d57a3..117483dd048c 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -5585,10 +5585,11 @@ void __init vmalloc_init(void)
+ 		vbq = &per_cpu(vmap_block_queue, i);
+ 		spin_lock_init(&vbq->lock);
+ 		INIT_LIST_HEAD(&vbq->free);
++		xa_init(&vbq->vmap_blocks);
++
+ 		p = &per_cpu(vfree_deferred, i);
+ 		init_llist_head(&p->list);
+ 		INIT_WORK(&p->wq, delayed_vfree_work);
+-		xa_init(&vbq->vmap_blocks);
+ 	}
+ 
+ 	/*
 
-Best regards,
 -- 
-Ye Liu <ye.liu@linux.dev>
+2.25.1
 
 
