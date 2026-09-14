@@ -4,75 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39365C88E64
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 13:12:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2716C88E50
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 13:13:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4A5006B0095; Mon, 14 Sep 2026 09:12:39 -0400 (EDT)
+	id CBD1F6B0098; Mon, 14 Sep 2026 09:13:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 47BEA6B0096; Mon, 14 Sep 2026 09:12:39 -0400 (EDT)
+	id C95246B0099; Mon, 14 Sep 2026 09:13:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 392636B0098; Mon, 14 Sep 2026 09:12:39 -0400 (EDT)
+	id B3BB96B009B; Mon, 14 Sep 2026 09:13:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 205B36B0095
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 09:12:39 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AB8B6160127
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:12:38 +0000 (UTC)
-X-FDA: 85212407196.17.1639680
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id F4113140007
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:12:36 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U9l6uz2y;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8B5886B0098
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 09:13:58 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 02C9E40116
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:13:57 +0000 (UTC)
+X-FDA: 85212410556.18.889B258
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 2D27220006
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:13:56 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JzAsP9EQ;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789391557;
+	s=arc-20220608; t=1789391636;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vZfwqBdvOFpQKew+Hh4SK3LM5/rd4AbqHnwLPn0HUtE=;
-	b=tNno3VW9+oZrpNvkxhnekfldMGUsPj3aMeSOC2WJpveusX/+Div9XaAUY4qMUci5K9QTrS
-	d1j3Q7/DDKWjS41/stMqAtxqiQWMIQ+LlOVmi2aMGBWIWmzbny8PRVwOFEWyF1UfzxPXcU
-	AjUCd2ZitVP3DeoOQOl/fxEUhhBtGlM=
+	bh=aokfXWqf4Omn2K37qVJrtEDTPmx21fzHBeWcZX5PiT8=;
+	b=MdIuBzoFS4/3WJlLtz8q2e7OwiyKc1YAGHNd8VYBr5yN7hgy33e4KJ67up4LBdWqpYck0m
+	Ehod669fhXDfRGkQvPGQSrfd9Ea+4xYw4J0FtjOdhh1OZV7g2sRMBgBNr4h471iV0rdWcD
+	RE6EDc0zKL14IKmNPb2zTu+w2btK9Ig=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U9l6uz2y;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JzAsP9EQ;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789391557;
-	b=mbJtLzslB4syj2fVUtRIPrsruYLE2tywbm74NKsrU0E+8MztsVgtzn5dN/L67cgby676/D
-	1Hi9LmedscJKOBwevfXAeDNJISDDUrXSK2OUYqxvlPgJT6PadsDMmBJdoj4gLLscmbDfEA
-	YHJySmzx94ULHhAAGwYpwinGESn5Ihg=
+	t=1789391636;
+	b=5MdXJxKpi0xlHSF0VsX3IioJtoZepCPZxrMAc4QZaWCh3QB/2CIMR9JRVngxFhkkSN5hoH
+	wqNQHSVd7Nl5SVxIH9aOpdYKwFzdHHkX4San6bgs46+pjNz9Fk+tw1o0sMTtG4s0IU3okw
+	FMeD2y3lOeCOpBqCNCN9fKAzdqAdowo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5C97E60120;
-	Mon, 14 Sep 2026 13:12:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3F2B1F00893;
-	Mon, 14 Sep 2026 13:12:34 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 55FCA42148;
+	Mon, 14 Sep 2026 13:13:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F1CD1F000FF;
+	Mon, 14 Sep 2026 13:13:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789391556;
-	bh=vZfwqBdvOFpQKew+Hh4SK3LM5/rd4AbqHnwLPn0HUtE=;
+	s=k20260515; t=1789391635;
+	bh=aokfXWqf4Omn2K37qVJrtEDTPmx21fzHBeWcZX5PiT8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=U9l6uz2yNakdSuy2bAOFywFnasaDqMo7M7iuS2ZuOFlmA7iXFxZ3HQOrSDdiCiPmS
-	 DwfZn50H/wewrGGL7Z2bzprqHQj+l27pinMzT1CPgCbQ4CnjLVRLyKYaYjcHn0v7Ok
-	 WkfIne7vSOcevZKRNXci5De3LGHv8skOXI9AKZK6BZYlDejlluJryTC/AJT0d3GuNS
-	 c3RCMXn7lhFrx9IznJ6g21XHECoccaF0X411VpnLhGBngMvbMr8ai+VYSxVCMXaLk7
-	 XbFTA0jSaYqGWo1xJv18F6NdQl03lqWARNJAaIT5H9k4QwvtTS+bFtrma20VRVWdwT
-	 1iv6xlzBULprg==
-Message-ID: <7efaff54-3f19-4c0c-a8c9-fcbacb1aa4e2@kernel.org>
-Date: Mon, 14 Sep 2026 15:12:31 +0200
+	b=JzAsP9EQNmpip2IZ+1q8uGwSdivHJf+BN/OhzW1IaEaPCudr1HooaypwLQohvGXv2
+	 7EMESu+dvEtamAjVtby1qT5sJixIEGSv8hlBEOqetJjVjRQ5cIvvjXssGZ7pE/WTJK
+	 Fa9U5+RvLMRMN8BEOyMiXpN62lmeMgPRysI5vtN9p8LOS7sNyTBu3KUXK0404RYp6A
+	 jq428PaaR6zzj3KU0V+OO8RiIAbFrvEig6jI7OZyxd7ESt8ngMAPLM90tU11+Qkpkl
+	 sqyf9GD1Up+PCvK3oYl4S3C9dG4dM33q/LB1Dc988vQQrpl0C3bGq2eXN2wMDCZ295
+	 f134ji6phSFrA==
+Message-ID: <e63e6edc-245a-4c83-8a0d-e419f6a8bd46@kernel.org>
+Date: Mon, 14 Sep 2026 15:13:50 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] md: Use folio_alloc_buffers()
+Subject: Re: [PATCH 2/3] md: Use folio APIs in free_page()
 To: "Matthew Wilcox (Oracle)" <willy@infradead.org>, Zi Yan <ziy@nvidia.com>
 Cc: linux-raid@vger.kernel.org, linux-mm@kvack.org
 References: <20260913-remove-pg_private-v4-0-848550f7574e@nvidia.com>
- <20260914041830.2072626-1-willy@infradead.org>
+ <20260914041830.2072626-2-willy@infradead.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -119,17 +119,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260914041830.2072626-1-willy@infradead.org>
+In-Reply-To: <20260914041830.2072626-2-willy@infradead.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: F4113140007
-X-Stat-Signature: 7ay8qzdyxdzac7d47bbbnst1qmogrwru
+X-Rspamd-Queue-Id: 2D27220006
+X-Stat-Signature: ftg4o8kbq8obr6k5ng8d5x3bpwhzfyy6
 X-Rspam-User: 
-X-HE-Tag: 1789391556-947456
-X-HE-Meta: U2FsdGVkX189W0ENum/V8JeWGI3z2/eUQC22oz8cidkhV9wkjElz2tUp3mrRlECHTTd3BbT7puc06m5JQ8BC5sEYZb4e4+xscjQKErEH5u7qPqGJSi1ckZVT3Z7R64+6mIWwJYggI1xIyOZTx5MOQyyuZqwfLibLJW7HwOhObB8tmtHixpHvw8QFBMn6v/YJX2qmAdJgP9e1fSYe371qf5NMNc7Eh4pYGa+yNh8qkCgE2KeD1OLmNUzw2S4AuPJqQvv8KN78vGIdkH9MnYMst6PcpTExpLDpGZVhPmPSLO9eWsDcC+tci34pP3c737HWDt9UgBDBHCJEKMatc2KFGKyyjudzLXbVrZ0mXMJwxhwBzafKUA+tRB09kSyGjRbcemsoIKLJVdUUa3uAWpYuovQ54ItLtmpnRKinFheQp9/XbjsI+SDXBRpp5gPU7jt0qUa1B9kmVn9SzXSGRndP7tbkpCEOVM7UT0gpaGGrhBdsj6ZL9Zuvq97lJXstM4vddHdo2GZEqphADqmsziMPKaAELJ/NBF3VqoquuVv5WzlbDjHy9eBqklJE704Jssz78qDxjTMysNPyHrWIeRWp/5CGW4sE8DN8S75AR+lZdGtCcCvjULrce60My0Ed6MJMtkxZ8+RflM6a4aQopaEv3hcL5LvYMPIoFPTVWLPwrRO7jRg45RIki5x6nRJd4J2BGViYgYbwxZNJVN362lJIjozW+2w9QlEOm7C6W8KTwa8+Q9lzwincwRyMIRbgj8uZk5n6E64pD+RTPSap+p6YnK1+6wVLLw015glrG7uXsZDoh4MRoaKCvEi7nQToU3UzhpbaWs3cc9Xzd7oX20jz/WUxGV7Y6z7iY4ZLQfzBPgqCRLznjpeyoOKWaNlGkBRbrwV0RQE5Y5FDVsaHZyh6UC7Er24AO2lN2C1BrAfHXejt4GpiHUO5Lmkd2xOgGKECA54pExBNt0Lqtml7Bfk
- 94qWXxJK
- XxdifdhBUh9/U+ejtvGldOtf11+uJh4DL93DhzqSBRDE2UMdcIJkYJjahiqBDP8VGhSKvo8KqcPH6GhUjFB85yG8uJEiH9KxPgLmwPPPnxc+gq5tnHJKjrbGvYgmJVPLprYKBmWUDDJgJkDTrzDp7XOsRZ96+635QoOVw2Jj80l1DQ0OOE/1aWMCGwCSrR7PghhOpmGpZIBDnpUQ8JGavw/r6H8U1flbNIZHoVeN4XTeuyneAUY2BGv6xcElEQkCqSTCy7XW0rBUntDcWp6iXPiI9l2UoajnlLv3L6Zp2Wh496v6E2Z1O5qEgVQ==
+X-HE-Tag: 1789391636-219134
+X-HE-Meta: U2FsdGVkX1+pdNb+SLEnGROb8Azj9Rwe8/3Vr8y2xrce7fB7s/jhlSK4TD7SZcCzrc3VdPJG7JwRbwhcIlZdJEVf0EgPklw0Mv39JekpTJ92jvQ5vcaSWPaq5Tf/Z2QR93GqyyW7+eoaUn3iitWRQjLng2z9dCJ2cxcU3jrZEoR5TR6yl4yUuNVI6npT2TybPr3giu1WMCyKN6xi2+g3EvLSEinIvfyX3zAeVodMl2prJHM2WBat7EqP4A1UrVZr6UJnyJ4BuIPXH5kkXdEz1F54zLvOuyDMN+XYAqzouDwWjlBzBpoZrvSNlgOoSW0nN33ia/FcxpjdMe2R0V6BFF1+GhxXEd86erX0W7T26sZ3RxajnQq8+JI3V5PD0jt9wQPjxLB/SRMDbPuIVqGosC6f8/8yzmiMlVYsFahebvZyx0+bUBbXfRT3hIm59CB+VU0yEwMCmWFUjeM+QpRbX6GqEGpF0U8PeqtenyQtst0/k4IBITyQfUMlGSPSy2VOWfRe9aF/3RK4OeYYYjGfjp+U9f3hzVVaBeu8tYO2o6wFil6M5c7AvT2uI6zHUvRSFevxlsdFGEAibXQxwzKPLdqr+f6MocuxYYubaid9PiI1ZN7w04BU7Df6HDywkvzpN8FVLAIXWjZ8AGtyCfm9/3AwmRevUMHzXXQn3U2YM1g8FpPX+KakHg3wEDnPKqdVGk/6g9sUkHSVJKWjxdo1qG6xuGN32THNaFt8cmLWPnT8Z6dKyMm03F6rmXmLiOyxyhqH5s4Shy+/K6al/B3ALVMzBwexR1Rbd2TWWU4elX+IcN7guLMcIeIXTb1ZRrDS9mRtBCKGDavdx8P7a2BDGm89ubz6L2CJsGdMhMxgL4qffkGT4pLqYRtQwygl+IFOWWapA9LGClPQVvdYDxa8hlwyOmBuVfaEw+WeUym3Be4Z6HGEzego9Y9q5rhsk3kQ1OXLo0ln5Jd7DzbosCF
+ CMemNTUd
+ 3eEaJmX9Ric1m8UJ9DUdARlreN+gcPf35x/VybELEO0vWua9MvW5v6sFAXO0fxZfBQXP0jHh5jG9g0u9yiiYjKstacxMIklLaZWCLYMmRKYtkiA7Ka1s++wUYqoJEeYqRuaJX0zYFH/shZ6xS0whuFBIESYL7tRH9QWR1N2kFwgoUVSL/V8EMKFxGJG3Bm/TT0nkIN3StF6icTCs9PfQ9WJNfjWYNmZQYCTflGnqwyb5UdwwkceZR7U5YT01qXI4dP7bVm/h60h+QBrJK97Ww58e/Yiiecd85Cuos/KA4aONo0zcs8ciHq3rxkkooxfC6uLMBZVmeCvLuVyxzHlRU14TscimfXoKXloMvk5qkmroZOHixjqPsVXmjgiTzBzOYPGIa7DJV/+7mECA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,15 +138,14 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 9/14/26 06:18, Matthew Wilcox (Oracle) wrote:
-> Remove the last user of alloc_page_buffers().  This isn't _great_,
+> Convert the page to a folio.  This removes some of the last uses of a
+> few page APIs (detach_page_private(), page_buffers()).  Replaces two
+> calls to compound_head() with one.
+> 
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> ---
 
-You should tell us "why" this isn't great.
-
-Because we're allocating folios although these things are not actually folios? I
-can only speculate :)
-
-Code itself looks good.
-
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
