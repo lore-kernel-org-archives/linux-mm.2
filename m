@@ -4,81 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0022BC88E67
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 04:52:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9575DC88E67
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 05:15:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C41446B0088; Mon, 14 Sep 2026 00:52:47 -0400 (EDT)
+	id 75E9C6B0088; Mon, 14 Sep 2026 01:15:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C19446B008C; Mon, 14 Sep 2026 00:52:47 -0400 (EDT)
+	id 70F966B008C; Mon, 14 Sep 2026 01:15:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B55846B0092; Mon, 14 Sep 2026 00:52:47 -0400 (EDT)
+	id 625286B0092; Mon, 14 Sep 2026 01:15:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9100E6B0088
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 00:52:47 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 960D7A65F1
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 04:52:45 +0000 (UTC)
-X-FDA: 85211147490.15.2D2DBB5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id D75441C0004
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 04:52:43 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=jmEysL+g;
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 37C136B0088
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 01:15:46 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 963CCA1078
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 05:15:45 +0000 (UTC)
+X-FDA: 85211205450.19.9FA9583
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 2B19A20003
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 05:15:44 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SIoY0t5E;
+	spf=pass (imf31.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789361564;
+	s=arc-20220608; t=1789362944;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=3Wt5ocwzEWGnNlYZNryMwTicaVcgg2/IRrlxzOXxn+c=;
-	b=wd+U3FQfG03+9UXMCGLXlrvu2k8ehyBBu8Zocunq6LFx6CudIo9/zJ7UHY+cpQbLlfOLid
-	WvqczhKWIX/TsUeSH/Io/wV3SMx8cNcGiJyDItp/mN+I6U/Rk+x3HA0qsocerpPcZlT8Gw
-	T9SruaSooQgs+mZASkZ6kH875llcJ6g=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=GUDBwHEEq7TXUANzZfGT2Bt6VxcKoDJkKvK4JgFLejE=;
+	b=khff8G/PlBhM37LZZ0tRUOiqbbW/Y7/BV28JDSilNghEPlnKXlYqw1DAjfGq40LWDWoaZ6
+	Jg8Id7xwfmzEaURD2raTYNRK8m1G4IvIluWUP2ioqj+X7x+P/GhGGYC5qgF+PZVQTuB3ya
+	tnsxT/q2ffBxnf+upMxnmTLPa6dPZNA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789361564;
-	b=0FPRLNupE7xg1nC4SUWlqeFJtu/eAaXNeqTUZXAjpUeeBxDisn03Madu+2C62dPJcQqxtL
-	wF4Lay1oeblcwaUWBylhzj+xJA3UixYk2rkfz0Jdo1tNutRPsOwB4BzQN3bsW+V6TBLfJU
-	G911rpCqmypXHo5dJIlEoJgDtnHwAow=
+	t=1789362944;
+	b=YimXAgLsHr/ocewHfVoY9jyUNfm0C4vBR6SKRZE2Tr6UNeHOFv+dBrIjdFdmxAEC0zyPsC
+	AQT4rRJ+s0Q2Dr64CsswMz1DdkzyTQsCu+BLJBBXgrAWOmK19Y58Pi5ykuasb6CAPO7vm8
+	/6aharbYcOHOvkGE89Ddvi80lXyHcBc=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=jmEysL+g;
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SIoY0t5E;
+	spf=pass (imf31.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DBD70414E7;
-	Mon, 14 Sep 2026 04:52:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94DA71F000FF;
-	Mon, 14 Sep 2026 04:52:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1789361562;
-	bh=3Wt5ocwzEWGnNlYZNryMwTicaVcgg2/IRrlxzOXxn+c=;
-	h=Date:From:To:Cc:Subject;
-	b=jmEysL+gdBRXJvJ5wGy4PM7XFeiQowuZ8f4CnHxs55WYuJ7Swv6ro4Vjz8CbHJbaz
-	 k2DgKnvO/hrEIkvnexjb//nMkqxlb6b7yAWiw1ut/wiDInTaY7isxSWl0oE3BdoNVP
-	 UJSDGSFi70HHNsS9QVJMfIUXRaD/fRdc9fH/ud9Q=
-Date: Sun, 13 Sep 2026 21:52:42 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
+	by tor.source.kernel.org (Postfix) with ESMTP id 422AB61398;
+	Mon, 14 Sep 2026 05:15:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90CF61F000FF;
+	Mon, 14 Sep 2026 05:15:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789362943;
+	bh=GUDBwHEEq7TXUANzZfGT2Bt6VxcKoDJkKvK4JgFLejE=;
+	h=From:To:Cc:Subject:Date;
+	b=SIoY0t5EzeuOkLvjtAI9DpiOH9foAsEuv9DTc0qYR5BDO1OV/wd0/VbmqSy2Vdhdp
+	 /7e+ueiyud+pXuWZDJNoTCWV7nFAhypxY2SJ1TI4e6cM1yZ5ymmsnUIhfKGJ4mci1a
+	 7CvIJwB5MPf6Xm8lgC/xTaN6aqouZu7bHV3EV4asRP25wQ2k+vtZPOgD0FY+L5pDwg
+	 qARStT88+ooiNtlsaiCHA7gXJ/EEOA/qn55XAgKnjU0olnZYxKN1nUts2XqosOq87O
+	 GSYAXWVIp8CFO5C4oELu2GZrswwYoKe/n4B8XIZ4KwgxLWuR5J7FHoM/EikXd5abVa
+	 nep++2t735iZg==
+From: Mike Rapoport <rppt@kernel.org>
 To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-mm@kvack.org, mm-commits@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: [GIT PULL] hotfixes for 7.3-rc4
-Message-Id: <20260913215242.66cdff48a7849112984deefc@linux-foundation.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Cc: Mike Rapoport <rppt@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [GIT PULL] memblock: fix for regions display in debugfs and MAINTAINERS update
+Date: Mon, 14 Sep 2026 08:15:32 +0300
+Message-ID: <20260914051534.4085114-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.53.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2B19A20003
+X-Stat-Signature: i4od9u6z1ysqsm3uyynj6xqgmugkgyrf
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: D75441C0004
-X-Stat-Signature: d5s94rgzhw95pb3yk37tbtrb5pxexfd3
-X-HE-Tag: 1789361563-593382
-X-HE-Meta: U2FsdGVkX1/PEf0XpNmumrEWyyU+rj1Qeglylw3/nas9+jAQPsi9a5Z6PcZi9LQj89oeI/PEX+Cv1rN/EA5cKWYALyirNqLcc1cL/2jVAqRg7ezbFkzq+JYIHyvOUHb711Cxx+1du+3BQQbHeV4lqgsg1GOKJixMAuQ6PJvUsd2w4E6u8vKI5FTkDz6JIAr1sI1WSP/A/SQ6mrwbpN31Ar2Sv6o0F/EBJ5zgYEqjHmwFfdO+dVaO6vn6ppT7o7pOyh43/6Hr43LVUa51R1WZHdFk6PPzLIOdoQFQhzdYG5x/4Sjjzg2CL3/TTykexkUjPR+vg2dQEhmaCCiNf9stVOFQZEw6+Scs00Zqwgnr/s0OQGTK2hhW9MN0qp9VY4trvk/TQhLt4mhL4caS8pRDUMb3lasEYdW3+LRMtjG7naF21stw5rsngEsedQ8kKy8xm6zZRH7IRp7z1JphASCc/FzlKfrgkgS/5DeQ64LuY6S3XSUYdAk2kwGfy1X1UE4ogUuKCIRU1ZzuMO9MMhKBqQlvdP0jkB0UObZEMk2jv0BtZBf/7nqHf4EfVIMMgctgIMeXTiQo4/rfi/wk2ccSYA2gcgCmEUudDeeKKjPz/lNyIzcz9eteNiddzXfIV/Tj7cddrB/9v9/mC3g3YSIaIOrZdTfZ+kw7hwt7+yuZbgNp9Vep0s6ia36IPlNy24ea1yiZDXgIEgp2X7GQvXoQycz4Jpk7FSoDGiiqVlCEASK/1WJrf1UhVQYWQisygH0gzIIUP9lQg4hLSG1HFwHYTbhskHPTw9UcW8hes8C17zDIqsrGzDk7ra2K8rOGXz+QXiFpvVBL0ziP7F4HE0b2dKaes6l0iPS+g1v60JMRjtnR7finrHDIq6WQC4IMFwHunqjm83u+ycm8fpTWMvFzsx01wsovuhGvKwJ/DY/uBn0tvpL1ijoyaQga7CDOxpur5MSFiWbcHrGxGJDY8gI
- 13vlJXvy
- oxLDteQjPf6SAUVazdZHN/axO02lhCJped5qEA2+NrsN5CeYqC63UlTlhByQjzQg+1nnEGiV5RxwWGS1KVcUo4W9nJy83vrhJswWKGuaGj7Da2N/0Vh8WnQZvP76hZTePV1EbURbZrnqelpBuO6BjO/iVrm+4Bz4/eL1pydzjWUDPMXGYVdgCQfdkswSEsL7G/B7a3XzIaCxAhvyYRv0LEMwqMGsd5b+6KobVSJ75UQ4nO+6Yp2xOyUmHF1egeK+wyu6UMyE5OHkFwe9HYktPOV9akg==
+X-HE-Tag: 1789362944-234380
+X-HE-Meta: U2FsdGVkX1/uXYQKbvtHbuYV8/a9n5D5g0ZdB9GvuAaL82Ow/NuXd43yurCxDdVHuO/9eKX7srJBw8RMue/9APq/mPpcwkJ2hVSafwstZYNX9lBSitoNJl5Iaku9l7kptklTtWBIRMkeYcZBJTR9tS5JxcVM+bzq82ZAZoI/BniJ+4+WRiTqwpNXMYhZTpl9mrUhmobCJ+S1w9keN1TD+3c8pf/OSCtB4dji1V96bgFz+s/VPz1OlKHphRw+VXEOk0MbI6pYITVEvh1YrSxvi4mvq26yuT8mREIISTlz2mfJMs4LmqS/fYSgeVtFt4Pb+8HfpYWxeM2ngZWL0QIciPHuk+ZtAG3+qhqtiiS+3ziWpa+Ttw35dmXTtEMTKQnnjw7GpIAd9nFlnzlwcaVU3sL067w5SDtnyb81kfwyKATo1ARpBlVZpMZh/HaMkwgWpbA7hLCXDKqCRXEcir20JKWyHRQ4I957lh5QqaWdZDlSOh+yJtsBKWa2afFICWTop4BB2rbsB9/GdX0YkyKKY1UFgGvZgUGZGUEJIY0Kr0TPRwZkswBNO+BBTtsXJ/sNaFctT2D+ZcfUCe9uZy2NVHPYzdal1dgBzCwfspQ7S72VnkszJhiIwJgFhthfGQ6M7YmnHLOlTxqe7SIaWTWpbCdXUdZmc6CsdbWduA+q1T0w6HFYe5C3Nc3LIWwaM/qYXRaIS6D/7BixNXYwXq6IHPeGBdGjjyfn4xmImggSqySg+b0MaBAeDcc6ZgdEQpoj/6VyUlvDptQXWy1PsrdoOGzW+vvFvDFMDKLwc/QXz7dXTomKr/cRELKDxrk50r8JKCphhL1SXlSPuz3Sc+kNJj8lpykqf5xYCc/Tb8pNW4II3Pcm2KG93IPTq+DXRBdROTVwDQkkxI8RvPXkazk4i0dq6i11FS9dckZ4MXZn2VAj7Urfu4y2fiswHXFhXuaJ129lJbg2rMbgqY2TVQm
+ YpsAplnY
+ h/p2GYCn4Puaxd+YsLQGEdJkPQbcLQOhHGBXU3EpcIvr8rw0y75aFGTvsTjh/h8N2prKWOrntqemKbnL3WINhuokpuzIRl44IGarsdoiJ56apZ0wbyf3XyoR744h0teDjmRoBgHxxrC5Ukn7yHrU8vbhLr41B+ks17M5p+GrR0d2O7Y9KCP90jMizCF63E/NcvbJ8zV9zL17dDX6v9Hnbabn2DfYz5ntSRHMkp2+13e3nLvk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -86,78 +90,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Linus,
 
-Linus, please merge this batch of hotfixes, thanks.
+The following changes since commit cee9395acd8043be0644b25c34bfa86623f2b935:
 
-
-The following changes since commit 0d9ff90a5422cc7509258aaaba1e7481df4d332a:
-
-  Merge tag 'scsi-fixes' of git://git.kernel.org/pub/scm/linux/kernel/git/jejb/scsi (2026-09-05 09:25:50 -0700)
+  Linux 7.3-rc1 (2026-08-30 13:34:40 -0700)
 
 are available in the Git repository at:
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2026-09-13-21-50
+  https://git.kernel.org/pub/scm/linux/kernel/git/mm/memblock tags/fixes-2026-09-14
 
-for you to fetch changes up to 7891fbb9512f127826e1d5dbf380ee212bd15eb0:
+for you to fetch changes up to 6e33dc90df108c76899dc544a42d17adcba61668:
 
-  mm/folio: EXPORT_SYMBOL_FOR_KVM(lru_cache_drain_for_folio) (2026-09-08 23:28:06 -0700)
-
-----------------------------------------------------------------
-14 hotfixes.  10 are cc:stable.  11 are for MM.
-
-All are singletons - please see the changelogs for details.
+  MAINTAINERS: update memblock tree URLs (2026-09-09 20:28:14 +0300)
 
 ----------------------------------------------------------------
-Ackerley Tng (1):
-      mm/folio: EXPORT_SYMBOL_FOR_KVM(lru_cache_drain_for_folio)
+memblock: fix for regions display in debugfs and MAINTAINERS update
 
-Andrew Morton (1):
-      remove old lib/alloc_tag.c
+* Make sure that multiple flags on a memblock region are all displayed in
+debugfs
 
-Christopher Obbard (1):
-      mailmap: update entry for Christopher Obbard
+* Update memblock tree tags in MAINTAINERS
 
-Coiby Xu (1):
-      mailmap: map Coiby Xu's address
+----------------------------------------------------------------
+Meijing Zhao (1):
+      mm: memblock: show all region flags in debugfs
 
-Jiayuan Chen (1):
-      mm/shrinker: fix bogus set_shrinker_bit() with cgroup.memory=nokmem
+Mike Rapoport (Microsoft) (1):
+      MAINTAINERS: update memblock tree URLs
 
-Lorenzo Stoakes (ARM) (3):
-      mm/huge_memory: bypass THP tuneables for huge pfnmap mappings
-      mm/mremap: account mm->locked_vm correctly for MREMAP_DONTUNMAP
-      mm/vma: correctly unaccount on mmap_prepare() failure
-
-Nhat Pham (1):
-      mm, swap: fix SWAP_USAGE_OFFLIST_BIT collision with real usage count
-
-Qi Zheng (1):
-      fs: fix missed removal of super_fs_objects_eligible()
-
-Seunguk Shin (1):
-      fs/dax: check zero or empty entry before converting xarray entry
-
-Shakeel Butt (2):
-      memcg: avoid charging the root memcg from obj_cgroup_charge_pages()
-      mm/mlock: use the IRQ-safe accessor for NR_MLOCK in __munlock_folio()
-
-Wenjie Qi (1):
-      mm: filemap: retain mapped dropbehind folios
-
- .mailmap         |    4 +-
- fs/dax.c         |    9 +-
- fs/super.c       |   18 +-
- lib/alloc_tag.c  | 1029 ------------------------------------------------------
- mm/filemap.c     |    2 +-
- mm/folio.c       |    2 +
- mm/huge_memory.c |   86 +++--
- mm/memcontrol.c  |    2 +-
- mm/mlock.c       |    2 +-
- mm/mremap.c      |    9 +-
- mm/shrinker.c    |    2 +
- mm/swapfile.c    |    2 +-
- mm/vma.c         |    6 +-
- 13 files changed, 91 insertions(+), 1082 deletions(-)
- delete mode 100644 lib/alloc_tag.c
+ MAINTAINERS   |  4 ++--
+ mm/memblock.c | 18 +++++++++++-------
+ 2 files changed, 13 insertions(+), 9 deletions(-)
 
 
