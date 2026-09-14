@@ -4,106 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66C39C88E50
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 07:30:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D34FC88E50
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 07:31:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3A9FE6B0099; Mon, 14 Sep 2026 03:30:31 -0400 (EDT)
+	id 9EC616B009E; Mon, 14 Sep 2026 03:31:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 30D246B009B; Mon, 14 Sep 2026 03:30:31 -0400 (EDT)
+	id 9CA7D6B009F; Mon, 14 Sep 2026 03:31:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D6446B009D; Mon, 14 Sep 2026 03:30:31 -0400 (EDT)
+	id 8DB686B00A0; Mon, 14 Sep 2026 03:31:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EA2A96B0099
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 03:30:30 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 356331411CD
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 07:30:30 +0000 (UTC)
-X-FDA: 85211545020.20.A301605
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 66F5B6B009E
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 03:31:07 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E3F2F41132
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 07:31:06 +0000 (UTC)
+X-FDA: 85211546532.18.59E5DB3
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 5791840008
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 07:30:28 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=NvcSnkpi;
-	spf=pass (imf17.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	by imf26.hostedemail.com (Postfix) with ESMTP id E3252140007
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 07:31:04 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=kPB08EjG;
+	spf=pass (imf26.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789371065;
+	b=p7Ef2ymQGvVwpwFyT5slBOpgUYfpXhQpblziHkJYtBDdAR5yp6dApJdobpMYd/s+coaTTG
+	B6n0j/UDm19gTB3frUrFyEWL9IL28lNlLPviLqHT6A2oqjN/S54dvREnxyz1CUji1Jx/n+
+	hg0bNKxsFsYJPnJL1FfwYk8YekKEtwk=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=kPB08EjG;
+	spf=pass (imf26.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789371028;
+	s=arc-20220608; t=1789371065;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LhAURySZ5WHhPZPaaV+18VRFRV9Xwpt897K1+X4Nx2w=;
-	b=8byuoGbHjo0Akgb0mr/KnNX7tpnW+vIDGKmqB39yPkeeJg3Rhz/nYqU8/ESmIdValPzqiA
-	B+iSiBZ8nM6QD1uzA/SGaDCpjCtBjrzS6RuzCqS4rsseiqFzS0JufHJWqeQ8vkB+AakWtO
-	qX6PvbiDDaNijDHhf2wmP2Fb3gd5ulk=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=NvcSnkpi;
-	spf=pass (imf17.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789371028;
-	b=ng1XQ9ceHczmjcysH+pAm2VRsBuJ+d6NhGFDK+K8k+/QN9rOW2A8iDumaeBk2t+5j9v13i
-	vLYPT+53UVVxfkW3WDwUtNlFPWh0YBnXbV3zjbiBoL0Bs0aLdODepwM27hUZif8DFm35Sk
-	bcXhLFdP+AhIxhZ8UTGMbF1WDo1T7xQ=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=aGLAStuaaNNOTL5BPmdBMRjWmnwGxEnrOyeQgcLCQ+s=;
+	b=1kU4FHJWZBvNycEM/nQMLHLdg7vJkHoviBuakubfqPJ6FLaCdvNkYtdOBV9qHYD3Bcr3Co
+	fBlCxDOqOdrkW9odJjAXnwFeIfpOCHV5VuwlxJdiOK9OmxLN9nh9ZrxfYRKsGaD/W0i6Pd
+	qi5fK9hyfNZkOhUhvY/cOpD2CCyOgA4=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A0BCA1570;
-	Mon, 14 Sep 2026 00:30:23 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 73DC71576;
+	Mon, 14 Sep 2026 00:31:00 -0700 (PDT)
 Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 588643F59E;
-	Mon, 14 Sep 2026 00:30:24 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9FE8C3F59E;
+	Mon, 14 Sep 2026 00:31:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789371027; bh=wGlC3x6B+YeFTS+wPx/ip9iVJG9tdNzDpN4kixOrAIQ=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=NvcSnkpiOzF72v/07UYMdPehxnJeUKin6ttYal8MsITdvJjQ09dpHZcsf9B80kbT8
-	 w52N6LhIelNn5QWYDiBFnEYYMNFWY4q5rgakE0bs/Eg7zaErXTs7APWrn2VQJPBbDZ
-	 HEBnzKqQLY252EDYOjov593XLiM7ZFf46564FwA8=
+	t=1789371064; bh=izQCU7IUhvJ7QRLLcnoy3tPOfrjmRr71yMTllFN+vlY=;
+	h=From:Subject:Date:To:Cc:From;
+	b=kPB08EjG6xAt/80eBymF2aYquxso7lT4+G9qJmu3rbjSvZ2my504OLDKkosGBxASe
+	 f1OPLN0swFlTDdECDniZhgPYB+IXFZCv+iHuufr/BBKQ6MIkOHjSBfCcTEPy+zdcl/
+	 aTEAtwMawJZV+mR07SbakMxWQFrY5KZCnSxApB+w=
 From: Yeoreum Yun <yeoreum.yun@arm.com>
-Date: Mon, 14 Sep 2026 08:30:12 +0100
-Subject: [PATCH v6 3/3] kselftest: mm: remove check_huge_shmem()
+Subject: [PATCH v3 0/3] kselftest: mm: remove HPAGE_SIZE and HPAGE_SHIFT
+ macro
+Date: Mon, 14 Sep 2026 08:30:45 +0100
+Message-Id: <20260914-fix_hpage_macro-v3-0-c9a305a01d39@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260914-fix_split-v6-3-16ed7123800b@arm.com>
-References: <20260914-fix_split-v6-0-16ed7123800b@arm.com>
-In-Reply-To: <20260914-fix_split-v6-0-16ed7123800b@arm.com>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
- Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKWip2oC/x2MQQqAIBAAvxJ7TlisBPtKRCy56R6yUIhA/HvSc
+ WBmCmROwhnmrkDiR7JcscHQd7AHip6VuMagURu0aNUh7xZu8rydtKdLOUJjiXGcUEOr7sRN+Y/
+ LWusHAWLtQmEAAAA=
+To: Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
  Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
- Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Yeoreum Yun <yeoreum.yun@arm.com>
+ Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, 
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+ Kiryl Shutsemau <kas@kernel.org>, Peter Xu <peterx@redhat.com>, 
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Shuah Khan <shuah@kernel.org>, 
+ Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
+ Sarthak Sharma <sarthak.sharma@arm.com>, Yeoreum Yun <yeoreum.yun@arm.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5763; i=yeoreum.yun@arm.com;
- h=from:subject:message-id; bh=wGlC3x6B+YeFTS+wPx/ip9iVJG9tdNzDpN4kixOrAIQ=;
- b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBqp6KFnDSPIySJuA1qhfL4+Y+ej5BNPPQFp/TfE
- moVKbr0hJWJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCaqeihQAKCRBt1cPRWsUx
- M3+eC/wN0LE1QiKBQiXu3bsjAMd7q2V3+BzmLi6SweD3okNMFuud5JNtkA3pT3d43XhuYEad3TD
- E4sHuD0y7GNWa7srSMT1U4pZv798dzi/wPiddVeNMUE5yLZWajm+z732ShV2FBmRiyIG+r6+2uV
- T/faG0bqjk5xkTM3Z20OrxZTv2bfBEsogdg01zzgHG1JxFsc8bdxaKzh0tPOcsGwwL3waAUd2Nd
- UCtyEBjZlZ1bCU9PFM3PJiveZjcKSOf++h+v5Xn3mOzflx6S9WE7nyXMN3SkZYf6WYUNFeWiknp
- UfAcrANMHe0/eUKh+dlHTb1ZjeAUHlvEA3DJxGYvP9JCE0oSUeuAntWyRSsb5a1HlCL/OhhH2aD
- sPU715QWjY0zY61kFV8KfsgOnXqBMiH3Tqv2t6wQ5U0WJFgBc3otCzLAqljY+QuuyS83XV6Rlyo
- 1p+1DeSpge9l03m2p/ICge8rZPk4lL8yRaUKvBUsW0G94KU/6F+ejuNdK72mpNzsIOucQ=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5213; i=yeoreum.yun@arm.com;
+ h=from:subject:message-id; bh=izQCU7IUhvJ7QRLLcnoy3tPOfrjmRr71yMTllFN+vlY=;
+ b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBqp6KyXsCpV93AkxG3X6hqxvw/KBfTNi9mgBjTH
+ sVjdigSSmqJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCaqeisgAKCRBt1cPRWsUx
+ MxKVC/96AgGeBKcHO8ZFEYTHoR7Hf2y9tgl5K51d+qp+Qu/iSmXNHfVouaYoBJgIXbU/VFQ1So7
+ EnrOTJvSYmB1W8IYrKVmEAbVFDsv/WBWinyS62lAudLWX5gU9lj97Xc23qHDv7mnpvfX/0+kgvE
+ dxMbEqBbxd7U2edAABzcy+8FqHRilFRFnH7xN6Z7w2e14Xw33pLw6+v5hSlZPMBtRC96QP2OwTg
+ D1sLT2IQfp2scNzBbspCl5zYrIFeF95N+r8trXLYTticsXaDqdCLGiyAgwk6959foBmAaoEiWa1
+ U3r0xtF27SHXapYza3MHSnk08lXSuzIX4fRS35BOVFmGOdrVbi0fY7Fk9D9jT/wnp+TiH2tTr/E
+ MIdQufB0VsYHnT3Jy7VG/eX9nUKLhJtTtDoEaeiAKaGF7HLb6oVw6bopsSveUl6CnGcnQSwlavY
+ MyGK5FL/rdneotQrcvxa/p6LwwFLghpHy60P+v6g3l7hbFEirJO+D4GIHP8Bk6tdi+I9M=
 X-Developer-Key: i=yeoreum.yun@arm.com; a=openpgp;
  fpr=2D83E092DD0533B85875A49D6DD5C3D15AC53133
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5791840008
-X-Stat-Signature: kyg81gtw4thyrgdnm75u1xnprotqgmrd
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E3252140007
 X-Rspam-User: 
-X-HE-Tag: 1789371028-980028
-X-HE-Meta: U2FsdGVkX1/HXSw9BjDR20kJ0Af3fuprytOwidvlle6so1x4n4sQ1ixYju1vhpr+dZe9HmjQBwJCVnvgvXqHa6NGbhqaUsAXPVe9V/5bqV8QvrI54Nob46zUdZ7y0uj3asNSsiOewPjA323WhKjraLLW5LlBlvCpEHZVWL4UH75hRM4yzPEAWlmfdA53W8HnkgFwstM/66BCVutu4bNMjsQgpiKUw50zKssLv3p23xbMVCIsYW6yG+fgHGkL9nfvRcW/OiVWh9ObIhUfh6diy2MBF3hX2804ZtqAk05Ij+UYbZ74GkLZRkBQoyQtuQUThctwYp3p1odnmbm/tY8yR0cpGm4iMdNrIHirAH5xAyozJ2MJMr0kL6bqAP+ESfTIcLMnn+jlC0WjUot0c3GtJw68OVQrQaumL1C92yrnI0nJC7io2CRV3EdmGurasWuXN9vGpBKfnjEAEYZp/sEprzfXNZrwMTS7ocjrjvVUjQiCPGH1QCWoaqZM5KB6rp/Mgy5uT78SJi+1/bR7QFb0HDuRlppE0M9UahT67h5B+N7LkVhlhto8zBe7i4GuJSsYS2MoJh80qTdT/vpNXtbywecYW0Apz6bEbsaEGIM9aT4cyx2LONczjyXrn/SWMSHUrdvM+zg25OBbtIE5Dp5CQr1vP1i0STmaQLZXZgUNduBsY5sFluVs3oLzNlM6bUQAjb1q0BAzIe0kznVVtcRmGqet2lL9lEUrCrDaQUkEaG38XXJxxE++xQFwd0YZtC5GkluKbBmYie123gZXSq01Cki6RzpdLPEG9rUXYc5gAPDILDe3fAsWZG3JPBZvnopac2NampUryaynUXKIiRRx1ykW0Ft7rABRsAepqL4ZlK6q22/1sig40bm5Y8Atb3eFPGDf/oS4U7shAD9IgQvfxhZqbNek3NhEwxGyr9Bnj65ZSM6fGvpxdD9WW/4sT5C3M3+PlVD3ZMibvd1U+VV
- xkmLstp4
- Z0DLCqzOIKwLDfYr2+RXhuIe/wVRb1Qzh3l4qQBd1T8hECGRcaA8Udwtwvn4orhAh4KWZZvPeIvPZnGLlJD2e67GxbkdrbG4FcHQSQPhPE4Puhc58uVizE58hmex78wofDW0fX4Gyz49z3apOaBOJJLPRsO2WKoCvw8wv1XyFnutnvY6o9RORAB6a7zaJKfPxY4hsgdBkpbHhRGmsacKJVWAXZLxVQcZeVhuTR+FS38UfY3DdIsBLyviZe/d+EyPWj6TWsy2Std/KXbiefeEy/0GBnaeoBHUpdXJMz6hkzrGWDP6FyfpUGgUpjEBIpifU6DFE0QMNQsF/W3r6OK4uPcHnUf2UT3hD0DHr
+X-Stat-Signature: tbk1gsbsjjs7y4cfu6rh4cuo96jmeaza
+X-HE-Tag: 1789371064-40884
+X-HE-Meta: U2FsdGVkX1/b3DAATUBAzEKXa+HLx8Qtv3sIfpplTHfhWl+jk5cgJv7s17G24Jv9dCJ7iV1TnT3EROZiAziQPvEeSIoEeWUfkLrb+vE41JyV3zuM9QKQ0BDIqTNri0HVOz5lIWIHMS0qaBRTJDxklunLTWWSPx7ods8uctVeYp4OjJEYuLEzn5auLpjzpRzNMtyl3yYKMgPPXqjNJb082yM9EdQLAbcWlYQHIioO8oJeTCsXT4zUDczbp3Oev7Jj6e3NHP6yFXs3Czmn+pLUfDH8U6ApUc9xOaDVu+hKBm7dANllrSHm3uxWgqC2Ynu/zxkWoI42JznNYjC6cFAaLG59jXsibtNUn+7i+SD5v+gRS2lZFJf/o/3LGnhPp2wM+8fPbXoSxbf8KBUhUyHwxwkcsnS8GUsha5mGQQFPact4MxWDFvc9mQHyInFFjBXAun2fbqZPm49cj/0Jy7rIpLKL1RC29quaAddZ4zPeGKkCONNIp47F/G7WAdNtMMKUlLsom+ExzcisRgps33TZsOoQy9IaupOpgKiRCqY4P09RGD1SilDx3YfFv+rdTFtDlmDZgKh5jmzo187QXzmFtxcNvbCzL5Zg0IJLE5Sg+CFAo0T5faK+QiGygZUMqhJLqepFD10rS1S2JvP1RK/LWZmMRMACYJd4rLjsTD24RyWYRYlesFP3y84u2IBClx5NqfJuWxEAjrH4t8h/Kr53SIK2wFOgRr+NX7r2h02wQVefUrcppBkE3UBRU7MU+ct5gdg4QX478tOufVlrZZ7zNt9hCDpE2L57JH+vcvk/Dj22CPnCoHT7qklitXOOxUgdVOyTMVkSsWOMcWzKWbtDvcrkDbV8sd1RGLB73/In7xGwfUQjIYuwIY9flT3HDxt15HlnwfOOvtKgjlII7W4W3EAI+Tkm6i4zTZ7yn3RnvHmwCPIWdUSsyIT5R0sjK8IG4AY8Si8++LAed818NEs
+ +TXtnG/W
+ lCDHzUgG+6fuKVsOFX/eupSFEQdMrbwgW/k4wkR4ncwnPR2k6SfZrz8XQSrGnpc7xmqrU2jhMNdf498G9P499LZQPdjHzsfuAVGkmZFiaUSs/YaoAqPsJNdmXjblT8bJnSMHmQTMIVxW1TONE3qEcfySPLjvd2RbMQhJ4+yz3XosBQzJaJWCnvvyxN6NCUG5weBgNB851sXhCi65ZnkHwQ7KEFC2xizEnzOkCau7yfLln1T+j+j7DaN76vTr2RQCYT6mRRmCtRkICRbEatjp1x2C3Ywy4eeZCIy2mAI0qoF8eATpBxQ7k0CQuAT7JXh/MY2ulBC2LJvaXbTg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,141 +115,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-check_huge_shmem() was required to distinguish shmem huge pages because
-/proc/self/smaps reports them using a dedicated “ShmemPmdMapped” entry,
-as opposed to “FilePmdMapped” for file-backed huge pages.
+HPAGE_SIZE and HPAGE_SHIFT macro is written based on the 4KB PAGE_SIZE.
+When this macro is used in some test, test result would be strange in
+the system where PAGE_SIZE is more then 4KB.
 
-Now that /proc/self/smaps is no longer used to detect huge pages and
-/proc/kpageflags is used instead, it is sufficient to distinguish
-between file-backed and anonymous pages since the ShmemPmdMapped is also
-kind of file-backed.
+Here is the example with transhuge-stress test with 16KB PAGE_SIZE:
 
-Therefore, remove check_huge_shmem() and use check_huge_file() instead.
+  transhuge-stress: allocate 61073 transhuge pages, using 122146 MiB virtual memory and 1908 MiB of ram
+    3.292 s/loop, 0.054 ms/page,  37106.002 MiB/s       2566 succeed, 58507 failed, 2566 different pages
+    0.591 s/loop, 0.010 ms/page, 206850.792 MiB/s          0 succeed, 61073 failed,    0 different pages
+    0.527 s/loop, 0.009 ms/page, 231895.107 MiB/s          0 succeed, 61073 failed,    0 different pages
+    3.292 s/loop, 0.054 ms/page,  37106.002 MiB/s       2566 succeed, 58507 failed, 2566 different pages
+    0.591 s/loop, 0.010 ms/page, 206850.792 MiB/s          0 succeed, 61073 failed,    0 different pages
+    0.527 s/loop, 0.009 ms/page, 231895.107 MiB/s          0 succeed, 61073 failed,    0 different pages
+    0.527 s/loop, 0.009 ms/page, 231839.704 MiB/s          0 succeed, 61073 failed,    0 different pages
+    0.528 s/loop, 0.009 ms/page, 231544.782 MiB/s          0 succeed, 61073 failed,    0 different pages
+    0.528 s/loop, 0.009 ms/page, 231462.074 MiB/s          0 succeed, 61073 failed,    0 different pages
+    0.527 s/loop, 0.009 ms/page, 231770.300 MiB/s          0 succeed, 61073 failed,    0 different pages
+    ...
+  ok 1 Completed
 
-Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+To address this, remove the HPAGE_SIZE and HPAGE_SHIFT macro,
+introduce pmd_pshift() and rename read_pmd_pagesize() to pmd_psize()
+to keep consistency with psize() and pshift().
+
+Also, run the KSM_MERGE_TIME_HUGE_PAGES test with a size of 512 MiB,
+which is the least common multiple of the PMD sizes for 4 KiB, 16 KiB,
+and 64 KiB base pages. Since allocate_transhuge() allocates mappings in
+PMD-sized units, the test may fail with the previous size of 100 MiB,
+which is not a multiple of the PMD size when the base page size is
+16 KiB or 64 KiB.
+
+After this patch, output of transhuge-stress:
+
+  transhuge-stress: allocate 3817 transhuge pages, using 122146 MiB virtual memory and 119 MiB of ram
+    2.558 s/loop, 0.670 ms/page,  47755.759 MiB/s       2585 succeed, 1232 failed, 2585 different pages
+    2.640 s/loop, 0.692 ms/page,  46268.432 MiB/s       2585 succeed, 1232 failed, 2585 different pages
+    2.635 s/loop, 0.690 ms/page,  46360.298 MiB/s       2585 succeed, 1232 failed, 2585 different pages
+    2.782 s/loop, 0.729 ms/page,  43899.795 MiB/s       2616 succeed, 1201 failed, 2616 different pages
+    2.692 s/loop, 0.705 ms/page,  45380.876 MiB/s       2627 succeed, 1190 failed, 2627 different pages
+    2.612 s/loop, 0.684 ms/page,  46765.812 MiB/s       2628 succeed, 1189 failed, 2628 different pages
+    2.683 s/loop, 0.703 ms/page,  45520.990 MiB/s       2630 succeed, 1187 failed, 2630 different pages
+    2.727 s/loop, 0.714 ms/page,  44789.321 MiB/s       2631 succeed, 1186 failed, 2631 different pages
+    ...
+  ok 1 Completed
+
+Additionally, introduce size_to_shift() for future users that need to
+obtain shift of a huge-page which is other than pmd_psize().
+
+Patch History
+=============
+Change in v3:
+ - rename read_pmd_pagesize() to pmd_psize()
+ - introduce size_to_shift()
+ - Link to v2: https://lore.kernel.org/all/20260907081509.924979-1-yeoreum.yun@arm.com/
+
+Chnage in v2:
+ - rename hpage_* to pmd_page_*
+ - Link to v1: https://lore.kernel.org/all/20260902175611.1241118-1-yeoreum.yun@arm.com/#t
+
 ---
+Yeoreum Yun (3):
+      kselftest: mm: rename read_pmd_pagesize() to pmd_psize()
+      kselftest: mm: remove HPAGE_SIZE and HPAGE_SHIFT macro
+      kselftest: mm: introduce size_to_shift() helper
+
+ tools/testing/selftests/mm/cow.c                   |  2 +-
  tools/testing/selftests/mm/folio_split_race_test.c |  2 +-
- tools/testing/selftests/mm/khugepaged.c            |  5 ++---
- tools/testing/selftests/mm/uffd-common.c           |  4 ++--
- tools/testing/selftests/mm/vm_util.c               | 11 +----------
- tools/testing/selftests/mm/vm_util.h               |  2 --
- 5 files changed, 6 insertions(+), 18 deletions(-)
+ tools/testing/selftests/mm/guard-regions.c         | 11 ++++-
+ tools/testing/selftests/mm/hmm-tests.c             | 22 ++++-----
+ tools/testing/selftests/mm/khugepaged.c            |  2 +-
+ tools/testing/selftests/mm/ksm_tests.c             | 16 ++++---
+ tools/testing/selftests/mm/migration.c             |  4 +-
+ tools/testing/selftests/mm/mkdirty.c               |  2 +-
+ tools/testing/selftests/mm/pagemap_ioctl.c         |  2 +-
+ tools/testing/selftests/mm/prctl_thp_disable.c     |  4 +-
+ tools/testing/selftests/mm/process_madv.c          |  2 +-
+ tools/testing/selftests/mm/run_vmtests.sh          |  4 +-
+ tools/testing/selftests/mm/soft-dirty.c            |  2 +-
+ tools/testing/selftests/mm/split_huge_page_test.c  |  2 +-
+ tools/testing/selftests/mm/transhuge-stress.c      | 25 ++++++-----
+ tools/testing/selftests/mm/uffd-common.c           |  6 +--
+ tools/testing/selftests/mm/uffd-unit-tests.c       |  8 ++--
+ tools/testing/selftests/mm/uffd-wp-mremap.c        |  2 +-
+ tools/testing/selftests/mm/vm_util.c               | 52 ++++++++++++++++++----
+ tools/testing/selftests/mm/vm_util.h               | 12 +++--
+ 20 files changed, 116 insertions(+), 66 deletions(-)
+---
+base-commit: 6b41451631cabf9ea3b384c2a099088e1598f963
+change-id: 20260909-fix_hpage_macro-da069ae04502
 
-diff --git a/tools/testing/selftests/mm/folio_split_race_test.c b/tools/testing/selftests/mm/folio_split_race_test.c
-index 1960635a953e..4c0d3b6a411b 100644
---- a/tools/testing/selftests/mm/folio_split_race_test.c
-+++ b/tools/testing/selftests/mm/folio_split_race_test.c
-@@ -182,7 +182,7 @@ static uint64_t run_iteration(void)
- 	for (i = 0; i < TOTAL_PAGES; i++)
- 		fill_page(mmap_base, i);
- 
--	if (!check_huge_shmem(mmap_base, FILE_SIZE, NR_PMD_PAGE, pmd_pagesize))
-+	if (!check_huge_file(mmap_base, FILE_SIZE, NR_PMD_PAGE, pmd_pagesize))
- 		ksft_exit_fail_msg("No shmem THP is allocated\n");
- 
- 	if (pthread_barrier_init(&ctl.barrier, NULL, NUM_READER_THREADS + 1) != 0)
-diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
-index f82673f5f6b4..6cd1effea465 100644
---- a/tools/testing/selftests/mm/khugepaged.c
-+++ b/tools/testing/selftests/mm/khugepaged.c
-@@ -416,9 +416,8 @@ static bool file_check_huge(void *addr, size_t len, int nr_hpages,
- {
- 	switch (finfo.type) {
- 	case VMA_FILE:
--		return check_huge_file(addr, len, nr_hpages, hpage_size);
- 	case VMA_SHMEM:
--		return check_huge_shmem(addr, len, nr_hpages, hpage_size);
-+		return check_huge_file(addr, len, nr_hpages, hpage_size);
- 	default:
- 		ksft_exit_fail_msg("Unknown VMA type\n");
- 		return false;
-@@ -451,7 +450,7 @@ static void shmem_cleanup_area(void *p, unsigned long size)
- static bool shmem_check_huge(void *addr, size_t len, int nr_hpages,
- 		unsigned long hpage_size)
- {
--	return check_huge_shmem(addr, len, nr_hpages, hpage_size);
-+	return check_huge_file(addr, len, nr_hpages, hpage_size);
- }
- 
- static struct mem_ops __anon_ops = {
-diff --git a/tools/testing/selftests/mm/uffd-common.c b/tools/testing/selftests/mm/uffd-common.c
-index 1fb967ef4985..a76851aced4d 100644
---- a/tools/testing/selftests/mm/uffd-common.c
-+++ b/tools/testing/selftests/mm/uffd-common.c
-@@ -196,8 +196,8 @@ static void shmem_check_pmd_mapping(uffd_global_test_opts_t *gopts, void *p, int
- {
- 	size_t len = expect_nr_hpages * read_pmd_pagesize();
- 
--	if (!check_huge_shmem(gopts->area_dst_alias, len, expect_nr_hpages,
--			      read_pmd_pagesize()))
-+	if (!check_huge_file(gopts->area_dst_alias, len, expect_nr_hpages,
-+			     read_pmd_pagesize()))
- 		err("Did not find expected %d number of hugepages",
- 		    expect_nr_hpages);
- }
-diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
-index 98f110098179..e31e88d5af76 100644
---- a/tools/testing/selftests/mm/vm_util.c
-+++ b/tools/testing/selftests/mm/vm_util.c
-@@ -384,22 +384,18 @@ static bool check_large_folios(int pagemap_fd, int kpageflags_fd,
- enum check_huge_type {
- 	CHECK_HUGE_ANON,
- 	CHECK_HUGE_FILE,
--	CHECK_HUGE_SHMEM,
- };
- 
- static bool check_huge_type(uint64_t categories, uint64_t kpageflags,
- 			    enum check_huge_type type)
- {
- 	const bool file = categories & PAGE_IS_FILE;
--	const bool swapbacked = kpageflags & KPF_SWAPBACKED;
- 
- 	switch (type) {
- 	case CHECK_HUGE_ANON:
- 		return !file;
- 	case CHECK_HUGE_FILE:
--		return file && !swapbacked;
--	case CHECK_HUGE_SHMEM:
--		return file && swapbacked;
-+		return file;
- 	}
- 
- 	return false;
-@@ -479,11 +475,6 @@ bool check_huge_file(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
- 	return __check_huge(addr, len, nr_hpages, hpage_size, CHECK_HUGE_FILE);
- }
- 
--bool check_huge_shmem(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
--{
--	return __check_huge(addr, len, nr_hpages, hpage_size, CHECK_HUGE_SHMEM);
--}
--
- int64_t allocate_transhuge(void *ptr, int pagemap_fd)
- {
- 	uint64_t ent[2];
-diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
-index f19bd17817e5..fc9c93235f6f 100644
---- a/tools/testing/selftests/mm/vm_util.h
-+++ b/tools/testing/selftests/mm/vm_util.h
-@@ -18,7 +18,6 @@
- #define PM_SWAP                       BIT_ULL(62)
- #define PM_PRESENT                    BIT_ULL(63)
- 
--#define KPF_SWAPBACKED                BIT_ULL(14)
- #define KPF_COMPOUND_HEAD             BIT_ULL(15)
- #define KPF_COMPOUND_TAIL             BIT_ULL(16)
- #define KPF_HWPOISON                  BIT_ULL(19)
-@@ -93,7 +92,6 @@ uint64_t read_pmd_pagesize(void);
- unsigned long rss_anon(void);
- bool check_huge_anon(void *addr, size_t len, int nr_hpages, uint64_t hpage_size);
- bool check_huge_file(void *addr, size_t len, int nr_hpages, uint64_t hpage_size);
--bool check_huge_shmem(void *addr, size_t len, int nr_hpages, uint64_t hpage_size);
- int64_t allocate_transhuge(void *ptr, int pagemap_fd);
- int pageflags_get(unsigned long pfn, int kpageflags_fd, uint64_t *flags);
- int gather_folio_orders(char *vaddr_start, size_t len,
-
+Best regards,
 -- 
-2.43.0
+Sincerely,
+Yeoreum Yun
 
 
