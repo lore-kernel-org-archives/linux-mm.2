@@ -4,87 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9095C88E64
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 03:34:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 934F7C88E50
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 03:40:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 26E806B0093; Sun, 13 Sep 2026 23:34:19 -0400 (EDT)
+	id 6BF576B0088; Sun, 13 Sep 2026 23:40:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2463B6B0095; Sun, 13 Sep 2026 23:34:19 -0400 (EDT)
+	id 6707F6B008C; Sun, 13 Sep 2026 23:40:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 135CE6B0096; Sun, 13 Sep 2026 23:34:19 -0400 (EDT)
+	id 538576B0096; Sun, 13 Sep 2026 23:40:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DE2016B0093
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 23:34:18 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 65346140F7B
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 03:34:18 +0000 (UTC)
-X-FDA: 85210949796.14.5C3B213
-Received: from mta0.migadu.com (out-6.mta0.migadu.com [91.218.175.6])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 6EA9F100004
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 03:34:16 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=quOVkhvj;
-	spf=pass (imf14.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.6 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 26A9F6B0088
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 23:40:07 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DBB20120F49
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 03:40:05 +0000 (UTC)
+X-FDA: 85210964370.21.004459F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 269CA80003
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 03:40:04 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=pHy6fbef;
+	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789356856;
-	b=z29JrFMA+MqpgYbVcZPu/EJ1Tf9+gGIWu8otWD/IPXT479AdXF5mocQCjLUxqNuM8BrxzE
-	dL0SuFai2Sj+B8lwNHfgV9Fs5RgrZHp1sI80R5K2wK6btit22MjH2v8gd8D2perhMDCboo
-	avCgutnxrKEna/06DzQnD7IekuAS4KE=
+	t=1789357204;
+	b=nCApyWcvmGH8hh3SlmHKxXu4cwG/WSP0bHfTSWqgjiewRg8V1v9pZypbeRKbDs7wcOK/jF
+	wA+l92q8VNs5F0xLWLA5xuFZlLw7fY0cRAW5n970r+rb02i4FCztA3RDKI2QZAHZSqr4zU
+	nH6IDqBkrDd02Zp+GfuG/1UzDq/rIag=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=quOVkhvj;
-	spf=pass (imf14.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.6 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=pHy6fbef;
+	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789356856;
+	s=arc-20220608; t=1789357204;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ajKAerFFepbwqMhXIfCqb5kXl0cmqS5YGukfG1CDznY=;
-	b=Y3hwvvUI0h9/ck1vAxDVopORShma5vCuH8dATePxkCgmJVHvKParBRh9kiCxJtw5QMc/nh
-	lDfDZ5jERtwM2ciqWOatLJsTTtGi7UL+8Kd9iuxB4j0SPu7YVrUttD/LSTVUW66Dxni2R+
-	El2kDc6TKaldX7mpfu6p/cdiHzP8vaE=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=GcO7629LLmWdKveTN71W2Hm5N+m1skxoYeOST5aDrko=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789356855; v=1; x=1789961655;
- b=quOVkhvjkgIAyv+cCaLsZXZhIctFJxSfOV0sKiZ22mIcuMjCDn4z5XNF385jQy85Cwv5IkAW
- x0DkSZf63o4CgbfK7GXbduRXa089ONgyggIAuRc7T27BW4NM4+MhCzVxO63zp0zRWDmdaJ8rdKa
- d2Iuk39tME82mh6nv94ZdsQU=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 6ddbd71e14968a1a;
-	Mon, 14 Sep 2026 03:34:15 +0000
-X-Mizu-Trace-ID: 6ddbd71e14968a1a
-X-Migadu-Flow: FLOW_OUT
-From: Ye Liu <ye.liu@linux.dev>
-Date: Mon, 14 Sep 2026 11:34:02 +0800
-Subject: [PATCH 3/3] mm/vmalloc: extract show_busy_info from
- vmalloc_info_show
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+	bh=x5zisV7HoQ8XMweM1XOT4E07P1NlnKsteMfQzVmO4Js=;
+	b=ylN0NUXObimRFEH6oFNS7jewf2YF4W6FOWjYJg05EEemek33fTQPfMAWj1RD0Cu8e+bdoo
+	8XdAZCb56E8HSMqv9hjhf7rjE9u0hAyODV1cT+ArLXPcoEibVLvhilwBGKPCuD7yV2l+53
+	wyn55lRPN+TNTBB19eD43xy27SfEIhs=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8DFC540A5C;
+	Mon, 14 Sep 2026 03:40:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92FF91F000FF;
+	Mon, 14 Sep 2026 03:39:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1789357202;
+	bh=x5zisV7HoQ8XMweM1XOT4E07P1NlnKsteMfQzVmO4Js=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=pHy6fbeflVTU8QtsqFS5eh8OvOR3ntwRr+lHZYMkoAT3ltm91/zKHpwN5XKZntEOS
+	 ILIVvwKavB+/VLgc77oFP5R90/PbqE2ALcouMF/TdFK9XZ9ovr5QioyLZB1yLh6r2e
+	 gdt1bOJXa+0zPlb1i7I7WNxSlmbqXRfHn0UsNCp4=
+Date: Sun, 13 Sep 2026 20:39:59 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: David Hildenbrand <david@kernel.org>, "Matthew Wilcox (Oracle)"
+ <willy@infradead.org>, Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes
+ <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, Ryan
+ Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
+ <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Usama Arif
+ <usama.arif@linux.dev>, Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, Minchan Kim
+ <minchan@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, Peter
+ Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Arnaldo
+ Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>,
+ Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>, Dave
+ Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Mark Rutland
+ <mark.rutland@arm.com>, Alexander Shishkin
+ <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, Ian
+ Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, James
+ Clark <james.clark@linaro.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ linux-perf-users@vger.kernel.org, Juergen Gross <jgross@suse.com>, Stefano
+ Stabellini <sstabellini@kernel.org>, Oleksandr Tyshchenko
+ <oleksandr_tyshchenko@epam.com>, xen-devel@lists.xenproject.org, Eric
+ Biggers <ebiggers@kernel.org>, "Theodore Y. Ts'o" <tytso@mit.edu>, Jaegeuk
+ Kim <jaegeuk@kernel.org>, linux-fscrypt@vger.kernel.org, Oscar Salvador
+ <osalvador@suse.de>, Chao Yu <chao@kernel.org>,
+ linux-f2fs-devel@lists.sourceforge.net, Tal Zussman <tz2294@columbia.edu>,
+ Gao Xiang <xiang@kernel.org>, Jan Kara <jack@suse.cz>, Yue Hu
+ <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep
+ Dhavale <dhavale@google.com>, Hongbo Li <hongbohbli@tencent.com>, Chunhai
+ Guo <guochunhai@vivo.com>, linux-erofs@lists.ozlabs.org,
+ linux-fsdevel@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>, Masami
+ Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Axel Rasmussen
+ <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu
+ <weixugc@google.com>, linux-trace-kernel@vger.kernel.org, Trond Myklebust
+ <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
+ linux-nfs@vger.kernel.org, Ilya Dryomov <idryomov@gmail.com>, Alex Markuze
+ <amarkuze@redhat.com>, Viacheslav Dubeyko <slava@dubeyko.com>,
+ ceph-devel@vger.kernel.org, Song Liu <song@kernel.org>, Yu Kuai
+ <yukuai@fygo.io>, Li Nan <magiclinan@didiglobal.com>, Xiao Ni
+ <xiao@kernel.org>, linux-raid@vger.kernel.org, Richard Weinberger
+ <richard@nod.at>, Zhihao Cheng <chengzhihao1@huawei.com>,
+ linux-mtd@lists.infradead.org, Baoquan He <baoquan.he@linux.dev>, Pasha
+ Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, Dave Young <ruirui.yang@linux.dev>, Shuah
+ Khan <skhan@linuxfoundation.org>, kexec@lists.infradead.org,
+ linux-doc@vger.kernel.org
+Subject: Re: [PATCH v4 00/16] Remove PG_private by using page/folio->private
+ checks instead
+Message-Id: <20260913203959.6b46b0b5a052aec818a7f267@linux-foundation.org>
+In-Reply-To: <20260913-remove-pg_private-v4-0-848550f7574e@nvidia.com>
+References: <20260913-remove-pg_private-v4-0-848550f7574e@nvidia.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260914-vmalloc_study-v1-3-526f68559706@linux.dev>
-References: <20260914-vmalloc_study-v1-0-526f68559706@linux.dev>
-In-Reply-To: <20260914-vmalloc_study-v1-0-526f68559706@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Uladzislau Rezki <urezki@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Ye Liu <liuye@kylinos.cn>
-X-Mailer: b4 0.14.3
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 6EA9F100004
-X-Stat-Signature: 5otac1m7nsduo5sghnt4f4kx7eutxn8o
-X-HE-Tag: 1789356856-596370
-X-HE-Meta: U2FsdGVkX19q5/7uCVN/zR5C+06/d0I52Iy/UmRAOiVAVxTuI5rP59mS3RN5+UeCgnIvA62KYLDMD22BXHEsiviiuxu7j/KM5ddShGaZkMCD7PgnO04JoAc6SoulZG94Z/O3VrMbHIO9ZJNDUSz2C0i7rcyueqU8dKDPj8YDydHQvg8PYOGl418UL4R1Ha8vnuPJpm+FSp8oLx22FEIT4V0mFjSCbfyEVkV57Vj0bFS0iwHudzzRDsnU1jUxb2MZCi5SXyYGh1DhXItZB21W7WcMc/qDCeE8CpLRGlxT1iaf6sJv3TT5b5nFc8te1mNaWv9D4f31cr4I3dTfSzrVQjZHUS+PY3ZZ0oLzNilCt1xGxMC4JZZgsBLFtWolnUiybX3AHJieEoW8O951bcLU1KbrDg84yF/S+zCX9uBuXZ5XqPcWCJEU/KnDaEwF2vgEGQoCF/7B/WXKBEhr99wVOtHssvYI2scrCoBz3+9c5s/vHjoeCoXADC6XOJYmRQSwaXA4MdnqQZct+agjxmRH50Yj08TM8E0JboXUUNPr4Sd7SzUv+QITxEo3eaFv1i9dBH0mG+LjdrYNxkpRAfqjBp9Rm+gcR3Mo1ZQKZO2OoYm4VUhWwGQEtSq4aFgE9XklZdcI0dsguQGAklKydDkFxi9ka4u5iO5o8d+sHECnCAMXJ53dMAhE6LY3rjkNOZkcSmnUXUP0Sq2dTgnUCq6ZSmvUUNUKej+0i0fnC3YtlTslJxwVfpW90oOhk7N/AUWcIbmoX0LyZqdMtA0m+f1qIk7x8lLOYlyVi34elx5s248JP8g4wWwuOPmLdMw+ibi+nPwzTvVy3cTx5QXbhg8vASVSFTyHWVSzL5gY7D5GSptiY3yKYCEnJXpB6SQbrjl+Oo4lVcVSDyJ0b4+5Se72j/yxn1aQBdKQQRM8e+0rDYbfzsK7FM5kXwmwj1jn9bUwkkTUQsC9deRfxqsWSj1
- 97Y2SCaW
- Mmmo7DrerxyBpXlv/xlrN0xx0SIFDDb/wJqfp7Xvz/H1c/GqMziy4NZifhsOFVoNs/AhWzYGoQg3O+87v7QdZ9NWPXooTodXIdMy83B5XF5MKVFkcJ71CdRKmSOAtZRTVgeEH8+oI/9/UN0mMXeDbDL18UdGiS/GViMYqRDKpwGfiJtdwn1uAv31JTWk8FyaYoDMFMBeXfZlqMhOTL2Y2W9cy35+ybHGrMw5Vm+6X/l4tH7XzaLVTXBOxPJKVfJIbvSp0OjJz+iL3SAWJFVALGXwioA==
+X-Rspamd-Queue-Id: 269CA80003
+X-Stat-Signature: 1ysohpioraf5h5udows4fqxuorj85qen
+X-HE-Tag: 1789357204-244537
+X-HE-Meta: U2FsdGVkX19Vg7z6Mc4Oxmt+FDotKfU0DoEuYrC7pYtgJWRnonOpOQT/VRt/+DBXQHMDkHl1US63aStTfhDlq0nDzMa4j5gz2FeFeThzzL7VDUYaTXI3yDzbSshAst88hROXEagjDAt4e0SRbKXm7xadJhRnvb2SKsbXUVDknguZ6LeC3sx8RMDrJP9zWhx8dofnY/kwbCOQrMf6Fh8iYwZMYH8i7pG1EiBQmCxuG6FsQpDmrfLc/4BDqS3RbcZSgopMbyxzLuvrE3+JCzOQkU66Tu/DJGWBRnRoRIqhmBqidvWRjGrASTUo9F+7RiNzaQbC/qpy0xOvIOGbaOnzTjgP8gvFbd21oAw/Y2Zxw6qUuQyWdXZxYBfbUjIfsrKcg9NTVmFZhGiQWqa+ndITI+91kSK6qWlVa2if6fKqOVa2ZE2BcrBe9j4QiPUsZUs3FwXdwC/Anehq+tcKqI4fgDHYZtOM1BZ4JGnur37ZlLTouEtSBgD2Thf1rNTwazrh41BZcLvv7HUANtqVjikfe7g+g/ZlYF7QicF7iqR8Z+VLromIsknq/cCokk1LXj2rg8fjkPQxqADQCPAu0de2VmLy7GuLS/EOcK1cCKfdHMwGGxFaEYuMLfAtmyIFPeonkTec8RnkXYoZx9oWFBWyLxJGKu9DOfOy59EM2j9Pj1sWvRaXFO7s6dqZ46ItSzVrK+An/SFD1QNwJPMeUCf4AbLGyMItztOziQSJ/w7vkZ0mhqLhg5tbOw/rbJFBbOsqw1SB6ev3xVXWC6GTcyipT56Ng+GoehScf8uEqmRaModWNHYmaD0pev68/DqXuCdKqmtX0myPSv+waMOuC3TggeVXDguLyfFtudvR3pxmDffH8PSUmCAuzt6y7hdRpcLOmHQ30Wmq3KbyTCmjOVOi1mPXTX96fRsFuUvlEVnj/hL5ND5fbUoD+4fsKoFDkg0NMZ98hlUat2ZrfJTwwFY
+ TKPM78EZ
+ bXBs7mLXFyhj/EhgWo6ZJeWrEiBjvTKgWWxIj52tjjPh1IdmAyISkaCM8Gc16JF6DfW4DWdcD4rW7Sd38H0WGwxKf4gYMgis8N67DtR9ZKqiGJkjjkL0lQ21Tk4zCecSppk52M2YBLM5qcqyt+02eDL0uG+XBliiPayLhbfnt3TBFO8WdHV/lRCZj7UdQ6e8M9EV4c/rTwYZ+0be4V4nK4gKoFpkWQpS3ABEFR/KICfHfRdMWDdD8fxu7QkNKynv29RYeZ98m8+CMK+TIt1U3o2dHE45NYYnM+bZ0U0iu5mQ3X0zjLQHmKDBOhCiYCtugBYt6WDnReYcA3Y67HND6hOfCLgyX2e/mkgFQgwEunjJ4RyP+yMHbGWNnCiFaELu/cEXvl1fCAuojmjYFHj59SfyeMtBzlQYC+NkITrGcR348CHXdLT5iNDaJLmnqx2i9+5Hfp+SZlwe7RT0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,58 +140,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ye Liu <liuye@kylinos.cn>
+On Sun, 13 Sep 2026 22:23:58 -0400 Zi Yan <ziy@nvidia.com> wrote:
 
-Extract the busy vmap area iteration into show_busy_info, mirroring
-the existing show_purge_info pattern.
+> This patchset removes PG_private to make space for upcoming PG_folio for
+> identifying pages from a folio (more details in Note below). Instead of
+> checking PG_private, all code is changed to check page/folio->private !=
+> NULL instead.
+> 
+> MM people are cc'd on all patches and subsystem people are cc'd on the
+> cover letter and corresponding patches.
+> 
+> Patch 6 is picked up separately in f2fs tree, but since mm-new does not
+> have it yet, it is sent for MM testing.
 
-Signed-off-by: Ye Liu <liuye@kylinos.cn>
----
- mm/vmalloc.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+AI review claims to have found a pre-existing critical level deadlock
+in f2fs:
 
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 797933ba9451..7638845377f5 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -5345,12 +5345,12 @@ static void show_purge_info(struct seq_file *m)
- 	}
- }
- 
--static int vmalloc_info_show(struct seq_file *m, void *p)
-+static void show_busy_info(struct seq_file *m)
- {
- 	struct vmap_node *vn;
- 	struct vmap_area *va;
- 	struct vm_struct *v;
--	unsigned int *counters;
-+	unsigned int *counters = NULL;
- 
- 	if (IS_ENABLED(CONFIG_NUMA))
- 		counters = kmalloc_array(nr_node_ids, sizeof(unsigned int), GFP_KERNEL);
-@@ -5415,12 +5415,18 @@ static int vmalloc_info_show(struct seq_file *m, void *p)
- 		spin_unlock(&vn->busy.lock);
- 	}
- 
-+	if (IS_ENABLED(CONFIG_NUMA))
-+		kfree(counters);
-+}
-+
-+static int vmalloc_info_show(struct seq_file *m, void *p)
-+{
-+	show_busy_info(m);
-+
- 	/*
- 	 * As a final step, dump "unpurged" areas.
- 	 */
- 	show_purge_info(m);
--	if (IS_ENABLED(CONFIG_NUMA))
--		kfree(counters);
- 	return 0;
- }
- 
+	https://sashiko.dev/#/patchset/20260913-remove-pg_private-v4-0-848550f7574e@nvidia.com
 
--- 
-2.25.1
+it also had a few things to say about this patchset and, as always,
+hugetlb.c.
+
+
+Thanks, The MM bits appear adequately reviewed and review of the non-MM
+bits are, as usual:
+
+  Great to have but I won't permit lack of other-than-MM review to
+  block MM improvements.
+
+So I'll queue it all up and shall push it into -next after a few days.
+
+Acks from non-MM maintainers are appreciated.
+
+If a non-MM patch appears in linux-next I'll autodrop the mm.git copy
+of that patch.
 
 
