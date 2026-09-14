@@ -4,80 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C28B6C88E73
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 14:29:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44ED4C88E73
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 14:32:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DBEB96B0099; Mon, 14 Sep 2026 10:29:12 -0400 (EDT)
+	id 5878E6B008C; Mon, 14 Sep 2026 10:32:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D965E6B00A3; Mon, 14 Sep 2026 10:29:12 -0400 (EDT)
+	id 55F356B0095; Mon, 14 Sep 2026 10:32:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C85856B00A6; Mon, 14 Sep 2026 10:29:12 -0400 (EDT)
+	id 475196B0098; Mon, 14 Sep 2026 10:32:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A87C16B0099
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 10:29:12 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 252206B008C
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 10:32:30 -0400 (EDT)
 Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E067AC0115
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 14:29:11 +0000 (UTC)
-X-FDA: 85212600102.06.AEBC313
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 2F9CB120006
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 14:29:10 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P3Edea9U;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9018B80116
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 14:32:29 +0000 (UTC)
+X-FDA: 85212608418.06.62CA135
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id C67E320010
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 14:32:27 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lsnxvKxT;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789396150;
+	s=arc-20220608; t=1789396347;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+qLblU+3Kc4+/X9TepAPoRZL2UWEHpF8i+gM8rIH7Q8=;
-	b=MKd5x4+eCxbWgEFRTO83FlV9XoFbysz/YpYEO5t4x6OO/6AeuJl39c0L8+1vGFbl62XCGG
-	ndnJGQ7bbwin6STJFEPe6y7twZCYEHa29tanooN7/POhGn4TO+MkCEkvhLzrI3T8ddyavq
-	Oi8v6cqKPgycrvL/BZfPdYn64ymn2tg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789396150;
-	b=3fbrqPd20r+mhUq8/NhLqeOqXP8UZlux9OG0/P3SYiN1hrwBZkoInyLhupMUeRDWc8wd0r
-	vVHhToLl3rjHMPiiSQ9FTVhTq9NYczLtMhVKAhZrmCVMdRpI184RqQtKQ0lQx7xmYTkF+T
-	cjZ/blVSHSkZBJqsiAr4lgCIHxBaobo=
+	bh=AqqRR/mVxXB+5iaJ9eNDsazLxdqYVHqBvhuHWtojPDM=;
+	b=FD4lzYIf5DGtAaxWjPDfSCbCYPkjlO+Ai3H2O3lPhP+TIBN7nMKBxPQmoSvynLiQWYEM1+
+	Vhuyqmf7BtxzzFkJmFQrY5qIl/gRDMioKlYDbzd/n1sDAHQB4zmskIGWAUcxYUct0gJmV7
+	PZZuSc4HvVxJei8IxYBYctcWOC5l6WI=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P3Edea9U;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lsnxvKxT;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789396347;
+	b=B5R5O+WN8NiKdD1mt39TJyffxPw1n9GNFuHb+JfKWfZg8LfeezLJmBq8Pfygm9Z7GTN6mY
+	t5wwc7LsZRSHdcubd64InfSYtDecbuI/5oTUGdsF2rxiXRM9er5ewflg2KMLlBZHUHaVHm
+	EBVzczsOQsXlWZth7eZEWyhrUAX/Lvk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B79D760142;
-	Mon, 14 Sep 2026 14:29:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C88771F000FF;
-	Mon, 14 Sep 2026 14:29:04 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 92BA8404DA;
+	Mon, 14 Sep 2026 14:32:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02B0C1F000FF;
+	Mon, 14 Sep 2026 14:32:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789396149;
-	bh=+qLblU+3Kc4+/X9TepAPoRZL2UWEHpF8i+gM8rIH7Q8=;
+	s=k20260515; t=1789396346;
+	bh=AqqRR/mVxXB+5iaJ9eNDsazLxdqYVHqBvhuHWtojPDM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=P3Edea9UKwT+ny0d7XBx83UgYk05fCB/jMjEhc0B5PYf7aiiBFtQFxjTF3OBL3f0P
-	 /KneYLOoTqqD8j4dFYbfF4TjTLgkXMuXhynrDa7m1NcDL8LeHg1HSwM58+IpByfjy9
-	 RV5mGB8ueay6JXN6LVNW4BIiPb+peoqB0VpIkPhcGGIAaqnCTMnHoyiHPnALF13ss+
-	 9yChybeBbnpgFhhqZfKjnJud3NnMckIL3A8jhGlzmxbh/FXqrGfZrtbwSWYEGjA+Ne
-	 VZ6CuMQL5vc3mwZg6fk9tgPsADZuPPM0i6q/aR4gmfQ6/EFjUQ9xuqpqgPwVJ2A+Aw
-	 MHPZokLRbC28A==
-Message-ID: <f76beaf8-351a-4b22-b362-a945a5e1af6a@kernel.org>
-Date: Mon, 14 Sep 2026 16:29:00 +0200
+	b=lsnxvKxTLV4+gEslEsqy0gfCPZACTJwu3G7od1j1RkuanOKgrlHgROjXGWfV+QXPO
+	 XrrcbwhfTH6YVMAfbcGtIEF+iAaLUqVGYj6YPHF8MseGsOMyazqdXdbIXmtujxvBrD
+	 uQpwbFZ5are1sgqje++pAHI53pVOv8TI8Zyhq/yAqYJGleoO3+Y8hxU+1nESrMSHKw
+	 wZIGB/jglYRERzdhfp1JftTVUtgQ5YiSAWnFe2A1u9AzFotRc9opt+hh/1m0Zki4V+
+	 LDYSscJxhKovWsbODwcU5acOivZf/7K3fcz/YdP/W4VZrtttvKQSyRZyUgnWG8J8qK
+	 d5bpDuiKmyhuA==
+Message-ID: <eed70516-e1c3-44f0-a982-327f18303b28@kernel.org>
+Date: Mon, 14 Sep 2026 16:32:17 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] mm/huge_memory: fix pgtable withdrawal for huge zero
- PMDs
-To: Kiryl Shutsemau <kas@kernel.org>, Lance Yang <lance.yang@linux.dev>
-Cc: akpm@linux-foundation.org, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
- liam@infradead.org, nico.pache@linux.dev, ryan.roberts@arm.com,
- dev.jain@arm.com, baohua@kernel.org, usama.arif@linux.dev, ljs@kernel.org,
- surenb@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260912234635.db50397364858aa15f58f4d7@linux-foundation.org>
- <20260913072312.52111-1-lance.yang@linux.dev> <aqfRCPheDYTgTdAk@thinkstation>
+Subject: Re: [PATCH] mm/oom_kill: fix hung tasks queued on mmap_lock behind a
+ long reap
+To: Jiayuan Chen <jiayuan.chen@linux.dev>, linux-mm@kvack.org
+Cc: Jiayuan Chen <jiayuan.chen@shopee.com>,
+ Zhou Yingfu <yingfu.zhou@shopee.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, David Rientjes <rientjes@google.com>,
+ Shakeel Butt <shakeel.butt@linux.dev>, linux-kernel@vger.kernel.org
+References: <20260914113239.367200-1-jiayuan.chen@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aqfRCPheDYTgTdAk@thinkstation>
+In-Reply-To: <20260914113239.367200-1-jiayuan.chen@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 2F9CB120006
-X-Stat-Signature: 5c9wwbmj17g97czben8auy9sjxqd79kf
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: C67E320010
+X-Stat-Signature: 6nuancfxw9o7x916rhbcpxi87nk7wg4w
 X-Rspam-User: 
-X-HE-Tag: 1789396150-629601
-X-HE-Meta: U2FsdGVkX1/Py4ff4gCBaOqyKdgE/B6yFfzrDH2MgrL3iYrGzT99nYMK4lKRINlsUxp0i+dsW2h1rZGEVzA8PtJgv+yEeEeAM/TVpQnNuMn4bTuddi+M612odhTCKBAEUTROthr+4L7cd9MAy+n1ojzwiRxgGlaP8NlC0fKzBk75cLVl2OIlEBpqlurED0sUPUbHuPG9omKFThUH85QcMPJ5/LoGRQwnfac9Vv99BGCbh+a7FEpJXjnuwu4T3MxTgg7ErCgYrLRS9Usqk9E8N6YaE47o8oJjWtsxvenGaOU2kP2PclqNUKJydmoqjxsyKTYBJsCnSaeOA40TlFH5WeDYu6+31bHCNvucQkkYnvbRfeKxDDeE4TurHJ1SgBekoo9YpyEeSHrNXTQhhdEUxDi/P/ndf56AUrCwcUrOR7nOB1Y4Cb3np+lEZ2lRugPGSBVaTFZtmQen80LlxaJ/X/Pk1IgCN8+VW8J/cwracqLYXGQ78/EdxVdr9xVkrzK/bJFujKzstRKMtR6vfMbribq4aUGDG9nLAid7CPc2wezLesGFvKo00bILgMJJXhISEn7NNXB8ZzsU4DRypOXMNwlIYwsdAtxIuKFcSw6luduvpcKJTjE/cEgHHh5jS+9mZKT368ydKE6oLfivVs2fKPEA4xcD1BElpRH7XNmowTQjOM0THBMqosMskU+dr1VwYZzx6noONvtEyZMHbUy2GxhYDdFLWM4UTMo2/1Hw0vQT62UkVvsoKTZBIz66+V7OArfcgBBHvWBYh8ZOQLG6EHGty7YiU0TCL/nn4PB61hAmEWftV03bSRuWkin79kmyf0kJJBAtsgWjL9IHQQNnMPye5ajQ5uYhyIoFKHzGyJYcRZX6EtDMkemqpMT5gWIb1mdl3SRywbhlzEPD9Ui38hAemyoBn7tkZGHBfujSis1WabTG5e8d5cHrpTbbw1lozQno1OW8CtoPQn0LyER
- CzpAWwb9
- dCM64OLt8Lvhja+dY6V753YoR6wxGCGbM9rwuIOjNDFpIV79UNL0v/B81lgtJfLSm+IonQJO0HbGOyoVCRSaD8BZOyTJtw4TwbY0tL2fodUpKPqPNatOHS/5Iys6qzr5T7aXUjQsIzXcjtzJhwoqUe2oFQnsBJ4eQtzPkDuH+izDoCmQkEZFDToTuLKlCGnTgcXJLPUUt6rc9/sIqa2gGO4pk7NPjlZWD9SvjOLd+zpkaJ7LYqFIE8I0CTabMpNaAZFftuOGaHl8tx8+ToW/6v89JoEasZxewscp4AQMBhWGzJb8CfkZcfeCA4w==
+X-HE-Tag: 1789396347-409413
+X-HE-Meta: U2FsdGVkX1/5Zz4ak2tz6VP/3Vuv5MQnM+03Ss6borzrnhw9oN4VmqF+E4JsENGlIRJf2sqqTClhPKxAQftyAlmR7ji3/xTWEimbbOkqIzS0P9ax7IHrduxCFETiJiC2Hw9P8da8KRVTKZzFdpDhstkxq6rxaEPstOoyt/1IKvR3g2KJ1GQKnLHqZc9Mn9Fvb7mfNqfKTzKekFECwFm8xEMzOU+pXIDfd3t4rEWU8Jzeb/4OVVfRXIVJ0Li+PkXs3ns3b8P4DwBxfu1onZccpwr15JHvdvG4z17WOSbX3BXXHeVQp+KXexnnUjPohokrVxJ91vn7L+8Jqp0DxWnQ6FF3hwTl1h67ovyHhq933ATJ/pWLrlWC8JHwp8sfqVEEXsQYw1dlb25wqTMJ8uGalaS+7hLFYKkr56EfXdp7nm/duz+ddh8ShHStS0lfohOSzvM29OFdggtjgmPeXoF44HIJciUFg7b34JzC7AlQrY+T4KFqJd+7fROqAinpA51P1a0GDpBS5lhFNO+Oj9UTj0GPyxTTZT4q+Hzw3eneV/Gt/azCjVoLQgZLXpWUp2oD2oBnrEt4YyeoD3H4H28BFxswSN30gkVHe7F9uG1r7N22MYl4792VecyuFzCpHiHCq4coxMANeCreEm4NnPTgl1wzhP1b/uhNncOCFtYl3cfpYyQqYXPqHM7vZ6GsIFRrql+sCN4BTrOXCRLtIkmILJd2wmm622I3RTsfjL1cKZnXcrNvBmENyTW8GoZtpqyZv8Mr0LqZDFfhnaPHn8w9FFMbNfdrJZQPIiVb7q2LwJSH1uCSzLltLdy0A88PCGnIqzwb+HfAKVunO6LktsNwxYPAH/syt+5tt5qVH3BrneR29LhG8qJtMCZChHm6j0i8TCI+GWRfVfw/w/LQjqu1UXPPxe2to9aYS3E3c8MHsGHlD9Yok5sIkuetCSv6Fl7O5FzAvq2hsuXdkPt2RTE
+ POjwmcgK
+ tNnsSliC+E460EysZ5H/iAt1W72hsMUZqnh/2aBJCL204SKsOl7gxn1FweIltfVrHxIsgOTIoNIN0L/8XelfOdQsHxu6eTncZQc9VQxIdzjeJriQKp1dtZFXhv4VunpisceiQFCwX+Wid+TGiDSSxwuKkqpDgnbc8AmhQyBrFtczIOX0/cOX6rJedZ4Y7ew6UWs7cCyMRQoz9RxXaRbXBwoRd9foumeKZhznSkRVjyXBOaPN6Yin9NcrcpfRkOM8P40Bn7tL8XL9opSuMNxwNtSvpWouiOqku8qHEFoziPj79/y8mzGBT3iJFkLq/u+lCORcnhWAGwi6wpjUsHpxw6mIxOMUeamaLnlqgDd5lUVduEQSTiC8QRJFWowvYzulhat2BkwvbKSY/lRWT6MZg/P89pg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,35 +143,137 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/14/26 12:59, Kiryl Shutsemau wrote:
-> On Sun, Sep 13, 2026 at 03:23:12PM +0800, Lance Yang wrote:
->>
->> On Sat, Sep 12, 2026 at 11:46:35PM -0700, Andrew Morton wrote:
->>>
->>>
->>> That's the sort of thing we'd prefer to avoid.
->>>
->>>
->>> How real is this?  Is there a reported-by:?  Do you have a reproducer? 
->>
->> Yes, I reproduced it on x86 with a small test module. It sets
->> VM_MIXEDMAP | VM_HUGEPAGE and calls vmf_insert_pfn_pmd() with
->> huge_zero_pfn, without touching the page tables directly. A full-PMD
->> munmap() crashes before the split series[1] as well.
+On 9/14/26 13:32, Jiayuan Chen wrote:
+> From: Jiayuan Chen <jiayuan.chen@shopee.com>
 > 
-> Ah. So there's no real bug upstream, right?
-
-Matches my understanding.
-
+> The oom reaper holds mmap_lock for read while it unmaps the whole
+> victim.  Anyone who wants that lock for write in the meantime sits in D
+> state until the reap is over.
 > 
-> And I am not sure it is how we want to address this. I don't think we
-> should allow randomly map huge zero page (and non-huge too). It can be a
-> security risk if it ever gets exposed writable.
+> With swap enabled the victim can be several times the size of RAM and
+> the reap runs for minutes.  LTP oom01 trips hung_task that way for the
+> victim and for ksmd, on 6.6 LTS and on 7.3.0-rc1:
+> 
+> Call Trace:
+>  <TASK>
+>  __schedule+0x487/0x1870
+>  schedule+0x28/0xb0
+>  schedule_preempt_disabled+0x16/0x30
+>  rwsem_down_write_slowpath+0x1d4/0x750
+>  down_write+0x60/0x70
+>  __ksm_exit+0xb4/0x230
+>  __mmput+0x12c/0x150
+>  mmput+0x1e/0x30
+>  do_exit+0x283/0xa30
+>  do_group_exit+0x34/0x90
+>  get_signal+0x952/0x960
+>  arch_do_signal_or_restart+0x41/0x250
+>  exit_to_user_mode_loop+0xd3/0x560
+>  do_syscall_64+0x385/0x470
+>  </TASK>
+> 
+> KSM is just the one LTP happened to hit: __khugepaged_exit() has the
+> same write lock cycle ahead of exit_mmap().
+> 
+> Backing off between vmas would not help either: the victim's memory is
+> a handful of huge vmas, LTP's mmap(3G) chunks merge into one, and
+> zap_vma_for_reaping() zaps a whole vma in one go.
+> 
+> So:
+> 
+> 1. zap_vma_for_reaping() takes a range, and __oom_reap_task_mm() zaps
+>    each vma in 1G chunks.
+> 
+> 2. After a chunk, if a writer is queued on mmap_lock, drop the lock and
+>    return -EAGAIN.  The caller retakes it with a trylock, checks
+>    MMF_OOM_SKIP as it always did, and starts over; what was reaped
+>    already is empty pagetables and walks fast.
+> 
+> 3. A hand-over is not a failed attempt.  Only a failed trylock counts
+>    against MAX_OOM_REAP_RETRIES, so the reaper still never blocks on
+>    mmap_lock.
+> 
+> 4. process_mrelease() shares __oom_reap_task_mm(): on -EAGAIN it takes
+>    the lock again and carries on, still reaping the whole mm in one
+>    call.  Passing the -EAGAIN up to userspace instead would be the
+>    smaller change, if that is preferred.
+> 
+> __ksm_exit() and __khugepaged_exit() now wait for one chunk at most
+> instead of the whole reap.  And the exit path stops waiting for the
+> reaper altogether: once __ksm_exit() has had its turn, exit_mmap() runs
+> alongside the reaper and the two of them free the victim together, up
+> to twice the freeing rate and close to it in practice with LTP oom01,
+> so the machine gets its memory back that much sooner after an OOM kill.
+> 
+> The chunk is a fixed 1G rather than PUD_SIZE, which is 4T with 64K
+> pages on arm64.  Each chunk finishes its own mmu_gather; that is the
+> price of being able to drop the lock.
+> 
+> Reported-by: Zhou Yingfu <yingfu.zhou@shopee.com>
+> Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
+> Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+> ---
+>  mm/internal.h |  3 ++-
+>  mm/memory.c   | 13 ++++++----
+>  mm/oom_kill.c | 69 ++++++++++++++++++++++++++++++++++++++-------------
+>  3 files changed, 62 insertions(+), 23 deletions(-)
+> 
+> diff --git a/mm/internal.h b/mm/internal.h
+> index 05179c4b2090..7ac1728a57c2 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -593,7 +593,8 @@ struct zap_details;
+>  void zap_vma_range_batched(struct mmu_gather *tlb,
+>  		struct vm_area_struct *vma, unsigned long addr,
+>  		unsigned long size, struct zap_details *details);
+> -int zap_vma_for_reaping(struct vm_area_struct *vma);
+> +int zap_vma_for_reaping(struct vm_area_struct *vma, unsigned long start,
+> +			unsigned long end);
 
-Due to some DAX stuff (and others) we have the shared zeropage in VM_MIXEDMAP.
-And we have some elaborate checks in vm_mixed_zeropage_allowed() to test for that.
+It's npw a vma range, so the function name no longer matches.
 
-We should do a similar validation, and ideally just forbid it if not used yet.
+>  int folio_unmap_invalidate(struct address_space *mapping, struct folio *folio,
+>  			   gfp_t gfp);
+>  
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 926276d41920..25c35a28a39d 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -2207,15 +2207,18 @@ static void __zap_vma_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
+>  }
+>  
+>  /**
+> - * zap_vma_for_reaping - zap all page table entries in the vma without blocking
+> + * zap_vma_for_reaping - zap a range of the vma without blocking
+>   * @vma: The vma to zap.
+> + * @start: The first address to zap.
+> + * @end: One past the last address to zap.
+>   *
+> - * Zap all page table entries in the vma without blocking for use by the oom
+> - * killer. Hugetlb vmas are not supported.
+> + * Zap the page table entries in [@start, @end) of the vma without blocking
+> + * for use by the oom killer. Hugetlb vmas are not supported.
+>   *
+>   * Returns: 0 on success, -EBUSY if we would have to block.
+>   */
+> -int zap_vma_for_reaping(struct vm_area_struct *vma)
+> +int zap_vma_for_reaping(struct vm_area_struct *vma, unsigned long start,
+> +			unsigned long end)
+>  {
+>  	struct zap_details details = {
+>  		.reaping = true,
+> @@ -2224,7 +2227,7 @@ int zap_vma_for_reaping(struct vm_area_struct *vma)
+>  	struct mmu_gather tlb;
+>  
+>  	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, vma->vm_mm,
+> -				vma->vm_start, vma->vm_end);
+> +				start, end);
+>  	tlb_gather_mmu(&tlb, vma->vm_mm);
+>  	if (mmu_notifier_invalidate_range_start_nonblock(&range)) {
+>  		tlb_finish_mmu(&tlb);
+
+
+__zap_vma_range() will VM_WARN_ON_ONCE() on invalid ranges, so that's good.
 
 -- 
 Cheers,
