@@ -4,93 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB4F9C88E50
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 11:33:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8F76C88E50
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 11:34:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 91FA16B0092; Mon, 14 Sep 2026 07:33:06 -0400 (EDT)
+	id C541B6B0088; Mon, 14 Sep 2026 07:34:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8CF116B0093; Mon, 14 Sep 2026 07:33:06 -0400 (EDT)
+	id C2CDE6B0095; Mon, 14 Sep 2026 07:34:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7BF276B0095; Mon, 14 Sep 2026 07:33:06 -0400 (EDT)
+	id B219F6B0096; Mon, 14 Sep 2026 07:34:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 527FD6B0092
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 07:33:06 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D85AE8032D
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 11:33:05 +0000 (UTC)
-X-FDA: 85212156330.08.DA82BA5
-Received: from mta0.migadu.com (out-47.mta0.migadu.com [91.218.175.47])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 9A3E7140007
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 11:33:03 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=YroVdIHm;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf26.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.47 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=YroVdIHm;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf26.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.47 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789385584;
-	b=ZEHPsOtKI9ZIy1Sxppei+HUu2wD04v4hzfxQju0yYatSO0EYOADAQ/knGJjPZenVOkQmyb
-	Pt4jPl3twCierbgAMMQWmdTCzdDK7pC35e65E617RxYdFM5dYTWoLI2NeMdyOyOuYHwCdc
-	OjR7jjVdESjDdcIKUJZEf/kECHUvKms=
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7F61F6B0088
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 07:34:14 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0457012033E
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 11:34:13 +0000 (UTC)
+X-FDA: 85212159228.03.4B79640
+Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 2DE111C0002
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 11:34:12 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=VtqG7JG9;
+	spf=pass (imf21.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.227.141 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789385584;
+	s=arc-20220608; t=1789385652;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=eDsYAzhD9tg72IwbT/C6Myc/uR0GN6DzhqaWLJ6BnW4=;
-	b=ytJlvaM16ze64axLAotQaQoPYIaN87YCgRuJP+V7khDJVBEaYryRLL3JOCByy9SMCk03xZ
-	PhPuG5hT79M+P8VFuwY8orxKjNc5rDnOFTq3FPWJFlPJpWo+DssQEWGTAIccHpBXNyIdJv
-	Y8Vm+zARYafch+0GsvjnmyoLgW5Jphc=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=6vJl8E8y2Jv1Fd46pBnggwUF5zwldxFjzqu7KY7Cla4=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789385582; v=1; x=1789990382;
- b=YroVdIHmnI1SQFJ/Mcaww7L3uI5drDaarAPzg86n4NB2dNWcUojJWUy9wInalMjOfE9fysxV
- OKtJPMsTx3mxz7TNq1sc5B1N1DCQu0kWlhQHcvoNTLiVYI1fvZomXVH9N5GKFFNT5MA7hQB0aAm
- J4MmaSrPEzoMZNcOcbap+8YI=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 545ecb2aac1ba300;
-	Mon, 14 Sep 2026 11:33:01 +0000
-X-Mizu-Trace-ID: 545ecb2aac1ba300
-X-Migadu-Flow: FLOW_OUT
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: linux-mm@kvack.org
-Cc: Jiayuan Chen <jiayuan.chen@shopee.com>,
-	Zhou Yingfu <yingfu.zhou@shopee.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=zluWgUEfiwqdpafmPuw47cpG+Z5oAjBePu1fe1afIYk=;
+	b=Z9nJ+Uhrpom2gRWqYIq/302Oc6+wHbwZEpevXVlUKK6W8htip+0FiX7rN1n//oCh0z7sb1
+	MD7HUpXu6ycO3/pA7vqOIBdAqruaywjYluuaj92tIxsMWk0HrGH3epBhxdBxl0j/L6qyvn
+	zGJz0HpCbfeMpsbQ7iU5rHGTDtQpo7s=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=VtqG7JG9;
+	spf=pass (imf21.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.227.141 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789385652;
+	b=QMwURyoXUH2a1eDGHpJ21CzEW4LmkK1quVmx27rXr7e/EYgwwbOAX4cv0WqGyFhbWXVEq/
+	ZVXvVR0SqQ/x63sOxHooJkmmJ2cR+KG2vIiNaVtJTOO+7vJK4rYJ6JhII0AItu1C/iS/G0
+	mcJwP0OqDZ5unYVHZW/F5Su0Xh/WCRM=
+Received: by mail-pj2-f13.google.com with SMTP id d9443c01a7336-2d747f0135fso16360195ad.0
+        for <linux-mm@kvack.org>; Mon, 14 Sep 2026 04:34:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789385651; x=1789990451; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=zluWgUEfiwqdpafmPuw47cpG+Z5oAjBePu1fe1afIYk=;
+        b=VtqG7JG9IxUPr4iW98hJtjA7TfKkkyOp8+s7FLlGPn5XHEXxUBHHXeZA4mJfNmsBTY
+         SkdXc+yQxXX8na6Af1hst8/GoNpTLXrP02w7lBTIDnoBAWDrPaJ1EMuK986PZPfVMYxF
+         0WzcyGnbtf9om6EByTB+Dybz+/dmRmwHPjHo8OmiRUA0q1NLIAYp3k6B1hvfQOPgVMVe
+         0M4xNf8/VqVdwUICe9GU14YashC2SYr2q4OmvaH9qA8e/XtYwdcs6E3t+zluuruowVKS
+         M8eoh0raYBhY1iDMjKxypYxffieoblZ+1UqXtu+TdvwXeBJYhOIIU4GB+PoCURuOsP8e
+         qTFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789385651; x=1789990451;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=zluWgUEfiwqdpafmPuw47cpG+Z5oAjBePu1fe1afIYk=;
+        b=RF5Mxtr5aBXVaozonbfNaZ+D1iqjcVshr/Mp0GHGl2Qg+9p4muXvRqdm49KdNxCYCL
+         jqHQhGiTl8omPLUNVv+nt/hLZlUGqu9jnEhSfD7DDFOwDC+8BA8CNs/IIRpSSDRLoa4U
+         7LbQBLCaaDNd91psowC5N4v/eF6nc3lpa0dpSX2bTumHhGFM+hkOHqDJ0nnoAWCbT78r
+         6YoT+vh4eeo9KER78WUnWSVTrgGP64ZLEmwkCzfhE3GyaIwf0balecuYjxEFdBmeq+2j
+         dIPKBQvLVitm0E6FvRN9npjUJGf6W5VNLKin/qRRJFZSDORZ6ME6phR4LusZBBjQuWly
+         GAmA==
+X-Forwarded-Encrypted: i=1; AKwUvBwyWdhuYOt3A3vl4ufFnispHo2M2J5mqmD6qOQO5d6sFAShmQ1oGnSyes9vrnuGwNT2z07bsWiTLQ==@kvack.org
+X-Gm-Message-State: AFuF++kPO0oyIiDiG1mfnhVn5vx/lP7olbb9wty3RqnRbP13aLfFRyp6
+	qvkhC2qnbeYf/JCyc9mddcvRXLy8AEAR0rFmbNz5wzCZK/aKQPKOPd/P
+X-Gm-Gg: AYBFou0+Lu2fK6QnOgsU1P7+2KnfaqkHFKENQe3v8AXDH8g/zGPaF3J4xZBoLeI5Pho
+	NtTC456Qsnizthm0mQ2t6++A7dTSBgDR0ZFYcRUww5tuZ3fTK+s/gT4+RR55r/2uMGyfalMiDxQ
+	eCTYmP9GaUEx59Aix3g6RBE+n8aSMgQbnQid9h0Ye/vOsIZr5KcWkmerXyhPUQdELlZEjnNEdP4
+	p7vVWvZWUWfHf43KhwxCb12yFKKOiSh+/IYy34Z2HmXUM9H+HcTs/1hQoeJYiB1lqNqpLDvM9OB
+	lWEw0DpyLRlIUi/t5LrLxY438kvYBm7l/GOUo0+Y1dm2QOY7g0eU2s8lkbkLkgOtx0CaT+cM7HX
+	A7C9xA9Y6JPze4V3MGOg1MV/NdLRwez1UujgPNqoQIIfMSXZ1RvFJYdfg94a2uoVxKTzHULAwEx
+	e1mlkUwM+xYPx89dGL5MF27VsLTTfhbfmkds9bpar67xWavQeJj8y9nzI+UdHiW/ZENned2hLZU
+	hntUlSKgjo1TsjJge1Cq25VKTr6CxV54/dv8kDf
+X-Received: by 2002:a17:902:e88c:b0:2d9:599e:df95 with SMTP id d9443c01a7336-2dd6c5cbdb1mr41439185ad.3.1789385650870;
+        Mon, 14 Sep 2026 04:34:10 -0700 (PDT)
+Received: from localhost.localdomain (vmi2317699.contaboserver.net. [85.239.239.237])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dd2cfd8c84sm46512045ad.62.2026.09.14.04.34.04
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 14 Sep 2026 04:34:09 -0700 (PDT)
+From: Lian Wang <lianux.mm@gmail.com>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: "Lian Wang (ProcessMission)" <lianux.mm@gmail.com>,
+	"Barry Song (Xiaomi)" <baohua@kernel.org>,
+	akpm@linux-foundation.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
 	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	David Rientjes <rientjes@google.com>,
+	Michal Hocko <mhocko@kernel.org>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
 	Shakeel Butt <shakeel.butt@linux.dev>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] mm/oom_kill: fix hung tasks queued on mmap_lock behind a long reap
-Date: Mon, 14 Sep 2026 19:32:37 +0800
-Message-ID: <20260914113239.367200-1-jiayuan.chen@linux.dev>
-X-Mailer: git-send-email 2.43.0
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	Wang Lian <wanglian@kylinos.cn>,
+	Kunwu Chan <chentao@kylinos.cn>,
+	liz2nku@gmail.com,
+	xueyuan.chen21@gmail.com
+Subject: Re: [RFC PATCH v2] mm: Improve pgdat_balanced() to avoid over-reclamation for higher-order allocation
+Date: Mon, 14 Sep 2026 19:33:47 +0800
+Message-ID: <20260914113353.94964-1-lianux.mm@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <aejtfpBUu7gNV6Tk@cmpxchg.org>
+References: <20260422021842.78495-1-baohua@kernel.org> <aejtfpBUu7gNV6Tk@cmpxchg.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9A3E7140007
-X-Stat-Signature: rkyntehhshs78xwg47q66nyeam44s8gd
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789385583-541406
-X-HE-Meta: U2FsdGVkX18NH8PzDWRNcHqMyDlJV3U6SIxWl9Loj+dQr4q38agvO7I0Zpm6m5uwcB8qGAi3eskuBr3MvuBROo68mTdlRcprUKVeXDZ8ECqPtWiso/lcyDBe19rO9+Lg1D1kKHpxZYNCbsp4Ne74lOLomZPycD8JoeP/0XP9iWnX/hEpLAR5Vt1AymCaZYiW5ncaNRQHqXXLpau9kn6J1l3PqS6yWKchNRjZ3AbTNeXbSU/bMyV7MmfYW9SPS9NiR0QAZwfy1A98pjqDgZO71jbSj8m+ds3cL6TXeFQGgEG82Dh0orHSIcNrpldOQSVXW6CfAXU8fzGR1C5Wbp7jQIaChwe2Dc7dYEZmDDeLVioeXX8GA+Z2k9M2vIS+nhGGYhY8IAUXEcPyM7V9cb5ND+CNQ4LI7j6jpFx3ASDWcGCV0c/iJiWopj+8B79HSWvyrC1CCHnGBZTe0R/fSv20Lsyrjnz8sVW+2u58fH2WI3KRDzZ4umMZzGe4dYeYKsjlWF5KIpKeL6mW833sf9Ja+r1drit3BpMaG/cJ/cek6r6/EWC3Ycphy4IgILZzmBDcVuFYntNoxisPLTS1pdNrIs04LrOCCzDvYXlP6d1y13QeEfunv7Jqc1YMCXy4lBmzbY3MWrDrnSqRV5PDDlNC1VtjJsswDbZ880T/2A1ANGSFdF6VoyfIeT3RLDlxHg1XuepvIuDQ8+4geMPVe7MZUgrsVEmwlfcd7kDv3YO5h42dLkyiWZ+/LqLKYEip/C7EeHV4QhtytzDj9n3t9afidG04njxFL5QXcVyGxAgG4xPgpKqSxn/HP+oWUpvrFmVNtpPWu2dxahhd2MIhJy8Oma5QvMZ/b026Zy52CB8OQvoQDTb4ckkYPHrCbCtJ3JE+reM6EiNU7/v2CKv+kpUXP2GNQtb+2EPgvjyuSiC/wuWdAxVxy48GbIJN+37enyX9bBGX5UyT+ZYajM5MBmB
- U38T+zV4
- Pnqj3Qwqrb0n0oRI0WiyjUKequ4tWc2cSeM9tPIAnQo2LDhTdv/CxeMAuu5aT1Fo02Q2U2Nt60uv5w2dXCjJLjWVADeh7HQN7FKs9qvgZ4XVzAPyNeoH9bzy3DrCmgsAQnp/1hG9lCT21HI/sNNyprGgi67AepKcXSG7RUllUgQUfD0KAuFHls8Zae7QAinooqKssoN/Fmca7GsGUpHpB1/YzUl/PAaeoktQXnN6NXYWA3cTLaN3MUcaLDr2nFXZR/i0y7F22NmDHVyW3qmZy04I7m5I375xRIYhPxv3GMzmEU08gqYHG3zlTiBb6SZeQaQw4+w2ePX/ysgRqDJUt3R39lA==
+X-Stat-Signature: g37wfwn8ds5knfp96worsxzttmrrtbrd
+X-Rspamd-Queue-Id: 2DE111C0002
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789385652-564607
+X-HE-Meta: U2FsdGVkX1+gUe0fuLsC65dEWqu5qKbxENcoQ0J7LBm83KFYGnmuP26tzcqEJi1KQE0wgiEyP+q+6q8sTZdC2rvaNOOkEHIA7aLBKXJgH4citvaCcHDYnsQpX60XQ8hqyVkMifUBiLaSwHw3jUm2iYg+nUAd64ylddsUPVarrjjUmyZ6Fi9cuNZKgLyGDSws30SJLZUpIVI8GcBbH5lmuV5i4jw4wyaNhaTOy0mlEzhHijMNmtcVxK+VFr2sJYlz+Q2RjHb/GLaPPjLxKJv+kBtVNauoRCY0BJHDWw+A4N/vCSHkkH8nEQDrPWNDrww0ns1J3IJ5vDQWwkNgioL98i3mXCprxkbjytaJCD9qux0xril2W0IdwXFx7fggi+hnaMJAcu+0Gs1lR0ar7m7FPKLtOjTJoxv9gD1OzoIBk4kfrqYufcWrjJVx1m1KtqC8/WRvPybFuMBER/KD+C4F/Dj3Iqtv5lVVany7da6YLEgxwWOZezfzeXxMl8189byXcKPqtKA8HNZdygTy8lZyhVaIMn3kGMMi/hk5M3dm0yzcWWcZbB6KqMd6d75f9UzVi2vWhHrmipN5n3EhWTuqfX0L5z/lhwAfoe/149EkAj3FGaD49nGkKEompTlKaK106eLj70E9wfXtYM2xvuxI60g0pPvmSuYHoiMsW2vvowYvUsJU15Tsk90tSr1gfyp7eUS6/9jmh52mxGrKw+A8JcsmMpKHBa98IeZOrin3IONBxKDApVkjsrL5/+4okT/J6H/tlKFNBpnnGXvn2uPpXdXwVJGqlv21FuE8//p+fD749ovR2FCo8a5thFS6pLCHjNOGuxPur+monq8gHnzTUqW+s/+kO0MxUyeBuNkKjOPnXO/62SgRr91+xDmpqBWVSEKaguBt9cPBTyfoHE73Be2Wp1KlryEVCCaUMIu7dFiKceuEIza/P2A5IVJFWx1T5WOk58MJAeZE+BOKx2X
+ WQ4gDpr4
+ au3nwFQlEU/X6ElGSEF9MV7fvjsXDqfYWIwd3AU2iMVn97DERXjlGconwdh4MzSFQW2Fl81rG8gY/iwtSp1tI+4kBsYF6Mw758o+O1X8o9iE4Yx2n7y0yYY5uFCHCgngqnq/HyFnzv0KsT5/0/tuvDJNEaFr7Ex5Z9LV9plMSkN2YDF/3x9/Ygjs2wzPaP7N2J8rBTMkf8DYsmpcwttQ8rxfJ/LmyH9MdFNVVVJ6oPGDz/em/MBVBR92MgOwRd975NHNYAvqiyeza8vtV5l61+wyFeeXoxc00VuAvEM+2T+Wfp8fQ0411ok18dDsulGOum4qQSNBrMPZjXOeuyHWGrZrk4Miw+y97GjeA3ixWgBTWZCEwvN7p3sV2IErJDQH6NeZcRUyvblaB00p3j9kaZfTLQX4hf0wniFFmdwwANHH7nuUV407YCPUYL8Uw17/v1VwUOQBqvgcoLt7FVkhcCzmb47DZlmPpOeMZdEuAEGcBivV+qBxECgDlv5Xu6eZwn7bOtePURKQDcR+J2R7QkvMKk1OeMOL53buogNthHBa1CHPl21RkbB3yxZu4Eh83a0zk4nnp3mqm1dRA4Ysaj8POybSx0Yc3qFD53I7/y8VWE48=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,264 +135,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Jiayuan Chen <jiayuan.chen@shopee.com>
+From: "Lian Wang (ProcessMission)" <lianux.mm@gmail.com>
 
-The oom reaper holds mmap_lock for read while it unmaps the whole
-victim.  Anyone who wants that lock for write in the meantime sits in D
-state until the reap is over.
+Hi Johannes, Barry, Baolin, Kairui, everyone,
 
-With swap enabled the victim can be several times the size of RAM and
-the reap runs for minutes.  LTP oom01 trips hung_task that way for the
-victim and for ksmd, on 6.6 LTS and on 7.3.0-rc1:
+We revisited the thread and Johannes's earlier analysis on the kswapd/kcompactd
+handoff. We agree that a single static `compact_gap()` cannot represent
+hundreds or thousands of concurrent higher-order requests. In such workloads,
+repeated kswapd wakeups often reflect real unsatisfied demand, and stopping
+kswapd too early can shift the burden to direct reclaim and direct compaction.
 
-Call Trace:
- <TASK>
- __schedule+0x487/0x1870
- schedule+0x28/0xb0
- schedule_preempt_disabled+0x16/0x30
- rwsem_down_write_slowpath+0x1d4/0x750
- down_write+0x60/0x70
- __ksm_exit+0xb4/0x230
- __mmput+0x12c/0x150
- mmput+0x1e/0x30
- do_exit+0x283/0xa30
- do_group_exit+0x34/0x90
- get_signal+0x952/0x960
- arch_do_signal_or_restart+0x41/0x250
- exit_to_user_mode_loop+0xd3/0x560
- do_syscall_64+0x385/0x470
- </TASK>
+At the same time, related reclaim issues are still appearing in several
+environments:
 
-KSM is just the one LTP happened to hit: __khugepaged_exit() has the
-same write lock cycle ahead of exit_mmap().
+  - Barry observed order-3 network allocations causing persistent kswapd
+    activity and device heating on phones, even though requesters can fall back
+    quickly to order-0.
+  - Baolin and Kairui have seen similar fragmentation-driven reclaim behavior
+    on servers.
+  - We have reproduced on PCs and VMs that order-0 memory and total available
+    memory can remain plentiful while order-3 blocks are scarce, yet kswapd
+    consumes substantial CPU and runs heavy reclaim/scan loops. We have not yet
+    reproduced this consistently on our server systems.
 
-Backing off between vmas would not help either: the victim's memory is
-a handful of huge vmas, LTP's mmap(3G) chunks merge into one, and
-zap_vma_for_reaping() zaps a whole vma in one go.
+There is a useful parallel in Johannes's production work on reclaim storms in
+defrag_mode:
 
-So:
+https://lore.kernel.org/20260626182215.1107966-1-hannes@cmpxchg.org/
 
-1. zap_vma_for_reaping() takes a range, and __oom_reap_task_mm() zaps
-   each vma in 1G chunks.
+The allocation paths differ, but both threads expose a similar feedback problem:
+reclaim may report progress in the number of freed pages, while not making useful
+allocation progress for the order, migratetype, or fallback intent that triggered
+it.
 
-2. After a chunk, if a writer is queued on mmap_lock, drop the lock and
-   return -EAGAIN.  The caller retakes it with a trylock, checks
-   MMF_OOM_SKIP as it always did, and starts over; what was reaped
-   already is empty pagetables and walks fast.
+> The compaction gap is sized for a single allocation, but
+> kswapd/kcompactd are a shared resource for potentially hundreds or
+> thousands of incoming requests.
 
-3. A hand-over is not a failed attempt.  Only a failed trylock counts
-   against MAX_OOM_REAP_RETRIES, so the reaper still never blocks on
-   mmap_lock.
+We share this concern and do not want to replace the existing incremental
+pipeline with one fixed value. We would like to separate two possibilities:
 
-4. process_mrelease() shares __oom_reap_task_mm(): on -EAGAIN it takes
-   the lock again and carries on, still reaping the whole mm in one
-   call.  Passing the -EAGAIN up to userspace instead would be the
-   smaller change, if that is preferred.
+  1. One high-order kswapd wakeup overshoots `compact_gap()` substantially
+     before `sc->order` is reset and kcompactd is woken.
+  2. Each wakeup makes bounded progress, and the total overhead comes from
+     repeated wakeups after best-effort callers have already fallen back to
+     order-0.
 
-__ksm_exit() and __khugepaged_exit() now wait for one chunk at most
-instead of the whole reap.  And the exit path stops waiting for the
-reaper altogether: once __ksm_exit() has had its turn, exit_mmap() runs
-alongside the reaper and the two of them free the victim together, up
-to twice the freeing rate and close to it in practice with LTP oom01,
-so the machine gets its memory back that much sooner after an OOM kill.
+For the first case, limiting the high-order reclaim scan or per-wakeup reclaim
+budget when order-0 watermarks are already satisfied may preserve the repeated-
+wakeup pipeline while avoiding a large single-pass overshoot. For the second,
+we may need stronger accounting of outstanding higher-order demand, instead of
+treating every repeated best-effort attempt as a request that still needs
+background progress.
 
-The chunk is a fixed 1G rather than PUD_SIZE, which is 4T with 64K
-pages on arm64.  Each chunk finishes its own mmu_gather; that is the
-price of being able to drop the lock.
+Would it make sense to align on a common, parameterized reproducer and trace set
+before choosing between changing `pgdat_balanced()`, bounding the high-order
+reclaim budget, or improving demand accounting? A useful matrix could cover:
 
-Reported-by: Zhou Yingfu <yingfu.zhou@shopee.com>
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
-Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
----
- mm/internal.h |  3 ++-
- mm/memory.c   | 13 ++++++----
- mm/oom_kill.c | 69 ++++++++++++++++++++++++++++++++++++++-------------
- 3 files changed, 62 insertions(+), 23 deletions(-)
+  - best-effort order-3 allocation with immediate order-0 fallback;
+  - sustained and concurrent THP or pageblock-order demand;
+  - default mode and defrag_mode;
+  - phone, PC/VM, and NUMA server environments.
 
-diff --git a/mm/internal.h b/mm/internal.h
-index 05179c4b2090..7ac1728a57c2 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -593,7 +593,8 @@ struct zap_details;
- void zap_vma_range_batched(struct mmu_gather *tlb,
- 		struct vm_area_struct *vma, unsigned long addr,
- 		unsigned long size, struct zap_details *details);
--int zap_vma_for_reaping(struct vm_area_struct *vma);
-+int zap_vma_for_reaping(struct vm_area_struct *vma, unsigned long start,
-+			unsigned long end);
- int folio_unmap_invalidate(struct address_space *mapping, struct folio *folio,
- 			   gfp_t gfp);
- 
-diff --git a/mm/memory.c b/mm/memory.c
-index 926276d41920..25c35a28a39d 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -2207,15 +2207,18 @@ static void __zap_vma_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
- }
- 
- /**
-- * zap_vma_for_reaping - zap all page table entries in the vma without blocking
-+ * zap_vma_for_reaping - zap a range of the vma without blocking
-  * @vma: The vma to zap.
-+ * @start: The first address to zap.
-+ * @end: One past the last address to zap.
-  *
-- * Zap all page table entries in the vma without blocking for use by the oom
-- * killer. Hugetlb vmas are not supported.
-+ * Zap the page table entries in [@start, @end) of the vma without blocking
-+ * for use by the oom killer. Hugetlb vmas are not supported.
-  *
-  * Returns: 0 on success, -EBUSY if we would have to block.
-  */
--int zap_vma_for_reaping(struct vm_area_struct *vma)
-+int zap_vma_for_reaping(struct vm_area_struct *vma, unsigned long start,
-+			unsigned long end)
- {
- 	struct zap_details details = {
- 		.reaping = true,
-@@ -2224,7 +2227,7 @@ int zap_vma_for_reaping(struct vm_area_struct *vma)
- 	struct mmu_gather tlb;
- 
- 	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, vma->vm_mm,
--				vma->vm_start, vma->vm_end);
-+				start, end);
- 	tlb_gather_mmu(&tlb, vma->vm_mm);
- 	if (mmu_notifier_invalidate_range_start_nonblock(&range)) {
- 		tlb_finish_mmu(&tlb);
-diff --git a/mm/oom_kill.c b/mm/oom_kill.c
-index 5d48bd862c27..cee0a0f7b4f2 100644
---- a/mm/oom_kill.c
-+++ b/mm/oom_kill.c
-@@ -503,10 +503,17 @@ static DECLARE_WAIT_QUEUE_HEAD(oom_reaper_wait);
- static struct task_struct *oom_reaper_list;
- static DEFINE_SPINLOCK(oom_reaper_lock);
- 
--static bool __oom_reap_task_mm(struct mm_struct *mm)
-+/*
-+ * Called with mmap_lock held for read.  Returns with it still held on 0
-+ * (done) or -EBUSY (part could not be reaped, try again later), and drops
-+ * it only on -EAGAIN, when it was handed over to a queued writer and the
-+ * caller should retake it and start over.
-+ */
-+static int __oom_reap_task_mm(struct mm_struct *mm)
- {
- 	struct vm_area_struct *vma;
--	bool ret = true;
-+	unsigned long addr, end;
-+	int ret = 0;
- 	MA_STATE(mas, &mm->mm_mt, ULONG_MAX, ULONG_MAX);
- 
- 	/*
-@@ -538,8 +545,25 @@ static bool __oom_reap_task_mm(struct mm_struct *mm)
- 		 * count elevated without a good reason.
- 		 */
- 		if (vma_is_anonymous(vma) || !(vma->vm_flags & VM_SHARED)) {
--			if (zap_vma_for_reaping(vma))
--				ret = false;
-+			/*
-+			 * Zap in 1G chunks and hand mmap_lock over whenever a
-+			 * writer is queued on it, so it does not wait for the
-+			 * whole reap.
-+			 */
-+			end = vma->vm_end;
-+			while (end > vma->vm_start) {
-+				addr = max(vma->vm_start, ALIGN_DOWN(end - 1, SZ_1G));
-+				if (zap_vma_for_reaping(vma, addr, end)) {
-+					ret = -EBUSY;
-+					break;
-+				}
-+				end = addr;
-+				if (!mmap_lock_is_contended(mm))
-+					continue;
-+
-+				mmap_read_unlock(mm);
-+				return -EAGAIN;
-+			}
- 		}
- 	}
- 
-@@ -549,16 +573,17 @@ static bool __oom_reap_task_mm(struct mm_struct *mm)
- /*
-  * Reaps the address space of the given task.
-  *
-- * Returns true on success and false if none or part of the address space
-- * has been reclaimed and the caller should retry later.
-+ * Returns 0 when done, -EAGAIN if mmap_lock was handed over to a writer
-+ * and the caller should start over, and -EBUSY if none or part of the
-+ * address space has been reclaimed and the caller should retry later.
-  */
--static bool oom_reap_task_mm(struct task_struct *tsk, struct mm_struct *mm)
-+static int oom_reap_task_mm(struct task_struct *tsk, struct mm_struct *mm)
- {
--	bool ret = true;
-+	int ret = 0;
- 
- 	if (!mmap_read_trylock(mm)) {
- 		trace_skip_task_reaping(tsk->pid);
--		return false;
-+		return -EBUSY;
- 	}
- 
- 	/*
-@@ -576,7 +601,9 @@ static bool oom_reap_task_mm(struct task_struct *tsk, struct mm_struct *mm)
- 
- 	/* failed to reap part of the address space. Try again later */
- 	ret = __oom_reap_task_mm(mm);
--	if (!ret)
-+	if (ret == -EAGAIN)	/* handed the lock over, already dropped */
-+		return ret;
-+	if (ret)
- 		goto out_finish;
- 
- 	pr_info("oom_reaper: reaped process %d (%s), now anon-rss:%lukB, file-rss:%lukB, shmem-rss:%lukB\n",
-@@ -595,15 +622,15 @@ static bool oom_reap_task_mm(struct task_struct *tsk, struct mm_struct *mm)
- #define MAX_OOM_REAP_RETRIES 10
- static void oom_reap_task(struct task_struct *tsk)
- {
--	int attempts = 0;
-+	int attempts = 0, ret;
- 	struct mm_struct *mm = tsk->signal->oom_mm;
- 
--	/* Retry the mmap_read_trylock(mm) a few times */
--	while (attempts++ < MAX_OOM_REAP_RETRIES && !oom_reap_task_mm(tsk, mm))
-+	/* Retry the mmap_read_trylock(mm) a few times; handing the lock over is not an attempt */
-+	while ((ret = oom_reap_task_mm(tsk, mm)) &&
-+	       (ret == -EAGAIN || ++attempts < MAX_OOM_REAP_RETRIES))
- 		schedule_timeout_idle(HZ/10);
- 
--	if (attempts <= MAX_OOM_REAP_RETRIES ||
--	    mm_flags_test(MMF_OOM_SKIP, mm))
-+	if (!ret || mm_flags_test(MMF_OOM_SKIP, mm))
- 		goto done;
- 
- 	pr_info("oom_reaper: unable to reap pid:%d (%s)\n",
-@@ -1227,6 +1254,7 @@ SYSCALL_DEFINE2(process_mrelease, int, pidfd, unsigned int, flags)
- 	if (!reap)
- 		goto drop_mm;
- 
-+again:
- 	if (mmap_read_lock_killable(mm)) {
- 		ret = -EINTR;
- 		goto drop_mm;
-@@ -1235,8 +1263,15 @@ SYSCALL_DEFINE2(process_mrelease, int, pidfd, unsigned int, flags)
- 	 * Check MMF_OOM_SKIP again under mmap_read_lock protection to ensure
- 	 * possible change in exit_mmap is seen
- 	 */
--	if (!mm_flags_test(MMF_OOM_SKIP, mm) && !__oom_reap_task_mm(mm))
--		ret = -EAGAIN;
-+	if (!mm_flags_test(MMF_OOM_SKIP, mm)) {
-+		ret = __oom_reap_task_mm(mm);
-+		if (ret == -EAGAIN) {	/* a writer got the lock, queue up again */
-+			ret = 0;
-+			goto again;
-+		}
-+		if (ret == -EBUSY)
-+			ret = -EAGAIN;
-+	}
- 	mmap_read_unlock(mm);
- 
- drop_mm:
--- 
-2.43.0
+We can share our reproducer and the PC/VM traces, and adapt the workload to
+collect per-wakeup `nr_to_reclaim`, `nr_reclaimed`, `nr_scanned`, order reset,
+kcompactd activity, allocation success, and fallback path details. It would be
+very helpful if Barry, Baolin, Kairui, and Johannes can tell us which parts of
+this matrix and which counters best represent the phone and server cases. Then
+we can compare scenarios with aligned measurements and work toward a solution that
+does not trade mobile reclaim storms for server direct-reclaim/compaction storms.
 
+Thanks,
+Lian
 
