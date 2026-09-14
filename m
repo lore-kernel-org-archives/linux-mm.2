@@ -4,84 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 942D4C88E64
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 02:25:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45F33C88E64
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 02:25:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 549D56B00A0; Sun, 13 Sep 2026 22:24:41 -0400 (EDT)
+	id EBE726B00A2; Sun, 13 Sep 2026 22:24:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D42F6B00A1; Sun, 13 Sep 2026 22:24:41 -0400 (EDT)
+	id DFAA36B00A3; Sun, 13 Sep 2026 22:24:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 34DE96B00A2; Sun, 13 Sep 2026 22:24:41 -0400 (EDT)
+	id CA24B6B00A4; Sun, 13 Sep 2026 22:24:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E8F3A6B00A0
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 22:24:40 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5A784120E92
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 02:24:40 +0000 (UTC)
-X-FDA: 85210774320.11.4B8F7A3
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013010.outbound.protection.outlook.com [40.93.201.10])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 90E1D18000D
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 02:24:37 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=RgvAuRWW;
-	spf=pass (imf06.hostedemail.com: domain of ziy@nvidia.com designates 40.93.201.10 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8748C6B00A2
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 22:24:42 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id AC04580E70
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 02:24:41 +0000 (UTC)
+X-FDA: 85210774362.10.FA88641
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012044.outbound.protection.outlook.com [52.101.43.44])
+	by imf29.hostedemail.com (Postfix) with ESMTP id E25FE120004
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 02:24:38 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=HHAKigUw;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf29.hostedemail.com: domain of ziy@nvidia.com designates 52.101.43.44 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789352677;
+	s=arc-20220608; t=1789352679;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xVv9wxA/M8gednBaRD1HGziV0QOHZmyR40hMEBPFV00=;
-	b=a6ilSNxytnF2G87r6wfMDuljd2Mdr/9WZAFTeTKPF/4bwpX9TFquL7zFDe0xNBl8vYX9qx
-	9emcrz8rMRMjHinws+dxZpBNw0WxlTOECKZ6ZolYMScdzEGEoyB9WKlgAv3efbkTTuh/x0
-	tJj/F8xEYNrlGIaC7e7vFCsASpi5td8=
+	bh=5oQkgIZB8g4TSzZHu0Etfeypilmex6FsVP2ICiojaz8=;
+	b=GSEKbhrAWl/Vr64PJ/1KLkh0YfR+X77Wr9snEOPHjjkfn+jdB2hl4NgTOtcp+XxJlOxRzX
+	0cUq5rF6bkjE/eHpsL7PnsJayZcFO9xVZX6jsSFXo5wFUsu9/gmup2ZMwFoAFaL0/GtCsF
+	WbyAozWOK1lq+HDLEwhiwnvc0LesvdQ=
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789352677;
-	b=dDZ+xK9ujqowqVQn6k60Xz1cu9SYZ+bZ6n7K1PjP7bulONwzui/NI7YP0inFp1K5CapPCq
-	07JpBwJ04+QWT+eD5Joh1TT7eer/Ln+yBEWNcsCf9MgRKba/kxZzkTb0xU9K9gZV7i9L3m
-	eyLpMo9ia29ykDuYQjCyBUdOBWyQGNw=
+	t=1789352679;
+	b=uB1kcuFgFFWnpSPoGeKK59+sEJ11nUlcRwomAviYmQ+/0Scl6ktmnDG13rgTtTdL/GDhPz
+	5/kpZ59CByWRdFr4XAin/I636V0zExGNg6+GzIxdyMxHsgVDZCNL7QCtqltzGHCtpEpati
+	WoQ8EPgDc5VXco4toHUvDZAkjrcoP2A=
 ARC-Authentication-Results: i=2;
-	imf06.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=RgvAuRWW;
-	spf=pass (imf06.hostedemail.com: domain of ziy@nvidia.com designates 40.93.201.10 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
+	imf29.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=HHAKigUw;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf29.hostedemail.com: domain of ziy@nvidia.com designates 52.101.43.44 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Y4kNAGv4P3i+CApyTQFH7HQYZ/0S5yKKDL7+7LHgyTc2ImMHs+hXb/DdRacxnfUzr6+3SvPCDAjStWCD1IxO5GSgUr6guKG0PWScrt6AwuiVhQUx32E3bs6GY38G2W2vUUH0I6DmbKw8j8KdMaNG4eUrBneusFlj/uPLvBK73RHE2xe+lPk8DJhGAlcRRMuznerXY/ceq5ukJqd334rlMVZF3ZC3l8PUe1AgECIbUGp/XqIDU4dJdUbHvGPG3lcI5F9xYA2A9tXreQYCl3UL39dTy2QeUVyRVRnimOLS1dIOQGkWTqxRNwdXuwQodLf9nTWepKE45havsTQNlSNgPw==
+ b=pRZmuEgehrC1cz41bokAttP2SMJ60Zp+62B3kcdZ0ORilhcWfmzVyqY1Q/Z5aeqydB1YItreEmbLCCwBd20bDmB0ZigYCInqWek8lGl4nizGhMKlUgxRhZILeVwlI0Bqp22VpU4/wogUUD5eY0Ow9XAvsDDBKujRDD2ZTT8i2OmT39Ibb7UZ9IpTQq1gIfhufd0zvX2wMD7DA8C2pOGdrCFMBBqwqmlZOHt2SKem4swrJDmkNogtUHGPmBtVSm91L9tNT6ajif5rhDI7JAmPu/cyzTR7wM8QBTk98AYEP4zlOdtcMJPky5qAfls7v320QU3XTz+3GtnBo1yfCq7u3A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xVv9wxA/M8gednBaRD1HGziV0QOHZmyR40hMEBPFV00=;
- b=NGaWiExv13SDw2gFL80ipk6P7zhnllXvouDvJnK5nZ9b6ThRITZIamFPdTssIuwV9jvZMrnzDWWgHjLgCI8v75MVenI3RbMA+KoVsxF1b/aifaGTR8dOBMA2aHF6s4K0/e0LutIK7bjmnY7jtnfYqaPrZJQjSNqVszStZcJRvhihe4O1L13fVDk7O/jH8DYudqaYPApebxKI/N6Z6Vsr5DA0QBZWjpypOf4XePRbKlL6y/GOsq3vFrPFmg2jECmwf5hFIA6mnhVgTz5vVOrBRt1tQjAmMi69zo68Z7rv8QgMA2xN3yhIo9Swk/GLOluFf1tQdWKAmP+EkPj1TCd+6g==
+ bh=5oQkgIZB8g4TSzZHu0Etfeypilmex6FsVP2ICiojaz8=;
+ b=SIUmOOUjp9reMiWY4nCq7sAHMjs0IYOK78WI+hOp/QP9lClx4oFkawNsQpFUfZj/AINBiHsI+RmQGvEduc4hV5+Ov5myTb4d0bMx8JGY35gJHuQ18dp0Vs8uUeNfMqwhOSjkqgrdQMBCr6vvHLj4PMe8SQAeo9wz4wRiQ8Ut0Vxt8LB70JKGdg491cVBzKT2DhUxDCF9GJqXG/3Bf8j0HS5yLAV/FBiTbn/5h8TvJ0P7Hoim/O7LDlYtHdSzqTjdT0DITb639IDfM5pDzfK5FKl/QyMl/e/7wuoUbpCx0wJFphX5YoH9RZzVZtQiAexwAsCwJVr0U9qRfyfz4q5Bgg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xVv9wxA/M8gednBaRD1HGziV0QOHZmyR40hMEBPFV00=;
- b=RgvAuRWWtK+Iul9CpKWeIbk4iCO/+jzOcVeVD35wiMJC6x4aqkDtDG2CqtJvmIqVG+zpby6vdVLpL2yJH7Xt4Il9/jC1Odp1h4BCEh4BK0eA5yyQ0J8+nF9nZBssYF3qDY6DcqdYmutwrJvCViXhPFGo8s7ubErvs2WZfMgZj2yl383Bo99twu1vhcWoaUMqiYCj7Hp5rNSIA22pH7H3/4/lh23w0insMwD8NtfaP98O56054X0W7SsZ2iniDBxMScEUwW9JOFBEg/nVYSUF63sqhD161N8tYIir3/eKqUzUuUstQKYL2QxcizTdaCMV5eV7yVnW0caR7e5FRfIGwg==
+ bh=5oQkgIZB8g4TSzZHu0Etfeypilmex6FsVP2ICiojaz8=;
+ b=HHAKigUwf2NyRqa5aM2Ij4bUzjLKHdvyH6PlKC0MraWmcNba5UHCEcEbXpOSRVDybXMgdJZ5UU8868qs+BMt3U/rDUbIe9l4MKBYMZniPKticDc/BoHRLc8KZUCuWpJUhK/iVjGvrgZhlTmIQqJZQvKWo5uOFKcX3+h7uHtSAGln8ywbhunNHb9SuA9DPKA8xyvWS/DZsNc8owuHilMDoVXl8TaNf4ZtjKH0ffaF2jcDsN/FpXu2NakBb9Aea64mq1cx/7FC9Bb/R3k4gR601dJaLq87IWEPGETEfpwov6x6BaOOyNT51GLNXuicneVWwsL9YwGdyLfloDvwdoiEPA==
 Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
  by DS0PR12MB6486.namprd12.prod.outlook.com (2603:10b6:8:c5::21) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Mon, 14 Sep
- 2026 02:24:21 +0000
+ 2026 02:24:22 +0000
 Received: from IA0PR12MB8374.namprd12.prod.outlook.com
  ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
  ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0406.007; Mon, 14 Sep 2026
- 02:24:21 +0000
+ 02:24:22 +0000
 From: Zi Yan <ziy@nvidia.com>
-Date: Sun, 13 Sep 2026 22:24:06 -0400
-Subject: [PATCH v4 08/16] erofs: mm/pagemap: add readahead_folio_last() to
- avoid folio->private
+Date: Sun, 13 Sep 2026 22:24:07 -0400
+Subject: [PATCH v4 09/16] erofs: use folio_attach/detach_private() instead
+ of direct assignment
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260913-remove-pg_private-v4-8-848550f7574e@nvidia.com>
+Message-Id: <20260913-remove-pg_private-v4-9-848550f7574e@nvidia.com>
 References: <20260913-remove-pg_private-v4-0-848550f7574e@nvidia.com>
 In-Reply-To: <20260913-remove-pg_private-v4-0-848550f7574e@nvidia.com>
 To: David Hildenbrand <david@kernel.org>, 
@@ -101,87 +101,86 @@ To: David Hildenbrand <david@kernel.org>,
  Kairui Song <kasong@tencent.com>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  Zi Yan <ziy@nvidia.com>, Gao Xiang <xiang@kernel.org>, 
- Chao Yu <chao@kernel.org>, Jan Kara <jack@suse.cz>, 
- Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>, 
+ Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>, 
+ Jeffle Xu <jefflexu@linux.alibaba.com>, 
  Sandeep Dhavale <dhavale@google.com>, Hongbo Li <hongbohbli@tencent.com>, 
- Chunhai Guo <guochunhai@vivo.com>, linux-erofs@lists.ozlabs.org, 
- linux-fsdevel@vger.kernel.org
+ Chunhai Guo <guochunhai@vivo.com>, linux-erofs@lists.ozlabs.org
 X-Mailer: b4 0.16.0
-X-ClientProxiedBy: BLAP220CA0017.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:208:32c::22) To IA0PR12MB8374.namprd12.prod.outlook.com
+X-ClientProxiedBy: BL1P223CA0016.NAMP223.PROD.OUTLOOK.COM
+ (2603:10b6:208:2c4::21) To IA0PR12MB8374.namprd12.prod.outlook.com
  (2603:10b6:208:40e::7)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|DS0PR12MB6486:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3b0577a3-d1f6-4fec-74dd-08df1207493d
+X-MS-Office365-Filtering-Correlation-Id: 6b5d5a0f-e1a6-4725-199e-08df120749c7
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|23010399003|7416014|366016|376014|1800799024|22082099003|18002099003|921020|10067099003|56012099006|11063799006;
 X-Microsoft-Antispam-Message-Info:
-	LXmdquqRakWVVHTOu2q8VGwFGarhn7aOPvcmKTPzfQvdT6LHGfpqTjDAhKu8hDyUMVCLw7ccnH5iHZOCbSeWr5mccNZsYQl8jFwrbHIp47FRTIJN2W0kGM+SuitZTp3dpWVQZ6m0fqD9CW9kwZooH9lJUNU9SIu3s9kpmIjt6+cSrqm9v5B2aDZMViFfK2KrT6PQJQhpg6B6A6RFIUKiD6LSISyfAG/cKJ2kGXzvF5RhWbwZTjQjr07glltdDaDSwf0vHzfImAHODImyLnqOy+JRfAi8FtfdySN+7UD6Hau08xAFc0wmP+pjsvzKDFG0o79N3XOiyLuHc7HLN3Hqip+C2cZGFumihKswebONkGb/u0lbY7GhkSGLWaz7k2bUUDHqiPijt8bdoy8lVNtMJzzAVXD24bHM/aDAyJ17PEwnfz2+vR5FBP/LxyxjBNUCr+J1EMXWiXHkHPw9wVAO21TFofCE11w2Nzlwbex6G+jjybU097UIoUO4ZdeCSbDswGVuHS9TOYUvPEXfLV3tMIfI7t/GslP48mDMvBgxNjxgCminpR0swe520zA5aKb87DBqB6YQ8UweLDrokz3cDD7mIjMzYO2n6/7+ziLalArSNt1jHx1yOzNphI5MWQkIFvnVNg7q2tqFbNUiKzMijwuZEN1+FJxteD80sDHfYwju5TuKN42SU+sM6/ZGALPJ2xs0g6mbWNNtlbnZiZvGVw==
+	gsz+V3hty8/wfORFNw/Zm9vNNPQXcgwUtyW0zE9q+Nmb9u31IIi6lf7avr93nI85wg87rO6z0gIu2FzNx85urfiBMoQkKlSYZjI+65H8mw/f3pRM1Zw0W50DAw1VjLSUN3wggIXSTFKiveobpiZqiWcWaAJIK9AjfyAaRMVcalIrGeJUn2++mrAnsDASVUvrtKKTVfaYUFXEVtp1uzMWUHmuzb2wmtZRirUNT8T4jk6xU7crQTzFNE3gO7dCl5yXGhYLJVlmpbA74Crppog+ZO0VEnyiCb0QXuJN1oXWjzZcbr2ffH+x83ePPU+KICfRTorjau2IGSvTc9TrP+ty4KfgY6WHRSqJZLIVutSx8haCONhH2OP8T9Wl4g2USyI+La2gu3bVHmpRjCwbKrWuQ3tpJqYJV8yDWn/eT8pq0QCqlbEVAE+XGVYd3OnveFJxF5ctc57lHLI5gokiHYP9v2SdD8IoJTmvdWemBYtoB1SkjaW0HMYhcjfNHjaB8iKgSpx0NYycFWjyR0TVXO67/JOhjNvx0Ob+kIt7AzVaD95RdjQNMxAgqFMXvlL+gMss9qRUiCWXF7jJbrOn2Fx94LhwmpaZF/Ve/RXN9b5GlREyndzmraThIMipFSAuqjLvFSPW7eEePqqI8hVQIJXtGfTGP9Jw47cwfStApnJcdT10xdnjF1xccxjc86HY55E+2AarSYqCMaG0TAa1ve0H6w==
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(366016)(376014)(1800799024)(22082099003)(18002099003)(921020)(10067099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Q3AvWVV3bU1kVDZXQUFtRHR6YzBodEw3WkRpb011M3hySk0wNVFpZXpGdllS?=
- =?utf-8?B?eXNTbHkyRUdja0hDVGJFMmpQMFBiNWxmdU92b1g4aDA1VGZxRXE3ejlhSy9C?=
- =?utf-8?B?R3JxNHJJbzZNdHVUK2FnVURpUjhvZUZjcklhcUFPYXQ1ZCtRTlpDdGNna29y?=
- =?utf-8?B?em9zbkZKbTd0eWpHZjZMR1UvVjgreS9HeUJQbEFsQUFsK0ZjWGpCWU13UnBa?=
- =?utf-8?B?ci9sdVVVdzBhSHViUkZkaWEzdUJ0dVdZWEVaM3NBZUVDMjN6SWhlekVFMmpI?=
- =?utf-8?B?VVlJSy9GNmptdGRJRUNRYjZuUW9ZKzBBZVRONzFYUFIxaEU3dGxCZU1TT29s?=
- =?utf-8?B?eU1kSkl2SEpCc0dNVDh2WndwK1JwYmNpUU9jVkkwanVjL3hyR3QvUE12QzJv?=
- =?utf-8?B?Uk9zdjExaTJFWVo1TlFlbzlqL0JIajQyRWU2V0EzejBCZWZtQ2J0bEFVWVJq?=
- =?utf-8?B?MnR0cWxuYVphOG4wUmNLMzNNaXBWeEszZ0NnSXFXcUNhUFByVkp0eGdxclhH?=
- =?utf-8?B?SzBTUHNDdmIwaEd5ZmllMzBiYVdxdjlFNG5TUnpyYUE1Y1lQdlhlbWtqeVFU?=
- =?utf-8?B?UUFvWWQxN1VFNW9hOVF0S3dqZ3J4SGZuUlNQVUlYbVFVS1JMWm4zeVF1NGRI?=
- =?utf-8?B?dms1VVFGd3pGekdROGd5dS9lU1pJS0Qrek84clhNZFZzVUNRbmR6Ulg1Nnh5?=
- =?utf-8?B?ZHJWZUMzY2lHZ2xMSzVIRFgwMksxODVZLzlCaGZWWW1xejRlb3VDbTNYbTJY?=
- =?utf-8?B?WU5rVlQxZU9nZEVZSjB6NXNIbmxmSUYrV2pXOC9KbEsxVXh2UDg2MmZROHJY?=
- =?utf-8?B?bjIySlR5Tk5UNVFXcU9qQmRBME9nZCtMQVJGVVNUYmdhNVJ2MWFmSERLM3dM?=
- =?utf-8?B?akEvME1vTU5laUZIWXVPWFljYmZCTG53cTVEMHZ4SFdtQWFuOTJCaldsZlR2?=
- =?utf-8?B?V2FhclpzVDcrVkhYeXFMMmV0WGZTaHJTZjcwU0xId2xIbnppNFp3SU9PLzk2?=
- =?utf-8?B?K1p2TkxmbEFSOVg3L0ZlOElNYW45cXVXZUp6ZU8zcmE0dWlPUUtyTlU3ZVRF?=
- =?utf-8?B?eklzRlFBa3dHQzFWNUQ4ZkVRKzh0L2U5Tno1VkJmU2NrT3dBejFHNm55clIv?=
- =?utf-8?B?L25ZYmJsSlZ1OVU3UjV4dFgvM1l5VkNDcnJxUjNUc2VCSFFVVGFTSzZnNjBp?=
- =?utf-8?B?RnBtQVRBTFl4R3l2Q0VEczRQR2M0ckdMakx4UjFmVHNRUXJZTStQUjBZSSs3?=
- =?utf-8?B?UkVxKy80N1NJR2R0cWNSZmczWUg1NUsvbE9zc0U3ZGRSVFpYUUVpTzRXb2x1?=
- =?utf-8?B?NmZvanl3U3pjZHRIYS9DcEZsTXN2TXhEV3NHSGhtbEN2NHY4Y0kvWnIzK09a?=
- =?utf-8?B?SWxGTEFVc2xKazI3TjdnLzBDazEyODdTK2VIM3VjZFNLbXVUN2crY2l5bURS?=
- =?utf-8?B?emdzakhWZUdvMGthTUF2NkVsVC9LUTltSjA1a280ZFJIMnBxKzlhWDZXT3RX?=
- =?utf-8?B?VElBUEgwUFg4RVN3SHJFVnFkbE4yOTkwbXhpSEFnUnZiOVRqclB6MFR1Ylh6?=
- =?utf-8?B?SzNSZjhYTUcwMUdoUFBZc28vblZtaEpSZ2VjRU1yanljRG9pWTFsQnd6Zjgr?=
- =?utf-8?B?d2RhbFJNUW1vRHIxZFQzTzFmNDJxUzY5QUl0b1g0eUF6QWc3d0RVcUpLZlNV?=
- =?utf-8?B?TXFCMXUzZG1RUGV1dHdBSzI1NHhybzJYODYvaWZwUnpwTExyRUhkZFZBRHUr?=
- =?utf-8?B?TzlTb2cycmMzbndHWENVbzdPeXozcTdoZ09WVzYzVkVBWGJkUmtqbTRReXpT?=
- =?utf-8?B?N2ptY1cwc01DeGNyazUrTDd6Q1J6OHpnNW5hakZlOHBoSVQzWE9xcTYxS3pl?=
- =?utf-8?B?UzRjeUVveUw3RmhVSjRyM0JzOWFySHFoU2R6dmYyUGMwT1NOUElHOFV4a1dW?=
- =?utf-8?B?bXc5RXppbjFyaExhWjVTQ0Z2emVUc2Voa2xMN0lzVHR3L0dIOHBFY056Q2gv?=
- =?utf-8?B?d1h3VlJvZXAxQVUrNXVIeWloV3NET0NyUlFhbGZ5OHdRVmNJUU5RSS9MTnRV?=
- =?utf-8?B?aWlFcGl6OEhmM3pPTldtdWw3TVlCUlpFRTlDYlpZUHJHekM4ZE0xenpHMm03?=
- =?utf-8?B?amJGMUp0ZjhBRnNLUXNQSVZBN3B3TGZYQnVybDFQNXBUODV2S1MwM3RFZXl3?=
- =?utf-8?B?NkowbVVQSkc3RUdPcmUrem43TkRJVDNUK2czakl3M1djNkg5ajRPSm1mRGdq?=
- =?utf-8?B?TzJXSUVMNHE3YlM3RVFIVjQ5VE1rVGhNZjI2QXlpYXVkZXFzRHlnM2xmeVda?=
- =?utf-8?Q?5yMth6Dn8KZg4D5Oj0?=
+	=?utf-8?B?VWREUFdFQzljSVAzMWJ5OE8wbGFVTzFkZmtyeldiQjhPN2xhTmJxZlhTOGV5?=
+ =?utf-8?B?enlaQ3Vhby9hbjRkQmJaU1UwbW5nb2lEODJIRkpHZzZIcU84NW1iaHZhZTFl?=
+ =?utf-8?B?UkJmRmNEcDBNWDNWWmhkSHdEOERPRlg4Wmxoa0NIeCtpMFl5bzBFUm9SaHBW?=
+ =?utf-8?B?aWNPSjNibEhGd1Y0dFBlSDFOSnZNSnEyZDBCYzJDbEJaUjA4WlUrY1REem02?=
+ =?utf-8?B?RGtSNDlUU1AxOHRwaHBJTkVTRDNSTVRvczk5R3dXN0FjQ0ZCelRmL0Y4Ynht?=
+ =?utf-8?B?bTc1NVlOTWMyS3hXMk1DNkowNmtzQTgvckFvZys5T25sOWtxMWh1UFFpOUpq?=
+ =?utf-8?B?cytzUWwzYTE0QUJ2N2FPb28xNjJBWGptVXg0YWl0dHZtelB6YXZSWGxsUGZY?=
+ =?utf-8?B?b0RTOS95Qm14NFpjUHJBeW9RS0c5UFFqcnpxT0xUNTVjWDdhSytaV2NVQTRO?=
+ =?utf-8?B?UEltTVdHWG0vcDFaUU9yOG9qWHl3T003OGljdy85WllKM0ZESFByS1VRNGJk?=
+ =?utf-8?B?TWp0RU5wcncvV2Z2anowcDI5a2xMQzJzL25mSmwwaCs3WHUwNGVvL0JXUWtH?=
+ =?utf-8?B?L2JTYUJWVGJHZnRaU0VIdnl1TUN5cVFCOWluSG1LeXEyWWhVOHBUWjBmWlhv?=
+ =?utf-8?B?TW1GWTBLdDFRajhaeEEvNjdqUWVJaWI1Ym9vWjAzeTlibHB6NzRaN2ZKdWl2?=
+ =?utf-8?B?cmVwL0s0bkNSSXE1clhZM3FvWm83dnNqNEsyUGZKaWlRbEpJLzRTOUQ2QWJw?=
+ =?utf-8?B?TWVzV1RpZVlkVTZEalluUjZuOEpXRmxMTC80RXZleDFOYTgvaTFVUzkwWnhs?=
+ =?utf-8?B?azhCVjRnMkFkSE5yUENqY1V4ZjVaNm1XS2R1TEVnYU10VnlLZlhVaTJpS3hB?=
+ =?utf-8?B?RE9WTnNScGlZMklpVUNmVlJtQ014cDhsMW1MbVkyeDZQQVB2S04yZVN0VW5l?=
+ =?utf-8?B?U1VyYmJ1MHg0WTNIQ2ZWaWNhS2hCcXQybC9RWllHRHdJYWo1K1BZdHBBOXBT?=
+ =?utf-8?B?aC94TWRteDUwQTNka1NtcTA2K0VybzBXOUt5SCtEZTN5bWJBbll1MjdCbzl1?=
+ =?utf-8?B?WktNUm1yblNycFg3SjFGb1ZoWHRCa05sS0lUcXp4bnZReHhuQVlyYkFJYXFn?=
+ =?utf-8?B?aXg5Z2lybEtZcWk2SWRRajlCSHhHTW83YkZnTEtIcG9icDNpeS9WdWZlL3Qw?=
+ =?utf-8?B?ekVBemUwUHEyU20rd1cwamNhQVk2OElmRndnOEV4akhNSnZydVgwZVRIa0p0?=
+ =?utf-8?B?aHhSNlUzY1JIRnJZOXF1Z0xmNmZlTVR0c29zK0dEampETThESzVvWU9hRWVI?=
+ =?utf-8?B?eERJd1huQTVzRmMyRFBUeFdoQ0V1ZFc3bzF0SExuRlBIRktiYXlGR28rRE83?=
+ =?utf-8?B?cGdPL0hXNUJrQTJJRG9WRnRpVnlFcFZqYVdUSWp1OTdwTExLWlMrVnUvOFRp?=
+ =?utf-8?B?VnYyeExnZjMyYjhGY1ZLbW1KSDJWeUlrS1NCenE4OVJOY0tXMDBhaklTTWkr?=
+ =?utf-8?B?blZ1THhTVWoxWExyZXdlbU1VREdLS0toSlQzdm1PY0txaE4vSERYMjNZL1FD?=
+ =?utf-8?B?S21sdER3dXFBNFpJZWZJWWVnUTZEYVkvS0JKL2s0N1ZKbG5ucmhnbnBCQmVB?=
+ =?utf-8?B?UXNjYnNxUkNTTDhOeTlQUUIrODkwbnFMZEVLaVJuUEptSjJNL3k0RXQ5cnpZ?=
+ =?utf-8?B?SjhndkJzWVJFb1IyV0FHQjlsU1o4cVJOUkI5NmYxRUpzbVp6R2FJNzB6OGgz?=
+ =?utf-8?B?dzB3a3c4RzdiYjdjVURhdGRRQlVJTG5YOHdYaCtEaTRsMm9EMnp0SEJnWUF2?=
+ =?utf-8?B?cEdEc0pGNlV2ODJ3UkVaOGhDMUVsU3FSZVBNMFJFNWZGb3JabmQ0b0R2OGZr?=
+ =?utf-8?B?Sm4vQ3ZESUwyeXJyNjV5dmlRUDZ5WXdyUlFSYm9VWUxza2tLUDFCenh2TjdH?=
+ =?utf-8?B?NStoN1J0eVUwcW5UZXI4Uy9RNnVrdlQ2aEJZUUptUEVXbzlDSy9MOU05bzZX?=
+ =?utf-8?B?T2NsVGROSDZ6Q253ci9JWUVDNFBteC9yUTBpbmpsall2Zm9iZTV0b3JLSksv?=
+ =?utf-8?B?YktmT0U1WHdXSzRydU15MmFEN0tSM2pUSkMxUktaNExTOTlPQjlWWDJKa1Ru?=
+ =?utf-8?B?bHZXMlFjOCtxQS90VTRDb1lKd3ZqWnFzSStGbTFhSmFXTVplZTZ2STkyRTZG?=
+ =?utf-8?B?R05TNEtqdmQ4cU1PTTMwVDdSRUtNK1cxWldyTnQrNHVKK25kNXh5OE8yV0l3?=
+ =?utf-8?B?N2F4aWVXRk1aR3ZpbG1qeDlvaXFJdXVmOFVaTjRJUmEzempDQlhkeUo5Ykhm?=
+ =?utf-8?Q?ZEpmxUiT47cUJVjHlm?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3b0577a3-d1f6-4fec-74dd-08df1207493d
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6b5d5a0f-e1a6-4725-199e-08df120749c7
 X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2026 02:24:21.3702
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2026 02:24:22.2746
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tLclKViQFBsmsz6LxOhuc56yLjJcbwjEednZGh54FN2MeVoXdjx9VioF0SS84/WJ
+X-MS-Exchange-CrossTenant-UserPrincipalName: /x3fAVW9z31WTZwfJpYVgtLQ2SIugzlsh32Y/pLrrZnUi5RgbwPVxJlzmOzRrcUz
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6486
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 90E1D18000D
-X-Stat-Signature: qzoe9gyyfimh58sui3ztwkkgtdwce37i
 X-Rspam-User: 
-X-HE-Tag: 1789352677-896073
-X-HE-Meta: U2FsdGVkX1+D7rNtVuyi7xxfFVfimIpb1ahKe1FhlCmI0jtImeAfPghZB+tzjTbByFdb4akerFiIAUpdLdr9sljOXAq6zKqvy1vPQXtMxPgTOpPUYQvVjuB1VTqvsoPHZf5/I1KrTxC2/Zmz/M8yhIA1XBq5O5TfLzHCYVxpHDlIUlO/Ex/+zT3t+8n8WjmyBts2dUCjasfELE9rvEJRLPXDbcrVZhQ6Nf2olMtIRwuzNQPiBE28+KpYQ1BRynNlderrEOGAM2s1uFfU4+nXU13S+6mnfN0kzQ5jfdJZ6bmXDoEqJH32Y+v7tOsM3G0FX+W+vkFSF7IgI9ikUHtefYopnVC4HcTibzHxNkkhKerS/CgvCh1V75q+n4/hVhiOpImIRm4pHe+mxGlVbvI2QQ9eR1WfCKLVjZMr1oB7wKp0o8n+JnX9CAIPEGda34Plv/NKGmuJuGdrmBnSZWfMkA2k2fahejR+WkYc7BFwOAh8rPsGSISAxUvjpA/okbzsuQQuxYqHUrB5iYjVvaD4Tmmq6E5JMWoPLZV1Z6Q50ukQfPzcl8xuquHe1mAZ1vB4FeRA8vbMSdshXEA0nNg1OxQXlyBS3Xd2Mlbmys5NwbGXYt/g0iqqoljA87ixUp8pOSlYluc6GM5LuVbQq07VALFImlYS46JH02HDYkXkHgyQPvSoteQZnouSQZmtunmwdThHEWe+dIpWYd8ScPwxIFJ3cGxx35LbUupvTVk1OzCXfoCiif3/3nFckbIuGfviDAqT+0AtHkSHesLtBAsW/gFPxOESWMzsYfgBfESElMMBWoHICwMWHyfFpHQMt56IeekYI2fYLphC+kmJkqEPv2ALG4IibB+fjDpf8bSodDOTkdUY/p/DWSYFj3CrqzVnqQ5UBUlpgB94+K+0fEIC0IQDeA+rP8uNyOyulva6dNEA9L3OR2Ap5YjjYBOMBUnwpoQvQSCRAla8Ltg+ySt
- QLSjWqS1
- BfczCs4d9ggXTohS5ZJeSq3pMM5H0DijY4Fgq3KnyURoCkBxpQB6dcYSmMQFu2adLmlFGp/LqOc+BnoD/OUch7fJ6HkCLxs+XvskfsnS71Kl5cquqz3dezzYp6N9FE7suqGt1A3vfdTg3dpaEQYB2UUi6Laj+d5kYyhQvjGKuONSNGEViH3vkIaKiIyG9M0s4fyKL+20xxWKmpWjRJiDXwo1Xc899jyCiKdgaudlLuxAqlQi76k4HXJWfevP/9famE28IMONUDW9XwyZKGUkwInbdzjyeGwa6qYgc71JNmHarIdoD5helAS30ERtJ/kQPlq0Qz7Y4FssR18m8RAIlg0W9r7cNvxX0cd+qOz1ukVoi4QAYIIrm/EuBF7D623Y6SSmd+MO/v22UBt8TklDHM/2aKgeKZwdq7D5q+wA0WIio4ET2dZ7I19dseaEe/JeFOBQSORjuuHG8+Ib80iJ/clIiozoynN2G70V3unRN7caaPvsl8DsPX+xQXxK2h7b880EMRZagDWC2xAq3JE0cZbf7OwRKAKIno1FYxWza5Il+ZkFQ+qOAjmjVWPrAFfSy+vIn/7Bw25w5AR87j0wflmQW+wY8nN+A93QMs33reVfUiPjrq3OCb9U7z9emlZfL32+z3MP72ocpwBby2dbff1Q+GdAiqlmSBVp9D2KVmzHyn2FjyfFnFF+hv3smQG+tvsbwDfkNyW/S7JBi4YCl6/7yMaPdsDa54eVlFkFEp7pM00Q8VJElhwW9DT1ozoC0jcio
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: E25FE120004
+X-Stat-Signature: keqomfr1zhtcpw88w6csrym6ahrc5a4g
+X-HE-Tag: 1789352678-412476
+X-HE-Meta: U2FsdGVkX18dHNaFpY8LvxqD/qIFqrs5/gwSSKMvRnWC37HsJwXYd8omIoaFm06ZTaZEwxd9fK1RvzeEztnu0R8VCRyM9N52V8dRRWhEDTYWOPoW4vhXSguPFcV2dd8j2ZBD5QdNdvtc5jN0QyRiLOZc+hR9wCIpXpAL6ONVL3GaeyQAWsWRz51U7cSHO/Ve2GPkzDYVOyYD1fEomUASmJ0F6bwoX2tJyZY48X4Rb3p/xx1knMmG3+riyf649Om1sroRhbJJCI+NhHqwU+jzXvDJxutNkOwJgJK7K9YxFOtOk2ke+0DQ330UalwJEIY/Nw14s2E03gQ2jYBm+fU2crkY3FVZv5FcJb9smMrdTUNiQ2OoFXzplcn1M04Q9RoICKe4XWJjERsGKN9rv+cmf9W8IyKhB/ieYhpAum2ZQ+vzsJEgolx8n7u+lNkgL8NTbZxFd+EUdeFfgS4at03gmwWj13OwdqZ2gqTNNAPPDXp1eVF0RoRyGCAiXtS8lAXDmMmwKg+ZQE2bRGqEhlpN1GKA8f0Hhg502f2cj2XLBRdU+48sXYjnCtVCzSX0vfpQl++DmBU7UZvT2lZd3u95BvRvMPDkleDxOR1VkLmMNsZxDWmeS4KaB27ZQljH0v4YQ7mWVQvyxwwh2Xz0s6jn/mWH397PCpdN5KrcVHifRJkEmsf60wnxJrKFEah3KSM1f4UVfvznQ7ZBcBwrIzJ2DEC9KIPCUbqkxY/AWSkTMXTmHpbDnjLtgE+qRfXa7oTJCAsR0zXaeJaIgfORmpAPNV9s6f2ghxEFPq4WZD9SZDy8mnPW97fvOKnh4pC80+lgotsx8fBW8Y+kndTtAPtIWqvdZ+7cI9EkQhObn3CEwotTifYqLmybLDmcaXiLCfuytSgknmLQBLTaveE4MiGAfu+2n5NGhh4IYZKny/6Ny0iLTMomsvARSdSp16qbbbQo+jlujPWQlMrcZdZ36im
+ 1a6M+LQN
+ W5PPQsiodvPFo3L4G9Ny+vegIVS8P6rtHWA1HXC0EyAjN0WDcmNyq2L3iAktE1lnEtK8idFAye50Z12EwI6UhdA6Zjq53Xc3o1uUsdfYFVg3Kku0EMXgmQATuoJ4k8NDC+TNPx1qao31jxgMRtHWiT19Bdj4pmAzmUDGh+TIZiqsOeZXVVLV0AanKkJbr5++xcdJWE5hRjanFXfpjq4TFkqLzFhrxuNvzAIDL754M99vSfKhu1UI/H/27itipOa2HjrD4RuAyHWnKsrmq4dIG+6zkWONbEzKOOrke40BBf1ERmkFE8RlPFrtxmkcuJBZKGcQhE5Y6HFUmyaKHThk4yDPkTxPyhlYc3wdGvw6vRob+NMNiEpTjrZ0q6EDL2Sx1zahHQSfnw+F00vrI0uWFA/E1mvuGOkgb7Qag9RSlgOKV0nvBGSnF1hGg4gxKj/Cl0TFTJESPyPLW/ejiTTVSz/8ccDFqA+YHANtFW7oDS4kvDH5n8s1mXdtR5vjWWInW2FbhNDGv4z0HG7nDkN8udd01kYpnQHAdr7vi5Z9gNJ58dUoXLdiVhKEwKPbad/9XsAdulMK7gkHSGgGQn4lP7j/65sH6Pr8Vq56/BFz/jU9GkGnz10CTtZr5k4YgBNTJQp0OnL8AJKIJmZw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -189,31 +188,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-erofs needs to traverse readahead folios in reverse order to achieve
-maximum performance by
-1. reading all folios from readahead_folio();
-2. storing the prior folio pointer in folio->private;
-3. traverse from the last folio to the first one.
+erofs_onlinefolio_init/split/end() use folio->private without setting
+PG_private or increasing folio refcount and it works. But after PG_private
+is replaced by checking folio->private in a future commit, it can break
+folio_expected_ref_count(), since the folio has private data without
+elevated refcount. Change them to use folio_attach/detach_private().
+Folios during this process are locked as they are in the process of
+readahead, so no parallel migration/folio split can happen.
 
-Add readahead_folio_last() to achieve the same function without using
-folio->private. __readahead_advance() helper shares readahead_control
-adjustment code among __readahead_folio(), readahead_folio_last(), and
-__readahead_batch() by checking new private member, _forward, of
-readahead_control.
+Furthermore, because folio->private is used to store in-flight I/O counter
+and the counter reaches 0 when all I/O completes successfully without error
+or being dirty, ->private=0 causes folio_detach_private() to not drop the
+elevated folio refcount. Solve this issue by using bias=1 for the counter,
+so that ->private stays non NULL throughout every attach-to-detach process.
+Add a macro EROFS_ONLINEFOLIO_BIAS=1. While at it, fix the comment about
+->private bit layout and add EROFS_ONLINEFOLIO_COUNT_MASK.
 
-It prepares for a future commit that replaces PG_private checks with
-!folio->private checks. After switching the checks, erofs's use of
-folio->private without bumping folio refcount can cause unexpected
-outcomes, e.g., in filemap_release_folio(), try_to_free_buffers() becomes
-reachable.
-
-No functional change intended.
+It prepares for a future commit that removes PG_private.
 
 Assisted-by: LLM
 To: Gao Xiang <xiang@kernel.org>
 To: Chao Yu <chao@kernel.org>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-To: Jan Kara <jack@suse.cz>
 Cc: Yue Hu <zbestahu@gmail.com>
 Cc: Jeffle Xu <jefflexu@linux.alibaba.com>
 Cc: Sandeep Dhavale <dhavale@google.com>
@@ -221,143 +216,61 @@ Cc: Hongbo Li <hongbohbli@tencent.com>
 Cc: Chunhai Guo <guochunhai@vivo.com>
 Cc: linux-erofs@lists.ozlabs.org
 Cc: linux-kernel@vger.kernel.org
-Cc: linux-fsdevel@vger.kernel.org
-Cc: linux-mm@kvack.org
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Gao Xiang <xiang@kernel.org>
 Signed-off-by: Zi Yan <ziy@nvidia.com>
 ---
- fs/erofs/zdata.c        | 13 +++--------
- include/linux/pagemap.h | 60 ++++++++++++++++++++++++++++++++++++++++++-------
- 2 files changed, 55 insertions(+), 18 deletions(-)
+ fs/erofs/data.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
-index e1e25ca0d1904..78fd7d980e957 100644
---- a/fs/erofs/zdata.c
-+++ b/fs/erofs/zdata.c
-@@ -1898,21 +1898,14 @@ static void z_erofs_readahead(struct readahead_control *rac)
- 	struct inode *realinode = erofs_real_inode(sharedinode, &need_iput);
- 	Z_EROFS_DEFINE_FRONTEND(f, realinode, sharedinode, readahead_pos(rac));
- 	unsigned int nrpages = readahead_count(rac);
--	struct folio *head = NULL, *folio;
-+	struct folio *folio;
- 	int err;
+diff --git a/fs/erofs/data.c b/fs/erofs/data.c
+index 0885b1f2fc925..f71c7b51bb720 100644
+--- a/fs/erofs/data.c
++++ b/fs/erofs/data.c
+@@ -239,19 +239,23 @@ int erofs_map_dev(struct super_block *sb, struct erofs_map_dev *map)
+ /*
+  * bit 30: I/O error occurred on this folio
+  * bit 29: CPU has dirty data in D-cache (needs aliasing handling);
+- * bit 0 - 29: remaining parts to complete this folio
++ * bit 0 - 28: remaining parts to complete this folio, biased by 1 so that
++ *	       ->private stays non-NULL while the folio is attached
+  */
+ #define EROFS_ONLINEFOLIO_EIO		30
+ #define EROFS_ONLINEFOLIO_DIRTY		29
++#define EROFS_ONLINEFOLIO_COUNT_MASK	(BIT(EROFS_ONLINEFOLIO_DIRTY) - 1)
++#define EROFS_ONLINEFOLIO_BIAS		1
  
- 	trace_erofs_readahead(realinode, readahead_index(rac), nrpages, false);
- 	z_erofs_pcluster_readmore(&f, rac, true);
--	while ((folio = readahead_folio(rac))) {
--		folio->private = head;
--		head = folio;
--	}
--
--	/* traverse in reverse order for best metadata I/O performance */
--	while (head) {
--		folio = head;
--		head = folio_get_private(folio);
+ void erofs_onlinefolio_init(struct folio *folio)
+ {
+ 	union {
+ 		atomic_t o;
+ 		void *v;
+-	} u = { .o = ATOMIC_INIT(1) };
++	} u = { .o = ATOMIC_INIT(1 + EROFS_ONLINEFOLIO_BIAS) };
  
-+	/* traverse from last to first for best metadata I/O performance */
-+	while ((folio = readahead_folio_last(rac))) {
- 		err = z_erofs_scan_folio(&f, folio, true);
- 		if (err && err != -EINTR)
- 			erofs_err(realinode->i_sb, "readahead error at folio %lu @ nid %llu",
-diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-index 939f3a5e973f6..1e3462357aaa4 100644
---- a/include/linux/pagemap.h
-+++ b/include/linux/pagemap.h
-@@ -1415,6 +1415,7 @@ struct readahead_control {
- 	bool dropbehind;
- 	bool _workingset;
- 	unsigned long _pflags;
-+	bool _forward;
- };
- 
- #define DEFINE_READAHEAD(ractl, f, r, m, i)				\
-@@ -1479,18 +1480,29 @@ void page_cache_async_readahead(struct address_space *mapping,
- 	page_cache_async_ra(&ractl, folio, req_count);
+-	folio->private = u.v;	/* valid only if file-backed folio is locked */
++	/* valid only if file-backed folio is locked */
++	folio_attach_private(folio, u.v);
  }
  
-+/*
-+ * Adjust readahead_control to ensure next folio comes from
-+ * [_index, _index + _nr_pages) afterwards and reset _batch_count.
-+ */
-+static inline void __readahead_advance(struct readahead_control *rac)
-+{
-+	if (rac->_forward)
-+		rac->_index += rac->_batch_count;
-+
-+	rac->_nr_pages -= rac->_batch_count;
-+	rac->_batch_count = 0;
-+}
-+
- static inline struct folio *__readahead_folio(struct readahead_control *ractl)
- {
- 	struct folio *folio;
+ void erofs_onlinefolio_split(struct folio *folio)
+@@ -265,14 +269,14 @@ void erofs_onlinefolio_end(struct folio *folio, int err, bool dirty)
  
- 	BUG_ON(ractl->_batch_count > ractl->_nr_pages);
--	ractl->_nr_pages -= ractl->_batch_count;
--	ractl->_index += ractl->_batch_count;
-+	__readahead_advance(ractl);
-+	ractl->_forward = true;
+ 	do {
+ 		orig = atomic_read((atomic_t *)&folio->private);
+-		DBG_BUGON(orig <= 0);
++		DBG_BUGON((orig & EROFS_ONLINEFOLIO_COUNT_MASK) <= EROFS_ONLINEFOLIO_BIAS);
+ 		v = dirty << EROFS_ONLINEFOLIO_DIRTY;
+ 		v |= (orig - 1) | (!!err << EROFS_ONLINEFOLIO_EIO);
+ 	} while (atomic_cmpxchg((atomic_t *)&folio->private, orig, v) != orig);
  
--	if (!ractl->_nr_pages) {
--		ractl->_batch_count = 0;
-+	if (!ractl->_nr_pages)
- 		return NULL;
--	}
- 
- 	folio = xa_load(&ractl->mapping->i_pages, ractl->_index);
- 	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
-@@ -1516,6 +1528,39 @@ static inline struct folio *readahead_folio(struct readahead_control *ractl)
- 	return folio;
- }
- 
-+/**
-+ * readahead_folio_last - Get the next folio to read, from the tail.
-+ * @ractl: The current readahead request.
-+ *
-+ * Like readahead_folio(), but walks the range back-to-front. The folio is
-+ * returned locked with its refcount dropped; the caller unlocks it once I/O
-+ * completes. Compound folios are returned once, at their head index.
-+ *
-+ * Context: The folio is locked.
-+ * Return: A pointer to the next folio, or %NULL when done.
-+ */
-+static inline struct folio *readahead_folio_last(struct readahead_control *ractl)
-+{
-+	struct folio *folio;
-+
-+	/* Drop the previously returned batch from the remaining range. */
-+	__readahead_advance(ractl);
-+	ractl->_forward = false;
-+
-+	if (!ractl->_nr_pages)
-+		return NULL;
-+
-+	/* xa_load() follows sibling entries, so a tail index returns the head */
-+	folio = xa_load(&ractl->mapping->i_pages,
-+			ractl->_index + ractl->_nr_pages - 1);
-+	VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
-+
-+	ractl->_batch_count = folio_nr_pages(folio);
-+
-+	folio_put(folio);
-+	return folio;
-+}
-+
- static inline unsigned int __readahead_batch(struct readahead_control *rac,
- 		struct page **array, unsigned int array_sz)
- {
-@@ -1524,9 +1569,8 @@ static inline unsigned int __readahead_batch(struct readahead_control *rac,
- 	struct folio *folio;
- 
- 	BUG_ON(rac->_batch_count > rac->_nr_pages);
--	rac->_nr_pages -= rac->_batch_count;
--	rac->_index += rac->_batch_count;
--	rac->_batch_count = 0;
-+	__readahead_advance(rac);
-+	rac->_forward = true;
- 
- 	xas_set(&xas, rac->_index);
- 	rcu_read_lock();
+-	if (v & (BIT(EROFS_ONLINEFOLIO_DIRTY) - 1))
++	if ((v & EROFS_ONLINEFOLIO_COUNT_MASK) != EROFS_ONLINEFOLIO_BIAS)
+ 		return;
+-	folio->private = 0;
++	folio_detach_private(folio);
+ 	if (v & BIT(EROFS_ONLINEFOLIO_DIRTY))
+ 		flush_dcache_folio(folio);
+ 	folio_end_read(folio, !(v & BIT(EROFS_ONLINEFOLIO_EIO)));
 
 -- 
 2.53.0
