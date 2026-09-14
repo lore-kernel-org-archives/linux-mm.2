@@ -4,95 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9402DC88E73
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 14:45:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A674EC88E73
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 14:45:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 06EB06B00A4; Mon, 14 Sep 2026 10:45:03 -0400 (EDT)
+	id 948156B00A5; Mon, 14 Sep 2026 10:45:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 01F376B00A6; Mon, 14 Sep 2026 10:45:02 -0400 (EDT)
+	id 8F98E6B00A6; Mon, 14 Sep 2026 10:45:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E9BB36B00A4; Mon, 14 Sep 2026 10:45:02 -0400 (EDT)
+	id 837276B00A7; Mon, 14 Sep 2026 10:45:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B1A0F6B00A4
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 10:45:02 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3D450A0102
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 14:45:02 +0000 (UTC)
-X-FDA: 85212640044.12.0697006
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4DF2D6B00A5
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 10:45:03 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B8B9216011F
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 14:45:01 +0000 (UTC)
+X-FDA: 85212640002.26.7BDB891
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 9D60F1C0005
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 14:45:00 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YDWJPo6C;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 176F14000A
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 14:44:59 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="mUU/cTdw";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="mUU/cTdw";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789397100;
+	b=0liVHL69BoKfAZDr5ror5dltc1E1RS+PBSXAJLhHQhg/yqkiB5k46dlXSgIrsp6HC9WE5c
+	jG5kuwTc5znfogWiAEjg3Ue3AdaQMvLI6MB9V1YhDhP0lJwELaqw9aFLFWHfQOkoGyLJ5O
+	yDhuffTApqSHF4cexeMO2oWTwg3nArg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1789397100;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Pe5PEKflMlDglfugpw4os1GpkWtazCvp49h5WT4n+gE=;
-	b=PVgX0v5ZAdAMcs/xJiB1+4m0RjnLgOTr0UVTsmvYEMG1Zb624/qprkIP1q4KV2TC6U1Mt4
-	+wV3CKK71tuL8PYvCg9QTB/gIOUt/iCDEelTgUDQ8pUbna06nZg28TpVvK3T+Be6MCjrSV
-	SRrocVwknvZtLLtKY5q3r/eUDqRWqvs=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789397100;
-	b=sWMw09Jg4hLdxWWm2HfuZpuev4WmaeJlK5sXRUWZn4LvyVJZh2KLYBKr4XhWn270eZ0Kct
-	7WPjp8x6Cj3MP5JoYhTuK1+givhU4MfvOaAVaWwYjcPdbkTtAgvWHkueCfmiCxA5aklcKa
-	WpgzN9nQ6Qk0GEuhvcT/7uleUMKi1sk=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YDWJPo6C;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	bh=9PbkWTjWrdG2mF2OjLqwQA4JbmDDau4Exk+WU0SHNwM=;
+	b=R0XhmsNvDsHhYIeQZYRczzbc8yXCddDVcWLw31wBzwgUvO/jWH79oelO7e06by9NRlcyv0
+	9+Z2BQNsLbSOAt93tshSeusWToqLj2Re5/2Hm5nGL6+4FymCBJWgBelxeyFn+9Ss2GBR25
+	P4gfNWzDaHQmkRKLqbDyppsvZx+ozNM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id EE22B43ADF;
+	by sea.source.kernel.org (Postfix) with ESMTP id 69326413D7;
 	Mon, 14 Sep 2026 14:44:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74A2C1F000FF;
-	Mon, 14 Sep 2026 14:44:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE5B11F0089D;
+	Mon, 14 Sep 2026 14:44:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1789397099;
-	bh=Pe5PEKflMlDglfugpw4os1GpkWtazCvp49h5WT4n+gE=;
+	bh=9PbkWTjWrdG2mF2OjLqwQA4JbmDDau4Exk+WU0SHNwM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YDWJPo6CioTXC0L1xlPNk0vVexQrbXgzSvuSlsaet6SV0LsY8ktyIn0l7ijI24HpZ
-	 0oKlGzJXMdhBqZlZL2zGfFdPn+A9D3PZMqH0DEC0OVuhe8yPIrMQuJ3U79BZbzeLG3
-	 w+idBuTZTD4NKvStaRs8O4eFliDKlNrtpZT9YHYqMAvFkrP4Z8kwyCI2gab8/m5n0L
-	 l9oS/cYSP4eZRqo8aTOzcyXc1x0DFpwIZ7D80fArIsJhHZgkdYO6LJolsYo0LeBWbK
-	 GH5I3ZTyy9mOCG5pcv0+uLo+ThQ7A2FrvstGz6y3hIJXDT6c3Fof4ivhbfqBDRPLPE
-	 9SD3UgnHcTWJA==
+	b=mUU/cTdwIIy730r278s4lWSS6qbNi1K8bB9KK0f5NPJoQ9iL7zvpAUIzkFHv9IUx3
+	 hvJKrtBA75lQorwGhuchbrnL32aQSBbjSgBfuVeqRDGPaqBSwJX7AAvM8M3zQS1lqY
+	 3FqImho3NtekOubwDwGuOK2vNVveE5v6KgiCEhnAz5T0ZZIWXS+Hbb3fRCU7HWcbB7
+	 +eL6ymZzYNaSrNdX0SC+TuSQ+myHwvDvkOSzntGgYEWlibdAQpEAxjLHfTrRr4SUp4
+	 6SP1J6Bmo1GJChdJy02AlKRK8cc49rz+5aXxnGX2piMiK8QzcVsre3uSGXGGzIE+Pq
+	 752a7o36cLlOA==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
 	"Liam R. Howlett" <liam@infradead.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
 	Lorenzo Stoakes <ljs@kernel.org>,
 	Michal Hocko <mhocko@suse.com>,
 	Mike Rapoport <rppt@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Vlastimil Babka <vbabka@kernel.org>,
 	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v2 8/8] Docs/ABI/damon: update for hugepage_size probe filter
-Date: Mon, 14 Sep 2026 07:44:45 -0700
-Message-ID: <20260914144448.93732-9-sj@kernel.org>
+Subject: [RFC PATCH v2 7/8] Docs/admin-guide/mm/damon/usage: update for hugepage_size
+Date: Mon, 14 Sep 2026 07:44:44 -0700
+Message-ID: <20260914144448.93732-8-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260914144448.93732-1-sj@kernel.org>
 References: <20260914144448.93732-1-sj@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 9D60F1C0005
-X-Stat-Signature: 1ww5upwjd1bgamnk4nt7uoun376cfewo
-X-HE-Tag: 1789397100-731652
-X-HE-Meta: U2FsdGVkX18E6LNKRQloggyPOwcxylICzJbbbCMzbz1CCG5idMZwHRC1+13b2I72c0Z95WI7DLWflEw033vSNMhKrsQCZuqYQ9CdTViCS7xkybkLaU8e5kyDXR/7Yh+P6HCJgGgEIp/xhG8icuIANcvYByCary1wgLeqBfVQ+IG52mPza4lGuhwH6XOZYxtRPubgmPD71FJU+I5fUZOJNAJXMBYjsxokyWbuuQZG2f5PRZJbE9t5TISa+Zbw+7eqPRvpVBOT81vzr6ax1Sfb9CfZ5ujbdGFxJALd92Hxo7zDnr6/tnT0a3xeuK9SBbDpdyMGaQAR7TcglRw8WCBRm4WrdONV+LIxIKkjzh2pWkS5SagfwT3gMuESg/7xvKi16UiqxVoSNN1E+xQN9Rszm2sjTvX9RDZsA0OXPtfwFdY6gY80zUIZvLAuJbb97IQAtcKHCBx3B4I+WmTVVw/O0d0qO01qmskNNK8dufwdrUt8HVYl7Qm7I7DrIpDYriZupNpdazXdD4cfC/0UpKOBlxZfvNQnuXhVpmOYVqmzilL5uPu0w9sqG7hBwW7HvmgXYBwsw4jt9shSs50qelqJibirbqyMv5bYZ+Wz9oB31nXxCHQUf+LbitwbjVudzz9WFGJMfaO0iqiy/tXCREZ/oEiItLSRdq3LN7k1gnl7qnprFGmK9DJHDuYFJpEOiK5E+snsFPvJ8nlFzHM54yOKA3MdagUHjmM3WSVeWrcyhO701SWgd6jaez3B3Qx9/ZRW9KZ4Li8oRojVEi+U6S4SL+N3oNsZ5jgvkS/1t0okX/NpHDrKgRLhvDgcFJ/05DoduqsL6+jnnP7J7UlDI3FVxwcXXxYyIE39/QtSG+IKA0RxX5YF09XC6KoFCRKWzbcoaBfcfw6mZU6+WtHqb4hndZEU9UcJuq15b8GJt0hQz115yQtkxneTnPsxS2dga3dN2yli6uCoxVVmXg77lIw
- r653mW82
- AbIp0DkZa3GkMZplYnJy0sLejWUTHvXeul+aCKvnWek7aT9d/vkcnPVnyVWDDd/YOGr4nxqceR9UJ1RUcq8DK1wGoBzodCd3Lx+p033UgiE9BX6IP+ebhBR0QgMd3hEp54yquTEWQGfJkzoBkUWtmViu1w4hRM8xrobvIMqEIvs761ssG6qfof5xbOjnXT6Iv2qR8cNk5vVZzTHD556/mX88EJOd3kpjhDmnVeRF3gT3o4hTw4flrbQanVIdB/WHtK9Z2mBFhj1uwWtYMuyFur1/5DYr0hL72pAaGv2bEnVTzOizt4LsFn9UJsFTxCHb7PybM
+X-Rspamd-Queue-Id: 176F14000A
+X-Stat-Signature: fkfi14inb93ixoqmgk4198ca74kxjz8j
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789397099-967089
+X-HE-Meta: U2FsdGVkX19B4307lul5X3c7tDZqPdpZqVKgmc5PGZL0G12/+r6KRE+5lxC/0ZYYWSQaZerB0uFoTyANpT+dBlQO5gD9frK7dSQkQ8Ye9/JSwmNQhqmebFNSzl3mX1i3A65cOxeEYXNiOp7Ebn/A1DGKjLnLtSy7/MO+vLbbPxFCA4z2srG08IStLc2Zmu77mTbWvL87XoT/EZYG2spqaXNfT2jq9CjnspNcG5qXzPnQ50/Fszgke4ijm9edwEruHPRhSSbct/lZcBDJ2bMx9e599HOfKigqlbsWT35UAoeoNkKBh+5uv8GZe/Lqg7v+mLbhrA/1rkd9noPZFSBNEcmHV4O0dTDDuLTtoMYXcV6+dJOkgFb49lYSuY4kwqrFhusFr40xw+Qtbv+jgMIsIw2ez1pinjwrgCKS2fi/VLeSdAmNtnwmSv6Z4U97cBF+lwozFIaT4pfzaOmxTVGbEYeuGtkQlB8fjbv8uJaYUcR9qoBBlaYFFvBTvpOB6PtzgQh+3JQPu08VKunOTtOLDlpWZQEzbDC9/RRguoH502DrRzo7y9r8tR/1ckMTaVvjg4Q2iDneJXNWI53p0MeC+uo2DEWMGwcRP37mdo697GHzN/ZNGssvn6SFgU3B246D/FcpWSMTrHk4WzLFEc4xtz4gUWtVlC3nqhTKl1g4TO1FMtdlNnA7gmZLwERVxayXKVcFZxQXF8oqV7ydnwAkIOcoqw7HplLzhJIrcxEyUKdR4xoaegqISoUkpwLKjnwGsc9kimd0otMRAKGoXtrdnkQbbvSCc05XK21HSmBurxcGuqsKFi114d+fqAccH7HenplxHY1/npWedz+fsgLHt2kVHl4Ye29JvMoQHm27+DYMSgjk4IRYeOfIQAstosUWfuRgbLmphZXncs6v59qHM9+VmwtOMKLoFGX0V6dKrCl5ITiAHkOwxyZ/d4mnx8yVE8lSFQF5TX8/s++fPoR
+ OG3OwrED
+ cO1GTiNVHSE0ZERtt/B54RCKhQTjfj7qGBum74GwKyBVH7hPm6Jtk/iAiDQLrcr9LZiQfBkDu0mj8M158elFUidNXk8YtGNyYJqc9hMBA01J9vYceZSSEAdPtur8/f2DPNcBIg2mXAo7BcD3vCXD+TJV5b1g98fguHIaB3ZrUvGeZ7mYUInl8O4qz3gAGLfqcPtEvFPhi0rB7gq0sl4icWZQaDWVoB7DtLSN4bq1k3YJoQ986zAWkYsUfgbj2AWJEnbZaAAy2bU+gWA6/fcGZCEaIznxAZg3K512XNASXqQsGUuxmqbvbT/e6KGFDQbmR+qjghmAGuUqY9s6YbHIu2w6z73uGyxTbJj84
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,40 +106,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-For the newly added hugepage_size data attribute probe filter, two new
-sysfs files are added for the size range.  Update DAMON ABI document for
-the new files.
+Update DAMON usage document for the newly added hugepage_size data
+attribute filter type.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- Documentation/ABI/testing/sysfs-kernel-mm-damon | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ Documentation/admin-guide/mm/damon/usage.rst | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/ABI/testing/sysfs-kernel-mm-damon b/Documentation/ABI/testing/sysfs-kernel-mm-damon
-index ad21f58f3c912..55df688ea596f 100644
---- a/Documentation/ABI/testing/sysfs-kernel-mm-damon
-+++ b/Documentation/ABI/testing/sysfs-kernel-mm-damon
-@@ -206,6 +206,20 @@ Description:	If 'memcg' is written to the 'type' file, writing to and
- 		reading from this file sets and gets the path to the memory
- 		cgroup of the interest.
+diff --git a/Documentation/admin-guide/mm/damon/usage.rst b/Documentation/admin-guide/mm/damon/usage.rst
+index d3e37400367bd..6b80bce5d678d 100644
+--- a/Documentation/admin-guide/mm/damon/usage.rst
++++ b/Documentation/admin-guide/mm/damon/usage.rst
+@@ -78,7 +78,7 @@ comma (",").
+     │ │ │ │ │ │ │ │ │ 0/prep_action
+     │ │ │ │ │ │ │ │ │ ...
+     │ │ │ │ │ │ │ │ filters/nr_filters
+-    │ │ │ │ │ │ │ │ │ 0/type,matching,allow,path
++    │ │ │ │ │ │ │ │ │ 0/type,matching,allow,path,min,max
+     │ │ │ │ │ │ │ │ │ ...
+     │ │ │ │ │ │ │ ...
+     │ │ │ │ │ :ref:`targets <sysfs_targets>`/nr_targets
+@@ -308,6 +308,8 @@ Writing a number (``N``) to the file creates the number of child directories
+ named ``0`` to ``N-1``.  Each directory represents each filter and works in a
+ way similar to that for :ref:`DAMOS filter <sysfs_filters>`.  When the filter
+ ``type`` is ``memcg``, ``path`` file acts as ``memcg_path`` for :ref:`DAMOS
++filter <sysfs_filters>`.  When the filter ``type`` is ``hugepage_size``,
++``min`` and ``max`` files acts as files of the same names for :ref:`DAMOS
+ filter <sysfs_filters>`.
  
-+What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/monitoring_attrs/probes/<P>/filters/<F>/min
-+Date:		Sep 2026
-+Contact:	SJ Park <sj@kernel.org>
-+Description:	If 'hugepage_size' is written to the 'type' file, writing to and
-+		reading from this file sets and gets the minimum size of the
-+		huge page of the interest.
-+
-+What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/monitoring_attrs/probes/<P>/filters/<F>/max
-+Date:		Sep 2026
-+Contact:	SJ Park <sj@kernel.org>
-+Description:	If 'hugepage_size' is written to the 'type' file, writing to and
-+		reading from this file sets and gets the maximum size of the
-+		huge page of the interest.
-+
- What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/monitoring_attrs/probes/<P>/filters/<F>/matching
- Date:		May 2026
- Contact:	SJ Park <sj@kernel.org>
+ .. _sysfs_targets:
 -- 
 2.47.3
 
