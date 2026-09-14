@@ -4,84 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CA24C88E64
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 04:18:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87DF1C88E50
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 04:18:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BED8B6B0088; Mon, 14 Sep 2026 00:18:41 -0400 (EDT)
+	id 9A05D6B008C; Mon, 14 Sep 2026 00:18:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BA06A6B008C; Mon, 14 Sep 2026 00:18:41 -0400 (EDT)
+	id 88E016B0092; Mon, 14 Sep 2026 00:18:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB6CD6B0092; Mon, 14 Sep 2026 00:18:41 -0400 (EDT)
+	id 77EE46B0093; Mon, 14 Sep 2026 00:18:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 82D7D6B0088
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 00:18:41 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DF3DF408CA
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 04:18:40 +0000 (UTC)
-X-FDA: 85211061600.06.F45E82C
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B8E36B008C
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 00:18:43 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A4B6F120753
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 04:18:42 +0000 (UTC)
+X-FDA: 85211061684.11.22D8F04
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 5ABC6140002
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 04:18:38 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=lfJqfYVL;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf26.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+	by imf30.hostedemail.com (Postfix) with ESMTP id 57A5C80002
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 04:18:40 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=kc2A+7jd;
+	spf=pass (imf30.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789359519;
+	s=arc-20220608; t=1789359521;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w0QS+yRZerwS7r9ZIT395XGB5TnODXn+M6COboka6d4=;
-	b=ChiDPzXOvpTiTH9mUhk7PB3muploUHvB40pgTagtZnY2f8lx2/z/v1nk5TNvUV4IL4NRJX
-	+Iz3zvA8S8kOdRKS2+YAEH43Bxih20kRY3CWitbeD29nzFJKDO0hOSzdEvMcsJZdeJTb7W
-	2VasObQpMxkd5c9JP/YK9q+YGnG0V88=
+	bh=4chEaOjoN9yQ/BXFRXOnQ16jio7Vi+Ozuc940HohS+k=;
+	b=3cscs9/RKDkrn5B5kGf9Az/+xG7XwL6YiRb/e/5V1k2hzaXIVXah4yTEBGludLrbBLfPRU
+	GbNlqWh9E8wg0Q3MJW8KxKR/a9n78/K3Z6u5LDM8eguaTQS1gVDLNxetHAMDQV/3wzKX84
+	Kx5euH00LJOS93mr1Ix3uRbx2+5iEl8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789359519;
-	b=UXW5m7Ls8iFYphgyoZZKoIGnxVF78t5MaKL0oWKheh/+dpoF9nth/fqXYqXJbL/1GRD6SH
-	HrBM1sBF6HR6tg6twcXa1y93EMfNgmQr2vyn9lAT9DZW8WD0fN1GUMXcdotyZpbKi/q6xz
-	rqE6R9oqolS+QK2ukHJxf9apAJW40zQ=
+	t=1789359521;
+	b=ANRKlUTQW1sJ17iJShYRmR+t6CsdCb6eyMDC3/lSDchvM3WgFulD0wosRrcPzSoEI/seWk
+	3sKs6KfuDqi71pU+RFJez3bq1YtBCF6ttci+XJ+2ZDDBLnS8PKOtJJEo/yBMWD4MlICbS1
+	YI3Qt1Xg8R+JwqwTbh8prI3BxNoNnxU=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=lfJqfYVL;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf26.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+	imf30.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=kc2A+7jd;
+	spf=pass (imf30.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=w0QS+yRZerwS7r9ZIT395XGB5TnODXn+M6COboka6d4=; b=lfJqfYVLFkWoSh58tWNEgYZIqq
-	8rxttqf5ZrcVCZ27NcR3Wxir1GQoSuAfmjin4m9PShwqeELFxRYmi6L5V60xShOfHLRy9X2DEgu7r
-	JO7o1JB9b+1TlelvxXOOoE4Y6EqwTQ491IajOmpVc1ki42H96H0F2vt+YPtUZwLdPcL/fDQHOfCH/
-	4+ggBPJrAdfQsklSfuAonJ3Qnge89yGsK9TKmVwi+hOfmMXSgXbkgc0qVNUtH+xG6JmxIdsuWhjSA
-	l2If62jmvafz8G/IUhehE49wq8xdYmI/qyaLr8o5QbPhVTqm78WXkIEfKIYMS2LX9TIfxL99MkP8L
-	JICnt6ug==;
+	bh=4chEaOjoN9yQ/BXFRXOnQ16jio7Vi+Ozuc940HohS+k=; b=kc2A+7jdgBYQ1W/+6/flgqBCoD
+	boPvxRb0PO3nwGj1LTv032o0ViM9luEtc1kJbI2szQPu3UHFobumKtWfo7nSt7fnNhbQT+aMkPLDN
+	wQMaqIFmNc62vR2HeEkkBBZBwQus7uGr9gpiym8Jj6nqMzf0GVwxvAMsAmf/0+Dgrv+WoG0OpvDeS
+	ZqgQvg+9Jf+sB2b+oMOB9qulEediMAl7UTq/xljTLDDr7GEOdwXSQnAmVqwPNPdE1l8VTxj4to28/
+	ccKWIFfzd4i24/8cDsyG3DYFb4ABERugHlaHC8cDIIY4IJWDD8np+A1zptgMNAFep1qwKcIX5iOac
+	z/cGNcUg==;
 Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x5y9K-00000008hGE-1YlF;
+	id 1x5y9K-00000008hHX-2bM1;
 	Mon, 14 Sep 2026 04:18:34 +0000
 From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 To: Zi Yan <ziy@nvidia.com>
 Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	linux-raid@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 1/3] md: Use folio_alloc_buffers()
-Date: Mon, 14 Sep 2026 05:18:08 +0100
-Message-ID: <20260914041830.2072626-1-willy@infradead.org>
+Subject: [PATCH 3/3] md: Remove the last use of page_buffers()
+Date: Mon, 14 Sep 2026 05:18:10 +0100
+Message-ID: <20260914041830.2072626-3-willy@infradead.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260913-remove-pg_private-v4-0-848550f7574e@nvidia.com>
 References: <20260913-remove-pg_private-v4-0-848550f7574e@nvidia.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 57A5C80002
+X-Stat-Signature: g6d9xxkmyjhjei89p6epbg5h84ji1qw3
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 5ABC6140002
-X-Stat-Signature: mzc1brmymwn665p9ghh6fq9sfdknmim3
-X-HE-Tag: 1789359518-152823
-X-HE-Meta: U2FsdGVkX18bgg+NOxQA+p5xkE66qzihfNjByLL59kxnPMFypxVaM3pKs95IRSw+bh1J97ORCd9rgC1osxXlAPigKJHmhu87RTz1+5Bc4bGqGu1hQ8ZtiycoYr+n+0Mq5pWX/KDJPiGbm1x2WOYTjei8LrIDrPuM9x/VXRj5AYOpG8Usw+zltRKhlrtH/D6Fm40SyMf4uYJE9c84+NjKzOvlsbynoOvZ8fj0e0xpIhivsyv6ID4sGMBe6DpPxO1OPfeL/LXD490Mi/weEoPnJpsxjnZ6K0EiDOac7Yz72ryHnqUQl2aeTdkobq2ZY6LatVYRF4mAZhjvz4+o60u5I8qbn7c3WlIoqlRdDEf/mgaKZBerAcSMLCGWjHdgyHb81b/wCiq882DDP2+0Y/nfrR5b9TlIjbz9akjJgpjn4A9bH+FExLK3N3XS+dJTrRjHF0QqeMY9t3SKstS6HaD5DueTdvYO/3gXJjGuSpeTMoo19qef7f9vvbT7Pq9NBO3AIvl2/VMzaq21dPfFGwWYKi2madqPkfR21ikpll10yBbvyMYqlYdQtpr0byOiJE/vCTGpbPLQpOHlWp8E+fn7kaVRiVlarr97PXNLMUeFiDoUEvdDdd711HBo4ymHw7aSHIJg2FV5OLqMj9Ik4E8K8fENa6PJykLAuAxxs/YPfxXsTGhj/+j0MzjFnO4Ex2dzM+m7g9InpoMELInBOfQ8WQs2nHHCN/E/TU1X73Jhn2t8R36PCF6YA+mEaOOn0HkT5lVhlGRb9luCq2A/P/tWf/MqSaC1MdatcIbFKTIV/78aiV0WnIMxRx685aUVUJoBHjL0e5gAsljRBpBgExOMuZaYI81cdie3ghKornHyBJQMRMPXP0PIKMaZPWe3yd6cj3yCyM94764rq3n0na0vqXnm1Gxsl8/93CQyij6JbJpsKBqHYoNIJuheG7RlXPRVwZ+n22aH79SIL8DNB2J
- o/3jTSCo
- HLFSvXQTNNl20Hemc0U3EJ+THT+IkLUCRYMDa/J+AjWRAvXHSHuA3WOgwjmAPRDaMOfE2k1UBYcFDu7SxzZrW6LPfF/oC81hnmXqjj0MAJlW/Q4+swWi6F+N7X4t8Zz3bHCj0eyvt/wVjiLr7VLlgkHWR7EOX/fq8vJTSqtEqZPyyRWKkC6kfdXYC3W2IU8u2zeBpkgUCLl7O6CmkSaVSEOMe1/ACLAbWjy/KA+t/Tc8kzYrErEVRXo0LxwVcxgUgnzcZJhgAQT13ShCcZt7/9kZAJmQVXBpyoCgVAPwYnlCE4mI=
+X-HE-Tag: 1789359520-412741
+X-HE-Meta: U2FsdGVkX1/BLX2jHCaBdnfkL0ml4CCY/5XV2k/bloYrW85m3eRniYw0CY04IlIIfnTgtnH5mC7O17hc4uW8/baeQI9r1kelAZy6MK4giEitLp7SRioul2FOawMaeCzKe/+zQQUi3MA194e6zRKzq8CYNVF6HW2QN6Z6UkSmg7SwaqVcLWC92ZKqU4k1cyfMWfjUSpKEi/dc/wd63v62mmg7rsuyBd+HUb8GwLJRQValJwNQ3PtBU/7mHgEQi3imJb6+Www9jbjxHFojVbtCVgPKxAnye7h2fIoa1nItDA47f/T0x32qldeFg8Q7N3a5IF3BP6vCTyU8WuBKWyuHsAFJb97B+LGqK5dlF7yDo5MfYoskwoeFvD0BLlStV7L/RsrmiU4aWxmqKUY4XBMy8px8fqulQYlrZxT6Jp+2hVUe32xGGcXlTbP2n0p1IpQFKsLDrNXVh9c1hppNvcn2WFIvDAD6P0UTx4t+kJJM52Qhu4qSmBXHruGVHj30DObxiBEbBPNE9JtwZsryvlXxcpyrJgVO9OfuznTY419Cjl5Zs8lB9ju0GDij4gwXMvsvt/AHq1Ztzzjk/d7kcV0VHh7/M6bJbvcRUcwDgJrCikswI0ZQiAAkdk09RtNGFJyJTCRXroxOK4Txy7gjbN2go3vu31ZGBoj7hc8xwPBXtM4PWBwDP58tPE7oBPF72JrMa7aOYriRJrBZP4zt7O7hgLtYFDndLK6nE8+Y2nQCxyfRn6B/Voqw2r3Wy0oNK05EXfUDNs2cgN/Vi0kbnSiwDmjnYqCAKCWqYJIq4Ee66tWpWBM6DuPyh8wh3a6vvp/d4rvLMc4o08+14NMpKigGC4a2YaEZDTXkueUNGpWCzjV8HYvqEszMypiXjVoVmF1h5QedwPotvJDsjOqDzHgnAbUDnvLfu1I9sgfhDv2oTLmHYOS1mHkyIEMxza0GVdYiM9rOjZMlfnuC01UKo73
+ iQn89H3s
+ omVOUyKja0DeR2CEK+0ocQT6IAJJJ/OU2ys919ZlLLSxyzOWsyy5uG4KEndMbPmyptkM4vpfTMvO++lLE0mI+bfnP1n/vNE0rFp5cmkG86mhrje2uoNQGyDHBtNPgBY74J4UR2u7njZNqjj1GthQC7jFbMnoAHw+UpoYcZw5gpyda9A2M1uY63MQyg3q43vhtevqQ0UeLl8fIaWNnoWWcx08jrC6OEa75acXZpQ2GkUNBGFmN62ABM08VmFGQibLdqkftCEHG4iSh1ImtOwcUjXXZl7UqSLwORfQmvdKQ1Sxre+M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,74 +89,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Remove the last user of alloc_page_buffers().  This isn't _great_,
-but prevents new callers of alloc_page_buffers() existing.
+Convert the page to a folio and use folio_buffers() instead.  This
+does introduce one extra call to compound_head(), but will simplify a
+later conversion of md-bitmap to use folios instead of pages.
 
 Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 ---
- drivers/md/md-bitmap.c      | 5 +++--
- fs/buffer.c                 | 8 --------
- include/linux/buffer_head.h | 1 -
- 3 files changed, 3 insertions(+), 11 deletions(-)
+ drivers/md/md-bitmap.c      | 3 ++-
+ include/linux/buffer_head.h | 7 +------
+ 2 files changed, 3 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/md/md-bitmap.c b/drivers/md/md-bitmap.c
-index b8325cb09a37..5f1637f974c1 100644
+index 7b42db87d536..c2528220c406 100644
 --- a/drivers/md/md-bitmap.c
 +++ b/drivers/md/md-bitmap.c
-@@ -560,6 +560,7 @@ static int read_file_page(struct file *file, unsigned long index,
+@@ -516,7 +516,8 @@ static void end_bitmap_write(struct bio *bio)
+ 
+ static void write_file_page(struct bitmap *bitmap, struct page *page, int wait)
  {
- 	int ret = 0;
- 	struct inode *inode = file_inode(file);
+-	struct buffer_head *bh = page_buffers(page);
 +	struct folio *folio = page_folio(page);
- 	struct buffer_head *bh;
- 	sector_t block, blk_cur;
- 	unsigned long blocksize = i_blocksize(inode);
-@@ -567,12 +568,12 @@ static int read_file_page(struct file *file, unsigned long index,
- 	pr_debug("read bitmap file (%dB @ %llu)\n", (int)PAGE_SIZE,
- 		 (unsigned long long)index << PAGE_SHIFT);
++	struct buffer_head *bh = folio_buffers(folio);
  
--	bh = alloc_page_buffers(page, blocksize);
-+	bh = folio_alloc_buffers(folio, blocksize, GFP_NOFS | __GFP_ACCOUNT);
- 	if (!bh) {
- 		ret = -ENOMEM;
- 		goto out;
- 	}
--	attach_page_private(page, bh);
-+	folio_attach_private(folio, bh);
- 	blk_cur = index << (PAGE_SHIFT - inode->i_blkbits);
- 	while (bh) {
- 		block = blk_cur;
-diff --git a/fs/buffer.c b/fs/buffer.c
-index c9342aeb8cdf..367be053d07b 100644
---- a/fs/buffer.c
-+++ b/fs/buffer.c
-@@ -781,14 +781,6 @@ struct buffer_head *folio_alloc_buffers(struct folio *folio, unsigned long size,
- }
- EXPORT_SYMBOL_GPL(folio_alloc_buffers);
- 
--struct buffer_head *alloc_page_buffers(struct page *page, unsigned long size)
--{
--	gfp_t gfp = GFP_NOFS | __GFP_ACCOUNT;
--
--	return folio_alloc_buffers(page_folio(page), size, gfp);
--}
--EXPORT_SYMBOL_GPL(alloc_page_buffers);
--
- static inline void link_dev_buffers(struct folio *folio,
- 		struct buffer_head *head)
- {
+ 	while (bh && bh->b_blocknr) {
+ 		atomic_inc(&bitmap->pending_writes);
 diff --git a/include/linux/buffer_head.h b/include/linux/buffer_head.h
-index 1d55f7770cad..c9918176adaa 100644
+index c9918176adaa..1d5eb6ba4576 100644
 --- a/include/linux/buffer_head.h
 +++ b/include/linux/buffer_head.h
-@@ -197,7 +197,6 @@ void folio_set_bh(struct buffer_head *bh, struct folio *folio,
- 		  unsigned long offset);
- struct buffer_head *folio_alloc_buffers(struct folio *folio, unsigned long size,
- 					gfp_t gfp);
--struct buffer_head *alloc_page_buffers(struct page *page, unsigned long size);
- struct buffer_head *create_empty_buffers(struct folio *folio,
- 		unsigned long blocksize, unsigned long b_state);
- void end_buffer_read_sync(struct buffer_head *bh, int uptodate);
+@@ -175,12 +175,7 @@ static inline unsigned long bh_offset(const struct buffer_head *bh)
+ 	return (unsigned long)(bh)->b_data & (page_size(bh->b_page) - 1);
+ }
+ 
+-/* If we *know* page->private refers to buffer_heads */
+-#define page_buffers(page)					\
+-	({							\
+-		BUG_ON(!PagePrivate(page));			\
+-		((struct buffer_head *)page_private(page));	\
+-	})
++/* If we *know* folio->private refers to buffer_heads */
+ #define folio_buffers(folio)		folio_get_private(folio)
+ 
+ void buffer_check_dirty_writeback(struct folio *folio,
 -- 
 2.47.3
 
