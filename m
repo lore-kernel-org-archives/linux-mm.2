@@ -4,99 +4,179 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0490BC88E77
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 15:09:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 938CFC88E72
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 15:09:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 13B036B00C9; Mon, 14 Sep 2026 11:09:41 -0400 (EDT)
+	id 92AC36B00C8; Mon, 14 Sep 2026 11:09:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 112B76B00CA; Mon, 14 Sep 2026 11:09:41 -0400 (EDT)
+	id 8DB3E6B00C9; Mon, 14 Sep 2026 11:09:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0035B6B00CB; Mon, 14 Sep 2026 11:09:40 -0400 (EDT)
+	id 7A49D6B00CA; Mon, 14 Sep 2026 11:09:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CD7786B00C9
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 11:09:40 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 525946B00C8
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 11:09:38 -0400 (EDT)
 Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 52F55160173
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 15:09:40 +0000 (UTC)
-X-FDA: 85212702120.22.64CD0CB
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EB0351C00D8
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 15:09:37 +0000 (UTC)
+X-FDA: 85212701994.22.30B80E1
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id BEB64180012
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 15:09:38 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WcXlyuz1;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf11.hostedemail.com (Postfix) with ESMTP id 3AFD44000A
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 15:09:36 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hrvl0D0j;
+	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789398578;
-	b=c5GQEMr0tyotkjPNFNL5OdkFouUlPNx2rJWZonXFF6mm3TqTXlKMb4mE/bXyJQynOVbe4G
-	rCRleLhZRIBG2UFz4w4EpCffW88uDPtcjHgaBLQhdnLEXMe86PxhyPcXsnVa1eJONIsEPZ
-	6ulLRum1hcPvDCxCmazKUD0pwoAGlVc=
+	t=1789398576;
+	b=EN4fOfbHNxvFdPlbFunrcxnOpRHR1QRvqO6BO11XDPG5tkgjaEW2ng7BRFFLSgK30M3VaA
+	I92I5h6n96FyGTdltBgtrQF44b3iw6CpjsCBZOPFr+Ztd2FuUpFYHL+Vzci909BAul0vzq
+	zlBkR5f5m0eeQyjwXcLLEek3AwpY+WU=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WcXlyuz1;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hrvl0D0j;
+	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789398578;
+	s=arc-20220608; t=1789398576;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lqGx/g9iA8NHnrHaYC5eHMoZQvuNCtTEzYjoeYtI/wc=;
-	b=gBxreFovNnD/Se5kccIrw5rnO9egHAnjg2xBz3S8qF480he6qKT6FQg3HLGlfwmyLAfb5Z
-	rQKBn6zfrGVUtTP++DwY4io4aqEHHDA5NSkyMxUmaocputzVvdU4Ac7V7fHyWJsc7ULGWH
-	Ady3Ifb/NjLxD1OaFw2Zilc578emYdg=
+	bh=GfRJzELhUA3zmjv637fDp+tblD+oWrGBxslIXX4F7cw=;
+	b=G8ar2hCiV4fX5e7bPHb3s3qQ87sb+FvGGtv9JFr6wAUUxYb++tEpEQuSXXlKDdvPKpqJ+m
+	7nfaAjYqQYU4MUgCb8VYlP54KGdlNiku/49Gig6tnfc8gd6owWEYMi3CmYDHFHHi5dr8iE
+	d44BDrdEmlLvxIGc46hWOuv9vYbFTpA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5A71B60142;
-	Mon, 14 Sep 2026 15:09:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 977821F00893;
-	Mon, 14 Sep 2026 15:09:30 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B548A601FB;
+	Mon, 14 Sep 2026 15:09:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A7561F000FF;
+	Mon, 14 Sep 2026 15:09:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789398578;
-	bh=lqGx/g9iA8NHnrHaYC5eHMoZQvuNCtTEzYjoeYtI/wc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=WcXlyuz11wuqXhEOE712pccfVCodWo1JsYcoBXEU8WVlNcItPfa55fFiROejw8tRc
-	 lnRyISQ+aGw/9Eu1iMx9m5Sz0OBNXExpG1C5jO4S7y9zwOZdc7/HTjiUQFuzxlCaOi
-	 TjrBvGod2FRnfM5IPUQnh7vGEVUM0PZz9IfEAst+SEn3L+E3E+OseVETV7mzFUEz0s
-	 PK0MKuMS7TkGj69J3pvFrRn044ZLSeww4P3RP2RtP7+iTHFGyKTkyb9OzU4Vsj4kDu
-	 fUKabYFlTOaXP3yQ6jW7qe20XnUpy8gLuWo6PiffhTiPTbtvvQaW7wVUKEHL/PY5Bo
-	 I5rCdMRmTRguQ==
-Date: Mon, 14 Sep 2026 16:09:27 +0100
+	s=k20260515; t=1789398575;
+	bh=GfRJzELhUA3zmjv637fDp+tblD+oWrGBxslIXX4F7cw=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=hrvl0D0jcUyh6uvN3XebCBKsuFl+Mh+LBuw54wmgiYZ5pJic6J+FDi7a7/oYIZbrN
+	 WQowmRaCgo8p7AykmaIoxZo/pJ2dHmUB9gbcFhmWl45G2Mhh4yFuopGrBcctiaM3El
+	 68DDeLDxRrJU/lwaOEljlbe9r0ocz39Hh4x2JFFkZNeVrvdYx+9pruOj7yeOkUdJdz
+	 9ayyQuXCEa9/XjgJ7X8EW3xxS5gu5Ksv+bqTx+v392geCiZRa/zUWP9Lprrt22EWHe
+	 i8V2yIXKCyWHgu7EKnmmt0Nm7KISk8cPtnmCihwyqZVRlPc2i1GMkwKxnVo8S8rDqM
+	 XfgZBeADzZr8g==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	Jann Horn <jannh@google.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Youngjun Park <youngjun.park@lge.com>, Peter Xu <peterx@redhat.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-Subject: Re: [PATCH v2] mm: implement and use vma_anon_tracked(), silence
- KCSAN
-Message-ID: <aqgMFnz6Y5rs_jig@gremlin>
-References: <20260910-vma-is-faulted-v2-1-e81ebc7d146b@kernel.org>
- <aqgC9iVHtB1fMWS2@pedro-suse.tail5790ac.ts.net>
+Date: Mon, 14 Sep 2026 15:57:42 +0100
+Subject: [PATCH v2 22/40] uprobes: remove VM_IO, set VM_MIXEDMAP for mapped
+ kernel pages
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aqgC9iVHtB1fMWS2@pedro-suse.tail5790ac.ts.net>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: BEB64180012
-X-Stat-Signature: 9oruizp3p4uyirxgbg6k8cqc3chapkr4
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260914-b4-mmap-prepare-vma-flag-sanify-v2-22-7d9781ed5361@kernel.org>
+References: <20260914-b4-mmap-prepare-vma-flag-sanify-v2-0-7d9781ed5361@kernel.org>
+In-Reply-To: <20260914-b4-mmap-prepare-vma-flag-sanify-v2-0-7d9781ed5361@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+ David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Jonathan Corbet <corbet@lwn.net>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, 
+ Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
+ Paul Moore <paul@paul-moore.com>, 
+ Stephen Smalley <stephen.smalley.work@gmail.com>, 
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+ Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, 
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+ Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert <dgilbert@interlog.com>, 
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+ "Martin K. Petersen" <mkp@kernel.org>, Jaya Kumar <jayalk@intworks.biz>, 
+ Simona Vetter <simona@ffwll.ch>, Helge Deller <deller@gmx.de>, 
+ Sebastian Reichel <sre@kernel.org>, John Hubbard <jhubbard@nvidia.com>, 
+ Peter Xu <peterx@redhat.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
+ Oleg Nesterov <oleg@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+ x86@kernel.org, Arnaldo Carvalho de Melo <acme@kernel.org>, 
+ Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+ Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+ Juri Lelli <juri.lelli@redhat.com>, 
+ Vincent Guittot <vincent.guittot@linaro.org>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>, 
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+ Nick Piggin <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+ Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
+ Catalin Marinas <catalin.marinas@arm.com>, 
+ Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>, 
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Albert Ou <aou@eecs.berkeley.edu>, 
+ Christian Borntraeger <borntraeger@linux.ibm.com>, 
+ Janosch Frank <frankja@linux.ibm.com>, 
+ Claudio Imbrenda <imbrenda@linux.ibm.com>, 
+ Alexander Gordeev <agordeev@linux.ibm.com>, 
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Andreas Larsson <andreas@gaisler.com>, 
+ Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner <brauner@kernel.org>, 
+ Matthew Brost <matthew.brost@intel.com>, 
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
+ Ying Huang <ying.huang@linux.alibaba.com>, 
+ Alistair Popple <apopple@nvidia.com>, Chris Li <chrisl@kernel.org>, 
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+ Youngjun Park <youngjun.park@lge.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+ Wei Xu <weixugc@google.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
+ Michal Hocko <mhocko@kernel.org>, Miklos Szeredi <miklos@szeredi.hu>, 
+ Xu Xin <xu.xin@linux.dev>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ linux-doc@vger.kernel.org, linux-usb@vger.kernel.org, 
+ linux-rdma@vger.kernel.org, selinux@vger.kernel.org, 
+ linux-sound@vger.kernel.org, bpf@vger.kernel.org, 
+ linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org, 
+ linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org, 
+ linux-fsdevel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
+ kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
+ linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, 
+ fuse-devel@lists.linux.dev, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2070; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=joQXUjvjM3OjL+Ta6QEJ1w5g7Vsv4M79ot1AULAZKpk=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLJWcG+UmWFxrd5rX01VbImjwcymWUd7HFT3MX92PMF2e
+ /PkB5K3OkpZGMS4GGTFFFmefxHfHyQSNq/zgr8bzBxWJpAhDFycAjCRu38Z/pcr1KWXq5Uo9Rn8
+ OHKxm9XRopRX32vrvYe8rb0uOxv4+Rn+l6+M/c59213zYUxKnlCarmzPTE253GMTvmzNPZN/b94
+ bJgA=
+X-Developer-Key: i=ljs@kernel.org; a=openpgp;
+ fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 3AFD44000A
 X-Rspam-User: 
-X-HE-Tag: 1789398578-621956
-X-HE-Meta: U2FsdGVkX1/ygxCz2yxn06KIGjwgZ9tzi9G66L3UQlDqHyqKSdhA7sDjSRFZl/jJr73STIjpdesV3K7JfiMQbHp/YEs9wqhR5zxqj/hEHJ2Ua1y2KOMrELllEtg9YzdEqYKLNvhizVzt1tHJKPfI5baL35q4CqBYOEkhyOFpZoepbdo4tzGVFq1KFd99vKYM3UAUzW8OC9vuUmSRJucVGdtnkAJEHOsdFJqXiHH0bP+1rDVUG2YItwMA70dZPqX//FnzoE/o55DVS2vCBenH7TZn/Ww5C8GScLVZRYmeoH0kef061fQqSYqw2jfZqhJQI6QzuJUNdn9Cm97Jzz6KZcGLjxN7Y5cq9zzVpW+rcx0GEb/phlD0QKm/EkqkRBmco2eYSpzTcXhfeDplAj97GCgkiwLjTm7GG5HAlnILHkedxlOOSJyGdcZC5RG7ZNwdEJN0XUrH/rVYKeoWMuuYkuhC4oMNRg0++i1kZOEJQckaHXy6p/p1z1FTJFuCE5FTJRRl5391trKx4P2QYkdc+CDAfYcWeC56XxNqXKVmZ9WEHmz580+XtBa50KrVCKjeM2Uvio4VAf+BKRDA+zcHLz/FC45BN8PFRJ9UJ8qDj31fnYNaOjHw1B0Af1hgDTdgXrmbIGbFSbGAozvkFaZGgSonhsf4qXdLnbumzfFeYLB2N/ZNsdr/fY7Unp2VHHQXafWjeu4D4+namtsjhYLxEsw8APfj7TaKl6tju98DKSX1c7lOJL81vjSkiqf3bdvvjFAKeRHtkEzNYIWX/IepidtZ8A1EfMFPFCo7qf+nCzsXQ+BxOuE5nRjug361DjG3nIMoOXfitu8fcEqihuv0NXmQ50xzF24qTCju5rZ7sZMU/0fjvIHDkptsVbTED+24vlJPhzwn6DhsAkIXnkrgOMuqtwcdUSBkLzk4vdOAN1lsjwPq2LdBU90NzLXzbIRdJBB7DbO2swrryW/Zefz
- +HhRI0RJ
- hTtAdjZElOizpz2IzzQbx5So30We/BG2T6xD4NygVZlnrxT+Ajg9JI8jj5Ua+aej+j3x53O7WM9Dc2ZQyx6VDcJ7APwwYoEpuewSxylQ+O5owJrqBEDoFp6bc/A/ddR72KRiIJ1bw/RgH4fdy+2aVdBftG+OUXvVLyZE9EQNaPAQqJM2ONM8mOj+jBjSYgY+LUhCs/9vhIZZkWRAHE2dlnTyeZyysJxWon3jZPNk7DyVAWC8lWk+7bLyPoP8dQpKDwzXs/mxKNdFllFupR1vvucT0xDJD8DgC91Z8sfLmrGmNlYDVYxZNKGgimUEulvuOqrKAXLfml3Y/FSNMui92cyhpdfaPWf5Ljy0a
+X-Stat-Signature: dh1imnj3rf7rfdmqfgynq1y6irdhqosu
+X-HE-Tag: 1789398576-378786
+X-HE-Meta: U2FsdGVkX19SQMPzknmvdxL3wq5zQ5fd9Qi27hWLLdwPqRbS+lUkQn1cffu+hKx0yH1cMTryIS9K99Yphe0+PLT1Xs3H3xwEPo4PFG75OaZpOrKChPXKQ0P02YnbbYy5N0ENn349/NwQFCo2Rl/xPHTt8xivITm2uyY/eUE64LMDERgnP05WSPyChQ6Qeu9YLP7F3x4+imyF2gTuaR6aS2zPGFhRwPrH+TOp3bIoYkgDMYP895Ogr80ESClpujZUWEpeXZVMP5ZcpCCuwCJVjRr7qkff7dI4mBcVfJZM9kvNxDBpk2+w3xSgxJn16NGDsOZgl6TB6gieqGjmF4MMnGaLZVP9ISQBDQuRt2n8CRDmlfcdWs9v9CetGbxLSGDQwFEjhSdDZb6Y2LrvrY3zBXDGd6aMdtCv6z8M85/5W8tZmNUYKs9Evy5oAyNA6/3GsWq9Qzy6CYktDtoB26m7qVVU9xA8rV3SXz3Xw4Wbx6RAXBmYZvWeipRwvLy/79Ly/XV4EFlZ1Y4sV9HxGS9FkSCxuqiZnZ+QMmJz5IYrpXQCIVYqWU+I0tr/JMbIlZVxfiMpJ4st2URffVFOZzWaeBLjj5XbJPFa4vP/5cbaImwkRFhgfurXWnSdR9zZVbw/4VnYW0gC6fWLcaMn/CMshNbJTdFhR/zLecdodEzEafxCUUGbdyNXESGd4KE8QcWdYQ5L7eQSQDAO+iMbeoRE+xBY7RFMIAheqRf+SR60z59c8xJyE31bp1wyj2yDYspkk8OywWh02Muj9AeTEYFyGqLvM7+SfTpX6GO45OeXFStdxlruss7fwhcmIbG65kk3QpLhvdAMx1KVj8BmMYyfvOqiVl8K3PnMQ3RTzvWFAgtTdbwJHnebAB9qcqijWoKpuCCv5BpHpzM0Vyboiex3G6dDQ1MdL87T0RWkTgcuFsNkNhuQBfiXM/GFY+TGstWIOLvcwFlw7xctSMnZ9uw
+ iMJ0BcC6
+ UzTDpDdQQ0WnmBAKycfNrATeqkrmFuJom3dlX4Aj5RJf54LxEzNj2K0X5YQWIs01mzTlocIIt0IjH+VWCmZq0yQTpAoIO+Y72T/v/eojA4E/kuQgQvWWXt1pWXc2265SR+CdxBsShJ8vJd5WQX1QYOMUYLge0KibCEnbtAYdZHWOL4nur7nrFz+qq+BT40125UNnSHZTnQncW0HAuBokC2Jgc/eV8/pQpghLb9Q9VcSE5qR8whBI7X2TOVdJG69Yn6MCOCX5U72j3fcbRz12J72GfA/T+nTx+di3OSIRIl8KHoqzJQNT8t99XGwJvW4PsahUZgse5ZJCwz0hmMlKcRCyfJE4novBG9voARLOVyq2FF76lydZyR5og004tmmFlUv/5OqoOhnUNCHbx4CxWxhJFBvDp+LJs3VFUhlIDd9on43KksbFdoEjcCnjAEOj5jSsdlnGJ4Uacqbv8IJraJ09/Jv+9//FNwmORv6dq0Lwj91a8FyJIKU/mDfFrPZLcedO5FCYMcGRcQHxgCd1gF9gVHUtVPR/IDiTAXrVURXHs00laaPpWy5jSVZZxLBMtOYas5u8blT3+PjGQeWOkwSk4Vm1T4C4EyJg+PigVQVbRw0hbexx3D1DpD/eno0Y7DIQnyPUteycR1+MVjo2/JxCpX9J0SDAimxYrKMpQNjjxiAXbuVO9mbXAYU0LLnsD1a5chkik4E5C+ZZuMaY9rawe8IXoIb6a5DtkiB+Lty3o06JHCy1DExCZ6VaKTegVjdtWmUUaxiipNhNQIAfBXDnvd6yVgZPE1tWPov/nTehW9rWO3Qu5fHCFBoiA+/p3SyK0SEDNXtnF1bTyPeMu1NOHJWm0tFVSOBjKkdHsh97XTAQ7jwHHSeQI/iJPq3zhGhCgheSu1tHeD/95m29267XBLFpZ1oJvBmglCbbOhG4ipqBn5+TGtTPVtDzDIxK9WaQrOLVF9LrEZ+8z5IkB5+h2ti82
+ NN1yEPuX
+ v0rAcL93O3QK2EYgKJjqffAInrS3xuQE1xIvtrUgxlT4WJEJYB4SOGiMW0Cjk7rivQKGL7ArhBGfOvNW46CStQChm4RgoxvJP6nLv6TCd7ew6WvBwAHP8lWhwd5RVcfNn1TlNU6CLR3tUS6RamoIk7PGi80AfK0IowWSHAEJRB5E51DLu3jZLQoIMb53Xp/t8aAflOz2YnDqElh1+yrwCnIcF2Tqyhycnz8fofiL4Yptryt5ThZSX/d/gwb/8JSzarEsXiuazU6nmveH0Yt6WQO9sqSSxwo4qnOaJLdviRJg2ASwXn96G0YA0+OMzRVHS7Z7Zpyb/S+0K6D7APBiRrSq3i4Q8A7NdPCNffjrvj7OaBM+zXb8Irl/yEj6rPtGzvlQjwTlUa06kjgdq3KC71fDYyKCDBXgsyrJQUxjr1NDOUsu6gz7MPAgBSXKYEpvTXND0A/3/t0Zq7lgZZGyh9kG/bgwC4L30dpa6+hQQ+IoQYmjTjiBaILpnywCLq5WHEEhSM753Nv/Soca49dxvlrcoqyV9CYDHyPMTJbsudnr2U49pWX1xyvakDjtit2aSjugH6BmjzalpxTFU9fybAeba7+dG4U1m3HnRm8jqh8IQYKtNvOeqS4JDw3402BEjurUIjkKRd8Fh305ryJzFMG0GwIkRo/sS4L57HECJ/cupnVkI1kW1d6eC039ChWGu7DjsMEgfhciA4hT83Pm5j94pzSM2sQC3bZ9vRHC7BSAzwesytzNlhSR16gw4Er/TUt6eLjnhceOviAZhmwOWOhZV19+TA+3L5bXZyIQ9RCz4KZ3BRYL0p7rrtHE0wKynoRZiWBM29Ub5IDqAECgNgzzfbk4LKxV0Wv6lx0dpzwPiDuyUjGfnD3ipaKR/byAOMVaCI/OYcZx9y62Jm5katP8eqXZaC3eJ/5iDJ5jwzm2b6N6KEwPpuZJU8RdvRArBaPEyrC14jVZKIBkG/2BdtP4xvhNr
+ PPp/DkeM
+ u9plD/V4zn3heh2g+9om/CLIa0Mw4VMNjlHrqO9reqEJ2wjtt8TmYMeO/QfdL3AVAdLQ/3+J2G/Ovfirg6ICx/u8i13oCJX/1VKLLtnxfbOgFH7LCJfUqYyE63GQUoSEDjtgALHHmruI9yJSkgTXjNoQTz9Q6yrQ9+vO+zezNXSEcVQ1TmvsayvyUXgPebd8ys9w8gsxvXsmAtqR56jfTzkzOcJ3TlSueg1meloaJUfPITBj7UYlv3MAnevLeeaw0mYQouPvHPQW0ynH578EKEkfvQa4eEE0qOBcA2R3tWOzVqw0tA3njhJBM8Qp8ottVZ2JgN2kxZmg+c/VQtKY7T+Q2KYt9+ZgdGW2T092GhnByYTGig7SmrC6eZWxbwOSAR9An1zH2ZBP5qKnUZVu/BJ/y4czWFMEsRaGmSb2VFgXMEdgiFe52EdIkeA0Bq2OaECILVgTsngazMtfITIK3I4Ns8Yl+qUIpqiUAbYgS53pvuqr5LjgFJC/8sXGBK7zqCaGu8A5aXaajNthX6e1zHJcY/H6+0AVwnF/ZRJXzXftmWWj+1WKoFM5gpcnPoyMAHou28sg1BxK0sZGdW/vvO5Glh2ClrMiUpHiQC4U02ncBYmjIFwbdVFAzfLU3dvuRh8T3sbJQ0L5Kk11y9XSIxAIz7+HYBi/PUG837nOhfSsD2W3NWGJVb8Mnn50dgYcV+FkA7ZvhhJQ7OSpJ5E40EHLVlYcIG5O5FLs7IqgA2TpWYw5CgFT0H2hMboZdDChbybtUysDUwZxSVWTzhgplT0bDKAc+1LRjH/vdV53F5yVsH0Sl55xo0q+1Y3ejtLdVX6naFt5Y8wxACPaJIp4Gsq1l2qS3SsxNV2SNpyq3XFpHMDam/zyQG4MDlhxj2u9CmkIuqjlUXnEIMGXQ2eBG5PD63Soijx83E45J2QYHEb3SR1oMl9+IxrUlXyyj/KSseuG1tIup9XWAzdN7yi7anAaHVlF7
+ a2rf5jy9
+ bm/SgJVn/qIad6wROmAI9URTcJ5inyXWhmCsr7Q4h5NqinW5hY8muqXCBhe3EVMW+EwAA8xw2XIXpbRdnwcG7+4NfNrCwYaFi+rim4EWzOPO3BjfJvPbQ6YhgTM9NrdHDcO9yv0R1FlapGGvAnntIkXsdVAkjfaCqzIbv3Rp9Bww9XGuMfW7p4nU4TA1FoU+k6sRdOiklA9Qp2BkPMQ7lYeZX+kGbiAizkOI/oRXOnTWRADe30spH750H9IGaDk6sZU1LwWcOK8RujSrH9XC7tuMGmL49migep1FQjWKlqF9BgfVXe69aElDzI8iSbVranxX8+IXe/X3CW6fF6fWtb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,159 +184,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 14, 2026 at 03:24:47PM +0100, Pedro Falcato wrote:
-> On Thu, Sep 10, 2026 at 02:18:35PM +0100, Lorenzo Stoakes (ARM) wrote:
-> > Provide a function to abstract the common task of checking whether
-> > a VMA is faulted in or not.
-> >
-> > A VMA or mmap lock must be held when calling this function. For an attached
-> > VMA the transitions between unfaulted/faulted state are:
-> >
-> >        Transition        |              VMA/mmap Lock state
-> >  ------------------------|-----------------------------------------------
-> >    unfaulted to faulted  | write lock OR read lock + mm->page_table_lock
-> >    faulted to unfaulted  | write lock
-> >
-> > So vma_anon_tracked() never provides a false positive (the lock precludes
-> > it), but if only a read lock is held, a negative result must be re-checked
-> > with mm->page_table_lock held.
-> >
-> > Detached VMAs cannot be concurrently manipulated as they are removed from
-> > the maple tree so require no guarantees.
-> >
-> > Use data_race() to silence KCSAN about non-existent data races between
-> > concurrent vma->anon_vma read/write on optimistic fault tests.
-> >
-> > Also while here, const-ify vma_is_attached(), vma_assert_stabilised() and
-> > dependants.
-> >
-> > Finally, update the core VMA merge/split, rmap, mremap, KSM and fault
-> > preparation callers which test vma->anon_vma directly to use
-> > vma_anon_tracked() instead.
-> >
-> > Note that the lockless read in reusable_anon_vma() is doing more than
-> > checking whether the VMA is faulted - it is returning the anon_vma to be
-> > used on fault, so this check is not altered.
-> >
-> > There is one odd one out - file_backed_vma_is_retractable() - which holds
-> > neither a VMA nor mmap lock and is stabilised by the file rmap lock only.
-> >
-> > Therefore just add a comment to explain why the direct vma->anon_vma check
-> > is required.
-> >
-> > Reported-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-> > Closes: https://lore.kernel.org/all/20260829100034.423064-1-trintaeoitogc@gmail.com/
-> > Closes: https://lore.kernel.org/all/20260909115723.528501-1-trintaeoitogc@gmail.com/
-> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> > ---
-> > v2:
-> > - Renamed vma_is_faulted() to vma_anon_tracked() as per David.
-> >
-> > v1:
-> > https://lore.kernel.org/r/20260909-vma-is-faulted-v1-1-3a701f48984a@kernel.org
-> > ---
-> >  include/linux/mmap_lock.h         | 12 ++++++------
-> >  mm/huge_memory.c                  |  4 ++--
-> >  mm/internal.h                     |  2 +-
-> >  mm/khugepaged.c                   |  3 +++
-> >  mm/ksm.c                          | 10 +++++-----
-> >  mm/madvise.c                      |  4 ++--
-> >  mm/memory.c                       |  2 +-
-> >  mm/mprotect.c                     |  2 +-
-> >  mm/mremap.c                       |  4 ++--
-> >  mm/rmap.c                         | 22 +++++++++++-----------
-> >  mm/swapfile.c                     |  2 +-
-> >  mm/userfaultfd.c                  |  2 +-
-> >  mm/vma.c                          | 29 +++++++++++++++--------------
-> >  mm/vma.h                          | 22 +++++++++++++++++++++-
-> >  tools/testing/vma/include/dup.h   |  2 +-
-> >  tools/testing/vma/include/stubs.h |  4 ++++
-> >  16 files changed, 77 insertions(+), 49 deletions(-)
-> >
-> > diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
-> > index 00eae65b74bd..03e1eb136111 100644
-> > --- a/include/linux/mmap_lock.h
-> > +++ b/include/linux/mmap_lock.h
-> > @@ -273,7 +273,7 @@ static inline void vma_end_read(struct vm_area_struct *vma)
-> >  	vma_refcount_put(vma);
-> >  }
-> >
-> > -static inline unsigned int __vma_raw_mm_seqnum(struct vm_area_struct *vma)
-> > +static inline unsigned int __vma_raw_mm_seqnum(const struct vm_area_struct *vma)
-> >  {
-> >  	const struct mm_struct *mm = vma->vm_mm;
-> >
-> > @@ -288,7 +288,7 @@ static inline unsigned int __vma_raw_mm_seqnum(struct vm_area_struct *vma)
-> >   *
-> >   * Returns true if write-locked, otherwise false.
-> >   */
-> > -static inline bool __is_vma_write_locked(struct vm_area_struct *vma)
-> > +static inline bool __is_vma_write_locked(const struct vm_area_struct *vma)
-> >  {
-> >  	/*
-> >  	 * current task is holding mmap_write_lock, both vma->vm_lock_seq and
-> > @@ -344,7 +344,7 @@ int vma_start_write_killable(struct vm_area_struct *vma)
-> >   * vma_assert_write_locked() - assert that @vma holds a VMA write lock.
-> >   * @vma: The VMA to assert.
-> >   */
-> > -static inline void vma_assert_write_locked(struct vm_area_struct *vma)
-> > +static inline void vma_assert_write_locked(const struct vm_area_struct *vma)
-> >  {
-> >  	if (!IS_ENABLED(CONFIG_MMU)) {
-> >  		mmap_assert_write_locked(vma->vm_mm);
-> > @@ -359,7 +359,7 @@ static inline void vma_assert_write_locked(struct vm_area_struct *vma)
-> >   * lock and is not detached.
-> >   * @vma: The VMA to assert.
-> >   */
-> > -static inline void vma_assert_locked(struct vm_area_struct *vma)
-> > +static inline void vma_assert_locked(const struct vm_area_struct *vma)
-> >  {
-> >  	unsigned int refcnt;
-> >
-> > @@ -410,7 +410,7 @@ static inline void vma_assert_locked(struct vm_area_struct *vma)
-> >   * With lockdep disabled we may sometimes race with other threads acquiring the
-> >   * mmap read lock simultaneous with our VMA read lock.
-> >   */
-> > -static inline void vma_assert_stabilised(struct vm_area_struct *vma)
-> > +static inline void vma_assert_stabilised(const struct vm_area_struct *vma)
-> >  {
-> >  	/*
-> >  	 * If another thread owns an mmap lock, it may go away at any time, and
-> > @@ -445,7 +445,7 @@ static inline void vma_assert_stabilised(struct vm_area_struct *vma)
-> >  	vma_assert_locked(vma);
-> >  }
-> >
-> > -static inline bool vma_is_attached(struct vm_area_struct *vma)
-> > +static inline bool vma_is_attached(const struct vm_area_struct *vma)
-> >  {
-> >  	return refcount_read(&vma->vm_refcnt);
-> >  }
->
-> nit: I would suggest you do all of this constification in a separate patch,
-> otherwise it can become tricky for backports. Things can naturally start depending
-> on const correctness, and you either need to manually adjust those future patches,
-> or try to backport this one.
+These are not MMIO pages so VMA_IO_BIT is an inappropriate flag to set.
 
-Ok will break out.
+Instead, set them VMA_MIXEDMAP_BIT as they are kernel mappings and this is
+the appropriate flag to set for those.
 
->
-> The rest looks vaguely good to me. I admit I'm not a gigantic fan of the name,
-> but I suspect it fits better with your future anon rmap ideas :)
+This provides the semantics required - no VMA merging is permitted, but
+does not prevent GUP.
 
-Naming's hard and it's hard to make everybody happy, unfortunately :(
+However this has no meaningful impact as these are refcounted and thus can
+be GUPed.
 
-vma_has_anon_rmap() better?
+A previous commit already prevented __mm_populate() from being invoked on
+XOL areas, which VMA_IO_BIT was previously relied upon to do, so that is no
+longer required.
 
->
-> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Both VMAs set a VMA name, so always_dump_vma() returns true before
+vma_dump_size() reaches its VMA_IO_BIT check, and thus there is no change
+in core dump behaviour.
 
-Thanks!
+Change this for both the core xol_add_vma() function and the x86-specific
+get_uprobe_trampoline() function.
 
->
->
-> --
-> Pedro
+Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+---
+ arch/x86/kernel/uprobes.c | 2 +-
+ kernel/events/uprobes.c   | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
---
-Cheers, Lorenzo
+diff --git a/arch/x86/kernel/uprobes.c b/arch/x86/kernel/uprobes.c
+index 65a2de82ecd2..0f60c0d076b6 100644
+--- a/arch/x86/kernel/uprobes.c
++++ b/arch/x86/kernel/uprobes.c
+@@ -715,7 +715,7 @@ static struct vm_area_struct *get_uprobe_trampoline(struct mm_struct *mm, unsign
+ 
+ 	*new_mapping = true;
+ 	return _install_special_mapping(mm, vaddr, PAGE_SIZE,
+-				VM_READ|VM_EXEC|VM_MAYEXEC|VM_MAYREAD|VM_IO,
++				VM_READ|VM_EXEC|VM_MAYEXEC|VM_MAYREAD|VM_MIXEDMAP,
+ 				&tramp_mapping);
+ }
+ 
+diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
+index 7709ea882477..b89cc5cee002 100644
+--- a/kernel/events/uprobes.c
++++ b/kernel/events/uprobes.c
+@@ -1726,8 +1726,8 @@ static int xol_add_vma(struct mm_struct *mm, struct xol_area *area)
+ 	}
+ 
+ 	vma = _install_special_mapping(mm, area->vaddr, PAGE_SIZE,
+-				VM_EXEC|VM_MAYEXEC|VM_DONTCOPY|VM_IO|
+-				VM_SEALED_SYSMAP,
++				VM_EXEC|VM_MAYEXEC|VM_DONTCOPY|
++				VM_MIXEDMAP|VM_SEALED_SYSMAP,
+ 				&xol_mapping);
+ 	if (IS_ERR(vma)) {
+ 		ret = PTR_ERR(vma);
+
+-- 
+2.55.0
+
 
