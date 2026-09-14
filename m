@@ -4,93 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B08C0C88E73
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 14:20:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C29DFC88E73
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 14:20:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D381F6B009D; Mon, 14 Sep 2026 10:20:05 -0400 (EDT)
+	id 880326B00A0; Mon, 14 Sep 2026 10:20:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC6FF6B00A0; Mon, 14 Sep 2026 10:20:05 -0400 (EDT)
+	id 7E6F56B00A1; Mon, 14 Sep 2026 10:20:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B86D26B00A2; Mon, 14 Sep 2026 10:20:05 -0400 (EDT)
+	id 6A73C6B00A2; Mon, 14 Sep 2026 10:20:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 87EAF6B009D
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 10:20:05 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 132371C0B37
+	by kanga.kvack.org (Postfix) with ESMTP id 34B0F6B00A0
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 10:20:06 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C12CD1C0752
 	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 14:20:05 +0000 (UTC)
-X-FDA: 85212577170.02.0EA33C5
+X-FDA: 85212577170.09.9F61D80
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 75A26100006
+	by imf18.hostedemail.com (Postfix) with ESMTP id 2EB861C000F
 	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 14:20:03 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jn2zEmzg;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jn2zEmzg;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LLAJKd3P;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789395603;
-	b=WNZCFI1ifqUfsrIhLjNy3f0aCNMaVE6GCVfvchERSAAIAHDqNnKrkg2trfrTzpUUnHoMZA
-	Y+A80Wdmd+8q6EWybGfoaI1u/nPv6Om+5CQEqmNxkDSGdl4/1yuJbMRKeCmQHMNpW3T1rP
-	2Z99arDMh/O8Cm3bA67WKHtbxzlAyrw=
+	t=1789395604;
+	b=bBFRUwSn+p650dVPugBQnktwlNwEdA3QplIAAGccvQ8ENCPitNQD+zOTAvaB8p7TKOXZrp
+	m80sQ1l8RmWkNkQlW/juB4DCy47huRT2+c/FcpXsw1Y6Fwc97WLn+OlWXu5TPaRpaO3bqg
+	IIuFa7MotatuDqin6s9MthguJJz//QE=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LLAJKd3P;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789395603;
+	s=arc-20220608; t=1789395604;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Oi23zu2/PrV0Foc+v/urHYp6bcscQLI0NRalUKOBVW0=;
-	b=d67WBL1+1q+5DISNqlUqg6ZDJvcTlJy3EiY7HWQ9RmynJHzr89j6mb1urwG+pGrB51bzke
-	PoEW6n+CYkaUX40EjyWm7+gOER6ixIXHLzzcvkJQtNeVrENSfz+Vh3nF2OASzsvQxuSAtK
-	tHp1mVwj1bSNIM8jSi22nYuiOyskYqM=
+	bh=dgI5/uHVhGU/u/lFuomzDRYuBHWw9s688+WF+gpTSJY=;
+	b=PbzJt2RArIQn780o8tttedJld2pn8hOPAscmSHXu75lL5AsaYP2e4Gg+B7TACZsxJyLcdl
+	o88j4yIEdC6qpQ0mhxADS0bRyiio8WnRIxk9lHgmCgsvexVwFC/K6LA67LMZ5wMIUnkxOT
+	DDZ7Rwuw+yn5lsnxg3RhfW5IvwAmE6E=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 068C160209;
+	by tor.source.kernel.org (Postfix) with ESMTP id BD2136020C;
 	Mon, 14 Sep 2026 14:20:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57D6A1F00893;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAA581F0089C;
 	Mon, 14 Sep 2026 14:20:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789395602;
-	bh=Oi23zu2/PrV0Foc+v/urHYp6bcscQLI0NRalUKOBVW0=;
+	s=k20260515; t=1789395603;
+	bh=dgI5/uHVhGU/u/lFuomzDRYuBHWw9s688+WF+gpTSJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Jn2zEmzg+8eiuhpnhyv9+INeK0b0PsfogpmddAwICz0n1DBUnFcadfFFpVffnaSJS
-	 vsKsEiNKXkO/Kl4FgEFeZJFiBlEyx1S6WFKEfjJvy8gnXibdwTLeQU2W9bkshneTkc
-	 XnnGaHWVx9bygDzCyMl+LfVoaw3/8ladZfooOKsSo7poW0P9Pqth+9uzTOMQCgwkf6
-	 Ad6Qmj+4U6jMwKKl1xiZZCvg9G1nHsUbTZRmjczJg1FQxVNn/gaBOSWUYyl2QA6pjj
-	 XO0tChvfTnDPewBNPesDi411NMzSx1kV7ahtGTSRvvqq6uLtRzw90zbOj22GOOeV+0
-	 7Hz7jeFMr+Y0A==
+	b=LLAJKd3PZfZJLA2mghR2o10iU2ZFbouGRqCNO/Ce//Yu5KWtT1Fb38VyB0L08FCuA
+	 ncSquZ0pmtNWj09L9+9wH2JgvSpzPbs7SgODgo6YgH3GSKvF/qjQlYeTePa6G5siUg
+	 Bdkg6gHk7rP4yAUkljf3cR/u0FwM7Cj2fwmJgMDjiFuBju+cdwiJREDEMEH9yQgYbO
+	 ET0CLVkg/JmOcmT9J9rFgy34S3fSuxjIQ0YUeeiTvpQJ9720JaTYJ+mHvdGA6WdHWp
+	 90jegwteY51FeTim7QjFIXDEhCh7EoyJQSAdw/7FXomE+LQsrBn3qMa+PV60IZjwTR
+	 9hmHyPPPeai3g==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Kunwu Chan <kunwu.chan@gmail.com>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@davidgow.net>,
+Cc: Liew Rui Yan <aethernet65535@gmail.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
 	SJ Park <sj@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
 	damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org,
-	Lian Wang <lianux.mm@gmail.com>
-Subject: [PATCH 4/6] mm/damon/tests/core-kunit: improve nr_samples_per_aggr test isolation
-Date: Mon, 14 Sep 2026 07:19:49 -0700
-Message-ID: <20260914141952.91465-5-sj@kernel.org>
+	linux-mm@kvack.org
+Subject: [PATCH 5/6] Docs/mm/damon/design: clarify when qt_exceeds increases
+Date: Mon, 14 Sep 2026 07:19:50 -0700
+Message-ID: <20260914141952.91465-6-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260914141952.91465-1-sj@kernel.org>
 References: <20260914141952.91465-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 2EB861C000F
+X-Stat-Signature: yk5q35itp6prrbxaidh3c16u337ef1eb
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 75A26100006
-X-Stat-Signature: 6akye4ferjfs54wswnqb7xieoe5mc14u
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789395603-483461
-X-HE-Meta: U2FsdGVkX19mV9Bk0I3G+nHwA+S0GTwY+ayvAPG//dDqVwBtwCmlgt1yJymjAz37t4fGjIgbg+K75nz1DOWnU2ntejnNKDXGANd7arK8U4z+vZAasHtcZDBfWgYVb+JycxGF+IC/bJEX0iPWIdyfjojM7WrvZqrrM3DBBNRzXf7QvduqTCegCAXKwHzwGgjHEzm/cd6/nZIRND2fgQUhcya76KRixqF/RdnPLkIZoqy1znSF2sNKot+YzdhIlTG6mf36tBPPcKLk7CTw5oMXQ7fbBUC/7PIrBmmb3aaEKPdTp0uTPEjeq5somNO4FYHfkS9obkMExFRcu8/eA2Pnlc4SldXODr4JfBEfvgdkYTN95I0080aX+5ETkiLTXBN+cLVv4DE9Bn2VhUs8oTg7wjWkPH/65H71FGYbxXQriMd5IfdJxFU2yYGGq684UzYQXJehQy6rz3dSpYdUnHAfgrkOE4MzgTO6AQlYF5pKKxdIPNnSiI2eaxcndCbvAl4fVODEqzyzPkovuQTbjqIF5DoVJlz3hXxSxw2oyL6hY+oQi7HP0vTzXp83dx90mgyQkt+/5NLUw00UqxBgSDb8nSysrf9f+FagodCwP+L/VE9PmEszm0VJfLJ/p4Dn1PTkfCJF1Mw9PbhlJsQ7ySAgvboTXnPbU250p72wFpw4jyp3IbXm5E3Oo68YFQr3cSZIiD0T7XpbSosgwxtqsS1w+yWJjVlzUuTHcijJn6N+THJymeo1XzSZ5Gx6i9S7XQ4ChDoH/rzsVSKodRRoRr2TQ1V7H//5xV2canRXtnLJZyN+V0t0j4qCrpyPQCHh/xesH8BHLrXxQ07U4kAQEAqMp26tb3+/Axlekly5OeEL8+vMZ4Zsv9fiNuIjU8qA6H8hIW8iYTvqySmS3EgyIhhrZBJnAMiHpbGf7TQ3+axYXXv8lIJ7/U26TfL+da3HSzx+FqQJZiPkkCSRGguV1pF
- Y4Vw087Q
- c2WMsqK4iMvo07HdyZkTFiEt3noB+urjAeh8vVsyMEScbMAWnk/468bpgEZvN4p3VSVUkF3kW2hQczo56kOs9EdfrCn9gtBgZPnPJQE3aHy0u72PeWrGwv1nbHpsaX0RsYczVmX4COKrk+yfrYclecG66TFi9F2PatykNwsivLIgzfBBrXJk3OZxj28nqt2iSTb72UmLUVTsdoRqmpBFZT4TnWQbHJ97gBlyy/5fJxSodeZO0AWG+8XgliUp0HCB6go4QYjm+xgU1IUCc0gMsTUse2S6A0Q4NvyRrSLDlzzKob+7csb95my2iQWq5qggwRGULMa3X3USVA6qakOjZMc0NWzuTOCm8gyb5t6BYAZmY1KfjOqJLux934Q==
+X-HE-Tag: 1789395603-512650
+X-HE-Meta: U2FsdGVkX1+sERTCrbW6RCjZgXjft9aFJn2onAgS1Lk46eNyDB90gERxYPlx0MTNp0/ydEMJHIrJ2bzWVN8uvc6JRMrktKm4KHBw6mUZi1LSrptdfiE9U1iugIvvlhVk8EcFrEjQcN6m1Kf50MvIvKJYIqhnE1LQDeugmM0dLe002ZEq+kYFVQEtOgjjopF7zRbMZlojKyrvTjijd5zNUVOpFE2i56G/eGHvNtxCxQ+D/zP2M/8U+VVsC2ffaGD2Je5eYxWHl7e/jVE89p/rIBeS5k4xmJrmsZynUTpTIm/iqeWGUh/Uwb9guOAQhPUGvkU0DOHvtvpvcgDnJyn04DkZU2hGHJ8Ga420WkbJprFoV7vQn0KUKdXwA0KEDoSAZYUPaIxa0+K/+So9sqoLdv3q7rHVBZx4/8a4SAMrwea1amKnEjE7tod8rUt97WAFclwuCGzNLoNCZ4dDG24z/CTwint7SEzEmUmk+Crs7gej43ByjuPPKEnNZHiQRnonrKGcLAzVyaY1R4gSH7fUdhrSWwHHI88e4Bf2RjpOd7sfB/MvhX3nrpsjKEBUYTGHuTUHEDILidaz7UzVdIsYX2V3vHhswC/98hd4khq2ipHdeISVAMWbkPJNwvz48znmYr5/yrCm0JBUrmuDDRYyrmU46euL5Mf7u/Pfw2X1PcrvR8H4x5wX0u6b3X5JbUfIbLjSn5OHYlDbaAkis7rLNI9zhkESp+TKJxBWl7SEjGUU+zn+7t6GcStcGhpU3i1g7CtjEewN9kTSTQohsIqpqNwQHdOv1tFSUODUvt9SHc7C2Gz5Z6hb4f2aQEtXJaoeNLaVRZnWLky1HCFaIavN4vkW1scBZiBns2/LZRJ17AH51em3Ef4RBsSWvU3sJVPdZZdgR+D47LMEu8nif3gCR8jdpcczbIkx2sKWVmNmF7j+urn5gbMVLO5QEfv6XgrpgsKsfJOg4fox4Fj8az4
+ Ed9EvCMZ
+ v0JthkMeqf6uBy8egdHjF+fzVLu16oFMXnz+ND20idHani16+2NX9E3wi3oN5RZgzp5T2U/mnDTGgh9/7q79JszkpUgS7dR1Uq5ODJcfRnqDTkjmac5NAcRUomZ4BdGxFlPsuifXhjjevuK8XbXu1EnjGvz1efpsb8s89DnkaHycxN+vNPlRXJp9KZn9vPuFRU2cTn0f3kfUrvAcIwOVCK6WQYazQxHS+tmeFRwW5J/ZxnikhlF8RqYP9Up7DrqxelVFuReqVbk0suQtsjJMGsHHrmkPHhJFC1U5RlpT2izsYaseSrjC3/jUFPud3RgN/JQBQxVan2h8001U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,72 +104,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Kunwu Chan <kunwu.chan@gmail.com>
+From: Liew Rui Yan <aethernet65535@gmail.com>
 
-Test the zero sample interval case with a non-zero aggregation
-interval, and keep the zero/zero case to cover the zero-result
-fallback.
+qt_exceeds counts how many times a scheme's quota has been exceeded.
 
-Also make the overflow case use an explicit sample interval so that
-it does not depend on the zero sample interval fallback.
+When using the temporal auto-tuning algorithm, the effective size quota
+becomes zero once the goal is [over-]achieved.  In this case, the quotas
+are still set, so qt_exceeds keeps increasing once per quota reset
+interval while the goal stays achieved.
 
-Signed-off-by: Kunwu Chan <kunwu.chan@gmail.com>
-Reviewed-by: Lian Wang <lianux.mm@gmail.com>
+Clarify this behavior in the design document.
+
+Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
 Reviewed-by: SJ Park <sj@kernel.org>
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
-Changes from v2
-- v2: https://lore.kernel.org/20260909070711.2448346-1-kunwu.chan@gmail.com
-- Collect R-b: from SJ.
-- Rebase to latest mm-new.
 Changes from v1
-- v1: https://lore.kernel.org/damon/20260908063635.2208922-1-kunwu.chan@gmail.com/
-- Use 0/0 for the zero-result case, consistent with damon_set_attrs().
-- Update commit msg and add Reviewed-by tag.
+- v1: https://lore.kernel.org/20260910112255.157012-1-aethernet65535@gmail.com
+- Collect R-b: From SJ.
+- Rebase to latest mm-new.
+Changes from RFC v1
+- RFC v1: https://lore.kernel.org/damon/20260908175105.42558-2-aethernet65535@gmail.com
+- Simplify the explanation.  Do not provide a complete definition of
+  qt_exceeds, but rather explain only the increment condition when using
+  temporal auto-tuning algorithm, simply to prevent users from becoming
+  confused and being unable to find any explanation.
 
- mm/damon/tests/core-kunit.h | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ Documentation/mm/damon/design.rst | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index c01e6a75cadc1..a47a5cdf285c8 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -627,12 +627,20 @@ static void damon_test_set_regions(struct kunit *test)
+diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
+index cb116a82ff20b..ad09416dfb21a 100644
+--- a/Documentation/mm/damon/design.rst
++++ b/Documentation/mm/damon/design.rst
+@@ -696,7 +696,9 @@ There are two such tuning algorithms that users can select as they need.
+   fast as possible, using maximum allowed quota, but only for a temporal short
+   time.  When the quota is under-achieved, this algorithm keeps tuning quota to
+   a maximum allowed one.  Once the quota is [over]-achieved, this sets the
+-  quota zero.  Useful for deterministic control required environments.
++  quota zero.  Useful for deterministic control required environments.  Note
++  that the zero quota is a valid quota, and therefore ``qt_exceeds`` :ref:`stat
++  <damon_design_damos_stat>` will keep increasing in this case.
  
- static void damon_test_nr_samples_per_aggr(struct kunit *test)
- {
--	struct damon_attrs attrs = {
-+	struct damon_attrs attrs;
-+
-+	/* Zero sample interval is treated as one. */
-+	attrs = (struct damon_attrs){
- 		.sample_interval = 0,
--		.aggr_interval = 0,
-+		.aggr_interval = 5000,
- 	};
-+	KUNIT_EXPECT_EQ(test, damon_nr_samples_per_aggr(&attrs), 5000);
- 
--	/* Zero aggregation interval doesn't cause division by zero */
-+	/* Zero sample and aggregation intervals cover the zero-result fallback. */
-+	attrs = (struct damon_attrs){
-+		.sample_interval = 0,
-+		.aggr_interval = 0,
-+	};
- 	KUNIT_EXPECT_EQ(test, damon_nr_samples_per_aggr(&attrs), 1);
- 
- 	/*
-@@ -640,7 +648,10 @@ static void damon_test_nr_samples_per_aggr(struct kunit *test)
- 	 * overflow
- 	 */
- 	if (ULONG_MAX > UINT_MAX) {
--		attrs.aggr_interval = (unsigned long)UINT_MAX + 1;
-+		attrs = (struct damon_attrs){
-+			.sample_interval = 1,
-+			.aggr_interval = (unsigned long)UINT_MAX + 1,
-+		};
- 		KUNIT_EXPECT_EQ(test, damon_nr_samples_per_aggr(&attrs),
- 				UINT_MAX);
- 	}
+ The goal can be specified with five parameters, namely ``target_metric``,
+ ``target_value``, ``current_value``, ``nid`` and ``path``.  The auto-tuning
 -- 
 2.47.3
 
