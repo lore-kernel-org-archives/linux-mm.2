@@ -4,86 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C993C88E6F
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 19:35:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCE49C88E73
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 19:42:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DDA656B0088; Mon, 14 Sep 2026 15:35:21 -0400 (EDT)
+	id 9312C6B0088; Mon, 14 Sep 2026 15:42:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D62FF6B008C; Mon, 14 Sep 2026 15:35:21 -0400 (EDT)
+	id 8DAA86B008C; Mon, 14 Sep 2026 15:42:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C06C66B0092; Mon, 14 Sep 2026 15:35:21 -0400 (EDT)
+	id 7F1206B0092; Mon, 14 Sep 2026 15:42:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 983B16B0088
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 15:35:21 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 572926B0088
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 15:42:27 -0400 (EDT)
 Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id F1FBC4027E
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 19:35:20 +0000 (UTC)
-X-FDA: 85213371600.10.74B7DDC
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E0C131A017D
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 19:42:26 +0000 (UTC)
+X-FDA: 85213389492.10.D9428AA
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 371438000B
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 19:35:19 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=t26XuQ42;
-	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf06.hostedemail.com (Postfix) with ESMTP id 2287D18000B
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 19:42:24 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=u5Mc5qUb;
+	dmarc=none;
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789414945;
+	b=8AcDufhQX0DMjU8THieakCi8HvX1/rpfhuEko/xJeYpzclWDn2LnOlNsPLZCUbpYpEnKMb
+	41ZJwdGjvQmYDGaYVnaXTbG/GB+Hz9Gya8/AwTfD0zK1niZfQKmwktfHlpRJfWnbrBrZJA
+	EwO+E/JD9lZtqhajadtILICn+d5uJHk=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=u5Mc5qUb;
+	dmarc=none;
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789414519;
+	s=arc-20220608; t=1789414945;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M1W684/6C3WrUebA7SAvM2Es+ZqgospVFCTS6bj5eGE=;
-	b=jsenL8gHB/wnZy5C+EREDQ1RFPL7MwBvL/n81M0WCkHSfDiVLxG1XLrT4VEGQYoBYS2agW
-	XKYIVNDum/6abnCRKbOBNUvv+3sM0WQinCkTygn3aEDlg2YYgOiL2SRXkw3fKLz2liKocO
-	dwZqe0pvdottEyg5F50qeqBSZlCI05s=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=t26XuQ42;
-	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789414519;
-	b=2HLgTbhGD4FeBGoJ4qSlIqI97fJs4cKH+LJ/UTdaqoM829NBWAV2woWfn40+H9aB6NmbrS
-	yrkrQ1PbZuXS81MAqkViSBdGy7UTBIjla1gXPi3axXQfME/D4a92SMgH2vxb8tK5ozdhMW
-	EzEnOkAfxbtE0kurrh7ALh8+hJ9hVEg=
+	bh=VZHyHjs3xvsqS461wD6jqghAtUtS45zyAmLcgUkikgk=;
+	b=wd820UibuaQnLtILz7XMjdgJAGVT34DD9vRk5h/wV7bmueoKvefu8X2flDlIq5+RevvZHR
+	0v+tLzjkfmzK8yfvdXEfbGrrDc7Ge8c2Ig7wmVMOlzNZX1sdYtl9gTu2C74nXRlnze3iSs
+	r4KbysS3LxWZa6mwKcCrwVpGI6Y2GWE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1B7CB43C2B;
-	Mon, 14 Sep 2026 19:35:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD7171F000FF;
-	Mon, 14 Sep 2026 19:35:17 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3526A40291;
+	Mon, 14 Sep 2026 19:42:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D04D81F000FF;
+	Mon, 14 Sep 2026 19:42:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1789414518;
-	bh=M1W684/6C3WrUebA7SAvM2Es+ZqgospVFCTS6bj5eGE=;
+	d=linux-foundation.org; s=korg; t=1789414944;
+	bh=VZHyHjs3xvsqS461wD6jqghAtUtS45zyAmLcgUkikgk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=t26XuQ42ox5+6PbK0t3SH6X3vdqTZP+pc6Lv4EOLb37XMwA/InExICWlVbQK6kzU9
-	 fF3FlWwErQKRorl9jagiVq1n4PI02YOOF8i22B/8BENOlnlNr3zAAjlY+M5WjAhRNw
-	 jF5kkiELNbp5zjTWZWE1ugRzUgftZ4idu1Ac1eXQ=
-Date: Mon, 14 Sep 2026 12:35:17 -0700
+	b=u5Mc5qUbS7NEhe8bppXdcDc7XkhOtoFC4dcsb/+c8qJGJhcaFjZ8kEE5dxQYvMRgh
+	 V1dbnfQ1u50rxYcOVWMdWHxS21HBYSrOpS1c9dP9/n2LPiUKIriz/1hiAwgomg1leh
+	 SHE9anYXYz7Kyzcu6E0b4pDNo7nrHzKK9jpyRZuU=
+Date: Mon, 14 Sep 2026 12:42:23 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: kernel test robot <lkp@intel.com>
-Cc: David Hildenbrand <david@kernel.org>, Linux Memory Management List
- <linux-mm@kvack.org>, mm-commits@vger.kernel.org, Suren Baghdasaryan
- <surenb@google.com>
-Subject: Re: [akpm-mm:mm-new] BUILD SUCCESS WITH WARNING
- 383fc05d4650b021f3c17e36a145106dcc61a294
-Message-Id: <20260914123517.3be0d96a9535c237bf9125cf@linux-foundation.org>
-In-Reply-To: <202609150259.5zswfxI5-lkp@intel.com>
-References: <202609150259.5zswfxI5-lkp@intel.com>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: david@kernel.org, liam@infradead.org, ljs@kernel.org,
+ linux-mm@kvack.org, kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH 1/1] proc/task_mmu: remove unnecessary inlines in
+ function definitions
+Message-Id: <20260914124223.3ce35057f35313d7c2a6254d@linux-foundation.org>
+In-Reply-To: <20260914190631.3167420-1-surenb@google.com>
+References: <20260914190631.3167420-1-surenb@google.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 371438000B
-X-Stat-Signature: 1hs9z8x4f6tscyizr3gde8uo5h6pi1ao
 X-Rspam-User: 
-X-HE-Tag: 1789414519-633433
-X-HE-Meta: U2FsdGVkX18ngaNE00gXGxu+LABAyxVyfYWJmVIv7PNeoP9ZITcv5GhjEHIOtbMb2jv3w3uAAa8JqFI3R4Ak+E6Q7IYnl28MRoOjav8Z9KifOlnquM0Nh83qKUYdgcqqyNY0Bj3cm9zZmPGjkntQV4MEqqy0DS0B5XgWoce8XSGcOioLuPvMHY1HElhBjy2NXV6U8BjlI0BEaSaeFlfKQcfxen0XWsepVd1t7iZ88EdsF9DwpdK4CvYImOVnqZpIiHFrPCfjLOy6Y07cc8KFcri1m/C6IEPfIGE4k/o/7F+QG7QOtyzk4sOxbQOSBnTywfRudPg3SF4szYK2XJWrZSLFd8R5hfiwfvM2XWM6e6Zfrf5Pv33+YdghiyCievOE0lQMTAIUgFyEFvVFgJCjTCtTwS4CCoAGYVNjTNTbgfJEHtGgaL8ExuAQROf/oMPTR1eSR873O/D8eCKYmcpzAKiyai3Lm6OaRek9ZKKRHdNg/U0ef4fs/PZe5HilnavxBn8iJ5VfaGXSh9AMHRDPrKpvwu6YHr7c4/wP7eWSF0hdNyv3OFvRdiCJMOzp849whIXVod9f/G71jOA5vWqFq0NtSxNjmXOnNAeYCsNwTzK7DKyuCZb6uHkq9oawaP3EzmKTeLpB/N8reXVEDN7xhzSLfzM8h8dTILCrxoImHAbWherM2TVzuqaGCCgoxDCf9LFACfvu89wgn7bsGchA6+hytk3yyQXOVjD+FGEMkWxJbdJw5J4D1C10TK2PU0vavlGs3O/hWiqP8ZmqT8w8e3aPth0xk9AIZZZpHPQN4g1SwEtumJULz1olDkswIScO4BL/nh492z5Bbxduwgr66mD1/766oLUsFTDQNcFFBruk1deIroladHiWzkVKmiCVkWxlW/7/7r1FzzHfLyWjO3W135eZ+pWagLvrXQO7EmLU4CKd1HHITjCGW68pomydijgqGnWmgEDJVhbRMep
- 3IzmercX
- 2fYChkTNfyS/VbXBtYu+f4MKMzxhs0zo6BPaoOKxJqpuvCncrzpSlOu3D9pM8SreB0GuJBQJ/ZlJEalJo1uCd4j5DX8giicicLJU3aUh17jEibyAu5qc4kCTlNFuYFEO9bP8/CHartR5TenZPotxVTHEEbqYEbWu3BDc8JiIOSLZDYTHbzpT5YA+4v8gLAkd8UsxNniObJvIn2PsrPbi8fC170aUy6/bcvOEK5/HG4B8Fx4iYG70VN/GW9NI0rqknoeuuolIM5F80YihnSyfCVyf2NNww4vTOYjmtW714NBpqFrY=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 2287D18000B
+X-Stat-Signature: me9kyjeyc87uuh53nczkgjfrcs13s3oz
+X-HE-Tag: 1789414944-237599
+X-HE-Meta: U2FsdGVkX18Kh8+OBLAJZe/th89KQwsswl72/rDsKQvJhHtMmQvOwrdNljgxFhbYB/sfR5L3UTseTaEc8/E2/+nVhMCgvStNpjNSn6FVHX/2syiIh4/rijZzjgvmRKdKpH7cPk71lNSe4FDB58fQdeDgj6IF/PyuNhr5hHnIyPWDzAiLbhY2DO1XpxXgAjYwd2eMv2TBrB7y55B7k7hNNqPtd+vnCPPm2Q+iNNOMKsHuqCmBWeNqONzP6tCYpnUQ2qFKatoyWr/MBzvI9I0K44rojuyo95rXXP+2H1ZfUULMP7KIRCbqOGbUw71HvLA+BVlogmc2n6OeF4wZnZbdO2ggvWhDw7DLrtHlTQN+xXrFs3oUGuACEAHpkWZTCwrXySuKTLQ42H8iumtnTkyDR0AGskDCt7ov/qmakYuegnVmd0nBNe2erL+jP3GXPk+ySQnCvW2dbdNPmPjuwWCPxKJ6K7pC/7zjc/X4yv8avbR2lVsqanBjms4KNuL31M5AkYJlpOh+gQfCtgUYpwe5kyQS69vFPfKwSax2d/Xitii+TRd899u9UdC1+g8/JR6z/EAs+jGQXfcd+TTQIOFQisMuHE+HEj22qp2/8OxrLPNfdqGBm9BuxU3pD06xJgInoIeVd1WMdMP2oEDxnzN1Q+/R7hhB0M4+QHPsUU7+xYDlhNEBSa02bYvzbZcKChbsbfqjbN5Zzq571hrhyXNrAAnNQffyOcTGnf5MA7eWdPdSDvTToFdZWU3EkCsDX3pMG0SLAi5t/R/y3sQ2AHkbVAcW2PNe9q63/zeZt6YWjV1q41XeZclEaCH3txeBKW2GaxvLjGmUknpKkZ46iJETwzUb7wnm3qkr3T4o/XhQd1ZXUTBPcYSbmWGxexfuXWRpSuuma4PyamU7QL0MKmhKY7ZlIeK/XabthV0/HHj+9+6VQYW5OG94fWejqpClr/P62PEp8kxOdrqumicWMko
+ myTRfYt0
+ A099RCIIPpUxQkKEu+ssxEblZimIAll0FQ/L5Ql5jd/impbKSk1dsgBEQj5YwcePz7bWiZzi7rebPN0SHIA1eAwTR9oAY6rheQ9IJepSyrhOQDP6grSV4r4OPBkoR0drQ8i2VDIERGjfJjsNYtsynt7rctpFsTug0Ilid9VwDLM052R3NlfthaZUEbGDfeyagrWoGZ1tpwuvjd6IC6bQFMRz1pGJL23GiJPeH31kVHAmN3znwbhu/5EMOC8IuNMrHp1e5tT4Dqx/xkHXgJmwiX1U5IJc4/OpGeSQDLE77kF/gFkck821yakPJ7pYOO3HvMbBw
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,55 +90,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 15 Sep 2026 02:10:03 +0800 kernel test robot <lkp@intel.com> wrote:
+On Mon, 14 Sep 2026 12:06:31 -0700 Suren Baghdasaryan <surenb@google.com> wrote:
 
-> tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-> branch HEAD: 383fc05d4650b021f3c17e36a145106dcc61a294  mm/swap, PM: hibernate: atomically replace hibernation pin
+> Uninlined drop_rcu() and reacquire_rcu() functions are not used when
+> CONFIG_PROC_PAGE_MONITOR=n. Exclure them in this configuration.
 > 
-> Warning (recently discovered and may have been fixed):
-> 
->     https://lore.kernel.org/oe-kbuild-all/202609121422.hkKWuy7K-lkp@intel.com
-> 
->     fs/proc/task_mmu.c:187:13: warning: 'drop_rcu' defined but not used [-Wunused-function]
->     fs/proc/task_mmu.c:195:13: warning: 'reacquire_rcu' defined but not used [-Wunused-function]
 
-Thanks.  Suren's "proc/task_mmu: remove unnecessary inlines in function
-definitions" didn't like
+But there's also
 
-# CONFIG_PROC_PAGE_MONITOR is not set
-# CONFIG_NUMA is not set
-
-I'll dial that back a bit:
-
---- a/fs/proc/task_mmu.c~proc-task_mmu-remove-unnecessary-inlines-in-function-definitions-fix
-+++ a/fs/proc/task_mmu.c
-@@ -130,7 +130,7 @@ static void release_task_mempolicy(struc
- }
- #endif
- 
--static int lock_ctx_mm(struct proc_maps_locking_ctx *lock_ctx)
-+static inline int lock_ctx_mm(struct proc_maps_locking_ctx *lock_ctx)
- {
- 	int ret = mmap_read_lock_killable(lock_ctx->mm);
- 
-@@ -194,7 +194,7 @@ static bool fallback_to_mmap_lock(struct
- 	return true;
- }
- 
--static void drop_rcu(struct proc_maps_private *priv)
-+static inline void drop_rcu(struct proc_maps_private *priv)
- {
- 	if (priv->lock_ctx.mmap_locked)
- 		return;
-@@ -202,7 +202,7 @@ static void drop_rcu(struct proc_maps_pr
- 	rcu_read_unlock();
- }
- 
--static void reacquire_rcu(struct proc_maps_private *priv)
-+static inline void reacquire_rcu(struct proc_maps_private *priv)
- {
- 	if (priv->lock_ctx.mmap_locked)
- 		return;
-_
+fs/proc/task_mmu.c:133:12: warning: 'lock_ctx_mm' defined but not used [-Wunused-function]
+  133 | static int lock_ctx_mm(struct proc_maps_locking_ctx *lock_ctx)
+      |            ^~~~~~~~~~~
 
 
