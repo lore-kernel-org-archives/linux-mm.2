@@ -4,92 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74A08C88E5C
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 02:46:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3421C88E5C
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 02:48:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 595176B008C; Sun, 13 Sep 2026 22:46:10 -0400 (EDT)
+	id 856086B0092; Sun, 13 Sep 2026 22:48:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 545D06B0092; Sun, 13 Sep 2026 22:46:10 -0400 (EDT)
+	id 807706B0093; Sun, 13 Sep 2026 22:48:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 45B226B0093; Sun, 13 Sep 2026 22:46:10 -0400 (EDT)
+	id 6F5926B0095; Sun, 13 Sep 2026 22:48:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 171946B008C
-	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 22:46:10 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 91A4A80EA1
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 02:46:09 +0000 (UTC)
-X-FDA: 85210828458.18.13B3F42
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 59E57A0007
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 02:46:05 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	spf=pass (imf15.hostedemail.com: domain of liuqiqi@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=liuqiqi@kylinos.cn
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A3A56B0092
+	for <linux-mm@kvack.org>; Sun, 13 Sep 2026 22:48:05 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 591F9120ED2
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 02:48:04 +0000 (UTC)
+X-FDA: 85210833288.22.1DE6876
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 9CD98140006
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 02:48:02 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aUYWUEkw;
+	spf=pass (imf09.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789353967;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=2+Ar385qYLGHnkpqpRXsQxijh/WUqSm2AZzcE8JmdP4=;
-	b=Yb6R9U+9LVj5k83BaBHHx2b8Q/LcfZBXTmec/B3I0FdpQAj6TGLdLdHYWJ5Hpkx5wipNiu
-	rcS1o9ZIL1vsjFoiLtVAl9eS1qaWd9WYPuc3zbGlkiuj7saibjPtmTj0HN/s9hMov57qbO
-	zD4tZ7kObhkfTpLkS+iFR+pwJtd4Htc=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=none;
-	spf=pass (imf15.hostedemail.com: domain of liuqiqi@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=liuqiqi@kylinos.cn;
-	dmarc=none
+	s=arc-20220608; t=1789354082;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=AXLI3k9/pMTK/BtsjTVMEyDksi2gFy8I9idpjBEt+8w=;
+	b=B756pq5owg6VxC+gw8xYaBD5MbAZPP2mvyDhqwXNLj7U8jLjKLASChAvR/6OHnJ/RnjL2I
+	qTk81oroSs0hABbVyU3zV7gXOe/rkJFOOhEGLKMVqVzXUxpfFtpO9kMcxQdPp29WPZ+xxe
+	qOx+TNsVc6eMSvSikruMeZy80eKm+Is=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789353967;
-	b=68ZWMVXKlz3Xg/5nr97/qFSmUATYG+IRmkPyZSaJwJ47Xwy1PuBtsp1AdjZC7hnzC3G+h7
-	i/xA6/l82lGc16Mq4igvowzmhBwzg28HMpuYObC5cH7PoR/3PPLuSfLTkfDtvxn9UgT4O9
-	oAvaXS0FuNZUiTaVKW38m0LXjp3k58w=
-X-UUID: 6ad32522afe611f19a56ed5b684f684d-20260914
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:bbe0c4a3-3b29-4f5b-9302-20e446aab4f0,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:7db8b62,CLOUDID:828b17566f75bd7eb8976c8866957840,BulkI
-	D:nil,BulkQuantity:0,SF:102|850|865|898,TC:nil,Content:0|15|50|99,EDM:-3,I
-	P:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0
-	,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 6ad32522afe611f19a56ed5b684f684d-20260914
-X-User: liuqiqi@kylinos.cn
-Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <liuqiqi@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1935826873; Mon, 14 Sep 2026 10:45:59 +0800
-From: Qiqi Liu <liuqiqi@kylinos.cn>
-To: akpm@linux-foundation.org,
-	vbabka@kernel.org
-Cc: surenb@google.com,
-	mhocko@suse.com,
-	brendan.jackman@linux.dev,
-	hannes@cmpxchg.org,
-	ziy@nvidia.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Qiqi Liu <liuqiqi@kylinos.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] mm/page_alloc: apply per-task GFP context in bulk allocator
-Date: Mon, 14 Sep 2026 10:45:55 +0800
-Message-Id: <20260914024555.138125-1-liuqiqi@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	t=1789354082;
+	b=ZAxx2ntCXM8bjcmXXFDZ2yVik93HppsOjMHuSCqa5BnGHQCo/Iw5LUnYKoWVHl88rqpPlc
+	+ed3G4GWhUWqx1j9RbuFxcCXZNcTX3b9fig/Giqcj2DRaBdGaWwQMnTayTwOH0WusXEBBU
+	k9ka+JOsc4H+MmRZ2Z/jLOfZX8dcPpM=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aUYWUEkw;
+	spf=pass (imf09.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id B302B413B8;
+	Mon, 14 Sep 2026 02:48:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 087EF1F000FF;
+	Mon, 14 Sep 2026 02:47:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789354081;
+	bh=AXLI3k9/pMTK/BtsjTVMEyDksi2gFy8I9idpjBEt+8w=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=aUYWUEkwRAc/MPD1E8wD6u4bTIsbzSq0kvntl9FVDaEATIYAy4I4sIHXFRhg9t4Yz
+	 04T63Uk3AKoDRg5NkaKSEjHUhOI2lbC8ikAkEKvl4oLWjLlij9tg1sMybkHau92g4w
+	 i3lIV7y5nDKFszslBx9YR0befexyZn9Vr1fRxtdL1d8YPb2I927c60O5OWDxlgwQWC
+	 iLso1LRAbVRq0e23KFOTaH+/kqOtLqBi3rSyUQuZVP+dNpzy+Hg3aD3BwD7OI5jIoU
+	 CW38fNAoU1X6qNgr88GSJx29l8IxFbmBXdbF6TD/ns1HI3wJQltPrXO1+RIlLwDk4I
+	 VHxM1iKtfDtGA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v4 16/16] mm/page-flags: remove PG_private
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Qi Zheng" <qi.zheng@linux.dev>, "Lorenzo Stoakes" <ljs@kernel.org>, "Shakeel
+ Butt" <shakeel.butt@linux.dev>, "Johannes Weiner" <hannes@cmpxchg.org>, "Kairui
+ Song" <kasong@tencent.com>, "Alistair Popple" <apopple@nvidia.com>, "Ryan
+ Roberts" <ryan.roberts@arm.com>, "Gregory Price" <gourry@gourry.net>, "Baolin
+ Wang" <baolin.wang@linux.alibaba.com>, "David Hildenbrand" <david@kernel.org>,
+ =?utf-8?b?TWF0dGhldyBXaWxjb3ggKE9yYWNsZSk=?= <willy@infradead.org>, "Dev
+ Jain" <dev.jain@arm.com>, "Andrew Morton" <akpm@linux-foundation.org>, "Vlastimil
+ Babka" <vbabka@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>, "Liam
+ R. Howlett" <liam@infradead.org>, "Michal Hocko" <mhocko@suse.com>, "Lance
+ Yang" <lance.yang@linux.dev>, "Ying Huang" <ying.huang@linux.alibaba.com>, "Zi
+ Yan" <ziy@nvidia.com>, "Muchun Song" <muchun.song@linux.dev>, "Mike
+ Rapoport" <rppt@kernel.org>, "Barry Song" <baohua@kernel.org>, "Nico Pache" <nico.pache@linux.dev>, "Usama
+ Arif" <usama.arif@linux.dev>
+Cc: "Steven Rostedt" <rostedt@goodmis.org>, "Jan Kara" <jack@suse.cz>, "Baoquan
+ He" <baoquan.he@linux.dev>, linux-mm@kvack.org, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, "Masami
+ Hiramatsu" <mhiramat@kernel.org>, linux-fsdevel@vger.kernel.org, "Pratyush
+ Yadav" <pratyush@kernel.org>, "Pasha Tatashin" <pasha.tatashin@soleen.com>, "Mathieu
+ Desnoyers" <mathieu.desnoyers@efficios.com>, "Dave Young" <ruirui.yang@linux.dev>, "Jonathan
+ Corbet" <corbet@lwn.net>, "Shuah Khan" <skhan@linuxfoundation.org>, linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+In-Reply-To: <20260913-remove-pg_private-v4-16-848550f7574e@nvidia.com>
+References: <20260913-remove-pg_private-v4-0-848550f7574e@nvidia.com>
+ <20260913-remove-pg_private-v4-16-848550f7574e@nvidia.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 14 Sep 2026 02:47:59 +0000
+Message-Id: <20260914024800.087EF1F000FF@smtp.kernel.org>
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: i7exy9h3fti9khapnm3k8rf1qsdwjemf
-X-Rspamd-Queue-Id: 59E57A0007
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789353965-23794
-X-HE-Meta: U2FsdGVkX18Gcu8DVcNZ8kiaGd5mjwIgpq2TDY+D4Ad4j2GNtJFQuHDHyVhk4BmVLwK3NioERkZXD1wqnMXneJiHDke2KHFf4ix5mPp0oBP2KH712s53iZf8ZUct5ObfQ9iM+dIEvMKIi61HMRW2WFdbdpvzGOuoZOQkUAhSIjeCqbnGuAeuLyz1/bBZtibNjQsAfgcX/N82Xiwvnjvzuq778Ocz0IyKeEmDXxC6AGeZ+HWDcQdjdBsWbPnh93qxS3ICp4zGAwdh2G2dkWOmRc6b491Dp03EncY1sYeaMRPW1s3trhcgLhxO0uq6hMwSNIs37i0J4pM1txtVbZQSnesA0hy3CLwaRtINpB+hC94MSsBAgXOhZV9E1Z+OWy8kvKgMnDSnj5LSX12Kz1eeM+GDr2swjdltGJKIcGa8HxGQGPNFH9mutH3wfRkzwc+F9rhwJE2wfI83/JL1xyviK0uLcIUEIb1aW/DDTmuJEs/7Bq5OUhvpQ3N2LmOWpbGyDv7iSOKXIRzV62Zor2PI47jbVUD1FJ0VoWtf+WyvibFdClwmY/1OlxTieSvzv41GRFdcqUBAOPC/LVOkupDaw5MQ6UgnOraJDjOGnUIOeTlfbgsmV188Updnv0SIZHWt8A1uHRZvb8act2kr6tMsMJoPjXYWLfvEO47uL5MUuP0r51zqtigdHzXkhTpNcMGQuMStMbD7NvLPmLRPS7OPKBg3Up6y41Bu2ym4iV3K2dDT1i/mFW77CRLUibDTW10h/a5WXyPIq6MAkzh9KOYiaXBa4PfkqDYKNSRSbxw8GDlOUNdy5GWdnx8dinMn0390TvOE77IjHiTVqHgDYqppEdZVpPKlYO1/PhGR0iP7ExNMKV93+owbmgkNaVTCydEQ338g3cJLV8vCEqZHkwmcJJ6OtBzPRWp09R8w/SScwquTrasc+3CdW4ST59vEsCssY+2ToQaRnePOI/TaA8P
- aNdEyTlo
- GEDKBtBT1sUEHvqHdFNzcPEUbrQwQWh+fLekOUQ4hQ7t4mEPlPwKd2mZ7wX0ZZQsNAiRC1s8Vh3gDcI4=
+X-Stat-Signature: 3jj8f4e3znzckjoaoc9gsugmxdd89ubd
+X-Rspamd-Queue-Id: 9CD98140006
+X-HE-Tag: 1789354082-792507
+X-HE-Meta: U2FsdGVkX1+pLO8m34VhTBWLIbutqkQP3c2IksjsV04wVzLEGx2PiQxrmEwqJ+1O36qg/0/+TwaASpn5BSsLj8gBt5HF55yCK49pr2KN3g1bw5dAF6IAvZWszF+KtmYi/JDyXhe1usKAViw2Wqwu6xop24RLz3Qa4ZAuHmmY1/35eC6c/i+UiDKmt9Id9Uj/ygSUUj8ev+adslGkBwjeLPL8lo/U1/dUjpQSaJLX4Y6mlObAHUGWJ3Lm3pTWuJvtX+fkD0Z6zoOiREiW1wMFow6TCGtzqJ9jjsRjmweCkkxjiTzVOwgLIAtzcryXYx3CYvq9p2HsM/402VSShIx/SyUtLw6CT56RAaNJz2dgq+FAAC1NTdXHYcQHJeNrg263zxoHYYfuJZ4xc96QH+IwVRLzEKj2CdqXdNS/hoQihPrYa2HHvdOqKfwDibBUDqTpSC1oSzTqA5oZ8DJJiRtySiwjBCG+5daOTpgQ1S56Q/eUYAn8qisi/FfnU75faYzWlHC+ICrnAlk42IRbD2R2eJssXiLVb37BD9Umncrwz77g/O6phCVi/aI0p9V5Pl17urQa1VW3JDeoV7PxrlXONmUtAwIkIxx5UVIM6R6Q1Jzi2A0R97wedtjNg5xHjK3vTFL1qo+G5uBU0eHTXK02D8kdMIMlEZuhsmBnnbvJknGpJpzvKqc8QhkV4cU1mtu04h2c/Sil1qP12LYObKEcXo/ISJeJEfhYgjuldT488xIxb3JOevimBJv2aOm/2NaGPdG/w8PUJLcevbqnKxK9/mNwpxAZK4/DLdC8ASaqsw/Cc7vH0pybMZ14sUmr/6AsURXT5USjjf8aiYpDgHiFMW+HIHXmprFUgpWG52zzLaf1DXNtQmpsjRo1er/Y1aEcSixkZlOlNmalgzZ1oulTPhWaFU/JSjUiSNHgrpaIbwQnP/3MaAmVsUMloTkFiWXMtkdz8vWWvSZIxiCmuE2
+ f4WYw7aZ
+ feG6Xanv126NRbp8RZwQuGbR0S2biiv0NaWecdcMxX7vM/Nm2w/8lNqVWcCTb+McOUf0ez0K5DG+JHDFBdd5XvdL8fr6+EAeGBE9U04IsOenr5niRRg9jtMh7DGl7EE7PVN6bNYRFXo5D6/PdDhaichKk7mBdsB20Gwqg9HjiWFvz+3nLsT1bcLzyTF1luj8UJr2+8H+5QCK3BWU3TS4lMt7mrPvZN880696o4PaZ0nbqNc3M2E+bV7CKRcDVuaJgqccnRj2YRSPoheJeYa0uKAOyEpIbXwjYh7vEeKTSjjxggYDGAA1GDiY4DrcWh6CAUXjNFaXaThgGop9NovY8drIbLNVjDBbpxxEBElJsjv0DXoA8Z7kR6sy7MK8fN0XLsH1PcQEUTQPTCdoomvgufP70u4gLlwmIPuBok0ys5d6X6u6mQyuChn1C2FnGbhXMajvTEOz3QagVmHNad3LLYsqvkEseSmE5p39W15dws/scXYDfwpB7CmW5ZzKvlQVXspvtAZ/Yc64iex7fxpWRVEKDWacCBuqObxcb3reZsK3keSWnBcw28RVjM1s2VzaSz/QyRR5L2rXSqRJbHNPwdrGp+uLO+7U/9Nvr07SVR1FqfdgAtSYTfdVMH6jFz8Z0zjWDrO22Cgrr5htZmJgfgGBAfJ05dDFe+AVPZEwrKUMS4TnVgs6O7Q5RbA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,36 +107,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-alloc_pages_bulk_noprof() does not call current_gfp_context(), so
-per-task scoped allocation constraints (PF_MEMALLOC_NOIO,
-PF_MEMALLOC_NOFS, PF_MEMALLOC_PIN) are not applied on the bulk fast
-path.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] Silent memory leak of folio private data due to missing check for =
+leaked `folio->private` data when a head page is freed.
+--
 
-The most direct consequence is PF_MEMALLOC_PIN: without clearing
-__GFP_MOVABLE, prepare_alloc_pages() selects MIGRATE_MOVABLE for the
-PCP list, and a task under memalloc_pin_save() receives movable
-pages from the bulk allocator.
+commit ebe4dd474a496c46897e3f790e03a43cc0508eaf
+Author: Zi Yan <ziy@nvidia.com>
 
-Fixes: 387ba26fb1cb ("mm/page_alloc: add a bulk page allocator")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qiqi Liu <liuqiqi@kylinos.cn>
----
- mm/page_alloc.c | 1 +
- 1 file changed, 1 insertion(+)
+mm/page-flags: remove PG_private
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 12fac9084c48..3be7288a1aa7 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -5207,6 +5207,7 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
- 
- 	/* May set ALLOC_NOFRAGMENT, fragmentation will return 1 page. */
- 	gfp &= gfp_allowed_mask;
-+	gfp = current_gfp_context(gfp);
- 	if (!prepare_alloc_pages(gfp, 0, preferred_nid, nodemask, &ac, &gfp, &alloc_flags))
- 		goto out;
- 
--- 
-2.25.1
+folio->private !=3D NULL indicates a folio carries private data, replacing
+PG_private. All PG_private users are converted. Remove PG_private and
+reserve the space as PG_folio for future use. Unused PG_private functions
+are removed too.
 
+> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+> index 08988877331ba..10f4ad075ea48 100644
+> --- a/include/linux/page-flags.h
+> +++ b/include/linux/page-flags.h
+
+[ ... ]
+
+> @@ -105,7 +101,7 @@ enum pageflags {
+>  	PG_owner_2,		/* Owner use. If pagecache, fs may use */
+>  	PG_arch_1,
+>  	PG_reserved,
+> -	PG_private,		/* If pagecache, has fs-private data */
+> +	PG_folio,		/* Do not use: reserved for folio identification */
+
+[Severity: High]
+With the removal of PG_private, does the free path for head pages fail to
+validate whether private data is leaked?
+
+Previously, the memory management subsystem checked for PG_private during p=
+age
+freeing (via PAGE_FLAGS_CHECK_AT_FREE) to catch filesystem leaks, and issue=
+d a
+bad_page() warning if it was still set.=20
+
+While tail pages are explicitly checked for leaked private data in the free
+path:
+
+	if (tail_page->private) {
+		bad_page(tail_page, "nonzero private");
+		...
+
+The head page's private field appears to be unconditionally zeroed without
+validation in __free_pages_prepare() in mm/page_alloc.c:
+
+	page_cpupid_reset_last(page);
+	page->flags.f &=3D ~PAGE_FLAGS_CHECK_AT_PREP;
+	page->private =3D 0;
+	reset_page_owner(page, order);
+
+Can this silently mask bugs where filesystems leak private data (like an
+un-detached buffer_head)? Should we add a check for page->private !=3D NULL
+for head pages before unconditionally zeroing it?
+
+>  	PG_private_2,		/* If pagecache, has fs aux data */
+>  	PG_reclaim,		/* To be reclaimed asap */
+>  	PG_swapbacked,		/* Page is backed by RAM/swap */
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260913-remove-pg_=
+private-v4-0-848550f7574e@nvidia.com?part=3D16
 
