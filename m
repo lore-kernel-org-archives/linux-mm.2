@@ -4,93 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C16D6C88E50
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 09:44:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AE1EC88E50
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 09:45:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B12C6B0088; Mon, 14 Sep 2026 05:44:37 -0400 (EDT)
+	id BFCBB6B0096; Mon, 14 Sep 2026 05:45:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 961C56B0095; Mon, 14 Sep 2026 05:44:37 -0400 (EDT)
+	id BB0146B0098; Mon, 14 Sep 2026 05:45:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 82B826B0096; Mon, 14 Sep 2026 05:44:37 -0400 (EDT)
+	id A77BC6B0099; Mon, 14 Sep 2026 05:45:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 60D9F6B0088
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 05:44:37 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7A376C01AC
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 09:44:36 +0000 (UTC)
-X-FDA: 85211882952.16.ED719F3
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 82E426B0096
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 05:45:56 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8EACB1A0187
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 09:45:55 +0000 (UTC)
+X-FDA: 85211886270.07.525FA6C
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id E8DD914000C
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 09:44:34 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KWt7mu4E;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789379074;
-	b=SHKdHbdC4rzgX0EQ+18rM+8wVFWEQ++zt5ddnlnIGqIUeqervs+weT8Qit8Njx8qcq2rSI
-	E+Yfb08zvQoW468MuWtLn0GByF/gsGyMA63l+G8FcNWXfkrD+gL0JIrrMj2IBKqkArtPiM
-	BY+PjgDrZST9mSFPiRA7y1pk+gH35+o=
+	by imf17.hostedemail.com (Postfix) with ESMTP id 02F9940007
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 09:45:53 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iGjqTOEx;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KWt7mu4E;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iGjqTOEx;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789379154;
+	b=EHrQfus9f3j4SzPdcXLzENbxDqJYjfr1iueewGLB7iXj45YewhZmvAsFyRgp+kGl8DonpD
+	fl2NM3Jj7ZGVRhzuEZSi8EPEkSIF3484Q6yQCo0MaElI1x6C8TsQEaaN/xVFhVeF/u8MQ3
+	DvQN+eYXclhSrQ2l8UF1CY0BXPMtFfA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789379074;
+	s=arc-20220608; t=1789379154;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RqhRsSPgAhnByvBCyGHJb2bv4q3f94ZzhrbaeD0aH4U=;
-	b=3870YDEqKv5kFwRnzZVUTwZEQqoHZcMg2NXWZudgXWgjCwM6fyeeeqDnp43DWru5Gnnusd
-	OgHnnIypdyYEAK87ZzDn+sXKuKgioMQUKTZx9fbWu5XQK6v0q5vR79/J/qa3PB0WyS5AUy
-	g0d1aoqXP+7dOEq/YmEZR4gcfIS/tOs=
+	bh=zYFRtPItrR9BesC1c0SvNo0V7skAjyhampHOopOgb+E=;
+	b=YKJ8kgyAxD0lNc2b+VKtbrJYtYx0qBW0ODKFrvF/wRbEKSoyR+ZD2WX//Fa65/PYvB9KcV
+	+al1vozno+jFkmXhSLmdsgtrAJnQImaLidchg0/KHHeiplIjv7gleshki2eKxdsSpyffIw
+	ZvQWhjNY6jJWVSN8+L57T4UhSbhyARM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 81DDE60008;
-	Mon, 14 Sep 2026 09:44:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 177691F000FF;
-	Mon, 14 Sep 2026 09:44:28 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2FDEE60142;
+	Mon, 14 Sep 2026 09:45:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C2331F00893;
+	Mon, 14 Sep 2026 09:45:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789379074;
-	bh=RqhRsSPgAhnByvBCyGHJb2bv4q3f94ZzhrbaeD0aH4U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=KWt7mu4ELgJGrcVZ0DL9s5IU+inozxhjLkG/29VpB9RV7Eo8oIiU70bBDZPvPzneS
-	 LiqWlP2EdIpLG2EUdBQtTTOFwV1nba+iVAEALW6zYxPLztIlB7nwlNuTeoVYhL9FUl
-	 hFHXZ199IV6x6mUAumxMRUlCu8ojrfM4kFiBfFpJZlE/Mwt2S25JOPSJx2e1TfZVgN
-	 WkBkFLiCFqDUutsuMD2zaG7JOW/CT7l41NeiKp2xG0x7cIywTEsePSq0Ow3wyeTrLd
-	 EA7TSY4wyjToX5H+p57WAQLh3Y4UCDQcnwge3VevFbQjxtR4tfd+edoCXs9QTZlKta
-	 SZkcnHI0SWyxg==
-Date: Mon, 14 Sep 2026 10:44:26 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Shaobo Huang <huangshaobo3@xiaomi.com>
-Cc: mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com, 
-	vincent.guittot@linaro.org, akpm@linux-foundation.org, david@kernel.org, kees@kernel.org, 
-	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de, 
-	vschneid@redhat.com, kprateek.nayak@amd.com, liam@infradead.org, vbabka@kernel.org, 
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, ryabinin.a.a@gmail.com, 
-	glider@google.com, andreyknvl@gmail.com, dvyukov@google.com, 
-	vincenzo.frascino@arm.com, kasan-dev@googlegroups.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, Uladzislau Rezki <urezki@gmail.com>
-Subject: Re: [PATCH v2] fork: reset pointer tag of vmapped thread stack
- before vfree
-Message-ID: <aqfBDEkiRmlb0WWZ@gremlin>
-References: <20260806123020.90869-1-huangshaobo3@xiaomi.com>
- <20260914093300.100495-1-huangshaobo3@xiaomi.com>
+	s=k20260515; t=1789379152;
+	bh=zYFRtPItrR9BesC1c0SvNo0V7skAjyhampHOopOgb+E=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=iGjqTOExfOZa0QvKhfJUvbiv67FIG3c89Rj0rsUQxP5OgPpsgR006zq3WD2eeCfhV
+	 xtycj63iozwTSTQ0srz1rAj0DzmLvTd1HsDnAM571u0uWAqqFa6GJ7U1ICrCTviShy
+	 VlhuIhZbvEGvJPOqEAe6kgvO3E5SgKegqG+qAfIANENtQYb2h6+7+nbx8oJuwQc2ha
+	 cT0M5h74snkyBiarWehir1s+f7q2TOzSFVyhkloVzYAwWHDSmStDrREmV4BgU/F8iK
+	 QnhfITXbe5BRsMHiARKZDHBWD2Z4CS9tM/WILqW2KlADJsEMt7AqrbpsouYlFiZry7
+	 RdDKOScVJI71g==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260914093300.100495-1-huangshaobo3@xiaomi.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 00/12] mm/sparse: remove SECTION_MARKED_PRESENT and
+ further cleanups
+From: Mike Rapoport <rppt@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, 
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+ Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Brendan Jackman <brendan.jackman@linux.dev>, 
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+ Oscar Salvador <osalvador@suse.de>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+ Jan Kiszka <jan.kiszka@siemens.com>, Kieran Bingham <kbingham@kernel.org>, 
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-cxl@vger.kernel.org, 
+ driver-core@lists.linux.dev, linux-fsdevel@vger.kernel.org
+In-Reply-To: <20260909-b4-sparsemem_cleanups-v1-0-008fc8d579fe@kernel.org>
+References: <20260909-b4-sparsemem_cleanups-v1-0-008fc8d579fe@kernel.org>
+Date: Mon, 14 Sep 2026 12:45:42 +0300
+Message-Id: <178937914266.4188640.7965323974267420342.b4-review@b4>
+X-Mailer: b4 0.17-dev
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: E8DD914000C
-X-Stat-Signature: q6cg6f7hcfnqgka446sem9dbo13xk7hw
-X-HE-Tag: 1789379074-245344
-X-HE-Meta: U2FsdGVkX194tAWvv1fc1yWxy2z1GFMMyKepuNWC/ls1mRfiH15UtbyOqL/N+utUghCDh5SI4BbsEX1yxdJYjjhFkaNCrkfJ9v9W0yrKxr7LKST9ddaz4bpf5/AAj+8UbwpRzYFnjtXkjpii8fmSmzErEztV0TCly0PlfIiiemLcd9DyoCm/a62vSaAEyMwVbMLhRzfsc/0hOwW7++iRPbCPYmFw5Wx+bd6IW8GwfuTez3miGBAcmVYk1tq1E+u20e7aFe3D2cpj4Se5ZW1O+y2E6QXMT+O3IQOr8n+TbrX0HH4Ky5283ZF/HwtyEKTKmrd54GuLAh4ZGwxDfuDvAnt1PRnPsUeqeqVp/M7pENGEDJ/Qs6SId6MwtAYyLbSPXIOqrfiH2aXsaRWIwT3TdLHPX2cHOQacqsypMCjXEnJ3U92ucr00wPKPu2hE6JO92Uzrw+Nv1vjH6hQByNTOV1F30N1dxo10PwdfJPfFrMc7zoYfuL/yOb2wzUDNnhIhVwNfVs+VPf0BjdAtJEFCHAT4K8xDFF04LFKCNgdk4ezYta9v/NNmnMymeTzZky91If85Tra19hQY/ONQKZM4Ed9ax5oPUlO0a7Euilp+G5oNmHyJH6330As29Bj6Mo2zW57KVLjvhUXcXXorU2xPu2v0z8LCB01S4CJhxA8mRQWHDqqQ5Xx1Dwv4laoukJYKSa0wqliXqdjrHndR49OsuskG77eYij7pXsdr5qrsonU/BaTJj7gElgAP63Ys4DfQJq6sTJxhFmQwFKbwWrXgmSXk9ZcbPGtxy1OjA2T2taYQVtrWsGCHcu2tpr+MVhNJ/l4UQ9u4lIJ7QlOnkQfOndFrpY4eax06FQtIRFnm+3N6qbRSiLqEkUbg0JALZfF7Xgs1pRqUobthlw7Y6qJTORCbYwwwpqipmj6FRvvOJ5RU+KcE9P/gVgW/tefLxiEsLw4UDDqkeJbF7V21Mc3
- 2JbNa6LR
- 6XjYfoDYb3S/bAMHhODikifpSRGdMyrZJURR2uW6p6bvdhsNz8J71p2yUSGSYeUXLTLKnz9NecsPhUrOF2kEHGGL4rs1j0BZBX4ZnIaJ0ata6CWShn2jURYthcQ6KcdapuRwIfck8SSgKTxcrveNEmwUESVOFmGPp95fHN8cbEsgTlEaoG51NWKTprq2gAWVUCjmie21AaWqsC9H5uzLUK1f4A3dn8CO1qjF5xhgQy15GCoLvG9dF3BdCViWqngdXEQUpt6lSAMVYhQXU/Z8e0Yz6n2+rj9HckMqAR2KHVTArOyrlNgltgUHBnXhCGVplkckuCO4Zq6AvGJkKVfZ4tpFtp2ylRas2eU+qAauqF7MnoavkQa71uI2xOgnwy3JpuCGSyORVe2dextn7xysZUyZekA==
+X-Rspamd-Queue-Id: 02F9940007
+X-Stat-Signature: qgjebb64xefgcit9tbd7i6qypmxni489
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789379153-768815
+X-HE-Meta: U2FsdGVkX18kn3SjTzLKSIiNJPGsv9rfUr+i/XwbuwpECe7JkT3jzS/UaevpfxljPUJUDj3O8M89RRWFnAz7zD17iinA8nkV/TftGMziv+YTgnKveq4jX/FlczntCn+rTNaLd+DQ2UlnjE6BS+taihWYeMssU/p392t8MhoDucblYq8Zj6/FtKDCUzPQaxA5vre1OH7AOh9GlHNrW+DPwKRSk+eZrJCmPg59XzVFNQj2zDeUyx02kpndacrRT1tEVyLnfxU7/fh16yMfQtVzyu+Qd1qgSwSKbfWUm/q7f0GLJ0ZYE5HIuf6TERT7/bsLlnt0wXsS/5fRK6uYuAt4qzEVwzwHJ5yHJEvEzlLs8QMo/Q7vqaRB/xqW7lqn7inLi3+QSCVmiD0dcYnyH9E9J5WrG3F/03GOqp73o7HXcEvauL/26fyLxNK9Xwa7szQ6j+eCgjSwDUmj8dzTShNu/a4ZkWZeyNBuqClRgFU8iSVwuQFY99E2S88QyFBfuo/xlkh4TQbsK5xDNqOKfB0XXN/BbO0uwAbPUP94hm5AQaEVpw6Obue26NIKdFdMAQOgL+Uu0CUNSQKLse2vId6MlUS9Gx23I+4h9EyfBb2wl3eEUWsMMpn9UIi65oeSE72XRaEjmeUuxZCzt64lFSOryvowvEBdur/9ibvkQGZbB/Q81zgQYrDuwZtvuc6jtJcWf8E8DrrScagYxEwwOoNogvcd1seon8QwO8uc728nMVE/wj49u8P6T3qBfLUf/JiiCxwaIFnGriUtc94E1ZSyD/dqPtb1Qu/HiGAprwrhGsek7bi/P6D4PeE7FBejLqbuDj6q6kJfybQ+wHtFtD9mm9EUBB5fRpEKVM/6WIeDtgGXKMEMoQs8sJ4+YWLNeSrbpOmb1PRYBxLRwvvR3aH5D5hQTNNF4jn9jYYc7qMJWQIiGHzfQ9nFsxOFoCXNtWeyKcRNWYpHOIMmE6tWGRU
+ 6VeVTcxj
+ nRqFYGPUsi7j7+hRpYprlgtT35ScWpilwJBdqJnFEY/5W1q8wJ7/jDm6nX6UiLZDJYxzHos9zae6WJZ9WPe6SRa31+QJSiclyi0NCMf83rzlS5QcwnxqIMx212YksO3mhKMsORr6EE6IBrlYSKbOKi41us+3Ocu2thcbPhoQjm1jhuvHTq+rc9RGXP2uUeLZPIlfKTckkKCrGW5FhJe1UGlpctWOx0RRSfLqe7KjHZ8W2RAqn8LGNQYkM1HlGJ6NLrGIABgB9NIkSkVpNzOOP4rCKsikMAqxg+O11
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,96 +108,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+cc Ulad for vmalloc stuff.
+On Wed, 09 Sep 2026 15:32:53 +0200, David Hildenbrand (Arm) <david@kernel.org> wrote:
+> mm/sparse: remove SECTION_MARKED_PRESENT and further cleanups
+> 
+> SECTION_MARKED_PRESENT is really only needed during boot, where we
+> can instead just rely on SECTION_IS_EARLY_BIT by setting that flag
+> earlier.
+> 
+> Some preparations for doing that conversion and some cleanups in the same
+> (sparse) area.
+> 
+> [...]
 
-Please don't send a v2 in-reply-to a v1 or any other email.
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-Send the patch entirely separately.
+-- 
+Sincerely yours,
+Mike.
 
-I really need to write a bot to say this :)...
-
-On Mon, Sep 14, 2026 at 05:33:00PM +0800, Shaobo Huang wrote:
-> thread_stack_free_rcu() frees the vmalloc'd thread stack via
-> vfree(vm_area->addr).  In RCU callback context, vfree() routes to
-> vfree_atomic(), which calls llist_add((struct llist_node *)addr, ...)
-> and writes 8 bytes to the base of the region being freed.
->
-> With KASAN_SW_TAGS, vm_area->addr carries a random tag.  If
-> kasan_unpoison_task_stack_below() has rewritten the shadow covering
-> [base, sp] to KASAN_TAG_KERNEL (0xff) -- which it does on every CPU
-> resume for the current task's stack -- the llist_add store checks
-> shadow[base] (0xff) against the pointer tag (random) and reports an
-> invalid-access, although writing to the base of a stack queued for
-> deferred free is legitimate.
->
-> Reset the pointer tag to KASAN_TAG_KERNEL before vfree() so that
-> kasan_check_range() short-circuits the check, the same way the task
-> accesses its own stack at runtime via sp.  The vmalloc lookup is safe:
-> __find_vmap_area() resets the tag before comparing against va_start.
->
-> Fixes: 9f7d416c3612 ("kprobes: Unpoison stack in jprobe_return() for KASAN")
-> Cc: stable@vger.kernel.org
-> Assisted-by: zhipuai:glm-5.2
-
-Thanks for adding this!
-
-New convention is to say:
-
-	Assisted-by: LLM
-
-Rather than to list the agent.
-
-See https://docs.kernel.org/process/coding-assistants.html
-
-> Signed-off-by: Shaobo Huang <huangshaobo3@xiaomi.com>
-
-Looks reasonable to me so, with nits addressed:
-
-Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
-But I would like Ulad's input on this from vmalloc side.
-
-> ---
-> Changes since v1:
-
-Thanks for adding this!
-
-Nit, but nicer to say 'v2:' here I think.
-
-> - Drop the 12-line comment; keep just the one-line fix.
-> - Fix the Fixes: tag to point to the commit that introduced
->   kasan_unpoison_task_stack_below (9f7d416c3612), which added
->   both the function definition and the _cpu_resume call site, not
->   the 2016 vfree_atomic commit.
-> - Add Assisted-by tag per Documentation/process/coding-assistants.rst.
-> - Use real name (Shaobo Huang) instead of "sparkhuang".
-> - Trim the commit message; remove the full KASAN dump.
-
-Please give credit to reviewers for each change, e.g. 'as per XXX' :)
-
-> v1:
->   https://lore.kernel.org/all/20260806123020.90869-1-huangshaobo3@xiaomi.com/
-> ---
->  kernel/fork.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/kernel/fork.c b/kernel/fork.c
-> index 45300f59cf2c..9a66b10749de 100644
-> --- a/kernel/fork.c
-> +++ b/kernel/fork.c
-> @@ -238,7 +238,7 @@ static void thread_stack_free_rcu(struct rcu_head *rh)
->  	if (try_release_thread_stack_to_cache(vm_stack->stack_vm_area))
->  		return;
->
-> -	vfree(vm_area->addr);
-> +	vfree(kasan_reset_tag(vm_area->addr));
->  }
->
->  static void thread_stack_delayed_free(struct task_struct *tsk)
-> --
-> 2.34.1
->
-
---
-Cheers, Lorenzo
 
