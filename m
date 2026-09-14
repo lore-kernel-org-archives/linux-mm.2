@@ -4,117 +4,154 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3D50C88E50
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 13:24:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27776C88E50
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 13:26:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BBE326B0092; Mon, 14 Sep 2026 09:24:07 -0400 (EDT)
+	id 299F96B008C; Mon, 14 Sep 2026 09:26:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B6FD86B0093; Mon, 14 Sep 2026 09:24:07 -0400 (EDT)
+	id 24AF56B0096; Mon, 14 Sep 2026 09:26:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A84AC6B009B; Mon, 14 Sep 2026 09:24:07 -0400 (EDT)
+	id 13A7F6B0099; Mon, 14 Sep 2026 09:26:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 78D8B6B0092
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 09:24:07 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EF312A3A27
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:24:06 +0000 (UTC)
-X-FDA: 85212436092.08.FBB7B12
-Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 31D0614000E
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:24:05 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZNETvTZu;
-	spf=pass (imf26.hostedemail.com: domain of jaewook376@gmail.com designates 74.125.228.12 as permitted sender) smtp.mailfrom=jaewook376@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789392245;
-	b=h2MhWDQrF/MMUOfoBTnV6NflEii+tPa4GqqBSZsFQkvcafaTyueD+B+ao8okTgYob98I6O
-	rTgGX869zzWdQJu3AZRGtPgIFDV3xrDKlHKJl7bMgZ3kDNx77GvBGZS6uNa9FQSnZrOjC1
-	/tbhvjAhLFjPAk0dsh4uGV/cROCQbGg=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZNETvTZu;
-	spf=pass (imf26.hostedemail.com: domain of jaewook376@gmail.com designates 74.125.228.12 as permitted sender) smtp.mailfrom=jaewook376@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id E66B46B008C
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 09:26:47 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7143C140143
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:26:47 +0000 (UTC)
+X-FDA: 85212442854.29.F649BED
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 96F0F180015
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 13:26:45 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LVfA7IiV;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789392245;
+	s=arc-20220608; t=1789392405;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fgRiOcxuYT/a5YlmbXURlfn299Pxo8srZQixNKFp+fc=;
-	b=XWoWyCeTbBeaLDJEKHUcnuv3GAYdFoxsZE6AR2jvxM6cPfsgMsxTcg7ruVUTzhNAUwes5P
-	2fYDgbiqO1G3eO2qemZWPTW3BXvOLKpvKBUvJloDX8CGxeUu5owXQoFFGB5sxZyUD6I013
-	TwvLkKvTxGvx32UuFDEQX+NZhYj3Pvw=
-Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc4d04d73b8so1526635a12.1
-        for <linux-mm@kvack.org>; Mon, 14 Sep 2026 06:24:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789392244; x=1789997044; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=fgRiOcxuYT/a5YlmbXURlfn299Pxo8srZQixNKFp+fc=;
-        b=ZNETvTZuaZk9p4UfaFKwMJTF8Hh6Cupv3M2GI6WG3g4AWfpcec3kYyymPfXyrcFpDI
-         lw0lxnyby8dDQClEE+UZa5K3cfvmqmFAulga/Ns0kc8mTEq7KCCWB9ceoorDbSqfkGNs
-         8qale8p8lgCts1080VCBygsLWHh9JclpNDj9rhJgZvq4u/E5BmTGiEp+Kf9Jj0J15lGH
-         i2eG6yK5YFwYc560QTlID/IXh2HrhFVYqPGHiB3U3Q+H3Km192kM6Jlx2V38FShlEauu
-         VjMhwi2sfE6i+zUumH0ktNJtcl7dx/z+KaQ3RdzjeYkxAY8XGP+KUpRnpEFLSQK0h+JT
-         SNow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789392244; x=1789997044;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=fgRiOcxuYT/a5YlmbXURlfn299Pxo8srZQixNKFp+fc=;
-        b=d6f3IobwFOaGe/HpPmYT71Ro8GnDxdu3gmUjaTNKQeRUo7xGpkMHIU/y7ffbdIlc6q
-         pDIIWPEjNdP0hXeyR3vPxFu63bCG8eSwx8vtKArSqoMTcDCb5qCswqcol3lOBUVws9ac
-         XkcAaPGeHd2WlRAPTceQpgRtsVU8THmnjO7SM0ncz0fwxFrKcIQN0jn6TzT6ilkD8ek9
-         PfFj49efYPUVGq0BzsLu8+rSA07pfZ0q2Vn6XiticV30eQPcvwQ6tjWPRf+qhNmi9Os+
-         Kmj7Fz8cFRWAMHSOG8PP9Y3jtkh4ISygXvvPpjGhnCNzt0rW+j0VbvNrduX+FLPeGKRq
-         zPkw==
-X-Forwarded-Encrypted: i=1; AKwUvBz2vYPEbuWqNsxxJcnFdr8AmPLrwmeIhy6dU9jyzd4YkoTcbtwgrduGBwbTSC338RS8tbX6yBo7rw==@kvack.org
-X-Gm-Message-State: AFuF++k4jL8WsC+9QOuErwJKjNLp0Sssf5V1IFIez3FFCqrxhLrM00e4
-	2Aq35lk/j1zOjCAy02/Stgwt1imNm0Yr/aScvdLJEvEatLTNoZ4naYw5
-X-Gm-Gg: AYBFou3q7k2/F7A/jvyFFrCJNpNhOXkV9VYVFJDW1XNBjgbK9rBWJk+PSbU0fPIkIN/
-	aIw/BvApbU26b9tw6FkR4gX9NR0CVos6t7TW6u3pCaWNlYUH1tM23/Cj5YcNGlQtPkwBXS8WAH6
-	4l1/wkykK1u6BM2D2WdzIrMqip1hjM0poM5Yt4/hG8ROJtLzvHGsOoeGOg0aVfCjnw+soRzVvav
-	yLeeDNv14jgqlQjJixGogvdtrzFyHSZVuEejOSY5gnaIcf8dDmEjwQXI9tWh1QSFNsOu69Q16vq
-	tFvYHtL7xsG3iTSzSm8DPT0Rwl6RHP7O5YSWDTuJ0ets+tjGnJMlwXAPGz6oDzDxlLwBvPXfLNX
-	u7o2E/otj2gCKYDQxjaSko+DqsFhB6DN4Fh3yG8eiweyon8kklUvV4iGlhgCu2Md53RY5qwypwb
-	tB41E3x0vfes2Vn0V01FqELTzSDtEsvt0QviEaGre+D7ZMrnsOkhqbha6CukwfBdO0RxBCLiv/1
-	tJobKtwrG4Egw==
-X-Received: by 2002:a05:6a20:7d9d:b0:3cd:9bb1:c6f5 with SMTP id adf61e73a8af0-3db40452773mr4994899637.10.1789392243791;
-        Mon, 14 Sep 2026 06:24:03 -0700 (PDT)
-Received: from arang.localdomain ([14.47.12.38])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc4c6596265sm4938853a12.27.2026.09.14.06.24.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2026 06:24:03 -0700 (PDT)
-From: Jaewook You <jaewook376@gmail.com>
-To: Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>
-Cc: David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Johan Hovold <johan@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3] mm/hugetlb: preserve mremap address delta when skipping page tables
-Date: Mon, 14 Sep 2026 22:23:52 +0900
-Message-ID: <20260914132352.472-1-jaewook376@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260911182408.75821-1-jaewook376@gmail.com>
-References: <20260911182408.75821-1-jaewook376@gmail.com>
+	bh=YlYwFRzA7o/DVEj1e1cnP7ktHjtNeLhR3AAaGHH8Ug0=;
+	b=Tm1mdpF8AiXlfDbnUREt/IHkIMfc47399sSaI2Z20X0icxdndxjR+aRvDwJIIFJIapjFCW
+	XXxoBidY2t/f+rTtZNFsnb/vw/oMLWKJR0kmvTSSNL4gsAZvDg2QBHmN9DbDrpefyROlc0
+	EcQQO1JSs5CxFi8nIw8tfNKD+q8YidU=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789392405;
+	b=hW5t8hQu7U6YGKMi0s4hbi6vrB7iLSc7PPDL5p7taKUFYrF5+fkjW+9pJBLz0cfXMcWllT
+	VdHjhwtd+N83CFbemTnBEFAt0s9J8XKs6or68J48bJ6L8OZ6JZMCntgLDWESriYjWRi5AQ
+	tIFBdoCyPZVn4+VP7N7U1pFj9dmQqIc=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LVfA7IiV;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id DADA341FFD;
+	Mon, 14 Sep 2026 13:26:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DD861F000FF;
+	Mon, 14 Sep 2026 13:26:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789392404;
+	bh=YlYwFRzA7o/DVEj1e1cnP7ktHjtNeLhR3AAaGHH8Ug0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=LVfA7IiVasTAzRSrRiQszUUtDWQYqay80S/mtUAUne2QZDkIdnbFlLxSzuw89mGL2
+	 kzFDYBDe3UKTXgb2xTp5/yrZ00NOM8y1SB3368cKIYF98nTIPL2FKjONdAtxkxUEuv
+	 5eGR1Q1I2RYvrXYTaGWW6KJWotvtq7YNnFqeRz7jffklbi9fqKi9Uzsn5YosJfcQLt
+	 j4p23sZ8KdrtPEGIdDa6u0v/vp3uWj7kUL0H9qWQdLZKrKbU5g6b59w8EXk5VIyasd
+	 9ibkY0UkNJyk5bb+Zf2ReOn1IQYH8x1PxVPvY0Ce5u+/9OmmwJ3w6Dmb3gQHicSR3Y
+	 E1XcXKJKkRGJg==
+Message-ID: <37f9a01c-4f6f-429d-b221-73ceffd55369@kernel.org>
+Date: Mon, 14 Sep 2026 15:26:32 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 10/16] mm/page-flags: check page/folio->private instead
+ of PG_private
+To: Zi Yan <ziy@nvidia.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Jan Kara <jack@suse.cz>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Axel Rasmussen
+ <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, linux-fsdevel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org
+References: <20260913-remove-pg_private-v4-0-848550f7574e@nvidia.com>
+ <20260913-remove-pg_private-v4-10-848550f7574e@nvidia.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260913-remove-pg_private-v4-10-848550f7574e@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: knkn9zhn1q13j83m5agscnj1buncct1a
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 31D0614000E
-X-Stat-Signature: kzg9axxygj7f1cd6atutgf5d1k5x6m7b
-X-HE-Tag: 1789392245-909528
-X-HE-Meta: U2FsdGVkX18qjO5OfmCR2cj0c3u4lKKKJNj/TqO6jLfFMAdJ9wVGSm79cPmOyYzwIsYO35sKUGZvWsBga7D3nvpZpXupwm/AoBCbFo/3DWruz7phmsRUr0PayyYcrL6BxGnb02MBFmkb2PACzHFeR41iGHJb+rqW94VD1DQsM/n1tpYWucQiG+lQ+XtITBVrUVC8AHi06FB/J//sp7Ldefv4X2YJDV2g2Z0pLSa5AoCOPDAlhJ2egyycIn/4hJ3qaA3dseLoGzHpiZm/yEZV2zOxxmJME8ewMkUPUi9vKhoTL9C2+SbZ/pg/jGo002DzNbz4LqlQvRqiZmJtZwV/ynh6pK800uNN1HBBAOQfZfc4WzR6twh2R0pubpRoZK6mWrAbdCUkuLxtsOWsxpwqBygIMWQF/PjjF2guzwlhpuBDTyvNIWclHQ1S9kboSuv5xR0TXcErIG5FzA0HEQP+ChzOUufCLVF69ts2IlOwsjOR0Bscn+HdmAeQwondGa4xMRJKH1XHxkyH+iRf8wY0hmC1B6rdE0kyKxVfLJQOaNvncRKuSTPlZp1IN43QPgFuK+D2/0SUTXpP4zWigvD5OO2U8uYwbgIgDSHdM9AYCNXjPqQU9i/mmqMqhLHDYQFJ0ydtNxIb6QRSNSr0GqDhfuTwfof1cpnWLLhdA/aksyY/Gy7fM8O/aKY6CF4UBChxW8bWm0bRQJIbwXz5cgBHIqoRtXQdNRmM+3dIvJk/+UdVUbctBmxYlNaKl/+acgwtNlr3tiAN2odLuBltD3aaIwxSHP3uoGrhKMWeAD5xbXV0qCHAZrbquk3QibZ8sP9YbBQ66rqejbccbF2lzTaZUj8yNZD278bA76uiomSxbSJErC9jejFsHIPjsBeYP/yBs12E6yF2X4ExlnnqP3shAaCVkPK0ppBcCOLtOpKzBagpn89v69D9bwQwPNksE5Ya5MGd4Fd/Xb0lozgF3Oi
- jxhwfXKF
- c9bA1ofGrwape6rrj7LpTp/VzEaitFJcf9BmkzS7K/RfG+gXeWjv5o/l5bn9ucbiTneTUNZeXWtmzSkgnlJNvw3d9D8LwUCn9dx3LqyC9B0tX3RwLhmT2lIRpseVpW9fC6Fgtd9l+I8Y37jcRYVPydV4z9mxUIvGYSmIw/346EhJS/lIlwVX20lh9t7r8MjwBPKfFlq8ojVoqBS0+1nJ5DSzSV3bLoIPJi3Y7SHlW5XKxpuZ0KvC7TK5Hg3d9hjn9ngxJaLXAvV7rRxzntrfiC6oBgFnq3cycB3WzeLrxQIJKBqrPRW1ItvPpoMhQoXOVi3LqxPe4moJitGIIBdVy1/yoSuaoYP6MKcw8eZyxta0Nb17CdzYQbEq2+MnLwxtGRB4gdOxP1dPQeiZttCLId+VFPbnqZ5v0yc1FkXM+c86+unctVsvB8nfW2w==
+X-Rspamd-Queue-Id: 96F0F180015
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789392405-442775
+X-HE-Meta: U2FsdGVkX18Bv+BK8wCgEMwwBl1NxOCVczcXCWiGrr94RuIHF5fr+/QZavmgwxFMoX9PrzIUcdyc5rnFfnLpKy1++QABVjviQv6j0uZ+Y0MrWXRDGLaQBiS7q83J9BSrKYKfUYEnDLiT/AN8QvZ3AHAslDmvZtsdcMp+WOyiBpO4rED7pApdIhEAqMqA1RC6CU/j+Zdv1G3W+eC94J/gfyl03AONuyA2IBzhYH+KLP/Xr0TkmuZ9rzzZGUvvrAWW5kcrz9pQIb7tx2MgYBmlDg+tlotJLOp52D1rkkZZUt39iCs3jJ7xdLjMaQi93lMfg1dnZ/RqldV5NA38R1gIkSuE1ndPP5emZMAULg29vfTLqULaSrW7ORxyAwDvwf5oI3ZEj7GloMB9Cr+W7TI39jHznobYB0SEYz2p7Afe7GQC5t9CRhUmsG58fAKnycSINKkXvVi5bnB+Ei48Nh97Ig9SAx4JqdTh97YFh1pz6nRsFBh7FcAfKivaVdaW3pFlNNd6oCY2XVMDWORQbPefnLioN4Om3F4tXcFxuVzXufOCYaU7yYuTacyBjsZFnquWIfMz7FrSI0enDtM0/BehzxXed69LDFrEGme+uiIJ9eoWCXEUVF4Gw/+Oih8btD1zZkF208zmLCn0c+yPEZlMhvbEfBeY8FMJtk47U9CrY/Otrg3zpFnpdhZoQnWp02pkQov4kQSTVsFSgPoz/3hicWqf1VpGHB2EjyjitJigm/2ab4JFwKVGVJW9zZBjQiF+QqMxjW9JPzpTpYcvpcdYmnDXvYnrlifL0FhH3RtXexQSH1AxIji57jSOnUB67qWUEIhVKfUDjC7o2y7wc0R0AFilLqzxekR1qIRjXZo/2v6SvKi1D8xEIj/0f73zQKcKGWdYZqxeSll9D0wvDOwyak7X+vCWD5IQk12uuKYtbA7QjRKrNaN3vSjALvO7uqGrrOUt/roHH3d/vJggYX5
+ yifEftKW
+ XVXak+qYD+//eeBZgGj2w54RrT5dItetyxBm2Blqs7mVwvcFrIrFJqkEOxJF5yqAPORpC41WB2OvHL2/IIXrVqXv/Besbox2rcQegnFh18Y3lEIbfawtGll3imOcOwuN+aFXD9BG3oJrYrLqRDmYZbCS7co9vQaARAT8gMSzkMFA6dIamY5jqk+3ilJdQ4z0aHumZtAXJS1kaiMfEv00YIjXi81Dd+Yy/7cLZ0WUrwznC585/3pXwUKIAQjKxGYiIRMfv1HOi5YyydlC2okVRk/O/29Mv+HEyJvTYUG2oDubLIjdEBxcZ5MfwlCXezitJNCtkx8FoSQq8KSS8dc2n4lzZAkwhfr9erLeHCEAwHRzBcjmJSagAAohFzHryrVajprnn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,72 +159,122 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-move_hugetlb_page_tables() optimizes mremap() by advancing to the last
-entry in the page table when the source page table does not exist, either
-initially or after unsharing a PMD table.  The common loop increment then
-steps to the first entry in the next page table.
+On 9/14/26 04:24, Zi Yan wrote:
+> After the changes of the prior commits, page/folio->private != NULL is now
+> equivalent to checking PG_private.
+> 
+> Stop checking PG_private on pages and folios and use page/folio->private
+> instead, except swapcache and hugetlb folios, because the former uses a
+> field (swp_entry_t swap) overlapping with ->private and the latter sets its
+> flags in ->private. Exclude swapcache and hugetlb when the code is meant to
+> check PG_private only. PG_swapcache and folio->swap.val cannot be set/clear
+> as a whole, so excluding swapcache with folio_test_swapcache() is not
+> reliable. Instead, use folio_test_swapbacked(), since PG_swapbacked is
+> stable when a folio is added to/removed from swapcache. Add a helper,
+> folio_has_attached_private(), for this check.
+> 
+> folio_expected_ref_count() can be called without folio lock, so annotate
+> folio_test_private() with data_race() to avoid triggering race condition
+> checks. While at it, annotate folio->mapping too. Add data_race()
+> annotation for other lockless callers too.
 
-However, the code advances both the source and destination addresses to
-the last entries in their respective page tables, which is wrong.  The
-destination address must be advanced only by the same amount as the source
-address.
+Shouldn't we just move the data_race() into folio_has_attached_private() and
+document there, that it can be called without the folio lock as well? Having the
+data_race in multiple callers looks odd.
 
-If the source and destination offsets within their page tables differ, the
-destination address can be advanced too far, causing follow-up issues.  Fix
-this by advancing the destination address by the source advance distance.
+> 
+> folio_set/clear_private() and Set/ClearPagePrivate() become no-ops.
+> PG_private is no longer checked at page free time.
 
-With a reproducer, we were able to trigger a kernel panic on x86-64.  With
-this fix in place, we can no longer reproduce the issue.
+You can mention here that we will clean this part up next, to remove these
+helpers entirely.
 
-Fixes: e95a9851787b ("hugetlb: skip to end of PT page mapping when pte not present")
-Fixes: 4ddb4d91b82f ("hugetlb: do not update address in huge_pmd_unshare")
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Signed-off-by: Jaewook You <jaewook376@gmail.com>
----
-Changes in v3:
-- Clarify that the optimization advances to the last entry in the current
-  page table before the common loop increment steps to the next entry.
-- Rename remaining_size to offset_to_last_entry as suggested by David.
+[...]
 
-v2: https://lore.kernel.org/20260911182408.75821-1-jaewook376@gmail.com/
+>  	}
+>  
+>  	/* One reference per page table mapping. */
+> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+> index 462e89e055485..08988877331ba 100644
+> --- a/include/linux/page-flags.h
+> +++ b/include/linux/page-flags.h
+> @@ -577,7 +577,23 @@ FOLIO_FLAG(swapbacked, FOLIO_HEAD_PAGE)
+>   * for its own purposes.
+>   * - PG_private and PG_private_2 cause release_folio() and co to be invoked
+>   */
+> -PAGEFLAG(Private, private, PF_ANY)
+> +
+> +static __always_inline bool folio_test_private(const struct folio *folio)
+> +{
+> +	return folio->private;
+> +}
+> +
+> +static __always_inline int PagePrivate(const struct page *page)
+> +{
+> +	return !!page->private;
+> +}
+> +
+> +/* no-ops during transition */
+> +static __always_inline void folio_set_private(struct folio *folio) { }
+> +static __always_inline void folio_clear_private(struct folio *folio) { }
+> +static __always_inline void SetPagePrivate(struct page *page) { }
+> +static __always_inline void ClearPagePrivate(struct page *page) { }
+> +
+>  FOLIO_FLAG(private_2, FOLIO_HEAD_PAGE)
+>  
+>  /* owner_2 can be set on tail pages for anon memory */
+> @@ -1169,7 +1185,7 @@ static __always_inline void __ClearPageAnonExclusive(struct page *page)
+>   */
+>  #define PAGE_FLAGS_CHECK_AT_FREE				\
+>  	(1UL << PG_lru		| 1UL << PG_locked	|	\
+> -	 1UL << PG_private	| 1UL << PG_private_2	|	\
+> +	 1UL << PG_private_2	|				\
+>  	 1UL << PG_writeback	| 1UL << PG_reserved	|	\
+>  	 1UL << PG_active 	|				\
+>  	 1UL << PG_unevictable	| __PG_MLOCKED | LRU_GEN_MASK)
+> @@ -1193,8 +1209,28 @@ static __always_inline void __ClearPageAnonExclusive(struct page *page)
+>  	(0xffUL /* order */		| 1UL << PG_has_hwpoisoned |	\
+>  	 1UL << PG_large_rmappable	| 1UL << PG_partially_mapped)
+>  
+> -#define PAGE_FLAGS_PRIVATE				\
+> -	(1UL << PG_private | 1UL << PG_private_2)
+> +/**
+> + * folio_has_attached_private - check if the folio has private data attached
+> + * @folio: The folio to check.
+> + *
+> + * Use this in code that may encounter swapcache or hugetlb folios but only
+> + * wants to detect attached private data. Swapcache stores swp_entry_t in
+> + * folio->swap, a union with folio->private, and hugetlb stores its own flags
+> + * in folio->private; both are excluded.
 
- mm/hugetlb.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+This is an implementation detail that is irrelevant for callers. Move that above
+the actual checks in the code below.
 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 4f6f58bf3db6c..5749f6270fb1f 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -5161,18 +5161,21 @@ int move_hugetlb_page_tables(struct vm_area_struct *vma,
- 	hugetlb_vma_lock_write(vma);
- 	i_mmap_lock_write(mapping);
- 	for (; old_addr < old_end; old_addr += sz, new_addr += sz) {
-+		const unsigned long offset_to_last_entry =
-+			(old_addr | last_addr_mask) - old_addr;
-+
- 		src_pte = hugetlb_walk(vma, old_addr, sz);
- 		if (!src_pte) {
--			old_addr |= last_addr_mask;
--			new_addr |= last_addr_mask;
-+			old_addr += offset_to_last_entry;
-+			new_addr += offset_to_last_entry;
- 			continue;
- 		}
- 		if (huge_pte_none(huge_ptep_get(mm, old_addr, src_pte)))
- 			continue;
- 
- 		if (huge_pmd_unshare(&tlb, vma, old_addr, src_pte)) {
--			old_addr |= last_addr_mask;
--			new_addr |= last_addr_mask;
-+			old_addr += offset_to_last_entry;
-+			new_addr += offset_to_last_entry;
- 			continue;
- 		}
- 
+> + *
+> + * NOTE: For swapcache, folio->swap.val PG_swapcache are not set as a whole,
+> + * so folio_test_swapcache() is not reliable to exclude swapcache.
+> + * Use folio_test_swapbacked() instead, since it remains set when a folio is
+> + * added to/removed from swapcache.
 
-base-commit: 08df884136f1c1197bab2a27814404fd329d9aac
+Dito, a caller of this function doesn't care.
+
+> + *
+> + * Return: true if folio->private is set and the folio is neither swapcache
+> + * nor hugetlb.
+
+Can we remove these implementation details here instead and talk about "true if
+the folio has private data attached" ?
+
+> + */
+> +static inline bool folio_has_attached_private(const struct folio *folio)
+> +{
+> +	return folio_test_private(folio) && !folio_test_swapbacked(folio) &&
+> +	       !folio_test_hugetlb(folio);
+> +}
+Apart from that LGTM.
+
 -- 
-2.43.0
+Cheers,
 
+David
 
