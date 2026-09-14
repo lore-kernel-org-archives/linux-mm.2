@@ -4,144 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90E3BC88E50
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 10:22:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D067C88E64
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 10:38:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 64F426B0088; Mon, 14 Sep 2026 06:22:29 -0400 (EDT)
+	id 09FAE6B0088; Mon, 14 Sep 2026 06:38:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5FF9D6B008C; Mon, 14 Sep 2026 06:22:29 -0400 (EDT)
+	id 051306B008C; Mon, 14 Sep 2026 06:38:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4EE016B0092; Mon, 14 Sep 2026 06:22:29 -0400 (EDT)
+	id E82126B0092; Mon, 14 Sep 2026 06:38:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 262336B0088
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 06:22:29 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 69D24120252
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 10:22:28 +0000 (UTC)
-X-FDA: 85211978376.18.2101291
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf09.hostedemail.com (Postfix) with ESMTP id DED4A140002
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 10:22:25 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=p2wi7jCq;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=g4fW+si0;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=3YH9x2Re;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ekt6QP9Q;
-	spf=pass (imf09.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C4C3C6B0088
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 06:38:39 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2DEDCA027D
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 10:38:39 +0000 (UTC)
+X-FDA: 85212019158.19.C52079C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 82EE780002
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 10:38:37 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ctkBDj2o;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789382317;
+	b=BYeaaGiaDpNtlAaLGpNHeUxJpGu+utJ5N/qYZp6vKo14dSgdlDKSvQOY5Xg1Wbs4gUnXun
+	NMY+t6f2LxjB37qI8ggESmvs2hNSVzN2Cs78Twtag3XGo1iRYoXHT+bI8s0anbRIdbrevr
+	631+faCK2FnGwylbJWtVCBmMvsUgeqA=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ctkBDj2o;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789381346;
+	s=arc-20220608; t=1789382317;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=luzLayfa4rHXL45QFB+GJQv0hHmRfCd3gxDCrJhimew=;
-	b=xx6zh3/j0gjrN4ixo3gshxK4Jid8GBo1baKFwRfReocNIPA4TNvBCfoys1N7BOY1lV+u3F
-	4ojT5Eu06g8KSDJpzrqW81rymC7ShUbTr2e/s4nkSj9voyTVQ4ea19AO9LYb+ntU/Zn9dA
-	mvDYPCd6gnp1kAn8lbeOBRCa4N+w5Mc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789381346;
-	b=TtJELfgKGGh+/70hTRphj3R+v0iuEppA+akqBn8gFjQhXWhKguHZSyCYR6jdlvyru1dTBB
-	FFJGVtEKP9BjTIU+iTEbxB+Mm4tZrVsdvRMTm9wAXeBThhdvy6EQqDkDmNQWFZdlx8uFrD
-	WOsg+holyMmDFMbvmdHeR5rT//g6CQs=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=p2wi7jCq;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=g4fW+si0;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=3YH9x2Re;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ekt6QP9Q;
-	spf=pass (imf09.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 173C521ADA;
-	Mon, 14 Sep 2026 10:22:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1789381340; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=luzLayfa4rHXL45QFB+GJQv0hHmRfCd3gxDCrJhimew=;
-	b=p2wi7jCqQxMtDtt0SsJX+NDu1YtSlcItEir5Cv21ks6QnEMwGVCmcDrkR5kJTSI6nYgRcV
-	pGq810eVTVfxv2SY5kw3iByF5JkocvR69W3AxecpcAsdrut6/sHHYR2VvwsKWLDOB5/chg
-	P6uECxmfOOYvoB/zhKWFS1s00tCq8t8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1789381340;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=luzLayfa4rHXL45QFB+GJQv0hHmRfCd3gxDCrJhimew=;
-	b=g4fW+si0DbGfirJ5Db7Wx8lw1R/j3jX/4JhaoyHqCn44N2t47tkSsfgEddDjhEtFkVBFc5
-	WHIYkg8AvLpEjWDw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1789381336; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=luzLayfa4rHXL45QFB+GJQv0hHmRfCd3gxDCrJhimew=;
-	b=3YH9x2ReN5DpSz5W5vfPn8wUxsHwFU5gl/qOIfVTasOSV3oj5HCsgPUPOUoh24VxCykh3r
-	Xh/gXjjqkGMbhisDJSHhIfeW5Nn6WVk10BMjUfYWDDW/2Q5Ak0is5ZwZr9QTjk/dPecUPM
-	beaT68eD94/xZVzXU3dX19wHad9n/6A=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1789381336;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=luzLayfa4rHXL45QFB+GJQv0hHmRfCd3gxDCrJhimew=;
-	b=ekt6QP9QmhOVCfSgVrF8QGUctm83k9cFrXM4te530+y1kMuSZQr1wXBMtz8zApT85TR4UB
-	BkbCxFvK25UeQTDw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DDAFE13515;
-	Mon, 14 Sep 2026 10:22:15 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 2tYaNtfKp2ogFAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 14 Sep 2026 10:22:15 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 6A623A12E4; Mon, 14 Sep 2026 12:22:07 +0200 (CEST)
-Date: Mon, 14 Sep 2026 12:22:07 +0200
-From: Jan Kara <jack@suse.cz>
-To: Barry Song <baohua@kernel.org>
-Cc: Jan Kara <jack@suse.cz>, Tal Zussman <tz2294@columbia.edu>, 
-	Wenjie Qi <qwjhust@gmail.com>, willy@infradead.org, akpm@linux-foundation.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, axboe@kernel.dk, trond.myklebust@hammerspace.com, 
-	jaegeuk@kernel.org, chao@kernel.org, qiwenjie@xiaomi.com
-Subject: Re: [PATCH v4] mm: filemap: retain mapped dropbehind folios
-Message-ID: <3pclzpr4f5qisxwqhjguk4zz7vwdbahzbjbgqryq2f5mpklddk@f5do4mayzzot>
-References: <20260829111621.41ed2bc9a0e99e3367eb96c3@linux-foundation.org>
- <ef160933595c365f2c47597b260bc7ecd98ed7ce.1788029516.git.qiwenjie@xiaomi.com>
- <076bb01b-6fcf-4691-be8c-0e8507c9fe64@columbia.edu>
- <CAGsJ_4xMK=rPXCH5OiCOYHKRQp-w+xDJQusJ_ykbuAuLZr+8bA@mail.gmail.com>
- <1e5118a5-6b61-49d0-85e1-825e22059241@columbia.edu>
- <CAGsJ_4wj6XvPB+QF+_X1BJ_8Y2sZEEFAw6RaJJz-cHaDWLkxaQ@mail.gmail.com>
- <65a2c7df-0d2e-46de-9580-01e9c35a7e32@columbia.edu>
- <CAGsJ_4zS+UehT4wuTuTVjK3s3mhzp+dku8M-Of9cF=CN82aRow@mail.gmail.com>
- <hbki3yc23dr5fkre5phwx2ev6yjfn3ooodan37uo3at53y3gs2@kjyxyb34s5bi>
- <CAGsJ_4xNLEhrCZR-7ZAxBnYV8BDzuQT29yT419mObVRGH71AVg@mail.gmail.com>
+	bh=wxIXOATk5FhrxMumaqsjd//lfDHJpwYqEyQwUB+eAxM=;
+	b=rCLBUHnX6N4JDXDs9YXjooz2LM67Eeh2EgrzPR11k+xMKG7FxCbNKv3KemHF+UdWj2cZYc
+	BwJcB+F4CHeGuGQbGTkC13wLWus5gKpdN123DL1FKVq32nba9XS+ZuMY6/RtFpu1XUuBIs
+	g6jlzOiFYg3ndZgV22YzGKTzbF2egWw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1743D60142;
+	Mon, 14 Sep 2026 10:38:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 456821F000FF;
+	Mon, 14 Sep 2026 10:38:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789382316;
+	bh=wxIXOATk5FhrxMumaqsjd//lfDHJpwYqEyQwUB+eAxM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=ctkBDj2of/0yY1ZCeqTf2CkovUmeZu8zOO1SBiBVw11JNgCFxqoVU02D1SlOVIrgc
+	 nTvH4H79+jki0DSlPszf70mxlpTXqMJmBRgV+A1UBLF47eS/lJl/eQscGj29MryduT
+	 1K883kqZDPIFT7O3XOP3JolNlf/VN+jvwEBCG5Icamfhbv/Hh37yLcN+xHzRNGkbK/
+	 HzvKxtoM8tv9j4/V4udWdo2O9mNz4qSaCL2W7SxQTdxNbvFOFCgWnSFhrxnydcuK8o
+	 UnNrN0nFl64FBdVcBqV1hFEYtSKkxfRKHmdUDGVTVqfcd9IGgZDL2A2ualdzWlr4Lv
+	 clwfQNOBom2bg==
+Message-ID: <cdffaae3-dc7e-4307-984a-8fbb55beb931@kernel.org>
+Date: Mon, 14 Sep 2026 12:38:29 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGsJ_4xNLEhrCZR-7ZAxBnYV8BDzuQT29yT419mObVRGH71AVg@mail.gmail.com>
-X-Rspamd-Server: rspam04
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 4/7] proc/task_mmu: remove special-casing of
+ smap_gather_stats() start parameter
+To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org
+Cc: liam@infradead.org, ljs@kernel.org, vbabka@kernel.org,
+ willy@infradead.org, jannh@google.com, paulmck@kernel.org, pfalcato@suse.de,
+ xueyuan.chen21@gmail.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org
+References: <20260911194145.1781926-1-surenb@google.com>
+ <20260911194145.1781926-5-surenb@google.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260911194145.1781926-5-surenb@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: yebnjwijhiuuhkfuu5zasugjj4af6e68
-X-Rspamd-Queue-Id: DED4A140002
-X-HE-Tag: 1789381345-239155
-X-HE-Meta: U2FsdGVkX1/K4IkL6Bl26jSXk9EnFFwJUxMGTnJKh3aPBsZs+5Guj0TLFbBK6QvSvwqa2GZjA/sQjUVM8xJnCDb0Gd2XDPexwlZcrFQJvzntc1Ju9WrgMBv3bOBolr2tW4Wdsp6qeTKEBoQMmiWZjj/KxNZnULK+CLx0K3dYkLeTkTkzGu/q+/FtaDValJVa+t1zp9OXW2g9WqhuoPK7OXRdPXI3BtMYpd7ODZZ8KQWZojiwpSQaeU32Qagk6U4kvs3zUCj5Dwvxok5KG1Z/PScshsCUg3Jf/8fgncQwYwbc/eEiU+cr5isb2MPNlebeFY15yqTNlxvmt79+8JMuJIm3YIm5t2P0gOwn1i/ZOkAxs8hCweuOguRPRuDyHsZpy0O5EvPItT5Kk24pGVOTphfDV30+3RcjDVXlVDzNeUDJmfirDqqE7TmrRZnHh8Wvh1q0A2zVfLjj5TAAfP3zEifEiYo8hblp2f6MXcfL+0fagNnWXWvsX3srOyB0Mw2II8gzlDe/xmgKg+Fgn5MF4/B9tFPmElbN6SyERh883vqNE3pbRzB/lOsxL1DzTH6ESLb6wfdlppUEOYK/8g37B5uckPqwHupoYELOUHT4bL0PtwNi00c6/ayOCSVzjJH8iH3OLCdEOnB3pT0w9GksAJh3fAWb3qYvtA7taiN7oMxc0wb73eHFWEHFL4BFgW49mwlsC8ond2N0UpkzdSwe+ozPGyTN9rDiXPUOdFIlbujv/Nn6tG9UDYXWspCCKuowmMWQUowAwsqUTTgQiAmgsuT1Lcp0VU1gCscDMrRpe9ZVpkWcmyLCFv8G23HO9gfrEAAl9ek+iRsD1temFe3I/PvV63quyv1uEDDpRZ65hyFC/lRmh7k2vxzG6MpveUo9nph6Rz9NCWNUjSTT7BKCrXYsH2wUYvoStSek5s3/GphOmZiNdtAtYgZxKG1uAmG39zuJ/vpu132US5o+AKp
- oXs4B5Ep
- ezWa/lPw/q4v5AMfhAGYXHrqwfr/l1eZf/BDbcs2gTcjKyz608OZuJm9XmZYmQOVd+VICHQDrRDxUP94F4ZBO8ofnpb0kO1CEqth7g9uPK79/U2xLw2mB82I5Iw4wH+t0n6nepq3pF4r0kITc/uOKH4IWzd1hawGX8nsuVwmDX17Ei+XstXxr4BlRfTYp6RBhBQQBkrTiZ5aI/FJFcRkVmKmzxb9RhVjwfzFmN2GoZ+Ljrpn0T7RAn0GSloL2swZbrANFKNrvJUJxsgLBldylfkh1A3y/2u7Tm9no58p8E+okrbz+Oki6pZfPMHEdTULsC+t33LqDbdo5/zzSFRHmCOIP2GaNCN/tt+yiAoOhixhesagL/wEH95hMGiY8WRa0G8NCL2ph7avtL1iY6dYmPOYwHBarS6olOdonQisdgSuBHB8TLiz0gOhW/rNwMQOVVgdKn12/tyqXSdVqGgo/s8QvCH1hQuvkiw/g
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 82EE780002
+X-Stat-Signature: 4afbj4j9eqfds8mgan67y8xd5o9aikua
+X-HE-Tag: 1789382317-757015
+X-HE-Meta: U2FsdGVkX18VokZOVK4l96fBrZ3SO1ludcUzyyQhDfDmUTQgv/D3KmEcP9FdzYcx+HxYhoOLnhkAh0DWDaCSdSYmYcRVzHgSE0LW1oMo4AS+BPS+HOWZpgA3z7Cmy+f1zCT+2KUoS39ulV26157nEZliG9t2nozq9+8Q3WtDvXs3bSO2Lb8praigBjOCs+mnA454S0aVQinN8QWIqAI5KLMS6/xyvAzBxcbvqRTWxze2/A4KP0cgsNLkIGY1H38zvv++h8AvHYTEqLsbs/n5RjJzUQdUpZaR8GUIFaTc+GbC1qK5vV0G8TgDxo8CfihGeHEpyq7PVKe1u8YLuaqtAy1B4JwwcHSA2Z9xsriGrpadTDVNAJJtfAiwG/DgXIwK4vYG+4we0YwABYTgJI60FDgZ7XKJXYGQ7fm2GsYzvtQccrPTGUQsXZZ/SeC/XKaL8CNHhr2VG/Kth93MG3fftmj3hatcjvL+PqdTBQk6oAYoMkFCy+3bCNO9rl6upBd8xUa4VGURo3YKS+Hxhz+o/GS28qEbhBBrrq9ex2XNKZJH7tdi0zv2x42Go8iYmx1BjNMU1V00W/qIqFGLkUfjWeTcYdfSJN04PSHDq7oujRfb837EDPYgOINR8IgX9+pm7JRA9/Q8vjKI/JGyjtoFQZ/E7biYYMXyC4sMANQc3y2EDGyXCy0hah7OM0sHDR5eXae1WSGwY1VXAKzUtF7LlL28bXyDmws7BVKOICT3gN4xtIWUdiZ6abRd17DAr+Xo5HnwWpoXXIusQNwEkP4XsIISv2PebBP0CH6sI75LJqtV33UW2a0Sv+aCGPQmUoTXC7c4EYXSFrG4RUXR41PnOCIBW5xaI1ieii8TQDi5RC78oAPHtaXiovb994o1luxmEJ9ZBJsrEzS1aersg27WW47UoNr1dKg8daxIDtDcj03WSkPRcf1JA1+fSBqLiZX87FMIgj4DvGSyZiKjvHo
+ phsXl1U5
+ SkK40Bf1Zz1zZBRHmlDwT+NgZYH8dHUL87KqkKNsok9azMmR/EVY4jfy7Y1PquChBrJO8C19bo591CL2vMW6NV9ZybB5EWrCM6XiVE8aY9lL/TLSInAwbCF5Ac62MZvqQOGgSf7U7jOohlsxVXn8eFiP16qYummSAMSIn95sWxEcoUpQlFVa21pSOMthXV9FPQlmgMidEuPr85b5bcXeRMhDeteYLEmAiQw17kbk9Zag+1IoZL9KP3aXW2uv55Y7I93s2CTJwEbszy1WORw9m8qji4rEAJgJZDm6kRXDqIvhNruQJFnxsUVCzP4231/j2W+7m7B8YEtIZLYfaow0dCw0HrJVVrbcWvQUeiOa9vzdDyMJAE2ox414M2VXQ/Jtmk+6oxKiSPNJbx6cRuEO+ngN6qNDGLtVxcCzUc7xBBiIsBRg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,152 +141,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 14-09-26 17:42:59, Barry Song wrote:
-> On Mon, Sep 14, 2026 at 5:33 PM Jan Kara <jack@suse.cz> wrote:
-> >
-> > On Mon 14-09-26 09:09:32, Barry Song wrote:
-> > > On Mon, Sep 14, 2026 at 7:34 AM Tal Zussman <tz2294@columbia.edu> wrote:
-> > > >
-> > > > On 9/13/26 6:51 PM, Barry Song wrote:
-> > > > > On Fri, Sep 4, 2026 at 6:36 AM Tal Zussman <tz2294@columbia.edu> wrote:
-> > > > >>
-> > > > >> On 9/4/26 12:28 AM, Barry Song wrote:
-> > > > >> > On Sun, Aug 30, 2026 at 7:59 PM Tal Zussman <tz2294@columbia.edu> wrote:
-> > > > >> >>
-> > > > >> >> On 8/30/26 6:25 AM, Wenjie Qi wrote:
-> > > > >> >> > From: Wenjie Qi <qiwenjie@xiaomi.com>
-> > > > >> >> >
-> > > > >> >> > Fault-around can map ready dropbehind folios without going through the
-> > > > >> >> > normal page-cache lookup that clears dropbehind. A mapping represents a
-> > > > >> >> > competing cached user, but writeback completion can currently unmap that
-> > > > >> >> > folio. A later mmap access must then fault it back in.
-> > > > >> >> >
-> > > > >> >> > Retain mapped folios instead. For a mapped folio,
-> > > > >> >> > folio_unmap_invalidate() can call unmap_mapping_folio(), which takes
-> > > > >> >> > i_mmap_rwsem and may sleep. Retaining the folio also avoids this path when
-> > > > >> >> > folio_end_dropbehind() runs in non-preemptible task context.
-> > > > >> >> >
-> > > > >> >> > Unmapped dropbehind folios continue through the existing invalidation path.
-> > > > >> >> >
-> > > > >> >> > Fixes: fb7d3bc41493 ("mm/filemap: drop streaming/uncached pages when writeback completes")
-> > > > >> >> > Cc: stable@vger.kernel.org
-> > > > >> >> > Signed-off-by: Wenjie Qi <qiwenjie@xiaomi.com>
-> > > > >> >> > Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> > > > >> >> > Reviewed-by: Tal Zussman <tz2294@columbia.edu>
-> > > > >> >> > ---
-> > > > >> >> > The mapped-plus-dropbehind state was reproduced in QEMU. The patched
-> > > > >> >> > kernel retained the mapped folio and continued to evict the unmapped
-> > > > >> >> > dontcache folio. I did not reproduce the sleeping-in-atomic warning and
-> > > > >> >> > am not aware of an existing report.
-> > > > >> >> >
-> > > > >> >>
-> > > > >> >> I was able to trigger the sleeping-while-atomic BUG on current mainline with
-> > > > >> >> some help from Claude. The reproducer itself is straightforward enough, but the
-> > > > >> >> configuration was a little finicky. The atomic context comes from using
-> > > > >> >> threadirqs so that virtblk_done() completes requests from the irq thread under
-> > > > >> >> local_bh_disable() and the vq spinlock with irqs off, so in_task() is true but
-> > > > >> >> the i_mmap_rwsem down_read() sleeps. It also needed 1 vCPU (so completion stays
-> > > > >> >> in the irq thread rather than softirq) and ext4 -o dioread_lock (so end_io runs
-> > > > >> >> inline instead of on a workqueue). With v4 applied the bug is gone, so:
-> > > > >> >>
-> > > > >> >
-> > > > >> > Thanks, Tal. Then I'm getting quite confused. Since with Wenjie's
-> > > > >> > patch, we are no longer going to sleep for dropbehind in `filemap.c`,
-> > > > >> > do we still need all the complex logic in the block device and file
-> > > > >> > system layers to move dropbehind to a workqueue task context?
-> > > > >> >
-> > > > >>
-> > > > >> Hi Barry,
-> > > > >>
-> > > > >> Let me clarify. Wenjie's patch prevents sleeping in a very specific case.
-> > > > >> The existing in_task() check covered most other cases, in that it just
-> > > > >> doesn't do dropbehind invalidation if we're not executing in task context
-> > > > >> (for example, block device writeback completing in interrupt context).
-> > > > >>
-> > > > >> However, dropping the invalidation defeats the point of dropbehind, as it
-> > > > >> leaves the pages in the page cache. If we get rid of the task-context
-> > > > >> deferral mechanism, we wouldn't sleep, but we also wouldn't invalidate.
-> > > > >> Wenjie's change is largely unrelated to this.
-> > > > >
-> > > > > Hi Tal,
-> > > > >
-> > > > > Thanks for the clarification. However, I’m still not convinced.
-> > > > >
-> > > > > If `unmap_mapping_folio()` is the only place where we might
-> > > > > sleep — where we might take `mapping->i_mmap_rwsem` through
-> > > > > `i_mmap_lock_read()`, as Wenjian pointed out in [1] — we have now
-> > > > > prevented that from happening with `if (!folio_mapped(folio))`.
-> > > > >
-> > > > > So no mapped folio should call `folio_unmap_invalidate()`:
-> > > > >
-> > > > > static void filemap_end_dropbehind(struct folio *folio)
-> > > > > {
-> > > > >          struct address_space *mapping = folio->mapping;
-> > > > >
-> > > > >          VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
-> > > > >
-> > > > >          if (folio_test_writeback(folio) || folio_test_dirty(folio))
-> > > > >                  return;
-> > > > >          if (!folio_test_clear_dropbehind(folio))
-> > > > >                  return;
-> > > > >          if (mapping && !folio_mapped(folio))
-> > > > >                  folio_unmap_invalidate(mapping, folio, 0);
-> > > > > }
-> > > > >
-> > > > > Why do we still need the `in_task()` check in
-> > > > > `folio_end_dropbehind()`?
-> > > > >
-> > > > > void folio_end_dropbehind(struct folio *folio)
-> > > > > {
-> > > > >          if (!folio_test_dropbehind(folio))
-> > > > >                  return;
-> > > > >
-> > > > >          /*
-> > > > >           * Hitting !in_task() should not happen off RWF_DONTCACHE writeback,
-> > > > >           * but can happen if normal writeback just happens to find dirty folios
-> > > > >           * that were created as part of uncached writeback, and that writeback
-> > > > >           * would otherwise not need non-IRQ handling. Just skip the
-> > > > >           * invalidation in that case.
-> > > > >           */
-> > > > >          if (in_task() && folio_trylock(folio)) {
-> > > > >                  filemap_end_dropbehind(folio);
-> > > > >                  folio_unlock(folio);
-> > > > >          }
-> > > > > }
-> > > > >
-> > > > > Could any other operation in `folio_unmap_invalidate()` sleep for
-> > > > > unmapped folios? Otherwise, it seems we don't need `in_task()` at
-> > > > > all?
-> >
-> > We do need it. folio_unmap_invalidate() calls filemap_release_folio() which
-> > calls into ->release_folio() handler and generally filesystems are allowed
-> > to sleep in this handler. Now usually they don't actually sleep there but
-> > they definitely grab a lot of irq unsafe locks there as Tal writes below.
+On 9/11/26 21:41, Suren Baghdasaryan wrote:
+> smap_gather_stats() interprets its start parameter to mean vma->vm_start
+> when it's set to 0. Eliminate this special interpretation and provide two
+> separate functions for a partial and complete VMA walk.
 > 
-> Hi Jan,
+> Since smap_gather_stats() operates within a single VMA, we can replace
+> walk_page_vma()/walk_page_range() calls with walk_page_range_vma()
+> which is simpler and also can be called while holding per-VMA lock.
 > 
-> Thanks very much for your explanation. That makes a lot of
-> sense to me.
+> No functional change intended.
 > 
-> Then, based on the above, I am getting into another confusion and
-> have another question. If `release_folio()` is actually allowed
-> to sleep, and some filesystem might sleep there in the future,
-> wouldn't Wenjie's patch [1] make sense in that case, as it
-> guarantees that `->release_folio()` is always called in a
-> sleepable context, while `in_task()` does not provide such a
-> guarantee?
-> 
-> https://lore.kernel.org/linux-mm/20260820142956.1414337-1-qiwenjie@xiaomi.com/
+> Suggested by: Lorenzo Stoakes <ljs@kernel.org>
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> ---
 
-Well, adding the folio_mapped() check makes sense as well as Matthew
-explained - we shouldn't be dropping mapped folios(). But yes, now that
-you've made me look into this I don't think dropping the in_task() check
-here is correct and we still need to make sure that *at least* we are in
-non-interrupt context and preferably to keep fs maintainer's sanity in a
-sleepable context. Matthew?
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-								Honza
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Cheers,
+
+David
 
