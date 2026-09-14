@@ -4,97 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 657A1C88E69
-	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 05:20:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9304C88E67
+	for <linux-mm@archiver.kernel.org>; Mon, 14 Sep 2026 05:27:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 199286B008C; Mon, 14 Sep 2026 01:20:31 -0400 (EDT)
+	id 80F3C6B0088; Mon, 14 Sep 2026 01:27:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14B086B0092; Mon, 14 Sep 2026 01:20:31 -0400 (EDT)
+	id 7BE726B008C; Mon, 14 Sep 2026 01:27:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 039586B0093; Mon, 14 Sep 2026 01:20:30 -0400 (EDT)
+	id 686506B0092; Mon, 14 Sep 2026 01:27:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D39936B008C
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 01:20:30 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E707C1A1092
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 05:20:29 +0000 (UTC)
-X-FDA: 85211217378.15.219A79F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 43AA0140007
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 05:20:28 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 41AB76B0088
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 01:27:13 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A9B1D14107B
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 05:27:11 +0000 (UTC)
+X-FDA: 85211234262.30.EA80F73
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+	by imf23.hostedemail.com (Postfix) with ESMTP id D825C140008
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 05:27:09 +0000 (UTC)
 Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CkTExBz8;
-	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="b/8M7PcY";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf23.hostedemail.com: domain of kayracizmeci@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=kayracizmeci@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789363228;
+	s=arc-20220608; t=1789363629;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o779dzepK0mFhzpZscdSpSvYUsF1kQ6qSiTkadkPzf4=;
-	b=gZtMjEtirXzb9PY/QjEttj2wNclnN06cgYWsOkRsIg+CeG44fGYWk6PC/z6iRII4VMRjNW
-	oS82NfSTWHa9qZWHiHgKAUi/biyMxB6Lv29gC+6tb3JoT4K22QROnhYyk3rHrD/NCtBrTY
-	szGpLG1ulrxINVCtBIdxPB9MsT7WJWc=
+	bh=Umg8VB2TWg/lUSpYqirY9VWZKZMZDhbUhj2GeduhS4g=;
+	b=4aBsR9jQT3TimVphJnq49R2pN/nqdC3yXhQA+TeVtUoKK9wlXoi4uINEGgagKhBxcl60Kd
+	FbDkN3xsHebT+V0CmhcKIcTT4coGpEgMH1JiatEU8yamGaDSRBcvKx+i0TBadUl4nKsP9Z
+	qcn22v2lKctQLEVX8qkec0lpx/bD790=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789363629;
+	b=i/rI/uyiB2yl4BU8rZTGujF9XTB8bXvF/pmnkUMEYuv3G5FnZ5gvIODCC0nyw7iI99g80I
+	LaEJoAsG7Wg+8QMoqT87RzuYlvxMbBO1XszNb4SAFUP+v4YEh+GDGQ7c8I1BS894HkSL2Q
+	ZmDUYwLuXgDGMUK1nfdkny1zYzjyVl0=
 ARC-Authentication-Results: i=1;
 	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CkTExBz8;
-	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789363228;
-	b=sSab4MGJwvPU8rjGWTqUFa0SA/7M0TUGe8Np0e62Kx7ExZSniNFXaCocc7wO5IkROvL6Ep
-	gZcEdoPoauT5SgFdNzt+KvEUnzBSfie3xyjxIGWdp7aCuXK4eNyfMo9a9AvnEe66Gogoor
-	F9tNWBVjTca0Ya4AAJqeQW/fjUtkcK0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 140CD40278;
-	Mon, 14 Sep 2026 05:20:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 998861F000FF;
-	Mon, 14 Sep 2026 05:20:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789363226;
-	bh=o779dzepK0mFhzpZscdSpSvYUsF1kQ6qSiTkadkPzf4=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=CkTExBz8pPEMBf1jk73HqRy9cRVhv5/C+/iPCXbOYp6XW7Lzx+sQ1dPL4vfhzGUKD
-	 1Qo4YLuCVLvhPKTxzUqjNbUy1Uvh7gG1I3nHUUqHzs/WEJuNkr9qBqahooT/6T5ZVm
-	 oR6CnuJc3DGdo2E3oDlVtXriiCz3rzEwiOys5VH0cgx+ZEDK5FyJNz90827TMmdf6G
-	 W2CcXEXQKcYkcl5oqdBHkuIsqpx+QgJgJl5qBheg0r2tbsTh9PXCq9NF/SX2bSEv/+
-	 2xV2YnJfUQF8bV7GrpUBqRvCECLrzr3MeGPvYWJKa4h381dPopjrSfvVE5ZktcPrKV
-	 K+Ef5ba1feaow==
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="b/8M7PcY";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf23.hostedemail.com: domain of kayracizmeci@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=kayracizmeci@gmail.com
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49d1ddd5d0aso999155e9.3
+        for <linux-mm@kvack.org>; Sun, 13 Sep 2026 22:27:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789363628; x=1789968428; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Umg8VB2TWg/lUSpYqirY9VWZKZMZDhbUhj2GeduhS4g=;
+        b=b/8M7PcYcphHtt6Huhmpnb3ggWa9Wma+ScPL1XTHNoQDPc4mibIhB+k/XmtIaIVr9m
+         1lsKpL9OLm7IsIr2GYurGbul41VqfeaDOViySCs7JLop4G4R+fUkjpgFt3vy/COkbQ3o
+         c1oARvjbaRTLjiLL2IOK59QeWMiUGCFGEvOCmQqG20eUCIBctKKiTkPjjKV+jtZbbtGv
+         UxYUwqqRzGzNVQiQOCvjydw+VALZHywcFwGBuDC98Te5WasevsqGjPWyQuy3pGxpr9MK
+         2yg1e5r0aev+4A4XzFRMjDESLQr93umMgPHcWgXkfS9/r66sxWp9PUJjyRD0U02/47ou
+         vKPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789363628; x=1789968428;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Umg8VB2TWg/lUSpYqirY9VWZKZMZDhbUhj2GeduhS4g=;
+        b=WXI3OKO/9OcHI4gKGiSEYQOluVjW8BB0OcOUDbsgTMu0ffqHeCh3XXxcGqQLH5DUHp
+         NVipU7PRSliNYbijpacUNh2rqHAG9K7aK3TrPykhrPqkk4zmSoiKkm00jXJ4haT0Xu4U
+         WcUflv1DLzG+D80k3A230M8Uj3I7NJGLDM1kc6Af9GTT6Zw4mnFTEb4dqu45HocVKn1T
+         VN8D26MWdOY+ZDZOqe9mlvSHIKvyuBx3mOqxrTtbOw2bJ3oEQNGPTeCA5ehCWfL/bSY6
+         iocI8kdsRuevLdiqxRPJFDRk7bCTz+eFFhBXL+jrgl4ubHe1Me+5tK4KOh36UwQdCVvt
+         za8w==
+X-Forwarded-Encrypted: i=1; AKwUvBz8t96x2MYtA72x4sT3dK+QYRjTxbeHD8wuvK8VP1NvyUNlmFhTf7sfSlHfRPYjBhZnYkHVryWWEw==@kvack.org
+X-Gm-Message-State: AFuF++k6KyAB9p48RQUd7XnJKn+K1VkQ+2fWpMZ1muw+M0Ps1Tn+K9ws
+	H0a44M2cPK1F5tnikApgWoYKi6H6bcTaq53D7XzBTcLP10mO7DiI38FC
+X-Gm-Gg: AYBFou31O/JEs55Bchm1rzxvvz8SPWZi4j+iAQWwwIzWLBRYcmi0/YsusBqCH9s34t+
+	M72JHIP518j666LpIxpVPCVQ8NtpqfXTk/thie+GLiM/MBMVfUb17ngW5P0s0KXn4rQGOBLbdA4
+	xleA+Uv7DwklO4eM3X0li+G+8uhym+jAQl8+S+q0YwUggrea2+K1tNzDJKFfd1s3LSSA+oeKQVN
+	O7e3LXUwL74y7aU7lpwayWXVLf0a85s9px9kJj2FMzz+Yd3zXYQOiJUP40fup+Q/MFjV3JYQWQK
+	KdgsQCDzgmc2V6PsV4loF4u0Yrzc78x95jXEU5nVxqED91mM9fBt/Ybj23CY3ixqh3GJ8Zxr6BI
+	KcH7DhAkurwPLlOd14aPQxIz4jgHOnW6tetN16EzHHqQe1XSrQmqutXI3JpcPA+V+AF8BWOLKSj
+	motLjFWZWZ3J61LWp3iJgqwoGq4K/Hd1Hb/eCWVU/5a6ccmtKAI0BgXSCUhsYBCxn64BabeL7WI
+	0mnNJPssJ9T6ePv0oCzjg==
+X-Received: by 2002:a05:600c:3ba4:b0:49e:6806:5712 with SMTP id 5b1f17b1804b1-49e7a66d0f5mr10933235e9.2.1789363628103;
+        Sun, 13 Sep 2026 22:27:08 -0700 (PDT)
+Received: from lima-kdev.local ([85.100.66.184])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e60adaee4sm432396845e9.14.2026.09.13.22.27.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 13 Sep 2026 22:27:07 -0700 (PDT)
+From: Kayra Cizmeci <kayracizmeci@gmail.com>
+To: yu.c.chen@intel.com
+Cc: brauner@kernel.org,
+	bsegall@google.com,
+	chen.yu@linux.dev,
+	dietmar.eggemann@arm.com,
+	imv4bel@gmail.com,
+	jack@suse.cz,
+	juri.lelli@redhat.com,
+	kayracizmeci@gmail.com,
+	kees@kernel.org,
+	kprateek.nayak@amd.com,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	mgorman@suse.de,
+	mingo@redhat.com,
+	peterz@infradead.org,
+	qyousef@layalina.io,
+	ricardo.neri-calderon@linux.intel.com,
+	rostedt@goodmis.org,
+	srikar@linux.ibm.com,
+	sshegde@linux.ibm.com,
+	tim.c.chen@linux.intel.com,
+	vincent.guittot@linaro.org,
+	vineethr@linux.ibm.com,
+	viro@zeniv.linux.org.uk,
+	vschneid@redhat.com,
+	wanglu.priv@gmail.com,
+	yi1.lai@intel.com,
+	zhanxusheng1024@gmail.com,
+	zhanxusheng@xiaomi.com,
+	ziqianlu@bytedance.com
+Subject: Re: [PATCH 1/4] sched/cache: Keep nr_pref_llc_running in the runnable domain
+Date: Mon, 14 Sep 2026 08:27:03 +0300
+Message-ID: <20260914052703.1286495-1-kayracizmeci@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <aqdVpO66OfmHvvqB@chenyu-dev>
+References: <aqdVpO66OfmHvvqB@chenyu-dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v6 01/10] mm: memblock: add missing HugeTLB flag name
-From: Mike Rapoport <rppt@kernel.org>
-To: Wandun Chen <chenwandun1@gmail.com>
-Cc: catalin.marinas@arm.com, will@kernel.org, chenhuacai@kernel.org, 
- pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu, tglx@kernel.org, 
- mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, 
- robh@kernel.org, saravanak@kernel.org, akpm@linux-foundation.org, 
- baoquan.he@linux.dev, rppt@kernel.org, pasha.tatashin@soleen.com, 
- pratyush@kernel.org, m.szyprowski@samsung.com, mark.rutland@arm.com, 
- kernel@xen0n.name, alex@ghiti.fr, hpa@zytor.com, ruirui.yang@linux.dev, 
- robin.murphy@arm.com, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
- linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
- kexec@lists.infradead.org, linux-mm@kvack.org, iommu@lists.linux.dev
-In-Reply-To: <20260902073116.802752-2-chenwandun1@gmail.com>
-References: <20260902073116.802752-1-chenwandun1@gmail.com>
- <20260902073116.802752-2-chenwandun1@gmail.com>
-Date: Mon, 14 Sep 2026 08:20:16 +0300
-Message-Id: <178936321614.3691424.10386784926753862087.b4-review@b4>
-X-Mailer: b4 0.17-dev
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 43AA0140007
-X-Stat-Signature: f9f3i4hhj8n5nc5jbyu5yk1tbdrrw6dm
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1789363228-41085
-X-HE-Meta: U2FsdGVkX18LG/CN9g2KfW0dEEtRPERkkcLnNZ3YAepIdDDbH1L1p7l9NEXlF8MmdARh3E62z1B+ZyFJQvQtY94eu15UvLLSKp27z+iASyn696xia/+zKtj4AjrVdvDyTpqEYmV+rSnvAbFwUdTn3vD4Pf+7M1HcfvRKnwuijG6PcqT+uaA6mxHuPtg4F4l/YUsxjR1w38Ltv8R0yp+AQ+sH7eW/HDpcKxQUyYmjVvcNYnUk/kMK0FBzv8raOCkeoosPSSNYUbjBRF26M9m3xNjDIK1OfGaTLS2N/S41Hn//C9Lz3XMqzD+fvNfMA93eu52HDS9B0hmFg6kFC52DwEdIxI7lWDm89T355UZeXWsh5dx/q9nc+NjopMDYX1zr8ee+DuYDQ+Vr3EX41VGRcLwX5vgh6nQMzWT+IQg6Ui4lwqeo5ifG9+kWO6bWhZqo7GhlaWyb244SQFJW2mxlIA9InPHRThF6miC2avdgu04Ubvn84HYnFmQL/5AYYOPNQXyMsU84+BieERNSG+Lu4xW7/vmD8FYVQxg5hBH+Ny6JZGFBk34ckbUPmb8byq1cy5eeozEwpmmP7zjpogW/fvI9EHG4X6xKFgsFyEbJHjafXI4+trwCSxOdvnZ3O612eSJPXxEvrZsnEINwW1ituwmGF0YN9Z6Oxb/mQRHEq4NRlqm35oXOenGtmd+9rdDJBr5NXPwlI6ipoplXY5I6KzInFC0cZ/bqw+QRkEZe3Lyjpo32KwQlMU6GxA10WoGU/HuGWJONjtG9kD/j817wiSgSvp470PVq1CU4wV4fGvrkqMpqdV9XI9syq2kwJMft9xdOnveANS5TL5tRqAbJ+CFQgDsZJTF/qQe4QN4sG6Fx/v7NcV+th+awpUC4TWS3PZWcqDMmNbv4SuTRaUduXQt8jSwKv01ns+SxIMyJ29qqG+BYnPd9FeUjQqQCFZozWSQHV4jPY8r7SS1IRJA
- GNMFZT7h
- 1uXpUMReymjfe8icSsYErIGkAxOPkUfgeZBE6wuwqykAWoQo8PEasWD2c5TVMofbSD4ChRrkxFGxsI93MJbJPO+YjEPj9kxrolT8M9BQ/uv0CWbIKuxf3vO5VpkxGZe5axr8gErdHPwLHbHEhcYVvxBhxP9FY2u7SrevJzEr+B+cjeekALGPjnumL9Lc2YEmovCceroZhwIRK1x3zZX7mrZS/tB1otKyS1trZkuJge1UP89Jw1s84PnYkBbx23UlbUKrpzr9jkE07zGU13K7wfFYC7cEG+vWjMSXVLmzRLDJeNTl0HLybxD7gVdOntxaOUIevNDFbuLha+Jk=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: D825C140008
+X-Stat-Signature: 9y3i58uwhkitaq8nsgemche3rbtjyrgs
+X-HE-Tag: 1789363629-851236
+X-HE-Meta: U2FsdGVkX199CNasl9pwTFptiPCUG2/3iz7otqTU3XBfpDahIsKymbSqKAhiHBPi71ODhrRPaNbmp4sGVxzc2fUjEvjmGSUD9N8KGahr4lKltHbwrGEnSA2mvJKPYI6d8CND17t8f9v5t8tB15amKF2JAEaLZD8Z62ozhBYEYpY3CsvqsAASuyG3PP4Eq08PQoHadFVNguxQh6W9KQwQPAKZkDjlIbvHk2Gg8KRWISKX5kOt6jCmlc2J52am8miSdp7R1AVR2P5UPYSTX/H0+Gw9DekCJ9tUL1B6nR1fHmI+CEK7mcJePZRczPiS8S8wmLBVFvden9UzYCiDE3My1+htcFO6yT+Mp4ACuwkyo2AApgqdlM/SMbZ7NlFLM5tF6Tu8UmpFkBbXjJtisnEgXifnLO60hBwvJw/8kpqauvBqJaVwLtiKG1R/w1w6LgciEcjCbDOQV/3WvNWit7aKif7yNypQBCLvEJ91O/fckfLVBJ+1dxNJPYr+z2V2eQYJEZ2h4tHjIF868PVYJqIZMnS6AbFzGE1vCwiF5tzS0lYfniTPxpX7GSEQEEiCA7KQ+nEIU1TszZwlVD2bV+txddd2l8UwyhEaBfiy0KIsWITr2tpZyo/WUsh5+uzBIzhJzh8+ikjfsQtnHIR/YvCgk+a9KFLD7lecGU7FFiSEYW2yOv01LuRIJJ20qpRtNpgMiumhMmOARixpa0G9H0yqUtYySc62y596Sj7KVaFnZEQXIUpRa40KH4pHFeBdfR9yILa9fOm1aZEPMh6ROoVlwa8nxQmUjmqre3muQD0i576FqLgJLnGRL/DGTz2DfCf8cLJZrYmgJUP46YfBhHlCHFHlD+E4dd/0HUd42O4HxR8zLcMK/zt9PkTY7kgYCKJR0aS3blidBTnoJaPpn6xk7zS6mG5fb/xLWJ6ryLnmyYCgTY9vv0dNvrDM97lREjWJk95AK1Km8XrHcIKFXG1
+ YTGfrxOy
+ zD5W74xNGjG3BahiCBJrxrREYsjQUEoFU+7VaKUHA94XywsaD40GHigN0fxwwSoLvf1V9T1s2dhE66WCeiCZQ9n3bHYC/XDZms/ow3KGbSlrqFWBGPFKO4sNxAas1y6qL7K2p0ZSHos2OGkzndJxBJEDgChvt9or1wbO0fyQlStaaUX13r3vF3PTh7uObQq3CeDqqGr73EEMrIPNqj88u4kbr475nf442JSoQaXACjuMVL55TB0eJDQuqj2EJzbNdR22NGSWoa+wlvk0H1AFPV976nt8QfLkBaV2txSkThFy0AjDCAsargzkiU4rH8eVFqC7vJTsoh5kLKWSAY4e2VmLC4tTgd/SAyfrG4s8jxe+6P8m22r79Ji3wJhy6s1tBWAfhKOThSuxqc/MQFjmWndu1IslQKcOICW5dygy/vNYgEZgrKUpFN8G1SKUvAE/ImFcC6gvzvuAknsBtl4AYfsEOk3BJsKZEDNB9nLhuSzx9bmyBzTkKz5qVJAYSGJEkrZ7+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,25 +147,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+Hello Chen,
 
-> Commit 7d163a75f821 ("memblock: make HugeTLB bootmem allocation work
-> with KHO") added MEMBLOCK_RSRV_HUGETLB but did not add the corresponding
-> entry to flagname[]. As a result, memblock debugfs cannot report the
-> flag by name.
-> 
-> Add the missing RSV_HUGETLB entry.
-> 
-> Fixes: 7d163a75f821 ("memblock: make HugeTLB bootmem allocation work with KHO")
-> Signed-off-by: Meijing Zhao <zhaomeijing@lixiang.com>
-> Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
-> Link: https://lore.kernel.org/lkml/20260821020910.3428585-2-zhaomeijing100@gmail.com/
+> Hi Kayra,
 
-Can you please send this as a separate patch, I'll pick it to the
-memblock tree.
+> I had a try according to your suggestion. It seems that the code becomes more complex
+> and brings more headache :-( due to several corner cases. The current version is a simpler
+> version with less code IMO. But I agree it looks a little hard to catch up with, so I added
+> some comments around account_llc_dequeue() and adjusted the code sequence of clear_delayed()
+> to make it easier to understand. Tim, could you please help check if this makes sense?
 
--- 
-Sincerely yours,
-Mike.
+I can't read your magnificent comment right now, I'm in a hurry. Sorry :-(. (But I will :>)
+
+> @@ -6415,23 +6465,18 @@ static __always_inline void return_cfs_rq_runtime(struct cfs_rq *cfs_rq);
+ 
+>  static void set_delayed(struct sched_entity *se)
+>  {
+> -	/*
+> -	 * Drop a task leaving the runnable set. Must run before sched_delayed
+> -	 * is set, or task_pref_llc_runnable() would already exclude it;
+> -	 * clear_delayed() mirrors this after clearing the flag.
+> -	 */
+> -	if (entity_is_task(se))
+> -		pref_llc_running_dec(rq_of(cfs_rq_of(se)), task_of(se));
+> -
+> -	se->sched_delayed = 1;
+>-
+>  	/*
+>  	 * Delayed se of cfs_rq have no tasks queued on them.
+>  	 * Do not adjust h_nr_runnable since __dequeue_task()
+>   	 * will account it for blocked tasks.
+>   	 */
+> -	if (!entity_is_task(se))
+> +	if (!entity_is_task(se)) {
+> +		se->sched_delayed = 1;
+>  		return;
+> +	}
+> +
+> +	pref_llc_running_dec(rq_of(cfs_rq_of(se)), task_of(se));
+> +	se->sched_delayed = 1;
+>  
+>  	for_each_sched_entity(se) {
+>  		struct cfs_rq *cfs_rq = cfs_rq_of(se);
+
+Yeah, I think this is cleaner. 
+
+I didn't read the comment tho :>.
+
+Thanks,
+Kayra :--)
 
 
