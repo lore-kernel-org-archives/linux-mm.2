@@ -4,88 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11934C88E75
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 15:39:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D554C88E75
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 15:43:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C544A6B0098; Tue, 15 Sep 2026 11:39:16 -0400 (EDT)
+	id 35C2D6B0088; Tue, 15 Sep 2026 11:43:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C05646B0099; Tue, 15 Sep 2026 11:39:16 -0400 (EDT)
+	id 30D856B008C; Tue, 15 Sep 2026 11:43:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B1B2F6B009D; Tue, 15 Sep 2026 11:39:16 -0400 (EDT)
+	id 1FDFB6B0092; Tue, 15 Sep 2026 11:43:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8CDFC6B0098
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:39:16 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 895F41603DF
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:39:13 +0000 (UTC)
-X-FDA: 85216405386.06.5981E33
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id C1CEB1C000D
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:39:11 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JxPFFrXi;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EA2806B0088
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:43:54 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 79D6C40486
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:43:54 +0000 (UTC)
+X-FDA: 85216417188.29.B45B961
+Received: from va-2-60.ptr.blmpb.com (va-2-60.ptr.blmpb.com [209.127.231.60])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 79D8780004
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:43:51 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=fygo-io.20200929.dkim.larksuite.com header.s=s1 header.b=B6MVj59H;
+	spf=pass (imf30.hostedemail.com: domain of yukuai@fygo.io designates 209.127.231.60 as permitted sender) smtp.mailfrom=yukuai@fygo.io;
+	dmarc=pass (policy=quarantine) header.from=fygo.io
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789486751;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1789487032;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O/8MfQYi9uN0d23Dv7BLSS+gv3tKa7FgzwTFgJSGcVg=;
-	b=SfKz8SyzZlCihlYiIm2x0ByGN5gY2GiUQ65GOMxJ1rpkY/P1aO7ZxCo6SlXsVU1kPW1f4h
-	jSQTRxXQFNhE5gepAHPdwAB6gjor76EN0Sbn5umMchocCc62fVnmg9dJfMoA3MYC7+Fodi
-	xbs8KGmhEpldCYbl/tDbTq1T7a9gqTI=
+	bh=d0n1MM6xxPsL/QERF+JcaetyUJsQd2U/h4AXxBLwz/w=;
+	b=JLkTt9SVRMz0wnflu2i1S1IGUU9+PwzfNFWr8aa3IZsBbkdBLJasJV+RszEgFQV+JMcvCL
+	SRpmQfGuUoJbrCmF/6Q3RTPvq+f66leGzRHh86psF0oz2ht2BRpmAE9G/OnVsIOCcBrRsh
+	o/8zMOw9hj331dJM6vALx/G/Tn7V5Xg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789486751;
-	b=0GTtujyM5yZI1WE3tNts9MRRyf5u5ccZLVP61xSIlN9vdUsC3UoXYw1oU1tiPza5hLNBqa
-	QDV4EdRNn6iqE3vng3t4rnRE9pTzPlwPqjBxX0W3SeDaGr7CGBo+scHKHo18gdzjhsPExs
-	K7ygYQ3Ql6VQmfM/cL8NBadKDvtkrok=
+	t=1789487032;
+	b=8CPsBifYbGKrF6oEds9MzVAm2KMAi7jxSJwag80UzqzyYtnzRShh63B6FgSVFjIXv00PyM
+	DuXTAUcQFFHm7TZhRJjUQkEU2EBLGbs/JKy0i5By+0AV4bdJhi5XdoHegEEds7gduzntux
+	Gn5qCv44TLYyytck+BOaYNHiSlB5Jjk=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JxPFFrXi;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B607143E3B;
-	Tue, 15 Sep 2026 15:39:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A2521F000FF;
-	Tue, 15 Sep 2026 15:39:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789486750;
-	bh=O/8MfQYi9uN0d23Dv7BLSS+gv3tKa7FgzwTFgJSGcVg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=JxPFFrXiqbIVZ1tnCWsx8Wp3Qe8Gg9cedEMClbUFxe5zxOtadVN6bsBCdOPD2hYiW
-	 qSjzx0o4vGguXISm52sHSBMdIuxrTAl1X0ieuyA8TxAnEHMnasJM8ERBqmUwCgoUTy
-	 Z+Nf9LPbbeEjeD3Fh4dwk/G/DfWoRSlx4k7mlkk+SgWG2pEsk1r+pK7Dj5qlGHFBv7
-	 7Wfj6vIubR1JYr8aWRQgA0hWYesKB+28UKaX8po9Xk2w9mNx5eJ/XXstL2FDtZocKN
-	 TOQlZeviA4xjRaGMxnYXfrM4z4ocgMQWX6EHCtZI8IFeAkY58oaD76ORranzr2m2H2
-	 0hyJQzCMJF/zQ==
-Date: Tue, 15 Sep 2026 16:39:05 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>
-Subject: Re: [PATCH mm-new RESEND] mm: mincore: use per-vma lock during page
- table walk
-Message-ID: <aqllzrP5DpYHfOZx@gremlin>
-References: <20260915143138.2595767-1-wangkefeng.wang@huawei.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260915143138.2595767-1-wangkefeng.wang@huawei.com>
+	imf30.hostedemail.com;
+	dkim=pass header.d=fygo-io.20200929.dkim.larksuite.com header.s=s1 header.b=B6MVj59H;
+	spf=pass (imf30.hostedemail.com: domain of yukuai@fygo.io designates 209.127.231.60 as permitted sender) smtp.mailfrom=yukuai@fygo.io;
+	dmarc=pass (policy=quarantine) header.from=fygo.io
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=s1; d=fygo-io.20200929.dkim.larksuite.com; t=1789487021;
+  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
+ reply-to:content-type:mime-version:in-reply-to:message-id;
+ bh=d0n1MM6xxPsL/QERF+JcaetyUJsQd2U/h4AXxBLwz/w=;
+ b=B6MVj59HlXMtOl9z0UjxaykEi6EDlwYrZpg3+azeNsjmlpkldNvo5mobKCZZv1eXwr4mtv
+ 9A/Y4ZX3nMUA4AYjNaZVH/8Pnb14vPpnCo2BzLFHD7Cxcc70Za102PyiI4r8dbT3K3tpnS
+ aVdq9L21zpwR5njcl2hcfzQMed0pXoPyXHN5De7q+YIlOHcFB9KScaL9M4JfXfqooGxEuU
+ GBCRAKKS7IFjJcGpkXh58DsVFdz77mf3WnJF9pP3pEXR+16DL40JlhwyTzZ1wkrPT8a30D
+ 7NMFvR+/dPVMVkI0zF0rHfhZSi6maqm2jnlsqQosfannu5FM7qlEz/nT3+EPlg==
+Reply-To: yukuai@fygo.io
+Mime-Version: 1.0
+User-Agent: Mozilla Thunderbird
+X-Lms-Return-Path: <lba+26aa967ad+ff1781+kvack.org+yukuai@fygo.io>
+In-Reply-To: <20260915064950.GA13417@lst.de>
+Received: from [192.168.1.104] ([39.182.0.142]) by smtp.larksuite.com with ESMTPS; Tue, 15 Sep 2026 15:43:40 +0000
+Cc: "Jens Axboe" <axboe@kernel.dk>, "Josef Bacik" <josef@toxicpanda.com>, 
+	"Tejun Heo" <tj@kernel.org>, "Johannes Weiner" <hannes@cmpxchg.org>, 
+	=?utf-8?q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	"Jonathan Corbet" <corbet@lwn.net>, 
+	"Shuah Khan" <skhan@linuxfoundation.org>, 
+	"Randy Dunlap" <rdunlap@infradead.org>, "Coly Li" <colyli@fygo.io>, 
+	"Kent Overstreet" <kent.overstreet@linux.dev>, 
+	"Alasdair Kergon" <agk@redhat.com>, "Mike Snitzer" <snitzer@kernel.org>, 
+	"Mikulas Patocka" <mpatocka@redhat.com>, 
+	"Benjamin Marzinski" <bmarzins@redhat.com>, "Song Liu" <song@kernel.org>, 
+	"Li Nan" <magiclinan@didiglobal.com>, "Xiao Ni" <xiao@kernel.org>, 
+	"Andreas Gruenbacher" <agruenba@redhat.com>, 
+	"Matthew Wilcox" <willy@infradead.org>, "Jan Kara" <jack@suse.cz>, 
+	"Andrew Morton" <akpm@linux-foundation.org>, 
+	"Chris Li" <chrisl@kernel.org>, "Kairui Song" <kasong@tencent.com>, 
+	"Kemeng Shi" <shikemeng@huaweicloud.com>, 
+	"Nhat Pham" <nphamcs@gmail.com>, "Baoquan He" <baoquan.he@linux.dev>, 
+	"Barry Song" <baohua@kernel.org>, 
+	"Youngjun Park" <youngjun.park@lge.com>, 
+	"Nathan Chancellor" <nathan@kernel.org>, 
+	"Nick Desaulniers" <ndesaulniers@google.com>, 
+	"Bill Wendling" <morbo@google.com>, 
+	"Justin Stitt" <justinstitt@google.com>, 
+	"Nilay Shroff" <nilay@linux.ibm.com>, "Tao Cui" <cuitao@kylinos.cn>, 
+	<linux-block@vger.kernel.org>, <cgroups@vger.kernel.org>, 
+	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
+	<linux-bcache@vger.kernel.org>, <dm-devel@lists.linux.dev>, 
+	<linux-raid@vger.kernel.org>, <gfs2@lists.linux.dev>, 
+	<linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>, 
+	<llvm@lists.linux.dev>
+From: "yu kuai" <yukuai@fygo.io>
+Message-Id: <06e3c977-461c-4469-80ec-b9f54aa51eea@fygo.io>
+References: <cover.1789237876.git.yukuai@fygo.io> <ef547fdb7a6c8e39a25a1b9473c444f24a0f03be.1789237876.git.yukuai@fygo.io> <20260915064950.GA13417@lst.de>
+Content-Transfer-Encoding: quoted-printable
+X-Original-From: yu kuai <yukuai@fygo.io>
+To: "Christoph Hellwig" <hch@lst.de>, "Yu Kuai" <yukuai@kernel.org>, 
+	"yu kuai" <yukuai@fygo.io>
+Subject: Re: [PATCH v2 2/3] blk-cgroup: store blkcg in bio instead of blkg
+Date: Tue, 15 Sep 2026 23:43:32 +0800
+Content-Type: text/plain; charset=UTF-8
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C1CEB1C000D
-X-Stat-Signature: 7skk5tfmgpd5u733m3hoguysthrjdepo
+X-Rspamd-Queue-Id: 79D8780004
+X-Stat-Signature: 7hzujqphzroqqcaiqg64nit8rwj1xmzu
 X-Rspam-User: 
-X-HE-Tag: 1789486751-181879
-X-HE-Meta: U2FsdGVkX18E8Y/eY/ZLKoOfJpC0oxhM809qzMsRwzL/X30V9rdcyYkdNxjpUhSPpqRpXHWFF9SS6OQjDNQWAw4InR2yuFi7tHa8vyuFZgeuNWAT8P0Uu/OzZ3zDKshvONHLfcoALQ40mch95sZwoxAz7mtu3dVtAM8qLabKo3Hfru9gbxrNg04W7PhRVVs0QPRC1JLjbXUglY8zz0WvgA25TTaflW4DpLoEZdJzsdwtJko61ioNQ2yqaqOT/rRrBLoLrRyhh6/gtxXOwGIZ1Fp6pEtaWHUsxDHCGueBWnj5WaUC/NkKpwOJdtVivn6rUFsqPbGhd3rJa5g1cLAc5mfwvFsZILY/BhTUfaypItNnHnxxPeTfoSKkUS/SV3LULSo4VtmFIE7HxjI/qnXU116j8zXX5Hcn2DxLqT/7dPPBruZA/g5hZf9/6qTuSc/RXZD709EfAfb30np+YKJYehNYLfLVxwXdztnrpm5kLAo51FWVHFDVj/6i968s1xtxy2hSB30ui/zf78xoZT1VcfNZhfmKxe6u/32TIhezbLB0AoIjRD5FPUlJrZ9uhNQoZRbRqm3H4Dn3cLOgHwIvCj+bXQhCuQzD0OIuXY+i7c7UXWsJoETCdtseVMRV+CGkUWwupjvro8g0LD476eZPODyurjLPlSgt0gn/yxufmr1EbPsYsu8tgjZFv1Hx1k9CYxYbQQP+bqGK2tnjx5zhFJfFWOx6wgDYDu/Bz+TcDXg2JaqnXh0V5ji3M8bWhSZAyEAPdyN+cd2Zx9NxI2kBax/MjM63gNDnKSw7YxE4QGY5GHDTw6vfDyulZ8v0WGKf8EetdGo6GukuY4ZMuk4aoupDi9jANxEOfoStXxRr1qkiyEJazpe/TrBeMNRCvQxY+OB0TtTVzUEJT6aB3FB86j68Dxpu+4XV2OQqmn+0CSkkKo1HBBu35a/DBBrIA7b4NLJZP+RzPfD02xVmlu8
- Yylr/2mA
- eHSIx2wjMHmO+4dmtMEKt96pPiI3OpriUAlYtxKfI8ganZFqdPaL/KbjQM1HT+sUUL/3ZxPatfjl2Y0So9mP2WpPWbIjtfzQm9L2vyF5IzbrCvjECwAuG/hEXD277wEyRtmz+f2bApmDILo5hnsXCfGofJN+L3EJRH8YTxvXtMRMfP1z3ZBbPzyjsJrpDXmdhge3lf8QG21S2+/WDbSFSsFqAkM0rMvwa5+a2KgAuOLrpdWHwlitgLfTlW4iWKC2dz6SWjqlROw3GhOu+CLaltTjvzKq/f72iNLgju+238V/aBdg=
+X-HE-Tag: 1789487031-483286
+X-HE-Meta: U2FsdGVkX183ZrkqsJt+IMPMeqtCPlvE7bpf5PmePJSCIzRP/SMB+FMxd1ENcWXM5KjroNKf6f1lMSn18I/nh9/NGitq3cUTEJaGbwOsOM/ivk7cOjiLbaizP0ap+VP8BdsLX+Wlv4gqvwTE8Ea0HNamEHPnnsElydFgZAAgaSPfh6nRaIBUVpbkaqw1c+s6JPNt5syyEo6wsr0UdkzIcCjGT0wNgmUcpPVhOzuGarD3pCnL1pAx7/4ExE47rk3w9jywok3IOkCRvg80XB1J3JokAz+G1P8OjA2HSKAdyKIDgGSdBkr3CPgpPnTuo9diBqBVh8btXoYZuw/WRW4FHMdHY2d+lBfLoJE3sRnPfLENkpmz/YdbV24GVMNZG+N/TpCskUTcs+lnyGnaxZtjfEa/kOYJU4by/7rJ42DbufaaUtDPkoIoFR6QbXCqlmL34h9ivxwpTPjy6I3PTm6C/wjala8TewLfN/irgZ5kc4wf2s0asMJqYKR1Th4uNcLwssFNFTAuFgaZDG9vpzLm/WjulQ1RFR/Aa66D/cQ9YILEmuA5RhfCpbNBPmZRJ2B+40ModRQLKV6pcOsIB3uwIYRv7trZQiOd+4i/O6/oGRW+dBpUwYey+vV5UGmjLeIU35qq+ieCnJlm9XHEwEv8aYT+9n+/NcBtZVa36fPXolJQy5amLBK7tdemri4GR/dbRygqLmEJPN9pp9Fys3imj9wch8Q95WtUnOq54I1ojmgJitEbguu58/2kP9F0UaB18rTAkrhkZteNckxR9wjDIqq+g3kf+glkwcJnj+fGAQpQAXKIaQl+ezq/wS3GH5bMd8JKmjaHBa2M8cnYLeS7tDy8/sskls7y4DFZI+uMO16iELtZh0kcDozVTunPkbGtCZfZ48U2NrnqNVxf7rXBI6mAxiossWjZNHs3k7O/HI1JbW+//9bkVm9BfE4i3lHrts2uYH2NVX3K4245apo
+ oT77ZzQM
+ +Gj0Dyuc6LqxooUmtS0NsSsxIGEVIvrJU/VrWXRRuSB/sLwM96qKwRKGNmmgJdykNCx39XDNYbDBp3Bc379R7aO38PPvcuECa/12e1Kt6p18h4dp1UyBGuZLls6J/xUfDLTVBQtaz2ISSJ+E1NKhbX4eDTvB6lm9spcLfhJqLzlQAhUt97zQtINbYb4ZyI9kVsHzRT8CmiHmxVGy+dbYUFgL3aTvzgmtrvjSJDX52Nv8Na4HpMSgJbYZWps18TiY5OHbsb7Vca8TavwoMTdmYqbK1dFy26d0wmF30cgH88W824zFizPsq9e5bet4JIKUoeKzXi4K1ruJ9DQkroubdYG/E6MdRROZy+wISBSxf5dgd4bskye+NCD6CnyLVkt5cu4H7kkxTfDRzE1a/XfKLMQ5dx4reLqJpBZUGuJfC3vFmwsWPn+ty4ipyPxqojc15D/zdstq0NNx0HBWuLG8EST0O8TJK1E1lc0raodt2/f2TRU+qlcCp6rBso0aWmmVUdPyIsFvKS/vwJOpfov7ENFHe+slRrAO3a6c1eeO1WqEeLMcXOKx0KnJSTBlG1i7JA9moM1PvX+MSVNI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,111 +120,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 15, 2026 at 10:31:38PM +0800, Kefeng Wang wrote:
-> do_mincore() performs a read-only, per-VMA residency query,
-> making it a good candidate for per-VMA locking. Convert it
-> to acquire the per-VMA lock, thereby reducing contention on
-> the global mmap_lock.
+Hi,
 
-NIT: The mmap_lock is not global, it's per-mm.
-
+=E5=9C=A8 2026/9/15 14:49, Christoph Hellwig =E5=86=99=E9=81=93:
+> On Sun, Sep 13, 2026 at 02:54:39PM +0800, Yu Kuai wrote:
+>> @@ -6243,10 +6245,17 @@ static void bfq_insert_request(struct blk_mq_hw_=
+ctx *hctx, struct request *rq,
+>>   	bool idle_timer_disabled =3D false;
+>>   	blk_opf_t cmd_flags;
+>>   	LIST_HEAD(free);
+>>  =20
+>>   #ifdef CONFIG_BFQ_GROUP_IOSCHED
+>> +	/*
+>> +	 * Pin the blkg used to look up bfqg.  If this is the first IO for
+>> +	 * the blkcg on this queue, create the bfqg before holding bfqd->lock.
+>> +	 */
+>> +	if (rq->bio && !bio_flagged(rq->bio, BIO_BLKG_REF))
+>> +		bio_blkg(rq->bio);
+> Can rq->bio be NULL here?  flush or empty passthrough request should
+> never enter the scheuler.
+Yes, rq->bio should never be NULL.
 >
-> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-> ---
+>>   	if (!cgroup_subsys_on_dfl(io_cgrp_subsys) && rq->bio)
+>>   		bfqg_stats_update_legacy_io(q, rq);
+> But I guess given that the code below checks it, we should at least
+> be consistent, so I guess it is better to keep it for now.
 >
-> RESEND:
-> - using new vma_start_read_unlocked() API, suggestted by Pedro Falcato
+>>  =20
+>>   static inline void dm_bio_record(struct dm_bio_details *bd, struct bio=
+ *bio)
+>>   {
+>>   	bd->bi_bdev =3D bio->bi_bdev;
+>> -	bd->bi_flags =3D bio->bi_flags;
+>> +	/* Restoring an ownership bit cannot recreate the associated reference=
+. */
+>> +	bd->bi_flags =3D bio->bi_flags & ~(1U << BIO_BLKG_REF);
+> I have a bit of a hard time parsing this, the line also is overly
+> long.
 
-That's not how resends work :)
+This is an issue found by AI, if the new flag is recorded to bi_flags, and =
+the flag can be
+restored to new bio by dm_bio_restore() without actually acquire a blkg ref=
+erence. And I
+checked this is the only place to read/write bi_flags directly in driver.
 
-If there's a change, then it's a v2. A 'resend' is identical to its original (or
-at most - rebased).
-
-This should be labelled a v2.
-
->
-> v1: https://lore.kernel.org/linux-mm/20260701144047.3786939-2-wangkefeng.wang@huawei.com/
-
->
->  mm/mincore.c | 28 +++++++++++++++-------------
->  1 file changed, 15 insertions(+), 13 deletions(-)
->
-> diff --git a/mm/mincore.c b/mm/mincore.c
-> index c086836bc4bc..f989e6d1ec18 100644
-> --- a/mm/mincore.c
-> +++ b/mm/mincore.c
-> @@ -235,24 +235,19 @@ static const struct mm_walk_ops mincore_walk_ops = {
->  	.pmd_entry		= mincore_pte_range,
->  	.pte_hole		= mincore_unmapped_range,
->  	.hugetlb_entry		= mincore_hugetlb,
-> -	.walk_lock		= PGWALK_RDLOCK,
-> +	.walk_lock		= PGWALK_VMA_RDLOCK_VERIFY,
->  };
->
->  /*
->   * Do a chunk of "sys_mincore()". We've already checked
-> - * all the arguments, we hold the mmap semaphore: we should
-> - * just return the amount of info we're asked for.
-> + * all the arguments, just return the amount of info we're asked for.
-
-The VMA read lock needs to be held here so you should say so in the comment.
-
->   */
-> -static long do_mincore(unsigned long addr, unsigned long pages, unsigned char *vec)
-> +static long do_mincore(struct vm_area_struct *vma, unsigned long addr,
-> +		unsigned long pages, unsigned char *vec)
->  {
-> -	struct vm_area_struct *vma;
-> -	unsigned long end;
-> +	unsigned long end = min(vma->vm_end, addr + (pages << PAGE_SHIFT));
->  	int err;
->
-
-Maybe worth a:
-
-	vma_assert_locked(vma);
-
-?
-
-> -	vma = vma_lookup(current->mm, addr);
-> -	if (!vma)
-> -		return -ENOMEM;
-> -	end = min(vma->vm_end, addr + (pages << PAGE_SHIFT));
->  	if (!can_do_mincore(vma)) {
->  		unsigned long pages = DIV_ROUND_UP(end - addr, PAGE_SIZE);
->  		memset(vec, 1, pages);
-> @@ -319,13 +314,20 @@ SYSCALL_DEFINE3(mincore, unsigned long, start, size_t, len,
->
->  	retval = 0;
->  	while (pages) {
-> +		struct vm_area_struct *vma;
-> +
-> +		vma = vma_start_read_unlocked(current->mm, start);
-> +		if (!vma) {
-> +			retval = -ENOMEM;
-> +			break;
-> +		}
-> +
->  		/*
->  		 * Do at most PAGE_SIZE entries per iteration, due to
->  		 * the temporary buffer size.
->  		 */
-> -		mmap_read_lock(current->mm);
-> -		retval = do_mincore(start, min(pages, PAGE_SIZE), tmp);
-> -		mmap_read_unlock(current->mm);
-> +		retval = do_mincore(vma, start, min(pages, PAGE_SIZE), tmp);
-> +		vma_end_read(vma);
-
-The logic looks generally right, just need to address the various bits +
-pieces I raised :)
-
->
->  		if (retval <= 0)
->  			break;
-> --
-> 2.55.0
->
-
---
-Cheers, Lorenzo
+--=20
+Thanks,
+Kuai
 
