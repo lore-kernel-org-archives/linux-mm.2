@@ -4,80 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7369FC88E75
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 15:20:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA47EC88E7F
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 15:22:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 553696B0088; Tue, 15 Sep 2026 11:20:17 -0400 (EDT)
+	id E09DA6B008C; Tue, 15 Sep 2026 11:22:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 503F16B0095; Tue, 15 Sep 2026 11:20:17 -0400 (EDT)
+	id DE3776B0098; Tue, 15 Sep 2026 11:22:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F1A46B0099; Tue, 15 Sep 2026 11:20:17 -0400 (EDT)
+	id CD5016B0099; Tue, 15 Sep 2026 11:22:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 081A06B0088
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:20:17 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id ACE346B008C
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:22:06 -0400 (EDT)
 Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1ED1C1A0459
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:20:16 +0000 (UTC)
-X-FDA: 85216357632.21.00FA0A8
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0E6E040479
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:22:06 +0000 (UTC)
+X-FDA: 85216362252.21.4AAE3E9
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 4FE1D4000C
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:20:14 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F5KCAvfz;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789485614;
-	b=emuf3JwDXmI6+fvwFRwzg9C/BqqoOMcwquMYGimbLLCpBbXIp3qiQMnK5zb4HBGy/TDpLQ
-	T7nXs1Idl/at2wRN8dH1iwLrGlHhoUalWvI+EP0ROcS+v3eT84lmqCGrvKNGlTrKtXZLDQ
-	AtxIaFyp/e6HeP5yKxYpK26QZqUpoKo=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F5KCAvfz;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 54D554000A
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:22:04 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Aqg9v+6M;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789485614;
+	s=arc-20220608; t=1789485724;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=isskOEQfc9nzpx03clYSswsA678FF85KNCAnq2sLlf0=;
-	b=JW3dzAAZMysL/y+rhQV5tP1JCUvC/T8HQqliA+KHJfZdOJuySAIcnL9yVmwcUd+ueoP4BC
-	g0YHY30s2uvQW6HlYtcC2VfqZqyf8xTkqE8AIGqtvCxIYunCUN7qItr0QlyhaMMyIkg84Y
-	IGntw/7zbB/Ip7DlMLv+iHPgTd08CNI=
+	bh=sqGaSkvdWQ60cpx32km743ewG0ao4oY1eQa2iuciX1s=;
+	b=s3bt/hx2hr7WQuATcAa6QLue+i28KRuExlhKj37bJ1TuQ4mnr7uByH2LGJ2JcvBufSiEr2
+	EMc5DriDNyMcb+CaKlbHt+z1QZYUcfbjjmie9mcifzJ5TyoWR0U1IWy4Szwcm4UFQoqGHL
+	d9kCrqFZu/u8o10MTCaU+3B2JXUM4wI=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789485724;
+	b=K9YRfKP8X5ZAUa6sBZWuKx9o/e1Q1CeIkL5LRrvRyUdwUOpC+VLIlcVTuTUEZFBR/PaG2W
+	T97/QKiElgKdTh0Xfin5OusS1ezePIJgkecqgINwjBbRjJ+tTYbv2fDh35Erq+GKiM7Y97
+	ydCmhH6nnV5tM+qnYByzFBycWO9JURQ=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Aqg9v+6M;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D233D600C8;
-	Tue, 15 Sep 2026 15:20:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 876C51F000FF;
-	Tue, 15 Sep 2026 15:20:10 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id CDAE8600C8;
+	Tue, 15 Sep 2026 15:22:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02FF21F000FF;
+	Tue, 15 Sep 2026 15:21:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789485613;
-	bh=isskOEQfc9nzpx03clYSswsA678FF85KNCAnq2sLlf0=;
+	s=k20260515; t=1789485723;
+	bh=sqGaSkvdWQ60cpx32km743ewG0ao4oY1eQa2iuciX1s=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=F5KCAvfzKIMU4RBO8DimZQ+dYMQ4Kck5NXykD8YT6qRLs+1XhXMqwpDa/0PF4bDCx
-	 oapOUpXIapYpujnnnHerFsH/Leztqw8ke5xgeGMOlaQ3IjWTmXOZlUimaUnfpfHigi
-	 HvdGCt9N1CGdHEvP5jvc/KMiqb2Vcf6vArbviDyRQBo0e5TJItJhNua0+a2MR7m1Qw
-	 FjzrOzP4Wx6QPyISluhoMdOwD6TW8DoBjXOc/IsvUXNpxNJXY9i35/nc13CToUYrlq
-	 vhLoq4vztd5Jk2663lqxxjJA6AE5j32XeCloFoGA5TuLQxaLqHTlhAaMg8JAoVTiOy
-	 iI+P8x/YBg68w==
-Message-ID: <209de483-a9a5-4d98-bda4-7998e8fdc7da@kernel.org>
-Date: Tue, 15 Sep 2026 17:20:07 +0200
+	b=Aqg9v+6M7v8DblQ+f4ysGGJ/SH9uXvVsSGeD5+NhMVr8m7krgF1WahVPvj+smpTaa
+	 gpXRP5d/hxHr3CKK3jevO8UsSTo9YkbaYLJrUBzfRFzRhkMSCvKW4zPwnvfYyfZrI9
+	 8174JctMpSjXK//CZOuT4QZf2RA1C/pDAOsEWdn0/uW80BGaEg+SKefERLSqsdpsCb
+	 F0bj0i4KxNcD/26Qz1NK9G9CKVvPtpEFdUJ6LdsYPpN2qL1e8l8ZIZfAWIGHfRd7QM
+	 N/VZPcv7wjwQnBt+Tt9r9qux/kEJI2bhZ2/8CJc0goHX0rIAeAp9XvPdtAb3OHn334
+	 DD8w6mTIXuqNg==
+Message-ID: <e7c72ccc-5c1e-4f29-8768-b30c01225e29@kernel.org>
+Date: Tue, 15 Sep 2026 17:21:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 2/2] mm/memory_hotplug: optimize zone contiguous check
- when changing pfn range
-To: Mike Rapoport <rppt@kernel.org>, Yuan Liu <yuan1.liu@intel.com>
-Cc: Oscar Salvador <osalvador@suse.de>, Wei Yang <richard.weiyang@gmail.com>,
- linux-mm@kvack.org, Nanhai Zou <nanhai.zou@intel.com>,
- Chen Zhang <zhangchen.kidd@jd.com>, Jason Zeng <jason.zeng@intel.com>,
- Chen Yu <yu.c.chen@intel.com>, Pan Deng <pan.deng@intel.com>,
- Tianyou Li <tianyou.li@intel.com>, linux-kernel@vger.kernel.org
-References: <20260914072929.1883794-1-yuan1.liu@intel.com>
- <20260914072929.1883794-3-yuan1.liu@intel.com> <aqjfyGeQaL4g2EcA@kernel.org>
+Subject: Re: [RFC PATCH 00/57] mm/collapse: rebuild collapse on migration
+ primitives
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: akpm@linux-foundation.org, ljs@kernel.org, nico.pache@linux.dev,
+ baolin.wang@linux.alibaba.com, baohua@kernel.org, dev.jain@arm.com,
+ hughd@google.com, lance.yang@linux.dev, liam@infradead.org, mhocko@suse.com,
+ rppt@kernel.org, ryan.roberts@arm.com, shuah@kernel.org, surenb@google.com,
+ usama.arif@linux.dev, vbabka@kernel.org, ziy@nvidia.com,
+ usama.anjum@arm.com, agordeev@linux.ibm.com, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ jannh@google.com, willy@infradead.org, pfalcato@suse.de,
+ rostedt@goodmis.org, mhiramat@kernel.org,
+ linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org
+References: <20260816224609.308019-1-kirill@shutemov.name>
+ <9f51ac27-24b2-495b-b397-84865f977d24@kernel.org>
+ <aoXRi3ngBhO54Akk@thinkstation>
+ <fd179a26-fd69-4b5f-9af1-b3755ba9030a@kernel.org>
+ <aqkg_iU46BJghUNk@thinkstation>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +132,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aqjfyGeQaL4g2EcA@kernel.org>
+In-Reply-To: <aqkg_iU46BJghUNk@thinkstation>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 4FE1D4000C
-X-Stat-Signature: j5fjpqu613998fct8kabkt1i66k4fqii
-X-HE-Tag: 1789485614-799373
-X-HE-Meta: U2FsdGVkX18VzsybFpfxx8oAo10Yvo7lVfmVq8nFr+vVtZdIP0Ea0JPKpbezjIqd196RGM85QCrknIATeojiQ+/gRB2m/pkTS231MrkxFSdI3Fy0o4TYmW6+5zuweFJspXUtfiQqmHG+io9+9SN7hg/Lc3agJpLpPblfJrs6ckJvcZaNG7inLxSIjNsQ2Wxj6ADuyYmRanap5Ucj3XJfG9a71T+k84pzZEG0Dsq2+5PNlzs+kmdnr7uzhYUyK5W2y6iA+8st76PdXrR7i8bwAwYzbCj/Q4OVKJEBchaovXi4uiAkY/5DjOflXUfH6ZOvmdFUuP8hOYwgaRHXhxz3I2ZD0N8QyEaZLa8jyIylJrLpVsqiRx3UD83Vmdgb+ZVsS0jzVVpFIMux2qWaJNYeCwHdZZ690ioAj6jVN9/Ni74XrsuzBZM6GBSgWPqNBqI6ZC/7SBOgTyKtpG7kOPro9I98BS4lKpCZxrxw9GGZtaAETJKSpZI0cw+Ku0VQRiOc0B1HAZ5/EW5I37ylTg1WtA6bx0S6roKzb0wLWlmiNL4DHYY/NwycGvs+YuCaddawfu29bPpBpLnZOOKWFn7nVyYTgvReEQCfar7nQgjDJaIL0yhBo4zgvXt/GSBuRNEk2iRfi9ft4RHF8dWQgCMQn7iUdFBVXJyvKd/Ce8TP0BY03lp9RoxUJs95lmvHT+yebS7BwZ5VEmKDrOCiRxuBsyEiFeGEfs0OUOBtfA7HIBX7qjuCDIGqMdM1zWRrAhdI4b5HspxbHb4zpCuQ7LVAc+n8MVCp60DJIPPENa5r+WIN5oHwtakR3mtwPyPgMcIpRQ/TgIrTN5b9GeBbJMZKICgd6nun68uBzDv2rpOhpRvLN2OESWuSMZDVn8ThnsjuGkVVFi+tS+2POY/n/jtLqDf4qViP9QZzNkvebbkevyXq0jtNtRSpQOAAsannqF0vsQvfW+xQx1A+HkCOFxD
- HmyNBybt
- H4W09fhVypTBhf8sq/TZE1NeSnnTZscKDJxLxuzn8TquNGXy9GUDd2+fIz0BLQZKW94j9vN3+YMse5zq9Dd4q25HxdrWvcINCJkwUWve65xvi60/Ra/aZRI6U3xvK6jUZgUhX2PSZQe0VbP6nfkS3FPruQcbE6vaGa0IdyVyaZ840RldHJNFvAyeE1lgs/kcfLDADlRam29NcYzCQqJAqPs0AwopcIPYnzHSRzcP4OJqxV2LL3BzJbt/aB1t+leeBDwFta87LYT4Od2ITQegDaeEAjj2vtIWoFj3Jeb9k09sPrFXnGwm48GSfN4Bw5Wr7wTmoG5aPrPG1cNePRHaocmsvqyqH3AR9zu+yfPOqobbLWUdvjQqQf9xIV/EuUcpcGEr8
+X-Stat-Signature: sdatwa36157yiaitb9f1dp7eykpdcrfa
+X-Rspamd-Queue-Id: 54D554000A
+X-HE-Tag: 1789485724-96983
+X-HE-Meta: U2FsdGVkX18vk8/bdmvDccEO4gEdjx/irdSez+DPDdIUydc1OrbwNeCiBFROISgdHTi+ycbVZNWuZHmVmfEpila1gMJjhu0vjOKlYBViKFzllS5dW693VjtZ7SvcazveL42/mfVrAyM8NGG8ftlJUmjTlW0sQoKS4x19XZo3FqpHPIQeKI34idFIo8mqzf9cp6GaT0Xn2DKkri2PtNv8kxt1/35/DHzvLjPl3/RrCMsTRNMaEMIvVGaSxmsF3YyWgEhJmud7o7xnr715iyMkWbFgVoWj9PmXQUwxMXKYiQYMlqgmWca8xJmszVDSJOs8sc6SbcrQhsHHhjhbbck9xq0q+s44FUi9BLshyIsRLj29D3GySdFbwi74+2O5G1uk2cWWakgMkj3xsYCfdUzVgPYjIOICFu8X8OKRM9FVcCRQ1UZ+4ldRULQm2B5GYymfesdZm4V6qpLDaKtBF3QFECzE3Tob35p1BrPBYTW3eF8ADUDyUEkrdl9PxacmTVZMCBIvvBFuXseTzc51p+zPKm/c+i3zM8T95xzmQb4/S+qLfrtuvbuIPifV18O+c5zKfaRDmZYgGGmzbtXKg1LoFezayOhDSQ1Edg6V+y4jHHAOAX0+jX9IqV0YLZ6sUAxplctdWDo54TWUWaiTQ54CF4zD97u0Cf7mMTfmiiMO5GNEuqh5wSi9zTUORVyw0sHKySBIX+J0904QfdPMdr12J74Frhr+qD+eGWO6ECBmL1nyedWN01sA1LTNlDozmWSya4KjHr5eab6CoyJ3Pj6nKX2vV08pbr5SfamY5iPi8P44bCf8F4E6jrGTanDHMMyZLsrtVUUuuarIhJCpgTnGwYY8WWIYTkVAoRHAzeYc16mpFeiHMyT0hxL7QavnGLuib62/EvEyOxsDUmzb5/uClUpHjVcOl6kodAToGnXz4z707X+Nd9WD4F332jlgm0zXm6pj3eABuFgj6LSwm4+
+ +c3jZgqu
+ ktryUT3h4m/DirnrEywCPYvQFkljSRkG4k9cV8aT+kWmXeGdeqGPYurV4n7CAgvZ6XDdwEWd9Z5BxyflQEDQultk6a94QfkqbVdHga5OFV8kxr5O62Y/ieYQwhUK145TQ2EVK24wvTFfWFBBL8vGnpu+Bsr9H/Dbehpn5tQmMDvuywT9lnm/2LnISO13Wqiq/4TcNV+lnc3nIXa7GGGzmBxg3DvdGuUqQW+VBoEwArFQjfIYkUjBIBWIwVyc6sSigAz8F35LwaJ6o0C8sYE5OXPvTxiO6nHuyPUEi
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,59 +150,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/15/26 08:03, Mike Rapoport wrote:
-> Hi,
-> 
-> On Mon, Sep 14, 2026 at 03:29:29AM -0400, Yuan Liu wrote:
->> When move_pfn_range_to_zone() or remove_pfn_range_from_zone() updates a
->> zone, set_zone_contiguous() rescans the entire zone pageblock-by-pageblock
->> to rebuild zone->contiguous. For large zones this is a significant cost
->> during memory hotplug and hot-unplug.
+On 9/15/26 12:46, Kiryl Shutsemau wrote:
+> On Mon, Sep 14, 2026 at 05:07:37PM +0200, David Hildenbrand (Arm) wrote:
+>>> As I mentioned above, we drop the ptl after the freeze. And take it a
+>>> second time for the install.  Allocation and the copy run in between with
+>>> no lock held -- on 64K the copy at PMD order is 512M of it, which is why
+>>> it cannot sit under either lock.
 >>
->> diff --git a/mm/mm_init.c b/mm/mm_init.c
->> index 1533aebafb68..d40a8ff23370 100644
->> --- a/mm/mm_init.c
->> +++ b/mm/mm_init.c
->> @@ -817,22 +817,39 @@ void __meminit init_deferred_page(unsigned long pfn, int nid)
->>   *   zone/node above the hole except for the trailing pages in the last
->>   *   section that will be appended to the zone/node below.
->>   */
->> -static void __init init_unavailable_range(unsigned long spfn,
->> -					  unsigned long epfn,
->> -					  int zone, int node)
->> +static unsigned long __init init_unavailable_range(unsigned long spfn,
->> +						   unsigned long epfn,
->> +						   int zone, int node)
->>  {
->> +	unsigned long next_chunk_pfn __maybe_unused = spfn;
->>  	unsigned long pfn;
->> -	u64 pgcnt = 0;
->> +	u64 online_pgcnt = 0, pgcnt = 0;
->> +	bool is_online = true;
->>  
->>  	for_each_valid_pfn(pfn, spfn, epfn) {
->>  		__init_single_page(pfn_to_page(pfn), pfn, zone, node);
->>  		__SetPageReserved(pfn_to_page(pfn));
->>  		pgcnt++;
->> +
->> +		/*
->> +		 * With vmemmap, at this stage all pages in an early section
->> +		 * have a valid memmap and are marked as online. However, only
->> +		 * subsections in the subsection map are actually online.
->> +		 */
+>> Hold on, are freezing all folios to collapse? That cannot possibly work with
+>> COW-shared folios that are mapped into other address spaces.
 > 
-> I'm having trouble parsing this comment. Shouldn't is say that some
-> subsections in a section can be offline because of holes?
+> I break COW for worthy candidates in the faultin prepass before freeze,
+> alongside swapin. It simplifies the picture substantially. No rmap mess.
 
-
-Maybe extending that a bit we could do
-
-"With CONFIG_SPARSEMEM_VMEMMAP, early sections have a valid memmap for all PFNs
-and the sections are marked online. However, we might have offline subsections
-in such early sections, indicated by the subsection map. While we must
-initialize the entire valid memmap, account only the online pages according to
-the subsection map as online (see pfn_to_online_page())."
-
+Hm, okay. So temporary memory allocations and page copying.
 
 -- 
 Cheers,
