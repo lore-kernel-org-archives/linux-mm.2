@@ -4,136 +4,159 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F0D9C88E75
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 00:57:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65CE1C88E75
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 01:08:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8797D6B0088; Mon, 14 Sep 2026 20:57:41 -0400 (EDT)
+	id 669206B0088; Mon, 14 Sep 2026 21:08:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 82B776B008C; Mon, 14 Sep 2026 20:57:41 -0400 (EDT)
+	id 61AEB6B008C; Mon, 14 Sep 2026 21:08:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F8546B0092; Mon, 14 Sep 2026 20:57:41 -0400 (EDT)
+	id 508226B0092; Mon, 14 Sep 2026 21:08:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3BFB46B0088
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 20:57:41 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8E8F6160248
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 00:57:40 +0000 (UTC)
-X-FDA: 85214183880.09.9E8A1AB
-Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
-	by imf23.hostedemail.com (Postfix) with ESMTP id D39FB140007
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 00:57:37 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=hpe.com header.s=pps0720 header.b=oHRZ7SjR;
-	spf=pass (imf23.hostedemail.com: domain of kyle.meyer@hpe.com designates 148.163.147.86 as permitted sender) smtp.mailfrom=kyle.meyer@hpe.com;
-	dmarc=pass (policy=reject) header.from=hpe.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789433858;
-	b=syMrxWU5mi41C9jozUKAnmETESy+DkqEe+wONv/gcvSaFUWjJbokiX1aAc+9oCCMwKxIOF
-	LXerRKsuMzKdvas/nEcIrGs5arG51Y1JSsRGDxYhLFUPjJpG1qWyF2pJL3KYUItT7xk+xj
-	HLICvUu8cD+CP7FbQY8vUzNI08ZVQr4=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=hpe.com header.s=pps0720 header.b=oHRZ7SjR;
-	spf=pass (imf23.hostedemail.com: domain of kyle.meyer@hpe.com designates 148.163.147.86 as permitted sender) smtp.mailfrom=kyle.meyer@hpe.com;
-	dmarc=pass (policy=reject) header.from=hpe.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 28EBB6B0088
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 21:08:20 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 38F981402DC
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 01:08:19 +0000 (UTC)
+X-FDA: 85214210718.26.1DF13BD
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 8AAA118000F
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 01:08:17 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=JlZVB02S;
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789433858;
+	s=arc-20220608; t=1789434497;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OS259iErZnBxTgbybAxhMxIa2SCl4Sz3q64JgdnS2yg=;
-	b=j6q2jsL0iarLHhlzfdWwRza8/4kYWQMgyEmdrc1q809qmBWartua2v6V09bLyUm7eEz2qY
-	lBoD1rQd2dcNUYgzT7pPQ+T6Uq6ZFpeFGjZaeKDkh8eyY3gpk4wra/37gen3j95QrWwhMu
-	RXKJjUinKJexUxUEiEO0UibUc0hcNco=
-Received: from pps.filterd (m0134422.ppops.net [127.0.0.1])
-	by mx0b-002e3701.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68EN3pS43403440;
-	Tue, 15 Sep 2026 00:57:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pps0720; bh=OS259iErZnBxTgbybAxhMxIa2S
-	Cl4Sz3q64JgdnS2yg=; b=oHRZ7SjRZFoWlHuqcXVhmfDJ0wGKX+/3mpgx0AfSCG
-	zyvpc5MC3hwNTiLzQDrzBIcuzozkvFEuZ2U0h3QlKnj6bu76KZiuB95M40+5Zdvi
-	sMZvrP4xkB/agoUhMwd92aKH/pFhyeEf9PGN9KBBy+IG0WFQJm9Ue1306kpaZJMt
-	sAJCVikyL/DAIgbkMcDD7l4eR7ge+5yXnMGYKQiPS8AWGEGhYcxmIaXcB02aeNBE
-	bYNvgxFlxVGYxdpLnrj5+A9Wzi/5WMGWCVEbJ8HRouGFvb6RUAMgQrjiJIY9dEi/
-	YIpPCYED1oKg9SOWDfBqiWEMW4ZJTxbvdm/s+Y0DfquQ==
-Received: from p1lg14881.it.hpe.com (p1lg14881.it.hpe.com [16.230.97.202])
-	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 4gppy1khtu-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Tue, 15 Sep 2026 00:57:11 +0000 (GMT)
-Received: from p1lg14886.dc01.its.hpecorp.net (unknown [10.119.18.237])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by p1lg14881.it.hpe.com (Postfix) with ESMTPS id B5122806B2F;
-	Tue, 15 Sep 2026 00:57:09 +0000 (UTC)
-Received: from HPE-5CG20646DK.localdomain (unknown [16.231.227.39])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by p1lg14886.dc01.its.hpecorp.net (Postfix) with ESMTPS id 827A7801710;
-	Tue, 15 Sep 2026 00:57:05 +0000 (UTC)
-Date: Mon, 14 Sep 2026 19:57:03 -0500
-From: Kyle Meyer <kyle.meyer@hpe.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: corbet@lwn.net, david@redhat.com, linmiaohe@huawei.com, shuah@kernel.org,
-        tony.luck@intel.com, jane.chu@oracle.com, jiaqiyan@google.com,
-        Liam.Howlett@oracle.com, bp@alien8.de, hannes@cmpxchg.org,
-        jack@suse.cz, joel.granados@kernel.org, laoar.shao@gmail.com,
-        lorenzo.stoakes@oracle.com, mclapinski@google.com, mhocko@suse.com,
-        nao.horiguchi@gmail.com, osalvador@suse.de, rafael.j.wysocki@intel.com,
-        rppt@kernel.org, russ.anderson@hpe.com, shawn.fan@intel.com,
-        surenb@google.com, vbabka@suse.cz, linux-acpi@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3] mm/memory-failure: Support disabling soft offline for
- HugeTLB pages
-Message-ID: <aqiX3-TxmbFkU8xs@hpe.com>
-References: <aqiIEkrc6aDBOqRg@hpe.com>
- <20260914173700.346dc533f1f21ef170b7722f@linux-foundation.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260914173700.346dc533f1f21ef170b7722f@linux-foundation.org>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE1MDAxMCBTYWx0ZWRfX1J48re0Pg76+
- isfei2rI9AQNEKpzmp0oGGQ7+UgNmRXG6g8gKGs2bzMjqbPzityDM73+bGjAhzPS7KlFCRTCd6j
- QEblYzHBFdNln+P8vYgR6jBTU38dP7nj6rvUn3bMbYb8CRJo1k+YIt5PaeCLeHORqzXQOxOuBrO
- I8e93cWpAPEWJNzwwrwrz2az0ri83aYEgZ8crHhfDN9frN75ABYbJ+xDz80Xw/eBo1oxSUFC+Vz
- mhelffqylCDlX0b/AXClyQzByaSWykcB4IQ32kZVL1g1P/GP16ZXC6MhHKJW6YZorpvib3ebP8n
- ucJmktJ/5oVpXLCDQ1rpCzsSbpqx5VrDiQ22zMz2u7LB0I8m1CdoOEzEApVT4mKgUIWwFEwJ41f
- YpvNg/IZtZe8dbRFuYIUda9LA5pMXFFSFa7NC5ALQ8Iw8bF7+wcL/XvdVowuMIeBT/8idp1S1Oc
- 0BqsyKKMAIbzqutDtvA==
-X-Authority-Analysis: v=2.4 cv=LKbz05W9 c=1 sm=1 tr=0 ts=6aa897e7 cx=c_pps
- a=FAnPgvRYq/vnBSvlTDCQOQ==:117 a=FAnPgvRYq/vnBSvlTDCQOQ==:17
- a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=gQcMVamqm3wCPoSYhaRC:22 a=ModqzXLkJJ0tFyq98apW:22 a=VwQbUJbxAAAA:8
- a=MvuuwTCpAAAA:8 a=QyXUC8HyAAAA:8 a=8QjRa3sHNxljrvLfDkgA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: r2HkFnvshq4dFtHu-OxLp914XimHte7n
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE1MDAxMCBTYWx0ZWRfX/uPv4lyY3U70
- +n+WkuZ7wkaUjohP3ln1OA8ZTlhbOl5UdaLjpEvIfoodrGnwjaYFQsQPhtK/bFJW9pReige7eOf
- Bef4U7tldSqIwBnAlrNfoL7YPykIIto=
-X-Proofpoint-GUID: r2HkFnvshq4dFtHu-OxLp914XimHte7n
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-14_05,2026-09-14_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0 adultscore=0 lowpriorityscore=0
- priorityscore=1501 spamscore=0 impostorscore=0 bulkscore=0 clxscore=1015
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
- definitions=main-2609150010
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: D39FB140007
+	bh=1++7fS8iWKOMzhlKxfG6KZTpRByEnFekp/pb13YE7fg=;
+	b=Hv4xHbCYULQMy4tRhnhdnc4jxbmT/cP/j6286SWuvMWT+4Utf/YpVRokDVglmAi97WaK+e
+	7f/vAska/vWMqUERzFQc4eg0xRxRCPQ99sSwGXC9OMyDKheOvfQuEUK4ze9P6wqOzc03Iz
+	9dxrXG7/znvUvg8Iun6usxko+7oBJSk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789434497;
+	b=HC4khTZhN50EWN6KJTKFCpPv5kab0fGcx07nU8K0gg4zaaTkiHJ/PdPllug9eULWOHQ6CB
+	66a68fuWEYOceCPyb53vwZ0ojCwsZsYIrj/Ym2waOvfxlyefSS2WX4YCHR9ul0crbJJ5wT
+	CHK2gHFZwW2nTwc3b1rPMzQH4r83PCc=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=JlZVB02S;
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 773C36025F;
+	Tue, 15 Sep 2026 01:08:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 648761F000FF;
+	Tue, 15 Sep 2026 01:08:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1789434496;
+	bh=1++7fS8iWKOMzhlKxfG6KZTpRByEnFekp/pb13YE7fg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=JlZVB02SRB8SlrjnhgKRH7erLp6/lF0bjE2LaEmvv4g/ygzNEN9Df4GzyzKOq1GRm
+	 MXZBeGQXDG+eEGW474o2elhJDXFweuH5LsbgShtKZ8tWHgw7BwYQ9PSDiWCSrWxS8a
+	 XDSL8c0/AB3jDnSpmNCqPc3psNggeGWzB7Ii5XXU=
+Date: Mon, 14 Sep 2026 18:08:11 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato
+ <pfalcato@suse.de>, David Hildenbrand <david@kernel.org>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+ <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Dennis Dalessandro
+ <dennis.dalessandro@cornelisnetworks.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Leon Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>,
+ Stephen Smalley <stephen.smalley.work@gmail.com>, Jaroslav Kysela
+ <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, Alexei Starovoitov
+ <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko
+ <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya
+ Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, Ryan
+ Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
+ <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Usama Arif
+ <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert
+ <dgilbert@interlog.com>, "James E.J. Bottomley"
+ <James.Bottomley@HansenPartnership.com>, "Martin K. Petersen"
+ <mkp@kernel.org>, Jaya Kumar <jayalk@intworks.biz>, Simona Vetter
+ <simona@ffwll.ch>, Helge Deller <deller@gmx.de>, Sebastian Reichel
+ <sre@kernel.org>, John Hubbard <jhubbard@nvidia.com>, Peter Xu
+ <peterx@redhat.com>, Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov
+ <oleg@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner
+ <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+ <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim
+ <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, Rik van Riel
+ <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Juri Lelli
+ <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
+ <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
+ <airlied@gmail.com>, Will Deacon <will@kernel.org>, "Aneesh Kumar K.V"
+ <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, Arnd Bergmann
+ <arnd@arndb.de>, Muchun Song <muchun.song@linux.dev>, Oscar Salvador
+ <osalvador@suse.de>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan
+ Kara <jack@suse.cz>, Marc Zyngier <maz@kernel.org>, Oliver Upton
+ <oupton@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, Madhavan
+ Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>, Paul
+ Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
+ <aou@eecs.berkeley.edu>, Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Janosch Frank <frankja@linux.ibm.com>, Claudio Imbrenda
+ <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens
+ <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, "David S. Miller"
+ <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, Alexander
+ Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
+ Matthew Brost <matthew.brost@intel.com>, Joshua Hahn
+ <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park
+ <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, Chris
+ Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Kemeng Shi
+ <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He
+ <baoquan.he@linux.dev>, Youngjun Park <youngjun.park@lge.com>, Johannes
+ Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Chengming
+ Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@kernel.org>, Miklos
+ Szeredi <miklos@szeredi.hu>, Xu Xin <xu.xin@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-usb@vger.kernel.org, linux-rdma@vger.kernel.org,
+ selinux@vger.kernel.org, linux-sound@vger.kernel.org, bpf@vger.kernel.org,
+ linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+ kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+ fuse-devel@lists.linux.dev, Takashi Iwai <tiwai@suse.de>
+Subject: Re: [PATCH v2 00/40] mm: make VMA flag semantics explicit,
+ eliminate VM_SPECIAL
+Message-Id: <20260914180811.057cba8fcc48d6e0b53a2683@linux-foundation.org>
+In-Reply-To: <20260914-b4-mmap-prepare-vma-flag-sanify-v2-0-7d9781ed5361@kernel.org>
+References: <20260914-b4-mmap-prepare-vma-flag-sanify-v2-0-7d9781ed5361@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: uhtnkx5zairqb4hc494oh3xeyeaj5ean
-X-HE-Tag: 1789433857-823609
-X-HE-Meta: U2FsdGVkX19YvhJYlkcem5G/hmrswA15a5eVAsTOfn1/hFZn396FJNi3uKyPWk+hprQVL8R10emTQvWC4bfi8N6S0Z/5VJeIINEK89scEvjaZ1DzPdohVc6W6cJIMSd77EJ8A7WJkZYudMFviY5/oBGuNbA7DTXG1bGqSwdastcZkl/6CPA40MqvXCwI740XbCXQKtLKkQ2Ec2dupffzLJSCiLtS1DqeyzdaRwAr+HVTb48rfQBqFrDuu8mxID6msRCdZ2HaLxKZoSHV946uyxESWrIxA1td8c2tvaJe/WTxLvXcIMZHnIoYRl8+OMN+j7ZPwP7Ql7N69KAp34OBzXFh3fwUGJzxuWhCzfC7fcofJ5f8QaAhhqnqUt+Ys6+nr4mu5b+23RQgRV61Z0czASIUkgvFRele9QuCOUydLriW5YYdhUm1G69v1ELgI7UXW713P3CeXkBmRlBbPNNfRszVgDjBg+6bkVbNuHnKn7toL/nz6j444ge0l19/ZMA57acwBw6iJ1bpDU4IM+DkYbaCZA+HRCHpTFCgLGt1kT3TgnnC3bGW479Vr3WCfZ3ZKk0fIt9vjjzKj0lzxP71cxW9jHg2NIEJFiql0JJ1voeLQCLvd0WT0oDutwo/jC+6H1GvoAKp+Hg3QoAdoHoG29lGYJyehTXFYMVEcLtpA/BGFQDLs6CKIwf+Sb+YmFuywmyfsClvAZcyAEzBsKFlnBzDIoekskEvwYACgIF1TFMkYZJl/dFBhGdukMSugiC/Z129pxl0y2lyOlVmK58vBVm/sCIDlCkj59tqfwukNLMXbHYlA7OtOeSCOppbyOsux/Z6sKxCUgorlw+02j6Xu+IfoZmH88efkCfYbFPx70jeiJySIMHzmd8RFoPuTvtlL68I9fZGFS+1MiJhb5tHB7ziUi6M1QMR/v7jugr952CmtPCnrETpXmvRyPqRM0GlDaX49lVN3b/V3ZUd6y5
- tRIb2Y0e
- gpkilyxA6v10A0fjFq6bBrUsheHBaM4+gUr/iaKBUkyFbBnZCz++mVX4fqpNqydg7TaJSpTJ8y3uveDzLTetuCWBLxnVoZoh9sNdau2KuO9kLPP3Nd1upIvfmt3lVZ133tfbEa0LAcyD7zf8v6HiuogBsOKtEv8WkK7HOkpzouxrEYzTk6xJHY7NpIILvAinIvby5nBU6UVLxWWO+OIXR54AZZwASkk9kWzlQ6VwgQv8bSRXF5UkEMsjX5Jo1mS9U6qmrQ5iHMq27Bk4CGlltA9sBEgXD+pr25bucZmNyBKiLeJPGgc74TZDI9iYd7FdDbKMR/b/mSzAXTSm8xh/PK7mxP2GwrkCJkwtMSNUM/X+ZGzJeXPuYwXB0uyRtS0nuGbbY
+X-Stat-Signature: t4zukw9xkrm5qpiik1p8kr5qnzpbxgig
+X-Rspamd-Queue-Id: 8AAA118000F
+X-HE-Tag: 1789434497-646517
+X-HE-Meta: U2FsdGVkX18hgINHF4Zdk05+m1Y4lYdtHcyv54NaW9u9PlB0wDrC6/OuwLUsL5XlTZTGu4V5E/OEA/jo509wwTe6V+G+oH65iWdscOIgmUaiVxDYbxk3brJ0h5+gjB6Phvl+smG1FE7jrKJ4R7eEY2RsIwbZLlMtkDXfQWltXe+FH27rvQxYPVkRfN+ME+DWcW9yU4k6RCWdQCpDi+DgYlXpzxp3evl+YFLhdDpRN97pxrLlTt6QwJiMWWgXW9Wn9wdSl0jVHEl0/8vmX7Ek2i0EVIIni2zDS+bAySHUEONY/LSbH0CU6UR4iycZEcR2kY3fqlxepNVIgNwMWOo5+TM8xxwdsljv/oUcjqFcWjGQyiw63rKoef9GnLtCy3XTQk5jvwrBh+SY9Pimv0gxLzljo2QGrWbSEx5ZX12Spxo3L0fPNvja42AAbXqN7OItYtDhwxv6/SphJzqRPMNVXNFJKEWu2wRSiQeuaZgdVaNDuEdIir1ya33gO7Wvb1OcfHPlqrEhFyTEWJaVHETSdTiCnYtsga0HaXJ/9To6NUQZbkJZYy4hjDG7osB404pMt63FaDRvlSeGwbWpcyM1cJqAx14VuXcj3hJ8QKITJ5+VHzoi5l/ZZ9dGg7Hcgs6MBlGKgs9hCAMej5kzUYU75JW3xKOITqjWfGa09YYXEfJdNe+PHSDLMixLBrlewYgZ3dGkbM74hOSoUGhcKLZh1QhgOc6lklHjdZgyYM0bsH7kDwAXcTPfxZ5SV17YFhNfzCqPUJQcpverh7Uf/FhxuY1wvAVgWIIS9qKK7Yr3kznCndLZA/5Cz7PVuHrJudyS6q08hi9wp/wvh94jCrs9YZ10kCYOCrMTX8kr2zw7muGYoqggGW87ivrSHCxkVyE/o5tle897swoeqoSb1ychgM9SamrN8vgLDdSM8HxZlNrI4kPi6RROS1BCC7jMEvRdvclTVG/loLBmDbCFgpu
+ 2hugfgNz
+ PzMB9QqmYYv3U8tAlR8ZcrypFC7BLaHi/A4k+t/oiP0QS0nlMke3/iuPNzABhxluLsHbRJbeA2t7aTuK59yE5oMB0sKVAk+YMl9ZGAt+6qIoDHahULnHdJWvTXOHeOoB7cYrnDfty/1xLbmn6B+jmtvPWIaLyWLm25Nd/A7fP3ZZ1P4r3GpnICuIjcqHFme87N187KHSvZMT2dE77J7lKLCzCjTwvAz1mjwyHlcEOw2x4M2brzgN3moxrK2f7OZjGKkcN4cdW3BoMguHMiEg41NYPfDSPTNdkCFfuHwxx9nJTJ60yeER/0OVSIn9qQOhfXHINgK3wZuiW68b+5pVCVYJaDboZmMqGUcg8OeCP2vPaGiYwPSX54HtuJygpKNnx0gE8iN64YgAmYwIGXXmymRcHQo+IBbwCC3IyHV+xo//M/df7XWCmc2t+B85PWcseV8+v5Fx+WcvtxachV+zxhxcqxc36GRvSYFB4mDhdbyFwfTAIDSBD7zDe1lvH+YX8LwtdjjpbYHkF3PTR4C2I/T//Opq3lhO0JT8dgawaQK666Icngg/IHt/1eJIpjWQM4eWZTagUJu1FwzNxG7az4X7R0UwRnOiRm+tw4SyFP8rp2kMT26pj5ZVlv6p+dTSrhhckhRJjG6F1548jEACkt+vjdt1E6gGLWJ/5Uh5fc4uURD5wuvR7Rz5Srxa1D0RFDv9EkIMqk0xNl0eSpVx6sp6Fku6BPlHZfePRIElEulmTnynh5QIyJBBgsK4ZhPIPUaLR/UUB7b0U/8xTGpqTdGcxU3f4niC+bSq7II6fjHyd9R7PToM3ctftA7foeLLVig98X32lD71l/l+6pd7R/ITwMUEA7O50NQje1fHbhlaublE9LIs268rUWEzI5zIupPi6hqnDxvNNYCycy1WDQbD8hPjhgfpIRDWkqKID9hRn1h2q0EMKlfwvK41+tllMfhOKMWTP9jlvIjS+CBo5m0Jj3Muh
+ YeCNxk/B
+ WwpQ10xMezmYQaBtw2GjBjCw4TyWEejvHN6Kz9Zkl9PH87wQACQj96acdbajqPJj3m/pngYnilWckUZopu07kq+Mwa0QnVBS7xxAXwwilXWRCezbJcgY2+wTwPdJXr10PHLxFmKRIDiVTn32DhpaCXwEjTHq/2SUBn0DsbV8WT0Rsf8uERkePLxJDKp3xz3QdyitqtIfUJafwCLt+uhUbI10Lt1N79Ex4mXkRXPstv0UhUKLtHAwnqg1BGnjqb7yutKNyWt+LI3stm3y5HLUzoGFI5bqItW4mo9IUcoNTP4e3V5G5q1kpxrjhlESCaSglchyU7Ag5Bx52WWgx3ZVRQNYJZ87H9M8brVhGqTu4wIwp4GrRuQSCUWw5ENe7LWy/eTZ7HArAIXzPwA0QPKTqCj5DA6Cd1la9XYa/TunKtNAzdFYiMYPNNYWOESdBJZzG1JlrZMdj143dtVBpxODlNZf21m3QmFhoteg1dBF1vGyoTf8ozCxx1iO1ElQ8gPM1mfbYnrKh3NYqwQRj/+m2l0+2NM4WFjuQBww3QzDzcXDeU+mFVFuwzlQjEybtwpgqaNNeAe0lbeyfkuEuwKkRiOkYPSVU0qcmnr9SuP2wceh8LLEHNfTUzOjFJT4auj4zCw07lsD56qFvJqpOc0Hf5LnLoa4XmYC5Umu63qEh0QtkXzz0xZXBQXOJMoHE6eTyCwTnqFbCFV1cVMny/BWCDpk8aUeJ3uPY7HBLqdlrl65MQuYrDzSF0jbKnUGgTvLSV05KY+dQYMQ7kpRwYp+mtUE8ngm9MlgWVa5+ee4TOOk87/7B7l0tvJ63Xbq5+LsxVMPeo4JQKIhLFJ3za7MkRETKxvtTkh/E6OVRUSI4A6fRAxMRc6MQVDPIt1imjaU3TMY6gxbCA3Qahle/I7G514THvirAXuGq8nNvQIrokzgkEnJJQnA16KhwW1OYMdiBsrqt3jPppoOg0+DK13A4ahBtQjhR
+ YxQSlNwx
+ Xr2mQzLUhxgyljMmJqOUHDt9Z6TNsQ5CAqrcc4HbrwMy7JjMXTetSHZho+PvhtiFp69W8cC7IK+U8lS8MNZfzUwaSXo7wA5Mc29KEron1oRpXmooJ5C6fK/wP3kBp7Vvwq8/kdxRcMt0I5cWJSchVGsifpkd+uS62DM3Ei5/bMzR4DVi4o0Dr821mktiR9dpD2rYO23HZ7e+1UPX6NNq3pGjrCCtdwQxAqqLvCM0QxMnHTW4V2v8eFhQt4/tbyu0/gkKvu7ujjbG/VLeFM0wF7jSzTeWgIf6nhhf5QjrQfl6ODsldQjmwiRPqbs5OUDsiEJjNi+t8FHmwmF6FgENcwKI0jMstO2g0fCdUGr0F2q1n0eQXifffmLid2XwsfvY/ICEbEc6rA+y99rtEHSw9gej/yWNMRW11B2RhhuMgfCd5DKbebiYqyBD/nuG1aBSZEsDnG1ytzv6okurdQSqw7MTGgYT/L/Toh9xa1bJyXvEri+a1+HuF7xlthmJamaA4e58JG49uYSr8Eob5cVMBBmZmz5+3hy4W8nlVOxVH+pVV6SItmmF9wW4OWnvqFAKBcm8mCYKDQb+HmIJn2iDYcoZ7Z/kyOQBtHneOi5ZP0xtbp4YU7/zPr+l0/e9cL/U/wPrh0JqdxmjAWxvbt8lzx448Uc8kaJmbiogxxVH8SchiDtpxZTz29oCyeHea9rhenI0hZHkO14yREyZ6bvq+oV7zpjiFpyhtgcyYphtVn5uSuSCsWM3YWJHiCR5vxEZG1fv+6PBE4de0YzNaxu/oeUqBfZFjo+Bv2zwJDzoZ3qIsK129trwyMsDnSenK9tIlGbyNHHqUsvy5IKKpLohLk94WCpZa9ZiSY3+DdlpKqzFLFu5wDI7+ONzN28uU7gQlVlTG3GXnPDAohHpX2EOIVToYbbdrUYvWGiAUkeiXf6io2oMoOZVfw0nd/PK+52Hz4kkdQI2q3hZzzpj0zttGM6FirN52
+ U98cSvAj
+ IU7scIDOXX/L2lV7gvldFyzRkx6FXoFcPn8cN74Ig9+oDzIS2duhqLXU5DJjP4BV7MUCU2WdF7yWR2A3aQuiQUu7IpHKWjJCyhPuJUsxVwkKMEnwVCwhG0jB+OEuh/Ov5aHJnOk3mkYsyfZowRY7kiJ4vF0Pdjb4JiuLIGKh3ekdLAKAnoGuj+kZ91jFaVAAxhDRnw43C1Da8J7cPFnISexHsMmhxeMSWp+IkOajlA7J8uIwnh3mP7rmb4mPM0QWHuQWBywJe98v2qoVVpPPtw5USzOdZBV+UFfeORF8feISEAWo6jp3xyW1ZcKidtJy1acTFPUPMa54TA6CjhlpvinuriJhRtmvo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,49 +164,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 14, 2026 at 05:37:00PM -0700, Andrew Morton wrote:
-> On Mon, 14 Sep 2026 18:49:38 -0500 Kyle Meyer <kyle.meyer@hpe.com> wrote:
+On Mon, 14 Sep 2026 15:57:20 +0100 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
 
-[...]
+> The VM_SPECIAL / VMA_SPECIAL_FLAGS mask conflates several unrelated
+> properties:
+> 
+> ...
+> 
+> It's all rather a mess.
+> 
+> This series brings some order to things by both limiting what drivers can
+> do with VMA flags and switching to using predicates that describe
+> behaviour, not arbitrary flags.
 
-> I'm hitting some rejects against
-> https://lore.kernel.org/20260825085756.63030-4-husong@kylinos.cn . 
-> Please update this against mm.git's mm-unstalbe branch or linux-next.
+That's a lot of patches.
 
-Sure, I'll send a v4.
+Review is thin and I expect this won't improve a lot.  Lots of "no
+functional changes" changes.
 
-> I'd updated v2's changelog with this:
-> 
-> 
-> Tony said:
-> 
-> : Recap of original problem is that some BIOS keep track of error
-> : threshold per-rank and use this GHES mechanism to report threshold
-> : exceeded on the rank.
-> : 
-> : Systems that stay up a long time can accumulate enough soft errors to
-> : trigger this threshold.  But the action of taking a page offline isn't
-> : going to help.  For a 4K page this is merely annoying.  For 1G page it
-> : can mess things up badly.
-> : 
-> : My original patch for this just skipped the GHES->offline process for
-> : huge pages.  But I wasn't aware of the sysctl control.  That provides a
-> : better solution.
-> 
-> Which is cumbersome but I think there's useful info here so please
-> incorporate in some way.
+Perhaps it would be helpful if you were to identify those patches which
+you'd like to see reviewers focus on?
 
-OK, thank you.
+>  1153 insertions(+), 582 deletions(-)
 
-> > Suggested-by: Tony Luck <tony.luck@intel.com>
-> > Signed-off-by: Kyle Meyer <kyle.meyer@hpe.com>
-> 
-> v2 had
-> 
-> Reported-by: Shawn Fan <shawn.fan@intel.com>
-> 
-> which got lost.
+It's funny how often cleanup patches do this.
 
-checkpatch.pl complained about a missing "Closes: or Link:" and I don't have a
-pointer to report, but I'll add that back to v4.
+All queued up, thanks.
 
