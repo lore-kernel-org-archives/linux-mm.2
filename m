@@ -4,98 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18D16C88E75
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 12:52:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4345DC88E53
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 12:54:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 12D756B0088; Tue, 15 Sep 2026 08:52:30 -0400 (EDT)
+	id 4DAA26B0095; Tue, 15 Sep 2026 08:54:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0DE6E6B0093; Tue, 15 Sep 2026 08:52:30 -0400 (EDT)
+	id 48B086B0096; Tue, 15 Sep 2026 08:54:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F0F0E6B0095; Tue, 15 Sep 2026 08:52:29 -0400 (EDT)
+	id 37A4B6B0098; Tue, 15 Sep 2026 08:54:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C60EF6B0088
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 08:52:29 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0F5D1A3D32
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:52:29 +0000 (UTC)
-X-FDA: 85215985218.10.5A1F476
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 86B0F100009
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:52:27 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W70QDnQs;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 18FC76B0095
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 08:54:14 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id ABFB6A4DDC
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:54:13 +0000 (UTC)
+X-FDA: 85215989586.26.C9C46CC
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 00597100006
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:54:11 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=QY0GrUg+;
+	spf=pass (imf14.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789476747;
+	s=arc-20220608; t=1789476852;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xxbZuNqffFNOIdaT0/KALBdxjs/EeQM9S6uRMEGgp/g=;
-	b=b04Cum5xE+C1vvsVi4M0ZE+wu9ni86lJzJN+2qgaYhf8QjBFRNTX4VINSadXdRObhTRlI3
-	dOkJNCItUoZxkRT5+oumNMyvPR8TPjpbyOPDn+hOgaS7dSyPf72HKix0tfAub7b4JLkpy8
-	BE2/V8pQkGdbZVTK0aj/DBWsg+yjKQI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789476747;
-	b=w5aUvrAyFqXGFvmXJrXJzSTew1G1o6acQn/JL943SmFBpK2u2daKXCXxhh5rBBlGl5Fv49
-	NVy+KhbJ74bsFLqHdnephTBF6TnddLgK9NnRqksv6mRz6qk8Fe4T/TGjpUep8P7q9OzUOr
-	Otq3BOhlNM6IAIxgHxp3h+J/rLZ4Rxg=
+	bh=txqh/4dMVNkv3jAnEFkWYzpJcEFlwoVpdz1x6TA4rUQ=;
+	b=lNOqRx6lVSumPIU8FbpDZlXqtu34mn+RU41oXpiZoSfBkENDAji+YFfZeCiXslUQXuxWFh
+	ebr/G9aiEZrTvaeAEDZlCG5fS4kEaNty02912xnR1EX5xR1asXn6JdYcRoXkc2LH6NovfP
+	HUL87CEAydednYl9lCpR4do5KSVCdtY=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W70QDnQs;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 064BB602A8;
-	Tue, 15 Sep 2026 12:52:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB8361F000FF;
-	Tue, 15 Sep 2026 12:52:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789476746;
-	bh=xxbZuNqffFNOIdaT0/KALBdxjs/EeQM9S6uRMEGgp/g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=W70QDnQstn6nkN/6eJiK2L4CeDsYQO7VSfN7e5dtSZ9Ip+oOiS4tiuercU+j1EL0A
-	 gF+UjpVEYA1DcaJ4esEkfojNun5QzqHaHSgaqvE4BJkRmC0dsCKiGA3dcfX0NtwulD
-	 FIUeb+eHkwdo6ox84GTqw6Bw0FMqiazL/tSZ31KRkXk6TAN3a+rFXIC3gMJHzTz91I
-	 duvpOe4F6k2PLkHX2wDNgb9YQc2iR3BpMSeRiWY73IG5FxkzTVFzLoQQdOuaZp9IYC
-	 agaxHZ1CCCLbjb3uWuLCJoNfjMOGCvR5qAaOaHtNZOPFSExjrWcuzFpyHUZt0fLjTD
-	 NudaPCN+36Vcg==
-Date: Tue, 15 Sep 2026 15:52:20 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: "Liu, Yuan1" <yuan1.liu@intel.com>
-Cc: David Hildenbrand <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"Zou, Nanhai" <nanhai.zou@intel.com>,
-	Chen Zhang <zhangchen.kidd@jd.com>,
-	"Zeng, Jason" <jason.zeng@intel.com>,
-	"Chen, Yu C" <yu.c.chen@intel.com>,
-	"Deng, Pan" <pan.deng@intel.com>,
-	"Li, Tianyou" <tianyou.li@intel.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v9 2/2] mm/memory_hotplug: optimize zone contiguous check
- when changing pfn range
-Message-ID: <aqk_hNZCVCyx5Mj_@kernel.org>
-References: <20260914072929.1883794-1-yuan1.liu@intel.com>
- <20260914072929.1883794-3-yuan1.liu@intel.com>
- <aqjfyGeQaL4g2EcA@kernel.org>
- <PH7PR11MB69325D48C3419508FFD8B8BEA3BA2@PH7PR11MB6932.namprd11.prod.outlook.com>
+	imf14.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=QY0GrUg+;
+	spf=pass (imf14.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789476852;
+	b=41cJxSl9pKW3yq4sFEZltB5eyFHoFPOVI3pW2rCuto/CxBVU0hVOqlr2H7zhxRuyMe3d3y
+	eO3/7/7t6goNhqCQgfntgSkZXz5S6nqrlGa8xAyh6z5XpvtqYvEmMGF10im0PffIWUcwX7
+	mUvPPpTgAvV+bv9K7kP/KxpZlhENkdM=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Content-ID:Content-Description;
+	bh=txqh/4dMVNkv3jAnEFkWYzpJcEFlwoVpdz1x6TA4rUQ=; b=QY0GrUg+hg2FpxWgJ8xxZXb26i
+	a40KcG1CY1FLiZgOkpyJzp7DOw1gx1xQpWXRtn5i+i0aRmh548I+laXxHuxipkTKTvSiRNGRa5cCa
+	15eEcGqTe1tBJvKRukwl9HWsRnOCulnpK4y+qO0fhIOzcDFrlMZl+0CfRcEvuSOcPBgro4LJ8Yp5T
+	+W95tZNqEZYj0PJvLqiJ78uIB6UGaw0dgkHbkpn2unqZVyAM2xLbbEbzam7ULQANjEZAiAHBDlgK7
+	ZG96j8aQrDleLqQAt/XRd2xXSUxwLy+Qib1h43v3kLn4zpG6CtscsiWn1xAmBwv68+/Wm51M3Kvks
+	hdLJbdeA==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1x6Sfl-004P5U-0I;
+	Tue, 15 Sep 2026 12:54:05 +0000
+From: Breno Leitao <leitao@debian.org>
+Date: Tue, 15 Sep 2026 05:53:35 -0700
+Subject: [PATCH v5 1/9] mm/page_alloc: factor out the accept-and-free tail
+ of __free_pages_core()
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <PH7PR11MB69325D48C3419508FFD8B8BEA3BA2@PH7PR11MB6932.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260915-hwpoison-kho-v5-1-3bc7a57bd503@debian.org>
+References: <20260915-hwpoison-kho-v5-0-3bc7a57bd503@debian.org>
+In-Reply-To: <20260915-hwpoison-kho-v5-0-3bc7a57bd503@debian.org>
+To: Ard Biesheuvel <ardb@kernel.org>, 
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
+ Miaohe Lin <linmiaohe@huawei.com>, 
+ Naoya Horiguchi <nao.horiguchi@gmail.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, kas@kernel.org, 
+ kexec@lists.infradead.org, David Hildenbrand <david@kernel.org>, 
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+ Brendan Jackman <brendan.jackman@linux.dev>, 
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+ Oscar Salvador <osalvador@suse.de>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+ hannes@cmpxchg.or, shakeel.butt@linux.dev
+Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-mm@kvack.org, rmikey@meta.com, riel@surriel.com, 
+ Breno Leitao <leitao@debian.org>, harry@kernel.org, 
+ linux-cxl@vger.kernel.org, driver-core@lists.linux.dev, 
+ kernel-team@meta.com
+X-Mailer: b4 0.16-dev-f8e9d
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2075; i=leitao@debian.org;
+ h=from:subject:message-id; bh=QndDTWh5bGLYFpgTzNsBMcjtlSoq6B2ZnR6/EP1pCQo=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqqT/e/q5/cYr405F2RzQcKhfWFrisnYG55iAgq
+ UvT/67s8SiJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaqk/3gAKCRA1o5Of/Hh3
+ bceTEACgTXdW1ZYLhwiIgzpNy3/tIJlO0t6mQw1xMfw4l9nQV4a9dvbY/XfEh5CoXZ1SxwevYyr
+ jYhT3krAmc4hkLt0U0WC3K64jg+VIQ1OpVudj7jjOnaFTFoQCk+Wco/JApTvPg0TXGejrmXZnAA
+ 7bmbJKaGYUBr0k+GH132hy4tzAGPNsbMghbh0+ZOx+CUZOLCAJ1OW+tW8seGCZ1H1iOZb33i/cN
+ yfqd5+3JA5PFya4Rq4iDZ+h+fhXelxujWlvkWhenA1TReHsfprrwXMK5NAlwxaOUqqy2mhKpzfd
+ WWyC+BjxTCT1RAF47MCnkAAi3/QAS8UDySy7+N26+WFvGImkuhmkRHw+Fb+yqxmn9erNjh6i2Da
+ pkX0o7jatRDIeeA0Tc6nEDsHerPH/Ao+Ph2vjQVWkC42Hy0Criep/Mi5EcLHD16RcBqgbyGCVHZ
+ Zmh4ahHaN07+XvCyatxhM9P3MiIQK+etSZDTegputerYeHbzVpCcMCTOkBz2i3R7GmpRoq/7IGf
+ u3uZYqGtBbqF5p5463cbsewXIL75U79WBO5rTMPMvegvHF85MkpAbTtQK5N/RZckds3O02TLBIY
+ ttKp3I2XptzsAjyHnmWewT1GB5fAUo2ahpu2ryFEAHzvDUf6GoZMUUMxTP39H4en8Sr4iglVSmT
+ l5jNgyb+RfmoLoQ==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 00597100006
+X-Stat-Signature: t8ybmnroermidpcn8x5fbgbxxb4o66u3
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 86B0F100009
-X-Stat-Signature: 9ciz95hafc6hf1wduat3qqag565cjux8
-X-HE-Tag: 1789476747-698467
-X-HE-Meta: U2FsdGVkX19QI3VfF9HRErFQ+ZcOGrFtug9ieOOPapJ+Gj8fl/te9rps0teayWGIz97yLRSMPBvVGuBDf6hD+HvsIiXZ7blH9ejxOJubs8nLcsKQRmd/+HihBSIljNxDXR5QQI2sXFr3KgehLvH8ysYJv1ihGxMbLDW8suZ3A2xugZACVMkK6vQbJ7bQ3i3epTd1duGXA4cY22IG+Iw8vNMf21XHrwm1YfDbtUwyU0kR/9aWDSLqDcIB0tMwOcv/5p3PjF7kdLHrU41i1GGPtITeU7h0/Edca4ffo1ICQxHuKgL406j+PiyQ1soyTGeSZjA2zTKtFTQS4Ag9pcpx++ai2MBxZWZYNxr020jV6YmVp0u+mU6VrQTrwUUG8ZcxD88XiBJtQX6ZjRS65y/haIvVUtj3nf3s9hz5mQVAx3w2BfUvJL2ctg4UX5kVMnjVGUUqpRNj/OA/6FQR18JJ8gH5OmYaM5y5m/VMHzlN9MkC2EHwRwV/Qx5zSo4QJEAh6QrlAXkcl4oCOzB9ociqo/X1n6e0gqeL1cLSq9aksHK3uLXc3g5GF76CoZbU7WdVIyVtCf3kutR2qunqnc+DuRaROrBmRilpR91p35efK329i9kWs58syN445Vwa2xL1f+dThts+FhAlgA4SpCPbzBak5+1pwe9E8d0xpshVvGl+EPYiKWsTrFCfido7D+DfXK2C8BT94eLVSWjoswn/s61YJCGNHKmD4OIq6XBAaMsn3G922buQ5tJAyK7l6CAiJvAOtSvs0ibH39AVH/M6DXj+EKptXKaDQoNXGmzz9foNjDQd3LgILjrGF4Ph0SAIsYjvd3gtIrkBqOC8o6hyNkL67T5gNJm7AT1LKMfrmxbtYJ3+owV+xnI0c0/m9ub4gMt9LyJ+WeWWnDI9N0wKKwinbhodshtHEqBSI8Qu1DCcsYdFa/9Nvqu6ELPxcOi4tBZ0FEm+S2zQTpFfV8g
- dsDzdu59
- 9VNNKm1EFnP/1nh1LGizbiEJoyOYQWSAvA3aS5z5Vpb8JgBYaN8FrZKQoetfECt4sEtABWYqY3xRfitRiv2yKceS71jJ12zavrTxZc24BpZ/6VP0Lu76aWByyPYYITjp1/I/aYmkSjrwg9qHLcAh1/dwso4PEXrjXmtpXydAUpwQN12NknjLWdiI13aFYdQnH3lMy9oSjMRoKg9eo4gh51RqJ/s9kbywSRw2Pax70cceRXcwFbMZdpuetelWU5nRYW391Rig32W3AIIztI4p370pmpxteqFKPk6iBP5cJ4toEQlvp4PQGDZCmGPcn6Gr0IXfjR3ym6YyuLWvDKu+Xe+LWulgBoh/aMPa/GueecN8DOxPxDKgPC8WmEJe+XIGkHgTpu+MkEbNdxyOW9/AQFtye8sgWieXVYmAnYUULi9PlgB8lTrTCSR831zVi3FZ/493Rdj4+J0bRhKqYmQ85rCWfIBVRKxH62QqBuzP2YvdEM/y0e7gO5FsPH3nzOGr69jXc2mOXMAAyR5n/rYD/j2jG63pHp4Ln6WLFjlcdLBRcdPaYFposD8Q/idM9wUvzwayb
+X-HE-Tag: 1789476851-249332
+X-HE-Meta: U2FsdGVkX19ic/X25/f6E6fYeehxd2lnqAQVqHqReBU0sGGfpb5/mf6Vj8QA2vBB9ne0t8oQ/gxmfgWCV9x1CgndtpDXcdDqsQoAircNO7ONh0+MahNnuNjP5zHdIPhqBBrm1rvaXXcreE24g2PAGp+B9I4EEKahchheYWZysNQkIvCK8n5jom33GG26MXdfkSIUQp++w7uwa5ssddzYIYg8Y4nZLMD7+95vW3IygjQsAaNvViAgPpMDafjTx+3wmwN1S0tSSAR54d92bjC4tMsAThowGk9cv7uRn/XUf6Tn9wzn/PE59q/2/PAlv+WWbOl2A5+ADt100675IrC2Yj3nfuND2sNGvwJdn7AhhfjIL2S64+nj6P8VYR6JYku6Wjt697MW+ZgIZoVUMkYaDtQKEOxijt3BaH76sdJ6sivJ+bCEguIqHQtSkjRDZ+8oDcw0ik/qsqzoNqniut7WOOy0iv1FYzuqt/wGfyKFsduSssu6QFG0w1inpspKk8jrhUgcPewHnW7k9n40UBXer9ebemE1hHt6U9eoMW14o9NnZ0BN9krAal2S6aypotNdF44EQMCoSBL6qjoHBdVOAopDAC/bkFo0zJNlxNJcWtJjNs+c9PBoqwd22NMRBL/HaDwFQbf1P9Z5D8Hl87CBnMGyU15/TWltJhkGp4I0OeBVh0wziKAetqC00X5AhbQZt2pOAsEznIkz5tMRPpc0nr0vIATt2JIYJpMSdN4jRVsWQmSJzk5KVN6umwFza91pTieK8vPoMaGl8sGebz1nhVHjvydt8gMYpZ802+S6yTTmq2T3PqHNTqA/JQwIZMfMpYrK1AC74j6B7Em+Zvc05iT9YbEcNNk2Hmo1Scq7QOMvQEKmCeIO/hMdlJ9KhLNoBH/iKGPJncP77saAOLQ/6vXctjDUXv5fInyxIi8oQrFCNyQg0qe3WogjaQzo+m8JS6taTfrV39c8naTPcyD
+ HwVgKYo+
+ +Ucz5B/tvRjKE9dS9m39wz7TFZrLZ62a/EMYSHwMmSYYU9N8y6jINbNO3LKlrif4vkT5fZfh5xkDidntvOxhKT5twYMI7cRqEKaYTA2sHkzm6uCqpSNSqQobfNQZZqZheqlX0WKC6oGhiHxbuyDpNHLREzHvjhaFu9MnOAA0kT3olZUJlK01MBrvxOCiGkFLZ6e3NGt87bD6CqiKn3S0Ziu3u4TTVaXkQxZK3rNzexopa0HwdsO9IgBjZMXBioJocDxAen+HhrH6F3sbplolJ5vd9GiHcp0vtdH2b8YbOim+/4Sz56q8bPJblaEefMRh0/SK6PjCpD6vLsWj5ICOavmEH9w600YQylwAg+vRd05mDrQAUkWtMkdvKDRbhmQgJNE+JTs8nU4YZHs2/XXLrkbWwzQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,106 +131,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 15, 2026 at 10:40:01AM +0000, Liu, Yuan1 wrote:
-> > -----Original Message-----
-> > From: Mike Rapoport <rppt@kernel.org>
-> > Sent: Tuesday, September 15, 2026 2:04 PM
-> > To: Liu, Yuan1 <yuan1.liu@intel.com>
-> > Cc: David Hildenbrand <david@kernel.org>; Oscar Salvador
-> > <osalvador@suse.de>; Wei Yang <richard.weiyang@gmail.com>; linux-
-> > mm@kvack.org; Zou, Nanhai <nanhai.zou@intel.com>; Chen Zhang
-> > <zhangchen.kidd@jd.com>; Zeng, Jason <jason.zeng@intel.com>; Chen, Yu C
-> > <yu.c.chen@intel.com>; Deng, Pan <pan.deng@intel.com>; Li, Tianyou
-> > <tianyou.li@intel.com>; linux-kernel@vger.kernel.org
-> > Subject: Re: [PATCH v9 2/2] mm/memory_hotplug: optimize zone contiguous
-> > check when changing pfn range
-> > 
-> > Hi,
-> > 
-> > On Mon, Sep 14, 2026 at 03:29:29AM -0400, Yuan Liu wrote:
-> > > When move_pfn_range_to_zone() or remove_pfn_range_from_zone() updates a
-> > > zone, set_zone_contiguous() rescans the entire zone pageblock-by-
-> > pageblock
-> > > to rebuild zone->contiguous. For large zones this is a significant cost
-> > > during memory hotplug and hot-unplug.
-> > >
-> > > diff --git a/mm/mm_init.c b/mm/mm_init.c
-> > > index 1533aebafb68..d40a8ff23370 100644
-> > > --- a/mm/mm_init.c
-> > > +++ b/mm/mm_init.c
-> > > @@ -817,22 +817,39 @@ void __meminit init_deferred_page(unsigned long
-> > pfn, int nid)
-> > >   *   zone/node above the hole except for the trailing pages in the last
-> > >   *   section that will be appended to the zone/node below.
-> > >   */
-> > > -static void __init init_unavailable_range(unsigned long spfn,
-> > > -					  unsigned long epfn,
-> > > -					  int zone, int node)
-> > > +static unsigned long __init init_unavailable_range(unsigned long spfn,
-> > > +						   unsigned long epfn,
-> > > +						   int zone, int node)
-> > >  {
-> > > +	unsigned long next_chunk_pfn __maybe_unused = spfn;
-> > >  	unsigned long pfn;
-> > > -	u64 pgcnt = 0;
-> > > +	u64 online_pgcnt = 0, pgcnt = 0;
-> > > +	bool is_online = true;
-> > >
-> > >  	for_each_valid_pfn(pfn, spfn, epfn) {
-> > >  		__init_single_page(pfn_to_page(pfn), pfn, zone, node);
-> > >  		__SetPageReserved(pfn_to_page(pfn));
-> > >  		pgcnt++;
-> > > +
-> > > +		/*
-> > > +		 * With vmemmap, at this stage all pages in an early section
-> > > +		 * have a valid memmap and are marked as online. However, only
-> > > +		 * subsections in the subsection map are actually online.
-> > > +		 */
-> > 
-> > I'm having trouble parsing this comment. Shouldn't is say that some
-> > subsections in a section can be offline because of holes?
-> > 
-> > Other than that
-> > 
-> > Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> 
-> Maybe we could add some more comments here
-> /*
->  * With vmemmap, at this stage all pages in an early section
->  * have a valid memmap and are marked as online. However,
->  * subsection-sized holes within a section are offline, only
->  * subsections in the subsection map are actually online.
->  */
+__free_pages_core() ends by accepting the block if it is still
+unaccepted and then handing it to the allocator. The poisoned-memory
+replay later in this series needs that same tail for the parts of a
+block it does not withhold.
 
-I don't see how adding almost identical cryptic comment in another place
-helps.
+Move it into accept_and_free_block(). This will be used later, when
+we need to accept and free a subset of a order-block that is
+not-poisioned.
+
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+ mm/page_alloc.c | 31 +++++++++++++++++++------------
+ 1 file changed, 19 insertions(+), 12 deletions(-)
+
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 404896b53003ef..b07b5f4751cb95 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -1579,6 +1579,24 @@ static void __free_pages_ok(struct page *page, unsigned int order,
+ 		free_one_page(zone, page, pfn, order, fpi_flags);
+ }
  
-> > > +#ifdef CONFIG_SPARSEMEM_VMEMMAP
-> > > +		if (pfn >= next_chunk_pfn) {
-> > > +			is_online = pfn_section_valid(__pfn_to_section(pfn),
-> > pfn);
-> > > +			next_chunk_pfn = min(SUBSECTION_ALIGN_UP(pfn + 1),
-> > epfn);
-> > > +		}
-> > > +#endif
-> > > +		if (is_online)
-> > > +			online_pgcnt++;
-> > >  	}
-> > >
-> > >  	if (pgcnt)
-> > >  		pr_info("On node %d, zone %s: %lld pages in unavailable
-> > ranges\n",
-> > >  			node, zone_names[zone], pgcnt);
-> > > +	return online_pgcnt;
-> > >  }
-> > >
-> > >  /*
-> > 
-> > --
-> > Sincerely yours,
-> > Mike.
++/* Accept the block if it needs it, then hand it to the allocator. */
++static void __meminit accept_and_free_block(struct page *page,
++					    unsigned int order)
++{
++	if (page_contains_unaccepted(page, order)) {
++		if (order == MAX_PAGE_ORDER && __free_unaccepted(page))
++			return;
++
++		accept_memory(page_to_phys(page), PAGE_SIZE << order);
++	}
++
++	/*
++	 * Bypass PCP and place fresh pages right to the tail, primarily
++	 * relevant for memory onlining.
++	 */
++	__free_pages_ok(page, order, FPI_TO_TAIL);
++}
++
+ void __meminit __free_pages_core(struct page *page, unsigned int order,
+ 		enum meminit_context context)
+ {
+@@ -1613,18 +1631,7 @@ void __meminit __free_pages_core(struct page *page, unsigned int order,
+ 		atomic_long_add(nr_pages, &page_zone(page)->managed_pages);
+ 	}
+ 
+-	if (page_contains_unaccepted(page, order)) {
+-		if (order == MAX_PAGE_ORDER && __free_unaccepted(page))
+-			return;
+-
+-		accept_memory(page_to_phys(page), PAGE_SIZE << order);
+-	}
+-
+-	/*
+-	 * Bypass PCP and place fresh pages right to the tail, primarily
+-	 * relevant for memory onlining.
+-	 */
+-	__free_pages_ok(page, order, FPI_TO_TAIL);
++	accept_and_free_block(page, order);
+ }
+ 
+ /*
 
 -- 
-Sincerely yours,
-Mike.
+2.53.0-Meta
+
 
