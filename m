@@ -4,90 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCBD3C88E72
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 02:49:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EBF8C88E72
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 02:50:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B21C36B0088; Mon, 14 Sep 2026 22:49:42 -0400 (EDT)
+	id 9753C6B008C; Mon, 14 Sep 2026 22:50:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD2356B008C; Mon, 14 Sep 2026 22:49:42 -0400 (EDT)
+	id 94EB86B0093; Mon, 14 Sep 2026 22:50:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E8C76B0093; Mon, 14 Sep 2026 22:49:42 -0400 (EDT)
+	id 867B36B0095; Mon, 14 Sep 2026 22:50:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A44A6B0088
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 22:49:42 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A0EDBA02E7
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:49:41 +0000 (UTC)
-X-FDA: 85214466162.19.E8D78B4
-Received: from mta0.migadu.com (out-1.mta0.migadu.com [91.218.175.1])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 8E9CA18000D
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:49:39 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kDF34Nw8;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf06.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.1 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5BEBE6B008C
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 22:50:45 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C59ED40303
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:50:44 +0000 (UTC)
+X-FDA: 85214468808.30.D198E5F
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 08D09120008
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:50:42 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=FkSJfhQa;
+	spf=pass (imf29.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789440579;
+	s=arc-20220608; t=1789440643;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zaV0SpzInG7kvQq5azykt5f4k7FtKQ2lMtdYarHFdFY=;
-	b=fK3raGQ/Z55fqEL1yu5UpQXrKLjUb9BnwiOfXi34o6drP57LcxvyzVhBHL/MAyPUOrKwOF
-	wZH/kimXRoZx1FQ5Vv1VMsfMD6zW8IAkx/FjmihzQPi7cjBV7B4FtOWxef5psIPyJz1NFC
-	KoqVSBlTGOFpqCANo6vv+HjZWt8StKo=
+	bh=opmE15Ezj7D6sPRc2lGbWMcP8W6cvhTlzz53Mdzz0Gc=;
+	b=vd0u5nBwc6abMd6yFtKydI/qZ/qP6lV8Icwg/h7BHYXe6CxikzYCe9HYyf68STh4tfqU6X
+	f+8Z/1nfnSdiGPO+oIjwJbOA8NzDM5+gndI8FaK6s51PrX6fZjbO33OQ7i4M+NiZ3XNyTX
+	AQoias8Qw8V8Nxrj6pHCw/M9b+ljjlg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789440579;
-	b=oU1Pjzwb/IfOYGAV8PJ53E/tnJ1FLE+XL2VKgLzgUGMUNMnrQgAR5E9ZvbeYyrEk2vq2jE
-	tQkiGp8h8krXfDYPVtSw9X/ITmgLUA8r2XiyRqKTT62Pf9gEmVH/2g7JLvWhPolRioUl9T
-	hoxwi9zyL5o4Hgfx6v0ly6WBq+REXNE=
+	t=1789440643;
+	b=k7bHovKCNHw0cQu8OyKiv2jXR+/UzapOsZOHVGxbcS9DSIYz6d/dC2zEeWvwsl63xo49MA
+	KsV1+s7FoIXROJ2BuEbrPqLlTvKdeEuU2D0QkNhpMv2Tb8YERKlZ3k2dIOOfgFl7B+18wA
+	81BVkIKE0kiELbS8+ZMjt6DgEMIwXeo=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kDF34Nw8;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf06.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.1 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=TPiaJesIqJ7PplIki0xusz3BjPaCRWubAMyDMo7M0qc=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789440578; v=1; x=1790045378;
- b=kDF34Nw8gQf1kDIs7+rmXJ+V3Sh/evMeGoxvhaqFrdIJROatbIoFXvIn1Uj5VMEF70+avUvk
- 4PYE90JDZBKmIpTf+rfvxemh9p42qmsIJaSUMuVkB2WVK+uV6t8pn/8DEODso2U2GkPgYcrMfeG
- 3InQCZrSKFISU394+esk94Z4=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 658701ff1c90a0b0;
-	Tue, 15 Sep 2026 02:49:38 +0000
-X-Mizu-Trace-ID: 658701ff1c90a0b0
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <af33dfe1-04ef-4bfd-8c79-0593b24c6bdb@linux.dev>
-Date: Tue, 15 Sep 2026 10:50:37 +0800
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=FkSJfhQa;
+	spf=pass (imf29.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-8692be1cda4so3366329b3a.1
+        for <linux-mm@kvack.org>; Mon, 14 Sep 2026 19:50:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789440642; x=1790045442; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=opmE15Ezj7D6sPRc2lGbWMcP8W6cvhTlzz53Mdzz0Gc=;
+        b=FkSJfhQais967ywz1gi0Faz0tPzHZWKY+Oq8ZvNf04NhIMRFiRaqR7lyyj5vnLobjR
+         XaU9O5M5PVSFt/x2nzKhAcwpSqJl4UsgILRkvWakOXLlYyEh7YBB4eP0dP2cx4/xweOk
+         CLgVnZzX7T63qgmcKAnjBp92bOGYT1hvX7kQmYNDm0qDu6gAGmznD4tFf0nAvT+7CqMG
+         wSPEinKhGioEMj49fHC3ftHsuFqrrtGeu/lz5fPfgQwROca53BzgHPkodXOmZqtnIrOf
+         EheNj/P8PhWBJUoeDEa8FGqGaBZVHCjIOCHdP0YF8hui0ze6iPtExWy+V0GlT8qpWs2Y
+         gUCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789440642; x=1790045442;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=opmE15Ezj7D6sPRc2lGbWMcP8W6cvhTlzz53Mdzz0Gc=;
+        b=RIsZCp7QWDx15YoJzzyr0qd2ZP7EhVsadOnjBT+ueUwS1HpjfUkowXmj8WTid1ICDD
+         QXCoU4LYF7sPIwfIbBRdZ2rj6kNGPwTkyuOSSVIm0tVafjtFsQi/KNafViobPMe2XVXh
+         tGOImatz1ZWTa1cyhmXCBkPh4vHqywZ/ZsginUTwnJRO7Stt1Etb2O5xyMaxV17fEEj5
+         7jm1V8q+aw2EFZSp9lPjnxADEEgq27Z+sDbfM0FZJ9KpHTis0TGUd4UsR25zWmxv8dRd
+         4U9DJhscwUVqum7JHeAvsyXhyyJF9W9qiob4jO+cSUulF9giJZyUTEQB1uPbP4l1ctkX
+         1mTg==
+X-Forwarded-Encrypted: i=1; AKwUvByoHwDf/JQxpo1MzxfgFICVpd/d0+Fcl7EiYviy9YYC4SSIUfxFjQ71rVGWS8X4uT+jUU4OjcH69Q==@kvack.org
+X-Gm-Message-State: AFuF++nlMUtdmsAoYS3P+LYIvTngZrFkjnLI0g/dahiuKqgxFlnVEdSm
+	mVjiFxlCGh3JgP365Hr+EZgkjK7yOTK9EIdpRLJEF46uQn/wEbkzyQds
+X-Gm-Gg: AYBFou18XMGG06WdIQ9tbU/vVoVnOB1UlPi75R8KfLq6aArxDbMcGx81z3YbTPNn1W0
+	fy8mEgFBd8scpT798W0EXGXHXbATS/RHLk2MGnlt6iSGdyM00poJxm0ShD4vuZOzkpJHQZtCHrI
+	5KJhcpaLPt4Bm95HFVT9cgoSnQlG8294lex957nQvoQJUhN4Q8aPiOwlVRR2+KWHva9O1T3Ug4w
+	7Ucoa5PW8ZxYZkfdA6Odq8LZv3Hd5cXK/TilGs1w/zMmLivDqiW7uBfYVFSkIwDuR4D9ybN/5ux
+	ns5YECQZEli2NohfLydjZw6PAitoCf2MgdSdcTrLWjQb34nOq6hwN0OqFEbTdVNfaAQg5/hUUUE
+	uoxRnncb6AVV0lkWf3z2+28xB9TDMm0fgtMtB0zu5Uax1apK4quvd2F6WQ8/yNdwi7ZV9QoznPs
+	yDlHVh7q5LhjHzbQjkUVeyNyTEOKJxfS6E6FKhVaaL5StLcKo6Ig2DDXAcdyOPO17zzxnhMpAsE
+	xSI/WEMIBoSJNEqpDZyAEDHmeoxHtng/bd2tyl3
+X-Received: by 2002:a05:6a00:e8e:b0:848:2e3c:9955 with SMTP id d2e1a72fcca58-86f833446f1mr10734859b3a.4.1789440641733;
+        Mon, 14 Sep 2026 19:50:41 -0700 (PDT)
+Received: from localhost.localdomain (vmi2317699.contaboserver.net. [85.239.239.237])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-86b2a2c1542sm5484353b3a.55.2026.09.14.19.50.35
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 14 Sep 2026 19:50:41 -0700 (PDT)
+From: Lian Wang <lianux.mm@gmail.com>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: "Lian Wang (ProcessMission)" <lianux.mm@gmail.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	"Barry Song (Xiaomi)" <baohua@kernel.org>,
+	akpm@linux-foundation.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	David Hildenbrand <david@kernel.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	Wang Lian <wanglian@kylinos.cn>,
+	Kunwu Chan <chentao@kylinos.cn>,
+	liz2nku@gmail.com,
+	xueyuan.chen21@gmail.com
+Subject: Re: [RFC PATCH v2] mm: Improve pgdat_balanced() to avoid over-reclamation for higher-order allocation
+Date: Tue, 15 Sep 2026 10:50:12 +0800
+Message-ID: <20260915025022.2061-1-lianux.mm@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <1abcc4cf-fc84-4dcc-947f-8733df44e625@linux.alibaba.com>
+References: <20260422021842.78495-1-baohua@kernel.org> <aejtfpBUu7gNV6Tk@cmpxchg.org> <20260914113353.94964-1-lianux.mm@gmail.com> <1abcc4cf-fc84-4dcc-947f-8733df44e625@linux.alibaba.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] alloc_tag: fix a leak and a deadlock around
- shutdown_mem_profiling()
-From: Hao Ge <hao.ge@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>,
- Suren Baghdasaryan <surenb@google.com>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20260817062726.106511-1-hao.ge@linux.dev>
- <20260826203914.347c42aa00081ee9e0eb858a@linux-foundation.org>
- <afa606df-3d5b-47c2-9972-f3e0c2e13c12@linux.dev>
-Content-Language: en-US
-In-Reply-To: <afa606df-3d5b-47c2-9972-f3e0c2e13c12@linux.dev>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 08D09120008
+X-Stat-Signature: cwgnr4cpjufdts4bejupxr36pk1ri59k
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 8E9CA18000D
-X-Stat-Signature: ik1faapkm7ir7ji31paenhkissbawdsk
-X-HE-Tag: 1789440579-379769
-X-HE-Meta: U2FsdGVkX19akWoNGhpHeBi8PQmJFxZubePoSNR6s5bAeiDdBIYQcImNHXPcp/Nlhl1Q0RJmNy2gE4KB6v4ID4y5sJfrYZ6dMwyE6xx+yMATSeU8U/0RBNsG//ogCD14CM4Cd+oOxG63LzCFcet80VzxOuh8/YlBORF9SYL98+C1vBY2N8WQbY5+pVby5/y/LSRhA3Udk68vCs/GnYkz7Mq7TvMLCrOEaKRmmQkjlTl+vDNyDdUxQDjvPJN3u6kWTcB4xmlhJu3PJuVOLay4nJ3LV1bAc3Ml+ET884Aeuie3TUSaBnaYg73pIer1QyZmk8Y64/i2RZ+G+KSicpzdOc7rzMHBgjM6FCeuERpwiWcJWfX6edmfUlaprP6JxcPtnGknKz4s3GsQFPPufbK1i8xd/4DfO73Fi4GaaZsvpqguPTmncZgBjpwfy4Pg3KN9VJB3/6F0mU7ebcFBzQNV1/u+J1LaVYOS5O7v6EcyzYXC+EUWlzcpIHTIhWLNVc7NnWmA0MUTeV1Dk9t9rr0n2YMRQDOc/ppM2CSFKiUMFPWY6FLtulVWZNVSMD9W8uZpF32ZSgY+VMAEnDBmTzZagTmxs+5T0j9tJjpo7TJatxpXn6WM8ahmYwibWgnpx3D9oWRu+FpAlb8aetfBq6FYJdSlznI7TWpXB55UvJBNrS+8xpdnJXYO2xSBc87+ItOpZI19Z6QnliRBLNBdcw+ytSVx6KY4m3l+THz9Hgd5socn8SuY8arLQGBAuHgAlMyk6W5lHqCEc4YePdz2+KADZeOSOiV2L5Esqw+O8mLVZB+MvDf14WR6tnlPaojQCN2X2xOs+s/zbfqRjeu9e279dDgBgT8/zFru855RMMMO2DujT77BQvdju4e64vJM2IOVGPRD8DOr2EiboPUkpzsmqMEjE1F3V1yuFQV6P0+4XfyKzR1/5W7K0lzTuJ7D/yKLZdgo3PpotO5Rzt3owvk
- 4JG/g2nV
- 1kIm1JvMUFSJfkfpldKbupck3MLIRikbw7ko+7NF1eZt1LJJ/mU5cli9dAAzVUVtAd38fYBWcnuC9iCu7elvo91J283qoZRh1MT2nF2+qE5FWHL7Z5N7omd2SUHqQpj2CgL9abQe+qki9HIrkZaAHOSVDOvaZAt7DtBLfy6pmfcPW9AEcCj6mk+lWv+v2cLQr31BMIjgyFjnLlXrZV7NzsbjLcwrhFMHtJcGPS+4aPK9XD7ffNHSpKHpK6iWiBWaHyic/alA77AVBAHUoEY+VdGIwfv4DWzITnr6dYYqeUT6e0ZzJAlDVJ/SsaJkxvgtWeMEC7j8OI81e/+WKNJC0OYPfFO8XkUvdX16Q69ghnupijobvmz92/MAgU7ZygsNS94zs/+7bRyUj27qDih6p6dEbVdXnqqx7VlitZX+4E19lDt4=
+X-HE-Tag: 1789440642-739939
+X-HE-Meta: U2FsdGVkX1+HTIzg+LG1LBvm6x1VyDb/SCmgE3odVB9mgr4oS7Js2rd96lNgFm+EcM8jPntglVH0sGWcjFBWEt6qtfLsqiekp4eVYzdFpT+VNiJSlwF4bcOsR9n3YZoh7V28wUKhw4YbPMvvyqw2STpJAXxw9EKCSFrfQZrzB5nf2TlojLh9/M3/fkaRAag8Uls2vGOh3hkwd9mL9XxcQoSuwbjF0r9fOKC0tmbz+yXivF5dX6rEsVRU7POXMg0ndlkbxqSmFpSS7cRUOix93gaG0GFBIfY+AjCAg4/yqIIkQoH9taw5t0p1H3jJz49Jg1H6GiAKqWfMDfhcXOZsXzbz34JQFbzeghsC0i4c4ZAA5ItGHntwAVt7kjZQPM4j/KyOcAIQrVLyjCA87al8LkS81Jyr+V3PPLVwnD1BaL6YXA2R+N0IzaxethhXrBJsiuBuPpRGH2AEsgPli6SV8vAy5vRLvFz7xi/HqY+jhv9K9L/wBeOBtjnoOEPwGOVU7oxs3tkWq3ilYtGIAEP02u0wbsWeh5X9zOZrSHlNu/7U39H+IXihBWxmy1KgTCLSgs0pe0CqMo5yfbDYAfM+1EgCpM1AjlxMHkO2gDa/CAK0yvPr+isf/FaVqMgI82wx3BXKeb+b96iYivfTWGQKYQHSNE/f0poyzXRGx3ZjKS5Qbgjp2LW2Qgs5+jackLytVzOuij3pE0WDbcL+j1HslktVBMYfo+EYH60lSaNOzam6NLR32a9ATQjlFE60KtbQUopNFAHHAqhmUv3JgQOhQIg4Ke1nrbGJbUnslOM3QMTJZYahw3KOm/vkUetRecYvtjflz+7+jJ/3V9YKwkjec++jAR9g0MmR3MIM49hWLUAsrUDmhKD17A9oWf0RIq1ctxtKjGv18voPH+qWfFZAESg5Y+M1V7yTdO5XTGOvrZxsuHWOpfUZ65lVEBdcOoJMXB1e3/C8rQrC3L5De5Y
+ tp1RMgp4
+ Ca2xZ5JyLZp4s50Fmj2dCjQCXC6ezNDNs7GInjpb4LtL15+9iMfDl1Xeqz2/mwJuzrK+N90oZuP8+7Q4ipi/PEaWZ49C0CFdTzQ6LkVPP+1zg/R0vuUUBF/hJSTphwhMnCnfUG6C6HBalwooPz011e+kn7zKeLg5jfqFkmDX+euCY1uHrsWdQtp5hw0J8sZ5gPDLAf9MZXMJtRuyQFHMowJETTU7+iZnEg3ZXGmFa3UEeqefTlu5j5njJXMYi28jWoEmSApE8GaC831KBqQoxEA1fseKWKHs7OPd+PRPTAq6s0CXngT1DWPwwF0hSJw06gRpaMeOMKAPJZwhyVa+WHenlIqNLKzxYxWf8EVZpHLliIRI27nWrH4ZP5bariIB+2IH/XqMXdJHi7LJb+HgZLQ/p1qNgiWDN8W3gBJr65VJQodKT+wY5+n0duf9VpNQ5dsZDuF+yVH/Ex/ER4ESEWRlIWe62Kl83ftDgZ8MuyfF9jj25+6xQfaWsbB49VtUa5rVeEYzgjLWWjLvU3BTn4aQ7bWLkAH2Nxf5ssjqFQMsIn3o/7B+KL1H1Sh9vnXOiSWCXVS5cPJEBoXA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,103 +135,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Suren and Andrew
+From: "Lian Wang (ProcessMission)" <lianux.mm@gmail.com>
 
+Hi Baolin,
 
-Update the status of this issue surfaced by Sashiko.
+Thanks, this gives us a concrete server-side reproducer. We can set up the
+fragmented-memory test with one workload requesting THP and another periodically
+accessing file folios through fio. We will keep free memory sufficient for
+order-0 allocations so that the test isolates fragmentation-driven reclaim,
+then measure fio latency and throughput together with kswapd reclaim, kcompactd
+activity, direct reclaim/compaction, and THP allocation success.
 
+We previously reproduced the kswapd CPU and reclaim behavior that motivated
+Barry's proposal, but we have not yet measured the benefit or possible
+regressions of the patch itself. As Johannes pointed out earlier, limiting
+high-order reclaim too aggressively can regress sustained or concurrent huge
+page requests by moving more work into direct reclaim and compaction. Therefore,
+when testing Barry's patch, we would like to cover both the fio interference
+case you described and concurrent higher-order allocation pressure.
 
-On 2026/8/28 11:11, Hao Ge wrote:
-> Hi Andrew
-> 
-> On 2026/8/27 11:39, Andrew Morton wrote:
->> On Mon, 17 Aug 2026 14:27:24 +0800 Hao Ge <hao.ge@linux.dev> wrote:
->>
->>> Two fixes for issues reported by sashiko:
->>>
->>>   1. percpu counter leak on modules loaded after profiling is disabled.
->>>   2. AB-BA deadlock between module load and /proc/allocinfo readers.
->>>
->>
->> Thanks.  AI review asked two questions.  One pertinent to your
->> alterations and one pertinent to Suren ;)
->>
->> 	https://sashiko.dev/#/patchset/20260817062726.106511-1-hao.ge@linux.dev
->>
->> I'll queue the patchset for 7.3-rc1, with a note-to-self.
-> 
-> Thanks for the heads up on the sashiko review questions.
-> 
-> The question on patch 1 (codetag_load_module() error handling)
-> has two parts.
-> 
-> The lost error code issue is already fixed; I sent the patch and
-> you queued it. (Thanks).
-> 
-> For the rollback part:
-> 
-> I've also seen Sashiko flag this same issue on another of my patches.
-> At the moment this case can't actually happen, alloc_tag is our only
-> registered codetag type, and codetag_module_init() cleans up its cmod
-> from the idr on every failure path, so nothing gets left behind.
-> 
-> That said, if we ever add a second codetag type down the line, the problem
-> Sashiko spotted will become real. I will follow up later to refine this
-> logic and make it more robust.
-> 
+Let's also wait for Johannes's thoughts, especially on whether bounding
+`sc->nr_to_reclaim` should be combined with better accounting of outstanding
+higher-order demand. In parallel, we can align the test matrix around:
 
-Daniel also raised this issue
-https://lore.kernel.org/all/675259f9-c093-439c-a411-1937b23ddaa2@linux.dev/
+  - best-effort order-3 network allocations with immediate order-0 fallback
+    on phones;
+  - order-3 scarcity with sufficient free memory and repeated kswapd wakeups
+    on PCs and VMs;
+  - fragmented THP allocations competing with file-folio I/O on servers.
 
-I do have the relevant fix ready locally. I plan to hold off on the next batch
-until we close out this recent chain of fixes. I'll bother you all again when the
-time comes.
+We can run the baseline and Barry's patch with the same reclaim, compaction,
+allocation-success, CPU, and workload-latency measurements. This should help us
+unify the design discussion and avoid optimizing the phone, PC, or server case
+at the expense of the others.
 
-> The question on patch 2 (async /proc/allocinfo removal racing with
-> alloc_tag_init() failure):
-> 
-> When I first read it, I think the window is unreachable. It requires
-> alloc_tag_init() to fail after proc_create() succeeded, and a process
-> to open and read /proc/allocinfo in the gap between schedule_work()
-> and the work running on system_wq.
-> 
-> But CONFIG_MEM_ALLOC_PROFILING is a bool, so when enabled alloc_tag is
-> always built in and it cannot be a loadable module. Its module_init(alloc_tag_init)
-> runs inside do_initcalls(), before /init is exec'd. Failures inside
-> alloc_tag_init() are already very unlikely to happen. When the failure
-> happens, no normal userspace exists yet.
-> 
-> That said, I realised the fix would actually be quite simple, we could just
-> move proc_create() to the end of alloc_tag_init().
-> I am not entirely sure whether we should do this though.
-> 
-> Suren, what is your opinion?
+Thanks,
+Lian
+
+On Tue, 15 Sep 2026 10:30:50 +0800 Baolin Wang <baolin.wang@linux.alibaba.com> wrote:
+
+> In such fragmentation scenarios, I don't think we should reclaim a large
+> number of file folios, instead we should wake up kcompactd to perform
+> defragmentation. So in theory, I prefer Barry's earlier proposal to
+> adjust 'sc->nr_to_reclaim' [2]. But let's see what Johannes thinks.
 >
-
-I've been thinking about this quite a bit lately. Defensive programming
-is always welcome — there might be edge cases I haven't considered,
-or scenarios that could trigger this down the line.
-Furthermore, if alloc_tag initialization fails, the corresponding sysctl
-entry serves little purpose.
-
-Besides, I've decided to fold these two patches into this series:
-https://lore.kernel.org/all/20260908092412.115953-1-hao.ge@linux.dev/
-
-This is because Sashiko keeps flagging this percpu leak.
-https://lore.kernel.org/all/20260908094736.2B1A61F00A3A@smtp.kernel.org/
-And patch 1 addresses exactly this issue.
-
-We'll fold these two patches into that series and let Sashiko run another
-round of review.
-
-Please kindly help review the folded V10 version.
-
-Thanks
-Best Regards
-Hao
-
-> Thanks
-> Best Regards
-> Hao
-> 
+> Based on our problem, I think we can setup a simple test scenario: one
+> workload tries to allocate THP under fragmentation (and free memory was
+> sufficient now), while another fio workload accesses file folios
+> periodically. In this scenario, kswapd's reclaim should not affect the
+> fio workload's performance.
+>
+> [2]
+> https://lore.kernel.org/all/CAGsJ_4x9vkv2G7d-gANf8kqUJVxQh_P9=AJxr98LFUgQeOTqow@mail.gmail.com/
 
