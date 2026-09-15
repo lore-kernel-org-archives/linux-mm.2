@@ -4,95 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85B28C982C4
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 12:03:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E44EC982C3
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 12:04:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 986EC6B00AA; Tue, 15 Sep 2026 08:03:20 -0400 (EDT)
+	id 3BC326B0098; Tue, 15 Sep 2026 08:04:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 95EF76B00AB; Tue, 15 Sep 2026 08:03:20 -0400 (EDT)
+	id 3934D6B009B; Tue, 15 Sep 2026 08:04:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 89CF06B00AC; Tue, 15 Sep 2026 08:03:20 -0400 (EDT)
+	id 2D1B06B009F; Tue, 15 Sep 2026 08:04:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 692226B00AA
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 08:03:20 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0845B1403ED
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:03:20 +0000 (UTC)
-X-FDA: 85215861360.01.185CF9C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 6199AA0011
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:03:18 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=THnhYqif;
-	spf=pass (imf25.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 11D4F6B0098
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 08:04:40 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 90766C0405
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:04:39 +0000 (UTC)
+X-FDA: 85215864678.16.CEF8FFA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id DEC6BC0010
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:04:37 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cuq2lBlL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789473877;
+	b=msidO41VNoTkog/cn5W2TQovmrfh9hvrEEb9D5H3h0WCdOmLEroQZV620u+czk4nVla4eU
+	MMPkYc30r22AytpzbBB3lycRFyT3oo2ynipS+tnYgfhs2O3Nc5BbH2SafcQd25nIwuf84t
+	Ou1FGRp8RIxt9zWFftHE8sEjAxd7vX0=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cuq2lBlL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789473798;
+	s=arc-20220608; t=1789473877;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+u7ApoOuOF8zgpGLaZZqOsYtXtnXCzj3vZ61f6s8LvY=;
-	b=dK98GFoCa6z80p/ImRCfKP92hS12uA9dKL0Wf13jzeSiQyUUuUx/NpVomatoYC8/BLbcqG
-	bouyOjCkljqZlMlx6T0Qh4XGGCf7k+clb02vOudEUAdPyjybZxAGc/QzyGJRGCLEc06z7i
-	/7YJgna4Sx5Nc8wtqfQ4+dbokvE7M1Q=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789473798;
-	b=miMlDUPTexHHyHZRSdCrGu2XP/L1oAe46yuCN8sjwnT3jnQoYwZn9xYAJHsprESh6qsWoR
-	gEV83Dg92Hza8lyg2mW2fIMGNMYNWTwN5ePNyNpmkrLwIrPWvkePk8uZY1EaITEs5kav3u
-	2ovzj8IaxxBreZHL4tX8XdbkbGD6N34=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=THnhYqif;
-	spf=pass (imf25.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=J5fP9X9CyVcuvKEYfpMseQ+In05Wp0Z5tRJ1lE5PSRA=;
+	b=3CO2Q3YXUTamtsFUL09FmyXgPfvtviYYbhNp8SjKog06HoKK6JBOh5QhJ9Xavak/SX4JTE
+	yGZID9N390P2oyIthwUW7Mqd03FXJ/+FQi0sWB4rDy6jEfcyJ5sZwCxraki+mhigdYA/oC
+	/LMsreKO8BvZbPEQeAjWLam02ajFO+g=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 84F70409F3;
-	Tue, 15 Sep 2026 12:03:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E53111F000FF;
-	Tue, 15 Sep 2026 12:03:14 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B3B4360261;
+	Tue, 15 Sep 2026 12:04:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28E9A1F000FF;
+	Tue, 15 Sep 2026 12:04:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789473797;
-	bh=+u7ApoOuOF8zgpGLaZZqOsYtXtnXCzj3vZ61f6s8LvY=;
+	s=k20260515; t=1789473876;
+	bh=J5fP9X9CyVcuvKEYfpMseQ+In05Wp0Z5tRJ1lE5PSRA=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=THnhYqifnsYIWurKEUAhE5a21iMJPlZD91gXsYeEKbrZccsHcRXVqGfm5oAHxQqOd
-	 e1wuKKqVeBYXyc2aFoavHWSkhBnSVerlDl5LdiePK1NOkSeaQW/idnPwhZZFr9qO2U
-	 cg7uUETVS3OG1gBkYBAm+yUoWRGRSH3/1l1cbZ2tR32pl+WFSqQtvnmtWPmcEO4Q+L
-	 BxuqA3mh6TGj2Aku0WcupA4zXl8/Qqfs3dDrK1fqU5kv2LzDSbBcXV0J8UBqa9cxEY
-	 w/xfA2bcbpba0mU4z3odT8FBDfF8Id5jJPBmzjOTZnLPQ12i2X8SrT2BDKLxXvMAyA
-	 ptXGYIc0ZxCJw==
+	b=cuq2lBlLoUw0Y72t9bFSWoR4MpMhbFj50xeEgbG3mMkdmknSMptpwSK3xFErl6Es+
+	 ul9rPuaoVaEF1rSc09McY1HCQ8/KvrsXmDJngtm2g8pGOkK8SksKn5c2XZu2qd6neC
+	 /n8PpaNv6M0cIf41/P5ePeN8jF4tTMI4A5SgldO4z9TVfn+pUHuseWjwq3FPjMZVL+
+	 /A1Dp6mNtF0UCTI50gLLUPpKDrqKyRhLmvgM/WajGKJ4JWHsivD3qdtc0trmEiG9AU
+	 uvPQ8IW2ncEh1yY23HCpFM+zP/B5XadcfTF+40CtiH7dhqHPX0XUxaPv0A3g/x9nid
+	 zNRhKlOBXH0Kg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC POC 22/50] net: install SCM_RIGHTS descriptors when
- recvmsg() returns
+Subject: Re: [PATCH RFC POC 28/50] drm/msm: install the out-fence descriptor
+ when the ioctl returns
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Christian Brauner" <brauner@kernel.org>, "Linus Torvalds" <torvalds@linux-foundation.org>
-Cc: kvm@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-gpio@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-hyperv@vger.kernel.org, "David
- Airlie" <airlied@redhat.com>, "Jan Kara" <jack@suse.cz>, linux-arm-msm@vger.kernel.org, "Jann
- Horn" <jannh@google.com>, linux-alpha@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-parisc@vger.kernel.org, "Jens
- Axboe" <axboe@kernel.dk>, linux-openrisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, bpf@vger.kernel.org, linux-um@lists.infradead.org, io-uring@vger.kernel.org, "Alexander
- Viro" <viro@zeniv.linux.org.uk>, linux-mm@kvack.org, "Peter Zijlstra" <peterz@infradead.org>, "Ingo
- Molnar" <mingo@redhat.com>, linux-fsdevel@vger.kernel.org, virtualization@lists.linux.dev, "Oleg
- Nesterov" <oleg@redhat.com>, linux-csky@vger.kernel.org, linux-mips@vger.kernel.org, kexec@lists.infradead.org, "Michael
- S. Tsirkin" <mst@redhat.com>, linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
- =?utf-8?b?Q2hyaXN0aWFuIEJyYXVuZXIgKEFtdXRhYmxlKQ==?= <brauner@kernel.org>, linux-snps-arc@lists.infradead.org, "Eugenio
- Perez" <eperezma@redhat.com>, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-In-Reply-To: <20260915-work-fd-reserve-unify-folded-v1-22-4d5217d6b246@kernel.org>
+Cc: kexec@lists.infradead.org, io-uring@vger.kernel.org, "Peter Zijlstra" <peterz@infradead.org>, "Jan
+ Kara" <jack@suse.cz>, linux-hexagon@vger.kernel.org, "Michael S. Tsirkin" <mst@redhat.com>, virtualization@lists.linux.dev, linux-mm@kvack.org, linux-csky@vger.kernel.org, linux-um@lists.infradead.org, "Ingo
+ Molnar" <mingo@redhat.com>, linux-gpio@vger.kernel.org, "Oleg Nesterov" <oleg@redhat.com>, linux-arm-msm@vger.kernel.org, "Jann
+ Horn" <jannh@google.com>, dri-devel@lists.freedesktop.org, linuxppc-dev@lists.ozlabs.org, bpf@vger.kernel.org, linux-hyperv@vger.kernel.org, "Alexander
+ Viro" <viro@zeniv.linux.org.uk>, linux-alpha@vger.kernel.org, linux-mips@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, kvm@vger.kernel.org, "David
+ Airlie" <airlied@redhat.com>, linux-m68k@lists.linux-m68k.org, linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org, "Eugenio
+ Perez" <eperezma@redhat.com>, "Jens Axboe" <axboe@kernel.dk>, linux-snps-arc@lists.infradead.org, linux-openrisc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ =?utf-8?b?Q2hyaXN0aWFuIEJyYXVuZXIgKEFtdXRhYmxlKQ==?= <brauner@kernel.org>
+In-Reply-To: <20260915-work-fd-reserve-unify-folded-v1-28-4d5217d6b246@kernel.org>
 References: <20260915-work-fd-reserve-unify-folded-v1-0-4d5217d6b246@kernel.org>
- <20260915-work-fd-reserve-unify-folded-v1-22-4d5217d6b246@kernel.org>
+ <20260915-work-fd-reserve-unify-folded-v1-28-4d5217d6b246@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 15 Sep 2026 12:03:14 +0000
-Message-Id: <20260915120314.E53111F000FF@smtp.kernel.org>
-X-Rspamd-Server: rspam04
+Date: Tue, 15 Sep 2026 12:04:34 +0000
+Message-Id: <20260915120435.28E9A1F000FF@smtp.kernel.org>
 X-Rspam-User: 
-X-Stat-Signature: ojzkdxhjde8k8hatwku8i8mmhxbxsmrz
-X-Rspamd-Queue-Id: 6199AA0011
-X-HE-Tag: 1789473798-302301
-X-HE-Meta: U2FsdGVkX18GAczmKfyy/nXkXtuthPYmgJAgIdqHfsWLRMAtIjTZVnMoT7EfHCab1E6ikW73DEQDeQ5ThFBVzEXLg5BDJki8sNgLIsn5SFIhq3E52ELSGoX9/Ze4fmxWmwWcJ30w+UILvkcr2O66v7SnLEU21V+2hv00cVCuWQWteUtHw/POjOKl1DFqsxJrcc5JLu8ZEpn2iTwJ1dpV6gOYpcj9LZ1GBCK3cLwEpgyKOQBVRW66OvqHIRcgUJf2Els0mzLeNrWaZJ/cDtrDUaJfEl7EozcUW9yfq2ePVAZM08eQU6crzBfI/zA+x/DGanwUwmhF33YxoZdAluvJ63AUb0a3+TLoPKyN8Xir6qjpeOzkwTjOS2XMEbBIv/XCzIXiV09DvsxEjC08Vm4UV9cOlvACnEL8+0NRqZMSJFZSOl7N7XXPQ4MyIPAjK9Hl4JL1qgLxnWeqmi7sNyiEziNVMscOLY/BXmmVgVOX2i5VXi2Pdl+ogFQX/Ere5/aG3iIU175dw9RMrpDjlXHLk4eLfZRgL71IatCZutRffFERVPk2jSYr4INVxCqdhXFQiJHtqLwAN870amjjmkA0jDCHpNb/mfFrUWROxWzNYxIc8Fn85hKnKcVE4Z0WnReZPD36jEsK3YPoqUtqrB4hFGBC/WI2GnnmnQpGKoXSid6+4FXEnXElqJzlhrH/2+VrrzSr9sqHIMyezdtNqbgPI0n6UZ94aafV/TCbl7PxWMjrcy1ohPgrumgdPEMaiIRJQlBg+yiYjFRB87paM0sxk6DZIaqRov2P8oxq4iio5thNA2L//wzUoLpnPQef7mF8km5foxuO+tboSbZGOpeWhnxBHJTlravzAvC0oPSslKbyI3g4RnkVZsk8Vq+WyylOzHREbW9Fagh2ZWtDaVzBrrik+xNC6RRJ9uEYeZUzIU/Lr6mhs28RtktmwAHI+8DfsTdym5WVOBah+8igITM
- Kpb4Z8D5
- QqgyNCy8IYQ4fpxRv5BZmiqa7VzkbYqAs6V5ujTrud355A0cWIk8WrO2hvoITa/Nu+zs6aXm+3dnPq9NsKIoKEh+k0kV0jKuqwuy9vAKkmTDsXSvThR/aLD4Hxb1amlrIFWiZ2KdRx3ANK1uybgq3qvxS1bY97SjMfv+8pl4pD4eb0lSfH2EEju4Z3Njobt0WGmxwcPLoP031FREMuRewBjftSBb62Qy25rR2LKnweo6la5ww3xgTgCjQyLvXQCvtfkUbn4Zwhxy4Z1ORR5yUc+KL1ACSYULfw9cqgJaebynf0F5xVoDqwXLJrw4kL6zht9mhz5a/DSBIj43DFi0zGkuTrJrRoyY2S/tXlpHaBtCPQh3ayv6yf+gmIwHsFpXx29hDNLHrCziM1NdUSaAra0qNEEQ7rEmbuawNTuQTUn6QWIafeCQD97DykOLVyBa7g1Qa0Z9dmLHnvjpmISVWvAoJW1k5DNVs6q59L78+MiunSCIXiNI0c0ICtxMdwGsipkIVsPntGaHcfQ0Oy6LT4GTN0MRIoRDWTR7xm/OQFl6LnaWYUnJFvzoJVnhQXA/mnu/o204ngB5K/dK4dQXouYA/NjPYsfvzKrmm3BEnmPR/Sch7CvEXgrETNjceoFfeda9EqhVJjcy8D3Jq1MSdpM2e4I+UZFvK7Sx8aNoqi2HxvfkOmj/8U2fqYM0/W+t+9Dl7OQOz7xkl9ITpfYkMIhPMeg==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: DEC6BC0010
+X-Stat-Signature: brgu8736cprkamr5n6saie3pzikcfipj
+X-HE-Tag: 1789473877-451825
+X-HE-Meta: U2FsdGVkX1/Rg7GZO32nk9WDVuLA18GA08VhytwLm7XtTO2rEAgXR0dk8/EUUvZScvQM7hNJbvOz08vMs+f52TKgnJTA2H5k4Ed5ecdv/CHnsKa0rtwWhZ8AfvHJ4jyPP/K/Y0fsBXAo/RPAI9SwZNU4JVepviYlqLNNAsVrnG5RcxfDbDkhZwxL+t0oCMXuPvTOgbMc25hJShs/ZgNig+TJTh4k7PadpAs31Cv19ypUKzdH4nQoWD8pEBaL/V/Hlp6Cj5u/UAnArm8Yw57Zhe9ThhwAe8TcPzi7nqjKh44MKgbOZG+T+R9TUql/jCm8GOi8y5Z/yGSIERL9yrIckXEfyH6uhcVhoatvrxDkSXfoHDsOQFQWnmV8zigFx/1GAA9tlv6kRXv8P43W4efklfjiH0Iik2E6uU34KoAAILQk7Ftx9mzn+ilkc7jNZFivu31QUbXcFjn0JkG3M0Fam1j4bSfUZzmsmgjqysL0dEPFCVL7OALn5MqH9BPtj0LSxOPBrNbCFhCKCciViUeqdXUOEWjSrZowbubxow7ne2vuxOcwbUFK/9ua3hReQSf682vdGtl9qm2RzQ8gs2FCmmojBVEpmDcd1LafNpyYX5fCkziJsh+6V38UewoFRSlXihQihKyQhxjXTBQIIC05Fn/lKFJzvJQ1tgnQ9oHpgPc9NGbN7GDh3a5NR3PztIEYJnVETKK8Z4b8ddYspGux/LOwAhVF+hhNaB44Jf1/Bqm+fAJ6DSFzHQG83VKxyABJTZJwF/zhPxLBp9uCuyKYZi2AIjj3knxtjcMGu1LvueHsIjIQpADu6+QZzHyfEmv9KbdSTIntsYXKuBFT5DYsM7tNNV4iqy9oiYV7vO4SvH9axGbnnKAk+2KqYIgHefdy3GKPiexICx6GnVQEv3uNipno2w2+fC7yI/r161g3sl1wYcZmYXIhVZO/K227NFnbONi+6Cwb7YgwZN+Ukmf
+ 20hUap+f
+ aHvfvto0gDynW2Y5/NoiH+V9fBmO/KNsJsH3MmRHE0HSPYc/fRGol5FQlWIr0aQ5IVUKMXDOraf230gxnSzV8glS3uJDXQG+1lod4JfYMigxRknBFfM0PavwnJl5YVTS8nhZf53Y8iv2KNKC4RWv4N6tt3GpquAShVKL3iQ+OZQqhzPvFaye5a6FrXRI34QvyK61s3vZl3HUbb7ZYp7ZyYKBljemrkuh7XylNqpzQwZRq3mON++HbeaFNSvoUOq7GErFWWSXnNSzT2FqDWzbuTiZfDKAIfOUyiVJfJKPUqjkVRuaBXMi2TuG9Zrai8Z6leffPZH2tXDE5cmg7u8i1YCY34aknWBCCL1HUjquo2pWrXjQnpF+xXFE855udf90W1yU6s7oLiFFUbZ5aiPWetBuzwWfQ7eEG0kOnrJ5eKbhIAIJ5bLLxnREgCHoP2RAGQLN63AHGiw8wnOwgQiUbH9W2RzarOY8vKNynAyG2wkTkDQ4D7lDKjN4gqh2NATRolGruFnt0tQx59hRRAYcI+2iCe/rE9amoVurH49o5sNRfCqJpgc+L9vFXse+eYeVEk/VCdtWX/0fPoJ3ic2hgmML6fTLj/cnbb/g3nbV5soHU5zXlW2TpgMqjunBHOagQWg9awGRuDHbT4WTnkU+MKK3YLvT46xMkjbiJHq/ZZZzpKB1/q16QK7xRb2/D/MD+YYSg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,23 +98,7 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> scm_recv_one_fd() allocates a descriptor, writes the number into the
-> control message and installs the file right there, one descriptor at a
-> time. Everything that recvmsg() does after scm_detach_fds() can still
-> fail though. When it does the syscall returns -EFAULT while the received
-> descriptors are already in the table and the caller has no way to tell.
->=20
-> Reserve the descriptor with fd_prepare() and stage the file with
-> fd_stage(). The number is written to userspace as before, but the file
-> is only installed when recvmsg() returns success and dropped together
-> with the descriptor when it returns an error.
->=20
-> A control message that doesn't fit still gets only the descriptors it
-> can report and MSG_CTRUNC.
->=20
-> IORING_OP_RECVMSG reaches the same code from io-wq workers and the
-> SQPOLL thread. io_uring requests commit their reservations before the
-> completion is posted.
+> Rely on the fd exit path machinery.
 >=20
 > Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 
@@ -124,6 +106,6 @@ Sashiko has reviewed this patch and found no issues. It looks great!
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260915-work-fd-re=
-serve-unify-folded-v1-0-4d5217d6b246@kernel.org?part=3D22
+serve-unify-folded-v1-0-4d5217d6b246@kernel.org?part=3D28
 
 
