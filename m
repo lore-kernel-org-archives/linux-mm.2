@@ -4,59 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C41E8C88E75
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 15:13:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F347C88E7F
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 15:14:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 801FD6B00A0; Tue, 15 Sep 2026 11:13:38 -0400 (EDT)
+	id 8F5FE6B00A2; Tue, 15 Sep 2026 11:13:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 78E236B00A3; Tue, 15 Sep 2026 11:13:38 -0400 (EDT)
+	id 82A826B00A5; Tue, 15 Sep 2026 11:13:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 608386B00A5; Tue, 15 Sep 2026 11:13:38 -0400 (EDT)
+	id 67D056B00A2; Tue, 15 Sep 2026 11:13:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4051A6B00A3
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3D1726B00A0
 	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:13:38 -0400 (EDT)
 Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8AAEEA56EE
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C3A86120457
 	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:13:37 +0000 (UTC)
-X-FDA: 85216340874.06.3B5DDD7
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 2DC5E4000B
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:13:34 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=nC9IA8+f;
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf17.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=xialonglong2025@163.com
+X-FDA: 85216340874.06.47E8FB8
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	by imf24.hostedemail.com (Postfix) with ESMTP id E95FB180005
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:13:33 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=GkJqEp1X;
+	spf=pass (imf24.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789485215;
-	b=YHrW0n97urzvFpOYGaPXeY1TWsmMKV6V2+PvpHLw9ddD7bFKwxOn2KttHIhYmRJOlh19TN
-	bUEU2vsQ8WaSeRU5NFhqZML/6qd4f4Z4yfxr0zJ9fJcntar+S6+qQkqzVWvbg6WjQ/fcPw
-	IxUjOv5UGJYgHyj1UkiPCDr1rpnJHOk=
+	t=1789485216;
+	b=wyUbNZFoiBts3x7Eb25CPl0FLbIgZT3GZuLb6aNomr9RSieKGNtUl62khtLRTEt2b5PBY2
+	lcn8cIaHfVpZ/UeZLfA/3QZZL6OAVmF6qm0KLI4QOE0Hn5FWslp+nRx8slLGfRk8gg7nqC
+	dm744GPpLFKAQJB/vKV/pNPRYz1e4EY=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=nC9IA8+f;
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf17.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=xialonglong2025@163.com
+	imf24.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=GkJqEp1X;
+	spf=pass (imf24.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789485215;
+	s=arc-20220608; t=1789485216;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DUV0qCujnR7jWHBaxK501gzxqQAOmB8+/waa59ibNAo=;
-	b=vV4SbYlpVJ51M4uhGvgBVBpwss0/WvpHbPX0wLxtbvcTpgKYifc/zOXRdCIIMzHoM0sEuh
-	b8uE1SaWjgjfPXPfm5c1cfigBU7ZXWj0p4I0EBtFl1a/FIBTo4jqkur5vEz+lHhChUi75c
-	/zk2+1GMymwtMCk2WSMKCq/XQSTzOwc=
+	bh=6q4gcoe8kuH2QdxsQJ5k7lgZ2jFMRw97/pDg4Zh17sU=;
+	b=v9FfxwJK2rbQSZ8WEwzcMRwQY2Vx/H6Z+f2z+sK8P+TS+T9E4AZslYmCXSQVic/fLvR4wR
+	Kd83xcbn32ZcfEDDfgvSugAH186aODYiLB6ENTq3alzOK7bATuIO4R4Nl+lTF495A08kC6
+	oaYCJA3D6jCCvKGF54y8kWybwRUOHfc=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=DU
-	V0qCujnR7jWHBaxK501gzxqQAOmB8+/waa59ibNAo=; b=nC9IA8+fgnp4jEwOZJ
-	DYHAny8HHu0tA3npvXPX41a8ZLTtxmknXGmZGu62lTlIXVODecETdYWEqC5ku4fr
-	RKQ06VpqzER0bCTgb7FMDXqn96JNE4uGeqD/1iHUMCxXFXMbdyRYkWQu2gkt4tWY
-	QLi3zXT61hqaoNImfIbpP2Cy0=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=6q
+	4gcoe8kuH2QdxsQJ5k7lgZ2jFMRw97/pDg4Zh17sU=; b=GkJqEp1X+ZfBaBgGDn
+	RPBgeZ26L/i+8J+rRKjjITmUjyWUN2moa6jfYEuBjgmHsztV4vzJ5v3+tLV0/M63
+	coXPjQCCbvdq4JzFYHKQ3xJ5N4JsPAfFq2ne8Zxq6XZIDpZ/yu4LomVDh2cnnurz
+	IxCrmXER2l3dxuTdJV/cmdeAM=
 Received: from VM-0-3-ubuntu.. (unknown [])
-	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wAn2xWOYKlqc0VUAw--.40469S9;
-	Tue, 15 Sep 2026 23:13:22 +0800 (CST)
+	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wAn2xWOYKlqc0VUAw--.40469S5;
+	Tue, 15 Sep 2026 23:13:20 +0800 (CST)
 From: Longlong Xia <xialonglong2025@163.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	linux-mm@kvack.org
@@ -65,28 +65,28 @@ Cc: Longlong Xia <xialonglong@kylinos.cn>,
 	Xu Xin <xu.xin@linux.dev>,
 	Chengming Zhou <chengming.zhou@linux.dev>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 07/14] mm/ksm: reuse the zero page pointer for merge tracing
-Date: Tue, 15 Sep 2026 23:12:21 +0800
-Message-ID: <20260915151236.5200-8-xialonglong2025@163.com>
+Subject: [PATCH 03/14] mm/ksm: use the correct format specifier for max_page_sharing
+Date: Tue, 15 Sep 2026 23:12:17 +0800
+Message-ID: <20260915151236.5200-4-xialonglong2025@163.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260915151236.5200-1-xialonglong2025@163.com>
 References: <20260915151236.5200-1-xialonglong2025@163.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wAn2xWOYKlqc0VUAw--.40469S9
-X-Coremail-Antispam: 1Uf129KBjvJXoWruFWDZFWxWryDGFy8Gr43GFg_yoW8Jr45pa
-	92yFWUur47JrWxZrWxZw4kZr43ta98KayxJrWUt398A3sxtry2yFWfKFW8Cr10qryfA3ya
-	kF4UAF1xKr45A37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j2RRiUUUUU=
-X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC+BJBOmqpYJJV-AAA3J
+X-CM-TRANSID:_____wAn2xWOYKlqc0VUAw--.40469S5
+X-Coremail-Antispam: 1Uf129KBjvdXoW7Xw4DZFWUWF4rKrWrKrWkXrb_yoW3ZrX_Aa
+	sFvr1rGw4xKr9I9w409wn3trZ7KayDGr1DWryqvrsIq3yUK3Z5XrWDWrnIvr1q9rWDKr98
+	CwnxZ3sFvrZ7WjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUnG2NtUUUUU==
+X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC9xFBOmqpYJFRyAAA32
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E95FB180005
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 2DC5E4000B
-X-Stat-Signature: tncpcbwiqd4z19sygs95ghbfzeo3ddte
-X-HE-Tag: 1789485214-361465
-X-HE-Meta: U2FsdGVkX18WZMPXkBTM3j97nevtTjsH2FJxWV+uaRoBXdyvodUzyy8m55M7LFq8ztho+iCowZ+TvdhShW0pbf3xZkaQFopGmPO8dZFhO45nWpF1WNu2zv/7PDIqUDVfplxeJ4XqAouF/AHh6Im0Q2GsbsH4nse6U9Yd2/0HuL/3iH2FSeM3YZvSBOP/pZzQS9/uLzyTNjmAp3H17YBZZWmgRoboOOk3flJfBPNDsd71+TsTEvZ24Rrrlp6duMrjHTofi5wPMLaU4X/25Jr0MiYT/n/5jFk0WQ6SxtXyDya8Aai65VgwHuyHS+cw/w2JWuNkydvpEbBjRhZeVT5LD1UUqdVeHnFbqSmZZy3eseYTNTVdwF9TUOaol+UtuSPO70INErS4YlQ9qm4Fe4X68GLiBrG1aNankclLLR2QNCXMTXDIu9rNAlinAtemXxM6xN0vmYdHkAcL0ozt8XWfXHcKrgfon/aEQaK4aWHcRcESOzgbfVstK/Y6hUEYOyD0fgKf/T5/Dcv5L1Q1b1hnUcqmTbpxZceB9ck+iPxaiPAcIWr0u4KOpYGfqBWiYgFG2q5F6EP2Ird2iVdIHPZzyqNanr0ydaQHRxJAeztriIa4mKFNwx9WgIMty7+RiPk9p6646jj6TeWIbyV+WVtfAOsRKi49ls2pKy6vDYlFvFai245sG4c6IfnbhjN8DhYRadQWlA6Y2TXXDwAqS/q9osJChLWGwHiq93VLntozJLcPYH1m1oMsupyiSArZS08l4BeXqqicAod5uhsKE+8JO/fEbJLKKcRvlTt/FQRDveP/TfM9VZPZq7g9K2StEn48libo4O+BCN92bLCGp16A7DyTywj9xPHg8ys2NLO8gbCgMpMzSdaDxfAv6n7jYbFfYa8tUr4kWutkAOQgbDw055q8opulSCj3BGICc6g9dcItIbC9IxIhEBYxIIsSFqm+p4ButyPQ0UdYbjBLJxC
- QaHnV6Ql
- s/Bo1ejgJbqZ7NcoXSON4EbaW9OYnfasRqGbeJMh8eGjSWLHQB4oEeE5VpUlGy4tSBFCixDr+BUw8LVKIwLfLeqt0OQUku+nsigiSlq7XSaG1X1hYbswlfSUov9fQroG6EI09M1N1SDtCya2r6HGxyxqF+6xl1C/4uKT8NqyvtPsJ69IwPZomZMCBuw3+UE2wkSLc4foK4x/t4tsQSlqbwWcasuIaCNq2fmEgMIfc2FPYJ5ea8elKNA7Sbw==
+X-Stat-Signature: kwu4493eieinmsrjtcoqx4q4mmziuonf
+X-HE-Tag: 1789485213-8472
+X-HE-Meta: U2FsdGVkX1/Jpuw72FzhU3+IIJKDRP9PvPeSWeBtta6e7OxQfTFy5RQrUYvEnr/BZNGCdTe+67m74yNYfszlKAJDJMZlvjKH5oIaynsGAFna/i3f/F2cpHqAtZpL/pP/hBwzrjfrKk1sPoXM3Jqal9cD3nQaU96VOEYOV551oOEG0y3kNJ2IWlzQBaipBI42zXe0QmqCmO2L3B3UPy11o/LUDW0yn9HbosNFGwameaTDph09ayY/9CnQR/sVxYmLr2XY4o+yFTOcUdbSN6+K+MhuTM144A4M3KBoC/efRhXuuij5PAgQrI3zdvZWrTxbScUzLqG5RLPXybvaZ1Jg/SZuOLvQ3K7r2qPn9q7y8n3QRVx2hakcu1mv6lGeYjhgP+pyoLNSBG5khs+kRBrUvUUqkL5v+oNH1ceXx7q8XF5ghGmjKkIwB00lVXDn8koUuRlqUl40RaVKrTy0uAs4BYkFhX1po4tAXd6j9mDjJet6dVWAuBNZrzlNMSp8sLJ9+z3r1ZY0voKXDzHDs2qRYBb9pUVfX7C6fHTKM7cIC5sFRLTTZ3gGorzkcCnXhduIRfKJ6QBW7FsplNnyLaAlRqAG2CLQP0CA6Gjegk7vtyKOkwquvjD7oGsUgtNX5yEbger/eRRw1RFpSv5JnEdE+mx5S80WKz9wdL0WRo1VTUMsAlSlxlHT60l8OhMOEBw+lJObW+DIoxgQsgib7h/bgPN2EQP8+9MQmrvss8OrBAOCMXBhtISwfyDzkoXynJWdjhQfNwNiWdc1yvbTK30/2EGmnOLuC4nPGnF3k/H4w4dcTx1ZzuAmY3l+UNr7kLS/8TgGk4XY7sODt2sPZDsANovu0ggHM/Pu7uucLk1N3G5SsXvJWlXYwo9g7gJCDj3QjuQnnLtNOWauto1muVbx6VshT+A2292PvCTPZPwHXrHFJyEwbYqJFEQ7mN7kcX3kH+BPRM5gv4rM0QPZE+r
+ pblAG1da
+ f9PqSj9WBHB4llHL7GC2JjbwDpjBHKht4eIb+hTc5OgnUloW25ubpAanZWSLdxiknZb8p9rQfS83zE6jVFKxiMvvDX51wQ53TVbKS1qo2d+C41zgN4irglH1Qht7rqOVdQzcjBp9/2RySWEkdhZ9reAk+MYeRG+W0XfYhnIaD2ZlLskySbTs/d+pCrev9XoZ9idRUUruykHSt+jQQIkJnblbC7kWALAG5lRWP55+NjnTYPpu3CXD1efCkLyjUUqCFt8pTVojjQC5CPeRLxwkYc5ovHltpI/HpCnmJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,42 +96,29 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Longlong Xia <xialonglong@kylinos.cn>
 
-Cache ZERO_PAGE() in try_to_merge_with_zero_page() for use by both the
-merge attempt and its tracepoint.
-
-No functional change intended.
+Use %d to match the int type of ksm_max_page_sharing. The accepted
+values are at least two, so the sysfs output is unchanged.
 
 Assisted-by: Zcode:GLM-5.3
 Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
 
 ---
- mm/ksm.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ mm/ksm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/mm/ksm.c b/mm/ksm.c
-index 78040ed99ccf..7fc9dac5d67c 100644
+index 1e4d77852fc8..18d037f571d3 100644
 --- a/mm/ksm.c
 +++ b/mm/ksm.c
-@@ -1580,15 +1580,14 @@ static int try_to_merge_with_zero_page(struct ksm_rmap_item *rmap_item,
- 	 */
- 	if (ksm_use_zero_pages && (rmap_item->oldchecksum == zero_checksum)) {
- 		struct vm_area_struct *vma;
-+		struct page *zero_page = ZERO_PAGE(rmap_item->address);
+@@ -3676,7 +3676,7 @@ KSM_ATTR(use_zero_pages);
+ static ssize_t max_page_sharing_show(struct kobject *kobj,
+ 				     struct kobj_attribute *attr, char *buf)
+ {
+-	return sysfs_emit(buf, "%u\n", ksm_max_page_sharing);
++	return sysfs_emit(buf, "%d\n", ksm_max_page_sharing);
+ }
  
- 		mmap_read_lock(mm);
- 		vma = find_mergeable_vma(mm, rmap_item->address);
- 		if (vma) {
--			err = try_to_merge_one_page(vma, page,
--					ZERO_PAGE(rmap_item->address));
--			trace_ksm_merge_one_page(
--				page_to_pfn(ZERO_PAGE(rmap_item->address)),
--				rmap_item, mm, err);
-+			err = try_to_merge_one_page(vma, page, zero_page);
-+			trace_ksm_merge_one_page(page_to_pfn(zero_page),
-+						 rmap_item, mm, err);
- 		} else {
- 			/*
- 			 * If the vma is out of date, we do not need to
+ static ssize_t max_page_sharing_store(struct kobject *kobj,
 -- 
 2.43.0
 
