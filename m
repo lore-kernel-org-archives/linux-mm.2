@@ -4,106 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 296E8C88E75
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 14:35:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F0D8C88E75
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 14:36:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 32ACB6B00A5; Tue, 15 Sep 2026 10:35:38 -0400 (EDT)
+	id 12FED6B00A6; Tue, 15 Sep 2026 10:36:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DB156B00A6; Tue, 15 Sep 2026 10:35:38 -0400 (EDT)
+	id 0BAF36B00A7; Tue, 15 Sep 2026 10:36:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A6276B00A7; Tue, 15 Sep 2026 10:35:38 -0400 (EDT)
+	id EC5926B00A9; Tue, 15 Sep 2026 10:36:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id EB68F6B00A5
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 10:35:37 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 74714120446
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 14:35:37 +0000 (UTC)
-X-FDA: 85216245114.02.6A9CEE6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id C419440007
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 14:35:35 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VtKFlspQ;
-	spf=pass (imf17.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789482935;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BECE26B00A6
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 10:36:42 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3F0D180431
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 14:36:42 +0000 (UTC)
+X-FDA: 85216247844.08.8BC42E5
+Received: from mail-qk2-f12.google.com (mail-qk2-f12.google.com [74.125.230.204])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 493992000A
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 14:36:40 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=YANOEQP2;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf13.hostedemail.com: domain of surenb@google.com designates 74.125.230.204 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789483000;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HhkTKZqSauRlzDBmuIch4WSDGbcfsJp9na+AzwvnNew=;
-	b=SY5cjMz8S5aLWXTB1DRMn2QLnW5DsKsrJSq/4i1Q7Ev4qZEMRJOZy9zP34za38O3lkVeSh
-	LcxgVIaiRwha4uyEpaLTCmysqqzxvVN7bSfNjzcWd98xJGPzuAAbVrbqtCHex8RDvLKl7n
-	cMnKgroHB9jx1npD8kuzDc8XP4IYt4M=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789482935;
-	b=7LIHb1WmeRKu8kt6YYCHqWgfULIYbnABafHj/mtWPvLmx0HVyXAuHJoBWjjqDgVQfkf5XF
-	hyUrBE7aE7zudxY+tpXT5mdoDTKPmNMf/B1okq4pZJVakBa+hgNM/xD1zCcK6+JkOC3VOQ
-	dy5J7IGT+w9JZQjGJXehkntEGCi7Mic=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VtKFlspQ;
-	spf=pass (imf17.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 43B0B600C8;
-	Tue, 15 Sep 2026 14:35:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 806681F000FF;
-	Tue, 15 Sep 2026 14:35:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789482935;
-	bh=HhkTKZqSauRlzDBmuIch4WSDGbcfsJp9na+AzwvnNew=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=VtKFlspQzOv/Zif2Ow84xQkRnLY0nrqHqoynrLyvg5SIxf+bnjB9jvnYZlJFCKoHk
-	 Fsvtg3M88EQ9y23RcTgrVdPVCC12nYfwrTuUPtF7T8/em/9zQkHdQ/95dP05TspWKr
-	 wlJbsjBRL2Kjst/08D5KbDCRo3s86XhKAa/vOUrCH037W/omFf9HgCtaWZYqYpWYMl
-	 uKKz66IuX3ETy+gTxW9l3SEAwkF8wt6lilp3aw3yD1ss5zU4+IsNIrAC1l7/o+T56X
-	 Rlmf4Odr5SnNyIpzIyI9wkTJHAURu7kq0z029COy9SPWurwLO8XzjMUfs1HWzJdOGd
-	 394I86ioQiGRQ==
-Date: Tue, 15 Sep 2026 15:35:33 +0100
-From: Harry Yoo <harry@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	"Kiryl Shutsemau (Meta)" <kas@kernel.org>, kexec@lists.infradead.org, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>, 
-	Brendan Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	rmikey@meta.com, riel@surriel.com, kernel-team@meta.com
-Subject: Re: [PATCH v4 2/5] mm/memory-failure: libstub: install the
- poisoned-memory EFI table
-Message-ID: <aqlMiLMZ_6RBbtgE@thinkstation>
-References: <20260909-hwpoison-kho-v4-0-359313564495@debian.org>
- <20260909-hwpoison-kho-v4-2-359313564495@debian.org>
- <2c9a7bef-3189-4f78-a6cb-61d2f7afd643@app.fastmail.com>
- <aqKhgPKzRf0e22s3@gmail.com>
- <aqkIdVhoG2wwVBtb@gmail.com>
- <aqkyT0Ui9h5KWuzn@thinkstation>
- <aqk4NUnq92ftuUuJ@gmail.com>
- <aqlFnuIIECOyaweo@thinkstation>
- <aqlI264D-PxJzPWb@gmail.com>
+	bh=wMRn/ahkKA5Dzm0qrPRXaVCV5b26ohTvkifPgSZR0R8=;
+	b=z/bRHxisjwaG7ro0VITpqZ8IJUegQrxmsz0+6b0xYvwyMlEAq3vgRIiY505r9fFF0gF4rn
+	OVVaske8zy0RpPAvCotKBTjDqf1S5CdT6JS1Yfp5lr+8ywvvvXt+pfa2KnF+dL5LnF0ibK
+	zT2YS8b2vDxL0Pfp1MD+7XE+X7suUgk=
+ARC-Authentication-Results: i=2;
+	imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=YANOEQP2;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf13.hostedemail.com: domain of surenb@google.com designates 74.125.230.204 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1789483000;
+	b=2Y+aHK+x6KzRaCEub92AtaGGqQAM8o48XQpKZeAIceyu0eTMk/+FhkJM/Gk9VAg4sU0ZVd
+	n+2JJxKZNq8XeleHrs6XBYBVP5uv9yx56mpBlbsGOltdiJnF5fxVnOey7+3dPm2a1SIfmG
+	5c/0T+ZaMiFDmlyyyb+PsqAWRMKeRLM=
+Received: by mail-qk2-f12.google.com with SMTP id d75a77b69052e-530d5fc2cd8so29461cf.1
+        for <linux-mm@kvack.org>; Tue, 15 Sep 2026 07:36:40 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789482999; cv=none;
+        d=google.com; s=arc-20260327;
+        b=A9W9ihBKruXJdgv8K5EcERZQQRy2jNoXxt7h48NrryUkisdZjZFBPysG6UHV1B/Xx0
+         QqLjuThHV+Jc6+FFL6WjvA8H0Lfzk77BgDCPSBBYEQpftSxoqY8+30uxg4EoI8DmiysZ
+         HfsTgipL9yERza/DiM5ypoeKalDdKzPwl8EYyvgQWuIvLVxE1mKCcbTo9L7AYhtpBPgW
+         2FtMAexS/hd0UzzLqKAF1taiErKgTCtbdci/vx6JdUUGrplTH76dnOwJwZt8kLeP9xTW
+         mWsSLZeNbp6A/EWe+VGi/+/GFi77gP0Rgfi1FwYo9PQ1w38TyxBa4rH3mtFM0TgCxvFF
+         brCw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=wMRn/ahkKA5Dzm0qrPRXaVCV5b26ohTvkifPgSZR0R8=;
+        fh=ebuAKljOjHOE6Hlidej6gUbY9G+c70nwSm+81HWSIDQ=;
+        b=IOWh88T2Jvvqjdz2zd5P/ygXVLSi0xLHORJ/Vh920OYuqP2MBRFBDGA7ZJA994foot
+         SGVHIfRwgqVHPQYv4oVXkV45cLjNbaA7ypHUmLvJgUsBbjDHISIePXiVyaWD/G/4re5J
+         RS1WEof0iHSLZQ2Xfum5KSPG2ak2JVBfIEz26Oa8O7lKWw2zHConafOH8OKcBHDU8M+B
+         yBQpZNW7+fHh2ARmWC4Cnrw0SafEi36Vr8oRHn6rxp+a2/h8jacnD+mrxGH2xVgwgsB+
+         4gqbY/Vb8r1xV699uQFv6lBMaHQeYRNJGDx+E25WMMxutoAEAWXtUvKMedTovQVpFPID
+         oAqQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789482999; x=1790087799; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=wMRn/ahkKA5Dzm0qrPRXaVCV5b26ohTvkifPgSZR0R8=;
+        b=YANOEQP2B9hZdXVMdG7k+c17qf+j9RMa+sVYUME29m8a5ebXXT4bC6E8RyXfS42lwR
+         rw7CCzMSx4zxJ+0GHtPYysRxWwLgE60fkEvFIpVESMVChybxr+LvCQev4fhPC8+EVvqC
+         RRGwho00xVw55+ABlQd8LOrcnrVdRyF8KtxckUsVpGimVHhFDIJWrfL/OfWxftNpHqIk
+         mnt4tWVYwjmlwu2wKIKIcx1iYK4TVlZSuEPNHxz7yvDVuRRrUd3R+wHgNgqg1GxPBUSE
+         R0rGRUDJCWbLEDHHn8gvnfeHTE+UQqp595xF09CAMrR3SyJIZJzXmZRavN9nhV0TFR1C
+         JsrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789482999; x=1790087799;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=wMRn/ahkKA5Dzm0qrPRXaVCV5b26ohTvkifPgSZR0R8=;
+        b=QVCLjVOFS6nDb0Np3l6bU8qYcxxpwNPQemlhrDfQKqy+XBhoqugYNOaXEbHlJooF0x
+         IRKl24cjS+2Hm9MYsdZvbyIP7IHFFUnQtT6Jm9FlzhdI8LTQG2oB08I7E0R0pzrG9CvO
+         kn/yYEtqvP/LZM5/NohJQVUO7FAndh84RoyC+9TRiqm1/Gjyb+azQYEcXY29/njIsk2r
+         hHqMUfh9uXwFti9k4xP5TO3xjJspHFk4asa1D+hXZqdassvZ2W51TV3yZexyPtq7eVGD
+         OdKUUT5E4Om6QqugDdjc1+n8LJsYDcznA5FbUu96X0cxMCylgJxnKGoh0+mE5eCIQlw3
+         6ArQ==
+X-Forwarded-Encrypted: i=1; AKwUvByqXA+pSQvOjSNI377WgbYswwtml6lDlzmGz73TCdHEtWCfKQ4hrBRg6jPHBLOotGh6VhSDNCIFDA==@kvack.org
+X-Gm-Message-State: AFuF++luZjcsAZS9mXcZQJi7CE/umAiVryewgVzevMI18e8KoKd9u0I3
+	voMVVZ3suA1g1YBNnbMqaD1lPUA23MEyEyHf81LpMJgYHag8BdRJ2VbNoGNqrfaFYR8FxJqdhL3
+	f7Ck8bZXJC5wN/zaRFeBGjSsi8bB4Yn26KpZt4349
+X-Gm-Gg: AYBFou00JWmwsoQEKVutyAhpaCIswGceO5Zlov9ds021NI5mWiFNV+U1MYzo5ZuIyXE
+	6kuoEZXLWWDt/f34vMd80dNSnHqTcxWm1aKblR2bMsTIk8spc9M95kwrMc3uOH9yCKk/nXbNsy5
+	seHUfmBhiVNzmgt+MiEfZVCj/NpZiIol6FDw+F8nUnWkx1KMPHuu2e6H48tplHX92RdvApYGMlh
+	3vogG0lx3+sn74Z6Dh8IdMI6RifRf0lS1sss/R55esHu2Ue/cFiz4FhI8vLi4aaWVSdmSUgzzel
+	OWHRtPOshe4unHRfNLdZsE/j0G8mxwFfYi1w20Y9sCMtj2u0j3kuOPpJnUkm6KRrKWsYaSluBNq
+	RwuioKyhn8B8=
+X-Received: by 2002:a05:622a:5148:b0:527:f08f:56a2 with SMTP id
+ d75a77b69052e-5311a698b88mr18698561cf.8.1789482998727; Tue, 15 Sep 2026
+ 07:36:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aqlI264D-PxJzPWb@gmail.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C419440007
-X-Stat-Signature: 3e54ztsy1587uxwq3tngjhdnspqy7xwn
+References: <20260817062726.106511-1-hao.ge@linux.dev> <20260826203914.347c42aa00081ee9e0eb858a@linux-foundation.org>
+ <afa606df-3d5b-47c2-9972-f3e0c2e13c12@linux.dev> <af33dfe1-04ef-4bfd-8c79-0593b24c6bdb@linux.dev>
+In-Reply-To: <af33dfe1-04ef-4bfd-8c79-0593b24c6bdb@linux.dev>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 15 Sep 2026 07:36:27 -0700
+X-Gm-Features: AcwNN1WtW5KqgGvhvlIri8T39xiLzrD7Zw5VwjZHMceFUigk0u27nHuuawn3KBE
+Message-ID: <CAJuCfpEUYztqobQDHt9GwJZOcn5JrOs49a+8AVpu_ySUG_KkyQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] alloc_tag: fix a leak and a deadlock around shutdown_mem_profiling()
+To: Hao Ge <hao.ge@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Kent Overstreet <kent.overstreet@linux.dev>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1789482935-161581
-X-HE-Meta: U2FsdGVkX1/g/uIdcmSmf3xzyxWYbLIq+1Vg/pxCk8In5Y3/YGibWLHaGZMgGTuqfvwNBlNlM1u0TNn6tGvPLB5CaDPHjOTOkC+jPIP75r5737erQfwS+Aa5SWQLzXDRnM6enY2IMkrV1oPg93xBHYgi6no9GY+P78u1XOiqgMgDE/FynDTkzNn4wU8+Z+43y5TUVZLVWDfXe3uuEopQVOGcYwgjwVxZwwvz4/qRTQ0w0nlsjSjYavVbwgPLhZfyQc8LN9hS8NHTtCWNxDooiuNpl/3am0nZW8IHkob3r9tBaNIGce3LorDmmyWcqavVdqiTpJ5Y0UmUXK94Op48sOURggtevHre24jiEQ2oDrliNLdoarcC5PYd7HuezuWToQbCLofbovHQDjwVB+KqztC2A0zLqXB9TMi27YoLpZkebKlxRNPtpdbs5BJfUVci7fPKGMdImkMRj2spTs+az3qUEsUjol698j7G5SJxH8VarYbsknLRiG8WjD4rg0JbjTcdgLEbs1xHRTfcdEP0oG2+iZqMDoHY0aYy04iOqaWnZrBiUv8p+3PZDZmW8BSDEHCInraXNuH6tpsZ9FUj/qsebSAJNGVUkJRiXRjOxyDVY0IoUQGBGXY71JcIO09h0rB1x2kUshYb5TjOd697kNbFGxkJRtqG385kA0ugWm42zHQTne24OrU5bhMldWs0gH6kRee1BoVGUjItdmQZuNcn8ejCPV53hvsmSLzD2yQ2zqFJ9Pzv5vpntylLiK26xThPDiTgMXzEd4ADkOId1M6sHXJ37eUhXmlrj/3LehMukwkttTY1QTC65VJh6oLZ8xyvs4t1qhIbo9fTC0Z5sqp5xunJ+HcfdA6ApNyyXkICULPhDRdI1x1G8naVtFdfBLdb7koUIKElnhpf839Ev68UUSyqQgdqTVkdfkyQKQ7ayIpTXuhivtD63+Kl6AZ6j2ytcJYPnzfamMbKofu
- fSTzaaVL
- WbY+G8Cnpqbee3bZysVTWOg4dFZZ8clRu95/0tHDrINVhlRo9avflZ35zTuaz3GseHdFeQu8o+ZuFd7XQqRd7RwdgfWJciNleNOKHzLQmthp1uWDxg/9gHVAkuC0ExTAsN72fcg0KTRiRbq3Sr0neIO58RerBdGO1tfpAzFdmNJsAZZ0OFv3OWSaiHQXYcr77+t2u8ukPp5ZZaof3FLUtwlV7fr0MG4t9yHnKS/Q3BWrxEEhrubQS3DQ7UshboijfGz5QsghGeehVu2pqyp9A4AJpAKEslXuQ5aiB2hzEH3U86wjHvU/pVi8GdRsiVViZ2OgRajrcRNSMn0E7N8bWLOTs0x9KKjNLqBYm
+X-Stat-Signature: cpqzxi9911uckimho1yfjkz365mxp5qn
+X-Rspamd-Queue-Id: 493992000A
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789483000-740927
+X-HE-Meta: U2FsdGVkX1+oQH2/hbcvPraq2KnoJVbRH7TYVCb8lcvz8rjoWfRFgqfFIVAp1xvyC5tdVzU5XrASj2Q/tSt83kn4Se1BPeNxXGcoL3fVlmjGl0IITtTveONdMn12wZJgE1NUXvkRUdPx9B6DIfH8iI7RLt2TIWxZoy03CO4aG93FEd3rnacKcfRWIqHcxA6VGXgo9Q2HCkGs/ZTuB+9o7OalZCVbfYHw7wGBoEJzf8CT59xj4qDaVgu45IYfLMffPDGNO5AHx13ZkGPRzK+jwr99Urv931jZIIbxiAFtuiCBfc52C8CBMUG8x5yBx6sCzQg98Irxj1k+dMSonf8KrP7LNX8MfCkVKQYGKjzL0r/re15YVJFu/mv5+ho3Q0hlWyPrI4aKK7oCFbYIHSKl9oPKjVBWQ4mtXxwcRVUxSHgJazm9ATO47lSCf5zZ60dxPuA2LxaEM5mmvPq+xS2CpG6OPvwg1qp6tAi9rB6XabfLkJz7YhEX+e16Vn4gIlHMz8dSQpYDxzFAqzlcbJOSj4zMZMVGGOa8Hl04OPL+1Rn4EdzbpRQLM8BcMDXQwtV8XiLMYOqUcplRX7zmNmFQtuy+mFKTeCnYtsS1yS3PvP50B1TuTnGNcOcbY+CSsmWhEFIxlsyxuDonAQjsZ8fldvkMs3QIXhGMOm+vPzKb7DjI10j3b03J2EtzdgnypBGbFmZZtKXFnmIzJOBrTTxPrwc06MYWwfUapmXgyu0CEch8ADc79/B6cSqWR00471PpcRR58/SOYBqSJqo03wt4b0qyeEi6aAobpJB1vvGpUAtahq9UQ0eGK3zckCPMSgA1YLNTIuLv4fDjO4WIpi6j+Kc6UEgb2hufsZKjyko/k8Lco78nu+GW2fdxHAkzQ0RPwD0e5QbyK6KL7Q8cttVJB8Y9YfJnqCAQwxp7+QMZ48pdS6wYGZXNx7zrBbpot7vvPEarDrC1WJLoVXkF+B3
+ 84LMItMi
+ +scTHgLxjkVeSoBfChnp+YNXsaTCenZyVSmhH7V0B2ZX0xc6d2I7Erc+falKYk0bHh3ZNyIRBVbfJSe++YGPPLB86rpG0htnmkE8/npNFqOI4h9R/M2j1Fot0f1Ran6tpC3a1hnHJgvB/hToE8OzW6B9IQrLMKsaW8uqqbXGSGlL9sxPHT6dEaHTs/0jv1Su71IfNwW369Sd0SDcAkwqYQ1OzyIOswRL+F8uEWa5QPGcue4X2sTs9dWN8bPo9pMVB4BAtQ0N/k8t5zWOw8RJs1ZBYhiExrjBWoOu7n+nfODAm2EqeXooI3xPjFVI1u1ztLfEsbIIQclF3vNOgboVVStE4fCXYH83X7mrtgB8IKBG1dWA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,42 +141,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 15, 2026 at 06:38:47AM -0700, Breno Leitao wrote:
-> On Tue, Sep 15, 2026 at 02:31:38PM +0100, Harry Yoo wrote:
-> > On Tue, Sep 15, 2026 at 05:39:44AM -0700, Breno Leitao wrote:
-> > > > Also, I wonder if some architectures have a scattered set of pfn
-> > > > ranges so that the span from the start pfn to the end pfn being much
-> > > > larger than the actual physical memory size.
-> > > >
-> > > > If so it might make more sense to have a bitmap for each pfn range.
-> > >
-> > > Agreed, having a ->next in linux_efi_poisoned_memory is a good idea that
-> > > we can lean on depending on whatever problem comes up down the road.
-> > >
-> > > Very good point — let's keep this linux_efi_poisoned_memory chain idea in
-> > > mind for whenever we need to expand it.
+On Mon, Sep 14, 2026 at 7:49=E2=80=AFPM Hao Ge <hao.ge@linux.dev> wrote:
+>
+> Hi Suren and Andrew
+>
+>
+> Update the status of this issue surfaced by Sashiko.
+>
+>
+> On 2026/8/28 11:11, Hao Ge wrote:
+> > Hi Andrew
 > >
-> > You mean 1) keeping the structure as-is for now (and expand later with
-> > new EFI table version) or 2) adjusting the structure in the future
-> > revision of this patchset?
-> 
-> I'd say option (1): keep the structure as it is for now, and only adjust
-> it once/if we actually decide to implement the hot-add use case.
-> 
-> That's exactly why I added the "u32 version" field to
-> struct linux_efi_poisoned_memory, so, it can be expanded later.
+> > On 2026/8/27 11:39, Andrew Morton wrote:
+> >> On Mon, 17 Aug 2026 14:27:24 +0800 Hao Ge <hao.ge@linux.dev> wrote:
+> >>
+> >>> Two fixes for issues reported by sashiko:
+> >>>
+> >>>   1. percpu counter leak on modules loaded after profiling is disable=
+d.
+> >>>   2. AB-BA deadlock between module load and /proc/allocinfo readers.
+> >>>
+> >>
+> >> Thanks.  AI review asked two questions.  One pertinent to your
+> >> alterations and one pertinent to Suren ;)
+> >>
+> >>      https://sashiko.dev/#/patchset/20260817062726.106511-1-hao.ge@lin=
+ux.dev
+> >>
+> >> I'll queue the patchset for 7.3-rc1, with a note-to-self.
+> >
+> > Thanks for the heads up on the sashiko review questions.
+> >
+> > The question on patch 1 (codetag_load_module() error handling)
+> > has two parts.
+> >
+> > The lost error code issue is already fixed; I sent the patch and
+> > you queued it. (Thanks).
+> >
+> > For the rollback part:
+> >
+> > I've also seen Sashiko flag this same issue on another of my patches.
+> > At the moment this case can't actually happen, alloc_tag is our only
+> > registered codetag type, and codetag_module_init() cleans up its cmod
+> > from the idr on every failure path, so nothing gets left behind.
+> >
+> > That said, if we ever add a second codetag type down the line, the prob=
+lem
+> > Sashiko spotted will become real. I will follow up later to refine this
+> > logic and make it more robust.
+> >
+>
+> Daniel also raised this issue
+> https://lore.kernel.org/all/675259f9-c093-439c-a411-1937b23ddaa2@linux.de=
+v/
+>
+> I do have the relevant fix ready locally. I plan to hold off on the next =
+batch
+> until we close out this recent chain of fixes. I'll bother you all again =
+when the
+> time comes.
+>
+> > The question on patch 2 (async /proc/allocinfo removal racing with
+> > alloc_tag_init() failure):
+> >
+> > When I first read it, I think the window is unreachable. It requires
+> > alloc_tag_init() to fail after proc_create() succeeded, and a process
+> > to open and read /proc/allocinfo in the gap between schedule_work()
+> > and the work running on system_wq.
+> >
+> > But CONFIG_MEM_ALLOC_PROFILING is a bool, so when enabled alloc_tag is
+> > always built in and it cannot be a loadable module. Its module_init(all=
+oc_tag_init)
+> > runs inside do_initcalls(), before /init is exec'd. Failures inside
+> > alloc_tag_init() are already very unlikely to happen. When the failure
+> > happens, no normal userspace exists yet.
+> >
+> > That said, I realised the fix would actually be quite simple, we could =
+just
+> > move proc_create() to the end of alloc_tag_init().
+> > I am not entirely sure whether we should do this though.
+> >
+> > Suren, what is your opinion?
+> >
+>
+> I've been thinking about this quite a bit lately. Defensive programming
+> is always welcome =E2=80=94 there might be edge cases I haven't considere=
+d,
+> or scenarios that could trigger this down the line.
+> Furthermore, if alloc_tag initialization fails, the corresponding sysctl
+> entry serves little purpose.
+>
+> Besides, I've decided to fold these two patches into this series:
+> https://lore.kernel.org/all/20260908092412.115953-1-hao.ge@linux.dev/
+>
+> This is because Sashiko keeps flagging this percpu leak.
+> https://lore.kernel.org/all/20260908094736.2B1A61F00A3A@smtp.kernel.org/
+> And patch 1 addresses exactly this issue.
+>
+> We'll fold these two patches into that series and let Sashiko run another
+> round of review.
+>
+> Please kindly help review the folded V10 version.
 
-Ack.
+Hi Hao,
+Sorry for not reviewing earlier version of your patchset and thank you
+for pursuing this. I saw your v10 submission and will start reviewing
+it. Due to time limitations, completing the review might take me a
+couple of days.
+Thanks,
+Suren.
 
-> Version 1 (this patchset) covers the common, basic approach. If down the
-> road someone sees value in extending it to other use cases (such as
-> hot-plug), we can bump it to v2 and add a ->next field then.
-> 
-> What do you think?
-
-That will work, no strong opinion here.
-
--- 
-Cheers,
-Harry / Hyeonggon
+>
+> Thanks
+> Best Regards
+> Hao
+>
+> > Thanks
+> > Best Regards
+> > Hao
+> >
 
