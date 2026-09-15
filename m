@@ -4,91 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE624C88E53
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 07:13:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF15EC88E75
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 07:13:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC2986B0088; Tue, 15 Sep 2026 03:13:35 -0400 (EDT)
+	id 150D36B008C; Tue, 15 Sep 2026 03:13:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C4DB16B008C; Tue, 15 Sep 2026 03:13:35 -0400 (EDT)
+	id 103276B0092; Tue, 15 Sep 2026 03:13:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B13C76B0092; Tue, 15 Sep 2026 03:13:35 -0400 (EDT)
+	id E969E6B009B; Tue, 15 Sep 2026 03:13:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A1116B0088
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 03:13:35 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1FEC5120357
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 07:13:35 +0000 (UTC)
-X-FDA: 85215131190.18.ABE08AA
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 6A634120004
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 07:13:33 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=JH+F0eXx;
-	spf=pass (imf29.hostedemail.com: domain of orgads@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=orgads@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C0F476B008C
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 03:13:38 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D9CF71C1F60
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 07:13:36 +0000 (UTC)
+X-FDA: 85215131232.25.D7084DF
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 14A1F20007
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 07:13:34 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=EHQ9HP4h;
+	spf=pass (imf31.hostedemail.com: domain of orgads@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=orgads@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789456413;
+	s=arc-20220608; t=1789456415;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=3/q6Adnz7lpVRwZWpJQefNRmiB7gYNF+Y1dkZ8i2uhk=;
-	b=KaWBVpm7AT2c7ZErx18KsrwDxxoOd6E/mjdAYwA68BEQMEUggw/oZSemX0lSevyJ6/vAVu
-	nKnJMZvXzNJvqX4Q70kpP15jpNHKCGJZqkPlDcDEv5cW+WrCWlaKE1pKZOd0wauK2b2R+w
-	Olc7hNppfxCZ+kR8ol7Rv4GO+wSzSn4=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=velMxIt+642lquxYVKbrnSVvPRt1SpQzIuYolRQYJw0=;
+	b=yn9Y+WnMWn0LtIPBDgLB7sNdYibWAUbEqlcre8qLtw9z3z2KiylVVxmRRazwRuTWNZjAGH
+	9dGjgSzVzb47CvdzzsO9wF7wbda58rGKoSYf7JKLYToDn6cv660iJMvx+9ROWIGfkC3IoP
+	JbBVwsvTWw5IkM06oE8uWIL6zxL8sik=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789456413;
-	b=PWzQdA14RAUVk/oNlc5bG5PR33dZeAaD12nM04mX0InJEqOwqTDvRljZdQXbxyaVkgajeL
-	NJu6UviSR6MpfvN3y7HT85LeHathQUcIb5+BN10MZ+RgIrc8fp7MO6lPPTAcwCHsnCK0Ih
-	XIVXpl9RvAdLPyW5d0FVgcyS70aHwkk=
+	t=1789456415;
+	b=CQJoChE7aGlHX4jzqsN7jOXZffGXtFpWTz+rPpmWxDW28i/FUo5XLVIdcWdk6wsAtqQc43
+	tJR6m2GThzpOvwKNpsx6jgNR8wo+BRAkPY46MfdBsL5Aj5xbglS3KlZHpiQ5G9zRo5AVKu
+	1Xc4TdAnR1RSyA1sE3rT9Nd3GWbIfhk=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=JH+F0eXx;
-	spf=pass (imf29.hostedemail.com: domain of orgads@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=orgads@gmail.com;
+	imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=EHQ9HP4h;
+	spf=pass (imf31.hostedemail.com: domain of orgads@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=orgads@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-49e717c9841so16714125e9.0
-        for <linux-mm@kvack.org>; Tue, 15 Sep 2026 00:13:33 -0700 (PDT)
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-49e6bad7b79so26302425e9.1
+        for <linux-mm@kvack.org>; Tue, 15 Sep 2026 00:13:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789456412; x=1790061212; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=3/q6Adnz7lpVRwZWpJQefNRmiB7gYNF+Y1dkZ8i2uhk=;
-        b=JH+F0eXx+ZKXvjICYKhz5Hj7FRdBf/ndQwjLOWeuY3MRXLIQb3BlC49oCV6E2Pr3fG
-         02ggDB5nYX36YWRbuoe35jIV9rZ3p8XSaQoh6oERqdflLsH9doRIJULLcsGZOn4kvxY+
-         KkRSjtz2AS6SJcVt2zMQf9oOvjkUMs41v0nv/R/Ejv1bEDNowU0Z2WYt8CQsRyKYlIf9
-         SYP1KbVeeBErUiCflLu0hYkrPPtdsJ8uHdvhyuBzsNXopVSoUvOOSSTi22wuoDYetvBz
-         zdbbHR8a7Zk44SpNMTSr3d/TNuj78gtFeq1Qe3saBxdEcUpiUVgDRyV11NjO9TWD2wVW
-         fbZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789456412; x=1790061212;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1789456414; x=1790061214; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=3/q6Adnz7lpVRwZWpJQefNRmiB7gYNF+Y1dkZ8i2uhk=;
-        b=EVW6vv63od5L1+KZnyEGMHw8BC2gqwo6mHcGOicZlNKr/g2WV1gC5piV6tjh/ypqzZ
-         /7Ls1Es3sN1w+Xsv6doTl7Mx+/IWKxZSesADC4IjfVy3dlnVwByvkhhhVgBQfj6eNwIX
-         LEiWuccl7/nZr4LKuhr3BfLXLQBegykIZ1m/8ag2YepaKtxcr0wknIShlrwmwr/YTNK6
-         pYgdQt4JvPGPQBuJy10YEUfao5dnIH3sbn1PUCzQx5vcYxisNBBxvbtVleR4j5vq4TgG
-         PHVU/DYmBADRDrOfPzYm52KAa0JlzK/g2/Oik5uCDAyrXPGGYmCEkGFr95pYfHO21VVN
-         0gcw==
-X-Forwarded-Encrypted: i=1; AKwUvByiqP0kdfvl3LHFNqRLWgw/cuz9/PBX+4JphIUFM9fVTYiZRnchflZ300drHg5OxgByrsg0u6Ehsw==@kvack.org
-X-Gm-Message-State: AFuF++kr98VSCdQukaCtZxZ97OS/JLWYOr6e5aRiazChLOZufwqP9xjg
-	T+mFKi8H4jAQKu6ztBgDTQSsYgSOyfIFMjuEWwTceN4S+Wl9OYpxvO2y
-X-Gm-Gg: AYBFou1/pkpLnSIfYEhqNLK1vtnWhZzoS974xqIQiTWqQOLltyk8j1TpDZQIV3uB0vI
-	a4HSDSUYxWgd+brQf38szK3SllguiLodFmCVlLyEuTlCqztJDSD6p/zLBv5cWIa42CU2QL+UkbK
-	tgn8iv1Jv1AoUTxrRAEzwbsjf48sjDN95WzN4A+AivYlWvT7B36o/ziWt5gv/YQFwx9ln+q2f/P
-	TYlqwmqBSkjdnziVFh6ENe0+itYr6ecbHI09mRCCHC5mwgMRBYkXzu97GQWJ4rXIPsKQLdtqt0o
-	gAx9Gqy4SXDZ/B4vHMaRVJBtIUrmIzozIE5gb3TXHukEzP6jewCsuEwxksajG61D5mpA5y4x3XC
-	SoBGpeOR/5AsejV6EM2KXjELRC/jBwAVdAfVDokljzJ1NVhKSuY080qnsj9rxVeRg87s1+IjDgG
-	yWDB5AO9Qwnb7UTynguWXdtEXxmGJkImp47N+hOcq1vCOnrZxvlqZ9/J0e5F1sQl0btV81tpBFW
-	LwnTpfjzjguppsFyqA3Hs8+yIwUC0tM6wPWA0ilTgZm0KIh1sd8Sbgvs42y7vbrfENH1mA0mVwB
-	ymZc+cUYKLEAkwnMEg==
-X-Received: by 2002:a05:600c:3586:b0:49e:747e:c00e with SMTP id 5b1f17b1804b1-49e7a64e729mr82091545e9.9.1789456411633;
-        Tue, 15 Sep 2026 00:13:31 -0700 (PDT)
+        bh=velMxIt+642lquxYVKbrnSVvPRt1SpQzIuYolRQYJw0=;
+        b=EHQ9HP4hNFOd7ga7Xw3YdDxiHMXsPVxrhdg+pUTc6aM9Jixdfrrd/ee/NQxOjV3keU
+         bB5lW6h49hPdrqY8jK3Bzp8XzGzfvgWACR2OVF6ubYBrndWsIrSHBkP4S+GrjIjEMKRY
+         oaT5cReXt8TwFewWCuWKdgkDkyyBhW4pnWuu+Crk4PzHHZ5vQtL/jjrgGlNGLfywCXP1
+         D6GoP/LJQwKwiPvY0y2Sik8KYvcXFvkWYXJBvcUEAtmcpMH5Cp/U8vrSBYLBXZFNk8PJ
+         Z/S2lWFAlsX7m2XftJpHver+O/lAbUEMUp3tJ6Xuo9u3eCLa58GbMfQ3y2DRPqGRplTQ
+         HNBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789456414; x=1790061214;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=velMxIt+642lquxYVKbrnSVvPRt1SpQzIuYolRQYJw0=;
+        b=w54bG9IJVbA4xupNgO/JgUhuCKMqNRu6OJnHanTQguyoTeNhj6zwG5VI91nD+cQm8i
+         IehTY5ulIU77pjAiz5ramad0JVtOUCA++AiCssv4g4Z67yOsDq343YyCgbrz/qVqD8pU
+         PrdAe+CEP1U3NKJv7DsR+7TOw2ujI0jJwzr1Wjd7nxSjMR4UhsOv/IJ00NjlhLNI4iq3
+         W+XzZ6srhMjuOOZGRWO++sGBZFN5q545nICH8TqvMw7z84rq0sNRqHv2puSQM62PJ/z1
+         TwsLtQGh/xqSJ1GWUEpLgD1ow4LOLayQwTXGn1HhKqJeyn4AiILvuDK+pN5qsEShC3TU
+         czXg==
+X-Forwarded-Encrypted: i=1; AKwUvBxsB2T/05ryF81fZG+T/7/mioSlE4bZXdkuxkeqDbnZE+hJAkAAFEN6yeLkwIxyRyUqs90KMV1wuQ==@kvack.org
+X-Gm-Message-State: AFuF++lYizRW/nPkAUdkn+NL4OU3NLyygNq2HnfwUnJsUF54MHqMeDyX
+	BidkzmisTKDK4L114Ij+VKGmpzrtu6Ga3A3ttEIogsZk7r1Wf7M8Sy4w
+X-Gm-Gg: AYBFou0lr5vtre7aH+Z/Dwxhbim5ODbkmcWwy4qqP1K5LDNQowhF/Xv21c9sAyZabgb
+	4ILO13jmhBaZL95zMgukRXhx+vfmPUhqNu25C4B83wOeKEX8XP1aLHDKT8kPC7RBWHuDyc1bujW
+	3OgwR+Od5KXztm9hmthH0Ud1kDxMNYapYJ3Znqg4flMDjLbtPTMIzEptw/TA6tyRRl2XPQo7VXm
+	Q+Uf+t269IrXQZsbmwt1PjlxkqqyuACNTGLQpBmRC17dyB4bT2Md74lu+kRSC8cOgRBYiDyPNwT
+	d1BhuDmmaKRAydcCLvhvJ11l4z6xQWP97X1Z2poyeEcH8V9OJaUshakb+ClKL87q6GTOrUX0EXL
+	3NyQvc3nFiR92A5+la41wXaz/n18/TBIzohE2+LvGZQrXRbrs3RY8Zybm3o6Xpyhrz3/hPQsZoN
+	OCbd69pV/zBY09nUOPaxRtjQiG8vDiNXsdtQVr72sqm4gpE577dNXzK88wrHr/Z7S74oNLRiARu
+	DJhFB3V4NvdySeTfH7LaJUT0hq8upEHqTxpWXHmDzeONILGdFzWNUr8CtzNwQ/pndGgdmXQkHJ9
+	7heIeftlAaa9I9i+
+X-Received: by 2002:a05:600c:4e4a:b0:49c:dc14:d681 with SMTP id 5b1f17b1804b1-49e7a63a784mr80413585e9.3.1789456412284;
+        Tue, 15 Sep 2026 00:13:32 -0700 (PDT)
 Received: from center.jhjvjihww5qejoy14qwv1cc4td.frax.internal.cloudapp.net ([131.189.143.225])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e7ef735cesm42941345e9.6.2026.09.15.00.13.30
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e7ef735cesm42941345e9.6.2026.09.15.00.13.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Tue, 15 Sep 2026 00:13:31 -0700 (PDT)
 From: Orgad Shaneh <orgads@gmail.com>
@@ -98,20 +99,22 @@ Cc: linux-mips@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	osalvador@suse.de,
 	stable@vger.kernel.org
-Subject: [PATCH 1/2] MIPS: mm: align hugetlb mappings in arch_get_unmapped_area()
-Date: Tue, 15 Sep 2026 07:13:24 +0000
-Message-ID: <20260915071329.15125-1-orgads@gmail.com>
+Subject: [PATCH 2/2] MIPS: mm: do not write a huge TLB entry when the probe misses
+Date: Tue, 15 Sep 2026 07:13:25 +0000
+Message-ID: <20260915071329.15125-2-orgads@gmail.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260915071329.15125-1-orgads@gmail.com>
+References: <20260915071329.15125-1-orgads@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
+X-Stat-Signature: tz9q6u9aswwb6w4tfo13wztnxasdwm1p
 X-Rspam-User: 
-X-Stat-Signature: 33h76wkwrn97oszkcy16yrbodxegsj3z
-X-Rspamd-Queue-Id: 6A634120004
-X-HE-Tag: 1789456413-565549
-X-HE-Meta: U2FsdGVkX1+tL7WmvIN8x9xnjG6TEEGlbseVbqy7QQSYkUnRuMJ1xkt24IrbQZeODyyJZ0I70S7CJpYMv1RRQlPvQrced4K47a8hIiAKKPMAPaOosUtwmT3PHJCXRz+Ez+gMpRmmgUM+pjH9IQpmSTDQBDiBAT/dXZMtTEZEikyqAk7vvHGfbqTUxn8RZ8D2QPy81Qf+3xTqj2qpFJ3hFJZwDZYDd+MWrc6LlC22jLY2xL/QeNCzvibTszuEJOtgk4Yn306+eiNu1NPZcOmKSotJEADDCWdN/XxXHZiKIYNXroA5rnYt9GhTwaCwKdq3IaU3kkCf5+S+77DhVZ1+I32pwusz0+a1ph6x222t4enBOXMMcIE0ETpJFfx5PgJBJdwVYkx0lcmBTUyEbAc9meB+CukCDG1wiJkq0zWgIWGQsoBdqf7jKTZuCA0y6QZhRP3lnFmE0kZvg2vfI5RpZL0YlVWhrsTOqeLSEjCQ+jsigs1qYe8EA8WV2IVzo+j4f3jGywrn84RiJy5bNNC/Krf4FKap9REX+s/4/URkegTJpLIw0ZtM5H43mDGWjH3Jzi7QdW1b5r1Q6W/sAcvRJyyIHocWUV9hFeTkJB5zoaUONV9cQdNgh9PDJrv1AkcvD4Q7sciyRTkA/+saY3GxYZknKABdzmpcE3vyJ2vjqJgOAjMhoZ9PmYyeE1UbxGTS02KNQBfADbF1LCmEi8EqcwSUDzOCLA8KPJa8Q9sRzNicOt0A6shS6x0YWLER2wqp9/grs7zVXQ0TVkhKxFP7gB4nSE+mLItRQdJ1+yoZ4SXOuwPBLHkZSL0Br/2MgG2J7lsbvx0EOxAHkfEbsbmb2STDKG5WqIB2aNLIluWCRwU3BQzS+XbwoawlZmLVcJQIZaW/Wr9eTVWeHgrEKb5LK0OIVpykYY+8fcKgNGUum5C6Cha6gst+b7Q3NHLn0v39ZzSv56JnGgkP5PbkR9e
- f/vOTszT
- PdIEUxYW0ldNojZMO333qSX2QeJZV+lW+MaQlknPNL7CsDHNa832o2h5J8lAeOGy9ixR0iaVIl1AET5NBCpsIPXDUBBsAFIGKbnyvEvY+D3Gv/KioFTfs28Bc86Xv8XJ8/HwoMGfZPWkXSjfx8pBiVj+kAVNQmVMRxIVnE80cl3xAuk1B8MFYqegN+nv1eyhmqQS2HtxJpsm2RKiP4JvtcJOmRARCfH/ScHHS3O7VdGaxwYpnYX6CtwyLgWsqT9YU0JEYJP4Mu8JGvyYlpTkJ2kDAfJZuPKyuUXgqansyEIG3aEvo3mVEPwOcGJpl+ivfE3daAGJAyEK9AfmBMAo9/TBz/vBPtbV+F+TNs5t4NMcPLsdAkYmLOtqkZK4qCiQuhLpBlmVYFhS2+PoyGkQgnQQY8Mu7F3ItCD77Wa1kLNtqVnhth6eEp/f9MKSPVkGbz6Z4QALMudxdRorZfHQs6toRVHwRUXS9Troa
+X-Rspamd-Queue-Id: 14A1F20007
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789456414-9109
+X-HE-Meta: U2FsdGVkX1/5p3qyT1Ugo1rbmsZmf4j/EJ0MWKsjf9pTtQ2jUHtwT1NUUYNhzbFitgNyv89SZL6CgkBPh6eALJg6gcdRe8ejA2iWyRlsqUadeD6Ok1NDMpIft4BUYrFKqY2sNM0NyPfytUywSH3wdMhkf7fJyRGXA3yrgy7QwUPaX2edND+NaXMdrsAU0gedQxsXIrryIg2Zy+DPSobtXXZKsCBuJ5Kow779FEqj4Q2bPoI8CgHqaeXCMMvA50N5gg7n/E2LuM5a8h1HGjnT7w2d74dXFqkYS9/TyZQ7RhWKuh0/y2eIYHZXDDKYzvglNUDALSPzSLYU6Z/HMNsUGVpsvJ3St6N/12ffyJIhM9UqNc5FcA+icv+kuQaJcvkv/Snd54r+a/NU57XoEJ8HLYRB98V0wYz7Hnxydq2H/1aLL0xpbDFos5iMNAeB7NqgeJrSCEM81eC17sywPiqrhnBG/j74kGuzQdG/RyeBz9mdUWJvfq7UmbczoWr1dEF8+/1n75xUuc3h+hOFFbE4x2Q3ea2o4PYnj5Ju8zVaSI4Ijw2nJR59UJkzDtnXgywLMx3ZmB14q2ODCTfsVkYwL8ueZ6e/ilGi6/f2cackOV/SpjtBN9Tn8JtQy+wu7sEBaMtcspcxUAYTkwBYCgtMGSoHVsI1bEH0+ngk0V3nf3abRBNXwl52QziQw3SEE8N7l2y+J4xKkwiTimIIEBP8yVIUjOWluN6h2coGi68yB80mV3uHytfwXevL7lFAVJQsbdojZRs9Xl44WRvbwOzvHhGhV2G3p7vQfRbOtLaYNntdO3sGkOHk4VB9/ZTarLSn3Biputt2AUe0Bh/aZ399cPpNZQQIFVDf1qDjZUl7Pp6k6TK2dkTJDukVjuFtfvZ61zlH5KjoAVjDiTW3fMNeYRoKB3eZkTIhtxl75vlgkmGUyZAzaWejz1XnUiO+9hsaX+6hrtqsOvazUgJ4bBZ
+ 6XdQ+w4d
+ VznV+1Maim8H0HPMeuuc07x2SeXMq8fptb++t88B43Dn2fYF9dl3QYPxvnKCsKY9k2Biwno/LA+7/NplWsJBxj0nXtOez3DNezh+6F7QE7QM5XJTf+Ghs4rzzezDC8fs849XrlCaphaoZ+v8OZapF7PPpp2LeAjJB5Hb0Ux9eByxdCAYcTZO6MhhLKKnPcl3pZWT8dUczYVnyNC8x62c8QtiNkFK/QYxGkUw682HM/dk4vfQbIgdjUx6ZcVs9q0KpxvHLnWc+jKg/T2u6gW6TG2dZtH+Dj4tWSWSRed7x6FxtKnJWpjMYEfVxwERWRwEsz66cgLWdhi1ineGSeODfSSLDBMSpV0aloYgFrRHSbptqkW99+LFkKipkU5cUc8HxMMJO5282CqKtjvwFRYa1iVfoBhEdu5w6AuphnU3apPL5TvkIH99r3ZXGozWkmruOGmstCzS4t3Bo7fDTn73mRfPwxw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,57 +122,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Since hugetlb mappings were made to go through the architecture's
-arch_get_unmapped_area{,_topdown}(), every architecture that implements
-those has to align hugetlb files itself. The generic implementation and
-loongarch do it with huge_page_mask_align(); MIPS was left out.
+__update_tlb() probes for the 8K pair at the address it is given and,
+for a huge pmd, writes the huge entry with tlbwi at the probed index or
+with tlbwr when the probe misses. That works only if the caller passes
+the faulting address, so that the probe finds the 4K entry the refill
+handler loaded for the faulting page and the huge entry replaces it.
 
-A non-MAP_FIXED mmap() of a hugetlbfs file therefore returns an address
-that is only SHMLBA aligned, and the kernel then installs 2 MB PMDs for
-a VMA that starts in the middle of a PMD. The consequences on an
-Octeon (CN63XX) board running a process that links libhugetlbfs with
-HUGETLB_ELFMAP=R and HUGETLB_MORECORE=yes, all within a minute of
-start: the neighbouring 4 KB page table is clobbered, the TLB ends up
-with overlapping entries ("Caught Machine Check exception - caused by
-multiple matching entries in the TLB"), process exit trips
-BUG_ON(start & ~huge_page_mask(h)) in __unmap_hugepage_range(), and
-freed pages leak into unrelated kernel structures (oopses in the irq
-maple tree, in pte_offset_map, ...).
+update_mmu_cache_pmd() is not called that way. do_set_pmd() has always
+passed the huge-aligned address, and since commit ebcfc63d6bca ("mm:
+abstract THP allocation") the anonymous THP fault path does too
+(map_anon_folio_pmd()). The probe then misses the stale 4K entry, which
+sits at the faulting page somewhere else in the 2 MB range, tlbwr adds
+a huge entry next to it, and the TLB holds two entries matching the
+faulting address. Octeon raises "Machine Check exception - caused by
+multiple matching entries in the TLB" on the next refill of that page;
+a process on a CN63XX board died this way within a second of start, on
+the first anonymous THP of its bss.
 
-Do what loongarch does in commit 3109d5ff484b ("LoongArch: Set hugetlb
-mmap base address aligned with pmd size"): when the file is a hugetlb
-file, use its page mask as the search alignment instead of the cache
-colour mask.
+Skip the write when the probe misses. The refill and TLBL/TLBS handlers
+probe the faulting address themselves and rewrite the stale entry with
+the huge one (they also set the software young bit), so the entry is
+installed on the next access at the cost of one exception.
 
-Fixes: 7bd3f1e1a9ae ("mm: make hugetlb mappings go through mm_get_unmapped_area_vmflags")
-Cc: stable@vger.kernel.org # 6.13+
+Fixes: fd062c847a8c ("MIPS: TLB support for hugetlbfs.")
+Cc: stable@vger.kernel.org
 Assisted-by: Claude:claude-opus-5
 Signed-off-by: Orgad Shaneh <orgads@gmail.com>
 ---
-diff --git a/arch/mips/mm/mmap.c b/arch/mips/mm/mmap.c
---- a/arch/mips/mm/mmap.c
-+++ b/arch/mips/mm/mmap.c
-@@ -9,6 +9,7 @@
- #include <linux/compiler.h>
- #include <linux/elf-randomize.h>
- #include <linux/errno.h>
-+#include <linux/hugetlb.h>
- #include <linux/mm.h>
- #include <linux/mman.h>
- #include <linux/export.h>
-@@ -72,8 +73,11 @@ static unsigned long arch_get_unmapped_area_common(struct file *filp,
+diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
+--- a/arch/mips/mm/tlb-r4k.c
++++ b/arch/mips/mm/tlb-r4k.c
+@@ -332,6 +332,19 @@ void __update_tlb(struct vm_area_struct * vma, unsigned long address, pte_t pte)
+ 	/* this could be a huge page  */
+ 	if (pmd_leaf(*pmdp)) {
+ 		unsigned long lo;
++
++		/*
++		 * The probe above only covers the 8K pair at @address, and
++		 * a huge mapping is installed with the huge-aligned address
++		 * while the refill that started the fault left a 4K entry
++		 * for the faulting page elsewhere in the range. Writing the
++		 * huge entry to a random index would leave two entries
++		 * matching the faulting address; leave it to the refill and
++		 * TLBL/TLBS handlers, which probe the faulting address.
++		 */
++		if (idx < 0)
++			goto out;
++
+ 		write_c0_pagemask(PM_HUGE_MASK);
+ 		ptep = (pte_t *)pmdp;
+ 		lo = pte_to_entrylo(pte_val(*ptep));
+@@ -339,10 +352,7 @@ void __update_tlb(struct vm_area_struct * vma, unsigned long address, pte_t pte)
+ 		write_c0_entrylo1(lo + (HPAGE_SIZE >> 7));
+ 
+ 		mtc0_tlbw_hazard();
+-		if (idx < 0)
+-			tlb_write_random();
+-		else
+-			tlb_write_indexed();
++		tlb_write_indexed();
+ 		tlbw_use_hazard();
+ 		write_c0_pagemask(PM_DEFAULT_MASK);
+ 	} else
+@@ -380,6 +390,7 @@ void __update_tlb(struct vm_area_struct * vma, unsigned long address, pte_t pte)
+ 			tlb_write_indexed();
  	}
+ 	tlbw_use_hazard();
++out:
+ 	htw_start();
+ 	flush_micro_tlb_vm(vma);
  
- 	info.length = len;
--	info.align_mask = do_color_align ? (PAGE_MASK & shm_align_mask) : 0;
- 	info.align_offset = pgoff << PAGE_SHIFT;
-+	if (filp && is_file_hugepages(filp))
-+		info.align_mask = huge_page_mask_align(filp);
-+	else
-+		info.align_mask = do_color_align ? (PAGE_MASK & shm_align_mask) : 0;
- 
- 	if (dir == DOWN) {
- 		info.flags = VM_UNMAPPED_AREA_TOPDOWN;
 -- 
 2.47.0
 
