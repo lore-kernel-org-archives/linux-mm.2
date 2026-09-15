@@ -4,100 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A063C88E75
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 09:40:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28E23C88E53
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 09:47:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3985A6B0092; Tue, 15 Sep 2026 05:40:04 -0400 (EDT)
+	id 2E39F6B0092; Tue, 15 Sep 2026 05:47:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 322226B0093; Tue, 15 Sep 2026 05:40:04 -0400 (EDT)
+	id 294BC6B0093; Tue, 15 Sep 2026 05:47:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 212096B0095; Tue, 15 Sep 2026 05:40:04 -0400 (EDT)
+	id 1AC356B0095; Tue, 15 Sep 2026 05:47:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EB5096B0092
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 05:40:03 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E3AEF80376
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 09:40:02 +0000 (UTC)
-X-FDA: 85215500244.05.31961A0
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf09.hostedemail.com (Postfix) with ESMTP id C252B140003
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 09:39:58 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	spf=pass (imf09.hostedemail.com: domain of wangxuewen@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=wangxuewen@kylinos.cn
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id EC7846B0092
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 05:47:29 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0BBB7120399
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 09:47:29 +0000 (UTC)
+X-FDA: 85215519018.11.376369D
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 2B38040007
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 09:47:27 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="cfMi/f1w";
+	spf=pass (imf07.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789465201;
-	b=NeAsT4uiAl//AnoMbSIQfeyptOTSZXj+5ujagWCst+PwToJ6niek0e/0e73bdMd05LchaR
-	oVSBFkUX0kTBsrh1NN5sKZ3CKsjChxs+jeSnnfFxw2Js1301CgPeZhQRx61zosnURTzeiw
-	mf7RzE/wz/vZKz7lMWp9iYJoD5IYDkY=
+	t=1789465647;
+	b=WTZjbfkfi3aXeSr3HOppibCVl5lypg/qd3m2jOANHNUjYHjdqwTT+Bl5mRHwTNQu8b66SO
+	/AU9rkcRAb5MSV6Wcrh3new1ugA3/LblRwUyax3bqv0yNBgdyJ3IsTYVrTc/KTOoFJuygN
+	PypvmTMK/dhJ60ZBQkDSq0NO2Kc2R1M=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=none;
-	spf=pass (imf09.hostedemail.com: domain of wangxuewen@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=wangxuewen@kylinos.cn;
-	dmarc=none
+	imf07.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="cfMi/f1w";
+	spf=pass (imf07.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789465201;
+	s=arc-20220608; t=1789465647;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=+fO13wgGnmxZ1EeA1lGC0PJIzPqWqQxrFyUro4sDzUA=;
-	b=1szVhF8izk/PqBSzoES0oDctmeJJIW4P/n52RoYkrfQ1o9scrEtJJJ/6waa/wIorGg8mxQ
-	430B2akumX+QQVBHMQjUI39P/bgaRUP0ALXKoi1yuR5T6DiBjJWaLnCUPougoCYniFnWi3
-	KRVIPm0u26PXMoOXiIW96m2gx0Z3QA8=
-X-UUID: 6239f3d8b0e911f19a56ed5b684f684d-20260915
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
-	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
-	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
-	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
-	HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED
-	SA_EXISTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS
-	CIE_BAD, CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO
-	GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:da4f0715-e686-4745-b629-eb1e25057181,IP:10,
-	URL:0,TC:0,Content:0,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:35
-X-CID-INFO: VERSION:1.3.19,REQID:da4f0715-e686-4745-b629-eb1e25057181,IP:10,UR
-	L:0,TC:0,Content:0,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:35
-X-CID-META: VersionHash:7db8b62,CLOUDID:7b889e1e0295ac8b8f5b76b6da3ca3b3,BulkI
-	D:260915173949X42TEFZR,BulkQuantity:0,SF:17|19|38|66|78|102|127|136|850|86
-	5|898,TC:nil,Content:0|15|50|99,EDM:5|-100,IP:-2,URL:0,File:nil,RT:nil,Bul
-	k:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0
-	,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 6239f3d8b0e911f19a56ed5b684f684d-20260915
-X-User: wangxuewen@kylinos.cn
-Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
-	(envelope-from <wangxuewen@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 379612814; Tue, 15 Sep 2026 17:39:44 +0800
-From: Xuewen Wang <wangxuewen@kylinos.cn>
-To: sj@kernel.org,
-	akpm@linux-foundation.org
-Cc: damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Xuewen Wang <wangxuewen@kylinos.cn>
-Subject: [PATCH v1] mm/damon/sysfs: propagate damon_call() error in turn_damon_on
-Date: Tue, 15 Sep 2026 17:39:28 +0800
-Message-Id: <20260915093928.3389096-1-wangxuewen@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=W+F5E+4yAPrBsxUagAfODWqYFVvI472YjmZbXUSQXPM=;
+	b=ki3VJdPGYykkO/+8qR3uw970sJ0sZrNarllVJj9TdLk/cjx7ycjGUCA81wcX9MDqQdx0ja
+	i4uhKrOAwrPyRwyZd9QPUf5f8uzYmxdzkx5eERphrP11v0Fe0RYZCLgqr1jEMOrHGvhHws
+	9LeauIvx4Ku6HGcw9/DuZVaYXbBtIEI=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B05ED169C;
+	Tue, 15 Sep 2026 02:47:22 -0700 (PDT)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 468CE3F9A2;
+	Tue, 15 Sep 2026 02:47:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1789465646; bh=TgiYyAGTrTLCELCWwltNRoXatU+CAWXmARo8WzAWAuw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cfMi/f1wlLVTG20Jg2wnJ6+DbyNLJTUAHFTMYihB7bLYPbjDzjaujrlPV144QpPV8
+	 XSl+d7YX01gX2yWrh42B5ii8sgq0sY8AEv8XA/835O7vsqb1KxpCDs4rzB+0+1PQAF
+	 vbG/dZlaGXwMv7aR8+YBHgWDaIYqkeTcsSaiHCSg=
+Date: Tue, 15 Sep 2026 10:47:20 +0100
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+	Peter Xu <peterx@redhat.com>, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Shuah Khan <shuah@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sarthak Sharma <sarthak.sharma@arm.com>
+Subject: Re: [PATCH v3 3/3] kselftest: mm: introduce size_to_shift() helper
+Message-ID: <aqkUKDJYytjTsQvm@e129823.arm.com>
+References: <20260914-fix_hpage_macro-v3-0-c9a305a01d39@arm.com>
+ <20260914-fix_hpage_macro-v3-3-c9a305a01d39@arm.com>
+ <b88f4ec0-61a8-47b0-901a-d63db115936c@kernel.org>
+ <aqf_XGKDq6jH6pJW@e129823.arm.com>
+ <c60fa1c7-ac83-4e41-9911-a426c6b42191@kernel.org>
+ <aqkIQF6XcLeXSHWO@gremlin>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: C252B140003
-X-Stat-Signature: zrzaybird568exnykyx6qqnnndja5eez
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aqkIQF6XcLeXSHWO@gremlin>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 2B38040007
 X-Rspam-User: 
-X-HE-Tag: 1789465198-979973
-X-HE-Meta: U2FsdGVkX19TigXPAb2GS3yepd4tBYav8VyLU6pbxGG/Mivkq4EJ20s7l5lAaXeVwfe9Otbz8VVld4HjO9sju1fE/mslw5kx21YafuIz/xv/VgKH3BTMcdQbWF/hD1Lv4orRt3tggiVRHi9HMC7MfpAsbK9Gl2IZWgpq2K8KQ4oY47VPxwpQOd6R/NMza2Dm5tUj97oU/grPEeV6Ibr1IPT2gwGc7wCLm6GogYLaPUIST1UTbk3JoKzqgPS8+XsTVBXOyeqjaIo7ks4Nu2uph/As5E9sySTY0Id4ZWeOKQivnAivM5cxSds8yO0BSsb7bElWXaLsJGzmymaa7XjJpP6CHmcgCKzg8sBUb5d8rfKQOvKmu1hH93m0koeG5oBtbTLktfYsGwkPmuJWcqr5LaWfb1pM+z288a1yw/dOy3qJoBf0uo1jIAFo3VqTTMzrePGDXMHmLsB8A2l3Wxh5Svg9xpYwbSn8kXbHqUNfZ3SEr+OLjx12LMjBcuyynPTmr1fYPrc+R11rcNP0xv7q+866c+Jv0DbxLnSWEK4zrU9Ci/OudUgFRtjzF2VVgguv+bkhRmDM6QQzt4dQZbpPFFNy4tzQg/L5VjI6VdNA0L/EVa66aAFsEbFmZDrlB+R+e5f8SqOY1EdVxa0/1j6ZKMI2WmX3f8YZyCqwDEspQc4H5dBJiJg9VzyFJAPlQNG2qkEgZUwxekyQ+Et9LkNbg/c6sD5fwhOiUlbefOiwsNB/B4WhfklEYKWVW2KsZBOn3VTLOIXxTwliE4hGIyB1Qc+BHJMDZlRWtvV1+FLif54yoPd7VZgocqBc+KSp9bfaoRUp7Edpe0tPCt/M1iGleBTu3oJXqUeWitS4oNXDtU+iJ47/NfDY4MXuJjAdRjBGz3l+YVT2qrcDX9rk9TAYYEw7BYQp/aloke65KGZpsGVPYceG5q72D8KSXKAoSl4JunvAGnkcWGOmxaMfU7p
- Jj/8VfNv
- uny6eO8POjHuc/ACabFwn5ZxEBVaZxuaA6+YYil35uoh5ewY=
+X-Stat-Signature: xhke8ix9cyqte4q1gxf1uuumrhhbfw64
+X-HE-Tag: 1789465647-502796
+X-HE-Meta: U2FsdGVkX18XkXvPJfZHucM3ToQwYMmHVo5g/ATH0HJ20z1WKfFEsPzqtD3fgVHjhnSblYVUCNtqUcV/fAqnFRASo/fyQZ6WQw3QgrEiVn7jW9G/9HQRCK7QDkzTXC2PlpccuCe4CZweu8VA0noJrQMmeftjB87GHhma/SGpE3+V4poeyXGoWrxyjhw6MnnKHYdrvU1A3vhdSwK5bWQn1tzwEWP0QCHgqODPcdvY57SXxVrADhojp3qCfyG3gRZicUMe+bNnvcRxzXINjnBEwnNZj2cp0pSX+TTxEPplchG5VH7gSGFAKtRuDWmGl9HFpqL/4WlWhwczrOHTxN32rWnNe/+y1tKU1/lhtiYshrgXHVMOyTyDSCk4Whs32woXpMYoSDZiyLx8YqmIaQL2kFKCk0ovt0r5lqHXIezOPIdO2fvaDV+l4qOg/5ikcgmUZlo7kL8F+z4Vo/yNmpNipykPloHNQgXzFD2aEi4y76SNLIqT2seeb8FqjHlGYR6cpUXYaUVCCTgCpmkkF+COS3IHv+a5NE3ScY+gV/3OSh5jbZiJf0aPO/XVSX7U4houDKbM7t7LIIq+128xx3K7T/XSYOB8wjZPsSs//OkOV1FEhP22wdUbrC2bdRdc6ynS4yIpn0+n84QdNNxhvP+g7cqhwtzIpEJz7TZLtXlKG0gSKimYxVrOPJHZiXNNBnpu7YaR7Xo40sRma9R8CVhPUwC4YM6q1n73CTG8fgy8hd21Y48tr5zc04oxLoj3btuj75gcrJDrHjyRk5pO3XPSBKeWXzy6VvyE21Ms9KjAuQDbjQqhhEWDEs5CzdJiX7C/lEPUT99KdL/StxPcQWXOm7ClvMqg+160apXUGP9ud4i6dQ+w6Ni6B2PXbuExUvWej0Go6y3nk7Hv4PsC7QwZ352MN4PsY0B0aPqgo+9+RhPjwHyp9J9FHmIwmHrxg/ECM2INnRY1+qQXBK937Zp
+ VFMCASX6
+ Xp5Aybo+sbzsM/YzUQ7v7WlJz6IpNfk3+CzCzld56tBrBPwaydsym0taqlOiTC8rqHlvDUjiGwulVyXKboaM3xcFkx3zonaZpRkRKgVC57CQwcE33E5ZZgJEHrUxuRzHBlXg0JfyFqETawrIRVn1InmGb9uvnKuxTd5Yx7PKXLYwl9GmVA4Qjqozi9ssTZeU0Ophlremyl+X0ZxVB/cXIoQw+lH8jwsmyXE+R6/QQAXq8ipJXhJfPEEs/Ml1fa9NhavXopUkUVptAQ54YSimZnHZMIw2nDkacdCapRJpHNumIZa2/i5ZYE3DIhxffG65uW3hNGYLfnImlheDYZKur+fSCfVNDUzsYBkZ9CzSNXqR78Xg96vBW+JEU9g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,36 +108,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_sysfs_turn_damon_on() ignored the return value of damon_call()
-for the repeat call control registration and always returned the stale
-result of damon_start() (0 at that point). When damon_call() fails,
-e.g., the kdamond is already exiting, the user still gets success from
-the state file write while monitoring is not actually on.
+On Tue, Sep 15, 2026 at 10:01:58AM +0100, Lorenzo Stoakes (ARM) wrote:
+> On Mon, Sep 14, 2026 at 04:08:30PM +0200, David Hildenbrand (Arm) wrote:
+> > On 9/14/26 16:06, Yeoreum Yun wrote:
+> > > On Mon, Sep 14, 2026 at 04:01:02PM +0200, David Hildenbrand (Arm) wrote:
+> > >> On 9/14/26 09:30, Yeoreum Yun wrote:
+> > >>> Introduce size_to_shift() for future users that need to
+> > >>> obtain shift of a huge-page which is other than pmd_psize().
+> > >>>
+> > >>> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+> > >>> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+> > >>> ---
+> > >>>  tools/testing/selftests/mm/vm_util.c | 10 +++++++++-
+> > >>>  tools/testing/selftests/mm/vm_util.h |  1 +
+> > >>>  2 files changed, 10 insertions(+), 1 deletion(-)
+> > >>>
+> > >>> diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
+> > >>> index fd1432dc6152..1fef1266429f 100644
+> > >>> --- a/tools/testing/selftests/mm/vm_util.c
+> > >>> +++ b/tools/testing/selftests/mm/vm_util.c
+> > >>> @@ -157,6 +157,14 @@ bool check_for_pattern(FILE *fp, const char *pattern, char *buf, size_t len)
+> > >>>  	return false;
+> > >>>  }
+> > >>>
+> 
+> Probably worth a comment here saying it's only for power-of-two sizes.
 
-Save and return the damon_call() result instead. No rollback of
-damon_start() is needed since a failed damon_call() guarantees the
-context is stopped.
+Okay.
 
-Signed-off-by: Xuewen Wang <wangxuewen@kylinos.cn>
----
- mm/damon/sysfs.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> > >>> +uint64_t size_to_shift(uint64_t size)
+> > >>> +{
+> > >>> +	if (__builtin_popcountll(size) != 1)
+> 
+> I wonder if it wouldn't be better to just do the old trick of:
+> 
+> 	if (!size || (size & (size - 1)))
+> 		return 0;
+> 
+> ?
+> 
+> > >>> +		return 0;
+> > >>> +
+> > >>> +	return ffsl(size) - 1;
+> > >>> +}
+> > >>
+> > >> Could likely just be an inline helper?
+> > >
+> > > Okay. If there is no comments on today, I'll post tomorrow with this.
+> > >
+> >
+> > No need to rush, leave some more days for people to catch up.
+> 
+> Agree with David seems better as an inline thing, the __builtin_xxx() should
+> be... built-in hopefully :P though I suggest something that wouldn't need that.
 
-diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index e3858ffab4b2..beb4bdc74460 100644
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -2280,7 +2280,8 @@ static int damon_sysfs_turn_damon_on(struct damon_sysfs_kdamond *kdamond)
- 	repeat_call_control->data = kdamond;
- 	repeat_call_control->repeat = true;
- 	repeat_call_control->dealloc_on_cancel = true;
--	if (damon_call(ctx, repeat_call_control))
-+	err = damon_call(ctx, repeat_call_control);
-+	if (err)
- 		kfree(repeat_call_control);
- 	return err;
- }
+Whatever is, okay. I'll change with old-classic trick :)
+> 
+> As long as strings.h is included in the header ofc for ffsl().
+> 
+> With the stuff above addressed, seems fine to me so:
+> 
+> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
+Thanks!
+
+> 
+> >
+> > --
+> > Cheers,
+> >
+> > David
+> 
+> --
+> Cheers, Lorenzo
+
 -- 
-2.25.1
-
+Sincerely,
+Yeoreum Yun
 
