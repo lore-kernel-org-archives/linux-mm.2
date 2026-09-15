@@ -4,107 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4802BC88E75
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 13:39:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DA4AC88E53
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 13:43:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4E2246B0098; Tue, 15 Sep 2026 09:39:42 -0400 (EDT)
+	id 44B8D6B0088; Tue, 15 Sep 2026 09:43:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 494BB6B0099; Tue, 15 Sep 2026 09:39:42 -0400 (EDT)
+	id 3FDC06B008C; Tue, 15 Sep 2026 09:43:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D2B46B009B; Tue, 15 Sep 2026 09:39:42 -0400 (EDT)
+	id 315156B0099; Tue, 15 Sep 2026 09:43:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B4F66B0098
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 09:39:42 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 447CEC042B
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 13:39:41 +0000 (UTC)
-X-FDA: 85216104162.03.942A4F3
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 7D70180004
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 13:39:39 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=BANf+DRv;
-	spf=pass (imf30.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789479579;
-	b=DjtWDrOaQYOfcFme08nMW+bWrYOTIvf2Wdixm7OIC0akrfhWv84GafnCzEQqqiDgowmtuT
-	PJ1vG2bqXolhR/rFGD5PoBNyLcbjzsR6wo6q4w0/OdsA1XMw/LNvNMehq36VQafHyH2hop
-	ZijHLP7MobdTH/5TgqbYZnR6Pblvl+o=
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 144436B0088
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 09:43:29 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9CC191603DA
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 13:43:28 +0000 (UTC)
+X-FDA: 85216113696.15.665A929
+Received: from mta0.migadu.com (out-122.mta0.migadu.com [91.218.175.122])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 6CF601C0003
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 13:43:26 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vGPc+Z92;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf21.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.122 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=BANf+DRv;
-	spf=pass (imf30.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vGPc+Z92;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf21.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.122 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789479806;
+	b=IovP+V208do1IXsPe30PClGCR7JTIp+rZz5EQF4/V/U0RcKcxtqGiNMDKJtKAO1SdsJKnQ
+	J9abYtx45hrpK87I3Ii60iA5vDV8S5CONmGipUPp5DC7UeFnKMVbKVxVwA4Ijh9rl62rBS
+	z7g7UCjlgiKnG9cLVj3rYppTRXNTdCc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789479579;
+	s=arc-20220608; t=1789479806;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tZSU09jDCsIk/tpoX25HEUkW1egfskgNv1nvZG1Ds40=;
-	b=oOQG2p44PnFfNbk9LuNgCDvGQU4w9FjmuBIhhwCOBsxRHUFcQvnjx605+TIDVgfYMK173S
-	R08nTBIerOO+BqvwYAiWl4F5pK1goiGPqAtljIKGQME9WKS6ao/KR7hj+dXMUyRV05+QEp
-	vlU+Ly1WPzuTSA1LIQT88J6KlHX/QyU=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Reply-To:Content-ID:Content-Description;
-	bh=tZSU09jDCsIk/tpoX25HEUkW1egfskgNv1nvZG1Ds40=; b=BANf+DRv0G7ET6nd+Q02kEYT2c
-	vD0Mdmy0esC2oiO1N8yesVKAZLUPkTsnz8o42k+YjQG4Z+8iuYgTcrL0MNA6PbeaKganDKnzH1Y6o
-	dz1s24SikbwO6UvoBwIl5MOsySvfek4zhd34ghQRFqhlMs76eRAiXy7gCoWV3PKofIQOYDmDdmZ+z
-	8umNKp9aZ7sYSbOGScmRPisgvY7fTzJF4LhfQfgaYtHzp+aE8umHMErYILFzLYv+cC6N8zV0soirE
-	MzgEa0+BS6oIJQ04ge7Wt0Df7pee81AIR4q7tocqaLjyrupAkjIJjTRtDxCT86XCyk5TrACr2je2b
-	QoiL60yw==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1x6TN9-004QnQ-0c;
-	Tue, 15 Sep 2026 13:38:55 +0000
-Date: Tue, 15 Sep 2026 06:38:47 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Harry Yoo <harry@kernel.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	"Kiryl Shutsemau (Meta)" <kas@kernel.org>, kexec@lists.infradead.org, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>, 
-	Brendan Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	rmikey@meta.com, riel@surriel.com, kernel-team@meta.com
-Subject: Re: [PATCH v4 2/5] mm/memory-failure: libstub: install the
- poisoned-memory EFI table
-Message-ID: <aqlI264D-PxJzPWb@gmail.com>
-References: <20260909-hwpoison-kho-v4-0-359313564495@debian.org>
- <20260909-hwpoison-kho-v4-2-359313564495@debian.org>
- <2c9a7bef-3189-4f78-a6cb-61d2f7afd643@app.fastmail.com>
- <aqKhgPKzRf0e22s3@gmail.com>
- <aqkIdVhoG2wwVBtb@gmail.com>
- <aqkyT0Ui9h5KWuzn@thinkstation>
- <aqk4NUnq92ftuUuJ@gmail.com>
- <aqlFnuIIECOyaweo@thinkstation>
+	bh=oAwQ3MRz+blXVd6WEH+DymLjj+dZf8p9ZsqTmnCf2m8=;
+	b=6t4DmLsCMFiCYbb4q4TIwvpsC9BuXX7KEGCxpmhalAGWo1bjQBx1NTtLTlsm+eQp8wTT0a
+	VKH06cOZsP+BJ3uN/cIWJc5jC+osdqVHTrMgvIxoI+9LOn+sZYB4wE/GPXUDFYuPsJcpSA
+	Qp96O49j46DvPeFsGQny020LHixDaIs=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=6HudDoiUDG0qD8sOY5Dvp2rvFR5U8GAkB5GWE5aD+1M=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789479804; v=1; x=1790084604;
+ b=vGPc+Z92QfmYlv0I08b8/LRhcYnsPy6z35SiQ4jrED23UugUlek7Z4JMvHtx5DvOEE1Kg/Cy
+ IJoObSEawkgGIYk/nI+8LeG2zT64D9bj0dBWndB2mRTbgH2058moz1XmfEASVVy/vOgfYWD/hub
+ oxndnVdWm1uVTzlb1PcgT8/Y=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id abc51d4308209202;
+	Tue, 15 Sep 2026 13:43:23 +0000
+X-Mizu-Trace-ID: abc51d4308209202
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <30bcc70c-be07-4237-9bb1-554aa5b5c5c2@linux.dev>
+Date: Tue, 15 Sep 2026 21:43:15 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aqlFnuIIECOyaweo@thinkstation>
-X-Debian-User: leitao
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 7D70180004
-X-Stat-Signature: cbasgfek5c1qsiyhx93i6d4yci4ayoeq
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] mm/huge_memory: fix pgtable withdrawal for huge zero
+ PMDs
+To: Andrew Morton <akpm@linux-foundation.org>,
+ Kiryl Shutsemau <kas@kernel.org>, "David Hildenbrand (Arm)"
+ <david@kernel.org>
+Cc: ziy@nvidia.com, baolin.wang@linux.alibaba.com, liam@infradead.org,
+ nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com,
+ baohua@kernel.org, usama.arif@linux.dev, ljs@kernel.org, surenb@google.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260912234635.db50397364858aa15f58f4d7@linux-foundation.org>
+ <20260913072312.52111-1-lance.yang@linux.dev> <aqfRCPheDYTgTdAk@thinkstation>
+ <f76beaf8-351a-4b22-b362-a945a5e1af6a@kernel.org>
+ <20260914111940.f7e2c72eac4a2df97a646793@linux-foundation.org>
+Content-Language: en-US
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <20260914111940.f7e2c72eac4a2df97a646793@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1789479579-328640
-X-HE-Meta: U2FsdGVkX18ip4Ua2E9m45K22ICHAEHQtJHIAINuN/L2hoxB4M6bEvcV9Eh+ob1ofnCRrYy4rJHO03yZmqzujzaDDwoQKyFoL1C19QQmb4WBAVedmDtOSmSi/UTLqsW5yz61gVe6OdXxHcl1FXl2FsfhX5HWH3dEDBsAPpJuzwwRL1CPy0+We2LqqSDvuTjVMCGEqFne9LM+LpuqGYq86EAxE7leyghrSlaSNuGiQL/frGcTu3UDBVaRFK24TGH7hYlVVFNRdquK0eck+996WEe3m0Tc08gm+lW5zEdwSxsnZUYMZnd7Lk1xml3acbPcrS5m4v8W79WA22jvMnzIFUDukVWsJ6YwzSvuyzsR0aNuinPp90qlLLfNpyaQMLr3q9ygBJ2+cCrPa0w5xMjVL9/wh+BMnR/uRQYGrXMBsOMHq3k/sSKAckAwe2VNlKS9Vz1qPpbHC4S+WIHCimLAEgX905M/CxHScfRIZ6N97y4ivXdsZP1xwfHaWrrieGtLOu+FB0070Bu4s5ggwCYSxTZvqy6x0yGHR2k2dGUkRrjBoDQvrnT89FG7FUHINBR3y6EX1DlSrOU5YpvjCHhf9DBEetWeh5qHOA4CqB/gIsjbwIfDKfxV89E7c2ze8h4xISJ/ldI3ZadvSXPTSOgD0SkFeuzG17edhqMqD/ZkUy/xzxjSlp+6Bo+8KZS/Yds3ja3q9Sf1Xe5+cK1yY5Ss1vQfnKayEYBPJiPW4nRpAqKjLA3t+eIRx1cBoJQgZEconV7gOoVStJyoeuwTqxY2+ivQ4kZ0oOsEESmK5Fw1VQ/I62vs12g9y8EX3amFwIhQMJUsrKJvHuTJGfDluV7t/avCgkWAvtzQ5jXejqdB5qr6yHf7WChr6oQNx3dOI/9pi4QdQu22sJvJKxyLsxSR9JJGnBavhGAz0Nbk1vbpWCxmxP5i/tFIJuwGydaKPXOW1vTDQQvOldHvafZGj1i
- gMOVq3hG
- akiSEJglbSIbFYZi9zLfAzWDOSF/IrWYR+QAI9AR2MUmSX9630Y7jLi1hrgNw6Yc/7WlTCZ8448Rhx0jp5nQ4x4uk9dRilfzjxPwhN9jnZwCdusrSH0S5vhxr+YedhPyxrOlsy7+61zkwiCODrgfL9RTKtXfPP+tiUOytuSCibCV8QRMQRkE7DDIoUc5pp5F/4PMwxJ9Vp0E/bqIA1ylS2f//EMU+cvTV0N2ozCgV+BLLfbyIWV5qpV2r2WqI/SWajRNN+vJsaPaJF1cDBUV3IsRA/mAyhko6LnHcK52tNmmBWIzj7cODhtv6+ZC/WJqsdASzE8S4psIBuMQVeJzWn/d/vwNGq3Mu02Fa
+X-Rspamd-Queue-Id: 6CF601C0003
+X-Stat-Signature: icgkgbkzo4twmyoe74ybqgq9mf9w741g
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789479806-525570
+X-HE-Meta: U2FsdGVkX1+lYE8lcgmmbZEtod/G5L8573GASjbbqzQXSSSO56D7aXlmMuPAOTNfmomsQ02nkO88tt6nZ4/VNWAT+S6kn2gCgIEmoyMUAeqcn5g73Zl4nZtrwfPQ4HzG7SJjv5MnbGPYuj67MN0zcZtIOqC9h44Kc55H29nZhNfgarjoApttc6/RJuAUbIyX+vLVNKZAWKYu0q9q4k20WDuscp8dGjT4emzhAhUqim2gIU7aamV9Z8kJOkp6zpRWd72m4oJN0yxa2dpPwJCJhekkq6ZLEur99Ijxew9LPlR9JNcnczIkckbG5khvBj9bpa57EqJJyzYoItu6i9ywJrjS1vberDp3sLC2Mv3GtDsX5o1sD1t5+eFhWEHWrgQO0DFk20q+s8gGlQfQrcDBxoNGt5hMgElGyrFBdinIaJP8ZSOPLQeiCsGCfdnZ2vNKg9kK7cfPNNNGfjILqFnWcDyqk6ZXrqPSmNCxtXMdzVn+/DSsLJnOSIrWPRNAVaC/6QzgOKC5XrC1s1QiSbWj48/xW+8hxoNCDcwvOtd6Z5Z0yAhzwUW1ZtdYBMEVCcUjBwclKRmv38e3izRNopbf+fGlATTQllRYhR9s5n3NqldJQlvyOH+TvBkYgroU6ZC+s6LK7EebzQgzhiNqdBbjmffU0s0I8iJ9wOzkDSNgUvu7wqZsXHt075+i00hDWq+Ubj8Or8QPEhU3TEvxGGcUJF1/ynrsLwFOge+cS8NtWrtU6ylnwbYmUprUac4gHaeb4w7kbrNpzm1jpx6fiWNqV19fNEs6jSt+9StksrpveMerMx6fIZLXH4K1bhb86RZwZ+Ko6nVxRby7uOUhFzzIVpNppUNOurBSFaH2ChGKJhegAcVBgYCl4z3TsDhm5Hf7RXZ92ms29Ue1CLUxF2SrgYDireeSciRn0EOJNls/bkEf+vLkC58mA3QPJ+k1FNbbjVmDLcJssRE3DGKIJrO
+ tNM+y+Ne
+ K36DEJwk1DL3YTLfgC3x/MqMivF/h0IzwG40fHBhi9eCL1hrV/ca4G83P1/YGtrwAdFdl6uLif4Ng4WKMrirrW8i4YHfcEPsMrQbYkBKfUH5CpT3LY12JuoU54NtTs1CTW3GoXhLCuwymiSpVCsJnI5doCKh0Ae35VI1OMZfyBFpUOZYo/2IyD6lSDLAgMyG5HtPzo0yv+OBgP00RRihlL2d8AyibKcK5C7pu+9jbu1YIxM7oUYVXVYGf6xHOdskb5str9z0A5LnULWaVPo/cmT91Q6oXnWUE0GAGAqO8Fzxi4w97eLdeU6XoeXbEGmQkev4vc93CajLUlAX3VI9q6EpE2UbSSscOgj5T
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,36 +99,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 15, 2026 at 02:31:38PM +0100, Harry Yoo wrote:
-> On Tue, Sep 15, 2026 at 05:39:44AM -0700, Breno Leitao wrote:
-> > > Also, I wonder if some architectures have a scattered set of pfn
-> > > ranges so that the span from the start pfn to the end pfn being much
-> > > larger than the actual physical memory size.
-> > >
-> > > If so it might make more sense to have a bitmap for each pfn range.
-> >
-> > Agreed, having a ->next in linux_efi_poisoned_memory is a good idea that
-> > we can lean on depending on whatever problem comes up down the road.
-> >
-> > Very good point — let's keep this linux_efi_poisoned_memory chain idea in
-> > mind for whenever we need to expand it.
->
-> You mean 1) keeping the structure as-is for now (and expand later with
-> new EFI table version) or 2) adjusting the structure in the future
-> revision of this patchset?
 
-I'd say option (1): keep the structure as it is for now, and only adjust
-it once/if we actually decide to implement the hot-add use case.
 
-That's exactly why I added the "u32 version" field to
-struct linux_efi_poisoned_memory, so, it can be expanded later.
+On 2026/9/15 02:19, Andrew Morton wrote:
+> On Mon, 14 Sep 2026 16:29:00 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
+> 
+>> On 9/14/26 12:59, Kiryl Shutsemau wrote:
+>>> On Sun, Sep 13, 2026 at 03:23:12PM +0800, Lance Yang wrote:
+>>>>
+>>>> On Sat, Sep 12, 2026 at 11:46:35PM -0700, Andrew Morton wrote:
+>>>>>
+>>>>>
+>>>>> That's the sort of thing we'd prefer to avoid.
+>>>>>
+>>>>>
+>>>>> How real is this?  Is there a reported-by:?  Do you have a reproducer?
+>>>>
+>>>> Yes, I reproduced it on x86 with a small test module. It sets
+>>>> VM_MIXEDMAP | VM_HUGEPAGE and calls vmf_insert_pfn_pmd() with
+>>>> huge_zero_pfn, without touching the page tables directly. A full-PMD
+>>>> munmap() crashes before the split series[1] as well.
+>>>
+>>> Ah. So there's no real bug upstream, right?
+>>
+>> Matches my understanding.
+> 
+> Thanks.  I'll remove cc:stable, move this into mm-unstable as a
+> next-merge-window thing.
 
-Version 1 (this patchset) covers the common, basic approach. If down the
-road someone sees value in extending it to other use cases (such as
-hot-plug), we can bump it to v2 and add a ->next field then.
+Sounds good to me, thanks, Andrew!
 
-What do you think?
+Kiryl, David, would you prefer the validation for raw-PFN mappings
+of the huge zero page as a separate follow-up, or should that
+validation replace this patch? wdyt
 
-Thanks for the review,
---breno
+Cheers, Lance
 
