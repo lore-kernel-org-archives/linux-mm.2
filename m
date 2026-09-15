@@ -4,29 +4,39 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE534C88E75
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 15:13:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00DB2C88E75
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 15:13:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AEB1D6B009B; Tue, 15 Sep 2026 11:13:37 -0400 (EDT)
+	id 1EB066B009F; Tue, 15 Sep 2026 11:13:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A9C286B00A0; Tue, 15 Sep 2026 11:13:37 -0400 (EDT)
+	id 1C8B06B00A1; Tue, 15 Sep 2026 11:13:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 919046B009B; Tue, 15 Sep 2026 11:13:37 -0400 (EDT)
+	id 0D8AC6B00A1; Tue, 15 Sep 2026 11:13:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 73E2E6B009B
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E40736B009F
 	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:13:37 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id F2F3240427
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0077BA56B7
 	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:13:36 +0000 (UTC)
-X-FDA: 85216340832.24.77E298F
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 515E81C0010
+X-FDA: 85216340832.01.25C3263
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 45F35A000D
 	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:13:32 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b="n97/zZ/q";
-	spf=pass (imf20.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=QVMt8CU8;
+	spf=pass (imf25.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789485214;
+	b=235ZueS+fcIRLX7UDiHvbMC9uQ4sOIr0hHVb5/6CrK6HGYFNw9eaClse9sGWv4aII0yTcB
+	DWor4NykYlvujJ2Pv1XsTJNQRiK/+p9pL1nL6od08XXQatA21YYER/VrAqHwSXuzN2HGUm
+	2f8xsShZd/Vy9Oh9t3GXpnNxhnQ0EEg=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=QVMt8CU8;
+	spf=pass (imf25.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
 	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1789485214;
@@ -34,29 +44,19 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2gqlmp1JcN66P7HZPc4Um7qYp+zXpL8XMfS9Kv/SGok=;
-	b=MruGhJDwsWnI3Os7UQrizhQUjsE7/LkeKNhppKXohMiiJcvNr9IJ+lAul/43eK3EMO+img
-	kiDxtebhP37301RyG3kJEMHbLBdcmXR0J8ZzF2HcLSbPyeDJf4sxStVpMojaX8mb6LCy59
-	RT1bKfXLk7pzRK6xwWeVr5hcd/ofybw=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b="n97/zZ/q";
-	spf=pass (imf20.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
-	dmarc=pass (policy=none) header.from=163.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789485214;
-	b=53I4b9v3QIUPSa+jL1BRJSCWlsdI5GyNjU2L8dG1NDGyqf/U3++ZsEhtyYSlpPe55knJ/g
-	vx4ywv3SK1faBnyeUuufK3AbwSe73V8HCj4diY7BTfUAhwTAtU4lwb1xjhEzO1rqiFELhK
-	kKJ6QkZHiC0ZzwC21cI6Sem7zPpWh5o=
+	bh=oSGOZuIlLi/kWLWERFDika52b/inT5K3imQnR+07eJM=;
+	b=yXwJgrwkh4fp+xpXzMbTkltyQN9LYuFLoFJIu842xP5dC3MEN51rIqha/D8k8QpqhG36I3
+	U/tns1HSl2QJimosMzmWCobJ8gHP8tdAlINwzmepXvZKiENv9LrkQcA/zpBuShspB3sJXr
+	QhyIbxJgFMdXckIF1oY1QCnxasoVdmE=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=2g
-	qlmp1JcN66P7HZPc4Um7qYp+zXpL8XMfS9Kv/SGok=; b=n97/zZ/qD5hDTvMo0p
-	ulmKvaQeDCsFVeiRcIatjgNxTEKFZlDElrp4M26FvDkrqJP2ILZDY44bMIx8j5/j
-	xDVXY3HMYPvd1z1CHVqjhVDzmn7BzPHtBF4oB9M8+Fuj3JL0U0RHgB1w0jl0VVyj
-	z7wNXXzG0ZuqsaNPCrG8MUVbc=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=oS
+	GOZuIlLi/kWLWERFDika52b/inT5K3imQnR+07eJM=; b=QVMt8CU8GnRT6gyCY+
+	QsEg19St/c65BK6C3qXQfV+DpxrA/Y9FUZL2zqUlrm3nZeUlfzSzCV9xOrvpxp4j
+	5lP08J7yf5j8kRF1u1GIL/b1Izvh6zRmZwBk+UZXcc9GbVUHLt1nFZsRNZXeFT8D
+	ywt8VrlQ5l03aJQn3TyklBOlw=
 Received: from VM-0-3-ubuntu.. (unknown [])
-	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wAn2xWOYKlqc0VUAw--.40469S6;
-	Tue, 15 Sep 2026 23:13:21 +0800 (CST)
+	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wAn2xWOYKlqc0VUAw--.40469S4;
+	Tue, 15 Sep 2026 23:13:20 +0800 (CST)
 From: Longlong Xia <xialonglong2025@163.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	linux-mm@kvack.org
@@ -65,28 +65,28 @@ Cc: Longlong Xia <xialonglong@kylinos.cn>,
 	Xu Xin <xu.xin@linux.dev>,
 	Chengming Zhou <chengming.zhou@linux.dev>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 04/14] mm/ksm: add advance_scan_mm_slot() helper
-Date: Tue, 15 Sep 2026 23:12:18 +0800
-Message-ID: <20260915151236.5200-5-xialonglong2025@163.com>
+Subject: [PATCH 02/14] mm/ksm: rename advisor_ctx to ksm_advisor_ctx
+Date: Tue, 15 Sep 2026 23:12:16 +0800
+Message-ID: <20260915151236.5200-3-xialonglong2025@163.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260915151236.5200-1-xialonglong2025@163.com>
 References: <20260915151236.5200-1-xialonglong2025@163.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wAn2xWOYKlqc0VUAw--.40469S6
-X-Coremail-Antispam: 1Uf129KBjvJXoWxuFyUJw1xuFWUur1fKw48JFb_yoW5uw4kpF
-	4jgFZ8Kr45Ar12gryxKr48ArWYvw40gr48Gw43Cws29r1ag345JF18Gay8JryYkFy8Wwnx
-	Xa1YvFs8Gry7K37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07URE__UUUUU=
-X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC9xFBOmqpYJFR0wAA3t
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 515E81C0010
-X-Stat-Signature: rbpkx79ofu311wzbneg4tfupo9jamf5o
+X-CM-TRANSID:_____wAn2xWOYKlqc0VUAw--.40469S4
+X-Coremail-Antispam: 1Uf129KBjvJXoWxZFy5Kw15JFykXF13tw1DKFg_yoW5Zr48pr
+	W5ursFkrW8ZFWYqa4UZrn5Xw17KrZ8Gw40gF1jkw45Crsa9ryUtrWxK3W0yF1UAa4vvry8
+	XryFgFyUtF4UtFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jzUDJUUUUU=
+X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC+BBBOmqpYJBV3QAA3o
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 45F35A000D
+X-Stat-Signature: 3xzd1si8seczmii5dyhtjb4etiqp6qco
 X-Rspam-User: 
-X-HE-Tag: 1789485212-690496
-X-HE-Meta: U2FsdGVkX1/GECMn/Y3YcH4twe948Bi7g0+fEe8KP2y4+u0GRieTkjk5vKn4yMLEY9HD3VNMugIYhufBR4iJIDxCRVilDH5PYm4BaZNaq7q9M/Wg2M35X12mMuxESAkw98parjS729Q+RYZOe/hc/a0zboIJMtxPSUBehANOdduwG7yzrjDhDwx7uUWx8FHC3kWB0wwNA9hGKrNEoR0h3awf7PpXGogFBZucQ1XDJgWVBv1uICzKI7SILWIAXq6Yfk/x7mZyK/ubqX4PpK/NzoAk6GS/nVqoh8DEO5BKW5rpmPr+OiPWXb/Tc1Acw3XNjBJ+475YLpLvRuVcz9LgfFuZEEu7c3mOgo//ZhrTxDO4fSIcHJGC3U0WQ5HOSXKUbnHGRpUq9z0VjfdzPGXyWRJiVTcvw5YkWpZkXRbCbZaDb5uCVkXatDG2r5Qj5/tqe5gGyD7ypUC8YUH2CltwrGeMNTOxkyHX49h99/NSw6WDI34O9K7KCralzfxsKoABa7Dzp/4e7DSHaIpiTazZNOf3l9JRtqm3oYuPKrA8gwf2wFpVxOGZ0HHn8UTZCrbv/RW47dCcQpXHAfJzC3TX5WMeqxs1bNr+sazBzD79NEIuzN69lv0JiroJHZZRoumuYSOLr0HD5siaFElD+Nr6t/x62gUj1PHqQQdfcnvXWm9So5Gqjz+tRpgq9S/4basqZel6p3StgD4/JRUd8F/GHunu0Q6Q5TLc/aWrN18WqrIkqY1YfE3Zdkkzb4Q60ligOxmJFOrXAFvJGIdvSCThl6e5+vkViqNK09puoPvxylQMB0hm+xYpk9xkzoFpOcfpsiGHzFIxx9EktpWUcfs4ggAGXS9zrUM82zv4JZkLPPjrG2qMRJJkhBJSFAeoK6mE2mi2hYHSqDC7iOFtWgCsrGyYdNbcqhpgBX3YP1X3Oq8kT+lA5DSa4ZVWKMc6h9vomZ3xb7S7Ih5Vt/fIbiC
- 0AaaLT9w
- rHshv2ZnaGW5mwUCkEe1XGM2OccDXuIGy/57/yhiaWNegcqmvCj0g+e68zkGbbPjsy87/V+S8BSIj3pDfkRioC1lx0IMZY3zS23isF1FDQt6pYA4HxUm1GVCG1HH/0RLdXaLDJWLcWavudJV5jAUbhdWr1Zl7V2/7CfHcf/OEsH7m1O8/IZh5OU9DJSYS7UCw9OV7sA/IbZFtWecXUpAhTuxIV6XfpCqvsE0C3SXvdJHd1UuFwDkFxziB0AjVdhkskxu/6APe/ReckH50pbw1xpFbwYjDh4XTgQbH
+X-HE-Tag: 1789485212-476449
+X-HE-Meta: U2FsdGVkX18hfGrW1u6oQhNguQ4CVy66RqmQ7I5ywugwNp13wOiCp6xcK8dNszcPLXLEzDv27PipnQTZi5CcktOmi4E6NxFzWkNGxWbdvSBffCjbKt6kQlm7ahqe9tsNpLNza1XYv62nUoCPn5y1twIB9fbltRNLjss9coYuvZqTZxqshMtK7xD//bs541CBwucxWjpOLa4BoOZdNwooijCjgo0fm0y7ZcnjWLtSONYZaLOQfrL60qHeZBvSLjVlzpCFDgREDvrlBVXI0Lo8jdVoTyI/jpZtMjNIeZgRSUnJOuTzNq62WMOP3AvsBn0ooJp4VWPKRTqxfZ0myYf9Qf//qRVFVwhiOMYkaeNX7Gcukhz40BTJOEHgq90a1hOIJS0mEt9/lCBBmxC0mYnEByFF+ZoH89kuI5RXvit1J4PpJBXNtEdYk/E7/sEiNxzrA3mh2NZ95rf6XFW9X65/dyVYM97FeUlz770tPKQMYyBagcyNd9zMeltzNOW6vcquToaefZ+QrT/cuEw+wDm4Jb88IqEv212UMSUWcrTpDCIj8yTfaM8/E9E2k35ki1Mv37gMs3OgqlTjWEiCfMzOAMZnd2RqdZXHyWwcr2AESfbowEnnPfGzDTtLosBE/v9mw513+9pHJU15KuBw7swfkq0uiIRVhwnKYyNyIDbIcLcVFIKQxoOylKafBA1oOnqAM3g9Gc0+43h/5KbhK3ukpw/G3ISW3IrrzdjPe0N4Rz0Dlbvg2Qwkmf9mHqRpdkJR7PLGRJSods1K9ww1Bnv5VPdLMEfXY4Di3Z2dnCxRbccWyGqwc6uwvcWYLKJDs14gLXxT4sIyah03/dgatnZwzbW2FsuKN6ydx/ehchpZdQC4ZKRvCsnzxIHpcmnf49bGZGpGJNzxxvzYvH6pe8CRjFVGK6MuPxQBrJ3soPz/1nGhXEwFU34gJIXO1PhhCqsENk/oUOn0jP2Z+beDL45
+ z0gGy8ll
+ qAfLcB7iedE4mLYhdlUJzZhkOEHTf7ENczIyrVhp+OCc2RQIP+yuBzx6qNsgw03T9+ynXVY3aDUpb+xQbv1cqbGho1dKE2/V7Kv0POAvAnZYrR6drA/eS/jogYdD/g5oM390yUW/0j7N4ly9P5Bw0IyCigKza/1CkWC1CwbcS0DhrDglKHl02Wi1IffO4PaTwdKxKk8MN3hZ+E0vTLWjm8OznA6UWzC/+P9KHWHxLQWCdeLwnNLNBKEjWEDJd+pXdlN4DJowxKFl1PVn/3M6g9lPVxEGnrPOXZno8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,9 +96,8 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Longlong Xia <xialonglong@kylinos.cn>
 
-Factor the four mm-slot cursor advances in scan_get_next_rmap_item()
-and unmerge_and_remove_all_rmap_items() into a helper. Assert that
-ksm_mmlist_lock is held.
+Rename the advisor context to match the ksm_advisor_ prefix used by
+its tunables.
 
 No functional change intended.
 
@@ -106,87 +105,84 @@ Assisted-by: Zcode:GLM-5.3
 Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
 
 ---
- mm/ksm.c | 34 ++++++++++++++++++++--------------
- 1 file changed, 20 insertions(+), 14 deletions(-)
+ mm/ksm.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
 diff --git a/mm/ksm.c b/mm/ksm.c
-index 18d037f571d3..aa33522627c7 100644
+index f637f3baea69..1e4d77852fc8 100644
 --- a/mm/ksm.c
 +++ b/mm/ksm.c
-@@ -1119,6 +1119,22 @@ static inline void folio_set_stable_node(struct folio *folio,
- 		   (void *)((unsigned long)stable_node | FOLIO_MAPPING_KSM));
+@@ -334,7 +334,7 @@ struct advisor_ctx {
+ 	unsigned long change;
+ 	unsigned long long cpu_time;
+ };
+-static struct advisor_ctx advisor_ctx;
++static struct advisor_ctx ksm_advisor_ctx;
+ 
+ /* Define different advisor's */
+ enum ksm_advisor_type {
+@@ -356,7 +356,7 @@ static void set_advisor_defaults(void)
+ 	if (ksm_advisor == KSM_ADVISOR_NONE) {
+ 		ksm_thread_pages_to_scan = DEFAULT_PAGES_TO_SCAN;
+ 	} else if (ksm_advisor == KSM_ADVISOR_SCAN_TIME) {
+-		advisor_ctx = (const struct advisor_ctx){ 0 };
++		ksm_advisor_ctx = (const struct advisor_ctx){ 0 };
+ 		ksm_thread_pages_to_scan = ksm_advisor_min_pages_to_scan;
+ 	}
+ }
+@@ -365,7 +365,7 @@ static void set_advisor_defaults(void)
+ static inline void advisor_start_scan(void)
+ {
+ 	if (ksm_advisor == KSM_ADVISOR_SCAN_TIME)
+-		advisor_ctx.start_scan = ktime_get();
++		ksm_advisor_ctx.start_scan = ktime_get();
  }
  
-+/*
-+ * Move the ksmd cursor onto the mm slot that follows @mm_slot in the
-+ * ksm_mm_head list, and return the new cursor (@mm_slot may be
-+ * &ksm_mm_head to (re)start from the first slot).  Called with
-+ * ksm_mmlist_lock held.
-+ */
-+static struct ksm_mm_slot *advance_scan_mm_slot(struct ksm_mm_slot *mm_slot)
-+{
-+	struct mm_slot *slot;
-+
-+	lockdep_assert_held(&ksm_mmlist_lock);
-+	slot = list_entry(mm_slot->slot.mm_node.next, struct mm_slot, mm_node);
-+	ksm_scan.mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
-+	return ksm_scan.mm_slot;
-+}
-+
- #ifdef CONFIG_SYSFS
  /*
-  * Only called through the sysfs control interface:
-@@ -1215,15 +1231,12 @@ static int remove_all_stable_nodes(void)
- static int unmerge_and_remove_all_rmap_items(void)
- {
- 	struct ksm_mm_slot *mm_slot;
--	struct mm_slot *slot;
- 	struct mm_struct *mm;
- 	struct vm_area_struct *vma;
- 	int err = 0;
+@@ -419,18 +419,18 @@ static void scan_time_advisor(void)
+ 	unsigned long scan_time;
  
- 	spin_lock(&ksm_mmlist_lock);
--	slot = list_entry(ksm_mm_head.slot.mm_node.next,
--			  struct mm_slot, mm_node);
--	ksm_scan.mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
-+	advance_scan_mm_slot(&ksm_mm_head);
- 	spin_unlock(&ksm_mmlist_lock);
+ 	/* Convert scan time to seconds */
+-	scan_time = div_s64(ktime_ms_delta(ktime_get(), advisor_ctx.start_scan),
++	scan_time = div_s64(ktime_ms_delta(ktime_get(), ksm_advisor_ctx.start_scan),
+ 			    MSEC_PER_SEC);
+ 	scan_time = scan_time ? scan_time : 1;
  
- 	for (mm_slot = ksm_scan.mm_slot; mm_slot != &ksm_mm_head;
-@@ -1253,9 +1266,7 @@ static int unmerge_and_remove_all_rmap_items(void)
- 		mmap_read_unlock(mm);
+ 	/* Calculate CPU consumption of ksmd background thread */
+ 	cpu_time = task_sched_runtime(current);
+-	cpu_time_diff = cpu_time - advisor_ctx.cpu_time;
++	cpu_time_diff = cpu_time - ksm_advisor_ctx.cpu_time;
+ 	cpu_time_diff_ms = cpu_time_diff / 1000 / 1000;
  
- 		spin_lock(&ksm_mmlist_lock);
--		slot = list_entry(mm_slot->slot.mm_node.next,
--				  struct mm_slot, mm_node);
--		ksm_scan.mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
-+		advance_scan_mm_slot(mm_slot);
- 		if (ksm_test_exit(mm)) {
- 			mm_slot_remove(&mm_slot->slot);
- 			spin_unlock(&ksm_mmlist_lock);
-@@ -2662,10 +2673,7 @@ static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
- 			root_unstable_tree[nid] = RB_ROOT;
+ 	cpu_percent = (cpu_time_diff_ms * 100) / (scan_time * 1000);
+ 	cpu_percent = cpu_percent ? cpu_percent : 1;
+-	last_scan_time = prev_scan_time(&advisor_ctx, scan_time);
++	last_scan_time = prev_scan_time(&ksm_advisor_ctx, scan_time);
  
- 		spin_lock(&ksm_mmlist_lock);
--		slot = list_entry(mm_slot->slot.mm_node.next,
--				  struct mm_slot, mm_node);
--		mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
--		ksm_scan.mm_slot = mm_slot;
-+		mm_slot = advance_scan_mm_slot(mm_slot);
- 		spin_unlock(&ksm_mmlist_lock);
- 		/*
- 		 * Although we tested list_empty() above, a racing __ksm_exit
-@@ -2758,9 +2766,7 @@ static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
- 	remove_trailing_rmap_items(ksm_scan.rmap_list);
+ 	/* Calculate scan time as percentage of target scan time */
+ 	factor = ksm_advisor_target_scan_time * 100 / scan_time;
+@@ -442,7 +442,7 @@ static void scan_time_advisor(void)
+ 	 */
+ 	change = scan_time * 100 / last_scan_time;
+ 	change = change ? change : 1;
+-	change = ewma(advisor_ctx.change, change);
++	change = ewma(ksm_advisor_ctx.change, change);
  
- 	spin_lock(&ksm_mmlist_lock);
--	slot = list_entry(mm_slot->slot.mm_node.next,
--			  struct mm_slot, mm_node);
--	ksm_scan.mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
-+	advance_scan_mm_slot(mm_slot);
- 	if (ksm_scan.address == 0) {
- 		/*
- 		 * We've completed a full scan of all vmas, holding mmap_lock
+ 	/* Calculate new scan rate based on target scan rate. */
+ 	pages = ksm_thread_pages_to_scan * 100 / factor;
+@@ -458,9 +458,9 @@ static void scan_time_advisor(void)
+ 	pages = min(pages, ksm_advisor_max_pages_to_scan);
+ 
+ 	/* Update advisor context */
+-	advisor_ctx.change = change;
+-	advisor_ctx.scan_time = scan_time;
+-	advisor_ctx.cpu_time = cpu_time;
++	ksm_advisor_ctx.change = change;
++	ksm_advisor_ctx.scan_time = scan_time;
++	ksm_advisor_ctx.cpu_time = cpu_time;
+ 
+ 	ksm_thread_pages_to_scan = pages;
+ 	trace_ksm_advisor(scan_time, pages, cpu_percent);
 -- 
 2.43.0
 
