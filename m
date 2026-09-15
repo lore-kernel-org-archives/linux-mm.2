@@ -4,86 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CB7BC88E53
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 03:17:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC27FC88E75
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 03:31:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4C5F36B00BE; Mon, 14 Sep 2026 23:17:14 -0400 (EDT)
+	id 923476B0096; Mon, 14 Sep 2026 23:31:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 49CCC6B00BF; Mon, 14 Sep 2026 23:17:14 -0400 (EDT)
+	id 8D49C6B0098; Mon, 14 Sep 2026 23:31:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 38CA16B00C0; Mon, 14 Sep 2026 23:17:14 -0400 (EDT)
+	id 7C3B56B0099; Mon, 14 Sep 2026 23:31:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0DA4D6B00BE
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 23:17:14 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8C9FBA02F0
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 03:17:13 +0000 (UTC)
-X-FDA: 85214535546.22.B6EBFBE
-Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 7153FC0005
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 03:17:11 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=none;
-	spf=pass (imf22.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C0C26B0096
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 23:31:03 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2B2251601B1
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 03:31:02 +0000 (UTC)
+X-FDA: 85214570364.29.0EE16F8
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 4D04740003
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 03:31:00 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=d3QPNl6D;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of kunwu.chan@gmail.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789442232;
-	b=zvt3tOkt9PoUAJLjUji8Gl/MQfrPykkVKORcG7xoeciYxJjGYpGaNtzTyuNYdS6tgwKeR+
-	Tx8Vy/jNf9pQgqCuLpY1dHEoTKkp7YRuatKn+5RHRhaaYEbIxQOY32atN3DGjIAJ4st+Ya
-	7yg3/l9sFLA+2LDkXG8xD1+feGQqH94=
+	t=1789443060;
+	b=5Lw02LKeQ8IivdHxAFmcAUdnK/NT4l39zcl0yNM0t+HMlBgxMzIaxewwBGNVd7W8SE6d/W
+	l4u8PYUH6KIMArd8z26kNF7D6jwRCVOshCVTubdIrOHH1puEdugLlyFbs17vrxlvIDBKZI
+	FvbKTcMLZf83hOogWzM3BfBOC1VPwoA=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=none;
-	spf=pass (imf22.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=d3QPNl6D;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of kunwu.chan@gmail.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789442232;
+	s=arc-20220608; t=1789443060;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cch3BT23Zv1nucK8xn1vQ4dMuGTzQVTedPP4PycMe4c=;
-	b=4L5/srn77bwAS9KsMDFCq6BvK1pxOupXplZ8/DQO49SSHgcPtI3/1x0we4Md4Nxj71Wn7F
-	A3cL2rUGvCnMMcQwl5rQVq+aoj0q0fxThTcM8poTZxlfa7cB+2OZPuQh0mDiUxr9bPt2mi
-	r6qlF6Zt1v/Kq1ck0AsSdaolxBpqKQQ=
-Received: from unknown (HELO yjaykim-PowerEdge-T330.lge.net) (10.177.112.156)
-	by 156.147.51.103 with ESMTP; 15 Sep 2026 12:17:09 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-From: Youngjun Park <youngjun.park@lge.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Chris Li <chrisl@kernel.org>
-Cc: Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Pavel Machek <pavel@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	linux-mm@kvack.org,
-	linux-pm@vger.kernel.org,
-	her0gyugyu@gmail.com,
-	youngjun.park@lge.com,
-	taejoon.song@lge.com
-Subject: [RFC PATCH 10/10] mm, swap: hold swap space back for a hibernation image at swapon
-Date: Tue, 15 Sep 2026 12:16:58 +0900
-Message-Id: <20260915031658.1505680-11-youngjun.park@lge.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260915031658.1505680-1-youngjun.park@lge.com>
-References: <20260915031658.1505680-1-youngjun.park@lge.com>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=s7nWcLz8pfZOPdgnq2ek5GovUDuRsqxFmdnwCI+6u6U=;
+	b=ZPonbFofr0yp3d31dP7djko0/w6MzaNSflxrtBIDYwxptd8+GCq7HfieM7yAm5w+7QsKzY
+	unXRAixF1yzEIrLsu8fKLGbJW2tnsPW+UYVvDZodrh37qRQ5WdGIrEQksvLzYKiWYfXkai
+	B3rZSS8m/0IViHpvT5dqj3auT1ZAUDg=
+Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-396ccb65437so1883563a91.3
+        for <linux-mm@kvack.org>; Mon, 14 Sep 2026 20:31:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789443059; x=1790047859; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=s7nWcLz8pfZOPdgnq2ek5GovUDuRsqxFmdnwCI+6u6U=;
+        b=d3QPNl6Dp34wxA8auWRNf1LraOPcjR2J8aXWU8HvSQ7NWbe/XC86CqlQfYGFqXzgF7
+         b3aVtje0WdBmBjWtqsnhW2mxMEIztxzMzxHpQ4jv/aKvIgJBoV4jcwn0HBWGUHrZQjTY
+         vZXCXqarkLQvSh0BEHYWlKkLyR1OhIDfEojdFOltZiLvV2lHOAi1pdx4h4jHAzqN1w2R
+         0fOOL8pr6T0juGeOq6saouIzKBJ/1dGo8y04pDRpHSP+0eLbHmYemZ+P7NCnAiAV0z+M
+         dMWzlEZxY+6J60+qpc0j3uhygfn55BYXC3EJ04QMOUIsImsiHxi61qrXYwKp+XeZet6Z
+         yX3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789443059; x=1790047859;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=s7nWcLz8pfZOPdgnq2ek5GovUDuRsqxFmdnwCI+6u6U=;
+        b=Wf5oV5tOD0IIclepQbHs+joZfi1QJrsTMAa1z4JaD7b+m7I0B7KSEYGy9G94ZoTKyr
+         zo6zNiUwZYsV59ze2BaHi/dRVyZSYDfZ2LsZZlfJJxQUVatiLqvV4F1g3e5pLxnEWErc
+         q/3RH2h5HQun8+671C3hfpDtwqK4tcqIQrDH0FwbsUGtD00KZRIl9hOO4mn5lp2XDLj7
+         NWDEZBVKCOJOTqJQOpu63rdyKw54aVtsFocewbppA0m++c5dwPTpVMAhfPEOku5iymVg
+         +QtY36l6lThl4ZOFIJNdIz/OfxGd9KjPYF7cPq1WMktJyESVgJCTFefF6jDrVkligJU/
+         I7nA==
+X-Forwarded-Encrypted: i=1; AKwUvBxIUIzHXbWgt3ilmSHGIAn3kZalMOfacfSpdrvNtLZxmqYzHlWFJRKxB/JYuBRHBbFg6LBfWr36Sg==@kvack.org
+X-Gm-Message-State: AFuF++kgNupGJaM3OAq0GOJj6MrSDxtCSIRgIBQCDHvxLmZVnKN/ySi+
+	aFVFJjRaLz1pPHT2b0pQm2hO7uSvNjYjCJa5q91Z+ERdAU6Or9PWbkjc
+X-Gm-Gg: AYBFou0Wn0FFvp1W8Jl0XNB6sLDIEE7Ksc016cQrpyX0/FyJ30fcFQAo8feP+PBRG7U
+	R01XRYcf9+wsN7AtjQFNJ4K9C9HB5Rj10YR5Fp4438QiEnaRF2K3CM8qlwQM8iXy7bEUcOoDTTS
+	z6QEbuBOCHxUE0lLdAd/sxuH0KDar3GxgJoUCy3TH3LqTuB3r0GJ9veOa0E5gvIMaYm+Vr1tF0P
+	soG6X522Vp88F0DSvc6Fh9k3q4xOHBur6vUbFIBZQ2KioJbS5jvIXm2hh1PoYEEtZIPlpuALMYc
+	VLyFeiMmaN0GZ/RBR1OEydJWwfVcmGgB6U/PRDIZd0GUvqzly/XQmJzuXIEqQ9FICB12Hr+4awu
+	7RpjeYZV3pKDZ28iRlVLYf4S/MqYhbHtLrTnQl1cz4YCFkeUafkqFywMaYJtsJOetGgUAkR8a1j
+	qbszCLlhQMiqXY4LZZOnAdS9ompFFy7bkKN5lqQa8m5mSOvAo5oAwHSRUjH1SVcNqflhi/Sw==
+X-Received: by 2002:a17:90a:e7cc:b0:39d:fe64:5725 with SMTP id 98e67ed59e1d1-39dfe6461f0mr4210211a91.5.1789443058917;
+        Mon, 14 Sep 2026 20:30:58 -0700 (PDT)
+Received: from gmail.com ([185.220.238.35])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33ba4f55735sm31317478eec.24.2026.09.14.20.30.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Sep 2026 20:30:58 -0700 (PDT)
+From: Kunwu Chan <kunwu.chan@gmail.com>
+To: SJ Park <sj@kernel.org>
+Cc: Kunwu Chan <kunwu.chan@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [RFC PATCH v2 3/8] mm/damon/core: return an error from damos_commit_filter_arg()
+Date: Tue, 15 Sep 2026 11:30:49 +0800
+Message-ID: <20260915033050.1579457-1-kunwu.chan@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260913171706.103052-4-sj@kernel.org>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 7153FC0005
-X-Stat-Signature: r54htimcigxrh55t3zioyuwmi8moihqw
-X-HE-Tag: 1789442231-452023
-X-HE-Meta: U2FsdGVkX1/LAprlyHE435dwheGSSYgWNjmd6AwuF/OYjFVBAJRfr1Y9MIoK2SkEtsvMNAA/StN7iP14+27Hmy9jCDlp4VDRYsS+YYu6fB62ON0c5KDr1Aw+lSOGhBv2vuq166IIsBAy613FV6AIUb32UKcqQOVxkwWQUgw+gGxbqIfajoArgttRCrcZu9Y47gBzpsMAVZZdlT1h9cfYgjNmG8OaJuu4S8DNQyUYxcYwVEa68EW1LScoRjuNQlP99ZmHBaDzmvSmtJg/Dm1212XS0wLqziRffZOWiFrDy0YCw69oRrCL28GZ1liNKQhU+BSRbvMYnpAkkKAqpwwGCwT6YZ6CCBb6xZaobyb3sFThxg/M0OUJeOHdRfoYbXNHCe9XfAHEq3tBq0sQF8JiBbb5bFu2QPwNhcTQbr9V6FwDV38V+W9vjsz79Ht4K3ygTr+tRG3NCRWfxktTdz4e/ZyTvKfKf1s2sphrdnfOGQq+Hyf2lOnY5ulKfiWY15wbLtBtvJMAFw9muzyvP2UxuO79kv4c3Fa2+Of6kg8UtlNA8SEBr0ZLq7zAt3dg2/ar/zG2kRpffgGPgnIQdY/MjJn9f5fLfI6rycgWHdVf/7MDmLJp6AU9AvR61rjx5HzXPcNgu8jn/Yg6Ce8OELpOwbwAIcsJOl0InG1NXlpRy+nYNsxXLiJMEG/yT2vuBEfCikQ9JETl0/jApOOf3JUi5aIV++mri7Jh0NwevSLMHhtd+5etNBoMWkFhnhJFi3oqOqVDpSOLQyymzPmZW++AGSBThXh3erQ568ffJ6XWeTE/3kq8Aecyunk/hmeYiDCy5DPmhB/kGue5HW6TgWqy9AX7zwVJ3BALRg9GKUYoij+1mz+gmnNufPWuHaBIGJt9hi9WkpBe+74pk7XyS9oXErs/WajUfk7PehKSjTFRejko3ApkaASNktZV+YLmRejuOgBd/fDqB1pqLygA/zM
- sbZZJX8n
- VQdWKdisymub3/9W6g6XVJ4Mj/s5EaDEX4LV+b8Q6nWKvt7GUg2QIDmPP6cZAMCkChqEnyrkY3gfuix8LN5Mct3MLoCpXgQCD8FrGfyZkknQPRjcRYfR2uFpS9IfrV3RadoKMXM/7R+0ThKjl6eg91NpXKDH1uyBkqE/f
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 4D04740003
+X-Stat-Signature: pnqc5kdg8zhuxackjy8w3nipcejg7m8s
+X-HE-Tag: 1789443060-569656
+X-HE-Meta: U2FsdGVkX1/JXXDidQwo7oQ6vbbzRuwlUjm6exXFovsv92BUJNgSH6WUOIyQ46ZFrUL79YC6wAi2x7FXbX4P7dQjxktG0njeqyQeIHzVgdMdO1kwxg2HbgbtgIYAVM8Sjz+daDqbEpQA0ceU5uYn9isrtbncT1RkkiS3E05s3dwi1PpYsC25cTBGUkE8DRUuYnAbdlB7VDGSP6ux8pn7hg9Uvkwwt8Xo7zvWIrYolsC+YurTyx9/r8pFHPsmWR2ktFQmzdzFMqVacoyeJTA1uMT9Tug2YBUYTCSPH65OfAW9dHrjmk+q0OZVRSWMyo6ssSXP9wddPMr3CJKOe6jZLzQP8CokQBaVEeQ3m2HAHf/qWFLPkt7sePtdi1zzTa9lR2HT+A0gQuGg24z9TsuN/qUAcMNSXTyThE6K3gwhgOZWm0tqvQ2PQchB69P+0PPn5dmoLw17EiWDOGOiuocL+q+1o4L//z+Hak2pl1+KTQdw5Hm+gEhVSzK+AQQPGLf8IxVMXmL8dAAX+Z0CKCfeMdSPNvh/PWhJVB3hCija2gMCXv1Atpqgvy0gOgRiSuUzsGTFJJ8GDJ0bnfpRAyq4HsXMZ+Oia6GIt92n15/Ubx/6yBujfo03vVuHtRiocyZ9E6pug3efck7f5JoJkXwU/rSsH35xlyFCxW46+thYJKixIoMdWepTGTjkW3tq+Wg2is13AiabQsbMAE82wQMEL8Gu8YS/vdqstv+xYD6fKGVf93gxzz8dOkHHAvDwMtmofJ8Fw0gwfu23qECtRzn10t+wsp+To50MQFImTWXcWQpYGJF0IwxA5YXfqBcSxHIIiBIcv5qgMzXNGCadDiv2h0kGRH0eDi5xqNLZoQZir5ilabIPzsb1Ft6xT9xA0rPZewd+Z8UPtsA1oUQ/V9Xz1w98Eaen4UfUR/Kk+0AKtPxqg3Y1AJfhZhsIxBtAwc0vb7/bYo67G4xZW37vrlS
+ ewcXYedI
+ AnV/AC49ys9PCrJ34cStxQ4d8TJ/MU7g+U4Xq5rRjSyJCd8hFc24Amjbdg2GycOl2XrVjrUR61q3WQ1oN/6aYI0h8vtFJ/GmltIlfXKdN9Oj6fZjmspz0gua5LtFeLe+VxW8hUcmazEzOsrg4B3JuujlY8aFPJWxPk1xrRCNyLJ7WlYFvRDcJiKxlSbxBYuQymoJs/KBhwq1TxIUP+bqXotmRlQKrgDTSQPOQGVNVkpj4+tL//xymWaG47pwZTffUBvvvh9r0GgGfsXpSBSCUGCZsRRw+x1oW4sgFoLJrnKwrxuMbDXt6CWQwarX/BIp5yWbeVJnOARyhXIb2Q6ddE7bvnzqTKx0zruiYn8NUG3GTLlkjyCe+YQ+fThtstGi6GBCcLAR/AgowTTS4xvzTP5bw17BmhcjgKfDuDmHEklJrS+XVjJCPf8wfcdQTXKcPNJ9Mdf/ldUWykHt0GbKwgouND6PKKFgfCA1D5a/34oB4XwVkJvIcE+/DsRrRhCXmCv/F0q3I3cAfPCB60NowHkAMjw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,211 +120,134 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hibernation takes whatever clusters are free when it runs, and an aged
-device may have no long run of them.
+On Sun, 13 Sep 2026 10:17:00 -0700 SJ Park <sj@kernel.org> wrote:
 
-At swapon, ask hibernation_reserve_pages() how much to hold back and set
-aside that many empty clusters in a row.  Nothing uses the device yet,
-so this needs no locking.  The run leaves si->pages and goes on no list,
-so the allocator never sees it.  Hibernation hands it out whole, before
-any other slot.  More than half of a device is refused.
+> damos_commit_filter_arg() is supposed to always succeed.  It may not in
+> future, for example, if the given filter is invalid.  Prepare the case
+> by modifying its signature to return an error when it failed.  Also pipe
+> the return value to its callers and let them handle the error.
+> 
+> Signed-off-by: SJ Park <sj@kernel.org>
+> ---
+>  mm/damon/core.c | 41 ++++++++++++++++++++++++++++-------------
+>  1 file changed, 28 insertions(+), 13 deletions(-)
+> 
+> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> index 3d7a973ea8b6f..ea7d8d5a4abf6 100644
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+> @@ -1317,7 +1317,7 @@ static struct damos_filter *damos_nth_ops_filter(int n, struct damos *s)
+>  	return NULL;
+>  }
+>  
+> -static void damos_commit_filter_arg(
+> +static int damos_commit_filter_arg(
+>  		struct damos_filter *dst, struct damos_filter *src)
+>  {
+>  	switch (dst->type) {
+> @@ -1340,28 +1340,32 @@ static void damos_commit_filter_arg(
+>  	default:
+>  		break;
+>  	}
+> +	return 0;
+>  }
+>  
+> -static void damos_commit_filter(
+> +static int damos_commit_filter(
+>  		struct damos_filter *dst, struct damos_filter *src)
+>  {
+>  	dst->type = src->type;
+>  	dst->matching = src->matching;
+>  	dst->allow = src->allow;
+> -	damos_commit_filter_arg(dst, src);
+> +	return damos_commit_filter_arg(dst, src);
+>  }
+>  
+>  static int damos_commit_core_filters(struct damos *dst, struct damos *src)
+>  {
+>  	struct damos_filter *dst_filter, *next, *src_filter, *new_filter;
+> -	int i = 0, j = 0;
+> +	int i = 0, j = 0, err;
+>  
+>  	damos_for_each_core_filter_safe(dst_filter, next, dst) {
+>  		src_filter = damos_nth_core_filter(i++, src);
+> -		if (src_filter)
+> -			damos_commit_filter(dst_filter, src_filter);
+> -		else
+> +		if (src_filter) {
+> +			err = damos_commit_filter(dst_filter, src_filter);
+> +			if (err)
+> +				return err;
+> +		} else {
+>  			damos_destroy_filter(dst_filter);
+> +		}
+>  	}
+>  
+>  	damos_for_each_core_filter_safe(src_filter, next, src) {
+> @@ -1373,7 +1377,11 @@ static int damos_commit_core_filters(struct damos *dst, struct damos *src)
+>  				src_filter->allow);
+>  		if (!new_filter)
+>  			return -ENOMEM;
+> -		damos_commit_filter_arg(new_filter, src_filter);
+> +		err = damos_commit_filter_arg(new_filter, src_filter);
+> +		if (err) {
+> +			damos_destroy_filter(new_filter);
+> +			return err;
+> +		}
+>  		damos_add_filter(dst, new_filter);
+>  	}
+>  	return 0;
+> @@ -1382,14 +1390,17 @@ static int damos_commit_core_filters(struct damos *dst, struct damos *src)
+>  static int damos_commit_ops_filters(struct damos *dst, struct damos *src)
+>  {
+>  	struct damos_filter *dst_filter, *next, *src_filter, *new_filter;
+> -	int i = 0, j = 0;
+> +	int i = 0, j = 0, err;
+>  
+>  	damos_for_each_ops_filter_safe(dst_filter, next, dst) {
+>  		src_filter = damos_nth_ops_filter(i++, src);
+> -		if (src_filter)
+> -			damos_commit_filter(dst_filter, src_filter);
+> -		else
+> +		if (src_filter) {
+> +			err = damos_commit_filter(dst_filter, src_filter);
+> +			if (err)
+> +				return err;
+> +		} else {
+>  			damos_destroy_filter(dst_filter);
+> +		}
+>  	}
+>  
+>  	damos_for_each_ops_filter_safe(src_filter, next, src) {
+> @@ -1401,7 +1412,11 @@ static int damos_commit_ops_filters(struct damos *dst, struct damos *src)
+>  				src_filter->allow);
+>  		if (!new_filter)
+>  			return -ENOMEM;
+> -		damos_commit_filter_arg(new_filter, src_filter);
+> +		err = damos_commit_filter_arg(new_filter, src_filter);
+> +		if (err) {
+> +			damos_destroy_filter(new_filter);
+> +			return err;
+> +		}
 
-Assisted-by: Claude:claude-opus-5
-Signed-off-by: Youngjun Park <youngjun.park@lge.com>
----
- include/linux/swap.h |  2 ++
- mm/swap_hibernate.c  | 78 ++++++++++++++++++++++++++++++++++++++++----
- mm/swapfile.c        | 23 ++++++++++++-
- 3 files changed, 95 insertions(+), 8 deletions(-)
+I re-checked this version, and the error return from
+damos_commit_filter_arg() is now handled at all call sites,
+including the new-filter paths.
 
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index 94c894c7ad9d..66d59828b327 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -249,6 +249,8 @@ struct swap_info_struct {
- 					/* list of cluster that are fragmented or contented */
- 	unsigned int pages;		/* total of usable pages of swap */
- 	atomic_long_t inuse_pages;	/* number of those currently in use */
-+	unsigned int hib_reserve_start;	/* clusters held back for hibernation */
-+	unsigned int hib_reserve_nr;	/* how many, 0 for none */
- 	struct swap_sequential_cluster *global_cluster; /* Use one global cluster for rotating device */
- 	spinlock_t global_cluster_lock;	/* Serialize usage of global cluster */
- 	struct rb_root swap_extent_root;/* root of the swap extent rbtree */
-diff --git a/mm/swap_hibernate.c b/mm/swap_hibernate.c
-index 23dc766f04cd..7475ae0966f3 100644
---- a/mm/swap_hibernate.c
-+++ b/mm/swap_hibernate.c
-@@ -5,10 +5,12 @@
-  */
- 
- /*
-- * The image gets whole free clusters first, then single slots from the
-- * allocator.  Clusters it does not use go back when the session ends.
-+ * The image gets the run held at swapon first, then whole free clusters,
-+ * then single slots from the allocator.  Free clusters it does not use go
-+ * back when the session ends.
-  */
- static struct swap_info_struct *hib_si;
-+static unsigned int hib_reserve;	/* clusters held back, still to hand out */
- 
- /* Free clusters set aside for the image, out of the allocator's reach. */
- static LIST_HEAD(hib_free_clusters);
-@@ -38,6 +40,56 @@ static void hib_return_free_clusters(struct swap_info_struct *si)
- 	spin_unlock(&si->lock);
- }
- 
-+static bool hib_cluster_reserved(struct swap_info_struct *si, unsigned int idx)
-+{
-+	return idx >= si->hib_reserve_start &&
-+	       idx < si->hib_reserve_start + si->hib_reserve_nr;
-+}
-+
-+/*
-+ * Hold a run of empty clusters back for the image.  This runs at swapon
-+ * before the device is in use, so it needs no lock.
-+ *
-+ * Return: the number of pages held, to be taken out of si->pages.
-+ */
-+static unsigned long hib_reserve_at_swapon(struct swap_info_struct *si,
-+					   struct swap_cluster_info *cluster_info,
-+					   unsigned long nr_clusters)
-+{
-+	unsigned long want, run = 0, i;
-+
-+	si->hib_reserve_start = 0;
-+	si->hib_reserve_nr = 0;
-+
-+	if (!si->bdev)
-+		return 0;
-+	/* Swap files sharing a block device differ by their first block. */
-+	want = DIV_ROUND_UP(hibernation_reserve_pages(si->bdev->bd_dev,
-+						      first_se(si)->start_block),
-+			    SWAPFILE_CLUSTER);
-+	if (!want)
-+		return 0;
-+	if (want > nr_clusters / 2) {
-+		pr_warn("swapon: %lu clusters for the hibernation image is more than half of the device\n",
-+			want);
-+		return 0;
-+	}
-+
-+	for (i = 0; i < nr_clusters && run < want; i++)
-+		run = cluster_info[i].count ? 0 : run + 1;
-+	if (run < want) {
-+		pr_warn("swapon: no run of %lu clusters for the hibernation image\n",
-+			want);
-+		return 0;
-+	}
-+
-+	si->hib_reserve_start = i - want;
-+	si->hib_reserve_nr = want;
-+	pr_info("swapon: holding %lu clusters at %u back for the hibernation image\n",
-+		want, si->hib_reserve_start);
-+	return want * SWAPFILE_CLUSTER;
-+}
-+
- /*
-  * Take a whole free cluster.  It gets no swap table, so cluster_is_usable()
-  * keeps the allocator away from it.
-@@ -130,6 +182,7 @@ static void hib_session_begin(struct swap_info_struct *si)
- 	if (hib_si)
- 		hib_return_free_clusters(hib_si);
- 	hib_si = si;
-+	hib_reserve = si->hib_reserve_nr;
- }
- 
- static void hib_session_end(void)
-@@ -189,6 +242,13 @@ swp_entry_t swap_alloc_hibernation_slot(unsigned int *nr)
- 	if (WARN_ON_ONCE(!si))
- 		return entry;
- 
-+	if (hib_reserve) {
-+		*nr = hib_reserve * SWAPFILE_CLUSTER;
-+		hib_reserve = 0;
-+		return swp_entry(si->type,
-+				 si->hib_reserve_start * SWAPFILE_CLUSTER);
-+	}
-+
- 	len = hib_take_free(si, &start);
- 	if (!len) {
- 		start = hib_alloc_slot(si);
-@@ -218,10 +278,13 @@ void swap_free_hibernation_slot(swp_entry_t entry, unsigned int nr)
- 		ci_off = offset % SWAPFILE_CLUSTER;
- 		count = min(nr, SWAPFILE_CLUSTER - ci_off);
- 		ci = swap_cluster_lock(si, offset);
--		if (cluster_table_is_alloced(ci))
--			__swap_cluster_free_entries(si, ci, ci_off, count);
--		else
--			hib_put_cluster_slots(si, ci, ci_off, count);
-+		/* A cluster held for the image is left as it is. */
-+		if (!hib_cluster_reserved(si, cluster_index(si, ci))) {
-+			if (cluster_table_is_alloced(ci))
-+				__swap_cluster_free_entries(si, ci, ci_off, count);
-+			else
-+				hib_put_cluster_slots(si, ci, ci_off, count);
-+		}
- 		swap_cluster_unlock(ci);
- 		offset += count;
- 		nr -= count;
-@@ -472,7 +535,8 @@ unsigned int count_swap_pages(int type, int free)
- 
- 		spin_lock(&sis->lock);
- 		if (sis->flags & SWP_WRITEOK) {
--			n = sis->pages;
-+			/* the run held back is there for the image */
-+			n = sis->pages + sis->hib_reserve_nr * SWAPFILE_CLUSTER;
- 			if (free)
- 				n -= swap_usage_in_pages(sis);
- 		}
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 98ed75708661..3b79cec6fd27 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -2182,6 +2182,18 @@ void swap_put_entries_direct(swp_entry_t entry, int nr)
- 
- #ifdef CONFIG_HIBERNATION
- #include "swap_hibernate.c"
-+#else
-+static unsigned long hib_reserve_at_swapon(struct swap_info_struct *si,
-+					   struct swap_cluster_info *cluster_info,
-+					   unsigned long nr_clusters)
-+{
-+	return 0;
-+}
-+
-+static bool hib_cluster_reserved(struct swap_info_struct *si, unsigned int idx)
-+{
-+	return false;
-+}
- #endif /* CONFIG_HIBERNATION */
- 
- static inline int pte_same_as_swp(pte_t pte, pte_t swp_pte)
-@@ -3379,6 +3391,13 @@ static int setup_swap_clusters_info(struct swap_info_struct *si,
- 			goto err;
- 	}
- 
-+	/*
-+	 * Whatever is held back for a hibernation image leaves si->pages, so
-+	 * that it is never advertised as swap, and it goes on no list below,
-+	 * so that the allocator cannot find it.
-+	 */
-+	si->pages -= hib_reserve_at_swapon(si, cluster_info, nr_clusters);
-+
- 	INIT_LIST_HEAD(&si->free_clusters);
- 	INIT_LIST_HEAD(&si->full_clusters);
- 	INIT_LIST_HEAD(&si->discard_clusters);
-@@ -3391,7 +3410,9 @@ static int setup_swap_clusters_info(struct swap_info_struct *si,
- 	for (i = 0; i < nr_clusters; i++) {
- 		struct swap_cluster_info *ci = &cluster_info[i];
- 
--		if (ci->count) {
-+		if (hib_cluster_reserved(si, i)) {
-+			ci->flags = CLUSTER_FLAG_NONE;
-+		} else if (ci->count) {
- 			ci->flags = CLUSTER_FLAG_NONFULL;
- 			list_add_tail(&ci->list, &si->nonfull_clusters[0]);
- 		} else {
--- 
-2.48.1
+Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
 
+I'll take another look at the remaining patches.
+
+Thanks,
+Kunwu
+
+
+>  		damos_add_filter(dst, new_filter);
+>  	}
+>  	return 0;
+> -- 
+> 2.47.3
+> 
+
+Sent using hkml (https://github.com/sjp38/hackermail)
 
