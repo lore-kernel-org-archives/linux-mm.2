@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2138C88E7F
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 11:34:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0893C88E53
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 11:34:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 078396B00B4; Tue, 15 Sep 2026 07:34:20 -0400 (EDT)
+	id D97356B00B7; Tue, 15 Sep 2026 07:34:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 04EEB6B00B6; Tue, 15 Sep 2026 07:34:19 -0400 (EDT)
+	id D6EA16B00B9; Tue, 15 Sep 2026 07:34:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E774C6B00B4; Tue, 15 Sep 2026 07:34:19 -0400 (EDT)
+	id C8D406B00B7; Tue, 15 Sep 2026 07:34:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C81A26B00B4
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 07:34:19 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 62F811403DA
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:34:19 +0000 (UTC)
-X-FDA: 85215788238.01.186590D
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A3FFE6B00B7
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 07:34:27 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 15B591203E9
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:34:27 +0000 (UTC)
+X-FDA: 85215788574.30.267B94E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 8D0021C0006
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:34:17 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lOHGXy8c;
-	spf=pass (imf21.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789472057;
-	b=zOznUubnUQa7PJptspIeoIkbDZpbDQuBakv9PuxSqpHkJOx2MOJDAIcAXJpFS/kJiqzODW
-	5BBZs8MpsCVdl3n31p/VYt0NclLiqR0UvCWkEOXDAxYUdjtzBSIySzzoIM6NxUfUEw1yQH
-	ZUdl0Slaqmvw0i1Z8eD0vNHqF6JLGYU=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lOHGXy8c;
-	spf=pass (imf21.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf08.hostedemail.com (Postfix) with ESMTP id 3CDD8160003
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:34:25 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JyIhvS+J;
+	spf=pass (imf08.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789472057;
+	s=arc-20220608; t=1789472065;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bA4ynAEQWzLS8TLe1OyiMNmBCpxqZtxYswH6/3xEJn0=;
-	b=69rTJqSoQykshO9cL4GSYD17UmGcn3N86RL3YzsRQqH1C81r9hWsIy4yffXlocF1snhKnh
-	5umxRC6PpYxnxyaUKg43Gy4v22TAqq2ga16rDfigMnVxRJp8zu3/rMC2MA+pxFIFMKw1eN
-	PZoHG1KLIC6XUvzsaSCkVO/nl418Gx4=
+	bh=KlocZhp7qjck9olR3klidY4UlF+C5OwdG3ef0fBmbDU=;
+	b=hxrckquxP+DFkgDzdLC75vZPuSCPs30Y25URURXF6WVqHjhEbxGMX7tt16ibqEA8HuUBQS
+	3YKSfjKbPqvBVtyoika+x7Inc/RrHf/tpdZqYiSf44xQRoDnza2JzlcRzDyBWsiuMm533Q
+	yQC4CGVvPhuS7YbWo1qxRmeHOx2k8Jo=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JyIhvS+J;
+	spf=pass (imf08.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789472065;
+	b=qKP17U7fUOnysIWwll+mDOFF8YQKcShPa2SlLGBDuUT3lJxU2ImJsrGTlyk4ig9IaGZ4dS
+	QByHJ6ZKIhk1BN7Zn7l6wiJaJwCUVdBZzLulYa0MAAe0zs0AcuryinxNaKH3COAteno+tN
+	smMaNXce2z4gq/Qxiyht5P0toXVYHWY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DD73B42A92;
-	Tue, 15 Sep 2026 11:34:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F2821F0089A;
-	Tue, 15 Sep 2026 11:34:09 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9286F4187C;
+	Tue, 15 Sep 2026 11:34:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 405011F000FF;
+	Tue, 15 Sep 2026 11:34:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789472056;
-	bh=bA4ynAEQWzLS8TLe1OyiMNmBCpxqZtxYswH6/3xEJn0=;
+	s=k20260515; t=1789472064;
+	bh=KlocZhp7qjck9olR3klidY4UlF+C5OwdG3ef0fBmbDU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=lOHGXy8cA8jMMGugeuqOHZsHNH9R6NCpiW1SGzSqk2TyhtRX4C5vLan9jF9Lg4sJM
-	 A2A2QCI68wPGNuvnvsrzBxBe+YzlBhd/5q0D0YjdRbOCeZ4h8kXDe3U7+UuYQS9gSN
-	 nEwgErx77J2ER2m1k0BupFTZUzEnThzBPGlrZZvpU1Un3NXwFxcQXOSeuFbFE3Jgku
-	 eXAGNFsAkifaZ03d/z3uqPrGplip5My3/DUaiek0wZjCAPE/m4YXJ55H3MQW+eeCW6
-	 5funLtKEK3ijtyLwLxFdU4Hr4SHgxA1Jfy6H6zqgczgxiU00tDcHkC1P9UYL1yAfe1
-	 +SqeWUaLUrpuA==
+	b=JyIhvS+JT82mqNUDoQEI5NLWlLHGSvHqAL4SSQ1kt8SKfEf+HfcjXdwmraSKCHGE8
+	 ZOy1pOhBVyA8CD8/PMtsr6/M5DyMiVViu2ENl+54eY1cvO87TiRTHmWjqOn6VYaBoZ
+	 R+EwigxYuUkdDx++PpQix7gADr1dTufOLv25uLow4e3SSmRhk6Xa/nk8d3fLnQOYYC
+	 Ydpt0fW4a/KY4J+ehGRp+fITQ9UnHopTKNJg1/CR1zut9A3qFE0J3crkfG5HDtEzwq
+	 G8elLfwAFZ2cfYNwrhA3h2Y1eTB9tlgjFj5+2pZKNm3kY5rb7mp2PNhr6wwTmKvzYc
+	 atFGIdRwNt4XQ==
 From: Christian Brauner <brauner@kernel.org>
-Date: Tue, 15 Sep 2026 13:31:09 +0200
-Subject: [PATCH RFC POC 23/50] file: open-code receive_fd()'s immediate
+Date: Tue, 15 Sep 2026 13:31:10 +0200
+Subject: [PATCH RFC POC 24/50] file: make FD_ADD() a standalone immediate
  install
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260915-work-fd-reserve-unify-folded-v1-23-4d5217d6b246@kernel.org>
+Message-Id: <20260915-work-fd-reserve-unify-folded-v1-24-4d5217d6b246@kernel.org>
 References: <20260915-work-fd-reserve-unify-folded-v1-0-4d5217d6b246@kernel.org>
 In-Reply-To: <20260915-work-fd-reserve-unify-folded-v1-0-4d5217d6b246@kernel.org>
 To: Linus Torvalds <torvalds@linux-foundation.org>
@@ -94,22 +94,22 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jann Horn <jannh@google.com>,
  kexec@lists.infradead.org, linux-hyperv@vger.kernel.org, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.17-dev-db0b7
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1378; i=brauner@kernel.org;
- h=from:subject:message-id; bh=9JAnV65R8KRKKJ6YuAvXjbfOJ9otGL1j9hOaIwPGraE=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSt1KllfvjTfp2zVVTgt9NTTlxN9shpKt3NzyD6qO520
- LPPTxYs7yhlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZjI1CCG/yUL4597uxz9uSVv
- B5MCM+uUS19mlk6c3GQWOy8v+s8XQzOGv5ILE+KOSk0/EKpzUmdZprjQ2jqtG2qZb/98t1fIsHn
- zhgcA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2484; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=T3KSWcji/YSytHTghs9Kt5BT4n+B/RVkFjKfZEpUiUE=;
+ b=kA0DAAoWkcYbwGV43KIByyZiAGqpLH2gnJPMvFkt0o4MjNDtgkqII7AmPHUY9LRg5JJdYim/g
+ oh1BAAWCgAdFiEEQIc0Vx6nDHizMmkokcYbwGV43KIFAmqpLH0ACgkQkcYbwGV43KIfFQEAxyCZ
+ bG8G/x+eu+vLdk6b9eKItI7HciqUsL6XwpabfYsA/1x0tYtG16iv2X3gSieaXgcMCW+XfqmAtez
+ piRVBKO4N
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3CDD8160003
+X-Stat-Signature: ruk9qayq5syoef5dg4s13kgkbdgpwznr
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 8D0021C0006
-X-Stat-Signature: ptyes59sz9kuaoghmd5rz6wif845tuhq
-X-HE-Tag: 1789472057-908985
-X-HE-Meta: U2FsdGVkX1/OHu6OfecVRb1hzArHEouMbW1UiqQb7eJbj1eVPByHYR0yl7ytXaC6YfmzO9Fg5/v2iRh9Z8fb1HHye458K7Pm2uDCDZn581I2s0jCnmzdbdEC9D5bZqbMxbsIEP4AgVOeRKHDhFCG/wJiGIdHfn5BvAJraiWj3gfIOr2sNSiizhkiFwtNVEBRxNtODz3hVCH3xT/88+l69rMxY6UbN7NvdUBIAcQTZYiin1N0stTRIS/tHAtHvYDvd3y/+9dSa++T1UQ1jVrplvMhxXjl+lk3NuCdRZfEngjZqZj3pDZ+kcUTK702ptoqFBx8gf6AtH9MbyzMxTsWhcgeJbSScuJSEUMz05eD05ThZW5KTJZyOcDUKanL0yS9LcNbveEUf2AV/yAAiI6zkLzuRGe5YQ4IcCkWrUzB2OopoT3FILRxGVw+6TDgpS4ArOetG9iNzoA8zsl1xBdb+cLNj2PILGAOcSDd8/kcxKmT7ERMMIQFvKET+hqZQX7HoHOf7DbAxzwi+pnng1Urty3o/TXFgOJ7+ZK4UB8VTo1UCQ47RvE4Fo9kzjhxRn0DEsjGdxeJiASR/NhSn2Y9tF3DvEItcbONC+NMDKISzVcXABNIr2bZJ7F9JKOMMP3hXP4v7qDcyiFm7PuRW5FfZ2P+E/xZEdmovZ/5zsrcRArQDM/yg4pbubE77EThz/RJjxa4p/4PNtb0n0AlLeqanU5pmXBDFzVLkQJ+nwpnNJqyYbZ1oOnleDDxvmib/rWtAFwciH4h9ONa4rToRytcVzl04FTM6PjdxIGf363vuiQYeKMhdlMX06aY3/STLEZd6d/1GqdDHu4LYpUaAeni0vuTGsHafVVZdlAEvoIxvArkD3BxBCsEP0gOpcYAQ02hWZfmaEEEdypffZ7BNOU0v6jc1b8ocfgxqbrB8ZC3QFB155PITkqaKRp56YFN3ZlilGJJ8B53zC8z8cgH51I
- HT6ljCMa
- Y5Skd7JEonh+bFOoQjN1TQ55GYhZynJV4BDFbqEkBHZUCc/+Yokcv51bX+b8Cawqq0YVxrt4LddUkH8c2sNvCgqRc7G03cJ09FS7W0TrRDXk32ZUZN7iI/qq39EnfX9t89RVjwOjAmb+Q17Fw2+3O2mrbWuyv4bELGH6Hn8s/wojlehQXNIGrgXnLam3ktEPl/RW6qQWLkeckxyT5yk/TsNMbr4XAfD0KE9CQZSVuE5chF+2QYDg07yjnjaABousgneY+JL6PXCilcXL1AV8M/38NaCCJOE+YB8t2
+X-HE-Tag: 1789472065-199084
+X-HE-Meta: U2FsdGVkX18Hne4uDzUkuogFgWPAYbTIWUQdLnaQun89dbJhVU8VD6A+1jjCFlCqXWDrxfYTvECjSYWNSqpCB+kW25mwV46rtvx2ttNyifbG/46KNBET81TIfvinHom1JZ+v7SFewSPebBkDSfppPp1PFwHbL5EKokuDb7QzZKl9ngkCHqHOyxxSDzWZcmYWKdIZ7CJ79o3veDhV9mYQ90e/NWZQGTtqSk6gPtYUctPlUULL3mclCzF2R7IxCtb2zvL0IvlwJ2kOGSkjeJvltBR+WuXwI5+uUhq7RsxxN+dPZQOpxynwhvoPT3sV898y9Mx+Powo0KsjIVfF9xZsrquduufvQd9NoISm24zh7aTSCpT4PodjKorpn0AMCxwCYgcqXikeGxjoSJr4AzInYwIcKa2FREHnTKvX2csTPZTS2QYhReG66dU1p5XY5Fszn7dY0+rXwJdSitzD72rRqKMAGKLDpyHE2gQMWI5gJzrSsO8/J8KHQZ2BAh7cQ5825CANwZO1XeOXgqb85s3edruIyNMLvuJ2UytwPmbueucuavu3NXLR+I9aFRy0AhRv7QVk8ZxxDnfmyhDGfUWzs1rkERK0VGdQXTtaBOz781N2/4WpU/IVJURbbrlrwEGf/1Z+YN9KrIZfwcAKpd6YRyMDZroz0CrLZwHDCVZ9Q+7V/1r661dbo67SE4c79vJQlHORSij8ROXc6lqAWEBBpNZotejp1AEzjAtIGNnvT6Z+5mQVB+C3aKbSqR8ptH3VTjPIuKe5J8uNyQE/GvRsp4N6PY7vKWC+HIQZBI1mIqa5oW2b8ugcfcJH7qLtqJkcIzataXXK04/bVvTYsQC3T4+5M6USkXPugg5ag+ZO+TTnOcuY5EpGt2GDVdUPbl7aS+7d2Mm6r5e3ctLoybSIhM8ctx+XKNglrxIYmUfwHiKrJJBa18zlEzBNTY1YxwhvSgJ4URnOlPYeix71EHv
+ V6edLG6M
+ VU5Ttgq4FzdZ5r+BNdQBKGX9GwZpR+/cidunEVYgFZhmOlxldL7JoRDH5DJd1qyNHcHCvBewN//bIzi6dEIV9UOXPPr9cHZO6mBRT1477rABS9ypfCAW8nAawjn/bwdnNaTqFjTuoY+6S1no+UIwri3/KDrlcocNSCvjLcT6qOUEEcSoyBUCU0ycpYN79yHePbEFf/aoqgs4GUw6UsyvOb6LZaLcvuWgPCGZr39EIOHV+2nRVsV7JEomKSIiOFkb0OQbr7vw9NqtvWqicoCRweSgScebJTs646eD8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,57 +117,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-receive_fd() cannot defer to syscall exit as SECCOMP_IOCTL_NOTIF_ADDFD
-installs into the target task and hands the number to the supervisor
-and IORING_OP_FIXED_FD_INSTALL runs from an io_uring op. Open-code the
-get_unused_fd_flags() + fd_install() it did through FD_PREPARE().
+FD_ADD() was built on FD_PREPARE() + fd_publish(). Give it its own small
+macro that allocates the descriptor so it stays an immediate one-shot
+for the hot descriptor-is-the-result paths (open, socket, accept, memfd
+etc.).
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/file.c | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ include/linux/file.h | 36 +++++++++++++++++++++---------------
+ 1 file changed, 21 insertions(+), 15 deletions(-)
 
-diff --git a/fs/file.c b/fs/file.c
-index 2b041b45f225..1f06d0c846c2 100644
---- a/fs/file.c
-+++ b/fs/file.c
-@@ -1607,25 +1607,27 @@ int replace_fd(unsigned fd, struct file *file, unsigned flags)
+diff --git a/include/linux/file.h b/include/linux/file.h
+index 04dd85cdd9bf..1ee7f058a882 100644
+--- a/include/linux/file.h
++++ b/include/linux/file.h
+@@ -259,24 +259,30 @@ static inline int class_fd_prepare_lock_err(const struct fd_prepare *fdf)
+ 		take_fd(fdp->__fd);                            \
+ 	})
+ 
+-/* Do not use directly. */
+-#define __FD_ADD(_fdf, _fd_flags, _file_owned)            \
+-	({                                                \
+-		FD_PREPARE(_fdf, _fd_flags, _file_owned); \
+-		s32 ret = _fdf.err;                       \
+-		if (likely(!ret))                         \
+-			ret = fd_publish(_fdf);           \
+-		ret;                                      \
+-	})
+-
+ /*
+- * FD_ADD - Allocate and install an fd and file in one step.
++ * FD_ADD - allocate a descriptor, build the file and install it in one step.
+  * @_fd_flags: flags for get_unused_fd_flags()
+- * @_file_owned: struct file to take ownership of
++ * @_file_owned: struct file to take ownership of (can be an expression)
+  *
+- * Returns the allocated fd number, or negative error code on failure.
++ * The file expression is evaluated only after the descriptor is allocated, so
++ * a full table does not run its side effects. Drops the file and returns a
++ * negative errno on failure. Installs immediately: for anything more than a
++ * bare install-and-return (reporting the number, configuring the file,
++ * installing several descriptors) use fd_prepare()/fd_stage().
   */
- int receive_fd(struct file *file, int __user *ufd, unsigned int o_flags)
- {
--	int error;
-+	int fd, error;
+-#define FD_ADD(_fd_flags, _file_owned) \
+-	__FD_ADD(__UNIQUE_ID(fd_prepare), _fd_flags, _file_owned)
++#define FD_ADD(_fd_flags, _file_owned)					\
++({									\
++	int __fd = get_unused_fd_flags(_fd_flags);			\
++	if (likely(__fd >= 0)) {					\
++		struct file *__file = (_file_owned);			\
++		if (unlikely(IS_ERR_OR_NULL(__file))) {			\
++			put_unused_fd(__fd);				\
++			__fd = __file ? PTR_ERR(__file) : -ENOMEM;	\
++		} else {						\
++			fd_install(__fd, __file);			\
++		}							\
++	}								\
++	__fd;								\
++})
  
- 	error = security_file_receive(file);
- 	if (error)
- 		return error;
- 
--	FD_PREPARE(fdf, o_flags, file);
--	if (fdf.err)
--		return fdf.err;
--	get_file(file);
-+	fd = get_unused_fd_flags(o_flags);
-+	if (fd < 0)
-+		return fd;
- 
- 	if (ufd) {
--		error = put_user(fd_prepare_fd(fdf), ufd);
--		if (error)
-+		error = put_user(fd, ufd);
-+		if (error) {
-+			put_unused_fd(fd);
- 			return error;
-+		}
- 	}
- 
--	__receive_sock(fd_prepare_file(fdf));
--	return fd_publish(fdf);
-+	__receive_sock(file);
-+	fd_install(fd, get_file(file));
-+	return fd;
- }
- EXPORT_SYMBOL_GPL(receive_fd);
- 
+ #endif /* __LINUX_FILE_H */
 
 -- 
 2.53.0
