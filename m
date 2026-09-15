@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36C58C88E75
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 03:17:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D83EC88E75
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 03:17:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C17A46B00B7; Mon, 14 Sep 2026 23:17:10 -0400 (EDT)
+	id C3F456B00B8; Mon, 14 Sep 2026 23:17:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC5A96B00B8; Mon, 14 Sep 2026 23:17:10 -0400 (EDT)
+	id C16B56B00B9; Mon, 14 Sep 2026 23:17:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A691D6B00BA; Mon, 14 Sep 2026 23:17:10 -0400 (EDT)
+	id B2D966B00BA; Mon, 14 Sep 2026 23:17:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D92A6B00B7
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 23:17:10 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E2842120306
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 03:17:09 +0000 (UTC)
-X-FDA: 85214535378.17.3B3C5AC
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 81C276B00B8
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 23:17:11 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DB610C0301
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 03:17:10 +0000 (UTC)
+X-FDA: 85214535420.23.FC5635E
 Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 5D1CE40004
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 03:17:06 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
+	by imf17.hostedemail.com (Postfix) with ESMTP id 2726540006
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 03:17:07 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
 	dkim=none;
-	spf=pass (imf01.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf17.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789442228;
+	s=arc-20220608; t=1789442229;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=q++yFCihLm5ha86x0IQ2fkklxsXHHKKwYzsfR1YJIDg=;
-	b=UZLNXzAutbb7z9/glf6iixm544pk5bzvv61kcg+pFrkLuzhl09tX+ezenRz9pPpw8uuHFY
-	/8FXQ3SkHVwpxR0tHjeEIlxvM2oh6R4FVzetvUFQgT8m1cPEPz5cCGqlRAv4H9JH6WBnKe
-	/IRfQSSB7s8Rbn+8LVcXomjB79At6Fw=
+	bh=Db0/XWQYJn4IepUTSOc5vi3VxgHaf0uHzMImd8z5Ito=;
+	b=dP45V5kEjVMwV3zzfmKH6i1nFW+D2zkSTpn0FF8RO635+Et8LT2WHuzj7Gk5y/RgWkOjPk
+	2U7PaLtO7cX+P0Jik+G1+c1PJg7mX6BvLdKGDvp8bGkC+iY9h+axCn4P4AHE6C2dy2bAe3
+	OM0M9gzGmS9PBRiHdaUlBFGB9Ec1KKE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789442228;
-	b=JKHh4Rp820T5nee6OW4yS5QRj3/I3FSLWSlwJMEiTs1KemO7GtSEX33SoK1AISYRSiKh0a
-	FsSqOS+rh8kADsP1C5x1d8zXVN/NbFnDXNlrZu1cao8p2pPXTciTwcLLELJWdIDtLfX6iE
-	g+qo/cyRVqXlbsCVKpoUcRmPzYI6K0c=
+	t=1789442229;
+	b=wUs6DhOvWGrIZ26AoVox3bzulvPyHV0LsiOtFh0mvJIm59dVlyY3KMHPQLXbis+6mZGZOB
+	lk28qpKTl5XQNjcvSTWZR/iffJXyLwJwyHi/CN1WPd9m0YhDm52nX2exmQUxR229UYcN7w
+	TVoMaqsErNKcfMF92gl4NgCf4jLkN1k=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
+	imf17.hostedemail.com;
 	dkim=none;
-	spf=pass (imf01.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf17.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
 Received: from unknown (HELO yjaykim-PowerEdge-T330.lge.net) (10.177.112.156)
-	by 156.147.51.103 with ESMTP; 15 Sep 2026 12:17:04 +0900
+	by 156.147.51.103 with ESMTP; 15 Sep 2026 12:17:06 +0900
 X-Original-SENDERIP: 10.177.112.156
 X-Original-MAILFROM: youngjun.park@lge.com
 From: Youngjun Park <youngjun.park@lge.com>
@@ -68,22 +68,22 @@ Cc: Kemeng Shi <shikemeng@huaweicloud.com>,
 	her0gyugyu@gmail.com,
 	youngjun.park@lge.com,
 	taejoon.song@lge.com
-Subject: [RFC PATCH 02/10] mm, swap: skip swap devices without a block device in hibernation lookups
-Date: Tue, 15 Sep 2026 12:16:50 +0900
-Message-Id: <20260915031658.1505680-3-youngjun.park@lge.com>
+Subject: [RFC PATCH 04/10] mm, swap: skip swap cache reclaim while storage is suspended
+Date: Tue, 15 Sep 2026 12:16:52 +0900
+Message-Id: <20260915031658.1505680-5-youngjun.park@lge.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260915031658.1505680-1-youngjun.park@lge.com>
 References: <20260915031658.1505680-1-youngjun.park@lge.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2726540006
+X-Stat-Signature: 87r3ui18hx83hjhpfjcc7d5jhtn9m7s8
 X-Rspam-User: 
-X-Stat-Signature: diw76i6y39kc9egwamoeopdziaejaind
-X-Rspamd-Queue-Id: 5D1CE40004
-X-HE-Tag: 1789442226-386452
-X-HE-Meta: U2FsdGVkX1/1Tdx6V0dXGhvyUEYZISk2M1mzGyIh9azfmUOa8NdZULmrVlcjGk7GNjkfSJK/EwaZWnaShHjP+0PnXrl7eAAEMNiv/QiqEJPCIhKWgcQbUR1KKhF/SHhiRja5CSoNfom2yGi9/blwwQJQa4mjIFb9LFVEfcIu6r0ZXB44uLV60HTwpI72PphRANoxLQ1D4KCjh6aWgPwwlAH8mte+3aO+EyvEhDgMQDGSf6XmtijN/5i/WmFI27WJ0w8/JQFtpRdRItq0QrPD3YkuDVRtHa/napZEoSwAbKTg7cAdyuHuADDy17KHykXrnpn9FXvGSWbNzPo/ZTaPFaG2CA0D5M5uwGLBHCJbJQGXTm1TdoyEMA25NwuV0BiQWTFlK02wF8Nl/BK2ktqStSYFphRsQNO7r3uGdaCyp6gRxsSpLUaL8hvR4t4fxG5u328VjCqijbzh1VnbCL+foOzHBGxXTeLlFqIeLsuTpXIxTPHdEsZQ9DaWEY0fM2LYtgSJDls0IRXrVuMXPyZMnCWw8zBEx6q0DbRMK8HkS0WNGzLUcW3trzGA7vtj8Rl7YANM7dY/cDNnirJr5gY5f5WBvdQw3m/6hCQzCFXBgbQgwos1UCJuhY9qYBk3NB1sFDlyLMUso/aZuo+z8FJMTiE+YhnvJX5nvsU46q6F5LU2Xm4yttfVL1Sl1k9AVklCQM6DpN75KJk5GmxKuPe56tGFjB+NM+vX5NsOZHx5TxNWigKlJP1uhaycnsElLwq89Q0WADpNdILi6FcxnkJ13hyl0tLcn4IbnFbvg/gOec/0W50SfqGZyeQ7gwo1njOzxM5CMhL0LJugG/CmZDvyja7iMDgt4+OvVYWFGIoicr92oQ3YCSQJsGmB8lKjTKpqx3bFyUNMDh9PIUYWMR6h0olTsZ2IZfMDHzvDyytdmUvJ/cLGojLIH6s7S0nOlkxfg/6f7kty+vJWmwNq/Xb
- O093U5SY
- DdMRPDjm69+qufHN7mYKH3rp47faYvpEVVK4ShOxdT+ky2GY3k3Or0PbUkXyLP210uLnSclIRDmhhWDudhW+xVCCBTMRIb2uA34IBmMV9nvoHK1m9sGdTk+2RojX10L203fp91Nm4aSSDgXnndNH0bhqAIDcmkcZEsoj9kquViRZDGy40qLXNH/EHThsTb0AV7xdsphQaWyHUWU3Wh9oetSPmpJezuhDd8irc
+X-HE-Tag: 1789442227-284300
+X-HE-Meta: U2FsdGVkX19sc4EbnRvs3mTfRX5G8zYIX9AvD7MhPQMzE304auS7Z5yI/A3I/NyUvakjlLpB0R17vpZ2KUfpYLXVDDAdgenJfAkx9NyrmwGO85LexLNBMJ3fxuWJ+PmliE3MGyfiJpcnWn56ttbtKkCIhFn5dbu8KO3jdodyvN5ML59Yvs2hdO4bXxfE5zMdqjVbwcrmpQdiYcLolguU3GGWHyJ2MSHgIvQsdk17A3WuvrhcvhjHmRsIYZa2W9vm8ywVvMKF4GbYMA5INx7ux+w6ht7HYJNJMhMDXs37Rnf9FB7Z5fka7njysNyOSyaW5t6zUfW89Ah/xKDYMiKXF2vwyxkrIbBmQx8xizgTLgJaVyqCfhSD5fhDs/SFK5nTTxaHeykB6cgZeYAS+Tt47pfVD9arko9N9tU3kCHs9l2BeeHsewEXaWU6aWKcJvIkm9xu7QtsTu/ZfHtx/spf1z5kKJUBGUzg5emcx+aycvGlH6wwjJO7GTm97IiqFHraONfuzZ7A5B3v7jFhqODem/XTtneXk11OMtRxcRoatqvEkTlPDCWv1qY2UiHvAIwgBRRNaaQEn7pWPA5hVgt87T1emZ+ryjzXawwz8P3ON+8z5wuJz0dwQt1ByxNW5aTnXce9S2T6t0qNzB2pC5j3tfCrnT/U+dUEcxM9Nsbq0WRV1ug/2lzGjfkcAjUWCdKXYIEW/8FYRUgE8fMsFWFBhv4QMwyLUBDo5DaN9NnqBjbyeqdNo58UezUqpKrICQ9vP0uFspAz68NyO2Lw3ShAo1hkkE9W+3P+KhHG1EJibQQNGI/kkV/50ECJGQnN1QbJQnhE0GoGTlf+pvuwzVqiKzMsiNxgKReFXAfVGAItTYRUKzabF3wqXJsCWPV1ypLayr+Ad2Wx+VI0bepHDyyPEcTCXn3XvsuZ4Wjp3pQOk0bo6VFtdsA4xRcdAOntcI/9EAOm6pnng11DpfVDtaP
+ NNSQ22QS
+ oICUsCI0MkArWvkfLKkSSqzgLeCUVqNgwbUyW9skrqJKC0yX0LgYLywYmIVxN0HlkmFnD9uEGUl0rHQGG+aSTUpyl7mDQJbnJ3SXGiN4gyWFaM136AH+BvlDi1361qSv56h9NUIEyvYs0uMaBX5Ds4pqeqMpJQzdQOvwQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,41 +91,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A swapfile on NFS or SMB3 has no block device, so claim_swapfile()
-leaves si->bdev NULL.  __find_hibernation_swap_type() and
-find_first_swap() dereference it without checking.
+folio_swapcache_freeable() refuses every folio for as long as
+pm_suspended_storage() holds, and that covers the whole window in which
+the hibernation image is written.  Every reclaim attempt the allocator
+makes there drops the cluster lock, looks the folio up, trylocks it and
+gives up.  swap_reclaim_full_clusters() walks a whole cluster to do it.
 
-Hibernation cannot use such a device anyway.  Skip it.
+Stop trying.  The allocator is left with the slots that are already
+free, which is all reclaim could have given it anyway.
 
-Fixes: 21bd900572f3 ("mm: split swap_type_of")
-Assisted-by: Claude:claude-fable-5
+Assisted-by: Claude:claude-opus-5
 Signed-off-by: Youngjun Park <youngjun.park@lge.com>
 ---
- mm/swapfile.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ mm/swapfile.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 592ca26a5c0b..655f2647472c 100644
+index 07aefb782fbe..cf519c5569c4 100644
 --- a/mm/swapfile.c
 +++ b/mm/swapfile.c
-@@ -2238,7 +2238,7 @@ static int __find_hibernation_swap_type(dev_t device, sector_t offset)
- 	for (type = 0; type < nr_swapfiles; type++) {
- 		struct swap_info_struct *sis = swap_info[type];
- 
--		if (!(sis->flags & SWP_WRITEOK))
-+		if (!(sis->flags & SWP_WRITEOK) || !sis->bdev)
+@@ -903,7 +903,7 @@ static bool cluster_scan_range(struct swap_info_struct *si,
+ 		if (swp_tb_is_null(swp_tb))
  			continue;
- 
- 		if (device == sis->bdev->bd_dev) {
-@@ -2425,7 +2425,7 @@ int find_first_swap(dev_t *device)
- 	for (type = 0; type < nr_swapfiles; type++) {
- 		struct swap_info_struct *sis = swap_info[type];
- 
--		if (!(sis->flags & SWP_WRITEOK))
-+		if (!(sis->flags & SWP_WRITEOK) || !sis->bdev)
+ 		if (swp_tb_is_folio(swp_tb) && !__swp_tb_get_count(swp_tb)) {
+-			if (!vm_swap_full())
++			if (!vm_swap_full() || pm_suspended_storage())
+ 				return false;
+ 			*need_reclaim = true;
  			continue;
- 		*device = sis->bdev->bd_dev;
- 		spin_unlock(&swap_lock);
+@@ -1050,6 +1050,10 @@ static void swap_reclaim_full_clusters(struct swap_info_struct *si, bool force)
+ 	unsigned long swp_tb;
+ 	int nr_reclaim;
+ 
++	/* Swap cache cannot be freed while storage is suspended. */
++	if (pm_suspended_storage())
++		return;
++
+ 	if (force)
+ 		to_scan = swap_usage_in_pages(si) / SWAPFILE_CLUSTER;
+ 
+@@ -1315,7 +1319,7 @@ static void swap_range_alloc(struct swap_info_struct *si,
+ 			     unsigned int nr_entries)
+ {
+ 	if (swap_usage_add(si, nr_entries)) {
+-		if (vm_swap_full())
++		if (vm_swap_full() && !pm_suspended_storage())
+ 			schedule_work(&si->reclaim_work);
+ 	}
+ 	atomic_long_sub(nr_entries, &nr_swap_pages);
 -- 
 2.48.1
 
