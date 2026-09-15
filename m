@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7D3BC88E75
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 11:32:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D067C88E7B
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 11:32:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A38676B00A3; Tue, 15 Sep 2026 07:32:48 -0400 (EDT)
+	id 270C66B00A4; Tue, 15 Sep 2026 07:32:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E8856B00A4; Tue, 15 Sep 2026 07:32:48 -0400 (EDT)
+	id 221A36B00A5; Tue, 15 Sep 2026 07:32:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8FE796B00A5; Tue, 15 Sep 2026 07:32:48 -0400 (EDT)
+	id 1118F6B00A6; Tue, 15 Sep 2026 07:32:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E7466B00A3
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 07:32:48 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 027531203ED
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:32:47 +0000 (UTC)
-X-FDA: 85215784416.28.C0B4FE1
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E1AF66B00A4
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 07:32:55 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 605EB1C23EA
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:32:55 +0000 (UTC)
+X-FDA: 85215784710.22.CE35146
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 3D20820009
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:32:46 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dCq0TREx;
-	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf19.hostedemail.com (Postfix) with ESMTP id A50781A0006
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:32:53 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QMTfLeTY;
+	spf=pass (imf19.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789471966;
+	s=arc-20220608; t=1789471973;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lhrRWmW1jhLpY0b4T+pXdyq2K6/6Lw3I7Dd8oxsFe60=;
-	b=c1LVR/Hq7vSkXRn19S6EDHzkK+5daVexTw3BA7n4A7WXInsoJqpEahe1IqJAACISjjGuYA
-	K2oWbdUswHJq3uoStDgCYK6r3bvijaBgaMu1pZP7hOIQIYDI6nmMAWRedIqWNorOIed5xq
-	sFQXsECM6cp6xfZ8+GajvQpzjGP6j/Q=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dCq0TREx;
-	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=o3Xn0Mlg9bYlNfr1tPx70kIWOKOkVzvKHpeJ1YxZNRQ=;
+	b=2bO/NBDJkn1e0P2Tam7l34rIddsTAZaZFUz9tPGviihTzauHtQ6f2XAOAu8rgtQVcqIt8K
+	iNsdkqBLIrAMDr8fKVY+P06NoGCu7DhvE50qfJvIzR4Qng+FlAigRlkymoWcA5hS+SqfRX
+	2tDjm8tjF2fXJCC/MtMn57BmElnlKCs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789471966;
-	b=BrjGHjYJQAHE4GmCLnyEqwP9hdvV1QkVJRJeSpNx/c7jl0hJ6+ErAYBlQiRelD5Uw5V6GQ
-	FEYlE++ec38adykiDal8UwwhoAb4zUTibUnFYRBvXhzop3d+Vy1wLyjm21ooCAX5WMg7rj
-	9WmDI3ChYX4pFzExLMgltGlyOztuu9A=
+	t=1789471973;
+	b=JEPC2NpkJ74+EVKLWfQU5XVRMuEzpy7k9VfmxOV90TocD5tj+SrMog2iSHMkP18KrbonUt
+	lRJRo4kwH5VxBBRFMBYdAccx9Av9VQlODtxkDTeCvunCpa2FAdCQ/45bn+ReCfapDJxNt+
+	dRo9J3uZHZI6nmxDUngOwOR53sHwRGE=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QMTfLeTY;
+	spf=pass (imf19.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 954BE602C4;
+	by tor.source.kernel.org (Postfix) with ESMTP id 32F56600D1;
+	Tue, 15 Sep 2026 11:32:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDE001F00893;
 	Tue, 15 Sep 2026 11:32:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39A7F1F000FF;
-	Tue, 15 Sep 2026 11:32:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789471965;
-	bh=lhrRWmW1jhLpY0b4T+pXdyq2K6/6Lw3I7Dd8oxsFe60=;
+	s=k20260515; t=1789471972;
+	bh=o3Xn0Mlg9bYlNfr1tPx70kIWOKOkVzvKHpeJ1YxZNRQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=dCq0TRExcU+BlQDM8hy6Cs9E6uwVSlfYujcFmaPmD6BlHGcwf1zlVdOj4iekia6nX
-	 al4ANJBJ1tX6VX0/MptbgzlPojdMZvifh4Xr1Iux25MunfDMJ0ZdADzgOLF+MDBHzN
-	 VJjSchXj7ycWNCGrw0+tgXtNpK5YAPLTUsheMDknEO+8eH1b0rnpbuY1zSztCCnVfA
-	 GRrWZUAcC9RH0jbS0xHcc8vRlak+IYa8EXS78G0mBcqGwylEICLDemOC/lzCP+aOI8
-	 4k5cX3F/404vMcxuo7rNpXN7ULTgziEBKlCxV3cgzN4zcwdBCL7BCfVwLs7N1a0luj
-	 JpfRAWBOJ7VYQ==
+	b=QMTfLeTYDVR+WQ8hqqaurH77Q8HR0/bGnyAWtgaX4cUnejbUKWLppk13HgBi3Ihb2
+	 kPmiHpO3rRdjRdgFadsL7sJc/DJxI741nrJT3qwJoOB8nOvZFJR2SADGysKabk6JuM
+	 +Y12LDqq0mzE7YbHwx9mql9DcjNt8nQ+Qa29un0t3I+ZOs7w3oYnaj7NIhtfD7oEQT
+	 msU0tD696FtyT0wnuNKm/bu8l4L+UeODuBuHPDS4FE16FLJNZPa3orOY3/myRLQWiZ
+	 tTW/UkhDAAaCJ74geD4ZPXSRk/hzP4l1fq1WFCmBvRegAKyGOdjJF20sUD1q1zgGGW
+	 6g8/IXE0N6uQw==
 From: Christian Brauner <brauner@kernel.org>
-Date: Tue, 15 Sep 2026 13:30:57 +0200
-Subject: [PATCH RFC POC 11/50] MIPS: commit fds on syscall exit
+Date: Tue, 15 Sep 2026 13:30:58 +0200
+Subject: [PATCH RFC POC 12/50] nios2: commit fds on syscall exit
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260915-work-fd-reserve-unify-folded-v1-11-4d5217d6b246@kernel.org>
+Message-Id: <20260915-work-fd-reserve-unify-folded-v1-12-4d5217d6b246@kernel.org>
 References: <20260915-work-fd-reserve-unify-folded-v1-0-4d5217d6b246@kernel.org>
 In-Reply-To: <20260915-work-fd-reserve-unify-folded-v1-0-4d5217d6b246@kernel.org>
 To: Linus Torvalds <torvalds@linux-foundation.org>
@@ -93,22 +93,22 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jann Horn <jannh@google.com>,
  kexec@lists.infradead.org, linux-hyperv@vger.kernel.org, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.17-dev-db0b7
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2696; i=brauner@kernel.org;
- h=from:subject:message-id; bh=O2Sy8b10JPTSM3T8FMxCg3yxJ2yYFrKaQgz1RZTqrDM=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSt1KmVfhLzX2amjpDLni+t5iy5HyJ8fnfYuQs5t239d
- 4fnocLijlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgImcVGP4H7v0ThyX7L2OzssZ
- Dg/usvC4O0iFJConhHNZcXS9mtKnwfBPb1pj+VPfVuVgW/nrzUqNt57OOi2ptdSndP/0CbwHHU/
- xAgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2707; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=2xplL1NyM3O4K4L6DfydYO0Aia7T1qYz/CjAzhj5Eew=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSt1KlVmMDBeUTxyxptzYxU+5fHZnpauZQ2vi++wMb75
+ MCxSf+ndZSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEzkuybDP6te7od7g1bqHMtY
+ dzzj4ZTFk3lluoP6jtXu1/pwK+HTg9WMDD/8g02vzP+as0ShzGk9q8/0pPLva21Sv4v4uacI9y0
+ z5QEA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 3D20820009
-X-Stat-Signature: 331a88ycekwj1dqo9q6qmqu6bu8h1ogk
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A50781A0006
+X-Stat-Signature: 3wbbd4x8w7tm3fuwggznq5okxhed9dhf
 X-Rspam-User: 
-X-HE-Tag: 1789471966-967329
-X-HE-Meta: U2FsdGVkX188V3AzGqWkdt+7HOO4NF7ct5vGrKeb9sCSyLl8v+2FOotMe8QIKsTmTiiGo64LCOZGczDm9Li5u3YubqPtCc5/w50wDwIjpuOYF/PBBcJ6xBqbYTHM9LitERQ5wbJivi6A8VFyWqLCrdgjejk5ydJPnNxVCugFqs3i2vTX3qrVYbjOZtys2NuYlAtXGaHvB+gbYIrJ/nxp5Fiylpm6Rs0YBa9XAJPYXYlYHOk+cFMcNQWPzUxumi1/4BnQss2jmWIpyfZIkH8lmK6HRG2n4W7IDzvEANNW0eV2t3wP+yt/kUoJIejK1E4+Ecdp/zl9tfzS2CPbTvwEIDXDUrqKu2BlVpZ5SGvNEbh+WyFdyDvbmVdilGz4gTMTpVOQ5TGMd+IMtpwV/1s9VJ3aw6Hqfuy1suGiz5s3SNCpdXu6RBB29ZmeX0a4JFa9vawQAztD+rpt4z3GYyg25r7/55PxqQyU1M60yPnB9mPCxVG4lJGa4AWTf9bcNNbu4+oIjo5C7CP2v6fWVdFSzHG/lxkQwE1T6Du9X8srn5SHWQIfhMsNa9CiKG+QpziyAdGNfqE5HTM85wMdP5Yl0mb28Anj2T4NF2hTuV/ym9uKeuPkDlRipIYJpzH35WeTRtzYsF5rNSEGPMSQcrvrqw51lNzqjQqY5W7LEenUxIxpSWEgLrnfZLT6mAVA8/P/iyand4ElFd0UUzXUuET2tynGkoYSXQpWYsDQk5ME6YvsQtIUI+EXtZ1zRVNk9KejBvx9ckcUE8mH3/Ugu23FnUZ7JeGumpWUVfBUKHclk6cMtB5aZcVmj7+7sLpFarH0+nKfAm9G6FF0YHxr5GszglQF6LGH9NjDt8+RIW4Dkd6wm3uTHLQfj9o+nJ22a+Dv26+bCfQ5hTBSXAuvctnIaED03nSZ6hvwApLWjDngR3UTpySKTfTrumAdEozlmsHmCz55rwboU4YqJJ69EpM
- eoVuhNcY
- U4SYgUMp65au2Lbf3w7qwTkv7qh01RYotibriGy1BPXgu18HrM6TUUOYro0xr9xKzh28lUJlZj33RNFEZkrfT2aSByrWJ/wZ37ZHWQntgeHzDkqMQzPYkl8nh1fy23Ur3QTQZnTulTYwAzhToVV6XzlSkp2HBDVwVmcbdMZP6XT9MEhw9XG7IkifpcnGxKprwFp6nWmyI2XVVd69HQ0yO15Bq+iS4EThw+TRwei0MjDnG5HFBDS3S+EkE5A==
+X-HE-Tag: 1789471973-114850
+X-HE-Meta: U2FsdGVkX1/I1n1UNwRvz8p9jD5MdtVLc0V6z4KH8PGxAAFa5Mu9QvFWq0Bex9c1btBGhNl+2f391fKrpeKLYLZJlZAQfDfOw70RXxtmRM4a6xf7pTMxW4iTUpFZ90T2C0OOkBOT8X2TopUQxTiW+ceaPjjkVQPCWB+clyeR3Npt7nKTiTxG91BXv2irvFGl4SphtTl3JmoDdYNiIXFz2d5VQIGG1Jj3+Oic86Ab0xgLlyJaAmYyPMP5qkwpPKB8JPMoflyTKgi9CYxbScXsb3ruXs4X2lNn+sw0gTtiEjeGEj58frOE967yFOXa3DOxMgCQDU6igUEDsdcdrEeg9VJ1oduk15BR0XW6dzPYQ5zR33XTY5rXl5C5U+QzTrybGLYnykzjy6Wx1xy74fV3GJfYHxkkgLaZ9FhymYdwxaFZ6RkQw6SMDe1NkSoapoLl4ixo6wmEpS40hnxcX03w4Q7S8mA7uXygNJauls49PUnNXFLh9M8vPHH7FQB+kLGhO5+g7/qGgKLj5+dvjAyWS3MTy8BJZ4Iz81Gw3Z4ZpK8Vqqn2eHiVoGd73MBCgpEYEWF7z8OhsUrPRx3Q+RVtWnJjPf05yw3NdE21fGz8ueT/3BzTvFytZmqlqORMvRIYOrHXvx5rerYqCXPHhAsvV2OPAr2LBh+/QkRFoj49HXxebhR7+iixPtbuenwUndVQXR7uQ2safEiUhB8Ubtzj0CqwUNMW7CNXHqoW22pFEjyjMjX1xXbxErJeuXxRQXiCpcsUiNPskZXhyKEsqJnaex74qjAB8G1+3ZaTkQEa6ZED6KDLRZGMptH+BD9KCZ7ViCN3w0/k5CGUw//Hqxbvp8QlR5GwgOOI9uYVv7KWx9U2iVEMKnqj/i4hPGsi3r4FMoAh3NeVRrDU9oomgIbsIPuzgNaxLcKYmBvOwU0N/j/d5i5eTcyzMJQNP0PpboZw9zo0vTNB4tKoVo2Gzyz
+ Pff3kCza
+ lHdZHRrHTxkF7TaMrnOeAY50am1GgaTofUcByxKsq4a1u0jMVdjWpGgxFK/sXpdscZfDD0LwMQAMWZ+8gWH/GsIuf8d+uG+uDZ9WGkBBxEvZ43i9iGnznust2J5a+ew+LGaWT7vrH2zYbKvP28roMHCqcvIC3x+LCXtG9sNwURpNjjg73maMKJx5hgB8EOokctMuXg3Ap1QdqoomJBvL8/4qJ52Ywh3R59/+kpJXJN6l//b9Xeye0dpzmpg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,69 +116,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add TIF_FD_SLOTS to the syscall exit work. The return path rereads
-the flags after the system call and calls syscall_trace_leave() for
-any of the exit work bits which commits the reservations before audit
-and the ptrace exit stop.
+Add TIF_FD_SLOTS and test it once the untraced system call has had
+its return code translated into the r2 and r7 pair userspace sees.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- arch/mips/include/asm/thread_info.h | 5 ++++-
- arch/mips/kernel/ptrace.c           | 4 ++++
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ arch/nios2/include/asm/thread_info.h | 2 ++
+ arch/nios2/kernel/entry.S            | 5 +++++
+ arch/nios2/kernel/ptrace.c           | 3 +++
+ 3 files changed, 10 insertions(+)
 
-diff --git a/arch/mips/include/asm/thread_info.h b/arch/mips/include/asm/thread_info.h
-index 2707dad260dd..79c81696e9c1 100644
---- a/arch/mips/include/asm/thread_info.h
-+++ b/arch/mips/include/asm/thread_info.h
-@@ -114,6 +114,7 @@ register unsigned long current_stack_pointer __asm__("sp");
- #define TIF_NOTIFY_RESUME	5	/* callback before returning to user */
- #define TIF_UPROBE		6	/* breakpointed or singlestepping */
+diff --git a/arch/nios2/include/asm/thread_info.h b/arch/nios2/include/asm/thread_info.h
+index 83df79286d62..7f5816e1b3d6 100644
+--- a/arch/nios2/include/asm/thread_info.h
++++ b/arch/nios2/include/asm/thread_info.h
+@@ -78,6 +78,7 @@ static inline struct thread_info *current_thread_info(void)
+ #define TIF_SECCOMP		5	/* secure computing */
+ #define TIF_SYSCALL_AUDIT	6	/* syscall auditing active */
  #define TIF_NOTIFY_SIGNAL	7	/* signal notifications exist */
 +#define TIF_FD_SLOTS		8	/* syscall prepared descriptors */
  #define TIF_RESTORE_SIGMASK	9	/* restore signal mask in do_signal() */
- #define TIF_USEDFPU		16	/* FPU was used by this task this quantum (SMP) */
- #define TIF_MEMDIE		18	/* is terminating due to OOM killer */
-@@ -152,6 +153,7 @@ register unsigned long current_stack_pointer __asm__("sp");
- #define _TIF_USEDMSA		(1<<TIF_USEDMSA)
- #define _TIF_MSA_CTX_LIVE	(1<<TIF_MSA_CTX_LIVE)
- #define _TIF_SYSCALL_TRACEPOINT	(1<<TIF_SYSCALL_TRACEPOINT)
-+#define _TIF_FD_SLOTS		(1<<TIF_FD_SLOTS)
  
- #define _TIF_WORK_SYSCALL_ENTRY	(_TIF_NOHZ | _TIF_SYSCALL_TRACE |	\
- 				 _TIF_SYSCALL_AUDIT | \
-@@ -159,7 +161,8 @@ register unsigned long current_stack_pointer __asm__("sp");
+ #define TIF_POLLING_NRFLAG	16	/* true if poll_idle() is polling
+@@ -90,6 +91,7 @@ static inline struct thread_info *current_thread_info(void)
+ #define _TIF_SECCOMP		(1 << TIF_SECCOMP)
+ #define _TIF_SYSCALL_AUDIT	(1 << TIF_SYSCALL_AUDIT)
+ #define _TIF_NOTIFY_SIGNAL	(1 << TIF_NOTIFY_SIGNAL)
++#define _TIF_FD_SLOTS		(1 << TIF_FD_SLOTS)
+ #define _TIF_RESTORE_SIGMASK	(1 << TIF_RESTORE_SIGMASK)
+ #define _TIF_POLLING_NRFLAG	(1 << TIF_POLLING_NRFLAG)
  
- /* work to do in syscall_trace_leave() */
- #define _TIF_WORK_SYSCALL_EXIT	(_TIF_NOHZ | _TIF_SYSCALL_TRACE |	\
--				 _TIF_SYSCALL_AUDIT | _TIF_SYSCALL_TRACEPOINT)
-+				 _TIF_SYSCALL_AUDIT | _TIF_SYSCALL_TRACEPOINT | \
-+				 _TIF_FD_SLOTS)
+diff --git a/arch/nios2/kernel/entry.S b/arch/nios2/kernel/entry.S
+index dd40dfd908e5..b3a99a6db379 100644
+--- a/arch/nios2/kernel/entry.S
++++ b/arch/nios2/kernel/entry.S
+@@ -222,6 +222,11 @@ translate_rc_and_ret:
+ 	stw	r2, PT_R2(sp)
+ 	stw	r1, PT_R7(sp)
+ end_translate_rc_and_ret:
++	/* Descriptors reserved by the syscall are committed in
++	 * do_syscall_trace_exit, take the traced exit path for them. */
++	GET_THREAD_INFO r11
++	ldw	r11, TI_FLAGS(r11)
++	BTBNZ	r11, r11, TIF_FD_SLOTS, end_translate_rc_and_ret2
  
- /* work to do on interrupt/exception return */
- #define _TIF_WORK_MASK		\
-diff --git a/arch/mips/kernel/ptrace.c b/arch/mips/kernel/ptrace.c
-index 17dc7249b8ca..d68eab59bcc2 100644
---- a/arch/mips/kernel/ptrace.c
-+++ b/arch/mips/kernel/ptrace.c
-@@ -17,6 +17,7 @@
- #include <linux/compiler.h>
- #include <linux/context_tracking.h>
+ ret_from_exception:
+ 	ldw	r1, PT_ESTATUS(sp)
+diff --git a/arch/nios2/kernel/ptrace.c b/arch/nios2/kernel/ptrace.c
+index 2cd7e1ecbd74..5cee1b717662 100644
+--- a/arch/nios2/kernel/ptrace.c
++++ b/arch/nios2/kernel/ptrace.c
+@@ -9,6 +9,7 @@
+ 
  #include <linux/elf.h>
+ #include <linux/errno.h>
 +#include <linux/file.h>
  #include <linux/kernel.h>
- #include <linux/sched.h>
- #include <linux/sched/task_stack.h>
-@@ -1364,6 +1365,9 @@ asmlinkage void syscall_trace_leave(struct pt_regs *regs)
- 	 */
- 	user_exit();
+ #include <linux/mm.h>
+ #include <linux/ptrace.h>
+@@ -140,6 +141,8 @@ asmlinkage int do_syscall_trace_enter(void)
  
+ asmlinkage void do_syscall_trace_exit(void)
+ {
 +	if (test_thread_flag(TIF_FD_SLOTS))
-+		fd_slots_commit(regs);
-+
- 	audit_syscall_exit(regs);
- 
- 	if (unlikely(test_thread_flag(TIF_SYSCALL_TRACEPOINT)))
++		fd_slots_commit(task_pt_regs(current));
+ 	if (test_thread_flag(TIF_SYSCALL_TRACE))
+ 		ptrace_report_syscall_exit(task_pt_regs(current), 0);
+ }
 
 -- 
 2.53.0
