@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41EC9C88E75
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 06:59:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC37AC88E75
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 06:59:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1356C6B0098; Tue, 15 Sep 2026 02:59:18 -0400 (EDT)
+	id C594D6B0088; Tue, 15 Sep 2026 02:59:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 10EE66B0099; Tue, 15 Sep 2026 02:59:18 -0400 (EDT)
+	id C308D6B0099; Tue, 15 Sep 2026 02:59:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 025136B009B; Tue, 15 Sep 2026 02:59:17 -0400 (EDT)
+	id B48686B009B; Tue, 15 Sep 2026 02:59:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CF99C6B0098
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:59:17 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 53FF580335
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:59:17 +0000 (UTC)
-X-FDA: 85215095154.16.C088C47
-Received: from mta0.migadu.com (out-105.mta0.migadu.com [91.218.175.105])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 2D44240003
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:59:14 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Dz+c9LRn;
-	spf=pass (imf12.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.105 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789455555;
-	b=3GLL9XvGibQC9n6CwgOglDVIIbrHkWF1+Whmd3dz0cwtiYzIQxPSeHyQIv6gdca+iYaVr6
-	JrM7Dqr+yNgVUv3NphdzYDkSyt//zv3cPRkm6PZIVpOo4RR79XcAjwQZyPj8VF1xcONe+3
-	AHF4AO+c8DjbGsTTmUvaxW77drI3sek=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Dz+c9LRn;
-	spf=pass (imf12.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.105 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	by kanga.kvack.org (Postfix) with ESMTP id 8AAD56B0088
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:59:21 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id F2F7E14035B
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:59:20 +0000 (UTC)
+X-FDA: 85215095280.28.3BD5972
+Received: from mta0.migadu.com (out-112.mta0.migadu.com [91.218.175.112])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 1424A40002
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:59:18 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="XvH0H/gQ";
+	spf=pass (imf27.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.112 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789455555;
+	s=arc-20220608; t=1789455559;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mHuVn8hUbj7N8TDfyEoDPKlG2yZcH2DzDBWw+EBJ4/g=;
-	b=fpm1W3EiRNFcSgCOcJpcCPBBoL3OzVsrJxII+IxH8Yc7LrxDejEzZ3l3bM3NNp1ghXSLxP
-	k0zaT0qUxAbGBwUZUa12AV5pqBOnYZuqO2zu93bJ3mWc4+adD5l/cBtybUvX4ON6E8MmJi
-	/1NmJIfZbws43mbEQFeHsJZUD1b8TZ8=
+	bh=w0AoV6LYkdymJpDD7VSHb3T6WvZ4tQ8szTYnbRZlsV4=;
+	b=qd7udlsQ8bGxe4jstb6a99TLl2K80KcNloDsgbHiPH8pYlC9SZVaK6U4wZBK7Jbbi3H8A2
+	Pvek3UKGWqMxeHB7zzoQyu/0ix/xzjgVGIzf6m6vRfkCFHnfQItJPhWg2chpkMyia/2yR/
+	dLy+mZCdNzCwQAmC6VzAYpqMXSlDjtY=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="XvH0H/gQ";
+	spf=pass (imf27.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.112 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789455559;
+	b=Hs91+DJGUSpGwvO++kNV59WLy2kXpdVDjJrBhYQoPaaJXM6SSjEXqDls8LARP9MOnwt8MX
+	FLworr9hhMUtK1Sq0bo1aymoDkJoj3Q0fRFGGg9rpqrUxftGwJSawNTS5XBsWg0Q/syvHr
+	HvmZI6NrJq3mQ41606OdQY9QbgqH5fE=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=1hrOUU2WscT9i12+q2dsMTJyNqNUXrCyPWNHR9ygX74=;
+DKIM-Signature: a=rsa-sha256; bh=5Vw+v6tRRrP3hQtpFy1LEiukFTySuc0mxZr/k7GpH8M=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789455553; v=1; x=1790060353;
- b=Dz+c9LRn+U4BKwUguORIFZqNQQxieg5o6zVodNBkoC2JEXt8UFf3IAGlY2Ygdn+0XcweaVfN
- RyzXkNvwdBOTnbJydG4u2KGY58++n+UcMBnQKR4CbLBnkhksvsIBdLOWisrIpXrFWhTKTay03rA
- jLB+iD4fMXYWigsmUd+sRAvg=
+ t=1789455557; v=1; x=1790060357;
+ b=XvH0H/gQ5qZmazbWuhKBFp2+oUOmHjfpydsM0L5V/NgCCPIFe6vhmxRZGBaXpsOBgGDKmDtd
+ zmbEMmdwUmy5/lFMm4b5JNGQF8A+ICmaNJs7q8QIbbToqFgD6TyKUsVV98xeMTThCSFOoi0PBhn
+ LXSlF8qY6ajAsV+EVsusMMQ4=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 6a28f1219eb0585b;
-	Tue, 15 Sep 2026 06:59:13 +0000
-X-Mizu-Trace-ID: 6a28f1219eb0585b
+Received: by smtp.migadu.com with ESMTPS id 332822dd31fa1db3;
+	Tue, 15 Sep 2026 06:59:17 +0000
+X-Mizu-Trace-ID: 332822dd31fa1db3
 X-Migadu-Flow: FLOW_OUT
 From: Hao Ge <hao.ge@linux.dev>
 To: Luis Chamberlain <mcgrof@kernel.org>,
@@ -76,22 +76,22 @@ Cc: linux-modules@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Sashiko <sashiko-bot@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH v10 1/6] alloc_tag: move release_module_tags() above reserve_module_tags()
-Date: Tue, 15 Sep 2026 14:59:56 +0800
-Message-Id: <20260915070001.113559-2-hao.ge@linux.dev>
+Subject: [PATCH v10 2/6] alloc_tag: clean up the populate failure path
+Date: Tue, 15 Sep 2026 14:59:57 +0800
+Message-Id: <20260915070001.113559-3-hao.ge@linux.dev>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260915070001.113559-1-hao.ge@linux.dev>
 References: <20260915070001.113559-1-hao.ge@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 2D44240003
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 1424A40002
+X-Stat-Signature: 3ghiwp3tzpyarxruhckmi5o3ti38rxkh
 X-Rspam-User: 
-X-Stat-Signature: esonhkfatw1qqc6oo9djwbaepmqoas33
-X-HE-Tag: 1789455554-566221
-X-HE-Meta: U2FsdGVkX1/f21ACpVLWup3N2QFugaww7s0FTf/kFHEiBC5h8CL1LdiuRfGxd52ctO7CiKf3AxhV3GK2CNyiA/Cv7o8JMjr1Fp1ww/3FLRoi3e7X22MRaC1ifO+FZcuep/LZo2DDo99gAuWnUPSxrDBqrvuBE43w2+JxvgPGzSKhNKGN7CmyJrKBjYhX9rhxv6ZRAajoy3eJIskiQ35w3FPqtzUmdj0Rtbu6MAkrt71vU2hdUEt3qGDDWixIeYoJTcY8JF2v5d3Nvnl74/QWu8lFxpjJD2T4LKNUS5NrdPm+fKhTLRK1dpfXWI1NF/oy9eAKTHTy5T88NoGqJ+2k2xiJwDTIaD2TFlvG8vySvEs5VyMuRc/La528rQOw85i1Nkv+mVfq8D4Al1jxM+v6xM0r6SjC+zq+RjrLE1Hn54spwT1DuhLKXYCCc/itmKHg1T0LHQOj0uVM/O1ve3WVOELH2dLS0aS7eTvwvpEZWOUnqL4+pcO/D7ik3ni/d9nUCVPBrzGzG2D8Hr+xhSXVc1mzXwCzS0jxJEiiR7ndB092+VA7Ovf3fPsCdZ2k1lqf6XszcnGnKBnOm66jFyL3Xad2rQK6Q2lOFuCXlVwZKFkqzOpaeW8ehzoaOcaPh9eKmEL7Hj5xgyaNOJL0U6uTxWKKYSdGjB1OYjQrKgdgBed5mC0ln2+gZhEVXSfYcK4Wiw7XNr+4WEidEWHfi1Iph3FA6Qn9rmL/QDezbvsyvdwqjkK6mynlWFozRu14YxBdhB2+jgJTT8VTi7t2JtJZlgdufy5xFGHKHV+GNNEvza0jkWLSN7oPqpKk+sYIZtxUar5ClZfcQNg8EXy+Y/2/6xh7mFlq97qHmeQL7CEqaicGMON49KWZgzWJ/3BJ6lpVeaHXXYhzIOpQyD0k6a1qJ0L03BZkzCULo/ybnwXWIXtlwZYJnlFWYSdUndIgLjm1m0ZTdqXIjbe3+jRuoF2
- l2Do2OAr
- kKV2uZH34dOi3SDUXN516rWkFsIOcbL4Ilp1rZQy9imFSoPc8x8hqKHzRY0je+uVSK0Pq2OPM0Kc0+4cLLgJdnmAcMD+nXWFYlB8LCA0SSshDIPn7u/5ACvxkpWYXd9/NoREsi/9KuV9ReMPEt1RPu2K28+fz8uTJIEVttjZGr4m7fIxRCikYuDlS9isZjNZGU2DAClN0jT2/bLKa2DjzovLMaTjNRz/uYa4QV1V36updaL4s3vg2qd0rXKqwaGHB2VXzDHqtzS0GApZ6/njOZ8Sz/nLN0P9YwDPs7HQMdDQIe14D/IwDXuIPSDp0PWR5sWUQ
+X-HE-Tag: 1789455558-551118
+X-HE-Meta: U2FsdGVkX19I+yTnFu5cikD3DsdK02ujcM9uk16F2UM4iTZ1HsgSxrRTZVtkhLt28u3oJ9yp4lY7Bde7qMmt6ktfqdkUx35QU06ZMpZ67D2sxmLwP6/YrgscL5nog7gECN5H3wqv64nzw56lK3kjG9pfYgsChL1IK0Bd8+oaWbGc6tc1PBlM5TdEksdWzqCAMLZTQTtY57n9/FQoEGs+czDSG6lauWvWtuUlQorYk1by/KJGpgc9C8K2ZyMdDOu4O7VSh/hdwWtDpKqfuKW7DZxH3hTCSF1IS4FPC03h/PzG7fTEJj5294AM8mON5BiDzXo17J9cltI7byDV9yv3Kl8qiZb/P0h3hji25irIkhXQaN3s0Qy2Up+Q6vsQvKhVLipcoZM45ZoM/Kij9AlxBetdOsY9+vZBn2wTbgVKpcFBbbH14M/ccsFWKYgQwubWJ4tGFeCnX9NPcYSYJPS1fldf/hcnI7FQTRxk8n9P5Vuw8hoVVW6lw6lIjnuywN9v6PtMk6mkPWlCqT0N73rD8JDdbH4EdhcTQOyZlsMUkzGi7QGjgpJLUyo1nz5kZJnuRe/hp9r61B1HEa5YccSLl8TCf+j1nonmV9kEVUZqTCdXcT0KWFRs5IhDEb1gvFlFso5Lusdnc5bGxyRD/Bvcw/ppzmnz6k3NLgYB0Zliw3cTVkaocYjV9DNM8HoO12wGJjXgQsLA/Lgik2ghPOaI3igzhIZfnSK083WN8jSU53hTQzn8/SSNz4udIgyu+4bmdVqJ6sMwxP60ygREbf/3xHnrwJTZhLDnJwt2vQSikCauQAYFVRTp68yCVY3FPG0sCUprnbHV7FdWwb1Sv3/nuI+UBLNEtoVXljwH5yh4pjmyQu2KHIYyUnq/OhjuO4PO1hxWJr+dRgLzKpCO2FKkIJ6+Vu/YhfDsaG0wgK7HqB6KWvNFH1ccJvIIh3LJjJTsaB31NmhjK+JpV1FKiok
+ 2t2Kz3SP
+ uNa5ZjKs1aEoKuy5AzWsE2EikoESse6NZ2qJkgpOd0dwOEVXtsCOitlBVooAOccbUHKSxjSfteARfpwMF6LUK4gqBo5ux4GTw+87PKk7PmyaEVtC0BgLcycGas+MIP85sYZKXIrBlq5l/dO3V4J6NljZajniSkFVoSN5zF3L7dBCqeAkolkBVCQl77b3+Gq1RbkW6fGZ1ansUoVkGmsYNfvK+mC93U3K5UvUsE/9RevRttZP0XDL+uQG96ilcr8cZp1GP6AsV5Z8SRR8zR9Z0EinvJvtThYkmwmCGyXk61uT9+dg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,133 +99,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-release_module_tags() is a cleanup helper. reserve_module_tags() can
-also fail after storing the reservation in the maple tree, in which
-case it should call release_module_tags() to undo it. Move the helper
-above reserve_module_tags() so no forward declaration is needed.
+The reservation is already stored in the maple tree when
+vm_module_tags_populate() fails. A failed load never unloads the
+module, so nothing releases the entry. Release it and roll
+module_tags.size back. Without the rollback a concurrent load that
+already passed needs_section_mem() can reuse the freed gap, skip
+vm_module_tags_populate() and write to unmapped memory.
 
-No functional change.
+vmap_pages_range() may have installed some PTEs before failing. A
+retry to populate the same range would BUG on them, so undo them,
+but only if vmap actually ran.
 
 Fixes: 4835f747d3ed ("alloc_tag: support for page allocation tag compression")
 Fixes: 0f9b685626da ("alloc_tag: populate memory for module tags as needed")
 Reported-by: Sashiko <sashiko-bot@kernel.org>
 Cc: stable@vger.kernel.org
-Acked-by: Suren Baghdasaryan <surenb@google.com>
 Signed-off-by: Hao Ge <hao.ge@linux.dev>
 ---
- mm/alloc_tag.c | 92 +++++++++++++++++++++++++-------------------------
- 1 file changed, 46 insertions(+), 46 deletions(-)
+ mm/alloc_tag.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
-index b33410310477..2070e682fe10 100644
+index 2070e682fe10..95ddf5b743d0 100644
 --- a/mm/alloc_tag.c
 +++ b/mm/alloc_tag.c
-@@ -835,6 +835,52 @@ static int vm_module_tags_populate(void)
- 	return 0;
- }
+@@ -804,6 +804,13 @@ static int vm_module_tags_populate(void)
+ 				     next_page, PAGE_SHIFT) < 0) {
+ 			release_pages_arg arg = { .pages = next_page };
  
-+static void release_module_tags(struct module *mod, bool used)
-+{
-+	MA_STATE(mas, &mod_area_mt, module_tags.size, module_tags.size);
-+	struct alloc_tag *start_tag;
-+	struct alloc_tag *end_tag;
-+	struct module *val;
-+
-+	mas_lock(&mas);
-+	mas_for_each_rev(&mas, val, 0)
-+		if (val == mod)
-+			break;
-+
-+	if (!val) /* module not found */
-+		goto out;
-+
-+	if (!used)
-+		goto release_area;
-+
-+	start_tag = (struct alloc_tag *)(module_tags.start_addr + mas.index);
-+	end_tag = (struct alloc_tag *)(module_tags.start_addr + mas.last);
-+	if (!clean_unused_counters(start_tag, end_tag)) {
-+		struct alloc_tag *tag;
-+
-+		for (tag = start_tag; tag <= end_tag; tag++) {
-+			struct alloc_tag_counters counter;
-+
-+			if (!tag->counters)
-+				continue;
-+
-+			counter = alloc_tag_read(tag);
-+			pr_info("%s:%u module %s func:%s has %llu allocated at module unload\n",
-+				tag->ct.filename, tag->ct.lineno, tag->ct.modname,
-+				tag->ct.function, counter.bytes);
-+		}
-+	} else {
-+		used = false;
-+	}
-+release_area:
-+	mas_store(&mas, used ? &unloaded_mod : NULL);
-+	val = mas_prev_range(&mas, 0);
-+	if (val == &prepend_mod)
-+		mas_store(&mas, NULL);
-+out:
-+	mas_unlock(&mas);
-+}
-+
- static void *reserve_module_tags(struct module *mod, unsigned long size,
- 				 unsigned int prepend, unsigned long align)
- {
-@@ -922,52 +968,6 @@ static void *reserve_module_tags(struct module *mod, unsigned long size,
- 	return (struct alloc_tag *)(module_tags.start_addr + offset);
- }
++			/*
++			 * vmap_pages_range() only runs once all pages were
++			 * allocated, and it may have installed some mappings
++			 * before failing. Undo them.
++			 */
++			if (nr == more_pages)
++				vunmap_range(phys_end, phys_end + (nr << PAGE_SHIFT));
+ 			/* Clean up and error out */
+ 			release_pages(arg, nr);
+ 			return -ENOMEM;
+@@ -947,6 +954,7 @@ static void *reserve_module_tags(struct module *mod, unsigned long size,
+ 		return ret;
  
--static void release_module_tags(struct module *mod, bool used)
--{
--	MA_STATE(mas, &mod_area_mt, module_tags.size, module_tags.size);
--	struct alloc_tag *start_tag;
--	struct alloc_tag *end_tag;
--	struct module *val;
--
--	mas_lock(&mas);
--	mas_for_each_rev(&mas, val, 0)
--		if (val == mod)
--			break;
--
--	if (!val) /* module not found */
--		goto out;
--
--	if (!used)
--		goto release_area;
--
--	start_tag = (struct alloc_tag *)(module_tags.start_addr + mas.index);
--	end_tag = (struct alloc_tag *)(module_tags.start_addr + mas.last);
--	if (!clean_unused_counters(start_tag, end_tag)) {
--		struct alloc_tag *tag;
--
--		for (tag = start_tag; tag <= end_tag; tag++) {
--			struct alloc_tag_counters counter;
--
--			if (!tag->counters)
--				continue;
--
--			counter = alloc_tag_read(tag);
--			pr_info("%s:%u module %s func:%s has %llu allocated at module unload\n",
--				tag->ct.filename, tag->ct.lineno, tag->ct.modname,
--				tag->ct.function, counter.bytes);
--		}
--	} else {
--		used = false;
--	}
--release_area:
--	mas_store(&mas, used ? &unloaded_mod : NULL);
--	val = mas_prev_range(&mas, 0);
--	if (val == &prepend_mod)
--		mas_store(&mas, NULL);
--out:
--	mas_unlock(&mas);
--}
--
- static int load_module(struct module *mod, struct codetag *start, struct codetag *stop)
- {
- 	/* Allocate module alloc_tag percpu counters */
+ 	if (module_tags.size < offset + size) {
++		unsigned long prev_size = module_tags.size;
+ 		int grow_res;
+ 
+ 		module_tags.size = offset + size;
+@@ -961,6 +969,8 @@ static void *reserve_module_tags(struct module *mod, unsigned long size,
+ 			shutdown_mem_profiling(true);
+ 			pr_err("Failed to allocate memory for allocation tags in the module %s. Memory allocation profiling is disabled!\n",
+ 			       mod->name);
++			release_module_tags(mod, false);
++			module_tags.size = prev_size;
+ 			return ERR_PTR(grow_res);
+ 		}
+ 	}
 -- 
 2.25.1
 
