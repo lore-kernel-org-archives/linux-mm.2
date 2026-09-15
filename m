@@ -4,101 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 404E7C88E73
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 08:39:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B1A9C88E53
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 08:44:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 466B06B0093; Tue, 15 Sep 2026 04:39:33 -0400 (EDT)
+	id C86C26B0088; Tue, 15 Sep 2026 04:44:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4183B6B0096; Tue, 15 Sep 2026 04:39:33 -0400 (EDT)
+	id C388F6B008C; Tue, 15 Sep 2026 04:44:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 308F46B00A4; Tue, 15 Sep 2026 04:39:33 -0400 (EDT)
+	id B4F456B0092; Tue, 15 Sep 2026 04:44:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0DE006B0093
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 04:39:33 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8013B8036A
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 08:39:31 +0000 (UTC)
-X-FDA: 85215347742.21.D8F9D79
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 51419C0008
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 08:39:29 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ZQ+8sTEO;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf28.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 8FA906B0088
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 04:44:51 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C055A140376
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 08:44:50 +0000 (UTC)
+X-FDA: 85215361140.12.AFF4A62
+Received: from mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 8BB36160006
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 08:44:48 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=H5nWwBKv;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789461569;
+	s=arc-20220608; t=1789461889;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ACD3yUszKbEn9SNvyomoKBpZdThNtSn1nMdd/duHd3c=;
-	b=y6k8PpbgpTx5fZ7dJFudA3coXuv2ab4FV/GKFKqJd1yl3cmJbzI6XN2g6RkaHROgyNdqpl
-	bdSnU85+PoVkVzPbOVDO9Nu3vWRHqoat/qzV+4aC4jwlqocZdgFn1udDW6bk+E3r+7V3MW
-	zlE+SyiYsvFZ1prZs/bAssV2AWzGF60=
+	bh=k7VmnpfzvPXSofFi8P4eMsLyUzS5eaNuDWdEobHGPKk=;
+	b=fKVN4tOqbJpoeRli7jgNnbJB888ChvT32I9kF92/fCitaBCCk+HwTR3fnT6weyzIIF7Gbk
+	8st/lXlznJL6Z+SLZ+0jemiia7cUHjUDWOM7TcZpyG+pu1RrumPoBW3swXWBqVw2soIOQX
+	PFIEcsm6iByS8mr94tjROj7qvvUl6RY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789461569;
-	b=1Fg+iVWV/m7wR570/vF8+jow6FvNOhpdEGg3uMflPYKp2TngfYS4JRYvE7xM/NgcnPf/sg
-	18BuMOQxe4cEXZ1s2NzVWAkQxEgsWS8Tqy8+vwCaeUSRTwnBjs6wGz5jz3DNWANsS3s4ul
-	c5PxYqk0e1QrWY8au+xth48LN89A4gQ=
+	t=1789461889;
+	b=Kz8h8/xASsHskHiC0yTAyoZnDWO3m9FVmVEK5U89PRpjMgIwFJp1XY8OAU8jq+wqEyOMja
+	NmL+UgfQnLQl4rsgxi8yzLarm4qWzeVaVpG+uycU/2fSLvhZyiK94OTYh/bsgFLA2OwkW5
+	FMqRd35BJYIkPHJeAj6uaVDuIarKlvg=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ZQ+8sTEO;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf28.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 963E0169C;
-	Tue, 15 Sep 2026 01:39:24 -0700 (PDT)
-Received: from [10.164.19.84] (a081061.arm.com [10.164.19.84])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C1D203F7B4;
-	Tue, 15 Sep 2026 01:39:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789461568; bh=yHlIrOdPfLjj9Gu8t0QO/KBvaVLhX4WuZRnvoHBDFI8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ZQ+8sTEOSXh+kPQv2ubox6sTg5+iNgLqJuOkCnT+cygDDQ9XBo7U6XJaXymP1pGJ+
-	 Y0DmwYp1Zo0S2RIxo6AMwXMKi0Cw0M1zWx99eH1J1EXwt/XnrQjnJAF3bhvS8fMaz7
-	 9qNmLrgH0LmpVPxUIkfIWBGKVDlRCIz9VcfSw9kU=
-Message-ID: <e6caa3e6-084c-442b-8d0e-e851ba75914c@arm.com>
-Date: Tue, 15 Sep 2026 14:09:18 +0530
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=H5nWwBKv;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=OdmaTEvWPgfTFD+u4aw06O2FSYvZjnGVMGwImr7GHt4=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789461887; v=1; x=1790066687;
+ b=H5nWwBKvXlQCIvrgfqP7aqsb1BOfq7cA2Dftrighr1kpCMGwYShZVKBJiIfe1RSUDQatmhH7
+ VINOJ0Z5LJJAG2Yj6t2fzpksqmvxdNmm0EsE1B8t8eSf6PijQsuffYbYmFLhU/N2JY2blpNjuIf
+ JQ2Qrs61fgn+3nd9YJ/2Yz8s=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 96d8f489691b383c;
+	Tue, 15 Sep 2026 08:44:46 +0000
+X-Mizu-Trace-ID: 96d8f489691b383c
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <e018e3a0-349a-4f36-90e0-8fafb001da43@linux.dev>
+Date: Tue, 15 Sep 2026 16:44:40 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 6/6] selftests/mm: add a GUP selftest
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
- Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Leon Romanovsky <leon@kernel.org>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Mark Brown <broonie@kernel.org>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Muhammad Usama Anjum <usama.anjum@arm.com>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, Rik van Riel <riel@surriel.com>
-References: <20260911110950.200240-1-sarthak.sharma@arm.com>
- <20260911110950.200240-7-sarthak.sharma@arm.com>
- <891915e3-3333-45f3-81a8-1ad38fa7ee37@kernel.org>
-Content-Language: en-US
-From: Sarthak Sharma <sarthak.sharma@arm.com>
-In-Reply-To: <891915e3-3333-45f3-81a8-1ad38fa7ee37@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] mm/oom_kill: fix hung tasks queued on mmap_lock behind a
+ long reap
+To: Michal Hocko <mhocko@suse.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ Jiayuan Chen <jiayuan.chen@shopee.com>, Zhou Yingfu
+ <yingfu.zhou@shopee.com>, David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, David Rientjes
+ <rientjes@google.com>, Shakeel Butt <shakeel.butt@linux.dev>,
+ linux-kernel@vger.kernel.org
+References: <20260914113239.367200-1-jiayuan.chen@linux.dev>
+ <aqg-oG2HDIUeK5Us@tiehlicka>
+ <20260914203533.3544ae8dd0903c7603b385c6@linux-foundation.org>
+ <aqjsPW92SgcHONKO@tiehlicka> <3c8d1d8e-0e67-4d1a-b73d-4eadd6266aa6@linux.dev>
+ <aqkAbBpYheX2DEHg@tiehlicka>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <aqkAbBpYheX2DEHg@tiehlicka>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 51419C0008
-X-Stat-Signature: iet65wfgn74kjiykz1gdnmd7apanyde3
-X-HE-Tag: 1789461569-93132
-X-HE-Meta: U2FsdGVkX1/BwViasT1Z15Bv89h/tjdphmstoiL6dceBapsKm3u62qWPfIhQ877ZBhr89CV8hWlqfFF2JXUwg0DjGGhxfwO2ceuT1P/PWUPsqq8JLFdLtYQXRvTx5s68P3p70jfItynDJxAmX+0hOmsKZ3+TXcE8X98xATWwoehCZlMMvKix2fP50IUkw8RsHBZdvkD1L5emnoq2lw4tfLxTnfRB8Y0EVMY2NuJeF94dhPSTNwhMYFLxJxAcWfAHtEGqcui8RR6DxuK3YM1ra4/AxIkm1lGGQpeAetsKi0JlPgoj4ck9axFpJ5SFSeN0ssAQB4NvaCiLrwLJM5oXBMdC8rNj145VyPxN1BUWlTtv4/9g02NOV2qoNDN+W6ZujQQ8mb/c985YU71UlmlLPYaO46JomgjwzzfVhIcMR1nkMyawWEM/5iX6oTAYsWEbyMXpTFWt7plZ0v0lLAd5yU6aoEjIwzxebWjCI0OVxQZmv0WRJTrjXrivnBNgdObSfO14EBFeGGF2nH5OoAWTi/MdggsQfPJNjcM3RApEhOumKUJ+V7BV7BDtEgA/tjTcBsVbWNgKTRytOxSfgJGHAehYvAaeYXCFEcoVXMPUA7rAfcwtB3BZ1LAQ8SbwjeZt3r9aBT+YwGD+fe7OtQsNB9mnK/skQJMQH1tZLwUJJ6NOn2dnHXG+XWurtsBs/CvHe7mQIq/+/LBpiANcJzEPAsYnDvttR/pFswPEhWTf/ET3MMz36D9TnWCy4nzOlDijJBWNHTHbd0OLEYUQN7Dtn+iFlLrDzX6XfygRAT9x11/n+HnPMFEAOZrJ9FNRKpTvXImi+Vy+opiQyQLknHLYM8NkeVlbRw85ZwoHk6uA6fK0aiAPz1pdp0jS4Mp5xcO8I4nq3Q7XmMYcHB5eJ1p1+ub+f5zTCHfpbBIUqrXKev2o7RYpHmQ2e9ZE45FlAZ6nlpslyq7O/2p8+O9p8s+
- YwZ3ZK7P
- ye5oypW0T4Z8xq9z5n2JrEoSnY7A5449sYo6+15FRbQe1VVEMPCX1BCdBh2LnbzRqDzYl4T4ZaYQMmm5L4WnoBv9jaUa1GQVp9huf4pU/3I0T7CSqik2EIpjyyUIUtlfazIN7sJ5abtPHSDiziTfSNhfMwt8vxW0k1qsuK8QAe7KG1zeIPmTP5bC6LyTeMH/WN/EuBHZgbCqI6Pac9PcSMfHG89KVH3hNfZ5VJcndJc9PUGhNBYYNaqrJyGvXy6+u8tS6
+X-Rspamd-Queue-Id: 8BB36160006
+X-Stat-Signature: geq6s7nf7tuh1ad7fzhhbojzgtb5r4bx
+X-HE-Tag: 1789461888-832390
+X-HE-Meta: U2FsdGVkX18RIVk0i2mQ8K3r/+e6fhJ0tsT19mjgPNQ89Xc9DIUR2DCWeF5qnSr+8iwMmqTXDm1wirFDaAcLMYcCC7HmcnKC2xgidqaPV2nBbgLUTcpCZ3/Xz02wU8HJ2NMs7d7PldxnUfQtL2v1OBuPA74C0JDfZX3l054MAFDwuIxN5f5kHvKTamAm6JX5leA8DxICjnmL0NFx5lAyROC0SJXCAOzTXcBt2+iE6m8qEDBASy3xTV9Ch7NYRkmWGoG2cUiiagjsyXN3JI8v/hRf5DFbm80QK1ocjWigFaxuZEiNOjgmHVd7JgAJPkKkmpxfjrrYKOM6VVgs5ycEhhgSkS/BIQuyRqM2OmPd/SyVUTYLpZuPna8dfK9ggYn1gqWB2FLzvumIJ3jzSXcINKuCTOUbSmgaP0EdwPMLcpMw53dyxdqLbuoTVx7rlLhKrKFutC5kVNXh6IEUF2UjBK+2Q5PIKQi+kBW6cm6TZJ4lX4AGYu+wUNeeUsk2ledIv9zRKRLjBdm+DZuDmqaJky3ESSSFn/Jc4tOXbYzolJVs3H2awqdLCV7kSTCxtAwiTDSQsh6K/npHmv5eXVyd5Y27S5B4BQNyPDpNp/mrK3rUM3z4kxR+Y2fAqP3GKZEYKf3xqP4zFocOQXA6ndBZL5VFnUsDb97DdPMe9viaBAvkSS4lIB43zp+NaezMOyF6PrRvUu7OkP+DEy/wCkSHO/vmsHuxLtbxJhV6ZyW0Rh9zM78Xa+w5GeZlvD9maD7oYhXvK1T1oBXA0uBivi96vaV7UUQkIVG63twLt+Ezyp0IiKM8ITSGhWlPy0KuOJgz0Ihw1ucssl9baT+xl3BL94oNX51V2kH1od6qcHepXnm/b5wCmVT2jQL1UNO3gXBIdBR016xuNVyfqMBiHZsyyT+iIJEMNgi6hx0tU0V4lsj0mjHvIenyG+uIHq3WinGRUxOlsYHVLOTf64Osoka
+ ewnknYcc
+ QORRXDcvuw683g9LSCSjZ2xsqcDxXbQzPoh5Xdk+ZezzGneMXOoJnExO0mNIn2fKhmOh82TK9KCQv6ZvTL//nW2o9I6tAvY+RUmosEuA/IpuS6bScSUl43tYlhtogIGJUX9DJSgzObr1nbfKT1j31SQgrKHWMUp7umpHRLz6VAQ9pE2H1nWRH3imMUuZDiU2iUIDEc6pxUI+oCXKVfQ8lk9B8Gcp/jrUto8zsCkn1OvxgDGk+UjdKyDe9UDLbhXzN93TPimyOfvcVN37ZnUi7T915FiE2UKhEfmAo98kfJYuqZvTnttoyeJZ3u3kYpArspHbSnyffHdjSH/LTISSXFKUXyB5jpj9JBiA76+QoKOG3GUvlqb1nrXVLn2+leluSqxsavzAcgnjQMgtzbt4655fNUg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,140 +102,78 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
+On 9/15/26 4:23 PM, Michal Hocko wrote:
+> On Tue 15-09-26 16:13:11, Jiayuan Chen wrote:
+>> On 9/15/26 2:57 PM, Michal Hocko wrote:
+>>> On Mon 14-09-26 20:35:33, Andrew Morton wrote:
+>>>> On Mon, 14 Sep 2026 20:36:16 +0200 Michal Hocko <mhocko@suse.com> wrote:
+>>>>
+>>>>>> Call Trace:
+>>>>>>    <TASK>
+>>>>>>    __schedule+0x487/0x1870
+>>>>>>    schedule+0x28/0xb0
+>>>>>>    schedule_preempt_disabled+0x16/0x30
+>>>>>>    rwsem_down_write_slowpath+0x1d4/0x750
+>>>>>>    down_write+0x60/0x70
+>>>>>>    __ksm_exit+0xb4/0x230
+>>>>>>    __mmput+0x12c/0x150
+>>>>>>    mmput+0x1e/0x30
+>>>>>>    do_exit+0x283/0xa30
+>>>>>>    do_group_exit+0x34/0x90
+>>>>>>    get_signal+0x952/0x960
+>>>>>>    arch_do_signal_or_restart+0x41/0x250
+>>>>>>    exit_to_user_mode_loop+0xd3/0x560
+>>>>>>    do_syscall_64+0x385/0x470
+>>>>>>    </TASK>
+>>>>>>
+>>>>>> KSM is just the one LTP happened to hit: __khugepaged_exit() has the
+>>>>>> same write lock cycle ahead of exit_mmap().
+>>>>> Why is this a practical problem we need to care about? It is kind of
+>>>>> natural that the oom victim exit path might race with the oom reaper. They
+>>>>> share the same lock that is mutualy exclusive. The whole point of the
+>>>>> reaper is to ensure there is a forward progress achieved. So before we
+>>>>> start modifying this let's talk about any practical/real life problems.
+>> Hi Michal, Andrew
+>>
+>> Agreed, the hung task warning itself is harmless, especially for a dying
+>> task. The real problems are what sits behind it.
+>>
+>> With a 500G swapped-out victim the reap takes ~600s, and for all of it:
+>>
+>> 1. The victim cannot exit. __ksm_exit() needs mmap_lock for write and
+>>   queues behind the reaper, so the process stays alive in D state for
+>>   10 minutes and whoever waits for it (parent, container runtime)
+>>   waits too.
+>>
+>> 2. ksmd and khugepaged stall. Once that writer is queued, their
+>>   mmap_read_lock() on this mm queues as well, so both daemons stop
+>>   for the whole system for the same ~600s.
+> Right. But why is that a problem we need to fix? OOM reaper is taking a
+> prortion of the exit time by doing the leg work of tearing down the
+> address space. Exiting task would need to do the same so it is unlikely
+> to terminate much faster.
 
-On 9/11/26 9:18 PM, David Hildenbrand (Arm) wrote:
+Hi Michal
 
-[...]
+Sorry, the subject is misleading.
 
->> +
->> +/* Just the flags we need, copied from the kernel internals. */
->> +#define FOLL_WRITE	0x01	/* check pte is writable */
-> 
-> BTW, it's odd that we support passing GUP-flags ... we should probably switch at
-> some point simpler attributes (bool write) or custom flags (but we don't seem to
-> need many ...).
+The total work is the same. But with the patch the reaper and exit_mmap()
+free the memory at the same time, so it takes about half as long: 264s
+instead of ~600s here.
 
-Agreed
+The hung task warning is not the point either. If that were all, masking
+it as Andrew suggested would be enough.
 
-> 
->> +
->> +/* Page counts exercising single, THP-batch, partial, and full-mapping GUP. */
->> +static const int nr_pages_list[] = { 1, 512, 123, -1 };
-> 
-> 
-> Would we want to calculate 512 dynamically at runtime using the PMD pagesize?
-> Could be something for a follow-up patch.
+The warning showed that ksmd and khugepaged stop for the whole reap, and
+that only happens with the reaper. A plain exit takes the write lock in
+__ksm_exit() / __khugepaged_exit() first, which also removes the mm from
+their lists, and only then holds the read lock in unmap_vmas(), so nobody
+waits on it. With the reaper holding the read lock, the exit's write lock
+waits behind it, and every mmap_read_lock() on this mm waits too, ksmd's
+included.
 
-Yeah this can be done.
+So the patch is really about the reaper not holding mmap_lock for the 
+whole reap.
 
-> 
->> +
->> +#define GUP_TEST_FILE "/sys/kernel/debug/gup_test"
->> +#define NR_HUGE_PAGES 2
-> 
-> I'd call this "NR_HUGETLB_PAGES".
-
-Okay.
-
-[...]
-
->> +static void run_gup_cmd(struct __test_metadata *_metadata,
->> +			 FIXTURE_DATA(gup_test) *self,
->> +			 const FIXTURE_VARIANT(gup_test) *variant,
->> +			 unsigned long command)
-> 
-> We prefer two tab indents.
-
-Okay.
-
-> 
->> +{
->> +	int i;
->> +
->> +	for (i = 0; i < (int)ARRAY_SIZE(nr_pages_list); i++) {
->> +		struct gup_test gup = {
->> +			.addr = (unsigned long)self->addr,
->> +			.size = self->size,
->> +			.nr_pages_per_call = nr_pages_list[i] < 0 ?
->> +				self->size / psize() : nr_pages_list[i],
->> +			.gup_flags = variant->write ? FOLL_WRITE : 0,
->> +		};
->> +
->> +		TH_LOG("nr_pages_per_call=%u", gup.nr_pages_per_call);
->> +		ASSERT_EQ(ioctl(self->gup_fd, command, &gup), 0);
->> +		ASSERT_EQ(gup.size, self->size);
->> +	}
->> +}
->> +
->> +TEST_F(gup_test, get_user_pages)
->> +{
->> +	run_gup_cmd(_metadata, self, variant, GUP_BASIC_TEST);
->> +}
->> +
->> +TEST_F(gup_test, pin_user_pages)
->> +{
->> +	run_gup_cmd(_metadata, self, variant, PIN_BASIC_TEST);
->> +}
->> +
->> +TEST_F(gup_test, get_user_pages_fast)
->> +{
->> +	run_gup_cmd(_metadata, self, variant, GUP_FAST_BENCHMARK);
->> +}
->> +
->> +TEST_F(gup_test, pin_user_pages_fast)
->> +{
->> +	run_gup_cmd(_metadata, self, variant, PIN_FAST_BENCHMARK);
->> +}
->> +
->> +TEST_F(gup_test, pin_user_pages_longterm)
->> +{
->> +	run_gup_cmd(_metadata, self, variant, PIN_LONGTERM_BENCHMARK);
->> +}
-> 
-> Heh, is there actually a reason why these kernel things are called _BENCHMARK?
-> 
-> I think they are really just tests that can be used for benchmarking ... the
-> measurement logic is entirely in user space.
-> 
-> We could consider cleaning that up as a follow-up.
-
-Yeah this can be worked on as well.
-
-> 
->> +
->> +int main(int argc, char **argv)
->> +{
->> +	int fd;
->> +
->> +	fd = open(GUP_TEST_FILE, O_RDWR);
-> 
-> Could do
-> 
-> const int fd = open(GUP_TEST_FILE, O_RDWR);
-
-Okay.
-
-> 
-> 
-> Thanks for doing that!
-> 
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-
-Thank you David!
-
-> 
-> 
-> I think reasonable extensions will be to execute tests on all available mTHP
-> sizes and all available hugetlb sizes, similar to what cow.c already does.
-> 
-> Can you look into that as part of some follow-up work? mTHP support will be
-> interesting for testing some of the patches Rik has been working on.
-
-Yup, I'll take that up.
-
-Apart from the indentation, const int fd and the NR_HUGE_PAGES rename,
-is there anything else I should incorporate in a respin? I think other
-changes would require a separate series. If you want me to fold any
-other change in a respin, please let me know.
 
 
