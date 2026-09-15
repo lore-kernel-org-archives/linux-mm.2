@@ -4,98 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CADBC88E75
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 23:49:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EDDAC88E7F
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 23:53:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2991B6B0088; Tue, 15 Sep 2026 19:49:50 -0400 (EDT)
+	id 5608B6B0092; Tue, 15 Sep 2026 19:53:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2499F6B008C; Tue, 15 Sep 2026 19:49:50 -0400 (EDT)
+	id 5119C6B0095; Tue, 15 Sep 2026 19:53:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1614F6B0092; Tue, 15 Sep 2026 19:49:50 -0400 (EDT)
+	id 427A76B0096; Tue, 15 Sep 2026 19:53:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E06B66B0088
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 19:49:49 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 328921A0561
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 23:49:49 +0000 (UTC)
-X-FDA: 85217641698.22.4ED2D98
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 85DBBA0002
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 23:49:47 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="R37/l7MY";
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 197F96B0092
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 19:53:46 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 970871C2528
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 23:53:45 +0000 (UTC)
+X-FDA: 85217651610.17.CF82E1A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 109A7140003
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 23:53:43 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PplxQb5n;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789516187;
-	b=62zVSOrETuy8Dc9gtxws9zelD1W54RsJ4fL7pbkW9K7SSzVYIqPCAZwVbIkiPuilfJkU0N
-	ijy3sq1Uip08THDlAx2Q6JblF2u/OjnWTlJ+81zxacI24YwJYOapoKaWF6x6n28eh/MWAO
-	/tlSw1qY93Yq2E6ZylOijLJX3YFVO1g=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="R37/l7MY";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789516187;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1789516424;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wfsqsA42RTLaHAcEouHB0BdpY6IKOeqMBzzSUc5mNWU=;
-	b=FjkcgMvJBVVcm4ui69l50xIinZRF33C26sgPuSY0MPNmmWghfUAXoAWcvIEVSaNTBvQ7DU
-	16uUZ4suov9bXhZGO58Begf+5bEiflYZJaLws39FZFs4jSZ59iW1c3MpmqBBS54eGZybYc
-	lqFywRZJNzmCS3/jmbtmubym25mtPbE=
+	bh=OPWCzUYSAJXN4K++8vT6w9N1hwOvTESTMHXbrKefK4c=;
+	b=s0UHnF6dvYwwck3u48oieEx82ZLZKwX6W8lyqd/uHy77XzTdtTRFcXzkKFkZWH/x0vqzrN
+	QT6zqLgUZ+JHMSRQdEEH4rUMBuRSqpSLNEUiEm5JR6dFWGcrJIw19BLrQcdRGUeKHwc1Yg
+	5xZKZIoImJPTE/E5C8BJkyzRfiN76eA=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789516424;
+	b=XVyPPzdy9p70E4H7f+Pf3gphDTPnh29bwmm1ncpILX30yhMlPLfOBFXqwjsjC/v6TtiE62
+	lEovmEKDTSFQUn7jmmUdAvzZdecrU4roxzStRlX8uRdrrt2DeH+DwOl1EBuS03SDFR+hyi
+	uAFVuMr77bvexks0vKoWhTIc8vR7u3c=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PplxQb5n;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id AA4FB60008;
-	Tue, 15 Sep 2026 23:49:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFE551F000FF;
-	Tue, 15 Sep 2026 23:49:45 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 34E38404F9;
+	Tue, 15 Sep 2026 23:53:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 507961F00893;
+	Tue, 15 Sep 2026 23:53:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789516186;
-	bh=wfsqsA42RTLaHAcEouHB0BdpY6IKOeqMBzzSUc5mNWU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=R37/l7MYIzsZWvs5bZA4sl2BNGKXaeQTUKIkLpnn4ERbwxLWzRGTp42Lb49HJVLOZ
-	 fL/IWFbPUll5P8RPuLLKKdJsieaNIvHIcM88ihHRTbiehVsx+0TIuFSwwXH2nZ1Z/h
-	 WYqTy49GZ1Wc9VebvC3D3CLEsoI8gHOm/er7yzjX7qdQiWoZ4633W0vSIKotxr3Eeu
-	 V+s8vWfD3KA6XnS0C+e+qSli92CS7cUQwWv4JRf6FXvEbxSrtFbpCScZp2999cHcbG
-	 qntq+e82CwPXl30d/H4odHWaEruwXvx/Hn2OPgkkxb6Rx68+RT2IhpQG89kGgGC2cF
-	 NAu0dogVEyUvg==
-From: SJ Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SJ Park <sj@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 0/8] mm/damon: introduce hugepage_size probe filter
-Date: Tue, 15 Sep 2026 16:49:38 -0700
-Message-ID: <20260915234938.98475-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260915163928.9d6260f445d895429d115fd8@linux-foundation.org>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1789516423;
+	bh=OPWCzUYSAJXN4K++8vT6w9N1hwOvTESTMHXbrKefK4c=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=PplxQb5nyQyaZ7w46hyW23hoFg3yKZvpD+woczhTgPfqovvmPhOTEFEJLwmWzc1gk
+	 QAACR2sPNCs6atVacLPhG5TcNwXo3GnUk/zXpbCLCC6i/dNCC8v4FBIXpGo+ojwdgK
+	 jt4X9lbnN9dEOPib8ge0m2BdeNY4LlmbZ6XI2nRMjzIHLDUF3OBCskvQbmqNp2qmmh
+	 lK4IrtmZ81P6GLSolCKauWVvNPjjVnzC+3wmE7hLQtVrtcvR17KT9Q81+K6VP+F2fO
+	 SLa9CSCvNFfMPCmkwMDq60hTsEBKdFK8FjyC+CTaT/ZkdbiFLj3CjevYjYGRl0F0n3
+	 ln3J6ul31bpCg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] vmcore: convert mmap_vmcore_fault() to use folios
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Andrew Morton" <akpm@linux-foundation.org>, "Mike Rapoport" <rppt@kernel.org>, "Baoquan
+ He" <baoquan.he@linux.dev>, "Pasha Tatashin" <pasha.tatashin@soleen.com>, "Pratyush
+ Yadav" <pratyush@kernel.org>, "Tal Zussman" <tz2294@columbia.edu>, "Dave
+ Young" <ruirui.yang@linux.dev>
+Cc: "Heiko Carstens" <hca@linux.ibm.com>, kexec@lists.infradead.org, "Vasily
+ Gorbik" <gor@linux.ibm.com>, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, "Christian
+ Borntraeger" <borntraeger@linux.ibm.com>, linux-s390@vger.kernel.org, linux-mm@kvack.org, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>
+In-Reply-To: <20260915-vmcore-fault-folio-v1-1-a0cb6278670f@columbia.edu>
+References: <20260915-vmcore-fault-folio-v1-1-a0cb6278670f@columbia.edu>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 15 Sep 2026 23:53:41 +0000
+Message-Id: <20260915235342.507961F00893@smtp.kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 85DBBA0002
-X-Stat-Signature: 1by8bxufi49bc1smpk7x33m1ayfxrmxt
-X-HE-Tag: 1789516187-685855
-X-HE-Meta: U2FsdGVkX1+NrHmh2rPBIG6ALu6fSQ2TTGbhZW7JwksRC6APIP/oEz1B1OL+CvCsUTnpeI9jmEX7N8ZvzefecV0AbWPxtgsYZHt+Gv0p2FRaSy0VJ0z260ARcsB/kDAFgULdFlrHuOFpjcrhFr0OgLl8eybW/XMMz51xx4XKPPyXSGWuKdH2BteYk7L8qyFcOcEocoR+PA8+tiuDVnj5t/zoVpEekepvg+1XC5OeZqPka1rSCgiaLcRKvDgiSFxVccscoc4zHb+z/qAZptXUS/mSd1rVDfKhaOLL2P2tij2UzwyX1/oPNlOvbM9ig7mFRmbG8mvvTKI1Wh0M5dDA8UTU4uF2YFSrWkJXnrM0FOXPJmDSLCst58JBCGX4tabbVuymXTkpFmAic+6rNJioGwzZ4Jb8o98UbssGQ2SxaTfy13djIKVeJ05q6K3885YWqlq8TiQbBuMFnYTIdMIK5/HyXDRmq9GMudymSzXpymlRa0B6llzbRdBEUh0sZ8TZD0wWVfNZM6y8Kl5dNLtcKgGVLpvZvEVrPRKDYnJduh2+xQUIJ7WNhziWdE3bq/CMiwl41V2ucJtuEMsAwYUXSjeQfOCrsDn99B/f1owlcjts9QrOsuf/V7UxoFP4QIYaRKFMopR5jDONt6PmUiIbSiWzKKOrwkaEDRFot1z3fG0lgTDECPuNUKAkrJH++6Tb+WNXstTQ19WqbetQ2eO1mLwjX5Nzav5YT8e3sFa60n0BtDbYhjFbt29t5RDu95sb1hDDZKu0OCn+kZosEpReDNhCqlTNA2IgxQ4cQcPCfjO7e4FRKiU24ij4f8Gw10CRF4F562sHx86nP7OkM6E/1XKCfusjhfsqcoWl+QN0zaepWiU8XwLnDwv6o+1fXNYfiKy6ZnxUSQW0yHrkTVSJ3RtBYBGXRAh2h7xx21qM44ZS+maVrSjnaJR9B1xAN0qG56/EoOtx6BFix+ALsBn
- s/EL+1ez
- A78nCnvBPeEAMuJe966OmfHjJbwgIS46pa3ABdrYWbmg2XSvPB+OFIesSHmK3jLomtxdmcvEGaVgPrN1J2y7TfLGBhUrXQemZX4dDl5+zpjo525C6FVoV/WkvXQhLN780dVRPNcopBdYFtIqVUrSnK0oKrZYaiw0oqm0M0weO5Y+RZ7kyOmmZ9MbcVjsACsDtvAzFZvDHcTtgGS0twTDl+JcfVbuLyXNS2q82s8wlQxn9WudKmG0VF7dmq7mJ/P4AYugrSZTaj3XVzw1ZtNM4HxFIgyQ1NuBj7IZxNBoM+UH1NLI/NBNTkEal5t8XGOZ9ZcZiPyI5qi6vK7FNT+zu19gtpg==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 109A7140003
+X-Stat-Signature: z3eqxgjnu8tzfwgiqo98osawoo3ax9j5
+X-HE-Tag: 1789516423-414929
+X-HE-Meta: U2FsdGVkX1/9z8N4NP3xblBw7iW1junzAhYQv6fRTUXhN3iq0mu9c1tJ37SKTR4VMpDmYhqLaWmPoHWflL6Gikw2gYoa/YQWlf6fmPkyUbL6Q6ABB1otX7doINH6dUW17kK4LLMvIDTMKPT6m9u0vRt5P2bPEJOyu1/WTxbkYdgbRRewzY7lXfuH57erFLnoek5sU+yKRf1/mwAszh5knPhTxw3S+HfxDyUs+EhUBjt79KGVyLHUSjrIPKS+DKq3UqaPped//RBbFkwuFuYP/gQIQQqLtioL1RkCDgstdcV9XXNBgB2gaQvB+RcJv8kodmu5PQrNka5qAMdL4B8L4yckO+3KhHb4P1g1oz2Y9VHAoF9OB/jYSNiuVrAsEANvcHp6EwfpMfQyRsT0QizWwGpaSVgrEvonKIkVh2W4tT29h0xctqbwYx0M/uoslB29tlvBI4iExy4ufyvHDmIOhUJYjJEaweayThUfRYhhOerO7idQpEqsS7rLuZg16qD/nILnzNySNi1KaROvgNhNPOXQHNSOimOs9Ku+x7N/CJUA/315hgFzL55Rsk9nelmC0l+Xz+LrJFK3oxLVDlOO+/YPqIJq8cpK6jeTmXuHcAYJ3KJlnnx3OGni2HloThpTos0KGiW8VHlLFfF0sBinC8cCw59u8fsUebIH+jCuvYQRZVdc2DX/3fScQ/WV6kgIwlOqpkmLmh5aGicODTsnnOkigUC1Uj4OOuryoxOlcQG7mLLRbrn9AFZcHsA/H60h3kEWIzZRXge0kxFHFpkmYBWBLDgek7MCTs0vYTw1Fvbfke72px1QQIFMuiVEF0tYGNZTvR0dzs6zo2+IcJT9jso9IEBGM+kOqfHzR4yh3Az3sQ2BNilaJCsgxNUmqmSRuWrQiEaVF2lqiYt+bNJ4r5tOIn5uB8+AW9eXkhnmMhH2w6K4Qmd4ZylW8oX51ehhpJbhlISvWLTxLS72Xeg
+ 1v/y0rwM
+ aEcelDsokw+oPld144+n5JXPdqWfi6LaINHL958or8Xdt+VsEZewchtbB8PXzWLs7P0Vv47zjK+3fRnvBXPdqhv+pPjc9iJY0l5BxX3CrQHhPkJMBkjvsBUS3kMG1SFud4jiQP0xw/UO8y+F1hrb6DdkQR+rBmNTNDoHsoQ1GoFonUP0ldKysdL9csyDC0gY1wjAH6+Tx2j+7eXrRYThPxWWQIHfFdgsaXVqTvvvfFVu8I451Ba0/AGXor3ekcvBRVfdknLlQt7NT1nVMDHBEFCiPGlAonelWEjHlE34h9UKKZ3DC/ZE/3XlCXAv3D2WGpqDz9NUYtOuwXdRVstlPAqeOAFqgEQING6eDBCFhC4hPXnwY8KewRZ0f+Wprh6XtjgsbL1ogpdtTO7d2gjuwyVOpy3QupmqmCvHjFrIL4R0/5RI4YcWaPyr9DQSE17PU23mEUDkYKIKftinoXQJpv8uUBUjQarMt+DpFznA89xOfW3alWjr4bfaUKabXtapIGL0AGndDGhgiawrfOdiUtcbVnS998MMdPuY2krvuQWwJHZAud+naSEQ/wEbMqcrzqJFykUC3v1OqPumdkVcfJdB3/Bm3zL+tc47E13hMxRQFepQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,47 +95,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 15 Sep 2026 16:39:28 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
+> Use a folio for the page cache page the s390 fault handler reads the
+> old kernel's memory into. This removes four compound_head() calls and
+> one of the last callers of find_or_create_page().
+>=20
+> The vmcore mapping only has order-0 folios, so the logic is unchanged.
+>=20
+> Compile tested for s390.
+>=20
+> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
 
-> On Tue, 15 Sep 2026 07:33:49 -0700 SJ Park <sj@kernel.org> wrote:
-> 
-> > Knowing whether a given memory is backed by a hugepage of specific size
-> > is useful for efficient utilization of hugepages.  For easy monitoring
-> > of the information, introduce a new data attribute probe filter type,
-> > hugepage_size.  It works similar to the DAMOS filter of the same name.
-> > It works for memory that is backed by a hugepage of a given size range.
-> > 
-> > Patch 1 introduces the new probe filter type to DAMON API and extends
-> > related data structures.  Patch 2 updates probe filter commit logic to
-> > handle the size range.  Patch 3 Updates the filtering logic to support
-> > the new type.  Patch 4 adds new DAMON sysfs files for the size range.
-> > Patch 5 updates DAMON sysfs interface to fully support the new filter
-> > type.  Patches 6-8 updates design, usage and ABI documents for the new
-> > feature.
-> 
-> All queued up, thanks.  With a -fix for [7/8].
-> 
-> > Test
-> 
-> fyi, I'm always reluctant to include testing info in the permanent
-> record.  Because it's development-time info which becomes obsolete very
-> quickly.
-> 
-> It isn't useful to someone who is reading the changelog in mainline in
-> 2028 (or even Nov 2026) because the patchset will have had far more testing
-> since these words were written.
-> 
-> It is of course very useful info but I suggest it be maintained below
-> the "---", where all short-term development-time info is best
-> maintained.
+Sashiko has reviewed this patch and found no issues. It looks great!
 
-Agreed.  I will do so for individual patches.  For cover letters that don't
-have the "---" lines, I will add an informal note saying "please do not add
-below to the commit message".  If you prefer, I could add "---" line on the
-cover letter instead of the informal note.  Or, I could add the informal note
-below the manual "---" line, too.  Let me know if you prefer that.
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260915-vmcore-fau=
+lt-folio-v1-1-a0cb6278670f@columbia.edu?part=3D1
 
-
-Thanks,
-SJ
 
