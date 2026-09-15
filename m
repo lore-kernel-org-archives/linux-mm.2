@@ -4,115 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE897C88E7D
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 16:02:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8733AC88E7D
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 16:02:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 921666B008C; Tue, 15 Sep 2026 12:02:15 -0400 (EDT)
+	id 358446B0093; Tue, 15 Sep 2026 12:02:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D39A6B0092; Tue, 15 Sep 2026 12:02:15 -0400 (EDT)
+	id 308B16B0095; Tue, 15 Sep 2026 12:02:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 79C1B6B0093; Tue, 15 Sep 2026 12:02:15 -0400 (EDT)
+	id 1F7A56B0096; Tue, 15 Sep 2026 12:02:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 524B26B008C
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:02:15 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DAB3BC04B4
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 16:02:14 +0000 (UTC)
-X-FDA: 85216463388.09.EA50564
-Received: from pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.13.214.179])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 93DB8140017
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 16:02:12 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=amazon.it header.s=amazoncorp2 header.b="p/aBoMg2";
-	dmarc=pass (policy=quarantine) header.from=amazon.it;
-	spf=pass (imf23.hostedemail.com: domain of "prvs=7114569a0=dipiets@amazon.it" designates 52.13.214.179 as permitted sender) smtp.mailfrom="prvs=7114569a0=dipiets@amazon.it"
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DD8F76B0093
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:02:56 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6843A40484
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 16:02:56 +0000 (UTC)
+X-FDA: 85216465152.02.09DDEA2
+Received: from mail-ed2-f31.google.com (mail-ed2-f31.google.com [74.125.228.95])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 2FD4A18000D
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 16:02:54 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=Q8lDAxH2;
+	spf=pass (imf06.hostedemail.com: domain of torvalds@linuxfoundation.org designates 74.125.228.95 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789488132;
-	b=Su6yb2baWNOymPIU8Xao+dXnZ1z4OYXRKDEwdxJY1XL7LCZ6sdt42ryx/xmc6FH+QSKouN
-	7U0t+0jtV3wsZCNJhxxlPiLbVjSkW2e+0G5B0bjfC44ZTELxJfqGGiymlHvmu3j617ZtsM
-	MhTAc4wawwz/Mh2FnIV8/s2ZJbolq2w=
+	t=1789488174;
+	b=iBHivu9LB1JXN8dgr4sabbUpRcxskzZPtXCGQISLzlVVXT/ZuDixvxqy3lQXmCcFPlo2CF
+	vGFn5+qs6lp/TkbHFMXdnWVUJKgK/8+gnUBTWZjIxtN5gQlGrqobH0e/xVHD4WLOc3wkB9
+	iinsApO6sMgvJrlqhiBTYo8ZVK/oNus=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=amazon.it header.s=amazoncorp2 header.b="p/aBoMg2";
-	dmarc=pass (policy=quarantine) header.from=amazon.it;
-	spf=pass (imf23.hostedemail.com: domain of "prvs=7114569a0=dipiets@amazon.it" designates 52.13.214.179 as permitted sender) smtp.mailfrom="prvs=7114569a0=dipiets@amazon.it"
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=Q8lDAxH2;
+	spf=pass (imf06.hostedemail.com: domain of torvalds@linuxfoundation.org designates 74.125.228.95 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789488132;
+	s=arc-20220608; t=1789488174;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zH2AffRhpysneQJNXQPa9UtiFiIZCjOUG9PhR8vSPsI=;
-	b=mG7luStAxVF322I56SuQP8qqVJjjauFZcUPMOSYHSj37WYd4ZcWgdCxfz8Bm1D+xm5P8tt
-	Q0PiJ+q7nD2qjpu2NuEk4Qa7PcN0zE6Aan0+sMtVXIu1obuTDtvICfksqRwClA6SXUx08p
-	MMvP4y+uwJw7w1GCE3L2+aqqr21swbU=
+	bh=cj8iWYGkmy9fr6Sp+MjBMi0cvssqzarl8Tgut8FUMEc=;
+	b=7hNKqOiUh1n5SSv5KyNwOW8F68eOoykgZqB0zP41mXvhAzCfALDuYbPe6m3y6UzveeKXUQ
+	wwQjR/KxuhAAzjcxiW/fCEQtgkRV+LftKBE4MFsPzd5jCA3DAK1fl37n94OUkGbtIgfixI
+	1FZ+HnZNXMRtt8pnC/iyJHOgCSrOyWo=
+Received: by mail-ed2-f31.google.com with SMTP id 4fb4d7f45d1cf-6aa053900f5so2031806a12.1
+        for <linux-mm@kvack.org>; Tue, 15 Sep 2026 09:02:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.it; i=@amazon.it; q=dns/txt; s=amazoncorp2;
-  t=1789488132; x=1821024132;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=zH2AffRhpysneQJNXQPa9UtiFiIZCjOUG9PhR8vSPsI=;
-  b=p/aBoMg2NvXzVu/2njR1un3ma7x6p+qAmz1nEk0jJwcL3NqQ2L+RWb7G
-   VEfSz/Elhh04xZeSmnnF+YfyHSmbwcbhOKDH/muj/xD+cjNeQkfZDYng2
-   yP7BRZyISOKFKasCAbUxTn/IiJQV41rDwFCiZSnVO3C6W/+SigctTfNLe
-   Rc2wRWJivLIbDuUGQSirtPGtSLFsen4S6WuShKxA9f9b59ZbVYxdRbsw5
-   LXuWZDvr2gUr58CQB7TSjsxxo9n5vWkP8515PacffqsSn5GwbiUAaU2Ck
-   zjtTZ28C/MqriTn5+gWLyVtEY+tHcJbnNkTaN0GIDoEJI9O7Gqru8V/uI
-   g==;
-X-CSE-ConnectionGUID: u92piRZrSFapAw+TyK//UQ==
-X-CSE-MsgGUID: YKI+s6tzTVW5liA/y0xZ6g==
-X-IronPort-AV: E=Sophos;i="6.27,103,1787011200"; 
-   d="scan'208";a="28716152"
-Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
-  by internal-pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2026 16:02:08 +0000
-Received: from EX19MTAUWB001.ant.amazon.com [205.251.233.51:27276]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.19.159:2525] with esmtp (Farcaster)
- id 15f7d0fc-d5b9-43a9-b411-4c5574972f7d; Tue, 15 Sep 2026 16:02:08 +0000 (UTC)
-X-Farcaster-Flow-ID: 15f7d0fc-d5b9-43a9-b411-4c5574972f7d
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.46;
- Tue, 15 Sep 2026 16:02:08 +0000
-Received: from dev-dsk-dipiets-1b-77b833da.eu-west-1.amazon.com
- (10.253.66.177) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.46; Tue, 15 Sep 2026
- 16:02:03 +0000
-From: Salvatore Dipietro <dipiets@amazon.it>
-To: <akpm@linux-foundation.org>, <hannes@cmpxchg.org>
-CC: <abuehaze@amazon.com>, <alisaidi@amazon.com>, <blakgeof@amazon.com>,
-	<brauner@kernel.org>, <brendan.jackman@linux.dev>, <david@redhat.com>,
-	<dgc@kernel.org>, <dipietro.salvatore@gmail.com>, <dipiets@amazon.it>,
-	<djwong@kernel.org>, <hch@infradead.org>, <hch@lst.de>,
-	<jackmanb@google.com>, <linux-fsdevel@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<linux-xfs@vger.kernel.org>, <mhocko@suse.com>, <ritesh.list@gmail.com>,
-	<rvvandan@amazon.com>, <stable@vger.kernel.org>, <surenb@google.com>,
-	<vbabka@kernel.org>, <vbabka@suse.cz>, <willy@infradead.org>,
-	<ziy@nvidia.com>
-Subject: Re: [PATCH v5] mm/page_alloc: avoid direct compaction for costly __GFP_NORETRY allocations
-Date: Tue, 15 Sep 2026 16:00:42 +0000
-Message-ID: <20260915160042.1265958-1-dipiets@amazon.it>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260911093209.d9181d5950778897935f6bcb@linux-foundation.org>
-References: <20260911093209.d9181d5950778897935f6bcb@linux-foundation.org>
+        d=linux-foundation.org; s=google; t=1789488172; x=1790092972; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=cj8iWYGkmy9fr6Sp+MjBMi0cvssqzarl8Tgut8FUMEc=;
+        b=Q8lDAxH2LIwYR2spnZ2zvUJe9ufXJtgd2eVvSvQXC3eghP1+NlitLkzwP45iJzATi5
+         tWjpjeoglPlja4Fj7zHgJPXsvyyUklo2KNmmxxaO+RwgqkHgUlALdDYi6ffEjM1eWRyY
+         SGX3Dov8pifG6SWE4YxWxUONlNWIToAuWhiRQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789488172; x=1790092972;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=cj8iWYGkmy9fr6Sp+MjBMi0cvssqzarl8Tgut8FUMEc=;
+        b=Oyg+fF9bOoHBmwywfe87qanc2JSQ5/znjlND4gwBzmkEUYcMKZnBd74gSYTcwoL2hm
+         pRX00MWoLdnz2rRZLyHYfsrJAnypyYnovfaUy1G7dH5rXPk5jPRINKf5wgJJBvTpUj9y
+         jp2+K7IdOMbGZs9GmscumHNouBhNsN42Q/Elat9PZdLiFFkofYW16N+4R8DIa9CIlwRs
+         YoWBoeWXTrcSUaw19HgO9hrEQk0wB4Qpaq6ME30SOTYABXk5lJTwaAtAcA8H+2Hu2OjV
+         ldzBcKJsRBm/SLWSEjsbHkZla0gP6JdcXDBKb/5nLiJHwNdaBGOgkQlLpNlXOZoZi6Ry
+         bfgQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzC7+sE5MuiemFx1wyBlT61hjxGIX+fcKUa61+xpDa9DSkF8TVIJtB6VN7SWgbIQ+QjMCDoAiaiHA==@kvack.org
+X-Gm-Message-State: AFuF++naFIcwethHLZk9QPd0qPlQvseV/tKGiVVS00uso/0MUh6vFe7h
+	NoyQXeH5rSnU84c0mSXKHm3FyAVKLUINx7DZTFtqIEdBQCvt3ruMPEYJ4cdeFe8D/Ej5pr84p2r
+	ygCTtHQU=
+X-Gm-Gg: AYBFou0hwO323GWieeZ4p6chh7zwnscqsLNC3V20faojzCk4Hz/DJqVAm1BJ+udnuwZ
+	IwiItUWY3sGIEUNSKwHqKi6y4y/wzwRePz+Vv/6HunOU0WegzOcaorQn6CZgYeY5V+7i3HstnJb
+	33tfg0yofc84m6gUA7s/WJzl9ZNPHPHPhTPgfUPujL41plloxLLgPc2pnfPDhr4PdSjC2HtiGzq
+	bhwRCB3Qyy1oO44CPbnfWTxiITPIoEDzgctCPtmDDOitmBizzWiUYvfhl2BZ04WWqfzo0/q1fQV
+	wCloeUVFs7EeVhH//m175bj4IUy03DN94WAFlFbvnpF4/d6LnDBLpCO0Eb4LuGMGrkxX3JOUPhu
+	0raaI2Otz7vNJVPYvApiW071A4BCcDWUp2YQIffYEsw9DM+yrjRqaJgTOQaRrDwHS0hCFhigZRi
+	uzjRUg4sXvS2NjqmjYpSueLBAoNx/Cefd3jJUuWNrY0SCKrNzIWcrton4z651dVw1g5ZG8eyYSD
+	IYRl+L8tlxkmsClO9c/oHxzjUo7mh1nQ6k0fZA9f20VQ+vHUw==
+X-Received: by 2002:a17:907:720d:b0:c24:6985:d7a1 with SMTP id a640c23a62f3a-c29b84ded7emr538057666b.7.1789488172279;
+        Tue, 15 Sep 2026 09:02:52 -0700 (PDT)
+Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com. [74.125.228.140])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c29de6040b8sm117066b.48.2026.09.15.09.02.48
+        for <linux-mm@kvack.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 15 Sep 2026 09:02:49 -0700 (PDT)
+Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c264788fd58so553974866b.1
+        for <linux-mm@kvack.org>; Tue, 15 Sep 2026 09:02:48 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxNl+Qb/yGeRsoZkCpI2IE1x5ynk1tYHO6prrAis23pzx5Z5yQWsO/Pvs98Fw6cASMAknMTKswdoQ==@kvack.org
+X-Received: by 2002:a17:907:cd0d:b0:c29:439b:d5c1 with SMTP id
+ a640c23a62f3a-c29b86141b9mr553591866b.16.1789488168046; Tue, 15 Sep 2026
+ 09:02:48 -0700 (PDT)
 MIME-Version: 1.0
-X-Originating-IP: [10.253.66.177]
-X-ClientProxiedBy: EX19D031UWC004.ant.amazon.com (10.13.139.246) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+References: <20260915-work-fd-reserve-unify-folded-v1-0-4d5217d6b246@kernel.org>
+In-Reply-To: <20260915-work-fd-reserve-unify-folded-v1-0-4d5217d6b246@kernel.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Tue, 15 Sep 2026 09:02:31 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wjeamU=_RYT9cR3dZJ2N-Teo-N1+aYh7jwhrB=iWXD0cg@mail.gmail.com>
+X-Gm-Features: AcwNN1WK06t9f9BcKFBIanysXcyUXK4eRICuH4x14s60AdlpF6ijCATIYaYAAvQ
+Message-ID: <CAHk-=wjeamU=_RYT9cR3dZJ2N-Teo-N1+aYh7jwhrB=iWXD0cg@mail.gmail.com>
+Subject: Re: [PATCH RFC POC 00/50] file: handle files on syscall exit
+To: Christian Brauner <brauner@kernel.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jann Horn <jannh@google.com>, Jan Kara <jack@suse.cz>, 
+	Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	Oleg Nesterov <oleg@redhat.com>, linux-alpha@vger.kernel.org, 
+	linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org, 
+	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
+	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org, 
+	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, 
+	linux-um@lists.infradead.org, Jens Axboe <axboe@kernel.dk>, io-uring@vger.kernel.org, 
+	netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-gpio@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, bpf@vger.kernel.org, 
+	David Airlie <airlied@redhat.com>, virtualization@lists.linux.dev, kvm@vger.kernel.org, 
+	kexec@lists.infradead.org, linux-hyperv@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 93DB8140017
-X-Stat-Signature: aezk31cc6oekzktpmrnxhbp7eed3ihhu
-X-HE-Tag: 1789488132-247659
-X-HE-Meta: U2FsdGVkX19lFYSvKZLtMOZMyp/PFinKCxFdLJ/QdAMcRh9/bCmawP7kwrto13mrECFo+Zevu14URljohLeVI4pXuN1oVlW74zYMDlqyGRjSmSp4Y2kaG6wFnc87EPTi5LOtBWahNQO1gTyPnb9joAQxKWcD9BfwKumt7FxothxJRM3WGuaz/IqQRH/xlC9zgE1qeWY54lY46UNQImMQYYMghBMj07GUFW0JsK5sohrU4AmCh/4N2TrRPxmprm3PdqKvGqHbrPy8FJ4ZuiAPWfc6ey7+NTiNbOXDsFsuJzuIRDwtpPAN/KsriPmFpJkV1/c1vegnbTYImE+XMux25kDqO/KocwCkAP0Z8sACx8SdZ5GfMG6djMRZQEDpBmQJYylTJJ7HFSz+vbjL9vLs0cCQRIJqCsrjznzh5zWVsSLY9rAHUIRYpmX77Lfjpb9g97NII6Rzi/j557gVe0woce3SlkNO4YYZHHfhxMdWkKfywe1bAOBxbd/2lzNzVi6190wZShokbjPQRGFfeqV/1uvys7yaoEXuNPPfz7h3ANYF6H4+Ein1tU2cKLpZstspexEDFjrpNRMETCbMIPsOZJ0xJsy7fxVCZ4cQNFEP5rro+1sM8qdhX/t+TC56epGbBpYseTKCJLqio+n5Zm9o/cLbDsSx7XgWBpn2hAOiosRjrEgYa0VQFHRNRPc98t0mUTbxrczvadwlKzoafwAiS4uCCM8YbUXU9uoXhE4VMcK8+z4uVA9W4xB9v1VTVyUQJP6CPOMlRzYsmCPP0zqEhyuvfGpxr/BeU97jNlm3mWMkzUuV0fpd0EuJNSMG7HxFs5hxmQ+gTAdvlHiTdi83zpZa133VKpcb/QQk3HEAiV2APMAthngtsi1WJjf/vyWS1njglD1ceXuY0z2wOVaqLmpI3T8w0CPc+ovs0m0kj7Ehomc4lq9cgNVv4bKTYysLkAWyPX3uLA0Z2wAr7ge
- BmgupKea
- OMmPGcbv9oeZMHeT/TRzyNKJqTINOeMwbpMYww+6WtYAItERP/pIMvaUE3IHtzZVHV66JBNlxt402IGXjOoNaixhxXrx+LVao09+bWIA59Guhi2pO/yn5CgnRqDWSaTX37zRN64tVPtSJ2oGk8E3ndDQQyD85x9/9iskoVUXoKr/hDMkpN1Pj6Z8zplJH+bHG/wSc3zoxDIZoPVC7FIDCzkpHNHr7pd3TqACqcEpil3DPDvJs35FyEWmbcasWPIhe3vRYruXVxIwV6PVezarz7iXgWYmJAqgmKfmZKJ/3kTqkNDDdVEf7yC09RX2xFaH07f/9pDZiGpGVc+rQ4Y976r4dM8wolS8lG2J1zZjneJYPv/guraDqDfXQYQ6FnlI7CPh1zsOMnkXNL7vA5pxCg8FHjupm7n2NcCB2wAZrss3Oza5WLp04sciAHzeb+0RiangS25+BjB9zWcxoMWKTPnbnOsEPIXGvdrIpwx3sacSsQRJFYHQc7Nnq7rmEbFlkqMVxAv0+rl2iuQ/Q3D7ETkz87ZoaK6GDzXflypgoAM6DxS33O5fCZyv9gDnaKh99if/f2nm9nxxlaKWGqNLs/YMd68c4RTrL8lA+oEtRJcDHYfhwNi1OtJjgsdPOzxvOO8xarSQ6vzXH0tZGA2IY9fRdrr3UNMWFerSUp9QNZRrHLIltN7PfNUfj8V5CDI4AC1XINgHUZ6mSwfWFlfZT97a/YIWemI5Zwepi
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 2FD4A18000D
+X-Stat-Signature: i8s4t7m1n5regoqzg8enok5cqwybhafn
+X-HE-Tag: 1789488174-965869
+X-HE-Meta: U2FsdGVkX18tQtSvnLAHygXJxhttKv1MyuXv1eOj0joKjyXKXyiOR0Lu9Fpz9rNtxwR3R3SA0jEZsK2XeVZjGvkM8qT7EKmZJdoL4xVsMWkFs2PFEosonQlMurNjX8FPqElAqABSiRV8Ka85jOu3zykEQmLj/FKq7e7+KvwElixYI0Mv1+oE8/D9TLasvQx+npjQnxaxbzRC0rYqMAxnUD3uMtmx2Lfe6Ocn95u6qYwk/Uhi+pNAT3oukMTTt0GIm8zh1+uDPc9nOY8AmmleThR8iwa7aIzgl3jxsN7w1MK5vPsOfblh8+hQiZ0MDI7wTTtXDEFEVQ5W9LOOnNg1XAh+fp7Ic58UmiYWm8kHi/pXYPBHpN7svdkeT8gH1xJQxOER+ckNXykaTsOiw4Z0sOcvZANGLyYwpHrNxrSwd2HTLOE27EeRIRLrvFbohOYWM77ITQbZoRaGY81UNC6V3J/qh4Z8SAWQc87hiLZ755m+i1uNoUI3RU1QDJFhlOGiL2JWl35jkUIBJnjc2HD0GtmpRszxY18bK9OsHKB7VCnYwY+px7EkX0sUYiFb1bBzMe3QPCa3xhYiNBtluWmyvhLDiX2bOv+3acSRe8UeED7RZUtB9M6ylzGYTSrjbjDlUwfP7pHNneQotpp0/ChFDiE5OLi1lfaZ5LlScJk4b2sVnWfeC3k7wO+uYd1I6KTsYFNTyXGRnmW3lWhURKXwJWTxKM8qJ/t9Tqe9+Ooxbz/m/97sJJMG0s88s2fyuYoOpVvvRm83f1PCgsIZOHoBzEWCwcIs+2161MNyRWewQs8agvonzTNil6PKsc9ezCad2Mg4SBDgblkk+Y9Jx6uOjWodct02AWxp4lHnhnOrOyphTHZsxx4OldyNMktE2fDGFhdOk9+B/paMD3A7Xa4VrYlmJdsPgR8O/cwVTfGSkD3TxqFw/1tcLau+HARB/v//D2PxOuj1jfOMafWWTSR
+ 8eOAOY9X
+ oo49VveZ7yzTbWA7WMshDUq1Bg8LCuiRGE9TFfSBGrhTLlfsW9fAHDrdXCCffMMcRvl5IXWRUWNyL0tCXPfLGJj6KcsN8NNTS63mTUT9DUIMsdB242tO3KCbeJyFpMYnmicGIfzbl9lYc9TupGOPjKgUt6vOxsZo1mwQRNYvFY1+CKfIjZIxqE4f9GRqtE2fSTpSNN8TkSW+o+n1yajxjrO9m00a0YbpVxaCWzY0C9siO5miFUeNcPjElUmcDJ28VOwPDIh44iqCgCdopChfeMXCYbm07c3lYKoWS2Ng8i8N1dUD2iRO2x72y5a+x17nUrFddCdKidPjBydgoHrOtQrgbWDXF81VxN5NvxUCCx7UaZiq9/28IV+KSEvnYF12ldL19QGp7l6QXkJBW02sX8omP4dAQZQ9LUAfV0NG4XxccTGxzCJ2Jg+NAkA+zMtzJJ9+7U6NPlSZ4db7ySptY/8qPmS23sveFJbABYALYnXinubFe8q3yviT8EmlhhHkt6GNMdu36m/kCSim/xF1SbVcqSQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,44 +137,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, 15 Sept 2026 at 04:31, Christian Brauner <brauner@kernel.org> wrote:
+>
+> TL;DR, this lets arch code handle fd install and cleanup. fd_prepare()
+> allocates a descriptor like get_unused_fd_flags() does and records it in
+> a slot on the task. fd_stage() attaches the file to that slot and
+> returns the number.
 
-On Fri, 11 Sep 2026 09:32:00 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
+Honestly, I am *not* a fan. At all.
 
-> does any of this look real?
+I think this adds complexity rather than removing it.
 
-The mechanism seems real, but it only shows up with vm.defrag_mode=1,
-which is off by default.
+The diffstat tells a story:
 
-With defrag_mode=1, a costly __GFP_NORETRY allocation that used to fail
-cleanly can now succeed by fragmenting another migratetype's pageblock,
-which seems like the wrong trade for a caller whose premise is a cheap
-lower-order fallback. Johannes, do we want to keep it strict?
-If so, we could add a condition like below. It is equally
-applicable to v4 and v5. Happy to send it separately or in v6.
+>  106 files changed, 962 insertions(+), 861 deletions(-)
 
-	/*
-	 * Reclaim/compaction cannot run, so defrag_mode's strategy
-	 * of enforcing ALLOC_NOFRAGMENT cannot be fulfilled. Allow
-	 * fallbacks rather than failing the allocation outright.
-	 * Not for costly __GFP_NORETRY: those have a cheap lower
-	 * order fallback, so failing beats fragmenting.
-	 */
-	if (defrag_mode && (alloc_flags & ALLOC_NOFRAGMENT) &&
-	    !(costly_order && (gfp_mask & __GFP_NORETRY)) &&
-	    (gfp_mask & __GFP_KSWAPD_RECLAIM)) {
-		alloc_flags &= ~ALLOC_NOFRAGMENT;
-		goto retry;
-	}
+in how this adds a hundred lines more than it deletes.
 
+But to make things worse, it adds them in bad places: low-level
+architecture assembly code.
 
-Salvatore
+Those extra lines are *not* making complicated code simpler. Quite the
+reverse. They are taking fairly straightforward "just deal with errors
+with normal cleanup in the place where it makes sense" and makes the
+*straightforward* case simpler, while making the big picture more
+complicated and subtle, and adding new code to places that are not
+simple and just blindly do somethign that makes no sense in that
+context.
 
+IOW: it's more code, and it's more abstraction, and it DOES NOT HELP.
 
+And yes, most of the well-maintained modern platforms (read: x86 and
+arm64) use the generic infrastructure and they don't show that
+low-level asm effect. So for those cases, it's mainly just  that added
+conceptual complexity and a new odd rule - and makes a *successful*
+system call go through that "extra work" and indirection phase that it
+didn't use to go through.
 
+So it just spreads out the work, and moves it to a less obvious place.
 
+All for the very questionable advantage that you can now randomly add
+a file descriptor without the few lines of fairly straightforward
+rollback.
 
-AMAZON DEVELOPMENT CENTER ITALY SRL, viale Monte Grappa 3/5, 20124 Milano, Italia, Registro delle Imprese di Milano Monza Brianza Lodi REA n. 2504859, Capitale Sociale: 10.000 EUR i.v., Cod. Fisc. e P.IVA 10100050961, Societa con Socio Unico
+IOW, I do not see a single real upside to this, and I see immediate
+downsides to it, and a more abstract complicated machinery.
 
+I do *not* see why we woudl want to make this be a "every system call
+exit" kind of thing. If there are places that think it's complicated
+to do, they could have *their* local little stack of fd's pending. Why
+force it onto the low-level system call entry for every system call
+when there are only a small handful of actual real cases (the vfs
+itself, and random ioctl's by odd driver subsystems).
 
-
+              Linus
 
