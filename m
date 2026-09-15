@@ -4,104 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6C66C88E75
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 13:31:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72D39C88E75
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 13:33:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C26416B0088; Tue, 15 Sep 2026 09:31:43 -0400 (EDT)
+	id 300D86B0092; Tue, 15 Sep 2026 09:33:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB0686B008C; Tue, 15 Sep 2026 09:31:43 -0400 (EDT)
+	id 2B2FF6B0093; Tue, 15 Sep 2026 09:33:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A78336B0092; Tue, 15 Sep 2026 09:31:43 -0400 (EDT)
+	id 1A0166B0095; Tue, 15 Sep 2026 09:33:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D3646B0088
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 09:31:43 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B7C08A03EE
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 13:31:42 +0000 (UTC)
-X-FDA: 85216084044.03.8F2091C
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DC7776B0092
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 09:33:23 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 36A00803FF
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 13:33:23 +0000 (UTC)
+X-FDA: 85216088286.22.AD4E14A
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 0B6B120003
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 13:31:40 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Bxgsy2BH;
-	spf=pass (imf13.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789479101;
-	b=Suf3h0MWMkgPHPye2rSCtsVHcLpewW8XJ8oH5jc0P18KLpjOucnS2wBhfnUR3yEL/iNcAb
-	qh2PBbQ+SL3Rsi95ZxVCJXkRD3NdOLI2ajPyYE60uT9R2EkG2ynFWGBRYaMuOTZLLFkh+E
-	AdKsWOrWEqwNfleYFZHmdixtLFfRvLo=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Bxgsy2BH;
-	spf=pass (imf13.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	by imf12.hostedemail.com (Postfix) with ESMTP id 7DB5340016
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 13:33:21 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HANA76hn;
+	spf=pass (imf12.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789479101;
+	s=arc-20220608; t=1789479201;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=szNMGe0DObGeR+SwRrUoeZsesJIvyvHlKuWjShKq/XM=;
-	b=dZiHmZsk+pzaase+yIhQiOaDhHUyKs80IIccax4CYuzPNxSOcsgK41UB5/9sVVTU5YfvOD
-	YEmJ4TndtAsdpBZFE6ka0J47GNqdz1/fjD/xoF1xFt1uM7ya7yQt35ZJNQLv5ITL19r/CR
-	vZDIpN87s1PmS5HZt0avZC2FVTm60rU=
+	bh=Da33iyX8RrUrhHPC36ssZZP7j4KMf25stiTxEiTRjDU=;
+	b=DjN/AdElJLbaXs+1R7ys1yX9SxiqfRtUYpxWt5iPTXA2JuOxi9wLXs7OzsFldNEw14nb++
+	Ud9aQcMicrUVySMOOAGehyzFtNH1DU0+O85Em8082IATqu1bg9dlRflox0nlWplmcXzRTy
+	yKqHmkK37v7xQc1L6vMfkKQIzCGXvh8=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HANA76hn;
+	spf=pass (imf12.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789479201;
+	b=OloSrhUo+UAwpRZs16dJVDY++ex4VB7yS0wpMyzSv8ySUleoKJHzj85jROaJiE3ugl9+N5
+	2LnMSiATz4l0ufw9k695GLROU6C+t4MF9ul/Ff4uOWhVkhnNvSPzLIEfxvAYtNrc8HK8yj
+	NwuE/pE/LDkDql/4ZopfDFs8Tt0IBRE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 27A1C43C5C;
-	Tue, 15 Sep 2026 13:31:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AE8D1F000FF;
-	Tue, 15 Sep 2026 13:31:39 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A1BE440DF4;
+	Tue, 15 Sep 2026 13:33:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45D391F000FF;
+	Tue, 15 Sep 2026 13:33:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789479100;
-	bh=szNMGe0DObGeR+SwRrUoeZsesJIvyvHlKuWjShKq/XM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Bxgsy2BH8vB1k6x/MwDXjlbNVwjyZEYkY8k9e3PdVaD+xjsGtBcSM9mJabPOrJUzz
-	 kd+tHYqRrKZEq87R5a8vsjCkYvifnJ8NtGCJawmHnVkZckYqaVj42qfBwQldxWKjGN
-	 lGHVDHinmGCkNbzgPmoE22Y75nwCu0vz4nOwIRCQC+CkloWdVLGFpJuKkkt6yR3sjn
-	 nFZNRopmz55BHRoMcDgESNpOC07YvQkifLyL9ERd9uVTHuFnJV5FTShXlo1wH1UfV3
-	 opo03/Dn1lTUHe5SWpC77GI5+3vj4S6E08Us84DlyhteMV2n/GNLKKz3llO3ZNCFst
-	 ILzESzN/1go0Q==
-Date: Tue, 15 Sep 2026 14:31:38 +0100
-From: Harry Yoo <harry@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	"Kiryl Shutsemau (Meta)" <kas@kernel.org>, kexec@lists.infradead.org, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>, 
-	Brendan Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	rmikey@meta.com, riel@surriel.com, kernel-team@meta.com
-Subject: Re: [PATCH v4 2/5] mm/memory-failure: libstub: install the
- poisoned-memory EFI table
-Message-ID: <aqlFnuIIECOyaweo@thinkstation>
-References: <20260909-hwpoison-kho-v4-0-359313564495@debian.org>
- <20260909-hwpoison-kho-v4-2-359313564495@debian.org>
- <2c9a7bef-3189-4f78-a6cb-61d2f7afd643@app.fastmail.com>
- <aqKhgPKzRf0e22s3@gmail.com>
- <aqkIdVhoG2wwVBtb@gmail.com>
- <aqkyT0Ui9h5KWuzn@thinkstation>
- <aqk4NUnq92ftuUuJ@gmail.com>
+	s=k20260515; t=1789479200;
+	bh=Da33iyX8RrUrhHPC36ssZZP7j4KMf25stiTxEiTRjDU=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=HANA76hn+RCjD4WFujdVFLp+r7nx14r2j+1Nwvbt+QhrcjXcd0R6HRif0YgSlAb0e
+	 FpDWKe0S3k8QV5X6Ycl51OskSSp93MiXwn4jRtFI3wwqmSuyQDTzOp7TDDh5gMq6r0
+	 vDnAMqq7rK1qd9sKu54VGjSOOIJmxrfyNiV0GAV4hMHZLcFVCZA4wXothga+8gupSp
+	 4VUJheuA3sj0cPQJBL+9ZxeSFYNr4M7E5VSIlG3vx4L91yHCkKR/T0qS/LyLRYLMOs
+	 45xhbManJxeliLDDEfVEaRQ1AsO9NeYiAXxC6Ey44kCfaN1X6Y0WrRzS4udvCq8FyD
+	 Mzhf2wHc8m1ZA==
+Content-Type: multipart/mixed; boundary="===============7419760775756817736=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aqk4NUnq92ftuUuJ@gmail.com>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 0B6B120003
-X-Stat-Signature: w7jduoweay1cz3tpkadorurc8abhhzpu
+Message-Id: <89f9e7223c18671a3a7025c9b3492c7e92539d00a289c2d83610918f8c53fe0f@mail.kernel.org>
+In-Reply-To: <93289af4317b57caa4e393d73fe6c786b24a4c2a.1789475073.git.zhuhui@kylinos.cn>
+References: <93289af4317b57caa4e393d73fe6c786b24a4c2a.1789475073.git.zhuhui@kylinos.cn>
+Subject: Re: [PATCH bpf-next v11 2/2] selftests/bpf: Add memcg async reclaim test
+From: bot+bpf-ci@kernel.org
+To: hui.zhu@linux.dev,roman.gushchin@linux.dev,inwardvessel@gmail.com,shakeel.butt@linux.dev,akpm@linux-foundation.org,andrii@kernel.org,eddyz87@gmail.com,ihor.solodrai@linux.dev,ast@kernel.org,daniel@iogearbox.net,memxor@gmail.com,martin.lau@linux.dev,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,emil@etsalapatis.com,shuah@kernel.org,baohua@kernel.org,geliang@kernel.org,linux-kernel@vger.kernel.org,bpf@vger.kernel.org,linux-mm@kvack.org,linux-kselftest@vger.kernel.org
+Cc: zhuhui@kylinos.cn,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
+Date: Tue, 15 Sep 2026 13:33:19 +0000 (UTC)
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 7DB5340016
+X-Stat-Signature: 7pfpkuqbwkkbowxkhdh31yer86e9wn4h
 X-Rspam-User: 
-X-HE-Tag: 1789479100-286782
-X-HE-Meta: U2FsdGVkX18OQQEHqmGZzcrsdC/U/cPxNqFXeeNzPtO1JWcFBRDGCeKIrSdaWJuj3yM0+sWrpZoDU5SGpX/6JkSCpdFMtyjR1vWD0IZ6Da32gmQWaSKNh03+lech8K3nOv42j23JWLLUT9gQKbrqlzXn+C3NPdDeucM+1KKRv8mCzSRAooDxuiBJtUjAAATn5BBUfJVSnF6h0CJZVrY2PXEXej7pjXLj2xElczrDyBDHMQLUQbGzrCJWWbJfj0XSeX8In73IWJMKEfwkddxhgiIkGRKVt1ICEaLT2MoVMEW+a1lWp7nfzKQKbTFuR80xVS9J3ykekzZWxuKSDGZ0RrrMFAx0KawA+lhdf9Wlas1BoFDy/JyyllaUTwvP8KFgdQBFq1zMlFrCLfkFF2uKvGF27dLYah+au54vvZtBp8PLsojPMNgZ3sq+vB6LMoF39hRnqCnJLGPpXA+KlAx2310NTkieQqyxVNXIzjy6/tvnEjKHg0xBEf8ym8FJljow5dX0oyXvW/CGBiTYu6o3beTzPkq2tGSIwjdksUx41MDEy2iT7HTRStKmSOQhIeVpv6ElmWpuczEKhk1say+KzWye37fyk/QEEeskX9yNe7/+RI0GVQZjPiGBwWA1xQNMcg0KL08+gb4GBP1UAIDcYq7K0e2uuRzrOGMJKk/OktbekMXWVu4vXXW4rOnxhB44LRbSESVTn+qVbWTPwPGKngdFkWtQFGiWvLN7Dwn/SCb3lRtaDlTBJzvLVgz/RYC1RD4QPIBW99R4VjslSD+/KhEPj+bWjy98ULHMjz6BuLDlE1LlNua0QycOmx57NP2Gz1QVHFuvFLNhPxolcc5jIJ7zce5A5DT7LXpG4+bnZ44KL1nSL5IxrUoCQYPOmReOdxOUzPu9iyL/VoJH1whEx6a4Tn6F4yIkGjvF4RK95cPEltXHbGI5cf8GQya4ogIkxf3CYUACO12nj+3rsHi
- 4XsBDiqa
- xqEPNqNH2WhKikvDgZSj2AZ7gNMf9O5HF0PXYuQwtaF7B0OOnbYzP1K2LjgVdXbmPZQncNAUd/bSo2axz6GRsTxPukuBzTUC3Z0gAQTqdrIK0QIc/hcPne9xDM72nmHeVOtGa9w2GtaqSfbdKit6LehmS2AtKhjRRnmZDH9hA7Ow3sD15x+nzr3EttHX36YRPR5e2/gnJw802n9TYa3+zS15chGO4ZsFkLkkn9nWbFwm2hF8bQikOfmOxYi9i39hKVGL8OqvPyI8Fr7JGNjFmYfAQPiT6SrHdB37Bc3AoEO++qEdl/ALOhfagql5o18x+HxF5kCif87V0cMHtk0dB0yZdDiY9iem53lB/
+X-HE-Tag: 1789479201-170832
+X-HE-Meta: U2FsdGVkX18JmDoLIcsWzwi0XTnkQ8r8WUGNpu09c44Q164KtLv3xsuDyN2PjhCXr9zTxKotDJBSJxgjV4PpsH9SfH5J7Ogl5lVjiX8zzz+tNhfiJeNfgBg1L+dpbata0UJMqPPV7I6jKKRWOnMvwEgj4BRf7dh2ZH6QVnsU7DNeoxvvR6vZAE9vDrETwEb6Z4YjAeXe0ny5DXr97gKpTTsI1NxgTKwOv8urs540kkkCFCV4uO4oc4LDYdsQEd7UCdknz3/CcHz+8IzNMC58OjGHkAX+ZJotxLs2qLV5ZXxa1KeKiu6HmZwaT6HXGnIO5hQssXOkcGnSONTTRbgd9eQdLxlnr+wnKUOPa70g6LGuGf9dSZ5lgvof9gwja3N5eH5k4o/SAqSEdlcL3yP9zoOlQ29x0Dmwdaiuuck5eAmcQ0na6vbeFtruCz8fc6Ow4jCOjNAQj7hd3TdsWs+bzd3RKUlYENGkqypskLEL/2PW0hDQT/aI6WX2cIMB/a6A+j/ocuw9a0Hmmkjf1+M9eOtfNMWkDbKeSkZrB/OHB5BAAARpZTExKHxgLt2iqZWAzks+vD0wHWR/F25cnDdnki3FUsvNznVOgZTJzv1cZ3oll3rBsggkLhp74oZ3zBkdyGpyuuE2sLfKXuZVx+DL1XtA23AgZT6QJD9NNdxOinMk8/Kq0suIwkktSJ0oOoQFg61Z5BmXlrPk/yYNgHtJmOM02x0/pKTDos1jzK1vmYrPLkfxU9/BJmmic2Ukh+RGxqFq4/aXQjvO/k0bdUT6PqUtEO1DXMsiGhlBzQ443gpzWncBINEex7phs8YRkpZ64hnDE3kG9pdPkJFtNmwrFzOeSHdgYXWptQ4W1uF1gsxivo0cEtKKDveLzjqAxQrkePGJiVT3W3O/Qu0ERJ9MPYzc9SlWcPyeJdX5gIq+kGk55KVlKMI150Sp3aW4mjKLWfsYfgf+dXPv6xugYUi
+ jnuzvNAJ
+ /oxFVVKKd19i4grab7EPw/bwp2VJ4TrepvtImfhlrzi7JXgl6v44WE/fVdkBO4ej6oMbbeBa6Qp56L4flXRZn+k7aqKGZ4AWM6mSCHwwkqFQWgR8qfUa61inqwg0g6qXfWRQQtXjoo1kIygOfSj/8+xBNlsr97Tzks2Z/qSQsKEXx/OuQP9tOtaeLyE8Jt7lR1IdHkg5fnFMQM95fjxORDgl9qxQJ9TzZ4sjP3MtIwkN0iWIcEYUG1mqeFbbZH2IleEP1tBKrHdhEhu8DMwLRxLhHrslkGB2BjdMgGTCDc8TgyoB+NNEG+8qMlxaGw2+axV4oXnKK0AS0qaE8hzf9eygjcUBVG6rEK3rdGS01NI4mRTAxU077jV7vgSpgXMID/mDcsXivoXS7/VytrBiMy++L/SB8hu7LET9r92LRxUgHLiqRR/exG9+qZ5jh5gGPdqahmW5VrbCAxwTc6Padw7FX/1btf6P+eSZLoccEVFky8FBlGep/UYhuqw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,69 +88,298 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 15, 2026 at 05:39:44AM -0700, Breno Leitao wrote:
-> Hi Harry,
-> 
-> Thanks a lot for the feedback.
+--===============7419760775756817736==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Hi Breno, no problem!
+> diff --git a/tools/testing/selftests/bpf/prog_tests/memcg_async_reclaim.c b/tools/testing/selftests/bpf/prog_tests/memcg_async_reclaim.c
+> new file mode 100644
+> index 000000000000..7c7d299b3b28
+> --- /dev/null
+> +++ b/tools/testing/selftests/bpf/prog_tests/memcg_async_reclaim.c
+> @@ -0,0 +1,779 @@
 
-> On Tue, Sep 15, 2026 at 01:12:54PM +0100, Harry Yoo wrote:
-> > On Tue, Sep 15, 2026 at 02:03:48AM -0700, Breno Leitao wrote:
-> > > On Thu, Sep 10, 2026 at 06:11:53AM -0700, Breno Leitao wrote:
-> > > > So I'd say we have two options:
-> > > >
-> > > > 1) Keep it similar to unaccepted memory, with 2M granularity.
-> > > >    - Pro : Similar mental model as unnacepted memory
-> > > >    - Cons: 2 MB might be a bit wasteful
-> > > >
-> > > > 2) Move to a linked list like the RFC, keeping it outside of the EFI
-> > > >    table.
-> > > >    - Pro: Reduce the memory granularities to page instead of 2M blocs.
-> > > >    - Cons: Another way of passing memory information between kexec
-> > > >      kernels.
-> > > >
-> > > > Any any other option or strong preference?
-> > >
-> > > Since nobody voiced a strong preference, I will stick with option (1),
-> > > the bitmap, for these reasons:
-> >
-> > Not sure if this was discussed already, but perhaps we need to have
-> > a chain of struct linux_efi_poisoned_memory rather than a single
-> > bitmap, to easily add support for hot-added memory later?
-> 
-> Agreed, that's a good point. We could extend linux_efi_poisoned_memory
-> with a ->next pointer, so that if we ever add hot-plug support later, we
-> can link in another linux_efi_poisoned_memory. 
-> 
-> That said, I'm not sure hot-plug memory is really relevant here. Hot-plug
-> is mostly used in VMs, while this feature is more host-side, so it doesn't
-> seem like a great fit. Maybe it would only matter for servers where
-> physical memory can be added while running (do those still exist? I
-> recall IBM offered that feature at some point, but I'm not sure there are
-> real customers for it).
+[ ... ]
 
-IIRC CXL memory modules can be set up either by firmware or hot-plugged
-after boot. Not sure how common the latter case is (or will be) in
-practice, though.
+> +static int real_test_child_work(const char *cgroup_path, char *data_filename,
+> +				char *time_filename, int read_times)
+> +{
+> +	struct timespec start, end;
+> +	double elapsed;
+> +	FILE *fp;
+> +
+> +	if (join_parent_cgroup(cgroup_path))
+> +		return CHILD_EXIT_JOIN_CGROUP;
+> +
+> +	clock_gettime(CLOCK_MONOTONIC, &start);
+> +
+> +	if (write_file(data_filename))
+> +		return CHILD_EXIT_WRITE_FILE;
+> +
+> +	if (read_file(data_filename, read_times))
+> +		return CHILD_EXIT_READ_FILE;
+> +
+> +	clock_gettime(CLOCK_MONOTONIC, &end);
+> +
+> +	if (!time_filename)
+> +		return CHILD_EXIT_OK;
+> +
+> +	elapsed = (end.tv_sec - start.tv_sec) +
+> +		  (end.tv_nsec - start.tv_nsec) / 1000000000.0;
+> +
+> +	fp = fopen(time_filename, "w");
+> +	if (!fp)
+> +		return CHILD_EXIT_TIME_FILE;
+> +	fprintf(fp, "%.6f", elapsed);
+> +	fclose(fp);
+> +
+> +	return CHILD_EXIT_OK;
+> +}
+> +
+> +static int get_time(char *time_filename, double *time)
+> +{
+> +	int ret = -1;
+> +	FILE *fp;
+> +	char buf[64];
+> +
+> +	fp = fopen(time_filename, "r");
+> +	if (!ASSERT_OK_PTR(fp, "fopen"))
+> +		goto out;
+> +
+> +	if (!ASSERT_OK_PTR(fgets(buf, sizeof(buf), fp), "fgets"))
+> +		goto cleanup;
 
-> > Also, I wonder if some architectures have a scattered set of pfn
-> > ranges so that the span from the start pfn to the end pfn being much
-> > larger than the actual physical memory size.
-> >
-> > If so it might make more sense to have a bitmap for each pfn range.
-> 
-> Agreed, having a ->next in linux_efi_poisoned_memory is a good idea that
-> we can lean on depending on whatever problem comes up down the road.
-> 
-> Very good point — let's keep this linux_efi_poisoned_memory chain idea in
-> mind for whenever we need to expand it.
+Is ASSERT_OK_PTR valid for checking fgets() return values? fgets()
+returns NULL at end-of-file without setting errno, so ASSERT_OK_PTR (which
+expands to libbpf_get_error()) would read from the ambient errno rather
+than detecting the EOF. If the timing file is empty, fgets() returns NULL
+with errno still zero from the previous successful fopen(), causing
+ASSERT_OK_PTR to pass silently and execution to fall through to
+sscanf(buf, "%lf", time) with buf uninitialized.
 
-You mean 1) keeping the structure as-is for now (and expand later with
-new EFI table version) or 2) adjusting the structure in the future
-revision of this patchset?
+The empty-file case is reachable: real_test_child_work() does not check
+the result of fprintf()/fclose() on the timing file, so a child whose
+write failed (ENOSPC on /tmp after writing two 32 MB workload files) still
+exits CHILD_EXIT_OK, and run_high_low_workload() then calls get_time() on
+a zero-length file.
 
--- 
-Cheers,
-Harry / Hyeonggon
+> +
+> +	if (sscanf(buf, "%lf", time) != 1) {
+> +		PRINT_FAIL("sscanf %s", buf);
+> +		goto cleanup;
+> +	}
+
+[ ... ]
+
+> +/*
+> + * test_progs hijacks stdout and only prints the captured log when the
+> + * test fails, so benchmark numbers go straight to the real stdout to
+> + * keep them from drowning in ASSERT output.
+> + */
+> +static void bench_printf(const char *fmt, ...)
+> +{
+> +	va_list ap;
+> +
+> +	va_start(ap, fmt);
+> +	vfprintf(env.stdout_saved ?: stdout, fmt, ap);
+> +	va_end(ap);
+> +}
+
+A subsystem pattern flags this as potentially concerning: bench_printf()
+writes benchmark text straight to env.stdout_saved, bypassing the test
+framework's stdout hijacking. Outside test_progs.c itself this is the only
+writer of env.stdout_saved in the whole selftests/bpf tree - every other
+test writes through the hijacked stdout so the framework owns when and
+whether the text appears.
+
+The effect is free-form lines interleaved directly into the stream from
+which runners and CI parse the per-test pass/fail records, on a path
+enabled only by an environment variable, so the same binary produces two
+different output shapes. The benchmark timings emitted are informational
+(not pass/fail verdicts), the path is gated behind
+TEST_MEMCG_ASYNC_RECLAIM_BENCH=1, and prog_tests/ files run under
+test_progs rather than kselftest.h. Would dumping benchmark numbers via
+the framework's normal stdout keep the output under framework control?
+
+[ ... ]
+
+> +void test_memcg_async_reclaim(void)
+> +{
+> +	u64 high_cgroup_id, low_cgroup_id;
+> +	double high_time = 0.0, low_time = 0.0;
+> +	double base_high_time = 0.0, base_low_time = 0.0;
+> +	struct memcg_async_reclaim *skel = NULL;
+> +	int err, bench;
+> +
+> +	bench = !!getenv("TEST_MEMCG_ASYNC_RECLAIM_BENCH");
+> +
+> +	err = setup_high_low_cgroups(&high_cgroup_id, &low_cgroup_id);
+> +	if (!ASSERT_OK(err, "setup_high_low_cgroups reclaim"))
+> +		return;
+> +
+> +	/*
+> +	 * Optional baseline for the benchmark numbers below: run the
+> +	 * same workload once without the BPF program, so the log can
+> +	 * report how much async reclaim improved the pressured cgroup.
+> +	 */
+> +	if (bench) {
+> +		err = run_high_low_workload(&base_high_time, &base_low_time,
+> +					    READ_TIMES);
+> +		if (!ASSERT_OK(err, "run_high_low_workload baseline"))
+> +			goto out;
+> +	}
+> +
+> +	err = setup_bpf(high_cgroup_id, low_cgroup_id, &skel);
+> +	if (!ASSERT_OK(err, "setup_bpf"))
+> +		goto out;
+> +
+> +	err = run_high_low_workload(&high_time, &low_time, READ_TIMES);
+> +	if (!ASSERT_OK(err, "run_high_low_workload reclaim"))
+> +		goto out;
+> +
+> +	/*
+> +	 * The timing comparison below alone cannot distinguish a working
+> +	 * reclaim from a no-op one, so require that the BPF program
+> +	 * actually reclaimed memory from the low cgroup.
+> +	 */
+> +	if (!ASSERT_GT(skel->bss->reclaim_calls, 0, "reclaim_calls"))
+> +		goto out;
+> +	if (!ASSERT_GT(skel->bss->reclaimed_bytes, 0, "reclaimed_bytes"))
+> +		goto out;
+> +
+> +	/*
+> +	 * The timing comparison is a benchmark and too flaky to fail CI
+> +	 * runs, so it only logs the numbers; the counters above already
+> +	 * proved that the BPF program reclaimed memory.
+> +	 */
+> +	if (bench && base_high_time > 0.0) {
+> +		double speedup = base_high_time / high_time;
+> +
+> +		bench_printf("memcg_async_reclaim: baseline high=%f low=%f, "
+> +			     "reclaim high=%f low=%f, speedup=%.2fx\n",
+> +			     base_high_time, base_low_time,
+> +			     high_time, low_time, speedup);
+> +	}
+> +	else if (high_time >= low_time)
+> +		printf("memcg_async_reclaim: high cgroup not improved: high=%f low=%f\n",
+> +		       high_time, low_time);
+
+Can this printf() output ever be read? test_progs redirects stdout and
+stderr to an in-process memstream, and dump_test_log() only prints that
+buffer when the test fails. Both printf() calls added by the patch are
+emitted on paths where the test then passes, so their output is discarded.
+
+The same file documents this behaviour and works around it for the
+benchmark numbers through bench_printf() and env.stdout_saved. Should
+these two informational printf() calls go through bench_printf() as well,
+or be dropped?
+
+[ ... ]
+
+> +void test_memcg_async_reclaim_dying(void)
+> +{
+> +	u64 trigger_cgroup_id, target_cgroup_id;
+> +	u64 calls_before, bytes_before;
+> +	char data_file[PATH_MAX] = "";
+> +	struct reclaim_events_seen seen = {};
+> +	struct memcg_async_reclaim *skel = NULL;
+> +	struct ring_buffer *rb = NULL;
+> +	pid_t reader_pid = -1;
+> +	int err, fd, i;
+> +
+> +	err = setup_dying_cgroups(&trigger_cgroup_id, &target_cgroup_id);
+> +	if (!ASSERT_OK(err, "setup_dying_cgroups"))
+> +		return;
+> +
+> +	err = setup_bpf(trigger_cgroup_id, target_cgroup_id, &skel);
+> +	if (!ASSERT_OK(err, "setup_bpf"))
+> +		goto out;
+> +
+> +	rb = ring_buffer__new(bpf_map__fd(skel->maps.reclaim_events),
+> +			      on_reclaim_event, &seen, NULL);
+> +	if (!ASSERT_OK_PTR(rb, "ring_buffer__new"))
+> +		goto out;
+> +
+> +	snprintf(data_file, sizeof(data_file),
+> +		 "%s/memcg_async_dying_XXXXXX", workload_files_dir());
+> +	fd = mkstemp(data_file);
+> +	if (!ASSERT_GE(fd, 0, "mkstemp"))
+> +		goto out;
+> +	close(fd);
+> +
+> +	reader_pid = spawn_keepalive_reader(data_file);
+> +	if (!ASSERT_GT(reader_pid, 0, "fork keepalive reader"))
+> +		goto out;
+
+Could the keepalive reader child's failure modes be diagnosed?
+spawn_keepalive_reader() reports its failures through distinct exit codes
+(CHILD_EXIT_JOIN_CGROUP, CHILD_EXIT_WRITE_FILE, CHILD_EXIT_READ_FILE),
+but the caller only checks that fork() succeeded. At cleanup the status is
+discarded:
+
+	kill(reader_pid, SIGKILL);
+	(void)waitpid(reader_pid, NULL, 0);
+
+If the child dies immediately - for example join_parent_cgroup() fails, or
+write_file() cannot create the 32 MB file - the parent still spends 50 *
+100ms in the first poll loop and then fails with ASSERT_GT(seen.called, 0,
+"reclaim events"), pointing at the kernel rather than at the child.
+
+The child's own diagnostics do not survive either: test_progs sets stdout
+and stderr to a per-process memstream, so log_err() output from
+join_parent_cgroup() and the fprintf() in read_file() land in the forked
+child's private copy of that buffer and are lost at _exit().
+
+The file already has the machinery to handle this - child_exit_str() and
+the WIFEXITED/WEXITSTATUS handling in run_high_low_workload(). Would a
+waitpid(reader_pid, &status, WNOHANG) probe before or after the poll loop,
+reported through child_exit_str(), make this diagnosable?
+
+> +
+> +	/* Wait for reclaim rounds to reach the live target cgroup. */
+> +	for (i = 0; i < EVENT_POLL_ROUNDS && !seen.called; i++) {
+> +		err = ring_buffer__poll(rb, EVENT_POLL_TIMEOUT_MS);
+> +		if (!ASSERT_GE(err, 0, "ring_buffer__poll"))
+> +			goto out;
+> +	}
+> +	if (!ASSERT_GT(seen.called, 0, "reclaim events"))
+> +		goto out;
+> +
+> +	remove_cgroup(CG_DYING_TARGET_DIR);
+> +
+> +	usleep(DYING_SETTLE_US);
+> +	seen = (struct reclaim_events_seen){};
+> +
+> +	calls_before = skel->bss->reclaim_calls;
+> +	bytes_before = skel->bss->reclaimed_bytes;
+> +
+> +	/* Wait for a reclaim round to report the removed target. */
+> +	for (i = 0; i < EVENT_POLL_ROUNDS &&
+> +		    !seen.skipped_dying && !seen.target_gone; i++) {
+> +		err = ring_buffer__poll(rb, EVENT_POLL_TIMEOUT_MS);
+> +		if (!ASSERT_GE(err, 0, "ring_buffer__poll"))
+> +			goto out;
+> +	}
+> +
+> +	if (!seen.skipped_dying && !seen.target_gone) {
+> +		PRINT_FAIL("no reclaim round hit the removed cgroup within "
+> +			   "the poll window");
+> +		goto out;
+> +	}
+> +
+> +	if (!ASSERT_EQ(skel->bss->reclaim_calls, calls_before, "reclaim_calls"))
+> +		goto out;
+> +	if (!ASSERT_EQ(skel->bss->reclaimed_bytes, bytes_before, "reclaimed_bytes"))
+> +		goto out;
+
+[ ... ]
+
+
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/34970614671
+--===============7419760775756817736==--
 
