@@ -4,111 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE466C88E53
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 12:46:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31115C88E53
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 12:49:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D099A6B0088; Tue, 15 Sep 2026 08:46:51 -0400 (EDT)
+	id 2D6066B008C; Tue, 15 Sep 2026 08:49:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CBA586B0096; Tue, 15 Sep 2026 08:46:51 -0400 (EDT)
+	id 286FA6B0092; Tue, 15 Sep 2026 08:49:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA85F6B0098; Tue, 15 Sep 2026 08:46:51 -0400 (EDT)
+	id 175AF6B0093; Tue, 15 Sep 2026 08:49:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A02B46B0088
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 08:46:51 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 49161A03EE
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:46:51 +0000 (UTC)
-X-FDA: 85215971022.06.BC5A7DC
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E35B46B008C
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 08:49:51 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7D449803FE
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:49:50 +0000 (UTC)
+X-FDA: 85215978540.04.03A5BF4
 Received: from mail-pj2-f1.google.com (mail-pj2-f1.google.com [74.125.227.129])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 923F61C0007
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:46:49 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=qOCq7vXt;
-	spf=pass (imf20.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.129 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by imf15.hostedemail.com (Postfix) with ESMTP id 9D135A0005
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:49:48 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=EVj6xlmU;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf15.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.129 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789476409;
+	s=arc-20220608; t=1789476588;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=f4zZou9G0GO5cZcybgt12UlI26seICje1hbKIqqh7wE=;
-	b=TxuqX7Q2EAU3KHl5dHiqsgpfM6dUsKqWCfaD7ma5ZGlO+wflHR8l01quKrmVu8MZAbONGm
-	7/fM6e0CdJHguU0on9Et54D6SLIsrMosVkQbGltwx9zqCP3bY3EHuBws0fFXYRZUrkM3JZ
-	SAeiocfZtE6K5q00TC8yRlO0EIhkL7U=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=qOCq7vXt;
-	spf=pass (imf20.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.129 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=mP8qopDle1Sc4k8F6w5GND/XUp1RUEWcrZG95tdjUPs=;
+	b=wFoili/XcfqcI4dXnt233a4nPLTe0ZmXw40HxVC9z+RVsVQnrtzmCwzIaOu+o4FtjB+G9F
+	GM9EvPtRbkOdCRRb3TWxWgjRlADuKcqf6yhi1nR6j7WctLu3hC43Vw/1Fe6hJaD5qVprYH
+	//f1qcHa7aFEtM6qBTwSr/3nO2Ye1so=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789476409;
-	b=uxbcOEDVVXFN+L9LlWZntmYkobKWDGQOHgL6dzKWnS9bqlHhGbnED1kyiBMW4Z5krXGwiM
-	ayT6xyWSw0tpuQf7cFBXvK/Xn7nJh4e2/VSkIhKTz+z+oNVLgy2EInwebcb8M2qTQzYkSi
-	cEual6NLmr239XEvQB30nhCS301A+jk=
-Received: by mail-pj2-f1.google.com with SMTP id 98e67ed59e1d1-39ded0d7f52so1316654a91.0
-        for <linux-mm@kvack.org>; Tue, 15 Sep 2026 05:46:49 -0700 (PDT)
+	t=1789476588;
+	b=ZlKVR3SrFmVP2yvBVqa6SUM7KixEhrfzBGv6G6AXDC6o04YuWT3mpWI1qo5bk58DkI4HLe
+	gPdFDvyS37pjwXZC7++uK3monKb/VCZKFKr8POlM7y9IG+mF/ZCcN/Yd0uF7Al7JSq4hgg
+	PZEdRySjLG/2Q1CpLCsF+mbpQUFkPWY=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=EVj6xlmU;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf15.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.129 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
+Received: by mail-pj2-f1.google.com with SMTP id d9443c01a7336-2dae660f31bso31695255ad.1
+        for <linux-mm@kvack.org>; Tue, 15 Sep 2026 05:49:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789476408; x=1790081208; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=f4zZou9G0GO5cZcybgt12UlI26seICje1hbKIqqh7wE=;
-        b=qOCq7vXt89meTDgYdCC47HJNMC60wpMXfTyolMmilNfOLR/dF2Iz03B3o0DAt2Fo2t
-         CO+xJyJ+/zvlMrvOivezrJOA6P+u1jHf5slCAWW1ctpye0QbqJH4+tmZaUncZfczQbd2
-         jXa7y++baIO2VeDuPws/0lP2ErE8O+A8FSgDsO6oq7MLBbF0MyyL5nUKi4Nb0H3TfTdQ
-         9mp/Xxn4hA7XwAtiK9u+cYPKkW0MHgUBcevTPY7gZcgb+2Qhc1lrJyHk4hsh7WxtSl4G
-         vYRmmCQj1r4ImRUcGJbB7UyKnLhewn7FdE3Wewan1bMcZQlvk+zfd5z1uInpZgY305tW
-         3c2A==
+        d=gmail.com; s=20251104; t=1789476587; x=1790081387; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=mP8qopDle1Sc4k8F6w5GND/XUp1RUEWcrZG95tdjUPs=;
+        b=EVj6xlmUXwttaSdwJnWx0SMgauV5RmQjBYOShsjQ2oWHyRhmFVatahqjfahfZ3cM3H
+         X3umwmPST6vt+VAGi0/9Tr2FPvYTsuV0PfVZMLFnUbh3jc+UTbpOdOr5l9WzA86OZsBU
+         eb8hBDbVJOhvZJO7HHesDA1aavjj3by/UBe9UaRlx6UV2aI3fCBkviXyzW0Dwd0GembO
+         q9wT3ssTCJYcgWjUyjxdJec5f+z2byr6CzJ0yUrqpfbMo2IF0XIc7pp/3MUPzZXvoNvi
+         JFOPyEm+FHbxTRWnLJwxlS4XJOcGOzCeskT5KpPR3+cI9wF5244P/CozVOIMcfgGiNkd
+         6a8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789476408; x=1790081208;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1789476587; x=1790081387;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=f4zZou9G0GO5cZcybgt12UlI26seICje1hbKIqqh7wE=;
-        b=W4FaWoOua3J9KnjdJ6W6M2LL39ai6nejjL5Ld3Io1TuHtZaVEcLDlU1k+kkE47WI2g
-         XKGKdQ1+TYtLsHVmBtkKzX9/Z/q71ZPmKt0j3OyTE3q7kUu6qnBxHdSnY5TkcCtqQtSB
-         va0UibbrsjFakPaNIAjRX3iTJXUMYorpKk7LzZ27DtVjW9uyshpasmQ2XVBmLvtxKrOA
-         V9NPPKECbdQpWsIPaIJdOsSNtdK7bIVH8jRh9P7zkLguhA3azIY35UPM7G2RSwG5GOst
-         tUbw713ivvI7FOQwVQHvGAeCcnn3pJl4MYxw7/fdWKSp5RQW6HQ+/CuqXB37X3ph/jz4
-         cmPw==
-X-Forwarded-Encrypted: i=1; AKwUvBy2lV0pr+pVqnqPIAfY9Gn9ayd6IEpeULed5/66pw7rNfStHFSfFevhL7iZl+sSDonVhO+BJcUVHQ==@kvack.org
-X-Gm-Message-State: AFuF++m4mxxe42rD4n7HUuNA9auYQQfatOukbbJ3BGARe6QTYfGVNFl7
-	HBJE7V5Ow4l1AnulDbG+CM4fPDLkF9XHF9FkmrPcgI6io1CIzUZD0/Gc
-X-Gm-Gg: AYBFou2EncJ2Mtg0mFMnmVT6hgRz0KQ9GUglIyI/sTmgsDoDz1HkR6bmiKXKchOxeQU
-	TVufNEIcTjqG2p7qkSbspSC+CKdKe9Fy0IxqFx/WhUPMifyoqoO61Jp0ZEu4HStUVa0MTz1sGOi
-	WgNzJfrJrUBnteSCubl0ylEvV+OKJU0ZfSHphSr8ayoX1D2sTgrIyvuD8ROLlxaXQktDS5Y7cNL
-	SP8ZOEh84VZI515URfA4GFIfC3z0/2rUdrLTFc3p+XtqSaGCDd+Xg3JkEzcPPoUYhbmysZqCikq
-	fkPhhfauQG5Wvhp70zGa++g8I9cPTLozTQva4NwMqOXyFEe8vj4NNkX2bw4a4aBvb8Le7yzGp3j
-	PLl77MZ50XK0SW1vFCy/stWCAJQysntQ2UwWdbuYFUN1YWPL2gHsYs9IEbZvYn/c4o7oVPsbMhD
-	rVzh9+hT+LrOIvwwzwTs+ng0L2R1sFcf8TZmeVtTkVwwbSR2uxl0PUdIdmyU0QoEo5IQ6QcI9Sh
-	/PA4Gp9xBY=
-X-Received: by 2002:a17:90b:4a46:b0:399:ecd:d68d with SMTP id 98e67ed59e1d1-39e110ed019mr1426128a91.22.1789476408264;
-        Tue, 15 Sep 2026 05:46:48 -0700 (PDT)
-Received: from intel.company.local ([122.11.210.25])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39dfda249efsm5268049a91.6.2026.09.15.05.46.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2026 05:46:47 -0700 (PDT)
-From: Wandun Chen <chenwandun1@gmail.com>
-To: rppt@kernel.org
-Cc: akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] mm: memblock: add missing HugeTLB flag name
-Date: Tue, 15 Sep 2026 20:46:41 +0800
-Message-ID: <20260915124641.2498280-1-chenwandun1@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        bh=mP8qopDle1Sc4k8F6w5GND/XUp1RUEWcrZG95tdjUPs=;
+        b=yG3bV1BTTJUhaNDVP4OJ8LjCUJnKsbr0/tNoXevjVbOtjQBLnRnZyKXcqUQAeHDDbx
+         r+6K/txfpVbt9MHFIAvjl5KYTmR15Wrii8uQql2YRufWToF6AxHxBoAovCKHLtDfnRe+
+         5TyZekQ+lc1Gif5Y80WT2PqtfeQoYl1g/TL8UDb1Tl3CEQOb/Yss1iHKk8OOZuA6FPZr
+         IEdBQNQrGbfxszYp+0g57VrQy8tKWbcdicghEE/oKTGS39mXDNmLn3GQtcvlsvuNW+6L
+         CMEaaDX6neiS31uoqgNsT8tn5Vd62JEaKFYTsC6gl/6t/QWqLs97Q0bdqoJwIcZXkNgO
+         9Eow==
+X-Forwarded-Encrypted: i=1; AKwUvBz5w3Y1iStRPfLK8xLef9o7rNT0MEHSuzD1k2MqKFRsZYXeMtyfQfUXM0lrNaYBzkt+LmUebcmcvg==@kvack.org
+X-Gm-Message-State: AFuF++n9GPXuLC/SPNUP5rmwQjRV9UPuY9e/4RcbxllD3AuGYhmHxqbW
+	kYiTOgyHUw4gFqjCYjK8r7//4JFedKYu0bkO3/v10CxVgW5wxxbP68WO
+X-Gm-Gg: AYBFou05RNrcnlGKhTOSjJpwacLKhQ8rkZkxRhba2F54m1EtKMDdUOwUjnaIgc1yYcF
+	w4HrNgUnSCKBOpJ8hHH66ZrVmA9p8Nlj1h1Za0qUvMnUQo+ivYnVriuInjiFcyk8XwgBNdU/e50
+	e5DCm4pnm9jyyhgssArcG+GVIyUKVS/ByntwJAOJvuXUgbFfZAGPLFrOZqIArJEUKDwa0vRyHI4
+	g1Iz2dooWiKCA5CMGK6fdNNmXVZXonO8HDuSFgzhXaanhmNTyCxzDdQNbESUX1b15DJG1TJiD+c
+	nU+//WOax+HHERaX3x9STadqCff63XSFWGmZQ4DNUfDlEhuKURqMwee/lwZ78qCN8eMWM8wNyia
+	h5KzKlWfPU9tTY9pdx4YqdLT6nqhPPnmT2KlPhqgKtH2ddF5X7Sd2EOTJayioXoe/dOeFgc8D/P
+	lrRWNFRFTFsuQ2KVWZckYL02wP4YqPnBDavuom85Dg5zxwWYTe5B2e0DWvCoMWtO+O5sYq/AfjT
+	Dp2vPo=
+X-Received: by 2002:a17:903:1a0b:b0:2d8:d4cc:be64 with SMTP id d9443c01a7336-2dd6c7134b4mr167097285ad.17.1789476587316;
+        Tue, 15 Sep 2026 05:49:47 -0700 (PDT)
+Received: from [10.125.112.20] ([122.11.210.25])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dd6f8ebbdfsm26424855ad.38.2026.09.15.05.49.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 15 Sep 2026 05:49:46 -0700 (PDT)
+Message-ID: <86a09d26-2de8-4590-b135-31564e2c7049@gmail.com>
+Date: Tue, 15 Sep 2026 20:49:32 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 01/10] mm: memblock: add missing HugeTLB flag name
+To: Mike Rapoport <rppt@kernel.org>
+Cc: catalin.marinas@arm.com, will@kernel.org, chenhuacai@kernel.org,
+ pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu, tglx@kernel.org,
+ mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+ robh@kernel.org, saravanak@kernel.org, akpm@linux-foundation.org,
+ baoquan.he@linux.dev, pasha.tatashin@soleen.com, pratyush@kernel.org,
+ m.szyprowski@samsung.com, mark.rutland@arm.com, kernel@xen0n.name,
+ alex@ghiti.fr, hpa@zytor.com, ruirui.yang@linux.dev, robin.murphy@arm.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
+ devicetree@vger.kernel.org, kexec@lists.infradead.org, linux-mm@kvack.org,
+ iommu@lists.linux.dev
+References: <20260902073116.802752-1-chenwandun1@gmail.com>
+ <20260902073116.802752-2-chenwandun1@gmail.com>
+ <178936321614.3691424.10386784926753862087.b4-review@b4>
+Content-Language: en-US
+From: Wandun <chenwandun1@gmail.com>
+In-Reply-To: <178936321614.3691424.10386784926753862087.b4-review@b4>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: xo3h13144tect7hdp68173d3es8butm6
-X-Rspamd-Queue-Id: 923F61C0007
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789476409-440036
-X-HE-Meta: U2FsdGVkX1+kRWm81wj3zV/F/vryi3jcrNTVeSgEwv7qdLpcCu2Y1yH5wwNzoJvCY/U6Xz/2xWczqtHIMcF0sungpHMhDHeCMiqz5GXT0K1mv2Pqnf87e4dJOXXLImaeywVcmHpKZ79BNakwmUesc+9GKIgz8GL1ZWx8ltBsfNDg0E7bNEALxalrmmivMQqbl5/jLweWt+EYhwQ/cVYCm0it1kA7+zWndyydPSOswNiY2rq4OL/8JVyt6cS+tSBjNywEgEgSGHT1piB+cIPMyxZy2zLBIxwWhV+nv4/crz+zWhxq1Y7pcWvpBnyZjxmin84yVhgytBgMT4Lo3JHpna5Xemh9wM+OawAO3lPLp9YGM0fk3+DnZ8ae+xouyrpovtFt/HLBECkoK1PPTflsMleluqvfO1pBoUiqJtnIjAqnM8J1Ga5I7rrAVRXCp5LBaW8rT7iHqtfAzC9aBemF2F4T4ECWc/A/63yY6gl8sRewBTJWx6I1c49HQK+1CG5WYJP+0eDkWJ5FPJpmwzvnAutlX27R3XHOHBGBzm0P1Ggonu5ViQ6wINKkFbxPH5SDd2UyQe+sSQvqCWwpo6IzcI/SwLLCLFvryRHIwgS5yufv8y3t8XRazL/C4NlASSqsRw4OLcyrNT+Co5UkZEiY5GEdpGIdqiLqU3EK2sV+roEFvE88vrdsIf3dBVJ9UEo/X1l345AZSf0Cg/+qDr0azTP64XNt4B5Dx/pXPgW3yg819xs8xpgedjchPbi2jqWui0F4bLKJoUz++voHORdgyaQEtzJM5Cf9R0uRcAVCSP+HW8GlrZR0XILm7W3TYUav8e2GzldLn1S9+X5JUD+4ggyvBkIP1x89i6+i2ffndKlGvDNyVerjJLazI+yxotfvIn6UFHon0LvjCYXMsh0gECU2I3nN7FYO75Djv72wp81h3onj7fsI1pIwiBeA31uddlTO1JEzpvyxSSRES6D
- 71PJWDJy
- +FGZN26WhvBDKGzNf4xMBs9k9TjZzRe5bL9ijFkjcItPb0KWDrZ2SLiWs3VAEDoy6rWOCry8r5icGQJUC95QI+wtGI61OX/xCMcWENnG+BipbDm9ojVnsMFrZfLP1RUyHlKJfhthptjIxBLTyS8dXuDcFM+x2QryPs9O8FrzRkPwUIh+uV16pO8D8mpoiTp4suAUobtf9NQqcw0UHr6Kq2UHbmTsCw1TLwAX+dZi1FZKey2R1xwMu60EW2j5sefw24fY6hGDQnc6iUfvS2BaChRt3bK9tP+OZLrfT8C8a7u1p2jHceVKFt3iGa85K7CLvPvaNwYIM+6NTO4zmymqBPl3QJUn95AeL/kKJxa2h0MiRTMngqL/UQeMa7V07d2qAxgoJz/1C2z5fs5Chx1sxdxADZaFx9HwfaOpjRG88oGkyX7dLi3WB5SybNvh0glmRLFhinkU9NGW5XHA=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 9D135A0005
+X-Stat-Signature: ddytucximsffm1ogyxc4eyn9psrkcm49
+X-HE-Tag: 1789476588-846981
+X-HE-Meta: U2FsdGVkX1+ZN3W1CmZvImClV24GufanawQdreH8GQ79X0bR4/MqVPSXjxjGDAJdgZP8pOuweHxGvhjjZlzmPrUPcT/3g9AoU2rT9KxaNfKqr/TZjp9b1l1AdSqdEEmI/TLaGy8sD1cf/OXbTtegmxQT7AJ0pS8U8SEtUCVmu9sX9whq3sN1a1mUgXl4X9rZGUUeaEFTFUa5FV0XJ4nTHwVLAyWCA2nmXrw9sDkJALThLVooafH8ovKMhpPZxBDIpxPc0aIfx9bbP3OuP2x2bpX8o+wifqqRjSbXB3GPqD2DNISRr9SI04qYj7sQg2GDpRLdMePzIUKSgpGjNHb4RU4zBGVyVe6V9DD3dI4Q+lTZm1spRTc9XqjRDB+aIfae8UhIcaNhTWeXkTrvsuVkh4RSjw7aXLsxjGPSoioNeT4MW5lTWnHOU8eugybtIlEmQWdfGmv0WZP8FGYSxrUrHse0JC5kFp2izptZZ3j+VbzHFFttVVp+0FuH/GvaS5rBcSciiJ3qpsih/Ebby4e4h+7JxSwYcSp0SLFPI0vGU0KGkvXnNxxJabbKCUo0u2ed5iEGQ6Zs43RKBcWWgiobpBHg0r/Go+C+cTUNvAvjfF2F+YApl44IwXxDOCd+PhcKpQyCVmmv/K735W+8es5xCKZ8nCjajWcvo8jTreSkQrVlAUloNqJRKhaTm9gr8JEHMrYIFeaaOaLFHLoKIWePM3P7VEJg+6/4hSKjEEUUNl+n4tH7BiYSjZr51XVHzp6BYSVsII3LZO2l7dSXEwRfWGhwdn7gJN4Q0zPBl+koUX468cXerWBvvvwVPIXd++aDnyLWIdD5SDx7ALz9+PlsfxRntLbibYgDR4i1KbSmVBndXO+bicG1nfT/4hoTIPmZ1ArG05zceSCjXRtvzc+dJHzSV3IM2H/DA8zxye/+qx5ud2TIQSJD7gx9xZZSNJkpqsx18UrDYWlqiXvX+1w
+ 6kFH/P4a
+ AzTOW2NgCygXXDsEuvLUTpQ3gT2bdHzeHEK4fb/mS3IoTR19c3O7ZMZm75lIJ6wtOVEguDYqVQqs0Q3RilL3YWP2E+oooZduOikXC5wci3lq4/lPm8zOt7SLKOUQadcNvKP7n+lM1/Cg9vsQFFxDtyCQscfgq7LMpfhk6sQl6BGEqPfBUKuvwS1LkhbUd8mzwJHRMER37alQ/WvjjCCj6vRF9Z76pEwxZQZ83u6r1oZyKh0P7WVwVsGCzhaf04bfl/t9cKN78JHWZlxNJL/CHCpTS7D6jt9PIHr2ng9o/wH+a78DkXqT7XOY3p9lhmrmzkzIJ2qf6zQFLuQF0krqhKr4ktzWwhcNBirAdRiJzVRFvSzhgDLYjbXu2cBJ41k5CgzKvjvf0rn2DHzi2MiS28d9mDhVxEpWbvFMdgh3IX4XF0UDCSqmP8Fs/COKUtqJ7HzpGUUTh42bODFyjweaH18nrdk/pFgzussL+AznW/ClM6E8oCzON0XsDmWa1lu5RL+4o
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,41 +134,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Meijing Zhao <zhaomeijing@lixiang.com>
 
-Commit 7d163a75f821 ("memblock: make HugeTLB bootmem allocation work
-with KHO") added MEMBLOCK_RSRV_HUGETLB but did not add the corresponding
-entry to flagname[]. As a result, memblock debugfs cannot report the
-flag by name.
 
-Add the missing RSV_HUGETLB entry.
+On 9/14/26 13:20, Mike Rapoport wrote:
+> Hi,
+> 
+>> Commit 7d163a75f821 ("memblock: make HugeTLB bootmem allocation work
+>> with KHO") added MEMBLOCK_RSRV_HUGETLB but did not add the corresponding
+>> entry to flagname[]. As a result, memblock debugfs cannot report the
+>> flag by name.
+>>
+>> Add the missing RSV_HUGETLB entry.
+>>
+>> Fixes: 7d163a75f821 ("memblock: make HugeTLB bootmem allocation work with KHO")
+>> Signed-off-by: Meijing Zhao <zhaomeijing@lixiang.com>
+>> Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
+>> Link: https://lore.kernel.org/lkml/20260821020910.3428585-2-zhaomeijing100@gmail.com/
+> 
+> Can you please send this as a separate patch, I'll pick it to the
+> memblock tree.
 
-Fixes: 7d163a75f821 ("memblock: make HugeTLB bootmem allocation work with KHO")
-Signed-off-by: Meijing Zhao <zhaomeijing@lixiang.com>
-Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
-Link: https://lore.kernel.org/lkml/20260821020910.3428585-2-zhaomeijing100@gmail.com/
+A separate patch has been sent.
+https://lore.kernel.org/lkml/20260915124641.2498280-1-chenwandun1@gmail.com/
 
----
-v1 -> v2:
-Split out from the reducing vmcore size series[1], per Mike's suggestion.
-[1] https://lore.kernel.org/lkml/178936321614.3691424.10386784926753862087.b4-review@b4/
----
- mm/memblock.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/mm/memblock.c b/mm/memblock.c
-index 31961ed628b0..f51811db118a 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -2874,6 +2874,7 @@ static const char * const flagname[] = {
- 	[ilog2(MEMBLOCK_RSRV_NOINIT)] = "RSV_NIT",
- 	[ilog2(MEMBLOCK_RSRV_KERN)] = "RSV_KERN",
- 	[ilog2(MEMBLOCK_KHO_SCRATCH)] = "KHO_SCRATCH",
-+	[ilog2(MEMBLOCK_RSRV_HUGETLB)] = "RSV_HUGETLB",
- };
- 
- static int memblock_debug_show(struct seq_file *m, void *private)
--- 
-2.43.0
+Best regards,
+Wandun
+> 
 
 
