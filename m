@@ -4,136 +4,208 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 800E6C88E7F
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 15:51:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C71EC88E7F
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 15:53:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 935C16B008C; Tue, 15 Sep 2026 11:51:37 -0400 (EDT)
+	id B365B6B0092; Tue, 15 Sep 2026 11:53:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E76F6B0092; Tue, 15 Sep 2026 11:51:37 -0400 (EDT)
+	id AE62D6B0093; Tue, 15 Sep 2026 11:53:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7FD386B0093; Tue, 15 Sep 2026 11:51:37 -0400 (EDT)
+	id 9AFEF6B0095; Tue, 15 Sep 2026 11:53:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 535916B008C
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:51:37 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D99C44048D
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:51:31 +0000 (UTC)
-X-FDA: 85216436382.16.1BF902C
-Received: from mail-oo2-f42.google.com (mail-oo2-f42.google.com [74.125.231.170])
-	by imf18.hostedemail.com (Postfix) with ESMTP id EA1731C000D
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:51:29 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=KIkbmrcu;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf18.hostedemail.com: domain of kuniyu@google.com designates 74.125.231.170 as permitted sender) smtp.mailfrom=kuniyu@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 73E8E6B0092
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:53:55 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 085BCA5661
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:53:55 +0000 (UTC)
+X-FDA: 85216442430.26.8FEC7D3
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010070.outbound.protection.outlook.com [52.101.85.70])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 3752FA0002
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:53:52 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=I6CD6OGg;
+	spf=pass (imf15.hostedemail.com: domain of ynorov@nvidia.com designates 52.101.85.70 as permitted sender) smtp.mailfrom=ynorov@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1789487632;
+	b=1kriPjueQrEebCq6UX0V4G7KJD3d9RkI8EnAISCc6A4037xR85FDIsgclqTlmmKc7g5VJV
+	iCBg7G3MC1X0v+8wDIquR3UE7UPHsihdStqND2Lu5e273INv5FuxZSYGy2uDuB5ZlWyF8/
+	FRXBBtim+r397bv8llJwH/lcOnu/GAM=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=I6CD6OGg;
+	spf=pass (imf15.hostedemail.com: domain of ynorov@nvidia.com designates 52.101.85.70 as permitted sender) smtp.mailfrom=ynorov@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789487489;
+	s=arc-20220608; t=1789487632;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qLaU8Sheaee7OVZT67w7SriDUMjtz6t3Qx6H6/8vnfk=;
-	b=tPClatUonm/TW6VbQhZ59JMC+qCi4XQ0rVw0qgt8OP66MTrpHTM9w9TDJw5CUVsdMz4DjF
-	u+yq6aqRBOcZiG7tjPvC4PUbYj7W6oMY62Ylls984q3z0tbghgm5lIJnsLt/EqPz8X4DTk
-	RJo8c0DAS/ASXdEVjMJNOmhuBvTF60E=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789487489;
-	b=sgKd8RcGCMGF+AJr/tPN4nz3CWIfl0Fj/XdRuLhfecEcOfS+cZMK4vSpuxa9ZlNoEuMDIf
-	4F8i1de9g87qpYs+qLUR9muPbfTb8eEch72xDdIkezYCBuj43EKG/zO8YXpuDNrfW+TGW1
-	9ar+2eXypwUENIQZrfaKbe0w3x+D2BU=
-ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=KIkbmrcu;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf18.hostedemail.com: domain of kuniyu@google.com designates 74.125.231.170 as permitted sender) smtp.mailfrom=kuniyu@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-oo2-f42.google.com with SMTP id 006d021491bc7-6b1ae6a9960so410956eaf.0
-        for <linux-mm@kvack.org>; Tue, 15 Sep 2026 08:51:29 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789487489; cv=none;
-        d=google.com; s=arc-20260327;
-        b=g/RpFlO7Z73Z/0m7+T7XDpr+zi2TiWADBWz3zo7yk1I3uk7hknkkTgBP95x3TlGECU
-         RwOAdcGrQxAEkRCpH6pQt9BfUNWa0fHEGpPI9KRa5fX6ROqewjjh8sqIpRw3zGmQscSq
-         amW/0Dwwpn/B8GXzyy7YVk6Csqt4kwX7ZQAPvjUr7xalEISzA8w4QtjoMNcCMBqbcMVK
-         2J2gG+W7srOdMRirpGOWTHy2sXLpC0hyslPPIAdxKOo1DtNyOuEoZZQ5Iai1ArPg1PlK
-         Z7o3+TBQf0/4ICuuKvw6wY7Eoll1/ioz/kFecC6Bk1usp9CXPgb3GoUoFwDtB4EepiZb
-         GIhw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=qLaU8Sheaee7OVZT67w7SriDUMjtz6t3Qx6H6/8vnfk=;
-        fh=0p7D/wI6WIH2LS0QkZyyFlsWXGkJ3cdwxMUACnu/01Q=;
-        b=sttT/FgeQuObulyQnxC6YEQRT7qwnTsMFtsPz+q6OoVUphtctr2WWTOSu3wsFlKnSb
-         f43xrCyvusoturELaV8EEs/eLTtFDLq1Zsx1qRyG8kpMrkciYEfPAWYeIxuxmGPKy4o5
-         OsgTe5cvCZlDSBlLHkeL9ZBfLOemxJe+1FtTi6HpBGXSEWMiQYPIvWAH5SoHQOQVz7VI
-         eOfTbUkgvbJdlWC8T2DDFjWd6uPaStEM6jytD9o963+yW3xqOMaUN2/4KtI3K2KDPSmA
-         CSpUwtm92kaUUMue4nySLDQUk/yIdYJimuUfZ+fTHifo7pQwfX+xCqDTM1DkYSUS3Bc9
-         roKw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789487489; x=1790092289; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=qLaU8Sheaee7OVZT67w7SriDUMjtz6t3Qx6H6/8vnfk=;
-        b=KIkbmrcuqHx69dtlSG2ZyOBWrr+BRy4hoMMdJl8cvi63yP2CsySrx2JILIgDIGPdmy
-         EfK3RcziaG02pBB1PnET6CtlwXuLLbAxfElTVaRWTUYHRbYz0nzt7gJ9S0BiFjqEXXx7
-         RsjUBvyT7dSV4OwkMKTyjhRJxnkLtX4MhSPDiQOhWuDRsfmnRh7Ky0ac4sl6K0UTnXo9
-         9J17gJDIk6sOQpvZB2RgNKCJ0OVhc+VZqi6R0tIh9kaq5wzqiwIJU0sni7y+NGMMH0vh
-         gzPebfcASe6qCyZm2B1V3EfEHVAq/ZnnwJixHW5AtV9OXT/wnZjFx9Ks+gwtUIclIBA0
-         2fjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789487489; x=1790092289;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=qLaU8Sheaee7OVZT67w7SriDUMjtz6t3Qx6H6/8vnfk=;
-        b=K0LCSs9xCd5jtXOwaiVx00iHNkTVLw7EczOGhszc+s5ZWtIyzYmZBxewGATwUU3HsA
-         3OwVcEhOHHmqDi7U1AHSwovn3cOrbvrzruetWaUsQF4r7Bkdga0RXsa/mNPi9+BVV6gd
-         LPb7j2qVsDin2OVFL+bH5POUTAm28hq1XmykMiKzj+j6k7t+q/f1FREl83oRYAFxsUN5
-         C09asiO5DqwH5jtPSaCqcXRRthjH5X9xfkryW8IqUmzDZGF1iYgvMSuIS3Pjfpt/OXAN
-         9i6F/vn4f4w/c6JKbMGE4+Ua4/Q6r4SfvLCU21VNc/PQRrDbplIb/reyQHCNSkU2/olr
-         RVzA==
-X-Forwarded-Encrypted: i=1; AKwUvByoEFMZ11EdBYT8MhsleEqa59szMO6rEr+7lNtuursiGJ8MycnbTK7JorQk2IZWfJwBXt6gZd8X+Q==@kvack.org
-X-Gm-Message-State: AFuF++nQs6w7+RAkNwo6/D+CjfVM/tJNjmNeT51UM6qMu13rCWXkrlwE
-	Fop5ABTPbpQcgIC8t4pY6Zo9ola+mz77BvdUID1qWxuPOCAvw6kVdPU1xx47MGF4YaoBU4O0wjM
-	NmNaek7O6/pMIQW6t1UMb4b89NLDCArubGx05YpQER5sy/8Udp6w0QTx2D+uaSw==
-X-Gm-Gg: AYBFou1/6ehTdRYBjzFQD5CfBAY3CbE8mQ5S+3s5N+tK9g2/0SfIwChO4iQPAcj6b+H
-	mEMFhvdVUNQRMp5dcy0+uMOq/s/SfUTyVw/b1HbSz0sRQNMNLBFQY22fS8TE8CHq5usSk//gM9x
-	BfTTiIFdAdwZYFXdo5AVDJtA+fkFNXEhQ03pgl2noNZngLvEsrn5b3OOJDdK12VJ1ggA5tHee2R
-	lfXvYkVsDBla8tlSUS7VPcNhqsdKr10cGrgDYyox/pCl3juaQ92tI1zZX5lr4pUhHHH4TL+cUVd
-	CdhlARxyHwi+NG+IGTM9tHRd2O9lLy+0IBtPhh0euOUCKvrXJ4mNjIz7bVIjtlrzwq1Y9dn2BeS
-	6EuoDCs5d0eCgG9LNPiMVZWHa4RI1hjUfioNjvNuGa3aqHfY0nRZ9XMcfVS5V+zKI9SdI
-X-Received: by 2002:a05:6820:f036:b0:6c1:d6a4:9268 with SMTP id
- 006d021491bc7-6c737b1ca30mr1441282eaf.5.1789487488174; Tue, 15 Sep 2026
- 08:51:28 -0700 (PDT)
+	bh=LcHuBiVKAZ0fpaCeLr1myHlzqWosgg3CQFg0zLYOEKI=;
+	b=cTUJu3umWwzfwtMCBVqVKAjdiNczJEGjVXs8M1BzG8iKjYp0AkBWbv105X0OfFih6JV/x6
+	3igWNeeIBOo67/YQCYomg0yrhJ0BLL4HFbUisvP+b9XsIfSIKVfuL2laopmBausffzehSd
+	G1NyS39hj+c8Gqq4Ou8mGDZG0fGLyok=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=sQ5vM1dxwRqkeCTpiy2hrY0hkFjMDY/q02iCMgbTsGKNhI9zXJWXme045NU7QRaTdi2sWT8BOi71GRWUKWao+zTHc0nEoI8CiolAyLFY4l1p3eoD+J1Sv2zgkwnxCY/2MgqGX1lQfViW77A3JRiJh3dqk/CXDkNFLxeM47CLaJAchWgkzAabBZl9YLNNCA511NFMZayt+R2vjt0FJSxa2cDkTvqjpV8qJ/aV0PbkBdYeXeuRA67x9HK567XkdD4eUiJi/YyVTjZrC01M7B/V9ua8NdFbU6NBm2T/iUG5IhJn7cMKPnNDQD44tM1jMoIQmO+rKbwtTimaO7Icp4gsww==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LcHuBiVKAZ0fpaCeLr1myHlzqWosgg3CQFg0zLYOEKI=;
+ b=hV4XzKGOIM/k0QOxU8TLYB8ZBcKKC2NPBW+RtiAOv2HhKuBaQRHFu92FAPROPAVMthf14Y+0Bp456FIz3TAmVobmQjxKG7h+HO+k35LyT5IlxJNarJCSEnkFrbsTEL5jcp/mQXriLAz/uE/cb7eyfWZe3C5Rvkcht4aZizPXtV2PZAjVDpxxlcFXg31aJzIpbm1kUETr9QBsHVtohkiZnDE5DOfNQPCAOH+PWeAzBPfThG+Lv+fOW+Yw9PWW5LuSroH1ONJr8/264kv8/g4GtV9nVf1FLja+qBl7meMsqk/jNYlOBdF53FlAj36g7K2LbAnpPh3j3qt0SL4LLEem/g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LcHuBiVKAZ0fpaCeLr1myHlzqWosgg3CQFg0zLYOEKI=;
+ b=I6CD6OGgf6kN/spLwN0AIDEYAfYnPjBCFB+QJhr3xzku7Qw0MjTDR2pAh7uDao2M6Lp9EpTxUpFumKBSzreeSm2BxhrSZOjFZAsEhsg1Rc41+bVDPXkKg+j039E9r3lZrsBoiKl3cPTpVGwOyP9q3QkFG/w2OYwyX3kajwN0fZN38gKOdDLvh3c5b3G3YIrUsBpahXcgvQR5YJi9lAK5Z5rjgHG4ycoWTwOioLGD+6zdTuF/ayxldRicmrhbg/wON52wr9isp120P6q8/P1vPGSCb2aXJIY0ob6a0UC0RaxruOLsKe53RS/dvVgyxRJhMuIkLP+O9NIM7+GGeJv8Ww==
+Received: from LV3PR12MB9356.namprd12.prod.outlook.com (2603:10b6:408:20c::21)
+ by CH3PR12MB8329.namprd12.prod.outlook.com (2603:10b6:610:12e::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.9; Tue, 15 Sep
+ 2026 15:53:37 +0000
+Received: from LV3PR12MB9356.namprd12.prod.outlook.com
+ ([fe80::1c36:31b4:c420:6286]) by LV3PR12MB9356.namprd12.prod.outlook.com
+ ([fe80::1c36:31b4:c420:6286%5]) with mapi id 15.21.0406.007; Tue, 15 Sep 2026
+ 15:53:37 +0000
+Date: Tue, 15 Sep 2026 11:53:36 -0400
+From: Yury Norov <ynorov@nvidia.com>
+To: David Laight <david.laight.linux@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Waiman Long <longman@redhat.com>,
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Zqiang <qiang.zhang@linux.dev>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Kees Cook <kees@kernel.org>,
+	Joel Granados <joel.granados@kernel.org>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+	wireguard@lists.zx2c4.com, netdev@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	rcu@vger.kernel.org, virtualization@lists.linux.dev,
+	linux-rt-devel@lists.linux.dev, llvm@lists.linux.dev,
+	Yury Norov <yury.norov@gmail.com>
+Subject: Re: [PATCH 00/17] Treewide: enforce static storage for object
+ initializers
+Message-ID: <aqlqAG5csUPFcSzQ@yury>
+References: <20260915030336.1192299-1-ynorov@nvidia.com>
+ <20260914231418.b15ec01f7225cf460f6e515a@linux-foundation.org>
+ <20260915102401.3c56aa95@pumpkin>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260915102401.3c56aa95@pumpkin>
+X-ClientProxiedBy: LV3P220CA0016.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:408:234::32) To LV3PR12MB9356.namprd12.prod.outlook.com
+ (2603:10b6:408:20c::21)
 MIME-Version: 1.0
-References: <CAL8qZ1bxzBXReej7M-20HkBwON9L6NZKZP96bs7s-e=j-_Gg8w@mail.gmail.com>
-In-Reply-To: <CAL8qZ1bxzBXReej7M-20HkBwON9L6NZKZP96bs7s-e=j-_Gg8w@mail.gmail.com>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Tue, 15 Sep 2026 08:51:15 -0700
-X-Gm-Features: AcwNN1VZxjUbgSRdsZo-3wXq8QiVHvk8HaQExXuqbOILOADwb7TrgLSgG0x2RqI
-Message-ID: <CAAVpQUBWtdDe4dS5Sd6mETpxVdmvSrnQkBdfK=NKgoWzTJUomw@mail.gmail.com>
-Subject: Re: Subject: TCP receive memory accounting before accept() with
- cgroup v2
-To: Cyclinder Kuo <kuocyclinder@gmail.com>
-Cc: netdev@vger.kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org, 
-	shakeel.butt@linux.dev, edumazet@google.com, roman.gushchin@linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV3PR12MB9356:EE_|CH3PR12MB8329:EE_
+X-MS-Office365-Filtering-Correlation-Id: 96645693-18de-43b5-1df4-08df13418132
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|23010399003|1800799024|7416014|376014|10067099003|6133799003|18002099003|22082099003|4143699003|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	d93qJc/QuT2rjbcJj2BRBeNsqLTjh3OrN8BCMIbyCQM9bGQhvxhiz/Xdw9H3KX+WEETMXCNV1bvy6cANZz/p0P7mAIkmLVukJA0t0LCIczMpsXWVsBbEXyNbSMOGw6CTrCypw2d3i/Myfw076do+S+ZKQqrs/oKKJyy2xa3Q+BdOEqGJ59bRcZ48ZvQqQdSoJJhnIFx8DW5ZJDWwotHJWjv7FxufwbbPRM88AfVacusbMzRsNJl3V/PdazCv25POMf8CKQbQ0xM/eekGBgyftEDwp12qaoewkZLXBqs2olWorzIVP6LoL1J2X/GawJASTXfLjU3N0F1KZjFk+Zkdw5ULo3CXrz8e1mwhDznE0hLi+G9aaRES277JOSBr69K51vcTckoBa1Itq9gOY66h0u42kpVw5BNRhfz/iYpYrDB1WdNeukAvRyaslIf1zfkPUhFqlXrgy8t5GuJEa6siy0cbG1zXJSLuXUV0NQxvUI1fvNk4PTA5X6O9i1BL6tJG1l0vgSK3adSF693OA2uwWtXGWYjxX42seJhsY2VYYlDab/hBh1sGMGicARwWWotOtCKSNbpA2Xwzmj9RjLIUEECAvjeHEa2GFWEBjgmSpgI/iL+6sqGrx9S2wmUUJJMf5cE4hOnPFwUCWDlaIUSS/5LIYx6OLS49gzItGC377f8=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9356.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(7416014)(376014)(10067099003)(6133799003)(18002099003)(22082099003)(4143699003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?4OFgHVTW8HAL8iD3NNGVIKY6JppEMbxl8qtf4EYb6qhyOWuhn+LWbG1vTehz?=
+ =?us-ascii?Q?Y/CK2tjNc0sXtu7Tvpc4C1S1WSmENYCkRzloS53zF4AJd/qNih8r55pafUNn?=
+ =?us-ascii?Q?6AHi2/4wbprvnZCk6ireeqVY9v+YFSnTq6XhGdXeR5mtegrRyYfQaes4L/KX?=
+ =?us-ascii?Q?IgihDqM0Wg8tCc7lS0MaMorClUeSQE1KDusBJJylC3+wgMhmqN3FdwuwnEMe?=
+ =?us-ascii?Q?HJcj8+INyJcwneNu3sbtUmaFwZ4vBEjwDnp24u/h2zcgaA3BmJxNnLawrlyY?=
+ =?us-ascii?Q?B4RecEybkxf1jWnooyUo3NEx7oHcdxfZDCSZg6boItTmlZJkgHAPtAo12Iar?=
+ =?us-ascii?Q?6CftdUZ8Pt7bXs4rGh5ZuGaPc8AyCIm1NuIPUmZHmLbT/cDqzSH2km9a8KzE?=
+ =?us-ascii?Q?p7hJgcq97gdVxh4DORSDz5m+p3sGYVFsvUKLDTrFxoKF5FXkwQzD3RNVe5NS?=
+ =?us-ascii?Q?W67J4eSYJi/2oJf2tD3UmFefEq2wRl9+tyknv5R6DclTqeiJ+qTBQxjoGXd5?=
+ =?us-ascii?Q?cwotGdP3CCEys1mR/9eKQcQdFHvNnj/ahTrM2zbfUfeu7iIo+9z7dFnCYHzy?=
+ =?us-ascii?Q?Pfg+SHCdE3vu1jT23szVOjjsdnxb8yWZM/+Bqf7R7hrAeeGXsgzld7xqa+I0?=
+ =?us-ascii?Q?Zl7ymI59DsjI1QbaHqh+MFARWNpgKtkkYdQHzD3BBceE3u2Zbbk5Ao+mVLT+?=
+ =?us-ascii?Q?kGtow3S5L2KaI6B4+0zqJ0j3WhF8hHY4YErhej+l6SgrlkLmVOOuvHv0+hEF?=
+ =?us-ascii?Q?8pVLxI9bp5bHZDaepRbHq6jcCjTW01yw+3BUndh5OJn+5bylWApJ+OBhNIi4?=
+ =?us-ascii?Q?MaCJKmnh1ed9yfurltKdH68p3k0Zu7p5yyNCiAJoFkZ+jy3rwm8sk3ZAxhOJ?=
+ =?us-ascii?Q?lT2ngdpu/aAkaJZomsiR+7L+I61Pxnmu+DS9cI0LT8EH7hCmFTz1lLgYm5v8?=
+ =?us-ascii?Q?zhC9rgZ4Ieub9wjrXoMVuxX+9LsngHuViFTy5r8Lmtqi8wHCtKolGmbqy0uJ?=
+ =?us-ascii?Q?HpmDH0XayFHZCiRZjPjhtl9XG32qgD0YJ/3x/1mG/OLcY0z46OelIBfZvIdI?=
+ =?us-ascii?Q?ffZqdsCu3faqBWR9UpSGLHS0SGMA4MHOKgx7D7wGezffPiXjo0+wquUZbvK1?=
+ =?us-ascii?Q?lhowiaEe+G2z7989dHevm2uE1yBxlSh8A+Cn3T9zqjj26K1vd8C2Je9JU08x?=
+ =?us-ascii?Q?SHjJgxOpZrB1aj4hJC0mVj6Sgo0vXTbn7KEXFT0WQ74Ccw8FoxyDAmon8yz5?=
+ =?us-ascii?Q?iIKar//b0xusBbOPu0mdg8Zx5OjQ/pGj2+qLocoSYQ49nxKVwtjbK/RsP9eT?=
+ =?us-ascii?Q?RpFg8oYOH188PWJkD1eJq5cTNrld9ObVA25LhuM+cxj+5LpSJMRnv98uzJW6?=
+ =?us-ascii?Q?bo8p/Swhf0+pN8I3eTbjJ1fyGvSe6YOY0wiaJrSxl8PYYvEfiYNCGU7pawwo?=
+ =?us-ascii?Q?9teQYf/I2PjYUnxXOkc1gs/sa4N5NZMLuGbq8+hkqwZUGwpCFca81uOS6rT0?=
+ =?us-ascii?Q?q9gNOEidBZx+DxRg9cHeVAxYWpnWJ2n1fnDXj4Y0AHLP2lGDoEAaDGfz522q?=
+ =?us-ascii?Q?Xi6Hmv4amhJoPn4+hqKIwvpLCPddKy1mWdWlzE4tvdCS2xNTnogXm5frJosq?=
+ =?us-ascii?Q?5l8V0kBc+opmFBvmEmyAN7zauZpy1HAmu9sUDbBU0ddN/3ug03/ll55hRAP9?=
+ =?us-ascii?Q?nWP3ELw2jzBD05LlpPTkkkknAQ9JIq7rBVM2mFgNXkCjppM1215ExISy5MBH?=
+ =?us-ascii?Q?0saeDTI2Ow=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 96645693-18de-43b5-1df4-08df13418132
+X-MS-Exchange-CrossTenant-AuthSource: LV3PR12MB9356.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Sep 2026 15:53:37.3269
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: wOOEBUdiMPdo94hOTsWhrIBDwu1Hv5iXG48S7cL29VtakwzKnY1EzNnlDRkstcRcwqi9nwUlVC04YX1RhggatA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8329
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: EA1731C000D
-X-Stat-Signature: 3s9ybxwmbjc6ot5b5ety16ybwo3b883f
-X-HE-Tag: 1789487489-335220
-X-HE-Meta: U2FsdGVkX1+e23QMq4OQTpfp2BHv09suozcrE6+xOPtlxA/+KgTJYvFE1FxZl2cKZdSzRXgNhOWadVz/gDzl+oUDPlneWn52nwr8TZjJyY+N6RKCJKN9oHQUtk9ixOGmffpVlroioX0DuzChBkh8OU+9Yhy3LxelsMKhToGZ9Z7y/yG4TeQGDVkHpbhsZ51URvpR2BgPEx16vvWlV1BkH1RGBzHogeF26mtmqzn1jM+e2G6Owi3uiQ/SY7DF7ptmjKuymsZ6i7Fkoav2bxcifi6Xr/8DU7fthXuc4D14CHT6ppkfZ2WFLS5bfnzxCXFNK1Wc7b/WggKANxRvDidPqWyRHx4zUGiB/mz4JPOdagwQpXM1MN29K3OZoZE0ZLSjMakXWo2R3qjSHEhEIuNXOvwBFuz/zx8FV8CZrJ12GRpAHYSr+XEbGiaipRmwStsncc3CEhNEbGd6Dh2vezmGsNkw8OCIVjT1vYzAHXKTP+Gi7rbf3elEbXxY0JKljXiaBARyLsQOPC7fnfry6ONahRYin/c+zEBoqAaHtc6JNE5xBKIcTugmCjY3cQ7KmwceB1s5ckRvEhY1rDrwFwp5cwaciSbExH272jddTVgfOr9RQ7g+TMu0DiCQF5jK18a0tcFyA7Ghp0MdQ8ixMS9B6YcgnTboCx7iIIPy1XMkd0Tp8yEWR/tXC1QSAtl598YabkG21A2FEcKssLewEW6I8OOf2W6WxThEPkRD2L11W+VhIrU5Z7eYk/J91nfeouQE12ZzCT8w+6GgXYT4QaKvAOGggpmmMGzx8O/Q5xB4OXUOnlsfl9N7LyI+7g9YzRAzMx6Hej9hKXaG/MteP097IJdWc3j94QvpFuLJrTLpbCumWjC8o3Aqm26/5/70YMcLpgtdaWIRDF6udwzBKvgi5uQFvAsJmFQySUaeEY4DMw1XNffsYqULfiDjA8fKm38/ZMNY1/xi0o03Lrh4NSp
- cVo4KTmu
- Ks78GZTMUi0Hp2RimQXt8OC3amWqcJ8irxWJJ4YzXDy5s/G1Jo7fOcF7ZkoXyNoSaZoca7ngIesD8nGf+x/p4uO+y/bDy8EZu0hGu+37ppxVwHfLSf7UwTlleffOOtYPin93Lg8NmUNgKGV1ETDWFLNfGGWx8kavPpMMj0JbNfnTO97In6pIfIvFE8ddvMew+/iT1o1duYNCtucUVySPsFMyaxF/iejxjNgUDH+1jtno8e66b03p8jPUmZVUuXbNdHWdn6UAR8mefTwPk83O/5Gpt08YuvuCjjjhBtzx6NUeFXny+59F/ZhtzgxRVIwhY4C9KHv+kNv+mO/iuDklYcohDBqHOn9oVeI4MGttwWYhw+1K0iJwFnoZx42w2e6OpZSHM6R2aZAaHSe4xpN2KvER7EffY5ql7DXwd9C2iQ+JvDP4=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 3752FA0002
+X-Stat-Signature: cymxszcypf5u3zm9qdurhkuhcmzxtnp6
+X-HE-Tag: 1789487632-282370
+X-HE-Meta: U2FsdGVkX1/+p+fargdE9gsCyjVEoA8p2Avc1POEf943SxpQSjQaJvKSJp5WGX28qWaMEjpu9RgtKPww7AKSiEF0W6DwWr6OVAX3c8W981J2Qksp+dmU+jZKYp+efJgkMFc/cyNpf65vZivFtmaebc41wx7gO9U+7r6U3u0k/u1t6hZTgBUcfmgjBxXS/EwJQMXpI5qYZkMfwhhbEWd7aMsnA5yOL8dG3cF5MlrwOInqnd/pf6uIrphOwtpZftDSdf3+XmxJsEdQMaxVA7WRzN9M4DuvQEsJGVLXNHI+hvMnrZnTXMgEtamQgmV04GvnK/iZhkaXnuuQfKydwZ4VkNsz4UZwpHD/31h+s0G1aMbum4y4UMdTzjhjOATJsu4ewGe7bddsHHQD1YbMUQlHQKotdOqaZtsDCEAn/BmvYnlo245uodhXoFtKa4Zz0D+z+JfqMia28VJqJlFtdy4zqJ0KWkS4wpUKC+mnxOxBKICYpY+lXTesTs57rQNFgVF0n2BTuhK4aHgdJWJcCloh6rnKHHVN4tfahj6AwhVFJX+CACbB4UHWJPC2xWErv/zChv10srdpkkAwNLUb5pQlgcfVmA35q0bFnzBj29kJFhzk9JszvN7ZCzomkRncM40VFSZ2YlJ69q/4KmPcF08ix04ehoS5ea8mL0istZ9ziNRw9YS6aZ3SdTxq3ECkSeAURCm2yaoGIPcOaiPPyAuqaJJF64z3h+ZeZTYT47NQhclJdxh9fHgytNa0HrXMVSbzD1rvNBvtiXuqEChE1SCVcGwR8TgqE5BrB4YexaPOjRrCNZ9x9QSR+wQEY46/1Fadxi8TxrCx3U8xDugevT+MUsFUg0WD/RK/tLt11TxRSGiYSCrdBF6EXfFiLvOrT5jPSgpVtHqJKhwXrlntKLvXr1tp299IV+QDuFasOXo+leID/VAhGLCRWc3Z3wHarMuxDT8IDxCRuVawKmery2A
+ 8ve39nq2
+ 8+9ZxEByuJTSkdy2kVY4vHukHuKbkZT+imVHEb40ydq4xaLSZXPCfXwpe4OE5e6YrQcssqDlCDCfXdCNJywBt+njwQXopq+w55Su6X2WgAj4rCowEdZLvp2yrrVrKSaR88PbRNsk/efFxmP7NlejZ1LKP+0Vm3e/lqtsH+hLfQBmc1CLzmEcCbLagbyai9j7eImD32JmjuaITf53ySAVW6/iFCDXOmdUmntpMfZv7pThEw30Q///+qJF7zzOp82ghbyRjbEfQvyQ+7oVGXJFxNU4zFmjOJh2wG1tPf/zFBPREUG/eYR6LY4O4zcvpm0hdyTFiUcfjWbdsOJy0nhqdz4ItHWhVowVhh9KwRbMskf57BhILv4+zvDhpATvS+JHW+CPb78GzdJGtttygQYUBO3j6YjBXFwE01Ukwl1/hJ3fim4E4tDBK3xXhSaEMUWjJJE3y3uA9QdUAPd+3uHzT1uei7jMGDN8ci2Mq4mVOSdUruBU26b5MPqwWdyD77V78RGTjf9027M/w6ReVRMsGxPBb82Gb3rGXEWqt0IxL74/sEzAtK3RyCG6BSNJMOXF0S12MTv5c5Xh71NNkmixyNCGm+W5mP9NIjQaA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,136 +213,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 15, 2026 at 2:08=E2=80=AFAM Cyclinder Kuo <kuocyclinder@gmail.c=
-om> wrote:
->
-> Hi,
->
-> "Resending in plain text; the previous message was rejected by netdev
-> because it contained an HTML part."
->
-> While looking into whether Kubernetes can allow net.core.somaxconn
-> by default on cgroup v2 nodes [1], I tested how receive memory is
-> accounted for connections waiting in the accept queue.
->
-> I understand that d752a4986532 ("net: memcg: late association of sock
-> to memcg") deliberately moved memcg association to accept() time.
-> The discussion also explicitly covered data queued before accept()
-> and charging that memory when the socket is accepted [2].
->
-> My question is about memory containment before that happens:
-> if an application delays accept() indefinitely, how should the
-> receive memory of those pending connections be constrained by the
-> service's memcg?
+On Tue, Sep 15, 2026 at 10:24:01AM +0100, David Laight wrote:
+> On Mon, 14 Sep 2026 23:14:18 -0700
+> Andrew Morton <akpm@linux-foundation.org> wrote:
+> 
+> > On Mon, 14 Sep 2026 23:03:18 -0400 Yury Norov <ynorov@nvidia.com> wrote:
+> > 
+> > > Declaration macros that statically initialize embedded locks require static
+> > > storage when lockdep is enabled. Automatic objects must use runtime
+> > > initialization so lockdep receives a persistent class key.
+> > > 
+> > > For automatic local objects, lockdep cannot use the lock address as a persistent
+> > > class key and reports "INFO: trying to register non-static key" before disabling
+> > > itself.  
+> > 
+> > So why haven't we been buried in reports about this warning coming out?
 
-AFAIU, this cannot be constrained by memcg, and you need to
-configure some knobs (somaxconn, tcp_rmem, rmem_max)  to
-define a sane threshold per connection.
+I have no answer. Maybe because lockdep isn't enabled by major distros...
 
-https://lore.kernel.org/netdev/20250707213900.1543248-2-edumazet@google.com=
-/
+The original report came from i386 randconfig. It looks like a combination
+of some luck and a new code, probably attracting more robots attention.
+ 
+> Are there any code changes outside of testing?
 
-
->
-> Test setup
-> ----------
->
-> - Ubuntu 24.04, kernel 6.8.0-53-generic
-> - Kubernetes v1.35.0, cgroup v2
-> - Server container and Pod cgroups: memory.max =3D 512 MiB
-> - Private network namespace, somaxconn =3D 65535
-> - Server calls listen(65535), initially without calling accept()
-> - Client runs on a different node
->
-> The server container was privileged to set somaxconn in its own
-> network namespace. The host's somaxconn remained unchanged.
->
-> The client established 256 TCP connections, then sent 64 KiB on
-> each connection, for a total of 16 MiB. The server subsequently
-> accepted all 256 connections without reading any data.
->
-> Results
-> -------
->
-> Phase                                     Pending accepts   Total TCP
->   Container           memcg
->                                                accepts
-> Recv-Q       memory.current  sock
-> Baseline                                 0
-> 0                 8.49 MiB             0
-> Connected, no payload          256                        0
->      8.49 MiB             0
-> Payload, before accept          256                        16 MiB
->   8.49 MiB             0
-> After accept, no reads            0                            16 MiB
->       33.82 MiB          25 MiB
->
-> I used ss in the server's network namespace to observe the pending
-> accept count and the established sockets' receive queues. I also
-> read memory.current and memory.stat in both the container and its
-> parent Pod cgroup. Both reported sock=3D0 before accept(), and
-> 25 MiB after accept().
->
-> The data was already queued on the server, but its receive memory
-> was only charged to the server's memcg when accept() was called.
->
-> I did not exceed memory.max or test memory exhaustion, so this
-> does not demonstrate a node OOM or an absence of other network
-> memory limits.
->
-> Current implementation
-> ----------------------
->
-> I also inspected upstream v7.2, although I have not repeated the
-> runtime test on that kernel.
->
-> sk_clone() still sets newsk->sk_memcg to NULL, with the comment
-> "sk->sk_memcg will be populated at accept() time" [3].
-> __inet_accept() then calls mem_cgroup_sk_alloc() and
-> __sk_charge() [4].
->
-> I also found the discussion explaining why simply inheriting the
-> listener's sk_memcg is insufficient, particularly when a listener
-> is created in the root cgroup and passed to a process in another
-> cgroup [5].
->
-> Questions
-> ---------
->
-> Is the pre-accept accounting gap an intentional limitation of
-> memcg socket accounting?
-
-I think so.
-
-
->
-> Has temporarily charging pending connections to the listener's
-> memcg, then reconciling ownership at accept(), been considered?
-
-Not sure, maybe Shakeel knows, but I think it would severely degrade
-scalability, and the change may surprise current deployments via OOM.
-
-
-> I realize this would need to handle different listener/accepter
-> cgroups and the root-cgroup listener case.
->
-> If that is not a suitable approach, is there another mechanism
-> that should bound this memory on a per-service or per-memcg basis?
->
-> For the Kubernetes change, we are holding off on treating
-> somaxconn as safe based solely on cgroup v2 until we understand
-> this better. Pointers to previous discussions would be appreciated.
->
-> [1] https://github.com/kubernetes/kubernetes/issues/134194
-> [2] https://lore.kernel.org/all/20200222010456.40635-1-shakeelb@google.co=
-m/T/
-> [3] https://github.com/torvalds/linux/blob/v7.2/net/core/sock.c#L2542-L25=
-47
-> [4] https://github.com/torvalds/linux/blob/v7.2/net/ipv4/af_inet.c#L761-L=
-766
-> [5] https://lore.kernel.org/all/CAAVpQUDUULCrcTP4AQ31B5bfo-+dtw3H8CQGq9_S=
-Q7d28xXSvA@mail.gmail.com/
->
-> Thanks,
-> Qifeng Guo
+ams_pmu_set/get_register in patch #6 for example.
 
