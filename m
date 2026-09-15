@@ -4,93 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48A7AC982C3
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 12:18:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 253B7C982C7
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 12:18:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3DC646B00AC; Tue, 15 Sep 2026 08:18:41 -0400 (EDT)
+	id 2EC7B6B00AB; Tue, 15 Sep 2026 08:18:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 385B86B00AD; Tue, 15 Sep 2026 08:18:41 -0400 (EDT)
+	id 2C3396B00AC; Tue, 15 Sep 2026 08:18:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 24E1E6B00AE; Tue, 15 Sep 2026 08:18:41 -0400 (EDT)
+	id 200C56B00AD; Tue, 15 Sep 2026 08:18:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EDBB06B00AC
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 08:18:40 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id ABF9DC03E8
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:18:38 +0000 (UTC)
-X-FDA: 85215899916.10.0A9ED6E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 1D2934000A
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:18:37 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ea1sJwsB;
-	spf=pass (imf04.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F02A66B00AB
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 08:18:36 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 60F3A40327
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:18:36 +0000 (UTC)
+X-FDA: 85215899832.24.0D3BC90
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id BDD171A0006
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:18:34 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=al7xG3Qx;
+	spf=pass (imf19.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789474714;
+	b=0LS7GmUMefyH6ewj+I+IVzcw6UxlAhFbxYTrHxQDwGM6/lOKT9+ha1W6dO27T1I3WvvgoF
+	SKMmXUN3/QItYha2txeJ7B4S1WkeJMGWWYUJlbKaltXwJTO0CM/bsidYrXNqc9HQJvfh2k
+	AyWl+YSzUd98jZFli6ZJMBD1FKg1R0s=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=al7xG3Qx;
+	spf=pass (imf19.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789474717;
+	s=arc-20220608; t=1789474714;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vrVAobJMjM7S9OZZMwIDwvr8ty2bA0kqwagLpHQp40w=;
-	b=8WlcyBVW+AhO3vUUqwC/F4aP47OBdiXIc09OzeESmVOOdE4JtlTBnBR9Ea/2ujCke6Lobd
-	X/JmWebPGcIVKlxHNIkqeVJlxfGUFFXTbvySSP6NpWxsrmbeKaanqZjYQNBvZC/dYfIUX4
-	h2Z12wh3UEJ+AKY96a7X+cuwDJAocc4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789474717;
-	b=THmjq/MaGouzxG0H+Oy7Ep6hkem/HFVsaZRtXU6t1WernN3wEcMNphPBVnYiUjSnDBKiOA
-	cvr2NT0YVwdSv6qXnHbR6OtHUP4jaRwIXnz0wOfaqFvBBEM/++HRtp1O+XHa6ih4m1OkzW
-	ggOrdrnpfATYgXygshU14b5Q+5+mO3Q=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ea1sJwsB;
-	spf=pass (imf04.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=3Nr8gcCwi6DEWSLP9EN8/l4h5yq3GfGsy2oDZDwQTVw=;
+	b=WLFk39bIiIOaewwqScTgcm5036imcSp3EI602GA6fLJ4HLrLnykkT03MATgbMfEV+pEr8s
+	mIwgVEE/V0DxImkQe9a4qYsrg4SBaBOdiI4ugEsQwhqf/DW9pFprCvPihYvqot5zE02dbh
+	DX4cWRfBuzt47iDyDPjxW3DKvR7gv78=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B2BA5602C4;
-	Tue, 15 Sep 2026 12:18:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E6111F00898;
+	by sea.source.kernel.org (Postfix) with ESMTP id 24A0A41B11;
 	Tue, 15 Sep 2026 12:18:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6100B1F00893;
+	Tue, 15 Sep 2026 12:18:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789474716;
-	bh=vrVAobJMjM7S9OZZMwIDwvr8ty2bA0kqwagLpHQp40w=;
+	s=k20260515; t=1789474714;
+	bh=3Nr8gcCwi6DEWSLP9EN8/l4h5yq3GfGsy2oDZDwQTVw=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ea1sJwsBr/Nvel740b29/2lnm8kv13L85FditgVsIEu95cKYPQZU0Zm86Po1jnZNR
-	 WHN070goKjNpVo1FRyPViEa8NGr0QNUX2ucQBNO5lGEpXDGQD7U7BclSRhluMnxtKP
-	 ATnOY9YQY/9J5OJE6jroQgQS5sfBOnMZtK6e3d1b5IYszHnQqLJX4JE1tZ1dgWaKGz
-	 MVf3djXQJIyElXt0yrKwDYp8btcu88OnDKD8ru7wqrjSAcI7zj25kTBGPYQCXOGFwa
-	 RfYXn1Lwzeg0QAuqyZ/UnU7T5x+37hRI9c8kwg/0XtOV9Mo2i3dXkFawFgls2HqTB0
-	 kguWCX48YbslQ==
+	b=al7xG3QxpordB8FaZac1xk6QWAEGzphwDCGfy40ckeGGdeDP1tbwhbJklTqx5QQFT
+	 ODvPZmGs3Rku3J2uQB3ChHYQAriES6YPKKW/TWgpaSESxWFOwioknFfQIhOZdlb/lh
+	 RLkOhFE53P9jFChtaD6A2+vi4SogD6zm9+SM0eAaXOgGkYYLJJfSgO/RrU1jMf018L
+	 IsZndXI06LzsoDnaEX00kNg9+CSe+xR/UDoSJpVb9b2SoGOi1j19PuVJIg9jG4HZNR
+	 dl5cjIQ8g0S9+wNIlluWxOi9Rk+9A+i9qr4Dl8RqrHyi07ZG8WPpqBJZWgaHICrgtm
+	 ZwEgDuMch+DXg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC POC 45/50] accel/habanalabs: stop putting the
- dma-buf descriptor back on failure
+Subject: Re: [PATCH RFC POC 47/50] iio: buffer: install the buffer
+ descriptor when the ioctl returns
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Linus Torvalds" <torvalds@linux-foundation.org>, "Christian Brauner" <brauner@kernel.org>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, linux-gpio@vger.kernel.org, linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, linux-snps-arc@lists.infradead.org, "Oleg
- Nesterov" <oleg@redhat.com>, "Peter Zijlstra" <peterz@infradead.org>, "Ingo
- Molnar" <mingo@redhat.com>, linux-alpha@vger.kernel.org, "Alexander Viro" <viro@zeniv.linux.org.uk>, virtualization@lists.linux.dev, linux-mips@vger.kernel.org, kexec@lists.infradead.org, bpf@vger.kernel.org, linux-arm-msm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "Jan
- Kara" <jack@suse.cz>, linux-openrisc@vger.kernel.org, linux-sh@vger.kernel.org, "David
- Airlie" <airlied@redhat.com>, linux-um@lists.infradead.org, linux-csky@vger.kernel.org, linux-parisc@vger.kernel.org, "Jens
- Axboe" <axboe@kernel.dk>, =?utf-8?b?Q2hyaXN0aWFuIEJyYXVuZXIgKEFtdXRhYmxl?=
- =?utf-8?b?KQ==?= <brauner@kernel.org>, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, linux-hexagon@vger.kernel.org, io-uring@vger.kernel.org, linux-m68k@lists.linux-m68k.org, "Eugenio
- Perez" <eperezma@redhat.com>, "Jann Horn" <jannh@google.com>
-In-Reply-To: <20260915-work-fd-reserve-unify-folded-v1-45-4d5217d6b246@kernel.org>
+To: "Christian Brauner" <brauner@kernel.org>, "Linus Torvalds" <torvalds@linux-foundation.org>
+Cc: "David Airlie" <airlied@redhat.com>, virtualization@lists.linux.dev, dri-devel@lists.freedesktop.org, linux-openrisc@vger.kernel.org, linux-arm-msm@vger.kernel.org, sparclinux@vger.kernel.org, linux-mips@vger.kernel.org, "Jann
+ Horn" <jannh@google.com>, linux-hexagon@vger.kernel.org, bpf@vger.kernel.org, linux-gpio@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-hyperv@vger.kernel.org, kexec@lists.infradead.org, "Eugenio
+ Perez" <eperezma@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, linuxppc-dev@lists.ozlabs.org, linux-alpha@vger.kernel.org, linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org, io-uring@vger.kernel.org, "Peter
+ Zijlstra" <peterz@infradead.org>, "Alexander Viro" <viro@zeniv.linux.org.uk>,
+ =?utf-8?b?Q2hyaXN0aWFuIEJyYXVuZXIgKEFtdXRhYmxlKQ==?= <brauner@kernel.org>, linux-arm-kernel@lists.infradead.org, linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org, kvm@vger.kernel.org, "Ingo
+ Molnar" <mingo@redhat.com>, linux-kernel@vger.kernel.org, "Jan Kara" <jack@suse.cz>, linux-csky@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, "Oleg
+ Nesterov" <oleg@redhat.com>, "Jens Axboe" <axboe@kernel.dk>
+In-Reply-To: <20260915-work-fd-reserve-unify-folded-v1-47-4d5217d6b246@kernel.org>
 References: <20260915-work-fd-reserve-unify-folded-v1-0-4d5217d6b246@kernel.org>
- <20260915-work-fd-reserve-unify-folded-v1-45-4d5217d6b246@kernel.org>
+ <20260915-work-fd-reserve-unify-folded-v1-47-4d5217d6b246@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 15 Sep 2026 12:18:34 +0000
-Message-Id: <20260915121834.8E6111F00898@smtp.kernel.org>
-X-Stat-Signature: yjgdi3jewgdnz7xuzuo49dckykudrio9
+Date: Tue, 15 Sep 2026 12:18:30 +0000
+Message-Id: <20260915121831.6100B1F00893@smtp.kernel.org>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: BDD171A0006
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1D2934000A
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789474716-227875
-X-HE-Meta: U2FsdGVkX186fIsHdtmZ72JCKzU9aF8D0OKPuLfB3Ic+fpeA/ZSgDb2ZN9k3Jmj22BI7+n+f9bWCsj3Y5h0ATllnEaIGQqU3kh/UC0Aeo1QY9Qg7E9vXIRUe/5iEbD0NrLgYlc+8gmLIDlu9D+3oCB6eUaY/uwrTABv58E6sRcDpjoe3LM6AjReY5rLnqFzjbfQjosUr5a0q6T2pMB+TX2HbKRTdRNYIUPXLLnhawSwrofAPQxaVHWawxmj2LZe3NVZPI7pCQ41+Fj6hQoxTBws4RJEaeQ8Z+6wanzPQEGjqGp0NcHy/4UDTB0u5+GZtb5iNJNn811tiCgHbd33vTFG9xx3brdJ1I31BE4UjjudoSkgCVrOFlDJZ56yqoVe6ECLoyX7l8XvJimf4R1wc3521f0BNoDFZ7CCWchrhVElE4W+5xG2DlGxNoc9I4L59ayUqQvOPgCyMQvCcizliaIiJCNgoox9MSN2lKFGCHfYnYAN/+gmkRO0jLAIcWtwKEdGE1GnoDqA2Y4wicspC+QxyHQawsGDQ13aHGTMIihqn0kR5lY6esJqs1EutJmJlQltJxgdqN776lwfwmq2gQioETYkMRJv6LIp3cXyKbv84r3GTKiFQLiXuuQk2sjX/E2vgSbJnQ03SHUXkHId+B0kk+lX4zLbszk0Pyg5KhFLgpl6kkGgLrWWYhnQ2NCH3368dW85bW1Zl56eqU9U4Zx8fVcSen9RArO87eRBo/GWyFkf0sSFOFae6UfKs6qlF8usaQ157q9nVqLWK44VTLpvlNk9pCx2Nnbi8Ar7w4xRZrBlCsZPg5aT3d9MnMqigSmurdaQeJpkLDYwwRfaTm+qYgmDpZ+zx8UBj3CKre4eEDWiHQoTXn03azCLLXWzSHu5LrNfLtCq4A//QRE50lKk5scnhRcwytdBz9eE/bjui69emPn9NRROp7BEVJJQMP3kx6/KKPDHsncdl6Tc
- +yaJJKQd
- Gder9m8OFd79W9HzSkG4tV35YnR2/9OfMwbVzrpnV92R45PvG0r3SDbOyzperVlImQq5J+NZAElHsN0ETQhWD9x+Ffrg3z+khh3sop6T37JPmmUHr8wOUy83oEo46nofa+vwB8E7CWeCqBBaN9fTN0sqiffhU5TEC1aVuXrPG/Nuzk6KNQ9A3C1lVIE9nWH5AEyWBpRHIjVQlslaiIPM1AGv8B5653j3ADBaPEIjo42iDXsQbYMUQGR6VWG7125wCWliV5ZLIEDWAn8f7T+keKPDl+I/yc1A+uxZHeOCvECLw0cPA1soYeYvnOChAd2+6dySXf+9xPp2PBEWQtnQsv4LYSmqpvgY/wITu+DYKynJoNGLiFenrE6WKaiHgWHsVITyCsjUR4S2W6Ktez1fViWh8OrLK8CTwmdqS6lNNwAcH+ggyYAwZKdd5SKwJWgtyQt0BEmY/QItHxFR1mxAc1+E2U49rv5Iyc1nba8Gr6NzdVzBLdEL15Pj/RBGPPIUPygiTj+MJsFJwOV2Ev16uI2o+RpWsOgTVqJcePbXeoqN/iw6Oz3DLBe4kvb8goIlfiZiPoGMKWpIDAGownWHm7Aw4/iPvFjy9HrgbO5Ru6x3uVn2jlLwx8eClQb1TALX798zCe0bwXhWIub1IQjNRmcb0/qBLovs4T4xe9/Wt6MBhI6JFdPTPX3MYgM7WSaD//TBT
+X-Stat-Signature: fsadgoq3ue3rmbrpp41peafd4wr3tk7c
+X-HE-Tag: 1789474714-517788
+X-HE-Meta: U2FsdGVkX1/VUQ9i1Jl0w0fHHv3cwTuT1yD2PHDOezeoWjhxP7MZLYD4Hpwh6AHKighAD7nXKXGKC8RM2ssfkO7hPIGa3etyQux4RRSiO3i104Et7TOQcLRRk8QNdoO8s0sUtO4pCDe/nV0RJ1sqGR04iW9OR37wPeC83y9kKr82QlP+vH1G4K7Si0ZXfxPxGA3I64WWQ8jAZ7tQE532Cke1Xsl4XlO2aeY00BNEDVX6nIQTuKv8Zb9zFmtffp4l9MByBfXUCplHLDYb5iJTbiHrH5ZpZlIo1iesRNDRz970FCt/bx+LJQnsbQR1HtxTE6WLh/n8bI5jfjn8r/8ybhjgA4Mdl5MMkPic0p64+J7F/DHv1NFqeDArCggQgQOxvUCy/LDnVVGAM1S1MEhOOknsI8pC5jXbuA2vHRVSsOPyahYBAhHox0wuMfSChLx5VZum1ShL/PWPe2W1A7a/NLx36hkPJCxPrEg96ShTH9+K2eNfn4qLivYA9sUlyR9WkmWxvKgM8UNCx/uYt9DFW1LxX734kiR1Nl9wJ4Q1aVialjbHoO9xkfWAkBnl3KvJAxQiAoFZ6dg876IONUDuuLB4RRSLN6iHYIYIyyvI9fIOfrzu3DBB5btPnbgiyqmBEBcnbMOeqMk3WWaqml7cOi4yz8BNFE+C3zJc9DV52QhoGQjdqcmpArvl6xLeN97ESCF0ePERTlwP3V+ZyzkJBbWmTc0/33/UQcxVi5RQYv8C5Bs3l4OyW/DyYqXsrbD6hXLv9w5uWDzyahXxRd0Ue+PMHI5bXp+pW6QBPaWQPGCBHBvPYhvMdStyZSzReYm+MhICE/iYwjPQL2J5VZeJ92q4uMWSnQZRXpwObVT4MVa7bVDBQOQZz/iMF0nh4JSX8G5sW6Lwuf2jS4zQrR1hNxGJAJ1Qs06ygMqez5XYDWEBVaZiENIPlrHoVMM4IJu7TnBrWEnZp9TQQIBJrvP
+ xflYP1YT
+ xX53+tDo+5Ze6YTUTVUzn5RdyvGBbS85hWT/wmCCfaFae029SjS37MJxVxIsD1h5spVFyUQml2ap+TuRLmSX8dq770n0dg+JYkVWJqvA2LoyY9jnSNLPMao5xfP3WXXKq+1/sxVeT7QeSqQ+CJ1/lCw+2NfQocWa5CffxYKW1GN3ad2wNsX30EALwmCQp+VKD/iw87Wrdt6V4WZ6Cvpd9aGnIXzjI32LarT38UUz1NVQCVJgnWDMLnbJiQ4HXXpNmi/lablraYWzoS3HXo3ir8q7NIuPFcKVYdpXNviy1L/3OvTa0hDuBbITZZojLmmfqowMTQKUOu/RVhDkCYQ5hyQ2dkcby9HWx0LOwgzjEHc+dutsEXZ4qn00EqJd2xf6KA2uGC9T9Jknz2L8SjO0laIIOS3WINNuJ1oZLJooLaQ7eFFnPdQne3c7a+nIFvt2+cjVASmNXqYOdj+fhxsK6VGOvQAwbC5xjNbBXBnXxwgKRu/nd9a2vWvVRfCVANOkNm8389JxoF5i3/PMo7Fj+NRDsqQjrRsJ7EbdTD2ZY7ocY6qTxECmb9/KcTNHhzgFvwHsfEnHkv60cnn5rnClRF0Lt9iaXu/s4ILi+pmQI0a+YdipF+z1nYYADPgp+n4XM+GD8JuWLFaiy0i14Wi/JB9uA4kHBpY4ChJld+HcS/RPeinLfLo6i5WJM5GJwfosuDC+J
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,6 +105,6 @@ Sashiko has reviewed this patch and found no issues. It looks great!
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260915-work-fd-re=
-serve-unify-folded-v1-0-4d5217d6b246@kernel.org?part=3D45
+serve-unify-folded-v1-0-4d5217d6b246@kernel.org?part=3D47
 
 
