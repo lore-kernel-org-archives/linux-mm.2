@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 113E1C88E7F
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 11:31:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0898C982C4
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 11:31:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D912F6B008C; Tue, 15 Sep 2026 07:31:32 -0400 (EDT)
+	id C31F76B0092; Tue, 15 Sep 2026 07:31:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D69E46B0092; Tue, 15 Sep 2026 07:31:32 -0400 (EDT)
+	id C0F9B6B0093; Tue, 15 Sep 2026 07:31:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C803B6B0093; Tue, 15 Sep 2026 07:31:32 -0400 (EDT)
+	id B1F046B0095; Tue, 15 Sep 2026 07:31:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9023C6B008C
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 07:31:32 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 089611203E6
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:31:32 +0000 (UTC)
-X-FDA: 85215781224.20.2DEBA0D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 301D81C000B
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:31:30 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iha9zwIE;
-	spf=pass (imf18.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 884E46B0092
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 07:31:39 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DF02EA03B9
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:31:38 +0000 (UTC)
+X-FDA: 85215781476.08.1A6EA60
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 114E91C0004
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:31:36 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FA99JUjo;
+	spf=pass (imf21.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789471890;
+	s=arc-20220608; t=1789471897;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BV+bpXMF0kMr9afG7XMe1ZpQQUGKxWkKKhyZrn6MnI4=;
-	b=Yer8Xz8a4WtmVWJ6PGezvsKKvShtkuGpidkEcoqNjYw2x+OHA/d1/8bvC36yZHLCtfAKFS
-	NIgRsZ+GCfzVmK/3HxMTzF2KPbLq45wFNHwKQoriC1g21KCe4fSWZU5hqfrgyzihpfKiqB
-	qR5rDh2lNIAAG8MjB+9NaSgQtCQwb+s=
+	bh=H/Q2uFiWqDBb8xqHpNo0BQBrMpfRMKZw5TP1oZm+kmg=;
+	b=ln8dUWNY6x/zNsA6RG9gii6LOaIrrgk8c4h9EbqnngmIsQ8T86vl/QgkoaiSGOMuI7jf8e
+	gqiFLbo8X4hDPvwewW2V7XS2iH/KYnRzBJEJWeELPsRGWpuYKyb7i+PBZdeJ9n1L3WVMqG
+	+uHbFo+135QbjoDDAiyn6EBxV4GmZU8=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iha9zwIE;
-	spf=pass (imf18.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FA99JUjo;
+	spf=pass (imf21.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789471890;
-	b=Yi+GvrEmYPoYCW8ovoydEaSsO0C5UukieuuxbB5oELuagVFT5fTkEl0eS1rv7A+CrF7HE8
-	Au7B88mZHqO0Vh39tILk+Jabq/H6q60MBPk52YNzIjnC7BJ6Y+lIsmiS/YgneLuz+ZvDxT
-	vl69tuR9Uh9KZl8sxQTHw0HTO9OCdTY=
+	t=1789471897;
+	b=elQ71JBTZ7tbfaKpF/lDVCkBKpgaNOXCT0HvOmaecNXi0iRfBkOJvWJ004+08ZTVmcRMlu
+	SBZ+TiU+vpQwgE+Rx/x+otCwXs0kHSE7drrI0BxD5qRxXWpoIaezRlIt3TcOgiVIGB0F+0
+	9E88+yDKZn8RAmFZ6Ock+CKM0wQsXnQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E907E602C3;
+	by sea.source.kernel.org (Postfix) with ESMTP id 5CA8843C41;
+	Tue, 15 Sep 2026 11:31:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19D9E1F00898;
 	Tue, 15 Sep 2026 11:31:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 755561F00893;
-	Tue, 15 Sep 2026 11:31:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789471888;
-	bh=BV+bpXMF0kMr9afG7XMe1ZpQQUGKxWkKKhyZrn6MnI4=;
+	s=k20260515; t=1789471896;
+	bh=H/Q2uFiWqDBb8xqHpNo0BQBrMpfRMKZw5TP1oZm+kmg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=iha9zwIEtPNkm47XS9IHbSz+doc5x/a0q/BqO5RtdRLBAwJzWWK80HBFjho8vmdLm
-	 FVXtzi7D7n3QZYfGQUCaFyIX3kmSsTcpUvtiUA6x4KKHv/BBBHR1xLNY7O8V+AYhW5
-	 6cijN8aepL9eGspZfHpuTUE9Uq0wYtHVBWMS4wfdRaRp4qChXosjV75w3F2vajImL0
-	 37udrL9kmbghIGDt8lvamiamwd5W3kRtRtu7QLfk+6ZfTko2QQy8lt94CL9MoHGkzk
-	 YL+StidMUnw4Q+mYhHY2HGWnUmxnlaLD+cmj782YsQP2euPh3/aoEsXUeTUBCBHLQg
-	 cIiDaVWOaMMdQ==
+	b=FA99JUjog1yV1DbWoG2ziqsNO+0sw6EHhtLDfJByBVRaUjyRjJwu1VFldCsris1pZ
+	 e2wCrK7C66Yw9jz989T8vHtdcQycYZY1aOUXtThwXFvZsxHJJ78r7g7qoZrOOkMU/s
+	 lj0gTkb4Mh3TKCRQmb0rlBwKhGV75TJbATZem6Sjbrdch9yj+/sxhbvRUPzaeynzTg
+	 lmZfZ3Gj1rUe2RlV3+OteWTMGEeRJFR//N1tZnHmdQHnT01ZVBDm1L4xmKQwmCU+jR
+	 umSCRuNroMIzP8zt6GPqOvmEIb6PE+fF3iEwa5/6zDnWWP2+oNJbKhA8JiapM5A8Pv
+	 P/GWj9Gp89ypA==
 From: Christian Brauner <brauner@kernel.org>
-Date: Tue, 15 Sep 2026 13:30:47 +0200
-Subject: [PATCH RFC POC 01/50] file: install files on syscall exit
+Date: Tue, 15 Sep 2026 13:30:48 +0200
+Subject: [PATCH RFC POC 02/50] entry: commit fds on syscall exit
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260915-work-fd-reserve-unify-folded-v1-1-4d5217d6b246@kernel.org>
+Message-Id: <20260915-work-fd-reserve-unify-folded-v1-2-4d5217d6b246@kernel.org>
 References: <20260915-work-fd-reserve-unify-folded-v1-0-4d5217d6b246@kernel.org>
 In-Reply-To: <20260915-work-fd-reserve-unify-folded-v1-0-4d5217d6b246@kernel.org>
 To: Linus Torvalds <torvalds@linux-foundation.org>
@@ -93,22 +93,22 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jann Horn <jannh@google.com>,
  kexec@lists.infradead.org, linux-hyperv@vger.kernel.org, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.17-dev-db0b7
-X-Developer-Signature: v=1; a=openpgp-sha256; l=12607; i=brauner@kernel.org;
- h=from:subject:message-id; bh=qwpcRc0Jz1/hf+VtwtU8xLhtdahWTgGJe+R6RdnVR1g=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSt1Kn5Lv3aQNl0bc5joV2rHG692cW0rpr7WL5SYUXhg
- aV+y6cpd5SyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAExk0i+G/3mbDwQKNu5VuZek
- N3OWQP6mtXkp0f/+1gs5LXbLerLqtSkjwznpCQcXHti+8cTFD50rwvm6Jr72yVvkOkcw0aS/fZ7
- eGlYA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5066; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=NtpqRPTNAZlEeaPhe0rYOorWsOpjpNCIyBf0GHcmRWk=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSt1KnJVo3fvV5S5/Sii+rtiZfVW3bllXHI7rc8Ks4gk
+ ree7ZZuRykLgxgXg6yYIotDu0m43HKeis1GmRowc1iZQIYwcHEKwEQusDD8Lz+/bproy5BneSeO
+ 7On6+Fbpk7eF5doft2tsDJMENZ0vdjP89zl45Kb3WpH+yPBZEx9N/6r6VywwdGaxQ76IV1yGifk
+ iNgA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 114E91C0004
+X-Stat-Signature: i11ufxegbsq75xnzgyh7afzapizenfox
 X-Rspam-User: 
-X-Stat-Signature: xqnsuz6euucf5xs8t44y1d7xgowtiqx1
-X-Rspamd-Queue-Id: 301D81C000B
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789471890-2080
-X-HE-Meta: U2FsdGVkX197mZukgRsIpsBQ+Q2PSxZGPArNOJeIq2gYmvKX9w3oMNEx7qfNcuxCSjvW5u6qybHFpng8OpnjDRjDBiM4LJsxwZwb5b8vomL3Oxga9qwbjgfM+6Y/xvDGm4kHPDgbPde5ZEVA5xTNczYTik/ri7wBtgwA4d7U74RB+CLJhutKpZOOK6uds62mFZq0LdM8zqEYzJzRKwU6YZXHK4p9ALQFSg2aDfSTJovx5lkwbn9tf3n14sB+lA3Lx5oM0xN4ewOdGOMv/ZQpYliWfqOLQUOBejGxDSGWlSKiLPzIYc9kWP1TasJI2rnPfgNswGaxfkTvz8FZPKA+Y6i5ONvpWEF+ppcIpDU+y8MtYkyuzMpd8ZTCCOL1F9p5BoIq1AXU+PMTNZzwyHGB5FbOFaCjNYGgwfBudJ485hFOHVDGAZDKYsaoopggDp6C/opsecpAGuCfrW4Ewum5DrzJ1vZ2WuuC+gYkmTl05i4bSaQd8fXtUBzhJE+tt3CfPShl1KOJj5nhGK1uVHHDT44XpcNF/xWGe9jlfwQOxvv7ZOXIeA9oQheSPTgVkwvDY8L+01pOF4YIXKEI6XNN4JRa86NLqBVhYV6gDCvRVkbdtS1e1Feb8I0OHw15MUtBZVFy/oXOA//amAdKSP4RmxMEF8AeUJoQiJvGMpog1tgswkMSCcxkETsWgLap1o5W5QnvMZmY0voYvs4yjL+S3GgcnZYYrh7gveqRghCg6FSOnHRVEpGNRyNiSPNP9QtgoSpF7W3Ri5SwTaLWfcYulvfN67ou6ZGnXfJ4/2LhgoOl9ERMHbgw98twK0aI7uMLnpQlXjIxeRMzBRG8eaFXavPmOA3xXin+LUWrRu/Fk/LqdO3F2XYcNKHBOH8oGJzcqNSnmuGGvj7F7yjaLfPvpyRJINkbwPb8+ZsduC92AUjXch500nICF563rv1BYtvCHSFKXkGWGnUbIAfkZsY
- NDyAi6p0
- l278PbgE2T9+MZGQjR4kxn3kuYz07zLz8HfJyKrbwye7GxR1RXXV5829oqpHPjghDx6T4Lm3Dp99Dh1+3tUube75Plk/GMukwG5nIOHg3TgkJ4fZDRlSJil4a3cF6JjKQqHarLX0y4Uiewsihmb2ZPI2kHlQaawYCMM60BWllF9u5KabWLt7OwsEBnkdk675Tpr37Escy/nqflrkNVTzcNDBzv3bvPv2aNMT/acw/W+EcmVCmoXmk7PWLe+G3lxrml8mkY4J/ih8ige8=
+X-HE-Tag: 1789471896-419309
+X-HE-Meta: U2FsdGVkX18scEbJ4y51DpkpI+KXMZ5bSRf5QmYKrcx4iBO71UImt/CSyZEaFbLupxFopec3GDc7iZDmDEvva+z5Di1vOnbpZYaqitkVptZKXQGDv6KhyBFLLa2zZMfFZkxeRCHjzDYQAhfNGRJlp1XwIrcZXgPGFH/ezLPWfGseANOONQpbrBcJklu1kT7eCfr7YD+jiKFRHzekeU0UG9FfO9ydDPILjUyTCfKXinQDsH3jO9yCWFRi8dnyzAZxJioBYSg1hdOLk27tAXU1szu+/pGvVKlUn0jLrf41X/QH+BlzSm3eyE346oFQ00pSiCHZG4CEhCu2Uq8pkE1TO491OLuOE1rgtYbXjDreiJBpcMr725SiTtn30UKqgdpba8cR+lGrUvs77WagYV/mwnvAdPu2wIldnShs5fZ8/K3GDYZR7eIiPvCVVpN5Q97fexT9AOu/4dZXVB0mX8K4VM23KdKw+EqKN0BlILeV5NOvLssSe4H5syhi4PXKEDUKiIBrpSlSa9nClp2B1a7lLukyv10RoqSzLHm7xEFxArzf2WJmySt7oKS1EnQUc03GcLknh+0z1CgT8skDzBmMKYqVaAjSaytbUaTk3mnl6HYdbc3YKb0E1VX1VJe8xxnGUTiAjx1sl6EB9MAE9e2Orp3AMuVZhX3m4msMCv/Fxcn/qa5UZUwiUv8+LZZX8Dnb9dJY+oBDa28T6ioQU7rYMoqHRcgDvQVhZqww9VSOdh1+NYgjKo9H5gKxlyfISt52FNZJdEgHthLr0XVbczurN66BAzQbRkLkhHfkk/ErJ5Bt8k+JEZgjWQ8SwgVhDPISqzJfdCfbiuy3/EJarrCqiZ9VOOJ//+kyb1YMKCMaXyOsEpfzMrYwsG81UBlWcq4Knf/MJAvIFn7yFNfTLkcGgIQ05XULPWpsGZg31lFaQaOfkkjbpKOVS6Wcmp83+n6MImjoHuRKcKUaMaG+Es8
+ w4WzPF5w
+ 9dTvKWTKOwUmrMEk27cJ42RXzXl4UyJrBCLxpkc6xRfYv4vT3HRTlqblH+ghS0z0WsAyljn6x2sSW3psmfvLslzQ3JFS5Hysvg+GU5msCl/FlEzr46qaxoSsmNKr7WDVg8ru3MZswWLbeBZsH67veG2HeVcdJFRaX6usOIIF70yX03M6poZ/XgB/sJ6pi3k/Laidiz2ia1jX7QdKfNt8mvHJ6K9LJFXqjl4Iny+qivPAF543iV1g+4I5xbg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,405 +116,145 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-So we've spoken about this idea quite a few times over the years that
-we could reserve fds and files on a task and then install or a clean
-them up on syscall success or error and get rid of most of the
-complicated cleanup dance that we have.
+Reserving a descriptor with fd_prepare() marks the task with
+SYSCALL_WORK_FD_SLOTS. The syscall exit path already tests the
+syscall work bits so a syscall that deferred nothing pays nothing new
+and one that did takes the slow path. syscall_exit_work() commits the
+reservations before audit and ptrace.
 
-My original approach to this had been to implement FD_PREPARE() based on
-cleanup guards and use scopes to make this happen. The other idea was
-what I'm illustrating here. It is overall equally robust and makes the
-install fd and file pattern work even if it there's a ton of cleanup or
-setup work happening in the middle. This is particular evident in the
-conversions of various dma/drm code later in the series.
-
-So this lets the syscall path do the install. fd_prepare() allocates a
-descriptor like get_unused_fd_flags() does and records it in a slot on
-the task. fd_stage() attaches the file to that slot and returns the
-number.
-
-When the syscall returns success the exit path installs every staged
-file. When it returns an error it drops the descriptors and the files.
-
-So a caller reserves, hands the number to userspace whenever it wants,
-creates the file, stages it and returns errors without unwinding
-anything.
-
-fd_prepare() returns the slot itself, as a const pointer. The
-preexisting fd_prepare_fd() and fd_prepare_file() give access to the fd
-and file.
-
-get_unused_fd_flags() and fd_install() don't change. A descriptor is
-only reserved where a caller asks for it. And open(), dup() and all
-other syscalls that maximize speed simply use FD_ADD().
-
-The task keeps two slots inline. For SCM_RIGHTS and multi-descriptor
-ioctls a spill array is added. It stick with the task.
-
-Reservations belong to the thread and the syscall that made them. A
-child of fork() starts without any. A thread can't unshare its
-fdtagble with outstanding reservations. Kernel threads never return to
-userspace so nothing would commit. Anything left at exit is a bug and
-gets warned about and dropped.
+Architectures without the generic entry code grow TIF_FD_SLOTS bit in
+their syscall exit work in the following patches.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/file.c             | 203 +++++++++++++++++++++++++++++++++++++++++++++++++-
- include/linux/file.h  |  37 +++++++--
- include/linux/sched.h |  21 ++++++
- kernel/exit.c         |   1 +
- kernel/fork.c         |   1 +
- 5 files changed, 256 insertions(+), 7 deletions(-)
+ fs/file.c                    | 24 ++++++++++++++++++++++++
+ include/linux/entry-common.h |  8 +++++++-
+ include/linux/file.h         |  2 ++
+ include/linux/thread_info.h  |  2 ++
+ 4 files changed, 35 insertions(+), 1 deletion(-)
 
 diff --git a/fs/file.c b/fs/file.c
-index 628ca07dc4b1..90351241bb07 100644
+index 90351241bb07..6fa481d63dcf 100644
 --- a/fs/file.c
 +++ b/fs/file.c
-@@ -630,14 +630,215 @@ static void __put_unused_fd(struct files_struct *files, unsigned int fd)
- 		files->next_fd = fd;
- }
+@@ -23,6 +23,7 @@
+ #include <linux/file_ref.h>
+ #include <net/sock.h>
+ #include <linux/init_task.h>
++#include <asm/syscall.h>
  
--void put_unused_fd(unsigned int fd)
-+/* Release @fd in the table, its slot is the caller's business. */
-+static void fd_release(unsigned int fd)
+ #include "internal.h"
+ 
+@@ -643,6 +644,19 @@ static void fd_release(unsigned int fd)
+ /* Enough for SCM_MAX_FD, and a page of slots on 4K pages. */
+ #define FD_SLOTS_SPILL_MIN	256
+ 
++/* Make the syscall exit path call fd_slots_commit(). */
++#if defined(CONFIG_GENERIC_ENTRY)
++#define fd_slots_set_work()	set_syscall_work(FD_SLOTS)
++#define fd_slots_clear_work()	clear_syscall_work(FD_SLOTS)
++#elif defined(TIF_FD_SLOTS)
++#define fd_slots_set_work()	set_thread_flag(TIF_FD_SLOTS)
++#define fd_slots_clear_work()	clear_thread_flag(TIF_FD_SLOTS)
++#else
++/* Nothing commits until the architecture provides the flag. */
++#define fd_slots_set_work()	do { } while (0)
++#define fd_slots_clear_work()	do { } while (0)
++#endif
++
+ static struct fd_slot *fd_slot(struct fd_slots *slots, unsigned int idx)
  {
- 	struct files_struct *files = current->files;
+ 	if (idx < FD_SLOTS_INLINE)
+@@ -690,6 +704,8 @@ static struct fd_slot *fd_slot_record(int fd)
+ 	}
+ 	ACCESS_PRIVATE(slot, fd) = fd;
+ 	ACCESS_PRIVATE(slot, file) = NULL;
++	if (!idx)
++		fd_slots_set_work();
+ 	slots->nr = idx + 1;
+ 	return slot;
+ }
+@@ -809,6 +825,14 @@ static __always_inline void fd_slots_finish(struct fd_slots *slots, bool failed)
+ 	else
+ 		fd_slots_drop(slots);
+ 	slots->nr = 0;
++	fd_slots_clear_work();
++}
 +
- 	spin_lock(&files->file_lock);
- 	__put_unused_fd(files, fd);
- 	spin_unlock(&files->file_lock);
++/* Syscall exit hook, keyed on the return value the caller will see. */
++void fd_slots_commit(struct pt_regs *regs)
++{
++	fd_slots_finish(&current->fd_slots,
++			syscall_get_error(current, regs) != 0);
  }
  
-+/* Enough for SCM_MAX_FD, and a page of slots on 4K pages. */
-+#define FD_SLOTS_SPILL_MIN	256
-+
-+static struct fd_slot *fd_slot(struct fd_slots *slots, unsigned int idx)
-+{
-+	if (idx < FD_SLOTS_INLINE)
-+		return &slots->inline_slots[idx];
-+	return &slots->spill[idx - FD_SLOTS_INLINE];
-+}
-+
-+/* Room for slot @idx in the spill array, doubling as it fills up. */
-+static noinline struct fd_slot *fd_slots_spill(struct fd_slots *slots,
-+					      unsigned int idx)
-+{
-+	unsigned int max = slots->spill_max;
-+	struct fd_slot *spill;
-+
-+	idx -= FD_SLOTS_INLINE;
-+	if (idx < max)
-+		return &slots->spill[idx];
-+
-+	max = max ? max * 2 : FD_SLOTS_SPILL_MIN;
-+	spill = kvrealloc(slots->spill, array_size(max, sizeof(*spill)),
-+			  GFP_KERNEL_ACCOUNT);
-+	if (!spill)
-+		return NULL;
-+	slots->spill = spill;
-+	slots->spill_max = max;
-+	return &spill[idx];
-+}
-+
-+/* Record @fd in the next slot, returns the slot. */
-+static struct fd_slot *fd_slot_record(int fd)
-+{
-+	struct fd_slots *slots = &current->fd_slots;
-+	unsigned int idx = slots->nr;
-+	struct fd_slot *slot;
-+
-+	/* Nothing would ever commit what a kernel thread prepares. */
-+	VFS_WARN_ON_ONCE(current->flags & PF_KTHREAD);
-+
-+	if (likely(idx < FD_SLOTS_INLINE)) {
-+		slot = &slots->inline_slots[idx];
-+	} else {
-+		slot = fd_slots_spill(slots, idx);
-+		if (!slot)
-+			return ERR_PTR(-ENOMEM);
-+	}
-+	ACCESS_PRIVATE(slot, fd) = fd;
-+	ACCESS_PRIVATE(slot, file) = NULL;
-+	slots->nr = idx + 1;
-+	return slot;
-+}
-+
-+/* The slot holding @fd, if this syscall prepared it. */
-+static inline int fd_slot_find(struct fd_slots *slots, unsigned int fd)
-+{
-+	unsigned int idx = slots->nr;
-+
-+	while (idx--) {
-+		if (ACCESS_PRIVATE(fd_slot(slots, idx), fd) == fd)
-+			return idx;
-+	}
-+	return -1;
-+}
-+
-+/**
-+ * fd_prepare - allocate a descriptor that the syscall exit installs
-+ * @flags: O_CLOEXEC or 0
-+ *
-+ * Returns the prepared slot as a const handle or an error pointer.
-+ */
-+const struct fd_slot *fd_prepare(unsigned flags)
-+{
-+	struct fd_slot *slot;
-+	int fd;
-+
-+	fd = get_unused_fd_flags(flags);
-+	if (fd < 0)
-+		return ERR_PTR(fd);
-+
-+	slot = fd_slot_record(fd);
-+	if (IS_ERR(slot))
-+		fd_release(fd);
-+	return slot;
-+}
-+EXPORT_SYMBOL(fd_prepare);
-+
-+/**
-+ * fd_stage - attach the file to a prepared slot
-+ * @slot: slot from fd_prepare()
-+ * @file: the file to install, consumed
-+ *
-+ * Returns the number. The syscall exit installs @file there when the syscall
-+ * returns success and drops it when the syscall returns an error.
-+ */
-+int fd_stage(const struct fd_slot *slot, struct file *file)
-+{
-+	struct fd_slot *s = (struct fd_slot *)slot;
-+
-+	VFS_WARN_ON_ONCE(ACCESS_PRIVATE(s, file));
-+	ACCESS_PRIVATE(s, file) = file;
-+	return ACCESS_PRIVATE(s, fd);
-+}
-+EXPORT_SYMBOL(fd_stage);
-+
-+/**
-+ * __fd_slot_fd - the descriptor number of a prepared slot
-+ * @slot: slot from fd_prepare()
-+ */
-+int __fd_slot_fd(const struct fd_slot *slot)
-+{
-+	return ACCESS_PRIVATE(slot, fd);
-+}
-+EXPORT_SYMBOL(__fd_slot_fd);
-+
-+/**
-+ * __fd_slot_file - the file staged into a slot, to configure before install
-+ * @slot: slot from fd_prepare()
-+ *
-+ * Returns the file handed to fd_stage(), or NULL before one is staged.
-+ */
-+struct file *__fd_slot_file(const struct fd_slot *slot)
-+{
-+	return ACCESS_PRIVATE(slot, file);
-+}
-+EXPORT_SYMBOL(__fd_slot_file);
-+
-+/* Install every staged file, release the slots that never got one. */
-+static void fd_slots_install(struct fd_slots *slots)
-+{
-+	unsigned int idx;
-+
-+	for (idx = 0; idx < slots->nr; idx++) {
-+		struct fd_slot *slot = fd_slot(slots, idx);
-+
-+		if (ACCESS_PRIVATE(slot, file))
-+			fd_install(ACCESS_PRIVATE(slot, fd),
-+				   ACCESS_PRIVATE(slot, file));
-+		else
-+			fd_release(ACCESS_PRIVATE(slot, fd));
-+	}
-+}
-+
-+/* Release every slot's descriptor and drop the staged files. */
-+static void fd_slots_drop(struct fd_slots *slots)
-+{
-+	struct files_struct *files = current->files;
-+	unsigned int idx;
-+
-+	spin_lock(&files->file_lock);
-+	for (idx = 0; idx < slots->nr; idx++)
-+		__put_unused_fd(files, ACCESS_PRIVATE(fd_slot(slots, idx), fd));
-+	spin_unlock(&files->file_lock);
-+	for (idx = 0; idx < slots->nr; idx++) {
-+		struct fd_slot *slot = fd_slot(slots, idx);
-+
-+		if (ACCESS_PRIVATE(slot, file))
-+			fput(ACCESS_PRIVATE(slot, file));
-+	}
-+}
-+
-+static __always_inline void fd_slots_finish(struct fd_slots *slots, bool failed)
-+{
-+	if (likely(!failed))
-+		fd_slots_install(slots);
-+	else
-+		fd_slots_drop(slots);
-+	slots->nr = 0;
-+}
-+
-+/* Install or drop the prepared descriptors based on @ret. */
-+void __fd_slots_commit(long ret)
-+{
-+	fd_slots_finish(&current->fd_slots, IS_ERR_VALUE(ret));
-+}
-+
-+void exit_fd_slots(void)
-+{
-+	struct fd_slots *slots = &current->fd_slots;
-+
-+	/* A syscall must not exit with prepared descriptors outstanding. */
-+	if (WARN_ON_ONCE(slots->nr))
-+		fd_slots_finish(slots, true);
-+	kvfree(slots->spill);
-+}
-+
-+/**
-+ * put_unused_fd - give a descriptor back before it got a file
-+ * @fd: descriptor returned by get_unused_fd_flags()
-+ *
-+ * Not for a prepared descriptor, the syscall exit releases that one.
-+ */
-+void put_unused_fd(unsigned int fd)
-+{
-+	VFS_WARN_ON_ONCE(fd_slot_find(&current->fd_slots, fd) >= 0);
-+	fd_release(fd);
-+}
-+
- EXPORT_SYMBOL(put_unused_fd);
+ /* Install or drop the prepared descriptors based on @ret. */
+diff --git a/include/linux/entry-common.h b/include/linux/entry-common.h
+index 6574b7183c01..2da30e50cf59 100644
+--- a/include/linux/entry-common.h
++++ b/include/linux/entry-common.h
+@@ -3,6 +3,7 @@
+ #define __LINUX_ENTRYCOMMON_H
  
- /*
+ #include <linux/audit.h>
++#include <linux/file.h>
+ #include <linux/irq-entry-common.h>
+ #include <linux/livepatch.h>
+ #include <linux/ptrace.h>
+@@ -36,7 +37,8 @@
+ 				 SYSCALL_WORK_SYSCALL_TRACE |		\
+ 				 SYSCALL_WORK_SYSCALL_AUDIT |		\
+ 				 SYSCALL_WORK_SYSCALL_USER_DISPATCH |	\
+-				 SYSCALL_WORK_SYSCALL_EXIT_TRAP)
++				 SYSCALL_WORK_SYSCALL_EXIT_TRAP |	\
++				 SYSCALL_WORK_FD_SLOTS)
+ 
+ /**
+  * arch_ptrace_report_syscall_permit_entry - Architecture specific wrapper for
+@@ -245,6 +247,10 @@ static __always_inline void syscall_exit_work(struct pt_regs *regs, unsigned lon
+ {
+ 	bool step;
+ 
++	/* Install or drop the descriptors the syscall prepared. */
++	if (work & SYSCALL_WORK_FD_SLOTS)
++		fd_slots_commit(regs);
++
+ 	/*
+ 	 * If the syscall was rolled back due to syscall user dispatching,
+ 	 * then the tracers below are not invoked for the same reason as
 diff --git a/include/linux/file.h b/include/linux/file.h
-index 27484b444d31..fe2893eea945 100644
+index fe2893eea945..04dd85cdd9bf 100644
 --- a/include/linux/file.h
 +++ b/include/linux/file.h
-@@ -91,6 +91,8 @@ extern bool get_close_on_exec(unsigned int fd);
- extern int __get_unused_fd_flags(unsigned flags, unsigned long nofile);
+@@ -92,6 +92,8 @@ extern int __get_unused_fd_flags(unsigned flags, unsigned long nofile);
  extern int get_unused_fd_flags(unsigned flags);
  extern void put_unused_fd(unsigned int fd);
-+void __fd_slots_commit(long ret);
-+void exit_fd_slots(void);
+ void __fd_slots_commit(long ret);
++struct pt_regs;
++void fd_slots_commit(struct pt_regs *regs);
+ void exit_fd_slots(void);
  
  DEFINE_CLASS(get_unused_fd, int, if (_T >= 0) put_unused_fd(_T),
- 	     get_unused_fd_flags(flags), unsigned flags)
-@@ -118,6 +120,12 @@ DEFINE_FREE(fput, struct file *, if (!IS_ERR_OR_NULL(_T)) fput(_T))
+diff --git a/include/linux/thread_info.h b/include/linux/thread_info.h
+index 307b8390fc67..c80a87444286 100644
+--- a/include/linux/thread_info.h
++++ b/include/linux/thread_info.h
+@@ -47,6 +47,7 @@ enum syscall_work_bit {
+ 	SYSCALL_WORK_BIT_SYSCALL_USER_DISPATCH,
+ 	SYSCALL_WORK_BIT_SYSCALL_EXIT_TRAP,
+ 	SYSCALL_WORK_BIT_SYSCALL_RSEQ_SLICE,
++	SYSCALL_WORK_BIT_FD_SLOTS,
+ };
  
- extern void fd_install(unsigned int fd, struct file *file);
- 
-+struct fd_slot;
-+const struct fd_slot *fd_prepare(unsigned flags);
-+int fd_stage(const struct fd_slot *slot, struct file *file);
-+int __fd_slot_fd(const struct fd_slot *slot);
-+struct file *__fd_slot_file(const struct fd_slot *slot);
-+
- int receive_fd(struct file *file, int __user *ufd, unsigned int o_flags);
- 
- int receive_fd_replace(int new_fd, struct file *file, unsigned int o_flags);
-@@ -148,15 +156,32 @@ struct fd_prepare {
- /* Typedef for fd_prepare cleanup guards. */
- typedef struct fd_prepare class_fd_prepare_t;
- 
-+/* Do not use directly. */
-+static inline int __fd_prepare_fd_old(struct fd_prepare fdf)
-+{
-+	return fdf.__fd;
-+}
-+
-+/* Do not use directly. */
-+static inline struct file *__fd_prepare_file_old(struct fd_prepare fdf)
-+{
-+	return fdf.__file;
-+}
-+
- /*
-- * Accessors for fd_prepare class members.
-- * _Generic() is used for zero-cost type safety.
-+ * Accessors for a prepared descriptor. _Generic() bridges struct fd_prepare
-+ * (the cleanup class below) and struct fd_slot (fd_prepare()) while callers are
-+ * converted; the struct fd_prepare arm goes away with FD_PREPARE().
-  */
--#define fd_prepare_fd(_fdf) \
--	(_Generic((_fdf), struct fd_prepare: (_fdf).__fd))
-+#define fd_prepare_fd(_x) _Generic((_x),				\
-+	struct fd_prepare:	__fd_prepare_fd_old,			\
-+	struct fd_slot *:	__fd_slot_fd,				\
-+	const struct fd_slot *:	__fd_slot_fd)(_x)
- 
--#define fd_prepare_file(_fdf) \
--	(_Generic((_fdf), struct fd_prepare: (_fdf).__file))
-+#define fd_prepare_file(_x) _Generic((_x),				\
-+	struct fd_prepare:	__fd_prepare_file_old,			\
-+	struct fd_slot *:	__fd_slot_file,				\
-+	const struct fd_slot *:	__fd_slot_file)(_x)
- 
- /* Do not use directly. */
- static inline void class_fd_prepare_destructor(const struct fd_prepare *fdf)
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 8b3d47a325cc..52bbf9931908 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -832,6 +832,24 @@ struct task_ipi_mask {
- struct task_ipi_mask { };
+ #define SYSCALL_WORK_SECCOMP			BIT(SYSCALL_WORK_BIT_SECCOMP)
+@@ -57,6 +58,7 @@ enum syscall_work_bit {
+ #define SYSCALL_WORK_SYSCALL_USER_DISPATCH	BIT(SYSCALL_WORK_BIT_SYSCALL_USER_DISPATCH)
+ #define SYSCALL_WORK_SYSCALL_EXIT_TRAP		BIT(SYSCALL_WORK_BIT_SYSCALL_EXIT_TRAP)
+ #define SYSCALL_WORK_SYSCALL_RSEQ_SLICE		BIT(SYSCALL_WORK_BIT_SYSCALL_RSEQ_SLICE)
++#define SYSCALL_WORK_FD_SLOTS			BIT(SYSCALL_WORK_BIT_FD_SLOTS)
  #endif
  
-+/* Descriptors this syscall prepared, installed when it returns. */
-+#define FD_SLOTS_INLINE	2
-+
-+struct file;
-+
-+struct fd_slot {
-+	struct file			* __private file;
-+	int				__private fd;
-+};
-+
-+/* Inline up to FD_SLOTS_INLINE slots, the rest in the spill. */
-+struct fd_slots {
-+	unsigned int			nr;
-+	unsigned int			spill_max;
-+	struct fd_slot			*spill;
-+	struct fd_slot			inline_slots[FD_SLOTS_INLINE];
-+};
-+
- struct task_struct {
- #ifdef CONFIG_THREAD_INFO_IN_TASK
- 	/*
-@@ -1206,6 +1224,9 @@ struct task_struct {
- 	/* Open file information: */
- 	struct files_struct		*files;
- 
-+	/* Descriptors prepared by the current syscall: */
-+	struct fd_slots			fd_slots;
-+
- #ifdef CONFIG_IO_URING
- 	struct io_uring_task		*io_uring;
- 	struct io_restriction		*io_uring_restrict;
-diff --git a/kernel/exit.c b/kernel/exit.c
-index 97686af89501..ee108353a62c 100644
---- a/kernel/exit.c
-+++ b/kernel/exit.c
-@@ -1000,6 +1000,7 @@ void __noreturn do_exit(long code)
- 
- 	exit_sem(tsk);
- 	exit_shm(tsk);
-+	exit_fd_slots();
- 	exit_files(tsk);
- 	exit_fs(tsk);
- 	if (group_dead)
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 416758c8a3d4..59c5cfa3e482 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -980,6 +980,7 @@ static struct task_struct *dup_task_struct(struct task_struct *orig, int node)
- 	tsk->btrace_seq = 0;
- #endif
- 	tsk->splice_pipe = NULL;
-+	memset(&tsk->fd_slots, 0, sizeof(tsk->fd_slots));
- 	tsk->task_frag.page = NULL;
- 	tsk->wake_q.next = NULL;
- 	tsk->worker_private = NULL;
+ #include <asm/thread_info.h>
 
 -- 
 2.53.0
