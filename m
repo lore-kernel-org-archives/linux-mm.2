@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62B5FC88E53
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 11:37:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB45FC982CD
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 11:37:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 81D646B00D1; Tue, 15 Sep 2026 07:37:12 -0400 (EDT)
+	id C63B86B00D2; Tue, 15 Sep 2026 07:37:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F5BF6B00D2; Tue, 15 Sep 2026 07:37:12 -0400 (EDT)
+	id C3C0D6B00D3; Tue, 15 Sep 2026 07:37:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 732D36B00D3; Tue, 15 Sep 2026 07:37:12 -0400 (EDT)
+	id B7AE96B00D4; Tue, 15 Sep 2026 07:37:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 526D96B00D1
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 07:37:12 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EC8531A03BB
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:37:11 +0000 (UTC)
-X-FDA: 85215795462.20.9DCEB49
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 370E840006
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:37:10 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oOCbPxoT;
-	spf=pass (imf17.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9AB756B00D2
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 07:37:20 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 326821403DE
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:37:20 +0000 (UTC)
+X-FDA: 85215795840.14.CA74E79
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 5F6C6180002
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:37:18 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a6dDn4u7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789472238;
+	b=oz2jO4YnzX2l0i/cJHvkiOw5JXOohJ+XL9Nzf1xCvxiH/UeluALW2Zi9CBE1k/DAzDBNYQ
+	2mdbejB62EdPK5Eaf0UYcFm0akqRnpOXRTy1iUlH6FDOysi5vV+Mss8vWTUZwSf7XO9jkP
+	BBBRdpgOna+G0z1M6KEZG7inq7PhuD4=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a6dDn4u7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789472230;
+	s=arc-20220608; t=1789472238;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xKFkiCa0hlTe3sMnpSzoSnXToiZbVbh61g+KJO9ieuc=;
-	b=W+JR1F5YxULqsJR0nzT97rY0CCbKB/xMIW5+y/o8odTM1651ZP3Lfy1IdfFTs+eEm+8mnw
-	ACjA+3ic5/R6zuRw5ygV0d0zoaZLQ+1HtXu/giBLO/mMOu3ycipIAfHsZjowRXDU8TtSQJ
-	12xLaGzN6ClVWq2KiwyqIiDEhTOr2VA=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oOCbPxoT;
-	spf=pass (imf17.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789472230;
-	b=DVJUb283cXHb6yZZ8z+lfiA+rYg0sEZnLegV3olJ/5VefWYXzf4DJdrQGbnLals9mdYqng
-	DUS8Ebx7eAmztV0twyEr6elsuFOfU+K3IGxLLG/pZMmWWYwKwf+TqII1h+rJ8WTg8+Fk64
-	77qMeR+zW3kACAbQmoEDGLVjflxh6Ns=
+	bh=BqXm1gwNkPuV8t/s5aBHvxXoZQi1gmoyMrWOmcTh+e0=;
+	b=SzUV/lWWmayI3cRMXpo5ipjc/rFAidgB/GVL/94PuBc0h86TkWyrXw9StERfMKh0zyNVyL
+	Lzcnih4/bjB9jXONUwWxExrDPD6rvgZID+73C3PcaebfEDc5IxlRqIm6cCZUR6iFMthnTY
+	N4KdbtZNQvz6S2ziRFUGklHdGgIdCAo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CD294602C4;
+	by sea.source.kernel.org (Postfix) with ESMTP id ABFD44184D;
+	Tue, 15 Sep 2026 11:37:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A48B1F0089B;
 	Tue, 15 Sep 2026 11:37:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D6561F000FF;
-	Tue, 15 Sep 2026 11:37:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789472229;
-	bh=xKFkiCa0hlTe3sMnpSzoSnXToiZbVbh61g+KJO9ieuc=;
+	s=k20260515; t=1789472237;
+	bh=BqXm1gwNkPuV8t/s5aBHvxXoZQi1gmoyMrWOmcTh+e0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=oOCbPxoTA5tRVDE1SDW2p9tC0NlFv3Be5GpoNWhYmURnweQxEsEdX5T61GQni5xDr
-	 dB8oKq6yW0o0+gkex/ln8ORrTi4m/ksGAeRyzNp36yZlNMlPyIA0cXetpfDQyX5Jlw
-	 kUeKik4FTXQWhScuFLMluxrSG6c9A9ZCbrTYp9zYSiEAOHtRRYECmeCyootOfrgsFF
-	 4aVzqXKYOQKlcIlDUd5HFPC99RpSLMKbQX+NeTk8Ib6ernTnIZhKKs5s66GAw9HT8a
-	 aS1v8S5YrjxrTs7D5UvVddV+Ou7n/rKAkdnUoUpvZBcB6uDYitfeHcIW+Z9u4N80Fg
-	 U5N4JdROMjYmQ==
+	b=a6dDn4u7UHWeS4oTPwJxZY/4MEQxfhe+w1dKAeLobwNA3kw8GA3R9jRM2UR2mitay
+	 53rP31LX9IqiX4KyqJPeG5/A7Wk+vS/URJ+UIVi9s1V2CPS0HR+hZ4KD6LOwLi84oS
+	 QHwPtObpcQ5V14Eq0QEfaz7SuQthG9rIDnYNoZNXfjPTl3loRHMdpOz24R20W3G90W
+	 UlZUihfBsJUGHcwdaoYH/9Wk5PPbgvkC3G4N/+PjxTb+vMzH1dM6mnf2s5E522jH4C
+	 ipwBTphCPJfK0gAPAR1mBJJ0lQjIBDvfQG7LHcMtNeNhxBkuWpXGTndvfVHeezP+yl
+	 SKtsU9/kk2SGQ==
 From: Christian Brauner <brauner@kernel.org>
-Date: Tue, 15 Sep 2026 13:31:31 +0200
-Subject: [PATCH RFC POC 45/50] accel/habanalabs: stop putting the dma-buf
+Date: Tue, 15 Sep 2026 13:31:32 +0200
+Subject: [PATCH RFC POC 46/50] xen/gntdev-dmabuf: stop putting the
  descriptor back on failure
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260915-work-fd-reserve-unify-folded-v1-45-4d5217d6b246@kernel.org>
+Message-Id: <20260915-work-fd-reserve-unify-folded-v1-46-4d5217d6b246@kernel.org>
 References: <20260915-work-fd-reserve-unify-folded-v1-0-4d5217d6b246@kernel.org>
 In-Reply-To: <20260915-work-fd-reserve-unify-folded-v1-0-4d5217d6b246@kernel.org>
 To: Linus Torvalds <torvalds@linux-foundation.org>
@@ -94,22 +94,22 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jann Horn <jannh@google.com>,
  kexec@lists.infradead.org, linux-hyperv@vger.kernel.org, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.17-dev-db0b7
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1297; i=brauner@kernel.org;
- h=from:subject:message-id; bh=ydrjF0IvCagPMk+8W3Lo5F+Om/GvHyzFN7KTNwOeZ+c=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSt1Kn/suYdZ5X5676SLT84zbaJW7EmM036Hiq6ZOOqB
- ZPZLiWKdJSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAExEfjfD/8KDx3tMQu5s8Nvq
- pTQrXEN8zcGDu7l3Sq29EHzMOo0/S5yR4VJD+//LnadWytZe1frxs+H8kb1LmHzvH1hrULDM+7H
- 3NRYA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1632; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=njDuxDGw0hmgU8wKPypyXyk5GfJpiYpSpC9eP8wkYpU=;
+ b=kA0DAAoWkcYbwGV43KIByyZiAGqpLH/I6D6Uv1WDf9ilssavQSoU/hfbYczV5DbAAkrVEcQbC
+ Yh1BAAWCgAdFiEEQIc0Vx6nDHizMmkokcYbwGV43KIFAmqpLH8ACgkQkcYbwGV43KLDpAD/YSHF
+ Q2prY93oobCwIjSF/SfO7Zal68tdHzxKNHmWJJEA/R/JD6+ZeSXqBuxwWtOWojlugYUiab/9tAe
+ INmLXFesK
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 370E840006
-X-Stat-Signature: myjmsmmf3dxuwr4cz6esgjf59jc7gpw3
 X-Rspam-User: 
-X-HE-Tag: 1789472230-140829
-X-HE-Meta: U2FsdGVkX19vOa4E6sxBkesCUHxF94ldcdZnx9CGUIT1KH0MulXfP3D6V3evgjlAI4A9EitvqEeBnHUxNEoq18H/W2ZkoZxuDO78lNc+tlBx9JnWs3BO8U+aILMlfPPBbGf0Zfr68xt+AIEzypvU0tjw5tCMnLgQqNwFirziH+LNK0+hZ55zVDUn2751HrngjmLoHXv6fH3cd2dtnlnlcU8iQbvCzdwREApKT9xfV3b9fZhSf6ksEK45d3+gxYD8Bt5U6TEYCyjEMmlqG5IjbNlktcufTqGeES2HqCW/Lso3lOksHkXu64sM0b1TplG5sotgMqF57kV+iWc5U1Zz5zOINdG11hrZ1DotlhW+upuoWL3hU+n973gGC95nZYxNBI03i0kKsvwx0WotGS+6wZudXDaxSjJRzaoHdF+M1vyaiXvQiDGRn2BMWEDwqzgNvyPT340YEkl2OW4i2ecsJnniOJOXXzGs65+qAb7ZWNEjgBk/4p3vfxU2RU0qifzNt6P0CnHE1r+FnA8w4cJ5RTo7fgsOSKh57c8a4kEevOIU6mBBVBwBKjlBrdUH4SU+JLaGkqecrkL0AOJmspoJjwOJZVi5bWh33ZHAlAxO5Iz/y1jea3pAVSRaPeR1YLiTQyee57x2WSGYdDLxcv52XzYc1+4dXrrjg8oJ41rGrFxLe7V/OWLVizwK0LjB0Bs3X68azU0q5ujrXLiAjejfdUnL+UYFlGRG0gdDcoa8sGeBxwe4VeyDLpqpSUUspZlM/ulX+LOR7rz3Ay/1nWWM+DJCHj0siq1EudpCQrMVZeFUyQuLhUSYL7KznCh95c3MkOaN1EgUfXydhgp9hRYNbh08Qh8E/RuvNm0XxQllAPlKqiIqXkmTkJvlKtZucBCTcthjKdpegE1FiU1Mu/OW+MKswfet/87dl7nwLQd36Gdjul3GQJzwBWR7V6xaDxk3d1iDnhlNCBM/Y7Uugrb
- rqKerE+o
- he2zesTU1/tye2woU1AIFaV/AMogykBLu64XtB3HT+gkGN2kBIcl36f8BL2tkEvGm7gfTDDg3xaMLKWCzG8xdNrIe6vVcYKebMBcWCpESplQxpAUDGGEIav4JGSr+z5K2OjnaHcN0BxanAAZr612Zs8CFo2qnhXT3m8mhQSColEfD/rFhoR+6POBh7mEZMiMcDLTg9M+PBUysGnmIMPX6LGeADXAhcSEhXSnlfx3EC6jO1LC5T00ViIBMBg==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 5F6C6180002
+X-Stat-Signature: n7ooyszfj1b3mqcayf39kqwon7zntpuh
+X-HE-Tag: 1789472238-407478
+X-HE-Meta: U2FsdGVkX18ou7kjlPNPu2JQUBCqjTToR93lrnJpU4TFHURbDz3ArZVFjv5cUxqOpcxWpY1kM58DkWk6e/LySMhi5BwKJcva7aLl335d0/gjWq5vaCxDXxfwJlVunBlykzBVYToANtnssQj1Rvysv/00AvKhVRegfWLU20FeNc9SRyE86bnVBeJ+6AEWzdcF53AL8n/zZ3DnxO+2ZMzN805npx8Pm5YMV3GiBcxQd+EiZF00rMXerSxotEgoLPQEDflxEmmBFsZQrml15U/vpgDbU0bwC9W9s+v/DnRqcdfi1ymEvevEyEiufTdjIXvOOKbFMHgzoeAxTFKlCYP3cf3VDinBcmzWJFZ55lKMW1b3tLwTGOpvwG76ADrekX7cGZr1x4pJe+5OGvyZT4mIsI3ctmgGPX7A+NtshIhPqvD95NzlX8xOHaIJ2ByYxV/jKOt6APcHb+fGbdO3kLxZVJVd3lTvePkGAYN6CEKV85frWIYB4DZkgrmJvwb6O8H+tXAMsb7dR3TYhO0zQV7YYOscA4WkELhd56yj9WrvH5p80Bf/MpL4RtQuNjB9/Qb0b3Fv/rOSShf6kiBiuUaO6oNxeZ3LXA8DnMJ5lUwiNJ08T1JEb+pA4UHLCUqIeLEv0DcU79J+fiGl/izwPax4jpfnaonbEJgOgkChfvuvym5FQfSb5DYlEnMzruN/LV3na9NmqDjnQh7uH/9lXIzb28L62PF/FV094WG67mXaxABRuVQyhV5aeRJmjabc3FM6yUHImdSsCov1tV8Mr486Iz5O6/jfmIZbuzbWJXLyjMfGLCU8DzwpdupiHmXw8ELysUyWduqVcvYTveSLUjbK8IsdqWZLtLabN9KEgGmLjAHew6JsYepuiagVzuBYOkVil2/ASX5JF1nKUv19g4FQbsT4uPA/L4/Y9Hy2cogI9JJ5IvAMFDjd2BDeHB0+yB+f2UniFwZ1FJq5xZGP5H9
+ mK9DmF3n
+ CWLWTmmhbgcDRtaRd7g7sPpJP7ATKNL1vzxpFNi+aFicxRnboF5RShwjfpR2UQznhlmJ+3S8VpQFykIS67zkVUNqTr1jzcJrJP5AzdAjvw6qY5GtXk/atlm02N5sBsnecKE2stGe7DupgLVL5hmpHPFT5zO8IUgekhNQuvLe4xrDyygZxOdhXsqiKSG3fP3rZTwHM+Q/8RUcWmpSjRRZ4V+uwNbjQ7NA+0NqAegq846c9jOaPV5YuLOPA3WNChkD1Pvyo/1Bc5s0RhAdcmQPqErHwrg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,41 +121,49 @@ Rely on the fd exit path machinery.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- drivers/accel/habanalabs/common/memory.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/xen/gntdev-dmabuf.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/accel/habanalabs/common/memory.c b/drivers/accel/habanalabs/common/memory.c
-index 361cff577381..1559442cd56f 100644
---- a/drivers/accel/habanalabs/common/memory.c
-+++ b/drivers/accel/habanalabs/common/memory.c
-@@ -1861,11 +1861,13 @@ static int export_dmabuf(struct hl_ctx *ctx,
+diff --git a/drivers/xen/gntdev-dmabuf.c b/drivers/xen/gntdev-dmabuf.c
+index 83b0df460894..a3ecc7c83974 100644
+--- a/drivers/xen/gntdev-dmabuf.c
++++ b/drivers/xen/gntdev-dmabuf.c
+@@ -357,10 +357,10 @@ static int dmabuf_exp_from_pages(struct gntdev_dmabuf_export_args *args)
  {
  	DEFINE_DMA_BUF_EXPORT_INFO(exp_info);
- 	struct hl_device *hdev = ctx->hdev;
--	CLASS(get_unused_fd, fd)(flags);
-+	const struct fd_slot *fd = fd_prepare(flags);
+ 	struct gntdev_dmabuf *gntdev_dmabuf __free(kfree) = NULL;
+-	CLASS(get_unused_fd, ret)(O_CLOEXEC);
++	const struct fd_slot *fd = fd_prepare(O_CLOEXEC);
  
--	if (fd < 0) {
--		dev_err(hdev->dev, "failed to get a file descriptor for a dma-buf, %d\n", fd);
--		return fd;
-+	if (IS_ERR(fd)) {
-+		int rc = PTR_ERR(fd);
-+
-+		dev_err(hdev->dev, "failed to get a file descriptor for a dma-buf, %d\n", rc);
-+		return rc;
- 	}
+-	if (ret < 0)
+-		return ret;
++	if (IS_ERR(fd))
++		return PTR_ERR(fd);
  
- 	exp_info.ops = &habanalabs_dmabuf_ops;
-@@ -1889,8 +1891,7 @@ static int export_dmabuf(struct hl_ctx *ctx,
- 	 */
- 	get_file(ctx->hpriv->file_priv->filp);
+ 	gntdev_dmabuf = kzalloc_obj(*gntdev_dmabuf);
+ 	if (!gntdev_dmabuf)
+@@ -388,17 +388,17 @@ static int dmabuf_exp_from_pages(struct gntdev_dmabuf_export_args *args)
+ 	if (IS_ERR(gntdev_dmabuf->dmabuf))
+ 		return PTR_ERR(gntdev_dmabuf->dmabuf);
  
--	*dmabuf_fd = fd;
--	fd_install(take_fd(fd), hl_dmabuf->dmabuf->file);
-+	*dmabuf_fd = fd_stage(fd, hl_dmabuf->dmabuf->file);
+-	gntdev_dmabuf->fd = ret;
+-	args->fd = ret;
++	gntdev_dmabuf->fd = fd_prepare_fd(fd);
++	args->fd = fd_prepare_fd(fd);
  
+-	pr_debug("Exporting DMA buffer with fd %d\n", ret);
++	pr_debug("Exporting DMA buffer with fd %d\n", fd_prepare_fd(fd));
+ 
+ 	get_file(gntdev_dmabuf->priv->filp);
+ 	mutex_lock(&args->dmabuf_priv->lock);
+ 	list_add(&gntdev_dmabuf->next, &args->dmabuf_priv->exp_list);
+ 	mutex_unlock(&args->dmabuf_priv->lock);
+ 
+-	fd_install(take_fd(ret), no_free_ptr(gntdev_dmabuf)->dmabuf->file);
++	fd_stage(fd, no_free_ptr(gntdev_dmabuf)->dmabuf->file);
  	return 0;
  }
+ 
 
 -- 
 2.53.0
