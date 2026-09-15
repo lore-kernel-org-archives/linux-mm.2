@@ -4,97 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4283CC88E75
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 13:24:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6C66C88E75
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 13:31:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 16AF76B0088; Tue, 15 Sep 2026 09:24:30 -0400 (EDT)
+	id C26416B0088; Tue, 15 Sep 2026 09:31:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1429E6B008C; Tue, 15 Sep 2026 09:24:30 -0400 (EDT)
+	id BB0686B008C; Tue, 15 Sep 2026 09:31:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 080236B0092; Tue, 15 Sep 2026 09:24:30 -0400 (EDT)
+	id A78336B0092; Tue, 15 Sep 2026 09:31:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D5AF36B0088
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 09:24:29 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E1FCE803E5
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 13:24:25 +0000 (UTC)
-X-FDA: 85216065690.17.973BCC6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 4421F4000C
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 13:24:24 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=clJ0vaxp;
-	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D3646B0088
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 09:31:43 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B7C08A03EE
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 13:31:42 +0000 (UTC)
+X-FDA: 85216084044.03.8F2091C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 0B6B120003
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 13:31:40 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Bxgsy2BH;
+	spf=pass (imf13.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789478664;
-	b=RNfvwIMJ9Y8V4tS3dMSXaqOy5htIiKIKAa3W/6+iiV89GqKjMvaKXOJSv+MKWE2HFl3xiV
-	U2LJ+6P3zyaL9GO6bmtYf8RCdqHRcRGjZfJVXTafuMbSs1xSZLHf6AFfOCT1bADaLgX1JK
-	4K5y8Ys3xK46bCNB7CFpXM4ywp4Xmoo=
+	t=1789479101;
+	b=Suf3h0MWMkgPHPye2rSCtsVHcLpewW8XJ8oH5jc0P18KLpjOucnS2wBhfnUR3yEL/iNcAb
+	qh2PBbQ+SL3Rsi95ZxVCJXkRD3NdOLI2ajPyYE60uT9R2EkG2ynFWGBRYaMuOTZLLFkh+E
+	AdKsWOrWEqwNfleYFZHmdixtLFfRvLo=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=clJ0vaxp;
-	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Bxgsy2BH;
+	spf=pass (imf13.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789478664;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1789479101;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kk0XHrASJtDcqcoYjyv1OoIDFhfagge458V6XsyOmPk=;
-	b=xQQsjH+dPnowsZNIAKXx7lFJ5hoYumSrkzHojWikkR2Xbj9Q2kXxAY9G1aedk3s0sMSAVu
-	bjnJT6Cza5gbyVkFhm3ASQx4DuElcDjcQOvk4BfDmPQiB16aX8f7w94s0trdCWKrC+calQ
-	cI4RRZT2wz0wZx9Oc5tGbQzut5m0jQA=
+	bh=szNMGe0DObGeR+SwRrUoeZsesJIvyvHlKuWjShKq/XM=;
+	b=dZiHmZsk+pzaase+yIhQiOaDhHUyKs80IIccax4CYuzPNxSOcsgK41UB5/9sVVTU5YfvOD
+	YEmJ4TndtAsdpBZFE6ka0J47GNqdz1/fjD/xoF1xFt1uM7ya7yQt35ZJNQLv5ITL19r/CR
+	vZDIpN87s1PmS5HZt0avZC2FVTm60rU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E22F7600D1;
-	Tue, 15 Sep 2026 13:24:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A5371F00899;
-	Tue, 15 Sep 2026 13:24:20 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 27A1C43C5C;
+	Tue, 15 Sep 2026 13:31:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AE8D1F000FF;
+	Tue, 15 Sep 2026 13:31:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789478662;
-	bh=kk0XHrASJtDcqcoYjyv1OoIDFhfagge458V6XsyOmPk=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=clJ0vaxp3sZXKwdBpf8y7D4hViqM4nFJmYSCrnv83plK3mCCe1Vo5znC49uX5JNHp
-	 6wrATjKzdnxnx3VpdI1iP7I6QMX7RQAwtLdtLnna1m+FdWYHgCtbX4LUcMSkd5rKqM
-	 vku4yNaOwmyZlw88cwMp1mr/E5vrxzrwO6eqRPMKYdn976UFdvVX7nvi8OB3baQ9Re
-	 9ovAl0QjkuXwklvSyFLaHZdl/yNn6+scd83y/4dwu22IQuhTLRWuPGPOPyQKH4CV5d
-	 iJzdHcs7SQMO+Jwp3IPkfx1iVIY2Z5TlFHKYC20wxoA75OJUkwf5p786a7f7mYPXnh
-	 5HlyU+wH7Cf9g==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 4/9] mm/memory-failure: efi: adopt the inherited
- poisoned-memory table
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Breno Leitao" <leitao@debian.org>, "David Hildenbrand" <david@kernel.org>, "Mike
- Rapoport" <rppt@kernel.org>, "Oscar Salvador" <osalvador@suse.de>, "Ingo
- Molnar" <mingo@redhat.com>, "Dave Hansen" <dave.hansen@linux.intel.com>, hannes@cmpxchg.or, "Ard
- Biesheuvel" <ardb@kernel.org>, shakeel.butt@linux.dev, "Borislav Petkov" <bp@alien8.de>, "Ilias
- Apalodimas" <ilias.apalodimas@linaro.org>, "Johannes Weiner" <hannes@cmpxchg.org>, "Liam
- R. Howlett" <liam@infradead.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Naoya Horiguchi" <nao.horiguchi@gmail.com>, "Andrew
- Morton" <akpm@linux-foundation.org>, "Thomas Gleixner" <tglx@kernel.org>, x86@kernel.org, "Michal
- Hocko" <mhocko@suse.com>, "Brendan Jackman" <brendan.jackman@linux.dev>, "Rafael
- J. Wysocki" <rafael@kernel.org>, "Zi Yan" <ziy@nvidia.com>, "H. Peter Anvin" <hpa@zytor.com>, "Suren
- Baghdasaryan" <surenb@google.com>, "Lorenzo Stoakes" <ljs@kernel.org>, kas@kernel.org, "Miaohe
- Lin" <linmiaohe@huawei.com>, "Danilo Krummrich" <dakr@kernel.org>
-Cc: linux-mm@kvack.org, linux-efi@vger.kernel.org, rmikey@meta.com, harry@kernel.org, riel@surriel.com, driver-core@lists.linux.dev, kernel-team@meta.com, linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org, kexec@lists.infradead.org
-In-Reply-To: <20260915-hwpoison-kho-v5-4-3bc7a57bd503@debian.org>
-References: <20260915-hwpoison-kho-v5-0-3bc7a57bd503@debian.org>
- <20260915-hwpoison-kho-v5-4-3bc7a57bd503@debian.org>
+	s=k20260515; t=1789479100;
+	bh=szNMGe0DObGeR+SwRrUoeZsesJIvyvHlKuWjShKq/XM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Bxgsy2BH8vB1k6x/MwDXjlbNVwjyZEYkY8k9e3PdVaD+xjsGtBcSM9mJabPOrJUzz
+	 kd+tHYqRrKZEq87R5a8vsjCkYvifnJ8NtGCJawmHnVkZckYqaVj42qfBwQldxWKjGN
+	 lGHVDHinmGCkNbzgPmoE22Y75nwCu0vz4nOwIRCQC+CkloWdVLGFpJuKkkt6yR3sjn
+	 nFZNRopmz55BHRoMcDgESNpOC07YvQkifLyL9ERd9uVTHuFnJV5FTShXlo1wH1UfV3
+	 opo03/Dn1lTUHe5SWpC77GI5+3vj4S6E08Us84DlyhteMV2n/GNLKKz3llO3ZNCFst
+	 ILzESzN/1go0Q==
+Date: Tue, 15 Sep 2026 14:31:38 +0100
+From: Harry Yoo <harry@kernel.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Kiryl Shutsemau (Meta)" <kas@kernel.org>, kexec@lists.infradead.org, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>, 
+	Brendan Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	rmikey@meta.com, riel@surriel.com, kernel-team@meta.com
+Subject: Re: [PATCH v4 2/5] mm/memory-failure: libstub: install the
+ poisoned-memory EFI table
+Message-ID: <aqlFnuIIECOyaweo@thinkstation>
+References: <20260909-hwpoison-kho-v4-0-359313564495@debian.org>
+ <20260909-hwpoison-kho-v4-2-359313564495@debian.org>
+ <2c9a7bef-3189-4f78-a6cb-61d2f7afd643@app.fastmail.com>
+ <aqKhgPKzRf0e22s3@gmail.com>
+ <aqkIdVhoG2wwVBtb@gmail.com>
+ <aqkyT0Ui9h5KWuzn@thinkstation>
+ <aqk4NUnq92ftuUuJ@gmail.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 15 Sep 2026 13:24:19 +0000
-Message-Id: <20260915132420.7A5371F00899@smtp.kernel.org>
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aqk4NUnq92ftuUuJ@gmail.com>
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 4421F4000C
-X-Stat-Signature: 58d5eo3hmfgy3yccb7f4nb5p4wq6ci5u
+X-Rspamd-Queue-Id: 0B6B120003
+X-Stat-Signature: w7jduoweay1cz3tpkadorurc8abhhzpu
 X-Rspam-User: 
-X-HE-Tag: 1789478664-605308
-X-HE-Meta: U2FsdGVkX18tCtIwpUlp5qRj9QNds6euJrsgBu4zbNNaVrA2xsZQivRyUF+Mmrbulo3m34SLtbDkBv9DPV/SibUonrVIx1neuumZNqrM9ailK3yRRs/fz0GhZxBaTkuHwIhb3giiHSN7Az8wyJ15wBzuehXe0AY3l01vB6DZdO5rRpbFYbWryLINqZM5WNijvRXleLD0s6jKtFA5TlLcEAhuAJlBwpqYumpZeC/gozadlqHHFRuWZNqygkDNfktAF9usSFOMiU7AJ8RY8bNvur6aF7raCM+dHf0oMTr8lTx1yq7GwZwdqLUzTj31CySeaHbIXZqZc5SG6A+OtSAITlwLLborD7pcTYZ18O8q2Gq+sJ90HOKfoyZNbntqruSMlt9WUa6U6tyaoExuLgolEIwnM3yIW6d3G212SyNx5MDLq93A3hLj2Rix0f9H9/X/SuZpE7bo4sXdGc8Qe868xMuhrvZ0QEkZMV0MIdtCpa3ZWhuz8624BoIUnf6PipIUVCylgTfsybYyXNLWbWBdC2HkG2ou7S+3tF/cQXfYu7h6+9GyqK3I6t1zlz6XoY/wCO1LrXIa2sVD7h4R5c6MJfDUW+26UOZ3t8JWoXau911/K/45estAdo26EKr7cKI39Ibmj7/xfFWdA458xK/SuOL2d0FvlRRwPIIdHhuNx+zUATQIop3vDIRgh7gkaPEl33pva4gPiMrlbeAJ/ZioKY1yMKYVElqB2+rL6+wcsFe9KS6WNKJlXL+cN0YhQR1y9X+J1jspt4IXnh26zSBiXTbPlsHwk5qRhssRDGWoh/WS0FjWYY877s+oXTiY/uwimb1JiiJVrRqGVh78wPOHSH2GUbWiDRQtzZSnlhDFWNXWcXlrob8YKHfIvojzGhF/FoXmUyQVNOZ+xizJE9RohgB/bwSuiicA68rpwHduagRoi1XI2SJI89+zKPPP5yP4fEyTaPWQc0P91C6KnyL
- sXSDZZz3
- pdj98tDICx8Bp9hAo+cJOEoWod0G1zOXsf/iSvbvJvEbetHtxaP2iCfxMJXPeaF2+nrf6yNK8BPKC+DVgx3oCjzDmL1zA+U+8L4xjQ7DG4KY8fChwyrPpQh7eueeU88KgDJE/7kdT3FoRd+D8BjnhvumVzbz5KRhiztjr0GA2SkicSnhvIYmNyBCIrczxcIOMZcL2MxuXS9ndFGzjoRzLjRDiTB7dr9IJ6aT2CSR3b3BcNp57uTrdFqquuvPoDugV7dvWEPEKepCLxIBBp1aKe7GrxNN74doyw3qdM9g6xxymjdV97drWiAv6HO1fY0cVXJkzUyt1xkS9zdy0dsMbWxlQV2w37ux5G8I3RQ7PMM9Jn4IgmeuyoxxJlISk227f7wis9m8JCYtwCmPO5iVmW7w/sm5HwtyR57mJrmz1sj6azMGqEBUWwAVooEe/Y44qXyKVkQphZWyP3iSErNPhXk+/yGfJLA8VDY+AGbZe3Co1joUtqYzTeZb1BjTbgIya73FTEgUe2DT2zM9n/i2wmumX1VUjfEFPU1NjSPiy9aQ0Ta5hUrF6eDTB6WOL6kdvTcfkdd4xZKkv8+81J2YeBm0EheGJgiURoqdK7feeym67jBMN2TzRnmMGFpeAsG9cK4y469XmxaxbcICjrQcq9itK0IsBv8haqI5Qk/oXnfz1Ab8=
+X-HE-Tag: 1789479100-286782
+X-HE-Meta: U2FsdGVkX18OQQEHqmGZzcrsdC/U/cPxNqFXeeNzPtO1JWcFBRDGCeKIrSdaWJuj3yM0+sWrpZoDU5SGpX/6JkSCpdFMtyjR1vWD0IZ6Da32gmQWaSKNh03+lech8K3nOv42j23JWLLUT9gQKbrqlzXn+C3NPdDeucM+1KKRv8mCzSRAooDxuiBJtUjAAATn5BBUfJVSnF6h0CJZVrY2PXEXej7pjXLj2xElczrDyBDHMQLUQbGzrCJWWbJfj0XSeX8In73IWJMKEfwkddxhgiIkGRKVt1ICEaLT2MoVMEW+a1lWp7nfzKQKbTFuR80xVS9J3ykekzZWxuKSDGZ0RrrMFAx0KawA+lhdf9Wlas1BoFDy/JyyllaUTwvP8KFgdQBFq1zMlFrCLfkFF2uKvGF27dLYah+au54vvZtBp8PLsojPMNgZ3sq+vB6LMoF39hRnqCnJLGPpXA+KlAx2310NTkieQqyxVNXIzjy6/tvnEjKHg0xBEf8ym8FJljow5dX0oyXvW/CGBiTYu6o3beTzPkq2tGSIwjdksUx41MDEy2iT7HTRStKmSOQhIeVpv6ElmWpuczEKhk1say+KzWye37fyk/QEEeskX9yNe7/+RI0GVQZjPiGBwWA1xQNMcg0KL08+gb4GBP1UAIDcYq7K0e2uuRzrOGMJKk/OktbekMXWVu4vXXW4rOnxhB44LRbSESVTn+qVbWTPwPGKngdFkWtQFGiWvLN7Dwn/SCb3lRtaDlTBJzvLVgz/RYC1RD4QPIBW99R4VjslSD+/KhEPj+bWjy98ULHMjz6BuLDlE1LlNua0QycOmx57NP2Gz1QVHFuvFLNhPxolcc5jIJ7zce5A5DT7LXpG4+bnZ44KL1nSL5IxrUoCQYPOmReOdxOUzPu9iyL/VoJH1whEx6a4Tn6F4yIkGjvF4RK95cPEltXHbGI5cf8GQya4ogIkxf3CYUACO12nj+3rsHi
+ 4XsBDiqa
+ xqEPNqNH2WhKikvDgZSj2AZ7gNMf9O5HF0PXYuQwtaF7B0OOnbYzP1K2LjgVdXbmPZQncNAUd/bSo2axz6GRsTxPukuBzTUC3Z0gAQTqdrIK0QIc/hcPne9xDM72nmHeVOtGa9w2GtaqSfbdKit6LehmS2AtKhjRRnmZDH9hA7Ow3sD15x+nzr3EttHX36YRPR5e2/gnJw802n9TYa3+zS15chGO4ZsFkLkkn9nWbFwm2hF8bQikOfmOxYi9i39hKVGL8OqvPyI8Fr7JGNjFmYfAQPiT6SrHdB37Bc3AoEO++qEdl/ALOhfagql5o18x+HxF5kCif87V0cMHtk0dB0yZdDiY9iem53lB/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,85 +109,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] efi: ABI incompatibility in poisoned-memory table due to unsigned =
-long
-- [High] efi: ABI incompatibility in poisoned-memory table due to PAGE_SIZE=
- check
---
+On Tue, Sep 15, 2026 at 05:39:44AM -0700, Breno Leitao wrote:
+> Hi Harry,
+> 
+> Thanks a lot for the feedback.
 
-commit 213ea31d156bf79dbf85ad9fc8678fe09bddbde2
-Author: Breno Leitao <leitao@debian.org>
+Hi Breno, no problem!
 
-mm/memory-failure: efi: adopt the inherited poisoned-memory table
+> On Tue, Sep 15, 2026 at 01:12:54PM +0100, Harry Yoo wrote:
+> > On Tue, Sep 15, 2026 at 02:03:48AM -0700, Breno Leitao wrote:
+> > > On Thu, Sep 10, 2026 at 06:11:53AM -0700, Breno Leitao wrote:
+> > > > So I'd say we have two options:
+> > > >
+> > > > 1) Keep it similar to unaccepted memory, with 2M granularity.
+> > > >    - Pro : Similar mental model as unnacepted memory
+> > > >    - Cons: 2 MB might be a bit wasteful
+> > > >
+> > > > 2) Move to a linked list like the RFC, keeping it outside of the EFI
+> > > >    table.
+> > > >    - Pro: Reduce the memory granularities to page instead of 2M blocs.
+> > > >    - Cons: Another way of passing memory information between kexec
+> > > >      kernels.
+> > > >
+> > > > Any any other option or strong preference?
+> > >
+> > > Since nobody voiced a strong preference, I will stick with option (1),
+> > > the bitmap, for these reasons:
+> >
+> > Not sure if this was discussed already, but perhaps we need to have
+> > a chain of struct linux_efi_poisoned_memory rather than a single
+> > bitmap, to easily add support for hot-added memory later?
+> 
+> Agreed, that's a good point. We could extend linux_efi_poisoned_memory
+> with a ->next pointer, so that if we ever add hot-plug support later, we
+> can link in another linux_efi_poisoned_memory. 
+> 
+> That said, I'm not sure hot-plug memory is really relevant here. Hot-plug
+> is mostly used in VMs, while this feature is more host-side, so it doesn't
+> seem like a great fit. Maybe it would only matter for servers where
+> physical memory can be added while running (do those still exist? I
+> recall IBM offered that feature at some point, but I'm not sure there are
+> real customers for it).
 
-This commit takes the inherited EFI poisoned-memory table into use by parsi=
-ng
-it in efi_config_parse_tables(). It validates the table header and hands its
-pages to memblock so everything afterwards can reach it with phys_to_virt().
+IIRC CXL memory modules can be set up either by firmware or hot-plugged
+after boot. Not sure how common the latter case is (or will be) in
+practice, though.
 
-> diff --git a/drivers/firmware/efi/poison.c b/drivers/firmware/efi/poison.c
-> new file mode 100644
-> index 0000000000000..3f12db3dc9b84
-> --- /dev/null
-> +++ b/drivers/firmware/efi/poison.c
-> @@ -0,0 +1,93 @@
-[ ... ]
-> +static bool __init
-> +efi_poison_geometry_valid(const struct linux_efi_poisoned_memory *pm)
-> +{
-> +	u64 nbits, end;
-> +
-> +	/* Whole words, and a bit count that can be taken without wrapping. */
-> +	if (!pm->size || !IS_ALIGNED(pm->size, sizeof(unsigned long)) ||
-> +	    check_mul_overflow(pm->size, (u64)BITS_PER_BYTE, &nbits))
-> +		return false;
+> > Also, I wonder if some architectures have a scattered set of pfn
+> > ranges so that the span from the start pfn to the end pfn being much
+> > larger than the actual physical memory size.
+> >
+> > If so it might make more sense to have a bitmap for each pfn range.
+> 
+> Agreed, having a ->next in linux_efi_poisoned_memory is a good idea that
+> we can lean on depending on whatever problem comes up down the road.
+> 
+> Very good point — let's keep this linux_efi_poisoned_memory chain idea in
+> mind for whenever we need to expand it.
 
-[Severity: High]
-Does this validation logic break binary compatibility across different kern=
-el
-bitnesses by relying on unsigned long?
+You mean 1) keeping the structure as-is for now (and expand later with
+new EFI table version) or 2) adjusting the structure in the future
+revision of this patchset?
 
-The ABI structure definition for linux_efi_poisoned_memory uses a
-variable-width type for the bitmap (unsigned long bitmap[]) rather than a
-fixed-width type like u64. If a 32-bit kernel (or 32-bit EFI environment)
-creates the table with a size that is a multiple of 4 (but not 8) and
-passes it via kexec to a 64-bit kernel, this validation will fail since
-sizeof(unsigned long) is 8.
-
-The 64-bit consumer kernel will reject the valid poisoned-memory table,
-losing hardware memory poison information. Accessing the unpoisoned memory
-subsequently triggers a Machine Check Exception (MCE), crashing the system.
-
-> +
-> +	/* And a footprint that can be page aligned without wrapping either. */
-> +	if (check_add_overflow(efi.poisoned_memory, sizeof(*pm) + pm->size,
-> +			       &end) || end > PHYS_ADDR_MAX - PAGE_SIZE)
-> +		return false;
-> +
-> +	if (pm->unit_size < PAGE_SIZE || !is_power_of_2(pm->unit_size))
-> +		return false;
-
-[Severity: High]
-Can this logic break kexec chains by tying the acceptance of an external ABI
-table to the consumer's local compile-time PAGE_SIZE?
-
-If a kernel configured with a smaller PAGE_SIZE (e.g., 4KB) sets
-pm->unit_size to 4096 and kexecs into a kernel configured with a larger
-PAGE_SIZE (e.g., 64KB), the new kernel evaluates 4096 < 65536 and entirely
-rejects the table.
-
-Discarding all hardware memory poison records can result in MCEs and system
-crashes when the supposedly good memory is allocated and accessed. Should
-the consumer instead accept the table and safely round up poisoned ranges to
-its native page granularity?
-
-> +
-> +	return IS_ALIGNED(pm->phys_base, pm->unit_size);
-> +}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260915-hwpoison-k=
-ho-v5-0-3bc7a57bd503@debian.org?part=3D4
+-- 
+Cheers,
+Harry / Hyeonggon
 
