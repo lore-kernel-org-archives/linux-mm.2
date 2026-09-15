@@ -4,118 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0F5AC88E53
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 06:14:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3150DC88E53
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 06:29:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A31226B0098; Tue, 15 Sep 2026 02:14:24 -0400 (EDT)
+	id D329F6B0088; Tue, 15 Sep 2026 02:29:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E29E6B0099; Tue, 15 Sep 2026 02:14:24 -0400 (EDT)
+	id CBD3B6B008C; Tue, 15 Sep 2026 02:29:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D04D6B009B; Tue, 15 Sep 2026 02:14:24 -0400 (EDT)
+	id B85146B0092; Tue, 15 Sep 2026 02:29:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 67A8F6B0098
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:14:24 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AA2CDC0348
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:14:23 +0000 (UTC)
-X-FDA: 85214982006.30.3AEDC69
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 14731A0007
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:14:21 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Cwwjt4nJ;
-	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8091F6B0088
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:29:35 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 805451C21C8
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:29:34 +0000 (UTC)
+X-FDA: 85215020268.25.DEE017A
+Received: from mail-pz2-f28.google.com (mail-pz2-f28.google.com [74.125.228.28])
+	by imf31.hostedemail.com (Postfix) with ESMTP id CA99D20005
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:29:32 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=gC9UnAuT;
+	spf=pass (imf31.hostedemail.com: domain of matthias.goergens@gmail.com designates 74.125.228.28 as permitted sender) smtp.mailfrom=matthias.goergens@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789453772;
+	b=UcFrYzmJgeOPfEMwCeuuw+QluAcFxpxjleK0RVGzI9iKXvAap1/x3y0VyQz+Mlx2r34OkY
+	ZmZln/jt/y3L7VXtEULnLtXSSwo9MLfkJ1JUTGNycyQeatlsyXVMHjISQYM5a5Ge+8C6Wj
+	50KPhnNTo7HPzC16M8BEXE3Ar0EbRok=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=gC9UnAuT;
+	spf=pass (imf31.hostedemail.com: domain of matthias.goergens@gmail.com designates 74.125.228.28 as permitted sender) smtp.mailfrom=matthias.goergens@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789452862;
+	s=arc-20220608; t=1789453772;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/xezU87Zq2Y1vT/o2bvpMtCWCufr1oupAxWYAhAbPVE=;
-	b=KF/ufVjQUeQMywMkjrsNej3o3iv5EPNuf2g0xEtTliTv6fpngaFPIR0Hvrc8Yea6HV09M3
-	HdHhgWEcji9qpbtLUOACHlQKQq1ZAgNeRrcy7hLiGUq11KSC+4y9noVQXN4/wJQFzu0B3B
-	nYaZBdfrNTk4cZMwQ1DhBqzFMdlUj50=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Cwwjt4nJ;
-	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789452862;
-	b=yKzQzEf1hmEPYIjkKquFFZ6vIQXyZVHQQEO+AG6QbFhOYR+gGHBXC03q4xofY0YpXMLcIp
-	96CepXOkSIiMR0ByZZiqi5+McmVElGDMY2Mik1seQr+hul3jvpA36Hrft9UyH8JHqeIjYC
-	hkJsxbqOgCJ/ibw6YUPpzw/cSIfb1R0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6A6A8600D1;
-	Tue, 15 Sep 2026 06:14:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3910C1F000FF;
-	Tue, 15 Sep 2026 06:14:19 +0000 (UTC)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Jliu2qQ+Am9D5/J1PCi8w8fiwrrDcbTYHcV6N7E5S9c=;
+	b=OcDIQesZgXj/XbNyDhr51sGllvLNo0hhX7iz2Xge4cYoOPAteAI/PU/NG1di2wQRpBUjA8
+	6k2NWzIkwaovdhwntuM+itRDrd0OEpXBrwDgrsbAgk/gugSvwkIwTUIEJ39RHcEcRImK+B
+	TMJec62LD0PKWhQ4nnBzWV3q8jACLvY=
+Received: by mail-pz2-f28.google.com with SMTP id 41be03b00d2f7-cc4ab4fe290so692161a12.1
+        for <linux-mm@kvack.org>; Mon, 14 Sep 2026 23:29:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1789452861;
-	bh=/xezU87Zq2Y1vT/o2bvpMtCWCufr1oupAxWYAhAbPVE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Cwwjt4nJYsaMpOAFBS96BKI8N+2+sK8qyZMEoJg8kDgjYtNT2BKKpZlwOV4sgpN7S
-	 855KBpJ5y+VTkRCRPDpDh2agL14R3mMuAGVEDtM5DfVAxwgvZ+edoZhOW3rum1Pzlo
-	 n7aEuG9bgOKttiqPyGo3uJh5NElBpjAtfEeOQXnI=
-Date: Mon, 14 Sep 2026 23:14:18 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Yury Norov <ynorov@nvidia.com>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Matthew Wilcox <willy@infradead.org>, Peter
- Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will
- Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>, Waiman Long
- <longman@redhat.com>, Dennis Zhou <dennis@kernel.org>, Tejun Heo
- <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, "Paul E. McKenney"
- <paulmck@kernel.org>, Frederic Weisbecker <frederic@kernel.org>, Neeraj
- Upadhyay <neeraj.upadhyay@kernel.org>, Joel Fernandes
- <joelagnelf@nvidia.com>, Josh Triplett <josh@joshtriplett.org>, Uladzislau
- Rezki <urezki@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, Mathieu
- Desnoyers <mathieu.desnoyers@efficios.com>, Lai Jiangshan
- <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>, Onur
- =?ISO-8859-1?Q?=D6zkan?= <work@onurozkan.dev>, Kees Cook <kees@kernel.org>,
- Joel Granados <joel.granados@kernel.org>, Anna-Maria Behnsen
- <anna-maria@linutronix.de>, Thomas Gleixner <tglx@kernel.org>, Juri Lelli
- <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>, Ben Segall
- <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, Valentin Schneider
- <vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, Mike
- Rapoport <rppt@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Lorenzo
- Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Jann Horn
- <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, "Michael S. Tsirkin"
- <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, Xuan Zhuo
- <xuanzhuo@linux.alibaba.com>, Eugenio =?ISO-8859-1?Q?P=E9rez?=
- <eperezma@redhat.com>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Nathan Chancellor
- <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, Bill
- Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- wireguard@lists.zx2c4.com, netdev@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, rcu@vger.kernel.org,
- virtualization@lists.linux.dev, linux-rt-devel@lists.linux.dev,
- llvm@lists.linux.dev, Yury Norov <yury.norov@gmail.com>
-Subject: Re: [PATCH 00/17] Treewide: enforce static storage for object
- initializers
-Message-Id: <20260914231418.b15ec01f7225cf460f6e515a@linux-foundation.org>
-In-Reply-To: <20260915030336.1192299-1-ynorov@nvidia.com>
-References: <20260915030336.1192299-1-ynorov@nvidia.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 14731A0007
-X-Stat-Signature: 5tsjn7s3b18s67cyhf1ptzo1rex6w91f
+        d=gmail.com; s=20251104; t=1789453771; x=1790058571; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Jliu2qQ+Am9D5/J1PCi8w8fiwrrDcbTYHcV6N7E5S9c=;
+        b=gC9UnAuT3PNLlGOAQvdghSyr9iQIqejXEy0Pl3AS5rOWAD2SAIG2wX6bMKbtj66DXI
+         QGMbZvbUuuPJGHhQ5ZJKTf9M/BcPh+H++wQdwCiHLW7BxFppFYGYKu/VEV34SmJYqynh
+         OeM0s0HggYBXOUH4fF/ONjmYHL+YqooOIjCvK+bhuhrh4z/NtYvXBGysaSxZvBmSYE9Z
+         5ICO4+/rmhU/BsCsOl3H/1U9jM+kWBz460ejxne+yUtRifvUDO1GlZPoC95R5rrPR1ua
+         wWXI3ewiJtZTH70Fy7sUQeeZzKZ1O8tFZXRrwbztLKVYhBs4Xk26fDnRlGdQm7oIScQP
+         S/NQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789453771; x=1790058571;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Jliu2qQ+Am9D5/J1PCi8w8fiwrrDcbTYHcV6N7E5S9c=;
+        b=Bqkr3F2rnVVkZ2tiqrkWXOca7u7uwiMvAk2RYISzO9W/aan6Udzfo5xRo0GH+QIAj4
+         eJBeYinPZ4gcXRETOrO9lfSy31kAeDEXXVubMolHLW/4EJsCmB1Sn0bWBuU0brJLfvyO
+         aI39qgmPyluY4kOxWvs1eMdTvNgn8SjvZYI6vEvIdLzocqrQhtSg7VwV6LRqUXa4qmfM
+         kNLJy8qVOuVVYdH/ayEie3FG0lrMT5v0yDP0CB87Bo77uGGk8na8xxJ8zzJ/M1fVOfQl
+         vXWwdYiAXboXk3Z/KvO1noGzhRnmusgSxX+DRMiHAvLwQGM4pUp+ZB1jUExyL1wL0t8C
+         3wFA==
+X-Forwarded-Encrypted: i=1; AKwUvBzGAWRCV+gUX4pBGt+y/cBDLVDw0qhaDwilU80D2LO2yNYf++tqjyD06QQcq3gHgIv1CZb5D2SuLw==@kvack.org
+X-Gm-Message-State: AFuF++k5S5H86/FeqHmxvWb8J+gKBwGQExjSVCuJNE2E891jLd4e3hv/
+	7LDuG6PXceorsWJ2m+F+9R3EwhFXGuRWEfKPTxYl89JpEwHXFSdqsz0s
+X-Gm-Gg: AYBFou363KeDMb7hbPj7owcaH1lWuu1G4YM4KpF884jMfwSJiKwAExnvaX/l7v1NK2W
+	+4ndn5Ba96E6udD3G140WSl9XziuCYuF2K4u3kiAhHtCfs8+CTWQpq9xLA9LEYVdvYtAlAkNcY9
+	au3yo0CT158pFqwG3uzpwFfHo+7XhI2afCmiXbeOZysZ+Kk1JD7NZQzbksjFmTeiHu/PZXSx6/P
+	ukKkvXPJ9J0d6+kGjneWYsJKtrrOSRzShWY+iVRWeXdN2vyOE6XSsi/LLGVihmOmO/bOgFI5t0x
+	Hdny/32maBxCRYZ1RruMHIViDkYDsn8uFERvQtTNcKOA8FL5nRQVH4IgaFHEmmiuULIcyy+BKtz
+	IfvtgUzn4rx02zJ/52uv/nznM9lxyNvykcuc8ki6uOEilB5nRkrujDHRCOIwKqkus6XRxfZ7vmT
+	wCwnF6PMlVtz3eulX0Hv2L/Wy5L9Zj9/WMnSnOA5PdJKQAGaqQXNwAVcwPLTYLXaVH6/t6nU5bb
+	BpzQFoY0VkGSGP7JEuziexPV3Ucakq0UfPpkxNfwGtn3UvMkQk2GIDE3B6gvzvBAse7G7fU/sfs
+	V0HI5iQBn2CzwNrBtuut1dk7xvp2UnhGA0uL6OR51TGgYchLCjmg4L9WRz5fTu32
+X-Received: by 2002:a05:6a21:3382:b0:39c:4e62:b843 with SMTP id adf61e73a8af0-3db5005bb45mr4318757637.10.1789453771209;
+        Mon, 14 Sep 2026 23:29:31 -0700 (PDT)
+Received: from spider.bream-herring.ts.net ([103.252.203.158])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc4c6549d95sm6031973a12.12.2026.09.14.23.29.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Sep 2026 23:29:30 -0700 (PDT)
+From: Matthias Goergens <matthias.goergens@gmail.com>
+To: Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>
+Cc: Matthias Goergens <matthias.goergens@gmail.com>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Christian Brauner <brauner@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	intel-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/i915: size shmem writeback budget to the object
+Date: Tue, 15 Sep 2026 14:29:24 +0800
+Message-ID: <20260915062924.2410550-1-matthias.goergens@gmail.com>
+X-Mailer: git-send-email 2.55.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1789452861-212697
-X-HE-Meta: U2FsdGVkX1+Jdopg9UHrPZUhl8lWVi1zgYdxS5LjpVICNhkXf5WhuBqR/OKOIArV5o+Gg6dmLfBdkd122tJxp5a40x2rvNNNVuVYwjHA8aUoLvClHMEe0fveC9hB6BlAh+QCmQkeMWYZvS3F+Gp150EzhSHjkjmpJMm5E2uQHDnjXojIP9ruj2NtdJ8+Qsdj4baPF5ITj4rmm7XR+O9HW1GTb1DSFAr8mMXOA0GbXFDGybgj4LrXYgM4cEzIKBcdfWDlL6c8TwBAlHKuQeesW8/NkfeLiNk3aQAnlVI0LkhL0yBifZYkbli+1uX2Yx7xcQFDf/gTFNzFgB1KOPsWEXEEpl/l0h0hkLjFNo9WBT+WsXPh+yQ5Z4kMS7GHRweRdamP/TKmqxYCgkeFcu2hUfYRM8u7PtCaqlzcP3Z89kCDuwb6alOwQ4X4/kJOE6jKCR7nCcxAdLmzQNkOd6rmweQynTqDtcK9gRpzjkgoihaKO8RsQJrNokYYz5L2yAMFE7dsZ2rMPkXjGtNAccA2Hw6Y5jipeC1XIBSVeXLhQ9DDLf68JeTvzxq/imQmoHsDWmPkHtX219qIa3CaaJyxCamtF3GYJKa54CHeJqCZyr6Noc5QCRXhAyWlA85+PDNreBzW2OB0FJ78PFqFx7ingNBHm/Ou76+mciaVr8eNvJqQi9KCfb3jxxYqTWpWyHwAdE3m38otGXxGk4oAY6QYaZvlT8CqkHkmAGsMoUMCIKA1O/2X+UNSisSfHnG8Ri3kA8OVUiY6M2wBHPhl6BV9aYKL9xqrwxsyUTa46rzwF3NNP2Jt18SPfJ0nDOw8Lm6SUaGlLjv5rHxd44pdswx6deaLgwN8sbApUPTMpzthLpvYlbSZ9iacgJUaOZO2jfMZgb4WVfVWis6ZbcUZDlCSQxAnLU1gUp3xBh9xomanmj9HH2w/dJHWpSOM1pUcWn1nyvaoKpLwI7XgUFjxWlS
- 2iEoqT76
- hRGtV6JKXQFnGzw/ar4x1ITDD3Zx1cM4ctM6PzMJpvGu+9P+0lNbPISEjdun30PVLwLTOQXgH5Cr6vpQGafhSvFUc7BQQnX6FoNIi6JMDJ3aTWhEjrMRN67FD0cxf8NYEFdpflyP9RR0eALA8xKOgecE3pkfirkiJxlLkrqV6WlJNY6eeSLyi1BeRYPTvpBiTbRvdzMNUoWZyFxagyVl1EQIUNr6MmeZPw05wlR74Di0Pqdcv4Xabi8nf78+Kcl9U5HRYpBPKmd7iHlum8oYlcTWwKgJLoh+MA9CoRuIbLoYhsxfnvLqEOnczMZuhWLf/PjyMQo2y2zdTq5X921QdXPRK3EiHKwr62VzmOVIconqPu8glj/pD79+kq2+AS4AWMcaF8zZil7ymo6s=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: CA99D20005
+X-Stat-Signature: gqsd5qm5inxojiu3okipa4bndbz7cmab
+X-HE-Tag: 1789453772-638249
+X-HE-Meta: U2FsdGVkX1+nV/X8Pi7/tBLsHEo9TdpNYiroNyR1R8SEkwgWGGxZ1rQCZfAkGNUlNttSEznHMVNoT/2L1uiTPOk3eZsbtj+RoPHbpGWNZ3QhCVFZ3xHwHMbtmmuHr8EuOLgYiXpuR6sI9uHkIpvWkrSWzwDMPBhWq/VuqbNUgV5RtAQ10uZGhLK+LZAdeB4QZxm8kE/Plwp/XX0bwtow8Mz90tN7D3oZau9oX98bmUaX4WWi+lRMD4ZHj3CF4Tv9KwEaAeD5B2t9HjRR6xZh7OhwlD5oq0VeQgoTSvANGErkCYn4Zv7btIyRKa44Cw18te7aaGW7/G1J+60zieJUNrncRUlclXau+BEpAp7OBxxhDQ1+Q6ZW3w3RpNURH+8aasUQ36yZmlGejPlEyyWlBVw+1ZvQGhiK6ar6FvzLCIXmL+nQqCQ2dCVXkkf3OThUUpLEerYZn1iNOQiFCTa382ZClNmumLPY6JLTg++UCAE/eDk8IE5ZRyToa7KDw2a3OjiWX+S5HYcpQkUHhOZKIXg+5iT+xO6MY9bhvyvw2JaxrE1RjD4ykNZDUbKgmIpwSGTN02OqIflEFjsqQHQgZs+OUAZavFuuJNmB6mTPtqcDKgdS1N/lW4HEWdENzb/z8MZW8ShNQueMSfgj3OE60pPuiJM1D7iTJBJfX9t/RfL5+cT6K9ae9xIHGNg3AO3MbsKFJNAAglSNZLAH53i/fOdq/bZG002/okHqPHANIta8sW5CbW8Rxo2ZRu0ur4/TRiryxaajPYuF8DpR6zvJedgCd/AHBtblvyHIW8ylw2poA/dowDzBt0lx58udfrc468oIRRTsor2KpPJFrIuHsIDhNU8pjUfT3RiCUx8aehyUtf5qOgBIFAlKuL/oNj0/zhcyuSUo7M7jzcMAjyyMQEPD/ybPJG6FfKGX6zHeKw/oc2rjMvpM8w4PJfzOQnPVi2gnZLRUW27RZJ4481t
+ HctD1G5d
+ 7pVEb7o3ad0ZW1oqCqHLzNYmeiAyC8pkIngJE6EVTqklM7cDfn7ovsJCwQ5ds0fmRoS8uxgxNXGYLK6JwlCXuOBl1kreC6UDm5WiPd0DGiU1j8ofFyUayOFeULVsdQy/6hAX0uCMKOUp4mUBxVCtoewRtziXUo6/iJXmZf9S2Ffp8DqvVM2CCTq57CzDBioRqdXXZwoZs9ywZCALB6fdtxUh+uy17w6jU+pPrpEhG9Z9CwujwkTN/voDbR3+D8tMN4MODE6j7uoiobMtCNtemvHZmXHcMotNV5d9d5IiyjQdjuNIvJp8vZBQT2/JaYms8XqmIBkqo/b+Ga4CZzbolH5PswrADJ7QqwPTQApU9vhszxqcTsl9jWLWS4WazCvfUexkUXE8A+YNcBSoEAC8cf2MxuFh5lSFEPlMKBRbf2PbrIZ0bvH8lGvmz7e7i+yaq/A6dykQm5yqnjn02/bYW+UkwCAHd/eHd7zN1tQ25uq/ENbxBBBTEz0iRFmiUn2WK2Fr+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,15 +128,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 14 Sep 2026 23:03:18 -0400 Yury Norov <ynorov@nvidia.com> wrote:
+Before the writeback_iter() conversion, __shmem_writeback() walked the
+object's page indices using its size argument. The conversion retained
+nr_to_write = SWAP_CLUSTER_MAX, which the old loop did not enforce.
 
-> Declaration macros that statically initialize embedded locks require static
-> storage when lockdep is enabled. Automatic objects must use runtime
-> initialization so lockdep receives a persistent class key.
-> 
-> For automatic local objects, lockdep cannot use the lock address as a persistent
-> class key and reports "INFO: trying to register non-static key" before disabling
-> itself.
+writeback_iter() consumes that budget for each folio and stops when it
+is exhausted in WB_SYNC_NONE mode. Explicit writeback of larger objects
+can therefore stop after only 32 base pages, leaving later dirty folios
+unvisited. Mapped folios also consume the budget despite being skipped.
 
-So why haven't we been buried in reports about this warning coming out?
+Use the supplied object size to set the page budget, restoring the
+object-sized writeback attempt. Writeback remains best-effort; this does
+not guarantee that every page is written or freed.
+
+Fixes: 776a853a43c9 ("i915: Use writeback_iter()")
+Link: https://lore.kernel.org/all/20260914111511.648711F000FF@smtp.kernel.org/
+Cc: stable@vger.kernel.org
+Signed-off-by: Matthias Goergens <matthias.goergens@gmail.com>
+---
+Thanks to Sashiko for pointing out the writeback-budget issue.
+
+This is a separate follow-up to the folio-unlock fix and applies
+independently. Compile-tested on x86-64 with CONFIG_DRM_I915=m.
+
+ drivers/gpu/drm/i915/gem/i915_gem_shmem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c b/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
+index e7b18f7f9644..5751bd25c2b2 100644
+--- a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
++++ b/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
+@@ -308,7 +308,7 @@ void __shmem_writeback(size_t size, struct address_space *mapping)
+ {
+ 	struct writeback_control wbc = {
+ 		.sync_mode = WB_SYNC_NONE,
+-		.nr_to_write = SWAP_CLUSTER_MAX,
++		.nr_to_write = size >> PAGE_SHIFT,
+ 		.range_start = 0,
+ 		.range_end = LLONG_MAX,
+ 	};
+-- 
+2.55.0
+
 
