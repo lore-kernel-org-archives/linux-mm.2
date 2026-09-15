@@ -4,137 +4,201 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBFB0C88E77
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 21:50:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08378C88E75
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 22:21:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A1D1D6B0088; Tue, 15 Sep 2026 17:50:44 -0400 (EDT)
+	id 39F736B0088; Tue, 15 Sep 2026 18:21:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F50B6B008C; Tue, 15 Sep 2026 17:50:44 -0400 (EDT)
+	id 32A366B008C; Tue, 15 Sep 2026 18:21:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 90B746B0092; Tue, 15 Sep 2026 17:50:44 -0400 (EDT)
+	id 1A7546B0092; Tue, 15 Sep 2026 18:21:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 492EE6B0088
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 17:50:44 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E41F5C0584
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 21:50:41 +0000 (UTC)
-X-FDA: 85217341482.10.4D5F4F3
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 038B2140005
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 21:50:39 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=L8js8VZB;
-	spf=pass (imf09.hostedemail.com: domain of isaacmanjarres@google.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=isaacmanjarres@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789509040;
-	b=4PWwuXDRlMexbV+WgQbrmGoLUPwKGi03f+chh8FCrv41p5wKzJ71TMYSN8JYesRaGEh7fs
-	cl3k4p1XCeDompUYAUA0x3aVlW6hNPn7gAxl+NKPzTzg+L6S/Rw8VkC/kWWN7yK/OJkhP8
-	eWmYC0Qq6N4Ka620cF9+f8HQ64gase8=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=L8js8VZB;
-	spf=pass (imf09.hostedemail.com: domain of isaacmanjarres@google.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=isaacmanjarres@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789509040;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DD0B96B0088
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 18:21:35 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 663E71C2962
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 22:21:35 +0000 (UTC)
+X-FDA: 85217419350.22.AB82A2F
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	by imf02.hostedemail.com (Postfix) with ESMTP id B650980003
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 22:21:32 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b="IV /k2TQ";
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=Q0neUfMh;
+	spf=pass (imf02.hostedemail.com: domain of robin.clark@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=robin.clark@oss.qualcomm.com;
+	dmarc=pass (policy=reject) header.from=qualcomm.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789510893;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tI17L7xSTrsApSfRoy8c9Azix9/YhE00k0p3SqEz6us=;
-	b=g4460Ke/40Qu2XpkCFMpa1DEZyuXH1nI/h7TyrMrsgIHl3PxiaVSvj8cwtTVA/8sVn6UOz
-	wGvFOtExZIZhYivI34TccTl+QG/KQswCIl1D5hTiC2Fufu+Y1HnMyKh1ET1wF89xGNxPYU
-	ei1fY+A8DxZEAvIS7u/25o6WrWNucaA=
-Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2db425c9050so16425ad.0
-        for <linux-mm@kvack.org>; Tue, 15 Sep 2026 14:50:39 -0700 (PDT)
+	bh=hnJAniUUz5UpK0eAzqlFlmnyP+PG3E6KxIttKsrRd1w=;
+	b=MqF22wo9RVhk/scPII1iXOuVsH/r3lMG0mNy57d7sfEtdWDitN2VNQG0N8VxjeQi2EowYb
+	yzZl5soVhMfR6Rff80ERZZuUcsfnZZ5GiIAvK821U9xbCgiMNihTpyMitGPTjyBf+YScC0
+	UWsKgf7djRNMdcAaCiT2/41WxMAprSo=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b="IV /k2TQ";
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=Q0neUfMh;
+	spf=pass (imf02.hostedemail.com: domain of robin.clark@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=robin.clark@oss.qualcomm.com;
+	dmarc=pass (policy=reject) header.from=qualcomm.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1789510893;
+	b=DFreFA1uKuKEF4XcXuXvkfHOFVrWuJRbEB+PzPQEUyePYn9O8qffKIJVgYxAq/1YmGL97X
+	d29Ai1ke+C4vKcpS3zvROuO0qzGUYuiPgJhKjIKuSBYqmVHSHXV5Ti0eXXk9lXoJo72pgE
+	YXQuk6CISZJ0drmp/J6aWlIaihR6Rog=
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68FLYp7l619836
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 22:21:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:to; s=
+	qcppdkim1; bh=hnJAniUUz5UpK0eAzqlFlmnyP+PG3E6KxIttKsrRd1w=; b=IV
+	/k2TQjkUrsTGpshqW8f1AkLpzgE6WqJLnJXyVNHKYz8mozA+vLQbIOpShvI99Nvk
+	BGk11nj45xZQZMebNdo7NiYw/EO7W5wcvHVc8eAkRKtGrNMclkKkbe3unomYvdUd
+	vFaT1byqggr1zubtRjDzuTG9pECEQdOzFAiv4kdIU3d7CXM0IsQ27dhrP8NvQBkU
+	TlOdMgPnM8h4FF25SXM2n03VFD94RLvjnLlaGSHHxie20ptztZeSDX3B4EelrzMT
+	n1DLEJiB1mKEp0dVH3Si7JCiMZpC8ZcIigaByfbQDV2F2ANWVcL1rru5kNRyAlZ9
+	ag1DWjYpUlLQQuGalXdA==
+Received: from mail-oa1-f72.google.com (mail-oa1-f72.google.com [209.85.160.72])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gq2y2kj75-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 22:21:31 +0000 (GMT)
+Received: by mail-oa1-f72.google.com with SMTP id 586e51a60fabf-45e83fd0663so6244515fac.1
+        for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:21:31 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789510891; cv=none;
+        d=google.com; s=arc-20260327;
+        b=I98lK+23H3JMpFrBH04qEpMvT11oGVi0V3MgPT2KiuolDPlHx0/BZcAfV2wdGr6dto
+         TmF/brImUe8m+95OXbkD6AYPIZ2MSO//3+ig6+AqwPBsE0KGqMQbAmeA5eGLVGGae29J
+         5griNI3HCRxc6FFRFgOmedBQTdKLM9CvTwJHgnpEbtQ5rRhHVKfSqW888cArBK5iEOKw
+         RxCZqTS6I7qOnGkVRsUHdlzIxVLupL2QxL9zUvpIE9kaPxOdqfUu1o9Aj15pi2liFYPq
+         /jdQw1x/HSyTiaYV/u2SFDDJEdIiI4wzhaoHGybHIXTbE54ZLR3dVsQOtEYtPGska8bI
+         LrYw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :reply-to:in-reply-to:references:mime-version:dkim-signature;
+        bh=hnJAniUUz5UpK0eAzqlFlmnyP+PG3E6KxIttKsrRd1w=;
+        fh=woE6QNjjm/DHsIJcTo5UWQI5wsr4oShj0FsjTCndakI=;
+        b=S7ERqFFw0AzSB1xc3ffrOktJHwm+zIQLcLKylAt91cgCZeBuiybrHf0i57hnTF3Jwb
+         wV/KlZMO0//v5vHhQHaFmt6f9xZTFhbH9kIJk3cv557C8ts7rgqfCxRMX8V+0ibSn7QI
+         MtCTDC6w4PHGML4r/nQ+OqqBc3wVr31ifyNldSllJP6izPmaNAxvQRmcruMMHoEgXiJD
+         uX0BRggbEVmn7r9wXyD3HsZbhIM31Oh8r6Db4EEjI0qMpDncizg8ilg8NuWkGc9Fi3V0
+         A5uQWcBKwogdFnQhn2supCw7jmLxme9EuVKE0dEqvMMgevQkRYXU+lWmGGRwTS58jAaZ
+         wjJw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789509039; x=1790113839; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=tI17L7xSTrsApSfRoy8c9Azix9/YhE00k0p3SqEz6us=;
-        b=L8js8VZBvQCvKLgWAEoQNzUpd+MDIQ6RCTTWD2smoxi4zsW5BUCxABhGdcf6utUmdK
-         TxGDCtnfZ2QqbuW4oO14XNiJhNN7bLC5/ZCjLgwwivjAJVz6CYCBW5b9vropDQwQ0gTL
-         s9d90uNGjeqs2Zn6PcrAzc7XfOFLIJfFmoJlvuhitsbkNo2VPzjsBA+pL+WteGaeknHf
-         QS23kOxxpCP4b1brrjMztKQglLAHOwipOC+qhCPvdXyG96Oxxe5+mYN3loYYlNZN4VFi
-         K+u05qyj57AkbrE5N7il4sqOSrc77yLaOiq8lybtmsU+4RG1KE+TghD9qWEBMa0XADQI
-         na1A==
+        d=oss.qualcomm.com; s=google; t=1789510891; x=1790115691; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:reply-to:in-reply-to:references:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=hnJAniUUz5UpK0eAzqlFlmnyP+PG3E6KxIttKsrRd1w=;
+        b=Q0neUfMh2v2rGApnhZsSb9KI/OWa499M+Iz3rdkhbBpc/v3lwrvKf215xQc6Qw/Npm
+         FscjAiSepcj1vdaTz4qLXAsXSoVP9skY0zAYmR6wUtxkKE379kNXlqmXkns1u6DPePCl
+         iWZaOAYfTqu5oF/GHHv6sMRFjcjplXyKalMMAjMaaPg3dR6yeBxUXHaX4pSC8q/wP0EJ
+         vudwei94hMutEkS1lXuU54iwRQz41rZGd5WVNEvqK7vlYJwOR5cjeocWPJQa9llDVJQ5
+         Pl+VOeYINw4+HCKxJxrKhTfVmDUnNR9dnCv7dKZm4CBpXLoCnoiTMO/4HJlkhPoUSq28
+         tuWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789509039; x=1790113839;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=tI17L7xSTrsApSfRoy8c9Azix9/YhE00k0p3SqEz6us=;
-        b=jfcqDVOr27XNq+rgAMKc7CkrMZGY18/GDxh+4lno8w8RwFz8mIm6gsFOCNv+XnDvUC
-         5FokWyedkW6ouE4EjWf1uD3XIw/s3KFU/foYcE9sJMWRFgpuYAw5daT51NgrIFVzI8FB
-         kFrvAdV653nFkDHd3UJf72OpwQT2ezt5+1szhqtIpnNe61KAPlijUlNANx3GWgk/iTYL
-         59MzCuYYNz19SMQCkRxp2M+IzW+tVDaVpV+xa1KwKSgY9G14hdcNjLOcj4mw7aNMiArN
-         QfcUM1im4L0fJq1d/CK0oiFO8tt/bFQGQJ7N2b/RJDOXHrFDYSl2Xtv+H6kO1ncZJIT+
-         51Lg==
-X-Forwarded-Encrypted: i=1; AKwUvBwexQoK4O+iZVccCH/PoShGwo+W1C8/eKd+fcH2rd29UunV+t9xGWoxs+YbznQsFOPZf1sX9FSIow==@kvack.org
-X-Gm-Message-State: AFuF++kaTj3ZJotA+YPB/0SNRlqibSX2CdhoatIC/t9TLNYBbKul2BTE
-	Leh+ZJ7Qv9+waQcxFsX05FkYrEDInGbeEgj+T10PH3Ic3sIS+G6cizTLp0cOIV2WqQ==
-X-Gm-Gg: AYBFou3qsEfIarsX+jTS+VlfzdtcAD3SzG5vuKPp9uboL4kpyoFgU9Y4wM7345QhCMk
-	rtO/Srvn3SVnfxENQPS5VDSkBYedU2OgJQMxvEiFnEclOXWkqWopmby2dL/uwdJL1Hr8B5JXSJV
-	dfmLIHJkXjTstj3b2N2UR0dVJLZkso4Sgl1w9JeZ1ik5X/v8yYd7oQZ9mMUVF+V2BzlLkAlb524
-	73oiH2vrtkrijqWEd91iXVhg23Yoay5n1d1aQOVR7gfar/herMO1rBTP+gHpeo+ULVTONJ71+QQ
-	Kuwp8WjNNhkA24YHwv+3a0rXlV1JqHxFwKA0Og6RDFE239P2TvTt5LizImBlfyEeJEK1gu2rCUe
-	6b9pfpRm8HRaUDpcZQL0/+Y/YI1pjv268ipF9y6aF8bL1E/S4gOO7ipFGM/cSLAw8UFU20ZszVQ
-	sthB+GvtEBMF74D7j6fVENiVldN3HXkV7HMn4lnu+ha8eqynPBHIl6fxYDRe/txxY8iRf/aworo
-	cAqf6rD5BmK91zj+rv99sEf8SgjwnZcfuW+AfsiE6iLVawf2O4=
-X-Received: by 2002:a17:902:f693:b0:2d0:1aaf:daec with SMTP id d9443c01a7336-2dd8be54ab9mr842285ad.9.1789509038186;
-        Tue, 15 Sep 2026 14:50:38 -0700 (PDT)
-Received: from google.com ([2a00:79e0:2e51:8:8352:5e93:3fd9:766d])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33bf5af4f0bsm2082822eec.24.2026.09.15.14.50.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2026 14:50:37 -0700 (PDT)
-Date: Tue, 15 Sep 2026 14:50:31 -0700
-From: Isaac Manjarres <isaacmanjarres@google.com>
-To: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Cc: =?utf-8?B?6auY57+U?= <gaoxiang17@xiaomi.com>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Xiang Gao <gxxa03070307@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	=?utf-8?B?5Y2w6Zev?= <yinchuang1@xiaomi.com>,
-	"bpf@vger.kernel.org" <bpf@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"Lorenzo Stoakes (Arm)" <ljs@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>
-Subject: Re: [External Mail]Re: [RFC] bpf: account ring buffer backing pages
- separately from Lost RAM
-Message-ID: <aqm9p1uW7ls65_S-@google.com>
-References: <20260815091819.3651099-1-gaoxiang17@xiaomi.com>
- <04f3ce2f-67f5-4829-9551-a69b9df29854@kernel.org>
- <CAEf4BzbwZkoacX-iP1j4+p8YNbWsq0pc3eTermh2uT5ir66zbw@mail.gmail.com>
- <8d2e20842c24460296e4c83e6dc0dde3@xiaomi.com>
- <CAEf4BzYQvhSVN=Hggg5FHzFdkRr4UNBD6yXaBsOaAwbsRpXpsw@mail.gmail.com>
- <aqSNkbhIuaB5D0H0@google.com>
- <CAEf4BzbAOgwQqsRQnY4yxvubLtioQNL_BBHer4ExvNF7Rvvu4w@mail.gmail.com>
- <aqhZEuQTu394hYB6@google.com>
- <aqh17GTlWiDVJ-N1@google.com>
+        d=1e100.net; s=20260707; t=1789510891; x=1790115691;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:reply-to:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hnJAniUUz5UpK0eAzqlFlmnyP+PG3E6KxIttKsrRd1w=;
+        b=jK7qPiURXQkwQTVIO24whU7QErMm5VYpb8tv/IqmHF/UXO7pXfzGgUnNGXRd/4MlHU
+         zw9LZC2fzI65oUN9+byehPqJstwuozSBw1g1Zt2sILmpZOwhxuxuLLUNXVsonhiZOpIJ
+         ybXRaXD6sedYwb2mYLcCGM38X02Me1yKOVlrFfpR494pC46mm6dwQpRbcBT59Ch3wykM
+         zFIaHzQO51CUtdfSROD7IZd54lldkIIevqfd3a5xWzoKZlbmmF7Z5gA5IyEYjctqDmUc
+         DcOicv46Cf1Q2NUPIPwOy6rA3rw8wgyM1F5CnOxUyHpc5FmqKQQktMpsBxCh0olYhQh0
+         y/lA==
+X-Forwarded-Encrypted: i=1; AKwUvByH2A03mgsXbxBrLsgqYEZeNZCLtuB7Y7PHVAEizjdmRFsn71xQG/PpRaIZ0EiXwhjNpHGBjIq+0Q==@kvack.org
+X-Gm-Message-State: AFuF++l5DgWZFsKPcQ1fdgC8yTYBjdwdaFP3bJQTHTwZ7U4Z1utqVOHH
+	vmHbXqAorh27yp4WfWSZVHM7LuZQ6uWD43RP64D0GZHSOhvQP0yye84pT4ekJoD1r0ivjiwjWem
+	HXvERiL55N9sM4zSSuO3L74KHTq3EQnyJgYEf96qlTX/Gxq2+vN3nyZlHnFWS5IZMnKPAdep+S2
+	YSqUcian6MTDrDlnNH//VknGrkQU8P
+X-Gm-Gg: AYBFou1htge4QS//XGLqB4oniXw/ghjPYPQM6zSbQI4L+FWmgI4ZFaTS9QHq/SbnFEJ
+	gLESWg2Ysb5DR7C3opcPL4m281/DjxO+D1ueNPO3EiTrUa15e0M6CriV5IHWWml27AH7hE90twV
+	lZ4V4KVWPWN2mkRyFijb8NmhRGoGuUbqwQLAcdltZ9hKAOLmopZTx/RJqT
+X-Received: by 2002:a05:6870:30f:b0:45e:2de4:95f1 with SMTP id 586e51a60fabf-4847584c51dmr189758fac.2.1789510890852;
+        Tue, 15 Sep 2026 15:21:30 -0700 (PDT)
+X-Received: by 2002:a05:6870:30f:b0:45e:2de4:95f1 with SMTP id
+ 586e51a60fabf-4847584c51dmr189724fac.2.1789510890430; Tue, 15 Sep 2026
+ 15:21:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aqh17GTlWiDVJ-N1@google.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 038B2140005
+References: <20260915-work-fd-reserve-unify-folded-v1-0-4d5217d6b246@kernel.org>
+ <CAHk-=wjeamU=_RYT9cR3dZJ2N-Teo-N1+aYh7jwhrB=iWXD0cg@mail.gmail.com>
+In-Reply-To: <CAHk-=wjeamU=_RYT9cR3dZJ2N-Teo-N1+aYh7jwhrB=iWXD0cg@mail.gmail.com>
+Reply-To: rob.clark@oss.qualcomm.com
+From: Rob Clark <rob.clark@oss.qualcomm.com>
+Date: Tue, 15 Sep 2026 15:21:18 -0700
+X-Gm-Features: AcwNN1UxxSxAxz0XPK7niSod0Tx_HsUs-C3mKdcqDSaFkh659BGkCorPygYZGHE
+Message-ID: <CACSVV028AdnTYa6OKDeoJYCau58uTkKMgEdqTn7crNSV8QZxOA@mail.gmail.com>
+Subject: Re: [PATCH RFC POC 00/50] file: handle files on syscall exit
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Christian Brauner <brauner@kernel.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>, Jann Horn <jannh@google.com>,
+        Jan Kara <jack@suse.cz>, Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>, linux-fsdevel@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        Oleg Nesterov <oleg@redhat.com>, linux-alpha@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
+        Jens Axboe <axboe@kernel.dk>, io-uring@vger.kernel.org,
+        netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-gpio@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, bpf@vger.kernel.org,
+        David Airlie <airlied@redhat.com>, virtualization@lists.linux.dev,
+        kvm@vger.kernel.org, kexec@lists.infradead.org,
+        linux-hyperv@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-ORIG-GUID: KFeM4ixX0sPJTs5xUx-4JcIBOr9aepK7
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE1MDMyNiBTYWx0ZWRfX0dOy6JoBfjGF
+ mrRfLnKJJEQA72eTZ1/dHSS7w+Wu6XXSjdZs69DyMASuLE0YCFfKx/ibnR48NJC3Ax6ito22zEh
+ 8IFFr4/IzmCJZLxltyS6IHPzpBEqpbH3o2uT/d2Lr4MyKyvloaGgxwPXrjc2lHGW19c0HqgyaWu
+ OXzQ7sSC6PgsVTUhg+ymllYXHQyWfVipL4zEFXoIxZacHYRCrvKJA9VVtWyB5wgVZfmsxX0WAA2
+ UQlFwSltcElrHgjzysn2Zf7qUcJi2lMa0qOhkHeQ73cVkdJvc/pixosWA9TYt3hbSlufqe5xo46
+ MMltg9mskJ75uvwNhHE3B4S8kP4FVqEg5foIHfJ+UKxWZN/OfKKxdhHtvK1I0C2I1eKek3JcnCt
+ Mh1V6l9fMYXR0zNgPR1wldO+bByOjnwMqXFdKBCla3eFui0h8FmW6l3KUAaV1+J+NRPxmQbTGXh
+ XHCuyPEd07QrsTZK71A==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE1MDMyNiBTYWx0ZWRfX8FXIe8S1E+V0
+ qSXnLgPVpIPIimHdRDmskfWdNk5rtXaIw7eJ5pufkXlObRmD4g34/Q0vdnzoH5pDJcKcf3DYp6l
+ yOJ5EP2S2MqW6SaWLpMe2AUnJD1rLa0=
+X-Proofpoint-GUID: KFeM4ixX0sPJTs5xUx-4JcIBOr9aepK7
+X-Authority-Analysis: v=2.4 cv=IcISymqa c=1 sm=1 tr=0 ts=6aa9c4eb cx=c_pps
+ a=Z3eh007fzM5o9awBa1HkYQ==:117 a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10
+ a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
+ a=ZpdpYltYx_vBUK5n70dp:22 a=Z4Rwk6OoAAAA:8 a=VwQbUJbxAAAA:8
+ a=2Rxv5svHm-zNKBYa0PsA:9 a=QEXdDO2ut3YA:10 a=eBU8X_Hb5SQ8N-bgNfv4:22
+ a=HkZW87K1Qel5hWWM3VKY:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-15_05,2026-09-15_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 suspectscore=0 impostorscore=0 lowpriorityscore=0
+ priorityscore=1501 adultscore=0 bulkscore=0 clxscore=1011 malwarescore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
+ definitions=main-2609150326
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: B650980003
+X-Stat-Signature: 3zjea9147x88rqk1wdm3nj6p8q3dfg5d
 X-Rspam-User: 
-X-Stat-Signature: p5k4n9o1sfxafzpmn7itgbudfyhabghp
-X-HE-Tag: 1789509039-548644
-X-HE-Meta: U2FsdGVkX19G9M4ecSlkoaZ/8QTysNx+YkJx+jR7AClo3eSkA6ZR61zRJ0/NM14CFv0PDsb8UL8bJ0OEy++8Mit1d0CK7ma2crLts5Drz1GomPQfYKGLDpTTEtG+9xMr23TPNTQIn8E9NiWI+/e7RmYPtyXdU1hTDiJQNgYH/zdUmGolByqZQddTLBw0SsjaYgtzs/uqUXZfyiukBfNkrmAocszcu1YNr+IGmCqEW/RmUfryU+VX90D9U+eG3lzfV+VsfH6ucmcPE5+xi463hMphEzsQI3Xt8zGBOAjHymc/XJESL6WDqgq4C6o0WjCzjK0N24KuDBBYGeOicdBtf70MqcpMlm/rkr8yNCn8eWsjfLY3FmV7R4Vi1l2nWlylYT99V1uh5xI/yGNq7RD+fLLrBO/yxHCtczGcbqWERVP4+IyVptR37Hs+xSjMdeNv+FNqH3xNw02x9Bw8/p947tvda4d94JgDX4ekhvhT+LFNq15IYE9QtHm1W6LIKD2eqQZe0gC+ecIjTJ/sXig1JJF2EO0f3Qb9z3S2XrVU8o8qWXkCQre/PyJD8jIZpZyVULRI9uEvwMnVXKuZNxUOdQXv406k1Kqvgx6Dx8Eg8nJnmpFd0L+2mhZ02h7mSlRsLGbt3idPne6kaVLiIdjXRZzuXlWia5Ub7l8FqFIfj52FVAKC9csoyCQs5xF76IowDWZp5M4/mEkdz9YUjt977XfnFSuVTVLlY12A3uAjgXrvh9BHO4ox4J6XlIcJiJ56M6COqEjzKZNwX3bEoSGvA9riNSj3MhfBchN0PCiiHZPA5wiZ1FHJ2FYxKYjD52CvmNSXziNt5REnTdXdUy287BAjPOIrvll6gVZdiPEauyXD1rD4D32yQKJGZBeaxQXy86shDtycGVPuOSSL4i1GaJnuOn/2ehpkdWF5fCOpo95kfqHNwwZw/HQCGQEqJV+qboXFy/c42RCQEciFFYj
- 0MX/ebwB
- omPpmJ+2+equvuzIYOjf+pgzo7ynGR3f5945MQFvAyk8k3akB/XQmnZ47Fi8y7KBNpGoQeAzhsjH53BykHoDAO8LEaGZU6CnBiApgpaekR+RXACo0AWc8lR4IuQYKHSGfNPzrXGoUzAfEcilsl8e+9zcIXcPGNSmWPjyeBTKLNfKXJD2jxcIRj8BcwyuoiDOK7UDOrEbTa6GtkQ98/8O1Jn59Awxk/CCLnZrsxJB/klVHS763fhWs9kyqCNuhRNhzEc4xrPgLRg2wfNELUU4c6ak3v/0iDdpaFtQpv7MwgU6Z/T2Q2nqy6gFyPAUcRGyj2tsqDFIXlh5FLavWC8VGdO0NpVvsgHoTWow2wEXulmZWB6CcbCiat+dpxbP0AwO6/3Qr7s9icZvn/ffhtTQ2gEaRWVrNoPcAKmOSv4eBTuBXyh9FK0IEO/fE/UxkPRE7EPWn1NojBHClu9ukUW/XqKCXfQtOHmId7Qc4rrio1iAASVID0rhCuNcWxb2sOXG8lrlUPb7LGMsQLOU=
+X-HE-Tag: 1789510892-165010
+X-HE-Meta: U2FsdGVkX18U+1PuCMSK0hgXfNiWutqGOxVMVakFDaSZ+Ssu8mli6h017mD8CRadsvD2gCdA/Q78M+uaIHtLb1MfgYO8dWsX2nDwNNPxwSX0PczYXY0OL828lysyuj12UY7GVfbCsQQOIljhSyVhLO8O/AKTYC8k8hK71yJ2YHdqbKDz/e1jH4M+fD0u2ZT+pIKY8P9gvFhwB/hOjnl3hJ1PoWs7tWv0RbTUad9/33J2CoedFzVv+6hGQspDL09Xdcz3MsBIqvGIZdiCh+Em3tq9doOWHAdclKUqvclKb1QGwDqxssk0swpqHP1NTUpIkEIbxHqXjpsNof6ewnrXqTYx6eYhrzX9UozsNCCmeMhF0pchlCNs8eMM55rJ+enUl00lXXSgVuON5bsS7d8f9xQs9h5PqZ4R5qBXCi5V2RKDYDcOQt6/HIMAsqSPQINYE9vMFVuyAehRslLOktzs05/0puErztBv6MpEEGoHhM27H/0KzrZP+6CT1eMwfIE4CncEAdAfqJpPqHx4jXsGZdkRysJ8jAHSvSmLW4qSzxZCuQ3DT/d3bFy3XU0wtH7Hv67+qz0kIS4mDBK+wizVh75pyQbmBUMAigHPQ/Rvz5yXSzZ6qXS5WYI6/+9Yx/H7fXB5tH1kLKASAeqG2C3ERCgmAzuSeSGltbPpoyY9kKew/1GIU31P6E8E0E8qDcp5BNK4H4Nr1pM9Q2kd3pYkXm44Nw9ZgpDdkD0yRydyd+xz9aqxKLlEm0Ww795hXclZPL8xe8OS0sW+oFC3k3oyQfcbbIE22bFGT7XDRl+2aki2JlAyw5dicDctuH8UoYq5vnsdoXfqzF2+2icRIGDD/e1O+l3MKYGmhZzwX37f+4zSKVFYlhd23BNGyZlS3iIUpS2m/4KZ+iezdWzq3TaTfS+hUySmzv9tznzZ4J661+IuLOjQLV3uexolTPbYn4EEIjw8QNxFEacFGHJV1Sn
+ s/UoWQ30
+ CbFKhOUay/bn8Iqo2SxFt7y+QoRDYSjjvLYRyczJXu28C0ENd6md2YhrdbDcVTVXixtRF/PjZth8zjq+rRVJPqNBxV6gLbnglldbY49gE6AflAP37HSjk9m8gdu/tMO5OtvJ5bU9Lu15+YJG/ZYN7BJNiKPlO9soK/gbCVR6N9CCIrzLOTWZrY/8k9sqLBeS9juxwDCn3JlRUnFGjaI6XATY6ZxqkFIka3U19I2IJngfQ892LHmYnbYz3/6WS5s1llYozXbW6zau+DjqhD8H7guji67nk6+aprBzJKcDXIKWnB+cRcxBpk5omz+Y7p4tVSxuwuI/Yrc5bun1EarIkbd8sYF6CS/hnAWGyVoCQhkXk5slDPOflbIsBAcLvkSve4zyUzPB33qTwwZh///CzuP3s/EUej/iJ6PvQiuil6Aa9n6xBVzidLcf8+MfT3I1hnYg1qlr2LDUEQ9d5sW2RY3ADIuo39OKTtVHH0RXOrE/FqmDGNdrJ9bYd+12lV7dMe/RV7duo7za/lzAtNdjr7QND3qP7fZctbYrjyabxUq59V4DN56AAnycXkbJCIoEMBuDt8vWsWOhdpkgJmS1CXkGLZO2jA2U3JcBXePWXcFbxj7doILaJ9bNZ7xGU6/EjRFRO7nOgk5XSKcL3wYoJkZBRknDQlgIrTEWIv6SHiKhmliPsrPOWljAhDYnrzHgpfl8oQarK2F7oZicyIAkEuQvVHv3zafYwC0WrfyYmQCtURIB/J4X2NUuxP7DlPw8lv3IwdO6MJO6M3fKKh8DErTr1UXY08S6usXq+uyoEGTV0hB8s6TNjA7x8cP2tRKi3ORNA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,105 +206,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 14, 2026 at 03:32:12PM -0700, Isaac Manjarres wrote:
-> On Mon, Sep 14, 2026 at 01:29:06PM -0700, Isaac Manjarres wrote:
-> > On Fri, Sep 11, 2026 at 05:04:55PM -0700, Andrii Nakryiko wrote:
-> > > On Fri, Sep 11, 2026 at 4:24 PM Isaac Manjarres
-> > > <isaacmanjarres@google.com> wrote:
-> > > >
-> > > > On Wed, Aug 19, 2026 at 10:24:28AM -0700, Andrii Nakryiko wrote:
-> > > > > On Tue, Aug 18, 2026 at 6:46 AM 高翔 <gaoxiang17@xiaomi.com> wrote:
-> > > > > >
-> > > > > > Thanks for the pointer. Understood — no new NR_* counter or
-> > > > > > /proc/meminfo entry.
-> > > > > >
-> > > > > >
-> > > > > > The remaining question is on the consumer side: Android's Lost RAM
-> > > > > > accounting would need to enumerate all live BPF ringbuf maps
-> > > > > > (BPF_MAP_GET_NEXT_ID) and read each map's fdinfo memlock to sum them.
-> > > > > >
-> > > > >
-> > > > > For BPF ringbufs specifically, you should be fine just iterating all
-> > > > > map with BPF_MAP_GET_NEXT_ID, getting its FD with
-> > > > > BPF_BTF_GET_FD_BY_ID, and then passing that fd to
-> > > > > BPF_OBJ_GET_INFO_BY_FD to get map's size.
-> > > > >
-> > > > Hi Andrii,
-> > > >
-> > > > Thanks for the suggestion on this! I did want to express a couple of
-> > > > concerns with this:
-> > > >
-> > > > Scalability
-> > > >
-> > > > I counted the number of maps on one of our devices, and there are 112
-> > > > maps, meaning that there will be between 224-336 syscalls with this
-> > > > approach. eBPF is becoming more popular, so I'm concerned about how well
-> > > > this will scale, if we have to invoke 2-3 syscalls per map.
-> > > >
-> > > > I had a test program that implemented your suggestion, and it took about
-> > > > 2 ms to identify 39/112 ringbufs. As the number of maps in the system
-> > > > grows, I'm concerned that the latency associated with computing the
-> > > > memory usage from ringbufs will become even more expensive. This is
-> > > > something we had an issue with before on Android, where we had to
-> > > > iterate through various sysfs files to gather wakeupsource metrics [1].
-> > > >
-> > > > To improve on this, I was wondering if we could expose the ringbuf
-> > > > memory usage and potentially other bpf stats through bpffs
-> > > > (/sys/fs/bpf/stats)? This counter could be a lightweight counter that is
-> > > > incremented/decremented on ringbuf allocation/freeing so that when it is
-> > > > read, there aren't any expensive computations.
-> > > >
-> > > > For this specific metric, we could just use a counter to track how much
-> > > > memory is being used by ringbufs and have userspace read that. That also
-> > > > brings me to my next point.
-> > > >
-> > > 
-> > > I just don't see a good enough reason to single out ringbuf maps
-> > > specifically. other map types also use memory, why would they be
-> > > excluded?
-> > 
-> > I was looking at ringbuf maps specifically because they allocate memory
-> > for the ringbuf via alloc_pages() and aren't attributed to any counter
-> > that is exposed to userspace. The other maps use either the slab
-> > allocator or vmalloc() to allocate memory, and those entries are visible
-> > via /proc/meminfo.
-> > 
-> > > If you are worried about too many syscalls, look into map iterator
-> > > program types (grep for SEC("iter/bpf_map") in selftests). That will
-> > > be super fast and way more generic than what you propose. You can ping
-> > > such program in bpffs and that will be you custom /sys/fs/bpf/stats
-> > > implementation that you have full control and customizability of
-> > > 
-> > 
-> > Thanks for the suggestion; I'll look into this and let you know if I
-> > have any questions!
-> > 
-> I looked into this, and this works in reducing the overhead from number
-> of syscalls, but the other part about correctness isn't handled by this.
-> 
-> For ringbuf maps we would have access to max_entries, but that just gives
-> us the amount of memory consumed by the data portion of the ringbuf, but
-> it doesn't include the 3 metadata (kernel structures, consumer idx page,
-> and producer idx page). I don't see how to derive this value--rather
-> than hardcoding it.
-> 
-> I did see that fdinfo for the maps does give the total memory usage
-> via bpf_map_memory_usage(). However, that value includes structures that
-> are allocated through the slab allocator and vmalloc, so using that
-> value would double count the memory usage in the system. Userspace
-> doesn't have the information required to break that value up to extract
-> just the part that is allocated through alloc_pages() directly.
-> 
-> I think it's worthwhile accounting this data correctly, as on our setup
-> there are 39 ringbufs. This can lead to 468 kB -- 1872 kB of unaccounted
-> memory depending on the page size.
-> 
-> --Isaac
+On Tue, Sep 15, 2026 at 9:02=E2=80=AFAM Linus Torvalds
+<torvalds@linux-foundation.org> wrote:
 >
-Please disregard my previous email. A colleague pointed out that I can
-use bpf_core_type_size() to compute the size of the metadata that I was
-referring to and that worked.
+> On Tue, 15 Sept 2026 at 04:31, Christian Brauner <brauner@kernel.org> wro=
+te:
+> >
+> > TL;DR, this lets arch code handle fd install and cleanup. fd_prepare()
+> > allocates a descriptor like get_unused_fd_flags() does and records it i=
+n
+> > a slot on the task. fd_stage() attaches the file to that slot and
+> > returns the number.
+>
+> Honestly, I am *not* a fan. At all.
+>
+> I think this adds complexity rather than removing it.
+>
+> The diffstat tells a story:
+>
+> >  106 files changed, 962 insertions(+), 861 deletions(-)
+>
+> in how this adds a hundred lines more than it deletes.
+>
+> But to make things worse, it adds them in bad places: low-level
+> architecture assembly code.
+>
+> Those extra lines are *not* making complicated code simpler. Quite the
+> reverse. They are taking fairly straightforward "just deal with errors
+> with normal cleanup in the place where it makes sense" and makes the
+> *straightforward* case simpler, while making the big picture more
+> complicated and subtle, and adding new code to places that are not
+> simple and just blindly do somethign that makes no sense in that
+> context.
 
-Thanks for all the help!
---Isaac
+With fd's it is more than just about error rollback.. exposing an fd
+to userspace mid-way thru an ioctl is an easy security bug to write..
+
+OTOH, "just use FD_PREPARE() / fd_publish()"..
+
+BR,
+-R
 
