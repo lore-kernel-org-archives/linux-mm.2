@@ -4,93 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A01CC88E75
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 12:14:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22BC0C88E75
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 12:15:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9E9426B0098; Tue, 15 Sep 2026 08:14:52 -0400 (EDT)
+	id 3819F6B009F; Tue, 15 Sep 2026 08:15:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C0FB6B009F; Tue, 15 Sep 2026 08:14:52 -0400 (EDT)
+	id 358666B00A1; Tue, 15 Sep 2026 08:15:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8FE276B00A1; Tue, 15 Sep 2026 08:14:52 -0400 (EDT)
+	id 26EFA6B00A2; Tue, 15 Sep 2026 08:15:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6DA816B0098
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 08:14:52 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 136561203EF
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:14:52 +0000 (UTC)
-X-FDA: 85215890424.11.239A912
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0566E6B009F
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 08:14:59 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 94F7B1603BE
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:14:59 +0000 (UTC)
+X-FDA: 85215890718.26.1C71E27
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 6E52EA0009
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:14:50 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Pfnv0gbx;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Pfnv0gbx;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	by imf13.hostedemail.com (Postfix) with ESMTP id 04A2B20009
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:14:57 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SQ3aDU0Q;
+	spf=pass (imf13.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789474490;
-	b=SkgLgB0Rmy0hlmcVBhOSG2/c4x1qsIKWZJPy2zA4cCizn+qIKd4xMi5VRfNEl4e5MY6kax
-	rN0I5OOJ3kVBVtegnT1c4p9nf+Xq+ilJy4OShpNjWe8mA4HGslqM448lYGL3BLf4sEyXUH
-	PcIZC6ntMjaQQ7nTdUKQNenKTVIK46U=
+	t=1789474498;
+	b=PjfgVo2KyTlz67A34iGqULRnGosZsUp9KbaxAxHmbnqGf4xNCOHie0VJ15WgrP87o60FuR
+	HjlSAg69lxofUdDag0g7XP7O4E1DYXrdEI62VyCOb8MGCEVf4IxLxTd4L92N2R08PiYeer
+	FmxBUhZK/SAgF6xD4LI0gFIP+plT1K4=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SQ3aDU0Q;
+	spf=pass (imf13.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789474490;
+	s=arc-20220608; t=1789474498;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TgpDOnocVQOLMc3/AlRq1UjktGK6C7Gyd90Kux4DYfA=;
-	b=vJa5yYXXA7EOASZRrTQ4N5KeIA7LUfMZeNDre86PVk1qwGSlyl4P5fsDSEvQWu/w6K6pub
-	q7N7NrsFAhRijezbLfqaZ4n3cUQoiMH4DWnRxrhAFBOuPniU182UmkLvGFoguk1EMmp9aO
-	E9zi8jW7M93B4B7qF6lEuOH/ERysY3A=
+	bh=ejtHf7OrVCONiSGbsU0Szkqhw/V3NKRKJBvDExa4qrI=;
+	b=KZE936/534n2tMdOevXcBMDp8ATML3Y2hEoxdbf0IntiIlgID0dOxIuwkadyyHiVK0mSuz
+	UFKq7YR+dKuIQfuFarcUAAIjI0DLdpUYv+R0NO6GJqSu1yFIl85xBPDZNRIOtLOBKQCRGK
+	+H5gnUKYMKsywYmWp47x5RWZnhJA090=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CA279409F5;
-	Tue, 15 Sep 2026 12:14:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1FAA1F0089A;
-	Tue, 15 Sep 2026 12:14:47 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 57C3740450;
+	Tue, 15 Sep 2026 12:14:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 398E91F000FF;
+	Tue, 15 Sep 2026 12:14:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789474489;
-	bh=TgpDOnocVQOLMc3/AlRq1UjktGK6C7Gyd90Kux4DYfA=;
+	s=k20260515; t=1789474497;
+	bh=ejtHf7OrVCONiSGbsU0Szkqhw/V3NKRKJBvDExa4qrI=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Pfnv0gbxXYPBW5ngDM1BPQQHDBEH64eQbCNBA7As7XQllaOVs9srOJocJTcOpC3XT
-	 +tBSuUVsDjYLtskj1H/KnGHu64fvB/LKvoto8b/1C9TdPBUb2FGeqlDDsZw5ByIwHO
-	 MoEzV8EHl67XJeuYV9ENqBOJt0ffAddHj7kVNT421bYVifya9Ag8OwSLhtmCFhxFob
-	 paeFeWYGLzS3PmbOQNjlBr1q4j6FJm9IcULTM3aAnjn6WlDhkszRFKzaVJthzwN/5c
-	 3uEdtqnuazTttbQPlVN1FAd3DR097y8tCWsB+WVkEH5KLWo19PePTQx30oDVv1BsOi
-	 I4VTuIqYdWUzg==
+	b=SQ3aDU0Q8GsPtoMGWFzUtgXPVhQk5j3tT2hP5/IYPK7pNnGp/W35LdJkurCxq/UDj
+	 jXECYSMyRfHDZKzN98Ln98DAG1rH6aAR4ISmzyGlU1rsDvw5Q93DNzrkBW2qSN7IRC
+	 YJr9cCfLCK65yz/lnkKU0h/88SazD0WGxzlXFRwUnZmmA1pIC11CPHPte6Jw/NVEZ8
+	 jp0yJWYB7+6Cgap52rqfdYHOC0u+j0XckjkUTQa+uZ9aKsrGomUpcl6BdIHpYiyzm/
+	 Rqj2wKLDgmWRUAKCkxgoX9x9LTH43+wakiVHy5v4VFxVPQvMYbRVfHWWmjs+K15B5a
+	 6EBFBzK+SsdcQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC POC 39/50] seccomp: stop putting the listener
- descriptor back on failure
+Subject: Re: [PATCH RFC POC 34/50] sctp: install the peeloff descriptor when
+ the syscall returns
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Christian Brauner" <brauner@kernel.org>, "Linus Torvalds" <torvalds@linux-foundation.org>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, dri-devel@lists.freedesktop.org, virtualization@lists.linux.dev, io-uring@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-arm-msm@vger.kernel.org, kvm@vger.kernel.org, kexec@lists.infradead.org, linux-gpio@vger.kernel.org, "Alexander
- Viro" <viro@zeniv.linux.org.uk>, bpf@vger.kernel.org, linux-sh@vger.kernel.org,
- =?utf-8?b?Q2hyaXN0aWFuIEJyYXVuZXIgKEFtdXRhYmxlKQ==?= <brauner@kernel.org>, linuxppc-dev@lists.ozlabs.org, "Oleg
- Nesterov" <oleg@redhat.com>, linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, "Jan
- Kara" <jack@suse.cz>, "Peter Zijlstra" <peterz@infradead.org>, linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org, "Jens
- Axboe" <axboe@kernel.dk>, "Jann Horn" <jannh@google.com>, linux-openrisc@vger.kernel.org, linux-um@lists.infradead.org, "Ingo
- Molnar" <mingo@redhat.com>, linux-parisc@vger.kernel.org, "David Airlie" <airlied@redhat.com>, linux-mm@kvack.org, "Eugenio
- Perez" <eperezma@redhat.com>, linux-hyperv@vger.kernel.org, linux-csky@vger.kernel.org
-In-Reply-To: <20260915-work-fd-reserve-unify-folded-v1-39-4d5217d6b246@kernel.org>
+To: "Linus Torvalds" <torvalds@linux-foundation.org>, "Christian Brauner" <brauner@kernel.org>
+Cc: "Peter Zijlstra" <peterz@infradead.org>, linuxppc-dev@lists.ozlabs.org, "Eugenio
+ Perez" <eperezma@redhat.com>, io-uring@vger.kernel.org, linux-mm@kvack.org, linux-snps-arc@lists.infradead.org, linux-hexagon@vger.kernel.org, "Alexander
+ Viro" <viro@zeniv.linux.org.uk>, bpf@vger.kernel.org, linux-parisc@vger.kernel.org, virtualization@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ =?utf-8?b?Q2hyaXN0aWFuIEJyYXVuZXIgKEFtdXRhYmxlKQ==?= <brauner@kernel.org>, kexec@lists.infradead.org, linux-arm-msm@vger.kernel.org, "Ingo
+ Molnar" <mingo@redhat.com>, "Jann Horn" <jannh@google.com>, dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org, "Jan
+ Kara" <jack@suse.cz>, linux-sh@vger.kernel.org, linux-mips@vger.kernel.org, linux-alpha@vger.kernel.org, linux-openrisc@vger.kernel.org, "Oleg
+ Nesterov" <oleg@redhat.com>, "Jens Axboe" <axboe@kernel.dk>, "Michael S.
+ Tsirkin" <mst@redhat.com>, linux-kernel@vger.kernel.org, linux-um@lists.infradead.org, kvm@vger.kernel.org, linux-hyperv@vger.kernel.org, linux-m68k@lists.linux-m68k.org, "David
+ Airlie" <airlied@redhat.com>, sparclinux@vger.kernel.org, linux-gpio@vger.kernel.org, linux-csky@vger.kernel.org
+In-Reply-To: <20260915-work-fd-reserve-unify-folded-v1-34-4d5217d6b246@kernel.org>
 References: <20260915-work-fd-reserve-unify-folded-v1-0-4d5217d6b246@kernel.org>
- <20260915-work-fd-reserve-unify-folded-v1-39-4d5217d6b246@kernel.org>
+ <20260915-work-fd-reserve-unify-folded-v1-34-4d5217d6b246@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 15 Sep 2026 12:14:47 +0000
-Message-Id: <20260915121447.E1FAA1F0089A@smtp.kernel.org>
+Date: Tue, 15 Sep 2026 12:14:54 +0000
+Message-Id: <20260915121455.398E91F000FF@smtp.kernel.org>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 04A2B20009
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6E52EA0009
-X-Stat-Signature: opfsiz1ogs36atwqmdn5yiz35n7aotnn
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789474490-797568
-X-HE-Meta: U2FsdGVkX180vOq3mVfBHEFElsqd9khcG3Tzz1ed95nqhyYb9Zta0pITYRkoUG3AtN82c53XIMV9K2y63NQ7hIeHOcjsnWGcDz6o0J4wubV3axR2TsqPDbGgBzLoIDZ+d93RymEetauMedN2tZq4GgTwEVT2uSyYLgfpFk1ClDRc9eoZr7Uw3USJx1mRVX/NyFAqEbFrGJdqDlGmRUhnrF0bl9/5hEwp6C92FT2mxCDOuDlWmzURZfKtqUrlGIJTxB5czFCnGMJhr9ahWeBKYvvAL+SRqZiXZHaYJO3FM97WO9jdATJOXRGGDczDVO0P3sK6JMpAX1oF05jsu3yNB22rcNPpQj/8M8ZGy3BjzUqyVwz3tdwkuf5A8NYTFlk3H+p+zqppg6UCcgqRX3pDysspuKR6dqRhbC/Y+gG/jqJDnsQRRb78cyxd/w4LnWAbC+XODw87JQQjmslqGTvdJsWO1KmEayQ3RfyAb4XLD64tquFbLltE+enaSdi+MQ38+0KVA+OoSr7lnZ6zLm4FQAI+Tc+O4SSxllp9VgJogSnyUrR7N5NAyVw27zi3p8uQacixtQQVxndakYD0unNnqsfW5tC86nzRDeLca63DQOzlvbatLto4WYQ1L7Bjm7bvrr3EZbt87qHsVu/jeXRT83WJLvWln8j6xMR5zVx21Dog+3B/XbF/KPXzU224eNq04/0xXU4lfzgFbillgHXfQ/r4bKaW8y1vVrzio8Kz6qDCEITyRwEDj0Tc9y7viX4chR4zcAufq8UdOBJun3MiRqCAlEGuzgZgJ/wugSucBedIKuWWlXAOh+Ey7GTKd3P8Z+i7dtK3n9G8o3MQrGkWz05VY11jPjc+dBptoxUjZDwzzbar7pdBb4sfzcoarMPDQT/g19Xcu83W+3dbekNBDcTOSlZDZ2OZ1vgy+iEeGbRRq11QtNFziERfNGw9XDnMygEnJC1PN4g1EB0hRy2
- laY+Sutd
- AQum3ysA3IM3l6jKifEL1MTkIK29hFZVf7VnhsX15jgARe0b/6vEus92BULUR/gpd3qqbSosRJbehxcZ8WFEoRUpIpV7ILw+x7hqMrOEQ1aGWbwz4vjPgmwhWfUtQ8IsGg9CMmYggNRnqCdKNpflXowVid2pTDydWHRXYOR5tSc6nBipQIuF4lRZKKwjrUdwJ6PUOBwHKEEysN4pYzQg1S0vwp3OFkA364w1l/VcYbT7wh2mp9BcxDn6zBti+MTDirT/8nWjjdhBLYIxndxQ3syLEHuzqhp9W44GkApoI2CuSBupGnbhjs7L/WuAvnvskNZUbbjpqeB0nUH/TceFhobK+jCDMbUx894jUwjGdqA9gn5nju6GqTdX/ISLs+GNA+hCN5364imRtZcivj4euX0lJrZbNdp6fNQ70bTXTcGxbHTPjXVz0jEjIgs4l9vzqPECcKRMGAwyByq+fD+8dP9z2HUPVTQCwnxso1lWxnRl7V9QwFYovjLJVRxwA5+l2SFywvLazm5AUsQQwdGtMWpyLC4Vv5g8JNlJTtZocI8gZAvtR1oWe0AF/U0QKTxpZYtxweNQSn0fvxhGk8qLZ8r3j7pyv0EjQJ5h7t/fg89NDmsAJzM1BclC6KBop1y5pscxQQdaj0HO8+Ip8gMH3R9UQ6wnXfw1DYmmEMfD7uodUeevAeInV5g+Ov53UaHR8iWEx
+X-Stat-Signature: zibi4wwnsk1zocge8xz6756cgjyaaizh
+X-HE-Tag: 1789474497-907991
+X-HE-Meta: U2FsdGVkX18tNyNCrdeuY6RDvOSEi8tX/+DPznBW1X0Xke4PHjP2mDkaBKy7rM438e7unHb3VFpnwmlZyO/yMZkJkxvwX9HYBsYCDuMK89Ze4jYVhgmj63OqDBASgHx3W4kSQZiAv/IcNZyGIXRraeUm+Fv4izUHVTXy60z/JEmQLgZir8icKmu1tFcnl01b41zf8xCMN5duKzcseemZgbTf8UCwInYwbQ8WqCi4bZ50fQZ9cWCROX6SW27xI+41SK3pt4WXKgaFQvjALEIoBatS79cHvGV4Q3SSKJei3EeJYf4q1jYfXXIb9s+hRydNPJ6UKumj3AgoO98KJ/KRFCAfW9tfZEdCfKwR4L0Suff5MkeCNf9tWEgBCYRqs/ZuQFZh+7ccm+j39vKdhbYDDpRC/FXtlnwOXKsMCyyELsKh5JsDvKcEHeyLCA+uta3g4kp7tgoblhGNMOho8qe13SByVGPoUN9JriODKvRgxEdB7G4WEz3eU7E+u9DYfiXXCucf8Z9ulWZ8G7rIWTeNrVm/N5WMEiU+97seAjbLhUAx7OlqMIU412/LIoLvNIhezNNBJOSqtAoxcoDTPwIBfuMuWlrCi1DZCzbF7Lpc6m5OofafsNyXfw2IHwRS1ivC5VEwkKVXpxFvbTgny1zEFVTNqDYWCAx6KXoYBLwmzgrtfstSof5zyZsmQuHfOrthEBOr5cCejTbM6ikp5wAgl0JRglM9zUrYJVP2Ymo5zM2Zuah5ii/Ufrb8mBt7CcJ3pd4ILxfIuprh/QBHYBv0Tv6ac81iRL8pQ4R3ucamyaVJZ63ERRrViYQnhvHzXryajPrI7P1u6zlBS+Wk+3ySo7+ORxkj8qQrX28dy870ADs6Mk06MLXJwcMMalVKt2D3DUmA6qMvecVwvZSR0nR1h76lm0OiouTXyhYSQoO5y6WKxh83RZzSU+2DqXhH4jzeNzPBkBNX/M3b0RCsgma
+ DFwlCpRc
+ IeqEUPJTFOT8Z1YQIeDheunKvkkd+1/6NAt1Nfsmf1h6NvijLO5QITA5c/vAqI+z5/BVff3MffigOJ14H04559/H6EmceHJg1bPMxefu2nf19X8sU8DrGZSoU2ff0IGzlJO6h3e3nfjTQhKmNCXdIzUN/L7Y3WBj09ZTlOuHVjr0b5/izLo0o/+C8NbUIF+BXP/bqkfJI2Iz/Yeg/NWmBdbEeOa2HBdAcyQGZm4TEcDa2T8pQBx84asa/hhoElrhETlvEcW3h4kpfp/ZyFEZPBahjAD8oyrtBz4QrcQbzV75NvAZwAXTYD7aeeqNYKriTSCDfnzy/XNPQOII0Boju5j28YynjEJ7ckbj47x4TOJpZpQ3qacT3dBDediIes1pZhFtz2MPVa3IHpL38lvr9e4Ffx9/RfpjleAgYI8ta8oFpfvFNO5PGlEKcrrovoqRxId9UxWP5lFjEkXsT3OJe6ul1JVFxirFR/yIduGS1mCwKylE+dyec8M7mEgABc3iAYGQmGxbtDXMdXA52tVOshwF90TQ42CGZ3sdYkUz+moHl+0S4w1MJkmMZODPZmwMqPPMgs/UnK384j/Ca777dlIYhiUcExNllMTxLM7/i4WWItv/R9dwLZiy/XZ+bw/gyeaNV08yLqTj4vPCxuMe6KHbnIsPV3aTNhKG2ISBpRx6PO5wNoqLugZLyl+FnCeNsx8Jq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,6 +107,6 @@ Sashiko has reviewed this patch and found no issues. It looks great!
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260915-work-fd-re=
-serve-unify-folded-v1-0-4d5217d6b246@kernel.org?part=3D39
+serve-unify-folded-v1-0-4d5217d6b246@kernel.org?part=3D34
 
 
