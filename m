@@ -4,75 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A09DFC88E53
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 12:54:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0141FC88E7B
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 12:55:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A59496B00A3; Tue, 15 Sep 2026 08:54:58 -0400 (EDT)
+	id F14C26B00A4; Tue, 15 Sep 2026 08:55:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A30BD6B00A4; Tue, 15 Sep 2026 08:54:58 -0400 (EDT)
+	id EEC096B00A5; Tue, 15 Sep 2026 08:55:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 946BC6B00A5; Tue, 15 Sep 2026 08:54:58 -0400 (EDT)
+	id DDB9C6B00A6; Tue, 15 Sep 2026 08:55:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 608446B00A3
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 08:54:58 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E75FA1C245F
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:54:57 +0000 (UTC)
-X-FDA: 85215991434.24.4F1253B
+	by kanga.kvack.org (Postfix) with ESMTP id 9EFCD6B00A4
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 08:55:06 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 25E4E1603C5
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:55:06 +0000 (UTC)
+X-FDA: 85215991812.12.0167B9B
 Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 33BFB40009
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:54:56 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=WCLWVJs9;
-	spf=pass (imf01.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+	by imf29.hostedemail.com (Postfix) with ESMTP id 71283120008
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:55:04 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=peho1MiS;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf29.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789476896;
-	b=OMHl8se20sGjPK3cAUj2RUH1WtuLGFvpyHfCq+RBOOKWyJhCs4/EKoJCQPQPw1+CpNwN6J
-	nExexRwgxi8JZIxqZsN54soF+rqoTaNdmGxcQpAVsD+J7InofiqyRO8um3csrDYoNYiHIj
-	sig9Fl2HjWtrn9vSl69NWl/QgNS+Zus=
+	t=1789476904;
+	b=ibnHggEcLIXirvngzgf/mgFPIrZaQ9GtIBoBoQNgy6QFtHAxnhSYrtQjAYhaabVRbrJ9PD
+	oLvSDlvsmECY2UbdqanRrixV6L0DbA3FITQv7PskOgSRXn5RCpRizchQy554DVGEaYv3Zf
+	OoeCtdH7YznGpfyJWJ9qlL6qxmbszVw=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=WCLWVJs9;
-	spf=pass (imf01.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+	imf29.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=peho1MiS;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf29.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789476896;
+	s=arc-20220608; t=1789476904;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K8v/C9O0g8FUjKOQ0TaIzosy3/qX+2dVro7BLtwLk5M=;
-	b=xcI9S7P4lFZRyOasaiNpuoEa6qy4/C5+C3Ib4AsOnoKt5TnwvDCNDxJ2yfeXAe/2LLAUab
-	EyemG3T1pz7K54yETJplLe066x+KIHw8vsdH5FCXzl68GTPRmBVO0GmQAMwspCSh16NPmb
-	ug2CzaUmj8stpTSwXmXTLLSRWXq8hLM=
+	bh=nJQHvGBJYwJr3F/aktnOoCOR2Bfx83QmvxSaOEex9rc=;
+	b=XzdDbgORvfm38iVwk8RE2u5janrwHv97cJXrX/boLHeIN2bfv623/4KlPk2Q5aCgOr9q1s
+	UunGVfcI4/TBV8i+zDtqWXEXa3kUdNBlYpCsal3WhLm7MTRkErBv1E9Mq6WdkGUQMUXy0h
+	nnBE1wf8pq9UNohyoFjnI3qiVWwe2qI=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
 	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description;
-	bh=K8v/C9O0g8FUjKOQ0TaIzosy3/qX+2dVro7BLtwLk5M=; b=WCLWVJs990HuIGJZ4x6CqmQCWg
-	uyMV8BszXqdZPcU9jgOKeQm8wtjSV8Koco5/z+PrAKYJu4BryqdfOOcNsgFsbIgJMWh9EzoXRryPa
-	H7dTU+tzAHUV00L56XsX0kLjyfH7qdxfIFnS2uNKDR7vnMsFW/X10qma/qPFVJbUls3KOTsRRSYWi
-	kdY4yJNGj7qWA6Z4zOqwdLgXUbBfH1qW6X1+qt5nF+zzLWXObNMkHR/QwRo9b84yo5qgY6tyxyext
-	mpraWHuEA0CgqcOfTj+XhyG/sbXtj8oecs4/BXDaT2m7WraT67ft2Vg2EmcfB02x6oJGikzUSrxwr
-	7ZdSBIaw==;
+	bh=nJQHvGBJYwJr3F/aktnOoCOR2Bfx83QmvxSaOEex9rc=; b=peho1MiSPxeM5E9y6ZkJnHD3Ac
+	ENhbZZIxpw7yPwYcbEI1X27MJfJtisrsN896BxohWU9hGrJtHupzLBnfbm4DthteXHHreNWnt9Y5C
+	8QS67ouHGUb8vn4m7JblIDmUdx8G8Tbq1ljQQFyC5VZJH4+0zEoMry+Cg+W+fLVO3JLBqhXxHMz21
+	G8aYg3DxyZ+70H3BZqt2ucu+76cl8M0D5evcCm2m7AbyGfDpkKcp0ON6jHuIPa1JO41TWuoiDOdJs
+	wCJ2/NXYJ3k2TrxgelPLDMwcY8BwBtdD41XbfHfuA5/SgPYSwl3p+LEVrAnV1biPV8+pa8risBmSL
+	ZygLzG/A==;
 Received: from authenticated-user
 	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.96)
 	(envelope-from <leitao@debian.org>)
-	id 1x6SgV-004P8h-0Y;
-	Tue, 15 Sep 2026 12:54:51 +0000
+	id 1x6Sgc-004P9J-34;
+	Tue, 15 Sep 2026 12:54:59 +0000
 From: Breno Leitao <leitao@debian.org>
-Date: Tue, 15 Sep 2026 05:53:41 -0700
-Subject: [PATCH v5 7/9] drivers/base/memory: count inherited poisoned
- frames into the block
+Date: Tue, 15 Sep 2026 05:53:42 -0700
+Subject: [PATCH v5 8/9] mm/memory-failure: add hwpoison_boot_page() to flag
+ an inherited frame
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260915-hwpoison-kho-v5-7-3bc7a57bd503@debian.org>
+Message-Id: <20260915-hwpoison-kho-v5-8-3bc7a57bd503@debian.org>
 References: <20260915-hwpoison-kho-v5-0-3bc7a57bd503@debian.org>
 In-Reply-To: <20260915-hwpoison-kho-v5-0-3bc7a57bd503@debian.org>
 To: Ard Biesheuvel <ardb@kernel.org>, 
@@ -99,31 +99,31 @@ Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-cxl@vger.kernel.org, driver-core@lists.linux.dev, 
  kernel-team@meta.com
 X-Mailer: b4 0.16-dev-f8e9d
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2728; i=leitao@debian.org;
- h=from:subject:message-id; bh=T3mL/3Kc07p9K/MT4mso5EEMI4eOaZY0yANJdmvBvvE=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqqT/e53Hu0gqe5cHhpqQNe7hv0ZP42+UV0B6bQ
- Vl11UrXA/WJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaqk/3gAKCRA1o5Of/Hh3
- baWYD/9D8jAr4oQzhn8Bl3b7Tmy0SS3Ar8i9wUTDGHUSVH8aR9qkR16ztxsU8oNKXkkIQQVbY6C
- +h4QevMxbRjtvsOyHkX4Kt8/hP+r9ytz2g7Ak3tWpPL/J3kXu4SrJb5o5hRcVhjXvHpW6HIq3Ws
- bFRMMbgL6xFVx7f5KFd8vjnYa6UStxqQKihP9INLA+VS4NYodrQCJ7T7q8udy/4fvLq4uT5eYqE
- HA7DXM5U2+fn5Rg8NKhxjJltesF5EqwqvrJtW8VPYYS6zuuConb9ZqLqsz8EfMSpTa8oliYbe1c
- TGVWNkeMvmBCRv8HaZYXW5cIVAHOzcf/FveCy7/ZZsi49Vc3IeVgNEr+nJwZaXpEYoieTgE7c6V
- LxDER8G4X1yzf8uxvPb37xayi4WN5h5/Dg4Ez6bj+3GRWjwWWY3f9PrMP5mhNt4ER9SSqpIASl5
- JB2Dd1a1891Yf823Bcovd8GMrQySGGIZVKVSMDcqBgPSLZItIzNFgHMV2peT+GVz/CTiyVvJoBe
- gVDkX8elv/o9EQAJ91RlR8W/sBlCXJC7iOi7ilK1upHfZAOFdeIBO+dayDenszq6c6rfWbCrW5p
- 4Q3IQ7FqWebTAaOsGRql4aFJv87VAW7MKQ+gOHvxPtlBXRL2BTAg3au44y9iTOBYqZ8etixQJtO
- aI8MzCIkOTUGhRw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3014; i=leitao@debian.org;
+ h=from:subject:message-id; bh=pkvLVOtl/wJxWCab4MZWos3IO2QmqKMvCWQXOQFBXcc=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqqT/ejMXIQjF5HQn3VxXq+6Zy/+n0FqXVKhxTp
+ P11aWC3wMmJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaqk/3gAKCRA1o5Of/Hh3
+ bY+/EACFlIZZKCGkeF1D4pH+3gCLk17ltEVj4rCRVqtzUt3BEHbKX02a5iBOQC/tfTUtE95ecVK
+ lOWKniPGfAbmnAp2TL4aXXUneo8dI4f/STXSJo9qHWYK/Ry9cDgT1xPzvPYj0YDbdp+okn4MT8e
+ Tuti3cA3W+IdRnIsAuJMv1FoGqcEMrsOKnyyODshHbHg29gADtUKTLc5J7ccFlVbejrCjPHu1lG
+ SboVxR+tnbt3la37O7iBxy8VmdO9Tf69BtvNUmkPuXB452agmhtTAt7EwdfBwIQfmyyrM2yThfP
+ rmqSmnXOL/D9MQFjSABsdm/5MrDZOJ8sBY7xpVhGrpBjiFD9Dp6jWC3wFCfuGlSjhONjnYUb3xT
+ 5J/EuMM2Jg4CJpW9GDxeomC6qbiJXOVuMVdzQfDKMwn7aPdPL2JArr6UkKKVAL7J2eina1oP7Iz
+ Og5kFNxhLig6XpPc//LGzKXEXdCESf6B39F/UKPWabHLHJz9Od9S7Q8eNl5KmGoUrANCyGOQvzE
+ cKokqpD7Cz/cXHDBief0J6Y3wE/JnD7y0D6fpIYHs/K5GKXf4j+oyf+LEhf0EsjKhRm8GMFXP88
+ Nk20+jo7Z/87cujzF69coCuRzBORUnpsor0dJA+DFLKUabKCfDz/ikqi6sCv6YCO1fAnwSKgakI
+ RD8ZDEpMLOGVIkQ==
 X-Developer-Key: i=leitao@debian.org; a=openpgp;
  fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 X-Debian-User: leitao
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 33BFB40009
 X-Rspam-User: 
-X-Stat-Signature: kpgat9b71hsh84fzfkytkums4ruwjnu3
-X-HE-Tag: 1789476896-787996
-X-HE-Meta: U2FsdGVkX19k0sLGNSM5QBA664s/rg6q6UwJFm/GWspOgvpfHQzpFWaOYN3EaLf+G0nT7hvZ7gVUrutOPIJ+3/sIR7ky45xc3FbTnSK79Ko4WwBUWDLk60WjLck54Vl71MD2U1n2eoaMk81Q1nVXtS1bIWMr/mt4wcMWcpIGCAuZDsuttmo8fhnV2NJhwWRpPG1mFDjodadxwLviq/039Y89mMfyclYi9BwDm9JZ+FFRCFpc9Irr7h+gQ77rwW2cQggR+vTx9fo7gdJObapT+/VtmOHEsv8zNgsTHKF1J27v4SKMTxl4zwXaRu0ArlTt7BU0H7yZykvmxWeqwDgvHSpntXGZFrHautVhW6XyThiJ++IqO/b/Ok41+EpgcYz7m19vmJnPyGiXghjnJ/XgXy9ai2m4P+W2joRHxtq8HRZTPKg6L5CsDtKCpsIquk3g09FULYO1VBvbh9YeIa1S11jfnxL0R53LiFcO1hHaKpG7XRFtF0w5sQRoRy23v6H64Rml8Dl4bznm9JSVlmZLaUMoQTEMF1pqkvrFjxvPl6qT4WeZ5PBwbam/OslfJxTWZ+5TH3gJLiTJVTuQxM1h7On97EdppABEDqWpn73DK+ZAWHTsxF5alGVPinwreT8yXZeNpBM7u9tGynjqvBdAP3JwstmZe6TpbD7QWvnnLYWnZyQ0suuaqjOcKSdrLRToS44KeAhptmrnqaLzosf6OgU83VfFQ655j2GyqjLvFyV18LlkeNpjCZb4a+Gil9bCnqzjch+8gVW9Qi0jGxsqc1uzbWNhZmV376wYrwMtNCekHmQIF7NH+nvu2oyWycX6HsWMJW8aXPNayja9AhjCq70y4OhhLXdRDLJZA1ohyh2lrfNuAmAFXBnhkIcT/SP3eLGV3OLuWSzyNuY8qZL844xL1tW3Nj9K4+frJVPHxxBDpJTqz57oWNnI6/FReXYlA36O0vLDZQYBhBFEz8a
- rK6wT4sV
- +EfVGda3DYsSXJx/Ss2rYFztq3YMV54E82bkMOsNNBv1NLSlOfkGVTfglVOSD6FthLnjYYtzjxUDGMUew9+DHtPsnqaXDx1UM/y5TWbS8AUQ0XiWlP7AB2TKM1q/CnEJkXOiY4rT3NIjheLD3a73N2+elJ7Xno0bl97W0yITebT0Otd+SPSbOsK/6EPP24DqJnG4/r7krZuZipijzlBUFs96rPD/LowAhDbXlv50bCRI6r9c4YM/vn4ofuHhkMlq31xTx8ZpdIzUbL+buAEor1GHuOs/cSGq3PjS2m8N26aD0KH2wt2rTtZj7vSYnYeVI28BnO6qnnIgrE1j8MI3JiuuzWPHFvTIAPef5N/AYk6AwJq8=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 71283120008
+X-Stat-Signature: cygxhry4wgmudjfcgdiuukt5zinkyi5h
+X-HE-Tag: 1789476904-589031
+X-HE-Meta: U2FsdGVkX18FLuCXYuG5n7JF2FSokLjyV9FFB0wK64Ca5bs2VuQ5w/XW9IX/On3cOKMBscqz6Gw85LIt8F+x4wVNSJYiY2o7Bi6Ya7mWKJm1IR6nz1gxVGnuXJNbeH1n2RgXE8hHPLL89dsltJpU9lc0cFqN15+nfXFlFWtnRwAPn8/ls0orrNlCV94RlaZeLcG+8H3rso0pZxzHoDLLyEtI0NjujTlgWfZIm6YKZ21qjsIkLQhDleX3e/HhjmsmFkJ0lBiyzVPuc6T0SATKzlqgxnNnUFJx1Lzk2UTpz3Nr/V1PLzNcUaKi9ySysSfs5ZbYTK4nVoTssTP+QE4Mcf83WHSt9sXyabIk2Di/RI7xsL85kpRPJd70igYK4cu8j8Dssyj9YsAzHsDn130e7KiGf+73y3yGS9AI0mWThpINTvfxyOFghdLZfYKycSpwAZ2Bj6KYfmOtJS3/Uo5F4Vk6Zi6HsB6ZLkOSCBHbZT+q/bJ1wqX+cKQ6C0HSkBZKb/07feFBWmLo7NA9cHveDZnWpNXdkh31sTyisBY25BdQABKVfFZfgSO6bHOxMs/pfGhqfgx/4jK3GSwHwD3KeeDtnQDmB1EiL6VBFWu6VblwbLB1ORM29tBUPn1WALubM/Agn7mwkb8iQiY7uUE0E7utd0Jnx+ScmFzISnmGwPWsy4TFnLatrHzWQA6Iwf6aIQm8rHOm0FlDzP8IfJDUcoQcBgCeRkOreh74/zx8Seh9kCT7MyvaZm4m3E2YpsD3FSxIG4QvkZzPdDWeGdif2XBrwv4SXvMNKJbl15ejPCOhQiz+Gq/m6eLOIaexOQ6fug5OtR8jrmmtU82RZ/1UBOo6Iygrape6FJOuyZZ+kc/6z+MlOMTLnB0ASV2euFEbFPbVvGycZSO/CvL7BbAqmrTAKjeY/3W9eXgY2PrG0bOfn6Tfa1gjPkDktzGjRNcCBz+aYb4+kb4/OFR6B1U
+ lSOgARVL
+ FYlUKUgwQ55sdZrJXGr85SbmZqoiQqpNEBTzY0CtVq/6gRWvvs03Z78ZKNoF0+M0KkJwWsZyz+7YUsCtxF2+Bp8Fs/QgJ5xhrm09Jb2HxlTyPlX6q2xAZdDVzSYlSr+pi3JR2QAYbKhyv9oJu3RagYXiKRLb+it0VP1dFl9MsiNBf++RCsp+V4L2fsMQFVnG1cFFuhdmm28wdY3V+94TyVVdT4XQJNWQS8Nc7kXo4LmsrQ4hrm7pbqbUef3Mv/RUCg9rGjIAF2sINwoiSDWSiv9kCHvxXKolz7Hww/lKq8LPgot6HBreGGikvGIwmAnAj4gn/VRr2qHYpdQyz4Bb0AA/H4p7Zc/gttlU5Mu1eVkP0TrLD6KbSXe0mdxK9dX/sGi2iZGQKBm44+b1x7NvM+SGtBA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,87 +131,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A frame a kexec handed over is flagged as it reaches the allocator, long
-before its memory block exists, so memblk_nr_poison_inc() had nowhere to
-count it. Walk the block once when it is created and take the count from
-the page flag instead.
+A frame the previous kernel recorded as poisoned has to be flagged before
+it reaches the allocator, which is long before memory_failure() can run.
+Add a helper that leaves it in the state a frame poisoned by this kernel
+would be in, so everything that already understands PG_hwpoison covers it,
+the kexec segment placement check included.
 
-Without it an unpoison later subtracts from a counter that was never
-incremented and wraps it, which then refuses memory_block_online() for
-good.
+num_poisoned_pages_inc() does not work at boot: its per memory block half
+looks the block up by pfn, and memory_dev_init() has not run, so it
+divides by zero. Take only the global counter there. A hotplugged block is
+already there, so that path takes both counters as usual.
 
-Only a block created online needs the walk. A hotplugged one is created
-before its pages are, so there is nothing to find, and its frames are
-counted by num_poisoned_pages_inc() as they are flagged.
+The caller comes later in this series.
 
 Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
- drivers/base/memory.c | 35 +++++++++++++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
+ include/linux/mm.h  |  7 +++++++
+ mm/memory-failure.c | 26 ++++++++++++++++++++++++++
+ 2 files changed, 33 insertions(+)
 
-diff --git a/drivers/base/memory.c b/drivers/base/memory.c
-index 5eead3346f1e32..49a33ddbb2e717 100644
---- a/drivers/base/memory.c
-+++ b/drivers/base/memory.c
-@@ -220,11 +220,16 @@ int memory_notify(enum memory_block_state state, void *v)
- 
- #if defined(CONFIG_MEMORY_FAILURE) && defined(CONFIG_MEMORY_HOTPLUG)
- static unsigned long memblk_nr_poison(struct memory_block *mem);
-+static void memblk_nr_poison_init(struct memory_block *mem);
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index b68824fcfbef19..8039830998dd4b 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -5225,6 +5225,8 @@ extern const struct attribute_group memory_failure_attr_group;
+ extern void memory_failure_queue(unsigned long pfn, int flags);
+ void num_poisoned_pages_inc(unsigned long pfn);
+ void num_poisoned_pages_sub(unsigned long pfn, long i);
++void __meminit hwpoison_boot_page(struct page *page,
++				  enum meminit_context context);
+ phys_addr_t range_first_hwpoison(phys_addr_t start, unsigned long size);
+ phys_addr_t range_last_hwpoison(phys_addr_t start, unsigned long size);
  #else
- static inline unsigned long memblk_nr_poison(struct memory_block *mem)
+@@ -5232,6 +5234,11 @@ static inline void memory_failure_queue(unsigned long pfn, int flags)
  {
- 	return 0;
  }
-+
-+static inline void memblk_nr_poison_init(struct memory_block *mem)
+ 
++static inline void hwpoison_boot_page(struct page *page,
++				      enum meminit_context context)
 +{
 +}
- #endif
- 
- /*
-@@ -807,6 +812,7 @@ static int add_memory_block(unsigned long block_id, int nid, unsigned long state
- 	mem->state = state;
- 	mem->nid = nid;
- 	INIT_LIST_HEAD(&mem->group_next);
-+	memblk_nr_poison_init(mem);
- 
- #ifndef CONFIG_NUMA
- 	if (state == MEM_ONLINE)
-@@ -1251,4 +1257,33 @@ static unsigned long memblk_nr_poison(struct memory_block *mem)
++
+ static inline void num_poisoned_pages_inc(unsigned long pfn)
  {
- 	return atomic_long_read(&mem->nr_hwpoison);
  }
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index d9b8be696aac38..60e9682434700b 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -137,6 +137,32 @@ phys_addr_t range_last_hwpoison(phys_addr_t start, unsigned long size)
+ 	return range_hwpoison(start, size, false);
+ }
+ 
++static void update_per_node_mf_stats(unsigned long pfn, enum mf_result result);
 +
-+/*
-+ * Frames a kexec handed over are flagged as they reach the allocator, long
-+ * before this block exists, so memblk_nr_poison_inc() had nowhere to count
-+ * them. Take them from the page flag instead.
-+ */
-+static void memblk_nr_poison_init(struct memory_block *mem)
++void __meminit hwpoison_boot_page(struct page *page,
++				  enum meminit_context context)
 +{
-+	unsigned long pfn = section_nr_to_pfn(mem->start_section_nr);
-+	unsigned long nr_pages = PAGES_PER_SECTION * sections_per_block;
-+	unsigned long i, nr_poison = 0;
++	unsigned long pfn = page_to_pfn(page);
 +
-+	/* A hotplugged block is created before its pages are online. */
-+	if (mem->state != MEM_ONLINE)
++	if (PageHWPoison(page))
 +		return;
 +
-+	if (!range_contains_poisoned_memory(PFN_PHYS(pfn),
-+					    nr_pages << PAGE_SHIFT))
-+		return;
++	SetPageHWPoison(page);
++	set_page_count(page, 1);
++	/* The page has been completely isolated == MF_RECOVERED */
++	update_per_node_mf_stats(pfn, MF_RECOVERED);
 +
-+	for (i = 0; i < nr_pages; i++) {
-+		struct page *page = pfn_to_online_page(pfn + i);
-+
-+		if (page && PageHWPoison(page))
-+			nr_poison++;
-+	}
-+
-+	atomic_long_set(&mem->nr_hwpoison, nr_poison);
++	/*
++	 * The per memory block half of num_poisoned_pages_inc() has no block to
++	 * find at boot, and divides by zero looking for one. A hotplugged block
++	 * is already there.
++	 */
++	if (context == MEMINIT_HOTPLUG)
++		num_poisoned_pages_inc(pfn);
++	else
++		atomic_long_inc(&num_poisoned_pages);
 +}
- #endif
++
+ /**
+  * MF_ATTR_RO - Create sysfs entry for each memory failure statistics.
+  * @_name: name of the file in the per NUMA sysfs directory.
 
 -- 
 2.53.0-Meta
