@@ -4,86 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1095C88E53
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 03:32:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D180EC88E75
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 03:32:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EA4DC6B0092; Mon, 14 Sep 2026 23:32:12 -0400 (EDT)
+	id D6CAE6B0095; Mon, 14 Sep 2026 23:32:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E552D6B0093; Mon, 14 Sep 2026 23:32:12 -0400 (EDT)
+	id D1D686B0098; Mon, 14 Sep 2026 23:32:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D915E6B0095; Mon, 14 Sep 2026 23:32:12 -0400 (EDT)
+	id C34576B0099; Mon, 14 Sep 2026 23:32:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B88726B0092
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 23:32:12 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0274F140307
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 03:32:11 +0000 (UTC)
-X-FDA: 85214573304.13.EB28E38
-Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 9DB0240004
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 03:32:09 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=none;
-	spf=pass (imf01.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A10CC6B0095
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 23:32:43 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EF38A1C2132
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 03:32:42 +0000 (UTC)
+X-FDA: 85214574564.25.22E44A0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 242FA100005
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 03:32:40 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=KN3s6g5U;
+	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789443130;
+	s=arc-20220608; t=1789443161;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+ygtrvdivSA6ZBqnGJh4AMZO5xI4B0IxVdT4ACX+3Ic=;
-	b=R4LssIsdFd9LILss3U2fN1SBCxXgq5tna4rvpXqhnp97WszVHZ4km50G0Re5WlwOWM8pdo
-	sB3Fk1Pgv3X+OYegk99AoAUhTiduAaMluTsxg/4SvppboTstA9F9XbMn7TveD4zNHQ+ze6
-	mZWencXnCUjQ5UgQmrizIDxxNIcL79g=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=none;
-	spf=pass (imf01.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=DJtcw4lxYMd8BUGvL3QH2Kt7L1pNOwjIdoeAGicFQhc=;
+	b=64Cy7+8f58neMyWUOMbc66ZBsEv8hIWLRxB3pb/QGyopTHvspikEAx5yQZ/dlnpt5NibSH
+	PNT5Kw5TYFc8Z7JqbwbE8fclsaVFcyHPude/d0i/K6yHLUhRss3qRvFWMEoMTA/xGFkRl5
+	dBmDgZU74olotZymop3sxW/ljbFiQGc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789443130;
-	b=GlX/8Wfbd+ufZneWGRvYqo1h+Oz5BfkAOvTl6yCl3Bd8Uvha+W0JFHA5//69i8iDir+cmn
-	dLaDF056MDVyeFyJYsq9YZwn0+uJElYcLGBVrj5Sj4WDrbPPtSRhkEsW8pwm4z2msFfcXT
-	Sd0FLgBmcdTB2R1etr9HfRVyts/v7+k=
-Received: from unknown (HELO yjaykim-PowerEdge-T330.lge.net) (10.177.112.156)
-	by 156.147.51.103 with ESMTP; 15 Sep 2026 12:17:07 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-From: Youngjun Park <youngjun.park@lge.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Chris Li <chrisl@kernel.org>
-Cc: Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Pavel Machek <pavel@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	linux-mm@kvack.org,
-	linux-pm@vger.kernel.org,
-	her0gyugyu@gmail.com,
-	youngjun.park@lge.com,
-	taejoon.song@lge.com
-Subject: [RFC PATCH 06/10] mm, swap: hand the image's free clusters out in disk order
-Date: Tue, 15 Sep 2026 12:16:54 +0900
-Message-Id: <20260915031658.1505680-7-youngjun.park@lge.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260915031658.1505680-1-youngjun.park@lge.com>
-References: <20260915031658.1505680-1-youngjun.park@lge.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 9DB0240004
-X-Stat-Signature: ytxauaf7xgnzjugm8m7wfn3tb33d3j7m
+	t=1789443161;
+	b=HwUbn9lv69MyrtVG6HOfbZ7GLkpXzT4lHJgSf61DZR2DxVPccTLUyksX4/pKx3DvvBqmHb
+	oKu7uuld6j4wP1pmA2nz3aGdTBFENYHKzFPVTkhyk7cTgdOodpcZHqv50jYOHBD/v1rR6f
+	Rwa9DBSf6vnmUx1lVwdLM4BWdepm3Kw=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=KN3s6g5U;
+	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6CC0641948;
+	Tue, 15 Sep 2026 03:32:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 659241F000FF;
+	Tue, 15 Sep 2026 03:32:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1789443159;
+	bh=DJtcw4lxYMd8BUGvL3QH2Kt7L1pNOwjIdoeAGicFQhc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=KN3s6g5UDIFToTuKC/4IKEROBfIZbHDioOFVA642QfWaU1gexfPME6VKQ1glqN9fR
+	 xO5508ebHeJkD4uc/AZHTb9TN5Lw+qX1lN2TYymv9X8m/h02fIJUMv00BjZTQDCzGx
+	 NBEmYzVvUWyfNrzjcJ4TzKIT1f7NC2p/6dR3cLjU=
+Date: Mon, 14 Sep 2026 20:32:37 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: david@kernel.org, chrisl@kernel.org, kasong@tencent.com, ljs@kernel.org,
+ ziy@nvidia.com, linux-mm@kvack.org, ying.huang@linux.alibaba.com, Baoquan
+ He <baoquan.he@linux.dev>, willy@infradead.org, youngjun.park@lge.com,
+ hannes@cmpxchg.org, riel@surriel.com, shakeel.butt@linux.dev,
+ alex@ghiti.fr, kas@kernel.org, baohua@kernel.org, dev.jain@arm.com,
+ baolin.wang@linux.alibaba.com, Nico Pache <nico.pache@linux.dev>, Liam R.
+ Howlett <liam@infradead.org>, ryan.roberts@arm.com, Vlastimil Babka
+ <vbabka@kernel.org>, lance.yang@linux.dev, linux-kernel@vger.kernel.org,
+ nphamcs@gmail.com, shikemeng@huaweicloud.com, yosry@kernel.org,
+ qi.zheng@linux.dev, luizcap@redhat.com, kernel-team@meta.com
+Subject: Re: [RESEND v7 00/29] mm: PMD-level swap entries for anonymous THPs
+Message-Id: <20260914203237.7cdfcd4c320470f4ae5cafd2@linux-foundation.org>
+In-Reply-To: <20260914122950.3283997-1-usama.arif@linux.dev>
+References: <20260914122950.3283997-1-usama.arif@linux.dev>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 1hurbjdpzgswmkjir6ttqdfoc4q6ik3k
 X-Rspam-User: 
-X-HE-Tag: 1789443129-795082
-X-HE-Meta: U2FsdGVkX19uxZGHZ+A/pTeZ4JdjNQUIWIfEk61Ru5EPQwSjzYGIghGwcQPiu2H0zNjnFvuQ/NuTmLxu/hpOyoRQgQsJjnGtDjjVKXpNjA+0haJyaM705DahGCOgMpOsqhwJwPSd9cf0FsmsdPEJRw9ZovWuyjJna7wFh4PmMlRbgttRpPiazDTrDrBL30qoQIRfwRpsp8RHfD+ZUc3RDmLyJhtI6jBfOkYxLhvSGH8gA5rHVW3UmG2A0xVf3g8fMee3D6ARvShRpGSBhhRpSpXi8/x2D1xUEtHB2GyWoAtPsplswEom9INd2DVtgj7umKL4eggj+lXFZSnxGauzPQi5jWrQzDVc453MUlD1/Hs7Ri09UTGGF92ufmK03FP5vZWh6n8FELVEAwOMTxy2fSE7bpySZi/E+kRU1UlZheaiL6d5vGfDivmylrWdZrhl9Z+/pZzHN2HcCP8U8hxd+i4Cp8dFkDhShB7G7WNEEgURJUP1f1uysjUEjjaA3ff1QGgDOehh17oHr4vZ4m+tProuLUmlhri98Bi+LH6TvikglhtP1hJfYTW1T+9uBo/Mmf3Oncm57CDBJso7C3wsEAJyes2+FKtw1U9wilyxOrZQ73whbER+I0sdDO6e/Tcm1KqJZLuFY4sx2IAco+MjksPtciBI2aJBFlDYHuwSivjBOmeOsQNXE1hpvZHjpldT7E6Gqs8J0zzwKSg5uoSgosSYy2A/1tlMl1GwaUOL6ajAriSI7dkrbFMxbeF0gTCARqQnAnsLWQMkVY+xBnZ8STAUu+bDpj/lHO3SHCtZn/3JgT8LGQHOvOMxl6nhzegY1zvGQA9GcwUhvajNWvR2r++0dbyZJxgfhx9wq5dqfVszttQMog7WOTqbWeQHCcNL5gyCHTsKdTN8X96Tb30dL6oYi/jv+lq+8vUdKBhYMwHdrtYrhrqhbtP6ExVn0Njpv9HEi4dQpZ9ociLXLxd
- DvGK6ygx
- Z5f+lAO7kOe6yiOZIZYAEbSlZ9BSQpzfx/NiX89HGRwLs6JOHckKz+suu+iSscyfRUjCmgDW0E2/IUKBZ5hBrnfkl6mVPpjc8DYD5KqNnwN9zD78U5GnnuDSMjpCW/J0J3eJ5raAZGabqVNvNKup+1OFo3cFAf17w25hS
+X-Rspamd-Queue-Id: 242FA100005
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789443160-269804
+X-HE-Meta: U2FsdGVkX19YLECBjkAVUGUXOXUV93mFAtfJOQ45aofb6UcL28e69eAVxhQdPgXzkQqsbvc15OGgm6QI3pHjn7ybpsbLCMZGodb/k2Y021LRLmkn81qoPf1kBgUGXLRZDZabgCa8g3tGbduRksac5kADhztgZVlN68aJgrKba9z1jDpbG1HyGQdbHuSTLVr1RTKKKsiOVi/gzAEZgoRfXMhljZnm47aORPoApCdbVfOyxsM1R24yhJVWA3VPfLeMiGF9+Ou6xMAdw40De7bgM8gsM7dK9PQq/qhC3/Xrvt+5Iy5n+qkwT1U855iktIRpkzH/x8VUY53FxonCUc6R6qOZxfnHAkJELUymlC9voSQDTq3Dbm/EA7XJ5HcRmfQHEN8kLyhv0admVsOnjBoKv9pBPu1Xr222VoElT2ismT6PEv7S+2wxQfxHw06K1K6vCKmCLvytu/32ufUHdTiBi6le7D929dfoP5S0rMIDEeBmcGuJniuOqiqDaeQLLbcC1cYL/FpCAdyWeDqHpPPZLvQ1GtGu4HUBgSwP0E2VefQT5Y/O7iWRENmGV8/7pusavjAhq/0FREx9ubOrPMQUxYJWjqWFyihkMkj8UaQc9BECgaByZkDT+wHx3mN4svn8p5YwO3Y9kShjzmq0Z4GySkpPietnj17uRvTkoCH/bDyen7zzL/jKpuDm3+z+ty8w251h3wUE+YllMIjUf/otJaz7HQDg5hzyRDEAJcjvmlqVOzQSo4bAd+EGT4blh6skM7hjb8TGCwB/QIS+ElvuxElPYchzLjkyGajw5K8Puy1GreHKbtC5k5uxfWy2iMlCp/ebPfYQaAxm6pSsG8OGiGZUhWEGa5m3IulXqu4+jR/Hn55cKkR5JebHdCutUfx7NTpGVK3jfMKMv2aiYR3/hqC7iYWT6jxNepbJe37CEcXmSRUEPGpXv5X+uRvPJifZ06DPD2fdqsZbqrvdBdr
+ alGqqC/b
+ gKykyVC07s3F4UuGT1rn5u9ax4pyHoGkSqy2XRFXG7jtw1zx32YJHydLUe9Xcsda1c9EoTpt0Zqv0xFZ2gVPh9s+SFuPUTLfcrWXmLyRsbzZmH6o2sMFH5EXirvVc/qI+SxE4VmAwQBLnvY0fOTBb+OxZ2QqncBfdyt8jCl4+rc+u5+oGQWTaomifraT06OZOlWyXVZGPTsMXez/m9nx9qiYZGekArS07TOsu7Kv/NB8A3ntXGM3fStKDsCl6C9qgoaqG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,59 +97,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The clusters set aside for the image come off the free list in the order
-they were freed, so on a device that has been in use the image is
-written back and forth across it.
+On Mon, 14 Sep 2026 05:27:50 -0700 Usama Arif <usama.arif@linux.dev> wrote:
 
-Sort them by cluster index once they are set aside, so the image is
-written front to back.  A rotating disk then writes it and reads it back
-without seeking back and forth.
+> When reclaim swaps out a PMD-mapped anonymous THP today, the PMD is
+> split into HPAGE_PMD_NR PTE-level swap entries via TTU_SPLIT_HUGE_PMD
+> before unmap.  This series introduces a PMD-level swap entry so the
+> huge mapping can survive the swap round-trip and do_huge_pmd_swap_page()
+> can restore the PMD mapping directly on swap-in, without waiting for
+> khugepaged to collapse the range later.
 
-Assisted-by: Claude:claude-opus-5
-Signed-off-by: Youngjun Park <youngjun.park@lge.com>
----
- mm/swap_hibernate.c | 9 +++++++++
- mm/swapfile.c       | 1 +
- 2 files changed, 10 insertions(+)
+Thanks.  I'd describe this as an inevitable step along our thp journey.
+Has to be done sometime.
 
-diff --git a/mm/swap_hibernate.c b/mm/swap_hibernate.c
-index 3431443716d4..23dc766f04cd 100644
---- a/mm/swap_hibernate.c
-+++ b/mm/swap_hibernate.c
-@@ -13,11 +13,20 @@ static struct swap_info_struct *hib_si;
- /* Free clusters set aside for the image, out of the allocator's reach. */
- static LIST_HEAD(hib_free_clusters);
- 
-+static int hib_cluster_cmp(void *priv, const struct list_head *a,
-+			   const struct list_head *b)
-+{
-+	return list_entry(a, struct swap_cluster_info, list) <
-+	       list_entry(b, struct swap_cluster_info, list) ? -1 : 1;
-+}
-+
- static void hib_claim_free_clusters(struct swap_info_struct *si)
- {
- 	spin_lock(&si->lock);
- 	list_splice_tail_init(&si->free_clusters, &hib_free_clusters);
- 	spin_unlock(&si->lock);
-+
-+	list_sort(NULL, &hib_free_clusters, hib_cluster_cmp);
- }
- 
- static void hib_return_free_clusters(struct swap_info_struct *si)
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 86ed8c6adae7..98ed75708661 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -38,6 +38,7 @@
- #include <linux/swapfile.h>
- #include <linux/export.h>
- #include <linux/sort.h>
-+#include <linux/list_sort.h>
- #include <linux/completion.h>
- #include <linux/suspend.h>
- #include <linux/zswap.h>
--- 
-2.48.1
+I'll await more review, especially of the core parts: pmd swap fault
+handler (#27) and swapout producer (#28).
+
+And it's a 29-patch performance optimization without any performance
+testing results ;)  Is efficacy testing in the works?
 
 
