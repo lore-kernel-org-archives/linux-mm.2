@@ -4,208 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C71EC88E7F
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 15:53:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34C54C88E75
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 15:55:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B365B6B0092; Tue, 15 Sep 2026 11:53:55 -0400 (EDT)
+	id 40CE76B0093; Tue, 15 Sep 2026 11:55:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE62D6B0093; Tue, 15 Sep 2026 11:53:55 -0400 (EDT)
+	id 3E47F6B0095; Tue, 15 Sep 2026 11:55:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9AFEF6B0095; Tue, 15 Sep 2026 11:53:55 -0400 (EDT)
+	id 2FB996B0096; Tue, 15 Sep 2026 11:55:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 73E8E6B0092
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:53:55 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 085BCA5661
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:53:55 +0000 (UTC)
-X-FDA: 85216442430.26.8FEC7D3
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010070.outbound.protection.outlook.com [52.101.85.70])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 3752FA0002
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:53:52 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=I6CD6OGg;
-	spf=pass (imf15.hostedemail.com: domain of ynorov@nvidia.com designates 52.101.85.70 as permitted sender) smtp.mailfrom=ynorov@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789487632;
-	b=1kriPjueQrEebCq6UX0V4G7KJD3d9RkI8EnAISCc6A4037xR85FDIsgclqTlmmKc7g5VJV
-	iCBg7G3MC1X0v+8wDIquR3UE7UPHsihdStqND2Lu5e273INv5FuxZSYGy2uDuB5ZlWyF8/
-	FRXBBtim+r397bv8llJwH/lcOnu/GAM=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=I6CD6OGg;
-	spf=pass (imf15.hostedemail.com: domain of ynorov@nvidia.com designates 52.101.85.70 as permitted sender) smtp.mailfrom=ynorov@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789487632;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	by kanga.kvack.org (Postfix) with ESMTP id 0F9936B0093
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:55:03 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9EAF514047C
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:55:02 +0000 (UTC)
+X-FDA: 85216445244.29.42D47CE
+Received: from va-2-58.ptr.blmpb.com (va-2-58.ptr.blmpb.com [209.127.231.58])
+	by imf07.hostedemail.com (Postfix) with ESMTP id D0E1940002
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:54:58 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=fygo-io.20200929.dkim.larksuite.com header.s=s1 header.b=mxaJtARW;
+	spf=pass (imf07.hostedemail.com: domain of yukuai@fygo.io designates 209.127.231.58 as permitted sender) smtp.mailfrom=yukuai@fygo.io;
+	dmarc=pass (policy=quarantine) header.from=fygo.io
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789487699;
+	b=jkB6ru+HnL0aARy/m+UzXyjic5XIP4Th1qC5WDLyJbG6K6stZ41NOtgkQ7QcG2MPIGrvLS
+	CjZ/MfmCyweHm7tC5ytL9LwsfDejH526ybX8P+NaGBE1Lzc2+HkgUEnyWlndT+0NPXm98H
+	ARA8sPx8Q3+h9K8sh27pd04FMFz7hMo=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=fygo-io.20200929.dkim.larksuite.com header.s=s1 header.b=mxaJtARW;
+	spf=pass (imf07.hostedemail.com: domain of yukuai@fygo.io designates 209.127.231.58 as permitted sender) smtp.mailfrom=yukuai@fygo.io;
+	dmarc=pass (policy=quarantine) header.from=fygo.io
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789487699;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LcHuBiVKAZ0fpaCeLr1myHlzqWosgg3CQFg0zLYOEKI=;
-	b=cTUJu3umWwzfwtMCBVqVKAjdiNczJEGjVXs8M1BzG8iKjYp0AkBWbv105X0OfFih6JV/x6
-	3igWNeeIBOo67/YQCYomg0yrhJ0BLL4HFbUisvP+b9XsIfSIKVfuL2laopmBausffzehSd
-	G1NyS39hj+c8Gqq4Ou8mGDZG0fGLyok=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sQ5vM1dxwRqkeCTpiy2hrY0hkFjMDY/q02iCMgbTsGKNhI9zXJWXme045NU7QRaTdi2sWT8BOi71GRWUKWao+zTHc0nEoI8CiolAyLFY4l1p3eoD+J1Sv2zgkwnxCY/2MgqGX1lQfViW77A3JRiJh3dqk/CXDkNFLxeM47CLaJAchWgkzAabBZl9YLNNCA511NFMZayt+R2vjt0FJSxa2cDkTvqjpV8qJ/aV0PbkBdYeXeuRA67x9HK567XkdD4eUiJi/YyVTjZrC01M7B/V9ua8NdFbU6NBm2T/iUG5IhJn7cMKPnNDQD44tM1jMoIQmO+rKbwtTimaO7Icp4gsww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LcHuBiVKAZ0fpaCeLr1myHlzqWosgg3CQFg0zLYOEKI=;
- b=hV4XzKGOIM/k0QOxU8TLYB8ZBcKKC2NPBW+RtiAOv2HhKuBaQRHFu92FAPROPAVMthf14Y+0Bp456FIz3TAmVobmQjxKG7h+HO+k35LyT5IlxJNarJCSEnkFrbsTEL5jcp/mQXriLAz/uE/cb7eyfWZe3C5Rvkcht4aZizPXtV2PZAjVDpxxlcFXg31aJzIpbm1kUETr9QBsHVtohkiZnDE5DOfNQPCAOH+PWeAzBPfThG+Lv+fOW+Yw9PWW5LuSroH1ONJr8/264kv8/g4GtV9nVf1FLja+qBl7meMsqk/jNYlOBdF53FlAj36g7K2LbAnpPh3j3qt0SL4LLEem/g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LcHuBiVKAZ0fpaCeLr1myHlzqWosgg3CQFg0zLYOEKI=;
- b=I6CD6OGgf6kN/spLwN0AIDEYAfYnPjBCFB+QJhr3xzku7Qw0MjTDR2pAh7uDao2M6Lp9EpTxUpFumKBSzreeSm2BxhrSZOjFZAsEhsg1Rc41+bVDPXkKg+j039E9r3lZrsBoiKl3cPTpVGwOyP9q3QkFG/w2OYwyX3kajwN0fZN38gKOdDLvh3c5b3G3YIrUsBpahXcgvQR5YJi9lAK5Z5rjgHG4ycoWTwOioLGD+6zdTuF/ayxldRicmrhbg/wON52wr9isp120P6q8/P1vPGSCb2aXJIY0ob6a0UC0RaxruOLsKe53RS/dvVgyxRJhMuIkLP+O9NIM7+GGeJv8Ww==
-Received: from LV3PR12MB9356.namprd12.prod.outlook.com (2603:10b6:408:20c::21)
- by CH3PR12MB8329.namprd12.prod.outlook.com (2603:10b6:610:12e::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.9; Tue, 15 Sep
- 2026 15:53:37 +0000
-Received: from LV3PR12MB9356.namprd12.prod.outlook.com
- ([fe80::1c36:31b4:c420:6286]) by LV3PR12MB9356.namprd12.prod.outlook.com
- ([fe80::1c36:31b4:c420:6286%5]) with mapi id 15.21.0406.007; Tue, 15 Sep 2026
- 15:53:37 +0000
-Date: Tue, 15 Sep 2026 11:53:36 -0400
-From: Yury Norov <ynorov@nvidia.com>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Waiman Long <longman@redhat.com>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Zqiang <qiang.zhang@linux.dev>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Kees Cook <kees@kernel.org>,
-	Joel Granados <joel.granados@kernel.org>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	wireguard@lists.zx2c4.com, netdev@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	rcu@vger.kernel.org, virtualization@lists.linux.dev,
-	linux-rt-devel@lists.linux.dev, llvm@lists.linux.dev,
-	Yury Norov <yury.norov@gmail.com>
-Subject: Re: [PATCH 00/17] Treewide: enforce static storage for object
- initializers
-Message-ID: <aqlqAG5csUPFcSzQ@yury>
-References: <20260915030336.1192299-1-ynorov@nvidia.com>
- <20260914231418.b15ec01f7225cf460f6e515a@linux-foundation.org>
- <20260915102401.3c56aa95@pumpkin>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260915102401.3c56aa95@pumpkin>
-X-ClientProxiedBy: LV3P220CA0016.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:408:234::32) To LV3PR12MB9356.namprd12.prod.outlook.com
- (2603:10b6:408:20c::21)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV3PR12MB9356:EE_|CH3PR12MB8329:EE_
-X-MS-Office365-Filtering-Correlation-Id: 96645693-18de-43b5-1df4-08df13418132
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|1800799024|7416014|376014|10067099003|6133799003|18002099003|22082099003|4143699003|56012099006|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	d93qJc/QuT2rjbcJj2BRBeNsqLTjh3OrN8BCMIbyCQM9bGQhvxhiz/Xdw9H3KX+WEETMXCNV1bvy6cANZz/p0P7mAIkmLVukJA0t0LCIczMpsXWVsBbEXyNbSMOGw6CTrCypw2d3i/Myfw076do+S+ZKQqrs/oKKJyy2xa3Q+BdOEqGJ59bRcZ48ZvQqQdSoJJhnIFx8DW5ZJDWwotHJWjv7FxufwbbPRM88AfVacusbMzRsNJl3V/PdazCv25POMf8CKQbQ0xM/eekGBgyftEDwp12qaoewkZLXBqs2olWorzIVP6LoL1J2X/GawJASTXfLjU3N0F1KZjFk+Zkdw5ULo3CXrz8e1mwhDznE0hLi+G9aaRES277JOSBr69K51vcTckoBa1Itq9gOY66h0u42kpVw5BNRhfz/iYpYrDB1WdNeukAvRyaslIf1zfkPUhFqlXrgy8t5GuJEa6siy0cbG1zXJSLuXUV0NQxvUI1fvNk4PTA5X6O9i1BL6tJG1l0vgSK3adSF693OA2uwWtXGWYjxX42seJhsY2VYYlDab/hBh1sGMGicARwWWotOtCKSNbpA2Xwzmj9RjLIUEECAvjeHEa2GFWEBjgmSpgI/iL+6sqGrx9S2wmUUJJMf5cE4hOnPFwUCWDlaIUSS/5LIYx6OLS49gzItGC377f8=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9356.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(7416014)(376014)(10067099003)(6133799003)(18002099003)(22082099003)(4143699003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?4OFgHVTW8HAL8iD3NNGVIKY6JppEMbxl8qtf4EYb6qhyOWuhn+LWbG1vTehz?=
- =?us-ascii?Q?Y/CK2tjNc0sXtu7Tvpc4C1S1WSmENYCkRzloS53zF4AJd/qNih8r55pafUNn?=
- =?us-ascii?Q?6AHi2/4wbprvnZCk6ireeqVY9v+YFSnTq6XhGdXeR5mtegrRyYfQaes4L/KX?=
- =?us-ascii?Q?IgihDqM0Wg8tCc7lS0MaMorClUeSQE1KDusBJJylC3+wgMhmqN3FdwuwnEMe?=
- =?us-ascii?Q?HJcj8+INyJcwneNu3sbtUmaFwZ4vBEjwDnp24u/h2zcgaA3BmJxNnLawrlyY?=
- =?us-ascii?Q?B4RecEybkxf1jWnooyUo3NEx7oHcdxfZDCSZg6boItTmlZJkgHAPtAo12Iar?=
- =?us-ascii?Q?6CftdUZ8Pt7bXs4rGh5ZuGaPc8AyCIm1NuIPUmZHmLbT/cDqzSH2km9a8KzE?=
- =?us-ascii?Q?p7hJgcq97gdVxh4DORSDz5m+p3sGYVFsvUKLDTrFxoKF5FXkwQzD3RNVe5NS?=
- =?us-ascii?Q?W67J4eSYJi/2oJf2tD3UmFefEq2wRl9+tyknv5R6DclTqeiJ+qTBQxjoGXd5?=
- =?us-ascii?Q?cwotGdP3CCEys1mR/9eKQcQdFHvNnj/ahTrM2zbfUfeu7iIo+9z7dFnCYHzy?=
- =?us-ascii?Q?Pfg+SHCdE3vu1jT23szVOjjsdnxb8yWZM/+Bqf7R7hrAeeGXsgzld7xqa+I0?=
- =?us-ascii?Q?Zl7ymI59DsjI1QbaHqh+MFARWNpgKtkkYdQHzD3BBceE3u2Zbbk5Ao+mVLT+?=
- =?us-ascii?Q?kGtow3S5L2KaI6B4+0zqJ0j3WhF8hHY4YErhej+l6SgrlkLmVOOuvHv0+hEF?=
- =?us-ascii?Q?8pVLxI9bp5bHZDaepRbHq6jcCjTW01yw+3BUndh5OJn+5bylWApJ+OBhNIi4?=
- =?us-ascii?Q?MaCJKmnh1ed9yfurltKdH68p3k0Zu7p5yyNCiAJoFkZ+jy3rwm8sk3ZAxhOJ?=
- =?us-ascii?Q?lT2ngdpu/aAkaJZomsiR+7L+I61Pxnmu+DS9cI0LT8EH7hCmFTz1lLgYm5v8?=
- =?us-ascii?Q?zhC9rgZ4Ieub9wjrXoMVuxX+9LsngHuViFTy5r8Lmtqi8wHCtKolGmbqy0uJ?=
- =?us-ascii?Q?HpmDH0XayFHZCiRZjPjhtl9XG32qgD0YJ/3x/1mG/OLcY0z46OelIBfZvIdI?=
- =?us-ascii?Q?ffZqdsCu3faqBWR9UpSGLHS0SGMA4MHOKgx7D7wGezffPiXjo0+wquUZbvK1?=
- =?us-ascii?Q?lhowiaEe+G2z7989dHevm2uE1yBxlSh8A+Cn3T9zqjj26K1vd8C2Je9JU08x?=
- =?us-ascii?Q?SHjJgxOpZrB1aj4hJC0mVj6Sgo0vXTbn7KEXFT0WQ74Ccw8FoxyDAmon8yz5?=
- =?us-ascii?Q?iIKar//b0xusBbOPu0mdg8Zx5OjQ/pGj2+qLocoSYQ49nxKVwtjbK/RsP9eT?=
- =?us-ascii?Q?RpFg8oYOH188PWJkD1eJq5cTNrld9ObVA25LhuM+cxj+5LpSJMRnv98uzJW6?=
- =?us-ascii?Q?bo8p/Swhf0+pN8I3eTbjJ1fyGvSe6YOY0wiaJrSxl8PYYvEfiYNCGU7pawwo?=
- =?us-ascii?Q?9teQYf/I2PjYUnxXOkc1gs/sa4N5NZMLuGbq8+hkqwZUGwpCFca81uOS6rT0?=
- =?us-ascii?Q?q9gNOEidBZx+DxRg9cHeVAxYWpnWJ2n1fnDXj4Y0AHLP2lGDoEAaDGfz522q?=
- =?us-ascii?Q?Xi6Hmv4amhJoPn4+hqKIwvpLCPddKy1mWdWlzE4tvdCS2xNTnogXm5frJosq?=
- =?us-ascii?Q?5l8V0kBc+opmFBvmEmyAN7zauZpy1HAmu9sUDbBU0ddN/3ug03/ll55hRAP9?=
- =?us-ascii?Q?nWP3ELw2jzBD05LlpPTkkkknAQ9JIq7rBVM2mFgNXkCjppM1215ExISy5MBH?=
- =?us-ascii?Q?0saeDTI2Ow=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 96645693-18de-43b5-1df4-08df13418132
-X-MS-Exchange-CrossTenant-AuthSource: LV3PR12MB9356.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Sep 2026 15:53:37.3269
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wOOEBUdiMPdo94hOTsWhrIBDwu1Hv5iXG48S7cL29VtakwzKnY1EzNnlDRkstcRcwqi9nwUlVC04YX1RhggatA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8329
+	bh=Xsn6DqvvOV+Iyp7MPv5ignkXFskUrJdLJ8ErPAvqBm4=;
+	b=1dOIZiqNlMqXIkS6tO7r6idAabqkSY7I0JSCUrHvgnkZycrcXgh+C1nqr/zmHtZLvfvIB7
+	kGIM66RVaizAuCc0MT5YlSEHxU6gs+PCjRlqGE2/k5zVo23Yp790EAAfTGQ8i51bb5SEac
+	W7zhhsfwKp4xl69Dg0/N6cCizz0rrVU=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=s1; d=fygo-io.20200929.dkim.larksuite.com; t=1789487691;
+  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
+ reply-to:content-type:mime-version:in-reply-to:message-id;
+ bh=Xsn6DqvvOV+Iyp7MPv5ignkXFskUrJdLJ8ErPAvqBm4=;
+ b=mxaJtARWsYQVSvNqqNhi3oAd9rB3WJsE5l/OaxHp7LKWFjy7L9ajEjiVF2rhnjKrEzx29q
+ TUi4XD+Fu5EZhcb1HreuSWXaGH84YvHoGMZZo3alZcGLbjPb+pDIOlwt+RQHgIDj5jlDiI
+ 6gDGg3FvqlvrIoiI97OklImmBOJ85ijXHOH72P5ZMum+e/ZfZXQEhYI/l7G8hocOy5YjP+
+ AE4B9niNx/ulxUjQWyBIG9TPJsdXTRjcCk+cKDCVV7uAOM0z7KJG3mCnohBiWjfIRy4leF
+ Ewi2mkvmrZPVbonk7cuAgyHp6mrRMVBz/eY6s1y/ZbVXchkE+EGrAdRKYGSpOQ==
+From: "yu kuai" <yukuai@fygo.io>
+Date: Tue, 15 Sep 2026 23:54:41 +0800
+Message-Id: <52df0198-9949-4801-ac0f-c86935d1aceb@fygo.io>
+X-Original-From: yu kuai <yukuai@fygo.io>
+References: <cover.1789237876.git.yukuai@fygo.io> <326e4904402440323532168095f2eb0c6f697836.1789237877.git.yukuai@fygo.io> <f27ee89f-5a52-4cfc-a14a-e5019ae61d89@linux.ibm.com>
+Content-Transfer-Encoding: quoted-printable
+Cc: "Christoph Hellwig" <hch@lst.de>, "Tao Cui" <cuitao@kylinos.cn>, 
+	<linux-block@vger.kernel.org>, <cgroups@vger.kernel.org>, 
+	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
+	<linux-bcache@vger.kernel.org>, <dm-devel@lists.linux.dev>, 
+	<linux-raid@vger.kernel.org>, <gfs2@lists.linux.dev>, 
+	<linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>, 
+	<llvm@lists.linux.dev>
+Subject: Re: [PATCH v2 3/3] blk-cgroup: move async bio punt state to blkcg
+To: "Nilay Shroff" <nilay@linux.ibm.com>, "Yu Kuai" <yukuai@kernel.org>, 
+	"Jens Axboe" <axboe@kernel.dk>, "Josef Bacik" <josef@toxicpanda.com>, 
+	"Tejun Heo" <tj@kernel.org>, "Johannes Weiner" <hannes@cmpxchg.org>, 
+	=?utf-8?q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	"Jonathan Corbet" <corbet@lwn.net>, 
+	"Shuah Khan" <skhan@linuxfoundation.org>, 
+	"Randy Dunlap" <rdunlap@infradead.org>, "Coly Li" <colyli@fygo.io>, 
+	"Kent Overstreet" <kent.overstreet@linux.dev>, 
+	"Alasdair Kergon" <agk@redhat.com>, "Mike Snitzer" <snitzer@kernel.org>, 
+	"Mikulas Patocka" <mpatocka@redhat.com>, 
+	"Benjamin Marzinski" <bmarzins@redhat.com>, "Song Liu" <song@kernel.org>, 
+	"Li Nan" <magiclinan@didiglobal.com>, "Xiao Ni" <xiao@kernel.org>, 
+	"Andreas Gruenbacher" <agruenba@redhat.com>, 
+	"Matthew Wilcox" <willy@infradead.org>, "Jan Kara" <jack@suse.cz>, 
+	"Andrew Morton" <akpm@linux-foundation.org>, 
+	"Chris Li" <chrisl@kernel.org>, "Kairui Song" <kasong@tencent.com>, 
+	"Kemeng Shi" <shikemeng@huaweicloud.com>, 
+	"Nhat Pham" <nphamcs@gmail.com>, "Baoquan He" <baoquan.he@linux.dev>, 
+	"Barry Song" <baohua@kernel.org>, 
+	"Youngjun Park" <youngjun.park@lge.com>, 
+	"Nathan Chancellor" <nathan@kernel.org>, 
+	"Nick Desaulniers" <ndesaulniers@google.com>, 
+	"Bill Wendling" <morbo@google.com>, 
+	"Justin Stitt" <justinstitt@google.com>, "yu kuai" <yukuai@fygo.io>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Received: from [192.168.1.104] ([39.182.0.142]) by smtp.larksuite.com with ESMTPS; Tue, 15 Sep 2026 15:54:50 +0000
+Reply-To: yukuai@fygo.io
+In-Reply-To: <f27ee89f-5a52-4cfc-a14a-e5019ae61d89@linux.ibm.com>
+X-Lms-Return-Path: <lba+26aa96a4b+386bd4+kvack.org+yukuai@fygo.io>
+User-Agent: Mozilla Thunderbird
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: D0E1940002
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 3752FA0002
-X-Stat-Signature: cymxszcypf5u3zm9qdurhkuhcmzxtnp6
-X-HE-Tag: 1789487632-282370
-X-HE-Meta: U2FsdGVkX1/+p+fargdE9gsCyjVEoA8p2Avc1POEf943SxpQSjQaJvKSJp5WGX28qWaMEjpu9RgtKPww7AKSiEF0W6DwWr6OVAX3c8W981J2Qksp+dmU+jZKYp+efJgkMFc/cyNpf65vZivFtmaebc41wx7gO9U+7r6U3u0k/u1t6hZTgBUcfmgjBxXS/EwJQMXpI5qYZkMfwhhbEWd7aMsnA5yOL8dG3cF5MlrwOInqnd/pf6uIrphOwtpZftDSdf3+XmxJsEdQMaxVA7WRzN9M4DuvQEsJGVLXNHI+hvMnrZnTXMgEtamQgmV04GvnK/iZhkaXnuuQfKydwZ4VkNsz4UZwpHD/31h+s0G1aMbum4y4UMdTzjhjOATJsu4ewGe7bddsHHQD1YbMUQlHQKotdOqaZtsDCEAn/BmvYnlo245uodhXoFtKa4Zz0D+z+JfqMia28VJqJlFtdy4zqJ0KWkS4wpUKC+mnxOxBKICYpY+lXTesTs57rQNFgVF0n2BTuhK4aHgdJWJcCloh6rnKHHVN4tfahj6AwhVFJX+CACbB4UHWJPC2xWErv/zChv10srdpkkAwNLUb5pQlgcfVmA35q0bFnzBj29kJFhzk9JszvN7ZCzomkRncM40VFSZ2YlJ69q/4KmPcF08ix04ehoS5ea8mL0istZ9ziNRw9YS6aZ3SdTxq3ECkSeAURCm2yaoGIPcOaiPPyAuqaJJF64z3h+ZeZTYT47NQhclJdxh9fHgytNa0HrXMVSbzD1rvNBvtiXuqEChE1SCVcGwR8TgqE5BrB4YexaPOjRrCNZ9x9QSR+wQEY46/1Fadxi8TxrCx3U8xDugevT+MUsFUg0WD/RK/tLt11TxRSGiYSCrdBF6EXfFiLvOrT5jPSgpVtHqJKhwXrlntKLvXr1tp299IV+QDuFasOXo+leID/VAhGLCRWc3Z3wHarMuxDT8IDxCRuVawKmery2A
- 8ve39nq2
- 8+9ZxEByuJTSkdy2kVY4vHukHuKbkZT+imVHEb40ydq4xaLSZXPCfXwpe4OE5e6YrQcssqDlCDCfXdCNJywBt+njwQXopq+w55Su6X2WgAj4rCowEdZLvp2yrrVrKSaR88PbRNsk/efFxmP7NlejZ1LKP+0Vm3e/lqtsH+hLfQBmc1CLzmEcCbLagbyai9j7eImD32JmjuaITf53ySAVW6/iFCDXOmdUmntpMfZv7pThEw30Q///+qJF7zzOp82ghbyRjbEfQvyQ+7oVGXJFxNU4zFmjOJh2wG1tPf/zFBPREUG/eYR6LY4O4zcvpm0hdyTFiUcfjWbdsOJy0nhqdz4ItHWhVowVhh9KwRbMskf57BhILv4+zvDhpATvS+JHW+CPb78GzdJGtttygQYUBO3j6YjBXFwE01Ukwl1/hJ3fim4E4tDBK3xXhSaEMUWjJJE3y3uA9QdUAPd+3uHzT1uei7jMGDN8ci2Mq4mVOSdUruBU26b5MPqwWdyD77V78RGTjf9027M/w6ReVRMsGxPBb82Gb3rGXEWqt0IxL74/sEzAtK3RyCG6BSNJMOXF0S12MTv5c5Xh71NNkmixyNCGm+W5mP9NIjQaA
+X-Stat-Signature: zgdxzfn5tddq6zwr6chmo5cq3zu3f165
+X-HE-Tag: 1789487698-787276
+X-HE-Meta: U2FsdGVkX19e5tbJgvaz2ZNItCEHnkSQR1ZH7oKhGEBjyObxBARlpxml9U+GFc1dSaCxQTeaXdToLkM8NEhoUR4JFgmTizFyTRuk7LiLfn8l5JnFIttNqinGKjXEwv4jzU2kB7ujOQxrl/R9Kr8wLEDT+uAPMYp2itGRqlBbjcVmVcJrluMj6KV/s2A2lYy9oWwjYLOHi4Obf+RGse6S56+y1qoIVjGKwOs5kSnNYJBc1gdgASpN8zucRq09r1vIJBZOAY3NHehggzX94ceu6Ct4QZ8DFkNYlwxsZyZi3N+PXFZqIT3BjGwgY2Yt9wF2wETE8Oiizuq4oAG42rp5L6SyIu03S7B/kDwK8PJ5VLdDQCZFpe3KSe8GXn5UX5k4d+JzdTO6EGVNFh6kNX2nlc0woYJfLFfAYF0Fw40L6zy8xdeKUBlWt50nE68BQz/b+XR448laxH+oyie2EMCNn0fV68Pqc5oB9DUsCWLEXmGgiSaR+gtYRD4kNoa+P43rpa/ghltFK99SKkloWwCPUuI9Sc24wK7scajIfOB+L1rYTGHWPNRpzIatSHvOVU2nahRi/y6VxD+y5+ugyT2OpHKv5DVVjkqxT5vLorX1xPUv5AHzDoPZlPTFxN3s3l/ETDekv6Y7zKhbcify2OCfgw/9KJTf9AsgXH1nD3rGfFRgya7BDLW91bQ0GK+W52yE6hIqCaZAx6/J1pbXBM91ExOVgbs6t+aipNYFFtq9pO+QHAg0faH+PhtjZbfMOtzDuMzXaV4aGRd0pDmMNauOFvBB+zQpor1tE2KP+CgcnHkFIjLW/tiprFHs6/uUuy46UGOtqlQXtatVjcES6vuwoiUfLXCaOK2qzVPGvZ65+FIysRinIftDdXgx1Q41iYIQivfJ5dxUaXM5aR8axBvb577BXaTV3K+wVuDKVuu4GlHMuNfRfCy36W7zfxL8HyRfAqMWvRvml3YAdsBIBhh
+ UmZ07kvl
+ uFm7USueNLB9zZm/p3e7HvmLWYVx7l++/6g3DBvYklsThzGISj78VNBUv80Bv7uuq1kO+F6VVzUfnIX9vPD2O2D+BPizxvKSXhJ1GDFBJEDdl8eBOQ3TDp6qqAoBk51CDvM7FeE24XGcwqLnHWTdhkHbEeGe2y6DclI1c2qdYfRk77msJxLJxKR1mQyShh8LTORrh5Sv9dmmq9KtauBbglQ/d42QAUs2h1cX0qi5HD8x6NAA4eUtLfb26ejGKWbS486XSS7sjXCruUCZyXQjqMSS64oIjam3Rsmh1drOjZyokClae71bxk8D3FUULCi30e3G7jMb5nHrSdKID5Qk/lYJvBR4e1jH47JgtVS2VhL6NoHP+JhTnrEE4eImSDabIMuqKEMBTvvxRdkI+ZxfU9yvdJZ9vxaSM1DoCU3spR/A7BK2Ah+/FjgmoBaC6y3hTTWug2ZzNM3tzsaMRTsGcSp74Ge6K7cGxhMiZr88V7frdihHH1Wfag1goFsCGidFdV9dhnjTbuz6FFSr+j/bmkaER8KrX9Yv8h70EuzKXfQaCcKUZIenEAG736mjouHO/A2ceCDzaljRuGPo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -213,28 +119,245 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 15, 2026 at 10:24:01AM +0100, David Laight wrote:
-> On Mon, 14 Sep 2026 23:14:18 -0700
-> Andrew Morton <akpm@linux-foundation.org> wrote:
-> 
-> > On Mon, 14 Sep 2026 23:03:18 -0400 Yury Norov <ynorov@nvidia.com> wrote:
-> > 
-> > > Declaration macros that statically initialize embedded locks require static
-> > > storage when lockdep is enabled. Automatic objects must use runtime
-> > > initialization so lockdep receives a persistent class key.
-> > > 
-> > > For automatic local objects, lockdep cannot use the lock address as a persistent
-> > > class key and reports "INFO: trying to register non-static key" before disabling
-> > > itself.  
-> > 
-> > So why haven't we been buried in reports about this warning coming out?
+Hi,
 
-I have no answer. Maybe because lockdep isn't enabled by major distros...
+=E5=9C=A8 2026/9/13 21:29, Nilay Shroff =E5=86=99=E9=81=93:
+> On 9/13/26 12:24 PM, Yu Kuai wrote:
+>> From: Yu Kuai <yukuai@fygo.io>
+>>
+>> blkcg_punt_bio_submit() currently queues punted bios on=20
+>> blkg->async_bios,
+>> so it has to call bio_blkg() to find or create a queue-local blkg.=C2=A0=
+ Bios
+>> now carry and pin the blkcg css, so punted bio lifetime no longer=20
+>> needs to
+>> be anchored by a blkg.
+>>
+>> Keeping the punt state in blkg can instantiate a blkg even when no blkcg
+>> policy is enabled, just to bounce submission from a shared kthread.=C2=
+=A0=20
+>> Move
+>> async_bio_lock, async_bios and async_bio_work to struct blkcg, and queue
+>> punted bios on bio_blkcg() for non-root cgroups.=C2=A0 Root or=20
+>> unassociated bios
+>> are submitted directly.
+>>
+>> This preserves the priority-inversion avoidance while preventing
+>> blkcg_punt_bio_submit() from creating blkgs that are not needed by any
+>> policy.
+>>
+>> Signed-off-by: Yu Kuai <yukuai@fygo.io>
+>> ---
+>> =C2=A0 block/blk-cgroup.c | 52 ++++++++++++++++++++++++++---------------=
+-----
+>> =C2=A0 block/blk-cgroup.h | 14 ++++++-------
+>> =C2=A0 2 files changed, 35 insertions(+), 31 deletions(-)
+>>
+>> diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
+>> index 59ccfefe16a8..aa3cee107ebe 100644
+>> --- a/block/blk-cgroup.c
+>> +++ b/block/blk-cgroup.c
+>> @@ -180,14 +180,10 @@ static void blkg_free(struct blkcg_gq *blkg)
+>> =C2=A0 =C2=A0 static void __blkg_release(struct rcu_head *rcu)
+>> =C2=A0 {
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct blkcg_gq *blkg =3D container_of(rc=
+u, struct blkcg_gq,=20
+>> rcu_head);
+>> =C2=A0 -#ifdef CONFIG_BLK_CGROUP_PUNT_BIO
+>> -=C2=A0=C2=A0=C2=A0 WARN_ON(!bio_list_empty(&blkg->async_bios));
+>> -#endif
+>> -
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 blkg_free(blkg);
+>> =C2=A0 }
+>> =C2=A0 =C2=A0 /*
+>> =C2=A0=C2=A0 * A group is RCU protected, but having an rcu lock does not=
+ mean=20
+>> that one
+>> @@ -226,23 +222,23 @@ static void blkg_release(struct percpu_ref *ref)
+>> =C2=A0 }
+>> =C2=A0 =C2=A0 #ifdef CONFIG_BLK_CGROUP_PUNT_BIO
+>> =C2=A0 static struct workqueue_struct *blkcg_punt_bio_wq;
+>> =C2=A0 -static void blkg_async_bio_workfn(struct work_struct *work)
+>> +static void blkcg_async_bio_workfn(struct work_struct *work)
+>> =C2=A0 {
+>> -=C2=A0=C2=A0=C2=A0 struct blkcg_gq *blkg =3D container_of(work, struct =
+blkcg_gq,
+>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ async_bio_work);
+>> +=C2=A0=C2=A0=C2=A0 struct blkcg *blkcg =3D container_of(work, struct bl=
+kcg,=20
+>> async_bio_work);
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct bio_list bios =3D BIO_EMPTY_LIST;
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct bio *bio;
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct blk_plug plug;
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bool need_plug =3D false;
+>> =C2=A0 -=C2=A0=C2=A0=C2=A0 /* as long as there are pending bios, @blkg c=
+an't go away */
+>> -=C2=A0=C2=A0=C2=A0 spin_lock(&blkg->async_bio_lock);
+>> -=C2=A0=C2=A0=C2=A0 bio_list_merge_init(&bios, &blkg->async_bios);
+>> -=C2=A0=C2=A0=C2=A0 spin_unlock(&blkg->async_bio_lock);
+>> +=C2=A0=C2=A0=C2=A0 /* as long as there are pending bios, @blkcg can't g=
+o away */
+>> +=C2=A0=C2=A0=C2=A0 {
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 guard(spinlock)(&blkcg->asyn=
+c_bio_lock);
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bio_list_merge_init(&bios, &=
+blkcg->async_bios);
+>> +=C2=A0=C2=A0=C2=A0 }
+>>
+> Instead of using guard(spinlock)(...) here, I think we could use the
+> simpler spin_lock()/spin_unlock() helpers. IMO, they are easier
+> to read and reason about for these short critical sections.
+Ok.
+>
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* start plug only when bio_list contains=
+ at least 2 bios */
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (bios.head && bios.head->bi_next) {
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 need_plug =3D tru=
+e;
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 blk_start_plug(&p=
+lug);
+>> @@ -259,19 +255,20 @@ static void blkg_async_bio_workfn(struct=20
+>> work_struct *work)
+>> =C2=A0=C2=A0 * cgroup.=C2=A0 Use this helper instead of submit_bio to pu=
+nt the=20
+>> actual issuing to
+>> =C2=A0=C2=A0 * a dedicated per-blkcg work item to avoid such priority in=
+versions.
+>> =C2=A0=C2=A0 */
+>> =C2=A0 void blkcg_punt_bio_submit(struct bio *bio)
+>> =C2=A0 {
+>> -=C2=A0=C2=A0=C2=A0 struct blkcg_gq *blkg =3D bio_blkg(bio);
+>> +=C2=A0=C2=A0=C2=A0 struct blkcg *blkcg =3D bio_blkcg(bio);
+>> =C2=A0 -=C2=A0=C2=A0=C2=A0 if (blkg && blkg->parent) {
+>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 spin_lock(&blkg->async_bio_l=
+ock);
+>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bio_list_add(&blkg->async_bi=
+os, bio);
+>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 spin_unlock(&blkg->async_bio=
+_lock);
+>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 queue_work(blkcg_punt_bio_wq=
+, &blkg->async_bio_work);
+>> +=C2=A0=C2=A0=C2=A0 if (blkcg && cgroup_parent(blkcg->css.cgroup)) {
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 {
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 guar=
+d(spinlock)(&blkcg->async_bio_lock);
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bio_=
+list_add(&blkcg->async_bios, bio);
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 queue_work(blkcg_punt_bio_wq=
+, &blkcg->async_bio_work);
+>
+> Again same here, replace guard() with spin_lock() and spin_unlock()
+> helpers.
+>
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 } else {
+>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* Never bounce if there is =
+no non-root blkg to queue on. */
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* Never bounce if there is =
+no non-root blkcg to queue on. */
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 submit_bio(bio);
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+>> =C2=A0 }
+>> =C2=A0 EXPORT_SYMBOL_GPL(blkcg_punt_bio_submit);
+>> =C2=A0 @@ -350,15 +347,10 @@ static struct blkcg_gq *blkg_alloc(struct=
+=20
+>> blkcg *blkcg, struct gendisk *disk,
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 blkg->q =3D disk->queue;
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 INIT_LIST_HEAD(&blkg->q_node);
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 blkg->blkcg =3D blkcg;
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 blkg->blkcg_id =3D blkcg->css.id;
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 blkg->iostat.blkg =3D blkg;
+>> -#ifdef CONFIG_BLK_CGROUP_PUNT_BIO
+>> -=C2=A0=C2=A0=C2=A0 spin_lock_init(&blkg->async_bio_lock);
+>> -=C2=A0=C2=A0=C2=A0 bio_list_init(&blkg->async_bios);
+>> -=C2=A0=C2=A0=C2=A0 INIT_WORK(&blkg->async_bio_work, blkg_async_bio_work=
+fn);
+>> -#endif
+>> =C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u64_stats_init(&blkg->iostat.sync)=
+;
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 for_each_possible_cpu(cpu) {
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u64_stats_init(&p=
+er_cpu_ptr(blkg->iostat_cpu, cpu)->sync);
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 per_cpu_ptr(blkg-=
+>iostat_cpu, cpu)->blkg =3D blkg;
+>> @@ -1399,10 +1391,16 @@ static void blkcg_css_free(struct=20
+>> cgroup_subsys_state *css)
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (blkcg->cpd[i]=
+)
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 blkcg_policy[i]->cpd_free_fn(blkcg->cpd[i]);
+>> =C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 mutex_unlock(&blkcg_pol_mutex);
+>> =C2=A0 +#ifdef CONFIG_BLK_CGROUP_PUNT_BIO
+>> +=C2=A0=C2=A0=C2=A0 {
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 guard(spinlock)(&blkcg->asyn=
+c_bio_lock);
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 WARN_ON(!bio_list_empty(&blk=
+cg->async_bios));
+>> +=C2=A0=C2=A0=C2=A0 }
+>> +#endif
+>
+> This is a slightly different case. At this point blkcg_css_free() is
+> freeing the blkcg object after its final reference has gone away, so
+> there should be no concurrent context accessing blkcg->async_bios.
+> Therefore, I don't think we need to acquire async_bio_lock here just
+> to perform the WARN_ON() check.
 
-The original report came from i386 randconfig. It looks like a combination
-of some luck and a new code, probably attracting more robots attention.
- 
-> Are there any code changes outside of testing?
+Perhaps is it better just to remove the check? blkcg will be pinned
+by any bio inside the list, so I believe this is safe.
 
-ams_pmu_set/get_register in patch #6 for example.
+> The clang context annotation cannot infer this object-lifetime property
+> and will therefore report an unprotected access. I think we should
+> explicitly mark this access as context-unsafe.
+>
+> But wait, even better, we could introduce a bio_list_empty_careful()=20
+> helper,
+> similar to list_empty_careful(), for this purpose:
+>
+> static inline bool bio_list_empty_careful(const struct bio_list *bl)
+> =C2=A0=C2=A0=C2=A0=C2=A0__context_unsafe(/* intentional lockless access t=
+o @bl->head */)
+> {
+> =C2=A0=C2=A0=C2=A0=C2=A0return bl->head =3D=3D NULL;
+> }
+>
+> Then this could simply become:
+>
+> WARN_ON(!bio_list_empty_careful(&blkcg->async_bios));
+>
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 free_percpu(blkcg->lhead);
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 kfree(blkcg);
+>> =C2=A0 }
+>> =C2=A0 =C2=A0 static struct cgroup_subsys_state *
+>> @@ -1447,10 +1445,18 @@ blkcg_css_alloc(struct cgroup_subsys_state=20
+>> *parent_css)
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+>> =C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 spin_lock_init(&blkcg->lock);
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 refcount_set(&blkcg->online_pin, 1);
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 INIT_HLIST_HEAD(&blkcg->blkg_list);
+>> +#ifdef CONFIG_BLK_CGROUP_PUNT_BIO
+>> +=C2=A0=C2=A0=C2=A0 spin_lock_init(&blkcg->async_bio_lock);
+>> +=C2=A0=C2=A0=C2=A0 {
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 guard(spinlock)(&blkcg->asyn=
+c_bio_lock);
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bio_list_init(&blkcg->async_=
+bios);
+>> +=C2=A0=C2=A0=C2=A0 }
+>> +=C2=A0=C2=A0=C2=A0 INIT_WORK(&blkcg->async_bio_work, blkcg_async_bio_wo=
+rkfn);
+>> +#endif
+>
+> This is interesting. As you know, while an object is being allocated
+> and before it is published, it can't be accessed concurrently. So
+> guarding blkcg->async_bios with blkcg->async_bio_lock is not necessary
+> here. Moreover, since blkcg is zero-initialized, we could simply remove
+> both the guard(...) and the bio_list_init() call above.
+>
+> Thanks,
+> --Nilay
+
+--=20
+Thanks,
+Kuai
 
