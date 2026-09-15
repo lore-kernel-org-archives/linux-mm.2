@@ -4,101 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0069DC88E75
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 17:54:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88848C88E7D
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 17:56:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CAFBE6B0093; Tue, 15 Sep 2026 13:54:31 -0400 (EDT)
+	id 92FC46B0095; Tue, 15 Sep 2026 13:56:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C86796B0095; Tue, 15 Sep 2026 13:54:31 -0400 (EDT)
+	id 907876B0096; Tue, 15 Sep 2026 13:56:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B9C8A6B0096; Tue, 15 Sep 2026 13:54:31 -0400 (EDT)
+	id 81CF36B0098; Tue, 15 Sep 2026 13:56:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 87F7E6B0093
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 13:54:31 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AD9AD804F3
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 17:54:30 +0000 (UTC)
-X-FDA: 85216746300.17.4E9CE3F
-Received: from mail.hallyn.com (mail.hallyn.com [178.63.66.53])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 71CEA180002
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 17:54:28 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=hallyn.com header.s=mail header.b=PmIGImVV;
-	dmarc=pass (policy=reject) header.from=hallyn.com;
-	spf=pass (imf16.hostedemail.com: domain of serge@hallyn.com designates 178.63.66.53 as permitted sender) smtp.mailfrom=serge@hallyn.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789494868;
-	b=pDPWFoJQ6HmsEOVfQs8V2B0Jlto5Ud9AqIqheaYytOSWktqUdxqV0+JuA3tAe/Tn2A9C1H
-	j8wEY4pwUG0aqxgqhnn/3vPVMtiZ58AFtgRPTaepTvf4MVxZE/g0t3l4XlV1igiJ3eoJPF
-	3gX4Rlfu81JmBYLAOMsVZ0aytI+wA3s=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=hallyn.com header.s=mail header.b=PmIGImVV;
-	dmarc=pass (policy=reject) header.from=hallyn.com;
-	spf=pass (imf16.hostedemail.com: domain of serge@hallyn.com designates 178.63.66.53 as permitted sender) smtp.mailfrom=serge@hallyn.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789494868;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3IH0zQ66XAhM9RpaAtWgUh4AiWfH8DT36se5pdj+tfo=;
-	b=2PSrovIAeYqreULP2uMz3e2Gi5JhQGcNEk+PIxTIJgiiKKRenJmVg+OtpuW1KeFS4/JnEF
-	1CEL0PiqChPFpBqL4C47oVrdTrdTqBtyySO7bUKTVk44vnO99e02P9dcYu8+EafxayiS5d
-	dV6vF9B1pxfNyEsvxQXCbjuqjogUseE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=hallyn.com; s=mail;
-	t=1789494867; bh=v63FY1fnrEkx7QXoR+GSQJrHmBwDUBI7qUvyhgXbjJs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PmIGImVVPLzOWAumb6PW4gmlneVv+6xM1ssscap9T86yUWBljn+p2Oe4CIeuTNomy
-	 R4XRJJzbs/FHPhGufWGaj99v8F+0jNMEZR9RzNk06ts81sf+zoQMwDJY+zcgm8G6cG
-	 gABgIEWhRHDeodGimlEH6KvdGSxsw/csqozdOy8UBNUlPxB1dBOb4nzjGcuQT6kEJc
-	 UjwPqdVsqPdB/CKRGB4hODB73ZpqHpi+SpHqg2xATLd6qEeXP2LjMeqajlTf/Jzmzi
-	 fiL8M2Q3os1jyaxpNS+cBkHGFPtj4pzkCY7a0M5IfkU9ChBuWtkG8io1mgHQ6xOC81
-	 O8SwtEMelSm0w==
-Received: by mail.hallyn.com (Postfix, from userid 1001)
-	id 080F9D83; Tue, 15 Sep 2026 12:54:27 -0500 (CDT)
-Date: Tue, 15 Sep 2026 12:54:27 -0500
-From: "Serge E. Hallyn" <serge@hallyn.com>
-To: Paul Moore <paul@paul-moore.com>
-Cc: "Serge Hallyn (AMD)" <sergeh@kernel.org>, Jann Horn <jannh@google.com>,
-	James Morris <jmorris@namei.org>,
-	Stephen Smalley <stephen.smalley.work@gmail.com>,
-	Jeff Xu <jeffxu@google.com>,
-	=?iso-8859-1?Q?Thi=E9baud?= Weksteen <tweek@google.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	linux-fsdevel@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Pedro Falcato <pfalcato@suse.de>,
-	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org
-Subject: Re: [PATCH v3 2/3] proc: query LSMs for introspective mem access (if
- PROC_MEM_FORCE_ALWAYS)
-Message-ID: <aqmGU4rylUsH9LqA@hallyn.com>
-References: <20260907-selinux-pokemem-v3-0-0bafbaeafe50@google.com>
- <20260907-selinux-pokemem-v3-2-0bafbaeafe50@google.com>
- <aql6gyQJoxEjx0xY@shallyn-amd>
- <CAHC9VhTjo+znkxBmvseCH1K3aJN18ZO7+6QGE-a+Sy6XN=uaMQ@mail.gmail.com>
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5E05C6B0095
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 13:56:04 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A46FCA04E8
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 17:56:03 +0000 (UTC)
+X-FDA: 85216750206.19.3B5B14E
+Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
+	by imf06.hostedemail.com (Postfix) with ESMTP id A3C1318000C
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 17:55:53 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=temperror ("DNS error when getting key") header.d=hpe.com header.s=pps0720 header.b=JtkvPdj9;
+	dmarc=temperror reason="query timed out" header.from=hpe.com (policy=temperror);
+	spf=pass (imf06.hostedemail.com: domain of kyle.meyer@hpe.com designates 148.163.147.86 as permitted sender) smtp.mailfrom=kyle.meyer@hpe.com
+Received: from pps.filterd (m0150241.ppops.net [127.0.0.1])
+	by mx0a-002e3701.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68FHsVqr2942025;
+	Tue, 15 Sep 2026 17:55:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pps0720; bh=PNlXKXX5IyXBrJN4ylgfbuPEUG
+	zQwPHtOwfHhk/bIe4=; b=JtkvPdj9EgRpDPcHrWl7UiRg4FD51sG7bJwVBqU6NW
+	Uf9ZBrOUOIdWZdWKf3O6D1LdCvuCCfHBVsothhkDzcEQvQqpUa+X3DE2tXlkrmaq
+	TwHA1tHiyDDO39sk9SEBf3lo8SVxRGAdRe/PmOH1oG2U32Ew1HRH3/0SvQnq+ooO
+	K2eGSGVE35K+NtUNjDt9OOnemYoYORplPC7JhdkdpeH9DTdCYMi3Gziqdeq3MRUw
+	O5s18X3g6ws5CMnEnGIjZAuhE5rAO37Xlpzok4myiSzSteUdQL3O4OYsdgwNOqRJ
+	wJibhZ7YuJ/A1lYAxITpmgTpsQD3Am432oLyRbNyZ3hw==
+Received: from p1lg14879.it.hpe.com (p1lg14879.it.hpe.com [16.230.97.200])
+	by mx0a-002e3701.pphosted.com (PPS) with ESMTPS id 4gq95pstj8-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 15 Sep 2026 17:55:12 +0000 (GMT)
+Received: from p1lg14885.dc01.its.hpecorp.net (unknown [10.119.18.236])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by p1lg14879.it.hpe.com (Postfix) with ESMTPS id 6BD1312EB9;
+	Tue, 15 Sep 2026 17:55:11 +0000 (UTC)
+Received: from HPE-5CG20646DK.localdomain (unknown [16.231.227.36])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by p1lg14885.dc01.its.hpecorp.net (Postfix) with ESMTPS id B4FBC805E88;
+	Tue, 15 Sep 2026 17:55:06 +0000 (UTC)
+Date: Tue, 15 Sep 2026 12:55:03 -0500
+From: Kyle Meyer <kyle.meyer@hpe.com>
+To: Michal Hocko <mhocko@suse.com>
+Cc: akpm@linux-foundation.org, corbet@lwn.net, david@redhat.com,
+        linmiaohe@huawei.com, shuah@kernel.org, tony.luck@intel.com,
+        jane.chu@oracle.com, jiaqiyan@google.com, Liam.Howlett@oracle.com,
+        bp@alien8.de, hannes@cmpxchg.org, jack@suse.cz,
+        joel.granados@kernel.org, laoar.shao@gmail.com,
+        lorenzo.stoakes@oracle.com, mclapinski@google.com,
+        nao.horiguchi@gmail.com, osalvador@suse.de, rafael.j.wysocki@intel.com,
+        rppt@kernel.org, russ.anderson@hpe.com, shawn.fan@intel.com,
+        surenb@google.com, vbabka@suse.cz, linux-acpi@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3] mm/memory-failure: Support disabling soft offline for
+ HugeTLB pages
+Message-ID: <aqmGd0GGUCkbZpkZ@hpe.com>
+References: <aqiIEkrc6aDBOqRg@hpe.com>
+ <aqkCbgHmMGxI_GLG@tiehlicka>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHC9VhTjo+znkxBmvseCH1K3aJN18ZO7+6QGE-a+Sy6XN=uaMQ@mail.gmail.com>
+In-Reply-To: <aqkCbgHmMGxI_GLG@tiehlicka>
+X-Proofpoint-ORIG-GUID: ZGyhASJQPrkZtald6s-qe-XaJzb3rLwu
+X-Authority-Analysis: v=2.4 cv=SJ3Xx+vH c=1 sm=1 tr=0 ts=6aa98681 cx=c_pps
+ a=5jkVtQsCUlC8zk5UhkBgHg==:117 a=5jkVtQsCUlC8zk5UhkBgHg==:17
+ a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=gQcMVamqm3wCPoSYhaRC:22 a=_ZmgHqWwjZUDpi_pur5s:22 a=VwQbUJbxAAAA:8
+ a=MvuuwTCpAAAA:8 a=OCHxr62PC90mTwIpeikA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE1MDI2MCBTYWx0ZWRfX/bF3jfMe5L2R
+ j63mU1nIBKQUtxaBXijRxEhjpUkMVc4zIvOsjeAo1gXa6d8EaQ3zY67L76NuqyOpj1PqfHtArmO
+ 2vl0Zj/ywj1xKqs1a/mzZMNwlkOXYrqejAwJQ505r93PdMuHej9YKGoy+OOhjdgIGcbnHU5kPaU
+ yvvrSCWy5ejLgHtdaE3GjSon0dkRbhoyLPGlPM5ivm10iaII7ndWeW/6v4Wb+WicsOGN6iGbq5y
+ TmACnEazHYCmP+PBiUKK1AlL2cSjGIx6qbmqEPScHv5nRJqfghhw+WYCVTjioKj934H6QVwbEyn
+ +l7ofYSeMOrVz1JhspzsrFr1N4lD/2CI+O885v1QKv5nzT3CrROQPCxW5DGn1rcxZV1AAEnv7EB
+ 8HBx6GOAVf7DeSMdD7b3ATQFGeRAgDSkWYdpFHxj64RkQev4NJH17HwCiED+iffIRQ5Flebq0JV
+ zWia0hniMaXW7l/WWHg==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE1MDI2MCBTYWx0ZWRfX63h0+WaHo6KX
+ o28u0TT4xIFnPPwvxBVPnt73ZCm6PXqMR4K+TANuw3CaFV5L9FIl2AQlI4GVDKvAEj81K9dRKGJ
+ DaYbaSq0UXlb+dnZCcP9Cbxr0DS1x+w=
+X-Proofpoint-GUID: ZGyhASJQPrkZtald6s-qe-XaJzb3rLwu
+X-HPE-SCL: -1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-15_05,2026-09-15_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 priorityscore=1501 phishscore=0 adultscore=0 bulkscore=0
+ clxscore=1015 lowpriorityscore=0 malwarescore=0 spamscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609150260
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 71CEA180002
-X-Stat-Signature: qzc63w9unp1e6yq5ctcdfoy1ziyuhah7
-X-HE-Tag: 1789494868-281693
-X-HE-Meta: U2FsdGVkX19JJwT9T7S9q+/2arehcDhLH5qlsYHpRfYyOa5jAojUddExhxsd/0whQIFKK5hIXXFZXieTM+aeC7FcTGwBlWTUlNPOHohC+NzSEIEXZObulfS34u+c59uP1oMfLH3MUUvUF0ywftGhF+UzLBkcCJXJIFchh1UcLHqtxi6JpLyScvyeuXNLlgre5k6bE/Yw+gnrPLET32n/vG3ThtuDyIoBj0HaUNqsd1IdWL8+keLlLoj1ZHZIXc3eH8KCeWh2VkZAU31YfG6dTct8ZP0wzMwUeHLTL/+n1pUCXxvbdDP5qzS6dcL9ObqomIQa2JXBFQGvZj9LM20eceU3vCeTCuPOHsKjdcq58U+9kpR7IeAAfZK3gRv3Y300Q1U1hU+v1UvU688ct1ufH11h+UzAPIKuyK/PpKbU0wh38FYDhVZDvF793Q5rv/yQPia0WmRF4SatPyi/Ut+qyaq1qGZMyEBgGrwJHlwka07TE9PHK8CS6tpxhNCi64YKgOxk2AHMdOnM2yQueAhtnpvlHWa2/Fb03oMx+jf+aFpbmmghHttO/U0bS2AYNkFUxJrpv6xA3NdMInNRKaWIz5sm5IUVtJYQU0WX14qR81tps6VwMZmGvzARGeUdzbywmxQQXNU+GpIluzMuR7cQ0XPi6qM8lZM/neCLPVQ9nkdgnjlBF/vING1c8j39E8wKVARtVUyA+0xw+5ET+tjWMJ6yllCl+TxL8dn4PdQmQtjK3hPOuC1g8scZ8lLcP3sremjWlQp5HGf2oJGqVpdb24XuXy8CrTSp7o1deVIbkvfktGvNP0jrAqpIyMFM9CWsEZcqnkFVqXRkiSjcLulZbMrU0LWVbu52tFIZ3VZqV7f4PqLMR5DJ1KNQzBvIi099VGsR4NWPw3d71R0xYQVrTMfbHWTkcvasqF6PcAprUxbQ6ZW94HM6RX/yxqvWbLP2S8UEAYIdygDtcFef9bN
- J3I2xBW5
- LslZmjfp47voUBQ8BaQjoWSmAbNFbhC/Xc4jqpxqGVMQimVVHgM0xpSdZ6Avcs8AwzeiU43aaZtulhAxv96qJr4HdWabavPI1CM0mJ5Gw4r51GdQFkZ36mtUPUECQ4tMRkLXyNI82A20Xbz64L+NtOG1Ob/rfrya2fU3EsH1NQQERQsGJypG8rN/veWHJwA++dqvIsoOgqcRLMN9kZrM1WzK6IRZbF0eabi9TnERqQzCwkEv6SPmWl/r3MfzMrMMfCcntrP72vZZNVJ9WLmErGkhCOE5OAL3utrZAnTIcaQBe9x+4uGLTAnPQIFR47DS2rlnPVnJnfO9wNzWD0Nvh6Eeqt+cZcJoIL4/WQXB45DeVAfDGQQIjKaYBsOfoMAGLVKOr
+X-Rspamd-Queue-Id: A3C1318000C
+X-Stat-Signature: zmg865p99yqxonuuejqjnfex3x7r9w78
+X-HE-Tag: 1789494953-644716
+X-HE-Meta: U2FsdGVkX19m5uWBHf08524bIBdj9uCckobS68xTFToCxMlRwh21DT+MFn0sO7H9APrChu+Lo8GSDrGlBovFhH/3CYoGcb4w+NfxHJI9ycI0qycFd2vURu3b5NQA9g4uwrMR1uaZL01rSWGpnlINsPXpYphbeJudnIQIIzNbOnPjHpRr9QZLpcydosrD/LHYgVLWLUFu0sKbCQ2He6VHzBuacw0d8yX5ccLPEVuufiTIl6GXw9D9l6XTx7EuzjVTHfo8LB7pdphyRj3AD2i2WK86kyURZqP1LJVcT6zmGC/aS04BQrqnFL1Kbp7v7TNwDnvYpOe1XhNL51A4u6lW+3UyMxteGTByG12c17K0LRMeB4MQvjHEKAL7pntKBwRyos+tZlmkiHurlvrKI9I+8xGz/qLG8Z3EnP2j1p6F2MvkCyP7SQ2qk7XE3vz39hVBeo3cPRmXYPv6P5HqQihtLapuEZdbuvpfEQG2uOgJlSwZuoBx2qt5f9S9xeZLNJmuTdEROJ3kF8uagA0gYOkAuS0IrST/gg3Pmt/WB0hjCFdUp6MuHgAlLen6Yr+W3iYg3Q3tv4sIwWQs4bLeTVAVx4iMGQZKGdXLlcoufHfG0JkeS+nMwpMyt3WZ1hJfpxa8eGRyQ8PhSwPGn3IADyWMHjlDhqk4q7PZjzqICllBmuMIWTKJ79+KsSC68Rk8Vueayq/dR/nYBJPTFg5zvvtW87yTODnBSI8OajFZDPDe7XLJCxPKSxo5RX627MgAbg8AKz10Y/jK5nnv/Fze9a7UtOiextgGI0MVJfffiT2ey8q236TvPgWfEGIyuz2Ay+fIcz5yHjiMbUUmMuvxqEVmLecNKk0Sdp1mOy+Q5vSvCyWtkpmuaU4IKA2ubAKM4aRO6PixUpwqSn3Ap0p7IlhDAClH0CTXidK5q3OxSpBY1p70VC0DB9A9eJbA6awrZyj8i14bUkTL+bCo94PG+7r
+ G+6QB9Z7
+ aFKhdOHBROr5Ss89w6EL8rKwmHZJLI6TDEnQe3FfL3lvM1zI1/gFjrSumgl+7dZdyNuI7NEuKkJZo2L4RK/rOyWLT5p6g+5JhxZ6S9pgvBIxmD/dCR/Tu2TQjkppiktmYVdJGRKEbynGqSLqS3FrmY2Rt7QPmMwP/2eId1fghN13S76LWDGLruucaIdjaDHHrMoM0tlZMUUWFpQdCVFnKLuKKaXXBmCXREWwc4WCVJY1XCJFfF1Psa0yTSaAzTvc2YAhtXALA7qK8NO5Gilk+wylVOnm5rptwICPz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,154 +121,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 15, 2026 at 01:24:27PM -0400, Paul Moore wrote:
-> On Tue, Sep 15, 2026 at 1:04 PM Serge Hallyn (AMD) <sergeh@kernel.org> wrote:
-> > On Mon, Sep 07, 2026 at 11:00:17PM +0200, Jann Horn wrote:
-> > > If the system is running with PROC_MEM_FORCE_ALWAYS, LSMs currently have no
-> > > good opportunity to block a process from overwriting read-only code in its
-> > > own address space through FOLL_FORCE writes via /proc/self/mem.
-> > > The security_ptrace_access_check() LSM hook is bypassed when a process
-> > > opens /proc/self/mem because this is considered "introspection".
-> > >
-> > > This causes a hole in SELinux EXECMEM enforcement, which tries to ensure
-> > > that a process cannot create executable anonymous pages.
-> > >
-> > > PROC_MEM_FORCE_PTRACE prevents that and ensures that such FOLL_FORCE
-> > > accesses are only possible when the LSM allows ptrace() attachment; but it
-> > > is unclear how quickly PROC_MEM_FORCE_PTRACE can be deployed in
-> > > environments running lots of third-party code, such as Android.
-> > >
-> > > So, introduce a new LSM hook that can forbid FOLL_FORCE specifically for
-> > > such "introspective" accesses.
-> > >
-> > > Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> > > Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> > > Signed-off-by: Jann Horn <jannh@google.com>
-> > > ---
-> > >  fs/proc/base.c                | 14 ++++++++++++--
-> > >  include/linux/lsm_hook_defs.h |  1 +
-> > >  include/linux/security.h      |  7 +++++++
-> > >  security/security.c           | 25 +++++++++++++++++++++++++
-> > >  4 files changed, 45 insertions(+), 2 deletions(-)
-> > >
-> > > diff --git a/fs/proc/base.c b/fs/proc/base.c
-> > > index bec6197329dc..295b21203c7f 100644
-> > > --- a/fs/proc/base.c
-> > > +++ b/fs/proc/base.c
-> > > @@ -851,6 +851,11 @@ static int __mem_open(struct inode *inode, struct file *file, unsigned int mode)
-> > >  /* private_data for proc_mem_operations */
-> > >  struct mem_private {
-> > >       struct mm_struct *mm;
-> > > +     /*
-> > > +      * Was the ptrace access check on open bypassed because the opener used
-> > > +      * the same MM (introspection)?
-> > > +      */
-> > > +     bool opened_by_owner;
-> > >  };
-> > >
-> > >  static int mem_open(struct inode *inode, struct file *file)
-> > > @@ -864,12 +869,14 @@ static int mem_open(struct inode *inode, struct file *file)
-> > >       priv->mm = proc_mem_open(inode, PTRACE_MODE_ATTACH);
-> > >       if (IS_ERR_OR_NULL(priv->mm))
-> > >               return priv->mm ? PTR_ERR(priv->mm) : -ESRCH;
-> > > +     priv->opened_by_owner = priv->mm == current->mm;
-> > >       file->private_data = no_free_ptr(priv);
-> > >       return 0;
-> > >  }
-> > >
-> > >  static bool proc_mem_foll_force(struct file *file, struct mm_struct *mm)
-> > >  {
-> > > +     struct mem_private *priv = file->private_data;
-> > >       struct task_struct *task;
-> > >       bool ptrace_active = false;
-> > >
-> > > @@ -884,10 +891,13 @@ static bool proc_mem_foll_force(struct file *file, struct mm_struct *mm)
-> > >                                       READ_ONCE(task->parent) == current;
-> > >                       put_task_struct(task);
-> > >               }
-> > > -             return ptrace_active;
-> > > +             if (!ptrace_active)
-> > > +                     return false;
-> > > +             break;
-> > >       default:
-> > > -             return true;
-> > > +             break;
-> > >       }
-> > > +     return security_mem_foll_force(file->f_cred, priv->opened_by_owner) == 0;
-> > >  }
-> > >
-> > >  static ssize_t mem_rw(struct file *file, char __user *buf,
-> > > diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_defs.h
-> > > index 65c9609ec207..12f84a1e6fab 100644
-> > > --- a/include/linux/lsm_hook_defs.h
-> > > +++ b/include/linux/lsm_hook_defs.h
-> > > @@ -36,6 +36,7 @@ LSM_HOOK(int, 0, binder_transfer_file, const struct cred *from,
-> > >  LSM_HOOK(int, 0, ptrace_access_check, struct task_struct *child,
-> > >        unsigned int mode)
-> > >  LSM_HOOK(int, 0, ptrace_traceme, struct task_struct *parent)
-> > > +LSM_HOOK(int, 0, mem_foll_force, const struct cred *subject, bool opened_by_owner)
-> > >  LSM_HOOK(int, 0, capget, const struct task_struct *target, kernel_cap_t *effective,
-> > >        kernel_cap_t *inheritable, kernel_cap_t *permitted)
-> > >  LSM_HOOK(int, 0, capset, struct cred *new, const struct cred *old,
-> > > diff --git a/include/linux/security.h b/include/linux/security.h
-> > > index 153e9043058f..e8bc2e644241 100644
-> > > --- a/include/linux/security.h
-> > > +++ b/include/linux/security.h
-> > > @@ -338,6 +338,7 @@ int security_binder_transfer_file(const struct cred *from,
-> > >                                 const struct cred *to, const struct file *file);
-> > >  int security_ptrace_access_check(struct task_struct *child, unsigned int mode);
-> > >  int security_ptrace_traceme(struct task_struct *parent);
-> > > +int security_mem_foll_force(const struct cred *subject, bool opened_by_owner);
-> > >  int security_capget(const struct task_struct *target,
-> > >                   kernel_cap_t *effective,
-> > >                   kernel_cap_t *inheritable,
-> > > @@ -676,6 +677,12 @@ static inline int security_ptrace_traceme(struct task_struct *parent)
-> > >       return cap_ptrace_traceme(parent);
-> > >  }
-> > >
-> > > +static inline int security_mem_foll_force(const struct cred *subject,
-> > > +                                       bool opened_by_owner)
-> > > +{
-> > > +     return 0;
-> > > +}
-> > > +
-> > >  static inline int security_capget(const struct task_struct *target,
-> > >                                  kernel_cap_t *effective,
-> > >                                  kernel_cap_t *inheritable,
-> > > diff --git a/security/security.c b/security/security.c
-> > > index 71aea8fdf014..2cde1efdb7a6 100644
-> > > --- a/security/security.c
-> > > +++ b/security/security.c
-> > > @@ -595,6 +595,31 @@ int security_ptrace_traceme(struct task_struct *parent)
-> > >       return call_int_hook(ptrace_traceme, parent);
-> > >  }
-> > >
-> > > +/**
-> > > + * security_mem_foll_force() - Check if FOLL_FORCE is allowed
-> > > + * @subject: credentials using which /proc/$pid/mem was opened
-> > > + * @opened_by_owner: whether checks on open() were bypassed because the opener
-> > > + *                   has the same MM as the target
-> > > + *
-> > > + * Check if FOLL_FORCE is allowed for accessing process memory through
-> > > + * /proc/$pid/mem. opened_by_owner signals whether the opener's MM was the same
-> > > + * as the target MM, meaning the security_ptrace_access_check() hook was
-> > > + * bypassed on open().
-> > > + * (Current current->mm does not matter for this; for example, if write() is
-> > > + * called on an FD that was received from another process which obtained it with
-> > > + * open("/proc/self/mem"), @opened_by_owner is still true.)
-> > > + *
-> > > + * Note that this hook is only designed to be useful in the opened_by_owner
-> > > + * case, where the subject credentials effectively also describe the object.
-> >
-> > Given this, would it make more sense to call the hook something
-> > like `security_mem_foll_force_self()` and only call it in the
-> > opened_by_owner==true case?
+On Tue, Sep 15, 2026 at 10:31:42AM +0200, Michal Hocko wrote:
+> On Mon 14-09-26 18:49:38, Kyle Meyer wrote:
+> > Soft offlining a HugeTLB page dissolves it, permanently reducing the
+> > HugeTLB page pool. This can be problematic for workloads that depend on
+> > a fixed number of HugeTLB pages.
+> > 
+> > Currently, soft offline must be disabled to prevent HugeTLB pages from
+> > being soft offlined.
+> > 
+> > This patch allows soft offline to be disabled for HugeTLB pages while
+> > remaining enabled for non-HugeTLB pages.
+> > 
+> > Commit 56374430c5dfc ("mm/memory-failure: userspace controls
+> > soft-offlining pages") introduced the following sysctl interface to
+> > control soft offline:
+> > 
+> > /proc/sys/vm/enable_soft_offline
+> > 
+> > The interface does not distinguish between page types:
+> > 
+> >     0 - Soft offline is disabled
+> >     1 - Soft offline is enabled
+> > 
+> > Convert enable_soft_offline to a bitmask and support disabling soft
+> > offline for HugeTLB pages:
+> > 
+> > Bits:
+> > 
+> >     0 - Enable soft offline
+> >     1 - Disable soft offline for HugeTLB pages
+> > 
+> > Supported values:
+> > 
+> >     0 - Soft offline is disabled
+> >     1 - Soft offline is enabled
+> >     3 - Soft offline is enabled (disabled for HugeTLB pages)
+> > 
+> > Existing behavior is preserved.
+> > 
+> > Update documentation and HugeTLB soft offline selftests.
 > 
-> Sometimes we can't avoid it, but in general I'd like to see us avoid
-> calling LSM hooks conditionally, I'd much prefer the hook
-> implementation (either at the LSM framework level or the individual
-> LSM) do the conditional check.  See my comments on the previous
-> revision.
+> This is adding a lot of user interfaces to control something you can
+> disable by config option for an admin only functionality.
 
-Ah.  Sorry, I had missed that.  +1.
+I may be missing it, but I'm not aware of a config option that disables soft
+offline specifically for HugeTLB pages.
+
+> I fail to to see any actual justification for all of that. If an admin
+> can disolve a hugetlb page it has power to allocate a new one as well.
+
+Allocating HugeTLB pages after boot is not guaranteed.
+
+> Not to menation that the whole soft offlining is mostly a testing
+> feature so adding a lot of fine grained configuration space seems
+> excessive to me.
+
+Can you elaborate on "mostly a testing feature"? For example, how does that
+apply to the BIOS/GHES path discussed here?
+
+https://lore.kernel.org/all/aMkOCmGBhZKhKPrI@hpe.com
+
+If you think this should be handled differently, I'm open to suggestions.
+
+Thanks for the feedback,
+Kyle Meyer
 
