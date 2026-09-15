@@ -4,96 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B1A9C88E53
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 08:44:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4489C88E73
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 08:47:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C86C26B0088; Tue, 15 Sep 2026 04:44:51 -0400 (EDT)
+	id D75806B0093; Tue, 15 Sep 2026 04:47:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C388F6B008C; Tue, 15 Sep 2026 04:44:51 -0400 (EDT)
+	id D4E2A6B0096; Tue, 15 Sep 2026 04:47:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B4F456B0092; Tue, 15 Sep 2026 04:44:51 -0400 (EDT)
+	id C8A8C6B0099; Tue, 15 Sep 2026 04:47:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8FA906B0088
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 04:44:51 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C055A140376
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 08:44:50 +0000 (UTC)
-X-FDA: 85215361140.12.AFF4A62
-Received: from mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 8BB36160006
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 08:44:48 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=H5nWwBKv;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf08.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A51736B0093
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 04:47:07 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 20E73C037B
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 08:47:07 +0000 (UTC)
+X-FDA: 85215366894.20.83A150A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 70889C000B
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 08:47:05 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L6RIYB4t;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L6RIYB4t;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789462025;
+	b=E/3x/UuD+WliN/I4P35jNXKve8CH5mDgEeKaI4b1AogN13W2mZLnr5kqAn8/0blE5fUt+i
+	zH8mNS6gEQdCPfQhGoYWgfl7pk/FNSfzNWXx/OpRUGW2XcMzAbbKWilj1E1k21DD5PT6lw
+	X50Y8ygGj2m1CL9N0iGmihc7OXtZZJw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789461889;
+	s=arc-20220608; t=1789462025;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k7VmnpfzvPXSofFi8P4eMsLyUzS5eaNuDWdEobHGPKk=;
-	b=fKVN4tOqbJpoeRli7jgNnbJB888ChvT32I9kF92/fCitaBCCk+HwTR3fnT6weyzIIF7Gbk
-	8st/lXlznJL6Z+SLZ+0jemiia7cUHjUDWOM7TcZpyG+pu1RrumPoBW3swXWBqVw2soIOQX
-	PFIEcsm6iByS8mr94tjROj7qvvUl6RY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789461889;
-	b=Kz8h8/xASsHskHiC0yTAyoZnDWO3m9FVmVEK5U89PRpjMgIwFJp1XY8OAU8jq+wqEyOMja
-	NmL+UgfQnLQl4rsgxi8yzLarm4qWzeVaVpG+uycU/2fSLvhZyiK94OTYh/bsgFLA2OwkW5
-	FMqRd35BJYIkPHJeAj6uaVDuIarKlvg=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=H5nWwBKv;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf08.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=OdmaTEvWPgfTFD+u4aw06O2FSYvZjnGVMGwImr7GHt4=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789461887; v=1; x=1790066687;
- b=H5nWwBKvXlQCIvrgfqP7aqsb1BOfq7cA2Dftrighr1kpCMGwYShZVKBJiIfe1RSUDQatmhH7
- VINOJ0Z5LJJAG2Yj6t2fzpksqmvxdNmm0EsE1B8t8eSf6PijQsuffYbYmFLhU/N2JY2blpNjuIf
- JQ2Qrs61fgn+3nd9YJ/2Yz8s=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 96d8f489691b383c;
-	Tue, 15 Sep 2026 08:44:46 +0000
-X-Mizu-Trace-ID: 96d8f489691b383c
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <e018e3a0-349a-4f36-90e0-8fafb001da43@linux.dev>
-Date: Tue, 15 Sep 2026 16:44:40 +0800
+	bh=wK2W2uongp7wJVjy1t0+DLgCG6nyVaTFIPWkinS9neo=;
+	b=qe1L31lffJ32vGam80r1lIZXbXYNrBiyI3WTsMcfUx5wzAChvkJBSPqJirDpl9vcUQ1N3a
+	gBZKhYkGz4iHkmzsImpMyXG5dUIAoiYj0GxtC9YFeEmbsNj65XGA8BIOxW7lQL+7+zqOtv
+	CQ9mXga3ljXevRlNFLnAOmZks278H7k=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 607DA43884;
+	Tue, 15 Sep 2026 08:47:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D4A91F000FF;
+	Tue, 15 Sep 2026 08:47:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789462024;
+	bh=wK2W2uongp7wJVjy1t0+DLgCG6nyVaTFIPWkinS9neo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=L6RIYB4texZzX1ZlecKG1L7F0lnZLSfxBR8u1qDQiw//ny+5kmvpADTbQdQjgzLzx
+	 xy507JtPyIXGrPhNV6FUzmKHApBnbzfj187VPQ+HF4bvttEby3CskFbaFHeW+gD0cW
+	 MWtyeTmRr+AJw90AFI6KKVTgXOIENOGrRgyJ/JZx5Oo48qRwHtN5a/xlVSzdHtrzlZ
+	 /nkn/JCrT3gX0g7j3rLkQ/BPejg7dwL/UAI4GMpVNs46aTZMBVFsSFx1aP8arO+RE+
+	 W62J32O5vH4w3Zqz9HxXXr0r4ixe6fUc+1k4T3rNPR5vRCARNo+07JQt3TWjt9GJzm
+	 K3O/oq+zYtJIg==
+Date: Tue, 15 Sep 2026 09:46:58 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Kaitao Cheng <kaitao.cheng@linux.dev>
+Cc: Mike Rapoport <rppt@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	"Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Kaitao Cheng <chengkaitao@kylinos.cn>
+Subject: Re: [PATCH] mm: Remove unused exact_nid parameter from memmap_alloc()
+Message-ID: <aqkE4DhNFWIzgHHo@gremlin>
+References: <20260914055130.44543-1-kaitao.cheng@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/oom_kill: fix hung tasks queued on mmap_lock behind a
- long reap
-To: Michal Hocko <mhocko@suse.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
- Jiayuan Chen <jiayuan.chen@shopee.com>, Zhou Yingfu
- <yingfu.zhou@shopee.com>, David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, David Rientjes
- <rientjes@google.com>, Shakeel Butt <shakeel.butt@linux.dev>,
- linux-kernel@vger.kernel.org
-References: <20260914113239.367200-1-jiayuan.chen@linux.dev>
- <aqg-oG2HDIUeK5Us@tiehlicka>
- <20260914203533.3544ae8dd0903c7603b385c6@linux-foundation.org>
- <aqjsPW92SgcHONKO@tiehlicka> <3c8d1d8e-0e67-4d1a-b73d-4eadd6266aa6@linux.dev>
- <aqkAbBpYheX2DEHg@tiehlicka>
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <aqkAbBpYheX2DEHg@tiehlicka>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260914055130.44543-1-kaitao.cheng@linux.dev>
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 8BB36160006
-X-Stat-Signature: geq6s7nf7tuh1ad7fzhhbojzgtb5r4bx
-X-HE-Tag: 1789461888-832390
-X-HE-Meta: U2FsdGVkX18RIVk0i2mQ8K3r/+e6fhJ0tsT19mjgPNQ89Xc9DIUR2DCWeF5qnSr+8iwMmqTXDm1wirFDaAcLMYcCC7HmcnKC2xgidqaPV2nBbgLUTcpCZ3/Xz02wU8HJ2NMs7d7PldxnUfQtL2v1OBuPA74C0JDfZX3l054MAFDwuIxN5f5kHvKTamAm6JX5leA8DxICjnmL0NFx5lAyROC0SJXCAOzTXcBt2+iE6m8qEDBASy3xTV9Ch7NYRkmWGoG2cUiiagjsyXN3JI8v/hRf5DFbm80QK1ocjWigFaxuZEiNOjgmHVd7JgAJPkKkmpxfjrrYKOM6VVgs5ycEhhgSkS/BIQuyRqM2OmPd/SyVUTYLpZuPna8dfK9ggYn1gqWB2FLzvumIJ3jzSXcINKuCTOUbSmgaP0EdwPMLcpMw53dyxdqLbuoTVx7rlLhKrKFutC5kVNXh6IEUF2UjBK+2Q5PIKQi+kBW6cm6TZJ4lX4AGYu+wUNeeUsk2ledIv9zRKRLjBdm+DZuDmqaJky3ESSSFn/Jc4tOXbYzolJVs3H2awqdLCV7kSTCxtAwiTDSQsh6K/npHmv5eXVyd5Y27S5B4BQNyPDpNp/mrK3rUM3z4kxR+Y2fAqP3GKZEYKf3xqP4zFocOQXA6ndBZL5VFnUsDb97DdPMe9viaBAvkSS4lIB43zp+NaezMOyF6PrRvUu7OkP+DEy/wCkSHO/vmsHuxLtbxJhV6ZyW0Rh9zM78Xa+w5GeZlvD9maD7oYhXvK1T1oBXA0uBivi96vaV7UUQkIVG63twLt+Ezyp0IiKM8ITSGhWlPy0KuOJgz0Ihw1ucssl9baT+xl3BL94oNX51V2kH1od6qcHepXnm/b5wCmVT2jQL1UNO3gXBIdBR016xuNVyfqMBiHZsyyT+iIJEMNgi6hx0tU0V4lsj0mjHvIenyG+uIHq3WinGRUxOlsYHVLOTf64Osoka
- ewnknYcc
- QORRXDcvuw683g9LSCSjZ2xsqcDxXbQzPoh5Xdk+ZezzGneMXOoJnExO0mNIn2fKhmOh82TK9KCQv6ZvTL//nW2o9I6tAvY+RUmosEuA/IpuS6bScSUl43tYlhtogIGJUX9DJSgzObr1nbfKT1j31SQgrKHWMUp7umpHRLz6VAQ9pE2H1nWRH3imMUuZDiU2iUIDEc6pxUI+oCXKVfQ8lk9B8Gcp/jrUto8zsCkn1OvxgDGk+UjdKyDe9UDLbhXzN93TPimyOfvcVN37ZnUi7T915FiE2UKhEfmAo98kfJYuqZvTnttoyeJZ3u3kYpArspHbSnyffHdjSH/LTISSXFKUXyB5jpj9JBiA76+QoKOG3GUvlqb1nrXVLn2+leluSqxsavzAcgnjQMgtzbt4655fNUg==
+X-Rspamd-Queue-Id: 70889C000B
+X-Stat-Signature: e4m5f3e1w3xypzicbs84yoj7tnmm6e1d
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789462025-717676
+X-HE-Meta: U2FsdGVkX19PiNMxk6Va/wQ2JbSLC/Q+mLBoLyTA6wT96k9Re/NzqIqVMLa61hu5dBTd8BQNGO12jRwaIoWdhhULOghSN3HX1MZMMrh8LdQWW0DNwVuPwFFJF4lWaZ/WJ2ODAgOrz9coha8Ye2SVXal99A6LunLmC4Fs/4tIrnqb69mTPXyKPHShi0Z0IPNf7lzGdYmOEswlwuEH/5TdXkUILINhrSWJ3h2Fo72vQv+FP1UcUrug+U5m7wfrq7kTem9fkhkb/dmtbOpSXvDSP8lWuTTeRXkgLpegI6/jdN0wYe/baUx/oePn1Vy+Sg7AM668R613B+ARZhmmnGwUWSlPYpB5F8wapDZl8BTaSp8YDTXzTYpzIQRnzzIsGbGZMZmy7Uqwp40hqPbcNaBZaierbz7mlywIEx1waqbIXQ21d2J1DpVGrmDIS/Qtj2oc9wP3Qt8jJmywrp9Fr2zwWIMJ09r2FGRTtoQyKqtW9/G6PDqMsT8gNUlaXXieCrw03Rxfu4qWeQ+pdWGG3qf1fxbmmqQWWoL5+JPUwkVhr4TEYRfvcVyhTvWWpMOKxcf7nys/CXDmRF7SvqG5CYaiaQJ6Hr03bzCh6V0ESdk9ZI/5CC3n/wfJERlKndW3Is/zIv7VH6TmHq9eIwwAC9EDKFJpQnJ9ZVNGLV6fn4tM6DkPUs8PULB9s6lh/vJonWnzKY7lhJm+OfALxizO2EMYz6prUdbFAA59dsneeK4SMSOLkgGs9tGHzZfrBiCulDmlmQ8/yjQtLrmIZcTLAKFJgqJeGXevKnb2qUht3MQPwlQ18sFnNmgD3TYQ90mPLhl/GIhe86syHEn4fbf/cG3A6ewqKft1YEM+eDnWANfaP/KBtBd37jj58xq1E380GvwvtqsAlHnX6UjjDQzCxfaYJGb71nutMBvC/ldP1KfuJzn0PQTsF9A/MMazR+pu5pUHnttf9FQ7s2PmmGyEfKV
+ i8BU0R7y
+ ojzyIlW0J8NR7vJiW5mLA43P9TFLFnx843guUTmXCJCMATDqi6l4zNu6Gz4vAnPOZ9a8Wh0nFPwxJr0C+Nbm+2mnp/SvM371a+E4LFABWw+XzNAOQwgW6Ph41+o/hK+YBvYyQVp4KhOyKRLpAGVcJhqJUeKm7oueha6XbfsJeLkNqfTND05YPZNHricN/nn7FD+DHIoGqTUZ7Cb89i1kp1C3b5yIHgHoVKszs/cV4ZbzjHOSH4lX4+WiWXX5ferajL7rDVqjYMV9jikhoTiRFDgoy72T0o0vH3sScckRbKuHVrQ4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,79 +94,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, Sep 14, 2026 at 01:51:30PM +0800, Kaitao Cheng wrote:
+> From: Kaitao Cheng <chengkaitao@kylinos.cn>
+>
+> Commit ffe55393137c ("mm/sparse: remove sparse buffer pre-allocation
+> mechanism") removed sparse_buffer_init(), which was the only caller of
+> memmap_alloc() that passed true for exact_nid.
+>
+> All remaining callers pass false, leaving the exact-node allocation
+> branch unreachable. Remove the exact_nid parameter and unconditionally
+> use memblock_alloc_try_nid_raw().
+>
+> This has no functional impact.
+>
+> Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
+> ---
+>  mm/mm_init.c        | 14 ++++----------
+>  mm/mm_init.h        |  4 ++--
+>  mm/sparse-vmemmap.c |  2 +-
+>  mm/sparse.c         |  2 +-
+>  4 files changed, 8 insertions(+), 14 deletions(-)
+>
+> diff --git a/mm/mm_init.c b/mm/mm_init.c
+> index beeeed4688c1..6af5cabf3e75 100644
+> --- a/mm/mm_init.c
+> +++ b/mm/mm_init.c
+> @@ -1601,7 +1601,7 @@ static void __init free_area_init_core(struct pglist_data *pgdat)
+>  }
+>
+>  void __init *memmap_alloc(phys_addr_t size, phys_addr_t align,
+> -			  phys_addr_t min_addr, int nid, bool exact_nid)
+> +			  phys_addr_t min_addr, int nid)
+>  {
+>  	void *ptr;
+>
+> @@ -1609,14 +1609,8 @@ void __init *memmap_alloc(phys_addr_t size, phys_addr_t align,
+>  	 * Kmemleak will explicitly scan mem_map by traversing all valid
+>  	 * `struct *page`,so memblock does not need to be added to the scan list.
+>  	 */
+> -	if (exact_nid)
+> -		ptr = memblock_alloc_exact_nid_raw(size, align, min_addr,
+> -						   MEMBLOCK_ALLOC_NOLEAKTRACE,
+> -						   nid);
 
-On 9/15/26 4:23 PM, Michal Hocko wrote:
-> On Tue 15-09-26 16:13:11, Jiayuan Chen wrote:
->> On 9/15/26 2:57 PM, Michal Hocko wrote:
->>> On Mon 14-09-26 20:35:33, Andrew Morton wrote:
->>>> On Mon, 14 Sep 2026 20:36:16 +0200 Michal Hocko <mhocko@suse.com> wrote:
->>>>
->>>>>> Call Trace:
->>>>>>    <TASK>
->>>>>>    __schedule+0x487/0x1870
->>>>>>    schedule+0x28/0xb0
->>>>>>    schedule_preempt_disabled+0x16/0x30
->>>>>>    rwsem_down_write_slowpath+0x1d4/0x750
->>>>>>    down_write+0x60/0x70
->>>>>>    __ksm_exit+0xb4/0x230
->>>>>>    __mmput+0x12c/0x150
->>>>>>    mmput+0x1e/0x30
->>>>>>    do_exit+0x283/0xa30
->>>>>>    do_group_exit+0x34/0x90
->>>>>>    get_signal+0x952/0x960
->>>>>>    arch_do_signal_or_restart+0x41/0x250
->>>>>>    exit_to_user_mode_loop+0xd3/0x560
->>>>>>    do_syscall_64+0x385/0x470
->>>>>>    </TASK>
->>>>>>
->>>>>> KSM is just the one LTP happened to hit: __khugepaged_exit() has the
->>>>>> same write lock cycle ahead of exit_mmap().
->>>>> Why is this a practical problem we need to care about? It is kind of
->>>>> natural that the oom victim exit path might race with the oom reaper. They
->>>>> share the same lock that is mutualy exclusive. The whole point of the
->>>>> reaper is to ensure there is a forward progress achieved. So before we
->>>>> start modifying this let's talk about any practical/real life problems.
->> Hi Michal, Andrew
->>
->> Agreed, the hung task warning itself is harmless, especially for a dying
->> task. The real problems are what sits behind it.
->>
->> With a 500G swapped-out victim the reap takes ~600s, and for all of it:
->>
->> 1. The victim cannot exit. __ksm_exit() needs mmap_lock for write and
->>   queues behind the reaper, so the process stays alive in D state for
->>   10 minutes and whoever waits for it (parent, container runtime)
->>   waits too.
->>
->> 2. ksmd and khugepaged stall. Once that writer is queued, their
->>   mmap_read_lock() on this mm queues as well, so both daemons stop
->>   for the whole system for the same ~600s.
-> Right. But why is that a problem we need to fix? OOM reaper is taking a
-> prortion of the exit time by doing the leg work of tearing down the
-> address space. Exiting task would need to do the same so it is unlikely
-> to terminate much faster.
+I don't see anything else _in the kernel_ reference
+memblock_alloc_exact_nid_raw(), though I do see some stuff in
+tools/testing/memblock/tests/alloc_exact_nid_api.c.
 
-Hi Michal
+So I suggest removing memblock_alloc_exact_nid_raw() and
+tools/testing/memblock/tests/alloc_exact_nid_api.c (and updating the testing to
+account for it as necessary) too.
 
-Sorry, the subject is misleading.
+Also I see both memblock_alloc_try_nid_raw(), memblock_alloc_exact_nid_raw() and
+memblock_alloc_try_nid() call memblock_alloc_internal() with an exact_nid last
+parameter too.
 
-The total work is the same. But with the patch the reaper and exit_mmap()
-free the memory at the same time, so it takes about half as long: 264s
-instead of ~600s here.
+Only memblock_alloc_exact_nid_raw(), which you should delete, passes this
+parameter as true, so you should drop this parameter too.
 
-The hung task warning is not the point either. If that were all, masking
-it as Andrew suggested would be enough.
+AND THEN :) it passes exact_nid to memblock_alloc_range_nid() and... I leave it
+to you to go investigate if that ever has exact_nid=true passed there.
 
-The warning showed that ksmd and khugepaged stop for the whole reap, and
-that only happens with the reaper. A plain exit takes the write lock in
-__ksm_exit() / __khugepaged_exit() first, which also removes the mm from
-their lists, and only then holds the read lock in unmap_vmas(), so nobody
-waits on it. With the reaper holding the read lock, the exit's write lock
-waits behind it, and every mmap_read_lock() on this mm waits too, ksmd's
-included.
+Let's clean this up all the way please!
 
-So the patch is really about the reaper not holding mmap_lock for the 
-whole reap.
+> -	else
+> -		ptr = memblock_alloc_try_nid_raw(size, align, min_addr,
+> -						 MEMBLOCK_ALLOC_NOLEAKTRACE,
+> -						 nid);
+> +	ptr = memblock_alloc_try_nid_raw(size, align, min_addr,
+> +					 MEMBLOCK_ALLOC_NOLEAKTRACE, nid);
+>
+>  	if (ptr && size > 0)
+>  		page_init_poison(ptr, size);
+> @@ -1644,7 +1638,7 @@ static void __init alloc_node_mem_map(struct pglist_data *pgdat)
+>  	end = ALIGN(pgdat_end_pfn(pgdat), MAX_ORDER_NR_PAGES);
+>  	size =  (end - start) * sizeof(struct page);
+>  	map = memmap_alloc(size, SMP_CACHE_BYTES, MEMBLOCK_LOW_LIMIT,
+> -			   pgdat->node_id, false);
+> +			   pgdat->node_id);
+>  	if (!map)
+>  		panic("Failed to allocate %ld bytes for node %d memory map\n",
+>  		      size, pgdat->node_id);
+> diff --git a/mm/mm_init.h b/mm/mm_init.h
+> index c9fc35e7e9f1..a8ed5c20851b 100644
+> --- a/mm/mm_init.h
+> +++ b/mm/mm_init.h
+> @@ -31,8 +31,8 @@ static inline void clear_zone_contiguous(struct zone *zone)
+>
+>  void memblock_free_pages(unsigned long pfn, unsigned int order);
+>
+> -void *memmap_alloc(phys_addr_t size, phys_addr_t align, phys_addr_t min_addr,
+> -		int nid, bool exact_nid);
+> +void *memmap_alloc(phys_addr_t size, phys_addr_t align,
+> +		   phys_addr_t min_addr, int nid);
+>
+>  void memmap_init_range(unsigned long size, int nid, unsigned long zone,
+>  		unsigned long start_pfn, unsigned long zone_end_pfn,
+> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+> index f22d815d7af0..c2fa5fbf0972 100644
+> --- a/mm/sparse-vmemmap.c
+> +++ b/mm/sparse-vmemmap.c
+> @@ -53,7 +53,7 @@ static void * __ref __earlyonly_bootmem_alloc(int node,
+>  				unsigned long align,
+>  				unsigned long goal)
+>  {
+> -	return memmap_alloc(size, align, goal, node, false);
+> +	return memmap_alloc(size, align, goal, node);
+>  }
+>
+>  void * __meminit vmemmap_alloc_block(unsigned long size, int node)
+> diff --git a/mm/sparse.c b/mm/sparse.c
+> index cc28bb41fdb1..f032c98b92d9 100644
+> --- a/mm/sparse.c
+> +++ b/mm/sparse.c
+> @@ -215,7 +215,7 @@ struct page __init *__populate_section_memmap(unsigned long pfn,
+>  {
+>  	const unsigned long size = PAGE_ALIGN(sizeof(struct page) * PAGES_PER_SECTION);
+>
+> -	return memmap_alloc(size, size, __pa(MAX_DMA_ADDRESS), nid, false);
+> +	return memmap_alloc(size, size, __pa(MAX_DMA_ADDRESS), nid);
+>  }
+>  #endif /* !CONFIG_SPARSEMEM_VMEMMAP */
+>
+> --
+> 2.54.0 (Apple Git-157)
+>
 
-
+--
+Cheers, Lorenzo
 
