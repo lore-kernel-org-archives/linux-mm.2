@@ -4,131 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EFC9C88E73
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 09:07:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55A46C88E53
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 09:08:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BC5C36B0092; Tue, 15 Sep 2026 05:07:52 -0400 (EDT)
+	id 50FA36B009B; Tue, 15 Sep 2026 05:08:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B77176B0099; Tue, 15 Sep 2026 05:07:52 -0400 (EDT)
+	id 4C03B6B009D; Tue, 15 Sep 2026 05:08:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A66486B009B; Tue, 15 Sep 2026 05:07:52 -0400 (EDT)
+	id 3D7B06B009E; Tue, 15 Sep 2026 05:08:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 71EC16B0092
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 05:07:52 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 37C98120378
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 09:07:51 +0000 (UTC)
-X-FDA: 85215419142.25.46D7AFB
-Received: from mail-ed2-f12.google.com (mail-ed2-f12.google.com [74.125.228.76])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 2B08D40009
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 09:07:49 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=FV28+kEv;
-	spf=pass (imf04.hostedemail.com: domain of mhocko@suse.com designates 74.125.228.76 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789463269;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0BE8F6B009B
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 05:08:10 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 917131A036C
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 09:08:09 +0000 (UTC)
+X-FDA: 85215419898.24.2502F89
+Received: from mail-yx2-f13.google.com (mail-yx2-f13.google.com [74.125.224.141])
+	by imf15.hostedemail.com (Postfix) with ESMTP id D40D7A0007
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 09:08:07 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=RrlB80E6;
+	spf=pass (imf15.hostedemail.com: domain of kuocyclinder@gmail.com designates 74.125.224.141 as permitted sender) smtp.mailfrom=kuocyclinder@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789463287;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TwWP/MlWLXdLm6RBuOTRTjXHdybTzxOxvT40BpicUW4=;
-	b=5Ecr4l/cowexBrHYQefyK2d+GqORGR5Z9MzZHcbsu4YDCLGVeeWeFjEK//Nmeiyc0Xs8hR
-	gGC8RDM7OasJN2uwXCJY5af7XRsmhYF4xC3GdPfPkekw5PKWtJCOqznoYgsOlzCALWoBM+
-	LR9t4FNnziRsGkyA+90UyPm5lFm6+Yk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789463269;
-	b=63MyWmErYEGQz+39pzzO5lSFKXaD38VucFjyY8UW9qTNt03AvSNVhr7sm3eAH2NR6XrdRL
-	6RZDSEcXj4ke5mblLM1w1EQJ/xaGKS5iaZFlHTj/BzgjdnYasVpu7w0kIcgll8szbW1P6k
-	x+MhbuzscDiFEG3RXSanVcWbFGKn43Y=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=FV28+kEv;
-	spf=pass (imf04.hostedemail.com: domain of mhocko@suse.com designates 74.125.228.76 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-ed2-f12.google.com with SMTP id 4fb4d7f45d1cf-6a99391ffb2so5229874a12.0
-        for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:07:48 -0700 (PDT)
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Gu8o41I2XXzRYGs0+w6OrfrzhP1q+smJSphMsWAZ4Fg=;
+	b=jSY+aV9SaUF49LlXbeQjBXPLYzI7GYpfpGX4TwGnTCgbcLrqAfXjTj/98KlYsdK8FnmI1g
+	oC0lTTKc/y9OiUUt7J9UpP2EBDB+jTsseyoIcVu35z0vz6wdoQ1wcha0lHIpgYW4r89hOw
+	a431kGZeDDwpUEqdK7Bcb43QpxNpGHA=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1789463287;
+	b=HDGvQblypPjVih/l6A3A+ABwHIT3puFGj4IJEma5p0EAz7FErJcOWkQvsgDPY4lJr1WKIO
+	Ubha1W88MLy9ULCCO2RoY8Tc/cDnuetgdoNp0u423PBbnvalyM4nR9yJPYd2FwMedlextE
+	E9I6DFra0GT5TM+ZJatFdZ4loel5nn4=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=RrlB80E6;
+	spf=pass (imf15.hostedemail.com: domain of kuocyclinder@gmail.com designates 74.125.224.141 as permitted sender) smtp.mailfrom=kuocyclinder@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-yx2-f13.google.com with SMTP id 956f58d0204a3-66e4ab201f9so2589107d50.0
+        for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:08:07 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789463287; cv=none;
+        d=google.com; s=arc-20260327;
+        b=bDxsJ9wyUosUfVLn45Qdt8PCQTKHzKgahznhVbZVjk9VK5uyRdm0nzpU7UaUwLDUoA
+         6TnGr4t1guKigb6J/S5yG21I0nZyRPyH+0yQ+DlYvUSabEwilVZMARpSjG6qKAs/ZvSg
+         DLn2NZJeyeyL017o7Efp0tbrqLooXFltoqFU5+cpMrRsqLnr4aGUs2PRB8I3VrU/oRSV
+         lhya9tV4yEP0KZyZFDkoDzO3loOoL21hW0GKpjxk0Suv47CZaVme73Vl2BFU1Un3RGlj
+         Q+AncZXEO+3vkKY1+IECtcFy5Tbfu5qobN1rYxuTZWtJwrRr+KWESp5i5LMs0xgkweif
+         s5Xw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=Gu8o41I2XXzRYGs0+w6OrfrzhP1q+smJSphMsWAZ4Fg=;
+        fh=GKJ6JCd4i2svkIYptaocrjxsZvydyGlQWPwlcJTz8Ww=;
+        b=GhtfxBSlgNw6aobnK0BQ/XXErCNLitUbGsVrdtaED1PlIhfYGciW0JAmz0KRLMFhCY
+         10UhgkB3HY+e3DpCjLhTBAe+SFuHaLpA1C2Koc3zh4bdctNH6cYQAdddnLrNESfVoJvh
+         KoG7g10oOlmBLIe8++vMU/biDzAjpwrrcbX5/owYk0oDq6K79m6wyHP/6nv/aQik/KsM
+         MaE1BdedBL24ydzfEW6j32DqoNUp7hAquca7xqzKNCXXO6xyHpjBM5DleSXChGw4NHoj
+         4OJDy+z6xS0N36BOVJTMmI9+a9i768RRAwHsPDbthOmvSI7wxbWbSkykTbUGQWCLUd03
+         c+eQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1789463267; x=1790068067; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=TwWP/MlWLXdLm6RBuOTRTjXHdybTzxOxvT40BpicUW4=;
-        b=FV28+kEv7gRbx+dT/4rGgN6p86RYkp/wRO4Tz0XnREDzzIdwUAyMst/In8GKynBoe+
-         WVzQeqsKiE70+hx9TfZKZAPAnPiRhS4d1b21Ge1NAl/os8DfnaeeUWJeHOXSe/gsL0WZ
-         dirqKbjGUODAd+8HqRPcjAHCPqzVExGDT2bz2a2i/hUndm++vp/MzSu5fZtc9Xchr5fv
-         YjCHrSrC5j9fwtLNHRZjUFvWRRujdrh1XReVw1GuSalAwXd/wKUC6lXcdK+4F8OYVPll
-         fC0m9xgbodcKtXknumBf48PrmeAFPW6Di/L4JB1FFp6hH9oAt9Fhk/IhEKK72iifoJAs
-         kubA==
+        d=gmail.com; s=20251104; t=1789463287; x=1790068087; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Gu8o41I2XXzRYGs0+w6OrfrzhP1q+smJSphMsWAZ4Fg=;
+        b=RrlB80E6VaXWjncbO4y+3X3WL7yIIwkyygy3LW+44uxSl7iIfViQgTkbhu3ZUHTVEz
+         zaLOTRbNJdhS4068/kw0CKedZwCAyY1QkgDWU4oUROemaC0Io46irSPRJ0YpJ4xBMbOQ
+         OUSS/o6dCGf//moEuVxWWFcukEXMOLS5Gga8G/+ksBTCKJ7BLmcjf0yZc3h43tE6yCs3
+         lIfkw0YW6dc4qO0mV3EtD5f5rfWPryGsSu9PflvpJH0LU5xwXVyimzFto1xmVVGN3Ma4
+         0G+OdYkUnC8l9WTernsvdL+Sk7AzY/XtrXnBRh/zKHkblIVc9v+rv8jCXVBt+29Yokuj
+         kbQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789463267; x=1790068067;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20260707; t=1789463287; x=1790068087;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=TwWP/MlWLXdLm6RBuOTRTjXHdybTzxOxvT40BpicUW4=;
-        b=DULH65yCA1s53BrKeIckcH0fuSxGfiloODyurb6wL9f7ES9GHvFOsUz825mZnwtPhs
-         GUaNYCIWSjXQj09NA82UJd3TaJxBJgAEbG7oU5JutzLixvSa5Q3AUOMrt6O9o5l1cUUT
-         hAuni6Hy0+MyRI92FDO2kbPPo/fxi4ONg9B9SiSrAoL/uMK1HanBXKYhUotw8GPY7Qe+
-         AMfB82otk+WluZSA7w7zV9qUOyjmONPyNdA+/DOU4tGUjwlSlt41D3yoH/fJjdRl8rSb
-         o3VB8YXsCNYvCACVvZdqcXB1MbOSVMoCvBBohEc9/DE3jrE6AKs6hLO8pVCe5Zd0pV3X
-         xqfg==
-X-Forwarded-Encrypted: i=1; AKwUvByYL2aFDz6G0tj9TbM09DLXiBN4H9OC+bODKS3kHEPdrpVp7vk0DWA5seLU7LC0DVudj9UkdKH6yw==@kvack.org
-X-Gm-Message-State: AFuF++mz0Y0FCkYnT4dMwPWgZfJmuZuQxw04kEMwbwg3FxyZbYxHtmui
-	+CebYg0xGOl/fIv84+PFbanLew/mvxJx0C6ZUxChKJPB1CBWB3j4guRX3UHLr2scQFk=
-X-Gm-Gg: AYBFou1cTc3gLvN1QVpTZBq87dsqhhjOQSuUXDCJ8ShdkxSgA/BWDJmQDzBeRrkiNxi
-	UQGAG/IIbHPnlc3M64MUEF2uCDg1+Dq+k1CFDJYLt2K8ILtsKxVpYxGDz8//JmpD4kK7olCi4CP
-	oEvYGqZ0jQ9D5LsbQygUNL9mgoQCRd3r465xLwtZEmAvbesgmOIyWGY43dy7nHuaB2WThMq6ZDe
-	Pv7IvVojw4p3zgRwP7IAcWt+uxrLZV/2XtlAtJtT7CgsmuZoBH0Wz60XX5BJfUNRAhfII05Rpc9
-	60a8j7BcOJ7H47bgtSxCXSaN5tPCDl5LgsMOably8Pjoh2n3hjYss5ilSKZLst9FMT8jRbl+Gdk
-	+gJhaYkBjSH+DiqgEkVdYt94iA8S2BdWlAiZD0cp1//oVpaFy+7wmW+U/CB78Z1i8x+63pwf9Pc
-	w+uDAzuJc67BGsE9Avt0CNNpgZtrSu7F1Hk7hhsCLpsiAJW5r9p9pR5fUrxrcb
-X-Received: by 2002:a05:6402:914:b0:6a9:bf3e:595b with SMTP id 4fb4d7f45d1cf-6a9f624e89dmr4274759a12.17.1789463267551;
-        Tue, 15 Sep 2026 02:07:47 -0700 (PDT)
-Received: from localhost ([2a02:aa7:4656:2314:c23c:9eda:81d:3])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a9b58f8528sm5417319a12.5.2026.09.15.02.07.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2026 02:07:47 -0700 (PDT)
-Date: Tue, 15 Sep 2026 11:07:46 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	Jiayuan Chen <jiayuan.chen@shopee.com>,
-	Zhou Yingfu <yingfu.zhou@shopee.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	David Rientjes <rientjes@google.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/oom_kill: fix hung tasks queued on mmap_lock behind a
- long reap
-Message-ID: <aqkK4kR2_tYxTnty@tiehlicka>
-References: <20260914113239.367200-1-jiayuan.chen@linux.dev>
- <aqg-oG2HDIUeK5Us@tiehlicka>
- <20260914203533.3544ae8dd0903c7603b385c6@linux-foundation.org>
- <aqjsPW92SgcHONKO@tiehlicka>
- <3c8d1d8e-0e67-4d1a-b73d-4eadd6266aa6@linux.dev>
- <aqkAbBpYheX2DEHg@tiehlicka>
- <e018e3a0-349a-4f36-90e0-8fafb001da43@linux.dev>
+        bh=Gu8o41I2XXzRYGs0+w6OrfrzhP1q+smJSphMsWAZ4Fg=;
+        b=MLopL99K9ke7uwMgw2LOmsrtqpFv94/mRtoR2cFrDydKr01TBb325XSxfYwGnnP0ML
+         b7mZcySKry09E4KH7cjWUyr38dP85GScPqTHUZzFPqy/xuZt35XQDEcvN5jaoH5cVmnj
+         cai67lY7QjY+haChqHp6KYM1Fq5odEUjMh/BK370Uy6smQc8SqV1I7s5hpDLRS5ofmFf
+         lxJQ88g+Z5I7ZT3wedO9C1cj5r+kMD79c8g7pFW1IzcmeUTVZiyfgq/vcovCsVI97jlh
+         p90XW+n8d/NezKqEOtQfS2DNf2/58D+XJ05WwzI8cQzXXpbavuSsJuAre0VkPeGnx2Bj
+         jxOg==
+X-Gm-Message-State: AFuF++l3sQi7uUX86OUOYcf7KWUo+SaaRs7EMo2bqfKeWAwRbm7qKSAO
+	ZGfYnH/MfL1uJKwERZcKyYwk5Ohp8Tfm7dAYiNC26IftaYmWG2IZLTIkpyPuN8+hOAxpSnhJK0Z
+	S/OKxnbjYe9mm545a1WOBo7PiALHzuDw=
+X-Gm-Gg: AYBFou3j6QyQ17pPca8LDwEEe5s5V2KPuJcqXBLUh83p1xuoNKjLHL0A52sYz8Yp7ZX
+	fXyfdJfrYPbk4OkG7eEz2kOUYLMREspB5G5aRvXNtiW6NC1F3BeUeWa5xZdIx7s62SAjsixXy/p
+	OKMVG1yT8x2+Mbooxhj+VbZSdlaHWEntc+JShjwtzVV9CzSsyKadS0IP175wREhTX/GTptYLMCB
+	k7TfAI9LYqZ0DPSZVWZJEeUJvtZgQaHK+0OGKOfx6HKBUREZDeK5uKImjs5MT40btLWNQlutzvk
+	NK6K9x0+G7H8mIfAidbqtMbUNXTrG8Xmj9CMPXO2KQ6Nz0l/Pee560E=
+X-Received: by 2002:a05:690e:e8e:b0:671:4b50:4628 with SMTP id
+ 956f58d0204a3-6714e1bbd88mr1691227d50.97.1789463286930; Tue, 15 Sep 2026
+ 02:08:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <e018e3a0-349a-4f36-90e0-8fafb001da43@linux.dev>
-X-Stat-Signature: ojdeqaenmgpw44hbxmwrmaoyydzkhn6g
+From: Cyclinder Kuo <kuocyclinder@gmail.com>
+Date: Tue, 15 Sep 2026 17:07:55 +0800
+X-Gm-Features: AcwNN1WKYt_LA1WL9vjWYb6kVe2gAIA0jbDKfrsHzKDJpkWLSstkxuDMf5Ww6rU
+Message-ID: <CAL8qZ1bxzBXReej7M-20HkBwON9L6NZKZP96bs7s-e=j-_Gg8w@mail.gmail.com>
+Subject: Subject: TCP receive memory accounting before accept() with cgroup v2
+To: netdev@vger.kernel.org
+Cc: linux-mm@kvack.org, cgroups@vger.kernel.org, shakeel.butt@linux.dev, 
+	edumazet@google.com, roman.gushchin@linux.dev, kuniyu@google.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2B08D40009
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789463269-550645
-X-HE-Meta: U2FsdGVkX18mZPqpEkQP+D9DiS3zPGkS/WYahBuRFzhwRY6zRlcre8BylCpL1dlvzKJFZd8Q54K3Y3oAMKvz8Emg3DE7yYSohuWjoItV8bxkqvsHUimGhsa1eLO4skpKcTNkhFqGfsoJUbWxYMVBH1g3bPpl12gN6RU3gFoXiE87+qobUrjPCsySnrH9wbm4b4h3VFRe14pOCGfUsKpXLWSc1NvY1hrT+ZqzgcGe74FcLfjtN5eD9C/V8MotT4gyk0MCPBYLHkkPsl+SeERDjymtwR68EQHtW1C5FJM2R2Cr2zchCDtxGR7GKFrLkzuywwuRxaWV+ncj4ucul6wJvA2Sn1EFqT2ren49BmdanAZ4o0bPmSOdqQ/pdQ+nLLdFE3ulSzZszc9ToeqsP8jrAAafjzRaQ8NspHvv/8nFKHgUsxeshMHAR13RdF2y4B/aUnFBE5xTU/hvKMPPgo9CI2og2kABqFWBN/HQSZlhxLfoGkSFnElL2IfcfGnAlfzx5MAbai7n8Eq2oCgdrOvqSCGwP3flZfmpnLRzSQquZS65oCsAnZGvetCVWiCal76y/Zipakt4UkS3hE70MbXXqniHPbapYgSJ/tWpf5UzfC+v+l508pTVjiCU3ulCUr9G0Gs+nkM0FtR6+Qxa9McEOtrCHDVp2VVmA6Pzmgb599gd3eRXEfh6xHqdu1QHIuR8egeYZ75+ckDLeYydjwpza1HC9kRlxLdev1xopb+BtRKT0cOcOM77WjnjmYQxrQm0iDbTPmoHBQ/2ABq/4U8Mc+1JBSopjIKct7aGZLJrVUoQg4Rs75ubuT+Zt+BjSMzcGY27RF0Fp/l5+C7++R1++NyV3dW5C8DihR/Ueu1iEwH0EukNUyWPbYRFRvrweFm1vBt+QZPeFQvCKNKCYwi+hhW7sZEpElhcN9zp/DtkFB6gtONd7wG5JclTW5oRbSYIqvne+oSzSLB64iD+Htp
- NPvRMisq
- hjkmob3qD8Gnwvz2bIcWx7z/0H2tbFHLWs6a69jw2tpSt2beprsGmkLMY8mtqXI0fVG/bMP9enFOhPVInLblqOzboRD6/3L2hY402gkfu67PcZE1GIV2nQ34lyiNyDeHqrjoClcJO/Pfb7AqFVCWaPeW40Lnwta+YwykTPD7t6gJ0BZ7/TRbESLljd3GdCqT+Cirfxfba5E2lioHSuSuzI4HdjYhmckWHL5xxB/fWTHi8mrhaqe4+qBR/45ocMjnY2J11RIumQOhbSez4+NMubMNTpiMHZtKdqi3RxL3iDWzaotvfYfZdWQApYxpATmyIIy4CknWLHe/kDqwqaXPOyOVrvbJJ0rG8O3Qtah8Vc+PbBNeowWi6eQfefvcwwup6ZElpN8dhHpZ/0HetoRhlwu2h8xTliebbjnrwsbAPuzEr5MjbZioQs7iysON0znO1YTmP1reC8/yrB11TWqdtE/aJRBtXJgfw8rLlW+hdOhsCF8hB9Ebo9iKs9Q==
+X-Stat-Signature: h6i6n58fz17ffd83bceuqpqo6igx3d4h
+X-Rspamd-Queue-Id: D40D7A0007
+X-HE-Tag: 1789463287-198762
+X-HE-Meta: U2FsdGVkX19dSBmLCxS7X4/AdfsQLmXGeJPaOc0JMhc6KrCLNcbAd1hpKOEei0B2a6oylRCuHCvYEWrLz+mMXrcZgXZaDRruElAnY8B0S10fkdde4ZnKczOzq78RUa1kbDh+PkxU9W68+6Qv3fym8iaxhYeT5WRpDB+THkKLYiu2cfJX3eKBOiKH45uGb3FDug9nRsvKcxzqRbU/gPkhb2RQIGEu1L1EIo97Yj1fGsD8BBxYtWrFH39cMUiZiAEIGJve4pjafkDO4vSfaPPLZDVZt0rnHT7uhryaXMV/MGqijD01xJoRfsXK6QUNe0pjhrvdo8URtSTFohzOfl4b2Yi43071As7eIdg7PwlkmlIFHNEhPFoMt6LB+7T98IN4k+joxfitmuPpnPUGZ9CfDfVsSzOD7h/6g2cfsFIIeAORhw2GKjJwB74N/la7I3iMOnHJ3nPAzZWnYLPptO+/k1UMDodPLnHYf0U8Kdh326yqqtcjoFvCoBYQl3p6gi1UKlMADH2SZWi8sYY0f9wnPPWEKMX6iWjyPmRepnh9WZ5Q3ceO2m+qKqxEa32TkSG0b/rfMWuYi/R4IjPEV2vN7MRAmlU6QnkrQnp4BvGN1X+isNxJz3JnYyKj333Pkxe1KKMy21ow/01q64AbxWyyFNCrU/fWAk5w1SLzRRCMgLRop9WKo97SFvVtcaYPzTMMdiwls0N2NrvBwqtHvlNXSLxy9+7VRxuCd78AQST2LrGtazr4gYZugEOmn/xdwnz+whTuEeaGjbhzoCOJ9CH5BlTPtKRPP5sxQ5qTrHzz68RJPWNKimvcImNPvucNRDzFkzp4YxBS0lgHJzhXDoHBceGe6I9+r/3KmdREEnugWU+5ER5LLbO65+eeCCRI420bLUiVPcEke2NAU+7+KdK/F65osUTVrO4zDmgzk7JMLJ3ighnsF44NUHQuEsYwIs5XC9JhXfvZdFOJCwd3xTb
+ Ms0HmJZ+
+ lO7CEVdAlLn09ri2DgWk0iq6AJmr709Ny2W3xqOKmjPOmLO2VPTLHE9pUM+Uu22MJFYc4S4eiXjYGZ3hJY/IBZTfNuRdRCoN+WnDRw9fhK1KP1T69/gaj9s8nmeamkGJoMfcEo90PkcLSjF283IVNAssoSW97T4W5F5MGSGElA4B/SnvgtKBYi391aBsYQQ9a2nd0kAUKENFvO+ATfrEhw0tun1kK4zD96XVmeP++/HIA39laCsS3Sfzw7QsDGPKBT4NKNHraKQqz8LK/+xO1aaW0M+AtGakslLMAKrXmuR3MRgxRhYQQb3+Bj3hcA/df3cT48XpU4bns6x+nK9xJFhUaLJsIcvsOl0PlPmjrtKZeohPxyQ6tH3BhBWXBqNWXDBXnfMaXNa9D0d0WpErFe/2jkxoVFV7qGGwF0Wb3asSph2ols2+/L6Dih4nQrW+FkVwPIOka1rWQPDByHkiPlILRvXx/2tdGRFizQ5593xPN5BUQcN+djNZgBB7f7Arvx5o0R2CIPUx31GU7xEW7yCASDr0L0Bn5GCcD3PfIFZPoajo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,103 +130,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue 15-09-26 16:44:40, Jiayuan Chen wrote:
-> 
-> On 9/15/26 4:23 PM, Michal Hocko wrote:
-> > On Tue 15-09-26 16:13:11, Jiayuan Chen wrote:
-> > > On 9/15/26 2:57 PM, Michal Hocko wrote:
-> > > > On Mon 14-09-26 20:35:33, Andrew Morton wrote:
-> > > > > On Mon, 14 Sep 2026 20:36:16 +0200 Michal Hocko <mhocko@suse.com> wrote:
-> > > > > 
-> > > > > > > Call Trace:
-> > > > > > >    <TASK>
-> > > > > > >    __schedule+0x487/0x1870
-> > > > > > >    schedule+0x28/0xb0
-> > > > > > >    schedule_preempt_disabled+0x16/0x30
-> > > > > > >    rwsem_down_write_slowpath+0x1d4/0x750
-> > > > > > >    down_write+0x60/0x70
-> > > > > > >    __ksm_exit+0xb4/0x230
-> > > > > > >    __mmput+0x12c/0x150
-> > > > > > >    mmput+0x1e/0x30
-> > > > > > >    do_exit+0x283/0xa30
-> > > > > > >    do_group_exit+0x34/0x90
-> > > > > > >    get_signal+0x952/0x960
-> > > > > > >    arch_do_signal_or_restart+0x41/0x250
-> > > > > > >    exit_to_user_mode_loop+0xd3/0x560
-> > > > > > >    do_syscall_64+0x385/0x470
-> > > > > > >    </TASK>
-> > > > > > > 
-> > > > > > > KSM is just the one LTP happened to hit: __khugepaged_exit() has the
-> > > > > > > same write lock cycle ahead of exit_mmap().
-> > > > > > Why is this a practical problem we need to care about? It is kind of
-> > > > > > natural that the oom victim exit path might race with the oom reaper. They
-> > > > > > share the same lock that is mutualy exclusive. The whole point of the
-> > > > > > reaper is to ensure there is a forward progress achieved. So before we
-> > > > > > start modifying this let's talk about any practical/real life problems.
-> > > Hi Michal, Andrew
-> > > 
-> > > Agreed, the hung task warning itself is harmless, especially for a dying
-> > > task. The real problems are what sits behind it.
-> > > 
-> > > With a 500G swapped-out victim the reap takes ~600s, and for all of it:
-> > > 
-> > > 1. The victim cannot exit. __ksm_exit() needs mmap_lock for write and
-> > >   queues behind the reaper, so the process stays alive in D state for
-> > >   10 minutes and whoever waits for it (parent, container runtime)
-> > >   waits too.
-> > > 
-> > > 2. ksmd and khugepaged stall. Once that writer is queued, their
-> > >   mmap_read_lock() on this mm queues as well, so both daemons stop
-> > >   for the whole system for the same ~600s.
-> > Right. But why is that a problem we need to fix? OOM reaper is taking a
-> > prortion of the exit time by doing the leg work of tearing down the
-> > address space. Exiting task would need to do the same so it is unlikely
-> > to terminate much faster.
-> 
-> Hi Michal
-> 
-> Sorry, the subject is misleading.
-> 
-> The total work is the same. But with the patch the reaper and exit_mmap()
-> free the memory at the same time, so it takes about half as long: 264s
-> instead of ~600s here.
+Hi,
 
-OK, I see your point, now. But rather than making the reapeing more tricky
-and less predictable with I would rather try to find a way to remove
-those bararriers.
+"Resending in plain text; the previous message was rejected by netdev
+because it contained an HTML part."
 
-> The hung task warning is not the point either. If that were all, masking
-> it as Andrew suggested would be enough.
-> 
-> The warning showed that ksmd and khugepaged stop for the whole reap, and
-> that only happens with the reaper. A plain exit takes the write lock in
-> __ksm_exit() / __khugepaged_exit() first, which also removes the mm from
-> their lists, and only then holds the read lock in unmap_vmas(), so nobody
-> waits on it. With the reaper holding the read lock, the exit's write lock
-> waits behind it, and every mmap_read_lock() on this mm waits too, ksmd's
-> included.
-> 
-> So the patch is really about the reaper not holding mmap_lock for the whole
-> reap.
+While looking into whether Kubernetes can allow net.core.somaxconn
+by default on cgroup v2 nodes [1], I tested how receive memory is
+accounted for connections waiting in the accept queue.
 
-The reason why the reaper was implemented this way is that it allows an
-easier and better predictable behavior. You get your lock and nothing
-stops you to finish. 
+I understand that d752a4986532 ("net: memcg: late association of sock
+to memcg") deliberately moved memcg association to accept() time.
+The discussion also explicitly covered data queued before accept()
+and charging that memory when the socket is accepted [2].
 
-Write lock holders should be really rare for a dying task (unless it is
-stuck somewhere in the kernel call path) and as already said
-ksm/khugpaged is known barrier that might be held back without any known
-downside so far. Tearing could be faster when running parallel but keep
-in mind that the purpose of the reaper is not to make exit path faster
-but instead it guarantees to finish unmapping.
+My question is about memory containment before that happens:
+if an application delays accept() indefinitely, how should the
+receive memory of those pending connections be constrained by the
+service's memcg?
 
-So please make sure you exaplain why blocking ksm/khugepaged barriers is
-problematic from the correctness POV and also whether it is feasible to
-drop those (that would be great IMHO). Also, and this will be important,
-how do you guarantee that the reaper will keep its current guarantees
-when the lock is dropped along the way.
+Test setup
+----------
 
--- 
-Michal Hocko
-SUSE Labs
+- Ubuntu 24.04, kernel 6.8.0-53-generic
+- Kubernetes v1.35.0, cgroup v2
+- Server container and Pod cgroups: memory.max = 512 MiB
+- Private network namespace, somaxconn = 65535
+- Server calls listen(65535), initially without calling accept()
+- Client runs on a different node
+
+The server container was privileged to set somaxconn in its own
+network namespace. The host's somaxconn remained unchanged.
+
+The client established 256 TCP connections, then sent 64 KiB on
+each connection, for a total of 16 MiB. The server subsequently
+accepted all 256 connections without reading any data.
+
+Results
+-------
+
+Phase                                     Pending accepts   Total TCP
+  Container           memcg
+                                               accepts
+Recv-Q       memory.current  sock
+Baseline                                 0
+0                 8.49 MiB             0
+Connected, no payload          256                        0
+     8.49 MiB             0
+Payload, before accept          256                        16 MiB
+  8.49 MiB             0
+After accept, no reads            0                            16 MiB
+      33.82 MiB          25 MiB
+
+I used ss in the server's network namespace to observe the pending
+accept count and the established sockets' receive queues. I also
+read memory.current and memory.stat in both the container and its
+parent Pod cgroup. Both reported sock=0 before accept(), and
+25 MiB after accept().
+
+The data was already queued on the server, but its receive memory
+was only charged to the server's memcg when accept() was called.
+
+I did not exceed memory.max or test memory exhaustion, so this
+does not demonstrate a node OOM or an absence of other network
+memory limits.
+
+Current implementation
+----------------------
+
+I also inspected upstream v7.2, although I have not repeated the
+runtime test on that kernel.
+
+sk_clone() still sets newsk->sk_memcg to NULL, with the comment
+"sk->sk_memcg will be populated at accept() time" [3].
+__inet_accept() then calls mem_cgroup_sk_alloc() and
+__sk_charge() [4].
+
+I also found the discussion explaining why simply inheriting the
+listener's sk_memcg is insufficient, particularly when a listener
+is created in the root cgroup and passed to a process in another
+cgroup [5].
+
+Questions
+---------
+
+Is the pre-accept accounting gap an intentional limitation of
+memcg socket accounting?
+
+Has temporarily charging pending connections to the listener's
+memcg, then reconciling ownership at accept(), been considered?
+I realize this would need to handle different listener/accepter
+cgroups and the root-cgroup listener case.
+
+If that is not a suitable approach, is there another mechanism
+that should bound this memory on a per-service or per-memcg basis?
+
+For the Kubernetes change, we are holding off on treating
+somaxconn as safe based solely on cgroup v2 until we understand
+this better. Pointers to previous discussions would be appreciated.
+
+[1] https://github.com/kubernetes/kubernetes/issues/134194
+[2] https://lore.kernel.org/all/20200222010456.40635-1-shakeelb@google.com/T/
+[3] https://github.com/torvalds/linux/blob/v7.2/net/core/sock.c#L2542-L2547
+[4] https://github.com/torvalds/linux/blob/v7.2/net/ipv4/af_inet.c#L761-L766
+[5] https://lore.kernel.org/all/CAAVpQUDUULCrcTP4AQ31B5bfo-+dtw3H8CQGq9_SQ7d28xXSvA@mail.gmail.com/
+
+Thanks,
+Qifeng Guo
 
