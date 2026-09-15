@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4643DC88E53
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 09:21:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3655C88E73
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 09:22:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6388B6B0093; Tue, 15 Sep 2026 05:21:57 -0400 (EDT)
+	id 8F8116B0096; Tue, 15 Sep 2026 05:22:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5EA086B0095; Tue, 15 Sep 2026 05:21:57 -0400 (EDT)
+	id 8D08C6B0098; Tue, 15 Sep 2026 05:22:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4FF896B0096; Tue, 15 Sep 2026 05:21:57 -0400 (EDT)
+	id 797266B0099; Tue, 15 Sep 2026 05:22:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 315556B0093
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 05:21:57 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C8E83C0267
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 09:21:55 +0000 (UTC)
-X-FDA: 85215454590.04.1F1A736
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4BBD36B0096
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 05:22:00 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1D5704038C
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 09:21:59 +0000 (UTC)
+X-FDA: 85215454758.25.2146A56
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf21.hostedemail.com (Postfix) with ESMTP id D0C631C0004
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 09:21:53 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=p4rMo+IJ;
-	spf=pass (imf21.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by imf02.hostedemail.com (Postfix) with ESMTP id 32AA980003
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 09:21:57 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=J+kAJGL2;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf02.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789464114;
-	b=j/LI1TM7zbhIVmw5TEit6GXjGNdgjplwZ071FSdtQ6Qz6DzksLuzsARAULy/94y9Mcf64l
-	qD+yxZEYEI9WiFUN+3Ka4GguN8LnLJ/iXq+GEtAh+8c10nfPv3QIaCiwbFq9Hda3iZhATq
-	gb3PWIIhm71+zNdMG7Ye5+8Q2epKql8=
+	t=1789464117;
+	b=oqkwBq2OuEOJOj5ANN9oPMs6d9PfmPsF6uh78WWWmcy29VVcvFZzBFFJzo59HgNtAv/1GM
+	OcioiK5YWwBMguHdAp9e3cZIWF/J/c0bukMfM96NWicZ4bhsTcPMOKiG3q8tZNk9EVdkJk
+	PkaI6mZ3jbuwhD2h3E1XqGTMS5mFaYw=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=p4rMo+IJ;
-	spf=pass (imf21.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf02.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=J+kAJGL2;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf02.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789464114;
+	s=arc-20220608; t=1789464117;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=biGGHgUQAKdhJdv6OsZMHXAKUuq6/PmgE2meR5B4aks=;
-	b=4Wq/xfRsHUM0QTu1LobxW70CHfjXi64D/YwRWE66PK5AIUcqDFzUeUbJJUJdyYFnO4HOn1
-	PRAyJOxvrGRG6u/Qc5NV28sEOI4n+uhffXW74MCphTNUQ2ER4C3uXldSoz0y+sYxQl82iL
-	cwqg0Q2lX7uAFutLtKzNC97atBADm/k=
+	bh=YZrSFCuSb0TIZoxIbDuKzof+JFG3wsG1OWarESMYFEQ=;
+	b=RdD2/QOcETdpsUj+WlsANfepm5uc2fJ6Ar+i1UIKUrTNOyEP/U1IzBuz5R6bpJmO6k0GQq
+	Dv2bdd49eO2KQTXvUzj3R4Y9VFrhc2uSY3Wb0w0b6EpkDmO6md+HuEsBdPpyq4+REoYFBv
+	aZnpo3Co//l9HjUdgK4r/SmEvt/+T68=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 63483169E;
-	Tue, 15 Sep 2026 02:21:49 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A9B1716F3;
+	Tue, 15 Sep 2026 02:21:52 -0700 (PDT)
 Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0F3F93F86F;
-	Tue, 15 Sep 2026 02:21:49 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 52A473F86F;
+	Tue, 15 Sep 2026 02:21:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789464113; bh=D8etrFh5PGy5HLvPhwqGM1Wl5RU8d5sdnQrtvxeo55k=;
+	t=1789464116; bh=yxQR2EiRSnlOGVI9wDjEBOU2jCM7zzSGFANR8dJ9rAs=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=p4rMo+IJ/Gkhmw6l4doFJOhI3kq5Jsrz6oPJZQHc42wSQRksETR+uZr0N63rimdPT
-	 TulTZLc1rZ7RX5Uo2fH7NNx47T6wNGRrtEkh4ryD1XR5bYqV0pzgpeiWYhM0iI144d
-	 fz13VfZSG3KjlMxrf7pKTlhU4YDzO7wL/2D02w1I=
+	b=J+kAJGL2BjHbdj6nYrlMZsL3L9Lj2PjwDM80cYWXHd1Vp1lOWJjcq7Q2Qm/j5XnHw
+	 OjgNB6wv7FOdPdyIcamVigwYNKsdDZGFctCFK0J3gYwPRK/VObjoS9MkLMoYsaBWd+
+	 iOZ73SrYMpRizoPmYiqkSnm4/uZLMV/BOtsF+YYY=
 From: Yeoreum Yun <yeoreum.yun@arm.com>
-Date: Tue, 15 Sep 2026 10:21:36 +0100
-Subject: [PATCH 1/2] kselftest: mm: return fail when child test result is
- fail in khugepaged
+Date: Tue, 15 Sep 2026 10:21:37 +0100
+Subject: [PATCH 2/2] kselftest: mm: fix intermittent failure khugepaged
+ test
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260915-fix_khugepagd_fail-v1-1-bb6f04c8759f@arm.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260915-fix_khugepagd_fail-v1-2-bb6f04c8759f@arm.com>
 References: <20260915-fix_khugepagd_fail-v1-0-bb6f04c8759f@arm.com>
 In-Reply-To: <20260915-fix_khugepagd_fail-v1-0-bb6f04c8759f@arm.com>
 To: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
@@ -84,27 +84,27 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  David Hildenbrand <david@kernel.org>, Shuah Khan <shuah@kernel.org>, 
  Yeoreum Yun <yeoreum.yun@arm.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3364; i=yeoreum.yun@arm.com;
- h=from:subject:message-id; bh=D8etrFh5PGy5HLvPhwqGM1Wl5RU8d5sdnQrtvxeo55k=;
- b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBqqQ4pqgL4yB1OOTyqBCX0ujLg4uw+AK27HNSUj
- klNmhjYVguJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCaqkOKQAKCRBt1cPRWsUx
- M9jODAC1p2pD+ImErVv4cHBblEws2o83F5MqG+kFAp3hq2sM3JAWDCTu/5rzPSZ96XYiCOJhGfQ
- Rz1CgascbrrgUX2lkNITzBJZxvDWiN3vHHkFSDHAq7vN0Nb1JX/FwmMDbUGU6sokZ/crr7W6B0E
- G6uz2lKxu5jE1uaNPROWId6JjXzJN8H2Tk3JQQFCPb/fwWOxZQ9lo1i07Xj4WiNkR/NhfeurO/m
- YhBJ4okasmpw3TKuufoFso92MjiKWPoZHJY89APsnRUuE808RM4W0m3+X2MPEdoHgJv87iNzuIp
- mlE7lt1w9eHwawcgv1VKEtNtN/BfFLuVSOoC/2IqrIvFwEoQr1A4MBCDO/moKVMRO82eYnFoX0j
- EX2FBnBXoIuILwFvQIDXGgCBC/hayweE+WrJL1J2iGBky7rP649fMnf9lsQZEwSatQDRw7ZfVaR
- AFpGz+ZgIS5jCcn7qJr2/3bbGw7p2VjhBZXC6ewfU63Kf22QhYcek+UTvZ0FuUZaIsKf4=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4423; i=yeoreum.yun@arm.com;
+ h=from:subject:message-id; bh=yxQR2EiRSnlOGVI9wDjEBOU2jCM7zzSGFANR8dJ9rAs=;
+ b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBqqQ4qQATMvvJEK3ZYgcRPUbjS+53++Tk8Ysis4
+ XDYAEUYOq6JAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCaqkOKgAKCRBt1cPRWsUx
+ M78uC/9CIAfRf6zmk9YykwQpH7GNfMsVHT0Grsqco4DCwk9jbC2K1EPyUOVkW0gj+SOVAz1/CO0
+ mYO/mSYIKo6ElFDUjk1tg/UIANN7l2em3oLht51OtL6Mvj6Bb5ZYfWi1dTBpW+gp+0NTNBW1zER
+ ejI7obz8sZUIuzHc5osND5TB9ClnKht4UKAcIYHSvtstrRj5Fpd5gejXxDVmiUkjCY/SVh0PVbw
+ tX/4G46b+FvLKW5Z6XYUxTwpJGZXhdZUWZw6jj0GygVml0ZgEXG4kN+7Uj60v2C5+FG6Fe+yPxH
+ mdZ62oyYjMykd6NiUqitvlkKtE64uhCNF+q18Jz72OWlv1/ZutO7xi0qkSrzHxBtUAnQ4TLjQJ2
+ 4VTylKZKrAw4Dk74VkTlgui5x47mZW3zuRBYevCgvbOutVIppYF8XbIlb/C+ykVM2nOgWlcb4T1
+ RRWqJCj2bpT9Fn6qeA1coHIsV37cXOjbs0uI3u3zI7L15ZxPHBo1JWaSVDXUkyrEJDcm0=
 X-Developer-Key: i=yeoreum.yun@arm.com; a=openpgp;
  fpr=2D83E092DD0533B85875A49D6DD5C3D15AC53133
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: D0C631C0004
-X-Stat-Signature: d39rwamrrs5sg88h36ahxtd9my57ntpb
 X-Rspam-User: 
-X-HE-Tag: 1789464113-663452
-X-HE-Meta: U2FsdGVkX1/AT2onk/n74UXxoY+q0rJU/mjVT3N3vGTutsEc3PVaDfsiTZNUXO96f+W60nyrCXhLKADDROOQWYbDwBfLGfBkAPv/poATJMrvlqDCIi8GbSXkmg6YUZr1OPpL4Lra7HXMF/FWfBWL8J2qjg2XxckgmnQQXN5dUxxGCNJeHv2CXsLtFH9HtxvHVR3gS6Vf6F1XTnGmVQi/N9coJ0epAJudOi5IEXVUyedQOfZ4OzLVIVAYy3qE7IfEWnx/mpvP9zLKdv0i79mnLMjp0PHHq1nlIy3ndqgxsNYAIWHmy5mLYewg/j5alINC6G10jv4riwZhuxDqsw8EFt5CKwlPS4BM3iv18Wo5CzbmMG8DkE/hZc3ziaWCC7rXu/e5EJKSfpoYs9b4huFUVipvilxvpdZkKOEdVJVvUevPJFwFKJ3vaYR0YJNmfYa51UYuWZm/UWCxxAx5rcGLbEmQPDsDaPzvHVgDU4ixyQ8M1glHNq1KPYrlBe6sglC0L24+dfnnbleRMYzMIy5x5PsSoe0gSSEhfi24ctaKHxrVrNpf2ItTruUljNi+CfDg14nJk4iY2Kps7laCOAlV8kKO9rf8ZI7vyWPZx3vO/OHjSHGROFmruc8rOv3XN0s6FqdudG4C1rLWD7F8rJxm1FL6gs/42Aae4wplAt8pHfao9HWNNdr6TYiHSjRifj010RU9cdE6+9RSFj0NoryLEt+FnCVI4zQygw7B+HvJaTFArsZdMP4PqIFmABsPIPhKBCOhBtuG5WvB9YPrxC+rlWfBoiGQYy5EaZlPrr79TztBmzLCwO8arKQKXbLngjCuOStjg31O3XGYyvFHW8W8cL/GMi9mVdo0ZmkeIda5v7GJQsHA4IAusQdAXK0sMqlZog5O6YyG8pl7QbNrL4i63oWHBmy5fOaaWrHkOnnb7BIfCWvo4qxbCL7HXyMLqFE8GfgWjSG/CTrYi+0z1k5
- PRl5U0H9
- 06lunJN1MBU21Os0LAHhYUT1Z2HVhhNQ8m3X5HQs4c5XTErOE2wE6malkOCgAAzvMZmW4/fNyKGYik2B0yS4nc9iofYBgwN+H0OMLGlZldTIwsD2J28Z+IT6Y0UZOZoG6aufg6jETTOBrrlguqecUNJMzmt7ahFkufOuR7Ck3ezJEoZIFzYM/MWsuSvLh2YJf15MIDFHni+1aTxfzeAeWLaGa7/h6qPtJP5iuUZIQcqc4UVmKnFog669XRgCiOQOzUcvOaqE3cXoItI1IwP/4I/a0EFeKx1PGJDO1
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 32AA980003
+X-Stat-Signature: y5ihpgj8zneeab4qh8yz4ytg1magjta7
+X-HE-Tag: 1789464117-531156
+X-HE-Meta: U2FsdGVkX18wVGCkPnSiLacN9NlpF0TjnvTGN9/O4WOSUaIbDukfVbUYKIL9UXFeiGotLH6GEN6uTXEn0ULOJT4bnTxzfpe/hdi9DFnbYDytSBK8ipAXSc7JHfoAKmSGBXa/oiVltswsugep3jXSKeuxTNBbAtDi1hYIHxTCRxFslTqrHKoL/wW1x8IpWUdcJsHYM/oWjxd5Vg30Y00pGt5mlKVuUulHtQ3++zu+NsiH1jL5Ep6hHC7AaoQ+t7sELnol7ZtMgPGITEzU2KwIyU3XnenByjpnZMKifgUMQqnNGCFr2nKLReYbE7lai7ucDhP6bv4TI4O7lqrVnuTO//HbdU/Gb5Ltz0obNDLfeKjUP8wI6uzFawJZ/80CvEHA2gsoCA/nPyzs8Qhx6xl6td1IGHpFy0GNWVfVeEgXgDJ8c70B3g5hIWR7eQGkKyppHRRpMEvyykBqz1WQYN8oPbyqbgQm24uYcQjuhcqozGklYHqewEoogKdhbltYJO+/kKgYAEgXzbw6mZaCjgQJw97MwuZHFbw9k1vfIMsewnL99k3D//qmEaLuFH/ErgAQuO5FimgPoZMau/OtQdNZyCYPR/USnsdCA8CsyPZVzDBr2BcJht3l1vtf7Ymclcy70Wi3so4pyd0qbJVBv6e0pjGiCanao8a5n+a2zKv26cDP0efauA5h9g8TFtzmLHDaooEjHICfParJOFeAS1CtE6YadJgh+Rpf/m3Obo1uX84jzD7gp9eIdMdJZjgLRTUPXKdp1UwzCW9nWcNHB3MJA8f1sIQAG90bLpdZ4KCzNcw51IrBZbtsnuzWoUaIC2nN5qUjJdJldbVYJS2GREa/J1RH9tl9XcAFPYlpi2Gl2HGwGNKrD0+xE8QfC00ME/Pt76lu0FuNGVtSy4PMIXyST9lnPC3TcavkFdpU/98TGkIeTHFAIg5vWsNkc7HlPJy/RVUYbVqCZNzQB3DQL2O
+ w0WFS4lw
+ SkzCo6P8C+jHSdvE96dTDXkeH7IG7YgNvalPFtjPcPz6t7p4SX4sHcu2DzMPrkqrrrZkIoiFfyYNQbTZJ4y821EFVPv09Ej4arjctnc3QfNFoLaG6IBvjfLvYKeRWfgF1AG13iQwHT4a+Dx9ywclkLBSxmMZbmcP2UdpxmF2x3OR4vEyYceN9rlUZEII5GJSQJX+qA466SePDw8pStjOCJtpErRCjK8c25WLjSij1tXEPKu6SYjrzRKzEjSyhQ8GKxRRr
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,14 +112,11 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Although the child process in collapse_fork*() or collapse_max_ptes_shared()
-reports `KSFT_FAIL`, the result is ignored because the test only checks
-whether the parent’s page was collapsed into a huge page.
+There are intermittent failures in collapse_max_ptes_swap() and
+collapse_max_ptes_shared() when using the khugepaged_context:
 
-As a result, the test is considered successful whenever the parent’s page
-is a huge page, even if the child test fails, as shown below:
+  // while running ./khugepaged -s 2
 
-  #
   # Run test: collapse_max_ptes_shared (khugepaged:anon)
   # Allocate huge page... OK
   # Share huge page over fork()... OK
@@ -128,75 +125,109 @@ is a huge page, even if the child test fails, as shown below:
   # Trigger CoW on page 1024 of 2048... Fail
   Bail out! Unexpected huge page
   # Planned tests != run tests (26 != 23)
-  # Totals: pass:23 fail:0 xfail:0 xpass:0 skip:0 error:0  // child failed.
-  # Check if parent still has huge page... OK              // parent hpage success
-  ok 24 collapse_max_ptes_shared                           // considered as success
-  ...
-  # Totals: pass:26 fail:0 xfail:0 xpass:0 skip:0 error:0
+  # Totals: pass:23 fail:0 xfail:0 xpass:0 skip:0 error:0
 
-To address this, propagate the child’s failure and skip the subsequent
-check in the parent.
+  # Run test: collapse_max_ptes_swap (khugepaged:anon)
+  # Swapout 257 of 2048 pages... OK
+  # Maybe collapse with max_ptes_swap exceeded.... OK
+  # Swapout 256 of 2048 pages... OK
+  Bail out! Unexpected huge page
+  # Planned tests != run tests (26 != 17)
+  # Totals: pass:17 fail:0 xfail:0 xpass:0 skip:0 error:0
+
+This happens because khugepaged may collapse the pages before wait_for_scan()
+is called, causing a sanity check that expects uncollapsed pages to fail.
+
+For example, in collapse_max_ptes_swap(), after faulting the pages back in
+and paging out up to max_ptes_swap pages, khugepaged may collapse them again
+before c->collapse() is called.
+
+To prevent this, change the khugepaged setting from ALWAYS to MADVICE for
+the affected tests, and mark the VMA with MADV_NOHUGEPAGE after it has been
+collapsed by wait_for_scan(). This prevents khugepaged from collapsing it
+again before c->collapse() is called.
+
+This failure was observed on NVIDIA Spark with 16KB page.
 
 Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
 ---
- tools/testing/selftests/mm/khugepaged.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ tools/testing/selftests/mm/khugepaged.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
 diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
-index f82673f5f6b47..c32244b565658 100644
+index c32244b565658..83e9386bbc842 100644
 --- a/tools/testing/selftests/mm/khugepaged.c
 +++ b/tools/testing/selftests/mm/khugepaged.c
-@@ -1009,6 +1009,8 @@ static void collapse_fork(struct collapse_context *c, struct mem_ops *ops)
+@@ -578,6 +578,8 @@ static bool wait_for_scan(const char *msg, char *p, size_t len,
+ 		usleep(TICK);
+ 	}
  
- 	wait(&wstatus);
- 	exit_status = WEXITSTATUS(wstatus);
-+	if (exit_status == KSFT_FAIL)
-+		goto out;
- 
- 	ksft_print_msg("Check if parent still has small page...");
- 	if (ops->check_huge(p, hpage_pmd_size, 0, hpage_pmd_size))
-@@ -1016,6 +1018,7 @@ static void collapse_fork(struct collapse_context *c, struct mem_ops *ops)
- 	else
- 		fail("Fail");
- 	validate_memory(p, 0, page_size);
-+out:
- 	ops->cleanup_area(p, hpage_pmd_size);
- 	ksft_test_result_report(exit_status, "%s\n", __func__);
++	madvise(p, len, MADV_NOHUGEPAGE);
++
+ 	return timeout == -1;
  }
-@@ -1056,6 +1059,8 @@ static void collapse_fork_compound(struct collapse_context *c, struct mem_ops *o
  
- 	wait(&wstatus);
- 	exit_status = WEXITSTATUS(wstatus);
-+	if (exit_status == KSFT_FAIL)
-+		goto out;
+@@ -839,6 +841,7 @@ static void collapse_swapin_single_pte(struct collapse_context *c, struct mem_op
  
- 	ksft_print_msg("Check if parent still has huge page...");
- 	if (ops->check_huge(p, hpage_pmd_size, 1, hpage_pmd_size))
-@@ -1063,6 +1068,7 @@ static void collapse_fork_compound(struct collapse_context *c, struct mem_ops *o
- 	else
- 		fail("Fail");
+ static void collapse_max_ptes_swap(struct collapse_context *c, struct mem_ops *ops)
+ {
++	struct thp_settings settings = *thp_current_settings();
+ 	int max_ptes_swap = thp_read_num("khugepaged/max_ptes_swap");
+ 	void *p;
+ 
+@@ -860,6 +863,9 @@ static void collapse_max_ptes_swap(struct collapse_context *c, struct mem_ops *o
  	validate_memory(p, 0, hpage_pmd_size);
-+out:
- 	ops->cleanup_area(p, hpage_pmd_size);
- 	ksft_test_result_report(exit_status, "%s\n", __func__);
- }
-@@ -1114,6 +1120,8 @@ static void collapse_max_ptes_shared(struct collapse_context *c, struct mem_ops
  
- 	wait(&wstatus);
- 	exit_status = WEXITSTATUS(wstatus);
-+	if (exit_status == KSFT_FAIL)
-+		goto out;
+ 	if (c->enforce_pte_scan_limits) {
++		settings.hugepages[collapse_order].enabled = THP_MADVISE;
++		thp_push_settings(&settings);
++
+ 		ops->fault(p, 0, hpage_pmd_size);
+ 		ksft_print_msg("Swapout %d of %d pages...", max_ptes_swap,
+ 		       hpage_pmd_nr);
+@@ -869,12 +875,15 @@ static void collapse_max_ptes_swap(struct collapse_context *c, struct mem_ops *o
+ 			success("OK");
+ 		} else {
+ 			fail("Fail");
++			thp_pop_settings();
+ 			goto out;
+ 		}
  
- 	ksft_print_msg("Check if parent still has huge page...");
- 	if (ops->check_huge(p, hpage_pmd_size, 1, hpage_pmd_size))
-@@ -1121,6 +1129,7 @@ static void collapse_max_ptes_shared(struct collapse_context *c, struct mem_ops
- 	else
- 		fail("Fail");
- 	validate_memory(p, 0, hpage_pmd_size);
-+out:
+ 		c->collapse("Collapse with max_ptes_swap pages swapped out", p,
+ 			    1, ops, true);
+ 		validate_memory(p, 0, hpage_pmd_size);
++
++		thp_pop_settings();
+ 	}
+ out:
  	ops->cleanup_area(p, hpage_pmd_size);
- 	ksft_test_result_report(exit_status, "%s\n", __func__);
- }
+@@ -1075,6 +1084,7 @@ static void collapse_fork_compound(struct collapse_context *c, struct mem_ops *o
+ 
+ static void collapse_max_ptes_shared(struct collapse_context *c, struct mem_ops *ops)
+ {
++	struct thp_settings settings = *thp_current_settings();
+ 	int max_ptes_shared = thp_read_num("khugepaged/max_ptes_shared");
+ 	int wstatus;
+ 	void *p;
+@@ -1100,6 +1110,9 @@ static void collapse_max_ptes_shared(struct collapse_context *c, struct mem_ops
+ 			    1, ops, !c->enforce_pte_scan_limits);
+ 
+ 		if (c->enforce_pte_scan_limits) {
++			settings.hugepages[collapse_order].enabled = THP_MADVISE;
++			thp_push_settings(&settings);
++
+ 			ksft_print_msg("Trigger CoW on page %d of %d...",
+ 			       hpage_pmd_nr - max_ptes_shared, hpage_pmd_nr);
+ 			ops->fault(p, 0, (hpage_pmd_nr - max_ptes_shared) *
+@@ -1111,6 +1124,8 @@ static void collapse_max_ptes_shared(struct collapse_context *c, struct mem_ops
+ 
+ 			c->collapse("Collapse with max_ptes_shared PTEs shared",
+ 				    p, 1, ops, true);
++
++			thp_pop_settings();
+ 		}
+ 
+ 		validate_memory(p, 0, hpage_pmd_size);
 
 -- 
 2.43.0
