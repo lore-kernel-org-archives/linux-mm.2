@@ -4,59 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFFBBC88E75
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 15:13:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F7BBC88E75
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 15:13:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B88916B0092; Tue, 15 Sep 2026 11:13:36 -0400 (EDT)
+	id 60A066B0096; Tue, 15 Sep 2026 11:13:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B5F726B0096; Tue, 15 Sep 2026 11:13:36 -0400 (EDT)
+	id 545286B009B; Tue, 15 Sep 2026 11:13:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A9DEC6B009B; Tue, 15 Sep 2026 11:13:36 -0400 (EDT)
+	id 481896B009F; Tue, 15 Sep 2026 11:13:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E1AE6B0092
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:13:36 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D1ACA120457
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:13:35 +0000 (UTC)
-X-FDA: 85216340790.09.CAE62E0
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
-	by imf08.hostedemail.com (Postfix) with ESMTP id CF81B16000F
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:13:32 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=PxZXa6YZ;
-	spf=pass (imf08.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.4 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 20B506B0096
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:13:37 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id ACF5114040F
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:13:36 +0000 (UTC)
+X-FDA: 85216340832.27.01E8361
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 0124220006
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:13:33 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=J+YFrG+y;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf13.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=xialonglong2025@163.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1789485214;
-	b=2rdIOIzKuR+RkimQYJOQPXtAT+YqdX7A1Ogk9s1a3pcA6PYm4dnTjHO9Kc+xNlWhdkW6az
-	NxpgDwlI4/oVOlRwivGzOfz8YNe2p3eK4rhPWHnGPaH9Bk7ihICZZkEl7zuf9q21y05b8J
-	4/L1Apyh4K9YQ3gmQKidMdrmSikWkmE=
+	b=7tQnYWChcV15DrInuS/9lE+ChAQPk97wZY2kFAl52yxbUUpGjgket114ex/24kSv4luLcw
+	nnktYeS6+Jwm89fumdrtrVpbTiohLNekRZiHTg8tdIvzs90ptUj2Khe5fs7X3dTSQFFz3g
+	XEH2AkNTAsSpHlSlKcx1DCWiRFEIrMA=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=PxZXa6YZ;
-	spf=pass (imf08.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.4 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+	imf13.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=J+YFrG+y;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf13.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=xialonglong2025@163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1789485214;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wzjjP3sMaRbt1nIGZyrCw0oTAfLtKcqQAE2afGv8ruM=;
-	b=4KQVEe1SjG9R/98bcP0FnqHFfWt7nCCmkDvLXI20kfkZEIEDQmvCgJDKwUxSGxCBP9DuFh
-	WLjPkMPtr2sRA1ln7gtV6UOlL5bEZmbgfy6wAhtkWmDPyuVt1PRsLf16zcz0HxgtAqC/E+
-	TBAblhXqzWDz5a9xEQdrJAhgcAE0o50=
+	bh=nIRCRjaAuMv2QZADS7mCIjWRPfqdJWUY1VCE1j3QO9U=;
+	b=bYTJGAmMDzJ6+OSb81dY10UOg/u8G4UnZOwEVd1Wm3MGwyufFlc5YkZ70AjZUlzx4JzhAf
+	ytYr4qx99wN9yb4hhKygf53fFfx8eXa4A9eRTRDJoRNpv3W1WggHnFIlzcOhF1G95mXidT
+	Atu7vUFigMkbUt3BLhogXMD34A/uMGE=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=wz
-	jjP3sMaRbt1nIGZyrCw0oTAfLtKcqQAE2afGv8ruM=; b=PxZXa6YZ8teADp7KfV
-	AqBANt55a9rfnNffg55Wpvejk9AqbXOqaja6NoX9OlDFchABtk9QA0dqOYqxx40c
-	qAJI+uTyS4DyFg4EWObY1QuntJAe+gIKX+LlxiBwulxM/+ExJMBWLsfgUpTKP6Hr
-	HNg9ww8Q4OBO64P5S1pqmHY0c=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=nI
+	RCRjaAuMv2QZADS7mCIjWRPfqdJWUY1VCE1j3QO9U=; b=J+YFrG+y/sUXr5jGUM
+	4QclUUaid2LCELZzDqL4Zq8aCvoIqJuPKGHpkj190HDoeTKUWKZuf7YkEWHsj9+v
+	GKX/8HXofuiCFNvnl9+4GFf/Ui01OplJDI2mc+ldsKulQbjYLaSEYkOVABUe8cPe
+	7IxFuetiQHAMcjP+de7DHsEqs=
 Received: from VM-0-3-ubuntu.. (unknown [])
-	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wAn2xWOYKlqc0VUAw--.40469S7;
-	Tue, 15 Sep 2026 23:13:21 +0800 (CST)
+	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wAn2xWOYKlqc0VUAw--.40469S10;
+	Tue, 15 Sep 2026 23:13:23 +0800 (CST)
 From: Longlong Xia <xialonglong2025@163.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	linux-mm@kvack.org
@@ -65,28 +65,28 @@ Cc: Longlong Xia <xialonglong@kylinos.cn>,
 	Xu Xin <xu.xin@linux.dev>,
 	Chengming Zhou <chengming.zhou@linux.dev>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 05/14] mm/ksm: make remove_stable_node_chain() return bool
-Date: Tue, 15 Sep 2026 23:12:19 +0800
-Message-ID: <20260915151236.5200-6-xialonglong2025@163.com>
+Subject: [PATCH 08/14] mm/ksm: document the two remove_rmap_item_from_tree() calls
+Date: Tue, 15 Sep 2026 23:12:22 +0800
+Message-ID: <20260915151236.5200-9-xialonglong2025@163.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260915151236.5200-1-xialonglong2025@163.com>
 References: <20260915151236.5200-1-xialonglong2025@163.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wAn2xWOYKlqc0VUAw--.40469S7
-X-Coremail-Antispam: 1Uf129KBjvdXoWrtF4xXF4xuw1UXF4fZF4Dtwb_yoWkurg_Kr
-	1Sqr92grWUXr4rArWDWrs7Xry3Kw4DGr1UJrySkF48tw1UXr4rCrsa9Fn7Z3yUur4FkryD
-	Gw1DAryxKrZ7CjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU1RVbPUUUUU==
-X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC3BFBOmqpYJGacgAA3s
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: CF81B16000F
-X-Stat-Signature: q4dnj1jn8wbk3skxinofmj54fzfg886b
+X-CM-TRANSID:_____wAn2xWOYKlqc0VUAw--.40469S10
+X-Coremail-Antispam: 1Uf129KBjvdXoWrtrykWF13XFWUAFWxGryrXrb_yoWkuFgE9r
+	4qqrZ3WFWDJrs0yF42gw13Wr98Kayjgw1UXryqg3W2q34UJa1kurWv9rsrXrWfurZ29F93
+	GwnFy3yUC3W7ujkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU0eRRtUUUUU==
+X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC+BNBOmqpYJNWAwAA31
 X-Rspam-User: 
-X-HE-Tag: 1789485212-116428
-X-HE-Meta: U2FsdGVkX1/nZYrvpaPjdtcg4zQjUkmrFEePI1jleH0oAESf/pHBW2APNSCjmgNy5MBhoiNHJ7KYy4RDhibUY+GVg6Ras7tCeZAF5AWN1kEUytRR2ja8p+V2gqy5vV0j33b1XuKWhINcupPkyPuMuvvhIueKzqT2luT2ynEIHGdSPV2E6lDF0biXntQfHqsphsP1vSqWkZj+bTvRmyT5AFQxaGtTx9poQlFZ2Hh4puxz+oYFCCWhL8NHdvBdy6MKZ4e49NO7ca6kcL55101MH55cpSdKoA8E5RevfJCe+aSZx1S2jq0prDiicaVSLY8R0w6RYyOn0yVEB9uSMtoi6sZ+b/+sjR/qitcMVVJxnv5pIAM93/2vSWiU3T3zYr7CeU2Tb+NoarrJiC5kZitm/sfP6jb8zXugv1T21gZo4goakYGb8qmVi01889f/7rf82ayQZtyPPypohYCDE9wDcANW/slrsshpET2XDk5FGQRlt3eny/yaHhAG+NTuNEXwG3hQmsT0i/krUau6lCazFuILy4ZwxZO3d93nkZtko9dULJ8kn+4zofcPvqkW3SEWu2NC4Ibe2ifnJLFPBoaMZL8o04xzhxDAJcE9o0XkHoDApAOSfYKpJt8TfFzLASAwxvMPFRGEE3Ze453wc8Ufe0r7TTHZgLCser8x+iijmJZMeG7F3ZrD+zgSX/abbLFqI+cH5zFIFbXLDv7VwW0LSuwpI/D64shAk57Flgjh0QZDKhGXmB7QWmIYJ59JpJG0rotsJdXd/mIbcCrIlFLjsQx+VR1J/ErH8ZvU4Wo1G6T+nujnITN5+lfOMEKjfIyIWxErD26Y4YYUPk2/f0QMUEf1jgWtNnYU2moZqs7LnWBfFgaV3sazWXSwqegQFeoO6A3st662mDX05+Y00feMBdhI6NQvKEj0dY/fUkpxEjqHMm9obHo6tD8+mPhOT2nIYLmp4/j1bZG0ZYnPyHW
- sqlUCqX1
- 01Kf3MQAwSJlBfZTvSXeR4TwyDB0lqOKmZTajo0gp2f0vX/D2JeJDtPMfh0QWGOsaSdvKPLIdFUC8StXsq2btbTkTjF2rtNd7QT6G6u+63QTrydVWbUbOk+zszVj0gAFs4R5NRW8u9FnUHqjmiyMKtvbj6KTFTqxyfETSJJJXtUeYhipgsfRkReOi0ZXv0br/xFHqTaByuQ6THovU3JDKDA8JDUyQ+TnuU2tYOUa9JUisS47yKVPIdFfC2yrpzySsthLJVsK6mfvFBVrfjORhI60k8/1kpP407B2F
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 0124220006
+X-Stat-Signature: fmoryx9s5c3wh5akm78qufmpfhmhps34
+X-HE-Tag: 1789485213-721002
+X-HE-Meta: U2FsdGVkX19RBem6xeKtwQskNPCH2McHYE3m8l2GSrWudiZ7c6TGRNSdh0EU4kURubPGINNzkT6aa6MPhHpBa8NgnxAXqhPfhWPIjPb1+H+qWg0Eo2qSJjNBlVH9DMvpu7g70yplR6mg61c3Z/CzSHGK8yBkUAPqPMShhtxD/K4xF2M+nj11xUf2ywzOMiDLIeGKxxqHYHyShDJGvcv3QEljHfsnDhTl5TRpvQneGgXGp2VJMKOdmNjhmgAnaqoinDXZqYsKAHRscNHe5v6l5ivwFydzEM6TV+ESr73VMV8YVNVF+Z1SgUfC+YXmTMyy9Bcdg5jatwmV4W/vR8tQnyx7N/nemb6cjpT43PY07ykFrSbusHTJ4DHD/AQffAU2mSNAZ1/ubcEXKNAETYsFpFe619+coF0Cywsr3aPGM0JvzIb0rrdqanjk0xM2EWlh6yGf+OiKp+Bwkm00IA6AYm3yfVgYl7E1Ol/WzCfJM6RH4yDM+DPf0l4dgR1J3ZHX+BGv6l+MIQ4GjGZlAktnzoCCLQJZ7mz/WHiFQlsAP37w1d9dXvTWlHS0DViw/lR9EhCBO+hHUmMy3iJR00/X6NZ6WyjxwFXhS41UlL9FnT2epVnib1mr7NbHqZBKOgbm1xOYilgj5C61pDmaAExWRZEsb+Uis09Z3QZwX+Fi049IGWgkfEFyXOuVsI5s/c7MdXRxERTi9JW9F4WYeqz8LrQEnyY7Tsz9W5DyQve/8Q33Vn7k4Ax3yCOdfDPQ/wbrghLV44CkjVmF976iaCOMACmHJXqqkHDj9gHvt2WC8R7/zEzmxIhsJeovvD/TrAr2bAL1w4uP6D8Ipupb/y8SS1HZi4nzE+aEkS7/DuJBm7u1VTX9q1vwPJlP+lMNXM9pab7J3TXe4RggY71lLDrs6AF154mrxwvwgX2tRitTvrkHlw7SGlQpCC6T0oXAi/x0JM84iStF7VZWsU4aaL2
+ tXEJaas4
+ q/7hESQoi8TDWjMY0ZLe2Bruc8Ow/3FDeD0rVyI6m3y+tYWU3wI7pK5npO5bF5Y2DCTG74z9tWI27b2Tbe2Qw5QpjuR2A8U8kupyjTXXBEoRngik0bfYbXgu39dmhus77tD9CZ5qCGqDLLHCm17a5BBD6KGOLikwyJSVo4/EXgGt5Hi7o4gAg0nJVc1URtC/svxBL1E0sAO+BuI3Eghdigras7JOwrs1OlwNYfse2sVQVRIjGEDH3RZkBq5dQ4tBKlQr9VfM4oxWtWcZV4r5X6c+MSCP55M2phqkasLp+bSjlPVqp4qCya4bhYyijzhrSZrRtPAK758PhVnI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,44 +96,43 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Longlong Xia <xialonglong@kylinos.cn>
 
-remove_stable_node_chain() only returns true or false. Use bool and
-return remove_stable_node() directly in the non-chain case.
-
-No functional change intended.
+Explain why cmp_and_merge_page() needs both tree-removal calls:
+non-KSM pages are detached before the early returns, while KSM pages
+are handled after stable_tree_search().
 
 Assisted-by: Zcode:GLM-5.3
 Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
 
 ---
- mm/ksm.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ mm/ksm.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
 diff --git a/mm/ksm.c b/mm/ksm.c
-index aa33522627c7..99f0bd3a1ae3 100644
+index 7fc9dac5d67c..1733b23cfaa2 100644
 --- a/mm/ksm.c
 +++ b/mm/ksm.c
-@@ -1177,18 +1177,15 @@ static int remove_stable_node(struct ksm_stable_node *stable_node)
- 	return err;
- }
+@@ -2313,6 +2313,10 @@ static void cmp_and_merge_page(struct page *page, struct ksm_rmap_item *rmap_ite
+ 		if (!is_page_sharing_candidate(stable_node))
+ 			max_page_sharing_bypass = true;
+ 	} else {
++		/*
++		 * Detach before the checksum and zero-page checks, which can
++		 * return without reaching the removal below.
++		 */
+ 		remove_rmap_item_from_tree(rmap_item);
  
--static int remove_stable_node_chain(struct ksm_stable_node *stable_node,
--				    struct rb_root *root)
-+static bool remove_stable_node_chain(struct ksm_stable_node *stable_node,
-+				     struct rb_root *root)
- {
- 	struct ksm_stable_node *dup;
- 	struct hlist_node *hlist_safe;
- 
- 	if (!is_stable_node_chain(stable_node)) {
- 		VM_BUG_ON(is_stable_node_dup(stable_node));
--		if (remove_stable_node(stable_node))
--			return true;
--		else
--			return false;
-+		return remove_stable_node(stable_node);
+ 		/*
+@@ -2338,6 +2342,10 @@ static void cmp_and_merge_page(struct page *page, struct ksm_rmap_item *rmap_ite
+ 		return;
  	}
  
- 	hlist_for_each_entry_safe(dup, hlist_safe,
++	/*
++	 * A KSM page can still have an old tree association here; non-KSM
++	 * pages were already detached before the checks above.
++	 */
+ 	remove_rmap_item_from_tree(rmap_item);
+ 
+ 	if (kfolio) {
 -- 
 2.43.0
 
