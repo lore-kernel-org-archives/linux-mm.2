@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D0EEC88E7F
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 11:37:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05F6FC982C7
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 11:37:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A1A1A6B00D3; Tue, 15 Sep 2026 07:37:28 -0400 (EDT)
+	id E11AA6B00D5; Tue, 15 Sep 2026 07:37:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F1F86B00D4; Tue, 15 Sep 2026 07:37:28 -0400 (EDT)
+	id DEAD76B00D6; Tue, 15 Sep 2026 07:37:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 908F96B00D5; Tue, 15 Sep 2026 07:37:28 -0400 (EDT)
+	id D013B6B00D7; Tue, 15 Sep 2026 07:37:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6AC646B00D3
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 07:37:28 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EC6AF1A0345
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:37:27 +0000 (UTC)
-X-FDA: 85215796134.19.0FC88A6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 3A4DA140007
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:37:26 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fNFTQOJL;
-	spf=pass (imf26.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A83B66B00D5
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 07:37:36 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id ED3CF1603A0
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:37:35 +0000 (UTC)
+X-FDA: 85215796470.06.60A1B16
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 3EA7080008
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:37:34 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KqnWgCCB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789472246;
-	b=KNrCmhW5ral5NSSGzUaD6H09XsxvBk2xlwwxR6YO0IvVm41ioYWqoVFcsyURJbZUZ/0tcN
-	LXCidozR7znsxaWskZFkvi6Ay1ljXlMGRNUiDM9m793SrgzH/VixNw/WgZKDKOkmmzpB1K
-	IoNVmqvbnTruk2JuwyuIL4Pw3axYlvU=
+	t=1789472254;
+	b=yilcIhoC0xWo8c7EBqq/Gv2QkE1xhV+/ia3t+dMzwD/ZT5ogEcuwiuR64/o/FAxK2NLpaa
+	+BgXCZXlrnyI3Rd5qmZC6nTv7nkZ/4QDgC2KRokqo31IhVSuDVZYNjfvM1ghnM+laxty6L
+	MXfxpO08oaa2LkiWSL/t3IBJqI0G4nI=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fNFTQOJL;
-	spf=pass (imf26.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KqnWgCCB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789472246;
+	s=arc-20220608; t=1789472254;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mjqLYqkFC5yCbrRzMMvOpmvK8b+wb1Az5sELRN6Iqmw=;
-	b=TVEz+j2BxtDETiNpiGKkOfEiKcNysDQzRs/65ZqwDXXr+ERYFJPCd0i0bpPR3V40pwxjJH
-	91t6YtMzhbU+ehGX27ye78fIjQ6biaD6sxoYGywXVKz5dQRG3UL4G903iUjR9Bjuj9pBxw
-	Yg8daBUezv0tbJVNf4KqwX6fI26+Ts4=
+	bh=43PF/RCUOZQkJsOOgjTj3NZfqo5RZrpEBnO0+rNiFJE=;
+	b=OWW/yTXLQAOowjRYT/wKJiQb/sUUc0heQ9kfQU60stzSzhpF8vgLnWHR2+gMEm6FB1PV8G
+	ByggIMOlV7JbWUUUGLx/gsdMkMM8Dfwazv1eSrEi9OX5Zv9L5vvcF+MN/znemelijMyYk6
+	jmm+t2WXZ57mgV63TS015pRyxEQaGzQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B699B602C5;
+	by sea.source.kernel.org (Postfix) with ESMTP id 8DCDA43410;
+	Tue, 15 Sep 2026 11:37:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 022161F000FF;
 	Tue, 15 Sep 2026 11:37:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EE621F00893;
-	Tue, 15 Sep 2026 11:37:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789472245;
-	bh=mjqLYqkFC5yCbrRzMMvOpmvK8b+wb1Az5sELRN6Iqmw=;
+	s=k20260515; t=1789472253;
+	bh=43PF/RCUOZQkJsOOgjTj3NZfqo5RZrpEBnO0+rNiFJE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=fNFTQOJL+iGGO+zzzm7cDe+/taoDcFY7fewDCdDuBMLNk844/5YTOXExel7EKsF9S
-	 oLRnzjguOrHBG/PK7ZC549dR4lB6cSOioaIssgENRRB/BPi7+UG74t/yS8GmkCNH9C
-	 SYkWW/2u8YiYHbyNYlVSLFpnBvaUvCIp4Mwu/abM5lLuo8GHPpD/0L9dCr6/bh0kxz
-	 Ano4WmSOQb609KJxhLhb4QylzFqFY4npF26OT03shrB8BqGetnHALS1L68dHSQxDHf
-	 lkgeVcI6ujFF+0WS99WYyuepbVTQzAmtrQq19Z8PUhZtIGApiugszVbmJFY6aacriE
-	 TeUsi9M9eNUTQ==
+	b=KqnWgCCBBHbflkUyPO4GlX+NqrkQFoLbpdeV95+70PxGxWdRlCZK2hEFg7AKpGM8d
+	 P+sDlo6n6p/oD4DHtw5k4ao1CCny987weMHVwVi57TIzGmedW26EG1RySUo7EUC3wL
+	 govHdLEbUVf9mmDt8elYfT7Db4xTVjDVamv4EuP8wsrMfCbgWeOAVYswLv5gav0BOT
+	 MlginGpeWoN48Ny0LTtfFlqXOFFO5u4nlES7nGcrAPFHjrQQttsk0uwSQM7UkTulFT
+	 MHFUk3iByhyEoh4VP3/GmREzjD3XQ75V+DK8eWFkJXVQmcZAGfPHvBT+mosXjqMwpA
+	 YKgxCV7My/uOw==
 From: Christian Brauner <brauner@kernel.org>
-Date: Tue, 15 Sep 2026 13:31:33 +0200
-Subject: [PATCH RFC POC 47/50] iio: buffer: install the buffer descriptor
- when the ioctl returns
+Date: Tue, 15 Sep 2026 13:31:34 +0200
+Subject: [PATCH RFC POC 48/50] misc: fastrpc: install the dma-buf
+ descriptor when the ioctl returns
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260915-work-fd-reserve-unify-folded-v1-47-4d5217d6b246@kernel.org>
+Message-Id: <20260915-work-fd-reserve-unify-folded-v1-48-4d5217d6b246@kernel.org>
 References: <20260915-work-fd-reserve-unify-folded-v1-0-4d5217d6b246@kernel.org>
 In-Reply-To: <20260915-work-fd-reserve-unify-folded-v1-0-4d5217d6b246@kernel.org>
 To: Linus Torvalds <torvalds@linux-foundation.org>
@@ -94,22 +94,22 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jann Horn <jannh@google.com>,
  kexec@lists.infradead.org, linux-hyperv@vger.kernel.org, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.17-dev-db0b7
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1959; i=brauner@kernel.org;
- h=from:subject:message-id; bh=RM8/Ryi0JBjisB2tI5DXR2rE8sCF/AliS5Zp4F8Qhf4=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSt1KkPFJZ6IZfMtyJ0UsaFFiuPoGWsPxtn3v1o+e3z3
- stfX0943lHKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAjCR6LMM/yNudM+8naelq7Sn
- g+X00Zpv+usvL13mfINZZtGLrdYV3KkMfzjPLfxTceTH7fV1ATe3FQTfd1Vd7vTqOWPz3spdkTu
- WLmIFAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1831; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=cqNOp0aS6I05gELpjlHXd0owI5nLbJqswEU8UWMTx0A=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSt1KkPYaw+MXnFd73DKesXPFlfMXNFNsPLRZf+RF2XY
+ bp6P+0Kb0cpC4MYF4OsmCKLQ7tJuNxynorNRpkaMHNYmUCGMHBxCsBETGQYGSZ8vdT+NFe0bk0l
+ +55pTDcfSvjMedPirtK/tvj3rIZKzuUM/8x33i1095DRM+a7Hu9qcGFp07anFQ2bOM4tOR05Zb0
+ HOzMA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 3A4DA140007
-X-Stat-Signature: hzah533qp1n3t5d9nix8cz5q5f58sky1
-X-HE-Tag: 1789472246-336150
-X-HE-Meta: U2FsdGVkX1+Mx81gu4FAQ5bCWJJJGGau2+dPfoWUwZcbl/2FI32D/1BpDGBiOBPUlA//unfI7QD9B8t7H+sjl09ADMpAI6EbzYqmsIS5ZMBtNXU7AVWpGosQdoqQPVBFY0wUVmZ+gCgFNokkB4ZfjhPNbshDtnhiXNg37DhA85nktG9hqQqN0tEo+3+CyDHpKZ2Od1V88Ac9dbQh8pWHTQ5MXnJEg2axVuy2vzxCZZ4q5f8SrSBDNz/Nq7ckSqtVRM496z5W9EwPui+wXaBL6hnQYtlEws6cG118wEwrKaKQMa5hfQGcIJCfiuxcLvL9jNkwmQPOYvwLl6Eqw7h1AWDR3JNumw2JbSysz8BD++wl+P5+DRl+aK2Xsfwbk0v4QMZ/yC/stR9iD+5F2setVTo4UucbwGlFUnoOHPsO/egKeoSe1N5ZkwPd6TZk+nIH4YFY88eoffsu7hArPcsR0uCHgCAK2COaZXF87KWLSs2HazdoTiw9GEAMf+xjW75WgAWAHt1fCwgu+W0ibnbBmvAx/ewA8PO+vI99ZMVbv9Ola6bcBBYWRJ3LyWGzBUzCd7bInNrt5vWG4d+39BiuYs6ds1OLEP5IoeGSAUUr580okI+5JVa7mWGqgPgtCyK9auQ7EuPMOYqa2VxA7P6XE0RvuuT6uB3zjLvRUlPlq9qd/1J9i6NrsxJaIITKzobB4rVV11is713JW8SDNXENI9XcieiqtXJ9SyKhH4CUz657QNK/dN/IT1HT1CosRtL6Cx4Qg2B488IHdijPQIxeKTjdRPstP4D4TSwMoWvay0E0AEG2gK3STMkcarEl756beAsFcF4FmMypub1q0a0mBDt+kbVKt/bgthhK1qI3469llsBJAt5998l/RMkjCihHFby/68CgUEMELSqHfpfouddrAHpcSf5x6B9XDV0kUQIW0GoiiFipiyv3vbyDRGRnHF9C2IkA/MvfTiNLJHr
- F2quGBXU
- ZDvM7BsWFN4TXNWfqcttsu8pVM+TPy+yE4xpQ7vpWbGrwozWqQFOFEGg4HWXc0aXWJjOunQBz7iB17NsydOXvrg4U5pwkVpNe8ISrKgRkJH6IM7PgCjMswyY2jRe6KJn3XOSs2ZxJuZxqFs1PUGtLCoX4VavaSMm3YdXRZrAf/3N8DePk0jMICXhlGc0yb344P2CCmElgmb1V9d53v1IxqVp3kTZH5WMHMzK7EDkxgLMYCYgIbKRyH3aaJw==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 3EA7080008
+X-Stat-Signature: 551toqmftncbribnpwjj7rnotjom58jr
+X-HE-Tag: 1789472254-742295
+X-HE-Meta: U2FsdGVkX1+B9wan8ll1s304oJUHysI0R20nsk1hPxDMPYhVx4n06BEHwPV+hhjn/jtz3MK1TxqX9qDjw3+FXeR7sQMitaAaHwq/PtUmeB/woNSZND3po6cMtUcVNEvnYWHjbmQeGT8xLadGqGpqYl08YzXLumMPdeQ0zyf8TId+Xu6OmGezGvfDH/hwjc6OHIP7aCq9T2cRGQJ/eIx0mKn8/VXGx8uHas9uaViFIDtJBrs2mt1qp2j5iUL+W8oTKOf4XN3C6I9AfmisPK78ai2UCYosYw8F+pmp7wXpFGeUDhtLmYm2HyObzubJ5DohWVGVayo22DAcTYnCPs2dW8pDJxBuLKpH1pJBP8O8oImtBZT8ZTSNLozA3DazT1LcJntP9b2JtbDkKNtsaRdNw5u0hBmu7Kf61Anj5vypDjnMlHntaACZ2OxQ2N/2Yphzx+6vjdIRadOOIWnRJdxOTXEnvPx/0KssFtquIUuHlnZfK5lwWjGBcyI2FBY9kxpbMFh3NDbEuJXANnI83rlI6NvEvry/kn/gLUk+4Yy134Sxgcu95LeQFZn94TaLomhEFL/thUQ/oFnKZy0iLuZpbYL7bEFyDTVbvh2N08ZqoCB3TX5hOCb0YxyRvSSBrBE2SvgAUVZ7D+phEPnyexN6rb5ETvUPJ5H2eeXkLGvecEN29ongprjGSAxGjvOBeEL4BjKq+hI8YpU4eIShONDWEXDhDxrIgBwJjva53V9xjLRx1LOM4EbjWI+YETKW3TjrINWpenzK3tymI151doXTH4h2QBdYetMzvBS9uKigEwReiVs5l3m1JwMVHJ6DtAni6ToGm+iBarOgLyW0X3q0atKur+IpimfAQBzMFoJ6SNy1XNAd3D7XsK759Z9N4oEhFCW0tSosgFgJqvXOUliUwT0eo/j6C3Kxf2T2M5s5iYxSoMREhvCJLZcLxp+I3Oz77WoORvRWVV0rQ+pUmjo
+ uix3f9Hq
+ OJk/sr6MiRQgy8aF39nujdY17lOVqu1uPbZuNVUGFP/U3JIPfAsH8E3lMD66Nqg4FBIBeImFhze57NziRaRhTjasJyJC7o01Vu/fsgh9tcdYQBXKDAkcgSe2pcHG+5+dXzOq3KtlGkRvrZT07ORA1Sg6WovD/y8WhYNfqtONX0iAkUN6hD6fUCxfuXZseWzJZGnPdzAuh8x59MYFtLvb3Ci7XkcQqoNJ8/GPetYD1FI9YnIRV0JWAlkWiZSfoPinkeTF7146iScgC35pueYu0ZViBVQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,57 +121,58 @@ Rely on the fd exit path machinery.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- drivers/iio/industrialio-buffer.c | 26 +++++++++-----------------
- 1 file changed, 9 insertions(+), 17 deletions(-)
+ drivers/misc/fastrpc.c | 19 +++++++------------
+ 1 file changed, 7 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
-index 2c9ec93dff47..9fb15bf82d0a 100644
---- a/drivers/iio/industrialio-buffer.c
-+++ b/drivers/iio/industrialio-buffer.c
-@@ -2041,7 +2041,7 @@ static long iio_device_buffer_getfd(struct iio_dev *indio_dev, unsigned long arg
- 	int __user *ival = (int __user *)arg;
- 	struct iio_dev_buffer_pair *ib;
- 	struct iio_buffer *buffer;
--	int fd, idx, ret;
-+	int idx, ret, fdno;
+diff --git a/drivers/misc/fastrpc.c b/drivers/misc/fastrpc.c
+index 90fd669636ec..24b84019bbd7 100644
+--- a/drivers/misc/fastrpc.c
++++ b/drivers/misc/fastrpc.c
+@@ -7,6 +7,7 @@
+ #include <linux/dma-buf.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/dma-resv.h>
++#include <linux/file.h>
+ #include <linux/idr.h>
+ #include <linux/list.h>
+ #include <linux/miscdevice.h>
+@@ -1804,6 +1805,7 @@ static int fastrpc_dmabuf_alloc(struct fastrpc_user *fl, char __user *argp)
+ 	DEFINE_DMA_BUF_EXPORT_INFO(exp_info);
+ 	struct fastrpc_buf *buf = NULL;
+ 	int err;
++	const struct fd_slot *fd;
  
- 	if (copy_from_user(&idx, ival, sizeof(idx)))
+ 	if (copy_from_user(&bp, argp, sizeof(bp)))
  		return -EFAULT;
-@@ -2067,26 +2067,18 @@ static long iio_device_buffer_getfd(struct iio_dev *indio_dev, unsigned long arg
- 	ib->indio_dev = indio_dev;
- 	ib->buffer = buffer;
- 
--	fd = anon_inode_getfd("iio:buffer", &iio_buffer_chrdev_fileops,
--			      ib, O_RDWR | O_CLOEXEC);
--	if (fd < 0) {
--		ret = fd;
-+	FD_PREPARE(fdf, O_RDWR | O_CLOEXEC,
-+		   anon_inode_getfile("iio:buffer", &iio_buffer_chrdev_fileops,
-+				      ib, O_RDWR | O_CLOEXEC));
-+	if (IS_ERR(fdf)) {
-+		ret = PTR_ERR(fdf);
- 		goto error_free_ib;
+@@ -1822,23 +1824,16 @@ static int fastrpc_dmabuf_alloc(struct fastrpc_user *fl, char __user *argp)
+ 		return err;
  	}
  
--	if (copy_to_user(ival, &fd, sizeof(fd))) {
+-	bp.fd = dma_buf_fd(buf->dmabuf, O_ACCMODE);
+-	if (bp.fd < 0) {
++	fd = fd_prepare(O_ACCMODE);
++	if (IS_ERR(fd)) {
+ 		dma_buf_put(buf->dmabuf);
+ 		return -EINVAL;
+ 	}
++	bp.fd = fd_stage(fd, buf->dmabuf->file);
+ 
+-	if (copy_to_user(argp, &bp, sizeof(bp))) {
 -		/*
--		 * "Leak" the fd, as there's not much we can do about this
--		 * anyway. 'fd' might have been closed already, as
--		 * anon_inode_getfd() called fd_install() on it, which made
--		 * it reachable by userland.
--		 *
--		 * Instead of allowing a malicious user to play tricks with
--		 * us, rely on the process exit path to do any necessary
--		 * cleanup, as in releasing the file, if still needed.
+-		 * The usercopy failed, but we can't do much about it, as
+-		 * dma_buf_fd() already called fd_install() and made the
+-		 * file descriptor accessible for the current process. It
+-		 * might already be closed and dmabuf no longer valid when
+-		 * we reach this point. Therefore "leak" the fd and rely on
+-		 * the process exit path to do any required cleanup.
 -		 */
-+	fdno = fd_prepare_fd(fdf);
 +	/* The staged file is dropped with its descriptor if this faults. */
-+	if (copy_to_user(ival, &fdno, sizeof(fdno)))
++	if (copy_to_user(argp, &bp, sizeof(bp)))
  		return -EFAULT;
 -	}
  
  	return 0;
- 
+ }
 
 -- 
 2.53.0
