@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCEB6C88E7B
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 11:35:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10AFCC982C3
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 11:35:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D985D6B00C0; Tue, 15 Sep 2026 07:35:22 -0400 (EDT)
+	id 35FCE6B00C2; Tue, 15 Sep 2026 07:35:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D70DE6B00C1; Tue, 15 Sep 2026 07:35:22 -0400 (EDT)
+	id 339486B00C3; Tue, 15 Sep 2026 07:35:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C873D6B00C2; Tue, 15 Sep 2026 07:35:22 -0400 (EDT)
+	id 24ED46B00C4; Tue, 15 Sep 2026 07:35:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A8E0D6B00C0
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 07:35:22 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 03A2A1403BE
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:35:21 +0000 (UTC)
-X-FDA: 85215790884.03.3D96BAE
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 05A8C6B00C2
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 07:35:29 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9C1BCA03BC
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:35:29 +0000 (UTC)
+X-FDA: 85215791178.15.CC1DAD0
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 12988100007
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:35:19 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HrkMpIvO;
-	spf=pass (imf14.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf18.hostedemail.com (Postfix) with ESMTP id CB39B1C0006
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:35:27 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XqYmNccj;
+	spf=pass (imf18.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789472120;
-	b=I03eKS19lExY0mcFKQSapBE7PF7SA4eW3A+sMtE5PLg89aKMmb7Rc08JVzoKxpaChX5x0I
-	/vUMJ6L6ha4/NAOUreIymg2SXKYt5yxUEJOgZqraE2Gz1W6T3uGuHFO3acmavrCG9g53qx
-	LG3UTHvV/LIFAsFKBbvW2mmg1Bol2tM=
+	t=1789472127;
+	b=oUOCuC5nGcg/UOUfae27TxHzFde8MwBZlEgGSQGzWKa+K1/FqvlGNlPZ4fJF0iDbYdd4VW
+	iTEwRWBx9uThqRz3vizRrQVcUKv7qtgM/e1O0O7P6I3czF79p73mlqCyQ2azhZJW+7VMRV
+	/qXvfrkhmUthwoUYNgiZ+hZf9Ri8zmc=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HrkMpIvO;
-	spf=pass (imf14.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XqYmNccj;
+	spf=pass (imf18.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789472120;
+	s=arc-20220608; t=1789472127;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vu/oKxz+arn92APs3M7qiv06zwHfUu2cH5sFUjT3DBs=;
-	b=2QXSkx35nfiv+A+o2GOe1QoU5ohKBD/d9VLw0w1N2usGdlDhcjVMgMrTK/WDp0cLLDni2u
-	Ws3IRfZInUmOYR5yts0ayojAu5NClHqWfPd7kZEuy1H0OptHEmOxSf0nASWtOKipQMiMBW
-	B307VpH6hIC60SbAqGbZ2Ki/rUIgYDQ=
+	bh=SiDQySP8IWTYUOdB117br7TNLcvsxWg+xpN5r3cQq6M=;
+	b=G/u9hGWm7wd+RvAOucy5++qHnEHgBPez4yfvbX4TXftmrHItEEqkjNzrXnQwsCpwaLVQ89
+	a4vDPtTdqGFAb0CHSl/ZKceKViazo+foQ+5IzyQqJhY03jD+SehjyrfVslmRnAoqlJ/SYd
+	oeQAGL3Fw3+ExK4GquP1YfEpbaDbF10=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2F5DC415D0;
+	by sea.source.kernel.org (Postfix) with ESMTP id 2303642E75;
+	Tue, 15 Sep 2026 11:35:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 863231F00893;
 	Tue, 15 Sep 2026 11:35:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91A641F0089B;
-	Tue, 15 Sep 2026 11:35:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789472119;
-	bh=vu/oKxz+arn92APs3M7qiv06zwHfUu2cH5sFUjT3DBs=;
+	s=k20260515; t=1789472127;
+	bh=SiDQySP8IWTYUOdB117br7TNLcvsxWg+xpN5r3cQq6M=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=HrkMpIvO7iGYskIOyxgrnhbmY51Jc8Ub7q4Why0AOMW3f+ydbKbSBCxy95zXyqe1p
-	 ZoAv51UkkYKpcZYTAAisBxBl4hf6Uv+KmnEvtmEszCrFQ4UCX6prXJTwvfuh+VBg0H
-	 KsE2Brv2yI+jIip82JC/Ngr+3NzDrIw2sFwoF22lMvLiCLY/9/fGutyOhJmWBoHQ0r
-	 N5tgRdT+HEy2DU7RimgNlnfIOmMDcup/G0VPUdWrNxwZPN/IikW4sEG5zmO1gaEX/J
-	 VgppH76C/4vJ+axoPp1uwZD0v634hBDcqupR0UFuTNRHu80xxaX7JAyL6dF7YCetWD
-	 6h8T6BgsJ0X2A==
+	b=XqYmNccjTCHTgLZfaFkSBqBDFVVBpN4V7uWmro0nlZYhYXdIOR3pUJm31rdV5qmY+
+	 IvkQ+yJ07iMIJdVfTfCU/X+J1F85+bUe/IC+GzOLdoIsjHzzI0cRTRkin0A6HJ4e9A
+	 wjbY7EF1qh+Lal3EYMMKlHTRwBv+A5nykmakJD+8D67Z72hDwiPvXhqDAFfL92TuNh
+	 lR+9tIh+dTMh59L9wRnctKfZHIAF9NgyjZ0E3adVhwso4Hs5jlLy1+Oyk4a8gR0BJY
+	 rzlOT3+qL2yuGXywSlb/k0KzE8CbI8Z7lw3SuGIaABfBF2TZ/OabNmu6rvP9iBmcEe
+	 3ufAwvnh6Znbw==
 From: Christian Brauner <brauner@kernel.org>
-Date: Tue, 15 Sep 2026 13:31:17 +0200
-Subject: [PATCH RFC POC 31/50] vfio: install the migration data descriptor
+Date: Tue, 15 Sep 2026 13:31:18 +0200
+Subject: [PATCH RFC POC 32/50] liveupdate: install the session descriptors
  when the ioctl returns
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260915-work-fd-reserve-unify-folded-v1-31-4d5217d6b246@kernel.org>
+Message-Id: <20260915-work-fd-reserve-unify-folded-v1-32-4d5217d6b246@kernel.org>
 References: <20260915-work-fd-reserve-unify-folded-v1-0-4d5217d6b246@kernel.org>
 In-Reply-To: <20260915-work-fd-reserve-unify-folded-v1-0-4d5217d6b246@kernel.org>
 To: Linus Torvalds <torvalds@linux-foundation.org>
@@ -94,22 +94,22 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jann Horn <jannh@google.com>,
  kexec@lists.infradead.org, linux-hyperv@vger.kernel.org, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.17-dev-db0b7
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1192; i=brauner@kernel.org;
- h=from:subject:message-id; bh=ZuarGRo5ZqIHA3hh6zA1izPVcZ2LCwhC5SlPF3ZepH0=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSt1Kkzvf951a0G+ZqpXSZ3J2/arrxG/8r9+aez1z9K9
- bjIVK2r1FHKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAjCRLQaMDBeN9d/bKs4OXXDx
- gkR+xafcmPCqbumzYcILTbl2Jzp0VTP8YspvytbQP3uhP99bqOslw97nz5UieFd43hf6lsB++8w
- DdgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3361; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=B2yzY8WVH9I+iLi4OuPEJenUrd90D6GAB5zasGpbfEQ=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSt1Kk7WTbjY/LDc6u2Nl9xvMO+7IG4y7ylT0vafyesW
+ 7+59X5BSUcpC4MYF4OsmCKLQ7tJuNxynorNRpkaMHNYmUCGMHBxCsBEdFwZGQ4ll/MKLt9+yuPv
+ Ls73Mh5H/nGs+LpMfK0El6Rj9O4LjyQZGY7rKSdd2rLmmIq27bPU4yUy5+NELr/9Lxu7/vCdBG/
+ ZPH4A
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 12988100007
+X-Rspamd-Queue-Id: CB39B1C0006
 X-Rspam-User: 
-X-Stat-Signature: yk8yfn9f1sgio66a575fegejxu6j4ri5
-X-HE-Tag: 1789472119-822032
-X-HE-Meta: U2FsdGVkX1+bFmCTsyYAR0v5sOoVmi3dGOFoL8PDgueEn3LEXk8W99VceoY0EskCZnygc4XXE5nFhB0lxHEjrQZ/acZhnVS4JoHVCwusG2l0cNQoJhUMSj2iXMDSK4VyCHzLTEU9rTA7cG4ASKDbBpWZTMOPtNnbgWe0tzqTMAiuDCYAPKFV9vDDIzL03KbuztGEIS7txw9XtzOeeI13layE3V6rP8N4AMiwXbKcPUq5tVRiOTwibD9rHsiGTjm3imba+w/H3BAmwGX0T1QvczA8Z/1iV4Dzg3sDtcsZXmhrwVCmIvOOS1WVsAvmfainhGEPMRjNV8ke0+C4zGFgqERunyZqmup/U+KfHpizHLZ3KPJT3g1PmXwr+8QmdiAzI0h093kBZRkPt7bytnb+Oe0QflG+zI9AjfYAYOnaqhLtelwjdwxgA22O+YDiHJ5Om2ZnpFcVK6B0hmvuDN0Y3KoTZvxK5M2dIwbhU2ykAyUFEki0TzW3mVlZpSQviYwm6EvAJzZer4Px1Eh65RLfzj2Y0NAf8+cUlJSx2/L9BGnhXRyK7IB5amHV4oJ9mvYCIhFJVQlrlN8r9VEw9fNqLQ87BYZPHmHQcOIch5nvzes+bJxPmHx6AVU6s7g5z55ubOhZr6bl8WFX0Kmfo2Waeyo71xe3SoTmqdQB1rrWipo2TJNwNit+iELzxbHW8ZLM+G0+TcHqh2W7OtCoI1rfKi5szWMx7nglvs2bnbZzWAZ/dexHTnW89NZlm1hJE+xtVEuPITtwteowbT/1Gw37LyK1YYBxpGhuViy1guawkqNGlkcRbvc/yiDQ76j+JmE2H2Ecf79s1eiyEjHK7ZG5iOtFBWSbJ/gIGp3cHoi98E/+d/cQSIwz66RsSutOHvx3YmZI9kn6CQDGmmyjkbKXohP6P/rS1el1PEYwiLIqlT0pxKG9bQ9l0gnR7n824IBdDgy98FFok3U7HOVDJR2
- n0gUXfrJ
- 1LgiDmsWzWUkG3200KyZx8CR0BLosyAWFSBUghKFNVdTYZ2EtWWeQAXlpwCwknucbK8WXMBYLJyHfhTF0OXtkEnC1C+reYzS5sRkHYx7UDDq2c4uE8wJ+UMw1dDKoyJwE1heeTR20dz/V1PykRnGUVi4oXZDG+RLnuc8Ng3KQxXAxkBVIUEN7QsCIHcgSzlo6LmuJVUtZboBtGKYiyyoFvrWHAv1vJON7heeoiZxyck+XOGIffxkqW/m5jIiMgtgOEJqN4udvPlQQ1Jkyn0DHInSS1w==
+X-Stat-Signature: mpeyxgygqa369nk97i8m33nfmkmwex36
+X-HE-Tag: 1789472127-709775
+X-HE-Meta: U2FsdGVkX19BkDb//EwkOCBqL1xrOVe8OLIcDz3QoW1GUWC6LCreNNtYYt6lzmbOk6yV6y0xNj01tQg8BC9cAmwjZG8GrGgmPMhWGcPnTwRpjSQE+mOL9lYWNg7ue6gzw8Pb91ZkKMovsGx+5n916BGw9rlQMWykMIvXbzQIVgcwIfpom6iE4HuMOMcWfGwSLkzTHFHSvC0O7Zr7WI5tp0jcm/CjOeGVJ50QGTCQCbdHRBSb/3bozJwZyr2qrmX6JU/GPfdgz4F9JyvrZHnsylxs94Hp+H6jc+qljstcOhUyltYpWQfacMYfhjVGuORa/ebQYaYp6dElQVZMVzeLOE4YtVAelnpNBVozw66+rmOsLMawMnY1zQCcogUTHC/WSpk6ZaFbwd5TMJjmVcEyMelFNHR9mgXO8Y5JY+2pdFVhAeRaF7fJzp1VGm2FT6rMc+r38V9f4onrKOhHXkCmjFW97oeC2J6reSWfmh/HbZbjJ0dXZVRTXlH7GyppJIR72W/X3MYHmMjzKS3Cdf9+EIXN/bK4u4HSsEJA4YP67aSU+LP5/AdSc6GiEBCwYi8xTNG2FRGYNofcWCIExdGnRXWnC8J8h/gBc5wPtg3BS3YoX3sxECqTOkd9wrYLx5SXEABuep/EnziOGf5gkqAQZNFPLldCGZQnhkg6PrkZHN4NMZDt7lPISKVWU5qmSrp7LLWwQrwIsG+0E3iXE1DKQ3Tzdwd3ss2Cd6lZmKVLcNN7G50WiVZgfQhcEcSND0KBHws+ybW9B2JJNID7ulYtcnGYPL27yFPJMQ4ME7lDFBU/ENI5ng0vuS17iqM2IT+W7Lb27F8n7V/B+92UPi456xULjn8Vm0XNqZBB/7oQHybPiwbg6MeuPej/qOJrz2HwqrE9pnuQtCeoqMqU8X09RoDzsnuFSaZ0FtYj9kQ+tInUjAVMPW67hjiRCv3GdYpT/+9iZCa/FUdvTfFoJTw
+ q1notXM6
+ P9bzUKeo/e0iuYfxme1Zxg2sX+3AWqqui1kCy6PVC5IEpmqrserKL0fEXSxnUG8JDaLvELQPjUWetBd4ySNKAqt5iLtirvb0SrXuKlg3xzbvetsiwRpe8SvyUBLcIDhlL6zXcK02VqfzxQYcJrQLRefd1k6j3HI3DluM2VUUk4zlMOsMpuS2jUEHUs5NAxVJcFNcTdCKL+erd9bD4KpB+9bOV8vvkB9iIJ4pHT1xdFRlQonBijFmZ7Kr0JQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,49 +121,135 @@ Rely on the fd exit path machinery.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- drivers/vfio/vfio_main.c | 25 +++++++------------------
- 1 file changed, 7 insertions(+), 18 deletions(-)
+ kernel/liveupdate/luo_core.c    | 48 ++++++++++++-----------------------------
+ kernel/liveupdate/luo_session.c | 24 ++++++---------------
+ 2 files changed, 21 insertions(+), 51 deletions(-)
 
-diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
-index 423ead48aafe..93d9d21f4074 100644
---- a/drivers/vfio/vfio_main.c
-+++ b/drivers/vfio/vfio_main.c
-@@ -903,28 +903,17 @@ EXPORT_SYMBOL_GPL(vfio_mig_get_next_state);
- static int vfio_ioct_mig_return_fd(struct file *filp, void __user *arg,
- 				   struct vfio_device_feature_mig_state *mig)
+diff --git a/kernel/liveupdate/luo_core.c b/kernel/liveupdate/luo_core.c
+index 1b2bda22902d..3899bbf30b53 100644
+--- a/kernel/liveupdate/luo_core.c
++++ b/kernel/liveupdate/luo_core.c
+@@ -270,61 +270,41 @@ struct luo_device_state {
+ static int luo_ioctl_create_session(struct luo_ucmd *ucmd)
  {
--	int ret;
--	int fd;
-+	FD_PREPARE(fdf, O_CLOEXEC, filp);
+ 	struct liveupdate_ioctl_create_session *argp = ucmd->cmd;
++	const struct fd_slot *fd;
+ 	struct file *file;
+ 	int err;
  
--	fd = get_unused_fd_flags(O_CLOEXEC);
--	if (fd < 0) {
--		ret = fd;
--		goto out_fput;
-+	if (IS_ERR(fdf)) {
-+		fput(filp);
-+		return PTR_ERR(fdf);
- 	}
+-	argp->fd = get_unused_fd_flags(O_CLOEXEC);
+-	if (argp->fd < 0)
+-		return argp->fd;
++	fd = fd_prepare(O_CLOEXEC);
++	if (IS_ERR(fd))
++		return PTR_ERR(fd);
  
--	mig->data_fd = fd;
--	if (copy_to_user(arg, mig, sizeof(*mig))) {
--		ret = -EFAULT;
--		goto out_put_unused;
--	}
--	fd_install(fd, filp);
-+	mig->data_fd = fd_prepare_fd(fdf);
-+	if (copy_to_user(arg, mig, sizeof(*mig)))
-+		return -EFAULT;
- 	return 0;
+ 	err = luo_session_create(argp->name, &file);
+ 	if (err)
+-		goto err_put_fd;
 -
--out_put_unused:
--	put_unused_fd(fd);
--out_fput:
--	fput(filp);
--	return ret;
+-	err = luo_ucmd_respond(ucmd, sizeof(*argp));
+-	if (err)
+-		goto err_put_file;
+-
+-	fd_install(argp->fd, file);
+-
+-	return 0;
++		return err;
+ 
+-err_put_file:
+-	fput(file);
+-err_put_fd:
+-	put_unused_fd(argp->fd);
++	argp->fd = fd_stage(fd, file);
+ 
+-	return err;
++	return luo_ucmd_respond(ucmd, sizeof(*argp));
  }
  
- static int
+ static int luo_ioctl_retrieve_session(struct luo_ucmd *ucmd)
+ {
+ 	struct liveupdate_ioctl_retrieve_session *argp = ucmd->cmd;
++	const struct fd_slot *fd;
+ 	struct file *file;
+ 	int err;
+ 
+-	argp->fd = get_unused_fd_flags(O_CLOEXEC);
+-	if (argp->fd < 0)
+-		return argp->fd;
++	fd = fd_prepare(O_CLOEXEC);
++	if (IS_ERR(fd))
++		return PTR_ERR(fd);
+ 
+ 	err = luo_session_retrieve(argp->name, &file);
+ 	if (err < 0)
+-		goto err_put_fd;
+-
+-	err = luo_ucmd_respond(ucmd, sizeof(*argp));
+-	if (err)
+-		goto err_put_file;
+-
+-	fd_install(argp->fd, file);
+-
+-	return 0;
++		return err;
+ 
+-err_put_file:
+-	fput(file);
+-err_put_fd:
+-	put_unused_fd(argp->fd);
++	argp->fd = fd_stage(fd, file);
+ 
+-	return err;
++	return luo_ucmd_respond(ucmd, sizeof(*argp));
+ }
+ 
+ static int luo_open(struct inode *inodep, struct file *filep)
+diff --git a/kernel/liveupdate/luo_session.c b/kernel/liveupdate/luo_session.c
+index f48e9a4185f9..7de35bad1ede 100644
+--- a/kernel/liveupdate/luo_session.c
++++ b/kernel/liveupdate/luo_session.c
+@@ -282,33 +282,23 @@ static int luo_session_retrieve_fd(struct luo_session *session,
+ 				   struct luo_ucmd *ucmd)
+ {
+ 	struct liveupdate_session_retrieve_fd *argp = ucmd->cmd;
++	const struct fd_slot *fd;
+ 	struct file *file;
+ 	int err;
+ 
+-	argp->fd = get_unused_fd_flags(O_CLOEXEC);
+-	if (argp->fd < 0)
+-		return argp->fd;
++	fd = fd_prepare(O_CLOEXEC);
++	if (IS_ERR(fd))
++		return PTR_ERR(fd);
+ 
+ 	mutex_lock(&session->mutex);
+ 	err = luo_retrieve_file(&session->file_set, argp->token, &file);
+ 	mutex_unlock(&session->mutex);
+ 	if (err < 0)
+-		goto err_put_fd;
+-
+-	err = luo_ucmd_respond(ucmd, sizeof(*argp));
+-	if (err)
+-		goto err_put_file;
+-
+-	fd_install(argp->fd, file);
+-
+-	return 0;
++		return err;
+ 
+-err_put_file:
+-	fput(file);
+-err_put_fd:
+-	put_unused_fd(argp->fd);
++	argp->fd = fd_stage(fd, file);
+ 
+-	return err;
++	return luo_ucmd_respond(ucmd, sizeof(*argp));
+ }
+ 
+ static int luo_session_finish(struct luo_session *session,
 
 -- 
 2.53.0
