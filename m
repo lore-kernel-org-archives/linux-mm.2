@@ -4,90 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE1FBC88E75
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 14:51:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86BF7C88E7F
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 14:55:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC0A56B0096; Tue, 15 Sep 2026 10:51:05 -0400 (EDT)
+	id 8A5F76B0093; Tue, 15 Sep 2026 10:55:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A99156B0098; Tue, 15 Sep 2026 10:51:05 -0400 (EDT)
+	id 8307C6B0095; Tue, 15 Sep 2026 10:55:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D70E6B0099; Tue, 15 Sep 2026 10:51:05 -0400 (EDT)
+	id 71DDF6B0099; Tue, 15 Sep 2026 10:55:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 76D926B0096
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 10:51:05 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8E29B1C22BC
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 14:51:04 +0000 (UTC)
-X-FDA: 85216284048.08.C88365F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 00A334000D
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 14:51:02 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Wdc+2Vi/";
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 500646B0093
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 10:55:08 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DE51D1603DF
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 14:55:07 +0000 (UTC)
+X-FDA: 85216294254.05.807EF7D
+Received: from mail-ed2-f12.google.com (mail-ed2-f12.google.com [74.125.228.76])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 0B0731C0006
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 14:55:05 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=cUd2mXY0;
+	spf=pass (imf20.hostedemail.com: domain of urezki@gmail.com designates 74.125.228.76 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789483863;
-	b=xtCtj5ZAER/599B5MDjaLZTBz5+vapt8iKWDkquVv+a5On/ylzFh2R1CvgMn7WBN1BSIeu
-	fLRS0BTv1osC7bWWgof9R5G8QLdu0no1pUC4DQXoDmkJjKIhcpFzSjlfrI00UoMVtpj7A7
-	jwvM6WZ9ooFw4Sun91yNSEyYIEBSgs4=
+	t=1789484106;
+	b=gUHj34jdRDUDhAB/Jdcjh1X0wdK1j0PoTXZLuFkqJeQVbi1UmfD6Rt0YqXmISFdqnsb7X3
+	8BQRSABaLkQJ2bf7TAKAXOCQpsmkyjBw7qfUA1IZPJHYoRQuD16I37544dfrTwRX63q0b7
+	C9Z7uiHSFr8r1qG7Fi5P1BrCYdyTPM8=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Wdc+2Vi/";
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=cUd2mXY0;
+	spf=pass (imf20.hostedemail.com: domain of urezki@gmail.com designates 74.125.228.76 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789483863;
+	s=arc-20220608; t=1789484106;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ttqsgjewLy0H5CGwDqwjIgtkd7bY0dbIELIdhgGk55w=;
-	b=IwyNV+MCxrzl+vxbGyG2N9LVn9w81CYVDxoIbDfS8leUf36JfUMFiD63O0dCRsK7T/4Wkn
-	FVPP+biNoDxwvXy/rEJi2WTrjtABFT2E/9I9VodUZe9uGjDc87XPcxYWPQi81IxjbDUTUi
-	O4zWWbDvsRealxqYGLQVcscJ2gklIT4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6929760142;
-	Tue, 15 Sep 2026 14:51:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D37571F000FF;
-	Tue, 15 Sep 2026 14:51:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789483862;
-	bh=ttqsgjewLy0H5CGwDqwjIgtkd7bY0dbIELIdhgGk55w=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Wdc+2Vi/1ypQiG51/JO+tXV3pbsxO/NkGqUD3tomIqmzQmzze/n+eKqveNmAxgCau
-	 NqMPFkksYyxt6HPqFVdb/EPHgprhxg0kM/JgjAOVv77Z608felCme8bXd6wj63gTLY
-	 MHYHTZ645nB5OseiQk8KF1BvVL1UTO+0c2B9XERzr59c4KenAifLD/fHEpWhqUL9Ix
-	 ACFCu4ok6KqS88NKR0jJnoc2EG7B3H647q7XN/d56TIzHmcFzCWBP4ukICBUJXw1QJ
-	 UhsjEix0AGf91Ce3xRC4pEq3grND5Pi3EjlHxGM+ciQfyGge3J/POPwOwSyXEYGvzb
-	 QGCmWjvlxVT/w==
-From: SJ Park <sj@kernel.org>
-To: Karl Mehltretter <kmehltretter@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lian Wang <lianux.mm@gmail.com>,
-	Kunwu Chan <kunwu.chan@gmail.com>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] mm/damon/core: score an unmeasured PSI goal as not achieved for the temporal tuner
-Date: Tue, 15 Sep 2026 07:50:54 -0700
-Message-ID: <20260915145054.92001-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260915060937.3423-2-kmehltretter@gmail.com>
-References: 
+	bh=zUhDI+dzHo2x9QlE6sWGtPeMOZNYE2a9quEmjR2fQ2o=;
+	b=ZAtEOD933FQVMmKpkKaghYSZjIFuD41ol7iIJSXKBTxD+lmqstUP0XqKMbWI1uqMiW9693
+	Kug/xQQPzlrHimCscRxNLITr/GWh7pGN/yRb+Do+aAoAxbhpmmV0DwLWtAjHhFl0Us7i/d
+	EQvQVh45XrKApNJS+mTP/o/HInwE9Uo=
+Received: by mail-ed2-f12.google.com with SMTP id 4fb4d7f45d1cf-6a6056ac81fso714227a12.2
+        for <linux-mm@kvack.org>; Tue, 15 Sep 2026 07:55:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789484104; x=1790088904; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=zUhDI+dzHo2x9QlE6sWGtPeMOZNYE2a9quEmjR2fQ2o=;
+        b=cUd2mXY0wm8t5VZZvWu0OtOaKTadMPy0RZj78ofRpl/AV9BR9bsQMu/hk4WxnxYFOD
+         mGnby2w5vvVPAsoGHNBKiLJWkHdbtc3uI8KSMFcMczDJdGL9+zSwY8PHQVB9fCfNxXkR
+         dRrl3XQjvHZCCYw3EhBGvuyrNUwgiTW80+YAwrGkqD1Hx4Ajh9BCAiI0ToKKFqy91CZv
+         yLS2jve7WG4O5DJZZ6CtUs4babwv2Coeap51kkh8UfX7dYoutjeFLqeqvSE0UliiGuTa
+         fhtLfg+EyiIT62aFf9eW547/qP2230VsOlO5dFpmE24kAXoFxOu0sUubvuBKSW+I7lmt
+         X7aw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789484104; x=1790088904;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=zUhDI+dzHo2x9QlE6sWGtPeMOZNYE2a9quEmjR2fQ2o=;
+        b=ywAHP1rj+BWgrO21rP+i0eRze5qaF47AH+4zkRG/8o+c0Dxhy7NRytBmK9bR78BrcE
+         CxokSiHP9uWQ4G8buMlnN6hFbgOxp7FbiaUwBDIYpZUagZOfIfuc1tlCOwScvTYCHvt3
+         692u8hK7gWZcUuj+Ghg/usvu5mkthe0J9QASpBxtmjRdFMZC2oVlPmIpgT2nAtS6VMvo
+         4ZdXkQ5hnXDm4/Wz3rgwtsqmOv7IjlWG5bM541Di3Z6r9v/iZcQ+fplaATzFWo99pMUs
+         ZhanKfCwx/R/OiaceDaim1qcI7roKVf/0ZFuozPZumbkPVds32Z+E5sOVvbQj3hN1eCN
+         iwzw==
+X-Forwarded-Encrypted: i=1; AKwUvBxCss5oEYlbLA2JBIMo+bU9Cuk5kVH3xpPlBdCtiWuHh58kJaMh9oHkmSHpJIzgENxmI4VnQ/vgUA==@kvack.org
+X-Gm-Message-State: AFuF++kbmKq+UDMg0hQasqE71gZJQSP7JRsbdv3VZHm0sPLdk42R4H2Z
+	DSF1fPwNT5eRKQEdIQMP4OGrRfdGfy4L+7jOfYaYYKYeiwGJ5TVMgOG5
+X-Gm-Gg: AYBFou3vAnD9tDSG30RXDBEfIs0bpDZ5aaspep24F0kNSjm/auIg+tnLhakQZnWMQej
+	fz/eSsZBDuE5R1ys/oLwie/GLAKw7Ro6bFqFuijOw5crojVbixx5381hZbeqJcSgkqQGkavMPqP
+	eTRWf+yvLPoHm3wZd2jiVM5v9R+NlpUhSPmMxaDb2xU09SIHTkJUQXgvtKGrdv1sQo8ci0Taotj
+	e3CXsQ4s1lOkJhPGfYqkCGzgTsvlR/snzewr3ZNG4ikeE3tMHmAmYoZiUQoQOV4xijgAbWeshZM
+	1JWhCOFaLrge8PFIZOmLNy+ZnBE/XLFD3eX4mj7mQVUBxQO9vD8MisXJhXmA2aulUqoJhraiIQY
+	noD4mUacN2VI1ylP0F4dyZmzlGLg4pAR8RDRZNEQvNCzjeD46IJbjdwSCT+36c6pZDQQMSzoecn
+	S0eJScB4aqMetqz9hSQQy+oP7g4UM+/dDqGYoz
+X-Received: by 2002:a17:907:1c12:b0:c26:19de:9adb with SMTP id a640c23a62f3a-c29d78edda1mr121688666b.26.1789484104486;
+        Tue, 15 Sep 2026 07:55:04 -0700 (PDT)
+Received: from milan ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c29660234f2sm606861766b.12.2026.09.15.07.55.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Sep 2026 07:55:04 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@milan>
+Date: Tue, 15 Sep 2026 16:55:02 +0200
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Uladzislau Rezki <urezki@gmail.com>, Ye Liu <ye.liu@linux.dev>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Ye Liu <liuye@kylinos.cn>
+Subject: Re: [PATCH 3/3] mm/vmalloc: extract show_busy_info from
+ vmalloc_info_show
+Message-ID: <aqlcRjH9JStZ_eJD@milan>
+References: <20260914-vmalloc_study-v1-0-526f68559706@linux.dev>
+ <20260914-vmalloc_study-v1-3-526f68559706@linux.dev>
+ <aqgqjRJ8qpYmx04v@milan>
+ <20260914213824.2b5d9af8a5be89fe09e1629b@linux-foundation.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260914213824.2b5d9af8a5be89fe09e1629b@linux-foundation.org>
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 00A334000D
-X-Stat-Signature: unh3z99rquufuc6zozpej6bb9o8d1zyn
-X-HE-Tag: 1789483862-314751
-X-HE-Meta: U2FsdGVkX186Mgle4q5xBaN/LhrWAh1mg2B9ndUTlqZ20/DuXh7QpseCrY6NyNM81kYZg27HlxE59ui3CLghYbpXWhsavGqMDe7XyE4JTMEUo4bPgy9a3wWiHqcjiykFuli9jAR7HaTqtOyf63i9k8/TpPPTEqLhVrPbZO1DN9JXmOmekEu1yVlT9WoWwPSdxLsDx1EdTRstIvidWHv1DG2/VkGuuWhm1HHnlwbrDmD5wmwSNLPFIoFsJywfsBfz47ja9aMhtEmTtWhTFcMS1bshTXaO1IVzRRP+ZeLi2WgzAtoKE23/LU7FyQCnSdh7Euk1jyYxlPVVjDCmC9MWDzW7JDy2tcFLfHyCJnj2x5g1C+SHhNZe+dy8I8myxlCjqh65dTzu/yVbrITFHtAT120odD1S93eTXAEmMWuabI5vPYOf0iye+xd2Eolw2b1ghwo3XaBKwN7nR6YClUFYgs3thQiCph/FLtxEyGM+G1MOlVZhjcMSz4d55YHv/+JVS1VBGNefp0RGfx5jdT4UioH6n4caKH5iOvzpmCcD79M4sDXXLT/hPCjUG7XYTw9AU4yqbSN8KzIGXjcHBSPfWP6pA6+VGokWsC9IVHt5EBzsYM5cUnOZWAhapPITixUIhkB0dz9UGmyEagk6QZcUoJNj8b/hrPkJ+SQQE5iyalEHHEzSQagu79m6BJ2q771+zlykeem792cUyQ2sjnCXMwp1ZA6ovOfgDATiD+jATGOf73KG5HMNQZSAsFLz01lp3pimDkRkSezW8EFX7aaIg0Da59XdY01465Ka47iB36kB4baJWar0mPqzMobJLgCyaTL24kG9AMmq5oH3k5IUOkvKW+p9Ff8rCbx4twtiBG8P6NEB3qzGnw/SCVXCiue6JEQbtWivvkWq9g9jhIVbjvy4XJXPjPewPngw/oLCVSISQ44OXJTzL95u5JPWyQtWjLt/fN3RLZVLR2cMKgT
- h4m8vIii
- ufCx7BrGZjd2r4DpVgX7v8iXBj0pjy+nQB3kqTp3BwsPhSKfh7i23MR+4/UaKGS9X6luumLt5R5mNGrimmfEQ4x/5oiz7868xPMvPjy9g0xDuHuYCHV3tG5V56r3juwcu1mcNcC78LS+x+8+ldEzmUGLY1StEA7SIYJgZXPtHuSfkfiEhFFYSfz6mBvQRHtkci7LJguAw4L+V/fEPZs1XRz7Wayvd1ZYsGQXTRqWSL6F6eO5AxbJGIlUL+OvCEeK4NdYxmZYxgxYIg94bbCApDPGGq5ivkv/uA21howwM8z3NgVF+aJC/2K9OcgU/NKpmeY0I34r4nqwg9qg=
+X-Rspamd-Queue-Id: 0B0731C0006
+X-Stat-Signature: u8sawrpet7ftk71pf9xu986bni1rhwuz
+X-HE-Tag: 1789484105-207678
+X-HE-Meta: U2FsdGVkX1+ZDMVT84PvJSfTngW+cV9bMZly0rrwEBoc+U6C3+PkNo396qtIut2Y0r37mqkiM5Eb0fukfeGpVlekLNnYZv8fWVMTUpXQn/ff/GU/ma+P/vgEjRg4hExufyOUUqJfWNjree7anTo9fN7kpnTliGGqdx5+NvClR9a6GKitLM7doZvIR7BSaicpNYoOIpJMnN4yADIq4/z78DZAtDuE/vhjGkVO0qdZJJRzEDZXVGIbyeLj5tErDKlW/5IGyyCZqdPX0UJN23sOn+gBihvi2j1UARoCkV5TzNabQ+yOND5N5ewPRPuAJCBeJOvekPYCW8uT9OOkWq9/NVShBO/luclgrf4BfsJdGNCoirUD/N5K/Ajlk/fxTzfEhuuYVKa9lTI7zqVxbeQ08o/VOEY7hgw4TTAPdrC6xeKlqa88lG63y221nOklxEi5hQMXHKs4nhgvaEtqsoZpkz94zH9bM3mIU3qpPXpBdYJP9fDQmxcODFTV0qdITwEceLIDYCI8yKEHqN4Zt23JGS/Adh25IK/Fir+Rq/PNOM1f8Nzgo3qXUngzyBRMLM99kh5Mg7srSANc51JjMDkobkshc5rznl1GMWC5fxOYo/RpcctKydDOEMsUlLHwJji2+J4cYAtrvt/Q9UZX5DHFnX1USoga/BInyafhmMVxDBX0zNZ1Guirzft5sp1QdI7po2fBbDq9P/tA4UhWhQqMGvShfZj2ApDBC0flT04Yb6brsbZZcrRk+tJM+ts7pNOZGASMhSSIALZ90/kKb9V868mc53lacNxEh0pSdmJQbbPsIjm37smcl5fUK6Tn0GRpJaxd/BMnwdxY2PDNg2BZnGZPHZl8JgGqptaaBCX1oB5cOaMOmOINeY2XrSRyJY76CVgi6jJOgRb3JOTkDw0jD/SfUS5LT/e77ZZON2zq3xeLUa0Wcq4K2K0+PxmmKUPrpqw0LS5kyjXYDgnD2wb
+ 8qahg5K8
+ PbiCf0ejklKHniXlIRsLJffhZNJv48Q0bfd5t9dwgYCN053uHG1EbiV0ic9nU2As1uA6Pff8nX4PiiigBBWeREMy+QyWn5H2aKSsrES28WEESYiNO7fkhsMnVU4u0NnPy4SUZsXwLu2HTZlp6/kAbehEwRAlB+3cR5nu+IOiayxEud+QFWC9NiAoAJ7MziAYrXqU2peF2vxXmMl9qwgTS1dBvdnlBeNPag5x0ZENNFqiAXh7yM6cLflJKs0HaPjxPluKVtZqSinS6x83UCy5Jko+UAdphFSy5ArAtIz9oxuwvRipF7mzDm2U4mkFs5IXkT5xIYYNcsSFO+rKtPxV6j2AltYTdIrLJNmUVylsbC3cCanqaew1oN3pIQEKolHje2tGP2ZkIHHMddmuN3wG4402Xv1LhdgHxYylQRgFLX9+ZSCc55lyt8tThmQZ2G7IENV2yM8UjWxDHjPuO0ecP0BewC+tTMfXL4vfLrbbmcGgB3Yp5h8++urUwIq21QEw3tChJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,75 +124,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Karl,
-
-On Tue, 15 Sep 2026 08:09:36 +0200 Karl Mehltretter <kmehltretter@gmail.com> wrote:
-
-> A newly created or committed PSI quota goal has no previous sample.
-> Commit a68878f83ae6 ("mm/damon/core: handle uninitialized
-> damos_quota_goal->last_psi_total") scores the first tuning round as
-> achieved to preserve the consist tuner's quota, since the feedback
-> loop returns its input unchanged at that score.
+On Mon, Sep 14, 2026 at 09:38:24PM -0700, Andrew Morton wrote:
+> On Mon, 14 Sep 2026 19:10:37 +0200 Uladzislau Rezki <urezki@gmail.com> wrote:
 > 
-> The temporal tuner sets the quota to zero for an achieved goal. This
-> skips the first charge window and the window after each goal commit.
-> Committing the PSI goal before every tuning round keeps the scheme
-> idle indefinitely.
+> > On Mon, Sep 14, 2026 at 11:34:02AM +0800, Ye Liu wrote:
+> > > From: Ye Liu <liuye@kylinos.cn>
+> > > 
+> > > Extract the busy vmap area iteration into show_busy_info, mirroring
+> > > the existing show_purge_info pattern.
+> > > 
+> > > Signed-off-by: Ye Liu <liuye@kylinos.cn>
+> > > ---
+> > >  mm/vmalloc.c | 14 ++++++++++----
+> > >  1 file changed, 10 insertions(+), 4 deletions(-)
+> > > 
+> > > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> > > index 797933ba9451..7638845377f5 100644
+> > > --- a/mm/vmalloc.c
+> > > +++ b/mm/vmalloc.c
+> > > @@ -5345,12 +5345,12 @@ static void show_purge_info(struct seq_file *m)
+> > >  	}
+> > >  }
+> > >  
+> > > -static int vmalloc_info_show(struct seq_file *m, void *p)
+> > > +static void show_busy_info(struct seq_file *m)
+> > >  {
+> > >  	struct vmap_node *vn;
+> > >  	struct vmap_area *va;
+> > >  	struct vm_struct *v;
+> > > -	unsigned int *counters;
+> > > +	unsigned int *counters = NULL;
+> > >
+> > Is setting counters setting to NULL odd here?
 > 
-> Score an unmeasured PSI goal as not achieved for the temporal tuner,
-> so a new scheme can run in its first window. Keep the consist tuner's
-> behaviour unchanged.
-
-Good catch, thank you.
-
+> static void show_busy_info(struct seq_file *m)
+> {
+> 	...
+> 	unsigned int *counters = NULL;
 > 
-> Fixes: a68878f83ae6 ("mm/damon/core: handle uninitialized damos_quota_goal->last_psi_total")
-> Cc: <stable@vger.kernel.org> # 7.1.x
-> Assisted-by: LLM
-> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
-> ---
->  mm/damon/core.c | 14 ++++++++++----
->  1 file changed, 10 insertions(+), 4 deletions(-)
+> 	if (IS_ENABLED(CONFIG_NUMA))
+> 		counters = ...
 > 
-> diff --git a/mm/damon/core.c b/mm/damon/core.c
-> index 06cf2ab7e97d..e6d87fd3992e 100644
-> --- a/mm/damon/core.c
-> +++ b/mm/damon/core.c
-> @@ -3161,12 +3161,18 @@ static void damos_set_quota_goal_current_value(struct damon_ctx *c,
->  		break;
->  	case DAMOS_QUOTA_SOME_MEM_PSI_US:
->  		now_psi_total = damos_get_some_mem_psi_total();
-> -		/* uninitialized last_psi_total; make no effect this round */
-> -		if (goal->last_psi_total == U64_MAX)
-> -			goal->current_value = goal->target_value;
-> -		else
-> +		if (goal->last_psi_total == U64_MAX) {
-> +			/* uninitialized last_psi_total; make no effect this round */
-> +			if (s->quota.goal_tuner ==
-> +					DAMOS_QUOTA_GOAL_TUNER_TEMPORAL)
-> +				/* an achieved score would zero the temporal quota */
-> +				goal->current_value = 0;
-> +			else
-> +				goal->current_value = goal->target_value;
-> +		} else {
+> 	...
+> 
+> 	if (IS_ENABLED(CONFIG_NUMA))
+> 		kfree(counters);
+> 	...
+> }
+> 
+> Presumably some dumb compiler or checker warned about
+> kfree(uninitialized-val).
+>
+Probably.
 
-The intention is to make no effect this round.  Setting current_value to zero
-to temporal tuner means it will now have highest quota it could have.  If the
-effective quota before this was zero, it gets an effect.
-
-Ideally, we should somehow remember what was the last esz and keep it.  I have
-no good idea for doing that with minimum change.  This is a corner case in my
-opinion (correct me if I'm wrong) so I want to keep the change as simple as
-possible.
-
-If there is not easy way to do that, I think just keeping the behavior but
-making it explicitly explained might be better.
-
-What do you think, Karl?
-
-
-Thanks,
-SJ
-
-[...]
+--
+Uladzislau Rezki
 
