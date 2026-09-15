@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7E3EC88E75
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 10:22:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D96F9C88E53
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 10:23:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 632066B009D; Tue, 15 Sep 2026 06:22:53 -0400 (EDT)
+	id D37146B009E; Tue, 15 Sep 2026 06:22:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5BACF6B009F; Tue, 15 Sep 2026 06:22:53 -0400 (EDT)
+	id CC0FC6B00A0; Tue, 15 Sep 2026 06:22:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A6776B009D; Tue, 15 Sep 2026 06:22:53 -0400 (EDT)
+	id B618B6B00A1; Tue, 15 Sep 2026 06:22:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 060786B009D
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:22:52 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 7DA5E6B009E
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:22:55 -0400 (EDT)
 Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 21364A038A
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C6F3DA0390
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 10:22:54 +0000 (UTC)
+X-FDA: 85215608268.03.9F78237
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 14CD4A0009
 	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 10:22:52 +0000 (UTC)
-X-FDA: 85215608184.03.9FB2928
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 45E79C0003
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 10:22:50 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OQTXkm7P;
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i1QmdycZ;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789467770;
-	b=qKW00L566HitvFVED0aVJo7BDVBtnXaCpFjETPBRq8/EnVX0uR+f4b6WzowLYre+kOJvRL
-	m9iEQjqu/PC6xqK2YuGOTHMehhd15gsJz9D7uXLWLOqLMdTCbSmzfToU25k0Jb/urrEokv
-	je+SkgFmEzcfMA44I9RdcUtJ3/aJZdo=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OQTXkm7P;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf25.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789467770;
+	s=arc-20220608; t=1789467773;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+Lfwr6DOZEL712P9mk5S4cinKmJtaSPg9LGMOLkoIvI=;
-	b=1Ng6S/M/hSMc8cASeT0R5JycHPlHd/4ogPW5ReiQgiVqzJwM2iBPvlIEFtHRx0/rPPJTJ5
-	/wXCzi8Gq2SUoS/gEapwk7BIVoo0U+cI7qM0gQVDDDzyrFejt1ygI39w6zNnxnXaOD1/dl
-	xwznx8GMMLImPkwbYfNeSckjxFNbVOU=
+	bh=03HAcIyKfSHMzxQiWZYef4ptvXZuNWZ0+WSpNlAzZJI=;
+	b=0eCRNyClLk2aYPrP0jB9hc0F1NPzkRUeCozKKMQpXYGqg6iD+ENQI0fO1G00AfSTs2v6Cc
+	ggtxa5XpLBmLDxieil9qKCRWVF8YPi55RN5bP5Mi6/Hi09fj9NsTI4t1rQKikP5+jvlIsC
+	SKPR1xAPm694qkqZUkoJPjD+iBZJWF0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789467773;
+	b=WDb1t6HejrqYHt2bfg+oclpE4u4nlfldqgfAUNwuoZd1LgTIZGV5CGOuAO6/8hI3PuByXp
+	171TQVICNaq9tclMFBTDEmNkqydN8GtFvL+/pxzHF/EmcX7MM+toaw9AOoRAh2Uk5FgCc4
+	vsmejRp8GrPqwZJ5NaibAMUWYb/QMkQ=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i1QmdycZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 98B1C42E0C;
+	by tor.source.kernel.org (Postfix) with ESMTP id A9285602CB;
+	Tue, 15 Sep 2026 10:22:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F06611F00893;
 	Tue, 15 Sep 2026 10:22:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4D131F000FF;
-	Tue, 15 Sep 2026 10:22:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789467769;
-	bh=+Lfwr6DOZEL712P9mk5S4cinKmJtaSPg9LGMOLkoIvI=;
+	s=k20260515; t=1789467772;
+	bh=03HAcIyKfSHMzxQiWZYef4ptvXZuNWZ0+WSpNlAzZJI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=OQTXkm7POpmghchxaNkGvtcXtdXm76bpQ8ZxWm+B3QBzgU0ST2VFq5KqUnO4hhQRP
-	 fFLpGL+t4GwnL4u8J1dRV1HsADNpYBrxbaQn5O6lg4LR4v6IZSM6C5eT89XNZsCk07
-	 5H7bvxmABJ1ue7nBzDILxz3qRtSYNktF5IKea38meFXGwe9alGZgZj7Ii0DGfjg0Xf
-	 lQrUu+J2PjKq+nNoM9m3AT2y+B2+Mgh3zMLmIs6imZ6P11jUEgQRbGHH96OmszAQhL
-	 8oPNePv7lrOfCTeUVKYMkx15tkzRwhxQmeeLu/hdOMPpQqPX4gWIBxdIlauIHKSorL
-	 Q1uFe/Ekp4dbQ==
+	b=i1QmdycZg/kysGgYsZUSVnDuJ+PyvMDigeRQ/01GP4bmVJGsn9IuB0SF5VEJHcEpw
+	 gE5H+miyh2pBFqpLpyDkjEKIG7g4nD6efWSs3T1sAoZtkILwY4hHokg44Fzmqm62rz
+	 Ajm7hgwXiEJ4Xjl36QC1+4Hh/YU+okUOUxajcfo4HlPGYQKgLro6/uyiHNjwCVB+1A
+	 8WIIycKjXZqUK5kebSvwVS7NpQiIVtE+9bawzagVwD5UcOoK9etucHsmHmIrRPzvSx
+	 oYOvNsZ9cy7WS2Xudwbf1pS3428pSeCg8/uiGxRxOkwxJkD+Hmd+FYkP64KI9FohAP
+	 Lbjv8oky63ODw==
 From: Christian Brauner <brauner@kernel.org>
-Date: Tue, 15 Sep 2026 12:22:19 +0200
-Subject: [PATCH 4/6] signal: only SIGKILL interrupts a coredumping task
+Date: Tue, 15 Sep 2026 12:22:20 +0200
+Subject: [PATCH 5/6] coredump: parse a snapshot of core_pattern
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260915-work-coredump-fixes-v1-4-f354ca41780c@kernel.org>
+Message-Id: <20260915-work-coredump-fixes-v1-5-f354ca41780c@kernel.org>
 References: <20260915-work-coredump-fixes-v1-0-f354ca41780c@kernel.org>
 In-Reply-To: <20260915-work-coredump-fixes-v1-0-f354ca41780c@kernel.org>
 To: Oleg Nesterov <oleg@redhat.com>, Jens Axboe <axboe@kernel.dk>, 
@@ -79,24 +79,24 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
  NeilBrown <neil@brown.name>, Ingo Molnar <mingo@redhat.com>, 
  Peter Zijlstra <peterz@infradead.org>, linux-mm@kvack.org, 
  io-uring@vger.kernel.org, 
- "Christian Brauner (Amutable)" <brauner@kernel.org>, stable@vger.kernel.org
+ "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.17-dev-db0b7
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2928; i=brauner@kernel.org;
- h=from:subject:message-id; bh=wEE0usJXExKGpjCvpVt43sCmGWJShblWOIA/77PWrYg=;
- b=kA0DAAoWkcYbwGV43KIByyZiAGqpHGijRDk4mk14U0sKIqMGh9oPZ352zjxnb7ninkYbALDDp
- oh1BAAWCgAdFiEEQIc0Vx6nDHizMmkokcYbwGV43KIFAmqpHGgACgkQkcYbwGV43KJNmgD/VSH8
- FkLiZlfi+FXpjhT54oVKKQ1kqWXsAMvoIboEKrcA/RXFD5+8zc9AFxnf6PL1yZXmcQkyhk3fWXs
- 2ENjyxkYO
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5241; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=/Ett7rDx35bRTI/Va5F+j/FYrq0e4ECB2pQmOI5Zy84=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWStlMnIW9Aktmi/37scj4kf2/ivZx17t3bTse/7Ds37/
+ 2zF6pPMOh2lLAxiXAyyYoosDu0m4XLLeSo2G2VqwMxhZQIZwsDFKQAT0VnE8N/vv8mVGvGfe3Yk
+ zw/vyjL0mc23c/O6u9c8iv5FlvZknIpi+Kf4eub0rCJD/sbEMPXDc7Z2PfqSIemhdWH2x23ujLc
+ lyxgB
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 45E79C0003
-X-Stat-Signature: s8eourgn587fi8b8r5ubq9tud3wf67ar
-X-HE-Tag: 1789467770-904463
-X-HE-Meta: U2FsdGVkX1+y7TnwrrMyzJK0o4ZSgHEIC5rERO3+WqKxaSDf/C0Y0v2Se022AcAnO0a6UJeOTl2st0fxPrrUZVIB1Oab2D6WGA1fN+7/ziLhLBHMczPRx85nxILZEBJH/YeETjE4L0BMv5mWsrykO2KFrC/qKdQhyCQj3sKBtNwvNk/7eJemcFYseal1wo1LcBHx7TPTj61gbERRk29mpk6HVbkxIkrpMlriUVyS9g5HpVIRLs8gaGc2xaozPEnkJYYVMvNah1hoBjJQn2RikltC3HzAf47M4uKjIeMQZYVKRD1EwfObegpcH+m9BupxpXdeg9MChTttoQncMN6HQTsn0PsXlOmSfK3VikWts6DgvZS/EVmPoSJUDzlaktenCLVlyokPfbtHgvlrtFAGcPOAd2N285/bnyAygKKSV/DAjN2OKvioMV4695hxhkHfwNjOu4Zn5n5J/GH7LgdRmOxs0JSxIu+t9Mjabu5LJPDer6zRNzFRqLgisKaaVjvWGIS1XjPf1ZNxfvBHawQUM2NXz+EZ5+XQg69ebCtccz2Z0sGmqiBZA+qt+afECtuuJc/xeVumXCp3JKvPy2EspyO4abGnrYSah+x4KJSNyyda7oPI2OQ14MGNor4/OPnUOdJcUlonLgMsViUOHclM80hvbwbk25QTrJpMx4cWslH1es4v1f01KAHYd/JnrZiTF8zQn3oXgf0bCX2Kkk9a1QYQbEtT1ruhjstzGPvBYCPSyDRopvFtfIRlftD7CRBIFKZ4TOB/Uec67PWRcWd4gZrn3Rnnp1uToSq84EydEZJ6QBxZxNDc8OMZtabzki2tF0AKDKsf44lpTtCqGPOWPak2wFZ0jjqJi/qVC31v9Qfx3DCPzzX0/bGvEBbjogjA9qZ5xgrFOoK4tiePdZzB5gDLOXUdatomz+UxUSaEFe3pMdYRSiFEBq5Xio/+QcGTYcx32An0ZuoF6h8t1hr
- qIxgpCIL
- spNmNZzEid38Qj1grJBYbE+F/4FsCsvCj70dxlJlyafNzeQshTBPh3cqnqr13kA9CNZKs48+q86Z6XtMB9qfBQ9/PrEyNhxiSEbmHhthOgjdLEmwkU46C8RdXj72MEh5Cwl7iO/DHoxcw7dt/+7rBrzUjHQIniHWJXtVqM0LqwwrSmS/QuvUdzhrj5e5kRexwDTT9UdoRNcknRxbAjGQFH4MU23c3MF7Abu90/ESgfhj0htm322zAy6ss5g==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 14CD4A0009
+X-Stat-Signature: dtbzbcnzodobqwgcizagtfqezjd6fnkg
+X-HE-Tag: 1789467772-690381
+X-HE-Meta: U2FsdGVkX189CMvb4uqb/beXIvGE5hDkFGssNQyRSTotuy8jjPE/iB961yGhW1JDA9z6UIn+BdcWvQ2WJ6Womc5oifCQclRy5FlfOUhnevXXVl9Qb9ieGriHUrphXJNCAXPJK3mIc6OHxhR+DebpXPOhsUnZf29STw4wZnE4Cv2TMMy7kuL6seidVYk5rCdBAjI/LBr1FzUa6/OWi3s2hpqxrZoeF+kmFDMsHiFPyFbvfbFul8YP1EkKAy5hTHb6+BdElJi+uFcVsMbvSFchS8PKsc4toLaaiw9P5DMcn2KhnL90O5GK1F8Tw8qdS2Gk9MUnMTo0wBX38anBzr24yaI/rcWbKdzhtgXzRds23sZ8AU4MawPTyftLCZM4w4yt8bs0ACxd5z6zxS1SgsggPcm94te4W9lv8Z2wA/CfSE/blSE1yNOWvK/S6jNiyTdbz6HMlK+LtxdZfG43Awzrt0pUUkSMYEKKu8t6vc38YFSBVCCkLjoYzOUNxTmw1ufz/tnD9IcXtXNfK9z6U0SHh6/WZTIXRC3GWza5Rx7/SSWoooq0RNf+X+/A9r0vkqFfCIMQuHI5Jh1581GORl1FeWIKvRFlGK7DOmYWdTUGrPOmtXRpM11SyEESVySQ0pa02OXzFIPUfc1G2wDBoMQjWKh7XjrTiuhI5BllQhTsSSvhMUqQYmHCnpRzYGhWLV2pl7CyDPJCW+M0VFaVsE8GCqI7CwEhth1NNQg7W5hcJQiVGoYyOym3fuTZ2jmRtzUQn4QozFhzOttoGuw9y3tMG2j7jqDhk/ha76o1ndFRyDtEHwPxLgEMaLOoPlaBzkQg4ZrxgMslmqw0Qut5Cuo+pj/sBWFid9kAF2G7p/OTB/Ar6lxUpxuvnTqUS8kAn9qwCrHyqUzWN424G20VjRqYOCd9udd4VmROYx5MKZVLrYFoGgvEKolVHWYpCEaTajjajNR7Ylo3vG3Q7sAhO0u
+ 5mV5fAyv
+ 5hfeBtKfI5q1mTVqvLow/9CWFdNwKBazDrE8xLfHzIF5gp38osXrTlgJXDMgNPk0TwuPpP8daNNKfrMgZgfvw4A/SirRso0humtsE/SauwCTKZOTEdURaiM5zdM2diUA3PSFX0B9c7GUYF5z6XdMBbFdro9oTX89bws2b+FFu17XD0snFoE7aRm7+f62um9Mu6jY9vlRvV22f1bBVpp5SwhuqB7KJHOmQj5in8WJ8t86/vLBZc6imoUNUUZ+GcJPKGYGPNQOo/3Wzr87K1yH/hVcJEEyLCJanrLZo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,80 +104,158 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The coredump client only accepts SIGKILL. I've massaged away
-TIF_NOTIFY_SIGNAL in another patch series but it seems that
-TIF_SIGPENDING also has some warts and causes truncated coredumps:
+This is a long-standing problem that I discussed a while back with Jann.
+I didn't care enough about it to really fix it and it's from the
+before-fore-times.
 
-(1) cgroup v2 freezer isn't built on freezing. Instead,
-    cgroup_freeze_task() sets JOBCTL_TRAP_FREEZE and calls
-    signal_wake_up() on every task in the cgroup. That includes the
-    coredump client. The coredump client isn't able to act on the trap.
+coredump_parse() reads core_pattern directly while it can concurrently
+be modified. So it reads the first byte, figures out what mode is
+wanted, then allocates the number buffer and then consumes the rest of
+the core_pattern string.
 
-    So a freeze that lands in while a coredump is written will block.
-    Moving a coredumping client into a frozen cgroup has the same
-    problem.
+Say the syscal handler updates the core_pattern array byte by byte
+(idiotic but supported). So that can lead to all kinds of insane mixups.
+Say you could transform the old "|/usr/bin/helper" and the new
+"/tmp/core.%p" into a usermodehelper started as "tmp/core.<pid>".
 
-(2) retarget_shared_pending() doesn't take a coredump into account too.
-    So if a sibling thread is in the middle of changing the signal mask
-    or it exists with a pending signal that helpers points the signals
-    to other threads.
+So copy what proc_do_uts_string() does and let the handler run
+proc_dostring() on a copy, validate the copy and make it visible beneath
+a spinlock. Then coredump_parse() can take a snapshot under the same
+spinlock and parse a stable copy.
 
-    While it skips exiting threads it will target it at the coredump
-    client as the coredump client isn't yet exiting.
+From now on, rejected pattern are never visible and we can drop the
+whole rollback logic. It has the same minor defect that utsname has,
+namely that two writers can race on a non-zero offset. Irrelevant imho.
 
-So it's related to PF_NO_NOTIFY_SIGNAL which I have sitting in
-kernel-7.4.signal. We should be able to fix it this time by making
-signal_pending() report only SIGKILL for a task
-that has PF_DUMPCORE set.
-
-A cgroup v2 freeze now waits for the dump to finish. The PM and cgroup
-v1 freezers keep aborting it through dump_interrupted().
-
-Basically, PM should be able to interrupt the dump. cgroup v1 freezers
-are legacy crap we don't care about and cgroup 2 should wait(?).
-
-Fixes: 403bad72b67d ("coredump: only SIGKILL should interrupt the coredumping task")
-Cc: stable@vger.kernel.org
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- include/linux/sched/signal.h | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ fs/coredump.c | 58 ++++++++++++++++++++++++++++++++++++----------------------
+ 1 file changed, 36 insertions(+), 22 deletions(-)
 
-diff --git a/include/linux/sched/signal.h b/include/linux/sched/signal.h
-index 70067ccfe2ba..3a7ff3416e57 100644
---- a/include/linux/sched/signal.h
-+++ b/include/linux/sched/signal.h
-@@ -386,6 +386,11 @@ static inline int task_sigpending(struct task_struct *p)
- 	return unlikely(test_tsk_thread_flag(p,TIF_SIGPENDING));
- }
- 
-+static inline int __fatal_signal_pending(struct task_struct *p)
-+{
-+	return unlikely(sigismember(&p->pending.signal, SIGKILL));
-+}
-+
- static inline int signal_pending(struct task_struct *p)
+diff --git a/fs/coredump.c b/fs/coredump.c
+index 78ab6cb78be8..20cd95786dbe 100644
+--- a/fs/coredump.c
++++ b/fs/coredump.c
+@@ -86,6 +86,8 @@ static int core_uses_pid;
+ static unsigned int core_pipe_limit;
+ static unsigned int core_sort_vma;
+ static char core_pattern[CORENAME_MAX_SIZE] = "core";
++/* Taken around every copy in and out of core_pattern. */
++static DEFINE_SPINLOCK(core_pattern_lock);
+ static int core_name_size = CORENAME_MAX_SIZE;
+ unsigned int core_file_note_size_limit = CORE_FILE_NOTE_SIZE_DEFAULT;
+ static atomic_t core_pipe_count = ATOMIC_INIT(0);
+@@ -241,11 +243,16 @@ static bool coredump_parse(struct core_name *cn, struct coredump_params *cprm,
+ 			   size_t **argv, int *argc)
  {
- 	/*
-@@ -395,12 +400,12 @@ static inline int signal_pending(struct task_struct *p)
- 	 */
- 	if (unlikely(test_tsk_thread_flag(p, TIF_NOTIFY_SIGNAL)))
- 		return 1;
--	return task_sigpending(p);
--}
--
--static inline int __fatal_signal_pending(struct task_struct *p)
--{
--	return unlikely(sigismember(&p->pending.signal, SIGKILL));
-+	if (!task_sigpending(p))
-+		return 0;
-+	/* A coredumping task only stops for SIGKILL, see dump_interrupted(). */
-+	if (unlikely(READ_ONCE(p->flags) & PF_DUMPCORE))
-+		return __fatal_signal_pending(p);
-+	return 1;
+ 	const struct cred *cred = current_cred();
+-	const char *pat_ptr = core_pattern;
++	char pattern[CORENAME_MAX_SIZE];
++	const char *pat_ptr = pattern;
+ 	bool was_space = false;
+ 	int pid_in_pattern = 0;
+ 	int err = 0;
+ 
++	/* The sysctl handler may be publishing a new pattern. */
++	scoped_guard(spinlock, &core_pattern_lock)
++		strscpy(pattern, core_pattern);
++
+ 	cprm->mask = COREDUMP_KERNEL;
+ 	if (core_pipe_limit)
+ 		cprm->mask |= COREDUMP_WAIT;
+@@ -1690,11 +1697,11 @@ void validate_coredump_safety(void)
+ 	}
  }
  
- static inline int fatal_signal_pending(struct task_struct *p)
+-static inline bool check_coredump_socket(void)
++static inline bool check_coredump_socket(const char *pattern)
+ {
+ 	const char *p;
+ 
+-	if (core_pattern[0] != '@')
++	if (pattern[0] != '@')
+ 		return true;
+ 
+ 	/*
+@@ -1706,16 +1713,16 @@ static inline bool check_coredump_socket(void)
+ 		return false;
+ 
+ 	/* Must be an absolute path... */
+-	if (core_pattern[1] != '/') {
++	if (pattern[1] != '/') {
+ 		/* ... or the socket request protocol... */
+-		if (core_pattern[1] != '@')
++		if (pattern[1] != '@')
+ 			return false;
+ 		/* ... and if so must be an absolute path. */
+-		if (core_pattern[2] != '/')
++		if (pattern[2] != '/')
+ 			return false;
+-		p = &core_pattern[2];
++		p = &pattern[2];
+ 	} else {
+-		p = &core_pattern[1];
++		p = &pattern[1];
+ 	}
+ 
+ 	/* The path obviously cannot exceed UNIX_PATH_MAX. */
+@@ -1723,7 +1730,7 @@ static inline bool check_coredump_socket(void)
+ 		return false;
+ 
+ 	/* Must not contain ".." in the path. */
+-	if (name_contains_dotdot(core_pattern))
++	if (name_contains_dotdot(pattern))
+ 		return false;
+ 
+ 	return true;
+@@ -1732,27 +1739,34 @@ static inline bool check_coredump_socket(void)
+ static int proc_dostring_coredump(const struct ctl_table *table, int write,
+ 		  void *buffer, size_t *lenp, loff_t *ppos)
+ {
++	char pattern[CORENAME_MAX_SIZE];
++	const struct ctl_table tmp = {
++		.procname	= table->procname,
++		.data		= pattern,
++		.maxlen		= sizeof(pattern),
++	};
++	bool changed = false;
+ 	int error;
+-	ssize_t retval;
+-	char old_core_pattern[CORENAME_MAX_SIZE];
+-
+-	if (!write)
+-		return proc_dostring(table, write, buffer, lenp, ppos);
+ 
+-	retval = strscpy(old_core_pattern, core_pattern, CORENAME_MAX_SIZE);
++	/* Work on a copy, proc_dostring() appends at *ppos. */
++	scoped_guard(spinlock, &core_pattern_lock)
++		strscpy(pattern, core_pattern);
+ 
+-	error = proc_dostring(table, write, buffer, lenp, ppos);
+-	if (error)
++	error = proc_dostring(&tmp, write, buffer, lenp, ppos);
++	if (error || !write)
+ 		return error;
+ 
+-	if (!check_coredump_socket()) {
+-		strscpy(core_pattern, old_core_pattern, retval + 1);
++	if (!check_coredump_socket(pattern))
+ 		return -EINVAL;
+-	}
+ 
+-	if (strncmp(old_core_pattern, core_pattern, CORENAME_MAX_SIZE))
++	/* Publish the validated pattern whole. */
++	scoped_guard(spinlock, &core_pattern_lock) {
++		changed = strncmp(pattern, core_pattern, CORENAME_MAX_SIZE);
++		strscpy(core_pattern, pattern);
++	}
++	if (changed)
+ 		validate_coredump_safety();
+-	return error;
++	return 0;
+ }
+ 
+ static const unsigned int core_file_note_size_min = CORE_FILE_NOTE_SIZE_DEFAULT;
 
 -- 
 2.53.0
