@@ -4,90 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A647EC88E53
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 06:11:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0F5AC88E53
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 06:14:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B65716B008C; Tue, 15 Sep 2026 02:11:22 -0400 (EDT)
+	id A31226B0098; Tue, 15 Sep 2026 02:14:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B15CD6B0096; Tue, 15 Sep 2026 02:11:22 -0400 (EDT)
+	id 9E29E6B0099; Tue, 15 Sep 2026 02:14:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A2D936B0098; Tue, 15 Sep 2026 02:11:22 -0400 (EDT)
+	id 8D04D6B009B; Tue, 15 Sep 2026 02:14:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 81A056B008C
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:11:22 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id EC7D2160317
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:11:21 +0000 (UTC)
-X-FDA: 85214974362.22.3EE7F78
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 2DFDF20008
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:11:20 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=yUydxAS4;
-	spf=pass (imf31.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 67A8F6B0098
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:14:24 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AA2CDC0348
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:14:23 +0000 (UTC)
+X-FDA: 85214982006.30.3AEDC69
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 14731A0007
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:14:21 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Cwwjt4nJ;
+	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789452680;
+	s=arc-20220608; t=1789452862;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xCk5bN9SaRWwllaiJGSLIbTGPxtbvtj0ZCgGZJ1Msns=;
-	b=GAgCLK71Bu2BgbLab7f9VwUdPFfWCOun2N3LBPlc/5ggC9VMoJPbY1QZ64iMU9hL1GyL+b
-	nWN2mhW8pXXhvvQdZvqJqnTktESlFhIXG5AAdQoaH4dkEhkCm/vlOT+m7mXqT06X0MppU5
-	OerLXrxcFWANgqeH+aW39M/2RJbUV0k=
+	bh=/xezU87Zq2Y1vT/o2bvpMtCWCufr1oupAxWYAhAbPVE=;
+	b=KF/ufVjQUeQMywMkjrsNej3o3iv5EPNuf2g0xEtTliTv6fpngaFPIR0Hvrc8Yea6HV09M3
+	HdHhgWEcji9qpbtLUOACHlQKQq1ZAgNeRrcy7hLiGUq11KSC+4y9noVQXN4/wJQFzu0B3B
+	nYaZBdfrNTk4cZMwQ1DhBqzFMdlUj50=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=yUydxAS4;
-	spf=pass (imf31.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Cwwjt4nJ;
+	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789452680;
-	b=4CJA8s63EPrPeYDxj06dD5EEjv2J8KFnaWTUG2ATPa2f00fjGg+wjwPW+0iYPKjyBOrniv
-	4cQwudqWULMJGX0UGn5d3za5ymbg4qYXFSUmKt9js/Z/b/rpdfmGM9d6LOHGDk0210tyB1
-	5s1MmASl+8sLlJJVfB8SeYVP1qxMn8c=
+	t=1789452862;
+	b=yKzQzEf1hmEPYIjkKquFFZ6vIQXyZVHQQEO+AG6QbFhOYR+gGHBXC03q4xofY0YpXMLcIp
+	96CepXOkSIiMR0ByZZiqi5+McmVElGDMY2Mik1seQr+hul3jvpA36Hrft9UyH8JHqeIjYC
+	hkJsxbqOgCJ/ibw6YUPpzw/cSIfb1R0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 18B1940050;
-	Tue, 15 Sep 2026 06:11:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AEB11F000FF;
-	Tue, 15 Sep 2026 06:11:18 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6A6A8600D1;
+	Tue, 15 Sep 2026 06:14:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3910C1F000FF;
+	Tue, 15 Sep 2026 06:14:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1789452679;
-	bh=xCk5bN9SaRWwllaiJGSLIbTGPxtbvtj0ZCgGZJ1Msns=;
+	d=linux-foundation.org; s=korg; t=1789452861;
+	bh=/xezU87Zq2Y1vT/o2bvpMtCWCufr1oupAxWYAhAbPVE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=yUydxAS4vHPqlkHac9gwWXo4taASQ50/J9468zWaAbLsONKUVHdztIvnzYOPtAmF9
-	 O6spzgv9H5BW8L8d2rCRVaZzuFds6hvGdRP2Ct3QPBpWELIu1r6ss8/scHsd87tvr1
-	 d56QkOORK0havknyiEvujnExWzU0m6e2ggNB9JCY=
-Date: Mon, 14 Sep 2026 23:11:18 -0700
+	b=Cwwjt4nJYsaMpOAFBS96BKI8N+2+sK8qyZMEoJg8kDgjYtNT2BKKpZlwOV4sgpN7S
+	 855KBpJ5y+VTkRCRPDpDh2agL14R3mMuAGVEDtM5DfVAxwgvZ+edoZhOW3rum1Pzlo
+	 n7aEuG9bgOKttiqPyGo3uJh5NElBpjAtfEeOQXnI=
+Date: Mon, 14 Sep 2026 23:14:18 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Gregory Price <gourry@gourry.net>
-Cc: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, kernel-team@meta.com, liam@infradead.org,
- ljs@kernel.org, vbabka@kernel.org, jannh@google.com, pfalcato@suse.de,
- peterx@redhat.com, jgg@ziepe.ca, david@kernel.org, sashiko-bot
- <sashiko-bot@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH] proc/task_mmu: handle special PMDs in clear_refs and
- pagemap
-Message-Id: <20260914231118.ac170fb8c2c105412adfedd3@linux-foundation.org>
-In-Reply-To: <aqjS0xWes7fhhI9A@gourry-fedora-PF4VCD3F>
-References: <20260912122822.3348978-1-gourry@gourry.net>
-	<20260914214910.a22cfcdc250bfbb6b14edaf8@linux-foundation.org>
-	<aqjS0xWes7fhhI9A@gourry-fedora-PF4VCD3F>
+To: Yury Norov <ynorov@nvidia.com>
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Matthew Wilcox <willy@infradead.org>, Peter
+ Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will
+ Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>, Waiman Long
+ <longman@redhat.com>, Dennis Zhou <dennis@kernel.org>, Tejun Heo
+ <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, "Paul E. McKenney"
+ <paulmck@kernel.org>, Frederic Weisbecker <frederic@kernel.org>, Neeraj
+ Upadhyay <neeraj.upadhyay@kernel.org>, Joel Fernandes
+ <joelagnelf@nvidia.com>, Josh Triplett <josh@joshtriplett.org>, Uladzislau
+ Rezki <urezki@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, Mathieu
+ Desnoyers <mathieu.desnoyers@efficios.com>, Lai Jiangshan
+ <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>, Onur
+ =?ISO-8859-1?Q?=D6zkan?= <work@onurozkan.dev>, Kees Cook <kees@kernel.org>,
+ Joel Granados <joel.granados@kernel.org>, Anna-Maria Behnsen
+ <anna-maria@linutronix.de>, Thomas Gleixner <tglx@kernel.org>, Juri Lelli
+ <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>, Ben Segall
+ <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, Valentin Schneider
+ <vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, Mike
+ Rapoport <rppt@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Lorenzo
+ Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Jann Horn
+ <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, Xuan Zhuo
+ <xuanzhuo@linux.alibaba.com>, Eugenio =?ISO-8859-1?Q?P=E9rez?=
+ <eperezma@redhat.com>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Nathan Chancellor
+ <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, Bill
+ Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ wireguard@lists.zx2c4.com, netdev@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, rcu@vger.kernel.org,
+ virtualization@lists.linux.dev, linux-rt-devel@lists.linux.dev,
+ llvm@lists.linux.dev, Yury Norov <yury.norov@gmail.com>
+Subject: Re: [PATCH 00/17] Treewide: enforce static storage for object
+ initializers
+Message-Id: <20260914231418.b15ec01f7225cf460f6e515a@linux-foundation.org>
+In-Reply-To: <20260915030336.1192299-1-ynorov@nvidia.com>
+References: <20260915030336.1192299-1-ynorov@nvidia.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 2DFDF20008
-X-Stat-Signature: z9bfeqcrr1bnezj4ufcth17sjyd5er5f
+X-Rspamd-Queue-Id: 14731A0007
+X-Stat-Signature: 5tsjn7s3b18s67cyhf1ptzo1rex6w91f
 X-Rspam-User: 
-X-HE-Tag: 1789452680-290724
-X-HE-Meta: U2FsdGVkX18X14Q70Esj7u3vT+WN6hxurSrnbqVKDerSe9COBCNICG9h8CuZdmzcLPh27dZ70QsV7L/0LjzX8r9ZZGxsk0JqbtZ7dNSSQNdCElaDWd/PrJJbikxGywETSFMGFBtPZkBThYseVwY+Yymgf5T/bYSzwPuT/88wOt82qFnkgQ5lYUxd1f5xybfxJogC+K66VTJib7R+s0rHwvTNnMu5lsS1xt02zrbl9xU5t7TqtqdtaT74y+0VSl+/Eq335eZncB1HtqRxGD7Z9dvtIwTDaX8FauOwqZFlebIahGgYiIvG0mleyHzj+FN9p+TCFLMz+rNe9JuYRGb0Qb/ALPCAGWZq/I3OeB5mnaEIXZkQOruyA8FN/nxaKU/veGCq4efbPRJoh0mRiVfKZxjZ9DK2eXEt8E1jZByM3LbFQa5nldTvhUepcjgctZ3PSvxl/Hr3YG5Tqjmi0zfgCGzvWTS/TDwxBfzth8B/mk03xulZaKfWUQHHq1tsZHs/EbiYSvdzcPhSm91WohkhBTkQuVJ9fJq3TClqezl0KezmcG8Z1e2fzMrXlxvfsIF0Oe2VMbWb1P+0AVZj/hA1rIcPR3A6l6VONzznEWkEicH0eKcQHRbu/BluMRZwxLSZzrZTaY6tI9ArU6aq8lY10ZzZDkkGJP5NHEhgJFu96LpPE9YGf1Al+ypdz9d3iAEqa1QgQIXgrYNRiKXnX7Dk1i0Yel1zDCGo/uvWJIs1xHCcjOi7xgWr5XGV3ni2/A9r8ZGjqR7uFti6mUVHLG6jzM7rGUWQK0UgJniASYf3VVPpVLhrix6WaPSbgcnQ6USrdPoJ++a7okP8JucI+R7jfaHXs6JbQ9V/53GrBTX0wiXY6gvi5lQYDvr4P3Oo128hex0Yx5XN6oYK4pLUwPosQ2V0WOBlwkJXn5pb74hV+ig62LvsNkyZZXVEQ7hhRI6EbQvg1aflfMPlJsCu4hZ
- uu8lv0pB
- 5gwsg79nNQF0dVoCkfwU1tSJuUPwGBC1jRgXqobLuh3EvWTWBC9QeDoV0PjbDawcuqzUpuCTjGk8YWchqfjUnhRUChKDoVqufSNmcIEMafI2tcKusMLUU16F7pSD9Y8BnzyeLeuBe58XPwkLemewZAq5QVQ/9SCeDxvCUk3iJgFiiBEK2q5vwH0leZmhg5QhRqZVwJdDktkUSbSipbWhuqubkQl5pOhn1LVDhPPw9XJWMS1imMUmrlEIyk0qyKBOy08oi8hr+hKq7TXP85rOv7pp6cWeeq/qmfCIZcH8PJNVUC0rxLCnnd6dJ7PiIqJsNKjTfcQz7jgFCcx/JzBdmTYBMtIVZKx/ZnMbzs8ND383X4XKR585YooTOBRNDnUczqSXN
+X-HE-Tag: 1789452861-212697
+X-HE-Meta: U2FsdGVkX1+Jdopg9UHrPZUhl8lWVi1zgYdxS5LjpVICNhkXf5WhuBqR/OKOIArV5o+Gg6dmLfBdkd122tJxp5a40x2rvNNNVuVYwjHA8aUoLvClHMEe0fveC9hB6BlAh+QCmQkeMWYZvS3F+Gp150EzhSHjkjmpJMm5E2uQHDnjXojIP9ruj2NtdJ8+Qsdj4baPF5ITj4rmm7XR+O9HW1GTb1DSFAr8mMXOA0GbXFDGybgj4LrXYgM4cEzIKBcdfWDlL6c8TwBAlHKuQeesW8/NkfeLiNk3aQAnlVI0LkhL0yBifZYkbli+1uX2Yx7xcQFDf/gTFNzFgB1KOPsWEXEEpl/l0h0hkLjFNo9WBT+WsXPh+yQ5Z4kMS7GHRweRdamP/TKmqxYCgkeFcu2hUfYRM8u7PtCaqlzcP3Z89kCDuwb6alOwQ4X4/kJOE6jKCR7nCcxAdLmzQNkOd6rmweQynTqDtcK9gRpzjkgoihaKO8RsQJrNokYYz5L2yAMFE7dsZ2rMPkXjGtNAccA2Hw6Y5jipeC1XIBSVeXLhQ9DDLf68JeTvzxq/imQmoHsDWmPkHtX219qIa3CaaJyxCamtF3GYJKa54CHeJqCZyr6Noc5QCRXhAyWlA85+PDNreBzW2OB0FJ78PFqFx7ingNBHm/Ou76+mciaVr8eNvJqQi9KCfb3jxxYqTWpWyHwAdE3m38otGXxGk4oAY6QYaZvlT8CqkHkmAGsMoUMCIKA1O/2X+UNSisSfHnG8Ri3kA8OVUiY6M2wBHPhl6BV9aYKL9xqrwxsyUTa46rzwF3NNP2Jt18SPfJ0nDOw8Lm6SUaGlLjv5rHxd44pdswx6deaLgwN8sbApUPTMpzthLpvYlbSZ9iacgJUaOZO2jfMZgb4WVfVWis6ZbcUZDlCSQxAnLU1gUp3xBh9xomanmj9HH2w/dJHWpSOM1pUcWn1nyvaoKpLwI7XgUFjxWlS
+ 2iEoqT76
+ hRGtV6JKXQFnGzw/ar4x1ITDD3Zx1cM4ctM6PzMJpvGu+9P+0lNbPISEjdun30PVLwLTOQXgH5Cr6vpQGafhSvFUc7BQQnX6FoNIi6JMDJ3aTWhEjrMRN67FD0cxf8NYEFdpflyP9RR0eALA8xKOgecE3pkfirkiJxlLkrqV6WlJNY6eeSLyi1BeRYPTvpBiTbRvdzMNUoWZyFxagyVl1EQIUNr6MmeZPw05wlR74Di0Pqdcv4Xabi8nf78+Kcl9U5HRYpBPKmd7iHlum8oYlcTWwKgJLoh+MA9CoRuIbLoYhsxfnvLqEOnczMZuhWLf/PjyMQo2y2zdTq5X921QdXPRK3EiHKwr62VzmOVIconqPu8glj/pD79+kq2+AS4AWMcaF8zZil7ymo6s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,22 +123,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 15 Sep 2026 01:19:50 -0400 Gregory Price <gourry@gourry.net> wrote:
+On Mon, 14 Sep 2026 23:03:18 -0400 Yury Norov <ynorov@nvidia.com> wrote:
 
-> > > Fixes: 3c8e44c9b369 ("mm: mark special bits for huge pfn mappings when inject")
-> > > Cc: <stable@vger.kernel.org> # v6.19+
-> > 
-> > Why cc:stable?  Is a crafted test driver the only way of hitting this?
-> > 
+> Declaration macros that statically initialize embedded locks require static
+> storage when lockdep is enabled. Automatic objects must use runtime
+> initialization so lockdep receives a persistent class key.
 > 
-> Technically reachable via mshv_vtl_low, so i tagged it stable.
+> For automatic local objects, lockdep cannot use the lock address as a persistent
+> class key and reports "INFO: trying to register non-static key" before disabling
+> itself.
 
-I have no idea what this means, but I pasted it in ;)
-
-> It's hard to make a judgment call on some of these - so I err on the
-> side of backporting.  Feel free to drop stable if you think it's not
-> worth it.
-
-I retained the cc:stable.  It's disturbing to leave known bugs in there
-because we *think* nobody can reach them.  What if we're wrong about that?
+So why haven't we been buried in reports about this warning coming out?
 
