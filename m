@@ -4,151 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DA46C88E53
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 09:24:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D259C88E75
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 09:39:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5040C6B0099; Tue, 15 Sep 2026 05:24:08 -0400 (EDT)
+	id 45CFA6B0088; Tue, 15 Sep 2026 05:39:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B5686B009B; Tue, 15 Sep 2026 05:24:08 -0400 (EDT)
+	id 3E5286B008C; Tue, 15 Sep 2026 05:39:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 37D5D6B009D; Tue, 15 Sep 2026 05:24:08 -0400 (EDT)
+	id 2B1FA6B0092; Tue, 15 Sep 2026 05:39:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B5356B0099
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 05:24:08 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 93BECA43C2
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 09:24:07 +0000 (UTC)
-X-FDA: 85215460134.06.575410A
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	by imf01.hostedemail.com (Postfix) with ESMTP id AECBC4000B
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 09:24:05 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=HiRFRV7g;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of david.laight.linux@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789464245;
-	b=JnzgrGn/qqVcOiy0fD/cQG7ypg3JViW2B6FOo7IaV6BKRd0DqjxOJU31Zd6Jx2tUiA9/iA
-	6pUECeGhq9jbG1f5ZONoNSlQTlCqShi8wrLTLPK9k+7kiTOjzZoIqSyq/lyvCxGsM9hHLu
-	r/llb3USuyoUjDxsQ4o39ZMPCVWVddc=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=HiRFRV7g;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of david.laight.linux@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id EA4856B0088
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 05:39:37 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 12055C0384
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 09:39:37 +0000 (UTC)
+X-FDA: 85215499194.04.1D7C964
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 4008A14000B
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 09:39:35 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=LbFtepk3;
+	spf=pass (imf23.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789464245;
+	s=arc-20220608; t=1789465175;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aLdhT2Q1x0+krLh05Drnda1oX9PUv34jY/LmETe5rwQ=;
-	b=v4Ff6d+47lzG2EGq9duYc09IsqG70frntjfY1v/vWDGrxmTfJcTilkdsjh++tOTtzs1yvE
-	drg3iKwm6w5J4iPeb3U6tH8rnZm9//eS052Iby5QtBj41Dr3FRMXRK/XbUFI0Qhh/sXWOU
-	u2iJhpD8ygxBwh/VqE3hIHjOqekX4cI=
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b912e2406so12226815e9.1
-        for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:24:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789464244; x=1790069044; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=aLdhT2Q1x0+krLh05Drnda1oX9PUv34jY/LmETe5rwQ=;
-        b=HiRFRV7gjrz2429NxDANTTeNdz28+n1e9tBArQkRToucEhescfT8yoCnOeDh0avKl7
-         XmzVQIvTF3VcB9Qwoh5v8kZzqIMqF8Ky10TlDIXL07DYbphP4bIndBu20hq6TsnMXDxn
-         XseLSNwkiox85qW2EhEIWxJQJ18LwUKlv9EayW7sdkgBJ0dNBnXn/9jfCLkECU1OrBi2
-         KY7iXmWlgVqP9zyR8Q+u+/GytmCpMVBFCcFOQ7ZV/Zhrpxp7hmM+G1wTS5YSRAYQjSnK
-         p/AvznQ+23W4F9VT6BgpxcP5Y7+W/dMuYv1mMlIsPq92DYVQ1H1aDwUNdD/jI8rEKfbK
-         XPVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789464244; x=1790069044;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=aLdhT2Q1x0+krLh05Drnda1oX9PUv34jY/LmETe5rwQ=;
-        b=PWlJD/qs2IdlDtSoBVujPjGBsbYT38CRzCv1G69bLtrmcTrvknI/8WSiBZfIET5TXS
-         c+GDBPeCP5rXQ5kVUBcE8GdEXRRMyIiKOyHY9CsnGISib4hpfk696AJhCVgt5iwaf0Fg
-         6dI62yVeWfRcqUfNhGdxzD51DqVv534Gveq39PhMv4jtIAzFqct2FouIE3x2YzIdcZxO
-         ILIZAeP+cEaJZBVNycavfyD7Tym2utqGXfmPL8lJ/z58tRJDUQaIVI/3xSjl6ZyftbLa
-         rFrpS0ZlKRwUN0PUsFuvChPIJUHJwlfUqH5obNEVa4Sl7rhx4V0yoEQjW+CgbkVqXKSp
-         e3ug==
-X-Forwarded-Encrypted: i=1; AKwUvBxdSb6jEKv2sz2fiTsjHBz4q93kk6ZPcJUfhFjaQKIKIB/p/2FAahp8VWHtJRh3kEfrF4qjubFgJg==@kvack.org
-X-Gm-Message-State: AFuF++kyWVqMXL3+ia94tRBkf92GNdZWq2MgjXZGwcDXVdXvHVAygPwa
-	hv0Wv1a9clh/3nArP86cjbILF++/PPxTDq/6lz6Xoeq3AA5WafdrZHEl
-X-Gm-Gg: AYBFou0H1SdyvGCZwIfL9zxyQHsaX5/PQ1kGeV2TpiKW98vGHUYXGMblWY1MS4PYBDn
-	LiQct3EpqiASfxoYHDGKk2NxUlH8J3sBM+GJSnbnxcsQXQDz6cDkNmsPTKAnCDAAY90kTlzM+VY
-	dFBtlbNvpNCWJnpidOpRP7OCcZ/mtJTfwyQ9pVsSFvuS2VO5rNmgjR1S9VkfJdU+4Z+heQr/Lfa
-	PT4guBdEvcagM/0QR1ldq3lMGuu5oFwaezP8r3gj487sRVy6b2kF5lB4NIAOFx6hBYk5quIaYm0
-	MvLWcnPET8/VQ7skyeBLSR+JFBQbL6X8IUiI/cEtPk4Fj1ixeWAYT09hSWy8P2tW+fYsd08tMMK
-	1WV6eZ96vVghfOAw6tWJ5fc7A9qoma1Tldg2HCsSk3gbeGZN3l+TbyEoDdS+y2RL+LGwxyZkiTa
-	gfLUX/aTVhsIXgZ7wuH52ioh6HHfd2ki9ci266fJAjrkIae/HdySBbBuVnY559/qLW3bvpnr6H5
-	Kv9fvAKV9KORuj49GP7ES2TrkJah1IHLB0C
-X-Received: by 2002:a05:600c:c162:b0:49e:65f2:db64 with SMTP id 5b1f17b1804b1-49e7d72b000mr36925425e9.5.1789464243970;
-        Tue, 15 Sep 2026 02:24:03 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e7ef9228fsm49333445e9.15.2026.09.15.02.24.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2026 02:24:03 -0700 (PDT)
-Date: Tue, 15 Sep 2026 10:24:01 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Yury Norov <ynorov@nvidia.com>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Matthew Wilcox
- <willy@infradead.org>, Peter Zijlstra <peterz@infradead.org>, Ingo Molnar
- <mingo@redhat.com>, Will Deacon <will@kernel.org>, Boqun Feng
- <boqun@kernel.org>, Waiman Long <longman@redhat.com>, Dennis Zhou
- <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter
- <cl@gentwo.org>, "Paul E. McKenney" <paulmck@kernel.org>, Frederic
- Weisbecker <frederic@kernel.org>, Neeraj Upadhyay
- <neeraj.upadhyay@kernel.org>, Joel Fernandes <joelagnelf@nvidia.com>, Josh
- Triplett <josh@joshtriplett.org>, Uladzislau Rezki <urezki@gmail.com>,
- Steven Rostedt <rostedt@goodmis.org>, Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>, Lai Jiangshan <jiangshanlai@gmail.com>,
- Zqiang <qiang.zhang@linux.dev>, Onur =?UTF-8?B?w5Z6a2Fu?=
- <work@onurozkan.dev>, Kees Cook <kees@kernel.org>, Joel Granados
- <joel.granados@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>,
- Thomas Gleixner <tglx@kernel.org>, Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann
- <dietmar.eggemann@arm.com>, Ben Segall <bsegall@google.com>, Mel Gorman
- <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, K Prateek
- Nayak <kprateek.nayak@amd.com>, Mike Rapoport <rppt@kernel.org>, "Liam R.
- Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, Vlastimil
- Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato
- <pfalcato@suse.de>, "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang
- <jasowangio@gmail.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio
- =?UTF-8?B?UMOpcmV6?= <eperezma@redhat.com>, Sebastian Andrzej Siewior
- <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, Nathan
- Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>,
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- wireguard@lists.zx2c4.com, netdev@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, rcu@vger.kernel.org,
- virtualization@lists.linux.dev, linux-rt-devel@lists.linux.dev,
- llvm@lists.linux.dev, Yury Norov <yury.norov@gmail.com>
-Subject: Re: [PATCH 00/17] Treewide: enforce static storage for object
- initializers
-Message-ID: <20260915102401.3c56aa95@pumpkin>
-In-Reply-To: <20260914231418.b15ec01f7225cf460f6e515a@linux-foundation.org>
-References: <20260915030336.1192299-1-ynorov@nvidia.com>
-	<20260914231418.b15ec01f7225cf460f6e515a@linux-foundation.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	bh=/uhpvQmr+AqCToUbIpUgflGVW8DQQ+RYjBfUFAIbuyk=;
+	b=WRsVwqNsjvC4iiUZYGX0ts1IBaPLduZRXBSr1J4z7B/xb8f9PWzoND7Z6xKJzrfq8VZjGy
+	ys35CQ0JgfDUifjsduI1p4m1sLsHPduKhjLExewbmUq1CCNtuiHA/54KP+Mh0rxWIUYyY+
+	CtRyWRNQP1Bx3U0+YY5k2OYGQPNWUc0=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=LbFtepk3;
+	spf=pass (imf23.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789465175;
+	b=BX5JM7RF8Wlw+Gx/c37ZqYY0vV+0pTv0BQXLnpUWA5FcbXxNX7YQGXcZu+cf3U6+hl83wM
+	rQcpd/D+Z+rss+8NJqP6vrD3SJwzAZjXXw4p+4cLIPexuin1g5ZPXRLua6S6lwL3AIwkGd
+	+OUkRk99yAYZqimlnZE9JRrF1nuGwAc=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A06CB169C;
+	Tue, 15 Sep 2026 02:39:30 -0700 (PDT)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9E29F3F86F;
+	Tue, 15 Sep 2026 02:39:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1789465174; bh=WvKg6yi0zy54Y7B92PbBMnpXp8kB6bmsey88lYteFxY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LbFtepk3gfAVUJ6FMQ6DX7rrzqIFqKbksF5m7SwDJw6CtohV2sV6LZb3AxkRMAX3X
+	 g8QbVXj0uGezWwbtv0j/1n9P7ctbLBAV6ujO1c/SuwFQhEmM7Xm3pKHr5+0BI9HJWn
+	 mv99fdUM9uYHfo7tMlTA7cKnSKCBa0luxL+g8lkQ=
+Date: Tue, 15 Sep 2026 10:39:28 +0100
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+	Peter Xu <peterx@redhat.com>, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, Shuah Khan <shuah@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+	Sarthak Sharma <sarthak.sharma@arm.com>
+Subject: Re: [PATCH v3 2/3] kselftest: mm: remove HPAGE_SIZE and HPAGE_SHIFT
+ macro
+Message-ID: <aqkSUBm_8LpIjAsZ@e129823.arm.com>
+References: <20260914-fix_hpage_macro-v3-0-c9a305a01d39@arm.com>
+ <20260914-fix_hpage_macro-v3-2-c9a305a01d39@arm.com>
+ <DLFJ9GNOF56E.1PDQZVO24RME@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <DLFJ9GNOF56E.1PDQZVO24RME@nvidia.com>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 4008A14000B
+X-Stat-Signature: qxsxgxcbuci3qifzc6zo1geajbqff414
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: AECBC4000B
-X-Stat-Signature: b8wfpsd9ge7d3myqks9sc19nmckgp4nk
-X-HE-Tag: 1789464245-211293
-X-HE-Meta: U2FsdGVkX18ibjE0CqpmmHbwQLX9J4SUd6PfSO2gvp66b1AbVJbJxlLY0MmMxmbNMP8a1tzClcSxvRtLYoEu/QZf/CAWf+/R1thqOm7S6W8ClG8Pf3mcrGHk4JxmTe02HkDOaKkBykVw6MCirzmjDxCl+yEipoLJDa5LLgY/wG51HO39l4PFZDyZ3VhTSut7nTaMtgOrpYMfMXPSOjpo2uiZ+OR35otzBQZDGRXRQzB0jSiy47zIjJq7hnWkG6ZOTP2eZze8MMmXQUWfetPwrLTQCb0m9FWIBDfH/wPARDBdMhL4jUehgglvLGIriEEGD2Ikz80poSh8yDe7GvP5QBwdbjmkBf629mqJTuqBzDrnNsmPH8cZeGY/05fjCN1tXdzzkbPfY9k6F4d3TYjAdqUE+Os34mJDt7AglMbrULPPj+kXgA9jIbdLBLJeIOUDtl+BENjaqyzR1P0+T+hkb3DWLdMYfd4g9VdiGGbe9KJgZ+5G9scwBN1MAkNNljxoHGJBeS63jIz0tLQRd0kcpiYjgBW3wUEoOhLmGFD6q/LnHqJ0G/exMKQCQMD1gJiejt3qrOz8KIEtZSVpTyPoH0BVBHyYGHgMV0iCFPYpBgj/e6NTvSAuc0jzuBxNifd4EwXib4+1B3gN7SfTPwv8iGZLMXt5SJG870VArmQ7CyoB1ZZVyQy1EehvECUQ8GRc+glARYZr/nRjhBUBscBQi8G9odwvoIV1+1P068XaQhuJequXEXKw7xu1kcnoPcgI5wV1BDyP4hXfbKQw0h3Z2qPadV4sOZC4pryx+iRpbYQ08/91LdL4F4TzNgBo0AgW9DqmR2SxzWrKBj3z17uOhXTdD4x+3iNKuhFXlgJ5g7C4lnOVrBy87OaXS4s3sai+ZpOSRoTYdfjuDQh+4FnOXfsb5e5JxAGJ+6ErJ0qvjUvpTxoSR0CmI0FTyTJ+4cIL6jXPgL6FcI9kviDBDbH
- UXw2gY9T
- HEKxpz3t1xOK/QLoKoWBBMS5T43QfB/LC3C8QGx7Akh+aag7pZN6CZFbjGkIUn/gaJKoAivwAof7o/A2b4MJoSjLpUftK16DXCTh1mwFzYVvXebKM3PZM3U7tbkIyaEjM5UOKq1ZbJ/NRy1mUXBytKuRODnrZuBc4ePTIh9hIDUahby+m8lVkbuODaxMO/L6QXY3ASABWx3CdsW2NlH3JBaA/PH+Fq+clMQpgyUPpjQMvzTgH4kf8DOq3gcb/Or4pQ937Leg1l1Ur7o0M7nSVmSiUm+LQxRcKJuunASGAsB7ybW3Vkd3uyFdfb9wb6ViHc19nEBPR4uthvFwPnoCDK49xLU5PlaK0ev4ZtjImIbNSoCR7jPKLBconLOEpOO0xj+Hl7V1t+HFS8ws35AF4uLqcVgJrp4/xKS0lTSElzSdoWq++z70/UqKcZdwUX66I5R4wrUGrkzQTO1Cjz3Jx/FH5bwFfhJRs0YuY0rQZa5IAM1Dhvw59PCkHim9PN5oRNnztpyDFtugWaHnNneciXCjc7NR0ivOu/shmrEBP+CY0M6OFJ3s8naI+Hf/ILil2yYDZL2KG4zsK9yrJWwZbfWPHMA==
+X-HE-Tag: 1789465175-317081
+X-HE-Meta: U2FsdGVkX1/4hW/Xpcc4mopa6OGxQtcTCNSTtk9RPspjr21dw4WIC9vKIkpT3QIiyJVJGxXTV06VCurjMF3v6hFDqKYZ24JBQ/4eZ8sRuraTM898KVsytV7XDGzcCt+BmhKTIJo+xLuAsvZl+u092YxvgMdM/o86v/S1b3br38OGdth8BnHaaOwmn+nV4TJlQDFYyFBTHKaX9oxB/52FIJUEfq6Dui9T8LcL4akRgtEFbyLhibmNPfujUKJvA63BB3g0oWCNFQcLfbYInCqg/XmnHo9V9yLHAaXjG8abHsnCe36g91FpBLVG7vT24s9uzUmOU36UoT+jOxfnm75efG9LD72SvOR87fCS+quKVBF6WzRUcRi2TrUFeLsA/xNLGtWuph5frxyuO44LeO8SUmNoMZLZcp+DKt10NKVG4GRBR57nIRKEsYsl2mb48TvtqJH/sWWeQXk4qYUBUfihHA5JDSr64fMwUYCdNmkHAf9d25jfsejdTkxlKIRbzcuYnvwCEM5wdPGpb22o4mgtIcK3XOlFOIxowkHtCC71ATylhu5gVATgDQ9OzS1cHC6j2G+Te9gVWulfnWUFyUI1cXigKG90g4FJb5Du0GGAQxRbj0BqfHKqgxlehiTAzWb0qDQsWhLWwXOjr5zxeiY80m2gtw2ODT7hJ1hXdX6fSWdiv/c/pbb+EFGUGp8iktX/c9EtS9NW3ZBO1UQUe/RlFY68Rr+9aOWqMgu0+9imAYd8S6D+mA1Jd3cCXEcOAOZCEf9liAYIAjvlKa7Dnz0VjOPsEfurwyI/bLgbMmhFNoNrclRAM9dPYQIGwgDCLMymeYRS6ybQKzwOkGnrJ7jcuSqz/rakuTfuSa6P54iXTAfdOevSOyLRdcguwxJmaYDgu3A6J7LAzDtiXD6tkm2O5uweQuy+fdWz3vdZmPaDiHkb7w6kuwavH1X0FKDjiNpZ0ZWyyboItKbU2AV6bo3
+ YhuCrZNk
+ +1LgVXAtgwDekBaQ5EvoknUS9tQavH/GnpgCgRv0V4NaflvjWQgc6muGTLvlEB/cHOvXOytCt2cadm72crqxRh0VDKbp4KJMZ/aRSOqPHzTfhMCtzhzXNKxmK60FDUpQHNTa/purqBkFOeNCILhTCYsztfjqaPuBm0lkwLF6jG3Q45sUMGj1O6AxDoItKJbUxMjt/JGKA/e105KmEzeUGOfR+ov2qhdISKU9/SO1j0hC6RMOx4ZyE+k0+lrSi/Gkq/kR1ZKPi3qzRWaeF4GF8S2kefv2a5UEeylTZYEUnxImPcaXvwhEqoGBejGpFojtJVJgnUO8d6Apw79/N2kxEIbYRBaT22sYJcypR3cMpx9LsVpbowq1ZkbmYlOIgF52b/bPf36fCcFdE8nP7ASUsSC0SOWOWRQEUscqs
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,23 +107,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 14 Sep 2026 23:14:18 -0700
-Andrew Morton <akpm@linux-foundation.org> wrote:
-
-> On Mon, 14 Sep 2026 23:03:18 -0400 Yury Norov <ynorov@nvidia.com> wrote:
+On Mon, Sep 14, 2026 at 10:26:59PM -0400, Zi Yan wrote:
+> On Mon Sep 14, 2026 at 3:30 AM EDT, Yeoreum Yun wrote:
+> > HPAGE_SIZE and HPAGE_SHIFT macro is written based on the 4KB PAGE_SIZE.
+> > When this macro is used in some test, test result would be strange in
+> > the system where PAGE_SIZE is more then 4KB.
+> >
+> > Here is the example with transhuge-stress test with 16KB PAGE_SIZE:
+> >
+> >   transhuge-stress: allocate 61073 transhuge pages, using 122146 MiB virtual memory and 1908 MiB of ram
+> >     3.292 s/loop, 0.054 ms/page,  37106.002 MiB/s	2566 succeed, 58507 failed, 2566 different pages
+> >     0.591 s/loop, 0.010 ms/page, 206850.792 MiB/s	   0 succeed, 61073 failed,    0 different pages
+> >     0.527 s/loop, 0.009 ms/page, 231895.107 MiB/s	   0 succeed, 61073 failed,    0 different pages
+> >     0.527 s/loop, 0.009 ms/page, 231839.704 MiB/s	   0 succeed, 61073 failed,    0 different pages
+> >     0.528 s/loop, 0.009 ms/page, 231544.782 MiB/s	   0 succeed, 61073 failed,    0 different pages
+> >     0.528 s/loop, 0.009 ms/page, 231462.074 MiB/s	   0 succeed, 61073 failed,    0 different pages
+> >     0.527 s/loop, 0.009 ms/page, 231770.300 MiB/s	   0 succeed, 61073 failed,    0 different pages
+> >     ...
+> >   ok 1 Completed
+> >
+> > Remove the HPAGE_SIZE and HPAGE_SHIFT macro and introduce pmd_pshift()
+> > helper to get the HPAGE_SHIFT properly. For HPAGE_SIZE, use pre-existing
+> > helper, pmd_psize().
+> >
+> > Also, run the KSM_MERGE_TIME_HUGE_PAGES test with a size of 512 MiB,
+> > which is the least common multiple of the PMD sizes for 4 KiB, 16 KiB,
+> > and 64 KiB base pages. Since allocate_transhuge() allocates mappings in
+> > PMD-sized units, the test may fail with the previous size of 100 MiB,
+> > which is not a multiple of the PMD size when the base page size is
+> > 16 KiB or 64 KiB.
+> >
+> > After this patch, output of transhuge-stress:
+> >
+> >   transhuge-stress: allocate 3817 transhuge pages, using 122146 MiB virtual memory and 119 MiB of ram
+> >     2.558 s/loop, 0.670 ms/page,  47755.759 MiB/s	2585 succeed, 1232 failed, 2585 different pages
+> >     2.640 s/loop, 0.692 ms/page,  46268.432 MiB/s	2585 succeed, 1232 failed, 2585 different pages
+> >     2.635 s/loop, 0.690 ms/page,  46360.298 MiB/s	2585 succeed, 1232 failed, 2585 different pages
+> >     2.782 s/loop, 0.729 ms/page,  43899.795 MiB/s	2616 succeed, 1201 failed, 2616 different pages
+> >     2.692 s/loop, 0.705 ms/page,  45380.876 MiB/s	2627 succeed, 1190 failed, 2627 different pages
+> >     2.612 s/loop, 0.684 ms/page,  46765.812 MiB/s	2628 succeed, 1189 failed, 2628 different pages
+> >     2.683 s/loop, 0.703 ms/page,  45520.990 MiB/s	2630 succeed, 1187 failed, 2630 different pages
+> >     2.727 s/loop, 0.714 ms/page,  44789.321 MiB/s	2631 succeed, 1186 failed, 2631 different pages
+> >     ...
+> >   ok 1 Completed
+> >
+> > Suggested-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> > Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+> > ---
+> >  tools/testing/selftests/mm/guard-regions.c    | 11 ++++++--
+> >  tools/testing/selftests/mm/ksm_tests.c        | 16 +++++++-----
+> >  tools/testing/selftests/mm/run_vmtests.sh     |  4 +--
+> >  tools/testing/selftests/mm/transhuge-stress.c | 25 +++++++++++--------
+> >  tools/testing/selftests/mm/vm_util.c          | 36 ++++++++++++++++++++++++---
+> >  tools/testing/selftests/mm/vm_util.h          |  9 +++----
+> >  6 files changed, 71 insertions(+), 30 deletions(-)
+> >
+> > diff --git a/tools/testing/selftests/mm/guard-regions.c b/tools/testing/selftests/mm/guard-regions.c
+> > index b724d62d2b75..eee29ef88cb2 100644
+> > --- a/tools/testing/selftests/mm/guard-regions.c
+> > +++ b/tools/testing/selftests/mm/guard-regions.c
+> > @@ -2195,14 +2195,21 @@ TEST_F(guard_regions, pagemap_scan)
+> >  TEST_F(guard_regions, collapse)
+> >  {
+> >  	const unsigned long page_size = self->page_size;
+> > -	const unsigned long size = 2 * HPAGE_SIZE;
+> > -	const unsigned long num_pages = size / page_size;
+> > +	const uint64_t hpage_size = pmd_psize();
 > 
-> > Declaration macros that statically initialize embedded locks require static
-> > storage when lockdep is enabled. Automatic objects must use runtime
-> > initialization so lockdep receives a persistent class key.
-> > 
-> > For automatic local objects, lockdep cannot use the lock address as a persistent
-> > class key and reports "INFO: trying to register non-static key" before disabling
-> > itself.  
+> Is it better to use pmd_page_size/pmd_page_shift instead of
+> hpage_size/hpage_shift for clarification? Maybe in a follow-up patch if
+> you think it is reasonable.
+
+He, I don’t have a strong opinion on this, but personally, I think
+explicitly naming the huge-page size used by the tests pmd_page_size
+makes it clearer. Still, if you think the suggested approach is better,
+I’m happy to change it accordingly. ;)
+
 > 
-> So why haven't we been buried in reports about this warning coming out?
+> Otherwise, with David's concern addressed, feel free to add
+> 
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+
+Thanks!
+> 
+> -- 
+> Best Regards,
+> Yan, Zi
 > 
 
-Are there any code changes outside of testing?
-
-David
+-- 
+Sincerely,
+Yeoreum Yun
 
