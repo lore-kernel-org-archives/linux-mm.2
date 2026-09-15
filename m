@@ -4,123 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3150DC88E53
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 06:29:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87B51C88E75
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 06:32:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D329F6B0088; Tue, 15 Sep 2026 02:29:35 -0400 (EDT)
+	id 8A38D6B008C; Tue, 15 Sep 2026 02:32:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CBD3B6B008C; Tue, 15 Sep 2026 02:29:35 -0400 (EDT)
+	id 853A26B0092; Tue, 15 Sep 2026 02:32:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B85146B0092; Tue, 15 Sep 2026 02:29:35 -0400 (EDT)
+	id 743406B0093; Tue, 15 Sep 2026 02:32:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8091F6B0088
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:29:35 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 805451C21C8
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:29:34 +0000 (UTC)
-X-FDA: 85215020268.25.DEE017A
-Received: from mail-pz2-f28.google.com (mail-pz2-f28.google.com [74.125.228.28])
-	by imf31.hostedemail.com (Postfix) with ESMTP id CA99D20005
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:29:32 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=gC9UnAuT;
-	spf=pass (imf31.hostedemail.com: domain of matthias.goergens@gmail.com designates 74.125.228.28 as permitted sender) smtp.mailfrom=matthias.goergens@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789453772;
-	b=UcFrYzmJgeOPfEMwCeuuw+QluAcFxpxjleK0RVGzI9iKXvAap1/x3y0VyQz+Mlx2r34OkY
-	ZmZln/jt/y3L7VXtEULnLtXSSwo9MLfkJ1JUTGNycyQeatlsyXVMHjISQYM5a5Ge+8C6Wj
-	50KPhnNTo7HPzC16M8BEXE3Ar0EbRok=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=gC9UnAuT;
-	spf=pass (imf31.hostedemail.com: domain of matthias.goergens@gmail.com designates 74.125.228.28 as permitted sender) smtp.mailfrom=matthias.goergens@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4EC116B008C
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:32:13 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B36D7A015C
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:32:12 +0000 (UTC)
+X-FDA: 85215026904.03.1CB08D9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id F303D40003
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:32:10 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=w+mQa4vO;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789453772;
+	s=arc-20220608; t=1789453931;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=Jliu2qQ+Am9D5/J1PCi8w8fiwrrDcbTYHcV6N7E5S9c=;
-	b=OcDIQesZgXj/XbNyDhr51sGllvLNo0hhX7iz2Xge4cYoOPAteAI/PU/NG1di2wQRpBUjA8
-	6k2NWzIkwaovdhwntuM+itRDrd0OEpXBrwDgrsbAgk/gugSvwkIwTUIEJ39RHcEcRImK+B
-	TMJec62LD0PKWhQ4nnBzWV3q8jACLvY=
-Received: by mail-pz2-f28.google.com with SMTP id 41be03b00d2f7-cc4ab4fe290so692161a12.1
-        for <linux-mm@kvack.org>; Mon, 14 Sep 2026 23:29:32 -0700 (PDT)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=5llc/XFrwgAZPw+/nwYOk6K5xOZoxnoq0F02YLYa//A=;
+	b=kutL7jWTcuHsEkxqRlu8Q9+fQWozFQmeprL8jirT5OTC4T/gphfrdC4M40DKYYNJX3SnFy
+	jYH9qfe63gQuo+9Ai2AOXKnftsyyT+UKH2dg/GGbNFTakYP6Vg//BfGMc8uHHfHJO6ptp8
+	GioLNLjFbVD3Si4sUXOOfatXLczXjUU=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=w+mQa4vO;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789453931;
+	b=Vvo/5U1rckuVR3uigX8GbJdYK0FZfAtfq1yFsKW/Qn5Q/qcrhS1IGnwx23HcsFaZ30bmxq
+	B8JDOXHHHPD7JeWufyjrXdK/Aec+kyNLS1msU0ZrG7niankzqTWOYkCdPIND5bRYKiTlff
+	C1VXItwHllv1v1zEQn73LoeqpHo94rA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2411C42EB4;
+	Tue, 15 Sep 2026 06:32:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0E011F000FF;
+	Tue, 15 Sep 2026 06:32:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789453771; x=1790058571; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Jliu2qQ+Am9D5/J1PCi8w8fiwrrDcbTYHcV6N7E5S9c=;
-        b=gC9UnAuT3PNLlGOAQvdghSyr9iQIqejXEy0Pl3AS5rOWAD2SAIG2wX6bMKbtj66DXI
-         QGMbZvbUuuPJGHhQ5ZJKTf9M/BcPh+H++wQdwCiHLW7BxFppFYGYKu/VEV34SmJYqynh
-         OeM0s0HggYBXOUH4fF/ONjmYHL+YqooOIjCvK+bhuhrh4z/NtYvXBGysaSxZvBmSYE9Z
-         5ICO4+/rmhU/BsCsOl3H/1U9jM+kWBz460ejxne+yUtRifvUDO1GlZPoC95R5rrPR1ua
-         wWXI3ewiJtZTH70Fy7sUQeeZzKZ1O8tFZXRrwbztLKVYhBs4Xk26fDnRlGdQm7oIScQP
-         S/NQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789453771; x=1790058571;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Jliu2qQ+Am9D5/J1PCi8w8fiwrrDcbTYHcV6N7E5S9c=;
-        b=Bqkr3F2rnVVkZ2tiqrkWXOca7u7uwiMvAk2RYISzO9W/aan6Udzfo5xRo0GH+QIAj4
-         eJBeYinPZ4gcXRETOrO9lfSy31kAeDEXXVubMolHLW/4EJsCmB1Sn0bWBuU0brJLfvyO
-         aI39qgmPyluY4kOxWvs1eMdTvNgn8SjvZYI6vEvIdLzocqrQhtSg7VwV6LRqUXa4qmfM
-         kNLJy8qVOuVVYdH/ayEie3FG0lrMT5v0yDP0CB87Bo77uGGk8na8xxJ8zzJ/M1fVOfQl
-         vXWwdYiAXboXk3Z/KvO1noGzhRnmusgSxX+DRMiHAvLwQGM4pUp+ZB1jUExyL1wL0t8C
-         3wFA==
-X-Forwarded-Encrypted: i=1; AKwUvBzGAWRCV+gUX4pBGt+y/cBDLVDw0qhaDwilU80D2LO2yNYf++tqjyD06QQcq3gHgIv1CZb5D2SuLw==@kvack.org
-X-Gm-Message-State: AFuF++k5S5H86/FeqHmxvWb8J+gKBwGQExjSVCuJNE2E891jLd4e3hv/
-	7LDuG6PXceorsWJ2m+F+9R3EwhFXGuRWEfKPTxYl89JpEwHXFSdqsz0s
-X-Gm-Gg: AYBFou363KeDMb7hbPj7owcaH1lWuu1G4YM4KpF884jMfwSJiKwAExnvaX/l7v1NK2W
-	+4ndn5Ba96E6udD3G140WSl9XziuCYuF2K4u3kiAhHtCfs8+CTWQpq9xLA9LEYVdvYtAlAkNcY9
-	au3yo0CT158pFqwG3uzpwFfHo+7XhI2afCmiXbeOZysZ+Kk1JD7NZQzbksjFmTeiHu/PZXSx6/P
-	ukKkvXPJ9J0d6+kGjneWYsJKtrrOSRzShWY+iVRWeXdN2vyOE6XSsi/LLGVihmOmO/bOgFI5t0x
-	Hdny/32maBxCRYZ1RruMHIViDkYDsn8uFERvQtTNcKOA8FL5nRQVH4IgaFHEmmiuULIcyy+BKtz
-	IfvtgUzn4rx02zJ/52uv/nznM9lxyNvykcuc8ki6uOEilB5nRkrujDHRCOIwKqkus6XRxfZ7vmT
-	wCwnF6PMlVtz3eulX0Hv2L/Wy5L9Zj9/WMnSnOA5PdJKQAGaqQXNwAVcwPLTYLXaVH6/t6nU5bb
-	BpzQFoY0VkGSGP7JEuziexPV3Ucakq0UfPpkxNfwGtn3UvMkQk2GIDE3B6gvzvBAse7G7fU/sfs
-	V0HI5iQBn2CzwNrBtuut1dk7xvp2UnhGA0uL6OR51TGgYchLCjmg4L9WRz5fTu32
-X-Received: by 2002:a05:6a21:3382:b0:39c:4e62:b843 with SMTP id adf61e73a8af0-3db5005bb45mr4318757637.10.1789453771209;
-        Mon, 14 Sep 2026 23:29:31 -0700 (PDT)
-Received: from spider.bream-herring.ts.net ([103.252.203.158])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc4c6549d95sm6031973a12.12.2026.09.14.23.29.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2026 23:29:30 -0700 (PDT)
-From: Matthias Goergens <matthias.goergens@gmail.com>
-To: Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>
-Cc: Matthias Goergens <matthias.goergens@gmail.com>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Christian Brauner <brauner@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	intel-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] drm/i915: size shmem writeback budget to the object
-Date: Tue, 15 Sep 2026 14:29:24 +0800
-Message-ID: <20260915062924.2410550-1-matthias.goergens@gmail.com>
-X-Mailer: git-send-email 2.55.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	d=linux-foundation.org; s=korg; t=1789453930;
+	bh=5llc/XFrwgAZPw+/nwYOk6K5xOZoxnoq0F02YLYa//A=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=w+mQa4vOvtao461etFNy2bwuQJ+upJnsGwE652+hpGOEoMlk/nYky6EIgrV6KXRUy
+	 1cbKTVEQtCFd10rtBgeGldl1NksNKCc9FNi+T7C7F2GF9AA69QyHCrBJJxrwrLvFDK
+	 PlNehJyAmx3ZMc8TvdW3h/3/+TR1fL97TQ1ZPl6s=
+Date: Mon, 14 Sep 2026 23:32:09 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ liam@infradead.org, ljs@kernel.org, david@kernel.org, vbabka@kernel.org,
+ jannh@google.com, wangjiexun@tinylab.org, sashiko-bot
+ <sashiko-bot@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/madvise: reclaim isolated folios if PTE restart
+ fails
+Message-Id: <20260914233209.3fd5a6e848ee82d13e43a301@linux-foundation.org>
+In-Reply-To: <20260912110832.3203902-1-gourry@gourry.net>
+References: <20260912110832.3203902-1-gourry@gourry.net>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: F303D40003
+X-Stat-Signature: ne9qaizg9okf1g6ff73k3ghyqkj45uy6
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: CA99D20005
-X-Stat-Signature: gqsd5qm5inxojiu3okipa4bndbz7cmab
-X-HE-Tag: 1789453772-638249
-X-HE-Meta: U2FsdGVkX1+nV/X8Pi7/tBLsHEo9TdpNYiroNyR1R8SEkwgWGGxZ1rQCZfAkGNUlNttSEznHMVNoT/2L1uiTPOk3eZsbtj+RoPHbpGWNZ3QhCVFZ3xHwHMbtmmuHr8EuOLgYiXpuR6sI9uHkIpvWkrSWzwDMPBhWq/VuqbNUgV5RtAQ10uZGhLK+LZAdeB4QZxm8kE/Plwp/XX0bwtow8Mz90tN7D3oZau9oX98bmUaX4WWi+lRMD4ZHj3CF4Tv9KwEaAeD5B2t9HjRR6xZh7OhwlD5oq0VeQgoTSvANGErkCYn4Zv7btIyRKa44Cw18te7aaGW7/G1J+60zieJUNrncRUlclXau+BEpAp7OBxxhDQ1+Q6ZW3w3RpNURH+8aasUQ36yZmlGejPlEyyWlBVw+1ZvQGhiK6ar6FvzLCIXmL+nQqCQ2dCVXkkf3OThUUpLEerYZn1iNOQiFCTa382ZClNmumLPY6JLTg++UCAE/eDk8IE5ZRyToa7KDw2a3OjiWX+S5HYcpQkUHhOZKIXg+5iT+xO6MY9bhvyvw2JaxrE1RjD4ykNZDUbKgmIpwSGTN02OqIflEFjsqQHQgZs+OUAZavFuuJNmB6mTPtqcDKgdS1N/lW4HEWdENzb/z8MZW8ShNQueMSfgj3OE60pPuiJM1D7iTJBJfX9t/RfL5+cT6K9ae9xIHGNg3AO3MbsKFJNAAglSNZLAH53i/fOdq/bZG002/okHqPHANIta8sW5CbW8Rxo2ZRu0ur4/TRiryxaajPYuF8DpR6zvJedgCd/AHBtblvyHIW8ylw2poA/dowDzBt0lx58udfrc468oIRRTsor2KpPJFrIuHsIDhNU8pjUfT3RiCUx8aehyUtf5qOgBIFAlKuL/oNj0/zhcyuSUo7M7jzcMAjyyMQEPD/ybPJG6FfKGX6zHeKw/oc2rjMvpM8w4PJfzOQnPVi2gnZLRUW27RZJ4481t
- HctD1G5d
- 7pVEb7o3ad0ZW1oqCqHLzNYmeiAyC8pkIngJE6EVTqklM7cDfn7ovsJCwQ5ds0fmRoS8uxgxNXGYLK6JwlCXuOBl1kreC6UDm5WiPd0DGiU1j8ofFyUayOFeULVsdQy/6hAX0uCMKOUp4mUBxVCtoewRtziXUo6/iJXmZf9S2Ffp8DqvVM2CCTq57CzDBioRqdXXZwoZs9ywZCALB6fdtxUh+uy17w6jU+pPrpEhG9Z9CwujwkTN/voDbR3+D8tMN4MODE6j7uoiobMtCNtemvHZmXHcMotNV5d9d5IiyjQdjuNIvJp8vZBQT2/JaYms8XqmIBkqo/b+Ga4CZzbolH5PswrADJ7QqwPTQApU9vhszxqcTsl9jWLWS4WazCvfUexkUXE8A+YNcBSoEAC8cf2MxuFh5lSFEPlMKBRbf2PbrIZ0bvH8lGvmz7e7i+yaq/A6dykQm5yqnjn02/bYW+UkwCAHd/eHd7zN1tQ25uq/ENbxBBBTEz0iRFmiUn2WK2Fr+
+X-HE-Tag: 1789453930-167462
+X-HE-Meta: U2FsdGVkX1/57qM+Z3DaV7RwHcFAXqtVruXISX6iM8/14VZvdr1FnU7p4KabQ2mnskh+QmSi3yNxwSNeMcXiM2hPEr7pxo8s+lFF/iqAI8dhh1v8Ik1dKvLruO9sFrgxw5L2fIch/pVG+Cu5qMl5bOFVtnJ9zeRzr8qI/w0J61OHpg1678emjqbvEuW29MzEb9v+v9fSiAK3toOz+U2D3BzGhPEoOC0DpGNkcYnFWMhP3uNjGsjQW+rWUGzoxqLwjZjQ8pjSoJgSGVgljgx1w64oGT4s+61pVA2HgAwpKhfjgmcGm9EinEMcbpR+zxKkq6q3xZKJh+dkiKkHqByYR3DT5DSaVNHvHwefk9opIgdGP7xFEojuGPE25tCFwUzyeTpSkgaWcoGFe3entVhu8+gEHB6EDPshj2SFXs+17R5qB2Qei5Rbp/5sAqB9fhgwW43iqVZ8SA0fzgR40LxRzKUXmaxoCVhjFqahQRtFM+Zrw0WcT5CUZNgeUMtY6j2SjGrHyakzgmCaSbxNeX9gybjRx/rLeJoSxgcSN3K0VLU2ZwQBMqTaVeRIrjrgki8IhwBEjiWefvHW1srXymjppe46JXTKfAC3UJaCdHDNF23zMF1D5S1ymLGg9SKKCJwrkV7nJtgdjR/RkCgVqJpp5TNPDuRYJ748v7QVH0/K2M+i3pkFhlv32L7cM9hD29DpwaQwrpw7FnCKL0laQzECAOZPsKb4QpJidjAz+H4dggvZEEv/1Kgg9X5Tyq27vN81HyRW4FLDPgaL4xeCPNeix0Wmegkcbn+0BBjYPc93HwoXg86jFyANF2ehp4YLDoc0yTcSqbUA/A8l7bada7dRshEUun5bUYV815VXs3i7TvrsrmYG/oMgoLj4xM9kWZ+h/LM4IirpM8jIzptjrm7dMHdg75vVzaXxEhTcan6DEgFzyeGjTwco1eDIbBEoLUNG9igrTe/euaWwjU8uPoZ
+ ozwwAWQd
+ 5/Ga0HshNa24lWf4MOEZn96o18c660fq/l2dVF10FzDDFqUutDeD9WQKDeknJDc/Df0jo7bONKlp/C4k24C0Qel3NVByYRfYgZG3D0X0aqgBHAlbcBeKynIPgg16QAYFY30HQNKSVGAogbp+hJRnejIvt4VbGzR1gnrbAKezKR6m7WzLmz+Ua8QFYysSTZphENi9uUuzZnjC97sHZvCBHRRxeA2CLcxnMs+QbDZWfgUDTIrnSqMi1sZ5BACqhwRk12M9Mamon6X+a+ExLPjcYRFyxICJvPuOR0N+HgI60OUNFIAiakCZ5xq3+W357+jdUAhHTFPA1pvBN9HY1Xnst0xJYoJVpQ5sXzjvwQ7CUra2FBEvy1qVl9usD09TY56JQF9YrNZ7e2MdlsJw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,46 +92,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Before the writeback_iter() conversion, __shmem_writeback() walked the
-object's page indices using its size argument. The conversion retained
-nr_to_write = SWAP_CLUSTER_MAX, which the old loop did not enforce.
+On Sat, 12 Sep 2026 07:08:32 -0400 Gregory Price <gourry@gourry.net> wrote:
 
-writeback_iter() consumes that budget for each folio and stops when it
-is exhausted in WB_SYNC_NONE mode. Explicit writeback of larger objects
-can therefore stop after only 32 base pages, leaving later dirty folios
-unvisited. Mapped folios also consume the budget despite being skipped.
+> MADV_PAGEOUT collects isolated folios on a local list before reclaiming
+> them after the PTE walk.  The reschedule path drops the PTE lock and then
+> restarts the mapping with pte_offset_map_lock().
+> 
+> A concurrent operation can remove or replace the PTE table while the lock
+> is dropped, causing pte_offset_map_lock() to return NULL.  Returning directly
+> in that case bypasses reclaim_pages(), leaving the collected folios off the
+> LRU with elevated references.
 
-Use the supplied object size to set the page budget, restoring the
-object-sized writeback attempt. Writeback remains best-effort; this does
-not guarantee that every page is written or freed.
+aw man, you got so close then left us hanging.
 
-Fixes: 776a853a43c9 ("i915: Use writeback_iter()")
-Link: https://lore.kernel.org/all/20260914111511.648711F000FF@smtp.kernel.org/
-Cc: stable@vger.kernel.org
-Signed-off-by: Matthias Goergens <matthias.goergens@gmail.com>
----
-Thanks to Sashiko for pointing out the writeback-budget issue.
+So what happened next?  Machine crashed?  Permanent leak?
 
-This is a separate follow-up to the folio-unlock fix and applies
-independently. Compile-tested on x86-64 with CONFIG_DRM_I915=m.
+> Route the failure through the existing cleanup path so any isolated folios
+> are reclaimed or put back.
+> 
+> Simplest userland pseudo-code reproducer:
+> 
+> p = mmap(PMD_SIZE, ANONYMOUS);
+> touch_every_page(p, PMD_SIZE);
+> parallel {
+>    while (1) madvise(p, PMD_SIZE, MADV_PAGEOUT);
+>    while (1) {
+>        madvise(p, PMD_SIZE, MADV_DONTNEED);
+>        touch_every_page(p, PMD_SIZE);
+>    }
+> }
+> 
+> Reproduced in qemu trivially with some explicit widening of the race window.
 
- drivers/gpu/drm/i915/gem/i915_gem_shmem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+How was the failure observed form userspace?  (repeating myself)
 
-diff --git a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c b/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
-index e7b18f7f9644..5751bd25c2b2 100644
---- a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
-@@ -308,7 +308,7 @@ void __shmem_writeback(size_t size, struct address_space *mapping)
- {
- 	struct writeback_control wbc = {
- 		.sync_mode = WB_SYNC_NONE,
--		.nr_to_write = SWAP_CLUSTER_MAX,
-+		.nr_to_write = size >> PAGE_SHIFT,
- 		.range_start = 0,
- 		.range_end = LLONG_MAX,
- 	};
--- 
-2.55.0
+> 
+> Fixes: b2f557a21bc8 ("mm/madvise: add cond_resched() in madvise_cold_or_pageout_pte_range()")
+> Reported-by: sashiko-bot <sashiko-bot@kernel.org>
+> Closes: https://sashiko.dev/#/patchset/20260821150912.183976-1-gourry@gourry.net
+> Cc: <stable@vger.kernel.org>
 
+#include "Documentation/process/stable-kernel-rules.rst"
+
+(sorry, getting snarky.  I'm saying this stuff 100x/day at present and
+it just isn't sticking).
+
+> Assisted-by: LLM
+
+Can I suggest you update LLM's prompts so it checks that the changelog
+includes userspace-visible runtime effects and so that it checks that
+the patch is approximately compliant with stable-kernel-rules?
+
+If you do, please share that prompt with me and I'll put it in ~/.signature
 
