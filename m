@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02F5CC88E53
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 06:59:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9176BC88E53
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 06:59:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CCE346B0099; Tue, 15 Sep 2026 02:59:23 -0400 (EDT)
+	id 1D2746B009D; Tue, 15 Sep 2026 02:59:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C80656B009B; Tue, 15 Sep 2026 02:59:23 -0400 (EDT)
+	id 1AB0F6B009E; Tue, 15 Sep 2026 02:59:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B95756B009D; Tue, 15 Sep 2026 02:59:23 -0400 (EDT)
+	id 0757F6B009F; Tue, 15 Sep 2026 02:59:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D0376B0099
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:59:23 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 61C56A015C
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:59:22 +0000 (UTC)
-X-FDA: 85215095364.11.B89D976
-Received: from mta0.migadu.com (out-118.mta0.migadu.com [91.218.175.118])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 61D5CA0008
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:59:20 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HGKjh1Gx;
-	spf=pass (imf25.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.118 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C9E3C6B009D
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:59:28 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 553A2160313
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:59:28 +0000 (UTC)
+X-FDA: 85215095616.25.689F051
+Received: from mta0.migadu.com (out-127.mta0.migadu.com [91.218.175.127])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 5E385160003
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:59:26 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="eX8qA/FQ";
+	spf=pass (imf08.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.127 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789455560;
+	s=arc-20220608; t=1789455566;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=Jd6vDZXp4FQU8Fc34nevbJb0IfdSwbwlOY3RmYCu38A=;
-	b=cCmAsIrHDOYdoJ2JQdvwHaaHVAkqauq1+BXp9ssOSsO2oLow/phzMhD7bKZJoxk3AyZ+FW
-	LvA1g12/bqx76dNRwqosr1g3zkJb2pN9RVVb8Ij6aWsCg8D08AFVaJ479+pbYWfUl7x7Ai
-	zStVfEjq1dH9j6XT1pGmpEHSpPAE0KA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789455560;
-	b=oF72h2CrhFtTdh8AWb0/CPrNoFBiZvYwTH+vMN+sdCb91kHFywM4OA3H16H0SxdMqmrciK
-	ySgGeHQIvobuGY45Sc13QUQ+y+XmJApi1yeZ7cT4WcHEPkcQThAIuyJ939Ke9uxFwUma3N
-	GN/zaEsNuDFZdMdlbKWHuHmsCz6nkIo=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Wa+uG71bUlNto16Q9Z6YwT0Okx0y3zn6noS2Oo19nOE=;
+	b=3m7Lw4e91AA2Cd9c/g4fVS2Dv5VbGYitV8P/zc18sGUcyVjSryeCSQAI8O6O7ltbowP5m1
+	8KvH4LOl6oLfv68o8uM6hVwhGRQRrk6PWhnL8YFQGO0ZXCdS9siRFipBeP2Pkb0jGXuoFc
+	5igLStmxiKaBZ316HNxKJHpkb5U24Rc=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HGKjh1Gx;
-	spf=pass (imf25.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.118 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="eX8qA/FQ";
+	spf=pass (imf08.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.127 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789455566;
+	b=uPzIIdFzrbFuwFM4CA24lyIt8tGUmBJVo3OlbraMMTHN/erta8+UtVj0BhiqYZ8EFcjEKM
+	2E9aAZAqZmqD8j93RApsKA/0WYluZ96p7syFS9WfUqRbGfVoKSp9j06thhljCLoV/OUtnZ
+	lc5v/CGhzQ0/lCPRAdQikpxmluGG3Q4=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=TXew7UKxHPC4CJEw9Ku1oOpgdOQ+ip6CfBvxC9mCB6g=;
+DKIM-Signature: a=rsa-sha256; bh=JlOTHViXIUCNUHaVGMaJ96xltazLuZ70o/39P8cGYqY=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789455559; v=1; x=1790060359;
- b=HGKjh1GxQzJxIdfm7QULEQj2kfzmr8JqA4d3yS9Zl38R7neag6wnQ3in+G/nBbgFbJbmRfum
- eGxhOTC8EasgZxK/3yR9mWwSR7SsRXXuxArC89VNwt23lcgb42o9UADcfofwAkqnXZ+ZQadXgmv
- JPd9Ee5+u4ai4c8mr9ll3Vts=
+ t=1789455565; v=1; x=1790060365;
+ b=eX8qA/FQMAqQ1y9V0POhTCcGwZthmYQxTlnAsZJG+OaRuI4+ogmno1eG/AV6dDSEY4RyeKes
+ lHjiOaxfYJlV5sAYxPByFS4RKMlAWHXhGl+P1cpNjm626+qshAIXbAsfQEqlvki4Yh6+yCc2TCl
+ iqEQF3zM0n/R5iCVaBawJcoY=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 1b15e78f739985dd;
-	Tue, 15 Sep 2026 06:59:08 +0000
-X-Mizu-Trace-ID: 1b15e78f739985dd
+Received: by smtp.migadu.com with ESMTPS id 5cc9afbad426c8d5;
+	Tue, 15 Sep 2026 06:59:25 +0000
+X-Mizu-Trace-ID: 5cc9afbad426c8d5
 X-Migadu-Flow: FLOW_OUT
 From: Hao Ge <hao.ge@linux.dev>
 To: Luis Chamberlain <mcgrof@kernel.org>,
@@ -73,21 +73,25 @@ To: Luis Chamberlain <mcgrof@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-modules@vger.kernel.org,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v10 0/6] alloc_tag and module codetag section fixes
-Date: Tue, 15 Sep 2026 14:59:55 +0800
-Message-Id: <20260915070001.113559-1-hao.ge@linux.dev>
+	linux-kernel@vger.kernel.org,
+	Sashiko <sashiko-bot@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH v10 3/6] module: introduce SH_ENTSIZE_STANDALONE for separately allocated sections
+Date: Tue, 15 Sep 2026 14:59:58 +0800
+Message-Id: <20260915070001.113559-4-hao.ge@linux.dev>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260915070001.113559-1-hao.ge@linux.dev>
+References: <20260915070001.113559-1-hao.ge@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 61D5CA0008
-X-Stat-Signature: sfhbesr5ibysikxustc19jyfw49frtjk
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 5E385160003
+X-Stat-Signature: dr9eedk34tkbgpgxky9rjz4k3eby11qo
 X-Rspam-User: 
-X-HE-Tag: 1789455560-689030
-X-HE-Meta: U2FsdGVkX19+8z07bFpVFeIvseA+tfYpFE4bg6WAbqwkE3zoUs+RnUqa7K6c6NNqk2BaYUb501bAPZQIsM3JR2p2czgS6TE+mH9MQVd4TbaY6OTVpCF58eA+0lW7y43WwYPMX73GKhcun3YrLp2na1AmO5vQloSEs2ZVFd9e36n9x+hK0s3Yr07209dOrhGOW9o4mzlQiWwt9AKKgFuw6mJ/lxgnNbAX4kQDOMFhDaRnJwd6nZmoTE+KJoEgRU7yk8G5CKGrX9bykg1gskLwOdNNcTCMyv4EJ6tLrO6joGho6rd9dcQMIoVN20kNu0WL66O6ek8rjWbjSPeLFu/lEUcWNOxsaTAVKwvU7xeonw/GJ+ZpG2RptDFizI0Rbr2x+7Qq3y7nQb2K+cVw26d1usp35rmc48qTiIE5rL+oBj1KrbPUmsrg4SVbRtRQGat6z1aNdVv4l9N3lLDxfxPN3tDu3KCqfswTey3byWwB2rlzPkamCumGf8if7r6j7DsuMBIBD88Gwc3rBUdH1j0ZEylFv0oVAkjSDe/5p3YhWUwEKhtM5FOKYSpc+HHbM7bdgzBJ8MnQpLlAII5EGy5en9Y/J3a6QHg8ZgvvP5SQ0G2i1LzHOHNRpAgooSJoMB+tm2v4Vz/ACucqhiP35FwZNV8YKe5f2BGZi4XB7uQzrZiHlGsvFlTDnY7aKe8/ySlVkXtNJcqYljaBrJI+8zuxeCXlcPxBNIEC0dT5GsneAvBSg+yYMGzyc1YLQwypIDHJgsvZ+bFho065EMNvGSSm3FzM0K/SqERvP/R0TiKwQZ3nS93/pAoZKGqD3x57a5SxmmG5RFlXr5TM5bnfpIeEy8xKFwSo+jeWVG1r9swCM51MOldS/fsFUoR2gm/bxcLJdxwOjUQVCFdU6r1zZPo54OUB8dM5B3Glo8I0X0dwsrvcqZnGSEkhJdDuQPNs8/oEgpUjQdt0sgMTyq/zdez
- Nx2OqQDF
- m2jNT0YvXj+5ZRvPr01Q5dUBlCd30QmaqtkDpk5npN+PUy+08MootRcz0xv7Npv4T1dypbOQM24w0CEyDLrtAbvxOvJtQrq55vhMuuyK4iL3+v+WgXBGIjozsIwQ542KRewgFjDAnK184UeQI7CKMT9sUa718X4dM3OlGtgik6hsiGVGB2Kn9E1hDsbqWHilivUcmS94iWcBeiIh065pNSPQwejsk12GML07kWIS3GcRcjnqyfKDrABZqcNFRp85YTlCusvU5Fs4nVWLJzEpo0Kh7VUJVI7z430O9RdZ6+13p4xkjiFpgfYmHo6g8oC0cQdzAOtavBHirra6Cjr7/feQqQtLo5mPBL9i4ZcCODFhSoIQ=
+X-HE-Tag: 1789455566-356736
+X-HE-Meta: U2FsdGVkX1/8ra/DEJatAp8YAZg1SnErHEdkQzQBjQApUeZxzzRi7TDUw2OYdIPkoyKl7/ifYglxgiH+ksJ3XEdhvg0Ij9wREm5eqwZIU+j+T2llBgNy6hljSIjG5giIFd+E8eH8Cf/WF0y7ZImLUEwYHdUlSkFFli25mCWC8Ybp2PBj2Ioh5S2peuNNZBrZFkrcLpNyF+wCyMTk4Ojmzxi6D15JLwQf6pthwo/mp9L4oA+UYzpR2VGPXulXLHq8mfK/AJFAHIU1oyA/9UFwpFkL+w6zLiUu9jFEXcq/5ZAcVR6VeqC754nb4nJfzCgQxoVXHhZrFrH2zygX1Pxr3HUSaxHHJFyn/xoy5trnbqH5Ddi/rmDy8welxgdpvtrYZ/5qOhyIDvE4+PUsfoBjLYAcD5xupG6HwtfSJ/sZ6sP3fVtv4ymJZU4sT6kehUFnUR27ccXZ95ZsF5QH0cncPzTGA/kSANBcPBiHLL7JzuKNKoFzqzDMPJ/Cgp2WEig2NZO4HgQveZPw+fqSYRQWKVvoaO6OFtj5iBnVgiulXjvIRPR5koi0mFGk/zosfvCvOhTcA72EcspVWmav2ulfRMCnavybpNmMJf9YytN3HdBW7KzhqbtF5ZeeDME09m7C9iBLs/j4lzLRMtZNK1znR9w89V0iq9Ko9WtfgSZvA6JzVd94B05eHh5rws/3Mlf7BdDKG8Z/+u5mGtuQwdBVRocXgPDXTG2ciy5BH0FNhDh8AASFPZK7G0bURurF2GF8Ypc3Uv4XKvIXyx6cHvOhmZnqbb13ZXrR+FaCGYnApDhOAMQvLr8jWzs0V7DwpNNRyQNqHc76dJi84zyMQ6pniMFxgqTDWZf8b4sZjG8gU1jajykS0ThKYEfcpeujiQL3UlQIV2bPfjPjqXIIKhuJ0BKTA5k3Dx2xN2eGYDoAM0RL7zUkBEvLiL5hED3MDEOOpvPo4dqmyTEpX09gepc
+ zOiqJUJ5
+ vz9RNxbJl3cIMgXQ1COf5zevacTz9rdQh15ZXFumjJugR+tc3ueMLizrT2osDZZ/pw+CYTaH5R89e6yvURogQGRn4G/GW2uUbURpQFgn9b5v98M00s9LC8iASkAQdrf6PHI2J9oWt/KyZp/BaO/71dwrqNQelQmEQynt4HNvh8W9QeHBsGG4ftUfPQRl2g0c8V/DSjCOOEJkDC0Zzab9Csh5wJMnvKe35RarAV0nM5iFoBlZWhdvdkX3Y7WJ3D7PyzodIMxJz9wMWvBkC2OuMwGoCAYn12ij96K5Z66QVsU4sAw3EQCzi7CiYmUzA+qsa54aNAPOxb0EXbyIOzMwWZMMCcNQ2yhPVQ8thg58N8Uj04pY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,207 +99,258 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-With profiling toggled off, the overflow check in
-reserve_module_tags() did not run, a module could load with more
-tags than the page flags can address, and re-enabling profiling
-then silently corrupted /proc/allocinfo. On overflow the fix shuts
-profiling down, releases the reservation and returns -EAGAIN, and
-the codetag section lands as regular module data in the same load,
-so the module loads without profiling.
+SHF_ALLOC means, per the ELF spec, that a section occupies memory
+during process execution. Some module sections occupy memory
+outside the regular module layout, for example the percpu section
+with its per-CPU allocations. The loader currently excludes such
+a section from the layout by clearing its SHF_ALLOC, which
+overloads the flag with a loader-internal meaning.
+apply_relocations() needs a special case for the section, and
+find_sec(".data..percpu") returns different results before and
+after layout_and_allocate().
 
-Review of the earlier series by Sashiko turned up two more problems.
+Introduce SH_ENTSIZE_STANDALONE to mark sections with a separate
+allocation. The percpu section is its first user. layout_sections()
+and move_module() skip marked sections, and apply_relocations() goes
+back to testing only SHF_ALLOC. Based on a patch by Petr Pavlu [1].
 
-One is a race. layout_sections() and move_module() both asked
-codetag_needs_module_section() where a codetag section goes, and
-mem_profiling_support can change between the two calls, for instance
-when another module load overflows the tag index and shuts profiling
-down. move_module() then copied the codetag section to offset 0 of
-its regular destination and clobbered the first section placed in
-that region.
+.data..percpu keeps SHF_ALLOC, so it would now show up under
+/sys/module/*/sections/. The section has one instance per CPU and no
+single address to report, and the entry never existed before, so
+skip it in add_sect_attrs(). add_notes_attrs() indexes its attrs[]
+array and skips it too. No functional change otherwise.
 
-v7 reworks where codetag sections are allocated, on a prototype by
-Petr Pavlu [1]. The allocation runs before layout_sections() and the
-placement is decided in one step, so nothing re-asks the question
-and the race is gone. The retry is gone too, on -EAGAIN the section
-is laid out as regular module data right in the same load.
+Fixes: 4835f747d3ed ("alloc_tag: support for page allocation tag compression")
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Link: https://lore.kernel.org/all/499bb60c-c6e3-43a3-bd92-95a0567ece5e@suse.com/ [1]
+Suggested-by: Petr Pavlu <petr.pavlu@suse.com>
+Reviewed-by: Petr Pavlu <petr.pavlu@suse.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Hao Ge <hao.ge@linux.dev>
+---
+ include/linux/module.h   |  2 ++
+ kernel/module/internal.h |  8 ++++++++
+ kernel/module/kallsyms.c | 13 +++----------
+ kernel/module/main.c     | 32 +++++++++++++++++---------------
+ kernel/module/sysfs.c    | 17 +++++++++++++----
+ 5 files changed, 43 insertions(+), 29 deletions(-)
 
-[1] https://lore.kernel.org/all/499bb60c-c6e3-43a3-bd92-95a0567ece5e@suse.com/
-
-Following review feedback from Petr and Suren the series is now
-split into six patches. The two alloc_tag fixes from [2] are folded
-in as patches 5 and 6 and replace the versions currently in the mm
-tree. Sashiko keeps flagging the percpu counter leak [3], patch 5
-fixes it, and now the whole set goes through review again.
-
-[2] https://lore.kernel.org/all/20260817062726.106511-1-hao.ge@linux.dev/
-[3] https://lore.kernel.org/all/20260908094736.2B1A61F00A3A@smtp.kernel.org/
-
-Patch 1 moves release_module_tags() above reserve_module_tags(),
-since the failure paths now have to call it.
-
-Patch 2 cleans up the populate failure path: the reservation is
-released, module_tags.size rolled back and the PTEs a failed
-vmap_pages_range() left behind unmapped, so a later populate of the
-same range is safe. It carries both Fixes tags so it backports
-wherever patch 4 goes, which uses its prev_size.
-
-Patch 3 introduces SH_ENTSIZE_STANDALONE to mark sections with a
-separate allocation. The percpu section was previously excluded
-from the layout by clearing its SHF_ALLOC, which per the ELF spec
-says the section occupies memory during execution, and percpu does,
-only outside the regular module layout. The mark lives in sh_entsize
-now, find_sec(".data..percpu") gives stable results again and
-apply_relocations() goes back to testing only SHF_ALLOC. The
-section would show up under /sys/module/*/sections/, but it has one
-instance per CPU and no single address, and the entry never
-existed, so add_sect_attrs() and add_notes_attrs() skip it.
-
-Patch 4 moves the codetag allocation out of move_module() in front
-of layout_sections(), so the placement is decided in one step and
-the race is gone. On overflow profiling is shut down, the
-reservation released, module_tags.size rolled back and -EAGAIN
-returned, the section is laid out as regular module data and the
-module loads without profiling instead of failing. Any other error
-fails the load. The release and the fallback belong together,
-without the release rmmod hits the stale entry and panics.
-
-Patch 5 skips the percpu counter allocation when profiling is off.
-After the shutdown modules load their codetag section as regular
-data, load_module() still allocated counters for every tag and
-release_module_tags() cannot find them on unload, so they leaked
-(Suggested by Suren).
-
-Patch 6 defers the /proc/allocinfo removal to a workqueue.
-shutdown_mem_profiling() runs under mod_lock, and the synchronous
-remove_proc_entry() deadlocks with a reader taking mod_lock for
-read in allocinfo_start(). The file is also created at the end of
-alloc_tag_init(), a leftover file after a failed init would panic
-its readers (Found by Sashiko).
-
-Tested on an x86_64 virtual machine:
-
-Booted without sysctl.vm.mem_profiling=1,compressed:
-# cat /proc/allocinfo is fine
-
-Booted with sysctl.vm.mem_profiling=1,compressed:
-# cat /proc/allocinfo is fine
-# insmod overflow_tag.ko
-# dmesg
-  With module overflow_tag there are too many tags to fit in 13 page
-  flag bits. Memory allocation profiling is disabled!
-# rmmod overflow_tag
-The module loads without profiling and unloads cleanly.
-
-Also ran continuous LTP stress for a few days, nothing abnormal
-so far.
-
-Changes in v10:
-- fold in the two alloc_tag fixes from [2] as patches 5 and 6, they
-  replace the versions in the mm tree and fix the percpu leak
-  Sashiko keeps flagging [3]
-- create /proc/allocinfo at the end of alloc_tag_init(), a
-  leftover file after a failed init would panic its readers
-  (Found by Sashiko)
-- count note sections with sect_visible() in add_notes_attrs() too,
-  the count has to match the fill loop
-
-Changes in v9:
-- do not export .data..percpu under /sys/module/*/sections/ (Petr
-  Pavlu).
-- move the populate failure cleanup in front of the rework, v8 patch
-  4 is patch 2 now. It declares prev_size itself, which the overflow
-  path of the rework also uses, so it carries both Fixes tags and the
-  two patches backport together
-
-Changes in v8:
-- roll back module_tags.size when the reservation is released, so a
-  concurrent load which already passed needs_section_mem() does not
-  skip populate for the freed gap (Sashiko)
-- unmap the PTEs a failed vmap_pages_range() installed, a retry to
-  populate the same range would BUG on them
-- zero the separately allocated codetag memory for an SHT_NOBITS
-  section, the tag area pages are not zeroed on allocation (Sashiko)
-- .data..percpu is exported under /sys/module/*/sections/ with the
-  boot CPU instance of the per-cpu area, and the interface is
-  documented in the ABI docs (Petr Pavlu)
-- keep a comment in apply_relocations() on how .data..percpu is
-  relocated (Petr Pavlu)
-- replace the "Based-on-a-patch-by:" tag with an in-body
-  attribution and a numbered Link: (Andrew Morton)
-
-Changes in v7:
-- split the rework following review feedback (Petr Pavlu, Suren
-  Baghdasaryan)
-- new patch 2 marks separately allocated sections with
-  SH_ENTSIZE_STANDALONE instead of clearing SHF_ALLOC
-  (suggested by Petr Pavlu)
-- split the populate failure release into its own patch (suggested
-  by Suren Baghdasaryan)
-
-Changes in v6:
-- rework on Petr's prototype and allocate codetag sections before
-  layout_sections(), the retry and its state resets are gone
-- fix the layout_sections()/move_module() race (Found by Sashiko)
-- release the reservation on populate failure as well (Found by
-  Sashiko)
-- only -EAGAIN keeps the fallback, other errors fail the load
-
-Changes in v5:
-- add Fixes: and Cc: stable to patch 1/2 as well, since 2/2 does not
-  compile without it (Andrew Morton)
-- restore frob-adjusted mem[type].size on retry instead of zeroing,
-  as s390 and parisc add GOT/PLT space there in
-  module_frob_arch_sections() (Reported by Sashiko)
-- drop the load_module() mem_profiling_support check; the percpu
-  counter leak is pre-existing and orthogonal to this fix
-
-Changes in v4:
-- add a new patch (1/2) to move release_module_tags() above
-  reserve_module_tags(); the overflow fix is 2/2
-- release the reservation on the -EAGAIN path
-- return -EAGAIN instead of -ENOMEM so the module can still load
-  without profiling (Suren)
-- reset sh_addr, mem[type].size and sym/str SHF_ALLOC before retry
-- skip percpu counters in load_module() when profiling is off
-
-Changes in v3:
-- use pr_warn_once() instead of pr_warn()
-- return -ENOMEM instead of -ENOSPC (Suren)
-- expand the commit message to describe the /proc/allocinfo impact
-  (Andrew)
-
-Changes in v2:
-- return an error after shutdown_mem_profiling() to skip
-  vm_module_tags_populate()
-
-v1: https://lore.kernel.org/all/20260804064408.105033-1-hao.ge@linux.dev/
-v2: https://lore.kernel.org/all/20260804122038.190270-1-hao.ge@linux.dev/
-v3: https://lore.kernel.org/all/20260805090633.141001-1-hao.ge@linux.dev/
-v4: https://lore.kernel.org/all/20260810093955.153015-1-hao.ge@linux.dev/
-v5: https://lore.kernel.org/all/20260812054105.102637-1-hao.ge@linux.dev/
-v6: https://lore.kernel.org/all/20260831072104.120197-1-hao.ge@linux.dev/
-v7: https://lore.kernel.org/all/20260902081802.146145-1-hao.ge@linux.dev/
-v8: https://lore.kernel.org/all/20260907062414.106873-1-hao.ge@linux.dev/
-v9: https://lore.kernel.org/all/20260908092412.115953-1-hao.ge@linux.dev/
-
-Hao Ge (6):
-  alloc_tag: move release_module_tags() above reserve_module_tags()
-  alloc_tag: clean up the populate failure path
-  module: introduce SH_ENTSIZE_STANDALONE for separately allocated
-    sections
-  module: allocate codetag sections before the regular module layout
-  alloc_tag: skip percpu counter allocation when profiling is disabled
-  alloc_tag: Defer /proc/allocinfo removal to a workqueue
-
- include/linux/module.h   |   2 +
- kernel/module/internal.h |   8 +++
- kernel/module/kallsyms.c |  13 +---
- kernel/module/main.c     | 133 +++++++++++++++++++-----------------
- kernel/module/sysfs.c    |  17 +++--
- lib/codetag.c            |  10 ++-
- mm/alloc_tag.c           | 141 +++++++++++++++++++++++----------------
- 7 files changed, 188 insertions(+), 136 deletions(-)
-
+diff --git a/include/linux/module.h b/include/linux/module.h
+index 96cc98568eea..0c6f32ddcbf2 100644
+--- a/include/linux/module.h
++++ b/include/linux/module.h
+@@ -325,6 +325,8 @@ enum mod_mem_type {
+ 	MOD_INIT_RODATA,
+ 
+ 	MOD_MEM_NUM_TYPES,
++
++	MOD_STANDALONE = -2,
+ 	MOD_INVALID = -1,
+ };
+ 
+diff --git a/kernel/module/internal.h b/kernel/module/internal.h
+index 061161cc79d9..4c738074a27b 100644
+--- a/kernel/module/internal.h
++++ b/kernel/module/internal.h
+@@ -29,6 +29,14 @@
+ #define SH_ENTSIZE_TYPE_MASK	((1UL << SH_ENTSIZE_TYPE_BITS) - 1)
+ #define SH_ENTSIZE_OFFSET_MASK	((1UL << (BITS_PER_LONG - SH_ENTSIZE_TYPE_BITS)) - 1)
+ 
++/*
++ * Marker for sections with a separate allocation, which are not placed
++ * into mod->mem[].
++ */
++#define SH_ENTSIZE_STANDALONE					\
++	(((unsigned long)MOD_STANDALONE & SH_ENTSIZE_TYPE_MASK)	\
++	 << SH_ENTSIZE_TYPE_SHIFT)
++
+ /* Maximum number of characters written by module_flags() */
+ #define MODULE_FLAGS_BUF_SIZE (TAINT_FLAGS_COUNT + 4)
+ 
+diff --git a/kernel/module/kallsyms.c b/kernel/module/kallsyms.c
+index f23126d804b2..0dca6d40160e 100644
+--- a/kernel/module/kallsyms.c
++++ b/kernel/module/kallsyms.c
+@@ -76,7 +76,7 @@ static char elf_type(const Elf_Sym *sym, const struct load_info *info)
+ }
+ 
+ static bool is_core_symbol(const Elf_Sym *src, const Elf_Shdr *sechdrs,
+-			   unsigned int shnum, unsigned int pcpundx)
++			   unsigned int shnum)
+ {
+ 	const Elf_Shdr *sec;
+ 	enum mod_mem_type type;
+@@ -86,11 +86,6 @@ static bool is_core_symbol(const Elf_Sym *src, const Elf_Shdr *sechdrs,
+ 	    !src->st_name)
+ 		return false;
+ 
+-#ifdef CONFIG_KALLSYMS_ALL
+-	if (src->st_shndx == pcpundx)
+-		return true;
+-#endif
+-
+ 	sec = sechdrs + src->st_shndx;
+ 	type = sec->sh_entsize >> SH_ENTSIZE_TYPE_SHIFT;
+ 	if (!(sec->sh_flags & SHF_ALLOC)
+@@ -131,8 +126,7 @@ void layout_symtab(struct module *mod, struct load_info *info)
+ 	/* Compute total space required for the core symbols' strtab. */
+ 	for (ndst = i = 0; i < nsrc; i++) {
+ 		if (i == 0 || is_livepatch_module(mod) ||
+-		    is_core_symbol(src + i, info->sechdrs, info->hdr->e_shnum,
+-				   info->index.pcpu)) {
++		    is_core_symbol(src + i, info->sechdrs, info->hdr->e_shnum)) {
+ 			strtab_size += strlen(&info->strtab[src[i].st_name]) + 1;
+ 			ndst++;
+ 		}
+@@ -199,8 +193,7 @@ void add_kallsyms(struct module *mod, const struct load_info *info)
+ 	for (ndst = i = 0; i < kallsyms->num_symtab; i++) {
+ 		kallsyms->typetab[i] = elf_type(src + i, info);
+ 		if (i == 0 || is_livepatch_module(mod) ||
+-		    is_core_symbol(src + i, info->sechdrs, info->hdr->e_shnum,
+-				   info->index.pcpu)) {
++		    is_core_symbol(src + i, info->sechdrs, info->hdr->e_shnum)) {
+ 			ssize_t ret;
+ 
+ 			mod->core_kallsyms.typetab[ndst] =
+diff --git a/kernel/module/main.c b/kernel/module/main.c
+index c1b34dc1e89a..ae2678ac7840 100644
+--- a/kernel/module/main.c
++++ b/kernel/module/main.c
+@@ -1619,12 +1619,13 @@ static int apply_relocations(struct module *mod, const struct load_info *info)
+ 
+ 		/*
+ 		 * Don't bother with non-allocated sections.
+-		 * An exception is the percpu section, which has separate allocations
+-		 * for individual CPUs. We relocate the percpu section in the initial
+-		 * ELF template and subsequently copy it to the per-CPU destinations.
++		 *
++		 * Note that .data..percpu has separate allocations for
++		 * individual CPUs. We relocate the section in the
++		 * initial ELF template and subsequently copy it to the
++		 * per-CPU destinations.
+ 		 */
+-		if (!(info->sechdrs[infosec].sh_flags & SHF_ALLOC) &&
+-		    (!infosec || infosec != info->index.pcpu))
++		if (!(info->sechdrs[infosec].sh_flags & SHF_ALLOC))
+ 			continue;
+ 
+ 		if (info->sechdrs[i].sh_flags & SHF_RELA_LIVEPATCH)
+@@ -1715,7 +1716,7 @@ static void __layout_sections(struct module *mod, struct load_info *info, bool i
+ 
+ 			if ((s->sh_flags & masks[m][0]) != masks[m][0]
+ 			    || (s->sh_flags & masks[m][1])
+-			    || s->sh_entsize != ~0UL
++			    || s->sh_entsize != ~0UL /* offset or standalone */
+ 			    || is_init != module_init_layout_section(sname))
+ 				continue;
+ 
+@@ -1745,16 +1746,10 @@ static void __layout_sections(struct module *mod, struct load_info *info, bool i
+ /*
+  * Lay out the SHF_ALLOC sections in a way not dissimilar to how ld
+  * might -- code, read-only data, read-write data, small data.  Tally
+- * sizes, and place the offsets into sh_entsize fields: high bit means it
+- * belongs in init.
++ * sizes, and place the offsets into sh_entsize fields.
+  */
+ static void layout_sections(struct module *mod, struct load_info *info)
+ {
+-	unsigned int i;
+-
+-	for (i = 0; i < info->hdr->e_shnum; i++)
+-		info->sechdrs[i].sh_entsize = ~0UL;
+-
+ 	pr_debug("Core section allocation order for %s:\n", mod->name);
+ 	__layout_sections(mod, info, false);
+ 
+@@ -2822,7 +2817,8 @@ static int move_module(struct module *mod, struct load_info *info)
+ 		Elf_Shdr *shdr = &info->sechdrs[i];
+ 		const char *sname;
+ 
+-		if (!(shdr->sh_flags & SHF_ALLOC))
++		if (!(shdr->sh_flags & SHF_ALLOC)
++		    || shdr->sh_entsize == SH_ENTSIZE_STANDALONE)
+ 			continue;
+ 
+ 		sname = info->secstrings + shdr->sh_name;
+@@ -2954,6 +2950,7 @@ core_param(module_blacklist, module_blacklist, charp, 0400);
+ static struct module *layout_and_allocate(struct load_info *info, int flags)
+ {
+ 	struct module *mod;
++	unsigned int i;
+ 	int err;
+ 
+ 	/* Allow arches to frob section contents and sizes.  */
+@@ -2967,8 +2964,13 @@ static struct module *layout_and_allocate(struct load_info *info, int flags)
+ 	if (err < 0)
+ 		return ERR_PTR(err);
+ 
++	/* Repurpose sh_entsize to track where each section is allocated. */
++	for (i = 0; i < info->hdr->e_shnum; i++)
++		info->sechdrs[i].sh_entsize = ~0UL;
++
+ 	/* We will do a special allocation for per-cpu sections later. */
+-	info->sechdrs[info->index.pcpu].sh_flags &= ~(unsigned long)SHF_ALLOC;
++	if (info->index.pcpu)
++		info->sechdrs[info->index.pcpu].sh_entsize = SH_ENTSIZE_STANDALONE;
+ 
+ 	/*
+ 	 * Mark relevant sections as SHF_RO_AFTER_INIT so layout_sections() can
+diff --git a/kernel/module/sysfs.c b/kernel/module/sysfs.c
+index 01c65d608873..15c6baeb39c4 100644
+--- a/kernel/module/sysfs.c
++++ b/kernel/module/sysfs.c
+@@ -62,6 +62,15 @@ static void free_sect_attrs(struct module_sect_attrs *sect_attrs)
+ 	kfree(sect_attrs);
+ }
+ 
++/*
++ * .data..percpu has a separate allocation per CPU and no single
++ * address to report.
++ */
++static bool sect_visible(const struct load_info *info, unsigned int i)
++{
++	return !sect_empty(&info->sechdrs[i]) && i != info->index.pcpu;
++}
++
+ static int add_sect_attrs(struct module *mod, const struct load_info *info)
+ {
+ 	struct module_sect_attrs *sect_attrs;
+@@ -72,7 +81,7 @@ static int add_sect_attrs(struct module *mod, const struct load_info *info)
+ 
+ 	/* Count loaded sections and allocate structures */
+ 	for (i = 0; i < info->hdr->e_shnum; i++)
+-		if (!sect_empty(&info->sechdrs[i]))
++		if (sect_visible(info, i))
+ 			nloaded++;
+ 	sect_attrs = kzalloc_flex(*sect_attrs, attrs, nloaded);
+ 	if (!sect_attrs)
+@@ -92,7 +101,7 @@ static int add_sect_attrs(struct module *mod, const struct load_info *info)
+ 	for (i = 0; i < info->hdr->e_shnum; i++) {
+ 		Elf_Shdr *sec = &info->sechdrs[i];
+ 
+-		if (sect_empty(sec))
++		if (!sect_visible(info, i))
+ 			continue;
+ 		sysfs_bin_attr_init(sattr);
+ 		sattr->attr.name =
+@@ -159,7 +168,7 @@ static int add_notes_attrs(struct module *mod, const struct load_info *info)
+ 	/* Count notes sections and allocate structures.  */
+ 	notes = 0;
+ 	for (i = 0; i < info->hdr->e_shnum; i++)
+-		if (!sect_empty(&info->sechdrs[i]) &&
++		if (sect_visible(info, i) &&
+ 		    info->sechdrs[i].sh_type == SHT_NOTE)
+ 			++notes;
+ 
+@@ -181,7 +190,7 @@ static int add_notes_attrs(struct module *mod, const struct load_info *info)
+ 
+ 	nattr = &notes_attrs->attrs[0];
+ 	for (loaded = i = 0; i < info->hdr->e_shnum; ++i) {
+-		if (sect_empty(&info->sechdrs[i]))
++		if (!sect_visible(info, i))
+ 			continue;
+ 		if (info->sechdrs[i].sh_type == SHT_NOTE) {
+ 			sysfs_bin_attr_init(nattr);
 -- 
 2.25.1
 
