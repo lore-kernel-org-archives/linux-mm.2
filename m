@@ -4,91 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99DF7C88E75
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 02:26:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A8E2C88E72
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 02:26:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AF5576B0088; Mon, 14 Sep 2026 22:26:45 -0400 (EDT)
+	id 6FCCD6B008C; Mon, 14 Sep 2026 22:26:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AA59F6B0093; Mon, 14 Sep 2026 22:26:45 -0400 (EDT)
+	id 6D5496B0093; Mon, 14 Sep 2026 22:26:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9BD1A6B0095; Mon, 14 Sep 2026 22:26:45 -0400 (EDT)
+	id 5EC316B0095; Mon, 14 Sep 2026 22:26:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7FA0B6B0088
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 22:26:45 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1B5931602D5
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:26:45 +0000 (UTC)
-X-FDA: 85214408370.21.E70B37C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 725E0A0002
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:26:43 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XPLksAgY;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F52A6B008C
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 22:26:57 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 99BF1402F5
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:26:56 +0000 (UTC)
+X-FDA: 85214408832.19.22E9990
+Received: from mta0.migadu.com (out-196.mta0.migadu.com [91.218.175.196])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 98FF280002
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:26:54 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=IDOPJAkx;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf02.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.196 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=IDOPJAkx;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf02.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.196 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789439214;
+	b=0EGfzP7ygE0JxFqFe4EtaJ0riqS6cvSdEcE/DQFbHxSNh+zvGKB9sq4W8GidB6THOU7zDE
+	Pzgn7OfEiY7ZNg1rBDNpr59/BKDnJTuLtuJCbmMTyVOt0d5jiB7SY5OZnyPjVZiOAao/m+
+	8RnVdX/f9ffDVJJqyhF2XA1pS22b3+0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789439203;
+	s=arc-20220608; t=1789439214;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FF/hMzJEEBjVHj8tu5+0x29Q3pa1mk5zwrpdsL2Gbqg=;
-	b=czr1QQEq8R+smRIOnEp3TiMqm+ufi5ZBQR6yMbLgmPT7bWogO8cUcoR/vlvUnrDSLw+Gf1
-	kPmqUphv1/sTmSHr6O7jUxe05QhhhMnkSI0wNAikfLzf2FRRFSi5VKMIVpCy/bA/SvaHiR
-	2/gpmcSA/Lfg60MNHyJQLS43UEiIozY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789439203;
-	b=kydTddLrjxivoLEyREe0n8Jacn/UWBg+cISmqXalJN4wr8uE1KBpKE0rURrqG9f21Ctw+P
-	cfG7gbwG1neWqyc09E57Q45KKopC+VcOCqW6ah82z93WEnpe4KvZzZcQy3ieLi28698HFM
-	fvtfqAZU2vXmt5w12C5RzlXQVZuWyUg=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XPLksAgY;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9E81940138;
-	Tue, 15 Sep 2026 02:26:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49D561F000FF;
-	Tue, 15 Sep 2026 02:26:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789439202;
-	bh=FF/hMzJEEBjVHj8tu5+0x29Q3pa1mk5zwrpdsL2Gbqg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XPLksAgYffr0yle6lKJ6XByLq/4bc3FRUCodqnf4SrClABYzHbAlOrsZjitB0eoFM
-	 rFkVa/PJlHlAg2Ran+D/zwQBrPw9NSVmsdQ+90da47gwcAt9fnNMHf/lqveBv1ydk7
-	 W2Coiaw+m17khA9iK1rsB6UZp7xpk8hrVgSUreA6NQnsSf0woOVy5FhFt8NYn0X4AZ
-	 xiQyesN0WbmdeGF5iOnybS/2YvZux6O/LOm9qDKkCtrGxH6kh5mSnYXOxfm8A9Q4Tr
-	 wayNzZCNfrYd0BvA6va5cTa+uUq7QT7ObBguny0eiGOnr7f5zEKCGuBHN/XIi9Hk+8
-	 A9QDivFwMiVnA==
-From: SJ Park <sj@kernel.org>
-To: KunWu Chan <kunwu.chan@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	lianux.mm@gmail.com
-Subject: Re: [RFC PATCH 4/9] mm/damon/core: use damos_quota_is_set() in damos_adjust_quota()
-Date: Mon, 14 Sep 2026 19:26:33 -0700
-Message-ID: <20260915022635.103818-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <CAN_Opa8qSHcDNU8k=EWMywUADizJEhHPpuia3jMcZ13i5iYXgg@mail.gmail.com>
-References: 
+	bh=ltfUfqHTxeh1EoiHT5yJn23kYx574y80AuIZmC4tMeM=;
+	b=c4AO/B6wLMoPPYLrV/p/i2/1f6E8pqGv7P4AlbEMSBfb8RGqGeR8zkP3oIvvztYZrOW3AL
+	k3SlyUVhUH18zWNd1ec4IBWXfzCY/FXk/EADZNcjiDZCCKMIrr2FhKsv51ujxn18CV5awF
+	W8fBeNtuBdoxSupUQBCc59/YqqlfBqE=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=WFAadgQLRx9VGPG7beZ1PrymSk2taGND2sdEQsl8PYY=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789439213; v=1; x=1790044013;
+ b=IDOPJAkxV1E7AzaSc2U+1EHFnJVe9bFouwDr5qxPJEIvlUEhnz9UTbdjQXiBFhshNck9po96
+ KZPR8ThwEs83KO1OgLZAN7lXnTvbROWgTBT/WHePb93AmuV0iOCvi5TpyiahBN36DQpzl/srgVw
+ H98PFKLzQYBrGMToLsIP5D7M=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 28292594e66ea37f;
+	Tue, 15 Sep 2026 02:26:53 +0000
+X-Mizu-Trace-ID: 28292594e66ea37f
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <7dccfc33-0ab8-4dc5-8886-8ad2b6dc290b@linux.dev>
+Date: Tue, 15 Sep 2026 10:26:42 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/3] mm/vmalloc: extract show_busy_info from
+ vmalloc_info_show
+To: Uladzislau Rezki <urezki@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Ye Liu <liuye@kylinos.cn>
+References: <20260914-vmalloc_study-v1-0-526f68559706@linux.dev>
+ <20260914-vmalloc_study-v1-3-526f68559706@linux.dev> <aqgqjRJ8qpYmx04v@milan>
+Content-Language: en-US
+From: Ye Liu <ye.liu@linux.dev>
+In-Reply-To: <aqgqjRJ8qpYmx04v@milan>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: y98iej9bdbbfohuzba3is3pp6qka97a8
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 725E0A0002
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789439203-646246
-X-HE-Meta: U2FsdGVkX18OckGoQ1M6E4eX+vpuNJFrXndI9pvjvWQ0lZjElAzkLMTYbZG2wNs5I2XavxyyA/S6hLpCdKlIibhBP4BrExNBdsPk2Slm1cpNwCBm8I4I4uU2hSlineQCiNIvd1+91/JyLfXTL+1XsNwKAPopQXCksFv9aVHxSqMvmiltwzJIjNDOBiT+WWEqrQVCMqb4D3C/6Pd3I/2s1CuLvkN6S8tqwd5ISeGTAka66dDXR8ntekxG4VXORea9xHgYqZkCOwHc/QzbFuJPUC7GWThLttgKCkgOUhkNhhursRSaEmKXmFrSkB8IQgyFREscHYkuxN+Q15ZQnnzVZUFosCdya/ISCzQW30QXDVhIRafmVqNqUE836kejcsKLJqeqUdZHlNXI8dV3b+AHfhwduMlS/6ZdY2/WMMJoUhm7kg38N/JQo88SouyWGSTxw3D68CdYJnzTh9Q27MK0ZbDNq3Uwkb85ed7UOcKn+AgtwWqxCaEZE1yePplISwNnQ6rpl6t50geBpWoEzTmu+XZ5HyUuxBfLJYyNdVmgZooa0m90qVe3QCroZ/mBH/8R5BTA57aT9RibvMzIYCP3jTBXGClbdXv2iLH9ZArkqEEZWG+BbeHXJAUiw01sFaApStLsVLELzBALhmhtJtlpzsKVlkvGm5FyM7Htmr5w3CNBQ1sxAAKXMTs89FN3GCBV3vkqgkpbCYkRRVr42WaeITbVrEQwnMRVTbH3v4OgBLG82OWhQZrxeZRl7C7BEtlqoed0Wva0Et0aGQqU+d07DUyVgocu8hw3WdF2CXe91YewJXgsjp5mOUrYo/UDzMKLqsDcMMB1ZKxlykZd43X61QNEHynxYYrTjFKQKrqyBmVazEBPmC+RByDFvyEmy1BI1xpT4h0ieRQDz7aAZ67HeEnUn9tkrTf3rTGMVOSCAHsL4aKmwXJyhbFLbV4Nvf+bcvdEUOjnhltCbciPQIL
- Zpktr2un
- G4d94lT7EUhkLydv7oX0+np1TlLj2HqvXFitl7cBm7ixpaoJNlbDDhaYkt1d4EviQ92JqmCDERZAaZlVPmTS16yLsKzyOqkYxQJMdcFWpOmYeqtnIvtkAeA0rAVWVIYsn6w0G3Scw/OinRRp4XeclAGf/bVqu2LrSIu5nLcSEPniKaUbs+BZ5uAMdPqxRdonDZ0nKbx893A7unkHmnRjO1wK4qj82yctQUjyWJnQxNT88yTZA6Vcwb6n+dX81WFXS6dPENgXcLA8tm5n6leCcTsRS9mTQqd2eayawT0bRfoYX8eWR2C6nJIKcKiZhhgthhbzw194u6P40QvkspzoTAU7kRQJw087Ap1hwYuNzGzTsUCgZKvg8+OJgVsgfE4CkIrfGVDMkBEehRezI8LWuM45NLvFWSL7qNWHq
+X-Rspamd-Queue-Id: 98FF280002
+X-Stat-Signature: asten4h4tsnhh3omai3x47xge9bd45ki
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789439214-799850
+X-HE-Meta: U2FsdGVkX19X2Hx0p3fSyoyzXLZlN0BugTTqLi5CZIih9ub3asgJV1cuyxif6Wx2dtrQloSXaiWY98Cbfu1qhdQLRWYLjcksyGPAdHFmdp0wGTiWJ3SwHlHHcHQAQ/icaHrQLNvufkpH0Jba6OVyCoMnfu6C+cErmDDzAxQxWIcVm2hiG/KorpvxOUIgvLqBq1G9+TBH5ilSOdu9y90iiTzhx3oDVDV1qnO/fVF1BF1w0LmNro6oS1HQZm4lpbTo1OMbna/8wZJUQw51ak9+H6vtxBIN93trVO7XbWOBaQZ5LCDsaHpAhA8IiXKqtN4S/8FqprpRt0dkpo51TncbSFVkxSsb+8wL97Mc4Ymfi3rWlFMJdQkbCA/j/dcbjEEOTSyKH962AeP0tcnpABQKtpAJnjjLYm7rwBYrvBG0tyeMVypCJOs8T6jVnWHNApnEWlcg4R+qtob2YyiYwB6+5Gsaux7yA4HGZly4wXojee0yldiGqis0/rkM1GmcB3HBaoI98jaC69vkv2HHUIW45pOkO5CFgLKymrrpXxOLozRyOrM6cVLvxLnt3Gcry+RdFs/M1ecyTCE0/D6YcpEDjQwWUk0VlARgbtsd0NvaHBVYayW9nuXOnSmtMh5JNbCxFYLMrxqj+7cI9RM3nDvACofGhGKUnkYQLyIfsbWemiKjzWZBLBmWuw3dsJKh7AZIYpAsv6KlEZfBPS0LRfO/3OuAYdYwJkVHrJhTjD4JXET+4ggjiddtE9s9LDm5SuyNnmjT7xQbnv6ulz5MSE356/IkYIkbY5qAvni44EPe3l+ftfiQlXMlwjSZd+Llja7hg26z96j1WD36vecQxJfh3JjYDVhFgLq+xN8Bp79t9YiJBNOPzcPyUQEXzxCex4py0HRbmEg7GUrZP86OE/sglaess55pKrfP5A2mBSejr4lPtp3Xnp+Q1DlvSAwo0WmdTFQVThbOG7W7EMZuGSO
+ 7b+xR+Oh
+ JXDPfPCkQVLg980HV9GWqAFyzcKm3/RF+J5CchLjRFfBP0Xak3Uboo01dkC5YHsl5GC894G/YsVM9TW039KzditToaKJ9yWs3JzNcU+YQL4t1qntbfRzRnp8gpBw3ROVz9fL/iT73LvhDzlr3iY6Bi1dLTKadDMDiR+8JWYHmpR6YlQ4ow/LjiEJ/UkD5Y7HK0/BHpA1YVDKXuXvgHpW3vWsnCmwr74ttsncxNHBGntvY+OjY7T5j5vDFPLdPGZQrnPHQKKtlo3eZfI7ul0P8AuI6YGBnZrv7aUX1g9GeQajNj8+HoR9Ja7eg7IdJeteZ0yHoyZnEYMn/tw3b+3Y8GjGdv2R2PTqCpKf0W9DfmIXh76UIL75QZ0wamw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,48 +93,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 15 Sep 2026 10:19:43 +0800 KunWu Chan <kunwu.chan@gmail.com> wrote:
-
-> On Mon, Sep 14, 2026 at 11:16 PM SJ Park <sj@kernel.org> wrote:
-> >
-> > On Mon, 14 Sep 2026 23:01:48 +0800 Kunwu Chan <kunwu.chan@gmail.com> wrote:
-> >
-> > > On Sat, 12 Sep 2026 13:08:05 -0700 SJ Park <sj@kernel.org> wrote:
-[...]
-> > So, if user sets only time quota, and then commits the quota to zero while the
-> > esz is non-zero, esz is never reset to zero.  As a result, DAMOS keeps applying
-> > the action with the esz forever.  Correct?
-> 
-> Yes, the stale esz path is confirmed.
-> 
-> One clarification, though: it does not keep applying the action
-> forever. While charged_sz < stale_esz, damos_adjust_quota() still
-> returns early, but damos_apply_target() continues to apply the
-> scheme and damos_charge_quota() keeps increasing charged_sz.
-> 
-> Once charged_sz >= stale_esz, damos_quota_is_full() returns true,
-> so damon_do_apply_schemes() skips the scheme. Since the early return
-> also prevents the charge-window handling from running,
-> charged_sz is never reset, and the scheme remains permanently
-> inactive.
-> 
-> So clearing the quota can result in the scheme applying up to the
-> stale esz, and then stopping permanently.
-
-Thank you for detailed clarification, Kunwu!
-
-> 
-> >
-> > If so, this may deserve Cc-ing stable@.  Kunwu, what do you think?
-> 
-> I think this is a functional bug in the existing code, and Cc'ing
-> stable makes sense.
-
-Agreed.  I will post this as a hotfix soon.
 
 
+在 2026/9/15 01:10, Uladzislau Rezki 写道:
+> On Mon, Sep 14, 2026 at 11:34:02AM +0800, Ye Liu wrote:
+>> From: Ye Liu <liuye@kylinos.cn>
+>>
+>> Extract the busy vmap area iteration into show_busy_info, mirroring
+>> the existing show_purge_info pattern.
+>>
+>> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+>> ---
+>>  mm/vmalloc.c | 14 ++++++++++----
+>>  1 file changed, 10 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+>> index 797933ba9451..7638845377f5 100644
+>> --- a/mm/vmalloc.c
+>> +++ b/mm/vmalloc.c
+>> @@ -5345,12 +5345,12 @@ static void show_purge_info(struct seq_file *m)
+>>  	}
+>>  }
+>>  
+>> -static int vmalloc_info_show(struct seq_file *m, void *p)
+>> +static void show_busy_info(struct seq_file *m)
+>>  {
+>>  	struct vmap_node *vn;
+>>  	struct vmap_area *va;
+>>  	struct vm_struct *v;
+>> -	unsigned int *counters;
+>> +	unsigned int *counters = NULL;
+>>
+> Is setting counters setting to NULL odd here?
+> 
+I would remove '= NULL'.
+> Other than that, LGTM:
+> 
+> Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+> 
+> --
+> Uladzislau Rezki
+
+-- 
 Thanks,
-SJ
+Ye Liu
 
-[...]
 
