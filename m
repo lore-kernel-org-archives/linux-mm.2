@@ -4,90 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33377C88E75
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 02:31:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 090B7C88E72
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 02:31:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 24B2E6B0092; Mon, 14 Sep 2026 22:31:00 -0400 (EDT)
+	id 1D7326B0088; Mon, 14 Sep 2026 22:31:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1FC036B009B; Mon, 14 Sep 2026 22:31:00 -0400 (EDT)
+	id 1AF396B009D; Mon, 14 Sep 2026 22:31:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0EC876B009D; Mon, 14 Sep 2026 22:31:00 -0400 (EDT)
+	id 0EF296B009E; Mon, 14 Sep 2026 22:31:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D4E1F6B0092
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 22:30:59 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0792BC02E9
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:30:59 +0000 (UTC)
-X-FDA: 85214419038.16.CBB9C54
-Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
-	by imf17.hostedemail.com (Postfix) with ESMTP id A81D040003
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:30:55 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="b/cTbEK0";
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789439457;
-	b=HS43EwZ6tkXyWQCu3N03YOtsCyyOlLgSQzBzX5ymeAF7ZGtDcw/HqeHp9VwWYlaEXECJES
-	PTsmkJ7nheOdO1f+wvJ/9I4tm/no+dZl+ehfkWtxmBbhbgNNP0bjbAZ8g+wMhA1+LQuaCS
-	x/nmiz+0qIexNQjv/SkGiJJBFkwPjYk=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="b/cTbEK0";
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DE6E26B0088
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 22:31:52 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 406B71C20C3
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:31:52 +0000 (UTC)
+X-FDA: 85214421264.10.55B45F4
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 271751C0004
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:31:50 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=epZV88N2;
+	spf=pass (imf18.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789439457;
+	s=arc-20220608; t=1789439510;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T3zoP75eshcusIq4zAJHkrJgPYj9IyXUMvCpsktAJxc=;
-	b=r0t3mtgowZwuIgL+spIi4MJL1six2/qzJQ/Yf8vhKOH58DLsEBujJZNqykLXS3EcrRQiLF
-	J/mAod5h3ssrCZoFzMN5ww+0fOM+F6L80Di/MAAb7nIBvJ4+h/tG83G0qV0gv+J3vj3qCC
-	PX1oUl9hDU57YTRCIqzWVTCdsAA4l2Y=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1789439452; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=T3zoP75eshcusIq4zAJHkrJgPYj9IyXUMvCpsktAJxc=;
-	b=b/cTbEK0eBsOWxbTfyoZEpLFf+tCOC2DIBtyGHCPxFzQtnZ3bIjoU22yrrqMPI2jjscKXVu5PgpJbjORNQk0H9k+cLBCWA+b/bJr3UgO45SQJMKvpSZHUknRS4MuurCYAOw3a8yNVjqPhPafIbGGfhANgH4HiVc3geZy8NufXFo=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=19;SR=0;TI=SMTPD_---0XB.cn-a_1789439451;
-Received: from 30.74.144.126(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XB.cn-a_1789439451 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 15 Sep 2026 10:30:51 +0800
-Message-ID: <1abcc4cf-fc84-4dcc-947f-8733df44e625@linux.alibaba.com>
-Date: Tue, 15 Sep 2026 10:30:50 +0800
+	bh=qSXFbfpOKnuvaEbNiDn4HfVO50MtuTzZ+yYBsK0eDiI=;
+	b=dvB970aV9CI7rTzLLtgBBjtgzBRZVUAPs624/Yeeo8uaR3205JqA8/4yK8G+7JQ2ctlc2j
+	tFexNUdkIU91wL/lWx9bskMZDEuybpxzk9iN2ZkGMwWZuRq4wdXODE91fd15GBk263zef0
+	7+JfaerbX5KGBXi3deyB6LZcqN3yt60=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789439510;
+	b=XaCCDcvxuD/pfXGYBsXNVHtstQWLhPJ0T+ocoz89UKLTtTyIFXX/a3NVE1dArSRqU/I6u/
+	LRCiv1rveRQPmhUkJkoY/tIPPvS0pKH5vE4FolCFNefgdCK32fyIchv1JXKzW/n/YYS0rc
+	NpFV15uqthtj+bWMJycBd3YJJpC10jk=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=epZV88N2;
+	spf=pass (imf18.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id E5CF340E022C;
+	Tue, 15 Sep 2026 02:31:46 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id qjc-Nwnlwtg8; Tue, 15 Sep 2026 02:31:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1789439496; bh=qSXFbfpOKnuvaEbNiDn4HfVO50MtuTzZ+yYBsK0eDiI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=epZV88N2/8zazLMcKvlccwrylVOewX/+KHOEExwCUJZyMLMKCWdHEWrFddkaGlHo3
+	 /rAkqnMLs7Mv1O7gPyalgGsZ8dOdjbczGw2Njwgpys5PAhwuem40BaZo3s+hypRWNe
+	 q3Yrxy7XscBDptePVIXSiMXYuxfykS2Z8RkkK1BHI8HqMxrizOpyGEhWKfjzxcSc8t
+	 AlUFtRN0q4KjqtEBIWkERV0jvgmC51eiighIb0vTjfehho381YFscFIAy1RTLqTAud
+	 jiRLdMRFT5dsNWff0ULOIflPBioo4eIvsF3rjqNyDWcVBh2MQMUVAXh0pQkOmtSAkE
+	 Xlj2tcMorNeP2JtXhKWRASpEKkHgW/cCRzWx7nALLiycLmx3p0uLLbKyvzoOqSaNhB
+	 HxuqcOgpdoUFJf7m/J8McpSUHbnvjPeFvK/yXJ02YAbBLy15DXsInlAEYdtJd7y8Iw
+	 LxlhhpBXDHHLv8DHlM88rBAECYVlLxDxM1Sb6UoGNDSGMtV/3NWk8tYbkrno69CIsN
+	 /p9kOKTWjTJ/CyOgiYlvFJtsnEKGLVy/ICnxoO20cuYkqnZS2yRFL+EVLcrJ48TfsP
+	 NZVIP2MgDtk66smtyDcdMOALcHCtAPdqOOkJHC6aj1MRsKb0t7dZebPa9zjc3vwGh1
+	 LrMYUBg8VAsjRJKk75Dgf9Mc=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::e])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 6408F40E00B9;
+	Tue, 15 Sep 2026 02:31:19 +0000 (UTC)
+Date: Mon, 14 Sep 2026 19:31:15 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Ihor Solodrai <ihor.solodrai@linux.dev>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	linux-kernel@vger.kernel.org, x86@kernel.org, bpf@vger.kernel.org,
+	kasan-dev@googlegroups.com, linux-mm@kvack.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v2 2/5] x86/cpu: Initialize boot CPU cpuinfo defaults
+ early
+Message-ID: <20260915023115.GFaqit8zcWHGkAdHD5@fat_crate.local>
+References: <20260814235134.3461435-1-ihor.solodrai@linux.dev>
+ <20260814235134.3461435-3-ihor.solodrai@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2] mm: Improve pgdat_balanced() to avoid
- over-reclamation for higher-order allocation
-To: Lian Wang <lianux.mm@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>
-Cc: "Barry Song (Xiaomi)" <baohua@kernel.org>, akpm@linux-foundation.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
- Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt
- <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- Kairui Song <kasong@tencent.com>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Wang Lian <wanglian@kylinos.cn>, Kunwu Chan <chentao@kylinos.cn>,
- liz2nku@gmail.com, xueyuan.chen21@gmail.com
-References: <20260422021842.78495-1-baohua@kernel.org>
- <aejtfpBUu7gNV6Tk@cmpxchg.org> <20260914113353.94964-1-lianux.mm@gmail.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260914113353.94964-1-lianux.mm@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260814235134.3461435-3-ihor.solodrai@linux.dev>
+X-Stat-Signature: nbknrg6xthpsxr48x4giwr6bp6o7frqo
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: A81D040003
-X-Stat-Signature: idetw3zu5g3gwbu5sfcipkrheaj859b7
-X-HE-Tag: 1789439455-517969
-X-HE-Meta: U2FsdGVkX195OfsfD8sGJqQCz2t/5HBJopdtauzgoEzkXBDKjFZne37cIa9ieWSEAmHs8nQkj6n7S4cWb2ZdUOccNMbkzod84buu2zOy26MCeUzTMjqBYSCje73hNLMOTFs46NtOPpwQt/wS9KoefvRI46EX8g7pXlgMR8eBI2xbO6orrTdsG47+WolTMKwVV+Ibw9Mv13iVzExyEEDhFgE4vn99k41AljPOH3OidQKjjgENN1FVIo4IlcNgGmCe56ZRy7zRJSFAZD5KVVJcLv67//k6GBKaPZNTwdVe98X1MaVJmKfmdDv1qKjD6cj5Nz14sxU2ffb9Bgsl+ydQg9Kd7wuh26AGV3jB/qt7LyJ45+Er4koqAoJldiT8IKrgRAvVhSe/yUVMc+SvJq0a3TGVbSkr2rbh4V3fKcusrm+voowhX8vl17gmwAX1IKo/edfxJjj5o26r0orKBMzZ5/p1EdQJGdzXHX108MVK0tzBBoXNrye5CoC7JPAj4XqsuuTIznzmmhYZakM7aRpHcxlYG8AaDHtfx7SkueM3LlHJOcQ9zoYLyS49wIPAJchlq+/qV1RgahW6r0Dczp15ILPLEooO9EnwnJtvwkvfGcrNdBHRpEWHV3vZd6ExkBCrSF4/N7MWElM9so7k/XNu8WZV9bWh2EFSEy3VahTMahLo+sWckgRsPdwQS6OiPHkDfOl3cmu9E8NesRXE3iezn1S67+1asfD7ckedBQnlYBUfrEbNg/rX4sdWA0EP5qBbQ22wu4USGFGVC6D5EUHwMHLd09PSEQKmHOnk045p686SixuTn33Ui+GJ4eBS0OBCB8/oPHrR78HQHS2iZiCz81xarXfBxjBdmwA/om3u7gxb94iheviwNZU0UHAOVL2GnSh/LTJrqIcnZJd1hKcSuhddQgP2JpnBznvt8UhK9hamFVLPWoFS/QjaHiMAaMf1yf37KpL8t27zRQ6v0sp
- rpZrXVhm
- 7MoK6ee3J6pPwCi6CkfRl/FRwWwTQYR2i/K5ogrQNUDGt2mo+p3b0ykmW+N/ecMijyD5taqwGQgX4PJXuPh6PI9U7GkLLprZN1+/noPnbmVfuY/NBLj5S9E1gQaIzZNpmz8rTSqa0qJ3yTAkedIn5w4MdZSzPu6Qys1ede1jtXi6ROntI9SKin7SCGE/ntkrrs1dGwvSo8o7fjIMfs95orZGoqLo6Xh/+dy/mPZBwj5j+19e6Q+hdCZl2yrSc3mwDGybTBWx694eGh6fX+xGbrvPbkd/sY5ADliBHUwwmJexu8qmjYdrlQCWDxnmCbVYuPTdBtdy9ADNl70mow14nyYmKVReJhbaMLb1F2L0H8+Ut3pgSmWoT1HfzZrMpe7uMfNo/NTxcqpAhKtJOf1GryLnoMCsmhELIEGjZzSFYqdZphU7oro6sr7Qe2HAzExsXDVY70YSGd6aoz6E8LdwXl9wJvS8nmt8uZffziVVA9MUp1jhRxCgAu6mwKdsyEmu2PlnG4glTVdNZxSRAuwhHPdZ8IA==
+X-Rspamd-Queue-Id: 271751C0004
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789439510-811508
+X-HE-Meta: U2FsdGVkX1/aDUmrmNprnkk8xc69HGaweQpmPxVe8+mgL4RMFsl4Ov+l9jUDq94C9zytPdIczOVRIymlIbbFOh0u1E9LF2tZw0s6hpGqBgDRRFXAghDpEJxm/P9GobHgimstPu9R4ugE9wIoUbhtiJ6n7Ns0nwwZbiFLsRwuUYPfKICF9D2CJ1NMh3CbF7hJcz150lJi9LM1McyloAQmv4LPL93fxO+6UOYz4069wGrr468DdfvR52+Nj2GJaqZwCvcgit0WHbwmxf64SRomi2y1ykrYUneYVBrGNfDY96utVOapP6V0kVr7i97EbYzbnCtscA7XneK3ImHCb+Gf2h9eCnoLmxfjQMK4Sgd+KQ7L9P2/W02LSUCKLXPbqcZhUjNlvc8kNDE8kzcQz83ST6LRWIUb/I6b0QGv/BYXoZ3DZ3hUkNSVRv4W8DCegtdDxCSMobdyS7cmp2BwPXKGot6JSQ5lbECrNgeB/+vfHgnnrcub+8FaTbWVVh+1zm7dwsM1aNPfLq4nOpZyBzIaut1PW5B+ehW9nKVluXUX+zzT5IPYNQicI8DAIXMkIxLkcjoqNL5hi10El0+06vw+Mt4A/LCkgMO8MIApa0MLOYrfSaIyUgHumCAKulPcyOZnW0ZouEPWQEFgra2YKIISXwlpktbTXsxYtrUZZCKCLcaRfpQWCSn8QiD+/rSLn2wmtoXEQln+gpw0zHySx9q0PpOu69W2Cua14w90ioZhIuXXpdmlJQe4DFqxJ8v30kuYuQUw15anOiQbxC1IbXPYy9gSibhBvp0G+eZVgwGHFQQAB3Logn6QJR/CoBdHQunzTK/kj6XawdnLWdLT/oODDFikrV1JKof+EX+72ztleDSxn5ie1EYNppO8ahN4IX8hMAazhfrdErdZLtqZNPn6S/tNuAt85xn7+xY1ylcvAsCN3g1s+cgSiwH8fkSc2Q4qa9SV/k3gbQzmDnOKZKz
+ T6tcFJ46
+ +HxsHVLsWAy2KYvlHZd0tHh3mDLDIcH+7QFCT4EAghzM8By46TY9PyXehO9obMMaaIi7HqJSpjKAkqKtPrbSOUcWMhtUGbhMS4XSAm0nDi/Gl673SYCaMYfNFysKJopDdRhIKFt4Njr6tblwEc9R75gxncO0gnLQMk1aKisxKmH2piVAUmD4MoiD6DR1NAqmxzgJGnhLbQWOzCfWsKxNp5waV51W4wa57HhvqRaAJ+S4EXBnwjZ1K1TNPtE20wbVnfB4A6THYKGMq1NczOHfY0Umvd+cLrFa9lvcOfhbqUpRQL8rOX0rKn/qfEkUfoTrukie+kbQv7y+CJg3P57uk7lcNEP1/hoGr8KdkzBtQS2ct1WzVWtfOWBJAcg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,100 +113,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Lian,
+On Fri, Aug 14, 2026 at 04:51:31PM -0700, Ihor Solodrai wrote:
+> early_identify_cpu() clears the capability array, the CPUID table and
+> extended_cpuid_level, but the architectural defaults for the rest of
+> struct cpuinfo_x86 are set only later, in identify_cpu().
 
+And I would've stopped here. I don't think we care too much about a CPU which
+doesn't enumerate CLFLUSH. Or is there an aspect I am missing.
 
-On 9/14/26 7:33 PM, Lian Wang wrote:
-> From: "Lian Wang (ProcessMission)" <lianux.mm@gmail.com>
-> 
-> Hi Johannes, Barry, Baolin, Kairui, everyone,
+I mean, you can say something along the lines that now things like
+->x86_cache_alignment are more correct but I don't think you need to go that
+much into detail.
 
-Thanks for raising this issue again.
+> On x86_64 x86_clflush_size defaults to 64. Until that default is
+> applied it reads as zero, which get_cpu_address_sizes() interprets as
+> "not enumerated" and replaces with 32. So on a CPU which does not
+> enumerate CLFLUSH the boot CPU runs with an x86_clflush_size and an
+> x86_cache_alignment of 32 until identify_cpu() resets them to 64.
+> 
+> Use the same defaults from the start, so that the boot CPU does not
+> depend on a later reset to end up with the right ones.
+> 
+> The values the boot CPU ends up with do not change. Early users of
+> cache_line_size() on a CPU which does not enumerate CLFLUSH now see the
+> architectural 64 instead of the 32 fallback, which is what they should
+> have been seeing all along.
+> 
+> This change comes before the last patch because that one removes the
+> reset: without the defaults established here the boot CPU would be
+> left at 32 instead of 64 on an x86_64 CPU which does not enumerate
+> CLFLUSH.
 
-> We revisited the thread and Johannes's earlier analysis on the kswapd/kcompactd
-> handoff. We agree that a single static `compact_gap()` cannot represent
-> hundreds or thousands of concurrent higher-order requests. In such workloads,
-> repeated kswapd wakeups often reflect real unsatisfied demand, and stopping
-> kswapd too early can shift the burden to direct reclaim and direct compaction.
-> 
-> At the same time, related reclaim issues are still appearing in several
-> environments:
-> 
->    - Barry observed order-3 network allocations causing persistent kswapd
->      activity and device heating on phones, even though requesters can fall back
->      quickly to order-0.
->    - Baolin and Kairui have seen similar fragmentation-driven reclaim behavior
->      on servers.
->    - We have reproduced on PCs and VMs that order-0 memory and total available
->      memory can remain plentiful while order-3 blocks are scarce, yet kswapd
->      consumes substantial CPU and runs heavy reclaim/scan loops. We have not yet
->      reproduced this consistently on our server systems.
-> 
-> There is a useful parallel in Johannes's production work on reclaim storms in
-> defrag_mode:
-> 
-> https://lore.kernel.org/20260626182215.1107966-1-hannes@cmpxchg.org/
-> 
-> The allocation paths differ, but both threads expose a similar feedback problem:
-> reclaim may report progress in the number of freed pages, while not making useful
-> allocation progress for the order, migratetype, or fallback intent that triggered
-> it.
-> 
->> The compaction gap is sized for a single allocation, but
->> kswapd/kcompactd are a shared resource for potentially hundreds or
->> thousands of incoming requests.
-> 
-> We share this concern and do not want to replace the existing incremental
-> pipeline with one fixed value. We would like to separate two possibilities:
-> 
->    1. One high-order kswapd wakeup overshoots `compact_gap()` substantially
->       before `sc->order` is reset and kcompactd is woken.
->    2. Each wakeup makes bounded progress, and the total overhead comes from
->       repeated wakeups after best-effort callers have already fallen back to
->       order-0.
-> 
-> For the first case, limiting the high-order reclaim scan or per-wakeup reclaim
-> budget when order-0 watermarks are already satisfied may preserve the repeated-
-> wakeup pipeline while avoiding a large single-pass overshoot. For the second,
-> we may need stronger accounting of outstanding higher-order demand, instead of
-> treating every repeated best-effort attempt as a request that still needs
-> background progress.
-> 
-> Would it make sense to align on a common, parameterized reproducer and trace set
-> before choosing between changing `pgdat_balanced()`, bounding the high-order
-> reclaim budget, or improving demand accounting? A useful matrix could cover:
-> 
->    - best-effort order-3 allocation with immediate order-0 fallback;
->    - sustained and concurrent THP or pageblock-order demand;
->    - default mode and defrag_mode;
->    - phone, PC/VM, and NUMA server environments.
-> 
-> We can share our reproducer and the PC/VM traces, and adapt the workload to
-> collect per-wakeup `nr_to_reclaim`, `nr_reclaimed`, `nr_scanned`, order reset,
-> kcompactd activity, allocation success, and fallback path details. It would be
-> very helpful if Barry, Baolin, Kairui, and Johannes can tell us which parts of
-> this matrix and which counters best represent the phone and server cases. Then
-> we can compare scenarios with aligned measurements and work toward a solution that
-> does not trade mobile reclaim storms for server direct-reclaim/compaction storms.
+This paragraph goes...
 
-Like I said before [1], the problem we ran into is that in scenarios 
-where fragmentation caused kswapd to be woken up and reclaim too many 
-file folios (even when free memory was sufficient), leading to severe 
-I/O contention that impacted some applications.
+> 
+> Signed-off-by: Ihor Solodrai <ihor.solodrai@linux.dev>
+> ---
 
-In such fragmentation scenarios, I don't think we should reclaim a large 
-number of file folios, instead we should wake up kcompactd to perform 
-defragmentation. So in theory, I prefer Barry's earlier proposal to 
-adjust 'sc->nr_to_reclaim' [2]. But let's see what Johannes thinks.
+... here, after the "---" delimiter as it doesn't really belong in the commit
+message.
 
-Based on our problem, I think we can setup a simple test scenario: one 
-workload tries to allocate THP under fragmentation (and free memory was 
-sufficient now), while another fio workload accesses file folios 
-periodically. In this scenario, kswapd's reclaim should not affect the 
-fio workload's performance.
+Thx.
 
-[1] 
-https://lore.kernel.org/all/8d4df864-2954-4eb6-b8d7-ae6595646e6e@linux.alibaba.com/
-[2] 
-https://lore.kernel.org/all/CAGsJ_4x9vkv2G7d-gANf8kqUJVxQh_P9=AJxr98LFUgQeOTqow@mail.gmail.com/
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
