@@ -4,92 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C737C982C5
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 12:00:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CB14C88E7F
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 12:00:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 07FBC6B0093; Tue, 15 Sep 2026 08:00:00 -0400 (EDT)
+	id 452386B009D; Tue, 15 Sep 2026 08:00:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 032826B009D; Tue, 15 Sep 2026 07:59:59 -0400 (EDT)
+	id 42A3C6B009E; Tue, 15 Sep 2026 08:00:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E88DF6B009E; Tue, 15 Sep 2026 07:59:59 -0400 (EDT)
+	id 366EE6B009F; Tue, 15 Sep 2026 08:00:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C0A0D6B0093
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 07:59:59 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1473B1203DD
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:59:57 +0000 (UTC)
-X-FDA: 85215852834.01.FD27682
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 5B357C000C
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:59:55 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PNkc1SOO;
-	spf=pass (imf22.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 12FEA6B009D
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 08:00:17 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 62EC11203FE
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:00:16 +0000 (UTC)
+X-FDA: 85215853632.23.5F3F30F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id A8DE82000B
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:00:14 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bdJ8EfCA;
+	spf=pass (imf03.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789473595;
-	b=517L2IyP7/WRTeeyMRCuIbRKHU8ATHEi8iIVpK4obEqLujTjJDqTGesw/WiCbPHT4uvKbZ
-	2dgwp8gyAZpnttsQZhAqZtHnZVRjRPOhddrtEvQfuLMwJ5kPesqA588otWQLfQddpLlAOd
-	zh0pWyDUfoDJldko75YssfSBFW29oqM=
+	t=1789473614;
+	b=jQJXqwP2Hq0QUpbZR5cCNZDPxGDlyY/i/9dzn33Rp4rWCsyRkpyzHckaKIxS1tiU9KZgUu
+	BFaATwFCVZUbQrpmRjIwODXnzAQheV8EV+3oAN8QXm37YzKL0jrJCS+SnCLJKEfD407jsA
+	V6hnQidNv8DBCjyj53YuYs+sFOm5GFQ=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PNkc1SOO;
-	spf=pass (imf22.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bdJ8EfCA;
+	spf=pass (imf03.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789473595;
+	s=arc-20220608; t=1789473614;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DQgIYhua5CTViS1X9ZXXGfaSPT/5dqgeOOlUNrKnxWw=;
-	b=6NsOVVcdv9yhq8XsI5/H47/i6Do4PWlkXEwbl1tHhEyE/CcaGWCtH76hoed1Fwel0X1VDM
-	JoGzpTTEvkiAWMftJnnU6QK0ILhoj8OUPCN8ASzXEHb5w10zrd/cVdlXYtvcnsrrvD4snD
-	67vR1IT/9t/GQ/wfsChj6opYA7SgufM=
+	bh=lkRrGN3tHH0vPXJQpfXyuI1f/hj84726OJ+wXiSAjkY=;
+	b=WMszHrdzb++4WyQWBLQzyho2OQ8cEMVmGrGuFzmjmGPJud2hobqnTY75/ZWBUqyoVQBSF6
+	p8/UdrfR/nqFL7pDHeFDHMKOk5aUSJ5gU6LTzRlLvJ1FmOTcpECcce8ekD8Xkeuhz+EVVU
+	5Eq+rzkSCUfDX1ttflDVDekBFHkZBs0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 30ED7600D1;
-	Tue, 15 Sep 2026 11:59:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1604F1F000FF;
-	Tue, 15 Sep 2026 11:59:52 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C51DE41B2F;
+	Tue, 15 Sep 2026 12:00:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D59F81F000FF;
+	Tue, 15 Sep 2026 12:00:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789473593;
-	bh=DQgIYhua5CTViS1X9ZXXGfaSPT/5dqgeOOlUNrKnxWw=;
+	s=k20260515; t=1789473613;
+	bh=lkRrGN3tHH0vPXJQpfXyuI1f/hj84726OJ+wXiSAjkY=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=PNkc1SOOx+a0MtActP/scxfu+EOEc0okpYmMq9u2IvQ6wdxXtOCmaRwTaDfxAYQfu
-	 KNpmxdQzkwQyaCWqsjPY6fMZbe5ub33vKaPoYJ07B7Q1LWFwdlgiCUvB0QQ8c2qsi1
-	 FMsSTqEgiIP1sEOamGDSgZSCZ6TfAMEjISixK2R8eaJA2XnzylLgQ4fdlCaNZFxShP
-	 J8hVTu3MQPl0lwmGSaxF9w8s3KltrNP5jpWzkNN2BlxuRXTG4UWjQZqj2E6RzHxSaN
-	 2Rs03FwwuFJXXN68mTYzdZ8pV7LyInc7Ptt8ORor8BsaOlsL4d3xo27nPcBZv3oI95
-	 0hW/vFstsi8gw==
+	b=bdJ8EfCAcKRLCnZZLr9KUFRKwzOp9HwWHqD8dKOgs2QECDixoCiY7OitpfSWybTgc
+	 GrKy8T3cB5cVyun9gMM4tiazPAmkuvnRoSJn20gDY30Pi6NZ2BlWie/yV3J02KVzmP
+	 +FdO4hMG7v/dI5BZjC8kuRbGxnY1BMC++7JlKDVKVVz2TBx0SWNpwMbRNY+KWbqJrn
+	 ewEE2svDPg32d5ej4oQppZf8rSJTrU4fXT0CFb4RwzIPHo6I6kwXfOXCr0tMaXJRUv
+	 nQKJqvUmQYSXF6bRUemMO3EjVCVESrcELW0g+JEeeCOWgYbp17E7wf+3S6taJJ6xjy
+	 asi0ByODbGixg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC POC 14/50] parisc: commit fds on syscall exit
+Subject: Re: [PATCH RFC POC 18/50] xtensa: commit fds on syscall exit
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Linus Torvalds" <torvalds@linux-foundation.org>, "Christian Brauner" <brauner@kernel.org>
-Cc: "Peter Zijlstra" <peterz@infradead.org>, linux-sh@vger.kernel.org, virtualization@lists.linux.dev, "Eugenio
- Perez" <eperezma@redhat.com>, "Alexander Viro" <viro@zeniv.linux.org.uk>, "Oleg
- Nesterov" <oleg@redhat.com>, linux-csky@vger.kernel.org, linux-m68k@lists.linux-m68k.org, dri-devel@lists.freedesktop.org, io-uring@vger.kernel.org, kexec@lists.infradead.org, "David
- Airlie" <airlied@redhat.com>, linux-um@lists.infradead.org,
- =?utf-8?b?Q2hyaXN0aWFuIEJyYXVuZXIgKEFtdXRhYmxlKQ==?= <brauner@kernel.org>, linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-hyperv@vger.kernel.org, linux-alpha@vger.kernel.org, "Michael
- S. Tsirkin" <mst@redhat.com>, "Jan Kara" <jack@suse.cz>, "Jens Axboe" <axboe@kernel.dk>, linux-arm-msm@vger.kernel.org, linux-parisc@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, bpf@vger.kernel.org, "Ingo
- Molnar" <mingo@redhat.com>, linux-gpio@vger.kernel.org, linux-mips@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-snps-arc@lists.infradead.org, linux-openrisc@vger.kernel.org, linux-mm@kvack.org, sparclinux@vger.kernel.org, "Jann
- Horn" <jannh@google.com>
-In-Reply-To: <20260915-work-fd-reserve-unify-folded-v1-14-4d5217d6b246@kernel.org>
+To: "Christian Brauner" <brauner@kernel.org>, "Linus Torvalds" <torvalds@linux-foundation.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, linux-openrisc@vger.kernel.org, "Peter
+ Zijlstra" <peterz@infradead.org>, linux-hyperv@vger.kernel.org, linux-fsdevel@vger.kernel.org, "Jens
+ Axboe" <axboe@kernel.dk>, linuxppc-dev@lists.ozlabs.org, linux-gpio@vger.kernel.org, "David
+ Airlie" <airlied@redhat.com>, virtualization@lists.linux.dev, "Oleg
+ Nesterov" <oleg@redhat.com>, linux-alpha@vger.kernel.org, kexec@lists.infradead.org, "Ingo
+ Molnar" <mingo@redhat.com>, dri-devel@lists.freedesktop.org, linux-csky@vger.kernel.org, linux-m68k@lists.linux-m68k.org, "Jan
+ Kara" <jack@suse.cz>, linux-um@lists.infradead.org, "Eugenio Perez" <eperezma@redhat.com>, "Jann
+ Horn" <jannh@google.com>, bpf@vger.kernel.org, linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org,
+ =?utf-8?b?Q2hyaXN0aWFuIEJyYXVuZXIgKEFtdXRhYmxlKQ==?= <brauner@kernel.org>, linux-snps-arc@lists.infradead.org, "Alexander
+ Viro" <viro@zeniv.linux.org.uk>, io-uring@vger.kernel.org, sparclinux@vger.kernel.org, linux-mips@vger.kernel.org, "Michael
+ S. Tsirkin" <mst@redhat.com>
+In-Reply-To: <20260915-work-fd-reserve-unify-folded-v1-18-4d5217d6b246@kernel.org>
 References: <20260915-work-fd-reserve-unify-folded-v1-0-4d5217d6b246@kernel.org>
- <20260915-work-fd-reserve-unify-folded-v1-14-4d5217d6b246@kernel.org>
+ <20260915-work-fd-reserve-unify-folded-v1-18-4d5217d6b246@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 15 Sep 2026 11:59:51 +0000
-Message-Id: <20260915115952.1604F1F000FF@smtp.kernel.org>
+Date: Tue, 15 Sep 2026 12:00:11 +0000
+Message-Id: <20260915120011.D59F81F000FF@smtp.kernel.org>
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 5B357C000C
-X-Stat-Signature: 9ouws5hr61iefoxgp5dh416iksqpiji7
+X-Rspamd-Queue-Id: A8DE82000B
+X-Stat-Signature: es1nwtx5k6wgms6imrqxzaxb3sxghtjh
 X-Rspam-User: 
-X-HE-Tag: 1789473595-741438
-X-HE-Meta: U2FsdGVkX18hRNwxfmiwCOSexTBg+bF4EiO0YSd0+CU5I2DPqRrW7rGSd7lu08P612KwKKL8UTuIzVVbi+Qq5aLFBvi6Tt3EH1++GqTcxCba/wq4aKOJEnVT5mvtVq5XPTC1PJA0aD1/Xihx+tzOLtoJRze4+usAJc/167qx4823WXPTlN35R8mAPviRu1TJR2JTBs1M9rKAi8zBORph9MYsBFwh86LkPu8M7fcQDtFEn/JNh89uf33CQx/P//TQ/C15c6VXph0R0mHXGwl1sLAo2lAeUgVAMNVnB3+bvLTwXcTyo3hrpG4+GutL86QI/6Xb7kxsZnVQ9dLhwnZDqoI13mN4vPaPm/NsE6va4lsGpWa5QLQBNl/Qz1Kt8xUV28pg66Df3Nj0fe42KtmuKOEUKmzhF4MUzKCu0E3Kr2pi8WCk44Bl6rKWclSgq6xwmYYimPTzpfTJ6ftUNsUfZoJw+CLuKuzWA3QKK86mkjVoyvKCpxwPcyv7D152w4Jz/idSdd0PbAPbXDFZR/nyDijrJMqOLxJH09f2Ax+DSY6d1x/4Lwm+o1RRaSfCje4gFn9YVazgnhZLtganeHo+4cI7VC9syG10hiefLTfX8VPc2vvdyQPZ5c4on1uKUjErDc9x8rZ8h7HW5GGy2wgjeoJboA3E+cGxFUI7BLuOr/D1ESKrrWkq2lCHKUftoPscKE9unfQmfTWl6NRcxFuVhd/Vgqwmp2uh+Ht+5qNEGuYPdMCeAHGg3fnz8eTYaP4D0n/zY5Vus16X0DAlUWcACmrEpNP4rYYbanplq3Ik5rXxG5d9PTq2NjsBL7S1xzagdlOs4UJJ9iwcZdyFv3h1SmcrCWb7SyCi5wmMebUD2/O9aJYQlA0hJO7fNGc3QFQ8ZaBdbA5eZtThbsMnoeTJn5UFwYOcHN1Bd69vC22iNB49FNbMMLU9BILmd7Y8mtj4NcwgB0sq1fXy30Ethj6
- Pw8J3G5G
- T88RXap8RjLbYkXRrNMPbyAjUPl3u/vBNzbT6kSzapqwynwt5zWLjKJ/L6UDXd1nLrRFdE/7JK8uNkuwADKEAQRkBFvhaA37sVM58xWQvDfqDBLrwdvX5pEsp+axQwinulLgOs+goi82XiJpa+3S1bQ66CXbrxFDJyjMloLyskyQim2OKdKlcwR9KvAKvcc+qKfqKWlyF3xXT3DQ9T8pn+hEWb+BUouqbQpcJHMCIkrW8/1FytmX2ksMlV3LIZpcMEe+v4QpF67Ks3q+eOz30zPbVwx+Ld+J7VUvWT8wdCiBlKwgHNWAQff5d36StAXHkYUVW0doJ/aBV/8BbPDflJkJa/Oakr6oBQ1vuFcuH5Y1ec2CtxIdEtDxTZYuMRMciXpNpL/QnsEgJVWQHZIFjoFpswqnGKupEaCTT1djLMGJgvBUKG0yYxCMAtvZcjWkQt21gXJ4l+J5wmX5tpspTxamNjBXD6kBDv1D3qSS9E29UvZUYdJfLHuP9oGJizC0ceIBlmuyTxGUukQEh7VHSbM7DRy/57uZOlyfQnEGMt7ck5bRgUg25aaxK9t1DshBx5vfblYaz1XshMM0dXrocQfm7SFdkOby+fKb1B7UY26y2uoHrmLBaVITiXUJcyWzX5pFeE5fjk03DhKdhFg/ksjcn+mtGi2K3qnEBo9y72R/a7TI=
+X-HE-Tag: 1789473614-487464
+X-HE-Meta: U2FsdGVkX1/dV0xQeKz3+t9EnwdWjzXbieXA/B26OSdcMzmbcA8TN6Wr4hOIcTt77HSlm32/OMUZEdPjdJtmB4+8yELDH/7YQ8KDKRepIJtKqez3SLIJ3QRyRM2euAc1Hb7qzHChbeSJBeyBQ18HE85qN3J3mx5aQt54BhuLesjeI7To0/tnL81t3aa9laHAR8wDswj0C6Lg+c3OQ9st5ahZDSSaJvcdX2+uQTEUXbIm3zkXY41Sy9HlFsiniX77Xa9psQ2ETd7T3T5sb+BWbSaFhJoPDvTPidkFzbR/7dFBNmLlJruJ4VjKpCC4RE75XWErkXIUmXjAid/IqR+rnaozALixKf03hBWSEzDV1OGqpSaRkYVPnmGgQcBVm3Y2MjE1xVlWNGn5OCXmIqXC8kYpl085OP1ret57JMsA5WhGlCB0OEBb23ipb9gftG6JBYkd9q00okFcYa9DncQOuZavCD2NmNcUZ8yBvHiXW6ifd2OlHaav+X7G1kvE7i859rCUDggWMy+1rf3fh+zHvdPNHi9kAJK47UTGqQ9lisWz42f8Qywz3PZM9RNTZwTM64KsIhjlEFEu1NDkP6DCGWJZZOP0CBRaEd5Q4A5YHc83daQur4YvSgagCikwa0TlJKC9fUlEBsvK5VXKD4WyugU1dFUCpD5/jJIs43a92IE2wRxyntwV2L5K2r8g9/v8E9sGThQoRqKwpjU6ZfJ6qxk1US4nsbpRu1R8XHyeDqk+1scCiXHohm0Ui1FHzrN9PFcN3vl8AKVa1vUg+t4MM93/+xvpFxtopRXIwkAlKbrIJUPLuD7FctANRsWX9tqahagk3hkUMS/9c6ShXdaubktb/v7N2zleHbIGMqh0K8CyL5ip7XZmXpfXRd0opcmQfODhaIyQ+MYc/hmpy6JrCkZtiNlpEFzfLS6GxgxNn+/6lO0fKl1XNk/Tb/FoDIC3MB4KYwmLVoswb3VwaBr
+ ezVyWT3s
+ d+333dRji1KJFdIkaqX5rRJ+v1tuWhXOREgbDtu8JbxvDdm5Z6tEVPIsR1QHyqeTeZIvu283gRb/+u5FR+Kaa01pW0QphCqyQFuBIA5eQtP0EuyD7m1SI9Paqdx8oQIk6jx6cecLNzM4EC8FqesYvNFRJJbGyEJeFNep3abw8odvccIPpCNP3Rtk9vMYNhWIlcWeOGYBQ4lh0IYqj5vfnErIJ/2FrysHKm258Ni0T7TiE1j3bhvt5PYFk6CyBzQRap1sC5QaGF1Bh846fTVtPntwcMRFipsrchMok1MJQnIXE+hJlkcRqHy14ygVGVLaDsFyRQ1G7Sa1sJo9sveZKtx6fRO1lXuPw9XzwQFrwF+5jwJXkgY7hIK4tpcVm7FG2Ks1qSVzrilJCohjI28+G77GDhFwpNTwnwkyGUmYdxuK30YS+flyBZsAA/VOIW2o/KqKmhCjH3UsWHvtKyInIxo2Tkb8yr4aLE8bG5j0uP94S4PhSNbLtBwCCJY2ASUQbHicEvcjbXygAwgscCexBK8Lf5V022JMA1Yn779fosQsFjhiXEORMh4agEmrtpezeaderxI/c2mWMuNLfY0vbP4aYbpPzOidcH6wZ+x7lQXp7/a0q5QoJUgp/tTfgBAtokU7QkoF/xPHg2L4URBXPy/LlJPrMz/GVM3Z6YSp0Nvi58fM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,95 +102,60 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] parisc: syscall fast path exposes uninitialized pt_regs to ptrace
+- [Medium] xtensa: inconsistent mid-syscall ptrace exit tracing due to stal=
+e flags
 --
 
-commit 38a139df8c7c61e11fc9314b5f43e371c71a8356
+commit f64c69fbd6ff1a2ee8dd26645f9d56d2d371647e
 Author: Christian Brauner <brauner@kernel.org>
 
-parisc: commit fds on syscall exit
+xtensa: commit fds on syscall exit
 
-This commit adds TIF_FD_SLOTS and tests it in syscall_exit once the return
-value has been saved. A task that reserved descriptors calls
-do_syscall_trace_exit() to commit descriptors and then continues with the
-usual checks.
-
-> diff --git a/arch/parisc/kernel/entry.S b/arch/parisc/kernel/entry.S
-> index e04c5d806c105..c5807cf6fbd8d 100644
-> --- a/arch/parisc/kernel/entry.S
-> +++ b/arch/parisc/kernel/entry.S
+Add TIF_FD_SLOTS and test it once the system call has stored its
+return value. A task that reserved descriptors uses the traced path.
 
 [ ... ]
 
-> @@ -1765,6 +1767,16 @@ syscall_do_signal:
+> diff --git a/arch/xtensa/kernel/entry.S b/arch/xtensa/kernel/entry.S
+> index 272fff587907f..4b95f48736e6b 100644
+> --- a/arch/xtensa/kernel/entry.S
+> +++ b/arch/xtensa/kernel/entry.S
+> @@ -1976,6 +1976,11 @@ ENTRY(system_call)
+>  1:	/* regs->areg[2] =3D return_value */
 > =20
->  	b,n     syscall_check_sig
-> =20
-> +syscall_do_fd_slots:
-> +	mfctl	%cr30,%r1
-> +#ifdef CONFIG_64BIT
-> +	ldo	-16(%r30),%r29			/* Reference param save area */
-> +#endif
-> +	ldo	TASK_REGS(%r1),%r26		/* struct pt_regs *regs */
-> +	BL	do_syscall_trace_exit,%r2
-
-[Severity: High]
-Does this expose uninitialized kernel stack memory to a tracer?
-
-When a process executes a system call that reserves a file descriptor slot,
-it enters via the fast path which only saves a minimal set of registers to
-TASK_REGS. If TIF_FD_SLOTS is set, the fast path directly invokes
-do_syscall_trace_exit() here before all registers (like %r3-%r18) are saved.
-
-> +	nop
-> +	b,n	syscall_check_resched
+>  	s32i	abi_rv, abi_saved0, PT_AREG2
 > +
->  syscall_restore:
->  	mfctl	%cr30,%r1
-> =20
+> +	/* descriptors reserved by the syscall are committed in do_syscall_trac=
+e_leave */
+> +	GET_THREAD_INFO(a4, a1)
+> +	l32i	a4, a4, TI_FLAGS
+> +	bbsi.l	a4, TIF_FD_SLOTS, 1f
+>  	bnez	abi_saved1, 1f
 
-[ ... ]
+[Severity: Medium]
+Does this introduce a regression leading to inconsistent ptrace
+observability?
 
-> diff --git a/arch/parisc/kernel/ptrace.c b/arch/parisc/kernel/ptrace.c
-> index 1d9e210702e1f..f142766792afa 100644
-> --- a/arch/parisc/kernel/ptrace.c
-> +++ b/arch/parisc/kernel/ptrace.c
+The exit path in system_call() dynamically checks TIF_FD_SLOTS from fresh
+thread flags (loaded into a4), but falls back to abi_saved1 for trace work.
 
-[ ... ]
+Earlier in system_call(), abi_saved1 is cached before executing the syscall:
 
-> @@ -381,6 +382,9 @@ void do_syscall_trace_exit(struct pt_regs *regs)
->  	int stepping =3D test_thread_flag(TIF_SINGLESTEP) ||
->  		test_thread_flag(TIF_BLOCKSTEP);
-> =20
-> +	if (test_thread_flag(TIF_FD_SLOTS))
-> +		fd_slots_commit(regs);
-> +
->  	audit_syscall_exit(regs);
-> =20
->  #ifdef CONFIG_HAVE_SYSCALL_TRACEPOINTS
+    GET_THREAD_INFO(a4, a1)
+    l32i    abi_saved1, a4, TI_FLAGS
+    movi    a4, _TIF_WORK_MASK
+    and     abi_saved1, abi_saved1, a4
 
-[ ... ]
+If a tracer attaches mid-syscall (e.g. using PTRACE_ATTACH on an Xtensa
+process currently blocked inside a system call), wouldn't the exit trace
+events be missed for most syscalls because abi_saved1 lacks the new flags,
+yet mysteriously be caught if the syscall happens to allocate a file
+descriptor (because TIF_FD_SLOTS is checked against the fresh TI_FLAGS)?
 
->  	if (stepping || test_thread_flag(TIF_SYSCALL_TRACE))
->  		ptrace_report_syscall_exit(regs, stepping);
->  }
-
-[Severity: High]
-If a tracer attaches concurrently while the process is blocked in a file
-descriptor allocation syscall, setting TIF_SYSCALL_TRACE, won't this call p=
-ass
-the incompletely initialized pt_regs from the fast path to the tracing
-subsystem?
-
-This could allow an unprivileged user attaching a tracer to their own proce=
-ss
-to read uninitialized kernel memory via PTRACE_GETREGS. Also, tracer
-modifications via PTRACE_SETREGS to these uninitialized registers would be
-ignored because the fast path does not properly restore them before returni=
-ng
-to userspace.
+Could we reload the fresh _TIF_WORK_MASK from thread_info here instead of
+relying on the stale abi_saved1 cache?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260915-work-fd-re=
-serve-unify-folded-v1-0-4d5217d6b246@kernel.org?part=3D14
+serve-unify-folded-v1-0-4d5217d6b246@kernel.org?part=3D18
 
