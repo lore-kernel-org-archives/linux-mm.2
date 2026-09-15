@@ -4,98 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 935E7C88E7F
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 14:25:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9D85C88E53
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 14:32:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7AB7F6B0092; Tue, 15 Sep 2026 10:25:47 -0400 (EDT)
+	id EBB966B0088; Tue, 15 Sep 2026 10:32:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 75C4F6B0093; Tue, 15 Sep 2026 10:25:47 -0400 (EDT)
+	id E6CC96B008C; Tue, 15 Sep 2026 10:32:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6741A6B0095; Tue, 15 Sep 2026 10:25:47 -0400 (EDT)
+	id D5AE26B0095; Tue, 15 Sep 2026 10:32:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 459406B0092
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 10:25:47 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CC080402F7
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 14:25:46 +0000 (UTC)
-X-FDA: 85216220292.02.8BA74D7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 3FF301A0002
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 14:25:45 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XpOWlEX6;
-	spf=pass (imf19.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789482345;
-	b=Ne3tD0IzB29I/HKqGlhMbDwb3FpFONy08prvtf85+wgsoWwzS6i5y9HykxYMmzkpjqVtce
-	8c+aJJGRP8G93qFLnKSf+2KuFnGpJ36u5e3K9aon9ATJbUuz0O7Qq4hqp+XoZDFAxcODZw
-	YQprKQCt9dYd1iQiRrLt1k3nOKr9ry4=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XpOWlEX6;
-	spf=pass (imf19.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B790D6B0088
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 10:32:04 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 49DF412046C
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 14:32:04 +0000 (UTC)
+X-FDA: 85216236168.19.A599C77
+Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 8571D40010
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 14:31:59 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=sAM9jKmn;
+	spf=pass (imf27.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789482345;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=41P4RsZFtpH5NGFfQV+UZfxuwGC9lxZAIr1dw8RbTR4=;
-	b=k8DI8uBXIcld3J4BxUNuQPxEM2z/5FTt3DzlZ6MddT8NwMWDzYo98q2YWd1gVLMiuNseST
-	f4JwSn/QP/9kD3AKUh0bNCklHY+ap2h3Ui1VfbQ67KoAXYKXgW/PY0n1Q+FfuWxBA9B8hl
-	hEZC4R5LFY8NHydJMoPer4ir5foE4II=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6F101600C8;
-	Tue, 15 Sep 2026 14:25:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5154C1F0089E;
-	Tue, 15 Sep 2026 14:25:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789482344;
-	bh=41P4RsZFtpH5NGFfQV+UZfxuwGC9lxZAIr1dw8RbTR4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=XpOWlEX6GlUhNRuKshbD4eV+VEWBxo/aZrSmcGDmlWldOIv2oE0bi2PvRXl6eBz4P
-	 RDmTK0sJjLksTMFuzt/fanlQTp8CDwd2ASUZcxjD/mPd5LSu6/vz+2kf3z+RKdoR4Y
-	 54d8u34R+rtJn7lOtpEg9sezQx4Fuw88RI/i+JGwTrYovq9jfevfBhs+nfQ+ARliu+
-	 bnwHo5WZKnXl9omRdCilRPgX4vGWWWL8czheQi9hZ7UGe570w/e7MBIC5hu5h5OuDi
-	 OBpOv3iOs3URkcWqtnKKa+I3OAdzpd7wzPITmwFaT5iKV/8N33zzqTPaKd6nio9Zit
-	 SCuNzx4N2FHUw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 9/9] mm/memory-failure: keep inherited poisoned
- frames out of the buddy allocator
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Zi Yan" <ziy@nvidia.com>, hannes@cmpxchg.or, "Danilo Krummrich" <dakr@kernel.org>, "Oscar
- Salvador" <osalvador@suse.de>, "Vlastimil Babka" <vbabka@kernel.org>, "Thomas
- Gleixner" <tglx@kernel.org>, shakeel.butt@linux.dev, "Ard Biesheuvel" <ardb@kernel.org>, "Michal
- Hocko" <mhocko@suse.com>, "Dave Hansen" <dave.hansen@linux.intel.com>, "H.
- Peter Anvin" <hpa@zytor.com>, "Andrew Morton" <akpm@linux-foundation.org>, "Borislav
- Petkov" <bp@alien8.de>, "Ingo Molnar" <mingo@redhat.com>, x86@kernel.org, "Miaohe
- Lin" <linmiaohe@huawei.com>, kas@kernel.org, "Mike Rapoport" <rppt@kernel.org>, "Naoya
- Horiguchi" <nao.horiguchi@gmail.com>, "Brendan Jackman" <brendan.jackman@linux.dev>, "Lorenzo
- Stoakes" <ljs@kernel.org>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Johannes
- Weiner" <hannes@cmpxchg.org>, "Ilias Apalodimas" <ilias.apalodimas@linaro.org>, "David
- Hildenbrand" <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, "Rafael
- J. Wysocki" <rafael@kernel.org>, "Breno Leitao" <leitao@debian.org>, "Suren
- Baghdasaryan" <surenb@google.com>
-Cc: kexec@lists.infradead.org, linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org, riel@surriel.com, harry@kernel.org, driver-core@lists.linux.dev, kernel-team@meta.com, linux-mm@kvack.org, rmikey@meta.com
-In-Reply-To: <20260915-hwpoison-kho-v5-9-3bc7a57bd503@debian.org>
-References: <20260915-hwpoison-kho-v5-0-3bc7a57bd503@debian.org>
- <20260915-hwpoison-kho-v5-9-3bc7a57bd503@debian.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 15 Sep 2026 14:25:41 +0000
-Message-Id: <20260915142542.5154C1F0089E@smtp.kernel.org>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 3FF301A0002
-X-Stat-Signature: ygksbswk3hzx5ew9yi9fzrjaz7bguki7
+	s=arc-20220608; t=1789482722;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=kPmD/Etzk0mnYDw9EGIof3Wh1FZd8nczR3alioDfOwI=;
+	b=j8vgyFH7MErFoP8q+0Y/TvLTawy2fe8f8vJd9jBqEq7F8Ibs0lbqV27Phg1JxziMiA4dZp
+	1GZW37SyjUr9Q0WADLv2HDVXsqesggPiXXr85Bzy2wxM8jOwZybt5J/MkOyVnXG8OtLeIJ
+	oaIY2SOkfJMjX5odJB/Y2Z//zH426PQ=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=sAM9jKmn;
+	spf=pass (imf27.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789482722;
+	b=b6YQjnKsJy5fdzNMzGHhp5uEGH0ChcBmYqLUxvdeHY4RLUlN0i9EgjGyXOPXIZJ/RrRuOg
+	n1d80tQLZ2ATPNIdSd6N/kdeXxRFQUWbVycZ9Y1wXewDI5B6y+p45s1+BLc1OxNZZhfaI5
+	Cg3D3CQce0q5nj2taEjf79Q2n0xCIJ4=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=kPmD/Etzk0mnYDw9EGIof3Wh1FZd8nczR3alioDfOwI=;
+	b=sAM9jKmnY8uS1x4kQk10tvU5YkY5pHxxJ3asBwfNrWDjpR1ak3OyiJa8artGiMHJ2MZnsZG46
+	O4wNWTMT82lD0+ITyZivg9/n385N2zQS5emC2+eKzIh7lR1zTBKk3CRVUaELlIxKeOdk9yciUhK
+	VOVy7p9kK6C/8pyaR4pbhNU=
+Received: from mail.maildlp.com (unknown [172.19.162.197])
+	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4hkkhW1qtDzRhQs;
+	Tue, 15 Sep 2026 22:20:59 +0800 (CST)
+Received: from kwepemk300003.china.huawei.com (unknown [7.202.195.93])
+	by mail.maildlp.com (Postfix) with ESMTPS id 056EE4057D;
+	Tue, 15 Sep 2026 22:31:55 +0800 (CST)
+Received: from ubuntu (10.50.87.83) by kwepemk300003.china.huawei.com
+ (7.202.195.93) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Tue, 15 Sep
+ 2026 22:31:54 +0800
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+To: Andrew Morton <akpm@linux-foundation.org>, <linux-mm@kvack.org>
+CC: "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro
+ Falcato <pfalcato@suse.de>, David Hildenbrand <david@kernel.org>, Zi Yan
+	<ziy@nvidia.com>, Kefeng Wang <wangkefeng.wang@huawei.com>
+Subject: [PATCH mm-new RESEND] mm: mincore: use per-vma lock during page table walk
+Date: Tue, 15 Sep 2026 22:31:38 +0800
+Message-ID: <20260915143138.2595767-1-wangkefeng.wang@huawei.com>
+X-Mailer: git-send-email 2.55.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.50.87.83]
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemk300003.china.huawei.com (7.202.195.93)
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 8571D40010
+X-Stat-Signature: cyr7qedqatogrqxg55ynqph57yf6ji3h
 X-Rspam-User: 
-X-HE-Tag: 1789482345-390512
-X-HE-Meta: U2FsdGVkX1/qWWiGzFRJKDg5i/OEiIf/m9Fdp0QvjN3OsppLxppftPuLJ038ryfcs/xla22kee8GI0A+EbYP7b+2z7TNYUH6QHEPtEGACc3OB369QdYW1pr9AFXxZM84lN4OEw/tSnLtInNOADik/WN6XxejDjaYLqz3P30dXjNcIvA7TKWkzRX4fr6tf1JJ4oYwYbuUkkd8J06v4v8thWqQgh+UzWluPs+MPwZPJtJiu2C8jvKS8NfCMCX2JTKozIrMv7n1yK9S9+0fuW7B59v7xWqE5Okxyzy2WK/EROCXY7tm8yacrgFf6lV1xSCknfWqQLt0CipjdDIrQRNcAxDnuUxz08ZOnFx8I7Z1zO1F4pYf/UtsTNSJwex3F3lebkczCX2e3aZXx9QZjj8Nu4Jiu9WkEuAjvCEfR2DOQm2nKi7LQ2PGu8I2scQWOGw65E0OX3w4gn4TLCNSAkbCZGSRJLKsViFr6jdwAoCd6hNfpAPA2FoLdJh/WeZTH1+zyqxPq8a9r/cnNBZx9hLLUYzVXP4RpAZce3XCIj+J7tiGROQ7sf5bBOTkioL1t9sL5HacDPN2ILQl7qwJ/SvWMBBnyTTpiEwtDSWpZ1ufiMMO6CBTruq+EFNW8reC4GuvKuxCrx+15QhAz+jYMSwjNhwEVrTM7gtqBtXk8LwAneRTkjBk/udCKSK0jKS3wiYdJ7Z5epiNGg/lZhJjQu1ljUekndyklfSDB0cubhuOzGH4syEHBiceJqhn1zlxdb1P9ZFFeGuLjp/Xs2ml9HGNBlqANT1WpkOOJqWaZGv5sDwuzRR5kXZD3yxRhA0lcicFRA0pwIq/76gUE35NvRgeM1faGL1FmanOthxfQlETj3KHHhlYgDGq8BXpSfWMw9hwMk6ppbjAHU3nq4qdx+bX/ZHHWsf4DgTD7ilHYAwwGloV54wXrDVybed7wSlhCEuX3aL0HK4YdL9q2ukne8R
- THmAf8yI
- lHdbBiSa/dSkvfOpFBzT4mawcJ8nuqAHqmncQR8K4x2PmlTIrouWrO4go+rCD/GscrJ4WEfrILXMms2PSOP1p3AZTAveZ1L4kN2AUxv4RXYMDyM7oMffXZ7eqt/mQDnE2ajNYJofqG0L3tYwDKdBjD9rkSyXV32pktpMyrNKRSh6S/3z8p0yZp446JID/S1jKdxYvFUgKstm07mfqfA6OT3QXQFvgOWVEnXh1nC52kxHtvf28u2NfeVlpLfbH7rzG4SN5s6Yw/8pnp7YgyscsD72FW92dacEaUEXmIkQCliR5LDgcBGTaBLqUcVSQUFa4D0EQiukTvRUsEIMiXuIJi7MEBRdN2Z5wgPt+vj0OuSvEBQr658HaO/u4m8YoSOsvxd4MS1gYBns/nJ5NZDwFKhPE+0TdlsvrQ+pjdSiiK8BVCKJqw/215yJHJxBZF1//rzjdi+r+4m48fszeQPdVwvVvjLSOheK3ezmlmuN/FykzmkwXluCVCZUiUrOuW9+vNe8NR3uL7T8nd694qvtKaKs3TGG9So+2o4gtcfgFtVFLySLh+Gg4Ax+/YXnD9z4EXwaMQaMO5UVjaFkH0cUA/AH2Io+h1nQYI0g9c4i+HiBJ3v1ZSiifhNujfZxIVJvVPURC7t1c4GeKa51TWbQKr7YezvlR2qQCB5aU1C3cFwxA3Mg=
+X-HE-Tag: 1789482719-760947
+X-HE-Meta: U2FsdGVkX19vX4ZTlDgtFC6XhZJ8Ojllyt4wuGWqwIXm0DGsqbZIh5AXZbv2zBj2ZJD57XI+Rpkzl6eMAkrHWxloSrxwOj+2ZRM61dHkpPj2NoirU8v0tJm+2P7XZzJS9V3Ax2/8lcK+LWTj3MO9l1rMSEQm4Qwpvp+YuMDa98Tf27AatKFZnJw3Ym4EGcGuWnhg2cZ/1JzLcpemEHkeTY2sF9Y2jV6V5+DAictGTbWDjLzO4S33kZ3bYbgpP2y9lxzFUTIgzslSeN28EtVE/LLM4dEoWd7gODGHggJ5VtRnSMGwLBWvYkkORHxokNgZ/Dxfd2yosYAys7h+Xg15FKoACL84uHRnlCeqz2ma4PXhngm2cp0vseLimMwXzT194m9UvifVO2iUFSGwkLObRpBsfYqNG5iLw3l8aVEGHLFmynZqtm9+E0AkUcnkvOXrjnWVlGn23Ve8+LVt/zzSDaS8Ojis7dME1ex0bUB0jXi/HKscviESuDR+kYJWoW/UPJVtyty917rD40bQ4mAl0Z+weEUn/xg9CP9JW6b2OryMteSjDGdjzYHuTok5Xnn4X68PYM766VUylJekcaff3y7FEjOtpD7Xd59lueRdxAkqsDgH0oWw41HQmkGLz4PDLNPICfyRL9WjSmRyuWV+oLi7gYmJonBQ6QS5PL7bm6iviwqTxZqP5i1tNIYp0qWvusA5JKxiGnpds2bsJKXeSYFJ8wMu+qhl34DuSw3y5bOqm2NEkNtyWBQhdd5pBudbxTa+1p+fPsSQnFy5S/wEfQr+vr922LGsL2z+PWkO1E8MSY6a5l/TTi0Hriv1SiaRIv/hzbuzulDezOJIb4T14n2rsbbLZe0g7CoKKmLnJJ/CHB0SUJpwLkdAaOF9Oh/85mBa3q+I7ta3tNJQ4uf5uGi8tKSazuHyze7Z4YDScuNwF6dY27Zw38PcyAC+VyjfIJlUU5WKa1cL2uVCz62
+ Phlze20f
+ 66oOS3GB5BlZ7Kzj8cwi/y/H7Y6DHbSOWRucu5TpxRZKgHXO05esQtO/jjro2hgE14FwReGawrS89fRTgilb9keAMpf2p4LRMF1JZ6YjH4v+rHHAft+jJSo1ZTFUcuau77OvKE+gPxkv3/lfis7Nu42SxwH+cQ58afMnaVOnvunD1DDeQBejaEb+3qL5kWs3NVzfEIx0mbOlGS9g20mOZPv8EDvyzk8P1JQ6iWHAPVLt3VqGF9NhyV8QskXSVHt/XW50BN9pM8jZ36hMvsop+iQ7dEQJFdoQcESsW1a13GSZzQCYiwjxIupvy+A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,102 +96,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] mm: panic when accepting clean pages sharing an unaccepted unit wi=
-th poisoned pages
-- [Medium] mm: lost memory failure stats due to lockless update in hwpoison=
-_boot_page()
---
+do_mincore() performs a read-only, per-VMA residency query,
+making it a good candidate for per-VMA locking. Convert it
+to acquire the per-VMA lock, thereby reducing contention on
+the global mmap_lock.
 
-commit 92cea9db628cbe8f9651b225628684a39c80ddd4
-Author: Breno Leitao <leitao@debian.org>
-Subject: mm/memory-failure: keep inherited poisoned frames out of the buddy=
- allocator
+Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+---
 
-This commit intercepts inherited poisoned pages before they enter the buddy
-allocator. It processes memory blocks by checking for poisoned pages, flagg=
-ing
-them, and passing the remaining clean pages through the allocator. This
-prevents unaccepted memory blocks with poisoned frames from being mistakenly
-re-merged.
+RESEND:
+- using new vma_start_read_unlocked() API, suggestted by Pedro Falcato
 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index b07b5f4751cb9..cca67a2702a42 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-[ ... ]
-> @@ -1597,6 +1597,25 @@ static void __meminit accept_and_free_block(struct=
- page *page,
->  	__free_pages_ok(page, order, FPI_TO_TAIL);
->  }
-> =20
-> +static void __meminit free_poisoned_block(struct page *page, unsigned in=
-t order,
-> +					  enum meminit_context context)
-> +{
-> +	unsigned long i, nr_pages =3D 1UL << order;
-> +
-> +	for (i =3D 0; i < nr_pages; i++) {
-> +		struct page *p =3D page + i;
-> +		phys_addr_t phys =3D page_to_phys(p);
-> +
-> +		if (range_contains_poisoned_memory(phys, PAGE_SIZE)) {
-> +			hwpoison_boot_page(p, context);
+v1: https://lore.kernel.org/linux-mm/20260701144047.3786939-2-wangkefeng.wang@huawei.com/
 
-[Severity: Medium]
-Is this call to hwpoison_boot_page() safe from data races during memory
-hotplug?
+ mm/mincore.c | 28 +++++++++++++++-------------
+ 1 file changed, 15 insertions(+), 13 deletions(-)
 
-When called during hotplug (where context =3D=3D MEMINIT_HOTPLUG),
-hwpoison_boot_page() calls update_per_node_mf_stats() which performs
-non-atomic read-modify-write operations on the node stats:
+diff --git a/mm/mincore.c b/mm/mincore.c
+index c086836bc4bc..f989e6d1ec18 100644
+--- a/mm/mincore.c
++++ b/mm/mincore.c
+@@ -235,24 +235,19 @@ static const struct mm_walk_ops mincore_walk_ops = {
+ 	.pmd_entry		= mincore_pte_range,
+ 	.pte_hole		= mincore_unmapped_range,
+ 	.hugetlb_entry		= mincore_hugetlb,
+-	.walk_lock		= PGWALK_RDLOCK,
++	.walk_lock		= PGWALK_VMA_RDLOCK_VERIFY,
+ };
+ 
+ /*
+  * Do a chunk of "sys_mincore()". We've already checked
+- * all the arguments, we hold the mmap semaphore: we should
+- * just return the amount of info we're asked for.
++ * all the arguments, just return the amount of info we're asked for.
+  */
+-static long do_mincore(unsigned long addr, unsigned long pages, unsigned char *vec)
++static long do_mincore(struct vm_area_struct *vma, unsigned long addr,
++		unsigned long pages, unsigned char *vec)
+ {
+-	struct vm_area_struct *vma;
+-	unsigned long end;
++	unsigned long end = min(vma->vm_end, addr + (pages << PAGE_SHIFT));
+ 	int err;
+ 
+-	vma = vma_lookup(current->mm, addr);
+-	if (!vma)
+-		return -ENOMEM;
+-	end = min(vma->vm_end, addr + (pages << PAGE_SHIFT));
+ 	if (!can_do_mincore(vma)) {
+ 		unsigned long pages = DIV_ROUND_UP(end - addr, PAGE_SIZE);
+ 		memset(vec, 1, pages);
+@@ -319,13 +314,20 @@ SYSCALL_DEFINE3(mincore, unsigned long, start, size_t, len,
+ 
+ 	retval = 0;
+ 	while (pages) {
++		struct vm_area_struct *vma;
++
++		vma = vma_start_read_unlocked(current->mm, start);
++		if (!vma) {
++			retval = -ENOMEM;
++			break;
++		}
++
+ 		/*
+ 		 * Do at most PAGE_SIZE entries per iteration, due to
+ 		 * the temporary buffer size.
+ 		 */
+-		mmap_read_lock(current->mm);
+-		retval = do_mincore(start, min(pages, PAGE_SIZE), tmp);
+-		mmap_read_unlock(current->mm);
++		retval = do_mincore(vma, start, min(pages, PAGE_SIZE), tmp);
++		vma_end_read(vma);
+ 
+ 		if (retval <= 0)
+ 			break;
+-- 
+2.55.0
 
-mm/memory-failure.c:update_per_node_mf_stats() {
-    ...
-    ++mf_stats->recovered;
-    ...
-}
-
-Since hwpoison_boot_page() does not acquire mf_mutex, could a concurrent
-memory_failure() execution on the same NUMA node corrupt the recovered and
-total counters?
-
-> +			continue;
-> +		}
-> +
-> +		/* this part of the block is not poisoned */
-> +		accept_and_free_block(p, 0);
-
-[Severity: High]
-Can this sequence cause a kernel panic when accepting clean pages that share
-an unaccepted memory unit with poisoned pages?
-
-When a clean page belongs to an unaccepted memory region,
-accept_and_free_block() invokes accept_memory(). However, accept_memory()
-operates at the unit_size granularity (typically 2MB) and rounds down the
-start address to this boundary before calling arch_accept_memory():
-
-drivers/firmware/efi/unaccepted_memory.c:accept_memory() {
-    ...
-    arch_accept_memory(phys_start, phys_end);
-    ...
-}
-
-Because the clean page and the poisoned page share the same unaccepted
-unit_size block, won't arch_accept_memory() be inadvertently executed on the
-poisoned page as well?
-
-If arch_accept_memory() attempts to accept physically poisoned memory (such
-as via TDX TDG.MEM.PAGE.ACCEPT), could this trigger an unrecoverable Machine
-Check Exception?
-
-> +	}
-> +}
-> +
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260915-hwpoison-k=
-ho-v5-0-3bc7a57bd503@debian.org?part=3D9
 
