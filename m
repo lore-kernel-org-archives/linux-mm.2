@@ -4,94 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B445C88E75
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 06:09:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 865D0C88E53
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 06:09:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EBC026B0088; Tue, 15 Sep 2026 02:09:49 -0400 (EDT)
+	id 9184E6B0092; Tue, 15 Sep 2026 02:09:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E6D3E6B0092; Tue, 15 Sep 2026 02:09:49 -0400 (EDT)
+	id 8C3A36B0093; Tue, 15 Sep 2026 02:09:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D36DE6B0093; Tue, 15 Sep 2026 02:09:49 -0400 (EDT)
+	id 769F66B0095; Tue, 15 Sep 2026 02:09:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id ACE0C6B0088
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:09:49 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D34F640337
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E06E6B0092
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:09:51 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 33B4C160308
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:09:50 +0000 (UTC)
+X-FDA: 85214970540.09.2788715
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 608BD140007
 	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:09:48 +0000 (UTC)
-X-FDA: 85214970456.20.66DB188
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 25A71A0004
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:09:47 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Erl3UKkP;
-	spf=pass (imf25.hostedemail.com: domain of kmehltretter@gmail.com designates 74.125.225.141 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=MzIK4Efw;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf26.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=MzIK4Efw;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf26.hostedemail.com: domain of kmehltretter@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789452588;
+	b=XzELBVQ2OBuq4a/2HM+LDW6Do62YXG0SxvmXCgOtvkC7onJPm/dWGgd6wViW52Kuu7iVY1
+	G4TPpkZoyzCWnCb8GYzgsHuAEs0rLgz6ikGze97Gp3N3c2qDkeBInk9VTq3y+DLbONWqkD
+	G74YvbI9t8v6vl3iSsoVM8AE5Blrl1w=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789452587;
+	s=arc-20220608; t=1789452588;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=SI783VUJkGIZm3nVSym26fZ6VNUHxk9Ukf15drWnbdY=;
-	b=xfbaVtjizc4hwzAPRBfwAzRPFGi3C4aekK1YNcrznpeQWIHxQoTW68budKSCWcoxxOmMZ0
-	v+gojCAVmsPKHFSI5xCQMpmUM/D1F5cLdFgHDFW0Er6oEr2BClUTMRem6/ePVYlDwgkrwn
-	/i2WtJWDfG1jdpD5kTjM2hJbjMcpn+o=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Erl3UKkP;
-	spf=pass (imf25.hostedemail.com: domain of kmehltretter@gmail.com designates 74.125.225.141 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789452587;
-	b=dM009IluCBEltzDy0R/5LB3Y9mPhyKwrL98r7X0RpFLWkngM4X+Ctlqhqd9OlSTio71k+T
-	L3CU2ZVeMBECR5/J2cCoYc7JA/AtLVEWmDXLytlKIx4Bjj30H2J48RwBnxuES+m5ymRDnE
-	hSb/ZBHNMx3eFI+Bfp61JAiMJZyOois=
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49d1fb0cf5eso22450235e9.3
-        for <linux-mm@kvack.org>; Mon, 14 Sep 2026 23:09:46 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=eHs3rghcFG8c8Adwq/+j11WtqFeOvFLLNzQbYygfDg0=;
+	b=0I57Ha+kbawoNd/3bRSFKVmE/+EdpVxtCtZjeDvchUU1XHKGh44wMKbc6w/yhKfU9P1rig
+	yiH2oKcYjIBOvp+pFvXqvLPoSttVoss9efX4T+ISxa0xo0nbiSrhY0qL0RCe8jOwJTavRl
+	7BhX8patM5CAToiYMawbae5CuY14NVU=
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4998b5a63e2so44693885e9.1
+        for <linux-mm@kvack.org>; Mon, 14 Sep 2026 23:09:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789452586; x=1790057386; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=SI783VUJkGIZm3nVSym26fZ6VNUHxk9Ukf15drWnbdY=;
-        b=Erl3UKkPWvltJIVXe7t34FC//53XXhb6ednsbGzjfpIPJ+3cEeQSIKwP5quoZPkTB5
-         IaoA0MeYcUE8KfeWL8FEjIUitI6IBLj24gius18QOPQvfsk3bGnAqm3oO28WSivzwrx+
-         Xps+oovjoot4gEWDfnv/i0gBMuVmrtW11X943IM6EgSzshG0ufzYcc8EJrD6qX5HEI/5
-         3vCzyrBmAOeFuJ7JUsIVujgl7yD9z/ESuZqQelOBvwv6gKRUkyMPC4aKAkQJZCdZf1bB
-         aTpfg6S9BM7xixMxBmfANxh6POLOK5fLTIcPYxBWVRbu1agG0A+7+6vQYRh7kci3v+qL
-         zxhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789452586; x=1790057386;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1789452587; x=1790057387; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=SI783VUJkGIZm3nVSym26fZ6VNUHxk9Ukf15drWnbdY=;
-        b=0RjC6dFWVCoHPsmTorrW2JuWXUmRyAKPejy2SubtnpFv3BTVc+A9/Y9PRIW53SJ/B9
-         MJQZ+YX8iR0emRoIU1cGZMWqXhY/TM71URhZp1a0N/QstR7RCov99LNTylygUDa+MpdM
-         GB6dz/SDlaAvNOkmoZLDEgr6d+YCMyqzgxTNKdpY/M27Quah7tmJ5Y92nUBNRERFKRxf
-         joSiqcJLWgorEkOqlJTDNVSPzohxCkpFogjlsGlfLdE+qOVTEsoNWkVou6J13fsYTGNe
-         /NRDFqq6pVaHIpYDcW/yhgO59NHE2pIQrbIPu4FJA2J99j/coK4Z2GZu0F2vBgdeFj43
-         F8fA==
-X-Forwarded-Encrypted: i=1; AKwUvBzx7G2/nrhdTv/41U5kElyRwrhdl2vyHZ+V3Qw5lE4AxJd8kBgR7YEtQQ62LpkXF0C3opwdBger0w==@kvack.org
-X-Gm-Message-State: AFuF++mb5XPQdAvuglRn4s6pAb7ikXf94atHlfu6Qyb13EVJXll0gyGo
-	wSZ4NHF5awz2xoC7gvH5VVeu/0zUAyq05fvKYqxutY+Co1qSpxEVSDZM
-X-Gm-Gg: AYBFou3aqvAigEWmvhrUGD277OmE9TVXjtkccumGIMbit+NdYtDpGOa1E+UQKqnqOiP
-	McIvinjaYP6q08SujlQvzrBlilG2MLyE8yNSd9/6IB68/qxcwS3i5J8gumkBLMbp8b9aqJsAe+S
-	mWiKmOyVzpiHtIzSfretCEfaId8J7FtHw/ZSUz2pmC4x8lTExql/pA3laEPNgw3k16G0Edu6fru
-	3VBLngw+rskUEQ/DsOsc1hv9vp+4DCZ8nZvEKR1GVb7Z0BfsH6t9hxxgLyZsV3kbdM+wm7LCKwK
-	oqFsMX9qM7FE14AjXOosq1I6Pw/qCNUIc8AvaQ9Z6qSSnDISVa8A9Tr2B/k4tVLjsUDklgDhwRE
-	0RwV2oXTbzkWsRKl/ltWcNIGgrFRcibplb5CcW8k9XK+sajNQpGQKIdxkVIHbNcRVqK7Dc0QS+o
-	osn9uEdofDoCK/wwAhLzdRt9Hj2/s5fEGFCJV3kAhNbYUrtuqJ1H4zzpjLHkj5pzZ4pTlz0oOWm
-	D3PH8vROO0h8Myhj3KvKCG8SVcB9Xu9wYve0UGrHdWUfaAUSLB6+ucbMoCZdQ31UuEITmEuxqmn
-	X2D6cN1K2An5fxSfQ9kQGomHULEqafs7T7Z4PavUF0krX4TP5RNBq8VH45Wnpkhs2B1PLD9dbwO
-	eSoxegzg3eaRLjwsQ
-X-Received: by 2002:a05:600c:4e02:b0:49d:272d:74b4 with SMTP id 5b1f17b1804b1-49e7a6387bcmr171632925e9.2.1789452585275;
-        Mon, 14 Sep 2026 23:09:45 -0700 (PDT)
+        bh=eHs3rghcFG8c8Adwq/+j11WtqFeOvFLLNzQbYygfDg0=;
+        b=MzIK4EfwK1Xhb4d/0DOoZR6qya0HYEZtgl52xve7aOFI09ZsuiQ431qZXnbKXmll/y
+         OV8IcZlZnmb3LXT0yl6JcL/3rsqpdXNjk5b79pnRUum84Y+HVSxNH0SYjhGY1CI1q1pl
+         xHHlW/YGMOdp25lkErn9AdUUr29EwNZYtadQdX7onRblNkIJCp/rIeE4uCHBWgAB/nI3
+         FIQedTv/HD/x9Rz8l5/Ne2n6mNcOr4Bixr9Ewut8mYYbTimhio1bO2hOgjVhIbxoxNKj
+         LPdgyfOEIA5k1mLDe3WxLGMrFA+2vXB8SdHxUgnyTc6X5DhxAb8tx/bfPuNUFOAQBis9
+         ajhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789452587; x=1790057387;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=eHs3rghcFG8c8Adwq/+j11WtqFeOvFLLNzQbYygfDg0=;
+        b=A457kJSLsVUcSW1uHmE4J/vdaBFXibFERYsJvgIFJw2Z1G2ngpjlYpjLRKANvU+pMQ
+         h+1Xa0o++no2z80RaTsQZ3NW0hiQMOlp461Uyd+VgBb7dBJMCKVsjppg/5ltVrvC/7t5
+         Tz5aUs9Ed7SmjmbGlnk57woGP/B0w5ugm0qCF99FU7GWJXKx7lP9Uc/4Tix3tml/GK2p
+         p057FfQ89VHDmF8L5/cPvEYx8Lib8wrvNi5ZfqGbLLW4jMPnEVjm+GPvQZjMg4Y6gmWm
+         mHMUWg/oyJJr6b3ETtxVjiJsra4x4URcA+Q5unaRjd/CiW7GKHYI+vkMmExAYNiRIOGX
+         MCRg==
+X-Forwarded-Encrypted: i=1; AKwUvByLi4N9AYY1lntqWbFN5o5ymr4KINVKl7r3Qgc+dW1upZJr88XweoBrZS0JPsFWYagmyvuBhWw9kQ==@kvack.org
+X-Gm-Message-State: AFuF++nqEmwTJLlQLLBA5tMvrLF9iO+0DSKfhxRbd20AgNb+x9nYrC7W
+	4+uKQ57LjEUSW655I00aDuuFK7oZPYPCRPIoJv3Fm3Mmote/TqK37ZFP
+X-Gm-Gg: AYBFou314R/N3sPh6oDq6SWCIU8n7Ll0pld8QdgTILWwtN0HkfHcO4fe2Usji0UlmzB
+	6jkLLs6MNJuVRJF/jd8y2f4Mq1Fml5QmmctjVkg/9QpWeNt6IoUcO73U0m5tISKHve04HOFNMBB
+	fFe6Zirqbs2Bd7PlLGMTN9U0Ca6J/mS13hkReSnbwWCSuUsJmdRPgP0sGSt2+DjuPqAMZdqFrCO
+	cyVk2RGTGttGhdRZGFx8bkPyPD/MY+DZR79YFguly9SWpNxCuGm5QlbNtk7Qsq4Fp0xZ/L0VtMO
+	HOelXC8E0Po3rDRUBypGgQPk+kPOzA3TjN/zNbroyoH6ILZ/gWl/qyoz4q6Z833TI1zduxx2WLJ
+	xGlE/w7atiNDUH/S4O+M803rcU7yEHT4Xf454SCgSmfbRQSaZkFhGSZ9UFIkn17feknholb1gEe
+	NXLXZqsHVkFykLVp4GhhrDP+u0q9rgs4ZgMWDT9ESDwCdYn7sva6kS3SIVCrT07gFDa0Epzc9o6
+	iashXp6ilil8rVxQ9P9R3EpPApr0uY+ARaOAIaN2pg2WK/z9Z6HLJFk+fJi83OnsntVajh7xHQX
+	2EavHXVikXdnfzTL6jFyCyxoVs+jxPS+OVey6U0s8pxYxK52fgONK4XKjTDhGiop7VIGhGY72sC
+	iO11/ILHhNF8iAThb
+X-Received: by 2002:a05:600c:3146:b0:49e:6ca5:8198 with SMTP id 5b1f17b1804b1-49e7a668f45mr66829135e9.14.1789452587021;
+        Mon, 14 Sep 2026 23:09:47 -0700 (PDT)
 Received: from MacBook-Pro-von-Karl.localdomain (dynamic-2a02-3100-afd5-c801-cc65-9ba1-765b-bff6.310.pool.telefonica.de. [2a02:3100:afd5:c801:cc65:9ba1:765b:bff6])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e7d27c88fsm44282905e9.2.2026.09.14.23.09.44
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e7d27c88fsm44282905e9.2.2026.09.14.23.09.45
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 14 Sep 2026 23:09:44 -0700 (PDT)
+        Mon, 14 Sep 2026 23:09:45 -0700 (PDT)
 From: Karl Mehltretter <kmehltretter@gmail.com>
 To: SJ Park <sj@kernel.org>
 Cc: Karl Mehltretter <kmehltretter@gmail.com>,
@@ -101,20 +102,22 @@ Cc: Karl Mehltretter <kmehltretter@gmail.com>,
 	damon@lists.linux.dev,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 0/2] mm/damon: fix zero quota for PSI goals under the temporal tuner
-Date: Tue, 15 Sep 2026 08:09:35 +0200
-Message-Id: <20260915060937.3423-1-kmehltretter@gmail.com>
+Subject: [PATCH 1/2] mm/damon/core: score an unmeasured PSI goal as not achieved for the temporal tuner
+Date: Tue, 15 Sep 2026 08:09:36 +0200
+Message-Id: <20260915060937.3423-2-kmehltretter@gmail.com>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <20260915060937.3423-1-kmehltretter@gmail.com>
+References: <20260915060937.3423-1-kmehltretter@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 25A71A0004
-X-Stat-Signature: d5zmewdkzwgp95tamsdrwsq93ht8pdwf
 X-Rspam-User: 
-X-HE-Tag: 1789452587-276496
-X-HE-Meta: U2FsdGVkX19x6BF+qYgyb2+ZdEXYXVZ1rrvcnO7z7gxVczxSHYHblsGf4o4NS6eTs8ipyFkWRTmu37mxbEVDYS1HBaKoXWiXc8vTe/xx3Dfh0SEUblZVCL0KjBADNdICPDJl9Iy+wMT0IfcJVs4+vw1AyTNdOCCdbLkd4PZiwVQNZRAhFKClvLeyPAmWLHX35NQzFQe4RRK9yxiQYTOX1Nl79FzhzVyFzVRox5ArifkuKLQwAG1iON+GsVbOR4OYk24KiVi5i3oY9XMyDW4UttU2tI7ZqegbMLAWTq7bnrK8wGvKT0/9a8ItqEnsNZLrUZ1cOi68gLCqhy4T3KPbqN59J5C+v90blePs9dT8Ng9fltAzLUNnbGTwFGaG4NJF5hp/B361hoNM6LKw+ri7qvNI+aKUOEtx171DIaFULu1bsmpHNQI0hxoXC/yngBRndvjclh3p4KK7CY1tWTD89XZsplL5FvVxnuX57IJMCqpMb8Hiyreld4o+FEaTbaKa43DVgJacOI1tlqEulf+D21zPLcefZrMl4cLcdy7iTqSRpaayF5HfuYMcURT6yM1us5d2ugvKcg5WeLeLfEJDV9dIibn38wEfFV2HEKpS2gE2mphYbmlK6boHvgHnGNqZC5pRkYhD5LG04NE2uU4nnZKZby7yiVi7XoH0M/ZVXOLd03u9q5k7WvWlI8qZvRBOB8NhpAqvF35vv0e+AHSgFYA+jdvCFf14qGoqCuJjL9ZzqNQjSduChv28VZF8myzSILXtNBpWlrpbl9KEp4B+H1idJTt59lwE6bWyjJ5jUHIUaTWiKq2CuocfIp1COSbC3Cr8QI3GYRzjT/E/YoTdfmQPt3HBKCTF/VYBkrGHbthL4YQ3y2AEGMypRe5yYeADb2hvQPvysv0ZaaYov6OcQ1z+MKvwVs1itA/7G4hpeZK35RRVp9Pjbi5Xgqxy4dmsWgUuS1qwLxrJYy4HEZu
- QEW/jqLf
- +3QrGp0KlAzYYbQEoLTYY8AvEezHPku6fxKwfE6I/sj8RYF1FMbugQktgFRczr4sDZYwmO3mrt0kjCfZQrKpirBK61Z3+ewn9x4P/vvxw+c/WKs7Ikm7ppoUodBAN+hCIsk7Cfjl+VB6Cj9EQGLwjLyggMzzDhal3f/FloDucokqXATlikbPyfMgMFUouhM6lJSnlR1l8kA+naXBrHK4JJjuOcOBIl7u8cFbcjdcQWU+WKglH/Eq94d9Lexh+ytiFLQB38F6bFNgkPKS+bsXNV6RMBwBqPAWr/ZhXH23QQL4Q0Q39/PaxJcQTnmf5LuAm9Ld9QHVZeW0Gd+jpfHnLGhfVTrMpO8z8ePx7dmB23TX1F1CALfm6NadbS1Z5miEGyovvKCoMr1qGMV4I3gA0yyvopiHtSncWqvnQk9G9t9Voh4Bbh85ADdFsIgHYai0hdCsmxQm92UbOnzx0XojV1tpj4TL2pcmllFNk4qB/4xS3MZb/lf4p7bM7xuFAIf97EUHj
+X-Rspamd-Queue-Id: 608BD140007
+X-Stat-Signature: qu5kezr6hhuh4iy4hnzksrb3puz6e8ny
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789452588-626287
+X-HE-Meta: U2FsdGVkX182ezqgKh4Jt0CZ8AcQ28ioSRRtZo/BzjhF/FCGifiGVvbQ9zHfDF/gWhjteIC1SrQeffYwAt+olvUz5eB/ZbG4vT8ySxIRIgp/bCfZvaRs+b8cA5vi8LgE1XdtfdviPocU1HHVoVQy3TuR77fQIVZtB3QDl4DPVMw42pY6rhpEgoflCu3/VcY2XCZcIH+BDLMmksGl2CJEbNS6bkKWz6kgeIKkCOah9Nd3mm1+svSEAKZF1RzFAiL+vF6JwHGrJ87OygUZ+Qd3ZWRnekmUxplILx9BWZrgvZhs8YYxaPWFLmYwNOTv9D1PgHLVT6MFNqbVQdu4kb/QGvwSbW/0jK3tXhL3RhV1Q/ExI4g6pi1Tyu8grtzWdG68D+kpHz6GVpdS/5uJmiAgjFXD3JhJr6xi6HnhZHiqneat76ff58DscHt7G5/xfz25R47TRPcBIXFljojO2rgy6ipZldHJTApNKx/guU3+4n204t8gJTm2kQowV111LGZxs1U3Q1dfSxV1L5++RFiOIxip1xcwdx+0aH2MM+Fi0oMc/ri5S4hCrswLAmTJ6ygxQ33P8zRc2S7srLjcLFFsxJ+ntfvNg99N5G4Rk6ZNQGMoYlX+J5vmvT7j8DxjpUk9Hk/WGhMeToIFw3fDf7Rro5Q08jbPN8ZS07fc5t5pMeknkFaCPFawdWZsAq676ynK520nWZbGvNkVyDJvW8vZbgmmDB/BMO/j6ahiJ5UubxYrFU99KesYKEjOI2T0VOM2VJYiyTIfonxKufX6+A35FQV/xhe7le87f5o93K/EvZ/9OHrEXXcAAqAJCt27rG30PV0mA61VjLOkon3FQ6rO+juy+roMuczRvSvXhCLva2c5k2IvWCefWL5kXbH6TGQ6Di8SZ6qhgt2aT0fGaNix4eXQbvgwFlWXJLsL8FfEiDUg6ldbTIf7pf3zo8QoAs/fHaqUQiuwOCsRqAppgJ5
+ tvHNJx0/
+ zthKMx3pjPZu/OV5zdbTm8QAjlVgsENZtP1iu7RF9QLHJEpsS1N7erSFvH8UvxEViSvYPWWh/bCaWRhlbJxeuv9/4Lz/Kecn5z0JHpoiMyN3KWTdj+3Vd1Gxu+FHoXpPt5pPiMCffQSs0oXypM4KSdScMyoF4+8MGOkFqjk1bW/ngqJwaovJqiHcA1DrQKs/VT0Apv07x34bw7e0PArL5g0rnW+pMEIn/JMl1nH6qvFY8XXcVfj50WJduehswEol0iWMxqA7nrN4gyyvPC3L4LK3K9g3KbUFOTrECeo95q8PeGFAOv/FVYG0Wv178RCY9SwGxldFugxnJ70BXHoEFL2h/XVsjaQtn5qJH8K/X4bAdJFg/LLDtibR7yWwjitYBDtRc7o3pYJbJnB2442rZkeyeoRrTM67yhDKa/4Q8H6khzicRCr+0HpfFHYOmpx+CkzsqDrTEqFqes1PoeYZqj8OT+mJZK/Y4vF+siLKmlKC8myavlOrEEKzz3b1UafZAE/64KiRD6VvEzdQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,48 +125,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A PSI quota goal without a previous sample is scored as achieved.
-With the temporal tuner, this sets the quota to zero for the first
-charge window and the window after each goal commit.
+A newly created or committed PSI quota goal has no previous sample.
+Commit a68878f83ae6 ("mm/damon/core: handle uninitialized
+damos_quota_goal->last_psi_total") scores the first tuning round as
+achieved to preserve the consist tuner's quota, since the feedback
+loop returns its input unchanged at that score.
 
-The series is based on next-20260911. It fixes commit a68878f83ae6
-("mm/damon/core: handle uninitialized damos_quota_goal->last_psi_total"),
-which is in mm-new and tagged for stable. Please carry this fix with
-it.
+The temporal tuner sets the quota to zero for an achieved goal. This
+skips the first charge window and the window after each goal commit.
+Committing the PSI goal before every tuning round keeps the scheme
+idle indefinitely.
 
-Patch 1 keeps the temporal quota active until a PSI delta is
-available. Patch 2 adds a regression test for the first round, the
-next measured round, the round after a goal commit, a measured round
-that reaches the target, and the consist tuner's unmeasured round.
+Score an unmeasured PSI goal as not achieved for the temporal tuner,
+so a new scheme can run in its first window. Keep the consist tuner's
+behaviour unchanged.
 
-Reproduced with damo 3.4.0 (b41965a) in a QEMU guest running
-next-20260911 (x86_64, CONFIG_DAMON_SYSFS=y, CONFIG_PSI=y):
+Fixes: a68878f83ae6 ("mm/damon/core: handle uninitialized damos_quota_goal->last_psi_total")
+Cc: <stable@vger.kernel.org> # 7.1.x
+Assisted-by: LLM
+Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+---
+ mm/damon/core.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-  damo start --damos_action stat --damos_quota_interval 120000 \
-      --damos_quota_space 1048576 \
-      --damos_quota_goal some_mem_psi_us 100000000000 \
-      --damos_quota_goal_tuner temporal
-
-then reading quotas/effective_bytes after update_schemes_effective_quotas
-every 18 seconds. Without patch 1 the effective quota is 0 for the whole
-first 120 second window and again for the window after "damo tune" with
-the same parameters. With patch 1 it is 1048576 throughout.
-
-The KUnit test in patch 2 fails without patch 1 and passes with it on
-x86_64 and i386 (CONFIG_DAMON_KUNIT_TEST=y, built-in KUnit run at boot).
-
-Karl Mehltretter (2):
-  mm/damon/core: score an unmeasured PSI goal as not achieved for the
-    temporal tuner
-  mm/damon/tests/core-kunit: test PSI goal rounds under the temporal
-    tuner
-
- mm/damon/core.c             | 14 +++++---
- mm/damon/tests/core-kunit.h | 69 +++++++++++++++++++++++++++++++++++++
- 2 files changed, 79 insertions(+), 4 deletions(-)
-
-
-base-commit: 68142f986ff04b2b70b31db00f719bf690f64a9a
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 06cf2ab7e97d..e6d87fd3992e 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -3161,12 +3161,18 @@ static void damos_set_quota_goal_current_value(struct damon_ctx *c,
+ 		break;
+ 	case DAMOS_QUOTA_SOME_MEM_PSI_US:
+ 		now_psi_total = damos_get_some_mem_psi_total();
+-		/* uninitialized last_psi_total; make no effect this round */
+-		if (goal->last_psi_total == U64_MAX)
+-			goal->current_value = goal->target_value;
+-		else
++		if (goal->last_psi_total == U64_MAX) {
++			/* uninitialized last_psi_total; make no effect this round */
++			if (s->quota.goal_tuner ==
++					DAMOS_QUOTA_GOAL_TUNER_TEMPORAL)
++				/* an achieved score would zero the temporal quota */
++				goal->current_value = 0;
++			else
++				goal->current_value = goal->target_value;
++		} else {
+ 			goal->current_value = now_psi_total -
+ 				goal->last_psi_total;
++		}
+ 		goal->last_psi_total = now_psi_total;
+ 		break;
+ 	case DAMOS_QUOTA_NODE_MEM_USED_BP:
 -- 
 2.53.0
 
