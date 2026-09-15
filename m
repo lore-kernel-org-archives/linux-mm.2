@@ -4,83 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72D39C88E75
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 13:33:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 376EFC88E75
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 13:36:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 300D86B0092; Tue, 15 Sep 2026 09:33:24 -0400 (EDT)
+	id 3F0C46B0095; Tue, 15 Sep 2026 09:36:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B2FF6B0093; Tue, 15 Sep 2026 09:33:24 -0400 (EDT)
+	id 3A2B46B0096; Tue, 15 Sep 2026 09:36:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A0166B0095; Tue, 15 Sep 2026 09:33:24 -0400 (EDT)
+	id 26D256B0098; Tue, 15 Sep 2026 09:36:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DC7776B0092
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 09:33:23 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 36A00803FF
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 13:33:23 +0000 (UTC)
-X-FDA: 85216088286.22.AD4E14A
+	by kanga.kvack.org (Postfix) with ESMTP id 01D9D6B0095
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 09:36:35 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0C381803E5
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 13:36:34 +0000 (UTC)
+X-FDA: 85216096308.28.326D653
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 7DB5340016
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 13:33:21 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HANA76hn;
-	spf=pass (imf12.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789479201;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Da33iyX8RrUrhHPC36ssZZP7j4KMf25stiTxEiTRjDU=;
-	b=DjN/AdElJLbaXs+1R7ys1yX9SxiqfRtUYpxWt5iPTXA2JuOxi9wLXs7OzsFldNEw14nb++
-	Ud9aQcMicrUVySMOOAGehyzFtNH1DU0+O85Em8082IATqu1bg9dlRflox0nlWplmcXzRTy
-	yKqHmkK37v7xQc1L6vMfkKQIzCGXvh8=
+	by imf28.hostedemail.com (Postfix) with ESMTP id 4A77BC000E
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 13:36:32 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SZqVJGAm;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HANA76hn;
-	spf=pass (imf12.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SZqVJGAm;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789479201;
-	b=OloSrhUo+UAwpRZs16dJVDY++ex4VB7yS0wpMyzSv8ySUleoKJHzj85jROaJiE3ugl9+N5
-	2LnMSiATz4l0ufw9k695GLROU6C+t4MF9ul/Ff4uOWhVkhnNvSPzLIEfxvAYtNrc8HK8yj
-	NwuE/pE/LDkDql/4ZopfDFs8Tt0IBRE=
+	t=1789479392;
+	b=zxS4SpqYnR98rmVb/2uCpcR/LFkIAzR1PHsCWQRuXzYCDTw6qB8DPIaWwmAHGWVDyTcjqo
+	+1B9GErlxN3FnH78H1V18CkiBY9JMysXYPUbydmhKvAH2uGD/SU3zu0/0s54qWXqFTwH0m
+	vK5ZqkHM2bdMigbhv2vEh+oF6p68dqo=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789479392;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=UD1C1sFiLo886bWFCF4yCVjFbhAC5ORHunqhsih89BI=;
+	b=ugt5bZSRoCvOCy2bO2SXZ4qSgl5amXHj6D8nkzE0LNlUjWVt1aApjzXEsmCUmlV/t+OA7y
+	qPhsT/oOJCCBNvOpId4On1xXBGyp1b8ayYaCXv3ySRyEKjtN7MFVY8s/veMUq9itq78FOE
+	EN2hiUM3Lx+q+R8ghN6zcVMzI6pu2A8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A1BE440DF4;
-	Tue, 15 Sep 2026 13:33:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45D391F000FF;
-	Tue, 15 Sep 2026 13:33:19 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 78072400FD;
+	Tue, 15 Sep 2026 13:36:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 700EE1F000FF;
+	Tue, 15 Sep 2026 13:36:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789479200;
-	bh=Da33iyX8RrUrhHPC36ssZZP7j4KMf25stiTxEiTRjDU=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=HANA76hn+RCjD4WFujdVFLp+r7nx14r2j+1Nwvbt+QhrcjXcd0R6HRif0YgSlAb0e
-	 FpDWKe0S3k8QV5X6Ycl51OskSSp93MiXwn4jRtFI3wwqmSuyQDTzOp7TDDh5gMq6r0
-	 vDnAMqq7rK1qd9sKu54VGjSOOIJmxrfyNiV0GAV4hMHZLcFVCZA4wXothga+8gupSp
-	 4VUJheuA3sj0cPQJBL+9ZxeSFYNr4M7E5VSIlG3vx4L91yHCkKR/T0qS/LyLRYLMOs
-	 45xhbManJxeliLDDEfVEaRQ1AsO9NeYiAXxC6Ey44kCfaN1X6Y0WrRzS4udvCq8FyD
-	 Mzhf2wHc8m1ZA==
-Content-Type: multipart/mixed; boundary="===============7419760775756817736=="
-MIME-Version: 1.0
-Message-Id: <89f9e7223c18671a3a7025c9b3492c7e92539d00a289c2d83610918f8c53fe0f@mail.kernel.org>
-In-Reply-To: <93289af4317b57caa4e393d73fe6c786b24a4c2a.1789475073.git.zhuhui@kylinos.cn>
-References: <93289af4317b57caa4e393d73fe6c786b24a4c2a.1789475073.git.zhuhui@kylinos.cn>
-Subject: Re: [PATCH bpf-next v11 2/2] selftests/bpf: Add memcg async reclaim test
-From: bot+bpf-ci@kernel.org
-To: hui.zhu@linux.dev,roman.gushchin@linux.dev,inwardvessel@gmail.com,shakeel.butt@linux.dev,akpm@linux-foundation.org,andrii@kernel.org,eddyz87@gmail.com,ihor.solodrai@linux.dev,ast@kernel.org,daniel@iogearbox.net,memxor@gmail.com,martin.lau@linux.dev,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,emil@etsalapatis.com,shuah@kernel.org,baohua@kernel.org,geliang@kernel.org,linux-kernel@vger.kernel.org,bpf@vger.kernel.org,linux-mm@kvack.org,linux-kselftest@vger.kernel.org
-Cc: zhuhui@kylinos.cn,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Tue, 15 Sep 2026 13:33:19 +0000 (UTC)
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 7DB5340016
-X-Stat-Signature: 7pfpkuqbwkkbowxkhdh31yer86e9wn4h
+	s=k20260515; t=1789479391;
+	bh=UD1C1sFiLo886bWFCF4yCVjFbhAC5ORHunqhsih89BI=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=SZqVJGAm8yvcnbN40xI+hqlsdqMDLkdt+phXQtPX68AzkVtujfWWbbiGfXbUa2Uym
+	 GVn/Nt/2dfvQsCKfCKY5JX4TDRFYeUywiiZtEQoSyMDnNFAB58WVP3gyPlYfr2gLzW
+	 46i7sA6/3GwFqCAkXxGegqIiREYKDnXnFYbG1IWUedOQs3dlPwWKAIFvt88csCqqJB
+	 JhrYK8GNSnhKAnI3Vd7VcyfPulYz/1mfzI61CW6idvYDRk1L0h0bM3cgCGE/lu9XqC
+	 I0p1GADYpzRWQgYCXbBM6PXsUZCYGyyJPl+mIfv7Aztx0DqxKRTslvqj0jpq9mMRRc
+	 5Y/PrfNGoeEZg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v5 5/9] mm/memory-failure: efi: record hardware-poisoned
+ frames into the poisoned-memory table
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "David Hildenbrand" <david@kernel.org>, "Naoya Horiguchi" <nao.horiguchi@gmail.com>, kas@kernel.org, "Zi
+ Yan" <ziy@nvidia.com>, "Breno Leitao" <leitao@debian.org>, hannes@cmpxchg.or, shakeel.butt@linux.dev, "Liam
+ R. Howlett" <liam@infradead.org>, "Miaohe Lin" <linmiaohe@huawei.com>, "Brendan
+ Jackman" <brendan.jackman@linux.dev>, "Andrew Morton" <akpm@linux-foundation.org>, "Thomas
+ Gleixner" <tglx@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, x86@kernel.org, "Lorenzo
+ Stoakes" <ljs@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>, "Ilias
+ Apalodimas" <ilias.apalodimas@linaro.org>, "H. Peter Anvin" <hpa@zytor.com>, "Ard
+ Biesheuvel" <ardb@kernel.org>, "Borislav Petkov" <bp@alien8.de>, "Johannes
+ Weiner" <hannes@cmpxchg.org>, "Danilo Krummrich" <dakr@kernel.org>, "Michal
+ Hocko" <mhocko@suse.com>, "Vlastimil Babka" <vbabka@kernel.org>, "Ingo
+ Molnar" <mingo@redhat.com>, "Dave Hansen" <dave.hansen@linux.intel.com>, "Oscar
+ Salvador" <osalvador@suse.de>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Mike
+ Rapoport" <rppt@kernel.org>
+Cc: kernel-team@meta.com, kexec@lists.infradead.org, linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, linux-mm@kvack.org, rmikey@meta.com, driver-core@lists.linux.dev, riel@surriel.com, harry@kernel.org
+In-Reply-To: <20260915-hwpoison-kho-v5-5-3bc7a57bd503@debian.org>
+References: <20260915-hwpoison-kho-v5-0-3bc7a57bd503@debian.org>
+ <20260915-hwpoison-kho-v5-5-3bc7a57bd503@debian.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 15 Sep 2026 13:36:29 +0000
+Message-Id: <20260915133629.700EE1F000FF@smtp.kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1789479201-170832
-X-HE-Meta: U2FsdGVkX18JmDoLIcsWzwi0XTnkQ8r8WUGNpu09c44Q164KtLv3xsuDyN2PjhCXr9zTxKotDJBSJxgjV4PpsH9SfH5J7Ogl5lVjiX8zzz+tNhfiJeNfgBg1L+dpbata0UJMqPPV7I6jKKRWOnMvwEgj4BRf7dh2ZH6QVnsU7DNeoxvvR6vZAE9vDrETwEb6Z4YjAeXe0ny5DXr97gKpTTsI1NxgTKwOv8urs540kkkCFCV4uO4oc4LDYdsQEd7UCdknz3/CcHz+8IzNMC58OjGHkAX+ZJotxLs2qLV5ZXxa1KeKiu6HmZwaT6HXGnIO5hQssXOkcGnSONTTRbgd9eQdLxlnr+wnKUOPa70g6LGuGf9dSZ5lgvof9gwja3N5eH5k4o/SAqSEdlcL3yP9zoOlQ29x0Dmwdaiuuck5eAmcQ0na6vbeFtruCz8fc6Ow4jCOjNAQj7hd3TdsWs+bzd3RKUlYENGkqypskLEL/2PW0hDQT/aI6WX2cIMB/a6A+j/ocuw9a0Hmmkjf1+M9eOtfNMWkDbKeSkZrB/OHB5BAAARpZTExKHxgLt2iqZWAzks+vD0wHWR/F25cnDdnki3FUsvNznVOgZTJzv1cZ3oll3rBsggkLhp74oZ3zBkdyGpyuuE2sLfKXuZVx+DL1XtA23AgZT6QJD9NNdxOinMk8/Kq0suIwkktSJ0oOoQFg61Z5BmXlrPk/yYNgHtJmOM02x0/pKTDos1jzK1vmYrPLkfxU9/BJmmic2Ukh+RGxqFq4/aXQjvO/k0bdUT6PqUtEO1DXMsiGhlBzQ443gpzWncBINEex7phs8YRkpZ64hnDE3kG9pdPkJFtNmwrFzOeSHdgYXWptQ4W1uF1gsxivo0cEtKKDveLzjqAxQrkePGJiVT3W3O/Qu0ERJ9MPYzc9SlWcPyeJdX5gIq+kGk55KVlKMI150Sp3aW4mjKLWfsYfgf+dXPv6xugYUi
- jnuzvNAJ
- /oxFVVKKd19i4grab7EPw/bwp2VJ4TrepvtImfhlrzi7JXgl6v44WE/fVdkBO4ej6oMbbeBa6Qp56L4flXRZn+k7aqKGZ4AWM6mSCHwwkqFQWgR8qfUa61inqwg0g6qXfWRQQtXjoo1kIygOfSj/8+xBNlsr97Tzks2Z/qSQsKEXx/OuQP9tOtaeLyE8Jt7lR1IdHkg5fnFMQM95fjxORDgl9qxQJ9TzZ4sjP3MtIwkN0iWIcEYUG1mqeFbbZH2IleEP1tBKrHdhEhu8DMwLRxLhHrslkGB2BjdMgGTCDc8TgyoB+NNEG+8qMlxaGw2+axV4oXnKK0AS0qaE8hzf9eygjcUBVG6rEK3rdGS01NI4mRTAxU077jV7vgSpgXMID/mDcsXivoXS7/VytrBiMy++L/SB8hu7LET9r92LRxUgHLiqRR/exG9+qZ5jh5gGPdqahmW5VrbCAxwTc6Padw7FX/1btf6P+eSZLoccEVFky8FBlGep/UYhuqw==
+X-Rspamd-Queue-Id: 4A77BC000E
+X-Stat-Signature: ctnfzagshum8jjn11x4ygpj4dns5cgrx
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789479392-550392
+X-HE-Meta: U2FsdGVkX1+fjUXzNqdz+gnJ3/WGiB+q8/Xy/VLu1Rg8KxPRyAeTII1Xw0mFSDKsC6UWBQX80T29MzDEm4DdjgGDjosZq5HYR1kBxxx57Xf3zMNgE0kAr1Pw9YKJksEb1xMJoibm/kJsdTMFx4qediI2SL1A2WLCxo48GktbikI9OQt7PkGPtgYNIJ0tpzebvuGulvF8GXWX7vJa6dAC9IzZ4f3tOvHAF8hdwdWQ5iY7nsnLYA2WH7CtMnuF1bBIqvvHt6IipY2s0VA01j4ccGUkb1FXuvO+sjyGrj4qoC8QignP9Qhd8YTj2pkQWOFWGBWjtIspuPM3hHG49dypZzD9Z8/L1dq/ULkNnJrm32d7lMJvVTl+TjQ1RUAyJzpsmNg2psIi0BIg+d/ekQ5IN6SHh0v/OrpwrSKl5H2E6yY6v+Vi/Mf/x/Lbj+rISBPZaosJaSBqWHViHBsTN0WMtwatQ/Ctqn0NZOTYPlTLJI3iO18hCcWWNMngH+zsLSO3N091jLV25+kM7HSBsW5A51jrlvMI19lSTPbGAzvnm0ZDZau7fKWH9sACa8h2Y8RpYBGm93Ca3NiE1RZW+7AnxHqBexbyV8vC1LJNbpwuZOybUv3ynx4OQ4OntVg+plpVXVdL2FacfoTGweqhwv0Lg8g9+Aa7aVCvQkRI4CuQc9Ov+WttJMYrZNUdgS0JbbI9dSJ0+slH1FXadq0Pj45sV+vwThu+CdZjxsRBp2fLlzwll8TS1O8ARpB8rAU4u2UZZEefkyGQWtzACvloSo4gszWkGEnhCHzR41lEZR482HuogeNE1vVH6SsycOPRj28Ai4vlXtfcfMcm/MualIqI/q98HBTBmcJv/xHUuMGf49uB34hGgxuuHpFNJjmRpKQyhg+V1a3BqmZWSBL1uzHbzfgzr1Nte0TUNggVVbkoe9M9ES0TpaeOU2CPDNdngmhRRunhZ1cMKu7Hi9I0orc
+ 8oBFnJZW
+ knlmba0eFJKjvdtuZ1FleRPSqqUVwsFSO5zLoHv/zaG+EFEJwMa+43pFk4eYNIYL0ZnbZ/qPQGE1HQ/nsLVi07EWnyY+CbTslep7r5R9F+b6hKdjEtkC2hObGMnbl5tZ3nv4nMBBM1ONzy0m23naboMxEsNMx2+SSEeCABsu/Pcy921Kikqt6QXzgF+SNerPM1iQbU5GX0smLSwk0NiRyQ/0kUbYFsoYFJoECgXNIFDjHGoJC31Wr/XbQLiw10Oug4Xdfo2K7s1+bHiXhzRx6Lu87M9IwYRQhVnkXJ1XOdJLy89kaI4LIDeHsVN1uYXT24VbYUHr43MV+WoEccDLSYafk6Z7w77t5bP2hYyTjNSfxbTkHeiooxTGrlsS0RrYJtGuc9ZIcfNavmd45+XDO3MeeKbv+CbUBnYu82rCPNBjeBSp5I4uT7y1NwEKRFp2D8a6UId1In1gonvWV+DYX5l6XlyY1yTdtT/1BDzu70sgU44a1z1pApHNzGlRxIW7k9rbbTm6a/7n7GcKNpvo5aXLmR4yezkvneSl5XsEZmfnKXohWDNJM/+piznHl47zG5seOyE22P79qepxQHuFgUgbQ3OSwHjiBHpRuuo6ZAoef2G+yLvS3AC9mlncddgmHjoIX1RU9TywoV8OioFS4iPlANiEnEgVT/uSCXiCLfKjLnaU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,298 +103,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---===============7419760775756817736==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
+- [Critical] efi: memblock_add() with PAGE_ALIGN_DOWN forces adjacent MMIO =
+into system RAM
+- [High] efi: ABI breakage in linux_efi_poisoned_memory due to native word =
+size
+- [Medium] mm: hard memory failures on soft-offlined pages are omitted from=
+ EFI table
+--
 
-> diff --git a/tools/testing/selftests/bpf/prog_tests/memcg_async_reclaim.c b/tools/testing/selftests/bpf/prog_tests/memcg_async_reclaim.c
-> new file mode 100644
-> index 000000000000..7c7d299b3b28
-> --- /dev/null
-> +++ b/tools/testing/selftests/bpf/prog_tests/memcg_async_reclaim.c
-> @@ -0,0 +1,779 @@
+commit e69689c81050c18119d69206dc9a7cb1e2fa4eeb
+Author: Breno Leitao <leitao@debian.org>
 
-[ ... ]
+mm/memory-failure: efi: record hardware-poisoned frames into the poisoned-m=
+emory table
 
-> +static int real_test_child_work(const char *cgroup_path, char *data_filename,
-> +				char *time_filename, int read_times)
-> +{
-> +	struct timespec start, end;
-> +	double elapsed;
-> +	FILE *fp;
-> +
-> +	if (join_parent_cgroup(cgroup_path))
-> +		return CHILD_EXIT_JOIN_CGROUP;
-> +
-> +	clock_gettime(CLOCK_MONOTONIC, &start);
-> +
-> +	if (write_file(data_filename))
-> +		return CHILD_EXIT_WRITE_FILE;
-> +
-> +	if (read_file(data_filename, read_times))
-> +		return CHILD_EXIT_READ_FILE;
-> +
-> +	clock_gettime(CLOCK_MONOTONIC, &end);
-> +
-> +	if (!time_filename)
-> +		return CHILD_EXIT_OK;
-> +
-> +	elapsed = (end.tv_sec - start.tv_sec) +
-> +		  (end.tv_nsec - start.tv_nsec) / 1000000000.0;
-> +
-> +	fp = fopen(time_filename, "w");
-> +	if (!fp)
-> +		return CHILD_EXIT_TIME_FILE;
-> +	fprintf(fp, "%.6f", elapsed);
-> +	fclose(fp);
-> +
-> +	return CHILD_EXIT_OK;
-> +}
-> +
-> +static int get_time(char *time_filename, double *time)
-> +{
-> +	int ret = -1;
-> +	FILE *fp;
-> +	char buf[64];
-> +
-> +	fp = fopen(time_filename, "r");
-> +	if (!ASSERT_OK_PTR(fp, "fopen"))
-> +		goto out;
-> +
-> +	if (!ASSERT_OK_PTR(fgets(buf, sizeof(buf), fp), "fgets"))
-> +		goto cleanup;
+This commit hooks memory_failure() hard offline reports into the EFI
+poisoned memory table so that they persist across kexec. Soft-offlined
+pages are deliberately excluded to prevent predictive offlining from
+becoming a permanent loss.
 
-Is ASSERT_OK_PTR valid for checking fgets() return values? fgets()
-returns NULL at end-of-file without setting errno, so ASSERT_OK_PTR (which
-expands to libbpf_get_error()) would read from the ambient errno rather
-than detecting the EOF. If the timing file is empty, fgets() returns NULL
-with errno still zero from the previous successful fopen(), causing
-ASSERT_OK_PTR to pass silently and execution to fall through to
-sscanf(buf, "%lf", time) with buf uninitialized.
+> diff --git a/drivers/firmware/efi/poison.c b/drivers/firmware/efi/poison.c
+> index 3f12db3dc9b84..847592862f01d 100644
+> --- a/drivers/firmware/efi/poison.c
+> +++ b/drivers/firmware/efi/poison.c
+> @@ -91,3 +91,30 @@ void __init efi_poisoned_memory_reserve(void)
+>  	memblock_add(start, end - start);
+>  	memblock_reserve(start, end - start);
 
-The empty-file case is reachable: real_test_child_work() does not check
-the result of fprintf()/fclose() on the timing file, so a child whose
-write failed (ENOSPC on /tmp after writing two 32 MB workload files) still
-exits CHILD_EXIT_OK, and run_high_low_workload() then calls get_time() on
-a zero-length file.
+[Severity: Critical]
+Does this forcefully override the firmware's memory map for adjacent 4KB
+chunks on larger page architectures?=20
 
-> +
-> +	if (sscanf(buf, "%lf", time) != 1) {
-> +		PRINT_FAIL("sscanf %s", buf);
-> +		goto cleanup;
-> +	}
+On architectures like ARM64 where the kernel page size can be 16KB or
+64KB, EFI memory descriptors remain 4KB. If the EFI poisoned memory table
+occupies a 4KB region within a 64KB page, rounding down to the kernel
+page boundary expands the range.
+
+This could force adjacent 4KB EFI regions containing firmware MMIO or
+reserved non-RAM regions into system RAM via memblock_add(). If the
+kernel later maps these regions with Write-Back caching attributes in the
+direct map, could this cause fatal Machine Check Exceptions or SError
+panics during speculative CPU accesses?
 
 [ ... ]
 
-> +/*
-> + * test_progs hijacks stdout and only prints the captured log when the
-> + * test fails, so benchmark numbers go straight to the real stdout to
-> + * keep them from drowning in ASSERT output.
-> + */
-> +static void bench_printf(const char *fmt, ...)
-> +{
-> +	va_list ap;
-> +
-> +	va_start(ap, fmt);
-> +	vfprintf(env.stdout_saved ?: stdout, fmt, ap);
-> +	va_end(ap);
-> +}
+> diff --git a/include/linux/efi.h b/include/linux/efi.h
+> index dd3263456dd4a..56402fdccd114 100644
+> --- a/include/linux/efi.h
+> +++ b/include/linux/efi.h
+> @@ -1288,8 +1288,10 @@ struct linux_efi_poisoned_memory {
 
-A subsystem pattern flags this as potentially concerning: bench_printf()
-writes benchmark text straight to env.stdout_saved, bypassing the test
-framework's stdout hijacking. Outside test_progs.c itself this is the only
-writer of env.stdout_saved in the whole selftests/bpf tree - every other
-test writes through the hijacked stdout so the framework owns when and
-whether the text appears.
+[Severity: High]
+Does the linux_efi_poisoned_memory ABI structure break on architectures
+where the native word size differs from the firmware?=20
 
-The effect is free-form lines interleaved directly into the stream from
-which runners and CI parse the per-test pass/fail records, on a path
-enabled only by an environment variable, so the same binary produces two
-different output shapes. The benchmark timings emitted are informational
-(not pass/fail verdicts), the path is gated behind
-TEST_MEMCG_ASYNC_RECLAIM_BENCH=1, and prog_tests/ files run under
-test_progs rather than kselftest.h. Would dumping benchmark numbers via
-the framework's normal stdout keep the output under framework control?
+The struct uses an unsigned long flexible array for the bitmap, which
+alters the element size depending on the kernel bitness (4 bytes on 32-bit
+and 8 bytes on 64-bit). efi_poison_geometry_valid() rejects tables where
+the size is not a multiple of sizeof(unsigned long).=20
 
-[ ... ]
+If a 32-bit EFI firmware generates this table, it will use 4-byte alignment
+and a 32-bit word array. Because CONFIG_EFI_POISONED_MEMORY is 64-bit only,
+the 64-bit kernel will evaluate sizeof(unsigned long) as 8 and reject
+perfectly valid 32-bit firmware tables as malformed.=20
 
-> +void test_memcg_async_reclaim(void)
-> +{
-> +	u64 high_cgroup_id, low_cgroup_id;
-> +	double high_time = 0.0, low_time = 0.0;
-> +	double base_high_time = 0.0, base_low_time = 0.0;
-> +	struct memcg_async_reclaim *skel = NULL;
-> +	int err, bench;
-> +
-> +	bench = !!getenv("TEST_MEMCG_ASYNC_RECLAIM_BENCH");
-> +
-> +	err = setup_high_low_cgroups(&high_cgroup_id, &low_cgroup_id);
-> +	if (!ASSERT_OK(err, "setup_high_low_cgroups reclaim"))
-> +		return;
-> +
-> +	/*
-> +	 * Optional baseline for the benchmark numbers below: run the
-> +	 * same workload once without the BPF program, so the log can
-> +	 * report how much async reclaim improved the pressured cgroup.
-> +	 */
-> +	if (bench) {
-> +		err = run_high_low_workload(&base_high_time, &base_low_time,
-> +					    READ_TIMES);
-> +		if (!ASSERT_OK(err, "run_high_low_workload baseline"))
-> +			goto out;
-> +	}
-> +
-> +	err = setup_bpf(high_cgroup_id, low_cgroup_id, &skel);
-> +	if (!ASSERT_OK(err, "setup_bpf"))
-> +		goto out;
-> +
-> +	err = run_high_low_workload(&high_time, &low_time, READ_TIMES);
-> +	if (!ASSERT_OK(err, "run_high_low_workload reclaim"))
-> +		goto out;
-> +
-> +	/*
-> +	 * The timing comparison below alone cannot distinguish a working
-> +	 * reclaim from a no-op one, so require that the BPF program
-> +	 * actually reclaimed memory from the low cgroup.
-> +	 */
-> +	if (!ASSERT_GT(skel->bss->reclaim_calls, 0, "reclaim_calls"))
-> +		goto out;
-> +	if (!ASSERT_GT(skel->bss->reclaimed_bytes, 0, "reclaimed_bytes"))
-> +		goto out;
-> +
-> +	/*
-> +	 * The timing comparison is a benchmark and too flaky to fail CI
-> +	 * runs, so it only logs the numbers; the counters above already
-> +	 * proved that the BPF program reclaimed memory.
-> +	 */
-> +	if (bench && base_high_time > 0.0) {
-> +		double speedup = base_high_time / high_time;
-> +
-> +		bench_printf("memcg_async_reclaim: baseline high=%f low=%f, "
-> +			     "reclaim high=%f low=%f, speedup=%.2fx\n",
-> +			     base_high_time, base_low_time,
-> +			     high_time, low_time, speedup);
-> +	}
-> +	else if (high_time >= low_time)
-> +		printf("memcg_async_reclaim: high cgroup not improved: high=%f low=%f\n",
-> +		       high_time, low_time);
+Since bit array layouts also differ across word sizes on big-endian
+architectures, should this firmware-to-kernel ABI boundary use fixed-size
+types like u32 or u64 instead?
 
-Can this printf() output ever be read? test_progs redirects stdout and
-stderr to an in-process memstream, and dump_test_log() only prints that
-buffer when the test fails. Both printf() calls added by the patch are
-emitted on paths where the test then passes, so their output is discarded.
-
-The same file documents this behaviour and works around it for the
-benchmark numbers through bench_printf() and env.stdout_saved. Should
-these two informational printf() calls go through bench_printf() as well,
-or be dropped?
+> =20
+>  #ifdef CONFIG_EFI_POISONED_MEMORY
+>  void __init efi_poisoned_memory_reserve(void);
+> +void efi_hwpoison_record_pfn(unsigned long pfn);
 
 [ ... ]
 
-> +void test_memcg_async_reclaim_dying(void)
-> +{
-> +	u64 trigger_cgroup_id, target_cgroup_id;
-> +	u64 calls_before, bytes_before;
-> +	char data_file[PATH_MAX] = "";
-> +	struct reclaim_events_seen seen = {};
-> +	struct memcg_async_reclaim *skel = NULL;
-> +	struct ring_buffer *rb = NULL;
-> +	pid_t reader_pid = -1;
-> +	int err, fd, i;
-> +
-> +	err = setup_dying_cgroups(&trigger_cgroup_id, &target_cgroup_id);
-> +	if (!ASSERT_OK(err, "setup_dying_cgroups"))
-> +		return;
-> +
-> +	err = setup_bpf(trigger_cgroup_id, target_cgroup_id, &skel);
-> +	if (!ASSERT_OK(err, "setup_bpf"))
-> +		goto out;
-> +
-> +	rb = ring_buffer__new(bpf_map__fd(skel->maps.reclaim_events),
-> +			      on_reclaim_event, &seen, NULL);
-> +	if (!ASSERT_OK_PTR(rb, "ring_buffer__new"))
-> +		goto out;
-> +
-> +	snprintf(data_file, sizeof(data_file),
-> +		 "%s/memcg_async_dying_XXXXXX", workload_files_dir());
-> +	fd = mkstemp(data_file);
-> +	if (!ASSERT_GE(fd, 0, "mkstemp"))
-> +		goto out;
-> +	close(fd);
-> +
-> +	reader_pid = spawn_keepalive_reader(data_file);
-> +	if (!ASSERT_GT(reader_pid, 0, "fork keepalive reader"))
-> +		goto out;
-
-Could the keepalive reader child's failure modes be diagnosed?
-spawn_keepalive_reader() reports its failures through distinct exit codes
-(CHILD_EXIT_JOIN_CGROUP, CHILD_EXIT_WRITE_FILE, CHILD_EXIT_READ_FILE),
-but the caller only checks that fork() succeeded. At cleanup the status is
-discarded:
-
-	kill(reader_pid, SIGKILL);
-	(void)waitpid(reader_pid, NULL, 0);
-
-If the child dies immediately - for example join_parent_cgroup() fails, or
-write_file() cannot create the 32 MB file - the parent still spends 50 *
-100ms in the first poll loop and then fails with ASSERT_GT(seen.called, 0,
-"reclaim events"), pointing at the kernel rather than at the child.
-
-The child's own diagnostics do not survive either: test_progs sets stdout
-and stderr to a per-process memstream, so log_err() output from
-join_parent_cgroup() and the fprintf() in read_file() land in the forked
-child's private copy of that buffer and are lost at _exit().
-
-The file already has the machinery to handle this - child_exit_str() and
-the WIFEXITED/WEXITSTATUS handling in run_high_low_workload(). Would a
-waitpid(reader_pid, &status, WNOHANG) probe before or after the poll loop,
-reported through child_exit_str(), make this diagnosable?
-
-> +
-> +	/* Wait for reclaim rounds to reach the live target cgroup. */
-> +	for (i = 0; i < EVENT_POLL_ROUNDS && !seen.called; i++) {
-> +		err = ring_buffer__poll(rb, EVENT_POLL_TIMEOUT_MS);
-> +		if (!ASSERT_GE(err, 0, "ring_buffer__poll"))
-> +			goto out;
-> +	}
-> +	if (!ASSERT_GT(seen.called, 0, "reclaim events"))
-> +		goto out;
-> +
-> +	remove_cgroup(CG_DYING_TARGET_DIR);
-> +
-> +	usleep(DYING_SETTLE_US);
-> +	seen = (struct reclaim_events_seen){};
-> +
-> +	calls_before = skel->bss->reclaim_calls;
-> +	bytes_before = skel->bss->reclaimed_bytes;
-> +
-> +	/* Wait for a reclaim round to report the removed target. */
-> +	for (i = 0; i < EVENT_POLL_ROUNDS &&
-> +		    !seen.skipped_dying && !seen.target_gone; i++) {
-> +		err = ring_buffer__poll(rb, EVENT_POLL_TIMEOUT_MS);
-> +		if (!ASSERT_GE(err, 0, "ring_buffer__poll"))
-> +			goto out;
-> +	}
-> +
-> +	if (!seen.skipped_dying && !seen.target_gone) {
-> +		PRINT_FAIL("no reclaim round hit the removed cgroup within "
-> +			   "the poll window");
-> +		goto out;
-> +	}
-> +
-> +	if (!ASSERT_EQ(skel->bss->reclaim_calls, calls_before, "reclaim_calls"))
-> +		goto out;
-> +	if (!ASSERT_EQ(skel->bss->reclaimed_bytes, bytes_before, "reclaimed_bytes"))
-> +		goto out;
-
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> index a2ca8df501cae..d9b8be696aac3 100644
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
 [ ... ]
+> @@ -1326,6 +1327,8 @@ static int action_result(unsigned long pfn, enum mf=
+_action_page_type type,
+>  	if (type !=3D MF_MSG_ALREADY_POISONED && type !=3D MF_MSG_PFN_MAP) {
+>  		num_poisoned_pages_inc(pfn);
+>  		update_per_node_mf_stats(pfn, result);
+> +		/* Only hard offlines are carried over to the next kernel. */
+> +		efi_hwpoison_record_pfn(pfn);
+>  	}
 
+[Severity: Medium]
+Does placing efi_hwpoison_record_pfn() inside this conditional block
+unintentionally skip recording hard errors on previously soft-offlined
+pages?=20
 
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+Soft-offline marks a page with PageHWPoison but intentionally does not
+record it in the EFI table to avoid permanent loss for predictive errors.=20
 
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/34970614671
---===============7419760775756817736==--
+If a genuine hard, uncorrectable error later occurs on that same page,
+memory_failure() will see the existing PageHWPoison flag and pass
+MF_MSG_ALREADY_POISONED to action_result().=20
+
+By coupling the EFI recording to the meminfo stat increments, genuine
+hard errors on soft-offlined pages are omitted from the EFI table. Could
+this allow the next kernel to map and crash on physically broken RAM?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260915-hwpoison-k=
+ho-v5-0-3bc7a57bd503@debian.org?part=3D5
 
