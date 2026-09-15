@@ -4,128 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9F6CC88E75
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 14:49:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE1FBC88E75
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 14:51:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C1DC26B008C; Tue, 15 Sep 2026 10:49:20 -0400 (EDT)
+	id AC0A56B0096; Tue, 15 Sep 2026 10:51:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BCE726B0092; Tue, 15 Sep 2026 10:49:20 -0400 (EDT)
+	id A99156B0098; Tue, 15 Sep 2026 10:51:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ABE026B0096; Tue, 15 Sep 2026 10:49:20 -0400 (EDT)
+	id 9D70E6B0099; Tue, 15 Sep 2026 10:51:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B2526B008C
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 10:49:20 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D5A43C046B
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 14:49:19 +0000 (UTC)
-X-FDA: 85216279638.10.990E791
-Received: from mail-ed2-f12.google.com (mail-ed2-f12.google.com [74.125.228.76])
-	by imf06.hostedemail.com (Postfix) with ESMTP id EC8C618000D
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 14:49:17 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=YwTt1Am1;
-	spf=pass (imf06.hostedemail.com: domain of urezki@gmail.com designates 74.125.228.76 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 76D926B0096
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 10:51:05 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8E29B1C22BC
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 14:51:04 +0000 (UTC)
+X-FDA: 85216284048.08.C88365F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 00A334000D
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 14:51:02 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Wdc+2Vi/";
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789483863;
+	b=xtCtj5ZAER/599B5MDjaLZTBz5+vapt8iKWDkquVv+a5On/ylzFh2R1CvgMn7WBN1BSIeu
+	fLRS0BTv1osC7bWWgof9R5G8QLdu0no1pUC4DQXoDmkJjKIhcpFzSjlfrI00UoMVtpj7A7
+	jwvM6WZ9ooFw4Sun91yNSEyYIEBSgs4=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Wdc+2Vi/";
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789483757;
+	s=arc-20220608; t=1789483863;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NtxVeAruzSzBSt8uXIvYAlTRCQtPNr3FqdWRr27iP+4=;
-	b=dZ/0VUPGwcLzAcHXJXYKjSl48st62TkuH2/MNtfDCb4qNLpAt/q17r6xu/f5CZAhkU8bJy
-	DjKUYhKfy9E9WIaIlcrdIQfImtCTWb8bdZxiE4Ujl8jWTt65z/WfiYZYPUwsy0P8opbLwa
-	UU0IXRUURMP6EJoBzWc2pB5sceJopfg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789483757;
-	b=JGt3VK3llHt/gGXPe7u86+gIOYM258B5YDA/BZHcgw4iNdwpHUSwcyeP5VGaSxJCyMmXG1
-	L9OT3YDZFyPrArXO8glJ4mLRMaxqi0RdYcxtmc/l1BHirW7B2vv98aqO6+ZgQ0bpluSZUe
-	4G535ROT2r+tLhupRelYum/JbGkR16U=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=YwTt1Am1;
-	spf=pass (imf06.hostedemail.com: domain of urezki@gmail.com designates 74.125.228.76 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ed2-f12.google.com with SMTP id 4fb4d7f45d1cf-6a98604f6b4so4959526a12.2
-        for <linux-mm@kvack.org>; Tue, 15 Sep 2026 07:49:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789483756; x=1790088556; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=NtxVeAruzSzBSt8uXIvYAlTRCQtPNr3FqdWRr27iP+4=;
-        b=YwTt1Am1aQnaJVeeFP6/Zb6pGAGFYWVrEh0vqEXCp+mQq4QxxczN85vn8JxHCuSjXB
-         7CvRClyjN4vzrlfySMx2+03FKsSTI8iIMdsgFKEna+RQLDmXMxzXKeDGOTw3AgY+cE44
-         nBoZQd1JvjJl6ms5ofHv4mL41OwDuaK9BCoibxryG5A5BBzeQQUM6yLQN0RHXlIES4NT
-         Nu3gIA1ZD1b5Qjvw1tUcR7bosPF/obMm0En6Vv9+FDbtyWpQnbQKN2Q8phap7Gq2scec
-         YPxYgJXjtdlKA6S5wmld2PQ1BL9jTpshV6wIxxn91bLYnPvWJUEGUFR/bUW+qFP3npiQ
-         20/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789483756; x=1790088556;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=NtxVeAruzSzBSt8uXIvYAlTRCQtPNr3FqdWRr27iP+4=;
-        b=YaIVsBx2RpLpjEVYBcCGQvpRZ/Fi2BvlVQdoFpDdL6IHGBHEBIE2HvIM/0iEPX/kYg
-         gYqBzMJmL26aUveF5zSvZ4OXIFwU/qzMY3etV7FkC44KTl5Rxut6tyYljPdgDC4dDskg
-         7wjati5yBrGnsnqdz8LlWzl+dUJOVpDL+78Rp6XeiVzeZk/RtnQjOaQsCMk6/SE9ISNk
-         YVbj3mFOTXKmgjDQXC8LtslMYm1b4KyrwVQIf8hJtuVAURfXBb6djy0H9bYhv2E1rTPD
-         lYkCLuH5JCilEIXFsjwI8ZgcURoA6Pxt3977T4aAEAzXT90Kln1Ql7bUKqR6v1TWXg+x
-         MGfw==
-X-Forwarded-Encrypted: i=1; AKwUvBykJAzHzV7SCucfwRv/KmfWAItMSHA33JGZNd5PFCshBXngvzh50kdZqu4P0lV4TxjfoeC9tcu80A==@kvack.org
-X-Gm-Message-State: AFuF++nDh88BLQTtGojat9E3OuFDHvahz8gzxRvhGofSSsI4Z7o90Gue
-	bMcw2plzcCH5047dchCLnzoHY+FsJsPPZzGKGwxutkuX8BdlkzjdAsYb
-X-Gm-Gg: AYBFou0OgpyVA1Cw5kloD0y2uvp43Rk60+C7mqn/aeiDss0TjsmUSPZdeRPIDzZqiUU
-	z0eGmbMFkoRe6SuWjpSVAHVT6chJicMIxuB+0cuB+A9KPZ1coRIK6ERW0j+NUT8UPWfmijnntjT
-	Q8BnH+81MAhPx/BfGZGRe74s7B1dOyuInT19bToNXlGfg601GpI8zdeg4QZf+puNi3AMwM+wOgh
-	xDffe1dBE58OeWyKuzhNzZR6unjKqcxxF3lTYtvTXq2DhuJMTfZCMWUfqwDE4F+Kk2hp0Cm4Op6
-	MNScb4nUbFZpRU5PTwtAXZ1Tg/hXqaxtE5fLIUoHJb1046v7i4FNVv141oZ3FD8vCcCBf+vTHjR
-	RCONZseX4lkYIANeeeW74d15mCgOkcR7z7a0T2wFKB+MtFAwv3cKq8H3b6q8uCXlUK6AxwEyXfb
-	ZKOogHCLSmtr2Jhs7odJmu20kj1Hh1yk434W7eJQ==
-X-Received: by 2002:a05:6402:a510:20b0:6aa:80c:e67f with SMTP id 4fb4d7f45d1cf-6aa080ce811mr1509941a12.39.1789483756171;
-        Tue, 15 Sep 2026 07:49:16 -0700 (PDT)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a9d0ef7228sm4345063a12.9.2026.09.15.07.49.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2026 07:49:15 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Tue, 15 Sep 2026 16:49:12 +0200
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
-	Shaobo Huang <huangshaobo3@xiaomi.com>
-Cc: Shaobo Huang <huangshaobo3@xiaomi.com>, mingo@redhat.com,
-	peterz@infradead.org, juri.lelli@redhat.com,
-	vincent.guittot@linaro.org, akpm@linux-foundation.org,
-	david@kernel.org, kees@kernel.org, dietmar.eggemann@arm.com,
-	rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
-	vschneid@redhat.com, kprateek.nayak@amd.com, liam@infradead.org,
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
-	mhocko@suse.com, ryabinin.a.a@gmail.com, glider@google.com,
-	andreyknvl@gmail.com, dvyukov@google.com, vincenzo.frascino@arm.com,
-	kasan-dev@googlegroups.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Uladzislau Rezki <urezki@gmail.com>
-Subject: Re: [PATCH v2] fork: reset pointer tag of vmapped thread stack
- before vfree
-Message-ID: <aqla6CyhEPihIznP@milan>
-References: <20260806123020.90869-1-huangshaobo3@xiaomi.com>
- <20260914093300.100495-1-huangshaobo3@xiaomi.com>
- <aqfBDEkiRmlb0WWZ@gremlin>
+	bh=ttqsgjewLy0H5CGwDqwjIgtkd7bY0dbIELIdhgGk55w=;
+	b=IwyNV+MCxrzl+vxbGyG2N9LVn9w81CYVDxoIbDfS8leUf36JfUMFiD63O0dCRsK7T/4Wkn
+	FVPP+biNoDxwvXy/rEJi2WTrjtABFT2E/9I9VodUZe9uGjDc87XPcxYWPQi81IxjbDUTUi
+	O4zWWbDvsRealxqYGLQVcscJ2gklIT4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6929760142;
+	Tue, 15 Sep 2026 14:51:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D37571F000FF;
+	Tue, 15 Sep 2026 14:51:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789483862;
+	bh=ttqsgjewLy0H5CGwDqwjIgtkd7bY0dbIELIdhgGk55w=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Wdc+2Vi/1ypQiG51/JO+tXV3pbsxO/NkGqUD3tomIqmzQmzze/n+eKqveNmAxgCau
+	 NqMPFkksYyxt6HPqFVdb/EPHgprhxg0kM/JgjAOVv77Z608felCme8bXd6wj63gTLY
+	 MHYHTZ645nB5OseiQk8KF1BvVL1UTO+0c2B9XERzr59c4KenAifLD/fHEpWhqUL9Ix
+	 ACFCu4ok6KqS88NKR0jJnoc2EG7B3H647q7XN/d56TIzHmcFzCWBP4ukICBUJXw1QJ
+	 UhsjEix0AGf91Ce3xRC4pEq3grND5Pi3EjlHxGM+ciQfyGge3J/POPwOwSyXEYGvzb
+	 QGCmWjvlxVT/w==
+From: SJ Park <sj@kernel.org>
+To: Karl Mehltretter <kmehltretter@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lian Wang <lianux.mm@gmail.com>,
+	Kunwu Chan <kunwu.chan@gmail.com>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] mm/damon/core: score an unmeasured PSI goal as not achieved for the temporal tuner
+Date: Tue, 15 Sep 2026 07:50:54 -0700
+Message-ID: <20260915145054.92001-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260915060937.3423-2-kmehltretter@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aqfBDEkiRmlb0WWZ@gremlin>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: EC8C618000D
-X-Stat-Signature: xq6ymo14s84wmrse4ys81rctjx7bibfi
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1789483757-490986
-X-HE-Meta: U2FsdGVkX18KnMNmnLQEI68cVRUcO7e2oqftinYN9jzzAHiVuP2wa6qPhrVbfD1R3ID1fEXfKW+mBUtrWbqH1bYJL1uBct6adDrhq9a8n+lgoniaGu7cgIyo4xndJKP4MLxYdDuQsui/IR9kNd+CiqhMpstnbU+ehKsafjv+YAwG4XHt5q+OQBk5cR6RU6jREGaSS6Ct9UZjTPf9KsGcsyL3KDUhFmUmWm/Hyi8KhzgSz5s/j7cFSN6Tq2sQvSiUsZBP8jvUHg/rlYO8zhKxX36OYZOWv8K7cZlUhG8rKNBy8+PVaTzMffj0zlkqMeVm2yuv8PzjjglzVk2UvjIXu4w23jQJWBUo8aG1BA4uwqDavgXLMXEJs9UiWI1gWvP0aURJNcBw6bTEJtnnAkLQvndxdPmOQ7J8cEJ62opNJpdC7JRgDD/E74NSS2uFOc8EM61vmOxlQunUTzztqZ+9Vml9GHmwftKGN8236ARVqiux1hd9vdZzFBuK6lvq5zjCVw1oVb+wDw0JZjwEwNsTpqbqWH2l8D3c5qQoPcgXp/hUniOBSU0lqMaZGgQdByioWtNf2/4e8th50EI2rWH8tSqZAUeEykqE+iZ+acVGWJWZGCji70WPZ21GdCM/i4HXpG6WWtX5mBNAUdbD2ELYIpGSRtN2vETiFm8gBML4rt7u9HP9snkhXLGhf+S7AFoXdKba8dRztHAd4m2SGX0NQldWF3IoF3SDoWfoYRN/zDE+HRKB/ZGsF6JBuqcZZ0VO5LuRU9ldehw5CnyYL6kxEZCPztqc/3AZH5LPKqi6o3OZcDzZ/XzB1ZGJPsrE3JRxW34qBhPveSV2+AMhEixGKwjehRZpzVnXDb3PRmIbU3vY5fapiKfaXV7FKn4bMb/nsBD3YZwo4DsvIc+9q9lK5R4rYaqDzu5qRczWOZzxs1FbS34ffszrr37ev62q9Bqt/q8+0bzL/r9Xsq+idE4
- pzKo5feh
- 6gjBQ/Pfn2Ln78xE2DiLtgCkfFaMQCFeUj51Rwu23sfAXo2dnz4AgDbxwRURQFhwcjlTKQC8y+U+s0UfK/oFkOIvsoAHT2FSWtcxSEy1Fk5k2WtIKzJOYjhxXOuCNKQlBHiuJm7VxSPSwti9XSu4nFe8XXr/AXWQ3aGlzcBz0T+0siVb3KEt0XxSqunmvkc+wAeQ2MbGONF/SSya399df/g/NwzuFngehDYbqy+RMy83fNmYz0evPNwaLsw8E2OHYp5d+EkSgeQkIoOpHJNvWxN1jNLN7FgRNqbkP+3hmEXE1Qz/XIdF9FfOSygY/JBZ+SB86YNkgvdYd5ALuHufPBMQj4EwjTAOWgEQzRyjqBt7rGG0OjuxxO+dOVkmsseB2vrwBmu/qvmoZ5jraMq4npKSHP9GOlxOgOgysLuJm1mpvo13S40uErleGRaN+q9m49EOHfiahJb3PPfbeLkFaQ2epah5AGyCkUMxKG6ZH9mng/iDZgmgc8Y87FeaciWQkdS3kJeQECpn8x15myE4he73aVq8cQIb+SbQaGHM5zXxwBkwFGm3NWBpXZmkhrah6uYO1Plste+0E4GpzzcnzQuBVuuT752oBlej8o0qnq817/vg=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 00A334000D
+X-Stat-Signature: unh3z99rquufuc6zozpej6bb9o8d1zyn
+X-HE-Tag: 1789483862-314751
+X-HE-Meta: U2FsdGVkX186Mgle4q5xBaN/LhrWAh1mg2B9ndUTlqZ20/DuXh7QpseCrY6NyNM81kYZg27HlxE59ui3CLghYbpXWhsavGqMDe7XyE4JTMEUo4bPgy9a3wWiHqcjiykFuli9jAR7HaTqtOyf63i9k8/TpPPTEqLhVrPbZO1DN9JXmOmekEu1yVlT9WoWwPSdxLsDx1EdTRstIvidWHv1DG2/VkGuuWhm1HHnlwbrDmD5wmwSNLPFIoFsJywfsBfz47ja9aMhtEmTtWhTFcMS1bshTXaO1IVzRRP+ZeLi2WgzAtoKE23/LU7FyQCnSdh7Euk1jyYxlPVVjDCmC9MWDzW7JDy2tcFLfHyCJnj2x5g1C+SHhNZe+dy8I8myxlCjqh65dTzu/yVbrITFHtAT120odD1S93eTXAEmMWuabI5vPYOf0iye+xd2Eolw2b1ghwo3XaBKwN7nR6YClUFYgs3thQiCph/FLtxEyGM+G1MOlVZhjcMSz4d55YHv/+JVS1VBGNefp0RGfx5jdT4UioH6n4caKH5iOvzpmCcD79M4sDXXLT/hPCjUG7XYTw9AU4yqbSN8KzIGXjcHBSPfWP6pA6+VGokWsC9IVHt5EBzsYM5cUnOZWAhapPITixUIhkB0dz9UGmyEagk6QZcUoJNj8b/hrPkJ+SQQE5iyalEHHEzSQagu79m6BJ2q771+zlykeem792cUyQ2sjnCXMwp1ZA6ovOfgDATiD+jATGOf73KG5HMNQZSAsFLz01lp3pimDkRkSezW8EFX7aaIg0Da59XdY01465Ka47iB36kB4baJWar0mPqzMobJLgCyaTL24kG9AMmq5oH3k5IUOkvKW+p9Ff8rCbx4twtiBG8P6NEB3qzGnw/SCVXCiue6JEQbtWivvkWq9g9jhIVbjvy4XJXPjPewPngw/oLCVSISQ44OXJTzL95u5JPWyQtWjLt/fN3RLZVLR2cMKgT
+ h4m8vIii
+ ufCx7BrGZjd2r4DpVgX7v8iXBj0pjy+nQB3kqTp3BwsPhSKfh7i23MR+4/UaKGS9X6luumLt5R5mNGrimmfEQ4x/5oiz7868xPMvPjy9g0xDuHuYCHV3tG5V56r3juwcu1mcNcC78LS+x+8+ldEzmUGLY1StEA7SIYJgZXPtHuSfkfiEhFFYSfz6mBvQRHtkci7LJguAw4L+V/fEPZs1XRz7Wayvd1ZYsGQXTRqWSL6F6eO5AxbJGIlUL+OvCEeK4NdYxmZYxgxYIg94bbCApDPGGq5ivkv/uA21howwM8z3NgVF+aJC/2K9OcgU/NKpmeY0I34r4nqwg9qg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,63 +95,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 14, 2026 at 10:44:26AM +0100, Lorenzo Stoakes (ARM) wrote:
-> +cc Ulad for vmalloc stuff.
-> 
-> Please don't send a v2 in-reply-to a v1 or any other email.
-> 
-> Send the patch entirely separately.
-> 
-> I really need to write a bot to say this :)...
-> 
-> On Mon, Sep 14, 2026 at 05:33:00PM +0800, Shaobo Huang wrote:
-> > thread_stack_free_rcu() frees the vmalloc'd thread stack via
-> > vfree(vm_area->addr).  In RCU callback context, vfree() routes to
-> > vfree_atomic(), which calls llist_add((struct llist_node *)addr, ...)
-> > and writes 8 bytes to the base of the region being freed.
-> >
-> > With KASAN_SW_TAGS, vm_area->addr carries a random tag.  If
-> > kasan_unpoison_task_stack_below() has rewritten the shadow covering
-> > [base, sp] to KASAN_TAG_KERNEL (0xff) -- which it does on every CPU
-> > resume for the current task's stack -- the llist_add store checks
-> > shadow[base] (0xff) against the pointer tag (random) and reports an
-> > invalid-access, although writing to the base of a stack queued for
-> > deferred free is legitimate.
-> >
-> > Reset the pointer tag to KASAN_TAG_KERNEL before vfree() so that
-> > kasan_check_range() short-circuits the check, the same way the task
-> > accesses its own stack at runtime via sp.  The vmalloc lookup is safe:
-> > __find_vmap_area() resets the tag before comparing against va_start.
-> >
-> > Fixes: 9f7d416c3612 ("kprobes: Unpoison stack in jprobe_return() for KASAN")
-> > Cc: stable@vger.kernel.org
-> > Assisted-by: zhipuai:glm-5.2
-> 
-> Thanks for adding this!
-> 
-> New convention is to say:
-> 
-> 	Assisted-by: LLM
-> 
-> Rather than to list the agent.
-> 
-> See https://docs.kernel.org/process/coding-assistants.html
-> 
-> > Signed-off-by: Shaobo Huang <huangshaobo3@xiaomi.com>
-> 
-> Looks reasonable to me so, with nits addressed:
-> 
-> Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> 
-> But I would like Ulad's input on this from vmalloc side.
-> 
-Makes sense to me even though we do it in the __find_vmap_area()
-but we also use an "addr" in other paths.
+Hello Karl,
 
-LGTM:
+On Tue, 15 Sep 2026 08:09:36 +0200 Karl Mehltretter <kmehltretter@gmail.com> wrote:
 
-Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+> A newly created or committed PSI quota goal has no previous sample.
+> Commit a68878f83ae6 ("mm/damon/core: handle uninitialized
+> damos_quota_goal->last_psi_total") scores the first tuning round as
+> achieved to preserve the consist tuner's quota, since the feedback
+> loop returns its input unchanged at that score.
+> 
+> The temporal tuner sets the quota to zero for an achieved goal. This
+> skips the first charge window and the window after each goal commit.
+> Committing the PSI goal before every tuning round keeps the scheme
+> idle indefinitely.
+> 
+> Score an unmeasured PSI goal as not achieved for the temporal tuner,
+> so a new scheme can run in its first window. Keep the consist tuner's
+> behaviour unchanged.
 
---
-Uladzislau Rezki
+Good catch, thank you.
+
+> 
+> Fixes: a68878f83ae6 ("mm/damon/core: handle uninitialized damos_quota_goal->last_psi_total")
+> Cc: <stable@vger.kernel.org> # 7.1.x
+> Assisted-by: LLM
+> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+> ---
+>  mm/damon/core.c | 14 ++++++++++----
+>  1 file changed, 10 insertions(+), 4 deletions(-)
+> 
+> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> index 06cf2ab7e97d..e6d87fd3992e 100644
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+> @@ -3161,12 +3161,18 @@ static void damos_set_quota_goal_current_value(struct damon_ctx *c,
+>  		break;
+>  	case DAMOS_QUOTA_SOME_MEM_PSI_US:
+>  		now_psi_total = damos_get_some_mem_psi_total();
+> -		/* uninitialized last_psi_total; make no effect this round */
+> -		if (goal->last_psi_total == U64_MAX)
+> -			goal->current_value = goal->target_value;
+> -		else
+> +		if (goal->last_psi_total == U64_MAX) {
+> +			/* uninitialized last_psi_total; make no effect this round */
+> +			if (s->quota.goal_tuner ==
+> +					DAMOS_QUOTA_GOAL_TUNER_TEMPORAL)
+> +				/* an achieved score would zero the temporal quota */
+> +				goal->current_value = 0;
+> +			else
+> +				goal->current_value = goal->target_value;
+> +		} else {
+
+The intention is to make no effect this round.  Setting current_value to zero
+to temporal tuner means it will now have highest quota it could have.  If the
+effective quota before this was zero, it gets an effect.
+
+Ideally, we should somehow remember what was the last esz and keep it.  I have
+no good idea for doing that with minimum change.  This is a corner case in my
+opinion (correct me if I'm wrong) so I want to keep the change as simple as
+possible.
+
+If there is not easy way to do that, I think just keeping the behavior but
+making it explicitly explained might be better.
+
+What do you think, Karl?
+
+
+Thanks,
+SJ
+
+[...]
 
