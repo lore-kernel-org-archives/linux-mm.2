@@ -4,89 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54779C88E53
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 04:22:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09FACC88E75
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 04:23:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3B83B6B0088; Tue, 15 Sep 2026 00:22:13 -0400 (EDT)
+	id 8EC826B0092; Tue, 15 Sep 2026 00:23:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3692D6B008C; Tue, 15 Sep 2026 00:22:13 -0400 (EDT)
+	id 876D76B0093; Tue, 15 Sep 2026 00:23:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 259246B0092; Tue, 15 Sep 2026 00:22:13 -0400 (EDT)
+	id 764FD6B0095; Tue, 15 Sep 2026 00:23:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0540C6B0088
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 00:22:12 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5DB6AA4EC6
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 04:22:12 +0000 (UTC)
-X-FDA: 85214699304.17.AEF322F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id B0B1420004
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 04:22:10 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=HjMkU9d+;
-	dmarc=none;
-	spf=pass (imf31.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F1566B0092
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 00:23:18 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BE9524030A
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 04:23:17 +0000 (UTC)
+X-FDA: 85214702034.25.A95060E
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 6E1701C0004
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 04:23:13 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=laRA6TOX;
+	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789446130;
+	s=arc-20220608; t=1789446193;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ift+8DOHb+25wOaqafeC4wcfvzXMnHSS8K6du3vmu8k=;
-	b=27VrLEc+X7+kvXCtIWRlYmHgdVvZ8Dyp8OgeirgCoKIuEI8hOCuZfnqLOtWp3H/rtD3V0n
-	oETqt9HJTadiAqOTuPsvF4rgpG55p5A2VTs+1ajU5KswuDbSNSRe4aqK9g84XXMvyNh/q3
-	pbBr4BZHz3yrr6kbAS9PpCIvqQ8MipU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789446130;
-	b=yH7RFs4hDPdynHr6soClrLcV5S5tUCbBTrx4S0NC0xCsTDjHpeqGU6vFX/TYgTV01svZJg
-	49UzL6W79u3sE3Zb9uMO4TghVLqF+U1UzAH3cz4NfAeEHejmvmLKf3F5qmCev13C3FBERg
-	FF5VOkZ7thYodxsmm1dwBObT14biYFs=
+	bh=u3bE1vYcJEMZwgNZJdDvjq7N3pDZZTBMPutYCe/LGKM=;
+	b=TCVF0f7BAbBspDRmbr6dG5QVz///fgqlkh7u/ZquCveD3hIEViL3mHwc/h1A2JEN99A6GO
+	xpWuLsN+5N+bICgl3bPePc88oBPREaAGSlXUFHs30NCXt1P5YdHNzyA+1zPSGQqQcDjZtb
+	oivnPnWoF4iFNT0apS5liVSj5d+xlXU=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=HjMkU9d+;
-	dmarc=none;
-	spf=pass (imf31.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CFC95414FC;
-	Tue, 15 Sep 2026 04:22:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A04171F00893;
-	Tue, 15 Sep 2026 04:22:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1789446129;
-	bh=ift+8DOHb+25wOaqafeC4wcfvzXMnHSS8K6du3vmu8k=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=HjMkU9d+BgVEFK7w9OEsa07Hxd+IEX0/9SPIjTm8q/qBwGp/Hib20MhNeAn2yF4qT
-	 izlwmKZd2Y9HCX5CglHOMNjP1J6FtHorkkg/QuTp8qlaVXmsewQy9z/BbEEmOCT6ml
-	 GmYcxgiFtalrqIO8ne4uIbK9LqgFyskfY28Dy+mk=
-Date: Mon, 14 Sep 2026 21:22:00 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Kaitao Cheng <kaitao.cheng@linux.dev>
-Cc: Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Muchun Song
- <muchun.song@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Kaitao Cheng <chengkaitao@kylinos.cn>
-Subject: Re: [PATCH] mm: Remove unused exact_nid parameter from
- memmap_alloc()
-Message-Id: <20260914212200.75878c86ab806c7e09b6c69e@linux-foundation.org>
-In-Reply-To: <20260914055130.44543-1-kaitao.cheng@linux.dev>
-References: <20260914055130.44543-1-kaitao.cheng@linux.dev>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+	imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=laRA6TOX;
+	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789446193;
+	b=EtiwreQ1E4lnc7J5LCmKD7ANx6JzFFvfEXz8gwp6ZUuiZjdf+T9+GMTRWcKhlv+MpmVVG5
+	MxUzN/rnahEzPNojDwPWv7PXh1F5XSJ9xq3KAe/N9nGv0851OxBO7iVIlRP+eDz42ktAo9
+	w526SenaZ4T4iApw+3XWgh33rzqbYzE=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EA1CA16F3;
+	Mon, 14 Sep 2026 21:23:08 -0700 (PDT)
+Received: from [10.164.19.33] (unknown [10.164.19.33])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D6D5B3F86F;
+	Mon, 14 Sep 2026 21:23:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1789446192; bh=QTihovuoYTHtrWdsiydIKBnDHHDBkjzHaEXKFHeEaf8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=laRA6TOX+7Wq16OysZ3VgBnqWdJeIUrsYRlPTMhc8ZVylWTgY9bJxhHO/h/SK5BeB
+	 w1m3+S4367IkbYhXwa+NVuU2U4zrRi24asaFI7jDgbNmlEKUdewsGao+5wnaBeERcJ
+	 RWrAY5YmLx2eqY3yqBKii1rLzKGaEWD/keZ9+9/s=
+Message-ID: <5f1f4e7d-909e-4622-95d2-c4ab26c567c8@arm.com>
+Date: Tue, 15 Sep 2026 09:53:08 +0530
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/3] mm/vmalloc: extract show_busy_info from
+ vmalloc_info_show
+To: Ye Liu <ye.liu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
+ Uladzislau Rezki <urezki@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Ye Liu <liuye@kylinos.cn>
+References: <20260914-vmalloc_study-v1-0-526f68559706@linux.dev>
+ <20260914-vmalloc_study-v1-3-526f68559706@linux.dev>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20260914-vmalloc_study-v1-3-526f68559706@linux.dev>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: B0B1420004
-X-Stat-Signature: weu6cns7k3qphepdpf6p9jjguitbpm9h
-X-HE-Tag: 1789446130-603385
-X-HE-Meta: U2FsdGVkX18eby2hn8p4ipGr+5H5ogyIPDzljZ6pvc951IaIL0lbtQGSEnuJyZG9CUFVyNFK8aywvTQWb0Q+YgGokf+kv1qa8taxENBSxJl4qMIVHquPUl1uqAzxyQ9BSjJTha5q5M8vwlEJUalJtLSBEvK2d9sKd9W7VZfLf1Z37lrL1aCaEgc7VYYC71eeGaipi9uci9Py6seqbg0h+umrglQIMDBkTI4bx8HPYa/KrHTzeaich5oP/RYAwda3kd/+DU913LqcF/PjabX5hP05awaR31Q+iTDiIzTO66Z6dTVT8tjepvdLTfqyiL8TTmAy9tg4fHuA0ehbXxES05iYREOsYMpeZQvjAgL9v4R93aqvJq/BiJtySiIaSZkQuNTixmfY0fT3GmleUEHjbpeA7EuBgjnMLiDKIJFuyYDhzrg0LE3UknI9p4RRenBDgCwugkeknf9FQoeiVn6fI8PeUmCn4tm6KB8QYbwlwqXR2EnPMfx9lAs4orDZXhEbfqaJQl+3fWmegpAISCz31rHSBLi6hfzyya1b4yWzF5Gddk9M+f5MDlTPyhvEKvC2PWgWWJ8TxFsJH16g3IGbKRvAKE64OUTIPAuY4TEbeG6LxrwOrttho9UDOtz4DZCHfhbRPjc5+z8NO79YNFdz4K7zTbZ2/ZDB4ENdeYLmo6J2b5vk07Tg9Sy0hmT6yFfzl41qwmeRKah6fcLcPNefOCEeYr2UEeHcFX2QJP3+QPTrObq6qVSP8UKkTp52iHvn9x9AEYLweCsVchQ2DLM2l10MUhghjPb8PbpafWhi58oFDSwjfEnUvEIaISVquCWSpNS5eo0VDgOe7CXRIXTun0m8CHwu1xF/jiW8NLlYMbVkg1ba1l0aJfqAKHPU8fiVGZoHU/zVVXeFvaRE+l9yWb+jzFa1+6YtKbUukxToRfY9oYEk+yj16rF8cDrTYQZwpHDueNPOlHw1eTytfQE
- giW1Sml1
- S8QLjCFIZUmhGjJKRTsPzjiEs3gItmkM5PreHAPtl5/XrlDwVPgnWiu32mcdSZswucEZuxXWHcAKwI9RV7MqUELKUkRicLY8qeuBRse23u6VBfSKwkSF1AisDd2bdVXqaV/RT2Tkyg34BkWell0qgc8PVCFYhqatFd9uOpXEjpqFt/j2mp/S9AtJjvnB9Slo0tnn1N/gLPvWo9w1RyBL3yXQHBXPlrn1VjJXQ3Htmwiri+Bia08i85oV3ONDDgxJns/8cL43vLWkciWo+m5UauBhdOvKRgs82X7xOB2oGSYowDuU=
+X-Stat-Signature: g45rf3roi5rrspkgj4tfbb5nn1u576bk
+X-Rspamd-Queue-Id: 6E1701C0004
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789446193-526944
+X-HE-Meta: U2FsdGVkX18V84NEwZsyx/maN4m574FkEeyaLOaHOXjtcqd9174LzSKTOvsQW7TyviBcJQi8R8gVbb2c8D8FEjwzAgtb/YxyEbEL8pbASAUWmrpx1zngy0KViFSox/nyd6tjwIMtKqbGFUbF8u6x6y1DVbv8QjAa76ZwwcEczjQvgTmodGE47NHl7cBuGC29lAcBiu2Euz6CufX5emEe1SICj+bsX4oKjubXJOGapq6mgqsE3tUQrLPhM7jAG+VKZFjZ1yeZak2gPxXsR/GcwHIqdYJB09k4xDiE5u/eoAMcx6un1lHo5aKONdHc57uO4Lv2qWIGuMw529MaCLFnO6jFnyfZp9rOmMoOWUyrXWeT3xar/jwbLWQJAcPZy47EMcBTeRzaDQzlfwaXApkLqki0OjOxxNc8fgS6Us/BKcLsJwMzf7kjUQAj9Ayz9IKJK8kvzcij/UoWODgIp0E5cfpJ2nIrchbuJTmnVy5ozV6yJ58UKwLOEqml3JeiFvNSpIzecAdc18BttP27Ac8WbriPeF/grENheXOuAjk1H+Un7kEtJoHpozrkujO1yqtubkZL4FL5QWZN2dLonQ5H1Vc7qxv59T8fcErYZj9sPIUF24d38ZgWZRJZdG6+meZRNiTdr70u96AlbmT2XkhRyrfv8T4U1biJmefqh8Uw3itdyT9HVyfdv5KgkUHikImmckNM3zLOXEjCxkC4No7SeSm5G+qzP6lk0UB17c/qEnCTBC2tjEewUXm2B2s1Wbw5IQNDxwDtgwqLE9hTM4QTdyf22UM3EfeSZYzjltkGWQ6UBS9iN/F5cwbF9RKU/uvdb5AiB38WMFsbPSwjyFzDrLjnMWawUCPAIwTK09PG41gmPUzlFWx7VAwTIHEF2P+6rvZYyHIXjAtRVteex1T299J3mfzjWNnLQK6lpTzAUt4K/219UPw+JcmkioS1ZmlAbV1GKyHrjXNAeto6As2
+ PpxjFk6B
+ fLvgWJ/E8o/pQ+y153hkh+apxF08X1oX8EGPhxF/9W4MLEsnxx4YUf/5UanVvifL/D5Es3Kw2hKRjqXlTTYXCqMVylAe9Eao67m/7Ok0rN5/ZCJPRoPOzH9wErNeJhYgXn044pbpghq7Xu7BS6IRNRQO8zdIcNYoOa1IL+BxajB1hossZ2XYBxlLlA9c2LDYS1E7bPaLbRN11nctpejENYr6jIa724o7Yt6NBfU3m2HUtsORG5PCXTqlrQfN38hg6/GfTS/zV9Vfvz5yZUfG35zz0NCMRFzcyQD7CFdaJA12fFoeaEjUYXq0d8QdAVvp15txhMAdvn3iDEF5qsQQ2vujU0Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,47 +93,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 14 Sep 2026 13:51:30 +0800 Kaitao Cheng <kaitao.cheng@linux.dev> wrote:
 
-> From: Kaitao Cheng <chengkaitao@kylinos.cn>
-> 
-> Commit ffe55393137c ("mm/sparse: remove sparse buffer pre-allocation
-> mechanism") removed sparse_buffer_init(), which was the only caller of
-> memmap_alloc() that passed true for exact_nid.
-> 
-> All remaining callers pass false, leaving the exact-node allocation
-> branch unreachable. Remove the exact_nid parameter and unconditionally
-> use memblock_alloc_try_nid_raw().
-> 
-> This has no functional impact.
-> 
 
-Latest development code has changed quite lot, but this was an easy reject
-to fix:
-
-> --- a/mm/sparse-vmemmap.c
-> +++ b/mm/sparse-vmemmap.c
-> @@ -53,7 +53,7 @@ static void * __ref __earlyonly_bootmem_alloc(int node,
->  				unsigned long align,
->  				unsigned long goal)
->  {
-> -	return memmap_alloc(size, align, goal, node, false);
-> +	return memmap_alloc(size, align, goal, node);
+On 14/09/26 9:04 am, Ye Liu wrote:
+> From: Ye Liu <liuye@kylinos.cn>
+> 
+> Extract the busy vmap area iteration into show_busy_info, mirroring
+> the existing show_purge_info pattern.
+> 
+> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+> ---
+>  mm/vmalloc.c | 14 ++++++++++----
+>  1 file changed, 10 insertions(+), 4 deletions(-)
+> 
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index 797933ba9451..7638845377f5 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -5345,12 +5345,12 @@ static void show_purge_info(struct seq_file *m)
+>  	}
 >  }
 >  
->  void * __meminit vmemmap_alloc_block(unsigned long size, int node)
+> -static int vmalloc_info_show(struct seq_file *m, void *p)
+> +static void show_busy_info(struct seq_file *m)
+>  {
+>  	struct vmap_node *vn;
+>  	struct vmap_area *va;
+>  	struct vm_struct *v;
+> -	unsigned int *counters;
+> +	unsigned int *counters = NULL;
+
+As pointed out by Uladzislau, setting to NULL is redundant.
+
+Apart from that LGTM
+
+Reviewed-by: Dev Jain <dev.jain@arm.com>
 
 
---- a/mm/sparse.c~mm-remove-unused-exact_nid-parameter-from-memmap_alloc
-+++ a/mm/sparse.c
-@@ -215,7 +215,7 @@ struct page __init *__populate_section_m
- {
- 	const unsigned long size = PAGE_ALIGN(sizeof(struct page) * PAGES_PER_SECTION);
- 
--	return memmap_alloc(size, size, __pa(MAX_DMA_ADDRESS), nid, false);
-+	return memmap_alloc(size, size, __pa(MAX_DMA_ADDRESS), nid);
- }
- #endif /* !CONFIG_SPARSEMEM_VMEMMAP */
- 
+>  
+>  	if (IS_ENABLED(CONFIG_NUMA))
+>  		counters = kmalloc_array(nr_node_ids, sizeof(unsigned int), GFP_KERNEL);
+> @@ -5415,12 +5415,18 @@ static int vmalloc_info_show(struct seq_file *m, void *p)
+>  		spin_unlock(&vn->busy.lock);
+>  	}
+>  
+> +	if (IS_ENABLED(CONFIG_NUMA))
+> +		kfree(counters);
+> +}
+> +
+> +static int vmalloc_info_show(struct seq_file *m, void *p)
+> +{
+> +	show_busy_info(m);
+> +
+>  	/*
+>  	 * As a final step, dump "unpurged" areas.
+>  	 */
+>  	show_purge_info(m);
+> -	if (IS_ENABLED(CONFIG_NUMA))
+> -		kfree(counters);
+>  	return 0;
+>  }
+>  
+> 
 
 
