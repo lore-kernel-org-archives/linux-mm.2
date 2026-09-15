@@ -4,87 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 432D6C88E7F
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 15:55:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C731C88E75
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 16:01:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3E7806B0098; Tue, 15 Sep 2026 11:55:56 -0400 (EDT)
+	id 355966B0088; Tue, 15 Sep 2026 12:01:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3BED76B0099; Tue, 15 Sep 2026 11:55:56 -0400 (EDT)
+	id 2E0E76B008C; Tue, 15 Sep 2026 12:01:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D6456B009B; Tue, 15 Sep 2026 11:55:56 -0400 (EDT)
+	id 1D2DA6B0092; Tue, 15 Sep 2026 12:01:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 160B16B0098
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:55:56 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 984D7C04B3
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:55:55 +0000 (UTC)
-X-FDA: 85216447470.22.7EEFD88
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 0143420004
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:55:53 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jX7wzDGS;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E52866B0088
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:01:57 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 699B71C26BF
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 16:01:57 +0000 (UTC)
+X-FDA: 85216462674.12.272B9F7
+Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 820E240021
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 16:01:55 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="vDE1/uW9";
+	spf=pass (imf17.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.205 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789487754;
+	s=arc-20220608; t=1789488115;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ck/iKy4tr4M+OoXzMpF/kel2WjhTrOUqJFUS4adZunI=;
-	b=FqAUk+2fuuLFvolXEYPO/G12vxy3V5PmRD7Y9weWIX3As5mrVhoWNhFnfX9LIUlu4bkG+8
-	fY+PANS2MqA32DhsPHWw8+kVCDXYu3eeWvDX52qGRHyOHtQ2j4YMzmBnyUMUHlc/Khy7Wb
-	CMJhvJDyq7D97hLZZOmWYuhlh9xEqU4=
+	bh=cHorUh9PUsMTcz7XlBSNxIJi9xL/FsLVONo19kBkoF8=;
+	b=o1ibNLJ3hNFrHfBtg8HvhUROG3Jv2a+mk2H2eqkFEHkBCcMpdAnpQY1rk21rwpEKlfSJSQ
+	0wED25dfyUttm8HwakaXMiEJtJkHBJ9Iy2Bn0z2+56xf7rnlAdfa2FEip6eK/OR3BBYgyS
+	jvxz+5TTr227Z2sXNkNj4jlsdJkdaNc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789487754;
-	b=omNj4udxjjUBs249XQzi+QYCxWqPtvK1wpYiKhA/t69eRzt2Z/j4QtEWJ669ycgv3xB7Fr
-	28u6BV4gWFI07Tao+sdt0H/eEZ08LlRp9knUdasY8wjsbS6bvoEi4aMy9NmizLMZfxJ4cb
-	U7AAMmJZBkHp3X5naZC+IIU/hqCiehY=
+	t=1789488115;
+	b=zqflxUVX3xGOD30hc6jh6K8yq8T/adwfTjY0/jaUgmDrOLkR14Ba/yCP2wD0V+L7Oa5LeZ
+	aWCIBKbinMLSbKcuE5By9pPVi6+yC98sYu1RVv5XdbbPuy+GB4HRRN2dH4+OlKh8k+u9T0
+	NwUen0InnDsu7tSfIsYKQ1q7+kTDsWk=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jX7wzDGS;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 67254600C8;
-	Tue, 15 Sep 2026 15:55:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FEFC1F000FF;
-	Tue, 15 Sep 2026 15:55:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789487753;
-	bh=Ck/iKy4tr4M+OoXzMpF/kel2WjhTrOUqJFUS4adZunI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=jX7wzDGSJXhqVbR925MIAaJe1yX9wpK9q83/+J8qU5r10cXHyAPSzaPaVae8wfyBX
-	 /OBeb4ckVh6Ws2j2eD7/CvCMd8gPJNGLpdIPMXq6m/QEwwGOCrrqBH9yBH02LbQiVp
-	 QSusn0MMDVidnsAimMaiwRP1W9tGttojyQC2i6tz3hjuFaV0Jkc8iMdNXjlWp6FRt/
-	 KuEOoMXi0v5VT4zgNSaaL+siwyXvVnzPlpuvZkXjGYqD4c397fOIXtUO3yW70tFgEx
-	 CXAADDjKSia0GY3oqhNddwHeuAUrLGuGWPzY70XsIeuDutI47lx2GAmvQ9KekOMs5I
-	 iIaZ90Webon2Q==
-Date: Tue, 15 Sep 2026 16:55:47 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Gregory Price <gourry@gourry.net>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
-	akpm@linux-foundation.org, liam@infradead.org, david@kernel.org, vbabka@kernel.org, 
-	jannh@google.com, wangjiexun@tinylab.org, sashiko-bot <sashiko-bot@kernel.org>, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/madvise: reclaim isolated folios if PTE restart fails
-Message-ID: <aqloB0zm3RjJ47m1@gremlin>
-References: <20260912110832.3203902-1-gourry@gourry.net>
+	imf17.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="vDE1/uW9";
+	spf=pass (imf17.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.205 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-qk2-f13.google.com with SMTP id af79cd13be357-939ca12ab70so423482885a.1
+        for <linux-mm@kvack.org>; Tue, 15 Sep 2026 09:01:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1789488114; x=1790092914; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=cHorUh9PUsMTcz7XlBSNxIJi9xL/FsLVONo19kBkoF8=;
+        b=vDE1/uW9lPNPas+Zs5mZ3FTSp2fDzpF7P/zbtQyLFqbij58i+sQZs2F1lR+X78HBuI
+         M9Ok4HQxuCuIcztsgObKs0oRL24DklEefHWDxvFoIDmMRnaqdoVBLPfLuFSiNhc4SjUo
+         EqgRb5ddiOp6FUlXvHo1KtCopacNMH0UD9Qg1NbsmfljBWHMk6uES34cQ3lkVZjCvJIH
+         rwZooVxl+b+wJOajwY18ZGnX0p+u5oWdCKM885ZZ9/iYnn5q+lrGh6DX8WsKPXfrciaD
+         kN9hI0k+ySKpdWOeifpeNLlJFiAMkX9L0KPWVee0l1T2F6xznUUuJhiz7gHoHeeGc0xT
+         7bvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789488114; x=1790092914;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=cHorUh9PUsMTcz7XlBSNxIJi9xL/FsLVONo19kBkoF8=;
+        b=2uGjDjhHJCAkMWVsDDwVzOPKN1Y1XHkIPy28hFNRsVqbZ8sqZbY2sHZzTr/VcM2baF
+         5ZeuX/7aW/5+V16HMhEB8zGa9ML67RrDkNTZLBxMFuEzCkD+WL24/mNSx1k45bSCSrrn
+         jTtdQ0Al0VhB7O1ZFLoQ5Fgx4Nkga1tNll57v23UerVrvMS05zWe3BoJoH456GJP9s6C
+         b+eLoLOT27dUpll4NnyXpptB+0jR73yCOl2/RWjaaz/AHzNj5qVWoOeXpWPFQuVPHzwG
+         ZNQ9SRO7THlf6V4CmIK6kKCQuS1MjHeY1MDoQS4tp9KhAOPVuY/yTfSrGH0YhITxo/ei
+         HU+g==
+X-Forwarded-Encrypted: i=1; AKwUvByD1+eQz628HSslvDPX6Vm9LAgnPKjPk1hqbHF/+Xmri62KN1ckFQKXk3bOxidGEOOYQS3YpcAndA==@kvack.org
+X-Gm-Message-State: AFuF++kyZQwI49wblhN5dz1+ODSdodu8Nn9L83bCNxXbhVvYB3pF+ItQ
+	6FoatZBYMtIx2dvqN2QN+trTPpMgqpNY7m64FDt4qu48g2hMawuWhLhKXY5iWPETRl4wWtSWXxI
+	VlM6L
+X-Gm-Gg: AYBFou1c5s/kOVkc1E0AD58dZ3/vOXYfbhvpICUnlkk5/xmpZnRZGERE6PJ0rwZILht
+	2H7AsRiN8Oe6e4vsY4z6shkFdRSWnk7kkr44/wQBT+hQdCbaigAZougFWDvGA0hrm5yHfPboOvb
+	F429+/79z4Cv6y+lZd6JpHtfLQarrH28UN8IFZPZiXNimN5QRcyQ+dfNonita/d7IZrQ8Huk2g+
+	9k0nR8VJELMkvmDzV1cXI7ovrR7oEfaX9VoZgssEIwBZbvzdug1wrQblGXOLq7KoN3sX+5+rIxO
+	d78Jrl+Dk1FJ0EOYO0jRH9lx0GyEFaYggCW0rJPTzSDpLqZx3H/360l81gRIJbl7AGfZrIIZGDt
+	Yrc1oH2YTZu8K1Wvb68I4P44WvvN07XqqUojQp3lFr6xOi1GRVUHvqsAVXkv9XVEQMngxTBuSOv
+	KqIASR09viE+7uqNG8gnkyfHhn6oyc7jBgg8N4u/u3t3in4pS/98UNPjAce0AfTQbsLIBR8Kgvr
+	oftOuqW6eQ4mJ7U4aW7DQw2sc9SYRltrK4Uq1X0szNaPH3ow6GebZY=
+X-Received: by 2002:a05:620a:1994:b0:939:fbd5:af44 with SMTP id af79cd13be357-93a299fbf14mr1209615585a.32.1789488114441;
+        Tue, 15 Sep 2026 09:01:54 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93a0414809bsm956311385a.45.2026.09.15.09.01.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Sep 2026 09:01:53 -0700 (PDT)
+Date: Tue, 15 Sep 2026 12:01:51 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Takahiro Itazuri <itazur@amazon.com>, 
+	Sean Christopherson <seanjc@google.com>, Brendan Jackman <brendan.jackman@linux.dev>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Wei Xu <weixugc@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org, 
+	Sumit Garg <sumit.garg@oss.qualcomm.com>, Will Deacon <will@kernel.org>, rientjes@google.com, 
+	Roy Patrick <patrick.roy@linux.dev>, Andy Lutomirski <luto@kernel.org>, 
+	David Kaplan <david.kaplan@amd.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Patrick Bellasi <derkling@google.com>, Reiji Watanabe <reijiw@google.com>, 
+	Nikita Kalyazin <nikita.kalyazin@linux.dev>, Ackerley Tng <ackerleytng@google.com>, 
+	Takahiro Itazuri <zulinx86@gmail.com>, cc-open-source@amazon.com
+Subject: Re: [PATCH v3 03/26] mm: introduce AS_NO_DIRECT_MAP
+Message-ID: <aqlpxa61SrzhWF1O@gourry-fedora-PF4VCD3F>
+References: <CAO9r8zNJ3mSRf5YyRQYYW-eM2eiFvQMXW4Rh0cT=31jsKZpuSQ@mail.gmail.com>
+ <20260903072625.62694-2-itazur@amazon.com>
+ <CAO9r8zMxdg2BTFguwcRQn8n-2CPaEJJfg+T8dWcgO2eV4uNaHQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260912110832.3203902-1-gourry@gourry.net>
+In-Reply-To: <CAO9r8zMxdg2BTFguwcRQn8n-2CPaEJJfg+T8dWcgO2eV4uNaHQ@mail.gmail.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 820E240021
+X-Stat-Signature: wgcx1f57o9zgmsy4fy8j8g3gjpniiwx3
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 0143420004
-X-Stat-Signature: nsyfme5fnsm84y8joae9b545picfpj8f
-X-HE-Tag: 1789487753-683907
-X-HE-Meta: U2FsdGVkX19FQM2reX75LyL6a4xE/mPUCiS6GBiGg021eY65S8lFO6U14Cu3XggCJWResQpWO+MXZ8OR73xDlolAevS82HhLXEWXcISQq2/XXgHuXC5FQtxqhUPB7bWLmQAYvBkNwdX3olF+C13aUMzovQXK/nqvr0R6EanuDYCBt2H3TjVf8cqBuRr2ind6CZx9lw811DKaz38EwREutxfRjjXA/i6CFtRzMuaMJanuJTxAF1rMY+BiBRJGORh9vxtfmRHzPmJO3NZH4uhR+Syty/fL12AYNXUupw9NTfwJzoKYlQNLyVKESJYDNOKeSkAVeXQw86mO4c3sElmc8b17O0n6zGyu6/14L8Sz69qU83vqZSgBsvrrzDBJ0bg2bTwTic5lec6N4xTN/Pj/HoerX8r9qb/SoVAEdH34yTshQ6zJyduRYYnw78ajAB9lEo7wWWgNMAkz7Rgp1zadkCadCVAaexzgfLvBnyMMTwG00Igcnxa0FX8BrqifiKgj/vO7FV0temBOBYgE7+IZ7UDKNLr0I1EaBZJRztJfgbkbtDPlqbG4cPVQUyGd3FppKGQPTV9E2Y6Wd0qJxPfPq09Dx0U6DUKbtZjEDUuwqX20MKUF6NVnK73TL4Vy6b08BsUSsdYyM7k6srRX5QgNOQNC4Mg2UwF1rAq5brm2D2WS0//eWLafSI8LOvwk9u/p6VsiKa34jBeFRKo7qXMALJ5LZyrabu0wUQCRefA9CdUz5Di+ZhMItB9a65uyRfEoaTp0LvsxSsb5bw5cTRV7281p6VztF0BbDmnwsm2kk52XHozU77XdMnl0GyVOgNyGv77kFuR/qRMQ8E7g7zrWFxUjgP0cny68btmJc9W29F6vM1IBj/0/WL0+KejJhOmwfH9/qyD41KF5yyplEz7xu02SBdwA1BUhxVzynKyt89UYmG+EQf/rIzbgfsRgL0VaWmMIHU5ti32UVau55Me
- dR+TRBSc
- ZqIw2FRRo2iBAakS3MQCNsEIC0ITw6gG6iuif3gW5tYsPFOV0nn/3Eva+JNxmmbJaOtg4J9NZUx4rzjvFlLEQuFrsurBh5iQ3DXKTaxmDSeX/g7rw4oeqZImzW6Wr8HGWiyQlvpOeggg2nUAwgBD/IzP9fLGUj4hst+FaGVVePV6SWh4R25IgZ/7jfOv07VCg4d8ID6kmiM6ofZaaSY53jJjRINu7wJvquvFb3Z7FL1P4MFOoPe4gNrfdnYniHEjFZJtibGLI3aebxY2Sq0CmxtDbLQKvXezYog2G6evewlAfRdWGqiIdPHoSauLFh6Zqx7dxIB8uc7etpq5CPFUJCFWfsaDBk5TeOpqQCLuumP4syc5cq1jwr4XtUwmMymd2LpQIu6Tb4xtElfg=
+X-HE-Tag: 1789488115-700746
+X-HE-Meta: U2FsdGVkX187XvCjlfNXyhk1uT8hgrkzdkVBfhnyFMa7cDrEOZyOL5BjsU/OUHCLwY1RIIvKD8C6t+/UxRmRsmjr0/7rIozX/as9XqhTOCwjYQ27RcUsFllILVWEppM4g/uprCEjjAEYgGzWFczAodrqx/cZTJF3L/dD2o98a+ufh3w5dS9DogiJvxdUVQpxTp5ctzLruC3aw12oslSgAb5EhwXYm9qIJOVHVn4m2ExB8En7npdkEAyhXc26fpT9EtExCNWsykmpfALpUTh4MtISneveNhy3SY9iSNP1x8Ju9q0hkVUZ8Kmx1VyrqkxmGZN/v5ZNfMrbJPD+uv2k+vHZ9lU8A7K18JUvhuE76wFtCqbZNBykO6Iy34UUtpkiAlWm2cTN/1FuCiptxD8x3HIdbQlh0bgWZ5sUcWDHMfy376J1y8SqpZ7gQi3O7Fr+0AkRok77E25HMpdo2G6+J6IqsqBswQokqits/OalpVPEn9lE4/sYDW3stXXPg/HHHMniET1vuWZu54X1lcXOUfN8m/uGwfgSyFTcFg3HdmQKDAOLYeuejSaY3+aHU7VcybQaWXBL+vMkKlYYk3yLJHsL6mVGCCwjJjZXX3LaHdmnJTkO/cDllalPmjvSpso48p6lwUMVos58gRZ37AejI2gvqiToul18eHkUZ0OX36VNw+xmTAdw7N6xhte0C76Pb+3lK2Qs1mDXGnOKYzLPMFUKePtRk1/o/VbZv9fDW4shN4iGYgX4jW/xrmNs/JCve/OisMjAA6R9jJvX4ACtEfV3FhWiq3vdNlXpYoJoQTOcreO3VSto3GRBCjOE9ExaaLfXI0PYsKm1XX2o7OnwgmGyyiyigWFBdldfDpuRfaYedJohxYCG8VbDXoUiACgEtm87dR3AoKyFIE2DsXEH/J7GwJiX6GT0dq5aqAQt7dZeKv9VSZDHD1SoVNDdmjan3guOSQJq+kClrei7SFw
+ LfCR9m9V
+ kxMzmSp5HA6ulZv4Owd75lKApcSXB547fJR7xlwj4h3l/Q3b4VPwF9ZxK5MUdHSOMqcsyqvJ6pzpy7AIQsfirxSxHUL7yQHd+aN6f87TQS28UK0rRces4+CBujNzyqcl1Sf4jn9dbpbMmsMO15OqGWQmAsuGHnXxTUyKk56bKPxpmsqzZQ+iR+eV28Zu7WPm+OKzBCW+WNyHY5Rwoh+kDW92UqLFs/QcrWCO4GZKO30QcKIcFF08L0iu7xSrwdc/0Dit4PhnyBq+Cy2w4ROrpiAzWp1EguVwey0GVnYGgrYR46GQmNYnzUaqr6qaIW6dN+UdXXPMVbUUFZBz9pocw5FvsF+IjhKbtwuuELDjDHgIPHsvflUYymH9KLfpVqKf4MUL79zuEd9ICBBCrt1XE1qUtRjmAKBTVhgM+v6YUlrCJyl6QYPHDOgHTgDzCPVKczr26G/FfPnZTPQg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,98 +134,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Sep 12, 2026 at 07:08:32AM -0400, Gregory Price wrote:
-> MADV_PAGEOUT collects isolated folios on a local list before reclaiming
-> them after the PTE walk.  The reschedule path drops the PTE lock and then
-> restarts the mapping with pte_offset_map_lock().
+On Thu, Sep 03, 2026 at 07:06:02AM -0700, Yosry Ahmed wrote:
+> > As far as I know, Brendan is no longer at Google.  I do not know whether
+> > he plans to continue the ALLOC_UNMAPPED / mermap work, or whether someone
+> > else at Google has taken it over.
+> 
+> I am currently working on a new version of the ALLOC_UNMAPPED series,
+> I am hoping to send something out soon.
+> 
 
-Is this reschedule path even necessary? It's pretty bloody sketchy.
+Hi Yosry,
 
-I thought the modern approach (TM) was to not do cond_resched() and friends so
-can we actually look at removing this?
+I've been trying to pull just the alloc_flags extensions (bulk and folio
+allocator API extensions) out of this set and my private-node work.
 
->
-> A concurrent operation can remove or replace the PTE table while the lock
-> is dropped, causing pte_offset_map_lock() to return NULL.  Returning directly
-> in that case bypasses reclaim_pages(), leaving the collected folios off the
-> LRU with elevated references.
->
-> Route the failure through the existing cleanup path so any isolated folios
-> are reclaimed or put back.
->
-> Simplest userland pseudo-code reproducer:
->
-> p = mmap(PMD_SIZE, ANONYMOUS);
-> touch_every_page(p, PMD_SIZE);
-> parallel {
->    while (1) madvise(p, PMD_SIZE, MADV_PAGEOUT);
->    while (1) {
->        madvise(p, PMD_SIZE, MADV_DONTNEED);
->        touch_every_page(p, PMD_SIZE);
->    }
-> }
->
-> Reproduced in qemu trivially with some explicit widening of the race window.
->
-> Fixes: b2f557a21bc8 ("mm/madvise: add cond_resched() in madvise_cold_or_pageout_pte_range()")
-> Reported-by: sashiko-bot <sashiko-bot@kernel.org>
-> Closes: https://sashiko.dev/#/patchset/20260821150912.183976-1-gourry@gourry.net
-> Cc: <stable@vger.kernel.org>
-> Assisted-by: LLM
-> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
-> ---
->  mm/madvise.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/mm/madvise.c b/mm/madvise.c
-> index 574aa2bb7c7e..ba5a3d77241a 100644
-> --- a/mm/madvise.c
-> +++ b/mm/madvise.c
-> @@ -464,7 +464,7 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
+I was taking another browse to make sure I didn't miss anything.
+I just saw this, and noticed i should have probably been cc'ing you
+here instead of Brendan:
 
-This function is truly some of the absolute worst code I've read in
-mm. Shocking.
+https://lore.kernel.org/linux-mm/20260914155115.439742-1-gourry@gourry.net/
 
->  restart:
->  	start_pte = pte = pte_offset_map_lock(vma->vm_mm, pmd, addr, &ptl);
->  	if (!start_pte)
-> -		return 0;
-> +		goto out;
->  	flush_tlb_batched_pending(mm);
->  	lazy_mmu_mode_enable();
->  	for (; addr < end; pte += nr, addr += nr * PAGE_SIZE) {
-> @@ -568,6 +568,7 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
->  			folio_deactivate(folio);
->  	}
->
-> +out:
+Do you have any concerns with me trying to pull this plumbing out ahead?
+Trying my best not to cause annoying conflicts.
 
-Seems odd to put this here for a condition that explicitly guarantees
-!start_pte? It should be before the if (pageout) reclaim_pages(...);
-surely?
+~Gregory
 
-I honestly wonder whether, rather than adding yet another label/goto into this
-absolute bloody mess, whether we should just live with a bit of duplication and do:
+---
 
-	if (!start_pte) {
-		if (pageout)
-			reclaim_pages(&folio_list);
-		return 0;
-	}
+as an example, this series commit 20/26 reduces in size to the below if
+the plumbing it pulled out ahead:
 
-I actually think that'd be clearer at this point than throwing in some more
-indirection.
 
-That's for the backport but somebody needs to rework this entire bloody
-function going forwards...
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 2e079fa3a729..bb43568bb468 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -5192,7 +5192,16 @@ static __always_inline bool prepare_alloc_flags(gfp_t *gfp, unsigned int order,
+                return false;
 
->  	if (start_pte) {
->  		lazy_mmu_mode_disable();
->  		pte_unmap_unlock(start_pte, ptl);
-> --
-> 2.55.0
->
+        *prepared_alloc_flags = alloc_flags;
+-       *fastpath_alloc_flags = alloc_flags;
++
++       /*
++        * The caller may be atomic if it disallows direct reclaim or requests
++        * lockless allocation. Determine this before gfp_allowed_mask can clear
++        * __GFP_DIRECT_RECLAIM.
++        */
++       if ((alloc_flags & ALLOC_NOLOCK) ||
++           !(*gfp & __GFP_DIRECT_RECLAIM))
++               *prepared_alloc_flags |= ALLOC_NOBLOCK;
++       *fastpath_alloc_flags = *prepared_alloc_flags;
 
---
-Cheers, Lorenzo
+        if (alloc_flags & ALLOC_NOLOCK) {
+                /* Certain other flags could be supported later if needed. */
+diff --git a/mm/page_alloc.h b/mm/page_alloc.h
+index b10f5422b6bc..863074319c2a 100644
+--- a/mm/page_alloc.h
++++ b/mm/page_alloc.h
+@@ -56,6 +56,7 @@
+  * alloc_tag_sub_check().
+  */
+ #define ALLOC_NO_CODETAG       0x1000
++#define ALLOC_NOBLOCK         0x4000 /* Caller may be atomic */
+
+ /* Flags that allow allocations below the min watermark. */
+ #define ALLOC_RESERVES (ALLOC_NON_BLOCK|ALLOC_MIN_RESERVE|ALLOC_HIGHATOMIC|ALLOC_OOM)
+
 
