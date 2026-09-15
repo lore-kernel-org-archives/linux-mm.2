@@ -4,93 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3797C982C3
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 12:12:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63C7AC88E75
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 12:13:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ACED86B0093; Tue, 15 Sep 2026 08:12:16 -0400 (EDT)
+	id 700236B0099; Tue, 15 Sep 2026 08:12:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AA66B6B0099; Tue, 15 Sep 2026 08:12:16 -0400 (EDT)
+	id 6D85B6B009E; Tue, 15 Sep 2026 08:12:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E3786B009E; Tue, 15 Sep 2026 08:12:16 -0400 (EDT)
+	id 5C7926B00A0; Tue, 15 Sep 2026 08:12:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D4706B0093
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 08:12:16 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id EB2E71203F2
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:12:15 +0000 (UTC)
-X-FDA: 85215883830.24.DD24F7B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 4C998A000F
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:12:14 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EFlkG4kl;
-	spf=pass (imf25.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E6BC6B0099
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 08:12:59 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CF848403F2
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:12:58 +0000 (UTC)
+X-FDA: 85215885636.11.725C350
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 2336BC0006
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:12:56 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dMecOfkG;
+	spf=pass (imf22.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789474334;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1789474377;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dTvFOp6vSGe4AZsCgKO980b0BeYwtUxBQL5x62d5jw8=;
-	b=enB9t3vR4kzSrFUSHId6ZvoOXb/ub62GoKnlpk+6rEUG6eqKBF9onR1ocQrmQQtvcFkBjr
-	0GRLhaHmesPnHBu5G/MJE8PSZE0yXnS5M+b8f3lVBtxrDol0/cPfWQ3yteoLA0tj3TQfxn
-	jixUO3U382nHJYgSYX+cfYVC1AkFKlo=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EFlkG4kl;
-	spf=pass (imf25.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=TyC2gpsaXN4JBLWKNmm7J702tnSFqXToNgpiVHAQLkg=;
+	b=3GfwM4Q1glBg9iOnA46yEi+tf/wmN2NzDxo//Wv8w6lE7U4bwWXxgeC3LG01fOzY353pZ1
+	FeW3MpJdF314sqAQ+lylaRC0ceJj60wwLAe3WWc1pp44kOM1m/L0VyLeI7DVMIa4vsK8bB
+	hnBSgkUafcH9N/z65oOAaoE1u4buZtM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789474334;
-	b=Dx5ut6ABHtNJ+KqAa2p0boNOcMUTr3BUTp8YhrAE3u5ujS1zMU1xI2yjdp1J7gpyol6JyR
-	qOENcS/SmjrHs2epjA8uLwDCS5+R/8klQkQSCDLDgI1eshzCa4tLLd4ed2ABVckPZ2oC5J
-	gQw3YpQcjqZIe6cEK8JIkaj0lxY+8iQ=
+	t=1789474377;
+	b=3VqLneFPbxaCzGfs9lH21mitmaPMojZRAf7C9H6GKMuZFE0HMiyrYkoD9lwbvkC8TxVZgs
+	TNpsUWGC4RWbq8hG0/jiVbxahOfPEaFKTYuhjbwRgFbfdqJqVSVeKuZ+Ft1+ibdNQ1903g
+	PBXpiNyaVaP/s6+dXATk8lps9eYUipc=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dMecOfkG;
+	spf=pass (imf22.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5A19240523;
-	Tue, 15 Sep 2026 12:12:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7195B1F000FF;
-	Tue, 15 Sep 2026 12:12:11 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 91133600D1;
+	Tue, 15 Sep 2026 12:12:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC8041F000FF;
+	Tue, 15 Sep 2026 12:12:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789474333;
-	bh=dTvFOp6vSGe4AZsCgKO980b0BeYwtUxBQL5x62d5jw8=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=EFlkG4klTh9q0ksv7M1hSJKTTDQQe7H5iyO2zHATvBU+UXti67y8RU1/odOq/zhGR
-	 VYQ/UthUrZvWy+XndwZ77DKsyT/9Ri6pFxYRhTSWuJI+DH+4yLpyuhu8mAIrHMk8t/
-	 6kDv1q8AwhLZ6F1rb+P8f3KP0PwnSljmvJWSc46nWvAQt32cRvhQ+HBCxLIdV4HK1y
-	 DBbf6pk3x8FN6xy4faUytIL4oO+ojk8F8MkK5f1LgG4gC4ZmwrIhyHU1W79T6CKby7
-	 mQNMHJsClSUixl8DuKxj7EGI22mNfTcwiHmk42y9GBCpJ9M/rUqbu9RbXfhHzUFMg4
-	 vNY+QKqLhGlQw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC POC 38/50] perf: stop putting the event descriptor
- back on failure
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Linus Torvalds" <torvalds@linux-foundation.org>, "Christian Brauner" <brauner@kernel.org>
-Cc: "Eugenio Perez" <eperezma@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, "Peter
- Zijlstra" <peterz@infradead.org>, kexec@lists.infradead.org, linux-um@lists.infradead.org, linux-arm-msm@vger.kernel.org, linux-snps-arc@lists.infradead.org, io-uring@vger.kernel.org, linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
- =?utf-8?b?Q2hyaXN0aWFuIEJyYXVuZXIgKEFtdXRhYmxlKQ==?= <brauner@kernel.org>, "David
- Airlie" <airlied@redhat.com>, "Ingo Molnar" <mingo@redhat.com>, linux-arm-kernel@lists.infradead.org, linux-m68k@lists.linux-m68k.org, linux-hyperv@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org, linux-gpio@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-alpha@vger.kernel.org, "Oleg
- Nesterov" <oleg@redhat.com>, kvm@vger.kernel.org, bpf@vger.kernel.org, "Jens
- Axboe" <axboe@kernel.dk>, linux-hexagon@vger.kernel.org, linux-mm@kvack.org, virtualization@lists.linux.dev, "Jann
- Horn" <jannh@google.com>, linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org, linux-sh@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-csky@vger.kernel.org, "Alexander
- Viro" <viro@zeniv.linux.org.uk>, "Jan Kara" <jack@suse.cz>
-In-Reply-To: <20260915-work-fd-reserve-unify-folded-v1-38-4d5217d6b246@kernel.org>
-References: <20260915-work-fd-reserve-unify-folded-v1-0-4d5217d6b246@kernel.org>
- <20260915-work-fd-reserve-unify-folded-v1-38-4d5217d6b246@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 15 Sep 2026 12:12:11 +0000
-Message-Id: <20260915121211.7195B1F000FF@smtp.kernel.org>
+	s=k20260515; t=1789474376;
+	bh=TyC2gpsaXN4JBLWKNmm7J702tnSFqXToNgpiVHAQLkg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=dMecOfkGD9IVBc5A1wOJ7RaGIcLenu0fPPaNj6ULgetn0QKiid3SmCobziHh5dth/
+	 nsDFEIkSHNG8yfPhdRtOGhuiglEEp7ZCUa/9k5QBoF5PdykrhfAZSEXZHUgx1U1BVK
+	 xGkTFAq/PNyGxR26wFeby3W2dyLnU3iQBk2jD4P50ZyW+dlHVBfMUvzMpwJaiHHOfs
+	 K2RpX/7yFozlGNknDOJ672FQSl3wdlWEAAzJJOS7dXtYw4h5/AJzF587NEwZ4BMyPj
+	 9pfv4RMOw/V3LIbDZ0K3TuOXdj2r4FW+lleHFXb0J74YtGlz0qeP1Rx8Bjz9BMVApD
+	 0vMrkjCKJ1HWA==
+Date: Tue, 15 Sep 2026 13:12:54 +0100
+From: Harry Yoo <harry@kernel.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Kiryl Shutsemau (Meta)" <kas@kernel.org>, kexec@lists.infradead.org, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>, 
+	Brendan Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	rmikey@meta.com, riel@surriel.com, kernel-team@meta.com
+Subject: Re: [PATCH v4 2/5] mm/memory-failure: libstub: install the
+ poisoned-memory EFI table
+Message-ID: <aqkyT0Ui9h5KWuzn@thinkstation>
+References: <20260909-hwpoison-kho-v4-0-359313564495@debian.org>
+ <20260909-hwpoison-kho-v4-2-359313564495@debian.org>
+ <2c9a7bef-3189-4f78-a6cb-61d2f7afd643@app.fastmail.com>
+ <aqKhgPKzRf0e22s3@gmail.com>
+ <aqkIdVhoG2wwVBtb@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aqkIdVhoG2wwVBtb@gmail.com>
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: yawg9uwgjqk55yy1et7hc9t15uwkowro
-X-Rspamd-Queue-Id: 4C998A000F
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789474334-3722
-X-HE-Meta: U2FsdGVkX1/IL0/hPzzlfhY22mFNoBRqLI1xFhIp4qXT7K35dfFGnD9beHmxGC8IiYyDUbhWf6QSpj3OesZ1OUcaaLHJUEB/hz293xBC9z20Gg8D8UdMJcsAtsIzXqpf3FGTLpzaoJVA1TaOvzApx8u7qN0AJ0BvdyiiBzymcOJ5OeWsuTsL4QywMIG63t0EkcUlhkSxR6LglLSY1xD9V9TE13iliQPBQagArHmwKPxJgHcK+/NFkrbA7G7vmSlc79gr7g3xplpqhmysVOb+CGz1SITpWQJ8T6mjrH2Jd4LwgN+gR1NdNRq72yoaYqAmKaOOXYyxUzMVUPBX9jREgQwMJwy2Dh5KBVngjc+9XbcvZxAdWFu+sKfbDybSN2Zp8LIeK2Nn3Is10ksmDdtv2kDW4K3gThOxAZkWBdMBY9l5MV7HWIJ6/5rys8XmUGFXU1u3JHzDxngtZB6emNtlZN6UMjTJIOZuZ1bsop5B5aorah4ysIEVBhX6O0MmHKMWqVL700DUolRvaVGnE9c7fn63UbVXEdWtGOsB8tV9VxVJ6VUGej5APos3zf9NfozEhvEBosvR/QyGJJdrl6Ck7bcqEZdPISPCPnUNLaibF58e3ciAKuxRuYhQVXrenHCeWF6N99fzqQ40Ay7SajkfuaIFiGrJOWOosF1IJAx3yVtKI57gGkaa6+yhSfRHD8cmxhFwNsE9YJrlW0dESoL6XqzwzCNKZrnqMe8dxUPNSPv+RySAP5cXEL6cfoq/apTUnemb0apPnaSgu34e9LvOJB4HBwe7EaldHC42jNQJA0Lo97IjJVsf5vgdV30lMXLYzosV3z8ICbSYZIPfWTC6DxUsFmTyaL1YlSeUeJLc5CiyJ2rNoshzTDWHyXxP3PqRth5/QR76j2lz8o5FTgA6zvCEdvZgkNXO5p5QyV8mUw6YhiiIixOWhBgXpN0qWEZjFJYqpCjEP7XThEq1/6/
- K7FqlgzX
- 8nu8t/5+kC3WfsxRwePIYyiTpLtr9vAwiMupgvpeQ0EczzazdZury1WSJsxbKSs3WUZ1Ebd2N4csNvS7x4PYHStJXEy1okWqkt93I/ZTYVp17Ewv5TMq4b6Rm5sY/7+0UUQE3MoK5y6qHPpXHepDRbzjPGuANOb7iDMjxuY/V2YaG/cn/4O3S8qjz+zTCVRW/PA3eDGczaZ3Pm9rOanUtMjP/T+YoAZgZT77LLXDKqQpe+6wdJe+cBqvPt0m/nxuKcts/wz7XB9OpK3n0RCEsJHN0a2y8GCsInuxZO2oFOVplCHzTwrZJ13OiQkaaLiY1Usunt5U0+cqLzv07Ln25n52dKlvajENq6ssCDyFFchPOegT8EfwwtieDuj9G3+Fg9ufRST+5QB1WmaeR8gCQ5+Ztub9Cbr0gXF62orVzWI/aNzfXSWIageNRA4efz+GiY7BTuOH6Vrobii8jViEWrTRjh7GAWECgysAHZco565nC4X8jq3CmaKNn6iWs6/HlELJPzPrcZrYIJk8MGsskAID7cjQxdrdY1h1RY+Ss3hj2C3r13dHOcJciMm7eyaG/GurEqbhVgRUT017d1Qm2iIYnx8hJ72Jk/0A56Si9OghJXhVoLkhaGGqGd9qAkiiB9CHXaF1alSmBgdVBQctawgnxW+xr8zqEyi+mI1ZWFSc7xDt9YwivJE4ncJuVDT2uwBnm
+X-Stat-Signature: 3811q7unnw8jemei4urogagntbqe9iz7
+X-Rspamd-Queue-Id: 2336BC0006
+X-HE-Tag: 1789474376-546068
+X-HE-Meta: U2FsdGVkX18V/KpQ6/IvBrJ6ilhWqaYtlKlv/K4tNRWzpEhjSbNOeJRG9B3peDJOyr8pGifm2OAmosFv7EtG5fXR4WbmQWS2dyjPbMGGVyoQ7cCGcFrLKaawsEnIh+tvB6dtcLxkZ7/tqMgD44kqNNbrbg7yrjYuYAb0g2K6hEJDhav1SYQacoAjYP5PDmrypxspouS/vd0sE/OSWjw+tU2aGmbs0Npz3jgFJspSC67VfeyRz1nWtcQCgrZB8BQnQFPPy/IaDcDuvYOWIvTuLAjm6xQ0NM0TIQ9r0wXRw+e0WCP/lAVijamRLYdCy9yTqBfu3w9SxB8AtzBmQb7Rjoeh+4LXSM7dvPBjFbK5jLS0FxJnCoYuCT/ZNKT/VK3hT2rHxwW4Kw7Hbd8KeWcqNfsNwmNI2Cb1ZceTMsgcfzlveU9ebZK04aAqGuSfmzJAb1/1/AMr8/QHFVrRijWN/BQpbSp3lOP3xIife3N+QbQVWP8RzqU02UqPbaUazNocsrDHo8hF/UD2PQVShMuwwuqsZ9rk90RNKeIZ9KxiPKXfUgEiWSCCPrdvNOzWa6R7EiPiKTgVI2tzz/UFJbkJHbT0Aq4jwE9CgL29xSVvJTrorKw7aYX8ZiVyhVNHByfBSy/svo3tVyW6URFSmLM/Uq2TZ2/6ltodEPbBqanKCAJrGGBe9xWbzR+/XHW29CruH6vrjMKBhSC/5XK9Jo9bq82mI5QYytaT2VrbJMTt4j1TMaQ/E07CeTi+/uVkxWuIEkQwyJM6T+oZOz66BBQA1gExQ1fV4VjjOYCoMjaW+9O4zswlqbF8VsWQ5FYj92/0Mlnp35buYEQ5VwVVnTPWUaL81j+uMPvl0PEt9xv4joGiGyq5BuLM4EuN9hqfza5fZo+6gheYCMtkwT1g0H71r1E1IUkNz55r0wMt71TJg5hZUBtCSfpguMq8pspRI3YAMK/dKLoN+gFrh7IcpIC
+ kATzp7PN
+ AkTDrz7g4kcxMGHkGPLwcBX3Cs2EQG/i58hgEhzcLdY8lBijGCwuSUs1ay8mkcJhUnDw7YgMBBQlLui6ycnxdWMNztQpNbFOAOWGb5CFaMGVGId1mAvCMGoLqLe2+zAMvbnuCF11TB4ZYXyhBKKAt3IwUgbUYoMj6tSAMJAZXEpGiyM8iAs8MByYag4Q4UMJ6oolX5fkuTQJdO9hQ2LT8WikHNtreuEiflP3UeQWnJCrDTkvkeFaOAHWZmDPl8BfAo3neNd2V2XrZvbHxzGhTrVtAo7x9RfFs+E/6ptsCS5GZsudbbyP26lkUVg+NsCHDY/q3Eym56FgEjzE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,14 +105,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Rely on the fd exit path machinery.
->=20
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+On Tue, Sep 15, 2026 at 02:03:48AM -0700, Breno Leitao wrote:
+> On Thu, Sep 10, 2026 at 06:11:53AM -0700, Breno Leitao wrote:
+> > So I'd say we have two options:
+> >
+> > 1) Keep it similar to unaccepted memory, with 2M granularity.
+> >    - Pro : Similar mental model as unnacepted memory
+> >    - Cons: 2 MB might be a bit wasteful
+> >
+> > 2) Move to a linked list like the RFC, keeping it outside of the EFI
+> >    table.
+> >    - Pro: Reduce the memory granularities to page instead of 2M blocs.
+> >    - Cons: Another way of passing memory information between kexec
+> >      kernels.
+> >
+> > Any any other option or strong preference?
+> 
+> Since nobody voiced a strong preference, I will stick with option (1),
+> the bitmap, for these reasons:
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+Not sure if this was discussed already, but perhaps we need to have
+a chain of struct linux_efi_poisoned_memory rather than a single
+bitmap, to easily add support for hot-added memory later?
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260915-work-fd-re=
-serve-unify-folded-v1-0-4d5217d6b246@kernel.org?part=3D38
+Also, I wonder if some architectures have a scattered set of pfn
+ranges so that the span from the start pfn to the end pfn being much
+larger than the actual physical memory size.
 
+If so it might make more sense to have a bitmap for each pfn range.
+
+-- 
+Cheers,
+Harry / Hyeonggon
+
+> 1) It follows the same mental model as unaccepted memory, which people
+>    are already familiar with.
+> 
+> 2) It is simpler to query at boot time, especially as the number of
+>    poisoned memory regions grows. Walking a bitmap is easier than
+>    walking a linked list when freeing memory back to the buddy
+>    allocator.
 
