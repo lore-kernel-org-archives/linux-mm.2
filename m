@@ -4,137 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 269D1C88E53
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 07:04:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA480C88E53
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 07:10:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 44C5A6B0093; Tue, 15 Sep 2026 03:04:23 -0400 (EDT)
+	id 9FF806B0096; Tue, 15 Sep 2026 03:10:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3FEF86B0095; Tue, 15 Sep 2026 03:04:23 -0400 (EDT)
+	id 9AF4A6B0098; Tue, 15 Sep 2026 03:10:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2EBA96B0096; Tue, 15 Sep 2026 03:04:23 -0400 (EDT)
+	id 8C5BF6B00A0; Tue, 15 Sep 2026 03:10:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 06E886B0093
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 03:04:22 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 052731A0336
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 07:04:22 +0000 (UTC)
-X-FDA: 85215107964.30.8519ABB
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 1386EA000A
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 07:04:19 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=tMYRanjG;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf25.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789455860;
-	b=FKzGyyZ2E6xqDI8c2PYNVF/uZkz5pirnqMHeNj6Wq44cZRlACySAg1cDsxe2kIfCJwZPaj
-	odtN32S2cVp221MfpycT4atqr8yh6trAhUVRuVnewpdOBOq0UCp1F2Cvwpph4H1wALM8vF
-	BGc+4szENYNq2o+Wbs4S4/i2aYZtbWE=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=tMYRanjG;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf25.hostedemail.com: domain of kunwu.chan@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789455860;
+	by kanga.kvack.org (Postfix) with ESMTP id 6095E6B0096
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 03:10:29 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DD3244034D
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 07:10:28 +0000 (UTC)
+X-FDA: 85215123336.26.F6883D2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 1DCBE140007
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 07:10:26 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O05SGGAd;
+	spf=pass (imf23.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789456227;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5rBX2/r5Oc8pD3Msk2TcE9A0RNIhE2Nvsx1mMLMnh+I=;
-	b=YX3C5tkNv33qUpBUuLFbcmizX4+weL9tFHylqx1eD2nXhEXKVhm82GwAf8fuR1syCtZral
-	GXAKMMbq7T7qjHRRDVhY0f/D6niB/d/00DrCkTFea6yEPc/ijdpvpSX7UhpiVps7pltsBl
-	Xvq5AP64TO9j2zCQWikuc4OEF7UhvMU=
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4998b5a63e2so45259955e9.1
-        for <linux-mm@kvack.org>; Tue, 15 Sep 2026 00:04:19 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789455859; cv=none;
-        d=google.com; s=arc-20260327;
-        b=OyUeq/0hofNH267FrHn1M7v7MeM9VMb37WE08q4PFkyu1Q54cACsubp6IKxzbxKIOO
-         CcXafr3QFrB46RwYdQfja/h32ViMl1UyEHc1pmQQzvgf81F/Eo2JvFDawYO05oKa+TXV
-         DBYWL5Nh/DuZRKuj/DyQZ3Hi5GngY7mTdGMFOLM9wUaws1IfSANjje8VR56mXafCoFV7
-         wIhhOflnmBue1LAt1UuduZN52bh+qmWksht6MLzo5mb8xfP3VIAk09rP4RSO9kN8MnEW
-         p6Ljx5FamNVDapMu9KefAf0zTATI5BjjNB4Iw0Mz3YyoaXHYrDa7Gm1V7EiV7hWEfZt5
-         ZuyQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=5rBX2/r5Oc8pD3Msk2TcE9A0RNIhE2Nvsx1mMLMnh+I=;
-        fh=KJXXTSovU+AOPKFKeTO5fZ/q6hOo+aZe/m4EQdNCsGw=;
-        b=KQh1gcDGF0u1rMBNECMvRCurqI2l7IIo2fLNEb83lnHbmMRvuBRz6+KrbkXo+b3NMQ
-         A9aRE7lZuFkyLSQxc142cSDCZMWY25p7iLaE3tZLqqKm+vOU8AeHzh/ESRU0goZqGKa/
-         uyaS5Nj+2kYhQD+CozYCj5/n7PWDbZY73ubIZsrvawGpEI80sEX8Ou/4Foqkd+UDAI0M
-         AraFXIZbQ9+3tBd3Z2MMEVgsn/fOI5zFWHzwg9wAK5F/LWMEouTEuxlpF5Uzikw+yuGb
-         1n90PC+Yc/UP66XTtnw1IJgu89zCi2qzRrCSv2KC5cXcMZeZzBtfhDGRHBeqWbLOLB8z
-         vVnw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789455859; x=1790060659; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=5rBX2/r5Oc8pD3Msk2TcE9A0RNIhE2Nvsx1mMLMnh+I=;
-        b=tMYRanjGcuQLrqQhxvT0zHiZ/rziTD1YFauVNwGiornWM76RRSw4jWotyZ6mDgldhM
-         rWBp3s/VO9NNhk2MSOZKPxD9OKQHc6jQyC1t+eXso7S0pvzeDKrgCDGXjYGvuKdygnTk
-         9N9HQ35css2Ubx69B2DzmihAMhNWFniWJKD3al5966R5ATrh1EK0f041dRo/CMaPeXBq
-         evS00285pD7YDG2ISzRS7kTSypi5on3OzALVPSAJZY0oxpSQaXdjGs1C23SJgjhYQWJj
-         1fte2BkH0fX0eOuePADo8c6zJJtSgUYXl0Tzty15mTZuNHvzhMyLW8vmtYzapU+Tyt4Z
-         /3CA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789455859; x=1790060659;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=5rBX2/r5Oc8pD3Msk2TcE9A0RNIhE2Nvsx1mMLMnh+I=;
-        b=sIONwsGbg6qNTU+K6e7G9cpyEUiFCe4CCK8nhMsr2pC5TtZLzwumZ+zayhdd69kZ7g
-         TIxv786zO4S0ghfpJWag7+zeEU9vreTIX4CcasnUgqZSShDO2CKBhDs+SURyANKsQGq1
-         TXYdv7xPNH85YU6vg3e7rbP4OGzBHs5v2E6SAsjQI7Bi2M8L6rmlHoDNqTVzUUuO8WWA
-         ORNYnRXF41O5Fs+OvhcLnA3jUlFTeZrYJWX0coLebpAlvEU4/aXffmGCBwXzhj/mbvoR
-         ltpVlEO687+pR2zZU4822vFjfxsR4C0E4jcJPQMKhDaip1l0Su7fvZb335fLVxZekkYK
-         6wGQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwfrXDLXxnWbqv93FdEU28TjgfaC9ImuBeDs8zfpKaB3zdlhTN6oO924i8kmyu/c0c3Y6VJeJHSig==@kvack.org
-X-Gm-Message-State: AFuF++lzAaU+c+IzpDnZRnsFUAX+I9dIfNj5u/q0ao031ORYNu0oWuSb
-	XyYNybZConAnWQEsN7RhrNfjChjX4ZiNYAxcXwvUJkGgL/v7fgPbu1FihfW7isahtlT5t+3ht/U
-	9CRzsLTUleSbboAF63VOC+hYnraUeBv4=
-X-Gm-Gg: AYBFou1hcNyvSj6UQcJ9Yj61ihM7fx3F+SizkL6sBP5KKytVR45W4aL05PU53ECA58k
-	zaA24Pm4HYItTlz2q4L98JeTE45PZdRg/o9NnWmw5UiRBJpfW7Sny/W+/bVMIPh3GhdEMNgGNFc
-	K+5uVxmSN2tXJpwNC1hnSHC6vPWEjT9wa7VnJh0N/ZVITIdCThlZ48TCVj7XVagnGY9LplqnjPO
-	1FVc5nij3Y1RVcprKfa80e5wjeRr32HD7rgnnQG1SvlSHtEXYbqIqoPB8T9SYZNUdOnGJF+a9LP
-	csvJ8UC9XgwsGT1JTGH4RwgbbyasHRoxfUfGJsIgRu1F1sRER4LDtOoUmz5cogEsCUTDqR/8BoA
-	db5hIa/k77n3zeA==
-X-Received: by 2002:a05:600c:6218:b0:49e:7423:687c with SMTP id
- 5b1f17b1804b1-49e7a65cb0bmr63673125e9.1.1789455858317; Tue, 15 Sep 2026
- 00:04:18 -0700 (PDT)
+	bh=oKxcff3RknMtu3nP96OKoAusCWTbG23nN8Jci2XLj7M=;
+	b=q0vhZ9oOTKRIvBNtAn1Rxf3cvMBUWAI6G3n13oNWOAMCNXNF2ZB6u385uK63qICiJO0WGo
+	amQkCHEEwv8TJqiajrif/2ZmG+aHGDPv1P4DAvNfn1468NAsOBNQwDf7gI8kAcmR3ZISp+
+	61l2N5THiZ8kOjsmuaE1AURuYltV15A=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O05SGGAd;
+	spf=pass (imf23.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789456227;
+	b=m/bvpVgMa7yDYPYC4ART2A4JMac84clqeuaQTsx6ADCiMGi1vz4kvjM4+BTgnV757G11PR
+	+ktLnkbK8riWCWfOBAViILbC1ODAq3+w9RMWAsWugoAeHed8Z0MeUqsgi83S3soZuMm6zV
+	qfiM60yR/rve76+m8kMCe9g3teR2rOE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0B375415D7;
+	Tue, 15 Sep 2026 07:10:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E9DB1F000FF;
+	Tue, 15 Sep 2026 07:10:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789456225;
+	bh=oKxcff3RknMtu3nP96OKoAusCWTbG23nN8Jci2XLj7M=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=O05SGGAdRPGrz0Iz+7XgwlSFs3F5RnNc0orTk5KU9yz8aeD27Z+fCAQ3JX0fHfAEj
+	 xCod+mWvLIGO/opeBlR1JATMb1O+8IRDeeSegYbMSJR+L9p5b2Ub+H2SkHHpUfRdLI
+	 qy6BtR30pEznfw5G2Iuf6kFVI7MNCf+iTXB84EaRmILGvGIc5FPXdkP9Ff8ytneID7
+	 gIFmvbA+UcB/J23fjfmlJoNt24rtTwQzOs/B4UV5CiExvTA4rmgoVawucc8weY5wUN
+	 Hpb6skjv+czEk0J2VNgwAc9cIVAlFId7X9MaNUxsJqVfimJLnn0UL4iyyFxOuckQTi
+	 5VOJUhZcIujVg==
+Message-ID: <4d9ebf64-e3b4-4b6c-9576-e8be59193f80@kernel.org>
+Date: Tue, 15 Sep 2026 09:10:22 +0200
 MIME-Version: 1.0
-References: <20260915060937.3423-1-kmehltretter@gmail.com> <20260915060937.3423-3-kmehltretter@gmail.com>
-In-Reply-To: <20260915060937.3423-3-kmehltretter@gmail.com>
-From: KunWu Chan <kunwu.chan@gmail.com>
-Date: Tue, 15 Sep 2026 15:04:06 +0800
-X-Gm-Features: AcwNN1Us-54OWzGUJ1Z9_Z4eN7azOm4Uvr77tQtD9tUxI7JjaSi59KP2yTRjYgg
-Message-ID: <CAN_Opa9rS45S_MHbmf63KC0LY9AGAdAC5r=vv_qcYMVAenWosQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] mm/damon/tests/core-kunit: test PSI goal rounds under
- the temporal tuner
-To: Karl Mehltretter <kmehltretter@gmail.com>
-Cc: SJ Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Lian Wang <lianux.mm@gmail.com>, damon@lists.linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 0/2] mm/slub: reduce list_lock contention with slab
+ parking
+Content-Language: en-US
+To: Hao Li <hao.li@linux.dev>
+Cc: harry@kernel.org, akpm@linux-foundation.org, cl@gentwo.org,
+ rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Pedro Falcato <pfalcato@suse.de>
+References: <20260824122004.3652-1-hao.li@linux.dev>
+ <a3e5581a-e039-45bb-b570-a01158b154bb@kernel.org> <aqPg5YRKdaZiBj9b@fedora>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <aqPg5YRKdaZiBj9b@fedora>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 1386EA000A
-X-Stat-Signature: 3crehstjfxq5psdfrsojy17dq9zyjhzw
-X-HE-Tag: 1789455859-560240
-X-HE-Meta: U2FsdGVkX186IPuNGkYq3HrbJjH1YpOEJcqSZ4wemtxdEpm1nQdf6dlPcSBTYzIL1FdQib9aiVo3Njli+MzE9Vk+h6sZuACCnZz2voDp4Fr7Y1dFouA5wCIots+4LxLvIPu0+vxw9Wpo5JkdA8W0/De69cQZR4iXB9zRgnLQdPQtxjR4gpKAAS84uSKp8Wq+J61toAyKKYOgV4fZqeKEL57CQa3dpVg/CvZt56X2956fIDDbrTfDry6hL940RXNlV4wpZf7I0zVwiUxIbmyeZwSw0Ac5OG3SYjFxwg/4dEOiz3pM6gh4voCeLWa8HG5u5tk37au/obrZAq/laTSK5QsnbvR+BxAaJqsdtRnWPWMXcZrQrltyKh5uhTuQIr9noZJOpXSxbzK0VfGbJFqJoh6qPnHJkriDXE6eOAv9cxD2cIxMbOtxC5Rsi8T3eGvRq7PybdZVLx/8KxXnsDjcyhOVv8mErt7t4YgfB3xJR1khy3T+nrFUh+GalKo4VePBlEDdunHNrF0lBg+FLIya/UopvPu7/9ctKBvvp7Fv1cZEOtaKCsan4WmgZDPKHNXFBX7dqbtt/GrYjB1B6f7oTm0dZ5pNoYyo8wUm8ocbVCWIC/p+drShxm1qD3jd+8yYELpliRoxclPBBd4qIyZNIvDmPDvjbwx2McXAE1L0eZkEcozfHUU39pNGzR1d7icC3z5k/FaK9NeFuWu4I29/4RAgesSQItqd5Wx/J4x3yhkk1oA6eioFk/uMIwVj5dDifTXrWgqX9cAsjIWcG2fJ+hg13eSWUgw1VUSkQXOVwpKlN+eZsfvJS7CTGKmn0RYzRoKDvYamqnWAi5Me5BSTWRNXPKMSxvLAPEAAeaX4ZcS0iMMVBV6SasUuvO9NcJ6VUoU9wtmQ6RBy0DPyiI+MKVLTgNP9sq+dVHuVzNSoILCRCtpg4zPuKrUv8ZL8TK2ngiusVeCClHUJ1CANdIK
- lpQLQlRp
- wJF+JN5BNPXRaxn9uJDc8Bm9u43eaUfm4v5FbGb+MJ2na2umjXf512KR6x5YZZDwZbXnRKXrf3/SEwosId+u9I63BpKlcUzWwK2kXLktMXpwr1u49Os4ZLuf8q2h1yKGTsmPqVqYMEinsLXMsBEC4KHpGKmLE4NNF4Fo+o6NLTJs8stR38bkqH4ZxVT3NJUKXBLHSvdQ8uTOneYui0VvBX+C+HC6JO5gIe8zIJsJPKqoGKF+JZHRRnRzJaJ5/7u7u8kQBqg+haWp0ps8c3CGAXryoeUX1bG+T76HcmNSylnsmyCWhoOhiyq5Pvq+HG8oRB91QbOiUUtUP6WPKnIxdcMUAZRe4ZtoKYXyrXxo86OQ6xuBys485dnsWLNqWDAyX9DzLqRUcjP9yv1l9C0ycKJqcRLRDVo1JZyyjrCHmdy10bMyRYGO6kO3aZMyd+4/CeQ+J2chwiV3UvkVpk6cQfGzSvUaqaJIcR65SXNKF6ewA977HYsXiXqNi0A==
+X-Stat-Signature: uqrk8zd7aa9kntiuww691xfsw118sngn
+X-Rspamd-Queue-Id: 1DCBE140007
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789456226-717858
+X-HE-Meta: U2FsdGVkX19b04O5tEKnViI8MYs12wQYLVuE8i2RcwLSxeTj23oJ/P0kKpR6F9VJNZY17kou2o7FGh65IQzWPSP0i/2iYRbY9M0Atc7XlU/9c6aKPVcfZWVlTGkAv9l4KlZnSp7k5JY4u6/SAiYs0n+BMsKQRS9yLKPqPBx0amr0j0dO5jSEAPnZC3rK4+/qBuK20a75RkcCJv2e8YGGMo75IiFK/5S0T2Z3NdKxcxftNAD1HY6EMgmA/lwlc2gftHQ3IIVsxXxTZne6vxKUaoKFOBpUZgpctuzAwjNOCTpqUmYDEYWOpcd7we5fotVGqv6wdIEXN+vjBGCzViw/dm8ei8d2/Clr12PDTc0t2ImO6zsJe4Jl7mbTy+6ONrOS/VBaNfFH6CGdxI8+a5XqRTfu2YFOyxqoNlhvlTsjNV14X/5Zc2Ses8kFwv8LZmhu1Hpz4hx3xrLuA247SnRYo7Dxtti2o8gn95flxH8QUIve0xjpWebr2zFENvi0a4ke2Jm4tC/721xWgkTUN8iKwnmzCedR/5aNq1GyDDnu7jcS4HklZWeF00FiXL3OWu5X0g5/1BQy8XoUCJrcWZqgxwA+8mBgLFR1gV0KXGLxUgGmO/KWBnOxVESzjoHJPNgfD6hHHF7r7qEioHdpO3JrNuyEWWqkNi3qhWHke9X6k1C9Pz/g2Aj/PMEJKx/FxJjUguqLHA+NHSX+SsW8SR/HcBbDxwm0Ikbz5J6VdX+9rRsySGeKxgkYbdzooD+p32LdhOnAr1zLaLTki4qdBxDOkWmgz5wonnSSY8rPG9npUAmoqPKGvvJWdcu9qJZHZurziAL2nNp3B4tK/dUNEL3H8R86CXJmj2T1GGVSFkUIV+TrjSjt0P3NrumD+F4wn/xCNUL1DObZSRSwePJ/mStnKqrBI3ri6zMta1Svvw08njwFnSHXVHkcuGwDfYA3fVfwGZ+Bv0ms6IYY7yCegpx
+ t1ods44r
+ HPBvu8D2PRdhaMvyycmqpYqdVoVHFOL3wKSI+hhywP4SeXB4K3b+S2HemWhnCAacVPfUDUZFm1YzGg4BK5MxjLFNlDVzOF+r9PG+s99PbS9LmlKqO/HAQ20S15/tSMbZPeapMwEBb9EsD3X30FQHmP8vH7UMx0yD/UEjLfMfRo9Pr1czevCqApW+ex/2J5zsm5bLgn12m6BfBWtBFXnM7Qe7O8xKIVkul89wzCwxYC+oN88ukxdN0wpzoMJ1WeNhQnzsg4oNsW9x2qUNKh5emMhpOgxD92HNgVxqn3ORkyuIcVHXb+2PCpRRAjw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,129 +135,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 15, 2026 at 2:09=E2=80=AFPM Karl Mehltretter <kmehltretter@gmai=
-l.com> wrote:
->
-> Exercise a PSI quota goal under the temporal tuner on its first
-> round, its next measured round, and after a goal commit. Use
-> ULONG_MAX as the target so the goal is not reached during the test.
-> Then check that a measured round which does reach the target sets
-> the quota to zero, and that the consist tuner keeps its quota over
-> an unmeasured round.
->
-> Without the previous patch, the first and the post-commit checks see
-> a zero quota.
->
-> Assisted-by: LLM
-> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
-> ---
->  mm/damon/tests/core-kunit.h | 69 +++++++++++++++++++++++++++++++++++++
->  1 file changed, 69 insertions(+)
->
-> diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-> index c01e6a75cadc..2b9b24ce7dad 100644
-> --- a/mm/damon/tests/core-kunit.h
-> +++ b/mm/damon/tests/core-kunit.h
-> @@ -889,6 +889,74 @@ static void damos_test_commit_quota_goal(struct kuni=
-t *test)
->                         });
->  }
->
-> +/*
-> + * Unmeasured PSI goals must not disable the temporal quota.
-> + * Keep sz * 10000 within a 32-bit unsigned long.
-> + */
-> +static void damos_test_set_effective_quota_temporal_psi(struct kunit *te=
-st)
-> +{
-> +       struct damon_ctx *c =3D damon_new_ctx();
-> +       struct damos_access_pattern pattern =3D {};
-> +       struct damos_quota quota =3D {
-> +               .sz =3D SZ_64K,
-> +               .goal_tuner =3D DAMOS_QUOTA_GOAL_TUNER_TEMPORAL,
-> +       };
-> +       struct damos_watermarks wmarks =3D {};
-> +       struct damos_quota_goal src =3D {
-> +               .metric =3D DAMOS_QUOTA_SOME_MEM_PSI_US,
-> +               .target_value =3D ULONG_MAX,
-> +       };
-> +       struct damos_quota_goal *goal;
-> +       struct damos *s;
-> +
-> +       if (!c)
-> +               kunit_skip(test, "ctx alloc fail");
-> +       s =3D damon_new_scheme(&pattern, DAMOS_STAT, 0, &quota, &wmarks,
-> +                       NUMA_NO_NODE);
-> +       if (!s) {
-> +               damon_destroy_ctx(c);
-> +               kunit_skip(test, "scheme alloc fail");
-> +       }
-> +       damon_add_scheme(c, s);
-> +       goal =3D damos_new_quota_goal(DAMOS_QUOTA_SOME_MEM_PSI_US, ULONG_=
-MAX);
-> +       if (!goal) {
-> +               damon_destroy_ctx(c);
-> +               kunit_skip(test, "goal alloc fail");
-> +       }
-> +       damos_add_quota_goal(&s->quota, goal);
-> +
-> +       /* fresh goal, first tuning round */
-> +       damos_set_effective_quota(c, s);
-> +       KUNIT_EXPECT_EQ(test, s->quota.esz, (unsigned long)SZ_64K);
-> +
-> +       /* second round: last_psi_total is initialised now */
+On 9/11/26 13:24, Hao Li wrote:
+> On Mon, Sep 07, 2026 at 03:44:08PM +0200, Vlastimil Babka (SUSE) wrote:
+>> On 8/24/26 14:19, Hao Li wrote:
+>> > 
+>> > Detailed data
+>> > -------------
+>> > 
+>> > metric                              before             after             delta      change
+>> > ==========================================================================================
+>> > alloc_fastpath                     155,417           168,534            13,117      +8.44%
+>> > alloc_slab                      55,679,646        26,702,510       -28,977,136     -52.04%
+>> 
+>> It's interesting that this is reduced so much. Is it because parked slabs
+>> cause more slabs to stay around for reuse, despite they are unparked
+>> immediately when trying to allocate/refill? That seems odd?
+> 
+> Yeah, it does look counter-intuitive at first glance. My understanding is that
+> the parking mechanism helps by bypassing the partial list spinlock, allowing
+> partial slabs to be parked onto the llist locklessly at any point. Because of
+> this, the refill path gets to see and reuse more partial slabs instead of
+> having to allocate fresh ones so frequently.
 
-Could we also check goal->last_psi_total here?
+Hmm that's an interesting effect, surprisingly large if true. Because the
+slabs we'd be parking are transitioning from full, there would be most often
+just a single free object to reuse?
 
-The first tuning round should consume the U64_MAX sentinel
-and establish the measured state.
+>> 
+>> > alloc_slowpath                           0                 0                 0      +0.00%
+>> > barn_get                             2,715             2,771                56      +2.06%
+>> > barn_get_fail                            2                 0                -2    -100.00%
+>> > barn_put                             2,715             2,770                55      +2.03%
+>> > barn_put_fail                1,370,488,457     1,668,257,974       297,769,517     +21.73%
+>> > cmpxchg_double_fail              3,827,935           549,427        -3,278,508     -85.65%
+>> > free_add_partial             1,684,340,964     2,161,921,625       477,580,661     +28.35%
+>> > free_fastpath                       31,766            32,979             1,213      +3.82%
+>> > free_rcu_sheaf              43,855,689,417    53,384,314,553     9,528,625,136     +21.73%
+>> 
+>> This metric (and others with similar numbers) should not be affected by the
+>> change. Does it mean the benchmark has a fixed time to run, but manages to
+>> do more work in that time thanks to the increased throughput?
+> 
+> Exactly! In fact, the increase in free_rcu_sheaf matches the throughput gain
+> almost 1:1. A ~21% increase in throughput naturally translates to ~21% more object
+> allocations and frees.
 
-Testing this explicitly would lock in that state transition.
+Ack!
 
-Thanks,
-Kunwu
-
-
-> +       damos_set_effective_quota(c, s);
-> +       KUNIT_EXPECT_EQ(test, s->quota.esz, (unsigned long)SZ_64K);
-> +
-> +       /* commit a PSI goal onto the initialised PSI goal */
-> +       damos_commit_quota_goal(goal, &src);
-> +       damos_set_effective_quota(c, s);
-> +       KUNIT_EXPECT_EQ(test, s->quota.esz, (unsigned long)SZ_64K);
-> +
-> +       /* a measured round that reaches the target disables the quota */
-> +       goal->target_value =3D 10;
-> +       goal->last_psi_total =3D damos_get_some_mem_psi_total() - 10;
-> +       /* U64_MAX marks an unmeasured goal, keep the sample away from it=
- */
-> +       if (goal->last_psi_total =3D=3D U64_MAX)
-> +               goal->last_psi_total--;
-> +       damos_set_effective_quota(c, s);
-> +       KUNIT_EXPECT_EQ(test, s->quota.esz, 0ul);
-> +
-> +       /* the consist tuner keeps its quota over an unmeasured round */
-> +       s->quota.goal_tuner =3D DAMOS_QUOTA_GOAL_TUNER_CONSIST;
-> +       s->quota.esz_bp =3D SZ_32K * 10000;
-> +       damos_commit_quota_goal(goal, &src);
-> +       damos_set_effective_quota(c, s);
-> +       KUNIT_EXPECT_EQ(test, s->quota.esz, (unsigned long)SZ_32K);
-> +
-> +       damon_destroy_ctx(c);
-> +}
-> +
->  static void damos_test_commit_quota_goals_for(struct kunit *test,
->                 struct damos_quota_goal *dst_goals, int nr_dst_goals,
->                 struct damos_quota_goal *src_goals, int nr_src_goals)
-> @@ -1887,6 +1955,7 @@ static struct kunit_case damon_test_cases[] =3D {
->         KUNIT_CASE(damos_test_new_filter),
->         KUNIT_CASE(damos_test_commit_quota_goal),
->         KUNIT_CASE(damos_test_commit_quota_goals),
-> +       KUNIT_CASE(damos_test_set_effective_quota_temporal_psi),
->         KUNIT_CASE(damos_test_commit_quota),
->         KUNIT_CASE(damos_test_commit_dests),
->         KUNIT_CASE(damos_test_commit_filter),
-> --
-> 2.53.0
->
 
