@@ -4,98 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADEA7C88E53
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 12:18:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48A7AC982C3
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 12:18:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CD5766B00A9; Tue, 15 Sep 2026 08:18:06 -0400 (EDT)
+	id 3DC646B00AC; Tue, 15 Sep 2026 08:18:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CAC996B00AA; Tue, 15 Sep 2026 08:18:06 -0400 (EDT)
+	id 385B86B00AD; Tue, 15 Sep 2026 08:18:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BF1866B00AB; Tue, 15 Sep 2026 08:18:06 -0400 (EDT)
+	id 24E1E6B00AE; Tue, 15 Sep 2026 08:18:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C0996B00A9
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 08:18:06 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 109BF1603BB
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:18:06 +0000 (UTC)
-X-FDA: 85215898572.13.3F85FDE
-Received: from mta0.migadu.com (out-98.mta0.migadu.com [91.218.175.98])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 3B86E1C0007
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:18:02 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Jkrzr2Ct;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf18.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.98 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Jkrzr2Ct;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf18.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.98 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789474684;
-	b=Be9PswG4WlgY3O7TrDHaRlhouZCcVObT+6cTlGlsavQKKSLxKvK0fttfymQ7wW8v0XaOgY
-	q8kt5JchwawS8BMzlqY7mwViPT7E38MrfXJLM9Gt4owyY+nh2mg+phiAUwG5cjYH9hiVG5
-	6s4sbBgnb01UpPW3KBk9lpLwB+277Ig=
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id EDBB06B00AC
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 08:18:40 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id ABF9DC03E8
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:18:38 +0000 (UTC)
+X-FDA: 85215899916.10.0A9ED6E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 1D2934000A
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:18:37 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ea1sJwsB;
+	spf=pass (imf04.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789474684;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1789474717;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2ktqcdspGeo8JUkm8ypE4bhTbtnZCEH07bgSeb1FDIU=;
-	b=qcD+pIth+P4S1JTtK4jNAz1YxA7+WSLwS2hHx68iBT5kdJ9Do2jQXDgMmkquJrLd69shaZ
-	DFReYlkKxRz2pr+wnEj/xIkT3ITUahND170j5IgZakup3YqnPFlV7PiJrhaC97o6UbfzKu
-	/mm7n4CQ7rebiWtfEVm3A/R4Q0TdDuQ=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=GQTQIcjs3xXmO+tF4fxaAvvvMtiV7CoLFztx3MvEqf0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789474679; v=1; x=1790079479;
- b=Jkrzr2CtACjyRbHVfuXfeF1Go6n1slEuAExFdiQqAzvkxJcRp9mUDUpL58luR8+bfipFzWA0
- aNJh//Z2vm2fgaTVAKMV6oPHQJCqgaoTMwJUiSgLjJC/kjpsNkc0swc3kE/AFffV+yJAPi/gBeY
- VL5k2VKbTh3pY+HAwWBB7ppQ=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id f5a27be91f52e8fd;
-	Tue, 15 Sep 2026 12:17:58 +0000
-X-Mizu-Trace-ID: f5a27be91f52e8fd
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <e38f2b80-20f2-4787-9e07-fb601552f550@linux.dev>
-Date: Tue, 15 Sep 2026 20:17:51 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] mm/mglru: add tracepoint for scan_folios()
-To: Baoquan He <baoquan.he@linux.dev>
-Cc: Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org,
- "open list:MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)" <linux-mm@kvack.org>,
- Ridong Chen <chenridong@xiaomi.com>
-References: <20260911102939.2485750-1-ridong.chen@linux.dev>
- <20260911102939.2485750-3-ridong.chen@linux.dev> <aqkoeJvFzqpoGeaP@fedora>
-From: Ridong Chen <ridong.chen@linux.dev>
-In-Reply-To: <aqkoeJvFzqpoGeaP@fedora>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+	bh=vrVAobJMjM7S9OZZMwIDwvr8ty2bA0kqwagLpHQp40w=;
+	b=8WlcyBVW+AhO3vUUqwC/F4aP47OBdiXIc09OzeESmVOOdE4JtlTBnBR9Ea/2ujCke6Lobd
+	X/JmWebPGcIVKlxHNIkqeVJlxfGUFFXTbvySSP6NpWxsrmbeKaanqZjYQNBvZC/dYfIUX4
+	h2Z12wh3UEJ+AKY96a7X+cuwDJAocc4=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789474717;
+	b=THmjq/MaGouzxG0H+Oy7Ep6hkem/HFVsaZRtXU6t1WernN3wEcMNphPBVnYiUjSnDBKiOA
+	cvr2NT0YVwdSv6qXnHbR6OtHUP4jaRwIXnz0wOfaqFvBBEM/++HRtp1O+XHa6ih4m1OkzW
+	ggOrdrnpfATYgXygshU14b5Q+5+mO3Q=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ea1sJwsB;
+	spf=pass (imf04.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id B2BA5602C4;
+	Tue, 15 Sep 2026 12:18:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E6111F00898;
+	Tue, 15 Sep 2026 12:18:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789474716;
+	bh=vrVAobJMjM7S9OZZMwIDwvr8ty2bA0kqwagLpHQp40w=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=ea1sJwsBr/Nvel740b29/2lnm8kv13L85FditgVsIEu95cKYPQZU0Zm86Po1jnZNR
+	 WHN070goKjNpVo1FRyPViEa8NGr0QNUX2ucQBNO5lGEpXDGQD7U7BclSRhluMnxtKP
+	 ATnOY9YQY/9J5OJE6jroQgQS5sfBOnMZtK6e3d1b5IYszHnQqLJX4JE1tZ1dgWaKGz
+	 MVf3djXQJIyElXt0yrKwDYp8btcu88OnDKD8ru7wqrjSAcI7zj25kTBGPYQCXOGFwa
+	 RfYXn1Lwzeg0QAuqyZ/UnU7T5x+37hRI9c8kwg/0XtOV9Mo2i3dXkFawFgls2HqTB0
+	 kguWCX48YbslQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH RFC POC 45/50] accel/habanalabs: stop putting the
+ dma-buf descriptor back on failure
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Linus Torvalds" <torvalds@linux-foundation.org>, "Christian Brauner" <brauner@kernel.org>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, linux-gpio@vger.kernel.org, linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, linux-snps-arc@lists.infradead.org, "Oleg
+ Nesterov" <oleg@redhat.com>, "Peter Zijlstra" <peterz@infradead.org>, "Ingo
+ Molnar" <mingo@redhat.com>, linux-alpha@vger.kernel.org, "Alexander Viro" <viro@zeniv.linux.org.uk>, virtualization@lists.linux.dev, linux-mips@vger.kernel.org, kexec@lists.infradead.org, bpf@vger.kernel.org, linux-arm-msm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "Jan
+ Kara" <jack@suse.cz>, linux-openrisc@vger.kernel.org, linux-sh@vger.kernel.org, "David
+ Airlie" <airlied@redhat.com>, linux-um@lists.infradead.org, linux-csky@vger.kernel.org, linux-parisc@vger.kernel.org, "Jens
+ Axboe" <axboe@kernel.dk>, =?utf-8?b?Q2hyaXN0aWFuIEJyYXVuZXIgKEFtdXRhYmxl?=
+ =?utf-8?b?KQ==?= <brauner@kernel.org>, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, linux-hexagon@vger.kernel.org, io-uring@vger.kernel.org, linux-m68k@lists.linux-m68k.org, "Eugenio
+ Perez" <eperezma@redhat.com>, "Jann Horn" <jannh@google.com>
+In-Reply-To: <20260915-work-fd-reserve-unify-folded-v1-45-4d5217d6b246@kernel.org>
+References: <20260915-work-fd-reserve-unify-folded-v1-0-4d5217d6b246@kernel.org>
+ <20260915-work-fd-reserve-unify-folded-v1-45-4d5217d6b246@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 15 Sep 2026 12:18:34 +0000
+Message-Id: <20260915121834.8E6111F00898@smtp.kernel.org>
+X-Stat-Signature: yjgdi3jewgdnz7xuzuo49dckykudrio9
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3B86E1C0007
-X-Stat-Signature: 5myah1i3hncwpcw8y6p5mr8fpj9i4aof
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789474682-915861
-X-HE-Meta: U2FsdGVkX1+wt1e8I9QdMP3VsDEmgimXYUyJe9YCt8wADX05GmdVozPfVZ0GHxVDpWSSlSResqy0jq2HVGwOVsoFH4GlMkt7rA6p3EgCoxpyMU+RNpB506N9MVKW28PNgqyw29A7oA/pQE+eFLXmtty1MLFnbLRP38jjVwwjw4+OaOPNz+n8/mVrc4tTM+3cMxayFDjmyKnRM0WFNiq6pj2MqKbBnEJn+W5x/CdDnKrHFH00YdlL2Rhc92s/LePqCh+RGFLvj/lJypHzHN3qrzwuszlDUSx/P2X71riNDMo8hmvElA5c7HoVMYSSmRUV+lBqiWCRAs8TktIk7nmQ4qQibCJAa2qavHfhZi+q4hWQTQbG8rP618ZpdinxAOe66sOMif+jrLz0ZDtOu2K5aOeaChw7KNdtbCbeCAE4LekozueEdU14OkxT5yLBQCoFbSYrQAQGYsrVTmVuW9qD8PnyaREMmlaZ6WIGHI0XKoqZumWoFa+bMkaa3FwAOPCWsSMkIKRiGRP++42Du1K9/he63KsveNpHBwuIZNqowkrDEQ10Y0HUEWhsruxuCNBteYE5qUwUdDbbBddJc3PvOoyLQSOCqr1htGfmLlr1wJV0yWEWn0YSLn5VcACJxfX7I6VbHiDiWIDhEqogEnMHkoRCk77kMspsp22Npus4VPfaZYMXHXRKQS2Wg8UnPCu1VsY/cjHKt1uWa6A47qCuxTG0YE0VhnMdn2uX+ct4otOfjyGYVU8Nn8+t1Kkftg/Cp9dUzdvMud9JlGVvZ1MCsJwg8J2c9M/ZZHeSeZggKkt6wJ+SZleSt/wFPCttS0kB6MZSOfR9mJzHdILyyWFU6ROtM3K9Gb1ZHIEE3zOvBer8q39xImYUOUSidQVGPNq4m2RSpf9MvykAswu4387R9070sbCQX1aFnxgLvlGOpv0qCXkO0bshraOYjdtJsG+0nbrENt3MOFwe7MSH8SB
- ZbqRsFse
- dtbHjN6mG9Qaz1yXoTld9smbTmDGbU1tLeSWXDZaMALbb868dOpIW+aE7OGv8FXg7nTXBRCbF8H8OsJ71X66CPhjmfgkgDQRsQQOqU4pyxZx4VmQ3wSiNlX4bpNf0dS8FmPXb1skRPLHYjcWFj2BCt7qPLJmV3BI+/WIQqoYNFl3oegpC//garzS+TPAOCXfLt+1MMxUhCA2CMHb2tNFC8iwzCcIuuIyQYSQ40t8DVCoJ5eezZKkMDqGru5xQzy4J09MBHOw9VSb/0b/bUmqlyjV9lbvlYozTwakTusgQNJa8mj47YbnTw8Wvs+9vdQgpv77RsZs57yZvK79Wo6V+tFpUOtGMK/Hu+Izx
+X-Rspamd-Queue-Id: 1D2934000A
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789474716-227875
+X-HE-Meta: U2FsdGVkX186fIsHdtmZ72JCKzU9aF8D0OKPuLfB3Ic+fpeA/ZSgDb2ZN9k3Jmj22BI7+n+f9bWCsj3Y5h0ATllnEaIGQqU3kh/UC0Aeo1QY9Qg7E9vXIRUe/5iEbD0NrLgYlc+8gmLIDlu9D+3oCB6eUaY/uwrTABv58E6sRcDpjoe3LM6AjReY5rLnqFzjbfQjosUr5a0q6T2pMB+TX2HbKRTdRNYIUPXLLnhawSwrofAPQxaVHWawxmj2LZe3NVZPI7pCQ41+Fj6hQoxTBws4RJEaeQ8Z+6wanzPQEGjqGp0NcHy/4UDTB0u5+GZtb5iNJNn811tiCgHbd33vTFG9xx3brdJ1I31BE4UjjudoSkgCVrOFlDJZ56yqoVe6ECLoyX7l8XvJimf4R1wc3521f0BNoDFZ7CCWchrhVElE4W+5xG2DlGxNoc9I4L59ayUqQvOPgCyMQvCcizliaIiJCNgoox9MSN2lKFGCHfYnYAN/+gmkRO0jLAIcWtwKEdGE1GnoDqA2Y4wicspC+QxyHQawsGDQ13aHGTMIihqn0kR5lY6esJqs1EutJmJlQltJxgdqN776lwfwmq2gQioETYkMRJv6LIp3cXyKbv84r3GTKiFQLiXuuQk2sjX/E2vgSbJnQ03SHUXkHId+B0kk+lX4zLbszk0Pyg5KhFLgpl6kkGgLrWWYhnQ2NCH3368dW85bW1Zl56eqU9U4Zx8fVcSen9RArO87eRBo/GWyFkf0sSFOFae6UfKs6qlF8usaQ157q9nVqLWK44VTLpvlNk9pCx2Nnbi8Ar7w4xRZrBlCsZPg5aT3d9MnMqigSmurdaQeJpkLDYwwRfaTm+qYgmDpZ+zx8UBj3CKre4eEDWiHQoTXn03azCLLXWzSHu5LrNfLtCq4A//QRE50lKk5scnhRcwytdBz9eE/bjui69emPn9NRROp7BEVJJQMP3kx6/KKPDHsncdl6Tc
+ +yaJJKQd
+ Gder9m8OFd79W9HzSkG4tV35YnR2/9OfMwbVzrpnV92R45PvG0r3SDbOyzperVlImQq5J+NZAElHsN0ETQhWD9x+Ffrg3z+khh3sop6T37JPmmUHr8wOUy83oEo46nofa+vwB8E7CWeCqBBaN9fTN0sqiffhU5TEC1aVuXrPG/Nuzk6KNQ9A3C1lVIE9nWH5AEyWBpRHIjVQlslaiIPM1AGv8B5653j3ADBaPEIjo42iDXsQbYMUQGR6VWG7125wCWliV5ZLIEDWAn8f7T+keKPDl+I/yc1A+uxZHeOCvECLw0cPA1soYeYvnOChAd2+6dySXf+9xPp2PBEWQtnQsv4LYSmqpvgY/wITu+DYKynJoNGLiFenrE6WKaiHgWHsVITyCsjUR4S2W6Ktez1fViWh8OrLK8CTwmdqS6lNNwAcH+ggyYAwZKdd5SKwJWgtyQt0BEmY/QItHxFR1mxAc1+E2U49rv5Iyc1nba8Gr6NzdVzBLdEL15Pj/RBGPPIUPygiTj+MJsFJwOV2Ev16uI2o+RpWsOgTVqJcePbXeoqN/iw6Oz3DLBe4kvb8goIlfiZiPoGMKWpIDAGownWHm7Aw4/iPvFjy9HrgbO5Ru6x3uVn2jlLwx8eClQb1TALX798zCe0bwXhWIub1IQjNRmcb0/qBLovs4T4xe9/Wt6MBhI6JFdPTPX3MYgM7WSaD//TBT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,163 +98,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+> Rely on the fd exit path machinery.
+>=20
+> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 
+Sashiko has reviewed this patch and found no issues. It looks great!
 
-On 9/15/2026 7:14 PM, Baoquan He wrote:
-> On 09/11/26 at 06:29pm, Ridong Chen wrote:
->> From: Ridong Chen <chenridong@xiaomi.com>
-> ...snip...
->> ---
->>   include/trace/events/vmscan.h | 63 +++++++++++++++++++++++++++++++++++
->>   mm/vmscan.c                   |  6 ++++
->>   2 files changed, 69 insertions(+)
->>
->> diff --git a/include/trace/events/vmscan.h b/include/trace/events/vmscan.h
->> index 8a872990b4be..5defa8f6719c 100644
->> --- a/include/trace/events/vmscan.h
->> +++ b/include/trace/events/vmscan.h
->> @@ -392,6 +392,69 @@ TRACE_EVENT(mm_vmscan_lru_isolate,
->>   		__print_symbolic(__entry->lru, LRU_NAMES))
->>   );
->>   
->> +TRACE_EVENT(mm_mglru_scan_folios,
->> +
->> +	TP_PROTO(struct lruvec *lruvec,
->> +		int highest_zoneidx,
->> +		int order,
->> +		unsigned long nr_requested,
->> +		unsigned long nr_scanned,
->> +		unsigned long nr_sorted,
->> +		unsigned long nr_skipped,
->> +		unsigned long nr_taken,
->> +		int lru,
->> +		unsigned long max_seq,
->> +		int tier,
->> +		unsigned long min_seq),
-> 
-
-Thank you for your review.
-
-> Do we need show nid? Guess phone vendor doesn't care about multi-NUMA
-> system.
-> 
-
-Eh, nid is not an mglru-specific key. Since there are 12 elements here, it can't 
-be added here.
-
-
-> And I checked v1 thread, seems Steven suggested to move the two int to
-> avoid extra padding.
-> 
-
-Yeah, I will update it. I updated v2 to fix Sashiko's issue, before Steven had 
-any comment.
-
-
->> +
->> +	TP_ARGS(lruvec, highest_zoneidx, order, nr_requested, nr_scanned,
->> +		nr_sorted, nr_skipped, nr_taken, lru, max_seq, tier, min_seq),
->> +
->> +	TP_STRUCT__entry(
->> +		__field(u64, memcg_id)
->> +		__field(int, highest_zoneidx)
->> +		__field(int, order)
->> +		__field(unsigned long, nr_requested)
->> +		__field(unsigned long, nr_scanned)
->> +		__field(unsigned long, nr_sorted)
->> +		__field(unsigned long, nr_skipped)
->> +		__field(unsigned long, nr_taken)
->> +		__field(int, lru)
->> +		__field(unsigned long, max_seq)
->> +		__field(int, tier)
->> +		__field(unsigned long, min_seq)
->> +	),
->> +
->> +	TP_fast_assign(
->> +		__entry->memcg_id = mem_cgroup_id(lruvec_memcg(lruvec));
->> +		__entry->highest_zoneidx = highest_zoneidx;
->> +		__entry->order = order;
->> +		__entry->nr_requested = nr_requested;
->> +		__entry->nr_scanned = nr_scanned;
->> +		__entry->nr_sorted = nr_sorted;
->> +		__entry->nr_skipped = nr_skipped;
->> +		__entry->nr_taken = nr_taken;
->> +		__entry->lru = lru;
->> +		__entry->max_seq = max_seq;
->> +		__entry->tier = tier;
->> +		__entry->min_seq = min_seq;
->> +	),
->> +
->> +	TP_printk("memcg_id=%llu classzone=%d order=%d nr_requested=%lu nr_scanned=%lu nr_sorted=%lu nr_skipped=%lu nr_taken=%lu lru=%s max_seq=%lu tier=%d min_seq=%lu",
->> +		__entry->memcg_id,
->> +		__entry->highest_zoneidx,
->> +		__entry->order,
->> +		__entry->nr_requested,
->> +		__entry->nr_scanned,
->> +		__entry->nr_sorted,
->> +		__entry->nr_skipped,
->> +		__entry->nr_taken,
->> +		__print_symbolic(__entry->lru, LRU_NAMES),
->> +		__entry->max_seq,
->> +		__entry->tier,
->> +		__entry->min_seq)
->> +);
->> +
->>   TRACE_EVENT(mm_vmscan_write_folio,
->>   
->>   	TP_PROTO(struct folio *folio),
->> diff --git a/mm/vmscan.c b/mm/vmscan.c
->> index 2554a6513aa8..67f59aa73fb9 100644
->> --- a/mm/vmscan.c
->> +++ b/mm/vmscan.c
->> @@ -4876,6 +4876,12 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->>   	trace_mm_vmscan_lru_isolate(sc->reclaim_idx, sc->order, nr_to_scan,
->>   				scanned, skipped, isolated,
->>   				type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
->> +	trace_mm_mglru_scan_folios(lruvec,
->> +				   sc->reclaim_idx, sc->order, nr_to_scan,
->> +				   scanned, sorted, skipped, isolated,
->> +				   type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON,
->> +				   lrugen->max_seq, tier,
->> +				   lrugen->min_seq[type]);
-> 
-> And seems Steven also suggested to calculate lru, max_seq, min_seq in
-> TP_fast_assign() in v1 which could be missed.
-> 
-
-Thanks, I will update it following Steven's suggestions.
-
-
->          TP_fast_assign(
->                  __entry->memcg_id = mem_cgroup_id(lruvec_memcg(lruvec));
->                  __entry->highest_zoneidx = sc->reclaim_idx;
->                  __entry->order = sc->order;
->                  __entry->nr_requested = nr_requested;
->                  __entry->nr_scanned = nr_scanned;
->                  __entry->nr_sorted = nr_sorted;
->                  __entry->nr_skipped = nr_skipped;
->                  __entry->nr_taken = nr_taken;
->                  __entry->lru = type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON;
->                  __entry->max_seq = lrugen->max_seq;
->                  __entry->tier = tier;
->                  __entry->min_seq = lrugen->min_seq;
->          ),
-> 
-
-However, 'sc' is an internal structure, so sc->order cannot be accessed in 
-TP_fast_assign(), and I don't think it is worth making scan_control an external 
-structure just for this.
-
-> 
->>   
->>   	*isolatedp = isolated;
->>   	return scanned;
->> -- 
->> 2.34.1
->>
-
--- 
-Best regards
-Ridong
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260915-work-fd-re=
+serve-unify-folded-v1-0-4d5217d6b246@kernel.org?part=3D45
 
 
