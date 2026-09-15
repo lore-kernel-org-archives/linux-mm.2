@@ -4,92 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72524C88E75
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 10:22:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFA60C88E53
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 10:22:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1EAF66B0088; Tue, 15 Sep 2026 06:21:59 -0400 (EDT)
+	id A51F46B0092; Tue, 15 Sep 2026 06:22:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 175AD6B008C; Tue, 15 Sep 2026 06:21:59 -0400 (EDT)
+	id 9DAEC6B0093; Tue, 15 Sep 2026 06:22:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 03CA56B0092; Tue, 15 Sep 2026 06:21:58 -0400 (EDT)
+	id 8D1986B0095; Tue, 15 Sep 2026 06:22:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C9ACD6B0088
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:21:58 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4775E4036F
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 10:21:58 +0000 (UTC)
-X-FDA: 85215605916.15.8F118BE
+	by kanga.kvack.org (Postfix) with ESMTP id 64DF06B0092
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:22:40 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E6153403A1
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 10:22:39 +0000 (UTC)
+X-FDA: 85215607638.03.AF93BB9
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id A64A240008
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 10:21:56 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cQuaEnvy;
-	spf=pass (imf27.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf01.hostedemail.com (Postfix) with ESMTP id 346CF40005
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 10:22:38 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZfIkvoHu;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789467758;
+	b=yOxxOsSZmzNwYsoQQJbzNCpgKUQwJjO47A15l3dOWRND5lL7BR5ALZ/sAO/3xNMgfuTUkX
+	dkOleG+JZtzdkW+ugKWO2wgfpSlb23QQ+FY0KdXBGIYGO6XA5jWPax2monJdvCT/clnTPR
+	59Bi3uOvmT6InEmshUxNlPpBdb2Uqv8=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZfIkvoHu;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789467716;
+	s=arc-20220608; t=1789467758;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fkiyvcxknqqa2FD78gZjvgffhDSvTiUS9a23EkmipXA=;
-	b=vPDUebHegF2keeUz3bJ1JfWu4E7ou/hsjxBRrkJgudIg6BW6wLYlhu4acX22KlAlNWOoH8
-	1/qwRpWEZ5vxvTvmqXCZTv+KMATLlfqJf7xWRPmIbpwhiPsKY9/+kMgP1GRuXXd+ne5uHh
-	UH7RujHk3ht+nWs2DK46Eu4NYVtjaXM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789467716;
-	b=Sp+OcQo4rN2IHuLfu9fah/0KZrICh3bEcWSuwpABXeYdvAtWcLdzftlCSmnWpqxL9SZ4e2
-	RRo7K05NNVcHyAeG4Nq0nWzVY1kU9kzajB9HO+tJqyalz8anBgux/6CSkHZgNt1EJlXKMe
-	BrkPZgnIS15/suIKWzYz/2w1cgdaFME=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cQuaEnvy;
-	spf=pass (imf27.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=4wyAN/shpVet1S7FZt5snhxeSjOLcT30h3RcCDyECW8=;
+	b=mlNMufuTn1qe8QiiDzryi9r47KfjeNBmbNXjXWo3WR8J2SgJNHywX/PQ/c949seMiEBqMg
+	CsN7f3dE22Nt+IxXtafJrJfe+B7gvhDbtZB44mMulO5OWHFlERam6mMFoYHfg6C9/M2kaK
+	FTJWG45gMY+ZdKqgk7hIABCQqvhE080=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id BC63B6025F;
-	Tue, 15 Sep 2026 10:21:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2E3A1F000FF;
-	Tue, 15 Sep 2026 10:21:54 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C96FE602BA;
+	Tue, 15 Sep 2026 10:22:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D5D31F000FF;
+	Tue, 15 Sep 2026 10:22:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789467715;
-	bh=fkiyvcxknqqa2FD78gZjvgffhDSvTiUS9a23EkmipXA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=cQuaEnvyIVzF1iyxdJAkXqhmxDCZYMNY9j2eYZJ07Mb6eI4uuD6iCsTsS+XpIax5b
-	 wX76OJsUvCoHl44rzpGGKNbDUnkQZdxlMma60wLmSTyYPzGIgHgsFm1eUQU//wGMlD
-	 XkLaNUmR9cJYUhhJcYebFLcWjw6QOfQ2MYSbJYY0ycp+xgVXdunHq6/e+yfNYiUdxE
-	 E6pJrCmbnIC1vM+8lUjIKIleVNO8CY3bc05B66ou/M/Pr3PYwIiSk/KWDfEyynFjl4
-	 Cymr2wIIm3yXem2ANvwX2ZqgPbMUlLxxmycHSORHJHSC2b7YT6yQ8S03CF/Yj4r8FR
-	 9HL8UnSyELE5A==
-Date: Tue, 15 Sep 2026 11:21:53 +0100
-From: Harry Yoo <harry@kernel.org>
-To: SJ Park <sj@kernel.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, 
-	Nhat Pham <nphamcs@gmail.com>, Usama Arif <usamaarif642@gmail.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Tejun Heo <tj@kernel.org>, 
-	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, Shuah Khan <shuah@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Kiryl Shutsemau <kas@kernel.org>, linux-mm@kvack.org, cgroups@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] selftests/cgroup: ignore memory.reclaim -EAGAIN for
- zswap writeback test
-Message-ID: <aqkavo7OfQdMOpLf@thinkstation>
-References: <20260914-test-zswap-wb-ignore-eagain-v1-1-6fb715c22cd8@kernel.org>
- <20260915001817.101713-1-sj@kernel.org>
+	s=k20260515; t=1789467757;
+	bh=4wyAN/shpVet1S7FZt5snhxeSjOLcT30h3RcCDyECW8=;
+	h=From:Subject:Date:To:Cc;
+	b=ZfIkvoHuyoWfLphJF9Ux/OT4dkN+zFZQjaLlXaS7GZfJGOmGzf8lg8h+Y74WUt5/e
+	 /BiOGflsUMFI0uhczf1E+CDDNEGIpg2rwutvXVQIErFAYQXheRrIn4OsVfapPO/EFQ
+	 WAfh6gZSe10k4LqAeeZbC+VmbTj7mdl9Hac/TWj+QeSqOOxeiSOxH2zLnvOmRHt/PN
+	 cpE30FHNm/x+Em13Jvt760nDmFNjxbpiIQ/ntoccCY02TX5A3PNPXT/WuBEtn7odIJ
+	 /p1ejqDKWjRRK5WrmqLZF7f9snnNTXxYf1MpylBkFfcQCj6IkjV0KYuXfggss/vOIh
+	 d5xojTxLi9CIA==
+From: Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 0/6] coredump & signals: an impossible affair
+Date: Tue, 15 Sep 2026 12:22:15 +0200
+Message-Id: <20260915-work-coredump-fixes-v1-0-f354ca41780c@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260915001817.101713-1-sj@kernel.org>
-X-Stat-Signature: kt7yxdpxfw48a9xcknownc9j8nedrndx
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/zWMSw7CMAwFr1J5jaO0EpByFcQiH4cGRFrZFJCq3
+ p2kiOXYb2YBIU4kcGoWYHolSWMu0O4a8IPNV8IUCkOnu4Pu2z2+R76jH5nC/Jgwpg8JUoi98UZ
+ HOhoo5sS0PYp4vvxYZncj/6ypunBWCB3b7Id6qlH1j6rNVXUC6/oFe3/HSqIAAAA=
+X-Change-ID: 20260915-work-coredump-fixes-edf98c80fe78
+To: Oleg Nesterov <oleg@redhat.com>, Jens Axboe <axboe@kernel.dk>, 
+ linux-fsdevel@vger.kernel.org
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
+ NeilBrown <neil@brown.name>, Ingo Molnar <mingo@redhat.com>, 
+ Peter Zijlstra <peterz@infradead.org>, linux-mm@kvack.org, 
+ io-uring@vger.kernel.org, 
+ "Christian Brauner (Amutable)" <brauner@kernel.org>, stable@vger.kernel.org
+X-Mailer: b4 0.17-dev-db0b7
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1431; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=hiV/G4OIpnMoj2ZHNIQVD88dPVpXmhWYk6cNSZeoQ5Y=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWStlMmI2DN5t9OqdXZvGF6dytFdOf3BmmtVlav9lepWN
+ n7Y2PHjVkcpC4MYF4OsmCKLQ7tJuNxynorNRpkaMHNYmUCGMHBxCsBENO4yMpwremp0rWHm9Fim
+ ry3/o27Z/L70YHK4ftcczW3PkudM2HyAkaHrn9zNuxfNMva9e8Mcdj2V3TZQIfnoEu2jE7jKGPJ
+ ZvzEBAA==
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A64A240008
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789467716-258836
-X-HE-Meta: U2FsdGVkX1+zDj+G3FDkoMRhmi2mjTY6ujMtlVjTlNxn3tbV7aLvvBmNSVdpJXC42zbEjBmx/MPcARwVFysogiQ7ywfETZfJujD+0IrEaIKiEQUoPeXQYSQS0pN4fNX4z+47tVM84Oi8oDW8rnQrlpHcURmqrNeGogbWxjta2FGsiYE9hxNEKuhSHvwF6dwDjJnf5iJn+/CWRqEg+Aywa7yg8mTiipeKmHlNxsKRi/rEhUaXrsT7RHGRiJ/P3okN7lZ/VyeYTOhxnzJqQVKq/xHoVi/rhpB7uDgSN3FZeBMTJjhVjPWu18ajGJbcmdcGy9HXI0FuYh0v6DmC6yyZUNJGuKq9EEx5fjjHezs+V051stGDmG8y70L6BNVME+9uMdDo+4ABmonL6m/XBlnD8TtJTRVn1tZAwzt7CjaadN+y4mCgIxjEfDJNXLn8yUM733ZDp0zH9Io9gniRo+8C+CtO1Oy/sXrhSmmZgOKPbsiFzQMy+AiiG/OFVLPL/b0J34y9eHWa9VdVQ+bWkf9qLSCVfIAf9W2PV/fdgzcSeVm5b6aRT/1UYOGQq6m/zjpLYbUp2az2SOCxUGrhJYPb6wvPeaLvJl8UrHiYJUZdQ5VqnRufPZ/3DOXdB1pygFbZi7sgJnn9aRsHBOQ+KdJv7Y8Ao+dCUaUTvJntZ4WmBA2avBbdqGaidrmdiEIlBFmSEgLFNXN9UkFl17nmRrKxSqYpcljzMLvDM5EIR0d6gawx4b6gemmb+/RTVuVEr+y/EhvvaMm+pNNw8ex8G4y+eVrO9pB8Fq0TW+rWH81WzZDDxY/IkTBbUZtFX20aosLjVC79fmmHFHBna0GLgMt1i7ClpBTf9Qd4nagoj3OQd9RcrixL7tJKo5mEgbTklE4jPvNTVF0dJEF/l51W3FrPd6C3YRs/q7+AE5N74Q4uNyRLETCn5MVcPQLB+Sw4orXH1LXNIJRrXCD+WKzQFRM
- WanZEc+c
- t06oMhf2K85hQUvj3sd5lfgWhCwzbADMG8Z57FOluykJQsg5ahVf1YnRmvW/Cd6QYpMZsSm90hEdsYeHULaoq+yFDFdBsT1cwZRAlqz3Bi341rp14c/SbFLHFrX/vlzM79fjCXjYHVnnHxiHOT1oBUgtbe8BQ4gUKMr/LaA+pnGU5LNFJyTIDrGsu6+KDzYV5h+NGUcIyIY9H9FCjcx2sv4gxAvcUS2XWdbL3V//2kLFNbR6mh6ukVkpuW4Qhvvv1mr0uH6DmFfT9rs+IcEhsi/3aK3pSq+r3wWM1aXFPhj3SXNGpjQac7jUSMXLX8/t6fVkKtqF76UKUeU82QgSkQ4BP96TlssBL5OT4
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 346CF40005
+X-Stat-Signature: c549f3yjs4hancheitqfx7edx4epcnht
+X-HE-Tag: 1789467758-192609
+X-HE-Meta: U2FsdGVkX1+JCzC6q0nI99WHgwUcn7abhmRvhR8UqGoRotUNMYIMgnXbo+PrEtNUZ1Zhm0ZaLNAYhz2CDFwkIBlYNiBpE/JaOnSiyPkFDpPovgarreyz9jKcesZy/mMUQHX4X8n4ihXwiZAl3xKw/iPXh2XrurUgJw7sU8w5iHLSMbxui50HcayQYw1KBY7zPz0NCvvBazJSBgXPfcRmd8Trk2l7Qzwbl1ld/L9tXAHwTTMPK77OeeS720ttesWxt0s0okvODyJNQ+FzTvc1GIe9wciOkUrdETa7d5EpPg6i9wvXNBYU4QXekZhUbfwrHEbIqBQBQcxNYL/His/Zka/nQp7zZmsLZVBCX7ABL45H07r3ZQKjV1vdRuUBgEQ2TqxcBR2lXFsRipTwOYv1xWIJ4KCvrs1DifuF3xw1JaZqn+zbJfXZMNmldCf15tarHjofvmIy56TbsL1v30q6SJ94sg9Rj7G2jHsrV6z+SPtHxoDwm8Sp13hsRyh/5JQs5tVXNdhOsRBVv6+hauL+L/cL7j8BAbgbdmNtLdN0wNmVWHJANkLuNnGlV7DAGST1AZQZWNxxPyP4b9D0RaR5Qe2w+Q5TWxWzPnDBgnfbH9kUpIyQ1iVpnAjqM9rGz0yvorEoZgk9rsmV4G8/ILcvNXa07YSVn4DCZllLyvOW2yV78uorVqcr8iSEP4rqdi/XM93Qkn4DtqtAjnrNap6Ly3A/fGnkF9eEb5cFZj8fklPGQbqLc3m/hQM6QCVTbB/R5b+xNOjBARbaEX5DJRvaFpLir2s0mCxAimGvgnKKSAM1q4pxBfkFgcmFJTtfzI400M5NgJjN2z/8mV1gwpcBdIkJoSQRCf8wGvlYqeNhVU+O7FSRCSPQjJtFuRfLLjMzpaFQLnXAEceDjFYNVcY28MQuJ2jX9EyUfvEBUQQRs42SeMbMnVL5uF24RWyXt47eAa8q0YtawWw1xVfAfWS
+ wUf1LvDZ
+ RuJC+nH+4/buxbNAZEMWh9LDTMWEBQ0Sq8tB62uLISqUeLMYdk6aYzCStx0qHZURi3Pi2WoBle6s2imtFUjYrxM/7EM10FRim4GYgfwD+Ys9oqwy54FJoAeCvS9HOoRniFdWsxOrlL781G/RmEQ/yKiFUPNIUcWexmIFSERij1I6dd7Kmmaqu7M9P05aJNGail/GTrlW5FdYPq7MaIlyoF9IzAviMpnEk2H1jjw0srhsCX5NOQkXko7ahQQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,66 +105,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 14, 2026 at 05:18:17PM -0700, SJ Park wrote:
-> Hi Harry,
+Hey,
 
-Hi SJ, thanks for looking into it!
+I asked Chris (Mason) to look at some of the coredump code with kres and
+he found a couple of things. Some of them I had already found and fixed
+but there's some good stuff in here.
 
-> On Mon, 14 Sep 2026 21:36:39 +0100 "Harry Yoo (Meta)" <harry@kernel.org> wrote:
-> Makes sense to me.
+@Jens, please take a look whether the io_uring fix makes sense. That
+kres thing added some patches but I found them all not very good and so
+came up with other fixes mostly.
 
-Thanks!
+@Oleg, I'm unsure about the freezer and coredump interaction with cgroup
+v2 and specifically fixing it in signal_pending(). Maybe you have a
+clearer picture.
 
-> [...]
-> > --- a/tools/testing/selftests/cgroup/test_zswap.c
-> > +++ b/tools/testing/selftests/cgroup/test_zswap.c
-> > @@ -346,7 +346,16 @@ static int attempt_writeback(const char *cgroup, void *arg)
-> >  	 * it can't writeback to swap.
-> >  	 */
-> >  	ret = cg_write_numeric(cgroup, "memory.reclaim", memsize);
-> > -	if (!wb_enabled)
-> > +
-> > +	/*
-> > +	 * When writeback is enabled, memory.reclaim may still fail to reclaim
-> > +	 * the requested amount of memory due to a slow swap device.
-> > +	 * Ignore -EAGAIN here. The caller determines pass/fail based on the
-> > +	 * zswap writeback counter.
-> > +	 */
-> > +	if (wb_enabled && ret == -EAGAIN)
-> > +		ret = 0;
-> > +	else if (!wb_enabled)
-> >  		ret = (ret == -EAGAIN) ? 0 : -1;
-> 
-> My humble eyes were unable to easily understand the change.  Is the change
-> effectively same to below, and if so, would this be easier to read?
-> 
-> '''
-> @@ -344,10 +344,11 @@ static int attempt_writeback(const char *cgroup, void *arg)
->          * writeback as zswap.max is 1/4 of what was needed when reclaim ran the first time.
->          * If writeback is disabled, memory reclaim will fail as zswap is limited and
->          * it can't writeback to swap.
-> +        * Even if writeback is enabled, it could return -EAGAIN due to a slow
-> +        * swap device.
->          */
->         ret = cg_write_numeric(cgroup, "memory.reclaim", memsize);
-> -       if (!wb_enabled)
-> -               ret = (ret == -EAGAIN) ? 0 : -1;
-> +       ret = (ret == -EAGAIN) ? 0 : -1;
+Other parts should be more straightforward (hopefully...).
 
-Hmm, no. This will mark the test as failed when a write to
-memory.reclaim returns zero even when wb_enabled is true.
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+---
+Christian Brauner (6):
+      coredump: don't switch a dumper that has no files table
+      fork: refuse new threads while a coredump is in progress
+      coredump: hold RCU while releasing parked threads
+      signal: only SIGKILL interrupts a coredumping task
+      coredump: parse a snapshot of core_pattern
+      io-wq: order the exit bit against worker creation task work
 
-It's not the same because when wb_enabled == true we consider
-ret == 0 or ret == -EAGAIN as success, while with wb_enabled == false
-we consider ret == -EAGAIN as success.
+ fs/coredump.c                | 66 +++++++++++++++++++++++++++++---------------
+ include/linux/sched/signal.h | 17 ++++++++----
+ io_uring/io-wq.c             |  2 ++
+ kernel/fork.c                |  4 +--
+ 4 files changed, 58 insertions(+), 31 deletions(-)
+---
+base-commit: b813a7ec026ca59a444ba0a36c2e17ac823eeed0
+change-id: 20260915-work-coredump-fixes-edf98c80fe78
 
-Not sure we can reduce that to one line of code.
-
->  out:
->         free(mem);
-> '''
-
--- 
-Cheers,
-Harry / Hyeonggon
 
