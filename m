@@ -4,163 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86142C88E7F
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 15:51:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 800E6C88E7F
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 15:51:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 42C1A6B0088; Tue, 15 Sep 2026 11:51:13 -0400 (EDT)
+	id 935C16B008C; Tue, 15 Sep 2026 11:51:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3DD876B008C; Tue, 15 Sep 2026 11:51:13 -0400 (EDT)
+	id 8E76F6B0092; Tue, 15 Sep 2026 11:51:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2CAE26B0092; Tue, 15 Sep 2026 11:51:13 -0400 (EDT)
+	id 7FD386B0093; Tue, 15 Sep 2026 11:51:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 06CED6B0088
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:51:12 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8ABE88049B
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:51:12 +0000 (UTC)
-X-FDA: 85216435584.13.BF27459
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011067.outbound.protection.outlook.com [52.101.52.67])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 9666B140009
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:51:09 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=DlJQ1j6x;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf09.hostedemail.com: domain of ziy@nvidia.com designates 52.101.52.67 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=DlJQ1j6x;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf09.hostedemail.com: domain of ziy@nvidia.com designates 52.101.52.67 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789487469;
-	b=Ul+DNhFVeitPfQVGjNotDtBLqKLg8Q8zaOt+40vqF11Ld7VCRtBcnwcSakWfYFfNmr3uef
-	nbXjcemGx0C/o2jwCgGMrtOsEWXxZ4NYrvsK0Dq5dgMufdvu8ObyLMeqZIuoTLw57ikblf
-	R9kWGy//v7QLUfDfuCgf40fZq3L3Hvg=
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 535916B008C
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:51:37 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D99C44048D
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:51:31 +0000 (UTC)
+X-FDA: 85216436382.16.1BF902C
+Received: from mail-oo2-f42.google.com (mail-oo2-f42.google.com [74.125.231.170])
+	by imf18.hostedemail.com (Postfix) with ESMTP id EA1731C000D
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:51:29 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=KIkbmrcu;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf18.hostedemail.com: domain of kuniyu@google.com designates 74.125.231.170 as permitted sender) smtp.mailfrom=kuniyu@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789487469;
+	s=arc-20220608; t=1789487489;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Xuw6m+IoGXUCoU3dUnLtBdPER5KYVzNeQD5xsbFUgFg=;
-	b=FjiyxelTH03EznaIp1YKFluVpyk9YDQVisB0wzetoaNfrBKq6hY+dxhhPdEHzCjCKpI7Zm
-	x6D06RKh+RBC3XRQOpQubm2hBlVJPBVT0zQUS3JlW/RIcxCn91h5OARB5j3KLEftSa3VyA
-	OFlD5SYR/+AGBjZ5z0ZRIn5VtxBXYU0=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=N2xFHNe2P/OPjq740XhVUYIOlmifAgRHw4DV2UrWBvplzJBNbI8025lMNNZ3JeWX5EtON1OCZutZZupOx91L5NLA1OAkqfDF5qJXN2IDQtlG4vObV9wtD7MxdfakUE23gryQehtpWs3vJtNkZpGvRSur2dX7oTdQDU/jPfX+5ZQNtmF5EOcAA3qEhPS4FWxgSr8OQw6g8i6GxWNSSPsGwqCImgSnbPt+PBEb4uSOwgiXiL4ypEPUJPea+Zr7Z+RdFjmIfmi42hKjQxe3RZprDOShSKyeD+RaZdCh0sLIqbT2n/l7OF5qVNpExkXgrug1XuQD3yJWMgv8kC2mIKs7KA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Xuw6m+IoGXUCoU3dUnLtBdPER5KYVzNeQD5xsbFUgFg=;
- b=P0BJOyM+auBCMRugL2y1R/NwoGiRcQv5xapE77nxaGD/v95Z9966BME88n6v+REnS0H5z5oo+oWgTfeKeoXMDiCs/IbfSFZIRt6NjWXKoiRXnOw/EUlXrdLpJ038hIbXQqu10k/NJn5fLTJBrwFZFVvqu2P8ks0t4wgBra2lTEe3x2ZY66u8TD+7ZxyZB3lrgE8kfK5uR0zOghUOdPqy00TGZ85QHrkqFWN0rmCZke2ZkoM2XcmKHdM5qlvT/os7qG1mnlm0xHzquKLvgMjSPMn4W7bF4EtGj5n5t44RRDpOCfNINCsd5k9Z4y9zdenFBbyl2BidZRmKggq8BP+3xA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Xuw6m+IoGXUCoU3dUnLtBdPER5KYVzNeQD5xsbFUgFg=;
- b=DlJQ1j6xRKUY8H5Vq5GYWyrlAov+Y8vNK1XIBemXAgC20gZsEo6cXLBS14ZpiDKu09rX2eJGPuiyLwgzaMXMihB1Yk/Z1dNW3JaJh7rbsPjlq5OZoN3wX1l4V5UfRGbA+B0IXgoKwdSfEV/WaXZSujGmh4pl/wmOJqf7tQ2crIonXaUiNkzeRIgyfIZD+q8FkpkO2/6zDmVD3RUTLtFb/hnvEAD5zosBDoKGHpsTwGVTai/zF0lXadGs/76VoqxZaWTL2TxKfonbcwKSFs9+gaWj0Wd7fKRc5Os3nsRLnyRAaHP4+Jf8T7sY3QsuWV2cXnMOQ1F8QBefKZNNnbsT0g==
-Received: from DS7PR12MB8371.namprd12.prod.outlook.com (2603:10b6:8:e9::18) by
- SA3PR12MB7902.namprd12.prod.outlook.com (2603:10b6:806:305::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Tue, 15 Sep
- 2026 15:51:01 +0000
-Received: from DS7PR12MB8371.namprd12.prod.outlook.com
- ([fe80::23d7:9e07:1de8:d80a]) by DS7PR12MB8371.namprd12.prod.outlook.com
- ([fe80::23d7:9e07:1de8:d80a%3]) with mapi id 15.21.0406.007; Tue, 15 Sep 2026
- 15:51:00 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, kernel-team@meta.com,
- "Liam R . Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
- Jann Horn <jannh@google.com>
-Subject: Re: [PATCH v2 09/12] mm/collapse: open-code collapse_single_pmd() in
- its two callers
-Date: Tue, 15 Sep 2026 11:51:00 -0400
-X-Mailer: MailMate (3.0r7032)
-Message-ID: <C70450FF-9795-4A17-9C5C-448C38203F7A@nvidia.com>
-In-Reply-To: <aqfeuAPx3lCKSXtd@thinkstation>
-References: <20260910120238.2529819-1-kirill@shutemov.name>
- <20260910120238.2529819-10-kirill@shutemov.name>
- <DLCTWPIN1HRO.2HK4RPZ43F301@nvidia.com> <aqfeuAPx3lCKSXtd@thinkstation>
-Content-Type: text/plain
-X-MS-Reactions: disallow
-X-ClientProxiedBy: CH3P220CA0021.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:610:1e8::31) To DS7PR12MB8371.namprd12.prod.outlook.com
- (2603:10b6:8:e9::18)
+	bh=qLaU8Sheaee7OVZT67w7SriDUMjtz6t3Qx6H6/8vnfk=;
+	b=tPClatUonm/TW6VbQhZ59JMC+qCi4XQ0rVw0qgt8OP66MTrpHTM9w9TDJw5CUVsdMz4DjF
+	u+yq6aqRBOcZiG7tjPvC4PUbYj7W6oMY62Ylls984q3z0tbghgm5lIJnsLt/EqPz8X4DTk
+	RJo8c0DAS/ASXdEVjMJNOmhuBvTF60E=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1789487489;
+	b=sgKd8RcGCMGF+AJr/tPN4nz3CWIfl0Fj/XdRuLhfecEcOfS+cZMK4vSpuxa9ZlNoEuMDIf
+	4F8i1de9g87qpYs+qLUR9muPbfTb8eEch72xDdIkezYCBuj43EKG/zO8YXpuDNrfW+TGW1
+	9ar+2eXypwUENIQZrfaKbe0w3x+D2BU=
+ARC-Authentication-Results: i=2;
+	imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=KIkbmrcu;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf18.hostedemail.com: domain of kuniyu@google.com designates 74.125.231.170 as permitted sender) smtp.mailfrom=kuniyu@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-oo2-f42.google.com with SMTP id 006d021491bc7-6b1ae6a9960so410956eaf.0
+        for <linux-mm@kvack.org>; Tue, 15 Sep 2026 08:51:29 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789487489; cv=none;
+        d=google.com; s=arc-20260327;
+        b=g/RpFlO7Z73Z/0m7+T7XDpr+zi2TiWADBWz3zo7yk1I3uk7hknkkTgBP95x3TlGECU
+         RwOAdcGrQxAEkRCpH6pQt9BfUNWa0fHEGpPI9KRa5fX6ROqewjjh8sqIpRw3zGmQscSq
+         amW/0Dwwpn/B8GXzyy7YVk6Csqt4kwX7ZQAPvjUr7xalEISzA8w4QtjoMNcCMBqbcMVK
+         2J2gG+W7srOdMRirpGOWTHy2sXLpC0hyslPPIAdxKOo1DtNyOuEoZZQ5Iai1ArPg1PlK
+         Z7o3+TBQf0/4ICuuKvw6wY7Eoll1/ioz/kFecC6Bk1usp9CXPgb3GoUoFwDtB4EepiZb
+         GIhw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=qLaU8Sheaee7OVZT67w7SriDUMjtz6t3Qx6H6/8vnfk=;
+        fh=0p7D/wI6WIH2LS0QkZyyFlsWXGkJ3cdwxMUACnu/01Q=;
+        b=sttT/FgeQuObulyQnxC6YEQRT7qwnTsMFtsPz+q6OoVUphtctr2WWTOSu3wsFlKnSb
+         f43xrCyvusoturELaV8EEs/eLTtFDLq1Zsx1qRyG8kpMrkciYEfPAWYeIxuxmGPKy4o5
+         OsgTe5cvCZlDSBlLHkeL9ZBfLOemxJe+1FtTi6HpBGXSEWMiQYPIvWAH5SoHQOQVz7VI
+         eOfTbUkgvbJdlWC8T2DDFjWd6uPaStEM6jytD9o963+yW3xqOMaUN2/4KtI3K2KDPSmA
+         CSpUwtm92kaUUMue4nySLDQUk/yIdYJimuUfZ+fTHifo7pQwfX+xCqDTM1DkYSUS3Bc9
+         roKw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789487489; x=1790092289; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=qLaU8Sheaee7OVZT67w7SriDUMjtz6t3Qx6H6/8vnfk=;
+        b=KIkbmrcuqHx69dtlSG2ZyOBWrr+BRy4hoMMdJl8cvi63yP2CsySrx2JILIgDIGPdmy
+         EfK3RcziaG02pBB1PnET6CtlwXuLLbAxfElTVaRWTUYHRbYz0nzt7gJ9S0BiFjqEXXx7
+         RsjUBvyT7dSV4OwkMKTyjhRJxnkLtX4MhSPDiQOhWuDRsfmnRh7Ky0ac4sl6K0UTnXo9
+         9J17gJDIk6sOQpvZB2RgNKCJ0OVhc+VZqi6R0tIh9kaq5wzqiwIJU0sni7y+NGMMH0vh
+         gzPebfcASe6qCyZm2B1V3EfEHVAq/ZnnwJixHW5AtV9OXT/wnZjFx9Ks+gwtUIclIBA0
+         2fjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789487489; x=1790092289;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=qLaU8Sheaee7OVZT67w7SriDUMjtz6t3Qx6H6/8vnfk=;
+        b=K0LCSs9xCd5jtXOwaiVx00iHNkTVLw7EczOGhszc+s5ZWtIyzYmZBxewGATwUU3HsA
+         3OwVcEhOHHmqDi7U1AHSwovn3cOrbvrzruetWaUsQF4r7Bkdga0RXsa/mNPi9+BVV6gd
+         LPb7j2qVsDin2OVFL+bH5POUTAm28hq1XmykMiKzj+j6k7t+q/f1FREl83oRYAFxsUN5
+         C09asiO5DqwH5jtPSaCqcXRRthjH5X9xfkryW8IqUmzDZGF1iYgvMSuIS3Pjfpt/OXAN
+         9i6F/vn4f4w/c6JKbMGE4+Ua4/Q6r4SfvLCU21VNc/PQRrDbplIb/reyQHCNSkU2/olr
+         RVzA==
+X-Forwarded-Encrypted: i=1; AKwUvByoEFMZ11EdBYT8MhsleEqa59szMO6rEr+7lNtuursiGJ8MycnbTK7JorQk2IZWfJwBXt6gZd8X+Q==@kvack.org
+X-Gm-Message-State: AFuF++nQs6w7+RAkNwo6/D+CjfVM/tJNjmNeT51UM6qMu13rCWXkrlwE
+	Fop5ABTPbpQcgIC8t4pY6Zo9ola+mz77BvdUID1qWxuPOCAvw6kVdPU1xx47MGF4YaoBU4O0wjM
+	NmNaek7O6/pMIQW6t1UMb4b89NLDCArubGx05YpQER5sy/8Udp6w0QTx2D+uaSw==
+X-Gm-Gg: AYBFou1/6ehTdRYBjzFQD5CfBAY3CbE8mQ5S+3s5N+tK9g2/0SfIwChO4iQPAcj6b+H
+	mEMFhvdVUNQRMp5dcy0+uMOq/s/SfUTyVw/b1HbSz0sRQNMNLBFQY22fS8TE8CHq5usSk//gM9x
+	BfTTiIFdAdwZYFXdo5AVDJtA+fkFNXEhQ03pgl2noNZngLvEsrn5b3OOJDdK12VJ1ggA5tHee2R
+	lfXvYkVsDBla8tlSUS7VPcNhqsdKr10cGrgDYyox/pCl3juaQ92tI1zZX5lr4pUhHHH4TL+cUVd
+	CdhlARxyHwi+NG+IGTM9tHRd2O9lLy+0IBtPhh0euOUCKvrXJ4mNjIz7bVIjtlrzwq1Y9dn2BeS
+	6EuoDCs5d0eCgG9LNPiMVZWHa4RI1hjUfioNjvNuGa3aqHfY0nRZ9XMcfVS5V+zKI9SdI
+X-Received: by 2002:a05:6820:f036:b0:6c1:d6a4:9268 with SMTP id
+ 006d021491bc7-6c737b1ca30mr1441282eaf.5.1789487488174; Tue, 15 Sep 2026
+ 08:51:28 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB8371:EE_|SA3PR12MB7902:EE_
-X-MS-Office365-Filtering-Correlation-Id: 673783cc-a89b-458e-d1f0-08df134123ee
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|23010399003|56012099006|6133799003|4143699003|11063799006|10067099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	dziaLEzhS6SIvb55+yuaG27Z/0O4SLgAHTACVytaqzyroQM1RxZ2neZhfcp+s9dOJH1JHEELVUBpQR7icMrdG51dfmNvOj8itHvvpOu70Bg9EGXk2o1yeK0WTvq6q/ftW4JNigLKkxi4EcwivLwsbkjYR178wJtrg1i3aG/BUQp1icn8IZvU/Lwi9vmlbbTksJdLIYup6t9DX/ZEEzUEXi2F+kR5xmmp9aUwhcscJnV6SAoT/jkx23Kp0zPDAtdxXLkUzfmbkXT11vzwM0GwDUJ1oribqsgNKSFVTaZ/zApyHoJJAJuRZxiSyq7/YOSHQsxJOlUkQA520j2GKXYLWPKN3ocL4OvnoVetxig/7LKYsTC/AjqLAGxrV8wtARka/Fs/teCU2GGiQZePn70HCAFMmlotY4hUIFIbhIx2Cqq3b5IsmTUrhVDBtoAwmLJcZ66iI1FCQLodPIcKy+igkHwRY9HT7c/igx+l5VOpGEQo1bdI8y5kBxtTnGuVna7Vl7Uri2Gr8TyNm4Y9YoEFp+XJNHUt6xf8DuWVTRFqemVBAL9BPQOPWHIv4xOUJFVbw+IEqECvsOnZh9ekzW4beYmpfWPbIY7USxcXQRCEkO6eu/DmAatjjRpLvne4KgDCb6XlBBJJ+X2kfDDCdyYK7cIkHi9c0e3PR/8U2mcfB7w=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB8371.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(23010399003)(56012099006)(6133799003)(4143699003)(11063799006)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?6VljITF7x/YFg0TkkcxlkD2XfbHibsB5ofPHdmgqYZgDVJhnrS6g/w/QfiSm?=
- =?us-ascii?Q?h8FdKKro3SA1LAoFa6fvml/63FqDrTwM88IMeLs5ljPAWy3aOiKJxriqILY2?=
- =?us-ascii?Q?Fg0wRsr8DjTiZ+TcPCM8p6pzXyxPKJEqRYhzy7N0c1ny3atNg63v29lzdQEa?=
- =?us-ascii?Q?BViie/59c2goQi0pOM4cQD+ieJH4PsBp/sM6qmlh77ioPWN/tfdZ+8HYhisD?=
- =?us-ascii?Q?r+NTheo4YsQFZBEywgT+7rajBrNorv3oWmqc1WjbeTfUj23tUZCg3GxfzJ36?=
- =?us-ascii?Q?Y3REFwoG8nKtwg6ItJowwVjr1wDO84O2s9eFqHk5fZYHfrzxuBB0FH+rLDZM?=
- =?us-ascii?Q?BqNB5ayODj/6WQ4EdQhbOH0qZGXrnzmGwN9hQDHp4oyOHS2L4E9kAG1dUVvA?=
- =?us-ascii?Q?6OTi8Zal7jx+nQx5UaebvHK13hkG6oIUdxpbYHHAvq8LT2CcvagbP+Ph3KVC?=
- =?us-ascii?Q?7XhwIvJVucnGgmoQ/Bgy3jP1ZWDNSoIm0ADF4wef20wdd3F9kuy4cZocB1L7?=
- =?us-ascii?Q?39Kk3pFl2MQeG8lqWU6O5YNBSBPhnsbODyq8AAeXgo1optE7LO/sJDj2dT6f?=
- =?us-ascii?Q?h98hP4qdsW56rj1jQYFtNBYhF0khNpaJWD0eDbbA+PxEm31NGACD3DuC6dpn?=
- =?us-ascii?Q?laJIbMdvbusSp2VYufIaNX8Z7sA1Oy/IJ4HmraGn0QRGC92Et4oOikhy6cge?=
- =?us-ascii?Q?KafaNl3tHGqt8Grtgd6xzhg1sUgwt7RHTpt2qZCXiEhVfyLn2YxV4kf3C8ph?=
- =?us-ascii?Q?f7YGwy5YQvl3r44eBs8E/aHpcoqwvgIRLVJWNszYHdEs1aGmsNWqyWdcorBo?=
- =?us-ascii?Q?CAIam+elFruPyiuQySK1ZNEqfjk0+b/itPfTNeNC6sdKeoyamd6/zlzhpMdD?=
- =?us-ascii?Q?iJg09nlz/pqjvy6BXrpv62mWutOtBU6RkWBDhbykmQ9cH2DUnf+Bv8FaAmG6?=
- =?us-ascii?Q?9RatWESST5XoxeazsekVgJn8sYq7R6uhkIqLQTSQ0T7NM2Kyonq+i9jy2sF0?=
- =?us-ascii?Q?T3qPrb2EpIJ3MbKZLXnm2S4kaLsDJTNEEaQqaDeBgK8CsD/2GhVPKoLyJViU?=
- =?us-ascii?Q?5IetwzUp9baacAze7b7qfhszLeREvfDekfh2+oI2L0qLgfP8pdYlL/R/oAv0?=
- =?us-ascii?Q?PYIie1Qv2YsQLYHkHLnH4FYdsWrj5sgqu7l68c6ESV5ng4kakOalNfwFhT3R?=
- =?us-ascii?Q?/VnCjrn43USpVrxdi90KB2oXl2ucRuRKJFKTtYsJZRRKRoxskjisbe5+Z5z0?=
- =?us-ascii?Q?D2nmf0aK8H+ZdBvaec2pla1uRococqmyOLZKhlPco66ox1d+C8YPJVndp/KK?=
- =?us-ascii?Q?ny50Vd3IKf9W7fkKi53ppRUMjGeAECQXnlZDGmnMX8mqruEbb0celwnIQ9og?=
- =?us-ascii?Q?cNIaawLwERh7HBxrorpJkFl30pFKg79JBYes5UjHiQUQH+4FEBXImMc2kAC8?=
- =?us-ascii?Q?b04PP5ccY/EvhAIvhy1EiE/LJ5yX0fDfV1OsRlQ7gygMn9Kv7jTmK8cGCBlk?=
- =?us-ascii?Q?xvrhWZgXsKePHMs7SJD9Wxcw7eLxxuak9MTYBaYElqYKVNU84HbV6xRxRnZz?=
- =?us-ascii?Q?Eyl0KVaWAaIwsn2gFpAlnsL0B6SEE3uUwgsyqr/8MrEeMz2pWOBSfX8JoBJt?=
- =?us-ascii?Q?u+rOWZOIMEaiCFmDXGn3TkPOv2BE+lRfY2FgECxu4DkVmkR4nhyJv/RSFB/M?=
- =?us-ascii?Q?aD6T1rN7LmrlXe88uFIfk+wdt+8qK0ruMOeMwzeK7i4Ul/kT?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 673783cc-a89b-458e-d1f0-08df134123ee
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB8371.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Sep 2026 15:51:00.8401
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: pJ37od0r0UUGFyFbwI5mBYrGUKKNGF7UGP6Ltk6IZVu9feMqIQ9sD5GmqPRJ9xtB
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7902
+References: <CAL8qZ1bxzBXReej7M-20HkBwON9L6NZKZP96bs7s-e=j-_Gg8w@mail.gmail.com>
+In-Reply-To: <CAL8qZ1bxzBXReej7M-20HkBwON9L6NZKZP96bs7s-e=j-_Gg8w@mail.gmail.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Tue, 15 Sep 2026 08:51:15 -0700
+X-Gm-Features: AcwNN1VZxjUbgSRdsZo-3wXq8QiVHvk8HaQExXuqbOILOADwb7TrgLSgG0x2RqI
+Message-ID: <CAAVpQUBWtdDe4dS5Sd6mETpxVdmvSrnQkBdfK=NKgoWzTJUomw@mail.gmail.com>
+Subject: Re: Subject: TCP receive memory accounting before accept() with
+ cgroup v2
+To: Cyclinder Kuo <kuocyclinder@gmail.com>
+Cc: netdev@vger.kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org, 
+	shakeel.butt@linux.dev, edumazet@google.com, roman.gushchin@linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9666B140009
-X-Stat-Signature: u9i34urrt6gpdo1dzumdowbcc9w9ux9t
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789487469-904158
-X-HE-Meta: U2FsdGVkX1+IHqp67e6SiMtbIbxLPWcMKounvq4t6hcrn809cbKQE7OkhtL7Z7KAkHtr2l+AD0+WRsyFV/poWhjRtiBkVrCNhOiENYClOmi7uzF08FZcEbOjolnvJr3Lx1Hqz/yr5KlT0ZSbqm/r1zbgFzMs+EavEL2rV2ZI8siA7NxaNEtkwjkuEkDqssq+UuC+0dPUV8nAqAqbVFQZLOyVW5grhUKaAVyy3ROTa9uOFr+qxdKNzTwkSJODbuNqy4kXn8ozSe9i9bJWPBirdWyIfv0Cjl6ITHSKtO4qqr3lEXg5l8jDTjIJcCMPI5INl3sSmvA5+xP5EDgkwudN/2at/YWUZV6WdlonUy5XmmzHMTchTzbaPRYrieMO8GWdpwjST67Q9K2qcLwZttgQIKCkpXXSq+8IKzPIP2etboAyIMn8r/xFarwKA6dHLquK1sUCaTCEUDoxVSK3Y3fGk5kPpdpCoFVrjJkn6ggEXNdDpPJyOMmmCQkvJfptzwwxgBiwQr+8QzC2B6BEKV2gK5cIo3bzhcraq7uFOsKbb3ns6YCWAXhwSOf53zsYqV++Q4AVBvYnMeMGLJV/aXf/WVvyn9Lg3qo69YbrPlBcJKrj1eS2aOJp5DudxRTpVB3eVyeBvQMXgbgTC5Tq0Ujtu4+mk+PNuUgUB7G0TIYIeHqYG41l4JRhvMMWLQkQ0wEx4tgYtAJsIF0okjQM0FqFjDJSP8iOl9t6thD8wFen+5UB48xNIAHEK5kiUqaT7F1iIaYj2qwUO0g6U1seWU2TgTXvimCXaCfCZk9kMORyGErofIIj/uRaRfS2upmqoJt5FjjDFCa7HNHsNgMTsvjr5/70zRNXOsDpo9UYliVqktf2Kff3hwddREL2hUPLjqMWNIwSKFiK7T5XpYXiXCw9fIsnL+jqZ8vfgAmzr6zQWPJPw+TPwHjiU8KEIolz70oOYPDQS0FDCdLcR7mZT45
- vGlbO/sJ
- wBheilEybqM0OAmNcPqoPJCR8yZYtnMBZSuDirzz5K3/xHF62DQtx2+gxGfvutR6AMtT97f6cO33R4+IeR0qKG2sPy9YIESHTHrkzDL/1+bSGtjIkQytl0bqEb7iH5hrMcSFXY3rz9chIP0/kkfuyRqrLDYU++lsHBNcWpmb3/Uokjq2qLFEMsdvCfKAHQRj9cP5wYH2vorqt0o4HNWsqixtgSUTz6n7oQHWKsPZID7STL3Bd4Vc2SqtIG94/jAyfjq17v8fvnToh0jEEBnVyr8L5IcDe4oqogU8peXc+cimmT6kDNI/DI6BhmMfoRaEe1sbpfZd/NwQnVbJUhKhpy4SMxQ6DeNLy68MLb6VgBBRobd2Ni8p3lm4B2odcSkPh0+e2Ktk5uJzWwJ0UEjJn05ix8Ly4Gfi2m1M/8EyTQqaTNBpdlBoXezU4EA==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: EA1731C000D
+X-Stat-Signature: 3s9ybxwmbjc6ot5b5ety16ybwo3b883f
+X-HE-Tag: 1789487489-335220
+X-HE-Meta: U2FsdGVkX1+e23QMq4OQTpfp2BHv09suozcrE6+xOPtlxA/+KgTJYvFE1FxZl2cKZdSzRXgNhOWadVz/gDzl+oUDPlneWn52nwr8TZjJyY+N6RKCJKN9oHQUtk9ixOGmffpVlroioX0DuzChBkh8OU+9Yhy3LxelsMKhToGZ9Z7y/yG4TeQGDVkHpbhsZ51URvpR2BgPEx16vvWlV1BkH1RGBzHogeF26mtmqzn1jM+e2G6Owi3uiQ/SY7DF7ptmjKuymsZ6i7Fkoav2bxcifi6Xr/8DU7fthXuc4D14CHT6ppkfZ2WFLS5bfnzxCXFNK1Wc7b/WggKANxRvDidPqWyRHx4zUGiB/mz4JPOdagwQpXM1MN29K3OZoZE0ZLSjMakXWo2R3qjSHEhEIuNXOvwBFuz/zx8FV8CZrJ12GRpAHYSr+XEbGiaipRmwStsncc3CEhNEbGd6Dh2vezmGsNkw8OCIVjT1vYzAHXKTP+Gi7rbf3elEbXxY0JKljXiaBARyLsQOPC7fnfry6ONahRYin/c+zEBoqAaHtc6JNE5xBKIcTugmCjY3cQ7KmwceB1s5ckRvEhY1rDrwFwp5cwaciSbExH272jddTVgfOr9RQ7g+TMu0DiCQF5jK18a0tcFyA7Ghp0MdQ8ixMS9B6YcgnTboCx7iIIPy1XMkd0Tp8yEWR/tXC1QSAtl598YabkG21A2FEcKssLewEW6I8OOf2W6WxThEPkRD2L11W+VhIrU5Z7eYk/J91nfeouQE12ZzCT8w+6GgXYT4QaKvAOGggpmmMGzx8O/Q5xB4OXUOnlsfl9N7LyI+7g9YzRAzMx6Hej9hKXaG/MteP097IJdWc3j94QvpFuLJrTLpbCumWjC8o3Aqm26/5/70YMcLpgtdaWIRDF6udwzBKvgi5uQFvAsJmFQySUaeEY4DMw1XNffsYqULfiDjA8fKm38/ZMNY1/xi0o03Lrh4NSp
+ cVo4KTmu
+ Ks78GZTMUi0Hp2RimQXt8OC3amWqcJ8irxWJJ4YzXDy5s/G1Jo7fOcF7ZkoXyNoSaZoca7ngIesD8nGf+x/p4uO+y/bDy8EZu0hGu+37ppxVwHfLSf7UwTlleffOOtYPin93Lg8NmUNgKGV1ETDWFLNfGGWx8kavPpMMj0JbNfnTO97In6pIfIvFE8ddvMew+/iT1o1duYNCtucUVySPsFMyaxF/iejxjNgUDH+1jtno8e66b03p8jPUmZVUuXbNdHWdn6UAR8mefTwPk83O/5Gpt08YuvuCjjjhBtzx6NUeFXny+59F/ZhtzgxRVIwhY4C9KHv+kNv+mO/iuDklYcohDBqHOn9oVeI4MGttwWYhw+1K0iJwFnoZx42w2e6OpZSHM6R2aZAaHSe4xpN2KvER7EffY5ql7DXwd9C2iQ+JvDP4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -168,94 +141,136 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 14 Sep 2026, at 7:47, Kiryl Shutsemau wrote:
-
-> On Fri, Sep 11, 2026 at 06:09:32PM -0400, Zi Yan wrote:
->> On Thu Sep 10, 2026 at 8:02 AM EDT, Kiryl Shutsemau wrote:
->>> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
->>>
->>> collapse_scan_pmd() and collapse_run_pmd() each have a clear locking
->>> contract.  The scan is called with mmap_lock held for reading and returns
->>> with it still held.  The collapse is called without it.
->>>
->>> collapse_single_pmd() kept that boundary inside itself.  It dropped the
->>> lock on some paths and not others, and reported which by way of a bool its
->>> callers had to carry along and then act on.
->>>
->>> Open-code it in the two callers.  Each scans under the lock it already
->>> holds and, on SCAN_SUCCEED, gives the lock up before running the collapse.
->>> khugepaged's lock_dropped and madvise_collapse()'s mmap_unlocked both go:
->>> the code dropping the lock is now the code that wanted to know.
->>>
->>> khugepaged's walk carries on to the next table while the scan keeps
->>> refusing, and ends once a collapse has taken the lock from under it.
->>> madvise_collapse() re-finds its VMA after a collapse, which it did before,
->>> and now uses a NULL vma to say that it has to.  It still reports the drop
->>> to its own caller, from the line that does it.
->>>
->>> The lock is given up and taken again at the same points as before.  No
->>> functional change.
->>>
->>> Assisted-by: LLM
->>> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
->>> ---
->>>  mm/khugepaged.c | 102 +++++++++++++++++++++++-------------------------
->>>  1 file changed, 49 insertions(+), 53 deletions(-)
->>>
->>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->>> index c26907300c23..9bdf12128357 100644
->>> --- a/mm/khugepaged.c
->>> +++ b/mm/khugepaged.c
->>> @@ -2857,28 +2857,6 @@ static enum scan_result collapse_run_pmd(struct mm_struct *mm,
->>>  	return result;
->>>  }
->>>
->>> -/*
->>> - * Try to collapse a single PMD starting at a PMD aligned addr, and return
->>> - * the results.
->>> - */
->>> -static enum scan_result collapse_single_pmd(unsigned long addr,
->>> -		struct vm_area_struct *vma, bool *lock_dropped,
->>> -		struct collapse_control *cc)
->>> -{
->>> -	struct mm_struct *mm = vma->vm_mm;
->>> -	enum scan_result result;
->>> -
->>> -	result = collapse_scan_pmd(vma, addr, cc);
->>> -	if (result != SCAN_SUCCEED)
->>> -		return result;
->>> -
->>> -	/* The collapse takes its own locks, so give this up */
->>> -	mmap_read_unlock(mm);
->>> -	*lock_dropped = true;
->>> -
->>> -	return collapse_run_pmd(mm, addr, cc);
->>> -}
->>> -
->>
->> Sorry for walking back on this. I think collapse_single_pmd() can be
->> kept and still get patch 10 to 12 applied. The reason is that by looking at the
->> code after patch 11 is applied, the collapse_scan_pmd() +
->> collapse_run_pmd() patterns in madvise_collapse() and
->> collapse_scan_mm_slot() look very similar. And it can make
->> collapse_scan_pmd() and collapse_run_pmd() internal with only
->> collapse_single_pmd() exported.
+On Tue, Sep 15, 2026 at 2:08=E2=80=AFAM Cyclinder Kuo <kuocyclinder@gmail.c=
+om> wrote:
 >
-> I gave more motivation in my reply to David:
+> Hi,
 >
-> https://lore.kernel.org/all/aqQf9hSy0iNjnL6t@thinkstation/
+> "Resending in plain text; the previous message was rejected by netdev
+> because it contained an HTML part."
 >
-> Short version: scan and run have different locking expectations, and
-> the split puts the boundary where the lock is. It is also what makes
-> moving the scan to per-VMA locking trivial, since the caller owns the
-> lock and the engine never touches it.
+> While looking into whether Kubernetes can allow net.core.somaxconn
+> by default on cgroup v2 nodes [1], I tested how receive memory is
+> accounted for connections waiting in the accept queue.
+>
+> I understand that d752a4986532 ("net: memcg: late association of sock
+> to memcg") deliberately moved memcg association to accept() time.
+> The discussion also explicitly covered data queued before accept()
+> and charging that memory when the socket is accepted [2].
+>
+> My question is about memory containment before that happens:
+> if an application delays accept() indefinitely, how should the
+> receive memory of those pending connections be constrained by the
+> service's memcg?
 
-Thanks. You also explained this to me in my early email to patch 9.
-It makes sense.
+AFAIU, this cannot be constrained by memcg, and you need to
+configure some knobs (somaxconn, tcp_rmem, rmem_max)  to
+define a sane threshold per connection.
 
-My motivation is to minimize code divergence of madvise_collapse and khugepaged.
-But it seems that their workflows prevent the unification.
+https://lore.kernel.org/netdev/20250707213900.1543248-2-edumazet@google.com=
+/
 
-Best Regards,
-Yan, Zi
+
+>
+> Test setup
+> ----------
+>
+> - Ubuntu 24.04, kernel 6.8.0-53-generic
+> - Kubernetes v1.35.0, cgroup v2
+> - Server container and Pod cgroups: memory.max =3D 512 MiB
+> - Private network namespace, somaxconn =3D 65535
+> - Server calls listen(65535), initially without calling accept()
+> - Client runs on a different node
+>
+> The server container was privileged to set somaxconn in its own
+> network namespace. The host's somaxconn remained unchanged.
+>
+> The client established 256 TCP connections, then sent 64 KiB on
+> each connection, for a total of 16 MiB. The server subsequently
+> accepted all 256 connections without reading any data.
+>
+> Results
+> -------
+>
+> Phase                                     Pending accepts   Total TCP
+>   Container           memcg
+>                                                accepts
+> Recv-Q       memory.current  sock
+> Baseline                                 0
+> 0                 8.49 MiB             0
+> Connected, no payload          256                        0
+>      8.49 MiB             0
+> Payload, before accept          256                        16 MiB
+>   8.49 MiB             0
+> After accept, no reads            0                            16 MiB
+>       33.82 MiB          25 MiB
+>
+> I used ss in the server's network namespace to observe the pending
+> accept count and the established sockets' receive queues. I also
+> read memory.current and memory.stat in both the container and its
+> parent Pod cgroup. Both reported sock=3D0 before accept(), and
+> 25 MiB after accept().
+>
+> The data was already queued on the server, but its receive memory
+> was only charged to the server's memcg when accept() was called.
+>
+> I did not exceed memory.max or test memory exhaustion, so this
+> does not demonstrate a node OOM or an absence of other network
+> memory limits.
+>
+> Current implementation
+> ----------------------
+>
+> I also inspected upstream v7.2, although I have not repeated the
+> runtime test on that kernel.
+>
+> sk_clone() still sets newsk->sk_memcg to NULL, with the comment
+> "sk->sk_memcg will be populated at accept() time" [3].
+> __inet_accept() then calls mem_cgroup_sk_alloc() and
+> __sk_charge() [4].
+>
+> I also found the discussion explaining why simply inheriting the
+> listener's sk_memcg is insufficient, particularly when a listener
+> is created in the root cgroup and passed to a process in another
+> cgroup [5].
+>
+> Questions
+> ---------
+>
+> Is the pre-accept accounting gap an intentional limitation of
+> memcg socket accounting?
+
+I think so.
+
+
+>
+> Has temporarily charging pending connections to the listener's
+> memcg, then reconciling ownership at accept(), been considered?
+
+Not sure, maybe Shakeel knows, but I think it would severely degrade
+scalability, and the change may surprise current deployments via OOM.
+
+
+> I realize this would need to handle different listener/accepter
+> cgroups and the root-cgroup listener case.
+>
+> If that is not a suitable approach, is there another mechanism
+> that should bound this memory on a per-service or per-memcg basis?
+>
+> For the Kubernetes change, we are holding off on treating
+> somaxconn as safe based solely on cgroup v2 until we understand
+> this better. Pointers to previous discussions would be appreciated.
+>
+> [1] https://github.com/kubernetes/kubernetes/issues/134194
+> [2] https://lore.kernel.org/all/20200222010456.40635-1-shakeelb@google.co=
+m/T/
+> [3] https://github.com/torvalds/linux/blob/v7.2/net/core/sock.c#L2542-L25=
+47
+> [4] https://github.com/torvalds/linux/blob/v7.2/net/ipv4/af_inet.c#L761-L=
+766
+> [5] https://lore.kernel.org/all/CAAVpQUDUULCrcTP4AQ31B5bfo-+dtw3H8CQGq9_S=
+Q7d28xXSvA@mail.gmail.com/
+>
+> Thanks,
+> Qifeng Guo
 
