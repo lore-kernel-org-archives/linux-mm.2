@@ -4,132 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E461EC88E53
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 10:46:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFD86C88E75
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 10:50:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D62666B0088; Tue, 15 Sep 2026 06:46:07 -0400 (EDT)
+	id 617F46B008C; Tue, 15 Sep 2026 06:50:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CEC1A6B0093; Tue, 15 Sep 2026 06:46:07 -0400 (EDT)
+	id 5C8C26B0092; Tue, 15 Sep 2026 06:50:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BD9FC6B0095; Tue, 15 Sep 2026 06:46:07 -0400 (EDT)
+	id 4BEDD6B0095; Tue, 15 Sep 2026 06:50:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 943666B0088
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:46:07 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 22DB46B008C
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:50:56 -0400 (EDT)
 Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DD59A803A5
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 10:46:06 +0000 (UTC)
-X-FDA: 85215666732.20.3E205CA
-Received: from flow-b6-smtp.messagingengine.com (flow-b6-smtp.messagingengine.com [202.12.124.141])
-	by imf30.hostedemail.com (Postfix) with ESMTP id F098B8000B
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 10:46:04 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="L 6Rc9ri";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=prKVy886;
-	spf=pass (imf30.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.141 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789469165;
-	b=IkYOXwzPvhGZoe+gqFJk0aIGSVXqTMxygIXZHYoMtOB1bhig+WwwoSU+93wTTHEutcpsww
-	wyWkb32pb0Czh7S78Khz5n7BurP5pdOf9oxitK+pyvz07ns4rbIUqFjuDxnz86Bmv9KSJG
-	zUm2M2JPq2gHEWtLep2NDQP1ZtY1m/g=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="L 6Rc9ri";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=prKVy886;
-	spf=pass (imf30.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.141 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 92E001C21EF
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 10:50:55 +0000 (UTC)
+X-FDA: 85215678870.20.F56D0EA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id E1D1C16000D
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 10:50:53 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G4yGHJwf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of cem@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=cem@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789469165;
+	s=arc-20220608; t=1789469454;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r3KZSIAXGNgRgXQOPp8px8yy9kwrf84Q26i0MJdE59o=;
-	b=1KgJtshGpfktbczFyNEucUNn9b4H0fP3LPVrwf9c/kiMG+kIm9ar2T3vNQMYfEwZ77HkrK
-	zfURQLMS/WSVWxTV+PXgoQNDh3OqlE96YdZ5g44UdHFoIQ7BH0hvXaFZ+LqO39VSzE0SlF
-	NcBc2KEB3XGVgkyodz1crYld68kx+Wg=
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailflow.stl.internal (Postfix) with ESMTP id E145B130051A;
-	Tue, 15 Sep 2026 06:46:02 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Tue, 15 Sep 2026 06:46:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1789469162; x=
-	1789476362; bh=r3KZSIAXGNgRgXQOPp8px8yy9kwrf84Q26i0MJdE59o=; b=L
-	6Rc9ri6gxOuiD4wi+F4wef0a+UJG3EiKJgnLWTLHVEuP2+3wj7T8IKZ0B6yDEWWG
-	Rm4ZRGyt51MckaWR05Hr0T7xAGvJE1ALKaZd1VUKZgJokVcvrRTR7mUWsWRqXK2E
-	9+hdo5R2yNg8kExFfkOQ17IGg3Jw+kuhOZtz9N0fC4Eh9Oga3O5w95DDEze/K3T6
-	I1nJLl8V6uAVt03r/Z3CSUr0gayS/pNXiEHpjJi7+CgQAKIy1lxlU/jT3MRV0cNP
-	OKVwiEHLiK2BmanG+W8XUrQo47YFtv5+v7VrZqADMQfaMmTJ/QQaXjb2SyeSVIbR
-	UfCmgsW2N7P4jiCYK7yGA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1789469162; x=1789476362; bh=r3KZSIAXGNgRgXQOPp8px8yy9kwrf84Q26i
-	0MJdE59o=; b=prKVy886uXsn6neUNmcdJmKXoR9+2Oz849wVpc5xfxikecwlI1v
-	OzTaFGnwulqZJsN3UMQ5VPHGPOcKz8ao3fvIBIxcZwacIJyFJHFvtfUhyLFjjY0S
-	tu/wZ0EKacJ2aleR1w+W16vNGjBiWW59PmESpJWe4sqC1c8sUAVCAkdllibLM1Gt
-	JACF7lYog81yldUY55iIK0dJDUioDZofFF+gf5+JoQi70DEeKNg/AYfMbm/MxE5K
-	yfSlV6GWZP3WU7W0ZC3I3QvwgzUjTRBjPVk/pLkMd4ArdYD4nr/XcWFFrogWI0sD
-	vb5KsMOM84YDaUtr2pJGLL6zjS0BSZW5N9A==
-X-ME-Sender: <xms:6SGpavVCAue0eV8cvmHt1ZCUzT6awTHI5y_G8H-cjxPLULy7t9yadg>
-    <xme:6SGpap42XUC_IC4BjACzT-tlborJZP-U77tyl_4xpZchdpZVxMrkC9r0Y87lws1Zw
-    A94vbuVjfertnWE1tp1382I-eUaB7y6HY67AxPpzUg05ab4kQofEtef>
-X-ME-Received: <xmr:6SGpaqJcFbEvAl65vM5X_uwTe1dEIaQDTcugMUgG0htPpEOgLEEUHRxiSqE>
-X-ME-Proxy-Cause: dmFkZTFDaruGlOr6fTdt0YZFnkPzwcHHkwV4lV9ndG6J2fASDcnXeHcQHuo3f91XsUJ2pA
-    HU/uv77nPp1rP5u/CbuPdLN/p1jpq3LVrMj2+B0r4SYZ7ziJEAJcJenoZ8R0wqbx6uZdgx
-    iwTu6LwFZHMvs/xqnUg2729mQ1gnrMulHt85qf2gQIHouioHBhh4T8jxnHZTj4Ry1kp9wz
-    upUTCMcgIk4OAkHdMZTxTifA04sMoR4eTQ43U9O+yMhwCEBYBv0BpxD4y1bzDxD6miaZ+0
-    f1p8SRDckwuQcEfweit5QYJe3BE3SEy4P90VboaSv38MUixnvuoBh8IePTHqg6uI6uPwSQ
-    9TnlZDd3WFxpHdKywm9yfMnU/s7dF/B8Dv/U6Mr+3+8NScUaikLRHSGmTXPt+/oh6dqnmk
-    6e/qjUYVd0japbWkdvtZpESil5JyXy91rl5ZhL0+cWwfCfNqOkCDdT+5qnXiTucG0iuVtF
-    EkDTimZuGUuiqYGPAyIrjcyUXuso9C/YJp1sDYYIcDspQyRxdqx/HHBc9WMlpIkxe8qydI
-    9ecVBuO3NoCqT3ImcHztcP3MfpOaGOm+I7hu0xyohn5YiEyq6gVd6BnqgUe27onY+gXnNB
-    35uBC2q/EENiA+1aXvvah/BYgPogoJCqQsxuAbiN8clRuqmZKm1nn8TiWeww
-X-ME-Proxy: <xmx:6SGpakhpOYKJaTFw4kZPYqtjdtCwcfNdN7HVop_yjwrlEWB-d4LxcA>
-    <xmx:6SGpasK-800YAOZRVu7WXruEk_79vLmMCl6tQEVAZtTR6UUIhZoX_Q>
-    <xmx:6SGpahGXgD-PlfvDBrMuI_H4LSSUXL-bLvomY3yUdXoMhyBTszbf-A>
-    <xmx:6SGpak2rKS216hDIjSz-nBdsOO-FC6wZhkrn9oTdK17KmMZ7K01OgA>
-    <xmx:6iGpasX0no-uhE96hzvYa67Wne1yGJN4-TV6_rq8-nnEI3DQG57hLGFw>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 15 Sep 2026 06:46:00 -0400 (EDT)
-Date: Tue, 15 Sep 2026 11:46:00 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: akpm@linux-foundation.org, ljs@kernel.org, nico.pache@linux.dev, 
-	baolin.wang@linux.alibaba.com, baohua@kernel.org, dev.jain@arm.com, hughd@google.com, 
-	lance.yang@linux.dev, liam@infradead.org, mhocko@suse.com, rppt@kernel.org, 
-	ryan.roberts@arm.com, shuah@kernel.org, surenb@google.com, usama.arif@linux.dev, 
-	vbabka@kernel.org, ziy@nvidia.com, usama.anjum@arm.com, agordeev@linux.ibm.com, 
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	jannh@google.com, willy@infradead.org, pfalcato@suse.de, rostedt@goodmis.org, 
-	mhiramat@kernel.org, linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [RFC PATCH 00/57] mm/collapse: rebuild collapse on migration
- primitives
-Message-ID: <aqkg_iU46BJghUNk@thinkstation>
-References: <20260816224609.308019-1-kirill@shutemov.name>
- <9f51ac27-24b2-495b-b397-84865f977d24@kernel.org>
- <aoXRi3ngBhO54Akk@thinkstation>
- <fd179a26-fd69-4b5f-9af1-b3755ba9030a@kernel.org>
+	bh=IhcyLjGJ05/2POGa2m97E2Ry5aVFyA3avbRCnlowYxc=;
+	b=31HkMYULx4mhBODYWO0Dw1HP4Jxfquutb2uNlf+lOutX3VUnKFU1SxoDG1b5R+vg52Qr6s
+	3KRuR0KDKE2ll8UO18K0Rp3unYu4wAq1VrBJCzKfnuLr3S6wAe6Qy3nOFrEF7/RjLvqaR+
+	PvfoVNSK17LWryNqRdUNZwZl83lG/Ng=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789469454;
+	b=8k1EFFYASxb9iSvTzeQfDQD0j4eqsscX/jsNA59RYP1PuiB/ks5Ef4P7NRFEOJvfAiDzOU
+	aDqWGfgCGQSsQwYxJ5BgfE8nLEnteNiptndxduAqvS7NmFoIYanj2FYIHSoHCyEpZtMblU
+	9fePPgEBnPnqMgleUGhJbw64hmtkkQc=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G4yGHJwf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of cem@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=cem@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1A7CA401DD;
+	Tue, 15 Sep 2026 10:50:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BF4A1F000FF;
+	Tue, 15 Sep 2026 10:50:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789469453;
+	bh=IhcyLjGJ05/2POGa2m97E2Ry5aVFyA3avbRCnlowYxc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=G4yGHJwfOy5m8i+mXo5di3UlWyqdcu5o4y/mZ7dwqz5we+V9jhBDgGeEICq1ztx6S
+	 Ya2a7CDPPpstVqAKcbBjGykdDs8vh//TL0IqBPNJ6LxkrRQ5iCkrvJG5wFNRbDI/M7
+	 T+/G1ziRwykRIo9EMAZ99Y8JRIgEL5oGqPiseiCBpJs0OTR9FIsmfV6e1+lSTIPaX7
+	 XwtKtdX0792KYhG1Fa8pkUT489nX6WkDJ4P5thelo/Lc+KzL85Fw3t5mBwMc3ECWha
+	 kMBzX/83euhexAwACcXz5/RjDDeJQ2m9W3emWiWID3boDAShx8AKYwCJQHCOlxvLQP
+	 S+/wcuUlIlIMg==
+Date: Tue, 15 Sep 2026 12:50:45 +0200
+From: Carlos Maiolino <cem@kernel.org>
+To: "Zhou, Yun" <yun.zhou@windriver.com>
+Cc: Christoph Hellwig <hch@infradead.org>, 
+	Kefeng Wang <wangkefeng.wang@huawei.com>, brauner@kernel.org, djwong@kernel.org, akpm@linux-foundation.org, 
+	vbabka@kernel.org, surenb@google.com, mhocko@suse.com, brendan.jackman@linux.dev, 
+	hannes@cmpxchg.org, ziy@nvidia.com, david@kernel.org, qi.zheng@linux.dev, 
+	shakeel.butt@linux.dev, ljs@kernel.org, linux-xfs@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH] xfs: fix NOFS state corruption in btree split worker
+Message-ID: <aqkicBmz0HzGa_Ig@nidhogg.toxiclabs.cc>
+References: <20260902134417.c44503a1d65533f81fb1c391@linux-foundation.org>
+ <20260903133756.2006032-1-wangkefeng.wang@huawei.com>
+ <aqJEWmUN3Jsajoyl@infradead.org>
+ <38377447-ffa2-43ef-bbfa-43d05decda1e@windriver.com>
+ <aqkKPU8HNkt_uV-m@nidhogg.toxiclabs.cc>
+ <e6af011f-005c-465e-b441-958543faf5a9@windriver.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <fd179a26-fd69-4b5f-9af1-b3755ba9030a@kernel.org>
+In-Reply-To: <e6af011f-005c-465e-b441-958543faf5a9@windriver.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: F098B8000B
-X-Stat-Signature: 3jndt7yzcw8phtd8w195rwbozdgu9hy4
-X-HE-Tag: 1789469164-326446
-X-HE-Meta: U2FsdGVkX1+fC3sJksPdwfJDA2fLWHQhHhoEfa0KnZKKHIQMbzcK32TW4KEVdMI4ZXD3J/T8nz7oLXDuHeo7Hd4YPI2WGj5hRYv3x/vOk2I8JZ9jwVFtjzsMzSA7S5KFxfTsilnWuFfGbDIIg6zuGKE2LiY1xu2pC7TaOoPqd5DFwq6yuXjGq6JdGxpzEUDYp7ELslpIOtttBhjgxQaLWDnBdH4AAg87jffjm6xmbVhMaXjqz9BORXbSWemvDOSziF7Ct+VJx4tsvEqDngsMOpv8IyAk6n/sJXUyJ91AtHtsiUJLhh4DvWADSCvVW8xhA0ycM2QKFTcHzM+boPaE7BNfELR1H/wnjrCRRyYK8GV9kqO7LwIxefQ0lVi9RUppZmeJnjP61upHK78qtGncYvmtC5ZTKGyoZ6zhvk2G4mX66dNxRXM5KeVisnlnZivkzgkou7rfsJJ0sQ1I+6mRthzRcOyKik/WNBLUHaKvRH6ss2SlXgLfDXE27qL9BXP1hY6EQuxVjYpkV0TceiiCSSdLKGQ381W3ITgGBVPMH8OsEklni7VI+wMj1JwKYN9c7qn8dFIEJ22xt4pHiu8pqnmSfQAdEGro75EtduWdPSUiFnVa8IGpMNZ0ncN1YMS64WH325w3+ASIL7DOd9hDs3oDTQlI00UdKVLFBTkWBYhUIUPOgUB8fqqwuBngfI25RPpdfR+Vtf0VbtYGmHRMt0+YC87EqP/OdF8WYp5bZ28aR7jLC1i8UR/ktUT6aWzufRdx5NHN8h0wkLNtcRsx6csNWCC9n4uI7CM4OdMp0MOVw9SXdUSpNFanyWJhFeSVOHhPBszDM6+M15EcR54kWEj2cjHD+rbTuha+OKBmbFqvCz+C0FXy/SrpALff/uHuHmhIvxOr12bbH04zLim1y1eGZEV9QTRQFq6F2WMo6a5931t7Mq1XRMGwvxtn6QPIf6SlDXGeHC2G1peuP3I
- wFLQc6RR
- Gv7wi2sTnCmVUXDglkN+8JlcxmIg/3dxfMsAXSisezt26sizB5jX+pc63qWOBrROyWOt26MSrbyzIvWstCq1JXxu0R5qVO2SlcOB4BAvJ527Ze4TJWveVlcmO7CmZYHdTF0ry3kxHnMAvMdrr4e9s8/jsubDsPva2KIpVz5lMUtVg7narhAG7sZCKa/JLWdHg8ooIVCWIoirXa8klXaR+qEaWqjzuIoTW+orOh/oiQeFR8Oj8S8RrqeWIvfEHLraWZF3cM7oOpa2/qfYIGsOIN8Okhf99dNEa1U77wCsw3ZCX3w5V24ii+auu//HYkpZ4Kg6juGW8NHpGboJAvQgAnPLieZdPJtClWATQtK5/O5JhoXjkNJJ1NyLV4M+15DUFEj9JD4nE4a3mUFZX5MiFvsTb39s7mhrhfbKp1+8uEe/eotcjET/6o2Z3b5i6sAC/hhRmPZ+DSedab7R6b0Sl91+hQg==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: E1D1C16000D
+X-Stat-Signature: ar941ebgfah7dmksgk3dik7pf7ntz5mt
+X-HE-Tag: 1789469453-123652
+X-HE-Meta: U2FsdGVkX1/WprWery8anMxYo3SJdi3+/Ksx8bXVokl5sd3O1MUZNvIywjDgKBdlVb+oc/wVaLSWZLyZTzwWVWEo4zwthEtlLITGvJstfX1HSHpdvOk+sjtsQmo0HUQOFrRJHxr5cGhrhwqXgnOnTNaJ/jF3TtuD8UlL3zGZ/i+i+e1WqDyDAiYqxtkA1/Ml2X4B/9FKSoBP27PvxliJOgh0kyis5mnoMlZrGCHE3SygQvSFJdk1ymV3TXW2VAhzRquN7m5twHU4yY8+ZNLzo28eKxxd9qxDxFE1Yjk3pW8Vldg2TdFHJF6d+LY/rwY7bu/FP0/gkYL5woZElr4cxXFCb519sJGvWUiJJkYbsKm1i5ZSaboLUSNCIatWDQrU3o6qJuobMi7WGzJK/uBTsQ1IBG+dkF8Pm3JDBx9SltoN0FVpNBdYvx4EQP9r31JJoXM6ZzVMWFrYhJlxymVKAuM3YSpqYSkdBHvNlz5cnUsuuljFXsIrhxqbgIGBsAO4tmKfzDKPngM6K9or5yzRh9d4eRwrppSXuUQhpqBUi4JN2PzpcVlUGTFsA3bCnGKr0UT2JaHVRYILkf4nkJI79MZyFBWtp6A1sskAOBrwwwLEX3nfN7nersPu/uGpwyJsEP8BL/jaDMyyV6X0UqHAyS6O7fDvrMrvkm2i46SNXPpEq+KhuTI34ZT0Q3w1L01B4Yt/nYlbAYMqPDx7AqFVov1WLBvV+S615w4vuMxQvOsWfD2KXZJy6XPx/wqXanaqPsb9PQI7iVvQfp4eXp4GfO5uVvuwcKdpzjmHlkIXqzeM1i4vy1PSet4Y7KFR9KJgQUJsqLFFteE0lresBnuPhMdLUGB1uBHb705kO1TBxblopECWDSScVn7hSU5dNUn8Ja2seaLVL6A7JP5B+RDJcX+dX761SSetPf29FCuy6Ig26ujCLvCHv7lcTScNQeCCZ7ay5VQ/0KRu8pFzSRI
+ AsjlaRVz
+ VDVp8zc442qBLEeyhd78z4rH5wax8I2J6i0946KpVduqG6Nu2U5c6uCmPVfYCirPd+uVypGlhIWMU9cZBQ3uXgrfUxmHcLP9z5VvPeSEtaUaZlI3zMHciHuC1ptsaZH8EnB4ljtBE6AWVSw4fEXGrF2gRXRlKnn4kBpPV7WXEWWRwx79bVhVg9n67HyMtKJAzhfA+MVU6pYJ8Yy3mXPjCmGx9jS4hJdIFHPi5dEFZc5+WeDCjHOS09pU2JduareqWEvT+E1/aZdPeBh+SfEXwJb9I/AIW5IsuzZNNLZLNp0cdUbxsXlrBIyeENxorw9zikM0ifQqLXtifS2tuzPzklOiIBQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,18 +99,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 14, 2026 at 05:07:37PM +0200, David Hildenbrand (Arm) wrote:
-> > As I mentioned above, we drop the ptl after the freeze. And take it a
-> > second time for the install.  Allocation and the copy run in between with
-> > no lock held -- on 64K the copy at PMD order is 512M of it, which is why
-> > it cannot sit under either lock.
+On Tue, Sep 15, 2026 at 06:34:49PM +0800, Zhou, Yun wrote:
 > 
-> Hold on, are freezing all folios to collapse? That cannot possibly work with
-> COW-shared folios that are mapped into other address spaces.
+> 
+> On 9/15/26 17:19, Carlos Maiolino wrote:
+> > > On 9/10/26 13:47, Christoph Hellwig wrote:
+> > > > Adding Yun Zhou, whoch touched this area recently.
+> > > > 
+> > > > On Thu, Sep 03, 2026 at 09:37:56PM +0800, Kefeng Wang wrote:
+> > > > > xfs_btree_split_worker() calls xfs_trans_set_context() and
+> > > > > xfs_trans_clear_context() on the caller's transaction, overwriting
+> > > > > tp->t_pflags with the worker's NOFS state. When the caller already has
+> > > > > PF_MEMALLOC_NOFS set (e.g. xfs_end_ioend_write, xfs_dio_write_end_io),
+> > > > > the corrupted tp->t_pflags causes xfs_trans_free() to erroneously clear
+> > > > > the caller's NOFS protection.
+> > > > > 
+> > > > > Use memalloc_nofs_save/restore with a local variable instead so
+> > > > > tp->t_pflags is never touched.
+> > > > 
+> > > > Looks good:
+> > > > 
+> > > > Reviewed-by: Christoph Hellwig <hch@lst.de>
+> > > > 
+> > > > Btw, if you have some spare time, it would be nice to kill
+> > > > xfs_trans_set_context/xfs_trans_clear_context as follow up given that
+> > > > they keep causing confusion.
+> > > 
+> > > Yes, you finished reviewing this patch [1] in July. However, I'm not sure
+> > > about its current status. Perhaps I should ping Carlos to check?
+> > > 
+> > > [1]
+> > > https://lore.kernel.org/all/20260720050522.3101824-1-yun.zhou@windriver.com/
+> > 
+> > Ok, now I see why Kefeng Wang re-sent these patches...
+> > 
+> > The first submission in July slipped through the cracks (I was on vacation
+> > that specific week FWIW). Feel free to give me a heads up if something
+> > don't get pulled in 1 or 2 weeks.
+> > 
+> > This one though is buried in a multi-subsystem series because you sent
+> > the patch In-Reply-To one of the emails in that thread.
+> > Please don't send patches as In-Reply-To something else, specially to a
+> > multi-subsystem series because it's really easy to skip such patches.
+> > 
+> > And then I got a "Re-Send" series with zero information why it has
+> > been re-sent, and one of the patches in that series was already picked
+> > up by Andrew. So I can't simply merge that here and mess up with what
+> > Andrew already planned.
+> > 
+> > If this patch can be merged before:
+> > 
+> > commit 14ec230f93fa928090507cfdc67ca67e928d0c9f         (linux-mm)
+> > Author: Kefeng Wang <wangkefeng.wang@huawei.com>
+> > Date:   Wed Sep 2 21:16:50 2026 +0800
+> > 
+> >      xfs: remove dead kswapd flag inheritance from btree split worker
+> > 
+> > then please re-send it, otherwise wait for the above patch to land in
+> > Linus's tree, rebase and re-send.
+> > 
+> To be honest, I was on vacation in August, and I've been busy catching up on
+> backlogged work since I returned. I admit I lost track of some patches'
+> status. That is entirely my fault, and I sincerely apologize.
 
-I break COW for worthy candidates in the faultin prepass before freeze,
-alongside swapin. It simplifies the picture substantially. No rmap mess.
+There are no need for apologies, my point is if you have/had a patch
+ and it wasn't picked up for whatever reason, feel free to ask/ping
+ about the status...
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Specially nowadays with the huge increase in the patches inflow, thanks
+to LLMs, this is subject to happen more often.
+
+> More importantly, my patch modifies the same code in
+> xfs_btree_split_worker() as Kefeng's series, which is already under review
+> and heading in the same direction. Therefore, there's no point in my
+> resending mine. Please just ignore my patch and let Kefeng's series cover
+> it.
+
+np,
+Carlos
 
