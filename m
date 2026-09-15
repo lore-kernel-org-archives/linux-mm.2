@@ -4,135 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5088C88E72
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 02:20:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A293C88E75
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 02:25:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 912CF6B0096; Mon, 14 Sep 2026 22:20:00 -0400 (EDT)
+	id 48BBD6B0092; Mon, 14 Sep 2026 22:25:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C43F6B009E; Mon, 14 Sep 2026 22:20:00 -0400 (EDT)
+	id 43CF16B0093; Mon, 14 Sep 2026 22:25:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B20F6B00A4; Mon, 14 Sep 2026 22:20:00 -0400 (EDT)
+	id 352626B0095; Mon, 14 Sep 2026 22:25:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D2146B0096
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 22:20:00 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3E54D1C20C1
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:19:59 +0000 (UTC)
-X-FDA: 85214391318.17.4FD6D9B
-Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 5B2A440006
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:19:57 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nuaQ1jtC;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of kunwu.chan@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789438797;
-	b=rvOHqvyy2W64EpiINp7PrTc6IjT4cf02DjdVs53Fp/Rjtrnlsh9N+LqeQASFtrNN+xkhHB
-	bOcqnwy2Vj2XIVwRa2f2CZsgTKT6/W9n98XWCJn009M3/yMw9G8/vsWLnursS1Mwki+7y/
-	ckoC+xBs01pYPvLRGvKdxdvi7lAzQR0=
-ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nuaQ1jtC;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of kunwu.chan@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789438797;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0CA896B0092
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 22:25:43 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7C05B1A02E3
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:25:42 +0000 (UTC)
+X-FDA: 85214405724.12.3E0E86B
+Received: from mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	by imf21.hostedemail.com (Postfix) with ESMTP id B5C331C0003
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:25:38 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=t7ciUKFq;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf21.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789439140;
+	b=FWQl63ZUhSxSdYImZRzB+lIISclUomNXkU0y5oIcMcmRvhP75aIB+DNmNz3LQjgCMAVzRu
+	OpykLvEPhEX+9rt24bi5Vod4rOFLXCYlJ0i106sXr6y6u0psVPviW1d/Dau3rC8t3uI4g4
+	1MpLcno66vZLWu9muVpnoPIMoYvFlr8=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=t7ciUKFq;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf21.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789439140;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Uz6pzhfSfo3jkEMjApuPj77vcnUzEs00MyRYle4FEto=;
-	b=qHknywzCSxRyJf8itcKWst+kW6ITXUuxWPTj+ZsRvZXg2kYFynDlDWboYisC7YvrRJPpf2
-	uqQACSxmLvE9Jxu07M6NfPq+mLzOL+pjiXOkpDX42/k8pkoA8O5FB+pIRKUQalB+EWMAyc
-	6XY0aMMoMh9ph3gzoG8nOSGHDF3CWqU=
-Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-482f6356256so957649f8f.1
-        for <linux-mm@kvack.org>; Mon, 14 Sep 2026 19:19:57 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789438796; cv=none;
-        d=google.com; s=arc-20260327;
-        b=q+ZWLKv1jSAcj3+hIr78JHz7IK1NFaYEm0IRn9xfdN9o0y8vz2o4a+d+QJ+yxS/57Z
-         q/IHSpp+d2U06M8tc9833SlPmj91FFT0oJchjVM6PGuEerq++Oz1PpNOMgQkHN8hSKHa
-         0gh7OeaU80l6iLpnNs66K2kpPQEsPeTtA2eMoBvsx8EuLhThinEANF+tQKFdCHeDiHg2
-         9uf1m9d57Ov6sjeYVf9nzYdz6OYKWm7o0edBYB75486UGN31jsrg2HDIVGwO+KEsLAPl
-         fB0qmkgTGNs4P1V45Kyj7oGxoPsQW0Xs7u/1EA+PIEL+deai9gWEGtRqiO0O8Fc2KITz
-         A9kA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Uz6pzhfSfo3jkEMjApuPj77vcnUzEs00MyRYle4FEto=;
-        fh=MPz1SuhjKc3r28EM9NBjrW0R/Vlt+Ssg5VFIHaO1eMo=;
-        b=clwE8tVd22BAAgK8F0YfMp2Zm+FdHcyfC5bYc9YeZn8jURBZUZZqWWXUpFvKvOCCiM
-         skpwrdQG1aJHvELOxisfi3UkM+SJrtUe9I4sKaBA99Nohcv2jphBb6gzaQJW3+vc2rHw
-         LV9qKOVjC43W45ky0Cj7UkmUve4CXv/JBOtl8jYPl042OW6snVx8V0He8hQhrZuS7UJM
-         CyXXMtga9tbQZC8UIEFQRu+hv761+K0hwP1AxKAjdsUz4phziALrZrJLnIYO8iiZ7YNV
-         yCkAY4wSd+zdqQAruCMkmTrqd5SFOcI0uuVCsyeo/i15G7UcM7L/bhxnLXFWZJV/rYVI
-         DvgA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789438796; x=1790043596; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Uz6pzhfSfo3jkEMjApuPj77vcnUzEs00MyRYle4FEto=;
-        b=nuaQ1jtCKDlawJNo+xrWiW0UqhwSbS5CFnbYJcpx1A2O5AKhJzppkvd9bBxkgrTMDo
-         4rZMxxgNxMRqA5lKvwRVAs5uVMshkCBPcIUmRVSmafrXdGtDJGDpy8S4xE4U5iWwswtp
-         odDmz+x/bbHiq0PrAbTDd7jkkKghyPr3gelEzVfaXisrf649m237Oi+zvZJdRfV3MOYB
-         jnEwtm/iMDvIfq14MBIzTTceWQHGX7y/mdenmOfDof/7EiS9awiXJta/kwBDpzuqqaLu
-         CItJgR1lEMN7tuNKNWOaENuz/FMd38GXt0JrpyBnDm7qtFl+4m7AvMhX1Zd/HAuvcoO2
-         ChBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789438796; x=1790043596;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Uz6pzhfSfo3jkEMjApuPj77vcnUzEs00MyRYle4FEto=;
-        b=q/YycOWtqXN17dJ9hmoVP4Ck1dPp7TON+YFlr1Q6Nkzw7Ar5Uz1+knFjcPW5uG36Qz
-         sibpVf4Qg6f8JRNEYC99f1cVtZMH1kLIE0hQkITQnuxNKfkOW+8sFrYJvgd+qw1i23Q2
-         cpGK7Zr2A9HHJTPhAXrAm4pVRJgj2ASDiJk4+eIPvygQ1qf/iVpjk24+vcickIUPf81x
-         4o51yZltAa8qJsR8uONjTQ1ssUe4NIqybi7ifwwJ2lsGtWgFG2BF36kgBnppTUT3GRgA
-         1Lid4O9VdTffn0weL5sbNMer4+ZF0k9RcBgKJL4Ph/ki0g0jImKUAS2XOaCyGljY3m0h
-         Wa3g==
-X-Forwarded-Encrypted: i=1; AKwUvBy+GAoyDOHuZb/7tUodxYnMRy3In2un6wHbzvOntqAj5mO0vi21xIIoROdRYvcIizKEzC65xj216A==@kvack.org
-X-Gm-Message-State: AFuF++kzNWkY/YkmDi5GO0CuIKiiAhTuGa+QpEafdCFRheRUxnlvcV4l
-	Fg3h2N4B922uRxsVn8BvdoisKVp44CHEbx1krqRs57rJJjtBwciWqF3VoS52cjzDvWBJ0iIfi4e
-	jBeMNHq8nerQwgb5z72LF0B5Yc1ULxLI=
-X-Gm-Gg: AYBFou1Hi9+g7EmFledhwWeKvbu929dXCCLZH/TU9c3T+uryX3JAzeQOQlNlYOZMTUF
-	I3sXIpiFEGepnFH7zaqjU/TxAB/UaZUL3BdvoZK170yI+B1t9A7PJhCvlYWIYRFl9S3GWUZXS5y
-	Mbvh+Ctu3/YckGXAOIFkJG7tnoOQjUO4Xi5obsv9ho9Rodo4YKGVLRc3/gSrQ6UTcdweRv4c4JK
-	WfL02sq6dndQpepLVz6kBZUCjllVw3CyWDDLwj8855WkjTXOl1VLyHSukdg6VAGUnAKCypXm8Dt
-	y5dJVcXQIaJGSH68wlvr4P6i7XZs4R0g9955UAS2qPmstprXhVVAQtJcEDCPZHcSntco7k3bJ7l
-	Ti8zzESbMcPt2
-X-Received: by 2002:a05:600c:5307:b0:49d:1e79:35d6 with SMTP id
- 5b1f17b1804b1-49e7d750cc2mr26446565e9.14.1789438794905; Mon, 14 Sep 2026
- 19:19:54 -0700 (PDT)
+	bh=TsN/QBnTzQalbMed3Wxwi/M5F0q6IcRHiwwRS9oYQs8=;
+	b=FvIXZ98uXpcmU7HRcIyJ+V8oGldwKYm+R/6STei2eiiW2OlOjhFlVS5kzMFi2FcwUpd9Oe
+	9AoYd282grLNQ29UZoLwznhz9rMtPh5pvpdV3NmNKi/cD5nW3wbvz9ZtxLCtkFF1TjryBo
+	elcRkYcUE/tLw0Hm9RqP7zDIUfYa0lo=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=G7jAV2yOVUgDl7MjUvMbstEXrE2pwtF5/atE+hJu/P4=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789439137; v=1; x=1790043937;
+ b=t7ciUKFqPBEZwQMEJDKqx5K9iHlF57FcZMf5oYVFVQrPSyYyE7SIeyE5jA8UTi5ahazNbr8L
+ /zLrNa5riwjmx0omISWKiWkmHx7rLe6rtFoaPnDB2GhU+anIzfGrPyABR7hUNqbyaQVwOay6e0z
+ I/ndzDlxlLWuR6fPL6OJXO80=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 8ebffbc4bc65cf5d;
+	Tue, 15 Sep 2026 02:25:36 +0000
+X-Mizu-Trace-ID: 8ebffbc4bc65cf5d
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <fc999f45-fcbc-4d6c-a0b6-2bea4da98013@linux.dev>
+Date: Tue, 15 Sep 2026 10:25:28 +0800
 MIME-Version: 1.0
-References: <20260914150150.1507525-1-kunwu.chan@gmail.com> <20260914151617.97903-1-sj@kernel.org>
-In-Reply-To: <20260914151617.97903-1-sj@kernel.org>
-From: KunWu Chan <kunwu.chan@gmail.com>
-Date: Tue, 15 Sep 2026 10:19:43 +0800
-X-Gm-Features: AcwNN1W8hM-JtjZLNyC-iYEta08SQzUOjubSm-5TdDfo7dJjMBqxsOi_D3YW6Tc
-Message-ID: <CAN_Opa8qSHcDNU8k=EWMywUADizJEhHPpuia3jMcZ13i5iYXgg@mail.gmail.com>
-Subject: Re: [RFC PATCH 4/9] mm/damon/core: use damos_quota_is_set() in damos_adjust_quota()
-To: SJ Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lianux.mm@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/3] mm/vmalloc: extract vmap_insert_free_area helper
+To: Uladzislau Rezki <urezki@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Ye Liu <liuye@kylinos.cn>
+References: <20260914-vmalloc_study-v1-0-526f68559706@linux.dev>
+ <20260914-vmalloc_study-v1-2-526f68559706@linux.dev> <aqgow3u0GSlj0P1Y@milan>
+Content-Language: en-US
+From: Ye Liu <ye.liu@linux.dev>
+In-Reply-To: <aqgow3u0GSlj0P1Y@milan>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 5B2A440006
-X-Stat-Signature: gtyr5se9zzm4r793owa6s64z6ebgtzkx
-X-HE-Tag: 1789438797-751644
-X-HE-Meta: U2FsdGVkX1/Iq7g8v1WbGytmWh4Cs4uxydPc1zHIelazOl/SRPeravmZN9D0kauE2YSuYM0b8/gjzoD8742zskgGG/qkti2Zir5dtqyczdYhCnqrOPjcd3/M9okUJ9heVZtrQ+fhj+uXRSQdYDNiqWDgk46eb51nVOg2JOuz/3tJwJ+p4BBomz04M3LQEKn1OcjZov5MB3neeeDP3Dz80JCA4FoJzmV1nVNlavW/K6kkKxAREfdByn28Ds/JrlclN5Fhwz0CCZmu0U+GSFmCp9PrcXGpNHJfWjv416keYUf2diXR+/+ABsXPoj6EIf5N0KOG3lBCceJ931WXvaH3Dhs/MT2D9XuxA6xTagule/0Ix+KZVKs/2Lbhnig7mrUbmJHcjQuZUf/XnHIHmTRaqfz8GlVPuPXeb1rmJy6LxFxFeX6YsXN0k2Z3iRGOZrWybtf4zjInisz4fBVAyq7ViiLR2S1D153Dp6nr+FOr2uyffyoPnOgKsNl0hdgW/7OZpeqwEh/ScBn0tfPOxBi7mTyuzeE6wsWhJkJPqF/0QOE0UWpgoeOaTLQmom7XwY01gBVUU44Q2TjzaqRGHMTYPtirpqeeD5BgNsyWxzVAHYqZ1pg3X5/64PmwnRmLVA34k6eFCNrtEuNH7lA8oa07AziUFQwQUgmtjRF35eYuHgmgeSAPro+cYHmexivbWQhIs9jbdvpPVDwouCY/yb8HbadvhXaDFR4QvvF3khlaNpy/AT0adnk21FbjjyoSNjLCAdTozW2vG0BdIZBmPff7KevbQKuTFLEEqBzFty9VGt23q0jkll2xpwCCdTlMS0wJX1SG+66Q5OPxwb4Zbunjneyx3Sx/mlu9/CP6WrW5JkiQnSDtNx+jdeJl0jgNhKVT7hSObV5DXqaqVcmcrgEqfr+AcIwFxW/Qsd1SPMfg5257rSklpS2h1AM3mJ1dMCW9URw20xlIe0gT91kUHm7
- uy1iPYjQ
- QWExvSDxpPCvpeyxsqwkC9vOuTVGR9VB/gL3nX1/iZLRoMssKt4NwEZrdohnbcDMUgP9NRcJzRTVyf1QU4SuvG+1yfmiaHhpMq9TbLHDlKPq2MfhjAyqzExA2d6cQN/wUkdcGgYlaRzJx7HbRgI76tLUS5Uo601TfvFnygH2Hz8U7G4o/E321NvFCT/yvEVMVr5hlv5qyrnqasHcEp0H/RH6Opg5TNoMxXVh+RN7nxVeqq0iq0O3V3W3wIHMJbLxfr4uXDn3w2Ff+C9vlnPdjE4djXTKgcmZc0tAgG1BvqV1xP97X0MnijvOY/3JYsfeHOYra/eyv8k/oc/y9WNk4hcwjWBOHxp4sh/xl89EFOw/3OKf/6Ft8cvqu/E28vcfaJZxuCWHzMcH5+u1uKgYZhDAoyYqHij8WqFH3l2nVb7Ac9MDjr1ngY8xXpARG6lXvCwTP3FeXzIgYyoVvrGeVKqQSqeZ60lebdFeuMs0ZLeGogsZvORHwN27jWB1GpD5XJn/sLRLinV6CnK7SpSCDySDAyjA+oq9Q1lumvoEkqqYVobeGm09KCsllUXGlJ3FpAv1u
+X-Rspamd-Queue-Id: B5C331C0003
+X-Stat-Signature: xpqdp3yje5y115mu4qugiqt5yt14yiih
+X-HE-Tag: 1789439138-684629
+X-HE-Meta: U2FsdGVkX1/6YoIn+joH5J6SGKXIvj/mH1sqmUn16rKwV9axlEs6KixRQGrtx3UdzARU1WdOFd4QWyJW/vf7sVXlRkfB3F7SaKBWjNRvMSFq5L1GjPShZx7C1W/3u7snTR6P4wigOvcJ9IQc42efd2dwP57t7PDPK5+/vABJP3MSi3TjiH+KznJ8G7eMGaTe6YrgdNZgMFsrT9bfWS5qygQx77MtiQbNC643sishkHnV9vkCVX3uxEJ+Rv3IiQcXoxO2kv1r9gADH3vY4wlYisCM3WvJS07M6DWDpzC6IraBxrOzH9TQZh8low33xxbQUYSCRBTiJnudNb2j5oKllc9jyYFWtzOpw+0hIEjcwjJBWGwXIdTzJKFHzXb7VJqToALc6brLzspj8rORg6CePUZdEOW9IUXzJT34zW6FMyK8A2azOlqnxShCn6t7fcKgVpJ/k0Ie+xQYf/eF+JH18B4LLDei9rGNYB6+y8L45nC+FRT2yYMHpQ0CfqTQ53xOR9UklCUFd2GbokVSG+ta8WCVpWmufGWLKQIdykqtlA/e6FySl+Hks93EwUCy7UlcNo8CN7b/8koH3Vj9aAVcJP5FZGcqsFhQPGVdY+5glGnh9dFJ8gl+dRpYqtu4I73oyrVSKqpLfKSMhsMXHOjAKQxKXBMsmTSqsnwuCcpQH38bQYiSGkOoCktPCdXtJsYE0qI1JX6UbV12ualriYMluV7s/hOWiNqLjurkHdh4VNnJW0+SzmK1W5yGZ8FDI21oQXuaAOF5dM50srQs/X9KIgIy2iAWeRIw/o87rdKWZ/JtHe0ePgsAN5JdpU71G23t/pyoFBOJZi9ykIErb7N6Rjiq0PReckgXsKKFPFFTY7ia4d2rZ7eXNNE2F2S1edTnx9RkiPQOgvLT9HX9ii00n11R0oggb9V1aKOVJ9s0qsc2YqKi6f2S+Vbl6ZuZ0BTJP159R8UnMZ0TKuLdCnH
+ /Eoda7I5
+ vV67FwRJGiJonx91kNfMEjmWa3r5zWheKX6iN2ReHlDy14Smd8TSpXXHznXtsmxpwYWzZvV+9Adi0c6sRyeoqCVEcuoXDf+Mua0EhVBWA3kpO4EHnp0QHqzssJ9zfJjIBLWwdI8OmUuzgg7/2xiRgZ+xSJbWTWw3T3PfKgdk9lyN0avqdf9LhdygAVNmmw6EFDMymJeWXBt+8wReUOJb8nqlp1h7LonIcQUt7C/rxdFu0CvzfTCDu0ZRm7Xh1YkfKdmd36lhRX/u1pH3k/kPFz3x2e42ug8jz/toyLGNgqQZrWwtE1aCwz96k41j7oDKS03HCfpLzjJqQMEJ3IBdmslkfFlgDJT1L9CbQ49GtN5VxXhvjZBCb/FQ8qg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,90 +92,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 14, 2026 at 11:16=E2=80=AFPM SJ Park <sj@kernel.org> wrote:
->
-> On Mon, 14 Sep 2026 23:01:48 +0800 Kunwu Chan <kunwu.chan@gmail.com> wrot=
-e:
->
-> > On Sat, 12 Sep 2026 13:08:05 -0700 SJ Park <sj@kernel.org> wrote:
-> >
-> > > damos_adjust_quota() is manually checking if the user set the DAMOS
-> > > quota.  There is a dedicated helper, damos_quota_is_set(), for the
-> > > purpose.  Use the helper.
-> > >
-> > > Signed-off-by: SJ Park <sj@kernel.org>
-> > > ---
-> > >  mm/damon/core.c | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > >
-> > > diff --git a/mm/damon/core.c b/mm/damon/core.c
-> > > index cf10f6d725c19..dd27068cb83e3 100644
-> > > --- a/mm/damon/core.c
-> > > +++ b/mm/damon/core.c
-> > > @@ -3344,7 +3344,7 @@ static void damos_adjust_quota(struct damon_ctx=
- *c, struct damos *s)
-> > >     unsigned long cumulated_sz, cached_esz;
-> > >     unsigned int score, max_score =3D 0;
-> > >
-> > > -   if (!quota->ms && !quota->sz && list_empty(&quota->goals))
-> > > +   if (!damos_quota_is_set(quota))
-> >
-> > Hi SJ,
-> > This is more than a cleanup, because damos_quota_is_set() also checks
-> > quota->esz, which the original condition did not.
-> >
-> > The path that makes this matter: damos_commit_quota() copies ms and sz
-> > from sysfs but not esz.  So if a scheme runs with a non-zero ms, then
-> > the user sets ms=3D0 and commits, the running scheme gets ms=3D0 while =
-esz
-> > keeps its old value.
-> >
-> > The old check would then return early, leaving esz stale.  That stale
-> > esz is visible to damos_valid_target() and damos_quota_is_full(),
-> > which also use damos_quota_is_set().
-> >
-> > With the helper, damos_adjust_quota() proceeds into
-> > damos_set_effective_quota(), where the first branch resets esz from sz
-> > when ms and goals are unset.
-> >
-> > The code change is correct, but worth noting the behavioral change in
-> > the commit message.
->
-> So, if user sets only time quota, and then commits the quota to zero whil=
-e the
-> esz is non-zero, esz is never reset to zero.  As a result, DAMOS keeps ap=
-plying
-> the action with the esz forever.  Correct?
 
-Yes, the stale esz path is confirmed.
 
-One clarification, though: it does not keep applying the action
-forever. While charged_sz < stale_esz, damos_adjust_quota() still
-returns early, but damos_apply_target() continues to apply the
-scheme and damos_charge_quota() keeps increasing charged_sz.
+在 2026/9/15 01:02, Uladzislau Rezki 写道:
+> On Mon, Sep 14, 2026 at 11:34:01AM +0800, Ye Liu wrote:
+>> From: Ye Liu <liuye@kylinos.cn>
+>>
+>> The allocation and insertion of a free vmap_area is duplicated
+>> between the loop body and the tail of vmap_init_free_space.  Factor
+>> it into a small helper so the main function only deals with computing
+>> the free gaps between busy regions.
+>>
+>> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+>> ---
+>>  mm/vmalloc.c | 41 ++++++++++++++++++-----------------------
+>>  1 file changed, 18 insertions(+), 23 deletions(-)
+>>
+>> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+>> index 117483dd048c..797933ba9451 100644
+>> --- a/mm/vmalloc.c
+>> +++ b/mm/vmalloc.c
+>> @@ -5433,11 +5433,23 @@ module_init(proc_vmalloc_init);
+>>  
+>>  #endif
+>>  
+>> +static void __init vmap_insert_free_area(unsigned long start, unsigned long end)
+>> +{
+>> +	struct vmap_area *free = kmem_cache_zalloc(vmap_area_cachep, GFP_NOWAIT);
+>> +
+>> +	if (!WARN_ON_ONCE(!free)) {
+>> +		free->va_start = start;
+>> +		free->va_end = end;
+>> +		insert_vmap_area_augment(free, NULL,
+>> +					 &free_vmap_area_root,
+>> +					 &free_vmap_area_list);
+>> +	}
+>> +}
+>> +
+>>  static void __init vmap_init_free_space(void)
+>>  {
+>>  	unsigned long vmap_start = 1;
+>>  	const unsigned long vmap_end = ULONG_MAX;
+>> -	struct vmap_area *free;
+>>  	struct vm_struct *busy;
+>>  
+>>  	/*
+>> @@ -5447,32 +5459,15 @@ static void __init vmap_init_free_space(void)
+>>  	 *  |<--------------------------------->|
+>>  	 */
+>>  	for (busy = vmlist; busy; busy = busy->next) {
+>> -		if ((unsigned long) busy->addr - vmap_start > 0) {
+>>
+> This line gets removed and then re-added below because of removing space
+> after (unsigned long). Maybe it is better to keep that space.
+However, the '{' is still there, but I'll add a space anyway.
+> 
+>> -			free = kmem_cache_zalloc(vmap_area_cachep, GFP_NOWAIT);
+>> -			if (!WARN_ON_ONCE(!free)) {
+>> -				free->va_start = vmap_start;
+>> -				free->va_end = (unsigned long) busy->addr;
+>> -
+>> -				insert_vmap_area_augment(free, NULL,
+>> -					&free_vmap_area_root,
+>> -						&free_vmap_area_list);
+>> -			}
+>> -		}
+>> +		if ((unsigned long)busy->addr - vmap_start > 0)
+>> +			vmap_insert_free_area(vmap_start,
+>> +					      (unsigned long)busy->addr);
+>>  
+>>  		vmap_start = (unsigned long) busy->addr + busy->size;
+>>  	}
+>>  
+>> -	if (vmap_end - vmap_start > 0) {
+>> -		free = kmem_cache_zalloc(vmap_area_cachep, GFP_NOWAIT);
+>> -		if (!WARN_ON_ONCE(!free)) {
+>> -			free->va_start = vmap_start;
+>> -			free->va_end = vmap_end;
+>> -
+>> -			insert_vmap_area_augment(free, NULL,
+>> -				&free_vmap_area_root,
+>> -					&free_vmap_area_list);
+>> -		}
+>> -	}
+>> +	if (vmap_end - vmap_start > 0)
+>> +		vmap_insert_free_area(vmap_start, vmap_end);
+>>  }
+>>  
+>>  static void vmap_init_nodes(void)
+>>
+>> -- 
+>> 2.25.1
+>>
+> LGTM:
+> 
+> Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+> 
+> --
+> Uladzislau Rezki
 
-Once charged_sz >=3D stale_esz, damos_quota_is_full() returns true,
-so damon_do_apply_schemes() skips the scheme. Since the early return
-also prevents the charge-window handling from running,
-charged_sz is never reset, and the scheme remains permanently
-inactive.
-
-So clearing the quota can result in the scheme applying up to the
-stale esz, and then stopping permanently.
-
->
-> If so, this may deserve Cc-ing stable@.  Kunwu, what do you think?
-
-I think this is a functional bug in the existing code, and Cc'ing
-stable makes sense.
-
+-- 
 Thanks,
-Kunwu
+Ye Liu
 
->
->
-> Thanks,
-> SJ
->
-> [...]
 
