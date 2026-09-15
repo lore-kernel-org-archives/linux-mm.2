@@ -4,93 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92490C88E75
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 01:40:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6076C88E72
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 01:57:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE13A6B0088; Mon, 14 Sep 2026 21:40:46 -0400 (EDT)
+	id 4EF386B0088; Mon, 14 Sep 2026 21:57:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E92F06B008C; Mon, 14 Sep 2026 21:40:46 -0400 (EDT)
+	id 4A0D86B008C; Mon, 14 Sep 2026 21:57:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D875D6B0092; Mon, 14 Sep 2026 21:40:46 -0400 (EDT)
+	id 369E76B0092; Mon, 14 Sep 2026 21:57:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A0C2F6B0088
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 21:40:46 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C06FA1402EF
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 01:40:42 +0000 (UTC)
-X-FDA: 85214292324.13.1A0198F
-Received: from mta0.migadu.com (out-62.mta0.migadu.com [91.218.175.62])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 41FF4A0005
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 01:40:40 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xG6JBmrM;
-	spf=pass (imf25.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.62 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id F04B26B0088
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 21:57:56 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6BA7A802E5
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 01:57:56 +0000 (UTC)
+X-FDA: 85214335752.05.B943A87
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 97CCD40008
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 01:57:54 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=hYIMpGPd;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf07.hostedemail.com: domain of qwjhust@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=qwjhust@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789437474;
+	b=5pXk+pbhcrHS0oR7nrkIJrb6uDV0GscDWiEHBJLOxowNEBb2AUhgbDPPpo6by8rjrFbJt6
+	2WOKm3bUVhT/SMjS9P53G0euATIAex0ZcKyhe314lrG2louI5MzhMQv6ypsGHTradS6Lkf
+	m50LNa6hyef3ANMIQCOiMuvNp87hO1U=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=hYIMpGPd;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf07.hostedemail.com: domain of qwjhust@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=qwjhust@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789436441;
+	s=arc-20220608; t=1789437474;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=63+GqYE4DQfR0Bx5ZSWXPstN8CpGM93K7KKkieJ+w5k=;
-	b=ml0wNn7QTNqSiRD7FwwhHf9/ZBV6EAz7aw0D9qipg2FNIOPDxudtVZVXQb2Y6MX5Q2Idjr
-	qp5Bj3ypkxiFDOr8DUJoQ9ic7S9ckhMO51xxQrGqV5At7TcvtfiVTfeH4Onpwc4hPE7U4p
-	ERXQak9WIMdiz4R0RXcnh5+FbG6PAWE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789436441;
-	b=TlLv9KfZWmSxVxyBwYRFL2Kyvry8QUOWdq/kMTmnmWu5+mVvtirN5ixJvDhVWigAD0VDNi
-	qWSHW47sKcjndAPDOquVA/VbwRq37yaxGqMADBCFU5RS3AvkksB46UVGlgcWGVl+O3UGdj
-	h5zsZflwuuHo9zYLNMIwW+pxul9/u3A=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xG6JBmrM;
-	spf=pass (imf25.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.62 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=05uRaWUcaOG/Q/CWJc/l3BnefdP/MWiBuuzMMUHj9ko=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789436438; v=1; x=1790041238;
- b=xG6JBmrMklm9hb4prYYVKhT91g9W8p/yh24RxHsUyes/Efqo68xd1mIPhyqat/8RSxqSv/gB
- RBzYZxWBJ8naglS9uPzcsXgY9qTEsqov1G6p0D1Yw2BecHxXJR8FtaGkDtyXLoXF/WgkbYgMtNO
- YSq0O1Hd8W6GLCpIN8A10vCg=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 98afbac615a21c5e;
-	Tue, 15 Sep 2026 01:40:38 +0000
-X-Mizu-Trace-ID: 98afbac615a21c5e
-X-Migadu-Flow: FLOW_OUT
-Date: Mon, 14 Sep 2026 18:40:34 -0700
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Cc: Hui Zhu <hui.zhu@linux.dev>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	JP Kobryn <inwardvessel@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
-	Ihor Solodrai <ihor.solodrai@linux.dev>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, 
-	Jiri Olsa <jolsa@kernel.org>, Emil Tsalapatis <emil@etsalapatis.com>, 
-	Shuah Khan <shuah@kernel.org>, Barry Song <baohua@kernel.org>, 
-	Geliang Tang <geliang@kernel.org>, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, Hui Zhu <zhuhui@kylinos.cn>
-Subject: Re: [PATCH bpf-next v10 1/2] mm/bpf: Add bpf_proactive_reclaim kfunc
-Message-ID: <aqihfvKMqJAudSQK@linux.dev>
-References: <cover.1789091855.git.zhuhui@kylinos.cn>
- <e00910f328c129fea716e9fd031dada328e60313.1789091855.git.zhuhui@kylinos.cn>
- <DLF8UFBL6NEL.MAD9F5418DIG@gmail.com>
+	bh=8LtHfoqQuWljZWMj5fNvShJKWJ7Eo3q2bY3EGg9Y51M=;
+	b=5+tFUc89GHiosin/k4Y4LklTY5r/s807ZikM15NnoEGOa9jBR0n5jtPnqBn8Xggv7Ig5Yj
+	lkY0T+0xzp5AH4THnmrVS0bonicQV8Z1IwvPMhvYvUU/Tds4WoxzreIssXZAWndQmi5Yq0
+	DnmXLJh+w4rUUGKSEuVS81CTnSHzkho=
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-86aecf49833so25936b3a.0
+        for <linux-mm@kvack.org>; Mon, 14 Sep 2026 18:57:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789437473; x=1790042273; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=8LtHfoqQuWljZWMj5fNvShJKWJ7Eo3q2bY3EGg9Y51M=;
+        b=hYIMpGPdA6IZzrp3iHwAF0pr/vo+LD4TJu5eRy/fWgjz6I1LEFlD8ocwe4WvN5AsDf
+         PPp/jY8RHjAu6oX8sSiub04YroGqcSGLt2mG8f3MaC+NGsF0sCOOUmys8LXGIV4/k9mT
+         Gz7DzQWayXJ+AV5vtC/Mgr56lJPR0c8uKDYIq+IWdHVy4iEiMUEg4Ng+BaKaHROAXtDT
+         K4gRvqgSDrnyXx7UOg97kLxcUwqO+jp7iznxKbTkFOEZcel3pF1x4p9DPNixosmkLYi0
+         jh0G3HodC0pYqBVA3tazDwaNTD2aBk1U2m0b7nZTr//Le6+ObvFV81rubc2B6UCHYIao
+         nGZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789437473; x=1790042273;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=8LtHfoqQuWljZWMj5fNvShJKWJ7Eo3q2bY3EGg9Y51M=;
+        b=cCAI2G7vTi8TUEkX/+akM1KuVwUi41rCIn/8qssL2/KKXC0BdQeZqoNSWOKtdpuNka
+         a0UzKXqHrIikgvZNG1UvrfzGg94dbqs+uIvRleAjzwsYjP3WRoy8+gMSJew1vmrvoeqT
+         roWa4BAoeMCWTCjBlzlKsrVnJ78UKBeKD5WoVUiiOMDtWDWyvEOg1gWDVf/UGrQY5xWr
+         ekbVwsg7H7oYGtzf/vAfykurPZZ71CPI64YyTChhBlgj9m+RNSq/r2s4z6rHjS5BcdTQ
+         KH5LVB218+CUcdhLHS6NLBwAuoS98wY8zmuz1rDBkoDmJhM6ZtOXAuTvMD4Zm4nZX41O
+         gdAw==
+X-Forwarded-Encrypted: i=1; AKwUvBwxxKbsBktHdhjMI0Yl43pNdxwJJCpcrlSsFrZ7jjYEpVHDKxs/B2tJb2Hmkfqa5BvlHXy2dU2E+Q==@kvack.org
+X-Gm-Message-State: AFuF++kOkRRkfDnFWxdVfq4h5JdTmDLw32Xig0wc213JL8Jlx6PQvie5
+	sWbvC6iFFt88RZTJvOBvnsSG804hxRm1Ijwed1VHhpa9HtWUcz+czkc3
+X-Gm-Gg: AYBFou04jg+tzDFhRwTq0LGSaB7DuA9CVey5PnlfZfUIJjh5VbCtklmOEdQMGd1Y+Ga
+	QhW8/teg5Um0Xbp4pnHxXfSmRmdSZQ06Bzlaoxbq1FxTdITPzJ4n9Kl4X60rsAErGOCS80d2Oxl
+	qJNw1uWa1crAKbMm7aeu4W/IkMCUn1Vbgw1SiVZnTswGEXTrNwKv0G66bEsq2fe0D+BFtXYzF+l
+	UPRLoM5F0qvqdUapIL1YWdV9mgMLFYalpjvre26F7iZFeJBK2UbnChVkw58+QHK55hcbUIV5n8g
+	EODCgaofYMOZT3A+K50/gIfJ23NNmH+VWel/E8BbiHzeJBehmKX0MjnlFY5XunjcF0eFWpEvoHb
+	wQz5BXnjXvWfLxFxeE274yshUkfFM6GIHSsoZRO2rZwYXKzpSQOe71s1h2AHpbtoRsMFBEvKlCm
+	LaPwZY1335iJ/oq8ic6BTeeRkN+wxJgPNUVabfGjCWrBm61OSwK8QRp70gD5phbX7Q5E6mhizya
+	RtmCoj52cVceUnJYNYBbXsoF39gMtfE
+X-Received: by 2002:a05:6a00:3a01:b0:86d:117e:5db3 with SMTP id d2e1a72fcca58-8708c45f131mr2265230b3a.26.1789437472373;
+        Mon, 14 Sep 2026 18:57:52 -0700 (PDT)
+Received: from qiwenjie-ThinkCentre-M760t.mioffice.cn ([43.224.245.241])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-86b6139e3bfsm5231011b3a.50.2026.09.14.18.57.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Sep 2026 18:57:51 -0700 (PDT)
+From: Wenjie Qi <qwjhust@gmail.com>
+To: jaegeuk@kernel.org,
+	chao@kernel.org
+Cc: linux-f2fs-devel@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org,
+	hch@lst.de,
+	jack@suse.cz,
+	axboe@kernel.dk,
+	tz2294@columbia.edu,
+	baohua@kernel.org,
+	linux-block@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	qiwenjie@xiaomi.com,
+	qwjhust@gmail.com
+Subject: Re: [PATCH v5 0/2] f2fs: enable buffered RWF_DONTCACHE
+Date: Tue, 15 Sep 2026 09:57:45 +0800
+Message-ID: <20260915100000.1789437600-1-qwjhust@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1788795700.git.qiwenjie@xiaomi.com>
+References: <cover.1788438786.git.qiwenjie@xiaomi.com> <cover.1788795700.git.qiwenjie@xiaomi.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DLF8UFBL6NEL.MAD9F5418DIG@gmail.com>
-X-Rspamd-Server: rspam04
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: n3xgdm94zrdrimnwomckyxhrchnfe6n3
-X-Rspamd-Queue-Id: 41FF4A0005
-X-HE-Tag: 1789436440-600478
-X-HE-Meta: U2FsdGVkX1+edK4jSKxyCM6fF85qnZTW0pETfmRgIJdCrR+ERBE9sJaumL2dEyRE7Oc6dtoWfH6REBaApT1pP064Qnwk79cfchQEv1oPxY3lLTlK9P/+p5ckCgB2WdYOaId4DVlcL8il1LGg0hFxvqvTYRG0Ygm+64/rbSoQaJ0YAB6QilBx8DzhI5KctOnq8xs6bIV4HubdGvj6+ph/mCT7bRNvCVR2PC0yy0RBksrDD5Un2sE1jmtdgr3zcgm0Ge00s2VgHINC2ZVJRWzvvWt84/Uyqs0ZaJVcUZic1t2UiS0cCmfeUSWSN1PCHZxkiC+Lbjl8vON/3MZJL13waNxyPBLCjQUrgLXYb6tk2jqrQTeqwdA8Vcj2/lY6Fl7jIVy41UWBj7aPvEl+ECRHtxQHTN9ukOaWAhWh+ilK21D1e/3ef4tpZAy+BAPOmbvpQgcxPohHDXKNDQPbp3UAl1vWMRnRkB4W0CT6ppUkC2EJCRSmXd4I0DYUftvmvD7p/418L9CKgzQdzBXK/NcM9RbHpXTwbBagOxMsuf45frNGIcoomqDXOj1vf/jzwN4xN9e0r0rY9+FDvX9KqGH9Pc+iB43AJtC3E2dl2JAS7Otu9sphkoxD5tBUsBFks0JatW5MeEisG0hHJ9mJx8imB5qu4Yq24p/I4aUnkXouOK1Hxz6UzSt+GCl3emP/wQDBLf3789OHQE6f775MgZg02KKAgYH0p1HVQG8O9dfDqoNRJku1BrmiuEVT2BobQUR1pMFOr/goolRgVaqlP7ho8PCgh0l/s9/UInNaw0mmg6fZc5vvNh4D4GBTgMDUpv9q6BN+/e0o4lZXpx2pjcI84DmVLst9USfolY0LjLYMjIIrfGU25HJz3RXHoKa1xtWk73J3duEs2FO1qbGyhAZrPM5wGLTW4j67o3P5Y8VppEc7xoYjjjgyj2SCrtPKLO99j6M8NhwV/Tcd/LPlsuf
- dPHBMDqs
- bYcL33As/F06CJOXLmpJyZ6BRo1vgy84iTAJTMmc4jtxckMvWJ3o9Tou9Cy73eo32JHb7d5xSCQuA6eigb9gta+dTBkXT/YdqVf8CJ2YCxFEnLgFOKHFr8AGfVgIWst510pOWbQIvv/EOngVn+/gqtYKumbV7SfG9s/Ftq81K4qvlYoTVCOjwWcZ+jDfhE16uT1CJaJ/6MgbsjdMoSVm4rL/MYtSo3vJ7cy5+M6YxwSE2D58I+drTPb1sGi8LDg2nWuB/QNC77sZIkfqiZjt8hLBamhvpYrcIFzzi+F+4n2JMxez+SYG3ydV9fvrRxTPSZMaN
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 97CCD40008
+X-Stat-Signature: d9qrmcjw8o9i5o7zhyximfzoptb6aeq7
+X-HE-Tag: 1789437474-306541
+X-HE-Meta: U2FsdGVkX18kME0AfTFvCnk1ow3/sL1UJVpHlLeiT/7UPPDkaiKflTDNWQ35HMq+A3InSOv38zoFH+T+SSphHoC0s33OhjcKXbkPGo3QN9rRUnT+v1PA6PMshF/3RTivwQrRhf+TAZCicNcgfh7lzdIMjs37L7JVbbf9PsVUaqa6XuLVDy/ylPAKmT2cMOQuC3aUzb9Gtesmjrm1Q7IL7LsIwGNNizK7J5WXFpwwwW/6rCtgKp0rRDYtxyw5gUf9iH0KEjJuWVI+IH1kAHPHXZ25V2TYYoqUl/ehmv1CfzIV7AhoAll/8+L5/QZpowBpJcfC/rqo6TmyUQQqTh/1DBk6fYToywfFm/K8pQd+XgZ2hXsZBw4AszQNqVgd/uI6xfMscur24w6XDhwJO+bBZHtAnVCypmUOcmxAoL4ApPHhzauNOb0DmxpsCr4cumapVO3IXdnMHalHde2EwDL8rkmR+A5H8T2uqACwrVCsND+ztbJmnKdRjcWpizj54m42u0mDoMlstcwEV38DQ876+pMILaKviXoT++0YbJiG3HTDlQ3Q7A1E6uBF7tWXUFa8N8Roh61eULpLusJ/Gd2rvmrBTCzpFWTuNOWFEhkAEVcaeN4WriXzLYv9bvzOyxoQwzPpT7yjgpijkezPRlr73gw/3pJidEn6As7uOAtvwLJGZDyvrlWuXaRRf4R6sJLYJj0Vxb4HQQ2YrDFOe/reYxeLfN7rnKriQkpKpQPt9ft3dUADHmOZi1mDKut4JugsUQwyOrA9O4T7jojWd+147ZBC+gcdKpaemWuIHbMXZ/vt4xbFYVk/AzSvTS95e/Wnw/2hvIjsPggyDfhHmALVLOA7qXSj3XnQSYHsH6/mEnReOgmkEPmny0fBmgaev8ev0XeBtnb2kn+SVYZltCBzWV9ny7nBfZVbCbKUZYEOFnpk75dDb9giaBxug9MxO9Z7j8lpMAO/whQnWeeFg4Y
+ srAEYbFf
+ z5Nl0ewvEYUrTBQHiZvoMZeCpc1g1l0VWTSt0P1+YapLE1JwXqfJ6W4CaJDm3ETJk2snrpnGrYC9i/ej4O2G25HqcO782527QhhtF8RGQrC99b3WjOXeyB+6x7wFmrXEeZqj4pJDqaWhcVjkE8oKKEzI7qLYn0BEFeftu4sDdj86xE1g/SRb8iRVWTW6sHozsV3HPHuX3orEJafJR+UOMf2beMAxVTEGqp/E9YtpZpGrlhphaKEiFQKglZgnrbMrog5++8gKNnTSE2ZXmggxOS4+QMQnsOBcGvxfbhtd3Sjr+39PgvPcJa1+Wt8XEMLbBV/0rxTED0a96llRSAKfHMglA1+7PtyJRPSWlZ2bfyLuW+7SJP9UhSusamXq5ZZlNZRobTwVZBiWUH+ijCmngxTHkrsoFK+dcDW6fqI3m7lYCkMwyIcfhP5dRSOyZYCkjwg5V
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,117 +132,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 14, 2026 at 08:17:09PM +0200, Kumar Kartikeya Dwivedi wrote:
-> On Fri Sep 11, 2026 at 4:20 AM CEST, Hui Zhu wrote:
-> > From: Hui Zhu <zhuhui@kylinos.cn>
-> >
-> > BPF programs can observe memory pressure on a cgroup (e.g. refault
-> > stats via bpf_mem_cgroup_page_state()), but cannot act on it:
-> > triggering reclaim on a chosen cgroup requires writing to
-> > memory.reclaim, which BPF cannot do. Add bpf_proactive_reclaim(),
-> > a sleepable kfunc which performs one proactive reclaim pass on a
-> > given memory cgroup, similar to a write to memory.reclaim but
-> > without retrying until the target is reached, so that when and how
-> > hard to reclaim is BPF policy rather than hard-coded thresholds.
-> >
-> > Since some bpf program types may be invoked while holding fs locks,
-> > limit the kfunc to BPF_PROG_TYPE_SYSCALL only, to avoid deadlocking
-> > in filesystem shrinkers on the reclaim path. A SYSCALL program can
-> > invoke the kfunc directly, or asynchronously from its bpf_wq or
-> > task_work callbacks, which run in process context and keep the
-> > SYSCALL program type.
-> >
-> > The reclaim target of a single call is capped at MEMCG_CHARGE_BATCH,
-> > following the precedent of high_work_func(), the memory.high
-> > workqueue fallback. Note that only the reclaim target is capped: the
-> > actual scanning work and its duration are not bounded. Reclaiming more
-> > than one batch is left to the BPF program rather than enforced by the
-> > kfunc: with one call per bpf_wq callback and the same work item
-> > requeued for the next batch, the program can also stop submitting
-> > batches in between, e.g. once the target cgroup is dying.
-> >
-> > Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
-> > ---
-> >  mm/bpf_memcontrol.c | 88 ++++++++++++++++++++++++++++++++++++++++++++-
-> >  mm/internal.h       | 10 +++---
-> >  2 files changed, 93 insertions(+), 5 deletions(-)
-> >
-> > diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
-> > index 716df49d7647..d8827bc388ef 100644
-> > --- a/mm/bpf_memcontrol.c
-> > +++ b/mm/bpf_memcontrol.c
-> > @@ -8,6 +8,8 @@
-> >  #include <linux/memcontrol.h>
-> >  #include <linux/bpf.h>
-> >
-> > +#include "internal.h"
-> > +
-> >  __bpf_kfunc_start_defs();
-> >
-> >  /**
-> > @@ -159,6 +161,74 @@ __bpf_kfunc void bpf_mem_cgroup_flush_stats(struct mem_cgroup *memcg)
-> >  	mem_cgroup_flush_stats(memcg);
-> >  }
-> >
-> > +/**
-> > + * bpf_proactive_reclaim - proactively reclaim memory from a memory
-> > + *                         cgroup
-> > + * @memcg: the target memory cgroup to reclaim from
-> > + * @size:  the amount of memory to reclaim, in bytes, clamped to
-> > + *         MEMCG_CHARGE_BATCH (64 pages)
-> > + * @swappiness: the reclaim swappiness, in the range
-> > + *         [MIN_SWAPPINESS, SWAPPINESS_ANON_ONLY], where
-> > + *         SWAPPINESS_ANON_ONLY means anon-only reclaim, or -1 to use
-> > + *         the memcg's own swappiness
-> > + *
-> > + * Trigger one proactive reclaim pass on @memcg, similar to a write to
-> > + * memory.reclaim, but without retrying until @size is reached.
-> > + *
-> > + * Only the reclaim target is capped: @size is clamped to
-> > + * MEMCG_CHARGE_BATCH, following the precedent of high_work_func(),
-> > + * the memory.high workqueue fallback, which bounds each reclaim
-> > + * request the same way. The actual scanning work and its duration
-> > + * are not bounded. To reclaim more, call this kfunc repeatedly
-> > + * instead of passing a larger @size.
-> > + *
-> > + * The kfunc can be called directly from a BPF_PROG_TYPE_SYSCALL
-> > + * program, synchronously in the context of the thread running the
-> > + * program, or from the bpf_wq and task_work callbacks of a SYSCALL
-> > + * program, which run in process context and keep the SYSCALL program
-> > + * type. It is registered for BPF_PROG_TYPE_SYSCALL only, because
-> > + * generic sleepable programs may run with filesystem locks held or
-> > + * in NOFS/NOIO contexts, where the reclaim path could deadlock on
-> > + * those locks via filesystem shrinkers.
-> > + *
-> > + * For asynchronous reclaim of more than one batch, driving the
-> > + * reclaim from a bpf_wq callback is recommended: call this kfunc
-> > + * once per callback and requeue the same work item for the next
-> > + * batch, instead of looping inside the callback and monopolizing a
-> > + * workqueue worker, and give each target memcg its own work item,
-> > + * as high_work_func() does with one work item per memcg. Whether
-> > + * to submit the next batch is up to the BPF program, which can stop
-> > + * at any point, e.g. once the target cgroup is dying.
-> > + *
-> > + * Return: The amount of memory reclaimed, in bytes, or 0 if @size is
-> > + * smaller than a page, or (unsigned long)-1 if @swappiness is out of
-> > + * range.
-> > + */
-> > +__bpf_kfunc unsigned long bpf_proactive_reclaim(struct mem_cgroup *memcg,
-> > +						unsigned long size,
-> > +						int swappiness)
-> 
-> I'm going to have to request one final change, sorry.
-> 
-> I think long is more meaningful as return value than unsigned long. It's already
-> restricted to MEMCG_CHARGE_BATCH. We return error for various arguments, we
-> should probably change to -EINVAL.
-> 
-> Apart from that it looks ok to me, but please, also wait for Shakeel to review
-> the set before you respin v11.
+Hi Jaegeuk and Chao,
 
-My only feedback is: please don't write essays in the comments. Just couple of
-sentences should be sufficient. (Please ask your AI to be very very concise for
-the comments and commit messages.)
+Friendly ping on this series.  v5 includes the mixed-bio completion update,
+the syzbot NULL-kiocb fix, and the additional memory-pressure data.
 
-Other than that please follow Kumar's suggestion and send the next version.
+Please let me know if this direction is acceptable or if another revision is
+needed.
+
+Thanks,
+Wenjie
 
