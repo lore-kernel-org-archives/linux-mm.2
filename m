@@ -4,109 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAEFFC88E7F
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 15:02:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1587DC88E75
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 15:02:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A87BE6B0096; Tue, 15 Sep 2026 11:02:32 -0400 (EDT)
+	id AB0436B0098; Tue, 15 Sep 2026 11:02:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A39406B0098; Tue, 15 Sep 2026 11:02:32 -0400 (EDT)
+	id A89386B0099; Tue, 15 Sep 2026 11:02:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 94FFF6B0099; Tue, 15 Sep 2026 11:02:32 -0400 (EDT)
+	id 97DAD6B009B; Tue, 15 Sep 2026 11:02:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6DC126B0096
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:02:32 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 81563A5694
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:02:31 +0000 (UTC)
-X-FDA: 85216312902.29.638C85B
-Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
-	by imf22.hostedemail.com (Postfix) with ESMTP id D3280C0014
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:02:29 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=J+FpntkJ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of ekffu200098@gmail.com designates 74.125.228.12 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=J+FpntkJ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of ekffu200098@gmail.com designates 74.125.228.12 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 71BF66B0098
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:02:57 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A518B120488
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:02:56 +0000 (UTC)
+X-FDA: 85216313952.30.5EF3BEE
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 7036810000D
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:02:54 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AcsaRlJ1;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf14.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789484549;
-	b=R22nz9r516RZj3G3cmI7Tm0QWfTEJqS0ZEe1pqdYO53hF4clDQws01ipzMq4YZSJ8VjKM1
-	yAu/pXaUmTLxGWgQeuPHs49NpAWB8oSHu/NaIzYpPxx23M95Axj9eNd2da3/fcpTczq1eT
-	irIZ55666gDudJy8DO0M0qe2i3WjHMg=
+	t=1789484574;
+	b=7aZmp0n679JPn/du6yY50fus0e/a5N5WGJzSvg8yfjJ6JRwXSkQ6ze96oqCGFP+WAPMivG
+	Y1McSgIJBJ50w09jpMQ9lm3GErsk2ovsIwaxBKjjtyOd0eL7wD4gX/8ujc9/yFL1eFKnS2
+	wNTAYAvLhneY3q9DHKuQnW2ta8B+ceI=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AcsaRlJ1;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf14.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789484549;
+	s=arc-20220608; t=1789484574;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=C/28T5laAAyTxLf1Yirs20VIa2oTd4s5Q0872s7X3RU=;
-	b=Y0aZVAyHB5FaTVBCiroXC7d3O24/vDE5Z2XgVQ6/ua4crFG71l89sKKGc476yweOKfK7dB
-	GL9NKw7f/vUlOzmNka+qO9d/9baDQa7FxHrRE0jnOhukDE19MrO3R6MDAIHDk34NVaGmTI
-	UF/WF0pAZoXKnaQoeAf/892t+pzmlAw=
-Received: by mail-pz2-f12.google.com with SMTP id d2e1a72fcca58-85469e211a0so3116022b3a.1
-        for <linux-mm@kvack.org>; Tue, 15 Sep 2026 08:02:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789484548; x=1790089348; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=C/28T5laAAyTxLf1Yirs20VIa2oTd4s5Q0872s7X3RU=;
-        b=J+FpntkJPCGbeiedFXDRnizi2PAZG7V0ROF/kj8P5SaNJjAeR4TJjegcV4NfX90qVG
-         fux+dWUWd/ON8LByj+c4c9R+3e6MpRta2ECXQj1dPEmj03vDRhl+AdTEVHwtra//KQib
-         zwJVxLPMQm8Z6JV5wzAZK3GTEIpPX3xKvpnSAA0u7weScXsIi9QEiVN3XJxjHEovZuA7
-         QdT6aJdtawsOOkRmJZ2DXPUU27nobXl8rzViXCH9QfvCyQJYuvUValmlvMyy3wtwQ8ZM
-         SfzfMVMnQitEqd/Kh0+uLyBtiGe9sxgTahgRz6k8bEvmCgU63xL8z+t0VseXL8QX/GAR
-         gg5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789484548; x=1790089348;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=C/28T5laAAyTxLf1Yirs20VIa2oTd4s5Q0872s7X3RU=;
-        b=jmxmqvFYuUWjVEq5csZd245AXPVZC0iPWSLM1AMqE1LpGmqfOB8JcQSPZB4K0//AGz
-         1rcJNOgwPePpFTS2y3j4e/JwgGHOZm0ARfHo287+wIRwu/oLN+J/88RyvfINWxhI6Ub6
-         ZbJtiDx89u5zoRcTCz0OrTnPjgneNuZwGys3m4htP0e88bGjL40UQ0ZSw9I2SMjm3C2m
-         /yA1a587uW4fvsKdXqRFCwOb1ubG721qSFrIPamGmZatluW7aLYclwlkRndtYOdPPo4O
-         vWTkftOAna+mYpSCCD/iCQjfcvWQF4a4wElxqhD9KBXFYi146QV84O6MFoU1QpjX2zOg
-         jXOw==
-X-Gm-Message-State: AFuF++kZYrwGPSsFpAh0F9/gtZLyuoIYWKgWcqY3z2phGEBM+TJotn+n
-	jS6beTkgvNHxdvIxd1RCnmXLAmlqy3je1T+H7/mKAInIgyTnmbhgGORC
-X-Gm-Gg: AYBFou2rzVTIOyCDRXtn8DVYbaI76jOWjEdfQIiWalb0+9WBRAu+OoJXAUfI5jWuu+p
-	PU3YkWXQ+HAiJLaCY1PHiF22OtiyB1rplzB8MFoElAj8Vxylgyuru/hxK2nXJlkXmKbBmegQEKg
-	aEVRE/LtuWzyfB8GwPPliuWu6HUV9geLMB7jcSAEwAeI+l0d49m1NbtC48U6FgZ1K5H4wozCDbB
-	z871ZYwTqcr0E56pXpMj7/w8mzAj/VXwInzcdADWyaqYrE96GOEmY0i9mArX+AaQdK03XYDR+lz
-	WX3UofxxwRcotN0ov00tw45UE8sdJ0apt9KinHxrB0EkSwaaEvx9gPQlEWofovv1vcnSgCho50t
-	Kkx50awzQFJzA3YOzg1AfdV28p/eekfDcumo9zUouXfvONDEUwX/jPJRe9Soncv3he1jSE+IfN1
-	yu60dvtTbGmgpvNPTch41zbnsjEagIbtpHiOppKRJ/5T+eIGAUKT7tbIlbdivb20QcI0JiEvxlk
-	wev
-X-Received: by 2002:a05:6a00:1c89:b0:84a:60a4:2651 with SMTP id d2e1a72fcca58-86f83947aabmr15469596b3a.6.1789484548262;
-        Tue, 15 Sep 2026 08:02:28 -0700 (PDT)
-Received: from ubuntu.. ([110.9.142.4])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-86b29bb9ecesm6422654b3a.43.2026.09.15.08.02.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2026 08:02:27 -0700 (PDT)
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Mike Rapoport <rppt@kernel.org>
-Cc: linux-mm@kvack.org
-Subject: [PATCH v2] memblock: use for_each_zone() in reset_all_zones_managed_pages()
-Date: Wed, 16 Sep 2026 00:02:21 +0900
-Message-ID: <20260915150222.390819-1-ekffu200098@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=YHyk6+IrqQOJoNBANVy6H3eTJp4wkRbqnNOpZl37PNY=;
+	b=OBMxnGScPCwAa59fwdNdEVP8UoqsWgEqfvwpOfSB8jrCvQ5x8jW1fkntfWnBQKn79JS4ZZ
+	cIjiy5np92U8GwAkfoBqsowvOQZtwOfz6TsAZvreR+PoEj4OZmm60zJyu0LuVsNaFCZJDC
+	W9p3Sam4iOlZQac5eimGHu8+5ApSgRo=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789484573;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YHyk6+IrqQOJoNBANVy6H3eTJp4wkRbqnNOpZl37PNY=;
+	b=AcsaRlJ1z83bzR4cV4sWiuf1mgpEtg/94ldmtyDc248dIwBuf39Aaj4PUzQkeE7VGwl4yo
+	EgAc5U8VoPZYP26cbvKapE7OJ9ASdMVF9T02xsp8B8k7rvW1vDyq4wdsowOnk2F11Qxfzq
+	2roaLtPnWLtx7sRnGYLiAzmhasTp7uc=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-628-t8xWsI1wOhS3uKw5owlbRQ-1; Tue,
+ 15 Sep 2026 11:02:51 -0400
+X-MC-Unique: t8xWsI1wOhS3uKw5owlbRQ-1
+X-Mimecast-MFC-AGG-ID: t8xWsI1wOhS3uKw5owlbRQ_1789484569
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 52A711955E91;
+	Tue, 15 Sep 2026 15:02:48 +0000 (UTC)
+Received: from fedora (headnet03.pony-001.prod.iad2.dc.redhat.com [10.2.32.114])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id D9361195604C;
+	Tue, 15 Sep 2026 15:02:44 +0000 (UTC)
+Received: by fedora (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Tue, 15 Sep 2026 17:02:48 +0200 (CEST)
+Date: Tue, 15 Sep 2026 17:02:43 +0200
+From: Oleg Nesterov <oleg@redhat.com>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Jens Axboe <axboe@kernel.dk>, linux-fsdevel@vger.kernel.org,
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+	NeilBrown <neil@brown.name>, Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>, linux-mm@kvack.org,
+	io-uring@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 2/6] fork: refuse new threads while a coredump is in
+ progress
+Message-ID: <aqleExxTBcHsonQe@redhat.com>
+References: <20260915-work-coredump-fixes-v1-0-f354ca41780c@kernel.org>
+ <20260915-work-coredump-fixes-v1-2-f354ca41780c@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260915-work-coredump-fixes-v1-2-f354ca41780c@kernel.org>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: sBTmLsyiMZ2l7YozWtwQHoVdYX7u5WT4qsiKV_VQBIc_1789484569
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D3280C0014
-X-Stat-Signature: 5qdy351enebjk13q7p9eqoz498umshzn
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789484549-533481
-X-HE-Meta: U2FsdGVkX1+KDia0vF9CkRW4CGNwW00KJmcdiDDRasKMGdleULFlfIs086/ipMCYYaF3Y7EoOdzT5gXqhbhgt7VDj6wZWY7M9mRQTl6qYZKlBeBlGOsEpZ4YoWHYn+Eo8MrHsBQT+oSh1bHOd0ZNTO8G8Y94e7uOSqP4xbWyzS5VqeonBjp6tBNVd6HU67cTXR2ccCuvxF/hYx9cB9MyKLEVD7PnVzfCg2YA7hcKhEWgQKynuAUZ1RJmWLmVNFYmUju5i36pDpmXonLOXyekUoZJQvZZGjWem2GXBNOD2J0J4akcyF6MndCr0OlIQI86rjNwei43q+LQloh3LstSQlj219i9nUb5o/1Uo8canm3/sbTppDGYLHc3Ip1g62JMkKbkEmlBIscmv3j9/yusBjsP1vEPyQFqhvYwmj9atvAJ1uarKKKskeTiJj+nWcq0be8koeGIKDRNG+B+r8g3aYe6Uwrl6utxYmUvwNy0DuRVbQSoT9LjTN9RnCNA/5beeyBxe3M8w4OuPkTw6ReJE46BiMTpG5PNd1FgUT5kEyeUoBfrf7YhrqCT1OI6n/K1VJ5RwYJNvMcke6uUd5CNvAd71Rgzuw++qnbMHi8qt6NUv06FCpoB3mwcjTdamgHOJV0OpYtb8oADn4ZtrqSqMNWSS2f+TfcL/ebu0NOKo1GSsOAtdedp+2S+DEulaHNKk9YPea7jqsjWaCAewsJCpSHeXnV7tTlEjv7IwmB3Whmi8C0OToGdyoJJS5Mxuo8MTy6TlmRjPGTz8uicilJXJy3BR/SPzCPRZG/bJV6x/sIKayr52ceKj1syRt8nrbr+R+rImoE1NP9qL+5Mk4syAWwyuHUzDO5j2oUWxOVMtLpS4OQ2rU+PxHjBWQnn8exTZdz2TEbukUuyD1FWzd6oXesT9nZ9uNscSauP++XUnZc9qlloLJnuN8DFh1F4WjBhz0SQT6AaakiFQHP6AHS
- TVZFoafN
- 9g8p7WANc7AvpMqFnwDGnLQZmF87ylmvQJuaeNKZ2lU35g6k015P1Xgr3KEalXW6RZuE3bX1M+Fhr7Da3rEiOI2xHgiTDhPq3QHJnDShL/3qqiYesl343RMkrO/wgYbLOQtZfLDInqboqVCD0aiE1u3iaGKzW1O/OKVLMm49oG24VgTJAgCTxutam9GiKVqU/C6Qz85iqXD+U/z6vq1Z7+IYXVPCDaXMWx73ypD3rlVdElN5hBSDVdjPvwFDsVZTLdDyBGRaeqaaIDmJe6SGy6zouu2jpml+HSsS3TVPmDMXthOhIYV9u1jStJRFEJMuHAbSlctLDDpEZH5PHRv6e0JJW9tcsGO43m77+PbrJ8BzXBgMjm1qLVOXGdh98Oe0i4xwpSQepCdmz0Ay/7xwb5TyLW29IUwR7A8bP20z979vieVfzd2mp3vwAz5gmoUSMZVGnWbEfVZq/k416nDI22/Ur49MY0b9CNYiS
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 7036810000D
+X-Stat-Signature: pntgqbnsmheo5h8n3kjemgnmukxp7jjw
+X-HE-Tag: 1789484574-560782
+X-HE-Meta: U2FsdGVkX18x81EmI9RbfhWfsO77bjw9QTsu0JKDC11Pp4PMRL37nnwODBQIamWPZ1gji1sO4R954bwmkH7kI11AX5zF3RlNzVF/YTr9iTGau1SYnmlZxa2dGtlJfqzg5zsXPjKZfxKSXXcPbUxmfsxd1E85zQFsBk6iOvSWtoRRU28xKvVOMTCzp3onxsB/je1xUeuz2UzAuEAnAuWaJAW6UjFy9Qk1ZBGKLdHHQdD7LvSisuTbwN2m5Pk2Cvup53Xn8QZ2E7pcjiP1StIs1kkALsoKrrL7mpi37NyY56DToyCpn6+dupvYWipTss1oX1UzlPIO+ZAbiQ8U1dCyTPAZmQPoKx1oQEmGYYhQ61CnWXTxXOs/jwk93ptRC0ikl9+GoNI0/sUzwDIwgjb4TeLGbcGTyGFZ1y/M4ArDc8LA8m4y4ZcQdVRxLE1QrK1gOQbIZ9LDIsUF0XFPCt4YQbykGl2fp5cGwVUCKw2h/or4WitXe25hXwk5QikEwvP96f4uzVimXThrby3Z4ikmi4CXIoRjGnUy/vrxBdNZj1pGHAzykInP1XeUksYSc158VJ6zLdNx0VjJHt/ntdkGI1cRuq7vLCdVcf/Dq+IiR9GYamgtwc33BCumYMn6BGmZWcbxTz+/i+4qj48M2wwX5F565cHY998l9PXPaqMLabA9T6K1HKvxy7+xyQ/ZZDQOv+YhvyEbNuhsNS9Mc20+iPBpYFdhsIQrBmm5K+pSWzuBE3mHl7qRIfOKW8JoFN8HGZnm+ioWHtGw5Wiw6aGZG9/rw2IeeIJ/nLtAYk1mAHaA87Q/VxtABgFihtD4bGTircY4LMLkK3IcwEOSonaTSRn/euEx6a9FFe8qkOcIILx4e7xvdASY/7DCfodw8+nOD4hQnYQ+/QYZszZt/Os4M41aU8nEAvG5BAFN2TqpYo3BaItSGhLzZifuVwjmPp9x4Xkr6/QHAAbx8+tO+oc
+ GT17YvmG
+ ViEJmHcfVVxAbB72Bz6FpXR+qsz/EUHet+Yer4S2pjoKq4IoC4kpOKcxr97DYU9o3Fk+qCxNV+8GMRCZ0tNoA8sOXcMp70VyAUNvkPGvpk2gEpImgzTlG0HRfErtwQMHxotlzkhMRzZeLjqF8L1D/qGMW95Dm5tST06uIf0gvg2s6HI4+OnWRB7sM81mGfGLBrCqjkkf4K6qkBfEVgPP5yTmANA6qBGtGpwPNp9qZyzgP0wAWW5Wxnqydf4aRhyHNIONja/6RB0tc+h+nY59k3MDfsd7OC3ZpwdqpdknStCvbDRviIuLgN4gN0vEzuP8zeH1sJfRL0R14HxJcKkWNo97H8b9e7KzNrbNj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,71 +110,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-reset_all_zones_managed_pages() iterates over the zones of every
-online node with a nested loop. for_each_zone() iterates over the same
-zones in the same order.
+On 09/15, Christian Brauner wrote:
+>
+> Say a SQPOLL thread is a member of a thread-group that coredumps.
+> The coredump code uses zap_process() and sends SIGKILL. The SQPOLL
+> thread uses io_sqd_handle_event() and calls get_signal(). It removes
+> SIGKILL from the pending set and returns. The SQPOLL thread breaks out
+> of the loop and drains its own task work.
+>
+> Any pending io_req_task_submit() with REQ_F_FORCE_ASYNC creates a new
+> worker when no other worker is free. So it ends up calling
+> create_io_thread() from a thread whose fatal signal is gone. That means
+> copy_process() allows the creation.
 
-So use for_each_zone() instead and remove reset_node_managed_pages().
+Hmm, thats bad ;)
 
-Also add a for_each_zone() no-op stub to avoid breaking the memblock
-tests.
+But then ...
 
-No functional change.
+> --- a/kernel/fork.c
+> +++ b/kernel/fork.c
+> @@ -2491,8 +2491,8 @@ __latent_entropy struct task_struct *copy_process(
+>  		goto bad_fork_core_free;
+>  	}
+>
+> -	/* Let kill terminate clone/fork in the middle */
+> -	if (fatal_signal_pending(current)) {
+> +	/* Let kill or a coredump in progress terminate clone/fork */
+> +	if (fatal_signal_pending(current) || current->signal->core_state) {
+>  		retval = -EINTR;
+>  		goto bad_fork_core_free;
 
-Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
----
-Changes from v1 [1]
-- Add for_each_zone() no-op stub for memblock tests
+this change is not enough? Don't we have a similar race with exec?
 
-[1] https://lore.kernel.org/all/20260908165733.1703766-1-ekffu200098@gmail.com/
----
- mm/memblock.c                         | 12 ++----------
- tools/testing/memblock/linux/mmzone.h |  2 ++
- 2 files changed, 4 insertions(+), 10 deletions(-)
+de_thread() kills all other threads and counts them too. Shouldn't it
+also check signal->group_exec_task ?
 
-diff --git a/mm/memblock.c b/mm/memblock.c
-index 31961ed628b0..6a03dc58cf2e 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -2465,22 +2465,14 @@ static unsigned long __init free_low_memory_core_early(void)
- 	return count;
- }
- 
--static void __init reset_node_managed_pages(pg_data_t *pgdat)
-+static void __init reset_all_zones_managed_pages(void)
- {
- 	struct zone *z;
- 
--	for (z = pgdat->node_zones; z < pgdat->node_zones + MAX_NR_ZONES; z++)
-+	for_each_zone(z)
- 		atomic_long_set(&z->managed_pages, 0);
- }
- 
--static void __init reset_all_zones_managed_pages(void)
--{
--	struct pglist_data *pgdat;
--
--	for_each_online_pgdat(pgdat)
--		reset_node_managed_pages(pgdat);
--}
--
- /**
-  * memblock_free_all - release free pages to the buddy allocator
-  */
-diff --git a/tools/testing/memblock/linux/mmzone.h b/tools/testing/memblock/linux/mmzone.h
-index 8d934ff5b080..24c149bb708d 100644
---- a/tools/testing/memblock/linux/mmzone.h
-+++ b/tools/testing/memblock/linux/mmzone.h
-@@ -13,6 +13,8 @@ struct pglist_data *next_online_pgdat(struct pglist_data *pgdat);
- 	     pgdat;					\
- 	     pgdat = next_online_pgdat(pgdat))
- 
-+#define for_each_zone(zone)		for (zone = NULL; zone; )
-+
- enum zone_type {
- 	__MAX_NR_ZONES
- };
--- 
-2.43.0
+Oleg.
 
 
