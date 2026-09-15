@@ -4,90 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 299ADC88E53
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 06:06:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B445C88E75
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 06:09:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 16EF76B008C; Tue, 15 Sep 2026 02:06:12 -0400 (EDT)
+	id EBC026B0088; Tue, 15 Sep 2026 02:09:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 121366B0092; Tue, 15 Sep 2026 02:06:12 -0400 (EDT)
+	id E6D3E6B0092; Tue, 15 Sep 2026 02:09:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 035676B0093; Tue, 15 Sep 2026 02:06:11 -0400 (EDT)
+	id D36DE6B0093; Tue, 15 Sep 2026 02:09:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DC5FA6B008C
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:06:11 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5FE951C21C8
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:06:11 +0000 (UTC)
-X-FDA: 85214961342.03.DE62AA5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 995C514000A
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:06:09 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="Q5OCUJ/k";
-	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id ACE0C6B0088
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:09:49 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D34F640337
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:09:48 +0000 (UTC)
+X-FDA: 85214970456.20.66DB188
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 25A71A0004
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:09:47 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Erl3UKkP;
+	spf=pass (imf25.hostedemail.com: domain of kmehltretter@gmail.com designates 74.125.225.141 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789452369;
+	s=arc-20220608; t=1789452587;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+xxEqhiF3vxSUzq5Nt+Fw5y6mQaekGAywZHRtZkajCg=;
-	b=1ktuMRzRmdffvvJPRbMbzNPNHctwxI4CHg7YRNaI5WObJCwH4DBztxpEvBeuIHDEIY+oLi
-	NMUrBuxRfDypznCtamU115wLfXsf31ReSdbeP6rf0ALDjMDYCjB7iV0kL0H8QA43eRVkjM
-	acTSzKefL6lCr6RtTnaw0+p+OmIjCaU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789452369;
-	b=fP3upawkT1RWB6EBVObczhqJwwRdoHk3uWXD7ugImN9sWE170N2YqzsVS91RNNB9I4ljkK
-	WQk2mvM1e61pVIMx5xGW8C2ouI3SRLHxraw8Lkl/OYrBS9I1EK7q8HYR7hewvL+fIqU2p/
-	HHgcp4y8zY6CeVyNCLLFsugAtn1l6Fg=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=SI783VUJkGIZm3nVSym26fZ6VNUHxk9Ukf15drWnbdY=;
+	b=xfbaVtjizc4hwzAPRBfwAzRPFGi3C4aekK1YNcrznpeQWIHxQoTW68budKSCWcoxxOmMZ0
+	v+gojCAVmsPKHFSI5xCQMpmUM/D1F5cLdFgHDFW0Er6oEr2BClUTMRem6/ePVYlDwgkrwn
+	/i2WtJWDfG1jdpD5kTjM2hJbjMcpn+o=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="Q5OCUJ/k";
-	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 88A3F600D1;
-	Tue, 15 Sep 2026 06:06:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C759F1F000FF;
-	Tue, 15 Sep 2026 06:06:07 +0000 (UTC)
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Erl3UKkP;
+	spf=pass (imf25.hostedemail.com: domain of kmehltretter@gmail.com designates 74.125.225.141 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789452587;
+	b=dM009IluCBEltzDy0R/5LB3Y9mPhyKwrL98r7X0RpFLWkngM4X+Ctlqhqd9OlSTio71k+T
+	L3CU2ZVeMBECR5/J2cCoYc7JA/AtLVEWmDXLytlKIx4Bjj30H2J48RwBnxuES+m5ymRDnE
+	hSb/ZBHNMx3eFI+Bfp61JAiMJZyOois=
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49d1fb0cf5eso22450235e9.3
+        for <linux-mm@kvack.org>; Mon, 14 Sep 2026 23:09:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1789452368;
-	bh=+xxEqhiF3vxSUzq5Nt+Fw5y6mQaekGAywZHRtZkajCg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Q5OCUJ/kGbEIlPHjL+9OEi6LGcdhCpjjZZQTNUXyD88CAOMW3kdJ+01jkWAGYgzlb
-	 SZ1Sbx3y1iaUM46yvjh4tGuLVqjq2Mc8kSFFdufzUIMfJ3Lf0tFRecpdV6T6TIJbzQ
-	 SN9YZOUDRIg5rPIBwxlsW+tNZ5yNfm4uuUKjmNXo=
-Date: Mon, 14 Sep 2026 23:06:07 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Julian Sun <sunjunchao@bytedance.com>
-Cc: linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- axboe@kernel.dk, hannes@cmpxchg.org, mhocko@kernel.org,
- roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
- willy@infradead.org, jack@suse.cz, rostedt@goodmis.org, tj@kernel.org,
- linux-mm@kvack.org
-Subject: Re: [PATCH v4 0/3] memcg,writeback: flush foreign bdev mappings
- separately
-Message-Id: <20260914230607.9e4d74933bb589eeef435e8d@linux-foundation.org>
-In-Reply-To: <eba0295b-268a-4573-aeeb-de79b9ca6063@bytedance.com>
-References: <20260914103119.1708452-1-sunjunchao@bytedance.com>
-	<20260914205947.5aab9d7261ef0f26ec8f3213@linux-foundation.org>
-	<eba0295b-268a-4573-aeeb-de79b9ca6063@bytedance.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 995C514000A
-X-Stat-Signature: z8oa8rwmdbrk11kgos6gn1jn871cxbq4
+        d=gmail.com; s=20251104; t=1789452586; x=1790057386; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=SI783VUJkGIZm3nVSym26fZ6VNUHxk9Ukf15drWnbdY=;
+        b=Erl3UKkPWvltJIVXe7t34FC//53XXhb6ednsbGzjfpIPJ+3cEeQSIKwP5quoZPkTB5
+         IaoA0MeYcUE8KfeWL8FEjIUitI6IBLj24gius18QOPQvfsk3bGnAqm3oO28WSivzwrx+
+         Xps+oovjoot4gEWDfnv/i0gBMuVmrtW11X943IM6EgSzshG0ufzYcc8EJrD6qX5HEI/5
+         3vCzyrBmAOeFuJ7JUsIVujgl7yD9z/ESuZqQelOBvwv6gKRUkyMPC4aKAkQJZCdZf1bB
+         aTpfg6S9BM7xixMxBmfANxh6POLOK5fLTIcPYxBWVRbu1agG0A+7+6vQYRh7kci3v+qL
+         zxhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789452586; x=1790057386;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=SI783VUJkGIZm3nVSym26fZ6VNUHxk9Ukf15drWnbdY=;
+        b=0RjC6dFWVCoHPsmTorrW2JuWXUmRyAKPejy2SubtnpFv3BTVc+A9/Y9PRIW53SJ/B9
+         MJQZ+YX8iR0emRoIU1cGZMWqXhY/TM71URhZp1a0N/QstR7RCov99LNTylygUDa+MpdM
+         GB6dz/SDlaAvNOkmoZLDEgr6d+YCMyqzgxTNKdpY/M27Quah7tmJ5Y92nUBNRERFKRxf
+         joSiqcJLWgorEkOqlJTDNVSPzohxCkpFogjlsGlfLdE+qOVTEsoNWkVou6J13fsYTGNe
+         /NRDFqq6pVaHIpYDcW/yhgO59NHE2pIQrbIPu4FJA2J99j/coK4Z2GZu0F2vBgdeFj43
+         F8fA==
+X-Forwarded-Encrypted: i=1; AKwUvBzx7G2/nrhdTv/41U5kElyRwrhdl2vyHZ+V3Qw5lE4AxJd8kBgR7YEtQQ62LpkXF0C3opwdBger0w==@kvack.org
+X-Gm-Message-State: AFuF++mb5XPQdAvuglRn4s6pAb7ikXf94atHlfu6Qyb13EVJXll0gyGo
+	wSZ4NHF5awz2xoC7gvH5VVeu/0zUAyq05fvKYqxutY+Co1qSpxEVSDZM
+X-Gm-Gg: AYBFou3aqvAigEWmvhrUGD277OmE9TVXjtkccumGIMbit+NdYtDpGOa1E+UQKqnqOiP
+	McIvinjaYP6q08SujlQvzrBlilG2MLyE8yNSd9/6IB68/qxcwS3i5J8gumkBLMbp8b9aqJsAe+S
+	mWiKmOyVzpiHtIzSfretCEfaId8J7FtHw/ZSUz2pmC4x8lTExql/pA3laEPNgw3k16G0Edu6fru
+	3VBLngw+rskUEQ/DsOsc1hv9vp+4DCZ8nZvEKR1GVb7Z0BfsH6t9hxxgLyZsV3kbdM+wm7LCKwK
+	oqFsMX9qM7FE14AjXOosq1I6Pw/qCNUIc8AvaQ9Z6qSSnDISVa8A9Tr2B/k4tVLjsUDklgDhwRE
+	0RwV2oXTbzkWsRKl/ltWcNIGgrFRcibplb5CcW8k9XK+sajNQpGQKIdxkVIHbNcRVqK7Dc0QS+o
+	osn9uEdofDoCK/wwAhLzdRt9Hj2/s5fEGFCJV3kAhNbYUrtuqJ1H4zzpjLHkj5pzZ4pTlz0oOWm
+	D3PH8vROO0h8Myhj3KvKCG8SVcB9Xu9wYve0UGrHdWUfaAUSLB6+ucbMoCZdQ31UuEITmEuxqmn
+	X2D6cN1K2An5fxSfQ9kQGomHULEqafs7T7Z4PavUF0krX4TP5RNBq8VH45Wnpkhs2B1PLD9dbwO
+	eSoxegzg3eaRLjwsQ
+X-Received: by 2002:a05:600c:4e02:b0:49d:272d:74b4 with SMTP id 5b1f17b1804b1-49e7a6387bcmr171632925e9.2.1789452585275;
+        Mon, 14 Sep 2026 23:09:45 -0700 (PDT)
+Received: from MacBook-Pro-von-Karl.localdomain (dynamic-2a02-3100-afd5-c801-cc65-9ba1-765b-bff6.310.pool.telefonica.de. [2a02:3100:afd5:c801:cc65:9ba1:765b:bff6])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e7d27c88fsm44282905e9.2.2026.09.14.23.09.44
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 14 Sep 2026 23:09:44 -0700 (PDT)
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: SJ Park <sj@kernel.org>
+Cc: Karl Mehltretter <kmehltretter@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lian Wang <lianux.mm@gmail.com>,
+	Kunwu Chan <kunwu.chan@gmail.com>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/2] mm/damon: fix zero quota for PSI goals under the temporal tuner
+Date: Tue, 15 Sep 2026 08:09:35 +0200
+Message-Id: <20260915060937.3423-1-kmehltretter@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 25A71A0004
+X-Stat-Signature: d5zmewdkzwgp95tamsdrwsq93ht8pdwf
 X-Rspam-User: 
-X-HE-Tag: 1789452369-860968
-X-HE-Meta: U2FsdGVkX1911/bnccOXs9VIO/1bRe4My+hsTPFkhiO2SaeXjQfW1C74CSHYjk4hOM0FKhu3r19TzPLkj0b08QWiZd+XEsz+XP58hmyRdm+f2bfkYyj0Mrz1E+gmAn/eJEzfHaFl6UGLBYwAi8CPx/aZlPXbseOQVR5PoMTWg/LkBWADZCG9EsBulPVVzxbovpsyFdwYlmi/d9kgyL9svvVvklIIMgiIqkG4MaacUpK4wNdamgtYYMLti45Rb2uyFFiwaPhe2eFQZsioV3yRkbfp44jhxquq8F4mjQWHkCLqhqFT3hQCefRBUjXdV91kk+2Bhw0JiTeS4GB7fmCNPZwgexpvH9AwvEn01fB9RoQb+NcpytomxGTNZFibTkCHMzw1CRTSevNrORrtPpIk87/BK+4UHia6kFogpx62cJiCGyr1QZZojYMPBla6Zq4e22T9FupVPUIGNP+IMbjtdPmmAfzaiGnGxMBxCUDLpUVAVXARSmkgkri5Hl23xEO6F7JuRlH3u/pjLlnivsJH+0/D2kUr73ZXc1boqKHsbg9CaYT/qJA9C/s5Bv3qkKexf9bskuhcErSpUSbMDc605TH2nxaWEQ+avaOIpi8DfJHyd3CTeSGKwCDEDrXcEof+GwskBCBDmk3X6kwx5C/yCCaQk3LBYtq5DkiyOD6GhV8LR0cV3ihMqbCJ1Rtm5BdF1h/fMG6z+npbHjWOoUGP0YBbKpFKOENWt2+78hCAecMjfivYagg59viZXy0R+uwj7GR6iQnl9GY6O7S5xzUIj291CiiF66OXZb3xyfdUGv+QuM2CL2dROq9W5xvxCY5nyGnkgdLe6AI/k8rMVS8EayM+YSItu4jAjVzmW5cdNlZms1a8p9nW2fjE4DRibaJsOi6PWN9pqxjr/oGjG1byDFV55m/WEQlwfr5QUw6DnZp4OIaerpgzmGpJMAp1k8AGVQbwfu5QF7OL/gTC0ii
- mwhQvxpO
- fvZUo5DHr8G3h74tFJFBUQwzeXHKr8uMZItM7YYh73uV32qt1nig+v/Fv5g4x05eq/a4XsmPddNboTi45nh76L5QKvqouTvZdx8xFQ/XgXrXIiORI0/ZULDXEWaANr+8tgz6eScd6wm9TCHcmLPHIadkavPqB8RxtH2IIPaPPvLzsCCGXa0VkKDtl6Xg8qnrnGkwci2T07TPs4f+2DD9NtueiUn4hCWNUUS1C8AoLYrk8N9kO937ZwsKK9EbIRfrcpKuZNAbHxSO9gkFLqgUds/uvnw==
+X-HE-Tag: 1789452587-276496
+X-HE-Meta: U2FsdGVkX19x6BF+qYgyb2+ZdEXYXVZ1rrvcnO7z7gxVczxSHYHblsGf4o4NS6eTs8ipyFkWRTmu37mxbEVDYS1HBaKoXWiXc8vTe/xx3Dfh0SEUblZVCL0KjBADNdICPDJl9Iy+wMT0IfcJVs4+vw1AyTNdOCCdbLkd4PZiwVQNZRAhFKClvLeyPAmWLHX35NQzFQe4RRK9yxiQYTOX1Nl79FzhzVyFzVRox5ArifkuKLQwAG1iON+GsVbOR4OYk24KiVi5i3oY9XMyDW4UttU2tI7ZqegbMLAWTq7bnrK8wGvKT0/9a8ItqEnsNZLrUZ1cOi68gLCqhy4T3KPbqN59J5C+v90blePs9dT8Ng9fltAzLUNnbGTwFGaG4NJF5hp/B361hoNM6LKw+ri7qvNI+aKUOEtx171DIaFULu1bsmpHNQI0hxoXC/yngBRndvjclh3p4KK7CY1tWTD89XZsplL5FvVxnuX57IJMCqpMb8Hiyreld4o+FEaTbaKa43DVgJacOI1tlqEulf+D21zPLcefZrMl4cLcdy7iTqSRpaayF5HfuYMcURT6yM1us5d2ugvKcg5WeLeLfEJDV9dIibn38wEfFV2HEKpS2gE2mphYbmlK6boHvgHnGNqZC5pRkYhD5LG04NE2uU4nnZKZby7yiVi7XoH0M/ZVXOLd03u9q5k7WvWlI8qZvRBOB8NhpAqvF35vv0e+AHSgFYA+jdvCFf14qGoqCuJjL9ZzqNQjSduChv28VZF8myzSILXtNBpWlrpbl9KEp4B+H1idJTt59lwE6bWyjJ5jUHIUaTWiKq2CuocfIp1COSbC3Cr8QI3GYRzjT/E/YoTdfmQPt3HBKCTF/VYBkrGHbthL4YQ3y2AEGMypRe5yYeADb2hvQPvysv0ZaaYov6OcQ1z+MKvwVs1itA/7G4hpeZK35RRVp9Pjbi5Xgqxy4dmsWgUuS1qwLxrJYy4HEZu
+ QEW/jqLf
+ +3QrGp0KlAzYYbQEoLTYY8AvEezHPku6fxKwfE6I/sj8RYF1FMbugQktgFRczr4sDZYwmO3mrt0kjCfZQrKpirBK61Z3+ewn9x4P/vvxw+c/WKs7Ikm7ppoUodBAN+hCIsk7Cfjl+VB6Cj9EQGLwjLyggMzzDhal3f/FloDucokqXATlikbPyfMgMFUouhM6lJSnlR1l8kA+naXBrHK4JJjuOcOBIl7u8cFbcjdcQWU+WKglH/Eq94d9Lexh+ytiFLQB38F6bFNgkPKS+bsXNV6RMBwBqPAWr/ZhXH23QQL4Q0Q39/PaxJcQTnmf5LuAm9Ld9QHVZeW0Gd+jpfHnLGhfVTrMpO8z8ePx7dmB23TX1F1CALfm6NadbS1Z5miEGyovvKCoMr1qGMV4I3gA0yyvopiHtSncWqvnQk9G9t9Voh4Bbh85ADdFsIgHYai0hdCsmxQm92UbOnzx0XojV1tpj4TL2pcmllFNk4qB/4xS3MZb/lf4p7bM7xuFAIf97EUHj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,62 +122,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 15 Sep 2026 13:35:18 +0800 Julian Sun <sunjunchao@bytedance.com> wrote:
+A PSI quota goal without a previous sample is scored as achieved.
+With the temporal tuner, this sets the quota to zero for the first
+charge window and the window after each goal commit.
 
-> > 
-> > What is the overall runtime effect of this?  IOW, can we see some
-> > before-and-after numbers?
-> 
-> I tested this series using a QEMU/KVM VM with 4 vCPUs, 8 GiB RAM,
-> cgroup v2 and ext4. Virtual NVMe write bandwidth was capped at
-> 200 MiB/s.
-> 
-> A fio job repeatedly overwrote a preinitialized 256 MiB file using
-> 64 KiB buffered writes, at 64 MiB/s, for 9 GiB of logical writes.
-> Four memcgs, each with memory.high=32 MiB and io.max=2 MiB/s, generated
-> metadata and buffered writes to trigger dirty throttling and foreign
-> flushes. Concurrently, foreground fio performed 16 GiB of sequential
-> direct writes using 1 MiB requests and queue depth 32. Normal periodic
-> writeback remained enabled.
-> 
-> Three comparison pairs, with alternating execution order, produced:
-> 
-> Run  Kernel   File I/O (GiB)  Time (s)  BW (MiB/s)  p99 (ms)
-> 1    base              7.19    114.74      142.79      1434
-> 1    patched           1.57     88.62      184.87       480
->       change         -78.22%   -22.76%     +29.47%   -66.52%
-> 
-> 2    base              5.13    103.59      158.16      1434
-> 2    patched           1.74     88.65      184.81       497
->       change         -66.06%   -14.42%     +16.85%   -65.35%
-> 
-> 3    base              6.14    109.27      149.94      1434
-> 3    patched           1.73     88.68      184.75       480
->       change         -71.77%   -18.85%     +23.22%   -66.52%
-> 
-> File I/O is completed block I/O matching the overwritten file's extents,
-> including final sync, not requested writeback budgets. The other metrics
-> are for the foreground workload.
-> 
-> Across these runs, mean file write I/O decreased by 72.7%, foreground
-> bandwidth increased by 23.0%, and completion time decreased by 18.8%.
+The series is based on next-20260911. It fixes commit a68878f83ae6
+("mm/damon/core: handle uninitialized damos_quota_goal->last_psi_total"),
+which is in mm-new and tagged for stable. Please carry this fix with
+it.
 
-Thanks.  This is super-important info so please condense, summarize and
-emphasize this result in the [0/N].
+Patch 1 keeps the temporal quota active until a PSI delta is
+available. Patch 2 adds a regression test for the first round, the
+next measured round, the round after a goal commit, a measured round
+that reaches the target, and the consist tuner's unmeasured round.
 
-How real-world is this test case?  I assume people won't see gains like
-this in anything they normally do?  I assume this is long-standing
-behavior, so if misbehavior like this was regularly being observed then
-we'd have fixed it by now.
+Reproduced with damo 3.4.0 (b41965a) in a QEMU guest running
+next-20260911 (x86_64, CONFIG_DAMON_SYSFS=y, CONFIG_PSI=y):
 
-> > 
-> > I'd consider this a memcg patch, and not only due to the line counts.
-> > 
-> > Please cc linux-mm on memcg patchsets.
-> Sure, will do.
+  damo start --damos_action stat --damos_quota_interval 120000 \
+      --damos_quota_space 1048576 \
+      --damos_quota_goal some_mem_psi_us 100000000000 \
+      --damos_quota_goal_tuner temporal
 
-Great.  Please update that [0/N] as indicated - help readers understand
-the expected real-world impacts.  Then send us a v5 and I'll get to
-work helping to deliver this to our users.
+then reading quotas/effective_bytes after update_schemes_effective_quotas
+every 18 seconds. Without patch 1 the effective quota is 0 for the whole
+first 120 second window and again for the window after "damo tune" with
+the same parameters. With patch 1 it is 1048576 throughout.
+
+The KUnit test in patch 2 fails without patch 1 and passes with it on
+x86_64 and i386 (CONFIG_DAMON_KUNIT_TEST=y, built-in KUnit run at boot).
+
+Karl Mehltretter (2):
+  mm/damon/core: score an unmeasured PSI goal as not achieved for the
+    temporal tuner
+  mm/damon/tests/core-kunit: test PSI goal rounds under the temporal
+    tuner
+
+ mm/damon/core.c             | 14 +++++---
+ mm/damon/tests/core-kunit.h | 69 +++++++++++++++++++++++++++++++++++++
+ 2 files changed, 79 insertions(+), 4 deletions(-)
+
+
+base-commit: 68142f986ff04b2b70b31db00f719bf690f64a9a
+-- 
+2.53.0
 
 
