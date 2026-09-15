@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6573AC88E7F
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 11:32:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1F6AC982C7
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 11:32:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 72A756B009F; Tue, 15 Sep 2026 07:32:33 -0400 (EDT)
+	id 1FB386B00A1; Tue, 15 Sep 2026 07:32:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7032A6B00A0; Tue, 15 Sep 2026 07:32:33 -0400 (EDT)
+	id 1D0B56B00A2; Tue, 15 Sep 2026 07:32:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 618076B00A1; Tue, 15 Sep 2026 07:32:33 -0400 (EDT)
+	id 0C09C6B00A3; Tue, 15 Sep 2026 07:32:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D4D86B009F
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 07:32:33 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5DE93403C7
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:32:32 +0000 (UTC)
-X-FDA: 85215783744.14.8DD8A7D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id A3026A0010
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:32:30 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="m+K2QXP/";
-	spf=pass (imf25.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DBC976B00A1
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 07:32:40 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 70E8A803BE
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:32:40 +0000 (UTC)
+X-FDA: 85215784080.20.2825F7D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id AA7DC4000B
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:32:38 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SOdqCs6F;
+	spf=pass (imf27.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789471950;
+	s=arc-20220608; t=1789471958;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i7wVyaLFDwSh4RsQ7x/yFwVaLvEj62at9uwFUzmPLMc=;
-	b=WjZyCfhAyNsz9wKQjz4faiQ1RkYVrKZmbogIq75bCfhDSABgRQQLWyarp6ENqaEvdxGOr6
-	zgqVoI8SILv+vYbgUaBdMlKPHBVfmQqlxlWtXg26hzJVkndqSL8n4BoUTd5uG/XqYdR6ER
-	sFxNypDQZ+bWws1MSz9kB+WZT6NwhyE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789471950;
-	b=54uEd8BiJlzRVzs4oXP/AFaWdp3dF6Qe4j/tc6gFsYIH24KwWNwuUg3diUbXNT/ymDibrK
-	IIPHp42TlnO/o1TG+tkpflIMkThficyDIg69wZaTVBHwUoBYXHNJW66CnZrYgLgFIYFjYY
-	iqsHQn4xZRAKrOyD/L5s307Znb1qxZI=
+	bh=tg5h99+rXwPUOCpAK+cpKxSGhPsqw2qIAApb6RMTrZY=;
+	b=4A7UH/7hR/EFYsYlgpbRfhI7/uzSZr9DiH/tf5hJagKGdt/puXqIPzPG+Xh12A5m/wabsw
+	o6QNUC6Tv17XbDAELDRRiOsNMVKXEyxnfWN2t7Nmao7dcD7AC6qY+q+xbKHEy16ot4MWxh
+	X0q9Rf0VOMpJvgH+cwyfqbnYbTGQBbo=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="m+K2QXP/";
-	spf=pass (imf25.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SOdqCs6F;
+	spf=pass (imf27.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789471958;
+	b=lHMxciSdf6UMFZQypZQQyVF6aexrXxWZNZ223Znq1U26bJ7PDwaC2gQUygUiovFBBIVzEG
+	9oM07ufcKbIdg8oQfEFXMYMEr3BvMxXdIQMNnqksRxhIeB9pYCv9rZCdNbSGCUbElgLfSd
+	hFwsil3n0M+v0V7LBWYkYko4WrOEXSc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 49224600D1;
+	by sea.source.kernel.org (Postfix) with ESMTP id D114043CB1;
+	Tue, 15 Sep 2026 11:32:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 726AF1F00898;
 	Tue, 15 Sep 2026 11:32:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A80221F000FF;
-	Tue, 15 Sep 2026 11:32:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789471950;
-	bh=i7wVyaLFDwSh4RsQ7x/yFwVaLvEj62at9uwFUzmPLMc=;
+	s=k20260515; t=1789471957;
+	bh=tg5h99+rXwPUOCpAK+cpKxSGhPsqw2qIAApb6RMTrZY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=m+K2QXP/zbRGzsTYOiazh6maQXF3AuGZOI8kte5zBpS/uMcEZtnwlKYDvWPSx21mx
-	 7TGqdB2C/asSsMklDxBThdjFd165iUvhBszGEb7vDKiAwqKwu88ALg4R3OQntDPmSy
-	 pL009b1opBUWgVeuBuk7lGh4yrLHaVwvTc34V6si7vaZd9pMcP+QTIh2EpkZPCrPHa
-	 roLy/D8FmA6vUFej8GssEIMuVEW8Xxbjc55QWU2ylDQo6Q1WZPwq27fmmdRMZbmLVP
-	 oJ72BLK/Gp1V/aWXjwbp1rJsiSD2B/wSlHgBuF1q53c4nr7kcTHLIyN7mofScYlI7c
-	 A/WVLIvzUUtlw==
+	b=SOdqCs6FFc+m85zKG65RFoiI3OX0TKhMSKuOGs5mjQ4eozA6DlIsvYCrD/FPZMCya
+	 K5qpA/W9zCpRVyaXCWr3ds/VJdxhjZpyZLD3Mkij4zr7pNA3EzYnKrukqu7tQxRSqi
+	 awcZPh3/KgPK/8y13mc/r6QIcT0xahYOLE6UWC72R99aPngllw7ccPTc2jgUwYcOi7
+	 U74GTjJbNoQ41gpF7hzYmntvuz0kqC5olR/d01x9OdjbXM1vPyPMxQK1LCxZgEa3FG
+	 WTQ0xmcaX8BwZ3dvqAm6+xxz2psYUrOreD8islOMqgvBbrNJc0rwt/o9saf69osrsb
+	 1/GNM2HBy3hbw==
 From: Christian Brauner <brauner@kernel.org>
-Date: Tue, 15 Sep 2026 13:30:55 +0200
-Subject: [PATCH RFC POC 09/50] m68k: commit fds on syscall exit
+Date: Tue, 15 Sep 2026 13:30:56 +0200
+Subject: [PATCH RFC POC 10/50] microblaze: commit fds on syscall exit
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260915-work-fd-reserve-unify-folded-v1-9-4d5217d6b246@kernel.org>
+Message-Id: <20260915-work-fd-reserve-unify-folded-v1-10-4d5217d6b246@kernel.org>
 References: <20260915-work-fd-reserve-unify-folded-v1-0-4d5217d6b246@kernel.org>
 In-Reply-To: <20260915-work-fd-reserve-unify-folded-v1-0-4d5217d6b246@kernel.org>
 To: Linus Torvalds <torvalds@linux-foundation.org>
@@ -93,22 +93,22 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jann Horn <jannh@google.com>,
  kexec@lists.infradead.org, linux-hyperv@vger.kernel.org, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.17-dev-db0b7
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4471; i=brauner@kernel.org;
- h=from:subject:message-id; bh=vs7iz3bKLJG7CXsTvZEBdGx9Li08YdT/8Wd/px3d4TY=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSt1KnprokIqSkKVD/KZ/524Xdnh56o/lnaM35m5YhWv
- xThf2beUcrCIMbFICumyOLQbhIut5ynYrNRpgbMHFYmkCEMXJwCMJG4VkaGBu1Lkfsvr6ti2m+Q
- 0zx3V73WWh1tb5Pp3pZGNvef1XwNY2Q4/KqPv1PzYdm70LqORZH7stbOZDNYK+obXGf+cLdIFAc
- jAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2340; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=nXh3DWWigUzaDKpK2QrpbR3RoNJlzLOS8WiJE98yT14=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSt1KnZ7yrddCzxyY2/Tpa2vz6x/Nq//Y/DVseZ581KJ
+ U5sMTtwtaOUhUGMi0FWTJHFod0kXG45T8Vmo0wNmDmsTCBDGLg4BWAiZXcYGfaG5Cl1dp6Z4vGN
+ heGfRKcz571g7fAA9V1NlYVnC00jGBkZbjv+T3n9aZpP9I+Lez8pxBz2mPT/3UPhvvRP08XYkut
+ MuAA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A3026A0010
-X-Stat-Signature: zt6sqmpw8dxh71hyyac6ybh9akrsikh6
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: AA7DC4000B
+X-Stat-Signature: kdssy6irydi6mj36i189qajzdp9q6by8
 X-Rspam-User: 
-X-HE-Tag: 1789471950-924861
-X-HE-Meta: U2FsdGVkX19+8CaTDNvmviMm67uCnuosMgMBcL/KrEUcTyMak5D998U5aJPMtDItZPkEtK7aj/0armhKll7NpuhYpB/F22ji5RyISo3h5cqH5+77iCuyJy3i2+NpU8OAZ6k/H+j1K1EypCli20fyt43SPbn4jaZervjnt6S9mNq+G/lUduHzwTK4tfzP0KPTuSa2An2sWcqLhsftZmtXr9ipNiZKSPDmLuREzXXj7RnEEG6Or1wBSv5VsWF1EXJTRATNgvjGVDsiC6TqxZQDI+ZmVE4rH1HFS99ZFkOxqjQ4BRkv2XK4HE8jGBlY0pF++9e1/kqbCoUoKXaPp4oQaLZxiX+LgRI4aNbxWznv7UdkEsYgvd6u+StL8ufGk5VJWit1AL7AXDTtAsG9ttkMvLqgs8drMIix0NJUbAnjFh174z0v/bf3GK44YphuyTSxy3qlXe6FY7NNUccmmJaxRXuEuwXg49V4mp4RHnQ5oAy/7S7NB7RD2mMII5Hu0fUxLHhpXAaB3UZaGkMgimkr9/4Skap9pBeZp46xcvFZeTsBNF4x8j2uz1ky2+vOAzyHD4JP5llI5WOjpbqmS75HmVSAD4UTuXdrKXK2yi+7yX0FUtNMyJkMC3CnBefwkUk/oCutrolmHAmDE9KWP/eOeGwfeRKo5ET6DYhlq4JxGd3Uw2P2m+Y+hPsHZN/VjPn7pMD6RSjzdUfreHQFORQNlfAAkNFp1HoSpGbemNIp1MNRj3yPcAG1sYHx7AqRnhy+/vwHA3brmh1CEmiu46ww9muY6bedPxSs0eJTcWQm/JovMkw+uX5cRTYKrDSgMvh8r5jddIpu3Y7hkK7gIKNNRtRat7+j60QhJaMwvcoc7A4ES0++Tyo3gGRQJUJoYLNBKmuTbnU9jI8B4iERyj3+cv1c36dPEcPsaiNLnH+JZ98FwVFZujwAaRNY5IZsFGGAyjugd7BsOckGHFe3KQn
- eMRXVXQC
- qO9Pq6ShGD2A9CBRoItJLss1cauQU7Mrj4aDAOylU/yaMa42yN9ml3uGV7O6XtqQt1T9UOxGjY7wsRtn938lKnoKAoHKB9AiuSj1+r7+8zWtv1puOrNypnwKwKr40N+C92dvHe3U+8XLZNHTVwrcKJNoHWOM24zVKn75Hjll+hOFzBQKF/H5IEl9FUd31SIbNkxuE9Q693HTqz3OiAORLN9OIiK0cnjIvM8hZAyWG5TSjgxl87bf6skLyvijw+DJeRG3q97y6PDvtWkowMQvfaVl5aebLy/uLLw0j03KBUylol/Y=
+X-HE-Tag: 1789471958-968025
+X-HE-Meta: U2FsdGVkX1+qk0PTZFfHNb28G7w4Fkie7OIWahheF5m+ylZmO+cIfcrHpbL1khZD6ohrNGpOh01zH3Kz+0JTcN7QoJbWIEVeRYUj7AsdaAAXx33DURiOwvep3WDPlSTa+XQbrgFw5sWNN4WAfwNOT9Gf++zTy8rzMXWzaEox5gyxMiW5tnTE/CeKp+5uQihmDVPcyPW2wG21PrVh2SFs0iUlvEl7fXSPLb8ZzVWkfYR9AHkXys2PUugZzgac8rz+e3ebVADxmepvJnYFSFab3au4R/1cVMV2QmdgxMhmEgFiXaF6KIUJ/v26xv3yHVfhPtPZKe2p6p5lVJ5R2ipzcK3ByFrdL7hV23FN+2c4peP6MXfpEA8f5u2mr6QUqg4TmXaauupslQJnNitAIwoVrtIQ6gvrB5eEuxj+/ciEdpNv4c6esE/Rb+GwW3jhrlYFwQC/MJfnxjB7Wq0BlaF1S7UeLSwbBkQrqEGYC8akT7NkjfVBXYSOUlp+uJ3DHV3ZXPyaUXTWen3xiFb4Yc2uUATh/p1rUJUyeja45dz+sTErG67NYM3rduZuOEdVo2PbycJ/AURPsXMukSUWfX2Y+mdSyMv65LuLPvYVccg/TZAKwDGJzYaKmVoizcAGc2rSXdH7epvY4Mz8h+7jG4fbW02uJWmEk/kUm4hBZA369wbFOrd9jcDUv2euakNWgOYE7tRKvNCEH1QzyhhrTnuHQiMhD0IjlwF3FHF/ZZKOOQUv7iO2wTfa/VJsxQZRP4+8Cxg2RFYFQB3LbH/zL3txvgF2PEpIRE6rHGlsxxV71I/lvZTJOv+ZEIYKwRjkqOGDmb1fid5MnIE5qS3um2rIWunciUvbzypJHB4Y+CvwzH0rArhFpfFLCc+IXK0+jA1r96Y3dP4S7HlJY+ZHaCTCTZR/1iZI156dQa+UDXLjKp1/2ewi/yEkzCXrh8gYMGLlY2b2jdw49TqxDrBjPMk
+ /18rZ/sN
+ jvSL4eOgQdvWO67jiGpUGKB7NdMS74ySZEiMEuq8yOAO1qJmz6RMWcdJPOkFpEJdbvi1Bcm2U0VH+RIIkXuUMPIauNRhcxfCiyxxq+rDxIEvzNdhsmxig+qa6CZJ9bs7AHFS7Lfbh9BGug843ONMsW4go0MOEYLnsodevk5Gf1rxNHi8pOpqZEvHD/324hyDBcx6bGgFm9Xl4roL3sEqW7rYXaxTmQpRDpB3O7fDGPKHwhax0dc+ZoYvqnA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,118 +116,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add TIF_FD_SLOTS and test it on the untraced return from a system
-call in all three entry paths. A task that reserved descriptors calls
-syscall_trace_leave(), which commits them before the ptrace exit stop.
-The traced paths already end up there.
+Add TIF_FD_SLOTS to the syscall work mask. The return path rereads
+the flags after the system call and calls do_syscall_trace_leave()
+for any of them which commits the reservations before audit and the
+ptrace exit stop.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- arch/m68k/68000/entry.S             | 10 ++++++++++
- arch/m68k/coldfire/entry.S          | 12 ++++++++++++
- arch/m68k/include/asm/thread_info.h |  2 ++
- arch/m68k/kernel/entry.S            |  2 ++
- arch/m68k/kernel/ptrace.c           |  3 +++
- 5 files changed, 29 insertions(+)
+ arch/microblaze/include/asm/thread_info.h | 5 ++++-
+ arch/microblaze/kernel/ptrace.c           | 4 ++++
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/arch/m68k/68000/entry.S b/arch/m68k/68000/entry.S
-index c257cc415c47..479032af2f2f 100644
---- a/arch/m68k/68000/entry.S
-+++ b/arch/m68k/68000/entry.S
-@@ -89,6 +89,16 @@ ENTRY(system_call)
- 	jbsr	%a0@
- 	movel	%d0,%sp@(PT_OFF_D0)	/* save the return value*/
+diff --git a/arch/microblaze/include/asm/thread_info.h b/arch/microblaze/include/asm/thread_info.h
+index 0153f7c2717c..ee2f76589696 100644
+--- a/arch/microblaze/include/asm/thread_info.h
++++ b/arch/microblaze/include/asm/thread_info.h
+@@ -103,6 +103,7 @@ static inline struct thread_info *current_thread_info(void)
+ #define TIF_SINGLESTEP		4
+ #define TIF_NOTIFY_SIGNAL	5	/* signal notifications exist */
+ #define TIF_MEMDIE		6	/* is terminating due to OOM killer */
++#define TIF_FD_SLOTS		7	/* syscall prepared descriptors */
+ #define TIF_SYSCALL_AUDIT	9       /* syscall auditing active */
+ #define TIF_SECCOMP		10      /* secure computing */
  
-+	/* descriptors reserved by the syscall are committed in syscall_trace_leave */
-+	getthreadinfo
-+	btst	#(TIF_FD_SLOTS%8),%a2@(TINFO_FLAGS+(31-TIF_FD_SLOTS)/8)
-+	jeq	ret_from_exception
-+	subql	#4,%sp			/* dummy return address */
-+	SAVE_SWITCH_STACK
-+	jbsr	syscall_trace_leave
-+	RESTORE_SWITCH_STACK
-+	addql	#4,%sp
-+
- ret_from_exception:
- 	btst	#5,%sp@(PT_OFF_SR)	/* check if returning to kernel*/
- 	jeq	Luser_return		/* if so, skip resched, signals*/
-diff --git a/arch/m68k/coldfire/entry.S b/arch/m68k/coldfire/entry.S
-index 4ea08336e2fb..43e47d4c0018 100644
---- a/arch/m68k/coldfire/entry.S
-+++ b/arch/m68k/coldfire/entry.S
-@@ -78,6 +78,18 @@ ENTRY(system_call)
- 	movel	%d3,%a0
- 	jbsr	%a0@
- 	movel	%d0,%sp@(PT_OFF_D0)	/* save the return value */
-+
-+	/* descriptors reserved by the syscall are committed in syscall_trace_leave */
-+	movel	%sp,%d2			/* get thread_info pointer */
-+	andl	#-THREAD_SIZE,%d2	/* at start of kernel stack */
-+	movel	%d2,%a0
-+	btst	#(TIF_FD_SLOTS%8),%a0@(TINFO_FLAGS+(31-TIF_FD_SLOTS)/8)
-+	jeq	ret_from_exception
-+	subql	#4,%sp			/* dummy return address */
-+	SAVE_SWITCH_STACK
-+	jbsr	syscall_trace_leave
-+	RESTORE_SWITCH_STACK
-+	addql	#4,%sp
- 	jra	ret_from_exception
- 1:
- 	movel	#-ENOSYS,%d2		/* strace needs -ENOSYS in PT_OFF_D0 */
-diff --git a/arch/m68k/include/asm/thread_info.h b/arch/m68k/include/asm/thread_info.h
-index 5cb3ace55622..861b6f523bda 100644
---- a/arch/m68k/include/asm/thread_info.h
-+++ b/arch/m68k/include/asm/thread_info.h
-@@ -62,6 +62,7 @@ static inline struct thread_info *current_thread_info(void)
- #define TIF_NOTIFY_RESUME	5	/* callback before returning to user */
- #define TIF_SIGPENDING		6	/* signal pending */
- #define TIF_NEED_RESCHED	7	/* rescheduling necessary */
-+#define TIF_FD_SLOTS		12	/* syscall prepared descriptors */
- #define TIF_SECCOMP		13	/* seccomp syscall filtering active */
- #define TIF_DELAYED_TRACE	14	/* single step a syscall */
- #define TIF_SYSCALL_TRACE	15	/* syscall trace active */
-@@ -71,6 +72,7 @@ static inline struct thread_info *current_thread_info(void)
- #define _TIF_NOTIFY_RESUME	(1 << TIF_NOTIFY_RESUME)
- #define _TIF_SIGPENDING		(1 << TIF_SIGPENDING)
- #define _TIF_NEED_RESCHED	(1 << TIF_NEED_RESCHED)
-+#define _TIF_FD_SLOTS		(1 << TIF_FD_SLOTS)
+@@ -118,10 +119,12 @@ static inline struct thread_info *current_thread_info(void)
+ #define _TIF_POLLING_NRFLAG	(1 << TIF_POLLING_NRFLAG)
+ #define _TIF_SYSCALL_AUDIT	(1 << TIF_SYSCALL_AUDIT)
  #define _TIF_SECCOMP		(1 << TIF_SECCOMP)
- #define _TIF_DELAYED_TRACE	(1 << TIF_DELAYED_TRACE)
- #define _TIF_SYSCALL_TRACE	(1 << TIF_SYSCALL_TRACE)
-diff --git a/arch/m68k/kernel/entry.S b/arch/m68k/kernel/entry.S
-index 338b474910f7..9e4471f68165 100644
---- a/arch/m68k/kernel/entry.S
-+++ b/arch/m68k/kernel/entry.S
-@@ -229,6 +229,8 @@ ret_from_syscall:
- syscall_exit_work:
- 	btst	#5,%sp@(PT_OFF_SR)	| check if returning to kernel
- 	bnes	1b			| if so, skip resched, signals
-+	btst	#4,%a1@(TINFO_FLAGS+2)	| TIF_FD_SLOTS: commit descriptors
-+	jne	do_trace_exit
- 	lslw	#1,%d0
- 	jcs	do_trace_exit
- 	jmi	do_delayed_trace
-diff --git a/arch/m68k/kernel/ptrace.c b/arch/m68k/kernel/ptrace.c
-index 4575f6487a9a..07103e6ddeb0 100644
---- a/arch/m68k/kernel/ptrace.c
-+++ b/arch/m68k/kernel/ptrace.c
-@@ -11,6 +11,7 @@
++#define _TIF_FD_SLOTS		(1 << TIF_FD_SLOTS)
+ 
+ /* work to do in syscall trace */
+ #define _TIF_WORK_SYSCALL_MASK  (_TIF_SYSCALL_TRACE | _TIF_SINGLESTEP | \
+-				 _TIF_SYSCALL_AUDIT | _TIF_SECCOMP)
++				 _TIF_SYSCALL_AUDIT | _TIF_SECCOMP | \
++				 _TIF_FD_SLOTS)
+ 
+ /* work to do on interrupt/exception return */
+ #define _TIF_WORK_MASK		0x0000FFFE
+diff --git a/arch/microblaze/kernel/ptrace.c b/arch/microblaze/kernel/ptrace.c
+index 236264e932d6..e6951fea8593 100644
+--- a/arch/microblaze/kernel/ptrace.c
++++ b/arch/microblaze/kernel/ptrace.c
+@@ -25,6 +25,7 @@
   */
  
  #include <linux/kernel.h>
 +#include <linux/file.h>
+ #include <linux/mm.h>
  #include <linux/sched.h>
  #include <linux/sched/task_stack.h>
- #include <linux/mm.h>
-@@ -289,6 +290,8 @@ asmlinkage int syscall_trace_enter(void)
- 
- asmlinkage void syscall_trace_leave(void)
+@@ -156,6 +157,9 @@ asmlinkage void do_syscall_trace_leave(struct pt_regs *regs)
  {
+ 	int step;
+ 
 +	if (test_thread_flag(TIF_FD_SLOTS))
-+		fd_slots_commit(task_pt_regs(current));
- 	if (test_thread_flag(TIF_SYSCALL_TRACE))
- 		ptrace_report_syscall_exit(task_pt_regs(current), 0);
- }
++		fd_slots_commit(regs);
++
+ 	audit_syscall_exit(regs);
+ 
+ 	step = test_thread_flag(TIF_SINGLESTEP);
 
 -- 
 2.53.0
