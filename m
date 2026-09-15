@@ -4,72 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0ABCC88E72
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 02:43:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1623C88E77
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 02:43:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D5F0C6B0095; Mon, 14 Sep 2026 22:43:44 -0400 (EDT)
+	id D5F536B0096; Mon, 14 Sep 2026 22:43:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D10ED6B0096; Mon, 14 Sep 2026 22:43:44 -0400 (EDT)
+	id D37406B009B; Mon, 14 Sep 2026 22:43:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C4EE46B009B; Mon, 14 Sep 2026 22:43:44 -0400 (EDT)
+	id BD9966B009E; Mon, 14 Sep 2026 22:43:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A1EA46B0095
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 22:43:44 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D2381802BC
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:43:43 +0000 (UTC)
-X-FDA: 85214451126.11.933281A
-Received: from mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 9DCFF160007
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:43:41 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="V/FRTSn2";
-	spf=pass (imf08.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9AF836B0096
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 22:43:45 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C68F2402C8
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:43:44 +0000 (UTC)
+X-FDA: 85214451168.07.AB03E72
+Received: from mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	by imf18.hostedemail.com (Postfix) with ESMTP id C05A81C0006
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:43:42 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mKk2zpXv;
+	spf=pass (imf18.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789440222;
+	s=arc-20220608; t=1789440223;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gfY0lZ0pNCwPAKqMOrWQbraB3Yfet6KtRQS3ZpWAtlc=;
-	b=Ydu9pvwLrZWihSVHJ6S02PQt4b5KY4in4vrnpdpni7JV2/X4Bg3dLmDRNWISOQ7OW4txQp
-	TA272w+L0KH/wn4CoT5yGJY8wcWRBBzYAPsCa8Rm8DxgpYXjtgPavYp4iWPSYyqj+Cx99r
-	hXX5x4I35XJFaujdUR7F5zMbyCk4J+c=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789440222;
-	b=D/UcDHIEkevvVoghkKqh9XpH304SNMYdf5X6gPDLA1pPE8bOCk2o+9gwzyfBSnMZCXKG5j
-	k7XZk7lzWnEuVwatsvQd2Pg5Qfr7IYAJ0jizrwAMkXpFS0nWlvvOQCcKp9nN36Jg1pFA8Y
-	Q+/ZmFffUJAbxp6sI0JDIWh0Itg0aBU=
+	bh=cVnTq/hVfntkQ0HRolgLqoiSN2sR07gRrgvmIygH9UE=;
+	b=3EF7RQplLIiwqzOpPC2kAHA9JhtRsB95/I6/BKJGZVsAzMJiYff3ylMA7mz8RD6Saz3COo
+	8eLj1lnnY/lFgOAB4jB2dskijRQLRiQ+JI51DNcUVsC45DwOJa8+Wj/pcWHTT8oQEhE0q0
+	1N2HF6glpMiU3VRS+gnvsZAWckmPF8c=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="V/FRTSn2";
-	spf=pass (imf08.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mKk2zpXv;
+	spf=pass (imf18.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789440223;
+	b=8Bul6vuhhG+KMXfjOg6LJX4YY94m92C/sf8ZW/sKhR4krlc7dPoZP10zOUfO5ch1Y6Bwze
+	UOHsBpXMo8lTa1gPU/h8c3VodPmKHM2/IerYpnyjZDbWyO+xFKRWoVEJC9wfzaVf9WXoEs
+	aQR8iBvW6zCrxROVXDGuZ3ZuwkZK0uw=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=DtVe6iy9kJQc88TiAutYrREK+boNgH17VbBNJY5qxyE=;
+DKIM-Signature: a=rsa-sha256; bh=F73hVyZvf0eZtl+4VEeziRhY9hxVXl8gY1uJk53dZ98=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789440220; v=1; x=1790045020;
- b=V/FRTSn29A+j4slc/1Ay3rzTNl4t8TUj6+J4EA/vBC7DZI3xgaD8hESrGTOk2lwwNZ33rG5/
- MWeWMgB9Ldw36xftIrZig9Rbl7Y3NRzVof2s0r3q6MsWQzJiXoqMHJyGdRoKZltGT3gveWDyYmN
- KgwXNMjrZJgYZ0M/i6D3Il0A=
+ t=1789440221; v=1; x=1790045021;
+ b=mKk2zpXvRBnrjD76Y/5amv0teeUuJoz+PwTU4C8VIur3dzy8xHK8+2JAYAU4xWwhbzB0CuZM
+ 5z5U1WSiIDQgE/ueU3vXJMUd23yglqZnvbOzagLri/nu3GFZie9JPV2BHE21VBWuF32CcJKIeYR
+ aXVPqXhZ7bCtIgEuIdzPAsaY=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 17f25854bac11652;
-	Tue, 15 Sep 2026 02:43:40 +0000
-X-Mizu-Trace-ID: 17f25854bac11652
+Received: by smtp.migadu.com with ESMTPS id a551f472497e0f01;
+	Tue, 15 Sep 2026 02:43:41 +0000
+X-Mizu-Trace-ID: a551f472497e0f01
 X-Migadu-Flow: FLOW_OUT
 From: Ye Liu <ye.liu@linux.dev>
-Date: Tue, 15 Sep 2026 10:43:30 +0800
-Subject: [PATCH v2 1/3] mm/vmalloc: group xa_init with vbq field
- initializations
+Date: Tue, 15 Sep 2026 10:43:31 +0800
+Subject: [PATCH v2 2/3] mm/vmalloc: extract vmap_insert_free_area helper
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260915-vmalloc_study-v2-1-cc4dfe635e22@linux.dev>
+Message-Id: <20260915-vmalloc_study-v2-2-cc4dfe635e22@linux.dev>
 References: <20260915-vmalloc_study-v2-0-cc4dfe635e22@linux.dev>
 In-Reply-To: <20260915-vmalloc_study-v2-0-cc4dfe635e22@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -77,14 +76,14 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  Ye Liu <liuye@kylinos.cn>
 X-Mailer: b4 0.14.3
-X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: 8sb88p5xzrjtptwgsob8xnyc5gz9csp6
-X-Rspamd-Queue-Id: 9DCFF160007
-X-HE-Tag: 1789440221-751430
-X-HE-Meta: U2FsdGVkX18yZMpcz2/KIihqrlZNaf3ivv+2LK0qexjtvk6d+hthfNZsVLOCVPt/Vq9QgS/bRKAKaNoygEtN1haYjMe8CL4QUwMvfjXfAD8cOeVmuDA3ERWR5/F/0OUd7n3nR7sksvXqIQ/Y7Bw5rKaj+09HChHa/zN0kDdBgn3wC8uKzDiqgZra7ApEyyvKQMO6geOvirxcfq/HV1CBnC1nush7D9R8RhrKCc6TvKf53uWQfLdMD2k+mHQdCk4+4nFm7Mym/z3yzypk1ZOomHh9tJ1zNXYXWxNb2RNrV7I0YIl3/uOmdDhBtdigZsf/ieq1Ah1TUqMWF4rJxnCV/EaZWWm4D8oKClU/QHGWSGSFMuy57BjrplQFHlqSWYKyFAgR/8PQrAk6dvbMc+F3tLhYCEASM92mNwinGmQtCPvUBQ+9HYOvJWNHWQ5SZmvqAei+BfIJcdN+FJPCurJrk9OWJc3g52fOSGdhyy+xNUa2LNHY3bYLRHSXrqgQrrRSBdm+reFYcRXXBGl/haQadIfw1cQuP8PX0pUWcymOADQYJH60haj6mbuB04A4n2u/56peJ5s1zGFfHQXd6MNgowB5uiDqsfGDXpbotjCbXSSwxrs/eSwdrY8BQtQeVtFRg2uMqcfafUEbRcWFOVYKrTFUwuNtj9LXnNmlXlAolQu28dKy6sKoRfDCrj9cDpKhVcVlyfPTS3EMlYjft9+CJHT9ylnYa4ANCeQrrDRYCvkqDviWho7IR8ByQ0b0vvZJnYTmNA8C9JhNxpe11x2iYR3E6VluEP1g5dED8MyA0EcP49vr1OoyMUYV3TA+NYkqdjR8QEcojuVrHpQ+stS5RmqYk0xBVzZyDsOeEmXbXOOu/idAfyAEXMqOatfVCpxgzKJC1ngH7b3I2oHbAT5w3LqybgDfbeJfD/+iDmVVqpc++wvWkwzDr/7OY7CafupmzpMbFRIDLW0SMjv7hlh
- cLJ7Lb7n
- VX1Z1Ai02T4asJacakEyUqiqUC6wVbnTxI930BrgAspLueM6R0X/wgN++M02dn4rCxbrQujP5xUChhXimSNO19Mgw5XBfVGWjROwb6/i0/iIwKQfD7jLbmflJi381S7mZEmWT4g5iyjCjVwBeH7wcOUZ3h/XQpzH9zXYxaKI2Osps8IxNJxSfIWzPZAyuYJKnRF5bTFVpB//JKLMHqd3Oo691i06fRW7BBv96iUHwaBY3tszjHwf5XSNke9fz8JcnYc25a+kzyBd2XSV5z1FLUktmoMdSuz+LS73K01zf0F16PhCR0GS8LYxeBA==
+X-Stat-Signature: rw3wx91o7p3bkzz3gm3588jf1cobabp6
+X-Rspamd-Queue-Id: C05A81C0006
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789440222-613061
+X-HE-Meta: U2FsdGVkX19xUh0hUOAM25mpd70r4Z1ScbNxOlbFzLSnzVyS7CGZn9R3cx7B3ohve+uur+f6nI9jIsa4F0rMn+7n1OjCssERMB4cgVyTGuV4AoQl27v3IZZQ8Q4keF9pt8SZarvJrTJ1R9Zl4IRjoN2GUy65/xlTd+dbexJ89mSy8P843gJKPqYzz0/X7bgfMm33Lttt3nD5PnHnl6DM73VXqvCId91Ct63GfWyclNSc6cwbhbxnP4C4slIq875WsWc+Ae6kEpZxpAWU8ZElUnkhY1+kH9avrNaPumNtx2yDcPK7JYumT1VLIqeZwD78gCUhZoqRWvQehEwlJQU5wgVQDgIZatkROUEWblzsRmQxGjKUD2XX8Asl+AHPVWAK9Ko18q1InzOXjnPqRMRVYCtHn3lyRP3rtstlSTd9j+qln3wcGJLila47M6HUWgI6+wyJZHlvmRoAAFWw9j2l6CGlwgs1P7n6HOMKG0ZHo1/HZpereTRiFIzVV7fVmTOlqrN9VvI7lE2W1fAc6eEqb3AFRso8CbE+WGDgyCz40w2l/l97eohlM+569CzWRxmtvGlvxNZicfPEiWM9Askb7FQjnMtf1QJAHPtPxOyiqhUgFhp0r6oXPvTGfHYGbL0sB2zmVedkeFuMbd8uF6IluhPzzYhZ4ZFiuQ9qJ9JlOF9YdNHcoxwkbFMivcW7mmpK7e6bVWjnReTchs0B9N+4AvLpZkEGWCwqKw5BrbxKr4dqNxOmu7HPgVMq1ZYlqSFS6gju+E3zbNo8YWARgNkhAO7CzRwLkKh5gCvZgLObSw5QtseoM/c6bWdIiXW/r6LVvMUF2vwRBsvsgIRkJJi+HuDCkXQWwpsNS/+pPcIfPVlz/gfcg0heOyKFgkWRTbvPYfZ0FEPZN1JsAVJoXGDzJfUU0aB1+kYHJuBOAa28TZkV9uT98j3LHRfBC34yyBLEcD3CjvIYe83nt50+IHT
+ HPJwmivs
+ dizkyYMLvP2c5KH+S5OD+N0krc4wXt95Tj6Msg8xrYmq2+2bBSBZr8biZ9kN7wDyMQtCkQS7v9LcbeQeEH/wEtMFvxk/JThv7LSaXX26fpsZltQlx5T3eu31WRRvznDrKEkJefGUjqJ/x33mXhcOpMgs+V1aeWIW7qViZlBKfDLvox4h28p0UBI0MZiSmI3+M7mExLx0YZ3gnzZzi2COp/eegLM5qeMNTWfN9V1/MQKDbxesNUjLDMHsLma11akyDKHag7dNJS5ZoKrxQiwAtf2WVIlsXx7zQzZX8LWLVwSGKIdK6caDz4YiSzw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,32 +93,84 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ye Liu <liuye@kylinos.cn>
 
-Move xa_init() next to the other vbq field initializations instead of
-after the unrelated vfree_deferred setup.
+The allocation and insertion of a free vmap_area is duplicated
+between the loop body and the tail of vmap_init_free_space.  Factor
+it into a small helper so the main function only deals with computing
+the free gaps between busy regions.
 
 Signed-off-by: Ye Liu <liuye@kylinos.cn>
 Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
 ---
- mm/vmalloc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ mm/vmalloc.c | 41 ++++++++++++++++++-----------------------
+ 1 file changed, 18 insertions(+), 23 deletions(-)
 
 diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 859e6d2d57a3..117483dd048c 100644
+index 117483dd048c..973d15ef4f3e 100644
 --- a/mm/vmalloc.c
 +++ b/mm/vmalloc.c
-@@ -5585,10 +5585,11 @@ void __init vmalloc_init(void)
- 		vbq = &per_cpu(vmap_block_queue, i);
- 		spin_lock_init(&vbq->lock);
- 		INIT_LIST_HEAD(&vbq->free);
-+		xa_init(&vbq->vmap_blocks);
+@@ -5433,11 +5433,23 @@ module_init(proc_vmalloc_init);
+ 
+ #endif
+ 
++static void __init vmap_insert_free_area(unsigned long start, unsigned long end)
++{
++	struct vmap_area *free = kmem_cache_zalloc(vmap_area_cachep, GFP_NOWAIT);
 +
- 		p = &per_cpu(vfree_deferred, i);
- 		init_llist_head(&p->list);
- 		INIT_WORK(&p->wq, delayed_vfree_work);
--		xa_init(&vbq->vmap_blocks);
- 	}
++	if (!WARN_ON_ONCE(!free)) {
++		free->va_start = start;
++		free->va_end = end;
++		insert_vmap_area_augment(free, NULL,
++					 &free_vmap_area_root,
++					 &free_vmap_area_list);
++	}
++}
++
+ static void __init vmap_init_free_space(void)
+ {
+ 	unsigned long vmap_start = 1;
+ 	const unsigned long vmap_end = ULONG_MAX;
+-	struct vmap_area *free;
+ 	struct vm_struct *busy;
  
  	/*
+@@ -5447,32 +5459,15 @@ static void __init vmap_init_free_space(void)
+ 	 *  |<--------------------------------->|
+ 	 */
+ 	for (busy = vmlist; busy; busy = busy->next) {
+-		if ((unsigned long) busy->addr - vmap_start > 0) {
+-			free = kmem_cache_zalloc(vmap_area_cachep, GFP_NOWAIT);
+-			if (!WARN_ON_ONCE(!free)) {
+-				free->va_start = vmap_start;
+-				free->va_end = (unsigned long) busy->addr;
+-
+-				insert_vmap_area_augment(free, NULL,
+-					&free_vmap_area_root,
+-						&free_vmap_area_list);
+-			}
+-		}
++		if ((unsigned long) busy->addr - vmap_start > 0)
++			vmap_insert_free_area(vmap_start,
++					      (unsigned long) busy->addr);
+ 
+ 		vmap_start = (unsigned long) busy->addr + busy->size;
+ 	}
+ 
+-	if (vmap_end - vmap_start > 0) {
+-		free = kmem_cache_zalloc(vmap_area_cachep, GFP_NOWAIT);
+-		if (!WARN_ON_ONCE(!free)) {
+-			free->va_start = vmap_start;
+-			free->va_end = vmap_end;
+-
+-			insert_vmap_area_augment(free, NULL,
+-				&free_vmap_area_root,
+-					&free_vmap_area_list);
+-		}
+-	}
++	if (vmap_end - vmap_start > 0)
++		vmap_insert_free_area(vmap_start, vmap_end);
+ }
+ 
+ static void vmap_init_nodes(void)
 
 -- 
 2.25.1
