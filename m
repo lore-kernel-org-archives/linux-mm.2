@@ -4,138 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F79EC88E53
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 06:56:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A748AC88E53
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 06:57:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B1C7C6B008C; Tue, 15 Sep 2026 02:56:44 -0400 (EDT)
+	id CCB396B0096; Tue, 15 Sep 2026 02:57:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ACD926B0096; Tue, 15 Sep 2026 02:56:44 -0400 (EDT)
+	id CA2AA6B0098; Tue, 15 Sep 2026 02:57:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9BEC66B0098; Tue, 15 Sep 2026 02:56:44 -0400 (EDT)
+	id B9B426B0099; Tue, 15 Sep 2026 02:57:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 753826B008C
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:56:44 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D4E631C2209
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:56:43 +0000 (UTC)
-X-FDA: 85215088686.05.D1B92AF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 12407160004
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:56:41 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=opLVeqeS;
-	spf=pass (imf08.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 96DE66B0096
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:57:07 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 66DED1A0336
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:57:06 +0000 (UTC)
+X-FDA: 85215089652.13.071C719
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 52468A0008
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:57:04 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=BhkXEgr+;
+	spf=pass (imf25.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789455402;
+	s=arc-20220608; t=1789455424;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iUEddWOFS6fHOKRXcDJByNFtvflAjvsvy6k9vJ5MeeA=;
-	b=BwRTF/VMq16q8n/o5AaDCSLrxLfips+8axsGxic7ZrkKt6MjMSuNKH4ACQA1TS4Ytmt/fH
-	uzPPxfjWjOjpjmF6A1pgTMi5xjNdrM+1FPnPXgLafgCVytaUXjVPmFOeTX+2Hs7mqj7LVm
-	+2q748uPT7VW2UGLBgvN1RAN0O3YNaU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789455402;
-	b=6BBiMOE6nPC316sswyS5xtOCdg8SrLmnaX5Npco6o0taHTtodr1fsOP5OFDZv/7OL8yrp0
-	sr+3QUHlGXaOVtkWLRQVqbDz+W3t5qfv0FFuckVO7eIhnrzIPFJCbB8iclHLbnLKActELa
-	pR8TSxtGRjguVV5uT9a3tNzUdzUevNk=
+	bh=19gTsJshLkl6xms1dIGVk+IXi9BTm+f13eumbdPgk68=;
+	b=vMFJ8JVDV3VJbRA1qRCQpO0F1lo1k+Y/PoMZSIp5EbcRGmIzFU/dGpw6SKGviwBchCGacR
+	fx1+AYWuYcZGV1ZG6jfOIZVEcrpWLEQ060e3zvsJTqMflmr4wmCpgcaztPKE4h6Fcdugje
+	c8xyY/AyfvhALhjr79XVmUgszSh8P5I=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=opLVeqeS;
-	spf=pass (imf08.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 94EBB600D1;
-	Tue, 15 Sep 2026 06:56:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBEBA1F000FF;
-	Tue, 15 Sep 2026 06:56:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789455401;
-	bh=iUEddWOFS6fHOKRXcDJByNFtvflAjvsvy6k9vJ5MeeA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=opLVeqeSzjUOWD0xEMAImiR1vGyYsNRwzSINVrs0Y80Qg2LwBZDphmrn2M4SV1Nyb
-	 /8pF3RZ8meeD53mow/pnbwsz5co4vUanf8laLU+l1kO5uOYSu2y8KUzouxH/yPcLZ9
-	 1U0JfdLQbOwV0PWPU2egm1tVXQ9Hfm9vYJGeoGAdCfFTC1fGNKHv16O5pYS/Pfm8/A
-	 NOeriloIpP3EV6Urreb1nb35DS2Hc73oF8TRop8SdNUmdacfRJzZQpSWaHh9RloR/H
-	 LSRXvv1cqlBRSC0aSNjXItyOi/V93hxWzAovC80ypUPpIFBCur5wZ4ppDz3UZ/dw5N
-	 F+nrsYv9SPueA==
-Message-ID: <436ca5b3-ac0b-4313-9ed3-66c73181686c@kernel.org>
-Date: Tue, 15 Sep 2026 08:56:35 +0200
+	imf25.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=BhkXEgr+;
+	spf=pass (imf25.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789455424;
+	b=20WehWf7kxUfiQXr6ic3KC0TV+5c2W38vsBcPF6r0tQqNIAPbKGi71n11EatIORGr5cOCr
+	v44LipBLdZjgynvCBh7OSqMbcPbuoVG7/SoLyo7Bzu1KyGwd+vb1NPWsB7eQhHnT48zSb3
+	ND4adR6A3lyd60kFiV5KoAWrj3napTI=
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c29c49a977aso127683066b.0
+        for <linux-mm@kvack.org>; Mon, 14 Sep 2026 23:57:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1789455423; x=1790060223; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=19gTsJshLkl6xms1dIGVk+IXi9BTm+f13eumbdPgk68=;
+        b=BhkXEgr+gdaZkpcSxNUTDbIrYpGX9tmUaApG01gOlIrQqJYgMdR5kffTyYCI2eGsA9
+         mKAXk5w1b0+vm5fo6kYwnLyCvjI5hU/LjEwuMR0OJeiMBPgeu4GMamPO886NsHqUY+72
+         t3kF0KILOxEPnYJT+qEYegq+iqw0dohtmeoMNkNIQbLmwVRpmCjork2RrO8A1A5FXxIu
+         Z3dhILq8A1lhYO7CoOXwW4fezC+L6qzCWs0AryNzLhRli2y5P5DTraMdw7TF2oi3VDnC
+         nm70FzhdL0EYEly7JBn6/GvDkRqqLedQnKIvYwcS0NjDoL6OdNiRZePEqyggXxaTwXTP
+         aPEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789455423; x=1790060223;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=19gTsJshLkl6xms1dIGVk+IXi9BTm+f13eumbdPgk68=;
+        b=I7hhEDv029opmG/Pfh3sHiFG6gO1y9wy2rdECydR1Joc/X33mGBwUIQmUhEzfx5BPT
+         tBmEKVeJuQL0smiu9Z2GjAhM+2/OKpJflqEkzeYMhdyEDercj0a6ryTw9D8wLVbvFErj
+         xcwbdvrB2vOE4coBCY32DfGL335TjjVEKFORCU9HZKtoEa5+3NLJICs/6JBZkQESQBKv
+         JH0Jzd19Ng3sqnFShYmOfO7g3CxBPI24SzeY+Umr1Hk8DPwXdCdISkCmMtqZp683Asl3
+         8FUWEt2MopvP708FMrIZl1tB741HrzKIFGHk9sPkliQVlBiiws0/+ueI27JquMwaWwjG
+         +OCg==
+X-Forwarded-Encrypted: i=1; AKwUvBzHy+a0jDnkz6/8v3iKls05dY5mJLGbhcy+2oAcXJtO1ZACYT4HEE29yuk/2rOJyl8k/qT9A8Y7lw==@kvack.org
+X-Gm-Message-State: AFuF++lWraxVCge/mE8x3dOMghsYtmSI9T/g+LX24+FeAv5mJdFdn/kB
+	rN6NSXDn5DOu/MQkVj7RfYVCaQh0qmNfNTUNEHTEkkl861V9fwEEcc7crY3ze3Y+lEU=
+X-Gm-Gg: AYBFou00uoPuIQFEpCpLhBlU/gvvHOAEBJhk8jJFvEBggkMSWkqdLXG2fFbDdRgtFAt
+	s9n6Rldg7iWsybadg0xodZYaUu6wb00tQsJA5a7Ehx4QLbvG5MPZWWCSUgPbGBToU6uf3aiVA5d
+	1X0hrtSypSPb+cdEnSRQtUwY9RsuL3ryNVZYt8tCirrXtitwrDPGBI1CZXCNRW6i6ZeAAkhStdR
+	M8ZucIgh/1fK7kiTrQrXRbEHpiC2bpXs9Q7HW/hEZF1N5txhzAxVGeqAbU8QLgkmgK/Itb6KyyE
+	8OV88oUUMZuTzn5diEtZkRepCC6DZRMCM2ZclRfkmsbuoMkR9SB7W4FpFLeRoM8HPrXEYoP+RBY
+	1D7Jkedgg1dLuiKJVONPQoCCuTMHtZlQv2kSUyfqS5EVo4udPBdaYM6FYUsZVlDxfiDTnqghOch
+	IwRtvtR8Kdf6xCUMlw7BQ9Wg332XAK2TIVT4scoPVJSq+ozY52LcFMSqSn/CqR
+X-Received: by 2002:a17:907:1c27:b0:c26:22ec:db92 with SMTP id a640c23a62f3a-c29b876765dmr355857466b.47.1789455422717;
+        Mon, 14 Sep 2026 23:57:02 -0700 (PDT)
+Received: from localhost ([2a02:aa7:4656:2314:c23c:9eda:81d:3])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2966067101sm537544766b.35.2026.09.14.23.57.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Sep 2026 23:57:02 -0700 (PDT)
+Date: Tue, 15 Sep 2026 08:57:01 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>, linux-mm@kvack.org,
+	Jiayuan Chen <jiayuan.chen@shopee.com>,
+	Zhou Yingfu <yingfu.zhou@shopee.com>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	David Rientjes <rientjes@google.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/oom_kill: fix hung tasks queued on mmap_lock behind a
+ long reap
+Message-ID: <aqjsPW92SgcHONKO@tiehlicka>
+References: <20260914113239.367200-1-jiayuan.chen@linux.dev>
+ <aqg-oG2HDIUeK5Us@tiehlicka>
+ <20260914203533.3544ae8dd0903c7603b385c6@linux-foundation.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm: Move default_gfp() into gfp_types.h
-To: Kees Cook <kees@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <brendan.jackman@linux.dev>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- linux-mm@kvack.org, "Rafael J. Wysocki" <rafael@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>, linux-kernel@vger.kernel.org,
- driver-core@lists.linux.dev, linux-hardening@vger.kernel.org
-References: <20260914223212.i.829-kees@kernel.org>
- <20260914223219.901347-1-kees@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260914223219.901347-1-kees@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 3xzpxc7aoid4xf5ndbuth51xzgw5j7h7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260914203533.3544ae8dd0903c7603b385c6@linux-foundation.org>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 12407160004
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789455401-443864
-X-HE-Meta: U2FsdGVkX1+swhsAn944XLAQxEyyhxbQskSfyd9L3O90Qx8YsPaoUEDs89QRci3ClXC+88UXAfybU48WUaq+neax7WgG0oXw1pI7GcN5f1m8Wnx0NouruPxnXEGlHexmUKI/29iIHWA/XbjyzSgcacA/3m7OGyHIb+/fZHhmvDIjNK/G6Ei3auY81ptZj0EBVXyIJTAR/bfvZUSrxavGZGDdCRS964HqYOHaB9Vt2P1KOxAAMvhr9YbSuXl/JSIFl4KfesA3xzYme70zAy86gcm2rMKR9x0K848NT5921iJLFkrMeoDujYcySQN92eODWJpoIRXI0G7hPBEN3xDA5wscqDEpfWIKBUN/MEGtKzl/8lBjAuPfceaadWOmmKDKnMTtGql3xo/BA1rLwUozE5Rx1gxrlSxtijgY1BMXlzjEysdKMZ0bS7h4BmZyOrgvm5JctpBfJs5OnQh1PYp1VJf4PRntGD24TvmR1o5xqWM73Eh8JVBVAC6XYPcGFCeFWGgybtd2ZPsux3KcgUuXZz8UjUsZB/yuznU+/l9PNJkgFUJmhc5+SVoAIQDE7+xDARBF8SgtyiUZivsWy2dFeSkmjvqr198IazCTHb6fN5PavkxE8x5A21NrBBX2RLHVPqbmvZZEPuo9IMQ5XgawF9rIyohVgDPh+x9nPmCMq+diZ2z0GF/pQRiBqOsPZPovz7620Z0La1JonIfd76c9sHDqywguHe9n+woooAyfwUAywg5HPGUp4XhM7tLlj6lC1x5ZA8sv5Fkx8Wx+TXjiT5VKgaB5KszXFKIJzRKOtzJ+/7b05lMeqr3kqcpwDqOdEurgdUxhxgTW76hF7HTmNLwrQ6WR8tKqz17SF47MXaEUBUN3fbUsJnc8dal8Nob+xiDDDenzwyMV0C45EBPJcTY4aoUZHuhlAOQ+oE83oyEGPk9QTf+BgyWuRV/PcE+I78qfoW7isMW4/o2hdik
- TbfBPw5m
- 1FqC7xFDdAx72fFBGvn182z/Y+o/Z2vNVE6l8hbikvnR7QnbwHcOEqxv7W3WXDbYIc67mdY21GO9kNY/sh/xv/Ho5o6P2dRbg+BOHGOGXKyQ+UpqsYbrTl8/ADKSrp54Jr3BPDt3zuu4lv0xVjqwFp8q44aeH2OtCqlh7LlmypYTblspRnbNzhS+o3d125hUIKfJ1kWZ8boPK588PvmSpz/K0DzOx3BNC21dH7ZgXPnT8NNtLXwycHrzDI+04/INh7G7aOxZKvzLEdmXc/56i/ZfrDjJYPSzLURLLlFR+wLxn/dXgCWfN3MoTWOg1t0wwM+SJizPdudkQvUbSetyml3talmzyFQOByb3QDkwgyRKftAM6dfKkS1ykJklKIY0gswCAbIWInru49LDLsE3/bTgDkX18BCC4kDvb2xgUEN1vfQpg8KeYqmRHezY0kcRN0ZskQVdT63vz49qk2PTQhwnmViTvTtYPDqREVVNPOR4x7vusAqMg0/34NTGCp9gGg8p4QDvorD2iJWCdtX3RaBwIM9EUMDf5hK5/PZiLpFsY265+FRGvfLqubUzRIQB/BFcnXo7PUbz449SLB/TtkxJtgMnTcxaodE08cezmHiWOtVMofBJGFrBXR+eqvg/dMtmZJWPCxwfQYdXiQ+9PoAUIVZKQfVNQhOq/7GRxB1zfamM=
+X-Stat-Signature: dygigpty3pgnk4s8so7hn33cjwgomejc
+X-Rspamd-Queue-Id: 52468A0008
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789455424-785520
+X-HE-Meta: U2FsdGVkX19cZ4X8AcOr4R7vy4k/n3E6ITkEqUpC/7kGTaIwEZRhM0HAyOz7r+AaNiu5us87v7p+ri6dB9BgWEt0aaSBT78hXDDUH1QK0qFSNg1lN7waQW6qViVYPCkyYvzbkOtycZ8EvklOU682fP8n0zib88bIZ1nt0g6NoG1ap3K900CzSVIpsHDCrEotxNp5HYMQw6J3yWOBd/Y84Zl/jpY8+bLt2XKoCA4WeZwh3jWEMmCx32oLUhpwTDmRlok0DotCxrkP0ZVh57ETxVfYaYqK1BMl9In6mVZ4kAFayBkjnR5Njy2PnZ89+EVgmrsZphdGIdCNyuAA2wYnsMg/67Hi4sVkEHrQx480JH/xk1P31rKnmTTELc4IMmGMYA6/HOZo4mTrEtIa90yjiF3dEW3JxOve+1YbjVE2VQhMv6EAJnONLeO1rPuRkdJHPhLFg0lLdwIq5Mp0fgJpy9s/kKzQarKc3ZHq5A7eWyi5TWu0pDsfuPeKBgiabM0dQisqFJngZWBUjEEpdLZKvAA3GJJUvgZjY1bLpKUoO0Nts9xTxnvanKMFvo/++7H24mNvMHe7wdNyyPta1rtKNfZB6wcQhS3MBgDEXABju/ehFNYLQ7nneGL3nGjnO8Qidx5W6QewvrqyntGTNig6Oeuy3cr8UfMXSRYsRx+VWrzdBa2ASQ/gyD9XUHc8pnoj0+/EZMBJ9mQWtCpBsnGkWkKt+WjUQa5lorwyScUFtHcZn0rUbAezMtqLBho5V/W3asjpQMWHFOR7fD3Cv5QeGpYgfY6BKw0sKG4pRFe3WFfFApzqzIo1LymlOL2wU9RzQRn03HIPtyXifOFxYnO6U6JZibiqUA9UJtlSBRmYOSJ9hlMy17Xf8pGe14a9zcdzlRkuwG0bk0U+ymrJynClYSeJ+llDXEuMUu+MZhnFz6pVlHDeO/7xgMyxikvHa7YhZRPpm8yE5s1XcKjyReY
+ Cun0ZPID
+ 6PbR3kkxwGPyUQ3fmxazM0AEC2IXCVJD8Rr5tu4w1wu3GsH8EO/D0+SH4K4L+WVCKf7CcoiwG8Y+LFQlQWWUdBik4ms4QTF/67qtbw7lZV8m2e7lUhgoc32XkBXFRjTYvs1I0W/TiT42P7aTa3qkrwH4GKVSBhncpAtMR70H9NB3ZXrMEhKVNi02c4dnNHkzspBOZeg9vX5R0PJdKAEfFcDhoANDMD2uEhEGbukm0j1FFhr2Fr/KweNbPvI8gjrhWtkFmY4RMmHjaqfo4v8AXXMaqZuMIQFRVa5GNl5DqN5fIbbBZV7LghbWB3hQlHb7r5bWtiuZOSKO+oLJvQmH4qf6pRdm3IVnWHNIcGVaolNtlaRSiXM+VWJZANNvtaPyoY4W7LnmkXMOxdLe2YR5BeQBil91JwdaBVVRSIIbUn9/cOpJ5V6shJ4pul3e8BcgN6wGRNdVpo/YrBkdvx1+S7gKRRw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,66 +130,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/15/26 00:32, Kees Cook wrote:
-> Using default_gfp() only depends on the GFP_KERNEL value. Move
-> default_gfp() into gfp_types.h so that future use in devres.h doesn't
-> require pulling in all of gfp.h.
+On Mon 14-09-26 20:35:33, Andrew Morton wrote:
+> On Mon, 14 Sep 2026 20:36:16 +0200 Michal Hocko <mhocko@suse.com> wrote:
 > 
-> Signed-off-by: Kees Cook <kees@kernel.org>
-
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-
-Incidentally I was thinking if default_gfp(...) usage should be extended
-also for the legacy kmalloc() API. Because it's going to still have users,
-buffers are needed for many things that are not objects (structs). Mike is
-converting many unnecessary page allocator usages to kmalloc(PAGE_SIZE, ...)
-often with GFP_KERNEL, so that would be neater too...
-
-> ---
-> Cc: Lorenzo Stoakes <ljs@kernel.org>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: "Liam R. Howlett" <liam@infradead.org>
-> Cc: Vlastimil Babka <vbabka@kernel.org>
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Cc: Suren Baghdasaryan <surenb@google.com>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: Brendan Jackman <brendan.jackman@linux.dev>
-> Cc: Johannes Weiner <hannes@cmpxchg.org>
-> Cc: Zi Yan <ziy@nvidia.com>
-> Cc: <linux-mm@kvack.org>
-> ---
->  include/linux/gfp.h       | 4 ----
->  include/linux/gfp_types.h | 4 ++++
->  2 files changed, 4 insertions(+), 4 deletions(-)
+> > > Call Trace:
+> > >  <TASK>
+> > >  __schedule+0x487/0x1870
+> > >  schedule+0x28/0xb0
+> > >  schedule_preempt_disabled+0x16/0x30
+> > >  rwsem_down_write_slowpath+0x1d4/0x750
+> > >  down_write+0x60/0x70
+> > >  __ksm_exit+0xb4/0x230
+> > >  __mmput+0x12c/0x150
+> > >  mmput+0x1e/0x30
+> > >  do_exit+0x283/0xa30
+> > >  do_group_exit+0x34/0x90
+> > >  get_signal+0x952/0x960
+> > >  arch_do_signal_or_restart+0x41/0x250
+> > >  exit_to_user_mode_loop+0xd3/0x560
+> > >  do_syscall_64+0x385/0x470
+> > >  </TASK>
+> > > 
+> > > KSM is just the one LTP happened to hit: __khugepaged_exit() has the
+> > > same write lock cycle ahead of exit_mmap().
+> > 
+> > Why is this a practical problem we need to care about? It is kind of
+> > natural that the oom victim exit path might race with the oom reaper. They
+> > share the same lock that is mutualy exclusive. The whole point of the
+> > reaper is to ensure there is a forward progress achieved. So before we
+> > start modifying this let's talk about any practical/real life problems.
 > 
-> diff --git a/include/linux/gfp.h b/include/linux/gfp.h
-> index 872bc53f32ec..b62e2fd53cb4 100644
-> --- a/include/linux/gfp.h
-> +++ b/include/linux/gfp.h
-> @@ -13,10 +13,6 @@
->  struct vm_area_struct;
->  struct mempolicy;
->  
-> -/* Helper macro to avoid gfp flags if they are the default one */
-> -#define __default_gfp(a,b,...) b
-> -#define default_gfp(...) __default_gfp(,##__VA_ARGS__,GFP_KERNEL)
-> -
->  static inline bool gfpflags_allow_blocking(const gfp_t gfp_flags)
->  {
->  	return !!(gfp_flags & __GFP_DIRECT_RECLAIM);
-> diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
-> index 190191411009..b1cd143f3c42 100644
-> --- a/include/linux/gfp_types.h
-> +++ b/include/linux/gfp_types.h
-> @@ -382,4 +382,8 @@ enum {
->  			 __GFP_NOMEMALLOC | __GFP_NOWARN) & ~__GFP_RECLAIM)
->  #define GFP_TRANSHUGE	(GFP_TRANSHUGE_LIGHT | __GFP_DIRECT_RECLAIM)
->  
-> +/* Helper macro to avoid gfp flags if they are the default one */
-> +#define __default_gfp(a,b,...) b
-> +#define default_gfp(...) __default_gfp(,##__VA_ARGS__,GFP_KERNEL)
-> +
->  #endif /* __LINUX_GFP_TYPES_H */
+> If this situation is expected, unavoidable etc then perhaps the best
+> change is to periodically poke the hung-task detector?
 
+Right. Reaping 10s of GBs worth of VMAs might take some time indeed and
+that could trigger the hung task detector.
+
+-- 
+Michal Hocko
+SUSE Labs
 
