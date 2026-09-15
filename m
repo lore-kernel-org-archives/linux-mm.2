@@ -4,93 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A2A4C88E53
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 06:04:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 299ADC88E53
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 06:06:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CDCD96B0088; Tue, 15 Sep 2026 02:04:03 -0400 (EDT)
+	id 16EF76B008C; Tue, 15 Sep 2026 02:06:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C8F806B008C; Tue, 15 Sep 2026 02:04:03 -0400 (EDT)
+	id 121366B0092; Tue, 15 Sep 2026 02:06:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B7C076B0092; Tue, 15 Sep 2026 02:04:03 -0400 (EDT)
+	id 035676B0093; Tue, 15 Sep 2026 02:06:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9BBB76B0088
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:04:03 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D35B014029B
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:04:02 +0000 (UTC)
-X-FDA: 85214955924.10.B9210B7
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DC5FA6B008C
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:06:11 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5FE951C21C8
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:06:11 +0000 (UTC)
+X-FDA: 85214961342.03.DE62AA5
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id D336CC0004
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:04:00 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mMAaxlNn;
-	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789452240;
-	b=eKbkz6k5QuSsbIo4mI7ck7xk07fsCKs++C4fNF/w3i46zJ4VQsOpBsRozXyUF2hLC5IoMD
-	g7ZOBQNr2e1am77laPAAyExYql6gyIxZVASEJgMKFhfLGjPAEWx3vhqA+Hk1QGsqEb6VCF
-	GxCx992AWMX2wSzeGBt8EAnFlXJ6d+4=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mMAaxlNn;
-	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf26.hostedemail.com (Postfix) with ESMTP id 995C514000A
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:06:09 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="Q5OCUJ/k";
+	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789452240;
+	s=arc-20220608; t=1789452369;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8vCQE5R3+C/PNtR9Gpe0u3TKggkO3uc52l+x3OETu2o=;
-	b=dhenfEroDLz8NlMv64V61xRjZJ/ruiu4tJa/m8em0ye7Ca3FMdvmh1hvKpxbYrd6nOFGU4
-	jBZm9b5waxHqDgOiXRUfsLZHsN56fqoqfgVXYKEeiN1slGTZ+DxrjTr4AiDPRv2I3GdAZK
-	xbYAdi/aUiKLI76EBUEftjQRTt53CoI=
+	bh=+xxEqhiF3vxSUzq5Nt+Fw5y6mQaekGAywZHRtZkajCg=;
+	b=1ktuMRzRmdffvvJPRbMbzNPNHctwxI4CHg7YRNaI5WObJCwH4DBztxpEvBeuIHDEIY+oLi
+	NMUrBuxRfDypznCtamU115wLfXsf31ReSdbeP6rf0ALDjMDYCjB7iV0kL0H8QA43eRVkjM
+	acTSzKefL6lCr6RtTnaw0+p+OmIjCaU=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789452369;
+	b=fP3upawkT1RWB6EBVObczhqJwwRdoHk3uWXD7ugImN9sWE170N2YqzsVS91RNNB9I4ljkK
+	WQk2mvM1e61pVIMx5xGW8C2ouI3SRLHxraw8Lkl/OYrBS9I1EK7q8HYR7hewvL+fIqU2p/
+	HHgcp4y8zY6CeVyNCLLFsugAtn1l6Fg=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="Q5OCUJ/k";
+	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 522F3600D1;
-	Tue, 15 Sep 2026 06:04:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45F4D1F00893;
-	Tue, 15 Sep 2026 06:03:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789452240;
-	bh=8vCQE5R3+C/PNtR9Gpe0u3TKggkO3uc52l+x3OETu2o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=mMAaxlNnxdyl4mQxQyS/wkmDUx3chMaHciqE9DrDRwHke7Oyow2NxXwO8bFqHRs6Z
-	 HQ/HbnfmXSgMapZcx//yZOtdcpBvP1pr2FSVxJyLQ/2CiIc9xqC+wc0IF48YOihe95
-	 KVzUKgKfirySdLJY0oXOyyaUWo12vbxHe8UNYJMa0eCkfqlZM3bZFFcPPRXaNM5X6u
-	 gzQCnmP5s+lGJjhCJ6m7ObDGNU0MUiVSgRTN/XfCTi6Fr75Dx+NlUlicWK2IqCFWjA
-	 OfqeeLZaMsCBzYq3GhCQkALmwm5CtO4MiEpo0SqgdfLs6RCF0yheIC/HXVxKr8dJq4
-	 Xn+Cg1UCgEWxg==
-Date: Tue, 15 Sep 2026 09:03:52 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Yuan Liu <yuan1.liu@intel.com>
-Cc: David Hildenbrand <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Wei Yang <richard.weiyang@gmail.com>, linux-mm@kvack.org,
-	Nanhai Zou <nanhai.zou@intel.com>,
-	Chen Zhang <zhangchen.kidd@jd.com>,
-	Jason Zeng <jason.zeng@intel.com>, Chen Yu <yu.c.chen@intel.com>,
-	Pan Deng <pan.deng@intel.com>, Tianyou Li <tianyou.li@intel.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v9 2/2] mm/memory_hotplug: optimize zone contiguous check
- when changing pfn range
-Message-ID: <aqjfyGeQaL4g2EcA@kernel.org>
-References: <20260914072929.1883794-1-yuan1.liu@intel.com>
- <20260914072929.1883794-3-yuan1.liu@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260914072929.1883794-3-yuan1.liu@intel.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: D336CC0004
+	by tor.source.kernel.org (Postfix) with ESMTP id 88A3F600D1;
+	Tue, 15 Sep 2026 06:06:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C759F1F000FF;
+	Tue, 15 Sep 2026 06:06:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1789452368;
+	bh=+xxEqhiF3vxSUzq5Nt+Fw5y6mQaekGAywZHRtZkajCg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=Q5OCUJ/kGbEIlPHjL+9OEi6LGcdhCpjjZZQTNUXyD88CAOMW3kdJ+01jkWAGYgzlb
+	 SZ1Sbx3y1iaUM46yvjh4tGuLVqjq2Mc8kSFFdufzUIMfJ3Lf0tFRecpdV6T6TIJbzQ
+	 SN9YZOUDRIg5rPIBwxlsW+tNZ5yNfm4uuUKjmNXo=
+Date: Mon, 14 Sep 2026 23:06:07 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Julian Sun <sunjunchao@bytedance.com>
+Cc: linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ axboe@kernel.dk, hannes@cmpxchg.org, mhocko@kernel.org,
+ roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
+ willy@infradead.org, jack@suse.cz, rostedt@goodmis.org, tj@kernel.org,
+ linux-mm@kvack.org
+Subject: Re: [PATCH v4 0/3] memcg,writeback: flush foreign bdev mappings
+ separately
+Message-Id: <20260914230607.9e4d74933bb589eeef435e8d@linux-foundation.org>
+In-Reply-To: <eba0295b-268a-4573-aeeb-de79b9ca6063@bytedance.com>
+References: <20260914103119.1708452-1-sunjunchao@bytedance.com>
+	<20260914205947.5aab9d7261ef0f26ec8f3213@linux-foundation.org>
+	<eba0295b-268a-4573-aeeb-de79b9ca6063@bytedance.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 995C514000A
+X-Stat-Signature: z8oa8rwmdbrk11kgos6gn1jn871cxbq4
 X-Rspam-User: 
-X-Stat-Signature: pyaxrkfdrp6qw6posppttio5f7sunndz
-X-HE-Tag: 1789452240-56153
-X-HE-Meta: U2FsdGVkX1+LD0SZe86mmSYBpmbvTUuvWr8V8OnaE1U+WdQsYGO8zy6UiWD8YZx4nUTOoDrM62MTFfX1GFH+3xJ1/a1eQX3daohX3T/NJo4LlYYyxsLBq2/HnC2GAWOyhJrkPcGG/3+IhiP+V20Q+QC0h4NIc6HyV4hwT3HzumqxrUKVMq0WCCksTIEWdTycReu8FcgO2OC/4oidShUHn9rcG0jzwNKfdsQx2OEW+dBm3G58WxYOl+DzfqvM4tOG/SnNbi52tMAbU1U6Ctx2wIzURrBOsUSniRk83hdyFOHpgzpyfmgPTsWCtgWfoYCCkpRZmml1jweZ/t+CLsBF7ChHm9mlYzM7t0KeXtOxzpRGVFrxvGLPIsyKUtReKisQ4QfAwW+S261ZN5JudpNhtFObaR+I6RbAftxsk3ZR95m6EG5tyezpMCaUaiNHGFNL/4nPHjdtuOihfo14I96nzGD0QoQBw93hNNtKXGJtMkB6irEy5LlQKwCStWYs05dvwSfSnfysmcpVtQe2oG1Nu8VHtezHVbMvOqpnBH2//XofAAt6+I5O5R10sfFk1ISz2gwlUoJank0Zlgb+Ps8mtuZfX5YvuiNXbd7XrVsam3bzED4/YSYmkLZKC1zD6g3bk54O1qb9g2CT/Eb1bH0gB6MUpAJHvNnlz7h0i3Qfh4/XaG+/5rC1NqQFJBvSrOCm+znRqAUiC7RQxceyGV4qJtkqTklDp38PioQKIKptWciOakVcXILasCrzIExTTdFBcnobZn+JKv7FYurNezRW164Y//sRsyjj0vixvqJ/77h7RwaUIE13KUvrC7GO/sHzsR+biOEN6uzqixiEv6X6MiWQPHFk4vY1n72lX0kf8AKXrvUGLxsJEbFukZT4gNOGCSvolxQLvjW2hXfMMJSy+vv05rfT9gEy2SC/m4yUw7m9D1OAvzpGxe5wF/RW7/LniJoj0j9fV7+nydO2YPN
- 5a+deCy2
- Y4DUZVr5RTH42SKYqJ8nmtgxtP0zsgKlowCsWcXJhuH1WxbZMAWvbVFk9O+RUs6CYFmEplEU9ROqlJExP41FaMO1cMAM83KanPnjtLZBemQgelLuVaKLtRsBIbG0cSgbJWA61I2LtCLySUorCI5CPbZYRGEhrcV7IV0+mUevl2pGWmI3klWiYzG8nAc4GBpdQwxoRyCjBd6onSAzLQcHreUeVfG2gvbUh7Mt6yxp/BSgrJf+fMX70EzbbhmKAjGA6EI187UTlB+eiGQECJ9N9iuyr3nKoNWSppxSvsayIHDgwgW8tosO605QdLUGKkvUJos5itXSkQdYd119wXnMXOaeNPaGR5Ila3ZdlzvRNi8Lhr2w6ugMUqc/OXTwRoJxaS8xGBM1CZX+2gaiqJkp7XWNrww==
+X-HE-Tag: 1789452369-860968
+X-HE-Meta: U2FsdGVkX1911/bnccOXs9VIO/1bRe4My+hsTPFkhiO2SaeXjQfW1C74CSHYjk4hOM0FKhu3r19TzPLkj0b08QWiZd+XEsz+XP58hmyRdm+f2bfkYyj0Mrz1E+gmAn/eJEzfHaFl6UGLBYwAi8CPx/aZlPXbseOQVR5PoMTWg/LkBWADZCG9EsBulPVVzxbovpsyFdwYlmi/d9kgyL9svvVvklIIMgiIqkG4MaacUpK4wNdamgtYYMLti45Rb2uyFFiwaPhe2eFQZsioV3yRkbfp44jhxquq8F4mjQWHkCLqhqFT3hQCefRBUjXdV91kk+2Bhw0JiTeS4GB7fmCNPZwgexpvH9AwvEn01fB9RoQb+NcpytomxGTNZFibTkCHMzw1CRTSevNrORrtPpIk87/BK+4UHia6kFogpx62cJiCGyr1QZZojYMPBla6Zq4e22T9FupVPUIGNP+IMbjtdPmmAfzaiGnGxMBxCUDLpUVAVXARSmkgkri5Hl23xEO6F7JuRlH3u/pjLlnivsJH+0/D2kUr73ZXc1boqKHsbg9CaYT/qJA9C/s5Bv3qkKexf9bskuhcErSpUSbMDc605TH2nxaWEQ+avaOIpi8DfJHyd3CTeSGKwCDEDrXcEof+GwskBCBDmk3X6kwx5C/yCCaQk3LBYtq5DkiyOD6GhV8LR0cV3ihMqbCJ1Rtm5BdF1h/fMG6z+npbHjWOoUGP0YBbKpFKOENWt2+78hCAecMjfivYagg59viZXy0R+uwj7GR6iQnl9GY6O7S5xzUIj291CiiF66OXZb3xyfdUGv+QuM2CL2dROq9W5xvxCY5nyGnkgdLe6AI/k8rMVS8EayM+YSItu4jAjVzmW5cdNlZms1a8p9nW2fjE4DRibaJsOi6PWN9pqxjr/oGjG1byDFV55m/WEQlwfr5QUw6DnZp4OIaerpgzmGpJMAp1k8AGVQbwfu5QF7OL/gTC0ii
+ mwhQvxpO
+ fvZUo5DHr8G3h74tFJFBUQwzeXHKr8uMZItM7YYh73uV32qt1nig+v/Fv5g4x05eq/a4XsmPddNboTi45nh76L5QKvqouTvZdx8xFQ/XgXrXIiORI0/ZULDXEWaANr+8tgz6eScd6wm9TCHcmLPHIadkavPqB8RxtH2IIPaPPvLzsCCGXa0VkKDtl6Xg8qnrnGkwci2T07TPs4f+2DD9NtueiUn4hCWNUUS1C8AoLYrk8N9kO937ZwsKK9EbIRfrcpKuZNAbHxSO9gkFLqgUds/uvnw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,72 +95,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On Tue, 15 Sep 2026 13:35:18 +0800 Julian Sun <sunjunchao@bytedance.com> wrote:
 
-On Mon, Sep 14, 2026 at 03:29:29AM -0400, Yuan Liu wrote:
-> When move_pfn_range_to_zone() or remove_pfn_range_from_zone() updates a
-> zone, set_zone_contiguous() rescans the entire zone pageblock-by-pageblock
-> to rebuild zone->contiguous. For large zones this is a significant cost
-> during memory hotplug and hot-unplug.
->
-> diff --git a/mm/mm_init.c b/mm/mm_init.c
-> index 1533aebafb68..d40a8ff23370 100644
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -817,22 +817,39 @@ void __meminit init_deferred_page(unsigned long pfn, int nid)
->   *   zone/node above the hole except for the trailing pages in the last
->   *   section that will be appended to the zone/node below.
->   */
-> -static void __init init_unavailable_range(unsigned long spfn,
-> -					  unsigned long epfn,
-> -					  int zone, int node)
-> +static unsigned long __init init_unavailable_range(unsigned long spfn,
-> +						   unsigned long epfn,
-> +						   int zone, int node)
->  {
-> +	unsigned long next_chunk_pfn __maybe_unused = spfn;
->  	unsigned long pfn;
-> -	u64 pgcnt = 0;
-> +	u64 online_pgcnt = 0, pgcnt = 0;
-> +	bool is_online = true;
->  
->  	for_each_valid_pfn(pfn, spfn, epfn) {
->  		__init_single_page(pfn_to_page(pfn), pfn, zone, node);
->  		__SetPageReserved(pfn_to_page(pfn));
->  		pgcnt++;
-> +
-> +		/*
-> +		 * With vmemmap, at this stage all pages in an early section
-> +		 * have a valid memmap and are marked as online. However, only
-> +		 * subsections in the subsection map are actually online.
-> +		 */
+> > 
+> > What is the overall runtime effect of this?  IOW, can we see some
+> > before-and-after numbers?
+> 
+> I tested this series using a QEMU/KVM VM with 4 vCPUs, 8 GiB RAM,
+> cgroup v2 and ext4. Virtual NVMe write bandwidth was capped at
+> 200 MiB/s.
+> 
+> A fio job repeatedly overwrote a preinitialized 256 MiB file using
+> 64 KiB buffered writes, at 64 MiB/s, for 9 GiB of logical writes.
+> Four memcgs, each with memory.high=32 MiB and io.max=2 MiB/s, generated
+> metadata and buffered writes to trigger dirty throttling and foreign
+> flushes. Concurrently, foreground fio performed 16 GiB of sequential
+> direct writes using 1 MiB requests and queue depth 32. Normal periodic
+> writeback remained enabled.
+> 
+> Three comparison pairs, with alternating execution order, produced:
+> 
+> Run  Kernel   File I/O (GiB)  Time (s)  BW (MiB/s)  p99 (ms)
+> 1    base              7.19    114.74      142.79      1434
+> 1    patched           1.57     88.62      184.87       480
+>       change         -78.22%   -22.76%     +29.47%   -66.52%
+> 
+> 2    base              5.13    103.59      158.16      1434
+> 2    patched           1.74     88.65      184.81       497
+>       change         -66.06%   -14.42%     +16.85%   -65.35%
+> 
+> 3    base              6.14    109.27      149.94      1434
+> 3    patched           1.73     88.68      184.75       480
+>       change         -71.77%   -18.85%     +23.22%   -66.52%
+> 
+> File I/O is completed block I/O matching the overwritten file's extents,
+> including final sync, not requested writeback budgets. The other metrics
+> are for the foreground workload.
+> 
+> Across these runs, mean file write I/O decreased by 72.7%, foreground
+> bandwidth increased by 23.0%, and completion time decreased by 18.8%.
 
-I'm having trouble parsing this comment. Shouldn't is say that some
-subsections in a section can be offline because of holes?
+Thanks.  This is super-important info so please condense, summarize and
+emphasize this result in the [0/N].
 
-Other than that
+How real-world is this test case?  I assume people won't see gains like
+this in anything they normally do?  I assume this is long-standing
+behavior, so if misbehavior like this was regularly being observed then
+we'd have fixed it by now.
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > 
+> > I'd consider this a memcg patch, and not only due to the line counts.
+> > 
+> > Please cc linux-mm on memcg patchsets.
+> Sure, will do.
 
-> +#ifdef CONFIG_SPARSEMEM_VMEMMAP
-> +		if (pfn >= next_chunk_pfn) {
-> +			is_online = pfn_section_valid(__pfn_to_section(pfn), pfn);
-> +			next_chunk_pfn = min(SUBSECTION_ALIGN_UP(pfn + 1), epfn);
-> +		}
-> +#endif
-> +		if (is_online)
-> +			online_pgcnt++;
->  	}
->  
->  	if (pgcnt)
->  		pr_info("On node %d, zone %s: %lld pages in unavailable ranges\n",
->  			node, zone_names[zone], pgcnt);
-> +	return online_pgcnt;
->  }
->  
->  /*
+Great.  Please update that [0/N] as indicated - help readers understand
+the expected real-world impacts.  Then send us a v5 and I'll get to
+work helping to deliver this to our users.
 
--- 
-Sincerely yours,
-Mike.
 
