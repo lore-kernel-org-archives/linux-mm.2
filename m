@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04CCEC88E7F
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 11:36:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1932CC88E7F
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 11:36:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 202B46B0088; Tue, 15 Sep 2026 07:36:33 -0400 (EDT)
+	id 2514E6B00CC; Tue, 15 Sep 2026 07:36:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1DA3D6B00CC; Tue, 15 Sep 2026 07:36:33 -0400 (EDT)
+	id 228486B00CD; Tue, 15 Sep 2026 07:36:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F18F6B00CD; Tue, 15 Sep 2026 07:36:33 -0400 (EDT)
+	id 166CB6B00CE; Tue, 15 Sep 2026 07:36:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E3A536B0088
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 07:36:32 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 84B721C23DD
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:36:32 +0000 (UTC)
-X-FDA: 85215793824.22.3F48300
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id ED1D76B00CC
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 07:36:40 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 62601C03D9
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:36:40 +0000 (UTC)
+X-FDA: 85215794160.03.F2536CA
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id BED422000A
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:36:30 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JOl8mduH;
-	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf13.hostedemail.com (Postfix) with ESMTP id AB93B20002
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:36:38 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=keM2MELZ;
+	spf=pass (imf13.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789472190;
+	s=arc-20220608; t=1789472198;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0ixA4Ace6BJn7IjrzCTCU0/h7/zoW2kue4sGkrY9xCg=;
-	b=RVeNLHkuOKdZexuk+EN7zaGzL+cPc+NdGdwKyiQebHX3IvwCZuF34LVTX99KdkeVYquAjl
-	k5cFlYlMuZ09g+WYKb8PDNuxi8CSmWoMsIHmO/YOYBow0vf4O1OKpdvt78jUXadt8sBKyY
-	aZ6AsGCqb+gvkiK7sDJubnUJjn60if4=
+	bh=dR2AT7slAh5QiQGKBciNLhR24TAk5bJ3ys4Ah5Rt7mE=;
+	b=EQdaXbsP3YuxX555kArMY5zhO3DuS0afppqFBrFH9IcSqR2mhLhLR82bUNtM8NWU9HgVmM
+	0s4SS1vGn4/53jign9yXa2NOkhcgxJC0EDVZiZdK74k807S6oL3rW0/QQzMiHsF1QCcp4z
+	+8YO9FRuCJNLDr+AsZowWbIvKPgxGOM=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JOl8mduH;
-	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=keM2MELZ;
+	spf=pass (imf13.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789472190;
-	b=T5rhbTvoatxzaiKOgYrr7ZZ2M7bcK0JJZd1tbTlYGuj6u3qLXtgYXXjOH8AQbVzxy9tJ25
-	L5iAQzCuH1p2O+gbZMs7is3u/0l9uJAwmEXnjaoVdal7d9LYUeT4A/dGl74IQF+lnUbjXd
-	fuLaWbwui3dpnuyoaR67frSiWMKiSzk=
+	t=1789472198;
+	b=yCUbKEYBzwRC5SRzBztm0uUUG0/4XzgQFonL9aKn4LXXR0bCEc8am0YvMpdJjnWxpAdy0I
+	xw0H+br+dnExy9pnafHewkyk1xRkJts06vOWrIaWwJdKc4UqUVxvtGQd0mr8BofNwbiRJf
+	hpE3EgjTElYT6HGhOYYDpsZ+4yeIgek=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 57141600D1;
+	by tor.source.kernel.org (Postfix) with ESMTP id 459BC602D0;
+	Tue, 15 Sep 2026 11:36:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 948881F00893;
 	Tue, 15 Sep 2026 11:36:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A888C1F00898;
-	Tue, 15 Sep 2026 11:36:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789472190;
-	bh=0ixA4Ace6BJn7IjrzCTCU0/h7/zoW2kue4sGkrY9xCg=;
+	s=k20260515; t=1789472198;
+	bh=dR2AT7slAh5QiQGKBciNLhR24TAk5bJ3ys4Ah5Rt7mE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=JOl8mduHPaeVv3eaq9MEhCqzMicOygBaK5O7Dzp/RHXpO7NODADnSsZqyfqWqEQZR
-	 lR/VPeQyWMIddPe1rPhDu05Hlm3nHa5FLkG932tVgVvVmp1QfM/hVE5mMYh+azuISL
-	 UmAM+w7jZ6/RT6AK2zvRXbcbWwva8oTaEAofof43ADeJYUXP4l+fKFnPm5nLpARsob
-	 2FLL0ErbZn7q0fCeD9rQeCPTtW4yh3QMmMpEVQM39yn4qUnY43PiI3hNDpcRqaUIti
-	 KY9m4cCM616bpCnYMsG+DY5wREnfHQo42u9v21mvFC1w6Cr6Wausbj6m5LHNP95jEM
-	 Ck7KRCyZ89YTg==
+	b=keM2MELZ8tMeEj63s6rILS1a6ikUND0cm/hSBjQN5i9zsMHRwumL2LpgndOJca1Aa
+	 97kIpfNmItf2JE76ybod5HhCCbaR3uSYEM810jrmgilIii5FRWRh1O86tNdM0FYWJl
+	 38f1UHzSPEd+hj/T0Nlt8QEoyRs4wb5r4JVdV9i/rSIOmEYhsfaqAD31KqLx/f0h3O
+	 ACHfbLbzGXb+++iV7WaxfM+tTIGP+WsUWGxYSjDxuYEbOqm0MVVuZjc4buiK4jUw7O
+	 C9LHTBiZSEultvzvuQBhaDEJQMVPhyftCJPppnofTMl7IPUPEYHfgCv4gmlMrEOmjT
+	 oPjncB8aAwY0Q==
 From: Christian Brauner <brauner@kernel.org>
-Date: Tue, 15 Sep 2026 13:31:26 +0200
-Subject: [PATCH RFC POC 40/50] KVM: stop putting descriptors back on
- failure
+Date: Tue, 15 Sep 2026 13:31:27 +0200
+Subject: [PATCH RFC POC 41/50] KVM: guest_memfd: stop putting the
+ descriptor back on failure
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260915-work-fd-reserve-unify-folded-v1-40-4d5217d6b246@kernel.org>
+Message-Id: <20260915-work-fd-reserve-unify-folded-v1-41-4d5217d6b246@kernel.org>
 References: <20260915-work-fd-reserve-unify-folded-v1-0-4d5217d6b246@kernel.org>
 In-Reply-To: <20260915-work-fd-reserve-unify-folded-v1-0-4d5217d6b246@kernel.org>
 To: Linus Torvalds <torvalds@linux-foundation.org>
@@ -94,22 +94,22 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jann Horn <jannh@google.com>,
  kexec@lists.infradead.org, linux-hyperv@vger.kernel.org, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.17-dev-db0b7
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3135; i=brauner@kernel.org;
- h=from:subject:message-id; bh=78vO7PDsYGy3GJUzt5pCpyZhq20MYXeEqBv9mkCwUOM=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSt1KmrZTOP7Ev9FMJVxubVxbdNfUMIq6RooWz7Kg6W0
- u0ly+I7SlkYxLgYZMUUWRzaTcLllvNUbDbK1ICZw8oEMoSBi1MAJmLaxPC/6MvkYx+dQ5OZjxmx
- 1NY+4H3y0sQ15JTH4W0GqkVf38y+wsgwpWTB7u0yUtPOBqdErHHe3P2Vb+cBu4mdx15GLt51wuM
- UCwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1418; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=KLCbLLJNzFhK9KnJoDv8kDUlKXi4pqPjbkN6aCwr8bo=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSt1Kk/tfzHImu/Gp6ZRSssN5fyinw4ruUhZCIkyWFT3
+ bH7k9a5jlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgIm8sWZk6GKcxbHPfdfrbYrn
+ f0Zr1u290KLF8etT65HPSeyxa5JK9zH8jwg7xHPKv6v/9/8HHp3fHOUXznI3MuD7/nrNS8a/OUU
+ arAA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: BED422000A
-X-Stat-Signature: 5h3d4r89ten16xn3bf6j73rww5dkcof4
 X-Rspam-User: 
-X-HE-Tag: 1789472190-553925
-X-HE-Meta: U2FsdGVkX1930jNnstW3HlZHwAS4J64tY2kteVNK77E8l923thQC8eHQhFzDl57eOmKylb/lkab8kPiwZlXPP/XvMt4kkMqlq9NZN2o7iRHZwWB0vXYAuFfxnedmMLxg7y6DMkvyhNPXrNm7ln3ZXeXdUK0/f5XSjdG9DUOVYOA1wjhPW/+nlGXC65Gn/DW1vfVexAF1oZ1+s+72pxngPCtbNe96ifWJNu6gnMbDO1q/1imShuDuQYf9JuZdr7soSCTOGu7QySPZfKxabWnjVJ+E8ExFwbAxh08hQIbedg+cmpXszJJZKL6pavtIpptN6K1/XH3lb/+/bUwp3SBVSXv9a68yj33MOi9aDhvLvjUxj/58jsrgDZzT+99PFu8YSPuubHd1eIGmlwFf/2SByAi76gPEXZio70kQL8hps9sStJwkqSabJTmtzUsy1MU+Br/zv9Oveoc+1LNM3/Ua7nigupQkVB8bJ57foh599G7vBGvA+5aPGxkl7KPrfdVXFgfLzj5gzGY2IkNpyoYJJV1Fyw6YGDV/98oAqaZ0rgKoh+6bmEwYMVzD54x/n0JMdkTqym/k7Xq4tE50hjMvkSgPHLJwYbq5txx9VEPHYRA6CwacqnOMe3EOJj/YeBBDCgfGO55O4hrqe51PiASlw5yaV3L0aFOOn2iDv1MNi3Tg2Stip2Kg7kRmqA74nMNs5FDVZJrx5guod21KVUI1jCka0Xak6pTn5ZJ2+WYd74r1sGAITz0Rkaro+qbKdOMUc9xluTx5LSbgJmhNukV5fm6WQCpd/LXFNqXaaJ/AK7liXT0HNGPA28ZqDwhPrJda3aTL+RI/R/5otyGPdkXDDZ3mgu4dW/zWeWP1rTphP/Sz0jxK0PK++Hd20WVLDXCnZtGOtqzYEZrO14O2wl0MUZnTLkVSkDW3Gn11Lzm1t9C/8jGBbKIg0WKP8nw/Ft5GblcdrT2ZwVLlGIpxS9H
- q47bz10Y
- cwPEasCG/zKL90Os2gG2Qi46koZR5sZRV0+nxdC4ELJocTfWFXH6nyo03wM2O5bUOFCT9uQOfX2Ng7DvhgMuHQzghNY/r3HkxO3LFJMoCxma/yA3tzBwYiF/OG0TulIYSCzjyedGIgETUHi/D9zLvQv84wXoVh/9LwO3y1x7KwohLydnLjO+PGKuH5hajCEseHwYlXW98EkKi6S43/6ZdN3yZExE55A6izU3zegQuSjNh8hNrN3tWVmL1Tg==
+X-Stat-Signature: cxhb6iwsts688ust44xxrwgqde7tmonc
+X-Rspamd-Queue-Id: AB93B20002
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789472198-176530
+X-HE-Meta: U2FsdGVkX1+uOON4+HJzZjnyCCl/WZdIxX1gIvIdLzeKF8IRygRc0+Ptrov2+C3dI/JEqjxmTYcQFL6QrHXnkDTTebjgT8QVrvgUKc/3jq5I/BAfbVgFH1SJWBecahZtt4Q0FaOy5Eq0hy7f8+5WlhbEoqYZKr2QYiM52Aosis2+Tx10IX7V7oxLVNMJ3r2hoQVhXRoxfV0MG9UGyUD+F+66qu1O9qLRuoUNs6GOg19bok5u5r59v7W4BXfRliblRJKqy7VDuz6688vC3BN5ctoiWzcbqimgX/M07vtZ2aNtxtTMNALPUir5PXgw7w6hECeAuROA2/0zvyy6KFeHvP06qIyLKlxMaV1v3rbKg25ZNxEQWec2SigT+HFb2XbRRTkMtk/8c5ZN6cgmW+4JLZZedy5e4WRrE/xWpPK5udX2EgUi9UQnzzF/ml6eFqUT3+YZUXge+AbszgwbQYAqyA5JiGpaJz2N2ugxB3CDxnKwfQFA7q/NT+M1KA8gj84TYQpIWa7LZS/qZOMW+XDLL27yeXjGqgLO3KyS3/tfhIDU6eLLoBZ4kt3N/Kvl70rK6HVK2ccEHRHWnonZkJ5mezB0/CHN7OMkquiy0cLNjJYNWUFEUAgRfGkVLPP3NLaZK5EIKJXPqVMFAreu0M6VaHZ0d23MFk4U+O4SsAfXvus/u+DI00GFTTtckljSMYl+zPhQs6FDYCg5BYibyY6nk7dMFP9ujVlbDGPJQcA3EyZn7blqZ+5iSaaTqyWzgBu7dvXXZIZcK65/a1zvyCsg7CzIMFBS4noNtEMU5FiRZ1jVvvvWiDfzk6LJQAGbrldEjNbSbWLWyymbV2svKLzDsvLBn1g6hAuWtxH9UWncZhAE6+rRRKdZL58XOcBDPL+z7zU+MbrsaTmGSPiM9b6j1t277htoIS11cUbHS4I+p1a4ESV/nyzshmSTPfKjpvrDmNYVTN+Jl/SKO9yLTGT
+ oPy8fMr/
+ gm3OxvAVKpVAxOmvA2UJrIrjqBBdyue0I0l4YQeIaO6BCOcB1RLM64oMyWlrpSxdNoZgpc3iuN/5mGOSOcHTZezs0QAm5weGQdGk5GQGF2JV7KRUy8Tr7dDS+SrZ2MdB1C2pFYg07TnQX46dz1VR2PrYNB6kuq1yR2QVu66MoKP83WcFDu/6mXF5L8Qc7r9b4jAArROUzz+Hf22YVLk2O/VAmaJOn43H6XOiDMq59X3AlhRmktt7kue5gX3C8FdhN+Jo+xKSzVP+qwlZLr49WtxaE4zkcSqBmkuY2o5qCf+a5pGM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,121 +121,55 @@ Rely on the fd exit path machinery.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- virt/kvm/kvm_main.c | 65 +++++++++++++++++------------------------------------
- 1 file changed, 21 insertions(+), 44 deletions(-)
+ virt/kvm/guest_memfd.c | 20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 65eb26a0520d..8d3d47a6c98a 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -4326,27 +4326,18 @@ static const struct file_operations kvm_vcpu_stats_fops = {
- 
- static int kvm_vcpu_ioctl_get_stats_fd(struct kvm_vcpu *vcpu)
- {
--	int fd;
--	struct file *file;
- 	char name[15 + ITOA_MAX_LEN + 1];
- 
- 	snprintf(name, sizeof(name), "kvm-vcpu-stats:%d", vcpu->vcpu_id);
- 
--	fd = get_unused_fd_flags(O_CLOEXEC);
--	if (fd < 0)
--		return fd;
--
--	file = anon_inode_getfile_fmode(name, &kvm_vcpu_stats_fops, vcpu,
--					O_RDONLY, FMODE_PREAD);
--	if (IS_ERR(file)) {
--		put_unused_fd(fd);
--		return PTR_ERR(file);
--	}
-+	FD_PREPARE(fdf, O_CLOEXEC,
-+		   anon_inode_getfile_fmode(name, &kvm_vcpu_stats_fops, vcpu,
-+					    O_RDONLY, FMODE_PREAD));
-+	if (IS_ERR(fdf))
-+		return PTR_ERR(fdf);
- 
- 	kvm_get_kvm(vcpu->kvm);
--	fd_install(fd, file);
--
--	return fd;
-+	return fd_prepare_fd(fdf);
- }
- 
- #ifdef CONFIG_KVM_GENERIC_PRE_FAULT_MEMORY
-@@ -5136,24 +5127,14 @@ static const struct file_operations kvm_vm_stats_fops = {
- 
- static int kvm_vm_ioctl_get_stats_fd(struct kvm *kvm)
- {
--	int fd;
--	struct file *file;
--
--	fd = get_unused_fd_flags(O_CLOEXEC);
--	if (fd < 0)
--		return fd;
--
--	file = anon_inode_getfile_fmode("kvm-vm-stats",
--			&kvm_vm_stats_fops, kvm, O_RDONLY, FMODE_PREAD);
--	if (IS_ERR(file)) {
--		put_unused_fd(fd);
--		return PTR_ERR(file);
--	}
-+	FD_PREPARE(fdf, O_CLOEXEC,
-+		   anon_inode_getfile_fmode("kvm-vm-stats", &kvm_vm_stats_fops,
-+					    kvm, O_RDONLY, FMODE_PREAD));
-+	if (IS_ERR(fdf))
-+		return PTR_ERR(fdf);
- 
- 	kvm_get_kvm(kvm);
--	fd_install(fd, file);
--
--	return fd;
-+	return fd_prepare_fd(fdf);
- }
- 
- #define SANITY_CHECK_MEM_REGION_FIELD(field)					\
-@@ -5499,21 +5480,20 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(file_is_kvm);
- static int kvm_dev_ioctl_create_vm(unsigned long type)
- {
- 	char fdname[ITOA_MAX_LEN + 1];
--	int r, fd;
- 	struct kvm *kvm;
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index 625e62e1a031..e0d1cb869342 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -526,17 +526,16 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
+ 	struct gmem_file *f;
+ 	struct inode *inode;
  	struct file *file;
+-	int fd, err;
 +	const struct fd_slot *fd;
-+	int r;
++	int err;
  
--	fd = get_unused_fd_flags(O_CLOEXEC);
+-	fd = get_unused_fd_flags(0);
 -	if (fd < 0)
 -		return fd;
-+	fd = fd_prepare(O_CLOEXEC);
++	fd = fd_prepare(0);
 +	if (IS_ERR(fd))
 +		return PTR_ERR(fd);
  
--	snprintf(fdname, sizeof(fdname), "%d", fd);
-+	snprintf(fdname, sizeof(fdname), "%d", fd_prepare_fd(fd));
- 
- 	kvm = kvm_create_vm(type, fdname);
--	if (IS_ERR(kvm)) {
--		r = PTR_ERR(kvm);
--		goto put_fd;
+ 	f = kzalloc_obj(*f);
+-	if (!f) {
+-		err = -ENOMEM;
+-		goto err_fd;
 -	}
-+	if (IS_ERR(kvm))
-+		return PTR_ERR(kvm);
++	if (!f)
++		return -ENOMEM;
  
- 	file = anon_inode_getfile("kvm-vm", &kvm_vm_fops, kvm, O_RDWR);
- 	if (IS_ERR(file)) {
-@@ -5529,13 +5509,10 @@ static int kvm_dev_ioctl_create_vm(unsigned long type)
- 	 */
- 	kvm_uevent_notify_change(KVM_EVENT_CREATE_VM, kvm);
+ 	/* __fput() will take care of fops_put(). */
+ 	if (!fops_get(&kvm_gmem_fops)) {
+@@ -575,8 +574,7 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
+ 	xa_init(&f->bindings);
+ 	list_add(&f->entry, &GMEM_I(inode)->gmem_file_list);
  
 -	fd_install(fd, file);
 -	return fd;
 +	return fd_stage(fd, file);
  
- put_kvm:
- 	kvm_put_kvm(kvm);
--put_fd:
+ err_inode:
+ 	iput(inode);
+@@ -584,8 +582,6 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
+ 	fops_put(&kvm_gmem_fops);
+ err_gmem:
+ 	kfree(f);
+-err_fd:
 -	put_unused_fd(fd);
- 	return r;
+ 	return err;
  }
  
 
