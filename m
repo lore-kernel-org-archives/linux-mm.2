@@ -4,123 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8866CC88E7D
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 16:17:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B83E5C88E75
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 16:28:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F0F86B008C; Tue, 15 Sep 2026 12:17:40 -0400 (EDT)
+	id 472E46B0088; Tue, 15 Sep 2026 12:28:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A0BE6B0092; Tue, 15 Sep 2026 12:17:40 -0400 (EDT)
+	id 424076B008C; Tue, 15 Sep 2026 12:28:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B7F46B0093; Tue, 15 Sep 2026 12:17:40 -0400 (EDT)
+	id 339286B0092; Tue, 15 Sep 2026 12:28:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A5FD6B008C
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:17:40 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 927CDA04AF
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 16:17:39 +0000 (UTC)
-X-FDA: 85216502238.30.75D9150
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 7DD0C120008
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 16:17:37 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=J6HuFXQZ;
-	spf=pass (imf29.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.174 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789489057;
-	b=SCzb2NbOUQ4a4RYdE+AmSKurKRH9ObGhYjRedFuy5Q8BmF+TGFWPfmP2CdRpdqHrfp28Ra
-	NWGLWA1pzNYv5pk3nmUgAvyJp0XiLjRwxqMAzeKNjEnkoXpL6JJ6dzdeiFeavI8bJB/5Ro
-	dtwpmPDQQzuOiBnOt2Q482rU/YO0/aI=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=J6HuFXQZ;
-	spf=pass (imf29.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.174 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0FDF96B0088
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:28:00 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5F2991404B8
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 16:27:59 +0000 (UTC)
+X-FDA: 85216528278.06.F20FDF7
+Received: from mta0.migadu.com (out-67.mta0.migadu.com [91.218.175.67])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 13BC0C0012
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 16:27:56 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=aaDciXGj;
+	spf=pass (imf28.hostedemail.com: domain of zenghui.yu@linux.dev designates 91.218.175.67 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789489057;
+	s=arc-20220608; t=1789489677;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dXoaSOzLcSniPHeJqnrgZd+b23tx7/MvhGFOoQXutdY=;
-	b=bk07BLLliz9tawrqf9tNeZnS6QKRUB+qDigAY3+irAeqRzBCohRnKgkn6Y1tpS+wD3NXvF
-	ybZhEEFbrSiu3QRV/1pOp23fYFSCV0ZA71kg0OS0tgaxD/qBQPxxIKmqoIlg3GhrSIEwbY
-	lXG6zPMsQsi9sqpYABa6KCtTFnLdZjo=
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-93a0fb2f9efso78060785a.1
-        for <linux-mm@kvack.org>; Tue, 15 Sep 2026 09:17:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1789489056; x=1790093856; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=dXoaSOzLcSniPHeJqnrgZd+b23tx7/MvhGFOoQXutdY=;
-        b=J6HuFXQZYUBEHu0xrbK680ivDkp3AU+Vfi9aqYK6h56lKqpk7ThzliVq9zenGqF0lN
-         CSbGA6y63QZWFEtb7SEf7Pj5RGVO9FQbElDUj08wDF9qVco42ljQBxoZ1Q78geZs4ttw
-         B+MnEbDFTwXR2FJNRPlkWGnlOPm3KVtUfeQmI0GoUumvu+G1Z5NRipeK15W1d7uCEYbG
-         a5uO5rYDM+mokTnNMdtCqWHQAhQPfAEFPHswKTWqm+jdM8dSPg09NFnFdGebY73D3PXB
-         Ns2yGl6pNlASxoSa196ufZRCMtgzUman8SZn6QNG2ML6bp5Ch29deYMsMYUAzf8yCihY
-         mGVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789489056; x=1790093856;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dXoaSOzLcSniPHeJqnrgZd+b23tx7/MvhGFOoQXutdY=;
-        b=v+XxncQvROTPxkvgCLE6vu8+WVCNlGepbNw7vYZbwr5hKLtaIMswcOyyrjHTze41vl
-         q4CG8+/ul4CK7dfAmxt8voKInOHjKkvGqReVBn56SODsSsHcHqSIK0nUvhM3oqaX0jHY
-         WWMaH9JSJqkumnTEuKgBmEnSbTsyJaxE91G9tU0osqahF7hmNZYPeZiIha2bHYGPudYN
-         Bv0LwCOorSNsJBVWxfjbhS4fopvVl6luF9M0Hcx2Z9DXluRUZC+VcU386YrdvxJZYnzy
-         lqP3lwM0/RUjkiO2I9KQUX0C3LUnrDwQktrpHKtC5ZPegHgchk9iga2RbXfUFNjGem/J
-         1+TQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzGdgnZbtJxo4UVIXfQEfpPpTIHOETGFykIn8yoK7HeEW6NFYkCEaMH4OJAeUQCntHuXhZb68hUtA==@kvack.org
-X-Gm-Message-State: AFuF++nrdq3t2Xanidh3HWXrrbtJBfnf7eGzAcGQMSFmT6HCmxVRzcPd
-	89FK51iuBFP+ToCYCDcSEbNIpsxNNepZo+BAHJ5i65t9PYxd4K+q++Ugm59lCB93CKk=
-X-Gm-Gg: AYBFou2C+DjeCE9++tF5kBftgMcVVSsyiPyrqxA/oGDRwxKYSZ6cCkoKQlUdZWa8XMB
-	yqeTDszKs5tpmnZnCeaJUMW1WKnvb5cHq3Un35gpkmRbAdYazoLO7oVNzSmazGre/adl2gYrpvf
-	gVCYktFcdp2dzG1LUOSTNxwOKiQIEx6dY3I3Fx4xV4qUdhIpqReJ98w0KiUCtBmVnvG9YdvZivK
-	Ks9U+4jC7RlU5QfFoujCqdArBNIyQm7JSdRgfIzmso8x8MieL/QiHJoJT3kiTJW+24CMPLAXzst
-	92bFZLJjFGpkSzlJ42jioTSyG3k8ObKv6ELtPq1hQbchGTH3AKuiSUQ3OJAObkb761cVannviwx
-	brmk2a8prRp0pOyGKgQd3k4igDdsck/KFIU2dOAH+a4Y7eGn54AhkxLDbRzfFfNCixNyfPyiN0b
-	MS7N6schOpemx5iemmxjYyMbUpfrX/CUFa5bfSAFGd1db3UgRXf0OUzU/Jv1dq0xzr+Q/v/A==
-X-Received: by 2002:a05:620a:2607:b0:939:b7f4:c7dd with SMTP id af79cd13be357-93a3477ff9cmr603922085a.47.1789489055702;
-        Tue, 15 Sep 2026 09:17:35 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9123bddd5e1sm2362876d6.3.2026.09.15.09.17.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2026 09:17:35 -0700 (PDT)
-Date: Tue, 15 Sep 2026 12:17:34 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Salvatore Dipietro <dipiets@amazon.it>
-Cc: akpm@linux-foundation.org, abuehaze@amazon.com, alisaidi@amazon.com,
-	blakgeof@amazon.com, brauner@kernel.org, brendan.jackman@linux.dev,
-	david@redhat.com, dgc@kernel.org, dipietro.salvatore@gmail.com,
-	djwong@kernel.org, hch@infradead.org, hch@lst.de,
-	jackmanb@google.com, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-xfs@vger.kernel.org, mhocko@suse.com, ritesh.list@gmail.com,
-	rvvandan@amazon.com, stable@vger.kernel.org, surenb@google.com,
-	vbabka@kernel.org, vbabka@suse.cz, willy@infradead.org,
-	ziy@nvidia.com
-Subject: Re: [PATCH v5] mm/page_alloc: avoid direct compaction for costly
- __GFP_NORETRY allocations
-Message-ID: <aqlvnm8AKp5f_UhG@cmpxchg.org>
-References: <20260911093209.d9181d5950778897935f6bcb@linux-foundation.org>
- <20260915160042.1265958-1-dipiets@amazon.it>
+	bh=bPCrMUGnpn8R2ypCIpaYTa7ilO/DP1aGUQ1rNOw3WDo=;
+	b=8WbAbRNI+bk4yhX/GE6oXY2aGVPhqhG1DV3VG97m08j3PKVGhjwmesUKM8ccdXvwQ54cEl
+	2OvXpfFWG4mRX9S0QUNDoHd8ZfdHHx3xgx/4OSEnq3cAUu1sBmxNJCzXqfX0le+aMEsjnv
+	dwCXCfKBFPVeRGLMyD2S9bXTBuaH2Xg=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=aaDciXGj;
+	spf=pass (imf28.hostedemail.com: domain of zenghui.yu@linux.dev designates 91.218.175.67 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789489677;
+	b=T1+EHVdBCUvCLS2rM5XaDsz1CtTfHeb/X3puAzXTpqDkhCw+xabLUCHkbp5rlJhRsLyZmz
+	jhnAu43GW94HUdFhS9+9UwhZeDh6517WP+IkBam0jG499lGwhXxDLRqYlPxH2Rh3il5MJE
+	Xjn2o9r1ytOvE+Xl00bHkd16eg64430=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=5aAOwXTYMykx5gxXWRId8scEdWimaCHbC2wDxGMxApw=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789489675; v=1; x=1790094475;
+ b=aaDciXGj//CpMTkGjwOYER+DQTexXuFR5qvdm2eqrq8Vfq1ZkZ/0Umej2dtR4wcwuPR3egUY
+ r/cER8O0q+sJ8+FYJCXYpev06UMAqgDTgp+mLVL8nB/Oo32AI3proogaeAM8qgUzo2iPdx8S9x0
+ x7QOsp53q1REMDl+Krh8hH0o=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 7bfd351e13a25abb;
+	Tue, 15 Sep 2026 16:27:45 +0000
+X-Mizu-Trace-ID: 7bfd351e13a25abb
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <9568025b-7a99-4404-a371-65f26a29a411@linux.dev>
+Date: Wed, 16 Sep 2026 00:27:31 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260915160042.1265958-1-dipiets@amazon.it>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 7DD0C120008
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/2] mm: refactor zonelist constructors and iterators
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+ liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, brendan.jackman@linux.dev, hannes@cmpxchg.org,
+ ziy@nvidia.com
+References: <20260912030424.2889731-1-gourry@gourry.net>
+Content-Language: en-US
+From: Zenghui Yu <zenghui.yu@linux.dev>
+In-Reply-To: <20260912030424.2889731-1-gourry@gourry.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 13BC0C0012
+X-Stat-Signature: maw5jckh9za35j3xn56ayramujfnpqgr
 X-Rspam-User: 
-X-Stat-Signature: cky51pamiog5hr4mjt69rjquixrkyiur
-X-HE-Tag: 1789489057-840024
-X-HE-Meta: U2FsdGVkX1+m/gxys732knMhja1exkCbfOtCyclUfqODkudKQs9FCIvkB59PTQCfB3CvlH/mnSvqyVALxowLElgwOPpOK48yJoe0x6/MCer7mT3thBThZesfzYdwlXlGhUOt4SvngIZ/VdGK4Xr/yoJgAGm4n18w9ZDnTR6QvhGdyFx6XIh3Te56H5IZSO4BGzYjUdPxtganiWRmUYM0UqktMHfNTTX3aw1kmX046TpP8VKk1miEFiG4WJZyxg87faBpFLCBpNkvbKsad2bomxeYE9vfm+SptbCgI68B7Zg7o3EiuKeRzMm9dPDmPRzsaZV1HmUuXDxhQjS3XCpga3eXvMxZ4VgWQ/Ig0VaEgTYTHLOtuAHdqxRXCf+qbg5g2rLVaN1LAwVd39/VXwa34ieaHZHDVYK+Pn2+qjv0nqGh8ZEO7I4/7lvXQ2RMspJt1PHt/chqU/qzD8QcGslJKX+lKv7uHdhbqji9fHGalk1EWi1Pbw6FHcSTevRDkdg/1nu0qehLwrooPRUhQp7XA3cfqeXv12JOpu/VDGwfU3IpwdHezFyR5194vqVD7lQTIiSWst75FMSX5xswIH/yAnQjH9//kBscYnlO3wfF9A6dTCmGu2oyeFpktxQADxPLRAZLVtOOaUtPEefxy1TE/H32zJdVJLrNU+b1q0KnVt1ZXUjqSMUlz0FZaVGlE5mXIck+ezOakGgdd6fXXH0RJcY4nd+0jtaitND5t0RIKfiDVMMEyVfwgDbU3gIKUSsYo9MHak64VRXePPUXNJjDb4g5poxmEfm7msVy8NJpr8m4Q+wSjG26AVi8ZIMzuDsqmi0MNEDw+FGZGQvKvMRG/4ApPvb3z3RmF7bYaTq7MHVDzq+dmVPHYaM50MCdrISkCUn1mv0jxNPFT4wLE9E2fvfIIxoVGlMMEfTccJ3imYsLoIaJHnnuHiJNFH2xvW/2jhbjmn33CTyN39qcTRC
- hptV/ZhA
- KT4n687zK6yAZ7PHhcgrb8WDXL5JcbtvnTHYVXa0R/enajr0pfjvVUvRqT1iXIu1YmsCB3Seu0F5b20PKqsg9uJpj8KzTmmA96f14GIDp9nUR5F/io000mojUUxfz3ZMl5n3YAcziT2W+Z/EfMBqZFIWmZRdWEO7aZC9gyRXweAmUTogSm7yGS8Zh3HTgI2Nh/8QxTF16IqfXaTS/XcseoZkgb5IeKJ+FD/VPlXYEqFPu94Xzio2xLNhogcbX8wOefsDSZ7TRg0J2s7CUTefYjV+k4Hj838lU2SpqxyAG/vmxCNiSMbPYNQ+EqbDoeIAjNcor2ro6y8uvsrEY5FBmWU8Cp6DIXRUL1FWKLoCtiXIG/2S2YkD5P35/CMbZyrAyeaRSsMoQeR5GFclTqzLYRrJPOFD/Dl+CsJ4XEokWt0L0zk3f9zqKhbLmUxhwaZNTuV2vc99EePBimzHriqdqGATHqAz5ZvUtJ4Ackjfvd3QezvCcRLfpCEEhNaWgWCt5l7c6NRuqlJdj0FjeR95rGzKdDTElsYyznkYSjlo5ceO2es+RacECXTRBTiCmig+rS0Uuay6k4E3An7xYl5/Fv3NHig==
+X-HE-Tag: 1789489676-7401
+X-HE-Meta: U2FsdGVkX1+1TrpYPKCd7Zal4gabTI1k45TVFqZJaasCQ57J5P9RaHFCTAjTzfYPKKUtbjKfHxIWkn0H2wq4gRBIHB0Mt+DYSPRNq4wM7ydL1ADnRpWa63qff7/USVJu1HoO6zjbqzZOYLdH+L1aicWp/QUnii5Dnfd4Dl7i+Y0f6g5nO48F0bmW74i21FKNoeZVTFPVUDruh9cw0oe67K8NfynEohEF+CZfy1d95efbmKJoY9JdYzOlWG5EMFn9Tt5npOal6+omRbPU5BRtAai3UTtvhU8DcxHO9TSmUG3Y/OK1Ycrtg7Hew5HJpaY4eHq4CT4uqvkKGWWSr8ZLED+AwExq+Bpns/53SV077NMo68SUsWintwLn0N7c5hq7uXC7uvIrQvW4TPx8SS92rcbxMcf+hfZonm9WVLGG/3BR+rXrg5FnQUuyFCNbt9urzIXXwRjCL7BRztu0t8YJANoW3bDzUeWqR0qXGslyqMZZIx0nzF/2E5kyCIRR/TheRFNAHHmJ5aqv6II4ie1ym85rCVYDwKIPvBNvP/S5hICclDClHdCWJBIlrj7WV840zn0cOYGoauisU2fUVUJX+CWXVGJkG5OHcm8x3keahw05aPtVCIAFgzDnoF1mZAv5LwUSB+oNpqNyM7x6E4UrpOrhBR5iFAuLzDS6MCsq/xCjaGH8pUktfykDnQ+IhNT1/zsaNLF/cYysabvPtMEV7xWXe0saz2za0EY102NCQ7N2ViXAILfGZek0w0xneofdgkK+7t9CVtCAWaqW8UESdlc2UAWKprRgwRG9s3hHmdzEBqw8/K8oE0CyZMbsb7Rm0TZkqMzTqY5Qp6aBTcpU+O73UbF9IWFGIatu0TfTfs7oyfm0uH8ViNGkIgmwf5Sdq036HOSXj7PvIGVL3eMgQneWHnUqYusaQ2mNTwkzTCkObx8YefZ8EbKUXoZUlQW7uiZfEZ8EuvaDBdqR/Bs
+ azq+JWIc
+ nHFvy2HjsqGKQ3osm3j2Vr/XGmjOzKbTXlFphsS225dJmQbe4DTX6EKiZS3fyp6xpKQINwvUfXWBdCGJpg/4LdYigK2WCVMfj+NSZ82KViemkP3n4pQxY2yDHUD9ZGLdALcDrUoz+6slZenpZaDaQTDDaopiIz6DKhxzyvRkdtlQ1V1qyy7Nnj1OFCXCT+AvAEMAroxQ/ZgE4goTmBZOJHZO2w7Un04iv3jEIBqXCFnsX9wGPzInSgMcrrLijDA6daPZGBD0XZt9edBgRALFxtx0nWQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,36 +94,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 15, 2026 at 04:00:42PM +0000, Salvatore Dipietro wrote:
+On 9/12/26 11:04 AM, Gregory Price wrote:
+> find_next_best_node() picks the next-closest node when building a
+> fallback list, and hardcodes N_MEMORY as the set it picks from.
 > 
-> On Fri, 11 Sep 2026 09:32:00 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
+> Refactor it into find_next_best_node_in(), which takes the candidate
+> set explicitly.
 > 
-> > does any of this look real?
+> This makes the existing behaviour explicit at both mm/memory-tiers.c
+> call sites - they select demotion targets in fallback order from
+> N_MEMORY - and lets callers narrow that set.
 > 
-> The mechanism seems real, but it only shows up with vm.defrag_mode=1,
-> which is off by default.
+> Then extract the per-node construction loop out of build_zonelists()
+> into build_node_zonelist(),i parameterised on the candidate nodemask
+> and destination zonelist index.
 > 
-> With defrag_mode=1, a costly __GFP_NORETRY allocation that used to fail
-> cleanly can now succeed by fragmenting another migratetype's pageblock,
-> which seems like the wrong trade for a caller whose premise is a cheap
-> lower-order fallback. Johannes, do we want to keep it strict?
+> Together these allow a zonelist to be built over a candidate set other
+> than N_MEMORY, into a zonelist other than FALLBACK, and iterated in
+> fallback order over a caller-defined subset.
+> 
+> These are prerequisites for generating a private node zonelist (nodes
+> unreachable by default), but are otherwise general improvements to
+> the existing interfaces so I'm proposing them separately.
+> 
+> No functional change intended - purely refactor commits.
+> 
+> Verified on x86_64:
+> 
+>   - find_next_best_node_in() compiles to the same 319 bytes as
+>     find_next_best_node().
+>   - Both mm/memory-tiers.c callers grow a single instruction - the
+>     added argument.
+>   - Boot-time fallback orders are identical on a 4-node guest with an
+>     asymmetric distance matrix.
+> 
+> Gregory Price (2):
+>   mm: refactor find_next_best_node to find_next_best_node_in
+>   mm/page_alloc: refactor build_node_zonelist() out of build_zonelists()
+> 
+>  mm/internal.h     |  6 ++--
+>  mm/memory-tiers.c |  7 +++--
+>  mm/page_alloc.c   | 74 +++++++++++++++++++----------------------------
+>  3 files changed, 38 insertions(+), 49 deletions(-)
 
-Yes, avoiding the fallback is a good idea. The user already
-communicated they can handle failure and have fallback options.
+Reviewed-by: Zenghui Yu (Huawei) <zenghui.yu@linux.dev>
 
-> If so, we could add a condition like below. It is equally
-> applicable to v4 and v5. Happy to send it separately or in v6.
-> 
-> 	/*
-> 	 * Reclaim/compaction cannot run, so defrag_mode's strategy
-> 	 * of enforcing ALLOC_NOFRAGMENT cannot be fulfilled. Allow
-> 	 * fallbacks rather than failing the allocation outright.
-> 	 * Not for costly __GFP_NORETRY: those have a cheap lower
-> 	 * order fallback, so failing beats fragmenting.
-> 	 */
-> 	if (defrag_mode && (alloc_flags & ALLOC_NOFRAGMENT) &&
-> 	    !(costly_order && (gfp_mask & __GFP_NORETRY)) &&
-
-It would be possible to remove the costly_order gate here and just
-bail on __GFP_NORETRY. But no strong feelings.
+Thanks,
+Zenghui
 
