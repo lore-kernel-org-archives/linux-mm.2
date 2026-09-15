@@ -4,93 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96254C88E75
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 19:02:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 121E8C88E7D
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 19:02:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D3CC6B008C; Tue, 15 Sep 2026 15:02:25 -0400 (EDT)
+	id 2A2856B0092; Tue, 15 Sep 2026 15:02:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 784116B0092; Tue, 15 Sep 2026 15:02:25 -0400 (EDT)
+	id 24FC96B0093; Tue, 15 Sep 2026 15:02:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6721D6B0093; Tue, 15 Sep 2026 15:02:25 -0400 (EDT)
+	id 0CEFA6B0095; Tue, 15 Sep 2026 15:02:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3CD906B008C
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E2EC36B0092
 	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:02:25 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 35EC3A0535
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 19:02:24 +0000 (UTC)
-X-FDA: 85216917408.28.9BD772F
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6162D8053A
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 19:02:25 +0000 (UTC)
+X-FDA: 85216917450.12.999857E
 Received: from mail-lf2-f12.google.com (mail-lf2-f12.google.com [74.125.229.204])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 6990A1A0003
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 19:02:22 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mrLgaDUZ;
+	by imf16.hostedemail.com (Postfix) with ESMTP id 88A4318000A
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 19:02:23 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ERlgnmQ2;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf19.hostedemail.com: domain of dmytrokoziuk68@gmail.com designates 74.125.229.204 as permitted sender) smtp.mailfrom=dmytrokoziuk68@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789498942;
-	b=q7o7fjTgYtnftHg6kJkFut6GzTSjjD7HDsoQVFbTMuORAcqidHFADOM58AlmP3rZe6g99N
-	kDZMBy13he7in3vpaDjHBfcvjnj+ClLFk7CZCRxB8r739aT/8l+51xq7dFRfRvq0R4FpJE
-	bVtgfe6/pF0qRPgHCGwjzSdueRczH0A=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mrLgaDUZ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf19.hostedemail.com: domain of dmytrokoziuk68@gmail.com designates 74.125.229.204 as permitted sender) smtp.mailfrom=dmytrokoziuk68@gmail.com
+	spf=pass (imf16.hostedemail.com: domain of dmytrokoziuk68@gmail.com designates 74.125.229.204 as permitted sender) smtp.mailfrom=dmytrokoziuk68@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789498942;
+	s=arc-20220608; t=1789498943;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=Blu3nD0TwZs02oT5Bhblb/0DYGCIMyHVEsoa4MDtnsA=;
-	b=zcpKj+Q1r3h+UagDRRl0t8CG2STV519zOogJtpsr8z0fSku+RFy2fDHgM35X7iZwyeGgRr
-	fiUUaZaDX750FUdDtHezyQ9mawx9kab4+X4PwV4rUmMcM13yVJfx/49vd0MlpCgG9UKTWn
-	USxtw8pk4sm92bWjNBK5dO5vL3dH3gY=
-Received: by mail-lf2-f12.google.com with SMTP id 2adb3069b0e04-5b5e4f16f12so104945e87.1
-        for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:02:22 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=juVs+niFQu9LlYoaoMOmavJNX6cEMYtGxEF+4Y/j32E=;
+	b=26Al9wv2VxQD829b7AKYIh+0N8IUXJKvFwg2DD08tWEr21bQHLPBEO5rEU9eSFvU4FsU0g
+	LfPZmAAhjNNRPewsfgvXdgC6nKMZZm6S6BlzLtJTZycDzoVj7MNs6LCfya4m8KQniQeDLY
+	TO8uGtQL26OUPLnLmxMeooOZUYljGW0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789498943;
+	b=guf9s0CErb06VoD8v7VTqzYvA+fIAhMbISSkaeJZnynCg0hBwLkNCY3c2xsJjpEJLv9LAm
+	IUhVAYqpo3tKTrDsqv1UBRkgCg54TCBIBMkzRM1kbgMOjTqlYjzOinI7Sl2H8aFCtoT+c4
+	7xnGK9QViz46TmWwUDHAmU2M+Rct1PA=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ERlgnmQ2;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of dmytrokoziuk68@gmail.com designates 74.125.229.204 as permitted sender) smtp.mailfrom=dmytrokoziuk68@gmail.com
+Received: by mail-lf2-f12.google.com with SMTP id 2adb3069b0e04-5b5e4f16f15so89905e87.3
+        for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:02:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789498941; x=1790103741; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Blu3nD0TwZs02oT5Bhblb/0DYGCIMyHVEsoa4MDtnsA=;
-        b=mrLgaDUZgKrVqkXQnf3r/odx1UjIUxI3L3185JDrcJnxjakhZvQ25SRyXDREvQND5J
-         4wYrGEIB3LwlQe+/TRu6p7oPUqAGpZTljm+eZE02fBiWZkkBU1m/6/2FAeiRplwAJwSh
-         9bJ41QHAq9qBOiD1PK9cVjTEw5pGmqJUZFKATSWiHTsR3BWNIo4QIth98+XV6/o3g81i
-         71hmk96NOzL0Fx8Cx8x2RqSuYT8nhnvPlffn1bJ7RP7yXyEJH7Lfbke1ZZLZDs1e3GYX
-         DVvEdo6rphex2jjoKvSQfRpWhsnv9CE3Q/0ZdJhlOxbVZeY7A3/GQ4cJRjvMfR5a4Uty
-         tr8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789498941; x=1790103741;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1789498942; x=1790103742; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Blu3nD0TwZs02oT5Bhblb/0DYGCIMyHVEsoa4MDtnsA=;
-        b=Ojxo50voQHHak6L06FG6AcH3blVN+fZ4IcD5NOXeG1ZejgUYYmNpLUdpkgz37RtHzt
-         b/QxLxuBkg+kteaOsY0S6d84Zysom4a23TNjCo0cHFM4vq+ooUJG6CzMlgzONOV715Lp
-         e3vlxqVpJK1RNTBFzcR0Wx9Q36iJAEK7GisYCS/2NxvwFz+Tcn9Ae8INK0oHuAtCaBaL
-         +iGXhplw0tEBFMzVwT3+T7m6czfEuEaADz51xetWvAYuSRvQfTnABgnnSkpWldpAVgpj
-         u7JbxfwA1Yq7yQQzl4gtdq9lHncYWheVLRaybkpVxFpRqv9t9SIrCd9AuyAUWkyugCcJ
-         6KGQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwTPypqQmVi1tcEl0cGmAcfwtlANzw0koua4TILjcOhe08Y7F2aEe5y4FbQfwKym4y8DpHazz/8rw==@kvack.org
-X-Gm-Message-State: AFuF++mcVIkar3sc/LgBY3kwIlgjeLmCkJ7wDcEott/60tHSBeIck5yk
-	KDRr3Y2wq9hFp0GA02Vx/gsc7oRvNplSnNvrya0+iYj1SouFuW9bt9gM
-X-Gm-Gg: AYBFou1WPm4nCm/xTlywpm3Mx/RZ6vlxYskyUu3KBPoozCHKY1IHRqB4LCI3INs1+vT
-	s8uFhjbM04Sg7YdQO7bblqLwuSFWwSTLx3CXElhWhODWHYTXWDkE9cQRROoVrx/esSnbGu8zqzn
-	yPKE0XLrTanCcFsIGzRJXJfWPc6jQs/mv+/+JfmmF7eud1LRRYgOJZSVe/SoqC/fwMTiCtbTZ8Z
-	hCLeLTlkD9ci4RtT4JIFHpAMH+ZP3EeCQDeNpYXiKcLVcIn1ih1tI5Z7NaOT1x7f8Wnud8rek2+
-	75OMyiHzqluIXUuWYRhC22+zrM3lY0veeGt1uUxk+KaRylt3V+XWnr4XVCpOq0O3xE2N8Eum+LB
-	VrUMqflb7yWF/oYYYTWJ8kBwDGICvJipbGVFCdRSkj0kxURFS83NCX6j2cYXXR3lzRKlV4JbARZ
-	QBzgbXJGxUo9VtK56iGC2k+J35Nf9Ec5MEHRR+Veqp2xU19hhaUntqcXz30WgLJjz8WzKdFwoKU
-	sTsb+OxJea3YT3iIr8FbSDNEldTGuvwxAKRSEVGkfWRzh/tG9xm3JUMZVYDRUNVaebw00h9dPTF
-	8kyDrOqTTdrQASHtpMaUQWxGaCsuS2zxySuWuMWCGIc+Gjpq+D3L3wXYt9FtOTwJ1Q==
-X-Received: by 2002:ac2:4c4e:0:b0:5b6:425:4bf0 with SMTP id 2adb3069b0e04-5b8ae8acdb4mr4205302e87.33.1789498940542;
-        Tue, 15 Sep 2026 12:02:20 -0700 (PDT)
+        bh=juVs+niFQu9LlYoaoMOmavJNX6cEMYtGxEF+4Y/j32E=;
+        b=ERlgnmQ21QDjKzHwfrFo8mOAu3ATv9rKtEoTv2nIrP7KsJAB3RorZb5Z0NZhHCVuW9
+         EYN/r1lKDeWbxYStzGceHbankl/aV04eewNqpKz6tiZnXAxT1TLTSF30/KIVr6pLsKFA
+         t3CCJxri2pQfQ2Ba1zV/PXZ1Yvrse/mb9SYZFvXrezjfbc7MCadiIBvxgSrZ45vMKRth
+         zo33UCOpTotGMUpmUqX7+36snL/oPC71jrGIOHFOo4zt5eDucMnIav0xcAIk9seFeBhK
+         M6mOgE25gLKmuAKk7RPpv910VehX/LSMoapNAnMO3cRrmFsrp3kfKEwShs4gyS2PmKps
+         JpPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789498942; x=1790103742;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=juVs+niFQu9LlYoaoMOmavJNX6cEMYtGxEF+4Y/j32E=;
+        b=1JQrCcWGB4S/l0TSS4nu8JurDwb2VeW64/xhKG8Xy7M8muC8RjbsBGLJe24M5Uxu6Q
+         DTlCr20Hl+nMOWbYv5LeIdeorGapnqctT5QeqeeRZH9vQLxDacT9LYlMQ8LT4ynKlpl4
+         lHvygQwKRkUK0lXjMivw1Dq6XU5b4jS4kYzQkHMJ2RVDl5ugS5jXn7u1RyX4xZYDJG8Q
+         VgZO3nwTeBokvgXePwu/SpukMhr7YtNKPoxzpNyqOdvpE1AOLH67uwq0l9MYlUcA35l+
+         APnxD8LD25lWQ42I4o8jEUATIQ3DwiKC8Ig4mUb+3+DGt9PVxckAPGubEHvtXI72hOrL
+         MQwA==
+X-Forwarded-Encrypted: i=1; AKwUvBxBidwz6dvBaAEvQvZl3EB/oQtfTgH8Bi+E7SPMJCvAaHlwFZ66iqmmXkjt4jme/A09qkHNwgWnmw==@kvack.org
+X-Gm-Message-State: AFuF++nLsSMo6+aZmtTTKT/c7bBAwkW4azb7XA7OdmRpQam7kvNtoRfV
+	cKMX1+Ti6uH5VQlk3NG2m/y/O7+WO95EIA51Z2hVeD/l9d3vZlixjJVA
+X-Gm-Gg: AYBFou1pvTJOGk+/ZOEMLUuyHrHoT9Z7cb/Crqm9pX0nFI7B8ytM2AaLDHT7jFxEdOR
+	vEu8XUQRBcbR/J6+v6Y9jtCA2XI15Ykt1MNz1SbktZrmi9xs4K0j6qHD+qe6/N1H/rO/RAt3pyX
+	g8BJXe5WYHDHy+pEDNTzfioboWSsfqyYJAK8b5a+GthxVI8IdIpYJlOP06xJAJt2jCdoOKnhZwE
+	Mf2Ka2uyFJtkgmbi5egLKc4qaakRC1dqsVEeFccfSn1nh4ULtomrGlYpjfqDEXmEzOcI6cFeVSy
+	qurzv3uKPFG1T2c4w3JYV7kPOLhkK7m1kM4G4U/dNlopu8Neq8UzL8BE3y5f2e+cva6uEokmOel
+	NTzBBm8QqwCmGsVA3nXqOV+AW8OsnAnI7AQmuHcbfxvDqoZoq/VVsNGAhume3nrcvJ2YzHsnYwC
+	/UCO4GPhkPOgop8H3tdgR01XlAf4F26jG9Lro7ryKLK8+9iTjyqXRqXfsvG3z4mvBTth+j/BYSH
+	qMQfs0WRRdjDfJfiBs+DbI6ydLdf5hw/IwHtTyBKipJhTNiXx1VkI3h0d/PsuluoAUjl5Oc7RJP
+	AnuoYHC5DKAgpVnZg5wWREvMj35z2f0txiEiuv7z49CrINukCefSiAK4kD63p8g=
+X-Received: by 2002:a05:6512:3d16:b0:5ad:55f6:1ec3 with SMTP id 2adb3069b0e04-5b8ae681db3mr4739034e87.5.1789498941854;
+        Tue, 15 Sep 2026 12:02:21 -0700 (PDT)
 Received: from localhost.localdomain (2001-14ba-a052-b900-3da4-4f58-44df-c60c.rev.dnainternet.fi. [2001:14ba:a052:b900:3da4:4f58:44df:c60c])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b8b57e0bd1sm157626e87.59.2026.09.15.12.02.19
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b8b57e0bd1sm157626e87.59.2026.09.15.12.02.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2026 12:02:19 -0700 (PDT)
+        Tue, 15 Sep 2026 12:02:21 -0700 (PDT)
 From: Dima Koziuk <dmytrokoziuk68@gmail.com>
 To: Alexander Potapenko <glider@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>
@@ -100,20 +101,22 @@ Cc: Marco Elver <elver@google.com>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	dmytrokoziuk68@gmail.com
-Subject: [PATCH 1/2] mm: kmsan: fix iounmap metadata teardown
-Date: Tue, 15 Sep 2026 19:02:06 +0300
-Message-ID: <20260915160207.2952-1-dmytrokoziuk68@gmail.com>
+Subject: [PATCH 2/2] mm: kmsan: fix ioremap error cleanup
+Date: Tue, 15 Sep 2026 19:02:07 +0300
+Message-ID: <20260915160207.2952-2-dmytrokoziuk68@gmail.com>
 X-Mailer: git-send-email 2.45.1.windows.1
+In-Reply-To: <20260915160207.2952-1-dmytrokoziuk68@gmail.com>
+References: <20260915160207.2952-1-dmytrokoziuk68@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 6990A1A0003
-X-Stat-Signature: upwa6z58ifnfnmz6ocxo1kppqq9rqin7
-X-HE-Tag: 1789498942-274199
-X-HE-Meta: U2FsdGVkX1+YS9qXge8SjWkJ59vOYrLMYz+groK+5QhOEUR3GBt2hqf/QCvzZw36jbS/+Rs51tfPiua2o5/K5B7rsMMh3GjYt3yITeabOv6mkgDESBOrXcgcax2vz57Tv0tbM3NCywk9Gfd/xttoco/ULBFgrRRMozyLOG6RjiFLmH/bjoDG4a7GAcrJIUQyYH/BaXR7fEBoMc3klk6XYNPnossV9a4MSAlxQkEQApw9shvVxB+eJHTKt4nSLl4/vTPxuyhKkMrBc+e0w/0wjlh71oSRSlmFdeXkITJxL49oKge4cSTsrE79XgN8Rco73no5/vZrqdC6AR3W1F8ORYhCy0sPal68dJo0yHLBONQ1mRU53A+od0ZUHFUsyEHmysMrBgH4u1Ol55nR3IV10SglIBixBRMKb1i4nQveqv1RnX5leKG4uh7Q7/PeQIGceOnKe+mQbBer+4Y1kj4FFWb+9dNhJt/fb0ehbzkua/+F+RACYO4CP03ikgTyrqhzFmvgRW/2r+EjqLEkOcKxnjcZpq184ZVQ4OC5kKssdSH2ixx7aXIyvC4IkG0dSzKRgxTxgcgshcDESerExEllN3P1l58s/tfGkn8TuX5PwbPJDiKMsXUE01n0Gg/AWd3n9m1q45Q5QsWh/U8gwfefcJo8ZI7KNUs+kJHRtKcliEwE18lbTYW2Hm1jhEWRQ1EL5UUvWkXUJeqQJ51UDVrkOkOzqmj0yZxrILTyDSI7cX2i55H2s97MfQ9KCsNFJCcn+beJCMr14gBqiJbDucWSyZDO6He0IX4E/8l0B2dmRAv6ElaCFRH545V8XYUEJZHSHl5F0TqmNxdZUgiYiDwjyZpT47L8wyV3P4tCZuEj8cJc7ZgIORMDL4p0UDzY6ooISKYgVeo3FCb9zNhTYckPPfiX8P5aOlkvtycPsUD8Lu4xEWFGXJ5VmWRk8RjySPBzYUNtRYbmgNU/fT9mFQE
- a/q2uIbm
- qKKmkYodvrQ/ga4Y9XFyYbUr+DPyorpg5o1nBfVGluSU4krtci81UE6+28McAeOV+TPdjBGJ+IwSMRd3Eby4p1NSUASjcHWbkfVdpW7SPJ8MT/g2MBihfpwYdIJxmXMGD4NvaDlIB1kkCCdaWipRdiDj8D0iXl4WguktqaK0ntDIxiL3eq6qxthdzbPYccGAF5U7DcSr5an/s4GV9Q8UlvrCnoo0tW5iUXo+fjkkRm6KjxZsBJlHDNb9BLRSKSkA7y718lV6n97JZI3Y2Y+oRFSVLMNsCFwDQzulcZAfMhgzRZ7J+1t+4T9KYjEWbk/qe83rM8vNnsBcNdzTvXqDMsE3v076nYt+HT+gNm3jiiLcVBQBxjwqk5++h1xN0zC+juy/k3XFXpgEhBYUOhFkafIIxF9Oa+dhfhNCw
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 88A4318000A
+X-Stat-Signature: enbzpa3piexedc4135f6m3hqpczne6zb
+X-HE-Tag: 1789498943-993473
+X-HE-Meta: U2FsdGVkX1+DVVB/6SbgGJqkWV5l3+dvGZCgqLyUkAIeeL45IpQfjcc3KNitXPwSuQYyzHP8cTxz0Ay06GBk1K5Zm1Cw/DkZGZdcjmofyEQm8mzXxly0oA4IgYKPeyc0aDLB9+UVJFelzRTptqioN27LmjKyOfGOfRJES8Lk+4kd7VwYv8CN8XsF4CIqZNzh5u8kWZuDmoo29UGioduCFmIT7qpU+cfyKAM5//p5iQGvGWOPeOkEn6fNkwTVOqGOR3No3LxFn7w8aYYTWGf+XAKtBxjiku4ZEIpITfKTHV37TWoSTCxFwvQbvHriim9ZS9dAiqwYHsth2TVFeQytEMTXS0AUzM0bzn5/E/xHBQsrwGS2AMfQVEeGCoNgUpuHUBgOQhjKREiP8ICdHp5PNfeXVpgs9kBD3sYO/9YAQQTQQATbjXLX4j6o5iYKnVw3HgTkjMJ1PFzkFvkPFQzg24tFL9nhvQZ4BBNX6BXNIZoPl1IoasIXcZK2nOrBsIewLzAMKKW01g02wJCdQJMHZqz70I3SCDKMsXCBS3PNWLuXZ2yFUI541Qs4htyRjuKwwxGvwIUj/SIoxanIS+zSv6qNmM+wtEc2uUzylLBI2kWUVid6a1Y1klNQ7uZIdcOXMbkQfWUhKz8aJ9bOuBJuooP2va2aSpWIZ7fJA4LcWVYIBhFiAaRkuhItBXOKvprBV3xOA526R7RXbEQDcFRFeG/TfW0FAOAv0LSQoyzC+gIDyzTe68a0Yer8S2aDp5tS2vwFtLM5REAVn7ArV3n7F+Q9v/Ty1CIvVwfzQk6rrcslFV9G5qSwX76a2JxVeSD6sjqWb0+/4Tzfo6cgpD9Qs3tDJ1aZQ4hjbnpT6k9knA5z6BaK7HpQa3v2ytiM67EYg6/1gLADYqyZDXj+2H3EX5G31cMcjcq4lVEibqPrFJN7SvIgpq/ltgZAHOLE0nKHcpdkSHvz13aH2V4kpaF
+ 6UQx84Ea
+ n+0pS7rzUVTCaYkr0t6Ud8kTSzxxGFSUktYANKoDeVYG8/PFkou5d01X7p/tzjEwDbDU6hhWShXNOCA5cHqUiyAYugEnGJdSiBQ3m62nfBtvTmKYv7WVj/jNXufP2YdhWpV1jchsRXQNuV2DoJ0LHNEgelkbvVBXKDuvQxAyI40o1H50KdSVofnggRXjJrDMmzTwKsz2Wtxun/JXd+hndTUxVV2BJoR7H8i1fijVVGWHJW24iTwjH7galD1lo9TYZAjGazlMA5ldc2BzxsSfGkIC/bYGcEBh9N+NGB8uiTSXBiY3BLgxXyFpMH0P6jzsT3rQz0lXzYplhA925RREEMbZllzN7rdXqFfBJyrfCs15te867Z7bz6qfPlOKkXkP05aXpPDuawmlBGEm1rLBEoi/Zz8DHERTpTkmS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,168 +124,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-While studying the code, I noticed that kmsan_iounmap_page_range() calls
-__vunmap_range_noflush(v_shadow, vmalloc_shadow(end)) inside its per-page
-loop, and does the same for origin. The first iteration therefore unmaps
-the entire metadata range, removing the PTEs for later pages before the
-loop can recover their backing pages.
+Looking further at kmsan_ioremap_page_range(), I found three cases where
+error cleanup leaks metadata blocks. Fault-injection testing confirmed
+all three:
 
-Looking at the page lookup, I found another problem. The only callers of
-kmsan_vmalloc_to_page_or_null() pass shadow and origin addresses, but the
-helper accepts only regular vmalloc and module addresses. KMSAN metadata
-lies outside those ranges, so the helper returns NULL and the backing
-blocks are never freed.
+1. If the first iteration fails, clean is zero and cleanup is skipped,
+   leaking any allocations that succeeded in that iteration.
 
-I considered extending the helper's range check, but vmalloc_to_page()
-also checks is_vmalloc_or_module_addr() through VIRTUAL_BUG_ON() when
-CONFIG_DEBUG_VIRTUAL is enabled. Supporting metadata addresses there
-would bring KMSAN-specific information of the address layout into generic
-vmalloc code. That seemed broader than necessary for this fix and would
-make it harder to review and maintain, so I looked at how KASAN handles
-metadata teardown.
+2. If shadow mapping succeeds but origin mapping fails, the shadow
+   pointer has already been cleared. Removing its mapping loses the
+   backing block.
 
-Follow the existing KASAN approach: walk the existing metadata PTEs, clear
-each mapping and free its backing block, then flush the metadata TLB
-ranges. Put this in a private kmsan_iounmap_pages() helper and remove the
-now-unused kmsan_vmalloc_to_page_or_null() and its declaration.
+3. On failures after completed iterations, cleanup removes the earlier
+   metadata mappings without freeing their backing blocks.
 
-Fixes: b073d7f8aee4 ("mm: kmsan: maintain KMSAN metadata for page operations")
+The cleanup needed here is the same as for iounmap, so it makes sense to
+reuse kmsan_iounmap_pages(). Track the end of installed mappings with
+mapped_end and advance it after each successful shadow mapping. This
+includes the current shadow block if origin mapping subsequently fails,
+while the PTE walk skips the missing origin mapping.
+
+Run cleanup whenever err is non-zero. Free allocations that have not been
+mapped directly, and use the shared helper to unmap and free the installed
+metadata, including blocks from completed iterations.
+
+Fixes: fdea03e12aa2 ("mm: kmsan: handle alloc failures in kmsan_ioremap_page_range()")
 Signed-off-by: Dima Koziuk <dmytrokoziuk68@gmail.com>
 
 ---
- mm/kmsan/core.c  |   14 ------------
- mm/kmsan/hooks.c |   64 +++++++++++++++++++++++++++++++++++++++---------------
- mm/kmsan/kmsan.h |    1 -
- 3 files changed, 46 insertions(+), 33 deletions(-)
+I tested this series on Linux 7.3-rc3 under QEMU with CONFIG_KMSAN=y
+and CONFIG_DEBUG_VIRTUAL=n, using ioremap()/iounmap() calls on the QEMU
+VGA BAR0. All tested mappings were torn down without metadata leaks.
 
-diff --git a/mm/kmsan/core.c b/mm/kmsan/core.c
-index 90f427b95a21..bf8c86fdcc5a 100644
---- a/mm/kmsan/core.c
-+++ b/mm/kmsan/core.c
-@@ -236,20 +236,6 @@ void kmsan_internal_set_shadow_origin(void *addr, size_t size, int b,
- 	}
- }
- 
--struct page *kmsan_vmalloc_to_page_or_null(void *vaddr)
--{
--	struct page *page;
--
--	if (!kmsan_internal_is_vmalloc_addr(vaddr) &&
--	    !kmsan_internal_is_module_addr(vaddr))
--		return NULL;
--	page = vmalloc_to_page(vaddr);
--	if (pfn_valid(page_to_pfn(page)))
--		return page;
--	else
--		return NULL;
--}
--
- void kmsan_internal_check_memory(void *addr, size_t size,
- 				 const void __user *user_addr, int reason)
- {
+ mm/kmsan/hooks.c |   35 ++++++++++++-----------------------
+ 1 file changed, 12 insertions(+), 23 deletions(-)
+
 diff --git a/mm/kmsan/hooks.c b/mm/kmsan/hooks.c
-index 5f1b8053f9fa..084ba667cbf7 100644
+index 084ba667cbf7..02c402f129e1 100644
 --- a/mm/kmsan/hooks.c
 +++ b/mm/kmsan/hooks.c
-@@ -20,6 +20,8 @@
- #include <linux/uaccess.h>
- #include <linux/usb.h>
+@@ -199,16 +199,17 @@ int kmsan_ioremap_page_range(unsigned long start, unsigned long end,
+ 	gfp_t gfp_mask = GFP_KERNEL | __GFP_ZERO;
+ 	struct page *shadow, *origin;
+ 	unsigned long off = 0;
+-	int nr, err = 0, clean = 0, mapped;
++	unsigned long mapped_end = start;
++	int nr, err = 0, mapped;
  
-+#include <asm/tlbflush.h>
-+
- #include "../internal.h"
- #include "../vmalloc.h"
- #include "../slab.h"
-@@ -142,6 +144,49 @@ void kmsan_vunmap_range_noflush(unsigned long start, unsigned long end)
- 	flush_cache_vmap(vmalloc_origin(start), vmalloc_origin(end));
- }
- 
-+#define KMSAN_IOREMAP_META_ORDER 1
-+
-+static int kmsan_depopulate_vmalloc_pte(pte_t *ptep, unsigned long addr,
-+					void *unused)
-+{
-+	pte_t pte;
-+	int none;
-+
-+	lazy_mmu_mode_pause();
-+
-+	spin_lock(&init_mm.page_table_lock);
-+	pte = ptep_get(ptep);
-+	none = pte_none(pte);
-+	if (likely(!none))
-+		pte_clear(&init_mm, addr, ptep);
-+	spin_unlock(&init_mm.page_table_lock);
-+
-+	if (likely(!none))
-+		__free_pages(pfn_to_page(pte_pfn(pte)), KMSAN_IOREMAP_META_ORDER);
-+
-+	lazy_mmu_mode_resume();
-+
-+	return 0;
-+}
-+
-+static void kmsan_iounmap_pages(unsigned long start, unsigned long end)
-+{
-+	unsigned long shadow_start = vmalloc_shadow(start),
-+		      shadow_end = vmalloc_shadow(end);
-+	unsigned long origin_start = vmalloc_origin(start),
-+		      origin_end = vmalloc_origin(end);
-+
-+	apply_to_existing_page_range(&init_mm, shadow_start,
-+				     shadow_end - shadow_start,
-+				     kmsan_depopulate_vmalloc_pte, NULL);
-+	apply_to_existing_page_range(&init_mm, origin_start,
-+				     origin_end - origin_start,
-+				     kmsan_depopulate_vmalloc_pte, NULL);
-+
-+	flush_tlb_kernel_range(shadow_start, shadow_end);
-+	flush_tlb_kernel_range(origin_start, origin_end);
-+}
-+
- /*
-  * This function creates new shadow/origin pages for the physical pages mapped
-  * into the virtual memory. If those physical pages already had shadow/origin,
-@@ -219,28 +264,11 @@ ret:
- 
- void kmsan_iounmap_page_range(unsigned long start, unsigned long end)
- {
--	unsigned long v_shadow, v_origin;
--	struct page *shadow, *origin;
--	int nr;
--
  	if (!kmsan_enabled || kmsan_in_runtime())
- 		return;
+ 		return 0;
  
--	nr = (end - start) / PAGE_SIZE;
+ 	nr = (end - start) / PAGE_SIZE;
  	kmsan_enter_runtime();
--	v_shadow = (unsigned long)vmalloc_shadow(start);
--	v_origin = (unsigned long)vmalloc_origin(start);
--	for (int i = 0; i < nr;
--	     i++, v_shadow += PAGE_SIZE, v_origin += PAGE_SIZE) {
--		shadow = kmsan_vmalloc_to_page_or_null((void *)v_shadow);
--		origin = kmsan_vmalloc_to_page_or_null((void *)v_origin);
--		__vunmap_range_noflush(v_shadow, vmalloc_shadow(end));
--		__vunmap_range_noflush(v_origin, vmalloc_origin(end));
--		if (shadow)
+-	for (int i = 0; i < nr; i++, off += PAGE_SIZE, clean = i) {
+-		shadow = alloc_pages(gfp_mask, 1);
+-		origin = alloc_pages(gfp_mask, 1);
++	for (int i = 0; i < nr; i++, off += PAGE_SIZE) {
++		shadow = alloc_pages(gfp_mask, KMSAN_IOREMAP_META_ORDER);
++		origin = alloc_pages(gfp_mask, KMSAN_IOREMAP_META_ORDER);
+ 		if (!shadow || !origin) {
+ 			err = -ENOMEM;
+ 			goto ret;
+@@ -222,39 +223,27 @@ int kmsan_ioremap_page_range(unsigned long start, unsigned long end,
+ 			goto ret;
+ 		}
+ 		shadow = NULL;
++		mapped_end = start + off + PAGE_SIZE;
+ 		mapped = __vmap_pages_range_noflush(
+ 			vmalloc_origin(start + off),
+ 			vmalloc_origin(start + off + PAGE_SIZE), prot, &origin,
+ 			PAGE_SHIFT);
+ 		if (mapped) {
+-			__vunmap_range_noflush(
+-				vmalloc_shadow(start + off),
+-				vmalloc_shadow(start + off + PAGE_SIZE));
+ 			err = mapped;
+ 			goto ret;
+ 		}
+ 		origin = NULL;
+ 	}
+-	/* Page mapping loop finished normally, nothing to clean up. */
+-	clean = 0;
+ 
+ ret:
+-	if (clean > 0) {
+-		/*
+-		 * Something went wrong. Clean up shadow/origin pages allocated
+-		 * on the last loop iteration, then delete mappings created
+-		 * during the previous iterations.
+-		 */
++	if (err) {
+ 		if (shadow)
 -			__free_pages(shadow, 1);
--		if (origin)
++			__free_pages(shadow, KMSAN_IOREMAP_META_ORDER);
+ 		if (origin)
 -			__free_pages(origin, 1);
--	}
-+	kmsan_iounmap_pages(start, end);
+-		__vunmap_range_noflush(
+-			vmalloc_shadow(start),
+-			vmalloc_shadow(start + clean * PAGE_SIZE));
+-		__vunmap_range_noflush(
+-			vmalloc_origin(start),
+-			vmalloc_origin(start + clean * PAGE_SIZE));
++			__free_pages(origin, KMSAN_IOREMAP_META_ORDER);
++
++		if (mapped_end > start)
++			kmsan_iounmap_pages(start, mapped_end);
+ 	}
  	flush_cache_vmap(vmalloc_shadow(start), vmalloc_shadow(end));
  	flush_cache_vmap(vmalloc_origin(start), vmalloc_origin(end));
- 	kmsan_leave_runtime();
-diff --git a/mm/kmsan/kmsan.h b/mm/kmsan/kmsan.h
-index bc3d1810f352..681594186663 100644
---- a/mm/kmsan/kmsan.h
-+++ b/mm/kmsan/kmsan.h
-@@ -165,7 +165,6 @@ bool kmsan_metadata_is_contiguous(void *addr, size_t size);
- void kmsan_internal_check_memory(void *addr, size_t size,
- 				 const void __user *user_addr, int reason);
- 
--struct page *kmsan_vmalloc_to_page_or_null(void *vaddr);
- void kmsan_setup_meta(struct page *page, struct page *shadow,
- 		      struct page *origin, int order);
- 
 
