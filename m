@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA068C982C5
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 11:31:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D3EEC88E75
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 11:32:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 10E696B0093; Tue, 15 Sep 2026 07:31:47 -0400 (EDT)
+	id 862256B0095; Tue, 15 Sep 2026 07:31:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E8A06B0095; Tue, 15 Sep 2026 07:31:47 -0400 (EDT)
+	id 837E46B0096; Tue, 15 Sep 2026 07:31:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EEF626B0096; Tue, 15 Sep 2026 07:31:46 -0400 (EDT)
+	id 729AC6B0098; Tue, 15 Sep 2026 07:31:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C11D36B0093
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 07:31:46 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 35BCB1C22AB
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:31:46 +0000 (UTC)
-X-FDA: 85215781812.08.983A096
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C0246B0095
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 07:31:54 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CFC2C403C8
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:31:53 +0000 (UTC)
+X-FDA: 85215782106.03.C506C69
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 7C8D2180002
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:31:44 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i7x382Hn;
-	spf=pass (imf06.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf12.hostedemail.com (Postfix) with ESMTP id 1E88540004
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:31:51 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NjTiEaV3;
+	spf=pass (imf12.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789471904;
+	s=arc-20220608; t=1789471912;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XMEKWie9jF24t7TYFlO7sbFAQBsdl6e/pxJpNAPN2Sg=;
-	b=vw0qf4BV4XWwbT8eGI95LoAhU7ztRt1NfYtwoYDDkvgKuZSErR+r+uis1MNEDWrBb8JLrq
-	qIxqvBcP7BkWOlTXxrCCoRinq6HL3vb1e78yAnF0LempKOTwyUiTiYzJfW5V7P6sDNkZUG
-	PlT9jHk5LJd/BexEIZ/aqPVt0YUPUks=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i7x382Hn;
-	spf=pass (imf06.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=FOANy+Z4EJ+6nqoqN6kMNeWMX83pxCR/f2oFPELw6+I=;
+	b=ndovoEPiLibjY1Gq6T/pWl0mW90U2VjhYNx3rdByLTakdrzeCt4JEBS1LtL7A8x9WMxrmV
+	QS3fWr5d96/eSEwpulOD2oViI699Be1gHhm4Ggu+uA36DyvWGqOt5+/w7/nE5/HXDCin0X
+	oE53V5TXo/shth9sCAtYLlLUNDcF8YQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789471904;
-	b=QMGa2+9wGs7Y/0yyHqvH+cSGyR226ALOzVnEeESeyNmIajQIZQV/OVBmW89UvYkfO0EWxY
-	8wUyvfNxF/Mjxek6UtGcAOThFKeQe3BNPdZ1ODsnflEKv1pYuf/3J0bZxoPdbUzh5W+2r0
-	5NBpqqr37MwaJ26g2xmfuxAW/0sAQjI=
+	t=1789471912;
+	b=cIxLUVEspGhCxhIDn3hngxhCBwnFK06ZKMDVNeByl2kT0KF7+U0dxttdnz6PuomH1WBUIo
+	wI/lZkvSjPKFEs398uoOHqMBFF9T4iOhUifWpPK10FF7/L0HNKc5xJIypCutIUl6a28T5h
+	ztCfr+YMe9REW+QYCnCY87+Y3D4wOeM=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NjTiEaV3;
+	spf=pass (imf12.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1C4AA602BE;
+	by tor.source.kernel.org (Postfix) with ESMTP id B0A5E6025F;
+	Tue, 15 Sep 2026 11:31:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44BA31F00893;
 	Tue, 15 Sep 2026 11:31:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B38BA1F000FF;
-	Tue, 15 Sep 2026 11:31:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789471903;
-	bh=XMEKWie9jF24t7TYFlO7sbFAQBsdl6e/pxJpNAPN2Sg=;
+	s=k20260515; t=1789471911;
+	bh=FOANy+Z4EJ+6nqoqN6kMNeWMX83pxCR/f2oFPELw6+I=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=i7x382Hnnkl9/28oqzb0mWvS6zSI4aiPrUmgqyFCmzCN9moF5QbSnsvMPDmf6jsFE
-	 20sY8viNkieJZbQC/m/uoRnsZDoZFxiObsIH/1onHcojg8Na5KA8WBmzAnwM4xe7nv
-	 cWuvmngGAmVYJETI1rRmztQmkMvwsRgO4LmnzxxzIad+JvmPwmUPG7wVIXCYGBiA0I
-	 mqlaXmYHiuxvamjCZ59B9hIoZAdp2d3/z0azbHRAvvW4HC6KY9c6HyzfMGBsxUC5KA
-	 wQsLl2gTta2JoSnUidFFvBDUQCl+fjxiaYkM5A0OZHt6XgJeW93tAdk20XFiFzz/9p
-	 9i6uz6bpnbytg==
+	b=NjTiEaV3ZaSoS1ZK+2F2vFiHjAl7mkp0G3MbSEUlep66TuNm80zD11hu1nBRrXxYn
+	 jBTgv2BJxRFDL61U3EX8wu6faVIGU3bVeFZLIy90XxwIrdrOUrOsKYX977rOTgZ/8I
+	 4thUe5a8WqKasgzR8NxRqDgxbn2ffdmAsbyPzlk/nLtbznCt3T36AhEWcTJxWAK16P
+	 +oX6GAj1A666bKWBCHBVyXFcgtj42qkim8vnDO1heVDCubdQ6sDhUxhnwBvgcIFp3b
+	 tNoelVNVV3FSdtQiheYIa3QaDhiMkmI4KN1O3BjQkmw4KGESv+pMI5iwydQ3oXYyV8
+	 m6gLuAfE4lcLg==
 From: Christian Brauner <brauner@kernel.org>
-Date: Tue, 15 Sep 2026 13:30:49 +0200
-Subject: [PATCH RFC POC 03/50] alpha: commit fds on syscall exit
+Date: Tue, 15 Sep 2026 13:30:50 +0200
+Subject: [PATCH RFC POC 04/50] ARC: commit fds on syscall exit
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260915-work-fd-reserve-unify-folded-v1-3-4d5217d6b246@kernel.org>
+Message-Id: <20260915-work-fd-reserve-unify-folded-v1-4-4d5217d6b246@kernel.org>
 References: <20260915-work-fd-reserve-unify-folded-v1-0-4d5217d6b246@kernel.org>
 In-Reply-To: <20260915-work-fd-reserve-unify-folded-v1-0-4d5217d6b246@kernel.org>
 To: Linus Torvalds <torvalds@linux-foundation.org>
@@ -93,22 +93,22 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jann Horn <jannh@google.com>,
  kexec@lists.infradead.org, linux-hyperv@vger.kernel.org, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.17-dev-db0b7
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3840; i=brauner@kernel.org;
- h=from:subject:message-id; bh=RHaKINpzdp/l9rjcdl2huzzYgE91Xjm8KSEi0tjemx0=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSt1KnZvvtgiPkBlSLl5w330l/eiLM07dLKTdyvJ/x9U
- swK10XpHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABN5uouRobnvtNDzWTUxee+k
- GNbq6gjNkn34863ehHMFswpYD6708Gb47zR1+f3CeV+t1HumyzefFry5dVXvk12PN5yNOaLxR90
- pnAMA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2822; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=evSE6cJdnuFzZXNcFgM0f0Wtj2vW8xSJVidsgxr0vnY=;
+ b=kA0DAAoWkcYbwGV43KIByyZiAGqpLHyhtTAYRmbLzGwRwqcyv1G19KV/PkIkpZzswA8hR9xFL
+ oh1BAAWCgAdFiEEQIc0Vx6nDHizMmkokcYbwGV43KIFAmqpLHwACgkQkcYbwGV43KJF2gD/fYHy
+ 46GYN1jNxZvG5+E3C415n+5O5q2AJF3BkQjO7yQA/1hW7xKAHZiI3T6na5l1kqSbVvDkaRah45d
+ KjuZmRA8O
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 7C8D2180002
-X-Stat-Signature: 5x86bzd1ae8c4u6teg9xo957rfpwoong
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1789471904-472859
-X-HE-Meta: U2FsdGVkX1/W0ZadCdnoTGyRA4D8tToXbhDrtxVnKBWynaFZDrxQ0qU48WZ+sXwUPWBGEofRY75WuDSJPIJ+uxJAmYfILq4RLo8W1TLv8EzZGcsp8GSZFGl814FQA8UiwEhGOEg70Q4a/iSIaKvSFVZb53glnAvdYFPkSXmUcjA5xHK0EEoBF6gQ08wIir6OXR/PZtLmzug+PJjhtahJSx+x8IVX6q6MTgJcS53IHJQa4af3HZZB36cDmM+gHRMdII4PbDbA0RawoLJLV07O3qCe8gPbqHyP7DfGdzXxTX5PTsFbmtbg6eOgDMXEcaye9krApWhxMpEWznejQeBGdeT/jxilKr6tF4cHek9+qtPeYLSToLaPRS4PmZGSzWxhcIzqWotmhxG/RrgIv/WRpxA6GZFRsS2e8Fn931O9d5LpOvfBOiQ0ruTi9tCF8tkgT9HjoQ1EnQGLWXM5NndODjLCUTLdME4TJOPGdfCGrdKEgxqyXWno5P195Q9Sg53+rFV6O0aV9F/6U78HBxANj2SwKNi+YJtdYHAOWs7xR1ZxVagjHTYzeoMUcWMhhzmKVDzBZ0FYHvCzDutcSKaHAV14H0P1IjTiBPjLjvWlWHEP4RxvCsUs9xY+rxgWq/xco1muov0K+S1aI+VR6J25hogvG4lZM9BbcyQRUlzEDc1aqZr1QmDrraII8RcFVYqzBU+lRC9EPKMHql/sCHDRlVY7aanYho3J5/0cwEY/H5kx7vGH8iOZ+mwCBNHdT/CvDPa+zuVS1eFghz2okJHe5SfFNQmzoUapP99A8jfp13DH/WVpt3UjRkiuVkXVooYf4xHEfPAanvvVKJwj+f9dIGnbWC+vTyyvY8Tm9xCKAfzkwk/8M/hZRlxwcfwJMMoIEhxAqq33dOREa7ETVIp0v1eJ0fvIpMj07ufREe/0H5Rc4Dx81++bX8FrFJydJarMH1KJdDAtzdf2gBbWuxg
- ZwObrTGz
- kXe58zEiN8egmcDuqNZNq4gWapgo/m0tG6UJ079EC4w7Ms+tdYyaKq+yga7ecny8xBpXVhls8tN8dYh6Wh5d9fE2xIeNH7J92tZjzy3GIen4n8qywAIMMYd6mQKmBP2mpCcFqCHF4RHOitTjrcnJbVKmINZd+Ni5fvMr80ZqiKttek2qLL+8NgfOEPYTMqjTRXDjVT54TUXctrCGQ41/3CE5NcTuHS7+r8WIFuzFRWdxEV/1zGDHvjDFQ0bGAfp5/9mqVSZVTEFY0cbO4SPFpC5Ky1Qzajb0YbdkdtPvFn7Rnf8LMLAtOqJoXKg==
+X-Stat-Signature: qqcc15oqju9uhfna3qa79opa9qm1rb18
+X-Rspamd-Queue-Id: 1E88540004
+X-HE-Tag: 1789471911-363852
+X-HE-Meta: U2FsdGVkX19e7jYur3F/kdYh5Bt1OuRdro2E9juBJmetmvYVzlR8NEn8cibOXT18kjiWL6wi0pLXfsk4eyfAKVzRipNk8SnCtaKv74h01fmcxkFs0sL1jvkwPrjDHmnLrRfdFBcmwZhmmUc/Lkif9IDciGV//z2yxcGUSkJuv2hAv1uwgefn8WHBSWylrWUpbe3Q+DnE19qtqBcWxdSXbz+L7QqeP03HW8Y3Un+jhkn2sUGFST0+QBZ/EUSbr98smUTqIqu+ZLVqEAII4AemPdXvLxpCZqilgtaToovk56u3xlzlU9QwrWq0/AQvkk6Y219Qs+03StHp+6Iic2wZIvbmZbA+cj+YRPp12ynVt27ce2DelnhgWGYqEwbi2SRtJITah1ITlIU3HaNm6pjUCQcJrEeowMw/5vaIQJvHlBCqd+kT9JISJtNa6WS43kir9BTVb5aqHDvwcI5ZcVLwPQsB7O9iKxT41WTDvsV1OvQUrg/qmrO1TJFlLAx+mJ9KP6WTFgKGwbKTB0CLba0TaDPnHHDe8ehHEY4L+Ih435oJXyY46GEbLnIUjrFh59Cvn26eq+BVHqi3vUi5iu3fydv+9285ohqILL1OJYhDk7WK6dQFtocylplfP0g9t4kRNHtYqUFed9NZO7DO2NgP8a8P50KCGz285/99OjyGDiDXFzyL54SqYoSaLb7Q9xG6WQmVHYARxza5tyCgyw0KPWxHD4fYumqCRY09+nXF1rhVwrDYKPpcpwW4FOc7eWuvK/aRx29NUEJohrdZw+gk8wPAUz2cvjMabTYq8giN2Qvu+Qk4vHXrTvjEyNOAZffjfm+B83hL63Setifi5O9w/PbNKINw5oi5dJV3luJ20sC/LxXrGOVSz9KyB7Gz7npXl/p/dcsd5S6ZXDq5RdKz3jdUCIRNObmUV0FmbFutOgrKdVrlpB+blSgRCuGebRVcRXOLGJIDo0ZSF6JuW1q
+ uiQTSvb0
+ hGqaypNc6LDf2GCMHPSuELGGP63d/kpXYxOlOQ3B4N+dI8etofabOokM1NHooglhuEeYqcUowqaVhpCBJpbbpDks/wVAMTVWJwJ81XC8jBwOrTDU7N4Y0YE4Bo2LCI5/nEh4kxmE5xnJbYIEJqR/KP3shiZIc885Ih2v/YhDgGPjmDibqShv0oLv/bJOJ1aw9o78WqTv02Oijn7Wd4zgOPbGLrE7aW0/wP+Uv1FXepqECNFalKOiwRgosh+DZVyG8rLE8vbv1CpYyat0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,113 +116,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add TIF_FD_SLOTS and test it once the untraced system call has stored
-its result. A task that reserved descriptors calls syscall_trace_leave()
-and joins ret_from_sys_call with the flag gone.
-
-We mirror the traced error path where the switch stack is set up and the
-return address and the syscall restart state are placed in callee-saved
-registers.
-
-Btw, let's remove alpha... It's a pain.
+Add TIF_FD_SLOTS and test it on the untraced return from a system
+call. A task that reserved descriptors takes the tracesys_exit path,
+where syscall_trace_exit() commits them before the ptrace exit stop.
+The traced path already ends up there.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- arch/alpha/include/asm/thread_info.h |  2 ++
- arch/alpha/kernel/entry.S            | 24 +++++++++++++++++++++++-
- arch/alpha/kernel/ptrace.c           |  3 +++
- 3 files changed, 28 insertions(+), 1 deletion(-)
+ arch/arc/include/asm/thread_info.h | 2 ++
+ arch/arc/kernel/entry.S            | 5 +++++
+ arch/arc/kernel/ptrace.c           | 4 ++++
+ 3 files changed, 11 insertions(+)
 
-diff --git a/arch/alpha/include/asm/thread_info.h b/arch/alpha/include/asm/thread_info.h
-index 1552ecca8520..db8465f5fabb 100644
---- a/arch/alpha/include/asm/thread_info.h
-+++ b/arch/alpha/include/asm/thread_info.h
-@@ -67,6 +67,7 @@ register unsigned long *current_stack_pointer __asm__ ("$30");
+diff --git a/arch/arc/include/asm/thread_info.h b/arch/arc/include/asm/thread_info.h
+index 255d2c774219..4c67d4eb434b 100644
+--- a/arch/arc/include/asm/thread_info.h
++++ b/arch/arc/include/asm/thread_info.h
+@@ -77,6 +77,7 @@ static inline __attribute_const__ struct thread_info *current_thread_info(void)
+ #define TIF_NEED_RESCHED	3	/* rescheduling necessary */
+ #define TIF_SYSCALL_AUDIT	4	/* syscall auditing active */
  #define TIF_NOTIFY_SIGNAL	5	/* signal notifications exist */
- #define TIF_SECCOMP		6	/* seccomp syscall filtering active */
- #define	TIF_SYSCALL_TRACEPOINT	7	/* syscall tracepoint instrumentation */
-+#define TIF_FD_SLOTS		8	/* syscall prepared descriptors */
- #define TIF_DIE_IF_KERNEL	9	/* dik recursion lock */
- #define TIF_MEMDIE		13	/* is terminating due to OOM killer */
- #define TIF_POLLING_NRFLAG	14	/* idle is polling for TIF_NEED_RESCHED */
-@@ -80,6 +81,7 @@ register unsigned long *current_stack_pointer __asm__ ("$30");
- #define _TIF_SECCOMP		(1<<TIF_SECCOMP)
- #define _TIF_POLLING_NRFLAG	(1<<TIF_POLLING_NRFLAG)
- #define _TIF_SYSCALL_TRACEPOINT	(1<<TIF_SYSCALL_TRACEPOINT)
++#define TIF_FD_SLOTS		6	/* syscall prepared descriptors */
+ #define TIF_SYSCALL_TRACE	15	/* syscall trace active */
+ /* true if poll_idle() is polling TIF_NEED_RESCHED */
+ #define TIF_MEMDIE		16
+@@ -88,6 +89,7 @@ static inline __attribute_const__ struct thread_info *current_thread_info(void)
+ #define _TIF_NEED_RESCHED	(1<<TIF_NEED_RESCHED)
+ #define _TIF_SYSCALL_AUDIT	(1<<TIF_SYSCALL_AUDIT)
+ #define _TIF_NOTIFY_SIGNAL	(1<<TIF_NOTIFY_SIGNAL)
 +#define _TIF_FD_SLOTS		(1<<TIF_FD_SLOTS)
+ #define _TIF_MEMDIE		(1<<TIF_MEMDIE)
+ #define _TIF_SYSCALL_TRACEPOINT	(1<<TIF_SYSCALL_TRACEPOINT)
  
- /*
-  * Work to do on syscall entry (in entry.S).
-diff --git a/arch/alpha/kernel/entry.S b/arch/alpha/kernel/entry.S
-index 9f2608de2544..20372e926359 100644
---- a/arch/alpha/kernel/entry.S
-+++ b/arch/alpha/kernel/entry.S
-@@ -569,6 +569,13 @@ entSys:
- $ret_success:
- 	stq	$0, 0($sp)
- 	stq	$31, 72($sp)		/* a3=0 => no error */
-+$syscall_exit:
-+	/* Descriptors reserved by the syscall are committed in
-+	   syscall_trace_leave, off the return path interrupts share.  */
-+	ldl	$17, TI_FLAGS($8)
-+	lda	$2, _TIF_FD_SLOTS
-+	and	$17, $2, $2
-+	bne	$2, $fd_slots_exit
+diff --git a/arch/arc/kernel/entry.S b/arch/arc/kernel/entry.S
+index 3c7e74aba679..f436391526e1 100644
+--- a/arch/arc/kernel/entry.S
++++ b/arch/arc/kernel/entry.S
+@@ -241,6 +241,11 @@ ENTRY(EV_Trap)
+ 	jl      [r9]
  
- 	.align	4
- 	.globl	ret_from_sys_call
-@@ -612,7 +619,7 @@ $syscall_error:
- 	stq	$0, 0($sp)
- 	mov	$31, $26	/* tell "ret_from_sys_call" we can restart */
- 	stq	$1, 72($sp)	/* a3 for return */
--	br	ret_from_sys_call
-+	br	$syscall_exit
- 
- /*
-  * Do all cleanup when returning from all interrupts and system calls.
-@@ -648,6 +655,21 @@ $work_notifysig:
- 	UNDO_SWITCH_STACK
- 	br	restore_all
- 
-+	.align	4
-+$fd_slots_exit:
-+	/* Keep the return address and the syscall restart state in
-+	   $26/$18/$19 across the call.  */
-+	DO_SWITCH_STACK
-+	mov	$26, $9
-+	mov	$18, $10
-+	mov	$19, $11
-+	jsr	$26, syscall_trace_leave
-+	mov	$9, $26
-+	mov	$10, $18
-+	mov	$11, $19
-+	UNDO_SWITCH_STACK
-+	br	ret_from_sys_call
+ .Lret_from_system_call:
++	; descriptors reserved by the syscall are committed in syscall_trace_exit()
++	GET_CURR_THR_INFO_FLAGS   r10
++	and.f 0, r10, _TIF_FD_SLOTS
++	bnz   tracesys_exit
 +
- /*
-  * PTRACE syscall handler
-  */
-diff --git a/arch/alpha/kernel/ptrace.c b/arch/alpha/kernel/ptrace.c
-index fc8f6cedbb28..736218b34601 100644
---- a/arch/alpha/kernel/ptrace.c
-+++ b/arch/alpha/kernel/ptrace.c
-@@ -6,6 +6,7 @@
- /* more mutilation by David Mosberger (davidm@azstarnet.com) */
+ 	st  r0, [sp, PT_r0]     ; sys call return value in pt_regs
  
- #include <linux/kernel.h>
+ 	; fall through to ret_from_exception
+diff --git a/arch/arc/kernel/ptrace.c b/arch/arc/kernel/ptrace.c
+index fe2b6572e919..0a0d74b9c7c4 100644
+--- a/arch/arc/kernel/ptrace.c
++++ b/arch/arc/kernel/ptrace.c
+@@ -3,6 +3,7 @@
+  * Copyright (C) 2004, 2007-2010, 2011-2012 Synopsys, Inc. (www.synopsys.com)
+  */
+ 
 +#include <linux/file.h>
- #include <linux/sched.h>
+ #include <linux/ptrace.h>
  #include <linux/sched/task_stack.h>
- #include <linux/mm.h>
-@@ -507,6 +508,8 @@ asmlinkage unsigned long syscall_trace_enter(void)
- asmlinkage void
- syscall_trace_leave(void)
+ #include <linux/regset.h>
+@@ -355,6 +356,9 @@ asmlinkage int syscall_trace_enter(struct pt_regs *regs)
+ 
+ asmlinkage void syscall_trace_exit(struct pt_regs *regs)
  {
 +	if (test_thread_flag(TIF_FD_SLOTS))
-+		fd_slots_commit(current_pt_regs());
- 	audit_syscall_exit(current_pt_regs());
++		fd_slots_commit(regs);
++
  	if (test_thread_flag(TIF_SYSCALL_TRACE))
- 		ptrace_report_syscall_exit(current_pt_regs(), 0);
+ 		ptrace_report_syscall_exit(regs, 0);
+ 
 
 -- 
 2.53.0
