@@ -4,57 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68BEDC88E75
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 06:50:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 113CDC88E75
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 06:50:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0142E6B0092; Tue, 15 Sep 2026 02:50:00 -0400 (EDT)
+	id F310A6B0095; Tue, 15 Sep 2026 02:50:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE0326B0093; Tue, 15 Sep 2026 02:49:59 -0400 (EDT)
+	id EE0BE6B0096; Tue, 15 Sep 2026 02:50:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D7FCE6B0095; Tue, 15 Sep 2026 02:49:59 -0400 (EDT)
+	id DD8A56B0098; Tue, 15 Sep 2026 02:50:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id ADB6D6B0092
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:49:59 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 321A1C0344
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:49:59 +0000 (UTC)
-X-FDA: 85215071718.08.550E2C8
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B10DF6B0095
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:50:51 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3F93EA43C4
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:50:51 +0000 (UTC)
+X-FDA: 85215073902.19.174B47B
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 4C33AC0004
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:49:57 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
+	by imf02.hostedemail.com (Postfix) with ESMTP id 5916580002
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:50:49 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf22.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+	spf=pass (imf02.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
+	dmarc=pass (policy=none) header.from=lst.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789454997;
+	s=arc-20220608; t=1789455049;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FggKGm/WFFE+x9D20ACL+L6UR50221e54Tgo0ZGVRhU=;
-	b=DLHI+M0mHnzT1NRgPxYTD83OJiQ7I3PmoCweiqQ/1c9HswKLpZAd/Jp7TmldIzp53Ph9cT
-	K2td7BioK2KpkqF62XmzttZbM8t1N6XQRahvE2TVVuj3MK4Kah3qz0e3zpApAFO2YDTWMe
-	kyMTq26in0f2hn/e192XA5hCEjJLiP4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789454997;
-	b=6WpEUaqNgx+bE36DVGnmaKRsW+mtRDGKqf4xd23hv3Zt8G8t/GeCNohOEnwRxPe+F93GjY
-	+5roDnDrkff7TtBfeqRg62gdT/qdEnKLX0dGkJor7iDcZeBMrKbValIKZhSjGp068lbZeB
-	beebiON3vme6jPu1h4CJZtMCUkLOljg=
+	bh=Fl3XDxOLKwkQaq7Gn83f938ZZZZx5MsQR5gd2rSVjIs=;
+	b=LegYpZ8j35Vydza9JzNu7OLqZy7qmmpj1PhW+o6NQzU6YirSy0KnXOzsq/hfZQJ6hIIiGA
+	aGOaHFttg4gLid3nCuW1kHuLPvkWFwFZ+nf1FaKWD2XyHxpOuiZ+NQmO7gO899GgAMx76n
+	VQb+8ssEWERXwQ0lvsPGUxEg92MOvCA=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
+	imf02.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf22.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+	spf=pass (imf02.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
+	dmarc=pass (policy=none) header.from=lst.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789455049;
+	b=glVb8H3GSZHRK5U53FaUNbIUQ2BvwWAjInx7lC37LMn6GlFcNPoUXwNBfVq08HpAoM74tl
+	uOPa6dx5blzns2wpTC+ABd6jctAni6pAgYsuxszBs4IWLxBffGjsHEOlqF84Hco0+QnFP1
+	K4tRJATzoxlCM87/TbxeajXdD0gouHQ=
 Received: by verein.lst.de (Postfix, from userid 2407)
-	id BB37468C4E; Tue, 15 Sep 2026 08:49:50 +0200 (CEST)
-Date: Tue, 15 Sep 2026 08:49:50 +0200
+	id BA6DC68C4E; Tue, 15 Sep 2026 08:50:44 +0200 (CEST)
+Date: Tue, 15 Sep 2026 08:50:44 +0200
 From: Christoph Hellwig <hch@lst.de>
-To: Yu Kuai <yukuai@kernel.org>
-Cc: Jens Axboe <axboe@kernel.dk>, Josef Bacik <josef@toxicpanda.com>,
-	Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
+To: Nilay Shroff <nilay@linux.ibm.com>
+Cc: Yu Kuai <yukuai@kernel.org>, Jens Axboe <axboe@kernel.dk>,
+	Josef Bacik <josef@toxicpanda.com>, Tejun Heo <tj@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
 	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
 	Jonathan Corbet <corbet@lwn.net>,
 	Shuah Khan <skhan@linuxfoundation.org>,
@@ -77,29 +78,29 @@ Cc: Jens Axboe <axboe@kernel.dk>, Josef Bacik <josef@toxicpanda.com>,
 	Nick Desaulniers <ndesaulniers@google.com>,
 	Bill Wendling <morbo@google.com>,
 	Justin Stitt <justinstitt@google.com>, Yu Kuai <yukuai@fygo.io>,
-	Christoph Hellwig <hch@lst.de>, Nilay Shroff <nilay@linux.ibm.com>,
-	Tao Cui <cuitao@kylinos.cn>, linux-block@vger.kernel.org,
-	cgroups@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-bcache@vger.kernel.org,
-	dm-devel@lists.linux.dev, linux-raid@vger.kernel.org,
-	gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, llvm@lists.linux.dev
-Subject: Re: [PATCH v2 2/3] blk-cgroup: store blkcg in bio instead of blkg
-Message-ID: <20260915064950.GA13417@lst.de>
-References: <cover.1789237876.git.yukuai@fygo.io> <ef547fdb7a6c8e39a25a1b9473c444f24a0f03be.1789237876.git.yukuai@fygo.io>
+	Christoph Hellwig <hch@lst.de>, Tao Cui <cuitao@kylinos.cn>,
+	linux-block@vger.kernel.org, cgroups@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-bcache@vger.kernel.org, dm-devel@lists.linux.dev,
+	linux-raid@vger.kernel.org, gfs2@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	llvm@lists.linux.dev
+Subject: Re: [PATCH v2 3/3] blk-cgroup: move async bio punt state to blkcg
+Message-ID: <20260915065044.GB13417@lst.de>
+References: <cover.1789237876.git.yukuai@fygo.io> <326e4904402440323532168095f2eb0c6f697836.1789237877.git.yukuai@fygo.io> <f27ee89f-5a52-4cfc-a14a-e5019ae61d89@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ef547fdb7a6c8e39a25a1b9473c444f24a0f03be.1789237876.git.yukuai@fygo.io>
+In-Reply-To: <f27ee89f-5a52-4cfc-a14a-e5019ae61d89@linux.ibm.com>
 User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 4C33AC0004
-X-Stat-Signature: dinrkf9p46pau1m3iko1jwoxmppxcda7
 X-Rspam-User: 
-X-HE-Tag: 1789454997-193071
-X-HE-Meta: U2FsdGVkX1+MjXWbiuph5MW4DUFP9hjRYMnuwAHsLTyoBHoY9q+IeQ9abojkqH6WTrasceh+cSXzQXzF9Mu3sUS5v8fvNocdgiLbjXm18cJSXdzpEi79xpMlliUWJlHdZM6GFXN3VBIrsnqBVNfvl6J1J6sXcaJiiG7tZGsfsC8HgBdWa1xZoK/fpM3m+re3RRV/AcGoGEqVyH6vC23ZBiGS6shLDlN4OBsE1JL5NbwNYldS3Zvo995ZejhyPCSNevb9IBrSNqKMZVHxADSqxw1kSTnYXjtMZ2aaJpQb9MERdix2gs1poWN189vyDV6IKfuwQAf3Z80SPuCRNmeY2pIf8DXgQD0ux3xZNg3IawTPZHXRcigqv/wmBs6I0M5uEbSvV2uMKRzoPIgnVCoMMfkYM0zGn9cM6BDkcqTNliGUTrQhd7KtL40XnZ2jhsTzJ2+6CzMtzgoCvYLbQjc0bPhTEO0qesKCq0mcy7SP4AUooY7ocyL5kZBT6EI5nT31I05ff+5L3qCwcNZoiMPDUJzxJBGTwg2bNV87RhxsMA6eyfr509tBGQq5RbqRZsTsVo6gbGMMY68dgqptCldxmwzdsKhya7jCIXvCGR8kVb18LsA9WFACE1th+qxwiVzkChp2zj5+nldcJKhNVxClYmYZh2liP+O+GP4MP8Ow+NnGgVF0dudIChkHI0B25yjgA5wc54pzyGGOhu36dwQiWqAtRSsM150E7hUzadA1rf4Q1xONBFbSVVbkHu36ZTFbWkvYCTE4Rk2PlFl9pXhz1vGvSZnkr0iUyp9aOQDOKbXcOLOHMqwKwxdjoKp1tR8tZgEurOwgDSvtvacz5xsxuw83RbnTLR+arAuDUhcL8xMXMYoX+RZN8+QYHrxKqmryb9iYDOgabwC7Pymj4DG/PedyF0gjr8Fjon0MXrD9v+MU80FfLirU9TDXYEiaVvPSUJg3X0V8nmxzWPDa1oi
- rC+inT3q
- D+0NvlmXd6Ze/THXOftSri8Mwwq59CtWe2GGWKUiH79RYe8aDnxxdVOu815EzaPRAv4wWebACdQA4HLMb2dCgszRmFTf8ig76Q/v1
+X-Stat-Signature: h5gydnkt8g8gkzwzej1xdtedmye3dwuc
+X-Rspamd-Queue-Id: 5916580002
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789455049-43867
+X-HE-Meta: U2FsdGVkX18Xtx0NMRb/y1bZiSjzAwpxrlD3KWsNmOHomd6i74i3ZspEBqxJYf92rqKWe+36/XPUlkBoepdid2YLDS3IlEd5XHgFWDMRsudAxWEweoJ+J7ih4zyRTt8lOleJuX8BwCZXUiRFWfNrUchsceQ37VBiC6TZ4Xo9v63nRoDrayoU9C9k2JScOYEk7NvV6Alvbz5GA+W+vKWUdEgVMLJ+QzeAvR25bXZcsUHstsLK9ml92HufR3KGxE+8GAg9AcuuDclqFtK6IVbxeJh4Emqpta2BIH2QO2sceS25Cm2aApTspJ37v6IsU8zXV/0UcyCDde6yYdIDb0xanH3cJPJuGvRRBhvpcZOtnvojdN81BaEZhU3GnH+ZJAOvMyePpJe4Ojf4zRDLToDgkZP/7kGhJfsMSg9F3DRgkES18xn+A4P5U18dBaUV1n2iUUi2oxkwfdDP39S2/NS27LNZ4/aCpGtiVdQoa4DREmhAq3+AFmuNRdGLJqtswfgBaK45IvtKt02h4fXIqTI6WYD1ddmfDSGaHqbMlbRRj+VTG9bfMwS3PSaeNfve/VK2HLunrhKtZSotLgvZ5i7afYPMCndIFYfKjvkaLPS4ydqmHrq4ACKon92hTFneGMmWVB9IE03/B27iaKYelbCOT0VTZmmwudJRHO2aVaBE9RQpuAD3FEnw5mOF5aztDkTXhrqhnj1/aIOJCg+MM5gJ7jmL4cr64gwacI3mjo2mjHTTQvxRvkFbPV/aTSt3VeM/cDDGllLKqJA+uuO0qBwbhf8t1+KTMFrqMhrRb9yeEW/AQGlUfP/knXy8fmWf0i1eQ0mtzpnWf9OLoQySa18BRTfkkdU4iV2RWFqHHA2x2MfNdYStsbxdlzPjFYFa9LN7X6/hZUxfMTkoYZCQtqjViaBEOtZHqjdKSI9wZ/fBbu2e2QuSuOzRPBfKGzhc1He4fnXeTuzpXIVQMnmwOUa
+ hXgmGIJM
+ H0nIUzURwyvSStZ1aB6bUGWAgIBWkVoNM7Sn4U1OXgtzfdRKmjZRLfNX+ow+1wAVmZCcdK/KeVEIjlX2BAGAsNj4Tpv4glljIfL/T
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,38 +108,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Sep 13, 2026 at 02:54:39PM +0800, Yu Kuai wrote:
-> @@ -6243,10 +6245,17 @@ static void bfq_insert_request(struct blk_mq_hw_ctx *hctx, struct request *rq,
->  	bool idle_timer_disabled = false;
->  	blk_opf_t cmd_flags;
->  	LIST_HEAD(free);
->  
->  #ifdef CONFIG_BFQ_GROUP_IOSCHED
-> +	/*
-> +	 * Pin the blkg used to look up bfqg.  If this is the first IO for
-> +	 * the blkcg on this queue, create the bfqg before holding bfqd->lock.
-> +	 */
-> +	if (rq->bio && !bio_flagged(rq->bio, BIO_BLKG_REF))
-> +		bio_blkg(rq->bio);
+On Sun, Sep 13, 2026 at 06:59:25PM +0530, Nilay Shroff wrote:
+>> +	/* as long as there are pending bios, @blkcg can't go away */
+>> +	{
+>> +		guard(spinlock)(&blkcg->async_bio_lock);
+>> +		bio_list_merge_init(&bios, &blkcg->async_bios);
+>> +	}
+>>
+> Instead of using guard(spinlock)(...) here, I think we could use the
+> simpler spin_lock()/spin_unlock() helpers. IMO, they are easier
+> to read and reason about for these short critical sections.
 
-Can rq->bio be NULL here?  flush or empty passthrough request should
-never enter the scheuler.
-
->  	if (!cgroup_subsys_on_dfl(io_cgrp_subsys) && rq->bio)
->  		bfqg_stats_update_legacy_io(q, rq);
-
-But I guess given that the code below checks it, we should at least
-be consistent, so I guess it is better to keep it for now.
-
->  
->  static inline void dm_bio_record(struct dm_bio_details *bd, struct bio *bio)
->  {
->  	bd->bi_bdev = bio->bi_bdev;
-> -	bd->bi_flags = bio->bi_flags;
-> +	/* Restoring an ownership bit cannot recreate the associated reference. */
-> +	bd->bi_flags = bio->bi_flags & ~(1U << BIO_BLKG_REF);
-
-I have a bit of a hard time parsing this, the line also is overly
-long.
+Yes, guard() is a complete mess that makes code unreadable, please
+don't use it.  scope_guard is a bit better, but given that it doesn't
+mix with goto based unwdinding it still is too dangerous to actually
+use.
 
 
