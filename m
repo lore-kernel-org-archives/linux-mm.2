@@ -4,59 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F062C982C1
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 15:24:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2E1DC88E7F
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 15:24:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 582946B009E; Tue, 15 Sep 2026 11:24:24 -0400 (EDT)
+	id CFB846B009F; Tue, 15 Sep 2026 11:24:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 55AA66B009F; Tue, 15 Sep 2026 11:24:24 -0400 (EDT)
+	id CAD136B00A4; Tue, 15 Sep 2026 11:24:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 498BE6B00A4; Tue, 15 Sep 2026 11:24:24 -0400 (EDT)
+	id B25EC6B00A7; Tue, 15 Sep 2026 11:24:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C3DB6B009E
+	by kanga.kvack.org (Postfix) with ESMTP id 953FC6B009F
 	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:24:24 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6B250160449
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:24:23 +0000 (UTC)
-X-FDA: 85216368006.18.5F1F5A3
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 7584318000A
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 230A516043D
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:24:24 +0000 (UTC)
+X-FDA: 85216368048.04.68CFE5D
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 6273BC0005
 	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:24:20 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=WpFtdi1k;
-	spf=pass (imf16.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.4 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=RRHRd0NT;
+	spf=pass (imf22.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
 	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789485861;
+	s=arc-20220608; t=1789485862;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I+EDjYdUiVp47imiKeO3dfc9fxyKX7XcOzgelislojA=;
-	b=cznDjWevT4ET30h/0cGsa1iqbY3LPBO8jd5wlm4Jj7CwPpBIJh/dbjzqL5QOBwd5A1K2q5
-	8dmG/8NAH4kARUefBbYI4nPu4WDAIBEfD/tHeZbek+0XuHNXKZqFoh5LPoGyBcfvOOH0AH
-	+CcarRoXdCTzL3VfxeqvAGH7hozjwFA=
+	bh=Xu5Nis9Fy2g0jTkf2lh9NOxXBZCd0nEic7P0WemrVuw=;
+	b=EJgFg6ahQC1IsIIzi3CVR9v4eqfoc9Etg71d2xGBLxAbTabrAjMM9o/9L9ffhMohFnddTJ
+	tWAb25zCGvsf4SLKFCcjgTO9AoJLzYI4GNZSwMlcmuNCM1dsAQNJjJZ2uc6menCiQ19Oxq
+	APpkOL65AQR1cqBhGGrNQwWxSatVsj0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789485861;
-	b=gsxmgHFvrBvYzjycDwrNwTmhVPrRuUwl8Jsjv00iABlwzUVo8X8EQU1fE6Bhk6Cjg/qvjY
-	lBAsAdh7SRZoPc8dx30ySdWUx1yeBfYrDdGOM6nxp4Oe2bRdOydb9LCS/m0gvGYoSHdkNM
-	sVlAf5cGvCYSTfDUxj/HamB0xrQiMds=
+	t=1789485862;
+	b=6sGi6cfnTzYIsiCljvF9mhlrWgGq6fxkOnK400jGsUy1H8zy8b0DX9DgtUFi9SO0NgYSDP
+	cvodPJiPiZLS1e8mAdZzFfP/YMIilKf/3M1IMIXqDmITz/TOtjH7wnptSd8QS+NRUdGmTc
+	FcvCLlPOeGUTpymnPiE1WE+wJJakcj0=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=WpFtdi1k;
-	spf=pass (imf16.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.4 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	imf22.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=RRHRd0NT;
+	spf=pass (imf22.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
 	dmarc=pass (policy=none) header.from=163.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=I+
-	EDjYdUiVp47imiKeO3dfc9fxyKX7XcOzgelislojA=; b=WpFtdi1kkpqGrSKW5z
-	9kmemIcYj4hWSDkCRiqij3OogB3ekvGwvisBCNQ+WrT1Y8qtIVEwdS0zIVq0ZU51
-	II9/hbduMCdb+W96ei/JRzFOSakFa5NJ0TgPAaPP+a5R+FMB4ednD87cpOxWs5Sx
-	SoA++PXVuEWvJrJ4QGfW+XD+E=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=Xu
+	5Nis9Fy2g0jTkf2lh9NOxXBZCd0nEic7P0WemrVuw=; b=RRHRd0NTVaD+w5oNbI
+	CUDrJxEGXYIpd3Sdv/4Wy0hWN7eOpoqjW7JO86FAiwKKamvtKuuOv7gGKi8wUiKB
+	Mvo+GhjM7/E3v2Fgmh+v64W/ETTAqPYj4yeMlg/wQ5UMBzOc2SkPCVA/GEhW8cVM
+	/AgKFvoht248hcYg0wBaXQU5o=
 Received: from VM-0-3-ubuntu.. (unknown [])
-	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wDHvVwYY6lqm28iAw--.18968S5;
-	Tue, 15 Sep 2026 23:24:10 +0800 (CST)
+	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wDHvVwYY6lqm28iAw--.18968S3;
+	Tue, 15 Sep 2026 23:24:09 +0800 (CST)
 From: Longlong Xia <xialonglong2025@163.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	linux-mm@kvack.org
@@ -65,29 +65,29 @@ Cc: Longlong Xia <xialonglong@kylinos.cn>,
 	Xu Xin <xu.xin@linux.dev>,
 	Chengming Zhou <chengming.zhou@linux.dev>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 14/14] mm/ksm: update merge helper comments for folios
-Date: Tue, 15 Sep 2026 23:23:50 +0800
-Message-ID: <20260915152351.7955-4-xialonglong2025@163.com>
+Subject: [PATCH 12/14] mm/ksm: take the ksm folio in try_to_merge_one_page()
+Date: Tue, 15 Sep 2026 23:23:48 +0800
+Message-ID: <20260915152351.7955-2-xialonglong2025@163.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260915152351.7955-1-xialonglong2025@163.com>
 References: <20260915151236.5200-1-xialonglong2025@163.com>
  <20260915152351.7955-1-xialonglong2025@163.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDHvVwYY6lqm28iAw--.18968S5
-X-Coremail-Antispam: 1Uf129KBjvJXoWxGw1ftw4UAryrur13KF4kWFg_yoWrJr47p3
-	ZF93sIyrZ5JryxWw1xtrW09343Z397tr4UArWDC34fC3Z8tryvgF12v34YvFy5JFW8Ca1Y
-	vr4jqF109a1vy3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jHCJPUUUUU=
-X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC+Brj3GqpYxp+IAAA35
-X-Rspamd-Server: rspam04
+X-CM-TRANSID:_____wDHvVwYY6lqm28iAw--.18968S3
+X-Coremail-Antispam: 1Uf129KBjvJXoWxXF48AryfZFy5JF48Cw17Jrb_yoW5Cr1UpF
+	Z2kasrCrW7JFWruryxAr4qyr1ak3sxtay0yF13J3y3Aa43t340kFyfKa4rArW3XrWrCa1f
+	tw4UAF1jgay5AwUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jzwZcUUUUU=
+X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC+Bnj3GqpYxl+CwAA3S
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 6273BC0005
+X-Stat-Signature: po95krubbog4cbycy64wd5yqudjzi8tq
 X-Rspam-User: 
-X-Stat-Signature: 1df3zeyahmtghkwfmjiba9pdbnpwaqyh
-X-Rspamd-Queue-Id: 7584318000A
-X-HE-Tag: 1789485860-478191
-X-HE-Meta: U2FsdGVkX1+pTm0r367oW9ogdXj2L+yEALDP6xFv1xpB8KpmIoGIuKB2kqmxq29nEfoz2tfiebomDlSG4lmxmPahTjzdgItx9m3obHnER2gf7h9u1mOX9l5ZHFeknzEsYwMND3ukSJ4tY74QLSVghtV2rfZapp4Lbdp42/SBtjB4zv8nMghdpPp9/CsQjbzlms7abzCNpxZXkvltmo/L0TdxMGX97rrUKWVgsGR+qvEDapUqW53ccCvcPA+l7sxVpDB9tic4nODL6GEsJjfkFvhgz4S8m1+f7UVB4Ty94v7tuf/ja2qlDhMnY7zHD8pRVMHVJGjGp13oy+Xg7EHVEsF1/YZAF+eietikAXGTIhxyWcN3hDCGuxbLC5D6I6JFcBHN0X345nGIwtcipuDQxswigPLHU/9/KLB56Xf4BFybs2agove+vRLvI1ybS3l2oa3Fj2JcOrlOGcRmH5k56egcMkh5XLzLpsDr7fGu3RMaWq3v4zyi+tAHCuPRaZn7sdCsTpp8m/Kf+2v5SGk4wSTqq8OrZfYOvwJEpFgPwxuzWBUvALjSi1bspLQgAYqWjiKkJFSqpF+vzyFYqAc3x+Kc1SxdAvP3LgRTXYP1SUJ7sxYARtm3GEsXIkjR4qWzgG3UqLUKT0y7wsOpC4HMLMtg270nryAUd0G6DwtS8AGhMkdhuM/x82oYDMSjETOIXAHKPe6syQGZVR0KgiPb+XzEMKk2j1th+/7rtbZw7qANC/gB8DkO/X/6B5NBuKOzVGZroIc+n5ak4btqL1hlbCWcCBPfEQYRldohZtDfFGtwadU/tQvurRtksHVrbSaTxZWwDY5jspUGphaQ0SAnWPhI5ES1c0uBv2dx2u8ecLIu/YoB4DhJKLsjzHfc3z3zC2rfJWTeBXrKWhpRu2kepx/Zsz4EBc4wAY+ky/Mjm1BiU///HqMJfA9awgrVYbcEyzXQlqrdncT4UhZnSoj
- /4QoU7TR
- aDG6Lb/3TITKmZSCYJpCLiprLWezphQhmBZW6/K0Sf760M5wLPdTRYaj+VRzljiE7/hRist8Q5hCWw8Tt5VXdAGv+fl73jwh/S+ImFuQ/f/gUfayM3OdUPaOhq/f98MgQFHBXmYAqmJNs4C0DPy/9cr4jAgXBPIkqc/4tQLJOm/vhgnITW6GF5jOrJ8J9/I96PlKMn3/vVYDVxE9bKgOyO6ZgfC2DYd/+eDbKZb80S//unQs=
+X-HE-Tag: 1789485860-805560
+X-HE-Meta: U2FsdGVkX1+/9uCIz6IdQmvoP5xuemhkDUewgfYaX0q+SQRlaNkbwzvyyj6Ncx/P8tFFoZcMRD5ygpG5wF/2t+WPp72nOl13ljBN7/EzxAd3n/4QfCDNmDrAXfOrlSG3J2PskMrIhsQOjswOGqbaS9VKsd/SFywMkwn/PN3LsRgkvQmuxmvBTCze7ZzkuYEGBBopC1B9cBidx9VUJbWnV1p7j7TNuWh/76ZqMy49VZWmiKpaTIdXSPFAYYFJDkc032i9ciU10zI6sqSdKt9pxnEa7qy1eBRybdVAvoD1tMKxDNVSfCJXstTJKWL1nfrUJ4aA0LLEunDr58/7ymlpWdRCgnsSnLL+DCn1Oo4qxQiLRcUS6V+7ss/i4jVXXf8ZMicTAB0e/P8x85SdobjqeP/JTBenc/b7jNqWp6nXn2p/H1rBkDlJ532CqILHmi/8lSGXadXzMyGhhxitTrs+Vuvz0iBVU0H6va+/VAa5Jn+BU1qolPliDayzA8VmFryoK8S9v9fspfC0TosVka73tqdFmUZQQqgxu1M+Chd+T2YDbycOFG0ZVDx0kAuTWFuxsIlTuxVd8RuiWxhynJygrF+Kp4iwohQc+hQ3nz9hW9HDUlioFLfwn0XVjUQFkF02J6UtYGp3DWicdtGCEkIXqVypJabHUH8nyjGTu6hth2g0dABLFJK8/iwTUn1S7dJ1muc2a7Y88krpWyEIabObDdKHVaXzIWFpDI9wJAsVq4YnaSqDL1gXwT8qgissKAQE17akwsL3OG7VEmWWZOXFc29I2tusUJqD6RP4d0zmX5KtUlJ4iNpyy1Dm0OlEk28B36x6dMWebLw1sS5owsPYvno4EC+oB/0FUp0eZ1m8YU6kCUx5JG5LGcgWZ+ja/CZS/ieF0jeHmMbowClWb9qR5PnkM8cfs2Olgq+pv/rOMeFCeJO7xDMejfYTlAGyWBPTI0AdDgQiEKRCg+Zej2p
+ PVky5fYU
+ VOzLXTprHJo7uS3qZ96StWfHuz/0IhaOj3BNUhT/8UEL60IoEN/5E259uSKNk4aJpmrcCtAGkaaKU+RMdUUXcIZ9DrvHdi/PgPj56iLN73MjrhOExSHXPer+IiZQQcSAJ2n+dcjJR+sPpB8afZaz+oCONxrmKTvun/SQ8G/Plj9nPuLq2pbeYrZvFxQ9kz4eugyTj7A19nzksb5IetEs/NQeKHHCuUOidpWr0AkrhPsIlcE+fZgwckZRm0okI/dnuB3SO3m6DPyudT/BlINurnUkdniPMwMDLjzNr
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,85 +97,89 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Longlong Xia <xialonglong@kylinos.cn>
 
-Update stale page names and the put_page() reference in the folio
-helpers' comments. Correct stable_tree_search()'s return-value
-description to match its folio and error-pointer results.
+Pass the order-0 KSM or zero-page target as a folio, preserving NULL
+for the initial KSM upgrade. Keep the source as struct page because
+it may be a tail page of a large folio that is split before merging.
+
+No functional change intended.
 
 Assisted-by: Zcode:GLM-5.3
 Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
 
 ---
- mm/ksm.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ mm/ksm.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
 diff --git a/mm/ksm.c b/mm/ksm.c
-index 937d1ffea4cc..8deb1abd64c2 100644
+index 4a4347e9ce39..10fcae7132b1 100644
 --- a/mm/ksm.c
 +++ b/mm/ksm.c
-@@ -1707,8 +1707,8 @@ static int try_to_merge_with_ksm_folio(struct ksm_rmap_item *rmap_item,
-  * try_to_merge_two_pages - take two identical pages and prepare them
-  * to be merged into one page.
-  *
-- * This function returns the kpage if we successfully merged two identical
-- * pages into one ksm page, NULL otherwise.
-+ * This function returns the KSM folio if we successfully merged two
-+ * identical pages into one, NULL otherwise.
-  *
-  * Note that this function upgrades page to ksm page: if one of the pages
-  * is already a ksm page, try_to_merge_with_ksm_folio should be used.
-@@ -1797,7 +1797,7 @@ static struct folio *stable_node_dup(struct ksm_stable_node **_stable_node_dup,
- 			found = dup;
- 			found_rmap_hlist_len = found->rmap_hlist_len;
- 			tree_folio = folio;
--			/* skip put_page for found candidate */
-+			/* Skip folio_put() for the selected candidate. */
- 			if (!prune_stale_stable_nodes &&
- 			    is_page_sharing_candidate(found))
- 				break;
-@@ -1870,13 +1870,13 @@ static struct folio *stable_node_dup(struct ksm_stable_node **_stable_node_dup,
- 
+@@ -1556,20 +1556,20 @@ static int replace_page(struct vm_area_struct *vma, struct folio *folio,
  /*
-  * Like for ksm_get_folio, this function can free the *_stable_node and
-- * *_stable_node_dup if the returned tree_page is NULL.
-+ * *_stable_node_dup if the returned folio is NULL.
+  * try_to_merge_one_page - take two pages and merge them into one
+  * @vma: the vma that holds the pte pointing to page
+- * @page: the PageAnon page that we want to replace with kpage
+- * @kpage: the KSM page that we want to map instead of page,
+- *         or NULL the first time when we want to use page as kpage.
++ * @page: the PageAnon page that we want to replace with kfolio
++ * @kfolio: the ksm folio that we want to map instead of page,
++ *          or NULL the first time when we want to use page as ksm page.
   *
-  * It can also free and overwrite *_stable_node with the found
-  * stable_node_dup if the chain is collapsed (in which case
-  * *_stable_node will be equal to *_stable_node_dup like if the chain
-- * never existed). It's up to the caller to verify tree_page is not
-- * NULL before dereferencing *_stable_node or *_stable_node_dup.
-+ * never existed). It's up to the caller to verify the returned folio is
-+ * not NULL before dereferencing *_stable_node or *_stable_node_dup.
-  *
-  * *_stable_node_dup is really a second output parameter of this
-  * function and will be overwritten in all cases, the caller doesn't
-@@ -1917,8 +1917,8 @@ static __always_inline struct folio *chain(struct ksm_stable_node **s_n_d,
-  * This function checks if there is a page inside the stable tree
-  * with identical content to the page that we are scanning right now.
-  *
-- * This function returns the stable tree node of identical content if found,
-- * -EBUSY if the stable node's page is being migrated, NULL otherwise.
-+ * This function returns a referenced folio with identical content if found,
-+ * ERR_PTR(-EBUSY) if the matching folio could not be locked, NULL otherwise.
+  * This function returns 0 if the pages were merged, -EFAULT otherwise.
   */
- static struct folio *stable_tree_search(struct page *page)
+ static int try_to_merge_one_page(struct vm_area_struct *vma,
+-				 struct page *page, struct page *kpage)
++				 struct page *page, struct folio *kfolio)
  {
-@@ -2005,11 +2005,11 @@ static struct folio *stable_tree_search(struct page *page)
- 			}
+ 	struct folio *folio = page_folio(page);
+ 	pte_t orig_pte = __pte(0);
+ 	int err = -EFAULT;
  
+-	if (page == kpage)			/* ksm page forked */
++	if (kfolio && page == &kfolio->page)	/* ksm page forked */
+ 		return 0;
+ 
+ 	if (!folio_test_anon(folio))
+@@ -1597,7 +1597,7 @@ static int try_to_merge_one_page(struct vm_area_struct *vma,
+ 	 * case, we need to lock and check page_count is not raised.
+ 	 */
+ 	if (write_protect_page(vma, folio, &orig_pte) == 0) {
+-		if (!kpage) {
++		if (!kfolio) {
  			/*
--			 * Lock and unlock the stable_node's page (which
--			 * might already have been migrated) so that page
--			 * migration is sure to notice its raised count.
-+			 * Lock and unlock the stable_node's folio (which
-+			 * might already have been migrated) so that
-+			 * folio migration is sure to notice its raised count.
- 			 * It would be more elegant to return stable_node
--			 * than kpage, but that involves more changes.
-+			 * than tree_folio, but that involves more changes.
- 			 */
- 			tree_folio = ksm_get_folio(stable_node_dup,
- 						   KSM_GET_FOLIO_TRYLOCK);
+ 			 * While we hold folio lock, upgrade folio from
+ 			 * anon to a NULL stable_node with the KSM flag set:
+@@ -1612,9 +1612,8 @@ static int try_to_merge_one_page(struct vm_area_struct *vma,
+ 			if (!folio_test_dirty(folio))
+ 				folio_mark_dirty(folio);
+ 			err = 0;
+-		} else if (pages_identical(page, kpage))
+-			err = replace_page(vma, folio, page_folio(kpage),
+-					   orig_pte);
++		} else if (pages_identical(page, &kfolio->page))
++			err = replace_page(vma, folio, kfolio, orig_pte);
+ 	}
+ 
+ out_unlock:
+@@ -1644,7 +1643,8 @@ static int try_to_merge_with_zero_page(struct ksm_rmap_item *rmap_item,
+ 		mmap_read_lock(mm);
+ 		vma = find_mergeable_vma(mm, rmap_item->address);
+ 		if (vma) {
+-			err = try_to_merge_one_page(vma, page, zero_page);
++			err = try_to_merge_one_page(vma, page,
++						     page_folio(zero_page));
+ 			trace_ksm_merge_one_page(page_to_pfn(zero_page),
+ 						 rmap_item, mm, err);
+ 		} else {
+@@ -1678,7 +1678,7 @@ static int try_to_merge_with_ksm_page(struct ksm_rmap_item *rmap_item,
+ 	if (!vma)
+ 		goto out;
+ 
+-	err = try_to_merge_one_page(vma, page, kpage);
++	err = try_to_merge_one_page(vma, page, page_folio(kpage));
+ 	if (err)
+ 		goto out;
+ 
 -- 
 2.43.0
 
