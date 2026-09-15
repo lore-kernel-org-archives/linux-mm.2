@@ -4,89 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63D36C88E53
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 08:35:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 608D6C88E53
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 08:35:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D605C6B00A2; Tue, 15 Sep 2026 04:35:51 -0400 (EDT)
+	id 6F8486B00A1; Tue, 15 Sep 2026 04:35:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC3086B00A4; Tue, 15 Sep 2026 04:35:51 -0400 (EDT)
+	id 6A7836B00A2; Tue, 15 Sep 2026 04:35:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B42486B00A2; Tue, 15 Sep 2026 04:35:51 -0400 (EDT)
+	id 54F026B00A3; Tue, 15 Sep 2026 04:35:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C6E86B00A2
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 04:35:51 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 22803A0363
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 08:35:51 +0000 (UTC)
-X-FDA: 85215338502.15.4EDB9A6
-Received: from mta0.migadu.com (out-75.mta0.migadu.com [91.218.175.75])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 11A1B180009
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 08:35:48 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=WLE7hqkF;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.75 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 309016B00A1
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 04:35:50 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 448F480363
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 08:35:49 +0000 (UTC)
+X-FDA: 85215338418.06.079F47C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id A7749140005
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 08:35:47 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iMoCyjgy;
+	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789461349;
+	s=arc-20220608; t=1789461347;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OvZsQKGcj9Vqs134Kw99g8pcS2/twYrrNuAewcEgKkM=;
-	b=w5VSc8L6bluxiAbyTI9XHzEH6l7kM7OXev7NFtQXboj/OX21bp8/Pv72hxUbE+u3sFaNdS
-	rUo90KAux33DU+ryfcjkgXPsqdrmi1DIHJ3awOmKy76LsDi9FJuGZYCgShdK0NTPZlDBrr
-	wmwyNDKS+u57NXbG434qCxAdw8ZNsnQ=
+	bh=V5PMVhNm6w7vScOauxt2sn2fqUvvMTkE5qtbt52NA+c=;
+	b=0JOXpZ8uDqe+20iA4LqAKYayd+7AoZFLhLUfvLcPLhC2lEpEwzxlL+9E5qtzEiOrsU1NUo
+	ISzHzHMD/8qtblZkiigvv/Gcw5JmdAQtLZ3apR7Bo4farwIkhdDyR6Ngnm5J1fOlENJFKj
+	hohBKdWCn3EJClPvECgo6sw6NuPxplE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789461349;
-	b=SwfgJj3/x6PTAa0VgclSgfZAQcLfq7ilT2z1KiqVaBdiuR0Ta4MYY3O/mfhstRC72UVlPq
-	Ov0mD8VXM8QbDfHyE3n3zEka9tuNum3IPzswQ17iYPHdtXUKUNkr8XmKaLXzwxfybo7wZF
-	S7kkwUohBzm48y2kLrMRy3gKKyDghpY=
+	t=1789461347;
+	b=k4KXXKfbPIU8YMBopO+hityZIgKGw+JXtqlSOuA1Oatt9BN4m0ft3+Mx11qXWqw+qgBYpG
+	pvflXOxuXkwQ4RxECB/xBicYWfOvJ5oeUr6UopocZOsmRI5WY/Jumq5hfgOIMCyc3Jlj/3
+	6/64a5bWFcxKjqMz2VXat3A3PGXs76E=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=WLE7hqkF;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.75 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=UxWvBiFLrCuQi9TNkzjtu18nlHcBKoUJpDAjQqN5GgM=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789461347; v=1; x=1790066147;
- b=WLE7hqkFT8CS5SvSefyHcNXeI+YjVi/UdWZ0cmTAWGz7wpLiPqSl5L7h6GAQRLSrLQ9iQmWM
- OXqAXdT+iNDx+wXRpLIiPswiHBHdi7+If+iROQ9KWMYaBAyvz4zPBfhKGIRzoFZkvnP/kRlWqUc
- KFS7/nqdJa4oAP2OHksGWZJw=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 1ae303b1f455d87d;
-	Tue, 15 Sep 2026 08:35:47 +0000
-X-Mizu-Trace-ID: 1ae303b1f455d87d
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.700.51.1.1\))
-Subject: Re: [PATCH] mm/hugetlb: fix misspelled parameter names in comment
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <tencent_034C6FC23D4817C40657E5F17F64E260A009@qq.com>
-Date: Tue, 15 Sep 2026 16:35:33 +0800
-Cc: linux-mm@kvack.org,
- Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: 7bit
-Message-Id: <276F2B46-5BA5-4C54-88E8-3DC75AC179D2@linux.dev>
-References: <tencent_034C6FC23D4817C40657E5F17F64E260A009@qq.com>
-To: Zhenghui Hao <zhenghui.hao@qq.com>
-X-Mailer: Apple Mail (2.3864.700.51.1.1)
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iMoCyjgy;
+	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id E39BB600D1;
+	Tue, 15 Sep 2026 08:35:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8D6F1F000FF;
+	Tue, 15 Sep 2026 08:35:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789461346;
+	bh=V5PMVhNm6w7vScOauxt2sn2fqUvvMTkE5qtbt52NA+c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=iMoCyjgyoF5Aia27jf1t2O0HSyVcKcUmOQA/DJ/7kOdR2uRikSSQXjTu2T9pU4uha
+	 WMSv5gbH4lyfFjgNW5IWEIW6Yqgp/hG4upDDmYllejUuFHCb9MymHWCulFEl5OV+UB
+	 0CLv6Lpcn5UoRCe0pALkn6kSC1v3joIYQJ0m0EiGmLQEd4uHlGixLo7WD8p7EcBsf8
+	 wzYjmPtTSQVVzUGXkicNIDUp4Hp+LWYY7YLo0TXOljiQta9Yov8CimRzuw8PrTDqA2
+	 dXFOfBtc2ZHOfngDM/5Fr9y8NhFVhovxz4qGp8h9M3X24ARuL9Wrmj8mhNuAlWUbt7
+	 imvp2N00pk2Hw==
+Date: Tue, 15 Sep 2026 09:35:41 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 00/40] mm: make VMA flag semantics explicit, eliminate
+ VM_SPECIAL
+Message-ID: <aqkCXW12QFi03jX7@gremlin>
+References: <20260914-b4-mmap-prepare-vma-flag-sanify-v2-0-7d9781ed5361@kernel.org>
+ <20260914180811.057cba8fcc48d6e0b53a2683@linux-foundation.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260914180811.057cba8fcc48d6e0b53a2683@linux-foundation.org>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A7749140005
+X-Stat-Signature: 56359yttqny81kxm49r1k36ueqyy15fs
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 11A1B180009
-X-Stat-Signature: 7d7au5ogey8oipp7gobykjsxkwku34jx
-X-HE-Tag: 1789461348-368725
-X-HE-Meta: U2FsdGVkX18BeQSsPgAb0zyJTH6Kmi96KfqaLndQj0FT2FxO4mibJp+CrLgCIgtf+LwcGzmZJi1FcCG3Qh2heFmbc3T1h+yAwD6+wJQ7UsuKyvFwfFUDaS5f7ODptTByfuExBO3Mv+/UjM90m5XfSFd+8L4NuLglDgNOck/pW3+n10Dm0XgymcNnFjo6RzmYmHqG5IuX24s+er0C9Sz+gNSF1801EbNVTdr7/uR8+hNsEQjkiAfceQ2/ouaS0wbO7MKFO+609mQTa6ynzExFlJpcvo4OoS8al+A96A27XOZoahB5ZrL2zF/dBg6oEICmclkZP5dLOVibsTZnIzMUAOXFNWtkzEh2n0Lh4q+9fU47wzAxVujLrUyryP36JQQrlRaVTP4TJv69A9WWBGsx1UaEQ2E0H+XfCZoeR/ePNBJrA8UH/5P5bzxBFYOzhaCHOLVX8xvBzbi23M4aGx4GuHXGtiYH+942xyle9XJX9WVobSVj7qz4Ckk7l3y7zjU2x/yD6fiDHzBY2ugoiMpUtGlE1JDGNL8r08GVA1IrSgTkstXMPrpHMq5o/S7e2L/mkOQGCrGPnEAVIiDqIWwZM8FJrhLfYWzTCqcrDHZrpHeZZIrUpqxiv4+suZLtb5aO+GfTS++V9b/DgDomsSlyIAW4U/6mgFqqKdTLwpTPAIFXBTU7N7z9X/Zls4FWTsbA2TRfrGuXiZpXrp3TEy4x46Ei4yKh6Ky/VRbuLcEjtPmNIrA93QljyP5UBbxtSQCQvd4PdhkQ6YG+AhCFOZrzwGxPTqT9uFoA1mScY0rGaxM1Hb8QfRGYs6gPYnFwYMcFWENMAMEy/w5lj45YPD1A3pRh8HMogyuQxok8mQEiUp9o48bJzuYQuOS6TOXBJXrLkM0IJX3/uGl/ixlCCDAX1PhK9h9x6NsP/UAhdU6GaNd1qPSAHOjFoUgwJ53MalQbPc2MtqgINLNIBFKy1Z+
- MgF75ChV
- 14DBd7QmZTsy6fkU/0AMbE+Q0bYFoJPtN9EIzJeWjTZnqhgBy5cXoVRPZrGHrDkGdawzdDAlmW8O6TF94LWp+E5+oj+vi7m+PAcBECoIC7NOa5j6iSSApMj0jpZqDFjZVKgExmCHClqR+atI0OX7BC1fFmkhxxVoKjgR6OILkoQPAccEY687KNb2wMgWZPVQnokDG+qMLXWV5nQSbWxT6nA99fEp5Tfg2EHtQGfgIH2RKnE1G3z7mgJ+OFV5u0dBvvQX8Y4WshLYBGO5VPY24FagLVqlVaqnTBH1E
+X-HE-Tag: 1789461347-348694
+X-HE-Meta: U2FsdGVkX1/zi63YypjjxGZjAfBBfTYk2f1IDbovE5wlZdfAO6YK8OefXShGFMRbuSn2War5PbaDaUwctgGyMnnZKVzoI0evQnHTnaBmyg/WcV3ns4WTVCJveqyn1r/DzwmiLqjBYNOEzPp9CoHqEUW2oCBXBrX5wnDOVvIQbFACnwzJbIzrYHd795Xwkf+KFxxNy5RDnxfpvRg3CG50FzTbk/O4Hphs++GNpX0mDHWrLZEuEH6RQ72sYzHb4Edpp4ORSH4gpnyYH+miT4eRbd3zp1tvpSJQgiQsgOSUnwa4SknojZjuWulXWpbZ7klVTDUiVRMeClVNAnQZtcDY1zQZ/MYjlpYGv7SmS3oHK3fHgfqQrXnYyVXtU8WlfpPrB/8SbM/qkcoD+oQgVjoQcBPDdQmr9IVxjzNA1EhGOmkxoUS7b9gbFchUWOtvaTd7Rj54YHZzXm0LMo8B5Z8Faun50XPmmC5eom64E03/2R8yWEZGqk1wg47zATWkX/xE++8a9pveH5lbzYCfaSfRcyqQlpfjMYxNZ3e5Fc7ouuS/6RylM9alH7WRY90jUJw0+GAe2UZMnmtYlk1xpHScrwPB43OtheqDEa83apFVn0ezMUWjtJ3SePD6o2+l+MO/fRNJKur0xwR6Sx1B1rA/ODaHcc5vVr22WJ3mSa8FvPRm/mUtQaDBTJbgQ/4AXKuHXgE25sOrdn89wQw8JIjnhMBW7XtKXmkf2HJZ65ncesz9OOxCaTR1p/cldfdPWLSIdP6i45wQN4zDVrOzkrbj4GWzTWK56h/PhsFrKCsygiTg3VtgDfn+HEDOXDCd4sXRvr6k4ejjQB5tONTiF6l0+e+Qy7NCqM0EWrxybvVoTAKvDqEyd/C8fLs6+W5nULN5ruyvhEVkWwYUdKUhINfEin+UMaqBZV3A98E3ipIuPe5yqoLTRDCh68to8oQ0Zlgppoo/6sKQzPL9IHJg+ZH
+ wswKlSY9
+ U/ZzMwUTb7OkC9p6oHvbMBCvzWxHKeSJzmbw6JdDngfM3cs757kxSYnaPcqcmO5uZT3wwivCijYkzADfTPpGx3xWhUD2Xe6KNJ4tUmOR4vyCNV+36dlIjcGOHbXh1MAoFHoecdCTQ8ktbVTv5VJde6p4ZZ/edof581wVBtcoaIj2oePzki8jIGklUGaqzsptdquebK0SVEZiUUCkB4QXw6b95wm/aWxhjImo5WEqM6T/fTekPylJyo6I1RGeN6oGZFxewekR6dvNqTWx1LROE3VcDaQ77loYF1EHtY1QIYZNMxaokeP4zl/pRxnQ3op3tzKgW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,22 +95,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+[excise cc- list to mm]
 
+On Mon, Sep 14, 2026 at 06:08:11PM -0700, Andrew Morton wrote:
+> On Mon, 14 Sep 2026 15:57:20 +0100 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
+>
+> > The VM_SPECIAL / VMA_SPECIAL_FLAGS mask conflates several unrelated
+> > properties:
+> >
+> > ...
+> >
+> > It's all rather a mess.
+> >
+> > This series brings some order to things by both limiting what drivers can
+> > do with VMA flags and switching to using predicates that describe
+> > behaviour, not arbitrary flags.
+>
+> That's a lot of patches.
 
-> On Sep 15, 2026, at 16:20, Zhenghui Hao <zhenghui.hao@qq.com> wrote:
-> 
-> The comment above hugepages_setup() refers to "hugepagsz" and
-> "default_hugepagsz", but the parameters parsed by this code are
-> "hugepagesz" and "default_hugepagesz".  Fix the spelling and also drop
-> the redundant spaces so the comment reads normally.
-> 
-> No functional change.
-> 
-> Signed-off-by: Zhenghui Hao <zhenghui.hao@qq.com>
+Yeah I know :)
 
-Thanks. This makes tree-wide searches for these command-line
-parameters more reliable.
+I held this back from last cycle to reduce workload, but I can't keep doing
+that :))
 
-Acked-by: Muchun Song <muchun.song@linux.dev>
+It's a lot but each patch is relatively easy to review.
 
+>
+> Review is thin and I expect this won't improve a lot.  Lots of "no
+> functional changes" changes.
+
+Well, I think it will! Had a meeting last night where Suren committed to
+going through, and I will nag people.
+
+It's a very busy cycle I realise but this is mostly fairly straight-forward
+to review.
+
+>
+> Perhaps it would be helpful if you were to identify those patches which
+> you'd like to see reviewers focus on?
+
+The mlock stuff is probably the most sensitive bit. But in general that the
+semantics are what we want.
+
+Already had some review on the driver-specific bits from relevant people (I
+fixup a bunch as part of the changes)
+
+>
+> >  1153 insertions(+), 582 deletions(-)
+>
+> It's funny how often cleanup patches do this.
+
+Well it's not just a cleanup per se actually, I add a whole new
+mmap_prepare() action methodology and add a bunch of mmap hook validation
+so it's adding functionality to the kernel.
+
+And there's a bunch of kdoc documentation too (plus a whole bunch of
+additional _actual_ documentation added to the mmap_prepare doc page), so
+there's good reason for the additions :>)
+
+>
+> All queued up, thanks.
+
+Thanks!
+
+--
+Cheers, Lorenzo
 
