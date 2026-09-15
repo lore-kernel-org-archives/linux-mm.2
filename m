@@ -4,89 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFE20C88E7F
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 15:24:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80390C88E7F
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 15:28:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4490B6B00A7; Tue, 15 Sep 2026 11:24:29 -0400 (EDT)
+	id 75E9A6B009B; Tue, 15 Sep 2026 11:28:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D3856B00AF; Tue, 15 Sep 2026 11:24:29 -0400 (EDT)
+	id 736AD6B00A2; Tue, 15 Sep 2026 11:28:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E9F06B00B0; Tue, 15 Sep 2026 11:24:29 -0400 (EDT)
+	id 64D736B00A5; Tue, 15 Sep 2026 11:28:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C3B56B00A7
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:24:29 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 54A8B4046F
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:24:28 +0000 (UTC)
-X-FDA: 85216368216.25.19B7227
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 3C1D1C000E
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:24:24 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=LaYhjaMQ;
-	spf=pass (imf28.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.5 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 49D636B009B
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:28:31 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B7D9CA0476
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:28:26 +0000 (UTC)
+X-FDA: 85216378212.03.021FF73
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 7A976C0002
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 15:28:24 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=splJMSXx;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf10.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=splJMSXx;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf10.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789486105;
+	b=Elv6t26Wpp8KEi8fpNxGT0e8kcf5fVW4Pqhr6ajbMf5RkkYjHUqKW+gkRi5SHfam3boZda
+	tgczzrbenPzteM5wve+G3HuS1HQwsgO1E0kHFZmNwWNJWZRmD7KNfsQbQNn73PVZ+zekX4
+	TD5M/0GLaZSR8dxaxN9tw5RzlWjbRyU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789485866;
+	s=arc-20220608; t=1789486105;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2y69Y0OdCOmdac9UFhhuRQleCsaQRsPBDc468BBCNVU=;
-	b=wu/oQXaN3YTfxEWrFROHPIkQx5u/rMioQBmKMBQaxR3FCVgQo6/Yie9MlswaDaDMe6EQo/
-	QlEL883ZdpxSp0htq7QtYN4OJMx4/52H3BoYrAk28Pb5ZTktlbKCLslerm2iEu1lNEqFOz
-	5MunjRMStqjYyIInw8wC5KMQ9cSlekw=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=LaYhjaMQ;
-	spf=pass (imf28.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.5 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
-	dmarc=pass (policy=none) header.from=163.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789485866;
-	b=PoKuL0/x8jIGQNNNw7D1c+XBK4MU8OkBvzn9AF48oOuHkOR5bRdL5+nWaOla+KkkIafIva
-	GO+IpZNhu4tigc6jO9g0xXfBzc+xQiwVOmlpRXYRE/EXigFIkchg5iHUpiRhlGksYZAFcC
-	gFApfs3pURDeVSAHzLc3P6NAu7tqO0U=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=2y
-	69Y0OdCOmdac9UFhhuRQleCsaQRsPBDc468BBCNVU=; b=LaYhjaMQxahAszyxRP
-	IP8O/nHjLSH4Kkt7ok78QfYW9xBijQWBDP6LSytr0vB0X521xX15evJYuEyumkYG
-	O56GVusCvyZ0/rbdbwrTm7OMYb/IsjnClD+R7veAP5QVoUbxyCMRUCqMVYNLBVWS
-	CNebuEgRLaCFkHg4TyrWg6G3g=
-Received: from VM-0-3-ubuntu.. (unknown [])
-	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wDHvVwYY6lqm28iAw--.18968S2;
-	Tue, 15 Sep 2026 23:24:08 +0800 (CST)
-From: Longlong Xia <xialonglong2025@163.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org
-Cc: Longlong Xia <xialonglong@kylinos.cn>,
-	David Hildenbrand <david@kernel.org>,
-	Xu Xin <xu.xin@linux.dev>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 11/14] mm/ksm: pass folios to replace_page()
-Date: Tue, 15 Sep 2026 23:23:47 +0800
-Message-ID: <20260915152351.7955-1-xialonglong2025@163.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260915151236.5200-1-xialonglong2025@163.com>
-References: <20260915151236.5200-1-xialonglong2025@163.com>
+	bh=QEW88ZQnSuhZNPj3vkXIV8NZ1wmCRrjqEwOa3KU5UvU=;
+	b=LiLOxRhF9ijG0b324DDC2YGgeqZDliHra+FSn/itLZruAwU493jZUoQLP8AWq09PYelIBV
+	BesWRwiQuEOZRAgXkzdf8AfXZavPGksjRcAyfb1GG35pQsINn7xD2262rP3CsTO9EyFuKs
+	gosF5apgdbH2OzslyHcHFZdWpJWGE6o=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=QEW88ZQnSuhZNPj3vkXIV8NZ1wmCRrjqEwOa3KU5UvU=; b=splJMSXxhNub0eAzI8FujE44l6
+	r4XyiRYshHMUnl86YfqkEb/+1g/xAqFKnDS7oAtZRCdHl+ol9kwgKqFB+vMzPAwuouJv8NHBQGCRw
+	ef2KBchTH6801R2hPBb1AX1QZh8Z8RB2Sd0bKZVDcCy7FXjJhXbuyfSQWFn5T3Cp60+xexWLaChrR
+	YL2q1jTyNaoVC852BBCLZGXqr2Pfyqj76IVCbXOf5H0lCDwBq/lyowLowr/y27glmiEEhjSu3WE0l
+	b+D1Naua42STbyZlsM3JJ7SlqmHdDAEOU3ArukM5LPYIp61pQ0jNFnCNajqePYwIFrDLMwRajzQl0
+	5GnonEZA==;
+Received: from [38.23.173.23] (helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1x6V53-000000079xT-0yw0;
+	Tue, 15 Sep 2026 15:28:21 +0000
+Date: Tue, 15 Sep 2026 11:28:19 -0400
+From: "Liam R. Howlett" <liam@infradead.org>
+To: Yury Norov <yury.norov@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, 
+	Andrew Ballance <andrewjballance@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+	Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, 
+	Eliot Courtney <ecourtney@nvidia.com>, maple-tree@lists.infradead.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, Yury Norov <ynorov@nvidia.com>
+Subject: Re: [PATCH] lib: fix lock initialization in region allocation
+ benchmark
+Message-ID: <tniaziqadej6t3f6herhfzsxu3di7deewfbgfpr57mlsurbbak@mkzuybcvjj24>
+References: <20260911155244.1406122-1-ynorov@nvidia.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDHvVwYY6lqm28iAw--.18968S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxJrWDuF4UWFy5Gr1fWw4fGrg_yoW8Aw4UpF
-	4kC3ZrJw4UJrWY9Fn7Kw4qyryay3s3ta1jya4fXa1avF15tw4qkFy8K3s8AFW5X34kCa93
-	tr4UtF1j9FW3Kw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jo7KsUUUUU=
-X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC9xnj3GqpYxl4WAAA3I
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 3C1D1C000E
-X-Stat-Signature: ydmutzcwdy1azgkmnnipzuqj5qyen9od
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260911155244.1406122-1-ynorov@nvidia.com>
 X-Rspam-User: 
-X-HE-Tag: 1789485864-854167
-X-HE-Meta: U2FsdGVkX1+zlZYVQ9VkYFXCPQHP6Ll+8ruwPoCMZNiNbuTwj28Xt0WQD5LO8XxnBqxtrEXj4WKb5F+Brf8fEk7GbmJDfH9/ka38o9X7xKncZSj4UvkCRikVMCoohm+X3vCZEWgCnpfYDBRyKYHB2ELy5ryvshK1p1Fkb30MwIeJ6lGAKivAdxxiKe0sOPViHtPUwJgEb+avO8oqOzxg7H8AL4f76kgVQodKZI2PMIFRu0c+RZKkULVSBNYtGAKgzazGWDKkZ25xbnumL+oL32FdHDCQI/1zz2XWTQi/LC48x6jmz2qi2hBAeiCE81R/v8GdGUEBIjLVY4laFqhtMlosEnF/B+1H1f6c6oAJUwfA79B7hTf3t6FGRl6yq5z+YY2VrXNvjoVAMFyXsYtiNOpiUxk0pY6ilIHBMwwUkVuovhDqeHwLftpI+KBoWs+BBc5ceBiuc0UN2odI1s7vjki6YVSOkUhrzoNI/RJxqUJj92wuam8jnlOTjz28bdHnlj+ByLeBKhx0iX+j+NcmEEXK0tkRMwjkJSeG/eYqa20h/CWg8OfuOZufZnEzXS3Tygxu/KghsRrdqVvNKv8oy0UeohbSuslkwomdACLKLovPS3+lCVbvSB/lfbXE104f3VXCC+fy/mw4z2MJN9wJfkU57FSXBWqHZ0SajQOS5MnqHZ/Ag5gsy1Qp2oRFHAqp/Zzr/UY+lWBMFpO7M6/jQs4N3KsyFzEtYqHV+OueJ/azhDHSaOl8MOAthsxjhLbuKMU1d+69iNjXr4FBvCNqT3GRIQWQwWXqWzPqF5OqvmoXTZt16eF6dyMbIsrL84ceI5VpRzQe0mRgJZ40b82DFhIsyQj66NkMAa/kJYUUD29Pj7KJCVQk1M0Nw0ucpRBJxm0o9Yc1Gz1ZxE5H91PdAIHI8W6+yAi2sJxlHwvAXKAPcL+ko1t8Rmc9mtsFOXYFP/qA9mhKa97+1MPBtpy
- SF+Bjd8k
- GsQWzuPKRgDQu+yqBpdTw9TfrmHX84TWq+bgwEAE6+FOKlbBCLenolfnzpZTFHqCGVL40X+v1a5i7gQRBz21K4rjZ51ONxp8UziMts/2pXrnwo9T82Yp7VlemXL97TCPji0CmccgE+h+kLEbtpvNqWKveif+PeVPFquS49Ml2kIAp5BIv4QhivFoTQwuqzIDGhdOwzYkJWCgg4OUDBhCoS7l7NhB5240fABDB+N1cLx8uEz06KBpq2UPqhP6lCqDDqaw37x5w5Fl8SwUyGoAD/0C8XPlRBMBpPeI5
+X-Rspamd-Queue-Id: 7A976C0002
+X-Stat-Signature: 14t3i4sbp539k94rehfqdxmqzj574fxx
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789486104-75661
+X-HE-Meta: U2FsdGVkX19hs/byK+fdWS9eveCMW7AVy5Lu750YOToC2ZJm6867n+nM9FE2xe3InoCqB1SBLWZC/jVdYvO9D26EfHXtn12wWo36sBtYZAcbBWsg3xlHAmz8EFzC1RZoWZxDNPFUt6zREZb9HoVsp7gt2t/VEx+IvCw9alis3m5RZRDvCXQDYjSM+dBjz+dt3CF+Yu6QKnfURSmq0xRgwahEJHf1OJ9mF7TTtpBqlAoE+9SPx9LWIzS88JYRlae/kAcDbZKY1/WaiLJsoxlqDBnh+2xKaOYYKf/RfG8O2G2d8m59H72oY0S6P9iE+I78VjGpaVIa8om9W0422VMnDjaXFH0HiwyaHhWkmy23xTfv+bqajgLJaoEbV59W5jOZ3xIQ9UOAKFBBNd4SOoiCC8BGNXcnTflslPFMJ+pCTQb5+TJhegKVrQT5LhT2InsNLp75akGoHAz8OaRZ2+tv0S/QwT5neuvPABc9bCNifA0lVh9ox4iHq8+7Y4hHsR/kR8yZGWtEJNbhBjiWq7g3t22teuuSr8KwYHnd1EOnNioryY0cE1ipZkWl8WDmulRRmhm7WaKqT1IU76GXbWtZYhQuNzC8QfkkpSMc6eQ4za+SswF9X/7l8h3FmaVEo/VDG+1xA7HNazpPMwmJIJOpBYLgAfWJkz/p5/DT8KviVlTnXY/PI6f6rLnEubEKS8CEkJvDTgm9DRXMnVo5Pj4Srmpc/VDg8CYahmpy7psjgEJfacu56N9Xvf4utvExwuaUys5Bdxzb/h9kKQggz7e9wtz9+zXfHpKVMpv3amG5oTi6/w4sNN0P4CkR2LsgiayA1RBuvcboPYkkV5FqXaCzL8IhLwDQQJXjUyUGaPAZW0mz4gmMEqXANJU3PZAhqQkGgJ4pZPni1jskIVx3CadIAwlkjvkSFpHi9xsBLn/XW+9upFkUzN6Iez0RYhE55NgjXMXgGVtO509YamlSI68
+ Aa/8dwrk
+ xvnFnC1ZLvFJj7Va7V3AT4uDngyL5/fgwrJvOUr7FpYxHyJFDRlzEcH5sDjYafOSACr1tXCHQ+FC2tEaOG8N9g84lSDeegp/z2RtSxSXpvj4xlBK8sEPIvKiJ+h5MlKrvAaG+OWrGCHZ81/RwZaKqNyr8Dgg/tgmurBYPcWdG/RbTDT10vaDhIDepXnYkXE6Twb+ujWLu4lhKD46hqJ3mBR7YEa3l2taJkQZsrfr8smxgFs4LIs6digPn8smtV6PPMEq+JdKWBmCLIdhJyst2UqEh2N8vF0sA5fOCNSYV2YvwuiLTvWwibRdYh3eOg2mtMcZitzynP9TkgiEfL/DR30dIViC2vfZsTXvL+JaPHKDXOTu4A8KUltXlM1UVL1bF5/odyBhvqX9YZWznds0XZ+mHNlb3wLNElcnFA2Bird3xdEFwBBd0pl857eK6Ht1PwSmJwMzbNk1zrH022pHDwgSTr9Y6optbXrx+jngPlCg22/g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,61 +93,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Longlong Xia <xialonglong@kylinos.cn>
+On 26/09/11 11:52AM, Yury Norov wrote:
+> The Maple Tree benchmark uses MTREE_INIT() for a stack-allocated tree.
+> Its static spinlock initializer leaves lockdep to use the lock address
+> as the class key. Since the address is on the stack, the first allocation
+> triggers "INFO: trying to register non-static key" and disables lockdep.
+> 
+> The IDA benchmark has the same problem through IDA_INIT(), but runs after
+> Maple Tree and therefore encounters an already disabled lockdep.
+> 
+> Use mt_init_flags() and ida_init() to initialize the locks with persistent
+> lock-class keys. Keep initialization outside the timed allocation paths.
+> 
+> Fixes: f4806cc63cc6 ("lib: test bitmap vs IDA vs Maple Tree performance for region allocations")
+> Closes: https://lore.kernel.org/oe-lkp/202609101106.771b567e-lkp@intel.com
+> Signed-off-by: Yury Norov <ynorov@nvidia.com>
 
-Pass the source and target folios directly to replace_page(). Any
-large source folio has already been split; KSM and zero-page targets
-are order-0.
+Acked-by: Liam R. Howlett (Oracle) <liam@infradead.org>
 
-No functional change intended.
-
-Assisted-by: Zcode:GLM-5.3
-Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
-
----
- mm/ksm.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
-
-diff --git a/mm/ksm.c b/mm/ksm.c
-index 8884964d5a53..4a4347e9ce39 100644
---- a/mm/ksm.c
-+++ b/mm/ksm.c
-@@ -1453,18 +1453,18 @@ static int write_protect_page(struct vm_area_struct *vma, struct folio *folio,
- /**
-  * replace_page - replace page in vma by new ksm page
-  * @vma:      vma that holds the pte pointing to page
-- * @page:     the page we are replacing by kpage
-- * @kpage:    the ksm page we replace page by
-+ * @folio:    the folio we are replacing by kfolio
-+ * @kfolio:   the ksm folio we replace folio by
-  * @orig_pte: the original value of the pte
-  *
-  * Returns 0 on success, -EFAULT on failure.
-  */
--static int replace_page(struct vm_area_struct *vma, struct page *page,
--			struct page *kpage, pte_t orig_pte)
-+static int replace_page(struct vm_area_struct *vma, struct folio *folio,
-+			struct folio *kfolio, pte_t orig_pte)
- {
--	struct folio *kfolio = page_folio(kpage);
-+	struct page *page = folio_page(folio, 0);
-+	struct page *kpage = folio_page(kfolio, 0);
- 	struct mm_struct *mm = vma->vm_mm;
--	struct folio *folio = page_folio(page);
- 	pmd_t *pmd;
- 	pmd_t pmde;
- 	pte_t *ptep;
-@@ -1613,7 +1613,8 @@ static int try_to_merge_one_page(struct vm_area_struct *vma,
- 				folio_mark_dirty(folio);
- 			err = 0;
- 		} else if (pages_identical(page, kpage))
--			err = replace_page(vma, page, kpage, orig_pte);
-+			err = replace_page(vma, folio, page_folio(kpage),
-+					   orig_pte);
- 	}
- 
- out_unlock:
--- 
-2.43.0
-
+> ---
+>  lib/region_alloc_benchmark.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/lib/region_alloc_benchmark.c b/lib/region_alloc_benchmark.c
+> index e88b4cf55c62..a644f3d5431a 100644
+> --- a/lib/region_alloc_benchmark.c
+> +++ b/lib/region_alloc_benchmark.c
+> @@ -78,11 +78,13 @@ static size_t __init ida_size(unsigned long nr_ids)
+>  
+>  static unsigned long __init benchmark_ida(unsigned long cap)
+>  {
+> -	struct ida ida = IDA_INIT(ida);
+> +	struct ida ida;
+>  	unsigned long cnt, idx, off, nr_ids = 0;
+>  	ktime_t alloc_time, free_time;
+>  	int id = -ENOSPC;
+>  
+> +	ida_init(&ida);
+> +
+>  	alloc_time = ktime_get();
+>  	for (cnt = 0; cnt <= cap; cnt++) {
+>  		for (off = 0; off < reg_sz[cnt]; off++) {
+> @@ -125,12 +127,14 @@ static unsigned long __init benchmark_ida(unsigned long cap)
+>  
+>  static unsigned long __init benchmark_maple_tree(unsigned long cap)
+>  {
+> -	struct maple_tree mt = MTREE_INIT(mt, MT_FLAGS_ALLOC_RANGE);
+> +	struct maple_tree mt;
+>  	unsigned long cnt, idx;
+>  	ktime_t alloc_time, free_time;
+>  	size_t sz;
+>  	int ret;
+>  
+> +	mt_init_flags(&mt, MT_FLAGS_ALLOC_RANGE);
+> +
+>  	alloc_time = ktime_get();
+>  	for (cnt = 0; cnt <= cap; cnt++) {
+>  		ret = mtree_alloc_range(&mt, &idx, xa_mk_value(cnt + 1),
+> -- 
+> 2.53.0
+> 
+> 
+> -- 
+> maple-tree mailing list
+> maple-tree@lists.infradead.org
+> https://lists.infradead.org/mailman/listinfo/maple-tree
 
