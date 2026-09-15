@@ -4,121 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA0D0C88E75
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 13:52:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 915F6C88E7B
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 13:59:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B3BA86B0088; Tue, 15 Sep 2026 09:52:22 -0400 (EDT)
+	id 6B4576B008C; Tue, 15 Sep 2026 09:59:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AEEF26B0092; Tue, 15 Sep 2026 09:52:22 -0400 (EDT)
+	id 68CAF6B0093; Tue, 15 Sep 2026 09:59:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DB466B0095; Tue, 15 Sep 2026 09:52:22 -0400 (EDT)
+	id 5A39D6B0095; Tue, 15 Sep 2026 09:59:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3B5BF6B0088
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 09:52:22 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B12831C24E3
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 13:52:21 +0000 (UTC)
-X-FDA: 85216136082.19.37575D3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id AE5E740009
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 13:52:19 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=it4mEL39;
-	spf=pass (imf12.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 319CA6B008C
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 09:59:20 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E4B791402D7
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 13:59:17 +0000 (UTC)
+X-FDA: 85216153554.12.2886131
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 181CEA000C
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 13:59:15 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=GmxnbBAh;
+	spf=pass (imf25.hostedemail.com: domain of aa9736195201@gmail.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=aa9736195201@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789480756;
+	b=Pv1wDLO1rrRZsGb1tjlActt0LBkBD+wgbxx9QgP9aJyCVES5pASx/9aui0Uob06MtOacnO
+	0AGunT4dLPAy8v/pXej/cMs2G4BEz5YbCEoWYEemH+8xyw43Kx1C5rmn1Vy/UTsF04b6Io
+	7zgqCvKsQ8q+uolC6Zg/kHdi5HGO064=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=GmxnbBAh;
+	spf=pass (imf25.hostedemail.com: domain of aa9736195201@gmail.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=aa9736195201@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789480339;
+	s=arc-20220608; t=1789480756;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5JZvciHOubNz1++8I3c/2N9YUlCfXc/5f861xiy4ft0=;
-	b=ddAJU6dJr+Bai+N7TqWPkaF/QvzW7j9TVC1g61TzwE4OifJuoJqHyRRB1lwje2ge+gGKX8
-	8DQj0AfYl6RdAokL1ldvUbgFIHJaQaQGEddBbn1Sgp0ABPm0o9r5msYxhdrCPERLjZ50jW
-	7PT2c69y8p4NvLp6JfZmgMVSIGxGHPw=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=it4mEL39;
-	spf=pass (imf12.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789480339;
-	b=qn9PjbAIp1NoUHS05sk4c8xLbSBL+tc7CSDnJXaH14IK4CJCGw/AE7SDfUwwB3kooNJSPZ
-	hP+8VQ8MKxNqEdQyZv+tHBtAOUfB6V4UKVwx3mAyVltY7dyYw2pL9cxntTEIXcniI33l+K
-	ZRm/8ib58WQJ0OMEo6aU+ZGkKTuDBnw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D48CD43D8C;
-	Tue, 15 Sep 2026 13:52:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B0831F00893;
-	Tue, 15 Sep 2026 13:52:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789480338;
-	bh=5JZvciHOubNz1++8I3c/2N9YUlCfXc/5f861xiy4ft0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=it4mEL392VOylMtWKucJN1H/SF3DAnw0vMuOMuzOxgyrfVosMCtYFPEOzDYEmBrW2
-	 W+hJM+/RR/gY7ErtRBZSwl+WlJhSXohUCn6o1XeZ5ycAVGIW3kJ6OjOCPHwu/L+pGK
-	 3ewVonc7r4UoKGfvtY6i8NU2P25btpAx/REc/e00UQY7GKiqtjsugzZ0EDzQXqhGbx
-	 DTQLHHJXWC7QgdC95T0OSpDwm2v9UDD/SPGVZgjCkxcnGnPS+6Bj6wVpNIvstFD8Uf
-	 JqsdvI//38sC3gA3EB0fPBHDwi5qqkPzu8hm4b42Ytx76sVcEa8g/ceU/zcGffVBHK
-	 0czi5YHXvhY1A==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 20534198003A;
-	Tue, 15 Sep 2026 09:52:13 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Tue, 15 Sep 2026 09:52:15 -0400
-X-ME-Sender: <xms:jE2pahuaU0yPr89PNnwihMvtUDzatVBlf1o7bmhFX_fvdotrRxPNaw>
-    <xme:jE2pasyD6rPQU-T7SmzLq9z7dbjbsLYjkbKjXrtQhdyq-J4_MxeCC2WM7ITBa4AqI
-    FODCsVl6oZ-jRmH8MiPOJhi-AazrWCFj-aOKBwuMtiU815RWzjoBZhDkA>
-X-ME-Received: <xmr:jE2pajfDJtIrKyv_BSRFJVrRzGMsmE7J7J3okImqThKeGQ6jl3GvpHylMds>
-X-ME-Proxy-Cause: dmFkZTGFaXHpQBoGzjJpzXuLzZEpEDoJVlEK8qfTCGlpZSscY902ocbS+NTIbNE8tMLKHV
-    Kw+V8ruiMZ5vcsUwLmFvicjQ5fT2dEGX6BR2ofYNuwhWcszZXWDOzUPFZV9Kf2hTY0XyYu
-    jgPRsVUGCvAoUBVHrbjcyoU/B85MGHEOvmNw+eGSCdPHSF+WLKvCB+LRHaJjwhCDtr3onu
-    9t7U2m3RKVIfG63unn994NKXoenEEAMJlO4Bca8sh/2dGdJkRJfrRO11fJi78OFB2d6mXQ
-    f6/BbV5VWGgDSXWO0Q4c80Vk7TllbENgzRJLLQpIDfQ0PD5mAXpy4gZfEHx7Mr9L/IT0K6
-    qh4TshP2kn6kCNLC26NFy23vTdqmsw8g3megqLyVsGqfTaooE+RYvVeuOIYZy7Gn/syAK/
-    mNQESXCErDbA14ZJWZl10saMPTrc6xf8XeOzvS/LSSWkGC977QeRJhhixrzJbfu+n81g9e
-    1UH9yXgjzdTmINJ0W1c/2l/8tsZ5SsrH+DBIDUf7x1iNg5JRg4E76mGNLhLbU0PpzmXwuz
-    fxsbi5T4JDhLZVv7EnZRfeABl7Tvmoe5VcDJ5trMTr/Py6Jb0oHqYqPMt54lsK/cZ45fqp
-    eYKlOCmUSIfa9v0foUvG1fSeSBnE2eyER4tyPwmWpyxheKzoGzIAZR2ZhruA
-X-ME-Proxy: <xmx:jE2palKexW_56iZGYRl_E5d3Cu6P3XzpWFLsyln1PPKWwAz8EhzrtQ>
-    <xmx:jE2pavkxi9ChIIU-0-VW8D515yeU6YlXXf4pRnSrH_EjKz4cAJAgkQ>
-    <xmx:jE2pagWthQlpbluzBQjzPidj4ZNuzeY1gW-HZYMmAX7jFVQ98KShdw>
-    <xmx:jE2pahs_bggCtIocE9mX-k2TRJSv5vXt2OxUFTUW0cPEs59A6Q52Ew>
-    <xmx:jE2pak0I-NiCjXIwieGMDtqxkNU6lajCAf3ySXrSuRVN2imtLk7w-USU>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 15 Sep 2026 09:52:12 -0400 (EDT)
-Date: Tue, 15 Sep 2026 14:52:11 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"David Hildenbrand (Arm)" <david@kernel.org>, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
-	liam@infradead.org, nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com, 
-	baohua@kernel.org, usama.arif@linux.dev, ljs@kernel.org, surenb@google.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/1] mm/huge_memory: fix pgtable withdrawal for huge zero
- PMDs
-Message-ID: <aqlMvfIhr8nD9RHB@thinkstation>
-References: <20260912234635.db50397364858aa15f58f4d7@linux-foundation.org>
- <20260913072312.52111-1-lance.yang@linux.dev>
- <aqfRCPheDYTgTdAk@thinkstation>
- <f76beaf8-351a-4b22-b362-a945a5e1af6a@kernel.org>
- <20260914111940.f7e2c72eac4a2df97a646793@linux-foundation.org>
- <30bcc70c-be07-4237-9bb1-554aa5b5c5c2@linux.dev>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=xt1pn2hZDDCJHs47h/vFTcvzZQctrx3Ka/dgj8KHcQs=;
+	b=njpJbr9i4MCYcX5/RSmn3V4lj93eV+mMR24b0l/WWjIzEPqkh8S10aG5nC4bg1yeVYHKCb
+	LU6fMd4tF0D4CvuvT4aBwOKgMxtuub7WmvildT1VbjCldPuRnVE8a0eeW4k0jvnm2x5xFC
+	ro4xWHA4OKgXF6ICPUW3I6CvlkJkBEc=
+Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2d747f01363so23724015ad.2
+        for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:59:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789480755; x=1790085555; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=xt1pn2hZDDCJHs47h/vFTcvzZQctrx3Ka/dgj8KHcQs=;
+        b=GmxnbBAhdEA2B+5ooEaUydIaW2lN0XCdGgJtm8H+3H3ybfvQssSASvuQ/TRWfV4dxO
+         gIIQ9/2C157kWDay7vC9L2uYw7NR53GEssHgIcTg7bvCF3DXOoHGNwoed5H9XNqJIUa+
+         BSHxJAfeqpCWT9oR4loJ+B3J+ePAQ58CTyfs1e76ZtmCVsoy6duzwJZvEuA2wliu0crB
+         KZyRp3pkokNSU6elHggsid86/g3WUmYX7ulaC+AJ1WukaGualOZFi8yyYtnV60CK0HOT
+         E4ucbSgi+dKKXOTfzavd8B6CjoKgKZEMAjUhnaSYcUwZu61CLkI1XrlVEfZabw80YGbs
+         NIiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789480755; x=1790085555;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=xt1pn2hZDDCJHs47h/vFTcvzZQctrx3Ka/dgj8KHcQs=;
+        b=HnBSyulzrtZrqUNpsSIWvMNB76+xbQkuPcXCa2Da4RsYCKWQbV3UDFa++r5VmG/TBw
+         ipiBqJftnjNFMJYesPEcoILoNK3CV9paygL/QDX/6x20F/zpcqPvXbGPR94+jYd2oixB
+         P0FKsAEAtpbbe0LE2NUK+fLbXN3yqi9m9eBMuGSiOhru9xgv9TULZsJYCzA+Exibybpz
+         ca3E71sOjFfmCRbBJt3IHB4C2klYryxGFhv0h9r7X5wW+YA9Xv1woSCdf2XPWK/kZDxc
+         dH/vToRiRhxACGti+A4zbtbMF0Z65IeR0Yfh1JZKt6NAvhJeOYvA55QIMvfhqC3F+BT7
+         NUQQ==
+X-Forwarded-Encrypted: i=1; AKwUvByuaKVjmnWp6+NhaVOLqVgbWJCM4DBvv1kFLq3Dqq4qS0kgJNawaMZz5Eiu6WhId6bxfVapSZLLWA==@kvack.org
+X-Gm-Message-State: AFuF++nvtSQc6x2C112rnhqS8tCTqnyKvxcbjbV2cHdq7sUN4dlm4cmM
+	7FELUPHFbCSbWUCwQbP7O7nuovOg2vRQVPCFWnKMVqtElsk8u2saRon8
+X-Gm-Gg: AYBFou3S/2bn2Z1zmneaECXY+l0za/BJ0frj9Y20NO7EQRCBfepG7i9HOCE/jd0jsF2
+	66V8OFdzH/xPZS++YXdE+ksx6Wm6CB2GEzAoTcTbl5dA4xJIo6rJs9dJhKsh4IyBlwDm/Lkpfe4
+	J2NFKDjhua8FqbXdHCyTJq/s6/29kDi3ud3/7q2uhd75P72wF+4E32xmHrXXlskcu62x2hO/E46
+	GfxuoAfv+gb0uLoyCTxitpjeG6VWK0Rl/PFpLN9tmM4+ZIwAnH5z66OgYmBYnnPk7Ok4T1+lLiR
+	zCuNZsGnvnZSRQgTc2CWU0QAnzNxQPlMzb1dxz6sPFUWaFYxTYvT3EUGrKT/yM4Vc2zCbTmU01E
+	wfJVo5DVETmevsmeD10kKBSGIjZ7ds+9AD4F64LEO6VAnPtraTjLYwB36KcA3ZHnDclx8QQGtE/
+	Bw4vKfKb4ayES7EQGApEoGi5NsVDUHq4rv8fnJPLHhpOyT54DZkDztIK3Ky7Kv2RFsJXFnsvQtQ
+	P9BUOrJBHLqhkFQLdx8IUVpWmpydd8pX3eocgSVy1mx1EOdOiBB0I2J6Zswph4A0pZCIKcpat5/
+	K28kaVClnT5oHowvZ4AFoGrD8A==
+X-Received: by 2002:a17:902:db0a:b0:2dc:fdde:30c5 with SMTP id d9443c01a7336-2dd6c73459fmr139178655ad.17.1789480754318;
+        Tue, 15 Sep 2026 06:59:14 -0700 (PDT)
+Received: from DESKTOP-TJS95SS.tail460ce2.ts.net (36-232-230-153.dynamic-ip.hinet.net. [36.232.230.153])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dd34c7f976sm65270435ad.81.2026.09.15.06.59.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Sep 2026 06:59:13 -0700 (PDT)
+From: Yuan-Hao Hsu <aa9736195201@gmail.com>
+To: Matthew Wilcox <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Jaegeuk Kim <jaegeuk@kernel.org>,
+	Pankaj Raghav <p.raghav@samsung.com>,
+	Chao Yu <chao@kernel.org>,
+	Eric Biggers <ebiggers@kernel.org>,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] mm/readahead: use large folios in page_cache_ra_unbounded()
+Date: Tue, 15 Sep 2026 21:59:09 +0800
+Message-ID: <20260915135909.1007-1-aa9736195201@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <30bcc70c-be07-4237-9bb1-554aa5b5c5c2@linux.dev>
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: neeqbfc6ca45ua4875uhz7dbfnezr9wx
-X-Rspamd-Queue-Id: AE5E740009
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789480339-608337
-X-HE-Meta: U2FsdGVkX1++KD5C7dCqsA/SZlxE6S20yfbjVcbnriAJpqgNJ7++ePaZuyNsxe4ZizX4uUMKd8VBRk9ZhQVBQgu3Wcq4Guuww2kw60LGC6HcL4DM+/7mkyQe0w2YENIFEBnzeB0nMxTaCNjFP2sqLzUQw7DGmkQoviDcL0AqQzlr5/eLZN0mORz3XtgI6hV8hhVEsW7rdVMK5LlKfDQ3XXXsgGY+cR8KVqK/yZLteUYWuIYmUPzNAYgOnMGue1DaDYXxV79dSVy3aXe0ZrbgOUZ5HLhtU/q5hJkEzKKRPgTXr9TfL9u/euWPf9MOQGLu2VhIjx+9KJy2/NTUnHVOW5/yQMKtvmKfYMtlW7zKueZmpJaQ92TwExgW/WqL/0nYdimE8SLMQuOg7WdEBuQtbFYriWz4uszyMktODFDCwqxzUy2fnkCISOgN/L7M1Gr/qXtCrU/d4EyChx7dvTIDhgIJacXWxoX83+SyWe96/qTQ5X0NqT3QTrPAzPvKlL294toNJNlxOy4vyIrHlmgHUINrhrSgXGpurod+5qsgLsWRm7TtRCwLccoIHi5xykUa2gUZNBewsyhJ94evRfLsCgr1gFJgnnTSLdJQVbPW4GvQqLO4bwiKH+7Qnl+b+xR/nJnIfNgoPJ5TdTY98uyW6Aq7Q++/OwucBSzNw42i6Y9WByeslrSAiQEzgHE2WvBLHr1xSMiiD05n4MSOSqkfgxMqliJGOftFjpNvPKpBQFhHMDwRABlFHPqSjUkP3Ekt/KTuVWcEgflNmUlIsesZo+hYRUOeumn373GY1iP1zWFONGJPKnGX8XIil8t+x4HG/36hbA9sSTDmMFwcFfVb9U0pa4ZsCfQoC+afV1v+XqBsHfspw6vitlVS+68My/BNpI8/ebThIlp4+i6wh0UYluFv1AoOoVoxkBPID4RfzKsqNZrT8D/YNchVZvGp3Wl8iFS+Q4hB3PFv+LR8+qn
- gS20sI6B
- Iu9Wb7ZWrFvfzhvPLdXu2APy3Fon07x7157GxtxbB/g6mlxEPMvQjyHuhKQ9VxC/PaD2FBfTXp5+bIxEZfm8e4aVfaSzISp0b2nyfb5/gZkc+OQmJ6FKbsyw+mLgbSmRrJzwC0Cu/OfvtiA3UMnSgvAY/9mXdfdfTZ3mIiFw58jFL1lxgUuUuPnduCJGdsghOI/UlOffhYT0+a2Lkb70ay0BiFq9kmDnpSnGrWvGvNlsfv08hDJmD8T9NpAHKE9sFGv8VqfUoUbQOnDC/a3kR80aGI1HZboiwqeibZQjndireW+xkyXCWDf9j61IG0Hztbl5SB58sQuzKJk32Rkm/jfbzM0ihHXFz/P06
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 181CEA000C
+X-Stat-Signature: t71ktonopuhbrxjq9919mjmj8q8dezjz
+X-HE-Tag: 1789480755-9271
+X-HE-Meta: U2FsdGVkX19OOHzE2aYPd/twst3XMtZcS9/fB64gOyIUTrhBHoHrUETozGEIjcSdbrbi0pSxkl+JRBH/g8Yzeqz50HDhvaZqh0lURql1sN6oBHc/bqxoPdsBXHmAOFH4MWaVHoZj2NgvK4dF9dxRy6ulLchy5yfJluHUt83TA8JWFweneP3Fe0kY8hWzNxwVTm/QT5t+cyZPXW1zUlDW+ZAQmZSJklbGVahABRXICR3rRV2VDwwKqDQzVBxWhCzJevX/cMqx0oe5Z/TwoSyv6FGe00n4DcLoIXnNvXVkknicVgA0f3pYV1IJEx7euylaia0G1sprf0iIEFmagP2yAuUcx7vpKHIuKB/S9mCmW95UiIzxaqZCRVRHQruLZB0Al9NtdSJv4s1sWO1iSfThYYsNBHzdfwTJORWyX3RezBKOZQEDzJzex4X/bPWnvdzC4rmClhPH4CccDodNkq8yuxFJ27MVGVXMEyWxEuBWYTKTkKyOIomNuTpML8DpjD0zHMo3//XQwDZ1bCfJDSQtRS82zrsE0szyUinPuMr6sOBvdu3pwzRIzQBogphMF+iJuNsz/aep7TggFQvQaeDwP2V0D7oHhoLxld0QCR6L0FIzDo+9NWno24TZlZEehJ3Hq9K5fglzz0dvRoAX7tZcCTAzFsxm+u4GTQPTtDCFZcLucFQAmDon1mjFjnfyj/RM+G9l/tx9ju4uZolThcNG0vtcwGj5yPsxOI/a0IAQezY/aox2DeoHtojsWGLJ8Qpsr61ZH4Mvy/gsI2UHYsBopWLkpYblDbS/UxlNnhq7T8+k+vN9EQEGKLmY3qiWdXC+STbQdGE7dGifRh7yQelPGNiLsxNvVMQYe+IB40Z7CycsF3oE5OZUbQmNLe8j7DZ+TSGAWw4JNT+BE0Kbva8loTXxJweu4oCZ2gVbLjiBl+Ofm3nhavNIoMr24TNsxU9wbTp+lzUGxKqjxVsqSse
+ M+XRJGCB
+ +M9xsmxX4E8F/+db5sT/Sxr6JEBUsVdkI9p/V5DxRHPpx23LEdsQjpaYx3MU6ihnA5dALalmPjS5Q9ggC2Uh2EbYNj5b/uhxqkVSguunao8AlrIycsCdC/il9ENiD8llq0ATXuI5kdfARzyB4O5ABYldeOCol/+zGEU7eDN90A5KuLeXN5yBSfcRYE89GyzNCQCTzL/c8YAWJBfWPGbIK+rUsRwWEjYyrmPAVBpIgEeLFcl/y1bZbLdXT6O4lWhoxP/EbwLaU241ax6QUjTizDFRo7k0EfBH4yGfCkQc00OH+xXRBMT3ZgD6Sjb0khPzg6z6zw8ZID7/3Fei/M3tTbU0uQsB+zYAn9cbuLeva2+F358sxq/0P62Y0OwnZhNa7wYkEbeJH+Dr4xno7FLX8QE6E7l+nU/dZmi9/LxLDJLrazgEVOZ1JyRYjDw3Pl7XcMj2mqH+vrYY4xJdblT0sNiIIGeluEj6tuRTBolizUQ3cQLkDRMYpdM/RdbTVL6L+Dz1utDgd8fepnvlx1SzfNzHQrO4Q/UXztkhn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,46 +123,265 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 15, 2026 at 09:43:15PM +0800, Lance Yang wrote:
-> 
-> 
-> On 2026/9/15 02:19, Andrew Morton wrote:
-> > On Mon, 14 Sep 2026 16:29:00 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
-> > 
-> > > On 9/14/26 12:59, Kiryl Shutsemau wrote:
-> > > > On Sun, Sep 13, 2026 at 03:23:12PM +0800, Lance Yang wrote:
-> > > > > 
-> > > > > On Sat, Sep 12, 2026 at 11:46:35PM -0700, Andrew Morton wrote:
-> > > > > > 
-> > > > > > 
-> > > > > > That's the sort of thing we'd prefer to avoid.
-> > > > > > 
-> > > > > > 
-> > > > > > How real is this?  Is there a reported-by:?  Do you have a reproducer?
-> > > > > 
-> > > > > Yes, I reproduced it on x86 with a small test module. It sets
-> > > > > VM_MIXEDMAP | VM_HUGEPAGE and calls vmf_insert_pfn_pmd() with
-> > > > > huge_zero_pfn, without touching the page tables directly. A full-PMD
-> > > > > munmap() crashes before the split series[1] as well.
-> > > > 
-> > > > Ah. So there's no real bug upstream, right?
-> > > 
-> > > Matches my understanding.
-> > 
-> > Thanks.  I'll remove cc:stable, move this into mm-unstable as a
-> > next-merge-window thing.
-> 
-> Sounds good to me, thanks, Andrew!
-> 
-> Kiryl, David, would you prefer the validation for raw-PFN mappings
-> of the huge zero page as a separate follow-up, or should that
-> validation replace this patch? wdyt
+Forced readahead still allocates one folio per page.  Everything that
+reaches page_cache_ra_unbounded() gets mapping_min_folio_order()
+folios, which is order 0 on ext4, xfs and btrfs:
 
-I think this patch can be useful for graceful recovery if we somehow ended up
-with a zero page in a mapping where we shouldn't have one.
+ - fadvise(POSIX_FADV_WILLNEED), readahead(2) and madvise(MADV_WILLNEED)
+   on a file mapping, through force_page_cache_ra()
+ - every read() on a file after fadvise(POSIX_FADV_RANDOM), and every
+   read() when ra_pages is 0, through the do_forced_ra path of
+   page_cache_sync_ra()
+ - the "standalone, small random read" path of page_cache_sync_ra()
+ - the merkle tree readahead of generic_readahead_merkle_tree()
 
-A separate patch with validation would be great.
+Both the ramp-up path (page_cache_ra_order()) and the write path
+(__filemap_get_folio()) allocate the largest folio that fits the range
+and its alignment.  The same 1 GiB file read sequentially ends up 97%
+in order-9 folios; read after POSIX_FADV_RANDOM it is 262,144 order-0
+folios.  RocksDB (PosixRandomAccessFile::Hint(kRandom), ::Prefetch()),
+WiredTiger (WT_FS_OPEN_ACCESS_RAND) and MappedByteBuffer.load() in the
+JDK all take these paths.
 
+Allocate the largest folio that fits instead: bounded by the mapping's
+maximum order, by what is left of the request and by the alignment of
+the index, never below the minimum order.  Nothing beyond the request is
+read; for a forced read the request is exactly what the caller asked
+for.  If an allocation fails, or filemap_add_folio() returns -ENOMEM,
+do not ask for that order again during this request.  If
+filemap_add_folio() returns -EEXIST for a large folio, something sits
+within the range it would cover but the index itself may still be free,
+so retry with a smaller folio and only skip the index once the minimum
+size collides, as before.  ra_alloc_folio() already does the
+allocation, the PG_readahead mark and the accounting for
+page_cache_ra_order(); move it up unchanged and use it here too, so
+the mark goes on the folio that contains the mark index in both
+places.
+
+1 GiB file on ext4, cold cache, x86-64 4K pages, medians of 15 runs:
+
+                                          folios      minor faults to
+                                     before  after   mmap it afterwards
+  readahead(2), 2 MiB at a time     262,144    512    16,384 ->    512
+  POSIX_FADV_RANDOM, 1 MiB pread()  262,144  1,024    16,384 ->  1,024
+  2000 random 256 KiB pread()       105,996  9,346     6,671 ->  2,055
+  madvise(MADV_WILLNEED), 8 MiB       2,048      4       128 ->      4
+  sequential read() (unchanged)       1,433  1,433       761 ->    761
+
+ext4 on a loop device over tmpfs, so that cold reads cost CPU only:
+
+  fio psync randread bs=256k fadvise_hint=random:
+        2,142 -> 2,977 MB/s, sys 57.0% -> 48.2%
+  fio psync randread bs=64k fadvise_hint=random:
+        1,051 -> 1,434 MB/s, sys 50.9% -> 45.1%
+  4 processes reading the same file with POSIX_FADV_RANDOM, 64 KiB:
+        6.9 s -> 1.1 s total, 552 -> 121 ms sys per process
+  20000 random 4 KiB pread() (order stays 0):
+        665 -> 580 ms
+
+A warm read() of the 1 GiB file costs 92.5 ms when the cache was filled
+through POSIX_FADV_RANDOM and 82.8 ms when it was filled by a sequential
+read; after this patch both are 77-80 ms.
+
+fs-verity on ext4 (300 MiB file, drop_caches, read, mmap, WILLNEED,
+FADV_RANDOM) verifies with merkle tree folios of order 0 to 3.  No
+change with CONFIG_TRANSPARENT_HUGEPAGE=n, where
+mapping_max_folio_order() is 0.
+
+Link: https://lore.kernel.org/r/aS4K3jGkJErj94R_@casper.infradead.org
+Link: https://lore.kernel.org/r/aS9uod21hG_qq7Rd@casper.infradead.org
+Assisted-by: LLM sparse
+Signed-off-by: Yuan-Hao Hsu <aa9736195201@gmail.com>
+---
+ mm/readahead.c | 123 ++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 75 insertions(+), 48 deletions(-)
+
+diff --git a/mm/readahead.c b/mm/readahead.c
+index 6e5563290287..d9ad081c72fd 100644
+--- a/mm/readahead.c
++++ b/mm/readahead.c
+@@ -204,6 +204,47 @@ static struct folio *ractl_alloc_folio(struct readahead_control *ractl,
+ 	return folio;
+ }
+ 
++static inline int ra_alloc_folio(struct readahead_control *ractl, pgoff_t index,
++		pgoff_t mark, unsigned int order, gfp_t gfp)
++{
++	int err;
++	struct folio *folio = ractl_alloc_folio(ractl, gfp, order);
++
++	if (!folio)
++		return -ENOMEM;
++	mark = round_down(mark, 1UL << order);
++	if (index == mark)
++		folio_set_readahead(folio);
++	err = filemap_add_folio(ractl->mapping, folio, index, gfp);
++	if (err) {
++		folio_put(folio);
++		return err;
++	}
++
++	ractl->_nr_pages += 1UL << order;
++	ractl->_workingset |= folio_test_workingset(folio);
++	return 0;
++}
++
++/*
++ * The largest folio that fits at @index: it must be naturally aligned
++ * and must not extend past the @remaining pages left of the request.
++ * Nothing beyond the request is read; for a forced read (WILLNEED,
++ * readahead(2), FMODE_RANDOM) the request is all the caller asked for.
++ * This is the policy page_cache_ra_order() and __filemap_get_folio()
++ * already use.
++ */
++static unsigned int ra_unbounded_order(pgoff_t index, unsigned long remaining,
++				       unsigned int min_order,
++				       unsigned int max_order)
++{
++	unsigned int order = min_t(unsigned int, max_order, ilog2(remaining));
++
++	if (index)
++		order = min_t(unsigned int, order, __ffs(index));
++	return max(order, min_order);
++}
++
+ /**
+  * page_cache_ra_unbounded - Start unchecked readahead.
+  * @ractl: Readahead control.
+@@ -215,6 +256,9 @@ static struct folio *ractl_alloc_folio(struct readahead_control *ractl,
+  * not the function you want to call.  Use page_cache_async_readahead()
+  * or page_cache_sync_readahead() instead.
+  *
++ * Folios as large as the mapping allows are used, but the request is
++ * not extended to fit them.
++ *
+  * Context: File is referenced by caller, and ractl->mapping->invalidate_lock
+  * must be held by the caller at least in shared mode.  Mutexes may be held by
+  * caller.  May sleep, but will not reenter filesystem to reclaim memory.
+@@ -227,6 +271,8 @@ void page_cache_ra_unbounded(struct readahead_control *ractl,
+ 	gfp_t gfp_mask = readahead_gfp_mask(mapping);
+ 	unsigned long mark = ULONG_MAX, i = 0;
+ 	unsigned int min_nrpages = mapping_min_folio_nrpages(mapping);
++	unsigned int min_order = mapping_min_folio_order(mapping);
++	unsigned int max_order = mapping_max_folio_order(mapping);
+ 
+ 	/*
+ 	 * Partway through the readahead operation, we will have added
+@@ -247,19 +293,13 @@ void page_cache_ra_unbounded(struct readahead_control *ractl,
+ 	index = mapping_align_index(mapping, index);
+ 
+ 	/*
+-	 * As iterator `i` is aligned to min_nrpages, round_up the
+-	 * difference between nr_to_read and lookahead_size to mark the
+-	 * index that only has lookahead or "async_region" to set the
+-	 * readahead flag.
++	 * Folios start at multiples of min_nrpages, so round_up the
++	 * index that only has lookahead or "async_region" to mark the
++	 * folio that gets the readahead flag.
+ 	 */
+-	if (lookahead_size <= nr_to_read) {
+-		unsigned long ra_folio_index;
+-
+-		ra_folio_index = round_up(readahead_index(ractl) +
+-					  nr_to_read - lookahead_size,
+-					  min_nrpages);
+-		mark = ra_folio_index - index;
+-	}
++	if (lookahead_size <= nr_to_read)
++		mark = round_up(readahead_index(ractl) + nr_to_read -
++				lookahead_size, min_nrpages);
+ 	nr_to_read += readahead_index(ractl) - index;
+ 	ractl->_index = index;
+ 
+@@ -268,6 +308,7 @@ void page_cache_ra_unbounded(struct readahead_control *ractl,
+ 	 */
+ 	while (i < nr_to_read) {
+ 		struct folio *folio = xa_load(&mapping->i_pages, index + i);
++		unsigned int order;
+ 		int ret;
+ 
+ 		if (folio && !xa_is_value(folio)) {
+@@ -285,26 +326,34 @@ void page_cache_ra_unbounded(struct readahead_control *ractl,
+ 			continue;
+ 		}
+ 
+-		folio = ractl_alloc_folio(ractl, gfp_mask,
+-					mapping_min_folio_order(mapping));
+-		if (!folio)
+-			break;
+-
+-		ret = filemap_add_folio(mapping, folio, index + i, gfp_mask);
+-		if (ret < 0) {
+-			folio_put(folio);
+-			if (ret == -ENOMEM)
++		order = ra_unbounded_order(index + i, nr_to_read - i,
++					   min_order, max_order);
++		for (;;) {
++			ret = ra_alloc_folio(ractl, index + i, mark, order,
++					     gfp_mask);
++			if (!ret || order == min_order)
+ 				break;
++			/*
++			 * -ENOMEM: memory is too fragmented for a folio this
++			 * large, or the memcg would not take it; don't ask
++			 * for that order again during this request.
++			 * -EEXIST: something already sits within the range
++			 * this folio would cover, but the index itself may
++			 * still be free in front of it.
++			 */
++			if (ret == -ENOMEM)
++				max_order = order - 1;
++			order--;
++		}
++		if (ret == -ENOMEM)
++			break;
++		if (ret) {
+ 			read_pages(ractl);
+ 			ractl->_index += min_nrpages;
+ 			i = ractl->_index - index;
+ 			continue;
+ 		}
+-		if (i == mark)
+-			folio_set_readahead(folio);
+-		ractl->_workingset |= folio_test_workingset(folio);
+-		ractl->_nr_pages += min_nrpages;
+-		i += min_nrpages;
++		i += 1UL << order;
+ 	}
+ 
+ 	/*
+@@ -456,28 +505,6 @@ static unsigned long get_next_ra_size(struct file_ra_state *ra,
+  * it approaches max_readahead.
+  */
+ 
+-static inline int ra_alloc_folio(struct readahead_control *ractl, pgoff_t index,
+-		pgoff_t mark, unsigned int order, gfp_t gfp)
+-{
+-	int err;
+-	struct folio *folio = ractl_alloc_folio(ractl, gfp, order);
+-
+-	if (!folio)
+-		return -ENOMEM;
+-	mark = round_down(mark, 1UL << order);
+-	if (index == mark)
+-		folio_set_readahead(folio);
+-	err = filemap_add_folio(ractl->mapping, folio, index, gfp);
+-	if (err) {
+-		folio_put(folio);
+-		return err;
+-	}
+-
+-	ractl->_nr_pages += 1UL << order;
+-	ractl->_workingset |= folio_test_workingset(folio);
+-	return 0;
+-}
+-
+ void page_cache_ra_order(struct readahead_control *ractl,
+ 		struct file_ra_state *ra)
+ {
+
+base-commit: 704340f1cd0dcef829eb62f5b48ae95a2ce17bdf
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.43.0
+
 
