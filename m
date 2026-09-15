@@ -4,98 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A550C88E75
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 10:16:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72524C88E75
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 10:22:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DEE136B0088; Tue, 15 Sep 2026 06:16:07 -0400 (EDT)
+	id 1EAF66B0088; Tue, 15 Sep 2026 06:21:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC73A6B008C; Tue, 15 Sep 2026 06:16:07 -0400 (EDT)
+	id 175AD6B008C; Tue, 15 Sep 2026 06:21:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D029A6B0092; Tue, 15 Sep 2026 06:16:07 -0400 (EDT)
+	id 03CA56B0092; Tue, 15 Sep 2026 06:21:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id ABC716B0088
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:16:07 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C98261403A2
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 10:16:04 +0000 (UTC)
-X-FDA: 85215591048.07.75B6B91
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 55C0040008
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 10:16:03 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="L4/VWeIA";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C9ACD6B0088
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:21:58 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4775E4036F
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 10:21:58 +0000 (UTC)
+X-FDA: 85215605916.15.8F118BE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id A64A240008
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 10:21:56 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cQuaEnvy;
+	spf=pass (imf27.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789467363;
+	s=arc-20220608; t=1789467716;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=1p5u2Zwv/oGa+juGw7P9v9Q6snr+DKkTRIeNmG+WA6k=;
-	b=5dUi2+SFxgCC6BtEQRfyN/mEP7LrGFDx1EVeIkNvZuKcQ9F0KapGb2YXE8mUjKxXC5ZoLS
-	Uu0uayx2SliW73c77yuBgy1xJgbmUxGPeDsw9puFM6yeYLnAmCTVs+dZ0TS8TVlK2kwLNC
-	ihoh9cm+5GBpSI6UHVDur1rOMzY8zu4=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=fkiyvcxknqqa2FD78gZjvgffhDSvTiUS9a23EkmipXA=;
+	b=vPDUebHegF2keeUz3bJ1JfWu4E7ou/hsjxBRrkJgudIg6BW6wLYlhu4acX22KlAlNWOoH8
+	1/qwRpWEZ5vxvTvmqXCZTv+KMATLlfqJf7xWRPmIbpwhiPsKY9/+kMgP1GRuXXd+ne5uHh
+	UH7RujHk3ht+nWs2DK46Eu4NYVtjaXM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789467363;
-	b=n6siZJxTKLkfIE9xNKJAYAV7cj2+LluBUjfH14ameUjX/0tH4OHlgCvFF3IoXMtkY7NLS8
-	Th7CGMyTOEAxl6xpVr8/ld8nrHrMNXEJxsYgD5hGgCWy2iofhHn5zIBvDVqUzx6Q85oj+2
-	UxNQhusfsStKItwkXwkxcpyehw+5w+Y=
+	t=1789467716;
+	b=Sp+OcQo4rN2IHuLfu9fah/0KZrICh3bEcWSuwpABXeYdvAtWcLdzftlCSmnWpqxL9SZ4e2
+	RRo7K05NNVcHyAeG4Nq0nWzVY1kU9kzajB9HO+tJqyalz8anBgux/6CSkHZgNt1EJlXKMe
+	BrkPZgnIS15/suIKWzYz/2w1cgdaFME=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="L4/VWeIA";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cQuaEnvy;
+	spf=pass (imf27.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 533EB4054F;
-	Tue, 15 Sep 2026 10:16:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 316241F000FF;
-	Tue, 15 Sep 2026 10:15:59 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id BC63B6025F;
+	Tue, 15 Sep 2026 10:21:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2E3A1F000FF;
+	Tue, 15 Sep 2026 10:21:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789467362;
-	bh=1p5u2Zwv/oGa+juGw7P9v9Q6snr+DKkTRIeNmG+WA6k=;
-	h=From:To:Cc:Subject:Date;
-	b=L4/VWeIAVDb1IzFKLYX1b/+IaSxpVI3jJNVNJK/KrLJj1lPqvsaKt6sIEY2jrpXAD
-	 0EfamwAPKN09SBCxULADG0HVUsCF0rCS2HCanCVTd1rbWN143su7Q4lxoOygf/YdMG
-	 gmpMOt76dM4zHxEDdKyeESVM4cBRTLvsUYnLQrTs5DbU2kukNTkkXpAz/Gt/Tk/iuf
-	 posWqFnP4N94Pcj9WQq8u9pU/SVeZcqUb4cLlAw/5xtGWJIIaFqQ1tcwu+mIumfEtq
-	 gpRaupWOrLyBIin/QWtUIaX+F8bnqKaCnlPxNtRL4BXq1DJjFvA44j4ymwYecbm12j
-	 NWTei3CcBR+gg==
-From: "Barry Song (Xiaomi)" <baohua@kernel.org>
-To: akpm@linux-foundation.org
-Cc: axelrasmussen@google.com,
-	baohua@kernel.org,
-	baoquan.he@linux.dev,
-	david@kernel.org,
-	hannes@cmpxchg.org,
-	kasong@tencent.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	ljs@kernel.org,
-	mhocko@kernel.org,
-	qi.zheng@linux.dev,
-	ridong.chen@linux.dev,
-	shakeel.butt@linux.dev,
-	weixugc@google.com,
-	yuanchu@google.com,
-	yuzhao@google.com,
-	Chuanhua Han <hanchuanhua802@gmail.com>
-Subject: [PATCH] mm/mglru: restore accidentally removed seq < max_seq check
-Date: Tue, 15 Sep 2026 18:15:56 +0800
-Message-Id: <20260915101556.50467-1-baohua@kernel.org>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+	s=k20260515; t=1789467715;
+	bh=fkiyvcxknqqa2FD78gZjvgffhDSvTiUS9a23EkmipXA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=cQuaEnvyIVzF1iyxdJAkXqhmxDCZYMNY9j2eYZJ07Mb6eI4uuD6iCsTsS+XpIax5b
+	 wX76OJsUvCoHl44rzpGGKNbDUnkQZdxlMma60wLmSTyYPzGIgHgsFm1eUQU//wGMlD
+	 XkLaNUmR9cJYUhhJcYebFLcWjw6QOfQ2MYSbJYY0ycp+xgVXdunHq6/e+yfNYiUdxE
+	 E6pJrCmbnIC1vM+8lUjIKIleVNO8CY3bc05B66ou/M/Pr3PYwIiSk/KWDfEyynFjl4
+	 Cymr2wIIm3yXem2ANvwX2ZqgPbMUlLxxmycHSORHJHSC2b7YT6yQ8S03CF/Yj4r8FR
+	 9HL8UnSyELE5A==
+Date: Tue, 15 Sep 2026 11:21:53 +0100
+From: Harry Yoo <harry@kernel.org>
+To: SJ Park <sj@kernel.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, 
+	Nhat Pham <nphamcs@gmail.com>, Usama Arif <usamaarif642@gmail.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Tejun Heo <tj@kernel.org>, 
+	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, Shuah Khan <shuah@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Kiryl Shutsemau <kas@kernel.org>, linux-mm@kvack.org, cgroups@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] selftests/cgroup: ignore memory.reclaim -EAGAIN for
+ zswap writeback test
+Message-ID: <aqkavo7OfQdMOpLf@thinkstation>
+References: <20260914-test-zswap-wb-ignore-eagain-v1-1-6fb715c22cd8@kernel.org>
+ <20260915001817.101713-1-sj@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260915001817.101713-1-sj@kernel.org>
+X-Stat-Signature: kt7yxdpxfw48a9xcknownc9j8nedrndx
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 55C0040008
-X-Stat-Signature: a5o7tsz43yh8eezmd9gyd9ow8nxss6df
-X-HE-Tag: 1789467363-551850
-X-HE-Meta: U2FsdGVkX1/RqZYukJlMY57RGId4qgayFpxKRVdkUy+ufq0YAUbtLdnZ4yPo+5RO7hBAMfbWza7QOnOdyMPBNmH0+dfD6yNhTdA5wXY6BVJpTIFEf4C9a1oJdAjq9ySRirTmkETRu/BvEbkSZWdwX1PnjFBHzmZONG5CwObFAyDIKY0k4pC2iPUf6q0moui/FLOy8sA/W+Bg0TjNJWF57LJ/4Ew1uVM44WIRmWo4TfCGebAG5QXtdHwiyGcit4hUtNt1V5aGC7DSurORzhbf7Vlnpbs994CcthvM1vt+Niryw57pRb5mtIpsUhwfKk7fBfIIWVl5oV9/+x9B1ayXxHQZkDpU9v7MVz+FoA7HzE9wydFY+YFcdKo1ac1BL1rNse1o+NydShQ1BHRv7t87V0kNI7Y8O+JyIoR/XF0pVplzweh2w3seWPzEMDuJeh49sItd8eGLCGh3U5Huav4EmD/M/FuF4PnZSryNo7MfDoeWpOUQ/S3kgKX56dntKsoKFcZQAo/5S5dZrRyMHIvoZZTdy6FKCjiRueTsumENE/wtrX7odvNHtYMtRQ2AYynz0uHjQp2uxo+cy88HLA2RdmR7Or4GgVi8E1o7rx/FKGG24N3m/GCy6JhIC/Gim4UXxG8JO3pH91GNxyFXzjZFsplza/SV9VXGLs/xBUo/NE3Oq9XBthM5wl+sTyYxAvjFW2sKIVEPXyyVT+KuxL3MOcI0qJTB9+LLdt0lZHFYCBRnM93X1F/kmFLangYlg60HwFQSjmDrsNoY93R7AGXLMygEl0gTJmApptGqACydq49SL3L/xNbB8Pb2+6ybq5654Dy354kZfSLhjSD0zTnBS6LW3T95S5PIGq3qPiXo+IiHVOvXqZh5uQHJZe/R0rAsmzVo5KYrK9U9R1cA0ocZVLtWyJbjj+Hwgin6ZVFeOM/4ub8rl8s73jiZhyNG7c5I/yvGaS3Jqbx2bmYL7Wq
- kL9OHMZ2
- GmqV9RYgWeywhGfNeK0afkHfA6heGhGgkImj7hPjiGZAFbxh3lqGIMqo0fZe2MFeQ4VojadKuRoWR5+JC2NvD4TN5bIVtJ+n0wEvR79AHp5qegew2Leih480dT3eafEcXXJycTWUIQtBxIXqZCw7HULRr74OGKfNsEsCQdRD3grbHx9cnw8S31iiqJoHUXJuzU8fam/yKoP3AL/s17+qE3XwFze7h6fPS5mU8g7xYy0uMeOL9AipP/qtl1Kmz2rFFbTdQiuX/7kMW3/8qmvzEJQeTVNDLatXCB9SXuIR/q1wEYHjHjB6QrQPcCQ==
+X-Rspamd-Queue-Id: A64A240008
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789467716-258836
+X-HE-Meta: U2FsdGVkX1+zDj+G3FDkoMRhmi2mjTY6ujMtlVjTlNxn3tbV7aLvvBmNSVdpJXC42zbEjBmx/MPcARwVFysogiQ7ywfETZfJujD+0IrEaIKiEQUoPeXQYSQS0pN4fNX4z+47tVM84Oi8oDW8rnQrlpHcURmqrNeGogbWxjta2FGsiYE9hxNEKuhSHvwF6dwDjJnf5iJn+/CWRqEg+Aywa7yg8mTiipeKmHlNxsKRi/rEhUaXrsT7RHGRiJ/P3okN7lZ/VyeYTOhxnzJqQVKq/xHoVi/rhpB7uDgSN3FZeBMTJjhVjPWu18ajGJbcmdcGy9HXI0FuYh0v6DmC6yyZUNJGuKq9EEx5fjjHezs+V051stGDmG8y70L6BNVME+9uMdDo+4ABmonL6m/XBlnD8TtJTRVn1tZAwzt7CjaadN+y4mCgIxjEfDJNXLn8yUM733ZDp0zH9Io9gniRo+8C+CtO1Oy/sXrhSmmZgOKPbsiFzQMy+AiiG/OFVLPL/b0J34y9eHWa9VdVQ+bWkf9qLSCVfIAf9W2PV/fdgzcSeVm5b6aRT/1UYOGQq6m/zjpLYbUp2az2SOCxUGrhJYPb6wvPeaLvJl8UrHiYJUZdQ5VqnRufPZ/3DOXdB1pygFbZi7sgJnn9aRsHBOQ+KdJv7Y8Ao+dCUaUTvJntZ4WmBA2avBbdqGaidrmdiEIlBFmSEgLFNXN9UkFl17nmRrKxSqYpcljzMLvDM5EIR0d6gawx4b6gemmb+/RTVuVEr+y/EhvvaMm+pNNw8ex8G4y+eVrO9pB8Fq0TW+rWH81WzZDDxY/IkTBbUZtFX20aosLjVC79fmmHFHBna0GLgMt1i7ClpBTf9Qd4nagoj3OQd9RcrixL7tJKo5mEgbTklE4jPvNTVF0dJEF/l51W3FrPd6C3YRs/q7+AE5N74Q4uNyRLETCn5MVcPQLB+Sw4orXH1LXNIJRrXCD+WKzQFRM
+ WanZEc+c
+ t06oMhf2K85hQUvj3sd5lfgWhCwzbADMG8Z57FOluykJQsg5ahVf1YnRmvW/Cd6QYpMZsSm90hEdsYeHULaoq+yFDFdBsT1cwZRAlqz3Bi341rp14c/SbFLHFrX/vlzM79fjCXjYHVnnHxiHOT1oBUgtbe8BQ4gUKMr/LaA+pnGU5LNFJyTIDrGsu6+KDzYV5h+NGUcIyIY9H9FCjcx2sv4gxAvcUS2XWdbL3V//2kLFNbR6mh6ukVkpuW4Qhvvv1mr0uH6DmFfT9rs+IcEhsi/3aK3pSq+r3wWM1aXFPhj3SXNGpjQac7jUSMXLX8/t6fVkKtqF76UKUeU82QgSkQ4BP96TlssBL5OT4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,48 +97,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Since commit 798c0330c2ca ("mm/mglru: rework aging feedback"),
-the following sanity check was accidentally removed:
-       if (seq < max_seq)
-               return 0;
+On Mon, Sep 14, 2026 at 05:18:17PM -0700, SJ Park wrote:
+> Hi Harry,
 
-That means we can perform aging for any value less than or equal to
-max_gen_nr.
+Hi SJ, thanks for looking into it!
 
-This has been inconsistent with
-Documentation/admin-guide/mm/multigen_lru.rst, which states:
+> On Mon, 14 Sep 2026 21:36:39 +0100 "Harry Yoo (Meta)" <harry@kernel.org> wrote:
+> Makes sense to me.
 
- Users can write the following command to ``lru_gen`` to create a new
- generation ``max_gen_nr+1``:
+Thanks!
 
-     ``+ memcg_id node_id max_gen_nr [can_swap [force_scan]]``
+> [...]
+> > --- a/tools/testing/selftests/cgroup/test_zswap.c
+> > +++ b/tools/testing/selftests/cgroup/test_zswap.c
+> > @@ -346,7 +346,16 @@ static int attempt_writeback(const char *cgroup, void *arg)
+> >  	 * it can't writeback to swap.
+> >  	 */
+> >  	ret = cg_write_numeric(cgroup, "memory.reclaim", memsize);
+> > -	if (!wb_enabled)
+> > +
+> > +	/*
+> > +	 * When writeback is enabled, memory.reclaim may still fail to reclaim
+> > +	 * the requested amount of memory due to a slow swap device.
+> > +	 * Ignore -EAGAIN here. The caller determines pass/fail based on the
+> > +	 * zswap writeback counter.
+> > +	 */
+> > +	if (wb_enabled && ret == -EAGAIN)
+> > +		ret = 0;
+> > +	else if (!wb_enabled)
+> >  		ret = (ret == -EAGAIN) ? 0 : -1;
+> 
+> My humble eyes were unable to easily understand the change.  Is the change
+> effectively same to below, and if so, would this be easier to read?
+> 
+> '''
+> @@ -344,10 +344,11 @@ static int attempt_writeback(const char *cgroup, void *arg)
+>          * writeback as zswap.max is 1/4 of what was needed when reclaim ran the first time.
+>          * If writeback is disabled, memory reclaim will fail as zswap is limited and
+>          * it can't writeback to swap.
+> +        * Even if writeback is enabled, it could return -EAGAIN due to a slow
+> +        * swap device.
+>          */
+>         ret = cg_write_numeric(cgroup, "memory.reclaim", memsize);
+> -       if (!wb_enabled)
+> -               ret = (ret == -EAGAIN) ? 0 : -1;
+> +       ret = (ret == -EAGAIN) ? 0 : -1;
 
-The correct semantics are that writing a value smaller than
-max_gen_nr should return 0, since the requested generation already
-exists.
+Hmm, no. This will mark the test as failed when a write to
+memory.reclaim returns zero even when wb_enabled is true.
 
-Fixes: 798c0330c2ca ("mm/mglru: rework aging feedback")
-Reported-by: Chuanhua Han <hanchuanhua802@gmail.com>
-Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
----
- mm/vmscan.c | 3 +++
- 1 file changed, 3 insertions(+)
+It's not the same because when wb_enabled == true we consider
+ret == 0 or ret == -EAGAIN as success, while with wb_enabled == false
+we consider ret == -EAGAIN as success.
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 5354eb8d3a07..18c4d3595749 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -5827,6 +5827,9 @@ static int run_aging(struct lruvec *lruvec, unsigned long seq,
- {
- 	DEFINE_MAX_SEQ(lruvec);
- 
-+	if (seq < max_seq)
-+		return 0;
-+
- 	if (seq > max_seq)
- 		return -EINVAL;
- 
+Not sure we can reduce that to one line of code.
+
+>  out:
+>         free(mem);
+> '''
+
 -- 
-2.39.3 (Apple Git-146)
-
+Cheers,
+Harry / Hyeonggon
 
