@@ -4,89 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1D0FC88E75
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 22:26:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 107B0C88E77
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 22:35:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E7EC96B0092; Tue, 15 Sep 2026 18:26:49 -0400 (EDT)
+	id 0118B6B0088; Tue, 15 Sep 2026 18:35:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E30CA6B0093; Tue, 15 Sep 2026 18:26:49 -0400 (EDT)
+	id F05DE6B008C; Tue, 15 Sep 2026 18:35:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D47086B0095; Tue, 15 Sep 2026 18:26:49 -0400 (EDT)
+	id DF2876B0092; Tue, 15 Sep 2026 18:35:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B39316B0092
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 18:26:49 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B645A1A0589
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 22:26:48 +0000 (UTC)
-X-FDA: 85217432496.27.B77F552
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 933B34000B
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 22:26:45 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=VVeBrPjA;
-	spf=pass (imf27.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.2 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
-	dmarc=pass (policy=none) header.from=163.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789511207;
-	b=Jy/lq2RwcpwTn2zF+1AZ06EzjlMfDkTsQLTWdItl82GtDP1r+qN1eaAA6AYd4WWz3ufbtu
-	9ZEQQeozxcOv3yqTYhS2Hel8LpyvJxuHHDPPEOTVArLQSO2Jx30CZt5ET1tT8ya4896YVQ
-	+tgQdOb0uLUoZGgvjNXEFPwPtiaqFm0=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=VVeBrPjA;
-	spf=pass (imf27.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.2 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C098B6B0088
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 18:35:46 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 51A22A057C
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 22:35:46 +0000 (UTC)
+X-FDA: 85217455092.08.AEE3620
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 7F9ECC0002
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 22:35:44 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=r7LHLzbd;
+	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789511207;
+	s=arc-20220608; t=1789511744;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bmYgvLBj+2fhN6x9AYnMb/kQHcFNBrYAQBS80G1+HZk=;
-	b=BGVwFqFRbPf/tlCQTU2fFgz6XSMQaR8EslmXnmUWFF33yeQH/jOV9kSajZBSqTB7EV7Ci+
-	gjKtxA5flHLNCurIP05Y8B9nS+9wMlAftE0X3j7f9GVfDZtnrqo5gNJfvqy2tvmC0UA/n4
-	8B7DxpjfguiZrghjA1AC3mjxSy7vMrM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=bm
-	YgvLBj+2fhN6x9AYnMb/kQHcFNBrYAQBS80G1+HZk=; b=VVeBrPjADv8axBo0bk
-	jPpFYmA817kRL1EPemb5uHEuQBMSQvgOiQdkvMbtghKXYsFvo6JUYuN0p36YiL1u
-	CJ+HOCuucVWVTVtqIDoSR4gcQs26wmEX/PTKuWLGhN0C5uPm1NAuQj3IOwoCe8/h
-	jVS6KMzV3FGmkMh7bZyzYNe7k=
-Received: from VM-0-3-ubuntu.. (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wDnt0z6xalq3CS+Aw--.61588S2;
-	Wed, 16 Sep 2026 06:26:03 +0800 (CST)
-From: Longlong Xia <xialonglong2025@163.com>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Longlong Xia <xialonglong2025@163.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org,
-	Longlong Xia <xialonglong@kylinos.cn>,
-	David Hildenbrand <david@kernel.org>,
-	Xu Xin <xu.xin@linux.dev>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 00/14] mm/ksm: merge-path cleanups and folio conversion
-Date: Wed, 16 Sep 2026 06:25:43 +0800
-Message-ID: <20260915222545.5683-1-xialonglong2025@163.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <aql2wPergPKdfzU8@casper.infradead.org>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDnt0z6xalq3CS+Aw--.61588S2
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjTRQ_-BUUUUU
-X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbC3Bu0rWqpxfthtAAA32
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 933B34000B
-X-Stat-Signature: 1ho4aak19c3mnc3yckyefseth8pfozwg
+	bh=RhTnPDaCLd+U+z7ApKM0YP7sn1aaMXZYDn+8iLwc6eQ=;
+	b=PKEvrAnceYP8KjFjUm1cDw7IGeJt22Y6+MUgBoyT7Qu8NnHjNtDdBP1nVN5JrEquBFn2wR
+	tZzKqSbs9iaCQL0gRxdKefbBJ/mDryMPhiWRzSv0SF3H14CPZlc3ROdbcloY/gGCJyqtVQ
+	Lnn1eFOnMiY9w2RO5+MTfA+MrBPMz84=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789511744;
+	b=A4yq9nrmldrMCJzYVeLc+hV02/hbnHaahTURDhZVAmwsriWKXREg31rMyvS1uIMTuJEnvn
+	/qwZuQpGDy0vOrcCmA8xVjTfzMmcj4Ybj4f0LhwWZZiZKjtTK6zkE4QpW2AhFifgjKBS3+
+	fU57FNpCiGe+I/83euBCdeuOk6oIaFM=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=r7LHLzbd;
+	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 8D83560008;
+	Tue, 15 Sep 2026 22:35:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 080761F000FF;
+	Tue, 15 Sep 2026 22:35:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1789511743;
+	bh=RhTnPDaCLd+U+z7ApKM0YP7sn1aaMXZYDn+8iLwc6eQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=r7LHLzbd0Mx3R5rOXvWP+PpUysVwGELhq01tND4SbqiwRuh/Mcy1MSIKsa7U7icZS
+	 UUFaeKBMV0dkcXN8kqoIr3ZGSP8zIrdffHc0AXlo67wZ3OYRQm30Cpvlh5iUHBMuzz
+	 hrr4PrWEKFpePZ2nISNQaVbut+HzuB+G2w1VIGOM=
+Date: Tue, 15 Sep 2026 15:35:42 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Dima Koziuk <dmytrokoziuk68@gmail.com>
+Cc: Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] mm: kmsan: fix iounmap metadata teardown
+Message-Id: <20260915153542.3b9afbd00f7e6cea87a3350b@linux-foundation.org>
+In-Reply-To: <20260915160207.2952-1-dmytrokoziuk68@gmail.com>
+References: <20260915160207.2952-1-dmytrokoziuk68@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1789511205-913689
-X-HE-Meta: U2FsdGVkX1+l0pUHfTA3Eumq1sRstK0JLSUIHu/52msV2aM6VNqfA5u6z1SfvS+8qObJY+MSxWqR8W9aFg4TF3vOZrvl5Cowi3KTg5xywgQo0IkaQXPD1rVk26CvuRIhanC3LPcpWGWjPmhFbgiCRMHxEC2G8otS5FuJvLL+31f5omi4WLyny6IgSxN2kZIKgRqVLWlB0YMawlTrZ2W041BWDOlpWBCJ3d3Vm7oil5LucfZwpp1BOsPYsFZQcVNYOda+8hTdbncqwug7d5GNbJkX6Rtvsf/yVlPGIzMzIgcX3qy9HJOeo7NqgtJTvaGWRB2F0zZVs6M//GhkumqaZggxhLmSbT1RrBK+uzd24AOZa6K8R055v8KM38G9sg6J42brlTjNnhXr66YEFMQdwQTQn8Swwu3jWulJUME0bylDNies86y7oskj093PQg8vpDUcHMiJLFX0vZOr8gceGTvQMU1jJAw3uzTM7pCSd0z8HtKkki5USf9tp6fKCTpo361j7NsqW45BF0tc4L1+sO7B1UCYFAztlhj6fomFFtrGEDvAQSmHCHpdGKPamcIm+TvXMeZBaaGUvKodKLcpIPT8oGg8pwFCj/LRNTrVV7yB//9fr+9GfJpo6n0JYU88makjWWMQNUOj/+nAyX4Ymem420dq9WX1C9ODoUkXg0guFOdKRANLSD8HbWWE31Gr1xZPs6G+P+RAA0/QZWvTQk3H6V1JhJInTbDoKVp6KwjPsGbLh/MbyZnLhHT2O9HKvv3t4FlQugwfgOkN7/MrQXABeqvXIFxe579e+wAWTbz4m/RK6Loftsj28DwTTEm4RnApsfb/PwrRtDncKqrR5ziucsTXc2XYlOLCDXfEUGkFiNtv/O94t4mh+QcoL/mrolC/BtAKab563ZltNe/KIdsmPyy20RHWe2cxEnBAnl97k5xKfnoDpQ2fZnBLvIlDYJfxW9o+iYmrsw8LoQF
- ryl9d7kg
- qwQmWUn7kkDhcVqRzPOAzgpnvC7wmIHP030jtH57vXiYEjetyH+LCM2PMzAOQv23RSM7Pr3leFQ+SFm7rQyyN3ZUc4P1UkxrvOh8ysxiwz+rM5W3tBnWTHnJEOGRrivaxKCP5y95+qVlJB65EdMObvcE0QIZ1hJpdK5VGBTH8CJHtK5revwaDOr3fSZjDVAflvbItr0cEsgKU/BLCL+AqYAu+wCj4EHu6Q+DaCqiWJaLHulkZUKTFkFZWEy8FV0ZTUO75GupknC2OLhQ=
+X-Stat-Signature: 7xiye6nfcy7trckhx1h9jz7n65bc8nyo
+X-Rspamd-Queue-Id: 7F9ECC0002
+X-HE-Tag: 1789511744-832973
+X-HE-Meta: U2FsdGVkX1/Dy0wEGs3ZF9q7C7FMpwjM69rhHp5rA7evKAwr840NycA0UcRG+eQ4wB9Cgd5pSTRYfm5Rvhqtw6KVAPOpzLTnN7wgukl10jTf+b6jNP9a9GLOsyKvLleUFwR9+p6uzOgZOeOrAgvZed5V8aJyfSeJrIAn3/6W4dueJFYVJJ+H6vMefrS9WL6QdcJE3E7x5CFW03+WH5bg/zyxUe5nEAdhz9Fi4x0BBFEtehA+U31h1G7yTtkYEdvP4z5wcc3uY1is55KVW/Ld8kgxE7JWiqFB+x/wOTwnHkQk4H5bvUQppJj3NR9h3Uv4595u1vLxEL1+oUPAHMmW0+2AGVl/JEqtpbrA8JQhZNTnJbXYFBKCeCneBvZiSXXh1QCVN7DI4tOlKDjSK/eoRwMuI4jMVnJu4rX8TqoR9BrNR54H0d7AeDuePm71nAsV+k4H2eLdnlcMg8QJ6flXM6n/vMhc254oFsY9ki2pa1lGE0FRBsCNQjDkOq44tke661fTaooyI5+auY3hV/4Mtk1WFvEPqY5usjRYjUB2ZWPOBzc20x3sqKPqDbsqSjeSW0nzWHE4rWa2bEa6Sr1Nab4dPYJLShyJYb9OELDk//aMlnetzFlU0KSZWZ1goPd79lQa8ORdH1REr5az8V4hqM6rK5yUFxnlJxfljAMrNTA29ATaVBdtz4uaUz8vzDFmV4LdDPKWfPPFCG2bb1+KZoWiGL8Hp7G0GKMKRIdBjo6zcc6Y6SKii84bT3QKMwjUwhNmH8HsG38uqz0VgXXYZ+x/nj28L9UduKZ+UHAoYYYv+Apzk3EJr/3ek7fkSUa/2DSFSHHVcHivJRkRkkm6SVtL/pH52n2FwH1x2ZWmqcT+4ODjFfo4pQQ3NAwO/IMP+GyXUmEmskMflJ4YW1SgxEasRT4oa5v8xr0kPUVfEsavfKPn8sVitI3GDqR5UGs2Yc+bumP5dBFFssLdvgm
+ MMptXFDC
+ joBQQDI4/6HmOdA6+dQw4Lf8BI7EbIunjM/U0wP56FU22XGPnjewn38UEhBGC2BDsZdWVmVQL1LXn6u/VdPifshMkAMbD9lyP6GXTdRJjqlA9pimayAvLJDFxntq25NMGfKy14918SD8tPAv44ynmRKHESUKKu1XQtj2kbUvciNQHWCx5Tx07oBmUkaNNszhbGagtBOWdB6ptIMFhbSUJKpdWpC6rWQ0+3LUKVtMAu2E1fUX8oSqsDWFPVVZ6HkU2shrTQoYO/u/9+jtDnrwpmJ2bU+B5dUH/yi43cQjmENtZhgleJohT2d+D5Hh6Uzqhb4rWcj1PzMjXnpk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,17 +90,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thanks for the review. You are right that I did not justify the
-page/folio boundary clearly enough.
+On Tue, 15 Sep 2026 19:02:06 +0300 Dima Koziuk <dmytrokoziuk68@gmail.com> wrote:
 
-Patches 11-13 only avoid converting the target page back to a folio and
-provide no functional or performance benefit by themselves.
+> While studying the code, I noticed that kmsan_iounmap_page_range() calls
+> __vunmap_range_noflush(v_shadow, vmalloc_shadow(end)) inside its per-page
+> loop, and does the same for origin. The first iteration therefore unmaps
+> the entire metadata range, removing the PTEs for later pages before the
+> loop can recover their backing pages.
 
-I will separate the independent cleanups and drop or rework 11-13 after
-getting guidance from the KSM maintainers. I also found a NULL/bisectability
-issue in v1 patch 12, which I will fix before any follow-up.
+Thanks.
 
-Thanks,
-Longlong
+AI review might have a found a couple of issues - please check?
 
+https://sashiko.dev/#/patchset/20260915160207.2952-1-dmytrokoziuk68@gmail.com
 
