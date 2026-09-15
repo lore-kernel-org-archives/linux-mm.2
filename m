@@ -4,91 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C0C3C88E75
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 03:35:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DE92C88E75
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 03:48:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D74646B008C; Mon, 14 Sep 2026 23:35:37 -0400 (EDT)
+	id A55FE6B008C; Mon, 14 Sep 2026 23:48:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D499B6B0099; Mon, 14 Sep 2026 23:35:37 -0400 (EDT)
+	id A07606B0093; Mon, 14 Sep 2026 23:48:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C87656B009B; Mon, 14 Sep 2026 23:35:37 -0400 (EDT)
+	id 91CB36B0095; Mon, 14 Sep 2026 23:48:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A77966B008C
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 23:35:37 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1D6FB120310
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 03:35:37 +0000 (UTC)
-X-FDA: 85214581914.04.49F7CB8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 622F9180004
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 03:35:35 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=V1RQ4BBB;
-	dmarc=none;
-	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 718496B008C
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 23:48:18 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E4A6EA02B3
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 03:48:17 +0000 (UTC)
+X-FDA: 85214613834.23.BE6E4B4
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf11.hostedemail.com (Postfix) with ESMTP id B56F640005
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 03:48:15 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=gtMBSMt7;
+	spf=pass (imf11.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789443335;
+	s=arc-20220608; t=1789444096;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vycjVsdvdL/Q00jPIQ1cuSnd7h6q2v9Vl0G0+pf20mU=;
-	b=8aMcGbOjaMujtzpCtuVF5mfbsLfp9PHFg7gqtXbtie/VdhgJarsqu6qLG03AcguTtbDXsD
-	hMJtVxiuLsxjqIaSoZsc+X65l9q6aA96tDA+s7jP298CivV3M9t1whO+LcaDs9Z1ha+w0A
-	KU9rSL74tJ76HiOnk72BKlmMphj0Ofs=
+	bh=JnSzcMrJLzIwbBgSc4r1h5wi1qOW8IjhyVNA1VSwOYk=;
+	b=PuL1vLmjc79X/2e+e4TZHgJbQCCWKq1J9XhxvnnLXVgf/9mSmMqfZBCbnRhjJD6iqAPfqq
+	n4EqIA7+LOlvDekYHBgtrr6wFASR/sCZ56797Hv1uKgiknlVN7Fvfdf9tl0/jcK04Bk3xS
+	vuP+Sd313qr+L3S2+DwN8bQvS2w793A=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789443335;
-	b=rbfChzIfZWC9vPdnZtZ3d0tVkedPOkuLuTRQ6qSaJAxjua3wFIohL3pFz0+jhjj+GrRcJg
-	8h+w+/QNyQEOeS0+VohUpw+J1UT8skYB7IYONdV91QJWqGSWjVUH4rbJyqUoi2g68gpYqq
-	yFpWuAa/fIrBALsVkv6hClV4YubhgEI=
+	t=1789444096;
+	b=LKFbNGgvHbUySU9HqXPIAncJTTj7lO5LA+TiP+jgSOqUUZZHxxIGv/ZJGIOSxA6BIi0kQz
+	xizs3NfZOcM0tuilDtYS8WH8dHwQVMSmQ926r5mvo4fcV9vEq3OMCjq+jgqB/R5+j5zcI2
+	dPKmckD/L5gID2UoNiXC1XCXtd5YDYI=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=V1RQ4BBB;
-	dmarc=none;
-	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 91969435E1;
-	Tue, 15 Sep 2026 03:35:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD421F000FF;
-	Tue, 15 Sep 2026 03:35:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1789443334;
-	bh=vycjVsdvdL/Q00jPIQ1cuSnd7h6q2v9Vl0G0+pf20mU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=V1RQ4BBB5iWxnvLsGmQ6REaJ5XmLOM//fRNynr/+jY9esATY0P6Tv5Kb/aLVsGn+g
-	 rHa5DFQqWPXhlDvVXN1pwIZUdw5jHYYC8KDtauL1OaSKrc/as/F6otmcR5VbxXDMvD
-	 +t+gpofGq6ijGYfKvzOhVyxDPb6CImZdfhtNZNv8=
-Date: Mon, 14 Sep 2026 20:35:33 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Michal Hocko <mhocko@suse.com>
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>, linux-mm@kvack.org, Jiayuan Chen
- <jiayuan.chen@shopee.com>, Zhou Yingfu <yingfu.zhou@shopee.com>, David
- Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka
- <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, David Rientjes <rientjes@google.com>, Shakeel Butt
- <shakeel.butt@linux.dev>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/oom_kill: fix hung tasks queued on mmap_lock behind
- a long reap
-Message-Id: <20260914203533.3544ae8dd0903c7603b385c6@linux-foundation.org>
-In-Reply-To: <aqg-oG2HDIUeK5Us@tiehlicka>
-References: <20260914113239.367200-1-jiayuan.chen@linux.dev>
-	<aqg-oG2HDIUeK5Us@tiehlicka>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	imf11.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=gtMBSMt7;
+	spf=pass (imf11.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F11791570;
+	Mon, 14 Sep 2026 20:48:10 -0700 (PDT)
+Received: from [10.164.19.33] (unknown [10.164.19.33])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E17253F7B4;
+	Mon, 14 Sep 2026 20:48:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1789444094; bh=KgjqZoWoWF2qzt6t1QQEyEyqBSmp/mCKv/Xm4NSLhic=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=gtMBSMt7KQpkpEw4uf2tV+eK0xJnhIK+UUdPXXSlgHaKB+doyn1hf0yIbcbxVkeB7
+	 gZ1GkGl+e4POIgoV86zRSfkJa/jcGhzGkpiswTbEjIPWcJXI5jFPP01aZfXhFDylb9
+	 dCn3om+7wQ5Fg4wBewetvePHdKhyIny513KDRR2Q=
+Message-ID: <5bafc4c7-6902-4015-8f74-e2f5773086de@arm.com>
+Date: Tue, 15 Sep 2026 09:18:10 +0530
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/3] mm/vmalloc: extract vmap_insert_free_area helper
+To: Ye Liu <ye.liu@linux.dev>, Uladzislau Rezki <urezki@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Ye Liu <liuye@kylinos.cn>
+References: <20260914-vmalloc_study-v1-0-526f68559706@linux.dev>
+ <20260914-vmalloc_study-v1-2-526f68559706@linux.dev> <aqgow3u0GSlj0P1Y@milan>
+ <fc999f45-fcbc-4d6c-a0b6-2bea4da98013@linux.dev>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <fc999f45-fcbc-4d6c-a0b6-2bea4da98013@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: zfymizobc5aj8fr8eh4yaskdrycwehwn
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 622F9180004
-X-Stat-Signature: oskns43y9t1k9xd949f6achmeo6zkit3
-X-HE-Tag: 1789443335-723945
-X-HE-Meta: U2FsdGVkX1/o8kdQN6sYkxJEEz/Jp2tY3HOaFfOEBocuc37HmL7A5H+judMoXw/PnMp8MGeBrsTN/mZr4uCNIzUXlBKBWHS3gLZ7q0nxc15fMZAA05lLx8dgbwDJ1XenId9ZaXjyLD5JsR6Py/AHjN1svf5oBwJYo33Xd/WqGbds0XUxHB0DzSC3p+/kdkQyl6RhKlDSHjJW96GA5RM7zPqt69N/8jFHBHaMnIj8nCQV5c3UuIXaZf8wgNT8VMFYCMUz1RN5Pi2KfM3C4ChceAlCqB5rycgBamcq3CF3cgmSIBJu4c1F2beqmrQUlElUrWhlFa40ZkzTPg917JO4MQ4Egpbxtu6f9UG5yWaZ797dkPPHLn7XM7wYTXlgS2A37XFg0VDDg7KTBvpt+l//HmrPyLt2MmI0aAgtlJQmEPjXvYg/pqMFjaj1p60Nxapn41XTXJPEwxn7ITi9jeaMddCYEPfxcghVY8Ts+KRF7Hj/aXZgaSrpMNoh+AW356/Zu6e3ztxBB196F+HXdNi9JVXSX6JGwdZ/jBtrTRV9aZxdZuMjkf6O9iyNbRBPjR5jQgUNiiYIIaJdpGnADnIqTuW7aEbU4oA3MTFtl5LdIeD6pRWdA6Kn4RrI/AbPLj2gxZSNUffz+EPJtOUzmF40db8+h1pvuH5hUp3tjW4cCpXVZEFDk4qw6a4zV48ZUMxaGM8Lh02tQmxWTkCrceIbXmsf9G43a7aRoP3eA5GiCEyVUteAoEZzqQosPripU1q6i+fJvfdMTErGoynN2vBoFU1LuGIgaABSB9D6HMFUI55AR1FkjsWMjthGuD/RGFR8k70JWz8vRLsmDHL6qbFMBAmNE4tRroxDOBmMiUxD+9IvFDpZ3uMzH9Tt5PAuppjn0LG7vyEInEdpDTvcsDhwykr6/l5HoF1E3z1Y67lT0mOxS6HEoXWy6SfF6fcKEgTqszckJAjKBLJngoiMFmi
- FEXzYZOX
- 8V8Co+M2Bm1X3OZJ8m23noZMpxrALZSTUSFQC5X+fz0IwNO31HJsi+3pX9K89hYBB9Lt5bRRQB+KCMp20jBa+lRSq/r7JgLldQ+RT/6Mb0gvJM9B2EmqC4mVTmEX88TwdgrMv/jZLcq5X3nVQL4zjmkS/tfaRbsIcu5OerL72eAKsy0UpljAaByX39U4zwfiilL3uRMpqqJefjUYRcb2GD50NaLzfwX/+ynMz7DBNHZYshm2vNTwKHmpXUbIEGEPTWPSGNO1MJf8Qq/kks8KnUBH+yAAa0GDIFdONEh1fZWfPqhEnznDGgQwIq/wGiOZ7lSjA7Umjv+msnGWnwdH5DFWunajeL5feiLdoY92TKf7mps0=
+X-Rspamd-Queue-Id: B56F640005
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789444095-77915
+X-HE-Meta: U2FsdGVkX1+1BMjFzYeuZnxLg6dnZLFfHivHv+GCgLqU9HAGAf/UwQF7aa1/aG1akXTTDow7YL1BohycuVi7Ru9bMOthnf5r48r21ZaUkRrNEYv3Mh8PAbYUBqMrt0JmtcaUsblbo65rVWzYluBKwEK4L5WoqJoUme/RnHdFj6pSSPHay5Pj04pGOfnphxAeh8XBQojz7OMCqpJLN5zNWKNDPaBtURbVgIuCXIwxKDE1XE5e/4wm05Lymvqq+RfcPWx3Lh8h36tchbkwx3r2VXJg4R3y4TPd7qqBQsNHQddcOAGL4x6EG+eXM92kmPjErt7PKMnf8ri74dQGOuvffwXdIiaeO009K2zneN5tUJmbDIcPBVGKi82cjn2Rgc0zPtpUC7CLUqc9gdrxKqMzuHThQf6hINIKdDsV0jBkawmDkEyRE5TOqkdXYE3zAI8g+O72VzbT7v4g0N/PnZqETSGXpsT9BcTquaaY1iCBjwwuBycNx27Tl3lxLKM0G/SnZUthICTd0KwrvoTne7IH29j9De+ng4nni6eKet5UuPpvFqvYmIgQmvpBkKkV+2u3FPAlNWPVtMvPVgYdH7vOiRiH9YE7Hraq6BcMpfIe5B//LI9AhDNgerqt9UPgg5r6+SF5WKXbfvGwubTUTlDxIB4gtSHaZB9UrMNCjZq3um70JP4caxhY5QCA2oRN/Xpob1BBTp//sI5fwgMXh9MoWT81MQscaLZ5KXxYZ1BpHaQdEM3vmmw0uM+nQsAVZEVKT0eoqVrYPYvF4EWe5XoIy3DQX5Eig4csUML9lOp/1JOzSJJv+54i9mlIFLwxVBbQYT5vDloHr/WmiHgDiausiOEGkBxykKyJWA8HJ849w0vcwJhD4aQnh+dg1HNNP1UiY9assTlvgQVek9olTdZjUBJGrGVdHAof5La6g3CM8S0r1+IerZi5E5pEzI+SfxcJTIa9r/VwkDlcDBSHsmT
+ 8vcfkWVX
+ yLjt3WKxZv8oIXDXpOjG83R0cfJJQ2jI4do/oncysp8KYXngL59S6qkFnJlK59gHfxmo21DbbHyZscKKwpIulHQLQKlG9aSf+q4E5W7pGrGiudTy8tUhzOAUxQj6YDnqK0Xtt/9L90xdLjlOHeM83IilCv2UPM7QSShmEa7Y5hbz6YJ6EBVNKMZ6ju6YpaDGXp30PfwJOH5+zuP/dlibyLrtOUWm9EKFQN6fjAzuyaHwenm1MRgZnGGdI7LUD3/WKPz6VkquuTog3/OPap2YGifZDeChCTqoDHIsY2aw59vbcxcH9duJaxEq8xRMIQHYRzuUrVO/tsYsOPRQNTWQMGoVN5Kt9zIzL7SrquOWzQ035n5k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,35 +92,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 14 Sep 2026 20:36:16 +0200 Michal Hocko <mhocko@suse.com> wrote:
 
-> > Call Trace:
-> >  <TASK>
-> >  __schedule+0x487/0x1870
-> >  schedule+0x28/0xb0
-> >  schedule_preempt_disabled+0x16/0x30
-> >  rwsem_down_write_slowpath+0x1d4/0x750
-> >  down_write+0x60/0x70
-> >  __ksm_exit+0xb4/0x230
-> >  __mmput+0x12c/0x150
-> >  mmput+0x1e/0x30
-> >  do_exit+0x283/0xa30
-> >  do_group_exit+0x34/0x90
-> >  get_signal+0x952/0x960
-> >  arch_do_signal_or_restart+0x41/0x250
-> >  exit_to_user_mode_loop+0xd3/0x560
-> >  do_syscall_64+0x385/0x470
-> >  </TASK>
-> > 
-> > KSM is just the one LTP happened to hit: __khugepaged_exit() has the
-> > same write lock cycle ahead of exit_mmap().
+
+On 15/09/26 7:55 am, Ye Liu wrote:
 > 
-> Why is this a practical problem we need to care about? It is kind of
-> natural that the oom victim exit path might race with the oom reaper. They
-> share the same lock that is mutualy exclusive. The whole point of the
-> reaper is to ensure there is a forward progress achieved. So before we
-> start modifying this let's talk about any practical/real life problems.
+> 
+> 在 2026/9/15 01:02, Uladzislau Rezki 写道:
+>> On Mon, Sep 14, 2026 at 11:34:01AM +0800, Ye Liu wrote:
+>>> From: Ye Liu <liuye@kylinos.cn>
+>>>
+>>> The allocation and insertion of a free vmap_area is duplicated
+>>> between the loop body and the tail of vmap_init_free_space.  Factor
+>>> it into a small helper so the main function only deals with computing
+>>> the free gaps between busy regions.
+>>>
+>>> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+>>> ---
+>>>  mm/vmalloc.c | 41 ++++++++++++++++++-----------------------
+>>>  1 file changed, 18 insertions(+), 23 deletions(-)
+>>>
+>>> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+>>> index 117483dd048c..797933ba9451 100644
+>>> --- a/mm/vmalloc.c
+>>> +++ b/mm/vmalloc.c
+>>> @@ -5433,11 +5433,23 @@ module_init(proc_vmalloc_init);
+>>>  
+>>>  #endif
+>>>  
+>>> +static void __init vmap_insert_free_area(unsigned long start, unsigned long end)
+>>> +{
+>>> +	struct vmap_area *free = kmem_cache_zalloc(vmap_area_cachep, GFP_NOWAIT);
+>>> +
+>>> +	if (!WARN_ON_ONCE(!free)) {
+>>> +		free->va_start = start;
+>>> +		free->va_end = end;
+>>> +		insert_vmap_area_augment(free, NULL,
+>>> +					 &free_vmap_area_root,
+>>> +					 &free_vmap_area_list);
+>>> +	}
+>>> +}
+>>> +
+>>>  static void __init vmap_init_free_space(void)
+>>>  {
+>>>  	unsigned long vmap_start = 1;
+>>>  	const unsigned long vmap_end = ULONG_MAX;
+>>> -	struct vmap_area *free;
+>>>  	struct vm_struct *busy;
+>>>  
+>>>  	/*
+>>> @@ -5447,32 +5459,15 @@ static void __init vmap_init_free_space(void)
+>>>  	 *  |<--------------------------------->|
+>>>  	 */
+>>>  	for (busy = vmlist; busy; busy = busy->next) {
+>>> -		if ((unsigned long) busy->addr - vmap_start > 0) {
+>>>
+>> This line gets removed and then re-added below because of removing space
+>> after (unsigned long). Maybe it is better to keep that space.
+> However, the '{' is still there, but I'll add a space anyway.
 
-If this situation is expected, unavoidable etc then perhaps the best
-change is to periodically poke the hung-task detector?
+
+Just mentioning in the commit message "while at it, drop redundant whitespace
+in "(unsigned long) busy->addr" should suffice.
+
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+
 
