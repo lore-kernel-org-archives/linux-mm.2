@@ -4,129 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C731C88E75
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 16:01:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE897C88E7D
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 16:02:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 355966B0088; Tue, 15 Sep 2026 12:01:58 -0400 (EDT)
+	id 921666B008C; Tue, 15 Sep 2026 12:02:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E0E76B008C; Tue, 15 Sep 2026 12:01:58 -0400 (EDT)
+	id 8D39A6B0092; Tue, 15 Sep 2026 12:02:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D2DA6B0092; Tue, 15 Sep 2026 12:01:58 -0400 (EDT)
+	id 79C1B6B0093; Tue, 15 Sep 2026 12:02:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E52866B0088
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:01:57 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 699B71C26BF
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 16:01:57 +0000 (UTC)
-X-FDA: 85216462674.12.272B9F7
-Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 820E240021
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 16:01:55 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="vDE1/uW9";
-	spf=pass (imf17.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.205 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 524B26B008C
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 12:02:15 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DAB3BC04B4
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 16:02:14 +0000 (UTC)
+X-FDA: 85216463388.09.EA50564
+Received: from pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.13.214.179])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 93DB8140017
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 16:02:12 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=amazon.it header.s=amazoncorp2 header.b="p/aBoMg2";
+	dmarc=pass (policy=quarantine) header.from=amazon.it;
+	spf=pass (imf23.hostedemail.com: domain of "prvs=7114569a0=dipiets@amazon.it" designates 52.13.214.179 as permitted sender) smtp.mailfrom="prvs=7114569a0=dipiets@amazon.it"
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789488132;
+	b=Su6yb2baWNOymPIU8Xao+dXnZ1z4OYXRKDEwdxJY1XL7LCZ6sdt42ryx/xmc6FH+QSKouN
+	7U0t+0jtV3wsZCNJhxxlPiLbVjSkW2e+0G5B0bjfC44ZTELxJfqGGiymlHvmu3j617ZtsM
+	MhTAc4wawwz/Mh2FnIV8/s2ZJbolq2w=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=amazon.it header.s=amazoncorp2 header.b="p/aBoMg2";
+	dmarc=pass (policy=quarantine) header.from=amazon.it;
+	spf=pass (imf23.hostedemail.com: domain of "prvs=7114569a0=dipiets@amazon.it" designates 52.13.214.179 as permitted sender) smtp.mailfrom="prvs=7114569a0=dipiets@amazon.it"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789488115;
+	s=arc-20220608; t=1789488132;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cHorUh9PUsMTcz7XlBSNxIJi9xL/FsLVONo19kBkoF8=;
-	b=o1ibNLJ3hNFrHfBtg8HvhUROG3Jv2a+mk2H2eqkFEHkBCcMpdAnpQY1rk21rwpEKlfSJSQ
-	0wED25dfyUttm8HwakaXMiEJtJkHBJ9Iy2Bn0z2+56xf7rnlAdfa2FEip6eK/OR3BBYgyS
-	jvxz+5TTr227Z2sXNkNj4jlsdJkdaNc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789488115;
-	b=zqflxUVX3xGOD30hc6jh6K8yq8T/adwfTjY0/jaUgmDrOLkR14Ba/yCP2wD0V+L7Oa5LeZ
-	aWCIBKbinMLSbKcuE5By9pPVi6+yC98sYu1RVv5XdbbPuy+GB4HRRN2dH4+OlKh8k+u9T0
-	NwUen0InnDsu7tSfIsYKQ1q7+kTDsWk=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="vDE1/uW9";
-	spf=pass (imf17.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.205 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qk2-f13.google.com with SMTP id af79cd13be357-939ca12ab70so423482885a.1
-        for <linux-mm@kvack.org>; Tue, 15 Sep 2026 09:01:55 -0700 (PDT)
+	bh=zH2AffRhpysneQJNXQPa9UtiFiIZCjOUG9PhR8vSPsI=;
+	b=mG7luStAxVF322I56SuQP8qqVJjjauFZcUPMOSYHSj37WYd4ZcWgdCxfz8Bm1D+xm5P8tt
+	Q0PiJ+q7nD2qjpu2NuEk4Qa7PcN0zE6Aan0+sMtVXIu1obuTDtvICfksqRwClA6SXUx08p
+	MMvP4y+uwJw7w1GCE3L2+aqqr21swbU=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1789488114; x=1790092914; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=cHorUh9PUsMTcz7XlBSNxIJi9xL/FsLVONo19kBkoF8=;
-        b=vDE1/uW9lPNPas+Zs5mZ3FTSp2fDzpF7P/zbtQyLFqbij58i+sQZs2F1lR+X78HBuI
-         M9Ok4HQxuCuIcztsgObKs0oRL24DklEefHWDxvFoIDmMRnaqdoVBLPfLuFSiNhc4SjUo
-         EqgRb5ddiOp6FUlXvHo1KtCopacNMH0UD9Qg1NbsmfljBWHMk6uES34cQ3lkVZjCvJIH
-         rwZooVxl+b+wJOajwY18ZGnX0p+u5oWdCKM885ZZ9/iYnn5q+lrGh6DX8WsKPXfrciaD
-         kN9hI0k+ySKpdWOeifpeNLlJFiAMkX9L0KPWVee0l1T2F6xznUUuJhiz7gHoHeeGc0xT
-         7bvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789488114; x=1790092914;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=cHorUh9PUsMTcz7XlBSNxIJi9xL/FsLVONo19kBkoF8=;
-        b=2uGjDjhHJCAkMWVsDDwVzOPKN1Y1XHkIPy28hFNRsVqbZ8sqZbY2sHZzTr/VcM2baF
-         5ZeuX/7aW/5+V16HMhEB8zGa9ML67RrDkNTZLBxMFuEzCkD+WL24/mNSx1k45bSCSrrn
-         jTtdQ0Al0VhB7O1ZFLoQ5Fgx4Nkga1tNll57v23UerVrvMS05zWe3BoJoH456GJP9s6C
-         b+eLoLOT27dUpll4NnyXpptB+0jR73yCOl2/RWjaaz/AHzNj5qVWoOeXpWPFQuVPHzwG
-         ZNQ9SRO7THlf6V4CmIK6kKCQuS1MjHeY1MDoQS4tp9KhAOPVuY/yTfSrGH0YhITxo/ei
-         HU+g==
-X-Forwarded-Encrypted: i=1; AKwUvByD1+eQz628HSslvDPX6Vm9LAgnPKjPk1hqbHF/+Xmri62KN1ckFQKXk3bOxidGEOOYQS3YpcAndA==@kvack.org
-X-Gm-Message-State: AFuF++kyZQwI49wblhN5dz1+ODSdodu8Nn9L83bCNxXbhVvYB3pF+ItQ
-	6FoatZBYMtIx2dvqN2QN+trTPpMgqpNY7m64FDt4qu48g2hMawuWhLhKXY5iWPETRl4wWtSWXxI
-	VlM6L
-X-Gm-Gg: AYBFou1c5s/kOVkc1E0AD58dZ3/vOXYfbhvpICUnlkk5/xmpZnRZGERE6PJ0rwZILht
-	2H7AsRiN8Oe6e4vsY4z6shkFdRSWnk7kkr44/wQBT+hQdCbaigAZougFWDvGA0hrm5yHfPboOvb
-	F429+/79z4Cv6y+lZd6JpHtfLQarrH28UN8IFZPZiXNimN5QRcyQ+dfNonita/d7IZrQ8Huk2g+
-	9k0nR8VJELMkvmDzV1cXI7ovrR7oEfaX9VoZgssEIwBZbvzdug1wrQblGXOLq7KoN3sX+5+rIxO
-	d78Jrl+Dk1FJ0EOYO0jRH9lx0GyEFaYggCW0rJPTzSDpLqZx3H/360l81gRIJbl7AGfZrIIZGDt
-	Yrc1oH2YTZu8K1Wvb68I4P44WvvN07XqqUojQp3lFr6xOi1GRVUHvqsAVXkv9XVEQMngxTBuSOv
-	KqIASR09viE+7uqNG8gnkyfHhn6oyc7jBgg8N4u/u3t3in4pS/98UNPjAce0AfTQbsLIBR8Kgvr
-	oftOuqW6eQ4mJ7U4aW7DQw2sc9SYRltrK4Uq1X0szNaPH3ow6GebZY=
-X-Received: by 2002:a05:620a:1994:b0:939:fbd5:af44 with SMTP id af79cd13be357-93a299fbf14mr1209615585a.32.1789488114441;
-        Tue, 15 Sep 2026 09:01:54 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93a0414809bsm956311385a.45.2026.09.15.09.01.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2026 09:01:53 -0700 (PDT)
-Date: Tue, 15 Sep 2026 12:01:51 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Takahiro Itazuri <itazur@amazon.com>, 
-	Sean Christopherson <seanjc@google.com>, Brendan Jackman <brendan.jackman@linux.dev>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Wei Xu <weixugc@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org, 
-	Sumit Garg <sumit.garg@oss.qualcomm.com>, Will Deacon <will@kernel.org>, rientjes@google.com, 
-	Roy Patrick <patrick.roy@linux.dev>, Andy Lutomirski <luto@kernel.org>, 
-	David Kaplan <david.kaplan@amd.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Patrick Bellasi <derkling@google.com>, Reiji Watanabe <reijiw@google.com>, 
-	Nikita Kalyazin <nikita.kalyazin@linux.dev>, Ackerley Tng <ackerleytng@google.com>, 
-	Takahiro Itazuri <zulinx86@gmail.com>, cc-open-source@amazon.com
-Subject: Re: [PATCH v3 03/26] mm: introduce AS_NO_DIRECT_MAP
-Message-ID: <aqlpxa61SrzhWF1O@gourry-fedora-PF4VCD3F>
-References: <CAO9r8zNJ3mSRf5YyRQYYW-eM2eiFvQMXW4Rh0cT=31jsKZpuSQ@mail.gmail.com>
- <20260903072625.62694-2-itazur@amazon.com>
- <CAO9r8zMxdg2BTFguwcRQn8n-2CPaEJJfg+T8dWcgO2eV4uNaHQ@mail.gmail.com>
+  d=amazon.it; i=@amazon.it; q=dns/txt; s=amazoncorp2;
+  t=1789488132; x=1821024132;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=zH2AffRhpysneQJNXQPa9UtiFiIZCjOUG9PhR8vSPsI=;
+  b=p/aBoMg2NvXzVu/2njR1un3ma7x6p+qAmz1nEk0jJwcL3NqQ2L+RWb7G
+   VEfSz/Elhh04xZeSmnnF+YfyHSmbwcbhOKDH/muj/xD+cjNeQkfZDYng2
+   yP7BRZyISOKFKasCAbUxTn/IiJQV41rDwFCiZSnVO3C6W/+SigctTfNLe
+   Rc2wRWJivLIbDuUGQSirtPGtSLFsen4S6WuShKxA9f9b59ZbVYxdRbsw5
+   LXuWZDvr2gUr58CQB7TSjsxxo9n5vWkP8515PacffqsSn5GwbiUAaU2Ck
+   zjtTZ28C/MqriTn5+gWLyVtEY+tHcJbnNkTaN0GIDoEJI9O7Gqru8V/uI
+   g==;
+X-CSE-ConnectionGUID: u92piRZrSFapAw+TyK//UQ==
+X-CSE-MsgGUID: YKI+s6tzTVW5liA/y0xZ6g==
+X-IronPort-AV: E=Sophos;i="6.27,103,1787011200"; 
+   d="scan'208";a="28716152"
+Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
+  by internal-pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2026 16:02:08 +0000
+Received: from EX19MTAUWB001.ant.amazon.com [205.251.233.51:27276]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.19.159:2525] with esmtp (Farcaster)
+ id 15f7d0fc-d5b9-43a9-b411-4c5574972f7d; Tue, 15 Sep 2026 16:02:08 +0000 (UTC)
+X-Farcaster-Flow-ID: 15f7d0fc-d5b9-43a9-b411-4c5574972f7d
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.46;
+ Tue, 15 Sep 2026 16:02:08 +0000
+Received: from dev-dsk-dipiets-1b-77b833da.eu-west-1.amazon.com
+ (10.253.66.177) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.46; Tue, 15 Sep 2026
+ 16:02:03 +0000
+From: Salvatore Dipietro <dipiets@amazon.it>
+To: <akpm@linux-foundation.org>, <hannes@cmpxchg.org>
+CC: <abuehaze@amazon.com>, <alisaidi@amazon.com>, <blakgeof@amazon.com>,
+	<brauner@kernel.org>, <brendan.jackman@linux.dev>, <david@redhat.com>,
+	<dgc@kernel.org>, <dipietro.salvatore@gmail.com>, <dipiets@amazon.it>,
+	<djwong@kernel.org>, <hch@infradead.org>, <hch@lst.de>,
+	<jackmanb@google.com>, <linux-fsdevel@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<linux-xfs@vger.kernel.org>, <mhocko@suse.com>, <ritesh.list@gmail.com>,
+	<rvvandan@amazon.com>, <stable@vger.kernel.org>, <surenb@google.com>,
+	<vbabka@kernel.org>, <vbabka@suse.cz>, <willy@infradead.org>,
+	<ziy@nvidia.com>
+Subject: Re: [PATCH v5] mm/page_alloc: avoid direct compaction for costly __GFP_NORETRY allocations
+Date: Tue, 15 Sep 2026 16:00:42 +0000
+Message-ID: <20260915160042.1265958-1-dipiets@amazon.it>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260911093209.d9181d5950778897935f6bcb@linux-foundation.org>
+References: <20260911093209.d9181d5950778897935f6bcb@linux-foundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAO9r8zMxdg2BTFguwcRQn8n-2CPaEJJfg+T8dWcgO2eV4uNaHQ@mail.gmail.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 820E240021
-X-Stat-Signature: wgcx1f57o9zgmsy4fy8j8g3gjpniiwx3
+X-Originating-IP: [10.253.66.177]
+X-ClientProxiedBy: EX19D031UWC004.ant.amazon.com (10.13.139.246) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1789488115-700746
-X-HE-Meta: U2FsdGVkX187XvCjlfNXyhk1uT8hgrkzdkVBfhnyFMa7cDrEOZyOL5BjsU/OUHCLwY1RIIvKD8C6t+/UxRmRsmjr0/7rIozX/as9XqhTOCwjYQ27RcUsFllILVWEppM4g/uprCEjjAEYgGzWFczAodrqx/cZTJF3L/dD2o98a+ufh3w5dS9DogiJvxdUVQpxTp5ctzLruC3aw12oslSgAb5EhwXYm9qIJOVHVn4m2ExB8En7npdkEAyhXc26fpT9EtExCNWsykmpfALpUTh4MtISneveNhy3SY9iSNP1x8Ju9q0hkVUZ8Kmx1VyrqkxmGZN/v5ZNfMrbJPD+uv2k+vHZ9lU8A7K18JUvhuE76wFtCqbZNBykO6Iy34UUtpkiAlWm2cTN/1FuCiptxD8x3HIdbQlh0bgWZ5sUcWDHMfy376J1y8SqpZ7gQi3O7Fr+0AkRok77E25HMpdo2G6+J6IqsqBswQokqits/OalpVPEn9lE4/sYDW3stXXPg/HHHMniET1vuWZu54X1lcXOUfN8m/uGwfgSyFTcFg3HdmQKDAOLYeuejSaY3+aHU7VcybQaWXBL+vMkKlYYk3yLJHsL6mVGCCwjJjZXX3LaHdmnJTkO/cDllalPmjvSpso48p6lwUMVos58gRZ37AejI2gvqiToul18eHkUZ0OX36VNw+xmTAdw7N6xhte0C76Pb+3lK2Qs1mDXGnOKYzLPMFUKePtRk1/o/VbZv9fDW4shN4iGYgX4jW/xrmNs/JCve/OisMjAA6R9jJvX4ACtEfV3FhWiq3vdNlXpYoJoQTOcreO3VSto3GRBCjOE9ExaaLfXI0PYsKm1XX2o7OnwgmGyyiyigWFBdldfDpuRfaYedJohxYCG8VbDXoUiACgEtm87dR3AoKyFIE2DsXEH/J7GwJiX6GT0dq5aqAQt7dZeKv9VSZDHD1SoVNDdmjan3guOSQJq+kClrei7SFw
- LfCR9m9V
- kxMzmSp5HA6ulZv4Owd75lKApcSXB547fJR7xlwj4h3l/Q3b4VPwF9ZxK5MUdHSOMqcsyqvJ6pzpy7AIQsfirxSxHUL7yQHd+aN6f87TQS28UK0rRces4+CBujNzyqcl1Sf4jn9dbpbMmsMO15OqGWQmAsuGHnXxTUyKk56bKPxpmsqzZQ+iR+eV28Zu7WPm+OKzBCW+WNyHY5Rwoh+kDW92UqLFs/QcrWCO4GZKO30QcKIcFF08L0iu7xSrwdc/0Dit4PhnyBq+Cy2w4ROrpiAzWp1EguVwey0GVnYGgrYR46GQmNYnzUaqr6qaIW6dN+UdXXPMVbUUFZBz9pocw5FvsF+IjhKbtwuuELDjDHgIPHsvflUYymH9KLfpVqKf4MUL79zuEd9ICBBCrt1XE1qUtRjmAKBTVhgM+v6YUlrCJyl6QYPHDOgHTgDzCPVKczr26G/FfPnZTPQg=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 93DB8140017
+X-Stat-Signature: aezk31cc6oekzktpmrnxhbp7eed3ihhu
+X-HE-Tag: 1789488132-247659
+X-HE-Meta: U2FsdGVkX19lFYSvKZLtMOZMyp/PFinKCxFdLJ/QdAMcRh9/bCmawP7kwrto13mrECFo+Zevu14URljohLeVI4pXuN1oVlW74zYMDlqyGRjSmSp4Y2kaG6wFnc87EPTi5LOtBWahNQO1gTyPnb9joAQxKWcD9BfwKumt7FxothxJRM3WGuaz/IqQRH/xlC9zgE1qeWY54lY46UNQImMQYYMghBMj07GUFW0JsK5sohrU4AmCh/4N2TrRPxmprm3PdqKvGqHbrPy8FJ4ZuiAPWfc6ey7+NTiNbOXDsFsuJzuIRDwtpPAN/KsriPmFpJkV1/c1vegnbTYImE+XMux25kDqO/KocwCkAP0Z8sACx8SdZ5GfMG6djMRZQEDpBmQJYylTJJ7HFSz+vbjL9vLs0cCQRIJqCsrjznzh5zWVsSLY9rAHUIRYpmX77Lfjpb9g97NII6Rzi/j557gVe0woce3SlkNO4YYZHHfhxMdWkKfywe1bAOBxbd/2lzNzVi6190wZShokbjPQRGFfeqV/1uvys7yaoEXuNPPfz7h3ANYF6H4+Ein1tU2cKLpZstspexEDFjrpNRMETCbMIPsOZJ0xJsy7fxVCZ4cQNFEP5rro+1sM8qdhX/t+TC56epGbBpYseTKCJLqio+n5Zm9o/cLbDsSx7XgWBpn2hAOiosRjrEgYa0VQFHRNRPc98t0mUTbxrczvadwlKzoafwAiS4uCCM8YbUXU9uoXhE4VMcK8+z4uVA9W4xB9v1VTVyUQJP6CPOMlRzYsmCPP0zqEhyuvfGpxr/BeU97jNlm3mWMkzUuV0fpd0EuJNSMG7HxFs5hxmQ+gTAdvlHiTdi83zpZa133VKpcb/QQk3HEAiV2APMAthngtsi1WJjf/vyWS1njglD1ceXuY0z2wOVaqLmpI3T8w0CPc+ovs0m0kj7Ehomc4lq9cgNVv4bKTYysLkAWyPX3uLA0Z2wAr7ge
+ BmgupKea
+ OMmPGcbv9oeZMHeT/TRzyNKJqTINOeMwbpMYww+6WtYAItERP/pIMvaUE3IHtzZVHV66JBNlxt402IGXjOoNaixhxXrx+LVao09+bWIA59Guhi2pO/yn5CgnRqDWSaTX37zRN64tVPtSJ2oGk8E3ndDQQyD85x9/9iskoVUXoKr/hDMkpN1Pj6Z8zplJH+bHG/wSc3zoxDIZoPVC7FIDCzkpHNHr7pd3TqACqcEpil3DPDvJs35FyEWmbcasWPIhe3vRYruXVxIwV6PVezarz7iXgWYmJAqgmKfmZKJ/3kTqkNDDdVEf7yC09RX2xFaH07f/9pDZiGpGVc+rQ4Y976r4dM8wolS8lG2J1zZjneJYPv/guraDqDfXQYQ6FnlI7CPh1zsOMnkXNL7vA5pxCg8FHjupm7n2NcCB2wAZrss3Oza5WLp04sciAHzeb+0RiangS25+BjB9zWcxoMWKTPnbnOsEPIXGvdrIpwx3sacSsQRJFYHQc7Nnq7rmEbFlkqMVxAv0+rl2iuQ/Q3D7ETkz87ZoaK6GDzXflypgoAM6DxS33O5fCZyv9gDnaKh99if/f2nm9nxxlaKWGqNLs/YMd68c4RTrL8lA+oEtRJcDHYfhwNi1OtJjgsdPOzxvOO8xarSQ6vzXH0tZGA2IY9fRdrr3UNMWFerSUp9QNZRrHLIltN7PfNUfj8V5CDI4AC1XINgHUZ6mSwfWFlfZT97a/YIWemI5Zwepi
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,70 +120,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 03, 2026 at 07:06:02AM -0700, Yosry Ahmed wrote:
-> > As far as I know, Brendan is no longer at Google.  I do not know whether
-> > he plans to continue the ALLOC_UNMAPPED / mermap work, or whether someone
-> > else at Google has taken it over.
-> 
-> I am currently working on a new version of the ALLOC_UNMAPPED series,
-> I am hoping to send something out soon.
-> 
 
-Hi Yosry,
+On Fri, 11 Sep 2026 09:32:00 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
 
-I've been trying to pull just the alloc_flags extensions (bulk and folio
-allocator API extensions) out of this set and my private-node work.
+> does any of this look real?
 
-I was taking another browse to make sure I didn't miss anything.
-I just saw this, and noticed i should have probably been cc'ing you
-here instead of Brendan:
+The mechanism seems real, but it only shows up with vm.defrag_mode=1,
+which is off by default.
 
-https://lore.kernel.org/linux-mm/20260914155115.439742-1-gourry@gourry.net/
+With defrag_mode=1, a costly __GFP_NORETRY allocation that used to fail
+cleanly can now succeed by fragmenting another migratetype's pageblock,
+which seems like the wrong trade for a caller whose premise is a cheap
+lower-order fallback. Johannes, do we want to keep it strict?
+If so, we could add a condition like below. It is equally
+applicable to v4 and v5. Happy to send it separately or in v6.
 
-Do you have any concerns with me trying to pull this plumbing out ahead?
-Trying my best not to cause annoying conflicts.
+	/*
+	 * Reclaim/compaction cannot run, so defrag_mode's strategy
+	 * of enforcing ALLOC_NOFRAGMENT cannot be fulfilled. Allow
+	 * fallbacks rather than failing the allocation outright.
+	 * Not for costly __GFP_NORETRY: those have a cheap lower
+	 * order fallback, so failing beats fragmenting.
+	 */
+	if (defrag_mode && (alloc_flags & ALLOC_NOFRAGMENT) &&
+	    !(costly_order && (gfp_mask & __GFP_NORETRY)) &&
+	    (gfp_mask & __GFP_KSWAPD_RECLAIM)) {
+		alloc_flags &= ~ALLOC_NOFRAGMENT;
+		goto retry;
+	}
 
-~Gregory
 
----
-
-as an example, this series commit 20/26 reduces in size to the below if
-the plumbing it pulled out ahead:
+Salvatore
 
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 2e079fa3a729..bb43568bb468 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -5192,7 +5192,16 @@ static __always_inline bool prepare_alloc_flags(gfp_t *gfp, unsigned int order,
-                return false;
 
-        *prepared_alloc_flags = alloc_flags;
--       *fastpath_alloc_flags = alloc_flags;
-+
-+       /*
-+        * The caller may be atomic if it disallows direct reclaim or requests
-+        * lockless allocation. Determine this before gfp_allowed_mask can clear
-+        * __GFP_DIRECT_RECLAIM.
-+        */
-+       if ((alloc_flags & ALLOC_NOLOCK) ||
-+           !(*gfp & __GFP_DIRECT_RECLAIM))
-+               *prepared_alloc_flags |= ALLOC_NOBLOCK;
-+       *fastpath_alloc_flags = *prepared_alloc_flags;
 
-        if (alloc_flags & ALLOC_NOLOCK) {
-                /* Certain other flags could be supported later if needed. */
-diff --git a/mm/page_alloc.h b/mm/page_alloc.h
-index b10f5422b6bc..863074319c2a 100644
---- a/mm/page_alloc.h
-+++ b/mm/page_alloc.h
-@@ -56,6 +56,7 @@
-  * alloc_tag_sub_check().
-  */
- #define ALLOC_NO_CODETAG       0x1000
-+#define ALLOC_NOBLOCK         0x4000 /* Caller may be atomic */
 
- /* Flags that allow allocations below the min watermark. */
- #define ALLOC_RESERVES (ALLOC_NON_BLOCK|ALLOC_MIN_RESERVE|ALLOC_HIGHATOMIC|ALLOC_OOM)
+AMAZON DEVELOPMENT CENTER ITALY SRL, viale Monte Grappa 3/5, 20124 Milano, Italia, Registro delle Imprese di Milano Monza Brianza Lodi REA n. 2504859, Capitale Sociale: 10.000 EUR i.v., Cod. Fisc. e P.IVA 10100050961, Societa con Socio Unico
+
+
 
 
