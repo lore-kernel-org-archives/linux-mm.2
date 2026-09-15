@@ -4,108 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 090B7C88E72
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 02:31:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8D60C88E72
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 02:39:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1D7326B0088; Mon, 14 Sep 2026 22:31:53 -0400 (EDT)
+	id BAA8E6B0098; Mon, 14 Sep 2026 22:39:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1AF396B009D; Mon, 14 Sep 2026 22:31:53 -0400 (EDT)
+	id B34DE6B0099; Mon, 14 Sep 2026 22:39:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0EF296B009E; Mon, 14 Sep 2026 22:31:53 -0400 (EDT)
+	id A23B26B009E; Mon, 14 Sep 2026 22:39:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DE6E26B0088
-	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 22:31:52 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 406B71C20C3
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:31:52 +0000 (UTC)
-X-FDA: 85214421264.10.55B45F4
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 271751C0004
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:31:50 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=epZV88N2;
-	spf=pass (imf18.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789439510;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 802696B0098
+	for <linux-mm@kvack.org>; Mon, 14 Sep 2026 22:39:50 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0B03CC02EA
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:39:50 +0000 (UTC)
+X-FDA: 85214441340.15.E07F230
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 12FAB140002
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:39:47 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZpPTdzn+;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf09.hostedemail.com: domain of kunwu.chan@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1789439988;
+	b=CotERG8t7vCfspzbuIVimZ8bo33eBQvzjesenALgAInALoASf0uukI8gxYoWOrgBJ1wcS2
+	uF4umfyiPOxCBnIWTSh8y76J/u9Ckc5n2PgEUfkb4EdvWAe6jPULCdbCwVkrM8ttb9u9vM
+	dA2OXMRGeCxpdRiA4RM/nRO7NOsVdU8=
+ARC-Authentication-Results: i=2;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZpPTdzn+;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf09.hostedemail.com: domain of kunwu.chan@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789439988;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qSXFbfpOKnuvaEbNiDn4HfVO50MtuTzZ+yYBsK0eDiI=;
-	b=dvB970aV9CI7rTzLLtgBBjtgzBRZVUAPs624/Yeeo8uaR3205JqA8/4yK8G+7JQ2ctlc2j
-	tFexNUdkIU91wL/lWx9bskMZDEuybpxzk9iN2ZkGMwWZuRq4wdXODE91fd15GBk263zef0
-	7+JfaerbX5KGBXi3deyB6LZcqN3yt60=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789439510;
-	b=XaCCDcvxuD/pfXGYBsXNVHtstQWLhPJ0T+ocoz89UKLTtTyIFXX/a3NVE1dArSRqU/I6u/
-	LRCiv1rveRQPmhUkJkoY/tIPPvS0pKH5vE4FolCFNefgdCK32fyIchv1JXKzW/n/YYS0rc
-	NpFV15uqthtj+bWMJycBd3YJJpC10jk=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=epZV88N2;
-	spf=pass (imf18.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id E5CF340E022C;
-	Tue, 15 Sep 2026 02:31:46 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id qjc-Nwnlwtg8; Tue, 15 Sep 2026 02:31:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1789439496; bh=qSXFbfpOKnuvaEbNiDn4HfVO50MtuTzZ+yYBsK0eDiI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=epZV88N2/8zazLMcKvlccwrylVOewX/+KHOEExwCUJZyMLMKCWdHEWrFddkaGlHo3
-	 /rAkqnMLs7Mv1O7gPyalgGsZ8dOdjbczGw2Njwgpys5PAhwuem40BaZo3s+hypRWNe
-	 q3Yrxy7XscBDptePVIXSiMXYuxfykS2Z8RkkK1BHI8HqMxrizOpyGEhWKfjzxcSc8t
-	 AlUFtRN0q4KjqtEBIWkERV0jvgmC51eiighIb0vTjfehho381YFscFIAy1RTLqTAud
-	 jiRLdMRFT5dsNWff0ULOIflPBioo4eIvsF3rjqNyDWcVBh2MQMUVAXh0pQkOmtSAkE
-	 Xlj2tcMorNeP2JtXhKWRASpEKkHgW/cCRzWx7nALLiycLmx3p0uLLbKyvzoOqSaNhB
-	 HxuqcOgpdoUFJf7m/J8McpSUHbnvjPeFvK/yXJ02YAbBLy15DXsInlAEYdtJd7y8Iw
-	 LxlhhpBXDHHLv8DHlM88rBAECYVlLxDxM1Sb6UoGNDSGMtV/3NWk8tYbkrno69CIsN
-	 /p9kOKTWjTJ/CyOgiYlvFJtsnEKGLVy/ICnxoO20cuYkqnZS2yRFL+EVLcrJ48TfsP
-	 NZVIP2MgDtk66smtyDcdMOALcHCtAPdqOOkJHC6aj1MRsKb0t7dZebPa9zjc3vwGh1
-	 LrMYUBg8VAsjRJKk75Dgf9Mc=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::e])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 6408F40E00B9;
-	Tue, 15 Sep 2026 02:31:19 +0000 (UTC)
-Date: Mon, 14 Sep 2026 19:31:15 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Ihor Solodrai <ihor.solodrai@linux.dev>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	linux-kernel@vger.kernel.org, x86@kernel.org, bpf@vger.kernel.org,
-	kasan-dev@googlegroups.com, linux-mm@kvack.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v2 2/5] x86/cpu: Initialize boot CPU cpuinfo defaults
- early
-Message-ID: <20260915023115.GFaqit8zcWHGkAdHD5@fat_crate.local>
-References: <20260814235134.3461435-1-ihor.solodrai@linux.dev>
- <20260814235134.3461435-3-ihor.solodrai@linux.dev>
+	bh=2jmDylHBt6Z/mwGiXz/nmJJJ0KqybZ3pQ4MP3rJZ7V4=;
+	b=66u/FQKwETN6kIUnvUjhTny48XJm9JxDM0VU9NBXpFHXyowjx1QfxLxJkl5tml1ECtY5ut
+	GfX9KyaN43WhUKfWBc/J0TkPRAji2q2m3xOl9FA6VYeOTB2rCp5pyMzWXkyMkYn138xMb6
+	i+79I0LogUgEX715FJ8z8tF9LuwyEjI=
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49cd38e0e5dso31453315e9.2
+        for <linux-mm@kvack.org>; Mon, 14 Sep 2026 19:39:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789439987; cv=none;
+        d=google.com; s=arc-20260327;
+        b=rdEU2Rwy0L9GvOZm1QExKjsQXG2PBZ2Y2l/NbSug0ynmfRy9jKSAIHf7aXULOzlIEA
+         jTwWXrTQCnzSPyWRMd+w/wwPxmKBg5MI/LJTJxMDs/xO6pIR3UWbbq1cer2OSQuCcX5t
+         Vcq4RGD7s+eTyejnPA5s50a29BX6/7ONmqxdNvLhLBJCD+pC/9pNjF3aZSVypshroBAQ
+         Bd+ZsVax/grU0OG9eXqxjmj69LsWWX5EasVg+4BfICx+l1rjnu3njh47cWZYemO9k/aC
+         SkhSZRq7M8sXSof8OyyhRaAwxrlE8wd+oyYy3AjvpWUsEsYc+8wu8/QR/vAQFQCPF+wB
+         UFdQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=2jmDylHBt6Z/mwGiXz/nmJJJ0KqybZ3pQ4MP3rJZ7V4=;
+        fh=2zG4+d8Km4vYk+g+iNMfzp5UruJxtQyM4YswJQ2FBoo=;
+        b=jeGf/dvSEgMDl+Mi72V9XtJlqPIUw13MhFLzo98PkIq/9eWem8PzSMJrTEGE2JZIto
+         LI/1lG0ZML32X3mUuRvK16r2FxNNmf9vOj9VqSXPeLwm7PYvc5YfKUJW2A1wCGmcO9gq
+         7Dt8J7TYREj1F7BEROBS5cmfZ2RBWuE0Hlnvl3rifIEYPdW1QGkb+fXdof2LyfIhfOI8
+         h0FqKZGSET2EcuL+gW6GqcC97bgUsAAoiNjusIUlRj/IZXtckRoaUhDUMLVJB40IDAWQ
+         2QAVe70NZkJxYHO9TGS/7tsd5CrRJo3126K2BCcmCPcTR471jxEtc+fdTb8ljdC2hYyj
+         QaZQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789439987; x=1790044787; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=2jmDylHBt6Z/mwGiXz/nmJJJ0KqybZ3pQ4MP3rJZ7V4=;
+        b=ZpPTdzn+uIibhA5CgIKHjKfRY8rRd1HuzEbfGLAvpXj/G/q1oTa4itd/ZljpeCpGei
+         Z8gfxsnGUDSExky2GJzynSlWwtlZZHMm2i2kmQDdEItd7HQQ3pwbnmhIIsy1CafGH5vQ
+         MjU2Z1NgD/111PS1/CInSIU0eAmyc/AQlyg2Ib08zUPyAMCKfG8L1FBYk/gTs6n+YgU0
+         AnXLL1BH/7YxJx79TZ8nxETTi3IBlXKeEBUtKV+t+NLPM9Hp9KREuG7S/l7KbMK8zN/+
+         jykGCORefbEBe0aWhKkgwWRbtOI7E6rIeLtxisQGlufsK9JJA1rA5qh7IWFGdOcZP4hk
+         hzeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789439987; x=1790044787;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=2jmDylHBt6Z/mwGiXz/nmJJJ0KqybZ3pQ4MP3rJZ7V4=;
+        b=Wnmto0kOxEcJfvyLsHYi/hHzbkE4idIVp9DSZ+R/8GaIpcvb40zySfdgRUr6lN420W
+         +gJ/34ULSMyaa7DOT/M6VZfUUJHIvNB+Ffrps8gZsKEClzNDHs/IcMAT91iMHp8keTk7
+         FboENjN28xa3Dzqet4mw/VAjWWlKh7JuSYjbHnEEYD3NXfk414JXq1lV0o706GWZPZDA
+         Dr99YGeHT7WFhYBUWNUKEvuSYPCYdvNfqMWIGYnqxZ90iknmOfzjbPmshchvnOXvyuF7
+         QYRv8kFiAbwQelypJNBrcfl/0M7fa7dVKH43bn7M3RZxrs0pzpxqzjAZSoY5F7y4yiFj
+         Ryqg==
+X-Forwarded-Encrypted: i=1; AKwUvBxGwZV1/+DiyE4rXypMscQ9FHE0wTQexkylbf+098Y+vEeYHJ2JJHlohxm18I22BC12OtmS1WPp/Q==@kvack.org
+X-Gm-Message-State: AFuF++lTqP+0HIfLjRjVzZswB81/jj/Rs89c5AIZU+cxOci0Ls7+MMIE
+	X/R6aAdGMkciW832PggkLAzTyi0VpuzV63+QcK/slSRQGi/tTjArYk7RbRSnsnZobm6H9lAUJtz
+	OGzI7gjbT70YeFDdlbbJykwKd2QbxWZtGnT4DOl8dzA==
+X-Gm-Gg: AYBFou0so4jgdsMkJbeXmt/NPP4MTK2y2Yjjl5qSKCIWC1U/V82ULiwIMdZ1DOp5ieB
+	j8wMo0PF/mrXUPN6DZMGtIl1SlJXttezPgDNG/93dmWfI4FuPty2asSwS+X7pvCU5rKvu9rdJd8
+	tHTRTY3fCAPMCo37iLWf62tgP/Rt+P4gcAEgPtoDuDEVj61gu8Ljvi5/PcG2MyZGtOAp+ECJZ/h
+	0R/6ay7/IbKRZGsbuG3Y8Gk+GGjp/18AcpMTYqCGgFTOqI/J3k1NW2hjj4l6uK+AG1n+tUrdFjV
+	7TWW+tbOFJ2ValbTL8CpulqDn86SSDqX33KxnJDHgvMmeTECkEkQDjLfLx8GS2RZW2FGI6Uk2nD
+	+EyueSavm6Qz3XtX5eqR68+oo
+X-Received: by 2002:a05:600c:3548:b0:49e:602a:b4ec with SMTP id
+ 5b1f17b1804b1-49e7a656bf6mr108019915e9.8.1789439986429; Mon, 14 Sep 2026
+ 19:39:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260814235134.3461435-3-ihor.solodrai@linux.dev>
-X-Stat-Signature: nbknrg6xthpsxr48x4giwr6bp6o7frqo
+References: <20260914155729.1518105-1-kunwu.chan@gmail.com> <20260914234924.100335-1-sj@kernel.org>
+In-Reply-To: <20260914234924.100335-1-sj@kernel.org>
+From: KunWu Chan <kunwu.chan@gmail.com>
+Date: Tue, 15 Sep 2026 10:39:35 +0800
+X-Gm-Features: AcwNN1Uk_DUdhz76I0hRVSRZulITZWPos7_upPjkw2hrucXG5m-I4GLxm605D_A
+Message-ID: <CAN_Opa-cJDOOtQo+24kSrO6E9khoJuD3wzHZxcgAWZrrSOOSqw@mail.gmail.com>
+Subject: Re: [RFC PATCH 8/8] mm/damon/core-kunit: test invalid damos filter commits
+To: SJ Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Brendan Higgins <brendan.higgins@linux.dev>, 
+	David Gow <davidgow@davidgow.net>, damon@lists.linux.dev, kunit-dev@googlegroups.com, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, lianux.mm@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 271751C0004
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789439510-811508
-X-HE-Meta: U2FsdGVkX1/aDUmrmNprnkk8xc69HGaweQpmPxVe8+mgL4RMFsl4Ov+l9jUDq94C9zytPdIczOVRIymlIbbFOh0u1E9LF2tZw0s6hpGqBgDRRFXAghDpEJxm/P9GobHgimstPu9R4ugE9wIoUbhtiJ6n7Ns0nwwZbiFLsRwuUYPfKICF9D2CJ1NMh3CbF7hJcz150lJi9LM1McyloAQmv4LPL93fxO+6UOYz4069wGrr468DdfvR52+Nj2GJaqZwCvcgit0WHbwmxf64SRomi2y1ykrYUneYVBrGNfDY96utVOapP6V0kVr7i97EbYzbnCtscA7XneK3ImHCb+Gf2h9eCnoLmxfjQMK4Sgd+KQ7L9P2/W02LSUCKLXPbqcZhUjNlvc8kNDE8kzcQz83ST6LRWIUb/I6b0QGv/BYXoZ3DZ3hUkNSVRv4W8DCegtdDxCSMobdyS7cmp2BwPXKGot6JSQ5lbECrNgeB/+vfHgnnrcub+8FaTbWVVh+1zm7dwsM1aNPfLq4nOpZyBzIaut1PW5B+ehW9nKVluXUX+zzT5IPYNQicI8DAIXMkIxLkcjoqNL5hi10El0+06vw+Mt4A/LCkgMO8MIApa0MLOYrfSaIyUgHumCAKulPcyOZnW0ZouEPWQEFgra2YKIISXwlpktbTXsxYtrUZZCKCLcaRfpQWCSn8QiD+/rSLn2wmtoXEQln+gpw0zHySx9q0PpOu69W2Cua14w90ioZhIuXXpdmlJQe4DFqxJ8v30kuYuQUw15anOiQbxC1IbXPYy9gSibhBvp0G+eZVgwGHFQQAB3Logn6QJR/CoBdHQunzTK/kj6XawdnLWdLT/oODDFikrV1JKof+EX+72ztleDSxn5ie1EYNppO8ahN4IX8hMAazhfrdErdZLtqZNPn6S/tNuAt85xn7+xY1ylcvAsCN3g1s+cgSiwH8fkSc2Q4qa9SV/k3gbQzmDnOKZKz
- T6tcFJ46
- +HxsHVLsWAy2KYvlHZd0tHh3mDLDIcH+7QFCT4EAghzM8By46TY9PyXehO9obMMaaIi7HqJSpjKAkqKtPrbSOUcWMhtUGbhMS4XSAm0nDi/Gl673SYCaMYfNFysKJopDdRhIKFt4Njr6tblwEc9R75gxncO0gnLQMk1aKisxKmH2piVAUmD4MoiD6DR1NAqmxzgJGnhLbQWOzCfWsKxNp5waV51W4wa57HhvqRaAJ+S4EXBnwjZ1K1TNPtE20wbVnfB4A6THYKGMq1NczOHfY0Umvd+cLrFa9lvcOfhbqUpRQL8rOX0rKn/qfEkUfoTrukie+kbQv7y+CJg3P57uk7lcNEP1/hoGr8KdkzBtQS2ct1WzVWtfOWBJAcg==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 12FAB140002
+X-Stat-Signature: bj31g5ftk44midkf8f87mydfo8msrhfc
+X-HE-Tag: 1789439987-898461
+X-HE-Meta: U2FsdGVkX1/97bu/X+O+DZpA/At9I5Br8IVcUU5Awar0qN+zspnWWyZB7UrlWIIZez3NplfSuk+NQq4Va8DM6/EhQIpD6CnDSq7rrbdgUeLrYf6381WluQg2gHJ/WnQZ3uvhUsB+Mg76PkWQnAgg4+kybdf3+is5nlgfs6YtHdKLcsg9F+aXZASKX5XOgT1HDyHHOFfkP/o7JMhRmKOACtIA+mNKoW7pGDjGV4u7zztMDHYiQQOzmH7GDvVIt4/qfD9A5aGnGbkrb3AH5CAaPa+tCuEi05Zok7+wy5tJAX3VEGsddcURwrmJwwBQw49Q/+GMvsiIujYIK2n8F0oIG1eUf3rhWs4vzcM+vWW4WB5dWZsAF1XXOlwX6whKFoV2elWFViaoa4AOWkqcGh/Sc5mnQLQtFGHrlMp/mdMAABoyVXdwCIamG/1hsAnJNwZ4x+KJxv5iGboh9IOSM7nswWlo5yMTk6HcKYOv3/kb0CJf5ZSXHheg7pGVnTiFnK/4a6/A99ZGoQ5KVeBn4rsCuMj9mDe41vUhrAEtRQhQXw1riFPSpRC5kA6uGXmjclcNgDW83DTMiMFrgt9jWWAza29Dm58sH9gHUoI7he5S2lrDUmyLHCpOaUuRI8WKVB9bJe0M7SCUayLyMNh22Ize5w+kxBctKJIdZ7pot/DE0jFGlhVBqU7p6XsiEjBY45XkINcDU4AZn2Yc3cVOTBR8JQ+USp2LX0xNXHB1Mo4+cfVaQUmUvFb45Xv2APHyoGosZcyZ2j03wT23SPq0SV9QnygdY0pT6PgURgBhEIsqabrH3Vqg8pAW1+rpP/WD+rjWXUiCkU5737KuDSl8BSbltDC+btyIZfijrHrgfsT0c4m9duxEPSNvFN2FavK1PdWXEzeyRQls3JkkXXKpPvNOVKnM8XQ/c2ybXY5IIS7yeffm6KvpcT2uBCUJ9AtrimFLQl7uJMf3P6k5tSVxkCT
+ Nn30Fxg9
+ tsDU647p0lReMmpN0L1CLamweLzZYqZJfufYKEG7lMFMtlvvDegfXPUJjoonLoTni46C9VajLCxdKg/uFFsA+uNHfH/6VR5hJPCjfuuJdFNIbC8dCqA2Qj78w1cwlf1qhsGJ4Te5yj+0x6QWHLBYz1L/VPurK9Os12pnnbtBMQnO9KYLI1CN38WQdy2g2BoF7JneQ5tAKkxm+pbJH93TqjkyMx1kjlx0ZK2Mk2w1kSlKLvppp8l5V16aVCsF7N4aGzixbZl+E9n+kFgjFcnwwC0KGmD9Q/ck1f3IIf0SgrkcC0iI/WWzJ41IeD4WL1WuCv6cOPQnMaEJ8aKhU3EZs6NLTKRwag8r52VFsYPhRT07+WgtNhoNWNb3R4GjIRVvrt26maEJj3sjTT1Moy4Ptzk0dE+3mi7k0+zWE8LP6evHpkDGJyr3gT42vcf/56vQI3X9KxDM896gPU/4+wgBCuM7mWwHNjN5vKDH6/ZOYCv1k9mB6Xcjr2OykHtZxQIP6GpEYx9bmkZHF6M8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,51 +142,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 14, 2026 at 04:51:31PM -0700, Ihor Solodrai wrote:
-> early_identify_cpu() clears the capability array, the CPUID table and
-> extended_cpuid_level, but the architectural defaults for the rest of
-> struct cpuinfo_x86 are set only later, in identify_cpu().
+On Tue, Sep 15, 2026 at 7:49=E2=80=AFAM SJ Park <sj@kernel.org> wrote:
+>
+> Hi Kunwu,
+>
+> On Mon, 14 Sep 2026 23:57:27 +0800 Kunwu Chan <kunwu.chan@gmail.com> wrot=
+e:
+>
+> > On Sat, 12 Sep 2026 12:18:06 -0700 SJ Park <sj@kernel.org> wrote:
+> >
+> > > Add test cases for testing the validation of damos filter arguments i=
+n
+> > > commit time.
+> [...]
+> > Could we also test an invalid PROBE_HITS_WSUM range here?
+> >
+> > Patch 4 adds the same max < min validation for
+> > DAMOS_FILTER_TYPE_PROBE_HITS_WSUM, but this test only covers
+> > ADDR and HUGEPAGE_SIZE.
+>
+> I agree it is better to add a test.  But not necessarily together with th=
+is
+> series, in my humble opinion.  I am separately working on the test.
 
-And I would've stopped here. I don't think we care too much about a CPU which
-doesn't enumerate CLFLUSH. Or is there an aspect I am missing.
+Thanks, SJ. Sounds good to me.
 
-I mean, you can say something along the lines that now things like
-->x86_cache_alignment are more correct but I don't think you need to go that
-much into detail.
-
-> On x86_64 x86_clflush_size defaults to 64. Until that default is
-> applied it reads as zero, which get_cpu_address_sizes() interprets as
-> "not enumerated" and replaces with 32. So on a CPU which does not
-> enumerate CLFLUSH the boot CPU runs with an x86_clflush_size and an
-> x86_cache_alignment of 32 until identify_cpu() resets them to 64.
-> 
-> Use the same defaults from the start, so that the boot CPU does not
-> depend on a later reset to end up with the right ones.
-> 
-> The values the boot CPU ends up with do not change. Early users of
-> cache_line_size() on a CPU which does not enumerate CLFLUSH now see the
-> architectural 64 instead of the 32 fallback, which is what they should
-> have been seeing all along.
-> 
-> This change comes before the last patch because that one removes the
-> reset: without the defaults established here the boot CPU would be
-> left at 32 instead of 64 on an x86_64 CPU which does not enumerate
-> CLFLUSH.
-
-This paragraph goes...
-
-> 
-> Signed-off-by: Ihor Solodrai <ihor.solodrai@linux.dev>
-> ---
-
-... here, after the "---" delimiter as it doesn't really belong in the commit
-message.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+>
+>
+> Thanks,
+> SJ
+>
+> [...]
 
