@@ -4,107 +4,151 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3655C88E73
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 09:22:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DA46C88E53
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 09:24:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F8116B0096; Tue, 15 Sep 2026 05:22:00 -0400 (EDT)
+	id 5040C6B0099; Tue, 15 Sep 2026 05:24:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D08C6B0098; Tue, 15 Sep 2026 05:22:00 -0400 (EDT)
+	id 4B5686B009B; Tue, 15 Sep 2026 05:24:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 797266B0099; Tue, 15 Sep 2026 05:22:00 -0400 (EDT)
+	id 37D5D6B009D; Tue, 15 Sep 2026 05:24:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BBD36B0096
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 05:22:00 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1D5704038C
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 09:21:59 +0000 (UTC)
-X-FDA: 85215454758.25.2146A56
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 32AA980003
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 09:21:57 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=J+kAJGL2;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf02.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B5356B0099
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 05:24:08 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 93BECA43C2
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 09:24:07 +0000 (UTC)
+X-FDA: 85215460134.06.575410A
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+	by imf01.hostedemail.com (Postfix) with ESMTP id AECBC4000B
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 09:24:05 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=HiRFRV7g;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf01.hostedemail.com: domain of david.laight.linux@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789464117;
-	b=oqkwBq2OuEOJOj5ANN9oPMs6d9PfmPsF6uh78WWWmcy29VVcvFZzBFFJzo59HgNtAv/1GM
-	OcioiK5YWwBMguHdAp9e3cZIWF/J/c0bukMfM96NWicZ4bhsTcPMOKiG3q8tZNk9EVdkJk
-	PkaI6mZ3jbuwhD2h3E1XqGTMS5mFaYw=
+	t=1789464245;
+	b=JnzgrGn/qqVcOiy0fD/cQG7ypg3JViW2B6FOo7IaV6BKRd0DqjxOJU31Zd6Jx2tUiA9/iA
+	6pUECeGhq9jbG1f5ZONoNSlQTlCqShi8wrLTLPK9k+7kiTOjzZoIqSyq/lyvCxGsM9hHLu
+	r/llb3USuyoUjDxsQ4o39ZMPCVWVddc=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=J+kAJGL2;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf02.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=HiRFRV7g;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf01.hostedemail.com: domain of david.laight.linux@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789464117;
+	s=arc-20220608; t=1789464245;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YZrSFCuSb0TIZoxIbDuKzof+JFG3wsG1OWarESMYFEQ=;
-	b=RdD2/QOcETdpsUj+WlsANfepm5uc2fJ6Ar+i1UIKUrTNOyEP/U1IzBuz5R6bpJmO6k0GQq
-	Dv2bdd49eO2KQTXvUzj3R4Y9VFrhc2uSY3Wb0w0b6EpkDmO6md+HuEsBdPpyq4+REoYFBv
-	aZnpo3Co//l9HjUdgK4r/SmEvt/+T68=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A9B1716F3;
-	Tue, 15 Sep 2026 02:21:52 -0700 (PDT)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 52A473F86F;
-	Tue, 15 Sep 2026 02:21:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789464116; bh=yxQR2EiRSnlOGVI9wDjEBOU2jCM7zzSGFANR8dJ9rAs=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=J+kAJGL2BjHbdj6nYrlMZsL3L9Lj2PjwDM80cYWXHd1Vp1lOWJjcq7Q2Qm/j5XnHw
-	 OjgNB6wv7FOdPdyIcamVigwYNKsdDZGFctCFK0J3gYwPRK/VObjoS9MkLMoYsaBWd+
-	 iOZ73SrYMpRizoPmYiqkSnm4/uZLMV/BOtsF+YYY=
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-Date: Tue, 15 Sep 2026 10:21:37 +0100
-Subject: [PATCH 2/2] kselftest: mm: fix intermittent failure khugepaged
- test
+	bh=aLdhT2Q1x0+krLh05Drnda1oX9PUv34jY/LmETe5rwQ=;
+	b=v4Ff6d+47lzG2EGq9duYc09IsqG70frntjfY1v/vWDGrxmTfJcTilkdsjh++tOTtzs1yvE
+	drg3iKwm6w5J4iPeb3U6tH8rnZm9//eS052Iby5QtBj41Dr3FRMXRK/XbUFI0Qhh/sXWOU
+	u2iJhpD8ygxBwh/VqE3hIHjOqekX4cI=
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b912e2406so12226815e9.1
+        for <linux-mm@kvack.org>; Tue, 15 Sep 2026 02:24:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789464244; x=1790069044; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=aLdhT2Q1x0+krLh05Drnda1oX9PUv34jY/LmETe5rwQ=;
+        b=HiRFRV7gjrz2429NxDANTTeNdz28+n1e9tBArQkRToucEhescfT8yoCnOeDh0avKl7
+         XmzVQIvTF3VcB9Qwoh5v8kZzqIMqF8Ky10TlDIXL07DYbphP4bIndBu20hq6TsnMXDxn
+         XseLSNwkiox85qW2EhEIWxJQJ18LwUKlv9EayW7sdkgBJ0dNBnXn/9jfCLkECU1OrBi2
+         KY7iXmWlgVqP9zyR8Q+u+/GytmCpMVBFCcFOQ7ZV/Zhrpxp7hmM+G1wTS5YSRAYQjSnK
+         p/AvznQ+23W4F9VT6BgpxcP5Y7+W/dMuYv1mMlIsPq92DYVQ1H1aDwUNdD/jI8rEKfbK
+         XPVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789464244; x=1790069044;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=aLdhT2Q1x0+krLh05Drnda1oX9PUv34jY/LmETe5rwQ=;
+        b=PWlJD/qs2IdlDtSoBVujPjGBsbYT38CRzCv1G69bLtrmcTrvknI/8WSiBZfIET5TXS
+         c+GDBPeCP5rXQ5kVUBcE8GdEXRRMyIiKOyHY9CsnGISib4hpfk696AJhCVgt5iwaf0Fg
+         6dI62yVeWfRcqUfNhGdxzD51DqVv534Gveq39PhMv4jtIAzFqct2FouIE3x2YzIdcZxO
+         ILIZAeP+cEaJZBVNycavfyD7Tym2utqGXfmPL8lJ/z58tRJDUQaIVI/3xSjl6ZyftbLa
+         rFrpS0ZlKRwUN0PUsFuvChPIJUHJwlfUqH5obNEVa4Sl7rhx4V0yoEQjW+CgbkVqXKSp
+         e3ug==
+X-Forwarded-Encrypted: i=1; AKwUvBxdSb6jEKv2sz2fiTsjHBz4q93kk6ZPcJUfhFjaQKIKIB/p/2FAahp8VWHtJRh3kEfrF4qjubFgJg==@kvack.org
+X-Gm-Message-State: AFuF++kyWVqMXL3+ia94tRBkf92GNdZWq2MgjXZGwcDXVdXvHVAygPwa
+	hv0Wv1a9clh/3nArP86cjbILF++/PPxTDq/6lz6Xoeq3AA5WafdrZHEl
+X-Gm-Gg: AYBFou0H1SdyvGCZwIfL9zxyQHsaX5/PQ1kGeV2TpiKW98vGHUYXGMblWY1MS4PYBDn
+	LiQct3EpqiASfxoYHDGKk2NxUlH8J3sBM+GJSnbnxcsQXQDz6cDkNmsPTKAnCDAAY90kTlzM+VY
+	dFBtlbNvpNCWJnpidOpRP7OCcZ/mtJTfwyQ9pVsSFvuS2VO5rNmgjR1S9VkfJdU+4Z+heQr/Lfa
+	PT4guBdEvcagM/0QR1ldq3lMGuu5oFwaezP8r3gj487sRVy6b2kF5lB4NIAOFx6hBYk5quIaYm0
+	MvLWcnPET8/VQ7skyeBLSR+JFBQbL6X8IUiI/cEtPk4Fj1ixeWAYT09hSWy8P2tW+fYsd08tMMK
+	1WV6eZ96vVghfOAw6tWJ5fc7A9qoma1Tldg2HCsSk3gbeGZN3l+TbyEoDdS+y2RL+LGwxyZkiTa
+	gfLUX/aTVhsIXgZ7wuH52ioh6HHfd2ki9ci266fJAjrkIae/HdySBbBuVnY559/qLW3bvpnr6H5
+	Kv9fvAKV9KORuj49GP7ES2TrkJah1IHLB0C
+X-Received: by 2002:a05:600c:c162:b0:49e:65f2:db64 with SMTP id 5b1f17b1804b1-49e7d72b000mr36925425e9.5.1789464243970;
+        Tue, 15 Sep 2026 02:24:03 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e7ef9228fsm49333445e9.15.2026.09.15.02.24.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Sep 2026 02:24:03 -0700 (PDT)
+Date: Tue, 15 Sep 2026 10:24:01 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Yury Norov <ynorov@nvidia.com>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Matthew Wilcox
+ <willy@infradead.org>, Peter Zijlstra <peterz@infradead.org>, Ingo Molnar
+ <mingo@redhat.com>, Will Deacon <will@kernel.org>, Boqun Feng
+ <boqun@kernel.org>, Waiman Long <longman@redhat.com>, Dennis Zhou
+ <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter
+ <cl@gentwo.org>, "Paul E. McKenney" <paulmck@kernel.org>, Frederic
+ Weisbecker <frederic@kernel.org>, Neeraj Upadhyay
+ <neeraj.upadhyay@kernel.org>, Joel Fernandes <joelagnelf@nvidia.com>, Josh
+ Triplett <josh@joshtriplett.org>, Uladzislau Rezki <urezki@gmail.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, Lai Jiangshan <jiangshanlai@gmail.com>,
+ Zqiang <qiang.zhang@linux.dev>, Onur =?UTF-8?B?w5Z6a2Fu?=
+ <work@onurozkan.dev>, Kees Cook <kees@kernel.org>, Joel Granados
+ <joel.granados@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>,
+ Thomas Gleixner <tglx@kernel.org>, Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann
+ <dietmar.eggemann@arm.com>, Ben Segall <bsegall@google.com>, Mel Gorman
+ <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, K Prateek
+ Nayak <kprateek.nayak@amd.com>, Mike Rapoport <rppt@kernel.org>, "Liam R.
+ Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, Vlastimil
+ Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato
+ <pfalcato@suse.de>, "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang
+ <jasowangio@gmail.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio
+ =?UTF-8?B?UMOpcmV6?= <eperezma@redhat.com>, Sebastian Andrzej Siewior
+ <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, Nathan
+ Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>,
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ wireguard@lists.zx2c4.com, netdev@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, rcu@vger.kernel.org,
+ virtualization@lists.linux.dev, linux-rt-devel@lists.linux.dev,
+ llvm@lists.linux.dev, Yury Norov <yury.norov@gmail.com>
+Subject: Re: [PATCH 00/17] Treewide: enforce static storage for object
+ initializers
+Message-ID: <20260915102401.3c56aa95@pumpkin>
+In-Reply-To: <20260914231418.b15ec01f7225cf460f6e515a@linux-foundation.org>
+References: <20260915030336.1192299-1-ynorov@nvidia.com>
+	<20260914231418.b15ec01f7225cf460f6e515a@linux-foundation.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260915-fix_khugepagd_fail-v1-2-bb6f04c8759f@arm.com>
-References: <20260915-fix_khugepagd_fail-v1-0-bb6f04c8759f@arm.com>
-In-Reply-To: <20260915-fix_khugepagd_fail-v1-0-bb6f04c8759f@arm.com>
-To: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
- Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Shuah Khan <shuah@kernel.org>, 
- Yeoreum Yun <yeoreum.yun@arm.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4423; i=yeoreum.yun@arm.com;
- h=from:subject:message-id; bh=yxQR2EiRSnlOGVI9wDjEBOU2jCM7zzSGFANR8dJ9rAs=;
- b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBqqQ4qQATMvvJEK3ZYgcRPUbjS+53++Tk8Ysis4
- XDYAEUYOq6JAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCaqkOKgAKCRBt1cPRWsUx
- M78uC/9CIAfRf6zmk9YykwQpH7GNfMsVHT0Grsqco4DCwk9jbC2K1EPyUOVkW0gj+SOVAz1/CO0
- mYO/mSYIKo6ElFDUjk1tg/UIANN7l2em3oLht51OtL6Mvj6Bb5ZYfWi1dTBpW+gp+0NTNBW1zER
- ejI7obz8sZUIuzHc5osND5TB9ClnKht4UKAcIYHSvtstrRj5Fpd5gejXxDVmiUkjCY/SVh0PVbw
- tX/4G46b+FvLKW5Z6XYUxTwpJGZXhdZUWZw6jj0GygVml0ZgEXG4kN+7Uj60v2C5+FG6Fe+yPxH
- mdZ62oyYjMykd6NiUqitvlkKtE64uhCNF+q18Jz72OWlv1/ZutO7xi0qkSrzHxBtUAnQ4TLjQJ2
- 4VTylKZKrAw4Dk74VkTlgui5x47mZW3zuRBYevCgvbOutVIppYF8XbIlb/C+ykVM2nOgWlcb4T1
- RRWqJCj2bpT9Fn6qeA1coHIsV37cXOjbs0uI3u3zI7L15ZxPHBo1JWaSVDXUkyrEJDcm0=
-X-Developer-Key: i=yeoreum.yun@arm.com; a=openpgp;
- fpr=2D83E092DD0533B85875A49D6DD5C3D15AC53133
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 32AA980003
-X-Stat-Signature: y5ihpgj8zneeab4qh8yz4ytg1magjta7
-X-HE-Tag: 1789464117-531156
-X-HE-Meta: U2FsdGVkX18wVGCkPnSiLacN9NlpF0TjnvTGN9/O4WOSUaIbDukfVbUYKIL9UXFeiGotLH6GEN6uTXEn0ULOJT4bnTxzfpe/hdi9DFnbYDytSBK8ipAXSc7JHfoAKmSGBXa/oiVltswsugep3jXSKeuxTNBbAtDi1hYIHxTCRxFslTqrHKoL/wW1x8IpWUdcJsHYM/oWjxd5Vg30Y00pGt5mlKVuUulHtQ3++zu+NsiH1jL5Ep6hHC7AaoQ+t7sELnol7ZtMgPGITEzU2KwIyU3XnenByjpnZMKifgUMQqnNGCFr2nKLReYbE7lai7ucDhP6bv4TI4O7lqrVnuTO//HbdU/Gb5Ltz0obNDLfeKjUP8wI6uzFawJZ/80CvEHA2gsoCA/nPyzs8Qhx6xl6td1IGHpFy0GNWVfVeEgXgDJ8c70B3g5hIWR7eQGkKyppHRRpMEvyykBqz1WQYN8oPbyqbgQm24uYcQjuhcqozGklYHqewEoogKdhbltYJO+/kKgYAEgXzbw6mZaCjgQJw97MwuZHFbw9k1vfIMsewnL99k3D//qmEaLuFH/ErgAQuO5FimgPoZMau/OtQdNZyCYPR/USnsdCA8CsyPZVzDBr2BcJht3l1vtf7Ymclcy70Wi3so4pyd0qbJVBv6e0pjGiCanao8a5n+a2zKv26cDP0efauA5h9g8TFtzmLHDaooEjHICfParJOFeAS1CtE6YadJgh+Rpf/m3Obo1uX84jzD7gp9eIdMdJZjgLRTUPXKdp1UwzCW9nWcNHB3MJA8f1sIQAG90bLpdZ4KCzNcw51IrBZbtsnuzWoUaIC2nN5qUjJdJldbVYJS2GREa/J1RH9tl9XcAFPYlpi2Gl2HGwGNKrD0+xE8QfC00ME/Pt76lu0FuNGVtSy4PMIXyST9lnPC3TcavkFdpU/98TGkIeTHFAIg5vWsNkc7HlPJy/RVUYbVqCZNzQB3DQL2O
- w0WFS4lw
- SkzCo6P8C+jHSdvE96dTDXkeH7IG7YgNvalPFtjPcPz6t7p4SX4sHcu2DzMPrkqrrrZkIoiFfyYNQbTZJ4y821EFVPv09Ej4arjctnc3QfNFoLaG6IBvjfLvYKeRWfgF1AG13iQwHT4a+Dx9ywclkLBSxmMZbmcP2UdpxmF2x3OR4vEyYceN9rlUZEII5GJSQJX+qA466SePDw8pStjOCJtpErRCjK8c25WLjSij1tXEPKu6SYjrzRKzEjSyhQ8GKxRRr
+X-Rspamd-Queue-Id: AECBC4000B
+X-Stat-Signature: b8wfpsd9ge7d3myqks9sc19nmckgp4nk
+X-HE-Tag: 1789464245-211293
+X-HE-Meta: U2FsdGVkX18ibjE0CqpmmHbwQLX9J4SUd6PfSO2gvp66b1AbVJbJxlLY0MmMxmbNMP8a1tzClcSxvRtLYoEu/QZf/CAWf+/R1thqOm7S6W8ClG8Pf3mcrGHk4JxmTe02HkDOaKkBykVw6MCirzmjDxCl+yEipoLJDa5LLgY/wG51HO39l4PFZDyZ3VhTSut7nTaMtgOrpYMfMXPSOjpo2uiZ+OR35otzBQZDGRXRQzB0jSiy47zIjJq7hnWkG6ZOTP2eZze8MMmXQUWfetPwrLTQCb0m9FWIBDfH/wPARDBdMhL4jUehgglvLGIriEEGD2Ikz80poSh8yDe7GvP5QBwdbjmkBf629mqJTuqBzDrnNsmPH8cZeGY/05fjCN1tXdzzkbPfY9k6F4d3TYjAdqUE+Os34mJDt7AglMbrULPPj+kXgA9jIbdLBLJeIOUDtl+BENjaqyzR1P0+T+hkb3DWLdMYfd4g9VdiGGbe9KJgZ+5G9scwBN1MAkNNljxoHGJBeS63jIz0tLQRd0kcpiYjgBW3wUEoOhLmGFD6q/LnHqJ0G/exMKQCQMD1gJiejt3qrOz8KIEtZSVpTyPoH0BVBHyYGHgMV0iCFPYpBgj/e6NTvSAuc0jzuBxNifd4EwXib4+1B3gN7SfTPwv8iGZLMXt5SJG870VArmQ7CyoB1ZZVyQy1EehvECUQ8GRc+glARYZr/nRjhBUBscBQi8G9odwvoIV1+1P068XaQhuJequXEXKw7xu1kcnoPcgI5wV1BDyP4hXfbKQw0h3Z2qPadV4sOZC4pryx+iRpbYQ08/91LdL4F4TzNgBo0AgW9DqmR2SxzWrKBj3z17uOhXTdD4x+3iNKuhFXlgJ5g7C4lnOVrBy87OaXS4s3sai+ZpOSRoTYdfjuDQh+4FnOXfsb5e5JxAGJ+6ErJ0qvjUvpTxoSR0CmI0FTyTJ+4cIL6jXPgL6FcI9kviDBDbH
+ UXw2gY9T
+ HEKxpz3t1xOK/QLoKoWBBMS5T43QfB/LC3C8QGx7Akh+aag7pZN6CZFbjGkIUn/gaJKoAivwAof7o/A2b4MJoSjLpUftK16DXCTh1mwFzYVvXebKM3PZM3U7tbkIyaEjM5UOKq1ZbJ/NRy1mUXBytKuRODnrZuBc4ePTIh9hIDUahby+m8lVkbuODaxMO/L6QXY3ASABWx3CdsW2NlH3JBaA/PH+Fq+clMQpgyUPpjQMvzTgH4kf8DOq3gcb/Or4pQ937Leg1l1Ur7o0M7nSVmSiUm+LQxRcKJuunASGAsB7ybW3Vkd3uyFdfb9wb6ViHc19nEBPR4uthvFwPnoCDK49xLU5PlaK0ev4ZtjImIbNSoCR7jPKLBconLOEpOO0xj+Hl7V1t+HFS8ws35AF4uLqcVgJrp4/xKS0lTSElzSdoWq++z70/UqKcZdwUX66I5R4wrUGrkzQTO1Cjz3Jx/FH5bwFfhJRs0YuY0rQZa5IAM1Dhvw59PCkHim9PN5oRNnztpyDFtugWaHnNneciXCjc7NR0ivOu/shmrEBP+CY0M6OFJ3s8naI+Hf/ILil2yYDZL2KG4zsK9yrJWwZbfWPHMA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,124 +156,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-There are intermittent failures in collapse_max_ptes_swap() and
-collapse_max_ptes_shared() when using the khugepaged_context:
+On Mon, 14 Sep 2026 23:14:18 -0700
+Andrew Morton <akpm@linux-foundation.org> wrote:
 
-  // while running ./khugepaged -s 2
+> On Mon, 14 Sep 2026 23:03:18 -0400 Yury Norov <ynorov@nvidia.com> wrote:
+> 
+> > Declaration macros that statically initialize embedded locks require static
+> > storage when lockdep is enabled. Automatic objects must use runtime
+> > initialization so lockdep receives a persistent class key.
+> > 
+> > For automatic local objects, lockdep cannot use the lock address as a persistent
+> > class key and reports "INFO: trying to register non-static key" before disabling
+> > itself.  
+> 
+> So why haven't we been buried in reports about this warning coming out?
+> 
 
-  # Run test: collapse_max_ptes_shared (khugepaged:anon)
-  # Allocate huge page... OK
-  # Share huge page over fork()... OK
-  # Trigger CoW on page 1023 of 2048... OK
-  # Maybe collapse with max_ptes_shared exceeded.... OK
-  # Trigger CoW on page 1024 of 2048... Fail
-  Bail out! Unexpected huge page
-  # Planned tests != run tests (26 != 23)
-  # Totals: pass:23 fail:0 xfail:0 xpass:0 skip:0 error:0
+Are there any code changes outside of testing?
 
-  # Run test: collapse_max_ptes_swap (khugepaged:anon)
-  # Swapout 257 of 2048 pages... OK
-  # Maybe collapse with max_ptes_swap exceeded.... OK
-  # Swapout 256 of 2048 pages... OK
-  Bail out! Unexpected huge page
-  # Planned tests != run tests (26 != 17)
-  # Totals: pass:17 fail:0 xfail:0 xpass:0 skip:0 error:0
-
-This happens because khugepaged may collapse the pages before wait_for_scan()
-is called, causing a sanity check that expects uncollapsed pages to fail.
-
-For example, in collapse_max_ptes_swap(), after faulting the pages back in
-and paging out up to max_ptes_swap pages, khugepaged may collapse them again
-before c->collapse() is called.
-
-To prevent this, change the khugepaged setting from ALWAYS to MADVICE for
-the affected tests, and mark the VMA with MADV_NOHUGEPAGE after it has been
-collapsed by wait_for_scan(). This prevents khugepaged from collapsing it
-again before c->collapse() is called.
-
-This failure was observed on NVIDIA Spark with 16KB page.
-
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
----
- tools/testing/selftests/mm/khugepaged.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
-
-diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
-index c32244b565658..83e9386bbc842 100644
---- a/tools/testing/selftests/mm/khugepaged.c
-+++ b/tools/testing/selftests/mm/khugepaged.c
-@@ -578,6 +578,8 @@ static bool wait_for_scan(const char *msg, char *p, size_t len,
- 		usleep(TICK);
- 	}
- 
-+	madvise(p, len, MADV_NOHUGEPAGE);
-+
- 	return timeout == -1;
- }
- 
-@@ -839,6 +841,7 @@ static void collapse_swapin_single_pte(struct collapse_context *c, struct mem_op
- 
- static void collapse_max_ptes_swap(struct collapse_context *c, struct mem_ops *ops)
- {
-+	struct thp_settings settings = *thp_current_settings();
- 	int max_ptes_swap = thp_read_num("khugepaged/max_ptes_swap");
- 	void *p;
- 
-@@ -860,6 +863,9 @@ static void collapse_max_ptes_swap(struct collapse_context *c, struct mem_ops *o
- 	validate_memory(p, 0, hpage_pmd_size);
- 
- 	if (c->enforce_pte_scan_limits) {
-+		settings.hugepages[collapse_order].enabled = THP_MADVISE;
-+		thp_push_settings(&settings);
-+
- 		ops->fault(p, 0, hpage_pmd_size);
- 		ksft_print_msg("Swapout %d of %d pages...", max_ptes_swap,
- 		       hpage_pmd_nr);
-@@ -869,12 +875,15 @@ static void collapse_max_ptes_swap(struct collapse_context *c, struct mem_ops *o
- 			success("OK");
- 		} else {
- 			fail("Fail");
-+			thp_pop_settings();
- 			goto out;
- 		}
- 
- 		c->collapse("Collapse with max_ptes_swap pages swapped out", p,
- 			    1, ops, true);
- 		validate_memory(p, 0, hpage_pmd_size);
-+
-+		thp_pop_settings();
- 	}
- out:
- 	ops->cleanup_area(p, hpage_pmd_size);
-@@ -1075,6 +1084,7 @@ static void collapse_fork_compound(struct collapse_context *c, struct mem_ops *o
- 
- static void collapse_max_ptes_shared(struct collapse_context *c, struct mem_ops *ops)
- {
-+	struct thp_settings settings = *thp_current_settings();
- 	int max_ptes_shared = thp_read_num("khugepaged/max_ptes_shared");
- 	int wstatus;
- 	void *p;
-@@ -1100,6 +1110,9 @@ static void collapse_max_ptes_shared(struct collapse_context *c, struct mem_ops
- 			    1, ops, !c->enforce_pte_scan_limits);
- 
- 		if (c->enforce_pte_scan_limits) {
-+			settings.hugepages[collapse_order].enabled = THP_MADVISE;
-+			thp_push_settings(&settings);
-+
- 			ksft_print_msg("Trigger CoW on page %d of %d...",
- 			       hpage_pmd_nr - max_ptes_shared, hpage_pmd_nr);
- 			ops->fault(p, 0, (hpage_pmd_nr - max_ptes_shared) *
-@@ -1111,6 +1124,8 @@ static void collapse_max_ptes_shared(struct collapse_context *c, struct mem_ops
- 
- 			c->collapse("Collapse with max_ptes_shared PTEs shared",
- 				    p, 1, ops, true);
-+
-+			thp_pop_settings();
- 		}
- 
- 		validate_memory(p, 0, hpage_pmd_size);
-
--- 
-2.43.0
-
+David
 
