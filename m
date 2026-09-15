@@ -4,73 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDE16C88E7F
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 11:33:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40D02C88E53
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 11:33:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C34686B00AE; Tue, 15 Sep 2026 07:33:41 -0400 (EDT)
+	id 41FC06B00B0; Tue, 15 Sep 2026 07:33:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C0DE56B00AF; Tue, 15 Sep 2026 07:33:41 -0400 (EDT)
+	id 3F6656B00B1; Tue, 15 Sep 2026 07:33:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD5FC6B00B0; Tue, 15 Sep 2026 07:33:41 -0400 (EDT)
+	id 30C2B6B00B2; Tue, 15 Sep 2026 07:33:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8AD696B00AE
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 07:33:41 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 22CB5803BF
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:33:41 +0000 (UTC)
-X-FDA: 85215786642.22.1F4DB62
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 690A640007
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:33:39 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m6JS+1os;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0CD096B00B0
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 07:33:50 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6537AA03B4
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:33:49 +0000 (UTC)
+X-FDA: 85215786978.20.592BF35
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 6C6D414000C
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 11:33:47 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Nmpj4NaF;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789472019;
-	b=gVbu414PtI8LowDSGo4IjjXicPeO1+/eyBcK/p3lkbY0t9onvI4NBNC1ldRNwgjbNSMzzL
-	1kgQqGw8Ed7mGlsWNH0/2G7GOH4qgMio6dC83Dk2n6vVxkreQmuqLyK4GFa9x8n0kLCc7r
-	svZD/eDyLRYP9iTeuFYPsb8fZwLhS2Q=
+	spf=pass (imf09.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m6JS+1os;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Nmpj4NaF;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf09.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789472027;
+	b=0/bRhniUP/5fiAgoVpSJNdUioewKmObcE40CfngGM+y/2ZSJxpVxAVWqbViWVvx+JtDtmR
+	Aq8YXaX6xNBDpgHmsymoyWNaeWAmhyR7FeB4LgE5Xpau0iKGmy6JVn8eyiNysHedDR5PfA
+	oKgvHUmIrEl8sYWYGOEnVaD5gxjCGXg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789472019;
+	s=arc-20220608; t=1789472027;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Opabrir2qKnajEOx/bmqQ0vFOOuJF5mcXpUx8QfYgRo=;
-	b=yfUA08Fq6QMzocWWgskA7wrFMVL2bATvZJ9ED8i9HfwJkaZ2O6Y/2Unxp2QGo+0wO/clHK
-	8fvMjw7CZIpgTLJovpMf3AUIMDKwRhd86i+VSVUakA6W8fzIZ2/QpPpcWqV+WGre/OQOz8
-	AHOdvh9WouieQFhpynRjnSE+cl1stjY=
+	bh=fPUeEhZalZFbuqvBU8/iDG2tqjgIH/ueKLGrOGx0E/Q=;
+	b=cjFRih1OIq8NrfRLT0S9QVwmGaCcl/UcEXkYaG1wkOc9+D4CiMGbDbVvJRvV+gcbvBTEvm
+	i9F38SmHLsEljOt4BBBj5366JaBPXtD4G8z1C70g+J0s5sDzCvdJqtcZhQRR+BNiADNO7r
+	+89DZ1MEjrAAGKyLctnnMgNdbN7PZRI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0A7A3602CA;
+	by sea.source.kernel.org (Postfix) with ESMTP id 88ED742A92;
+	Tue, 15 Sep 2026 11:33:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32EB01F00898;
 	Tue, 15 Sep 2026 11:33:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A06C1F000FF;
-	Tue, 15 Sep 2026 11:33:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789472018;
-	bh=Opabrir2qKnajEOx/bmqQ0vFOOuJF5mcXpUx8QfYgRo=;
+	s=k20260515; t=1789472026;
+	bh=fPUeEhZalZFbuqvBU8/iDG2tqjgIH/ueKLGrOGx0E/Q=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=m6JS+1osV+HHQ3+stbRMi1nG57ukYiJTEcH35bNEsuFkz3EDpaPqRCxptR5myI3CQ
-	 DrVL3ticaSsEmHs4hzrQOkVHuI+pRvmExpm7hSTVT1Fy4ahKbV0yxhDmvASrd6aMLO
-	 kfyvZnG8hPY/OSMfxVk2m1KEfL0A4tlDKieBNoYaPaJt6kinrooutLXDgSWdlzJaI4
-	 Qyu0CqnjMLHGESZU0vH6Xh9zHueNHEtLJB7dyoK2455umDXJ25s2IeNCaoYNiPSyj5
-	 BtthgxR3vTZnXL/kG06SW2wMzb3uuLV+YqWCArv2R8bMdgvjWU+Ck1onWTajB/my7G
-	 f4cwtNsAzJb3g==
+	b=Nmpj4NaFXMtUCUBJkK324vi22fpzvX6uomFULBZJOjhgDQCroZWI/8lb8hRAJVCHh
+	 9EhYq/igSRVSJd0Z69cCAreFakLrT8v7g5ED2rGJFufV7eihjNzGDapElAJqkyWjpl
+	 lBXB4AtsKeIiuD1UD4coI3pcXNoLmTr78UlIqOkuglt9Hw0oChJkwnEGg4w0f6UJ0f
+	 E3lrRN0G+U0+0MXEDUccPLURv/tGCWrEtzl5wBa6tk79GG6qHRxEjmf3jJK1LMmPo3
+	 /VFHB2tZrT068p2qgHGbLHusKwE8Tye3wqbBTFb6QOLjp++ERuzcM9sRPxtZnWLn1E
+	 KgqcMBfnsrMfA==
 From: Christian Brauner <brauner@kernel.org>
-Date: Tue, 15 Sep 2026 13:31:04 +0200
-Subject: [PATCH RFC POC 18/50] xtensa: commit fds on syscall exit
+Date: Tue, 15 Sep 2026 13:31:05 +0200
+Subject: [PATCH RFC POC 19/50] file: require the syscall exit hook from
+ every architecture
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260915-work-fd-reserve-unify-folded-v1-18-4d5217d6b246@kernel.org>
+Message-Id: <20260915-work-fd-reserve-unify-folded-v1-19-4d5217d6b246@kernel.org>
 References: <20260915-work-fd-reserve-unify-folded-v1-0-4d5217d6b246@kernel.org>
 In-Reply-To: <20260915-work-fd-reserve-unify-folded-v1-0-4d5217d6b246@kernel.org>
 To: Linus Torvalds <torvalds@linux-foundation.org>
@@ -93,22 +94,22 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jann Horn <jannh@google.com>,
  kexec@lists.infradead.org, linux-hyperv@vger.kernel.org, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.17-dev-db0b7
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2590; i=brauner@kernel.org;
- h=from:subject:message-id; bh=Ob3PjpQ/cxpLv/3i+RPAC4oxtU+7SyXGKknKtjIi6uA=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSt1Km1PCQWPOf+dN42p7eiixMDrC8oHl3XfDxb8HXeu
- Q8v17M86ShlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZiIlRQjwxxl+ehP3JqHnz5Z
- rnHMf3GFlcCby16MDPn/pqho/776ZA8jwwxuu0Z35YDFs7a2ZE2t16lXXVd42bXR6lPXzm5Ltrk
- 6jAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1044; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=kO5/kQT0XZnIdRnIvngddyYIzT4ZNU9mDakuELDqlrQ=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSt1Kmt7K/PWBxqv33Jx9xZ93feiJvYXvn0wyGRJfor4
+ xvDgz5O7ChlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZjImo8M/0t6Hp5cOHfxxr5q
+ 5ZTEWby+CmuzN2gtu/o25VNw3Kl5VQ8Z/ns2bzkbtn3/k1lfb3I0OE2bn/HePMr9P8+ZRZUPSuV
+ nr+YCAA==
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 690A640007
-X-Stat-Signature: dhfwffjkan65qc1k7hwfsrrjjuzd8kou
-X-HE-Tag: 1789472019-446137
-X-HE-Meta: U2FsdGVkX18bvbVLrGD/cyivYtNXKGfw1bpv8lTezrUAfjJHjXDict98fi0l17zq9DIWNCAq+LkPfYA1Mcw+XPivl5q4faltpvisPTXO5ztOHw4WE8SgIlzB7JHY3WUx24hlyfO+F4zaclCnFyaOENaip90fcXIR1EGfH3InBei7QnqOJWmsvlf47IxNSelkLwO46lL2dnuD1n1vy4gb5c0fz5QeNLl6M+pBGZbiuybelKic+vHY5TocWIpP6tjUOLZFRs4OCknn7YwbPL2uDkYNuxHlag+hY+uwuvM9Fssftwo2R4Gdzu+V39BDLJybljACuayfrWDFKQjIX+ti7ItcCtBIU0ZPGWOdfk0tXzYWIuDq7+MtIe9irgedw8xA1nMj5nlRAFDfX5t6ulqhbpgMX7Z9+PTqgJ+EYSqwlRQzLurIOEN8eZaCXADuJWo33FXFrO+Jq3v/xPxY97BjeY49+BYnEKF27YBN/uf51DDjwp1xBHMhHZta+df27ZoGTc8TQdS/S/6qOWnKtavVETrCuBOcGRNbpW6cxFJqXD2LNevGyT7G+y+xVLYd21WHZKnfZENzMzLX1jxTrL0INuv+8qRJ1avy6TvxxfP/L4DkNi9latc8silo1ldL4ol2FpzzuKGweJRcn10OhGtL6fclVU1cc4evz97kaz2fit9qGZ29P88q7B8IcZhqqkM7iLVKgPi4ePffXcYe2DSG0orjSkad01D6eUDk+4+Zgbx1/x9yUVlFHlMMJM8N3IsSA1MNKprkT+hyXTLAitiQxazJlgwc63oSWVVbGtGlZE15aZbDERUJHXjhXgWlZKMHWha33lER+p1bOIMvXthBTcHhHaiQMQwpKBs2Y/P2bsp2SKiJK7+VC5MtdAt4TI+KMcr2XsgUhsdVqhvlDqIvfbkv8PbgoPOO4l/v3UYuuBEY7YxhuGz/Vxpf63zALlNgdnE/rJn7Dch/+SK+MXv
- h9uuTf5d
- 5KXPjXD1snrufEgj2jXe3dQl/B/ZSUVEZUuLArBIEslJtjpC+mk+MTHjLfy06Fb4oUN0dQIvmVSCoowZPY1QqL8P6FaulWxsQRQpjCKohlamdQr+N20OP0sVjoHMfTyFYutqdFdFVOR6RgxbfZjsQPAlfGQ48nZfP9CIbJIGVifQ1Cq13NCwBVQ1UBxbYNDSC4zAB0LLPyaBEtKqBIL2SusT4N9gn0ZzziIDZBGTDVLyUG/0Ow0onKI5ZIg==
+X-Rspamd-Queue-Id: 6C6D414000C
+X-Stat-Signature: bshsssjxytd61fycqu5n69i4h4qseu15
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789472027-465379
+X-HE-Meta: U2FsdGVkX1/imkZiB+kjBESWOImczpIyRnxnjewWfBjFn0F68mZJ6ZkxifnhpoCH82ggtL19hPUiX0mYG6zQysNG10XlqN3hxv3c7n6Iv0UGsP+FHT0RUqMyiqetOwUe06giQjhry/gDUOy+O7G3Wgvqx5UtJV9I5zemZ4OVkd8eSgP9YQkJ65YTDHukvv5ITe3fYWz7hDcKZ7RuF+PyKG2RcIDerWUHfjFKJYfYmMKy+oIPD3HLwfJvTbdNN10qG0mDk81rqrdu8xHzbB/t1tkZ7tDAYlpDtlQ95uGDUBA4pEcmFNmRj03C/bvLexd9xCIJ0Z/TKYns4vFm7fkVP+Dmfn++qjeDjvWsIsM39kUOTfHe5EWG0c47G5wFAvt4LDnhh19vB92jj+OSVbK3zaYAKeAaYaggWXZpjmqQGOmoPO/qbzvMQ0E3Be5jYUH2bCuVmoh28k/OCGHdnpajDmdqAug56dK1W3N85EA7VjPluHhcSI4fCNr9idQ/7jAg6b8XFFTShxlU7RGIlJyAtR0RdCwqTro8cu2STHVMhxLBIUHs407PIRyvTaeTe2FqqcarjOL7j9ejP8LM+zRgg3rs1kRf3uzybcSFENwHX0eOwhPJrCjAlDhi94pcfzX0HW8rsG+G1cOx+5MdRMBAyayBDFf3Ayt+ferhtAGvvSbjribQsfLFg9oURb5mIHaOJi7aVrq5NqG9Vm3G5Y4puzC0kB+3mGfDP/p/deKLgzde8AYtAhFLb71J28s/Toqm/1ZakskUOxbpX/EehXLatOKv8KhW+EOknP+1oFRfXRTCns7Gr9pdbTzzxke75ku4hi94Bun6QCJSvGIbdw5P+fDzrowEZoIntiCQ0t0L+R/NAfdkwFdlsNnetNaXxOuvQXqU8+G2LTR2YEJO1MkL5h0C7xgE5d2pdPm6U78Sk+bT9M+hIfyI5rEQN3YQKZH8pddK6radqSW0g2cMG4n
+ bk4F7dG1
+ DtEW2IC0ZEPB5MQ4Em8a7eVEQujyBkAiUW1qQgqHV/WY7q5mF1GANvTYSEyXFMUg0PmhGXMyHxDe+rZERo+3oc3wjuQPy6AVCuaZ8wPfmBd7CbCoNO5VWBoIlXLE6vdr0AulSD6mQrwmtDpbIRuomzlF8ckCtjpoj2MJiFvqnYb8hmEjt/s4+jDQwO/qxmo0BKwM1bN+GS6cn9wGIRRQOQW8ozM/E7NqA0moWHyk6iC06jPsS6c9jt5xsBg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,74 +117,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add TIF_FD_SLOTS and test it once the system call has stored its
-return value. A task that reserved descriptors uses the traced path.
+Every architecture now either uses the generic entry code or provides
+TIF_FD_SLOTS. The fallback that deferred without ever committing
+can go. Make it a build error instead. A new architecture can't grow
+fd_prepare() callers without the syscall exit hook.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- arch/xtensa/include/asm/thread_info.h | 2 ++
- arch/xtensa/kernel/entry.S            | 5 +++++
- arch/xtensa/kernel/ptrace.c           | 4 ++++
- 3 files changed, 11 insertions(+)
+ fs/file.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/arch/xtensa/include/asm/thread_info.h b/arch/xtensa/include/asm/thread_info.h
-index 5b74dfc35ef9..0c8eb5dc8398 100644
---- a/arch/xtensa/include/asm/thread_info.h
-+++ b/arch/xtensa/include/asm/thread_info.h
-@@ -124,6 +124,7 @@ static __always_inline struct thread_info *current_thread_info(void)
- #define TIF_SYSCALL_AUDIT	9	/* syscall auditing active */
- #define TIF_SECCOMP		10	/* secure computing */
- #define TIF_MEMDIE		11	/* is terminating due to OOM killer */
-+#define TIF_FD_SLOTS		12	/* syscall prepared descriptors */
+diff --git a/fs/file.c b/fs/file.c
+index 6fa481d63dcf..2b041b45f225 100644
+--- a/fs/file.c
++++ b/fs/file.c
+@@ -652,9 +652,7 @@ static void fd_release(unsigned int fd)
+ #define fd_slots_set_work()	set_thread_flag(TIF_FD_SLOTS)
+ #define fd_slots_clear_work()	clear_thread_flag(TIF_FD_SLOTS)
+ #else
+-/* Nothing commits until the architecture provides the flag. */
+-#define fd_slots_set_work()	do { } while (0)
+-#define fd_slots_clear_work()	do { } while (0)
++#error "the syscall exit path must commit prepared file descriptors"
+ #endif
  
- #define _TIF_SYSCALL_TRACE	(1<<TIF_SYSCALL_TRACE)
- #define _TIF_SIGPENDING		(1<<TIF_SIGPENDING)
-@@ -134,6 +135,7 @@ static __always_inline struct thread_info *current_thread_info(void)
- #define _TIF_NOTIFY_RESUME	(1<<TIF_NOTIFY_RESUME)
- #define _TIF_SYSCALL_AUDIT	(1<<TIF_SYSCALL_AUDIT)
- #define _TIF_SECCOMP		(1<<TIF_SECCOMP)
-+#define _TIF_FD_SLOTS		(1<<TIF_FD_SLOTS)
- 
- #define _TIF_WORK_MASK		(_TIF_SYSCALL_TRACE | _TIF_SINGLESTEP | \
- 				 _TIF_SYSCALL_TRACEPOINT | \
-diff --git a/arch/xtensa/kernel/entry.S b/arch/xtensa/kernel/entry.S
-index 272fff587907..4b95f48736e6 100644
---- a/arch/xtensa/kernel/entry.S
-+++ b/arch/xtensa/kernel/entry.S
-@@ -1976,6 +1976,11 @@ ENTRY(system_call)
- 1:	/* regs->areg[2] = return_value */
- 
- 	s32i	abi_rv, abi_saved0, PT_AREG2
-+
-+	/* descriptors reserved by the syscall are committed in do_syscall_trace_leave */
-+	GET_THREAD_INFO(a4, a1)
-+	l32i	a4, a4, TI_FLAGS
-+	bbsi.l	a4, TIF_FD_SLOTS, 1f
- 	bnez	abi_saved1, 1f
- .Lsyscall_exit:
- #if defined(__XTENSA_WINDOWED_ABI__)
-diff --git a/arch/xtensa/kernel/ptrace.c b/arch/xtensa/kernel/ptrace.c
-index 364e4fdabb00..d44d62a56b85 100644
---- a/arch/xtensa/kernel/ptrace.c
-+++ b/arch/xtensa/kernel/ptrace.c
-@@ -13,6 +13,7 @@
-  */
- 
- #include <linux/audit.h>
-+#include <linux/file.h>
- #include <linux/errno.h>
- #include <linux/hw_breakpoint.h>
- #include <linux/kernel.h>
-@@ -571,6 +572,9 @@ void do_syscall_trace_leave(struct pt_regs *regs)
- {
- 	int step;
- 
-+	if (test_thread_flag(TIF_FD_SLOTS))
-+		fd_slots_commit(regs);
-+
- 	audit_syscall_exit(regs);
- 
- 	if (test_thread_flag(TIF_SYSCALL_TRACEPOINT))
+ static struct fd_slot *fd_slot(struct fd_slots *slots, unsigned int idx)
 
 -- 
 2.53.0
