@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7170EC88E75
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 10:22:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7E3EC88E75
+	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 10:22:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 60AB96B0098; Tue, 15 Sep 2026 06:22:50 -0400 (EDT)
+	id 632066B009D; Tue, 15 Sep 2026 06:22:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5966C6B009B; Tue, 15 Sep 2026 06:22:50 -0400 (EDT)
+	id 5BACF6B009F; Tue, 15 Sep 2026 06:22:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 437226B009D; Tue, 15 Sep 2026 06:22:50 -0400 (EDT)
+	id 4A6776B009D; Tue, 15 Sep 2026 06:22:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 10EF36B0098
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:22:50 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id EDFD1C0321
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 10:22:48 +0000 (UTC)
-X-FDA: 85215608016.19.52949BD
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 060786B009D
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 06:22:52 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 21364A038A
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 10:22:52 +0000 (UTC)
+X-FDA: 85215608184.03.9FB2928
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 34CDF1C0006
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 10:22:47 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oQejdY96;
-	spf=pass (imf18.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf22.hostedemail.com (Postfix) with ESMTP id 45E79C0003
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 10:22:50 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OQTXkm7P;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789467767;
-	b=6rKNgKjEyvMDzK01xhtudbNRMOAgjdkdj35h+E8Z7Sh79HcG4ReM/d9r7P8o9JTcomhWvU
-	nOUJ1ucdRs4qwIWnfUQWcTMS8/hWmzIPzPm/TDhZOBSD1Ow7XbULeN2DTFGUIgPbxhIZwk
-	0r8AuKY/3klpYqFg7BhDwEFFVxjuOlQ=
+	t=1789467770;
+	b=qKW00L566HitvFVED0aVJo7BDVBtnXaCpFjETPBRq8/EnVX0uR+f4b6WzowLYre+kOJvRL
+	m9iEQjqu/PC6xqK2YuGOTHMehhd15gsJz9D7uXLWLOqLMdTCbSmzfToU25k0Jb/urrEokv
+	je+SkgFmEzcfMA44I9RdcUtJ3/aJZdo=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oQejdY96;
-	spf=pass (imf18.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OQTXkm7P;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789467767;
+	s=arc-20220608; t=1789467770;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FD0usaDv/+Lu82oshcV7j/hEpSlA+eSeMjmlzM+oZoA=;
-	b=q4lleli2BUId4cca0yyYbMQgzPkg08HloOhyV4gd9Xq7I/kZyJ2DiR+YPogVicY4VeAda8
-	swdt3hukgwSXdXGIzsSRIwkFRkRHiaWPz6Wmovv+M6VKz/1Qcf15zpSgdXjqHtNbSrjFib
-	F0S2RGth9o7GBLIC/OMu1rgG4YvbtjI=
+	bh=+Lfwr6DOZEL712P9mk5S4cinKmJtaSPg9LGMOLkoIvI=;
+	b=1Ng6S/M/hSMc8cASeT0R5JycHPlHd/4ogPW5ReiQgiVqzJwM2iBPvlIEFtHRx0/rPPJTJ5
+	/wXCzi8Gq2SUoS/gEapwk7BIVoo0U+cI7qM0gQVDDDzyrFejt1ygI39w6zNnxnXaOD1/dl
+	xwznx8GMMLImPkwbYfNeSckjxFNbVOU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 726F14387F;
+	by sea.source.kernel.org (Postfix) with ESMTP id 98B1C42E0C;
+	Tue, 15 Sep 2026 10:22:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4D131F000FF;
 	Tue, 15 Sep 2026 10:22:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3E0C1F00893;
-	Tue, 15 Sep 2026 10:22:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789467766;
-	bh=FD0usaDv/+Lu82oshcV7j/hEpSlA+eSeMjmlzM+oZoA=;
+	s=k20260515; t=1789467769;
+	bh=+Lfwr6DOZEL712P9mk5S4cinKmJtaSPg9LGMOLkoIvI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=oQejdY96kS0xDsfpwi0u/8CNcZshfIEcghMbq5EHuhdKdZOZd5dm8x5NoCxMA4QJ8
-	 1tVhOQNfcGdgzFkcb7ICrok85RIer0HXOnjE+ZozSow/Ote97fP1TOdja1mH1yvyBS
-	 RSgIK9/EgtyJqDr/CqhxB+w5HUgoNiKCwwk/N9Xil0sAHDAY33meJquZzcN/izHJJC
-	 WjbKqynoKiDnHI07kaNPPaDLHXlW/dGUxJQioKFp7J7OZWE3w2CDAdfVcivicABUYa
-	 gWiWpQZFDZRKpn3GL4ByTn3Fdh1zP+EIu4R5zms3xAr/T1svYeZ8aQCnqumZjkOd+m
-	 PGOU/L+HP2+2Q==
+	b=OQTXkm7POpmghchxaNkGvtcXtdXm76bpQ8ZxWm+B3QBzgU0ST2VFq5KqUnO4hhQRP
+	 fFLpGL+t4GwnL4u8J1dRV1HsADNpYBrxbaQn5O6lg4LR4v6IZSM6C5eT89XNZsCk07
+	 5H7bvxmABJ1ue7nBzDILxz3qRtSYNktF5IKea38meFXGwe9alGZgZj7Ii0DGfjg0Xf
+	 lQrUu+J2PjKq+nNoM9m3AT2y+B2+Mgh3zMLmIs6imZ6P11jUEgQRbGHH96OmszAQhL
+	 8oPNePv7lrOfCTeUVKYMkx15tkzRwhxQmeeLu/hdOMPpQqPX4gWIBxdIlauIHKSorL
+	 Q1uFe/Ekp4dbQ==
 From: Christian Brauner <brauner@kernel.org>
-Date: Tue, 15 Sep 2026 12:22:18 +0200
-Subject: [PATCH 3/6] coredump: hold RCU while releasing parked threads
+Date: Tue, 15 Sep 2026 12:22:19 +0200
+Subject: [PATCH 4/6] signal: only SIGKILL interrupts a coredumping task
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260915-work-coredump-fixes-v1-3-f354ca41780c@kernel.org>
+Message-Id: <20260915-work-coredump-fixes-v1-4-f354ca41780c@kernel.org>
 References: <20260915-work-coredump-fixes-v1-0-f354ca41780c@kernel.org>
 In-Reply-To: <20260915-work-coredump-fixes-v1-0-f354ca41780c@kernel.org>
 To: Oleg Nesterov <oleg@redhat.com>, Jens Axboe <axboe@kernel.dk>, 
@@ -81,22 +81,22 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
  io-uring@vger.kernel.org, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.17-dev-db0b7
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1174; i=brauner@kernel.org;
- h=from:subject:message-id; bh=4ZTB5yNEhzFeYRPm7RO+Hv5mIE3RCIsFcZAFiThZ+rg=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWStlMm4We52yWHKuhsh1+4en2LDcv2Rs99O4xW/JD/P0
- P2XHBG2vqOUhUGMi0FWTJHFod0kXG45T8Vmo0wNmDmsTCBDGLg4BWAihn2MDE2Fnw1CM1z0uIN3
- 2JqtOFIfLr/rx8G48ws5TV3vtrV/YmNkuOw6Z5HCZO7cfUHz173WlpTR2auVcfpOl5tRt42LfmQ
- XKwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2928; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=wEE0usJXExKGpjCvpVt43sCmGWJShblWOIA/77PWrYg=;
+ b=kA0DAAoWkcYbwGV43KIByyZiAGqpHGijRDk4mk14U0sKIqMGh9oPZ352zjxnb7ninkYbALDDp
+ oh1BAAWCgAdFiEEQIc0Vx6nDHizMmkokcYbwGV43KIFAmqpHGgACgkQkcYbwGV43KJNmgD/VSH8
+ FkLiZlfi+FXpjhT54oVKKQ1kqWXsAMvoIboEKrcA/RXFD5+8zc9AFxnf6PL1yZXmcQkyhk3fWXs
+ 2ENjyxkYO
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 34CDF1C0006
-X-Stat-Signature: wie44uc1ip6b8ym384m7qmqy7kd5q648
-X-HE-Tag: 1789467767-393604
-X-HE-Meta: U2FsdGVkX18azQtcfBvwwLl4UIFZ9EqUXqisChVMIwWACjFv3mNZ0UsFJajX4WZtsESDhEAS/chKoPUU1EycvJWTHl9xX/a36afeNkmY2X18udXntMTOtB2cHVR08Rk872FFzANj2Xh8gMSvdzAGULS8wGYkKKUC9ytwKdBhQo+2jghbnO3+nCSUsOI6doFT5bX4YCsiiyHbctJLiwixl8m09hwXpWwE5GlTsmWYXst/fpzlutoKw3sGk7Hun63Xr9HflrD9l23hXo9mNRYysobuJIvsL7iydAN7BbMSCX2RZ8pi3djqkNjujdH6w3tvQsYUO8vIfPTZWF1W1LZUlqL9PelGPwGosQTmr76Yc1Vc4ck6yQ2N2CdokWZk+kgGmNcRxG2sULEQkOnaot4jMj3F1MY968jHRKPbwwf7CxYyZCaQEbgIu9OcIXmkg5pxuNJKcF1iO50r0msdw54ehBH8JLLgKM7ijyyK8/ro2rKFraPWGY3FmiMovxuf98LkNLInukQzYFtlP991PvOseXHKVSB6e7/ic2eQxqKIA+kwCRfo88lcWAg/zeqLVEFwaMtQI773Pu0dewmwBWz0GzwgVb+THRZGtdF2hV8ze9h/xv4QprZ+G/Rs70vH+smNtBij8rtNXDfnj3v4gguGwZQfvOBqJw/3AjVcOc11VbhT9Vj/Tyobx5vjov3nIqmrxF9OpEW2sSXF1DvXg6t+ijk71toUomRYasSRBvD8f8Asknzd3CK7uEG1bteOzIbNXlGyQCPMBVDlnppr0cQW41Oi0nTJaHuqU5aW+y81O57Cb9zIPjmvUVT8M2LTHUPogIqh7CZl/muKgtSnUbQ0Jo8c8/yvmfGxXZWF7tAhb74gcmx6wjQ3IMz3qNs04ygxrby1GyE03FrGY2k3IgeuI0v1n+L94VDYQoBb1G1o29BaUEyIB6oCEBywiafFku2365hp9sDXlgR0S+SaQpL
- 5Oq05CEj
- Z9KqrCAQFdU0fK9S+a8k/kDfjR5kQ9fGW+YsasPCja+ih8NzJEb5x6526/W4zC9MOxwumkAEBWx39HfYKwz3VLMI+ien3KgBvwN3ASFtowRKO0w6Mdau9cdbY8xMv+sEVvuWrLVj3WgvswiaC6aw1IIB/n51xWmDRH8HG0PNQkowqB/pTSc2JYgrlOZiBkhoU4Z8/8FkzBl82j0Uls9nVMwVTh/Tri7GYEgxKJsGGNvVzP7D0U6nNuOTRDQ==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 45E79C0003
+X-Stat-Signature: s8eourgn587fi8b8r5ubq9tud3wf67ar
+X-HE-Tag: 1789467770-904463
+X-HE-Meta: U2FsdGVkX1+y7TnwrrMyzJK0o4ZSgHEIC5rERO3+WqKxaSDf/C0Y0v2Se022AcAnO0a6UJeOTl2st0fxPrrUZVIB1Oab2D6WGA1fN+7/ziLhLBHMczPRx85nxILZEBJH/YeETjE4L0BMv5mWsrykO2KFrC/qKdQhyCQj3sKBtNwvNk/7eJemcFYseal1wo1LcBHx7TPTj61gbERRk29mpk6HVbkxIkrpMlriUVyS9g5HpVIRLs8gaGc2xaozPEnkJYYVMvNah1hoBjJQn2RikltC3HzAf47M4uKjIeMQZYVKRD1EwfObegpcH+m9BupxpXdeg9MChTttoQncMN6HQTsn0PsXlOmSfK3VikWts6DgvZS/EVmPoSJUDzlaktenCLVlyokPfbtHgvlrtFAGcPOAd2N285/bnyAygKKSV/DAjN2OKvioMV4695hxhkHfwNjOu4Zn5n5J/GH7LgdRmOxs0JSxIu+t9Mjabu5LJPDer6zRNzFRqLgisKaaVjvWGIS1XjPf1ZNxfvBHawQUM2NXz+EZ5+XQg69ebCtccz2Z0sGmqiBZA+qt+afECtuuJc/xeVumXCp3JKvPy2EspyO4abGnrYSah+x4KJSNyyda7oPI2OQ14MGNor4/OPnUOdJcUlonLgMsViUOHclM80hvbwbk25QTrJpMx4cWslH1es4v1f01KAHYd/JnrZiTF8zQn3oXgf0bCX2Kkk9a1QYQbEtT1ruhjstzGPvBYCPSyDRopvFtfIRlftD7CRBIFKZ4TOB/Uec67PWRcWd4gZrn3Rnnp1uToSq84EydEZJ6QBxZxNDc8OMZtabzki2tF0AKDKsf44lpTtCqGPOWPak2wFZ0jjqJi/qVC31v9Qfx3DCPzzX0/bGvEBbjogjA9qZ5xgrFOoK4tiePdZzB5gDLOXUdatomz+UxUSaEFe3pMdYRSiFEBq5Xio/+QcGTYcx32An0ZuoF6h8t1hr
+ qIxgpCIL
+ spNmNZzEid38Qj1grJBYbE+F/4FsCsvCj70dxlJlyafNzeQshTBPh3cqnqr13kA9CNZKs48+q86Z6XtMB9qfBQ9/PrEyNhxiSEbmHhthOgjdLEmwkU46C8RdXj72MEh5Cwl7iO/DHoxcw7dt/+7rBrzUjHQIniHWJXtVqM0LqwwrSmS/QuvUdzhrj5e5kRexwDTT9UdoRNcknRxbAjGQFH4MU23c3MF7Abu90/ESgfhj0htm322zAy6ss5g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,39 +104,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When coredump_finish() releases the threads the wakeup neither holds a
-reference on the task nor is it inside rcu.
+The coredump client only accepts SIGKILL. I've massaged away
+TIF_NOTIFY_SIGNAL in another patch series but it seems that
+TIF_SIGPENDING also has some warts and causes truncated coredumps:
 
-The threads don't necessarily need a wakeup to exit. If it gets
-preempted or was woken for other reasons it sees ->task cleared and
-exits. So only rcu keeps such a task_struct alive.
+(1) cgroup v2 freezer isn't built on freezing. Instead,
+    cgroup_freeze_task() sets JOBCTL_TRAP_FREEZE and calls
+    signal_wake_up() on every task in the cgroup. That includes the
+    coredump client. The coredump client isn't able to act on the trap.
 
-If the coredump client is preempted between the store and
-wake_up_process() for longer then try_to_wake_up() takes pi_lock() in
-freed memory.
+    So a freeze that lands in while a coredump is written will block.
+    Moving a coredumping client into a frozen cgroup has the same
+    problem.
 
-Hold the rcu across the loop.
+(2) retarget_shared_pending() doesn't take a coredump into account too.
+    So if a sibling thread is in the middle of changing the signal mask
+    or it exists with a pending signal that helpers points the signals
+    to other threads.
 
-Fixes: a94e2d408eae ("coredump: kill mm->core_done")
+    While it skips exiting threads it will target it at the coredump
+    client as the coredump client isn't yet exiting.
+
+So it's related to PF_NO_NOTIFY_SIGNAL which I have sitting in
+kernel-7.4.signal. We should be able to fix it this time by making
+signal_pending() report only SIGKILL for a task
+that has PF_DUMPCORE set.
+
+A cgroup v2 freeze now waits for the dump to finish. The PM and cgroup
+v1 freezers keep aborting it through dump_interrupted().
+
+Basically, PM should be able to interrupt the dump. cgroup v1 freezers
+are legacy crap we don't care about and cgroup 2 should wait(?).
+
+Fixes: 403bad72b67d ("coredump: only SIGKILL should interrupt the coredumping task")
 Cc: stable@vger.kernel.org
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/coredump.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/linux/sched/signal.h | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/fs/coredump.c b/fs/coredump.c
-index 791a9268ed96..78ab6cb78be8 100644
---- a/fs/coredump.c
-+++ b/fs/coredump.c
-@@ -602,6 +602,8 @@ static void coredump_finish(enum coredump_state state)
- 	current->signal->core_state = NULL;
- 	spin_unlock_irq(&current->sighand->siglock);
+diff --git a/include/linux/sched/signal.h b/include/linux/sched/signal.h
+index 70067ccfe2ba..3a7ff3416e57 100644
+--- a/include/linux/sched/signal.h
++++ b/include/linux/sched/signal.h
+@@ -386,6 +386,11 @@ static inline int task_sigpending(struct task_struct *p)
+ 	return unlikely(test_tsk_thread_flag(p,TIF_SIGPENDING));
+ }
  
-+	/* A released thread may exit and be freed before it is woken. */
-+	guard(rcu)();
- 	while ((curr = next) != NULL) {
- 		next = curr->next;
- 		task = curr->task;
++static inline int __fatal_signal_pending(struct task_struct *p)
++{
++	return unlikely(sigismember(&p->pending.signal, SIGKILL));
++}
++
+ static inline int signal_pending(struct task_struct *p)
+ {
+ 	/*
+@@ -395,12 +400,12 @@ static inline int signal_pending(struct task_struct *p)
+ 	 */
+ 	if (unlikely(test_tsk_thread_flag(p, TIF_NOTIFY_SIGNAL)))
+ 		return 1;
+-	return task_sigpending(p);
+-}
+-
+-static inline int __fatal_signal_pending(struct task_struct *p)
+-{
+-	return unlikely(sigismember(&p->pending.signal, SIGKILL));
++	if (!task_sigpending(p))
++		return 0;
++	/* A coredumping task only stops for SIGKILL, see dump_interrupted(). */
++	if (unlikely(READ_ONCE(p->flags) & PF_DUMPCORE))
++		return __fatal_signal_pending(p);
++	return 1;
+ }
+ 
+ static inline int fatal_signal_pending(struct task_struct *p)
 
 -- 
 2.53.0
