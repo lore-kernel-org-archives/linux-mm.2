@@ -4,146 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11252C982C9
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 17:29:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F427C982C9
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 17:38:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 186E56B008C; Wed, 16 Sep 2026 13:29:25 -0400 (EDT)
+	id 235F46B0088; Wed, 16 Sep 2026 13:38:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 15F396B0092; Wed, 16 Sep 2026 13:29:25 -0400 (EDT)
+	id 1BF496B008C; Wed, 16 Sep 2026 13:38:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 064EC6B0093; Wed, 16 Sep 2026 13:29:24 -0400 (EDT)
+	id 086F66B0092; Wed, 16 Sep 2026 13:38:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D2C576B008C
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 13:29:24 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id EDE151207B6
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 17:29:23 +0000 (UTC)
-X-FDA: 85220311806.23.75D93DC
-Received: from mail-ej2-f18.google.com (mail-ej2-f18.google.com [74.125.228.146])
-	by imf25.hostedemail.com (Postfix) with ESMTP id F040AA0005
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 17:29:21 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=kbc5kHcn;
-	spf=pass (imf25.hostedemail.com: domain of dmatlack@google.com designates 74.125.228.146 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789579762;
-	b=gJm8T2trmDCiDht965QBAPBoTB8itIXAZce5Za9N9QNNIA5OAYYgOSyiWYZmtljMm1BpiN
-	a3gvyV/45EwKn39B4zEQ7RFXDlrX8M3VgMMEgQ1k/dtnmqYc9HNUv+3WbaEpL1/W5zIuzu
-	gApfj7x2xzbgm3YI8Hhe4pRmDNgaxkc=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=kbc5kHcn;
-	spf=pass (imf25.hostedemail.com: domain of dmatlack@google.com designates 74.125.228.146 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789579762;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D64106B0088
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 13:38:51 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1A24D160795
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 17:38:51 +0000 (UTC)
+X-FDA: 85220335662.28.04934FB
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf16.hostedemail.com (Postfix) with ESMTP id D16E2180004
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 17:38:48 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=X4BufaVm;
+	spf=pass (imf16.hostedemail.com: domain of bfoster@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bfoster@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789580329;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MsBp/K/8Mh4fs+CJj0dFevHba775OvfQ8W0kzE3hMzk=;
-	b=3TTmaVwlZTBxr0LSPgoNs/7+kjkdq/xnLyE91hWwoWyNVCovRfo/a39JixpZ7cIxpAV2zq
-	ZnQawTNLzd174K9dh8hCcqjMymfPo9h+O+Pc1/UQT1uGoIRoXvnFwo3AHFpkEn8OX0lE2X
-	G3qMyiqan0lb5cszojqGwKYvra2bkOE=
-Received: by mail-ej2-f18.google.com with SMTP id a640c23a62f3a-c254fa65080so166468866b.3
-        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 10:29:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789579760; cv=none;
-        d=google.com; s=arc-20260327;
-        b=o1U2C0WTquFcpBNH65amagd7QJZ2JKc3WoT33BRIWrbAx536pa+zRNnoaGmA+GEFSC
-         n5axWTGD12vXzDUrbxoIRC75av7tLax1r9jwuLXID6I695qFp4hjPvUWWjKop6cqqv54
-         WdN63cSCpkn8cJyT/mJ3kmlUiAPW0GteGxYA2UtNZuCua/HDs3b7QgvKyQwYs0LHC0TQ
-         LC0iID8VqszDgtLPnbkXHn7eNJ0hqFVOoBUz7z1RL2YtozRwX6UiMBJBw1+DwsM9i75p
-         h/mhxXhOm2+hxvT0kv3O62wbpwgc62r8RwTjjmdo5wWdfk/Giv0g6PGSK+Ev/OwsU41S
-         Bwbg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=MsBp/K/8Mh4fs+CJj0dFevHba775OvfQ8W0kzE3hMzk=;
-        fh=9Xzjq8bPeiNq0cgvpo+joK2Sn9ETibJHLcV9NrInD7o=;
-        b=CoEJDyP+UUvo+SkbsqJd6cZXY7yjoafoSqwnKTEhmHrrihkFmHejJGSA5d1Pa1Twzu
-         TSCb/s+Cgh6zOWLU2OABq34TWASzE3zDQFj9YCDHq8App/rxcloyiIyroiNSHWO5zTze
-         dz79VdICCRpNZWCvsToYMAq/pkbQhqnOKDj7JIGZqPkJPC2+ZAKNkwH5/LTgs9EjunjI
-         lqzvgW7O67O4LenyS3TBcXY7YOVuRLmbRPDZxaesQCMOKOa/mdmppvndl9UjzvaS3Oxs
-         LlueFMeZtN5zBodHGUk/EAYo/Ido04PTu+qVUbdbYc+pObOx5iVt4IhpMXf6SG/iXee6
-         P6zA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789579760; x=1790184560; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=MsBp/K/8Mh4fs+CJj0dFevHba775OvfQ8W0kzE3hMzk=;
-        b=kbc5kHcnx/zWxk0pCMBjevtKD3r9Pppf5PY/at6X0R1432t17RW2ho9pdU5NlQTXHy
-         13XooXFv/RtHWheMWST5WhgAObCxoUjKtOlr2AgDFaxnjSH4nP9pV45NIVhZLhKG2Jre
-         d+nI7NDEFHaLBUiemns45f9OGdJrg9j86pAGufeGyhrBFp2ZuL9k+UU3Tfzmjvqot6hq
-         xmF/bj3BZeVdicihUs3RYbVriUpiSVRGwBPIxLzB1GTK1yw7joGIMe08BagQQ1y1axEc
-         Ipd7vw4QSfQrAhr3ORFehSlKxqS5wyRvMW5sfH1djgdub9MO85wv3d4Zrpt6+ltVJhP8
-         uSEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789579760; x=1790184560;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=MsBp/K/8Mh4fs+CJj0dFevHba775OvfQ8W0kzE3hMzk=;
-        b=I1YtOdX6x7IKaVqY4V6dnfBFrV99kliw1Bhjda/98gxHajx+wNrrnHjDKXIbQsQq6b
-         adY0STsqMsQiY7kerO6hQkLyN2rEgwXPx3qBR+doGVfYH7DwsUbxvOXovjaIouwtV4jh
-         ZubF7pRHOW2Rx0zCp748Jo5BqtfJocNoluIeo7Wqg5dRTZDqVZFTSJRr4I0AhdA130Oo
-         xCblZ96MPpyTpAgIf1YCIt8BFQQjv+gpV0Bx5G1CGNV5+vdVYew/tJ38oyolSHzaqB1C
-         jyC7e+erbbOOoUhedbH1nIO7/iBtxIYCSA27T7XyEsYFuWhYtt23HtbVOSeLkJcVTU5n
-         t0qw==
-X-Forwarded-Encrypted: i=1; AKwUvBysyoNT8qaGbRNTcKkFQTyDLlyqricE3YEJbyPe/aji/NCMBWHnXW6ho1/FDp0e7940PDG4vVduYQ==@kvack.org
-X-Gm-Message-State: AFuF++kYJz0bt3zjM1eRyy8H9dLL14WBQmEUdUM/2VNnbamDNqaqwANw
-	OIrjnactSDrYTWg3i+bTZxdxh5ZDQ+tFNnNeqOjcxj01POcbszqiAD5twTEBZIsQtwZNH2AbZAF
-	dVPBO6cYO0SpkHnNv2dnTUx0Sl4MYYanPHvkJBNmk
-X-Gm-Gg: AYBFou18p80v5MUC9Y5aXTuBGHzBYZVDnPI/X/YDuxMd14BDhli01l+Rxj9QjjZtaxt
-	idCghaQMVJLOOABR/oLtWgaRnlaea2jYphSiityuG8IkTX4IQVbppemnpsCQTkrYnwuWf7s2ifK
-	4wpWt6TFDdT2SueILHcH5HArvWrdUQsaMsVI9Awf1pRXxm/+4y2KvhuY/odAIE16RqSkNZ/mfBJ
-	X3BB0lEigVmwn1ZCkL4FfntEdxKukXXhLd7mPRgqsU+AQgFB7NsxUyCYYJPcQe5O1OosW1oGWc0
-	8k7+1Qd3hMcNmxtSPO460EqMVia8IcKTlh9LHRZY4ZZB5zlK6AcMA4hzBSyNftDlKrbu7gkGxjK
-	2BmxOsfmaBFyDNUQdbBWx
-X-Received: by 2002:a17:906:c114:b0:c29:52dd:317c with SMTP id
- a640c23a62f3a-c29e52ff5aamr253749566b.30.1789579759601; Wed, 16 Sep 2026
- 10:29:19 -0700 (PDT)
+	bh=cmdjUNL1XY7zBDucnHHtvP/PymRScu1lUWAizmkODYI=;
+	b=GNvSI5N3eTZ+XZeqnGPb1lMmMA5NJN8RqlDdFKWqhwBB/brhsKDPTyRtXWQXolxxHm8aTx
+	qyXKdDPnxrQ5fNoogCE4/IHzV+iqE1FUU51Fkh2+nTb4kD6qzr0iJ6pb/bHot2R53dbX7y
+	4Cs1Ez+D8bxl4D2PESjPcmycF5A/z9A=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=X4BufaVm;
+	spf=pass (imf16.hostedemail.com: domain of bfoster@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bfoster@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789580329;
+	b=J+URNmK+l+c/y92w9ih5QgX3r2KhLDSNoz7/yU+iOLVXO+PDQmp+8os+gG2YWz1lx9EEzn
+	L0IrwiPIAvp7iSBQZwHbn7Zkjg4pC2ncy4NMTBTphTdoU3u60sKQ6CY/WR73uBz49QI9fG
+	W4EQC4YLgi8qVwhyWuDGrXgcmhXov5Y=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789580328;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cmdjUNL1XY7zBDucnHHtvP/PymRScu1lUWAizmkODYI=;
+	b=X4BufaVmFqhZw567ZHFqDRNk/0ruOj+1BrfVSSpe1+TmeOygt6tcfJtM8IZDhTVRsPlXOl
+	B+4yybX/sFXhuXswLADA5CIRmnYWh+FL0l7vtSIhtimQ5k8Y0qNJjJJdUqdjcSQdCfWV1l
+	N5K4lZstDhAQ2m9J8zklqGtdECX/5YM=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-673-AEY05fytPNudNZBo7klhJg-1; Wed,
+ 16 Sep 2026 13:38:44 -0400
+X-MC-Unique: AEY05fytPNudNZBo7klhJg-1
+X-Mimecast-MFC-AGG-ID: AEY05fytPNudNZBo7klhJg_1789580321
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 817AA195422C;
+	Wed, 16 Sep 2026 17:38:40 +0000 (UTC)
+Received: from bfoster (headnet03.pony-001.prod.iad2.dc.redhat.com [10.2.32.114])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 83CE21956087;
+	Wed, 16 Sep 2026 17:38:35 +0000 (UTC)
+Date: Wed, 16 Sep 2026 13:38:33 -0400
+From: Brian Foster <bfoster@redhat.com>
+To: Zhang Yi <yi.zhang@huaweicloud.com>
+Cc: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-ext4@vger.kernel.org,
+	akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, hughd@google.com,
+	baolin.wang@linux.alibaba.com, willy@infradead.org, jack@suse.cz,
+	ziy@nvidia.com, joannelkoong@gmail.com, djwong@kernel.org,
+	yi.zhang@huawei.com, yizhang089@gmail.com, yangerkun@huawei.com,
+	chengzhihao1@huawei.com, wangkefeng.wang@huawei.com,
+	yukuai@fnnas.com
+Subject: Re: [PATCH v3 1/3] mm/truncate: fix data loss when splitting
+ straddling large folios fails
+Message-ID: <aqrUGRd0JClEZNzN@bfoster>
+References: <20260916092450.654408-1-yi.zhang@huaweicloud.com>
+ <20260916092450.654408-2-yi.zhang@huaweicloud.com>
 MIME-Version: 1.0
-References: <20260728221007.2098560-1-dmatlack@google.com> <20260728221007.2098560-4-dmatlack@google.com>
- <e099cbaf-3185-4c39-ae36-7f0e074ebff7@linux.dev>
-In-Reply-To: <e099cbaf-3185-4c39-ae36-7f0e074ebff7@linux.dev>
-From: David Matlack <dmatlack@google.com>
-Date: Wed, 16 Sep 2026 10:28:52 -0700
-X-Gm-Features: AcwNN1X8OtlPLlB_fEFGTTxlBHL1RWBLk55_RIeZg7bMhopD1i4pmTuVWaDvZaI
-Message-ID: <CALzav=eX0gVrbWCnYGwfqPHUkoVxqdr2nw3Tx6Aqze0XOcuwzA@mail.gmail.com>
-Subject: Re: [PATCH v8 03/12] PCI: liveupdate: Track incoming preserved PCI devices
-To: Zhu Yanjun <yanjun.zhu@linux.dev>
-Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org, 
-	Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, 
-	Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>, 
-	David Rientjes <rientjes@google.com>, Jacob Pan <jacob.pan@linux.microsoft.com>, 
-	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, 
-	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>, Mike Rapoport <rppt@kernel.org>, 
-	Parav Pandit <parav@nvidia.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Pranjal Shrivastava <praan@google.com>, Pratyush Yadav <pratyush@kernel.org>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>, 
-	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20260916092450.654408-2-yi.zhang@huaweicloud.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: BOuamSkdszM2qVaDZJSPFiF72gSbIuRtaV9rNzoR6fo_1789580321
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: D16E2180004
+X-Stat-Signature: 4c3hmzodts9fj4rm88qs86ngi3c1yziq
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: F040AA0005
-X-Stat-Signature: u7kh7oopysqc16rk9dzky78meby7dh7c
-X-HE-Tag: 1789579761-394015
-X-HE-Meta: U2FsdGVkX19aXv5A+5JLhUZogqaQiqmPwif7smeCX2pYUphiwmN/gHxELBp6+2XevZxMpkuX98rvAFinFjh2peRygBW4Ex4Sl93X+WEvsHhN2jPznhE+gzb0v5osE8jJbiDfUxG58s4Y11unpZBBXAyeWth+Io71DTf5UlmgvKfmNpj0XdubwRLPc7j02qerkBRMNpSeIMKLC7Ktd9j0H7rTTEC5u4bjPW2j33HkZMIOc+0iM9jUeIt8xocyNN8nE8lVwfaq9POUWnC5YloMf9NXCxUkDgvF8hUi43o6JnP/c02zjVcLX38/GOi+GfhdeVJjky/UIW07k2ZcGitJkh1cdMJCYMNEsnUOXw80oW8mHT3hPIeQn48HOLEgkUA88povh95FG/jsNLPpiyP2PpnfNuQLYxtB/17jbc4FmBV+yWz8mTpj0Edd3SmzT6wR9K8yxpAP35SQWHggd/1PiJNfg6EXY1DAF2RzhjFnM3pztrZpMFFFAcN8FpEhKfEk/wrTUUz9xey6KXghi7r161ZU3CoIHxyhB6RogsLoboFqhfk8X88exqBRDCVpF56fIRvwpNUh7k0kM+TF81VaYefZGXDHxigKYmEf7wnMHlsnWATOdFAxo5m8wAIQ2L9g+SrjwZ/JL29xRRUV1BoEVLK7qQP0CLWKscx+LOnFXho46AoOhhi7nT6txHLIPu3xY9j5n4C7J07/S/zg+itkkWCHdPMMGyCqvEZSI3n4AtDjCqaPUMUsrSGZkmxi77pOnvaUS4Ztb6EGgdnCLYu1kzqlbJV3NlGgVSbT8Liq01LLU4yvlQj89fQiK5nTIiVJ517Ol3T81byqBGr0t/ijLdIdyw1LMoI1P2CoF/WyzwW1XM6Fq6RChsdncB9aoPOwCgI6RCJyrfbcHtQWwWlY4SnItI0UnAnGjDfuvXcqMGudKcb42yUEoDEIn9omR41OdbZR1gnSK3yYG7XbS9S
- 7xF+/HnG
- yAM1ANw2Ug1m6Ou7bbxmK7I7qNY92gvJFqlYgAuFdxlpXazvnotjMLfCHqmY0TjDsRcsQV1iFEbtStG+gpw5lq4Z4aLK1QnAlCvtcd4dkSi7zt2neRlYrDwIOeD4okK8eWkwV+xF0xS5cpZSXU1ny/bAjyAteGmMOns9LFYkYMbb/FZTy+THjpMaNmhS9LzbzoRqGJdvXeoxV2Bbh2f5hMTNc7srtF8GWeQM3zpUUOMjxOU0=
+X-HE-Tag: 1789580328-519787
+X-HE-Meta: U2FsdGVkX18Ygg10UUtY0Ch5UukNI2/T7khTNKjxLY+bJBZePZoPSil/SLKX8O0pnwXDyPcz5LWRfQhygvfV2Vduf44NC+M4tw/bENVw7Us+o8newcyl6Kzr4EBwp8224mUW6qZDbiM9oNEHT8JcJPk0PqUuYQQqwSvZlQ3A0GWBnLVvrx47rc6cJEqjHcoXM6kE0tgiqAYxnPN5zgAZh3+EMEgBtr4NEtg2JzBe3kje4siQY2tiuT9750CvCuTYCtXF1E9pS9J5SVtCVUHme+SR2DhshWOE6zd8rgZ+PD8rAep2LFmNQBHqS7/QJLs00BWnX6Soj+NYmcmkFQGXwxanYrSLhAMWyo/dKmTUrNuQkxcEiRZrkEm2bnbuaeNcXM6XfglrO/KIdSVXAIpYNbrAWBAN1ob0+HG9jjugwbZU6o5Omm2ICutNb2jARkmo7lhD2pxCqTBoFTXAIbmqlLhr/xd1QdD4LHj0D4jjUXnuFuUXG+An18+wD6wcMs+BrMPldLu/IvQkhbFcm1a83S4/OhCCdiascEWM9IBKBpXkjxXVcR1Ei70mgQ+axnCvLKGGRS2P2pPvVUe69AbMxlWntRzqHVXwOUYvT+7WVoIbQKi8AqedZMtOt69nYTGRP74PaOvc0Nj3vVRgCRGhc2CCo5iGpf4N6nMWHuS7pYhFJKf9KnQn/NCKMjU50PLFFHdYMR8f5oUGW6lcyumjKPxBxbOxR7zrczndyMY3IBRrMohbdkoBPZ7FNStLGqKjWWz89i4UVBilk5DgmbtDqSJ9JLBGGO06YiiOq9PLijb0wrHfBF/dpOCg1/H/nkLsSkEUQ4mWXaxSl0qXfvUgdsN4ERR5r6FYBJrSsAgW1pfDVWuwtuzHKxSBc9d26rXvdB2hbyD8jcKWlEVdYDmG2NJ2gcaiWXMyfNMlUHkayledD0E/zRBAqxOW89dNx3uTEs0guRf4bZ6VhQqCcFb
+ 43yUzznV
+ fTw6zw2eDGlJ0f/JhrzQsUaKEWA9tSXyjLwBOe/NmSfeWO4HVM/odK016S7jHCyvnbm8QHu3cu2W5tsOx9q4FVPnu0Kp2c9lkHQKUoT0g4rBSedvQvcxPNB1XU0K7/Dl4G13EYLggCnfxbI6vtC/vf3rE2mmwVmG1cVScnuPqaVjWCjkwVPgI2XgYlTfA0W4eqcHFb2lqMR1UwtzccfxgIQDkQigG+rWf0KCPcQIhtNdntJv8i/E43T1e531FwILtgUO+QWFDRhjsS6Zhje9+086zoQCeWNZo86G2BS9dilCUucqksNwIRNtRN2Qym/z3O5VGdSIbITl/9gnsVLLlf2UNRJ4oGO+AFNwc6D/MeRKF6EChatlIqrE1YiPo3ar6Stamkc+ZEppVDWNHeMYSDWh7vPW21UEfnoD8G37bKRq5ol8pCoP37ywsyg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,43 +113,204 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 15, 2026 at 8:31=E2=80=AFPM Zhu Yanjun <yanjun.zhu@linux.dev> w=
-rote:
-> =E5=9C=A8 2026/7/28 15:09, David Matlack =E5=86=99=E9=81=93:
+On Wed, Sep 16, 2026 at 05:24:48PM +0800, Zhang Yi wrote:
+> From: Zhang Yi <yi.zhang@huawei.com>
+> 
+> truncate_inode_partial_folio() splits a large folio so that the caller's
+> truncate loop can drop the in-range sub-folios while keeping the
+> out-of-range tail. The first split at the punch start edge is
+> non-uniform, which leaves the sub-folio at the truncation end edge as
+> large as possible, this means it may still straddle the range, holding
+> both zeroed in-range and valid out-of-range data. The function then
+> attempts a second split at offset + length to isolate that tail.
+> 
+> If the second split fails the straddling sub-folio stays merged. The
+> function returned true unconditionally on all exit paths of the success
+> block, telling the caller it was fully handled. The caller kept its
+> default end and the truncate loop truncated every sub-folio below it,
+> including the merged straddler, discarding the valid out-of-range tail.
+> 
+> For example, a 4-page order-2 folio punched from offset 0 to the middle
+> of the last page:
+> 
+>   truncate_inode_pages_range()
+>     truncate_inode_partial_folio()      # same_folio == true
+>       1st split at page0 -> [p0, p1, p2-3]   # non-uniform, success
+>       folio2 = p2-3 # straddles: p2 zeroed, p3 tail valid
+>       2nd split of folio2 fails / cannot lock
+>       return true                       # BUG: caller keeps default end
+>     end = 3
+>     loop truncates p0, p1, p2-3        # p3's valid tail is lost
+> 
+> This became reachable after commit 7460b470a131 ("mm/truncate: use
+> folio_split() in truncate operation") replaced the atomic split_folio()
+> with folio_split(), whose non-uniform split can partially split a folio
+> and leave the end edge merged.
+> 
+> It has gone unnoticed because a dirty large folio normally carries the
+> filesystem's private data, for example buffer_head, so
+> filemap_release_folio() -> iomap_release_folio() returns false on a
+> dirty folio and folio_split() aborts with -EBUSY before any split,
+> leaving the straddler safely unsplit. The bug is only reachable on paths
+> that produce dirty large folios without filesystem private data, and it
+> was caught on the upcoming ext4 iomap buffered I/O path when no ifs is
+> attached.
+> 
+> Rework the contract so the caller is told the page range to discard:
+> 
+>   - Add pgoff_t *pstart and *pend out-parameters that receive the page
+>     range fully covered by [lstart, lend] after any split (or none),
+>     i.e. the pages wholly within the range and safe to discard.
+> 
+>   - Adjust the ordering of the validate check when splitting folio2.
+>     folio2->index is only reliable after the reference count and lock
+>     have been successfully acquired, since it may have been split
+>     concurrently, or freed and recycled to an unrelated mapping. On any
+>     failure to obtain a reliable end position, fall back to
+>     folio->index, which is safe but leaves the sub-folios split off at
+>     the offset edge in the page cache.
+> 
+>   - Rename the byte-range parameters start/end to lstart/lend to better
+>     express their semantics.
+> 
+> Callers in truncate_inode_pages_range() and shmem_undo_range() pass
+> &pstart for the folio at the start edge and &pend for the folio at the
+> end edge, so the truncate loop drops exactly the fully covered pages and
+> never touches a straddling folio that still holds valid out-of-range
+> data.
+> 
+> Suggested-by: Brian Foster <bfoster@redhat.com>
+> Link: https://lore.kernel.org/linux-fsdevel/anH-WKA1coW6wtfG@bfoster/
+> Fixes: 7460b470a131 ("mm/truncate: use folio_split() in truncate operation")
+> Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+> ---
+>  mm/internal.h |  4 +--
+>  mm/shmem.c    | 13 +++-----
+>  mm/truncate.c | 89 ++++++++++++++++++++++++++++++++++++---------------
+>  3 files changed, 71 insertions(+), 35 deletions(-)
+> 
+...
+> diff --git a/mm/truncate.c b/mm/truncate.c
+> index b58ba940be47..bec6d881d022 100644
+> --- a/mm/truncate.c
+> +++ b/mm/truncate.c
+...
+> @@ -259,32 +271,62 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
+>  		 * for shmem truncate
+>  		 */
+>  		struct folio *folio2;
+> +		pgoff_t end, aligned_end = (pos + offset + length) >>
+> +					   PAGE_SHIFT;
+>  
+> -		if (offset + length == size)
+> -			goto no_split;
+> +		if (pstart)
+> +			*pstart = round_up(pos + offset, PAGE_SIZE) >>
+> +				  PAGE_SHIFT;
+> +
+> +		if (offset + length == size) {
+> +			end = aligned_end;
+> +			goto out;
+> +		}
+>  
+>  		split_at2 = folio_page(folio,
+>  				PAGE_ALIGN_DOWN(offset + length) / PAGE_SIZE);
+>  		folio2 = page_folio(split_at2);
+>  
+> +		/*
+> +		 * folio2 may become stale due to a concurrent split or
+> +		 * freeing, so validate it before and after taking its lock.
+> +		 * If it fails, we can't get an accurate end position and fall
+> +		 * back to folio->index, which may leave sub-folios split off
+> +		 * at the offset edge in the page cache this round.
+> +		 */
+> +		end = folio->index;
+>  		if (!folio_try_get(folio2))
+> -			goto no_split;
+> -
+> -		if (!folio_test_large(folio2))
+>  			goto out;
+>  
+> +		if (folio2->mapping != folio->mapping ||
+> +		    !folio_test_large(folio2))
+> +			goto out_put;
+> +
 
-> > CONFIG_64BIT is now required to enable CONFIG_PCI_LIVEUPDATE so that th=
-e
-> > domain and bdf can be guaranteed to fit in an unsigned long and be used
-> > as the xarray key.
+Hi Zhang,
 
-> > diff --git a/drivers/pci/Kconfig b/drivers/pci/Kconfig
-> > index 3781e2b5f095..8af20f558086 100644
-> > --- a/drivers/pci/Kconfig
-> > +++ b/drivers/pci/Kconfig
-> > @@ -273,7 +273,7 @@ config VGA_ARB_MAX_GPUS
-> >
-> >   config PCI_LIVEUPDATE
-> >       bool "PCI Live Update Support"
-> > -     depends on PCI && LIVEUPDATE
-> > +     depends on PCI && LIVEUPDATE && 64BIT
->
-> One question about adding 64BIT to the dependency:
->
-> As I understand it, enabling CONFIG_64BIT essentially means that we are
-> building a 64-bit kernel, and a 32-bit architecture cannot normally
-> enable CONFIG_64BIT.
->
-> If that is the case, would depends on 64BIT be necessary here? Or is PCI
-> Live Update already inherently restricted to 64-bit architectures by the
-> existing LIVEUPDATE/architecture configuration, so that this dependency
-> would be redundant?
->
-> If this problem has already discussed, I am very sorry about this.
+The only thing that sticks out to me in this version is the
+!folio_test_large() check above. If we split (or something happens) such
+that folio2 is no longer large, wouldn't it be more likely to catch it
+here and fail to update end like we do in the same check a bit further
+down after the folio lock? Maybe I'm missing something here, but it
+seems a little odd for the same condition to return two possible states
+like this. Otherwise I like the changes you've made and the rest of the
+patch LGTM.
 
-The necessity is that the PCI core needs to store more than 32-bits in
-the unsigned long xarray key (see the snippet above). The dependency
-on CONFIG_64BIT ensures that unsigned long is big enough. We could
-probably remove the dependency but I would rather wait until someone
-with a 32-bit build has a real use-case for using PCI_LIVEUPDATE
-before putting any effort into it.
+Brian
+
+>  		if (!folio_trylock(folio2))
+> -			goto out;
+> +			goto out_put;
+>  
+> -		/* make sure folio2 is large and does not change its mapping */
+> -		if (folio_test_large(folio2) &&
+> -		    folio2->mapping == folio->mapping)
+> -			folio_split_or_unmap(folio2, split_at2, min_order);
+> +		if (page_folio(split_at2) != folio2) {
+> +			folio_unlock(folio2);
+> +			goto out_put;
+> +		}
+> +		if (!folio_test_large(folio2)) {
+> +			end = aligned_end;
+> +			folio_unlock(folio2);
+> +			goto out_put;
+> +		}
+> +
+> +		/* Split failed: back off to the head of the straddler */
+> +		if (folio_split_or_unmap(folio2, split_at2, min_order))
+> +			end = folio2->index;
+> +		else
+> +			end = aligned_end;
+>  
+>  		folio_unlock(folio2);
+> -out:
+> +out_put:
+>  		folio_put(folio2);
+> -no_split:
+> +out:
+> +		if (pend)
+> +			*pend = end;
+>  		return true;
+>  	}
+>  	if (folio_test_dirty(folio))
+> @@ -413,11 +455,8 @@ void truncate_inode_pages_range(struct address_space *mapping,
+>  	folio = __filemap_get_folio(mapping, lstart >> PAGE_SHIFT, FGP_LOCK, 0);
+>  	if (!IS_ERR(folio)) {
+>  		same_folio = lend < folio_next_pos(folio);
+> -		if (!truncate_inode_partial_folio(folio, lstart, lend)) {
+> -			start = folio_next_index(folio);
+> -			if (same_folio)
+> -				end = folio->index;
+> -		}
+> +		truncate_inode_partial_folio(folio, lstart, lend, &start,
+> +					     same_folio ? &end : NULL);
+>  		folio_unlock(folio);
+>  		folio_put(folio);
+>  		folio = NULL;
+> @@ -427,8 +466,8 @@ void truncate_inode_pages_range(struct address_space *mapping,
+>  		folio = __filemap_get_folio(mapping, lend >> PAGE_SHIFT,
+>  						FGP_LOCK, 0);
+>  		if (!IS_ERR(folio)) {
+> -			if (!truncate_inode_partial_folio(folio, lstart, lend))
+> -				end = folio->index;
+> +			truncate_inode_partial_folio(folio, lstart, lend,
+> +						     NULL, &end);
+>  			folio_unlock(folio);
+>  			folio_put(folio);
+>  		}
+> -- 
+> 2.52.0
+> 
+
 
