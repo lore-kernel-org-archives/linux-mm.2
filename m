@@ -4,118 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1853C88E77
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 14:02:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62365C88E5C
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 14:08:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C7F4D6B0096; Wed, 16 Sep 2026 10:02:51 -0400 (EDT)
+	id 537956B0088; Wed, 16 Sep 2026 10:08:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C30B46B0098; Wed, 16 Sep 2026 10:02:51 -0400 (EDT)
+	id 4EEA66B008C; Wed, 16 Sep 2026 10:08:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B464C6B0099; Wed, 16 Sep 2026 10:02:51 -0400 (EDT)
+	id 3D69A6B0092; Wed, 16 Sep 2026 10:08:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F94E6B0096
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 10:02:51 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 033341C142E
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:02:50 +0000 (UTC)
-X-FDA: 85219791342.25.100275A
-Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 1A4CA1C000F
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:02:48 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=C1p4+lMs;
-	spf=pass (imf18.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.205 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789567369;
-	b=Iqo9w7POADdCxmgUyDZgM1McwHBrzkHWXB+dEHWS0YHdTj443y5PPiMDyEIeJAPQ66ME7Z
-	7q+SQALJ2zNRBUKPn21a6m03rCP9JRil6j9tnw/Egm1aDrivKC6AVjK0HrbkKEiQCT0jK+
-	ZgfVWT5fiFmoZ0qhRPfYedhZVB6mxhA=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=C1p4+lMs;
-	spf=pass (imf18.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.205 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0E5866B0088
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 10:08:30 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 98ECE14074F
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:08:29 +0000 (UTC)
+X-FDA: 85219805538.11.918CAC0
+Received: from mail-oi2-f10.google.com (mail-oi2-f10.google.com [74.125.231.202])
+	by imf11.hostedemail.com (Postfix) with ESMTP id E04D740008
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:08:27 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=none;
+	spf=pass (imf11.hostedemail.com: domain of 32qKqagkbACcVbcNDOOHUDSSLG.JRRJOHXVHUFRQWHQW.FRP@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 74.125.231.202 as permitted sender) smtp.mailfrom=32qKqagkbACcVbcNDOOHUDSSLG.JRRJOHXVHUFRQWHQW.FRP@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789567369;
+	s=arc-20220608; t=1789567707;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QK04b22kulIc7bZXmZ0HJttAO0Z2ragkIvYz0XNFgzE=;
-	b=hEx9NSa+BwV4Yx0CDYIvh1x5/u0I5O5RQMDyUsg1htc4H11GvhAQtgaI+VHIb1fSMiMGJ2
-	WT/Sa2TTpWlM2Qb3phUCkUwW+a+sdVJA+GBHGez35FzCO+8gITMCtX+QWZmq7zytnU+gTs
-	iPjHQSBz7FFCWkvip7xg8NdTABgDIVU=
-Received: by mail-qk2-f13.google.com with SMTP id af79cd13be357-93a0299c787so75294485a.1
-        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 07:02:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1789567368; x=1790172168; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=QK04b22kulIc7bZXmZ0HJttAO0Z2ragkIvYz0XNFgzE=;
-        b=C1p4+lMsdaN3B+Z3fGBn3qkJVkgf4jwB9gr8NAEAjfK/x49Qy9MOCJ2sXHU6cGkxiX
-         h5a1CqNAeBPXWHXKNk/toPSWtLuVSfenUjhJ18kgMytoDbLQhhp8aJxL+f2AmPZyyoel
-         EkduKUqtS1F1NDa6/g1aKr6dGI6JTp9oewHGTIa1uM2y4CCj/aq1k3x4fdhawPrlBh5Y
-         5plG8cW+fFZ2Ll2Te0J7P/TzlLautM1KDBU8+Wd4DtAl/s+XLCIGqE1zoRYa8XTsHxsB
-         c5ZvgenvQJw38D8IL4T1OweclFZ4IuSw7Ox20fQkEwgspQhLgbB6pquOTk0A8ZGgvAbo
-         188Q==
+	 in-reply-to:in-reply-to:references;
+	bh=htUCy0q7FG4YSd/XI01PpxHhl9O1HtPtmWa1pKHUGLE=;
+	b=WL1pyru/yGAlq+SUEjwSqeG5l2roM6X3yLR0YhWW6IGXBiaNx1QSYWEDoPXUYSpGCBNxwh
+	bezvbNnSGmiSZb8/jfIrGIGGLuWQ7pWxmx0TOIlNKeAtbgWCkT4nBsJih3dHYHs5KQ7ZRr
+	M1JAyegebWPpsoPe0TZ+oJ98Exic++I=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789567707;
+	b=cS6TqCWJHhNEBB3ab3MuMXATsPqAjf9hbjw6IsUkeZ9aeFaMMAyL4t/DzSkuIPP6nuZscz
+	SROq/5jrAM6xQxo4ACqiE/J1WldAak1XsoL/KlVzYdlSTYxsmfMokg+N/xQbXE43fyDS0G
+	QLJHqDZLOADamTl6LwDJEIXYDQ1aTs4=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=none;
+	spf=pass (imf11.hostedemail.com: domain of 32qKqagkbACcVbcNDOOHUDSSLG.JRRJOHXVHUFRQWHQW.FRP@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 74.125.231.202 as permitted sender) smtp.mailfrom=32qKqagkbACcVbcNDOOHUDSSLG.JRRJOHXVHUFRQWHQW.FRP@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+Received: by mail-oi2-f10.google.com with SMTP id 5614622812f47-4b94bb43008so924854b6e.0
+        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 07:08:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789567368; x=1790172168;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=QK04b22kulIc7bZXmZ0HJttAO0Z2ragkIvYz0XNFgzE=;
-        b=Vi/mLu9eU/hLVvVifJuqTqE9dAeeKNknkixl+X/NrQDCYA3ofB6lq5KTxn2ddctACA
-         /cuIYJGTfvhoOPySvqNOtOHe9m7JP16rTS/oF8safoa4z9ACqshdqoBsaTqF0loJerd3
-         RufVDloFpmcjfJtQKaICKLA3Hf4DzgVQaUNKSOlReYGCOsC3U2gn5cN60sy56ZR0p8xb
-         d3QUKOlbKFGkalesjw1Dv/2XJODRTdMRiwBgkt/A9Fw/CyacLdEGjzDTmihEP4af6XG9
-         wkTjttvy+j5FSGYdxlvFLpeYldkAaIDkpOB0DsmlfVFY0NLl79Cnxxet7AmLwVafgtws
-         aSHw==
-X-Gm-Message-State: AFuF++lkEFihVf9JPiTtpGOfGpm7gw0tdTamBcJnmXSib3nMHpDwefD4
-	4lAZXfjQVbxsToU6Ulu7YKlbTwca6ZiENRyuFE5wgpGUwFBVX+iqvUJYo4qVzdtFhFo=
-X-Gm-Gg: AYBFou3k7Giq/c6z7O012XPeIgUMKOyTBKBq6tMYgA4wnNLhclJieh6aqg6isHByypF
-	a81ZEhKqELEqsZAICH6F80tenJ+q3R83pcb8T8Ox2BKVbTx5LHuK8GTJ0HSvE5hb6+zQGVvuhNJ
-	MX+ysN1YI++eqt+06vmwBR6gllq8xqVYdJ0sKk5LidHEXE/Gd1kF0n/bNZU6sD1Nh0YXxbsPNmN
-	Sep9pBKgUbqF7J5dmgUqDOneBOxN8ParDOx2/xY0PPLsd5pXcQKEQzXsSGRdtSGujEGBDs/ktW4
-	BkeQtc7tADPYQEUZk7yXo+aIUm89X5T3SV99qtZ8QNupf/InzWMGfNOzgEknLPfOZRf4B/SbLQ8
-	23N3uDQayogp3fPq/OcUWp5C38SsHNblsVP8i0ifB4xtg6P8QkyxBrR2bu4tSefjFjyQIE84l4c
-	T7sl2hF6LhNXpJBQojM+q4NlrbCMNjA3s4jWmgD4+ve20Yyxp+I+AxGAIlN7q6TZl8rSs6Uevul
-	HxKnS2PIUNCAfYLWKZHxaXP2e0Kjp6nmFb+apZzEsjdzrfqRmdL5mQ=
-X-Received: by 2002:a05:620a:2704:b0:937:19d3:3fda with SMTP id af79cd13be357-93bb785c5b6mr477815485a.28.1789567368038;
-        Wed, 16 Sep 2026 07:02:48 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93b780cfa78sm218545285a.2.2026.09.16.07.02.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2026 07:02:47 -0700 (PDT)
-Date: Wed, 16 Sep 2026 10:02:45 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
-	akpm@linux-foundation.org, liam@infradead.org, david@kernel.org, vbabka@kernel.org, 
-	jannh@google.com, wangjiexun@tinylab.org, sashiko-bot <sashiko-bot@kernel.org>, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/madvise: reclaim isolated folios if PTE restart fails
-Message-ID: <aqqgeOtYBcRdVqmI@gourry-fedora-PF4VCD3F>
-References: <20260912110832.3203902-1-gourry@gourry.net>
- <aqloB0zm3RjJ47m1@gremlin>
- <aqlzzwLOVT79Ti_7@gourry-fedora-PF4VCD3F>
- <aqqTtW3vjfzH8bcY@gremlin>
+        d=1e100.net; s=20260707; t=1789567707; x=1790172507;
+        h=content-type:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=htUCy0q7FG4YSd/XI01PpxHhl9O1HtPtmWa1pKHUGLE=;
+        b=gvnJNzFBqXkrG2hu4jQQUlVkkq1zm6g1c5psNt0LNEgtPJERpJwdyZcaS6PhgT6yTF
+         e15je4v6DYSdJaup4jU2w/1732gvd0dXkF7g+eOoUDIKGjSB0Ocqdf2tp6gkESurTGkA
+         HiF3rSdsx/sDXx/3OPzMSjLIE4iyPmC/ORXj/UleipCIGtQDny274Wl3Uo0MIrey+c2x
+         q5VkReSrUvwFTqAUADtauvq2EnylMe/an4OXb9tbZbOxcGZ2yuHB4RLZE0mZkiMlmNQ4
+         fkMiahllk8+kfFUGmURwJ7pspir/3YbUDOkkemKnUbz6nfQy7chH6TFSj3za9GyK94QW
+         iSYg==
+X-Forwarded-Encrypted: i=1; AKwUvBwJvG/UcJaz66rnaGtJEsLgWW57RcAnqEfv1aXTVuLp3/6p/VCDHPsiSYhM576vKE5qapK2ldOvuQ==@kvack.org
+X-Gm-Message-State: AFuF++nisSQ1MO51jm3XkpbMKZOBKfePb1oOu4WqvqVzNZR9eG2J6UY9
+	CMUmkBqqfzXZ7aFV8nCJLE8Xg1hmtsXo4P9AWeZkUWS9GAaGY+TnFJizGZiUebZKEo1LdI7QRGM
+	OwHG3ZT7l+REazPjZweWxVgLH8CWT6Ijsc5M909L9wyo9N79NKP1jdNxNR8U=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aqqTtW3vjfzH8bcY@gremlin>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 1A4CA1C000F
-X-Stat-Signature: e5fgc8w7gm8c1w1ic7k3ebifgdoux1wh
+X-Received: by 2002:a05:6820:81c9:b0:6be:4eb3:e1c0 with SMTP id
+ 006d021491bc7-6c7d3fe744bmr2517440eaf.45.1789567706922; Wed, 16 Sep 2026
+ 07:08:26 -0700 (PDT)
+Date: Wed, 16 Sep 2026 07:08:26 -0700
+In-Reply-To: <6936812a.a70a0220.38f243.0090.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6aaaa2da.86093f18.33004f.0001.GAE@google.com>
+Subject: Re: [syzbot] [kvm?] BUG: sleeping function called from invalid
+ context in kvm_mmu_notifier_invalidate_range_start
+From: syzbot <syzbot+c3178b6b512446632bac@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, bigeasy@linutronix.de, dwmw2@infradead.org, 
+	dwmw@amazon.co.uk, kvm@vger.kernel.org, liam.howlett@oracle.com, 
+	liam@infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-rt-devel@lists.linux.dev, ljs@kernel.org, lkp@intel.com, 
+	llvm@lists.linux.dev, lorenzo.stoakes@oracle.com, me@brighamcampbell.com, 
+	mhocko@suse.com, nogikh@google.com, oe-kbuild-all@lists.linux.dev, 
+	pbonzini@redhat.com, rientjes@google.com, rppt@kernel.org, seanjc@google.com, 
+	shaikhkamal2012@gmail.com, shakeel.butt@linux.dev, skhan@linuxfoundation.org, 
+	surenb@google.com, syzkaller-bugs@googlegroups.com, vbabka@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1789567368-570102
-X-HE-Meta: U2FsdGVkX19oK68yjEOfaFkSbZQNBevEV/wDV0YdYdAGiSAHhDmja8CfpuOa/HUKBIaSSI+W44XbHPkmCDnIOMQRKYbIdACSlGSqUTvN4PZ7UyBfYBJ1QCqwN2NdlemYCmKW2R4DbjPtNIJB5afsONGsWB4IMhyzdbM7L29UXZWSCQ+3on3MzkjoLra1YaIOH8IHeZFAJHPppCPerpPMBZdJsGS2A9nW9qMBoBzWIYu2dZzXs3Xvj9mkyHFDCGIO57cCeaZ8Ngfnp/1kHsAqOvW99Mmd7u7ihUZEVDL6MnLfDgfbRJ4ldtED5Ml6F0t1f90npHkiE66yJrYoJFs47g7/IlEM7ZeGapRDp35K32qX2khZ54XYtSod8c17NAaZIdlvW8edSG6KS/p0fk5oVqzaCiVExiYkEPgdTauevWsvQLcGoBCqBcq8vSyXEzl0xUWvq2wfi3wbTaCyyp+P3dQwCa1faKvN/Nkl+C/RU53alIucE0NaCPoxOZBuCO8tcwlos3l+hJo72G5eiWX5MnpOWWXXKPpXekfi9sabMri1GVts0to/sDQc1eHffbMjvvLVZ4bXJTGyaZ1xrQfaE/RYf1bdR4nE0HA3yWaO+MR6raodYJl1NE+HA3yKosF28w/ifsOnutMbCYabTua9JB4KY5GzVgbpJbkcHiyUx5OW9q4hH3tvuZvUExFLVvmrqAOOyj0cTmsVpGXekizM1e9jTeuGAYj03AuAwbfe9Sms84nyaTKPlERpb8EltnZW4ELKq7ZY0F0Fa7rqTNgG0XxkJcgJHKLquLXHq/sCl0wlrSWXHuD+nTTONT2tLS2YR95PStFYviYFu+afPdrE5JgciBvhWoR+XTJyA3BGBcZOu2X2l1QBufLz6D3lNoI5jZSDUXarMnBfgqU/mFv+6bqyKx4UVt5VhPBy1qP8f3P2J+ToLtib01BjERWyl5PH1hgsdcRr6P3X9qGol5m
- Gp0cSAx0
- GxZDChwFYIWnNp/hZtjuhy7fNYgCDOQCChjvpAqfPjw3DhcwudKCHHosxfr0aUT4ZvyG9Jxai6nx4abOIsybLKlBwv9Y+YC/I7Zcl85xvGDSjtrjIoiXCP4riDlulDBXyhs3ZCaYJrhpNF0dng+Uta/OjCc0x61sNSa2smMy2iC9acjK5Q7VFtevW3ndb+aSaCK77/dfLp0elNUZtcf3xXd5PNaMiNAOE7+b54U70YQA2bj6DS9XCex/X2RGmJQZ/Br9BT2b2D5Kxu4CrRx8GXBGykYWbCKtI3VpdU5OIXvW/HgbiTjewzZC/YEZc55A8z6xwlMgSZzT3OC9ZIBqr16fr93z/3tLqTIwuicO+itbsQkLg/zCyf0fsMhU8eJp7/hFiDDtkUKV9KT2zpe1M14YlQaRv3g8NNeKpNJbhurSbx2uQPn4FAiGOTISBOa4JQdoLAU24WIhzmqU=
+X-Stat-Signature: 557hbanbkuon16zbxaywtg5otr7sws4z
+X-Rspamd-Queue-Id: E04D740008
+X-HE-Tag: 1789567707-178999
+X-HE-Meta: U2FsdGVkX18mDBUIyQrYKOcK7NBGHQUAJhsHoSkn9MpuwKKQdt4AC5W34nHnPC7tnPEj6KFwrd/zz9X2uVBw3cULHgPsbaXP+nfwoP0j6twGb2pKzDB5O1Jk/EpwpdVfpkIVZDtF85udDHOHOpkNtAVutym/DHNwEo6oxsu5GqTqvBGba1BFeS6jVN2aC4TaMLuSS08ObTZr5suuEN0Eud8Ob8Y9r4I66xRulwVJFhso6uvEvltnw5LIfRrD9Jq4SeWJLi93S9G2JdMQWxi3wYuRXU0tRVDKYfD+Y55fqdODpoKZ9TCUtJ7B1wmiPbytfxNPDY8NpqW0jkJVYUUFOGuKQdD8SSrLJ29H5eZ0cNmQLLwRf61CWFk1pNVXq3V//acmM4oyPaiyXVUyZN6sC+NByDhxujpbi7NfJhrVCGiy6KlKMCu1xtBD+6YzNXK6z6oteL8Ggz+T61dD39Fhsnw/WzWylRxSWQXKNOLEMQrKE1fYqCsSB8kJl0ZKaKZ4krlslx8lVQTvTpXBqg32l+SAnXloUMc0HRLTqW4uVNj6o9zBdlkP78nN8lQVzAvj946WJr/WxwsRZPLHQAbmRYJYbJTiqo34Db18+U2BMFNyhXWt2cYwWP9ZEur0Sk5gT2VYukuVF3wI0Bpjt3Qa/ibQKYAkZuMUTXuUfPMoviu9hPzQh/1OatYTjRgVW5A1uWYL7nbvhjTMwYJ9WCJYsj+pvE2bIe58AjPFbkY34uo6XAEolhZLddrBfmoPVrnn7Gfvm6Avnav8cYIIAQxXcRTH7JFjyKuXkZljTz5bqLR26hvf4Io1GC1oVmfrAJreNCj/8BxeZTtuDQbf1wTNDZbOv55CWY5BY68io7khD9+ZAHP7Y8ZOw1Ajv+oFtEbFj1Jd4sDvVGE1LoyWOSJvoKg03YWE6U3yLe4KPYpMn3Zj2w97jVo/0zHXqUKRqoDQDxaCDA2LzlrhbJ4CTS7
+ bR2j2fqT
+ 5UkNrbhbDmv5NBTYs34vlSuF7Gcay1qpe9iK0fsssysi+j6FGOYTBd7+WYIe13CjeWhIZrL00DAjjJw3AA364tUz6qE9WoJkp/JqIsKJlynlSLI3i9uHp7sQ0pHW+rQCrW7pDTIBGPZgnV80HdGEFcuyktBfqg4DYUJjWHqU6B9kzqjG9BeuYjCo2tgct8ZY/eY4ewi7IzlvwTpDn6SQRl/x068vSoNq6pl7hOcJCgdOxhkcQGoSPfx9MgXlfLPz9RACGIUePBbyVlaCWLsAnlpQfPLpfvN8rOL+V9855f4mNOoWV5JvOwGiXtY03cL1HVP/cliGe/Fo/dup5BfJkD/UuyYZKMOcDOBalMBbVK3wnQ/o+CFQpwNEu/dPthn6VmketSunYTokfvuYGP+OhXD00Xei+0QuGarjTfx5KH5u8f/MuQRzTkB29BssV3JkopLUucEssVE8v7tBnNJ383cQ/pYe4PMM91EzgJ//WTSvAwNLM9oOQNKckaRJm2aY6H1mO+5/zYEKg3mqqY4tNMafjYDY5ZRWxbz/40riozgIGOszB6IXcfC+01y1Q8qoWaNEZX2KMme+/qPYQKN+IL98IMbPiZOXLdJk0NW7Iafn9fxtTTxK9/ZMpBSGosZKo7TNUM0jo9jvpHidRFYktTmgMm1XWKDcqwPZOU18q0O2b+txxQvlDgPdixh4BTdR3hB7Vj7y3rnh9vZmc+N0ktww1Qr8VEXHnH8wLPFtR3OLlhiDtlRuGj56GEesmBlFXJKgmE0oK0RoIKUhQKWftiEwFiiTRt0rueZ3C2HEfkVhCLsTUtaevPJjnq5+fwXmJ5AoGMLXYzxRnEEIeiUDHvScmm3XuQLZ+bSXngCXVZe6PsRLAIlhEIun0o4fBBocsk8QTYedfT31awzuDy4xUv5tNybYAFapnp2jSJG3wKR4D8QLC+wEOFHslNiLoIXQ6RCPYUlJrmMyCu1opD9JAUrjbeTuu
+ EKdcEBEm
+ vo5JegwuEglzfi+QEJ28MV46jrvvjrgLIyhgpaqjRQ9rugD5y7jWS9+ZrGh+EnyL7w6k9gQTJfcMpSfokhD73QnCbO6tCb8FM3AjcNmft8lH9ZrApxmBanikDwrHFTaY+B6XoAdbllvr91CSugxryEYJwXK0a0l9K4VogE5JjpuzvPLTqR7uewsaUzK2mjbTLorQyNehDgg76LLJ+LL+DLZnV9RzkuRKzxuQ0r/zBNIS7JD5dm/xXO7vFZrENxvq12hBGKL2RLlb23JLy4XDL8CzTsVxprGQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,57 +105,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 16, 2026 at 02:18:36PM +0100, Lorenzo Stoakes (ARM) wrote:
-> >
-> > relevant meme: https://i.imgur.com/W0N40BK.png
-> 
-> Content not viewable in my region :'( seems I do not have a loicense for
-> that!
-> 
+syzbot has found a reproducer for the following issue on:
 
-google "reading other people's code meme" and find the comic with 
+HEAD commit:    9b87fdc9af2f Merge tag 'sched_ext-for-7.3-rc3-fixes' of gi..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=16f46bf9580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=b454dc6b1b7acd30
+dashboard link: https://syzkaller.appspot.com/bug?extid=c3178b6b512446632bac
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12f23925580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16f23925580000
 
-// this is bridge
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/d9d20c79bd3c/disk-9b87fdc9.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/2a6a8f176798/vmlinux-9b87fdc9.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/db8864d1c812/bzImage-9b87fdc9.xz
 
-:]
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+c3178b6b512446632bac@syzkaller.appspotmail.com
 
-> >
-> > No argument here. This function in particular is really horrendous.
-> >
-> > I think i'm now 4 or 5 stacks deep on the "Thanks for fixing a bug, but
-> > while reviewing your fix sashiko found yet another CVE-worthy bug".
-> 
-> Yeah, I WISH it wouldn't do that.
-> 
-> I mean it's helpful to some degree and it finds real stuff.
-> 
-> But it's _where_ it does that and the workload++ aspect of it.
->
+BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+in_atomic(): 0, irqs_disabled(): 0, non_block: 1, pid: 38, name: oom_reaper
+preempt_count: 0, expected: 0
+RCU nest depth: 0, expected: 0
+locks held by oom_reaper/38: 4, last CPU#1:
+ #0: ffff8880370147b0 (&mm->mmap_lock){++++}-{4:4}, at: mmap_read_trylock include/linux/mmap_lock.h:619 [inline]
+ #0: ffff8880370147b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reap_task_mm mm/oom_kill.c:566 [inline]
+ #0: ffff8880370147b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reap_task mm/oom_kill.c:609 [inline]
+ #0: ffff8880370147b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reaper+0x2b4/0xc10 mm/oom_kill.c:650
+ #1: ffffffff8e30af80 (mmu_notifier_invalidate_range_start){+.+.}-{0:0}, at: mmu_notifier_invalidate_range_start_nonblock include/linux/mmu_notifier.h:495 [inline]
+ #1: ffffffff8e30af80 (mmu_notifier_invalidate_range_start){+.+.}-{0:0}, at: zap_vma_for_reaping+0x193/0x380 mm/memory.c:2266
+ #2: ffffffff8e30afd8 (srcu){.+.+}-{0:0}, at: srcu_lock_acquire include/linux/srcu.h:198 [inline]
+ #2: ffffffff8e30afd8 (srcu){.+.+}-{0:0}, at: srcu_read_lock include/linux/srcu.h:305 [inline]
+ #2: ffffffff8e30afd8 (srcu){.+.+}-{0:0}, at: mn_hlist_invalidate_range_start mm/mmu_notifier.c:515 [inline]
+ #2: ffffffff8e30afd8 (srcu){.+.+}-{0:0}, at: __mmu_notifier_invalidate_range_start+0x5c6/0xb80 mm/mmu_notifier.c:580
+ #3: ffff8880465ad560 (&kvm->mn_invalidate_lock){+.+.}-{3:3}, at: spin_lock include/linux/spinlock_rt.h:45 [inline]
+ #3: ffff8880465ad560 (&kvm->mn_invalidate_lock){+.+.}-{3:3}, at: kvm_mmu_notifier_invalidate_range_start+0x1b6/0xc10 virt/kvm/kvm_main.c:745
+CPU: 1 UID: 0 PID: 38 Comm: oom_reaper Not tainted syzkaller #0 PREEMPT_{RT,(full)} 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ __might_resched+0x31b/0x470 kernel/sched/core.c:9257
+ __rt_spin_lock kernel/locking/spinlock_rt.c:48 [inline]
+ rt_spin_lock+0xc2/0x400 kernel/locking/spinlock_rt.c:57
+ spin_lock include/linux/spinlock_rt.h:45 [inline]
+ kvm_mmu_notifier_invalidate_range_start+0x1b6/0xc10 virt/kvm/kvm_main.c:745
+ mn_hlist_invalidate_range_start mm/mmu_notifier.c:525 [inline]
+ __mmu_notifier_invalidate_range_start+0x709/0xb80 mm/mmu_notifier.c:580
+ mmu_notifier_invalidate_range_start_nonblock include/linux/mmu_notifier.h:498 [inline]
+ zap_vma_for_reaping+0x1f7/0x380 mm/memory.c:2266
+ __oom_reap_task_mm mm/oom_kill.c:548 [inline]
+ oom_reap_task_mm mm/oom_kill.c:585 [inline]
+ oom_reap_task mm/oom_kill.c:609 [inline]
+ oom_reaper+0x519/0xc10 mm/oom_kill.c:650
+ kthread+0x38b/0x470 kernel/kthread.c:436
+ ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+oom_reaper: reaped process 8617 (syz.2.1028), now anon-rss:0kB, file-rss:72kB, shmem-rss:0kB
 
-In some senses - yes it's annoying.
 
-In other senses, it's saved me a lot of pain debugging my new work, and
-I'm willing to do some cleanup on the way to new functionality.
-
-Someone's gotta be the janitor I guess.
-
-> > I suppose reasonable to say the goto is worse.
-> 
-> Yeah I know it's all a bit much of a muchness, and obviously my suggestion
-> _duplicates code_ which is also not wonderful.
-> 
-> But the control flow in the function I think is a bigger issue.
->
-...
-> > I'll spin a v2.
-> 
-> Thanks!
->
-
-Given i already started rewriting and validating the entire garbage
-pile (see other response), mind if i just leave this as-is?  This gets
-completely replaced anyway and i'd rather not have to go backward at
-this point.
-
-~Gregory
+---
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
 
