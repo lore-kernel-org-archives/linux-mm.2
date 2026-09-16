@@ -4,127 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21AD7C982CC
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 17:00:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2028CC982C9
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 17:09:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 040606B0088; Wed, 16 Sep 2026 13:00:20 -0400 (EDT)
+	id 09AF06B0088; Wed, 16 Sep 2026 13:09:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F058A6B008C; Wed, 16 Sep 2026 13:00:19 -0400 (EDT)
+	id 04C0B6B008C; Wed, 16 Sep 2026 13:09:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DCE026B0092; Wed, 16 Sep 2026 13:00:19 -0400 (EDT)
+	id E7C836B0092; Wed, 16 Sep 2026 13:09:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AE4276B0088
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 13:00:19 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 17696160777
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 17:00:19 +0000 (UTC)
-X-FDA: 85220238558.03.CE028E1
+	by kanga.kvack.org (Postfix) with ESMTP id C19226B0088
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 13:09:30 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5129D160783
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 17:09:30 +0000 (UTC)
+X-FDA: 85220261700.27.9206F3D
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 834F01C0014
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 17:00:17 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PmVw4wXS;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf17.hostedemail.com (Postfix) with ESMTP id 5E9834000B
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 17:09:28 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LWqerj0a;
+	spf=pass (imf17.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789578568;
+	b=fNo4+0GmYXPPrGIGpOIQwhknNEdkwrmV6wf0d9ali1WIaEHDohTzMKc7jAf4t7UHwsrBE2
+	Uap5+IYZUCfizdUGSBOsvo90wVwmEGiuNm+7P/IYyd9k2hzJFGcG5WN0KGEhRgy2YYLIX+
+	ECbLqKNIwMIsB0/Y55Pn8qzVZWqrkfQ=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LWqerj0a;
+	spf=pass (imf17.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789578017;
+	s=arc-20220608; t=1789578568;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JNZtWdKCogaGrWtyvhM6z027Qg7RFwkG7Shw9zuVQhE=;
-	b=YxT9OtF/h4YbfEUX8qe2b0UZWG2yxKEjc3+kT3yCX5jAmYem0CY/5R4FJLNl5iASONp431
-	qmD4DHnhg9rL/DKtCFNw+F9HFEsHN1YtdxmL7vaqQbQvGCvuHT0FGHUMqw5yBi3ZIPqWYm
-	jETePo5MYqFkw/DuQA1MbHE61Dh0eAE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789578017;
-	b=USPt5B1F9LYnrC4JLAvdcu7cehjWZPkZ2La0OeDfiXEOzvG+R+cxkYLxSjgyuE+C9u000U
-	BL/xLa07i0V4PPIQq1X5FN6Ur3YqKJC9xOqZP3nRIbk26QyYgm5oaBVaFOMBqeNV/UzEhm
-	A5ZADhoIxL/PBmHfkW04bkwhE1cIpX8=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PmVw4wXS;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=EYIPtNMDNyQ/6WY1hk2JBEVGtLHLfjG619n8HAgX2tw=;
+	b=B+PlowtIAMHwm6N4PAi+3QUxvn9+Oyy6MmgIE+Ylz7tqEjzvfOq/fX5ayoOFmzSLONJBJ4
+	gnhOB00QnDdMvHYV7IekPljlGdcJs73x5ttZ03dqmsvfp0s8zJ01FNGZFcmjqCqZsEMN7G
+	S2uZMNm21QqvEDeqM50IkR2FENN1SEQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 46BE4600CB;
-	Wed, 16 Sep 2026 17:00:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4114D1F000FF;
-	Wed, 16 Sep 2026 16:59:55 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A576A602C5;
+	Wed, 16 Sep 2026 17:09:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B33741F00898;
+	Wed, 16 Sep 2026 17:09:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789578016;
-	bh=JNZtWdKCogaGrWtyvhM6z027Qg7RFwkG7Shw9zuVQhE=;
+	s=k20260515; t=1789578567;
+	bh=EYIPtNMDNyQ/6WY1hk2JBEVGtLHLfjG619n8HAgX2tw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=PmVw4wXS/r9CpHfAOn2amzHMwnGPXSnlrGas83Xpi7dsydIKsArkblukiVIHwBAY6
-	 ubpGfFGa7kqrykL1Pa6q3MkO4GKMCQQXpCmITVG/PeoahA3HJxtDyVnKBlsOT5y6Mm
-	 wozpolIxCIhxuWjx0aQRah90ZewUiZ9k5Elj1dLiF8CCivxp3p7w6OaDY/5H9Oq45S
-	 O6mv0zYlNEHZcdRLCgzvK/ZrOJVz1jz48dKYZvJ7Oi+o5KCdWId8DKOgPiN8pVOlBz
-	 jm/9rlekEwQE9XCQ+GkKAffM26w81NuZfKTTB+nUUF3sGMC9I2pcmKHTHWSj4DPFxw
-	 A9hfwpouwGpWQ==
-Date: Wed, 16 Sep 2026 17:59:52 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Guo Ren <guoren@kernel.org>, 
-	Brian Cain <bcain@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>, 
-	Dinh Nguyen <dinguyen@kernel.org>, Simon Schuster <schuster.simon@siemens-energy.com>, 
-	Jonas Bonn <jonas@southpole.se>, Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, 
-	Stafford Horne <shorne@gmail.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, 
-	Rich Felker <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
-	Russell King <linux@armlinux.org.uk>, Vineet Gupta <vgupta@kernel.org>, 
-	Michal Simek <monstr@monstr.eu>, Chris Zankel <chris@zankel.net>, 
-	Max Filippov <jcmvbkbc@gmail.com>, Will Deacon <will@kernel.org>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
-	Peter Zijlstra <peterz@infradead.org>, "David S. Miller" <davem@davemloft.net>, 
-	Andreas Larsson <andreas@gaisler.com>, Richard Henderson <richard.henderson@linaro.org>, 
-	Matt Turner <mattst88@gmail.com>, Magnus Lindholm <linmag7@gmail.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Mark Rutland <mark.rutland@arm.com>, 
-	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Richard Weinberger <richard@nod.at>, 
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>, Johannes Berg <johannes@sipsolutions.net>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Vlastimil Babka <vbabka@kernel.org>, 
+	b=LWqerj0asUBl5mtWNWo7n/nykCqCU502c2DJydmt2eMm7kzsEvMm9nPaKCKnYxFle
+	 PtJ4nQtsfIWJrDtrDFpS4Ro3cO7+E5Fo7fC8y+ZE08Li+lRcdurVqgRlxM41vlWpvH
+	 cPFaiYckAIS3XUTkkwbCtKT5yzSJ0NY15pBcj2+2sZVOK4jJmWZqJQwXpWUKBouDjU
+	 VborlYuABqOtgaJHC4/qx6LFR/W6ZJAk+SXmbugszPA5iXmBsKbQslwn32WDORnPt0
+	 q9Fhq5vhndQDxsJfruuRYAWGkZu+moIPwHBUWk5lffpo36mq4f0+8Ghe3NzOOOCcYJ
+	 cFCxxhMTRfWWA==
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 37F4F198003A;
+	Wed, 16 Sep 2026 13:09:20 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Wed, 16 Sep 2026 13:09:24 -0400
+X-ME-Sender: <xms:P82qaiwtHNsjl1hytDOaqAe2_6EnrUrcXt0YfqaFCHBsC1kn_e4gAw>
+    <xme:P82qavHnQFv0mIWxMbXrNw6e8CuhjHis_cEvFycaQtXEPGUBUZOZG0Nowg2VtLybu
+    XKviAE09c-CjE4SKlyODnQZNoS8yGD-pLu1VLsUt1Cbqhw279yV4rZc>
+X-ME-Received: <xmr:P82qai6IeaGYtne0hJP-GQQZwYeGGBBW7KK-J8g6wGh258to265jQr29PBk>
+X-ME-Proxy-Cause: dmFkZTFV2UCcZr2GlXxYscRnpO5twby6pXhiHVdxeWgqRFx4KTYs3c1z/LJtw2pl3bmLGT
+    SjKcaugx9MWXu+xOcXXwd3VtNepswxZmDVEUvi4lQHUKvURxNnarwj9loY6NXKq6Cmax9y
+    wvcU8EkW3DVn16heKoIFJ9UsUjMtAoXK96bkebfHJeZRVjxqjgNOj5/kPQYwVdE6TQ023p
+    CCMxllIHDMNupE3Ac77/LjqyVd4CZI78dRY4ZeB+OTMw0dQ5oQfzfZU3NzQDR3P7wW0c4C
+    MR6zFt8bbwxRh8gyLQ4m2aFbkZWXqUilZTaeerE8U5TZFrY9Tu74f8LWMkHwlcVPKSEYI2
+    ELt8rO+LmPoGRacMpaFK8VJNEhSga/OemsP/etzQg1NA43uDvwJZ0Q2iamr6+cOrrJOhhZ
+    Ob/D4EoB7s9eGmNKK9Wz6Ql53fVTRhZz9hsfNDrz/iRxFYhzq1Oet95QNfTfSTAx8qRS12
+    XoveBvdLrXUqsJgzaNLg5Xp6q9CDIweabgLMlRM8sT2kuNZr1P11u9NUfzslS40hwlG4mM
+    BBJQCOEnxSthIZ6iy2lRp+l50IFyD/wYYuipel/bc7f2gdEIMGPIcUiJ0nRIi3ODY3yYAB
+    l0dUjaHDx59hhDtjphJgpyQSHZMQNDMPfPiHlFmeY+TovoCEGh26+KFTIK+g
+X-ME-Proxy: <xmx:P82qauV7CdE5fVc-RlAU-sFYarVXpHS9ezru3zj4s_TpDtcO4BmE0w>
+    <xmx:P82qavJfqmCsNrsZp8GNVrYoFUI_uoM5FdBIHd_xHZAV57bSfl6d6Q>
+    <xmx:P82qauQ2vQD3aUgol4h2WHHUmis3y1dwQGiZabPW3M1vGPioub3tXQ>
+    <xmx:P82qaiBnhXmiTuoavJ0sd348dWGmzObwLtYoGHBva5EB2kMbIk800w>
+    <xmx:P82qak-gvAifzihzhevXQjss8iKtVSzDLmJGWJhmOTU4yAarpr4l6OnL>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 16 Sep 2026 13:09:18 -0400 (EDT)
+Date: Wed, 16 Sep 2026 18:09:17 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: akpm@linux-foundation.org, David Hildenbrand <david@kernel.org>, 
+	Boris Burkov <boris@bur.io>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
 	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org, 
-	linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org, linux-sh@vger.kernel.org, 
-	linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linux-snps-arc@lists.infradead.org, linux-arch@vger.kernel.org, sparclinux@vger.kernel.org, 
-	linux-alpha@vger.kernel.org, loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
-	linux-um@lists.infradead.org, Hugh Dickins <hughd@google.com>, Qi Zheng <qi.zheng@linux.dev>
-Subject: Re: [PATCH v3 01/12] mm/huge_memory: zap deposited page tables after
- an RCU grace period
-Message-ID: <aqrAflIQbwcNKlQL@gremlin>
-References: <20260911-rcu-pagetable-freeing-v3-0-7b8c86103821@kernel.org>
- <20260911-rcu-pagetable-freeing-v3-1-7b8c86103821@kernel.org>
- <467b6599-b73a-4f58-a29a-b6c6d1ffc3a5@kernel.org>
+	Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>, Rik van Riel <riel@surriel.com>, 
+	Harry Yoo <harry@kernel.org>, Lance Yang <lance.yang@linux.dev>, Jann Horn <jannh@google.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
+	"Darrick J. Wong" <djwong@kernel.org>, Carlos Maiolino <cem@kernel.org>, 
+	Usama Arif <usama.arif@linux.dev>, Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org, 
+	linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	kernel-team@meta.com
+Subject: Re: [RFC PATCH 0/5] mm: sub-folio dirty tracking for PTE-mapped mmap
+ writes
+Message-ID: <aqrJAX6nMTIo6Vnn@thinkstation>
+References: <20260903182943.662461-1-kirill@shutemov.name>
+ <ap6LFvuOuWf_BkGi@thinkstation>
+ <aqrDfoFFr8o0Mf0G@casper.infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <467b6599-b73a-4f58-a29a-b6c6d1ffc3a5@kernel.org>
-X-Rspamd-Server: rspam04
+In-Reply-To: <aqrDfoFFr8o0Mf0G@casper.infradead.org>
 X-Rspam-User: 
-X-Stat-Signature: aqzfmsgxich7nkwupiqxo9d76as6ydkm
-X-Rspamd-Queue-Id: 834F01C0014
-X-HE-Tag: 1789578017-89819
-X-HE-Meta: U2FsdGVkX1+qNLmBpczz4RJ74CtTJpFf8l3iJ5V8ddBAvBE8xPDmVDnXFa2AfvoNjCVLCkDtenP/vJ2K78DD0SNE2o0sqnnlPI+j3eWVzrnJdTXN0XDzXA2Pr67Ca+PF48FQDj+H+j6l1sIxGbiDby5A6UjD/8SSC27cuyDKqJV1poP5ZypYIBEAGcAwZyHxNdh8XQHR35NqmkECMtEjvtAR3vleR1jtL5M6gGrROEiO5OEagNhLAiMyJwgiXFPNl+ebjG9dmt8bD4td1DUSdoVFwfiuGv6+jtPaMeSFK+JBx0ZSRWCHm1PY5msiI66ZQa4n3TIM557Q5Bhik8o+IltTadtworoaOPnK/csLVEjtFMugA6cDDfkFfIIjqQZyC91AR8Vl9klKaFHwnOKDEjkn8/VA2XeOOKl8eeCGdRq9XKCwmmKoL7D9iMzQ6pmke2Tk/nspAnl4Z99pShso6scs4yIG45J0zw2sptqYRQ+qPp9wVhKJyhcngAWql6IyQCMPeWWAfVMV7LTOd/+/kfRJvK4L0qCL8Gnqltz1pI0IFGbR68qAftI3lOvgi3Epts38Ag3ZaP3pcFKNHlzvZisij4xzGYPpZdA10MyMCn0aC8rr/GqabCvWtWRBt3XHRo2+t/bvnPlqtZ+GPYWvPZ1Zg9RGLoCX2+qxYDlp6K8gdgq54GA69GtCPofHKc1cb7MuwXGE6WYa2ZJSe4qCyco+huLO1DtMpIzS0onsYQ7qf/rQ9is4pskEBNid2PkWKUBz36RnNwyNco1+wCqqK/0E796QX5BCvTTwH6EZO+Lx9rVgH94ABPpjrBiik3cxJ514ylAkuHMpFVWvXzexqTKZRHiuXCazHJ5cfAe9lAD/NTMi0faQpO/na/1gx20LGB112VvgqAChtHGNEjDy6BU0auarLl48esbv/UrsF+RCZDUO9tCAoh7WqPLr3B9FJMIKOJP02wBpSoBpdWa
- m8Kictu/
- 73kd6raCB/Y42X+njwvcV8FlKPhkw8RRtsb6OmpHISwwldtLv5texploQ2mw2ZCyTsGforXJbg4y6rDGXV8xTJzu3YEFces4xU/vpYspWR1mgVUWTFpbHIhwiMq6c4T0Y1O9KX1H7wkNvj73Hi99zmuLJRjekk4zXOtDSUMriszJMXY5H6gLDFCQ5s4QgL6HAWu0XsK+/WVv8CBKlH8M+291MNhGbPqOtMhHQ6D12l3UjTHlbxtkESGZg4iCGzeb8r5rrr+rul8Dfi/X03f/7hg5wRXiv0Ew7yhuJOP0raqH70IsenB6YcZkkXPLc8rqATWZWV7LDkHUZCUZTBzPeU+RwDYq/HLSXuxo7QQ6cOB6dX4Iiu6L5yjPM1w==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 5E9834000B
+X-Stat-Signature: mt98wypewajyhqw5mob66e38najyic7s
+X-HE-Tag: 1789578568-377236
+X-HE-Meta: U2FsdGVkX1/zm4CkuzbN42vtmH3NOFoFxfJRL4fVy4JpSTX39ptzrrdL+xdO0S7/X2ORc5igbYNQnvdInjnqSxauUmt/UaIJrJiAPvjixPdy0MXtuhkxGqHpxhNP9WYCamKxvTuWlYvBoqWRUqnwtuc/5+0ZgVJgrbS3dxl1561UOEUa3kY7XFuiz7+v9lumR7YhF7PpNg7SbuZE1HsvgDvB+mEagCQ4OqVl/Wt5D9ntUwQgc7WyrzeygUqOVPCKAcP85pgY06lA+xbP1u4errnHthg5iPXXtASMRAIPrzw6Xdme7TjY/9VlvnGpoFc4gp52GyB/M0LgAbAVNAdnoQt+H/Xr8cUZX/R1A195VBimRNQB+1LVBKuijrCCTT3gsXBpdR9ZunK9yuk2Wg/Q5WanosuU0gaoNSfJcN6wVN/RNtlVkrtiQxLuDanAkmatRPPzAwc6MLdwxfepcHJCK6oGYhyxXnkGUAnd1ngN0i/oy/eUDCWvDHvJvXfB4uVA6jk0JCeObOCrx5vy//oxMEjWzJl2H8uwKCW7TOYimzQPbmdLhTa6xhBlUfBIrV8swtXhhu+GrtyjaZk1z4/2QDvzEVzcbq62VZ17eaAYYNHKxMXEbzqZOED2KmNOL1k/eJErWyi8Un32UDAjsfDYDO6hUW3vzQZ2+9pwgjt3xX84YbKJaW+mSXmQ/t5QT+IFt+T6c7kEOjeuzwhb+McffyJ77fBbYNgbvgAYJJMcJJQEmaNb0cTyd4iLHuuDO+Jt6BRkNl441m+/2pNGH/Jnxj1ybTuk0fVV4QSgcbuoBytwNp4Xw3nLTJvdb9qxhwKoXRrC1hU/2oXECcwtU+mCzJqsaKyMDTWM+hfZqERT8kYkq7lr3cVVjJOOVJ+ejxNTdb9JPLe4R1PHN0Ot6etpmBukdbAHpEV/8xmHwd71S4430+V2yHS5EZqqs43Sb4saxLnytiQm+SIbaXlBIpz
+ Wl98Syp2
+ CRj/PP3b8t42ip1cppGmuKUFxGZ7UGHu4pazijmm/89/8mv7ZXYyPsyuQlX8Kw86RBnqL+maRlnou5pnIuyxAT6qUdZPOZnsTs2NYFmfnYzyI9xd3AGFLcv1nuwLaoJPuzag+LuG1sdb9Y6vNldbeIK14KS0kO9ctbYKXj56NvGfgOEHCj7+d5/73I67kFOmg2DD0cfOkbi0K3tYz90NJ/xpW8Wnug2KID0qvCZbf6feiLbjh63WNmz5dreBfPlFU7XqYcLYYiW+4HxPYxMQmdT+3U8jIEmXvp4Fa0Zhd9z6BKF+ZCi9y1H4RYlV4VO6PdS8SXOm+NzLuX2ffjaKL0HVXoi0Xxydh/miEU8EPVHb0MBZjW8qhkxZvYubnSyBvaLuaO7LSwfD38d6Rml9LldM8tw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,159 +129,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 16, 2026 at 04:42:04PM +0200, David Hildenbrand (Arm) wrote:
-> On 9/11/26 21:36, Lorenzo Stoakes (ARM) wrote:
-> > When an anonymous mapping is collapsed for THP, a PTE page table is
-> > 'deposited' with the installed PMD entry.
->
-> Right. Or when we allocate an anon THP.
+On Wed, Sep 16, 2026 at 05:27:42PM +0100, Matthew Wilcox wrote:
+> On Mon, Sep 07, 2026 at 11:15:15AM +0100, Kiryl Shutsemau wrote:
+> > Boris pointed me to Matthew's proposal to remove ->dirty_folio:
+> > 
+> > https://lore.kernel.org/all/aoyWln-Gt-yvZQkE@casper.infradead.org
+> 
+> Thanks, Boris ;-)
+> 
+> > I agree that the current ->dirty_folio() makes little sense and that
+> > dirtying the folio can be bundled into ->page_mkwrite(), as they are
+> > matched 1-to-1.
+> > 
+> > My proposal makes the distinction between making the folio writable and
+> > making it dirty meaningful. ->page_mkwrite() allocates whatever is needed
+> > on the filesystem side to track dirty state and drive writeback for the
+> > *folio*, while ->dirty_folio_range() marks part of the folio dirty.
+> 
+> Why do you think that's a meaningful distinction?  We create a writable
+> PTE because we've taken a page fault for write.  There's probably a few
+> naoseconds where the PTE is writable+clean before it becomes
+> writable+dirty, but even then sometimes we do both pte_mkwrite() and
+> pte_mkdirty() as an optimisation in the write fault path.
 
-That case doesn't interact with page walking though, as they're
-just-allocated right?
+This is true for the PTE that the fault was for. But we don't necessarily
+want to dirty the other 511 pages at the same time.
 
-Am focusing on collapse case for that reason rather than listing all
-possible places deposit can happen.
+The basic idea is to make the whole folio writable at fault and shift
+dirtying to be per-PTE on write to it.
 
->
-> >
-> > This is done in order that a split can be performed without needing to
-> > allocate additional memory.
-> >
-> > The freeing occurs in zap_deposited_table() and is done directly without
-> > any delay via pte_free().
-> >
-> > This is currently not a problem as existing page table walks are protected
-> > by the mmap or anon rmap lock.
->
-> Or VMA lock?
+> > We can still drop ->dirty_folio(). A filesystem can provide
+> > ->dirty_folio_range() if it wants fine-grained (sub-folio) dirty
+> > tracking.
+> > 
+> > A separate question is whether we want to avoid installing a writable PMD
+> > entry for filesystems that want fine-grained dirty tracking. I have a
+> > patch for this, but it deserves a separate discussion once we agree that we
+> > want this for PTE-mapped folios first.
+> > 
+> > Any feedback?
+> 
+> It's very odd to be optimising for shared-writable-mmap.  This is a
+> horrid model for I/O.  https://cs.brown.edu/people/acrotty/pubs/p13-crotty.pdf
 
-Yup indeed, can update on respin/ask Andrew to add VMA lock here.
+Sure.
 
->
-> >
-> > However this becomes problematic in a future where RCU-only page table
-> > walkers exist, as there is nothing to prevent a page table walker that
-> > started the walk prior to collapse having its PTE table freed underneath
-> > it.
->
->
-> Wait, but wouldn't it be really problematic to punch a page table that is still
+But not everybody got the memo[1] :P
 
-Punch? You mean deposit?
+I think it worth considering if we want to make large folio adoption
+smoother.
 
-> being walked into the deposited list where it can just be allocated from another
-> PMD->PTE split?
+[1] https://www.reddit.com/r/bcachefs/comments/1vepk4a/comment/p1sn4v1/
 
-In general, RCU-only page table walkers are _only_ guaranteed that the page
-tables are not freed from underneath them, as per the cover letter:
-
-	"As a result, page table walks can now be performed safely under RCU without
-	 any risk of page tables being freed underneath a walker.
-
-	However, this is the only guarantee that this work provides - page table
-	walkers must still ensure that page table entries are as expected
-	throughout."
-
-So this series doesn't actually have to answer that :)
-
-But a PTE PTL -> pmd_same() check will flag anything like that,
-a.k.a. pte_offset_map_lock().
-
-The RCU lock replaces stablisation on stuff other than VMA/mmap or rmap
-lock.
-
-If the walker needs to be sure the PTE is actually valid and belongs to the
-expected walk then further is required.
-
-Alternatively (like GUP-fast) if you wanted to avoid locking at all, IRQs
-off would be required paired with the tlb_remove_table_sync_one() in
-collapse_huge_page().
-
-Another strategy could be used I guess with looped checks but it gets a bit
-sketchy with timing etc.
-
-But actually maybe we can avoid all that...
-
->
-> Note that pgtable_trans_huge_withdraw() just dequeues *some* PTE page table in
-> the list attached to the PMD table.
->
-> Something is odd here.
-
-...Since this code path already allocates (the huge folio), so allocation
-here isn't an issue (as long as done outside of lcosk), why not have it
-also allocate a new PTE to deposit and RCU-free the existing PTE instead?
-
-That eliminates the one place in the kernel (afaik) where a
-page-table-walker-visible table can just get yoinked over somewhere else.
-
-Then a lockless PMD check works.
-
-E.g. something like the below?
-
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index f49a6710933b..d9cb6b406ebb 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -1293,7 +1293,7 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long s
- 	LIST_HEAD(compound_pagelist);
- 	pmd_t *pmd, _pmd;
- 	pte_t *pte = NULL;
--	pgtable_t pgtable;
-+	pgtable_t pgtable = NULL;
- 	struct folio *folio;
- 	spinlock_t *pmd_ptl, *pte_ptl;
- 	enum scan_result result = SCAN_FAIL;
-@@ -1310,6 +1310,12 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long s
- 		goto out_nolock;
- 	}
-
-+	if (is_pmd_order(order)) {
-+		pgtable = pte_alloc_one(mm);
-+		if (!pgtable)
-+			goto out_nolock;
-+	}
-+
- 	mmap_read_lock(mm);
- 	result = hugepage_vma_revalidate(mm, pmd_addr, /*expect_anon=*/ true,
- 					 &vma, cc, order);
-@@ -1433,8 +1439,8 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long s
- 	spin_lock(pmd_ptl);
- 	VM_WARN_ON_ONCE(!pmd_none(*pmd));
- 	if (is_pmd_order(order)) {
--		pgtable = pmd_pgtable(_pmd);
- 		pgtable_trans_huge_deposit(mm, pmd, pgtable);
-+		pgtable = NULL;
- 		map_anon_folio_pmd_nopf(folio, pmd, vma, pmd_addr);
- 	} else {
- 		/*
-@@ -1453,6 +1459,9 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long s
- 	}
- 	spin_unlock(pmd_ptl);
-
-+	if (is_pmd_order(order))
-+		pte_free_defer(mm, pmd_pgtable(_pmd));
-+
- 	folio = NULL;
-
- 	result = SCAN_SUCCEED;
-@@ -1463,6 +1472,8 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long s
- 		anon_vma_unlock_write(vma->anon_vma);
- 	mmap_write_unlock(mm);
- out_nolock:
-+	if (pgtable)
-+		pte_free(mm, pgtable);
- 	if (folio)
- 		folio_put(folio);
- 	trace_mm_collapse_huge_page(mm, result == SCAN_SUCCEED, result, order);
-
-
->
-> --
-> Cheers,
->
-> David
-
---
-Cheers, Lorenzo
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
