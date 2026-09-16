@@ -4,98 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2867C88E5C
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 08:35:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57D8CC88E77
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 08:36:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D26BC6B0088; Wed, 16 Sep 2026 04:35:06 -0400 (EDT)
+	id 191AB6B008C; Wed, 16 Sep 2026 04:36:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD7D16B008C; Wed, 16 Sep 2026 04:35:06 -0400 (EDT)
+	id 169956B0092; Wed, 16 Sep 2026 04:36:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC6516B00A1; Wed, 16 Sep 2026 04:35:06 -0400 (EDT)
+	id 057646B009D; Wed, 16 Sep 2026 04:36:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 881606B0088
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 04:35:06 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BBDBEA5BC5
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 08:35:05 +0000 (UTC)
-X-FDA: 85218965370.20.755C8CC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 33A23A000C
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 08:35:04 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cd2Z9Sxp;
-	spf=pass (imf15.hostedemail.com: domain of arnd@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=arnd@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D35046B008C
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 04:36:42 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1E9B0C068D
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 08:36:42 +0000 (UTC)
+X-FDA: 85218969444.11.E1F363D
+Received: from mail-pj2-f43.google.com (mail-pj2-f43.google.com [74.125.227.171])
+	by imf02.hostedemail.com (Postfix) with ESMTP id BB18380003
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 08:36:39 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=k+Jj0nhB;
+	spf=pass (imf02.hostedemail.com: domain of songmuchun@bytedance.com designates 74.125.227.171 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789547704;
+	s=arc-20220608; t=1789547800;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=Y8u9M/CPrZ8uUGb5gcQd+lDUMbsBuT9RIoPai58SWkI=;
-	b=NcmynZJ0L5VjHuCJ7Qx7daHDctZ8hj/T3B6muMUHkGtDhcCSykCg4FlShzQ3XU74g+7p6a
-	BMz+Mkm5JMSJH2598+Z72G8kRZPGVOJJ2XQSRDHRU4dETGfQUW6NxKQ2uBQbyPiP88uZuT
-	hiHDefTlyuIncCmnX0k1BvUg+eA+QvE=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cd2Z9Sxp;
-	spf=pass (imf15.hostedemail.com: domain of arnd@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=arnd@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=/Ky/jym2qeoiedQ+4uP+uRv23sKBrOXkwKGv1IN5HSI=;
+	b=bLU0vV7ZmWbaM3gk+EnOEID4hMOD1dDKrWnchjppA0IyqZHvl1XdJBPhpiy34pEZrYEbfd
+	+dLC94r+Mihgj5ug5ew9AkX5TBYcEHLNtQfBguCHuF7Y1qmvbJAQVK4ZNF46sNNRhmnULl
+	EVzYuE/WdU+z6EZCpVMfuSMzwH2+qUk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789547704;
-	b=eJvXxu/yF3m7Kry/IhEIgolSwy2FoBsFyGMlm3QX86MzrdPRiRgs4X96r2OQTfDoNx8DZL
-	N9VImSp3AOHFqVT5hp8imZ8k8zKtdotnMdW/4jOTJh3tOnGM/qkmsuN6XykFOVvLwFmwXb
-	yJsp2xXfc0knNDXl/7oyxE6RJxi6kxA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7119F43BD1;
-	Wed, 16 Sep 2026 08:35:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0E0B1F000FF;
-	Wed, 16 Sep 2026 08:34:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789547703;
-	bh=Y8u9M/CPrZ8uUGb5gcQd+lDUMbsBuT9RIoPai58SWkI=;
-	h=From:To:Cc:Subject:Date;
-	b=cd2Z9SxpnkTdH1y1FcHDR85THhmLg1DVK79MLRBdRCJ7jrGFGuHz3EOm+1lgjoxQs
-	 P99byAnWaXD9p8xXn89E3AzOKhuN5gv6rX/ijcdxo1mvHXXstI97IPXci9EHoIty0A
-	 isqHt8/ClvZCSfl6A5yvhD7YHpgMN55ji+BD5O9eebKd2KXYy5tu/NWH7xhcqkVbdb
-	 y18ExV8YCpBN8+4yS+awIntit5R05/OZJz0DxEkozrbpGB0mQjWG/aaXiTabpqut/R
-	 R8pMJ2qPPM1ZU0RPNQKllljAnYCy/i8aM2jnZF38cEzu4FpqLcx/PmhYWVHRLJulV0
-	 ZZf+8RpJDObzA==
-From: Arnd Bergmann <arnd@kernel.org>
+	t=1789547800;
+	b=eA49hiP9poJd4N7YpuLhapjYNmflC883vlvPG8tUYODMlcoAxA/uibuBwvWaIkLUtnfdvL
+	FaVLJKb5rKfoQ2P7oCVG5YL49zX9S/Oz1T4vVVE39eAMxu0o6flZth9v5huCY9DUOyIBEk
+	5OPtOY6x5i4Q7lqRiz9HUAqV0Caz03I=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=k+Jj0nhB;
+	spf=pass (imf02.hostedemail.com: domain of songmuchun@bytedance.com designates 74.125.227.171 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: by mail-pj2-f43.google.com with SMTP id d9443c01a7336-2db18fe459dso4081955ad.3
+        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 01:36:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1789547798; x=1790152598; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=/Ky/jym2qeoiedQ+4uP+uRv23sKBrOXkwKGv1IN5HSI=;
+        b=k+Jj0nhB6QFwQyzDc79M1ljFTTtI9G758mUBNnYYaJh0MZwbXbO8rf4uIBkBfc5GGv
+         wuD3PpoM8Xek+HfUVFHDD/66wpNqdmbJ6lUuF2f7u85yR+6hVtJuTlwmwtv7C87ZpCLY
+         xSDP5N2kg+MZ4J6mXquassQoRA3zLFHJCrwHpF2gxmcT1n8aPfJJtMzOLn5fgec2gPDg
+         Z6dKGlRBSBwQDGhbIql1zNKWUBULrFvJLRzz3dYbdTz4KRkA4x5Ohy/mms629b8uF2N7
+         Vc+5Qjh/7yN1vgsYCwGmv5acjqLRGLzOnWcQuVJn8SrE1333mOt/Fc7QYkd4RJURTPma
+         d8PQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789547798; x=1790152598;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=/Ky/jym2qeoiedQ+4uP+uRv23sKBrOXkwKGv1IN5HSI=;
+        b=oOICv54WTy30MD5Ft0gwM+VVJaqnGV/RztD+RTJRrIqg4EJTvDNLTU2JGXUV4Ty364
+         8ydrKBbA8MfPvsUcJnh/yaK4voajV25hOXzRTnlog1M9fq9rtcQaDyqQFhUQY168YWdF
+         /GC1FCmzVBGEFIBgWT/psexzoblwj41UT7VRfIOS99x2NLbHxk57M9yEbEVF89kzsIWF
+         Ru85PBkORmu+WrJrMId12gSuNNxv3QFATeq1V06kEmQS0lFj4n/sYdVvOiYAiUbKVQrV
+         Kr1u0L6sqb6EGoCS4eoRW9GNDB1XQXIH3+IfktVpDDzVgC4LARvfMrGVDLtXqOK7nJGb
+         mzuw==
+X-Gm-Message-State: AFuF++ldtVKqs0Jl/hq+0RaVAg0oRQU5wBQQ1+BODOa7Ku7mn9dAQ4sl
+	P5hYE3YDQKLHGpX8Rz81k2vbyhv6Rx/ESSM7mMWXrgN7NRi3GY4WQXG0ilepHKEZHiI=
+X-Gm-Gg: AYBFou1kZspoiIOVd35juOMeywrw+wDVM91p1rgZDL8l7OBt6kmSLyxTXxpys9DdsoD
+	MEdDhTj5vNC4djBKxIyfPVU5wAVI6U0OGDj2aMfjL7ZNmNZlXt3KOE62GQT3CvuBAWaDHmsvifz
+	52n5BYhVxHt/ZTlcPNcWjWaaRsyOiL7CE9Lrm4yWNCtD08X3SkOE+wBv5rihp73TS9fEibM7ptF
+	OYPzNj6mlbMQvQBkYtbMC8RPw9Zc7U8nWcglMVhwNDmiTS5fhVCpeGyAP21yAb5t2pkYWg2D90S
+	AMZ1vt7xhC3yZGdNvbzDaBOxUTPqPelEDfJtWFVD3RA+0SltfODLXyZcvtzTW0CNQI6SPsh0xcp
+	BPGrfDu2ohlqZSaWIAxKMRwWIVbAGWm5WoOLovVr3hOqk6yX2is8W+kCmo3uKNgDt6qVtQW8inb
+	xA9K8eKzKsq5vKxs1qs+ALvzoTL3ysWedaWzRKCff3GtK+8GJ74CJwjQduJhHUGhULCWhBEPqGh
+	avw2BYnJ5Yeq+dmSeIY
+X-Received: by 2002:a17:903:ac4:b0:2db:63cb:1b17 with SMTP id d9443c01a7336-2dd8e633554mr35455145ad.18.1789547797988;
+        Wed, 16 Sep 2026 01:36:37 -0700 (PDT)
+Received: from n232-176-004.byted.org ([36.110.163.100])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dd89d9007csm7646915ad.5.2026.09.16.01.36.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Sep 2026 01:36:37 -0700 (PDT)
+From: Muchun Song <songmuchun@bytedance.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Arnd Bergmann <arnd@arndb.de>
-Cc: David Hildenbrand <david@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Jonathan Corbet <corbet@lwn.net>
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-doc@vger.kernel.org,
+	Muchun Song <muchun.song@linux.dev>,
 	Lorenzo Stoakes <ljs@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Ridong Chen <chenridong@xiaomi.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] mm/vmscan: avoid false-positive -Wuninitialized warning, again
-Date: Wed, 16 Sep 2026 10:34:46 +0200
-Message-ID: <20260916083456.4136132-1-arnd@kernel.org>
-X-Mailer: git-send-email 2.53.0
+	Mike Rapoport <rppt@kernel.org>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Muchun Song <songmuchun@bytedance.com>
+Subject: [PATCH] fixup! mm/sparse-vmemmap: introduce CONFIG_VMEMMAP_OPTIMIZATION
+Date: Wed, 16 Sep 2026 16:36:27 +0800
+Message-ID: <20260916083627.2145779-1-songmuchun@bytedance.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260916064341.1825793-2-songmuchun@bytedance.com>
+References: <20260916064341.1825793-2-songmuchun@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 33A23A000C
-X-Stat-Signature: ocnbk7smckn1c9fe1733ixuuhb8jjq9x
+X-Stat-Signature: fdh4thh5wdkrpynakop5susz9jfuy6m1
 X-Rspam-User: 
-X-HE-Tag: 1789547704-752993
-X-HE-Meta: U2FsdGVkX1+FgJM1T9EAQjj2pGJGB4K/RcW1nLjDuyQJW+oGrkGzpy6QLXFUU+HM8KwdYgmKQL6cdaLXWxdR76PYN2L5s9F5/M/+W3vl8EagjTiNbggYwY3Un6feifGX7kGOmAUZUDW6fIRFzOivOGWvMGqNXWjq3lFWOEZmFM8T8N0ul0AHIUU9JcnD6iOu5tLm4gt54lijluAsTM8jlSgXketyncjAh7hW8uuZsudkrmKld3uOTZadt6B4+ZkwiYC3r0hk1Fmg1yJp2+fpk8/pZil9gEnXZdTFy/gV5safiAzXQjZfspmoQew7XFjTDnag5tjwzwHxUGQTD5uXv/BHYSMvuX7OzX0aIl0Qr7wuct6/wzMzIoUCgnpwRe3CftvHB3y8OkyOIyxlvk0qNwMG1543cE1lmp5Y4egnrhhm4ETwLgGqq1zVcpqmaUwiMNz+icM77MT5DEnnmMPscyekPZ2+/kd5AWwJiynKl39imbl4iXa4iILM23hnzs3/cx+qF+2XQPg/rdzhV3WLAt4lTR5lp8i2jDAuBzwaMch4L445LgQxqCw3Cxg8xoL4e4BwsfDK8g+mdjrVBLPI8z5NA1n5BMfyGDHKYYZcAuIDX8e/C8ub/n9tCaPwc+gLuUoyHIATHyyQTxyEZIh8sHKG2ZkoEwEXb89OXltUzwneO8AULcgcBNHtpVDPl46Fn9FdIeCTwyzB/9oBWKiWcDAT8aR3yntQI1zglJQ5f0BWC/PsxEqigN7Z7c3ft9iAH0P5uxeAWOR7vPpWcaeKt6sY+BT5005eZ8lDjnvyZEqds9pgt3H0dK5Y/UlplUr4IS4RmgnGHGraOiNsY6Sq3/YhmXwIv2GZXxF5lCni+33AvKSG1FBBn/71SH3J8Ojg6oMEvd5sq0/h7RjBzyPO/LlLBYkY636dVdbfTjoMqihoEx3zh/OYrZpK5lK114YkQ+6vM6Q3HmUEQryYhdC
- 9rnt/ZVe
- BGhZSvHd36KNzGWLwiWI2cPtJbmDyJ+Lz9z7MTUH7TahFQoJzm7lHIPErZ0Fs6tWT/FloyXHi0V1vIjoTitYFkteofFMo1ddngMnAqaPTTICMSp4CP0B9kr7rc6Q6BZvCyATTncUAAWLXMCBbVfp78yTBZmVLCBj7hZDGN4nWRwV4ZgizpqWk3q3Fd8/YMtWABs3qD+kNaM30NyddeXDv1NmedYql+e6cNF+fq20+L5IbV7Y=
+X-Rspamd-Queue-Id: BB18380003
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789547799-252853
+X-HE-Meta: U2FsdGVkX19mWKlIUY4FJNVWVIp2YzFU51Wh4WWEnBXOpzMqluoL7JO2JG6ml+LLE8Mc6aUPGkeeOM3b/PmBSe9PTrfWrvqr28UHWBjk9071hxz/jPfBhBOhkKFyJ44qXcqZCtkG7KShagIE2ScnCIk4LUxP7kT8av/UwN4VQn2DI63mDbvGhULdNr8G+KuC7yicPSzDzOc16nXGmfKt0CfBKHDRykYoj0MZ94efUli7VD49AwAkE9Nmxva9FWU7etx+nifr+yg0LvHYF2ltmB+iverOzQbWGZ08sQV6b8D1hz5fwJHHccxMTgT2R/6HpoKMQbWdgpkonjz6hky05B9n2j4e12kQpcV8RLB9Mik/TQ5DR4HgiKpThdXJmtL98Wp8V+A1D9U1sS6w5IdoCKorqD9ApZNPZ8zYsfMSYdVqfoZx/CxAmjZDrk9Y+GFttXBLNRqB7/TbDhGhgY1R2ebKWhikC9VL2Sb8FyfM9KYDQyI6+GuZU+nQuhhuTRfJcBZKt2kILMErLrgapFb2txR5xUc+CT2+1M583yMwFLOI6WfCahWpy5W4EYjXAkUBrQvFYjm8ehMjfmhxe7+yVcYuPE5Kd7csFWv0jugVQvC053X9jDEkpxwaydBNHMcnGv4ZClhUgX9ZJdrJnrL0GPhFsweY6fY/5TMx8jWGq7Y9MZhV+rBmHwgQw3pcU7muYBhOO3QLEoaCI2EKLU/RuJ1I5IDZf+DZh07aMU/tPAGFWxbLuzvkaBC/zPZP2h28cl9ZCYNWfIG8XFfPiunYRfBtqfayuBju5YgnjlwjyfGSpvZuunR0ia0/Mro7me7lG7Hd6LobwVopvtji/ZyPWfPZNWmtSd8ihEoidv12QgyYCkeFK5RPFxPY/hh6icQHUxEKu8lxD5thhH+ERwXUNf64XAp0HfyhxqpkdCEZAmxycBFzXaFRM1CtCoyMJvfeR3cI7alf0FJq4sojPCn
+ thdUzR41
+ f+E7w6Hjaol+LUbfT5ZTY2WSaiM4PpMmyHnf0E9pSuuqwrPm1Kc8OxcIXV9YOEkyT+ev1sPrPYxx0BPfEL0pnd0jHl5a8I67DdcowcaHwgR2pfGWCgDCDI2ucv+H92CMjRPhXf2bNcahz+D8bL4HDOZShHrYWejBFs/1EHxOKbY3Ya77vwfZE6jKrqTnFuKQZFmX6vLpncSBwHm1Z1q2YqTA79pCIyib97texIfNBMFI6+whWDtHd8F8NF0kerHYLbgTs0rACXun8Iq3Bzsh0kOrQNENWTZq5evkfVfvdMGu2zWiezBCF8eyO5AVCdHtSpnIOmpCnHo8o/tGC2hQ8Rcw8PoCDCSRU/0KcZfRRcix7DSEjQvWr60sKAPl1Vq+MDFe5hFwpQLDif30Grkh+oohcZ6EbDEcvet020bzQhcAJpK8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,70 +132,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Arnd Bergmann <arnd@arndb.de>
+The section-based vmemmap optimization infrastructure is guarded by
+CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP, but it can also be used by
+ZONE_DEVICE users that set dev_pagemap::vmemmap_shift. Introduce
+CONFIG_VMEMMAP_OPTIMIZATION as a common config for the shared
+infrastructure.
 
-I previously worked around a false-postive gcc-16 warning in the
-get_tier_idx() function, by adding a fake initializer. This happens with
-the -fsanitize=bounds sanitizer when the compiler creates a specialized
-variant of isolate_folios():
+Select the new option from HUGETLB_PAGE_OPTIMIZE_VMEMMAP and from
+ZONE_DEVICE when the architecture opts in to DAX vmemmap optimization,
+and use it to guard the generic sparse-vmemmap state and helpers.
 
-In function 'get_tier_idx',
-    inlined from 'isolate_folios.constprop' at mm/vmscan.c:4982:9:
-mm/vmscan.c:4934:9: error: 'sp.refaulted' is used uninitialized [-Werror=uninitialized]
- 4934 |         read_ctrl_pos(lruvec, type, LRU_TIER_MIN, LRU_TIER_MIN, 2, &sp);
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-mm/vmscan.c: In function 'isolate_folios.constprop':
-mm/vmscan.c:4946:25: note: 'sp.refaulted' was declared here
- 4946 |         struct ctrl_pos sp, pv = {};
-      |                         ^~
-
-Adding another "= {}" would solve the problem as well, but to prevent
-this from happening again after the next code refactoring, try instead to
-prevent this by forbidding interprocedural optimizations on this function.
-
-Link: https://lore.kernel.org/all/20260213123902.3466040-1-arnd@kernel.org/
-Fixes: 3de705a43a46 ("mm/vmscan: avoid false-positive -Wuninitialized warning")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+Acked-by: Qi Zheng <qi.zheng@linux.dev>
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- mm/vmscan.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+Note: When folding this fix into
+"mm/sparse-vmemmap: introduce CONFIG_VMEMMAP_OPTIMIZATION",
+please use this commit message for the resulting patch.
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 11387a0fbeeb..626d2fc78cc9 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -3274,8 +3274,10 @@ struct ctrl_pos {
- 	int gain;
- };
+v5:
+- Select VMEMMAP_OPTIMIZATION from ZONE_DEVICE instead of DEV_DAX,
+  covering all users of dev_pagemap::vmemmap_shift, reported by
+  Sashiko.
+- Drop the DEV_DAX dependency on ZONE_DEVICE added in v2, as it is
+  no longer needed by this patch.
+
+v4:
+- Rename SPARSEMEM_VMEMMAP_OPTIMIZATION to VMEMMAP_OPTIMIZATION
+  (suggested by Mike Rapoport)
+- Collect Acked-by from Mike Rapoport
+
+v2:
+- Fix SPARSEMEM_VMEMMAP_OPTIMIZATION being selected without
+  SPARSEMEM_VMEMMAP, reported by Sashiko.
+- Add an explicit DEV_DAX dependency on ZONE_DEVICE
+- Collect Acked-by from Qi Zheng
+---
+ drivers/dax/Kconfig | 2 --
+ mm/Kconfig          | 1 +
+ 2 files changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/drivers/dax/Kconfig b/drivers/dax/Kconfig
+index f50c6b32d826..602f9a0839a9 100644
+--- a/drivers/dax/Kconfig
++++ b/drivers/dax/Kconfig
+@@ -8,8 +8,6 @@ if DAX
+ config DEV_DAX
+ 	tristate "Device DAX: direct access mapping device"
+ 	depends on TRANSPARENT_HUGEPAGE
+-	depends on ZONE_DEVICE
+-	select VMEMMAP_OPTIMIZATION if ARCH_WANT_OPTIMIZE_DAX_VMEMMAP
+ 	help
+ 	  Support raw access to differentiated (persistence, bandwidth,
+ 	  latency...) memory via an mmap(2) capable character
+diff --git a/mm/Kconfig b/mm/Kconfig
+index 0fa2eb76e4f2..30170a936f1f 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -1224,6 +1224,7 @@ config ZONE_DMA32
+ config ZONE_DEVICE
+ 	bool "Device memory (pmem, HMM, etc...) hotplug support"
+ 	depends on MEMORY_HOTREMOVE
++	select VMEMMAP_OPTIMIZATION if ARCH_WANT_OPTIMIZE_DAX_VMEMMAP
+ 	select XARRAY_MULTI
  
--static void read_ctrl_pos(struct lruvec *lruvec, int type, int tier_min,
--			  int tier_max, int gain, struct ctrl_pos *pos)
-+/* __noipa works around  gcc-16 warning for uninitizled use of pos->refaulted */
-+static __noipa void read_ctrl_pos(struct lruvec *lruvec, int type,
-+				  int tier_min, int tier_max, int gain,
-+				  struct ctrl_pos *pos)
- {
- 	int i;
- 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
-@@ -4924,7 +4926,7 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
- static int get_tier_idx(struct lruvec *lruvec, int type)
- {
- 	int tier;
--	struct ctrl_pos sp, pv = {};
-+	struct ctrl_pos sp, pv;
- 
- 	/*
- 	 * To leave a margin for fluctuations, use a larger gain factor (2:3).
-@@ -4943,7 +4945,7 @@ static int get_tier_idx(struct lruvec *lruvec, int type)
- 
- static int get_type_to_scan(struct lruvec *lruvec, int swappiness)
- {
--	struct ctrl_pos sp, pv = {};
-+	struct ctrl_pos sp, pv;
- 
- 	if (swappiness <= MIN_SWAPPINESS + 1)
- 		return LRU_GEN_FILE;
+ 	help
 -- 
-2.53.0
+2.54.0
 
 
