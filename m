@@ -4,151 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EC31C88E77
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 03:08:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91B59C88E75
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 03:10:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 68C8F6B0093; Tue, 15 Sep 2026 23:08:36 -0400 (EDT)
+	id A87966B0088; Tue, 15 Sep 2026 23:10:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 667246B0095; Tue, 15 Sep 2026 23:08:36 -0400 (EDT)
+	id A396C6B0095; Tue, 15 Sep 2026 23:10:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 57B256B0096; Tue, 15 Sep 2026 23:08:36 -0400 (EDT)
+	id 94E706B0096; Tue, 15 Sep 2026 23:10:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E6346B0093
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 23:08:36 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A82B6120522
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 03:08:35 +0000 (UTC)
-X-FDA: 85218142590.03.122BCB1
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012062.outbound.protection.outlook.com [52.101.43.62])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 7426D16000D
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 03:08:32 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=ZUQ0EdQr;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf08.hostedemail.com: domain of bharata@amd.com designates 52.101.43.62 as permitted sender) smtp.mailfrom=bharata@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789528112;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6EC356B0088
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 23:10:32 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D60BB140591
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 03:10:31 +0000 (UTC)
+X-FDA: 85218147462.14.04F71A8
+Received: from mta0.migadu.com (out-161.mta0.migadu.com [91.218.175.161])
+	by imf14.hostedemail.com (Postfix) with ESMTP id A6D88100002
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 03:10:29 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=jX2wT0cK;
+	spf=pass (imf14.hostedemail.com: domain of yanjun.zhu@linux.dev designates 91.218.175.161 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789528230;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uSHpX/5mMSgmF9zwtmW14QBzOh2lq9neo71E4KXfU0s=;
-	b=fhaPlo81UpgiXj+Mwrci0s5WbEr5UZrlrIZHL0nkqFaMj5IlAFKiMcsAg6Y/LrIRbNNyKv
-	lv3A8dNXcnXJiflNCLS4Gp2DzBfXo+YoJsP6QujQ0POowqR1MshLfgnTYv5UpeDoUkkbXG
-	NiueY49aaCtrYSBbCYzltzXzxbCcK8M=
-ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=ZUQ0EdQr;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf08.hostedemail.com: domain of bharata@amd.com designates 52.101.43.62 as permitted sender) smtp.mailfrom=bharata@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789528112;
-	b=SPlXHQHP593DwmdByY6+MUvohXnPXHMIbT7NU/7HW2nh8lPA88yQVUgbtm4MPQiJTkuCeP
-	YlWN3zUkV+HgfRiLuTN5bzK9Jmckdko1QnjyFmX/DVAWQgdYTX/eUVT0OUyZlV+oqtHuFu
-	x0vGvNO0cvvQ/idJ/BfUvI8D7fdL3Mw=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ptrt7kQScvJit/5g12NDcVF9aqOkS6PQpjKl9+FSjTWuxF/WFt0gdCdVBYT9Z+bJKT/FjhPyorl3qqSQb7zQv0FdFd4IxrPjxl3eSK/6WLUPe0OnH+ZgBvOTsa3yXm3dBICUT02EW3gntE021LkQTAuWAnQk14qqNpfVlnpZ11ds7b/0tnw6IoPDGfeMOjKHrXIzWzFZSuf31Jyr23+I8cKWcBqL1NkAWfqE7zkT4bcxkSOYSHoKQhxOVuxX60OaJ/2orzmxf5uix/vxnQ+neUtbRruW0V0TTwJNWDglsQy4sC8S6IPx4q3aLy2oltrfsf7Pyzm70iILYsEHKkAeBg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uSHpX/5mMSgmF9zwtmW14QBzOh2lq9neo71E4KXfU0s=;
- b=JM/a5Rp56Hg0rgBkPTFe7IY+bZ/XD2RnFu+Tj4/96eatxmS/zxEbOUGw7NYRZvWbfPJfavL2Izfo2K4roizaxitkaow7UTZ8S7U2G/4nbHNjm0yXEo505neB6JEnjxH6G3CRDrqJnewRxul6uv7IXLJN1tl37XWATviU7Jodp38NWgidcnsYv/ealjAaWIlgd4QLPBjgRq0XmyKB7n7rwUv2KuM97YO/LvmNMYRbWpqvNzBpSUobREQ/GOGgisqjTfhx+a3dSFGvh+WZ5NZW9DhDg+kcWR8BL/Ygln/gdgqGkCjcGDbu8KHaHthWuytlUnm2r2JaPeVV9OIVBwy7/A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=gmail.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uSHpX/5mMSgmF9zwtmW14QBzOh2lq9neo71E4KXfU0s=;
- b=ZUQ0EdQr5mdVDgSGhf7SNMM9hlHVom2CIYyHG8v1UD52yZAjrgs3n0p9PHedG+N15/ig0KbXMaVmtD+RXs8mKKZjJdRFCOB90DyfFddR+1HgaK1qaUZwJz4d1jUW1StlARMZTqGITN6Eek3W8F6FmYeTSL3KcT1bDPrkrXzASRw=
-Received: from SJ0PR13CA0006.namprd13.prod.outlook.com (2603:10b6:a03:2c0::11)
- by CH3PR12MB7571.namprd12.prod.outlook.com (2603:10b6:610:147::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.11; Wed, 16 Sep
- 2026 03:08:25 +0000
-Received: from SJ5PEPF00000206.namprd05.prod.outlook.com
- (2603:10b6:a03:2c0:cafe::a9) by SJ0PR13CA0006.outlook.office365.com
- (2603:10b6:a03:2c0::11) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.428.9 via Frontend Transport; Wed, 16
- Sep 2026 03:08:24 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- SJ5PEPF00000206.mail.protection.outlook.com (10.167.244.39) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.428.7 via Frontend Transport; Wed, 16 Sep 2026 03:08:24 +0000
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Tue, 15 Sep
- 2026 22:08:23 -0500
-Received: from [192.168.0.152] (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
- Transport; Tue, 15 Sep 2026 22:08:16 -0500
-Message-ID: <f871efd2-06b4-493f-87cc-919b6e0945c0@amd.com>
-Date: Wed, 16 Sep 2026 08:38:17 +0530
+	bh=IwkSYifMbosbsUEedZ7gLy2vWvhS8YTHhJAZCDXKYtg=;
+	b=74P2LKMfwDnugdRE9VvIBS3pOd9BJFKnyAVJdvDfOwoTk8LwNd78jHZN08XNRofa/6wTBy
+	NwTTYczeOE3e9YSAT/kHYuMuEXwxGj7IyAg0xm3pHbOg1y4y0oTWgGL3C4aJzQBS+ju3NV
+	Nq5E0l4dkAS1mAr6jNqB6r92QSiF5xU=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789528230;
+	b=zDkz0X0zNmMHyu97jjdYjkpjPO6g+w6/fvwDZpPCibYKLrQY7CcVO16MyaJRFxRDbqTpmx
+	aSO64hYqRHpHDYZ085huSuAU9+32FU9s7sj8yfA/U6bgxbFbA/JCPCfNp6R9l/puNJAdHp
+	TkXHpA8ftgKztlnTd1Bmkp5m4OAH89Q=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=jX2wT0cK;
+	spf=pass (imf14.hostedemail.com: domain of yanjun.zhu@linux.dev designates 91.218.175.161 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=csEbIBxX3sc1gWBbMon8k+eE2iLJ+8zMXKxOOcicrLc=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789528228; v=1; x=1790133028;
+ b=jX2wT0cKF0RmSEao+ISC8r/nhw40fvnZ9eBT/mz7ovJ9VYp+K/AgugUWxrOPCq3kgNgyUHCL
+ y3j/1n0cfM0W4jt2/v7q3SlixeTtoeK54sv17qxLhkorNnnCIwYFrQLmCf3mYpaG8p3s85m017Q
+ FAqClIxECqt2di9CpkNXT99Y=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id bddbdcc5f2aab402;
+	Wed, 16 Sep 2026 03:10:15 +0000
+X-Mizu-Trace-ID: bddbdcc5f2aab402
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <9211b2b6-9fca-4ef7-a141-84636d56e67e@linux.dev>
+Date: Tue, 15 Sep 2026 20:10:04 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 0/8] mm: Hot page tracking and promotion infrastructure
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-CC: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<Jonathan.Cameron@huawei.com>, <dave.hansen@intel.com>, <gourry@gourry.net>,
-	<mgorman@techsingularity.net>, <mingo@redhat.com>, <peterz@infradead.org>,
-	<raghavendra.kt@amd.com>, <riel@surriel.com>, <rientjes@google.com>,
-	<sj@kernel.org>, <weixugc@google.com>, <willy@infradead.org>,
-	<ying.huang@linux.alibaba.com>, <ziy@nvidia.com>, <dave@stgolabs.net>,
-	<nifan.cxl@gmail.com>, <xuezhengchu@huawei.com>, <yiannis@zptcorp.com>,
-	<akpm@linux-foundation.org>, <david@kernel.org>, <byungchul@sk.com>,
-	<kinseyho@google.com>, <yuanchu@google.com>, <balbirs@nvidia.com>,
-	<alok.rathore@samsung.com>, <shivankg@amd.com>, <donettom@linux.ibm.com>
-References: <20260911210859.1359875-1-joshua.hahnjy@gmail.com>
-Content-Language: en-US
-From: Bharata B Rao <bharata@amd.com>
-In-Reply-To: <20260911210859.1359875-1-joshua.hahnjy@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF00000206:EE_|CH3PR12MB7571:EE_
-X-MS-Office365-Filtering-Correlation-Id: e1a53a73-fb35-42b5-2a15-08df139fc5ac
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|36860700016|82310400026|23010399003|1800799024|10067099003|6133799003|18002099003|56012099006|11063799006|22082099003|13003099007;
-X-Microsoft-Antispam-Message-Info:
-	OPN/6dv4TLuaMh1KCrpFwwWsp/LSxirdKd02Bw8203JjMPpauIcGajstegxM6vaOt73NWWbLb4IgSA8uRjVqDZt652Mwcc1yOMOH4d0fajOPKuMVYg2m69yZEaTql+rPdcAGaQnY8Rg4hs+BndsfT3w0YngiJzTSzj/NVd7C/oBMNYdFOFryrB/CraKuS21ELB53rVwS655Cz+A1BhgiJdwSsral+6ok2y0UIHkXvLTBdtYi9zeJOZ/yoJDQQVPSqIhvAKIgQSZ9kqm24w6hSbrN64+sEa2qjYfbMDtVl4ZDG1wyaUOgymD5yocAvnwweMhg0LtF3jrlDPNeW873/jbYcPx4KIimSVf4rkMO17V4BeownBDYXDJwBQ3PdQtA4X+H9dxB7KnJvA5eThonXhwOhom6fpaEbM04SCxtjsfli6Ns1CaA7tb1EVcms2llSc8NQBAuV7heRSiln50tMcWgxPCsixMnsBVE7tPOPZQ2Lt7SPSS8nOIAi9BU3iSiayt5EL7/Wwd9554h3G/1+6xgG4NVOC+jfmmtxElYA9ha6P7ieyGfS86EpF4ZBE895pKqlzjleKkYOI+VE88OXSdX9KinZ0RTDwILBL4EUeAhhfgHyneYw7foNh1tPuTK019U+w/Ew9YB1JkEMSM6gY5Gm8lKKqiFKFm4tdFPHRoypT1Md5sGyA8PGT0McjIwrsIoUf7nQ9OqwCZ4Wb8qwQ==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(36860700016)(82310400026)(23010399003)(1800799024)(10067099003)(6133799003)(18002099003)(56012099006)(11063799006)(22082099003)(13003099007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	4yFLT0s8OELjPqFum2EEH2LAUeyCsLsEvICBVM3csRHztXlZ27PVqOTVDgiIEfY2cMTZ+wpvNGHtnXuqCbZNlzNh/ZX8ST8Js7QlnHrlUD4FwtY/+ftXpSyO+pfc58e/DkET86VJJOaZP9pLLxNKV0uSfTSsIVekPGvbyDxU31xKBxhBvY3wOOEe109fOggJNRWwAy9rOUIo4QDHVMz60YRRLOgDparbH8Hl+fCVGV8J/ZCHb/oMmvmhlFas/1tRkwGVgKVI5NyPgepJ/YCVJJuIuoL0eRgnPqZ1iTSlKdlMEUXdU967J6AtasNP3JqLSZN0ORYVwE0qttNrLyr99bIJYLiZgGj3fm6MVs1NdN2aa9OOCr48FFJMBkjWCEWppdck7TNqFHeBUXu4FnjbH6LXIeuenswhMiEj2i2fQivkPy40J3KgnHfqo8LAoV71
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2026 03:08:24.5758
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e1a53a73-fb35-42b5-2a15-08df139fc5ac
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF00000206.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7571
+Subject: Re: [PATCH v8 02/12] PCI: liveupdate: Track outgoing preserved PCI
+ devices
+To: David Matlack <dmatlack@google.com>, kexec@lists.infradead.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-pci@vger.kernel.org
+Cc: Adithya Jayachandran <ajayachandra@nvidia.com>,
+ Alexander Graf <graf@amazon.com>, Alex Williamson <alex@shazbot.org>,
+ Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
+ David Rientjes <rientjes@google.com>,
+ Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>,
+ Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
+ Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
+ Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pranjal Shrivastava <praan@google.com>, Pratyush Yadav
+ <pratyush@kernel.org>, Saeed Mahameed <saeedm@nvidia.com>,
+ Samiullah Khawaja <skhawaja@google.com>,
+ Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>,
+ William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>,
+ "yanjun.zhu@linux.dev" <yanjun.zhu@linux.dev>
+References: <20260728221007.2098560-1-dmatlack@google.com>
+ <20260728221007.2098560-3-dmatlack@google.com>
+From: Zhu Yanjun <yanjun.zhu@linux.dev>
+In-Reply-To: <20260728221007.2098560-3-dmatlack@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: f4o3edgm8awxxen5w3aqsidabsyukin8
-X-Rspamd-Queue-Id: 7426D16000D
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789528112-160824
-X-HE-Meta: U2FsdGVkX1/Y9Ks1elFvj/WOcPBTuEWu2owLqJwOCgAQWihWVjmqivmCy1pLu3glj+aB5jkrtlBKL+DSxoF/Uyhx7Fvn0zlWRQ4VG1Aid2Ti7XoxlHrJlchRGhrQ39+QnRVPyLFlPJLO4H9k1NLDuWptG698kgLHUJ5eaod6mmbbP7B8uyZj8YHHi7fZopNemylB1rbH9rboO8mjwabfQ4obLnH9HqXQat+eMl6MqbFheVADVop1YGpG8wsRLJNmz9MG83R78ziyza4Dm8qwHwVzpOEifUcvvGucFWEZUtoomeBR5v5LXJtLMTvf818Pr6AimgPRJF+UFiVJ91RLXgDn/FuvSuJwspHSk5ikj45a7/0N13Z4d7RbV9scN9sexkTxRiCATW2ydoKfkjkC2YmLi+IwwozI0LoexBJ/2IeFu0ZMzoN7ossUYdwUmELcSvegHyR64000S6a+wh73pq+7sIXZ+Kdie3UVp+iHQBwhvBi4zfafrSUjxw1O1haKix3+2ksHRuUD5tT0qoWiIH4+h4LERwZ21bBSutskIxXRk1ZdIO7CvwvdM2dJn4o0Rz7HRc6usGNNsNXB141QkpPI2zhmvyVfeHGR8jxpX/qpr0QeFa9J/A9wsXCiImzB16A7rW1W/wMOVyS1BlInGyEi4n5qFAt6t77fMmw5bBJ/+OQ5U5JKj75uFrJS/ec99OKIBTtpE+yHrc5HkYOuU1INs6EdJnai/5TBjjDjvhtnqk/XIlZEYaKRxQrTlRgIWRGH+17nsvtlGmRTc15BlQm1TYm99OGfO7M6b+Tq6YhQeexiNU6BX+YqvpLO9BfkbGXvgQTPPfkP28CoUQEVbftPGRyyWKalNq7O2zANn4H9PM0YB4ZhZ1nVOdmUCRw8U47x2dsQpmJJTiDHJjp6bfrS9Lk0ZQdhV4LfWoZMyuuXPDA7eB6v1MBYUyIB2JzEdXp9We71TDs9+xN39hh
- X30d2MPP
- Hj42wVFGQNWXB6kjJeTF9Zpj/EW71wj89j6t94Pc6ZJG6W1kEVkcyfzpWUB9I9dN48QVaeG6GJhdOpOU0QosBWiS4QGXvp9JKX7P9FOv6U0pk0IROougVoi78eRan0xtMSy/poVJu2/wiNWEa8JYft5AsMFdJFqlu576IcYuVOtP9/F5QRZyuF5sgAL0NHFYz69Q9+FgA1XimCf96wc4pPZdkTwHsZoH3tuIiSM84Dhy0nJlJV21NT3dK5aVHI11vVd0Hoj6z1+OeJlh2T2+OR2sNSOMU5UJpNt+9gDAHef0kMEV6soBnknNRZddD6Ka/bvRabeWN/C6bNXjECmwgLDbb6noWMApezIPA4xgacEGZVNvXTT/cqtTqJkOwVOeeurxfgdtTsvlI1RgWhDklC3zVyIDeQuXxLqzI6glHMeKYUTwJwdB1orcB1P8ofuLP7fRgDUj3fK/jRMIOnMCvJSCUNSGngWgjlFeI8k/hr6l/YH5vrQM3BrZkuQNDTRzAB0zkj4vH9CABbPdfORW6R93a0WMtED/NhXDfeZ8kg1XOkJj4EBX/+hOPbLCcgSfHTkreglb4Yf5TkN+Ez8INLcnRRQ==
+X-Stat-Signature: yq4ft5f83fruay1fc8oaioycriedku1x
+X-Rspamd-Queue-Id: A6D88100002
+X-HE-Tag: 1789528229-72011
+X-HE-Meta: U2FsdGVkX1+5IhWvG/kTY11aXFLr3Yoj7FhX6CBpT2rK0cPhMuGW/99HG1aSZ4OAMz9ARmopqabO1M2k5PIZ3UmOgByW6vJI72StdWKKlzrGnMtUXPVwYQSjLi/cqH7CsjaLiqE1lgv8Jc296hhPiHXup5oG6gsoeYoNDfznhDr402X91cKgVoJcmOIlAqswvt9lA9BjhEIKB7O68MTjZ9g1EkztU7iVxwS+gH9j3fSPMwxVGBiJNnr3u9lhxIEkdAWf9DvWmScGtdwvyPShAoducXXUzc0XncXSmNFMe/lsia2AweCexb1nkDVd6JbTVRydjOtXkHMGpRzNtZ6b0uimT+dN06HGDNkkSlELpzjFW4YPSpxPzwK0RxOlUrWmba0F3L9EkereDMwNgpalMmrU/UkDaoXQdOUnAy1Bu39i1Zhx0xTwGgbZq3OG0VZh77CXDYcgRCXD8dqVX2dvH7cYiI/CBmiQtkDwVZWXJOapf47cxdI0KmN/N34spf948klky3MDVvVL9fxnErueoOaSF8V2Pi3yV6RfqbQ98nUAq7Rfytb0yReRJ5fiob8k/7PovghjQHWf82pNxXkx6Ii1aymVJhg0adz7sk+Mh4+JwtSWGaPTYYvXmXNA1CZsd718zbqddhZNnNExGDrCjCVY5+5V2yv2eLbggU8RPRVHMNWFQ8KASsTTVZzexUTyCiSQZDYNfdt+YTvsImVoaNSAwXiqBfYPBJ7AJj/XqZ/gVjiOcserdsPdR5vEVobsD1QTqEVBdo3AOnYw1NVnGpLfdyp+cHVEfZVs0BudozWAj7OT3e6EpJ436LOQ4irmtNL5ZgsO/oIYrkXLoRC17lGwUVnEiegH2YlVkp0FCnvtD/+z2lURCpCnPN/hZQuqhTerT7Q+G1KjxglvSI8ktqvPKmTWG+rZbOhi5eyLXizV7H7kJY3d3BFLJEo5LwCUpJ4jC43oto3zzCEKgJs
+ 3bDZLxxM
+ Rl7/UEKNKo4L66ecqgzux8M9GkxVWUaY27Vc9rrq63YF4sHVdjxJ5+qX2mP/Egi3ZqUJXZIjW5SHypdyZBIOgfigXy5TrDeEOieExBLyfhcvjUQmK1/rsVHZPSURCkfepjO+kZHNoI5tKGlVOX4IoCAbkWg/PQXnD+WohZzD9QU0QrSf2VBlg2L/tZ2dXzB43sZXjUVSUESQnJm+m5vjGHDmOIzUlyHPbXzC+ZBa5jDmbiSIJn+cJ3BqWQ2HMpanCbOTaJcQQzL/ypqoR6kGjPCzae8BxKjFZQD6bRHhvD9HK8aPpQmtjDX0yyfJDHWDjAIhckmfDgR5LND2qR7yVDmBxzsNK3J4SPUqf0NXYHyJe2Y+v7HspwlVf4Cx4JgBpl2/4Ra+zmi93dS+FmktKqpaIxb3p1md/uEnpOaUnebsY7nTnDEDOOLor8L431Xp0jwNSySrgk8gH7WM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,76 +107,400 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12-Sep-26 2:38 AM, Joshua Hahn wrote:
-> Hi Bharata,
+在 2026/7/28 15:09, David Matlack 写道:
+> Add APIs to allow drivers to notify the PCI core of which devices are
+> being preserved across a Live Update for the next kernel, i.e.
+> "outgoing" devices.
 > 
-> We've been testing pghot in a Meta kernel with worklaods to try and see
-> what the performance characteristics look like. I wanted to report
-> some of the findings that we've found in our testing. Note that these
-> results are from a modified kernel that has my tiered memcg series [1]
-> backported, as well as Gregory's numa balancing scanning fixes [2]
-> as well. 
+> Drivers must notify the PCI core when devices are preserved so that the
+> PCI core can update its FLB data (struct pci_ser) and track the list of
+> outgoing devices. pci_liveupdate_preserve() notifies the PCI core that a
+> device must be preserved across Live Update. pci_liveupdate_unpreserve()
+> reverses this (cancels the preservation of the device).
 
-Hi Joshua,
+Hi David,
 
-Thanks for testing pghot with your workload!
+I have a question about the pci_liveupdate_preserve() and 
+pci_liveupdate_unpreserve() APIs.
 
-> 
-> - Without tuning and using the default tunables that pghot comes with,
->   we've found around a slight performance regression against raw NUMAB2.
->   This was being run on a host with 750G DRAM and 250G CXL.
+Is it supported to call these APIs multiple times for the same PCI 
+device? For example, a driver could do:
 
-pghot promotes on 2nd access by default since pghot_freq_threshold is 2
-by default. This will result in slower promotions compared to NUMAB2
-which promotes on 1st access. Could you please try with setting
-pghot_freq_threshold to 1? I think I should make the default as 1 going
-forward.
+pci_liveupdate_preserve(pdev) -- > pci_liveupdate_unpreserve(pdev) -- > 
+perform some operations -- > pci_liveupdate_preserve(pdev) again, before 
+the actual Live Update starts.
 
-In any case, will it be possible to provide more information on what your
-workloads are, and the exact performance metrics? Any representative workload
-that can be substituted to reproduce this behaviour can also help.
+ From the implementation, it looks like an unpreserved pci_dev_ser entry 
+can be reused, so I wanted to confirm whether this preserve -- > 
+unpreserve -- > preserve sequence is an intended and supported usage.
 
-And when you say slight perf regression, how much is it exactly?
+Thanks!
 
-> - However, we've found lower pgscan_direct, pgpromote, and pgdemote
->   rates as well.
-> - We've seen PSI dramatically drop on the host as well as the promotion
->   happens asynchronously. 
-
-That's good to see.
-
-> - I also found a bug where the kmigrated thread isn't created for nodes
->   that are onlined later after boot, like CXL nodes that get onlined
->   with memory later on. I've been using a small hack commit in
->   pghot_memhp_callback that just checks for the MEM_ONLINE case and
->   spawns a kmigrated thread.
-
-I will take care of this scenario (CXL node online after boot) in my next posting.
+Yanjun.Zhu
 
 > 
-> Finally, we've seen some issues with pghot causing userspace crashes,
-> which leads us to believe that there might be some bugs that manifest
-> in userspace as well (we have not been able to find out where in pghot
-> these bugs are introduced).
-
-That's something I have never seen till now with any of the benchmarks that I
-have run. Any kernel messages attributing the failure to pghot? Anything
-attributable to access reporting or  kmigrated threads?
-
-Any clues from coredump or gdb debug of userspace crash?
-
-Were you running your workloads as part of a non-root memcg?
-
-Do you see these failures without [1] and/or [2] ?
-
+> This tracking ensures the PCI core is fully aware of which devices may
+> need special handling during shutdown and kexec, and so the list of
+> preserved devices can be handed off to the next kernel.
 > 
-> Thanks for working on pghot!
-> Joshua
+> For now, the API only supports preserving non-VF devices on a root bus
+> (not behind an PCI-to-PCI bridges).
 > 
-> [1] https://lore.kernel.org/all/20260807202059.2620949-1-joshua.hahnjy@gmail.com/
-> [2] https://lore.kernel.org/all/20260911001826.2109390-1-gourry@gourry.net/
-
-Regards,
-Bharata.
+> Reviewed-by: Pranjal Shrivastava <praan@google.com>
+> Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> Reviewed-by: Bjorn Helgaas <bhelgaas@google.com>
+> Signed-off-by: David Matlack <dmatlack@google.com>
+> ---
+>   drivers/pci/liveupdate.c       | 210 +++++++++++++++++++++++++++++++++
+>   drivers/pci/liveupdate.h       |  21 ++++
+>   drivers/pci/probe.c            |   2 +
+>   include/linux/pci.h            |   3 +
+>   include/linux/pci_liveupdate.h |  21 ++++
+>   5 files changed, 257 insertions(+)
+>   create mode 100644 drivers/pci/liveupdate.h
+> 
+> diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
+> index fffb41a66ca7..b003b7069cdb 100644
+> --- a/drivers/pci/liveupdate.c
+> +++ b/drivers/pci/liveupdate.c
+> @@ -36,6 +36,27 @@
+>    *
+>    *  * ``pci_liveupdate_register_flb(driver_file_handler)``
+>    *  * ``pci_liveupdate_unregister_flb(driver_file_handler)``
+> + *
+> + * Device Tracking
+> + * ===============
+> + *
+> + * Drivers must notify the PCI core when specific devices are preserved or
+> + * unpreserved with the following APIs:
+> + *
+> + *  * ``pci_liveupdate_preserve(pci_dev)``
+> + *  * ``pci_liveupdate_unpreserve(pci_dev)``
+> + *
+> + * This allows the PCI core to keep its FLB data (struct pci_ser) up to date
+> + * with the list of **outgoing** preserved devices for the next kernel.
+> + *
+> + * Restrictions
+> + * ============
+> + *
+> + * The PCI core enforces the following restrictions on which devices can be
+> + * preserved. These may be relaxed in the future:
+> + *
+> + *  * The device cannot be a Virtual Function (VF).
+> + *  * The device cannot be behind a PCI-to-PCI bridge.
+>    */
+>   
+>   #define pr_fmt(fmt) "PCI: liveupdate: " fmt
+> @@ -50,6 +71,21 @@
+>   #include <linux/pci.h>
+>   #include <linux/slab.h>
+>   
+> +#include "liveupdate.h"
+> +
+> +/**
+> + * struct pci_liveupdate_global - Global state for PCI Live Update support
+> + * @rwsem: Reader/writer semaphore used to protect the incoming and outgoing
+> + *         FLBs, and the references to them in struct pci_dev.
+> + */
+> +struct pci_liveupdate_global {
+> +	struct rw_semaphore rwsem;
+> +};
+> +
+> +static struct pci_liveupdate_global pci_liveupdate = {
+> +	.rwsem = __RWSEM_INITIALIZER(pci_liveupdate.rwsem),
+> +};
+> +
+>   /**
+>    * struct pci_flb_outgoing - Outgoing PCI FLB object
+>    * @ser: Pointer to the preserved struct pci_ser.
+> @@ -128,6 +164,180 @@ static struct liveupdate_flb pci_liveupdate_flb = {
+>   	.compatible = PCI_LUO_FLB_COMPATIBLE,
+>   };
+>   
+> +static void pci_liveupdate_flb_put_outgoing(void)
+> +{
+> +	liveupdate_flb_put_outgoing(&pci_liveupdate_flb);
+> +}
+> +
+> +static struct pci_flb_outgoing *pci_liveupdate_flb_get_outgoing(void)
+> +{
+> +	struct pci_flb_outgoing *outgoing = NULL;
+> +	int ret;
+> +
+> +	ret = liveupdate_flb_get_outgoing(&pci_liveupdate_flb, (void **)&outgoing);
+> +	if (ret)
+> +		return ERR_PTR(ret);
+> +
+> +	if (!outgoing)
+> +		return ERR_PTR(-ENOENT);
+> +
+> +	return outgoing;
+> +}
+> +
+> +static struct pci_dev_ser *pci_flb_alloc_dev_ser(struct pci_flb_outgoing *outgoing)
+> +{
+> +	struct pci_dev_ser *dev_ser;
+> +	struct kho_block_set_it it;
+> +	u64 count = 0;
+> +	int err;
+> +
+> +	kho_block_set_it_init(&it, &outgoing->block_set);
+> +
+> +	/* Try to find an existing, previously unpreserved, entry. */
+> +	while ((dev_ser = kho_block_set_it_read_entry(&it))) {
+> +		if (!dev_ser->refcount)
+> +			return dev_ser;
+> +
+> +		count++;
+> +	}
+> +
+> +	/* Otherwise grow the block set and reserve a new entry. */
+> +	err = kho_block_set_grow(&outgoing->block_set, count + 1);
+> +	if (err)
+> +		return ERR_PTR(err);
+> +
+> +	if (!count)
+> +		kho_block_set_it_init(&it, &outgoing->block_set);
+> +
+> +	/* This should always succeed since kho_block_set_grow() succeeded. */
+> +	dev_ser = kho_block_set_it_reserve_entry(&it);
+> +	if (WARN_ON_ONCE(!dev_ser))
+> +		return ERR_PTR(-ENOSPC);
+> +
+> +	return dev_ser;
+> +}
+> +
+> +static void pci_liveupdate_unpreserve_device(struct pci_flb_outgoing *outgoing,
+> +					     struct pci_dev *dev)
+> +{
+> +	struct pci_dev_ser *dev_ser = dev->liveupdate.outgoing;
+> +
+> +	if (!dev_ser) {
+> +		pci_warn(dev, "Cannot unpreserve device that is not preserved\n");
+> +		return;
+> +	}
+> +
+> +	pci_info(dev, "Device will no longer be preserved across next Live Update\n");
+> +	outgoing->ser->nr_devices--;
+> +	memset(dev_ser, 0, sizeof(*dev_ser));
+> +	dev->liveupdate.outgoing = NULL;
+> +}
+> +
+> +static int pci_liveupdate_preserve_device(struct pci_flb_outgoing *outgoing,
+> +					  struct pci_dev *dev)
+> +{
+> +	struct pci_dev_ser *dev_ser;
+> +
+> +	if (dev->is_virtfn) {
+> +		pci_warn(dev, "Cannot preserve Virtual Functions\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	if (dev->liveupdate.outgoing) {
+> +		pci_warn(dev, "Device is already preserved\n");
+> +		return -EBUSY;
+> +	}
+> +
+> +	if (!pci_is_root_bus(dev->bus)) {
+> +		pci_warn(dev, "Cannot preserve devices behind bridges\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	dev_ser = pci_flb_alloc_dev_ser(outgoing);
+> +	if (IS_ERR(dev_ser))
+> +		return PTR_ERR(dev_ser);
+> +
+> +	pci_info(dev, "Device will be preserved across next Live Update\n");
+> +	outgoing->ser->nr_devices++;
+> +	outgoing->ser->devices = kho_block_set_head_pa(&outgoing->block_set);
+> +
+> +	dev_ser->domain = pci_domain_nr(dev->bus);
+> +	dev_ser->bdf = pci_dev_id(dev);
+> +	dev_ser->refcount = 1;
+> +
+> +	dev->liveupdate.outgoing = dev_ser;
+> +	return 0;
+> +}
+> +
+> +/**
+> + * pci_liveupdate_preserve() - Preserve a PCI device across Live Update
+> + * @dev: The PCI device to preserve.
+> + *
+> + * pci_liveupdate_preserve() notifies the PCI core that a PCI device should be
+> + * preserved across the next Live Update. Drivers are expected to call
+> + * pci_liveupdate_preserve() from their struct liveupdate_file_handler
+> + * preserve() callback to ensure the outgoing struct pci_ser is already set up.
+> + *
+> + * Returns: 0 on success, <0 on failure.
+> + */
+> +int pci_liveupdate_preserve(struct pci_dev *dev)
+> +{
+> +	struct pci_flb_outgoing *outgoing = NULL;
+> +	int ret;
+> +
+> +	guard(rwsem_write)(&pci_liveupdate.rwsem);
+> +
+> +	outgoing = pci_liveupdate_flb_get_outgoing();
+> +	if (IS_ERR(outgoing))
+> +		return PTR_ERR(outgoing);
+> +
+> +	ret = pci_liveupdate_preserve_device(outgoing, dev);
+> +
+> +	pci_liveupdate_flb_put_outgoing();
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(pci_liveupdate_preserve);
+> +
+> +/**
+> + * pci_liveupdate_unpreserve() - Cancel preservation of a PCI device
+> + * @dev: The PCI device to unpreserve.
+> + *
+> + * pci_liveupdate_unpreserve() notifies the PCI core that a PCI device should no
+> + * longer be preserved across the next Live Update. Drivers are expected to call
+> + * pci_liveupdate_unpreserve() from their struct liveupdate_file_handler
+> + * unpreserve() callback to ensure the outgoing struct pci_ser is already set
+> + * up.
+> + */
+> +void pci_liveupdate_unpreserve(struct pci_dev *dev)
+> +{
+> +	struct pci_flb_outgoing *outgoing = NULL;
+> +
+> +	guard(rwsem_write)(&pci_liveupdate.rwsem);
+> +
+> +	outgoing = pci_liveupdate_flb_get_outgoing();
+> +	if (IS_ERR(outgoing)) {
+> +		pci_warn(dev, "Cannot unpreserve device without outgoing Live Update state\n");
+> +		return;
+> +	}
+> +
+> +	pci_liveupdate_unpreserve_device(outgoing, dev);
+> +	pci_liveupdate_flb_put_outgoing();
+> +}
+> +EXPORT_SYMBOL_GPL(pci_liveupdate_unpreserve);
+> +
+> +void pci_liveupdate_cleanup_device(struct pci_dev *dev)
+> +{
+> +	/*
+> +	 * It should be safe to READ_ONCE() outside of the rwsem during cleanup
+> +	 * since there should no longer be any references to @dev on the system.
+> +	 *
+> +	 * This should never happen in practice. Drivers should block removal
+> +	 * while a device is preserved.
+> +	 */
+> +	if (READ_ONCE(dev->liveupdate.outgoing))
+> +		pci_WARN(dev, 1, "Destroying outgoing-preserved device!\n");
+> +}
+> +
+>   /**
+>    * pci_liveupdate_register_flb() - Register a file handler with the PCI core
+>    * @fh: The file handler to register.
+> diff --git a/drivers/pci/liveupdate.h b/drivers/pci/liveupdate.h
+> new file mode 100644
+> index 000000000000..b2335581f8d0
+> --- /dev/null
+> +++ b/drivers/pci/liveupdate.h
+> @@ -0,0 +1,21 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +/*
+> + * PCI Live Update support (core API)
+> + *
+> + * Copyright (c) 2026, Google LLC.
+> + * David Matlack <dmatlack@google.com>
+> + */
+> +#ifndef DRIVERS_PCI_LIVEUPDATE_H
+> +#define DRIVERS_PCI_LIVEUPDATE_H
+> +
+> +#include <linux/pci.h>
+> +
+> +#ifdef CONFIG_PCI_LIVEUPDATE
+> +void pci_liveupdate_cleanup_device(struct pci_dev *dev);
+> +#else
+> +static inline void pci_liveupdate_cleanup_device(struct pci_dev *dev)
+> +{
+> +}
+> +#endif
+> +
+> +#endif /* DRIVERS_PCI_LIVEUPDATE_H */
+> diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+> index dd0abbc63e18..14b66acbdb15 100644
+> --- a/drivers/pci/probe.c
+> +++ b/drivers/pci/probe.c
+> @@ -24,6 +24,7 @@
+>   #include <linux/pm_runtime.h>
+>   #include <linux/bitfield.h>
+>   #include <trace/events/pci.h>
+> +#include "liveupdate.h"
+>   #include "pci.h"
+>   
+>   static struct resource busn_resource = {
+> @@ -2485,6 +2486,7 @@ static void pci_release_dev(struct device *dev)
+>   
+>   	pci_dev = to_pci_dev(dev);
+>   	pci_release_capabilities(pci_dev);
+> +	pci_liveupdate_cleanup_device(pci_dev);
+>   	pci_release_of_node(pci_dev);
+>   	pcibios_release_device(pci_dev);
+>   	pci_bus_put(pci_dev->bus);
+> diff --git a/include/linux/pci.h b/include/linux/pci.h
+> index da58aa101e4c..b41dd572a2d6 100644
+> --- a/include/linux/pci.h
+> +++ b/include/linux/pci.h
+> @@ -593,6 +593,9 @@ struct pci_dev {
+>   	u8		tph_mode;	/* TPH mode */
+>   	u8		tph_req_type;	/* TPH requester type */
+>   #endif
+> +#ifdef CONFIG_PCI_LIVEUPDATE
+> +	struct pci_liveupdate liveupdate;
+> +#endif
+>   };
+>   
+>   static inline struct pci_dev *pci_physfn(struct pci_dev *dev)
+> diff --git a/include/linux/pci_liveupdate.h b/include/linux/pci_liveupdate.h
+> index 8ec98beefcb4..894052ad6961 100644
+> --- a/include/linux/pci_liveupdate.h
+> +++ b/include/linux/pci_liveupdate.h
+> @@ -8,14 +8,26 @@
+>   #ifndef LINUX_PCI_LIVEUPDATE_H
+>   #define LINUX_PCI_LIVEUPDATE_H
+>   
+> +#include <linux/kho/abi/pci.h>
+>   #include <linux/liveupdate.h>
+> +#include <linux/spinlock_types.h>
+>   #include <linux/types.h>
+>   
+> +/**
+> + * struct pci_liveupdate - PCI Live Update state for a struct pci_dev
+> + * @outgoing: State preserved for the next kernel.
+> + */
+> +struct pci_liveupdate {
+> +	struct pci_dev_ser *outgoing;
+> +};
+> +
+>   struct pci_dev;
+>   
+>   #ifdef CONFIG_PCI_LIVEUPDATE
+>   int pci_liveupdate_register_flb(struct liveupdate_file_handler *fh);
+>   void pci_liveupdate_unregister_flb(struct liveupdate_file_handler *fh);
+> +int pci_liveupdate_preserve(struct pci_dev *dev);
+> +void pci_liveupdate_unpreserve(struct pci_dev *dev);
+>   #else
+>   static inline int pci_liveupdate_register_flb(struct liveupdate_file_handler *fh)
+>   {
+> @@ -25,6 +37,15 @@ static inline int pci_liveupdate_register_flb(struct liveupdate_file_handler *fh
+>   static inline void pci_liveupdate_unregister_flb(struct liveupdate_file_handler *fh)
+>   {
+>   }
+> +
+> +static inline int pci_liveupdate_preserve(struct pci_dev *dev)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+> +
+> +static inline void pci_liveupdate_unpreserve(struct pci_dev *dev)
+> +{
+> +}
+>   #endif
+>   
+>   #endif /* LINUX_PCI_LIVEUPDATE_H */
 
 
