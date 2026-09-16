@@ -4,90 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 575C6C88E77
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 11:30:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4A03C88E77
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 11:31:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 51D4A6B0088; Wed, 16 Sep 2026 07:30:30 -0400 (EDT)
+	id B3A816B0092; Wed, 16 Sep 2026 07:31:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4CEDC6B008C; Wed, 16 Sep 2026 07:30:30 -0400 (EDT)
+	id B11986B0093; Wed, 16 Sep 2026 07:31:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E4266B0092; Wed, 16 Sep 2026 07:30:30 -0400 (EDT)
+	id A4E1C6B0095; Wed, 16 Sep 2026 07:31:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2148F6B0088
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 07:30:30 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A8376806C3
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:30:29 +0000 (UTC)
-X-FDA: 85219407378.26.C8D0026
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 1002314000B
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:30:27 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D6mXo8aG;
-	spf=pass (imf23.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 863E76B0092
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 07:31:08 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2024B1406E6
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:31:07 +0000 (UTC)
+X-FDA: 85219409016.02.2E33E64
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 5B17520010
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:31:06 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JInK15Ne;
+	spf=pass (imf31.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789558228;
+	s=arc-20220608; t=1789558266;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cNxxziEzSRjeeKkjHPI2ybzZcO+hLZVdC7CPel2aGig=;
-	b=WxQSRHVZtRcefW+wxh1BiBBiMJr+zlbBPFNvEJrES5oPJltYhnjWpp4F+GkPXTNj7YWrab
-	x6fDM2Orwpi5ZXkpa27gFd/SKRR+i1/SPl1q/JGb1BgPhLOsnHtrHjkApUlHNvsaaimioo
-	jmsGc2ZXi6uCrv19x91BdGkbAHzD4+U=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D6mXo8aG;
-	spf=pass (imf23.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=d3aQ/RHXKAOVlFbFC1F/OA3OtXmrvIqiX5Vn/+TjVtg=;
+	b=vwxNZ9ACsnKf2iNmqPUMw+6G3oIft6YAqxXcHor39JOeCreW7r82ibzZQEnh5XU9zyKXZ9
+	Q+CXAcFbanqtql6omFGd23NeXkZFN1XXRUj/HWVU8vIvrg6yaZ0LSc6yexkRt0928Hygmj
+	MJzyIEnnjBjIa0EXLAqH3ZXhFUqfM7Q=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789558228;
-	b=d7vxfWHIyK6vMDyG/aRp+lt1Mm1obBKs5CiuCiRHDOZCR2/dmQxx+eGwC8VyQR95mzd4Y0
-	VjJTtTR37XnQWFBq4Ie8CkBNPfJcURnwRIGiKVD+zKy0D+JsDSf1U3dYJDrEPKPsD9itl/
-	YvAtNOrrE3WoX9UNu9sB/NLc14Bi0ko=
+	t=1789558266;
+	b=yQ8j8OSCdDfnFEk3vsUcfg62TKzan8Vp2TEfW0bU31JtjMF1bLgCE6Htla3LEycf8HZOTW
+	TIz8UiYikBjmoodZx5Yn8x5lvS0u6Gkf79D3TfCxo8CG5Rsp4cBzbCaJ3eCI9Gig4h+AE+
+	8CTqIXx44X9SqC30AFDr4fLPMZ0RsBc=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JInK15Ne;
+	spf=pass (imf31.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CF8DE6053A;
-	Wed, 16 Sep 2026 11:30:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B11CD1F00893;
-	Wed, 16 Sep 2026 11:30:23 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id AA37E435E1;
+	Wed, 16 Sep 2026 11:31:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D870B1F000FF;
+	Wed, 16 Sep 2026 11:31:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789558226;
-	bh=cNxxziEzSRjeeKkjHPI2ybzZcO+hLZVdC7CPel2aGig=;
+	s=k20260515; t=1789558264;
+	bh=d3aQ/RHXKAOVlFbFC1F/OA3OtXmrvIqiX5Vn/+TjVtg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=D6mXo8aGO1S4K38ZGd8hkcIL0zJZyK5x1+eSM6TRcftvJ9ZosYGt4bxLvysVZ+c/Y
-	 xDcSDPMp52bYcCHZbgSChB8nsQXIgP/tAv10w+e4enDJXg7Uhd6pl3beUXWDcN6RdQ
-	 6VF7pTigbgLNIIxkSvcuWk5HBji2ptCf94tszX/X9Ha5vfIU5DpjUo7TzugCOisXTb
-	 AuyPrBRFbuaFK29qI7SDRhEjy3Ku7qyicG1MDeY96T6+L6Tts7MoKh14J/IoMUKB9B
-	 HCQc6d71jHWqbETl0C7+9hNnVoF9hUItBo8u3gooJ0NJZhejtfpJE89vQU4GBshhLq
-	 T/Un53225h9YQ==
-Date: Wed, 16 Sep 2026 13:30:21 +0200
+	b=JInK15NePnHwnp5y0aeKVDsmdAWQ8ljldVfQpVz0MS0LQJtQw6xAdjqUcD11+caw5
+	 j04ipBiOhLho3PxcawONN/CNz5rKhn3QLdRjSMjrFCR9qfLuG2i6ir8g/hV+P/B/kO
+	 7lluvELFD+ej13n46WiWLJSF2G77vOKF744TzZHuWT/HW4vElneAba8jl6gsZ1t0cm
+	 LGmel36amcsfpCcrvO+h9UCuoB3H5dtwncIjPLSIeJ42cn64gluNG1XGbhZwAzKzDX
+	 AnDRxeXd7PuKQyiz9pwLE5C/8PblfNiwJA+38zoHGRbM6g0KTfrCbY0d4meDIcxuZ1
+	 wZtv5VHieRyCA==
+Date: Wed, 16 Sep 2026 13:30:59 +0200
 From: Christian Brauner <brauner@kernel.org>
 To: Oleg Nesterov <oleg@redhat.com>
 Cc: Jens Axboe <axboe@kernel.dk>, linux-fsdevel@vger.kernel.org, 
 	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, NeilBrown <neil@brown.name>, 
 	Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, linux-mm@kvack.org, 
 	io-uring@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 2/6] fork: refuse new threads while a coredump is in
- progress
-Message-ID: <20260916-geortet-ermessen-delegation-07b36ac1f4eb@brauner>
+Subject: Re: [PATCH 3/6] coredump: hold RCU while releasing parked threads
+Message-ID: <20260916-aufrechnung-urnen-jenen-519900ff6667@brauner>
 References: <20260915-work-coredump-fixes-v1-0-f354ca41780c@kernel.org>
- <20260915-work-coredump-fixes-v1-2-f354ca41780c@kernel.org>
- <aqleExxTBcHsonQe@redhat.com>
+ <20260915-work-coredump-fixes-v1-3-f354ca41780c@kernel.org>
+ <aqlglWwVeh4rwL0q@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aqleExxTBcHsonQe@redhat.com>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 1002314000B
-X-Stat-Signature: qus3yeq9iw1uzf4yibqc74kf5m78itob
+In-Reply-To: <aqlglWwVeh4rwL0q@redhat.com>
+X-Stat-Signature: 118914d4szqxgarsmewzqb74g9icytas
 X-Rspam-User: 
-X-HE-Tag: 1789558227-479898
-X-HE-Meta: U2FsdGVkX18AaZ2z3dpKDjZOZbehh06CDyKw58GxdeVBQDa9Jel+IO18RmW301b5Tm8XqXqcYOr+F7CPIVpjPNy9LPg2vajBYRoVBhKQi/ZxQDER03vYeiB1cMyNe/6ckQxkgxbUatz2XdWySGxez9u/fHht+Rkdq5Yc3VO7aCXF+yNqrvoL9yy9JMhGYc0xUcNvaWD+Tb+DcUHIebpt/4PshFUVLUVyap7Oa/vb3TbFaeQuxpnsOS5UPN+Uhefrwrx72MLz187cMq+eBfuf6k2hzCg0CizCWFqma33yX+2hXQe/+A7odlWNr43Zp9sj/+wAWluiqbAgKvtAr1RtW+TjvsTpMFkZq7VM2+8OOzVnHxgJ6AbQvBSJrZ9A3vaEzFsnUrW9kMUkfMayAsUhKsTwmmaExBQWA9x4qnPWO/C44EXYcp+LheumR1OOu/wk+JkontNMmSvIjn3WP5vXVEgISgV4m3Bikey0sldL386dVkKnoGkigd3UuLihB+4K/TkUaIjohAltP3zaOXGx+yCKBoFAA35Ok+tyxNEP8xMBisC7ZGqHOQmH1kS2Bdag/3vpQ2wHckDXiWqdOg83wamYNdfTj+zVI4Rz8f/5y1IeD2JO3MvcfZGSNU6f/fDAgw93pggElXqDH2AWmrzycdUtKGT0dsP+nzbTgKe6RQUhSEFYML/BtE2aQTDEr04BxW9NlXE68FUwgEJL0rDMtD+STFVioRVRF0pNg/cYGvVsf8G+MhN/N+QQKp93hffEwvh8xLkVNF1Eb/bb490ksbRTBDbLuVyEq101tklJnH4cJ+QwI8pQzeoreW/xy3Zw0u6D3UZrA/0+6TDgcyfqCUnaFlAvWaOoscN9Hzqb9qQBaiBnziWoxGsFayeV0QXAkBDjQ9Jzr41GCSijLyzurTyg5KrYssO2i1FajuHpPm438bEglk6JyESKP3PUpuJa7xoor53z5GClTAyOFFV
- Pu6tBXky
- r1PrtF5EAo8OGJXkO1ufhRpGTK2Ch1//k9x3Jf1rXNQ03ge5PYJgIJli92Mcr6seih25L9e4N+kNUv5OdahgExgk83TWUfuk9u+uKHhGbqdhfSIv4WLOjeH7QrJuekDr9Gm+UStzwUH0p6BUraAqg2M5TVvIKcBsKjuRWbrvEzwsHgvXzD9eU1PSfnYPTiPNx7Q6+SMhEAe2GS0h9v8IxMXbckqeCCRJV8njr/bf3G/QbOLdiQlQIjqvkii+di3yd/d+SY2e0vy/X5dkHWJkjZo0RvzL5iLlEd+U01Zvn4lRWfe0=
+X-Rspamd-Queue-Id: 5B17520010
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789558266-215882
+X-HE-Meta: U2FsdGVkX18mrx0VJ0QKTUA3qzjCm52otwMjRzWmi2K9GA+Cr12A39Xg8T1L4Zm2TByUEPCPhGLcwQucTt6coIniMfoaH2mv/ol0Vu6OhS2mpd1w5m8a/HFv5GBRa6FUMHzWfy/EFCDPG0c96PBzsMAvyZ3VCC5tgL+S18C6YxM5Iy9WI9nxOc+yc1VCgVEPeqjK1yb8x4XHc5vm5lEWKh/Gvg5p7su1pOPh7z28JepKOLvmRAI4ikkOfwv2DMLQeF91halCHBZHJPPgJGaovWWtNuEqJ/XdubtnZBSZBB7LZXZy7WrUSOifpq1YfbrzRhZzMLxQMNNFDHVD+TZPPupf42p0NhP0jiyJe8/+bppoq7En/WQBKKSxMcsmoF4Z6SHmbLW4s7L+kqIskwhYf/EhJLoCaItoYHtzfDONRpu4MJi6SGU77G7UQaH2J/i/mrmcdVSampIy3fKf/DC5XB9vKsrNFwuFeA8EImCCRvOWHFxhXXd5MjFnZzb7lOcuTA5ihimN/TAbWO6WgQvyOjycvRIwy7+A36bWNrlgDAFuDZ9h/6M6l5HGK5Cwu0LkqRCyBT72uUyIW8JasUCMwlVkiY8PHGp0aLH7tF5Ef+xYcY3h7ydfkefyrwLkAs0Yst8rRRz8lX1kOlk4vjx51DYr3yI9QgkTgdYakn80tu/8hGSodOAN8KrxppPUD8Vte6WCWGOWtyqJZkQFIvHHe3rWKL3rzkLxiCy9FpJV8cjmpmA4uQab2HL4PdeCoN/XIMyhaJe7Y2sqkY4VihFNi71mmrJGgpf8xmmMCuKzDE+ZfBat3fIwrfhaDV1CBiSJ/mJx5Ceyi9Lk1wF5UaxRvU4X8hgr7zHIgevjkCf90HvCOIDVs+E01/fd/a03QdVQVorfIJFyPzwQVEkInsFLJMc3JLGq6JjEIHEiRbn3AqWnLwP82txyIadMADgZ3EUklh9Ml0OgjalV0uh9Ff+
+ iUyeuZTp
+ f9hZKjT3vaj034Mhaf9gQQtmX5urOi6x3b14vtG4wS4+aCok+CQa3RkemqRreyQoHGGlFgQysD/FFfTItMuYEir8jq0PaIAeIU9p9t+npnTca87/tLN/CMJAPsFwIEEIwZrppnt4fTtH7+y50IvU50MNlHkO5T0qsprAu2akVARQ7xBm9UH/O0IXaJuU5pCX52Bsl4ibxoTAArhYh3eqn6BstthGCSo5QnJdu+8LUNycnrhMI3z9aAMvk+8+ntKi62kT1KZ8yfAw0Oegw8rOrNTfewrTYx/G7GNYYFCu5JoTix0z8UpzQ8RfKTUFLdGY22605JxmHUTLqXObwFU8kcM//xQo9UPGcE5z2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,45 +94,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 15, 2026 at 05:02:43PM +0200, Oleg Nesterov wrote:
+On Tue, Sep 15, 2026 at 05:13:25PM +0200, Oleg Nesterov wrote:
 > On 09/15, Christian Brauner wrote:
 > >
-> > Say a SQPOLL thread is a member of a thread-group that coredumps.
-> > The coredump code uses zap_process() and sends SIGKILL. The SQPOLL
-> > thread uses io_sqd_handle_event() and calls get_signal(). It removes
-> > SIGKILL from the pending set and returns. The SQPOLL thread breaks out
-> > of the loop and drains its own task work.
+> > When coredump_finish() releases the threads the wakeup neither holds a
+> > reference on the task nor is it inside rcu.
 > >
-> > Any pending io_req_task_submit() with REQ_F_FORCE_ASYNC creates a new
-> > worker when no other worker is free. So it ends up calling
-> > create_io_thread() from a thread whose fatal signal is gone. That means
-> > copy_process() allows the creation.
-> 
-> Hmm, thats bad ;)
-> 
-> But then ...
-> 
-> > --- a/kernel/fork.c
-> > +++ b/kernel/fork.c
-> > @@ -2491,8 +2491,8 @@ __latent_entropy struct task_struct *copy_process(
-> >  		goto bad_fork_core_free;
-> >  	}
+> > The threads don't necessarily need a wakeup to exit. If it gets
+> > preempted or was woken for other reasons it sees ->task cleared and
+> > exits. So only rcu keeps such a task_struct alive.
 > >
-> > -	/* Let kill terminate clone/fork in the middle */
-> > -	if (fatal_signal_pending(current)) {
-> > +	/* Let kill or a coredump in progress terminate clone/fork */
-> > +	if (fatal_signal_pending(current) || current->signal->core_state) {
-> >  		retval = -EINTR;
-> >  		goto bad_fork_core_free;
+> > If the coredump client is preempted between the store and
+> > wake_up_process() for longer then try_to_wake_up() takes pi_lock() in
+> > freed memory.
+> >
+> > Hold the rcu across the loop.
+> >
+> > Fixes: a94e2d408eae ("coredump: kill mm->core_done")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 > 
-> this change is not enough? Don't we have a similar race with exec?
+> Aah, thanks...
+> 
+> Acked-by: Oleg Nesterov <oleg@redhat.com>
+> 
+> 
+> But to be honest the changelog looks a bit confusing to me...
+> 
+> 	curr->task = NULL;
+> 	wake_up_process(task);
+> 
+> So wake_up_process(task) is not safe, task can exit after a spurious
+> wakeup if it sees ->task == NULL.
+> 
+> And perhaps a short comment above "curr->task = NULL;" makes sense?
 
-Yeah, we do...
+Yep.
 
-> de_thread() kills all other threads and counts them too. Shouldn't it
-> also check signal->group_exec_task ?
+> The reason for guard(rcu) is not obvious at all.
 
-not just that. We need in_execve checked too because
-io_uring_task_cancel() runs the exec'ing thread's task work after
-de_thread() when group_exec_task is unset.
+Ok, will change.
 
