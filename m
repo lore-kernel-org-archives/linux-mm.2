@@ -4,104 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1D2DC982C9
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 21:34:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7757C982C1
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 21:47:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D13CE6B0088; Wed, 16 Sep 2026 17:34:31 -0400 (EDT)
+	id 849366B0088; Wed, 16 Sep 2026 17:47:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC4EE6B0092; Wed, 16 Sep 2026 17:34:31 -0400 (EDT)
+	id 7FA326B008C; Wed, 16 Sep 2026 17:47:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B8CA26B0093; Wed, 16 Sep 2026 17:34:31 -0400 (EDT)
+	id 6E86B6B0092; Wed, 16 Sep 2026 17:47:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 911256B0088
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 17:34:31 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 56E9D16017A
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 21:34:30 +0000 (UTC)
-X-FDA: 85220929500.20.D2DFBD3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 667FD20007
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 21:34:28 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YnViTkjq;
-	spf=pass (imf13.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 503CF6B0088
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 17:47:20 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4078514018E
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 21:47:19 +0000 (UTC)
+X-FDA: 85220961798.26.881BECD
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 5601A40009
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 21:47:17 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i7K1cXJA;
+	spf=pass (imf07.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789595237;
+	b=PkmuONkXJww82rRZn+WgY0kEwBbUdILr+tiO3eaE0T8Cj40fuqQsPz+4rVWS85dD6N9hg4
+	WW6mDRXRxdv3tLD2/amub8trtnbwtTuDd/t91CRSmGTaQzEBoS6Gf6VqNBNJW6CS25ZBLp
+	O648TOBqfC6Xy3I4i21Bmtudz1NX0Ak=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i7K1cXJA;
+	spf=pass (imf07.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789594468;
+	s=arc-20220608; t=1789595237;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vZHwbu018oziF0YzB8Dbq35UuDzuxoPLASxubSP1C4U=;
-	b=NcKtG6WS6/mZa+HbnErYeAYtOP7o03TAD08cwHGDj3VYhegSoZnzLu5Lyq/a4NrjsoQR0I
-	qoUAH4iYdVzaCoJXsvovNKjlDdr+5YkIX6/7qBGvWC6wXWDWXE/tKu2xwR1JoFL/XA4/Nk
-	gNfNgM9a7mfYjlfZ7loRcsx8E5R6w+k=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YnViTkjq;
-	spf=pass (imf13.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789594468;
-	b=0TTSh6sYiI6P5AYqis+t7yN8C7Rp4VjLASe8L3+FdlxKEd71JyTM+QJ2J5PLXC/gllakHu
-	RQ3ozTQero2e+PHCcdhchMcstxSfVPhPznK8ID4b4DMf0BefrZ7I1SC/8KnoM0vtHGgnhd
-	WSGqTWE41dHDI9s06M2jyXeZL126qMQ=
+	bh=BKgCCFGN6jBwDhfi6TCpAdpQqIHyfoSi+GJbRxa4SOw=;
+	b=WKMRl4rz8GCXhFCFHYBUvPM13Scm6IRVwOEh8AzjLifwx1dM2u66NHd/0glhuzfKrA9DBU
+	TBdujYffStIFjR3Zw8Aathia7U8mgTLd5PW20SIxek56t3CAtbjGMXe4dWdEIsGYk1+V17
+	MtIgCokt0S1GAESd/V2Yr9V45Qr9sdE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8BB1E44043
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 21:34:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E7691F0089B
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 21:34:27 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9EFAF602CC
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 21:47:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5776C1F0089F
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 21:47:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789594467;
-	bh=vZHwbu018oziF0YzB8Dbq35UuDzuxoPLASxubSP1C4U=;
+	s=k20260515; t=1789595236;
+	bh=BKgCCFGN6jBwDhfi6TCpAdpQqIHyfoSi+GJbRxa4SOw=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=YnViTkjqjY2tdIpaDUXdUNmiEKWVN7tDIwtoA47ULo6c1zBON5U9i9XryxY4Wk4TI
-	 oPlXK13wF+5QrpWoGZVW3PU9C4j/4/dLl6HXJquqUklrLRpXvCsGTsO9hxTGeQpS86
-	 oKKTlJ05ArKPO8r2to0x3Kmc2v7+XU+mB4Wy6LPmuM0Im1oCbxNjLI2MsOtS7kvFaD
-	 cPBmsUk4rhAbukEK6Os8Lg0YeAINRFFYxi8BpUmPzGhMWSQ2mzdMM9yhWjV99+ACj6
-	 /3a7P8VUrFymUFg2F+33txnN3e6YaVHvUJYfnMZZ1JWR3Cb4QEWVAQWvjfuNXF5Jpm
-	 nZjZo4bf8CtcA==
-Received: by mail-qk2-f43.google.com with SMTP id d75a77b69052e-52fb769ca02so1049641cf.0
-        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:34:27 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBzLi+q6OIjzKz5b5EauKkDUaoATtfcKnrXVicgovq+Hg5oTexCOWuPAQR69J7DBxQfN0BwSUO7seA==@kvack.org
-X-Gm-Message-State: AFuF++nSyXSALdVhaakYssswaHpEb3j0ecn0UOzas1aCR5FsvpB8PXzE
-	6u4HQiuSye+NSE3F2ZvhaVe7PGt18OdeJkW2UWTlefTBZHYDdg9NYxLKzaV6xz7uzRS0ckgzT/M
-	VgcxGnhea1as0etBamw1L68MK//mHuJY=
-X-Received: by 2002:a05:622a:1a94:b0:517:5b2c:6aae with SMTP id
- d75a77b69052e-5327edfb4c5mr88841271cf.13.1789594466802; Wed, 16 Sep 2026
- 14:34:26 -0700 (PDT)
+	b=i7K1cXJAiZ42c3Y67CoPxg3ZTvOcNb1Ho/Q0n9wc76vc42OnAbKKl0BYyoOFkQIub
+	 tB9wfV5LOiJ/WCbQSDLU36bUjw1Fq7cK3sVbsi+mkCCl/B24e+XoqQYtVlHlcAPLfm
+	 /0JVJ2HgO5ZjtBpDPTKS06H27OhOTmyjaQZ0IcKb7YDwZCWr27DsAHT1oreBUYxeWK
+	 Ym27jQwg3P2+dGSTb/3hsVVTWhZfQjv9xXVtnLiFRPXdlGP69RHp5Dn1wWHOOD541X
+	 QkLARJrJ5roWoLwUv5E94qQsZNI+Ej5efe9XjMJ0+IK5LBzk9Z+khff+kBHfg+LxHv
+	 G5dbOO4YBiXhg==
+Received: by mail-qk2-f12.google.com with SMTP id af79cd13be357-939109f067fso14308585a.2
+        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:47:16 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBwCxiiiBrUxnaPzOvRZCiGaDj+kDVyBfQvvM/ytkWgAOkUrNOzzIcCrCed8qYCfNo+vSjJVjf7zcw==@kvack.org
+X-Gm-Message-State: AFuF++koK1RPRAXE2yem5sh/erBx3y9ZsmWukK5kI4mjxxZXs4NKv2zC
+	O8Vf1L/QyPuIn/gPtUYlVb42UmZ5bDY7P45ZDlxT1W9DL5/xUO7BYh1S2tMMRnO1QJFG4VuTH8O
+	Etwzp5cOtKrIo24oA1DjttdfJ0if1Uoc=
+X-Received: by 2002:a05:620a:2312:10b0:93b:c07d:a6bb with SMTP id
+ af79cd13be357-93bc07db157mr388003585a.16.1789595235708; Wed, 16 Sep 2026
+ 14:47:15 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260916123846.1242548-1-ridong.chen@linux.dev> <CAGsJ_4zwP3_+EYY5Ug9EJ+yD1UdxsBSGr25u8s1K3u_i7LH3Zg@mail.gmail.com>
-In-Reply-To: <CAGsJ_4zwP3_+EYY5Ug9EJ+yD1UdxsBSGr25u8s1K3u_i7LH3Zg@mail.gmail.com>
+References: <cover.1789475073.git.zhuhui@kylinos.cn> <ee6bcf945910babab2200f05040975492aed21b3.1789475073.git.zhuhui@kylinos.cn>
+In-Reply-To: <ee6bcf945910babab2200f05040975492aed21b3.1789475073.git.zhuhui@kylinos.cn>
 From: Barry Song <baohua@kernel.org>
-Date: Thu, 17 Sep 2026 05:34:15 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4zQcj-EdqK_j5uuMQxWZzac5a9akz+jmcJ8ewPRJH6MnQ@mail.gmail.com>
-X-Gm-Features: AcwNN1UtLY7oHGpUa0GVuFEMOd8HB5GEXBkaH1H60YU1bEVxMibMdR9fZ4kb6WE
-Message-ID: <CAGsJ_4zQcj-EdqK_j5uuMQxWZzac5a9akz+jmcJ8ewPRJH6MnQ@mail.gmail.com>
-Subject: Re: [PATCH mm-new v9] mm: vmscan: retry folios written back while
- isolated for traditional LRU
-To: Ridong Chen <ridong.chen@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"open list:MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)" <linux-mm@kvack.org>, linux-kernel@vger.kernel.org, 
-	Ridong Chen <chenridong@xiaomi.com>
+Date: Thu, 17 Sep 2026 05:47:04 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wggMLKcxwtDhzPS-P2sF_NyqL8tsKKnP1jdk04aCECAg@mail.gmail.com>
+X-Gm-Features: AcwNN1X8tj6qrT264I7u0puPG663sCANci7__uZPqHwmsLy7UyUcS1gzMfRwgL0
+Message-ID: <CAGsJ_4wggMLKcxwtDhzPS-P2sF_NyqL8tsKKnP1jdk04aCECAg@mail.gmail.com>
+Subject: Re: [PATCH bpf-next v11 1/2] mm/bpf: Add bpf_proactive_reclaim kfunc
+To: Hui Zhu <hui.zhu@linux.dev>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>, JP Kobryn <inwardvessel@gmail.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Ihor Solodrai <ihor.solodrai@linux.dev>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
+	Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
+	Emil Tsalapatis <emil@etsalapatis.com>, Shuah Khan <shuah@kernel.org>, 
+	Geliang Tang <geliang@kernel.org>, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+	Hui Zhu <zhuhui@kylinos.cn>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 5601A40009
+X-Stat-Signature: zdx7pp563txd4gwq7ahcgjprr7ohn9mg
 X-Rspam-User: 
-X-Stat-Signature: wgsg8ezsibjkgfbqzq8epqotyd53yckb
-X-Rspamd-Queue-Id: 667FD20007
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789594468-156180
-X-HE-Meta: U2FsdGVkX18CIhXh9ZxO3+WK5yLs5Q1eCKPQ7f2WhAorlQYIydARnQoPlr39/Y2iDdfeoYhMCYdAN5nlyWb4M8SOfnBVU5Ge/lh9B2tKxQgjmNL9a0y2G30ELnRXaJwB0b4Gbpm77dygvV3JE20DR+RHNFPXpXKww2su+x4kU8NLMQvdRioF57wd1oh43OqRtHl8uYZzN1/DS3eULxHRFjcvFYiQWpVhQgUjGPn8B6W6w1zBAbju35l6nZSaJlb68Tqmb4x3VY4pn2GTt9W76MiWiSRIqdOK46jBjVTMEXyOGKa8LEoNxG9S+z4C3IoRkWY6kFtpwKRCcDJfPAE+Vq3642EOxf99Y8ZZMrEWZKFmAuVsyfNScgP655OQP/alcn9tGEImYMABhav4KUJ179qxRqlSgcr9fi5ZKy2hhh3pgPyySj4UTHnXqU4qFY+nqT0Ke02toCGK5Fh0uBvMT1uO1LouOOl6okxLBmDhuBlCM1qju+SlfPb6A2ohVi34DNh5RiaUg/9KuugHjDQIrq3H/raaejvdV5RbKAjaUXwvL0HsBNhROvhBqmJBTNBjlwUUtIW1uy5LGsmg8Rdo3dFtZ/WpG4/CjzH3R4r1QiOhn/vrRn/RkUAec8uifPAtBaAp8rrBJlt2brGiUSGfvbTe0F/9NhfX4fLst3IcTbfvQo4xNdKQmlESXB7DQyK4OLa/p9/3nv2iuzKWcbN5NuIoXE4dL1qzMYJa6KmfLurGMvgLub3A214s4ZJW0P4NsmRcuA7ur94nkfz6uNqPVH7OiPMnQbKYZ8J4rWpz80m5zNWgeRFItfIHLhzvrefmAAAq9XvUOpTwPT61joneaLUHTcy8dOUT1IqV4oSENTllfDq+7ZxSchoG9NaZbeyttNo298QQM+oGibrv+51OxtK03fTnTDPAbwON+dNgr99Hc72GQOxHxD0o8Gl6xuC46R0D38Gmnx9MVjwkhIL
- 6m22o07D
- zKtPpzIqfYN0pv3ffnuIXYUcX6pwjxCLhUpr9z6IVNYQK0d0u+Ean1BSHhpo8iXGQ+8Xgm0GQX7wwom8gA3LUNIpZTjwUa5zPTpFFOMgW6eBLSPtZ9DK6HUFPMqlNRi1ASptITAG0eMOmeF6XEaHQzcpQZ8sWRJMaziwdDabiSgeCStgrSv9ahlDNB/YpOn3peS8nz9ZsshDL71X6qMn4SzdwVr6JvJ2sCO0KKdPZIA29hi9QbQe2K1cACEwLFi6A0YEtCk1HhU6gUC2E1rlIw+xanVw4wOfnF5NuHCQOf1b8w6KOpmCBKrLXmg==
+X-HE-Tag: 1789595237-917603
+X-HE-Meta: U2FsdGVkX19KNnTy3mB7yCYfalc4TdquBc0Gu4ttGnUQ+Pn+o/+Zxd/MRoQ6X0pEOUVSCy6j60kPIIcNrJ8j/Rn9uBAltIvl4fmuCK/wQtIL9UKHlqYMxdd5Fz85uxM5PqXlqgL28k6ypZgA/s4Vb3WwyvrWAcTqSD4dMhWn10oSYBG104qECKcn7nn44HXZHGFcMkv55A9+HeocRvcwUTDyp53uXUc3jAxhI9ZwAo5eKse1ua9HYhMTanRUbCmHo5Azjdh5LqhfkOcK0pEqlzPN+I/jANPtE/s2ENsyBUEHabWIXk7QT5YrwT/gVPaQc83RTu8u4Tn/il09qssx5FuA0HrD5jicUUiOUcXETbeu8/RTJwjtvxGXrRjS0clP/vatiZRYCP9PRzWxW7HG0nfuAhB1N82XU+VLqI/T4Ran8Ns1tkWXTllPUh3hjUtVW2C/2UlMFQBL4zLXtop3oOXpCH9MJ3GKJp3s3TxWVUcIxbnsL50VeHJNqPPsOXne9r4Y+sSWhsl0sIvPx+DSXO+1wlneobzmIt3c7/0oOLxqtdwtJur8Y9DWjoi+mGQDiVq22QHkeuXPw4EjtdeLpycfDaGLVawLqvYmEvCdomM5qhGJ5gHY/EXOx5/1sIqoi6oXlQwCg4o5TphC103MCjUX7Qs1bOJ/wX6jRqnJbrHBpE4h9Mu+IliMHJMDe3bGX/UxSzpIZ1RPLzw/om7EGmgE1D+nWiUFvHSavxUMwEjC/hbMLYEVf8DOmWNflRHF2jvn2QHWUTVIJdDUD1n3DATfFSvxmv/ACukoVXe/cLlbX1HzQPdi6GmCjM1vT3TIp8MkszKZf+TpdeQ+UEDk6B+OikX3oQarwR098fEhfwQXN5xAl6xQ1r3o3sLv9L3Ye8vlGvD06AddTSkL90VghxQb1CSMHWUV0ibyN4DpGrYTm+eukucps7DfgFBKGwS01eD3ZJLc06qy1EikT27
+ SHzyR9Vu
+ tm58pcWgVx2Q1t6WGyCZ1RJRU5ZrPRKYzNpqC+BpHyVxsxQapSfuxaTaDBaT0WVpCSODBC04XRwA/LXrbjhmioE5D0aVfzkjPg5jpkevCkDpZDJTaJOQ4H0mNbBwx4gzP5TJFbszoeuX1j44NY0L3BoGpMcCJM6N4EUSljHp5Zt8x+WuEbqcMCX4xjDcUS8+nCBdSJVnBzuvkwLvy/nYrSVTbxYVeJ7/dIbzKDRZp8jKYzOUJSatGlAULrDS0HHmfp6JGuzDa+n7RvuaXZiO96w3c6luup9CsO9L2HmxJR8M/FOQTiaKAjHYZOCIvYl8UgoVcN9lVU2ISTK0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,49 +111,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 17, 2026 at 5:25=E2=80=AFAM Barry Song <baohua@kernel.org> wrot=
-e:
+On Tue, Sep 15, 2026 at 8:30=E2=80=AFPM Hui Zhu <hui.zhu@linux.dev> wrote:
 [...]
-> I don't like the way you describe the problem as "wasted" swap.
+>  /**
+> @@ -159,6 +161,47 @@ __bpf_kfunc void bpf_mem_cgroup_flush_stats(struct m=
+em_cgroup *memcg)
+>         mem_cgroup_flush_stats(memcg);
+>  }
 >
-> The real problem is that those folios skipped
-> `folio_rotate_reclaimable()`, so they were added back to the head
-> instead of the tail, where rotation could have moved them to the tail.
-> This resulted in a cold/hot inversion.
->
-> The swap entries they are using now will eventually be released when
-> we scan those folios again and reach the head of the list, so this is
-> not actually wasted swap space. You are probably right, on the other
-> hand, that if those head folios hold swap entries and the swap is
-> full, this could prevent the reclamation of folios at the tail, making
-> it even harder for us to reach the head.
->
-> >
-> > This issue should be fixed in the same way as mglru. Therefore, the com=
-mon
-> > logic was extracted to the 'find_folios_written_back' function firstly,
-> > which is then reused in the 'shrink_inactive_list' function. Finally,
-> > retry reclaiming those folios that may have missed the rotation for
-> > traditional LRU.
->
-> I wouldn't necessarily call it a fix, as keeping the swap cache for
-> those folios can sometimes help with future hits. For example, we may
-> hit those folios again before they are reclaimed. So it's a
-> double-edged sword.
->
-> That said, the cold/hot inversion is a real problem that we should
-> fix. Ideally, we should find a way to restore the missed
-> `folio_rotate_reclaimable()` behavior, conceptually something like:
+> +/**
+> + * bpf_proactive_reclaim - proactively reclaim memory from a memory cgro=
+up
+> + * @memcg: the target memory cgroup to reclaim from
+> + * @size: the amount of memory to reclaim, in bytes, clamped to
+> + *        MEMCG_CHARGE_BATCH
+> + * @swappiness: the reclaim swappiness, in the range [MIN_SWAPPINESS,
+> + *              SWAPPINESS_ANON_ONLY], or -1 to use the memcg's own
 
-BTW, maybe we should have another patch to fix `MADV_PAGEOUT`.
-
-Thinking about madv_pageout, we are supposed to reclaim those
-folios. But because the swap device is fast, they miss
-`folio_rotate_reclaimable()`. As a result, we not only fail to reclaim
-the folios, but actually promote the very folios that we are supposed
-to reclaim. This seems pretty problematic.
-
-This is probably a common problem shared by both CLRU and MGLRU.
+I assume you missed the word "swappiness" here: "use the memcg's own
+swappiness".
 
 Best Regards
 Barry
