@@ -4,90 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EDDAC88E7F
-	for <linux-mm@archiver.kernel.org>; Tue, 15 Sep 2026 23:53:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 202F2C88E77
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 00:00:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5608B6B0092; Tue, 15 Sep 2026 19:53:46 -0400 (EDT)
+	id BAE666B0088; Tue, 15 Sep 2026 20:00:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5119C6B0095; Tue, 15 Sep 2026 19:53:46 -0400 (EDT)
+	id B605C6B008C; Tue, 15 Sep 2026 20:00:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 427A76B0096; Tue, 15 Sep 2026 19:53:46 -0400 (EDT)
+	id A75096B0093; Tue, 15 Sep 2026 20:00:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 197F96B0092
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 19:53:46 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 970871C2528
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 23:53:45 +0000 (UTC)
-X-FDA: 85217651610.17.CF82E1A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 109A7140003
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 23:53:43 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PplxQb5n;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 802DF6B0088
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 20:00:15 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1094816052A
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 00:00:15 +0000 (UTC)
+X-FDA: 85217667990.16.27E719B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 4BFCFC0002
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 00:00:13 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=1C59dYo6;
+	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789516424;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1789516813;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OPWCzUYSAJXN4K++8vT6w9N1hwOvTESTMHXbrKefK4c=;
-	b=s0UHnF6dvYwwck3u48oieEx82ZLZKwX6W8lyqd/uHy77XzTdtTRFcXzkKFkZWH/x0vqzrN
-	QT6zqLgUZ+JHMSRQdEEH4rUMBuRSqpSLNEUiEm5JR6dFWGcrJIw19BLrQcdRGUeKHwc1Yg
-	5xZKZIoImJPTE/E5C8BJkyzRfiN76eA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789516424;
-	b=XVyPPzdy9p70E4H7f+Pf3gphDTPnh29bwmm1ncpILX30yhMlPLfOBFXqwjsjC/v6TtiE62
-	lEovmEKDTSFQUn7jmmUdAvzZdecrU4roxzStRlX8uRdrrt2DeH+DwOl1EBuS03SDFR+hyi
-	uAFVuMr77bvexks0vKoWhTIc8vR7u3c=
+	bh=lsG2UJoJMhrVhGOcp/RTa9rgqpxI7yatSzmwd8yhhxk=;
+	b=WxYfLwoa0IFS6nFYZpfjT+/zJgcFmp321nAv1ty4SiOgJnzEhsw9Apk3IV2ope/ZuJsEXh
+	ODzoJAhhErIZIqiG+hk8Mx6YbsiAbE/7P/hjTgca1as4MCDDbzXskXHJO36XLAvpooyEQI
+	d+b+o3HOzdw/z+CO/7ow78pe+z0k3c4=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PplxQb5n;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=1C59dYo6;
+	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789516813;
+	b=0Be4T55wJTq8rS1mfhWeasWsHaMN+COyZ1Nrl9tdZR8OrbwxUbhrUN7W9L8EGhaj2YQ+QW
+	yB7bZUJYZdT2yTBr0GjVs3VplXqkluRUYon7S8DKmXfRmtiWiE0VtJN+ILrKSDTH30+24z
+	EEuwNQwbur0VCoQPQ9262ac8lakjNEc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 34E38404F9;
-	Tue, 15 Sep 2026 23:53:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 507961F00893;
-	Tue, 15 Sep 2026 23:53:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789516423;
-	bh=OPWCzUYSAJXN4K++8vT6w9N1hwOvTESTMHXbrKefK4c=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=PplxQb5nyQyaZ7w46hyW23hoFg3yKZvpD+woczhTgPfqovvmPhOTEFEJLwmWzc1gk
-	 QAACR2sPNCs6atVacLPhG5TcNwXo3GnUk/zXpbCLCC6i/dNCC8v4FBIXpGo+ojwdgK
-	 jt4X9lbnN9dEOPib8ge0m2BdeNY4LlmbZ6XI2nRMjzIHLDUF3OBCskvQbmqNp2qmmh
-	 lK4IrtmZ81P6GLSolCKauWVvNPjjVnzC+3wmE7hLQtVrtcvR17KT9Q81+K6VP+F2fO
-	 SLa9CSCvNFfMPCmkwMDq60hTsEBKdFK8FjyC+CTaT/ZkdbiFLj3CjevYjYGRl0F0n3
-	 ln3J6ul31bpCg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] vmcore: convert mmap_vmcore_fault() to use folios
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Andrew Morton" <akpm@linux-foundation.org>, "Mike Rapoport" <rppt@kernel.org>, "Baoquan
- He" <baoquan.he@linux.dev>, "Pasha Tatashin" <pasha.tatashin@soleen.com>, "Pratyush
- Yadav" <pratyush@kernel.org>, "Tal Zussman" <tz2294@columbia.edu>, "Dave
- Young" <ruirui.yang@linux.dev>
-Cc: "Heiko Carstens" <hca@linux.ibm.com>, kexec@lists.infradead.org, "Vasily
- Gorbik" <gor@linux.ibm.com>, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, "Christian
- Borntraeger" <borntraeger@linux.ibm.com>, linux-s390@vger.kernel.org, linux-mm@kvack.org, "Alexander
- Gordeev" <agordeev@linux.ibm.com>
-In-Reply-To: <20260915-vmcore-fault-folio-v1-1-a0cb6278670f@columbia.edu>
-References: <20260915-vmcore-fault-folio-v1-1-a0cb6278670f@columbia.edu>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 15 Sep 2026 23:53:41 +0000
-Message-Id: <20260915235342.507961F00893@smtp.kernel.org>
+	by tor.source.kernel.org (Postfix) with ESMTP id 604F460008;
+	Wed, 16 Sep 2026 00:00:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F96F1F000FF;
+	Wed, 16 Sep 2026 00:00:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1789516812;
+	bh=lsG2UJoJMhrVhGOcp/RTa9rgqpxI7yatSzmwd8yhhxk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=1C59dYo66QV+RKUWZNkNSJKjp2seecbRk2ujMq+oeftUoRIcPPX+1yEcLeM93SJfK
+	 jYQVNI7P5FG0EJ4uXrKQCUTc+hoLutKaGcdEzB46e0LhpElLl6z7MS+yfZX2XV3KbF
+	 WNG9OJOwPzGbwY25294h3e7JSRzmaBn+ojJclNIo=
+Date: Tue, 15 Sep 2026 17:00:10 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: david@kernel.org, chrisl@kernel.org, kasong@tencent.com, ljs@kernel.org,
+ ziy@nvidia.com, linux-mm@kvack.org, ying.huang@linux.alibaba.com, Baoquan
+ He <baoquan.he@linux.dev>, willy@infradead.org, youngjun.park@lge.com,
+ hannes@cmpxchg.org, riel@surriel.com, shakeel.butt@linux.dev,
+ alex@ghiti.fr, kas@kernel.org, baohua@kernel.org, dev.jain@arm.com,
+ baolin.wang@linux.alibaba.com, Nico Pache <nico.pache@linux.dev>,
+ "Liam R. Howlett" <liam@infradead.org>, ryan.roberts@arm.com, Vlastimil
+ Babka <vbabka@kernel.org>, lance.yang@linux.dev,
+ linux-kernel@vger.kernel.org, nphamcs@gmail.com, shikemeng@huaweicloud.com,
+ yosry@kernel.org, qi.zheng@linux.dev, luizcap@redhat.com,
+ kernel-team@meta.com
+Subject: Re: [RESEND v7 00/29] mm: PMD-level swap entries for anonymous THPs
+Message-Id: <20260915170010.0667b6dee268fb6fb29a3fee@linux-foundation.org>
+In-Reply-To: <ae847e8a-8c16-4170-a18c-19adb1a50de2@linux.dev>
+References: <20260914122950.3283997-1-usama.arif@linux.dev>
+	<20260914203237.7cdfcd4c320470f4ae5cafd2@linux-foundation.org>
+	<ae847e8a-8c16-4170-a18c-19adb1a50de2@linux.dev>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 4BFCFC0002
+X-Stat-Signature: zte958qujw4hks6kcpejpxs1y38jxmqe
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 109A7140003
-X-Stat-Signature: z3eqxgjnu8tzfwgiqo98osawoo3ax9j5
-X-HE-Tag: 1789516423-414929
-X-HE-Meta: U2FsdGVkX1/9z8N4NP3xblBw7iW1junzAhYQv6fRTUXhN3iq0mu9c1tJ37SKTR4VMpDmYhqLaWmPoHWflL6Gikw2gYoa/YQWlf6fmPkyUbL6Q6ABB1otX7doINH6dUW17kK4LLMvIDTMKPT6m9u0vRt5P2bPEJOyu1/WTxbkYdgbRRewzY7lXfuH57erFLnoek5sU+yKRf1/mwAszh5knPhTxw3S+HfxDyUs+EhUBjt79KGVyLHUSjrIPKS+DKq3UqaPped//RBbFkwuFuYP/gQIQQqLtioL1RkCDgstdcV9XXNBgB2gaQvB+RcJv8kodmu5PQrNka5qAMdL4B8L4yckO+3KhHb4P1g1oz2Y9VHAoF9OB/jYSNiuVrAsEANvcHp6EwfpMfQyRsT0QizWwGpaSVgrEvonKIkVh2W4tT29h0xctqbwYx0M/uoslB29tlvBI4iExy4ufyvHDmIOhUJYjJEaweayThUfRYhhOerO7idQpEqsS7rLuZg16qD/nILnzNySNi1KaROvgNhNPOXQHNSOimOs9Ku+x7N/CJUA/315hgFzL55Rsk9nelmC0l+Xz+LrJFK3oxLVDlOO+/YPqIJq8cpK6jeTmXuHcAYJ3KJlnnx3OGni2HloThpTos0KGiW8VHlLFfF0sBinC8cCw59u8fsUebIH+jCuvYQRZVdc2DX/3fScQ/WV6kgIwlOqpkmLmh5aGicODTsnnOkigUC1Uj4OOuryoxOlcQG7mLLRbrn9AFZcHsA/H60h3kEWIzZRXge0kxFHFpkmYBWBLDgek7MCTs0vYTw1Fvbfke72px1QQIFMuiVEF0tYGNZTvR0dzs6zo2+IcJT9jso9IEBGM+kOqfHzR4yh3Az3sQ2BNilaJCsgxNUmqmSRuWrQiEaVF2lqiYt+bNJ4r5tOIn5uB8+AW9eXkhnmMhH2w6K4Qmd4ZylW8oX51ehhpJbhlISvWLTxLS72Xeg
- 1v/y0rwM
- aEcelDsokw+oPld144+n5JXPdqWfi6LaINHL958or8Xdt+VsEZewchtbB8PXzWLs7P0Vv47zjK+3fRnvBXPdqhv+pPjc9iJY0l5BxX3CrQHhPkJMBkjvsBUS3kMG1SFud4jiQP0xw/UO8y+F1hrb6DdkQR+rBmNTNDoHsoQ1GoFonUP0ldKysdL9csyDC0gY1wjAH6+Tx2j+7eXrRYThPxWWQIHfFdgsaXVqTvvvfFVu8I451Ba0/AGXor3ekcvBRVfdknLlQt7NT1nVMDHBEFCiPGlAonelWEjHlE34h9UKKZ3DC/ZE/3XlCXAv3D2WGpqDz9NUYtOuwXdRVstlPAqeOAFqgEQING6eDBCFhC4hPXnwY8KewRZ0f+Wprh6XtjgsbL1ogpdtTO7d2gjuwyVOpy3QupmqmCvHjFrIL4R0/5RI4YcWaPyr9DQSE17PU23mEUDkYKIKftinoXQJpv8uUBUjQarMt+DpFznA89xOfW3alWjr4bfaUKabXtapIGL0AGndDGhgiawrfOdiUtcbVnS998MMdPuY2krvuQWwJHZAud+naSEQ/wEbMqcrzqJFykUC3v1OqPumdkVcfJdB3/Bm3zL+tc47E13hMxRQFepQ=
+X-HE-Tag: 1789516813-913162
+X-HE-Meta: U2FsdGVkX1/35EpitAWATP6utVjKjOLaaqJ2UpCR8YHb2/i+tc45lKj3IzMaEzxOH3VqU10C3RQXIS/rr+TI0hUnKKGyB1/FUmkF+qTi5nx5iqhs24ZoxRIqYJa8aI/K0Mk+cF6c1BOqxlXxJDWt80jqqPq8jmtPp2CZqnxPiOXV7YCALsbq7kSUIwG2L4vfPKbVJIAnLt9EGkboeYAN9dWropNprShS4H8S+pMHcepOB50oevZNS50MgPEbi3PA0PXYWhLHVxdf4eLrPGmUVJHT570p6pGI6+73gksXt/PP34ePxB6VVPdA5Q7GAaWRqj65j6931I1T+ItrMzE1UgkAjkA7z4bAzG2porVBXTVWmh4uifkCw4SSeQFrrk+/CjzUzQj1LgikC+1KWZKSaz/9m/JGqImeOofAhTGximRebbGi4mpP4E4tK1OPZdhyppg0Qs69R1CpEmQNq9/dvh2X0o1ZLtOmGSEAq5jNGjmCF715h4vIwiJpFlOnOmHR7hOIWcymBqVst8PKOLqY3SfSGYWC4t0b1u6oVTHYOxf3azCmxuoCjEIICbQpfKxdf+Pka1uKV1PPTgs6H82cZE2JpZLsgbG3roHOr9FcRXsLkrwnqB2GR8aepyYGPXNXmVBRcO2q6olVlDfrKGO91eivcHfUxHYiCXDAGw1gSealrtBV6y32U27hH243KkT+wedGfgAZSwyUcpCagNqD0pf73TC1veXVnk9QUvyXo6GgVQvs46ekX9ULPn8+ZIIotrwFHOKWFeZ1lFsl2uhgy0OhMh+Xf0OMpe8hc+e4+Lp2HkWwbqxzhnpKfvCUvBGSGM4/PV+nqAdg/IqN8pB9ToJW3Os2JRFpQOdsgqkUnlpjHMAPsQWzm1eAuGZb2G/ScABqdiBPq1mafYvIyPBKJ71JnBAlv7HUXoJk/W2/l4+C3H0kQtuFot0vtgQl5GUP6e4gWgBQtzx15wrAlfn
+ mFRGypVg
+ McuNYML8k36bT+RxZPniDkDvfKtMxMuyrwXkhBgL1RVMPMX3kejzj78U9VIVmVW1PCzG/inJUqFqONfVE9gOccD7evNbdy0O5YaMrpc91HeE4tHoGxkXA7fFZiF2SmcLCHoq3tcKDH8XdmRUzfWKH59X2fNi90FvU8mABN7VOFT0/p72KhdZKyymHBvv5jUzwNg/B0dxTo5slf8BhoqiDWjNvwZhKRiPCnFTte85VoXfHq+OEGGCHyldQWA7AaSeyvsvy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,20 +100,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Use a folio for the page cache page the s390 fault handler reads the
-> old kernel's memory into. This removes four compound_head() calls and
-> one of the last callers of find_or_create_page().
->=20
-> The vmcore mapping only has order-0 folios, so the logic is unchanged.
->=20
-> Compile tested for s390.
->=20
-> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
+On Tue, 15 Sep 2026 15:09:16 +0100 Usama Arif <usama.arif@linux.dev> wrote:
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+> 
+> Four workers repeatedly write the working set, forcing memory to be
+> swapped out and back in. The results below are the medians of five
+> interleaved runs per kernel, following one warm-up run:
+> 
+> Metric                           Baseline median   Patched median   Change
+> Aggregate benchmark throughput   584.3 MiB/s       2,408.9 MiB/s    +312.2% (4.12x)
+> Elapsed time                     85.43 s           20.72 s          -75.7%
+> Major faults                     1,814,699         228,466          -87.4%
+> Swap I/O rate                    1.02 GiB/s        4.10 GiB/s       +303.9%
+> 
+> The results look good as this is a swap-intensive workload.
+> It primarily demonstrates the reduction in swap-fault and page-table
+> overhead from preserving PMD mappings.
+> 
+> For long-running workloads, where I believe the series will shine, I expect
+> benefits from fewer TLB misses, less khugepaged work as well as less kernel churn
+> due to larger folios, although there aren't a lot of benchmarks to test that.
+> PMD swap entries also move us closer to eliminating page-table deposits for
+> anonymous THPs, which would provide memory savings.
+> 
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260915-vmcore-fau=
-lt-folio-v1-1-a0cb6278670f@columbia.edu?part=3D1
+Thanks.  Wow.
+
+This doesn't look totally real-world but it's close enough to indicate
+that real people doing real things will see nice benefits from this
+change.  As expected - leaving post-swapin thp reassembly to khugepaged
+was so lame.
+
+Please add the above info to the [0/N] and maintain it.
+
+(I'm itching to get this moving ahead, but we do need eyes on those
+core bits).
 
 
