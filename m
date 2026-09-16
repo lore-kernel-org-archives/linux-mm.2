@@ -4,120 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BADA2C88E77
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 13:57:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31C81C88E77
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 14:00:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9692C6B0092; Wed, 16 Sep 2026 09:57:50 -0400 (EDT)
+	id 2CE5D6B0093; Wed, 16 Sep 2026 10:00:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 918BB6B0093; Wed, 16 Sep 2026 09:57:50 -0400 (EDT)
+	id 2680D6B0095; Wed, 16 Sep 2026 10:00:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 82F646B0095; Wed, 16 Sep 2026 09:57:50 -0400 (EDT)
+	id 17DD46B0096; Wed, 16 Sep 2026 10:00:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5EA3C6B0092
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 09:57:50 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C5CAF1A0727
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 13:57:49 +0000 (UTC)
-X-FDA: 85219778658.08.C0075AB
-Received: from mail-qv2-f12.google.com (mail-qv2-f12.google.com [74.125.230.140])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 04BFB1C0006
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 13:57:47 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=kGYBo4qn;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.140 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E96476B0093
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 10:00:45 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 708BB8072C
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:00:45 +0000 (UTC)
+X-FDA: 85219786050.16.814029E
+Received: from mta0.migadu.com (out-134.mta0.migadu.com [91.218.175.134])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 36B0614001C
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:00:42 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="dZ/K0710";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf09.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.134 as permitted sender) smtp.mailfrom=hao.li@linux.dev
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=kGYBo4qn;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.140 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="dZ/K0710";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf09.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.134 as permitted sender) smtp.mailfrom=hao.li@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789567068;
-	b=H8An2ieefTOtfWV71rWD3LE/PWQ4ko8IZfVGsVNOJzZsJBmZOU1e9EA+plSzGXfpp8o7jX
-	gR124bIKl0V74wXaoERsMMxtGjaano0dkUSZPONW0VVXQggwmd0cz3PWwlp4pqMiIgYOrj
-	52/0YKLJ8Pxvy/1mS63QjTuRazMc18o=
+	t=1789567243;
+	b=dkhBpuCnsG8AWqrUUdXER2iSe+mRKMnGJjQN4Hn4NoSmvtqmIEf/PIibyGHUn7jg7UFvG4
+	CNbay6rIVfGQc4DwKj9UYIiFOSrZRLhhy65qJLBXa+Pg2zYJFCDwmiVgdsAwZ1vGBQ2cp1
+	zk8acKe8oWAslWVYerCqclVJz3f6mRw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789567068;
+	s=arc-20220608; t=1789567243;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NgUHPiwSi16km0SbObf2vOYCgqHRbxyVwtkEbeNTtkE=;
-	b=HUAXPMbaGZEb9wVYxkLT8cylya71pn3yQVdQ4PUaZeTh7d9VxApe1/C7wiLylt5d+zzoRk
-	g6BqU0eM5vHvYDlTRnTDSwFy6rzhb8mRhC5ha+d8PtrzAdhuW5lQpYE6LJi7xlDwOgJ9lH
-	woaunm8JB/uoaRyMYZPK+oGx8YoAOoM=
-Received: by mail-qv2-f12.google.com with SMTP id 6a1803df08f44-9105d241693so8665046d6.0
-        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 06:57:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1789567067; x=1790171867; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=NgUHPiwSi16km0SbObf2vOYCgqHRbxyVwtkEbeNTtkE=;
-        b=kGYBo4qniZNsS/TdYe2Kj7XLbGRasxlL4WnD6lzvFdAP0ROjuQgpR5kPDp97s4CHXa
-         BmGBCElTs+mW2sS/29a1y/JtyNO0QsVgTDZiwMVmTK2d9UenFu+keg4CmiFqlOMkpcK+
-         lAS41Y3lgRLwmqaKh/7Kat2JcdnBFXk/aO+/Jd7Hqf+NOOLixYeDyLm0ny/qrxCqlLmy
-         YtZVqEFPgzlpCqKv8iiUJNM2BssMpbIYM3gQfGE6C13sHkcs5u/GFfRWsolMAnCCuLL7
-         wSanpqIQWTYEyuXMj5IZtnlPRWaooubsYcK8eYca88XkLbpM+d7BHz5vVqEnMvIJRoPI
-         21kw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789567067; x=1790171867;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=NgUHPiwSi16km0SbObf2vOYCgqHRbxyVwtkEbeNTtkE=;
-        b=v5ONLR7yILpQofZ5SUdoyr+VbgJOzcIq0gcHo0BemuP43nHtgtqS288QxNMxYJ6T3S
-         3z0SOk//MN+cbHaZ4Vn7I71URHwmMtokVaTeOxIJiP9iGATADtJJN1PFq14fWYlCfdpJ
-         YYUAh3gmTeQKSfkjGVfakGvR9BEF86U5Gt1A0mt+/et5G17G8SEb4rbTgWvkDbWl5vIY
-         I0jjhRzpjm3BGF6VzAg+AG1375mS3XcL8DjLrE2VhMF1TwQevVDd11KQWesZ+zOZ6ZHe
-         8dx364aUVM5sfC1cYCd84VoWq5ag0PHqzGV4n2OiCGt6OyCN19BubCFEYLoafe5XKomB
-         2dhw==
-X-Gm-Message-State: AFuF++mYvrHBKcJysbWocE8baY2lS57JI7c6sahegXhMJSUOrxTW5IsY
-	H2O5bbgYj4PPmSESazzzTJ2Cd6OFpcQvaTWX7AAjoE05EeYbrYw35bE1qrjb0WgwMYU=
-X-Gm-Gg: AYBFou2/ijMCtHxY4nNiiOVVNmbuHKVdgSvEUjza0G/D1WHgFs7+GQlyaVIeAJkql96
-	l1lNMlpOCVTNhY9z3W6zhGVuNeHtMCP03jR94OzM+CLUeGgmYLjY2VqA78s9vrOj5nlQn2Je4pH
-	dmjlriJINg0lP0Zwxx8pINSaUuInjjx3ZCK6RF2zw7p9cLGOQbjFNd3PEUoVyKwpQASJNSTow5t
-	ji7K0SvzZtCPF0WldCA9g2ud6EGPGF+ZlUmX0HoyfoVoNdgBWqu+mF+HJJ95KyVu6v1OwYP37R9
-	JwFdPcjaTqfhwwFoPhGcKH/aP62AzO2JumISU3b2+wY0sB5GA1fb1zkGZWWxQoFeCAHNW77Hu6P
-	ZSDdLDt9aGy2cTq7c1KZuX02//R0CUN4V5YF0wLGJ1ujCkP1LHklbOATp2gsijhhk/4kssoNbyu
-	4e5wpfftsEaXQmaMdv+sOJdIkRFC4R7AwPPS6ytqfUnEGTRPqDbj1pVPGoieA2uHznwrL8iRkj0
-	ZTugXtCXkH/G0sjDYEO7HtdeXcuplWRySCZG2hL9S5/0WTPBZx5yC0=
-X-Received: by 2002:a05:6214:5902:b0:910:3452:d57f with SMTP id 6a1803df08f44-9123d7b5209mr61354706d6.31.1789567067054;
-        Wed, 16 Sep 2026 06:57:47 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9123beeec67sm26377736d6.48.2026.09.16.06.57.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2026 06:57:46 -0700 (PDT)
-Date: Wed, 16 Sep 2026 09:57:44 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
-	akpm@linux-foundation.org, liam@infradead.org, david@kernel.org, vbabka@kernel.org, 
-	jannh@google.com, wangjiexun@tinylab.org, sashiko-bot <sashiko-bot@kernel.org>, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/madvise: reclaim isolated folios if PTE restart fails
-Message-ID: <aqqbB_nFAOGenDhy@gourry-fedora-PF4VCD3F>
-References: <20260912110832.3203902-1-gourry@gourry.net>
- <aqloB0zm3RjJ47m1@gremlin>
- <aql65IhMobL5Al9B@gourry-fedora-PF4VCD3F>
- <aqqTbGMJL86TzDrf@gremlin>
+	bh=K+tp+8CWpgt9KQvrIq79J7M4Xia1oIGIHoddALpW1aw=;
+	b=Pgc4w1PhBEnTfSYtJoJ0o7ESesfjId7MtRchyP2BtxO1tOmuhuhvkh9RMtUBGqb2JkP241
+	Q55HDAwCdHSKHqzKJ9dLYS0hKwXdOxUK73Xmb44LH65tvAPhz2QQ+tKiesSwh7xnXr2OE/
+	gHTK5xDLvepknK0Q8BzSf+GxMEWXYmA=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=VnaTq5M5se49V/9M3c8zvRQnGAJq4+i+kTu1qxqaOlY=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789567238; v=1; x=1790172038;
+ b=dZ/K0710yObmAG+nqd1rTazeVb+9Xjw1Y4sc2mahRs8b4ON1KXMv2wHgoVNCFsjfXAFcL6RK
+ OUSfvlltt8yaWpY8Aie2xGPcrhAvnLlAuMFiCVg3ENYMyRfleAKepEdGigcIrgPHVuzfizpbCn1
+ f05ucNYvb1Untg5iScLXE9Z4=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id da512f38a1cd2b39;
+	Wed, 16 Sep 2026 14:00:37 +0000
+X-Mizu-Trace-ID: da512f38a1cd2b39
+X-Migadu-Flow: FLOW_OUT
+Date: Wed, 16 Sep 2026 22:00:24 +0800
+From: Hao Li <hao.li@linux.dev>
+To: Harry Yoo <harry@kernel.org>
+Cc: vbabka@kernel.org, akpm@linux-foundation.org, cl@gentwo.org, 
+	rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 1/2] mm/slub: make the case handling in __slab_free()
+ easier to follow
+Message-ID: <aqqfP-bj2jh0pN56@fedora>
+References: <20260824122004.3652-1-hao.li@linux.dev>
+ <20260824122513.3829-1-hao.li@linux.dev>
+ <aqf4IsztnhrXBocx@thinkstation>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aqqTbGMJL86TzDrf@gremlin>
+In-Reply-To: <aqf4IsztnhrXBocx@thinkstation>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 04BFB1C0006
-X-Stat-Signature: d9885ttg9n73s18efjfwnw6scnq53su1
+X-Rspamd-Queue-Id: 36B0614001C
+X-Stat-Signature: ywfkgmsrh31xdwnx1e4cmywccppifp1i
 X-Rspamd-Server: rspam01
-X-HE-Tag: 1789567067-397059
-X-HE-Meta: U2FsdGVkX18GZyc0hp44LK8fDm2yPjDxWgn3jvQ2pFN2DTdLs4PfK+Yvxsi11p3+2zC88eTuMidRfre3Bb7rlxFW0JVYXAAAltyxkqpnd1YSzP8bFQwgkQlJYNYSPLQ3Ghp1e6FUQvQc2uZkQSNrYhl9XnbQ/oWzm5LAMRj0eMq6RErPK5jfEH48dQr+/2r6fqYYgYyq2hzW7wg9Vw92+Km1+P9BZy/NjEgLAsXocY9zxG1dh2ch6/SP1ywT0ZJPIki2HIaYS+gSbtOFFs3rG/AbnUe92Bjn9m+Iv37UVQwQWsS0bJCAgLtneyf4isKEIyUT7ZRyBew8rPETywbAaSVC6avimQod2fbS5GMLX7VF99tmhRUUHsXSWjRyNlu9NkbX2Z1p3RH65jevspsudT+s/Z3TtdaaXXlSsqwZTNQZXZZrCj6RhLOAbN3t8eGafVtqsi1yJqZ2cuUqwHiirxLBR36sOnP7Gq5SrILLO/7PQ5C6GEnHaEb7zZB8xQ4eorh4v+kFAeZHdaqqgqbW2JsHO6eqKdSg1NrMP3SQOOfVmpuNl/PW/G4Gy2H9KdFXrS0NPtl7Gt4GOqfJz9nHEir5pXqcbDK/ul8Lv2bMuhHqmNG9MDmhRsczIjQoN91eNhZL6/eNtuhph1hmVsPaxri+MGEDeqbjWjMWb9y37jGRylpTMVMhFmHmcIOj01NiSn1AWnd2IqI/HW9mXGoA5bAgAoeyIUaBofM3MGzOcr9zCYGwWftNIeocd5lBAb/FXFvT+AHtDsCb5UMpF77ey7n/RdWWHlSlTYVlguDCRs3IieUeJB2R0PgXVAxsdZUJpjqEPDfZxXFpIFlKxnGw/x4uKL8UGWKJ1kra/xvRsxmvfCEQEFq1uQzXhIWAlRG6i1Uyv0/tGkKADMM5vgzIDW1EUlJfhMobDyzewAFQJyBsJImdDUMDndk2S22YPpR0qvA63z/29VnC3iyRW5c
- hMq8pv5n
- 4+t47a3pfbKaJVjHYyfbepYKJLpU+ccO6eFpDnn4Hqbb3r4DzfTrYZAyHpsxHEmOuhJVT8CpI+SUOtyMeYtm8y6+zQZ7Jc3CyTO8xYvQ6PXmNa8F7jFZawOY1oOZNEHTzWXEqn7+OrIgGKg7+/lKMvWR2/yujXt//F98M6Et9fe8KaRSvv+3+cA2ACX5ilPtAlGmNkaNzNhdlAF1XpQ2HYtmd+jmYZd7UA1SFkx5Eu8OQBytEuDHzIAmHwNmtTvmk2e9zUfA0atnAG7ABrPqi+d8gSPWkplQyPtMzdbeOCcJeyFo4ZMDVIf8/M88QJqNl59UxOIGDLkP1eX1J1DwsKdY4lTVGhHJ6Tf1j
+X-HE-Tag: 1789567242-190187
+X-HE-Meta: U2FsdGVkX19FG3jGoqJYofQK8ipfwjpgl5bWcrCNdYgUqPPT/EmBhLK5IZYmzGTPmhOFXEaME7r39KYk9IjdttuEIqfmmguEhg4PfCF+0LIB10b8zXBVF+r3DLYZIectVTVixQtsSh4nJ9Lz+nEjvNeXA1PniaxfqyPnzMkA8HAkOy+6Du0l2brKJR1fXT64hSVFnfUrFo7rhvGevLtJqxanh21QqSmu7CRCLUlrAuuUCfP3g4qvITjqgchm8Yj/w82nzQmLe5FTc8NM8kMSrNCdZBSUZqZId6ICLlekLxgpaBWhheh+H/5BerFwwDBTdo7818z04PfQCO3pHH2S1N+JZPUIO4e6McMAQbRQvs4hP044k8R73Liij/OtnqCu+7FvPuJavEqRWppsfdOCvgszFv4h3KpOy1mfnabAc1uXaWxVF6Ug6OjJdcSh/XWVckfy4idXzGXW3KbIRvApZOxo8eKeUQZF8nrgF0gKBuGNwzVRZj3Ekg+bX9gDPzypNGzi0TFV2aeGP2wfm3XuunNvBigYu1eK3KkuNzCeoH1pQT+kgKQQQ3MpDt8ZlcxOCt2d1Dczni09d1SCiw6K0EtcqnsPMev5g4yu+arE3RWazCHrZpRbkayQfevbYdvRtDE+r/AvIS7hQRi/l6VZNaVewaqya3lTTZw9L0yRGyf9pyz/IenEhd0JSeb927V+PE7fFJyb9hP/8jbKuqEscb/2cdVf9KkKTefsYao+f6SYy37q7Y+AhRaIsqNZKU8Uv5z7+sZYDodB67JlajEhLy1ELvEKWrdF/hcZ6K+H871UeuzmN9XLBEx1Fg94U1EdFGuVBJQkdUjG4mP3KM2jh4rcpsha7k/Oz/Bt8oPIRHzLniPGmx1FXJ07Oln2oUZzpkl7eY8Ke2Jtqwoc7kKh13N1W+46flcmFvCt/ScrTL6W5UUjpYW57WRMMQjlbvX8rJKPt4aJtD0+wVGIK80
+ eh5oddzT
+ PQGhQ0NmUkKqk8PY05bLkiXa2ZfkNfaYqnNH4PAAcnNCUfNPL/2R07pxLZMN1HBICuwH/v0q4+8vOw5F3wf4wltRXRsAKIICFdQobg9MKc2hHJLLsh/G2IAKBTs08LSf9DKEf2G2SG3j34udpxhYRPeWXYd+x55/yla6CBT+okOIdV9iJjyX99eJKRBH033S4PEv7SNG8QES/6ihomApTX95eUTg3yhth/qK8P5Oztnl0tS0tsFRqWBxC4adNiaOeTOIDj5DVlsGPmRWzPV7yKscFrB7HKIfm0nLEA5l1rxu4yqsotDo78W42PdcDCCMy5O++WdJs1tkp3lb2No0IoJFy8g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,71 +92,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 16, 2026 at 02:03:29PM +0100, Lorenzo Stoakes (ARM) wrote:
-> On Tue, Sep 15, 2026 at 01:12:03PM -0400, Gregory Price wrote:
-> > On Tue, Sep 15, 2026 at 04:55:47PM +0100, Lorenzo Stoakes (ARM) wrote:
-> > > On Sat, Sep 12, 2026 at 07:08:32AM -0400, Gregory Price wrote:
-> > > > MADV_PAGEOUT collects isolated folios on a local list before reclaiming
-> > > > them after the PTE walk.  The reschedule path drops the PTE lock and then
-> > > > restarts the mapping with pte_offset_map_lock().
-> > >
-> > > Is this reschedule path even necessary? It's pretty bloody sketchy.
-> > >
-> > > I thought the modern approach (TM) was to not do cond_resched() and friends so
-> > > can we actually look at removing this?
-> > >
-> >
-> > Sorry - meant to reply to this.
-> >
-> > Honestly there's so much jammed into this function i can't give you a
-> > straight answer. I can take a short detour to figure out if we can
-> > rework this as a whole.
+On Mon, Sep 14, 2026 at 02:39:16PM +0100, Harry Yoo wrote:
+> On Mon, Aug 24, 2026 at 08:25:09PM +0800, Hao Li wrote:
+> > There are 7 possible transitions in __slab_free():
+> > 
+> >   a. partial->partial
+> >   b. partial->empty, offlist
+> >   c. partial->empty, onlist, exceeding min_partial
+> >   d. partial->empty, onlist, not exceeding min_partial
+> >   e. full->empty, exceeding min_partial
+> >   f. full->empty, not exceeding min_partial
+> >   g. full->partial
+> > 
+> > (There is no offlist variant of e, f and g as a full slab is on no
+> > list.)
+> > 
+> > Clarify which case each branch handles, and replace the goto with a
+> > return at the end of the skipped block so that every branch explicitly
+> > states its coverage.
+> > 
+> > Case 'a' is the only path that needs neither list_lock nor list
+> > handling. Give it an early continue: handling it upfront is much clearer
+> > than forcing every other case into a nested block.
+> > 
+> > Also, read SL_partial once after the loop right where it is used, rather
+> > than re-reading it on every iteration.
+> > 
+> > No functional change.
+> > 
+> > Signed-off-by: Hao Li <hao.li@linux.dev>
+> > ---
 > 
-> s/short detour/long journey through hell/ perhaps? :P ;)
+> Looks good to me (with Vlastimil's suggestions adjusted),
+> Reviewed-by: Harry Yoo (Meta) <harry@kernel.org>
+
+Thanks!
+
 > 
+> >  mm/slub.c | 95 ++++++++++++++++++++++++++++---------------------------
+> >  1 file changed, 49 insertions(+), 46 deletions(-)
+> > 
+> > diff --git a/mm/slub.c b/mm/slub.c
+> > index b0cd0572e2f2..e20375307770 100644
+> > --- a/mm/slub.c
+> > +++ b/mm/slub.c
+> > @@ -5748,76 +5748,79 @@ static void __slab_free(struct kmem_cache *s, struct slab *slab,
+> 
+> [...]
+> 
+> > +		/*
+> > +		 * The slab might need to be taken off (due to becoming empty)
+> > +		 * or added to (due to not being full anymore) the partial
+> > +		 * list.
+> > +		 *
+> > +		 * Speculatively acquire list_lock before calling cmpxchg(), as
+> > +		 * performing cmpxchg() prior to lock acquisition races with
+> > +		 * concurrent paths, such as the shrinker.
+> 
+> nit: it's bit weird to mention shrinkers specifically?
 
-Not as much as you'd think.
+Yeah, better to remove it to be more generic.
 
-I did it yesterday and left an agent to validate it overnight with
-existing in-tree tests, LTP tests, and added some new tests.
-
-The naming could use some work (cold_or_pageout -> lru_op, bleh),
-but new call graph / pseudo-code:
-
-• walk_page_range_vma()
-  └── madvise_lru_op_pmd()              [PMD callback]
-      │
-      ├── PMD is a huge mapping
-      │   └── madvise_lru_op_huge_pmd()
-      │       ├── acquire PMD lock
-      │       ├── madvise_lru_op_huge_pmd_locked()
-      │       │   ├── process whole folio, or
-      │       │   └── return locked+referenced split candidate
-      │       ├── release PMD lock
-      │       └── split folio / reclaim isolated folios
-      │
-      └── PMD points to a PTE table
-          └── madvise_lru_op_ptes()
-              ├── map PTE table and acquire PTL
-              ├── madvise_lru_op_pte_range_locked()
-              │   └── madvise_lru_op_pte_batch_locked()
-              │       ├── process one folio/PTE batch, or
-              │       └── return locked+referenced split candidate
-              ├── leave lazy-MMU mode
-              ├── unmap PTE table and release PTL
-              ├── split candidate if necessary
-              ├── reclaim isolated folios
-              └── reschedule and restart from current address if necessary
-
-Looks like a normal table walk now.  Significantly easier to review and
-doesn't make my eyes vomit. (there's still an ifdef wart, but it's not
-mid-function anymore... so that's nice).
-
-Going to spend a little more time testing and tweaking before I post it.
-
-I've been working on a making more extensive unit tests for certain
-parts of mm/ and this might be a good time to look at whether I can
-introduce a piece of it.
-
-~Gregory
+-- 
+Thanks,
+Hao
 
