@@ -4,93 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F7E7C88E5C
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 12:51:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AC1FC88E5C
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 12:54:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E8566B0092; Wed, 16 Sep 2026 08:51:43 -0400 (EDT)
+	id 8EF6E6B0093; Wed, 16 Sep 2026 08:54:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 899EE6B0093; Wed, 16 Sep 2026 08:51:43 -0400 (EDT)
+	id 8A12C6B0095; Wed, 16 Sep 2026 08:54:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7AF876B0095; Wed, 16 Sep 2026 08:51:43 -0400 (EDT)
+	id 7B63A6B0096; Wed, 16 Sep 2026 08:54:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5BBE76B0092
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 08:51:43 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 05ED01A06D7
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 12:51:43 +0000 (UTC)
-X-FDA: 85219612086.11.6DBCF06
-Received: from mta0.migadu.com (out-111.mta0.migadu.com [91.218.175.111])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 04B1E140007
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 12:51:40 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qLfThpJn;
-	spf=pass (imf23.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.111 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F8C86B0093
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 08:54:58 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DAA961206EC
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 12:54:57 +0000 (UTC)
+X-FDA: 85219620234.30.D5C902E
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 75CC7A0007
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 12:54:55 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=kL2FeXHk;
+	spf=pass (imf15.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789563101;
+	s=arc-20220608; t=1789563296;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=+qAu95NlLgiI5sYTT8Qr8gOpJeUvt0eaVuwkSzqyWgg=;
-	b=KSnX+a+poziOdmvezbGpgEhXCBmnv7f5e8be9TjdWCJl/xN/9cpx45ltCvnfYbvXIeoXnN
-	/pBwIOBstcJWVchrHicN6dQqBmBi1EPr3HhBc1A4Ud3iEjwRTNL2z7RvFR5okqpnZTTL+r
-	Mx7s9KSnvWGz/F+yjQrCIKGsRUsPhfw=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=3+6Kr80JG4BpC+G12cdr/A75Y8Inn6C+PumT0UpV3iA=;
+	b=fT89M5sx+AkAiI4ldAL+QWir894lNbMIW+zxKowF7/Ncw+QjRmkEc9SU6D2th9PeOFgIer
+	vihGaBTStk166iC65i7X5MzspZ/x0OgrPLSuGjB7GwOWPaDEhgTEkwBCLGglL0gswCeNWN
+	PVLdi6TSn1o1huJLkFSEWRDN3QCcaeE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789563101;
-	b=aKwmOln6lbARSodGiuVINZeV8Pi2u8qpjNIKN1peNBl3ovAFSYg21Ddw3bCg2Z3h6ayZJa
-	BjpwN7Afv2ZX7h3Us6WCsOfbtyGxKS46ma7T76VteaLhyzO0QcCGVh6F5T1L0dLttTybtB
-	TT+jsMvG78HmejIUQJpP05/QQscKiyM=
+	t=1789563296;
+	b=7xvrmP7dcAgIrhXpFxIUk8xaRKGPP/bHsQKKXejjZpHpHbmswzM718TywfOCmOXZ5fjICt
+	7DAbVpW9tRDfnVWuCxs7u2LGsso1nMcUFnvrlV32zWtdyAbmcm6/gVercHpz+OWUrV3skU
+	kiPPj/DiHc8TXN2jK1idZ5AmeZXJBkY=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qLfThpJn;
-	spf=pass (imf23.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.111 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=/GTEXjAO8G07aQ62TimyMku3VnOjLh/C2zIWvY7maY0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789563099; v=1; x=1790167899;
- b=qLfThpJnuV2qzRJzau+BUNAKZxTbQM+pZ2bPZOLeVdrT0Tj1iAyNvR1J7z7DaYC6vJoSLkbV
- ViHJ7KnN9aka+1FrYZcFJaaSAU86jfcPdfuOEkYVqPDCTE/d6gSw8FxLPoBPIyRBDdtBy2Ohn7L
- 3nu48xdYKNXCBxiNmmQYI81w=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 13cff38a12b166cd;
-	Wed, 16 Sep 2026 12:51:29 +0000
-X-Mizu-Trace-ID: 13cff38a12b166cd
-X-Migadu-Flow: FLOW_OUT
-From: Usama Arif <usama.arif@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	jack@suse.cz,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	willy@infradead.org,
-	david@kernel.org
-Cc: hannes@cmpxchg.org,
-	mhocko@kernel.org,
-	roman.gushchin@linux.dev,
-	muchun.song@linux.dev,
-	riel@surriel.com,
-	shakeel.butt@linux.dev,
-	kernel-team@meta.com,
-	Usama Arif <usama.arif@linux.dev>
-Subject: [PATCH] mm: filemap: move lruvec accounting outside the xarray lock
-Date: Wed, 16 Sep 2026 05:51:22 -0700
-Message-ID: <20260916125122.2696271-1-usama.arif@linux.dev>
-X-Mailer: git-send-email 2.53.0
+	imf15.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=kL2FeXHk;
+	spf=pass (imf15.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=3+6Kr80JG4BpC+G12cdr/A75Y8Inn6C+PumT0UpV3iA=; b=kL2FeXHkacHaFxdFGZoyyMtDG7
+	qVtQ95V5o5JnWtfqovZodaKZTyDq7rRGm4juqrkFIfvNv7/FRNCmx/rgv9+9cBzJmxNDsORbe5YO4
+	EBjLOt9S7vviqc9E+5Rj3TsFZvqTNdkmiZmfP+bgfg2iqI9I3FJ2YxWo5tVYQClwBxaAJSafk/QBp
+	7UD9D0JS7VJoOky5XYBLvsIObwPtcOsNPXtuoJV/FJewNWmwuQtWz8kjSATnhWXXjFwoQbRr/Thc0
+	Fw2sAxshJ56i6FiSwe5n2WDyQvK376fO1967y4rHuxtN5tz/Ii5es595YxihBgb+CjRx1na6Z7xab
+	Xd/UpRJg==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1x6p9t-00000004Tte-28nx;
+	Wed, 16 Sep 2026 12:54:41 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 80F96300328; Wed, 16 Sep 2026 14:54:40 +0200 (CEST)
+Date: Wed, 16 Sep 2026 14:54:40 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Tim Chen <tim.c.chen@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Kees Cook <kees@kernel.org>, Christian Brauner <brauner@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Qais Yousef <qyousef@layalina.io>,
+	Aaron Lu <ziqianlu@bytedance.com>,
+	Srikar Dronamraju <srikar@linux.ibm.com>,
+	Vineeth Remanan Pillai <vineethr@linux.ibm.com>,
+	Ricardo Neri-Calderon <ricardo.neri-calderon@linux.intel.com>,
+	Chen Yu <yu.c.chen@intel.com>, Lu Wang <wanglu.priv@gmail.com>,
+	Hyunwoo Kim <imv4bel@gmail.com>,
+	Zhan Xusheng <zhanxusheng@xiaomi.com>,
+	Zhan Xusheng <zhanxusheng1024@gmail.com>,
+	Yi Lai <yi1.lai@intel.com>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 3/4] sched/cache: Decouple sched_cache_group from mm
+Message-ID: <20260916125440.GF776954@noisy.programming.kicks-ass.net>
+References: <cover.1789061845.git.tim.c.chen@linux.intel.com>
+ <cb678eddae708e2865ec69a04edf999119c2168a.1789061845.git.tim.c.chen@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ph799hi4u7hoh9goyjj8w6q6z89nhpco
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cb678eddae708e2865ec69a04edf999119c2168a.1789061845.git.tim.c.chen@linux.intel.com>
+X-Stat-Signature: z1tn6ew9ga7bh3mdjr3q3rm3b5auttsp
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 04B1E140007
+X-Rspamd-Queue-Id: 75CC7A0007
 X-Rspamd-Server: rspam03
-X-HE-Tag: 1789563100-598472
-X-HE-Meta: U2FsdGVkX19iRTvEZtZZlqCb6BfQnRIcJf69cOGBZedeBQanG+8ctqz6I4UlJHzQ7+vN+TTJa6UGzHwRJxWQDmzMxKcjYinIW86F0fZPoirGoErutbtEyVtjefYvmeJi6BSY28BVrD1MufDb9rMHiDEfzGQL2Qk6qJnRglNdmGmG7a2OYR0XrfgcG+VjGMuM04M4s7zaDbMUo6MuBuc51mGPDPlwopyy02uYGmvrSXw58zwcYF0G+vi16D57/lgfUp4wv5n20pAvgcQCqd13TYESr5UyouXNKEr33JAgl9hQNFLKoB2ZSpoNKGnllu3gh8kkvN5Wh22CrRv0HUf7YCMUmsUnZDeKdgsqHiHGxT1ito1yUfxmcYzk5ifZOQTv3PkjsiqWDHDeqMiVmPOum6kyLJg74jAjX0d0F7BZZho7du4oIG9477o1gKZXvhQY6A5rsT6L0ieEulQvjfKr8BP7TOOIPhoRTAm4/sJ2G6okvEGVwt/XG+2/CSheXVfmUqeNyV8WIbVbphpv+EplATCOiFxpPzvISHn6a1mq5at+lGhJCGCZZRiPYFgeLd8vitH1gd7U/J9tTPVT1GbMxSCycF1RxiEB/6AOSsALYRt9PIsR4gc9NN4soCfx3Tz2VTXTi3+lcUavSfFO//LzWVAjKtwl6yBfoDn9/ko+nb+btfjCXm0LycZO0fl1SVCRoDou5xccfMHVsMGRKj4YBbeYgS6n1Aw6sN1kZ5guuSmxR2J6Z72hL1evOx6+E4YQPpG3/D/t7qMLRW+P7q19KQ3ZjKPahjvHbYXF2Qkqi12lms2s/itCZXSh9i0rQ+mcXY+QS8unrxyAG5tUdyfj6WINBRJbi4Z0HIBKlnPKxsU84O/5KIlawJE2jIfJ2DWIDiV371CAlBQsLEWVIL70bSTK3121qTa97+D/3fVwExuIqvc9iDTtjmsZhjpm/dyOKuZhqbNtXo3EgCP9Dga
- a80AZtrm
- mrVa5FBiFbpO1tAF/Uq/YB7lgwYkUBTCOnXnPBZV+hu8DJbUFovbod/LYwTeNWBYrsbKaIlQCQr0ug2lPYoTmXNRRzKoIzj7e58Q+QELIEdsRdIb6usmw4i8MgjM/LWrsgJ8xuhVhjoCskwOjka3kR+7P4j03MdxV3PtCeFNCUI+IiozhvBNnirUL0r9MM/d+MhIpYX+02PuqGii6vPp3wG/Pf+8coSYF4L0n
+X-HE-Tag: 1789563295-255303
+X-HE-Meta: U2FsdGVkX18Hl2RmAOyj4MhjXYtYhar7d+/+cBZyPMV8onCPL5bnlDzTZVKv8Uskx0vtryNOK9aKJZ38Y1SZwdvL8RsufCbY+a3qSMBMH+5qMA3p8Ga/upzT3c6Gy8GUTdRbyy/j+lWytdn9i1SKDpzOrbdiWlMPi3FgR5OPJ9/96lOciDY2jmWaTFuUjvIvYAHySmFTkqmMIEjEjN6k4oRPPbINTGcVtINyOPBoYSAnXwYhzJhzJwSkgFgqWYhI680asJ+BFgjiDKI0sugsoXy+8HMp8OSqamkePXkNYfyOuwutYo2YitjANQHKERfMjW7TQufsqlK/OfOegLSINTt3j1M2r0gMAA/cxvbuDL7z0uw8BiE643maQiQqWx4qOceXXvz4wir18cy0k3SXjwkZfiajfSs2UVNoWAHARcLUfRqwlAxNAuSM14VNkckKDf3Vo4E9lznce0r0FraH+10A+dOqG/WW0GEBwLiEYdEVxg1zGV9IZ1/h5K1AAMD7jYnrK0a6NtWBxaUDXhYcl97hqPwy5dhi9TmkWxvSa33qgdlDnA7Ti13EixovAIbmsWjWRprt6t8CiFz8LSx95q6WrmP4OQOwh4eIeliHYc0cRG6nW6+5xaaxAgQRu9NJs6bH1E/ueLhAAvxI1xi/j6JYXQdJntysLyTDECSZ6PERsq59PTngpjYO1f3PZ9mmC3bYTmwCqJCYNXgWBHc5XbS4P90yZiBGrMrlr7qUbWBSVDVrdFat3rIsFhoBokZVtCo+dy5kk9H6rHxi2kYA06lNSJBzhRZbupMsdxAvvIyArMOzv11XQENJgofXPB5R5g0xZpxXQ6o6+MjQpMuETChqBMg8YEKQneRw/DbxBdEVV4ZsR69l7Aa9vud3wDOAdVdNgu/rzsoxL8BgA/56kV7Mqh56jD7UUvPxA9tJo+lRtNYF8wSI/CLLKvHDM++iT6uP71ChWOaVZCXhehL
+ bjkwjZg8
+ rfciF+tQI0B2kt5mMPCpxflAolWlR6fYoNXhmSi8R9iNUkwyw1FLdlZ6i1LYXWJMR+BiZEPzxMagzkRfP5Psh6KznVDJww2n2lJ/DQUggvbZ3IY5wytZ3g5VA2H6dl9ZGHiRtgf9iNjwcAscS16GvoNhxDusEgfFkaw5XvgsSwjL2NIz8s0mDF2sy7xW4z3E/g2m3pmurCuQQub6ChNk9znckx8enbNdaTsXJUvCQ0AQJRSvT20P1dvw2Z9rTfw7Z1MYCnWCwblzMkiJ6Zvfe4q9ccqHq75pJ3FNF2bJAo0bmGXvTUuZtu+qcVFzxEY85Zyoevvyct7yYxBo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,65 +111,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-__filemap_add_folio() inserts a folio and updates mapping->nrpages
-while holding mapping->i_pages.xa_lock with interrupts disabled. The
-XArray insertion and nrpages update require the lock, but the lruvec
-statistic updates do not. With CONFIG_MEMCG, those calls also update
-per-CPU memcg and lruvec counters and notify cgroup rstat, extending the
-critical section.
+On Thu, Sep 10, 2026 at 10:46:11AM -0700, Tim Chen wrote:
 
-Move the lruvec accounting after a successful XArray insertion and
-after xas_unlock_irq(). The page-cache references pin the folio, while
-the folio lock keeps folio->mapping stable and prevents removal until
-accounting is complete. This moves one lruvec update for ordinary folios
-and a second for PMD-mappable folios out of the serialized section.
+> +static void sched_cache_group_free_rcu(struct rcu_head *rcu)
+> +{
+> +	struct sched_cache_group *grp =
+> +		container_of(rcu, struct sched_cache_group, rcu);
+> +
+> +	/* free_percpu() may be called from atomic context. */
 
-In a 30-second system-wide perf lock contention -ab capture on a
-production host, the hottest caller-stack record attributed to
-__filemap_add_folio() had 20,867 contentions and 557.930 ms total wait.
-That was 14% of the 3.998 seconds of aggregate lock wait in the
-capture. Moving lruvec accuting outside of critical section should
-help optimize it.
+That comment is misleading at best. This is rcu-free context. And
+free_percpu() is not allowed from actual atomic context on RT.
 
-Signed-off-by: Usama Arif <usama.arif@linux.dev>
----
- mm/filemap.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+> +	free_percpu(grp->pcpu_sched);
+> +	kfree(grp);
+> +}
+> +
+> +void sched_cache_group_put(struct sched_cache_group *grp)
+> +{
+> +	if (!grp || !refcount_dec_and_test(&grp->refcnt))
+> +		return;
+> +
+> +	call_rcu(&grp->rcu, sched_cache_group_free_rcu);
+> +}
+> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+> index 32213801ea39..b5a823f0a622 100644
+> --- a/kernel/sched/fair.c
+> +++ b/kernel/sched/fair.c
 
-diff --git a/mm/filemap.c b/mm/filemap.c
-index 00fd89cf6f550..4720bbfc1a663 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -918,14 +918,6 @@ noinline int __filemap_add_folio(struct address_space *mapping,
- 
- 		mapping->nrpages += nr;
- 
--		/* hugetlb pages do not participate in page cache accounting */
--		if (!huge) {
--			lruvec_stat_mod_folio(folio, NR_FILE_PAGES, nr);
--			if (folio_test_pmd_mappable(folio))
--				lruvec_stat_mod_folio(folio,
--						NR_FILE_THPS, nr);
--		}
--
- unlock:
- 		xas_unlock_irq(&xas);
- 
-@@ -942,6 +934,13 @@ noinline int __filemap_add_folio(struct address_space *mapping,
- 	if (xas_error(&xas))
- 		goto error;
- 
-+	/* hugetlb pages do not participate in page cache accounting */
-+	if (!huge) {
-+		lruvec_stat_mod_folio(folio, NR_FILE_PAGES, nr);
-+		if (folio_test_pmd_mappable(folio))
-+			lruvec_stat_mod_folio(folio, NR_FILE_THPS, nr);
-+	}
-+
- 	trace_mm_filemap_add_to_page_cache(folio);
- 	return 0;
- error:
--- 
-2.53.0-Meta
+> @@ -1669,18 +1677,35 @@ void mm_init_sched(struct mm_struct *mm,
+>  		epoch = rq->cpu_epoch;
+>  	}
+>  
+> -	raw_spin_lock_init(&mm->sc_stat.lock);
+> -	mm->sc_stat.epoch = epoch;
+> -	mm->sc_stat.cpu = -1;
+> -	mm->sc_stat.next_scan = jiffies;
+> -	mm->sc_stat.nr_running_avg = 0;
+> -	mm->sc_stat.footprint = 0;
+> +	raw_spin_lock_init(&grp->lock);
+> +	grp->epoch = epoch;
+> +	grp->cpu = -1;
+> +	grp->next_scan = jiffies;
+> +	grp->nr_running_avg = 0;
+> +	grp->footprint = 0;
+> +	refcount_set(&grp->refcnt, 1);
+>  	/*
+> -	 * The update to mm->sc_stat should not be reordered
+> -	 * before initialization to mm's other fields, in case
+> +	 * The update to grp->pcpu_sched should not be reordered
+> +	 * before initialization to grp's other fields, in case
+>  	 * the readers may get invalid mm_sched_epoch, etc.
+>  	 */
+> -	smp_store_release(&mm->sc_stat.pcpu_sched, _pcpu_sched);
+> +	smp_store_release(&grp->pcpu_sched, _pcpu_sched);
+> +	/*
+> +	 * Publish the group last.  Not every reader qualifies it by
+> +	 * grp->pcpu_sched - can_migrate_llc_task() only checks that the
+> +	 * pointer is non-NULL before reading grp->footprint and
+> +	 * grp->nr_running_avg - so a reachable group must already be
+> +	 * fully initialized.
+> +	 */
+> +	mm->sched_cache_grp = grp;
 
+If it is a publish it needs to be store-release.
+
+> +	return 0;
+> +}
+> +
+> +void mm_destroy_sched(struct mm_struct *mm)
+> +{
+> +	if (mm->sched_cache_grp)
+> +		sched_cache_group_put(mm->sched_cache_grp);
+> +	mm->sched_cache_grp = NULL;
+>  }
+>  
+>  /* because why would C be fully specified */
+> @@ -1738,7 +1763,7 @@ static int get_pref_llc(struct task_struct *p, struct mm_struct *mm)
+>  	if (!mm)
+>  		return -1;
+>  
+> -	mm_sched_cpu = READ_ONCE(mm->sc_stat.cpu);
+> +	mm_sched_cpu = READ_ONCE(mm->sched_cache_grp->cpu);
+>  	if (mm_sched_cpu != -1) {
+>  		mm_sched_llc = llc_id(mm_sched_cpu);
+>  
+> @@ -1781,11 +1806,15 @@ void account_mm_sched(struct rq *rq, struct task_struct *p, s64 delta_exec)
+>  	/*
+>  	 * init_task, kthreads and user thread created
+>  	 * by user_mode_thread() don't have mm.
+> +	 *
+> +	 * A kthread can temporarily adopt an mm via kthread_use_mm(),
+> +	 * so p->mm alone does not imply a user task.
+
+This seems like a related but distinct fix, no?
+
+>  	 */
+> -	if (!mm || !mm->sc_stat.pcpu_sched)
+> +	if (!mm || p->flags & PF_KTHREAD || !mm->sched_cache_grp ||
+> +	    !mm->sched_cache_grp->pcpu_sched)
+>  		return;
+
+Is this susceptible to TOCTOU ?
+
+>  
+> -	pcpu_sched = per_cpu_ptr(mm->sc_stat.pcpu_sched, cpu_of(rq));
+> +	pcpu_sched = per_cpu_ptr(mm->sched_cache_grp->pcpu_sched, cpu_of(rq));
+>  
+>  	scoped_guard (raw_spinlock, &rq->cpu_epoch_lock) {
+>  		__update_mm_sched(rq, pcpu_sched);
+> @@ -1798,11 +1827,11 @@ void account_mm_sched(struct rq *rq, struct task_struct *p, s64 delta_exec)
+>  	 * If this process hasn't hit task_cache_work() for a while invalidate
+>  	 * its preferred state.
+>  	 */
+> -	if ((long)(epoch - READ_ONCE(mm->sc_stat.epoch)) > llc_epoch_affinity_timeout ||
+> +	if ((long)(epoch - READ_ONCE(mm->sched_cache_grp->epoch)) > llc_epoch_affinity_timeout ||
+>  	    invalid_llc_nr(mm, p, cpu_of(rq)) ||
+>  	    exceed_llc_capacity(mm, cpu_of(rq))) {
+> -		if (READ_ONCE(mm->sc_stat.cpu) != -1)
+> -			WRITE_ONCE(mm->sc_stat.cpu, -1);
+> +		if (READ_ONCE(mm->sched_cache_grp->cpu) != -1)
+> +			WRITE_ONCE(mm->sched_cache_grp->cpu, -1);
+>  	}
+>  
+>  	mm_sched_llc = get_pref_llc(p, mm);
+
+Perhaps it makes sense to have a local:
+
+	struct sched_cache_group *scg = READ_ONCE(mm->sched_cache_grp);
+
+because as is, the compiler is free to keep re-loading that. I mean,
+dumb, but allowed. Also the local variable will shorten some of those
+long expressions.
+
+
+Somewhat applicable to the rest of the patch too, where it makes sense
+and all that.
 
