@@ -4,108 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC306C982C9
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 18:58:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 856E9C982C9
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 19:07:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9521C6B0092; Wed, 16 Sep 2026 14:58:50 -0400 (EDT)
+	id 654426B0088; Wed, 16 Sep 2026 15:07:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 902CC6B0093; Wed, 16 Sep 2026 14:58:50 -0400 (EDT)
+	id 605CF6B008C; Wed, 16 Sep 2026 15:07:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F18B6B0095; Wed, 16 Sep 2026 14:58:50 -0400 (EDT)
+	id 4CCF16B0092; Wed, 16 Sep 2026 15:07:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 565ED6B0092
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:58:50 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E5AA0407FD
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 18:58:49 +0000 (UTC)
-X-FDA: 85220537178.08.7A95E1D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 2B705A000C
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 18:58:48 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dpKfeOdn;
-	spf=pass (imf15.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789585128;
-	b=YDJfp0/CGGL5B6GI0kcQtYgRbzmM1sBfN2VejUxcBDq96ypacWchg6b7iFLLHs2ZpzdCaS
-	AmIp+wOIYivkpPdV3T8rpqJBvsABkrob4nk5PipldKIEGWfP3FPuhPyDRn6rvLzAqxIDZr
-	dTRHGHwWt3B1BnYUSOv6OV8aj0MV3MM=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dpKfeOdn;
-	spf=pass (imf15.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789585128;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E0226B0088
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 15:07:19 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5FE1F1C2F57
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 19:07:18 +0000 (UTC)
+X-FDA: 85220558556.29.74C7375
+Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 5F1ED40004
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 19:07:16 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=CLe7odtF;
+	spf=pass (imf12.hostedemail.com: domain of surenb@google.com designates 74.125.230.205 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789585636;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lSvr0vCtdCumQova2+QTaGAW1CeluERBIU1FmP9NgV0=;
-	b=r5vwF33K2ZLT+uPq/JSfK5sGi06lisiFDR4w1m419/+nGt9TLXi8HW6ZK0Q79Q+hPms9dx
-	a9I5yHYsTKDuCDE+Om1MLT8dVdPVG3vSliTQ2+1mGDa9ajJrkgiIlIkoqT4LyQHctkytuz
-	Q8DHiUtbgOd38tITSEKChdPDvEs9gJg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5D9A1419C5;
-	Wed, 16 Sep 2026 18:58:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 575CF1F000FF;
-	Wed, 16 Sep 2026 18:58:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789585127;
-	bh=lSvr0vCtdCumQova2+QTaGAW1CeluERBIU1FmP9NgV0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=dpKfeOdnhJbQOBnw3SyHypTt1bwo3khu9OjlnaFMto0eI+LryvCcytPSjazdhOHUR
-	 s4du1cwq3DXECxApHbs7cf/wMeptDnEdlt2Pclae5BtOwLmGVkqOmtMcI0ZzkNUwTL
-	 9YWSexTWum8n8WNCqEbnlTR40tO0Qrml0kRiC5M5x+wSbM14AnTazL5yCSRNfjugqy
-	 JCXx1cKYMi8Z3Tti0pRbkYFQY0g9nmG5XSSThdECoh5+J5VCB4MTJdVcYvfjECDfap
-	 FnkMzxpiuQfqYa0TZAX1sbBJEKIfu8jryKFSikfQZ4dfSWI8Qw0+FhRqLQhSc0p5xy
-	 mjrO8itBp9hWg==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: David Matlack <dmatlack@google.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>,  Zhu Yanjun
- <yanjun.zhu@linux.dev>,  kexec@lists.infradead.org,
-  linux-doc@vger.kernel.org,  linux-kernel@vger.kernel.org,
-  linux-mm@kvack.org,  linux-pci@vger.kernel.org,  Adithya Jayachandran
- <ajayachandra@nvidia.com>,  Alexander Graf <graf@amazon.com>,  Alex
- Williamson <alex@shazbot.org>,  Bjorn Helgaas <bhelgaas@google.com>,
-  Chris Li <chrisl@kernel.org>,  David Rientjes <rientjes@google.com>,
-  Jacob Pan <jacob.pan@linux.microsoft.com>,  Jason Gunthorpe
- <jgg@nvidia.com>,  Jonathan Corbet <corbet@lwn.net>,  Josh Hilke
- <jrhilke@google.com>,  Leon Romanovsky <leonro@nvidia.com>,  Lukas Wunner
- <lukas@wunner.de>,  Mike Rapoport <rppt@kernel.org>,  Parav Pandit
- <parav@nvidia.com>,  Pasha Tatashin <pasha.tatashin@soleen.com>,  Pranjal
- Shrivastava <praan@google.com>,  Saeed Mahameed <saeedm@nvidia.com>,
-  Samiullah Khawaja <skhawaja@google.com>,  Shuah Khan
- <skhan@linuxfoundation.org>,  Vipin Sharma <vipinsh@google.com>,  William
- Tu <witu@nvidia.com>,  Yi Liu <yi.l.liu@intel.com>
-Subject: Re: [PATCH v8 03/12] PCI: liveupdate: Track incoming preserved PCI
- devices
-In-Reply-To: <CALzav=eBXsaZKNv1SNtuT9F6aX_2TS3u5kUtko5WMv2NWt3e+A@mail.gmail.com>
-	(David Matlack's message of "Wed, 16 Sep 2026 11:31:17 -0700")
-References: <20260728221007.2098560-1-dmatlack@google.com>
-	<20260728221007.2098560-4-dmatlack@google.com>
-	<e099cbaf-3185-4c39-ae36-7f0e074ebff7@linux.dev>
-	<CALzav=eX0gVrbWCnYGwfqPHUkoVxqdr2nw3Tx6Aqze0XOcuwzA@mail.gmail.com>
-	<2vxzcxud6ol3.fsf@kernel.org>
-	<CALzav=eBXsaZKNv1SNtuT9F6aX_2TS3u5kUtko5WMv2NWt3e+A@mail.gmail.com>
-Date: Wed, 16 Sep 2026 20:58:40 +0200
-Message-ID: <2vxz5x056n1b.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	bh=yHbOQrPgVkpK3KZeBIodImpdgvuoykZQvSNB9/nSIAA=;
+	b=0F7yWX8TLn40lpAKG/rTiNksOPmRIcj05hhDGmtyiSVN9/wlmfzMQuPYkvHLCb/9A9m/hY
+	ea6IJ4zdmnz0FUKngWymZxAfzHXCxzZQItNM5o7Bbuc5JoEEtdsED3kgn23BYz5Lty8bmp
+	bfoeKd45mO8axkeyO6M0vr4O8FNlpDk=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1789585636;
+	b=gFmpji50kdW4RQbuTdc14PDnOtnd98TfAqz1Olp24HODK6QvXHvi4j4s3oov6ArYEfvK8z
+	AdDXEFhGg+CXrdOn4h6PV31XTdXs/gEUWUpsANbhhqkERpeVruV5G2y9tMSQCzEeJcoQLR
+	KnTWdDCRpqMC+7gqGiFaQ1WxqvJzad0=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=CLe7odtF;
+	spf=pass (imf12.hostedemail.com: domain of surenb@google.com designates 74.125.230.205 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-qk2-f13.google.com with SMTP id d75a77b69052e-530d5fc2cd8so7031cf.1
+        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 12:07:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789585635; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Kg31NKakG3JKcQE8LxkosKyldEMIJ+s7L1LcpKRwdjzA6zwjlknYnzFNlQ3rLjMObd
+         Kgmh8jwz/hi03GoIMP6i+fj4SyB3gRROyyYs+qL0QvoXhkr+ZL1Kk48ehaV+VxKHXsHl
+         sGIKKIJIIV5qXlUBW98k1lWVbcyUFpVfklTv6ME883GbSA8kFSmod5Tc8hI17HoYx4qq
+         7wCDi+cRd6/+i1pBZq8UFzVrOFEZmDQN4BL83buOasc95CH10zHpjyIHdGaZm/oNmWCC
+         g+Sji0RgBIOR/94HjpIltrOeaYRrV5mfap7ScTzz7/5fLUT6sTQsBSQPOf99Hm75HeZ3
+         w+Bg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=yHbOQrPgVkpK3KZeBIodImpdgvuoykZQvSNB9/nSIAA=;
+        fh=tDmJIWjdoSuApuqL8zAWs/D1z0HZ96piZXZBaHmROkE=;
+        b=G27MrvJ8DOE8nT5CEkXkVAtHx48hbTMRglMGEBec3PCeg8mE6wIBIehc2DOlmyQeYV
+         SMeCIcJ66jadj0DSgMyNGsjuC6zXdj4kSiINbZz9ucpzPMMkRExB8gG20xVilIY94RQx
+         G1yVjb4uO1DljYXn64VBbvSmq15N9M7iknTa++rvCprB0oI6Xs9GL2oe8sRSH8D400LE
+         5noaQZN3egx/aUq+5zlzvBlYNiWVU7X5uPp54NYRATBHAFmYD9xXz2PuOTdTXPzs53N0
+         2IJ7iVEE1ItKZQexSuBxaRKD+ijkddGw/A+J/nNqcqMmKIRkGannu7xrWhXJMTIKeC9j
+         YogQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789585635; x=1790190435; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=yHbOQrPgVkpK3KZeBIodImpdgvuoykZQvSNB9/nSIAA=;
+        b=CLe7odtF6WFMr4CutU6CsK3fmC2keaTSbupdjN9VPMdUVQHcFCqR/mZTT85jY9gy56
+         8rb3vIjUffi5sGp8EOOHubGb5VsxUvmW1loTpc0bJvLr95Vy3KDjrW6h3T0SwSIM2uGI
+         rgXJVxrEWxvcuzbB4GSnMjkF7QeDCLu2xEfYMBFIHLLy38rHStu43jOKBS4yoHPE2OGL
+         NNKLA7AG6fDvdlP50oLM0GgwcNwH0SXi+P2bjF8AoM7sJLPAIDJkUhzpSmKq8i4xKUPN
+         AEmN3YtR38WNISKLLY+osG+8+Uq2bwIBIzeh8fsMiVCS8RamvepJmRHiIsx2hubbqrcm
+         0i7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789585635; x=1790190435;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=yHbOQrPgVkpK3KZeBIodImpdgvuoykZQvSNB9/nSIAA=;
+        b=g1j1Pytg0pB7M93RvTIK7M1MKEi3eDb88heft4mk4Ti2+XKVbm2j5kpkwlFyty18Zg
+         eQyv4PPCqbOEkIUyNf1wLb0GatcqrOHDZv4MEWlo78+De9Hi6Lw8WgwpflQ540pD2XlM
+         9mudAasT7Sg58eHPQSsDnFqPOJoHCmiGqjcsG60ZeQoA2/fpNAtGdjAsbIBBPQUsZjnk
+         IsqAJAzk/7+wtMdFxM82KQblzPagCrRtNY4X4NMdXmHz0/YP/em/NWjXWKQSAO+wjjTX
+         WEGKwQx3wG1TCp/YGPYnTYeuqsSIDNTH7MkN495OliXQL2ULYbsjZ1dzMzmlOIbMlE4B
+         +7pg==
+X-Forwarded-Encrypted: i=1; AKwUvBzfiDO8kqV0wlKTB8vkBU5drT+txK7FdGSq/xNEUVwpcFrOV+NC4cuuS2W7wRv7UPephe/TTFiLnQ==@kvack.org
+X-Gm-Message-State: AFuF++kNgJ+fCtTgS87EAg3tzNn/DVRrvD1Pn4xNBC0jFcfL5NFUGy+H
+	6bxDI1fJH+H+YWF9v2Wxi8OozfawiHg6rCNZoM/dpLMPUx7VTARuIjl/14n4m1TxNdWwd1m+L33
+	J11G3Q+KrRIajWSfluzVYw+15HlEPysO60V9534tj
+X-Gm-Gg: AYBFou1XYQZbEFSx3iUhiMyeSZ6dy3//dRn3O3jFDwnIwaTdFPd9RZAFzAcGlccCCzC
+	sY3kgshBulZ0TCC6PtrUACRsxsLBOpRet7PzK60MNIbK1QLT8J16MugWdnckc0exxf+rzyjWQ7r
+	j4pzeLMDdODyRbTCJXeD9la2+M7wIkr3f17Of+jLBaI2XPoF6W+9gbRyz8FhLNE73Xjxnd+GMgy
+	2a/LLE/csFNL025mGzoS5rklPRsvnqIsDPLMQvs+lI07msVA3hJw87VL5KmFMy+H01t9ULttWS/
+	0IBpAKiKlii9OIXvctPTG2l0a//F77FivAIaMyjDk+2PuYcFEYWyYhRQh7i5kG8RNQlJ6DMnuhL
+	e0H07ygPRhg==
+X-Received: by 2002:ac8:5d10:0:b0:532:858d:e791 with SMTP id
+ d75a77b69052e-5328dc0bc4fmr2243931cf.8.1789585634800; Wed, 16 Sep 2026
+ 12:07:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20260915070001.113559-1-hao.ge@linux.dev> <20260915070001.113559-3-hao.ge@linux.dev>
+ <CAJuCfpHJSwNhgotMVpmjVvdv=m52_7Kvzpztf0WcN0AaoSeGGw@mail.gmail.com>
+ <60642a7f-2949-428a-8290-40d69c989a77@linux.dev> <CAJuCfpG3d7n=z5WnUQYZsqvrt1pemF8TFvGiGyZGLO7ykVvqAQ@mail.gmail.com>
+In-Reply-To: <CAJuCfpG3d7n=z5WnUQYZsqvrt1pemF8TFvGiGyZGLO7ykVvqAQ@mail.gmail.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Wed, 16 Sep 2026 12:07:03 -0700
+X-Gm-Features: AcwNN1U77eJFNHkPfe6Ppe6tyXfOBb0DKmw4ydlFrQQ2j_8G2MzMCljaOX2F-Do
+Message-ID: <CAJuCfpGeRdFY6UPF-vXxwHvP2+tN=BKgRkmLR3PMLuWhxgzPRA@mail.gmail.com>
+Subject: Re: [PATCH v10 2/6] alloc_tag: clean up the populate failure path
+To: Hao Ge <hao.ge@linux.dev>, "David Hildenbrand (Red Hat)" <david@kernel.org>, 
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
+	Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
+	Aaron Tomlin <atomlin@atomlin.com>, Kent Overstreet <kent.overstreet@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-modules@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Sashiko <sashiko-bot@kernel.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 2B705A000C
+X-Stat-Signature: 7yaqiyfs6rthsnfhffo5fgmyf77hym9a
 X-Rspam-User: 
-X-Stat-Signature: pwc14j73iymh3xhdbngyr9mstnxpw6fs
-X-HE-Tag: 1789585128-165594
-X-HE-Meta: U2FsdGVkX19v4wwcJutOHP0bu9YdyAyNsL5QXsnSfmaq8OW18rw6rNceyUvBxboUSUnyRwPWp0SAc8XTEgJS27QuZTmLcy6s2xOn8pnSmu+qgflyTlXuRx1rxv++SEl27YUwugvDQ1D2HHnXU123zU3vEuxlVItftsbqEsukTq+cnhMApw70Cle9fAbOjRknP3WaUq35eNGVf4FgPsKZnrsXcPpZ725co1mifErkDJ98+s6paqYzwvBMz+RpwdYIaQxPw/lTJgw1km2Qcaa3ZSOI4gn9OHh6f2ewBLGG63xl4hivSWwHE5AnkanwhrKr3wzZZcD6W2WltzGZp7wF0cPcxa6OAJmslULqmvcs7765fZ2o0O6GLQNwGlMhnK/n7kKRBNirlX090aKX1hSFWF1iOUbx9L3sSs3SDsDgcK8mw1HB9GtDlqS7wZXRXCcVBhYvrkK5JTs7M6QtQBEzUjcMRUFS2wBlXeSjAVQUDAUGEHbyoJGzvYw32hWdpZSA1qHGcUdoTtqXTuv12mEu4uLzB9Wnd+/x4wFpCjOMuUxaMKGIBG9HBefl1fUXEUzUCNMwp+1bwIK4X+ZLnDF1oPyeNb8XbHydB3Ccleixj3HxOcrgF/opfht7y9HQAzDjN674CxFzRmXJnW1yxxmpXsC3CTzSRhBb1IJOF6ybPE7aNc2xrQ5bnwO9S4pilbpriDBaaBb7VGeXnaLULHG9eB/OOSx8wbQHnMEqXInq66gPwwqdfkoZ4lx0s2CcONoKIdalcvV/1PO8FixTANYDeecFUp23HX1/+Ke52ZX5NiEbyRKjXfp4zS1YGqDiQYHSmdRJhbYP+dmdIl08P2GheHN6YWcyF/e2PCbxg2lL+D5G/CXcf18M/hfXvj+LLFsGfLmSjuTWo1DySApu7ulbqS4MewO8rshEs4/GVb1Zfh1agi5zCuOrJR4sKqWyMHV6yIL715ygAtwp4BaG31G
- kdPHD2sa
- UoZTw0Vo9NWdjYbY6mG+bM/qPxCn2zrrn+KM/5X5ckbVgxTI04Xsw51zX0xGtKJqa850C+mgUyeBPQ0O44V7Wqm36tXVQMgl/gAHIPaGqscVMnilP3Cn/1xI/9nAq8wThm15aol4mB5yXLzUThjSJIXi89S2nwsho+APL3hnf84RfiuRXZlZpg/IhR4IvCca4iICyxzlNLu5opd4OosE60HRP+acThX0s27hzvCDikSkl+x8VEDlRqyCbAw==
+X-Rspamd-Queue-Id: 5F1ED40004
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789585636-569413
+X-HE-Meta: U2FsdGVkX1/4Yoym+W0o+sdDA4fh2WJ3BV2gZx5Ov8lfEP0RPDgtBkCaec80BFtea7IzmMNWKekY7ugNlriMarvp2BP7VugwYaykjqxR2iz0r8IyZNZTer1YO7zUwgT7nKWPFWuUghUIV4yxZM6pHTxQm7W8sj6B02O1r6qQjofP5KgRPOSEJWTCHjmMNmARtEc1LYdCj5d46RtDOy7r+RnidzwUHirQYkV1OPSi57wRRNHBsfbRE4cAAWH4L2PB/ksT+zZcUYNsSyFVHzxySf2En973Bhwucw2Mb7A2EK1cBXCxn214s/hD95+z2IJuC8uAnyOqk7dqc8E31U8NfYCezvJMmuEJndh/2na0LNcPXHu/9C/h/ekjIPmfG/70lAzXNtoQ4ca/J7Y0rzNVC8bi6p64GGy11KQHlH4v31rcvPI1+flywYhAdX7sjVMykd99ScTd6nxU2ReNiy9DcApD1hlwv5yXprbsparzrtG4wFD2pda2fbe4moR8IYZmbcJUwZY/E9H/UeM2AZ6SJ8bxthX8jDdR+6kD0jXVZjlvzmGh6kXw4+bimfQ6LW1rjMZ3+IllioIi0aFkaz/covkk5iqIMmaZMdkV1Be8wAUdrxQlMl6fepDfviKj+9I/5/mfmH7cv114KUBvQiwMkOWti5KRbxHRz2aFrSxF4+gpv6EhhjVzPhzxRSqMHmHFsIs+X2GJNMe7CIDKgFXPRENa7Sqxbgccv9KoBxUA1i56f23FqyCbr8a3OIEbfKwSTQAiRf6guimmXybvgEtsm+1VLwMHkbye09TVqcNz5ogrvxLHdnDgRT7d28SK8VOMzZbcQ5a3KOb8rK9ZAqpw0GByqR1dEph7sIQOVIS1WnWy12c5pqRml5SL8xkDbuMQzY5TI+IGjDyaERadzvTdJe/bD8AewzEp54DDUWbqK2Te7noBReKkWVQBkTg1AV8wo+R9bVCaQrMAYm2lugK
+ GSoN/6aS
+ IMhi9we3Znuhohx126B2D/5ZQ0EL3Xvdz1C6n0OiomtLluVALpTfo+575hcUL4pwyujsdGkzMWPGZ5/VXgQi+kAqbe8zknp8o5bWM6pTivCBFlYdYIx2g6joBfJzd7iuDIbG2v3jobtznAN+4u51GlJ6pqOjJOn8tpIBpalMz7L0wotlbPs7AloTxbjWRWU4wtdJemCjao98ODnYTJiWO2NE48HKOgUnoEezDOZwvF36A2G49aJpVTS7A6BkVqQxid+NZf00+l8ebkEmyk9nZwCPyc1LOCWaRS2yEFPg04a8rW6OPamVlT7isG7YHmW4mgijgOp4HQ+ru3lciFS0EKlHx8YVT41iWdNLDAKCt0fSY8PJ+H2lpO7T6zlbptzOEYQEbnl0pXhhw3X0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,85 +147,150 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 16 2026, David Matlack wrote:
-
-> On Wed, Sep 16, 2026 at 11:25=E2=80=AFAM Pratyush Yadav <pratyush@kernel.=
-org> wrote:
->>
->> On Wed, Sep 16 2026, David Matlack wrote:
->>
->> > On Tue, Sep 15, 2026 at 8:31=E2=80=AFPM Zhu Yanjun <yanjun.zhu@linux.d=
-ev> wrote:
->> >> =E5=9C=A8 2026/7/28 15:09, David Matlack =E5=86=99=E9=81=93:
->> >
->> >> > CONFIG_64BIT is now required to enable CONFIG_PCI_LIVEUPDATE so tha=
-t the
->> >> > domain and bdf can be guaranteed to fit in an unsigned long and be =
-used
->> >> > as the xarray key.
->> >
->> >> > diff --git a/drivers/pci/Kconfig b/drivers/pci/Kconfig
->> >> > index 3781e2b5f095..8af20f558086 100644
->> >> > --- a/drivers/pci/Kconfig
->> >> > +++ b/drivers/pci/Kconfig
->> >> > @@ -273,7 +273,7 @@ config VGA_ARB_MAX_GPUS
->> >> >
->> >> >   config PCI_LIVEUPDATE
->> >> >       bool "PCI Live Update Support"
->> >> > -     depends on PCI && LIVEUPDATE
->> >> > +     depends on PCI && LIVEUPDATE && 64BIT
->> >>
->> >> One question about adding 64BIT to the dependency:
->> >>
->> >> As I understand it, enabling CONFIG_64BIT essentially means that we a=
-re
->> >> building a 64-bit kernel, and a 32-bit architecture cannot normally
->> >> enable CONFIG_64BIT.
->> >>
->> >> If that is the case, would depends on 64BIT be necessary here? Or is =
-PCI
->> >> Live Update already inherently restricted to 64-bit architectures by =
-the
->> >> existing LIVEUPDATE/architecture configuration, so that this dependen=
-cy
->> >> would be redundant?
->> >>
->> >> If this problem has already discussed, I am very sorry about this.
->> >
->> > The necessity is that the PCI core needs to store more than 32-bits in
->> > the unsigned long xarray key (see the snippet above). The dependency
->> > on CONFIG_64BIT ensures that unsigned long is big enough. We could
->> > probably remove the dependency but I would rather wait until someone
->> > with a 32-bit build has a real use-case for using PCI_LIVEUPDATE
->> > before putting any effort into it.
->>
->> KHO or live update themselves don't support 32-bit platforms and there
->> are no plans to do so either. So I don't think you even need to have a
->> dependency on 64BIT in PCI_LIVEUPDATE. Only 64 bit architectures define
->> ARCH_SUPPORTS_KEXEC_HANDOVER, so PCI_LIVEUPDATE and others indirectly
->> inherit the dependency.
->>
->> If you'd like to be extra safe, then probably you should add a
->> dependency to 64BIT in KEXEC_HANDOVER directly. Though I think that can
->> be a separate patch independent from this series.
+On Wed, Sep 16, 2026 at 9:31=E2=80=AFAM Suren Baghdasaryan <surenb@google.c=
+om> wrote:
 >
-> It should be in both places then. PCI_LIVEUPDATE explicitly requires
-> 64BIT for its own use of unsigned long, so it should have an explicit
-> dependency. If KEXEC_HANDOVER requires 64-bit for its own specific
-> purposes, then it should have an explicit Kconfig dependency as well.
-> That way if and when someone wants to add 32-bit support we know
-> exactly which configs need to add support.
+> On Tue, Sep 15, 2026 at 11:00=E2=80=AFPM Hao Ge <hao.ge@linux.dev> wrote:
+> >
+> > Hi Suren
+> >
+> > Thanks for you review.
+> >
+> > On 2026/9/16 05:09, Suren Baghdasaryan wrote:
+> > > On Mon, Sep 14, 2026 at 11:59=E2=80=AFPM Hao Ge <hao.ge@linux.dev> wr=
+ote:
+> > >>
+> > >> The reservation is already stored in the maple tree when
+> > >> vm_module_tags_populate() fails. A failed load never unloads the
+> > >> module, so nothing releases the entry. Release it and roll
+> > >> module_tags.size back. Without the rollback a concurrent load that
+> > >> already passed needs_section_mem() can reuse the freed gap, skip
+> > >> vm_module_tags_populate() and write to unmapped memory.
+> > >>
+> > >> vmap_pages_range() may have installed some PTEs before failing. A
+> > >> retry to populate the same range would BUG on them, so undo them,
+> > >> but only if vmap actually ran.
+> > >>
+> > >> Fixes: 4835f747d3ed ("alloc_tag: support for page allocation tag com=
+pression")
+> > >> Fixes: 0f9b685626da ("alloc_tag: populate memory for module tags as =
+needed")
+> > >
+> > > If a patch fixes two other patches, it likely needs to be split so
+> > > that each part fixes one patch only. But read on please. I'm not sure
+> > > if one of the fixes is correct.
+> > >
+> >
+> > Kept them in one patch because they only make sense together.
+> >
+> > After a failed populate the reservation is released and the
+> > size rolled back, so the next load takes the same gap and calls
+> > vm_module_tags_populate() again, and that retry would trip over
+> > the PTEs the failed vmap left behind.
+> >
+> > Without the rollback a load that already passed needs_section_mem()
+> > just reuses the gap, skips populate and writes to unmapped memory.
+> > So splitting them leaves each half broken.
+>
+> Yeah, that's why I think vmap_pages_range() cleanup should be a
+> completely separate patch with vmap_pages_range() doing cleanup
+> itself.
+>
+> >
+> > >> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> > >> Cc: stable@vger.kernel.org
+> > >> Signed-off-by: Hao Ge <hao.ge@linux.dev>
+> > >> ---
+> > >>  mm/alloc_tag.c | 10 ++++++++++
+> > >>  1 file changed, 10 insertions(+)
+> > >>
+> > >> diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
+> > >> index 2070e682fe10..95ddf5b743d0 100644
+> > >> --- a/mm/alloc_tag.c
+> > >> +++ b/mm/alloc_tag.c
+> > >> @@ -804,6 +804,13 @@ static int vm_module_tags_populate(void)
+> > >>                                      next_page, PAGE_SHIFT) < 0) {
+> > >>                         release_pages_arg arg =3D { .pages =3D next_=
+page };
+> > >>
+> > >> +                       /*
+> > >> +                        * vmap_pages_range() only runs once all pag=
+es were
+> > >> +                        * allocated, and it may have installed some=
+ mappings
+> > >> +                        * before failing. Undo them.
+> > >
+> > > If vmap_pages_range() failed to map the range, why should we need to
+> > > undo it? If it indeed leaves some partial mapping when failing then I
+> > > would argue that vmap_pages_range() should be undoing these partial
+> > > mappings itself before returning the error.
+> > >
+> > Yeah it does - none of the paths under vmap_pages_range() undo themselv=
+es on error.
+>
+> Hmm. I wonder if this behavior is intentional or requires a fix. The
+> only possible reason I can think of is performance but I can't imagine
+> a failure to map is a performance-critical case.
+>
+> +David Hildenbrand (Red Hat), +Lorenzo Stoakes (Oracle) what do you
 
-Well, I don't think we are ever adding 32-bit support. Most 32-bit
-support in the kernel is being deprecated or removed, so I really don't
-think it makes much sense to extend KHO/live update to 32-bit
-architectures.
+Huh, my gmail thinks you are still at your previous companies :)
 
-But anyway, if you'd like to explicitly mark PCI as needing 64-bit, that
-sounds fine too in the very very unlikely event we do add 32-bit
-support.
-
---=20
-Regards,
-Pratyush Yadav
+> guys think? Shouldn't vmap_pages_range() undo its possible partial
+> mapping when it fails?
+>
+>
+> > pcpu_map_pages does perform cleanup on its own as well. There may be ot=
+her similar sites.
+> > https://elixir.bootlin.com/linux/v7.3-rc3/source/mm/percpu-vm.c#L255
+> > so I did the same here.
+> >
+> > If we really want vmap_pages_range() to handle this cleanup internally,=
+ I believe that would
+> > be a relatively large change, and we would need to consider many more c=
+ases. So I think we keep
+> > the current behaviour for now.
+>
+> Yeah, I understand it would require a deeper cut but if that's the
+> right way to handle this we might as well do that. Let's see what MM
+> folks think.
+>
+> >
+> > Thanks
+> > Best Regards
+> > Hao
+> >
+> > >> +                        */
+> > >> +                       if (nr =3D=3D more_pages)
+> > >> +                               vunmap_range(phys_end, phys_end + (n=
+r << PAGE_SHIFT));
+> > >>                         /* Clean up and error out */
+> > >>                         release_pages(arg, nr);
+> > >>                         return -ENOMEM;
+> > >> @@ -947,6 +954,7 @@ static void *reserve_module_tags(struct module *=
+mod, unsigned long size,
+> > >>                 return ret;
+> > >>
+> > >>         if (module_tags.size < offset + size) {
+> > >> +               unsigned long prev_size =3D module_tags.size;
+> > >>                 int grow_res;
+> > >>
+> > >>                 module_tags.size =3D offset + size;
+> > >> @@ -961,6 +969,8 @@ static void *reserve_module_tags(struct module *=
+mod, unsigned long size,
+> > >>                         shutdown_mem_profiling(true);
+> > >>                         pr_err("Failed to allocate memory for alloca=
+tion tags in the module %s. Memory allocation profiling is disabled!\n",
+> > >>                                mod->name);
+> > >> +                       release_module_tags(mod, false);
+> > >> +                       module_tags.size =3D prev_size;
+> > >
+> > > Yes, this one is a valid fix. It fixes 0f9b685626da commit.
+> > >
+> > >>                         return ERR_PTR(grow_res);
+> > >>                 }
+> > >>         }
+> > >> --
+> > >> 2.25.1
+> > >>
 
