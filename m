@@ -4,125 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4877C982CC
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 16:10:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35D1CC982CC
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 16:11:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8DC2A6B0088; Wed, 16 Sep 2026 12:10:55 -0400 (EDT)
+	id 07B1A6B0092; Wed, 16 Sep 2026 12:11:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 88D126B008C; Wed, 16 Sep 2026 12:10:55 -0400 (EDT)
+	id 029D26B0093; Wed, 16 Sep 2026 12:11:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A9146B0092; Wed, 16 Sep 2026 12:10:55 -0400 (EDT)
+	id EB24B6B0095; Wed, 16 Sep 2026 12:11:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 55CFA6B0088
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 12:10:55 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DA0534078C
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 16:10:54 +0000 (UTC)
-X-FDA: 85220114028.17.FA5E458
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 00DEB40015
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 16:10:50 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=jR3nSyDO;
-	spf=pass (imf04.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.177 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C82226B0092
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 12:11:24 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3F807C07AA
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 16:11:24 +0000 (UTC)
+X-FDA: 85220115288.20.E9A6B2C
+Received: from out-2z4y-a134.jellyfish.systems (out-2z4y-a134.jellyfish.systems [198.54.127.134])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 58B68140004
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 16:11:22 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=tychen.cc header.s=spacemail header.b=mGG6lVB8;
+	spf=pass (imf09.hostedemail.com: domain of hi@tychen.cc designates 198.54.127.134 as permitted sender) smtp.mailfrom=hi@tychen.cc;
+	dmarc=pass (policy=none) header.from=tychen.cc
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789575082;
+	b=NYAvv3EvK/ETxPO15CvQxNKol7rd9UW/77+8BLPmo3mHpYM1enSdOCzbpTaKKZNR7DNbml
+	PP5FNT+56sCKUazB79hTeFAKYDz3SWpJjITdGiubOVrmi2dNkqYyqmuFPLSmKMWlKRXqqD
+	asNx0eInNX4c8C/dNETvFpGvqZwSu4k=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=tychen.cc header.s=spacemail header.b=mGG6lVB8;
+	spf=pass (imf09.hostedemail.com: domain of hi@tychen.cc designates 198.54.127.134 as permitted sender) smtp.mailfrom=hi@tychen.cc;
+	dmarc=pass (policy=none) header.from=tychen.cc
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789575051;
+	s=arc-20220608; t=1789575082;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EzULl2Rsxwfe7EFb6MSMik7LenJTHelPDSDR0csqtEA=;
-	b=QYhORqNJH+xr4xLjJ0MUdVmc65GdqfvKB/4eWRJqXkrhlQWd+TdCSjWWo0F6M/VooqHHnZ
-	sISLTgQtbcQGAKWwdFqVpbTkCgINLFD7xWGI0ikv+MG0NIEQV/kIsSx0Hay2QwSHY1O4EM
-	VuWTw6MpblVOSdX6/f2Hufw6vnWZJ+c=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=jR3nSyDO;
-	spf=pass (imf04.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.177 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789575051;
-	b=WoDokGTraFj/7MvSEXg5ypGl8kbAnR6pBf8KxSTFFnLBd/a/Xan3ogFr8siC48kbypbM6m
-	0/7hZBAvptr9u/JeLJSI6PGK+0FjA3yc9J4GbjrHaW7HekkcDQ7De+vOKLzwHvS083Fxqf
-	d8lXsBtb3llYyUUq2FTqPNWmcT3kxDE=
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-93a10f9a2easo194641585a.0
-        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 09:10:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1789575050; x=1790179850; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=EzULl2Rsxwfe7EFb6MSMik7LenJTHelPDSDR0csqtEA=;
-        b=jR3nSyDOaWUpgu5z6vsD5HD87WgwSK5hObMRo8NMop4tCG4sKW+aZWd8NCDv5XAxBz
-         Pm8OIYuuxI4VkQmdwIEzPjv6yDdM92XBGKZ4l6NYxjS15yKdaL39YNPF+gdtqiB6LQ3E
-         KFPyW3XfOagnkZLeUNiBSoGjWEw/pzeG0Tjqkpsn9nRzOzpa9izibdaZxU7s3op2kqko
-         HvxLQlPzliTRA+Otsuh6EtIyQMkA2n0nx7jq18WMijF/HLyuxR10lwkTU1b6N/IChPGS
-         BXZRSAjmDLcv3dGp3MmCSAtbE0O5sXI9OrSnBg0RAnurop2PqTdbvpaoERIUERMNCEMF
-         IY+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789575050; x=1790179850;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=EzULl2Rsxwfe7EFb6MSMik7LenJTHelPDSDR0csqtEA=;
-        b=CxE/hTjj7eRqGjLqNufHs9ETm+l2J4vGxf5HG/WuIvxfFxxH9kHy+WtAt3WVM/pAIW
-         k0vYi4EXhSJDn1GBbLi0RLF15O3DoIqNcA+a8bNtvZ2YUt83+z5kdRbK5q1Hva68DLKh
-         yLYpz0+LdkzZ4I1FVXPFzHFkiv39q730D8aApKj0eZXlkOwOmNU1ST2k9m5veUJcV/UQ
-         vJGPpNi7bMI7P6Va+4uH49YT0ONMosg9o0anKvOso8YiMMjhMXuAkXx0hhhG3SUltAqD
-         7i48kvOt4w+15rY1uY9DI6EFOGl6GHYIeBQIcO6tywEF5e8j4jA3p0Q9ZtZ7bpPpDnjj
-         p2Ig==
-X-Forwarded-Encrypted: i=1; AKwUvByWa+MwcvFxvfKj2x+ZqRgH+s5/Wq6hQD+1lIlyjFOyNcUliJzdG2QRK+HS+2bz4MRqIGJJF7wJYw==@kvack.org
-X-Gm-Message-State: AFuF++lPwDvKmVXfm2Xb6B7yz/SbuX8NOQPdDXGe2dyVPKvKUB59Y5hZ
-	byEcYR8fUb9/+L78TISB3z4WamwicQua90MfA+NoLAmNxzhC+CgJeVJ8mmavmK1N2jA=
-X-Gm-Gg: AYBFou0Cc5ZMdITR4yOzJbzAXvIWTH//Isbs6syVsWlArqjXWb3UncT/5pW3Y+prP2A
-	cNUenn5uLki+YcQPo3XkVXyqEEw2MzXSyTEFVlzcfEq6986yXrk7mKEYNXBxeKQeyt2ADeeVQaT
-	+LSfR0EsgINr9WbceKky4qK73yOJiguLJGvrpxf6VBALU33/ul6Sv3NznNQR/8qGqHa6QGRfKwb
-	jKQs3+PdBBFkOpacb+BzpN/M3B3Hr8HcjCWOVimgok5xcUfkeB0QhEiUuUK/DQCE2J8t7VvNc1K
-	CeVq4+iKV+DqvnG02s7t0/qZi00/muzLxSiCscWlQ+g2lVnWOrebfROEx4NTqZzlO6Jzplubj55
-	3fc8gqa0uWp8L1nUcB0ga/VnKnne2YETn/wlTNOZ6OgIkK80vvUlPeVKLB+bQ5anChh6XeeJ09P
-	OUHaBKOtb49MJeyiolO7a3FsIy3TVlGtliIFbD6qOHzDTlVRgfe8OPBOCeXE9h/S3D6P3KjeMWg
-	Z8L4R+3wJhbY2CrWwi3v8YpLqkqzEhepefUfiO1ShXzKqQT8RvwHIs=
-X-Received: by 2002:a05:620a:1b83:b0:93a:1196:ce5 with SMTP id af79cd13be357-93bc63ec899mr23113285a.33.1789575049934;
-        Wed, 16 Sep 2026 09:10:49 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93b782562c0sm248094585a.32.2026.09.16.09.10.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2026 09:10:49 -0700 (PDT)
-Date: Wed, 16 Sep 2026 12:10:47 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com, akpm@linux-foundation.org, 
-	liam@infradead.org, vbabka@kernel.org, jannh@google.com, wangjiexun@tinylab.org, 
-	sashiko-bot <sashiko-bot@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/madvise: reclaim isolated folios if PTE restart fails
-Message-ID: <aqq6ey3DG9h5NIDZ@gourry-fedora-PF4VCD3F>
-References: <aqqbB_nFAOGenDhy@gourry-fedora-PF4VCD3F>
- <aqqjW5dpyznijYLh@gremlin>
- <aqqk89oTigJ9LS2N@gourry-fedora-PF4VCD3F>
- <5437871c-d9ee-49d2-b24f-965c73c29c3e@kernel.org>
- <aqquDtEZL1ndymGN@gourry-fedora-PF4VCD3F>
- <46d923e6-5724-4df6-b0d5-8dda7c547f6e@kernel.org>
- <aqqyhkZqcXDUrzeb@gourry-fedora-PF4VCD3F>
- <4fadcda7-d96a-4cd9-9b0f-5d387b6f82af@kernel.org>
- <aqq23i9824-GWdhg@gourry-fedora-PF4VCD3F>
- <9b50a047-b5e6-45c3-aee6-551896b52eaa@kernel.org>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=SmXuwsjaElzcBy3cwomr2oW9QZmnugnFOvebRFqKdOo=;
+	b=Kf8GGSyqEep1JjQUZ/BVL/rS8cSDHopfv80N1A2HRzCC4uc/U9teGfZn0rWRJs0D376leX
+	p7L/R6i0rUcRAQji9FmNwXWczpFbSAxN9rMP8q/0vdWrA0oGX0H13rOU9aCEMCBBEqhED7
+	DjlX4DhlP78EB3tziljVxyek51EcqT4=
+Received: from fedora (unknown [117.147.120.98])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.spacemail.com (Postfix) with ESMTPSA id 4hlP5J2g0yz8sWt;
+	Wed, 16 Sep 2026 16:11:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tychen.cc;
+	s=spacemail; t=1789575077;
+	bh=SmXuwsjaElzcBy3cwomr2oW9QZmnugnFOvebRFqKdOo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=mGG6lVB8NxNSGeDC9BFk5vYiA6hVgh+GAkJbwKCzfEryrBGLW6ZcgE9AbEw3DGz9o
+	 zSNr9+clF1LJL561yjk4vHMQPTGsNR45DwhXDk8fuKY5ZjMGV0JSYIHEvlwmFPaqKK
+	 1YzYoCkvAPBbzcAfIQQK4caKuTYi2ibY5P94QIHI06sz8kRiHxrgBE5v+7Nhzass7D
+	 H97Raxv87Ue5N3QzbzwkaK23VOI21XWKYJR+Z7XocnwU6EqMGdedo3cgzusmISw/QW
+	 GZJTHO2A9OPajZOlKB7NQim/aubERJJjCTOn0sRY+ps9GjJRFaFioYHOtK1LdipRzC
+	 8miYGIVWQktMQ==
+From: Tianyi Chen <hi@tychen.cc>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/2] memblock tests: fix BUILD=32 address conversions
+Date: Thu, 17 Sep 2026 00:11:03 +0800
+Message-ID: <20260916161105.2548281-1-hi@tychen.cc>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9b50a047-b5e6-45c3-aee6-551896b52eaa@kernel.org>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 00DEB40015
-X-Stat-Signature: tnudcitirk58jyt5odeupbtab36ohp6e
+Content-Transfer-Encoding: 8bit
+X-Envelope-From: hi@tychen.cc
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 58B68140004
+X-Stat-Signature: 1arpeatd6memkry6okque4tkfrjq5n9j
 X-Rspam-User: 
-X-HE-Tag: 1789575050-481151
-X-HE-Meta: U2FsdGVkX185gshjsni7L7tLcxeWwV8wx+sLnyqIhEVIvuKSYem2HbbA0xGvyaAdG5clr7L6q6aDXXzZqrOUhQDNNkrKW/kdf4uvFbi1fokhlbA/w0+PFD4CL/C3F6bKlgC265XGpAO26fDy3/SPxdfDEeeXakcq+MlO4R32YdrTklhJX1xypEXeRmfYfOimsGlup+1LE77dA9YFmu1+BzRJcdQK7AWBWzpUWlvDIv+u9KS7rYpxV7FPUkw4xrtoVAOvEYJiAyGQQQ5vpHCY2KmkHujCt9CWLAa7OkbvTVWFF5hAac+T7PJjlWeOUAQuDCqQfLwcZjmY29zC0ZC56fuvOonthdWncqdgzAa36+hDSmAJqZe+MkOgm6mXZj+5uPos9juuCMUMiGC84cJn+NocFltdQ4bEmFNGK3wVhordCVYXzVQ9QvPrOlC0MeBTRIj4/Zjdf7ioR3Zr5ZYnAkJaJo1G910no3esjlbt0gBRvorcqCuyN1VV5ItvlYrIt9snbE3spnZFKFeRb0r1CXuxlvJ9ipck8D+yq0tteve0awtAnjSJx0SQvOw+xHdW6CyTpw6jjQ+3qVi2QenqjJyzLyCpT2g6gnNthahOzuooI1mQ6IyRDXgVnj4eG0ACNdsE4xAPs9ZP+rm9LjgaeQjJvi6rJFmxmtgr7ww6NIM4PRzWmB6EsPymBgXg6+z2Azv1ZDte6J6jkkjUbGXLs843jR2dCXZ/ORKxLq9YmacUv863hkIyTo/tsEehfDNrvrdzabzsLr5omrwp5XLj/5RIduYpgnVVl1u5sSFKJWckvqupdm1KQ62ecTb05p7BfQ3R8bzOfBOGH0HNrBtZt/V4yYZh+Rl4EB0jk453adeeOInHf5lEZhl7SWF0e3npEfFkwHHULDX8xcPx5Q7FoQ3MaInTlcv8mUuAEoraDTpIoATCLKDSghETgUh/x9f2KPWZSDmlTWB37Wojh7z
- GeIl4fHY
- fvmpWgeUEH2Y2/Y/224fzCT2jWtxwGXWbeUfwQTLADweyS2Ph9x8CO5/aobjJ4FlGtSUQMfoHE0U/V6jOGS5W2x4PIK9Wty4CAGOgABNg6kdAmDmZ8638U4pH994m4JAhtu7jkm8bJTN4RkxeFbqTtZ7DPGlnyHHzeQqVW6X8AC6Xmzp9YBTwomX9Zd5Jv0L4icpf2glc5QL4IEh0DW0Ow7sCQ+imdsGde+n8APTEaCa9wip91TMgO6gUviyH5De+QhKHJvOoGQgqHmMI4a9T/VrASzzfIzJKP4tNm/H5nDTLvxIRR8PXC1mN6gG5DANvYNC1fuAoJ6ewG2o=
+X-HE-Tag: 1789575082-535062
+X-HE-Meta: U2FsdGVkX1/yjxm5KUumD7OVvtuz1f2JbX+ZWt6ToLysp9iUngfAIHDYSIZ0G9E/9SB7XCI8Aqiyr8DNnVtzyIyrvT6a3M5CLyq0Pol33+f5+pbO4JreWjpPgkahbKr/r0zfC8f/fUojhJgKUEXbAZEF6w/6tjM4yTmJRMKJmb6Mhd5aCagosk6mpAYjU4OcdCfcI8yzYcYHm8Dv+c9ou2J8eCq4V21Cq7tHNExZc0x5WjxR8OzVmUO7cjCltzUzBNHNcwwtIM//6n1CPMHGKvom5HV5+qknUsAFxoJIB/M0f+/eMB8PysWWx6mpzyGy1EZxf4m5nCa0fRdr+RQ90rrT4oQyqfhgSchRaAXTQqvFLmZso8klV6UGGQexyLWcbQiplAIsA58s4LKRxBN5Xvp6mGo/JbzlVNQrNzQwUCYFBZnRjBVGV1ysaRXsxFPXNkaB90HlBmZ8yrfAhWJYb80ktv5+cBufAe+xZv7OhJlsjUXnWCb9a3okTQJTSAg8w9zfsaMpwmL4XDsfj85VE1bFffQfOL2Yn7b5Yjuq3kX4m4j6VKTxHy21qP7tmUsnonMDVwg7KY/jfsDfh4QhhX1YAJs7pl2Za8Pg5ycpso53W2b8h4l9x2v+EQE1v94pAGHlrFGaQdonRJB4/8utq38rqd4NsIn+ntyBGNr8CickZ5UpPJZ45eVBoEbiNsDpfztze+OIICKDxJVgLa3xZBVr/K2CmeLBsbwvCKztjKCsAoaFruvzEGgHtoJMg6sk0pmoA33PXeOv68AOHOLuu+3vEt/P0o8JQPrXmchV1Y7AqGhIeP0LYlIqUNNSkAmXns7sTTjzj96N2klJL2BoQ6ugsJKSrOb9zT74jwDVCTvBDW4d3pu9y4pyKRvZOt4DQ0R7HKGhtj2aI8Cs77hYeYo5O888dgRkLYTWQNXi72pPP3GWNE2bQ8k6ivO83VXFTEVI704ag9ELbUR9kF3
+ +cYBCQ5q
+ k7b5z3ICC2RRG/IU/zk89+TaLRvaSgQ7cpfSpYUisHZ8XwyYsb9dTpV6+KZ+Of/zxN8zVD8wFlvSFsM2v+zZSrpyMmhp9LVWJixg/B4u2qiUWRwG+GM1mkszLsyRPvEbqXRkNA69quzL8PFCAQr659NfzRJc/lRnVjWbcjOR0WQpa51iRx5SbQ7vyiFWh/Fo7v6UdhIRgYDXM5P3Lced4/gZEDZ6AeEb8r6+TlPc+lOK159fDBatysQPMFNszIEvi1Arwxv4QpVZxEDRvmm0YPth3+ILOjRa6HqxjCcwIsHtuxlYy70Ue/bQdZuHe6VpjDhWZWEIYKXUVAroLvPnhkdl4omJBLOVeJ19+syIvsp8mtUc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,43 +90,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 16, 2026 at 05:42:43PM +0200, David Hildenbrand (Arm) wrote:
-> On 9/16/26 17:37, Gregory Price wrote:
-> > On Wed, Sep 16, 2026 at 05:24:43PM +0200, David Hildenbrand (Arm) wrote:
-> >> On 9/16/26 17:19, Gregory Price wrote:
-> >>>
-> >>> You missed this part:
-> >>>
-> >>> "I'm trying to be careful about not causing a bigger maintenance burden"
-> >>>
-> >>> I wouldn't do that to you :]
-> >>
-> >> I just wanted to make it very clear that I don't need another schlopped gigantic
-> >> patch series in my inbox that I'll mostly have to ignore because it's
-> >> un-reviewable ;)
-> >>
-> > 
-> > I would never :]
-> > 
-> > But *motions generally at madvise* if this isn't schlop i don't know
-> > what is lol.
-> 
-> Just to be clear, I enjoy any cleanups in that area which are well written (and
-> your track record shows that you do exceptional work ;) ).
-> 
-> I would also enjoy a properly stubbed page allocator as well as I envisioned ...
-> as long as it's not something schlopped together and rushed out.
-> 
-> ... of course you would never work-slop me/us like that! :)
-> 
+Fix two BUILD=32 failures: truncating a physical address before freeing
+it, and sign-extending simulated memory addresses. Existing assertions
+cover both regressions.
 
-It's fundamentally a bootstrapping problem.
+The runner passes with GCC in both allocation directions across 32-bit
+builds, 32-bit phys_addr_t, and NUMA configurations. BUILD=32 NUMA=1 also
+passes with Clang.
 
-Regardless of whether an LLM wrote the tests for page_alloc in its
-current form - it's going to be schloppy, because the code itself was
-never written to be testable in the first place.
+Tianyi Chen (2):
+  memblock tests: use physical free for the maximum-address check
+  memblock tests: zero-extend simulated memory addresses
 
-That's the actual problem we're all dancing around.
+ tools/testing/memblock/tests/basic_api.c | 6 +++---
+ tools/testing/memblock/tests/common.c    | 6 +++---
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-~Gregory
+
+base-commit: 5728d3523f12826a2b180c1c5738f74e33197e14
+-- 
+2.55.0
+
 
