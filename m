@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C91B8C982CC
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 23:39:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28058C982CC
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 23:39:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3E3AE6B0096; Wed, 16 Sep 2026 19:39:11 -0400 (EDT)
+	id 5B73B6B0095; Wed, 16 Sep 2026 19:39:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 349E86B0095; Wed, 16 Sep 2026 19:39:11 -0400 (EDT)
+	id 4A9C66B009D; Wed, 16 Sep 2026 19:39:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 128346B009B; Wed, 16 Sep 2026 19:39:11 -0400 (EDT)
+	id 2ADFF6B0099; Wed, 16 Sep 2026 19:39:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A24D86B0096
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BAB476B0098
 	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 19:39:10 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 83840801D1
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E5BB2C01B1
 	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 23:39:09 +0000 (UTC)
-X-FDA: 85221243618.23.726A3CF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 704DC100002
+X-FDA: 85221243618.17.246BDCF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id EE1FC180002
 	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 23:39:07 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=f1z5CZls;
-	spf=pass (imf14.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=e92l7mcC;
+	spf=pass (imf24.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789601947;
-	b=fCRnbhTIOICeiYaFsmhN8lPHBQWJmHvtZzILIEp20DXix6sNG0AVa6vw43TRSUtBzZcZAq
-	xKAsGbWm6ITH/MwUEM8XowEcrqrVkumceV3/hddrfNdPf+3To7LpYhFPnGWiWJFXs3Cqyd
-	mPJM8uTIaoJPnb4ZHO3uIbB/TgcAnr0=
+	t=1789601948;
+	b=uAv5FyJtXfL/U9njmUPMsAuaFbeyuIQhkxkBjnuW8RB3Z5yt3c1q/ms6g+X41zCu/9tUP5
+	UUmZmtodsVFOuWd8C1/l5tWTm/I47VB4HbP25DP1zDDv52fq+6KbNUOR3dVV/ZvhR2Jgjk
+	Rr9aa1Rw4V26M2Vj9mjwBwYJi3BTgW4=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=f1z5CZls;
-	spf=pass (imf14.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=e92l7mcC;
+	spf=pass (imf24.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789601947;
+	s=arc-20220608; t=1789601948;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t7V94T4jqTtwJP0Kyggdz6M1H2MPHYC1fivx4/AVk/U=;
-	b=8E5UvhOC8hLeQzk0H1U8RAnmsoIizSLt3NjOFsbtEb/ENYUX0ZH+DGPvaNQXHZGF82fAfo
-	qJEFOKQ11rV7f8ZJ5C1AkFA0Om7GQGSZAnMqsUB9kBsQMIT4uQHEo+1k0D4CBBfPiQ+Vne
-	SYCSkI177er2LZlqBuHrqEfI8c5vDuk=
+	bh=Vf7VE6q2uT03JYKaJrNLskhMG4dUxqdG03ckxZLkf/I=;
+	b=srB3eEAql5hCGyV7X4xULZOnHEQS3YUfc6smCHc5szoJO3wtd/vGIOor8j5V5kWtAuZfS4
+	TbaeFJloMW2e5ZiMN5EocWh6gCApadtXRc+w9P86W5NJZyqMSiFJvOncQXnv4kAGBfXX9e
+	n2RqrgGDRPodbrg32ojvlYYWWkeZu1I=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8B775601FD;
+	by sea.source.kernel.org (Postfix) with ESMTP id 996AA444FB;
 	Wed, 16 Sep 2026 23:39:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 218FCC2BCF7;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 328D0C2BCF5;
 	Wed, 16 Sep 2026 23:39:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1789601946;
-	bh=n3E3ITbJt2F0ATINujb758jtbhACRD+OXMDt7pKPpxw=;
+	bh=tsqf0aWLMOSwHnXHAdTX02Wxeb0NHizwCLMEWz/sUuI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=f1z5CZlsEaFnb82imS3fpFJauY49vm5e300pO6TQjgFW0A85lvsjfcechGUmyMF3h
-	 uOB472mB4K3fKPGHDK+GbclXgxrV+BRPzjgFhj+RLHViIN1uZlIYM+q6UXZbIBJURa
-	 g8zUxCL6XxqTka+WQxLW9Lal7YEpSUGw0znmjArqDmLolt6nla5Q5fEUu7ezp1/LxO
-	 JFv3SkHo1r3xgDL2sLKPmVDQZb7p1kaTsYQUPl5A2v8oY434klCRRR5hCRS49chlnk
-	 /047LxEDeGNiZYvkynCA/s7/XD3MksoZ8mGAXFg0u088uqLHj5wtSGTH7gTp1rXNOw
-	 cNqS92g1G5cow==
+	b=e92l7mcCyLvFCvSdP+gQOJGEpnIArr3QpQLdShF+6mqjzhvhG7dyJYo0nPWI2zL0M
+	 bE3hENv4WBhfgLnfFiajWk9V3kgN6N2L+e42zVmOesaS8UcRfnp/3ekRtRlMUaIqJG
+	 TxPDKZpDXuSvljbtBHKnkiqNDEhfPoWdTyscHw9NDLBCRJQicIii0jO4cJiPs3q5ar
+	 UYmNPPUx6FitppsoLhBTUjhVLcXGvBMREvbKyW8CG6f7tTA8z0C8HvBr8ffG3Wkcje
+	 piG87SJxjRFcvJBtMNX0Y+TrbRXq0JAlgL1zK58qdkXI6EwmwDr+LUa2cgLzG+UGiO
+	 oHFLldgU0ujHw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F2F98C982C1;
-	Wed, 16 Sep 2026 23:39:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 111E0C982D1;
+	Wed, 16 Sep 2026 23:39:06 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Wed, 16 Sep 2026 16:39:01 -0700
-Subject: [PATCH v3 1/4] mm: hugetlb: Track used_hpages when getting/putting
- pages from subpool
+Date: Wed, 16 Sep 2026 16:39:02 -0700
+Subject: [PATCH v3 2/4] mm: hugetlb: Fix out_put_pages subpool reserve
+ calculation
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260916-hugetlb-subpool-always-track-used-v3-1-38aae9b5ccdd@google.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260916-hugetlb-subpool-always-track-used-v3-2-38aae9b5ccdd@google.com>
 References: <20260916-hugetlb-subpool-always-track-used-v3-0-38aae9b5ccdd@google.com>
 In-Reply-To: <20260916-hugetlb-subpool-always-track-used-v3-0-38aae9b5ccdd@google.com>
 To: Alex Shi <alexs@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
@@ -99,11 +99,11 @@ Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-mm@kvack.org, Ackerley Tng <ackerleytng@google.com>, 
  stable@vger.kernel.org
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1789601945; l=14450;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1789601945; l=4939;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=1rJLxc1vQs+7R3iQxLs6DJhbnCNS1veJoZJ6u64m6UE=;
- b=p+Y+YmKHxOPhydDivUi3pXAIbjicZ4mIXrvwEKxw0Fz1syw4o01FWso8Z2ePGDeUQ0DBDIsjE
- 0lOb3CkL9W7BuoI2stEDqkMEkocf5UjhQU7MGeTr89mBx7yICqXut+/
+ bh=hbCc1VLcSxFYUMlKbRMMvbXITCMyD6a9EHSLeup8DNs=;
+ b=MH2U3Qi7wREMFL0fYx06ravkLlUdpLhlZGfCa/VY1ZApR995ImjP5LngSVOH3zHCLQXF1LY/w
+ QoBsu4M7/krCg4sUbpsZ26aXy80XwK6XqvfTmoAoynkMZqkEAX6m0n7
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -112,12 +112,12 @@ X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 704DC100002
-X-Stat-Signature: gogwpu6wrd71udbd3p7nw1t1e8bbzom8
-X-HE-Tag: 1789601947-92118
-X-HE-Meta: U2FsdGVkX19n+p1KCc6E46IfS7h4hsMooqLWFI45rtty8nGBuxyyHNc5bA/Mcj4FDbSZa3Y+8sbmWx64v5cHgkhvOgFQuUqyPnmH2frkTGCF2W/3uXwXWUOzuuZBEJ/ZHnb8kxbmlbqFscgr6Y8zfYWeSSAiVLvRR/BfCkiHfays0nwuKFajQPZPN6XQUjbUqMh7PrGRwr+mfuHepuuG9C3dM+nTfBNkSZ6RVnIfyPsGecihQ5+9WFKFd5DkKb3C5Kq3Ex98oQaWyHexnCSm36eCw/9WSC9XsqMKe+Feky3ZfkX2hl5AkHoM9op6qgwSS+VBAuxALMirwgsUogxMT4vAp6l0qmbJv6uofZom38NPdUoZ2XJTpVsoZ0PZRnRZSPwMp5N4molOOb0I/vVS8l9PSExtHGs+SPQDS6IddMV5qN2cwDIg8KASfX7WRnIARTHOUdOT7JfWD9SS0UErmBVIcFamiRtN1ZZ0Wgx3o7h4r4oRItUDAZN7EfrjkVA4bEnE9953I1jGIwGJiqPurJREtsJWb0RgA2d7be/fUcWkhmt7Vs4R2s1I/DZ3NQPH7RQ6t2D3efPNAPafP2S25xh6YeiOgeT0eUrPE7aXf7lW+95j7vSvGeYx8/TCkXw0NptV/x+LazvQVNXzmJj1VPNFlqmBejeXrxbMW+Vz5KXbyTfF/YUg13vm8f4G974xpwO8R4a/40869Uc49ImZ5fubXMmvpT32BN0u6FRihk3tHg6fJU7AFY5wP80spS0cNI0nsifeUEA6jjhvQhG0bQT66XVXMjqsetQ4yjuzm2tDwJHbHuT1/HJOv0OSSx3va5AiipyIiQuGTDzSrKUJjF2eEXgYWDb/AIukx5PVtbs1M4X64HU9rHDG8jVx/6fXQQ+hKucnex/BFck2MfregrVVHL68wOgPH6xKxlvUGpgR/8qBRo4qmGZaaNZX6vMrGBUsQ8OSKAdwa25DMRS
- zMjTgNwK
- e8hsekMXsCn2yK06Z8foMgP9DYytWkKKafxLjV98bxS3qQH8s6DqzNgocYtvCMmK4TrMV66slVsm4oXwqubyWMFkV18RHjJYRpeU/hjC7nQIChFYi9Uel/5Th/LzghCPRj5nWf3ERjgJQLaTDEX9CmVT/h9rs2dxNTPAPufCX/ELChiqsRJ9ugkGZom1RI1WRfRlK0w9ydy62escsNueqWYAdN7LS0GNC2HPwakz6UB0FhlEjK3W8scMU/YjqlO1WzkJZSf2/AANrHJsRfHBCeP5YwhNj4ibcTSEK3YyNIShe5lgyp3Fr/YLaYt2ViUkotoIJ8eSFWa2/Ht5C2nbMiCU8w1cOYcCXe/mIXGRYohPqk6enSG5aFdAimWTxgmPhXMJRWwwpeL/6OPH3ulVT7enGOt/BRgREhdZEFn6qy5UmtQNficofI0ATly5ZdPguYsovQjjFh5Eze9WUYg4cux8o911NtFw1re6/Q53IOPBR5/rTmZN3pIuNIgje89S2cCSS6JB1SkSTaF7M6LeP5Zr3wUm/AfCmVanCa9R4L418F3iJsWLKl/iyy6Yv3S1Msvnh
+X-Rspamd-Queue-Id: EE1FC180002
+X-Stat-Signature: uda98o7eu6u6rentdqns3bc58psuxywi
+X-HE-Tag: 1789601947-926281
+X-HE-Meta: U2FsdGVkX19MO1Q0VO7ch/RDQrTCQsMpnf9gbCAFSFuJPgGQq8XcqrHVJZCG2y3f5duMx98GMBTZiHsZq6/OlWOyovVE+Q8pMj6FR62X4e6ie/ycSyQoKEwuvFrAlaCcsLWPlqKcW77s6YJr4xhX0XrsUktUvcmJPxNL/tFmd2l7GFQUvmNSF7c7fgfE8l3Q7bwUtUR//V2l6cHMHSqJFQ55uR/rTeTmRFZWdtVUJi5XZZ94xfvJ2RlQs07BAwM4rqBcHrCkpOfU0e8ehCsiRnsOIseXJZpD7UdiOcwgcfK6doWaLgDOYAi2Ib7CBl/d6iNJZjIBGZ6EWxA1xyojDVKkRt6Q7tlDVDRXRQy7n60hiI+avElu2ClguotpanJmjKbkGn1mBupmuZHK/KZWZ2pemILjqxHaPJJ52lEaFhMmWHlCQ4+klOGFwbmlCMSrLB3aM0eWVLGqbPkg+dKDrfIxmMXGfWhYtjZz8ihP83bgNggiFtEkRNlXXABFumhLif5ACuv7cCP89YA8wZwq6bZUJQTHYG4aeAOof9G2RfmrMmryCaHkY+tlxtzUQN8RNc6Q9lvsZesjBc1gq5qqmTn9gjR5Pwr0ugCh6kYDubd8++QqOzi0+Me+xkU3Uq7rNfoZIufQmZsy+iH1CMU0ygcAguOwTAw/o1XkB7T1eLfhm7/cnFlscLI4pumcuF/8fafWEsIERXXqlWXaLkqQEEa7rdVbU0mRzvGEE93dCBJ5ZQ61XQVcJ/VdxpfoG6pL6hUXA2jlwI+AWxOkcVKCUhq0/N2sp/on2n4hajflbNCU5yGmaYQ4sSWn6qS/t228Vf1lTa2HKwwpM8vCmUT0j2LQwmUeyj3VczunxHWigtLk66yqBR5fZbWYf98vVYwiXufA/s7U+bcoarZVm8FqBVUyp3QxSzDJ4vSL7Vik3Df4m/DAwshtPE+dpqN37eIwnHeUWLaUt0ybQefsWXp
+ pKErXzFD
+ 6/9VNSVMkVg1mwNVpfPYK0wYq8YZdQ3Q11NSfbyS4PnY20wyj9PK3B66KbawxWUDGA2SSLMI5c0A+sBiI7DFMeWziydR4NsvQjNLdLcTQlc0cphvBxoQoIog/kzrqw62sgpmWqVOmaKX2UBM7Z5kwuhSCenS6Rz9qrIkk8f0n5ICgZE74Fd8HM2lREpklVlf91eWMXYTtWciJSaGHXM/vu85GbzZpxOHfR2oxTm0UXN0oaTe3VK+3BeQOUz5fSyIWEXGDX7WfE8YfRg6ySt6mj3POIFbyNRbFvXjSd1jeym4w8AGRUGrrNJiRuJsNBvRot6VoIeAd4T9MOE529XqwdWvFIW+EdTu1FHEMbdj25FU8s+SLo4X/f9RWiuPzvTDt0Pd+WRDOVGsnKRVMNdYzeBRpOXofof1Che7EqwOaa16qxTS12iWnAiR+9CsiNO7bCltp4P4lZDKdWWwM4D+fR4u84KpfbXAJ1GFTLx0i9WDpDR9d9Dgs/sf6bpdbtVrTqqRaBSk30Ht+9ZUQjIOqHmCxZgFz8f8lG3EbhOITzprrzy4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,328 +127,134 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-HugeTLB subpools currently only track used pages (used_hpages) when a
-maximum size limit (max_hpages) is configured.
+When reserving pages for a mapping fails during global accounting, the
+error path rolls back the adjustments made to the subpool.
 
-This breaks minimum size (min_hpages) guarantees. The subpool guarantee
-requires that the sum of used pages and remaining subpool reserves
-satisfies the configured minimum:
+Currently, this rollback was performed in two separate steps:
 
-  used_hpages + rsv_hpages >= min_hpages
+1. Returning only the portion of reservations originally satisfied from the
+   subpool
+2. Separately adjusting the subpool used pages counter for the portion that
+   was requested from the global pool.
 
-where used_hpages includes both allocated folios and active reservations.
-Therefore, when pages or reservations are released, the maximum number
-of reservations the subpool can absorb is:
+In (1.), because the used pages counter had not yet been decremented for
+the global portion, the subpool observed an inflated used pages count. If
+the mount was configured with both a minimum size and a maximum size, this
+inflated count prevented the subpool from recognizing that usage fell below
+the minimum size guarantee.
 
-  limit = max(0, min_hpages - used_hpages)
+As a result, the subpool failed to restore its reserved pages counter and
+instead returned that a global reservation should be dropped. The
+mount-time reservation is permanently destroyed, leaving global reservation
+counts depleted and causing an underflow when the filesystem is eventually
+unmounted.
 
-When used_hpages is untracked and remains zero,
-hugepage_subpool_put_pages() assumes limit == min_hpages. It falsely
-restores reservations to the subpool even when existing allocations
-already satisfy the guarantee.
+Additionally, if concurrent threads modified subpool usage during the
+reservation attempt, calculating the rollback amount using stale local
+variables could cause global reservation counts to diverge.
 
-This false restoration leads to:
-1. Leaked global reservations: resv_huge_pages is not decremented,
-   reducing the huge pages available for use across the host.
-2. Premature freeing: the subpool considers itself unreferenced on
-   unmount (rsv_hpages == min_hpages), freeing the subpool while folios
-   are still active in page cache and leading to a use-after-free.
+Now that used pages are always tracked within the subpool, return the
+entire requested page count to the subpool in a single call. Global
+reservations are then adjusted using the difference between the
+reservations originally requested and those returned, fixing the issues
+described above.
 
-Fix this by unconditionally tracking used_hpages in the subpool, and
-capping the reservations the subpool can absorb to
-(min_hpages - used_hpages).
-
-With used_hpages always tracked:
-- subpool_is_free() is simplified to check whether used_hpages is zero.
-- hugetlbfs_statfs() is updated to explicitly check for max_hpages == -1;
-  previously it relied on (-1 - 0) evaluating to -1, which would now
-  underflow and report negative free block counts.
-
-Trace of a false restoration:
-
-1. Mount time:
-    + spool->min_hpages = 1 (user requested min_size=2M)
-    + spool->max_hpages = -1 (no maximum size specified)
-    + spool->rsv_hpages = 1 (reserve min_hpages)
-    + spool->used_hpages = 0 (untracked when max_hpages == -1)
-    + h->resv_huge_pages = 1 (reserved by hugetlb_acct_memory(h, 1))
-
-2. Shared mapping of 4MB (2 pages) created (mmap with MAP_SHARED):
-    + In hugetlb_reserve_pages(), region_chg() finds chg = 2 (pages 0
-      and 1 need reservations)
-    + hugepage_subpool_get_pages(spool, 2):
-        + spool->rsv_hpages = 0 (consumed the 1 subpool reservation)
-        + Returns 1 (since this subpool only had 1 reservation)
-    + hugetlb_acct_memory(h, 1):
-        + h->resv_huge_pages = 2 (incremented from 1 to 2 for the
-          global reservation)
-        + region_add() records reservations for pages 0 and 1 in
-          resv_map
-
-3. Process touches and populates Page 0:
-    + hugetlb_no_page() calls alloc_hugetlb_folio()
-    + Page 0 reuses the existing reservation (vma_needs_reservation()
-      returns 0 => map_chg = MAP_CHG_REUSE = 0)
-    + hugepage_subpool_get_pages() is not called (map_chg == 0)
-    + dequeue_hugetlb_folio_nodemask() consumes 1 reservation:
-      h->resv_huge_pages = 1 (decremented from 2 to 1)
-
-4. Process closes the file and exits:
-    + For MAP_SHARED mappings, reservations persist in inode resv_map
-    + Page 1 reservation remains active
-    + h->resv_huge_pages = 1 (retained for Page 1)
-
-5. File is truncated to 2MB (truncate -s 2M):
-    + Truncation invokes remove_inode_hugepages() for range [1, LONG_MAX)
-    + Page 1 was never faulted into page cache => freed = 0
-    + Calls hugetlb_unreserve_pages(inode, 1, LONG_MAX, freed = 0)
-    + region_del() removes Page 1 from resv_map => chg = 1
-
-6. Inside hugetlb_unreserve_pages(): hugepage_subpool_put_pages(1):
-    + delta = chg - freed = 1 - 0 = 1
-    + Because spool->max_hpages == -1, spool->used_hpages always = 0
-    + spool->used_hpages < spool->min_hpages (0 < 1 => true)
-      <<== subpool assumes 0 pages are in use, ignoring allocated Page 0
-    + spool->rsv_hpages + delta <= spool->min_hpages (0 + 1 <= 1 => true)
-    + spool->rsv_hpages += 1 => spool->rsv_hpages = 1
-      <<== false reservation restored to subpool
-    + Returns 0 (subpool absorbed the reservation)
-
-7. Back in hugetlb_unreserve_pages(): hugetlb_acct_memory():
-    + hugetlb_acct_memory(h, -0) does nothing
-    + h->resv_huge_pages remains stuck at 1 even though both reservations
-      have ended (Page 0 allocated, Page 1 truncated)
-
-8. Later during unmounting:
-    + subpool_is_free() checks spool->rsv_hpages == spool->min_hpages
-      (1 == 1 => true)
-    + The subpool is erroneously considered completely free
-    + hugetlb_acct_memory(spool->hstate, -spool->min_hpages) decrements
-      h->resv_huge_pages by 1 (1 - 1 = 0), masking the leak on unmount
-
-9. If the folio outlives the inode:
-    + When Page 0 is freed, free_huge_folio() attempts to access the
-      freed subpool pointer, leading to a use-after-free and double-free.
-
-Fixes: 09a95e29cb30 ("mm/hugetlb: optimize minimum size (min_size) accounting")
-Fixes: 1c5ecae3a93fa ("hugetlbfs: add minimum size accounting to subpools")
+Fixes: 1d3f9bb4c8af ("mm/hugetlb: restore failed global reservations to subpool")
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
 Cc: stable@vger.kernel.org
 ---
- Documentation/mm/hugetlbfs_reserv.rst              | 17 +----
- .../translations/zh_CN/mm/hugetlbfs_reserv.rst     | 11 +---
- fs/hugetlbfs/inode.c                               |  8 ++-
- include/linux/hugetlb.h                            |  4 +-
- mm/hugetlb.c                                       | 73 +++++++++++++---------
- 5 files changed, 55 insertions(+), 58 deletions(-)
+ mm/hugetlb.c | 44 ++++++++++++++++++--------------------------
+ 1 file changed, 18 insertions(+), 26 deletions(-)
 
-diff --git a/Documentation/mm/hugetlbfs_reserv.rst b/Documentation/mm/hugetlbfs_reserv.rst
-index a49115db18c76..d244583fdcbc3 100644
---- a/Documentation/mm/hugetlbfs_reserv.rst
-+++ b/Documentation/mm/hugetlbfs_reserv.rst
-@@ -314,21 +314,8 @@ huge pages.  If they can not be reserved, the mount fails.
- The routines hugepage_subpool_get/put_pages() are called when pages are
- obtained from or released back to a subpool.  They perform all subpool
- accounting, and track any reservations associated with the subpool.
--hugepage_subpool_get/put_pages are passed the number of huge pages by which
--to adjust the subpool 'used page' count (down for get, up for put).  Normally,
--they return the same value that was passed or an error if not enough pages
--exist in the subpool.
--
--However, if reserves are associated with the subpool a return value less
--than the passed value may be returned.  This return value indicates the
--number of additional global pool adjustments which must be made.  For example,
--suppose a subpool contains 3 reserved huge pages and someone asks for 5.
--The 3 reserved pages associated with the subpool can be used to satisfy part
--of the request.  But, 2 pages must be obtained from the global pools.  To
--relay this information to the caller, the value 2 is returned.  The caller
--is then responsible for attempting to obtain the additional two pages from
--the global pools.
--
-+hugepage_subpool_get/put_pages() use the number of huge pages passed to adjust
-+the subpool 'used page' count.
- 
- COW and Reservations
- ====================
-diff --git a/Documentation/translations/zh_CN/mm/hugetlbfs_reserv.rst b/Documentation/translations/zh_CN/mm/hugetlbfs_reserv.rst
-index 20947f8bd0654..ae1f1f31477fc 100644
---- a/Documentation/translations/zh_CN/mm/hugetlbfs_reserv.rst
-+++ b/Documentation/translations/zh_CN/mm/hugetlbfs_reserv.rst
-@@ -246,15 +246,8 @@ hugepage_subpool的min_hpages字段中被跟踪。在挂载时，hugetlb_acct_me
- 被调用以预留指定数量的巨页。如果它们不能被预留，挂载就会失败。
- 
- 当从子池中获取或释放页面时，会调用hugepage_subpool_get/put_pages()函数。
--hugepage_subpool_get/put_pages被传递给巨页数量，以此来调整子池的 “已用页面” 计数
--（get为下降，put为上升）。通常情况下，如果子池中没有足够的页面，它们会返回与传递的相同的值或
--一个错误。
--
--然而，如果预留与子池相关联，可能会返回一个小于传递值的返回值。这个返回值表示必须进行的额外全局
--池调整的数量。例如，假设一个子池包含3个预留的巨页，有人要求5个。与子池相关的3个预留页可以用来
--满足部分请求。但是，必须从全局池中获得2个页面。为了向调用者转达这一信息，将返回值2。然后，调用
--者要负责从全局池中获取另外两个页面。
--
-+它们负责所有子池的统计核算，并跟踪与子池相关联的预留。
-+hugepage_subpool_get/put_pages()函数使用传入的巨页数量来调整子池的“已用页面”计数。
- 
- COW和预留
- ==========
-diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-index 7611a8470ea26..5113f743f6fc7 100644
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -1109,8 +1109,12 @@ static int hugetlbfs_statfs(struct dentry *dentry, struct kstatfs *buf)
- 
- 			spin_lock_irq(&sbinfo->spool->lock);
- 			buf->f_blocks = sbinfo->spool->max_hpages;
--			free_pages = sbinfo->spool->max_hpages
--				- sbinfo->spool->used_hpages;
-+			if (sbinfo->spool->max_hpages == -1) {
-+				free_pages = -1;
-+			} else {
-+				free_pages = sbinfo->spool->max_hpages -
-+					     sbinfo->spool->used_hpages;
-+			}
- 			buf->f_bavail = buf->f_bfree = free_pages;
- 			spin_unlock_irq(&sbinfo->spool->lock);
- 			buf->f_files = sbinfo->max_inodes;
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 16c4c4caa126c..4551ff3023640 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -39,8 +39,8 @@ struct hugepage_subpool {
- 	spinlock_t lock;
- 	long count;
- 	long max_hpages;	/* Maximum huge pages or -1 if no maximum. */
--	long used_hpages;	/* Used count against maximum, includes */
--				/* both allocated and reserved pages. */
-+	long used_hpages;	/* Used page count, includes both */
-+				/* allocated and reserved pages. */
- 	struct hstate *hstate;
- 	long min_hpages;	/* Minimum huge pages or -1 if no minimum. */
- 	long rsv_hpages;	/* Pages reserved against global pool to */
 diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 4f6f58bf3db6c..e72e22f887478 100644
+index e72e22f887478..faa799634822e 100644
 --- a/mm/hugetlb.c
 +++ b/mm/hugetlb.c
-@@ -130,12 +130,8 @@ static inline bool subpool_is_free(struct hugepage_subpool *spool)
+@@ -6676,12 +6676,14 @@ long hugetlb_reserve_pages(struct inode *inode,
+ 		struct vm_area_struct *vma,
+ 		vma_flags_t vma_flags)
  {
- 	if (spool->count)
- 		return false;
--	if (spool->max_hpages != -1)
--		return spool->used_hpages == 0;
--	if (spool->min_hpages != -1)
--		return spool->rsv_hpages == spool->min_hpages;
+-	long chg = -1, add = -1, spool_resv, gbl_resv;
++	long chg = -1, add = -1;
+ 	struct hstate *h = hstate_inode(inode);
+ 	struct hugepage_subpool *spool = subpool_inode(inode);
+ 	struct resv_map *resv_map;
+ 	struct hugetlb_cgroup *h_cg = NULL;
+-	long gbl_reserve, regions_needed = 0;
++	long regions_needed = 0;
++	long gbl_resv_get;
++	long gbl_resv_put;
+ 	int err;
  
--	return true;
-+	return spool->used_hpages == 0;
- }
- 
- static inline void unlock_or_release_subpool(struct hugepage_subpool *spool,
-@@ -193,13 +189,18 @@ void hugepage_put_subpool(struct hugepage_subpool *spool)
- 	unlock_or_release_subpool(spool, flags);
- }
- 
--/*
-- * Subpool accounting for allocating and reserving pages.
-- * Return -ENOMEM if there are not enough resources to satisfy the
-- * request.  Otherwise, return the number of pages by which the
-- * global pools must be adjusted (upward).  The returned value may
-- * only be different than the passed value (delta) in the case where
-- * a subpool minimum size must be maintained.
-+/**
-+ * hugepage_subpool_get_pages - Get pages from a subpool
-+ * @spool: pointer to subpool structure (may be NULL)
-+ * @delta: number of pages to allocate or reserve
-+ *
-+ * Check and update subpool page usage counts when allocating or
-+ * reserving @delta hugepages.
-+ *
-+ * Context: Takes spool->lock using spin_lock_irq().
-+ * Return: Non-negative number of reservations that cannot be
-+ *         satisfied by the subpool, or -ENOMEM if the subpool maximum
-+ *         limit would be exceeded.
-  */
- static long hugepage_subpool_get_pages(struct hugepage_subpool *spool,
- 				      long delta)
-@@ -211,15 +212,14 @@ static long hugepage_subpool_get_pages(struct hugepage_subpool *spool,
- 
- 	spin_lock_irq(&spool->lock);
- 
--	if (spool->max_hpages != -1) {		/* maximum size accounting */
--		if ((spool->used_hpages + delta) <= spool->max_hpages)
--			spool->used_hpages += delta;
--		else {
--			ret = -ENOMEM;
--			goto unlock_ret;
--		}
-+	if (spool->max_hpages != -1 &&
-+	    spool->used_hpages + delta > spool->max_hpages) {
-+		ret = -ENOMEM;
-+		goto unlock_ret;
+ 	/* This should never happen */
+@@ -6756,9 +6758,9 @@ long hugetlb_reserve_pages(struct inode *inode,
+ 	 * the subpool has a minimum size, there may be some global
+ 	 * reservations already in place (gbl_reserve).
+ 	 */
+-	gbl_reserve = hugepage_subpool_get_pages(spool, chg);
+-	if (gbl_reserve < 0) {
+-		err = gbl_reserve;
++	gbl_resv_get = hugepage_subpool_get_pages(spool, chg);
++	if (gbl_resv_get < 0) {
++		err = gbl_resv_get;
+ 		goto out_uncharge_cgroup;
  	}
  
-+	spool->used_hpages += delta;
-+
- 	/* minimum size accounting */
- 	if (spool->min_hpages != -1 && spool->rsv_hpages) {
- 		if (delta > spool->rsv_hpages) {
-@@ -240,11 +240,19 @@ static long hugepage_subpool_get_pages(struct hugepage_subpool *spool,
- 	return ret;
- }
+@@ -6766,7 +6768,7 @@ long hugetlb_reserve_pages(struct inode *inode,
+ 	 * Check enough hugepages are available for the reservation.
+ 	 * Hand the pages back to the subpool if there are not
+ 	 */
+-	err = hugetlb_acct_memory(h, gbl_reserve);
++	err = hugetlb_acct_memory(h, gbl_resv_get);
+ 	if (err < 0)
+ 		goto out_put_pages;
  
--/*
-- * Subpool accounting for freeing and unreserving pages.
-- * Return the number of global page reservations that must be dropped.
-- * The return value may only be different than the passed value (delta)
-- * in the case where a subpool minimum size must be maintained.
-+/**
-+ * hugepage_subpool_put_pages - Release pages back to a subpool
-+ * @spool: pointer to subpool structure (may be NULL)
-+ * @delta: number of pages to free or unreserve
-+ *
-+ * Check and update subpool page usage counts when freeing or
-+ * unreserving @delta hugepages.
-+ *
-+ * Context: Takes spool->lock using spin_lock_irqsave(). May release
-+ *          and free @spool if its usage count and references reach
-+ *          zero.
-+ * Return: Non-negative number of reservations that the subpool cannot
-+ *         absorb.
-  */
- static long hugepage_subpool_put_pages(struct hugepage_subpool *spool,
- 				       long delta)
-@@ -257,19 +265,24 @@ static long hugepage_subpool_put_pages(struct hugepage_subpool *spool,
+@@ -6785,7 +6787,7 @@ long hugetlb_reserve_pages(struct inode *inode,
+ 		add = region_add(resv_map, from, to, regions_needed, h, h_cg);
  
- 	spin_lock_irqsave(&spool->lock, flags);
- 
--	if (spool->max_hpages != -1)		/* maximum size accounting */
--		spool->used_hpages -= delta;
-+	spool->used_hpages -= delta;
- 
- 	 /* minimum size accounting */
- 	if (spool->min_hpages != -1 && spool->used_hpages < spool->min_hpages) {
--		if (spool->rsv_hpages + delta <= spool->min_hpages)
-+		/*
-+		 * limit is the maximum number of reservations that
-+		 * can be restored to this subpool.
-+		 */
-+		long limit = spool->min_hpages - spool->used_hpages;
-+
-+		if (spool->rsv_hpages + delta <= limit)
- 			ret = 0;
- 		else
--			ret = spool->rsv_hpages + delta - spool->min_hpages;
-+			ret = spool->rsv_hpages + delta - limit;
- 
- 		spool->rsv_hpages += delta;
--		if (spool->rsv_hpages > spool->min_hpages)
--			spool->rsv_hpages = spool->min_hpages;
-+		if (spool->rsv_hpages > limit)
-+			spool->rsv_hpages = limit;
+ 		if (unlikely(add < 0)) {
+-			hugetlb_acct_memory(h, -gbl_reserve);
++			hugetlb_acct_memory(h, -gbl_resv_get);
+ 			err = add;
+ 			goto out_put_pages;
+ 		} else if (unlikely(chg > add)) {
+@@ -6821,26 +6823,16 @@ long hugetlb_reserve_pages(struct inode *inode,
  	}
+ 	return chg;
  
- 	/*
+-out_put_pages:
+-	spool_resv = chg - gbl_reserve;
+-	if (spool_resv) {
+-		/* put sub pool's reservation back, chg - gbl_reserve */
+-		gbl_resv = hugepage_subpool_put_pages(spool, spool_resv);
+-		/*
+-		 * subpool's reserved pages can not be put back due to race,
+-		 * return to hstate.
+-		 */
+-		hugetlb_acct_memory(h, -gbl_resv);
+-	}
+-	/* Restore used_hpages for pages that failed global reservation */
+-	if (gbl_reserve && spool) {
+-		unsigned long flags;
++ out_put_pages:
++	gbl_resv_put = hugepage_subpool_put_pages(spool, chg);
++	/*
++	 * There may be a difference between the number of
++	 * reservations to consume and the number to restore now if
++	 * there are multiple threads interacting with the subpool -
++	 * restore the difference.
++	 */
++	hugetlb_acct_memory(h, gbl_resv_get - gbl_resv_put);
+ 
+-		spin_lock_irqsave(&spool->lock, flags);
+-		if (spool->max_hpages != -1)
+-			spool->used_hpages -= gbl_reserve;
+-		unlock_or_release_subpool(spool, flags);
+-	}
+ out_uncharge_cgroup:
+ 	hugetlb_cgroup_uncharge_cgroup_rsvd(hstate_index(h),
+ 					    chg * pages_per_huge_page(h), h_cg);
 
 -- 
 2.55.0.1082.g2b9226bbc0-goog
