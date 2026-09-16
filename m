@@ -4,140 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9B23C982C9
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 20:52:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77B18C982C9
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 21:06:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D10586B0092; Wed, 16 Sep 2026 16:52:17 -0400 (EDT)
+	id 255F16B0088; Wed, 16 Sep 2026 17:05:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C9B166B0093; Wed, 16 Sep 2026 16:52:17 -0400 (EDT)
+	id 206D26B008C; Wed, 16 Sep 2026 17:05:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B62C56B0095; Wed, 16 Sep 2026 16:52:17 -0400 (EDT)
+	id 0F6A96B0092; Wed, 16 Sep 2026 17:05:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 885516B0092
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 16:52:17 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 992E180143
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 20:52:16 +0000 (UTC)
-X-FDA: 85220823072.09.A071719
-Received: from mail-oo2-f41.google.com (mail-oo2-f41.google.com [74.125.231.169])
-	by imf08.hostedemail.com (Postfix) with ESMTP id BC85C16000E
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 20:52:14 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=pe1XjvuV;
-	spf=pass (imf08.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.231.169 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id DAD306B0088
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 17:05:58 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 62270A3DEE
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 21:05:58 +0000 (UTC)
+X-FDA: 85220857596.27.FDDC43B
+Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
+	by imf01.hostedemail.com (Postfix) with ESMTP id B11D840005
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 21:05:56 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=LqoDkLMS;
+	spf=pass (imf01.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.48 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789591934;
-	b=MdKeuq0jCzbqtlvDx4LGSuv88oSbStK24mVS0sW69znlQr8vtty+ds/L97RDK+HLouRCvW
-	aldo3HF4BG9sujEZk3FdVdc+Uw/H3u9WzDThL+pPJfF89U7XPXlDeAXNOdVzAeZxZ6Eu1K
-	UJ9SyJGjsBoFQP1/33Onfpf68gBMOlM=
+	t=1789592756;
+	b=ycPhwDDnXdRQjaSQ05Yz9henz5PyUZC+n4NQKtjpWMeIdzlFqFOOfIn/2IagtM665IHmtt
+	UEHwzs0xvU9sageObzHWugMA2MQtGecCPzlgaRoEt3QT1dUYW90nPZHxYKp6/P8cUzNo6a
+	t2uhmY1OkZZXMjd6yx7Brh+wdH8e5+I=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=pe1XjvuV;
-	spf=pass (imf08.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.231.169 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=LqoDkLMS;
+	spf=pass (imf01.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.48 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789591934;
+	s=arc-20220608; t=1789592756;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KFxqhaToXcLhZx57rZOKyfb/5RQhEkCVEVgt0s8vR2I=;
-	b=XQqgcCYphn34U3meXynBcDZemJ9aTVXzBmwbdvWO0gynTpY9WLyd7sIbQjnQ3uH+P8Z4Ez
-	bfMgDMd9OW1cP+81zQ3VDoTxLjydjhc9paaZZr6zBxut72+5uNAtWSeuH+hd/q7//rRxhV
-	V+f9z9895QIUmiFVe4fEX0yNCZrV2wI=
-Received: by mail-oo2-f41.google.com with SMTP id 006d021491bc7-6bff4d6504cso35977eaf.2
-        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 13:52:14 -0700 (PDT)
+	 in-reply-to:references:dkim-signature;
+	bh=CrpLOTKNk/9YQapYhhYSJLfsas1NK9k/H2Cz4g1H2bU=;
+	b=q5deMv4ZsdxrI9KFBWm/PbocjBpIpLyLpFs2hxStO9IRqEyB7f3ntSvc2LLQV6SlaWgxMs
+	5XtrvMF3LxdytJZieb7yGzeX2s6LN2S6hSn1M2Yr4fqes9KaNomfy76Q/gpgX8yhSwzw+0
+	MUc5kG45lYyjiXRBYU3h+SBRF7w0R9A=
+Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-7fccba9c675so103228a34.0
+        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:05:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789591934; x=1790196734; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=KFxqhaToXcLhZx57rZOKyfb/5RQhEkCVEVgt0s8vR2I=;
-        b=pe1XjvuVmzI1g2C2boPwD/LKhG604SzxuQHbMGpEknGisSB1quAIPijeO/IoXUfLDP
-         w7/PflLK9VGGo3MZ/TBx8cCwPk+KgYQPllB4Vwb6i6aMfl5FTuLed2sDgJFIydKwFdYE
-         kI7x2oiQT6bGhluFiFnxjFu2t6rhCFlI7JJk61VRS6evCpXViL/VOEnNEzZ1weNR0NAe
-         LsbvywTbPgrMxBThjYndwtyDTalnQ1AJJ827rokro48riF3F4NfIXL9W1KxGN1fGguKM
-         Yv1mcMyyjhmZNCfzWz3o12oHE2oqWPpxod8rYJul1zr8/xyqS1jAiX7c55FHoiMCtN/u
-         yKwA==
+        d=gmail.com; s=20251104; t=1789592755; x=1790197555; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=CrpLOTKNk/9YQapYhhYSJLfsas1NK9k/H2Cz4g1H2bU=;
+        b=LqoDkLMSSOQpygel6HrpjYwdylyDAlT8XISn+KO56V53aIyiQc3+njCsJzkHYPDvMx
+         NUSEDtP6HSh9kiHHe3V2NGhyNZXhL6Ke+2dmFiM1HFr765jAXYVsFTi+FcjzaQbJY8rh
+         /wYKAJI5zC6uT7SgABHsaqJP2PS2sVzjg4eaiXarTMVTqL3kB/4QBZTUhv3jIzc0GIQB
+         240G+FJ4WtzSDO2cMWxsEiIrlg3xN50lM9ylcW9nIORF6WBjsOMjZhLA0Hscs08lye93
+         I9xYNHMtdZrwq185ZLbBueVHh8qB0uKG8k223oGxHtLViejku3fKgu9X6bG8FwyReA5R
+         KqAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789591934; x=1790196734;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=KFxqhaToXcLhZx57rZOKyfb/5RQhEkCVEVgt0s8vR2I=;
-        b=ORNrekKhUJlfKFRsScMuTRvSkfW4goyVhQM7Ea8gENhs0/+tPsSbtce1pHwH0doOrt
-         IAAqQ3Q6EpyOIRTPbCSSmIvnOdtqnTvSTp2mHySH/D6iXdWwmwSugktBe2mhL3KJlJmx
-         NLb7WHIQrHVtOzcQ9LWepb9oaZ3sFTKb541UAsiewlFsS70QglCOg/1qcbnwDnhTSW1q
-         qD82erlNRf8jlbigRSRvrubJK9y6AqdClEOaSdXkNPSkA/QXYyx/+pYylIQ0XT96B37S
-         HOXosDBB+oF17M3lPFjF68sSG3vv64GE62UOoh2cBAPWXS5bg0mdivhBeRMTH1zuQQaW
-         l06A==
-X-Forwarded-Encrypted: i=1; AKwUvBxf1IfYkp2W0Fki7tG6QCuQE4VWA06k7XI28UOkcpJ/yyiMezcLYu7I3Ptlfsd4T9KZ9EKJKh/6TQ==@kvack.org
-X-Gm-Message-State: AFuF++lNfL1AXUr7DIZbkN6tOBU+bBYIK8oLi0I4fs/j9u43R4jzeAP+
-	T2BtzYz5E9nJ5dCvWtQyOYceOaqzCjyCrPaxvxhm+CTGoT9ncjHkHXjw
-X-Gm-Gg: AYBFou2BoLIGENZ9NoWjxnAo096a5Av2keLhK0mpF+MMDzSCppg0dgLRV4K6YxBkhKl
-	XIsoEY05ZjcCUrL+whiv8A06EZp1NwqouyyzDdxCrelPASYNhvB2FMhKGbn2VMgn4KvD+n1bKQm
-	tGdiUXBPxjnc86KESQYN+S9q2WADq+fm34UegqhyM8X673PN+81n1xaR0pQec0R9264eOgdOayU
-	tjWxGQXSbC2sh2VqqvBgCqftgFL3EcnkSjBaciTo6r6otWfFKK3Nwabo6plYUqkUp6RDZcgDiPz
-	n7hnnmsXunRtvlOcSB+NLxw7JPhdthfzW45xdqw7r4eSY5hEpxt6sPAC9kkYF7XeVT93SeCeOGX
-	vb/kyX44Kla12BOWYNefxVbPhVRrcv8rnfyPKw5By6MZMeiHwbgDIkqOJ2KRafiuuvzxZ+Q3hTe
-	xDR/wBWlOv9Nj8/YA9o4UzkSGwBSP1D6wLKzLnyMO3tULjZ77kDjBSq6/CiXGB2+ZVv4aP+LyeR
-	EpMA/AKDm8XuVPrIxp7R7zKk/wSJQ==
-X-Received: by 2002:a05:6820:2226:b0:6c2:1018:3f7 with SMTP id 006d021491bc7-6c7d41e1e4emr7017724eaf.23.1789591933607;
-        Wed, 16 Sep 2026 13:52:13 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:40::])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4842a23e310sm3312526fac.12.2026.09.16.13.52.12
+        d=1e100.net; s=20260707; t=1789592755; x=1790197555;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=CrpLOTKNk/9YQapYhhYSJLfsas1NK9k/H2Cz4g1H2bU=;
+        b=BLooMXCm+9KsUoCnt9ExVDFGfTdlIvB9OWhwiJLDYGJT4sr1rKXURoMNu/iL6PnkP0
+         Nt0fS0Q6ycVATkKOUM77yyZEqKxK6V6/FI0UfvY9HzBL88Ww0+ZBrhOQ2EHggZl0N4By
+         D+UarxhNrxlLC2iyU/8HMOUkDQSDldV4cqt1QMVOiAEu5veKZQEc616vBe0rkfnfS3CV
+         xVFjXXue4Y/mHiW24ckzX1eL5elbXimAWhIJWbjRfuxzBU5wnBvkG0s4gp0wgZs3Dafu
+         ANaZsGni7sKod3LUsbWZ7x+y+exvuigx8R+cJW0jsggeh/PivF6nqKZ/720VCRiy/Vlk
+         EEcg==
+X-Forwarded-Encrypted: i=1; AKwUvBzzzeJuqN96QazKd8pBbkFM83VuOzWIIRbK33WYz/RTuaXZhBVM147hS6x/vU0LhXjQRBtVFpoOgg==@kvack.org
+X-Gm-Message-State: AFuF++mH13eUNTfi1finBkIM+QEq6B9J/RcO1cBZwDPjeH8vY3iuyUes
+	M58IwTry7APfyyOhz9JT40bsKpwMw7BLrjUydB/HmmCoqcIlGBtXDkTX
+X-Gm-Gg: AYBFou1Am4o5ZmLtfDQYmF3MnQMpmqvE5AsrC2fKz15BeKjbciYOZ9wyFv6zc5BUwMo
+	xAx0eTBmUVByosFUM2PRejD4Wmm27XDriT/fFYofq5OXqd5TCiNMRMpgezobIJNnKZOTCfxgFNo
+	JklMjyKyWxP9bxlxOC+GaKo8Al7jcxME7JWg3xvU76d9AVobmHRRHXvaGjoUbxndpUI5ziwGEFw
+	96bGQwQ0CTbTzv+4x2DmyPK9bexIlYXZXKwuQpzjNZNDa6zzeXZ322ILNlpm0CFDwPNCQo1AIwK
+	4upxrAuzvT2zJNEbpLRVoopCCPnlNPrpjckIPkwfVC9ewnUWPJPGyrJQcgb3oSoodJ15I6rshH/
+	lNebC5JSABAZY2AMMwS/gmmncdDSeukMAWeZkakNZ1Gc5m46notR5n42vy4FIGLTIZ0AjptAHj4
+	t6ibCVYBvpjaCQ60Hx98rXKoHJrYOrdCrT8VeaX1pRgnRN2mfVAVzT95/R2f8fypzGbmwCpBXQg
+	JWFH4/8gWl94de0Si+fRLxnAZ9s
+X-Received: by 2002:a9d:64d4:0:b0:803:68df:7827 with SMTP id 46e09a7af769-80c4ef2087amr659287a34.36.1789592755475;
+        Wed, 16 Sep 2026 14:05:55 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:3::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-80c466a74d2sm930485a34.12.2026.09.16.14.05.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2026 13:52:12 -0700 (PDT)
+        Wed, 16 Sep 2026 14:05:53 -0700 (PDT)
 From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Bharata B Rao <bharata@amd.com>
-Cc: linux-kernel@vger.kernel.org,
+To: Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Maarten Lankhorst <dev@lankhorst.se>,
+	Maxime Ripard <mripard@kernel.org>,
+	Natalie Vock <nat@pixelcluster.dev>,
+	Tejun Heo <tj@kernel.org>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	cgroups@vger.kernel.org,
 	linux-mm@kvack.org,
-	Jonathan.Cameron@huawei.com,
-	dave.hansen@intel.com,
-	gourry@gourry.net,
-	mgorman@techsingularity.net,
-	mingo@redhat.com,
-	peterz@infradead.org,
-	raghavendra.kt@amd.com,
-	riel@surriel.com,
-	rientjes@google.com,
-	sj@kernel.org,
-	weixugc@google.com,
-	willy@infradead.org,
-	ying.huang@linux.alibaba.com,
-	ziy@nvidia.com,
-	dave@stgolabs.net,
-	nifan.cxl@gmail.com,
-	xuezhengchu@huawei.com,
-	yiannis@zptcorp.com,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	byungchul@sk.com,
-	kinseyho@google.com,
-	yuanchu@google.com,
-	balbirs@nvidia.com,
-	alok.rathore@samsung.com,
-	shivankg@amd.com,
-	donettom@linux.ibm.com
-Subject: Re: [PATCH v8 0/8] mm: Hot page tracking and promotion infrastructure
-Date: Wed, 16 Sep 2026 13:52:10 -0700
-Message-ID: <20260916205211.267720-1-joshua.hahnjy@gmail.com>
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: [PATCH v6 0/5] mm/page_counter: move stock from mem_cgroup to page_counter
+Date: Wed, 16 Sep 2026 14:05:46 -0700
+Message-ID: <20260916210552.891730-1-joshua.hahnjy@gmail.com>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <f871efd2-06b4-493f-87cc-919b6e0945c0@amd.com>
-References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: BC85C16000E
-X-Stat-Signature: f3gp8mc7wcjxfp8ju3w797kctstkfcwp
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: B11D840005
 X-Rspam-User: 
-X-HE-Tag: 1789591934-205981
-X-HE-Meta: U2FsdGVkX1+c/OieTcdo+z4veSKMZE5UxO76EN7IVVsm7o4FWLDe8SPbadd6oRfWylZOuJTIfThUMNLaLRGcCCvHx5RBypfAlTG98Q9n0eV1EjEcpPzAwb1IJ18lwhksDyitxJULEIjmVx5JP32OHuC0XqK2i+0RjNJe/o+lnct392UokbHQJkrzjIz1rINraQl1niR4NKOGUn7l4nlHI0Izn4J8FLgjeDuzpOIOzgJO73aHhyUcrNAv9RUCwwzORaCPfD1OB+Jks2Fnky28eJWmmcXPggNHzeveP3rDP933NQa5bORtsSacITf8MX9v7gc5ujnp4Zo+nazD1qSI5yA1GOwPtVlzxa/MDPZovFThqWDXEBe+qFaBT/oXtsX0V6RB8A/5PIDkGu/NTETr6V+arEKQIzqj4AyMtLHENQlg6W97rWy638083wDfeRCKsZ/nI/tMk+xxDvEP5/jY/5IFEmytT2xV0Qq7VIQI7/tq3s7yud71spFhdxJtx/osLl3gVlTbjsxZaA+s+Ti3z6bXHEYJMYijbWP1wJd8QMh1dunSDyN01chnMioeQY6YAQcHZsdCTYtEHLlb1qJAnMrrePaUMqbdnGU06IL0RN+gHKKNNpy71dNQ8ROELBxacIlhuskmBsmxHj3DF06EI5LOQuh/LqId/YocWOX2uChCEcBHTkHFLbz7a7Hc/XL/Kdn0/JxQnQCRHEs7ahF5VTi9IXDnco7m0qa4+Uim1JDr4t5jXCZnxoQUNwjjweSW58jTz5L7m6cwUEL/dkisijr/P8+i02Kg8Bp4/UZrKtPUhVn7UMyfW5L4ptMD7al01pH9t8kOhqujGlT6EbDu+dz5WMEED1n6TTO8OM9b+6tQQw0jSEpGeyVxAoAmcKJ+YEtYZiDA2rwDhbQfmKCp4pQ6xQtuXV1TaOKO20c19Sq4HsrmKm/bIbrUz8WOSy1naS9coAjIwh1r98+cJx+
- OPu2HEhB
- U/wrWOzW+OfUnAS+nN1Tsd0/3slYd2OoXQOZc8UmZ9ycspJcnPYHGnKhwM2hm3umsC6b+oq8mXJJBB7Lt46mfIDu5S19pebSnVq9bUnMGUKy6wNJg8L2mj6PlJd299G7pjUjcTurRT2gS+nPFtPr1a4RqgwJpsJrLDNIgs+/WoxfhLhU5DeQr7dUwD92Wg1ZltGzYjOkbDkoShjoeit6oV0QA9U6WAg3zIgKSqqIUcm0WP0TdxRnDA3eBgfTnTy9vt72Fr/jnssvBatxpZoE+w19xL/+X3yjZroEtDrN9RNFlCmkT+RVE1eiHijT4gfeoHv+c055sSZU0XbwzKC1RGtTD7c5021TJK8TBhaqNuXogR0MPK5mEb3479YS1HzwCX9a+IvQW5Ou4JBTBxURtCnTSjikzrU2sYrxyPiPMy4+mj3P5K5v4chlM03uWIqXBg2pUYJ2g1RYYaerF1QUpm7D5yWym3Xdit8TObpUiEin377wCLSW6TeBerXID7+5NXnWurZ0tpyBvsvzQTKC2dywBu9IUQwNcq4zr3KR4wjv6Zah0joaNbp8OtjJe89rbtnsLftIMxj3NWEw=
+X-Stat-Signature: iq5o418gupg3r8kaweaxpiorsmjob4sw
+X-HE-Tag: 1789592756-616744
+X-HE-Meta: U2FsdGVkX18gI0waoRndqqcQYmw7/WBZ+HK5weET16L4bhvo1Knh7yer0PSCCPiYfBfjqwiI7nClQMa2jZa9+Ra5F40n2VZUuAeHVZBvE0X0F8VnbI2GM7F4KLQOcnfvITmtBUTrI88orCwzW/VWnZ1J6HdBlJDGLfWvLO0i0qJ/2/DfLUsjVCk1WM0TUJXaEW65uDn/WYOKdkz0bbbQmdapQTYfuPQs10QL7lw6G/0JH0Su50okpm7t3toDQ51q2ibUXQXDMgEUmjqehKnSOMKtQO0AD5tNZsjlO702ttlcPwQF0HBhy7ZnNRKsGF+QvcMfiJrFODFkklgDBiFzayl8cnmWvJxDUyCFCmpk31YYN/ooWrDaAhW6PFFYWX8pZorYo1lvdwhShHdmyD7BeGHmQLALcCIhugf+lQk9e9NdkcO5PPGKWTi8n393b0jKj/xA00bRy//7ffJx67nvXID56qcVnw9VrnpemvV4wrHt0zRQxugRMf0YcefmBRDa7iqiVL/rI08bWFDVxlYa34ywDbWg0aO5D/VjDy9msOfp3UkUdKFPyU6f8wj9dOZn0A7KP2yyvH5yjP9Gyhj5fP6b2vaINaOhVxiv6QEUqsc0i43cs+Y4I9Q1PyrOw9z8AiUIGzHusgqVQqjVCADOWNqifC+7LIyIicGfiL8Cj3d9wZFbROwgPkxCoHS88DVw4DjSeXXF+bWIgbWz4Twlv7b6MXt2XgINVnO2jZpZO896c4ICu4WBR3luu5JTq7b1pgOT0jEnVrCkSapoaEdWij46I3bHOwvYuyB+KE5FJUbNCSQDoXrur4EB4gOEw01uaJ2qNkj5qbBA8/e2KaaDlX9Fx7FNcabppivWIQPgU4x/6vyBAbS2fPIHTruxq35Zvr1ftvQnmZK9IdmA8KVEN+621GYdcjh5l7+NRSTRLkNbPYOVyURNWROZvbu/1Cr/6lGrUKJO3F523hUHafq
+ wkd7WtqD
+ dY26rsGCJYWjQBddQLuCcGeKu8Pc3MO/ja8UWkpBvOVhBqvTm5vKJPibsJEHMYsLz1PvpypG/oMyWDBpWQBejZhj5b6MBcVZx8RQD0umON4pfLg20b8CMJT8sxKfaslej251XgmkziCNVu9cMB6OWyyTM12f6CDclX00wpfCBvPL2/I/YKwvHnc/Kp/5gK8G9EsxR4yDWjcFLeixaIxwHPf7C+YVyVugeF12f+ZVTISpyyxPB30fR4zs80hSsM9ohEb7DdNznyD9JXuu/UlGh4GW8n+VHMXLmQ41OPdAtFf1Hv4MeAUVgsXcPMDpixndsmaTHNlZclyAE0WCzzMPZ7RdOMnm93qIp7jVjB5sApiqUz7VjjeCZ+FUPJwAguIgc9YEQTn/6Z5UEOjzywA+soA0Hf3Zo3h/dE6tEPsmNfZ1sX9sMY4mQ+bKRTqcdiVRxOVPB27tQOCwbuybrTqtRuQwY5jbpdxJqaBPYph+bTC+5H6+3nP0INqBOYuGvAyS+TfagJlChBqUQhIYBZ2veEW/jm196y7acyFZV5p9bXGPgqou+uzeC9Als6OFYIBk1600zI+/x60Ae6sA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,95 +134,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 16 Sep 2026 08:38:17 +0530 Bharata B Rao <bharata@amd.com> wrote:
+v5 --> v6
+=========
+Following feedback that v5 combined the (1) stock abstraction move from
+memcg to page_counter and (2) changing the allocation / draining
+behavior, v6 limits itself to only the first goal. It retains the
+existing seven-slot per-CPU design and drain policy.
 
-> On 12-Sep-26 2:38 AM, Joshua Hahn wrote:
-> > Hi Bharata,
-> > 
-> > We've been testing pghot in a Meta kernel with worklaods to try and see
-> > what the performance characteristics look like. I wanted to report
-> > some of the findings that we've found in our testing. Note that these
-> > results are from a modified kernel that has my tiered memcg series [1]
-> > backported, as well as Gregory's numa balancing scanning fixes [2]
-> > as well. 
-> 
-> Hi Joshua,
-> 
-> Thanks for testing pghot with your workload!
-> 
-> > 
-> > - Without tuning and using the default tunables that pghot comes with,
-> >   we've found around a slight performance regression against raw NUMAB2.
-> >   This was being run on a host with 750G DRAM and 250G CXL.
-> 
-> pghot promotes on 2nd access by default since pghot_freq_threshold is 2
-> by default. This will result in slower promotions compared to NUMAB2
-> which promotes on 1st access. Could you please try with setting
-> pghot_freq_threshold to 1? I think I should make the default as 1 going
-> forward.
+INTRODUCTION
+============
+Memcg keeps a per-CPU stock of precharged pages so that small, frequent
+allocations do not walk the page_counter hierarchy every time.
+Today, the stock implementation is within memcontrol code, even though
+the operation it caches is a page_counter charge. This makes it
+difficult to add new page_counters to a memcg and preserve the fast
+path behavior.
 
-Gotcha. Out of curiosity, I'm wondering why you decided to make this a
-tunable. Specifically, I'm wondering if there are any workloads that
-benefit from making it require a second access. To me keeping it at
-first access makes a lot of sense. Obviously you could say that
-scanning workloads would want to use 2 accesses, but there should be
-other ways to prevent that from happening rather than counting the
-number of accesses before promotion. Just my 2c.
+This matters for future work like my tiered memcg limits series [1]
+which introduces multiple new page_counters to memcg. Without making
+stock a page_counter-level property, it means that every memcg charge
+now goes through multiple page_counter hierarchy walks, instead of
+being able to cache these charges.
 
-> In any case, will it be possible to provide more information on what your
-> workloads are, and the exact performance metrics? Any representative workload
-> that can be substituted to reproduce this behaviour can also help.
-> 
-> And when you say slight perf regression, how much is it exactly?
+To make future page_counters scalable and performant, move stock from
+mem_cgroup to page_counter so that each page_counter can opt into its
+own per-CPU cache of pre-charged pages.
 
-I'm seeing that average latency is about 20% higher and p99 latency
-is about 5% higher.
+We get an added benefit of simplifying try_charge_memcg code, which now
+has all the stock management handled transparently within the
+page_counter layer.
 
-> > - However, we've found lower pgscan_direct, pgpromote, and pgdemote
-> >   rates as well.
-> > - We've seen PSI dramatically drop on the host as well as the promotion
-> >   happens asynchronously. 
-> 
-> That's good to see.
-> 
-> > - I also found a bug where the kmigrated thread isn't created for nodes
-> >   that are onlined later after boot, like CXL nodes that get onlined
-> >   with memory later on. I've been using a small hack commit in
-> >   pghot_memhp_callback that just checks for the MEM_ONLINE case and
-> >   spawns a kmigrated thread.
-> 
-> I will take care of this scenario (CXL node online after boot) in my next posting.
+EFFECT ON MEMCG V2 USERS
+========================
+This series has no functional changes intended for memcg v2 users. We
+preserve all draining, refilling, and (un)charging behavior, including
+the uncharge path's refills / direct uncharges.
 
-Thanks, it will make it easier for us to use on our end as well.
+EFFECT ON MEMCG V1 USERS
+========================
+For memcg v1 users, the decoupling of the memsw and memory stock means
+that each of them now manage their own independent stocks and can lead
+to a different size of precharged cache for each.
 
-> > Finally, we've seen some issues with pghot causing userspace crashes,
-> > which leads us to believe that there might be some bugs that manifest
-> > in userspace as well (we have not been able to find out where in pghot
-> > these bugs are introduced).
-> 
-> That's something I have never seen till now with any of the benchmarks that I
-> have run. Any kernel messages attributing the failure to pghot? Anything
-> attributable to access reporting or  kmigrated threads?
+Cgroup v1 has an invariant that memory.memsw.usage_in_bytes is larger
+than or equal to memory.usage_in_bytes, because memsw is a superset of
+memory. With separate stocking, this could have been broken in scenarios
+where the memory stock is bigger than the memsw stock, leading to
+memory usage appearing to be inflated and greater than memsw usage,
+even though the real usage preserves the invariant.
 
-We're doing A/B testing with NUMAB2 only and pghot, and we are seeing
-the userspace crashes in the pghot host only. It seems like there
-are some segfaults trying to reference ip 000... and a warning that
-references "Too many tries to read user space".
+To prevent this, report the larger value of memory and memsw
+usage_in_bytes for memsw reporting, so that the invariant isn't broken.
+This is a bounded stock-related overestimate and does not affect
+limit enforcement.
 
-I don't have anything in particular that would direct us right to pghot,
-but this crash has repeatedly come up, only on pghot (across reboots)
-and not on our NUMAB2 worklods. 
+Based on latest mm-new as of 9/16/26:
+892f5b3b07e5b "mm/swap, PM: hibernate: atomically replace hibernation pin"
 
-> Any clues from coredump or gdb debug of userspace crash?
-> 
-> Were you running your workloads as part of a non-root memcg?
+[1] https://lore.kernel.org/all/20260807202059.2620949-1-joshua.hahnjy@gmail.com/
 
-They were part of a non-root memcg.
+Joshua Hahn (5):
+  mm/memcontrol: flatten try_charge_memcg control flow
+  mm/page_counter: introduce per-CPU stock
+  mm/page_counter: make page_counter_try_charge() stock-aware
+  mm/memcontrol: move memory stock to page counters
+  mm/memcontrol: add stock to the memsw page counter
 
-> Do you see these failures without [1] and/or [2] ?
+ include/linux/page_counter.h |  35 +++-
+ kernel/cgroup/dmem.c         |   2 +-
+ mm/hugetlb_cgroup.c          |   2 +-
+ mm/memcontrol-v1.c           |  12 +-
+ mm/memcontrol.c              | 328 ++++++++++-------------------------
+ mm/page_counter.c            | 209 ++++++++++++++++++++--
+ 6 files changed, 334 insertions(+), 254 deletions(-)
 
-Yup, I think these are unrelated to those changes.
+-- 
+2.53.0-Meta
 
-Thanks again Bharata!
-Joshua
 
