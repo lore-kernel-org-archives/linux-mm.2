@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E577C88E75
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 02:28:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8F1AC88E77
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 02:28:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 668456B0092; Tue, 15 Sep 2026 22:28:09 -0400 (EDT)
+	id A60766B0095; Tue, 15 Sep 2026 22:28:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 63FFB6B0093; Tue, 15 Sep 2026 22:28:09 -0400 (EDT)
+	id A12D76B0096; Tue, 15 Sep 2026 22:28:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 555776B0095; Tue, 15 Sep 2026 22:28:09 -0400 (EDT)
+	id 950806B0098; Tue, 15 Sep 2026 22:28:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3CC126B0092
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 22:28:09 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C60C3160581
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 02:28:07 +0000 (UTC)
-X-FDA: 85218040614.28.17B6AA3
-Received: from mta0.migadu.com (out-222.mta0.migadu.com [91.218.175.222])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 91D481C0003
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 02:28:05 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=icxZfwJW;
-	spf=pass (imf20.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.222 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 78E1C6B0095
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 22:28:56 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DAF0DA05C2
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 02:28:55 +0000 (UTC)
+X-FDA: 85218042630.11.AE44414
+Received: from mta0.migadu.com (out-247.mta0.migadu.com [91.218.175.247])
+	by imf03.hostedemail.com (Postfix) with ESMTP id C4B9920002
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 02:28:53 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bguxoym4;
+	spf=pass (imf03.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.247 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789525734;
+	b=V7oKFrTTXYyGndiQKCpa4ZU+HIj7NF5j7i5gdJm5KlBxMiDNKv25l7WFM2R/B/4g4T6n3X
+	bgmh4kiBmoUjddCzrizTvr6VLxVKGMKQVsCku1/gn92wrCh5wzU+Qo4rwY+/UJ8jbE6OpO
+	paInPBeoRrXA1RLS6xVI5ZKlxxoni/E=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bguxoym4;
+	spf=pass (imf03.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.247 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789525686;
+	s=arc-20220608; t=1789525734;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kJgEZ3B/DsQ5071yZaP+CFUO+XNU47PB26CE8J37aAU=;
-	b=Uu3TsvEXkZ8UkK0DuROiR+6YgbT3jS6ujF4lKnGwQVmQ/WDUum5JGlpV52mGBpo1I3kiB2
-	DEEbDeojvklbL8pVOR9fYr/t0ikFcqolvkBkuVZTLCVV5gPfysKIUrBDXUEMc3iGc/8ie2
-	3w1rRMV/6h2nmY7hYYmKN0YRwhVdLqI=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=icxZfwJW;
-	spf=pass (imf20.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.222 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789525686;
-	b=P08KkVqC04CF+ZELvGaUt0Ky/qDiRM6CXD4kI6C9H07EEyPcpql30oIUOqzif3VQMIPB/d
-	A65j7Fi0MsssbfT7SGgSWjKypwn7YaT1wG3k1oJuatvV8BohBAtN3j1IA5mFlAxAUNHF8Z
-	+RTbyYmdlHzBCpkFk2tFQBbc83jhU70=
+	bh=4qHIoUIvbOmtiJ4vJQ6gCU9MsrMYH8mxyIJDAnzJP+0=;
+	b=Yc9j+/bOOgdYSo+LCXj+VHbgTONUpzGUxBrWSlcJ3espN2CuMCLdJATn6v5CsWPEVRVu09
+	lxTk9o1aneVLfTNZRHXLagtf8IjsoDYZGNbrlPz4qbMRf3or/OsbU0DRk1hHo1QP1pJ6no
+	nrNiIw4PxuDQLgJuEtonun9t3aVr8fc=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=ZyxvwXCuu3wDubtodIGxIsLb9DGpsFtLwTaxFFn+nac=;
+DKIM-Signature: a=rsa-sha256; bh=tTKmz98Lo5PgYCpRdlP0wUncPsKYuinX9OL0Z34CMXs=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789525684; v=1; x=1790130484;
- b=icxZfwJWf9IQMeeSSW2HGckpLv/cicx7r/t1n3GOKWT4uTHFT+Tzb0PjFo1E4waqCykBmRue
- C7eDTylMdvEocKy+BNqjgV1NKoBD5QWzCUtMghpQDMa116QaawXSRGqYNO05I9sK6+t7b9G/5yj
- yISOx8NczZymSfEYFS6PWUfo=
+ t=1789525732; v=1; x=1790130532;
+ b=bguxoym48gTuKTsek+zfr7nVSvfkOfFpTCP0Li4h0ISSG7k/NNlmEIy4QO9OPFIeNWOhVIft
+ B7WqHMvU75M+4mhfGJMq7PsrXsVliQxbPDAMLhU1m/27/ELXpb3rzj68O5aSh9uLzRICr2CHHkO
+ tvOibVlRC5RmPtC1KUN+TyC0=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 00efc25bd57ee33c;
-	Wed, 16 Sep 2026 02:28:03 +0000
-X-Mizu-Trace-ID: 00efc25bd57ee33c
+Received: by mta10.migadu.com with ESMTPS id 519e8ea2ff9347be;
+	Wed, 16 Sep 2026 02:28:52 +0000
+X-Mizu-Trace-ID: 519e8ea2ff9347be
 X-Migadu-Flow: FLOW_OUT
 Content-Type: text/plain;
 	charset=us-ascii
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.700.51.1.1\))
-Subject: Re: [PATCH v3 01/11] mm: memcontrol: take a const folio in
- folio_memcg() and friends
+Subject: Re: [PATCH v3 02/11] mm: memcontrol: constify obj_cgroup_memcg() and
+ friends
 From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260915-folio_memcg-const-v3-1-c239a6010b58@columbia.edu>
-Date: Wed, 16 Sep 2026 10:27:41 +0800
+In-Reply-To: <20260915-folio_memcg-const-v3-2-c239a6010b58@columbia.edu>
+Date: Wed, 16 Sep 2026 10:28:30 +0800
 Cc: Johannes Weiner <hannes@cmpxchg.org>,
  Michal Hocko <mhocko@kernel.org>,
  Roman Gushchin <roman.gushchin@linux.dev>,
@@ -98,19 +98,19 @@ Cc: Johannes Weiner <hannes@cmpxchg.org>,
  linux-mm@kvack.org,
  linux-kernel@vger.kernel.org
 Content-Transfer-Encoding: 7bit
-Message-Id: <FE95C2D9-510C-4588-84AC-4AFCAA2D3921@linux.dev>
+Message-Id: <1FC4ABF6-E713-4034-9431-9B97C584B90F@linux.dev>
 References: <20260915-folio_memcg-const-v3-0-c239a6010b58@columbia.edu>
- <20260915-folio_memcg-const-v3-1-c239a6010b58@columbia.edu>
+ <20260915-folio_memcg-const-v3-2-c239a6010b58@columbia.edu>
 To: Tal Zussman <tz2294@columbia.edu>
 X-Mailer: Apple Mail (2.3864.700.51.1.1)
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 91D481C0003
-X-Stat-Signature: odp8hwhdsdzkuerra4ioh5d84tp31bww
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: C4B9920002
 X-Rspam-User: 
-X-HE-Tag: 1789525685-741205
-X-HE-Meta: U2FsdGVkX1+2Y7veBsO9mPxjJ8ZQH2GznSf1I9byhNSCJR3s3WNi52KppGZKfHMle4dzOPjRSDZ2CoSwUt22sGiDidJh1VSdLERqs/Q1Vg5xf1LrVAlOzN6AsYexgiuj6hcGPP5qnKKzoM26taMm69ymEf8ZNib03/GhQUuok2iqKF72vteIo81KuEyxFGtCO4Jum8Jmmam1kp8P7Maj6yJeSbVwT5m8LYYIzmaN8HbW0DudEUf8uDGq/R71X7VahaAYEGn8aitxfsAs5NZtXKCdEybdjnuD0iJLSWn1Vvar15axTpDvTkRm7f8dJ7Td06CQC0ZjK3tO9iOyr7V1zN0Jm3+zAb/YgcVbtPLGPJMlsKcnEdOQSurFrlATH2vrPhZWOFA+tS/VTsuFbxXLkOjSpsFT4o2zo74Y4K8oLasLpTL+EQ29wCzpE/2I+0WQnlKEVkfX2Ke8m9wYefrT9bXkYlTXrLysRf+r+DNlZRFe04hMbWsH7o5YiRZ25x/236RPentfJkflEtlKAb99Xps+YWul9CEfMfGuQE7PFfPeldK9c+/NVhlfxt2gzpMDrtV6UqEGStuA5OJyVx4esz8sfrD/DpPXiq4FDmVcNtgivHoojh1jdpVqPqZY4E8SFCaFleg49RX4UgYIfZdr7eeaxXFOc3R02RcC/QPmpSIw2xO1IKNa6/DDyLp34KgUzC9ogN9vqm7I0XluDDs/AjvQb+dbPYJB3MaJjLIU1PQNidMhXF7IY0Scpnly+ifkCue0pVf6h+Zf1UEpQttNNtctIrk6wOerH+IBT43Cug1oYeUyCqM2ANzMUc7XaCOLQ9nCaN7g4RFp9kvhLg7UF8XoONARC5nAZur4iQNha6rwtHrNcYJ1c6R9D5anPHXjayxoKXF4iRbtavsW1Z41W8vMuvqpp4UIn6PjJftQvoZfIB4kDa9S4EwPN9vpuaFhG/QUbTqgeudHUiwSSlI
- G1TWwN/j
- 6l8E/UaJpPEcfF0uaECfliGQK3jWjjoxNgGMCi626Yg2W12wZkPS3vpYWxMfr2/yDBztqt6x+q0JgGkshJYNVSOCpk6+qBFaVzbELXd53No5qLTMrLUQfbDWXQmptkGpDotA3YDfWumU5KHPQWSOk0kNWUfPwCW704xgzoW3cmsOHUQkTdnoGdwdPNP7VmlDgMAz7rcZGA1Dh/gRL1LMkrItrAkN6ow04yIqGbUcLgrc8mgbjMXyPCGSy5hfK9THLIv7FB2En79hDbEIpydhGNdddYu64/FeEbI6/r9ZEmBsmaIGBdOpHTTtFGw==
+X-Stat-Signature: t651hhpssqqfu55q5x7xu8bdgt68jdfr
+X-HE-Tag: 1789525733-256247
+X-HE-Meta: U2FsdGVkX19iMGuP9O8yywJRbOBYLBKOfcyIvKGEhSwjFNpKauZ0JA6OBQk9MOEpGCJrNoHZBbl8Br5uPqrRFvo24V6g2Zw6B01+zLoZ/ZtviJVM9U5vHoURcSb6708ElguUP34MeVcdjJMLb7xbyOo/tk6GPetUAB5Og21k+ofgblgtU0sI1GwLg3vYCU+6tQK+uh3niBwaFRS1cT86i8zHF/sBvZT0qCHdKjtdi9CU3TmKsSZMmCjUEILzfj08/dBf4nFdH/dYTwfCWqXADTA3azbXIkG+ngUBzYuDN6zZYWiJUhEkyWUYmgaq6fyKLUV/htglS1t625anrIyK6gWO42/YDUQDcOP8SGQpkaXQ/6Dv8Xsjg9Y6EoJeec/23OSQSjkQxzT/HKpqOE7hPc5GWi8tsf005EnBwE6dJyXC/iuYdhqXkUXaICM1CBqb5UDWMnLnjFg8GJ0maLYKzoNaA8rTzzG6MHK3rhdiyUHCgeYTi6l5D+7FDcoQsjtawQEV/uifmwrx8+Kapn78UXM/Usa7zzpybWI1hCQTpDmyZ8gGap5LW9IoOPbAQPK4UGcG4C1mKzg7BPk3TAsa6eblQTK6l7/hivG11J2RPpYNW64LwQB3gNVXTATksEU0JWu+OSnzJZpquctbfzbEjgQyfxOvAFm0ZmChspqpN5iq1WZ+nAW+aLGt0/U5+f+K2rw3mEWuzNIcI0Uirz9fVU4i1mv1feriDmHjA4ILMVTqyGzIGyHkchBz3UUhjkZJYCftjtDw1kRd1oPc5k05s8KjFGj0BMBOcBDMqk4PbZrdvHwB/Vnmc3l2znTiOEBEbowcimGDuWvwlhhdj479qIdQJ7eET9CwDNW34plo5op7sOgFe1Y4nLevenx6UwdxEtdqZPm/+nkDAnlYAyy2cA3bE1AQlHIJBP9aa+O/iByqN89iWY/0RJXpI1GhB5ez3p8eY3V61maRqZ+4KZh
+ WSVuWiMm
+ GoVK4Ky+3IggsEYiB72opUp0A8g1PMHOI7LI+TEIje01iHaHqLFGamEupbQOLPchCG4zxM2/jd/B06zXYI+w2jGwLyR82AlkmpidPbz/J1nCxHBhjpZdPjMG/hisxAiJLey3H3xYzQgj1pz6/Z+PUlZA3hRQ1OYWVnsAz4CasJb+xSBF99taTmqZYS34hqr2KpR4NYyoNUT56iV7HoA8qi9WJzl2uh4POqt1fjY5wUeUs+6Ck7pKINnD1Y3pYnzXDiyMY0q300aWMxQVQav4Omz0OQQOBZOla+guw598uGqfEbTRSdkGBCVnZyXpmIi2phbaLJlS23X0BK+rP6DhRi+yw7A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,10 +122,8 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 > On Sep 16, 2026, at 07:20, Tal Zussman <tz2294@columbia.edu> wrote:
 > 
-> The folio_memcg() family only reads from the folio, and everything it
-> calls already takes a const folio. Constify it, along with the page
-> wrappers built on top of it and get_obj_cgroup_from_folio(), which only
-> reads the folio's objcg.
+> obj_cgroup_memcg() and get_mem_cgroup_from_objcg() only read from the
+> objcg. Constify them.
 > 
 > Signed-off-by: Tal Zussman <tz2294@columbia.edu>
 
