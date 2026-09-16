@@ -4,146 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82822C88E77
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 08:32:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2867C88E5C
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 08:35:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9035E6B009F; Wed, 16 Sep 2026 04:32:46 -0400 (EDT)
+	id D26BC6B0088; Wed, 16 Sep 2026 04:35:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8B46A6B00A0; Wed, 16 Sep 2026 04:32:46 -0400 (EDT)
+	id CD7D16B008C; Wed, 16 Sep 2026 04:35:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 77F026B00A1; Wed, 16 Sep 2026 04:32:46 -0400 (EDT)
+	id BC6516B00A1; Wed, 16 Sep 2026 04:35:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 546A06B009F
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 04:32:46 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id F2EB3160611
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 08:32:41 +0000 (UTC)
-X-FDA: 85218959322.18.1C61FCD
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 881606B0088
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 04:35:06 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BBDBEA5BC5
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 08:35:05 +0000 (UTC)
+X-FDA: 85218965370.20.755C8CC
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 33698100003
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 08:32:40 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OE0zVRHy;
-	spf=pass (imf05.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	by imf15.hostedemail.com (Postfix) with ESMTP id 33A23A000C
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 08:35:04 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cd2Z9Sxp;
+	spf=pass (imf15.hostedemail.com: domain of arnd@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=arnd@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789547560;
+	s=arc-20220608; t=1789547704;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kryuK3liGiOsrOQQb3JdRd/XrDBXKZJdf0bb5gTtXVA=;
-	b=UaoTv41JCjt1a2lFumm9eDbnOtOInK3D7kaoj/uAmm1CZh4Fo9uAeE2+OuceV+51+2qJH5
-	MSx1MYqUmnXeFw45ouYJtHrO6ZGypRBZkHjEy+523SexSJwJOT80JiUKSVFBDDVyyjnfkK
-	/1Mw+GOrxdTn9Vg7VE/F47oOFAr89zo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789547560;
-	b=iRYQJHASe/CXa8+rec3le4jkD5W/ExZNtAYwQEJvNLkQiWuTBueRJGcnL+F2HmB8CAuf13
-	jmKbXPklMCoqnDuIqfrZDHxH266743B8aqaEndY2F82JRcZluqBW7hwYlqaUbKJ7lJ2xiQ
-	y/erod2PW7hkJErOMw7Di/p2sdd2R/g=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Y8u9M/CPrZ8uUGb5gcQd+lDUMbsBuT9RIoPai58SWkI=;
+	b=NcmynZJ0L5VjHuCJ7Qx7daHDctZ8hj/T3B6muMUHkGtDhcCSykCg4FlShzQ3XU74g+7p6a
+	BMz+Mkm5JMSJH2598+Z72G8kRZPGVOJJ2XQSRDHRU4dETGfQUW6NxKQ2uBQbyPiP88uZuT
+	hiHDefTlyuIncCmnX0k1BvUg+eA+QvE=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OE0zVRHy;
-	spf=pass (imf05.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cd2Z9Sxp;
+	spf=pass (imf15.hostedemail.com: domain of arnd@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=arnd@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789547704;
+	b=eJvXxu/yF3m7Kry/IhEIgolSwy2FoBsFyGMlm3QX86MzrdPRiRgs4X96r2OQTfDoNx8DZL
+	N9VImSp3AOHFqVT5hp8imZ8k8zKtdotnMdW/4jOTJh3tOnGM/qkmsuN6XykFOVvLwFmwXb
+	yJsp2xXfc0knNDXl/7oyxE6RJxi6kxA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6A8414131C;
-	Wed, 16 Sep 2026 08:32:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 211411F000FF;
-	Wed, 16 Sep 2026 08:32:31 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7119F43BD1;
+	Wed, 16 Sep 2026 08:35:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0E0B1F000FF;
+	Wed, 16 Sep 2026 08:34:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789547559;
-	bh=kryuK3liGiOsrOQQb3JdRd/XrDBXKZJdf0bb5gTtXVA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=OE0zVRHywwZPRGzw7YjRr13x+B5BhcawMFrUjOnZ6UYVh2xMHPClEH7eMMRLHg1Ta
-	 7383xDBAZx8aiTXPifqvkjz/Mzlzyu/vPr1sVy0IqIqgj914UgaLVVLse6c+FvxiOe
-	 q/DsaHka4dg6nsJp1DoaOSMXlppy3fKbwLJsq+dhGQvACllR4eeE0uahd5SMJtHU/D
-	 Ip7/c+4nt3hgP6HiJhggCs8ScgA8TgUCedPyHUKgHP4POlPRNovh9CZHMb1C2g+Tk7
-	 tb0CIBNryPjpn7Njm5gW8fRbYiNZx1lPnJSzJsR/pj6WuKcX4F2sttv1kZw9KwyVEr
-	 1XcJsl3KPxL0w==
-Message-ID: <3c663c66-70ab-4c9b-a490-67deac9a572d@kernel.org>
-Date: Wed, 16 Sep 2026 10:32:30 +0200
+	s=k20260515; t=1789547703;
+	bh=Y8u9M/CPrZ8uUGb5gcQd+lDUMbsBuT9RIoPai58SWkI=;
+	h=From:To:Cc:Subject:Date;
+	b=cd2Z9SxpnkTdH1y1FcHDR85THhmLg1DVK79MLRBdRCJ7jrGFGuHz3EOm+1lgjoxQs
+	 P99byAnWaXD9p8xXn89E3AzOKhuN5gv6rX/ijcdxo1mvHXXstI97IPXci9EHoIty0A
+	 isqHt8/ClvZCSfl6A5yvhD7YHpgMN55ji+BD5O9eebKd2KXYy5tu/NWH7xhcqkVbdb
+	 y18ExV8YCpBN8+4yS+awIntit5R05/OZJz0DxEkozrbpGB0mQjWG/aaXiTabpqut/R
+	 R8pMJ2qPPM1ZU0RPNQKllljAnYCy/i8aM2jnZF38cEzu4FpqLcx/PmhYWVHRLJulV0
+	 ZZf+8RpJDObzA==
+From: Arnd Bergmann <arnd@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Arnd Bergmann <arnd@arndb.de>
+Cc: David Hildenbrand <david@kernel.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Ridong Chen <chenridong@xiaomi.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] mm/vmscan: avoid false-positive -Wuninitialized warning, again
+Date: Wed, 16 Sep 2026 10:34:46 +0200
+Message-ID: <20260916083456.4136132-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 9/9] mm/memory-failure: keep inherited poisoned frames
- out of the buddy allocator
-Content-Language: en-US
-To: Breno Leitao <leitao@debian.org>, Ard Biesheuvel <ardb@kernel.org>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
- <nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>,
- kas@kernel.org, kexec@lists.infradead.org,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
- Brendan Jackman <brendan.jackman@linux.dev>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Oscar Salvador <osalvador@suse.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
- hannes@cmpxchg.or, shakeel.butt@linux.dev
-Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, rmikey@meta.com, riel@surriel.com, harry@kernel.org,
- linux-cxl@vger.kernel.org, driver-core@lists.linux.dev, kernel-team@meta.com
-References: <20260915-hwpoison-kho-v5-0-3bc7a57bd503@debian.org>
- <20260915-hwpoison-kho-v5-9-3bc7a57bd503@debian.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260915-hwpoison-kho-v5-9-3bc7a57bd503@debian.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 33698100003
-X-Stat-Signature: ac3sr5qsbxnbicbr9d879zo9is6j15ua
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 33A23A000C
+X-Stat-Signature: ocnbk7smckn1c9fe1733ixuuhb8jjq9x
 X-Rspam-User: 
-X-HE-Tag: 1789547560-686522
-X-HE-Meta: U2FsdGVkX1+J4OPpNwUIZHFh0ahtmeLYO4RJorVlL04yeX42HdG53Sd3hCoseMBhSbqQtmjeynduC4/na/HyLrC9VwU4RvIFt3MQd+pH8OWav209gDrbR9LG7aGlZIAA6Hs8yp2JHb9/FUfXBS2sct2zMZCXkw9W3+3giDlHzxwkmgB3bNAvUeUD2x1nWDVZ7zckF5vdMQjE0xhLJSm1cmB92zhQh/sV27kSbFgn33e2aa5uw/1Xp3tjIoVA/LKIIcYrqsx5OjAfL8BjjWHEvJk6Jx1zEshJwaB3aLJDs9LWa1oVST93u4o64bUGkIWjDoR6jVZkd06/eCf+uRMRugdF+KrQKH6A1OVA+j2Png3YZSbrcyB0Iwo5tNt2gKEwpjO0zIQG/0zlhfqA8ZRv3LjRNPNMdg1Xx1iEYaC+RW8s66iUF9bmGSAgX/BpvT3GX7biGUbrjPSR7QDeNxYkmEJEos9kwcAgMlvp3b5DzuCtEyJ71T0pLajFH9coHs9zpTjJKJQ3vd9Fp/idBZqBu2fEarf+IkPlzdNjoBI7xb056XBqKNqb2gOoUcEAHsRrnFr88QJUJzNoklTuGt20ehXLMZYMwq9r8Hv/6+Z4D89qV4h2nw4dzIAWzr/gbdlnhLsU4DrXM7C12SCmrq7j0Tv7Bvft7wJWB8iLTvDa9E1xBbpHq3cHuDcEAcAqUZfcehS+y4DKqox+0BLAlkWd1EIkm1HeVIlx8cXMBuZ9OGa0caUNc/6snVeNN2bnTmSirSTTtR6NzANOtrYWGAbGj7zMF1ReEApP8Gb0l0lPzjOCHI6KU5yjmOaSp66uOGtZZpx7s1zW3aCRtpPcsQwyf7EKoXXN40DQrno3KUBd6Nfn9b0BLyZw9aaGUxrVTZgZdR134vE5spnDsnrEome6u3CP2JjQCAvAe/n+12rCzIlla2RnK/HziN64fM6FFhfXe18D9Vfreskt/8R9DjI
- Srsy9m/y
- zZdgnyP2U2KB4HTAIIaiEO3bjjc5ydg4PrMSrVHh2/2Sp6uboAROt0DvHTm3fRLDLPXZcp0rTqo/hzuLJ5bg4j8BI6P1ak7uIGZU+sGHXpJe/zG8z9e6nkaE+0O3o1PmTjHrENVnZpsbiHRbD1EfAUi9d6KTwITBVKakdM2S/PldWn/wBah7CafQXA4048syZ/R5LrvIKi3LE3pRbFKWvP1fs2wCBw08iVO9YD08oNiLVVqOsb2BRvrrqMXpm54pCxonrRSH6D//qYy728G9/iQalCYfU8FQ8GJ2Jfxk5sWAH39Au+LA3LyCiB2j8lUutPaxzOOeQdevv5mfW3ySzIixorCDx7Wbxur9nwN8uk7UBvPuXa3Yq9sehuXJgOAn3UfHJ
+X-HE-Tag: 1789547704-752993
+X-HE-Meta: U2FsdGVkX1+FgJM1T9EAQjj2pGJGB4K/RcW1nLjDuyQJW+oGrkGzpy6QLXFUU+HM8KwdYgmKQL6cdaLXWxdR76PYN2L5s9F5/M/+W3vl8EagjTiNbggYwY3Un6feifGX7kGOmAUZUDW6fIRFzOivOGWvMGqNXWjq3lFWOEZmFM8T8N0ul0AHIUU9JcnD6iOu5tLm4gt54lijluAsTM8jlSgXketyncjAh7hW8uuZsudkrmKld3uOTZadt6B4+ZkwiYC3r0hk1Fmg1yJp2+fpk8/pZil9gEnXZdTFy/gV5safiAzXQjZfspmoQew7XFjTDnag5tjwzwHxUGQTD5uXv/BHYSMvuX7OzX0aIl0Qr7wuct6/wzMzIoUCgnpwRe3CftvHB3y8OkyOIyxlvk0qNwMG1543cE1lmp5Y4egnrhhm4ETwLgGqq1zVcpqmaUwiMNz+icM77MT5DEnnmMPscyekPZ2+/kd5AWwJiynKl39imbl4iXa4iILM23hnzs3/cx+qF+2XQPg/rdzhV3WLAt4lTR5lp8i2jDAuBzwaMch4L445LgQxqCw3Cxg8xoL4e4BwsfDK8g+mdjrVBLPI8z5NA1n5BMfyGDHKYYZcAuIDX8e/C8ub/n9tCaPwc+gLuUoyHIATHyyQTxyEZIh8sHKG2ZkoEwEXb89OXltUzwneO8AULcgcBNHtpVDPl46Fn9FdIeCTwyzB/9oBWKiWcDAT8aR3yntQI1zglJQ5f0BWC/PsxEqigN7Z7c3ft9iAH0P5uxeAWOR7vPpWcaeKt6sY+BT5005eZ8lDjnvyZEqds9pgt3H0dK5Y/UlplUr4IS4RmgnGHGraOiNsY6Sq3/YhmXwIv2GZXxF5lCni+33AvKSG1FBBn/71SH3J8Ojg6oMEvd5sq0/h7RjBzyPO/LlLBYkY636dVdbfTjoMqihoEx3zh/OYrZpK5lK114YkQ+6vM6Q3HmUEQryYhdC
+ 9rnt/ZVe
+ BGhZSvHd36KNzGWLwiWI2cPtJbmDyJ+Lz9z7MTUH7TahFQoJzm7lHIPErZ0Fs6tWT/FloyXHi0V1vIjoTitYFkteofFMo1ddngMnAqaPTTICMSp4CP0B9kr7rc6Q6BZvCyATTncUAAWLXMCBbVfp78yTBZmVLCBj7hZDGN4nWRwV4ZgizpqWk3q3Fd8/YMtWABs3qD+kNaM30NyddeXDv1NmedYql+e6cNF+fq20+L5IbV7Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,79 +103,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/15/26 14:53, Breno Leitao wrote:
-> When the pages are being given to the allocator, check if they are
-> poisoned, and mark them as such.
-> 
-> Similar to unaccepted memory, hook it in __free_pages_core(), and thus
-> the frames never enter the allocator, rather than being taken back out
-> of it.
-> 
-> A block runs up to MAX_PAGE_ORDER and a unit is 2MB, so hold back only
-> the frames the table covers and free the rest one at a time. The
-> allocator merges them back up, so a unit costs the frames it names, not
-> the whole block.
-> 
-> The frames that are freed go back through accept_and_free_block(), so a
-> clean frame in a block that is still unaccepted is accepted first.
-> 
-> A frame is flagged before its memory block exists, so the per block
-> counter is seeded from the page flag when the block is created rather
-> than incremented here.
-> 
-> Suggested-by: Kiryl Shutsemau <kas@kernel.org>
-> Signed-off-by: Breno Leitao <leitao@debian.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+I previously worked around a false-postive gcc-16 warning in the
+get_tier_idx() function, by adding a fake initializer. This happens with
+the -fsanitize=bounds sanitizer when the compiler creates a specialized
+variant of isolate_folios():
 
-> ---
->  mm/page_alloc.c | 26 ++++++++++++++++++++++++++
->  1 file changed, 26 insertions(+)
-> 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index b07b5f4751cb95..cca67a2702a421 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -1597,6 +1597,25 @@ static void __meminit accept_and_free_block(struct page *page,
->  	__free_pages_ok(page, order, FPI_TO_TAIL);
->  }
->  
-> +static void __meminit free_poisoned_block(struct page *page, unsigned int order,
-> +					  enum meminit_context context)
-> +{
-> +	unsigned long i, nr_pages = 1UL << order;
-> +
-> +	for (i = 0; i < nr_pages; i++) {
-> +		struct page *p = page + i;
-> +		phys_addr_t phys = page_to_phys(p);
-> +
-> +		if (range_contains_poisoned_memory(phys, PAGE_SIZE)) {
-> +			hwpoison_boot_page(p, context);
-> +			continue;
-> +		}
-> +
-> +		/* this part of the block is not poisoned */
-> +		accept_and_free_block(p, 0);
-> +	}
-> +}
-> +
->  void __meminit __free_pages_core(struct page *page, unsigned int order,
->  		enum meminit_context context)
->  {
-> @@ -1631,6 +1650,13 @@ void __meminit __free_pages_core(struct page *page, unsigned int order,
->  		atomic_long_add(nr_pages, &page_zone(page)->managed_pages);
->  	}
->  
-> +	/* First: a block parked by __free_unaccepted() never returns here. */
-> +	if (range_contains_poisoned_memory(page_to_phys(page),
-> +					   PAGE_SIZE << order)) {
-> +		free_poisoned_block(page, order, context);
-> +		return;
-> +	}
-> +
->  	accept_and_free_block(page, order);
->  }
->  
-> 
+In function 'get_tier_idx',
+    inlined from 'isolate_folios.constprop' at mm/vmscan.c:4982:9:
+mm/vmscan.c:4934:9: error: 'sp.refaulted' is used uninitialized [-Werror=uninitialized]
+ 4934 |         read_ctrl_pos(lruvec, type, LRU_TIER_MIN, LRU_TIER_MIN, 2, &sp);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+mm/vmscan.c: In function 'isolate_folios.constprop':
+mm/vmscan.c:4946:25: note: 'sp.refaulted' was declared here
+ 4946 |         struct ctrl_pos sp, pv = {};
+      |                         ^~
+
+Adding another "= {}" would solve the problem as well, but to prevent
+this from happening again after the next code refactoring, try instead to
+prevent this by forbidding interprocedural optimizations on this function.
+
+Link: https://lore.kernel.org/all/20260213123902.3466040-1-arnd@kernel.org/
+Fixes: 3de705a43a46 ("mm/vmscan: avoid false-positive -Wuninitialized warning")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ mm/vmscan.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 11387a0fbeeb..626d2fc78cc9 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -3274,8 +3274,10 @@ struct ctrl_pos {
+ 	int gain;
+ };
+ 
+-static void read_ctrl_pos(struct lruvec *lruvec, int type, int tier_min,
+-			  int tier_max, int gain, struct ctrl_pos *pos)
++/* __noipa works around  gcc-16 warning for uninitizled use of pos->refaulted */
++static __noipa void read_ctrl_pos(struct lruvec *lruvec, int type,
++				  int tier_min, int tier_max, int gain,
++				  struct ctrl_pos *pos)
+ {
+ 	int i;
+ 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
+@@ -4924,7 +4926,7 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ static int get_tier_idx(struct lruvec *lruvec, int type)
+ {
+ 	int tier;
+-	struct ctrl_pos sp, pv = {};
++	struct ctrl_pos sp, pv;
+ 
+ 	/*
+ 	 * To leave a margin for fluctuations, use a larger gain factor (2:3).
+@@ -4943,7 +4945,7 @@ static int get_tier_idx(struct lruvec *lruvec, int type)
+ 
+ static int get_type_to_scan(struct lruvec *lruvec, int swappiness)
+ {
+-	struct ctrl_pos sp, pv = {};
++	struct ctrl_pos sp, pv;
+ 
+ 	if (swappiness <= MIN_SWAPPINESS + 1)
+ 		return LRU_GEN_FILE;
+-- 
+2.53.0
 
 
