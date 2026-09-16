@@ -4,97 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B59B5C88E5C
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 07:07:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2843BC982C4
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 07:09:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5F71E6B0092; Wed, 16 Sep 2026 03:07:03 -0400 (EDT)
+	id 6E5D36B0095; Wed, 16 Sep 2026 03:09:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A7296B0093; Wed, 16 Sep 2026 03:07:03 -0400 (EDT)
+	id 6BCE16B0096; Wed, 16 Sep 2026 03:09:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 495DE6B009B; Wed, 16 Sep 2026 03:07:03 -0400 (EDT)
+	id 5D4596B0098; Wed, 16 Sep 2026 03:09:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2A4496B0092
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 03:07:03 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 06111805E5
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 07:07:01 +0000 (UTC)
-X-FDA: 85218743442.10.C96909C
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf22.hostedemail.com (Postfix) with ESMTP id E0A3DC0003
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 07:06:58 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=bU8VbXfk;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf22.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 38D406B0095
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 03:09:56 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B8CFDC0622
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 07:09:55 +0000 (UTC)
+X-FDA: 85218750750.01.B56B78D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 1CF2D1C0006
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 07:09:53 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K7SwAZ5T;
+	spf=pass (imf18.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789542419;
+	s=arc-20220608; t=1789542594;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9x/SI9lzMazRKT1jOXiFAsVL8v8pO+gIgyfwCxXS3Q4=;
-	b=ofazgMc1QWwSZqto6adRZp48q/yXVZBNjyPzTNVRTXGhVo6PPEz6zbwOWWpxG9/4k7Xsal
-	UoQUyW2O2Ixb/y1X9BSPzyC6liEpSlQazBvQzF2KkIL++jY/h/ZiNLnO7UGo23aI5Nkapd
-	P5Gx0Ajh0EWGSjwKsUZs8yyMxSXOIfw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789542419;
-	b=E6mwALujnUaF+i69JVNgyELhwvq465T7inzIhjAhjKDX2vBNMBpmVINLHNFHS9WBudIrce
-	BdEJc68foF3yy650vSFS5oZmpzEIM0E7MwLgVZf7qs5XxdjDubTaUKI474u4wc6OQjPqwz
-	pLp+aqg2gh3/XK/uJLEq1YswBwlIyWU=
+	bh=p2gx8+1v2YG2nXZ5rZ43ZGOVbgNWYwB+4lHcBSPfXX4=;
+	b=19+csjKA5hSDRybM2Gh0sb6SbSLMegkZzIj8PlvR1sreK8C5ColPFcS89IG6wD6G7gFmyY
+	F3s9VrZhH5SZPpBz0WZVAryxZnHgfutO3CepwJoX6cQmelsg82OBybx79ZBukEeDX9XRWm
+	YxKzGZZJyA/AELT/uiGxUMJZFS+/iFo=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=bU8VbXfk;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf22.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1E0A0152B;
-	Wed, 16 Sep 2026 00:06:54 -0700 (PDT)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 995AF3F86F;
-	Wed, 16 Sep 2026 00:06:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789542417; bh=7j41/pbsi2hh7BzOK/zlBjo5ceENRET+9FnTWgUaeYY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bU8VbXfkKaKwuh6T7BWjvzIFRNk1/Mkj14bNCbgP3EMRPQntwVb6eQyRKr/RtoJHR
-	 nZXlP4iJoqERz7vC2vDX7Bun0jQtSF23uJZpSIC4RlnrRLdm33e9UUX8fC63WvUnhI
-	 2Wt5RYyChyWHtUQWRzRHrQCFtqWRQD1Q+BwMeRUM=
-Date: Wed, 16 Sep 2026 08:06:52 +0100
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Shuah Khan <shuah@kernel.org>
-Subject: Re: [PATCH 0/2] kselftest: mm: fix intermittent failure khugepaged
- test
-Message-ID: <aqpADFi-qa4990ZD@e129823.arm.com>
-References: <20260915-fix_khugepagd_fail-v1-0-bb6f04c8759f@arm.com>
- <db48325a-6eea-4924-916e-5da06bd31e47@kernel.org>
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K7SwAZ5T;
+	spf=pass (imf18.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789542594;
+	b=olZc8hX10thEnq58oIQp9BvqTrGjiVmmqsIYMm9G7LbfwMEXQ1+7WF1Q3WS9izG0VWZ88U
+	eqm0TJD4uExNBVH1yl7ABRUYzg/a76NBPYbOQ9yiXus5C5cDMzjG0r35GuSwkpSbaMXOuX
+	sanm/i+FVxOo4+1AXvtkNsDZHzSo9R4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id ADAFF6053A;
+	Wed, 16 Sep 2026 07:09:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 165081F000FF;
+	Wed, 16 Sep 2026 07:09:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789542593;
+	bh=p2gx8+1v2YG2nXZ5rZ43ZGOVbgNWYwB+4lHcBSPfXX4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=K7SwAZ5TQox94KhnzDZgdWak9JeascnEJT6tgsdFitx13oH/yvHVurs3emFIQIidi
+	 xcR0gIE20GLza50nMYtjBg//0e7WD22sTKu3OHciVTO0Egw6dpfNvS97BoC4LpWgvN
+	 ZD0aZmUahuws0zfu0FGKie6dskhpn2wDFZH1gLvxR0Y/XLP3PDKD59Q3XEFPNj3iGd
+	 l3nMpo+kKycUGKylVUc5DFObZlUBNTgMifgw32kRkszA3iFJ9ppTn7CES9cJYrH1JE
+	 XD/gyr3hXov/6xjsaqqL1FGY+8ZmWmmW0Gqlh80XrHJbwZzvXyNf+hmB3sQ+DilGUR
+	 S0XyD3cx8I3Gw==
+Date: Wed, 16 Sep 2026 09:09:41 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jann Horn <jannh@google.com>, 
+	Jan Kara <jack@suse.cz>, Ingo Molnar <mingo@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, Oleg Nesterov <oleg@redhat.com>, linux-alpha@vger.kernel.org, 
+	linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org, 
+	linux-hexagon@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
+	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org, 
+	sparclinux@vger.kernel.org, linux-um@lists.infradead.org, Jens Axboe <axboe@kernel.dk>, 
+	io-uring@vger.kernel.org, netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-gpio@vger.kernel.org, linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	bpf@vger.kernel.org, David Airlie <airlied@redhat.com>, 
+	virtualization@lists.linux.dev, kvm@vger.kernel.org, kexec@lists.infradead.org, 
+	linux-hyperv@vger.kernel.org
+Subject: Re: [PATCH RFC POC 00/50] file: handle files on syscall exit
+Message-ID: <20260916-seilbahn-heimvorteil-edelmut-bad3637b3a95@brauner>
+References: <20260915-work-fd-reserve-unify-folded-v1-0-4d5217d6b246@kernel.org>
+ <CAHk-=wjeamU=_RYT9cR3dZJ2N-Teo-N1+aYh7jwhrB=iWXD0cg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <db48325a-6eea-4924-916e-5da06bd31e47@kernel.org>
+In-Reply-To: <CAHk-=wjeamU=_RYT9cR3dZJ2N-Teo-N1+aYh7jwhrB=iWXD0cg@mail.gmail.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: E0A3DC0003
-X-Stat-Signature: 4xoxqsrwe8ompzzsoo1ayairdbxwemqu
-X-HE-Tag: 1789542418-28702
-X-HE-Meta: U2FsdGVkX1+CJfVjYj7Bsh2cm4dHO6NZedlZgRJ1250nXhEsPz3l/p946wNrKk93hFLs0WJV6OfWaeWFa5SxUpva9Mm1wNV7latHXOVsvdlXc8CF4Gi1jBK7B1ETup4JEBmUJcelX+uV9JeDwoNXZc5K9dKx5shwLDnih5pSzX7hO9XTfOyLZn07Ih7wqCPfn3Io6OjGeCWZdbHCLHkBbjU/Ccmvd9NRgUCkoE4BWc1iie4CGT+eJ+Bm7tHyppInZwPqX3w38WSRW+YTFrHOqbjW8zZhHHIyD29g3OvyfYHIomvOpSM6a+09Y6T+hJRXCK4PwQg0T51kt/dIJ6y2tqVuP9ry+iOEhtTsjPx6dYlIl9/3LEhI2pUzahZ0AxwweHap4C3Whu6oXyo1up4G2SSc2/GI/YAQ3tA4nP+wY2k4dobIxp/mBw9mnWjgZzeecnyyyf86Sys5X3lcqKcLMITvZ0cajgXeaOzcgaAn45J1MfhOOYddxHDuDS2RBIqjYqo673P+VJT4fhmYfPbrVcKxZgBYH+/yC0exRTKdz0tuRKZn/Ulp5UgzYloFvDySEH9dZrk9VFdFHWVnMX3kJ41gqjyfCQBm1GMFOfxZfICAGtgtBJPRdhq+GKq66dYR0ZXJK1UDCWpPcIKJ73puguVlODAtq8t9waSv/v8RDYmf3NSxy8dFCG/2S4WlVmEZbUz6sPsPN4Sh6W7dUhitomvrkap3+8JjnPL4DYv8ayd+cpRCXE9geqQDWN/iTwj71nAT+8lEddvx/kk3cOXEXqwUpXjgjbR9PNjFGaXZ1qdDnC9ATGvwYordyNiXpJweRjWutwDqchzizTpqSiaf16Vuk9OkqAECNoGeSNmvKzHskVNguaJujZZ+tMq5ZgOc0ja3qFJrvuxBoClcNd1sDYTti2LnGEBiz5LconR7LxUvdA9GXms1SUNI8buh0dMDWGVDUjEKVO+ezdVIcXN
- N8H8Ju1D
- r72z/S7I51RYM5lnP7eLOa4twsl9RZc7tH12C7jEbtxLq2WLujEdgjTTvSVABUgVjaR+IQwEovEeL6c+Nat/UzRB0eWNwqEZvRQtnvvldt19qASsy7e72KbbbD0NsUaETTvbCLLI1oPbMN8G4/gAebOouPMXZJRXIoJNu6rDncMZ7zWEKmB4+gJixccluzuoOPUXNEK/8W1OHNHt6gyaYvDH4B4CKws/GbaJOxr+J/Y3xCso=
+X-Stat-Signature: 9eepndwg38ran1j54qbi8jghpmb5kdos
+X-Rspamd-Queue-Id: 1CF2D1C0006
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789542593-957335
+X-HE-Meta: U2FsdGVkX189N+2361jB68OIdpyKU2LJUvx7dN5g7PR/7f/YMGLN9DumVWBvJW8V6JMv1ueMKWOVq9n2ZiaVCN5gIBbEBCNL98sr7DWFsG5jwxdHMuUste21TOCn1vSs3ac8zj1ICtU95V88neCw/vcLe5fo/poLR0mhyI8Fe4haRnO2pBosiXdKfWHI+4QGi9J9A619uHk18+q80BXSQUyovbGCNrdgI9LttaR6ViLojdRGsPahOmJx60R/7FpgzdeYn9oecx0J5/ww9Q0G/vfPq4kOmQIb8YE5pA32tYpnICqVYaMZGWvmGuebTMVMeFIiuVNCTXRgMEF5TukP4k2vbMLiz3FUUbp15q7aL1Guv4TP9dG2gNHeFPDyHms/0fiqNtJXivWfaoKGAVg8/fx9DAeGjEbYEml5nLOxUhEYajFw4SVFttVPKYvmS0XUjDs5bA0nuhZdZBuHVCb4VLUiJVrfeltgr7ChoQEKsNRx940vWRLTFYNIUaPrMfR+G64YCf2QKZxgYFFln0jOnXsBpqAw/ltSRat7u/ioqq1bq3DmhhCkr3mVG9E3MYhjUm6eeYnOjYdmwPgeU5mBHQN/ET/8ZBoAsn4J5DWrSCgCMxlKV5jOKvpCjff6d8djsQTUkWFID4os0FEAkEO4S5k+u9UkYn3r6xIDtozHT7J/bCiUm3XFyPeOWaB+q6ClTeANoV6iGoeAfGtfbHKvzWTWPI61cy6DjBfSbiJe0RFAQU5Jgg0a2ROO3rTrC+I7f44V+oSVX2PvyJ4uMM5mSpgYeoirgNQZDvuDdWDgvsca616/J2KhdQzdvwAD0AECFuzjPyYjzMXhDFIJN3hdz8tT3nIQy60IkuLtPZrXhBj63me6UcZGVBYsiuDnf577J/UktzV+EMcadDtsC5EEDm6wN4ZbBI9uKfNpfTB27q5h9yYOi2YEdFNLlydR+0NB/DcsSrmjmByy64dylza
+ 5W1htnyt
+ MeFCyQ7dl3jY+LpExzsD0w7C9fPudLQNrxYNRxhehCSOWDg9Y2ZJKwAn5S4i2BwWeXkomyMpvNc2eTYWo2KEIkGXAgdzlF3oNDPywn0uYJRfIupY6GdSrxjgIgo2Xs7cAdXTX4lkTbOWtoEL+/I75O8YQvMxIs1fY+3g5gZ6HMnkNQBAzJoHk1H0+WZ/dD4nrQze6mYopVQjN9DMpvQgpAxd9U+XFVTwYeFjF+buBmfnJPmcKlr8/m/vZl9mgKhFjKKIAvGY5j+ZOJThwKReyOgK1DzRPWB7q/ETitUhMidxubHP0zy59h6L0vOGTn9gxbmxO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,50 +102,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 16, 2026 at 08:41:00AM +0200, David Hildenbrand (Arm) wrote:
-> On 9/15/26 11:21, Yeoreum Yun wrote:
-> > There are intermittent failures in collapse_max_ptes_swap() and
-> > collapse_max_ptes_shared() when using the khugepaged_context:
-> > 
-> >   # Run test: collapse_max_ptes_shared (khugepaged:anon)
-> >   # Allocate huge page... OK
-> >   # Share huge page over fork()... OK
-> >   # Trigger CoW on page 1023 of 2048... OK
-> >   # Maybe collapse with max_ptes_shared exceeded.... OK
-> >   # Trigger CoW on page 1024 of 2048... Fail
-> >   Bail out! Unexpected huge page
-> >   # Planned tests != run tests (26 != 23)
-> >   # Totals: pass:23 fail:0 xfail:0 xpass:0 skip:0 error:0
-> > 
-> >   # Run test: collapse_max_ptes_swap (khugepaged:anon)
-> >   # Swapout 257 of 2048 pages... OK
-> >   # Maybe collapse with max_ptes_swap exceeded.... OK
-> >   # Swapout 256 of 2048 pages... OK
-> >   Bail out! Unexpected huge page
-> >   # Planned tests != run tests (26 != 17)
-> >   # Totals: pass:17 fail:0 xfail:0 xpass:0 skip:0 error:0
-> > 
-> > This happens because khugepaged may collapse the pages before wait_for_scan()
-> > is called, causing a sanity check that expects uncollapsed pages to fail.
-> > 
-> > For example, in collapse_max_ptes_swap(), after faulting the pages back in
-> > and paging out up to max_ptes_swap pages, khugepaged may collapse them again
-> > before c->collapse() is called.
-> > 
-> > To prevent this, change the khugepaged setting from ALWAYS to MADVICE for
-> > the affected tests, and mark the VMA with MADV_NOHUGEPAGE after it has been
-> > collapsed by wait_for_scan(). This prevents khugepaged from collapsing it
-> > again before c->collapse() is called.
+On Tue, Sep 15, 2026 at 09:02:31AM -0700, Linus Torvalds wrote:
+> On Tue, 15 Sept 2026 at 04:31, Christian Brauner <brauner@kernel.org> wrote:
+> >
+> > TL;DR, this lets arch code handle fd install and cleanup. fd_prepare()
+> > allocates a descriptor like get_unused_fd_flags() does and records it in
+> > a slot on the task. fd_stage() attaches the file to that slot and
+> > returns the number.
 > 
-> ALWAYS also respects MADV_NOHUGEPAGE, so why is the ALWAYS -> MADVICE (MADVISE)
-> change required?
+> Honestly, I am *not* a fan. At all.
 
-You're right. this is redundant and it's enough only set the
-VM_NOHUGEPAGE for anon. I'll remove them.
+I'm really glad that you don't like it! I hate it too.
 
-Thanks!
+To quote back from the cover letter:
 
--- 
-Sincerely,
-Yeoreum Yun
+> The idea in this series is old-ish and really never let go of me and so
+> I wanted to at least dump it onto the list once even if it's just for
+> illustrative purposes.
+
+I think the cleanup-based solution we've added a couple of releases ago
+is the better appraoch. Which is why I chose it over this.
+
+But this install-on-the-way-out idea has been brought up quite a few
+times as the "better approach". I never really believed it would work
+nicely. Now we have an implementation on the list that we can point to
+and we can move on from this.
 
