@@ -4,96 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC531C982C1
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 09:02:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 409D1C982C1
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 09:08:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 716686B0088; Wed, 16 Sep 2026 05:02:03 -0400 (EDT)
+	id 4D89D6B0092; Wed, 16 Sep 2026 05:08:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6CF206B008C; Wed, 16 Sep 2026 05:02:03 -0400 (EDT)
+	id 4895B6B0093; Wed, 16 Sep 2026 05:08:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5DD5C6B0092; Wed, 16 Sep 2026 05:02:03 -0400 (EDT)
+	id 39F466B0095; Wed, 16 Sep 2026 05:08:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 396F56B0088
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 05:02:03 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CAD061406A0
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 09:02:01 +0000 (UTC)
-X-FDA: 85219033242.09.56E5BAE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 35BCDC000A
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 09:02:00 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wu0pWfdD;
-	spf=pass (imf10.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 143DD6B0092
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 05:08:18 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1496CA5D00
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 09:08:17 +0000 (UTC)
+X-FDA: 85219049034.30.106557A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 23166180002
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 09:08:14 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=DbjJMDJo;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	spf=pass (imf16.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789549320;
+	s=arc-20220608; t=1789549695;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ztMMMMv7bxzK6KlzZ8FgpSfa4Wm0mxmludXZFP2zroQ=;
-	b=XRpQgWTFX3NKYlr6/u35G/B6eDp8P44KyMwVhlmYB7owPK++Xs+5JN2pVY2ViZUufPYR3Q
-	kM9/ugSQ1PT0JpAOJNdEt6qzVflMEY8qbUFnYL4M5IDUm+UzlLW9uHuEC8u8Td4ogAIzFC
-	Nd7xSEtraOg0+x7RzDViJNRlBTWJxCw=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wu0pWfdD;
-	spf=pass (imf10.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=1c5BkG1XwUGSYihHgqGld4BqIOfDyTeiCgVyGKTLkns=;
+	b=S65EtVP9cc7K3JCm4V9YKZrR72F5KYKGjrw/X9rYqK7nQsGOSZjQbEbhG/N6vzrLkCZpsm
+	JDA1oL9DykkzctTiQbxeZgCk846Q84zcdgnzI5vj/NkGqOrUUXkl3T7c4aMgcr2cAGB5yO
+	eSUT7WB4gztCW8vV6D2JIK0oDGF9Tnw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789549320;
-	b=npwqD/+Huz/yM1m+Xvsy87H3RA60Li48B0d4pAd7rLsCVwBtdtDhh1a2/WL3U7ZdIlWx3q
-	FRCwYD3pZFUI7Zh29O6TKByar89GHf4qcr6H7KbDznXln1WddUoNpnTt/zQn6qNFYPbTBa
-	yyKTl7Wp3FH4FU//jUxbbSYoj2ayO/s=
+	t=1789549695;
+	b=RtcZFihcPPgp4By+SPqf8FQFYgA9dXYOfBeyA4lkBoa4hmQxoQIhzFy1C526Xq+XA51ME0
+	9vSxPNCGDFCMOWOZeRjI9UPe5pYVh1isI0FTS2XN6L+7XbqG08M70nUBwCHwqCVehZ890d
+	lwQkmZIZvbTmncbE+UrzvCTIOA8taRA=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=DbjJMDJo;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	spf=pass (imf16.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E6613602D0;
-	Wed, 16 Sep 2026 09:01:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7DE81F000FF;
-	Wed, 16 Sep 2026 09:01:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789549318;
-	bh=ztMMMMv7bxzK6KlzZ8FgpSfa4Wm0mxmludXZFP2zroQ=;
+	by sea.source.kernel.org (Postfix) with ESMTP id 97D8241927;
+	Wed, 16 Sep 2026 09:08:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C11701F000FF;
+	Wed, 16 Sep 2026 09:08:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1789549693;
+	bh=1c5BkG1XwUGSYihHgqGld4BqIOfDyTeiCgVyGKTLkns=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Wu0pWfdD20WkmcJlHU0fRgfxFv5iUvN0ccfoP7F0VMVMYwoHsEoDYfn+nZMvEzV1m
-	 KgsAJCb4zn+2o0fvKGnbBgVbre5Es7my0jYMg1cdlyvgH0yxuNUuZnAuZrzuEwSaZF
-	 1yXsXOcY+4mY1yMSu//HjBM/KuFq2cuIsI8Ci83ETN+356JpDar6y/fUY4GlCRgC0N
-	 +o1s2o/YNhIVKXnP5KjUeBL1NTnQNOaFH1DEQN2ZwHIrNc+TnmM6Ln6fgymfBBoCWZ
-	 IGr8qm2BKp7AH7SO5nZrhRqHVCpNWTmOdiwF6Ins4wLxpoEYYHgWxPfMkHNfAg+wWW
-	 nENUQt62KGCVA==
-Date: Wed, 16 Sep 2026 11:01:51 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: Paul Moore <paul@paul-moore.com>
-Cc: Jann Horn <jannh@google.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
-	Jeff Xu <jeffxu@google.com>, =?utf-8?B?VGhpw6liYXVk?= Weksteen <tweek@google.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Pedro Falcato <pfalcato@suse.de>, David Hildenbrand <david@kernel.org>, linux-mm@kvack.org
-Subject: Re: [PATCH v3 0/3] proc,security,selinux: let SELinux block
- FOLL_FORCE for /proc/self/mem
-Message-ID: <20260916-begossen-tischbein-abgemacht-e7dada3d1e56@brauner>
-References: <20260907-selinux-pokemem-v3-0-0bafbaeafe50@google.com>
- <20260910-wohnbau-bezwangen-wegziehen-7a32dcf237b1@brauner>
- <CAHC9VhTE82bRRSXSUuMOdrfoMh=xOb5hDvqiKWzBKD1urab3hA@mail.gmail.com>
+	b=DbjJMDJogC8wmX9uIsrav3Iwtmpm7VdSW6iGJVYfuqGtqfOxKJyjAsJciaS7cCIJj
+	 5MBV82FutMYTWXCkoB4pdHCAGx+1QxfOEXi6lnAJXJD4VbqptsKZlj/Xsr0nhtlOXb
+	 +P586OykuvYqikYSGWTjMD332werjohzIpCI0jpI=
+Date: Wed, 16 Sep 2026 10:06:19 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: akpm@linux-foundation.org, dave.hansen@linux.intel.com,
+	Liam.Howlett@oracle.com, ljs@kernel.org, david@redhat.com,
+	willy@infradead.org, shakeel.butt@linux.dev, vbabka@kernel.org,
+	jannh@google.com, aliceryhl@google.com, arve@android.com,
+	cmllamas@google.com, christian@brauner.io, tkjos@android.com,
+	dsahern@kernel.org, davem@davemloft.net,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH v7 2/5] binder: Make shrinker rely solely on per-VMA lock
+Message-ID: <2026091635-steadfast-widely-7753@gregkh>
+References: <20260831203056.838265-1-surenb@google.com>
+ <20260831203056.838265-3-surenb@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHC9VhTE82bRRSXSUuMOdrfoMh=xOb5hDvqiKWzBKD1urab3hA@mail.gmail.com>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 35BCDC000A
-X-Stat-Signature: gpmm7w6to6451798p1gg6dymhta6mne9
+In-Reply-To: <20260831203056.838265-3-surenb@google.com>
 X-Rspam-User: 
-X-HE-Tag: 1789549320-724222
-X-HE-Meta: U2FsdGVkX19vla6lkiBq4+BpV5vLiCBj5iRNs0LN1TAkpl6oHsgqJDXhdR2r40T6xYcG/ZzP+zLIKHWiwCzWFv4dJn37WUGJ187ZyqoMPk8ubG7i8R23yBbbquuDljFFNwZY5wJdb+feKQl4AIW0Y9HjDbHHZZzhVtTxg6M+6ekkHZCfCx8yp7b9AzggIa/Q3xZ+VtJJKpv4Zqn1yxQqVb0v67UWTiruj2PGebNc6HpTppCELbeLUUTsKvabSVN3r/hqn99ItkgE9cJbhbIR3oy8WSlaxi9kO3uAtQxS0XwlBcJBnJhY1cJwC/PgKQG7jg/5tiArbndX4w6SzKDWPEkB4U/VfSBlYougs8piDHkVd1zF8eDNanWX9NU7z8VgS023PyYVdxa6kfEECrk5uq3Vsa+0Joj5HkOJCLDkUhR5Nunmz/zRLXOsKsB3+7eLbfBbkkLQf89CQkN806F5Hj3Ewbd0HVCGwe9V0Qq3Yyzw6ZRAFDhy+5Ap2Mp5I09qXyGUiNvfGbAxOCXJT1D4dOxHj1IscDplTBhRE6Vy2eVQJTzut3mQENUU3L/YG/n+zA3thTRTgm9o+XYglIOrHcFAOwf0NZyALDWCVape9czLI890XN5qizybObLI8q6LRC/kv7mSFuT0v1zZDvmezUMS8FaVHm65OgRgqbVVhsa6z71G/fHYpWi99SgsbBotmH6Ixm6JvCSVdpq66yZIY7jn3jp2FJpzV1pXUHd0z92d7DFzKPzKgkB33HnvQS/iy0B1G0xeQJcF/N8/Mqt78ly2crHVVQxHTTjGWxIQJrF87BJZeP+/7Gk5QqlL7fe1+K4JN6IaURUZow4phHYky3ao8Q4ltv9Kmt8GNYZGq0KVg/1mMu4AQ2FwTz3ax9QlUZmRtmP/+6itg/jz7bF9OQaRaZIu6/1+G45dtutwa/8smQCwtwU0wkZVlASRiK0wnMl4N4FFqHyt2tOEpXK
- 8lmf5fz1
- cm2k5anhcWVxEQCPfB6dVY6ut4a6yt/u93EVulYb1InLjwfCp5HMn7hrh2QCdhPhELhnTIy9lr6SFOSgWTGRJn8iZOZxqdIB3wn/aSopUMAEpnvKhe65TktunemaJfCWeW0Ks+TzZpv0DClrv4IEclFPLFV5wsRVbxgqw+hnOnUHNPLrKfnKTL/K1S6G+UvMyNjFuglOl4Oh4WFZLAtiV55Cx4KxXUZHNsdnuWkeq68xNSg/3Wr2h1zJCs7VwdAB17XtY7SacV5cdVo60bdVFMn7epfiZ/3C0omCdisrU6i7gvVhCPboeJaZVcf+RcCq7vXsz8F8yVHPCOXLplMlx6ujs7kwDPDJCploQq/YqLhrPPHnBqAFzeLzpJmyVYKK8vxQCHzUrSwzhcidP/9ka+a4Lu+8RFtr5CtgWDtnwPPfAdwsqwfdAR0CzyVwWPKfScyGkVx7V8c07lE3X658q85sVNA==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 23166180002
+X-Stat-Signature: febo8bd9x3o3behgorta6otjrte4xzjp
+X-HE-Tag: 1789549694-220666
+X-HE-Meta: U2FsdGVkX1/4l4tcH0p4sZl4hTZM63XqZYGFeYYBmyW7WP0Fz92tctSnkl2GREY+g25OvwiNt2ePuvI0vlCO9HAmNo8wW/ungj/u+3p9cYzFAvhV+o43ZFo4Z3iRvu8yyqwOumNLkRI3KWj26iaB+GSDBRcWIXg0VyCyq8q04FOzfwvP4/Hqzg870rbpMRec3SkOBcmydshsIY58Tbu82i506v9bXwhg+LuqhZ4JwzuNJpgOwmJqcEhQlY6nEQAdYSCmx50J9dOTe73d9LpR2L6OOT9uQ+RZ9YYnmrGmxyoImVUdC2Z7cYswv7JmaF8Na0HEHQjZfYdUG7licZnZ0/okVPxW0/iCZZXL+IDFj4QSHvCgeKsDYIXAnkBEYRJsqi4618G2C6jywPITQm1ejKPm4oCfDTUooIJC6rBwS1lQ1wi84s0/5hPwhXAdYy8xZtnMc3ZFU/rKUmlfPbKDVRk9gZeeni5w2VU0++X2ZhqDNd0vFAvBI0bsx1NZ/K6BlImhTwezd3nUDzghHJytSATzbjCNWbRX7qANdrmjMAG5R9ax1T7Q8exdGcR1mGQP9jd5xVkHghy1o1uZSZQ1uaQ82W9BcW4OpwGSE0zH9/TVCEfH5lEs/gbvTLbUfoIxh2mMLaNaonmKe1NKzfGCDz8kfRwj+bFM1GQFSgl1L9ZgDOW2YPNwGsFQ+B3Kze7AkuRnvTY0yKpcREaiNKGGDiZCiQTshbbaH8iIYkGSzSlkIHAN+1IroKBIFVHiPKOpRyY3Hh7FudHZsX1DEYsz022EFeLf75MIFY6uENHfACgspIwXxwZPYG8DmbHQF7mj+7nmUvPWXfDtKtv/Hl8rG3MttCVKB4eF+G4b+HbCaxzT3BeHf6xW6Y9u09uXqhQB5saomziKbC9XvvZg/Qvf4D7uEdUuLb/Wwa7zbIcgk0fa7Mzs9IJY2m7rhvnRCePBcdgAvDc1+aA9EnnK7n5
+ gQnQKDtc
+ QrhwsaTU+3v3ZsPCe+k9rsBBN9swD1CQXwl8/3qnHjFKBQcb9u8Y2eLBKR8j4iyeTg7WkBULq56wa0vds64lilLEznml3ANPeTj3AUp6TUv7VKeOxTwiNulq3dnfW1iXTDVOkYnfTqinco72RrX/8yEmGYlt2nwFrp/q4b7yNjkfljfhaN7+MFeTWSfkjU8oy+DuPXzdLt90gm8GsB7fDS2owu/IXaltdCMqCr0SFRo4f86Hpz3lQSDTsy04AxTQ0f6wdra6oyS3I7rI7Kx6VMCDbeEingqNYtnPtsK78Gibe9AYaC0VA7W5ph1r7I9QA6NU2mX+HhHcVIrRUg/QNYZg29Rasrc1ze/HiDtGjajGEga/gB25vM2mRG7kSgAWasEi6BXtFdRhSedpS83N8Otvhw+TJdZLu0bTEz65uffzov9cdFf/YDLQRHv+lM2lvcFD26+G0lS0ZoAznq1mj+XfT4zimHrgwRwh+utxdFc5hqy42OaOnxlSnA2vLPjty9tVSue1ncA3AAA8CnFlTgyZwUUhvNF0QPCbRiBBJOyOMiBAxqwsPmcqnCB4lzp83KXY0s7hOa7p7CL624GNQqc2oyxLnFK5kOvcen/fxAnD2MFv7M0krR7b9xAWnzlT7ajpZEhOqUHFI5He1KUKq3MlhEHOoRp0VBe/pRBotLTb60te4V6ryUTqonAfPJOCxo9IWuhQLJ5j6yfL9P8uXIF9ivv0ij48WkZvUsUKSvvFeUpFoYvz2I+8/OYK1XTwEB9WohydBy7h8zMk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,52 +96,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 14, 2026 at 01:05:39PM -0400, Paul Moore wrote:
-> On Thu, Sep 10, 2026 at 3:48â€¯AM Christian Brauner <brauner@kernel.org> wrote:
-> > On Mon, 07 Sep 2026 23:00:15 +0200, Jann Horn wrote:
-> > > proc,security,selinux: let SELinux block FOLL_FORCE for /proc/self/mem
-> > >
-> > > The goal of this series is to let SELinux prevent the use of FOLL_FORCE
-> > > when a process writes into /proc/self/mem and the system is configured
-> > > with PROC_MEM_FORCE_ALWAYS (which used to be the default behavior, and
-> > > is still used by current Android devices).
-> > >
-> > > [...]
-> >
-> > Let's move this on a shared branch that both the vfs tree and the lsm
-> > tree pull. That's the standard way of handling dependencies between two
-> > subsystems that want to route code that touches both of them. Branch is
-> > stable.
+On Mon, Aug 31, 2026 at 01:30:53PM -0700, Suren Baghdasaryan wrote:
+> From: Dave Hansen <dave.hansen@linux.intel.com>
 > 
-> For some reason (/me looks at gmail) your email never hit my inbox, I
-> only noticed it now while reviewing Jann's patchset.
-
-Oh weird?
-
-> Christian, can you explain why you merged LSM code that I haven't
-> ACK'd?  We've talked about this in the past and I think I've been
-> fairly clear about it; I wouldn't merge VFS code without an
-> ACK/Reviewed-by/etc. from you or Al, I've been expecting the same
-> consideration from you.
+> tl;dr: lock_vma_under_rcu() is already a trylock. No need to do both
+> it and mmap_read_trylock().
 > 
-> While I don't have a problem with a topic branch for this, can you
-> also explain why this topic branch should live in the VFS tree?  There
-> are more changes under security/ than fs/, and unless I've misread
-> Jann's cover letter, this entire patchset is focused around enabling
-> LSM/SELinux controls and not necessarily anything really new from a
-> VFS perspective.
+> Long Version:
+> 
+> == Background ==
+> 
+> Historically, binder used an mmap_read_trylock() in its shrinker code.
+> This ensures that reclaim is not blocked on an mmap_lock. Commit
+> 95bc2d4a9020 ("binder: use per-vma lock in page reclaiming") added
+> support for the per-VMA lock, but left mmap_read_trylock() as a
+> fallback.
+> 
+> This was presumably because the per-VMA locking can fail for several
+> reasons and most (all?) lock_vma_under_rcu() callers have a fallback
+> to mmap_read_trylock().
+> 
+> == Problem ==
+> 
+> The fallback is not worth the complexity here. lock_vma_under_rcu() is
+> essentially already a non-blocking trylock. The main reason it fails
+> is also the reason mmap_read_trylock() fails: something is holding
+> mmap_write_lock().
+> 
+> The only remedy for a collision with mmap_write_lock() is to wait,
+> which this code can not do. So the "fallback" after
+> lock_vma_under_rcu() failure is not really a fallback: it is really
+> likely to just be retrying in vain. That retry in an of itself isn't
+> horrible. But it adds complexity.
+> 
+> == Solution ==
+> 
+> Now that per-VMA locks are universally available, lock_vma_under_rcu()
+> will not persistently fail. Rely on it alone and simplify the code.
+> The removal of the fallback does not affect NOMMU case because binder
+> driver depends on CONFIG_MMU.
+> 
+> While at it we also make the handling of the cases where the original
+> binder VMA is gone consistent. There are two cases to consider when
+> Binder VMA is gone:
+> 1. there is no VMA at that location anymore.
+> 2. there is now another unrelated VMA at that location.
+> 
+> Before this change we handle case 1 by having the shrinker proceed to
+> free the page, and just skip the zap_vma_range() call. And we handle
+> case 2 by having the shrinker return LRU_SKIP. While either behavior
+> is acceptable, we need to handle them in a consistent way. Handle both
+> cases by freeing the page without touching the VMA (skipping the
+> zap_vma_range()).
+> 
+> Full disclosure: I originally tried to do this with
+> lock_vma_under_rcu_wait(), but it did not fit well with the mmap_lock
+> trylock semantics. Claude caught this in a review and suggested the
+> approach in this path. It seemed sane to me. So, Suggesed-by: Claude,
+> I guess.
+> 
+> Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+> Cc: Vlastimil Babka <vbabka@kernel.org>
+> Cc: Shakeel Butt <shakeel.butt@linux.dev>
+> Cc: linux-mm@kvack.org
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Arve Hjønnevåg <arve@android.com>
+> Cc: Todd Kjos <tkjos@android.com>
+> Cc: Christian Brauner <christian@brauner.io>
+> Cc: Carlos Llamas <cmllamas@google.com>
+> Cc: Alice Ryhl <aliceryhl@google.com>
+> Cc: David S. Miller <davem@davemloft.net>
+> Cc: David Ahern <dsahern@kernel.org>
+> Cc: netdev@vger.kernel.org
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Acked-by: Carlos Llamas <cmllamas@google.com>
+> ---
+>  drivers/android/binder_alloc.c | 46 ++++++++++++++++------------------
 
-See the reply on the bpf thread. I think this just a misunderstanding. I
-was under the impression that with minor tweaks v2 was already acked by
-lsm people.
+This file will be going away (along with the other binder .c files) for
+7.4-rc1, so I don't object to this getting into other trees now, just
+note that it will not be needed if you wait a release cycle :)
 
-In general, if a subsystems hooks into the vfs layer and filesystems
-that are directly maintained by the vfs layer then the vfs tree provides
-the shared branch. This is not at all specific to security. It's just
-more pronounced for notify or security because hooks are accepted
-layering violations that place constraints on how vfs code itself is
-organized.
+thanks,
 
-I think this is just a misunderstanding that would've been easy to
-clarify without the kerfuffle.
+greg k-h
 
