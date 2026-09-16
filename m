@@ -4,78 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46ABFC88E77
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 11:58:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8ED2C88E77
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 11:59:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 467F56B0088; Wed, 16 Sep 2026 07:58:57 -0400 (EDT)
+	id F19996B00A6; Wed, 16 Sep 2026 07:59:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 43F686B00A6; Wed, 16 Sep 2026 07:58:57 -0400 (EDT)
+	id EEF5F6B00A7; Wed, 16 Sep 2026 07:59:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3203E6B00A7; Wed, 16 Sep 2026 07:58:57 -0400 (EDT)
+	id DBA326B00A9; Wed, 16 Sep 2026 07:59:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EDBE96B0088
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 07:58:56 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 84BC01406BC
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:58:56 +0000 (UTC)
-X-FDA: 85219479072.15.0ACDDAC
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012016.outbound.protection.outlook.com [52.101.43.16])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 5B50D14000A
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:58:53 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b="KNHRx1/u";
-	spf=pass (imf26.hostedemail.com: domain of Alexey.Kardashevskiy@amd.com designates 52.101.43.16 as permitted sender) smtp.mailfrom=Alexey.Kardashevskiy@amd.com;
+	by kanga.kvack.org (Postfix) with ESMTP id B5F126B00A6
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 07:59:34 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4E0EAA59F6
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:59:34 +0000 (UTC)
+X-FDA: 85219480668.28.6F04055
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010043.outbound.protection.outlook.com [52.101.85.43])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 33C72100002
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:59:31 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=wzwC6nfw;
+	spf=pass (imf14.hostedemail.com: domain of Alexey.Kardashevskiy@amd.com designates 52.101.85.43 as permitted sender) smtp.mailfrom=Alexey.Kardashevskiy@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1789559971;
+	b=JeI34zMCPUXCjYdOtbBurak2dqwIpMcCnC+IZnSb3jYQDVF/23h6P66l5+kzKNhZ4CE9Xu
+	tUcMLWxpk6vrHbtEIoz9DJIlIpoxZn7xHsbY4F5RbQnWSb+XM0NGiCQd9VG2t4DL2NQPFS
+	3NLV0pErFdapk4AHF96RJhubNHd4tYw=
+ARC-Authentication-Results: i=2;
+	imf14.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=wzwC6nfw;
+	spf=pass (imf14.hostedemail.com: domain of Alexey.Kardashevskiy@amd.com designates 52.101.85.43 as permitted sender) smtp.mailfrom=Alexey.Kardashevskiy@amd.com;
 	dmarc=pass (policy=quarantine) header.from=amd.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789559933;
+	s=arc-20220608; t=1789559971;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uN3TtTwM+bwTehqyvzEhtWdo/9tbU5sGc+GO4ttJXns=;
-	b=7F+JlyThBiOTp4bsLYmX8RSoleVDbGblC4LKQXRZ/+au4GsbulS4KkyP+YlsOBr9YCk2kY
-	DEQsGvZT6BZ/U0Qb5FMuSZ5m73wlnspHLAHEtkW9UArr63YSZ42EwhXpu1EZTwjCQKAfDl
-	fG/+S1cl00gJ+g4zVkpLLi/Bs/dC8JI=
-ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b="KNHRx1/u";
-	spf=pass (imf26.hostedemail.com: domain of Alexey.Kardashevskiy@amd.com designates 52.101.43.16 as permitted sender) smtp.mailfrom=Alexey.Kardashevskiy@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789559933;
-	b=0HMaPI4EzEMkaKWiR5XMZ/DahZ4MxYB7uDPtE2PWENJD3Br4fTGZa9VuYoeyYuuFWfk3S6
-	66dbKj9wu2VCof+rFFMFFiVJVzFyyBiNqRstLXu2Au2EwiuoZqTG9D7gUZb2HDg08CCKNk
-	JfARhGVViZH8s1+mUdKImeD5on5O+Zo=
+	bh=qTsg1utTkplWuARlA0qswoeLICanNrYPE/18/PBEUNY=;
+	b=2NJZwDTDFa4wYT2NDV9fVnbq+xr+THa86i6O0S8f3jhJA98wR1ESazu2Oj4zL2wSf44uw6
+	Asb+2JVkrtrv5DSsjZfUD6a7pKdDxe6rLPH+ioce3nq3371Ljq2ptId/pcZMSv0yi3Lwmq
+	tGvYdZMaw9SVDtXAy/JtitBfToJJ21Q=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=seol/ZRYlk9PRV/AE/0igGP4M475B8bTrWiYjR7Z5NVQdKgQ8Snt2Iybu43auxQTLklLTDj+/czXGPucm0VRfzcuHZnrtWsnzt9fa564LGCuzyXYB2wboIBU0JiXD2tXbkUw4vznR7ZJdYwkqjhER+nCBLKlLXXLD77GbCUVxF55cBM98geU4KyUAbObpDwGwPlX7OUjvnyQ/ErVPhnYwe35LYF2lgl5JKmTc092duqdYS/xqXIz44O5hNx1ujjZtaQrsdxqobZsO6EZPAGhyMogjMHX3oHd0JDOqY35plSg988uH9TBWL1tdirm3lgBThESwB5WN07dH7u6fQsegQ==
+ b=ofOgEZt5/WvZL398DiMP4cnJu+bAOQ7ChdryDjdv6oc3B+1IqZ5xoCor8N7Ik69lXihL8DalFNN9z171VyKvjWP7qM0DDXR3yLwNOmXuBqCv86Gbl8ba8tHqsafdCNrPxltMrbLTHvsJAE5IbcIcl+RldZJlImHm7npnTIGIzJJ1QMcy8I+eqcBMS9ZZqprVDYX2C05fuBYoOpwyswLPdGLbxffVcsQm3S+lV4Mtf7YbMTeFB9fehnnY8S4cHnUSdXF5aINmNiKz7F17iSKPebMKZAIN0MpN0ypjqkW2E4BYk1eFRto289kn9r4R9JwcoGJZ4lcE9S2+Jgiy17XQSQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uN3TtTwM+bwTehqyvzEhtWdo/9tbU5sGc+GO4ttJXns=;
- b=XlTCsuXfh6cbbhbZNEiVEITWSHaHxkZnjq0bBeBSI5S9g72kOw6XGGLeK+K4EWewm32H7VlSEd4nr9nUOHdWNETpfESYKdGCr2rAYiTPH207To88lFcUGwNjCbRT5kfB/PfJJXyvT9Em+8pJ3/kxdg7x61bbkpD3JT9YQtyIVXR5ilk5oujw/aNZ0uubZrZfPpO/N0oLeVTV7PmLE9i4C+BeEl2/6Slm/wxe2mDrFRJf9rojTe83MvrKt2jeWQn8nrZyd2tWkH35wRnCkyEjLproJIrPBR1lP5u2c2UEo9YQu/qPilPg/lGoa9Pjy7GmzZv5ehcBcrlNaEp9KYwiZA==
+ bh=qTsg1utTkplWuARlA0qswoeLICanNrYPE/18/PBEUNY=;
+ b=rmoiGjoh+6GgaL646m2gMAgAeOVhpofkBX3f/ONIo6agDbJ3NudbMju58xl+C1BXMLqHJHo/SJLgCu6OfZ6ClRdQOK+hdd+xThXKfg0ZOf8ObPpFogMdFYwFsuEVQyDlOqpg6yNgukAg4WRCIldL4HVzAGdtQX2nPGDjHKo/+CXnz1CXQERwq5BbbujDJTMzsYKKk4HZj6Q0ZmvdBb7+OwZZswtvWAkI3jaCClT3FPSNqo8ZTMgGcp9Xw0Zxm0nnnymV0tycimCtTkLIwfYtp4uFWIZo/SDWyrbE3/S4DfvtntmL3XIUE/P/cTKwfr6stSp1zjl52cvPMVYQHPKRMw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uN3TtTwM+bwTehqyvzEhtWdo/9tbU5sGc+GO4ttJXns=;
- b=KNHRx1/uIQrLP/p1OqbUtpLgVwCk7UVtvYLpPsa2/jtKdsR4Vjqm3gQm0t1vp4EhK906ZcAgkkSaNp5GN9OT1xi2nBN7sRrVepy7neCrEzBcLk6mtscazitXsKE123nz5ng2gI1C17BYkbYjzOdNlcc5U03fFb1OlKx8D9A4k+g=
-Received: from BN9PR03CA0782.namprd03.prod.outlook.com (2603:10b6:408:13f::7)
- by SJ2PR12MB8111.namprd12.prod.outlook.com (2603:10b6:a03:4fe::17) with
+ bh=qTsg1utTkplWuARlA0qswoeLICanNrYPE/18/PBEUNY=;
+ b=wzwC6nfwNmFtjgfk9sDcnKOMQ04jGfMzMCsC94PMwXHTyprnLafBJ/OMhSdIIZT7e1gKWt5OaYurLNADb4gi+KaWK8d7Qz3Dv4f9nx3JwyUsO5xKzntXU9YygO+pNZBzDvE9YfRcVfyBpz6mQnPpD2GxVC7juJ3ZzS7smUM8JKs=
+Received: from SJ2P220CA0004.NAMP220.PROD.OUTLOOK.COM (2603:10b6:a03:5da::11)
+ by SJ0PR12MB6832.namprd12.prod.outlook.com (2603:10b6:a03:47e::12) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.11; Wed, 16 Sep
- 2026 11:58:47 +0000
-Received: from BN1PEPF0001854A.namprd05.prod.outlook.com
- (2603:10b6:408:13f:cafe::37) by BN9PR03CA0782.outlook.office365.com
- (2603:10b6:408:13f::7) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.11; Wed, 16 Sep
+ 2026 11:59:24 +0000
+Received: from SJ5PEPF00000208.namprd05.prod.outlook.com
+ (2603:10b6:a03:5da:cafe::ab) by SJ2P220CA0004.outlook.office365.com
+ (2603:10b6:a03:5da::11) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.428.11 via Frontend Transport; Wed,
- 16 Sep 2026 11:58:46 +0000
+ 16 Sep 2026 11:59:24 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -83,13 +83,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- BN1PEPF0001854A.mail.protection.outlook.com (10.167.248.9) with Microsoft
+ SJ5PEPF00000208.mail.protection.outlook.com (10.167.244.41) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.428.7 via Frontend Transport; Wed, 16 Sep 2026 11:58:46 +0000
+ 15.21.428.7 via Frontend Transport; Wed, 16 Sep 2026 11:59:23 +0000
 Received: from aiemdee.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 16 Sep
- 2026 06:58:23 -0500
+ 2026 06:58:59 -0500
 From: Alexey Kardashevskiy <aik@amd.com>
 To: <x86@kernel.org>
 CC: <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
@@ -141,54 +141,53 @@ CC: <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
 	<linux-mm@kvack.org>, Alexey Kardashevskiy <aik@amd.com>, <aik@ozlabs.ru>,
 	Santosh Shukla <santosh.shukla@amd.com>, "Pratik R . Sampat"
 	<prsampat@amd.com>, Scott Soule Cheloha <scott.cheloha@amd.com>, Ackerley Tng
-	<ackerleytng@google.com>, Fuad Tabba <tabba@google.com>, Dan Williams
-	<dan.j.williams@intel.com>
-Subject: [RFC PATCH kernel 10/17] x86, dma: Allow accepted devices to map private memory
-Date: Wed, 16 Sep 2026 21:51:50 +1000
-Message-ID: <20260916115159.1938195-11-aik@amd.com>
+	<ackerleytng@google.com>, Fuad Tabba <tabba@google.com>
+Subject: [RFC PATCH kernel 11/17] tsm/core: Add TDI status
+Date: Wed, 16 Sep 2026 21:51:51 +1000
+Message-ID: <20260916115159.1938195-12-aik@amd.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260916115159.1938195-1-aik@amd.com>
 References: <20260916115159.1938195-1-aik@amd.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 X-Originating-IP: [10.180.168.240]
 X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF0001854A:EE_|SJ2PR12MB8111:EE_
-X-MS-Office365-Filtering-Correlation-Id: c49f70c9-81ce-478f-dac0-08df13e9dd27
+X-MS-TrafficTypeDiagnostic: SJ5PEPF00000208:EE_|SJ0PR12MB6832:EE_
+X-MS-Office365-Filtering-Correlation-Id: d8ed4718-0d0d-4492-fba9-08df13e9f352
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|376014|36860700016|7416014|82310400026|32650700020|11063799006|10067099003|56012099006|22082099003|18002099003;
+	BCL:0;ARA:13230040|1800799024|82310400026|7416014|32650700020|376014|23010399003|36860700016|18002099003|22082099003|10067099003|56012099006|11063799006;
 X-Microsoft-Antispam-Message-Info:
-	1bJ49a9trfumDwoyn9MewgHhdhH/vcO7H1vXItEBAR2GcC7Oz87Mn2l/avJzWfkRSChnShOjFI7hXwvbMP4FfIal/XfkCyAQO06jw07jp3OKH8Fv14GY6YOHfTvUSlnHRxfsxtpJfmrCwkr9GnKg5GXYolHH8kdXZuVQtH+PnHROr5jB+rRKZUZkw+jMKi6EB5sMFZve0dHPB2LyTXPZfcqQSwRzRnMa9JPAmrYk6BmjpPlY/zGIZMRL4ogIwgoaoBWgr2X3fJECn8xofhkS/dPlWE1gm4LGMM32AysHf5mzmXFzDVjFx/CzkJpupwN0nH8TVL9pWKTlpIbIQXDjaLx+FkjqAMfx3fzEL7R4946H7Hyse1Woyyf1+rbrQX6IFOCMqIQA75eNFofO3sWviWdOBrpPfr3KmGpt74PsgqnSShJAKfS1rBPn1YyDMZkLp8IRElEVCiFMgecxLvI7J7mj2+8+4z5F1jrSmVH0Pm+vouATGQfb5p4qKwJd5g31NtCxqwjL3sFapbwogiTa2xbrqJegMhJ+hMbhT1MYg0hV+Xn4w7KKLhnAON+dlxkAOXrgjAYJhDrg6VqYsK3x1ZmsmutuwzCbubbgs27aDBSaTnor7fzVXyE4z3gIdRZrtCPFmFIGs1Lxt9GqNBFoPs+7N5a4otqlL9gf7mHsWsJ4fS9vrcN8OM8srKTIfIU3IRe3qhs521WNeSWpaqmQQg==
+	1gjrxiOzZs++uLN/08CsbVuU5pzivX1w5sGfokhVo62HhTqsZAyt2altg4jQKy61YsFa5Q4JpAePEy56dZ2EtjTCeKjExL81JRYHJiYMY2uEiMnekm+X4HfnK61KTogTrUDOSWqYPac0RXsqXDF4wcWCECweQL2O+qrasaKF9Ob2twna6aAPVekdisRqgLeJlZeWB+Pyy3Bj167PJL09ZDmneWPqJ/nWbZ0cNzIZ9Uqu+TxE79xdf2uWrFfFyctA02oysbQLQg7NUfSUI+121Lh84kpVXJKbsCp4RX8FM8vKws3J3lHABQArpnrkiLAf2KQseddH0TJq+Gv/qJeo3ppTVrTxG+l8MATdtE6Ao3U3P+6gT3P9M6R6/DAw+GSzx5a/5muRGjOlLBCzMMiMgoy/exC0T3bXU9lf4eS/7wyQMhaEBz721jzLwZwa2Dv1PivZYIiWNzz8ZjfwLrQbmMk5/p8DJ5F9/KW0TMkedGokdgxIMOBxpzKrj0WOPNZTSFL2PdgqRRvebRWS/tn5JkJTmIfnpT4wVrU/EEANzAHAwcREbazlGn77NGogt+eYeQ5dt8vAtItGg7Je1OTdf7apf9IzPoCJmzfouuIh9OdDINS2GF86XJJkhSUJfr/0LPVLQjFXnrujzmzz+zKMX+LG2m67WgXyvo8/Y0n5DPWZ4ATFg4mJDgroef2p5B6hrmxaAbtQhopAI4TWgp6URw==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(376014)(36860700016)(7416014)(82310400026)(32650700020)(11063799006)(10067099003)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(7416014)(32650700020)(376014)(23010399003)(36860700016)(18002099003)(22082099003)(10067099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	qK/f3bcE1ASam6x2JuApZeSzxgwli4lwEhb+EPtO5GlbcvqWi2n0k+nCmOHidWa9c57wxnSKyVw6rpTH9uNaDmg3oJNXlIBXvGR1R/KFN/gP+3nnPsanWwrd57y/UdARYtTQx0oclZLQ0BGPI91gFjNkAlX5ujD1fxxig+qClAg8/i1f9m8YX9y28sjNZGmBEwP33TPzxrpHnN+hFi9AJNhz+zn1fgjuz4xCrtBlZIiJKBNAa55ix5MqPrc/Hp0hNMUb1/YlmECGfzThwtN1CwLiUVLLQlBKO1fcb1JIi5Qgv+5uPUz+SYTP5gl8NeH5pRlAUwiBM8wDq7PFX6NC37IA+rMpo1xfWlWcVjunL8MiE56oFApW110XZtgRGjDSOijBETZIzUKDFueWDJ8SMcnlpUO0wFZzFrYSoIR3W1JjxXGiUODmzMgF+4duPdAm
+	Fw53La2fWg2oO27psEqX3jIivEE3n3gbx3/xjn+KQHm1lz4FNVBajz48hTuLTPBt6uG2tVEbRRVvKQr7qSZv/THDK5/fsPRLILmlZp0+sWXWEMlp25tRTvdUlkvhgDpQhBBk7Xpw2/WNTNcciwCV4ENZvJuvlLVUt1sTm2llbK9DDNN55pWfltlQswjlh2XFTQbM3dBdqqt+eTE/9bviiGOC+WUEncGgm0s5E9hPqxwtrOEHu++p+E6DTbn76h4jtwoev54pqgHFtv9qpZ3UnUOsoBgI/lRE0iX1qfId86tWTOyfo3im62f04xW5+LNlhm5i3d1Ohcu/n4ZPM6reeV5E+Yufduo2+SyugUAxp87dhY4NTuBXalrrqjLQ46tVhj9YCY3Hk8coI/nSAbVxEzdI6mbCYS8c/Eerz4Y0bR2xhA+W8KI8DfNb2knsosaa
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2026 11:58:46.8022
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2026 11:59:23.9209
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c49f70c9-81ce-478f-dac0-08df13e9dd27
+X-MS-Exchange-CrossTenant-Network-Message-Id: d8ed4718-0d0d-4492-fba9-08df13e9f352
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BN1PEPF0001854A.namprd05.prod.outlook.com
+	SJ5PEPF00000208.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8111
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5B50D14000A
-X-Stat-Signature: swu1oh87g6gptb8iy73e9ncr9upcfb4x
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6832
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 33C72100002
 X-Rspam-User: 
-X-HE-Tag: 1789559933-800044
-X-HE-Meta: U2FsdGVkX19oFGmuxILVR8kvzhXXkFl8dzAkaysrc+gU9dv2P9Ox3iIXIkZTg8gvBK1CR92zGmE7XxUQHQfcINXY/JDtbyHYji+FaQL52jdFIshXObuevksxFzi2oC1b5hfRLMOSTF43H0EsNacis8+6/5T5U7uZPgMLUsrBc0XznfZzFcCwbRwhuxCgTuQ4enADVhUnrmmGPbFiOESE/vR5xSppNQOpEr3H+N/w00UjaNXLCrIcOfHihjmgQ+DaKak5Ppi8wZcjSFKMqdYeTEn3MeQZDfone/jO/I9GxRgtkoO1Zb21keqkMZIw6i+EhYu3AAbs3zc75wdn6IXVhOM24FDs1fwgRBTOvTuYLc62JfCpeOuh2rTdpOL/3rhrwZ8+tUaV8q3C1tawWqqHnyZAC+oeVSImwNitKQVugBqFJfZglFj+VmAmV/U+GAwGdfGiF5JqKSgCC9iQJntJBF25YZOBc16GepREfyG0xC9APwy98Y6Z2x1ZXPT9gfw3KrXFl8up5L7hs/Z0k09CHnCstJOfyAnIy/j7a+K06FohaQEMCq6cAF+I8MVIme1PB1AOw5uoiXWfEXbskZe0hJ5qTXcbxJJFg5/EaSvmonRna8FIywASjJEVBkmVhj1R7VGb7a02tEvo/b0hBURKc2di5PpGqQM/ewRasTCAVFPwvNC0/YGN9jxt11tsE9LQ08kPTAT02bLEQz3ZXhdD/IFcMrcl7Lg0nyY8Nh7G2HLngjGz7TNrjZI+ulzmsg9Gv45BMeOy3u4XtqyNMpegBjCUehSv5MtiCdmuECpmTHur3tBusu2moVb5OpCING3bJEGszr+aFa3RX2TWEzcpwJfhJqWwxiNY61E4q6PoLcgAcdUOWP8TRhk3dJRQVrkxZLT7kluep7IsvRgdZnx0FPNPlrAk+R7KOlQH+WCmeu7FTzuhCIWMj8Pvm/QmS2l6Pqzu9RnRgU1bRRyo+ke
- fAQkDQEN
- TlMOh2POBcsN3gew/rShK2Jc+H8P6XW1YevEDJJsTxdZzbj4GkTEHGTvtk5FrFh02XzmgLcp+/OZyZuc3oDvuo9uRdqOfRQeo3lBAbi3eOdghDDXzGgM7U0DcRF+pwlayO6EotYo+59/KLI6xMFXGPZjPqdgYilmT4TVuC7jPMu9NkGn4wc9gvhBKYTya7n2kTpMNKQpxgmaWirTQ2WIsn4IOjlopMYgS96noGPNqy/KuXp8eOAa0W4XIwMsHDdpcCUwAyR8kSHVWTe9oXc5nwtR2UiC7prDN3QpkQ+BHhCrIuonQHRPJdn6pkkMrHHvYKf1yfMW6/fYrjil5Thgl3ju4x/PKlhEkj7OQ2pXNifRXa2OQYfX7qRzFADePqDw9+5KzFCerGTLiTUVEtIbsqbeJhAVetcg+N1np41GERoHtrHpB8zx2Zxy9+TDaUhXFyUuA3E9qHX1xcs3q/aqqy7OXEpjk9NbTifHiEA+fppoBg77mLIXI4SgsJNFDU2Uqlly0MygxhjkcCjkDywVuvem871G55PGceKYp61Ep70sjggzi684bfbuek4BKvcVe/Zumcc5MEO/3TYNeYD2J19cGzshSVSE64bt66XFrUj1hpJ5hjo1IgR9f2DLiIGFZy0ROcxOmgSrG8NoyM00XSOPIOGISYJAOLLODcjYHHW5ByAWcjo5gqsxcosZHJPZeRRB08r2F8bMq5V9pw1e+6//Y1eKoC/6cixxfhmq6YmDLtphkmjAmCcEP9bkyAxrL1R9LcptieXCmhmiZw2X1saBmz8lzVrBTNg+34ZeG+nPAI4Zopb9jlgor1ziFqfegvpR5IoYBiEC0RJQ=
+X-Stat-Signature: 557igpiqu56icm3tab57ygoj3j6w6cch
+X-HE-Tag: 1789559971-978581
+X-HE-Meta: U2FsdGVkX18MhtQY5twYyYkcYffSU+u6ENaR6kih8F7VmfaFJsZpWIRVO+FoABBUSzCNZduSlA7h0VrPRLhKmsPSf6ORtJHQ84Qfj20/p8YyFsIedwjad5xVLdqwe23j0+hzA6RDMFyye5ebpdBfAJpqUWEhBTRa16h4KsVcFCf+SDXrkr3WRcCfbyYtpzjz8ThrdQj11cXNZUI8BqvMyDinZMaeeY/KLtnu4axoOKBARWiWZAPwHK3AiyKKzArepLtFKQGtD4tRWvKuNEpT+tG1/XRk5uWhSf/GK+WvyQGN8WQxeyXKoVN0AlKB5YlSBum4khVNjb9/pfZftc9zgiozJYdbhZdFk2t0CVf4uqskSG2VFy4jEGl1RDTin2wBPs1sm7HKAHnY4cwuWFPq/mxIkQA1t0ATycZzXqrmlFQF9+QJMjTt8y/V1eY7cs6GJDVYECMhHhqZxsqTw9GW8DlUBNlmhUeoD7ijqfv3MHe8WGYFiVoahNkN1RfKrg6e8XuuouC7STNBFDKBxpHpaLtuYLg2oWW01l3GF+2CBCcm6cjWFvewuApDeHWmZyivFnQPEKZvCD9a11ItDg3hD3uDhIqDTStctyqCv49mM8cCSnsgmiMHzG97xu/tg8enNHBz/13Q/FTnyWwV73Jk0CWrPSz9MJJSf/dlkGtcAZqvWZcJ4GEYbv4JvGKVwyyjvXJV2hkGksGnOA4hl7ylhxvfPH3YPUe95Z7WcCvmXdJetyR6kM5es6HTT69NnXRiOE+dDYHvEooPRp8N+L17yVe7AKmMBdssk0r6nSUnGGzxyrCJPeMuwkb1sPlaKeGlV/bAAmjWS1bHJNJzwCSDzMN61GHwF76FaVk4ZkLqMfkF7BKaItux2SNP+8jBUEuMVwsSwiYJh5cBmyfzpUXI66i1RX631XA9NqgLgYpssrJbKYqyCNeQfqITQMKROhk8VxSsG7LPa67Tw4bB2g+
+ lST9FswY
+ PWeT6bNtbasXeHJ6QSVc/83/FSRN6CiTnaZyS6f+g5vBzzCnh4zLqKSOSK7b5wkx144eDmKfM39fgE1bNt2tX+N0iq/5C3Z2qMXQU5eb4c3Pco7l6W10sokCC2rog9zMFYpIu+iuP+3//WDsxZXl7n4GOdRRm4f3RzpJzlX0wHPguV1t5ZcWfgpUXXlkwq8HIJ5HXfAbvczDV0HhvH+YYg1u0WaKGanTp/naYSOxdAfiG0pz3aYQ2Arqe104rNUc67ohHiMxEyQ8Nj1rnyzOaOVz/UFhO/uX1wuJGTX2ej2vt4tQLTddkzEzulDkc7p/AGw2NckOyR2qo6vTxq7EhQSTZluq6BTdlh0UpDLP111KPEnT4i8Pn6yOc77580zxb+JBXGVCMZRZq91l95CZ7H7BzvWw88hbJwuNC8X+HXqHyi+R+hIDTohwZJ8RKAi6NkPEt7bjF3dYigQuOE1iQ0hHxsbyGkZivGLLBQSdI+xLOf9I3UUf0x+Vk0frZvVszRaqYH/b5L5tApKInFS8dsOdcrcb1QRudSXpjBG8U6PQtfdptIl+C/OclqmXH5FpcAzuaa4Nl7Jra1nw1o2ngh8/nsmi7q+WC8UTfgLUm5dZWInIyw2if6e1V3KlCOvl47plcoqD1VuCJfY2dtLv8kxrOs2cXHCCNoiB6MBt6N9dCgGY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -196,45 +195,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Dan Williams <dan.j.williams@intel.com>
+Define a structure with all info about a TDI such as TDISP status,
+bind state, used START_INTERFACE options and the report digest.
 
-With the arrival of "accepted" devices, devices that have been enabled to
-DMA to private encrypted memory, coherent DMA allocation no longer requires
-page conversion. Update force_dma_unencrypted() to skip accepted devices.
-
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@kernel.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: x86@kernel.org
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-[aik: re-added device_cc_accepted()]
 Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
 ---
- arch/x86/mm/mem_encrypt.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ include/linux/pci-tsm.h | 69 ++++++++++++++++++++
+ 1 file changed, 69 insertions(+)
 
-diff --git a/arch/x86/mm/mem_encrypt.c b/arch/x86/mm/mem_encrypt.c
-index 95bae74fdab2..805800ddbd79 100644
---- a/arch/x86/mm/mem_encrypt.c
-+++ b/arch/x86/mm/mem_encrypt.c
-@@ -20,10 +20,11 @@
- bool force_dma_unencrypted(struct device *dev)
- {
- 	/*
--	 * For SEV, all DMA must be to unencrypted addresses.
-+	 * Require unencrypted DMA unless the device has been "accepted",
-+	 * enabled by a TSM driver to DMA to private encrypted memory.
- 	 */
- 	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
--		return true;
-+		return !__device_cc_accepted(dev);
+diff --git a/include/linux/pci-tsm.h b/include/linux/pci-tsm.h
+index 9b34304d9a1f..2ca577e2a37e 100644
+--- a/include/linux/pci-tsm.h
++++ b/include/linux/pci-tsm.h
+@@ -11,6 +11,7 @@
+ struct pci_tsm;
+ struct tsm_dev;
+ struct kvm;
++struct tsm_tdi_status;
+ enum pci_tsm_req_scope;
  
- 	/*
- 	 * For SME, all DMA must be to unencrypted addresses if the
+ /*
+@@ -88,6 +89,7 @@ struct pci_tsm_ops {
+ 
+ 	int (*refresh_evidence)(struct pci_tsm *tsm, const void *nonce,
+ 				size_t nonce_len);
++	int (*tdi_status)(struct pci_dev *pdev, struct tsm_tdi_status *ts);
+ };
+ 
+ /**
+@@ -331,4 +333,71 @@ static inline ssize_t pci_tsm_guest_req(struct pci_dev *pdev,
+ 	return -ENXIO;
+ }
+ #endif
++
++/* private: */
++
++enum tsm_tdisp_state {
++	TDISP_STATE_CONFIG_UNLOCKED = 0,
++	TDISP_STATE_CONFIG_LOCKED = 1,
++	TDISP_STATE_RUN = 2,
++	TDISP_STATE_ERROR = 3,
++};
++
++enum tsm_tdisp_status {
++	TDISP_STATE_BOUND = 0,
++	TDISP_STATE_INVALID = 1,
++	TDISP_STATE_UNBOUND = 2,
++};
++
++/*
++ * struct tdisp_interface_id - TDISP INTERFACE_ID Definition
++ *
++ * @function_id: Identifies the function of the device hosting the TDI
++ *   15:0: @rid: Requester ID
++ *   23:16: @rseg: Requester Segment (Reserved if Requester Segment Valid is Clear)
++ *   24: @rseg_valid: Requester Segment Valid
++ *   31:25 – Reserved
++ * 8B - Reserved
++ */
++#define TSM_TDISP_IID_REQUESTER_ID      GENMASK(15, 0)
++#define TSM_TDISP_IID_RSEG              GENMASK(23, 16)
++#define TSM_TDISP_IID_RSEG_VALID        BIT(24)
++
++struct tdisp_interface_id {
++	__u32 function_id; /* TSM_TDISP_IID_xxxx */
++	__u8 reserved[8];
++} __packed;
++
++struct tsm_tdi_status {
++	__u8 status; /* enum tsm_tdisp_status */
++	__u8 state; /* enum tsm_tdisp_state */
++	__u8 meas_digest_fresh;
++	__u8 meas_digest_valid;
++	__u8 all_request_redirect;
++	__u8 bind_p2p;
++	__u8 lock_msix;
++	__u8 no_fw_update;
++	__u16 cache_line_size;
++	__u64 spdm_algos; /* Bitmask of TSM_SPDM_ALGOS */
++	__u8 certs_digest[48];
++	__u8 meas_digest[48];
++	__u8 interface_report_digest[48];
++	__u64 intf_report_counter;
++	struct tdisp_interface_id id;
++	__u64 tdi_id;
++} __packed;
++
++enum tsm_spdm_algos {
++	TSM_SPDM_ALGOS_DHE_SECP256R1,
++	TSM_SPDM_ALGOS_DHE_SECP384R1,
++	TSM_SPDM_ALGOS_AEAD_AES_128_GCM,
++	TSM_SPDM_ALGOS_AEAD_AES_256_GCM,
++	TSM_SPDM_ALGOS_ASYM_TPM_ALG_RSASSA_3072,
++	TSM_SPDM_ALGOS_ASYM_TPM_ALG_ECDSA_ECC_NIST_P256,
++	TSM_SPDM_ALGOS_ASYM_TPM_ALG_ECDSA_ECC_NIST_P384,
++	TSM_SPDM_ALGOS_HASH_TPM_ALG_SHA_256,
++	TSM_SPDM_ALGOS_HASH_TPM_ALG_SHA_384,
++	TSM_SPDM_ALGOS_KEY_SCHED_SPDM_KEY_SCHEDULE,
++};
++
+ #endif /*__PCI_TSM_H */
 -- 
 2.55.0
 
