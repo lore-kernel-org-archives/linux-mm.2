@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45D91C88E77
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 13:38:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB5D4C88E5C
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 13:39:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 59A416B0088; Wed, 16 Sep 2026 09:38:22 -0400 (EDT)
+	id E739C6B0092; Wed, 16 Sep 2026 09:39:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 570B16B008C; Wed, 16 Sep 2026 09:38:22 -0400 (EDT)
+	id E4BA86B0093; Wed, 16 Sep 2026 09:39:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4888F6B00A1; Wed, 16 Sep 2026 09:38:22 -0400 (EDT)
+	id D62F26B00A1; Wed, 16 Sep 2026 09:39:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 197CE6B0088
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 09:38:22 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5CA3F120728
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 13:38:21 +0000 (UTC)
-X-FDA: 85219729602.30.452F1E8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 9DEFE40008
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 13:38:19 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Fx3YHqgg;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B56476B0092
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 09:39:13 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D47561C28CB
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 13:39:12 +0000 (UTC)
+X-FDA: 85219731744.29.5279CE1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 10709A0005
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 13:39:10 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JSfXnglF;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789565899;
+	s=arc-20220608; t=1789565951;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8O/kTujFJZONtx3CvzXCpeeJEvu3qXIvPhXpAUcAqVQ=;
-	b=OBB7bqoq7VqvCPn+WBtmm2eJlrUaANxFr/lCjOX29YD86Uri3AkxQshUVt4dbI0STkMze3
-	WSQTW6Rr/dD8d1gwAQNiCAZJodosVQsKqQucYRCf8tOVTsAG/AVjLbP6A1qjv/x+L0V9pk
-	OQRLaxHMTygc3wsgoIBzWCzKMfqJQmI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789565899;
-	b=uXgPxkkKBXfCBXP7auUeXX65GieZX1WdQXKHdEz0lDrxoLFF9igS464MKdSOGsFMM680kI
-	ts52304f1kekI3HDWN53p6vokxfmmzbC1pDu8TqOGoyb7Txxc8JPNW5qx76TorTfzB6phF
-	Q2prTsVo/3SfKZ/ykXUzqc0TNKV13c8=
+	bh=uB6n1K3LCaEVCrqPWgjTTDdDBNC3FP5MLx4HfaiqvKA=;
+	b=zf9by2SaHPuUB2iV2j2WrmV6cAw4rx6ZXmoppWL6KkYc5QYvvn0gx48itI40bKT3a6NaPK
+	0N4cDFanFREcLk6ABZsh8KmSC19wMRnE28+fJwP/844Soutf/Lid0kKjKnxKNiMALd6/IS
+	s2/yRbxGbvj/jha+nDqQx1oqhR1vKkc=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Fx3YHqgg;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JSfXnglF;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789565951;
+	b=d0ylhfwmSpiV6NBuca/ursHLB2UOQzWD5hMKBaTN+KQ5/iybcu9oBuwW28q8lc5kyLL4Ur
+	CJPhfcJl1RoLpqnTY7dh8RhvJgwi0/3MQdKiGuk2x1wQ51aNd9U+gFEzdZf2DSgEjjRe69
+	CeD1AbBA7MDGjFG2H1fau1WSpijY+nw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C4E64602CC;
-	Wed, 16 Sep 2026 13:38:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 333591F000FF;
-	Wed, 16 Sep 2026 13:38:16 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3453B4145E;
+	Wed, 16 Sep 2026 13:39:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5EC81F000FF;
+	Wed, 16 Sep 2026 13:39:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789565898;
-	bh=8O/kTujFJZONtx3CvzXCpeeJEvu3qXIvPhXpAUcAqVQ=;
+	s=k20260515; t=1789565950;
+	bh=uB6n1K3LCaEVCrqPWgjTTDdDBNC3FP5MLx4HfaiqvKA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Fx3YHqggFxvjzHFans8rkrcDlx1fMvYHzrGvqOo+1s026Bzc8WI9z/avq4l9D57Zt
-	 dllGsX9dg3RqDjBmvjZVJZiTSraEpfgGcoGm6BywAYxpmHfOwB//Wt29SD5euw6se4
-	 +aFDWdLsxUm+bjMjEgqVSRcH5tkRmlji2cP+Zn+mrmZCSi3aN7WujfWTRarDIjw/fA
-	 CmDX9ZWcv7rCHbtX1KIXxfmPMjudO06rG6W5dwOYiGBoS6GtIW/oqvwmb800imD9ri
-	 405fUEYGBFv/DiduUnVedCTInxho8qbJ9C1xE1DV/H5gm/saOZznPOOqscQngcrGOU
-	 4uowKDeQAAssg==
-Message-ID: <05a7ac7a-b7bb-4f75-a395-6854874fb8c7@kernel.org>
-Date: Wed, 16 Sep 2026 15:38:13 +0200
+	b=JSfXnglF0N3PtBmzFz52fRvW/pwX6FqS6EyRHa2wwVpaoCOJBaGFPgMuWG+ODgm57
+	 uzUdyTc9y4b7iiFWbatxIpIKXgXXfxwYzyQf62fwn3dreu18PdoYBOJSapkhTnjMx5
+	 kYYH3g0YTT1WsS1k5JiV0UL8DU8Ekyk3frjNZsRlkvymK+oJQR6gA7VLvdusvGKExm
+	 gGfbrjjQ0+6m1CVxfALv14O9PRixN0G9mH9svEYusD7Xf13kvHRIzI5kMdKdjusYlg
+	 JpqDCF6yF5H2tRUsQEnvE2Qy9MofukMIlRcMhuOGPkWPxNdv6jpUs3JEUqS3QBoJTc
+	 lLdZgRRvkC2dw==
+Message-ID: <ef85271a-a1a3-4b9b-8c99-c1f871a13c6b@kernel.org>
+Date: Wed, 16 Sep 2026 15:39:05 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2 02/14] arm64/mm: Route all pgtable reads via
- ptval_get()
+Subject: Re: [PATCH V2 04/14] arm64/mm: Route all pgtable atomics to central
+ helpers
 To: Anshuman Khandual <anshuman.khandual@arm.com>,
  linux-arm-kernel@lists.infradead.org
 Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
@@ -78,7 +78,7 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
  Mike Rapoport <rppt@kernel.org>, Linu Cherian <linu.cherian@arm.com>,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org
 References: <20260907035030.2839978-1-anshuman.khandual@arm.com>
- <20260907035030.2839978-3-anshuman.khandual@arm.com>
+ <20260907035030.2839978-5-anshuman.khandual@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260907035030.2839978-3-anshuman.khandual@arm.com>
+In-Reply-To: <20260907035030.2839978-5-anshuman.khandual@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 10709A0005
+X-Stat-Signature: ia394547yb571q7gto88a33rzxyefcbx
 X-Rspam-User: 
-X-Stat-Signature: 7butfwaut3qztogggj55388nb9167u6u
-X-Rspamd-Queue-Id: 9DEFE40008
-X-HE-Tag: 1789565899-871843
-X-HE-Meta: U2FsdGVkX1+tqy7K2Z/wXebf96AmsTrfjsmoV5yL6S7J38c+5FsRcnrb6AqRFcbl4cbYiFJ/5eIslq2xvfT9TgX72mBF5PO/U/HIUX4RV/7r59qZ/2R+CNTSMi0SMpBLpj1P38lgS3MkGOvK+hcSv0cdtuix0/kemFKLxcYRspN3OFW7iImiMVUSf1Lljessvkb4hGF0/TwZ433WrD8aKqHLYfULS4gFPyV5AUt4L8coK0Zh/Z2mzohCid8HxqC/PfcAWMqYejPlx0gDRzpZKcdCMvAV7oy4doLtj1NNylcaKz9X+v3iL1H8XQfWkwa9meFeQwBsWudIGZ0X2l0ijwIhdRFdfA5I73uy6not8g4EY4TWt7idBnZkaAehNYWdB9V4A+ar2xGrgYFhGvMftVkrB3X+jfwOkYuA6IBwg03hqWurAa7+sEn8Rixm5Knzlr9zXX7kI8QFP5oR205mm3KnfOgOOXjqs3ZF6GXY3l2/X+x/glMeyWznrNRXYPXiZSf/XPIm3eYbHd3MmL9twxuhR5E8tvP1zocMFugaRiKQ1qVyOawdKdbutRGwhnl59IEdd4GOe3Orl2+TbtOkXsNkmCgtVooUPcMDD2dI3lQ3RGbTDiPPCenEukBqxyqUN/VYNF/A1tGOh0YwVSEat+bHqRL/UGYa6eV5ZpTWjrZpOnb9vH/CfN9tQe+YHaVj9pul3gejzCgC3MnvMYT05NvVtom9+AfVHRKqDcFldLLxqaW1mKZD/drGOTuP3fJF0Lmi+ng527rpJ43nXvOKgBU4Z/0Bnw2OgE4slilQfa4HoSjWDeVnEsQnOHYqVvTDa9ZJIPm6wS9A0BsWPDZdlBURnoBZAEfw/mBiKQeWagU8S9GC43RJeqrQ6hqicHjmNldAJPN9a+fpiqVQxoaoOnnzPrdsXdsMJpPOn2TZ8LL/t7g14Ks4D7Ykl7gi1QYUBQ2esfTqn5nr8teiHQ/
- L8/WHgQC
- zp4Axvjy4wB10ymiyn1eM137veBHimlt4Tosk8Nw1qVVRvdeQIi6kBc4QuF+mGtPzaDK+xf/dMNSqN6amlfJW1Cr5OBu0UM6TXEny3W6Qky7CqHTiL40qraGIufdbXrEtwFfhi5/5BQwr0MmzAjYLjVaMSBAGT0zboGWZwD8fXAxQrdIaKp+TrRLY+21YGT2EBAjjzvj+Dc0GTS25FXxJLyfMHcYyUfgRmNHjsXm8nBw2I+rEhugVbYyy3RKn5xlYdmtHxbuMjhlPlDImOBpE7eQCBOaO3roP+0ckphAsOH3AI9pt/kigZceP7F48qxvV3pBrFOS0+f2U70s4y7BO3wmY58F5UOLbpdvlW1nVXb+bOWBt4M60QqOWWHH9yGdSFGXZ+h693nSu8MxmQWZZZTQA7xqD5124BKlN8OtmEFa2GjRdadvymvY8uZ3j4jpXLvUp
+X-HE-Tag: 1789565950-317847
+X-HE-Meta: U2FsdGVkX187LVD0itQ6dd1FDhdKeJreJZux0jKtSjMcfZDSoBluW7ZmZ/KxfjxWm9lShg88VQ9I6+bePKKYX91EE3crGTYkUSdtDlLO01Khz37Yx2CUZe6dJzXcuQhD8bDIZ01WLKk8xHpCZ+99L0BZ+2x1L2rnbJZn2i31QCiyj+4vIR081hiz6RwLrUkWIeyp8AOUzMrbV3pl3QTgvDebo9Aq2DuqnwBzqPqttzJaQKxbE6OSFXRJk3S1M6NY0OBK/4Pr55VoRw1UgW/93yheM4y67g1ESWcN2DTuNICElr1zVPVC4YxWKoZH0ZopUgC8h6E6QKiCFVYZnMZOvrXIquX0Wd5HgqElBU6tEj5CijzDpDpxdtq7w9ANO7VVP6sgmLrkzqa23RkOChuohgp+fPXydkoKdyCVe0m6ER2pItkr5r8pj5rlZXgWYLD0i0AX+esLuCg/s+YO7OfhwcndFmxRH/HH4suK29zb4rqfDyg10f8eCDC1D/fmVRv2fkRK9ZyFA+kct645h91bV26Xt//YYN8sTSfBmXUOQ3FbxXdtEnahVaHZ0mdtOxm6TfTvrPbDWQ7vzs3tuaYwsiDUZezcVmoyqehy9fxTPdjoNFJk6msxzOfw21GeQ2dMP+UIDyOiTWmwqTdG7D+MMNsMdzROOJ316+7aHAj+Tn+9VglSLgr3P/5FMt+nlyTOzaHKW2io3neKqTPAYh/QuH4jyqnUneIDkH5w9vtxitk7bUiw9VIn03hgc4iqN7EMI3Tqo+5ZM6Ff8jutiqGZRgTNXFBGwr54nLrSYZKm1nLc27gOhXx1q/+c8KGs4zrgUmu8tB33VFQZ4xZ+ko2lTOWte7DW1hjyPegQHFYh0fbBlEoUPfmE+1ygBSXhNXOVj1sDSbnIK4g6ppo2tWhEebW1fBvbWNjqM2mf2z74Bh9GaJ9y2f3+JNMrYT8HpFnnsqDbjybXNmESI5B5yX+
+ kKXUavaw
+ aiFZ/cdaoIPMYFlzxHtTnKYYdskWYQUCzL/qH8sPJ87Sibp4ETV4J9+3jX8ATRh6RtV9ez1OjDv4Xrv+74W9lw/zk5SMsss5ZBXBHmeZeoWsNZLRPqonsqvHmArXcAKtUqBciK8EKjyEI/M6UjO7JlVxI8koqjXDHcJhmD376x3UPoDonenAMggOL2FlpvB9NEphixo/SqtHoaALG7Q2gwc8M38yutUN5wMsJhDxtUKrqDeawTSh5UeTISwGoALnDDK05/EyFfLPbIvvn5RJp/6q+spEbO8mbXzqi1aK9i3Np7hB2VnRuGPDrqLToQ2Orhx0iGjE/CGZFYFuK7+BJV28dCefScxl3gYmVEat4o4xhJJPjEV0F+4m5zfOcHtrOvORMcs4st56/lJGJd5XjrW5+wg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,12 +144,13 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 9/7/26 05:50, Anshuman Khandual wrote:
-> Define arm64 platform specific implementations for new pxdp_get() helpers.
-> These resolve into READ_ONCE(), thus ensuring required single copy atomic
-> semantics for the page table entry reads.
+> Route all cmpxchg() operations performed on various page table entries to a
+> new ptval_cmpxchg_relaxed() helper. Similarly route all xchg() operations
+> performed on page table entries to a new ptval_xchg_relaxed() helper.
 > 
-> In future this infrastructure can be used for D128 to maintain single copy
-> atomicity semantics with inline asm blocks.
+> Currently these helpers just forward to the same APIs that were previously
+> called direct, but in future we will change the routing for D128 which is
+> too long to use the standard APIs.
 > 
 > Cc: Catalin Marinas <catalin.marinas@arm.com>
 > Cc: Will Deacon <will@kernel.org>
@@ -159,25 +160,33 @@ On 9/7/26 05:50, Anshuman Khandual wrote:
 > Cc: linux-kernel@vger.kernel.org
 > Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 > ---
->  arch/arm64/include/asm/pgtable.h | 38 +++++++++++++++++++++++++++-----
->  1 file changed, 32 insertions(+), 6 deletions(-)
-> 
-> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-> index 83087b70f192..f764132ca34e 100644
-> --- a/arch/arm64/include/asm/pgtable.h
-> +++ b/arch/arm64/include/asm/pgtable.h
-> @@ -84,6 +84,32 @@ static inline void arch_leave_lazy_mmu_mode(void)
->  	arch_flush_lazy_mmu_mode();
+
+[...]
+
+>  	case PAGE_SIZE:
+> @@ -1400,7 +1411,7 @@ static inline void ___ptep_set_wrprotect(struct mm_struct *mm,
+>  	do {
+>  		old_pte = pte;
+>  		pte = pte_wrprotect(pte);
+> -		pte_val(pte) = cmpxchg_relaxed(&pte_val(*ptep),
+> +		pte_val(pte) = ptval_cmpxchg_relaxed(&pte_val(*ptep),
+>  					       pte_val(old_pte), pte_val(pte));
+
+Indentation goes out of sync here.
+
+>  	} while (pte_val(pte) != pte_val(old_pte));
 >  }
+> @@ -1438,7 +1449,7 @@ static inline void __clear_young_dirty_pte(struct vm_area_struct *vma,
+>  		if (flags & CYDP_CLEAR_DIRTY)
+>  			pte = pte_mkclean(pte);
 >  
-> +#define ptval_get(x)		READ_ONCE(x)
-> +
-> +#define pmdp_get pmdp_get
-> +static inline pmd_t pmdp_get(pmd_t *pmdp)
-> +{
-> +	return ptval_get(*pmdp);
-> +}
-Ah, one thing: you could pass a const pointer to all these read helpers.
+> -		pte_val(pte) = cmpxchg_relaxed(&pte_val(*ptep),
+> +		pte_val(pte) = ptval_cmpxchg_relaxed(&pte_val(*ptep),
+>  					       pte_val(old_pte), pte_val(pte));
+
+Same here
+
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
