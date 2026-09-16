@@ -4,78 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02FF8C88E77
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 12:01:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0483CC88E77
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 12:01:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 09BD96B00AA; Wed, 16 Sep 2026 08:01:10 -0400 (EDT)
+	id 160056B0093; Wed, 16 Sep 2026 08:01:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 04C176B00AB; Wed, 16 Sep 2026 08:01:09 -0400 (EDT)
+	id 111176B0095; Wed, 16 Sep 2026 08:01:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E2F366B00AC; Wed, 16 Sep 2026 08:01:09 -0400 (EDT)
+	id EF49A6B00AC; Wed, 16 Sep 2026 08:01:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AFB4A6B00AA
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 08:01:09 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 41D001C2CC7
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 12:01:09 +0000 (UTC)
-X-FDA: 85219484658.19.25EB31E
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013029.outbound.protection.outlook.com [40.93.201.29])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 2D7C218001A
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 12:01:06 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b="tAK/ysYq";
-	spf=pass (imf16.hostedemail.com: domain of Alexey.Kardashevskiy@amd.com designates 40.93.201.29 as permitted sender) smtp.mailfrom=Alexey.Kardashevskiy@amd.com;
+	by kanga.kvack.org (Postfix) with ESMTP id C14966B0093
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 08:01:52 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 708301C2CC0
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 12:01:51 +0000 (UTC)
+X-FDA: 85219486422.26.C79836E
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010046.outbound.protection.outlook.com [52.101.85.46])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 457D5A0015
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 12:01:48 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=RpT1pMU0;
+	spf=pass (imf25.hostedemail.com: domain of Alexey.Kardashevskiy@amd.com designates 52.101.85.46 as permitted sender) smtp.mailfrom=Alexey.Kardashevskiy@amd.com;
 	dmarc=pass (policy=quarantine) header.from=amd.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789560066;
+	s=arc-20220608; t=1789560108;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dA9IhLE51D9NYfND88bqQhl20dii5Ckm+YGWHKm39+w=;
-	b=Ewr1gYNMvvJeGc56a08ysTMGckHNUsFGP/b8A+Zw/Oy8/D+H+sihFmeRikePkweWYfh7L5
-	DGDN0RoHpWY/sEUZnyVxNWDGCfJ7Fk6wI97DyYtMdsUxgRQIsk4BUxERD4ACtiIBsoa6lQ
-	FxP5OefhrqkQXj/rQY0TYfKnceJJbBE=
+	bh=m5Wn2u7LMPCPQqnkaKjK7qt1ozlCRrR1eh6v97NBG5s=;
+	b=gTrXjs0O8DC6/Zd7NyxQnXbH+roSu70UYawJ3bCh8KBoZBwZfVYB673smGBHFSWQZYae4E
+	yJKZ04uo1PMUOlBZ0u4CcXkZ2rx23bw6nyN0TsK2AvGzySaW9tmEKFXrOKEw8G6WckZ1kq
+	kXnVIUwWU+BlOQLWT/1DERaynNjzHoc=
 ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b="tAK/ysYq";
-	spf=pass (imf16.hostedemail.com: domain of Alexey.Kardashevskiy@amd.com designates 40.93.201.29 as permitted sender) smtp.mailfrom=Alexey.Kardashevskiy@amd.com;
+	imf25.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=RpT1pMU0;
+	spf=pass (imf25.hostedemail.com: domain of Alexey.Kardashevskiy@amd.com designates 52.101.85.46 as permitted sender) smtp.mailfrom=Alexey.Kardashevskiy@amd.com;
 	dmarc=pass (policy=quarantine) header.from=amd.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789560066;
-	b=gSVsf/2LND9xvIFRQftK4EfHqnj7trQCVOKJ3yv8x3CfpA7MGmC5QVMnfCa3Wm+FEi3f4c
-	ioerLxKRydYpsZnJuDK9xi31AVwCfKJtzJDVQWeVfjqOe6NGIoCSMFG2L2MxogdqZNzXcL
-	lwk6ZK8Mgs5W+vBscJOCR1htk8rbA6U=
+	t=1789560108;
+	b=TgVJETE2pLg3sUd4+LHXQuZoyhp6eUsWbOzLjXcHIE9bUYjaf8i6Y/C91pt9my4SeFdR84
+	B5BILECsVFhiYJB3Cq1HGbZWnlEvSZBnW4RAXHv4HZY5LtnO3TbdsGjQBZ6O3f6k9GbtS9
+	kMBiiqDTU9Hkbu1PMzL3SC01QOASnro=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RysGZKMHs1epu977SrAA1JJSXiIjQsbitUAUzo0og631gjBBRGn2BjxwjMCWcLdW9BsWVbm0Un2UWcNH5lE4IaOSolB+EkLLL8y2QC6InyHSCVH8JjNHWIpV/7BUTovPbEJnD7mVpQRQNLEHc8NGPHKTkozR+hormCPiq7qcpKgUF9ntpa0wTdJrnvqkVfL2LQAUffw4syw5+2lkQTDAErjXLyOf0hMFBwydmsV820C42XeGwt5YwL64AxB5caus6zS5j6nidzX9qAtb/5kccD2ijd+JMZACa8CX7RLp2vr6/GItAGOH+HS4AqSNrMwA18UolsJq2Z4l4JM/wgsoiw==
+ b=ez46YkTXVNPBaIsUDadQp2HbzH2MzSUTArP8XRKzrau9uH0KazSMpiFMJZ490AM5RobEp4q9wt2iGXMEqV57xqQ+7WNBr4fQGROO8j5yxCaL+8MNG//M8krALapxAMwhH0SHA7PhBc8BE4SSX8Gg0OXxj1uSPdPElVL0l4smWPJNuUUi82ixmSnYE3t2E0nNUcMhb1jyWUad1pBSjYrqdnXzQZ9OGeJk0LuHacrJV/l7JM+tMqyuwog0xwrnbxr92smLbFOpUWBAHJ0S6F7Z0UoYA18POj44sijrJP+kH/+UbdPpNP/1PIRKMvGs1DUhohi4AWy+05VycuHa+hrnqQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dA9IhLE51D9NYfND88bqQhl20dii5Ckm+YGWHKm39+w=;
- b=Zq0s1qpS2T2DBAuVG1kAZEK2avJylW2WibH619MTsPJcnmCtsy1p2I1ivYzWdNAhUd5neykHRhgupx2s/Y/JvUhW8/IYB16p0wipHiXVW+9efx5+IxkXcL2HtMZ1R8vdNDDp6ZzjPSoXYbwziqKk1+1JJOG2NhcAatzs/Zg/c3y02nnp1NjdPLp2UJAcxfugXovube426MkdH85A+meTpKT/FjzKXkiDvbMhda9Bgkqb/IrtggNSTMnaQAMb1vdTZlFzcOAJUdISU6JFE1SCbpzE9wik9Usi7b5LGY2ahxnVtfJunrT8l9Ypo3DQBW1JfoVcadkhf+whT9WGqV7WZQ==
+ bh=m5Wn2u7LMPCPQqnkaKjK7qt1ozlCRrR1eh6v97NBG5s=;
+ b=dC4kPfCKMTsVvumw/AfwQJbkmA2qPNO9VhXvprucbnf+ClPy5GBqXj/tV0VDOf2g5yDmU0u3kPQdc/dBZ+tGAxSgry0KDbdk+UozBMtFTc4UVpv2hcxoxmcET0BtrW7p8YWVLeN2EMmJlBve0UzZsoImvYJ+T5uNcQro5PpgqhFTmVQfjUwK/KL/AxVBiCpG9LXMMX9WFxySQRqdg242zGeeUz+Ol/ak432vVMKWeabLzmlQDu4xGdWvridNCNHuqHZ40OGroIk/DF1zfd09DMAuWyMVZ5Fzr4n93OjBe3DrxRsxCXYA/8WmVCNSJpJOx+EsFYGqhMltn22NgCGadw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dA9IhLE51D9NYfND88bqQhl20dii5Ckm+YGWHKm39+w=;
- b=tAK/ysYqFM0Y9x2ZqU5FZKr3ii9y+n+d3OlTvslr4zPgMTQ/QxQBNp5eDczxHclEBLKTBi7+YVb+89H49gjSJ8nuWbfMQQb/vKu1imImgR00hozdC6mQ2b97US6CJSaqjungVhFJjkw/Jne+utrpAr9Lj6257hszIYPZukzEU2Y=
-Received: from BY3PR05CA0060.namprd05.prod.outlook.com (2603:10b6:a03:39b::35)
- by PH8PR12MB7206.namprd12.prod.outlook.com (2603:10b6:510:226::5) with
+ bh=m5Wn2u7LMPCPQqnkaKjK7qt1ozlCRrR1eh6v97NBG5s=;
+ b=RpT1pMU0oCMmamH88JBb2YcpTKg9WPNT5UC213Hyh3uJ2ZzAdSDTiHve1Mje7l3BusNT0TkBooD/4Qbrpjx4TnAppNG2+xKugKTq8jTIevcVjmt4MUN1IIdPrcPPPPxMNpDnuPscIwCJ0SAu8MamfhuIX1GeizOLAUYAiqFd8+Y=
+Received: from SJ0PR05CA0076.namprd05.prod.outlook.com (2603:10b6:a03:332::21)
+ by MN0PR12MB5860.namprd12.prod.outlook.com (2603:10b6:208:37b::6) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Wed, 16 Sep
- 2026 12:00:55 +0000
-Received: from SJ5PEPF00000208.namprd05.prod.outlook.com
- (2603:10b6:a03:39b:cafe::43) by BY3PR05CA0060.outlook.office365.com
- (2603:10b6:a03:39b::35) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.428.9 via Frontend Transport; Wed, 16
- Sep 2026 12:00:53 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.11; Wed, 16 Sep
+ 2026 12:01:35 +0000
+Received: from SJ5PEPF00000209.namprd05.prod.outlook.com
+ (2603:10b6:a03:332:cafe::8c) by SJ0PR05CA0076.outlook.office365.com
+ (2603:10b6:a03:332::21) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.428.6 via Frontend Transport; Wed, 16
+ Sep 2026 12:01:35 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -83,13 +83,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ5PEPF00000208.mail.protection.outlook.com (10.167.244.41) with Microsoft
+ SJ5PEPF00000209.mail.protection.outlook.com (10.167.244.42) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.428.7 via Frontend Transport; Wed, 16 Sep 2026 12:00:53 +0000
+ 15.21.428.7 via Frontend Transport; Wed, 16 Sep 2026 12:01:35 +0000
 Received: from aiemdee.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 16 Sep
- 2026 07:00:23 -0500
+ 2026 07:01:11 -0500
 From: Alexey Kardashevskiy <aik@amd.com>
 To: <x86@kernel.org>
 CC: <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
@@ -142,9 +142,9 @@ CC: <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
 	Santosh Shukla <santosh.shukla@amd.com>, "Pratik R . Sampat"
 	<prsampat@amd.com>, Scott Soule Cheloha <scott.cheloha@amd.com>, Ackerley Tng
 	<ackerleytng@google.com>, Fuad Tabba <tabba@google.com>
-Subject: [RFC PATCH kernel 13/17] x86/sev: Pass HV features to sev-guest device via platform data
-Date: Wed, 16 Sep 2026 21:51:53 +1000
-Message-ID: <20260916115159.1938195-14-aik@amd.com>
+Subject: [RFC PATCH kernel 14/17] x86/sev: Add GHCB calls for SEV-TIO
+Date: Wed, 16 Sep 2026 21:51:54 +1000
+Message-ID: <20260916115159.1938195-15-aik@amd.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260916115159.1938195-1-aik@amd.com>
 References: <20260916115159.1938195-1-aik@amd.com>
@@ -156,38 +156,38 @@ X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF00000208:EE_|PH8PR12MB7206:EE_
-X-MS-Office365-Filtering-Correlation-Id: a5d7f197-52a1-412b-0589-08df13ea2869
+X-MS-TrafficTypeDiagnostic: SJ5PEPF00000209:EE_|MN0PR12MB5860:EE_
+X-MS-Office365-Filtering-Correlation-Id: 43b471b3-312e-4f11-3c46-08df13ea4171
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|23010399003|1800799024|82310400026|36860700016|32650700020|6133799003|18002099003|22082099003|10067099003|56012099006|11063799006;
+	BCL:0;ARA:13230040|1800799024|82310400026|36860700016|32650700020|23010399003|7416014|376014|10067099003|3023799007|6133799003|20052099010|22082099003|18002099003|56012099006|11063799006;
 X-Microsoft-Antispam-Message-Info:
-	ggHAuYoxRsyDmpK7PPMyGhSXUVaxMF5B6QiwogeqTKeq8nrUfoGbiuHNraN3dkd0skkFA3zEvpk+aJnVn1HM6Jq20t56aRiGcpH2o0cXLweg0liKmiDcCC0rVTLVDHw4zu0r5TqyXPV0r1wWtMiMs1/Irbo7Nfa6QDPUtnkUGtLIwNkNgcyeCTpUK90LpQ6qZx7P9ESt9G85MtUYrZLY7RfJ0gid8yc/pnrWXBcO+mQK5o2S5b7YhtmRIDgvztr55XrEh67vlroLgrNb8jaYr8nDMz4i/9lByCpQdb8yQy/5NvY556JdFYDckQVfFZI2EE58KtUVYUcuccC2dtXmn0VRjQ1R67mNN1M1TQ1AGf0mdo1JmD1iSqgrgeONVkGWhNHvACyMuymSAv3ODDMMoQFLYkLE64NgcdAmHWnBTTrLWTajZCIk6ab/c7FKNX/qohLNMdzlwlZVWHjClgupBMitwAspZw2ZsvbTVeCLcjVVRTx6nmWmM+mnCK1M1m0gYtN34UqUkVnyU13gu5hdjshHC6Y8qotNQMLqVVM/aMxuBIzK6oYFKFNMirClvOi9DljNzBUDiHa93ScnhQhL24WJIy4czyUnL7X+4c3NSoj3fn+TF9i5jKlmOtlFxBDjRVI5c2PokHHhJoP1BvEr3EHgaPtjCbeP96Q3CO9/FQ1p6QHskScpLi4OdNF500oQ+7BIGtxXXQ6/VNPe/nAfsg==
+	/5G+nkTNRMJNQGSuiS6RRZKhS/KhosBx1ar6A3U+Yen4hddWoqMH8sZ3wb207pdmlf0+n/OzPd/tDMYtXqhUUSVV1cPUQ8F0erZvNy6rM/w6QV8wI/3i7R92YCzdRuxztFT05eYuD1VphA9OBQ1iM1Cw5YjQnrR1cQhe1GMX/T7+lB7WgHV2DFFqnZePUqxNodAa/Imy8E4w+nNI2OXHRKchZyt+I95+JXZj8Ww4qsCEvsPhzpEcM/JFQgSTpiSrjROv38LiYhzlpTW+O41JTbJPqj4GWBLFT5esxRrw136PSiIhRppB/qqNKj6DkLGUjpO7nQK3klmH6NDYQ8Uy9OuJSuRLay4fy8FwEOCrI54/BjnWWiHslCVUMoD7pHg8/sn4WcUc9MnM7rS1MoD+Tsic0kR4DsMjM8I8JQ4x7BjAv1Tob2/14Kvxoh82LRwbhsZrIZuhuKF2Q8B2nCJSiN+dbS6FAY1W7m/ULAGzT2Ey6rt4cJtRxkvAtEeH62ozmZIBcxg4Q5y5JQL93YMM/F20OqMGA+v2k89I8WiSaEh7Z0hvlHQ/1anLCNqI2jbHJ3atWpbmXAbPazrzonBx9HP6m8/vlg4rQs3J1QlaGF6HYKZaZM0Z6YsuplxSNzGoR3K9NIyLylTwMPtZE3FjYtWqp/1oCWdduhO0VRo7g1XoMXRTWtgFYjZon5qA+8wfMD30YexillBF9Jp4aRT7Sw==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(1800799024)(82310400026)(36860700016)(32650700020)(6133799003)(18002099003)(22082099003)(10067099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700016)(32650700020)(23010399003)(7416014)(376014)(10067099003)(3023799007)(6133799003)(20052099010)(22082099003)(18002099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	5VNspuapkH17wbM+rVXflo4XP8xHnthNl+oOZFPFwbu0ugA4FoP8rAAUVJs6Yka2Pf9TSkZj8jDB29CK112ociHjGt5B00jAIadlkGTdc2UI8GMXYt1VAeMUUb9rwBk/stqu34Adiy3P+T4PB9eMdUYUn3yiLdaPs4ogEouoY829E5R2JUSrc4IFcPwjvID1T1VQnqBeoAkvC1D+na+ouWQLZxfoeQGeuOcqF+t+YyAZnPqe18nMmY1Z8bLPTs3psdy259oc24hf1xtUyjag9UpQQjQPxYFPD6njODKts36lplHDLXD9rIosqr1OeZ74O8VI8Z1SbXkE9wuewkr4EEKRq0wMQ2nOLq9AW5ex0ZCC2BRhFwfJzrC8XLCib2BFQxENnEquSWrDi2eR7wEJZ/Y8ZNN7UyQLJbqXj9h2mdsKjd55xNr0uBVojEztnq9l
+	KGWqrxMpevRTUyLVG3M4M4v9Z+GrPszOWDRjjAtKr8gD+oIKekSZU1I1NEkcyDv7jCtK/HW59j+Q01lJZ5+zIvQt1Yhwllk/712KIEfEkfOUWdb9QDW/f1PSxKSNWqwa2Pogq0I/jKyYueKaGIv/XT+r1HVArzdQkAJ9qVWcdO8aFyoGyd/UNzEmgh0Tn/FDwDD2A8AT+3wBP0YhiGrwfhBW46lVveiCmlm6+h+mUnz3dFWiK9l4XDhlwlulUqJFOWY+5qRerR47gP50Op8Fn9lkliy0er94KZgjh1e2zYnNzdsI6FqJ8zf7rDPycm/1ljgPBc1U3QKNG8CeLDr9L3ctPipWjYJoyohqqivWF7/UVU1ZG0BjMPaUwVLmS9cN0G664BHbQ3K+kBgAKtcvax+3dNsK0RA8i0eVE/WZXPRECrI/mCBS5Waf/5k8hME0
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2026 12:00:53.0122
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2026 12:01:35.0080
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a5d7f197-52a1-412b-0589-08df13ea2869
+X-MS-Exchange-CrossTenant-Network-Message-Id: 43b471b3-312e-4f11-3c46-08df13ea4171
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF00000208.namprd05.prod.outlook.com
+	SJ5PEPF00000209.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7206
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2D7C218001A
-X-Stat-Signature: p4m5erp9wge3o9yan4rkerdyny5p3fhg
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5860
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 457D5A0015
+X-Stat-Signature: dein87gm4j65omyn5x3udkkxo1rt9f3o
 X-Rspam-User: 
-X-HE-Tag: 1789560066-418585
-X-HE-Meta: U2FsdGVkX19fUtu+KfVbW0C3k/ufuJiw/pgURj4cfZnK6o8sQ0U7qdDI9OkuPLRVF7JTOZTanQZVh3g6wrvqE1STl3HSRfoz+Sn3OLceZQwE3zdPIwoqk9eUe3MRFL3NZ/FKIjhUMMrlmgBDq/2OP9k1dk9c8VY5SOosqF5PaV5bya8YnfJLhjyaCAOxJ6DhGsw8GTpKHd3SOy9kLld4MfIHS7IyDuIf35r7Rg6qQVk5vXwaiNJl9Cho/efCfuOI4a+ewArclmSSjAWNxuBMtnXZEnLryuRDekJ5hfQvBEzRinFpE5dB2/WZODOtT7AuI4OyepGaaJpIXOdBVLpejjodEpgNcpI7qyWsBTP7f0uRy4/i0yoD2kmRERfH9oYzJDA1b/WSNjtCdof63gJy4E6BnAW1RiBcENc97G59OiS6esve+ihL/KSydwwgucmHAaXN1jj/5YEpUN1ZLLGmitaxiCv52dvhVLIfXayzJ9PiT4LkN+j6JuCQBz9NgTkaIuBEFBRClbaI0zeR/MFlezRoTZiwVNiP9OjptwBdcT3tg37RoH6VCOllG3sG36DE6thoBVu2LFTCFYZSpinvHYtS+I6IsF4kj0p8t9gHXx0Xgn9v3X/nG7K/Ef/v2oCz7bckj5E232C1bUFwKWJFw7U80ivtlz7xRz5wkqtMCbPwSkUARGWsZF+WTdaHO2FExT4Do5nXlpYK3tzPN2ko68qd+QMmOCJa63gmuA82us8ia5R6F797g9yvi0SQ4A9o0pFegsQdorHAQyLSVqjb7mcWNNTc26bXzbnt5qFhqYnbTzDyx/4XkLosLMIjtPohIMBmfad+fMRnT3ce2isbsltXeg3IvDGr7lyMJZbp4W2jLNERh15QO+N/uCsglTOSupk92kbPhaksITxaRwX0X1lphqT0x9kPcDhE5nBu6MOMscDiyJLrs+Y5FKgQW/XV5DTLIm6p2SEoH5GIBK/
- 6W8PRrST
- 3Vn70PsrqoU9iJrnoDmprcNQBDYrsvJEx6RZX0bARaXSPADxuvpJxD3sH9A5Ndz/YRreL3+GMpwNdgx31OEDgO1aPmzYpwAYH3KPR5rCI6eEdbwlS7oB+g9TKyAgnweZw/2M81owlg+YI44g9Qa3giaSThN9KGgJ0WDnfQt1BQUrrj6QvGWu6JyX0VIhSls93Dmxq39DN/WiceVe8q4A8AJFyP2vsPQnIwzoaDxETEzTCwWFtB5sjodIpFdirp9RWSCW75j2Xrq+4nbHAjd32R7p6aXsZ/CFWDSwKSbe5X6DVliYubKNMEsqfHm5qZU5ZDejhOr7Ohx2zRB4gcY3v35XZxCgWBybBoM5DfHidWjXsa5FXv1IrFdoJie4hTd7wMPPHIP0r9I2n62yfqN8qaBcu1/GhodzzrSFVGnFqYiTUttibdEkZKCRu392vP6CgxFuowFTZubm6qvLKmFIaq8EkqivLS0nI1AtMgokBYi4QPEtU6sh7OMBEI5fQtJGb1Opt02GfxnIdFGH3Y/PJr4EqXd9SVL0vRgaTinf6xnCsPnrVG/LXZ5UzkMvwlhLMqj6oe0wABJfTqE0iHRbOvmXbFCgOxS6NKFtfabCTxcfYGA41DptvxqP/8bDrobWPDc5nbm98CtYF2e8=
+X-HE-Tag: 1789560108-44595
+X-HE-Meta: U2FsdGVkX18Cig41QFo0tYJDCMl/Oy4NEliuSiO/TRgRA6xzxM495MKrh0Mo4ZwIvqJuAxm9OuQDxAdtdidLdQVq7k1m+CWF1VTUtHpJDDbUS5BMdx4ZbA+eQa5aqEzw33UL5NqAw0wngbyKEQC861vQWctHHoJhbEpU5MlEuv5n07d1FUjipt7i5O8jWrSJ/SBl/d2vo1o6giM3chzjcZ01FODC3pOMZIxpIAR81Nma7/vw05vrk0vRAtV6/fGV76vkoNME61wva2LxIrvLvL4JVKWdcwCyENFPbIdtgm+ABtR+shE8EQHiAGWYpbFHY2ZsGwSZbuE2JD7hzaFAre8pr60DqLean3vfUTj1kma7Q5KMEYg/w8CuBR9da84uVOC7lWmD8E2Nhkw8KnW4b1uvgdI3bFHiApCEFULzQA6geerV5fmTPHby+oyrglpHehnMnc57hOc+CT0jV8dmpSYberjcLHtofSKo2l2BGth6MBGR9Y2f6+jgdciQSM/KRvoxjNUrvqjWH3exYoct1TzljYVo5rzlsh2YRQNOKTkVsb/d+V33b5uCuNFKHjpLePqJ8A0RcvFdvWDRWrquK+eLeiRCWh4sxk9K3WiZUaD+GFzGeCsO4+UiOPiY1k1BQ1Bb4BpcVoXwN14PWNVF8BTre6+oF1L8h3OAu2NJPAjVyf/b44M/NktVHq9/aQxAvyjF4D1ARUyKS6WuguSB5R5dWRJ84arv9nAxB21y5+v0CowNdZCi3ehKXhByDIBGrtkf+j6WHbsXFcaPGe8a2YsRRz5sKOutK7QN2+ccA1kzCeyVRa2aVb9hD9pU+c3z2AcDauX9KHoCJwhPKidx7YIH16P64EnfKq1owVMFaSOSABBN1mp3IvkHStUGX4WZ+3eXPPCf+/ze3GBqxpfXZNmZJgKQmqHbUdRiO3Hx+a0UqQY1R86bDHg9qS8xK4w6w3O1cuUM7e4kZw3qvwF
+ NF6g0+5a
+ tj0kzaQK+gc5P7zSqYjbjALqOCTaSdZ25rBTn06O08cts8sgZcHteblHiwj9QVT7CL3XrVdcImhJ7Fe4aHXNOxCJjwY0o4qe8ZVmNIQVcBAb0yMq1Efizkibqoa19szQyCUpGPO9lHvKdV8Isy/GAkhpfLUg2+a/yH+qoZHK33Oxt/rHQS15rfRvyDnom8Hf4UnmuYtfGo0PAgkrehuatd+M6GLLbxynIcpvv1yMq3Ta8+xbtiNcTagTH5VePEoY15J/FJ1JjTk5GRz325pLyGUMERQqrjKx5ovRMcqnNietO0OFvKwoNOfUu1uWzelnh6D9Dpc/Hli0e4eJRsu8JzFK3ZozignYpn9kUmIejVBcC3D5JGszmkeBndxxdeZezvExIdRFXwyz6eHgUTRL1+vAwP3CdK1puIxW8YdOdoe0/qbJKmC+TljCbDvZdCQVdJWrP+2+eSI9kIFahaS56yhfp4cmVirvZQxo4+sE+nLb/I4YroBcQhy4s/3EqdmkuwKIEx0+8JPBwYZOHkIqtEILfwPhFO9kXhuYEi4r40icVac1mN+BIGQZx8iW24RfF4uMdLTL2J6w7UHpJXQNgjDOqNFtx7/bdGkR6rdTDHanEbXwJqzdZJL8vC1+qYZMmwpnYPIvnC8LtVQE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -195,58 +195,199 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The SEV HV advertises supported options via GHCB, the guest stores
-bitmask in the SEV core.
+SEV-TIO is a PSP protocol allowing PCI pass through of trusted devices
+(TDI == TEE Device Interface) to an SNP VM. The VMM advertises
+the support via HV_FEATURES and implements new calls:
 
-The sev-guest device is a user visible platform device (/dev/sev-guest)
-which provides the interface to communicate with the HV via GHCB.
-It may choose to limit the functionality depending on what is available.
-The first user is going to be SEV-TIO which is going to trigger creation
-of "tsm" folders in the PCI sysfs but only if GHCB advertised such
-support.
+1) TDI operation: the host executes on the guest behalf:
+- TDI bind/unbind to/from the SNP VM in the PSP;
+- TDI start/stop which translates to TDISP interface start/stop.
 
-This should cause no behavioural change.
+2) TIO guest request for an encrypted communication channel between
+the SNP VM and the PSP, it follows the existing Extended Guest Request
+pattern to read device evidence:
+- get TDI status;
+- validate MMIO ranges (a variant of the PVALIDATE instruction for
+  MMIO RMPs);
+- configure sDTE (a secure IOMMU descriptor).
+
+Extend snp_req_data to pass more parameters.
 
 Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
 ---
- arch/x86/coco/sev/core.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ arch/x86/include/asm/sev-common.h |  1 +
+ arch/x86/include/asm/sev.h        |  5 +++
+ arch/x86/include/uapi/asm/svm.h   | 40 +++++++++++++++++++
+ arch/x86/coco/sev/core.c          | 42 ++++++++++++++++++++
+ 4 files changed, 88 insertions(+)
 
-diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-index cc292d7c6fd1..5b912f42f493 100644
---- a/arch/x86/coco/sev/core.c
-+++ b/arch/x86/coco/sev/core.c
-@@ -1381,11 +1381,6 @@ static int snp_issue_guest_request(struct snp_guest_req *req)
- 	return ret;
+diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
+index 01a6e4dbe423..ff763c3c5d63 100644
+--- a/arch/x86/include/asm/sev-common.h
++++ b/arch/x86/include/asm/sev-common.h
+@@ -137,6 +137,7 @@ enum psc_op {
+ #define GHCB_HV_FT_SNP			BIT_ULL(0)
+ #define GHCB_HV_FT_SNP_AP_CREATION	BIT_ULL(1)
+ #define GHCB_HV_FT_SNP_MULTI_VMPL	BIT_ULL(5)
++#define GHCB_HV_FT_SNP_SEV_TIO		BIT_ULL(7)
+ 
+ /*
+  * SNP Page State Change NAE event
+diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+index 9e7a077c445d..89aaccb053ba 100644
+--- a/arch/x86/include/asm/sev.h
++++ b/arch/x86/include/asm/sev.h
+@@ -149,6 +149,9 @@ struct snp_req_data {
+ 	unsigned long resp_gpa;
+ 	unsigned long data_gpa;
+ 	unsigned int data_npages;
++	unsigned int guest_rid;
++	unsigned long npages;
++	unsigned long param;
+ };
+ 
+ #define MAX_AUTHTAG_LEN		32
+@@ -597,6 +600,8 @@ static inline void sev_evict_cache(void *va, int npages)
+ 	}
  }
  
--static struct platform_device sev_guest_device = {
--	.name		= "sev-guest",
--	.id		= -1,
--};
--
- static struct platform_device tpm_svsm_device = {
- 	.name		= "tpm-svsm",
- 	.id		= -1,
-@@ -1393,10 +1388,17 @@ static struct platform_device tpm_svsm_device = {
- 
- static int __init snp_init_platform_device(void)
- {
-+	struct platform_device *dev;
++int sev_tio_op(u32 guest_rid, unsigned int op, u64 *fw_err, u64 *tdi_id);
 +
- 	if (!cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
- 		return -ENODEV;
+ #else	/* !CONFIG_AMD_MEM_ENCRYPT */
  
--	if (platform_device_register(&sev_guest_device))
-+	dev = platform_device_register_data(NULL, "sev-guest", -1,
-+					    &sev_hv_features,
-+					    sizeof(sev_hv_features));
-+	if (IS_ERR(dev))
-+		return PTR_ERR(dev);
-+	if (!dev)
- 		return -ENODEV;
+ #define snp_vmpl 0
+diff --git a/arch/x86/include/uapi/asm/svm.h b/arch/x86/include/uapi/asm/svm.h
+index 010a45c9f614..93597ad492bf 100644
+--- a/arch/x86/include/uapi/asm/svm.h
++++ b/arch/x86/include/uapi/asm/svm.h
+@@ -122,6 +122,44 @@
+ #define SVM_VMGEXIT_SAVIC_REGISTER_GPA		0
+ #define SVM_VMGEXIT_SAVIC_UNREGISTER_GPA	1
+ #define SVM_VMGEXIT_SAVIC_SELF_GPA		~0ULL
++#define SVM_VMGEXIT_SEV_TIO_GR			0x80000020ull
++#define SVM_VMGEXIT_SEV_TIO_GR_INFO_STATE	BIT(0)
++#define SVM_VMGEXIT_SEV_TIO_GR_INFO_CERTS	BIT(1)
++#define SVM_VMGEXIT_SEV_TIO_GR_INFO_MEAS	BIT(2)
++#define SVM_VMGEXIT_SEV_TIO_GR_INFO_REPORT	BIT(3)
++
++#define SVM_VMGEXIT_SEV_TIO_GR_SDTE_VALIDATE	BIT(0)
++#define SVM_VMGEXIT_SEV_TIO_GR_SDTE_VTOM	GENMASK_ULL(51, 21)
++
++/*
++ * TIO_GUEST_REQUEST's MMIO_VALIDATE_REQ/MMIO_CONFIG_REQ encoding for MMIO in RDX:
++ *
++ * T....... ....GGGG GGGGGGGG GGGGGGGG GGGGGGGG GGGGGGGG GGGG.... ........
++ * Where:
++ *	G - guest physical address
++ *	T - TEE
++ */
++#define SVM_VMGEXIT_SEV_TIO_GR_MMIO_GFN(r)      (((r) & 0x000FFFFFFFFFF000ULL) >> PAGE_SHIFT)
++#define SVM_VMGEXIT_SEV_TIO_GR_MMIO_RESERVED(r) ((r) & 0x7FF0000000000FFFULL)
++#define SVM_VMGEXIT_SEV_TIO_GR_MMIO_PRIVATE(r)  (!!((r) & BIT(63)))
++
++#define SVM_VMGEXIT_SEV_TIO_GR_MMIO_NUM(r)      ((uint32_t)((r) >> 32))
++#define SVM_VMGEXIT_SEV_TIO_GR_MMIO_ADDR(r)     ((uint32_t)((r) & 0xFFFFFFFF))
++
++#define SVM_VMGEXIT_SEV_TIO_GR_MMIO_MK_VALIDATE(start, private) \
++	((SVM_VMGEXIT_SEV_TIO_GR_MMIO_GFN(start) << PAGE_SHIFT) | \
++	((private) ? BIT(63) : 0))
++
++#define SVM_VMGEXIT_SEV_TIO_OP			0x80000021ull
++#define SVM_VMGEXIT_SEV_TIO_GR_MMIO_MK_NUM_BDFN(n, bdfn) (((uint64_t)(n) << 32) | (bdfn))
++
++#define SVM_VMGEXIT_SEV_TIO_OP_PARAM(guest_id, action)	((u64)(action)<<32|(guest_id))
++#define SVM_VMGEXIT_SEV_TIO_OP_ACTION(exitinfo1)	((exitinfo1)>>32)
++#define SVM_VMGEXIT_SEV_TIO_OP_GUEST_ID(exitinfo1)	((exitinfo1) & 0xFFFFFFFF)
++#define SVM_VMGEXIT_SEV_TIO_OP_BIND	0
++#define SVM_VMGEXIT_SEV_TIO_OP_UNBIND	1
++#define SVM_VMGEXIT_SEV_TIO_OP_RUN	2
++#define SVM_VMGEXIT_SEV_TIO_OP_STOP	3
+ #define SVM_VMGEXIT_HV_FEATURES			0x8000fffdull
+ #define SVM_VMGEXIT_TERM_REQUEST		0x8000fffeull
+ #define SVM_VMGEXIT_TERM_REASON(reason_set, reason_code)	\
+@@ -245,6 +283,8 @@
+ 	{ SVM_VMGEXIT_GUEST_REQUEST,	"vmgexit_guest_request" }, \
+ 	{ SVM_VMGEXIT_EXT_GUEST_REQUEST, "vmgexit_ext_guest_request" }, \
+ 	{ SVM_VMGEXIT_AP_CREATION,	"vmgexit_ap_creation" }, \
++	{ SVM_VMGEXIT_SEV_TIO_GR,	"vmgexit_sev_tio_guest_request" }, \
++	{ SVM_VMGEXIT_SEV_TIO_OP,	"vmgexit_sev_tio_op" }, \
+ 	{ SVM_VMGEXIT_HV_FEATURES,	"vmgexit_hypervisor_feature" }, \
+ 	{ SVM_EXIT_ERR,         "invalid_guest_state" }
  
- 	if (snp_svsm_vtpm_probe() &&
+diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
+index 5b912f42f493..ed0e4546d5e5 100644
+--- a/arch/x86/coco/sev/core.c
++++ b/arch/x86/coco/sev/core.c
+@@ -104,6 +104,37 @@ static unsigned long snp_tsc_freq_khz __ro_after_init;
+ DEFINE_PER_CPU(struct sev_es_runtime_data*, runtime_data);
+ DEFINE_PER_CPU(struct sev_es_save_area *, sev_vmsa);
+ 
++int sev_tio_op(u32 guest_rid, unsigned int op, u64 *fw_err, u64 *tdi_id)
++{
++	struct ghcb_state state;
++	struct es_em_ctxt ctxt;
++	struct ghcb *ghcb;
++	int ret;
++
++	/* __sev_get_ghcb() needs IRQs disabled because it uses per-CPU GHCB. */
++	guard(irqsave)();
++
++	ghcb = __sev_get_ghcb(&state);
++	if (!ghcb)
++		return -EIO;
++
++	vc_ghcb_invalidate(ghcb);
++	ret = sev_es_ghcb_hv_call(ghcb, &ctxt, SVM_VMGEXIT_SEV_TIO_OP,
++				  SVM_VMGEXIT_SEV_TIO_OP_PARAM(guest_rid, op), 0);
++
++	*fw_err = ghcb->save.sw_exit_info_2;
++	if (*fw_err)
++		ret = -EIO;
++
++	if (!ret && op == SVM_VMGEXIT_SEV_TIO_OP_BIND && tdi_id)
++		*tdi_id = ghcb_get_rcx(ghcb);
++
++	__sev_put_ghcb(&state);
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(sev_tio_op);
++
+ /*
+  * SVSM related information:
+  *   When running under an SVSM, the VMPL that Linux is executing at must be
+@@ -1345,6 +1376,11 @@ static int snp_issue_guest_request(struct snp_guest_req *req)
+ 	if (req->exit_code == SVM_VMGEXIT_EXT_GUEST_REQUEST) {
+ 		ghcb_set_rax(ghcb, input->data_gpa);
+ 		ghcb_set_rbx(ghcb, input->data_npages);
++	} else if (req->exit_code == SVM_VMGEXIT_SEV_TIO_GR) {
++		ghcb_set_rax(ghcb, input->data_gpa);
++		ghcb_set_rbx(ghcb, input->data_npages);
++		ghcb_set_rcx(ghcb, ((uint64_t)input->npages << 32) | input->guest_rid);
++		ghcb_set_rdx(ghcb, input->param);
+ 	}
+ 
+ 	ret = sev_es_ghcb_hv_call(ghcb, &ctxt, req->exit_code, input->req_gpa, input->resp_gpa);
+@@ -1354,6 +1390,8 @@ static int snp_issue_guest_request(struct snp_guest_req *req)
+ 	req->exitinfo2 = ghcb->save.sw_exit_info_2;
+ 	switch (req->exitinfo2) {
+ 	case 0:
++		if (req->exit_code == SVM_VMGEXIT_SEV_TIO_GR)
++			input->param = ghcb_get_rdx(ghcb);
+ 		break;
+ 
+ 	case SNP_GUEST_VMM_ERR(SNP_GUEST_VMM_ERR_BUSY):
+@@ -1366,6 +1404,10 @@ static int snp_issue_guest_request(struct snp_guest_req *req)
+ 			input->data_npages = ghcb_get_rbx(ghcb);
+ 			ret = -ENOSPC;
+ 			break;
++		} else if (req->exit_code == SVM_VMGEXIT_SEV_TIO_GR) {
++			input->data_npages = ghcb_get_rbx(ghcb);
++			ret = -ENOSPC;
++			break;
+ 		}
+ 		fallthrough;
+ 	default:
 -- 
 2.55.0
 
