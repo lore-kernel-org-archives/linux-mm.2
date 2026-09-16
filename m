@@ -4,90 +4,151 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDB4FC88E75
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 03:05:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EC31C88E77
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 03:08:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E75E56B008C; Tue, 15 Sep 2026 23:05:25 -0400 (EDT)
+	id 68C8F6B0093; Tue, 15 Sep 2026 23:08:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E28F96B0092; Tue, 15 Sep 2026 23:05:25 -0400 (EDT)
+	id 667246B0095; Tue, 15 Sep 2026 23:08:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D64DB6B0093; Tue, 15 Sep 2026 23:05:25 -0400 (EDT)
+	id 57B256B0096; Tue, 15 Sep 2026 23:08:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A3BEC6B008C
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 23:05:25 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3D20C1A04CB
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 03:05:25 +0000 (UTC)
-X-FDA: 85218134610.15.9BEBA8F
-Received: from mta0.migadu.com (out-33.mta0.migadu.com [91.218.175.33])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 2FDD0140003
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 03:05:22 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=fsTxT0MK;
-	spf=pass (imf09.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.33 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789527923;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2E6346B0093
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 23:08:36 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A82B6120522
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 03:08:35 +0000 (UTC)
+X-FDA: 85218142590.03.122BCB1
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012062.outbound.protection.outlook.com [52.101.43.62])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 7426D16000D
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 03:08:32 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=ZUQ0EdQr;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf08.hostedemail.com: domain of bharata@amd.com designates 52.101.43.62 as permitted sender) smtp.mailfrom=bharata@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789528112;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XoJdHtWD8u2OpWB5LgfZc9nKRHqZctBi023N7rIRV58=;
-	b=I71Zrt55VvFyNu8+9sRjldyNZO/jLPNIzJPIZGHnfeVU1xGoHM9P6VesIBWIX9qRdJ525U
-	BrPrCfeGBmvtOXtO/IbBAarkv6xSyHHqK9RMaEr1TTLXzODoQElP5upJpvyUZtKOGkkTFw
-	WLAWZRcJsco+m+V9S0BG7xFoPD3BZbs=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=fsTxT0MK;
-	spf=pass (imf09.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.33 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789527923;
-	b=KaWP75O6hd+0943oGJw5U7iEgKM9Nk7reyySETPCfKsiLMyFsy9CBsncr+RQOTWqen0s4t
-	ZgpyNUR5rVD9aO07jGNTyQc9QR+2xoeHcKCWZvx23XSmrgHwngMOkdgvQ4ppTLZfqKWp5C
-	I8zTBA63lnVCWU6QTWnq+sgp7jTeQ70=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=WLf1stpeXJJXUPVOOAEMB3BX3rGdPNogSeeY2FwLjKw=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789527921; v=1; x=1790132721;
- b=fsTxT0MKaI5mBWYC96jjQqL6OEeZsWxV3uokFm5+tPCN0GWje3D32kIKl64vvs9ZDGnD8Wmc
- tNCvZfOY8deGBNGwaMrjq9uI5y4lKAXVgwf9tI+RBHEMLqnnLA7BaBcAEnUkcebGjAqKlkcIcZu
- UjyKlr+pRurY1RijVyxuIc/A=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 94ae2165ced7c340;
-	Wed, 16 Sep 2026 03:05:21 +0000
-X-Mizu-Trace-ID: 94ae2165ced7c340
-X-Migadu-Flow: FLOW_OUT
-Date: Wed, 16 Sep 2026 11:05:12 +0800
-From: Hao Li <hao.li@linux.dev>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Pedro Falcato <pfalcato@suse.de>, harry@kernel.org, 
-	akpm@linux-foundation.org, cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 2/2] mm/slub: introduce slab parking to reduce
- list_lock contention
-Message-ID: <aqoCdn2OkTWcDwF1@fedora>
-References: <20260824122004.3652-1-hao.li@linux.dev>
- <20260824122513.3829-1-hao.li@linux.dev>
- <20260824122513.3829-2-hao.li@linux.dev>
- <8d73f087-42e2-454c-8e5f-93c1b64cb969@kernel.org>
- <aqPlMzUIw-4g2iOX@fedora>
- <819fbc70-4c6b-4202-ada0-c3ef8ace1408@kernel.org>
+	bh=uSHpX/5mMSgmF9zwtmW14QBzOh2lq9neo71E4KXfU0s=;
+	b=fhaPlo81UpgiXj+Mwrci0s5WbEr5UZrlrIZHL0nkqFaMj5IlAFKiMcsAg6Y/LrIRbNNyKv
+	lv3A8dNXcnXJiflNCLS4Gp2DzBfXo+YoJsP6QujQ0POowqR1MshLfgnTYv5UpeDoUkkbXG
+	NiueY49aaCtrYSBbCYzltzXzxbCcK8M=
+ARC-Authentication-Results: i=2;
+	imf08.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=ZUQ0EdQr;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf08.hostedemail.com: domain of bharata@amd.com designates 52.101.43.62 as permitted sender) smtp.mailfrom=bharata@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1789528112;
+	b=SPlXHQHP593DwmdByY6+MUvohXnPXHMIbT7NU/7HW2nh8lPA88yQVUgbtm4MPQiJTkuCeP
+	YlWN3zUkV+HgfRiLuTN5bzK9Jmckdko1QnjyFmX/DVAWQgdYTX/eUVT0OUyZlV+oqtHuFu
+	x0vGvNO0cvvQ/idJ/BfUvI8D7fdL3Mw=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Ptrt7kQScvJit/5g12NDcVF9aqOkS6PQpjKl9+FSjTWuxF/WFt0gdCdVBYT9Z+bJKT/FjhPyorl3qqSQb7zQv0FdFd4IxrPjxl3eSK/6WLUPe0OnH+ZgBvOTsa3yXm3dBICUT02EW3gntE021LkQTAuWAnQk14qqNpfVlnpZ11ds7b/0tnw6IoPDGfeMOjKHrXIzWzFZSuf31Jyr23+I8cKWcBqL1NkAWfqE7zkT4bcxkSOYSHoKQhxOVuxX60OaJ/2orzmxf5uix/vxnQ+neUtbRruW0V0TTwJNWDglsQy4sC8S6IPx4q3aLy2oltrfsf7Pyzm70iILYsEHKkAeBg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=uSHpX/5mMSgmF9zwtmW14QBzOh2lq9neo71E4KXfU0s=;
+ b=JM/a5Rp56Hg0rgBkPTFe7IY+bZ/XD2RnFu+Tj4/96eatxmS/zxEbOUGw7NYRZvWbfPJfavL2Izfo2K4roizaxitkaow7UTZ8S7U2G/4nbHNjm0yXEo505neB6JEnjxH6G3CRDrqJnewRxul6uv7IXLJN1tl37XWATviU7Jodp38NWgidcnsYv/ealjAaWIlgd4QLPBjgRq0XmyKB7n7rwUv2KuM97YO/LvmNMYRbWpqvNzBpSUobREQ/GOGgisqjTfhx+a3dSFGvh+WZ5NZW9DhDg+kcWR8BL/Ygln/gdgqGkCjcGDbu8KHaHthWuytlUnm2r2JaPeVV9OIVBwy7/A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=gmail.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=uSHpX/5mMSgmF9zwtmW14QBzOh2lq9neo71E4KXfU0s=;
+ b=ZUQ0EdQr5mdVDgSGhf7SNMM9hlHVom2CIYyHG8v1UD52yZAjrgs3n0p9PHedG+N15/ig0KbXMaVmtD+RXs8mKKZjJdRFCOB90DyfFddR+1HgaK1qaUZwJz4d1jUW1StlARMZTqGITN6Eek3W8F6FmYeTSL3KcT1bDPrkrXzASRw=
+Received: from SJ0PR13CA0006.namprd13.prod.outlook.com (2603:10b6:a03:2c0::11)
+ by CH3PR12MB7571.namprd12.prod.outlook.com (2603:10b6:610:147::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.11; Wed, 16 Sep
+ 2026 03:08:25 +0000
+Received: from SJ5PEPF00000206.namprd05.prod.outlook.com
+ (2603:10b6:a03:2c0:cafe::a9) by SJ0PR13CA0006.outlook.office365.com
+ (2603:10b6:a03:2c0::11) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.428.9 via Frontend Transport; Wed, 16
+ Sep 2026 03:08:24 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ SJ5PEPF00000206.mail.protection.outlook.com (10.167.244.39) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.428.7 via Frontend Transport; Wed, 16 Sep 2026 03:08:24 +0000
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Tue, 15 Sep
+ 2026 22:08:23 -0500
+Received: from [192.168.0.152] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
+ Transport; Tue, 15 Sep 2026 22:08:16 -0500
+Message-ID: <f871efd2-06b4-493f-87cc-919b6e0945c0@amd.com>
+Date: Wed, 16 Sep 2026 08:38:17 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <819fbc70-4c6b-4202-ada0-c3ef8ace1408@kernel.org>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 2FDD0140003
-X-Stat-Signature: 5noexgqc8nq5ggii3mjq4d1nyy4wnax7
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 0/8] mm: Hot page tracking and promotion infrastructure
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+CC: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<Jonathan.Cameron@huawei.com>, <dave.hansen@intel.com>, <gourry@gourry.net>,
+	<mgorman@techsingularity.net>, <mingo@redhat.com>, <peterz@infradead.org>,
+	<raghavendra.kt@amd.com>, <riel@surriel.com>, <rientjes@google.com>,
+	<sj@kernel.org>, <weixugc@google.com>, <willy@infradead.org>,
+	<ying.huang@linux.alibaba.com>, <ziy@nvidia.com>, <dave@stgolabs.net>,
+	<nifan.cxl@gmail.com>, <xuezhengchu@huawei.com>, <yiannis@zptcorp.com>,
+	<akpm@linux-foundation.org>, <david@kernel.org>, <byungchul@sk.com>,
+	<kinseyho@google.com>, <yuanchu@google.com>, <balbirs@nvidia.com>,
+	<alok.rathore@samsung.com>, <shivankg@amd.com>, <donettom@linux.ibm.com>
+References: <20260911210859.1359875-1-joshua.hahnjy@gmail.com>
+Content-Language: en-US
+From: Bharata B Rao <bharata@amd.com>
+In-Reply-To: <20260911210859.1359875-1-joshua.hahnjy@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF00000206:EE_|CH3PR12MB7571:EE_
+X-MS-Office365-Filtering-Correlation-Id: e1a53a73-fb35-42b5-2a15-08df139fc5ac
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|36860700016|82310400026|23010399003|1800799024|10067099003|6133799003|18002099003|56012099006|11063799006|22082099003|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	OPN/6dv4TLuaMh1KCrpFwwWsp/LSxirdKd02Bw8203JjMPpauIcGajstegxM6vaOt73NWWbLb4IgSA8uRjVqDZt652Mwcc1yOMOH4d0fajOPKuMVYg2m69yZEaTql+rPdcAGaQnY8Rg4hs+BndsfT3w0YngiJzTSzj/NVd7C/oBMNYdFOFryrB/CraKuS21ELB53rVwS655Cz+A1BhgiJdwSsral+6ok2y0UIHkXvLTBdtYi9zeJOZ/yoJDQQVPSqIhvAKIgQSZ9kqm24w6hSbrN64+sEa2qjYfbMDtVl4ZDG1wyaUOgymD5yocAvnwweMhg0LtF3jrlDPNeW873/jbYcPx4KIimSVf4rkMO17V4BeownBDYXDJwBQ3PdQtA4X+H9dxB7KnJvA5eThonXhwOhom6fpaEbM04SCxtjsfli6Ns1CaA7tb1EVcms2llSc8NQBAuV7heRSiln50tMcWgxPCsixMnsBVE7tPOPZQ2Lt7SPSS8nOIAi9BU3iSiayt5EL7/Wwd9554h3G/1+6xgG4NVOC+jfmmtxElYA9ha6P7ieyGfS86EpF4ZBE895pKqlzjleKkYOI+VE88OXSdX9KinZ0RTDwILBL4EUeAhhfgHyneYw7foNh1tPuTK019U+w/Ew9YB1JkEMSM6gY5Gm8lKKqiFKFm4tdFPHRoypT1Md5sGyA8PGT0McjIwrsIoUf7nQ9OqwCZ4Wb8qwQ==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(36860700016)(82310400026)(23010399003)(1800799024)(10067099003)(6133799003)(18002099003)(56012099006)(11063799006)(22082099003)(13003099007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	4yFLT0s8OELjPqFum2EEH2LAUeyCsLsEvICBVM3csRHztXlZ27PVqOTVDgiIEfY2cMTZ+wpvNGHtnXuqCbZNlzNh/ZX8ST8Js7QlnHrlUD4FwtY/+ftXpSyO+pfc58e/DkET86VJJOaZP9pLLxNKV0uSfTSsIVekPGvbyDxU31xKBxhBvY3wOOEe109fOggJNRWwAy9rOUIo4QDHVMz60YRRLOgDparbH8Hl+fCVGV8J/ZCHb/oMmvmhlFas/1tRkwGVgKVI5NyPgepJ/YCVJJuIuoL0eRgnPqZ1iTSlKdlMEUXdU967J6AtasNP3JqLSZN0ORYVwE0qttNrLyr99bIJYLiZgGj3fm6MVs1NdN2aa9OOCr48FFJMBkjWCEWppdck7TNqFHeBUXu4FnjbH6LXIeuenswhMiEj2i2fQivkPy40J3KgnHfqo8LAoV71
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2026 03:08:24.5758
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: e1a53a73-fb35-42b5-2a15-08df139fc5ac
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ5PEPF00000206.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7571
 X-Rspam-User: 
-X-HE-Tag: 1789527922-170526
-X-HE-Meta: U2FsdGVkX1+GgWx6M9uytx+9LyETvmLwcmQF67FZw+JWRmmtT7KAUc8SDwEF5Xm6zhu/vlUtqSOEyc5iMEhtyAqzarDourcwI4UCHIAsVNCRxWO8MvDF+y7hIVuUwlP5M0Y4fAxLvwj8NpuHg6t4CfZ+mpUkgIq4IsP4pTpdwy7tEI6oV8GrRyBNApV4FLvDMg/c3EcEMOXXdougj+zyo+5jLzyVbIXqvPbQUDeVsQ4fc6j7HQionVkUPPtyQWkuM8SsYhwUCWMDhNGsgSE6n6CsTEPD7mW1ZYtdqXQVBdEoGzL/xZRnqS08MrC1bkh9k4IA0O0B3xG1lAD/VNODwfsw6I3Pc123HtXY0yjSGdproKX3wcP+zYCxQr8THFMPspdaSkVYv8YIjF0u75GlYU+neqeb8K1cL/k3pfYWEWiRCiatP1eEjFh5OUgtGk4f3q9JoTx1CJRO5NzmTs2ksDqDZuG8NPOsRMYjGXaDxjjEPSPjPBENcWLiZv9lEn3Dy4o6P/JVpek7PEd5IH65VMjg7MxnPVYbeJj50jiRxAc5/4W8bWFJ8zMMdXDSe4KAub+Skke7Qw5YqWzMImqcdlfGaywoTY80CdagwcypQ7twLgcI83IcSBCphgH0P3GjgfxxXsMvKt9rAXMDhap2N72A+sJOvipp3oicPtt1IFwi/l7dfUw2JoG1rkeZTTlRmtUIqiFBG/zETJxMYLqOdKd69TUaxfoDndGpgZIcHoDCgExQt7Kr4wakeWz+2Q549aaXr2U6FrQSmarKstM+VlWq66st1hQsaqPnCMhSSp6/C1U4hCIzLnWNWFt5RBveIeQT8Gwp6qT+V9AMRC0asb/IckNWn0RFeTrGGSCLZaFWA/Pu7J5fHGwdIbbkIptUg7v/n5KFAAl6Q9q/Li0ZI9MxXNRCFAtbiKLkq446W6OEhsn6+3QUqEOjmjFXTOoFdxfAX2Ch5VyDxHoPeGM
- ayoiZcTR
- zLC2Yt4PlNkQ9L1T5UFRP1kAe6AL4WD0ipjaQbns205hfvCAhGUFV3N1jhu/D/hqZ6aiH+GkDM/QnnknMfQRUN7NIm5W2c/DF8Dd1NmIk2C2IrdQecWWNHZTj2qqmsiKjE30QE34+xaGoLRw8o64YtsPObp+6IT3Sgs72pE6Z4DYkMBcs1rZkIPlSxfikL5g0hWiNwMkaCSSgdxs5k7W20jlmwiHAAhfb0hg1XxUpfL0FoysTLMEkrrJOxvQASw1gmuvgBrzE4xGEi+6Q2gTet/ki+UPY/9FrJpPrBiAdvS613VAWM+Umj8JBuz6fR2IvI8+uaHf22sPNDbQLtAxsrjU/Bf3UgQJyVkOL
+X-Stat-Signature: f4o3edgm8awxxen5w3aqsidabsyukin8
+X-Rspamd-Queue-Id: 7426D16000D
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789528112-160824
+X-HE-Meta: U2FsdGVkX1/Y9Ks1elFvj/WOcPBTuEWu2owLqJwOCgAQWihWVjmqivmCy1pLu3glj+aB5jkrtlBKL+DSxoF/Uyhx7Fvn0zlWRQ4VG1Aid2Ti7XoxlHrJlchRGhrQ39+QnRVPyLFlPJLO4H9k1NLDuWptG698kgLHUJ5eaod6mmbbP7B8uyZj8YHHi7fZopNemylB1rbH9rboO8mjwabfQ4obLnH9HqXQat+eMl6MqbFheVADVop1YGpG8wsRLJNmz9MG83R78ziyza4Dm8qwHwVzpOEifUcvvGucFWEZUtoomeBR5v5LXJtLMTvf818Pr6AimgPRJF+UFiVJ91RLXgDn/FuvSuJwspHSk5ikj45a7/0N13Z4d7RbV9scN9sexkTxRiCATW2ydoKfkjkC2YmLi+IwwozI0LoexBJ/2IeFu0ZMzoN7ossUYdwUmELcSvegHyR64000S6a+wh73pq+7sIXZ+Kdie3UVp+iHQBwhvBi4zfafrSUjxw1O1haKix3+2ksHRuUD5tT0qoWiIH4+h4LERwZ21bBSutskIxXRk1ZdIO7CvwvdM2dJn4o0Rz7HRc6usGNNsNXB141QkpPI2zhmvyVfeHGR8jxpX/qpr0QeFa9J/A9wsXCiImzB16A7rW1W/wMOVyS1BlInGyEi4n5qFAt6t77fMmw5bBJ/+OQ5U5JKj75uFrJS/ec99OKIBTtpE+yHrc5HkYOuU1INs6EdJnai/5TBjjDjvhtnqk/XIlZEYaKRxQrTlRgIWRGH+17nsvtlGmRTc15BlQm1TYm99OGfO7M6b+Tq6YhQeexiNU6BX+YqvpLO9BfkbGXvgQTPPfkP28CoUQEVbftPGRyyWKalNq7O2zANn4H9PM0YB4ZhZ1nVOdmUCRw8U47x2dsQpmJJTiDHJjp6bfrS9Lk0ZQdhV4LfWoZMyuuXPDA7eB6v1MBYUyIB2JzEdXp9We71TDs9+xN39hh
+ X30d2MPP
+ Hj42wVFGQNWXB6kjJeTF9Zpj/EW71wj89j6t94Pc6ZJG6W1kEVkcyfzpWUB9I9dN48QVaeG6GJhdOpOU0QosBWiS4QGXvp9JKX7P9FOv6U0pk0IROougVoi78eRan0xtMSy/poVJu2/wiNWEa8JYft5AsMFdJFqlu576IcYuVOtP9/F5QRZyuF5sgAL0NHFYz69Q9+FgA1XimCf96wc4pPZdkTwHsZoH3tuIiSM84Dhy0nJlJV21NT3dK5aVHI11vVd0Hoj6z1+OeJlh2T2+OR2sNSOMU5UJpNt+9gDAHef0kMEV6soBnknNRZddD6Ka/bvRabeWN/C6bNXjECmwgLDbb6noWMApezIPA4xgacEGZVNvXTT/cqtTqJkOwVOeeurxfgdtTsvlI1RgWhDklC3zVyIDeQuXxLqzI6glHMeKYUTwJwdB1orcB1P8ofuLP7fRgDUj3fK/jRMIOnMCvJSCUNSGngWgjlFeI8k/hr6l/YH5vrQM3BrZkuQNDTRzAB0zkj4vH9CABbPdfORW6R93a0WMtED/NhXDfeZ8kg1XOkJj4EBX/+hOPbLCcgSfHTkreglb4Yf5TkN+Ez8INLcnRRQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,234 +156,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 15, 2026 at 09:43:58AM +0200, Vlastimil Babka (SUSE) wrote:
-> On 9/11/26 15:06, Hao Li wrote:
-> > On Mon, Sep 07, 2026 at 03:38:22PM +0200, Vlastimil Babka (SUSE) wrote:
-> >> On 8/24/26 14:25, Hao Li wrote:
-> >> > Introduce a mechanism called parking to mitigate lock contention in the
-> >> > free slowpath.
-> >> 
-> >> Interesting!
-> > 
-> > Thanks!
-> > 
-> >> 
-> >> > In the free slowpath, when __slab_free() transitions a full slab into a
-> >> > partial/empty slab through a free operation, it must acquire the list
-> >> > lock to add these newly freed partial/empty slabs to the partial list.
-> >> > 
-> >> > Why must partial and empty slabs converted from full slabs be added to
-> >> > the partial list? Because only by doing so can the sheaf refill or alloc
-> >> > slowpath see these partial slabs and allocate from them. Therefore, the
-> >> > list insertion must be performed, which requires acquiring the lock and
-> >> > leads to heavy lock contention under high concurrency.
-> >> > 
-> >> > Analysis of profiling data from the will-it-scale mmap1 benchmark shows
-> >> > that full -> partial transitions account for a large proportion, second
-> >> > only to partial -> partial.
-> >> > 
-> >> > With extra instrumentation added to __slab_free(), the following data
-> >> > was collected for the maple_node cache (in counts):
-> >> > 
-> >> >   partial->partial    843017414
-> >> >   full->partial       550719384
-> >> >   partial->empty      17459564
-> >> >   full->empty         2
-> >> 
-> >> That's a lot inded. I'd be careful if it's some specific aspect of the test,
-> >> i.e. lots of parallel allocations followed by lots of frees, that wouldn't
-> >> be that common in realistic workloads. But worth looking into at least.
-> >> If it's this kind of pathologic behavior, then I expect changing sheaf size
-> >> as suggested by Pedro wouldn't help much.
-> > 
-> > Thanks for pointing this out. I looked into this bursty alloc-and-free behavior
-> > a bit deeper and ran some further experiments.
-> > 
-> > The core question we want to answer is: why does such a massive volume of
-> > object allocations and frees fall straight through to the node partial list
-> > layer, rather than being caught and handled at the barn/sheaf layer? In SLUB's
-> > current design, the per-CPU main/spare sheaves act as the L1 cache, the barn as
-> > L2, and the node partial list as L3. For the mmap1 benchmark (which heavily
-> > stresses the maple tree), the allocation path uses kmem_cache_prefill_sheaf()
-> > rather than the generic allocation APIs, and the frees go through kfree_rcu().
-> > 
-> > Then, here is what happens during allocation: kmem_cache_prefill_sheaf()
-> > normally borrows the spare sheaf directly. If the sheaf holds fewer objects
-> > than requested, it refills it to capacity from the node partial list layer and
-> > this completely bypasses the barn layer. Once the maple tree finishes
-> > allocating a batch of objects, it returns the sheaf back to pcs->spare via
-> > kmem_cache_return_sheaf(). So in essence, this prefill path is just funneling
-> > objects directly from the node partial list into the maple tree through the
-> > spare sheaf. It skips the barn layer.
-> > 
-> > Then on the free side: these objects are freed via kfree_rcu, and then
-> > rcu_free_sheaf() checks if there is still room on the barn's full list. But
-> > since the allocation path never actually pulled from the barn, the full list
-> > stays permanently saturated. As a result, rcu_free_sheaf() always falls back to
-> > sheaf_flush_unused(), flushing objects straight into the node partial list
-> > layer. It skips the barn layer too.
-> > 
-> > So looking at this behavior, the benchmark does seem to reveal a gap in this
-> > allocation path, where a huge amount of traffic ends up bypassing the barn
-> > layer entirely.
+On 12-Sep-26 2:38 AM, Joshua Hahn wrote:
+> Hi Bharata,
 > 
-> Great find! Indeed that's a big gap for prefilled sheaf users, doh.
+> We've been testing pghot in a Meta kernel with worklaods to try and see
+> what the performance characteristics look like. I wanted to report
+> some of the findings that we've found in our testing. Note that these
+> results are from a modified kernel that has my tiered memcg series [1]
+> backported, as well as Gregory's numa balancing scanning fixes [2]
+> as well. 
 
-Thanks for confirming! :)
+Hi Joshua,
+
+Thanks for testing pghot with your workload!
 
 > 
-> > To see if we can address this, I draft an experimental patch. It introduces a
-> > new field, barn->sheaf_partial, which is a single sheaf rather than a list.
-> > 
-> > [The patch code is included at the end of this email.]
-> > 
-> > Whenever kmem_cache_prefill_sheaf() runs, it detaches pcs->spare and checks
-> > whether it holds enough objects for the request.
-> > 
-> > If so, it returns it right away as in the original code.
-> > 
-> > If not, call __prefill_sheaf_pfmemalloc() and then go into
-> > barn_replace_partial_sheaf() to swap the non-full spare sheaf with a full sheaf
-> > from the barn. The full sheaf is handed to the caller, while the non-full sheaf
-> > is temporarily stashed into barn->sheaf_partial. This largely avoids falling
-> > back to the node partial list. If barn->sheaf_partial already has a sheaf, we
-> > merge them together, and any resulting full or empty sheaves are placed back
-> > into the barn accordingly.
-> 
-> Makes sense to me!
-> 
-> > The key idea here is simply to let __prefill_sheaf_pfmemalloc() pull a sheaf
-> > from the barn's full list, which makes room on the list for future
-> > rcu_free_sheaf() calls.
-> > 
-> > Here are the numbers with just this experimental patch applied (without the
-> > parking patch):
-> > 
-> > baseline: 28779879
-> > after experimental patch: 35550211 (+23.5%)
-> > 
-> > metric                              before             after             delta      change
-> > =============================================================================================
-> > aliases                                  0                 0                 0      +0.00%
-> > align                                  256               256                 0      +0.00%
-> > alloc_fastpath                      23,259            59,287            36,028    +154.90%
-> > alloc_node_mismatch                      0                 0                 0      +0.00%
-> > alloc_slab                      10,171,378         4,796,346        -5,375,032     -52.84%
-> > alloc_slowpath                           0                 0                 0      +0.00%
-> > barn_get                               441       193,807,528       193,807,087  +43947185.26%
-> > barn_get_fail                            0               377               377         new
-> > barn_put                               441       181,694,607       181,694,166  +41200491.16%
-> > barn_put_fail                  272,868,220       156,335,632      -116,532,588     -42.71%
-> > cache_dma                                0                 0                 0      +0.00%
-> > cmpxchg_double_fail                744,975           357,255          -387,720     -52.04%
-> > cpu_partial                              0                 0                 0      +0.00%
-> > cpu_slabs                                0                 0                 0      +0.00%
-> > destroy_by_rcu                           0                 0                 0      +0.00%
-> > free_add_partial               337,390,126       162,178,648      -175,211,478     -51.93%
-> > free_fastpath                        5,204            14,081             8,877    +170.58%
-> > free_rcu_sheaf               8,731,794,372    10,816,953,777     2,085,159,405     +23.88%
-> > free_rcu_sheaf_fail                      0                 0                 0      +0.00%
-> > free_remove_partial             10,170,229         4,794,785        -5,375,444     -52.85%
-> > free_slab                       10,170,229         4,794,785        -5,375,444     -52.85%
-> > free_slowpath                   18,697,056        11,563,127        -7,133,929     -38.16%
-> > hwcache_align                            0                 0                 0      +0.00%
-> > min_partial                              5                 5                 0      +0.00%
-> > object_size                            256               256                 0      +0.00%
-> > objects                             14,774            14,596              -178      -1.20%
-> > objects_partial                     14,774            14,596              -178      -1.20%
-> > objs_per_slab                           64                64                 0      +0.00%
-> > order                                    2                 2                 0      +0.00%
-> > order_fallback                           0                 0                 0      +0.00%
-> > partial                              1,913             2,544               631     +32.98%
-> > poison                                   0                 0                 0      +0.00%
-> > reclaim_account                          0                 0                 0      +0.00%
-> > red_zone                                 0                 0                 0      +0.00%
-> > remote_node_defrag_ratio               100               100                 0      +0.00%
-> > sanity_checks                            0                 0                 0      +0.00%
-> > sheaf_alloc                    145,870,437       151,536,660         5,666,223      +3.88%
-> > sheaf_capacity                          32                32                 0      +0.00%
-> > sheaf_flush                  8,731,787,311     5,002,740,743    -3,729,046,568     -42.71%
-> > sheaf_free                     145,870,431       151,536,655         5,666,224      +3.88%
-> > sheaf_prefill_fast           3,500,187,266     4,331,383,393       831,196,127     +23.75%
-> > sheaf_prefill_oversize                   0                 0                 0      +0.00%
-> > sheaf_prefill_slow                     322               646               324    +100.62%
-> > sheaf_refill                 8,750,484,664     5,014,304,944    -3,736,179,720     -42.70%
-> > sheaf_return_fast            3,500,187,348     4,331,383,596       831,196,248     +23.75%
-> > sheaf_return_slow                      240               443               203     +84.58%
-> > slab_size                              256               256                 0      +0.00%
-> > slabs                                1,913             2,544               631     +32.98%
-> > slabs_cpu_partial                        0                 0                 0      +0.00%
-> > store_user                               0                 0                 0      +0.00%
-> > total_objects                      122,432           162,816            40,384     +32.98%
-> > trace                                    0                 0                 0      +0.00%
-> > usersize                                 0                 0                 0      +0.00%
-> > 
-> > derived                                                  before             after      change
-> > =============================================================================================
-> > page allocator churn (alloc_slab + free_slab)        20,341,607         9,591,131     -52.85%
-> 
-> Very nice!
-> 
-> > 
-> > As we can see from the data, barn_get and barn_put spike significantly, which
-> > shows a large part of the traffic is redirected into the barn. This eases slab
-> > alloc/free churn and cuts page allocator allocations/frees by 52.85%.
-> > 
-> > Additionally, NUMA performance also seems to see some improvement. Under the
-> > maple tree benchmark, the free_slowpath metric likely reflects objects that
-> > enter add_ptr_to_bulk_krc_lock() due to nid mismatches and are eventually freed
-> > via kfree_bulk(). This metric also shows a noticeable drop.
-> > 
-> > Metrics like alloc_fastpath did improve, but their absolute numbers are small
-> > and likely unrelated to the maple tree test.
-> > 
-> > The tradeoff is a increase in slab fragmentation, with total_objects and slabs
-> > growing by 32.98%. I suspect this happens because as more traffic gets routed
-> > to the barn layer, objects end up being more scattered, which ends up pinning
-> > more slabs.
-> 
-> Maybe it's partially also due to the fact that the test can run faster (as
-> we discussed earlier), thus have e.g. more kfree_rcu() objects in flight
-> (free_rcu_sheaf above increased a lot), etc. So I wouldn't worry too much.
+> - Without tuning and using the default tunables that pghot comes with,
+>   we've found around a slight performance regression against raw NUMAB2.
+>   This was being run on a host with 750G DRAM and 250G CXL.
 
-Yeah, make sense, and I tested it multiple times, this impact is bounded.
+pghot promotes on 2nd access by default since pghot_freq_threshold is 2
+by default. This will result in slower promotions compared to NUMAB2
+which promotes on 1st access. Could you please try with setting
+pghot_freq_threshold to 1? I think I should make the default as 1 going
+forward.
+
+In any case, will it be possible to provide more information on what your
+workloads are, and the exact performance metrics? Any representative workload
+that can be substituted to reproduce this behaviour can also help.
+
+And when you say slight perf regression, how much is it exactly?
+
+> - However, we've found lower pgscan_direct, pgpromote, and pgdemote
+>   rates as well.
+> - We've seen PSI dramatically drop on the host as well as the promotion
+>   happens asynchronously. 
+
+That's good to see.
+
+> - I also found a bug where the kmigrated thread isn't created for nodes
+>   that are onlined later after boot, like CXL nodes that get onlined
+>   with memory later on. I've been using a small hack commit in
+>   pghot_memhp_callback that just checks for the MEM_ONLINE case and
+>   spawns a kmigrated thread.
+
+I will take care of this scenario (CXL node online after boot) in my next posting.
 
 > 
-> > For comparison: the parking mechanism reduces lock contention at the node
-> > partial list layer, while this experimental patch absorb the traffic earlier at
-> > the barn layer. They are independent in mechanism. Interestingly, both
-> > approaches deliver very comparable performance improvements. A bit
-> 
-> Great.
-> 
-> > frustratingly, combining the two only squeezes out an extra ~1% gain, I'm still
-> > investigating why that is.
-> 
-> I don't think it would be bad if this change rendered the parking approach
-> unnecessary. I suspect Pedro would be very happy :)
+> Finally, we've seen some issues with pghot causing userspace crashes,
+> which leads us to believe that there might be some bugs that manifest
+> in userspace as well (we have not been able to find out where in pghot
+> these bugs are introduced).
 
-Exactly. The parking approach is a bit invasive, while partial sheaves feel
-much cleaner.
+That's something I have never seen till now with any of the benchmarks that I
+have run. Any kernel messages attributing the failure to pghot? Anything
+attributable to access reporting or  kmigrated threads?
 
-> 
-> > Phew, that turned out to be quite a long write-up!
-> 
-> Thanks for that :)
-> 
-> > All in all, I feel we could probably focus on evaluating and pursuing this
-> > experimental patch first. For maple tree performance specifically, it seems
-> > like it might be the better fit compared to the parking mechanism (which is
-> > probably better suited for generic allocation pressure outside of maple tree).
-> 
-> Agreed! I'd try to look at the code ASAP. For now we can probably... eh...
-> park the parking patch :) and its possible improvements.
+Any clues from coredump or gdb debug of userspace crash?
 
-Haha, totally agree, thanks! No rush though, take your time. :)
+Were you running your workloads as part of a non-root memcg?
+
+Do you see these failures without [1] and/or [2] ?
 
 > 
-> Thanks again!
+> Thanks for working on pghot!
+> Joshua
+> 
+> [1] https://lore.kernel.org/all/20260807202059.2620949-1-joshua.hahnjy@gmail.com/
+> [2] https://lore.kernel.org/all/20260911001826.2109390-1-gourry@gourry.net/
 
--- 
-Thanks,
-Hao
+Regards,
+Bharata.
+
 
