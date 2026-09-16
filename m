@@ -4,88 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0958DC88E5C
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 10:59:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EA92C88E77
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 11:05:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E4A636B0095; Wed, 16 Sep 2026 06:59:41 -0400 (EDT)
+	id 36B956B0088; Wed, 16 Sep 2026 07:05:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DBC8E6B0096; Wed, 16 Sep 2026 06:59:41 -0400 (EDT)
+	id 31B4B6B008C; Wed, 16 Sep 2026 07:05:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CAB586B0098; Wed, 16 Sep 2026 06:59:41 -0400 (EDT)
+	id 230636B0092; Wed, 16 Sep 2026 07:05:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A40656B0095
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 06:59:41 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 346C81206A7
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 10:59:41 +0000 (UTC)
-X-FDA: 85219329762.29.1AE89E7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 83902C0008
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 10:59:39 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LAql0rPt;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789556379;
-	b=3CSxnYNkchdCQIsYZUQp6S1t45rKLBOR3W6fT2guPJBxsTIDM1iuKMU7ZCJFsS0MiF+vfU
-	8fHBrDwya4MmoBJ47nZftmqDZG9LbGqWoXDrCcQwhIZwPaVkJlwNhciJVNApeEgICHuXR2
-	ptufbMnXNXR6RZFDjauPFVMLhEvkRBU=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LAql0rPt;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EB53C6B0088
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 07:05:53 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 96DF5A5D15
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:05:53 +0000 (UTC)
+X-FDA: 85219345386.10.2C22ACD
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id EB4E81C0008
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:05:51 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZA3RLk6f;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789556379;
+	s=arc-20220608; t=1789556751;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Tc4Aai0SNxDfo1WleUJPJGNkJ8xTAXJ3SVOUXDOmepE=;
-	b=E8E25fK4qtblo9tVYS3BZ3O4jo1ZFBn7ZU+xmW6YyCwHkfv6JY5yemJplpu/PAZ/LQAWax
-	FvjKqCMcVZqKJB1pWZhERukdB70xdA+k4QTrfLbkxsHiEC4r0gPN7JgrcRsRmbz9DD7cUz
-	kscpT9r50iMShZQYP73Job8ZyQyRTZg=
+	bh=DYEbp3NDbWCNlMXuaXTXLtCtA8T9knTbdyJ+6diMaPQ=;
+	b=TteTnFbu22wpD/QWgMLK5fUzrFud3YHzPB+lZhTsxsQXXK9nzWbR9Mfb2BcOKTfP364wN0
+	jxJFYmWoejFcCKqH0/fhhHOVgiEy+TphkndPdFMQ4EuATCBw3eVkZzGDyNVWhmDP8BNGUH
+	Dyf0kLQ7Fe1A1H8mD4sIcH1t6WKoxDc=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZA3RLk6f;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789556751;
+	b=xNYnZnq761PJVAoIso/fZWC914GKPXyZyyZCVOxNN+ZPOCfnSKYsuWiqtchmqmd9eAcdNl
+	OYTHH45BE7BGNv/6aJoGHu/J/rjN7S9rGkPQuYL9Nx19sHB6ysUzrrXWIx5o+n184Pu6HR
+	2JIV8h+7ke9SCkUI8SRmXvxrsdX90KY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A0BF943BE1;
-	Wed, 16 Sep 2026 10:59:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2864E1F00893;
-	Wed, 16 Sep 2026 10:59:34 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6D1DB60234;
+	Wed, 16 Sep 2026 11:05:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C8831F000FF;
+	Wed, 16 Sep 2026 11:05:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789556378;
-	bh=Tc4Aai0SNxDfo1WleUJPJGNkJ8xTAXJ3SVOUXDOmepE=;
+	s=k20260515; t=1789556751;
+	bh=DYEbp3NDbWCNlMXuaXTXLtCtA8T9knTbdyJ+6diMaPQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=LAql0rPtvN5VzBdHGrrh/28DRXddvV4XNsfz7emfkcWzFbpvCnlr1v9fPfik/3GNu
-	 oQIH4coNS8f4gXlb1t/PXKzMN2X/OLhhF/G22WPMrfA+fyx5lJVR7pR4VVbawRrM0c
-	 sfgZQFx1l/TtxwgjTfr2do/TkmhGicmOFC4UuhhCLqY6Mlwh7dFSop8+ryPaXsvLSc
-	 wr5lV1pv0O36ymg2AkdWG9hAGP2clOuagYzdggJs54UToGTpf3aDDXpTn5n4qyy/Oa
-	 F4lxmrwPTLEoVdkhKegoGRDADlwxt+Bp4eeV3NIf/KkBM0WJqnFKaiV35rTXZKj0aD
-	 3xyN7hV1fg6Ug==
-Date: Wed, 16 Sep 2026 11:59:32 +0100
+	b=ZA3RLk6f5n/v3mZ9/7OVo3fJZHY0MAmzZ+5QFDzF2dod2OVpfNO6VBCctrHbqs6i6
+	 A/QtImdtfHw2cCEDIPmoCTtVHReumt29NbdSIpeuBgCLyBoDtDwPfaXMazedOhoX/G
+	 xUCHOkCuN+DFcInc+PYB4dEITaNa32GPcF38QLDt86dWtyjq24SF+APGC9KGPXBAeV
+	 HK7u/iWI8SG3LfUfgZjSo576F9X4Lcdb4gkOls9qCv5wqRXYZluBJa2QhwM4459Wij
+	 VlFlb11urNHILrRaDFVb+teLrwyUBU1kFqXYtyLwDv1g7VC6Ykd3JyM/iQDzEOg0sv
+	 B3dZ+rP/Kb/vg==
+Date: Wed, 16 Sep 2026 12:05:43 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>
-Cc: akpm@linux-foundation.org, shuah@kernel.org, david@kernel.org, 
-	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Zi Yan <ziy@nvidia.com>
-Subject: Re: [PATCH v2] selftests/mm: skip khugepaged file tests if mkfs.xfs
- is unavailable
-Message-ID: <aqp16Lp3mPwszQUc@gremlin>
-References: <20260912202903.16157-1-jaeyeon.lee.dev@gmail.com>
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+	akpm@linux-foundation.org, liam@infradead.org, david@kernel.org, vbabka@kernel.org, 
+	jannh@google.com, ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
+	rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com, 
+	apopple@nvidia.com, peterx@redhat.com, jgg@ziepe.ca, 
+	sashiko-bot <sashiko-bot@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] mm/madvise: use vm_normal_folio_pmd() in
+ cold/pageout PMD range
+Message-ID: <aqp2uu4_QY7NRjoH@gremlin>
+References: <20260912034833.2952750-1-gourry@gourry.net>
+ <20260912034833.2952750-3-gourry@gourry.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260912202903.16157-1-jaeyeon.lee.dev@gmail.com>
+In-Reply-To: <20260912034833.2952750-3-gourry@gourry.net>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: EB4E81C0008
+X-Stat-Signature: xrey5e7oozr3irimhiweck1nmtr91qcy
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 83902C0008
-X-Stat-Signature: bmfgr6aafdx7e8yfgc6rdnsfyparst5j
-X-HE-Tag: 1789556379-887634
-X-HE-Meta: U2FsdGVkX1++D46VSg7S+yJbB+x4mqRZ/OdoIBnVIV6zWgJSMJdpGbOWxYq5z+c3SvH+/ZJJMVJvF4EXjIhf2oA1Pg8jd3HwVuJVvlqZsh4keElcXnrx8klRpLgoVPncHHDT7JeAZVyjmiF3YSMaMZv9EZVaMiioLWulLldYxozXMcAyGLKVqgZbDVx71f9kS2ETUtPIB/T11rTwKWeuwHMlCzbVMBiUSw2xY3qlF+uAS1hzFOj+JnCFhvImeKUCrxbD3R9HDw3qJACr60RDbDDU63d+IzWpD828XEdYkS4tMqOo0GThtp+H90H2L4I27HCuJNl9wH2XrixNvrbT4BZ27tSCB7n4q7D2RdPmuZy236PbmuaFEaq0bImPDYoFzqEjoK9kiZUJprIvKQ8it6vn4x08RNeJe8GTKzcu+bzR9d1Rpu6xUJFnBsuJ9p2THcrfTet1jaRqypaQTeBOSUPqAl4eixpVJhl7M48C4mLEU2TU0h/QIHZGPf5/sg229oHAa4fOXnGLpYk7jod9JDWnWEeVKXLzJVLIAnIBx0fjy594Xy2kPT27TvCaUJ1RQmN6qD+f6qTETaRmobJrcM3OAc6gljeenlHqY1vtOSI2pQX7MLkaa3MWkI6+7Qot2xgEV4peX/D1HWnzNcxYk7+HFLjulB0NnODF5pwas2fDp06/oflbcVJU6aUUO/3x4ZWDc27EcvZ2c09RD21oFSVwhqzi+2ZGq6Itbq7gwbE3h9iu8qqAvvujrluA9i73g9S2cY9w7okVVlZ1IL3w11Q6YLGuCOX2K0QyBQiAwhaTtW4O5ljGXO9P1pgcHLHygOYay/ptAsexk9kTE/9CGujnDM/mrgryTjxVqzraQZQZ648wqMIrt9VYBbX7LnEHqg94tLOm/laRaHQnJmoBQjpU48jzdM6yrZ9ihVsp1BC16Dy98R60iUv6EsZt3lzxRnPOJNEa6CBA6PcpJw5
- wsrJo3x+
- bsGBDv/A64BkWFGZEOAROwXsC1MlQbj5SEdsJVGLXyYH4daDqwztACL4HxzasYszik2Jb3ZcIQiJSNAoeuDHQIWotx7LTZpdWy4HP3dtPqD9FsjnSQIqdslKfHyNTQMkL16mHpc/Qyf6qn4uTq/2znDijgEtSlPIUxoOBQRGKhVK/RBc+/NU+5jIcqFckItwx/Y76+cMWQY428a5ZsiANnaxC7q0di8AA+y8y3/sC6EQT+JUEVDmYlXpO1JNwi5J5zefONPT011sVBZQ/0HHt/qJOPkE6VgFJSXtnonWZfHO4WGONbxwb+hIQIKcyhhRnE6rsrf/NCh3wiWYf624XdGt8hrUAZYtkKSjggLTzzp+SE5a1lsbVJA/aSboKB8JWg7JH34pmcleTB7dgZOAvN8pWJg==
+X-HE-Tag: 1789556751-162483
+X-HE-Meta: U2FsdGVkX19STTRtc1AFR5kqEuIJr9yiCWafpnchm6NI0eFwY55Ny/CGjWvSX0+MznXuKh9Rve+D2n2SryJQsKHzCrjLUW8kwBy4jp6PyKTY8nhYMI2YYium9r7ukas+99HkWaO+9z7hdlXcjjRVpt4i7LK3A49RXqraV6zz8y90lbsWlx0uJMdmTw+l47/F6c73ADCSeXJcxJGVN/65rmYJ5o2er1ro344nG39I8b59GhgUjG1MwYW/MQDfIMIlTUnsxErimvQnxxD5jvYF4VJWN9U/gG2L2K1vZ7fo+uU6N0RWPagbUt75XutJGWCAFElVJ3ZJIvF0mbIPTjQ3tC6hgq2ms1nd16Z/C+ZB2URhUsl/HCMzu4bQywevaHBbzzae/eGm0iJmiqtgRPhzxGN3y5h31RRxrX6kykatsYvWfLwV3MMnW2hekzqzA4HE+RP8av9JsUjYltzuiUSuo+wFeOv1zrCOCKUiLflJ/PHyLmrHQZ53rkg7tcTr/PSiILbhnkJkiuHnONfpEQhjOHk9ZyxeqqODxsKspRxVJYyWv9tsLwA8Hy7ZF2xCeDju70PBYd/4zQQoWhyi/nNpTRXbrFEzK17dBWJ9hY6UY1D7v2h1Lu9r6gbtglDCicNSiCKG1XswTuBr8uambY+Z88z8ISIgXea8oqI55RAsT0NCoCKK055ZmlkeiRvWBxDQkmHA1VcOzvO0YVbuaBUKct3SmVY9dbe5OgZ/Fh+n7NHlFkCBHJBNG8kLCmkcRrg9xV4jAukfXF/ugVGE+q+l/8mNPeGbbWGWGFhG6qlYYo0QMz1Ps5xb7dD2ZFfAfVeoTJku1FNXkTUvfhmhV8Ccc6+sWSQxdBEYCe6/2fOGXUsmPyZwPNPxZNNkun2j4hH/Sz70fLllyMOLf0dRmoONNd7gbq+oeOEaNJY2Bom+we/0SOWmg2PnZYck8dYNDb+bIWfWeWMIk0co8bFYBoB
+ lA8Rs1wH
+ VXMVPIay5sBmztSGWvx1x+zzkjNQZlpnv0eF6LLmRv6nJvArrlIeoeqhFChRKCozHyUlqXL5TaJ/BUMtUk60c2RjSvDS07Mg5JE8DU/KimzpALRwNZwg6VsJ5LyUwi1nLzfmE7Rw00Sj8ksjXJH4577y8pLdHbyCnrw1TesIJ5Q36S+D8JsiY+21UdkYruTqCRtII/PmpveChkYTWpqRTsPrP4wNbBSmYxPlDZkm3BadV8/lHPf15RucDZZynLSg3TSOcswz+0MBHvnGX/JCJH560Ju+Cdh2yKqDKKqnyEUsxjpsBD6Tc82cWdREDdtG6mkU6BaqsRorTpBNT+S88PQ2SxTtpywI7kMDc8EHji95oCDkw5txdbXuwxRMm8oNt6ig6nmbVlTi4lKncLCh/qF/9ckD+IL6q2v+vuhuU9BMU8L3OGxscBJjo1lhXUhAMkDHo+MnL46WGN79OVc49k4Yyz7Rfw14zxGTdLiiQLsuNF4fDYp7wjEBBvFecJiMNPUttZIMFcnNP4MY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,63 +96,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Sep 12, 2026 at 10:29:03PM +0200, Jaeyeon Lee wrote:
-> The XFS setup for ./khugepaged all:file checks that the kernel supports
-> XFS but not that mkfs.xfs is installed. When CONFIG_XFS_FS=y and
-> xfsprogs is missing, mkfs.xfs and mount both fail, but
-> SPLIT_HUGE_PAGE_TEST_XFS_PATH is assigned from mktemp -d and stays set.
-> The test then runs against plain tmpfs and six subtests fail.
->
-> The script already has a skip path for this test, but it never runs
-> because the path variable is always set. Assign
-> SPLIT_HUGE_PAGE_TEST_XFS_PATH only once mkfs.xfs and mount have both
-> succeeded, and remove the image and directory otherwise.
->
-> Suggested-by: Zi Yan <ziy@nvidia.com>
-> Assisted-by: LLM
-> Signed-off-by: Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>
+On Fri, Sep 11, 2026 at 11:48:33PM -0400, Gregory Price wrote:
+> mmap a VM_MIXEDMAP region whose ->huge_fault installs a PMD through
 
-I guess you didn't propagate my tag as it changed a bit? Anyway LGTM so:
+Gosh, shock, horror! VMA_MIXEDMAP_BIT sir! :P
+
+(It's fine it's fine)
+
+> vmf_insert_pfn_pmd() - mshv_vtl_low does this, and needs CAP_SYS_ADMIN
+> to open - then:
+>
+>   madvise(p, PMD_SIZE, MADV_PAGEOUT);
+>
+> With a stand-in module for the driver:
+>
+>   BUG: unable to handle page fault for address: fffff587c0000008
+>   RIP: 0010:madvise_cold_or_pageout_pte_range+0x410/0x9b0
+>    walk_pgd_range+0x52b/0xaf0
+>    __walk_page_range+0x6a/0x1d0
+>    walk_page_range_vma_unsafe+0x8e/0x120
+>    madvise_pageout+0xb2/0x180
+>    madvise_vma_behavior+0x46b/0xa90
+>    do_madvise+0x108/0x190
+>    __x64_sys_madvise+0x26/0x30
+>
+> Nothing validates the pfn on the way in:
+>
+>   can_madv_lru_vma()     rejects VM_PFNMAP, but not VM_MIXEDMAP
+>   can_fault()            *pfn = vmf->pgoff & ~(mask >> PAGE_SHIFT);
+>   vmf_insert_pfn_pmd()   no pfn_valid() check
+>   pmd_folio()            pfn_to_page() -> unpopulated vmemmap
+
+I definitely suggest checking out the small series [0] I sent which changes
+how these kinds of semantics are expressed where I... ugh what I missed
+can_madv_lru_vma()! Damn it.
+
+Noted as a follow up :)
+
+[0]:https://lore.kernel.org/linux-mm/20260914-b4-mmap-prepare-vma-flag-sanify-v2-0-7d9781ed5361@kernel.org/
+
+>
+> Even with a valid pfn the path is wrong.  The mapping carries no rmap, so
+
+Isn't a non-rmappable page not a folio?
+
+I mean the fact that vm_normal_folio_pmd() returns NULL is kinda saying
+that :)
+
+> folio_maybe_mapped_shared() sees mapcount 0, and the walker goes on to
+> folio_deactivate(), or folio_isolate_lru() plus reclaim_pages(), against a
+> folio this mapping does not own.
+>
+> Use vm_normal_folio_pmd() and skip on NULL, as the PTE half of this same
+> walker already does with vm_normal_folio().  This also filters the huge
+> zero PMD, so its separate check is no longer needed.
+>
+> Fixes: 3c8e44c9b369 ("mm: mark special bits for huge pfn mappings when inject")
+> Reported-by: sashiko-bot <sashiko-bot@kernel.org>
+> Closes: https://sashiko.dev/#/patchset/20260817220810.1175596-1-gourry%40gourry.net
+> Cc: stable@vger.kernel.org # v6.19+
+> Assisted-by: LLM
+> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
+
+LGTM in general so:
 
 Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
 > ---
-> Changes in v2:
-> - Attempt mkfs.xfs and mount and fall back if either fails, rather than
->   only checking whether mkfs.xfs exists (Zi Yan)
-> - Fix Assisted-by tag format
+>  mm/madvise.c | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
 >
-> v1: https://lore.kernel.org/linux-mm/20260911124517.63714-1-jaeyeon.lee.dev@gmail.com/
+> diff --git a/mm/madvise.c b/mm/madvise.c
+> index f75a9d139980..fbb72ab49aa6 100644
+> --- a/mm/madvise.c
+> +++ b/mm/madvise.c
+> @@ -395,16 +395,15 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
+>  			return 0;
 >
->  tools/testing/selftests/mm/run_vmtests.sh | 12 ++++++++----
->  1 file changed, 8 insertions(+), 4 deletions(-)
+
+Oh God! This function again!
+
+>  		orig_pmd = *pmd;
+> -		if (is_huge_zero_pmd(orig_pmd))
+> -			goto huge_unlock;
+> -
+>  		if (unlikely(!pmd_present(orig_pmd))) {
+>  			VM_WARN_ON_ONCE(!pmd_is_migration_entry(orig_pmd) &&
+>  					!pmd_is_device_private_entry(orig_pmd));
+>  			goto huge_unlock;
+>  		}
 >
-> diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-> index d09f9f6a384e..b870d21c055a 100755
-> --- a/tools/testing/selftests/mm/run_vmtests.sh
-> +++ b/tools/testing/selftests/mm/run_vmtests.sh
-> @@ -417,11 +417,15 @@ if [ -z "${SPLIT_HUGE_PAGE_TEST_XFS_PATH}" ]; then
->      if test_selected "thp"; then
->  	if grep xfs /proc/filesystems &>/dev/null; then
->  	    XFS_IMG=$(mktemp /tmp/xfs_img_XXXXXX)
-> -	    SPLIT_HUGE_PAGE_TEST_XFS_PATH=$(mktemp -d /tmp/xfs_dir_XXXXXX)
-> +	    XFS_DIR=$(mktemp -d /tmp/xfs_dir_XXXXXX)
->  	    truncate -s 314572800 ${XFS_IMG}
-> -	    mkfs.xfs -q ${XFS_IMG}
-> -	    mount -o loop ${XFS_IMG} ${SPLIT_HUGE_PAGE_TEST_XFS_PATH}
-> -	    MOUNTED_XFS=1
-> +	    if mkfs.xfs -q ${XFS_IMG} && mount -t xfs -o loop ${XFS_IMG} ${XFS_DIR}; then
-> +	        SPLIT_HUGE_PAGE_TEST_XFS_PATH=${XFS_DIR}
-> +	        MOUNTED_XFS=1
-> +	    else
-> +	        rmdir ${XFS_DIR}
-> +	        rm -f ${XFS_IMG}
-> +	    fi
->  	fi
->      fi
->  fi
+> -		folio = pmd_folio(orig_pmd);
+
+Again I'm wondering if pmd_folio() is just a code smell in general?
+
+> +		folio = vm_normal_folio_pmd(vma, addr, orig_pmd);
+> +		if (!folio)
+> +			goto huge_unlock;
+>
+>  		if (folio_is_zone_device(folio))
+>  			goto huge_unlock;
 > --
-> 2.43.0
+> 2.55.0
 >
 
 --
