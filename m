@@ -4,97 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84243C88E7F
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 00:44:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D14F0C88E77
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 00:58:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4DF146B008C; Tue, 15 Sep 2026 20:44:16 -0400 (EDT)
+	id C9BE86B0088; Tue, 15 Sep 2026 20:58:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 48F256B0092; Tue, 15 Sep 2026 20:44:16 -0400 (EDT)
+	id C74366B008C; Tue, 15 Sep 2026 20:58:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 357B16B0093; Tue, 15 Sep 2026 20:44:16 -0400 (EDT)
+	id BB7F46B0092; Tue, 15 Sep 2026 20:58:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 18C1A6B008C
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 20:44:16 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A68F71205A7
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 00:44:13 +0000 (UTC)
-X-FDA: 85217778786.28.E965912
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
-	by imf20.hostedemail.com (Postfix) with ESMTP id C0D9D1C0004
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 00:44:10 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=srVmd1uk;
-	spf=pass (imf20.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D4256B0088
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 20:58:25 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 277BB8059B
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 00:58:25 +0000 (UTC)
+X-FDA: 85217814570.27.310609A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 70BE1140002
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 00:58:23 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NvauvRPr;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789520303;
+	b=YeBIA0EWeY5qP960/zInguVdz87lHfdglfckxZsmkHL+EUArNoUfHLJF+4BxwjwQjgNlQv
+	xnBXnhx4aAwsLYcJo0bype1BcE+NsQJCe9Ql8poP8t57HWb4Pq351/+3Cisr3aDgwbmPUY
+	lGJg24UrWd6ABV3PEIlUH9kKkU5LOP4=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NvauvRPr;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789519451;
+	s=arc-20220608; t=1789520303;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NsKHsBOIdCXLAdxuEi12ZuRKcmDXnF4mxA3rIBYLSzE=;
-	b=cDQdNpKalykCrTERZlVbaHmDIkXtbfRyPuxvsuD+7BAqeDw2toGpWmZgoRB7lwX9wz/ZdD
-	/MFJYEQafMfHZHd79csSJO/yWdrZhPE8s7b02AKsDPM+b9lW8dU03bvB3pa/+OYxutLYD6
-	iNNCjId8rocgpChpVy1J5eb4I7282s4=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=srVmd1uk;
-	spf=pass (imf20.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789519451;
-	b=CllZmKPpR6TIpidDvrot8iQ6/152po6VGsYrbVhMCAPG7JoJCqTNvfJXStB7024Nuil7gY
-	xQVJXu5CCOtC7f97yKC3dCTsdU+U3FW2jXlcM+xC8GFUho0jusaolPDqnMfBPFmN/Jvmiq
-	6XeSrFRdZMdeAZdB5AGzvpE2qwGO1Yw=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=NsKHsBOIdCXLAdxuEi12ZuRKcmDXnF4mxA3rIBYLSzE=;
-	b=srVmd1ukUwLvj3sCL9GG0BGYSdvJbDOW97ezUsa8Q1+3pihrcMbXv8Fq9sUe0SFLljBUlA014
-	L1VjwlxWvPaCqr35t2rnHtaPsua16TMDc2+EF1xWjZVrcaBcpRK6X8/2P+rwuopKsYZhxLAzaFQ
-	E1G37YnlEgguw2PI+0+/a/4=
-Received: from mail.maildlp.com (unknown [172.19.163.200])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4hl0Gh3L7KzLlX2;
-	Wed, 16 Sep 2026 08:33:00 +0800 (CST)
-Received: from kwepemk300003.china.huawei.com (unknown [7.202.195.93])
-	by mail.maildlp.com (Postfix) with ESMTPS id DEE4B40563;
-	Wed, 16 Sep 2026 08:43:58 +0800 (CST)
-Received: from [10.174.177.243] (10.174.177.243) by
- kwepemk300003.china.huawei.com (7.202.195.93) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Wed, 16 Sep 2026 08:43:58 +0800
-Message-ID: <85aed7f5-2524-412d-859e-989ce4f9a830@huawei.com>
-Date: Wed, 16 Sep 2026 08:43:56 +0800
+	bh=KwdyHdv4MnQJM3h6YHH803Ox/K0l+mlSFgFkCNPYbYY=;
+	b=PGsOBiDWwO8VcLi1zkskThBfNgD3wVCamTxcPBJ2hldFMxrGEBFVwATpQiT9m+rvGWYcbL
+	FsjdWSMcvWWKBJznwyK5u0WwE5J+MxZYdMwcB3HOziM+Skg5Y/Ozbbdy7kO4U5srGgCn1w
+	adLc+uPDNmG+meMVXDVHWword5LB7VQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id A0CE742DB8;
+	Wed, 16 Sep 2026 00:58:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE6871F000FF;
+	Wed, 16 Sep 2026 00:58:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789520302;
+	bh=KwdyHdv4MnQJM3h6YHH803Ox/K0l+mlSFgFkCNPYbYY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=NvauvRPrJvajpFZpLH57aY0fnKI0MrpEwDocwhlvNxlhitzUAEG1AjRQF0oH+wQP3
+	 MWU2ycopmmE5EBaM4XTUqnGWsFjLOqf+TsnyvgN5qRbDYOFIjm7YZEy5auL/3ITcd7
+	 Cu38tdUCRb2G7X4lhYdowX2GKEUyB9YQCltLSkoWHfX2fQlUdvuoMz+7FLJkF8TCuT
+	 gXFljaNWwWacPpijchGAOBJWwo0Q0CIZOn2hjPgAQoD55QTWOU8Ef1CUAy+gUp/YeF
+	 WoVLeKCl1I9WTmtZMO9ac0uuFVwyUiRjbBn9MMpbA67DsdNCOxmnEQiTF3HiMeR5YN
+	 zUFWdJBywhiyA==
+From: SJ Park <sj@kernel.org>
+To: Lian Wang <lianux.mm@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	Ravi Jonnalagadda <ravis.opensrc@gmail.com>,
+	akinobu.mita@gmail.com,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	akpm@linux-foundation.org,
+	corbet@lwn.net,
+	bijan311@gmail.com,
+	ajayjoshi@micron.com,
+	honggyu.kim@sk.com,
+	yunjeong.mun@sk.com,
+	rientjes@google.com,
+	weixugc@google.com,
+	jic23@kernel.org,
+	gourry@gourry.net,
+	Kunwu Chan <kunwu.chan@linux.dev>
+Subject: Re: [RFC PATCH v2 0/9] mm/damon: hardware-sampled access reports
+Date: Tue, 15 Sep 2026 17:58:09 -0700
+Message-ID: <20260916005810.101606-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260915025514.2434-1-lianux.mm@gmail.com>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-new RESEND] mm: mincore: use per-vma lock during page
- table walk
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-CC: Andrew Morton <akpm@linux-foundation.org>, <linux-mm@kvack.org>, "Liam R.
- Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Jann Horn
-	<jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, David Hildenbrand
-	<david@kernel.org>, Zi Yan <ziy@nvidia.com>
-References: <20260915143138.2595767-1-wangkefeng.wang@huawei.com>
- <aqllzrP5DpYHfOZx@gremlin>
-Content-Language: en-US
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <aqllzrP5DpYHfOZx@gremlin>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- kwepemk300003.china.huawei.com (7.202.195.93)
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: C0D9D1C0004
-X-Stat-Signature: gqoy377n1whe3hgxsrsr6m4s8najxmwr
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 70BE1140002
+X-Stat-Signature: x4dyjsdqyjagaw9hrz7tzboe8qaokp48
 X-Rspam-User: 
-X-HE-Tag: 1789519450-861387
-X-HE-Meta: U2FsdGVkX1+UG7jDn49voNT+36fFUJDNpyz4gQtqb5ZEabFx+oEcfl1fkp1FPvXw8DzilpleyhgWOOgLDZ3HoomIdtf1VrTV1ThX2ZSwNcAqZOGScpyIuHoUQ38MqlwZJDq7fFSKop/8MU+mzRBCxuZ4cyDbo6ya2Bzy8v3SxkSooLWzIxqS1x7GBnzS5s3I8ZMlgLcm3pRa2KwiW52GMtTZ2akn8GD8eDJGjHF+n2YD0c5Ny/dWjH85Tt1mnQCTPj+py1uYrZqO5JFAadCiXBtbwjB+u4ugesBL+3UK1pTqy1yXZ0v9Mwp78H6gHy3agYYAmdJt350kdM2U0fg/5sJi1iAIpMbXJPuioCEHtaKJaHkIC2b12+wdApHP1EZC2sAoEH0FeWfhq+IoDjsnjN63/smMbs5VQ0PfGpn4mMa1xoCn8baegvYHFSYYnNo4TEllYeY7s+6Z5ygF8H51jucB2FkJmZz+Foml2Z4QlCB169eTizmJUar5uWY9g0aYQy7oKrCqILg/zkWbKtkx35WfMySAkVfs+cz1CGVhF8/FM1iQz1GVnvK78W1OQTozN9V9mXzCNlMV0IkXvgfh7p1FmxdRYi4Og/+eXv2qh0m1opHg9IheCwvlx3uajCWQ+km6AScNDgOT3hXR2x97aXDn1km6W836Aqd0DlxapsfyREns3I/cC3qA1o2Q2bwv7A4v2C8fFyM46vSm0FyKXKTYeUH+Mqz9Dm+M114mkGrO33bRR/NNMct/+E1EUwNm4JWpiBOkEjHS8QGe8XLB0JLMlNuake550dIMnMdU4DKfZiB4zqew1v/sANyJs7g95N4X4ikraUl8USs95ZUi0h9KtQQr7CCqhpgy6NGcCSbJhwqMNt22mj3wxXzzdO7Zd5x/AtnqDJFmJeLNGQbTsD7kyzVFlCn/lkiHqCOBKHfwI9JAQaKaxgzKea0J7N2vPR7WQJxQAMPQK8Yqdxf
- 8C10hOD7
- Mh4BnDd/TyuKMICcdA5nA88DyXBeDmU9UV+86zC0IXboG4/YFJ6meF2SuYVWGgWksfwJThDRp2QXXklx1/gjW5+Pd930YOWe6lu19ciK4R5t+1xTbhAnM5SG3CTAVp5CmxM4M1KSfjfS7eLLfrClxMuQOG57wZ6cHbsrTOByS/AKGhupdSRIWF1ZNxnjJKclQT1bPT4O3XRkvwD9mfTf7msHORF6yFqZkWQ7XRJD8pMln7vwQeaCvcywzGXfk0fb1qlhroOTrwHqkkEY7+qy/iQvdOG30nNWplgQpbBcMSii8GNQqZqXWEJfyHJK/yzljWUj0Ibe77TWYHOSTL8GA2VVOejhBuGOQjtFfQGJzDlmWz40=
+X-HE-Tag: 1789520303-296740
+X-HE-Meta: U2FsdGVkX1/++j6cUk+BlhcrfBoSvyaskuSvPROzRsXwu3sfom2O25GvkL8zCQP5xvsTD7y2o2CRU4KK4rcbcWH9IfA/Yq8X855/3gHxXAbdo653r2BJ0I6eqACX82Er8LKEJncCrqzhVLTA448MXZMN1MlbyODZZI8gpetKgEOjtJM6WyH+2S7p9Xp7AfyIFC5/IdAABZ5sCmt8MbrFaX2GTq5e3qET8CAAGPJPzf7C8fgpRD/FbTp8VAS4sIBBaDrSqygLMM+7eOOaWxM1PhGg/faocIeRsoT/a18Qb8tbOR3M4z1eSJJ24DCLvNTZUBIhqLIhVWYHszc/e+mpZ2Err5q9waH09EAsxLVEDOXUYcfIH9fwb0e2aKI9hPqeCmYlBB2nOPIqCl9ynxQyN5sdn0jKwCJeebn+g0sEQKI9Gx5j+IQYcz3NCoapH2Svloh1x7bekXXTux8wnSF9yHYOxvdrUD4dvvPUXbKUmpyrrEBkdisFJnATmDiJ2qopQeb9awlbgc6SZPsD3cMRR1YfH73/ZNzAKF3Fd0zBKxZM1PFGKS+2zaI+laOnU59G/qEWQHakm4BJ0XcnTuZiNR+nWdC5aYde/9YoHAl3LDon8b4sB7n9fnFyvUWKnrB/4PGREoesMcmfzY51XoPhYstHUF+xbUJpIHOPZj3GL2f98vPa9+0gZOs0r/DAhfQTNvTOfDA18pFavX9cbtls1e6Dh5n2YQVdCvTJq34LiXltPcssDsfv6kx1GfuqgGYl2G6aNmhYPyDnO/EOKtrUjxhO5LoP7jeUeozBCS47ddGLw5rPkR9pa4tHv73fN1TclUaRf+ZgE9JhPo/annX8wlLrHFa1N5djdlka3gxB6gIi9ggbAvhAd8r8hgaxIi1LcP6d0yOUbsmOjYftnG5N0yLTnNx1/sNBnXTY5FDCEiIJLaB6HnIU9JFeXXFpyz9W3R8Z4Pmv/thnoWxaUOt
+ fwstHQrk
+ RxycYUJhqaP2uQ0FcR5qHZ9lEZT/ienBrPS5ZeqO1vswwHDrF/RGTSEDK6OZoBk/fXkZNtHiNKgip29GH0Xy1aPUwGU+KbMJs/lX64nXS3Vgvnl6n49eRXA/zOImmE8HkqF6+JrMbRf3LIwjQk5K7L7ZtTGLgeOFCTuDlZJIXB5xEQOjpZPvWNEbrwBCTBDcdDIAyWPq/uUtDS1rw//u4C86lRFYEpbxWD1McK0L2VwdRWwj2XOZr2WzIpB9HaxalEp5Z3B+bi9khYXb7Q/t55hwKNqKQg/dcIL448hwlnDmDBNe8RL3Ab1u6wA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,127 +106,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Lian,
 
+On Tue, 15 Sep 2026 10:54:51 +0800 Lian Wang <lianux.mm@gmail.com> wrote:
 
-On 9/15/2026 11:39 PM, Lorenzo Stoakes (ARM) wrote:
-> On Tue, Sep 15, 2026 at 10:31:38PM +0800, Kefeng Wang wrote:
->> do_mincore() performs a read-only, per-VMA residency query,
->> making it a good candidate for per-VMA locking. Convert it
->> to acquire the per-VMA lock, thereby reducing contention on
->> the global mmap_lock.
+> From: "Lian Wang (ProcessMission)" <lianux.mm@gmail.com>
 > 
-> NIT: The mmap_lock is not global, it's per-mm.
+> Hi Ravi and SJ,
 > 
->>
->> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
->> ---
->>
->> RESEND:
->> - using new vma_start_read_unlocked() API, suggestted by Pedro Falcato
+> Thank you for sharing this work.  The report path looks potentially useful
+> for a DAMON observation-granularity problem that we are investigating.
 > 
-> That's not how resends work :)
+> The scenario originated from an issue reported by SXF, and we are planning to
+> share and discuss it at LPC.  We have now reproduced the underlying observation
+> difference on both a local PC and an x86 server.  The server run below is our
+> larger, controlled reproduction.
 > 
-> If there's a change, then it's a v2. A 'resend' is identical to its original (or
-> at most - rebased).
+> Our test monitors a QEMU process whose guest memory is backed by a shared
+> tmpfs file.  The guest repeatedly writes one 4 KiB page in every 2 MiB range
+> of a resident 48 GiB data set.  The unique 4 KiB spatial coverage of one sweep
+> is about 96 MiB, or 0.195% of that data set.
 > 
-> This should be labelled a v2.
+> Using vaddr DAMON with a 500 ms sampling interval, 20 second aggregation
+> interval, and 500--2000 regions, two opposite-order runs reported a mean hot
+> ratio of 1.751% without shmem PMD mappings and 75.836% with them.  A control
+> that writes the full 2 MiB ranges reported 75.366% with PMD mappings.  Hence,
+> in this workload the current observation does not distinguish spatially sparse
+> 4 KiB activity from dense activity once the large mappings are present.
 
-Get it, thanks for the clarification.
-
-> 
->>
->> v1: https://lore.kernel.org/linux-mm/20260701144047.3786939-2-wangkefeng.wang@huawei.com/
-> 
->>
->>   mm/mincore.c | 28 +++++++++++++++-------------
->>   1 file changed, 15 insertions(+), 13 deletions(-)
->>
->> diff --git a/mm/mincore.c b/mm/mincore.c
->> index c086836bc4bc..f989e6d1ec18 100644
->> --- a/mm/mincore.c
->> +++ b/mm/mincore.c
->> @@ -235,24 +235,19 @@ static const struct mm_walk_ops mincore_walk_ops = {
->>   	.pmd_entry		= mincore_pte_range,
->>   	.pte_hole		= mincore_unmapped_range,
->>   	.hugetlb_entry		= mincore_hugetlb,
->> -	.walk_lock		= PGWALK_RDLOCK,
->> +	.walk_lock		= PGWALK_VMA_RDLOCK_VERIFY,
->>   };
->>
->>   /*
->>    * Do a chunk of "sys_mincore()". We've already checked
->> - * all the arguments, we hold the mmap semaphore: we should
->> - * just return the amount of info we're asked for.
->> + * all the arguments, just return the amount of info we're asked for.
-> 
-> The VMA read lock needs to be held here so you should say so in the comment.
-
-ACK.
+The observation makes sense.  However, does the sparse access pattern
+realistic?  If so, what is the purpose or expected benefit of using huge page
+for workloads having such access pattern?
 
 > 
->>    */
->> -static long do_mincore(unsigned long addr, unsigned long pages, unsigned char *vec)
->> +static long do_mincore(struct vm_area_struct *vma, unsigned long addr,
->> +		unsigned long pages, unsigned char *vec)
->>   {
->> -	struct vm_area_struct *vma;
->> -	unsigned long end;
->> +	unsigned long end = min(vma->vm_end, addr + (pages << PAGE_SHIFT));
->>   	int err;
->>
+> We are testing existing DAMON strategy mitigations first.  As a next step, we
+> plan to replay recorded access addresses through the report/probe decision
+> path, independently of a live PMU, and check whether DAMOS can distinguish the
+> sparse and dense cases.  In that experiment, raw report frequency and unique
+> 4 KiB spatial coverage will remain separate quantities; lack of reports will
+> remain unknown when source coverage or loss is insufficient.
 > 
-> Maybe worth a:
-> 
-> 	vma_assert_locked(vma);
+> If the report evidence makes the decision reliable, the response we want to
+> evaluate is an internal, bounded PMD mapping demotion (splitting the mapping
+> while retaining the underlying THP folio), rather than exposing physical folio
+> split as a DAMOS action.  We will first keep the response stat-only and archive
+> the would-act ranges.  After the replay result is repeatable, we can replace
+> the replay producer with an appropriate hardware source and share the results.
 
-ACK.
+I'm not very sure if this is the right direction.  PMD mapping demotion sounds
+like you just don't want to use huge pages.  If so, you could disable huge
+pages.  Answers to my above questions would be helpful for me.
 
 > 
-> ?
-> 
->> -	vma = vma_lookup(current->mm, addr);
->> -	if (!vma)
->> -		return -ENOMEM;
->> -	end = min(vma->vm_end, addr + (pages << PAGE_SHIFT));
->>   	if (!can_do_mincore(vma)) {
->>   		unsigned long pages = DIV_ROUND_UP(end - addr, PAGE_SIZE);
->>   		memset(vec, 1, pages);
->> @@ -319,13 +314,20 @@ SYSCALL_DEFINE3(mincore, unsigned long, start, size_t, len,
->>
->>   	retval = 0;
->>   	while (pages) {
->> +		struct vm_area_struct *vma;
->> +
->> +		vma = vma_start_read_unlocked(current->mm, start);
->> +		if (!vma) {
->> +			retval = -ENOMEM;
->> +			break;
->> +		}
->> +
->>   		/*
->>   		 * Do at most PAGE_SIZE entries per iteration, due to
->>   		 * the temporary buffer size.
->>   		 */
->> -		mmap_read_lock(current->mm);
->> -		retval = do_mincore(start, min(pages, PAGE_SIZE), tmp);
->> -		mmap_read_unlock(current->mm);
->> +		retval = do_mincore(vma, start, min(pages, PAGE_SIZE), tmp);
->> +		vma_end_read(vma);
-> 
-> The logic looks generally right, just need to address the various bits +
-> pieces I raised :)
-> 
+> This seems like a useful consumer experiment for the report interface, even if
+> the vaddr and optimized transport parts belong to the later phase.  Please let
+> us know if this direction conflicts with the intended report semantics.
 
-Thanks for your review, will resend a v3.
+I believe this doesn't conflict with the project, though.  Nevertheless,
+technically speaking, it is not the report semantics.  Reporting allows any
+information to be reported.  Page faults like information could be coarse
+grained, same to the current page table accessed-bit based one.  Only finer
+grained access primitive reports, like those from perf events, would increase
+the accuracy for the sparse access pattern monitoring.
 
->>
->>   		if (retval <= 0)
->>   			break;
->> --
->> 2.55.0
->>
+Whether sparse access pattern is realistic and using huge pages on systems
+having such access pattern makes sense are different questions, though.
+
 > 
-> --
-> Cheers, Lorenzo
+> We will share the strategy, replay, and mapping-decision results once they are
+> repeatable.  We are also reviewing and testing this series, and will follow up
+> with the appropriate tag(s) for the exact revision if that work justifies them.
 
+Looking forward to!  Nonetheless, it would better to make sure we are on the
+same page for the above questions before digging deeper, in my humble opinion.
+
+
+Thanks,
+SJ
+
+[...]
 
