@@ -4,98 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69B31C88E77
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 05:57:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D03A1C88E5C
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 06:00:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 30DE76B0092; Wed, 16 Sep 2026 01:57:22 -0400 (EDT)
+	id D4DA76B0095; Wed, 16 Sep 2026 02:00:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E6566B0093; Wed, 16 Sep 2026 01:57:22 -0400 (EDT)
+	id CFF556B0096; Wed, 16 Sep 2026 02:00:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 223D16B0095; Wed, 16 Sep 2026 01:57:22 -0400 (EDT)
+	id BEC966B0098; Wed, 16 Sep 2026 02:00:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id F39BE6B0092
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 01:57:21 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 742521205F3
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 05:57:21 +0000 (UTC)
-X-FDA: 85218567882.23.DCF7FF0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id C0CEC18000B
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 05:57:19 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Hfjbn/14";
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B1A96B0095
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 02:00:34 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 80A2414035B
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 06:00:33 +0000 (UTC)
+X-FDA: 85218575946.03.BB4F4F5
+Received: from mta0.migadu.com (out-90.mta0.migadu.com [91.218.175.90])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 2B44C1C0005
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 06:00:30 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WWe5tKzi;
+	spf=pass (imf20.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.90 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789538239;
+	s=arc-20220608; t=1789538431;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m6SKrH4CseAWkOxTNnD7adA5OG5gHGdFDKDZV8MwdQo=;
-	b=SPOTwaFW0AFOu+Ja9VloY1JbtZxn0vTQ0yam9TEjR523OId7b1wzC/aEJmkwa7g0CcLbwr
-	s+pIbahG5VZ4j6vQ/Gs3Tx1OlHAYlBicNCKxjkNWDzrvYZNmYpq+LMCeAn5uAefImmUlOG
-	4VfnIEZZPEgNxBuZtGYNpDoA5+Nttpo=
+	bh=f0aoWg+xjgpe3M/y6SHgXpjhXZxQmN/c+nIdH5D3a7E=;
+	b=egIaWo6Ix9dsXdznQEownkD+C0GzthocylZ33Sv7nsjP5S45fQ/nWDuP4RO9nv4RtWvtGw
+	NzPEUnAzmAgZbJvBteG0HOBNqswsmrpMJoBTwZhdbDEbKPUU9AlEiGD9ww3A/2I9SwDWfr
+	CKS4/bhKPcvI3V9vMIXu0bgiqQ3twAU=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Hfjbn/14";
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WWe5tKzi;
+	spf=pass (imf20.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.90 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789538239;
-	b=vMK+92RaBXH11kUJGtQNznza2V0qZ017Pf7vzjpKNJ02Q4wxnGn1R9pv3NWB/Cax6bbLsQ
-	GJFXssqC4iGlYYm9Hrtw9aD9V/T5RXYd24vN9YNv7M1oa2xckO+39rncMaZ13PvjzQ0Gp0
-	mEHQl4PFu9o0OOICeucQXbegdMsk5/E=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CDAF2419F9;
-	Wed, 16 Sep 2026 05:57:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30AAF1F00893;
-	Wed, 16 Sep 2026 05:57:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789538238;
-	bh=m6SKrH4CseAWkOxTNnD7adA5OG5gHGdFDKDZV8MwdQo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Hfjbn/14ap3NphlFUGF122siXy5FCwFpEPoVLD/bkd+cBzcIjiKB6/MC5XRcHHUDE
-	 BUE4Y8+QMyH1XCUvSJSf8eRGEfjMlCj9wnfBzVCwFXv3IwxFVMtGNTuAHgTBJe5pID
-	 OEQI12RtTWQ0jmOWZeDg5lNVuxrA9jf6Ykbl8Z5puaZI/XWFlizjnsciuMt2Zezswm
-	 EweQSqqGtp5HWk8w+BJ3a7A4GO0DotOvPw6wNEwfag0dnM/3DhqO5Dk/0n8lR3qJAi
-	 sG+5atyvp3JADGHGrMHBXPGJvYivWpXwzTF9csYn4q23Zn7dnYeNgsS0Z5qUcu+u50
-	 jXFEPammnloAg==
-From: SJ Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SJ Park <sj@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 0/8] mm/damon: introduce hugepage_size probe filter
-Date: Tue, 15 Sep 2026 22:57:10 -0700
-Message-ID: <20260916055711.24926-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260915163928.9d6260f445d895429d115fd8@linux-foundation.org>
-References: 
+	t=1789538431;
+	b=Nxn4I4hMyYwbWexDTw+mz/3hXCEwCLulLIoEnnaWbApEBCd9jTKrLEG0sy8uT9iIwvIgJI
+	ni6icafXiEMLzGkXrPo2sVL1XjbCG0+jq0tcRme8yCteNx1A5bPZgfYi3OOnX9fZYM0z89
+	DtosaM/VhVaz1GEjHV7EEG1CIKW5Rn4=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=lkKO+hhwFT4C9KkIH3ogidkHvWCUt7zPEkugIUZmm7w=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789538429; v=1; x=1790143229;
+ b=WWe5tKzidE/ANoXtzoNd9naaXhFitJOIdOk3cYeKCHsIIph3vNCIHghDBS8omFgqK1fWPHTe
+ QPPPrg/H5kpFXwAzVJ6dFviUcNabBlheCnGGmy54ATNufnHMzvCUHJTy5elNka9e98WO7vTD5vG
+ QoHP53zUjN22FtmO9LTPUOk0=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 39cd2895c6e16674;
+	Wed, 16 Sep 2026 06:00:12 +0000
+X-Mizu-Trace-ID: 39cd2895c6e16674
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <60642a7f-2949-428a-8290-40d69c989a77@linux.dev>
+Date: Wed, 16 Sep 2026 14:01:06 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 2/6] alloc_tag: clean up the populate failure path
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>,
+ Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
+ Aaron Tomlin <atomlin@atomlin.com>,
+ Kent Overstreet <kent.overstreet@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-modules@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Sashiko <sashiko-bot@kernel.org>, stable@vger.kernel.org
+References: <20260915070001.113559-1-hao.ge@linux.dev>
+ <20260915070001.113559-3-hao.ge@linux.dev>
+ <CAJuCfpHJSwNhgotMVpmjVvdv=m52_7Kvzpztf0WcN0AaoSeGGw@mail.gmail.com>
+Content-Language: en-US
+From: Hao Ge <hao.ge@linux.dev>
+In-Reply-To: <CAJuCfpHJSwNhgotMVpmjVvdv=m52_7Kvzpztf0WcN0AaoSeGGw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C0CEC18000B
-X-Stat-Signature: qsfzmxrzqyjip73bk3pq6bai58ea89go
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 2B44C1C0005
+X-Stat-Signature: js3r7yswyfrwr9o7j9aopj3r8kmzhrf7
 X-Rspam-User: 
-X-HE-Tag: 1789538239-469884
-X-HE-Meta: U2FsdGVkX18pE0TQ2bjnxvxj8Ps2VE0xgNwu+opZo45Qk4mNjITSqjCNwnCkFjvqSxXstIe9WM6kGyTCo+WPysFMN6flQYXuX7p5vC6cKnHruVbWzIQzGTjNX6tj88TkZSxvv6dmcgeihIVmAG1ocrN+xVkd/8uG95WGoVcbogud3ZeHiC9u9VB1xneLUrCYw0PRuBHWa2MmizfAyAuDxCGhaAdcKO7GOfTdyACDzuqLn+gfWCDsjcfr3GcYOQW+31MJMjxlcZ/Ci5Uh5SkQAw5RwTUAkpHAuTSAdpshaHI+QcpZLE2Er1aAnxNpN/MJSNDa2SWZ+pPdxyVe0fwPgWBI//7BCKn4EiYH9QdkU+whP0UNJQceHhLqTBRtcGhuFjfHnpqGS5UjgitrUoL+ngv5wkqw+f+k8G3R8IrNKX0ny540Ql5j7G5HX4hQHkfJVoa5t7QlJmKi0589OGWtfBbeVrrTlIuCViQ0cRvta/4d+s4KKHWJNI02/NIRWoyWtOMTGfiyLIeC53ABJO0pKceZFxbdU52ez/aNZB8ia/I8apBxnxd3iCX01QirztjN+PSr/6nRsq9aRH0Mv5gu8hz3NgId1lxWcHtH/sn78m1fyRFBV1jJCq3kVHYEw9zAG4jJjjGq5Nwb2MbxD5ORBdY3d2BBXUgyzluE6wWJlM7CmIjMPMlnei0RgjBYlXOp4wVZmKHroaDfCoG2Y7ItIURMJ38eRrHm/j9jUZ+eNGkgUlQQrtXS1cCou8gcJLSik5aT4RMdisYXKCs8wRv8Qf8F/3Yc4fcND6I99B+juATyQVSFhYJlqODY5caGRlND5lfQgOHswz6YaEl1kweGKaIbnV1aBne4eKkSgK3Wt0z+Z+qi3NE/NrXZ40i+fTVWiwgBVpOEZ7fsOSt8F4ml9V0ae+uSfkKpAEHpEoeRnRqweKEV7we8RQGuoyy7olytAjE3/NquwFXUEHLPJeF
- VBVRDx+t
- lc6oK69YWYmijbgocnnxXHiyiCj7qP/G4RMvj+jMJncJ8E2BgZy1pLcutGwUaprkNKOHzhVhr1va/gGRk6foCP8KaN11To1fWbDav0L4KoZBNkZrogNiHgFkC0usw+RTODM/TfSwDAmC3nvgTDT9oNgmRebxhYS2DsVZp6u4027T4auvsw1I3cfr74WQiVBHCkKRgTa5MRfu+iLnLUzzujzka0dAamQtnvjuXRp5jce1px4Cq/82oGyXuUiTwMbZGuuoXwFRNRHE6fBNsXa7n71DMj3uPaGtyYK4R92Q4sP+FhlQPpd/ax/Xu+/PYwEb7sRNHnPSZJCNRcXWwTWdCy6BuqA==
+X-HE-Tag: 1789538430-600001
+X-HE-Meta: U2FsdGVkX18Hl0ieYchK6X9WZ/tNMTiXKclQ78sW3ksmqzaxf8WNopYVrrKXuxitKM4i3GbPHTFfOLQDIrxlafVG0f3CLqkVFsUph59ia8593Qe5jVBQkowrVuvb/fOg0f9WwnR53YJBgEXAMVrBajsMvpHUeCIOWE9Kdhgi/w7tJvAw9KS/SHhiKhNWom87TmtXq5jdR8wVxqdNkS/szAMSqii/MHkzLX+UVYELx6kXmecgVLLPbKF63Im3vM8ZdNVZZi9KzYroTrHaBLjsDxM7nHRBhyZawIlyTngSBl3ha9WOyT6q6clnRF/RHRLNbO1EIYlP3KY7BXTqYPUj+xqsiA0MQkb6b4TPHwnz96YPgCz4m9+xXwNlUfXzNgUMNnr1pKByXsww/1naCiv4L0cCpBt8TrYUE1siyXR9l6ZHsycI91OY6VQHQBwJc8tSdWJKHnFpgB2ObpjWNao/8ak+wgpKTZT+CJ2PK9cp+NRIFbhVq11jdL2vd4Y3d9BCEAxwI7w6oVltHRGo8UGAYMQdNMK9qMQQLxGXOmGfJyf1lBr5MjfCHunswPX0799Me3RZMwfeJ0KLOfQiAt/b4beVyh9ylfrj75EXQk/IzFj0Pd4KY579G5vOkFW99tCf6nugE3OA9uglfiSKl3s+fCCb+0XvhAOEW/FrmRvzo0Spef5130ieDOPl+DcceYG5YwPZDpLNVh37OgNoYiTe/pZH5khpfBqsr3+2mO+lpLOqrNYxR73QbzUdUesZ5poEl7IyOHfhZwVnbANhFlEYWozX6RhmGEm47nJ6X/wURhU9Q7O+/wz9/1r7e2jjQ9zEhpvKvIcp4n6ioSTyu3jlgO/J0U9sFP5rx1e5Bs2DGUBKc47mlsP7YN3XkcIvCe67JZMsAuLq/7yiBAUIBu83zE5SvcVuFk/sWU2JXIggUGgiPRjZ6iWtOwyCaS1G7Mr7mDAYYpu8fLbWT9ysI2u
+ GLC+Utql
+ HP63TDeQqEO5jG9pCadt4NUKkMO6UYZGGUwZLbqM7ASG1HylVZnnCDr8hcizSWuZmlLYG3GxCceaPFEG6f8rh+5i8/ypS1gOB7HWG/Dj1nwN1q3ftmUNvFqqC/ogwYmcVDiNCLZLwi/xUVWpg8Ag6+fDbVh4U+Sq0Y/0GidOSh3jRjMehHuFebqeTT5jh5NLeL0X6FU9WwLlTSnGQwdPHvs/nRogrKyC2vGt7n2vf2gxVNeGzGpNI58gHVj7uQ/ROBkTI2bYixQCWwWkWaHI8FkWFSkrvMUvH+WfWoKpCEsNfj/yaHhdNN/i/6yWTu2tF/dPBEW/rUgmr6+GhlJPXKzt4Zxejlv7iCponQAmxNTqTX4yYwj2QjR+Od5eWaPJrQJlJ1Uj5PSfo+uRRNLmEEM7jfS27WxCkcVEgaFzUHOdTGp0Nb63XDqlghg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,54 +98,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Andrew,
+Hi Suren
 
-On Tue, 15 Sep 2026 16:39:28 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
+Thanks for you review.
 
-> On Tue, 15 Sep 2026 07:33:49 -0700 SJ Park <sj@kernel.org> wrote:
+On 2026/9/16 05:09, Suren Baghdasaryan wrote:
+> On Mon, Sep 14, 2026 at 11:59 PM Hao Ge <hao.ge@linux.dev> wrote:
+>>
+>> The reservation is already stored in the maple tree when
+>> vm_module_tags_populate() fails. A failed load never unloads the
+>> module, so nothing releases the entry. Release it and roll
+>> module_tags.size back. Without the rollback a concurrent load that
+>> already passed needs_section_mem() can reuse the freed gap, skip
+>> vm_module_tags_populate() and write to unmapped memory.
+>>
+>> vmap_pages_range() may have installed some PTEs before failing. A
+>> retry to populate the same range would BUG on them, so undo them,
+>> but only if vmap actually ran.
+>>
+>> Fixes: 4835f747d3ed ("alloc_tag: support for page allocation tag compression")
+>> Fixes: 0f9b685626da ("alloc_tag: populate memory for module tags as needed")
 > 
-> > Knowing whether a given memory is backed by a hugepage of specific size
-> > is useful for efficient utilization of hugepages.  For easy monitoring
-> > of the information, introduce a new data attribute probe filter type,
-> > hugepage_size.  It works similar to the DAMOS filter of the same name.
-> > It works for memory that is backed by a hugepage of a given size range.
-> > 
-> > Patch 1 introduces the new probe filter type to DAMON API and extends
-> > related data structures.  Patch 2 updates probe filter commit logic to
-> > handle the size range.  Patch 3 Updates the filtering logic to support
-> > the new type.  Patch 4 adds new DAMON sysfs files for the size range.
-> > Patch 5 updates DAMON sysfs interface to fully support the new filter
-> > type.  Patches 6-8 updates design, usage and ABI documents for the new
-> > feature.
+> If a patch fixes two other patches, it likely needs to be split so
+> that each part fixes one patch only. But read on please. I'm not sure
+> if one of the fixes is correct.
+>
+
+Kept them in one patch because they only make sense together.
+
+After a failed populate the reservation is released and the
+size rolled back, so the next load takes the same gap and calls
+vm_module_tags_populate() again, and that retry would trip over
+the PTEs the failed vmap left behind.
+
+Without the rollback a load that already passed needs_section_mem()
+just reuses the gap, skips populate and writes to unmapped memory.
+So splitting them leaves each half broken.                                   
+
+>> Reported-by: Sashiko <sashiko-bot@kernel.org>
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Hao Ge <hao.ge@linux.dev>
+>> ---
+>>  mm/alloc_tag.c | 10 ++++++++++
+>>  1 file changed, 10 insertions(+)
+>>
+>> diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
+>> index 2070e682fe10..95ddf5b743d0 100644
+>> --- a/mm/alloc_tag.c
+>> +++ b/mm/alloc_tag.c
+>> @@ -804,6 +804,13 @@ static int vm_module_tags_populate(void)
+>>                                      next_page, PAGE_SHIFT) < 0) {
+>>                         release_pages_arg arg = { .pages = next_page };
+>>
+>> +                       /*
+>> +                        * vmap_pages_range() only runs once all pages were
+>> +                        * allocated, and it may have installed some mappings
+>> +                        * before failing. Undo them.
 > 
-> All queued up, thanks.  With a -fix for [7/8].
+> If vmap_pages_range() failed to map the range, why should we need to
+> undo it? If it indeed leaves some partial mapping when failing then I
+> would argue that vmap_pages_range() should be undoing these partial
+> mappings itself before returning the error.
+>
+Yeah it does - none of the paths under vmap_pages_range() undo themselves on error.
+pcpu_map_pages does perform cleanup on its own as well. There may be other similar sites.
+https://elixir.bootlin.com/linux/v7.3-rc3/source/mm/percpu-vm.c#L255
+so I did the same here.
 
-Thank you!  I found the -fix is in the mm.git as below:
+If we really want vmap_pages_range() to handle this cleanup internally, I believe that would
+be a relatively large change, and we would need to consider many more cases. So I think we keep
+the current behaviour for now.
 
-'''
-$ git show 81c69fbb4128
-[...]
---- a/Documentation/admin-guide/mm/damon/usage.rst
-+++ b/Documentation/admin-guide/mm/damon/usage.rst
-@@ -309,7 +309,7 @@ named ``0`` to ``N-1``.  Each directory represents each filter and works in a
- way similar to that for :ref:`DAMOS filter <sysfs_filters>`.  When the filter
- ``type`` is ``memcg``, ``path`` file acts as ``memcg_path`` for :ref:`DAMOS
- filter <sysfs_filters>`.  When the filter ``type`` is ``hugepage_size``,
--``min`` and ``max`` files acts as files of the same names for :ref:`DAMOS
-+``min`` and ``max`` file acts as files of the same names for :ref:`DAMOS
- filter <sysfs_filters>`.
+Thanks
+Best Regards
+Hao
 
- .. _sysfs_targets:
-'''
-
-But, I think it is slightly wrong.  The fix I requested is
-'s/files acts/files act/', but the committed fix is doing
-'s/files acts/file acts/'.  Could you please fix it when you get a chance?  Let
-me know if there is anything that I can help, too.
-
-
-Thanks,
-SJ
-
-[...]
+>> +                        */
+>> +                       if (nr == more_pages)
+>> +                               vunmap_range(phys_end, phys_end + (nr << PAGE_SHIFT));
+>>                         /* Clean up and error out */
+>>                         release_pages(arg, nr);
+>>                         return -ENOMEM;
+>> @@ -947,6 +954,7 @@ static void *reserve_module_tags(struct module *mod, unsigned long size,
+>>                 return ret;
+>>
+>>         if (module_tags.size < offset + size) {
+>> +               unsigned long prev_size = module_tags.size;
+>>                 int grow_res;
+>>
+>>                 module_tags.size = offset + size;
+>> @@ -961,6 +969,8 @@ static void *reserve_module_tags(struct module *mod, unsigned long size,
+>>                         shutdown_mem_profiling(true);
+>>                         pr_err("Failed to allocate memory for allocation tags in the module %s. Memory allocation profiling is disabled!\n",
+>>                                mod->name);
+>> +                       release_module_tags(mod, false);
+>> +                       module_tags.size = prev_size;
+> 
+> Yes, this one is a valid fix. It fixes 0f9b685626da commit.
+> 
+>>                         return ERR_PTR(grow_res);
+>>                 }
+>>         }
+>> --
+>> 2.25.1
+>>
 
