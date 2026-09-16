@@ -4,190 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F01C3C88E77
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 12:03:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3325BC88E5C
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 12:03:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B28056B00B6; Wed, 16 Sep 2026 08:03:43 -0400 (EDT)
+	id 053AA6B00B7; Wed, 16 Sep 2026 08:03:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB89E6B00B8; Wed, 16 Sep 2026 08:03:43 -0400 (EDT)
+	id 0063B6B00B8; Wed, 16 Sep 2026 08:03:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 902FE6B00B7; Wed, 16 Sep 2026 08:03:43 -0400 (EDT)
+	id E36676B00B9; Wed, 16 Sep 2026 08:03:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6088A6B00B5
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 08:03:43 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C2B30A5DFB
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 12:03:41 +0000 (UTC)
-X-FDA: 85219491042.03.252198E
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013006.outbound.protection.outlook.com [40.93.201.6])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 9E28BA0019
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 12:03:38 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=pEkxIe6W;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf25.hostedemail.com: domain of Alexey.Kardashevskiy@amd.com designates 40.93.201.6 as permitted sender) smtp.mailfrom=Alexey.Kardashevskiy@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789560218;
+	by kanga.kvack.org (Postfix) with ESMTP id BEADD6B00B7
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 08:03:45 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5517A140700
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 12:03:45 +0000 (UTC)
+X-FDA: 85219491210.21.26758BA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 963DF100010
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 12:03:43 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fcm9fdtt;
+	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789560223;
+	b=kXQVFDKNOUcVgr5xAFUw8IZ66wjf4DDWKSA3UWvH0U8jclNjy3vhjhGdsAV+FihxGPknOH
+	YfCdz+kakHAmFYrPqQDWETVIhBAqdNEf4yy2N+PDzvfQxWjme8e0TAX2/owItkiblwY4aZ
+	C2AS4kYCLy/+UUybUeWWeAGQbiGvKck=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fcm9fdtt;
+	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789560223;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WNgXfa5En712+eAspMOEbd4EbM4QDl/vkmtEAEeJtpw=;
-	b=tFf66CNAISVn6RL0eIBUT7+LsachCdemrLkZwCRLFEs4xWdmpxMGvPPAg1PCbFEqFt48dM
-	e9n3fkLG7nMuZ9eb9FSDZE+d3POOqtWAAzVHew/2DEwgSeRkcvEpmABX1ITiE/oNr3l13p
-	JRhWWIy06vKNu6q3zCxWcLo6/Gb73Uk=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=pEkxIe6W;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf25.hostedemail.com: domain of Alexey.Kardashevskiy@amd.com designates 40.93.201.6 as permitted sender) smtp.mailfrom=Alexey.Kardashevskiy@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789560218;
-	b=EDUVCWImCzeFdGQIJ6ME0wfBZ+5Q/S7aYSf8KJDNX2xRuBWpMwbhxV1IaHhNHjCiFIc0FF
-	qfRLYL0BZ1DhMLxJOVjWELsIDJjKkkSRAE5lvTeX1b4cU1wGBdC5Zk39xISLLaY5wpU1cC
-	MvbsYkiqXJ39bsZ3ajFX2VUGYv8plZc=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sdWZGPM/zgWMCChuh52X0kMji/qLxyRnue0l4weppikfIskSxwetWJztFG0+vdh/yuym1d0rd0z3AfQTJLfwN5/s3ttZPOvbaFGTaPbhJkkXfTU7wIDgO0fbrwAc5JCaaTsidDHnutfF/OQFVv1XYn98HJ1W3xvnmWScIDfCUT3K14TyKd7PASinbA8Sk8PoFypDZP5fTlvlv72O+U9SMCcK8jxp/mNUydtEyYrHwfGavd0ucS7VnvEy4x6T/JOxc0I/y7m7k1tEp9FGYw6ZAGvqpO1pnvZy8VTszGO7n/Vrl6+0g9/VY2DU6OMEWRU0tw/CWyETpjwPpA/MYywJ6A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WNgXfa5En712+eAspMOEbd4EbM4QDl/vkmtEAEeJtpw=;
- b=LSYNh5pVts8gPMPMedX0JXjgMQiXo3cpgEMoWw+mHa2iEZwEuZAKy3JVH8sIV7pIGmPmhp1Pdii9dBGHYWUfDaV0yH1y3hpCRTFtVJhCc0K+PedFf69YdzoqYzT2HqGmzRSs9uVXsmJ0xPZOKeqPmEvBxX77/wEC+/CFR0QNoj1/Bv6PYR5S5yWrBIsn+h+41pGYwwPOoqAGPvhk62KHw7QAI0K0wqRibfEVgjss5cLb4NuliWck4voL2FcQcwdG7v/OtNPkoKmw0VmNAxi9FfEkUd6wHZVObbXkDVnCjSrM89ghLFpoHG8o9WNsZ6W0mO4hvtvv3dAyLMTEF37LHA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WNgXfa5En712+eAspMOEbd4EbM4QDl/vkmtEAEeJtpw=;
- b=pEkxIe6WPh1OzcaBTJT4DVHOZUiIH9fM8UC0vHozp9wjEJKN7cTc8RQ2oJN5lIT/WKvmxpwTk90fQw7tTftPmDuF5diikQVG431OJLdqT9rnfRqfjeWMxJu4oTNAbxUZyI+8bsbwvSOuw7uEzI8tt4Fqr8NUiKxBtub7JpwIGes=
-Received: from SJ0PR05CA0148.namprd05.prod.outlook.com (2603:10b6:a03:33d::33)
- by PH7PR12MB5758.namprd12.prod.outlook.com (2603:10b6:510:1d1::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.11; Wed, 16 Sep
- 2026 12:03:24 +0000
-Received: from SJ5PEPF00000209.namprd05.prod.outlook.com
- (2603:10b6:a03:33d:cafe::6c) by SJ0PR05CA0148.outlook.office365.com
- (2603:10b6:a03:33d::33) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.428.8 via Frontend Transport; Wed, 16
- Sep 2026 12:03:24 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ5PEPF00000209.mail.protection.outlook.com (10.167.244.42) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.428.7 via Frontend Transport; Wed, 16 Sep 2026 12:03:24 +0000
-Received: from aiemdee.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 16 Sep
- 2026 07:03:01 -0500
-From: Alexey Kardashevskiy <aik@amd.com>
-To: <x86@kernel.org>
-CC: <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
-	<linux-crypto@vger.kernel.org>, <linux-pci@vger.kernel.org>, Thomas Gleixner
-	<tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
-	<bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin"
-	<hpa@zytor.com>, Sean Christopherson <seanjc@google.com>, Paolo Bonzini
-	<pbonzini@redhat.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra
-	<peterz@infradead.org>, Ashish Kalra <ashish.kalra@amd.com>, Tom Lendacky
-	<thomas.lendacky@amd.com>, Herbert Xu <herbert@gondor.apana.org.au>, "David
- S. Miller" <davem@davemloft.net>, Bjorn Helgaas <bhelgaas@google.com>,
-	Juergen Gross <jgross@suse.com>, Stefano Stabellini <sstabellini@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, Marek Szyprowski
-	<m.szyprowski@samsung.com>, Robin Murphy <robin.murphy@arm.com>, "Andrew
- Morton" <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, "Suren
- Baghdasaryan" <surenb@google.com>, Michal Hocko <mhocko@suse.com>, "Catalin
- Marinas" <catalin.marinas@arm.com>, Jini Susan George
-	<jinisusan.george@amd.com>, Kees Cook <kees@kernel.org>, Michael Ellerman
-	<mpe@ellerman.id.au>, Nikunj A Dadhania <nikunj@amd.com>, Ard Biesheuvel
-	<ardb@kernel.org>, Eric Biggers <ebiggers@kernel.org>, Kim Phillips
-	<kim.phillips@amd.com>, Joerg Roedel <jroedel@suse.de>, Ethan Nelson-Moore
-	<enelsonmoore@gmail.com>, "Tycho Andersen (AMD)" <tycho@kernel.org>, "Liam
- Merwick" <liam.merwick@oracle.com>, Michael Kerrisk <mtk.manpages@gmail.com>,
-	Suresh Siddha <suresh.b.siddha@intel.com>, Xiaotian Feng <dfeng@redhat.com>,
-	Venkatesh Pallipadi <venkatesh.pallipadi@intel.com>, Andi Kleen
-	<ak@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>, Tony Luck
-	<tony.luck@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>, Lu Baolu
-	<baolu.lu@linux.intel.com>, Xu Yilun <yilun.xu@linux.intel.com>,
-	=?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>, Jonathan Cameron
-	<jic23@kernel.org>, Jori Koolstra <jkoolstra@xs4all.nl>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>, Ian Campbell
-	<ian.campbell@citrix.com>, Jeremy Fitzhardinge
-	<jeremy.fitzhardinge@citrix.com>, Petr Tesarik <ptesarik@suse.com>, "David
- Howells" <dhowells@redhat.com>, Haavard Skinnemoen <hskinnemoen@atmel.com>,
-	Kenji Kaneshige <kaneshige.kenji@jp.fujitsu.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, "Christian
- Marangi" <ansuelsmth@gmail.com>, Dave Jiang <dave.jiang@intel.com>, "Michael
- Kelley" <mhklinux@outlook.com>, Ilias Stamatis <ilstam@amazon.com>, "Sumanth
- Korikkar" <sumanthk@linux.ibm.com>, Simona Vetter <simona.vetter@ffwll.ch>,
-	Toshi Kani <toshi.kani@hp.com>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>, Vinod Koul <vkoul@kernel.org>, Jiang Liu
-	<jiang.liu@linux.intel.com>, Arnd Bergmann <arnd@arndb.de>, Anshuman Khandual
-	<anshuman.khandual@arm.com>, Kefeng Wang <wangkefeng.wang@huawei.com>,
-	"Palmer Dabbelt" <palmerdabbelt@google.com>, <linux-coco@lists.linux.dev>,
-	<xen-devel@lists.xenproject.org>, <iommu@lists.linux.dev>,
-	<linux-mm@kvack.org>, Alexey Kardashevskiy <aik@amd.com>, <aik@ozlabs.ru>,
-	Santosh Shukla <santosh.shukla@amd.com>, "Pratik R . Sampat"
-	<prsampat@amd.com>, Scott Soule Cheloha <scott.cheloha@amd.com>, Ackerley Tng
-	<ackerleytng@google.com>, Fuad Tabba <tabba@google.com>
-Subject: [RFC PATCH kernel 17/17] x86/sev: Flush IOMMU TLB for trusted devices
-Date: Wed, 16 Sep 2026 21:51:57 +1000
-Message-ID: <20260916115159.1938195-18-aik@amd.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260916115159.1938195-1-aik@amd.com>
-References: <20260916115159.1938195-1-aik@amd.com>
+	bh=U1G72EbqUjI9oNziOv0XdCQMAxirZYF5Q2JcgCPI+0s=;
+	b=V4n5SKGTGIFr9CR44bRdWJMAvfPpcumBb4pa0OaNmC/UXPx9PYaQmRMKsEHXT+Ix/tNDdU
+	5/el3sul4IMO7FvNypqFjaECwEk1S3wZ+63xAhJQ/LvQgppFNsYXFgUroJQlBfCda+UVs/
+	7jcAzcVifEDu9S1Q1MbSEY5g0Tnm6PE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id E8C7E43BCC;
+	Wed, 16 Sep 2026 12:03:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34DE01F000FF;
+	Wed, 16 Sep 2026 12:03:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789560222;
+	bh=U1G72EbqUjI9oNziOv0XdCQMAxirZYF5Q2JcgCPI+0s=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=fcm9fdttTL0J5d54oDgnnaOXbfP4m62y8rhkTSL8Kso8AsVR22kr2n4xv6/XHwMSx
+	 dS3wVkbutXH8B2SFDVIsezpqRL0A4rLC3FwhgQfoVLQAYdk8UyeeDeD1UGNmh8ws7i
+	 RwE0f46pnD3le+Fbg4VsF2BERVktF0rEWHDize+t1pLKm5IenmrFkOPrvZc9ne+tr+
+	 7J/jHraIIr9WUyc2UsGY0Ld7qZa9Rvw8t97K5xNZc2eJ3GtMQ8tc5484KNZUUe8U8R
+	 G6eKu4er/FWQ+EerPBDSVJDjKuhU7qTM++2TSf1B654t2ZJrXj9fUQFWp9Qe484FU3
+	 am52O0k6xVoHg==
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Date: Wed, 16 Sep 2026 15:03:15 +0300
+Subject: [PATCH v3 08/13] s390/qdio_main: Use kzalloc() for the IRQ
+ structure
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF00000209:EE_|PH7PR12MB5758:EE_
-X-MS-Office365-Filtering-Correlation-Id: 21ea1d17-cfda-4c2c-c170-08df13ea82d3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|36860700016|82310400026|23010399003|376014|1800799024|32650700020|11063799006|56012099006|6133799003|18002099003|22082099003|3023799007|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	yu/3328I801SY6FsYLc9CmvUZeEctUSSIDcyqxwUJ2hyVwt1WwcikhhyEMaqjVoj9tup6Xs7JzO2JsFAwueqDHDuLJ4UJeD/Cqr0S/gwkM/VbD2cofhYFX+DGMcg8giesVcXkUaTcZfLys+XRE2GX0TEknqjsrq8h+KJMRLuv9azyIRAHjLcNOetKEeY/l3SK+Zl6nQaWCi2uBgCZm871matcHCgw8YPx771yvaq3lo372oXL6vbba3D+LqRDMjyGQXtjXjQ2kEqFmGqfdaiaI24BeoAKNt4T4lsp8YxyrpYck0xZC8v2YQWbWtd2ZjGgUZdlW8WfxK7kNLFYHLfq1OsmitoWZ5nLJKkI5SlgjZ5Y1b6ytdTP9v1b5oOHAKJ/TeeWP3hRt4xn56FdReJnGnJ6Mfx1xjAhoFl16ZwQ25h/RSTrPwtNSOwF0tNev+u2W1ADCXmLBjsw6yfT18W86V2LNNt4b+fRE23l5h0xhIYXcOsWPSB+Y3F5SDGmWere2xqvjMP/gQfj8rpcZxpYarVEjV+OFEKpCid77UcNu/fAGh7619VZIwl2bovx9wB
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(36860700016)(82310400026)(23010399003)(376014)(1800799024)(32650700020)(11063799006)(56012099006)(6133799003)(18002099003)(22082099003)(3023799007)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	cb7bK2cEQmHcr0JP49cyQs52un826U+ce5HZh0WUKLP+NxrD8AcCzH5bePkXMGpnA3ymANrzpOSs6nrnYlJPrhKvhMt+HtLVqqmS/E6++vt5OAdCWcjsBtHKJ+QIvM/bunvTX7sQKQ/2dns2Gc45uni/M6nHqDzJVC8R0Po21vRlnjJa+CcTk0dJZ3HbQ5zUPHsM1WIk9XQj39DDho1cKopgzakVdo/TZNycLzBfRVOk8LuI1piyvQ5BRbAzLqWH76tpNQKNERneQPauhw+yjtUPl1rqfN8chlrueV970xK4gUAPXQ2sMffAzL/zncSCVYK1Hwdgvut4Qb3FsjbJ3ufmR1Vfxlf8u1T+0W2JcqtSsasf0M/f6hxoC+oUKHN+NZI6VVyVLetXy4sdmL6/faQmDdYbLkXxVyvkuVeH1fivn8YnzvYNkPGf8gVbJJcV
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2026 12:03:24.6817
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 21ea1d17-cfda-4c2c-c170-08df13ea82d3
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF00000209.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5758
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260916-s390-cio-ready-v3-8-39e4894637d6@kernel.org>
+References: <20260916-s390-cio-ready-v3-0-39e4894637d6@kernel.org>
+In-Reply-To: <20260916-s390-cio-ready-v3-0-39e4894637d6@kernel.org>
+To: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+ Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>, 
+ Mike Rapoport <rppt@kernel.org>, 
+ Peter Oberparleiter <oberpar@linux.ibm.com>, 
+ Sven Schnelle <svens@linux.ibm.com>, 
+ Vineeth Vijayan <vneethv@linux.ibm.com>, 
+ Vlastimil Babka <vbabka@kernel.org>, linux-s390@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+X-Mailer: b4 0.17-dev
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 963DF100010
 X-Rspam-User: 
-X-Stat-Signature: whobk95z5wiuu16ueo4odp1w6zqkbt3f
-X-Rspamd-Queue-Id: 9E28BA0019
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789560218-548513
-X-HE-Meta: U2FsdGVkX19e7fs6T22ul9xuAD31rB8JMNb8EMNRtewrSinpsLBn942okUOUxdhtsdcnME0P66yTgvqwJUC14P/OfS5qFFSjd9rX26aBPm4mKfu4ewUbtL8DmHqIeVyEXSFd7e7rBgxhM8fyBF8eD5Lzs9PI4xGEHnPSlns1NY6pTtgV5MsJEndIYEftoLLEOV/PKdKeoyHtP/gZfZJeG0rsTIUt7YSThtQZuQbP4KLHLW4E3z5ztEjp7/lJUiVN9aMGsBWKim3F8NDWd4WwU6zUCAMHODPE7WAxAnlIsZBEIWwh/7b0innMt0hpCnpMJ4XP5w34+p0M5R3CCCztZJub4vh9bWuyhsJwcwphTg5gfr0f62DopP2c4hcbKIZgWk1ayXF4OMSQ5Pe6lkkDGQh/aPsFvMlAUqCLd9XQi08nwLhF2t29zRcdVdhDqOKR5mtSlDqih0o3j1/h8mt2QnDOHlmOtdZY8ynBjLWg2j7J7/V06i13lGOdFihufF3vcR+TryIaGbgE9XKYpXijYisoOU9xGpfnW53yf0JA4qBtzh2SBjnc7E7OVpS74brSLURhS5Znp4cFbycAztwaWRMCQkvmkvuU6SZKzbaDYVy5G5ctOhKI08V+PdxVRz8TUpnYMilOJYm09oizqkVcOSxIQexT4PrzGKemVj6keNT+jjfhbbYsJ67qp7UR/ZSlWl80wjxBctMzq71dlRDG/yekazciPPlk9clqZwVnzPwHu4onyB18KGzXPiBCYTLoq4Lz1ipN5IiKgZkZrABJLzuOGYwzfxtYCZ1y04wnDpPU+0J+WWTPyhXv8nsPz//onEqP3CkgIqo4Cs9BoGjVfYfhwbWJKaHXEV+UXpCq3iT7hgk0rJrbYCPFKgcg+fq6ZlCHc8KsathLFLWwjRndmMbiDyIvn3qGiD6DYit+z47cEm4f1fZIZCdnFSpIwumUB4lzv4SL39U6KRfrLpW
- 9/5PywfY
- 3HifJi0Q9pMJIlOyQX64xnhrA+4sWnxAPqndNVgWKJita3z76LmEzTQRCv9zDAKHZ1eSUlBufky7FILHJ3br7Zn3mjbH7CC+O/0masBPW5fC2tTmIi6F9RBYTPGxcE4ew9JSwLNoJiPHU4rDg5VYVHTZJ76I+OJ/p2pp3PQ0VxR7jmikdOnigFCg8KF0LiEj2US32wvItvORmEIixk+IzuB97yScKay8sBBwG1KWtJjqouSQAiVC1yxm5HhBSQf9qfjoPbvC2fVy6iO4S9WeZSOyvmcorrf626r52DCSn73IlhvxnuFpKHbPHofp+BCWeaKCWOA8ALGheJJQ10g2862HDZDcWgK1GYWaHSX3MMAp7SeDTjZkcxVg+cTZDfuWIx5evsgxJrAJEf+j00LpdXe7mP60NODde2tEuYQ5CkjGRKSOOyOoWYayDHqEWkZ7WfqDxpmmZXWUnJL3MS/2dvtTkH37YliAWOpxWCmvYF5qfddkNHu8fdSZoVu+D8ApAdxuZSmqBhdoRlnR4X8HAqw/VeesiVgA+yNzBGwNCE845/WBYNhN779N7ej5M4HUZRkxDLAaRi94g8z0t1NTHPK9aLQdTdzIDnJiDwGlUqJBsXAsxuSe89jPL6xk+IuKbjn2MnXIX0UtG1sk=
+X-Stat-Signature: 9n38xexeafagzaag55z3jd43twgrsphm
+X-HE-Tag: 1789560223-224740
+X-HE-Meta: U2FsdGVkX1+sB34E+KDO0D9N08twoc1UTtK3NDw/PNmg2cRA6nD4fHqpLCxBECx2mhvPPWFKsQ3eKsQQJsL423zBCfRlHyOtFzbSOuPDFMvGyLLHrjBX+KvjsVta8JLmW1KeLBsQmElnyQQYMFpOleSMu5afJDbQ/H+6UUufyZ9RTf8eXrZ5T/mwkqh8x/Qcbmnm4pTKpxMfh51Wu1BUnqXGwaqCJHs2B9Dsod6x4htleK9LEKcoxHoTCAjUpBTnCclKaJjfJpPHpPLxrEyPsdXNCS2kbl5YmMRNok8MgdzkuHqOxygf0W7W8euNxcyo20oGg76fU7pbYynGZ+yyd5P5kX4og5TRxuzJreSIwrJLkZQUvIqkWR7Ct6XBwZd0rVXwEPWkvZk0Ui7jc7u8L6SnSJGqoKiKTGjSF/9Ku0nGsb4b18E9gWyjdYsvvj7NbWjI67ZAoKB5wZrsDO5JiHDdgkCJ2gx0I1wiVpsY3H2VmDqbyABalT83YmX54w/EhP7MzE55Z3C4lv1BUotOwb8gPuPFCnI4MARmwCi/B9qbSEZEbm/816UMTXjGfBvnHBwIl634gE3SkZBrXbUQJAn1JZA0NBOrZ6JSTalM6F/9mj4mLVLCyFSgwD25bpTAgeiFGQOc6G4I8btNfklRdTNSo6MQnbz90yjW/0mqiXBLTi+nraMkcgzJpOy8+mHeBH9Uoq2OiR37m0C3plduV4x/f4IKaob96O+fOLnugPqg/neEbHTmWFfH3FsDFX5JUIcEhMKLsQucPKmmW+ox61Xj86D1KDfDmgI0i0D3CobIOduloBCIETtdvYR3a/Ts2DG8sxdr+ToBlS0Lse7+UHAC1UBbJvueEUE0rW+a00TEi1aDZ+4IY9fglT+11rFvXTz+A5VMt4sMJPm4BNGtsKqSbURup56pUVoJ6i8FIPX5Kh89FZ/pMCY+rH4Fd3no4nmbKmP6QOT8WOVLQ8i
+ dRBjXzP2
+ HSh9mA+9rh7pD9iNQsO/7ObS1JBt7iEh+SA0ibZgMBddaRyO9Sph0cxujN+E7oyW4QkbLLuYjSfgXdcQGeUyfxD28mmRsPeTWL9AvKzw/zXMoxKFiYDqXRqI1x6qcG+geVdyo5Kc1z3Nig+bwG2y1/UgITd/H9nYHhW50RlabU4jzxoVYzoCowxZ/GsNeYt8mNdMx8VgD/+/JwR4ISQdx3gzX/jtknd39ZvwtPx7YAFeY62jFfCGPO84+1jUSqjVvgd+0P3GazxwUGxCEGxB9H2UY7r2bcaTAsOgP9rf8v2cydduxhgVJZqo6vsP0to0KlZFT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -195,218 +99,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-IOMMU performs RMP checks when SNP is enabled, the results are
-cached along with the IOMMU translations. When a VM lowers permission
-of a mapped page (moves to a lower VMPL level or from read+write to
-read-only or private to shared), the cached RMP check results require
-invalidation.
+qdio_allocate() allocates the QDIO irq structure.
 
-At the moment the only way to invalidate IOMMU cache is the RMPUPDATE
-instruction which flushes all IOMMU TLBs. It is a host privileged
-instruction so a VM needs a way to ensure the host has done it.
-Note that the guest's RMPADJUST/PVALIDATE do not flush IOMMU TLBs.
+This memory can be allocated with kmalloc() as there's nothing special
+about it to go directly to the page allocator.
 
-The host implements a new "IOMMU TLB Flush" VMGEXIT code which is
-advertised via bit#11 in the GHCB Hypervisor capabilities.
+kmalloc() provides a better API that does not require ugly casts and
+kfree() does not need to know the size of the freed object.
 
-Use RMPUPDATE in the following way:
-- allocate a page per VCPU (to allow lockless flushing);
-- When invalidation is needed, copy two patterns (A and B) to the page;
-- invalidate the page so the host can make it shared;
-- use new GHCB call to request RMPUPDATE on the host;
-- the host makes the page shared;
-- the host clears pattern A;
-- the host makes the page private again;
-- the host returns to the guest;
-- check if pattern A has changed and pattern B has not;
-- if the above failed, panic().
+Performance difference between kmalloc() and __get_free_pages() is not
+measurable as both allocators take an object/page from a per-CPU list for
+fast path allocations.
 
-The patterns are located far enough to not hit the same cache line to
-work with the cipher text hiding feature.
+For the slow path the performance is anyway determined by the amount of
+reclaim involved rather than by what allocator is used.
 
-The host can choose to not execute the request, WARN_ON if this
-is the case. Further patches will attempt to handle this in other way.
+Replace use of get_zeroed_page() with kzalloc() and free_page() with
+kfree().
 
-Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
+While on it, drop the kmemleak exemption for the CCW. The IRQ structure
+is now tracked, so kmemleak can find its pointer to the CCW.
+
+Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
+Assisted-by: copilot:claude-opus
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- arch/x86/include/asm/sev-common.h |  2 +
- arch/x86/include/uapi/asm/svm.h   |  3 +
- arch/x86/coco/sev/core.c          | 92 ++++++++++++++++++++
- 3 files changed, 97 insertions(+)
+ drivers/s390/cio/qdio_main.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
-index ff763c3c5d63..51abf8d061fa 100644
---- a/arch/x86/include/asm/sev-common.h
-+++ b/arch/x86/include/asm/sev-common.h
-@@ -138,6 +138,7 @@ enum psc_op {
- #define GHCB_HV_FT_SNP_AP_CREATION	BIT_ULL(1)
- #define GHCB_HV_FT_SNP_MULTI_VMPL	BIT_ULL(5)
- #define GHCB_HV_FT_SNP_SEV_TIO		BIT_ULL(7)
-+#define GHCB_HV_FT_SNP_IOMMU_TLB_FLUSH	BIT_ULL(11)
- 
- /*
-  * SNP Page State Change NAE event
-@@ -210,6 +211,7 @@ struct snp_psc_desc {
- #define GHCB_TERM_SECURE_TSC		10	/* Secure TSC initialization failed */
- #define GHCB_TERM_SVSM_CA_REMAP_FAIL	11	/* SVSM is present but CA could not be remapped */
- #define GHCB_TERM_SAVIC_FAIL		12	/* Secure AVIC-specific failure */
-+#define GHCB_TERM_IOMMUTLB_FLUSH	13	/* IOMMUTLB flush failed for SEV-TIO device */
- 
- #define GHCB_RESP_CODE(v)		((v) & GHCB_MSR_INFO_MASK)
- 
-diff --git a/arch/x86/include/uapi/asm/svm.h b/arch/x86/include/uapi/asm/svm.h
-index 93597ad492bf..269050942c8e 100644
---- a/arch/x86/include/uapi/asm/svm.h
-+++ b/arch/x86/include/uapi/asm/svm.h
-@@ -160,6 +160,8 @@
- #define SVM_VMGEXIT_SEV_TIO_OP_UNBIND	1
- #define SVM_VMGEXIT_SEV_TIO_OP_RUN	2
- #define SVM_VMGEXIT_SEV_TIO_OP_STOP	3
-+#define SVM_VMGEXIT_IOMMU_TLB_FLUSH		0x80000022ull
-+#define SVM_VMGEXIT_IOMMU_TLB_FLUSH_NO_ACTION	1
- #define SVM_VMGEXIT_HV_FEATURES			0x8000fffdull
- #define SVM_VMGEXIT_TERM_REQUEST		0x8000fffeull
- #define SVM_VMGEXIT_TERM_REASON(reason_set, reason_code)	\
-@@ -285,6 +287,7 @@
- 	{ SVM_VMGEXIT_AP_CREATION,	"vmgexit_ap_creation" }, \
- 	{ SVM_VMGEXIT_SEV_TIO_GR,	"vmgexit_sev_tio_guest_request" }, \
- 	{ SVM_VMGEXIT_SEV_TIO_OP,	"vmgexit_sev_tio_op" }, \
-+	{ SVM_VMGEXIT_IOMMU_TLB_FLUSH, "vmgexit_sev_tio_iommu_tlb_flush" }, \
- 	{ SVM_VMGEXIT_HV_FEATURES,	"vmgexit_hypervisor_feature" }, \
- 	{ SVM_EXIT_ERR,         "invalid_guest_state" }
- 
-diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-index ed0e4546d5e5..aa5a3abb4796 100644
---- a/arch/x86/coco/sev/core.c
-+++ b/arch/x86/coco/sev/core.c
-@@ -44,6 +44,7 @@
- #include <asm/cpuid/api.h>
- #include <asm/cmdline.h>
- #include <asm/msr.h>
-+#include <asm/archrandom.h>
- 
- #include "internal.h"
- 
-@@ -103,6 +104,36 @@ static unsigned long snp_tsc_freq_khz __ro_after_init;
- 
- DEFINE_PER_CPU(struct sev_es_runtime_data*, runtime_data);
- DEFINE_PER_CPU(struct sev_es_save_area *, sev_vmsa);
-+DEFINE_PER_CPU(u8 *, iommu_tlb_flush_ghcb_page);
-+static atomic_t sev_tio_devices_num;
-+
-+static int alloc_iommu_tlb_flush_ghcb_pages(void)
-+{
-+	unsigned int cpu;
-+	struct page *pg;
-+	void *p;
-+
-+	/*
-+	 * Allocate per CPU pages while encrypted DMA is not happening yet
-+	 * and smashing is cheap.
-+	 */
-+	for_each_possible_cpu(cpu) {
-+		if (per_cpu(iommu_tlb_flush_ghcb_page, cpu))
-+			continue;
-+
-+		pg = alloc_pages_node(cpu_to_node(cpu), GFP_KERNEL, 0);
-+		if (!pg)
-+			return -ENOMEM;
-+
-+		p = page_to_virt(pg);
-+		/* Trigger psmash in the host os now to avoid psmash race later */
-+		snp_set_memory_shared((unsigned long)p, 1);
-+		snp_set_memory_private((unsigned long)p, 1);
-+		per_cpu(iommu_tlb_flush_ghcb_page, cpu) = p;
-+	}
-+
-+	return 0;
-+}
- 
- int sev_tio_op(u32 guest_rid, unsigned int op, u64 *fw_err, u64 *tdi_id)
- {
-@@ -111,6 +142,24 @@ int sev_tio_op(u32 guest_rid, unsigned int op, u64 *fw_err, u64 *tdi_id)
- 	struct ghcb *ghcb;
- 	int ret;
- 
-+	if (!(sev_hv_features & GHCB_HV_FT_SNP_SEV_TIO))
-+		return -EPERM;
-+
-+	if (op == SVM_VMGEXIT_SEV_TIO_OP_RUN || op == SVM_VMGEXIT_SEV_TIO_OP_STOP) {
-+		if (!(sev_hv_features & GHCB_HV_FT_SNP_IOMMU_TLB_FLUSH))
-+			return -EPERM;
-+
-+		if (op == SVM_VMGEXIT_SEV_TIO_OP_RUN) {
-+			if (atomic_inc_return(&sev_tio_devices_num) == 1) {
-+				ret = alloc_iommu_tlb_flush_ghcb_pages();
-+				if (ret)
-+					return ret;
-+			}
-+		} else if (atomic_dec_return(&sev_tio_devices_num) == 0) {
-+			/* Do cleanup or leave it like this? */
-+		}
-+	}
-+
- 	/* __sev_get_ghcb() needs IRQs disabled because it uses per-CPU GHCB. */
- 	guard(irqsave)();
- 
-@@ -347,6 +396,42 @@ static int vmgexit_psc(struct ghcb *ghcb, struct snp_psc_desc *desc)
- 	return ret;
+diff --git a/drivers/s390/cio/qdio_main.c b/drivers/s390/cio/qdio_main.c
+index d137bf8c70664..28eb8602ca97e 100644
+--- a/drivers/s390/cio/qdio_main.c
++++ b/drivers/s390/cio/qdio_main.c
+@@ -12,11 +12,11 @@
+ #include <linux/module.h>
+ #include <linux/init.h>
+ #include <linux/kernel.h>
+-#include <linux/kmemleak.h>
+ #include <linux/delay.h>
+ #include <linux/gfp.h>
+ #include <linux/io.h>
+ #include <linux/atomic.h>
++#include <linux/slab.h>
+ #include <asm/debug.h>
+ #include <asm/qdio.h>
+ #include <asm/asm.h>
+@@ -936,7 +936,7 @@ int qdio_free(struct ccw_device *cdev)
+ 	free_page((unsigned long) irq_ptr->qdr);
+ 	kfree(irq_ptr->chsc_page);
+ 	kfree(irq_ptr->ccw);
+-	free_page((unsigned long) irq_ptr);
++	kfree(irq_ptr);
+ 	return 0;
  }
+ EXPORT_SYMBOL_GPL(qdio_free);
+@@ -961,7 +961,7 @@ int qdio_allocate(struct ccw_device *cdev, unsigned int no_input_qs,
+ 	    no_output_qs > QDIO_MAX_QUEUES_PER_IRQ)
+ 		return -EINVAL;
  
-+static int ghcb_flush_iommu_tlb(struct ghcb *ghcb)
-+{
-+	/* AES encrypts with 16 byte blocks */
-+	unsigned long s1[BITS_TO_LONGS(128)], s2[BITS_TO_LONGS(128)];
-+	void *p = this_cpu_read(iommu_tlb_flush_ghcb_page), *p2;
-+	struct es_em_ctxt ctxt;
-+	int ret;
-+
-+	if (!p)
-+		return -ENOMEM;
-+
-+	/* Keep patterns apart far enough to not share the same cache line */
-+	p2 = (u8 *) p + 2048;
-+
-+	vc_ghcb_invalidate(ghcb);
-+
-+	BUILD_BUG_ON(ARRAY_SIZE(s1) != 2);
-+	if (!rdrand_long(s1) || !rdrand_long(s1 + 1) ||
-+	    !rdrand_long(s2) || !rdrand_long(s2 + 1))
-+		return -EFAULT;
-+
-+	memcpy(p, s1, sizeof(s1));
-+	memcpy(p2, s2, sizeof(s2));
-+
-+	pvalidate((unsigned long) p, RMP_PG_SIZE_4K, false);
-+	ret = sev_es_ghcb_hv_call(ghcb, &ctxt, SVM_VMGEXIT_IOMMU_TLB_FLUSH, __pa(p), 0);
-+	pvalidate((unsigned long) p, RMP_PG_SIZE_4K, true);
-+
-+	/* Ensure that the host change is visible */
-+	smp_mb();
-+
-+	if (!memcmp(p, s1, sizeof(s1)) || memcmp(p2, s2, sizeof(s2)))
-+		return -EFAULT;
-+
-+	return 0;
-+}
- static unsigned long __set_pages_state(struct snp_psc_desc *data, unsigned long vaddr,
- 				       unsigned long vaddr_end, int op)
- {
-@@ -404,6 +489,13 @@ static unsigned long __set_pages_state(struct snp_psc_desc *data, unsigned long
- 	if (!ghcb || vmgexit_psc(ghcb, data))
- 		sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_PSC);
+-	irq_ptr = (void *) get_zeroed_page(GFP_KERNEL);
++	irq_ptr = kzalloc(PAGE_SIZE, GFP_KERNEL);
+ 	if (!irq_ptr)
+ 		return -ENOMEM;
  
-+	if (atomic_read(&sev_tio_devices_num)) {
-+		int ret = ghcb_flush_iommu_tlb(ghcb);
-+
-+		if (ret)
-+			sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_IOMMUTLB_FLUSH);
-+	}
-+
- 	__sev_put_ghcb(&state);
+@@ -969,9 +969,6 @@ int qdio_allocate(struct ccw_device *cdev, unsigned int no_input_qs,
+ 	if (!irq_ptr->ccw)
+ 		goto err_ccw;
  
- 	local_irq_restore(flags);
+-	/* kmemleak doesn't scan the page-allocated irq_ptr: */
+-	kmemleak_not_leak(irq_ptr->ccw);
+-
+ 	irq_ptr->cdev = cdev;
+ 	mutex_init(&irq_ptr->setup_mutex);
+ 	if (qdio_allocate_dbf(irq_ptr))
+@@ -1011,7 +1008,7 @@ int qdio_allocate(struct ccw_device *cdev, unsigned int no_input_qs,
+ err_dbf:
+ 	kfree(irq_ptr->ccw);
+ err_ccw:
+-	free_page((unsigned long) irq_ptr);
++	kfree(irq_ptr);
+ 	return rc;
+ }
+ EXPORT_SYMBOL_GPL(qdio_allocate);
+
 -- 
-2.55.0
+2.53.0
 
 
