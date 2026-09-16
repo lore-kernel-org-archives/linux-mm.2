@@ -4,121 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0DF16C88E5C
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 12:19:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA19FC88E77
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 12:31:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DDE5C6B009B; Wed, 16 Sep 2026 08:18:59 -0400 (EDT)
+	id 7B1136B0088; Wed, 16 Sep 2026 08:31:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D8E386B009E; Wed, 16 Sep 2026 08:18:59 -0400 (EDT)
+	id 789DD6B008C; Wed, 16 Sep 2026 08:31:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA49D6B00A0; Wed, 16 Sep 2026 08:18:59 -0400 (EDT)
+	id 6C7346B0092; Wed, 16 Sep 2026 08:31:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AACBB6B009B
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 08:18:59 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 468F1A06F7
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 12:18:59 +0000 (UTC)
-X-FDA: 85219529598.16.8DB7118
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 35F67A0006
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 12:18:57 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D4f3aphR;
-	spf=pass (imf15.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3EDD36B0088
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 08:31:02 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6106E1A06CB
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 12:31:01 +0000 (UTC)
+X-FDA: 85219559922.26.1330CD4
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	by imf13.hostedemail.com (Postfix) with ESMTP id B826D2000A
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 12:30:58 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=e3922R9P;
+	spf=pass (imf13.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789561137;
+	s=arc-20220608; t=1789561859;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=g3nJkuOIIREUaA/BODadsUt0oMvW89mcTSVk+TBxQTM=;
-	b=EY+eKBd6ATBguBOUPW1Y8jt9EQQyxLq8qSWUd7YnPteywFWEdOT2vTMdClFnAz4XU2UFTa
-	7WYWtgQbkSbDgcNs0c7tW3mnkcgF7SCeMnF3fSKnQ2YhfFRLxnfd44ZHKwMgF5BJUZ6QOS
-	6SugWEX89Mb2WM7KPbtLVYdKNW55cpk=
+	bh=+CZTXTXBpkYDLkHM3H81KdkEWF4+imO91qZpPhQs9rg=;
+	b=Q9jawZeWVBLTm96DrwADjWIZWj4yHaio9n+/0UBpJSyUtVBvhmy18BUyGlO4skDf/CT0kr
+	BQP7Np4ZJ+XNkhAmJRFgI7FHtsJr3xai/JExfRttA5WyoYrnvvA0/893ucbdhNfHrwpEyn
+	qUf834sgk1K2hoaUhPq7c2DD0omk+3s=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D4f3aphR;
-	spf=pass (imf15.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf13.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=e3922R9P;
+	spf=pass (imf13.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789561137;
-	b=Cm8Huq/+uiRog8ljxFAQeo7HjvKdRTisWugGNIKM3v5fWC2sdNis2j2P75kvLUUCf/CKxO
-	E3N8SBNRo01Z0bgeM5CsXDuo1iXaAJMPTCJ4uh2Ofla/SUti6urHoK4Wwa5TykKcwEeb83
-	d9pWF73N5bvb/UMslFGRoo5hS2xI1FQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6861B40231;
-	Wed, 16 Sep 2026 12:18:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2ED21F000FF;
-	Wed, 16 Sep 2026 12:18:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789561136;
-	bh=g3nJkuOIIREUaA/BODadsUt0oMvW89mcTSVk+TBxQTM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=D4f3aphRbKTCYsr2/YdXXnNmP/c0zn+7f5CJPLOJU5Ag2ihsF9YAuf/mxPe5qbWft
-	 RuJi+8IW2fqsg2OF0+gmzWHc2BZ4j4PTjyLzOz6AXC/PLF6S9HdJruYCs9q1aBBa08
-	 8ZHvdqKz4yosb2VOnkK+Ge5a3oc1M8xppXnjlaquXG9GOt81jNxcjCCBLr3Ao5sI/6
-	 BahavSPx3iHj0YFmmT9k2mAHR+8Qz/8CGxdMyrpN7ANNhao26Bl05UJf0Ue5Rfo74u
-	 /bJEB1hlV/SynllZ7gk30FFmaNk7xpCzcneGOvAY4XI56CwUaA/YCw+pHaapShTTsS
-	 Z2H/oC/TGFtGw==
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 9C3EF1980047;
-	Wed, 16 Sep 2026 08:18:49 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Wed, 16 Sep 2026 08:18:53 -0400
-X-ME-Sender: <xms:KYmqalRLUKQ46xVHQNAqn_SpMCWEJPEnVGHPtE9pzFa946VuffulsQ>
-    <xme:KYmqasdqqQzLLGbURN2ksP1011QzixMMfmpF8lNUTzKITQDDUxPPxIKCHfuAtHzHK
-    HePpXZVWutif9vuPFKO5v9KU79xJFks9D-SgyH4nfh2k-fblP6MxBcb-Q>
-X-ME-Received: <xmr:KYmqai4oFAoRIup95gPn3oxV9GZR0bmPcVh4y3t-o5HV8Kj-6Zg9KNTuehc>
-X-ME-Proxy-Cause: dmFkZTF/htPXCt3Vp5AMDzX4aViluNR37AwoAasTR8iHLjBZ9vB+37s09E5FAj3fIBktXf
-    wD7jyU9p9m8acEr6Ra3scjJrTilVkEufiTVp8kg6W1u05cirw+hDmrgiY3yqIDsNCGGy4Z
-    NhlL2XmoVVdXSi7pWEyIFPv29lkrmEA3vKS966LaOo5Roq203cNGaURFEmJuo4rr3dx3pl
-    zRvPBAEFOPc4BaV8VgR4olkNsATDKNUJ2aL3kSE+ZeDgohHMV8NuWlBUr1Y7gSpUtMk43S
-    pHxrvHb6UYaqOu5IrjHeg8msBZNq9Ws0Y9sYF6moF2neMeMXhIcDUsNMr5TA/1SnWdrbnv
-    krg8yzA58Iyw1wZU0OAObVQ8m4UiYc1907t7mzYhwQjpudg0+8QPH1YgpeY0d8JMVdr0rE
-    I5cdBJmZizSGHOliBIKAT49rDuCWkjlzVhcGpA/FSylhtI2vOZ35amP2Bpu/ffULhom6KK
-    mAFZrnyuq/2DovcPoXQKkstvBgE4kd6res0YrZ3TPJzPbjo01wcRbJyjyMarV3bBWIRJ2U
-    /nfjKeUYZx8uSLHmxv0YkpN2OTgeBBvRg8w5ox13JY97RAKWHu1XAFS+AJFTFFrgA3BMc9
-    4qUEfpEZPGPotDW9vPvWAQY4X3sf4al6PYefswJLQwFlMv/gcWohOVdYNR3w
-X-ME-Proxy: <xmx:KYmqalZSh5ALRNUk-yGxJZtajzA-EP-yYLtuDHVayGKZTkMcKh7jSg>
-    <xmx:KYmqalt_kssyM3YMu8dwBID1pt4VvyP-Mkj4cux8cj19ZAJNXpj0Vg>
-    <xmx:KYmqamtGLQwsCpo5AynCQsRx8Mzfx9LtL8HamC26SVKkpQEEcWC-6A>
-    <xmx:KYmqauptDI-qdtg3rUZiebczKcGTquH5dulg1Jd6BPm1F5o5OVxSfQ>
-    <xmx:KYmqat4kHc5k7IM1jrC0PaSyoI4CLHsuMRGImK3xFqk2X2jADcQ2D4xX>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 16 Sep 2026 08:18:48 -0400 (EDT)
-Date: Wed, 16 Sep 2026 13:18:46 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Zack Rusin <zack.rusin@broadcom.com>
-Cc: Borislav Petkov <bp@alien8.de>, Ajay Kaher <ajay.kaher@broadcom.com>, 
-	Alexey Makhalov <alexey.makhalov@broadcom.com>, x86@kernel.org, Dennis Zhou <dennis@kernel.org>, 
-	Tejun Heo <tj@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	"H . Peter Anvin" <hpa@zytor.com>, virtualization@lists.linux.dev, 
-	bcm-kernel-feedback-list@broadcom.com, linux-kernel@vger.kernel.org, Christoph Lameter <cl@gentwo.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	Bo Gan <bo.gan@broadcom.com>, linux-mm@kvack.org, linux-arch@vger.kernel.org, 
-	linux-coco@lists.linux.dev, kvm@vger.kernel.org
-Subject: Re: [PATCH v1 0/2] x86/vmware: Share steal-time storage in encrypted
- guests
-Message-ID: <aqqGUAX65s4LdJkr@thinkstation>
-References: <cover.1789488039.git.zack.rusin@broadcom.com>
+	t=1789561859;
+	b=tJq6CxTpU8EvdLcn54VlvldmCh8Jo+Vex19IwP1bIC6Hidp4rqOIcXcwE/ibSIub3Rum5F
+	cu0Vxhww44bJIL31YZE2o+5maJAOgYeVcSUbcn5RFw7Rb92qsV6y4w/h5lzVBbLtrhPkgh
+	0DRRJ9Qw40nWTlkX5uSO82r0KwMSX/w=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=+CZTXTXBpkYDLkHM3H81KdkEWF4+imO91qZpPhQs9rg=; b=e3922R9Pa3dJE7oen76mKNw5N9
+	VvvvvkZYZHayIVSaAf2fw5Y85QIsPxqoxncNxhYKbbYc/gBmOrkfvy94nCoOB3K07i9LOTw4imPzu
+	GQharzpSZp8Z+zqgJcb0faYKZRQwYFUEoqS/8F89QlYzkIzciXbP1wI2X8VPmISOKl1lMN11dNi/c
+	bxFi4JcEU03WNANXH6GLhcuY0tQLqM9P4HrIZuEh9kE99hGKVfBHX8qcXC93g2ArUQ2CiszmqYYqw
+	a6XWwn6v/9F0F3Ggw4SKBTheZzdKObS5mCEEBg7Ia3vSVpAozwjCPPfnYDtBG0xqtGTXZRyQGubsh
+	2oIcEM2A==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.99.2 #2 (Red Hat Linux))
+	id 1x6omm-00000007qXL-1y4b;
+	Wed, 16 Sep 2026 12:30:48 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id CB3503012C6; Wed, 16 Sep 2026 14:30:46 +0200 (CEST)
+Date: Wed, 16 Sep 2026 14:30:46 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Tim Chen <tim.c.chen@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Kees Cook <kees@kernel.org>, Christian Brauner <brauner@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Qais Yousef <qyousef@layalina.io>,
+	Aaron Lu <ziqianlu@bytedance.com>,
+	Srikar Dronamraju <srikar@linux.ibm.com>,
+	Vineeth Remanan Pillai <vineethr@linux.ibm.com>,
+	Ricardo Neri-Calderon <ricardo.neri-calderon@linux.intel.com>,
+	Chen Yu <yu.c.chen@intel.com>, Lu Wang <wanglu.priv@gmail.com>,
+	Hyunwoo Kim <imv4bel@gmail.com>,
+	Zhan Xusheng <zhanxusheng@xiaomi.com>,
+	Zhan Xusheng <zhanxusheng1024@gmail.com>,
+	Yi Lai <yi1.lai@intel.com>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 1/4] sched/cache: Keep nr_pref_llc_running in the
+ runnable domain
+Message-ID: <20260916123046.GE776954@noisy.programming.kicks-ass.net>
+References: <cover.1789061845.git.tim.c.chen@linux.intel.com>
+ <82736e1329bf8ed195bbbc4990486c87094e6789.1789061845.git.tim.c.chen@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cover.1789488039.git.zack.rusin@broadcom.com>
+In-Reply-To: <82736e1329bf8ed195bbbc4990486c87094e6789.1789061845.git.tim.c.chen@linux.intel.com>
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 35F67A0006
-X-Stat-Signature: xk9zbfz8jw5tft57fyjckx5yognefqj1
+X-Rspamd-Queue-Id: B826D2000A
+X-Stat-Signature: 7hzu9y45dbdwr9naigrn1ghgwgggwbpy
 X-Rspam-User: 
-X-HE-Tag: 1789561137-338820
-X-HE-Meta: U2FsdGVkX18pi65mhXBQL61oNcC0swWxvyqDcDYJqOLTc+QvuLqGoxZzAmMWZSr6sAQD3+1jb8701tteMbebbzCIf0NZSXUDwqJPmBGXkWakxmzRC7XeJZwICqcIdzzrGtTWaXYBzsg4G1Q9I8LHqEAHBISPzNcIQcKRzmimvn5KGmkgHpOtm9DebtheVQO4opcOvgkopLEqvPDya5R3iiC1D/mE1tmH3FZIVitd3TQKbVn/NoUupFOMXHUNyuhqIabhu9zGPSmDZBL7Q6d7y+7zUUiHVsKP8Ih/w8ygRbKUwgdUJqFvY5B7pl49RYAJ056ARboMbi5IFTIOMkjcIzLk02xc1Zw6E99TxZND/GsTPa+tU1RYCv/tm9lREja1kEr1CItSC/i7YDg8djNIUtnkT80gzfHD1DzDit6WD/Lqd3fjHhBijLqh8PiVlWwx5agAofjlElXX0OCSsCJQGj2Gdrd8HVT3kSPM+KYwNZ2wDuqwBuiEqIxZBeWPBIlORFGZ9x6oWBHxkqYXPzJaamHwQpH/kF5/zXfvzviOswQaImLMddX0eZxDSoefz5TIOdj42MsBE8YW6iVezjaVRgc9Jl/nG/KUE65FhasdCL7aXjgBlnIU9clWBS/uUwLHWERHroYIZAus7b0r/M3bf8f1J50kkiY3BYdvqh8Cw3RxVgFsZ+7ENRR0s4f5YgLrkk8iKKfaHxLvzUK2+j/rw062Ryss4eVQtHXzAB2H5++vrCdfDGCmkaRgE1ujn9BeO/difZA5C8SaRJysj9Zxu5vKgHbfCYGayF8UZSI9SuLOVr3BVOIlXqcbRxoS+h8Eu+ooXzLZVa0edCZCEXqWXZ2MhiPEJdcPc9ibaEfv+Kr9bzJQkdeMwdi4J8siDi8M11+2MWVQFB3VpeUWI0iphoKFt2nkttDKzTWXrwnWHWe2ky9sHUeXddm18o+DikgZMiHlyoTOZOyGbYJY+uz
- DkrI3ooq
- qkmIJz00wxmcs3wRXXfIPgmAeAJASigp1RJX3ftc1qmE8AshEGXPJC5dU0XV/qs5PVaj8zKdMwYlxvg4AZmChsVESaqXWv92qXZpmgI5LurobkJ9Va0+jn3BbEMGT371zQasz1HNbBWrTTJgYVstkp71yRdnEqllbCprcdthATVdwBnzO/s5ajbyQqRTifHZ7+DA6lFcbCGLVSUISsRPaNre8Pia27xwRz8zFgb93pOtQi/uMVKVmWt34O+wOiCvS1OduWpfOK4dWJbsZaui4PBBtgS3T13Cf+vGPTendbj7gDqw=
+X-HE-Tag: 1789561858-719012
+X-HE-Meta: U2FsdGVkX18SEpincax1l45zgiaCKuVrtWAN//DyQD6W3Eoa1U8+41s++t3Wrl2zRa5N9NQjAdGadMIa6TKW0BCAJfEBKgkWQUrqNrT7xGp2hj3Te0f3BiYOQs4jrk+dS0S7pUyqubOq1lnWQl3XDpi+F3DIkgmZDl8cFHpaRPjHob3T1x55O2UQf4pQuGO6p8E1Jv/7lYU9gHBQkykzVcQLZ/5tGC76p2HuoUEVddhwX9e6e3awImVlSVLXpdxwh0mTBuX1x9Y7glzt+v0wgMLLFiq4vVDi2x2NwAeXxh4H0O4t9b4rstuWCMKu+kj1BanAOihPng/4yFuV7afPaIVfpcIT0RNgY/rTOpdEjXJBtABTChj+HnK3UwxkCO5DP0tlPC7veq2Zwdq0r+OmT42vcDfMB9EHGei303802ISilTU2VpC9qEqwYOuoN445+fPvd2aCl91vSp7soptIGf8V2WKvb+yXk37tuKGoBJSGRPk+aXQ1k66gaLpKohVqwk6H1kMV7o+Ar0kH/hGtyZ+P86Bd4TeAWpY9OSGANFQsnrFs/kFWqKm7tXPHBCaSMdMxV9FfumWBe/x6ACQ2PrMRcLATv1wCeqwafIFw3++VpdXcxOpMJhpSt+cDALrDAkdmHGD2rlBlUSfuazADrRD6jr/vETotVHZGbsSTSTCB4uHtfPc9QKLgNGpytaXrYHZXr+bEh70V4Tsx39LcNkA7xAwsUijA4Bd0DXbu2EINcM0fWAtyG0aFszHAqwS+VY/hzQ7kL/UGILKTBWQlvKfEb+MYdEs7nrWT1jiOgavtH6GYU1R3DzAiMDTfTDCDYRz6aUaTE1zuQ5h+tNNYrRZ9GRcouUf5+CoI9lqesjPCd6pQWFHwzWUZQZXbMCtPH1J6DbqTPKEvYdrXV5tDusLs9dF9zeEj/RfkDfSBNWlQQJEo+S7GKMLPRSWRuBa9cGaMgNk6sNfBn+9Ye1l
+ cgZRTI7Z
+ MXR2XL68m5V61NyLj8uDbRWRO8vmLm6gV2Gr+YeefPnXv3pEtfK6PKOSCVAw3vUh1L5yE0NHYDxgThthQQDcrQJClkBiAZUzevARjQuUOuyibnYM7+5oDgK2Y8AAXRCAY7KfczpJTY3ldTZavAbTVW1eQ9JcF18RTodNT7NM+vMtz2VewTK6xgH04viTdXQ5wm/KJ9Dpronmr+yMkB5hn9o/kT0bTm3q2ESa/dH8CYDPn9Zo+NfJ+5dOOZWVjbeaEKDHCVk1lTrOlvLyPde4FKnISVYJWeqqrvztWh5juVNfYQiBV01TnDl9jqpYyJuIG1+9WABbS+v3PLQj1jH2+m1U3R3qkkpj5xzE887RvBG84l24CmKYW91WFTRhK3CUpcsBkmopB3YDAlVCGlKTiqEONVA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,62 +112,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 16, 2026 at 01:05:38AM -0400, Zack Rusin wrote:
-> VMware registers each per-CPU steal-time GPA with the host. An encrypted
-> guest must first convert that storage to shared memory, but the existing
-> setup publishes the address without conversion.
+On Thu, Sep 10, 2026 at 10:46:09AM -0700, Tim Chen wrote:
+> alb_break_llc() decides whether to break LLC preference during active
+> load balance. It does so by testing that every runnable fair task on the
+> source rq prefers its LLC:
 > 
-> Patch 1 makes the decrypted per-CPU section available with
-> CONFIG_X86_MEM_ENCRYPT, including TDX-only configurations. Patch 2 defers
-> encrypted-guest setup until allocator-backed page-table splitting is
-> available, converts every possible CPU's storage before publishing any
-> GPA, and attempts to roll back all conversions on failure.
+> 	env->src_rq->nr_pref_llc_running == env->src_rq->cfs.h_nr_runnable
+> 
+> But the two counters cover different sets. nr_pref_llc_running is updated
+> in account_llc_enqueue()/account_llc_dequeue(), next to cfs_rq->nr_queued,
+> so it follows queued tasks. h_nr_runnable is updated in set_delayed()/
+> clear_delayed() and drops delay-dequeued tasks.
+> 
+> So under DELAY_DEQUEUE, a preferring task that goes to sleep stays counted
+> in nr_pref_llc_running while h_nr_runnable falls. The equality then breaks,
+> alb_break_llc() returns false, and active balance is free to pull a task
+> off its preferred LLC. Active balance only moves runnable tasks, and this
+> is the only LLC check it consults: once the stopper runs, LBF_ACTIVE_LB
+> skips the per-task test in can_migrate_task(). The runnable set is the one
+> we want.
+> 
+> Fix it on the counter side. A task should be counted in
+> nr_pref_llc_running exactly while it is both queued on its preferred LLC
+> (pref_llc_queued) and runnable (!sched_delayed). Define that membership
+> once in task_pref_llc_runnable(), and adjust the counter only through
+> pref_llc_running_inc()/pref_llc_running_dec() from the four sites that
+> change either input: account_llc_enqueue(), account_llc_dequeue(),
+> set_delayed() and clear_delayed(). Gating every update on the same
+> predicate keeps the delay, wake and dequeue paths from double-counting
+> or underflowing; see the comments at those sites for the ordering.
+> 
+> nr_llc_running and sd->llc_counts are not touched and stay on queued
+> semantics.
 
-I acked 1/2, but I don't like where 2/2 does the conversion.
+Needs a fixes tag.
 
-A variable declared with DEFINE_PER_CPU_DECRYPTED() ends up in a
-dedicated, page-aligned linker section. The point of the section is that
-one place converts it. Instead every user does it itself: KVM in
-sev_map_percpu_data(), and now VMware in vmware_decrypt_steal_time(),
-each with its own vendor checks and failure handling. The macro today
-only buys page isolation, not the shared mapping its name promises.
+> Reported-by: Zhan Xusheng <zhanxusheng@xiaomi.com>
+> Closes: https://lore.kernel.org/lkml/20260827135000.735138-1-zhanxusheng@xiaomi.com/
+> Suggested-by: Chen Yu <yu.c.chen@intel.com>
+> Signed-off-by: Tim Chen <tim.c.chen@linux.intel.com>
+> ---
 
-The underlying problem is that the whole "decrypted section"
-infrastructure is built around SME/SEV and was never generalized.
-__bss_decrypted, early_set_memory_decrypted() and
-mem_encrypt_free_decrypted_mem() are all under CONFIG_AMD_MEM_ENCRYPT
-and implemented in mem_encrypt_amd.c. sme_postprocess_startup() converts
-.bss..decrypted only if sme_get_me_mask() is set, so a TDX guest never
-shares it. 1/2 moves the per-CPU linker section to X86_MEM_ENCRYPT, but
-nothing that would act on that section follows.
+> @@ -6395,6 +6428,14 @@ static __always_inline void return_cfs_rq_runtime(struct cfs_rq *cfs_rq);
+>  
+>  static void set_delayed(struct sched_entity *se)
+>  {
+> +	/*
+> +	 * Drop a task leaving the runnable set. Must run before sched_delayed
+> +	 * is set, or task_pref_llc_runnable() would already exclude it;
+> +	 * clear_delayed() mirrors this after clearing the flag.
+> +	 */
+> +	if (entity_is_task(se))
+> +		pref_llc_running_dec(rq_of(cfs_rq_of(se)), task_of(se));
+> +
+>  	se->sched_delayed = 1;
+>  
+>  	/*
 
-Rather than have every TDX user reinvent the conversion, I would rather
-see the infrastructure made vendor-neutral: boundary symbols for the
-per-CPU decrypted section like the ones .bss..decrypted has, an early
-conversion primitive that works on TDX as well as SEV, and a single
-conversion of both sections at boot. Then sev_map_percpu_data() and
-this driver's loop go away.
-
-> TDX's conversion callback uses __pa(), so patch 2 preflights every possible
-> CPU and leaves steal time disabled if a TDX guest uses vmalloc-backed
-> per-CPU storage. This covers percpu_alloc=page and automatic allocator
-> fallback. AMD encrypted guests support those mappings and are not rejected.
-> Supporting them in TDX would require a separate conversion-API change.
-
-Refusing vmalloc-backed storage on TDX is the right call, and not because
-of the __pa() in the callback. Converting a vmalloc alias means either
-fracturing the direct map or leaving a private direct-map alias to a
-shared page, and the latter is a guest shutdown the moment
-load_unaligned_zeropad() steps into it. See the comment in
-tdx_early_init() and the earlier discussion of the same idea:
-
-https://lore.kernel.org/all/xqi2bkulnhen2vax5msbzczlaywx3dsc7ezpn7oo5qn7u7xzap@xmaseinov7tf/
-
-But that decision belongs in the same central place as the conversion.
-If the first per-CPU chunk is vmalloc-backed on TDX, the decrypted
-section is simply not shared, and users see that, instead of every
-driver re-deriving it.
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+With flat pick stuff only task can get delayed. Now, I think we merged
+the cache aware stuff last cycle, so it we backport this (see that Fixes
+thing) then this must stay. But then also please make a note to take out
+this condition again later.
 
