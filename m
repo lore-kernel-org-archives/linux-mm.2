@@ -4,97 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E575C88E5C
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 06:50:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AA2CC88E5C
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 06:51:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B59F06B0093; Wed, 16 Sep 2026 02:50:35 -0400 (EDT)
+	id 0F9036B0095; Wed, 16 Sep 2026 02:51:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B07F66B0095; Wed, 16 Sep 2026 02:50:35 -0400 (EDT)
+	id 0A9036B00AE; Wed, 16 Sep 2026 02:51:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A459C6B00AE; Wed, 16 Sep 2026 02:50:35 -0400 (EDT)
+	id F00A46B00AF; Wed, 16 Sep 2026 02:51:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8776E6B0093
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 02:50:35 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1C7771A0621
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 06:50:35 +0000 (UTC)
-X-FDA: 85218702030.16.B8A3E71
-Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 51A83C0003
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 06:50:32 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=uRiPWqWU;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf10.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789541433;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C24856B0095
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 02:51:08 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 98EEFA5C5E
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 06:51:07 +0000 (UTC)
+X-FDA: 85218703374.01.56727EA
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 78DD918000B
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 06:51:05 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=RRekhLHF;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf06.hostedemail.com: domain of kunwu.chan@gmail.com designates 74.125.225.141 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789541465;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8xL98/jtasdgZkBKzQM8Eu1G+T4R39abYMVJxmdXGZg=;
-	b=qcDCe0ZVFbmojOddKa+cHLGV/caIT0mZY0stflFnoP6U0/cSFOeWwhpMngovC2z9vzqOui
-	7V55i22DwLEy0ZgD+WXYfztBe8S2jy1zOYaVR4BZD0ldGL8zu8bp0BYSN3yKw3cDmjrwSN
-	ZJLDRIicJfeC0cZicJC6iAf/gq/PeCE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789541433;
-	b=kxEGIlH1eHOYeAAiccnfJjKacx/++ryh1/Ks91I7Iwy2a3TP9GpbcU7lf2hy7pls4pya1N
-	uD1P83kI7M1MP7HbKXYUUCnOBZb1LTlCpZ6hLL0AXzIbp0CoC9GphnlRizVxvMFJKMyGaT
-	eJd87dGiD01DKCfi4xLtE/WnngVGbC8=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=uRiPWqWU;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf10.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=8xL98/jtasdgZkBKzQM8Eu1G+T4R39abYMVJxmdXGZg=;
-	b=uRiPWqWU31G2ipkzIXg0fc8jd7rxVP7AsPF4eItTJ5hzz62cIpI56OZxjtv3kvLInd7F/I7m4
-	tZOVpkoj4GQDe4dqClW3oifOGdkDeaSbzCvBTv69I2IAps5UVY6OQ4Autznk0dPiwBaIXLX7DR+
-	upkt9sgukjxQ0/YwxpwLs3s=
-Received: from mail.maildlp.com (unknown [172.19.163.200])
-	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4hl8PH0QQ1znTVd;
-	Wed, 16 Sep 2026 14:39:15 +0800 (CST)
-Received: from kwepemk300003.china.huawei.com (unknown [7.202.195.93])
-	by mail.maildlp.com (Postfix) with ESMTPS id 36C1F4055B;
-	Wed, 16 Sep 2026 14:50:20 +0800 (CST)
-Received: from [10.174.177.243] (10.174.177.243) by
- kwepemk300003.china.huawei.com (7.202.195.93) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Wed, 16 Sep 2026 14:50:19 +0800
-Message-ID: <1ddf7304-70d9-4e35-935a-9d622b022e4f@huawei.com>
-Date: Wed, 16 Sep 2026 14:50:17 +0800
+	bh=6n5rbrY/01roG/1TlDqdvk5Po6lB1Q7LrGFLCfNfZQw=;
+	b=vCEU1DXs+czCGtVxEjQ58i0yeKn4F19vs/GTefpqHjHJtMB5r0dLLgVVSMh5dLyVUEz+8d
+	IW8MDWgajzegMaC5UKDbbp9zlDzQvVY4vVccZ2Hzo6yEC7q3rmEBNqvVVfXNs/6DvbyEje
+	dWmU86KhMjhZh3hhgWiMoC4oQDSIA4Y=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1789541465;
+	b=s3UkxOe/ZyRQe1UARrkqZS33y938pdExuuoZImgkjJwhUFxrGKGHYv5G7MimE0YD86vAuZ
+	Swga+Mi7hIYf68Zzd62GvfJcHpLH0vSukQbYxRZKC4Kb8wAMz1VhY8uILkNAqmLbn/JssC
+	0XzWiPVhk9MNo1xm4YSts4u43C7m1Vw=
+ARC-Authentication-Results: i=2;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=RRekhLHF;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf06.hostedemail.com: domain of kunwu.chan@gmail.com designates 74.125.225.141 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e6c0fce17so2881835e9.1
+        for <linux-mm@kvack.org>; Tue, 15 Sep 2026 23:51:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789541464; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Xn0RupmutlRG7gwi3mS5kogkoZrlG3c539fOVqM3yhBsq/J6zs+0qbPT3UUm0SS29E
+         BP4WNobisQUf4mex8QeTO6aK51ZKKahUTGpp1ETCOKbSJFIZkz5NpmwdlgTkuZ/5/9QS
+         UaiUzgn9+RzAvFvx7/btgWMHTAg2XPO/8UbNbZ8GGx/FOk/DpKY2ydmICSzmHxrwQfKc
+         OgbSdihEfMkvgEJD5RuuBgdR+KoCTniQfpaZ746tPq34WAK2u66Bgbzxg6rAnD+KLqIS
+         QKR7WhsbtXgMIbtfOiu6trkj1IfvfhoQ0esIJJNEJ624lfqFLVNb5aZaZ4rYsxefwtov
+         c0tw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=6n5rbrY/01roG/1TlDqdvk5Po6lB1Q7LrGFLCfNfZQw=;
+        fh=UdiNr0oAlFf9TFLJF3c9x5w8MiKHlYhRcOGHULlbdoI=;
+        b=sxm7QpDlh2QopuuXdThTQm9/9yqq2AjE4AWbcTAhhiCux222nQGgyMnaysGBJRGWga
+         t19+bwAPsb2jfzequSMPc2BXvOILY04C8gBL2zu2xNAwd0A33Ktwv+/aZCDr3m5qrwRi
+         HEou6muTNtyBriZ71u0bkNP3zxcIFWelp1+6RjreF4aKVUdzVSh3IWW6f+V0PSB+BWG4
+         /lAMCIOUdzMvA+kfv7FlSmE7uViL9uLUPyfE1rd5VlSS53tqV4HxRqnlpnCH/O/9SqFv
+         emp+RKcTpNxWxlYi40BGnJV4XqZ39pikRCBY4MKHd3FA0QvfxRDD4XGe65UcSbtmY17u
+         C52A==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789541464; x=1790146264; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=6n5rbrY/01roG/1TlDqdvk5Po6lB1Q7LrGFLCfNfZQw=;
+        b=RRekhLHFVuLdhZut/0OzXyf/7RfE0d3rOJcwvHOpON3Go6aA6BxLZKxAUS+YdSVcSY
+         X7Llzl3q07AedzXm7WigUPAfFC7/26u+WEaahtsLJNxA3Ds781WKF3NBF2O1gei/AHnS
+         USVjELsdi10XgruJyXGh3UGZmtAB448WYr1aycrPPvdde/6Q7MGoUBK2LpNPYXKGUAC0
+         ACEEjwThXsXL8qNYrVMxC/pF9h4Kl0jidBFHdQyIAbcTdV66ZKAGZ0U2WBiT8634yX4W
+         vclApp1zQFKKAHEJG97VzSvksrfJ+jsPP56oRcsL6cbeooZlKgIXHZWVYKRoEWu67oDb
+         Gxcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789541464; x=1790146264;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6n5rbrY/01roG/1TlDqdvk5Po6lB1Q7LrGFLCfNfZQw=;
+        b=kpW424OaY8rk+REQEtL8XbA7Ybr3tJOiivo5fq9kzzYAu+sE6fbzrM6y97eUBFO+R9
+         ilw6BdPdkk+qI+gcqpStCKuj4hMTZ9EDJNzcI2JG23Ikl2PCbU6cpibFujksjbKCFHHp
+         T7uuBjGkVR4+qt2GrScHcnq2K7CDqJcmvOOMVbJVHLRuY1AqJfHLdYlw04AXUOSjBeHw
+         ui8pJgVetKdhZUmBATD3M8+vnJcNUrCe7q9FSP2BcdVca/k1LVblStVCtkOlirhqE9ha
+         +Q8jNFEGTKrTofW5o1V/o8GJNfu92lbkIFndMmv5r8I9BUDTTzPbNUxiWSTfnWdJMg/s
+         ZvmA==
+X-Forwarded-Encrypted: i=1; AKwUvBzLfxYs8VE3qkJ9/SZEGcjq7Q6sCyMjlRmxfutDtGY0VNn0SfZaPL5WkqJ4aqq5eL7c+QHrRpoujA==@kvack.org
+X-Gm-Message-State: AFuF++nNldjEbu6CTyQW0tlOhVNSrwvGINyGKnlrj95CvPrRYoZxjuIo
+	E3iwDqlO7j1yrk6HJlvzolNfMZVUC9Gx5lxRyN2ee489P9oQEXBYo31+UTYsSLbRPMOzDz0WEdC
+	3Qe+CD0r78t0R/OjsfU3tXLjPl0TOW0E=
+X-Gm-Gg: AYBFou2ysfaJrLIUfcbc20fiNM2YD4NGLT+evotH1TG6KIh4ZPzIqTZqi2RS1VRzMCt
+	d+hg33MPi9fYpnWkqFEm1ob0DkTeWvpMPKF5tfY5a4PAqI6byAPzIrLcubqwWNvfv+qdPH1n1jU
+	1P6rd1nTZAy3zDLMGmaCIYICDziItL76B4A641bng20O/PGmuiV+zoYS1aN9r00qO8xB8ytuOjv
+	pqEs6rbNHgW8jFS6OI2Jm0UyZ7HryTjG2NFc7qmDmuJYChQuZ72AGarHXSnfVYFgBBa8vFIjrSR
+	KrCctSGB5vc9WfTlsHjwkOIoFEd8Zsm8Qj1XnRMKbgWwiKKsgYnFjLkYsfQ7o3gF6IwzW1T1cyb
+	dsugZ+o0Y+tO9Zw==
+X-Received: by 2002:a05:600c:4505:b0:49c:fc6e:a3e1 with SMTP id
+ 5b1f17b1804b1-49eb7346118mr12408175e9.32.1789541463728; Tue, 15 Sep 2026
+ 23:51:03 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-new v3] mm: mincore: use per-vma lock during page table
- walk
-To: "David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton
-	<akpm@linux-foundation.org>, <linux-mm@kvack.org>
-CC: "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro
- Falcato <pfalcato@suse.de>, Zi Yan <ziy@nvidia.com>
-References: <20260916043153.2631696-1-wangkefeng.wang@huawei.com>
- <9da6298e-485a-41af-a42f-7dd05c571125@kernel.org>
-Content-Language: en-US
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <9da6298e-485a-41af-a42f-7dd05c571125@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemk300003.china.huawei.com (7.202.195.93)
+References: <20260916041409.106926-1-sj@kernel.org>
+In-Reply-To: <20260916041409.106926-1-sj@kernel.org>
+From: KunWu Chan <kunwu.chan@gmail.com>
+Date: Wed, 16 Sep 2026 14:50:52 +0800
+X-Gm-Features: AcwNN1VhHl9-ceP5c4iG_sWBNprIthUHetKIW-a6tK-i7YoEH8Zpfkg8hmrI5R0
+Message-ID: <CAN_Opa-Cb2TG0C1bZix7LqFk_LH-0qgNgkj8GU4kUE2FwtA7mQ@mail.gmail.com>
+Subject: Re: [RFC PATCH v2] mm/damon/core: don't skip damos_adjust_quota()
+ while esz is not zero
+To: SJ Park <sj@kernel.org>
+Cc: stable@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
+	damon@lists.linux.dev, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	lianux.mm@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 51A83C0003
-X-Stat-Signature: oi78zqmfqiyffx9ue7p1hmxuy98xt3fc
-X-HE-Tag: 1789541432-554457
-X-HE-Meta: U2FsdGVkX18IM1HlePsWj7SXg3ec0r5wl8UA/C+gh88gOO7bOBI6SfbSPSdVzvVUHhZrRvi8HbM6YqW5JARBXs2C0Q6yfjxnhWYSzfD+x1owxqBI00mRxX2bvrEPh74fmmpoRjdB2HC4TtbWtCBy7og0Z2Q7knkqnoeB0SxRO2g6T2Um3jf8PR74gzp/+cA8mrIcyuhoLvEJaxtmjklvr/9gRr7kLCD6oCGJKZBGMyPMJ1FS/0z1zrI0g3sEVK0W3LeFLFdKsK+KbEEgpNXV/XIE7Q52owpZzOSpOv+h4lu9j8zupMVFPdyeAfI/rgnROhJ86ix/XLSWujTb/fYEG1UfrvKCJzjUZMBUEv9pS9aG7iQW8OzKGCbtufL90cTtu/Rrmw40dAQctRsG7uDiiPduiQqet2cyU5rQ2xS1wNQR2BnIlfghyKPBZe/ITUioMK2XpPyqnk/xHQbyBQ4GGxbd2e8z/vEuC9q90Bsp2AHfCoIlnuUtyeN3Ll8ik2FNkjuwVuOnoQS3mdPUQcMpMibaOKTZpoGxqe60pzVSTwE5pW9LG1WiVV/pQK47BzwutbqkbDHZv89wElvLUsj9iQKMhpYDUTAeme7cKHmT7E1dUNT1agc8SKiyrCcVWCiMePnuUkxVul2ffi8cUDRz9R/m7h3USVXXr0/rCO86r7CQ2SQPdqFa/KpuDgHaoQmBZGHhB8kdH0F/nngTYn6Q4Anar6+0YiLT72EENNB4Hr36GWvli6xzGiQtu3o7neWD4aGEh6J5C/eMBFroNw5W/ybG74oHo3mtkIBIELBdU0wkG0wjEGqKnfX2E+d7lPYbQ92bLtqSPx90SVTWeO/Kaalm/MEDb2hgxv7NZxe6LoZp4q+OvCl8AJWO4HTJ/PrC4uGA3gPSdE207Yr2YnLrJd0n61nwBe1ItPiI8yZZfdpTAmewDHa+QMSOYeeq/w7qdfyUnZ1p4dKzJmHmGMF
- wc5lCnpK
- quqIxo8cXmPIJ2KljaQv2JVDiLBuwE1iO0Nih6u2YkMrxYq8QnrO5FusW4DLLFlfhJ+5pWA0dmP1G5pr+ESrbI1uo324V0Ok7+FN8YdkZyN7BCcrnmxmpPUr0MaMsj7uFlcSXdu6HZCgMRIiaJ9JMOFvRr9JUsxKao8MGD0kNHaDwtKZn3ITrA9TqkgoXC/24ELD4semTZOTTNtAjcPP9uQf+VQTclddavo7WAQyRgsFvUoi2LcgZHM1bjtbRue95Z1UoJ5nGxViR3SuYiA5MdHldnyDpkJ1GVvAaYkpO58WZ21awP2jKCELKGEPoZVKy4THxv5TU5MbZsJnC/K7CllDMyy6pMMZ8MBUsaUWriTkCFGs=
+X-Rspamd-Queue-Id: 78DD918000B
+X-Stat-Signature: yqhdmasdjpsqdjesyfsrsf3ey77q9eiy
+X-HE-Tag: 1789541465-170287
+X-HE-Meta: U2FsdGVkX19Tg4y2vAdQlSqGY2UXJHL5kCGAuZR8uRL0bQ4PpidSGK52dsAQVkjzfSOfpEaIp0bhU5Rw6phbu3EqxTK0CIXHltJIXoUGiG0bHN83P0fb1D55AL38vLz3Hc+2SUjoRB8UlMYju6iwvVXdm9g0++n+aHgbLgi6esd4G1RgypgyJ91HGh361KV0EfuBW2zJ38PSrbNSuEcb9YTBkW7Obu+PPVPN0otGZ7QmkBqQk8lljWGtYK5PP3YARUM2dkBqnE5XBwv/uP2n6toXihDfzOak4Hk6/cQme9ftdH7VG0+U5t8o+MgNOiwh9TOdfKMHtXoEdTDgbsbfYhJhl4YpLyKKr5/7jk/4ZcipVaxEkU7fGucM14rRblKJ8P/914VewWIZQGyhIQsOzExu5i0zX+s46m7uh3K3QAfj8tLDINUedfGjbMKitZ5q8yTjiCmDGVgfIVm7PWIZxvzS8GejuKNA45lTnSsvTl059GzAS8BSTVYMXjOLAMQUNwpAuYrzBDnB8ZKWMMlUxdeJLK6czUETCwv2PL9FkODUqNJS2e6Ey4GLqJxhLRFZzjJGifNzkxHn/yJirVOCLZLeN1gFd0jId29SrZKnHyujeW0cf6X7L+cxwMuRYvYeiIAgBVi1bncHdDqw6+RdeV6PowDcoZ2VdFdFLMn1v30ncOs1ZYMqNDqtBhQz6bXMoxDBFFEB2Eb01WNnhhAF8IJ8ov7ysfSALHDPn5TTdkwxJJ/ldAAbu+NrxJeE2Aur6UvQar0CF4IbC8JfWskKNstK+JYDcxcBSNk5yWTAeU+SlfTXFdI4XqmRijUgn1luXvOZ3C3mVfMlON2XwVnfwhZmXRkLMbg38zpd+fhwCta175nOctellDI01SnRp8zceRNdk5febjpAR17/FMAl6n9YkEum14kuXGyQHQbV6l2QSKIHoysHz+Lh0YSit/O4k3jizSHrG8j26pyBOtn
+ HAwnjR/F
+ y5TQhld5CbpBiMUQ3OjKZhHjmFMY69WQeWSq9Bi7dTo8S6zkqu3vZWap6WTZUs/uQKEB8sA028I1wtpejuGv8pB2Hn1o7rYrlSWi6BDvoYd+D7CiAYbkv3jqlxSHjeCcRQXBhJQu8S8O4epfVb7CGuDnjf8/t3I6Vm4AWSdj/v6R9HPj45ivqCWM+IP1eL8BGjBO1cWRSV0V0hS7KK14F431Kkh+rvm3+m98oJ7ApZ1jDHKFL1i6XJcrpYqNAXrqGqyBLlxLmK6Js24scVUwTMY3nMlskZMSr+OiPEgYX5KlkxeHlHzpxTLnpR7XjkdMYeDD/43B8Q2S7OnVpC3IDc+3sQ+cxFmQnP8nufwZYU3CgrxX8zqrJcAH56A2382URbzCqvcjevH453w1ikPZEBG39AEpGTd+/02Tl6HEouuqMAULjOR05D0bV5JNdT+asoW3xhrCcwinB47i0NzMh3xN3mJc4x8RFQYQpuE0Y86w+Er2UAJv2+ymVKH16UoVg/K0kagsHnatQiMtE259f1y0wIIaZsvRuA9lFSNubVdOfvzHwKkS/dm/62G28P3jcsgjz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,81 +142,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Sep 16, 2026 at 12:14=E2=80=AFPM SJ Park <sj@kernel.org> wrote:
+>
+> DAMOS could unexpectedly stop working when a user disables quota using
+> the online parameters commit feature.  Fix it by correcting a wrong
+> quota unset check in damos_adjust_quota().
+>
+> DAMON users could disable all quotas by unsetting time and size quotas,
+> and removing all quota goals.  The intention of disabling quotas would
+> be making DAMOS run at full speed.  When such quota disabled setup is
+> detected, damos_adjust_quota() skips all its work.  The skipped works
+> include effective size quota (damos_quota->esz) updates and charged
+> quota amount (damos_quota->charged_sz) resets.  The intention is to
+> avoid doing unnecessary work when quotas are disabled.
+>
+> However, users could do the setup while effective size quota is
+> non-zero, by doing the disabling with the online DAMON parameters commit
+> feature.  In this case, because the effective size quota exists, DAMOS
+> will keep working with the quota until it is fully charged.  After the
+> effective quota is fully charged, the charged quota amount
+> (damos_quota->charged_sz) cannot be reset because damos_adjust_quota()
+> skips it.  Then, DAMOS stops working until the quota is newly set or
+> DAMON is entirely restarted.
+>
+> The problem happens because damos_adjust_quota() assumes the user setup
+> for disabling quota immediately disabled it.  In reality, the quota is
+> still working until the effective size quota is also updated to zero.
+> Other logic for catching that uses damos_quota_is_set(), which
+> understands the fact and therefore checks the effective size quota in
+> addition to the user setup.  Fix the issue by using damos_quota_is_set()
+> in damos_adjust_quota() to determine if its works should be skipped.
+>
+> The user impact is a non-deterministic and unexpected DAMOS stop
+> behavior.  That is, users would disable quotas using the online
+> parameters commit feature, expecting DAMOS will run at full speed.
+> However, depending on the timing, the setup can be updated while the
+> effective size quota is non-zero.  Due to the above mentioned internal
+> mechanism, DAMOS stops working instead of running at full speed.  It is
+> unexpected behavior.  It is also non-deterministic because sometimes the
+> setup is done when the effective size quota is zero, depending on the
+> timing.  It doesn't cause critical issues like crashes or leaks.  Users
+> can simply set a reasonable quota again, or restart DAMON.  But
+> definitely it is an unexpected and non-deterministic behavior that makes
+> it difficult to reliably use.  Also investigating the root cause of the
+> behavior would be quite difficult.
+>
+> Fixes: da87878010e5 ("mm/damon/sysfs: support online inputs update")
+> Cc: <stable@vger.kernel.org> # 5.19.x
+> Cc: Kunwu Chan <kunwu.chan@gmail.com>
+> Signed-off-by: SJ Park <sj@kernel.org>
 
+Thanks, SJ. The commit message captures the full lifecycle precisely.
 
-On 9/16/2026 2:33 PM, David Hildenbrand (Arm) wrote:
-> On 9/16/26 06:31, Kefeng Wang wrote:
->> do_mincore() performs a read-only, per-VMA residency query,
->> making it a good candidate for per-VMA locking. Convert it
->> to acquire the per-VMA lock, thereby reducing contention on
->> the per-MM mmap_lock.
->>
->> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
->> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
->> ---
->> v3:
->> - add vma_assert_locked, update changelog/comment, per David
-> 
-> It likely was Lorenzo :)
-> 
+Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
 
-Oh, I'm completely blind :)
-
->> - Add RB
->> v2, (RESEND):
->> - using new vma_start_read_unlocked() API, suggestted by Pedro Falcato
->> v1:
->> - https://lore.kernel.org/linux-mm/20260701144047.3786939-2-wangkefeng.wang@huawei.com/
->>
->>   mm/mincore.c | 29 +++++++++++++++++------------
->>   1 file changed, 17 insertions(+), 12 deletions(-)
->>
->> diff --git a/mm/mincore.c b/mm/mincore.c
->> index c086836bc4bc..0fe50f8a7e62 100644
->> --- a/mm/mincore.c
->> +++ b/mm/mincore.c
->> @@ -235,24 +235,22 @@ static const struct mm_walk_ops mincore_walk_ops = {
->>   	.pmd_entry		= mincore_pte_range,
->>   	.pte_hole		= mincore_unmapped_range,
->>   	.hugetlb_entry		= mincore_hugetlb,
->> -	.walk_lock		= PGWALK_RDLOCK,
->> +	.walk_lock		= PGWALK_VMA_RDLOCK_VERIFY,
->>   };
->>   
->>   /*
->>    * Do a chunk of "sys_mincore()". We've already checked
->> - * all the arguments, we hold the mmap semaphore: we should
->> + * all the arguments, we hold the VMA read lock: we should
->>    * just return the amount of info we're asked for.
->>    */
->> -static long do_mincore(unsigned long addr, unsigned long pages, unsigned char *vec)
->> +static long do_mincore(struct vm_area_struct *vma, unsigned long addr,
->> +		unsigned long pages, unsigned char *vec)
->>   {
->> -	struct vm_area_struct *vma;
->> -	unsigned long end;
->> +	unsigned long end = min(vma->vm_end, addr + (pages << PAGE_SHIFT));
->>   	int err;
->>   
->> -	vma = vma_lookup(current->mm, addr);
->> -	if (!vma)
->> -		return -ENOMEM;
->> -	end = min(vma->vm_end, addr + (pages << PAGE_SHIFT));
->> +	vma_assert_locked(vma);
-> 
-> I think Lorenzo asked whether we should do that. But the walk_page_vma() further
-> below would already verify that due to PGWALK_VMA_RDLOCK_VERIFY (see
-> process_vma_walk_lock) so not sure if that's really required here.
-
-I misunderstood Lorenzo's intention, which has already been verified 
-through the PGWALK_VMA_RDLOCK_VERIFY check. I don't think it has much 
-value, but adding it doesn't do any harm.
-
-> 
-> AFAIKS, everything we do in mincore_pte_range() should be compatible with the
-> VMA lock, including the swap and pagecache handling.
-> 
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> 
-
+> ---
+> Changes from RFC
+> - RFC: https://lore.kernel.org/20260912200814.145612-5-sj@kernel.org
+> - Split out from the cleanup series for taking hotfix path.
+> - Describe the real issue.
+>
+>  mm/damon/core.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> index e0414d2adcb41..89390897a0d8e 100644
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+> @@ -3330,7 +3330,7 @@ static void damos_adjust_quota(struct damon_ctx *c,=
+ struct damos *s)
+>         unsigned long cumulated_sz, cached_esz;
+>         unsigned int score, max_score =3D 0;
+>
+> -       if (!quota->ms && !quota->sz && list_empty(&quota->goals))
+> +       if (!damos_quota_is_set(quota))
+>                 return;
+>
+>         /* First charge window */
+>
+> base-commit: 191c4a84eef1db85cc7e1a853761e8ce8683afd4
+> --
+> 2.47.3
 
