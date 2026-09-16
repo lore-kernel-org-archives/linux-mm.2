@@ -4,133 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D023BC88E77
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 02:01:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2568FC88E75
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 02:14:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1050A6B0092; Tue, 15 Sep 2026 22:01:39 -0400 (EDT)
+	id 2F3266B0088; Tue, 15 Sep 2026 22:14:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B72A6B0093; Tue, 15 Sep 2026 22:01:39 -0400 (EDT)
+	id 2A64D6B008C; Tue, 15 Sep 2026 22:14:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE75F6B0095; Tue, 15 Sep 2026 22:01:38 -0400 (EDT)
+	id 172D76B0092; Tue, 15 Sep 2026 22:14:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B60BF6B0092
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 22:01:38 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id ADC021C292A
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 02:01:37 +0000 (UTC)
-X-FDA: 85217973834.06.FDF77BB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id E3EEB4000A
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 02:01:35 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=HA4IrxR+;
-	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789524096;
-	b=IN/ebRBRXoyCseGIRXvFUOSvAVuK/wOxjEIBaRWhOGMt54Q14vXNZ1gc/MKBNSo3XeOp1A
-	+/9dzNZY0dW3BSkjPHehaLoMmeCdLGQeJytgH4uTxX8qT5pZT+/Eyoowurs4AozEI7ISnp
-	I3UQU1iivqPXxxTm2sUU1g7EnNG/x6k=
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E44F86B0088
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 22:14:54 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4B509A05BE
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 02:14:54 +0000 (UTC)
+X-FDA: 85218007308.11.4FFF17E
+Received: from mta0.migadu.com (out-243.mta0.migadu.com [91.218.175.243])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 4766B180003
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 02:14:51 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=K8deB8et;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf16.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.243 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=HA4IrxR+;
-	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=K8deB8et;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf16.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.243 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789524891;
+	b=rI5TYI5sKFxr6sUUxexy3mQ8Rbe1fTPuH0VtDkojPdehB4SjYgR7qPJYr00M7KQYGXznuH
+	pJtz6sBuSnq0C8aXWYsbjAo4CK7HQgOIAelqx66WGGsDAp7laiABfXaoH9RV1zAcebTdfF
+	gpmVrX6McRNPDWnNM50NN2NFaKkiJPw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789524096;
+	s=arc-20220608; t=1789524891;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Kq4nX0CZWZvbBl1ewxdrR8njTtxJd2HKKhLZ4yZoin4=;
-	b=naoBSRCiwplODOr0O16dPB+OMfveyWRvhroZDrvNUT88wsrKIeLkmSvKnbKTpkwlLemHaz
-	OPk7tMdyRjdr0LinV07XFsUbEjLEOnQOsSRJbAMlnbz6cRUsHQyfDfRoR800+RvG2Ksr/g
-	htw0pRx5VRP39VEBaeI03Xqa/3EQvms=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CDE3560214;
-	Wed, 16 Sep 2026 02:01:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E999D1F00893;
-	Wed, 16 Sep 2026 02:01:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1789524094;
-	bh=Kq4nX0CZWZvbBl1ewxdrR8njTtxJd2HKKhLZ4yZoin4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=HA4IrxR+bH6KFYi5TWsVFFRj5NN/KsmXWn+L2rcKXslNm+h4O1+C0Mz1TX/mnbSd5
-	 wNlo1vs7L/RwOu/p4JC+a32HO1/edlho+RmyG7M/c8w2xQw4dUW63KjVSNntMUP6xo
-	 zHIhd6HWzSLYzzfxhv0JalmDYIqgVcBuZA1Pa2/U=
-Date: Tue, 15 Sep 2026 19:01:31 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, Baolin
- Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett"
- <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, Ryan Roberts
- <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
- <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Usama Arif
- <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Guo Ren
- <guoren@kernel.org>, Brian Cain <bcain@kernel.org>, Geert Uytterhoeven
- <geert@linux-m68k.org>, Dinh Nguyen <dinguyen@kernel.org>, Simon Schuster
- <schuster.simon@siemens-energy.com>, Jonas Bonn <jonas@southpole.se>,
- Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, Stafford Horne
- <shorne@gmail.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, Rich
- Felker <dalias@libc.org>, John Paul Adrian Glaubitz
- <glaubitz@physik.fu-berlin.de>, Paul Walmsley <pjw@kernel.org>, Palmer
- Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Alexandre
- Ghiti <alex@ghiti.fr>, Russell King <linux@armlinux.org.uk>, Vineet Gupta
- <vgupta@kernel.org>, Michal Simek <monstr@monstr.eu>, Chris Zankel
- <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>, Will Deacon
- <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick
- Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
- "David S. Miller" <davem@davemloft.net>, Andreas Larsson
- <andreas@gaisler.com>, Richard Henderson <richard.henderson@linaro.org>,
- Matt Turner <mattst88@gmail.com>, Magnus Lindholm <linmag7@gmail.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Mark Rutland
- <mark.rutland@arm.com>, Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui
- <kernel@xen0n.name>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, Helge
- Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael
- Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)"
- <chleroy@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik
- <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, Christian
- Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle
- <svens@linux.ibm.com>, Richard Weinberger <richard@nod.at>, Anton Ivanov
- <anton.ivanov@cambridgegreys.com>, Johannes Berg
- <johannes@sipsolutions.net>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
- <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
- <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>, Vlastimil Babka
- <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jason Gunthorpe
- <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, Peter Xu
- <peterx@redhat.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
- linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org,
- linux-sh@vger.kernel.org, linux-riscv@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, linux-snps-arc@lists.infradead.org,
- linux-arch@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-alpha@vger.kernel.org, loongarch@lists.linux.dev,
- linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
- linux-um@lists.infradead.org, Hugh Dickins <hughd@google.com>, Qi Zheng
- <qi.zheng@linux.dev>
-Subject: Re: [PATCH v3 00/12] mm: make userland page table freeing RCU-safe
-Message-Id: <20260915190131.adee185f2ce04a8ec821489c@linux-foundation.org>
-In-Reply-To: <20260911-rcu-pagetable-freeing-v3-0-7b8c86103821@kernel.org>
-References: <20260911-rcu-pagetable-freeing-v3-0-7b8c86103821@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: E3EEB4000A
+	bh=+YofiNmc2k+r11NsLNUY3ZWxaGTJvfbP28Oty+Lm/Cw=;
+	b=GpQJ+W7MGC8rxthKbcGJo7WtFuxgmjNJU/8oDpCeIgZuyh8JQgibloBLensaAdKFf6fIsB
+	LS4O/m5oHbCoL5kakKvPWAahE5v48g3RnkW7GIzF8gJozBppkvFiqUzHEkSigMCd1JDh3M
+	QvaLkRKwI5akdlFI5vlMOKVCa4G2aSA=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=lqLsdeTEg6cA2AaSBrBEJdlEzfNC4PV/xJxx+hp/HkE=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789524889; v=1; x=1790129689;
+ b=K8deB8etutTS0bx6JOtfjx9Pv09f0fg1Sww/JfiyNxtsz09/PpnkKFhrX/MltuqWx4+JUx7M
+ rAcfURnxR/0lDp9SKWZf3reXV0BmwCAgVg/vwLpBEbrwcQU5BwHgl2ofDqpIg3csq+3J34tO3U6
+ SamAD/l8cx98qmTJY72xMDlo=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id 7a9ac813747d9e7d;
+	Wed, 16 Sep 2026 02:14:39 +0000
+X-Mizu-Trace-ID: 7a9ac813747d9e7d
+X-Migadu-Flow: FLOW_OUT
+Date: Wed, 16 Sep 2026 10:14:31 +0800
+From: Baoquan He <baoquan.he@linux.dev>
+To: Ridong Chen <ridong.chen@linux.dev>
+Cc: Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	David Hildenbrand <david@kernel.org>,
+	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+	"open list:MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)" <linux-mm@kvack.org>,
+	Ridong Chen <chenridong@xiaomi.com>
+Subject: Re: [PATCH v2 2/3] mm/mglru: add tracepoint for scan_folios()
+Message-ID: <aqn7h3BVCCRFI2TI@fedora>
+References: <20260911102939.2485750-1-ridong.chen@linux.dev>
+ <20260911102939.2485750-3-ridong.chen@linux.dev>
+ <aqkoeJvFzqpoGeaP@fedora>
+ <e38f2b80-20f2-4787-9e07-fb601552f550@linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e38f2b80-20f2-4787-9e07-fb601552f550@linux.dev>
 X-Rspam-User: 
-X-Stat-Signature: wd93kmnap8dcfw8kmshhux5ifpo9ccpm
-X-HE-Tag: 1789524095-495377
-X-HE-Meta: U2FsdGVkX19fYuJmZ9P+2hstZR8PIIg+fTyOllFKbkFonK4f4SlofD+Iy9O32Z4YT1crXGIsrjh4trQwkfa/+zFXuTIJLkDKWb3XeaQyo6bN3JbQCfcPAdEtsMG7mRWO0lrAyBjjatBIBCjAsdV8kM3NgwSegZ5udVfZh8gyiCZfHjhlw0+JdGd8myfnkpsOncxPMZFSqBwVXxFYkrl5J36BlxqQCpq9RdvBvZ7GBa7zjZaBldAVzukoH7bn/auZsrNOkep6PTfdsNVHzfHmWMJnuzOLhT56ZF/n1lBW8Qc7dfQtUeUwpr1gfNekNSXmx5yKwZk/w42MsUEtkbRZHOs4k+CdBpbJ2SfJv56Ipo+Rli8ymm+59SIiYINr7K0Yq4oiQdjBoxZwKQuVY4g0wpfqYaTdHZRJrdOWRYlpUlaJZmOQtJL8jZLxlQaA3i9bwfQlJZCg7iUuCZ+KOsU8GBzNxHJ8i+FVqqt1Ki9xkM2D5fsnqXv8zzzetDEkSqg+ufB1vfN4k+JftDYs/W/S/Z6X6dhrQZ8SslJgUKqH+zSZVgM7Rdx++GWbA035TWFgEsw1lN/zHExEHkxgLI5yuraMyv0gKIe8McIIZVe9h9WFbrao/yFqXxzA3JDJHJCJiIcYxkS95acjIVRwVMmztQQwxCQZLgfWof9DcMvC907zf/3RerCfi1j2B0tdTqDcGeDpnhoGmd9DQMG2Jm0GDnRTaHnkt8jKNzCqROJU/fqH6r+bMVL3DWvpofH8TwL0+GknO1DCU+rl86ZeHoCle6zboF6BmC2dJmT4YMgqFqF2btDVMARpOr+o9Dt1dVpF9yH5ia2GRrTeF1LG4BTpRYvuRiR7eWTU2tnM1Z03Pl2cLxVfdEg+OmsobcWa42hGabZOJTQ/yZ+PGKcXU42AC+Zrm/x8+RdeQqaQdrg2a0orvwYgFsBd0jEwL+u4H/Uz7QWwosTQfP+bsamqdJT
- eAdVfEdR
- LfXx5+THod8lXitLhK9XoDvMd8M+t1VW6zYWCRrH5r7VPYOE45E4omX8vdAJniflis9eLfqGkF7HqISudaIwri+F1RP2X3mzu4JfzCnI+NN8qZ03f8FHrKEHwvlwjeEhkAfytL2r5LNP7+TGc658jGECI0GZQI5Ha6fn+JZ16wI2z2xKW4qzwOVYFCc8nZI5XkgxRgxPPR/PnfR3tgIp2ByB40tSilYxWR5ge9Qp+s2gwIJ7QG6ZsHh4TMapY0YhpWXzAS7aNnwT0mQTqPpDGI8otjcSBgBfUbfzw30sFYdl/bRC+PID+Wj3Xo+VdGVljfeIqiZSOQGTZbgQVg8wd5YwdKar/rsrrycaC
+X-Rspamd-Queue-Id: 4766B180003
+X-Stat-Signature: pxr8dz8ngfm73he7hbzn3wkf9hzi99yc
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789524891-273554
+X-HE-Meta: U2FsdGVkX1+nq0uwdedr6TJWJBgjllXxctbyQcTxUeFF3aiRgFaxXGpYE93XCViXlQcKbsT6T3NTjiIeS83tp/u0/kos5Nku2Yb/fKXlooSNMnWsoxkuU8Vyvt7KMah23s4RFDbjj7dE4cWnGgG/qi+Mu/rrMhWr2r0mbWaiQTBtRkOglEfQS92vWCQ0q7ktaaOrVCvL3Wob9Wod52I8mjpW2Yly4AVoTLuotgWKsA9KfjqRSfvjcl1FDezGmrc9KXHzQUZ9671MUFbhG8VDSW3jqfYs9cP0ll1vyt2n39PyOaVjaqw3fjqxg9lSnAIsv/2Ms1XL6nTRyTZNHSW21+9OZFnBYhRck1YeD7ugqBPp9yWmvtUXDgigNeKgrs5TjB3xkpQH8ppM1aEXyfLcFAi8sjxWojCIHz5G+dItXtIrj9e1WgUYhQzSyRcu9rHyzZbor00+DRvpLnloAO4lAWZKIH6GrItIWU9HATCtcEdvd5RHZiGBtCh/86MPVcFHcWgF52fD6qCmzPlBfagNLGBjs8iV1KGmb+HU8IK/RlinnRwUTCBKFbs9B5QA6OEulqcf/ukggfubOCBW6lLf29U5tbivJx56qWqI3/RPFYu55Ss1YAko2iqD/2C9HbFs+atu99fKGJoW0JyI0B28LDJU9aMqdbNgmqvjSPGMu7H3F9VXLSvnTrWSfzc8HCA6kS66oZGXp8cfPW2fVNqt6PQewHeHZZO9HUcVj8cxAJUtq/UD39mc6PG/S4O6IJl4yFTp9noHcSxqMYKG/LGpq1t5CKIeKwiOsC+LZB2icZtXeNZ6JoB3wSOh5KjcTxpuZuahT4aeoPXa5iWoGpS7KQuzu6haU8pugHryhfWLfjcb3+lwRVl4BRmq2gS4F0mARM9ze+W7uz+Kvly/yJJuKtvrp62f6HoUs7B5WCoF4vOdbL5mX8zQf1Y8eUfwokN5KBU6ReHkzdtuVOYu/Ju
+ MdI0hUC1
+ aq0sMb66L/ixWuz5mfzDhEMAZLDKoCsY8OifGA5ZWmkRIle+C4jvjIPXepdcPhEerz7+yUGwLq3DwlLIBOSeRuuARMtF+V/l4w6hvFFTLjcJMfUbDXcxK0L0a+sFJ5GCZeujXUaroi74KBBj0BSBvVdqYfJy3qO17OSmIZZQxt0uJ9LOGpgQBddIIP4SffEQcVLnCEKv/HPMFJsGNAqH9COZMegtt04gpFVh4a6CnxAxs0bQnjmOB5c3AkXbPCO2Sk9ofw9lskTCZy+Z8M63wGEzsMbANu88+7cx6jWn1x9ByYn09Xug2QL9P+Sz7cyLhYqpXTRs+z3W5LNF3j3zgg588cg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,53 +105,173 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 11 Sep 2026 20:36:47 +0100 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
+On 09/15/26 at 08:17pm, Ridong Chen wrote:
+> 
+> 
+> On 9/15/2026 7:14 PM, Baoquan He wrote:
+> > On 09/11/26 at 06:29pm, Ridong Chen wrote:
+> > > From: Ridong Chen <chenridong@xiaomi.com>
+> > ...snip...
+> > > ---
+> > >   include/trace/events/vmscan.h | 63 +++++++++++++++++++++++++++++++++++
+> > >   mm/vmscan.c                   |  6 ++++
+> > >   2 files changed, 69 insertions(+)
+> > > 
+> > > diff --git a/include/trace/events/vmscan.h b/include/trace/events/vmscan.h
+> > > index 8a872990b4be..5defa8f6719c 100644
+> > > --- a/include/trace/events/vmscan.h
+> > > +++ b/include/trace/events/vmscan.h
+> > > @@ -392,6 +392,69 @@ TRACE_EVENT(mm_vmscan_lru_isolate,
+> > >   		__print_symbolic(__entry->lru, LRU_NAMES))
+> > >   );
+> > > +TRACE_EVENT(mm_mglru_scan_folios,
+> > > +
+> > > +	TP_PROTO(struct lruvec *lruvec,
+> > > +		int highest_zoneidx,
+> > > +		int order,
+> > > +		unsigned long nr_requested,
+> > > +		unsigned long nr_scanned,
+> > > +		unsigned long nr_sorted,
+> > > +		unsigned long nr_skipped,
+> > > +		unsigned long nr_taken,
+> > > +		int lru,
+> > > +		unsigned long max_seq,
+> > > +		int tier,
+> > > +		unsigned long min_seq),
+> > 
+> 
+> Thank you for your review.
+> 
+> > Do we need show nid? Guess phone vendor doesn't care about multi-NUMA
+> > system.
+> > 
+> 
+> Eh, nid is not an mglru-specific key. Since there are 12 elements here, it
+> can't be added here.
 
-> The majority of architectures in the kernel defer page table freeing until
-> an RCU grace period has elapsed, this series converts all remaining
-> architectures to do so too and eliminates CONFIG_MMU_GATHER_RCU_TABLE_FREE
-> altogether.
+Hmm, we print memcg_id but not nid, it may not be so clear. How do you
+differentiate several lruvec-s on one memcg? I am not very familiar with
+trace mechanism, do we have a element number limit?
 
-Thanks, I've updated mm.git's mm-unstable branch to this version.
+Imagine I only want to trace this function, now I can see memcg_id,
+zone_idex, while don't know node/lruvec, that's a little pitty. Just my
+personal opinion, I could miss anything.
 
-> v3:
-> * Added Kiryl's tag to series (thanks! :)
-> * Corrected commit message, comment indentation in 11/12 as per Kiryl.
-> * Corrected 12/12 documentation as per Kiryl.
+> 
+> 
+> > And I checked v1 thread, seems Steven suggested to move the two int to
+> > avoid extra padding.
+> > 
+> 
+> Yeah, I will update it. I updated v2 to fix Sashiko's issue, before Steven
+> had any comment.
+> 
+> 
+> > > +
+> > > +	TP_ARGS(lruvec, highest_zoneidx, order, nr_requested, nr_scanned,
+> > > +		nr_sorted, nr_skipped, nr_taken, lru, max_seq, tier, min_seq),
+> > > +
+> > > +	TP_STRUCT__entry(
+> > > +		__field(u64, memcg_id)
+> > > +		__field(int, highest_zoneidx)
+> > > +		__field(int, order)
+> > > +		__field(unsigned long, nr_requested)
+> > > +		__field(unsigned long, nr_scanned)
+> > > +		__field(unsigned long, nr_sorted)
+> > > +		__field(unsigned long, nr_skipped)
+> > > +		__field(unsigned long, nr_taken)
+> > > +		__field(int, lru)
+> > > +		__field(unsigned long, max_seq)
+> > > +		__field(int, tier)
+> > > +		__field(unsigned long, min_seq)
+> > > +	),
+> > > +
+> > > +	TP_fast_assign(
+> > > +		__entry->memcg_id = mem_cgroup_id(lruvec_memcg(lruvec));
+> > > +		__entry->highest_zoneidx = highest_zoneidx;
+> > > +		__entry->order = order;
+> > > +		__entry->nr_requested = nr_requested;
+> > > +		__entry->nr_scanned = nr_scanned;
+> > > +		__entry->nr_sorted = nr_sorted;
+> > > +		__entry->nr_skipped = nr_skipped;
+> > > +		__entry->nr_taken = nr_taken;
+> > > +		__entry->lru = lru;
+> > > +		__entry->max_seq = max_seq;
+> > > +		__entry->tier = tier;
+> > > +		__entry->min_seq = min_seq;
+> > > +	),
+> > > +
+> > > +	TP_printk("memcg_id=%llu classzone=%d order=%d nr_requested=%lu nr_scanned=%lu nr_sorted=%lu nr_skipped=%lu nr_taken=%lu lru=%s max_seq=%lu tier=%d min_seq=%lu",
+> > > +		__entry->memcg_id,
+> > > +		__entry->highest_zoneidx,
+> > > +		__entry->order,
+> > > +		__entry->nr_requested,
+> > > +		__entry->nr_scanned,
+> > > +		__entry->nr_sorted,
+> > > +		__entry->nr_skipped,
+> > > +		__entry->nr_taken,
+> > > +		__print_symbolic(__entry->lru, LRU_NAMES),
+> > > +		__entry->max_seq,
+> > > +		__entry->tier,
+> > > +		__entry->min_seq)
+> > > +);
+> > > +
+> > >   TRACE_EVENT(mm_vmscan_write_folio,
+> > >   	TP_PROTO(struct folio *folio),
+> > > diff --git a/mm/vmscan.c b/mm/vmscan.c
+> > > index 2554a6513aa8..67f59aa73fb9 100644
+> > > --- a/mm/vmscan.c
+> > > +++ b/mm/vmscan.c
+> > > @@ -4876,6 +4876,12 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+> > >   	trace_mm_vmscan_lru_isolate(sc->reclaim_idx, sc->order, nr_to_scan,
+> > >   				scanned, skipped, isolated,
+> > >   				type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
+> > > +	trace_mm_mglru_scan_folios(lruvec,
+> > > +				   sc->reclaim_idx, sc->order, nr_to_scan,
+> > > +				   scanned, sorted, skipped, isolated,
+> > > +				   type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON,
+> > > +				   lrugen->max_seq, tier,
+> > > +				   lrugen->min_seq[type]);
+> > 
+> > And seems Steven also suggested to calculate lru, max_seq, min_seq in
+> > TP_fast_assign() in v1 which could be missed.
+> > 
+> 
+> Thanks, I will update it following Steven's suggestions.
+> 
+> 
+> >          TP_fast_assign(
+> >                  __entry->memcg_id = mem_cgroup_id(lruvec_memcg(lruvec));
+> >                  __entry->highest_zoneidx = sc->reclaim_idx;
+> >                  __entry->order = sc->order;
+> >                  __entry->nr_requested = nr_requested;
+> >                  __entry->nr_scanned = nr_scanned;
+> >                  __entry->nr_sorted = nr_sorted;
+> >                  __entry->nr_skipped = nr_skipped;
+> >                  __entry->nr_taken = nr_taken;
+> >                  __entry->lru = type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON;
+> >                  __entry->max_seq = lrugen->max_seq;
+> >                  __entry->tier = tier;
+> >                  __entry->min_seq = lrugen->min_seq;
+> >          ),
+> > 
+> 
+> However, 'sc' is an internal structure, so sc->order cannot be accessed in
+> TP_fast_assign(), and I don't think it is worth making scan_control an
+> external structure just for this.
 
-Here's how v3 altered mm.git:
+Agree.
 
-
- Documentation/mm/process_addrs.rst |    4 ++--
- include/asm-generic/tlb.h          |    4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
-
---- a/Documentation/mm/process_addrs.rst~b
-+++ a/Documentation/mm/process_addrs.rst
-@@ -541,8 +541,8 @@ We establish basic locking rules when in
-   after an RCU grace period has elapsed. However, any entry found must be
-   revalidated after the page table lock is taken (such as the
-   :c:func:`!pmd_same` recheck performed by :c:func:`!pte_offset_map_lock`)
--  before it is acted upon. Changing an entry always requires the page table
--  lock.
-+  before it is acted upon. Changing an entry requires the page table
-+  lock and one of the locks that excludes teardown (mmap or VMA lock).
- * Reads from and writes to page table entries must be *appropriately*
-   atomic. See the section on atomicity below for details.
- * Populating previously empty entries requires that the mmap or VMA locks are
---- a/include/asm-generic/tlb.h~b
-+++ a/include/asm-generic/tlb.h
-@@ -151,8 +151,8 @@
-  *  Page directories (__p*_free_tlb()) are always freed via tlb_remove_table(),
-  *  after an RCU grace period (see mm/mmu_gather.c).
-  *
-- * This serialises against software page-table walkers, including architectures
-- * which do not use IPIs for remote TLB invalidates.
-+ *  This serialises against software page-table walkers, including architectures
-+ *  which do not use IPIs for remote TLB invalidates.
-  *
-  *  An architecture is expected to provide __tlb_remove_table() (see
-  *  HAVE_ARCH_TLB_REMOVE_TABLE) or use the generic __tlb_remove_table(), which
-_
-
+> 
+> > 
+> > >   	*isolatedp = isolated;
+> > >   	return scanned;
+> > > -- 
+> > > 2.34.1
+> > > 
+> 
+> -- 
+> Best regards
+> Ridong
+> 
 
