@@ -4,80 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D720C88E77
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 06:11:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A4B5C88E77
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 06:12:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 105C66B0088; Wed, 16 Sep 2026 02:11:19 -0400 (EDT)
+	id 85C536B0092; Wed, 16 Sep 2026 02:12:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B8676B008C; Wed, 16 Sep 2026 02:11:19 -0400 (EDT)
+	id 833CA6B0093; Wed, 16 Sep 2026 02:12:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE76D6B0092; Wed, 16 Sep 2026 02:11:18 -0400 (EDT)
+	id 749C56B0095; Wed, 16 Sep 2026 02:12:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C32B26B0088
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 02:11:18 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id AC2AD12061C
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 06:11:17 +0000 (UTC)
-X-FDA: 85218602994.01.79D011F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id E60D64000A
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 06:11:15 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YztrGueW;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 48E916B0092
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 02:12:29 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 266041C2B52
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 06:12:28 +0000 (UTC)
+X-FDA: 85218605976.30.7A4CE50
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 4FED2140003
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 06:12:26 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GW2zjHlD;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789539146;
+	b=kOEx+T5SeFGHbMxOwXwUoHMeJhoCU7r5NG/7mgTPyhZQcPU8942ncM3DeFkrLzz5pkASmp
+	OjK+m1xUHPSGhRf/+T1/cOnQ0cmRGm0cgvQ6r+pq1fWH3M928ZIJGFTA6ynPhoK98srKPk
+	10VZnQ0DHEE1lsVdCFFYbwapHRm4MuQ=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GW2zjHlD;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789539075;
+	s=arc-20220608; t=1789539146;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UGrcU1xSal3PMw302kzTs+2eIWDoDzFKnNibjdAgJcE=;
-	b=EvRPhnWp/JuAR+5vWeN2vbYYqot6Pd99nFUtdcmd1oEhrmm8YkkoRAZy7JeKswX9fM8Eka
-	AXubZ2d2UUE9+dOgED83mXBcf2HCyTxm3lbCE1hqrG/TJJb2xDvTd7VTmCSGJGpYleElqE
-	sLx5VyknUE+ki+KNA2Zu+2LZPvOaGyE=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YztrGueW;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789539076;
-	b=h9vOib8Bxm+XEU0xb4KI2GvWcFrvnoo50Dg4HCrWhMpMJlqUe3ZfkzpZn1hLkKKPpzrNru
-	suwezXtiA86Fq1F3X8+7ZPDSvwA1pjdooRkWBkm20q0Xii5pQ7NphJed7EL+F2iCp1Yw2F
-	et7MYH5NghB8ZdQujzmEaYKVE34DKLs=
+	bh=X6Pgd9VK8mpSZf4/s8Zo2FUO4nqPRKKV5sJgzNVBD/M=;
+	b=AMzjDUIulsUdL72bXvqAjgU/uBgbPIAOpqsAtuY04wPNoCg/SKHshFx52DINbhv0Z67zkC
+	Vv5bmTERX13T1nNsm3FR/OgsIUSdus0j8lJdV1vaqQ53M2qOumTC+q++0pPYKpUe4IzHdc
+	PKQaNAerZ1eSBkBmrfyKDWzjkJwJ4BM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4BB7060214;
-	Wed, 16 Sep 2026 06:11:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 128601F000FF;
-	Wed, 16 Sep 2026 06:11:11 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 81F4542DB7;
+	Wed, 16 Sep 2026 06:12:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8C831F000FF;
+	Wed, 16 Sep 2026 06:12:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789539075;
-	bh=UGrcU1xSal3PMw302kzTs+2eIWDoDzFKnNibjdAgJcE=;
+	s=k20260515; t=1789539145;
+	bh=X6Pgd9VK8mpSZf4/s8Zo2FUO4nqPRKKV5sJgzNVBD/M=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=YztrGueW7S75vJt5/VwfFwARA7pYJ7v3ID5aNQncwiRJg/UbDd65z1f7dKsFv2oRa
-	 nTV2enQ4x/rn4yQoPDzHhrKdlgJLS4Esp/fVznHhQaPJv0/2TRTpZkm8PJ6N8FKgXk
-	 SbDPpalSmpZLD7Yi6ssaCXn65z6NeBhjtXKMH28bOYZz8i+BeyMfpvGeUhwZME07L7
-	 JtyhyEjkd9f/ME9bNLXAMZuAtf9ow1vYXwZK+04Qf/kWqMOBoAbdsQ0aT7ZeSkShNb
-	 lR6FXQuL7K+GX3QkNzD49Sd4U+Lo81nZ8ki2/0LDDzjJtoqwwhmSNC22W82nanyBGm
-	 Fv4HsxuYHyxdg==
-Message-ID: <f784fec5-7261-4ebe-803e-eb26141a0fdc@kernel.org>
-Date: Wed, 16 Sep 2026 08:11:09 +0200
+	b=GW2zjHlD5N61EWUI3NmTflCzPGuJkyU+QXmd1DP/4DgIkjqxgqZ4sCR/5QEY7yYJq
+	 rNjrCiGXWYyMwg9/CPji+rkUKcj+x24AzZnnm5tCTC3qAAL9D0E6hlfcJaxkGRd4X9
+	 0UH3/soKBy1M/oeP34Qd1GpXlEd5jqJKBwNYVHJ1lbpdEtHm+OidS3tEZ0CtclVGOG
+	 amlInPBB3YWEb1dYe3KRTDxfjSvfqvHdoKcO+3ssKawblK2dziIJP52+HKLnRr8NWd
+	 YfZJ9rCXJUWeOLuBHZghMUPnpLEpWzIjayA6aIjibgibDm4JwKeNOjWxGqph16JfoW
+	 7mCy2kMRKOfzA==
+Message-ID: <c7a5ff0c-126d-4762-8b04-5897da09b8b1@kernel.org>
+Date: Wed, 16 Sep 2026 08:12:18 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] mm/huge_memory: fix pgtable withdrawal for huge zero
- PMDs
-To: Lance Yang <lance.yang@linux.dev>
-Cc: akpm@linux-foundation.org, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
- liam@infradead.org, nico.pache@linux.dev, ryan.roberts@arm.com,
- dev.jain@arm.com, baohua@kernel.org, usama.arif@linux.dev, kas@kernel.org,
- ljs@kernel.org, surenb@google.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <83a1287b-8589-4408-96f4-4f78dfca1bc9@kernel.org>
- <20260916044142.95044-1-lance.yang@linux.dev>
+Subject: Re: [PATCH v4 05/16] mm/hugetlb: use direct assignment instead of
+ folio_change_private()
+To: Zi Yan <ziy@nvidia.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Oscar Salvador <osalvador@suse.de>
+References: <20260913-remove-pg_private-v4-0-848550f7574e@nvidia.com>
+ <20260913-remove-pg_private-v4-5-848550f7574e@nvidia.com>
+ <CC279633-6F0F-440C-BCDF-1D5362C4CB7B@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +134,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260916044142.95044-1-lance.yang@linux.dev>
+In-Reply-To: <CC279633-6F0F-440C-BCDF-1D5362C4CB7B@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 4FED2140003
+X-Stat-Signature: 33zyrmchci3yxpusdo5kn8gr14h5g1y3
 X-Rspam-User: 
-X-Stat-Signature: dos9ps5pesjr7sscb74zwi3zm3spwu56
-X-Rspamd-Queue-Id: E60D64000A
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789539075-784026
-X-HE-Meta: U2FsdGVkX1+Z1AFd8zuyD2bef7pNbdM4QHcdD0SzhB0SX/j0ONsYhgRH0cLPdxdG0w7YHH7AUcCm/ZY5ZIrWgR2oU2bMM1DXcXRx6oK7h0FyKKZLf7kENmop7HJWpVqMoV9rHTHlJuQRyEiDLjS66ICzm0telGtono7rIhu99enqu4j9qgujgM/KCSnDO8E1G+s3dAnvHySoul0TiKewluhra9BTd52646MireJBpCVblLod3+2cCqhGOiDpPN5agrE11BHhFWJ9mbKh+TcZbMF4BHWLcXi9AtbY0mLFNpZVi+Ki2eiJlWE7TjNUtmR2n2XGJqwUgJPm4NlosPrkCXN47GJq7MojrdT8BXxwsQOSJoFgogJ+ama5stRG5jb+ZgmoKf4VlO3DsS199F2rRlamqQjgEOvaZ7Mb26wY1cCg4I1rajVJsdqEMw6oE7gmnTXuW/1UIwSb3I+O4nDE+TcGmWa4cL9FKRKHlVmm6XTEzTyKiSxwqdSlbzOJH17GU3YyqpKme2BOOhdEdZOw/D4xo5jruMKubMERYQrpzncAITfs8Y2Bsf6qnB9NTdKdNPGnDIPKHeLI60FFAhkf6eWeT+pcRn5efzZtpLreO0O+PV+WIpyXNxK7/iqTeL8lAny9c0NlP9nMHu6iekf+GStXmZLxbitn4MDAiwbrqXvWa63b3THTk93hTqBG+E07VRnDN/UmwUwNby6I0/x14vsINyqraA2xJhqt3uLYMcCqLECqzScuhoSLliMwwpjfLpUObCDbYc0iPQKTQvE7KZTdz74RMo0wl9Y8pSbepziQ4l0xKoSOovI2D1ILMa0LcG/pLzXmm0f63hsN2GoFBhr7jBXGczbkhYvszahgN/EMccxcBzIlZuWLwpdb/8WAaBAT3ETDaMUeKbhmQnLP+0eUJxSXwIYya7e0EagVuqCXuyOFkHwsGTD18+ye+qw424OINNkoe6ie2DtMFwB
- PGn7SypD
- JUHRUrULlv7E0uh9/bmKQk6YOjBkqN3udkdjwnNhlD7b3LkKAxv62zBqSjRzIJqUtZ7LGf59kZfzBZHGnwfJoQ5nv7yoKL03hb/aiPT30fyXnB4BluFkfILSF1J59/HI8zSdgTSPl7Ep0EmlxHar3E5Sgx0eTNyyqZDbM8WY1f97uG8TMq0CpWy42mnsxf5bSjunWc9MIZ7EiMwdc5yJSrs5WPFf+QK2av7yf7Wc2NOiSxfFhXttEhg+ybv5buQFLEfWyHOldeQoC4YRwDXkhF+Qw86sVO3aa4QE/xkMxINLUvD2oPRvjemqcbA==
+X-HE-Tag: 1789539146-979568
+X-HE-Meta: U2FsdGVkX1+uI1jSQmPWjmAHl93Fel5eY5FzAEeMLdB7aAs49lUduBgA+p8ul/rtIwhOcngJDtKWPOiYBYUGMv22T5TLpTHB08MrcFV6xDhNc9R4tR4SwhiUYsA2wlwRx7GjYK5XLwBoWl4H06qQeRcxxZ3yWd7shjJuLGM/QZBQ9moinU1UJHshjIo+OkbK/r1XIClh6w9u0KTMXqTiKUurNHfUzsSPqex9lpt8EKATjAMCU7dA72p8VpPg/kS+4FL/+mbpWrNLaRwpHBCjxIMozylEk5fwqC4ERLfIn87cR/T0LNDTvM6iUFkferk0/vPNiSXWCWfYaPsf0n4j/JMChqhfHzgPs9RmE8UnmiIe31VPQdur4f/RzNbdJV3Xcqh8NTcUUeurQBrerviKmOAu2cmKuYK+7GO4bqg853kviFcoPlv9uQU99uTqswSGjXkBKno920vVQRT5tIBAa12UFxGTZDYVXS4YT9FcA1lGf6YAmY6U9BTGkG4TD+jihCvKJmoYXEZdWtfDVlvWDQ8IbaNh2zBAgqxb7rB/0JSb1E+HI7k9mk8pu5i0jFCuuZEDtxaVq2NKz1DH8NL1fOttJee3B3WnrBDGecfBJDd80ZoiePittDCYcQ04dKM5yECoJjpXYYpCYNcnwRsXrUfnDT8ti8MG8yGP6IJ45NrSGhFAdHRlf8eluDFFae1ZkHDcadfQqotLMYRnwZk5wf24/+sisvGXIzxd7/LSUokH8EW5yrUzYUaTpzhqiFCXGDFAeZKKZnZNcRRY5IL5xqouciyv/VTkF4bNOf8wm3W7EwzTMJKVO0vf7XUKQZELr5QMYb5OHVaEHUBbqwWZK1afumJnf5lrkwlQx5fEc8uYgX+eglsJwPeZi7d6ScAR1YFnsBkkvZnL2juwJj0kwOSHf/SZTsCbPojPbs0uRQjYO7BTXzY/jF1mDzxN4oQ2YjCMGRYiDXuaPDwQPV7
+ w2huMffn
+ K09tBuhgwlS/juG0+04AwTSYTJcJzIA6vA4w2P20rYziMbYGDRTs96j7VKtS2sNvI/HjO+JyWI9SB1r+yZO8lQW6uBb6Qt8m6pfcKYZWYIg2ulKD4C6C/xHi+1dZfqQcxAYhLK/uauKyMKbtj80j36cwtiBEJs1uAj8ZVatFzc5DpkUJHjzWsZkTrtxHn/cE8DPwHykXM2dA57wO46ZXD+extexLzhi0kmi1wt9piz5O2Gkz1DQh6/5tEREk0tov1voejahsbMTODux+x9P49l/1oO3G4kF8309LZCsR9x37x54o+y8aATRnUrzGcHmAiI9NglHZ70hwugBd+6jsdlsmBz+R6put4njPdDEr9L9WpjrNFUQJ2mBUV45qf0rwxprktNmEIGYCxFCvF/triFY9ixXiraf/oAZySEBp5Qw7MhMAsGF1f1LmciJcFW9HOti86IeOL9m/x/54jvSXMrch/vaAyNUuusyiosAIrlc59GAvPzNPlFhJR9pXtyy4e8ipNjPWy3FQE9/CsO5RVF/NYhQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,43 +152,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/16/26 06:41, Lance Yang wrote:
+On 9/16/26 03:56, Zi Yan wrote:
+> On 13 Sep 2026, at 22:24, Zi Yan wrote:
 > 
-> On Tue, Sep 15, 2026 at 05:13:17PM +0200, David Hildenbrand (Arm) wrote:
-> [...]
+>> folio_change_private() should be used along with folio_attach_private() and
+>> folio_detach_private(), where adding and remove ->private content requires
+>> folio refcount change. add_hugetlb_folio() simply sets folio->private to
+>> NULL without refcount manipulation. Change it to direct assignment to avoid
+>> semantic confusion.
 >>
->> Ok, it's really only DAX and anonymous VMAs that use the huge zero folio. Other
->> (module) code would have a hard time using it, as mm_get_huge_zero_folio() is
->> not exported to modules.
+>> It prepares for a future commit that remove PG_private.
 >>
->> DAX uses dax_pmd_load_hole()->vmf_insert_folio_pmd()->insert_pmd() where we
->> deposit a page table only if arch_needs_pgtable_deposit().
+>> No functional change intended.
 >>
+>> Assisted-by: LLM
+>> To: Muchun Song <muchun.song@linux.dev>
+>> To: Oscar Salvador <osalvador@suse.de>
+>> To: Andrew Morton <akpm@linux-foundation.org>
+>> Cc: David Hildenbrand <david@kernel.org>
+>> Cc: linux-mm@kvack.org
+>> Cc: linux-kernel@vger.kernel.org
+>> Acked-by: Usama Arif <usama.arif@linux.dev>
+>> Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+>> Signed-off-by: Zi Yan <ziy@nvidia.com>
+>> ---
+>>  mm/hugetlb.c | 7 ++-----
+>>  1 file changed, 2 insertions(+), 5 deletions(-)
 >>
->> So I think the rule is simply:
+>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+>> index d3a0650ff6905..8d551cdaef9db 100644
+>> --- a/mm/hugetlb.c
+>> +++ b/mm/hugetlb.c
+>> @@ -1446,11 +1446,8 @@ void add_hugetlb_folio(struct hstate *h, struct folio *folio,
+>>  	}
 >>
->> arch_needs_pgtable_deposit() -> always deposited
->> vma_is_anonymous() -> always deposited
+>>  	__folio_set_hugetlb(folio);
+>> -	folio_change_private(folio, NULL);
+>> -	/*
+>> -	 * We have to set hugetlb_vmemmap_optimized again as above
+>> -	 * folio_change_private(folio, NULL) cleared it.
+>> -	 */
+>> +	/* Clear all folio->private flags except hugetlb_vmemmap_optimized. */
+>> +	folio->private = NULL;
+>>  	folio_set_hugetlb_vmemmap_optimized(folio);
 >>
->> ?
 > 
-> YES!
+> Sashiko[1] said when a CMA hugetlb folio is freed but fails vmemmap restore,
+> add_hugetlb_folio() clears HPG_cma. It either bypasses
+> hugetlb_cma_free_frozen_folio() due to the missing HPG_cma flag, or
+> skips cma_release() and causes a CMA memory leak if it is free directly
+> to buddy allocator. Sashiko also asked if HPG_temporary should be preserved
+> as well HPG_cma.
 > 
->>
->> The trick is that we don't have anon THPs in non-anon VMAs.
->>
->> So could this be simplified further or am I missing something?
+> Answer:
 > 
-> Ah, cool! I hadn't thought of that :) You're right, anon THPs cannot live
-> in non-anon VMAs, so pmdval and folio aren't needed here. Will simplify
-> it as suggested :) and add a comment explaining the rule.
-> 
-> static bool has_deposited_pgtable(struct vm_area_struct *vma)
-> {
-> 	return arch_needs_pgtable_deposit() || vma_is_anonymous(vma);
-> }
+> Missing HPG_cma is a real issue. It can be fixed by checking
+> folio_test_hugetlb_cma(folio) at the beginning of add_hugetlb_folio() and
+> setting HPG_cma after folio->private is assigned to NULL.
 
-Yes, that's what I had in mind. (while at it, maybe call it "vma_has_*)
+
+Maybe we should just simply only clear flags we actually want to clear ...
 
 -- 
 Cheers,
