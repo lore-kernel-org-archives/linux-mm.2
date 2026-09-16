@@ -4,93 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D983BC88E77
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 01:15:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2A16C88E77
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 01:23:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D0B256B0092; Tue, 15 Sep 2026 21:15:23 -0400 (EDT)
+	id 79B386B0088; Tue, 15 Sep 2026 21:23:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CBCB06B0093; Tue, 15 Sep 2026 21:15:23 -0400 (EDT)
+	id 74D446B008C; Tue, 15 Sep 2026 21:23:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB1696B0095; Tue, 15 Sep 2026 21:15:23 -0400 (EDT)
+	id 63B2C6B0095; Tue, 15 Sep 2026 21:23:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 951406B0092
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 21:15:23 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 28D041A05C3
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 01:15:23 +0000 (UTC)
-X-FDA: 85217857326.28.B85AF36
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3D0646B0088
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 21:23:41 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AE10F160503
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 01:23:40 +0000 (UTC)
+X-FDA: 85217878200.04.2E15658
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 63DA040003
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 01:15:21 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=AUVm1lBJ;
-	dmarc=none;
-	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789521321;
-	b=Lk1LRXQfRlSEzlIbHi8sGoHwe4j6rJ/MWITM3hEZx+Mie0KYP2u/YoQMDhIvFXSrqYdqAW
-	M0D4FiM0Am02omMUy4PQGXn7o3p+Zyqa0fbs2yzeQj2AzBlqJBs0bzdU4MDf6a7mRBH23p
-	KBoKI2Kb3dtV90bCYl6R+DzVctblMdQ=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=AUVm1lBJ;
-	dmarc=none;
-	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by imf31.hostedemail.com (Postfix) with ESMTP id 16DF420004
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 01:23:38 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TRyZpojy;
+	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789521321;
+	s=arc-20220608; t=1789521819;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XuQDZikRv9jj7fQ5oAHaP13olV/99KYu+eiNYZt//68=;
-	b=ZgG+kZlbInR8NdlzDc/Lt5AoYJTBZYAgTIRfWTibksEfP0KGHkLFtWvKfzq0ALb6rIGQGx
-	41VlLT/ZAYnMQrJaIccvWpEOVxjPo7kzpHjH3b/XId7zDvfM8cqJiKkHdkECz7juXOOzOr
-	bHZqnqetwRFtK35MC3eUxUjMmzJjZuw=
+	bh=A0W90VIeUB/IBMQozfKb1frW2yE+YJ2al62rTy8touI=;
+	b=eFqpbF1KjiGI04s4mGB/DRBXl80+hf0w4aA42AiiFnlsOgTz7C5ZVWruyzfdI1J/irjb/r
+	2jXJQgT0lif2JgPLMvP0MsvajObow3MOkmTgYulXrtSsF7FEOAMO5jdBNrionC7TqDZAEF
+	3Z20/hK5SZqSCD/keA+wSUzVr8/lHY0=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TRyZpojy;
+	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789521819;
+	b=AjFo91iAszZfXoB2HCv0E2pFY+6L0ZsvRp8WBMrARvj1Sn83QQ0B0wk/sUYEPq6u+kOBFA
+	1IIfmZdtRGlIDWPOBlKfyaXv5m+tzzt3Hxbl7/eIbbpBFh0BVQ3T/u4L7ZGgLY3yu4eZaX
+	lv0KmWDPdYuC0RkpKr9fnuT5PpnNapo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8283F43EE8;
-	Wed, 16 Sep 2026 01:15:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C58EE1F000FF;
-	Wed, 16 Sep 2026 01:15:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1789521320;
-	bh=XuQDZikRv9jj7fQ5oAHaP13olV/99KYu+eiNYZt//68=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=AUVm1lBJj70j8iqZrzQ1fp/ueoOLFAKmyvLXcuvW6liyZeYvuNXpyoTxXSd5DK5h+
-	 E708l/TD4IbwQwiwzx0h6LvU9909pVVWHhvzM5JTwL5IgghscAtdBgdFta5vpPGtYb
-	 Vc2vhtdaDEQUBe74tqvrodB/VxTHrrgzQwZ9f4ig=
-Date: Tue, 15 Sep 2026 18:15:19 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry
- Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Usama Arif
- <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Lorenzo Stoakes
- <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
- <mhocko@suse.com>, linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, David Hildenbrand <david@kernel.org>, Shuah
- Khan <shuah@kernel.org>
-Subject: Re: [PATCH 0/2] kselftest: mm: fix intermittent failure khugepaged
- test
-Message-Id: <20260915181519.648c2962143b761cf02efd17@linux-foundation.org>
-In-Reply-To: <20260915-fix_khugepagd_fail-v1-0-bb6f04c8759f@arm.com>
-References: <20260915-fix_khugepagd_fail-v1-0-bb6f04c8759f@arm.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	by sea.source.kernel.org (Postfix) with ESMTP id 4878A4395F;
+	Wed, 16 Sep 2026 01:23:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD77B1F000FF;
+	Wed, 16 Sep 2026 01:23:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789521818;
+	bh=A0W90VIeUB/IBMQozfKb1frW2yE+YJ2al62rTy8touI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=TRyZpojyIkfGqtAYjWn5esKE2+0oYJ0ODs5DmjNbL4ra6Sl9gqoBAAzndgf/GYlDW
+	 eJQKjAi2Q61lPAnXmrk3FJpXBY5Fc+AQKudHKMJMs9jJP+J5xMqUkXMcT0Dhdf61jz
+	 sHcVnsb/u2OhpUAK4WyZaBm3yadKPjESvfWuN8UyZbA9h1LO6emlot06nzUqVLe2zq
+	 XasURGPbpb1j3H57zzu2K4dFiI3Og3oFP3Mhg2RKVgg0XmW1HxusaS65w5I5iTJ056
+	 dtTT45PF5Iww/CW8lpLffKGjmOfRzDjMD72/a4pZ1IkGo4CtIaW4OOn/coisZrQrXF
+	 giNmtMYs2CWBg==
+From: SJ Park <sj@kernel.org>
+To: Zhenghui Hao <zhenghui.hao@qq.com>
+Cc: SJ Park <sj@kernel.org>,
+	linux-mm@kvack.org,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/hugetlb: fix misspelled parameter names in comment
+Date: Tue, 15 Sep 2026 18:23:30 -0700
+Message-ID: <20260916012331.102450-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <tencent_034C6FC23D4817C40657E5F17F64E260A009@qq.com>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 63DA040003
-X-Stat-Signature: jatx8ibtayuffa6k184af7r6jg9cng95
-X-HE-Tag: 1789521321-362548
-X-HE-Meta: U2FsdGVkX19pJJcRXAB2bZh2L5WuJGTThTuOj7Vk/GUqhHbpt+tm5ytc3/6tSLbsElwqALEHIkrKWEniHbsz1z5VE0dNJFhz4zfZGgXwBpHsQ8KWgOqR4gJeVMFI8GHVraKuPQxJmtqf4LxjaZJoXTr+GYF7U4+DO5wqVu3LY93cD7BIkhu/koPZ2LZDGBP7hwcHOksChMpZXkZsmLOfHH3FJfaz02L3WNkTqBfqdTZb/vS9sLntTjfVC2cR9J4jq9Eq4x5/Be/rp3oVf5GsqdyrBLbIG9NEFoHVjIv1vg8/7EWiCh7i/qc3tc4/HK69eLos0yAWM7EVX1kNwZ17z6tsSxu983mGpAZBdYWWCXRMsSpskK/OMh+qipyx9o2QxE0tTcRL0AjAA5cYlS8w6fL+iItTqOa3nKEcF9LN1DFSdyRr1rOtsro0/W9sXKVnDlemelP8qNgrez2PjFsM4H4ArC7mpqsQ3bgTirVVHblkeLZi7fdSvnjcgB/QzrVyKC3yW1ZMiVcQKR7rZSpINP3lui/pTbcs88o9NO9f98SEZFULzx4XzDu6/kOpO87wCiGGLTP7Fo70oySfBFjSbYDAXeaERfG3JLiMrxyt3O3l8VwyZF3jIZhuhamIeS/V6OEmbTW/p8UOPJ2M9istLRpCrRpT4u4JuKSv6pG+QmvJxWkszGzxLrfvojl5cYtySqeBqlNKCvv23D2iDS5eXG9nOChGFCjWI7KB6jFmCyb/5ppBxlpDKNg3SCY5QoU2VMReCY69nKxyJ8g/bujoOac591/QCwAqMgXXxD94KgyPITEJZ7havdaV/McH+rhViW9cj4xXcbhHSTTGB1jSkEGUdmPV1taECNm0getU6NjQs4BnsE0NEOkqR0AsiulrXoXrejAzVjhZvh8gy7LY7ORapzFxpdnX4U36Vbka5aKhothhaz0tbYJLPRY2liYzUsbMqaJ2JRaPLjcU7rK
- sYxye4m1
- uAcX9YvYaygxweY7zD7LIPB48vmxKwVrsJMMf0X+xZQZBp1sa7L/ZTIUGqqGIpJafBXg9/cse4kiIzXSOJcHJTjqa2p+IFgvmW+nYVVuilv6C6c34kuAiL2WNGfXub5iSbBfzYkXrH1JGrPoY7QRgkWYFdhpocGPwW4KJYKKTg4Qjw75HRCokCmQVoXQ4FJmiRKwDiZhUKx/dZs+0q0QirS6zf15Ek3Ek3ViVCdArJs931uFmgryH2VijhHTEPrDSTSU8isPxzBlDfnttI6XRqOBxRs49h7Nz6s8VRHHE6AjgnnTNjfeSe+/3KQ==
+X-Stat-Signature: yseyr33ruaikwgo9qscaa6d999hdwu6g
+X-Rspamd-Queue-Id: 16DF420004
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789521818-90147
+X-HE-Meta: U2FsdGVkX18thdrxIA4ByMgABTbBvixA3JLnp4XRlKcyEW3Eko/qHzzZEWIKrbmVCquy5nDIFiDkNBuUsxcjcYg78+XboxkbN68wfRzXfXJLylBrxOV7v5F7ybKDM/vfk+hAwWmNuIJLCGZBcbObyeZoQ5p+dAUaZj9V+Kpca0YdTujTKuzk/JN4CRbvHWYeJbpxWxE04Z107HAj+n+N/pUt1isHoMSPo/v9elPk8bkzc9jMBaov//vz7ZxcSXeshDsoA5lWsGw1ROTB/11BlH2lhLvR74yMp8qgsGCShAVv+GPwlOTwDsZZpr8tItGZxD2ZDNiKcg3Xm8i+3sZYFrEFYeD/armSH/PnHh7VguVZL5RykB5oQnUOevWH2XiGcqYATpBirXBmCcikhBac+7x82UeTKL14fpPgDOKskAOzK17DY3xq8u3IIbN5TzqsqMA3r8KTIHgWM1BgDHTctHbxqt36oLfPSibf4DXzgxErqlrwP2O0uHnGw6T3zeN1xf7hcBNNWTMPDBZtJkS+EB8i3D6f+DM8eTbU4J2ulUYav+Tk1ZdU2VRhmf92aOY0csVtyb+jeOv/Fqo5YwRUH8JpEsEwa3WLzrYDQ1lUwbVXPMtefk/Qpjg5wNa8XxLC551YNBHFg+1lZ+diKethqTxc7i9RwDu0w9oudvsBlpKO9AEO/Q8WooZrTmvFBX2XafP+lamX2zzJZ53sPWFy//r1kwH1t3UeT6oDgRruI1ndeqbDV3Ys16Lqc6E+hsZbHVVEgVAgc+nazPQBxQupuJBPZR3KEH9E0Oi0JislYAtyZKPST60Gcgyr24kKgrJtpDZgZ26xc3RaXcVr91Kld/FEye3rtxS0ZM2fW4zgGDVD6Xh3aOkNd3rPXZN5/IyN7dA5u2x3bxy+WE+FgCkDA2Unw2WH48A9I9SYlNeAxyD904ZQNKX8FdhtEcbPeI9w5mvzXnC5QzgLN8zlulu
+ NR3Vxms/
+ qWeyT9cNe82LH9jnycBIy6WY4+7cJPAXTBam3sdrG31RMiUkaxAsaNpWeITSpkXaE0EGF6bEpg0cmmAPfRYfB5iUdSLgJ9u+88/070BKHrKqa1l/62Nx7313mATT4+LAwepfFNwgJJY544HeQPFbNKqcQTLWC4gLr48XpbqXuHjj3imIs5FrVUmOJ3cq2QwrrD3pMT9nfrZf/DuvVDB3oc+TLPSG2e2W2nkLn1p/mr8KRrg0u2y6YXqtS5bQgfYSavWh9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,35 +95,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 15 Sep 2026 10:21:35 +0100 Yeoreum Yun <yeoreum.yun@arm.com> wrote:
+On Tue, 15 Sep 2026 16:20:29 +0800 Zhenghui Hao <zhenghui.hao@qq.com> wrote:
 
-> There are intermittent failures in collapse_max_ptes_swap() and
-> collapse_max_ptes_shared() when using the khugepaged_context:
+> The comment above hugepages_setup() refers to "hugepagsz" and
+> "default_hugepagsz", but the parameters parsed by this code are
+> "hugepagesz" and "default_hugepagesz".  Fix the spelling and also drop
+> the redundant spaces so the comment reads normally.
 > 
->   # Run test: collapse_max_ptes_shared (khugepaged:anon)
->   # Allocate huge page... OK
->   # Share huge page over fork()... OK
->   # Trigger CoW on page 1023 of 2048... OK
->   # Maybe collapse with max_ptes_shared exceeded.... OK
->   # Trigger CoW on page 1024 of 2048... Fail
->   Bail out! Unexpected huge page
->   # Planned tests != run tests (26 != 23)
->   # Totals: pass:23 fail:0 xfail:0 xpass:0 skip:0 error:0
-> 
->   # Run test: collapse_max_ptes_swap (khugepaged:anon)
->   # Swapout 257 of 2048 pages... OK
->   # Maybe collapse with max_ptes_swap exceeded.... OK
->   # Swapout 256 of 2048 pages... OK
->   Bail out! Unexpected huge page
->   # Planned tests != run tests (26 != 17)
->   # Totals: pass:17 fail:0 xfail:0 xpass:0 skip:0 error:0
-> 
-> This happens because khugepaged may collapse the pages before wait_for_scan()
-> is called, causing a sanity check that expects uncollapsed pages to fail.
+> No functional change.
 
-Is this something we should be testing for?  If I'm understanding
-correctly, success/failure is dependent on timing vargaries inside the
-kernel and that isn't something we can reliably test for.
+Looks good to me.
 
-IOW, should we say "bad idea" and just delete this test case?
+> 
+> Signed-off-by: Zhenghui Hao <zhenghui.hao@qq.com>
+
+Reviewed-by: SJ Park <sj@kernel.org>
+
+
+Thanks,
+SJ
+
+[...]
 
