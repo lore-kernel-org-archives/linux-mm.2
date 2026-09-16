@@ -4,88 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F27A1C88E77
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 11:26:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 575C6C88E77
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 11:30:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0345F6B0096; Wed, 16 Sep 2026 07:26:09 -0400 (EDT)
+	id 51D4A6B0088; Wed, 16 Sep 2026 07:30:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 00B7E6B0098; Wed, 16 Sep 2026 07:26:08 -0400 (EDT)
+	id 4CEDC6B008C; Wed, 16 Sep 2026 07:30:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E649E6B0099; Wed, 16 Sep 2026 07:26:08 -0400 (EDT)
+	id 3E4266B0092; Wed, 16 Sep 2026 07:30:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C63CF6B0096
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 07:26:08 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 55EEF4069A
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:26:08 +0000 (UTC)
-X-FDA: 85219396416.19.5A3D557
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 32A8D1C0007
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:26:03 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Yju6Ftmo;
-	spf=pass (imf18.hostedemail.com: domain of xiangzao@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=xiangzao@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2148F6B0088
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 07:30:30 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A8376806C3
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:30:29 +0000 (UTC)
+X-FDA: 85219407378.26.C8D0026
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 1002314000B
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:30:27 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D6mXo8aG;
+	spf=pass (imf23.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789557966;
+	s=arc-20220608; t=1789558228;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=qkFbwJ3DbJzS5ny24JTrLqbzgteYgwCCQYHKn5yzPro=;
-	b=dyupuhSX04VrIxQgztpcutAHoglJrhgP5gfOsK7keDQTFWUNb1Vr3R/YnsEIl6KeqhVq5W
-	h8qLkNLTCS5zJFbBZM+nd7NL62Tb237CgsKyNZJdLbig7uCIhue5XG757ipZMkj9mfCr5x
-	c5wK06p9hdl4qivsKNQSMFdn9BePJGU=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=cNxxziEzSRjeeKkjHPI2ybzZcO+hLZVdC7CPel2aGig=;
+	b=WxQSRHVZtRcefW+wxh1BiBBiMJr+zlbBPFNvEJrES5oPJltYhnjWpp4F+GkPXTNj7YWrab
+	x6fDM2Orwpi5ZXkpa27gFd/SKRR+i1/SPl1q/JGb1BgPhLOsnHtrHjkApUlHNvsaaimioo
+	jmsGc2ZXi6uCrv19x91BdGkbAHzD4+U=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Yju6Ftmo;
-	spf=pass (imf18.hostedemail.com: domain of xiangzao@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=xiangzao@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D6mXo8aG;
+	spf=pass (imf23.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789557966;
-	b=ZIzjGmnoOmRHONFEkdYRx7ucAmmcA+tdPWPGp2OLmK8LgIzzOw8VQGZ89vIR6f3XLC6Yw2
-	F8Sa1NvFcJk78+5F2U7f3kZ4hyjQNuiQ1LWTk/l55vR6aqU5MWi2aTQu5fzh/YHRXtgc7C
-	iDijagMQijTRaj3RG8bCjYXKOzp9tQw=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1789557960; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=qkFbwJ3DbJzS5ny24JTrLqbzgteYgwCCQYHKn5yzPro=;
-	b=Yju6FtmoQTmuc/7SsQ0P+2OK/IEN+87df742iNU3Bjs/WPsYeMbCGtcUr9s2j8MO98HgeWUWb1DHs0bPDP29+8d+UC2s9PX+yhw8vd45kgAEberM3YibHmksVSfqzA70OhdHbCRknWAAA9Wh09EdWIaZ9Z13ZP/6dIQF+tF7/es=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=xiangzao@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0XB4nUJy_1789557948;
-Received: from banye.tbsite.net(mailfrom:xiangzao@linux.alibaba.com fp:SMTPD_---0XB4nUJy_1789557948 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 16 Sep 2026 19:25:57 +0800
-From: Yuanhe Shu <xiangzao@linux.alibaba.com>
-To: akpm@linux-foundation.org,
-	vbabka@kernel.org,
-	mgorman@techsingularity.net,
-	linux-mm@kvack.org
-Cc: surenb@google.com,
-	mhocko@suse.com,
-	brendan.jackman@linux.dev,
-	hannes@cmpxchg.org,
-	ziy@nvidia.com,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	henry.willard@oracle.com,
-	david@kernel.org,
-	Yuanhe Shu <xiangzao@linux.alibaba.com>
-Subject: [PATCH v2] mm/page_alloc: do not boost watermarks in kdump capture kernels
-Date: Wed, 16 Sep 2026 19:25:45 +0800
-Message-ID: <20260916112545.3707893-1-xiangzao@linux.alibaba.com>
-X-Mailer: git-send-email 2.43.7
+	t=1789558228;
+	b=d7vxfWHIyK6vMDyG/aRp+lt1Mm1obBKs5CiuCiRHDOZCR2/dmQxx+eGwC8VyQR95mzd4Y0
+	VjJTtTR37XnQWFBq4Ie8CkBNPfJcURnwRIGiKVD+zKy0D+JsDSf1U3dYJDrEPKPsD9itl/
+	YvAtNOrrE3WoX9UNu9sB/NLc14Bi0ko=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id CF8DE6053A;
+	Wed, 16 Sep 2026 11:30:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B11CD1F00893;
+	Wed, 16 Sep 2026 11:30:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789558226;
+	bh=cNxxziEzSRjeeKkjHPI2ybzZcO+hLZVdC7CPel2aGig=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=D6mXo8aGO1S4K38ZGd8hkcIL0zJZyK5x1+eSM6TRcftvJ9ZosYGt4bxLvysVZ+c/Y
+	 xDcSDPMp52bYcCHZbgSChB8nsQXIgP/tAv10w+e4enDJXg7Uhd6pl3beUXWDcN6RdQ
+	 6VF7pTigbgLNIIxkSvcuWk5HBji2ptCf94tszX/X9Ha5vfIU5DpjUo7TzugCOisXTb
+	 AuyPrBRFbuaFK29qI7SDRhEjy3Ku7qyicG1MDeY96T6+L6Tts7MoKh14J/IoMUKB9B
+	 HCQc6d71jHWqbETl0C7+9hNnVoF9hUItBo8u3gooJ0NJZhejtfpJE89vQU4GBshhLq
+	 T/Un53225h9YQ==
+Date: Wed, 16 Sep 2026 13:30:21 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Oleg Nesterov <oleg@redhat.com>
+Cc: Jens Axboe <axboe@kernel.dk>, linux-fsdevel@vger.kernel.org, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, NeilBrown <neil@brown.name>, 
+	Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, linux-mm@kvack.org, 
+	io-uring@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 2/6] fork: refuse new threads while a coredump is in
+ progress
+Message-ID: <20260916-geortet-ermessen-delegation-07b36ac1f4eb@brauner>
+References: <20260915-work-coredump-fixes-v1-0-f354ca41780c@kernel.org>
+ <20260915-work-coredump-fixes-v1-2-f354ca41780c@kernel.org>
+ <aqleExxTBcHsonQe@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <aqleExxTBcHsonQe@redhat.com>
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 32A8D1C0007
-X-Stat-Signature: o83d675obmsdn6oep3wx1sw8tqp34oe1
+X-Rspamd-Queue-Id: 1002314000B
+X-Stat-Signature: qus3yeq9iw1uzf4yibqc74kf5m78itob
 X-Rspam-User: 
-X-HE-Tag: 1789557963-12071
-X-HE-Meta: U2FsdGVkX19NWsc9GfjJKr8aTMiM/R23YY0l7mE9+NXDtnO2yuz27r4CXJpuEYshMAyYFhmV9gYNee4fAz3CQvzKD6Ze7Y3BjlEkrqnI81WC+o6jDkYQrn3nLzFO4fxsoyIIEG6fiibWQBz/PtsyDldYLE7Of/SCZnE5ovBpruoQXctwj5tNOXYQpMZuaRT4JRyqtQQf0VB/gKjGbBfAji9aJ4WSd08KpWIkqFwsmVf22pM1neJDqeO71D+pFQ94pnO3hnB2Gcq/ZF65kmLnMNTs6uRIf9lOgOlrOMXH5S+7cdZhJ97BDSXrhXj61u5aNraX9YC5Eqc6SJ74oBQ5wocYUZYvDCtEz+K/RIO/SK10T0Hr14wgWh/kjI3G2cNukVNA6oRp7TZWcFT9dxVWG1Recs7zxjOxQbdn9tY77WIAogwaTCbQ+lRpzSaX09jbCgAl4k+BniIM1z2j/j8LjV5amLPf9RuMGcpSL2xRPGcHFUO60+uNyQBAwG/ZVTHWRO67hMlyDtCZNwL9fI8pDYsKU4zUgpOGuHU1oMsCbxz4Zu4uK8caDvYAkSl33pi5o4Ko09KSHW6LUVTUXcGqv1+fu91TbMATlB7hsTslKi+YopbbSTqIT3itJ4BSaVhHVjOYQx5a0JaKLGj06BYxeXioFbFn0JFsxIrkGdueRGw4ZFETytz7phPfw+evosZiISBEDXz5VHJ+lkbsyFTgBp+M1H0SuLzkvLJXNns4Zt1JEYw38sKtLd0bQjfeyAlE1UE19I+bWuCPvWq/YwTrB/6nBS6mZmJeUyEUqa9Np63GIw77Ub2Ypz4yorvS/UNFekqMYGyLyfehpyKGi/DFThngXOOjn1HqtjAO2gTEV9xpmMTHM+c9zSuBUMUV34mY+txbWwkSuzvvYdDBjD77c5kMg68sF0B8mlygv+G7uN18tMF6As04Qtar2dC6AZ9pceG7Unvk346Gl5q7Zxy
- Sz9YOnF3
- JarAco+Tq1igS6MSPUTBe+mP9IDkNtEvBHiYB5KsOOLogxYV81XhWCmRQbKkTegXIS88VqRCuSFaIAUrkr/mdzwsCjq3OZiTJGZpWBLZf/eAQHgO1i5l1t6e66/t10YFZwM3/qbPLXarmLWnUIdFwlmpcYAxtaM17fwwuRHaPoVdtqgHrK6Qx8KYKBYvIgeFPRhFb5tHqByMgpcGtFQHDLG5wWF54I3/cTa+hi8NQv92+uqRWaSL+Muivf33M2J8bScOlPukBqXPUS17NJE7JsmaMmfijNdhpFdKwp7gh5D5IrPLJ+IsGrN+CpAAll0YNKE588pTVpHbgn7PqEk+dAwTMHhio/cXZkL6l
+X-HE-Tag: 1789558227-479898
+X-HE-Meta: U2FsdGVkX18AaZ2z3dpKDjZOZbehh06CDyKw58GxdeVBQDa9Jel+IO18RmW301b5Tm8XqXqcYOr+F7CPIVpjPNy9LPg2vajBYRoVBhKQi/ZxQDER03vYeiB1cMyNe/6ckQxkgxbUatz2XdWySGxez9u/fHht+Rkdq5Yc3VO7aCXF+yNqrvoL9yy9JMhGYc0xUcNvaWD+Tb+DcUHIebpt/4PshFUVLUVyap7Oa/vb3TbFaeQuxpnsOS5UPN+Uhefrwrx72MLz187cMq+eBfuf6k2hzCg0CizCWFqma33yX+2hXQe/+A7odlWNr43Zp9sj/+wAWluiqbAgKvtAr1RtW+TjvsTpMFkZq7VM2+8OOzVnHxgJ6AbQvBSJrZ9A3vaEzFsnUrW9kMUkfMayAsUhKsTwmmaExBQWA9x4qnPWO/C44EXYcp+LheumR1OOu/wk+JkontNMmSvIjn3WP5vXVEgISgV4m3Bikey0sldL386dVkKnoGkigd3UuLihB+4K/TkUaIjohAltP3zaOXGx+yCKBoFAA35Ok+tyxNEP8xMBisC7ZGqHOQmH1kS2Bdag/3vpQ2wHckDXiWqdOg83wamYNdfTj+zVI4Rz8f/5y1IeD2JO3MvcfZGSNU6f/fDAgw93pggElXqDH2AWmrzycdUtKGT0dsP+nzbTgKe6RQUhSEFYML/BtE2aQTDEr04BxW9NlXE68FUwgEJL0rDMtD+STFVioRVRF0pNg/cYGvVsf8G+MhN/N+QQKp93hffEwvh8xLkVNF1Eb/bb490ksbRTBDbLuVyEq101tklJnH4cJ+QwI8pQzeoreW/xy3Zw0u6D3UZrA/0+6TDgcyfqCUnaFlAvWaOoscN9Hzqb9qQBaiBnziWoxGsFayeV0QXAkBDjQ9Jzr41GCSijLyzurTyg5KrYssO2i1FajuHpPm438bEglk6JyESKP3PUpuJa7xoor53z5GClTAyOFFV
+ Pu6tBXky
+ r1PrtF5EAo8OGJXkO1ufhRpGTK2Ch1//k9x3Jf1rXNQ03ge5PYJgIJli92Mcr6seih25L9e4N+kNUv5OdahgExgk83TWUfuk9u+uKHhGbqdhfSIv4WLOjeH7QrJuekDr9Gm+UStzwUH0p6BUraAqg2M5TVvIKcBsKjuRWbrvEzwsHgvXzD9eU1PSfnYPTiPNx7Q6+SMhEAe2GS0h9v8IxMXbckqeCCRJV8njr/bf3G/QbOLdiQlQIjqvkii+di3yd/d+SY2e0vy/X5dkHWJkjZo0RvzL5iLlEd+U01Zvn4lRWfe0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,109 +95,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A watermark boost is not confined to one watermark: wmark_pages() adds
-it to min, low and high alike, so every watermark check sees it,
-including should_reclaim_retry() and the last ditch ALLOC_WMARK_HIGH
-attempt in __alloc_pages_may_oom().  Once the boost exceeds the memory
-still free the allocator gives up and invokes the OOM killer, and a
-capture kernel that is still booting has nothing to kill: the boot
-panics and the vmcore is lost.
+On Tue, Sep 15, 2026 at 05:02:43PM +0200, Oleg Nesterov wrote:
+> On 09/15, Christian Brauner wrote:
+> >
+> > Say a SQPOLL thread is a member of a thread-group that coredumps.
+> > The coredump code uses zap_process() and sends SIGKILL. The SQPOLL
+> > thread uses io_sqd_handle_event() and calls get_signal(). It removes
+> > SIGKILL from the pending set and returns. The SQPOLL thread breaks out
+> > of the loop and drains its own task work.
+> >
+> > Any pending io_req_task_submit() with REQ_F_FORCE_ASYNC creates a new
+> > worker when no other worker is free. So it ends up calling
+> > create_io_thread() from a thread whose fatal signal is gone. That means
+> > copy_process() allows the creation.
+> 
+> Hmm, thats bad ;)
+> 
+> But then ...
+> 
+> > --- a/kernel/fork.c
+> > +++ b/kernel/fork.c
+> > @@ -2491,8 +2491,8 @@ __latent_entropy struct task_struct *copy_process(
+> >  		goto bad_fork_core_free;
+> >  	}
+> >
+> > -	/* Let kill terminate clone/fork in the middle */
+> > -	if (fatal_signal_pending(current)) {
+> > +	/* Let kill or a coredump in progress terminate clone/fork */
+> > +	if (fatal_signal_pending(current) || current->signal->core_state) {
+> >  		retval = -EINTR;
+> >  		goto bad_fork_core_free;
+> 
+> this change is not enough? Don't we have a similar race with exec?
 
-Seen on an arm64 machine with 64K pages, CONFIG_PAGE_BLOCK_MAX_ORDER=10
-(pageblock = 64M) and crashkernel=512M, running a distribution kernel
-based on 7.0.14.  A high order UNMOVABLE allocation fell back to a
-MOVABLE pageblock while the capture kernel was still in do_initcalls():
+Yeah, we do...
 
-  Node 0 DMA free:68096kB boost:65536kB min:68160kB
-  low:68800kB high:69440kB managed:479168kB
-  Out of memory and no killable processes...
-  Kernel panic - not syncing: System is deadlocked on memory
+> de_thread() kills all other threads and counts them too. Shouldn't it
+> also check signal->group_exec_task ?
 
-The zone was not short of memory.  Subtracting the boost gives
-min:2624kB low:3264kB high:3904kB, so the 68096kB still free sat 17
-times above the high watermark and the allocator would not even have
-entered its slow path.  The boost supplied 65536kB of the 68160kB min
-and by itself put the zone 64kB under water.  It is that large because
-boost_watermark() clamps it with max(pageblock_nr_pages, max_boost);
-watermark_boost_factor alone would have allowed 5824kB.
-
-Commit 14f69140ff9c ("mm: limit boost_watermark on small zones") already
-tried to protect capture kernels, but it infers them from the zone size
-and skips the boost only below four pageblocks.  arm64 64K pageblocks
-were 512M then, so the guard reached zones up to 2G;
-CONFIG_PAGE_BLOCK_MAX_ORDER can cap them at 64M, which shrinks the guard
-to zones under 256M and lets this 468M zone through.
-
-kdump is a property of the kernel, not of the zone, so test for it
-directly.  A capture kernel exits within seconds and never uses the
-fragmentation avoidance the boost buys.  Normal kernels are unaffected:
-the size based check still covers their genuinely tiny zones.
-
-Passing sysctl.vm.watermark_boost_factor=0 to the capture kernel does
-not cover this window: sysctl.* parameters are written through procfs
-by do_sysctl_args(), which runs after do_initcalls() where the panic
-above happened, and watermark_boost_factor has no early_param of its
-own.
-
-Fixes: 1c30844d2dfe ("mm: reclaim small amounts of memory when an external fragmentation event occurs")
-Cc: stable@vger.kernel.org # v5.0
-Cc: Henry Willard <henry.willard@oracle.com>
-Cc: David Hildenbrand <david@kernel.org>
-Signed-off-by: Yuanhe Shu <xiangzao@linux.alibaba.com>
----
-Changes in v2:
-- Drop the stale kdump capture kernel mention from the small-zone
-  comment in boost_watermark(): capture kernels now return earlier.
-  (Vlastimil Babka)
-
-v1: https://lore.kernel.org/r/20260914131142.2984623-1-xiangzao@linux.alibaba.com
-
-Build tested with CONFIG_CRASH_DUMP=y and =n.
-
-Tested on the affected machine with the original crashkernel=512M and
-capture kernel command line.  Without this patch both capture boots
-panicked at 7.9s inside do_initcalls() with a 64M boost in place.  With
-it, and with boost_watermark() instrumented, every call was suppressed -
-including those inside do_initcalls(), where the panics happened - free
-memory came down to within 64kB of the min watermark, where a single
-boost would have put it 65472kB under, and the dump completed.
----
- mm/page_alloc.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
-
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 12fac9084c48..f52ed7d2cd34 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -37,6 +37,7 @@
- #include <linux/vmstat.h>
- #include <linux/fault-inject.h>
- #include <linux/compaction.h>
-+#include <linux/crash_dump.h>
- #include <trace/events/kmem.h>
- #include <trace/events/oom.h>
- #include <linux/prefetch.h>
-@@ -2178,10 +2179,17 @@ static inline bool boost_watermark(struct zone *zone)
- 
- 	if (!watermark_boost_factor)
- 		return false;
-+
-+	/*
-+	 * A kdump capture kernel exits before a boost can pay off, while
-+	 * the raised watermark can exceed the memory left for the dump.
-+	 */
-+	if (is_kdump_kernel())
-+		return false;
-+
- 	/*
- 	 * Don't bother in zones that are unlikely to produce results.
--	 * On small machines, including kdump capture kernels running
--	 * in a small area, boosting the watermark can cause an out of
-+	 * On small machines, boosting the watermark can cause an out of
- 	 * memory situation immediately.
- 	 */
- 	if ((pageblock_nr_pages * 4) > zone_managed_pages(zone))
--- 
-2.43.7
-
+not just that. We need in_execve checked too because
+io_uring_task_cancel() runs the exec'ing thread's task work after
+de_thread() when group_exec_task is unset.
 
