@@ -4,133 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10F7DC88E77
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 09:50:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4449EC88E77
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 10:19:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DFEFA6B0093; Wed, 16 Sep 2026 05:50:23 -0400 (EDT)
+	id 44B886B0088; Wed, 16 Sep 2026 06:19:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB0726B00C3; Wed, 16 Sep 2026 05:50:23 -0400 (EDT)
+	id 3FB776B008C; Wed, 16 Sep 2026 06:19:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C93D06B00C4; Wed, 16 Sep 2026 05:50:23 -0400 (EDT)
+	id 2EB0E6B0092; Wed, 16 Sep 2026 06:19:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B4D66B0093
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 05:50:23 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 877BA1A067C
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 09:50:22 +0000 (UTC)
-X-FDA: 85219155084.25.7C2827B
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
-	by imf15.hostedemail.com (Postfix) with ESMTP id A978DA0004
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 09:50:20 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=UtDQJtEk;
-	spf=pass (imf15.hostedemail.com: domain of david.laight.linux@gmail.com designates 74.125.225.141 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789552220;
-	b=HpSx18uRsVGMAfxIX+SbB8dp2oxB/P96sT7cD6oB5SAYJZForBOtpp4O7FnuiHFtNT2RJ1
-	qkMkvhCpPHUevwFMh6ltem4Tfb+RHrRa2myImB0Ua3EigkkNKcL+H57tCqhmDdqjiszKTw
-	W8+srPHfDuxI7MvTJ3giHM2QJ0CXteY=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=UtDQJtEk;
-	spf=pass (imf15.hostedemail.com: domain of david.laight.linux@gmail.com designates 74.125.225.141 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 0463E6B0088
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 06:19:43 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0F5E940666
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 10:19:43 +0000 (UTC)
+X-FDA: 85219229046.30.281B126
+Received: from mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 72E0D20009
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 10:19:40 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	spf=pass (imf03.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789552220;
+	s=arc-20220608; t=1789553981;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=79YAdtaHEv3S3nDvYc6X9C5ar06F3FncZEtUncQdJQ4=;
-	b=G9EIjUU8Zxd4Nl2cROnURHD1bwm5aA/mUwk9YKXTGWKY5m9iyXkVwd3TvpPZrJx01wzy+l
-	04hoZ2y5PHKHi+mv/iW5FCcv5IVrBBapKmPHRd1I7PANvwvwEL79vYTvajR0Q7K3DCW0c1
-	EMlx4UQ7VV3uH0nN823jPvHzRKDjBco=
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e66390995so4145615e9.2
-        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 02:50:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789552219; x=1790157019; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=79YAdtaHEv3S3nDvYc6X9C5ar06F3FncZEtUncQdJQ4=;
-        b=UtDQJtEkS+QY3MYsSzeUf+Ncd3pOtaWGkAeIRwGtcJyzk12ztpqO4g/yiPfsvaimrJ
-         WUVzGA2w6Ln8JLzRatuo1PA7VmrK0kH9M5YoTx3HxTmzESNRrdtO93viB84K9fI1LyfV
-         Uyv9EJ+DKCeT+FUkM7HH55OilnaKU/caRV66VIUxE5/ATp05M6GxpqZgXAvWxMTkxoLO
-         6J50AldLtTSt2ICn6Xhcc8cVRU9Mydmi9r9RGRdgdybI7qBBLgwLfXCGxBp9m21AyB7w
-         7rfxy0tDEL+O7y4Y63eaIRoSiCeLA03WmJ/+AXfGpR/SWNirL63+UZGuI7bsKT0zcEOS
-         LFyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789552219; x=1790157019;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=79YAdtaHEv3S3nDvYc6X9C5ar06F3FncZEtUncQdJQ4=;
-        b=EjbTpnSx5pzSH9E0JiZiGNsc0nVOP6Gg7jeSA/mVUhab7/yUwveWwPrm/1PYUl6LoI
-         zfooXeCHQ1MiIuPB0OWItyYGNnDL8ZMueCyrpARaO6KKwFw66d8tXdscjux9LUzy4JXC
-         Or9KoKuBbHgm1vS1/MEET592h/4M0sbzIFc9HEDjoN917sA3vmbK0L4ipLP7S7XV9lA1
-         Kxbkvygs1SMVw26ZFduBZsSGvNLzRJKIpI0v9YFz8a3kGfOftv+2kRYretHxkKB1VKF8
-         +ndrgzjW5IiwrThPUONso45+1z/l6m2b2CPjzlZTO7p/h/AbmhWi/exzF9NM8laO1yV5
-         xUfg==
-X-Forwarded-Encrypted: i=1; AKwUvBx5+naGzp00p88mXiwEwc3KovOc0eYn2mREIGhHmFnhCvxLPF1hzMTwb1I4TEsSAYUb25l+l2PL0A==@kvack.org
-X-Gm-Message-State: AFuF++mFBadERnUvuqLROMQdjQbFUMLy7kBv6m/pA9OyJ7F/sj7xTxqH
-	FxAOwwsy9oLsdM6GUSalNeTL9en0b2Mnpf/rLYwCnjtsm11gG0RITlrn
-X-Gm-Gg: AYBFou0zMh6n71DuMo/6UMGTc6vxOtOWMAxuCTjBJhzE7iBm8c+k12xRyfzVfBiZvIz
-	Jo5kPWn+6LFAlJjxqf/XkZmOMTxh6N71hTk5r5QS3AHmHG8jxNGASYsMXAyNrGUJybiabo8iYsV
-	0M410oqi/6lKZPd2zId2Dw4s+fxF/lchpOR9RR11Dj3vGRkBnEMz6EMgBJQaoCZw91ZzPN4DeIW
-	QrFH7eNZUd4dxU6Sl1MHCTZeyh0HrGeJwgowQpLm385sphMZ9m7fxKuO590p4KuLXpip0ntSdVY
-	BHljwZIZZjj+My0b19AzgjaQ7looG4/uPjUV2aLdRC1+WUZqRuerYz0tAQ1hMCgNSSQtfcxB6Hp
-	XsVE4+SHsJLCxlgPkcBrgq0p0yab0zp4yhTaQSmD+2o3gGa8J1dUSrCNSPWhtGyKoXXcDyW5Bed
-	nHlwcOCba9TXI8DmYRx9cPh/0Stft6VsbnvW8jVkAJaQiNXGNrOBs5diKKFlC1hv1lDxQdi8aDN
-	ezkVpnr+y9VC8ud0MfacX5AXizfHJLMtqRRR3TqdD9QtgQ=
-X-Received: by 2002:a05:600c:4ec6:b0:49c:fea3:8633 with SMTP id 5b1f17b1804b1-49eb732aec0mr19444455e9.24.1789552219000;
-        Wed, 16 Sep 2026 02:50:19 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e83b02245sm84055225e9.10.2026.09.16.02.50.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2026 02:50:18 -0700 (PDT)
-Date: Wed, 16 Sep 2026 10:50:17 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Jann Horn <jannh@google.com>, Christian Brauner <brauner@kernel.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Ingo
- Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, Oleg Nesterov <oleg@redhat.com>,
- linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
- linux-hexagon@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org,
- linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-um@lists.infradead.org, Jens Axboe
- <axboe@kernel.dk>, io-uring@vger.kernel.org, netdev@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-gpio@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
- bpf@vger.kernel.org, David Airlie <airlied@redhat.com>,
- virtualization@lists.linux.dev, kvm@vger.kernel.org,
- kexec@lists.infradead.org, linux-hyperv@vger.kernel.org
-Subject: Re: [PATCH RFC POC 00/50] file: handle files on syscall exit
-Message-ID: <20260916105017.13ea5e36@pumpkin>
-In-Reply-To: <CAHk-=wi3Kkqgfg6zUTHpQoZNL2VOB4vYqpi6RX0WNO++29UtyQ@mail.gmail.com>
-References: <20260915-work-fd-reserve-unify-folded-v1-0-4d5217d6b246@kernel.org>
-	<CAG48ez1RsdT=O=-0city3vjgWhDvY424KtTmrCJntWy5ds3HBQ@mail.gmail.com>
-	<CAHk-=wi3Kkqgfg6zUTHpQoZNL2VOB4vYqpi6RX0WNO++29UtyQ@mail.gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=d/k2QwEHlu9GdoguTxDgcOGaFD5m3zZTSVSnJJvXJYw=;
+	b=49BuAkEbXW0oBR3rp1U4g3YCX660D4ttxvf0y9OcUvS4LJu4cd5QSxQc9iLvxos8sEeSII
+	2+1yXLtM/Ih37wu16nLm+5ZsHlCXUHMlgebGHmeX1s6ABWDinzcniqsrKx4wxsbrETuOtr
+	yE8j3jHNtG7f+WfCAze/zfsulW9zsrI=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789553981;
+	b=5PYqgZz4NbOFfMKl59DFrYZWUm/0Mmsq3NPDM5kCowMHX03PB4XMuSz54lX5K6UhKSzO7p
+	n21pZm4vZydotKxXktOuyBkT2uaQC+TR/lPCZ6SalQ/1VBboPKDk5K4nQdnOSR+tSjVW3S
+	C8XQGVQVDTNKWAvefEWK9iRZ1tbNIio=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf03.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id 8bd0561a397f3082;
+	Wed, 16 Sep 2026 10:19:38 +0000
+X-Mizu-Trace-ID: 8bd0561a397f3082
+X-Migadu-Flow: FLOW_OUT
+From: Baoquan He <hebaoquan@kylinos.cn>
+To: linux-mm@kvack.org
+Cc: akpm@linux-foundation.org,
+	chrisl@kernel.org,
+	kasong@tencent.com,
+	nphamcs@gmail.com,
+	baohua@kernel.org,
+	youngjun.park@lge.com,
+	hannes@cmpxchg.org,
+	yosry@kernel.org,
+	shikemeng@huaweicloud.com,
+	chengming.zhou@linux.dev,
+	baoquan.he@linux.dev,
+	david@kernel.org,
+	linux-kernel@vger.kernel.org,
+	kunwu.chan@gmail.com,
+	Baoquan He <hebaoquan@kylinos.cn>
+Subject: [PATCH v3 00/14] mm, swap: extendable swap devices (xswap)
+Date: Wed, 16 Sep 2026 18:19:07 +0800
+Message-ID: <20260916101929.149106-1-hebaoquan@kylinos.cn>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: A978DA0004
-X-Stat-Signature: fu8kmt74zraohp6hwcsapj914ts1wjxy
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 72E0D20009
+X-Stat-Signature: hcjy4qzzgmixfq4ynuagfiy8o6b75c39
 X-Rspam-User: 
-X-HE-Tag: 1789552220-995529
-X-HE-Meta: U2FsdGVkX1/GHWaHhyrvKiSbyZ1fktF37tO7uRzhJagqbhdfXJTSuRcS7DiesxJcBP5j5aavt7DMoxDcBsLFRwiiqr3G86c7h7xGNF3G9V7gv4KWFh76EGA8wFJuN1LhU1Tx1il1xLlEVVdNPEoPoGKIZ/ktUl7U7PSeS+moRIHuSJmWjw7d5PGqyyWkRhecRtdfGcZe5NPOi7Cucb6lptSFt1+K0WDv2YRaFDPFyyZFmib4lQSYD50yTLI4MBumrMeDZgtr4GW8b2mAqCkEy4vunJuvxTpYlwFZWqAqRiN1Kw+2Pya755zxm93F0LwF04pa5URJ8yOljxfVTrmdJrY8G+APKzoulbi+ngrib9/d768zUz3V5/QnjGPZbkE7m0EnkAgVpSZJOlxhv48/RjpQy2S0506vhQpS6nLDcEmBtovYv9xuD1vabXnlaKbJY2D6DVwqDe+yZHXaXwnQ2hfSxD5mWd6OvRzBIwWtkzXRtqFAAaXA9QHhAx+W/j8WOxb05XI9umPTRPp7agy75UFZO8oAAe8nXWhzLXU6RFk61/kED1uqxBF8ZVwJrOiQKVs/H5Q8rabLPmpjkIxfFgW0P4XcFDxmiOumzwS7XsHDqSOxYHP9M8K3ytaAMKf0W9EIt2LE0jKScdJT9TJHhfhA4H3uhjc/v+Hx5vJLsMukwYZe12HxmTbdhz/p2UGkoELj7e2+oOEM6J5Z8BGh7qAYiYV1WU7vSvPArf/IpfYu3W97mybQtyRVFxAGT3+3ET6uc41rs2fxZwzmsYR0pWQ/vKB2NNT7uQ4eOVRxJrlN4ERLNRmEKlGLHJTXtQ1lUSn4tCRsiD8BDWUvrAMJHB1Ios+OdkY2xcHmW4H/08hPPpkabmgjdx8Lw+nCpsAUthLKxU9A6EnUns1koM2yLUStkiH1n2aV+kWKBHE5Y3B7q1g5hwORZREBtrdhO/nZwsmYRI74JvyJvSS6r/J
- E8+GCDEY
- YgwdyH9/CQCwz5SoQPEuKA+T+E5W1kfGk4ksEPZpfg9TeCmCwlHoSz9b/1D5POwluM+JbIjGnlfp5owgY9D2yPrzHmmmay59gnp9Hal+L/lVDmYdhDcMgatYwfB6I4BvIzqYQ40SHu5nDsv7Y7W4nAr1kBnFcKZHogyGVDMOoV9iDoeRtqIMad3qLbwNd60kTAb9pfpsXkaoNbAgnYLynqMH8d3giS1fQDRv7HmYY2FOXFMIvYmHB1QZon5hz3LDzVtCDf13/ui+APipDmv7MRCPFUyFKKgyvoOpvfj2yWK8RdXjsvU8fdwBG/UHYLcxTDurWm/+oRb0mlLsyrfQtDhxDhWipaz8wj2ruFyGC+2sS/PsD4x63ADrzeN7XT5o5JdD8B98oL0P8FmFi4dSIV9BdI2DwWhDxilvFZzseF9KQYI4hxUWa7NPPlWYOJmQLV61KH6ga9vs26ciIMrHZMMMb+YmDNQdLFX8hX49j+8Xji7yoo9Zi05M5NOyyVloEyLePVAjO0iYf7Hc=
+X-HE-Tag: 1789553980-707728
+X-HE-Meta: U2FsdGVkX18DbBdzUFoUDlU6UnrEFl0vgMdcML2XUO7TOOT6rFWO9AaEPA5jQQDbc+h0SO4ehBocj2clWlccrWKsTgLxO0SBR19+ESLJqV7ZBeASRc4/BWrsBpvaAtg5jSreeVOG6iGzWowjN/Znnsht+dKlnjxjNmCT4RursV7vctCzBEjS/npVMRd/jeBKgCT3D/+wRefmx0gtPI574Y0p4eyF13nUvaJTacQrRgpBUgQu/dwshhuDDz6GJk6fZaiJu2nV/69RxAWH+d68sVjY0SzjLpEZpvQlpUIFzONJFunzuI4TL7KnqlL9Kj2iAKSWVIOQ7Be1xOFS1gMIDf5dBdRfSPSQTd27nL810opCKqCdcpki39o/lIEWOajldHCINRfmgn5TOM72ar1/f73LmK/vzwfcIx+5kHkVpigHscUZt8NdCyWuLLPpj0Et/6nUJY6UjdnPpKPaN7Ud6H/iJ8aTKRG8SL0lZsQX8NZtN318Ogd4FGAH+ZgtVFNOJNXiFKVuumWzNmyFPbCqFs0aNL3P8LPsiEmPG3i9vIgpaXzz41DXAOQihQ/mZsBRIQLJL4/NIUJgSm7VTh+kqpmA8pVutiPXMbbekaH4BVlBiSruwMj1kxqicAFS4rkO9xGtbMvilaoxGgMh3oHO5tdE+NHLt19TJGi0y8JK34hRq9so1uO/a41e5CJdiur/KIO8gDhcs0Nn/j+u1WSaBkMSSIb+GorJ9kCoheppNmTK+rZuVBlaVj1pQVIr4hsnU92yVMOeMHaux/T5sWQXhgf+o856vs6Au7BKtiPQTdIzie1ko1yjCPwChYUIFkvLZdf9MSgOKJ0hia3feJYnjAIqYfAURohr5VKZAsfFmsKZfnKXj4TH8k6eer3gtnuLhBCeIm0ut8AaklsPJnkSIfJC7wZ4/D35ANjmHPGVHkviCLFA3iYAflfXZ0a9n84uqODtF+kMj2xphobIHcP
+ k96Ar3CB
+ WtmhH+Idcx9GlGP+w27zTUVhzCAygNikF1EoCWxwS+XxdZCdf37Yf6SUQ4+I3rlAHtwwgGAk5rCztSohO0Fv+awbaTlqcb5INukjAEe+hg5DN3yGkClV+xBfXZxrX1V9adSWw4YinpQI5ZIeLIEoOTWi4zyOZPqiMUbvI6O1m7KAupR+JkWe7mp8Z+7iaKXYIXsTVRGUzOFdyq+/suVTMXZ0QLZOXSFpzoPvB9wm09mHbCbmS3/5apxBP+E1xfuzrnp4TN57zt4GoqrJnp49XxzuO4pe6/yzXUTNtAFMfhtb5cCPakabjNiI6fJxcko0ML3bVSzsxPd6rkbk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,61 +91,275 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 15 Sep 2026 12:08:57 -0700
-Linus Torvalds <torvalds@linux-foundation.org> wrote:
+xswap is a swap device with no backing storage. Swapped-out pages live                                
+in zswap. Its cluster_info[] array lives in a VM_SPARSE vmalloc area,                                 
+and the area is grown and shrunk on demand as swap usage changes.                                     
+                                                                                                      
+The problem being solved is the static size of compressed swap. Both   
+zram and zswap need the size fixed in advance, and neither gives memory 
+back when the workload shrinks. The solution should be a device whose
+size can scale up/down as per usage. xswap does that by mapping the
+metadata lazily instead of reserving it for the whole range.
 
-> On Tue, 15 Sept 2026 at 10:52, Jann Horn <jannh@google.com> wrote:
-> >
-> > Is this mainly about stuff like "we installed a file descriptor and
-> > then the following put_user() failed"? Because if so, I think a nicer
-> > fix would be to have a policy of "if userspace provides unwritable
-> > memory to a syscall, just keep going and pretend the access worked",
-> > and maybe have a sysctl that kills the process when this happens to
-> > emphasize that userspace should not be doing this.  
-> 
-> We've done that before, where we just ignore put_user() errors and the
-> user gets whatever the user gets.
-> 
-> It is maybe not optimal, but it's fine. You can find quite a lot of
-> unchecked put_user() calls with a pattern like
-> 
->         git grep '^[[:space:]]*put_user(.*);'
-> 
-> and some of them are in core code - see the two in kernel/fork.c, for example.
-> 
-> One of them says "if userspace has not set up a proper pointer then
-> tough luck". The other one doesn't even bother with a comment.
+Design   
+------                           
+- si->cluster_info[] stays a plain array. Access is still
+  &si->cluster_info[offset / SWAPFILE_CLUSTER]: no per-access branch, no 
+  RCU discipline, no tear-down state machine, no NULL return.              
+- Only an initial chunk is mapped at creation. The rest of the address     
+  space is reserved, not allocated, so an idle device costs nothing.
+- Growth is driven by allocation. When no free cluster is left and the       
+  address space has room, the next chunk is mapped and added to the free  
+  list. No userspace involvement.
+- Shrink is driven by frees. The free tail is scanned, and whole chunks
+  are unmapped once the mapped range is at most half in use and several
+  chunks can go. One chunk is left mapped as slack, so the next                                       
+  allocation does not map it straight back. A ceiling lowered below the                               
+  mapped range skips the half-in-use rule and is enforced at once.
 
-I think the code should try to return EFAULT (IIRC that is too hard
-in one of the exec cases).
-Otherwise very unexpected things might happen if the memory is just
-readonly.
-If you ignore the error and the pointer is invalid the application will
-get a SIGSEGV and (usually) die.
-But winding back kernel data because a user copy failed is likely to
-be problematic/difficult and at best have error path code that isn't
-really tested.
+Size
+----
+A device starts at 1xRAM, rounded down to the cluster. That costs
+nothing, because the mapping is lazy. The underlying address space is
+2xRAM. An optional per-device cap,
+/sys/kernel/mm/xswap/type<N>/limit, lets an admin lower the ceiling;
+the excess is unmapped right away. Grow and shrink both work without
+it. Creating a device requires zswap.
 
-As well as writing fd numbers to userspace, some sockopt code tries to
-wind back if the write to optlen fails (which has been read earlier).
+Interface
+---------
+  /sys/kernel/mm/xswap/create           write an optional priority
+  /sys/kernel/mm/xswap/destroy          write a swap type
+  /sys/kernel/mm/xswap/type<N>/limit    read/write, in pages
+The device shows up in /proc/swaps as xswap<N>.
 
-I've forgotten which Unix converted EFAULT to SIGSEGV in the system
-call exit code - I'm sure one of the ones I've used did.
+Note
+----
+Writeback, rmap lookup, etc. are consumers of this base. I have a
+writeback prototype on top of this base and will post it as a reference.
 
-David
+Testing
+-------
+qemu KVM guest, 8G RAM.
 
-> 
-> The scheduler has two cases too, although one of them is admittedly
-> for another error case.
-> 
-> So yes, saying "if you pass bogus arguments, you get what you get" is
-> a valid model. It's perhaps not the *preferred* model, but it's not
-> wrong.
-> 
-> It *would* be wrong to take code that already has error handling and
-> remove the error handling, though.
-> 
->                   Linus
-> 
+Tested create/destroy, raising and lowering the limit (including clamping
+when it is written below the pages in use), shrink with live entries, and
+2000 create/destroy cycles for leaks; all passed.
+
+The workload is memhog: it faults in N GB of anonymous memory inside a
+cgroup with a much smaller memory.max, forcing the pages to swap.
+Set MEMHOG_FILL=pattern: the default fill is all-zero pages that zswap
+compresses to almost nothing, so the device never fills.
+
+  # echo 1 > /sys/module/zswap/parameters/enabled
+  # mkdir -p /sys/fs/cgroup/xswap_limit
+  # echo max > /sys/fs/cgroup/xswap_limit/memory.swap.max
+  # MEM="MEMHOG_FILL=pattern numactl --cpunodebind=0 --membind=0 ./memhog"
+
+1. Create and destroy
+
+   # echo > /sys/kernel/mm/xswap/create
+   # swapon
+   NAME    TYPE  SIZE USED PRIO
+   xswap0  xswap 7.8G   0B   -1
+   # cat /sys/kernel/mm/xswap/type0/limit
+   2035199
+   # echo 0 > /sys/kernel/mm/xswap/destroy
+   # swapon
+   (nothing)
+
+   limit is in 4 KiB pages; 2035199 is RAM (2034976 pages) rounded up to a
+   whole number of clusters. The device starts at RAM, not twice RAM.
+
+2. The cap holds
+
+   # echo 2147483648 > /sys/fs/cgroup/xswap_limit/memory.max
+   # ( echo $$ > /sys/fs/cgroup/xswap_limit/cgroup.procs; eval $MEM 11 300 ) &
+   # awk '/SwapTotal|SwapFree/' /proc/meminfo
+   SwapTotal:       8140796 kB
+   SwapFree:         354012 kB
+
+   The cgroup runs out of room before the device does and the OOM killer
+   takes the workload — that is the pass signal. SwapFree never exceeds
+   SwapTotal, so nr_swap_pages never goes negative.
+
+3. Raising the cap
+
+   # echo 3052543 > /sys/kernel/mm/xswap/type0/limit
+   # awk '/SwapTotal/' /proc/meminfo
+   SwapTotal:      12210172 kB
+   # ( echo $$ > /sys/fs/cgroup/xswap_limit/cgroup.procs; eval $MEM 11 300 ) &
+
+   No OOM this time: 2473705 pages in use against 2034976 pages of RAM, so
+   usage goes past RAM.
+
+4. Lowering the cap below the pages in use
+
+   # echo 1000000 > /sys/kernel/mm/xswap/type0/limit
+   # cat /sys/kernel/mm/xswap/type0/limit
+   2426879
+   # awk '/SwapTotal|SwapFree/' /proc/meminfo
+   SwapTotal:       9707516 kB
+   SwapFree:             860 kB
+
+   The write is clamped up to the clusters covering the pages in use, so
+   the free slots in the partially used top cluster stay accounted for.
+
+5. Shrink with live entries, then destroy
+
+   # echo 4069887 > /sys/kernel/mm/xswap/type0/limit
+   # sleep 60
+   # awk '/SwapFree/' /proc/meminfo
+   SwapFree:       16279548 kB
+
+   The shrink unmapped the tail — the state find_next_to_unuse() must
+   survive. Put live entries back and destroy:
+
+   # ( echo $$ > /sys/fs/cgroup/xswap_limit/cgroup.procs; eval $MEM 3 300 ) &
+   # echo max > /sys/fs/cgroup/xswap_limit/memory.max
+   # echo 0 > /sys/kernel/mm/xswap/destroy
+   # swapon
+   (nothing)
+
+   dmesg stays clean across create, shrink, swapoff and destroy.
+
+6. 2000 create/destroy cycles, diffing /proc/slabinfo before and after:
+   the largest growth is 142 objects. One object leaked per cycle would
+   be 2000.
+
+Performance
+-----------
+(qemu KVM guest, 8G RAM, zram as the swap device)                                                         
+This series should not slow down a kernel that never creates an xswap
+device. I measured that overhead by comparing the base tree with this
+series. Both were built with the same .config and CONFIG_XSWAP=y, and no
+xswap device was created. I ran three 3G MADV_PAGEOUT workloads, three
+rounds each, alternating between the two kernels across reboots. I
+counted retired instructions per page swapped out with perf stat:
+
+  workload                      base       series     delta
+  swapout                       50824.8    50866.2    +0.08%
+  swapout and swapin            63770.4    63796.8    +0.04%
+  swapout into a full device    67729.9    67707.8    -0.03%
+
+Two runs of the same kernel differ by less than 0.1%, so the differences
+above are real, not measurement noise. I cannot use wall clock time for
+this comparison, because two runs of the same kernel differ by more than
+the two kernels do.
+
+Changelog
+=========
+v2 -> v3:
+- Rebased onto the latest mm-new.
+
+- The grow path now honors the user-set ceiling (si->nr_clusters) instead
+  of growing up to nr_clusters_max, and a ceiling below the mapped range
+  is unmapped exactly instead of rounded to a chunk (patches 12 and 14).
+
+- The limit write clamps the ceiling up to the clusters covering the pages
+  in use, replacing the earlier WARN_ONCE; si->pages becomes mutable at
+  runtime (patch 13).
+
+- Minor comment and cleanup changes.
+
+v1->v2:
+- Patch 1 (mm: zswap: return -ENOENT when the swap device is gone) is not
+  part of this series; it was posted separately.
+
+- There is only one size knob now. The runtime ceiling and the debugfs
+  per-device limit are gone. All that is left is the optional per-device
+  cap, /sys/kernel/mm/xswap/type<N>/limit. Grow and shrink work without
+  it.
+
+- The shrink no longer keeps its own count of the free tail. It scans the
+  tail instead, and dropping the counter also removes a call from the
+  cluster allocation path.
+
+- The priority is no longer a patch of its own. The create attribute
+  takes it:
+    echo 100 > /sys/kernel/mm/xswap/create
+
+RFC v3 -> v1
+- Add patch 16 to support setting xswap device priority at creation.
+  The create sysfs interface (/sys/kernel/mm/xswap/create) previously
+  hardcoded every new device's priority to DEF_SWAP_PRIO, it now
+  accepts an optional priority:
+
+    echo "<percent> [<prio>]" > /sys/kernel/mm/xswap/create
+
+- Bug fix: xswap_lock init ordering. mutex_init(&si->xswap_lock) was called
+  after xswap_map_clusters() (which locks it), i.e. locking an uninitialized
+  mutex. Init now before the first xswap_map_clusters() call. Thanks to Klara.
+
+- Bug fix: Fixes a compile error in !CONFIG_XSWAP builds. xswap_debugfs_root
+  is declared inside CONFIG_XSWAP ifdeffery scope, so the ungarded use
+  caused error when CONFIG_XSWAP is off.
+
+RFC v2-> RFC v3:
+- Replace the "header-only swap file + swapon" creation hack with a
+  proper file-less device created and destroyed via sysfs
+  (/sys/kernel/mm/xswap/{create,destroy}).  This required the
+  __swapoff() refactor and the free_swap_cluster_info() signature
+  change (patches 4, 6, 14).
+
+- Require zswap: refuse to create an xswap device when zswap is
+  unavailable (patch 15).
+
+- Split the unrelated zswap -ENOENT fix out of the series into a
+  standalone patch (patch 1).
+
+- Fix nr_free_tail over-counting on concurrent grow, shrink leaking
+  detached clusters on early bail-out, a re-init race on cluster
+  spinlocks in xswap_map_clusters(), the nr_clusters_mapped update
+  ordering, and swapoff accessing the shrinker-unmapped cluster tail.
+
+- Minor cleanups (checkpatch, /proc/swaps alignment, commit messages).
+
+RFC v1-> RFC v2:
+- Added __GFP_HIGH | __GFP_NOMEMALLOC to alloc_page() and kmalloc_array()
+  in the grow path, plus memalloc_noreclaim_save/restore() wrapping,
+  to prevent the grow path from consuming emergency memory reserves
+  or recursing into swap under PF_MEMALLOC. This is folded into patch 3.
+  This was pointed out by Nhat.
+
+- Folded the mutex serialization fix into the cluster grow patch (patch
+  3). This is suggested by Nhat.
+
+- Fixed coding style issues: corrected indentation of declarations in
+  xswap_unmap_clusters(), removed unnecessary block scope around the
+  err variable in xswap_map_clusters().
+
+- Rebased onto mm-unstable
+
+Baoquan He (13):
+  mm, swap: add CONFIG_XSWAP and xswap fields to swap_info_struct
+  mm, swap: refactor free_swap_cluster_info to take swap_info_struct
+  mm, swap: add xswap cluster grow via VM_SPARSE vmalloc
+  mm, swap: add sysfs create interface for xswap
+  mm, swap: add xswap grow trigger on cluster allocation
+  mm, swap: add xswap_try_shrink and shrink trigger on cluster free
+  mm, swap: free backing pages in xswap_unmap_clusters
+  mm, swap: defer xswap shrink to workqueue to avoid lock recursion
+  mm, swap: refactor swapoff and add xswap_destroy
+  mm, swap: require zswap for xswap devices
+  mm, swap: cap xswap growth at nr_clusters
+  mm, swap: add sysfs per-device size limit for xswap
+  mm, swap: shrink xswap to the ceiling when it drops
+
+Chris Li (1):
+  mm: xswap support for zswap
+
+ include/linux/swap.h |   26 +-
+ mm/Kconfig           |    9 +
+ mm/page_io.c         |   19 +
+ mm/swap_state.c      |    4 +
+ mm/swapfile.c        | 1240 +++++++++++++++++++++++++++++++++++++-----
+ mm/zswap.c           |    7 +-
+ 6 files changed, 1174 insertions(+), 131 deletions(-)
+
+
+base-commit: baa8de2f3448d1466a888a805c18d01c998fe052
+-- 
+2.54.0
 
 
