@@ -4,141 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4BCCC88E77
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 06:41:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5679EC88E77
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 06:43:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 816DA6B0093; Wed, 16 Sep 2026 02:41:10 -0400 (EDT)
+	id 201F26B0088; Wed, 16 Sep 2026 02:43:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C7F36B0095; Wed, 16 Sep 2026 02:41:10 -0400 (EDT)
+	id 1B2606B008C; Wed, 16 Sep 2026 02:43:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 690296B0096; Wed, 16 Sep 2026 02:41:10 -0400 (EDT)
+	id 0A73D6B0092; Wed, 16 Sep 2026 02:43:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4862F6B0093
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 02:41:10 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 01D7FC0196
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 06:41:08 +0000 (UTC)
-X-FDA: 85218678258.06.29BB4D8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 210A140006
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 06:41:06 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="YRcOO/aY";
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789540867;
-	b=5SrhPqIzmrxXDkoKEnpEl0Cp+xoR9+28ODyMKAeOhBYZP4vt/xZ3h/CRlZHQ2tCfL0mJyT
-	GKomvQ4wdXhuieGAO5K4Z520JqLYbwnRZPYXwqGuPfWN7ETpS35dOzFmb/P1bgKqJBnS1p
-	XfFjp2lWjdKZ11KZ8+iwsWun9da+cXI=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="YRcOO/aY";
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C83356B0088
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 02:43:54 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 57CCE120623
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 06:43:54 +0000 (UTC)
+X-FDA: 85218685188.14.FAE638F
+Received: from mail-pj2-f43.google.com (mail-pj2-f43.google.com [74.125.227.171])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 32AF180004
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 06:43:51 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=Mm9iq9gb;
+	spf=pass (imf30.hostedemail.com: domain of songmuchun@bytedance.com designates 74.125.227.171 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789540867;
+	s=arc-20220608; t=1789541032;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=N4r+Pqiu+h2areqlWCR+raj1oLk7aj/ORIoUigQPd4M=;
-	b=CxzhqrkSHAzYzsYQgyYm2aZa4DOXX8OpstN2dY61BlA8mCpbhDm9vSLuMqGJU0M1xH7n9O
-	ybiqIPQ7VTGEFCbsqBzDTPrGELSWChh1q24KDx0yVtIlSTKIl+n7+Ro/ZvCcSUKtsWuNQp
-	vuWuk0ZiknJlCxkMqvmHXSpSC8Mxvag=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4BD9741A8F;
-	Wed, 16 Sep 2026 06:41:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 780051F000FF;
-	Wed, 16 Sep 2026 06:41:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789540866;
-	bh=N4r+Pqiu+h2areqlWCR+raj1oLk7aj/ORIoUigQPd4M=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=YRcOO/aYEgAieFRd9TV4em1CiMPNL4yZ2IxWt5FVOqBdT1E1LDqTvqSiNqefv5alX
-	 QJ7IfkAR3/rt5P+BVHbG06ZmBdqimeMXUP1aFFGJSIkkgBeVWgHt9UlzN6YLThTClw
-	 EMhmq2G6roomk/lKD1LtDv5TMZtuJmLtJIWd5oxHF1x6/CgKNzwQ53hniKCw3wUE4k
-	 dTxwpeoE2Kne023rPO7AcasjqcOb4syUVFvmF+QbVLtZFh04XbXJ1noxsUNUZrt98i
-	 Yn6w45hHVHb4sJDClSpTxnzvLWCSgzvMCQ8P8Qh+RM2/zsmZ5zrma/Pnmo1vJ3L4zr
-	 72RjjehxGchPg==
-Message-ID: <db48325a-6eea-4924-916e-5da06bd31e47@kernel.org>
-Date: Wed, 16 Sep 2026 08:41:00 +0200
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=0LtIEs9A+1i71VGLOsFyci15iFpT6FPKjskDwO0GIQg=;
+	b=GLutLBQEuRR8TRfxATRIAaFdg2UcQoDNHO3obllJwt6tfal+a8RpPJatCF2SuZ4KgMbXAp
+	DZ6fmfcQNHhSvENy4LSdwNMKEJyU+PYbWX6OfIs/c0GOJwe5XSYVCSM+d4/qJQZHphZI1S
+	Zi6FC4L/4sMsyXAxAF77oAawGnjtNdA=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=Mm9iq9gb;
+	spf=pass (imf30.hostedemail.com: domain of songmuchun@bytedance.com designates 74.125.227.171 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789541032;
+	b=BKoTMPJke74HdYlEx1HP+fV+ygR5Mc1ySy5SYa9EAG1dLTHbqcVWyLWFa5lbToD9ge+sw+
+	lQ+oBrQFsdK+yDfaqSxIhkrjh4cMmjq5qh7vFKmrnugtA20k0/YxzpnhYGtE2ymCL1XM/F
+	2UEL2Xh7W4EnqTA/pabuciNDFVFpJJM=
+Received: by mail-pj2-f43.google.com with SMTP id d9443c01a7336-2dd88a115c1so6141635ad.3
+        for <linux-mm@kvack.org>; Tue, 15 Sep 2026 23:43:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1789541030; x=1790145830; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=0LtIEs9A+1i71VGLOsFyci15iFpT6FPKjskDwO0GIQg=;
+        b=Mm9iq9gbK9FipDoLow9VrBjm1zH0wLQtR0ElE3/kNlstANMoRA/b8aVUGDzQsJa6b/
+         qgMjGpgql84RMmRAAjqgV6MIa9aCIpHPJdR4qfYH5GxYtZJqSi8ujv6sEN1lBx80Cv9W
+         gufHL02Zo1OGtQYCOPgi2wucA5hxr7DEU9YH3B24jbKNHB4WSMV1znIUn5/kDfR4G/fi
+         SFxjY8LZ6SfT6GwK840FtBZ8TUk6DrIE60ZDECGMLNU+T0uAkOM3Qy22fx+X22+JBNq+
+         RZ5KC6syMv1zLmRKDUEvSkgcUK2VYr1RvB1pRDdDQ/glTJOUwUuA8bBfT1WpTGDumuCI
+         Vwzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789541030; x=1790145830;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=0LtIEs9A+1i71VGLOsFyci15iFpT6FPKjskDwO0GIQg=;
+        b=R+h3QOya5EugMPstb13VqxEMg0SsVLzVR5kxIj6PJO8DUY/r7ZoaxwbINSBpCp/Z4C
+         w7mVg8kILUr7s1DNcoCTFfQR5bnfNu/9RPmONJvZl9YxYPzzxGZyUXP65Oi5Ny1yP8fc
+         HLob7YysYTF8Nq4hW3CCu70m52JUYJw2THU61tkSNlH3FLekAFRDp0g5O/YcETAQxLLr
+         xrBhOBy49j/B0RIYAf+KXcgOg3XTlfAcCqT9lzMUEIxDZvZ9A8Dy3BCbY5ye3YLDyk0s
+         +vOlzmc27XWyvOQDAi21kNFyK32Z8FdbvI7xSSzMqZ/uYk5VlDCx7xvx8h23wy4DCQ+5
+         SWzw==
+X-Gm-Message-State: AFuF++laLEYl1iLHxY20K2dZeTBmCQPcwBU568GRz3ARMMlC58IWJTHE
+	GffmIucJ9wM9lqCLxckzUVAiB+Oyg/w1uJo/huZYePMYCzA5KOL1rdBqHKSVdiD+tPQ=
+X-Gm-Gg: AYBFou2IUsDAwtl6rCrSSzbGFz5Dp4+4+KUY7Ci8PQJX8XqqGPGlq4Chuysc9kbs3ho
+	1b0O7EH5V36UqI1/MP1wnhzMsgNnBzbYmWEf0LHQL+bs/RkJkQAynKeyZDR9kCcXWpOqo8Yy/vd
+	6cbqV5sMgfQNLODFa+n6wqeuHlLcwZSnAbAMzFWIhEyc6uNYCuBHEpi0mVv/figYWi8HcD36XC8
+	mTWmKCr4+1A4NUcwsP/1mqtIbaLnqFijGzoU5v4UG0gxkHq/UkS6adN55WYUKM+GtmLFIu+nBo5
+	5oSx3t1Dp6X/3tsRAoo7ZFy7DUIk3q/Bk6/aacPYnZQCjPvjoX5yC2Y+a5YxO0G/4+HtVHfmiLU
+	A70VDGZIotbUP/fv8N9LHQXq2yXal4y5DFWq3ICZbSgesiG5+knNDeR7IKp+dv3q71rDhplZUHh
+	jujy4BNEz+neC3Ojv5PF6cAombMkB3qxF17ZjvojMiARs4B6creT4UJnSV3VRYouIRF2l0gvBn0
+	D6ma5mAZ3sBmQDO8LE=
+X-Received: by 2002:a17:903:22c2:b0:2d9:3083:a3ac with SMTP id d9443c01a7336-2dd8e52c3aamr26882255ad.15.1789541029585;
+        Tue, 15 Sep 2026 23:43:49 -0700 (PDT)
+Received: from n232-176-004.byted.org ([36.110.163.98])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dd89f0592asm6074755ad.62.2026.09.15.23.43.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Sep 2026 23:43:48 -0700 (PDT)
+From: Muchun Song <songmuchun@bytedance.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Jonathan Corbet <corbet@lwn.net>
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-doc@vger.kernel.org,
+	Muchun Song <muchun.song@linux.dev>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Muchun Song <songmuchun@bytedance.com>
+Subject: [PATCH v4 00/11] mm: Switch device DAX to section-based vmemmap optimization
+Date: Wed, 16 Sep 2026 14:43:30 +0800
+Message-ID: <20260916064341.1825793-1-songmuchun@bytedance.com>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] kselftest: mm: fix intermittent failure khugepaged
- test
-To: Yeoreum Yun <yeoreum.yun@arm.com>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>
-References: <20260915-fix_khugepagd_fail-v1-0-bb6f04c8759f@arm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260915-fix_khugepagd_fail-v1-0-bb6f04c8759f@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 210A140006
-X-Stat-Signature: c6ysck74ya64sajs9ystzwhyz1h98a5f
-X-HE-Tag: 1789540866-952513
-X-HE-Meta: U2FsdGVkX1/erO2pfUPQC87Q41uWV4XFP7qCjjxXySj+hVdD6oWpZ75d6uz2YLVWEwvOh+fR7bAXPrnjVwrJcAI3ShZIHMJF4CxdPl6RHLuhgW8VtA2zQ5j0ZGmQ/75FJBrDuZhg55JIUO+34XpAObBU0VIWYyTQpFi7falLq8YuDlsabh4A+1IX/A6wBJAfsjkQATzZJP8P+4zVbsTM4iAbc6pOGlpZ4uDy6vvaMYi54V5MbGUIIJ9Sc04p1dM8qC2/FPdYBD9iYJgeT7DpDZD3HZSfC9Ykl4T1dWuavW2nmvMdcYbl/FDDvcVW/7evloEu96iwF7GP21jw9TLp19lwyWZ8J0U4pf/Befidbxv9R8C5ZAH2se/1mxb4hNF9mRQxsxbVFoAa6a6NesFzykMrfZ0S2pvbihYv8PD3OWA/wrgr2q07EnRR8oMwO7Zq567oZmXW50ImnYyrfjeiKPkNtUtmaV5N1k6Yw35qwTCDzztWYLHF2G/qhtHFbA0N90tvASlboI7MMYGrE8qYqAIi7ILAE5bJZUG7G8CsYLJkx34VQt1vR67vbaIH6Eva0yoAbPFP3UmiG95pgbqW6ABZxqnR6526i7hPWeOTykKH41OHMtD5KBUoPkEbRSkzh2S8M43/AFqLT5f1OLpbK6tlzIF6KAvPVfkU02RVs1bDTVy3NOpS1rLJ+MA4NsIYNhL7G7Z5J6X7XQUZDlTcBX7Qp3D88ExMl5zXbsPx7vACYwTULxWzpGiPHr2Fh3m2qkucruhyJbH0/mK9BMkESi5v2DbafbAwB8nmu6b66sLkzxD53/1KEt7QagxTI8PvgbLeokgSoEw5UA3tm+fpuEFrww+9b9da98a5gtqktfa8gBqxY+K6xo+8IhoCAIvW6jFvhhJjOuDcereBA7su1rA1VcABKxu9cwv7c0ly93nxgtfqOm72Vu6a4wLLHQLPhDxKDhaNn3wMmPI9U2g
- 8j9qyzdW
- i3gJoTHITq+chaOIH6sjvUtsrNDeIKgk2wNcVsDnfTrdCnXE5yOY9wbnvBWWw1SQxsb9nGgDCiFY+P1F0i+kWzvyZya0rWoAfTbHj+/25vcfmWlcEsrt+nmuE6DBMZ4cLTBpx/lpYDXFoUuKVcHJz2/8C6mufMcBwYiD3svUTOa+wrPqnac3ae8FVNArEv7nk3KI2AwEe2mM3BTN0t98MEoRtlQ0wvm45CR+y/dgYDMiTcd8qfKi1B05uybIweB4fAt5ve7IR3gL/B+4=
+X-Stat-Signature: 9h7ktw1mftkbnuq37rzj1uk8sygzcf5m
+X-Rspamd-Queue-Id: 32AF180004
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789541031-635373
+X-HE-Meta: U2FsdGVkX1+jIgxrQ+UZhjJoI9VJFbj6sql60UBNGorZulVYozeXr13ke9Xah/y6grlEduQB2A6VQStZKflLS5pAtxOi8KfzGfAiImgZyCfkzLUSs5Ek8acApCwsqMsGKIqkryfZuE6lupz2Ll2gUFew1kvaydc1nsz9su6JNCfxDf9WBgT7woMU8qov52twe0av7zCxbR9p1m/+dbZOp5hMIGVkhuBBHD11L5Np3B9m7MkQvTkt0I1RE2UmbAvB4i6rSlFfsXd9M1xxPCCSpAov8KHVhtCkxNyy+fzJ1AIPnrmMhqGg3kg2Sq0MEb8ltxcUaIeFvQl1YEkoJL1gvYZ+TCTfUA5jdynqVGo146GLl5JilhSIn5Q23BeKXxYGKRrFQzS4VlxetgiRFQsIPUcu74hslr1AGimZnVPgseU1vLHYZ2KiSvgmH9F+36iHJHMv0wc1/g5onbe/kr5b1/LA38t0njx3cznczNTshspvIDG/F2ThsgBZThpFWdeykiRK3OYLcqKkvF16WiWpKl0TtUiVqFHPmkXWhk2ZrCxqcQwHlUXtvx5Ipub7Ttcm3Qh/iVremgP+PGnTW3m4EHzVxA2LdMsaFM+ekEDUqPAo1mYBxdmJcbhnPaOwGBldnK4mz++2BWCxNS9/D4zT2kHr/qzioFQHsGmONSglYtMyabng9AwTWAOuUgxNbNUPiSwD3IeoWAB2LYarBgjiJbQ/ugJBG95v0qGcdTLCg1JlUF4Wi6j3msXLKsvM8D9p2Umr9RwA94+0jPYRzc+iTN2+NnPD4M0+cUKU1PAl+g4+5asuzuab3ESeXDtlhlZIGrmpLg7CSM9/QhS86CuCt6imAdVcm8ZLL9LZxMBZdlZtfgfIDa0/IoO1FwbJEihkfYa1hgEcDx27emtR10Gs/DMdKkO1CiEsoGyj5B6TO9Z3l91MtBrhUB2wFKKGDYTfEGJwsZ/Oe6bac7yYl0D
+ huHPFIVp
+ b+kfJEGQV63XdBn5WdtyKYP0O4RlEXN9Op0LUwG2l6J+WjCtUS7oYc3wKZ4DC9MTKuxqgEGBm5Z2M1NLVXBVwCM4chWTUdWkalkCuvHzkfxZjj8/bEQ1OG9YWjawMLCUiXKo3SOYFIfKUmKJsBaQkDkC/OEnutnam6MlEJJ24J6R75gHu3szk7remIhIQPusDLSQGy0PdvtS3aTeZf7pIv97EXFkHVo0B9o7WCSwUdJRunJKoH2ey4sPGD/IyQ3FhSRQqJVGJ82ZBTbgUJuKj5MUDxDuphXuREeXd1/6vm7S8ZijEjeZ7sinVUW0HdLecJnlTvXa61IzbFxA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,45 +129,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/15/26 11:21, Yeoreum Yun wrote:
-> There are intermittent failures in collapse_max_ptes_swap() and
-> collapse_max_ptes_shared() when using the khugepaged_context:
-> 
->   # Run test: collapse_max_ptes_shared (khugepaged:anon)
->   # Allocate huge page... OK
->   # Share huge page over fork()... OK
->   # Trigger CoW on page 1023 of 2048... OK
->   # Maybe collapse with max_ptes_shared exceeded.... OK
->   # Trigger CoW on page 1024 of 2048... Fail
->   Bail out! Unexpected huge page
->   # Planned tests != run tests (26 != 23)
->   # Totals: pass:23 fail:0 xfail:0 xpass:0 skip:0 error:0
-> 
->   # Run test: collapse_max_ptes_swap (khugepaged:anon)
->   # Swapout 257 of 2048 pages... OK
->   # Maybe collapse with max_ptes_swap exceeded.... OK
->   # Swapout 256 of 2048 pages... OK
->   Bail out! Unexpected huge page
->   # Planned tests != run tests (26 != 17)
->   # Totals: pass:17 fail:0 xfail:0 xpass:0 skip:0 error:0
-> 
-> This happens because khugepaged may collapse the pages before wait_for_scan()
-> is called, causing a sanity check that expects uncollapsed pages to fail.
-> 
-> For example, in collapse_max_ptes_swap(), after faulting the pages back in
-> and paging out up to max_ptes_swap pages, khugepaged may collapse them again
-> before c->collapse() is called.
-> 
-> To prevent this, change the khugepaged setting from ALWAYS to MADVICE for
-> the affected tests, and mark the VMA with MADV_NOHUGEPAGE after it has been
-> collapsed by wait_for_scan(). This prevents khugepaged from collapsing it
-> again before c->collapse() is called.
+This series is split out from the earlier, larger series "mm: Generalize
+HVO for HugeTLB and device DAX" [1]. While the parent series generalizes
+vmemmap optimization across HugeTLB and device DAX, this subset addresses
+a single, self-contained step: switching device DAX to the section-based
+sparse-vmemmap optimization infrastructure introduced for HugeTLB.
 
-ALWAYS also respects MADV_NOHUGEPAGE, so why is the ALWAYS -> MADVICE (MADVISE)
-change required?
+After the HugeTLB conversion, optimized vmemmap state is described by
+the memory section and the sparse-vmemmap population path can allocate or
+reuse shared tail vmemmap pages based on that metadata. Device DAX still
+uses the older DAX-specific population model, including a separate tail
+vmemmap page reservation and architecture-specific logic to locate or
+populate reusable tail pages.
 
+This series makes device DAX use the same section-based model. Device DAX
+records the compound page order from pgmap->vmemmap_shift in section
+metadata before vmemmap population, uses the common per-zone shared tail
+vmemmap page, and drops the extra reserved tail page. The powerpc radix
+path is updated to use the same shared tail-page helper, so the generic
+and powerpc DAX paths follow the same reservation model.
+
+The first patches prepare the shared infrastructure by introducing a
+generic CONFIG_VMEMMAP_OPTIMIZATION symbol, factoring out shared tail-page
+allocation, and keeping the special shared-tail struct page initialization
+local to sparse-vmemmap.
+
+The middle patches move device DAX onto that infrastructure by recording
+the device DAX compound page order in memory-section metadata, using that
+metadata to back generic device DAX mappings with the common per-zone
+shared tail page, exposing the shared helpers so the powerpc radix path
+can use the same model, and dropping the extra DAX-only tail page
+reservation and the now-unused section accounting arguments.
+
+The final patch updates the documentation for the new DAX layout.
+
+This is intended to be the third smaller step toward the broader HVO
+generalization. The wider HVO consolidation between HugeTLB and device
+DAX is left for follow-up series.
+
+[1] https://lore.kernel.org/all/20260513130542.35604-1-songmuchun@bytedance.com/
+
+v4:
+- Rename CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION to
+  CONFIG_VMEMMAP_OPTIMIZATION (suggested by Mike Rapoport)
+- Collect Acked-by tags from Mike Rapoport
+
+v3: https://lore.kernel.org/all/20260911050228.58884-1-songmuchun@bytedance.com/
+- Use EOPNOTSUPP for partial additions to sections that already use
+  optimized vmemmap mappings
+- Move device_zone() after NODE_DATA() to fix non-NUMA builds
+- Collect Acked-by tags from David Hildenbrand and Qi Zheng
+- Rebase onto mm/mm-new
+
+v2: https://lore.kernel.org/all/20260908030335.96549-1-songmuchun@bytedance.com/
+- Add a missing SPARSEMEM_VMEMMAP dependency (suggested by Qi Zheng,
+  reported by Sashiko)
+- Add an explicit ZONE_DEVICE dependency for DEV_DAX
+- Add missing dependencies to the new public header
+- Explain why optimized and ordinary layouts cannot share a section
+  (suggested by Qi Zheng)
+- Explain why sharing tail vmemmap pages is safe for DEV-DAX (suggested
+  by Qi Zheng)
+- Clarify the removal of duplicated 4K PUD calculations from the docs
+  (reported by Sashiko)
+- Collect Acked-by tags from Qi Zheng
+
+v1: https://lore.kernel.org/all/20260831075342.57563-1-songmuchun@bytedance.com/
+
+Muchun Song (11):
+  mm/sparse-vmemmap: introduce CONFIG_VMEMMAP_OPTIMIZATION
+  mm/sparse-vmemmap: factor out shared vmemmap tail page allocation
+  mm/sparse-vmemmap: open-code init_compound_tail()
+  mm/sparse-vmemmap: prepare DAX vmemmap population for compound page
+    orders
+  mm/sparse-vmemmap: set compound page order for device DAX
+  mm/sparse-vmemmap: switch device DAX to shared tail vmemmap pages
+  mm/sparse-vmemmap: move vmemmap optimization helpers to a public
+    header
+  powerpc/mm: switch device DAX to shared tail vmemmap pages
+  mm/sparse-vmemmap: drop the extra tail page from device DAX
+    reservation
+  mm/sparse-vmemmap: drop unused section_nr_vmemmap_pages() arguments
+  Documentation/mm: update DAX vmemmap deduplication docs
+
+ Documentation/arch/powerpc/vmemmap_dedup.rst  |  90 ++-------
+ Documentation/mm/vmemmap_dedup.rst            |  32 +--
+ MAINTAINERS                                   |   1 +
+ arch/powerpc/mm/book3s64/radix_pgtable.c      | 124 +-----------
+ arch/x86/entry/vdso/vdso32/fake_32bit_build.h |   2 +-
+ drivers/dax/Kconfig                           |   2 +
+ fs/Kconfig                                    |   1 +
+ include/linux/mm.h                            |   6 +-
+ include/linux/mmzone.h                        |  23 ++-
+ include/linux/page-flags.h                    |   5 +-
+ include/linux/vmemmap-optimization.h          |  94 +++++++++
+ mm/Kconfig                                    |   4 +
+ mm/hugetlb.c                                  |   2 +-
+ mm/hugetlb_vmemmap.c                          |  30 +--
+ mm/internal.h                                 |   9 -
+ mm/memory_hotplug.c                           |   6 +-
+ mm/mm_init.c                                  |  17 +-
+ mm/sparse-vmemmap.c                           | 184 ++++++++----------
+ mm/sparse.c                                   |   3 +-
+ mm/sparse.h                                   |  81 +-------
+ 20 files changed, 253 insertions(+), 463 deletions(-)
+ create mode 100644 include/linux/vmemmap-optimization.h
+
+
+base-commit: 48cd55c7cb7b6a674cb94c2d65864088877f9279
 -- 
-Cheers,
+2.54.0
 
-David
 
