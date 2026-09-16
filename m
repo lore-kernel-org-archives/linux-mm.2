@@ -4,119 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F7D4C982C9
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 15:40:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F145C982C9
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 15:41:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6320C6B0093; Wed, 16 Sep 2026 11:40:04 -0400 (EDT)
+	id ACB106B008C; Wed, 16 Sep 2026 11:41:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E23E6B0095; Wed, 16 Sep 2026 11:40:04 -0400 (EDT)
+	id A79136B0092; Wed, 16 Sep 2026 11:41:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D0856B0096; Wed, 16 Sep 2026 11:40:04 -0400 (EDT)
+	id 982B86B0095; Wed, 16 Sep 2026 11:41:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 297506B0093
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:40:04 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4383A8077A
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 15:40:03 +0000 (UTC)
-X-FDA: 85220036286.08.B91F7A2
-Received: from mta0.migadu.com (out-11.mta0.migadu.com [91.218.175.11])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 074C1120011
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 15:40:00 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=S2GkJ7ud;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf29.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.11 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 44EDC6B008C
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:41:42 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 578A01A0787
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 15:41:41 +0000 (UTC)
+X-FDA: 85220040402.23.A788986
+Received: from mail-pj1-f99.google.com (mail-pj1-f99.google.com [209.85.216.99])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 133BB160013
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 15:41:38 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=broadcom.com header.s=google header.b=fzVd5DEh;
+	spf=pass (imf08.hostedemail.com: domain of zack.rusin@broadcom.com designates 209.85.216.99 as permitted sender) smtp.mailfrom=zack.rusin@broadcom.com;
+	dmarc=pass (policy=reject) header.from=broadcom.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789573201;
+	s=arc-20220608; t=1789573299;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8rNAbUEn+P2bvvYOlZ5debpHxHDk94L90O6Ky42mqxw=;
-	b=dzFvkV3lR0++fjkbdTFtQiIwwKFOIxmmmYW/D0MY2SSHyblWXE7CuhjxP+hYgKerQqUlMS
-	77jGZpZOIYu00szaLkHUvKt4jwFNW1JW2hR1qPC+rvY3WBP2YFlHcqVNr+fdMKp7+GPtRX
-	NSzSY4fU6MsKTNq9Q14XScyZAbINAPE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789573201;
-	b=h5/b9M/DqRSH/EvnkdOD3SSCWtUy338erWa/xx5zgpYx+Nwsi7SgEYgHUh/Ik9LzAwmcfo
-	SNlsLI9t9IK85F+R4j9IjqtFoncYvYyEX45ALVex/uiZAFTCWTiCk9rFvBwhMRxhIjYaLY
-	oDMUG5fBX0vTaq8+TMf+3WCzMCYZ3Ks=
+	bh=514YjgdJRrYAyC7L0v47cSPNxTqa23tF756JLZnIgaE=;
+	b=jxGRMuvPmytwAMPAB21OjbqCEQLnOrH84KFp155YrjBc+AcIaV1sHhq3KsYztKWjthvLog
+	DtOLqq7lROgSkZFnY2vmLFnJuSswDvod+Vkcxegc/mGWOmqD3Fa6egCybPa3Vy8eeceGCf
+	HAQTnGWtkOaQ6BPeWhgSSov9I5EdqyM=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=S2GkJ7ud;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf29.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.11 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=7tSYx1YNaVm49StAg6iVU/9rtvR8g/9RYPq4x+SxYQs=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789573199; v=1; x=1790177999;
- b=S2GkJ7udYAy1rj1ZYrcWezocAALqVdwo5zRefftGOE/6y8e9BIQ8quM0fEIK/i8Fhw67S0qx
- DmkSoXzNoaR+J6Pdxt5NHzZO0Rqzt3f6ZHlrS6EXXu6qoQfEDG65gw5mWOEiYEBwCRW2qmGUbZk
- HCslw6VmCq3AZASQkAAn4yfI=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 55f1b8f3b5fd4211;
-	Wed, 16 Sep 2026 15:39:57 +0000
-X-Mizu-Trace-ID: 55f1b8f3b5fd4211
-X-Migadu-Flow: FLOW_OUT
-From: Usama Arif <usama.arif@linux.dev>
-To: Breno Leitao <leitao@debian.org>
-Cc: Usama Arif <usama.arif@linux.dev>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	kas@kernel.org,
-	kexec@lists.infradead.org,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	hannes@cmpxchg.or,
-	shakeel.butt@linux.dev,
-	linux-efi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	rmikey@meta.com,
-	riel@surriel.com,
-	harry@kernel.org,
-	linux-cxl@vger.kernel.org,
-	driver-core@lists.linux.dev,
-	kernel-team@meta.com
-Subject: Re: [PATCH v5 3/9] mm/memory-failure: libstub: install the poisoned-memory EFI table
-Date: Wed, 16 Sep 2026 08:39:53 -0700
-Message-ID: <20260916153954.1054456-1-usama.arif@linux.dev>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260915-hwpoison-kho-v5-3-3bc7a57bd503@debian.org>
-References: 
+	imf08.hostedemail.com;
+	dkim=pass header.d=broadcom.com header.s=google header.b=fzVd5DEh;
+	spf=pass (imf08.hostedemail.com: domain of zack.rusin@broadcom.com designates 209.85.216.99 as permitted sender) smtp.mailfrom=zack.rusin@broadcom.com;
+	dmarc=pass (policy=reject) header.from=broadcom.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789573299;
+	b=zaTGER3MFWjlI3d/8WkJgSdX0qHCTY9SP3cwDc67PifRJFidS0JkpqPDqo7zMVqQIj5aa9
+	Sq9psOeymTFO3sxCsbwgL1eo+dYEvsPPq7GGi1GvD4pPZjD9XheOW1iwOWdrHGiFedr01P
+	E0KE9yiqVrrdLk3vcaJWXnMCxgWgJ00=
+Received: by mail-pj1-f99.google.com with SMTP id 98e67ed59e1d1-3856d6fbcb3so4424488a91.2
+        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 08:41:38 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789573298; x=1790178098;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:dkim-signature:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=514YjgdJRrYAyC7L0v47cSPNxTqa23tF756JLZnIgaE=;
+        b=03E2G4wWE28ojM7hg0Bck7fLIgRrtzvU8upG5xn7aSRH80HAdfml4o8vPzdXxIEQNi
+         iY7/aDYADlpj1heBVOLsdEqe6aez/WhGPl8Ns08m1RDghzKKxoUlU9IdTxe4bQzJGOEK
+         aSOgfSzuqoH5Jib3XNnxad0adkxUEvAMTiW4yiJYzNDCJeBqUBSc+ci8+NIw2G2tEICE
+         nvNKvtVYRJXIUnNJzn5/l3SO78lxGC916ESfey/bSajjjO9V3ntm7XxvAbjVkgkmBr59
+         ix7kRlB6j/KaK2aPGJ9ohOOL9N5NwNun5ZMXo78vPHf1YOAKx9FkiykMVfrEPXXHpFOo
+         4xBA==
+X-Forwarded-Encrypted: i=1; AKwUvBxrW+3tmwj8/e+gdZt/QOaEIRRqwA13y2xLNRXUmBEH9kuFFr0iXO/B/Vnysg474/8KE9cq6g2qOQ==@kvack.org
+X-Gm-Message-State: AFuF++mqd+vvvSInLZVNRvLSWZ+6QR6SYHt/rJhCZQbgc56+YQgGfj7z
+	7LU7sipnfbh3fyBHAnyn4XIdL9KBDjdgu5K6J95KytOUUuY/6v6k/tmAC492svVxtsfdbAeREyV
+	xAeXjuMrjv5qeR7jkyWhICWK26HEeuUQQSzsYj14qqJtedsmRxEgQl11bWJucBcleENoyysTJ6f
+	/8Clw/8O199Y746dF8/3EJO/kEOzKEwhZvkSBwjdKJUm0r3s0uU+/KTIebYDXPg/qKLTeLPr49D
+	zI=
+X-Gm-Gg: AYBFou3MiqwEAOIKJHuCeH7Ig+Qz+aQFbxw5jNwyHS7CCX4/ia+igpcpWE2N0sS9vvr
+	JPvHZ2r0mv2QpRYnqf1CtCVeT0wkLAmftiguPDuBB6pkTvRFTP7r0N6RCtViMrnYgYRhv/Y7L9I
+	CI9vKypP2cwPRITtA6WYeVvtYhmNJyEvAjW6ZdX+oGvYtc0DBR3Xv8ExWbEIWxYqGuwZZ8RW7oQ
+	aobi8jfNFTf4Mcsjs52N8YxaMnaMIyuq0GvRQu/9ClST2r4z5hy1OgxKr0/0eDFvrW+4L/rfPH0
+	mvABD/kok9mVPyltkWAL9VUC0c0W/PpCfR+9ab7INW0ISRqdym1K8OsNyYRFCN793UvhGH3r72t
+	A2fDFp8nJ9y8/rri+thDxpxKDv06n5GB5UnmulvBspcJ050A5tZbI4EewrOw69eH+clBIYauQ5g
+	i+PT06bCASMhwP5fbNJWqI0zC/cRsAhbDM
+X-Received: by 2002:a17:90b:578b:b0:39e:14db:4371 with SMTP id 98e67ed59e1d1-39e1e27a374mr6894734a91.1.1789573297302;
+        Wed, 16 Sep 2026 08:41:37 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-25.dlp.protect.broadcom.com. [144.49.247.25])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-39e35da787asm19454a91.1.2026.09.16.08.41.36
+        for <linux-mm@kvack.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 16 Sep 2026 08:41:37 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-lj1-f198.google.com with SMTP id 38308e7fff4ca-3a58fef21b3so22381751fa.0
+        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 08:41:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1789573295; x=1790178095; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=514YjgdJRrYAyC7L0v47cSPNxTqa23tF756JLZnIgaE=;
+        b=fzVd5DEh4YbXkR3besDtQdoka6WNyRUwCgD86KaDIgcqsOjKFlwCC5W3ET229/sPKY
+         pCi6fzsQyIhX2cNIzvhb1GKeyuU7QuMhnLx20lC/v4RLTerwaNuWshwg/01tdQyN125T
+         R+JKTWn/45FuxSsB2MpmyepxfbMEioV7cv2MY=
+X-Forwarded-Encrypted: i=1; AKwUvBwK7CxQGMU7s4FWTZ8MUNura9HQk4uuGstN5lofeZCzLRWpFRg2xF6Rhnp2Im8wNl1ef3M6if/Geg==@kvack.org
+X-Received: by 2002:a05:651c:222c:b0:3a3:42cf:c014 with SMTP id 38308e7fff4ca-3a5dc988ee4mr6734911fa.7.1789573294669;
+        Wed, 16 Sep 2026 08:41:34 -0700 (PDT)
+X-Received: by 2002:a05:651c:222c:b0:3a3:42cf:c014 with SMTP id
+ 38308e7fff4ca-3a5dc988ee4mr6734611fa.7.1789573294062; Wed, 16 Sep 2026
+ 08:41:34 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <cover.1789488039.git.zack.rusin@broadcom.com> <aqqGUAX65s4LdJkr@thinkstation>
+In-Reply-To: <aqqGUAX65s4LdJkr@thinkstation>
+From: Zack Rusin <zack.rusin@broadcom.com>
+Date: Wed, 16 Sep 2026 11:41:19 -0400
+X-Gm-Features: AcwNN1X8EphbssgNJGAU5J8Ew6yzojuFKn8poYC7Vw-gA-ySadQxgIJcWpvSrQw
+Message-ID: <CABQX2QMAfszf3z+Auo0AdwGsf94kTX0DrTrd8k6G1PTNMYsdXQ@mail.gmail.com>
+Subject: Re: [PATCH v1 0/2] x86/vmware: Share steal-time storage in encrypted guests
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: Borislav Petkov <bp@alien8.de>, Ajay Kaher <ajay.kaher@broadcom.com>, 
+	Alexey Makhalov <alexey.makhalov@broadcom.com>, x86@kernel.org, 
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	"H . Peter Anvin" <hpa@zytor.com>, virtualization@lists.linux.dev, 
+	bcm-kernel-feedback-list@broadcom.com, linux-kernel@vger.kernel.org, 
+	Christoph Lameter <cl@gentwo.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Bo Gan <bo.gan@broadcom.com>, linux-mm@kvack.org, 
+	linux-arch@vger.kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="0000000000008eefeb065b9b8058"
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 133BB160013
+X-Stat-Signature: 48fjeymet9zmsaffi6kyobtb3n1mmgpc
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 074C1120011
-X-Stat-Signature: 9qj36msg91zk7kkrkcn8g3dgqxfabxu8
-X-HE-Tag: 1789573200-432185
-X-HE-Meta: U2FsdGVkX1/0lSIu9Z/P0DYt2slRq5cWPItjHGR2skyINvIOd/0QfiRku4gj23GZyH7zfyFPru4k20tTTS3B5N4ljf9bWDE3WWgRlSreOQazGDbfjElFFfvUkknnlxyZCZUwwQsfZ+87xJqWqzSQ2b7b13QFplWJWR6rT6WfEjJ/BH98y7vyosfvfmjQXGzChQNooZlQEmz8XF4RSU2dFO8A0jIw90DaUgp05mlFjgkwL6sDxaJoXpg2c8TovR/5opKc7VJtTnER9u/Otm5Gd2Saua3OaEIYEXLt7hm4YYa8VAkl9BR0ipvzrMsUrpWx5KEhKgypXWVwIq9y7pzvnzKXSoCcQMV2eb9Zf+6SeqYqUUZuF6lUMWwVaSmdZCTeAogmZv+USoo9MK8D8bYwCcvlNk3z6iqriw5p7gqo73ylqvrYgjHGmYgksuYttk/KqHUufA02bmsu8w/LUcb0JBN6wTS2fRwQluXoi6366qoiY1mR8MAE0R+HXKy7fqAFBdChZ/9fAYsFRmgPTFpM/ejc2Q89JZZLkvdiCvWqVJoHTGnXviMZnSZ2vD4N9+s4rdyXvbL04eaSG2BQ6IF/eze44qf0dPXUhr09Mdxa1ATq5AVytadANbbAzND0WDKe3pSo9+cBx+JFZFzzqFdMsrilQ4XNLM04g5Pwcx43KXk/IuchDMGONtw75B9RYpUJbvELdP06eNWy09aSK06fbRnhSbU62NGut+pxSEFefsdjv0KkFCmcW1kAhCyitCf8QhpzN02rZ4do7rPRja3Hy8sGkMOtKtKlYlvd8oFrFDVEWPrilmM1BAw5do90oTtjwmnlGebZclhrNw+edczGLrZU3Tdoc9seSu8KcVspjY/TLlMEALoeT6mIHVdVIrXmWmo42W3w1vvUm/UmRRoLKIjrYGx3/zB3livRuFl+oFYO8ecpCzZmrcn2JGt16+sGnF8pRSNwojg/ohmXC+R
- CY+yvqZr
- ix6RHosnP7L/FBIbLJRvgvKDQ5+A4ezOyD57qJmOqruwc60UpKkSXquwPtSAKTRii96Sz9hfEwOborr371K68U+bKvJWkoqznDkIZPvccSnDWV2lqYsNzByjgOt92qULV2tWFuMQuY11C/YndvIz+Kl/75ha08LKLh9u7DNNWDRq0OmlSzdBDTC4HYGXmWA09z0ikoqVyXb62JhAm3QVcR5tLlT1ex/sagiatUZmlBYlOKWp0GwqCXyf8t17gIey02iO3FeaTWdNrjRs1LSpAYWXDXhyho/ZBLgK74ThaPCZRg85cbNDaZBKQit2xpcDeGsbYYOfsZVovHBc=
+X-HE-Tag: 1789573298-80874
+X-HE-Meta: U2FsdGVkX19mvcAVUzthUbBZx98S2zlBX0NXlWllU1+xtoNxjcLOXkTQmf6iuLQZanM6+4ao43AC4Ix6Q2XFsVCaB2gPHsgtoSava5e6OU56wTG3Bgox4B+ftyZItZTzp24BVmr84eqG6z+wnSyPNdX/Dny9yNPYfvORAyYjpSteo/ojpVXIyivVEQG7G8v2QxCsSM/Er/ZP3La7Idi+XAp86NoTKdeOZfg7xoHlej+JH1+Zf+B9vXFIJmqj2s2AQGrw2Iy3WynQZ2STIBaZEgLXLtHAx6kIOwsufK707bd+El7e42wOlr4FtErRCY4tbcXWGQW7TDYVawtLc2AbGHv4KgMIWRBQGdlSVaQqoF1VulUPpXwrSEYSZ7hcCQ6zTHy85TWnTq9hjKGiNrZ5AKtoT9h7mzGHRVUEPlmFK/UEQY9oGqd5JQmpfDFmGNw9xUROAcoL2x81qFsLNAWdKQG/Js+G0AQT88v47w8/mluKHBS3nboHPMps6Jra4dg4PRa5Pr49XZFD3j+G8RVFGuyoH6drASihaeln6l0CMHAUQGm9krvTc+/O0Yv6kSvHb/6+gq0YJTS59IvWNCuwTvXcBwZ14NukMYuVz4fiIEqNf1liqbMIG/gKRj2/GG2UNWKDZYyah15k3FgSTvr6Pr+EpgtTD95pwrVmZgAY5bWhQCaew9Isb5Vxwo978S4UO+5SCATIsw/E8YUn2gN797uJm7u4a7yqwZqYyDVXKvQ6IqBXbSSC4izdpWLoig3wdGygbmaCH3nzlb6K97FO72sMNaeD//yDlp3WCApgtjgxzJW6IWFvkV+djPZnRkKFCl1su9Rp155V3/KLXbPrugvf+SASnzhg+VKSGkqDedAf9C51gmA23T+pDq/FWitXq9qdQXrTTTv1/F1BOm5SlLUR5M5HAHPj04f4knsP/OwCgGy2yQjB3VEIlpHf2dAXM/NmmvRlG7ycjJWyl2T
+ ruQbiQsT
+ N+shI91bW6c9nvPV4zeObhoeijV1AH0OMhLbhyNavFDMW9xOdg1rzGb3utMD1NtjA4Crmdhh56NTbg5tQY7mtJSKtwG8mLh7KRPXXYX7fB9zQpAUIjUGVKmtKYklX/pYb4lFv/T6zEjJgBqxRxknRrDjbWd5Y1CKtGKQa9NqaewL8VzVGpHfqV7iZBs1WwXStO2YdKffouRJlHUoY0gqzPYmu6ttmhJXo07oKt9bptojT4EdDg/l0enMNdVajZ/6RRJK1wkAUKCBubzG7i38qwboIVk0ZKSwtMLWy9sGvZ5Y6nmIegLnlk+9BaFn3ajRy145wFfrxxeoDImUY9t3OenEfjD/PwoUin0DiIU5/5a/RB+v6wGdlSq41z8cClYtFCLuosPFw5tOFLngj/f9d1l8CqT6ilBooicFMCzuqCTqLi7HoO9yJBRiuSprsuQ2wKcxk4f3u3JOlXNE0KFG8yvvMpQhFT11HaOE6LI82IQUy5wwzdDLch4+x288DCQggpYfY5VHza2rWBMdq5tpOs5sQnyaUkcX14VOgrbWOiMWKe0I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,228 +138,217 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 15 Sep 2026 05:53:37 -0700 Breno Leitao <leitao@debian.org> wrote:
+--0000000000008eefeb065b9b8058
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> A EFI config table can only be installed while boot services are still
-> up, so the stub has to create it; the running kernel can only flip bits
-> in a table that already exists.
-> 
-> Size the bitmap from the span the UEFI memory map describes, which
-> efi_get_ram_range() walks since the stub has no max_pfn. Bit 0 covers
-> the bottom of that span, recorded in phys_base, so a machine whose RAM
-> starts high does not pay for the hole below it. Memory the firmware
-> hot-adds later sits outside the span and is not carried across a kexec.
-> 
-> One table has to serve every architecture, and what they agree on is the
-> attribute: setup_e820() takes a descriptor as RAM only if it is writeback
-> cacheable, and so does is_usable_memory() on arm64.
-> 
-> The bitmap spans from the lowest to the highest descriptor that is
-> write-back cacheable or unaccepted memory, as discussed with Kiryl. That
-> leaves out the MMIO apertures, which sit high enough to stretch it far
-> past the RAM it needs to describe.
-> 
-> At one bit per 2M that is 64K per TiB, and 256M at the 4PB x86
-> architectural maximum. The 2M granule is called "unit" here, and the
-> table carries it so the granule can change later without breaking the
-> kernels already reading it.
-> 
-> Allocate it as EFI_ACPI_RECLAIM_MEMORY so the next kernel does not take
-> it for free RAM, and install it empty.
-> 
-> A table installed by an earlier boot rides the system table across kexec
-> and is reused as-is.
-> 
-> Signed-off-by: Breno Leitao <leitao@debian.org>
-> ---
->  drivers/firmware/efi/libstub/efi-stub-helper.c | 103 +++++++++++++++++++++++++
->  drivers/firmware/efi/libstub/efi-stub.c        |   1 +
->  drivers/firmware/efi/libstub/efistub.h         |   6 ++
->  drivers/firmware/efi/libstub/x86-stub.c        |   2 +
->  4 files changed, 112 insertions(+)
-> 
-> diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
-> index 48f93f7758e9e9..9c66e06c972c5a 100644
-> --- a/drivers/firmware/efi/libstub/efi-stub-helper.c
-> +++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
-> @@ -774,3 +774,106 @@ void efi_remap_image(unsigned long image_base, unsigned alloc_size,
->  			efi_warn("Failed to remap data region non-executable\n");
->  	}
->  }
-> +
-> +#ifdef CONFIG_EFI_POISONED_MEMORY
-> +/*
-> + * Find the base and top of the memory, so, we can create the bitmap for
-> + * the full range.
-> + */
-> +static efi_status_t efi_get_ram_range(u64 *base, u64 *top)
-> +{
-> +	struct efi_boot_memmap *map __free(efi_pool) = NULL;
-> +	u64 ram_base = ULLONG_MAX, ram_top = 0;
-> +	efi_status_t status;
-> +	int i, nr_desc;
-> +
-> +	status = efi_get_memory_map(&map, false);
-> +	if (status != EFI_SUCCESS)
-> +		return status;
-> +
-> +	nr_desc = map->map_size / map->desc_size;
-> +	for (i = 0; i < nr_desc; i++) {
-> +		efi_memory_desc_t *d;
-> +
-> +		d = efi_memdesc_ptr((unsigned long)map->map, map->desc_size, i);
-> +		if (!(d->attribute & EFI_MEMORY_WB) &&
-> +		    d->type != EFI_UNACCEPTED_MEMORY)
-> +			continue;
-> +		ram_base = min(ram_base, d->phys_addr);
+On Wed, Sep 16, 2026 at 8:18=E2=80=AFAM Kiryl Shutsemau <kas@kernel.org> wr=
+ote:
+>
+> On Wed, Sep 16, 2026 at 01:05:38AM -0400, Zack Rusin wrote:
+> > VMware registers each per-CPU steal-time GPA with the host. An encrypte=
+d
+> > guest must first convert that storage to shared memory, but the existin=
+g
+> > setup publishes the address without conversion.
+> >
+> > Patch 1 makes the decrypted per-CPU section available with
+> > CONFIG_X86_MEM_ENCRYPT, including TDX-only configurations. Patch 2 defe=
+rs
+> > encrypted-guest setup until allocator-backed page-table splitting is
+> > available, converts every possible CPU's storage before publishing any
+> > GPA, and attempts to roll back all conversions on failure.
+>
+> I acked 1/2, but I don't like where 2/2 does the conversion.
 
-Can this use the architecture's full RAM predicate?  On x86,
-setup_e820() maps EFI_LOADER_CODE, EFI_LOADER_DATA, both boot-services
-types, and EFI_CONVENTIONAL_MEMORY as E820_TYPE_RAM without requiring
-EFI_MEMORY_WB.
+I saw that, thank you. Since I'll be respinning v2 of this I can go
+ahead and drop the unused DECLARE_PER_CPU_DECRYPTED in that one if you
+want as well.
 
-If a non-WB descriptor is at either end of RAM, this code omits it
-from the bitmap span.  efi_hwpoison_record_pfn() then rejects a
-poisoned PFN there, so the next kernel can allocate the bad frame.
+> A variable declared with DEFINE_PER_CPU_DECRYPTED() ends up in a
+> dedicated, page-aligned linker section. The point of the section is that
+> one place converts it. Instead every user does it itself: KVM in
+> sev_map_percpu_data(), and now VMware in vmware_decrypt_steal_time(),
+> each with its own vendor checks and failure handling. The macro today
+> only buys page isolation, not the shared mapping its name promises.
+>
+> The underlying problem is that the whole "decrypted section"
+> infrastructure is built around SME/SEV and was never generalized.
+> __bss_decrypted, early_set_memory_decrypted() and
+> mem_encrypt_free_decrypted_mem() are all under CONFIG_AMD_MEM_ENCRYPT
+> and implemented in mem_encrypt_amd.c. sme_postprocess_startup() converts
+> .bss..decrypted only if sme_get_me_mask() is set, so a TDX guest never
+> shares it. 1/2 moves the per-CPU linker section to X86_MEM_ENCRYPT, but
+> nothing that would act on that section follows.
+>
+> Rather than have every TDX user reinvent the conversion, I would rather
+> see the infrastructure made vendor-neutral: boundary symbols for the
+> per-CPU decrypted section like the ones .bss..decrypted has, an early
+> conversion primitive that works on TDX as well as SEV, and a single
+> conversion of both sections at boot. Then sev_map_percpu_data() and
+> this driver's loop go away.
+>
+> > TDX's conversion callback uses __pa(), so patch 2 preflights every poss=
+ible
+> > CPU and leaves steal time disabled if a TDX guest uses vmalloc-backed
+> > per-CPU storage. This covers percpu_alloc=3Dpage and automatic allocato=
+r
+> > fallback. AMD encrypted guests support those mappings and are not rejec=
+ted.
+> > Supporting them in TDX would require a separate conversion-API change.
+>
+> Refusing vmalloc-backed storage on TDX is the right call, and not because
+> of the __pa() in the callback. Converting a vmalloc alias means either
+> fracturing the direct map or leaving a private direct-map alias to a
+> shared page, and the latter is a guest shutdown the moment
+> load_unaligned_zeropad() steps into it. See the comment in
+> tdx_early_init() and the earlier discussion of the same idea:
+>
+> https://lore.kernel.org/all/xqi2bkulnhen2vax5msbzczlaywx3dsc7ezpn7oo5qn7u=
+7xzap@xmaseinov7tf/
+>
+> But that decision belongs in the same central place as the conversion.
+> If the first per-CPU chunk is vmalloc-backed on TDX, the decrypted
+> section is simply not shared, and users see that, instead of every
+> driver re-deriving it.
 
-One possible way to preserve the x86 behavior before applying the WB rule is:
+I went through the linked thread, including the dropped 2022
+Quote-buffer alias approach and the 2024 netvsc work's kexec
+regression, fix and re-review discussion. I will keep TDX vmalloc
+support out of this series and correct the explanation to cover alias
+consistency, direct-map splitting and load_unaligned_zeropad(),
+including removing the suggestion that per-page GPA lookup alone
+resolves it.
 
-    if (IS_ENABLED(CONFIG_X86) &&
-        (d->type == EFI_LOADER_CODE ||
-         d->type == EFI_LOADER_DATA ||
-         d->type == EFI_BOOT_SERVICES_CODE ||
-         d->type == EFI_BOOT_SERVICES_DATA ||
-         d->type == EFI_CONVENTIONAL_MEMORY))
-            goto include;
-    if (!(d->attribute & EFI_MEMORY_WB) &&
-        d->type != EFI_UNACCEPTED_MEMORY)
-            continue;
-include:
-    ram_base = min(ram_base, d->phys_addr);
+After tracing the boot paths, I think there are two distinct pieces
+here. The SEV boot GHCB needs .bss..decrypted before BSS is cleared,
+whereas the SMP per-CPU instances do not exist until
+setup_per_cpu_areas(). KVM then registers its boot-CPU per-CPU buffers
+in smp_prepare_boot_cpu(), so the common conversion needs the early
+primitive you proposed. A shared early_initcall would be too late for
+KVM. The UP registration path probably also needs handling separately
 
+My suggestion would be to do one of two things (or at least I think
+those two options are realistic to me, given that I'm no expert here):
+- add the central per-CPU infrastructure and migrate KVM/VMware
+together, removing both loops and putting the TDX vmalloc rejection
+and readiness state in common code. Would you and the KVM maintainers
+be happy with that first, and generalizing .bss..decrypted separately
+while preserving its earliest SEV setup? afaict the latter also needs
+to broaden the annotation and linker guards, and changes kvmclock
+storage and sharing on TDX-only builds.
+- a smaller VMware fix using a separately allocated, direct-mapped
+page per CPU while the common infrastructure is developed. Using the
+normal allocator would also defer ordinary-guest registration, unless
+I kept their current static storage as a second path. This option
+would retain caller-managed sharing and buffer lifetime handling.
 
-> +		ram_top = max(ram_top,
-> +			      d->phys_addr + d->num_pages * EFI_PAGE_SIZE);
-> +	}
-> +	if (!ram_top || ram_base == ULLONG_MAX)
-> +		return EFI_NOT_FOUND;
-> +
-> +	*base = round_down(ram_base, EFI_POISON_UNIT_SIZE);
-> +	*top = round_up(ram_top, EFI_POISON_UNIT_SIZE);
-> +
-> +	return EFI_SUCCESS;
-> +}
-> +
-> +/* The size of the bitmap */
-> +static u64 efi_poison_bitmap_size(u64 span)
-> +{
-> +	u64 bytes = DIV_ROUND_UP(DIV_ROUND_UP(span, EFI_POISON_UNIT_SIZE),
-> +				 BITS_PER_BYTE);
-> +
-> +	return round_up(bytes, sizeof(unsigned long));
-> +}
-> +
-> +static struct linux_efi_poisoned_memory *efi_poison_alloc(u64 phys_base,
-> +							  u64 bitmap_size)
-> +{
-> +	struct linux_efi_poisoned_memory *pm;
-> +	efi_status_t status;
-> +
-> +	status = efi_bs_call(allocate_pool, EFI_ACPI_RECLAIM_MEMORY,
-> +			     sizeof(*pm) + bitmap_size, (void **)&pm);
-> +	if (status != EFI_SUCCESS)
-> +		return NULL;
-> +
-> +	pm->version = 1;
-> +	pm->unit_size = EFI_POISON_UNIT_SIZE;
-> +	pm->phys_base = phys_base;
-> +	pm->size = bitmap_size;
-> +	memset(pm->bitmap, 0, bitmap_size);
-> +
-> +	return pm;
-> +}
-> +
-> +/* This needs to be done while boot service is still active */
-> +void install_poisoned_memory_table(void)
-> +{
-> +	efi_guid_t poisoned_memory_table_guid = LINUX_EFI_POISONED_MEMORY_TABLE_GUID;
-> +	struct linux_efi_poisoned_memory *pm;
-> +	u64 ram_base, ram_top, bitmap_size;
-> +	efi_status_t status;
-> +
-> +	/* A table installed by an earlier boot rides the system table across kexec. */
-> +	pm = get_efi_config_table(poisoned_memory_table_guid);
-> +	if (pm) {
-> +		if (pm->version != 1)
-> +			efi_err("Unknown version of poisoned-memory table\n");
-> +		return;
-> +	}
-> +
-> +	if (efi_get_ram_range(&ram_base, &ram_top) != EFI_SUCCESS) {
-> +		efi_err("Failed to size the poisoned-memory table!\n");
-> +		return;
-> +	}
-> +
-> +	bitmap_size = efi_poison_bitmap_size(ram_top - ram_base);
-> +	pm = efi_poison_alloc(ram_base, bitmap_size);
-> +	if (!pm) {
-> +		efi_err("Failed to allocate poisoned-memory table!\n");
-> +		return;
-> +	}
-> +
-> +	status = efi_bs_call(install_configuration_table,
-> +			     &poisoned_memory_table_guid, pm);
-> +	if (status != EFI_SUCCESS) {
-> +		efi_bs_call(free_pool, pm);
-> +		efi_err("Failed to install poisoned-memory config table!\n");
-> +	}
-> +}
-> +#endif
-> diff --git a/drivers/firmware/efi/libstub/efi-stub.c b/drivers/firmware/efi/libstub/efi-stub.c
-> index 235c9738da2d63..22a315e2814a1a 100644
-> --- a/drivers/firmware/efi/libstub/efi-stub.c
-> +++ b/drivers/firmware/efi/libstub/efi-stub.c
-> @@ -179,6 +179,7 @@ efi_status_t efi_stub_common(efi_handle_t handle,
->  			 EFI_RT_SUPPORTED_SET_VIRTUAL_ADDRESS_MAP);
->  
->  	install_memreserve_table();
-> +	install_poisoned_memory_table();
->  
->  	status = efi_boot_kernel(handle, image, image_addr, cmdline_ptr);
->  
-> diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-> index fd91fc15ec810b..44436869c4efe1 100644
-> --- a/drivers/firmware/efi/libstub/efistub.h
-> +++ b/drivers/firmware/efi/libstub/efistub.h
-> @@ -1169,6 +1169,12 @@ efi_enable_reset_attack_mitigation(void) { }
->  
->  void efi_retrieve_eventlog(void);
->  
-> +#ifdef CONFIG_EFI_POISONED_MEMORY
-> +void install_poisoned_memory_table(void);
-> +#else
-> +static inline void install_poisoned_memory_table(void) { }
-> +#endif
-> +
->  struct sysfb_display_info *alloc_primary_display(void);
->  struct sysfb_display_info *__alloc_primary_display(void);
->  void free_primary_display(struct sysfb_display_info *dpy);
-> diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-> index 0bae0f06b6763a..3136132b9628ab 100644
-> --- a/drivers/firmware/efi/libstub/x86-stub.c
-> +++ b/drivers/firmware/efi/libstub/x86-stub.c
-> @@ -1024,6 +1024,8 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
->  
->  	setup_unaccepted_memory();
->  
-> +	install_poisoned_memory_table();
-> +
->  	status = exit_boot(boot_params, handle);
->  	if (status != EFI_SUCCESS) {
->  		efi_err("exit_boot() failed!\n");
-> 
-> -- 
-> 2.53.0-Meta
-> 
-> 
+The second option is, of course, easier for me, but I'm happy to do
+the first to get steal-time storage working for us. Do you have any
+thoughts on this?
+
+z
+
+--0000000000008eefeb065b9b8058
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+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
+6U6qgI8F5eiKsQyE0HgYrQJx/sDs9LLVZlaNiA3U8M8CgEnb8VhuH3BN/yXphhEQdJXb1TyaJA60
+SmHcZdEQZbl4EjwUcs3UIowmI/Mhi7ADQB7VNsO/BaOVBEQk53xH+4djY/cg7jvqTTeliY05j2Yx
+uwwXcDC4mWjGzxAT5DVqC8fKQvon1uc2heorHb555+sLdwYxAgMBAAGjggHYMIIB1DAOBgNVHQ8B
+Af8EBAMCBaAwgZMGCCsGAQUFBwEBBIGGMIGDMEYGCCsGAQUFBzAChjpodHRwOi8vc2VjdXJlLmds
+b2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3I2c21pbWVjYTIwMjMuY3J0MDkGCCsGAQUFBzABhi1o
+dHRwOi8vb2NzcC5nbG9iYWxzaWduLmNvbS9nc2djY3I2c21pbWVjYTIwMjMwZQYDVR0gBF4wXDAJ
+BgdngQwBBQMBMAsGCSsGAQQBoDIBKDBCBgorBgEEAaAyCgMCMDQwMgYIKwYBBQUHAgEWJmh0dHBz
+Oi8vd3d3Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAkGA1UdEwQCMAAwQQYDVR0fBDowODA2
+oDSgMoYwaHR0cDovL2NybC5nbG9iYWxzaWduLmNvbS9nc2djY3I2c21pbWVjYTIwMjMuY3JsMCIG
+A1UdEQQbMBmBF3phY2sucnVzaW5AYnJvYWRjb20uY29tMBMGA1UdJQQMMAoGCCsGAQUFBwMEMB8G
+A1UdIwQYMBaAFAApNp5ceroPry1QLdugI4UYsKCSMB0GA1UdDgQWBBQNDn2m/OLuDx9YjEqPLCDB
+s/VKNTANBgkqhkiG9w0BAQsFAAOCAgEAF463syOLTQkWZmEyyR60W1sM3J1cbnMRrBFUBt3S2NTY
+SJ2NAvkTAxbPoOhK6IQdaTyrWi8xdg2tftr5FC1bOSUdxudY6dipq2txe7mEoUE6VlpJid/56Mo4
+QJRb6YiykQeIfoJiYMKsyuXWsTB1rhQxlxfnaFxi8Xy3+xKAeX68DcsHG3ZU0h1beBURA44tXcz6
+fFDNPQ2k6rWDFz+XNN2YOPqfse2wEm3DXpqNT79ycU7Uva7e51b8XdbmJ6XVzUFmWzhjXy5hvV8z
+iF+DvP+KT1/bjO6aNL2/3PWiy1u6xjnWvobHuAYVrXxQ5wzk8aPOnED9Q8pt2nqk/UIzw2f67Cn9
+3CxrVqXUKm93J+rupyKVTGgKO9T1ODVPo665aIbM72RxSI9Wsofatm2fo8DWOkrfs29pYfy6eECl
+91qfFMl+IzIVfDgIrEX6gSngJ2ZLaG6L+/iNrUxHxxsaUmyDwBbTfjYwr10H6NKES3JaxVRslnpF
+06HTTciJNx2wowbYF1c+BFY4r/19LHygijIVa+hZEgNuMrVLyAamaAKZ1AWxTdv8Q/eeNN3Myq61
+b1ykTSPCXjBq/03CMF/wT1wly16jYjLDXZ6II/HYyJt34QeqnBENU9zXTc9RopqcuHD2g+ROT7lI
+VLi5ffzC8rVliltTltbYPc7F0lAvGKAxggJXMIICUwIBATBiMFIxCzAJBgNVBAYTAkJFMRkwFwYD
+VQQKExBHbG9iYWxTaWduIG52LXNhMSgwJgYDVQQDEx9HbG9iYWxTaWduIEdDQyBSNiBTTUlNRSBD
+QSAyMDIzAgxhPxw+eieHWB40hPkwDQYJYIZIAWUDBAIBBQCggccwLwYJKoZIhvcNAQkEMSIEING+
+tS9jluKZG2ayZ4pYr4+TXQr15tnm2U0384jZyaB7MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEw
+HAYJKoZIhvcNAQkFMQ8XDTI2MDkxNjE1NDEzNVowXAYJKoZIhvcNAQkPMU8wTTALBglghkgBZQME
+ASowCwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQcwCwYJ
+YIZIAWUDBAIBMA0GCSqGSIb3DQEBAQUABIIBAAiJiiMRjpbhErRjga91uv6fyg7gDKiW/hzIZv4u
+twci6FZEZWPYJYzwugbWz8tTef7pmY99e2ozuPN8cvLqjnDD9CdmDOA1oKFiKeuhTxMKrmsdFxUF
+A/zaoj8Hh15JhRNwQB/Hn6JooqcOmUZINDYEDse+KmMcxuCsMi2D7N2/2bOB9PHl/2uBiCZ9NiEZ
+8LmqSKB/hjxWSvkm/Mo6WmsPYtekjp5MRu5wYBMZQMyPCnQKGpZMzVOUOG+THnEj5pJvLhzj6pvT
+nOEp+MloSY9rk0lmdMFQxK3qy6ZXjKFT1dUSwPdfPpSmc6WHa5huCNvC0hBo8Pn3HvKrY0Xmtgc=
+--0000000000008eefeb065b9b8058--
 
