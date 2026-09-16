@@ -4,105 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4192C982C4
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 15:19:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4E3DC982C3
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 15:21:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B60B96B0093; Wed, 16 Sep 2026 11:19:41 -0400 (EDT)
+	id D88796B0088; Wed, 16 Sep 2026 11:21:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B12D16B0095; Wed, 16 Sep 2026 11:19:41 -0400 (EDT)
+	id D38F36B009B; Wed, 16 Sep 2026 11:21:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A2B746B009B; Wed, 16 Sep 2026 11:19:41 -0400 (EDT)
+	id C4E6E6B009D; Wed, 16 Sep 2026 11:21:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F50D6B0093
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:19:41 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9FFB5160725
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 15:19:40 +0000 (UTC)
-X-FDA: 85219984920.08.33F0A91
-Received: from mail-qk2-f12.google.com (mail-qk2-f12.google.com [74.125.230.204])
-	by imf25.hostedemail.com (Postfix) with ESMTP id CC4B5A000F
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 15:19:38 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=AkQkiY3r;
-	dmarc=none;
-	spf=pass (imf25.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.204 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A6DBE6B0088
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:21:58 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 23464A0782
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 15:21:58 +0000 (UTC)
+X-FDA: 85219990716.26.0411F57
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 8B59140006
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 15:21:56 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YruKXo64;
+	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789571978;
+	s=arc-20220608; t=1789572116;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VpNPb1TxYXca1d4OZUk8cPR+2lzT1yr8aN9KjQ5b67k=;
-	b=3JrYg+BtAMe4XoPPn69cCDFeqTHXU1Z7uyr2iUpA8HpdvRfBVxo9VjzTtGM3Ti8zQ6tw6U
-	APmmfU326aqWmYcx3eMyFmLspqoQ7cxz0MZQS0da2zCRh7d2UOd0nxGN0zxL9FdSQZZsAH
-	6r6Xc3imeDgsCK+OiYZEFhaTznx2QZ8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789571978;
-	b=ulYyeHaxBQVk0BoOCW7Pr/Fd4vuiUgQTeCkqi6gcXXWoZtqirya/E2LeHq4Ba8PnpSdTG+
-	qBEnze0kf8PjnPSBHmCblrP6uRbFIpf7CHvczyWrSXSWs2mtgm3tyJCyHQjXa0MFUiT1AC
-	mnx3b3BP4cgs15+8BFnpYRGd9HPHuQ4=
+	bh=jYSmK5y+SZIRTC3GyQbRTqJn7SlfXievVVdd5VGAyTI=;
+	b=hMNG6oTfnQaAFlSheLKQzKMY4RuDczb0pSS2N37ygeYzhImr35i3YALDng+wfDEWoMw8ce
+	vipp9FA6YwA8nHeLdZ4y0wJUxDm39jaylLENlw273NzEryC+zFO9P1s9rlogaYWKAITQgV
+	n+btKppL5H0WOxbkrt5LUawZ/id/Os0=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=AkQkiY3r;
-	dmarc=none;
-	spf=pass (imf25.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.204 as permitted sender) smtp.mailfrom=gourry@gourry.net
-Received: by mail-qk2-f12.google.com with SMTP id d75a77b69052e-530e28a62abso13094431cf.1
-        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 08:19:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1789571978; x=1790176778; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=VpNPb1TxYXca1d4OZUk8cPR+2lzT1yr8aN9KjQ5b67k=;
-        b=AkQkiY3rpTeCZOfHELppmdgne9veALwT7V/r/UMitdEZADERC4M/Wyw6F5BeS1YH3A
-         Tmy5Jpb1BgSdKvwEiiVPsZQkLOjyMIPLM9TlDCUL2emxQucppbKyHvVBZb7TGH5BtmJ9
-         emd6+/kfZVC94ZLWaH3vxEHceXcSGPx2QmYyEjQENAzX+NMM+6sCiwfVJnKGbsHX60EJ
-         RlqbofC6IRQiVfBrK02XYk+So5DglG5xHY7bOEpUUtKooGnVoiiQ8N3Zj+QL0GtUDGPL
-         kthPm48A1DkVp7hrr8LZZ/IWiPq4rqYLSdPUhZdnNbWyGCpOZkQZgLKltedEeDIAVlFL
-         C4bg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789571978; x=1790176778;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=VpNPb1TxYXca1d4OZUk8cPR+2lzT1yr8aN9KjQ5b67k=;
-        b=QC5sVfZ+JVmQ/8glJP0FmvQHqPaj1CkAqjNpZ7wvgQpn5rPEhnZb9fg1ZguQJJ+RFi
-         IfmREUr0E1MsaoOypsB4iApOi8obUelMSb1BprXl9yXGxMOP2OrnLBWWqbgy8oRgPZ8Q
-         FtaN7lOU5PTr9gKl0i5wRt4Pv7npY2rkKCNKeOLHXJplXu14kIxawthjaz8Z6nPGuPpG
-         dQtaiXWgj629nA/b5DQX0N1LJ2Yr0UFhWTmz6QkfBa4c6ODOMyCIeObl+PgRtDhAN0Lk
-         Poa2cJ/jyfbry7wwXdl3DunzPWTk9bTU/fcT40yJJ0vM3bQveNVqfXgQd6VF1xWGDVPL
-         Oq/A==
-X-Forwarded-Encrypted: i=1; AKwUvBz/FwuS/+cthAClYOsOXq0fQXefdKSkbxdK+V4EUtwnnccJId3hEtT3w2izH2mQ4Ug9uZ6VWj3dcg==@kvack.org
-X-Gm-Message-State: AFuF++lzSyrgkzSOK0gVjlho337KCgZOSw1dobtABe3ylHSh5lLILdHT
-	fPEWXH9Ler+YL4KoDGS9DJo2YTQS+hnCoPygj+LX+6HBXbLZatf81UqUGNp4AE0ow6g=
-X-Gm-Gg: AYBFou3fp0Eg3jMIL1jz2ozqXqJUYItUTBSqvqNUSZwACeygvr8zODmkKHqc1AvUvDK
-	N9RcDpwyQVNAvShhs4oSUva3TlbgIc59Tg/HmBO+SpxLnsdxMpel/YYeJq5KftlwUl6/beMaLqe
-	vyLYHVIt5dVRzUpi9RowqQVGqdCRlBGlCU+AaqmzWMKt0Vs3YZGIb1DwaUBBgjRrqpxKjYFslWz
-	wT3su4mqbW8dbs2u31C4aekxZqkCfBr7ibaUyXa5V/W8hrRtjwO+z5pb9P2R4pdChcvVLYHl8if
-	QIONjfJVnbduF9GfntDTp+ohQzK3knAbpagEGuLaUdB8nXCic/AtAMzAsgR1A77s+14FEEZU6cN
-	wV5GW9xPJ0hdvX6E8MWKm7Q+CeY9KW1NSMNfCiJ+8cJ/jY9h44NPqVO6U/Cs5TXngmO0K0GZh8w
-	M5sbq2ZdzDPMHGPxxq+pKV6WhKx3ce9VGVjgnLinBU616UcdtIoW8gmZ9TOnCFF0XkTUBlNOvyl
-	FEyBbattQhN7QeHIs++TaCfwZlx7DaPR3lwHaYqjVIMszfdwyyyRTo=
-X-Received: by 2002:ac8:5f0e:0:b0:531:2154:becc with SMTP id d75a77b69052e-5327eead6e2mr49713181cf.22.1789571977900;
-        Wed, 16 Sep 2026 08:19:37 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-53262024a94sm24051881cf.15.2026.09.16.08.19.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2026 08:19:37 -0700 (PDT)
-Date: Wed, 16 Sep 2026 11:19:35 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, linux-mm@kvack.org, 
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YruKXo64;
+	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789572116;
+	b=QskNHQo4Qsc1SJ+wTQJP2Nxt/ZEw0JKLZeqlHoXYJGVxEV7SrPJgAK35HKFlt+IzTNmqQr
+	jkRDkJ84f98j5CGzeJygxwNhVWq9NoxR6RSPPoHEJYdRAJH/DIth1Y2aY2QfJNjULdm4d/
+	MDS4zMud5/IYfBDLLIZwEcu/BE1mCx0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0341860234;
+	Wed, 16 Sep 2026 15:21:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 905981F000FF;
+	Wed, 16 Sep 2026 15:21:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789572115;
+	bh=jYSmK5y+SZIRTC3GyQbRTqJn7SlfXievVVdd5VGAyTI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=YruKXo64eKDZQFGDDd8CEzuHZHfosdcnkd/01HIK6gfZyUV3aIPITuaF3Bx5IQ1JW
+	 vdWSmFv0U0ltztQYw0xb5LedymRs9pTaXO/WBKCOFimTiwzisE4Cvqi2menFkbioZV
+	 Ghugtu5MJWJa3Iz0euWc0rEJtKXUpFdeVO46PBYUgLVA5tz2oA8xCZX+Ojj1si0l96
+	 xmoJEp/7DMlISrSJGF5+fMyGxd3FfWCSCzXFEI3zqAM8AbquN5MS5SRqXA6Jw9cxmB
+	 sulhd9yPZfubs9yJQ3LXvn8uo7eskwHnaRXptcxZ440t2mxx5GnramlMLhMoCJ0Gd4
+	 U45HzK/LmW+aQ==
+Date: Wed, 16 Sep 2026 16:21:49 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Gregory Price <gourry@gourry.net>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org, kernel-team@meta.com, akpm@linux-foundation.org, 
 	liam@infradead.org, vbabka@kernel.org, jannh@google.com, wangjiexun@tinylab.org, 
 	sashiko-bot <sashiko-bot@kernel.org>, stable@vger.kernel.org
 Subject: Re: [PATCH] mm/madvise: reclaim isolated folios if PTE restart fails
-Message-ID: <aqqyhkZqcXDUrzeb@gourry-fedora-PF4VCD3F>
-References: <20260912110832.3203902-1-gourry@gourry.net>
- <aqloB0zm3RjJ47m1@gremlin>
+Message-ID: <aqqzpldNskE2RRo-@gremlin>
+References: <aqloB0zm3RjJ47m1@gremlin>
  <aql65IhMobL5Al9B@gourry-fedora-PF4VCD3F>
  <aqqTbGMJL86TzDrf@gremlin>
  <aqqbB_nFAOGenDhy@gourry-fedora-PF4VCD3F>
@@ -111,18 +81,19 @@ References: <20260912110832.3203902-1-gourry@gourry.net>
  <5437871c-d9ee-49d2-b24f-965c73c29c3e@kernel.org>
  <aqquDtEZL1ndymGN@gourry-fedora-PF4VCD3F>
  <46d923e6-5724-4df6-b0d5-8dda7c547f6e@kernel.org>
+ <aqqyhkZqcXDUrzeb@gourry-fedora-PF4VCD3F>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <46d923e6-5724-4df6-b0d5-8dda7c547f6e@kernel.org>
+In-Reply-To: <aqqyhkZqcXDUrzeb@gourry-fedora-PF4VCD3F>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 8B59140006
+X-Stat-Signature: c3jzt5gbadyz9oiibqjcok6yfs9s67gi
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: CC4B5A000F
-X-Stat-Signature: o5chx1frq3ab7bhcjfywqf5ta67ekgj7
-X-HE-Tag: 1789571978-245862
-X-HE-Meta: U2FsdGVkX1+mSlWax+CskNoogJuBo0JfA+4M3vJhjhnlvIH/dzJDRBRfBmlG6O4k2hZmbaZ0kaeKbN+stPLxvBsUnyoeRyfmTaCvCxdx1T5j+0ScacQ6aYi8UY7FwzMuzBP9tBz9phiciCiDlJ+X1fEwAnb4Ju/NJVfDffefyjL/LBSDXJ3O2snF8NEYLsEE3dVHVg6fgT/LgkHI2Cit3sIS+0bMkHo3Wh7v/EC9Geg9H5LS+tyCFhp2VXzh3tvGRSb04+SdbgbZQlgmYr+7VbKm41hGapvY1aviIFvT72H1pyB0GyKTROPOtF/byZVeBknKmojmRViHcgklFf9mwZX63qAwLR8Fyu8O/7rxXF+Swcjp4/uABSDNFjup7x1mJhkmfK3f+Fb73r9OOYmgZoTWogiJpKXC1cGAWFHEPKIoJikTcXf6VdlGvwV0juKXuK4IA2LzfgkB25EIuA0/UQrjqnCaCKx6gm3nLkfh//OejlVwqX6auFCFhmNw0UTTrsv0qXyJjad3dzTaOYs/qzpmeR459PBfWNdZJcWLqUGp+6G5yoXVtfo0R77Ao0YJbFHl2k/d0FQE8Js9/DmlEW9uY7Hd2KBndcUP5hXAXnSEvpaidtEMBOljHSaHeuCirctPcm87XI0LonlMHDdZfLpgmR9tOJcgSKNuKRFMUN0yNgxQH0kVnw90Ehq77AK+4Gj2TGTdS7Lgln16L8rXLv6CgQjdeC4Gz56nawi9RsAiWEBLzajsy7gQ3syXZZGnVqqa0UWCcRaLlMv6mdysGUDE7ECoyLLAmIAfvpUbZ/pkA1hdmxEhCZGwwSZENUio+91hJgubZPaOwOZBsxONJy1eoyMEP3uoQqIvk8CfsetPbPY1nhpubFUOKwyh2TDUbpWq75tXujoO0c/Rb42VJUSGjtSme80zudC9bpTdQOdmbDbyaVkUrkBahF0WU1stf1e2VpRcFswO6krQ1ah
- T8cPXpPJ
- MZGDHSmVnxfVzCrIdixU7l7BSCmFOcsNiJ/br+Q0y9mBPO1hN9Ws0xCM42GXhDIyw3fKUbC5YDz/cbrdMH/ProIJF0+6KTJd/bb/KqLI8L2WonontGvo+0l1srDMTkMVCbHoBDL16FCMnRfsMjeX/5GsgEqgnyympRniGIhXXsLeO0ZT19ywMGNO8N/rK3TEE90p/r74BB6I8ltlNSsFeXEP19bcRtxrER/PsT/unxbnfJ2BeYz4LHdHLVcFkukGcjDjSivF8/uKUhs7UrpbQQn8JXS2VYO4C8ITxXyri+wEGPYnvmaA74rTwxtZ4ZCmKsn5PtVBDYy9SlHQ=
+X-HE-Tag: 1789572116-607349
+X-HE-Meta: U2FsdGVkX19KvV6h5JM220nShccvm4s0yEYxFiYbbCBmEn2z0Zvm+cfP4YGC5UAg0+tEDa10jTg90Q0LeacnnSWpYWhR1m+lnAhzANyDS55H0HS3sX6ca0AH3QR9RfcMvjy6YjM0vw1bx5aKsVvB/A/ToUhsmbqnpG5N/Zx0bErYoE/5i2TQyNLY12F3HsWzfEBGDSAG574ofSECmkeMoT39TM6RTrF4pvD5uxMIFU+UF5oRwlYjJ8sXC8mVn+1LFvJo2k7XFQkCGa/RtE586pnV3gRQ6dgARJFT8Tbz39ieemGn3suJCQQT/XlFBf59AW1qT8pegIue0Yvde6ICmGhyFV8hizkW03Ep7rH4Xsp6HiwGrp6MDVxE+Qjls4aC7O0f9iAIVpLDZxGLboFUz4i8gg+pa6Lvsi+P3dFilFy1Ax9Z9HY/GtADucpf6vH9MtwlWBVqAcO5aakqhI95ds+Awatea4CkGmxkd0bday8kmjXPj4Nh2MAB+yQAxcXeF+IijyI3orDtdO4Tu2LqC9+CbF6VNWEu8yQZrFMa+Y+HcfN6hMSfmB7AKrv+HB435YljgGpyvo1s0hYFZUhE4UCAcRQj5Ae/CgyVeDQriImadsOKlG53bWVongmyDfB8TSxukLLHJw3O+RP6t+ZH/D1mUhrXjtaOFxlb5oDcGwV8dBX1vMAJ18VStZ+n2r/NBc965jzjj7SY7RW4Jo+51sRwh/67XhpIkPPQmbOpxbct5GikRPLKwDthi7mW+GVuL0VHLg8gLrDctM3h1uzt2SpwGphuhNBB4DVlgExifRRIqNHhvOg9n7dxVq2sYZdbhDJ5wEVcacIdzXh6t3bjFovTBJ34P4Gayk1ysoni1sPfmXAWSYD/X/h0RWZCW1ygAy3FFZn442sfBeV+Tri1liE74qPvVg6ilvt/hMbs/mhQhlsL9EDgafM1qlLIefQW0rwdFuN/gD/gUIzzEsG
+ BVFWUqMv
+ FyaWol4tLIXCZOZKYloDM9q5Rd7N7BuD/JyH7pxn4eIYcks0HPsBqL6U+P1VfZfmP9NAStzrCkk+Cz+6601L4dbHlcYkUouY6sDt5r4IYUo/BHJRUEICbj/8TkZCDT07cMHucFHTrrPmrHwdB1tWOBgsXDKafNF6t62Xq3hBOSfm1azeQjRGYI1/RrmqYQIsPNgUZDxVBjTcwzER8LviNfiivzafGoepmcMzf23gpH5jiHQlX2MsFPhjuCWaznyY+ZzuL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,22 +101,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 16, 2026 at 04:59:32PM +0200, David Hildenbrand (Arm) wrote:
-> >>
-> >> I told Brendan exactly that (try stubbing it) and he tried ... and had to give
-> >> up at some point because it just wasn't feasible. ;)
-> >>
-> > 
-> > LLM go brrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
-> 
-> No schlop like that please, I don't want to hate my life
-> 
+On Wed, Sep 16, 2026 at 11:19:35AM -0400, Gregory Price wrote:
+> On Wed, Sep 16, 2026 at 04:59:32PM +0200, David Hildenbrand (Arm) wrote:
+> > >>
+> > >> I told Brendan exactly that (try stubbing it) and he tried ... and had to give
+> > >> up at some point because it just wasn't feasible. ;)
+> > >>
+> > >
+> > > LLM go brrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
+> >
+> > No schlop like that please, I don't want to hate my life
 
-You missed this part:
+Somebody doesn't realise it's all too late for that :P
 
-"I'm trying to be careful about not causing a bigger maintenance burden"
+Picture Pennywise the clown in a storm drain etc.
 
-I wouldn't do that to you :]
+> >
+>
+> You missed this part:
+>
+> "I'm trying to be careful about not causing a bigger maintenance burden"
 
-~Gregory
+Yeah that'll be the hard part :))
+
+>
+> I wouldn't do that to you :]
+
+Hmmm... wouldn't you? You want to don't you? ;)
+
+>
+> ~Gregory
+
+--
+Cheers, Lorenzo
 
