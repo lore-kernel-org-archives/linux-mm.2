@@ -4,145 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35D40C982C4
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 14:58:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BE56C982C3
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 14:59:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 371176B009B; Wed, 16 Sep 2026 10:58:56 -0400 (EDT)
+	id 9DB8F6B0093; Wed, 16 Sep 2026 10:59:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 349866B009D; Wed, 16 Sep 2026 10:58:56 -0400 (EDT)
+	id 9B3116B0096; Wed, 16 Sep 2026 10:59:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 260186B009E; Wed, 16 Sep 2026 10:58:56 -0400 (EDT)
+	id 8C8D86B009E; Wed, 16 Sep 2026 10:59:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E079D6B009B
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 10:58:55 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 69D958071F
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:58:55 +0000 (UTC)
-X-FDA: 85219932630.02.0882E66
-Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com [74.125.228.140])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 7BED5160004
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:58:53 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=KXluu9j8;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf08.hostedemail.com: domain of dmatlack@google.com designates 74.125.228.140 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789570733;
+	by kanga.kvack.org (Postfix) with ESMTP id 67BBC6B0093
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 10:59:39 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0929B80756
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:59:39 +0000 (UTC)
+X-FDA: 85219934478.19.D6070F4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 4293FC000F
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:59:37 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dVqrKFhF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789570777;
+	b=4kLKDbAyDl0n6/7hlPIArBhmgF63fTpm6FJxsxMCGH21MTTJZmCY0asxcgejqr2LzUdSLK
+	KACK21xwigyUcmzeYrT3ycC6ZYH7RAfp8jBj99dosIswzRpsEoHHPwUT07YOK1PQrLH9nI
+	Rr54hBItkig3+lVWNWvzXPBeFw9Hiw4=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dVqrKFhF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789570777;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7B8AGM6usS6/DkOynGbVPS6pps2aTMeSLXoc/PLBLeU=;
-	b=xhkn3m7rqAQQttaR1FCcatXNsfUCOOSOMxwAw4mKBOJ86ZhxcgXWEuC7Mq4UCA/pMfFko0
-	2mLdDY/nBZ1l9lm/3XhKzwlXScEX6xnhjXEmCskePjQ9jJAbyvSWSZj2iZxF8G2gUz+BtQ
-	RbW82FRVFwWj3TDhAn5+ToF0bf37y2w=
-ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=KXluu9j8;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf08.hostedemail.com: domain of dmatlack@google.com designates 74.125.228.140 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789570733;
-	b=12pm1DbEdd08PnJ4o42Hy4jVPC1rxhSudf8ktncBiga4DGxVJ48xZEA/HZGTjURvuiBcRM
-	6mOjl5DLBNsFiSaV/r2SjNopoGYDNNgVh/lkvJhqk3FXrTZ08qeYhmJDDuwOte8dgqCgpm
-	xkiWwnun6r4pkqQZlrypEvxHrBgq9j8=
-Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c254fa4c24cso174507966b.2
-        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 07:58:53 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789570732; cv=none;
-        d=google.com; s=arc-20260327;
-        b=tAphUKywi92zAY1pHKX3MwkpAOhxLKwvnUUgChWbFN54rx+1Sd0kXIZxmBaHcZFldQ
-         3lcMpolYn8VeNEYlOrPToIQrR/La1BeU0/CO2ZvE4Qwi9ZMmSwn+snHBw8wJmI3FhnPP
-         ZBrswKaB7qKXAT3FT0WN1ukSjZBH2+HWEngN6fr6r0LGKkuNYK6XmwfHcxWwFqtiq5gK
-         cfZKRj7KtPMywC/WmqjzCwhUreVHXhdqrn7Xps8KUQS6zVzz19bafpX/HWl4qhO3Beei
-         QxjfggQCAuEt4EiNG5Zw/u46Lvts4i7MqLAWfgcj2NvEc8S1ZPmsBwcdlYzscM3frxou
-         5lTw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=7B8AGM6usS6/DkOynGbVPS6pps2aTMeSLXoc/PLBLeU=;
-        fh=59zzKI6+dJq+y9sAp7ElfeArojbOJoI3B8xNjvGvyxg=;
-        b=owmoLK0zzdW57QVlWnHkuvZKjSIR+3hroBRx1NYde+bDF7H2kJ+XGSbrw3NMKrpAJT
-         rrDFlIAAtxrS+JP272FLo/QnFlAbUIbAElF08Rc9JrWf+P2BLlaR4R6fCja5yiN5Ccd0
-         vlVynGcdLGM5Z1oRc+Uk+rLH4SXrzqq3C2vZsTir5s7j1aHJujgEvA2DW/peo6s+4fRa
-         TR6OZb1FxGckiO85iwjPuCIE/lMomzY/2I2brQQMrE6X+GeXviawiEQTPgWSs9YCDrHG
-         /WryXumMG4gwvgT2vmRV8wJxI85iIQPupt0kyRp6+gJt68D4+dJdVGpPUunif8CPSs8s
-         xLGg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789570732; x=1790175532; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=7B8AGM6usS6/DkOynGbVPS6pps2aTMeSLXoc/PLBLeU=;
-        b=KXluu9j8U8x15XwbtQ6wzdkwpgqjQtEZYB8E9S8wkgjPf0cQPxXphU91lURHcmx9+u
-         IjGKRotxwwwaNVvCA5h8QWGfKTo4/H6huuB8kZBGjHNK7uAgC4s8pSWUnnIss2xXALXD
-         leZQI8LJqwnwf+rHHu3VXJ+DXrAZI661cQDZdYDggL4InEf5HAN613LpbQFdc/EvUwyn
-         zbpRIZUboQB9R5qUog834/6yRTuEZsuXMRqXGZITAeKVKbnFMAjAihgfq7J9Ci874FsW
-         6lFYCRRlT1fUvUKi4OojwRJg/Fb5Vz0nm9zvzG5/1titogjvU9k3F14368n1tcbTra2b
-         /mxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789570732; x=1790175532;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7B8AGM6usS6/DkOynGbVPS6pps2aTMeSLXoc/PLBLeU=;
-        b=KCnYehNwXd2euSahsDt5C1PAtPxpHVcB4sfe3BzpRWsKPdopCMtSWrYvmVcBCoYc5p
-         TS9dGmvGMLLaQvJabkE1Yu70ZWYKdO23dv26eUDGmcDwx/wz6vozDbePXjdX4RFgGAV4
-         R7C/KISD+xjDRcMgRQaQsJL3niOF3A7kb/Ej3JT5IpGTR4jGqFNFGqFZFaxTCl33Bt8X
-         /3Be6LQ58N94iHmiqEi/k4nDtyeiZ6V06IM8TFGrFrUkuMIrJjj7QjastNKXlaAFkvKy
-         UOL/moiq9KGDgweZuU8sXnBvT/SV7/dWBzFzbbMYTg0iaAkWdFcbhiD4QyZz+bF47arM
-         xvhw==
-X-Forwarded-Encrypted: i=1; AKwUvBxDN1/CxwljOnd08wTKUrGeJbIUspFiMjWBbXIsFt6oDdoKJPgZxXvS/G67iwMcElbNfX2uXL98eA==@kvack.org
-X-Gm-Message-State: AFuF++kWr3ySLIChoVBuqm9ymSFP/MSCDk5zxqf58v25keDlxWfTajgN
-	xdJ1Ed6AVVaM5JzA7qGPJ+28betB2W2pIS8tzt5VtDxDXVA6Ee8OWdpsUBeFKm0hzsXfsKcQi75
-	q82NgdfMclyOLlBeXYa2lXUGXpr5MOVGBFOVTPq4H
-X-Gm-Gg: AYBFou2qcGo4RkGJL8CGRvO0S70fc0bqs6fLzMeHpwvqi/uzfnwX1uQALdNCGV1C9B0
-	HIa1OOC9NbQR4nHeDZOieBjfKYUpDqWz5CEWp9XSsa56QN5PStWIijvPPM1+sEl9S2ERroRUSh2
-	hdShyoVUw5jQnuVeGtJyYLNB9LxN/5QNk/Y629bvp0EFQDy+tm0qFWXKxPIvvyQsakpW4XvsThZ
-	JfclXk/qXd/XLHKiplBZ9L0j+k9cBbz2boaAS9+ZjDBa72g4I3z0ZLWyrMPCdNHKv+VbYbtyXT0
-	tBqLOiCjQPhJ+GworecEu1N2NlHjUzTUHVst9fHgZGlxERUN8vnZhzw=
-X-Received: by 2002:a17:907:c49a:b0:c28:fb3f:fe20 with SMTP id
- a640c23a62f3a-c29e52c71e0mr199279166b.30.1789570731516; Wed, 16 Sep 2026
- 07:58:51 -0700 (PDT)
+	bh=pAxx3UUAqYirDlx4uXabcthtQZepM0tyOeBdgaNDzoc=;
+	b=QMb9TMInOQNDCOr23MEMkz5W8Gl3gPgarA7t3MH7ziOxueqyRflO82AXaURbZlp/5dNTzW
+	IDDF72lra7I/H+gMA50WjONC/6ERH6jnXq0EPB8Odc7nwt3JTddnlZ4aTTZJjGXpvURiFD
+	rf0NAct8BsI6pFOu7EXs8xFfmFlESQE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id CA697602CB;
+	Wed, 16 Sep 2026 14:59:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DFBB1F000FF;
+	Wed, 16 Sep 2026 14:59:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789570776;
+	bh=pAxx3UUAqYirDlx4uXabcthtQZepM0tyOeBdgaNDzoc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=dVqrKFhFhjCMQQBSq2OYDNAnp5WtJ49ttTsdcQUBwlAKmbRC/3H6GvpNkNo+X9m1m
+	 8so9CnkEY+fqXPUaWGlQds6e3w4SatqLY8qOTHlUBsV7rACaTTxur9h5AI/gDHHgEk
+	 2DkBQkKTnXNbumkKD8Oqp++kq/EHDkM0ODGQba3OggJp3Jfp99Ox9S7P1piCJ6mzlx
+	 0aPHWJQHx+ncbFwOZBfwxnw+OTa+N8YxZPC7cJXnE6GW4c1+ovtRvUvb3bMlIxG7Oi
+	 Vsxoe1fi4ZZkpOv0W9aK3i/OwMENspG8TWac4W+yxqURPbTCY++Us1uWrubO52qWOe
+	 Y1Dwfsg4/Ww7A==
+Message-ID: <46d923e6-5724-4df6-b0d5-8dda7c547f6e@kernel.org>
+Date: Wed, 16 Sep 2026 16:59:32 +0200
 MIME-Version: 1.0
-References: <20260728221007.2098560-1-dmatlack@google.com> <20260728221007.2098560-3-dmatlack@google.com>
- <9211b2b6-9fca-4ef7-a141-84636d56e67e@linux.dev>
-In-Reply-To: <9211b2b6-9fca-4ef7-a141-84636d56e67e@linux.dev>
-From: David Matlack <dmatlack@google.com>
-Date: Wed, 16 Sep 2026 07:58:23 -0700
-X-Gm-Features: AcwNN1V694h9Klbei55CjXCXrLccfSPzJ9ZF9qWXraB-n35v9TC4KupB_2aeuGo
-Message-ID: <CALzav=dJUiZe+Hxck9X+kKVXoRn-Ks2WxV7B5i0RHRFGy7-Mpw@mail.gmail.com>
-Subject: Re: [PATCH v8 02/12] PCI: liveupdate: Track outgoing preserved PCI devices
-To: Zhu Yanjun <yanjun.zhu@linux.dev>
-Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org, 
-	Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, 
-	Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>, 
-	David Rientjes <rientjes@google.com>, Jacob Pan <jacob.pan@linux.microsoft.com>, 
-	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, 
-	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>, Mike Rapoport <rppt@kernel.org>, 
-	Parav Pandit <parav@nvidia.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Pranjal Shrivastava <praan@google.com>, Pratyush Yadav <pratyush@kernel.org>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>, 
-	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/madvise: reclaim isolated folios if PTE restart fails
+To: Gregory Price <gourry@gourry.net>
+Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ akpm@linux-foundation.org, liam@infradead.org, vbabka@kernel.org,
+ jannh@google.com, wangjiexun@tinylab.org,
+ sashiko-bot <sashiko-bot@kernel.org>, stable@vger.kernel.org
+References: <20260912110832.3203902-1-gourry@gourry.net>
+ <aqloB0zm3RjJ47m1@gremlin> <aql65IhMobL5Al9B@gourry-fedora-PF4VCD3F>
+ <aqqTbGMJL86TzDrf@gremlin> <aqqbB_nFAOGenDhy@gourry-fedora-PF4VCD3F>
+ <aqqjW5dpyznijYLh@gremlin> <aqqk89oTigJ9LS2N@gourry-fedora-PF4VCD3F>
+ <5437871c-d9ee-49d2-b24f-965c73c29c3e@kernel.org>
+ <aqquDtEZL1ndymGN@gourry-fedora-PF4VCD3F>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <aqquDtEZL1ndymGN@gourry-fedora-PF4VCD3F>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: xitk59ki4to7sn9dxcnbudnpxkr1zhy8
-X-Rspamd-Queue-Id: 7BED5160004
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789570733-715672
-X-HE-Meta: U2FsdGVkX197o660WZ3oZ81UEK9nrJFyS16wUMOem6OglKdr9EeL2i6oG6PAb09DcSGoz9zk8qxULuNPlPTRUguuz7JKqLlDsswZgdB91noKkNsGH6uOxNwj87n5UlnL7qUZno5Yq7wjgsSHvrDThC8OJDeBUtNZBZfv4TOF5vFD/QaqQIVwOZJ+/GB9qF61cWVgwd4rRZH2LWg6KzFTlQz8LtFAe0QPlOR2KkvZibV56CZ1xHsLP5+An1pms98JYTsT1VHAyzBcNRSrL7oLSj261qAuoPCVA8scB8tvzP1l8yhVSa9SlJIxFo/TODaw67E3mRcfzS2LJsv5GiktoVmqZXCFtri5Mow2Sk5VWHO7DlhiEMkfESfDCOKI53NtmDeG7NrJlfQcbrr1ZZA9ZjykXSNM51S7AzaCnwBuknlQwjA4GXhTV9KQwDX/gtuRbliOvYalt0z8ztGBKE5p9hcpMrUVJyfA2+WpcL8dCY7u9vUdb6EPHd2x5aPuYgUrXBWGZ6WSyKgOcambKdI/alcWgAJroImK2FJobuiIkjLwpdCquqmRERl77hZg/85MfZ+8Qo7dAQQytIe266H4KNXytmi4reFLbNBbVhhY/eezTcmfbDp2TxixJKVf8IHZPwvy+h5FMyH2VhcAOjcr8JQ89s0LheuJV/ZI9IZe0NDBTtCS/1OKZjvgPgvAbVLv0RCldKHlLfCOUEJKI6S7QjYBBV51dTS/cGC4EPRNmMnPTRdHx3V/WZJzzx/1BVNWCDruQXDV/uWsuPI3Cav1oPW/UmVVcWtMZ48DATayTtRhShWotThIZuuz6YCl7Oc9/sNqIWyIV4KCUi3YWkArmDW+2DwbDWXa4JlFu+kFLeuWYP4/fKvZeyYKnQr0uZ6FdXJPvJrQCHNuEbOW+U1wIX3OfsDI5pBfXs3W/SwX0mtpCmnoWPWNHcYaVV3ZnKt21UsPwuB4DjL+6jDRaee
- /fsatmFU
- bGjxJWJH/dwvWC9di55C4mO2voKyU2xSAKOgNmH245+G9Po31Qp2QtgTCXrCI+KCt7ulWaDlE63GvFqGfSDiO6/NBN9PwJIniNo0ETvOW8KZPQjImOQZmquaSexCN1p89d+sBoVhWZCyFtS5GBrQqG9kLG1alq0eV9JUd6EF2ayMLhQxMHisiNoC7UCoR6frwty7NUkLqcxZFu9Q2tv/vMZjOfNGfoHwX2MRzRpWufXwIvls=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 4293FC000F
+X-Stat-Signature: yzwh1gm7a8gpugomcekkzdfzsew76788
+X-HE-Tag: 1789570777-776969
+X-HE-Meta: U2FsdGVkX1+2rRHwikbjbXo6cp0YcHeOh45M1trCB2npDvhd/Myp9aNWl3CdvFf431YCwhOsIcCMQJbf1x5OEE2beAhJ8E2cEQ5X9hN3YZu0gH85wFiG5mQvX3L+3yd3jEQniI2ZqlOvFUHlGXkbc+3Mb+l1OWfIc9DY1WZmCrYxwNeiggp3vPNQYl+O0KaJZG5f+ailITyMsTwHujHqVelemzsR+qZ4mhoMg1rSomIPjpxYw/wLVfMgYZMb/MMkEGS+GyZwYyawilu649xp1d4gwy8WoKlqSYhgBem3XOIEnrOrQc5dYMh1tOH4bYG3YXkJS3U8euApaWUItfpirH1Zr7S8/eVRyQ4mEvLVfOHdwL7zbGwWsunDM1XWgVloDc/9oRneL8EkjbFbjlUFIahMRzxgNIqcNcG1PbljcHgNdlUuiquFc+ySG878Wp5vKWTe4vvOcBuA34KJl2ab/dICwYK9MCcu+g25m4S3cn2GQ9o7mzof2OSBcQ5dUiemZHafjpU5FC9qFzx52YCLLRrSANPgBe7hXBshRKEqVtqInyKzzJTfv0sZCQU8l816cRx2+l18q/igx41+nzn42vfpYiYbNKowKRyu3siisRFrWoei8pjuNfkp8rD/DeRjEOTpE+6A6XRTxI+8OR6s+mIk1VAJIq0MTz6YUCshY96RyBeM7cZdgGNdRn5tykiIYTazlr/wk+ID2ZUz0jWYmaRP+a7SfiwIzCj7ivjiNI9N8fnK6fQ+3uStL0VeghmSHTH95ALZu2Sp2uH/ZDnl1QHFikXO2OVJeBV53Ls2zeKI4CPdKEj4+Y/dKxLNFKfspgB8NV109p2ZxjY1Q3JMZ6cj6BiFYHi+YFY7ziuKKe4wG5xYwCwE3TuGziev1L/ZdEcOeGLpqT2hB66kKwo16TITcg8MPL2M4I4vIQFF7bQwEoJZm4X19SFIOdiy1Ml4J1Co0vF96iHLBGmjuMD
+ cKl0fyR+
+ 2pC99jmeWmI3qzZeNxZI3jazP6rjIHI34s2CaoIGHSzVEAsLbjews1rMBuDsQZTvctOCLPwZ16yuAgjs7giTSvjTWqu35+aOPm5j3K2QB0XqR4tfqOPZUrz34Jq+4msmadgYu6pZhHcboeHhM5sDXolAtbowNBbSdFv2scAgm0sRWaUkaoU4YRtIAJJpmjTmfW2E2YaFIRI9wDAVo4hZbXgHV0i4NtP7/C3r7n0C2NkdPPvEZxcnlWF4yePKPbATtMZmCM3TOXPIf9aY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,39 +145,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 15, 2026 at 8:10=E2=80=AFPM Zhu Yanjun <yanjun.zhu@linux.dev> w=
-rote:
->
-> =E5=9C=A8 2026/7/28 15:09, David Matlack =E5=86=99=E9=81=93:
-> > Add APIs to allow drivers to notify the PCI core of which devices are
-> > being preserved across a Live Update for the next kernel, i.e.
-> > "outgoing" devices.
-> >
-> > Drivers must notify the PCI core when devices are preserved so that the
-> > PCI core can update its FLB data (struct pci_ser) and track the list of
-> > outgoing devices. pci_liveupdate_preserve() notifies the PCI core that =
-a
-> > device must be preserved across Live Update. pci_liveupdate_unpreserve(=
-)
-> > reverses this (cancels the preservation of the device).
->
-> Hi David,
->
-> I have a question about the pci_liveupdate_preserve() and
-> pci_liveupdate_unpreserve() APIs.
->
-> Is it supported to call these APIs multiple times for the same PCI
-> device? For example, a driver could do:
->
-> pci_liveupdate_preserve(pdev) -- > pci_liveupdate_unpreserve(pdev) -- >
-> perform some operations -- > pci_liveupdate_preserve(pdev) again, before
-> the actual Live Update starts.
->
->  From the implementation, it looks like an unpreserved pci_dev_ser entry
-> can be reused, so I wanted to confirm whether this preserve -- >
-> unpreserve -- > preserve sequence is an intended and supported usage.
+On 9/16/26 16:58, Gregory Price wrote:
+> On Wed, Sep 16, 2026 at 04:48:04PM +0200, David Hildenbrand (Arm) wrote:
+>> On 9/16/26 16:42, Gregory Price wrote:
+>>>
+>>> Yes, in fact I used that as a start for exploring how I might make other
+>>> components testable the same way.
+>>>
+>>> "Stubs... stubs everywhere"
+>>>
+>>> There's basically 4 testing mechanisms i explored:
+>>>
+>>> 1) selftest
+>>> 2) Usermode Linux (UML)
+>>> 3) Userland stuff like VMA
+>>> 4) Linux Test Project (for syscall and ABI testing)
+>>>
+>>> selftests are really limited and actually create a maintenance burden,
+>>> they're not real unit tests and are highly dependent on the actual
+>>> machine configuration which is super annoying.
+>>>
+>>> But, lets take the page allocator as an example.
+>>>
+>>> The only piece of the page allocator that "should" (cough, simplifying
+>>> here a bit) be machine specific is zone and node configurations... but
+>>> I'm not convinced that this should require a full VM to unit-test.
+>>
+>> I told Brendan exactly that (try stubbing it) and he tried ... and had to give
+>> up at some point because it just wasn't feasible. ;)
+>>
+> 
+> LLM go brrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
 
-Yes that is a completely supported use-case. A device can be preserved
-and unpreserved any number of times up until pci_device_shutdown(),
-where the preservation status of the device is frozen (see patch 10).
+No schlop like that please, I don't want to hate my life
+
+-- 
+Cheers,
+
+David
 
