@@ -4,120 +4,174 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97847C982C9
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 17:52:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3DCF2C982C9
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 18:03:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 55A6B6B0095; Wed, 16 Sep 2026 13:52:32 -0400 (EDT)
+	id 14E126B0088; Wed, 16 Sep 2026 14:03:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 531A36B0096; Wed, 16 Sep 2026 13:52:32 -0400 (EDT)
+	id 0FF316B008C; Wed, 16 Sep 2026 14:03:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 46F5E6B0098; Wed, 16 Sep 2026 13:52:32 -0400 (EDT)
+	id F08936B0092; Wed, 16 Sep 2026 14:03:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F6446B0095
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 13:52:32 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 69A3F404BC
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 17:52:31 +0000 (UTC)
-X-FDA: 85220370102.23.97FBC9D
-Received: from mail-lf2-f12.google.com (mail-lf2-f12.google.com [74.125.229.204])
-	by imf16.hostedemail.com (Postfix) with ESMTP id AEEFF180005
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 17:52:29 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=FEqGqiza;
-	spf=pass (imf16.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 74.125.229.204 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789581149;
-	b=hPrk8MTsV8ToYL28I38h3/1pDH0iFRAq0s+6Rpc8IJfG1QynMABNsBcxXBw5W7KdUZ9ipD
-	s7+JDkr3MjV3ItyYtXXPCN1n8qYLiSgPLiXf8RIoSCoEd7jI1YLBmGaVKQbmF1jtY7+oIq
-	omADFsSdq1PF4tXV7+F7gyDRHl6goDU=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=FEqGqiza;
-	spf=pass (imf16.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 74.125.229.204 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789581149;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C369B6B0088
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:03:42 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4AF12160556
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 18:03:42 +0000 (UTC)
+X-FDA: 85220398284.05.AAF1E40
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011020.outbound.protection.outlook.com [52.101.57.20])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 6AC0F1C0008
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 18:03:39 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=XC5yBv8Y;
+	spf=pass (imf20.hostedemail.com: domain of ziy@nvidia.com designates 52.101.57.20 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789581819;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=99q2Kz8VLvsm/yvtFk2tFIeyCDvYHKpqJj7kva7BYPs=;
-	b=ifbg4mT+WAsxDBxpsLCEmwCHhmGc7+E4D2JMbzBzQqI4xVRDcutriT0M/V8TWy935Lzh26
-	P7YGa8DobE8GZ8z5DOb4nwofUM06gMEFQUGMlnoFhA71AlpkDSkL5L+xe90pfC7lIEmrZX
-	KBafuWH4YjplZFSeq8q+mVaa/xEsFWs=
-Received: by mail-lf2-f12.google.com with SMTP id 2adb3069b0e04-5b79786cdafso166310e87.1
-        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 10:52:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789581148; x=1790185948; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=99q2Kz8VLvsm/yvtFk2tFIeyCDvYHKpqJj7kva7BYPs=;
-        b=FEqGqiza6YKGkM1TZX4ifnJ2OmcbSJiEg6rPnBipr2XRc5dOluVsPYYCv/GAUbew1M
-         qOiGJ5lRvXjnrGXiTIJB6UFzjnt0Vvg5DMVsgrfhTAWVAGYMO50mjdsIMwmJmNIuPhkA
-         QsBnHISC6eZFh11y2Q1p2v1NBS4PQt6/ghNdFQosFRHfM+d45hMEEnWFaU+xmUn6are3
-         LxzfanpLxcfT5b1oUJKoFt6gamX14kX/iPeEYkwdcjS3gKeY2g5/3g/1JmXdOtdMXVkt
-         CHbdI1Xdl6Yum7xkx0loM/5rZcKbWb7Mpc5Ltoi/nLmU8Y7M0m25gtpcBPXFky1WEh8k
-         UopQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789581148; x=1790185948;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=99q2Kz8VLvsm/yvtFk2tFIeyCDvYHKpqJj7kva7BYPs=;
-        b=2ewMcVhw47UpbDqgaQeqXz1yZR21lKn83KtLdBtJoFVNTi6ZGsSbTEUgbjbO125/dQ
-         iYEAbffBRYWNjrqieiflDNFtISlITmMrRuIdTYRKFG8E2KvoiyX3P2c2SZlBlmS3HV6R
-         CgydLE0JmKwi7U8Z+2Xzogka2C9ssIjuVe8k3h76/uwZmy0U0EXZ76387kBId97MSZj+
-         KKHY10zfYA7oFYAqNui+WP5J0F4e1WKtO6PgK0gmfYaHsnUyYz/x1RndFwejAcWBvxJB
-         HMNneVF5frA/IApw+GyqbXNnvEry0rI/3OefhKlqJuXJbJPXUjt45CQqk35+AIL5xdcR
-         5slA==
-X-Forwarded-Encrypted: i=1; AKwUvBx4PKIUkwahlp5Xan/EhTN3cEKvijd64qbjn6bQnMHu1So4U9yVUuoboRLDESHcNYer2ScnuUjw0w==@kvack.org
-X-Gm-Message-State: AFuF++n/v/pQ/ORHKv2LCqA50LWvx7X8L2Xfu+zHpAufC1GY+49VMV1A
-	RBfEzqH2cacjf5Y2xs/9pRUFLEimHj5GTJCPS9YT8ZdmemvoTZ997CS7
-X-Gm-Gg: AYBFou0CHBWUESaPGQfOweoq1DL3InLxzi6o5NKVvgQY1qOV0ji91UrUgcxozvvtL5G
-	rRo1F8aEGt7dSQoA/OxMl2R2vWYxCPJN1aFfFEAXoYqWgXmc4Vjsw20E4rbg/JxloxMpVrXg23X
-	lOvCggdYGsguA5tzus3qnhJrNjG4bs8cIe/YBaxrVfyYd/pNIlzc8hNTh3xL4vln+s0+aNzw4JF
-	uiI51iB+8zh46TovzjCujPyZcczdc+i8Y9KemPoR+zMXAFH6niEdFL9X2Wur+S9DvVmU4Ch8EsK
-	Y+oHa6usQ2dmRWJIXPklqH49kUg8xyMB7b4IMMdmeV9VbtXFw3OnAPCXZHU+eNMoSRG9HGURqNK
-	5bBGad4uRGIhl6fLrSmecEchdU46hYozMKx6whmpiits7xSms7uytTjHzYV3eb4s+iWtdrPnC7e
-	SD6M9l98mb2UVVlQo69Sx+7Uu1nFjqzZT7opclXjPouK5JmnqgNhPB3fmumC9b5kAIK+xsHHUk6
-	xr7RLJ4g1JV
-X-Received: by 2002:a05:6512:3182:b0:5b8:b53d:89c3 with SMTP id 2adb3069b0e04-5b8b661a3e0mr1304622e87.2.1789581147601;
-        Wed, 16 Sep 2026 10:52:27 -0700 (PDT)
-Received: from dellarbn.yandex.net ([80.93.240.68])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b8b57897easm1080649e87.5.2026.09.16.10.52.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2026 10:52:25 -0700 (PDT)
-From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Alexander Potapenko <glider@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Shaobo Huang <huangshaobo3@xiaomi.com>,
-	"Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	kasan-dev@googlegroups.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] kasan: unpoison task stack below watermark only in generic mode
-Date: Wed, 16 Sep 2026 19:51:13 +0200
-Message-ID: <20260916175113.1327454-1-ryabinin.a.a@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=rhqjECNnIKQ3HxZfI2X4MMoijUlUGWqWsh+UQjuFs1Y=;
+	b=a4K7ueAYIkiOiUxtjR5nKisFj/oJ3Cpx7rUR5zeS+IBhLCsMGV+mt0TqbzBvCEagmjgzRl
+	0F/H2kaMAD8nfc6cwo0LakN9OaC+iyMb6l9KYbSqxmU8CBh3vzbZUPNjndyAd3zMvaCVOF
+	HmAz53ha6tAQ4VpLJfcjseTDD4GenfA=
+ARC-Authentication-Results: i=2;
+	imf20.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=XC5yBv8Y;
+	spf=pass (imf20.hostedemail.com: domain of ziy@nvidia.com designates 52.101.57.20 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1789581819;
+	b=CHM6CQ568XYh37lFUFQ8ZgHx8ivBIuF+EBj1UI9vqE6zHOo8+4FmdYT5GwUlg6JEXlGo2C
+	TKwLPXZ41pKnu2nuKasbnxq8ocER6JAFK75L9djYoNK8mn+HmAVrm0Y5DOyqhmjOLPyjdc
+	oLzQdtptkssGOB1Q4MXX646v0yAqvm0=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=eejKA9zwZ/cfat6jhHTQ5/wRlbtsIOblZt67jMbntNkPrtG1imr+diB4UO1ZbzCVBB28AU2oDXwTatRqOOEymnB1oOfkewXoKqylA3qX4iDAogy7Yvmt9G3TEkTOkkNO/xRSiG6X18ZhUucS7WmvUxz/AqsX9JtBYetqhWvUIIQCILVALJNj420tNFGJfnm+t0VU55snNDckYygMeAsSnL//JcJqA6UW1GtsHWzH7BZuM3tLwoDW0GFXAXv872cKKgwjcrRmbeR8v4RIMyYWOVz9e3ibQLK++tPNkN8yJ1tPbgDVXNHVSAJBE34v/CZtdmsDOdsFbsOomK6ATQ7N6g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rhqjECNnIKQ3HxZfI2X4MMoijUlUGWqWsh+UQjuFs1Y=;
+ b=cZQIpcrae3OCxubnSNDaBFRFaMLpy4OYHpC6iGCNAlFZb0sX9LEcrsefH4z2+kwLU6rPPVr/ITUN69EmGSM2ifgj1TtTk8VFfKXKGY2hLfF2tb12evpzTBgm0mWUb4FUNUaIbhL91SB+bxfBNgBOgLr0hKpN7QYnPWR0CO6m31GuT6guGbar06Sx+JKGJl/QfIf9VL7512pXITAB9L0Oc6OhOaO845FFrM/9mT+sOXNm+lnTn85mF8ZfSVG2/mGHJV6kFybUnRyhxXaifx56M7rpZDUyVIZpoLEJK19q+jbxRtEjy7oEStr4noN3pkvfTP1C8hDKXq6IRgQUoPiU6Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rhqjECNnIKQ3HxZfI2X4MMoijUlUGWqWsh+UQjuFs1Y=;
+ b=XC5yBv8YZieHGkuGHwW9ojGJLNG5FVlAHpQb87cih3K9mEOeabtposINoKbdqk9VdG72vfJvLEYP9AQVJOxMJvlVFvja2IOalFvRmdTqhfBYAqEVgLShYQVhrVrAwwwc2eB6ix/jAsPWL6sD0X//AcIQlg+USbumZCt6p3rf5GXqJlbscgajwkK2ral5GZoIYgC2R1F7z45j5Q58NiW8iqFaLYJmZPkWSqFwnGNeyWTFCxsvqG7dMDAf1cLzlBeLvopFVJDlIz5d8iWAwfAQUpWF1TH3JGWFYBGpzzGKXXcJ9g6J5ye0Whzib8F25cfbwAlNkGj55x6UuOGesNzFbw==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by SN7PR12MB8818.namprd12.prod.outlook.com (2603:10b6:806:34b::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.9; Wed, 16 Sep
+ 2026 18:03:28 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0428.009; Wed, 16 Sep 2026
+ 18:03:28 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 16 Sep 2026 14:03:26 -0400
+Message-Id: <DLGXT0ERY79Z.3C5DYVJVX6S9Z@nvidia.com>
+Cc: <linux-mm@kvack.org>, <linux-fsdevel@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-ext4@vger.kernel.org>,
+ <akpm@linux-foundation.org>, <david@kernel.org>, <ljs@kernel.org>,
+ <liam@infradead.org>, <vbabka@kernel.org>, <rppt@kernel.org>,
+ <surenb@google.com>, <mhocko@suse.com>, <hughd@google.com>,
+ <baolin.wang@linux.alibaba.com>, <willy@infradead.org>,
+ <bfoster@redhat.com>, <joannelkoong@gmail.com>, <djwong@kernel.org>,
+ <yi.zhang@huawei.com>, <yizhang089@gmail.com>, <yangerkun@huawei.com>,
+ <chengzhihao1@huawei.com>, <wangkefeng.wang@huawei.com>, <yukuai@fnnas.com>
+To: "Jan Kara" <jack@suse.cz>, "Zhang Yi" <yi.zhang@huaweicloud.com>
+From: "Zi Yan" <ziy@nvidia.com>
+Subject: Re: [PATCH v3 1/3] mm/truncate: fix data loss when splitting
+ straddling large folios fails
+X-Mailer: aerc 0.22.0
+References: <20260916092450.654408-1-yi.zhang@huaweicloud.com>
+ <20260916092450.654408-2-yi.zhang@huaweicloud.com>
+ <xl2rtnntlxoxoozkddgrlkcsgukcngvvcwazm7gb7q5g32yxir@ef5ltcwueboh>
+In-Reply-To: <xl2rtnntlxoxoozkddgrlkcsgukcngvvcwazm7gb7q5g32yxir@ef5ltcwueboh>
+X-ClientProxiedBy: BN0PR04CA0057.namprd04.prod.outlook.com
+ (2603:10b6:408:e8::32) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|SN7PR12MB8818:EE_
+X-MS-Office365-Filtering-Correlation-Id: e2e232e5-2150-454f-1c48-08df141ccf51
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|23010399003|18002099003|22082099003|3023799007|10067099003|4143699003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	5mz8pk5bXR6xYx5j1pAn8sMWOGHfH00fskhSL7i3ZZl6teVsXXzAN43Fk93ODH535GNvUEwSBXE2QgHVIKce8AMaSebsAnHA9z9zsGMphXmH4MLsLZTBVR1h6/ngXOMoHwAsfGVjFOEiIQeeKJHDpqImJhZvTyOiszlW96DpvJ9eHpBJSdYtfWtmUd3k/dzaKaL3EXqdfl4fdS2kBrrDGOB7lDP4FPx1E1/o/vJrKJ/HrGQ92EMqMTlIwen+3ykx0hqoAMGMABmYi3h35/nsag9+B/sfcviEzp9QJyit4Mt6Nv+oTkA281rE84VH23XchITsWf0OKR6AxTtL29CBrmoAwzytJ4W2XwknYvMgKCooEYOT8R4dObQlEMTH4KIXpniPFsjOdSbpISbyF8PHbGnKSTEfHSa/j728QB1R+wffY72TiWkVHB4y3JgvPwJHXzsnUNgS4fy9U0sJi4VhfVmC6Vqy5+A/L8HVe3mZfR3axgZgnkubcnTSjPc6Zyjhevls8Mksf64wZC5lvLKZpD+4QzSmGtYpJAbpRieYYs4Ss6zBoN0oVa/88sMo7JBic7RTbC2iJECyxdhxFwdrVXVR8ir+pPPoJWlQjqf6Vn/WP6YLVekk7RatjBt8jED8DhtmVIZz2Bjbgr+JJuhI82oTt83y1EfJpQpSYy/LGyw=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(23010399003)(18002099003)(22082099003)(3023799007)(10067099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dkUwWWpzT3dCalAwLzVjbG1LcDdOdll1Q25hakdTTXlvc1ljVXFYc3RzN3Qr?=
+ =?utf-8?B?VVcrNUUxaGV0UXdoWnZ1MzBseGxmZFNZbElSL2sxYkthVnN6ZWxQWXZLOTlV?=
+ =?utf-8?B?cmtTa01tN0RUN3ErVWlHejNZMjJjanBhak03bWQyU1hhL1lvVCsxTXBocHhX?=
+ =?utf-8?B?TjlVK2xqZGJBT1pTdXBNcG1FZ1U1RVV2TGFMYmpWUFpjVzBaVUtzRERxeDhk?=
+ =?utf-8?B?VzVUZ0pjWitqZFE5VHJES3pKazRKUTh4TTlQdTNGaWJzQ09QaGVCVDllRGY0?=
+ =?utf-8?B?SFMwalRlTkh4ZU1RRlpPUDNIWEhHWXBrMHpsT3pqdnQ5UDBTb0RZOGQwRmZv?=
+ =?utf-8?B?QVIwWmF1R002QkNHQUlmRHdJRkg0eW1nNVBTMUpFaWlyMmVnSm0ybmdkQU81?=
+ =?utf-8?B?ZjhuWVlaM3hvUzYxdUxoVU10ODY1UDc3Q2VPNks1cXdFMVhBQmpBL3VYeUFM?=
+ =?utf-8?B?SFRkaTE1QjlpS01UbnJjSWFZbGZjWEhGV0lDSmxJRUF4WmFzTmNzeHh0RXgx?=
+ =?utf-8?B?ank5MDU5bzlPWHVhdGlCZVFES1pOelZVV241aTl4UmgySjZ2ZFhWbGdvRUw2?=
+ =?utf-8?B?dUFSbkJyeUxlZXRlb1ZMVzF2LzlrUzJCbkRyTXNDelg0d3Z3V2UzOVlBOC9R?=
+ =?utf-8?B?THlBRXBvdzcvRmJuOWtGVTl0SWxjSU16SkkxY1IzeDRUQ1RZcFYvT2ZaTTJY?=
+ =?utf-8?B?NXdnZTZORDB3QVJTQTFFYXdwaWlyelNrcXNvS1h6cjA4M3VLMmEzdC9DcDQv?=
+ =?utf-8?B?VFRVQndzeHFVODJPdVlteWdtaERVK0JRcnZZc3orUXJLaTBCMmJObXdvMWxJ?=
+ =?utf-8?B?RWswbjNsNHQxSWFRcGJ4Z1dDTmZ5R0h4WnVzdUJJSjVPSWFEQVA0Ump3RkR2?=
+ =?utf-8?B?SmxpcHMwNFVnSS8zZmhDWVgydTlsNHJwSjZtUFcreTZSSEhkVThZdTZrenFa?=
+ =?utf-8?B?c29NMXlKdS9QRUI2MGJWWDhiWFRUaEl6SUU5TS8yd3BCaW1VczBHeS9qbGM3?=
+ =?utf-8?B?WnVEZ0FTUVhoaHdneE0zZ2xPZHIra2ZEejVvVTBtaE5URExQOU9iTnYxM3l3?=
+ =?utf-8?B?S3ltdnI2cTRsWE0wMzVucE9FUko0L1RpcDduUnc4bDBDMDBkemRIekZRQURM?=
+ =?utf-8?B?V1YyYnVGZXdTRlBPOGtGS2gwY0NhcTZkYS9vcWptV2VxMXFXSlRiaU92Z3Ex?=
+ =?utf-8?B?Rm9ESXA3bTN1UDRGZmVxN2lBMkVieWFNdmhQKzNUUlUvKytTZDlBYnhMZmNK?=
+ =?utf-8?B?VG1FanNDTHVMSUNIb1JSUXU4K3VoWUtSeHFYRUh1bjJMRk1ZNXEvYzQrdWdv?=
+ =?utf-8?B?SGl2OUtWNGdhR0E0dnpkWFZYZEJ2UjZpdTlYNm9vdHhrSzFwamRvSWFSMm4y?=
+ =?utf-8?B?R3g4emhHTlRKajFoV0V2amxZUE1iTjNET2FqUk5GMThhMnNqOHFERmhGRGFO?=
+ =?utf-8?B?QU9EVmJNSDVBNlNHMmJiV1Z4Wk5TdFRnNWlvbUhHUmhXZk9QdUdYaXJPcHha?=
+ =?utf-8?B?RHpMNEM5cG5Yd3hhYnY0Y0dleGVnUEdsTkxBNGlKcGxxZzh0NkpPT0hhbGNw?=
+ =?utf-8?B?WnhNS21ZaEY5QXhhQjJhTllNMEhmdDdpK3BOaHhXSXlIb00ya3BkdWR2Nmds?=
+ =?utf-8?B?TEM4TUFFb2JQb0ZwOHlLcWEwcFh3RTRiQlBmdzN6YVc2L1g2RWVsdlRTY0Q2?=
+ =?utf-8?B?OTFvS3dnYStpc1VOODY0RkZHZXpSK1pMVXBoWnRLTXdrdkFIREg0eUtOME9W?=
+ =?utf-8?B?a0M2bjU0UDcvWHc0T2YvZGJTbk1qN1lUbW00N2F4MkNITDlTODYzSms4czZt?=
+ =?utf-8?B?TjEvRDJDQ3RqUzlQcHNFUUpGUjRoMGVFYVE2K3FBL2dVYXdHenlndHRDdDFq?=
+ =?utf-8?B?eDA3Tkh4NXE5UnlVNjZaWWJBZStmb0Zhd2pHNmkxWEdRRnVrNWM0bW9lNU5O?=
+ =?utf-8?B?czVzMkp6THQ2cGk1dWIwL2E3d3ErcVlMbGlLcWFvSFp5a3NGeG1kMlFrOUtO?=
+ =?utf-8?B?OGR5Z2ZXZ3pNcy85Z0R1bWxIZWIxS1VLbThoR0VwT1hYb0sxTTMzU2RlVEo0?=
+ =?utf-8?B?VnV1eXV6dGRjS2lQR2tXQmpKRC83RHp3akkxYnJaUUk3Zko0b0RPM1IzV3Ir?=
+ =?utf-8?B?ZExqTWxSUzRRZFA0TVcrRnJaVmNUUmh1TXJrQllCcis2RE5iNTNGcUI3cVhI?=
+ =?utf-8?B?eVh5M214YXBWTDZTMTNHbFUzQUptYldzbUFRVEMrVFQwZXh6bUxnMU9tYTVN?=
+ =?utf-8?B?OGZFOE95T2hrTXMxSDlJMnlXcTZicHA4YmNNRDUrNDdmeUxMT3E4M1p6U1FE?=
+ =?utf-8?Q?mehb4ScisI2OBPo/p5?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e2e232e5-2150-454f-1c48-08df141ccf51
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2026 18:03:28.1016
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nnDZNoMGYTXpFczhU8cWhh+xGpMGkK8zrwmxXZmGC29lGop3JaJppc3P3PER5cmZ
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8818
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 6AC0F1C0008
+X-Stat-Signature: mrsq1khfafyz9wtendhrdzgab7dd4dpm
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: AEEFF180005
-X-Stat-Signature: ckczo5eeuo5uai5dowechkcrk458twr8
-X-HE-Tag: 1789581149-410244
-X-HE-Meta: U2FsdGVkX1/pidBVc3zGvyNE9sCmrbCfPFSmdg9XzbghsY4WxBaSmUOGgWg+3YFXejCD1b9zEVNlbLq9qqAV3UEv6vlONuh3wNrk++wmUPQZw4o01TgnRIPwm/mmrbCIP/krtU8arudeoGnsfs+KUTbtq6QjcGCYhDctmNm60SUNn3b2rVezsgXlmtQ1crzQCSSMk4p3pofnTCIbqtupicvnFeMaF/VjphSQO/yKekC0yMdZ7+EAGgT0db/3Q6oFz8J2/Fa1UOMeuXD96NDUDdYhKNFpznVeqV3BJ4xgx0JX3E0S+CkkhVgOckczdWtWiho+vhIctiIrtpGXthrO/S7+0LADy9ekN/hP59oxsmSSg50ZndvRwiblXFajOIZbdz4SrxnToLRRX7sKiUxPAWXJEdQqb5HGKMeAm4ba9jdUprvyvJrjdkqy7UCTyYR4D2q8oSc+kW9HN6FhRTDVTGR9nZ+x5kAW0fX1GxtSrcA5mVb96w5L/+fkeAhpdTYKGsDAhOtdVr6RSd7o8NAPXQ5lKEXnqTF7x//bN/x7SVXbSy2uvMO5LtJRAhfX8EmlxkBdTB/J+PGDrBL8FUR/ImgrvwlQOeEjRDjmYaWQuwXf0H3e0yUb0k9j/dq85RNhSTN0meS79W2TLWOdq+rFKZS3lGGKNrY6tY3xiZmBSp1buCnqHlQEOtqiIZdEVKonTqILhrAi5xst4ejWUsqOhr7P674FZZVdyCbqFrEmv/H8J+mp9am+e3IhGh+PMIrFNIdMLNUpJdUhFe3z2+yrmbiEyMdU3LsuDu24cUBxeLAMlPHuGHSQ0Yg9Ioh450ZQ/VqPfNPyQBjdI2XACo+D+GAtQbZq8HU2n8C7jLDB9kSOgPZrEJH1meZbbXh95Pz/xhy1Nre12tq7cWwSFR3cALgaUVvLEJRUGo7kzsiRsAWCf5wZ3XmkMjFHy01V3dZijOFVj9l43apLFmmYgw7
- YHab9Haw
- kjKQpQCIn8MddSF8Zarp4OyJt2LTfBM2UMGuOYVBMUKwIqKRqo3ApTRBdBqz5WOpUM/gg2qaqDqkQa5ITSCGfYSRAfV9Ir3hyhLwpQ5wlDGnSnQH9J5/4Y6MEOQX2oMN9X3v5sWC/GfxRErf9Tz5V4NFns/0fH0dxVPYjGO3M+1f9aJ+OFTg8z2aNde4wyrA7yqXjZcPgRKVK1YQv+WXbR7wSbMFqE1jTefEkDT6P9FoIw9l1pG3RW7SS7EJkJWquSIluDRYAcN93VP1seMKh67/Fjjd/saJ6cTYfQzH7YvpFp2vsFPtuKHWKWDboygduHlClKm5plL0AjtJ2VZVBobEkpSw0DurwPUcm7SedXyUGjWAFHIRXLTEwckrWH9qmW9eh/aMoSs5+dONlrdVIqLthCFxGnZt+7sHnyB0dctLfVW8DrSFVW6ILljSTWAdpBjb2kqMcKOdSxmj2Z2PL5qoNHM3Z96Wb3iL5GP13rmWxUTFnxHtUTkcnEcRQ4hc4D1GO/YHoPMQ17dq7clRhq+s2Ww==
+X-HE-Tag: 1789581819-130568
+X-HE-Meta: U2FsdGVkX1+A6xJij/U/Q20UgCOq8qE+UrdGTcqQQNSNF+GlSL51PNkuUmXuO5kylP7Tq55dIuBOH+Y7oDYXt3oJ6t9I4M1IdpEsjKZR64e4I5BD4COZnI8gP6iKva+tPgPfSIDYlg+y9LAnBUsRzHxaIxgGRzuuFISk+u4tWNzy4lpyilULOWhMT2sHyd94BNkuBPa6UvaCyFj58Zon6aAdHBynTiVOo7JuiLdHYNOtmuoeK18NWGUk0AVLTJ0iononKWukNlTBxqxdi5IuO2/Qc+f7o9VTPkXjkBx5IxCD3ksRAgRtEhLgNZLPIzLSKccohDKVI4jAq4dA2OClo2wvSxQln0gjfM8NN0lE01VBAxU4Zubbr6lqnjKUCLD7i9qPsDLez3WBm0Q5pKc1oqqtNS3l5yYoBD1lohfiiZPJArD0RHSI1TWCo0gB6DKyZmTgAQZwNP8H8JXmOrBPaMZR2Lv6orT1wribzLHgDi6mpUCxirjy8iS/xrpqGEYlSrbxfAw2/ByMOVcP/lYN17GqRB+feElMKVHuGMp6DYMDfkBQ4x4LccaVBkFe7ckmWJbvc9/UagxeVX2t/15eXL4fbOaXmt0eXM4hUxN1mIBktsJwmiDDcJYuRnvDGR9VatChlowcg4OWqw12ZutVJYkJJ9P72LQWQh6/47F/kxcIIdMOqFAuWqtb23WNEIkw7NUCqqvAxhr9iyxo1RguItUG7LnEBE7mjf22qsGVR34UTZDuB5YImFpF+O8FlQQQCSnDNWQv+8oFuMyZulmp5KKTuLs4NH/BLs1PCaklGcEgLvnKt7c+/pfd7OBl1dCXheUcjBlsCq/mPrIUpiQxx+iyitKVIEypia9Q0g8f7BVfIcsJluEHmihjceLmDn+P0nLCDfvGfp7dhE+3WZp77PQca0xyAL8fRpaVwQbABuHa8WxGADODF10JnCtXQGuvaNhE1FtMKlMk9pliYgv
+ d62yU+wb
+ Bzt8OT0VPs6O8DgEk/n3Q5+aqwCgplVKhmwbkXI6Imc4vx2y2rC4qZZcNOUftUqqtvQ4XQJINOmbSektadPVp8FxNIfHTo81uboJxxqLy6tooqQcS39Xbfk+enRyWthD1IBKHgcAh29v2d9+dBkbFtxUFKgHbLzqwSEIorEj3Ir7WReLDrZde7ftjUJPcBh0iwLxwzlN/YcefO+F8bZh2bXNUZRgWj4Bmicpn3bQbp4+cBMX77MXfAIcBJ9lzJHney7r/Ux4dgvosXkWalFApru9lnGOyVi6qMV1YNQwiod2lRA40X9FzFPSOdM0St6g+6ptedWqhzfBl2UZYuHkSO2IIlwJyVR6yuUwXe7bFOzjQQa2XLOoE14mMG0zGV5IXR2NfUj3+jCEC9HuAGHTEhunlblP6nhSLSmN3Nt1ueGzezkWWggn1YvabK+xu1b2AVSwq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,88 +179,239 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-CPU resume and BPF exception handling can discard stack frames without
-running their compiler-generated epilogues. Generic KASAN needs
-kasan_unpoison_task_stack_below() to clear the redzones left behind by
-those frames before the stack is reused.
+On Wed Sep 16, 2026 at 8:02 AM EDT, Jan Kara wrote:
+> On Wed 16-09-26 17:24:48, Zhang Yi wrote:
+>> From: Zhang Yi <yi.zhang@huawei.com>
+>>=20
+>> truncate_inode_partial_folio() splits a large folio so that the caller's
+>> truncate loop can drop the in-range sub-folios while keeping the
+>> out-of-range tail. The first split at the punch start edge is
+>> non-uniform, which leaves the sub-folio at the truncation end edge as
+>> large as possible, this means it may still straddle the range, holding
+>> both zeroed in-range and valid out-of-range data. The function then
+>> attempts a second split at offset + length to isolate that tail.
+>>=20
+>> If the second split fails the straddling sub-folio stays merged. The
+>> function returned true unconditionally on all exit paths of the success
+>> block, telling the caller it was fully handled. The caller kept its
+>> default end and the truncate loop truncated every sub-folio below it,
+>> including the merged straddler, discarding the valid out-of-range tail.
+>>=20
+>> For example, a 4-page order-2 folio punched from offset 0 to the middle
+>> of the last page:
+>>=20
+>>   truncate_inode_pages_range()
+>>     truncate_inode_partial_folio()      # same_folio =3D=3D true
+>>       1st split at page0 -> [p0, p1, p2-3]   # non-uniform, success
+>>       folio2 =3D p2-3 # straddles: p2 zeroed, p3 tail valid
+>>       2nd split of folio2 fails / cannot lock
+>>       return true                       # BUG: caller keeps default end
+>>     end =3D 3
+>>     loop truncates p0, p1, p2-3        # p3's valid tail is lost
+>>=20
+>> This became reachable after commit 7460b470a131 ("mm/truncate: use
+>> folio_split() in truncate operation") replaced the atomic split_folio()
+>> with folio_split(), whose non-uniform split can partially split a folio
+>> and leave the end edge merged.
+>>=20
+>> It has gone unnoticed because a dirty large folio normally carries the
+>> filesystem's private data, for example buffer_head, so
+>> filemap_release_folio() -> iomap_release_folio() returns false on a
+>> dirty folio and folio_split() aborts with -EBUSY before any split,
+>> leaving the straddler safely unsplit. The bug is only reachable on paths
+>> that produce dirty large folios without filesystem private data, and it
+>> was caught on the upcoming ext4 iomap buffered I/O path when no ifs is
+>> attached.
+>>=20
+>> Rework the contract so the caller is told the page range to discard:
+>>=20
+>>   - Add pgoff_t *pstart and *pend out-parameters that receive the page
+>>     range fully covered by [lstart, lend] after any split (or none),
+>>     i.e. the pages wholly within the range and safe to discard.
+>>=20
+>>   - Adjust the ordering of the validate check when splitting folio2.
+>>     folio2->index is only reliable after the reference count and lock
+>>     have been successfully acquired, since it may have been split
+>>     concurrently, or freed and recycled to an unrelated mapping. On any
+>>     failure to obtain a reliable end position, fall back to
+>>     folio->index, which is safe but leaves the sub-folios split off at
+>>     the offset edge in the page cache.
+>>=20
+>>   - Rename the byte-range parameters start/end to lstart/lend to better
+>>     express their semantics.
+>>=20
+>> Callers in truncate_inode_pages_range() and shmem_undo_range() pass
+>> &pstart for the folio at the start edge and &pend for the folio at the
+>> end edge, so the truncate loop drops exactly the fully covered pages and
+>> never touches a straddling folio that still holds valid out-of-range
+>> data.
+>>=20
+>> Suggested-by: Brian Foster <bfoster@redhat.com>
+>> Link: https://lore.kernel.org/linux-fsdevel/anH-WKA1coW6wtfG@bfoster/
+>> Fixes: 7460b470a131 ("mm/truncate: use folio_split() in truncate operati=
+on")
+>> Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+>
+> The changes mostly look good to me but I have some confusion around the
+> folio2 splitting below.
+>
+>> @@ -259,32 +271,62 @@ bool truncate_inode_partial_folio(struct folio *fo=
+lio, loff_t start, loff_t end)
+>>  		 * for shmem truncate
+>>  		 */
+>>  		struct folio *folio2;
+>> +		pgoff_t end, aligned_end =3D (pos + offset + length) >>
+>> +					   PAGE_SHIFT;
+>> =20
+>> -		if (offset + length =3D=3D size)
+>> -			goto no_split;
+>> +		if (pstart)
+>> +			*pstart =3D round_up(pos + offset, PAGE_SIZE) >>
+>> +				  PAGE_SHIFT;
+>> +
+>> +		if (offset + length =3D=3D size) {
+>> +			end =3D aligned_end;
+>> +			goto out;
+>> +		}
+>> =20
+>>  		split_at2 =3D folio_page(folio,
+>>  				PAGE_ALIGN_DOWN(offset + length) / PAGE_SIZE);
+>>  		folio2 =3D page_folio(split_at2);
+>> =20
+>> +		/*
+>> +		 * folio2 may become stale due to a concurrent split or
+>> +		 * freeing, so validate it before and after taking its lock.
+>> +		 * If it fails, we can't get an accurate end position and fall
+>> +		 * back to folio->index, which may leave sub-folios split off
+>> +		 * at the offset edge in the page cache this round.
+>> +		 */
+>> +		end =3D folio->index;
+>>  		if (!folio_try_get(folio2))
+>> -			goto no_split;
+>> -
+>> -		if (!folio_test_large(folio2))
+>>  			goto out;
+>> =20
+>> +		if (folio2->mapping !=3D folio->mapping ||
+>> +		    !folio_test_large(folio2))
+>> +			goto out_put;
+>> +
+>>  		if (!folio_trylock(folio2))
+>> -			goto out;
+>> +			goto out_put;
+>> =20
+>> -		/* make sure folio2 is large and does not change its mapping */
+>> -		if (folio_test_large(folio2) &&
+>> -		    folio2->mapping =3D=3D folio->mapping)
+>> -			folio_split_or_unmap(folio2, split_at2, min_order);
+>> +		if (page_folio(split_at2) !=3D folio2) {
+>> +			folio_unlock(folio2);
+>> +			goto out_put;
+>> +		}
+>> +		if (!folio_test_large(folio2)) {
+>> +			end =3D aligned_end;
+>> +			folio_unlock(folio2);
+>> +			goto out_put;
+>> +		}
+>
+> So I always found this folio2 lookup and revalidation somewhat suspicious
+> and now that we're digging into it I'll ask: As you note in the changelog=
+,
+> by the time we compute split_at2 the page can be already freed and reused
+> because it was split off from the original 'folio'. It can be for example=
+ a
+> slab page or anything else. So is it guaranteed that page_folio() actuall=
+y
 
-CONFIG_KASAN_STACK also enables this helper for SW_TAGS. The helper
-derives the stack base from an untagged stack pointer, so
-kasan_unpoison() writes KASAN_TAG_KERNEL (0xff) into the shadow for
-[base, watermark). For a vmapped task stack, vm_area->addr still
-carries the original random allocation tag. This creates a tag mismatch
-at the stack base even if that memory has never held an instrumented
-stack object.
+For a slab or unrelated page, folio->mapping check rejects them.
 
-When the task exits and its stack is not cached, thread_stack_free_rcu()
-passes vm_area->addr to vfree(). In RCU callback context this reaches
-vfree_atomic(), whose llist_add() writes to the allocation base through
-the tagged pointer and triggers a false KASAN invalid-access report:
+> returns something sensible? What guarantees we properly detect the "reuse
 
-  BUG: KASAN: invalid-access in vfree_atomic+0x90/0x150
-  Write of size 8 at addr c2ffffc0a8f70000 by task rcuop/7/75
-  Pointer tag: [c2], memory tag: [ff]
-  Call trace:
-   __hwasan_store8_noabort+0xe8/0xf8
-   vfree_atomic+0x90/0x150
-   vfree+0x220/0x298
-   thread_stack_free_rcu+0x3c/0x4c
-   rcu_do_batch+0x308/0xaf0
-   rcu_nocb_cb_kthread+0x33c/0x708
+No, but folio_try_get() prevents non ref'd folios.
 
-The deferred-free path started using the tagged vm_area->addr in
-commit 449e0b4ed5a1 ("fork: clean-up naming of vm_stack/vm_struct
-variables in vmap stacks code"). Previously it freed the untagged
-pointer derived from tsk->stack, so the write was never tag-checked.
+> for something else" case in all possible cases for which the page can be
+> reused? I understand this is mostly a preexisting issue so maybe these
+> questions are more for MM guys than you...
 
-SW_TAGS does not need the blanket shadow reset to make subsequent stack
-accesses valid: untagged kernel pointers have the match-all 0xff tag,
-and the compiler initializes the shadow tags of instrumented stack
-objects before use.
+I agree with you that trying to split a unlocked and not ref'd folio2 is
+flaky. And it almost does a __filemap_get_folio() like you proposed
+below.
 
-Return early unless CONFIG_KASAN_GENERIC is enabled. Keep the mode check
-in the common helper so it covers both resume and bpf_throw().
+>
+> So for me as an filesystem guy I'd appreciate some comment in this code
+> explaining why grabbing folio2 this way is actually safe. The really safe
+> way of getting to folio2 would be to use
+>   __filemap_get_folio(mapping, (offset+length) >> PAGE_SHIFT, FGP_LOCK, 0=
+)
+> but I suppose we don't use the mapping lookup as it is more expensive?
 
-Fixes: 449e0b4ed5a1 ("fork: clean-up naming of vm_stack/vm_struct variables in vmap stacks code")
-Cc: stable@vger.kernel.org
-Reported-by: Shaobo Huang <huangshaobo3@xiaomi.com>
-Closes: https://lore.kernel.org/all/20260806123020.90869-1-huangshaobo3@xiaomi.com/
-Assisted-by: LLM
-Signed-off-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
----
- mm/kasan/common.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+__filemap_get_folio() is a better version of the existing folio2 finding
+code. When I wrote the code, I never thought about using
+__filemap_get_folio(), but I probably should have done it.
 
-diff --git a/mm/kasan/common.c b/mm/kasan/common.c
-index b7d05c2a6d93..7d21c4db68d2 100644
---- a/mm/kasan/common.c
-+++ b/mm/kasan/common.c
-@@ -114,12 +114,23 @@ void kasan_unpoison_task_stack(struct task_struct *task)
- /* Unpoison the stack for the current task beyond a watermark sp value. */
- asmlinkage void kasan_unpoison_task_stack_below(const void *watermark)
- {
-+	void *base;
-+
-+	/*
-+	 * Only the generic mode needs this. In the tag-based mode the
-+	 * compiler fully initializes the shadow of stack variables on
-+	 * function entry, so stale tags left below the watermark are
-+	 * harmless.
-+	 */
-+	if (!IS_ENABLED(CONFIG_KASAN_GENERIC))
-+		return;
-+
- 	/*
- 	 * Calculate the task stack base address.  Avoid using 'current'
- 	 * because this function is called by early resume code which hasn't
- 	 * yet set up the percpu register (%gs).
- 	 */
--	void *base = (void *)((unsigned long)watermark & ~(THREAD_SIZE - 1));
-+	base = (void *)((unsigned long)watermark & ~(THREAD_SIZE - 1));
- 
- 	kasan_unpoison(base, watermark - base, false);
- }
--- 
-2.55.0
+BTW,
+__filemap_get_folio(mapping, folio->index + (offset+length) >> PAGE_SHIFT,
+		FGP_LOCK | FGP_NOWAIT, 0)
+might be better:
+1. folio->index is needed to get the right folio2,
+2. nowait can us nonblocking.
+
+
+>> +
+>> +		/* Split failed: back off to the head of the straddler */
+>> +		if (folio_split_or_unmap(folio2, split_at2, min_order))
+>> +			end =3D folio2->index;
+>> +		else
+>> +			end =3D aligned_end;
+>> =20
+>>  		folio_unlock(folio2);
+>> -out:
+>> +out_put:
+>>  		folio_put(folio2);
+>> -no_split:
+>> +out:
+>> +		if (pend)
+>> +			*pend =3D end;
+>>  		return true;
+>>  	}
+>>  	if (folio_test_dirty(folio))
+>> @@ -413,11 +455,8 @@ void truncate_inode_pages_range(struct address_spac=
+e *mapping,
+>>  	folio =3D __filemap_get_folio(mapping, lstart >> PAGE_SHIFT, FGP_LOCK,=
+ 0);
+>>  	if (!IS_ERR(folio)) {
+>>  		same_folio =3D lend < folio_next_pos(folio);
+>> -		if (!truncate_inode_partial_folio(folio, lstart, lend)) {
+>> -			start =3D folio_next_index(folio);
+>> -			if (same_folio)
+>> -				end =3D folio->index;
+>> -		}
+>> +		truncate_inode_partial_folio(folio, lstart, lend, &start,
+>> +					     same_folio ? &end : NULL);
+>>  		folio_unlock(folio);
+>>  		folio_put(folio);
+>>  		folio =3D NULL;
+>> @@ -427,8 +466,8 @@ void truncate_inode_pages_range(struct address_space=
+ *mapping,
+>>  		folio =3D __filemap_get_folio(mapping, lend >> PAGE_SHIFT,
+>>  						FGP_LOCK, 0);
+>>  		if (!IS_ERR(folio)) {
+>> -			if (!truncate_inode_partial_folio(folio, lstart, lend))
+>> -				end =3D folio->index;
+>> +			truncate_inode_partial_folio(folio, lstart, lend,
+>> +						     NULL, &end);
+>>  			folio_unlock(folio);
+>>  			folio_put(folio);
+>>  		}
+>> --=20
+>> 2.52.0
+>>=20
+
+
+
+
+--=20
+Best Regards,
+Yan, Zi
 
 
