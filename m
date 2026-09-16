@@ -4,144 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99DCCC88E77
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 10:39:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3AFDAC88E77
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 10:54:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5CF8A6B008C; Wed, 16 Sep 2026 06:39:27 -0400 (EDT)
+	id E7DDB6B0088; Wed, 16 Sep 2026 06:54:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 55A5D6B0092; Wed, 16 Sep 2026 06:39:27 -0400 (EDT)
+	id E27C06B008C; Wed, 16 Sep 2026 06:54:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 422946B0093; Wed, 16 Sep 2026 06:39:27 -0400 (EDT)
+	id D1AC46B0092; Wed, 16 Sep 2026 06:54:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F043B6B008C
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 06:39:26 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 771D11406BB
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 10:39:26 +0000 (UTC)
-X-FDA: 85219278732.21.7E98C94
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 20F4A140008
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 10:39:23 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=FwzjFTdp;
-	spf=pass (imf09.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=hca@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789555164;
-	b=XYfUtI/YuzxKJKynZ3mV8Zdhs8Fxa/peF4oZ/6bqDCt5iSD+MMEyGlmx1yJQ0Tk/EG/7cp
-	XX0Rd3x/ESzyhcS5YRFp0RR7Bs24KxzGsE0OtQXfKdMDNAQO4qLkzk0FQ4g4581rEs1tQs
-	+JbJuTFh0yvAxHnYXz9d5B/g1euxJVI=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=FwzjFTdp;
-	spf=pass (imf09.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=hca@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A91BC6B0088
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 06:54:04 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 222E5C060D
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 10:54:04 +0000 (UTC)
+X-FDA: 85219315608.07.CA3AE74
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 5C84C1C0004
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 10:54:02 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bSUpKngB;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789555164;
+	s=arc-20220608; t=1789556042;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+3H4eiYHlM52Ul5TlDNK99t0Z8JheOeMJcD5v1zuGgA=;
-	b=3ylB1wp8YcP499t+xpzfI03apbkM5xSsNHbljOpRJuHbT92YXEukjdGP2yNLkXoBbDI4ab
-	bwL/A7eSK710sFGe9J81ZeoSZLZsFYEJM0AUxa/kPoEcDsUhTWq1v/Un8V9YqTphuNK3lI
-	WpE9M3FlqCAVV7tqWXRbwH/LMLqY9Rk=
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68FLViLw1963941;
-	Wed, 16 Sep 2026 10:39:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=+3H4eiYHlM52Ul5TlDNK99t0Z8JheO
-	eMJcD5v1zuGgA=; b=FwzjFTdpGMKZbZRS23HIk8U0MGP4RCIubNPxVJBrRmep6a
-	3K0vmk4Z7xG2DbaUfczGOeAvbK6UTdcQnUqxzRbIcBSWjhEOIBRBylgU8TNYY03g
-	pJOUMGRRwWxCcSVUi+WIEuHm1EJNHFW4+mExpbkVZxevgyDSNd2+lWMVv1i4LC6Z
-	Qb2T83OmNGcgKitCoeBoiXa3TnANfc4BE32ap3Yaqvs0eVwgvxFBzkJLD/dI6wTa
-	hBoEt88JdhZJZujhUq1vvUmA0Y705sJ4D2CDhSagVoBSk8oSb548wEJSgqHHDvvw
-	OJ8CaJJZt59apmaCbx2q/OMHSaZ41z6P63Hp976g==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gmxf540fs-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Wed, 16 Sep 2026 10:39:19 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68G7Xrus414631;
-	Wed, 16 Sep 2026 10:39:19 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gq03bwudd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 16 Sep 2026 10:39:18 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68GAdEI510158450
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 16 Sep 2026 10:39:14 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C67B920043;
-	Wed, 16 Sep 2026 10:39:14 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6374820040;
-	Wed, 16 Sep 2026 10:39:14 +0000 (GMT)
-Received: from osiris (unknown [9.111.77.138])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed, 16 Sep 2026 10:39:14 +0000 (GMT)
-Date: Wed, 16 Sep 2026 12:39:13 +0200
-From: Heiko Carstens <hca@linux.ibm.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Peter Oberparleiter <oberpar@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Vineeth Vijayan <vneethv@linux.ibm.com>,
-        Vlastimil Babka <vbabka@kernel.org>, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 11/13] s390/qdio_setup: Use kzalloc() for the storage
- list
-Message-ID: <20260916103913.15587Ea3-hca@linux.ibm.com>
-References: <20260910-s390-cio-ready-v2-0-e931086fdde1@kernel.org>
- <20260910-s390-cio-ready-v2-11-e931086fdde1@kernel.org>
- <20260916092720.15587B52-hca@linux.ibm.com>
- <aqpuG_QJdsMj6_so@kernel.org>
+	bh=K8sT3qjJgiYU41deN4p7Wl5xM6q6ADoh7h6pB9tDP0M=;
+	b=4rK7urO9K56Yi+zoywp902dfC+/uzgUhdsnj774GY4PN5Cax4rlzBuWu4OGQXABlSlDV5m
+	GS3Z3RIR7I0wnNB+/sJo7NjdnN8bARJXlqIyZBZW7oac+pz2kUnW7uLgHiD4X3ZasBGvz3
+	flA8F1koO8vN9PIhXcKy3b+novZwDX4=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bSUpKngB;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789556042;
+	b=viCNrZtiYttL8h67KLEr8yQD05oDdsDq8Ok8btT7iufHB8oybfpdcSkpWl0aHU4SGE4GFW
+	zNUL5BkNh2+jXRMeOHDxtFjvAMS99/Y00boMe1p49Z92QUKZODqgTwbdVjnGJumxHU/gyW
+	9DvY87m90O529iqI/auRVEkq8iV5A5A=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8244841780;
+	Wed, 16 Sep 2026 10:54:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E75651F000FF;
+	Wed, 16 Sep 2026 10:53:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789556041;
+	bh=K8sT3qjJgiYU41deN4p7Wl5xM6q6ADoh7h6pB9tDP0M=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=bSUpKngBu52G0CG8UQlTQFfbdTiEhxt4kuSWUaDB4z3r4fMrZH5qgTjYirquqN/Kz
+	 5hVYfgVpU9YI32/BjQglTFoDEDl8MrHBwF362ZLSy3cIGdGtah9Y/PIzT6/LuxopqG
+	 Cli/VuqBav0YEsey2gCTj/FxMhxHZ1mM6M+4ppEKXSozxCIf2J9R+kcMpX+0VYhpKe
+	 nYkINUFpU7ryYS6pE6tVnB1rNTGDsJZm3ABWbDFhkZHOqwgshdRNLj3qbv6gBqTuux
+	 rHrXbp6FInlycGD/QQC0s1Azyv7MFlIl5idEq0qit+lWvnQ6Nzi5KYd+JuxCAnG4nd
+	 u89xAa8eGHM+w==
+Message-ID: <27b6a4de-ddc1-4aed-bd30-f466c730d551@kernel.org>
+Date: Wed, 16 Sep 2026 12:53:57 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aqpuG_QJdsMj6_so@kernel.org>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: ys9KpCB49CI4_-bPZyIr8JYvriTUPdLD
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE2MDEzOCBTYWx0ZWRfX2rTLPgQNpSTR
- rmiT5VZ8LEr/X+t2cOLO0vxyY5DopxT+shkWE73PTv5vkKDuIA6n7s7RwAQ1udUa9UGbHphZ2iS
- hfb4g2rSYfwlVBOOkaladzjuXI7HKNk=
-X-Authority-Analysis: v=2.4 cv=cvgOAF4i c=1 sm=1 tr=0 ts=6aaa71d7 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=eNkaPj_DA2v-bknRGywA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: ys9KpCB49CI4_-bPZyIr8JYvriTUPdLD
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE2MDEzOCBTYWx0ZWRfX83wVa+jXeFQF
- jtOhLzmACExMLaKf2nueWLwOkLK+n+b0r5volL41zQEbxbMbguLvXEfJjjy9RshjVoWcDgf/PNK
- sBYzhSEZsx5mjRc/u5GRfvW1f2KJyj7Ubq//tbiJrND4uId2UwQIRW5WwbuZ8cb9xLWh3prfQV2
- P2MDTR3dOzr5heurqsz1AUELHr6FAdNs5aslrFHOUGaKthDJOnaQ7TL6m7p5Ywg6beGmqo4wcKI
- ntS/HVjR7LhC5h5j70FoxxlpHkCAhrGmTJkfNC1lfzlwOdTSTdH/af32hYjEKvM3f/gSLRM1tyr
- Dg5CP3GYTATqaRNb/W7T/05VRLWDQ3TrDm7FdfXBrZ7tOA7p8lsqfoNXdoql3cVV0lgvUWgFZxh
- nzkUW5gTKVKNpjddN7L8UT240iYakdcyufU1xu9EYewjLbVzuc4zmfs1Va4Ie9RfeSWUMNLDGFB
- KoZqcAz6JjLBlrHcFlw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-15_05,2026-09-15_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 lowpriorityscore=0 clxscore=1015 priorityscore=1501
- suspectscore=0 bulkscore=0 impostorscore=0 phishscore=0 spamscore=0
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
- definitions=main-2609160138
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 20F4A140008
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5] mm/gup_test: safely calculate GUP batch size
+To: Sarthak Sharma <sarthak.sharma@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Kiryl Shutsemau <kas@kernel.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260915102524.125758-1-sarthak.sharma@arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260915102524.125758-1-sarthak.sharma@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: fxt1k148ufyuwn9rt187juziokja8xem
-X-HE-Tag: 1789555163-660270
-X-HE-Meta: U2FsdGVkX1/dv8HPbaA2uP5PI/lrVEZWZQRsA1lzRnSBngZz6o+5XguMyPEXBSFsQnYwG0bMK9RF5hIYbYZg5YMEYg+BHQ+Zy4foDnyHku4gCUx2+X3R4Vfy19BPKM6pnhSAdtLmLuATnVggH+Eg4lpuaypH+10f06gqtOwBOSeKbtkwTr1PjUOkp9nth/kjcVB/6bsgdzwebmZfE/4r9n3+k+a+6TIzJEJAaZsaPolgCbUiHS1g3ac9+INUedHYLyhUFBzln/XbS0dAdwLpjuVm7HNN6PrZfz3ucKMS1qY7+x5rq9iVTFYunCbb2N/RPEyi3kmIY4SxEHf+phOkaHTF+03D1AWLwoAIvINi09SouKoAkS5nPuJVz63JbLGnYmTYsrs58OxKr+QHKjW9kWEkSz55jCIOjAK99KA21kDaavIlXhCE4tWZUmaGLyxmqa8zPRGGaYV7vYYsmIB+SNIDg9DvWhEWq1RwLdsVxdLFOjEU0dmJV2QC/W2KHuolyyiIMzK3bAPQ0oMr+VC7OG4fFTlnk8r6lQlzD2nqXzP2m5sf5WAZ+pCe4J8UoFWIrKPhyEEH04xceMtzj0DHiGCTYD5mmH6CbVjKSOydpHVrhgiHVOYotwtGyDzKRo1FSo53XkK/CTTpggfSLsPKfGkSRpUmCjm9obs5tmqnsia/j1WvnT9/6Gx/IwYIu3ZfcnXhI8N6OH46A1hfGlrAcG9WYpAwh+MdRbEf90EiLEPuXO9ksNf1dhXS3VKbuPc/yiCJSR37nvBEiaEVN2GeQhH5nUG9ZaCTt/jOoapPjfpY8Qu1tq486n8bbIiYRKLhlIuBcoBnOZE5+i6LMdZDX9cTNlNNMCot0ar4W3iC9S4EP4gqI2aePh8zkp4VgELTJcBI+MOh14nnHJqbDNfrmODZv+SkDxBqVwufMexAHIn49jr+HcJtX2U1gu/3lsSanUEb3OCBITNFNGZnA73
- zmU++cdZ
- AdzsBzmwfQ3qWOEC+KjCIOCn/McN4f3oO2WyLs4T81i5nrk8GJ0Kyl3m2OJ8zwJjwMoo4m6Kh05FGhVWF5WfQrHhfEPyn8RmOt0pN+c01LCRKjXLDnVofMgirvmok9XdqEwcjyPLMqbzqm8xC8vcwGF3jBWXU+iB8IH/ZSC3FlnwyWkUV8wy1BgFyNHw5jxScrZ8TEEMjO7g8KzHTVdnN7nIuef4Q8t4eBE9sNB8yX3U05CJblAlZ+6JT18SXkadd0QAPvr0stF8Mmj0=
+X-Stat-Signature: 7r7u6wrmnoctdjiec5qqzpumsjx76igb
+X-Rspamd-Queue-Id: 5C84C1C0004
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789556042-797133
+X-HE-Meta: U2FsdGVkX18SHM56GSfR16JrUJ++4b2lAWJpzM3+0ushbGf5Vqe3xDpPJZY19Ll3mbbVCByyElpZyQ7ODMjq0yZgtFJXx/tRvUzL5OW/1Dr/lPF2v/TI9G55FKXDNKp5DRK+lfVrZfWyr1U47gIfsYjresAqD5m2tooBPavQI2LxztpqONdGSc11LOQ4rUQmmrvG2fnFxL/Opj5PwAwFy+RDr+2ui4XHUXwUcT+JZspWice1S/nbM8zxXDeZvUZdo5nPVp5lEqbzYNGId3nKeVR0+u0rTMTZpKMxZkK3RoPBbAoRq+SJ40N2Iw8PcvPKSQIkvs5m7XvLeUhuFBQjM4efJBLcD3fhA78qqMcYmtnSO8jykJzJT5MHzOSVnXRuMMlk2yza6jmyRRFpbiLjnwTXsny3khOh7CcmlsjG7eF1XslxxjbHPxQQ+Bpyl6+cKa5G4qZTFdxi1CNU0kKCQpTPTM7th/h/lj6u+1ai4VsoFq58jvLxcyjoa/cBb6AHMppdmeFqiGH/p5C1BNJZG66SO4ExOqDPWPT8EtBGi5G0iis5GKOAWzDGXUPyHASfV0nR+z0xa7G2v8SWwXH2exfX0S7hLScKVKOfV3eXtWG5U35QMUFHq431F8cNnHDvla8fMQ3y0Z3NgaFO8U8sZO7g/+Vm/gadS4Dm6KfKLtZ5HP44yOCnNnmjnAZCQJcJRoSO9d92SHgwlFgrf6P5tMtFO4NVzkD7PISm2YzH+MqpgimxUXicGWFCQNqKexhI0kBB/JJbcGQwMs+5Od+R++84JlTsr1y3HTxvBLqPNSJ2PTcc8kFDu64iQGW6sGrj8QqTBpDWs4PC0JbBGIY3MO4mG1NwXb8DwsaEbMgDH/jOPKUysebMuF2w5HAc6Figk7hwapnRGEq/KzJQvLT71DBimtU5V70/EoJeoewxuu/HmDEOZ1xjYArojoAQauuUUVe6vvRPL//7b0KIKVs
+ WB8P2jNJ
+ JWO/icnu8XZcHlI+CkmOfOcULxLpU1nusMrkgb0i3JPoDrh2aoL0Cm64G01o7M0ccF6i7+NjfhoUhNulRwo0yf5K9UVgQoIO7F5qjbNu1nRMbeThHW/uhsrYK39zVy5dt1n8+AScFN8FpYNhzI//k46P6Hmf1AHgdnpsypykrVN8cKWSLfL9b0K5O04ktrq9oejRF83c13Er31D6D7+c/vMFBGhvlsYrlmAtsg79IJB41ifEtWnNp2TNEf1l4ozYmQ1NHI9nycL41Xmn11noS4SeMk5olF1uuKLTE2gg9v4SnJHJ6tnrv4ea8gbTarGxF9HpAcUqLvTzLKlsOGTXCv/66UihaDRRziKqAdpWr2nCFOQY+JYzwWO9fG9m7W+5nMKTq4Bzl689VgwQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,28 +139,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 16, 2026 at 01:23:23PM +0300, Mike Rapoport wrote:
-> On Wed, Sep 16, 2026 at 11:27:20AM +0200, Heiko Carstens wrote:
-> > On Thu, Sep 10, 2026 at 02:00:13PM +0300, Mike Rapoport (Microsoft) wrote:
-> > > __qdio_allocate_qs() allocates the storage list information block of a
-> > > queue.
-> > > 
-> > > This memory can be allocated with kmalloc() as there's nothing special
-> > > about it to go directly to the page allocator.
-> > ...
-> > > @@ -109,7 +109,7 @@ static int __qdio_allocate_qs(struct qdio_q **irq_ptr_qs, int nr_queues)
-> > >  			return -ENOMEM;
-> > >  		}
-> > >  
-> > > -		q->sl_page = (void *)__get_free_page(GFP_KERNEL);
-> > > +		q->sl_page = kzalloc(PAGE_SIZE, GFP_KERNEL);
-> > >  		if (!q->sl_page) {
-> > 
-> > Speaking about unnecessary changes: why is this a conversion to
-> > kzalloc() instead of kmalloc()?
+On 9/15/26 12:25, Sarthak Sharma wrote:
+> __gup_test_ioctl() calculates the end of a GUP batch using:
 > 
-> An LLM went wild and I missed it in my review :)
-> Same in another patch.
+> next = addr + nr * PAGE_SIZE;
+> 
+> If nr is too large, it can cause next to overflow and wrap around.
+> If it wraps, the next > end check is bypassed and a large value
+> of nr is passed to the GUP call, even though the pages array was
+> allocated according to gup->size. This can lead to out of bounds writes.
+> 
+> Also, when fewer than PAGE_SIZE bytes remain, the calculated batch
+> contains zero pages. The code still calls GUP functions with pages + i,
+> which can point past the allocated array.
+> 
+> Calculate nr by taking the minimum of the number of pages per call and
+> the pages remaining in the address range. Reject zero sized and non
+> page aligned gup->size values and zero nr_pages_per_call value.
+> 
+> Fixes: 64c349f4ae78 ("mm: add infrastructure for get_user_pages_fast() benchmarking")
+> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
+> ---
 
-I guess we want a v3 then, even if this is trivial.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+
+-- 
+Cheers,
+
+David
 
