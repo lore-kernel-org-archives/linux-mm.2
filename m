@@ -4,141 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C4DBC982C3
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 15:11:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6310EC982C4
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 15:12:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 844476B0098; Wed, 16 Sep 2026 11:11:20 -0400 (EDT)
+	id 512E76B0096; Wed, 16 Sep 2026 11:12:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7CD6E6B00A0; Wed, 16 Sep 2026 11:11:20 -0400 (EDT)
+	id 49C186B0099; Wed, 16 Sep 2026 11:12:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 695716B00A1; Wed, 16 Sep 2026 11:11:20 -0400 (EDT)
+	id 38CED6B009D; Wed, 16 Sep 2026 11:12:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 35A676B0098
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:11:20 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 04368C0705
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 15:11:18 +0000 (UTC)
-X-FDA: 85219963878.12.7B72286
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 353BFC0007
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 15:11:16 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="k/2kdVXt";
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0DA8A6B0096
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:12:58 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 942C0140757
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 15:12:57 +0000 (UTC)
+X-FDA: 85219967994.17.D872A0A
+Received: from mail-wm2-f5.google.com (mail-wm2-f5.google.com [74.125.225.133])
+	by imf27.hostedemail.com (Postfix) with ESMTP id B8A8340015
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 15:12:55 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=NMJsGwYC;
+	spf=pass (imf27.hostedemail.com: domain of memxor@gmail.com designates 74.125.225.133 as permitted sender) smtp.mailfrom=memxor@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789571476;
+	s=arc-20220608; t=1789571575;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=6pJZlwL4vv3n0HS3phtnf+vf4448t/3gjdWcfUceqG0=;
-	b=TvoIq9mm8MSsKWYXiDTYBK+Kp+tX+QQ1YE0fzXDR0iziqdHPjSz0jR2rIENGFJYREat4o3
-	ss2mVt2mBLN57JKf8ru45yvlq8kIOzlX5RD2UT/iHzr1DthypI8i/4LuDgGLaYBg/n2aWT
-	UbkjuiQURxPMJvWuhYegQwTp4car+b0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789571476;
-	b=sUPKdikQ+fnO9KHGaPcuFPksGTIhWJ4U0+Lm2KKcTg1i8X03bo/iL6i/Fq7cYgkg6WnUcO
-	zC4o3194Kxh2rAT+JZEfo422JPIFvWz0msCkxmSMvTa9aNNuJkbHZvsVtcQ+wxGBUhRDGa
-	oGj2fTmpjYNf7Ad9rPQXQZWpoEV+qdI=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=NiyXCBgsYQLbIjno9HOYcORcmeh+vcq7qFmr7RtjHrY=;
+	b=tegbcbkEfzIALxlT7ERMO5MajkkQIrKj4neISbgsPW0/64Mlcw2D/SV3mqNA6U0MKXhHzz
+	mEYWdu6prjojvAO50tmFCH51B7VE55aikbLEd7H4PeLqImff1lUCBkIrGOVfjhKFPUCt9P
+	n3JBC7ESaOYCCyUGXEjCyV+MVKEgJqQ=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="k/2kdVXt";
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id F2A38602D0;
-	Wed, 16 Sep 2026 15:11:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C74CC1F000FF;
-	Wed, 16 Sep 2026 15:11:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789571474;
-	bh=6pJZlwL4vv3n0HS3phtnf+vf4448t/3gjdWcfUceqG0=;
-	h=Date:From:To:Cc:Subject;
-	b=k/2kdVXtCQvMgh7swp8SCL+7ZpmoB8Wf3KF6uUxHIg/O/QJKckm1zOkiSogwJblfo
-	 aYF4IgshxAL7U9EA+4gimQpQ7dog+5Bfe0r2edOz2yY3D95n22bz+j7NM/yScK3Ws4
-	 F4DvtlVXKd6ArvyL/mlL5QLeqyZAIzAMTA2I7sl4Bx/s5R2gOWVzc3Zu5Hr8bNNcfJ
-	 rQqPlC2+S+tmHPwvH5PyCLsI/gd22w/KEm1+MydzOgor/1cV6xHrXMKePA0HhRbEON
-	 31WLVfe1rRsjHVioUXriSkMXpU/si/sCzQkZzIUGFgMz+qWGOBgM3soR96ai6YZALu
-	 vYsKfpuP4fGug==
-Message-ID: <b91dbfae-20f1-4b9f-a25b-4397afae80f9@kernel.org>
-Date: Wed, 16 Sep 2026 17:11:04 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM <kvm@vger.kernel.org>
-Cc: ackerleytng@google.com, amit@infradead.org,
- aneeshkumar.kizhakeveetil@arm.com, ashish.kalra@amd.com,
- dwmw2@infradead.org, eberman@quicinc.com, fvdl@google.com, gshan@redhat.com,
- jackmanb@google.com, jackyli@google.com, jthoughton@google.com,
- kalyazin@amazon.com, kas@kernel.org, kevinloughlin@google.com,
- liruxin@google.com, michael.day@amd.com, michael.roth@amd.com,
- mike.rapoport@gmail.com, mvaralar@redhat.com, pankaj.gupta@amd.com,
- papaluri@amd.com, patrick.roy@linux.dev, Peter Xu <peterx@redhat.com>,
- pheragu@quicinc.com, pkondeti@qti.qualcomm.com, prty@google.com,
- psalian@google.com, qinkun@google.com, seanjc@google.com,
- shan.gavin@gmail.com, shivankg@amd.com, sidtelang@google.com,
- suzuki.poulose@arm.com, tabba@google.com, tatashin@google.com,
- vannapurve@google.com, vbabka@suse.com, wyihan@google.com
-Subject: [Invitation] bi-weekly guest_memfd upstream call on 2026-09-16
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=NMJsGwYC;
+	spf=pass (imf27.hostedemail.com: domain of memxor@gmail.com designates 74.125.225.133 as permitted sender) smtp.mailfrom=memxor@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789571575;
+	b=gEYx3dRUc//mS6mmayUsFKYw7bNi6qkVH5WrCd17lqNgD2apXtkdVzyLaMD7uQy6KmSgBm
+	HvaapUrjtIkPQ0XsAcFRqTahSAvfwNmmoDlzlqteSbSex9DCo+emmhgGEUvPfotN6R4EMO
+	yX+EOyLbp10jyU0EyEXJK548QjvrGxQ=
+Received: by mail-wm2-f5.google.com with SMTP id 5b1f17b1804b1-49e667e3c45so12069085e9.1
+        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 08:12:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789571574; x=1790176374; darn=kvack.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=NiyXCBgsYQLbIjno9HOYcORcmeh+vcq7qFmr7RtjHrY=;
+        b=NMJsGwYCNyUyicBADJrW/JdmrqZ/jFDGbWGtNb4VE6YdQWlVjfcvrL6im4JAXpfW02
+         p3gMBD/+3Ni7TZIz/Ib752l1mthyAk/MY+7WS2zgxpvIIv60otZp8ze8H3jt+67LFXrz
+         XDWYOui1b3PUXyCmz4/+XBrMl6E25t9RuZo76hUcf9Fmd8cDLBlyG8vQmiYw9v/uNnV9
+         JZaFSW3Keml+QDF4bfBG3A1hs+G6BqfUjNuwDGqul11KWiD6Sc2tPFIS+1MNk3Co1fcl
+         0Rx1/HVSLaCCZXj7W7Jf2Dg+/03Agz3HkigqWeieCPHWoCMp8wDXTf7zXSIXfzh4s1OZ
+         vkdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789571574; x=1790176374;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=NiyXCBgsYQLbIjno9HOYcORcmeh+vcq7qFmr7RtjHrY=;
+        b=FnD3pUg1L3r6uWK4g6gf8A5iFFb7OhsWl39gLeF1fzh9zG0Dd5D0u4wB2mBX/6LbQu
+         TUmoV0pytxJboX7QgNa5bgzTOQOdyefeK+BTRdfnERUbt32FQETbDblZ7wwCauu1vJgZ
+         Hg6YDXs8FiIpmrg5KfPQjAaDQSeDUBGtXooSDi66NtawguZS382l9uRoL3Kqc3AwoNMf
+         AUCCs6CClULNUMDXQy8fOpfRDcJPp1JlVaXp34IfOWgjK3sd/GKlCR7UJ+iOzJqibWiC
+         CkFVo6S4yp6mxlnAIL6NaHPF9r5bemhundXgqIuQ/EMj0jFpj/vGLgDZ5GjQ4P9B+SVb
+         R4Dg==
+X-Forwarded-Encrypted: i=1; AKwUvByXkfonxpAjtgkCk0WNqetohAKEXXSuCoTE3iox1njcRt/QfY8I2wD+czuVcD7BAyil1IpLu3LgZg==@kvack.org
+X-Gm-Message-State: AFuF++nIZdoB01WuiKVc5S4YvMt0YNjMoec4kQfL8zywYpkolHq8NeKq
+	EfFc43yRYKf2dqESk63zDkEiOOk/MdyiFGm56kCrMFCL26Ej/+DuelEU
+X-Gm-Gg: AYBFou2QEGnun+mgOxSM85B04jSbkVNEe+PEltFc+S+F34C64eR0xUUtYNNpzy28bib
+	rOPsPjG9LW84JEvfgWq3J2+oGkq8aSQQVooWSL+5Gj+ASN0dbMYJ7Jb62s/QnR+RfpsIx74/i0H
+	eo8I8XYLQcKj7cIj+Qjpi+54g+BFkUUK2KlQW36CXbsnFRbWCgsZx9di8mLUVzXO51XEltnsRMx
+	dS3feMpA/sK7kBFXNhlxRsDroX8LFl3z7u+4jMXsDR9uiXITh9zbAkzijPVqsFvfKkwaUPTkf20
+	DJcE9YqlAjKeLqFkUL7k8FhedjyDo8qX5H46p3nBQjzO3BesajtfHAWltGjCwwb6q6ft9lU1aDs
+	qFA2prjr0InlgLvVwvfvOJIxhr33g6oOWrJ+jpb8k0lc7Wt/cAlmAQIvI0aUkcXN0bOETYltsKR
+	DjEDz8HNycAUj3dCWj7UAcUQyOrERiAz2eH8HqFoH4YG3e3aj3fsAeQ5z2P8xA4rlVp/HV9H5X+
+	cfS8maPqw4NSep8+Dp+RHtj3naZmju9vbwvfoZzey8On7jeAmERmu4y5ylHZkVDJxrAOWGX+PLO
+	Ez3HCfxY/k+dliGm/lcL14hZW0kvF/S+LCueRg==
+X-Received: by 2002:a05:6000:468b:b0:487:afe:c154 with SMTP id ffacd0b85a97d-4870d03e721mr2779653f8f.40.1789571573885;
+        Wed, 16 Sep 2026 08:12:53 -0700 (PDT)
+Received: from localhost (nat-icclus-192-26-29-3.epfl.ch. [192.26.29.3])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4870bf27a41sm7320342f8f.18.2026.09.16.08.12.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 16 Sep 2026 08:12:53 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 353BFC0007
-X-Stat-Signature: 7337uh8r759kq54n1x4d9tc54tek7g9w
+Date: Wed, 16 Sep 2026 17:12:52 +0200
+Message-Id: <DLGU6EUUD8HP.3SFNWRU1728IJ@gmail.com>
+Cc: "Roman Gushchin" <roman.gushchin@linux.dev>, "JP Kobryn"
+ <inwardvessel@gmail.com>, "Andrew Morton" <akpm@linux-foundation.org>,
+ "Andrii Nakryiko" <andrii@kernel.org>, "Eduard Zingerman"
+ <eddyz87@gmail.com>, "Ihor Solodrai" <ihor.solodrai@linux.dev>, "Alexei
+ Starovoitov" <ast@kernel.org>, "Daniel Borkmann" <daniel@iogearbox.net>,
+ "Martin KaFai Lau" <martin.lau@linux.dev>, "Song Liu" <song@kernel.org>,
+ "Yonghong Song" <yonghong.song@linux.dev>, "Jiri Olsa" <jolsa@kernel.org>,
+ "Emil Tsalapatis" <emil@etsalapatis.com>, "Shuah Khan" <shuah@kernel.org>,
+ "Barry Song" <baohua@kernel.org>, "Geliang Tang" <geliang@kernel.org>,
+ <linux-kernel@vger.kernel.org>, <bpf@vger.kernel.org>,
+ <linux-mm@kvack.org>, <linux-kselftest@vger.kernel.org>, "Hui Zhu"
+ <zhuhui@kylinos.cn>, "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH bpf-next v11 1/2] mm/bpf: Add bpf_proactive_reclaim
+ kfunc
+From: "Kumar Kartikeya Dwivedi" <memxor@gmail.com>
+To: "Shakeel Butt" <shakeel.butt@linux.dev>, "Hui Zhu" <hui.zhu@linux.dev>
+X-Mailer: aerc 0.21.0
+References: <cover.1789475073.git.zhuhui@kylinos.cn>
+ <ee6bcf945910babab2200f05040975492aed21b3.1789475073.git.zhuhui@kylinos.cn>
+ <aql_rkQMtlLmMstC@linux.dev>
+In-Reply-To: <aql_rkQMtlLmMstC@linux.dev>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: B8A8340015
+X-Stat-Signature: rht78j9q7m4npdf5ths7o31ixjtih3fj
 X-Rspam-User: 
-X-HE-Tag: 1789571475-137733
-X-HE-Meta: U2FsdGVkX199JhjOkmr92otDfUfDmd9BksBiF5LducQNsKKf80UlULJfx92SFM1BwzIIGiMfITdshrX8HN/zHtkuswZL0vg/MOw/9AoLr6wZuOQ0umPsClxoQ8Hu2zpU0Rc5BDDmIJnrSLtt1A9lVEitMdxI7XveEJJt5SE1R27o8UCCJ3VEQl+wJB5qMDK8+qLyzW/qB/vFcrFH/kbibzaE2AlpWct6OWQFoAZx+4vGwAjfudJMmMPEHnFpDUIkS545GCe7YkI9ryoeED1bdraaGGlLa27er2loqWOJTNnhQ7o50EIdQPQlDUDZaLehNE/pxJv+3pFNThORoM9ziDmfCfDgxgLBmeM/P1lXey38Uo6iwSbgmhvAh16JGFMMZnZeO26dzc2Xy+A/lJ5qiJv6vtvAWE0XHGXvAbQ25jn1Uw9MyHsz8W1Pv6LHKbIgHyG1oStWF5lGAoYNgzNUw7dIO3wkZ+EXzP/R+VeAi+x7q1v8tzPZrm4oebRfgs++9/VHgX88AgKp+kuPd21H8ARQTGO5rKFCzAv1XOd9mcijFrrx0QRD52iR6MYa/vXK2JhbfHh9RlTMo836/ddEbcQ9sRb4xzGHhW7sZYgyYjJ4MrAGhqsiHLRv2qsu4XkVYs6gNybycBuRLNN6fPVO8f5LaApHDJDrjAkyVaDxDUtdx9lkTbORqaWNP993eSyXaY0CeRwcwHtrKCx12JjzFrOyLHD6RUIip5t+1UIcWflrW/0HgVOrtpUD4v5N7EHF1HCpBS8N5/EpSLbYh/rfHYnhG84YR/jwtFuuaUltWEHgOQMsSrYGVJN7nleAdcs3HWaanGIDcpdkHbwulQtqyR9iEpfuzEDGzM1Pbf9afTq6AreHW477UgpRBDzlUARA0pWLQQ+GdFdTQHdSNQr/uwET22Tnw6afZhD0i9mZbeI2LwbKnqxODAgPvYZAev1nVNbqylhzPRJN0ambcSs
- MylvADSo
- /xYmXN8Pb4TaD8XTRa5lOULcbew58te8jaW4C7A1aGnrLIvh7MrLkbaZrYtmQlI+K3O/VqS9Sy4xynfsS4//p5cfF1jQi0pVzx2CQrHjumtE5b078wKY6UF+mcwLRljalxYcQIN6Mf00MrUeWap3QgR450UJsnm9zAtCNQMqk50SLlCr9sxC6z9IGuufg2gse08dQQl1KDbdWmclyVR6VX+n2ak1z7IewNvm/xtqtHIQDdT1qND8dq+tpG8+dukxiu9Z7/+ETRp0SdR+TBL0i2u0m6HNtxi1WiKBqOedQdw7VWNwLgJkhR0CEJrtoIHScWb0K9KnyrQAHXWqk7NNZlxIxy5a0O7nZf+OT8iSlsvYY7ZtsRfCbtgmmy0sIi3MMs3ZXoZ1HERWtfmNNhF0nA+oASuaF2wjodShr/30NVNCb01btkpeY6gKfl1VAEDuDyioXZaS56aqBXV3H87I5a6HSRQ==
+X-HE-Tag: 1789571575-622906
+X-HE-Meta: U2FsdGVkX1/WpRhCjvsKSA+4AI2CovdwiQRbQAM8alfS8ioOgV3S7PJoSeNwUnMRifJ5FMRNsr/pEYBokPkg82nJ7at2+GbXO8SOaRKwq2j4Jy72632tFBH1PiRRBsX8w9P/gjhmYIfN3AcxJFGvOzSTzXpFAfGIDTSVQC+8HnY837EBKkqXJlVojKVLrV13JeIUv4Nt/hBlIHVc1Uc/KWjZItyZtku3d5YLVlreAX+jL08y7uFAqxOm4hTecOiJPN9U2TpHQgpVq7f4MyybR3uIzVWv+WAB0pIYQamoR9G27cD/R/ozCr5NcZp3Dd8DTy1IDiNRc+dfQc8XZ2/2qUcHCNywAz8k/Ut1QS9EU6DaM74rmDxXjPTYblAyIK66+1NF4hpYQvqqc/quktWYRyivF7AA93zJP8FSP7ygRezAFiVkZivC4uI46MOT5KHZipMfB3vcLP7NyXupGtCoXjUORntwYpUv1grS3USFEBBo1J4jBsgM8+87EH9znqLcOnQK9x2A+lKOVWEfQLRQW3GHwKPl8zkOtZeIgri1OCBmr9+H3I8nrASHnvvN/AFZc8VHjtLIhhmexAh7Mf+9f6yKdexI/ONhaXKVt31uWqjrHce4TuXXrS9VUr/MMwyArZgjsodDTaTrT11M5vxxzNDzqpcNVD4ack2Bomz3ZzIZZ/b/8r4pguGKfcgEyL/nvGW3nhdMXBYF7KNgJXwBwR4QrqPyJkaO/wTphz+lifN2JsEoyTtE4MacuIwWRKHfj4o0M7j49qYGk8/i87W4hMF3mcRYN+QVs++7etSY17nNhOOdUybbqjPUVG2UuaHgBNINU8CCDwCUW7uHRy1SszaGR//ojWNQqE6GyWsTv7IAxoLpIBV0XgVwnClYZcmGoSNnM+odFUdNdNyK4FTtbfvBF8Ho67yqQeNi8SJV5IZ7NticJzKAFXe/M22QfAbJ5MPcRORt1SmWuOFSWbG
+ Vde7ev9i
+ 4VYAOLS0k3ZbxODGLMdj9CpKqqHRWiRYomIU/VvnMnXn+wu8KT52tkbUrdAQSb/xKMbZNigU386BO4cuPR7KozrF3L7mcuHoSWXMHPF3dAdr3LfS4iHOEVH6csbtGPQs2Hq35prDkJbhJ9IYPQi4dznFeh1lWF7J7Q4LduC56pmQBs6OwAkWD07cZpfQ9c5PdY6kWfdymigav5Ea9zb443S+mY0dOVBcmMzNxfGfhGPi3C0cJir3o/mA5UmV3Be6ZIxG1BIqNhBB8R8p5jpICu+YZZhs63FgWlMUCHi8SKThENu8QD7o46vremOEmUjTCcnE8407Vi4slPcqPJSbtj4r+WoFGllVl16p1RHUkKs+sRYfZZ2Pkyq5nLNjxYikK9nTkg3lgQHdh57o9dZ8LD8iqZ8D3H3pYjBEjFmiGAv0ckOE2a8QJUEsAPi9jKcNiO6iPii69e5sp8CQq1OFmcVowpuO/lZhZzEnKP5j6VYVUZkot1oxHgi9hHv3qjQUZ2oeStzequb+wm2Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,32 +135,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On Tue Sep 15, 2026 at 7:26 PM CEST, Shakeel Butt wrote:
+> On Tue, Sep 15, 2026 at 08:29:35PM +0800, Hui Zhu wrote:
+>> From: Hui Zhu <zhuhui@kylinos.cn>
+>>
+>> BPF programs can observe memory pressure on a cgroup, e.g. refault
+>> stats via bpf_mem_cgroup_page_state(), but cannot act on it:
+>> triggering reclaim requires writing to memory.reclaim, which BPF
+>> cannot do.
+>>
+>> Add bpf_proactive_reclaim(), a sleepable kfunc performing one
+>> proactive reclaim pass on a memcg, like a write to memory.reclaim
+>> but without retrying until the target is reached, so that when and
+>> how hard to reclaim is BPF policy rather than hard-coded thresholds.
+>> The reclaim target of a single call is capped at MEMCG_CHARGE_BATCH,
+>> as high_work_func() does for memory.high; reclaiming more is left to
+>> the program, which can call the kfunc once per bpf_wq callback and
+>> stop at any point. It is limited to BPF_PROG_TYPE_SYSCALL, because
+>> other sleepable programs may run with filesystem locks held, on
+>> which the reclaim path could deadlock via filesystem shrinkers.
+>>
+>> Convert MIN_SWAPPINESS, MAX_SWAPPINESS and SWAPPINESS_ANON_ONLY from
+>> macros to an enum so that they are emitted into BTF and usable from
+>> BPF programs via vmlinux.h.
+>>
+>> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+>
+> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 
-Our next guest_memfd upstream call is scheduled for tomorrow, Thursday,
-2026-09-16 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
+Hi Andrew and David,
 
-So far we don't have any topics, so I assume we'll just briefly sync on current
-upstream work and discuss whatever comes up.
+This looks good to me (from BPF side) and Shakeel, Hui might respin once mo=
+re to
+address some of the selftest concerns.
 
-We'll be using the following Google meet:
-http://meet.google.com/wxp-wtju-jzw
+After that, any objections to taking this through bpf-next?
 
-The meeting notes can be found at [1], where we also link recordings and
-collect current guest_memfd upstream proposals. If you want an google
-calendar invitation that also covers all future meetings, just write me
-or Ackerley a mail.
-
-To put something to discuss onto the agenda, reply to this mail or add
-them to the "Topics/questions for next meeting(s)" section in the
-meeting notes as a comment.
-
-[1]
-https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-cxTxOrAosPOk/edit?usp=sharing
-
--- 
-Cheers,
-
-David
-
+Thanks
 
