@@ -4,99 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64F9FC88E5C
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 12:18:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0DF16C88E5C
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 12:19:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 43EF36B0093; Wed, 16 Sep 2026 08:18:02 -0400 (EDT)
+	id DDE5C6B009B; Wed, 16 Sep 2026 08:18:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 41C046B0095; Wed, 16 Sep 2026 08:18:02 -0400 (EDT)
+	id D8E386B009E; Wed, 16 Sep 2026 08:18:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3546E6B009B; Wed, 16 Sep 2026 08:18:02 -0400 (EDT)
+	id CA49D6B00A0; Wed, 16 Sep 2026 08:18:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 17D196B0093
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 08:18:02 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9ABD7406EC
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 12:18:01 +0000 (UTC)
-X-FDA: 85219527162.18.74F9731
-Received: from mta0.migadu.com (out-167.mta0.migadu.com [91.218.175.167])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 5B07D40009
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 12:17:59 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="c25CGZ/2";
-	spf=pass (imf04.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.167 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789561079;
-	b=bPBA4oBJz4adFzTakI68nc8o/l872yfD3Yx2zCXdBdS5VkhBbq5VP9i8Um3u0/WX53Bsv0
-	jmbd9luNH+AzTwjhTUg9hoQZJfDz4PjBtbnoMImTMjdiXfYFUkB39pWDfZvSyOhYOkR582
-	LeceWthdQx9xZ9DL44/Q4SDYzzAf4CI=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="c25CGZ/2";
-	spf=pass (imf04.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.167 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AACBB6B009B
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 08:18:59 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 468F1A06F7
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 12:18:59 +0000 (UTC)
+X-FDA: 85219529598.16.8DB7118
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 35F67A0006
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 12:18:57 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D4f3aphR;
+	spf=pass (imf15.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789561079;
+	s=arc-20220608; t=1789561137;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BorA4xxG4TDiAsQp3Tb4u+iQH6GvNNZv/2kBfZZ1R1g=;
-	b=WDuf8caBQwZZSVVWvzbpJKDM8l10HqSmmrO44BFUnEqfGr1MreLPPNpiQEV31NdUz3GDzq
-	Fj40aWPt5tjaGj/HiLzTDb84924HMPpyLpNwk86chvwOMU/3LGRdW6RIfVT3h0HOwqHKFJ
-	FD1ge2NpYKUNDEJPttNmn4Ft1svnZj4=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=sGhhbpRXCSZiqq9AwMFqiHAd8QFegqbJzta1OrqUPoA=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789561077; v=1; x=1790165877;
- b=c25CGZ/2a9gYO97w3wlEuqufGxCY8YY1R3JrasXSSYkaa0SdoRigNjuXzpjNMzsGBSWDfCLD
- td81QVhFUYbWlcC17XsgF4Y3CLvOdYzNqZY2DvlH/B/4+lRcF9U4NjrD81QUMGvUUf5svLevtpe
- kG4nxik3htx6lDDlhA3UIuYU=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 6aeebd5c5ba43b2f;
-	Wed, 16 Sep 2026 12:17:57 +0000
-X-Mizu-Trace-ID: 6aeebd5c5ba43b2f
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <ce8c2ebf-7eb4-4afc-a007-1cfcec439ede@linux.dev>
-Date: Wed, 16 Sep 2026 20:17:50 +0800
+	bh=g3nJkuOIIREUaA/BODadsUt0oMvW89mcTSVk+TBxQTM=;
+	b=EY+eKBd6ATBguBOUPW1Y8jt9EQQyxLq8qSWUd7YnPteywFWEdOT2vTMdClFnAz4XU2UFTa
+	7WYWtgQbkSbDgcNs0c7tW3mnkcgF7SCeMnF3fSKnQ2YhfFRLxnfd44ZHKwMgF5BJUZ6QOS
+	6SugWEX89Mb2WM7KPbtLVYdKNW55cpk=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D4f3aphR;
+	spf=pass (imf15.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789561137;
+	b=Cm8Huq/+uiRog8ljxFAQeo7HjvKdRTisWugGNIKM3v5fWC2sdNis2j2P75kvLUUCf/CKxO
+	E3N8SBNRo01Z0bgeM5CsXDuo1iXaAJMPTCJ4uh2Ofla/SUti6urHoK4Wwa5TykKcwEeb83
+	d9pWF73N5bvb/UMslFGRoo5hS2xI1FQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6861B40231;
+	Wed, 16 Sep 2026 12:18:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2ED21F000FF;
+	Wed, 16 Sep 2026 12:18:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789561136;
+	bh=g3nJkuOIIREUaA/BODadsUt0oMvW89mcTSVk+TBxQTM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=D4f3aphRbKTCYsr2/YdXXnNmP/c0zn+7f5CJPLOJU5Ag2ihsF9YAuf/mxPe5qbWft
+	 RuJi+8IW2fqsg2OF0+gmzWHc2BZ4j4PTjyLzOz6AXC/PLF6S9HdJruYCs9q1aBBa08
+	 8ZHvdqKz4yosb2VOnkK+Ge5a3oc1M8xppXnjlaquXG9GOt81jNxcjCCBLr3Ao5sI/6
+	 BahavSPx3iHj0YFmmT9k2mAHR+8Qz/8CGxdMyrpN7ANNhao26Bl05UJf0Ue5Rfo74u
+	 /bJEB1hlV/SynllZ7gk30FFmaNk7xpCzcneGOvAY4XI56CwUaA/YCw+pHaapShTTsS
+	 Z2H/oC/TGFtGw==
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 9C3EF1980047;
+	Wed, 16 Sep 2026 08:18:49 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Wed, 16 Sep 2026 08:18:53 -0400
+X-ME-Sender: <xms:KYmqalRLUKQ46xVHQNAqn_SpMCWEJPEnVGHPtE9pzFa946VuffulsQ>
+    <xme:KYmqasdqqQzLLGbURN2ksP1011QzixMMfmpF8lNUTzKITQDDUxPPxIKCHfuAtHzHK
+    HePpXZVWutif9vuPFKO5v9KU79xJFks9D-SgyH4nfh2k-fblP6MxBcb-Q>
+X-ME-Received: <xmr:KYmqai4oFAoRIup95gPn3oxV9GZR0bmPcVh4y3t-o5HV8Kj-6Zg9KNTuehc>
+X-ME-Proxy-Cause: dmFkZTF/htPXCt3Vp5AMDzX4aViluNR37AwoAasTR8iHLjBZ9vB+37s09E5FAj3fIBktXf
+    wD7jyU9p9m8acEr6Ra3scjJrTilVkEufiTVp8kg6W1u05cirw+hDmrgiY3yqIDsNCGGy4Z
+    NhlL2XmoVVdXSi7pWEyIFPv29lkrmEA3vKS966LaOo5Roq203cNGaURFEmJuo4rr3dx3pl
+    zRvPBAEFOPc4BaV8VgR4olkNsATDKNUJ2aL3kSE+ZeDgohHMV8NuWlBUr1Y7gSpUtMk43S
+    pHxrvHb6UYaqOu5IrjHeg8msBZNq9Ws0Y9sYF6moF2neMeMXhIcDUsNMr5TA/1SnWdrbnv
+    krg8yzA58Iyw1wZU0OAObVQ8m4UiYc1907t7mzYhwQjpudg0+8QPH1YgpeY0d8JMVdr0rE
+    I5cdBJmZizSGHOliBIKAT49rDuCWkjlzVhcGpA/FSylhtI2vOZ35amP2Bpu/ffULhom6KK
+    mAFZrnyuq/2DovcPoXQKkstvBgE4kd6res0YrZ3TPJzPbjo01wcRbJyjyMarV3bBWIRJ2U
+    /nfjKeUYZx8uSLHmxv0YkpN2OTgeBBvRg8w5ox13JY97RAKWHu1XAFS+AJFTFFrgA3BMc9
+    4qUEfpEZPGPotDW9vPvWAQY4X3sf4al6PYefswJLQwFlMv/gcWohOVdYNR3w
+X-ME-Proxy: <xmx:KYmqalZSh5ALRNUk-yGxJZtajzA-EP-yYLtuDHVayGKZTkMcKh7jSg>
+    <xmx:KYmqalt_kssyM3YMu8dwBID1pt4VvyP-Mkj4cux8cj19ZAJNXpj0Vg>
+    <xmx:KYmqamtGLQwsCpo5AynCQsRx8Mzfx9LtL8HamC26SVKkpQEEcWC-6A>
+    <xmx:KYmqauptDI-qdtg3rUZiebczKcGTquH5dulg1Jd6BPm1F5o5OVxSfQ>
+    <xmx:KYmqat4kHc5k7IM1jrC0PaSyoI4CLHsuMRGImK3xFqk2X2jADcQ2D4xX>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 16 Sep 2026 08:18:48 -0400 (EDT)
+Date: Wed, 16 Sep 2026 13:18:46 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Zack Rusin <zack.rusin@broadcom.com>
+Cc: Borislav Petkov <bp@alien8.de>, Ajay Kaher <ajay.kaher@broadcom.com>, 
+	Alexey Makhalov <alexey.makhalov@broadcom.com>, x86@kernel.org, Dennis Zhou <dennis@kernel.org>, 
+	Tejun Heo <tj@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	"H . Peter Anvin" <hpa@zytor.com>, virtualization@lists.linux.dev, 
+	bcm-kernel-feedback-list@broadcom.com, linux-kernel@vger.kernel.org, Christoph Lameter <cl@gentwo.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	Bo Gan <bo.gan@broadcom.com>, linux-mm@kvack.org, linux-arch@vger.kernel.org, 
+	linux-coco@lists.linux.dev, kvm@vger.kernel.org
+Subject: Re: [PATCH v1 0/2] x86/vmware: Share steal-time storage in encrypted
+ guests
+Message-ID: <aqqGUAX65s4LdJkr@thinkstation>
+References: <cover.1789488039.git.zack.rusin@broadcom.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] mm/mglru: add tracepoint for scan_folios()
-To: Baoquan He <baoquan.he@linux.dev>
-Cc: Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org,
- "open list:MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)" <linux-mm@kvack.org>,
- Ridong Chen <chenridong@xiaomi.com>
-References: <20260911102939.2485750-1-ridong.chen@linux.dev>
- <20260911102939.2485750-3-ridong.chen@linux.dev> <aqkoeJvFzqpoGeaP@fedora>
- <e38f2b80-20f2-4787-9e07-fb601552f550@linux.dev> <aqn7h3BVCCRFI2TI@fedora>
-From: Ridong Chen <ridong.chen@linux.dev>
-In-Reply-To: <aqn7h3BVCCRFI2TI@fedora>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1789488039.git.zack.rusin@broadcom.com>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 35F67A0006
+X-Stat-Signature: xk9zbfz8jw5tft57fyjckx5yognefqj1
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 5B07D40009
-X-Stat-Signature: xbqpnahkapmhhqqpjx41teox88e1zgr6
-X-HE-Tag: 1789561079-692017
-X-HE-Meta: U2FsdGVkX18YzwMVjpn/7jr0xkaW4gweQV9d8yBagE6srzN2OjaKAv16HQcdT5cO0hxf7kBYPa3eC7USjJt2WyH5nxNC0UzE03XknAW2BbdtdIxaD5HWV4qfpjlI03uCjRqv6YR8EFf7gPI9ynhroivYzC34fTe4TdhlVTfDKjgnLqPv9g3emHdgAyF9bo8g+d5Hnl8Mb7GrrXvOq0kug6HQy3jUOlV81CNOdxcpeXzlE3lvSqU220PeQXT5L1492CF3y04lqKHxPfH9eLMQ447SDMu6IBs1Q9R82lVg6gUKdh/CsrEExd/VF7mbj2elk79ATysPmbIAAb/ntBlcAMs0Bfn7T1t92xdF7lpyUlPTx0kGPfTt6orbHc9zxaiikWin2lB89rrUrum5b5RWioaNO8Ng6V1TjERD8eOYz8OufBNLVy6+DFJ4I79iACmbCWnuL5GFAQ1u6EpOFJRuPrk29olblBw809tP2VVVnEThx1BqTOQ4TwGBJMxUKLyDfr8TkItCYy/qHFrc2ZJasDxKfGyIheYxeHqSnpg/ldUF58HQfOnpa/5BCua4ZrU7fDYdGd5Ctze7qsmAS4aEBwo9PxsdyXsA8Rb9IKVvj9QvtIMHVc+Oa92H+zefPVLMvgCw6eXa++3Mg4KfzXzlQeFu8enCtqYAd2e5CHA7UbdLTSTPhKO8eQk9OftUFM93MfN7N+Jik7GMr5GuEi9tidkri0w8A7A5Tlo1+16KfhrXnAmBZAbPe0nQdwcIFqo2DLoxXqs7PSsq0mYgoQAEn6OKAtAweaMDZxqyvrxd0uRks5vFBGsx1UyVNu08LoZybKhOVDNtnrZTwNumGjT6YTHkkZ/RHkC+pUgI7Z2pHHvlT0rH0zjtZCxV94HwGY47vcSDF1dI1VzvGV41OZGGsbmO5gIFZVFx0TrXoegKBTCmt/JEQpbXXYaxHtS75/fq44rw+HGEO23D2jO3Fhq
- 382luD9s
- PTcltE7P9D6wr+cq280OkjTXHkzib/cf2nvcvn1vT3vuTLzKYWK+FGcuo/Ri0y2y2SlWQTCUoJCjEri3SLv8JQ8liF13aWVVTp6FEHx0RzvOFJOntCC/V6zojxrg4GZRHZBdjqWDgG9bL8hilGyfNBcSbiDPYbdZwBoO/Wbd6b9DSzOJDLADwDxLebCQ+tFdXW6QHibiteoaZabmOFm8N+ZJTxbSwGkLAKztblmt5YZJMXFkhQCR2jz5YNtbOwfZySVEZvYzxeP9RKqOYiIirciDJk4+nVvMh/VjWYp0UI/qZBUt1OJ3RqshlpH1HbjGaIlFlYHeHfOy9ofK9+Lnl4dUPiGijMGVbPyE1
+X-HE-Tag: 1789561137-338820
+X-HE-Meta: U2FsdGVkX18pi65mhXBQL61oNcC0swWxvyqDcDYJqOLTc+QvuLqGoxZzAmMWZSr6sAQD3+1jb8701tteMbebbzCIf0NZSXUDwqJPmBGXkWakxmzRC7XeJZwICqcIdzzrGtTWaXYBzsg4G1Q9I8LHqEAHBISPzNcIQcKRzmimvn5KGmkgHpOtm9DebtheVQO4opcOvgkopLEqvPDya5R3iiC1D/mE1tmH3FZIVitd3TQKbVn/NoUupFOMXHUNyuhqIabhu9zGPSmDZBL7Q6d7y+7zUUiHVsKP8Ih/w8ygRbKUwgdUJqFvY5B7pl49RYAJ056ARboMbi5IFTIOMkjcIzLk02xc1Zw6E99TxZND/GsTPa+tU1RYCv/tm9lREja1kEr1CItSC/i7YDg8djNIUtnkT80gzfHD1DzDit6WD/Lqd3fjHhBijLqh8PiVlWwx5agAofjlElXX0OCSsCJQGj2Gdrd8HVT3kSPM+KYwNZ2wDuqwBuiEqIxZBeWPBIlORFGZ9x6oWBHxkqYXPzJaamHwQpH/kF5/zXfvzviOswQaImLMddX0eZxDSoefz5TIOdj42MsBE8YW6iVezjaVRgc9Jl/nG/KUE65FhasdCL7aXjgBlnIU9clWBS/uUwLHWERHroYIZAus7b0r/M3bf8f1J50kkiY3BYdvqh8Cw3RxVgFsZ+7ENRR0s4f5YgLrkk8iKKfaHxLvzUK2+j/rw062Ryss4eVQtHXzAB2H5++vrCdfDGCmkaRgE1ujn9BeO/difZA5C8SaRJysj9Zxu5vKgHbfCYGayF8UZSI9SuLOVr3BVOIlXqcbRxoS+h8Eu+ooXzLZVa0edCZCEXqWXZ2MhiPEJdcPc9ibaEfv+Kr9bzJQkdeMwdi4J8siDi8M11+2MWVQFB3VpeUWI0iphoKFt2nkttDKzTWXrwnWHWe2ky9sHUeXddm18o+DikgZMiHlyoTOZOyGbYJY+uz
+ DkrI3ooq
+ qkmIJz00wxmcs3wRXXfIPgmAeAJASigp1RJX3ftc1qmE8AshEGXPJC5dU0XV/qs5PVaj8zKdMwYlxvg4AZmChsVESaqXWv92qXZpmgI5LurobkJ9Va0+jn3BbEMGT371zQasz1HNbBWrTTJgYVstkp71yRdnEqllbCprcdthATVdwBnzO/s5ajbyQqRTifHZ7+DA6lFcbCGLVSUISsRPaNre8Pia27xwRz8zFgb93pOtQi/uMVKVmWt34O+wOiCvS1OduWpfOK4dWJbsZaui4PBBtgS3T13Cf+vGPTendbj7gDqw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,215 +126,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 9/16/2026 10:14 AM, Baoquan He wrote:
-> On 09/15/26 at 08:17pm, Ridong Chen wrote:
->>
->>
->> On 9/15/2026 7:14 PM, Baoquan He wrote:
->>> On 09/11/26 at 06:29pm, Ridong Chen wrote:
->>>> From: Ridong Chen <chenridong@xiaomi.com>
->>> ...snip...
->>>> ---
->>>>    include/trace/events/vmscan.h | 63 +++++++++++++++++++++++++++++++++++
->>>>    mm/vmscan.c                   |  6 ++++
->>>>    2 files changed, 69 insertions(+)
->>>>
->>>> diff --git a/include/trace/events/vmscan.h b/include/trace/events/vmscan.h
->>>> index 8a872990b4be..5defa8f6719c 100644
->>>> --- a/include/trace/events/vmscan.h
->>>> +++ b/include/trace/events/vmscan.h
->>>> @@ -392,6 +392,69 @@ TRACE_EVENT(mm_vmscan_lru_isolate,
->>>>    		__print_symbolic(__entry->lru, LRU_NAMES))
->>>>    );
->>>> +TRACE_EVENT(mm_mglru_scan_folios,
->>>> +
->>>> +	TP_PROTO(struct lruvec *lruvec,
->>>> +		int highest_zoneidx,
->>>> +		int order,
->>>> +		unsigned long nr_requested,
->>>> +		unsigned long nr_scanned,
->>>> +		unsigned long nr_sorted,
->>>> +		unsigned long nr_skipped,
->>>> +		unsigned long nr_taken,
->>>> +		int lru,
->>>> +		unsigned long max_seq,
->>>> +		int tier,
->>>> +		unsigned long min_seq),
->>>
->>
->> Thank you for your review.
->>
->>> Do we need show nid? Guess phone vendor doesn't care about multi-NUMA
->>> system.
->>>
->>
->> Eh, nid is not an mglru-specific key. Since there are 12 elements here, it
->> can't be added here.
+On Wed, Sep 16, 2026 at 01:05:38AM -0400, Zack Rusin wrote:
+> VMware registers each per-CPU steal-time GPA with the host. An encrypted
+> guest must first convert that storage to shared memory, but the existing
+> setup publishes the address without conversion.
 > 
-> Hmm, we print memcg_id but not nid, it may not be so clear. How do you
-> differentiate several lruvec-s on one memcg? I am not very familiar with
-> trace mechanism, do we have a element number limit?
-> 
+> Patch 1 makes the decrypted per-CPU section available with
+> CONFIG_X86_MEM_ENCRYPT, including TDX-only configurations. Patch 2 defers
+> encrypted-guest setup until allocator-backed page-table splitting is
+> available, converts every possible CPU's storage before publishing any
+> GPA, and attempts to roll back all conversions on failure.
 
-Yes, it will fail to compile if there are more than 12 elements.
+I acked 1/2, but I don't like where 2/2 does the conversion.
 
-With AI's help, see
+A variable declared with DEFINE_PER_CPU_DECRYPTED() ends up in a
+dedicated, page-aligned linker section. The point of the section is that
+one place converts it. Instead every user does it itself: KVM in
+sev_map_percpu_data(), and now VMware in vmware_decrypt_steal_time(),
+each with its own vendor checks and failure handling. The macro today
+only buys page isolation, not the shared mapping its name promises.
 
-include/trace/bpf_probe.h
-```
-30 #define __CAST1(a,...) __CAST_TO_U64(a)
-  31 #define __CAST2(a,...) __CAST_TO_U64(a), __CAST1(__VA_ARGS__)
-  32 #define __CAST3(a,...) __CAST_TO_U64(a), __CAST2(__VA_ARGS__)
-  33 #define __CAST4(a,...) __CAST_TO_U64(a), __CAST3(__VA_ARGS__)
-  34 #define __CAST5(a,...) __CAST_TO_U64(a), __CAST4(__VA_ARGS__)
-  35 #define __CAST6(a,...) __CAST_TO_U64(a), __CAST5(__VA_ARGS__)
-  36 #define __CAST7(a,...) __CAST_TO_U64(a), __CAST6(__VA_ARGS__)
-  37 #define __CAST8(a,...) __CAST_TO_U64(a), __CAST7(__VA_ARGS__)
-  38 #define __CAST9(a,...) __CAST_TO_U64(a), __CAST8(__VA_ARGS__)
-  39 #define __CAST10(a,...) __CAST_TO_U64(a), __CAST9(__VA_ARGS__)
-  40 #define __CAST11(a,...) __CAST_TO_U64(a), __CAST10(__VA_ARGS__)
-  41 #define __CAST12(a,...) __CAST_TO_U64(a), __CAST11(__VA_ARGS__)
-/* tracepoints with more than 12 arguments will hit build error */
-```
+The underlying problem is that the whole "decrypted section"
+infrastructure is built around SME/SEV and was never generalized.
+__bss_decrypted, early_set_memory_decrypted() and
+mem_encrypt_free_decrypted_mem() are all under CONFIG_AMD_MEM_ENCRYPT
+and implemented in mem_encrypt_amd.c. sme_postprocess_startup() converts
+.bss..decrypted only if sme_get_me_mask() is set, so a TDX guest never
+shares it. 1/2 moves the per-CPU linker section to X86_MEM_ENCRYPT, but
+nothing that would act on that section follows.
 
-> Imagine I only want to trace this function, now I can see memcg_id,
-> zone_idex, while don't know node/lruvec, that's a little pitty. Just my
-> personal opinion, I could miss anything.
-> 
+Rather than have every TDX user reinvent the conversion, I would rather
+see the infrastructure made vendor-neutral: boundary symbols for the
+per-CPU decrypted section like the ones .bss..decrypted has, an early
+conversion primitive that works on TDX as well as SEV, and a single
+conversion of both sections at boot. Then sev_map_percpu_data() and
+this driver's loop go away.
 
-Yeah, you are right. In my personal experience, I always enable 
-trace_mm_vmscan_lru_isolate and trace_mm_vmscan_lru_shrink_inactive, which 
-contain node_id. So we can see how the lruvec is scanned and shrunk, and we can 
-get node_id from trace_mm_vmscan_lru_shrink_inactive. I am not arguing that this 
-is exactly the 'correct' way to use these tracepoints, but I think it is a 
-common usage.
+> TDX's conversion callback uses __pa(), so patch 2 preflights every possible
+> CPU and leaves steal time disabled if a TDX guest uses vmalloc-backed
+> per-CPU storage. This covers percpu_alloc=page and automatic allocator
+> fallback. AMD encrypted guests support those mappings and are not rejected.
+> Supporting them in TDX would require a separate conversion-API change.
 
-I am open to that. If we want to record node_id, we have to remove an element. 
-Maybe tier? But I would strongly recommend record memcg_id, we frequently need 
-to check the reclaim behavior of a memcg, and most of our scenarios are non-NUMA.
+Refusing vmalloc-backed storage on TDX is the right call, and not because
+of the __pa() in the callback. Converting a vmalloc alias means either
+fracturing the direct map or leaving a private direct-map alias to a
+shared page, and the latter is a guest shutdown the moment
+load_unaligned_zeropad() steps into it. See the comment in
+tdx_early_init() and the earlier discussion of the same idea:
 
->>
->>
->>> And I checked v1 thread, seems Steven suggested to move the two int to
->>> avoid extra padding.
->>>
->>
->> Yeah, I will update it. I updated v2 to fix Sashiko's issue, before Steven
->> had any comment.
->>
->>
->>>> +
->>>> +	TP_ARGS(lruvec, highest_zoneidx, order, nr_requested, nr_scanned,
->>>> +		nr_sorted, nr_skipped, nr_taken, lru, max_seq, tier, min_seq),
->>>> +
->>>> +	TP_STRUCT__entry(
->>>> +		__field(u64, memcg_id)
->>>> +		__field(int, highest_zoneidx)
->>>> +		__field(int, order)
->>>> +		__field(unsigned long, nr_requested)
->>>> +		__field(unsigned long, nr_scanned)
->>>> +		__field(unsigned long, nr_sorted)
->>>> +		__field(unsigned long, nr_skipped)
->>>> +		__field(unsigned long, nr_taken)
->>>> +		__field(int, lru)
->>>> +		__field(unsigned long, max_seq)
->>>> +		__field(int, tier)
->>>> +		__field(unsigned long, min_seq)
->>>> +	),
->>>> +
->>>> +	TP_fast_assign(
->>>> +		__entry->memcg_id = mem_cgroup_id(lruvec_memcg(lruvec));
->>>> +		__entry->highest_zoneidx = highest_zoneidx;
->>>> +		__entry->order = order;
->>>> +		__entry->nr_requested = nr_requested;
->>>> +		__entry->nr_scanned = nr_scanned;
->>>> +		__entry->nr_sorted = nr_sorted;
->>>> +		__entry->nr_skipped = nr_skipped;
->>>> +		__entry->nr_taken = nr_taken;
->>>> +		__entry->lru = lru;
->>>> +		__entry->max_seq = max_seq;
->>>> +		__entry->tier = tier;
->>>> +		__entry->min_seq = min_seq;
->>>> +	),
->>>> +
->>>> +	TP_printk("memcg_id=%llu classzone=%d order=%d nr_requested=%lu nr_scanned=%lu nr_sorted=%lu nr_skipped=%lu nr_taken=%lu lru=%s max_seq=%lu tier=%d min_seq=%lu",
->>>> +		__entry->memcg_id,
->>>> +		__entry->highest_zoneidx,
->>>> +		__entry->order,
->>>> +		__entry->nr_requested,
->>>> +		__entry->nr_scanned,
->>>> +		__entry->nr_sorted,
->>>> +		__entry->nr_skipped,
->>>> +		__entry->nr_taken,
->>>> +		__print_symbolic(__entry->lru, LRU_NAMES),
->>>> +		__entry->max_seq,
->>>> +		__entry->tier,
->>>> +		__entry->min_seq)
->>>> +);
->>>> +
->>>>    TRACE_EVENT(mm_vmscan_write_folio,
->>>>    	TP_PROTO(struct folio *folio),
->>>> diff --git a/mm/vmscan.c b/mm/vmscan.c
->>>> index 2554a6513aa8..67f59aa73fb9 100644
->>>> --- a/mm/vmscan.c
->>>> +++ b/mm/vmscan.c
->>>> @@ -4876,6 +4876,12 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->>>>    	trace_mm_vmscan_lru_isolate(sc->reclaim_idx, sc->order, nr_to_scan,
->>>>    				scanned, skipped, isolated,
->>>>    				type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
->>>> +	trace_mm_mglru_scan_folios(lruvec,
->>>> +				   sc->reclaim_idx, sc->order, nr_to_scan,
->>>> +				   scanned, sorted, skipped, isolated,
->>>> +				   type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON,
->>>> +				   lrugen->max_seq, tier,
->>>> +				   lrugen->min_seq[type]);
->>>
->>> And seems Steven also suggested to calculate lru, max_seq, min_seq in
->>> TP_fast_assign() in v1 which could be missed.
->>>
->>
->> Thanks, I will update it following Steven's suggestions.
->>
->>
->>>           TP_fast_assign(
->>>                   __entry->memcg_id = mem_cgroup_id(lruvec_memcg(lruvec));
->>>                   __entry->highest_zoneidx = sc->reclaim_idx;
->>>                   __entry->order = sc->order;
->>>                   __entry->nr_requested = nr_requested;
->>>                   __entry->nr_scanned = nr_scanned;
->>>                   __entry->nr_sorted = nr_sorted;
->>>                   __entry->nr_skipped = nr_skipped;
->>>                   __entry->nr_taken = nr_taken;
->>>                   __entry->lru = type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON;
->>>                   __entry->max_seq = lrugen->max_seq;
->>>                   __entry->tier = tier;
->>>                   __entry->min_seq = lrugen->min_seq;
->>>           ),
->>>
->>
->> However, 'sc' is an internal structure, so sc->order cannot be accessed in
->> TP_fast_assign(), and I don't think it is worth making scan_control an
->> external structure just for this.
-> 
-> Agree.
-> 
->>
->>>
->>>>    	*isolatedp = isolated;
->>>>    	return scanned;
->>>> -- 
->>>> 2.34.1
->>>>
->>
->> -- 
->> Best regards
->> Ridong
->>
+https://lore.kernel.org/all/xqi2bkulnhen2vax5msbzczlaywx3dsc7ezpn7oo5qn7u7xzap@xmaseinov7tf/
+
+But that decision belongs in the same central place as the conversion.
+If the first per-CPU chunk is vmalloc-backed on TDX, the decrypted
+section is simply not shared, and users see that, instead of every
+driver re-deriving it.
 
 -- 
-Best regards
-Ridong
-
+  Kiryl Shutsemau / Kirill A. Shutemov
 
