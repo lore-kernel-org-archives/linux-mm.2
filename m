@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 772F5C88E5C
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 12:03:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C5BAC88E77
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 12:03:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2276D6B00B1; Wed, 16 Sep 2026 08:03:36 -0400 (EDT)
+	id E83676B00B2; Wed, 16 Sep 2026 08:03:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D9F66B00B2; Wed, 16 Sep 2026 08:03:36 -0400 (EDT)
+	id E3A656B00B3; Wed, 16 Sep 2026 08:03:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 002D36B00B3; Wed, 16 Sep 2026 08:03:35 -0400 (EDT)
+	id CD3F96B00B4; Wed, 16 Sep 2026 08:03:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CB0136B00B1
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 08:03:35 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5600D1406FB
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 12:03:35 +0000 (UTC)
-X-FDA: 85219490790.05.0A2C500
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id BD33940004
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 12:03:33 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Hurb/eAm";
-	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id AB3276B00B2
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 08:03:39 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 37E2D1406F6
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 12:03:39 +0000 (UTC)
+X-FDA: 85219490958.16.AFA0DFD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 5FC2F2000A
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 12:03:37 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="loxsFHy/";
+	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789560217;
+	b=X2VX7VWO3Zcoy+5HSdGur1z/SxLuKh/lcrhU4OtCdH52s9eNKgFC3hRKgAiTNebcbbOKLW
+	zFl1X7QVo77yxr1Rbr4N5EpBxwSNWrTh+aVWAAOZZARrNFzJsfpFuwnmrQDXpnhMg0j46A
+	85tJksVHX5jD0iLxl0AAjk7cFpggjrs=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="loxsFHy/";
+	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789560213;
+	s=arc-20220608; t=1789560217;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NE/c7IMcBZdCzVyFsxXaIo3nYpN6KWCimcqlbKV3gw0=;
-	b=8meiARbeLaJ8I6B0HWTyJ1Whb2qevxT4AycPafnmcccCGKeh36UODdMl0k5/ggmenm6b2y
-	KXJoAwgIeZZoT1ev09Jl8C0udy/1g4CDOBp/mammww7Ty9VhoFVIfq2lr7b9ia6yjQ23Fd
-	67WC5vpCJwZ8ZyqWyHNBoMzwPhOwtHg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789560213;
-	b=vwcuNtMMG96BAIjyC0pShiKIZ61M259hV11aZXAMHOIcQKI3Y4GZwc157J+uXfvWDWuPpe
-	rHHvLjsqZSFDCkM5re6LsyKhjB187JMeYS5r+YVEG8/14bUi3cQ8CNShbe/0/VgIkNVRfv
-	Y1UYevTqSs938HlB5aoh3tvQ6vPDDWE=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Hurb/eAm";
-	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=kEZ6nz/JFEHq+6k02cM7QTBhs2+peJoyslzMnyOEfRs=;
+	b=v8xefahcE9NgbolR47TTMwMgI5wmMHT6CAX+s9AtAyjlu0fQKWG1fjsHEp4Ezbu0+8e1Ir
+	q0tUYFyseBckthTadfSBVdPuRvbsz+z20Qxfgn38VqJ95d8olZN2p9iVFdxpu71yftZ7QV
+	gTsuhjLwrzYIYcBDvnQS+3Rl8ZLX/ns=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 58B076053A;
+	by sea.source.kernel.org (Postfix) with ESMTP id AD59543BD4;
+	Wed, 16 Sep 2026 12:03:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89ECF1F0089A;
 	Wed, 16 Sep 2026 12:03:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C93F1F0089B;
-	Wed, 16 Sep 2026 12:03:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789560213;
-	bh=NE/c7IMcBZdCzVyFsxXaIo3nYpN6KWCimcqlbKV3gw0=;
+	s=k20260515; t=1789560216;
+	bh=kEZ6nz/JFEHq+6k02cM7QTBhs2+peJoyslzMnyOEfRs=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Hurb/eAmlQUwytzx60cR7oXIXwPA9vQ9j3r7mE5ESHPcxyZwpxAIKXedhTuem/7+4
-	 k8VJcCj4MvctRgAIRQZzv9lPBK8r+oWCR9GlPv+9bM9PzG8AZKhenrd74PlzLwcoK/
-	 C9iwWhoecv5nUoGvli8YQnAB6j2mMBVNl91ZnMatnQnoD06LhHPKeU/9ud6HpuHYbh
-	 ZHlKMVe+PMyggGdXJmXkv8WAvH8eeUe+/6MqH1OyusTwnPoDeOy7d81H2i7l8HY2RU
-	 kGMHU5sjGvBOZq8kV3KUP87V/yB7P28VA7MZuqJIeApCocYKcM5t5WgSUR6dVC5gXW
-	 3G2leQwBMM50A==
+	b=loxsFHy/1eGz0qgPCeXN17uzD1ptVS/Qxc+rDq4qznAMqIVmpl8x1bPXVz5v78gGp
+	 E+G037KiAiF17UQYrBj1C+2W71dMxMfTyy3ALvNjsrgjwwAZVOz/P4Ro0Y+qG95ij7
+	 itVTEszggQCYKVFrYbDdNc+Fn2YpsR2xhwG7rOxTFF5BJr6p8N/b6YBsqzobih9x4o
+	 ie1WGvsiiiF/P+/HmzjazSjiCv/4ZTAmi83l0qCDxHJTCh/15Ar6X704M3PAE8D6E6
+	 0MEg+Pw6SzS2yKFpJWlhEqeuu1UG8qyjCVIquA4Dv3BgNvN5XgcddFG5N7Y2muRF7P
+	 iu+6kR7AqO/lw==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Wed, 16 Sep 2026 15:03:12 +0300
-Subject: [PATCH v3 05/13] s390/cio: Use kzalloc() for CHSC work areas
+Date: Wed, 16 Sep 2026 15:03:13 +0300
+Subject: [PATCH v3 06/13] s390/cmf: Use kmalloc() for the CMB area
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260916-s390-cio-ready-v3-5-39e4894637d6@kernel.org>
+Message-Id: <20260916-s390-cio-ready-v3-6-39e4894637d6@kernel.org>
 References: <20260916-s390-cio-ready-v3-0-39e4894637d6@kernel.org>
 In-Reply-To: <20260916-s390-cio-ready-v3-0-39e4894637d6@kernel.org>
 To: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
@@ -83,14 +83,14 @@ Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
  Vlastimil Babka <vbabka@kernel.org>, linux-s390@vger.kernel.org, 
  linux-kernel@vger.kernel.org, linux-mm@kvack.org
 X-Mailer: b4 0.17-dev
-X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: 5mjk4pkx7gtkk84coqhaco11m9p6h9nq
-X-Rspamd-Queue-Id: BD33940004
-X-HE-Tag: 1789560213-666981
-X-HE-Meta: U2FsdGVkX1+kMXJqldCZ3a0oE9sDN7Vq8kCfg+a4Ywx1Irp7F3dd4pZjyUIrT49i5XumuPmFRHqyeLWtTOwwTKkdIsaD5WJwVhObpqzd3d1WoKZVMs0nBD16ZVdbckeo9xhBelXrkRZ6oDpSuoVqd0CBc9JYjwsOzMyNmbBHz9aIEF5YXhEvozNENCLgtVcGXrALZXybdWvSFAdyVV84CQi9ZfWB7+Z/4jdZ66Wm9kovvKjKHJ4RB+XkYR0FCtHkRPiY8awsssy5TRqJQKc88DbTDlWzqSkLEte+o8Jlef0PTF+b+pIeU3sOsb9QZ7PsLyZG1zQEEUPId9eN9B3skH0TuM7sryBFJw8SWsEWwoEvJrkYnEIVQ4AhWJM6GV2DSxEXDwIFXGVQzdH+UP8gSptWH732I9LKMWRZOytiPBe3zjtYoVh3Ry6dYhjDQYRyGgU9LfNl83l7ZQhdxBvdGrZcGS4WBTh/8jGAwlZ5840p1F/T9DJD8tMlVlcAtGQ6aVT1fl3IpnUMvvgc/h1txDGoIQA12m/wLqU4jHjihy/9s93TYorBDc9rOLMeBBsOPzb4Dl67OR894A039yl9NcF3+e2hMKr1c8VotGVEpqUnjH95ueXAvGoa9aGpTL7poLAUjlNGoO1iotWXkzBgB6UaCxL+bh3zxDKJICgFhjUnF0Or5stj9mTpy7/b+azIf7XOxOTX2RJK5iZxgGXYdzXcsTvqjYJbY3ZCqNTcxKy+ItYczl8WVw2+UIdX3XVB0ZwA1R6ApMMAXO5PW7QFpIR1AqO7vTIMr+8pn26GD5Cer9QqkyeC1eeQkYRWbRgrEWoBYJTb2sgEGIjvrSjARhPLagsz5UFLzQFXZHA9y0ReLO+m2A1hv901f9okkeXSK5FA9ChpBmfjOO18ocfboUh+x51A2o9XPhAHnWPr4e6Jwiq6gq+1vSQSu9AUbaZBQh55Yg9nEFoKFoEw5yU
- jO8x1vZ0
- Wr5dDkQquLcieyKLy6oQaIZWmXzhTDBzxZS+owpnRs1bRuSPT10TB0h8vMBtb8nOdrsDPOjJ95LkKsBatBpk7ph5XH2z6mFsr5E8WP5ezHjrO+hIjGST6QPzmfXZIrOQpmLRXUJD5Tn5VFSzWjfKbIy29yiTywXvInacCb+VI19JMLHCHdYE4HS76HURZoIh0YXTWiHSmuaqU7WfLca6iEDmn7kTt7TeVRP5/dAXg2F8g7NttVVNOSEpUqC2DZ5oPVsqV7Uj5pLuBk8k=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 5FC2F2000A
+X-Stat-Signature: gpcn7ftufp99oupondf974zuz5d5rsxe
+X-HE-Tag: 1789560217-53169
+X-HE-Meta: U2FsdGVkX189KBCwjpL7UsjVRHewmSYWIrP1JMmZjCkS5GZY6QvmRBA+5Sxt5O3bXZdwoGXxNN7VZzOLdzthcn7/ebPKGk0Jf+6EtyFe54/QI8IqutEauhtztKPtkinhW37ZoxwVSv0Ddt0YuKHfYXSDa6R4BFCux7crrBQhUrhMHQBPs6YhsWSh+Qjl+Ibqp37mLl2KvvL/BHq8tihc/6eWJOR1+RFdb1TQqsYV9jCaEKEO7Yan9lpTppNIdfHLlf4CfK1dh3SaULxg2rDkqG9WMFZYYeJeAN2fKGZf/Qi+rnGaCxhTuMQNRX/sgucPbElbOHwYCVre2OM+Qu91P6CChAIBYCKhSsrU0rQTghs31XDindo4mrzpSMpMg1I49GU9LzTAwwdcRKguvMc10nAvMb6G6vVOSNVmFKfTA9Q4pZvQGNe9NhPdoPyrGMp93GgZKZbATUkQVa4FZFXdO6UsZXldpMcQxwspGEMvqQVGEZFWSyHF9l/Gd3UhGudXGJhTonnTriOI3kUQ6Pt/TfRVskZIrGIAF+tX53ARxLfjzTQsL9F9/Q5xNT/mSJqPMldjp1pxYUYJybUmW6TpdlUft4G7U7b4L4Uh5EKVnYuybQWY7AHTeKmtKyIHfEn/UoHzc5ZNH7+c5RGmx38LQ9mjZikdc4WIdyijAvQuJ+KAsdmD8Xmi94gCnG7gawdhLWznN+uoj6ZtXtbvMp6QEmjIHvIjrL+DfiDVVE00X6fY9rUqFcsxPp26rj7M0+d6gyxaTTblT/CIWtyBeLNsEyHiWsItWXkXdNPF/qKlBqXi431gpboCLd7V8qz5KuNhLhx9BUG3g0v6DbGW9N5REsa6/sEAoz7h2M34HasXD1p5YIGxGGBwb5kIhUhvHGGkL8qJJFr4JCxOQNV6gWGuFT/LBf3kYhKmSPcmWC05qxV7b4H8h9AwBiMj1AVax6tqDtVyNpxB01ZD12Z09MJ
+ rNLAwD9S
+ nJPbIXQUGkY36kwGflt/FY7eQH0BGxVAAahVmfjz8mHqXom6ThsPz6tR0VaSudaQoSbFeF5LLfO0ELsDvJ7VSxk7QCn/7AnY3L2CK8Yb70FUCJloRA33Qpgg1sOuL+9QYb7j1XVUFHP3msPkPumC4N6+zq7mDp4vIHbkhXl+EeSjzCCXzld4ufIseHMArJTx8h16p1A9wBhxECTa8bbQunzG3SF7EOu3Dj69aNp6IuCtE76V7+6AooQ3UzHFmcQkXabI2V+AsvkMcJHY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,8 +98,8 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-chsc_init() allocates the work area for CHSC commands and
-qdio_allocate() allocates one for CHSC calls during qdio_establish().
+alloc_cmb() allocates the channel measurement block area shared by
+devices using the basic channel measurement format.
 
 This memory can be allocated with kmalloc() as there's nothing special
 about it to go directly to the page allocator.
@@ -114,123 +114,62 @@ fast path allocations.
 For the slow path the performance is anyway determined by the amount of
 reclaim involved rather than by what allocator is used.
 
-While on it, change qdio_irq.chsc_page to void * to get rid of the casts.
+The measurement block origin must be 32-byte aligned. Each CMB is
+32 bytes, so kmalloc() provides the required alignment without rounding
+the allocation to a power-of-two number of pages. Reject an empty area
+before allocating it.
 
-Replace use of get_zeroed_page() with kzalloc() and free_page() with
+Replace use of __get_free_pages() with kmalloc() and free_pages() with
 kfree().
 
 Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
 Assisted-by: copilot:claude-opus
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- drivers/s390/cio/chsc.c         | 6 +++---
- drivers/s390/cio/qdio.h         | 2 +-
- drivers/s390/cio/qdio_main.c    | 6 +++---
- drivers/s390/cio/qdio_setup.c   | 2 +-
- drivers/s390/cio/qdio_thinint.c | 2 +-
- 5 files changed, 9 insertions(+), 9 deletions(-)
+ drivers/s390/cio/cmf.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/s390/cio/chsc.c b/drivers/s390/cio/chsc.c
-index c3186c0a372b4..d98f629e89295 100644
---- a/drivers/s390/cio/chsc.c
-+++ b/drivers/s390/cio/chsc.c
-@@ -1143,7 +1143,7 @@ int __init chsc_init(void)
- 	int ret;
+diff --git a/drivers/s390/cio/cmf.c b/drivers/s390/cio/cmf.c
+index 92ab3d546fe47..8fd41a7dfc20b 100644
+--- a/drivers/s390/cio/cmf.c
++++ b/drivers/s390/cio/cmf.c
+@@ -482,6 +482,9 @@ static int alloc_cmb(struct ccw_device *cdev)
+ 	ssize_t size;
+ 	struct cmb_data *cmb_data;
  
- 	sei_page = kzalloc(PAGE_SIZE, GFP_KERNEL | GFP_DMA);
--	chsc_page = (void *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
-+	chsc_page = kzalloc(PAGE_SIZE, GFP_KERNEL | GFP_DMA);
- 	if (!sei_page || !chsc_page) {
- 		ret = -ENOMEM;
- 		goto out_err;
-@@ -1153,7 +1153,7 @@ int __init chsc_init(void)
- 		goto out_err;
- 	return ret;
- out_err:
--	free_page((unsigned long)chsc_page);
-+	kfree(chsc_page);
- 	kfree(sei_page);
- 	return ret;
- }
-@@ -1161,7 +1161,7 @@ int __init chsc_init(void)
- void __init chsc_init_cleanup(void)
- {
- 	crw_unregister_handler(CRW_RSC_CSS);
--	free_page((unsigned long)chsc_page);
-+	kfree(chsc_page);
- 	kfree(sei_page);
- }
++	if (cmb_area.num_channels <= 0)
++		return -ENOMEM;
++
+ 	/* Allocate private cmb_data. */
+ 	cmb_data = kzalloc_obj(struct cmb_data);
+ 	if (!cmb_data)
+@@ -501,12 +504,12 @@ static int alloc_cmb(struct ccw_device *cdev)
+ 		WARN_ON(!list_empty(&cmb_area.list));
  
-diff --git a/drivers/s390/cio/qdio.h b/drivers/s390/cio/qdio.h
-index 4bd4c00c9c0ca..dff5f53a8795d 100644
---- a/drivers/s390/cio/qdio.h
-+++ b/drivers/s390/cio/qdio.h
-@@ -244,7 +244,7 @@ struct qdio_irq {
- 	int perf_stat_enabled;
+ 		spin_unlock(&cmb_area.lock);
+-		mem = (void *)__get_free_pages(GFP_KERNEL, get_order(size));
++		mem = kmalloc(size, GFP_KERNEL);
+ 		spin_lock(&cmb_area.lock);
  
- 	struct qdr *qdr;
--	unsigned long chsc_page;
-+	void *chsc_page;
+ 		if (cmb_area.mem) {
+ 			/* ok, another thread was faster */
+-			free_pages((unsigned long)mem, get_order(size));
++			kfree(mem);
+ 		} else if (!mem) {
+ 			/* no luck */
+ 			ret = -ENOMEM;
+@@ -547,10 +550,8 @@ static void free_cmb(struct ccw_device *cdev)
+ 	list_del_init(&priv->cmb_list);
  
- 	struct qdio_q *input_qs[QDIO_MAX_QUEUES_PER_IRQ];
- 	struct qdio_q *output_qs[QDIO_MAX_QUEUES_PER_IRQ];
-diff --git a/drivers/s390/cio/qdio_main.c b/drivers/s390/cio/qdio_main.c
-index c1e09fa34e774..d137bf8c70664 100644
---- a/drivers/s390/cio/qdio_main.c
-+++ b/drivers/s390/cio/qdio_main.c
-@@ -934,7 +934,7 @@ int qdio_free(struct ccw_device *cdev)
- 
- 	qdio_free_queues(irq_ptr);
- 	free_page((unsigned long) irq_ptr->qdr);
--	free_page(irq_ptr->chsc_page);
-+	kfree(irq_ptr->chsc_page);
- 	kfree(irq_ptr->ccw);
- 	free_page((unsigned long) irq_ptr);
- 	return 0;
-@@ -986,7 +986,7 @@ int qdio_allocate(struct ccw_device *cdev, unsigned int no_input_qs,
- 	 * qdio_establish. In case of low memory and swap on a zfcp disk
- 	 * we may not be able to allocate memory otherwise.
- 	 */
--	irq_ptr->chsc_page = get_zeroed_page(GFP_KERNEL);
-+	irq_ptr->chsc_page = kzalloc(PAGE_SIZE, GFP_KERNEL);
- 	if (!irq_ptr->chsc_page)
- 		goto err_chsc;
- 
-@@ -1006,7 +1006,7 @@ int qdio_allocate(struct ccw_device *cdev, unsigned int no_input_qs,
- err_queues:
- 	free_page((unsigned long) irq_ptr->qdr);
- err_qdr:
--	free_page(irq_ptr->chsc_page);
-+	kfree(irq_ptr->chsc_page);
- err_chsc:
- err_dbf:
- 	kfree(irq_ptr->ccw);
-diff --git a/drivers/s390/cio/qdio_setup.c b/drivers/s390/cio/qdio_setup.c
-index ea09aadaae4ec..bd80703c174c7 100644
---- a/drivers/s390/cio/qdio_setup.c
-+++ b/drivers/s390/cio/qdio_setup.c
-@@ -253,7 +253,7 @@ int qdio_setup_get_ssqd(struct qdio_irq *irq_ptr,
- 		if (!ssqd)
- 			return -ENOMEM;
- 	} else {
--		ssqd = (struct chsc_ssqd_area *)irq_ptr->chsc_page;
-+		ssqd = irq_ptr->chsc_page;
+ 	if (list_empty(&cmb_area.list)) {
+-		ssize_t size;
+-		size = sizeof(struct cmb) * cmb_area.num_channels;
+ 		cmf_activate(NULL, CMF_OFF);
+-		free_pages((unsigned long)cmb_area.mem, get_order(size));
++		kfree(cmb_area.mem);
+ 		cmb_area.mem = NULL;
  	}
- 
- 	rc = chsc_ssqd(*schid, ssqd);
-diff --git a/drivers/s390/cio/qdio_thinint.c b/drivers/s390/cio/qdio_thinint.c
-index e167aa75c3dff..a2ff51887537f 100644
---- a/drivers/s390/cio/qdio_thinint.c
-+++ b/drivers/s390/cio/qdio_thinint.c
-@@ -136,7 +136,7 @@ static struct airq_struct tiqdio_airq = {
- 
- static int set_subchannel_ind(struct qdio_irq *irq_ptr, int reset)
- {
--	struct chsc_scssc_area *scssc = (void *)irq_ptr->chsc_page;
-+	struct chsc_scssc_area *scssc = irq_ptr->chsc_page;
- 	dma64_t summary_indicator_addr, subchannel_indicator_addr;
- 	int rc;
- 
+ 	spin_unlock_irq(cdev->ccwlock);
 
 -- 
 2.53.0
