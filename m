@@ -4,95 +4,187 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 799BAC88E77
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 11:48:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF2F0C88E5C
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 11:52:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C4FA6B008C; Wed, 16 Sep 2026 07:48:04 -0400 (EDT)
+	id C24B56B0093; Wed, 16 Sep 2026 07:52:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A27C6B0092; Wed, 16 Sep 2026 07:48:04 -0400 (EDT)
+	id BFC3D6B0095; Wed, 16 Sep 2026 07:52:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B2606B0093; Wed, 16 Sep 2026 07:48:04 -0400 (EDT)
+	id AEB306B0096; Wed, 16 Sep 2026 07:52:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 332F06B008C
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 07:48:04 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CD880A5DCD
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:48:03 +0000 (UTC)
-X-FDA: 85219451646.12.6D04DCE
-Received: from mta0.migadu.com (out-209.mta0.migadu.com [91.218.175.209])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 66A9E140008
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:48:01 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Oe30Vh81;
-	spf=pass (imf09.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.209 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789559282;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 860916B0093
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 07:52:50 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 103D5C06EC
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:52:50 +0000 (UTC)
+X-FDA: 85219463700.24.B7BCB53
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011002.outbound.protection.outlook.com [52.101.62.2])
+	by imf03.hostedemail.com (Postfix) with ESMTP id E853520003
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:52:46 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=TYb0b5xW;
+	spf=pass (imf03.hostedemail.com: domain of Alexey.Kardashevskiy@amd.com designates 52.101.62.2 as permitted sender) smtp.mailfrom=Alexey.Kardashevskiy@amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=quarantine) header.from=amd.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789559567;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=C23ESRvk52M5CAbKHrncgrOg09aivZ1Xo46yJYnM7CM=;
-	b=e5hSxLTOtdY123yYuMXxn3u9K4EwhQqW4m0sDrzDoXpIEuKnDPGvfbY58NPsMupUoq6vIC
-	EIkZbLHUpJjBgE9flsyjjAk0MgqKmot6kEIJjmrOUCYIXpNeZUXOjORYwdDxpyzD7rafxx
-	r1/JKB51bHq1hPkTv24DbnL1xWTOAIk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789559282;
-	b=hueCUgVVNsVUMQsx2PYtwg+8/ldfWKsgxYB03Jwl59Glc0ZO6CpOWIhIzKxkhC5boE6w2w
-	0O5xZ0tYGzmrTqSrVwW9qoqPhjh4Z9nQX9GX4traBpYNl95mgGk0axcJTuoy09Y7mx6w9H
-	geDbn16nFZMf1xmILIcFpv7KXONfy6k=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Oe30Vh81;
-	spf=pass (imf09.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.209 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=QkgxTAjnw9kjoZrd4E4SroH/8THVIEwQ2WjorBKbMs4=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789559279; v=1; x=1790164079;
- b=Oe30Vh81EI21s/dDYotCAXjcMII9SOM1nMku33ZCIok2R4y7Mh+xuR6WzsUrKNaaC+NGRuwB
- V/YHXjd3szcUxeb2sIsm2/4QnISKv1sRUDcL1Xvycc9o7Y9c4F+tS4lMoQicKab5v84hNGYztSu
- mS0hbiC69LrJPE3CvBYCKaoA=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 7d2a5ac1929357ee;
-	Wed, 16 Sep 2026 11:47:49 +0000
-X-Mizu-Trace-ID: 7d2a5ac1929357ee
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <4c8febe3-8e07-4c73-8f4b-44e4ad4374fb@linux.dev>
-Date: Wed, 16 Sep 2026 19:47:38 +0800
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=mZx62VDeT0ufB+RoQyhNsYub6vn+IMt5N7ocikkQ9sU=;
+	b=dk9FUFOvrvGg/PtGJMENdM70XmH1nWtvsdahQescV4YsSAN/Fp11BWmvXUGy+4oLLWFMyt
+	o14ffXrjOS6NxED53KyyRHRsVW/e+Kbe45sosXeziV+cOQnWzSs4xp/bv/ZI12WAvJ0tir
+	N6nSQ+7xVqIhJ7rwu8V7w5cro++KA70=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1789559567;
+	b=i+o3x63q85/RImzCTCnY2oRdrYSy1fFR6wLi6n/tLsIb/nJAp9DCYCPv4cFPLi0W9kUmW0
+	sEVlWQOJxetUOqGw5MhXiOtzv4HkpTPCIhLRzg1ayC5UAiGwu00s5EtPPdVaxzDjZmEdsp
+	rRpw5H2zVabPUrimtpDFfIzT8qORfxw=
+ARC-Authentication-Results: i=2;
+	imf03.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=TYb0b5xW;
+	spf=pass (imf03.hostedemail.com: domain of Alexey.Kardashevskiy@amd.com designates 52.101.62.2 as permitted sender) smtp.mailfrom=Alexey.Kardashevskiy@amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=quarantine) header.from=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=aG0oKHb8KcEdre+rK3In8EAAqhdVUmF9VvRw6NPuPrlGrqPlvJPLzycguBO2noWHblZKBztH6x0PTeRAIrNfo/FpZQhkGtE6TprWRpR+ankhY0Sb5NVTSp8OB0TsfwRe1wR34gNExtL8rMQVZtY0WVlYqAev9TLoyn8+fjF+tErqAlqXMQ6QaChgVBOe+FHNUOdFQtBVCZnDV7xdAVyT5RA8NUbNzytuhsjQ2QVS4uT/x4y0xn/YQEwASNyZ3/qCOIOJoXazBFPW4b9h4kcue6fkaKWdAiUhfg0gCYUPi89mn6ssnZCOXYzl2h2M3N6O6c0ARXSiUxHJeyn6Ynu7BQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mZx62VDeT0ufB+RoQyhNsYub6vn+IMt5N7ocikkQ9sU=;
+ b=FUyNkmAgjoL3/Qs+3F8bOdJWZRxxAQSwJW4szhpjx76WlA2EdbNX7jtMV4pbjd6iC91k08D4iBb9j8AgeMohTuau1FzNyZt2pgMNrR3k7wEhCceWhRur0It9nkugCoDQfECZ/QHNEXl5jVGK9zQfspiclLtQPItvb1RkcyDOMSOeazpPRKoZiKffRGMnXBwgNMPwDdqq7GrZVoEa2hiF6nXWgC58+c0tDXJtUVpRjwHqUBSf7xfoY9HeBUajjbck/1j+ocf+2OW94VtyszgXGAhvPMbR2a17/AFehv7xqsqmqP2D78ATc4RhwLcSfrFMBON46FvV0aHG6+MLdveVFg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mZx62VDeT0ufB+RoQyhNsYub6vn+IMt5N7ocikkQ9sU=;
+ b=TYb0b5xWa3CwbsbXaROqwWacW3UnsWZAsLXCBsuO2VZj3iXs8h7XkGDWJzHS+Rr4NOgL3HVseZVrYfoYjT+MEH/NbZvmfhn1kvBEhxyM6OmIB0EJdTl5EhLqRsxHyVePmgg7X/cEjYvCt0uElsJXsLaUetdh0Zp7OnwDJk7C+7o=
+Received: from CH2PR17CA0024.namprd17.prod.outlook.com (2603:10b6:610:53::34)
+ by LV3PR12MB9119.namprd12.prod.outlook.com (2603:10b6:408:1a2::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.9; Wed, 16 Sep
+ 2026 11:52:37 +0000
+Received: from CH2PEPF00000141.namprd02.prod.outlook.com
+ (2603:10b6:610:53:cafe::4e) by CH2PR17CA0024.outlook.office365.com
+ (2603:10b6:610:53::34) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.428.9 via Frontend Transport; Wed, 16
+ Sep 2026 11:52:36 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ CH2PEPF00000141.mail.protection.outlook.com (10.167.244.74) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.428.7 via Frontend Transport; Wed, 16 Sep 2026 11:52:36 +0000
+Received: from aiemdee.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 16 Sep
+ 2026 06:52:13 -0500
+From: Alexey Kardashevskiy <aik@amd.com>
+To: <x86@kernel.org>
+CC: <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-crypto@vger.kernel.org>, <linux-pci@vger.kernel.org>, Thomas Gleixner
+	<tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+	<bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin"
+	<hpa@zytor.com>, Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+	<pbonzini@redhat.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra
+	<peterz@infradead.org>, Ashish Kalra <ashish.kalra@amd.com>, Tom Lendacky
+	<thomas.lendacky@amd.com>, Herbert Xu <herbert@gondor.apana.org.au>, "David
+ S. Miller" <davem@davemloft.net>, Bjorn Helgaas <bhelgaas@google.com>,
+	Juergen Gross <jgross@suse.com>, Stefano Stabellini <sstabellini@kernel.org>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, Marek Szyprowski
+	<m.szyprowski@samsung.com>, Robin Murphy <robin.murphy@arm.com>, "Andrew
+ Morton" <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, "Suren
+ Baghdasaryan" <surenb@google.com>, Michal Hocko <mhocko@suse.com>, "Catalin
+ Marinas" <catalin.marinas@arm.com>, Jini Susan George
+	<jinisusan.george@amd.com>, Kees Cook <kees@kernel.org>, Michael Ellerman
+	<mpe@ellerman.id.au>, Nikunj A Dadhania <nikunj@amd.com>, Ard Biesheuvel
+	<ardb@kernel.org>, Eric Biggers <ebiggers@kernel.org>, Kim Phillips
+	<kim.phillips@amd.com>, Joerg Roedel <jroedel@suse.de>, Ethan Nelson-Moore
+	<enelsonmoore@gmail.com>, "Tycho Andersen (AMD)" <tycho@kernel.org>, "Liam
+ Merwick" <liam.merwick@oracle.com>, Michael Kerrisk <mtk.manpages@gmail.com>,
+	Suresh Siddha <suresh.b.siddha@intel.com>, Xiaotian Feng <dfeng@redhat.com>,
+	Venkatesh Pallipadi <venkatesh.pallipadi@intel.com>, Andi Kleen
+	<ak@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>, Tony Luck
+	<tony.luck@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>, Lu Baolu
+	<baolu.lu@linux.intel.com>, Xu Yilun <yilun.xu@linux.intel.com>,
+	=?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>, Jonathan Cameron
+	<jic23@kernel.org>, Jori Koolstra <jkoolstra@xs4all.nl>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>, Ian Campbell
+	<ian.campbell@citrix.com>, Jeremy Fitzhardinge
+	<jeremy.fitzhardinge@citrix.com>, Petr Tesarik <ptesarik@suse.com>, "David
+ Howells" <dhowells@redhat.com>, Haavard Skinnemoen <hskinnemoen@atmel.com>,
+	Kenji Kaneshige <kaneshige.kenji@jp.fujitsu.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, "Christian
+ Marangi" <ansuelsmth@gmail.com>, Dave Jiang <dave.jiang@intel.com>, "Michael
+ Kelley" <mhklinux@outlook.com>, Ilias Stamatis <ilstam@amazon.com>, "Sumanth
+ Korikkar" <sumanthk@linux.ibm.com>, Simona Vetter <simona.vetter@ffwll.ch>,
+	Toshi Kani <toshi.kani@hp.com>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>, Vinod Koul <vkoul@kernel.org>, Jiang Liu
+	<jiang.liu@linux.intel.com>, Arnd Bergmann <arnd@arndb.de>, Anshuman Khandual
+	<anshuman.khandual@arm.com>, Kefeng Wang <wangkefeng.wang@huawei.com>,
+	"Palmer Dabbelt" <palmerdabbelt@google.com>, <linux-coco@lists.linux.dev>,
+	<xen-devel@lists.xenproject.org>, <iommu@lists.linux.dev>,
+	<linux-mm@kvack.org>, Alexey Kardashevskiy <aik@amd.com>, <aik@ozlabs.ru>,
+	Santosh Shukla <santosh.shukla@amd.com>, "Pratik R . Sampat"
+	<prsampat@amd.com>, Scott Soule Cheloha <scott.cheloha@amd.com>, Ackerley Tng
+	<ackerleytng@google.com>, Fuad Tabba <tabba@google.com>
+Subject: [RFC PATCH kernel 00/17] PCI/TSM: coco/sev-guest: Implement SEV-TIO PCIe TDISP (phase2)
+Date: Wed, 16 Sep 2026 21:51:40 +1000
+Message-ID: <20260916115159.1938195-1-aik@amd.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8] mm: vmscan: retry folios written back while isolated
- for traditional LRU
-To: Barry Song <baohua@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Kairui Song <kasong@tencent.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>,
- "open list:MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)" <linux-mm@kvack.org>,
- linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
-References: <20260913100013.3603815-1-ridong.chen@linux.dev>
- <CAGsJ_4xEAS5Bacn8dUxDPoMKwD054zUsfUB3MSGYxGYwicPyWQ@mail.gmail.com>
-From: Ridong Chen <ridong.chen@linux.dev>
-In-Reply-To: <CAGsJ_4xEAS5Bacn8dUxDPoMKwD054zUsfUB3MSGYxGYwicPyWQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PEPF00000141:EE_|LV3PR12MB9119:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7391569d-ac2a-4616-69f3-08df13e9008e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|82310400026|376014|7416014|23010399003|36860700016|32650700020|18002099003|13003099007|3023799007|5023799004|10067099003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	T/gKaq7XFEnBi/yuOuXBHIHCD7TNUzO6/LsGHGpb0VdFnhOacL7FQW1YWREUJE4JArQUEVm1ccK17oYVI1nlQOwVcl/+SkFGawQkgJDJaZ4qH1D/uIlFGDhiW1/d74DByXinxZnIkDQYj9FGXk4OOKJ+kYv/d+CAgG/PTWX0UzZ/Lp0jxAQbHs0Dyh/2BKLQqGx6/d87Tw12FdpCH48IcuKsPZwqk5G9T+klwO3fX8+XnXeVDGfJzW1m5NX1LnPISZhnXsO1uvc3KjxwqC2Ws3B92AV1byfml134mscouKf/eQr8L/BZGaOFkoksnlwWnjD9lH0mPC+uYD4fmIH/V9QWuw+a9tH/N1wA7D6WVBzjww7atU8VJyL+8XzaMFb2qtdJHbhuqCMaB+z8zwC49JfgoEPtAu0mlkYGGFxSu1TzrPnUKfMf62FtDWqwnsNj+u/4ijrmb4SDCnyuz/6Z5BsgMBwCnB0FOHo2HxPuIIO/mnWIVAz+NpBP5CW+k+EC5+76SALy+Sdr9vQ3wwwT8Jfd5sNrI69QlA0aSM0wKMl/u8/LnCLD16kj9JQrN6WPJvPTYouVAb0XPd8oICcFGbiT83qjuJrhursHTFxWhZkq9RUKjqw8PtitrmDBrh8LUAuK8iS9K561fV/OmR7VSuUhBxxDeAcJFprd3/YTi2LlHtvo9PNlxcIYxGV3Ppv25ZrBkRpchcUBXVADUWXLhA==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(376014)(7416014)(23010399003)(36860700016)(32650700020)(18002099003)(13003099007)(3023799007)(5023799004)(10067099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	+PlvSj+WWJdnQa9fqspJ0fGqU+h8yDsfBtjgrmCFlifW3rsbziq4yuNPQQyR/FXWEZSSp00sFYlutVZKzH62lMegd/JbzlYn/hpN78cr2SasoVm5fd/J4xz3ACrrUADNDus1kHqqqKweQl1XkKAuyyjZFggKvacCQoEX2+evG1kj/d82Fq/frgLm/kuBcCvch7vryn1qSGP2AV5fgGB6MD44u054gmUCHYZ5J56mDlJHDsaimg0mgKICWykgf5Qrzl+6gXxuOP4oouH0O8q6rxFwhevrd3K2x79h5jdXml1nC+XkfEUmXRGj3ewK399oB19ERF3hI9KhQsBGCljTGcXTZww+3pXfxyI/qyphgkPNRR1m+v+1Meh6DZkmrq0nPl4K1ltrTht/7eWVnESEApX3Cd54btZQ1VkXv4eebynsR510gjyu4rP54UQmEU7W
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2026 11:52:36.6991
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7391569d-ac2a-4616-69f3-08df13e9008e
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH2PEPF00000141.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9119
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: E853520003
+X-Stat-Signature: yntyu4z8mktpw9prig5e1ks17zjs6485
 X-Rspam-User: 
-X-Stat-Signature: 8gdwxxi85jfbtueep87b84zewy7xdxam
-X-Rspamd-Queue-Id: 66A9E140008
-X-HE-Tag: 1789559281-759310
-X-HE-Meta: U2FsdGVkX19mXA9EhR41xCSixU2/Bix0+G7tbfsofCHbm0DfmQkiN7Z8sikfHQld2gdFhfUbM29JkVEoyw52lGJHlpDi8oNxkFc64yq+ENcLETIulgYrX2pZAvrT90V0w1dwuanjga0JTN0fRJ0VWWBn1UMj49dNFUEwAjnp6tSQ4NWX4TkZtCodr+FRBr5jkVu9hP4uICeSZ5lKvwLghtrY4b+4mphzm1Q1J+NIIl0D1wtYFbcQWLow0sb60cIqpN5pC5HZ4pI2SDVYKYkW0/iYtIorxJdTHzlOsgKgHGH8u+zizzTE+rbFx83sYV7aYbZVBtvhUuf3Baekkdgga3XBYsfk3uGqy+tjQGzJnX2Bu4+3COsOOu1iJXegL3APdx3H1FifJhV7SAeQJ2o+NRK3gg1TeSFT9UKYdMLkSAoGEKGvPXaZ6LI20rIbOERS7BD6IVb4nKXJtVHp1ucPhThQ1wE8tZs9sutDLl1rcli0HSmWzcwLNfIzfZCzt00rm7QuZMh79A+Sx0oB+JCngDzp8UpO2pl4heRYXO2jlkiR/g4sp8zbF6fZ5DAyG6MNKzOwRqlBiFp7nEFYwNH/PgohWyuW/4hXkSORzYg5hT+rn9b4LXt9RO8jaJdgRuFF3RCY0smfYB5qwcI/215eCf7qyMNp3+vf9EaNX5k0MNlKFI7ItA0T5Ca4KUUaGs1NPFbzPStmsUSfb/CgGsENd8w28/ZkS4fhqo6aNvdIL2uG/i0yxbtfaj/7KS6ovosVO79Dbmgsmk5z3KnzJhdEUkB9EMD577kVC7Hys3wt13O7MCw4mai4VbeDvP6RjpzHMDfDEIiEiZyTKdhK3TNrDHDXygc2vBMS0cCX7k2p3Nd4vvyd/AtXsPPqkWNu3TV6Pt+EmdZcNtaNSlzaicE2wxPab7jBJzTDAHfy1/u4Zhmm6WBWU+EYWc9JMXWDZyyBE8RFZ5EyqTtvcJYwL/E
- BvrIFRkx
- eiP0biWfDMbKOcf50gY94BAhACX/iQCLjwjaFwddQaUDpWvDUkRB9K6sTpW3Ua5BOCMEMKZsak8vbUe9oNABpdje68iTk0EJjnd3NxzKgDTk2GJ2gHaNhLMRsQelLw3UCxEH9f6f//BLsw9xSUdkZ43ihG9DZ0s2sInQqGl0yxHHVsFwxOy+I5nbqXT6zUPBqgA4VG6t8tMDyoF/DraNXH8kpCXVH/8SMzwv5sXaVmeTtlSMGsGnJzuuTjYAHKYfN498G6J/GXk/M14aawln7Bsja90z2lvftS2XLtCuI/F7ZmovGaZe0QGQIddDWV+3H/HnJdIhMv+W9C7uwox8wRJ7ps/jWWOnfwc22n9NHOpZUt373wKYQd6/LkDv32rAjl96c9RA3uYTuzRnjLH783/NfX7XVX9Uzz0z9YIZyTbek6/U=
+X-HE-Tag: 1789559566-779645
+X-HE-Meta: U2FsdGVkX19dPYZP0Eu2KuDibzfty4bJCQaYWhOCWPWXNcQ9VSw5ZyStFjWLa4XBhcAVOzxut+6/3YlDSZ/5/NNiOIdck3T4PpPdBy1ZO6QKPC8D5iIK9tA9tKDP6C4oFtKDicbKQ4kfpFUO034C9rktvLIlBqswq5t4EEOEOxpTdEL5U2ObolqAerU09nb7gzpSf3PhvvnIIPBFTnsznTNQInx8GkO4Ap5erg52nhU6hs8h2Oia/tBM1uSbNNcuBBIr3+/yjILOn2FFsFpR6hLnwbgcYc0JnzFp50EWMZpWLvQCI6RKBBGgmrqPCpej0Av9IEhiEVOaj8tJDMCcmdzWfaKGmfMYEjp43vePZeaAzHW3C+NwJA0jIIrGxmn0PlzTpYMmmBhbsrv9s2iO4IjvgIMFhn6eFn+xHM++zQQIRUvTMNofhSLL0ozTLdhQEaHb2ZCrrctvwd/NolbZZs1a/Ch505VoyOjLL/lqjmKlepCdXFXnkmlCydk5afq5xfVW9jjRmJ8lA9SWg4XPm8z3ZlXDWOiN4IpyzYE0iX2ETn2ck5NcvX2eIdIMr9wknh8OQ00roThie4cNIYspnZPTMMsskMOCau+467K1X4+hE5y1O2/MwTEWCGmsOrXQoNNvh8vZnAg5OBUEjC+VAEJdmdQdjfFaRWVyheuEaLRVwuLOPkqataT4BGGtTa6zh+/6LbOHbeluCGFsJc+3sgNem65PWaLS2kRm3otoEYfs0i7z0xMYqX0f4H8FIVG7pi7ZJflZHSFPiNuNJsbk0waVdI5ecPy5qSpdzMNT94yXUUGsifTfe5Ern+mw7LVqkACehrMql+TxgJ3oxg5Tjl0igVwzmRqRHSD9uWdfLsOkb4yAeUwcsY9+grlJ2n1aklm/ZIcPWbcEoSglqlXlPp4bKVCaDSEXEV48q1rse6BWQlA5sOSGcYn2CLjiDImhJOXWEjgoJ2EWXiOU7BZ
+ aF1xYjec
+ p5Qz5fgwzm7AyXi0Mjyov2NhrcXxG80ky9n/7lzJkFrz4SNCBLSJmswipwhW59dEQ8d6pO9VUAodn+UZIH6iUrkPwU8+tpNf1DKpkWtBYF4SKRu+/uD8i94fLmZYjehnXdZaFns8FoFh2EKtm8fNUwViPsfU4iuGOhHQ9Nwm5Aiu3hJLfauJYo0qmL2UmqlhAh2bJE+AS9AQ3MZ4ki82hOQO6DWstgRcGxbaOZj75Gi3kilIPU5nyzVDvw20MGOKFKxkJIyY0x75cIGo9JFTdAc4UHQWMx5pRvtXy2YXddP26c37/cGQH5eddDN42ZhN6EGpJyuX4WFjORmB53JO2GO1qV688BtqTFQhslx+z2WXrjmWF7NKL0czFjpTcHe2M6bxR7NXjbPxQwAwpKdK+nerubwKEhaVd3suQAxiVsq42kiymaIxp6SclwZHNzUHbfrfucPKsZKEJdEDZpRQ9TqrPoAkyro3es7aURpsq5KT6hVvxCtp24JX1I21KLxu7bFzwBdtjBoaRvs32slBDzYSY/UtAW0HDQbO1bE0PvknrSQ/nWh4JlMI8QvcPeE3FDCWPN7v84VnXbcIBJGU2TGhvt3n7WtmgZq0LVrozbNXuR6XBT9+HhZEB/l/ruXSjhlxhddIvRSkmuk2l0K1TJ0j6O7c9jIyvd8xBETMriOvACCw3jRBxCRXcZA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,277 +193,128 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
+Here are some patches to continue enabling SEV-TIO on AMD.
 
-On 9/13/2026 7:33 PM, Barry Song wrote:
-> On Sun, Sep 13, 2026 at 6:00 PM Ridong Chen <ridong.chen@linux.dev> wrote:
->>
->> From: Ridong Chen <chenridong@xiaomi.com>
->>
->> As commit 359a5e1416ca ("mm: multi-gen LRU: retry folios written back
->> while isolated") mentioned:
->>
->>    The page reclaim isolates a batch of folios from the tail of one of the
->>    LRU lists and works on those folios one by one.  For a suitable
->>    swap-backed folio, if the swap device is async, it queues that folio for
->>    writeback.  After the page reclaim finishes an entire batch, it puts back
->>    the folios it queued for writeback to the head of the original LRU list.
->>
->>    In the meantime, the page writeback flushes the queued folios also by
->>    batches.  Its batching logic is independent from that of the page
->>    reclaim. For each of the folios it writes back, the page writeback calls
->>    folio_rotate_reclaimable() which tries to rotate a folio to the tail.
->>
->>    folio_rotate_reclaimable() only works for a folio after the page reclaim
->>    has put it back.  If an async swap device is fast enough, the page
->>    writeback can finish with that folio while the page reclaim is still
->>    working on the rest of the batch containing it.  In this case, that folio
->>    will remain at the head and the page reclaim will not retry it before
->>    reaching there".
->>
->> The commit 359a5e1416ca ("mm: multi-gen LRU: retry folios written back
->> while isolated") only fixed the issue for mglru. However, this issue
->> also exists in the traditional active/inactive LRU and was found at [1].
->>
->> It can be reproduced with below steps:
->>
->> 1. Compile with CONFIG_TRANSPARENT_HUGEPAGE=y
->> 2. Mount memcg v1, and create memcg named test_memcg and set
->>     limit_in_bytes=1G, memsw.limit_in_bytes=2G.
->> 3. Create a 1G swap file, and allocate 1.35G anon memory in test_memcg.
->>
->> It was found that:
->>
->>    cat memory.usage_in_bytes
->>    1073700864
->>    cat memory.memsw.usage_in_bytes
->>    1413124096
->>
->>    free -h
->>                  total        used        free
->>    Mem:           1.6Gi       1.2Gi       299Mi
->>    Swap:          1.0Gi       678Mi       346Mi
->>
->> As shown above, the test_memcg charged about 324M swap (memsw.usage minus
->> usage), but almost 678M swap memory was used, which means that 350M+ may
->> be wasted because other memcgs can not use these swap memory.
->>
->> This issue should be fixed in the same way as mglru. Therefore, the common
->> logic was extracted to the 'find_folios_written_back' function firstly,
->> which is then reused in the 'shrink_inactive_list' function. Finally,
->> retry reclaiming those folios that may have missed the rotation for
->> traditional LRU.
->>
->> After change, the same test case only wasted about 2M swap. The swap
->> device usage matches what the memcg actually charged.
->>
->>    cat memory.usage_in_bytes
->>    1070301184
->>    cat memory.memsw.usage_in_bytes
->>    1412448256
->>
->>    free -h
->>                  total        used        free
->>    Mem:           1.6Gi       1.2Gi       299Mi
->>    Swap:          1.0Gi       327Mi       696Mi
->>
->> [1] https://lore.kernel.org/linux-kernel/20241010081802.290893-1-chenridong@huaweicloud.com/
->> [2] https://lore.kernel.org/linux-kernel/CAGsJ_4zqL8ZHNRZ44o_CC69kE7DBVXvbZfvmQxMGiFqRxqHQdA@mail.gmail.com/
->> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
->> ---
->> v8: Rebase to the -next tree, adapt to the current reclaim API, and retest.
->>
->> [v7]: https://lore.kernel.org/linux-mm/20250111091504.1363075-1-chenridong@huaweicloud.com/
->>
->>   mm/vmscan.c | 104 ++++++++++++++++++++++++++++++++++++----------------
->>   1 file changed, 73 insertions(+), 31 deletions(-)
->>
->> diff --git a/mm/vmscan.c b/mm/vmscan.c
->> index d1495a7d469d..6e13e570aab8 100644
->> --- a/mm/vmscan.c
->> +++ b/mm/vmscan.c
->> @@ -181,6 +181,10 @@ struct scan_control {
->>          struct reclaim_state reclaim_state;
->>   };
->>
->> +static void find_folios_written_back(struct list_head *list,
->> +                                    struct list_head *clean, struct lruvec *lruvec,
->> +                                    int type, bool skip_retry);
->> +
->>   #ifdef ARCH_HAS_PREFETCHW
->>   static inline void prefetchw_prev_lru_folio(struct folio *folio,
->>                  struct list_head *base)
->> @@ -2013,14 +2017,16 @@ static unsigned long shrink_inactive_list(unsigned long nr_to_scan,
->>                  enum lru_list lru)
->>   {
->>          LIST_HEAD(folio_list);
->> +       LIST_HEAD(clean_list);
->>          unsigned long nr_scanned;
->> -       unsigned int nr_reclaimed = 0;
->> -       unsigned long nr_taken;
->> +       unsigned int nr_reclaimed, total_reclaimed = 0;
->> +       unsigned long nr_taken, isolated;
->>          struct reclaim_stat stat;
->>          bool file = is_file_lru(lru);
->>          enum node_stat_item item;
->>          struct pglist_data *pgdat = lruvec_pgdat(lruvec);
->>          bool stalled = false;
->> +       bool skip_retry = false;
->>
->>          while (unlikely(too_many_isolated(pgdat, file, sc))) {
->>                  if (stalled)
->> @@ -2052,25 +2058,42 @@ static unsigned long shrink_inactive_list(unsigned long nr_to_scan,
->>          if (nr_taken == 0)
->>                  return 0;
->>
->> +       isolated = nr_taken;
->> +retry:
->>          nr_reclaimed = shrink_folio_list(&folio_list, pgdat, sc, &stat, false,
->>                                           lruvec_memcg(lruvec));
->> +       total_reclaimed += nr_reclaimed;
->> +
->> +       /* Retry pass is only meant for clean folios without new isolation */
->> +       if (isolated)
->> +               handle_reclaim_writeback(isolated, pgdat, sc, &stat);
->> +       trace_mm_vmscan_lru_shrink_inactive(pgdat->node_id,
->> +                       nr_scanned, nr_reclaimed, &stat, sc->priority, file);
->> +
->> +       find_folios_written_back(&folio_list, &clean_list, lruvec, file, skip_retry);
->>
->>          move_folios_to_lru(&folio_list);
->>
->>          mod_lruvec_state(lruvec, PGDEMOTE_KSWAPD + reclaimer_offset(sc),
->>                                          stat.nr_demoted);
->> -       mod_node_page_state(pgdat, NR_ISOLATED_ANON + file, -nr_taken);
->>          item = PGSTEAL_KSWAPD + reclaimer_offset(sc);
->>          mod_lruvec_state(lruvec, item, nr_reclaimed);
->>          mod_lruvec_state(lruvec, PGSTEAL_ANON + file, nr_reclaimed);
->> -       if (nr_scanned > nr_reclaimed)
->> +
->> +       if (!list_empty(&clean_list)) {
->> +               list_splice_init(&clean_list, &folio_list);
->> +               skip_retry = true;
->> +               /* Retry folios were already isolated and accounted above */
->> +               isolated = 0;
->> +               goto retry;
->> +       }
->> +
->> +       mod_node_page_state(pgdat, NR_ISOLATED_ANON + file, -nr_taken);
->> +       if (nr_scanned > total_reclaimed)
->>                  mod_lruvec_state(lruvec, PGROTATE_ANON + file,
->> -                                nr_scanned - nr_reclaimed);
->> +                                nr_scanned - total_reclaimed);
->>
->> -       handle_reclaim_writeback(nr_taken, pgdat, sc, &stat);
->> -       trace_mm_vmscan_lru_shrink_inactive(pgdat->node_id,
->> -                       nr_scanned, nr_reclaimed, &stat, sc->priority, file);
->> -       return nr_reclaimed;
-> 
-> this is a bit weird to move the tracepoint, shouldn't it just trace the total
-> number of twice reclamation?
-> 
+SEV-TIO allows guests to establish trust in a device that supports TEE
+Device Interface Security Protocol (TDISP, defined in PCIe r6.0+) and
+then interact with the device via private memory.
 
-Sorry for misssing this comment.
+In order to streamline upstreaming process, a common TSM infrastructure
+is being developed in collaboration with Intel+ARM+RiscV. There is
+Documentation/driver-api/pci/tsm.rst with proposed phases:
+1. IDE: encrypt PCI, host only
+2. TDISP in guest: lock + accept flow, interface report <= WE ARE HERE
+3. Enable on host: secure MMIO + DMA, KVM changes
+4. Device attestation: certificates, measurements
 
-I think we should move the tracepoint, since the 'stat' would be cleared by the 
-time it is passed to shrink_folio_list, just as evict_folios does.
 
->> +       return total_reclaimed;
->>   }
->>
->>   /*
->> @@ -5006,8 +5029,6 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->>   {
->>          LIST_HEAD(list);
->>          LIST_HEAD(clean);
->> -       struct folio *folio;
->> -       struct folio *next;
->>          enum node_stat_item item;
->>          struct reclaim_stat stat;
->>          struct lru_gen_mm_walk *walk;
->> @@ -5046,26 +5067,7 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->>                          type_scanned, reclaimed, &stat, sc->priority,
->>                          type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
->>
->> -       list_for_each_entry_safe_reverse(folio, next, &list, lru) {
->> -               DEFINE_MIN_SEQ(lruvec);
->> -
->> -               /* move_folios_to_lru() culls unevictable folios via folio_putback_lru() */
->> -               if (!folio_evictable(folio))
->> -                       continue;
->> -
->> -               /* retry folios that may have missed folio_rotate_reclaimable() */
->> -               if (!skip_retry && !folio_test_active(folio) && !folio_mapped(folio) &&
->> -                   !folio_test_dirty(folio) && !folio_test_writeback(folio)) {
->> -                       list_move(&folio->lru, &clean);
->> -                       continue;
->> -               }
->> -
->> -               /* don't add rejected folios to the oldest generation */
->> -               if (lru_gen_folio_seq(lruvec, folio, false) == min_seq[type]) {
->> -                       folio_set_lru_refs(folio, 0);
->> -                       folio_set_active(folio);
->> -               }
-> 
-> Baolin has a patch which modifies this.
-> so probably you are not based on the mm-new?
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git/commit/?id=519f7768585e372b97e568baf9d4648e6beb6863
-> 
->> -       }
->> +       find_folios_written_back(&list, &clean, lruvec, type, skip_retry);
->>
->>          move_folios_to_lru(&list);
->>
->> @@ -6108,6 +6110,46 @@ static void lru_gen_shrink_node(struct pglist_data *pgdat, struct scan_control *
->>
->>   #endif /* CONFIG_LRU_GEN */
->>
->> +/**
->> + * find_folios_written_back - Find and move the written back folios to a new list.
->> + * @list: folios list
->> + * @clean: the written back folios list
->> + * @lruvec: the lruvec
->> + * @type: LRU type (only used for CONFIG_LRU_GEN)
->> + * @skip_retry: whether skip retry.
->> + */
->> +static void find_folios_written_back(struct list_head *list,
->> +                                    struct list_head *clean, struct lruvec *lruvec,
->> +                                    int type, bool skip_retry)
->> +{
->> +       struct folio *folio;
->> +       struct folio *next;
->> +
->> +       list_for_each_entry_safe_reverse(folio, next, list, lru) {
->> +#ifdef CONFIG_LRU_GEN
->> +               DEFINE_MIN_SEQ(lruvec);
->> +#endif
->> +               /* move_folios_to_lru() culls unevictable folios via folio_putback_lru() */
->> +               if (!folio_evictable(folio))
->> +                       continue;
->> +
->> +               /* retry folios that may have missed folio_rotate_reclaimable() */
->> +               if (!skip_retry && !folio_test_active(folio) && !folio_mapped(folio) &&
->> +                   !folio_test_dirty(folio) && !folio_test_writeback(folio)) {
->> +                       list_move(&folio->lru, clean);
->> +                       continue;
->> +               }
->> +#ifdef CONFIG_LRU_GEN
->> +               /* don't add rejected folios to the oldest generation */
->> +               if (lruvec->lrugen.enabled &&
->> +                   lru_gen_folio_seq(lruvec, folio, false) == min_seq[type]) {
->> +                       folio_set_lru_refs(folio, 0);
->> +                       folio_set_active(folio);
->> +               }
-> 
-> as above. please take a look at Baolin's patch:
-> https://lore.kernel.org/9214e36bf738fcfba86acc8cea85dff4010f66b0.1788918714.git.baolin.wang@linux.alibaba.com
-> 
-> 
-> Best Regards
-> Barry
+Acronyms:
+TEE - Trusted Execution Environments, a concept of managing trust between the host and devices
+TSM - TEE Security Manager (TSM), an entity which ensures security on the host
+PSP - AMD platform secure processor (also "ASP", "AMD-SP"), acts as TSM on AMD.
+SEV TIO - the TIO protocol implemented by the PSP and used by the host, extension to SEV-SNP
+GHCB - guest/host communication block - a protocol for guest-to-host communication via a shared page
+TDISP - TEE Device Interface Security Protocol (PCIe).
+
+
+
+Flow:
+- Boot guest OS, load sev-guest.ko which registers itself as a TSM
+- PCI TSM creates sysfs nodes under "tsm" subdirectory in for all
+  TDISP-capable devices
+- lock the device via:
+	echo tsm0 > "/sys/bus/pci/devices/0000:01:00.0/tsm/lock"
+- accept the device via:
+	echo 1 > "/sys/bus/pci/devices/0000:01:00.0/tsm/accept"
+- load the device driver:
+	- DMA to encrypted memory should work right away
+	- Reported TEE MMIO regions will be mapped as encrypted
+
+
+Patches 01/17..05/17 are fixes and can go in sooner.
+Patches 06/17..17/17 are the minimum required by the VM to get encrypted MMIO and DMA.
+
+Doing "io_tlb_default_mem.for_alloc = true" in swiotlb_init_remap() enabled T=1 DMA
+to shared guest memory.
+
+
+The previous conversation is here:
+https://lore.kernel.org/r/20260225053806.3311234-1-aik@amd.com
+
+This is based on the last Dan's patch series rebased on top of
+v7.3-rc2 with the DMA SWIOTLB fixes from Aneesh.
+
+The whole tree is here: https://github.com/AMDESE/linux-kvm/commits/tsm-next/
+The host support is here: https://github.com/AMDESE/linux-kvm/commits/tsm
+Some raw QEMU sketch is here: https://github.com/AMDESE/qemu/commits/tsm-next
+
+Please comment. Thanks.
+
+
+The SEV TIO spec:
+https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/specifications/58271.pdf
+
+
+
+Alexey Kardashevskiy (16):
+  pci/dma/tsm: Call disable DMA bus hook on cleanup
+  pci/tsm: Fix stale comment about TDI report range start
+  tsm/core: Store range_id in pci_tsm_mmio_entry
+  crypto/ccp/tsm: Use TSM API for DOE
+  tsm-core: Register nevertheless
+  x86/io/tsm: Allow mixed ioremap for shared+private BARs
+  x86/dma: Revert "x86: Remove unnecessary architecture-specific
+    <asm/device.h>"
+  x86/dma: Add ARCH_HAS_PHYS_TO_DMA
+  dma/swiotlb: Force shared DMA for allocatios from SWIOTLB
+  tsm/core: Add TDI status
+  coco/sev-guest: Allow multiple source files in the driver
+  x86/sev: Pass HV features to sev-guest device via platform data
+  x86/sev: Add GHCB calls for SEV-TIO
+  x86/sev: Implement guest TSM driver for SEV-TIO (phase2, DMA)
+  x86/sev: Enable secure MMIO (phase2)
+  x86/sev: Flush IOMMU TLB for trusted devices
+
+Dan Williams (1):
+  x86, dma: Allow accepted devices to map private memory
+
+ arch/x86/Kconfig                                    |   1 +
+ drivers/virt/coco/sev-guest/Kconfig                 |   1 +
+ drivers/virt/coco/sev-guest/Makefile                |   5 +-
+ arch/x86/include/asm/device.h                       |  13 +
+ arch/x86/include/asm/dma-direct.h                   |  77 +++
+ arch/x86/include/asm/sev-common.h                   |   3 +
+ arch/x86/include/asm/sev.h                          |  13 +
+ arch/x86/include/uapi/asm/svm.h                     |  43 ++
+ drivers/virt/coco/sev-guest/sev-guest.h             |  20 +
+ include/linux/dma-direct.h                          |   2 +-
+ include/linux/io.h                                  |   8 +
+ include/linux/ioport.h                              |   3 +
+ include/linux/pci-tsm.h                             |  71 ++
+ include/uapi/linux/sev-guest.h                      |  12 +
+ arch/x86/coco/sev/core.c                            | 148 +++-
+ arch/x86/mm/ioremap.c                               |   2 +-
+ arch/x86/mm/mem_encrypt.c                           |   5 +-
+ drivers/crypto/ccp/sev-dev-tsm.c                    |   5 +-
+ drivers/pci/pci-driver.c                            |   3 +
+ drivers/pci/tsm/core.c                              |   3 +-
+ drivers/virt/coco/sev-guest/{sev-guest.c => core.c} |  25 +-
+ drivers/virt/coco/sev-guest/tio.c                   | 725 ++++++++++++++++++++
+ drivers/virt/coco/tsm-core.c                        |  16 +-
+ drivers/xen/swiotlb-xen.c                           |   2 +-
+ kernel/dma/direct.c                                 |   3 +-
+ kernel/dma/swiotlb.c                                |   2 +-
+ kernel/resource.c                                   |  63 ++
+ mm/ioremap.c                                        |   2 +-
+ 28 files changed, 1249 insertions(+), 27 deletions(-)
+ create mode 100644 arch/x86/include/asm/device.h
+ create mode 100644 arch/x86/include/asm/dma-direct.h
+ create mode 100644 drivers/virt/coco/sev-guest/sev-guest.h
+ rename drivers/virt/coco/sev-guest/{sev-guest.c => core.c} (97%)
+ create mode 100644 drivers/virt/coco/sev-guest/tio.c
 
 -- 
-Best regards
-Ridong
+2.55.0
+
 
 
