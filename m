@@ -4,118 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47C6CC982CC
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 16:00:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4877C982CC
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 16:10:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BAF4C6B0093; Wed, 16 Sep 2026 12:00:28 -0400 (EDT)
+	id 8DC2A6B0088; Wed, 16 Sep 2026 12:10:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B5FA46B0095; Wed, 16 Sep 2026 12:00:28 -0400 (EDT)
+	id 88D126B008C; Wed, 16 Sep 2026 12:10:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A4FA76B0096; Wed, 16 Sep 2026 12:00:28 -0400 (EDT)
+	id 7A9146B0092; Wed, 16 Sep 2026 12:10:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A6C06B0093
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 12:00:28 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 68DD91C2E30
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 16:00:27 +0000 (UTC)
-X-FDA: 85220087694.18.A7163B2
-Received: from mail-ed2-f35.google.com (mail-ed2-f35.google.com [74.125.228.99])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 8AECF160003
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 16:00:25 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=MjT3z3k6;
-	spf=pass (imf08.hostedemail.com: domain of urezki@gmail.com designates 74.125.228.99 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 55CFA6B0088
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 12:10:55 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DA0534078C
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 16:10:54 +0000 (UTC)
+X-FDA: 85220114028.17.FA5E458
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 00DEB40015
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 16:10:50 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=jR3nSyDO;
+	spf=pass (imf04.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.177 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789574425;
+	s=arc-20220608; t=1789575051;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TsvLmFYjKq8EwshF1xfkN1TxmP1IiwbM+LSRU/xQAr8=;
-	b=pBAm2rrLOmfDHEDmj5Kj/YeBGaNc+dcFy5LVt0awUCqTtoMIxW6mLwzh8V4j2g+/wUiiKr
-	Wn4cfIFyw46ptsURdHDzCFlm6C7gHbG4BPlf4ZCjPQwv6YR3QRoDboc5tTZUosQqE7wjhg
-	Xr2LHDp/Z6hpMmS7aSG64fYIoGZ4rnQ=
+	bh=EzULl2Rsxwfe7EFb6MSMik7LenJTHelPDSDR0csqtEA=;
+	b=QYhORqNJH+xr4xLjJ0MUdVmc65GdqfvKB/4eWRJqXkrhlQWd+TdCSjWWo0F6M/VooqHHnZ
+	sISLTgQtbcQGAKWwdFqVpbTkCgINLFD7xWGI0ikv+MG0NIEQV/kIsSx0Hay2QwSHY1O4EM
+	VuWTw6MpblVOSdX6/f2Hufw6vnWZJ+c=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=MjT3z3k6;
-	spf=pass (imf08.hostedemail.com: domain of urezki@gmail.com designates 74.125.228.99 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf04.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=jR3nSyDO;
+	spf=pass (imf04.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.177 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789574425;
-	b=yvU80fJ1g1rDEGuexPao58pFZuVcB/bkI1mf1yJhEobBUqu+xqko0W57vlupYEDlRe+KSK
-	rhguw9zvGEm5ZwJgp3VuZnjyvG48LaXhqoNCq6nQqya0VPS4BgihTrbTDg+7TJzSVuKu8V
-	351/Yvjj+Iv+/Bk8UPo2an5tWf9h0h4=
-Received: by mail-ed2-f35.google.com with SMTP id 4fb4d7f45d1cf-6aa053900f5so2010075a12.1
-        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 09:00:25 -0700 (PDT)
+	t=1789575051;
+	b=WoDokGTraFj/7MvSEXg5ypGl8kbAnR6pBf8KxSTFFnLBd/a/Xan3ogFr8siC48kbypbM6m
+	0/7hZBAvptr9u/JeLJSI6PGK+0FjA3yc9J4GbjrHaW7HekkcDQ7De+vOKLzwHvS083Fxqf
+	d8lXsBtb3llYyUUq2FTqPNWmcT3kxDE=
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-93a10f9a2easo194641585a.0
+        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 09:10:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789574424; x=1790179224; darn=kvack.org;
+        d=gourry.net; s=google; t=1789575050; x=1790179850; darn=kvack.org;
         h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=TsvLmFYjKq8EwshF1xfkN1TxmP1IiwbM+LSRU/xQAr8=;
-        b=MjT3z3k6EGKWtNOjNOatxLModF/LmGVeoAgiDkP2I6rGUN5EtA+iCb51Q0YbL8Do/x
-         klY53SmcXxlxSQroDpjih1O0xsfhvnU3RCrdrQfqFhmd27zbzKJRaHYZ2gxq8eoagEIr
-         nOh+yQMfnreLr40LcT9wtif7nHO+eNNHQ1htiQXZcHHH03wphCJJsDxqJiBtrWluKuLI
-         weqBc5Pc7CNfQZXv1Dp16SwOB4WdnM/+9bt+PnrdmzArGMIAR1jZvRYEPf8NTn1LWxP1
-         AFzeQKtCVAuQQJloKe8t1kg2poRSgEy3lyrlB9CEE21iRMM3tBOsgBkBFnwAynBzoP9q
-         v9NA==
+        bh=EzULl2Rsxwfe7EFb6MSMik7LenJTHelPDSDR0csqtEA=;
+        b=jR3nSyDOaWUpgu5z6vsD5HD87WgwSK5hObMRo8NMop4tCG4sKW+aZWd8NCDv5XAxBz
+         Pm8OIYuuxI4VkQmdwIEzPjv6yDdM92XBGKZ4l6NYxjS15yKdaL39YNPF+gdtqiB6LQ3E
+         KFPyW3XfOagnkZLeUNiBSoGjWEw/pzeG0Tjqkpsn9nRzOzpa9izibdaZxU7s3op2kqko
+         HvxLQlPzliTRA+Otsuh6EtIyQMkA2n0nx7jq18WMijF/HLyuxR10lwkTU1b6N/IChPGS
+         BXZRSAjmDLcv3dGp3MmCSAtbE0O5sXI9OrSnBg0RAnurop2PqTdbvpaoERIUERMNCEMF
+         IY+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789574424; x=1790179224;
+        d=1e100.net; s=20260707; t=1789575050; x=1790179850;
         h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:x-gm-gg
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=TsvLmFYjKq8EwshF1xfkN1TxmP1IiwbM+LSRU/xQAr8=;
-        b=G7PBM3+C4+x3TNuyw7qLCsHsTHl5aseqR+OFTBY2xrN2BCksz5FTxrs8ewPMJqSdQm
-         x8uavyZgFdo6/omzhV8uuhyPnE6h6q9eH1QrDrS88v1jh9p4OzePrNAFMQdu+twumqrv
-         VLaCEJYcW+zLw70CjwcZzeN1bYLFCPW8cF0WWJabr2BsdHN5EIjUWSkyVdHelY95sg2A
-         vfq9h8jbNB3BccYHAs7L9OTKf4+yg1SWy6ORMoMbv7zpfhCdc+X/hcf5OgWfllyawx3F
-         Lfn/lhexndKxz1uAv0+Y7Tp0giGAx/uVYzzPAenktn3Ue0osEAsUTCPjXgLmO6GlS0+p
-         LsmQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwXHfECbaaWFYBBFU+kzjmRc1/h09PPx28ygReOvyErW6LZAgh3ruUKQ3HyndBns1yzwkB+ZBc+qg==@kvack.org
-X-Gm-Message-State: AFuF++mUAT9iStlkdBjd3vH0YQEW00XCyG3iFgPyULPvConXPsgruwwi
-	6t+dgjytGB97GOGiSQs1Paxek3J4p4BbmAop1uGABq3ibL7ph53WYoDJ
-X-Gm-Gg: AYBFou2+Zi9IPcoVUyHW19w2Uuk7eivK0AHwvVk8IKcqas0xTl/It9YECFQqRfovVJt
-	rU5SqQcQ9QQ2gcqCJfYcLmL2+a7Pb6nJykh5TrdzilCa6dSDGU93mKeARHBtSJkvRSzlm4HapVp
-	8quMYr8wjM0969RPZ/nq04vGQuHV60bcFTYNqO5n1zDUa+l39utV5gKTA5PvpUJZd0JIJOsy0oT
-	3IZpyXtVPRXd4sV6F0ZQuXfe2QVaPnBWHjAlDz24idiXaq8q4o0jSeDfW7xF1L23t2yHJolXxgn
-	jVcQjXspHhcTjtOoY6L1onK6vpgPjiyNGrJTapJHR0EgBo/DcnwbtEHxHVA8LmhiTFY78jZSifu
-	HmH5zh2XS7fThll0sIL88EqItnvCqjJuCYLXy9oiuf9+zl5I/HPvWwWddu7fodVE3wxAgb5bO34
-	qjC91tJ+6VH+akDMUkxqlBoKSTMyR5RWO0KkDy
-X-Received: by 2002:a17:906:6296:b0:c21:450d:cd88 with SMTP id a640c23a62f3a-c29e51e1395mr226379866b.6.1789574423786;
-        Wed, 16 Sep 2026 09:00:23 -0700 (PDT)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c29de454b4csm165476666b.17.2026.09.16.09.00.22
+        bh=EzULl2Rsxwfe7EFb6MSMik7LenJTHelPDSDR0csqtEA=;
+        b=CxE/hTjj7eRqGjLqNufHs9ETm+l2J4vGxf5HG/WuIvxfFxxH9kHy+WtAt3WVM/pAIW
+         k0vYi4EXhSJDn1GBbLi0RLF15O3DoIqNcA+a8bNtvZ2YUt83+z5kdRbK5q1Hva68DLKh
+         yLYpz0+LdkzZ4I1FVXPFzHFkiv39q730D8aApKj0eZXlkOwOmNU1ST2k9m5veUJcV/UQ
+         vJGPpNi7bMI7P6Va+4uH49YT0ONMosg9o0anKvOso8YiMMjhMXuAkXx0hhhG3SUltAqD
+         7i48kvOt4w+15rY1uY9DI6EFOGl6GHYIeBQIcO6tywEF5e8j4jA3p0Q9ZtZ7bpPpDnjj
+         p2Ig==
+X-Forwarded-Encrypted: i=1; AKwUvByWa+MwcvFxvfKj2x+ZqRgH+s5/Wq6hQD+1lIlyjFOyNcUliJzdG2QRK+HS+2bz4MRqIGJJF7wJYw==@kvack.org
+X-Gm-Message-State: AFuF++lPwDvKmVXfm2Xb6B7yz/SbuX8NOQPdDXGe2dyVPKvKUB59Y5hZ
+	byEcYR8fUb9/+L78TISB3z4WamwicQua90MfA+NoLAmNxzhC+CgJeVJ8mmavmK1N2jA=
+X-Gm-Gg: AYBFou0Cc5ZMdITR4yOzJbzAXvIWTH//Isbs6syVsWlArqjXWb3UncT/5pW3Y+prP2A
+	cNUenn5uLki+YcQPo3XkVXyqEEw2MzXSyTEFVlzcfEq6986yXrk7mKEYNXBxeKQeyt2ADeeVQaT
+	+LSfR0EsgINr9WbceKky4qK73yOJiguLJGvrpxf6VBALU33/ul6Sv3NznNQR/8qGqHa6QGRfKwb
+	jKQs3+PdBBFkOpacb+BzpN/M3B3Hr8HcjCWOVimgok5xcUfkeB0QhEiUuUK/DQCE2J8t7VvNc1K
+	CeVq4+iKV+DqvnG02s7t0/qZi00/muzLxSiCscWlQ+g2lVnWOrebfROEx4NTqZzlO6Jzplubj55
+	3fc8gqa0uWp8L1nUcB0ga/VnKnne2YETn/wlTNOZ6OgIkK80vvUlPeVKLB+bQ5anChh6XeeJ09P
+	OUHaBKOtb49MJeyiolO7a3FsIy3TVlGtliIFbD6qOHzDTlVRgfe8OPBOCeXE9h/S3D6P3KjeMWg
+	Z8L4R+3wJhbY2CrWwi3v8YpLqkqzEhepefUfiO1ShXzKqQT8RvwHIs=
+X-Received: by 2002:a05:620a:1b83:b0:93a:1196:ce5 with SMTP id af79cd13be357-93bc63ec899mr23113285a.33.1789575049934;
+        Wed, 16 Sep 2026 09:10:49 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93b782562c0sm248094585a.32.2026.09.16.09.10.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2026 09:00:23 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Wed, 16 Sep 2026 18:00:20 +0200
-To: Hillf Danton <hdanton@sina.com>
-Cc: Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
-	Baoquan He <bhe@redhat.com>, LKML <linux-kernel@vger.kernel.org>,
-	Dev Jain <dev.jain@arm.com>, lirongqing <lirongqing@baidu.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH RESEND] mm/vmalloc: Use dedicated unbound workqueues for
- vmap drain
-Message-ID: <aqq9FM3ti6NIHxQ0@milan>
-References: <aqgnOoOjWxRtaqxZ@milan>
- <20260916001228.644-1-hdanton@sina.com>
+        Wed, 16 Sep 2026 09:10:49 -0700 (PDT)
+Date: Wed, 16 Sep 2026 12:10:47 -0400
+From: Gregory Price <gourry@gourry.net>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kernel-team@meta.com, akpm@linux-foundation.org, 
+	liam@infradead.org, vbabka@kernel.org, jannh@google.com, wangjiexun@tinylab.org, 
+	sashiko-bot <sashiko-bot@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/madvise: reclaim isolated folios if PTE restart fails
+Message-ID: <aqq6ey3DG9h5NIDZ@gourry-fedora-PF4VCD3F>
+References: <aqqbB_nFAOGenDhy@gourry-fedora-PF4VCD3F>
+ <aqqjW5dpyznijYLh@gremlin>
+ <aqqk89oTigJ9LS2N@gourry-fedora-PF4VCD3F>
+ <5437871c-d9ee-49d2-b24f-965c73c29c3e@kernel.org>
+ <aqquDtEZL1ndymGN@gourry-fedora-PF4VCD3F>
+ <46d923e6-5724-4df6-b0d5-8dda7c547f6e@kernel.org>
+ <aqqyhkZqcXDUrzeb@gourry-fedora-PF4VCD3F>
+ <4fadcda7-d96a-4cd9-9b0f-5d387b6f82af@kernel.org>
+ <aqq23i9824-GWdhg@gourry-fedora-PF4VCD3F>
+ <9b50a047-b5e6-45c3-aee6-551896b52eaa@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260916001228.644-1-hdanton@sina.com>
+In-Reply-To: <9b50a047-b5e6-45c3-aee6-551896b52eaa@kernel.org>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 00DEB40015
+X-Stat-Signature: tnudcitirk58jyt5odeupbtab36ohp6e
 X-Rspam-User: 
-X-Stat-Signature: feg74qysswwr1fu1fxz1jqrydtar3poa
-X-Rspamd-Queue-Id: 8AECF160003
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789574425-428954
-X-HE-Meta: U2FsdGVkX1/Wx56YaAxKukoVKI+HNd9BujxSuhx/GzHC7qUmKwFtRT0T+e/S2xHlOPWnuleGcvKBmyRVuqC0UErOvVgQ5fa9fvxWdSEsH1q5cICYbOly1i3/LHgr6+7AScS8NG2NCiFHju2nx1wJS2/XBYpfsqLfS+/joWjv6BTLTF/2Cw1MOqCGf3ZzDkicjrfOnbxSsrC+DVpNdg4EI/d0b7hET1hzoXrrh24CKoLZ8QPPuiXx3u16Za2GdkL+8Y8CwMmPZgnCH0DpU5Fkw3uCxuuzlTDC9jd3b2b/M4PV/c9n2m8t3IwWj32giWEEVW8eZ4zSDA/ZGZNJag+gcm8SVbUpn1NAfhXx3WHx3s57lyuWKX2Hg9jrdHeEeeI2tWoYhNzeU/BaEvbHtBHbS/pDF8TiFG9Qm9SCDKTbv/EUuKpXF3VaDTVm9iHT3bxLiJ4Yxau9wu8tPnnIkdTQAtjqqQ/x8bT8dfZzt2PlklNM/F1DDzaxqq1ydHLfUMbGD9F4K20jS0Bdm3yn8d1MEGOQ+sIxpgmVhGiijCE7uo4FkC9G4m6yi7S0nl9F5TwMAYjhTPYWLWBHa512Qa5f5/A7ouCjA2ot2vAWb+wEmN/XJ/dddbGfUC7Wm8VLW8r+ZD3v3kB/Igj7kkkKFvz+2daBKwzjxoMUROcI/Zt1SEsqlmq8fJsrd8pZx04XeQWc3WnMOoX7Iwv4xukk7I5TjagsEyz/kROftWmsNbRFWCuyyz46zMQ8pfimVMeBGSZFlhPQYlNmnptwdjQ1a7JGHG6kkVVX2Q52bBCT5NJGidSak4WZAuAYrpy4OWuoGlen7/Zv+YpO/KkfausdGzAgdl2UQKid6K4pxPVX+7BoPOnnmUMk3XtdrpXvm205DCkZbkF8FPgQ76LE/+ro1Rb1otqJ07ZTaBwZXcWdt+ylumHYAmdbDn63HLMbFjI/v2sWaO4ysOqrBjrKVgYuPmP
- fpZy9PXX
- EsUqskDhWi3CuhUoUk9XmsmXmFfQxBpiOVKostcT0JoVc2nXkT+OwjrLXe7knt/YTxGa6wj5PNTjj+1MZ2zmyiYWlI7x9aR+j5X9mjmeZ4QwW+UK4lpB0MbDhAkdD+G3gqJPX9lfsPprRiPQjVSjFjCLWjy0ofKjBHUCq3jQ7z1B7830xAs1rAqBvpAzpY+mNdRfHNa8T6xO9ar9vAZ6vIVplCBjOKWtiYehsuwJSEE9F/FQCT26yWvx4qOW3cakS2D4BnFTxoe1AHpZliymFRn3JBaMDvI3M4W1ttzu6EYtX4dRvXD1euZKt2z49dBkZZKlva+TX8gl/WGTmm2zTCHN9rc0xUgApIOEEWdg61TnFeofDvJANootPrETGGEIpphNq49aJOoFRLZLTFeyX8C/1jfSq7Zj6BLScXCHGszkyvgQVbSHNE8Kb7AsTCNNhT5Li+59jQ20iVvMLLq8DDocSmXYeeNTUC3lItN5MgvH9Ib+eLpaNRmOdGA==
+X-HE-Tag: 1789575050-481151
+X-HE-Meta: U2FsdGVkX185gshjsni7L7tLcxeWwV8wx+sLnyqIhEVIvuKSYem2HbbA0xGvyaAdG5clr7L6q6aDXXzZqrOUhQDNNkrKW/kdf4uvFbi1fokhlbA/w0+PFD4CL/C3F6bKlgC265XGpAO26fDy3/SPxdfDEeeXakcq+MlO4R32YdrTklhJX1xypEXeRmfYfOimsGlup+1LE77dA9YFmu1+BzRJcdQK7AWBWzpUWlvDIv+u9KS7rYpxV7FPUkw4xrtoVAOvEYJiAyGQQQ5vpHCY2KmkHujCt9CWLAa7OkbvTVWFF5hAac+T7PJjlWeOUAQuDCqQfLwcZjmY29zC0ZC56fuvOonthdWncqdgzAa36+hDSmAJqZe+MkOgm6mXZj+5uPos9juuCMUMiGC84cJn+NocFltdQ4bEmFNGK3wVhordCVYXzVQ9QvPrOlC0MeBTRIj4/Zjdf7ioR3Zr5ZYnAkJaJo1G910no3esjlbt0gBRvorcqCuyN1VV5ItvlYrIt9snbE3spnZFKFeRb0r1CXuxlvJ9ipck8D+yq0tteve0awtAnjSJx0SQvOw+xHdW6CyTpw6jjQ+3qVi2QenqjJyzLyCpT2g6gnNthahOzuooI1mQ6IyRDXgVnj4eG0ACNdsE4xAPs9ZP+rm9LjgaeQjJvi6rJFmxmtgr7ww6NIM4PRzWmB6EsPymBgXg6+z2Azv1ZDte6J6jkkjUbGXLs843jR2dCXZ/ORKxLq9YmacUv863hkIyTo/tsEehfDNrvrdzabzsLr5omrwp5XLj/5RIduYpgnVVl1u5sSFKJWckvqupdm1KQ62ecTb05p7BfQ3R8bzOfBOGH0HNrBtZt/V4yYZh+Rl4EB0jk453adeeOInHf5lEZhl7SWF0e3npEfFkwHHULDX8xcPx5Q7FoQ3MaInTlcv8mUuAEoraDTpIoATCLKDSghETgUh/x9f2KPWZSDmlTWB37Wojh7z
+ GeIl4fHY
+ fvmpWgeUEH2Y2/Y/224fzCT2jWtxwGXWbeUfwQTLADweyS2Ph9x8CO5/aobjJ4FlGtSUQMfoHE0U/V6jOGS5W2x4PIK9Wty4CAGOgABNg6kdAmDmZ8638U4pH994m4JAhtu7jkm8bJTN4RkxeFbqTtZ7DPGlnyHHzeQqVW6X8AC6Xmzp9YBTwomX9Zd5Jv0L4icpf2glc5QL4IEh0DW0Ow7sCQ+imdsGde+n8APTEaCa9wip91TMgO6gUviyH5De+QhKHJvOoGQgqHmMI4a9T/VrASzzfIzJKP4tNm/H5nDTLvxIRR8PXC1mN6gG5DANvYNC1fuAoJ6ewG2o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,82 +130,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 16, 2026 at 08:12:27AM +0800, Hillf Danton wrote:
-> On Mon, 14 Sep 2026 18:56:26 +0200 "Uladzislau Rezki (Sony)" wrote:
-> > This patch does not use queue_work_on() semantic thus i do not want to
-> > queue all helpers on current CPU. Instead scheduler does balancing and
-> > that is it.
+On Wed, Sep 16, 2026 at 05:42:43PM +0200, David Hildenbrand (Arm) wrote:
+> On 9/16/26 17:37, Gregory Price wrote:
+> > On Wed, Sep 16, 2026 at 05:24:43PM +0200, David Hildenbrand (Arm) wrote:
+> >> On 9/16/26 17:19, Gregory Price wrote:
+> >>>
+> >>> You missed this part:
+> >>>
+> >>> "I'm trying to be careful about not causing a bigger maintenance burden"
+> >>>
+> >>> I wouldn't do that to you :]
+> >>
+> >> I just wanted to make it very clear that I don't need another schlopped gigantic
+> >> patch series in my inbox that I'll mostly have to ignore because it's
+> >> un-reviewable ;)
+> >>
 > > 
-> [Fair queue in the Eric Dumazet accent]
+> > I would never :]
+> > 
+> > But *motions generally at madvise* if this isn't schlop i don't know
+> > what is lol.
 > 
-> +static bool
-> +schedule_drain_vmap_work(struct workqueue_struct *wq,
-> +		struct work_struct *work)
-> +{
-> +	if (wq)
-> +		return queue_work(wq, work);
-> +
-> +	return false;
-> +}
-> +
+> Just to be clear, I enjoy any cleanups in that area which are well written (and
+> your track record shows that you do exceptional work ;) ).
 > 
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/linux/workqueue.h#n697
+> I would also enjoy a properly stubbed page allocator as well as I envisioned ...
+> as long as it's not something schlopped together and rushed out.
 > 
-> static inline bool queue_work(struct workqueue_struct *wq,
-> 			      struct work_struct *work)
-> {
-> 	return queue_work_on(WORK_CPU_UNBOUND, wq, work);
-> }
+> ... of course you would never work-slop me/us like that! :)
 > 
-> queue_work_on
->   __queue_work
-> 	if (req_cpu == WORK_CPU_UNBOUND) {
-> 		if (wq->flags & WQ_UNBOUND)
-> 			cpu = wq_select_unbound_cpu(raw_smp_processor_id());
-> 		else
-> 			cpu = raw_smp_processor_id();
-> 	}
-> /*
->  * When queueing an unbound work item to a wq, prefer local CPU if allowed
->  * by wq_unbound_cpumask.  Otherwise, round robin among the allowed ones to
->  * avoid perturbing sensitive tasks.
->  */
-> static int wq_select_unbound_cpu(int cpu)
-> {
->  	pr_warn_once("workqueue: round-robin CPU selection forced, expect performance impact\n");
-> }
-> 
-/**
- * worker_attach_to_pool() - attach a worker to a pool
- * @worker: worker to be attached
- * @pool: the target pool
- *
- * Attach @worker to @pool.  Once attached, the %WORKER_UNBOUND flag and
- * cpu-binding of @worker are kept coordinated with the pool across
- * cpu-[un]hotplugs.
- */
-static void worker_attach_to_pool(struct worker *worker,
-				  struct worker_pool *pool)
-{
-	mutex_lock(&wq_pool_attach_mutex);
 
-	/*
-	 * The wq_pool_attach_mutex ensures %POOL_DISASSOCIATED remains stable
-	 * across this function. See the comments above the flag definition for
-	 * details. BH workers are, while per-CPU, always DISASSOCIATED.
-	 */
-	if (pool->flags & POOL_DISASSOCIATED) {
-		worker->flags |= WORKER_UNBOUND;
-	} else {
-		WARN_ON_ONCE(pool->flags & POOL_BH);
-		kthread_set_per_cpu(worker->task, pool->cpu);
-	}
-...
-}
+It's fundamentally a bootstrapping problem.
 
-A local CPU preference for WQ_UNBOUND is not the same as executing on
-the __bound__ per-CPU system kworker.
+Regardless of whether an LLM wrote the tests for page_alloc in its
+current form - it's going to be schloppy, because the code itself was
+never written to be testable in the first place.
 
---
-Uladzislau Rezki
+That's the actual problem we're all dancing around.
+
+~Gregory
 
