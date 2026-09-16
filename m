@@ -4,130 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7141C88E77
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 11:39:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 799BAC88E77
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 11:48:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D45176B009E; Wed, 16 Sep 2026 07:39:34 -0400 (EDT)
+	id 6C4FA6B008C; Wed, 16 Sep 2026 07:48:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF4EE6B009F; Wed, 16 Sep 2026 07:39:34 -0400 (EDT)
+	id 6A27C6B0092; Wed, 16 Sep 2026 07:48:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BE4C76B00A0; Wed, 16 Sep 2026 07:39:34 -0400 (EDT)
+	id 5B2606B0093; Wed, 16 Sep 2026 07:48:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C8CD6B009E
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 07:39:34 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 25703160678
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:39:34 +0000 (UTC)
-X-FDA: 85219430268.29.8E31630
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 41C9A20008
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:39:32 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KJyruiO5;
-	spf=pass (imf13.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789558772;
-	b=Wo2BjNga55MIP6O+T9JTD4X0MNZKQnxqdLXPTzP2nNzFoJnWYtH1bWCrRf423xCB0/uLlF
-	YxCSpAgF3Fwc5IXXm08pPC8XhBPADk/EyvGQKCnDNmr0UqY/Irs5xEzkXsAVHi16S6Y7P3
-	glsyMZ7YYuhMTpAJrj6LLF64+/b2Qw8=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KJyruiO5;
-	spf=pass (imf13.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 332F06B008C
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 07:48:04 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CD880A5DCD
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:48:03 +0000 (UTC)
+X-FDA: 85219451646.12.6D04DCE
+Received: from mta0.migadu.com (out-209.mta0.migadu.com [91.218.175.209])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 66A9E140008
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:48:01 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Oe30Vh81;
+	spf=pass (imf09.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.209 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789558772;
+	s=arc-20220608; t=1789559282;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PwPvpxGrzEMSl2UNY8taOVvejOczhuAnj7LbVVW1ppU=;
-	b=vQFf3EZVzUoGGm7qZoEZszGH4LKaivIdd/Bmuz0owD5qsSWw0gSycM87bKPxFdAmkNNqjK
-	TX7PeRjXhyymfMY2ekNcThSsA/5cs5jSkhElPPtIpLBdZDTt+yypEgoBa+tfzLK1WCvbrd
-	7L8H7LeKeNpLnW4HC9i/2CdpEP7e6tE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 636D64331F;
-	Wed, 16 Sep 2026 11:39:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A404A1F000FF;
-	Wed, 16 Sep 2026 11:39:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789558771;
-	bh=PwPvpxGrzEMSl2UNY8taOVvejOczhuAnj7LbVVW1ppU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=KJyruiO5wrKXPzdDFVqClE0Ty9ULE/hZ5397ZAAciwaIzSVYco6qRvg6/MDxgtKC0
-	 5Orh+cdNNSyRg9VM6hQ/zX41j+heGbSMRTvdr4Bf6A683yZM+Uct4pWu7p8C/TZAod
-	 oecbogdsDV6kKQO+FXHf05kUU+o/mbKfsVJUibf5nEU/8bF6feZlVbDOPQhBrdkCNq
-	 4CJaECSLIEwat0TrrDvjO5jSd0KNNyHgMQm3amCX92l6XCO0ns5Hn/UVCMAoEtXizc
-	 1+68a2ZkufZRdTVOGMQFm/423/2+A9Yl8H7Yx+w2fcLCxww5d6OnBDIserveBUvhlz
-	 4/duiZamVsrQA==
-Message-ID: <6cfc9b2b-f27d-4f06-ac76-bba64b5c1668@kernel.org>
-Date: Wed, 16 Sep 2026 13:39:27 +0200
+	bh=C23ESRvk52M5CAbKHrncgrOg09aivZ1Xo46yJYnM7CM=;
+	b=e5hSxLTOtdY123yYuMXxn3u9K4EwhQqW4m0sDrzDoXpIEuKnDPGvfbY58NPsMupUoq6vIC
+	EIkZbLHUpJjBgE9flsyjjAk0MgqKmot6kEIJjmrOUCYIXpNeZUXOjORYwdDxpyzD7rafxx
+	r1/JKB51bHq1hPkTv24DbnL1xWTOAIk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789559282;
+	b=hueCUgVVNsVUMQsx2PYtwg+8/ldfWKsgxYB03Jwl59Glc0ZO6CpOWIhIzKxkhC5boE6w2w
+	0O5xZ0tYGzmrTqSrVwW9qoqPhjh4Z9nQX9GX4traBpYNl95mgGk0axcJTuoy09Y7mx6w9H
+	geDbn16nFZMf1xmILIcFpv7KXONfy6k=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Oe30Vh81;
+	spf=pass (imf09.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.209 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=QkgxTAjnw9kjoZrd4E4SroH/8THVIEwQ2WjorBKbMs4=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789559279; v=1; x=1790164079;
+ b=Oe30Vh81EI21s/dDYotCAXjcMII9SOM1nMku33ZCIok2R4y7Mh+xuR6WzsUrKNaaC+NGRuwB
+ V/YHXjd3szcUxeb2sIsm2/4QnISKv1sRUDcL1Xvycc9o7Y9c4F+tS4lMoQicKab5v84hNGYztSu
+ mS0hbiC69LrJPE3CvBYCKaoA=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 7d2a5ac1929357ee;
+	Wed, 16 Sep 2026 11:47:49 +0000
+X-Mizu-Trace-ID: 7d2a5ac1929357ee
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <4c8febe3-8e07-4c73-8f4b-44e4ad4374fb@linux.dev>
+Date: Wed, 16 Sep 2026 19:47:38 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/page_alloc: do not boost watermarks in kdump
- capture kernels
-Content-Language: en-US
-To: Yuanhe Shu <xiangzao@linux.alibaba.com>, akpm@linux-foundation.org,
- mgorman@techsingularity.net, linux-mm@kvack.org
-Cc: surenb@google.com, mhocko@suse.com, brendan.jackman@linux.dev,
- hannes@cmpxchg.org, ziy@nvidia.com, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, henry.willard@oracle.com, david@kernel.org
-References: <20260916112545.3707893-1-xiangzao@linux.alibaba.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260916112545.3707893-1-xiangzao@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 41C9A20008
+Subject: Re: [PATCH v8] mm: vmscan: retry folios written back while isolated
+ for traditional LRU
+To: Barry Song <baohua@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Kairui Song <kasong@tencent.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ "open list:MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)" <linux-mm@kvack.org>,
+ linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
+References: <20260913100013.3603815-1-ridong.chen@linux.dev>
+ <CAGsJ_4xEAS5Bacn8dUxDPoMKwD054zUsfUB3MSGYxGYwicPyWQ@mail.gmail.com>
+From: Ridong Chen <ridong.chen@linux.dev>
+In-Reply-To: <CAGsJ_4xEAS5Bacn8dUxDPoMKwD054zUsfUB3MSGYxGYwicPyWQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: doqndwqgyrbbo76951j58jpsksefkfxg
-X-HE-Tag: 1789558772-111900
-X-HE-Meta: U2FsdGVkX19iCyBzD7dNUefCMvO+k379uwG5eImdd/+d6KqdItsRnlNz57XreC9ddj0FEHY4wbRB+GFGpR9LqoOK177iCkz03H8rr2shXX2UDwehgrVwfyRedNRPRhqEievXO2zTNOHR+3BASpdONWSXVXMyyVR4DGnF9t/OtMEHJtbKjCLoFGaAny4O3LeA9d5c7Efqr+u/qiG4HsQ/1CuoFfJHWJQzr6gmyfzkJ1RvmULIj2rG7G/2K2s+w1eM0UfFaP9hPzgf8qG5fnCo9sxMRnSiGH0UyKI7BWsmgkBW5KWGPrVYozJ6j0jgZx1swhCfFA7gftCpqUIUgXMQjm9zXhBuUay00/WFhyAZzPfxFhOz4Ap3UH+6AFaloWPn5ZPqXjPyA2ChnwFmSnkEKD0p7LU2jZmsUVf5x0YRzr/GCbo9JIjtFEarTpD71Q02Xof42m6ZfKGUdV8XEEXYVVZ853q3OXcxDwzi88taktXpBXhntkgziphREZKLHuhTSKjlSBuNRthIUYJuN+3BzrBDNegEJK2koJfsd2Psjwt02tEfMkP3It2qCX4Jij1/96ahwyk7H395iu9O/nHv6CoITlW186QtO+R66mEH9kSBd4Qt0FlLxo4cHT4FZppWyPWMqkyRJSdKmK8u+8No+UjNgafGC/A7if/Ns8jkzvNtAiVjXdXckHTm40Jk2ZBuHu9PfnhXFSEoajvOAAbiuUf3U7cwWiL5lt5Cuuw43aFTX+FGGUTWfCxyrVl2Luy1b7F0EiLWxUUB+ViTMcBbDO4Swcf5RYe8N4i8PnHpXyLNAVXS5PBAH0DHRQ+26Mg5WS9wxpC0gHmyDW/Bpu7S0BxbZB+X1TzVU/DEzAem3rD8r+gqB0JhRmIHE2NQM3X0aYyReZEqWTcJa60mhEWRvF8qObEDmZmNtPIxkH7RjmhyRrbFVxt+5jkqFZNUpYXrt0H7cuSZFk+uOLudfAx
- 5MDXzvhL
- c5KDO8tbPeC+a0TMLoHkNIHDjTceaAJqMCS8kCLtmgWeYvsa53IPd32h5xIzyi9jhdBebS0/ZTn4CFxsvhBX9YilYsIWzHACWt+v+FDLvHSXrlJpzEbrBHMZStkItSeHReV563GDwaEdHQFba0XXE/lwGTD7ObJt8lqMufRe370MmExhR8759nGP0TKfPBm2vaAa4EzPckugirQk8wl1H2ZElKDUitozPxNEYbspjuxGAEEKBKkHXZrcuvtQbfQNRRlN4wfZZG1DJ5M5tKkcYZfVHDzUz1lVuIeUGqFZMmRHYqUuMINPJgjfc03Qf2NqNoAMaZRc8j/i/0pFQprRJWFuJcO83vqcEFxCfTrb4eoNNI/iVgCRlZLqz6RSAv7V2QsF9
+X-Stat-Signature: 8gdwxxi85jfbtueep87b84zewy7xdxam
+X-Rspamd-Queue-Id: 66A9E140008
+X-HE-Tag: 1789559281-759310
+X-HE-Meta: U2FsdGVkX19mXA9EhR41xCSixU2/Bix0+G7tbfsofCHbm0DfmQkiN7Z8sikfHQld2gdFhfUbM29JkVEoyw52lGJHlpDi8oNxkFc64yq+ENcLETIulgYrX2pZAvrT90V0w1dwuanjga0JTN0fRJ0VWWBn1UMj49dNFUEwAjnp6tSQ4NWX4TkZtCodr+FRBr5jkVu9hP4uICeSZ5lKvwLghtrY4b+4mphzm1Q1J+NIIl0D1wtYFbcQWLow0sb60cIqpN5pC5HZ4pI2SDVYKYkW0/iYtIorxJdTHzlOsgKgHGH8u+zizzTE+rbFx83sYV7aYbZVBtvhUuf3Baekkdgga3XBYsfk3uGqy+tjQGzJnX2Bu4+3COsOOu1iJXegL3APdx3H1FifJhV7SAeQJ2o+NRK3gg1TeSFT9UKYdMLkSAoGEKGvPXaZ6LI20rIbOERS7BD6IVb4nKXJtVHp1ucPhThQ1wE8tZs9sutDLl1rcli0HSmWzcwLNfIzfZCzt00rm7QuZMh79A+Sx0oB+JCngDzp8UpO2pl4heRYXO2jlkiR/g4sp8zbF6fZ5DAyG6MNKzOwRqlBiFp7nEFYwNH/PgohWyuW/4hXkSORzYg5hT+rn9b4LXt9RO8jaJdgRuFF3RCY0smfYB5qwcI/215eCf7qyMNp3+vf9EaNX5k0MNlKFI7ItA0T5Ca4KUUaGs1NPFbzPStmsUSfb/CgGsENd8w28/ZkS4fhqo6aNvdIL2uG/i0yxbtfaj/7KS6ovosVO79Dbmgsmk5z3KnzJhdEUkB9EMD577kVC7Hys3wt13O7MCw4mai4VbeDvP6RjpzHMDfDEIiEiZyTKdhK3TNrDHDXygc2vBMS0cCX7k2p3Nd4vvyd/AtXsPPqkWNu3TV6Pt+EmdZcNtaNSlzaicE2wxPab7jBJzTDAHfy1/u4Zhmm6WBWU+EYWc9JMXWDZyyBE8RFZ5EyqTtvcJYwL/E
+ BvrIFRkx
+ eiP0biWfDMbKOcf50gY94BAhACX/iQCLjwjaFwddQaUDpWvDUkRB9K6sTpW3Ua5BOCMEMKZsak8vbUe9oNABpdje68iTk0EJjnd3NxzKgDTk2GJ2gHaNhLMRsQelLw3UCxEH9f6f//BLsw9xSUdkZ43ihG9DZ0s2sInQqGl0yxHHVsFwxOy+I5nbqXT6zUPBqgA4VG6t8tMDyoF/DraNXH8kpCXVH/8SMzwv5sXaVmeTtlSMGsGnJzuuTjYAHKYfN498G6J/GXk/M14aawln7Bsja90z2lvftS2XLtCuI/F7ZmovGaZe0QGQIddDWV+3H/HnJdIhMv+W9C7uwox8wRJ7ps/jWWOnfwc22n9NHOpZUt373wKYQd6/LkDv32rAjl96c9RA3uYTuzRnjLH783/NfX7XVX9Uzz0z9YIZyTbek6/U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,111 +100,278 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/16/26 13:25, Yuanhe Shu wrote:
-> A watermark boost is not confined to one watermark: wmark_pages() adds
-> it to min, low and high alike, so every watermark check sees it,
-> including should_reclaim_retry() and the last ditch ALLOC_WMARK_HIGH
-> attempt in __alloc_pages_may_oom().  Once the boost exceeds the memory
-> still free the allocator gives up and invokes the OOM killer, and a
-> capture kernel that is still booting has nothing to kill: the boot
-> panics and the vmcore is lost.
-> 
-> Seen on an arm64 machine with 64K pages, CONFIG_PAGE_BLOCK_MAX_ORDER=10
-> (pageblock = 64M) and crashkernel=512M, running a distribution kernel
-> based on 7.0.14.  A high order UNMOVABLE allocation fell back to a
-> MOVABLE pageblock while the capture kernel was still in do_initcalls():
-> 
->   Node 0 DMA free:68096kB boost:65536kB min:68160kB
->   low:68800kB high:69440kB managed:479168kB
->   Out of memory and no killable processes...
->   Kernel panic - not syncing: System is deadlocked on memory
-> 
-> The zone was not short of memory.  Subtracting the boost gives
-> min:2624kB low:3264kB high:3904kB, so the 68096kB still free sat 17
-> times above the high watermark and the allocator would not even have
-> entered its slow path.  The boost supplied 65536kB of the 68160kB min
-> and by itself put the zone 64kB under water.  It is that large because
-> boost_watermark() clamps it with max(pageblock_nr_pages, max_boost);
-> watermark_boost_factor alone would have allowed 5824kB.
-> 
-> Commit 14f69140ff9c ("mm: limit boost_watermark on small zones") already
-> tried to protect capture kernels, but it infers them from the zone size
-> and skips the boost only below four pageblocks.  arm64 64K pageblocks
-> were 512M then, so the guard reached zones up to 2G;
-> CONFIG_PAGE_BLOCK_MAX_ORDER can cap them at 64M, which shrinks the guard
-> to zones under 256M and lets this 468M zone through.
-> 
-> kdump is a property of the kernel, not of the zone, so test for it
-> directly.  A capture kernel exits within seconds and never uses the
-> fragmentation avoidance the boost buys.  Normal kernels are unaffected:
-> the size based check still covers their genuinely tiny zones.
-> 
-> Passing sysctl.vm.watermark_boost_factor=0 to the capture kernel does
-> not cover this window: sysctl.* parameters are written through procfs
-> by do_sysctl_args(), which runs after do_initcalls() where the panic
-> above happened, and watermark_boost_factor has no early_param of its
-> own.
-> 
-> Fixes: 1c30844d2dfe ("mm: reclaim small amounts of memory when an external fragmentation event occurs")
-> Cc: stable@vger.kernel.org # v5.0
-> Cc: Henry Willard <henry.willard@oracle.com>
-> Cc: David Hildenbrand <david@kernel.org>
-> Signed-off-by: Yuanhe Shu <xiangzao@linux.alibaba.com>
 
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-> ---
-> Changes in v2:
-> - Drop the stale kdump capture kernel mention from the small-zone
->   comment in boost_watermark(): capture kernels now return earlier.
->   (Vlastimil Babka)
+On 9/13/2026 7:33 PM, Barry Song wrote:
+> On Sun, Sep 13, 2026 at 6:00 PM Ridong Chen <ridong.chen@linux.dev> wrote:
+>>
+>> From: Ridong Chen <chenridong@xiaomi.com>
+>>
+>> As commit 359a5e1416ca ("mm: multi-gen LRU: retry folios written back
+>> while isolated") mentioned:
+>>
+>>    The page reclaim isolates a batch of folios from the tail of one of the
+>>    LRU lists and works on those folios one by one.  For a suitable
+>>    swap-backed folio, if the swap device is async, it queues that folio for
+>>    writeback.  After the page reclaim finishes an entire batch, it puts back
+>>    the folios it queued for writeback to the head of the original LRU list.
+>>
+>>    In the meantime, the page writeback flushes the queued folios also by
+>>    batches.  Its batching logic is independent from that of the page
+>>    reclaim. For each of the folios it writes back, the page writeback calls
+>>    folio_rotate_reclaimable() which tries to rotate a folio to the tail.
+>>
+>>    folio_rotate_reclaimable() only works for a folio after the page reclaim
+>>    has put it back.  If an async swap device is fast enough, the page
+>>    writeback can finish with that folio while the page reclaim is still
+>>    working on the rest of the batch containing it.  In this case, that folio
+>>    will remain at the head and the page reclaim will not retry it before
+>>    reaching there".
+>>
+>> The commit 359a5e1416ca ("mm: multi-gen LRU: retry folios written back
+>> while isolated") only fixed the issue for mglru. However, this issue
+>> also exists in the traditional active/inactive LRU and was found at [1].
+>>
+>> It can be reproduced with below steps:
+>>
+>> 1. Compile with CONFIG_TRANSPARENT_HUGEPAGE=y
+>> 2. Mount memcg v1, and create memcg named test_memcg and set
+>>     limit_in_bytes=1G, memsw.limit_in_bytes=2G.
+>> 3. Create a 1G swap file, and allocate 1.35G anon memory in test_memcg.
+>>
+>> It was found that:
+>>
+>>    cat memory.usage_in_bytes
+>>    1073700864
+>>    cat memory.memsw.usage_in_bytes
+>>    1413124096
+>>
+>>    free -h
+>>                  total        used        free
+>>    Mem:           1.6Gi       1.2Gi       299Mi
+>>    Swap:          1.0Gi       678Mi       346Mi
+>>
+>> As shown above, the test_memcg charged about 324M swap (memsw.usage minus
+>> usage), but almost 678M swap memory was used, which means that 350M+ may
+>> be wasted because other memcgs can not use these swap memory.
+>>
+>> This issue should be fixed in the same way as mglru. Therefore, the common
+>> logic was extracted to the 'find_folios_written_back' function firstly,
+>> which is then reused in the 'shrink_inactive_list' function. Finally,
+>> retry reclaiming those folios that may have missed the rotation for
+>> traditional LRU.
+>>
+>> After change, the same test case only wasted about 2M swap. The swap
+>> device usage matches what the memcg actually charged.
+>>
+>>    cat memory.usage_in_bytes
+>>    1070301184
+>>    cat memory.memsw.usage_in_bytes
+>>    1412448256
+>>
+>>    free -h
+>>                  total        used        free
+>>    Mem:           1.6Gi       1.2Gi       299Mi
+>>    Swap:          1.0Gi       327Mi       696Mi
+>>
+>> [1] https://lore.kernel.org/linux-kernel/20241010081802.290893-1-chenridong@huaweicloud.com/
+>> [2] https://lore.kernel.org/linux-kernel/CAGsJ_4zqL8ZHNRZ44o_CC69kE7DBVXvbZfvmQxMGiFqRxqHQdA@mail.gmail.com/
+>> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+>> ---
+>> v8: Rebase to the -next tree, adapt to the current reclaim API, and retest.
+>>
+>> [v7]: https://lore.kernel.org/linux-mm/20250111091504.1363075-1-chenridong@huaweicloud.com/
+>>
+>>   mm/vmscan.c | 104 ++++++++++++++++++++++++++++++++++++----------------
+>>   1 file changed, 73 insertions(+), 31 deletions(-)
+>>
+>> diff --git a/mm/vmscan.c b/mm/vmscan.c
+>> index d1495a7d469d..6e13e570aab8 100644
+>> --- a/mm/vmscan.c
+>> +++ b/mm/vmscan.c
+>> @@ -181,6 +181,10 @@ struct scan_control {
+>>          struct reclaim_state reclaim_state;
+>>   };
+>>
+>> +static void find_folios_written_back(struct list_head *list,
+>> +                                    struct list_head *clean, struct lruvec *lruvec,
+>> +                                    int type, bool skip_retry);
+>> +
+>>   #ifdef ARCH_HAS_PREFETCHW
+>>   static inline void prefetchw_prev_lru_folio(struct folio *folio,
+>>                  struct list_head *base)
+>> @@ -2013,14 +2017,16 @@ static unsigned long shrink_inactive_list(unsigned long nr_to_scan,
+>>                  enum lru_list lru)
+>>   {
+>>          LIST_HEAD(folio_list);
+>> +       LIST_HEAD(clean_list);
+>>          unsigned long nr_scanned;
+>> -       unsigned int nr_reclaimed = 0;
+>> -       unsigned long nr_taken;
+>> +       unsigned int nr_reclaimed, total_reclaimed = 0;
+>> +       unsigned long nr_taken, isolated;
+>>          struct reclaim_stat stat;
+>>          bool file = is_file_lru(lru);
+>>          enum node_stat_item item;
+>>          struct pglist_data *pgdat = lruvec_pgdat(lruvec);
+>>          bool stalled = false;
+>> +       bool skip_retry = false;
+>>
+>>          while (unlikely(too_many_isolated(pgdat, file, sc))) {
+>>                  if (stalled)
+>> @@ -2052,25 +2058,42 @@ static unsigned long shrink_inactive_list(unsigned long nr_to_scan,
+>>          if (nr_taken == 0)
+>>                  return 0;
+>>
+>> +       isolated = nr_taken;
+>> +retry:
+>>          nr_reclaimed = shrink_folio_list(&folio_list, pgdat, sc, &stat, false,
+>>                                           lruvec_memcg(lruvec));
+>> +       total_reclaimed += nr_reclaimed;
+>> +
+>> +       /* Retry pass is only meant for clean folios without new isolation */
+>> +       if (isolated)
+>> +               handle_reclaim_writeback(isolated, pgdat, sc, &stat);
+>> +       trace_mm_vmscan_lru_shrink_inactive(pgdat->node_id,
+>> +                       nr_scanned, nr_reclaimed, &stat, sc->priority, file);
+>> +
+>> +       find_folios_written_back(&folio_list, &clean_list, lruvec, file, skip_retry);
+>>
+>>          move_folios_to_lru(&folio_list);
+>>
+>>          mod_lruvec_state(lruvec, PGDEMOTE_KSWAPD + reclaimer_offset(sc),
+>>                                          stat.nr_demoted);
+>> -       mod_node_page_state(pgdat, NR_ISOLATED_ANON + file, -nr_taken);
+>>          item = PGSTEAL_KSWAPD + reclaimer_offset(sc);
+>>          mod_lruvec_state(lruvec, item, nr_reclaimed);
+>>          mod_lruvec_state(lruvec, PGSTEAL_ANON + file, nr_reclaimed);
+>> -       if (nr_scanned > nr_reclaimed)
+>> +
+>> +       if (!list_empty(&clean_list)) {
+>> +               list_splice_init(&clean_list, &folio_list);
+>> +               skip_retry = true;
+>> +               /* Retry folios were already isolated and accounted above */
+>> +               isolated = 0;
+>> +               goto retry;
+>> +       }
+>> +
+>> +       mod_node_page_state(pgdat, NR_ISOLATED_ANON + file, -nr_taken);
+>> +       if (nr_scanned > total_reclaimed)
+>>                  mod_lruvec_state(lruvec, PGROTATE_ANON + file,
+>> -                                nr_scanned - nr_reclaimed);
+>> +                                nr_scanned - total_reclaimed);
+>>
+>> -       handle_reclaim_writeback(nr_taken, pgdat, sc, &stat);
+>> -       trace_mm_vmscan_lru_shrink_inactive(pgdat->node_id,
+>> -                       nr_scanned, nr_reclaimed, &stat, sc->priority, file);
+>> -       return nr_reclaimed;
 > 
-> v1: https://lore.kernel.org/r/20260914131142.2984623-1-xiangzao@linux.alibaba.com
+> this is a bit weird to move the tracepoint, shouldn't it just trace the total
+> number of twice reclamation?
 > 
-> Build tested with CONFIG_CRASH_DUMP=y and =n.
+
+Sorry for misssing this comment.
+
+I think we should move the tracepoint, since the 'stat' would be cleared by the 
+time it is passed to shrink_folio_list, just as evict_folios does.
+
+>> +       return total_reclaimed;
+>>   }
+>>
+>>   /*
+>> @@ -5006,8 +5029,6 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>>   {
+>>          LIST_HEAD(list);
+>>          LIST_HEAD(clean);
+>> -       struct folio *folio;
+>> -       struct folio *next;
+>>          enum node_stat_item item;
+>>          struct reclaim_stat stat;
+>>          struct lru_gen_mm_walk *walk;
+>> @@ -5046,26 +5067,7 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>>                          type_scanned, reclaimed, &stat, sc->priority,
+>>                          type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
+>>
+>> -       list_for_each_entry_safe_reverse(folio, next, &list, lru) {
+>> -               DEFINE_MIN_SEQ(lruvec);
+>> -
+>> -               /* move_folios_to_lru() culls unevictable folios via folio_putback_lru() */
+>> -               if (!folio_evictable(folio))
+>> -                       continue;
+>> -
+>> -               /* retry folios that may have missed folio_rotate_reclaimable() */
+>> -               if (!skip_retry && !folio_test_active(folio) && !folio_mapped(folio) &&
+>> -                   !folio_test_dirty(folio) && !folio_test_writeback(folio)) {
+>> -                       list_move(&folio->lru, &clean);
+>> -                       continue;
+>> -               }
+>> -
+>> -               /* don't add rejected folios to the oldest generation */
+>> -               if (lru_gen_folio_seq(lruvec, folio, false) == min_seq[type]) {
+>> -                       folio_set_lru_refs(folio, 0);
+>> -                       folio_set_active(folio);
+>> -               }
 > 
-> Tested on the affected machine with the original crashkernel=512M and
-> capture kernel command line.  Without this patch both capture boots
-> panicked at 7.9s inside do_initcalls() with a 64M boost in place.  With
-> it, and with boost_watermark() instrumented, every call was suppressed -
-> including those inside do_initcalls(), where the panics happened - free
-> memory came down to within 64kB of the min watermark, where a single
-> boost would have put it 65472kB under, and the dump completed.
-> ---
->  mm/page_alloc.c | 12 ++++++++++--
->  1 file changed, 10 insertions(+), 2 deletions(-)
+> Baolin has a patch which modifies this.
+> so probably you are not based on the mm-new?
 > 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 12fac9084c48..f52ed7d2cd34 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -37,6 +37,7 @@
->  #include <linux/vmstat.h>
->  #include <linux/fault-inject.h>
->  #include <linux/compaction.h>
-> +#include <linux/crash_dump.h>
->  #include <trace/events/kmem.h>
->  #include <trace/events/oom.h>
->  #include <linux/prefetch.h>
-> @@ -2178,10 +2179,17 @@ static inline bool boost_watermark(struct zone *zone)
->  
->  	if (!watermark_boost_factor)
->  		return false;
-> +
-> +	/*
-> +	 * A kdump capture kernel exits before a boost can pay off, while
-> +	 * the raised watermark can exceed the memory left for the dump.
-> +	 */
-> +	if (is_kdump_kernel())
-> +		return false;
-> +
->  	/*
->  	 * Don't bother in zones that are unlikely to produce results.
-> -	 * On small machines, including kdump capture kernels running
-> -	 * in a small area, boosting the watermark can cause an out of
-> +	 * On small machines, boosting the watermark can cause an out of
->  	 * memory situation immediately.
->  	 */
->  	if ((pageblock_nr_pages * 4) > zone_managed_pages(zone))
+> https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git/commit/?id=519f7768585e372b97e568baf9d4648e6beb6863
+> 
+>> -       }
+>> +       find_folios_written_back(&list, &clean, lruvec, type, skip_retry);
+>>
+>>          move_folios_to_lru(&list);
+>>
+>> @@ -6108,6 +6110,46 @@ static void lru_gen_shrink_node(struct pglist_data *pgdat, struct scan_control *
+>>
+>>   #endif /* CONFIG_LRU_GEN */
+>>
+>> +/**
+>> + * find_folios_written_back - Find and move the written back folios to a new list.
+>> + * @list: folios list
+>> + * @clean: the written back folios list
+>> + * @lruvec: the lruvec
+>> + * @type: LRU type (only used for CONFIG_LRU_GEN)
+>> + * @skip_retry: whether skip retry.
+>> + */
+>> +static void find_folios_written_back(struct list_head *list,
+>> +                                    struct list_head *clean, struct lruvec *lruvec,
+>> +                                    int type, bool skip_retry)
+>> +{
+>> +       struct folio *folio;
+>> +       struct folio *next;
+>> +
+>> +       list_for_each_entry_safe_reverse(folio, next, list, lru) {
+>> +#ifdef CONFIG_LRU_GEN
+>> +               DEFINE_MIN_SEQ(lruvec);
+>> +#endif
+>> +               /* move_folios_to_lru() culls unevictable folios via folio_putback_lru() */
+>> +               if (!folio_evictable(folio))
+>> +                       continue;
+>> +
+>> +               /* retry folios that may have missed folio_rotate_reclaimable() */
+>> +               if (!skip_retry && !folio_test_active(folio) && !folio_mapped(folio) &&
+>> +                   !folio_test_dirty(folio) && !folio_test_writeback(folio)) {
+>> +                       list_move(&folio->lru, clean);
+>> +                       continue;
+>> +               }
+>> +#ifdef CONFIG_LRU_GEN
+>> +               /* don't add rejected folios to the oldest generation */
+>> +               if (lruvec->lrugen.enabled &&
+>> +                   lru_gen_folio_seq(lruvec, folio, false) == min_seq[type]) {
+>> +                       folio_set_lru_refs(folio, 0);
+>> +                       folio_set_active(folio);
+>> +               }
+> 
+> as above. please take a look at Baolin's patch:
+> https://lore.kernel.org/9214e36bf738fcfba86acc8cea85dff4010f66b0.1788918714.git.baolin.wang@linux.alibaba.com
+> 
+> 
+> Best Regards
+> Barry
+
+-- 
+Best regards
+Ridong
 
 
