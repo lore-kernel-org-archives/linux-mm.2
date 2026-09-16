@@ -4,54 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBE66C88E5C
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 10:21:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6866C88E5C
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 10:21:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CFF836B00A2; Wed, 16 Sep 2026 06:21:08 -0400 (EDT)
+	id C635A6B00A4; Wed, 16 Sep 2026 06:21:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB09D6B00A3; Wed, 16 Sep 2026 06:21:08 -0400 (EDT)
+	id C14D46B00A6; Wed, 16 Sep 2026 06:21:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC7456B00A4; Wed, 16 Sep 2026 06:21:08 -0400 (EDT)
+	id B2AB96B00A5; Wed, 16 Sep 2026 06:21:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9BFE66B00A2
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 06:21:08 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 34AB51604BB
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 10:21:08 +0000 (UTC)
-X-FDA: 85219232616.22.0F3AB78
-Received: from mta0.migadu.com (out-67.mta0.migadu.com [91.218.175.67])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 41DEB40003
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 10:21:06 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	spf=pass (imf04.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.67 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 8E1226B00A3
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 06:21:12 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id F1D0616063B
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 10:21:11 +0000 (UTC)
+X-FDA: 85219232742.23.AB5D470
+Received: from mta0.migadu.com (out-78.mta0.migadu.com [91.218.175.78])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 284FB180004
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 10:21:09 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	spf=pass (imf16.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.78 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789554066;
+	s=arc-20220608; t=1789554070;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=exQnmu+siJi9uiqAIwgKI8l6Xr6oWUa7Y1zp4oobdy0=;
-	b=J19I/v/7vVeIEMMPk/ZASgQZuxP/WOdM7Tq7HxFOD7uSEWYN/DBsIavV2pr9oa82w3gs8N
-	HVLp8BqeiC/GDzK6e6gKz6CUIqCbyOiKtPOwG0BeqjWFlMNBxCYtafsM20R3+hJDYtq7JK
-	xG/YPYLrPfnYsPssG5UF/jMDNVaJsWk=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=none;
-	spf=pass (imf04.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.67 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=none
+	bh=yf6HUQ0wAMz0G8wZZgS5F81k26xdJYyMbkW5zISosIQ=;
+	b=cpMu5SE08fjsRP8ZHuGzunSYv41T1ZOFzHOpfn7BF3y4Tb5RunnLGf94smvuKgo5agEV91
+	vR9zXIoNkrB0WQfTDiU46OvlnjJLnNkVBFrNtG/E03V0WkH59ygWJJwiXXxHRsUuYD9+WL
+	JwJS7uP8HQ8K0Re1VY2zINshw9xP/hU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789554066;
-	b=AL8K2yq6Bdbwpd2NiL8P5AFw1rOBdN8xkOyUCqGbUht/IEySLytWskX5vf20qaqWfOaYvF
-	qxQJK/VS2HIjtKwXcwWYJL/wqV7/nUz/g+J6x/cn+8f2L3OGk+xauuYzuz5U4xkQYtMBpW
-	Du0xwGs4Xnuu0vv6pI/h2WLyTJn5Cqk=
+	t=1789554070;
+	b=suIeNBf2LrlKXICx3ZFXvndASnr271WHo+ban6ss0oNqTkpqXElox23vmZJK7tZHRZpFfh
+	Lmay3bZINupJ946ixphB7ACq08F5+k3YswRWWc8ukbqKGeK1mgoiHKARHV1wgpckjDjFuD
+	6HGqC5xmQ1rG1sOAlU9ND/dginbNdOk=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=none;
+	spf=pass (imf16.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.78 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=none
 X-Envelope-To: linux-mm@kvack.org
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 42f42ab4e84ad3fd;
-	Wed, 16 Sep 2026 10:21:05 +0000
-X-Mizu-Trace-ID: 42f42ab4e84ad3fd
+Received: by mta12.migadu.com with ESMTPS id 0d5d1a8d72c58130;
+	Wed, 16 Sep 2026 10:21:08 +0000
+X-Mizu-Trace-ID: 0d5d1a8d72c58130
 X-Migadu-Flow: FLOW_OUT
 From: Baoquan He <hebaoquan@kylinos.cn>
 To: linux-mm@kvack.org
@@ -70,23 +70,23 @@ Cc: akpm@linux-foundation.org,
 	linux-kernel@vger.kernel.org,
 	kunwu.chan@gmail.com,
 	Baoquan He <hebaoquan@kylinos.cn>
-Subject: [PATCH v3 10/14] mm, swap: refactor swapoff and add xswap_destroy
-Date: Wed, 16 Sep 2026 18:19:17 +0800
-Message-ID: <20260916101929.149106-11-hebaoquan@kylinos.cn>
+Subject: [PATCH v3 11/14] mm, swap: require zswap for xswap devices
+Date: Wed, 16 Sep 2026 18:19:18 +0800
+Message-ID: <20260916101929.149106-12-hebaoquan@kylinos.cn>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260916101929.149106-1-hebaoquan@kylinos.cn>
 References: <20260916101929.149106-1-hebaoquan@kylinos.cn>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: zaumuqhfsaa88cntbp7fjjmdta6oju47
 X-Rspam-User: 
-X-Stat-Signature: im6wphgt8a6i9fsgqthjhtohzyaoscee
-X-Rspamd-Queue-Id: 41DEB40003
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789554066-796493
-X-HE-Meta: U2FsdGVkX19eRBtByUoepsadsPOhNxThma+GUrJJJzQEddP2Wi/l3SzdX+kbv6UsifWPXkkJY74L9WPgJVISdN9ImqQeIKjV979MCJnNosq/Jab5AzS5iUkdVp8lYrPXLH+SwokSXm/CY2wx6jOXwOCXwbv5EaK4rRSq5m4qwvlAWKUpak4iAff7EyjLbQfEyQqXAvufphZkazLOjd+x3pbPbL/vTLjT+SA0WZ/AyWOc8I24whWGCzDVLf2Kfsv76nFF9KVHJ53acIOYxf0lAt8uMpuLZWKpc+KzMhRbVIrQr2iEoSdf02eRPvr2Chjrdg0Oa8FfuEv+B2n5indA1A9HK2tdoZSPenryRHYlud+58bPDgD7+qURFHGj54z+VaHuvXMk0BukEkw7LADF2xd9WYb/0DBozf6fxvDDuFVXLKnlc8nInfCv7P/EChALQjdJ7L8+RFS1yR4S+0JbY9WjLzXK3Bz8Wig/NPrn1I25Ojx92S7vN6XNdozgBgpqBUIatE1SWeG7Ukk7tHNCvD4sDyzRrUW8R5jjXNLOh/C2FNAhtEFA5HgHMOoE5Ip30OC2CXYgtwQ585CkDzgR2lpNoZIKJGMxHUhTn/JaIHxvlvuwVeztGxqXlaLXmD5AQ6XmF4G1FHkHMvCIE8Rc6wmSUb8dUSAkt+A8tiot840Yu0/6XMfTcj40k4MkaJ/fTo2FiTTz4eSu+9qBV7YhLFfqbhu2yDYSs9+MqlLjO1qaHJLjN2vCx6zu243ZEIsUh+wU/aukU9SP5zNNKKcZx/XFXzyX4Go5HexuzBaUxzB1OEflRkyHmzZFcT5HMrMrAuAHyvCCMBPovhB0XOJq5VPVwcVzYMqWsz9tLtdNUCKsUco2hn3M8dB+NO9++xHjAIRP2ON7d+SXgvOdTwSPa4T5DfmgtDDLmLkWLoS7QRxX2/y3MyEZzqf5XSz58jCCmbVZHr793tlKeizNiIG1
- G7Ow2vje
- 8t6v/IgGQw4+gI3sFPzvLTvewM4i+D0yyFsBy7Lnv3YPBBcNb9e7CVwkJ+C/Ig1cYxZhFz6OSxLlGj4LA+gjhwe48SGwVOPUqO9QhGgpiWwcYXsRMhHOKokmFxR/T1Cu+HBb7oZDORQ09/+mhGsTC4tiG08lIWuxEBVdASqjZxa3BPyKbdltPf5k0ZnTD0RQgxnAdTx/ntRZlnTGOtsfq4YTmgIPCt1CfvzZjLFB9GgcBamS6fnocvL0V5zQ9hW2navV+/VK2fjcqtDd7PF0Rwzik5ZswdRyU3K/JJPPyE41oFrHcx8u500pFVwcISaDP6BjZBYyo0v25co5P/N7Ya955Og==
+X-Rspamd-Queue-Id: 284FB180004
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789554069-986244
+X-HE-Meta: U2FsdGVkX19TrM02sQOyFV1kFJwjk2zkiAJ2m9fhHuju/f65r0MfiGf7XiEIwQWSp8wf0bpCr3vklMbGDA0ee4Xg+toeJRuKVVeRm76L1c84p7OciqEncF5Gz4kLWQ1IWvSmSQ/+Tp56CSDGw0KlTtEtymFUxDrVlnWEePXz8XnW3luDszpd8re9ps6b5lvulholYkbUpYBzoYPXxzXCE6q5G4VexJxPHulha6Os9enLbUhiVWZ9zMH3BFdXtqaPYV79GgJf/N1MxCfqA3Dros/x1L2EYQnhsMdWHKwNlzZ084dlELodpMPuvTeVSfxEZrN/TOuFuBjn0LVnxMPNBA9tRdspt2dgohgqZ3ECQH+zv3RRV1p1mSVUNUb6St1+DeQine9HbwbWyp1AyyL91dhBQSJ4bM0OOvatk8JoQLJINAcIdFa2mmd9Z2gziSTQnGpakQxCcuWXGWwb9dnJeAP73ZMWLONPakymy7GHFEBxf/tDvPz3BEPRRAkqYjJa3Du7Ww1pwtSsVrjFVwFqxp23MhyRMYZbMITroc2mQIUTwcXdZqjBvEGZRT/SkxKbQsUIIiSPMe6wa4p/jH6rI4Vi8xed0ISpRJg+IqCD26SnnnN/IQdSuLGYxpXz/EWkhm7N4dv9N16/9EFwcz+LY9nBG2Iv2DD7vUCsZAe4mX059BlpMYjLOHZTj+8/NuCd3Mcjh4bUvyW+zY06wgBdTcT3XHIeM7NkBnm9OgoJRcVMFJrEzEeO1a9NBodJlgWXSplCeQjRS02yQRmWKuWCHavQDuRmx5KIHZo3u3kuhgX4SBnNGXe0mWZK+8cQOHIljWJJWrSkyhp8iV4cE8/VzsF0iJW5vTtyEBnlgsAV6wbeiEayqERleC3woWp+QLLPgstJeMyvTp8qcAYBoPBZjRJ0HC3qFKaZe+eDCXynh1XI2ROHxdrSwSSfISkH7+pkm6WVcSB5wybuibN2MYT
+ bpmwq8n1
+ xSQ349cOIEBs5PzuXOLRF7o0mH3dPtlPfF+bKNdSi+VeYNeDAziMxLkYmIhOahpDA/iqhFiVDs0Ufm1mWLL9BajFuCNk6uRlv7s2gWB63Gf/1u3bZMwjAyQLGnEwVT+vBnRFlZVcBQ8CMzZvdm6qOuT4s2azwpOo03qgLK961LEk8rjqxYIuk5IAOp6eXkdPuFKOOyq+HiqklCwRuYih9j1njL4/VHSKGfof0ENMQ91lF+rTuXrSgBKYp0kcLSBHvH9yezEIxinaSqPh1OGvg2dKp8zJKiRnThA88/zbvBxzG7XM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,304 +94,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Extract __swapoff() from sys_swapoff() so the teardown logic can be
-shared, and make it work for file-less devices.
-
-Add xswap_destroy() to tear down a file-less xswap device by swap type,
-exposed via /sys/kernel/mm/xswap/destroy. Writing a swap type tears down
-that device; it requires CAP_SYS_ADMIN.
+xswap pages live only in zswap. Without zswap, swapout cannot free the page,
+but still takes a swap entry. So the device consumes swap entries without
+freeing memory. Fail to create a device when zswap is unavailable.
 
 Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
 ---
- mm/swapfile.c | 205 +++++++++++++++++++++++++++++++++++++-------------
- 1 file changed, 151 insertions(+), 54 deletions(-)
+ mm/swapfile.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 351c68bcd70b..cdcbcbaa6d87 100644
+index cdcbcbaa6d87..cac084bc72d6 100644
 --- a/mm/swapfile.c
 +++ b/mm/swapfile.c
-@@ -73,6 +73,7 @@ static int xswap_mapped_end(pte_t *pte, unsigned long addr, void *data);
- static void xswap_try_shrink(struct swap_info_struct *si);
+@@ -4439,6 +4439,10 @@ static int xswap_create(int prio)
+ 	if (prio != DEF_SWAP_PRIO && (prio < 0 || prio > SWAP_FLAG_PRIO_MASK))
+ 		return -EINVAL;
  
- static int xswap_create(int prio);
-+static int xswap_destroy(int type);
- 
- static ssize_t xswap_create_store(struct kobject *kobj,
- 				  struct kobj_attribute *attr,
-@@ -103,8 +104,35 @@ static ssize_t xswap_create_store(struct kobject *kobj,
- static struct kobj_attribute xswap_create_attr = __ATTR(create, 0200, NULL,
- 							xswap_create_store);
- 
-+static ssize_t xswap_destroy_store(struct kobject *kobj,
-+				   struct kobj_attribute *attr,
-+				   const char *buf, size_t count)
-+{
-+	unsigned long type;
-+	int err;
++	/* xswap has no backing store, it relies on zswap. */
++	if (!zswap_is_enabled())
++		return -EOPNOTSUPP;
 +
-+	if (!capable(CAP_SYS_ADMIN))
-+		return -EPERM;
-+
-+	err = kstrtoul(buf, 0, &type);
-+	if (err)
-+		return err;
-+	if (type >= MAX_SWAPFILES)
-+		return -EINVAL;
-+
-+	err = xswap_destroy(type);
-+	if (err)
-+		return err;
-+
-+	return count;
-+}
-+
-+static struct kobj_attribute xswap_destroy_attr = __ATTR(destroy, 0200, NULL,
-+							 xswap_destroy_store);
-+
- static struct attribute *xswap_attrs[] = {
- 	&xswap_create_attr.attr,
-+	&xswap_destroy_attr.attr,
- 	NULL,
- };
- 
-@@ -3399,65 +3427,44 @@ static void flush_percpu_swap_cluster(struct swap_info_struct *si)
- }
- 
- 
--SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
-+/*
-+ * Drop @p from the avail and active lists and undo its accounting.  The
-+ * caller must hold swap_lock and have checked that @p is WRITEOK and not
-+ * pinned for hibernation.
-+ *
-+ * Returns 0, or -ENOMEM with swap_lock still held.
-+ */
-+static int swap_info_remove(struct swap_info_struct *p)
- {
--	struct swap_info_struct *p = NULL;
--	struct file *swap_file, *victim;
--	struct address_space *mapping;
--	struct inode *inode;
--	int err, found = 0;
--
--	if (!capable(CAP_SYS_ADMIN))
--		return -EPERM;
--
--	BUG_ON(!current->mm);
--
--	CLASS(filename, pathname)(specialfile);
--	victim = file_open_name(pathname, O_RDWR|O_LARGEFILE, 0);
--	if (IS_ERR(victim))
--		return PTR_ERR(victim);
--
--	mapping = victim->f_mapping;
--	spin_lock(&swap_lock);
--	plist_for_each_entry(p, &swap_active_head, list) {
--		if (p->flags & SWP_WRITEOK) {
--			if (p->swap_file->f_mapping == mapping) {
--				found = 1;
--				break;
--			}
--		}
--	}
--	if (!found) {
--		err = -EINVAL;
--		spin_unlock(&swap_lock);
--		goto out_dput;
--	}
--
--	/* Refuse swapoff while the device is pinned for hibernation */
--	if (p->flags & SWP_HIBERNATION) {
--		err = -EBUSY;
--		spin_unlock(&swap_lock);
--		goto out_dput;
--	}
--
- 	if (!security_vm_enough_memory_mm(current->mm, p->pages))
- 		vm_unacct_memory(p->pages);
--	else {
--		err = -ENOMEM;
--		spin_unlock(&swap_lock);
--		goto out_dput;
--	}
-+	else
-+		return -ENOMEM;
-+
- 	spin_lock(&p->lock);
- 	del_from_avail_list(p, true);
- 	plist_del(&p->list, &swap_active_head);
- 	atomic_long_sub(p->pages, &nr_swap_pages);
- 	total_swap_pages -= p->pages;
- 	spin_unlock(&p->lock);
--	spin_unlock(&swap_lock);
-+	return 0;
-+}
-+
-+/* Common swap teardown after list removal; shared by sys_swapoff() and
-+ * xswap_destroy().
-+ */
-+static int __swapoff(struct swap_info_struct *p)
-+{
-+	struct file *swap_file = NULL;
-+	int err;
- 
- #ifdef CONFIG_XSWAP
--	if (p->flags & SWP_XSWAP)
-+	if (p->flags & SWP_XSWAP) {
- 		cancel_work_sync(&p->xswap_shrink_work);
-+		/* Wait out a shrink racing us from the sysfs write path. */
-+		mutex_lock(&p->xswap_lock);
-+		mutex_unlock(&p->xswap_lock);
-+	}
- #endif
- 
- 	wait_for_allocation(p);
-@@ -3469,7 +3476,7 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
- 	if (err) {
- 		/* re-insert swap space back into swap_list */
- 		reinsert_swap_info(p);
--		goto out_dput;
-+		return err;
- 	}
- 
- 	/*
-@@ -3509,15 +3516,21 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
- 	kfree(p->global_cluster);
- 	p->global_cluster = NULL;
- 	free_swap_cluster_info(p);
-+	/*
-+	 * The device is off swap_active_head and no longer WRITEOK, so no
-+	 * reader can observe these; clearing them here needs no lock.
-+	 */
- 	p->max = 0;
- 	p->cluster_info = NULL;
- 
--	inode = mapping->host;
-+	if (swap_file) {
-+		struct inode *inode = swap_file->f_mapping->host;
- 
--	inode_lock(inode);
--	inode->i_flags &= ~S_SWAPFILE;
--	inode_unlock(inode);
--	filp_close(swap_file, NULL);
-+		inode_lock(inode);
-+		inode->i_flags &= ~S_SWAPFILE;
-+		inode_unlock(inode);
-+		filp_close(swap_file, NULL);
-+	}
- 
- 	/*
- 	 * Clear the SWP_USED flag after all resources are freed so that swapon
-@@ -3528,10 +3541,61 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
- 	p->flags = 0;
- 	spin_unlock(&swap_lock);
- 
--	err = 0;
- 	atomic_inc(&proc_poll_event);
- 	wake_up_interruptible(&proc_poll_wait);
- 
-+	return 0;
-+}
-+
-+SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
-+{
-+	struct swap_info_struct *p = NULL;
-+	struct file *victim;
-+	struct address_space *mapping;
-+	int err, found = 0;
-+
-+	if (!capable(CAP_SYS_ADMIN))
-+		return -EPERM;
-+
-+	BUG_ON(!current->mm);
-+
-+	CLASS(filename, pathname)(specialfile);
-+	victim = file_open_name(pathname, O_RDWR|O_LARGEFILE, 0);
-+	if (IS_ERR(victim))
-+		return PTR_ERR(victim);
-+
-+	mapping = victim->f_mapping;
-+	spin_lock(&swap_lock);
-+	plist_for_each_entry(p, &swap_active_head, list) {
-+		if (p->flags & SWP_WRITEOK) {
-+			if (p->swap_file && p->swap_file->f_mapping == mapping) {
-+				found = 1;
-+				break;
-+			}
-+		}
-+	}
-+	if (!found) {
-+		err = -EINVAL;
-+		spin_unlock(&swap_lock);
-+		goto out_dput;
-+	}
-+
-+	/* Refuse swapoff while the device is pinned for hibernation */
-+	if (p->flags & SWP_HIBERNATION) {
-+		err = -EBUSY;
-+		spin_unlock(&swap_lock);
-+		goto out_dput;
-+	}
-+
-+	err = swap_info_remove(p);
-+	if (err) {
-+		spin_unlock(&swap_lock);
-+		goto out_dput;
-+	}
-+	spin_unlock(&swap_lock);
-+
-+	err = __swapoff(p);
-+
- out_dput:
- 	filp_close(victim, NULL);
- 	return err;
-@@ -4128,6 +4192,10 @@ static void xswap_try_shrink(struct swap_info_struct *si)
- 
- 	mutex_lock(&si->xswap_lock);
- 
-+	/* A swapoff raced us and is about to walk this mapping. */
-+	if (!(READ_ONCE(si->flags) & SWP_WRITEOK))
-+		goto out_unlock;
-+
- 	nr_mapped = READ_ONCE(si->nr_clusters_mapped);
- 	if (nr_mapped <= 1)	/* keep cluster 0 */
- 		goto out_unlock;
-@@ -4435,6 +4503,35 @@ static int xswap_create(int prio)
- 	spin_unlock(&swap_lock);
- 	return error;
- }
-+
-+/* Tear down a file-less xswap device by its swap type. */
-+static int xswap_destroy(int type)
-+{
-+	struct swap_info_struct *p;
-+	int err;
-+
-+	p = swap_type_to_info(type);
-+	if (!p)
-+		return -EINVAL;
-+
-+	spin_lock(&swap_lock);
-+	if (!(p->flags & SWP_WRITEOK) || !(p->flags & SWP_XSWAP)) {
-+		spin_unlock(&swap_lock);
-+		return -EINVAL;
-+	}
-+	/* Refuse swapoff while the device is pinned for hibernation */
-+	if (p->flags & SWP_HIBERNATION) {
-+		spin_unlock(&swap_lock);
-+		return -EBUSY;
-+	}
-+
-+	err = swap_info_remove(p);
-+	spin_unlock(&swap_lock);
-+	if (err)
-+		return err;
-+
-+	return __swapoff(p);
-+}
- #endif /* CONFIG_XSWAP */
- 
- SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+ 	si = alloc_swap_info();
+ 	if (IS_ERR(si))
+ 		return PTR_ERR(si);
 -- 
 2.54.0
 
