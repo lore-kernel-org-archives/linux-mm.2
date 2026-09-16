@@ -4,147 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01C05C88E7F
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 18:31:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B606BC88E7F
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 18:34:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 047CB6B0092; Wed, 16 Sep 2026 14:31:50 -0400 (EDT)
+	id 6DB916B0088; Wed, 16 Sep 2026 14:34:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3ACD6B0093; Wed, 16 Sep 2026 14:31:49 -0400 (EDT)
+	id 6B3C76B008C; Wed, 16 Sep 2026 14:34:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E28C36B0095; Wed, 16 Sep 2026 14:31:49 -0400 (EDT)
+	id 5CAA86B0093; Wed, 16 Sep 2026 14:34:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B2C706B0092
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:31:49 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id EB7DA14080C
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 18:31:48 +0000 (UTC)
-X-FDA: 85220469096.19.D21E3C0
-Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com [74.125.228.140])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 06BD74000C
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 18:31:46 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=dvG8jVh+;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf01.hostedemail.com: domain of dmatlack@google.com designates 74.125.228.140 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=dvG8jVh+;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf01.hostedemail.com: domain of dmatlack@google.com designates 74.125.228.140 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789583507;
-	b=7tdXcdAgjwFRIrZdNF+/KsUHPWzFmEfzVokQdX7bVDP8A7jIMpzMJ992pYCff0AoUHEcnq
-	SjbMfB38mzPke1JLtlPBKbgNFkS0yECEkK42r2FmB4s0dcfY4um2vVWQTx3XXRXr1hkFMp
-	jTbdcGuwVUUFkuEQRVnG4v7Tyj02IcI=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789583507;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2DE796B0088
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:34:43 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 72DCB407E1
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 18:34:42 +0000 (UTC)
+X-FDA: 85220476404.03.B748B83
+Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 2A3A81C0006
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 18:34:39 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf18.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789583680;
+	b=0dtVOlp81uJmtEOxoDxA9q1FBWA4BMbwK0iwXnep0frAC1k8SqCBEzdx0SwIwGmMyhbJHV
+	xuyknX1jpWKX4Wy6AE+EWh7v58Q9lWx6QcLCtqCnCFMdbLVsaexLh4OusJjCHNztaaZ0Bv
+	c+94G16RylFYXlIW1HlCpDlyXokS8cI=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf18.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789583680;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c2N3q/7Juy2glVDKTIb/78eRKEUlwWWYByVLZXDb0dM=;
-	b=4dHmQ3BWSjTSGSJi69IkeVaXIzp8ba6Yts1hKHSHaabmqQ9aJ+0P5HQ7zVH1BcVU0zdDWZ
-	OX22gslSZlZZawfMrAgBtSR91U+BPfoxrcqjeKkFHcVujzLlzCDOlkKvl2Zxaek+VYGADn
-	wnrvmD7L3+5E0BYHo7gE8m1V0+fRUhI=
-Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c254f6c7a4aso8049366b.0
-        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:31:46 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789583505; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ejRhSd3q2+4UmCNy0NTrBdcJGVY3PtyBpVL1qAFKr/mLH97uJGgpSmLS9lNDcUzxwa
-         WIl2m/GvICIKXAdKswkngMojFojXKAk+C2XCU3GMyytHB91RxnZ3DcE3rfWOBr00cXPW
-         Jh9dBnLvCXlpI/4Et4xGVED1kGnddww0ZAgj5445SmgyO6T67IrJchjzBaMY0EJD8uDf
-         SNOc48sXp5rEgMPOc41EEYpiics7up35ygFvJK9PNgxMwjNYgswBYW8O8jEnUDeDhtdh
-         BNziAf9jU7sgrx+xYmyqMf/kzRFzHFUMkLxIpsHqoQ7bs06afXulRtEZVW4ySqqle5c8
-         7u+g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=c2N3q/7Juy2glVDKTIb/78eRKEUlwWWYByVLZXDb0dM=;
-        fh=cYzPXTXZ1w2kwCG8rOo7mO2aY523QW72qPtCPMaxMFs=;
-        b=aJ51HWDZUzQPuVsT5cf374RZlENzXk68SH9T57xYiy46CFpJkDtRGoIGuE6fplGPme
-         wjslyjrGJxLWI1PcMMrg+T6+j8NzZj4w6eJDP6105cIiBIGOp3vdwXD8l7p/5va7hm5v
-         8FwK/CEjw6t+ZfSTUCQSbau0Jamrj2gId+IgSRprjuk7y0CkHZOkottTIb228oVAYKjc
-         N4KqsacPGvLJCscIRLC2oy3D9VkWKLTgbfBPZBbVuZq6QRXIjzwdw4lZ9HE/GVVLs1bQ
-         SJ3IVBc6W/uqOt9YuSy1i0yK/bPZucucN4ahXJ1FkxLfQ55zY8orxmYL1hLsGLwQameN
-         fp7A==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789583505; x=1790188305; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=c2N3q/7Juy2glVDKTIb/78eRKEUlwWWYByVLZXDb0dM=;
-        b=dvG8jVh+3hovsDdQMMmsc0PGuLsjjRMC2AHpafaLTjZ5NIkLUKKvH77yZ+8ayOziCp
-         qeHN9AS4CfpHIcennL2ZQ+Xo4Fbuqh5OMZCj43XPhg5dLnvcHHPhapmPepU7SsqBb5hc
-         quZQNpombZ20eMpKwVIz0SP2FTbwDhX2hF6T7tfgMBxXsWF6IZYT8OLKbYqSmWjkBrQl
-         oDgcQwBSgzNSlTCfyW7waMg6mDYqMeY+V2LXqoGrTu7lJ2jcY7LF5GwLXrs2vnhRdHil
-         ZFa6TF0TavZyxC+qdnyNdofnm80Dvnr09epJFYgvAmEyA72Y1iO8n5ytfTtymkK3B5Im
-         UbTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789583505; x=1790188305;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=c2N3q/7Juy2glVDKTIb/78eRKEUlwWWYByVLZXDb0dM=;
-        b=KyW8gPzoNIG0H4AxFHG5212nuP0HWx2sMSgHqZ+SZ4u1IMYO0cC4eghzf7mrEWiVma
-         +jyNNBH08KxI9GjcmSeqPm7jAJ0DYa6hVXe7z+zZu9UsVqD9WrgPQyKpO3LNvYePRFAL
-         NMxhH1LYJvO1OlKjF2YpyVGVwZQgodkZPNMiVW0RJ277MEWIIN6ZMMhgjmDmP52Z1VjD
-         qdFLqMovSIGWP6+uho/SUj3fxPyAWe0RPFRmZH+QI5ovLtnR/tcvo+QHljkrkzLqwnIh
-         gWqItGW1vsCe8qvcsjfkuodKJ9bunfTSjTfrBoFexUbN5yRwOXs61Xuqyo1AirXGG9q/
-         r80g==
-X-Forwarded-Encrypted: i=1; AKwUvBy03+9YIrK4nfo1nEPZwsk1m8sNPc/VZswPkJENvvmBQDmJlgh/en6NiCvtSW6J3AZifLHHPn/C7g==@kvack.org
-X-Gm-Message-State: AFuF++lTMdQzXdlXGDW+8yypybYBJmcJCfp0Fdj2L0qvywnywHggC4PL
-	x2AUu2baGlMWfkuY9sRVURsoo9PMRfynmVJSVaJ2dDv5UR9uPgK0hLM48ZkmoRtBVkLI6BhKEy6
-	PWlo7+V1NBQBpsVYwfQxs03VYXNrvHWj5Oz17rXoJ
-X-Gm-Gg: AYBFou0sYEK0hlh0iyt86Y0VLkRKXSWRCWl971lTdjVWxi0iaTKX+raKtyMMA1spa3i
-	xx+uoA4fZb3eRLahvxvU3qnrfvz0HlpX13b+SLzDNvh6COB5w69YKs2vIKnGoKJwoGGJYQyABPL
-	3saENhio5ZhWysW3t9W9MFB4vgPnE6KQ4iqYXF/uob77IFlUS9DNwsADeHYtLoCHqIhkVbmr5wU
-	gCUhKg1WSWdVDLwm/Cs91aUkCWK7QbK03ApH2HPthQ6NMIiwuoUMKDkqunCkFOCWygTeDRMPRao
-	IwHScug/lxYo/Y7uNY7OxboIUY59EP9BzhpZs4JupyJjqTa1gKyAyo9Eb62upObNoPyTFDJlwlx
-	fW6ac2mUvG+Y=
-X-Received: by 2002:a17:907:7287:b0:c26:1649:47af with SMTP id
- a640c23a62f3a-c29e5308ae2mr282051266b.37.1789583504840; Wed, 16 Sep 2026
- 11:31:44 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mDu+I8ZQNrJOrZW50lylvCYc5vXsbZjr9CEmyRt8TXQ=;
+	b=woS0baKychLL9BTNAfT/csdwOKXZT2SBw4IGjJ3azp/ManVCIjzwJOXyz++VXbTQAHeMDU
+	02coWY3wSTbrSvakKwgtkcUrBOP4bDzXH3tMWEKNt9gWuiBiL75rMoam0QcAhhFu0VYzUg
+	2smr2bMMVW69reKKAl3MTQlSYL3O0kU=
+Received: from unknown (HELO yjaykim-PowerEdge-T330.lge.net) (10.177.112.156)
+	by 156.147.51.103 with ESMTP; 17 Sep 2026 03:34:37 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+From: Youngjun Park <youngjun.park@lge.com>
+To: akpm@linux-foundation.org
+Cc: chrisl@kernel.org,
+	youngjun.park@lge.com,
+	linux-mm@kvack.org,
+	cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kasong@tencent.com,
+	hannes@cmpxchg.org,
+	mhocko@kernel.org,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	muchun.song@linux.dev,
+	shikemeng@huaweicloud.com,
+	baoquan.he@linux.dev,
+	baohua@kernel.org,
+	yosry@kernel.org,
+	joshua.hahnjy@gmail.com,
+	taejoon.song@lge.com,
+	her0gyugyu@gmail.com,
+	lianux.mm@gmail.com
+Subject: [RFC PATCH v11 2/4] mm: swap: allocate swap slots from swap tiers
+Date: Thu, 17 Sep 2026 03:34:35 +0900
+Message-Id: <20260916183437.2946306-3-youngjun.park@lge.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260916183437.2946306-1-youngjun.park@lge.com>
+References: <20260916183437.2946306-1-youngjun.park@lge.com>
 MIME-Version: 1.0
-References: <20260728221007.2098560-1-dmatlack@google.com> <20260728221007.2098560-4-dmatlack@google.com>
- <e099cbaf-3185-4c39-ae36-7f0e074ebff7@linux.dev> <CALzav=eX0gVrbWCnYGwfqPHUkoVxqdr2nw3Tx6Aqze0XOcuwzA@mail.gmail.com>
- <2vxzcxud6ol3.fsf@kernel.org>
-In-Reply-To: <2vxzcxud6ol3.fsf@kernel.org>
-From: David Matlack <dmatlack@google.com>
-Date: Wed, 16 Sep 2026 11:31:17 -0700
-X-Gm-Features: AcwNN1Xd8nWTyJ5g1jf7rTHS0mmvfUGKUHwbATk6Q8e84nhTP92-8_DCKmvtasY
-Message-ID: <CALzav=eBXsaZKNv1SNtuT9F6aX_2TS3u5kUtko5WMv2NWt3e+A@mail.gmail.com>
-Subject: Re: [PATCH v8 03/12] PCI: liveupdate: Track incoming preserved PCI devices
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Zhu Yanjun <yanjun.zhu@linux.dev>, kexec@lists.infradead.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-pci@vger.kernel.org, Adithya Jayachandran <ajayachandra@nvidia.com>, 
-	Alexander Graf <graf@amazon.com>, Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Chris Li <chrisl@kernel.org>, David Rientjes <rientjes@google.com>, 
-	Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, Leon Romanovsky <leonro@nvidia.com>, 
-	Lukas Wunner <lukas@wunner.de>, Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pranjal Shrivastava <praan@google.com>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>, 
-	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 06BD74000C
-X-Stat-Signature: zzhuk7ggpkucnqfttk9gmbkyhaco18cm
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789583506-910773
-X-HE-Meta: U2FsdGVkX1/FjIWF3h0j5fi7mTkXyuGH5I2QTJMxmGxT/kfBgSaJPFXiNWLv6UQ1igiQJx5KQonNjY01dSw4DC9dYWsBoEz/UVkg/jBUb1MWNv48JiuS+OF6GTzuidGZZ5kZ0dMsykz+WKzbz3eeuv8D8keuO9nlwTv7FS5tfXs+FlGlgbp5HV1QBCF/QVGQGrEZkyg9yem/tHj/bUEL1FFOoBL8v4hbFQDRoowR0GTpUF3nU9SDNwgmD0s1kd9N6UzF7nrt8vsk1d7EKMcmsMtiGLoEUbSdoQimcVq8+j89NVITxYX2izHTKQ5akwhlTllDNpcEUVKmATJfxbMb58VMLeADFduiqwlqOvlj8S3TEspqtNm2vfRXq7V3zRy/V9+XPoXrvVoVcjf69GqBD6vyHMam5/3Q7kX/jJZtSv/unild2ollp4JIbaBZqvVUDhU+gDMsr5LK7RhhJRRHLprmEojjHzldjvriTXBKXlkUmkBZm8hptWbX/FMQgp4rR7GZzpJszOIzPe3emffM8gmPI8xnMWrGV0Y+6FoYrNNRVTSkhLgpg1gIlEQx7nY2jWySMXHBXUiYggch4zLWlo23NP3rfMeDmBy5HuiBHyt39wrbt/A4ttafavBr9L3cCjl0rRMUF1OSJC7On2qCoYsbTZZEhjSs+5kkIpgL7bpP/KHNWAYIEnczXLXRNevWC0J6gHX1YW22j6qhiuKkjsutEW4gp3PRneI4jU3eMpgaAMStB78DCRO6LuwMJ98v4/gjwp26hp7hHIQ4z5Vhtg2q214Z5BFmUWfoSdZO1Kt+je/ccAyaYPZ7jKZB4nuIoQdjg0nZVRNuY+UG83zfofmyq1J77Iz8+I0nB/mzCc+Qs3x92Jq4kgLiUMIMlpIn1THp+JOJ85S5alXEja2TQG9vPavxdeHzF3AbCmgqbs7Fy3oGcgs4kTDHtok2zcpkiQ/5zhA52524BL36URl
- fpEU820t
- 5p7M5dihQKXoKXqWMmayAdtA/zeyuwxXHantMuVjNeqQx+tgDeI60Ea2crwmiIHkobpnJyntyXalitJ0cnBTaJqkqKTVpzQ/8T5kNV0jdAUwCpyktC6R0KAxVx/sqPYlD6zTYUAQhiYJtdNT3tbl7P0uwHgshKZ8V5izIsReNKJa6RCLjzWlL91dOI8jacujB8MDeTLy/Giv6nv2Srn+7jsIf9rlho52g49Gskgdz4Gof0WWtf3SLt14AGwWgpC1I/M1t
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 2A3A81C0006
+X-Stat-Signature: fyurbffykhxix3z374sfuwxqyph1p46k
+X-HE-Tag: 1789583679-916096
+X-HE-Meta: U2FsdGVkX1/ac6s+CPiapaQJqB19D755yvijkxQ9lZZ6sFKCLdLUSLxS6VL+q6ooUw+SCFFykNFjBDatRuejdCFHHGK0xpRmt5/uKICx45LlpNaUvKudHyngWMRkWMobC8DyOa5tp3Jrvshp0Q+pRspEqg057ALOFiViqJA/xj7/C+Ir6285ECXnWriTTXqnhstqNYQlCnJitqraBjV1irSSWoKKCaGzMuDF2FX2hlogLwkNcD7A3TNNzJaDO3xzguxKBRf0isNZpDrv/S4LEB0z+alkUWoaWJkzD+n5eO3SyluSJLdteRTv2ieOjUb4ZYU/xpRH5gy/2KLq3RhLwjZUjiay2DrSV+WCJiKyLPSIyWl9YnHt10OjYggta39C1Itiyf7hfkBAA7A1/mYHGz4NPMpnk13Da3VXEN5H4wzxNn5q42QyvDMxlPm+6iSO3d1YjD2nqqG18pyntETidXpE+oSYs7a479DZg3lpfv75HcCQp8TnAFYMkJIuPFTVld6X9PZnWpitBRJpwYu2TIqkKKgXoemhmfZgconTjOq4SDiHDgtnz9bK/OIbF6fdxDtrTirngvuE9zfeBtPcuz9p5/c9NCFfzl1c7sjmoci0SbrUGDcfTHXqli8S/YmKYHidyQRIJB7nsYWakTfoTZzEGwNtwJLTmPeMKzxPJqcHe2i3nVvLiwvwqi3yPEgpGhKXz0IUJA5uW+pUu/b7QY32CGhxFU31hy1h2dQ96q26gY3eNVDqSDwLFmDGiiqUsAi2H9V+BkoQ/gD19sQVk5u2pyrw4Ws9P1WbqvyJvJmy3lOIGmQjFEIDgUoWyLNP9ehNhiwaC/jpDXu1pyC2LyFYNZum0Su4AfQeL0l1v3gSTwsqqscJlsMaGBQBVtejIGvYv1BJHp961Rz/hK89jJ4nQF2ltJpca9VqoauU8rIZpcEZTA6Z8/MqLetcMa3Ho/vliHVtw1TPbqTenss
+ EkqXgCib
+ WXzclLR9wF33tD6Z1DsRGFTVV80tep8BLP4Z69heYNpEsKoXHUZl5r+OmWT7v+IvLDKYoXsc79vUE7rrIeEhcm9LfHsKaLbg6KUNdmDz04mYMK6Thj0MfWmxXeAJWcIvUZrGHKJYJD0K+r43Bf7b/oFquHTZJYnBXpsM88PXwk8/iCxwK6NrAn5p+FlRoG+vlG4r/Ic0kLL12OfHcwQou/93DgIEJpJJpPdojPncZtggannfbEaJfE1XzlShHZ0nAiOqoU886/8CYbl0/X1KHFjolrQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,70 +96,267 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 16, 2026 at 11:25=E2=80=AFAM Pratyush Yadav <pratyush@kernel.or=
-g> wrote:
->
-> On Wed, Sep 16 2026, David Matlack wrote:
->
-> > On Tue, Sep 15, 2026 at 8:31=E2=80=AFPM Zhu Yanjun <yanjun.zhu@linux.de=
-v> wrote:
-> >> =E5=9C=A8 2026/7/28 15:09, David Matlack =E5=86=99=E9=81=93:
-> >
-> >> > CONFIG_64BIT is now required to enable CONFIG_PCI_LIVEUPDATE so that=
- the
-> >> > domain and bdf can be guaranteed to fit in an unsigned long and be u=
-sed
-> >> > as the xarray key.
-> >
-> >> > diff --git a/drivers/pci/Kconfig b/drivers/pci/Kconfig
-> >> > index 3781e2b5f095..8af20f558086 100644
-> >> > --- a/drivers/pci/Kconfig
-> >> > +++ b/drivers/pci/Kconfig
-> >> > @@ -273,7 +273,7 @@ config VGA_ARB_MAX_GPUS
-> >> >
-> >> >   config PCI_LIVEUPDATE
-> >> >       bool "PCI Live Update Support"
-> >> > -     depends on PCI && LIVEUPDATE
-> >> > +     depends on PCI && LIVEUPDATE && 64BIT
-> >>
-> >> One question about adding 64BIT to the dependency:
-> >>
-> >> As I understand it, enabling CONFIG_64BIT essentially means that we ar=
-e
-> >> building a 64-bit kernel, and a 32-bit architecture cannot normally
-> >> enable CONFIG_64BIT.
-> >>
-> >> If that is the case, would depends on 64BIT be necessary here? Or is P=
-CI
-> >> Live Update already inherently restricted to 64-bit architectures by t=
-he
-> >> existing LIVEUPDATE/architecture configuration, so that this dependenc=
-y
-> >> would be redundant?
-> >>
-> >> If this problem has already discussed, I am very sorry about this.
-> >
-> > The necessity is that the PCI core needs to store more than 32-bits in
-> > the unsigned long xarray key (see the snippet above). The dependency
-> > on CONFIG_64BIT ensures that unsigned long is big enough. We could
-> > probably remove the dependency but I would rather wait until someone
-> > with a 32-bit build has a real use-case for using PCI_LIVEUPDATE
-> > before putting any effort into it.
->
-> KHO or live update themselves don't support 32-bit platforms and there
-> are no plans to do so either. So I don't think you even need to have a
-> dependency on 64BIT in PCI_LIVEUPDATE. Only 64 bit architectures define
-> ARCH_SUPPORTS_KEXEC_HANDOVER, so PCI_LIVEUPDATE and others indirectly
-> inherit the dependency.
->
-> If you'd like to be extra safe, then probably you should add a
-> dependency to 64BIT in KEXEC_HANDOVER directly. Though I think that can
-> be a separate patch independent from this series.
+The slow allocation path walks swap_avail_head, one plist of every
+available swap device, ordered by priority.
 
-It should be in both places then. PCI_LIVEUPDATE explicitly requires
-64BIT for its own use of unsigned long, so it should have an explicit
-dependency. If KEXEC_HANDOVER requires 64-bit for its own specific
-purposes, then it should have an explicit Kconfig dependency as well.
-That way if and when someone wants to add 32-bit support we know
-exactly which configs need to add support.
+Give each tier its own list of available devices instead. The slow path
+now walks the tiers in order, and walks each tier's plist as before.
+__folio_throttle_swaprate() walks them the same way.
+
+swap_avail_lock still protects these lists. The tier list changes under
+it too, so the walk can go on after it drops the lock, as long as its
+tier is still there.
+
+This is the groundwork for the per-priority allocation queue series from
+Kairui and Lian [1]. That series can move onto the per-tier device lists
+one tier at a time.
+
+[1] https://lore.kernel.org/linux-mm/20260829-swap-pcp-priq-v2-0-68d3d925578c@gmail.com/
+
+Assisted-by: Claude:claude-opus-5
+Signed-off-by: Youngjun Park <youngjun.park@lge.com>
+---
+ include/linux/swap.h |  2 +-
+ mm/swap.h            |  1 +
+ mm/swap_tier.c       | 17 +++++++++-
+ mm/swap_tier.h       |  3 ++
+ mm/swapfile.c        | 78 ++++++++++++++++++++++++--------------------
+ 5 files changed, 64 insertions(+), 37 deletions(-)
+
+diff --git a/include/linux/swap.h b/include/linux/swap.h
+index 22ccb4b5801e..df69c2dd434a 100644
+--- a/include/linux/swap.h
++++ b/include/linux/swap.h
+@@ -268,7 +268,7 @@ struct swap_info_struct {
+ 	struct work_struct discard_work; /* discard worker */
+ 	struct work_struct reclaim_work; /* reclaim worker */
+ 	struct list_head discard_clusters; /* discard clusters list */
+-	struct plist_node avail_list;   /* entry in swap_avail_head */
++	struct plist_node avail_list;   /* entry in its tier's avail list */
+ 	const struct swap_ops *ops;
+ };
+ 
+diff --git a/mm/swap.h b/mm/swap.h
+index 4de6b9b0f261..916c0ad128f7 100644
+--- a/mm/swap.h
++++ b/mm/swap.h
+@@ -37,6 +37,7 @@ struct swap_io_ctx;
+ #endif
+ 
+ extern spinlock_t swap_lock;
++extern spinlock_t swap_avail_lock;
+ extern struct swap_info_struct *swap_info[];
+ 
+ /*
+diff --git a/mm/swap_tier.c b/mm/swap_tier.c
+index 8ed1427cee09..286f319fb125 100644
+--- a/mm/swap_tier.c
++++ b/mm/swap_tier.c
+@@ -65,6 +65,7 @@ void swap_tiers_init(void)
+ 
+ 	for_each_tier(tier, idx) {
+ 		plist_head_init(&tier->active_head);
++		plist_head_init(&tier->avail_head);
+ 		INIT_LIST_HEAD(&tier->list);
+ 		swap_tier_inactivate(tier);
+ 	}
+@@ -92,11 +93,14 @@ void swap_tiers_assign_dev(struct swap_info_struct *swp)
+ 
+ 	lockdep_assert_held(&swap_lock);
+ 
++	/* The allocator walks the tiers under swap_avail_lock. */
++	spin_lock(&swap_avail_lock);
+ 	tier = swap_tier_lookup(swp->prio);
+ 	if (!tier) {
+ 		tier = swap_tier_prepare(swp->prio);
+ 		swap_tier_activate(tier);
+ 	}
++	spin_unlock(&swap_avail_lock);
+ 
+ 	plist_add(&swp->list, &tier->active_head);
+ }
+@@ -109,6 +113,17 @@ void swap_tiers_remove_dev(struct swap_info_struct *swp)
+ 
+ 	tier = swap_tier_lookup(swp->prio);
+ 	plist_del(&swp->list, &tier->active_head);
+-	if (plist_head_empty(&tier->active_head))
++	if (plist_head_empty(&tier->active_head)) {
++		spin_lock(&swap_avail_lock);
+ 		swap_tier_inactivate(tier);
++		spin_unlock(&swap_avail_lock);
++	}
++}
++
++/* The avail list of the tier @swp belongs to. */
++struct plist_head *swap_tiers_avail_head(struct swap_info_struct *swp)
++{
++	lockdep_assert_held(&swap_avail_lock);
++
++	return &swap_tier_lookup(swp->prio)->avail_head;
+ }
+diff --git a/mm/swap_tier.h b/mm/swap_tier.h
+index 3dce716d23f6..c4347c28d8f1 100644
+--- a/mm/swap_tier.h
++++ b/mm/swap_tier.h
+@@ -14,11 +14,13 @@ struct swap_info_struct;
+  *
+  * @prio: priority of the swap devices in the tier.
+  * @active_head: swap devices in the tier.
++ * @avail_head: available swap devices in the tier.
+  * @list: linkage into swap_tier_active_list or swap_tier_inactive_list.
+  */
+ struct swap_tier {
+ 	short prio;
+ 	struct plist_head active_head;
++	struct plist_head avail_head;
+ 	struct list_head list;
+ };
+ 
+@@ -33,5 +35,6 @@ void swap_tiers_init(void);
+ /* Tier assignment */
+ void swap_tiers_assign_dev(struct swap_info_struct *swp);
+ void swap_tiers_remove_dev(struct swap_info_struct *swp);
++struct plist_head *swap_tiers_avail_head(struct swap_info_struct *swp);
+ 
+ #endif /* _SWAP_TIER_H */
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 8201ae779833..e9d142c0655b 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -85,8 +85,8 @@ static const char Bad_file[] = "Bad swap file entry ";
+ static const char Bad_offset[] = "Bad swap offset entry ";
+ 
+ /*
+- * all available (active, not full) swap_info_structs
+- * protected with swap_avail_lock, ordered by priority.
++ * all available (active, not full) swap_info_structs are on the
++ * avail list of their swap tier, protected with swap_avail_lock.
+  * This is used by folio_alloc_swap() instead of the active lists of
+  * the swap tiers because those include all swap_info_structs,
+  * but folio_alloc_swap() doesn't need to look at full ones.
+@@ -96,8 +96,7 @@ static const char Bad_offset[] = "Bad swap offset entry ";
+  * is held and the locking order requires swap_lock to be taken
+  * before any swap_info_struct->lock.
+  */
+-static PLIST_HEAD(swap_avail_head);
+-static DEFINE_SPINLOCK(swap_avail_lock);
++DEFINE_SPINLOCK(swap_avail_lock);
+ 
+ struct swap_info_struct *swap_info[MAX_SWAPFILES];
+ 
+@@ -1226,7 +1225,7 @@ static void del_from_avail_list(struct swap_info_struct *si, bool swapoff)
+ 			goto skip;
+ 	}
+ 
+-	plist_del(&si->avail_list, &swap_avail_head);
++	plist_del(&si->avail_list, swap_tiers_avail_head(si));
+ 
+ skip:
+ 	spin_unlock(&swap_avail_lock);
+@@ -1267,7 +1266,7 @@ static void add_to_avail_list(struct swap_info_struct *si, bool swapon)
+ 			goto skip;
+ 	}
+ 
+-	plist_add(&si->avail_list, &swap_avail_head);
++	plist_add(&si->avail_list, swap_tiers_avail_head(si));
+ 
+ skip:
+ 	spin_unlock(&swap_avail_lock);
+@@ -1398,35 +1397,40 @@ static bool swap_alloc_fast(struct folio *folio)
+ static void swap_alloc_slow(struct folio *folio)
+ {
+ 	struct swap_info_struct *si, *next;
++	struct swap_tier *tier;
++	short prio;
+ 
+ 	spin_lock(&swap_avail_lock);
+ start_over:
+-	plist_for_each_entry_safe(si, next, &swap_avail_head, avail_list) {
+-		/* Rotate the device and switch to a new cluster */
+-		plist_requeue(&si->avail_list, &swap_avail_head);
+-		spin_unlock(&swap_avail_lock);
+-		if (get_swap_device_info(si)) {
+-			cluster_alloc_swap_entry(si, folio);
+-			put_swap_device(si);
+-			if (folio_test_swapcache(folio))
+-				return;
+-			if (folio_test_large(folio))
+-				return;
+-		}
++	for_each_active_tier(tier) {
++		prio = tier->prio;
++		plist_for_each_entry_safe(si, next, &tier->avail_head, avail_list) {
++			/* Rotate the device and switch to a new cluster */
++			plist_requeue(&si->avail_list, &tier->avail_head);
++			spin_unlock(&swap_avail_lock);
++			if (get_swap_device_info(si)) {
++				cluster_alloc_swap_entry(si, folio);
++				put_swap_device(si);
++				if (folio_test_swapcache(folio))
++					return;
++				if (folio_test_large(folio))
++					return;
++			}
+ 
+-		spin_lock(&swap_avail_lock);
+-		/*
+-		 * if we got here, it's likely that si was almost full before,
+-		 * multiple callers probably all tried to get a page from the
+-		 * same si and it filled up before we could get one; or, the si
+-		 * filled up between us dropping swap_avail_lock.
+-		 * Since we dropped the swap_avail_lock, the swap_avail_list
+-		 * may have been modified; so if next is still in the
+-		 * swap_avail_head list then try it, otherwise start over if we
+-		 * have not gotten any slots.
+-		 */
+-		if (plist_node_empty(&next->avail_list))
+-			goto start_over;
++			spin_lock(&swap_avail_lock);
++			/*
++			 * if we got here, it's likely that si was almost full before,
++			 * multiple callers probably all tried to get a page from the
++			 * same si and it filled up before we could get one; or, the si
++			 * filled up between us dropping swap_avail_lock.
++			 * Since we dropped the swap_avail_lock, the swap_avail_list
++			 * may have been modified; so if next is still in the
++			 * tier's avail list and the tier is still there then try it,
++			 * otherwise start over if we have not gotten any slots.
++			 */
++			if (plist_node_empty(&next->avail_list) || tier->prio != prio)
++				goto start_over;
++		}
+ 	}
+ 	spin_unlock(&swap_avail_lock);
+ }
+@@ -4013,6 +4017,7 @@ static bool __has_usable_swap(void)
+ void __folio_throttle_swaprate(struct folio *folio, gfp_t gfp)
+ {
+ 	struct swap_info_struct *si;
++	struct swap_tier *tier;
+ 
+ 	if (!(gfp & __GFP_IO))
+ 		return;
+@@ -4031,12 +4036,15 @@ void __folio_throttle_swaprate(struct folio *folio, gfp_t gfp)
+ 		return;
+ 
+ 	spin_lock(&swap_avail_lock);
+-	plist_for_each_entry(si, &swap_avail_head, avail_list) {
+-		if (si->bdev) {
+-			blkcg_schedule_throttle(si->bdev->bd_disk, true);
+-			break;
++	for_each_active_tier(tier) {
++		plist_for_each_entry(si, &tier->avail_head, avail_list) {
++			if (si->bdev) {
++				blkcg_schedule_throttle(si->bdev->bd_disk, true);
++				goto out;
++			}
+ 		}
+ 	}
++out:
+ 	spin_unlock(&swap_avail_lock);
+ }
+ #endif
+-- 
+2.48.1
+
 
