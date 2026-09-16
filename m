@@ -4,80 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9555CC982C4
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 14:30:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F281C982C4
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 14:30:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D0096B0088; Wed, 16 Sep 2026 10:30:14 -0400 (EDT)
+	id 7AB276B008C; Wed, 16 Sep 2026 10:30:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 75B396B008C; Wed, 16 Sep 2026 10:30:14 -0400 (EDT)
+	id 75B736B0092; Wed, 16 Sep 2026 10:30:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6229A6B0092; Wed, 16 Sep 2026 10:30:14 -0400 (EDT)
+	id 64AC46B0093; Wed, 16 Sep 2026 10:30:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3FEAD6B0088
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 10:30:14 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id ACF5180565
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:30:13 +0000 (UTC)
-X-FDA: 85219860306.15.E175A06
+	by kanga.kvack.org (Postfix) with ESMTP id 4455F6B008C
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 10:30:57 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E1094806E8
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:30:56 +0000 (UTC)
+X-FDA: 85219862112.05.9DAB70D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id D1BA240009
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:30:11 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZbOE9AMC;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf19.hostedemail.com (Postfix) with ESMTP id 0FE031A0007
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:30:54 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZMX7W14Y;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789569011;
+	s=arc-20220608; t=1789569055;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nRPwui//DdZeQJe3FFPtKCePfUSwnp41dl+UxM2JXEA=;
-	b=TI4I17plaWGPRBbwi+OlVOIPsrtOtfZ5osxkNR5DeeuU62o9/myBA97ewHHydWyL0FsB2c
-	GuoDz/djXfQYmEkw1ywvAmi2OoO1UV1EDjY3Dpex+v8w1VxEXKJEI0q3dHk/jxejffStLJ
-	l/c9jdXdma7goakZHpOfhYpZmig7HL4=
+	bh=amzHTUgi5PS6zBYPGEq5Q/X4VaQD9up3c6Cx/8cwhSw=;
+	b=7QyQVwjPmatVGdOPAX7HPyBu3IH3JrfF+EC798kQbnnBqwN2xJ8s9kQKy3KcfWMg84Dr0h
+	+u2kBf//TZs+5GSdKZyPwTxgO+GJ+LLvLvnJ+AgodkV5pwdkPKWPCUBl++rrWRtRZQA500
+	IOMgHzC649hsEfjXrin2exzVzb8kvz8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789569011;
-	b=d2ZNRVTjBpbQJNH2yRTZFQuNAlMVcwVHWSR1oiv5uoiGLC459mWbWwuICYj+vHdbsFpmZD
-	WoRkBL85nBVK8gsp0TxMKmvL//nymhIAMe2siMnbTisUbcQQAvMPf/P2JPy5r+Dut4aW6a
-	uVzMtcxIYGaYPJzdw4U5fMfPp7Sswxg=
+	t=1789569055;
+	b=NNAwVjYW6PfTht3Ef6wSRJN0t8IlwF3B5nXX72/y97D6eOKZh6Xkjd9XFk8UsZD/JJmQYI
+	5eLk2nVCcBqraTKjw6ofugaHsfJuV21jMmwUVi2ni+/EyMBux0uxWjuQzdl6vSA1Q2E8P3
+	EBjjvVV2rvENGVG1GDaRF3rI1wkOUkI=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZbOE9AMC;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZMX7W14Y;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id EA31E415CE;
-	Wed, 16 Sep 2026 14:30:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83B581F00893;
-	Wed, 16 Sep 2026 14:30:08 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5A94F43D18;
+	Wed, 16 Sep 2026 14:30:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C60901F000FF;
+	Wed, 16 Sep 2026 14:30:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789569010;
-	bh=nRPwui//DdZeQJe3FFPtKCePfUSwnp41dl+UxM2JXEA=;
+	s=k20260515; t=1789569054;
+	bh=amzHTUgi5PS6zBYPGEq5Q/X4VaQD9up3c6Cx/8cwhSw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ZbOE9AMCGmYoHwYcnarKJaXI6uAMxVQfXWxur+hh8bApx/N3MdVr5/9UMcQ1tM+lH
-	 dJy3cTT6U5b5ws+hkUqJsIfENsyI2AryeulCzNceohcyJfzupz9grf85us2YvbYJ/K
-	 MlGiGPzwHqcXqUSm7I+vH309ANU2K9p8XP/Yc+Qi/4plXhBPiZAKdg9+E2Uh7ENeGN
-	 bX9r+ZMUodz3EJowHmZFAJJOdkM91PFDKp4pMubfLfeTPq7DXJSuba0y5bD6+MvLy0
-	 RLb2ZHvhBO0F5hoFNWgKQX7x+PiH3sePCO+ifp48KfAnQMTo77S/eiZnO8rJSYNzff
-	 ijUhgnLsqNusA==
-Message-ID: <be1c0a62-4589-4fe4-a500-d3fe16a6e610@kernel.org>
-Date: Wed, 16 Sep 2026 16:30:05 +0200
+	b=ZMX7W14YgRWUyiRnEHlGkiZId0AKfaLF82Jd8p3vI+UNoQcCzZns0j4mJFuEmXhKJ
+	 JEftQXA3+bGpIDIIA9dSHnNfXwo2SSayTySqZ2eeuoejLJ4ESXl7O2OlwByjYb6am9
+	 74nlyBEOzqJ84J/H9YYU72sOs7GCnyfXcLBVE9XBfqoIcxuaD7kl5gmxNb9ddjDJQW
+	 Tp96iRDy2Wu2q8HCGIMlsfaOHKaOzIXztVtFUAYmJJzfpKWCDp3ua4mqyM8NSM0rT8
+	 S+8ErRA82/1ect6mq6v2FWX2tCBCO0wVO0+hCH4yBeIIbt4dBmPJCYL8n9VnzfsddT
+	 JlZLV62oBmNuA==
+Message-ID: <67b63b36-82c9-45d4-8dd3-1bec2823a123@kernel.org>
+Date: Wed, 16 Sep 2026 16:30:46 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2 06/14] arm64/mm: Enable fixmap with 5 level page table
-To: Anshuman Khandual <anshuman.khandual@arm.com>,
- linux-arm-kernel@lists.infradead.org
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Ryan Roberts <ryan.roberts@arm.com>, Mark Rutland <mark.rutland@arm.com>,
- Lorenzo Stoakes <ljs@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- Mike Rapoport <rppt@kernel.org>, Linu Cherian <linu.cherian@arm.com>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20260907035030.2839978-1-anshuman.khandual@arm.com>
- <20260907035030.2839978-7-anshuman.khandual@arm.com>
+Subject: Re: [PATCH v3] mm/memory-failure: Support disabling soft offline for
+ HugeTLB pages
+To: Michal Hocko <mhocko@suse.com>
+Cc: Kyle Meyer <kyle.meyer@hpe.com>, akpm@linux-foundation.org,
+ corbet@lwn.net, linmiaohe@huawei.com, shuah@kernel.org, tony.luck@intel.com,
+ jane.chu@oracle.com, jiaqiyan@google.com, Liam.Howlett@oracle.com,
+ bp@alien8.de, hannes@cmpxchg.org, jack@suse.cz, joel.granados@kernel.org,
+ laoar.shao@gmail.com, lorenzo.stoakes@oracle.com, mclapinski@google.com,
+ nao.horiguchi@gmail.com, osalvador@suse.de, rafael.j.wysocki@intel.com,
+ rppt@kernel.org, russ.anderson@hpe.com, shawn.fan@intel.com,
+ surenb@google.com, vbabka@suse.cz, linux-acpi@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+References: <aqiIEkrc6aDBOqRg@hpe.com> <aqkCbgHmMGxI_GLG@tiehlicka>
+ <aqmGd0GGUCkbZpkZ@hpe.com> <aqpYxAktjexhaMGc@tiehlicka>
+ <ad36cd54-7319-4bb4-bf8f-9fcc7b009158@kernel.org>
+ <aqqXbwglwYTyTuUG@tiehlicka>
+ <36480c86-fc59-4387-91a4-cad839f502f2@kernel.org>
+ <aqqdlndHq9vHeX8s@tiehlicka>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +133,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260907035030.2839978-7-anshuman.khandual@arm.com>
+In-Reply-To: <aqqdlndHq9vHeX8s@tiehlicka>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D1BA240009
-X-Stat-Signature: wz9bgtimkmc6a974fmmae4atp8u6qsq7
 X-Rspam-User: 
-X-HE-Tag: 1789569011-36691
-X-HE-Meta: U2FsdGVkX1+n078i/KKhH6v1G67ZH64xezTVxDvHY//xeTQZGdpFXlbfJmKopfck27BAvWK1xip0SKgrorZd+sG85hKpUpWeSuzTHuI/86JLtC3C3eMzHIfGUFpokgzU1V3n4hp/4aRIOOg5RoUwMpLk0VmcgWGNd2qS1XN4Iitddlj0IWl2K2Cu15wPhK8fQA/xz4poe4URA3a4+z7RUAH327IbNlB+kSIkJSqNnAL5BYspcw10HpYkXn8CzX2z9LO2OPJUCsryR1mGNXY9sRiPPOb3g1XuggWioOjRGlcQKLeVKdtSavcON0VQt16bYLxh9HLPamxEFIO5e8iTu5u+mmueGnbZdmJiCibHKb0hvUq6jVU9hSAuzDZRZqTe7K0SItTvg35QYn5UeHDpLWCUYlDhP0w7CZAAVtIXUaYzEVhDrOeqEYBr+lT27bfFNGMwGLx7npZdV/rO2s8fP0UZRJZR+OD94IWf6CkWu0L7lMjjQ2xYSmKkZQGTXbRRKwSpqPRbZtSq0RCFCfzycVV1RvjzElAhSM30j6j01AchUcZKbFijW+/f63+G5qScx3k1lTi0vfhu7E2S9g7k8XWYwp+QcufCKMMhDxJyfeqqz6VOdSjKweZAEfq+tyzy+VNDrUNYPCQZvSOoeUwRfmZUVxyb5IPsmk2Bt+qJ9qRMyKdu5ZRpt2RduBmB8hl30oj9r8q24cCUV2XnprKqH8+UUktYboFgaX9CNH5vqE2b+xtrj37IqPxhyIjNx03W/axoe2MamVhQ5qUILaMVDQa09V+a5JLR2BuJHlUCj6riSbptKqaiPuu97IbtxHITNvyudVttBNZQdO4vfSuDcW/vVBkif6yLRof/TE3MPXw5gzurdD1r8i2xsguX6lJ/CWnPUkZb/ztkD/zjNgPdfLxHsA3+i8a6KNkcRjlMiTBMtJQri/zz3Bn47fGKaxyKvm1DAxw3O9pMCdG+aA/
- /RMmhzpo
- 9sEmpqHvap51oic6Vd3ATg36YwkmrNxDSS6vc/KUNWdksJCzznBJNh5jUDzWMvkLd1tQJ2IAE0YuhrwS5nSLHQTjNthm/C/4Us2WczqpR+XxZYC8dneIEUFjVvungnefAvIh9gAtmkRwHCUogFpn7x31fZeZoqIxMe6jNCAMnr9WPLmUphnxcBRx5/ozNn+/ZrS+7Pc2yPCXWxK8bG019ecINsOq8AEUsNaGAXaEOBQnPLzWwYkAOIqVuoAflXu2JR5W5
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 0FE031A0007
+X-Stat-Signature: wsrkhj35ewer6pith6iackhqpxfk6jbt
+X-HE-Tag: 1789569054-339222
+X-HE-Meta: U2FsdGVkX1+vC+izoWdKEiuuvhYMWb4Rklivr0ch8eQke9ypgyTSNArTYqh5b/MzTfS5s+EDJ9Xp81xV+LYBAZ0Vf/CQqTiCUrz8cDUaiEHZPHN5A6SQ5mnIA5TEqZA3/P3jcgKpfwCS4Dm1as0NaRaUi3hzZ57XgGNBuPDl3JBPHAOKMvhu4jB9uApaG1UI24L5vdZNw1Nqs6m0RO9GudxD/T77wjRtL2hSGqfio9Pl+tlpv2c74EVLcj2DAqfma00tc4SthZ3ylyPlPoHYBAI7GUE20lOCkGS3nbMCulgGESXmH+16UFTQADGeinBPO3LNJ/c9HjaQ1UusEq/HDcjNAurQHaet5YFJE1nm4vjviWHmXxIaXG7pkqQPSSlbEAgeQOnmR20UPxLyGUjCDtsvUWwUGgiwt2ikVb5XbCDwiO1mT3cvV61BhZi+8LgpLYuDPoeW9UfHBBxUBBDl4oHSCle+Evkk0uEBhQl99VZm6B1ZFU+Xgn2wn8XdfuDHks2i5A6U5vDjWUpGUM5ypX784SzLs7wfZCdqKifJQ9ADvUopB2cN+MvSGh/FiLwEUutLFUfyvInpsxINiaG2ugSLwaLNpLuEG2a5nXc6/X+iSA9zequIXD1wtFNp5uZ+2nHWf7u5MOCBNRiJlK0yrXq1lra86IfyT4p+fT/rI0M37yrodHOOKgTzHZQ11f9HP0aqHu4QLZblEqlkfD4WgL1exYIFg6gu4ecB3cZ0x7OmGVtpGo8D3tiPu+fGjiA8i3llQ2lXCl6lgujt9bLOAOgOjyodYEcN+O/9kClb5BBFXHeY7Q+GeBMF6kGrkNsALta8Ere4WJgnukamgDnUMspIZT4PfI0am53B/01ClXHyPmlBmPBFhCr+tDcUHhaiT8oVpu7VXVrMfS0GAafEJ/nXPIC6qLd5zsM93MrMV1uuPu9poP0VhNhKdaIALUVX7uqKy6Hv0kRfFWRJXFv
+ ++crzld6
+ J4yXmqJSSnq5EaRoKbeojSjxQU5/j3qocPnQS3PwY8xr+tq3IIM3mEftbJaRgAWJARtLiAwJzoxis+MA2mqbE1CnmngtwIjK1amUYSFzDWgCZCFLMXZcAdG/hYxt1sTXsU41YLAFrG0xFfknf1dBfNCxvSU1SC4vn7Z3RMSZSa5DemGWyB2mdFOvtwDBsACvjejM4p6IgxTvo23guKW8frheyOF0EyKmspfrfZQLSXyvNjYawSJHNcDu0C6eThBBaCfzEXe6IUTqqthV/YYSFkD0QD+QBrwqbSDqCsl9aJAPzvTt+XQuFKN4NLGFdKWyO13crsikaHG6YwiBGznrbIsWhhA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,37 +151,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/7/26 05:50, Anshuman Khandual wrote:
-> FEAT_D128 halves PTRS_PER_PXX thus shrinking the VA range coverage
-> for each page table level. Hence in order to preserve all existing
-> VA range configurations, some geometry now need to become 5-level.
+On 9/16/26 15:45, Michal Hocko wrote:
+> On Wed 16-09-26 15:28:01, David Hildenbrand wrote:
+>> On 9/16/26 15:19, Michal Hocko wrote:
+>>>
+>>> Yes, no dispute on that. But we have HW poisoning for exactly that
+>>> purpose, no?
+>>
+>> Well, that tells you that the page content is effectively gone and should be
+>> tried to be recovered / migrated away. Unless I am messing up terminology here.
 > 
+> Maybe it is me messing up the terminology...
+> But I guess we have established that whether soft offlining is being
+> abused or not, excluding hugetlb through a configuration is just a wrong
+> thing to do.
 
-Hmm, wasn't this 5-levels before, but other code allocated+initialized the p4d
-table for us?
-
-I mean, I see how we are filling in another level, but I don't see how we would
-reconfigure something to use 5 page table levels?
-
-> Since fixmap is used to build and manipulate page tables early on
-> during boot the mapping must also gain that additional level which
-> was not required earlier.
-
-I am no expert ... but I am confused :)
-
-We do have a loop only in early_fixmap_init_pmd(). So we cannot possibly span
-more than a single ... PTE table?
-
-> 
-> Enable fixmap with 5 level page table when required. This creates table
-> entries at the PGD level. Add a fallback stub for pgd_page_paddr() when
-> (PGTBALE_LEVELS <= 4) which helps in intercepting any unintended usage.
-
-
-Again, I am very confused. Is it really just "As the page table layout changes,
-we might no longer have a p4d table pre-populated for the range our fixmap falls
-into. So if there is no p4d table yet, populate a static one just like we do for
-the other levels."
+Yes, it's odd that you wouldn't want to evacuate hugetlb but everything else.
 
 -- 
 Cheers,
