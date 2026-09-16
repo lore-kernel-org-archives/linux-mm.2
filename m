@@ -4,96 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 281C6C88E75
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 02:21:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E577C88E75
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 02:28:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0DDB86B0093; Tue, 15 Sep 2026 22:21:46 -0400 (EDT)
+	id 668456B0092; Tue, 15 Sep 2026 22:28:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B6236B0095; Tue, 15 Sep 2026 22:21:46 -0400 (EDT)
+	id 63FFB6B0093; Tue, 15 Sep 2026 22:28:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F0F756B0096; Tue, 15 Sep 2026 22:21:45 -0400 (EDT)
+	id 555776B0095; Tue, 15 Sep 2026 22:28:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CBFAA6B0093
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 22:21:45 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 448DC1405DD
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 02:21:45 +0000 (UTC)
-X-FDA: 85218024570.05.50A94EB
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 49D341C0006
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 02:21:43 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=JoXbFyMV;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf21.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3CC126B0092
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 22:28:09 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C60C3160581
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 02:28:07 +0000 (UTC)
+X-FDA: 85218040614.28.17B6AA3
+Received: from mta0.migadu.com (out-222.mta0.migadu.com [91.218.175.222])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 91D481C0003
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 02:28:05 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=icxZfwJW;
+	spf=pass (imf20.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.222 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789525303;
+	s=arc-20220608; t=1789525686;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0PDqoq+zdboGZz+ZtWzehFvO/uG7ox3OUn57jhvPSSU=;
-	b=ImAC4ZDaMNYgIcg0vHY+tGngnmJObbvSFlSdT22HJjfkaY1aBbuB0z6tTOdP7IbBqS9QlB
-	nQ9u9HQfzdDV4gVWQcbGMOLagt5qYk7BEm7AcxIzi0DIXcG+pBnTsQODx90xLxKNx+/YMt
-	zt1uFnC9W2OnNzGCbnapuloN3Hbc1m4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789525303;
-	b=hbpvAzLPh28T61LJ1cpNT4H00IpoWmckwD+dtRrP6sgVwPhjlA39PL9esBrt/XPO5666dz
-	Ap1fYIzr2HuodiQlVpb08XJIbfnjStiVZCdyZxaAwfY9uHz+U3xojHBO2hsyf1TUwJhYR7
-	+FYodREeWk4J+SehbRDqosUreMuOQ9M=
+	bh=kJgEZ3B/DsQ5071yZaP+CFUO+XNU47PB26CE8J37aAU=;
+	b=Uu3TsvEXkZ8UkK0DuROiR+6YgbT3jS6ujF4lKnGwQVmQ/WDUum5JGlpV52mGBpo1I3kiB2
+	DEEbDeojvklbL8pVOR9fYr/t0ikFcqolvkBkuVZTLCVV5gPfysKIUrBDXUEMc3iGc/8ie2
+	3w1rRMV/6h2nmY7hYYmKN0YRwhVdLqI=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=JoXbFyMV;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf21.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 877521516;
-	Tue, 15 Sep 2026 19:21:38 -0700 (PDT)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0E8F33F882;
-	Tue, 15 Sep 2026 19:21:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789525302; bh=S4w36axQ/SJ69u2USTyQfVcFaYAkRYJZPUbJ4PAI6Oo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JoXbFyMVWWZjqZk7Hc5TRbF/vgpn9cjNNGutfJNMW8RhND0pNpA5AXidlK9Ldvtsa
-	 TWTQ+aTujtaCejCqatN/QhAotVYLBDh5r4kqL5fLeY+perXuNG1cI8QD+Ep0/zP7o5
-	 E/bEJGq1a8cTncs9O48EsuAoacSHe0uhQShjZ2Z0=
-Date: Wed, 16 Sep 2026 03:21:36 +0100
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-	David Hildenbrand <david@kernel.org>, Shuah Khan <shuah@kernel.org>
-Subject: Re: [PATCH 0/2] kselftest: mm: fix intermittent failure khugepaged
- test
-Message-ID: <aqn9MBPcN4nctCBI@e129823.arm.com>
-References: <20260915-fix_khugepagd_fail-v1-0-bb6f04c8759f@arm.com>
- <20260915181519.648c2962143b761cf02efd17@linux-foundation.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260915181519.648c2962143b761cf02efd17@linux-foundation.org>
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=icxZfwJW;
+	spf=pass (imf20.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.222 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789525686;
+	b=P08KkVqC04CF+ZELvGaUt0Ky/qDiRM6CXD4kI6C9H07EEyPcpql30oIUOqzif3VQMIPB/d
+	A65j7Fi0MsssbfT7SGgSWjKypwn7YaT1wG3k1oJuatvV8BohBAtN3j1IA5mFlAxAUNHF8Z
+	+RTbyYmdlHzBCpkFk2tFQBbc83jhU70=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=ZyxvwXCuu3wDubtodIGxIsLb9DGpsFtLwTaxFFn+nac=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789525684; v=1; x=1790130484;
+ b=icxZfwJWf9IQMeeSSW2HGckpLv/cicx7r/t1n3GOKWT4uTHFT+Tzb0PjFo1E4waqCykBmRue
+ C7eDTylMdvEocKy+BNqjgV1NKoBD5QWzCUtMghpQDMa116QaawXSRGqYNO05I9sK6+t7b9G/5yj
+ yISOx8NczZymSfEYFS6PWUfo=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id 00efc25bd57ee33c;
+	Wed, 16 Sep 2026 02:28:03 +0000
+X-Mizu-Trace-ID: 00efc25bd57ee33c
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.700.51.1.1\))
+Subject: Re: [PATCH v3 01/11] mm: memcontrol: take a const folio in
+ folio_memcg() and friends
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20260915-folio_memcg-const-v3-1-c239a6010b58@columbia.edu>
+Date: Wed, 16 Sep 2026 10:27:41 +0800
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+ Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Kairui Song <kasong@tencent.com>,
+ Qi Zheng <qi.zheng@linux.dev>,
+ Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>,
+ Baoquan He <baoquan.he@linux.dev>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Chris Li <chrisl@kernel.org>,
+ Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>,
+ Youngjun Park <youngjun.park@lge.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ cgroups@vger.kernel.org,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Message-Id: <FE95C2D9-510C-4588-84AC-4AFCAA2D3921@linux.dev>
+References: <20260915-folio_memcg-const-v3-0-c239a6010b58@columbia.edu>
+ <20260915-folio_memcg-const-v3-1-c239a6010b58@columbia.edu>
+To: Tal Zussman <tz2294@columbia.edu>
+X-Mailer: Apple Mail (2.3864.700.51.1.1)
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 91D481C0003
+X-Stat-Signature: odp8hwhdsdzkuerra4ioh5d84tp31bww
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 49D341C0006
-X-Stat-Signature: wqoe54djagibenn4ay5gk3amz7csrdkb
-X-HE-Tag: 1789525303-990733
-X-HE-Meta: U2FsdGVkX187d/jkWI+OrVRnfF6jVH+cUXexVZzIYUlwosUNdRkkIWb2kQkH+oinzRDXDE94K2cRGhOCb2g9nATwMf2yMZXM1NXj2Zqh7u8EXyOaTDjRzaCbPu6QfJatFrNqgOgmWpQP72P9D1GOjPvQspilMYuHLVdb8UZGI146wdE/O2UOF86Jx/6Ix4hHACbRYNq4vYQz0hOakVu8L0rQfKwGlkt0Mn4YRv7rasfLdMH5BFjqbrqvFbRkZ8/CgSQiU6mTZhroa0y5sFCpgP7dUzmOIYR0JGkUsfk6NwnwfsGR0mgc0JeLjhsiZux44ka2rOYQd5QUY0vaNTkP/c6Q6gRfe9idA3H97JLcaYF20/PI7/EDt57XW1sonbrqU+2oNx2GMxcAvnpZVCbcl+cZvNuuWrrzE9hiMqeI1Urg3NMsTMQpNmaYvAK2kVd6b1/xkETlF1YLxOY1eTAFP9L1/wk6ckkSsq89TVhyq/l7FqRVAGLzdiCkQ6t/ined1EnTlM+xs1N2WI/y8tDhRG/+ZT8KodUcHf0WfOiwbzM7RW7aLA7ZOYLe0vVWbXe7TH+q8N5IeqSWzCZQJr/QrzQGB215gmp52B6R2kbM2QQKhQxVXh3KDbIrcvFWlCpvB758xu+aFa49zpYJTBzO6AuN24l1zkcwoJLc8bBrZ6aBDIxD8ZRvxRUsQtFYkJYg9EuotbKL4lpXGKufkDwuoDyx+LAYdcmuScgOjZEOEDnM5Iv1miEFEt1XDFwcX4jNq4n42tReS/JrPunAnF2cCfu4fawuIrHxdQ/sE4suUQXPVy78rzoePOpygkX0vNrEYRayxkMb/As3lYEaPs8wAIZ30yQTbh90NU/DRndz52s38KDDWs0vIAgcpAyynpuv+ZRd6O+EdWHf6eJq2OJAvUVEfO/W3x7ySqpWyahlYJDe7wm5yp+37trLFTu0rmsZQ4T7QGsqmowQNSNu5fu
- 5wxhXQJ0
- JqOgYmBwnEFngH08G3pqdEfvieKZhS6B46/fOLuzVzskfJQ11J64YLsZxFPsUItDRdnmFi5K+7uitWtJFa4BJUHpJysCk+JQ2GsH/UoX1+IKBmQBlqZUm9cT4TAHLxlq8j+RchqqsAVeVlqZoVVAY4uAhv51qrA1DT6Q2Pz6MrE49VzrBVy8NTwJA13X3AL8kq9Q3ZBH189+XFD56BICFA+hDaosZH+xD+Zox+OR+SWpmlhizKhKMqlMLjxYfmoBhcvF6OX48ulm6DipaGwA9BF97Jthr+DKfRkLx
+X-HE-Tag: 1789525685-741205
+X-HE-Meta: U2FsdGVkX1+2Y7veBsO9mPxjJ8ZQH2GznSf1I9byhNSCJR3s3WNi52KppGZKfHMle4dzOPjRSDZ2CoSwUt22sGiDidJh1VSdLERqs/Q1Vg5xf1LrVAlOzN6AsYexgiuj6hcGPP5qnKKzoM26taMm69ymEf8ZNib03/GhQUuok2iqKF72vteIo81KuEyxFGtCO4Jum8Jmmam1kp8P7Maj6yJeSbVwT5m8LYYIzmaN8HbW0DudEUf8uDGq/R71X7VahaAYEGn8aitxfsAs5NZtXKCdEybdjnuD0iJLSWn1Vvar15axTpDvTkRm7f8dJ7Td06CQC0ZjK3tO9iOyr7V1zN0Jm3+zAb/YgcVbtPLGPJMlsKcnEdOQSurFrlATH2vrPhZWOFA+tS/VTsuFbxXLkOjSpsFT4o2zo74Y4K8oLasLpTL+EQ29wCzpE/2I+0WQnlKEVkfX2Ke8m9wYefrT9bXkYlTXrLysRf+r+DNlZRFe04hMbWsH7o5YiRZ25x/236RPentfJkflEtlKAb99Xps+YWul9CEfMfGuQE7PFfPeldK9c+/NVhlfxt2gzpMDrtV6UqEGStuA5OJyVx4esz8sfrD/DpPXiq4FDmVcNtgivHoojh1jdpVqPqZY4E8SFCaFleg49RX4UgYIfZdr7eeaxXFOc3R02RcC/QPmpSIw2xO1IKNa6/DDyLp34KgUzC9ogN9vqm7I0XluDDs/AjvQb+dbPYJB3MaJjLIU1PQNidMhXF7IY0Scpnly+ifkCue0pVf6h+Zf1UEpQttNNtctIrk6wOerH+IBT43Cug1oYeUyCqM2ANzMUc7XaCOLQ9nCaN7g4RFp9kvhLg7UF8XoONARC5nAZur4iQNha6rwtHrNcYJ1c6R9D5anPHXjayxoKXF4iRbtavsW1Z41W8vMuvqpp4UIn6PjJftQvoZfIB4kDa9S4EwPN9vpuaFhG/QUbTqgeudHUiwSSlI
+ G1TWwN/j
+ 6l8E/UaJpPEcfF0uaECfliGQK3jWjjoxNgGMCi626Yg2W12wZkPS3vpYWxMfr2/yDBztqt6x+q0JgGkshJYNVSOCpk6+qBFaVzbELXd53No5qLTMrLUQfbDWXQmptkGpDotA3YDfWumU5KHPQWSOk0kNWUfPwCW704xgzoW3cmsOHUQkTdnoGdwdPNP7VmlDgMAz7rcZGA1Dh/gRL1LMkrItrAkN6ow04yIqGbUcLgrc8mgbjMXyPCGSy5hfK9THLIv7FB2En79hDbEIpydhGNdddYu64/FeEbI6/r9ZEmBsmaIGBdOpHTTtFGw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,47 +118,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> On Tue, 15 Sep 2026 10:21:35 +0100 Yeoreum Yun <yeoreum.yun@arm.com> wrote:
-> 
-> > There are intermittent failures in collapse_max_ptes_swap() and
-> > collapse_max_ptes_shared() when using the khugepaged_context:
-> > 
-> >   # Run test: collapse_max_ptes_shared (khugepaged:anon)
-> >   # Allocate huge page... OK
-> >   # Share huge page over fork()... OK
-> >   # Trigger CoW on page 1023 of 2048... OK
-> >   # Maybe collapse with max_ptes_shared exceeded.... OK
-> >   # Trigger CoW on page 1024 of 2048... Fail
-> >   Bail out! Unexpected huge page
-> >   # Planned tests != run tests (26 != 23)
-> >   # Totals: pass:23 fail:0 xfail:0 xpass:0 skip:0 error:0
-> > 
-> >   # Run test: collapse_max_ptes_swap (khugepaged:anon)
-> >   # Swapout 257 of 2048 pages... OK
-> >   # Maybe collapse with max_ptes_swap exceeded.... OK
-> >   # Swapout 256 of 2048 pages... OK
-> >   Bail out! Unexpected huge page
-> >   # Planned tests != run tests (26 != 17)
-> >   # Totals: pass:17 fail:0 xfail:0 xpass:0 skip:0 error:0
-> > 
-> > This happens because khugepaged may collapse the pages before wait_for_scan()
-> > is called, causing a sanity check that expects uncollapsed pages to fail.
-> 
-> Is this something we should be testing for?  If I'm understanding
-> correctly, success/failure is dependent on timing vargaries inside the
-> kernel and that isn't something we can reliably test for.
-> 
-> IOW, should we say "bad idea" and just delete this test case?
 
-If the test environment can be set up to control those timing vagaries,
-I believe in that such cases are meaningful for verifying the expected
-behavior.
 
-This patch sets up the conditions needed to make the result reliable,
-so I don't think this test case should be dismissed as a bad idea or
-deleted as inherently unreliable.
+> On Sep 16, 2026, at 07:20, Tal Zussman <tz2294@columbia.edu> wrote:
+> 
+> The folio_memcg() family only reads from the folio, and everything it
+> calls already takes a const folio. Constify it, along with the page
+> wrappers built on top of it and get_obj_cgroup_from_folio(), which only
+> reads the folio's objcg.
+> 
+> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
 
--- 
-Sincerely,
-Yeoreum Yun
+Reviewed-by: Muchun Song <muchun.song@linux.dev>
+
+Thanks.
+
 
