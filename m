@@ -4,78 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 527C7C88E77
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 06:25:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E5D3C88E77
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 06:33:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5DACB6B0096; Wed, 16 Sep 2026 02:25:09 -0400 (EDT)
+	id 3CDF76B0088; Wed, 16 Sep 2026 02:33:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 564C16B0098; Wed, 16 Sep 2026 02:25:09 -0400 (EDT)
+	id 378B66B008C; Wed, 16 Sep 2026 02:33:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 42BC96B0099; Wed, 16 Sep 2026 02:25:09 -0400 (EDT)
+	id 267916B0092; Wed, 16 Sep 2026 02:33:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0FC606B0096
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 02:25:09 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0686E6B0088
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 02:33:53 -0400 (EDT)
 Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 88E2312062B
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 06:25:08 +0000 (UTC)
-X-FDA: 85218637896.12.9200FFB
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8C2F91605CA
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 06:33:53 +0000 (UTC)
+X-FDA: 85218659946.12.F3A953F
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id D9C0E20007
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 06:25:06 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PWlWiHbo;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PWlWiHbo;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789539906;
-	b=eSO/sh0tnqWjYZvZs/D+6EWWT+qEDW7KBXdLFigYvse+cA8wBwcLVav7qudzUuxq+dokQ/
-	KOcPHbQe9LE+vrD2Sl9JR5x33hAtzlVbj6daKABJhTnz4WlIt1s6wh69Uv1cM0NNA7Ncwd
-	AXHge9cgBSBLeoCtpzDNuNvRVNRPr8A=
+	by imf18.hostedemail.com (Postfix) with ESMTP id D4A051C0004
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 06:33:51 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="QlrS4v6/";
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789539906;
+	s=arc-20220608; t=1789540431;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WSAK4OewrbYk1s8dXTIrNF8g5vHL0nZd3Hyf6R+tOGI=;
-	b=3Uemcmblm+sK6RfRF0zRSCPcipA3ezhI7sVV8nuFsz8zAt3HBqHRY96R1gZ1r8OAgnvqPF
-	xxAoAdKeFQubUhuVfzjK+uNYpnUvcYCBywPiv9wxYCezvmCE1T1hblpiZnKiBuiimROYaz
-	UNXb8NsHN+YCZGBHGEIqs6AORVotTf0=
+	bh=OPREws8MXPltghU8R5rvn0z5vmy47E4maC36zCSjimk=;
+	b=wD2grswEPpneh2TNxOixEfyFbkLfb9fDjRAFH2rQBVv5I21A//DwJeofja4iu4lOPzO3R0
+	Mk/lf2vx0030f+sMgNayMrHzwA1yU1mYB9HY8HRWADurY1iiGs1Ke+8dSQ4VJAGyqyMqYn
+	MnaE+d+qh1XtlfxKixI+XhK1zMrEQOs=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789540431;
+	b=Wn2nmwselfAFZcfh4nbuJOZavkI3WnM11xtDL+Yh8ls0+jKNhCwe+mrVO3aTPL/nKEZhL7
+	sEvLCBE3Njszhnl8mdt142pSY88aJt1Q1zwojYKE5pNHy92AwXO5PSjRRZLVl24SIVCx+g
+	EJ1eV4c6mDp1e+IZ1CHhZF/qV4nrrK0=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="QlrS4v6/";
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6A55B60008;
-	Wed, 16 Sep 2026 06:25:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1279B1F000FF;
-	Wed, 16 Sep 2026 06:25:03 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6762060008;
+	Wed, 16 Sep 2026 06:33:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A0D81F000FF;
+	Wed, 16 Sep 2026 06:33:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789539906;
-	bh=WSAK4OewrbYk1s8dXTIrNF8g5vHL0nZd3Hyf6R+tOGI=;
+	s=k20260515; t=1789540431;
+	bh=OPREws8MXPltghU8R5rvn0z5vmy47E4maC36zCSjimk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=PWlWiHbozNTNPVYdWeMwfblXPsRUHvZ2LxCu4OsQAnqDtZHViQh9tAFFL5FLlmvFd
-	 A65abK9Fy838XvqboO6LTsjyNPDDws1PJJtUQkHbvhFxwi/oaEqBBz+0TMc5mPGQyi
-	 jlTCNEhOtIZJAyU25bUL0ceA9oQCZFT7aS0PHJj+txmfMM2IOChCjT8Qx9GFnjR+FF
-	 fuuyznnPmKDNkXP0SxhiwW39J7+FtF2xD3g/x9SH57za1goAA0kR9kQJ/CAIS/Mgt0
-	 iDoMcXS33MJIclWt1XP6vWMN/GEF9wtzTeEgsmGOK4JIYT5y2PRxAJ6eO+22Xaof72
-	 j7CHcFhNy6w+Q==
-Message-ID: <2f63b25e-71ca-4af6-83d2-70be2388a55a@kernel.org>
-Date: Wed, 16 Sep 2026 08:25:01 +0200
+	b=QlrS4v6/BNtJvq/01glTCj2gMMusPuT6T7E7M8qV7tOGdVgvxUPc8sOtCoGkoPVa/
+	 OAuzVtlXMKEsdbT4IhJPlN5d6WRElGF+nM9Zebwe+y+TLB/k5UVLsT+NLveeZujjX6
+	 gbmBvkWeCwHsH199vGFqvmkQpirTKfhvvJ2EaGZrPdb3jgGV2XZPzW4eSS8hz/wLd6
+	 VpUsfw7+r2fyrvj7IDi6uTHogDLlLxi6JKtIvs+duM9TRhUcNzbxQqWYch73kMBZqj
+	 Sfyfd73RkKIfC18ssYs97S3JUyX8gvmwREHg5GKGpbtKm6nrqQvKaChNw1J0oadXdd
+	 sFKI2qoWLNqag==
+Message-ID: <9da6298e-485a-41af-a42f-7dd05c571125@kernel.org>
+Date: Wed, 16 Sep 2026 08:33:47 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RESEND PATCH] mm/madvise: use folio_trylock() in the
- cold/pageout PMD split
-To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
- akpm@linux-foundation.org, liam@infradead.org, ljs@kernel.org,
- vbabka@kernel.org, jannh@google.com, sashiko-bot <sashiko-bot@kernel.org>,
- stable@vger.kernel.org
-References: <20260912110540.3203010-1-gourry@gourry.net>
+Subject: Re: [PATCH mm-new v3] mm: mincore: use per-vma lock during page table
+ walk
+To: Kefeng Wang <wangkefeng.wang@huawei.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
+Cc: "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Zi Yan <ziy@nvidia.com>
+References: <20260916043153.2631696-1-wangkefeng.wang@huawei.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,17 +122,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260912110540.3203010-1-gourry@gourry.net>
+In-Reply-To: <20260916043153.2631696-1-wangkefeng.wang@huawei.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D4A051C0004
+X-Stat-Signature: jytn9mtww4rqw6d4j39zig73kjabpndz
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D9C0E20007
-X-Stat-Signature: 73t8mhjc1yfgsi4e7gzgykqs9aanomrw
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789539906-859798
-X-HE-Meta: U2FsdGVkX19uQDzAS4WLngRtazWESdN0p0Ar3Zs72SHHQjeAfx7pfujS46fkZ0Rsmin6Gu9C7bqucqxY5Toik+U6FB8yqo6HN3ZRE/skUMGP2WvtZBAZKkPsnNPtnl//DwAWCoYCqvxlwRUZ3A0OYgYfRZ3CwbK1f68GiqKKNPfU1Mtv4WaXp0rEwxjnnxq4X+7YFo1nCZbzEd/KOL8hiQP3brLc28Kv1wCiO2ybNUG1yTiAE+lcVpqoD5tUqPP8CHqR1B27OAoOhBut0NNrDvRoBQV59qsS7oGgCTd8jbwRj+TWK1xwolDwDXkmkKu7UxKF2m9bi7sTsAHj3sC1rjRt9Bewbq1AMY0YHSXYdpDC5MFC1m1l2npQ6xrUwD6MkupzqnoiPzc7DTE05Gy8ygA34jubLtyQyHqJre035IAJdV6qZjgnxZh1c4PE4oy2pN5JjpQ6CAsNWb1dr+Vm7Q/ClN7nydPFmGLrkJ+qm97Ehx597krAP9N0rD6Ag7huIohJ8hru9dzS0z35/X9E0rBrOCQUvYHjp7xTIuQnBI6G1rwPwsAVi4SY0lJOyiIYuTq4dYpUg26sLmE0evjI/FTxGmU7v4Pfp/0R2KnDn2UrQvGkhXuM3fD8M35nWNttsphBiLkKprW15z4IbY6fbVwDKocUotj0RhIJuznFbxUrN3h7Wm0zkslqGchlJqspR+l/apQfEAYWMIJIShQgC29YVTTdXFNCeJxJAt1NBWvEdgaWnB1BuwJwkTYXA9YeGvuKU1+vH514Qe4gYZPUYC+RpQnDUhZsW5yaKCWYrcgsLegAR/I6mwTj+tDX5hfTN8hQf5c29Tcgg3LanCIiptowkdiwTSin0H7ls/qji0WyqmM9wGpjafZftt1IQOxYYwtPoWBLdHlasUi4JZggrKudimCi4uPau9u5yTi3fTjOM6QrM0gXiXPnnDZ4VTLcBNVroB0XLdbJh1X0Vjm
- tvFqJCSp
- EdxoKpIQMPSA+jUxOo7CVyV4bMN0B8lcHyGfGzuIxBUiE24GTJT4LrJ+3EEWlDJS8TXABZ9/yDh3yaZMSxUVueSPFsJNuJJWsfo5b2kJLkxA88uyBeN8CRRUWiJHZIhwoNJvsdcFrlntZO/3t5BVbcZLD1BU2PnXYoKzP/a2cwwDs8lF/Kq/kdr0hXD9TH1qAMENsfSVUDHku2pQ+3wi+MB6urfzE2LYGNyEmRbIckUt15l9KFXBNNgrAp+6BIW6UXDVR1jDP8Q/XSsHt2cjYfIRLuU7+UI7x+RcmdlK1Ec8qTziXAj3Ir/zQevfEwrXaVIniVoGdW/BAHt0=
+X-HE-Tag: 1789540431-380022
+X-HE-Meta: U2FsdGVkX18NTS5RErJrufp7Lsw/UIxQUAOvWGbo8YyNWkoufF3B6jX80x3tn7SCAYSmfPejZlJQfFmg8emZqc3e7H63FPgOQ+6HRd69or/3KT4XYTyOLY6GVnY1cQEgcUd0ktsjzK7aJEewmEZ1e8gCllkWNM8aa4D5T/vRLmji7nUE0J5vAg6zQ4vlPchKqTtgyiJWX6PQ7eIwaCvAk38phakFo0EEMRzX6aC50WGuHR9P91Qu2ACHeBcMWzxmKMACutF1nMGgPHSiTXNgKXIkvffzf/OJe9NduLMAWuw5txnXYB9fGuRD+q7j2/ZlU3NihxiiXvMHHOdpwpKS1yZzyFh5Ln0vITQJHOfiQJiY/beqpfrXbPlUPQTc7BmBhyOcgXLDWqE9ZNWFyLIQrYQRiKvu61E7iA4v18VrfIAh5ognjcyWQzeDdok49/BdtIvptd2W/Y646noOzNWHEpSlgYJ1sejrTGOB3W7VB5mbQ2fTML8K2KGlVaeQKsQjDhyIdtHP/TY1AEn60XDIV827i47YfpnPEVEi+OWuNJBHGyIAVajWKlWugQzFEO2vg4n7OyxYrEQ+tM++Cv2wZjxcQFE4GeDhcOau25gozhIhP3vTvhH42iOqvnpuUtnH+VjsxzTNMF2A4x46afnkITCxOn5ldQNVR2co70W5I5NCvvP/9m7I82KhLTLD5ebTOCh5PX5236dAoM5enPswuATrI9NyZ/fm7ulC/3G3cI+gdUPb9w4l2O9oelMhi2WMjXZmW2qYPBJp/PLZ8JRvgb/rUrUwB/sKdrQZDMzzZdL5nY3jwHrJ4stz1kWvsdYyf2aEUg7EiEQdoNNWzbB8YYir10xRFWjDCyPBq61ofmYhUoIGZZ4FxSvKyEknq3XrXR9mwtAUDgs00ysIpUxJ6Ujo7LVp0tR1Dz6zV0Lma7123volWXWWxzIiouVl452k7x/TqotFut22wQzDJuj
+ Lv+GDytL
+ LOh0cJ745UEeZvfAdyHalKS4amdgrZRoas5VFwJpfShYrae9eS4RTZAT2hBH/JYeNGqNgwENubYdK7EzW8IlHx/rMSgvsJ6cB1gbDKN15ogu7Vz3YBAqPcQ0VJsiEfCm2RJ96WgKMl6s7BbRNDE6sJQwLrhnB6kd/iIMVtKyYpRXHT1TpHmIX8UipanbeCehlOBvmbKyoNsgUaNMwaxmJsA9kSBM8o5+nNBVuIaKABrKeL2fX94VPBifqS6Hx2+q7dBleoVJeTEDVZxImP6ZHtZZuiTCPIGuq+wCsIG2uQOQmyxE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,51 +140,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/12/26 13:05, Gregory Price wrote:
-> MADV_COLD or MADV_PAGEOUT over part of a PMD splits the THP in
-> madvise_cold_or_pageout_pte_range().  Two threads doing that to
-> the same THP create spurious failures.
+On 9/16/26 06:31, Kefeng Wang wrote:
+> do_mincore() performs a read-only, per-VMA residency query,
+> making it a good candidate for per-VMA locking. Convert it
+> to acquire the per-VMA lock, thereby reducing contention on
+> the per-MM mmap_lock.
 > 
->   CPU0                          CPU1
->   ----                          ----
->   folio_get()
->   spin_unlock(ptl)
->   folio_lock()
->                                 folio_get()
->                                 spin_unlock(ptl)
->                                 folio_lock()  <- blocks, keeps its ref
->   split_folio()
->     folio_expected_ref_count(folio) != folio_ref_count(folio) - 1
->     -EAGAIN
+> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+> ---
+> v3:
+> - add vma_assert_locked, update changelog/comment, per David
+
+It likely was Lorenzo :)
+
+> - Add RB 
+> v2, (RESEND):
+> - using new vma_start_read_unlocked() API, suggestted by Pedro Falcato
+> v1:
+> - https://lore.kernel.org/linux-mm/20260701144047.3786939-2-wangkefeng.wang@huawei.com/
 > 
-> CPU1 cannot drop its reference until it gets the lock CPU0 holds, so CPU0's
-> split always fails.  folio_trylock() makes CPU1 leave without ever taking a
-> reference.  The PTE branch of this same function already does this, as do
-> madvise_free_pte_range() and madvise_free_huge_pmd().
+>  mm/mincore.c | 29 +++++++++++++++++------------
+>  1 file changed, 17 insertions(+), 12 deletions(-)
 > 
-> Reproducer: 400 rounds of eight threads calling MADV_COLD on half of each
-> of eight THPs, re-formed with MADV_COLLAPSE between rounds.  From
-> /proc/vmstat:
-> 
->                      thp_split_page   thp_split_page_failed
->     before                     3186                     860
->     after                      3200                       0
-> 
-> The short before count is rounds where every thread failed and the
-> advice was dropped for that THP entirely.
+> diff --git a/mm/mincore.c b/mm/mincore.c
+> index c086836bc4bc..0fe50f8a7e62 100644
+> --- a/mm/mincore.c
+> +++ b/mm/mincore.c
+> @@ -235,24 +235,22 @@ static const struct mm_walk_ops mincore_walk_ops = {
+>  	.pmd_entry		= mincore_pte_range,
+>  	.pte_hole		= mincore_unmapped_range,
+>  	.hugetlb_entry		= mincore_hugetlb,
+> -	.walk_lock		= PGWALK_RDLOCK,
+> +	.walk_lock		= PGWALK_VMA_RDLOCK_VERIFY,
+>  };
+>  
+>  /*
+>   * Do a chunk of "sys_mincore()". We've already checked
+> - * all the arguments, we hold the mmap semaphore: we should
+> + * all the arguments, we hold the VMA read lock: we should
+>   * just return the amount of info we're asked for.
+>   */
+> -static long do_mincore(unsigned long addr, unsigned long pages, unsigned char *vec)
+> +static long do_mincore(struct vm_area_struct *vma, unsigned long addr,
+> +		unsigned long pages, unsigned char *vec)
+>  {
+> -	struct vm_area_struct *vma;
+> -	unsigned long end;
+> +	unsigned long end = min(vma->vm_end, addr + (pages << PAGE_SHIFT));
+>  	int err;
+>  
+> -	vma = vma_lookup(current->mm, addr);
+> -	if (!vma)
+> -		return -ENOMEM;
+> -	end = min(vma->vm_end, addr + (pages << PAGE_SHIFT));
+> +	vma_assert_locked(vma);
 
-While the split now succeeds, one of both calls will just effectively skip
-processing the page table. SO while CPU0 will succeed with the split, CPU1 would
-just skip the page table.
+I think Lorenzo asked whether we should do that. But the walk_page_vma() further
+below would already verify that due to PGWALK_VMA_RDLOCK_VERIFY (see
+process_vma_walk_lock) so not sure if that's really required here.
 
-And what happened before?
-
-Split on CPU0 failed and it would skip the page table. Split on CPU1, however,
-would likely have succeeded?
-
-So this is all far from perfect.
-
-... but this matches what we do further down in the PTE scenario.
+AFAIKS, everything we do in mincore_pte_range() should be compatible with the
+VMA lock, including the swap and pagecache handling.
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
