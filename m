@@ -4,141 +4,175 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D6D2C88E7F
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 17:45:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F5E4C88E7F
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 17:51:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 156AA6B0088; Wed, 16 Sep 2026 13:45:29 -0400 (EDT)
+	id 04E1F6B0092; Wed, 16 Sep 2026 13:51:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 12DEF6B008C; Wed, 16 Sep 2026 13:45:29 -0400 (EDT)
+	id F41426B0093; Wed, 16 Sep 2026 13:51:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 044356B0092; Wed, 16 Sep 2026 13:45:28 -0400 (EDT)
+	id E088A6B0095; Wed, 16 Sep 2026 13:51:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D16056B0088
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 13:45:28 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 43CB41407FA
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 17:45:28 +0000 (UTC)
-X-FDA: 85220352336.05.667B6DD
-Received: from mail-yx2-f12.google.com (mail-yx2-f12.google.com [74.125.224.140])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 1E68D18000C
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 17:45:25 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nuAaffrY;
-	spf=pass (imf06.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 74.125.224.140 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789580726;
-	b=hkXBbpP4PqWS8Cygyb7UlvBuv15uSPc7jeZZhTi0GvaFvNsvkz3sjjuXWCA7qoHAduD2oL
-	wRz4rAD67UANrGeSP0mOfFCF0WgztIHwlYFVYoAc+GPBwcrdgEkc+/m3WEO/rAKgWiJIo4
-	U/TvF5T76x1SCkmloGiSl9TtjZYOX8M=
-ARC-Authentication-Results: i=2;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nuAaffrY;
-	spf=pass (imf06.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 74.125.224.140 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789580726;
+	by kanga.kvack.org (Postfix) with ESMTP id BBF196B0092
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 13:51:15 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 020C6140757
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 17:51:14 +0000 (UTC)
+X-FDA: 85220366910.04.6990AE6
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	by imf25.hostedemail.com (Postfix) with ESMTP id C6440A0007
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 17:51:12 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=E7FjhsZ1;
+	spf=pass (imf25.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789581073;
+	b=ELfKwY6zdYNVuNFF90gk2qHdqYZhY3qEmqkaMhgjkGxftQE6mKtFlnanysYzj+NbrCLWk7
+	edisRyp5YhIQ/oo7IULawKO5HFhDkDCA27TyfqW1+VXTTs5P7DgThsmVwT8vGw4tphA1BA
+	nJVCQQK4vU7rZGwztATNMYO1xsfrIqM=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=E7FjhsZ1;
+	spf=pass (imf25.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789581073;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IOYv3QgMRUMifmGGTF2BeO7ylrbnq7wWgArM3pERBA8=;
-	b=MmCPJEWvScE1uAMkos5eX2vAdv6fn04iBW+t2+g8r35NPUrRGaViGtAXjrjCYaKeK1zBwu
-	LpvlENZfj6s+9Ox3uHl6FBG+gMEUnN2FGWAoht3aCmTbswsGYqKWpueX067QD/nE12CLx9
-	sTRh2rg8RNil1eA/MnijVEVEPueHwVU=
-Received: by mail-yx2-f12.google.com with SMTP id 956f58d0204a3-66fb7488033so185182d50.2
-        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 10:45:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789580725; cv=none;
-        d=google.com; s=arc-20260327;
-        b=M0CWg4cSuSM1/mVaY0+dA5fpF6dmascRVwgGKiyhT3nORPM+iPiJHGD/dyhuwz4hnQ
-         cjSQD+jADe/ZvbuSxZP1gL2Lu4SqSR1OXPU6hlMwcz0JhBva54hmw7EhoOG1Jx8RO/bb
-         qeHLXqzBj4CEqSz9/p2VfmzuFiW7n5/14D5mpXYT3JCIN9AyeilQZc609oVz+cKLWZHl
-         nOA0h0qiiwX2zBbKnDI6JBzN37LoseGebqmaYB/ILmdmRfGCzF5oedWtLg0HpccJSa7Z
-         3iicYBBe2tI7dLO7TibLJ7gFy8FUQOFHoTZXY72JlPmrp4ofPLoItxcA7Tai5t7fbDmx
-         JARg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=IOYv3QgMRUMifmGGTF2BeO7ylrbnq7wWgArM3pERBA8=;
-        fh=hfNtkLD4PN812ndipcjFAWUO4jXuStyhQFEhQsAZ+so=;
-        b=WNfgT2V+d4U1d2DM7gTjXmIu9BrACZekp/fipuqPMrR8GW4/vEadCLPMVmtJmHoprm
-         eKJ6c3obG5ejUsg2ukzJA60Olxkl0MGVX44C8mVIKwdlgvaG7LPGPjHPoDBBMndu7gPj
-         2xQ8VBwrih+lgthnPwOZRi9X9nAFu9XSIMhOr8HABR1ViWfGzluYKUZq8tCmE3qK3Cjf
-         /gsEUgiSGycmkd/tX3lAM7+q8CackbvF3QtUoPfVBNvydvn1U6AiidoEe5WhzRKmkKz0
-         hu8CfY2Ekd0W8oigtlM/Cn8Tw5NBxvdIXmClq8ONO15v3t4lKMuG3M+DqdI1YcOYEODX
-         Dz2w==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789580725; x=1790185525; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=IOYv3QgMRUMifmGGTF2BeO7ylrbnq7wWgArM3pERBA8=;
-        b=nuAaffrYYwzsErkJPSV6H0GAo8LsT9zpr4U4L9wS9YXHShDocz3U494Q9Gk3w7XvJv
-         22AlA0khfmef+NEzAC+LQ0oHNvumnUbkYzyro6T4PyZbJFiyHf46i/Dmk0j4rP/3buwS
-         fTp6iRYoaBbzmrMX48N8UMGLeAgxR7s0suVLp4lkAXCqr9s8Vw6hGDuPvvL1+VmMvmKW
-         tKAW7IV9oj26hv6RrDRJI15KGkuSzjGgJaP5d5t+CGwZvfqDxo5KpgvTpIX9tkZ3r8s1
-         cTW1NGc0XwG32u1gQuzvtnXBRzwyYisjmdGUbT6NBVVpgpmp5qDjJPDBLacWcnUSOfk/
-         +FXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789580725; x=1790185525;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=IOYv3QgMRUMifmGGTF2BeO7ylrbnq7wWgArM3pERBA8=;
-        b=DY/st4HC3SUNCWoEoKEVmXKkbKiTXJaoOvS5akAC20E62WGLadAAWDFl56rboQVGIq
-         3cbYIj+7tzR1velRmHM3BuR4xjNaoZdLMQg42bCX+LBdgvZwjiJ4mLCZSJL8S5EnWRVA
-         0D8CovPpzxMyhlDEP5w9lDvGV6qe1dTB5wDk4ueGMiSA0hLAFJDJYLFXemRf+uC13GA+
-         u+GXmtGcE+qyths7lzCFBGz46IpeqWu5ChrmH9d18Sc/yr8nQmytWosJ9/kYmWsOMke2
-         /loA3TGsz9ABP9N+PlU5AzNWUcMpJEE6W5mESsT1XtAsNZPDTEbYmJPn2Hvs8OHF6jYr
-         fOrw==
-X-Forwarded-Encrypted: i=1; AKwUvBwY+bFsclU7XrFNBpQ0PXeWD/0A8llh2p9HDDQVJFsP7zgUSa8JBPfa74amgQ4TQ98sH+M6WGjb3w==@kvack.org
-X-Gm-Message-State: AFuF++mnHn3I04FdujoOdkLvDz5piQEE4qsmjBDC4jGIBBWV1v22V9+E
-	iUbjePxfWwScVL807pzGCooGbPmzdndbGyj+SAHvJZSlaQSufJbKuP93BpSmH3LqxABRlaYb3Uc
-	zgmTJMwqMoqE5YJc2ZT7T82MyRzMiW18=
-X-Gm-Gg: AYBFou1dUptMyTnmZibcepSS5SjvN9AsJe/iWuyyh605kZz2DAJza6tHUCEvOnpH6YQ
-	k3FReW+qlGxQHGyLBS/CBKywef9u0n0yv7dfUx/HIlzxzCl12dWP22oMnVyUiDXFlLv3kD2b6zE
-	3JSKepgBq1I1jTixX00q+u2ZzTtanE9o5B1ZrtZ3xkmq75JqnlbnF24Z3K0za3n8lrmwaQRWxLM
-	o7e4LqDcQsHuqMF7pit2AnOyBeZVKp/mb+MxsGpgNjaWBAOILYO1/sdEsDSO5CMh8Z7gfYYAg2+
-	uYBgZyv5LDTRXhE67FgcFO/2EsE40zXj4JwYaLvztQr/FUEjBd4avg==
-X-Received: by 2002:a05:690e:174d:b0:671:335c:d6b with SMTP id
- 956f58d0204a3-6716344be02mr1247899d50.5.1789580724461; Wed, 16 Sep 2026
- 10:45:24 -0700 (PDT)
-Received: from 95991385052 named unknown by gmailapi.google.com with HTTPREST;
- Wed, 16 Sep 2026 13:45:23 -0400
-Received: from 95991385052 named unknown by gmailapi.google.com with HTTPREST;
- Wed, 16 Sep 2026 13:45:23 -0400
-From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-In-Reply-To: <20260914093300.100495-1-huangshaobo3@xiaomi.com>
-References: <20260806123020.90869-1-huangshaobo3@xiaomi.com> <20260914093300.100495-1-huangshaobo3@xiaomi.com>
+	bh=or2++1LeeipZYCb3G9WRgyA4slOHEhMs91sMxm37PrE=;
+	b=3BqK1q42VXekRjgIcA9lOahto+UPkPAEXLfcfH9spWnxm8Eee9ktYcD/gl2KtZOnDTq3Oz
+	Z8eG6NdRW93FnZrFzJ3ShkINY5okx5hmuB2XEl+miVH4lN3knKsFrF7lKLmlxXn7wjvMbU
+	v2ckcpdNxhakPvSL7WRSzTBUWM4doUE=
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 99E4540E00E8;
+	Wed, 16 Sep 2026 17:51:09 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 9zV9muLWubjt; Wed, 16 Sep 2026 17:51:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1789581064; bh=or2++1LeeipZYCb3G9WRgyA4slOHEhMs91sMxm37PrE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=E7FjhsZ1898C+iRkHA2e9itQoyiqH/Ch3CRAiwQscnU0CXAU1B3A58i/8qF7CWRQh
+	 G9fmEyLGGIFdYQql64Uc91Gneuv+SDG6aDTZnURc3lGHscWFc5r5ZPh1vPnn+mqjo9
+	 KFHhO1O53B1kflUQZ5pwBl1X+TZ/YeOf6S4ukWau6F9Oy2bvc2AkWVFtpJFZA/d20Q
+	 giWI8kOs24tcni/YN9qyJ2ifRbE9E3/xTzGmQUWsiuXTEhyoEZljOUczoL/sJ+VORm
+	 Jkvi5hPfZD2JyHdgx2JTUeJM+9EfC5lNAKlo3wpXrtxjuZdy0HbqzBa/nrDlGGXUEB
+	 T6ChTVHnrHjzueQm9iG6UjvNvWs1Ci2nBGXVxdIW5G0N5g5YvMPiyWBQmN/KIt+8BJ
+	 4nMWbx4zbda4r5Pe4F71yKd9gdBn5WVrThXpykty5Y9ZS6rxK/Zy/4imk+qiuwIQBK
+	 +J/Y7B2Xd/vbfAw0NWAJZRMYwlCrFpuzM/A8ynROZCZpyn7YbI8CMVxBS6k2Zrpwya
+	 T6Y4mlUo4kZxEKXRc1Vy6jsORFjfP4A+DtCjZKq1wSzIccfVVxpJX103Kp6LkYYPGE
+	 WV11UFcMReR+2ndH81MYlmJrtQ8QF3VCSlMJid4YqIKWMK9eHGy2UwsKc4B1bjlrvo
+	 ZcjWPKxqQS0jjFQdEECxxF+M=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 6DA8240E00B9;
+	Wed, 16 Sep 2026 17:49:32 +0000 (UTC)
+Date: Wed, 16 Sep 2026 10:49:29 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Alexey Kardashevskiy <aik@amd.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-crypto@vger.kernel.org, linux-pci@vger.kernel.org,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Jini Susan George <jinisusan.george@amd.com>,
+	Kees Cook <kees@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>,
+	Nikunj A Dadhania <nikunj@amd.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Kim Phillips <kim.phillips@amd.com>, Joerg Roedel <jroedel@suse.de>,
+	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+	"Tycho Andersen (AMD)" <tycho@kernel.org>,
+	Liam Merwick <liam.merwick@oracle.com>,
+	Michael Kerrisk <mtk.manpages@gmail.com>,
+	Suresh Siddha <suresh.b.siddha@intel.com>,
+	Xiaotian Feng <dfeng@redhat.com>,
+	Venkatesh Pallipadi <venkatesh.pallipadi@intel.com>,
+	Andi Kleen <ak@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>,
+	Tony Luck <tony.luck@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Carlos =?utf-8?B?TMOzcGV6?= <clopez@suse.de>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Jori Koolstra <jkoolstra@xs4all.nl>,
+	Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	Ian Campbell <ian.campbell@citrix.com>,
+	Jeremy Fitzhardinge <jeremy.fitzhardinge@citrix.com>,
+	Petr Tesarik <ptesarik@suse.com>,
+	David Howells <dhowells@redhat.com>,
+	Haavard Skinnemoen <hskinnemoen@atmel.com>,
+	Kenji Kaneshige <kaneshige.kenji@jp.fujitsu.com>,
+	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Ilias Stamatis <ilstam@amazon.com>,
+	Sumanth Korikkar <sumanthk@linux.ibm.com>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	Toshi Kani <toshi.kani@hp.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Vinod Koul <vkoul@kernel.org>,
+	Jiang Liu <jiang.liu@linux.intel.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Palmer Dabbelt <palmerdabbelt@google.com>,
+	linux-coco@lists.linux.dev, xen-devel@lists.xenproject.org,
+	iommu@lists.linux.dev, linux-mm@kvack.org, aik@ozlabs.ru,
+	Santosh Shukla <santosh.shukla@amd.com>,
+	"Pratik R . Sampat" <prsampat@amd.com>,
+	Scott Soule Cheloha <scott.cheloha@amd.com>,
+	Ackerley Tng <ackerleytng@google.com>,
+	Fuad Tabba <tabba@google.com>
+Subject: Re: [RFC PATCH kernel 01/17] pci/dma/tsm: Call disable DMA bus hook
+ on cleanup
+Message-ID: <20260916174929.GCaqrWqZ1fIhi4Rgbn@fat_crate.local>
+References: <20260916115159.1938195-1-aik@amd.com>
+ <20260916115159.1938195-2-aik@amd.com>
 MIME-Version: 1.0
-Date: Wed, 16 Sep 2026 13:45:23 -0400
-X-Gm-Features: AcwNN1UbSz9j_YK2TyroR0WvWmqVkz_Hz7gqfmErLvR7rOVGTQ8tgDgYEplJIPk
-Message-ID: <CAPAsAGzVsmj4xRsJeBBBt5FvgUqWa7eyb4w=EBkm8GGeLF1EhA@mail.gmail.com>
-Subject: Re: [PATCH v2] fork: reset pointer tag of vmapped thread stack before vfree
-To: Shaobo Huang <huangshaobo3@xiaomi.com>, mingo@redhat.com, peterz@infradead.org, 
-	juri.lelli@redhat.com, vincent.guittot@linaro.org, akpm@linux-foundation.org, 
-	david@kernel.org, kees@kernel.org
-Cc: dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com, 
-	mgorman@suse.de, vschneid@redhat.com, kprateek.nayak@amd.com, ljs@kernel.org, 
-	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, glider@google.com, andreyknvl@gmail.com, dvyukov@google.com, 
-	vincenzo.frascino@arm.com, kasan-dev@googlegroups.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260916115159.1938195-2-aik@amd.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: C6440A0007
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 1E68D18000C
-X-Stat-Signature: mbe7gkgegdcfys4fpdtyj78fddzwkgxt
-X-HE-Tag: 1789580725-283263
-X-HE-Meta: U2FsdGVkX19Kbxy/aBK0OLlAA1sM8bsAgukUTquXoTeIVFlq04mu0tObCjoF+K7B4LbRiloYHbVdOomgTB+XE0zlyBIQV5ubYuol3GlnMPLxDs+zHfI2gQsrxl9EXlG7V1K9CV/H1bQPuVbrmOCl96FBFeCVhYIXr7noqx2XKiFDVwbjIGdboa+qSD96Kh4IDtpB1WMnhNXUWseNNN1pd6R0PGaHpLoE7qxqVBVPeCJvVOfJfmXN2bPAnl8lznbYF2GmmDfJl0fpe8Qp71o4O+zZX3UU4iVv/oxTUTACt1nH28gV92h81RtUnzMfJVowe17Nh/GPODP3KpAkn9WDkDmOBm1sn4XaCTMQ/mUcI+PPWZFctN4/CFJiJW5jgHddYciruCG+y1DDtgqR0nul7anFpH+E9vNMkHVVQ0tEABW+vStB5K9IK+SPOiK/H+RveZZ5cqkku3T7wgkBUbqVooxqul1AX0F58OoDQoC+dSJShKLACK+tyQ7I23G/bgYlWPPXYKxGEKkmzLMDw6tDlnyBrarx9zzDpjv9AYdH1VCAPIQZTI4MI02mfO5Y7qbNHMqm9IT1+9CEbY+xiflXXqOcNWqADuKBC8WBGEfD8uFl/UXCYdISxXVPo2cIDUemgmIxH1x3kqcctYr8OsNRQKtyTENb5ZGzyZHwMhoo1vQZx6vJSJIo2kUp8LeESNbiJ4vpAS+pECYTrAlqTYrlDnkHfxFIAHiPEGynHXky7CPFfmXLi6Ga7BUg4ocpr3eQtcmtXypw1EroMvW5O9HV1uHN/tGqxm1WDkEo55bFzYXOsVS/0Bt0rxJA8mQr7NtSmP7itQs+VUTfsHLek3ggI09OBgybU6bYGve8x9yvJ+0INZCtmscZVQnIiHY9Up0A8IgfJ+58zSrMUNv0b66OscIsYnLrfsiaoI/13E2kjpe+kJ2SAGzLLHkA5N5mG5VSoRvQ4fcoLgdv1cHcuaw
- E0pGae/r
- QCQQfbyIK6KSTvXGLR1/ROeBsTDrdB/GI50nN85NOWiIwxiRm8ds6j05CfPiQexvmOF3dIvVVahodOCqq5Y/zqhnANXZdeUAAOgR+hNa8E4+SkJsby/uBHVtBcdWdzgeq8kwcOtCOPtHMwUgxjA0QulBCvCs8Lq9zg4yWr9qKXy27tLzJyXNnjlBOV7ZulGiwrrE+/5kQVSMSdfKNKhcw0+rDwN2D1ycaXEDpqP3rFwoFAM1UILzHSrwZWgl06jAL843uiH1pvHduJMoF2clPVlTZf9j++qOVN/36yildoG7wD/yrPRRo4+5gFoBfbHlym79hRWNmRA1d6QO8qiTUZOek1zJZYRj5B0AlzeAJ+2Yi5wZN0H4/VyZCWo8YRZRWVSbjyFbofWRIxHmhzgGOAQY0mgzQgJ0bzm7dglASIiHqBi1ON10jlszCkRrDKENPyo1ucj+ga9gB6ciuYXfh7jmV++UjntK4YG9bdnHYUBsVio/b4Z4DABYrxZEFH4K5GmoNc1pKcqR1Xq/Uimyu9yAI22rij+N3n8TI
+X-Stat-Signature: zombqqyhbucj6tsktbqwuz6d73hckr7f
+X-HE-Tag: 1789581072-350043
+X-HE-Meta: U2FsdGVkX1+WP8wReWzpFCvkABkc7GrYbbrzO1yQCSpSv6eAMTJg/wRLxZR5t2Oqu2b0RB+6jgu4A7X0i8KRkjZlF3pRzjA5xEl4X2o98Sf1XSn2qqkn/o5JXaWA4kFOQyLGxYgFw1v3F0qGuR8gCAvT9qC/pZtHjYcW1UDDDN4eTraSWu6LmGIhUXQk+go/HAI6szVXDmmqyWaxCHYnFh9+jb7loHQv7B57BoiVdtxF4JbfqMpYSNxkHUfJcfK/WjivHA9QuGcJIL4qRpjrds4bQdemxBGjnnqXGUzNjD5MHH3mIcJipfnnbRm2IoPTOEZMTdUjr9me/NHL4ME8lqQWapNwxbc38fGIlJZVL+n3Zo1YDR+OGj924ufAXZyNxyl0MFQVyvnfqBX4QMavLrsTgvi7eSiZn4hCgwFlUBX5owS044hMMhQC8TeXippTgusoXo1C2d2tgfXcZHkoC4SL5dASRls2JgHFNkGM7f5zClNInyZn80AS6E+ijXQMdPS/42/2F0TMLvHBR++eF5ZUfEpA+Em2JUnjySnCwNSj6gZNlHCW3QWDHdjRJ78+jcKvgRWDvsmoego9hr6t2fZzfwdEUoP7GSWaciA/He/vD4Mrr4iU7mu6mnYFYBhs5jXK/k9Io75KsSrUohvMXqCTqRaVeVM1/mJvipclECXHfuXRvhzb9Q/v14VJArA/4mVUv+847gGOba0MWvHp86sTTgF+tliDtlCxiITJRE/i35usm9wotYycVWPKbb8mfxr0Zu/SgNjou5XbReHtg3Q/l2JRfBJRYpym+5RR/xdd58y/Yvj6+jM8kh4aqcYr1vD2V37SoPFZGn8gnE1zTD2myEv0NxZDXXQ4UJ2P6/+3uEYK5xZLGGLuAzSrxNnCsR19qPn+VQDffKZdGGHvO5QknmUR5m/jzb3wyuPTPqJ+vtn/rlMFoBa2f74vKheMv+yYKm4BxgD3HWQjppY
+ DeVEuspK
+ 9fyKCsfmssFHNlrVftfkyJhw2EEq/FmlT2Tv83CXoy+az76ViCU7UrcEseWMjLS5HlmqILIF68GmM+pY4vfqwb4mZu2671AhMax504o8vRtCTwVrvfXDkxiBPuHFkrMh5D9syFmaUuRsAqjpUA1pRW4dhKqW2fx2UfR5XHHDKUcliC2Xmwcpfu3tg8BVytlYMXfbatlNqKSertWEOtaW9ULMOZCuJSID4wd2fSyzeNiSgtRuVLdZrtGps4kE7f0OaLriQMlMzLQkQdVw82Xje9uHoHb4m264BA720IJYxuIzY8O/bjK9WK+2v2xG2nlq8+4i5j+3vLpYPb0eVTSbYRIgJmket0NAoqwQkymLq7qkROP3l6xQuU6LTCtWp1bG+9uSV+u0Y4LJGhBQIvV80Za4ds5XOful9TPmlAVVu4e92qEQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,87 +180,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Shaobo Huang <huangshaobo3@xiaomi.com> writes:
+On Wed, Sep 16, 2026 at 09:51:41PM +1000, Alexey Kardashevskiy wrote:
+> +	if (device_tcb_trusted(dev))
 
-> thread_stack_free_rcu() frees the vmalloc'd thread stack via
-> vfree(vm_area->addr).  In RCU callback context, vfree() routes to
-> vfree_atomic(), which calls llist_add((struct llist_node *)addr, ...)
-> and writes 8 bytes to the base of the region being freed.
->
-> With KASAN_SW_TAGS, vm_area->addr carries a random tag.  If
-> kasan_unpoison_task_stack_below() has rewritten the shadow covering
-> [base, sp] to KASAN_TAG_KERNEL (0xff) -- which it does on every CPU
-> resume for the current task's stack -- the llist_add store checks
-> shadow[base] (0xff) against the pointer tag (random) and reports an
-> invalid-access, although writing to the base of a stack queued for
-> deferred free is legitimate.
->
-> Reset the pointer tag to KASAN_TAG_KERNEL before vfree() so that
-> kasan_check_range() short-circuits the check, the same way the task
-> accesses its own stack at runtime via sp.  The vmalloc lookup is safe:
-> __find_vmap_area() resets the tag before comparing against va_start.
->
-> Fixes: 9f7d416c3612 ("kprobes: Unpoison stack in jprobe_return() for KASAN")
+Where is that function and the rest of the gunk needed for me to apply before
+I review those?
 
-This commit merely renamed the resume helper without changing what it
-unpoisons. Only generic KASAN existed back then, so it cannot have
-introduced a tagged-mode problem.
+The patches on that branch:
 
-The problem became visible with
+https://github.com/AMDESE/linux-kvm/commits/tsm-next
 
-  449e0b4ed5a1 ("fork: clean-up naming of vm_stack/vm_struct variables
-in vmap stacks code")
+which come before those here are enough?
 
-which changed thread_stack_free_rcu() from vfree(vm_stack) to
-vfree(vm_area->addr). vm_stack is derived from tsk->stack, whose tag
-alloc_thread_stack_node() resets to 0xff. Since that commit, vfree_atomic()
-gets the tagged vm_area->addr instead.
+Thx.
 
-> Cc: stable@vger.kernel.org
-> Assisted-by: zhipuai:glm-5.2
-> Signed-off-by: Shaobo Huang <huangshaobo3@xiaomi.com>
-> ---
-> Changes since v1:
-> - Drop the 12-line comment; keep just the one-line fix.
-> - Fix the Fixes: tag to point to the commit that introduced
->   kasan_unpoison_task_stack_below (9f7d416c3612), which added
->   both the function definition and the _cpu_resume call site, not
->   the 2016 vfree_atomic commit.
-> - Add Assisted-by tag per Documentation/process/coding-assistants.rst.
-> - Use real name (Shaobo Huang) instead of "sparkhuang".
-> - Trim the commit message; remove the full KASAN dump.
-> v1:
->   https://lore.kernel.org/all/20260806123020.90869-1-huangshaobo3@xiaomi.com/
-> ---
->  kernel/fork.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/kernel/fork.c b/kernel/fork.c
-> index 45300f59cf2c..9a66b10749de 100644
-> --- a/kernel/fork.c
-> +++ b/kernel/fork.c
-> @@ -238,7 +238,7 @@ static void thread_stack_free_rcu(struct rcu_head *rh)
->  	if (try_release_thread_stack_to_cache(vm_stack->stack_vm_area))
->  		return;
->
-> -	vfree(vm_area->addr);
-> +	vfree(kasan_reset_tag(vm_area->addr));
+-- 
+Regards/Gruss,
+    Boris.
 
-Thanks for report the problem and the patch. NAK on the fix though.
-It addresses the symptom rather than the cause.
-
-The problem is not that vfree() is called with a tagged pointer. The
-problem is the 0xff written into the shadow by
-kasan_unpoison_task_stack_below().
-
-That helper is only needed in generic mode. There the compiler expects
-the stack shadow to be zero, so the redzones left behind by discarded
-frames must be cleared before the stack is reused.
-
-The tagged mode has no such requirement. The compiler fully initializes
-the shadow of stack variables on function entry, so stale tags left
-below the watermark are harmless.
-
-kasan_unpoison_task_stack_below() should simply be a no-op in tagged
-mode. I'll send a patch.
+https://people.kernel.org/tglx/notes-about-netiquette
 
