@@ -4,49 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4651C88E7F
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 18:34:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89B94C982C9
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 18:34:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3D4126B0095; Wed, 16 Sep 2026 14:34:44 -0400 (EDT)
+	id A379A6B0093; Wed, 16 Sep 2026 14:34:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 331B66B0098; Wed, 16 Sep 2026 14:34:44 -0400 (EDT)
+	id 999916B0096; Wed, 16 Sep 2026 14:34:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 227A26B0093; Wed, 16 Sep 2026 14:34:44 -0400 (EDT)
+	id 861746B0098; Wed, 16 Sep 2026 14:34:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CF7486B0093
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:34:43 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E1DD5807AA
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 18:34:42 +0000 (UTC)
-X-FDA: 85220476404.19.59D8924
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C92C6B0093
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:34:44 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3A2C11A0806
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 18:34:43 +0000 (UTC)
+X-FDA: 85220476446.11.A327C3F
 Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
-	by imf11.hostedemail.com (Postfix) with ESMTP id A643140007
+	by imf28.hostedemail.com (Postfix) with ESMTP id A9D40C0007
 	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 18:34:40 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
+Authentication-Results: imf28.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf11.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+	spf=pass (imf28.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf28.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1789583681;
-	b=w/XEKutUj54OlYa2+wYvwmxg1RLFd1uhplO/+yQ3bjC+fCfXbjVS//P+1qCYmUBgxViD1t
-	EhFwGKqzpMfCuVVOSKBfIdUwpH6DEQqsO25wcpa8Topi0yjZWqQjbH1eHvSB1Js+U7G90v
-	QSqlNKy3zgXphn5eRlcy45he4Jm6jCQ=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf11.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+	b=Va5qxisMaJlJenO7cX8OBRneS8juhUPL2fmGJEw+kepPmIhCNF9729HLnEIWKBK9nay1YB
+	m2LOHPtqzP0PbtP5Il7/On+ERndsINPnp7lXmdq2r8Y23leSFUUvMPOua8iLuEULyrZZj9
+	oakNxToYzU8WUXWIDGiQk++YUwbIfEk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1789583681;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=GGIsjnpMmyXNRzLC0ZPseHxzGUyt5CAd187eVI+5n7w=;
-	b=gUSKcz1lOmfica5/gPK3gtewaQdRjb87YjoEXPgqysPBzaMAM0qqSph8RMmNHw2yiliBlK
-	xFaz5vFAzLiYYDnZJ5agWsyN2p+MDewsboBglCGemErTX7CQ6+3xr0pv0FXDUctiUlYdXT
-	PUDEQcSPnXdTCHCpTiY9Ff+GeblRwnY=
+	 in-reply-to:in-reply-to:references:references;
+	bh=MmpZXcbdCabduIfsr82s7WdIqMQdjydMYlu1ggTsDqk=;
+	b=nV7g2MF6R7qvLEeHHYA5sNLwXBpT+EWPltD/mOHaztMa2kMTw/d2zMwLuoLwmZS6XE4aC3
+	BaANmbLby2VQEV443+dXEW+g+fb3sz5fe55LQ5C4NzLxnsGyHZqlv8NMpWzu3NGDQXnAyM
+	OvQKQTbLci89MTeRShptoK5ITnI/R3s=
 Received: from unknown (HELO yjaykim-PowerEdge-T330.lge.net) (10.177.112.156)
 	by 156.147.51.103 with ESMTP; 17 Sep 2026 03:34:37 +0900
 X-Original-SENDERIP: 10.177.112.156
@@ -72,20 +73,22 @@ Cc: chrisl@kernel.org,
 	taejoon.song@lge.com,
 	her0gyugyu@gmail.com,
 	lianux.mm@gmail.com
-Subject: [RFC PATCH v11 0/4] mm/swap: priority-based swap tiers with per-cgroup selection
-Date: Thu, 17 Sep 2026 03:34:33 +0900
-Message-Id: <20260916183437.2946306-1-youngjun.park@lge.com>
+Subject: [RFC PATCH v11 3/4] mm: swap: add a debugfs interface for memcg tier selection
+Date: Thu, 17 Sep 2026 03:34:36 +0900
+Message-Id: <20260916183437.2946306-4-youngjun.park@lge.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260916183437.2946306-1-youngjun.park@lge.com>
+References: <20260916183437.2946306-1-youngjun.park@lge.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: A643140007
-X-Stat-Signature: 4ssj3mxb5oqtdwkqzm1sfe7xfrybfp5o
-X-HE-Tag: 1789583680-864184
-X-HE-Meta: U2FsdGVkX19TvCMY5r56AXhBlKS4XWrU6CKWC+BpK7ABKOnlP/NUAeYwGv8dSOp31BFnDzUQ5KJ8ahauJoCVv7o0XhRu5IgRzNUn0Kj3K4nULsS3NgbguZ4Nz3Xio+IP1lRC0z8H0IsahDkqmm3PucpL0mMqBwyPgFRvPdf7o9swyp1Hwb+GZgRXD9x0aKc69J3msUBDs2CWsgPoSvqCDdYV+LsVQAt3ZOeimSJLSsogO3jD7T5g653+xmBRNywi3NyRv1QqQogUW+zPXj8ec1+9gPczSLAUjgBrl6jcAxeEUig/RBqp7Xq0LN17w7DmAnXfytsE3PmSdnW48FpB078TVosjld8Vpg7Gr3JnQkPp7o/1EvhtGPLhzNaxCHtq+8NToWAH1P7LEJXRXE993O5fjiMSOHN/YRN2LOtX/vA5pDQmSq4g4TcPVGmN+dic1F6giwvPLs79/tJEJsUmuqcyT5vQ2a77fRtXb218MIle0B5tFUbFtqLSwgtX1b0XGJgIinMVuYMKIerhYtQ6bbfnkIAGj5udaYMkInMbxyy/VHMMUwKnrlgrzltMfOvyZzXaYkiugpIy9xQWagtLziHnxiv78FX/qUFiP6X5Tnv6+iXHlZvmcsayKiFEEjgFzQZNUdDPPLfB9ntHg+r4ut48LXzBwhz7lrIqXfq22ky2ZSkAhLo+dbhTj9QqEZuCrnOv/IC5fN1T/si2pZqTe8ZP2U/MrYKJjkum3rAbU1YoOrFb4MTrkVfZNIBQ4zTku1etsRHbW4yavZACfzlp55Z3v2w13xaoarScV+Lij9Ov/czEUnOLUky4bC3/pbD86yxlt6ieRTzqmxm0ZxxYUo2tPikGOiHkV2MBEjRzydfHnubb/RzzBrsS1F5gcNl0YGzvx29k4Fume/Ql/uDxFKGHgy5GtfEN7QWiYcLJME5xxJ0YIhvpN153pYSq2s6ojO/JlfGnSUSq6d45bqp
- +UlrZdPY
- ivvGihQJRGyI17BpLVZw+8rBOn0wkrsyIfHEPAFc+VJfFHBl6/ImDS8xJGgzKZqQrJsdQlUIPEMiAamw6iHJkyljrzb5MTYSIbjGZtp73jGah9xY1rBcZZY3z3dZIcN3V2XLcr+Al6MZh62SIeaOy6DLvctqO3WmLtXrTGcf4qoUoCmZc6x47KNLRTIY0cacEcM3sdH+OsI1quBORuswWEKHShP4+dNOUbqNSrPlhX32Oqb7sjvIvwB5qACwIQKPaIJhBs7iVi5S3jIsLDOm1Ua7xegM+4/diWit/nGvfVIxZGcN8lZKE+EuxyTcsnvw5ZtInL5wJ03ZW1ajqhIOsteQqzg==
+X-Rspamd-Queue-Id: A9D40C0007
+X-Stat-Signature: dg1sn7s1qbztqkfeixckqe9ek6pr7d9x
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789583680-365615
+X-HE-Meta: U2FsdGVkX19+x9hDg6p7QL4pmG4I9yvV2TNqT2RyzYuGiyYLQr0VecXVqEPxZ1wW2VrlbKzdyfwz2w14BnzsOTp2pqdlrQ0H4BcqKdFH5AhRzKQI1yz7gS9AOWKDWGCQ1RbCBdlYY1GVcdWIqYi2GXsXd8uS6w1Qq+A3IIMJ1oEMkruSNi8yohZexduQ0bvvTkBrNV9248yUtFisviDpF1NjSMWDarFCSBthoKGcz7wW73if1In4BKVIZg3LXrfEO7irjh/LkPw6fiFNr9DdpCwt3hMfcRhPtNbeCwZ2PjJIy2gOYXU7XJrLBHDyf+zS+3MD7RJg+u61RCv9oGzvMiCPtaZW7o0zX8nlAROoNqukSwwNAhJDrRRWomZUQqo/XzFJPmKiPZWNAhIG96CxYHB6tCYCSmKm59BbURzaJBftHItlGuZTfLaRcxSDFTBzdD8ikshblKZuJU+nNf9pkk75riCVA3bcKTh0ukBhDXpQeRNLA4yr/58Z7EVTuCsWjz0wQJJD74cTgpFFuqES8kiPZFpi7ypFxdZmINyx8mBZ1crRx9rfWvL5rQTIQJfIp5vlM+WYocfW7f5SM0KMXKOKLCXPbsEaaS241xuKntpuCe+vChGp/8MuPUdR2IDJg03d2h5mYkomWa7kHcfpFhrnY3/kIqjnsp6Km597+vGU/6rsGck8qk0cFH61haIU7mqMmwo/ot7uCQ96vmwF+BwS9wMJiA5o+p0QAWqqYBifmU8bI+X6JvnG5N6DSyCSktqAo/+Cm+4xOYuzxIgSFhYS+4hxTtfW+qQbYlstbo5mQmc7ACeDTTyjuY/H/6goeTNKMreNGB/lEoMUYNmtFKoQ1WERgl6h42V7xude2QK6cOPWPpZp9l11Mtn9d3K8MXvpPwCEgeUwnuDU3jvsfxMasu8qDDe1vZwILBwmxwvm6cn01gmlYP7qrF89RTehu8yYVTSNouIm3QEcTMc
+ 6vmsZNzH
+ 7JxF+WDQJfZTuDi6nmEn07VxDGZW0F7Xo1JbGvmu6yLnSxb4Ukk8tn++SVXSc8v/hk6uJC/A92n1rNwfEsRg8RlxLnkoeCBuVZUZ62I+iLKcB5TglNw1XMFBvPWBEKIO/zxvTGlsyi1GByBOy+fuVn3TalJJzFot1/w9Nt4aLBFG0MCEuNjWUDcXfjfwO8O4sxSc+licOI/DgB6cj6g8vXBhDXogX9v3BxGubxZaZk3HOlrC6aRYQnJjfu94XLvzx3VCkXNNyflCklqq4i0sgtOfIW2Z6STYsaY42NsNo91RM7aGKi77JY1BpHABqwGmj4wQL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,167 +96,575 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is RFC v11 of the swap tier series [1], reworked after the v10
-discussion [2][3].
+Swap tiers do nothing until something chooses between them. Let a memory
+cgroup do that.
 
-Motivation
-==========
+Each cgroup carries a mask of the tiers it may swap to. Write a cgroup
+path and a hex mask to /sys/kernel/debug/swap/memcg_tiers to set it. Bit
+i is the tier at index i. /sys/kernel/debug/swap/tiers lists each tier's
+index and priority.
 
-After the v10 discussion, I would like to first land the parts that do
-not affect users, before anything touches memcg, with two goals in mind.
-
-- Serve as a bridge that causes no trouble when the tier interface and
-  memcg support are introduced later.
-- Make per-cgroup swap device selection possible.
-
-While thinking this through, I came across some insights that I'd like
-to discuss with the community. Hence this RFC v11.
-
-As a starting point, let's look at what swap priority already gives us.
-
-- Devices with different priorities are used in priority order.
-- Devices with the same priority are used round-robin.
-
-From this point of view, a priority itself can be seen as a tier rather
-than a property of a device. Each distinct priority is a tier, the
-devices with that priority hang off it, and allocation walks the tiers.
-
-This is one of the insights that led me here. In the v10 design, a tier
-was a priority range, so one tier could contain multiple priorities.
-That raised two questions.
-
-- If devices in a tier are allocated in priority order, aren't they
-  effectively different tiers?
-- Is there a real use case for several same-priority round-robin
-  groups inside one tier?
-
-If each distinct priority is its own tier, both questions go away.
-A tier is one round-robin group, and ordering exists only between
-tiers. (Anyone who wants priority-based allocation inside a tier can
-still get it through a separate tier interface later. 
-mix allocation policy? also possible. we have interface.)
-
-Either way, no explicit tier interface like the one in v10 is needed
-yet.
-
-Even when real tiers work are introduced, the view stays the same.
-
-- We want an ordering between tier A and tier B.
-- Devices in one tier form one service speed group. How they share
-  allocations may become flexible, and will normally stay round-robin
-  as it is today.
-- On top of that, we will add backend transfer between tiers after
-  swap virtualization.
-
-This series changes the current swap code to follow that view, which
-gives us the following.
-
-- Per-cgroup swap can later fit into a swap tier interface without
-  trouble.
-- A base for the per-priority allocation queue series [4].
-- It is close to a refactoring of the existing structure, so userspace
-  is not tied to an implementation.
-
-Kairui, Lian, would it be okay to use this as the groundwork for [4]?
-What do you think?
-
-Per-cgroup swap in debugfs
-==========================
-
-Patches 3 and 4 let a memory cgroup choose its tiers through debugfs.
-
-  # swapon -p 100 /dev/nvme0n1p2
-  # swapon -p 50 /dev/sdb2
-  # cat /sys/kernel/debug/swap/tiers
-  Idx   Prio
-  0     100
-  1     50
   # echo "/batch 0x2" > /sys/kernel/debug/swap/memcg_tiers
 
-Bit i of the mask is tier i, so /batch swaps only to sdb2. A tier keeps
-its index for its lifetime, so the mask keeps selecting the same tier
-across swapon and swapoff.
+This lives in debugfs on purpose. A cgroup file is a permanent ABI, and
+what a swap tier should look like is not settled yet. It is built only
+with CONFIG_MEMCG and CONFIG_DEBUG_FS.
 
-Masks are kept in a list keyed by cgroup ID rather than in struct
-mem_cgroup, so the series does not touch memcg code and needs no Kconfig
-option. A mask applies only to its own cgroup and is not inherited by
-child cgroups.
+The masks are kept in a list keyed by cgroup ID rather than in struct
+mem_cgroup, so memcg itself is not changed. A mask applies to the memory
+charged to its cgroup and is not inherited by child cgroups. The entry of
+a removed cgroup is dropped on the next write.
 
-This debugfs interface is a stepping stone. Once the tier model
-settles, /sys/kernel/mm/swap/tiers would list and name the tiers, and a
-memcg knob such as memory.swap.tiers.max would take tier names and turn
-them into this mask.
+Each swap device is stamped with its tier's bit at swapon. A device's
+tier never changes, so the stamp is written once and read locklessly by
+the allocator.
 
-Future direction
-================
+When the last device of a tier is swapped off, the tier frees its index
+for reuse. It waits until swapoff can no longer fail, so a device whose
+swapoff fails goes back to the same index. The freed bit is set back in
+every cgroup mask, so a cgroup that had disabled that tier must disable
+it again once a new tier reuses the index.
 
-This is not done in this series. If the tiers introduced here settle,
-which differs from giving tiers priority ranges, work can continue
-along these lines depending on the discussion.
-
-The following are common to both.
-- The per-priority allocation queue series from Kairui and Lian [4].
-- Add /sys/kernel/mm/swap/tiers.
-- A memcg memory.swap.tiers.max interface.
-- Per-tier allocation policy (an extension that needs discussion).
-
-If tiers are assigned by priority ranges as before, the tiers here have
-to be related to those ranges. When a tier is assigned at runtime, the
-devices that fall into its range are merged into that tier.
-
-If tiers are extended the way they work here, a tier stays a priority
-and the interface only adds names. A tier starts with a default name,
-such as its priority, and can be renamed through the tier interface.
-
-(I think there are a lot of possible way which we can discuss.)
-
-Change log
-==========
-
-v11
-- Reworked after the v10 discussion [2][3], with no new user ABI.
-- A swap tier is now a single swap priority, created and removed by
-  swapon and swapoff. /sys/kernel/mm/swap/tiers and CONFIG_NR_SWAP_TIERS
-  are dropped.
-- The active and available swap device lists move into the tiers.
-  (#1, #2 patches)
-- Per-cgroup tier selection moves from memory.swap.tiers.max to debugfs.
-  (#3 patch)
-- Masks are kept in a cgroup ID list instead of struct mem_cgroup, and
-  are no longer inherited by child cgroups. (#3 patch)
-- Dropped the selftests, which tested the dropped interfaces.
-- Rebased on recent mm-new.
-- v10 link: https://lore.kernel.org/linux-mm/20260713025644.170839-1-youngjun.park@lge.com/
-
-Changes up to v10 are in the v10 cover letter [1].
-
-[1] https://lore.kernel.org/linux-mm/20260713025644.170839-1-youngjun.park@lge.com/
-[2] https://lore.kernel.org/linux-mm/amDCIl51NoNPL7Op@cmpxchg.org/
-[3] https://lore.kernel.org/linux-mm/amIlqHQ40baRoz3O@cmpxchg.org/
-[4] https://lore.kernel.org/linux-mm/20260829-swap-pcp-priq-v2-0-68d3d925578c@gmail.com/
-
-Youngjun Park (4):
-  mm: swap: introduce swap tier infrastructure
-  mm: swap: allocate swap slots from swap tiers
-  mm: swap: add a debugfs interface for memcg tier selection
-  mm: swap: filter swap allocation by memcg tier mask
-
+Assisted-by: Claude:claude-opus-5
+Signed-off-by: Youngjun Park <youngjun.park@lge.com>
+---
  Documentation/mm/index.rst     |   1 +
- Documentation/mm/swap-tier.rst |  55 +++++
- MAINTAINERS                    |   3 +
- include/linux/swap.h           |   5 +-
- mm/Makefile                    |   2 +-
- mm/swap.h                      |   2 +
- mm/swap_tier.c                 | 421 +++++++++++++++++++++++++++++++++
- mm/swap_tier.h                 |  71 ++++++
- mm/swapfile.c                  | 173 ++++++++------
- 9 files changed, 658 insertions(+), 75 deletions(-)
+ Documentation/mm/swap-tier.rst |  55 ++++++
+ MAINTAINERS                    |   1 +
+ include/linux/swap.h           |   1 +
+ mm/swap_tier.c                 | 294 ++++++++++++++++++++++++++++++++-
+ mm/swap_tier.h                 |  31 ++++
+ mm/swapfile.c                  |   5 +
+ 7 files changed, 387 insertions(+), 1 deletion(-)
  create mode 100644 Documentation/mm/swap-tier.rst
- create mode 100644 mm/swap_tier.c
- create mode 100644 mm/swap_tier.h
 
-
-base-commit: b08a65b93426d86e3f354d655d6225397b591877
+diff --git a/Documentation/mm/index.rst b/Documentation/mm/index.rst
+index 13a79f5d092c..6afc45cd4b3d 100644
+--- a/Documentation/mm/index.rst
++++ b/Documentation/mm/index.rst
+@@ -34,6 +34,7 @@ see the :doc:`admin guide <../admin-guide/mm/index>`.
+    page_reclaim
+    swap
+    swap-table
++   swap-tier
+    page_cache
+    shmfs
+    oom
+diff --git a/Documentation/mm/swap-tier.rst b/Documentation/mm/swap-tier.rst
+new file mode 100644
+index 000000000000..4007c23f83a6
+--- /dev/null
++++ b/Documentation/mm/swap-tier.rst
+@@ -0,0 +1,55 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++:Author: Chris Li <chrisl@kernel.org>,
++         Youngjun Park <youngjun.park@lge.com>
++
++==========
++Swap Tier
++==========
++
++Swap tier is a group of swap devices that share a priority. It acts as a
++facilitation layer, allowing users to manage swap devices based on their
++speeds.
++
++Users are encouraged to assign swap device priorities according to device
++speed to fully utilize this feature.
++
++Tier Index
++----------
++
++A tier is created when the first swap device with its priority is swapped on,
++and removed when the last one is swapped off. Each tier is given an index when
++it is created and keeps it until it is removed, so a tier's index does not
++change when another priority is swapped on or off.
++
++Per-cgroup Tier Selection
++-------------------------
++
++A memory cgroup can be limited to some tiers through debugfs. This is for
++evaluation, not a stable ABI.
++
++``/sys/kernel/debug/swap/tiers`` lists the index and priority of each tier.
++``/sys/kernel/debug/swap/memcg_tiers`` takes a cgroup path and a mask in hex,
++where bit ``i`` allows the tier at index ``i``::
++
++    # cat /sys/kernel/debug/swap/tiers
++    Idx   Prio
++    0     100
++    1     50
++    # echo "/batch 0x2" > /sys/kernel/debug/swap/memcg_tiers
++
++There is no separate delete operation. Writing a mask that allows every tier
++clears the restriction, so the cgroup drops out of the file::
++
++    # echo "/batch 0xffffffff" > /sys/kernel/debug/swap/memcg_tiers
++
++A cgroup's mask is also dropped when the cgroup is removed.
++
++A mask applies to the memory charged to its own cgroup and is not inherited by
++child cgroups. A tier keeps its index for its lifetime, so the same mask keeps
++selecting the same tier across a swapon or swapoff.
++
++When a tier's last device is swapped off, its index is freed and can be reused
++by a later tier. The freed index is re-allowed in every cgroup mask, so a
++cgroup that had disabled it must disable it again once a new tier reuses the
++index.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 37f353015cae..af17b804f31b 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -17402,6 +17402,7 @@ L:	linux-mm@kvack.org
+ S:	Maintained
+ F:	Documentation/ABI/testing/sysfs-kernel-mm-swap
+ F:	Documentation/mm/swap-table.rst
++F:	Documentation/mm/swap-tier.rst
+ F:	include/linux/swap.h
+ F:	include/linux/swap_ops.h
+ F:	include/linux/swapfile.h
+diff --git a/include/linux/swap.h b/include/linux/swap.h
+index df69c2dd434a..30d3c37ca530 100644
+--- a/include/linux/swap.h
++++ b/include/linux/swap.h
+@@ -237,6 +237,7 @@ struct swap_info_struct {
+ 	struct percpu_ref users;	/* indicate and keep swap device valid. */
+ 	unsigned long	flags;		/* SWP_USED etc: see above */
+ 	signed short	prio;		/* swap priority of this type */
++	unsigned int	tier_mask;	/* swap tier mask */
+ 	struct plist_node list;		/* entry in its swap tier */
+ 	signed char	type;		/* strange name for an index */
+ 	unsigned int	max;		/* size of this swap device */
+diff --git a/mm/swap_tier.c b/mm/swap_tier.c
+index 286f319fb125..de183c2678e0 100644
+--- a/mm/swap_tier.c
++++ b/mm/swap_tier.c
+@@ -1,5 +1,10 @@
+ // SPDX-License-Identifier: GPL-2.0
+ #include <linux/swap.h>
++#if defined(CONFIG_MEMCG) && defined(CONFIG_DEBUG_FS)
++#include <linux/debugfs.h>
++#include <linux/memcontrol.h>
++#include <linux/seq_file.h>
++#endif
+ 
+ #include "swap.h"
+ #include "swap_tier.h"
+@@ -17,6 +22,10 @@ static LIST_HEAD(swap_tier_inactive_list);
+ 	for (idx = 0, tier = &swap_tiers[0]; idx < MAX_SWAPTIER; \
+ 		idx++, tier = &swap_tiers[idx])
+ 
++/* A tier's index is its slot in the array, stable for its lifetime. */
++#define TIER_IDX(tier)	((tier) - swap_tiers)
++#define TIER_MASK(tier)	(1U << TIER_IDX(tier))
++
+ /*
+  * Naming Convention:
+  *   swap_tiers_*() - Public/exported functions
+@@ -56,6 +65,12 @@ static void swap_tier_inactivate(struct swap_tier *tier)
+ 	list_move_tail(&tier->list, &swap_tier_inactive_list);
+ }
+ 
++#if defined(CONFIG_MEMCG) && defined(CONFIG_DEBUG_FS)
++static void swap_tiers_debugfs_init(void);
++#else
++static inline void swap_tiers_debugfs_init(void) {}
++#endif
++
+ void swap_tiers_init(void)
+ {
+ 	struct swap_tier *tier;
+@@ -69,6 +84,8 @@ void swap_tiers_init(void)
+ 		INIT_LIST_HEAD(&tier->list);
+ 		swap_tier_inactivate(tier);
+ 	}
++
++	swap_tiers_debugfs_init();
+ }
+ 
+ static struct swap_tier *swap_tier_prepare(short prio)
+@@ -103,6 +120,17 @@ void swap_tiers_assign_dev(struct swap_info_struct *swp)
+ 	spin_unlock(&swap_avail_lock);
+ 
+ 	plist_add(&swp->list, &tier->active_head);
++
++	/* Put back by a failed swapoff, so already stamped and counted. */
++	if (swp->tier_mask)
++		return;
++
++	/*
++	 * A device's tier never changes, so stamp it once here. Paired with
++	 * the READ_ONCE() in the allocator, which reads this without swap_lock.
++	 */
++	tier->nr_devs++;
++	WRITE_ONCE(swp->tier_mask, TIER_MASK(tier));
+ }
+ 
+ void swap_tiers_remove_dev(struct swap_info_struct *swp)
+@@ -113,11 +141,31 @@ void swap_tiers_remove_dev(struct swap_info_struct *swp)
+ 
+ 	tier = swap_tier_lookup(swp->prio);
+ 	plist_del(&swp->list, &tier->active_head);
+-	if (plist_head_empty(&tier->active_head)) {
++}
++
++/*
++ * A failed swapoff puts the device back into its tier, so the tier is given
++ * up only here, once swapoff can no longer fail. Returns the tier's mask if
++ * @swp was its last device, 0 otherwise.
++ */
++unsigned int swap_tiers_release_dev(struct swap_info_struct *swp)
++{
++	struct swap_tier *tier;
++	unsigned int freed = 0;
++
++	lockdep_assert_held(&swap_lock);
++
++	tier = swap_tier_lookup(swp->prio);
++	if (!--tier->nr_devs) {
+ 		spin_lock(&swap_avail_lock);
+ 		swap_tier_inactivate(tier);
+ 		spin_unlock(&swap_avail_lock);
++		freed = TIER_MASK(tier);
+ 	}
++
++	WRITE_ONCE(swp->tier_mask, 0);
++
++	return freed;
+ }
+ 
+ /* The avail list of the tier @swp belongs to. */
+@@ -127,3 +175,247 @@ struct plist_head *swap_tiers_avail_head(struct swap_info_struct *swp)
+ 
+ 	return &swap_tier_lookup(swp->prio)->avail_head;
+ }
++
++#if defined(CONFIG_MEMCG) && defined(CONFIG_DEBUG_FS)
++static DEFINE_MUTEX(swap_tier_lock);
++
++/*
++ * struct swap_tier_cgroup - tier mask of a cgroup.
++ *
++ * @id: cgroup ID of the cgroup.
++ * @mask: tiers the cgroup may swap to.
++ * @list: linkage into swap_tier_cgroup_list.
++ * @rcu: frees the entry after a grace period.
++ */
++struct swap_tier_cgroup {
++	u64 id;
++	unsigned int mask;
++	struct list_head list;
++	struct rcu_head rcu;
++};
++
++/*
++ * Cgroups written to memcg_tiers. Changed under swap_tier_lock, walked by
++ * the allocator under RCU. A cgroup not on the list may use every tier.
++ */
++static LIST_HEAD(swap_tier_cgroup_list);
++
++static struct swap_tier_cgroup *swap_tier_cgroup_lookup(u64 id)
++{
++	struct swap_tier_cgroup *stc;
++
++	list_for_each_entry_rcu(stc, &swap_tier_cgroup_list, list,
++				lockdep_is_held(&swap_tier_lock)) {
++		if (stc->id == id)
++			return stc;
++	}
++
++	return NULL;
++}
++
++/* Drop the entries that allow every tier or whose cgroup is removed. */
++static void swap_tier_cgroup_prune(void)
++{
++	struct swap_tier_cgroup *stc, *tmp;
++	struct cgroup *cgrp;
++
++	lockdep_assert_held(&swap_tier_lock);
++
++	list_for_each_entry_safe(stc, tmp, &swap_tier_cgroup_list, list) {
++		if (stc->mask != TIER_ALL_MASK) {
++			cgrp = __cgroup_get_from_id(stc->id);
++			if (!IS_ERR(cgrp)) {
++				cgroup_put(cgrp);
++				continue;
++			}
++		}
++
++		list_del_rcu(&stc->list);
++		kfree_rcu(stc, rcu);
++	}
++}
++
++/* One line per cgroup that dropped a tier, in the syntax a write takes. */
++static int swap_tiers_memcg_show(struct seq_file *m, void *v)
++{
++	struct swap_tier_cgroup *stc;
++	struct cgroup *cgrp;
++	char *path;
++
++	path = kmalloc(PATH_MAX, GFP_KERNEL);
++	if (!path)
++		return -ENOMEM;
++
++	mutex_lock(&swap_tier_lock);
++	list_for_each_entry(stc, &swap_tier_cgroup_list, list) {
++		if (stc->mask == TIER_ALL_MASK)
++			continue;
++
++		/* A removed cgroup's entry stays until the next write. */
++		cgrp = __cgroup_get_from_id(stc->id);
++		if (IS_ERR(cgrp))
++			continue;
++
++		cgroup_path(cgrp, path, PATH_MAX);
++		cgroup_put(cgrp);
++		seq_printf(m, "%s 0x%x\n", path, stc->mask);
++	}
++	mutex_unlock(&swap_tier_lock);
++
++	kfree(path);
++	return 0;
++}
++
++/*
++ * Keep only the tiers set in @mask.  @cgpath must name a cgroup that has
++ * the memory controller enabled.
++ */
++static int swap_tiers_memcg_set(const char *cgpath, unsigned int mask)
++{
++	struct swap_tier_cgroup *stc;
++	struct cgroup *cgrp;
++	bool enabled;
++	int ret = 0;
++	u64 id;
++
++	cgrp = cgroup_get_from_path(cgpath);
++	if (IS_ERR(cgrp))
++		return PTR_ERR(cgrp);
++
++	/*
++	 * Not cgroup_get_e_css(), which falls back to an ancestor when the
++	 * memory controller is not enabled here.
++	 */
++	rcu_read_lock();
++	enabled = cgroup_css(cgrp, &memory_cgrp_subsys);
++	rcu_read_unlock();
++	id = cgroup_id(cgrp);
++	cgroup_put(cgrp);
++
++	if (!enabled)
++		return -ENOENT;
++
++	mutex_lock(&swap_tier_lock);
++
++	stc = swap_tier_cgroup_lookup(id);
++	if (stc) {
++		WRITE_ONCE(stc->mask, mask);
++	} else if (mask != TIER_ALL_MASK) {
++		stc = kmalloc_obj(*stc, GFP_KERNEL);
++		if (stc) {
++			stc->id = id;
++			stc->mask = mask;
++			list_add_rcu(&stc->list, &swap_tier_cgroup_list);
++		} else {
++			ret = -ENOMEM;
++		}
++	}
++	swap_tier_cgroup_prune();
++
++	mutex_unlock(&swap_tier_lock);
++	return ret;
++}
++
++/* The tiers that the cgroup @folio is charged to may swap to. */
++unsigned int folio_tier_mask(struct folio *folio)
++{
++	struct swap_tier_cgroup *stc;
++	struct mem_cgroup *memcg;
++	unsigned int mask = TIER_ALL_MASK;
++
++	rcu_read_lock();
++	memcg = folio_memcg(folio);
++	if (memcg) {
++		stc = swap_tier_cgroup_lookup(cgroup_id(memcg->css.cgroup));
++		if (stc)
++			mask = READ_ONCE(stc->mask);
++	}
++	rcu_read_unlock();
++
++	return mask;
++}
++
++/*
++ * When a tier is removed, its index (bit position in the mask) becomes
++ * free for reassignment to a future tier. If a cgroup had previously
++ * disabled this tier (cleared the bit in its memcg_tiers entry), its mask
++ * would keep that bit clear, meaning the new tier at the same index would
++ * be silently unavailable, an invisible cgroup constraint left behind by a
++ * tier that no longer exists.
++ *
++ * To prevent this, OR the removed tier's mask bit into every cgroup's
++ * mask. This resets the bit so the new tier is accessible by default.
++ * Users who want to restrict it must explicitly disable it after the tier
++ * is re-created.
++ */
++void swap_tiers_memcg_propagate(unsigned int mask)
++{
++	struct swap_tier_cgroup *stc;
++
++	mutex_lock(&swap_tier_lock);
++	list_for_each_entry(stc, &swap_tier_cgroup_list, list)
++		WRITE_ONCE(stc->mask, stc->mask | mask);
++	mutex_unlock(&swap_tier_lock);
++}
++
++static int swap_tiers_memcg_open(struct inode *inode, struct file *file)
++{
++	return single_open(file, swap_tiers_memcg_show, NULL);
++}
++
++static ssize_t swap_tiers_memcg_write(struct file *file,
++				      const char __user *ubuf,
++				      size_t count, loff_t *ppos)
++{
++	char *pos, *tmp, *cgpath;
++	unsigned int mask;
++	int ret;
++
++	tmp = memdup_user_nul(ubuf, count);
++	if (IS_ERR(tmp))
++		return PTR_ERR(tmp);
++
++	pos = strstrip(tmp);
++	cgpath = strsep(&pos, " \t\n");
++	if (!cgpath || !*cgpath || !pos ||
++	    kstrtouint(skip_spaces(pos), 16, &mask))
++		ret = -EINVAL;
++	else
++		ret = swap_tiers_memcg_set(cgpath, mask);
++
++	kfree(tmp);
++	return ret ? ret : count;
++}
++
++static const struct file_operations swap_tiers_memcg_fops = {
++	.open		= swap_tiers_memcg_open,
++	.read		= seq_read,
++	.write		= swap_tiers_memcg_write,
++	.llseek		= seq_lseek,
++	.release	= single_release,
++};
++
++static int swap_tiers_show(struct seq_file *m, void *v)
++{
++	struct swap_tier *tier;
++
++	seq_printf(m, "%-5s %s\n", "Idx", "Prio");
++
++	spin_lock(&swap_lock);
++	for_each_active_tier(tier)
++		seq_printf(m, "%-5td %d\n", TIER_IDX(tier), tier->prio);
++	spin_unlock(&swap_lock);
++
++	return 0;
++}
++DEFINE_SHOW_ATTRIBUTE(swap_tiers);
++
++static void swap_tiers_debugfs_init(void)
++{
++	struct dentry *dir = debugfs_create_dir("swap", NULL);
++
++	debugfs_create_file("tiers", 0400, dir, NULL, &swap_tiers_fops);
++	debugfs_create_file("memcg_tiers", 0600, dir, NULL,
++			    &swap_tiers_memcg_fops);
++}
++#endif
+diff --git a/mm/swap_tier.h b/mm/swap_tier.h
+index c4347c28d8f1..9967cfbcc439 100644
+--- a/mm/swap_tier.h
++++ b/mm/swap_tier.h
+@@ -9,16 +9,20 @@
+ /* Forward declarations */
+ struct swap_info_struct;
+ 
++#define TIER_ALL_MASK		(~0U)
++
+ /*
+  * struct swap_tier - structure representing a swap tier.
+  *
+  * @prio: priority of the swap devices in the tier.
++ * @nr_devs: swap devices in the tier, including ones being swapped off.
+  * @active_head: swap devices in the tier.
+  * @avail_head: available swap devices in the tier.
+  * @list: linkage into swap_tier_active_list or swap_tier_inactive_list.
+  */
+ struct swap_tier {
+ 	short prio;
++	int nr_devs;
+ 	struct plist_head active_head;
+ 	struct plist_head avail_head;
+ 	struct list_head list;
+@@ -35,6 +39,33 @@ void swap_tiers_init(void);
+ /* Tier assignment */
+ void swap_tiers_assign_dev(struct swap_info_struct *swp);
+ void swap_tiers_remove_dev(struct swap_info_struct *swp);
++unsigned int swap_tiers_release_dev(struct swap_info_struct *swp);
+ struct plist_head *swap_tiers_avail_head(struct swap_info_struct *swp);
+ 
++/**
++ * swap_tiers_mask_test - test whether two tier masks overlap
++ * @tier_mask: mask to test, e.g. a swap device's tier bit
++ * @mask: mask to test against, e.g. a cgroup's mask
++ *
++ * Return: true if @tier_mask and @mask share at least one tier bit.
++ */
++static inline bool swap_tiers_mask_test(unsigned int tier_mask,
++					unsigned int mask)
++{
++	return tier_mask & mask;
++}
++
++#if defined(CONFIG_MEMCG) && defined(CONFIG_DEBUG_FS)
++/* Memcg related functions */
++void swap_tiers_memcg_propagate(unsigned int mask);
++unsigned int folio_tier_mask(struct folio *folio);
++#else
++static inline void swap_tiers_memcg_propagate(unsigned int mask) {}
++
++static inline unsigned int folio_tier_mask(struct folio *folio)
++{
++	return TIER_ALL_MASK;
++}
++#endif
++
+ #endif /* _SWAP_TIER_H */
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index e9d142c0655b..bb953dd33ca0 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -3191,6 +3191,7 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
+ 	struct address_space *mapping;
+ 	struct inode *inode;
+ 	unsigned int maxpages;
++	unsigned int freed_tier;
+ 	int err, found = 0;
+ 
+ 	if (!capable(CAP_SYS_ADMIN))
+@@ -3290,7 +3291,11 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
+ 	p->max = 0;
+ 	p->cluster_info = NULL;
+ 	spin_unlock(&p->lock);
++	freed_tier = swap_tiers_release_dev(p);
+ 	spin_unlock(&swap_lock);
++	/* Under swapon_mutex, so a swapon cannot reuse the index before this. */
++	if (freed_tier)
++		swap_tiers_memcg_propagate(freed_tier);
+ 	arch_swap_invalidate_area(p->type);
+ 	zswap_swapoff(p->type);
+ 	mutex_unlock(&swapon_mutex);
 -- 
 2.48.1
 
