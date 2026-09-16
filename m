@@ -4,150 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65FE4C982C1
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 06:49:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E575C88E5C
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 06:50:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2A5486B00AD; Wed, 16 Sep 2026 02:49:10 -0400 (EDT)
+	id B59F06B0093; Wed, 16 Sep 2026 02:50:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 254696B00AE; Wed, 16 Sep 2026 02:49:10 -0400 (EDT)
+	id B07F66B0095; Wed, 16 Sep 2026 02:50:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F5A26B00AF; Wed, 16 Sep 2026 02:49:10 -0400 (EDT)
+	id A459C6B00AE; Wed, 16 Sep 2026 02:50:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C743F6B00AD
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 02:49:09 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DA98380625
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 06:49:08 +0000 (UTC)
-X-FDA: 85218698376.20.5BCE20E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 0D2EF40007
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 06:49:06 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NIsHT4gQ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789541347;
-	b=pw50cSsewbbh7YlA/psD6Mb2HtQXI6gfJbOIQj8JDUY8E2SAmtluWtRTI0tBfWMLS4Zahr
-	eC9xyagNwylmXWh0jPkCBlqP+Ts/gPI6P9lYJhXzA5eWZnT2UvgJaajHuFmJ/6hx8qKkZh
-	H5K8EsZBQuaU/l70Aoo5UP1I5a9ZmZE=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NIsHT4gQ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8776E6B0093
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 02:50:35 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1C7771A0621
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 06:50:35 +0000 (UTC)
+X-FDA: 85218702030.16.B8A3E71
+Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 51A83C0003
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 06:50:32 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=uRiPWqWU;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf10.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789541347;
+	s=arc-20220608; t=1789541433;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2Jerf9k/7ZUAS3hTD5JMzljHUmpWPb3xVLDzJuhZyno=;
-	b=6YJpC1vK9WzkEjhGokJWIeoge2wcm+1F+5dUP6p96PGO00DvBLOKgKbTw8tyNkVxsMNuKn
-	ofDEuIc5F/vYCcPp0hb4cHd6GsCgmzsQjR3hgVMD8InkKBYae3LGXr8JTEYCqiOMLW314a
-	0XkVQg6wXKb9eRT9EQehzCAPLrent5M=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 20CAF41328;
-	Wed, 16 Sep 2026 06:49:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16A611F000FF;
-	Wed, 16 Sep 2026 06:48:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789541346;
-	bh=2Jerf9k/7ZUAS3hTD5JMzljHUmpWPb3xVLDzJuhZyno=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=NIsHT4gQlpxUlSHwQ555s9gNMJGrNz7ejQHcN/REK0LMOB6cfEox8X8i2tPu+/jll
-	 FJSOwrLvAhSHpbHjK786UpAyopzh2bKcAm2t6kmOkoX+UORcYDh+6GQvYWIl9Fw/x3
-	 gQM4qPKQm7BBW1h0lsVoK/bfQ9HPrQafStQ72azFwE6xP5vE/I24khCYFZuGcN4D7c
-	 GD25BYMhMaQNTdmqb7W2wWSyUEoxwM259BajyX3zyuWDyP2Ntg/qlFUCHT+YTBrmfI
-	 iCGXd+hwO6Dg8TK6G33Iu1ZqGPvFjnghrhPWeRCbHL/V28prRh+ygYun/BnTlwsQxZ
-	 el1w/7MZDX5rw==
-Message-ID: <de41b78a-8471-4832-be0c-35d410a4499a@kernel.org>
-Date: Wed, 16 Sep 2026 08:48:56 +0200
+	bh=8xL98/jtasdgZkBKzQM8Eu1G+T4R39abYMVJxmdXGZg=;
+	b=qcDCe0ZVFbmojOddKa+cHLGV/caIT0mZY0stflFnoP6U0/cSFOeWwhpMngovC2z9vzqOui
+	7V55i22DwLEy0ZgD+WXYfztBe8S2jy1zOYaVR4BZD0ldGL8zu8bp0BYSN3yKw3cDmjrwSN
+	ZJLDRIicJfeC0cZicJC6iAf/gq/PeCE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789541433;
+	b=kxEGIlH1eHOYeAAiccnfJjKacx/++ryh1/Ks91I7Iwy2a3TP9GpbcU7lf2hy7pls4pya1N
+	uD1P83kI7M1MP7HbKXYUUCnOBZb1LTlCpZ6hLL0AXzIbp0CoC9GphnlRizVxvMFJKMyGaT
+	eJd87dGiD01DKCfi4xLtE/WnngVGbC8=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=uRiPWqWU;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf10.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=8xL98/jtasdgZkBKzQM8Eu1G+T4R39abYMVJxmdXGZg=;
+	b=uRiPWqWU31G2ipkzIXg0fc8jd7rxVP7AsPF4eItTJ5hzz62cIpI56OZxjtv3kvLInd7F/I7m4
+	tZOVpkoj4GQDe4dqClW3oifOGdkDeaSbzCvBTv69I2IAps5UVY6OQ4Autznk0dPiwBaIXLX7DR+
+	upkt9sgukjxQ0/YwxpwLs3s=
+Received: from mail.maildlp.com (unknown [172.19.163.200])
+	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4hl8PH0QQ1znTVd;
+	Wed, 16 Sep 2026 14:39:15 +0800 (CST)
+Received: from kwepemk300003.china.huawei.com (unknown [7.202.195.93])
+	by mail.maildlp.com (Postfix) with ESMTPS id 36C1F4055B;
+	Wed, 16 Sep 2026 14:50:20 +0800 (CST)
+Received: from [10.174.177.243] (10.174.177.243) by
+ kwepemk300003.china.huawei.com (7.202.195.93) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Wed, 16 Sep 2026 14:50:19 +0800
+Message-ID: <1ddf7304-70d9-4e35-935a-9d622b022e4f@huawei.com>
+Date: Wed, 16 Sep 2026 14:50:17 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 7/9] drivers/base/memory: count inherited poisoned
- frames into the block
-To: Breno Leitao <leitao@debian.org>, Ard Biesheuvel <ardb@kernel.org>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
- <nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>,
- kas@kernel.org, kexec@lists.infradead.org, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Brendan Jackman
- <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>, Oscar Salvador <osalvador@suse.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
- hannes@cmpxchg.or, shakeel.butt@linux.dev
-Cc: linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, rmikey@meta.com, riel@surriel.com, harry@kernel.org,
- linux-cxl@vger.kernel.org, driver-core@lists.linux.dev, kernel-team@meta.com
-References: <20260915-hwpoison-kho-v5-0-3bc7a57bd503@debian.org>
- <20260915-hwpoison-kho-v5-7-3bc7a57bd503@debian.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH mm-new v3] mm: mincore: use per-vma lock during page table
+ walk
+To: "David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton
+	<akpm@linux-foundation.org>, <linux-mm@kvack.org>
+CC: "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro
+ Falcato <pfalcato@suse.de>, Zi Yan <ziy@nvidia.com>
+References: <20260916043153.2631696-1-wangkefeng.wang@huawei.com>
+ <9da6298e-485a-41af-a42f-7dd05c571125@kernel.org>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260915-hwpoison-kho-v5-7-3bc7a57bd503@debian.org>
-Content-Type: text/plain; charset=UTF-8
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+In-Reply-To: <9da6298e-485a-41af-a42f-7dd05c571125@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.177.243]
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemk300003.china.huawei.com (7.202.195.93)
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 0D2EF40007
-X-Stat-Signature: wbpkedpu3ykpwjzaaocs7fytdjjkk6a7
-X-HE-Tag: 1789541346-759715
-X-HE-Meta: U2FsdGVkX19VnTio+5KReFc4piDrEwW5bA7kZtlLslg10JBgr7CzuBVkOHAfQcM/pcyrH/YByAv+lMXgE8oosk6XWAXvxINib2Yco8RB+PQdndjVb02SkGhdlkrOhjJyJlHc1TdNAx6rgKf/kEGdJH0sywUn4CnlmRbUIIFSuqWWtvEpVf9oPtSfYeKs2+3trBVyzxikvoRfS/Q4D4KmLG73dYmZ+8AvqAFkxS1Lye0t6glXUsZjwa9ABQvkN8eleiR8ClUHaFxtB2mNWjFEL7wUdo3OYxWKb3Rs3jVfdfE0kHuopQ3fNbcJVbvLhdeOD0UOqAjcOC1ie5AZgIQA4FDFDKgNm41oCCVIdCF4Hgt2aBCYCyBNvoV9NFECTXyKjXCyq1tVvcI2heeZ446cZwe04DQKRRDmsRYvyukyRmBv2kMuuoY8NuwJ0VXD6qNlqwf8PwTt40/2vrI/ZIQhsRn+FkdpMOzVmihur9tLhXJytk24IcKN4ZBzlI1wI2ehaT4n6z6bUzgvqRf6T+FV2kXc/mfrScxUvS3AN3vpBYH1FZ3oAVUKGduxB9Waqs0o0M86u7NFL/aH8weIrVYfGayTwNAm5mScQ4kLvQcD4R79wqCwYiUn4CaET4GBKMJFXubSVXRv4vvuOTAN0TCT5y3fZ2AbOD0Pi0c6kBd2D3QDpq6Nt6rnLlO+OnkoudlyPProImuJoPLUVOe23LGgNYovQ/qc9yY/NMXrG2puoY2qlGpR9xWxJqFxlOGIbaL3g9AP1rTL3H8Zg7D+DfVWUEFeZEmuwKZpCPCQ4QzzTtFWxQBRMzWHO/txCJ1IWjuq/bNGl4KyniZpgfXC7KARt5r2g0/9m9U4FQi7LjvEUE6f7P3dVRkZsmMz0NKQRYQHNq+ZFHn+weLtlWMGARqGxYqsvRolLKzq0UUozyEB2SNKBK41Pgn8v4t9InhP+PlJIATGJkTDUtaBoOvnVCa
- MB089GVe
- i7TZ+fIJuRSQAlnp2r+IgIa6ud7Q/2uhc0wZIA9+3UH4HZ7mS8Wp/nPmFyvWTPpwyHxMZEHX/17E0TCnumSOIj1/2Uk5K6vHe5x7OXnueMcx/l0h36wSNTu2xCeK+cQnrYQfy4aiUneG0QS4jRwqoeVfgQjndf5M3XqyViEpwZaESdXbMxv2SmVu3QdVW7IjpRfrgmyHZ9754R6ncQnp71Nv779KqLUvVzAPMycWOlVR521M6kqDT7+FxWPO3XvBi31RuSZYXOLNM6jOrZLivvkq8AuN2emVnDXoBGporJgPHqsU2EtxbKXLTjTB8CnjfqiPZAllVXuWaaKWCTNYamXf62GjzL1ThESOTnr7FCUAALjY=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 51A83C0003
+X-Stat-Signature: oi78zqmfqiyffx9ue7p1hmxuy98xt3fc
+X-HE-Tag: 1789541432-554457
+X-HE-Meta: U2FsdGVkX18IM1HlePsWj7SXg3ec0r5wl8UA/C+gh88gOO7bOBI6SfbSPSdVzvVUHhZrRvi8HbM6YqW5JARBXs2C0Q6yfjxnhWYSzfD+x1owxqBI00mRxX2bvrEPh74fmmpoRjdB2HC4TtbWtCBy7og0Z2Q7knkqnoeB0SxRO2g6T2Um3jf8PR74gzp/+cA8mrIcyuhoLvEJaxtmjklvr/9gRr7kLCD6oCGJKZBGMyPMJ1FS/0z1zrI0g3sEVK0W3LeFLFdKsK+KbEEgpNXV/XIE7Q52owpZzOSpOv+h4lu9j8zupMVFPdyeAfI/rgnROhJ86ix/XLSWujTb/fYEG1UfrvKCJzjUZMBUEv9pS9aG7iQW8OzKGCbtufL90cTtu/Rrmw40dAQctRsG7uDiiPduiQqet2cyU5rQ2xS1wNQR2BnIlfghyKPBZe/ITUioMK2XpPyqnk/xHQbyBQ4GGxbd2e8z/vEuC9q90Bsp2AHfCoIlnuUtyeN3Ll8ik2FNkjuwVuOnoQS3mdPUQcMpMibaOKTZpoGxqe60pzVSTwE5pW9LG1WiVV/pQK47BzwutbqkbDHZv89wElvLUsj9iQKMhpYDUTAeme7cKHmT7E1dUNT1agc8SKiyrCcVWCiMePnuUkxVul2ffi8cUDRz9R/m7h3USVXXr0/rCO86r7CQ2SQPdqFa/KpuDgHaoQmBZGHhB8kdH0F/nngTYn6Q4Anar6+0YiLT72EENNB4Hr36GWvli6xzGiQtu3o7neWD4aGEh6J5C/eMBFroNw5W/ybG74oHo3mtkIBIELBdU0wkG0wjEGqKnfX2E+d7lPYbQ92bLtqSPx90SVTWeO/Kaalm/MEDb2hgxv7NZxe6LoZp4q+OvCl8AJWO4HTJ/PrC4uGA3gPSdE207Yr2YnLrJd0n61nwBe1ItPiI8yZZfdpTAmewDHa+QMSOYeeq/w7qdfyUnZ1p4dKzJmHmGMF
+ wc5lCnpK
+ quqIxo8cXmPIJ2KljaQv2JVDiLBuwE1iO0Nih6u2YkMrxYq8QnrO5FusW4DLLFlfhJ+5pWA0dmP1G5pr+ESrbI1uo324V0Ok7+FN8YdkZyN7BCcrnmxmpPUr0MaMsj7uFlcSXdu6HZCgMRIiaJ9JMOFvRr9JUsxKao8MGD0kNHaDwtKZn3ITrA9TqkgoXC/24ELD4semTZOTTNtAjcPP9uQf+VQTclddavo7WAQyRgsFvUoi2LcgZHM1bjtbRue95Z1UoJ5nGxViR3SuYiA5MdHldnyDpkJ1GVvAaYkpO58WZ21awP2jKCELKGEPoZVKy4THxv5TU5MbZsJnC/K7CllDMyy6pMMZ8MBUsaUWriTkCFGs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,90 +102,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/15/26 14:53, Breno Leitao wrote:
-> A frame a kexec handed over is flagged as it reaches the allocator, long
-> before its memory block exists, so memblk_nr_poison_inc() had nowhere to
-> count it. Walk the block once when it is created and take the count from
-> the page flag instead.
-> 
-> Without it an unpoison later subtracts from a counter that was never
-> incremented and wraps it, which then refuses memory_block_online() for
-> good.
-> 
-> Only a block created online needs the walk. A hotplugged one is created
-> before its pages are, so there is nothing to find, and its frames are
-> counted by num_poisoned_pages_inc() as they are flagged.
-> 
-> Signed-off-by: Breno Leitao <leitao@debian.org>
-> ---
->  drivers/base/memory.c | 35 +++++++++++++++++++++++++++++++++++
->  1 file changed, 35 insertions(+)
-> 
-> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
-> index 5eead3346f1e32..49a33ddbb2e717 100644
-> --- a/drivers/base/memory.c
-> +++ b/drivers/base/memory.c
-> @@ -220,11 +220,16 @@ int memory_notify(enum memory_block_state state, void *v)
->  
->  #if defined(CONFIG_MEMORY_FAILURE) && defined(CONFIG_MEMORY_HOTPLUG)
->  static unsigned long memblk_nr_poison(struct memory_block *mem);
-> +static void memblk_nr_poison_init(struct memory_block *mem);
->  #else
->  static inline unsigned long memblk_nr_poison(struct memory_block *mem)
->  {
->  	return 0;
->  }
-> +
-> +static inline void memblk_nr_poison_init(struct memory_block *mem)
-> +{
-> +}
->  #endif
->  
->  /*
-> @@ -807,6 +812,7 @@ static int add_memory_block(unsigned long block_id, int nid, unsigned long state
->  	mem->state = state;
->  	mem->nid = nid;
->  	INIT_LIST_HEAD(&mem->group_next);
-> +	memblk_nr_poison_init(mem);
->  
->  #ifndef CONFIG_NUMA
->  	if (state == MEM_ONLINE)
-> @@ -1251,4 +1257,33 @@ static unsigned long memblk_nr_poison(struct memory_block *mem)
->  {
->  	return atomic_long_read(&mem->nr_hwpoison);
->  }
-> +
-> +/*
-> + * Frames a kexec handed over are flagged as they reach the allocator, long
-> + * before this block exists, so memblk_nr_poison_inc() had nowhere to count
-> + * them. Take them from the page flag instead.
-> + */
-> +static void memblk_nr_poison_init(struct memory_block *mem)
-> +{
-> +	unsigned long pfn = section_nr_to_pfn(mem->start_section_nr);
-> +	unsigned long nr_pages = PAGES_PER_SECTION * sections_per_block;
-> +	unsigned long i, nr_poison = 0;
-> +
-> +	/* A hotplugged block is created before its pages are online. */
-> +	if (mem->state != MEM_ONLINE)
-> +		return;
-> +
-> +	if (!range_contains_poisoned_memory(PFN_PHYS(pfn),
-> +					    nr_pages << PAGE_SHIFT))
-> +		return;
-> +
-> +	for (i = 0; i < nr_pages; i++) {
-> +		struct page *page = pfn_to_online_page(pfn + i);
-> +
-> +		if (page && PageHWPoison(page))
-> +			nr_poison++;
-> +	}
 
-That just slows down boot unnecessarily on 99.9999999999999999999% of all
-systems out there.
 
--- 
-Cheers,
+On 9/16/2026 2:33 PM, David Hildenbrand (Arm) wrote:
+> On 9/16/26 06:31, Kefeng Wang wrote:
+>> do_mincore() performs a read-only, per-VMA residency query,
+>> making it a good candidate for per-VMA locking. Convert it
+>> to acquire the per-VMA lock, thereby reducing contention on
+>> the per-MM mmap_lock.
+>>
+>> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+>> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+>> ---
+>> v3:
+>> - add vma_assert_locked, update changelog/comment, per David
+> 
+> It likely was Lorenzo :)
+> 
 
-David
+Oh, I'm completely blind :)
+
+>> - Add RB
+>> v2, (RESEND):
+>> - using new vma_start_read_unlocked() API, suggestted by Pedro Falcato
+>> v1:
+>> - https://lore.kernel.org/linux-mm/20260701144047.3786939-2-wangkefeng.wang@huawei.com/
+>>
+>>   mm/mincore.c | 29 +++++++++++++++++------------
+>>   1 file changed, 17 insertions(+), 12 deletions(-)
+>>
+>> diff --git a/mm/mincore.c b/mm/mincore.c
+>> index c086836bc4bc..0fe50f8a7e62 100644
+>> --- a/mm/mincore.c
+>> +++ b/mm/mincore.c
+>> @@ -235,24 +235,22 @@ static const struct mm_walk_ops mincore_walk_ops = {
+>>   	.pmd_entry		= mincore_pte_range,
+>>   	.pte_hole		= mincore_unmapped_range,
+>>   	.hugetlb_entry		= mincore_hugetlb,
+>> -	.walk_lock		= PGWALK_RDLOCK,
+>> +	.walk_lock		= PGWALK_VMA_RDLOCK_VERIFY,
+>>   };
+>>   
+>>   /*
+>>    * Do a chunk of "sys_mincore()". We've already checked
+>> - * all the arguments, we hold the mmap semaphore: we should
+>> + * all the arguments, we hold the VMA read lock: we should
+>>    * just return the amount of info we're asked for.
+>>    */
+>> -static long do_mincore(unsigned long addr, unsigned long pages, unsigned char *vec)
+>> +static long do_mincore(struct vm_area_struct *vma, unsigned long addr,
+>> +		unsigned long pages, unsigned char *vec)
+>>   {
+>> -	struct vm_area_struct *vma;
+>> -	unsigned long end;
+>> +	unsigned long end = min(vma->vm_end, addr + (pages << PAGE_SHIFT));
+>>   	int err;
+>>   
+>> -	vma = vma_lookup(current->mm, addr);
+>> -	if (!vma)
+>> -		return -ENOMEM;
+>> -	end = min(vma->vm_end, addr + (pages << PAGE_SHIFT));
+>> +	vma_assert_locked(vma);
+> 
+> I think Lorenzo asked whether we should do that. But the walk_page_vma() further
+> below would already verify that due to PGWALK_VMA_RDLOCK_VERIFY (see
+> process_vma_walk_lock) so not sure if that's really required here.
+
+I misunderstood Lorenzo's intention, which has already been verified 
+through the PGWALK_VMA_RDLOCK_VERIFY check. I don't think it has much 
+value, but adding it doesn't do any harm.
+
+> 
+> AFAIKS, everything we do in mincore_pte_range() should be compatible with the
+> VMA lock, including the swap and pagecache handling.
+> 
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> 
+
 
