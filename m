@@ -4,91 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39A39C88E75
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 01:08:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D983BC88E77
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 01:15:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1DA816B0088; Tue, 15 Sep 2026 21:08:23 -0400 (EDT)
+	id D0B256B0092; Tue, 15 Sep 2026 21:15:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 164D96B008C; Tue, 15 Sep 2026 21:08:23 -0400 (EDT)
+	id CBCB06B0093; Tue, 15 Sep 2026 21:15:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 059636B0092; Tue, 15 Sep 2026 21:08:22 -0400 (EDT)
+	id BB1696B0095; Tue, 15 Sep 2026 21:15:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C89596B0088
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 21:08:22 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D9F091C2956
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 01:08:21 +0000 (UTC)
-X-FDA: 85217839602.23.DD11FF4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 503471A0004
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 01:08:20 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i70aeXIS;
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 951406B0092
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 21:15:23 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 28D041A05C3
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 01:15:23 +0000 (UTC)
+X-FDA: 85217857326.28.B85AF36
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 63DA040003
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 01:15:21 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=AUVm1lBJ;
+	dmarc=none;
+	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789521321;
+	b=Lk1LRXQfRlSEzlIbHi8sGoHwe4j6rJ/MWITM3hEZx+Mie0KYP2u/YoQMDhIvFXSrqYdqAW
+	M0D4FiM0Am02omMUy4PQGXn7o3p+Zyqa0fbs2yzeQj2AzBlqJBs0bzdU4MDf6a7mRBH23p
+	KBoKI2Kb3dtV90bCYl6R+DzVctblMdQ=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=AUVm1lBJ;
+	dmarc=none;
+	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789520900;
+	s=arc-20220608; t=1789521321;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d+aGD7aIOa+zzJYmZKe8hvODLP7Ng8RsJCihAMnlDYs=;
-	b=KQ8+NqkZMqiLxJsPMg1k9wzmP8qbVSTqz30zfY7EwYWGkx+HW2YlUGb+5E7zwBRfnRmI1o
-	zSblyNmB18cZCAq2noLrciJQNkV0ywwfRb7nIlLy0Cpio3oQTttQicu76BosvhUM5YWlC2
-	5L1Hlh4J3inVgNMnGwuweA5YmVj7Ejc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789520900;
-	b=3U9ZCTMhjUI/j20Cd4ELcFDMDXYyBXV1bYyDmu9tGwPsNqEwGcmmU17JZ3yjlSonb7nHg1
-	RiwY4nyH7otRQPI6Mc9iI4uOfQrVqxabT6uD6Qaaoo7fDI6CgpNORqoyDbMIuEn0GY45Hj
-	K4HjqvdMonpvPn4S/SLVhc1/S0liIak=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i70aeXIS;
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=XuQDZikRv9jj7fQ5oAHaP13olV/99KYu+eiNYZt//68=;
+	b=ZgG+kZlbInR8NdlzDc/Lt5AoYJTBZYAgTIRfWTibksEfP0KGHkLFtWvKfzq0ALb6rIGQGx
+	41VlLT/ZAYnMQrJaIccvWpEOVxjPo7kzpHjH3b/XId7zDvfM8cqJiKkHdkECz7juXOOzOr
+	bHZqnqetwRFtK35MC3eUxUjMmzJjZuw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D433B60008;
-	Wed, 16 Sep 2026 01:08:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43F821F000FF;
-	Wed, 16 Sep 2026 01:08:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789520899;
-	bh=d+aGD7aIOa+zzJYmZKe8hvODLP7Ng8RsJCihAMnlDYs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=i70aeXISLBRvXOCvYar/0XG5MN77z0h0IgHOjQyRiGlbaGHjTS8j8wzzQ5XXVl9lA
-	 yowaL9/V9kzV26/FszQud20oWTyEmnTefoI4AY9Jwcf/kH3GaN3rvlRmDKBiM19C6a
-	 a8X9yKYT/StG5srzGsxnxxUomHa/1g1KV6BbT3bt4IzM1od+aOSOjKxhYe+cPWzXyy
-	 B2YxnuozLhs9FZc4x0DZkKOFh7YeGRwCn09uQmNpnP9xHqOwttu1F6omT922kdbVVd
-	 KEH5cAlA7XMwketYySW6ht3aRIHu67VvY3mMkyZR7M2rEIcKo/EiyeuFVrXkBAKXrL
-	 ITlpqZ42wAwUw==
-From: SJ Park <sj@kernel.org>
-To: Arnd Bergmann <arnd@kernel.org>
-Cc: SJ Park <sj@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Hao Ge <hao.ge@linux.dev>,
-	Abhishek Bapat <abhishekbapat@google.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] alloc_tag: avoid implicit padding in uapi
-Date: Tue, 15 Sep 2026 18:08:11 -0700
-Message-ID: <20260916010812.102238-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260915202404.3568029-1-arnd@kernel.org>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
+	by sea.source.kernel.org (Postfix) with ESMTP id 8283F43EE8;
+	Wed, 16 Sep 2026 01:15:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C58EE1F000FF;
+	Wed, 16 Sep 2026 01:15:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1789521320;
+	bh=XuQDZikRv9jj7fQ5oAHaP13olV/99KYu+eiNYZt//68=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=AUVm1lBJj70j8iqZrzQ1fp/ueoOLFAKmyvLXcuvW6liyZeYvuNXpyoTxXSd5DK5h+
+	 E708l/TD4IbwQwiwzx0h6LvU9909pVVWHhvzM5JTwL5IgghscAtdBgdFta5vpPGtYb
+	 Vc2vhtdaDEQUBe74tqvrodB/VxTHrrgzQwZ9f4ig=
+Date: Tue, 15 Sep 2026 18:15:19 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry
+ Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Usama Arif
+ <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Lorenzo Stoakes
+ <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+ <mhocko@suse.com>, linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, David Hildenbrand <david@kernel.org>, Shuah
+ Khan <shuah@kernel.org>
+Subject: Re: [PATCH 0/2] kselftest: mm: fix intermittent failure khugepaged
+ test
+Message-Id: <20260915181519.648c2962143b761cf02efd17@linux-foundation.org>
+In-Reply-To: <20260915-fix_khugepagd_fail-v1-0-bb6f04c8759f@arm.com>
+References: <20260915-fix_khugepagd_fail-v1-0-bb6f04c8759f@arm.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: z5g3gopie9meu6jk9uarrw6bdo4ob6ho
-X-Rspamd-Queue-Id: 503471A0004
-X-HE-Tag: 1789520900-190782
-X-HE-Meta: U2FsdGVkX18LKjk1U1GaAakauVvHMe6dQTK9Fv6nFavBAFvQ81dQYlOJxZIXUjtjbaQHqHuwKSuysgWmVgqRkYD2zrxIRBoRmgxd54PXWHR70DSIDeHnk5PW3N6fnRIYHcXOwfnjEMIS4ABc116E+TEWHO8Ye9wUz1H7R76De/DSV6BlwQrpnlEb42JRiy9NAizDW1Z1KA5k2s0tzO6jZIZbPXIhHkZHQW+9dCntA6bZf+f6dPFQW9ieq6j21lavlrDWRsuHbtTJZd01qy5j/41WNqdx475VpOB4V3mFgxtc7Mbbfs2cWPy5OxxhATYIe+NqrH3aaia4Fu6aeWd+lmquL06LQpd4fXYdOfsMo321iJYnrh7t241yudXbSXF2zoJj2aZ+yNX6wku6HNclP+5rfI2fzKZbuoxKLzP5frqV5YG010iqon+bnEL9eH2Nx1uyEAeUFdGgjegZ7KZYR6GVDds967HTMYngQOjNZRcdsYtprr/U3rou81aYL+o9XVXyF+0TDb7GJl7Rct/uakMz2FMpE4ZNIgTu3G+qIik08wgXx7EwSp9SlZrfxn3/kI3VuxjXtr5xPrIYPL7oGejpObi1HqCRY26VcKmmw/xE6U+NTRIfLGtegkM63tOXQ2okwBszf8VA40k6IYOxIb+pBByDPLAZBxsAOsYV89iNbUP691L7A3vvyyqQENBcokU5L8icVO78jTIwh4Vba53q/FpkcGFkeO2we8w/tTTzVuUvtZEPydtO8lIh2nnBLlUIffyOvM1uCTbQc/psdUTu+qPnZh7+w1uvddWicI3iHi9yPib/XKkU/D+CmRxuA3IdhIxEPOliSZK+Dh+SaL3NfzCDhOL0mP/yE20kcozomhA+I9kfVZ+DfHFIRDo7jMcRgcXFhT1K7GCMlpjtdnoFhBFH2tmcai0aNcNxdnsv0VukplDXeHjT8cU0VW4l19nIXfKMIZc6v1z7qzE
- JWCyTnnS
- ClClfpJxLO/x/Eot3hXB0w34jRpHmgYvPjU6BH5QoXaCvBra+LOqhHrsl4zP2/mRiMTvRaFL6uZjK+leDlQ8wgHLutrZqFliv1b8OzHOXvRtKGDifrYI2FDoTqRD06txaQbXYlzNe3budp+jBl9N0boK8Wi0TuulSIOudtBmFJi298/1rjHT8MZBDFYK8yLX3a/TDUvGbf79Stf6uL8jQ4KlEJnpo0KZ+X8iNqkyAWsIlfk8kr4gMbYg//QfLVlTJXzC+zTurmyD/J5gEuzPdjLnJyaaVuor1gnMuFG2AK7/KTdA=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 63DA040003
+X-Stat-Signature: jatx8ibtayuffa6k184af7r6jg9cng95
+X-HE-Tag: 1789521321-362548
+X-HE-Meta: U2FsdGVkX19pJJcRXAB2bZh2L5WuJGTThTuOj7Vk/GUqhHbpt+tm5ytc3/6tSLbsElwqALEHIkrKWEniHbsz1z5VE0dNJFhz4zfZGgXwBpHsQ8KWgOqR4gJeVMFI8GHVraKuPQxJmtqf4LxjaZJoXTr+GYF7U4+DO5wqVu3LY93cD7BIkhu/koPZ2LZDGBP7hwcHOksChMpZXkZsmLOfHH3FJfaz02L3WNkTqBfqdTZb/vS9sLntTjfVC2cR9J4jq9Eq4x5/Be/rp3oVf5GsqdyrBLbIG9NEFoHVjIv1vg8/7EWiCh7i/qc3tc4/HK69eLos0yAWM7EVX1kNwZ17z6tsSxu983mGpAZBdYWWCXRMsSpskK/OMh+qipyx9o2QxE0tTcRL0AjAA5cYlS8w6fL+iItTqOa3nKEcF9LN1DFSdyRr1rOtsro0/W9sXKVnDlemelP8qNgrez2PjFsM4H4ArC7mpqsQ3bgTirVVHblkeLZi7fdSvnjcgB/QzrVyKC3yW1ZMiVcQKR7rZSpINP3lui/pTbcs88o9NO9f98SEZFULzx4XzDu6/kOpO87wCiGGLTP7Fo70oySfBFjSbYDAXeaERfG3JLiMrxyt3O3l8VwyZF3jIZhuhamIeS/V6OEmbTW/p8UOPJ2M9istLRpCrRpT4u4JuKSv6pG+QmvJxWkszGzxLrfvojl5cYtySqeBqlNKCvv23D2iDS5eXG9nOChGFCjWI7KB6jFmCyb/5ppBxlpDKNg3SCY5QoU2VMReCY69nKxyJ8g/bujoOac591/QCwAqMgXXxD94KgyPITEJZ7havdaV/McH+rhViW9cj4xXcbhHSTTGB1jSkEGUdmPV1taECNm0getU6NjQs4BnsE0NEOkqR0AsiulrXoXrejAzVjhZvh8gy7LY7ORapzFxpdnX4U36Vbka5aKhothhaz0tbYJLPRY2liYzUsbMqaJ2JRaPLjcU7rK
+ sYxye4m1
+ uAcX9YvYaygxweY7zD7LIPB48vmxKwVrsJMMf0X+xZQZBp1sa7L/ZTIUGqqGIpJafBXg9/cse4kiIzXSOJcHJTjqa2p+IFgvmW+nYVVuilv6C6c34kuAiL2WNGfXub5iSbBfzYkXrH1JGrPoY7QRgkWYFdhpocGPwW4KJYKKTg4Qjw75HRCokCmQVoXQ4FJmiRKwDiZhUKx/dZs+0q0QirS6zf15Ek3Ek3ViVCdArJs931uFmgryH2VijhHTEPrDSTSU8isPxzBlDfnttI6XRqOBxRs49h7Nz6s8VRHHE6AjgnnTNjfeSe+/3KQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,36 +98,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 15 Sep 2026 22:23:47 +0200 Arnd Bergmann <arnd@kernel.org> wrote:
+On Tue, 15 Sep 2026 10:21:35 +0100 Yeoreum Yun <yeoreum.yun@arm.com> wrote:
 
-> From: Arnd Bergmann <arnd@arndb.de>
+> There are intermittent failures in collapse_max_ptes_swap() and
+> collapse_max_ptes_shared() when using the khugepaged_context:
 > 
-> The impliied padding causes a harmless warning when testing the uapi
-
-s/impliied/implied/
-
-> headers with -Wpadded that could in theory indicate incompatibilies or
-
-s/incompatibilies/incompatibilities/
-
-> data leaks:
+>   # Run test: collapse_max_ptes_shared (khugepaged:anon)
+>   # Allocate huge page... OK
+>   # Share huge page over fork()... OK
+>   # Trigger CoW on page 1023 of 2048... OK
+>   # Maybe collapse with max_ptes_shared exceeded.... OK
+>   # Trigger CoW on page 1024 of 2048... Fail
+>   Bail out! Unexpected huge page
+>   # Planned tests != run tests (26 != 23)
+>   # Totals: pass:23 fail:0 xfail:0 xpass:0 skip:0 error:0
 > 
-> ./usr/include/linux/alloc_tag.h:41:1: error: padding struct size to alignment boundary with 7 bytes [-Werror=padded]
+>   # Run test: collapse_max_ptes_swap (khugepaged:anon)
+>   # Swapout 257 of 2048 pages... OK
+>   # Maybe collapse with max_ptes_swap exceeded.... OK
+>   # Swapout 256 of 2048 pages... OK
+>   Bail out! Unexpected huge page
+>   # Planned tests != run tests (26 != 17)
+>   # Totals: pass:17 fail:0 xfail:0 xpass:0 skip:0 error:0
 > 
-> The code here is fine, but it's better to make the padding explicit
-> and avoid the warning here.
+> This happens because khugepaged may collapse the pages before wait_for_scan()
+> is called, causing a sanity check that expects uncollapsed pages to fail.
 
-Typos are trivial and the change makes sense to me.
+Is this something we should be testing for?  If I'm understanding
+correctly, success/failure is dependent on timing vargaries inside the
+kernel and that isn't something we can reliably test for.
 
-> 
-> Fixes: 1d581ab2348c ("alloc_tag: add ioctl to /proc/allocinfo")
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-
-Acked-by: SJ Park <sj@kernel.org>
-
-
-Thanks,
-SJ
-
-[...]
+IOW, should we say "bad idea" and just delete this test case?
 
