@@ -4,94 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB0A9C982C1
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 22:40:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A2AEC982C1
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 22:48:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB67B6B0095; Wed, 16 Sep 2026 18:40:05 -0400 (EDT)
+	id 00AEA6B008C; Wed, 16 Sep 2026 18:48:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D675D6B0096; Wed, 16 Sep 2026 18:40:05 -0400 (EDT)
+	id F23AB6B0092; Wed, 16 Sep 2026 18:48:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C7DAA6B0098; Wed, 16 Sep 2026 18:40:05 -0400 (EDT)
+	id E39A46B0093; Wed, 16 Sep 2026 18:48:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A65776B0095
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 18:40:05 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D2706160163
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 22:40:04 +0000 (UTC)
-X-FDA: 85221094728.29.0FB62AF
-Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 2AAAB80003
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 22:40:03 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=none;
-	spf=pass (imf30.hostedemail.com: domain of 3whqragkbAAEtz0lbmmfsbqqje.hpphmfvtfsdpoufou.dpn@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.198 as permitted sender) smtp.mailfrom=3whqragkbAAEtz0lbmmfsbqqje.hpphmfvtfsdpoufou.dpn@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789598403;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=eWbhpWk71ccWdwuOVmq402NHgmE8BaqjoYuvIsrzF3g=;
-	b=giiW+GdZbooR6EepEaXjt7JY/GguD8WoD/I4NojkgXtUm3Bo4lP/9haT1sm1uQU4/KE5pp
-	ctf1/iZDo1ESsi2XJBxHrq3Hr3o2W4SxchehDcWfDtaQSegDEoDQLg9Be4SL8GP0UtP1H3
-	Fv5MBWT0a/8fhDgAQB8UiJscyMktxVE=
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BBADA6B008C
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 18:48:46 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 52C6DA01B7
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 22:48:34 +0000 (UTC)
+X-FDA: 85221116148.18.68FFAA7
+Received: from mail-oi2-f13.google.com (mail-oi2-f13.google.com [74.125.231.205])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 83EE0C0005
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 22:48:32 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=eb+cjHL5;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf22.hostedemail.com: domain of joannelkoong@gmail.com designates 74.125.231.205 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789598403;
-	b=aUtQVJbWDWXx2Snr0CoVWr+8igtdL5D/QA+t0JtsOou/lpLg7+ZUsSUoAltBTGoCJQtf5I
-	bjvnTF2Is7c16/YLArnL/eC20G4Vv4REMSx9J/5SCV2VPncnIj/dBN9qaEO9FDkLtHNQ4F
-	hGPEPKUAefjNN9mCLWV0oVTMwLDnoEw=
+	t=1789598912;
+	b=tXrWZE/bqbxnRXob653jYsgXySb3fzkFk6UHiqa7M3QT5Ec51DIuBZUQAYjiCzD2kcpWDr
+	x+RD9x0vy1A40kcEgNvK+xOgV5/Zzn5WL+Is0QXIaUSOT1LPF/gPBET8wtXd9NyRIamU6F
+	w7kwp2yY92T/MQC0bjOHNjZ4EvDmJYo=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=none;
-	spf=pass (imf30.hostedemail.com: domain of 3whqragkbAAEtz0lbmmfsbqqje.hpphmfvtfsdpoufou.dpn@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.198 as permitted sender) smtp.mailfrom=3whqragkbAAEtz0lbmmfsbqqje.hpphmfvtfsdpoufou.dpn@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-4b28d7ffab1so261521b6e.1
-        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 15:40:02 -0700 (PDT)
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=eb+cjHL5;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf22.hostedemail.com: domain of joannelkoong@gmail.com designates 74.125.231.205 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789598912;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=O//kPRqm92umksxbPoaUg/VRllgTguXLWE1QLEZxLq0=;
+	b=TqCGRvf4npt29Qe9y/IzGhNQgpAsZ9ne82NaGkofQiWmlLyVQtw6PUkorjS0UEKCMLNewE
+	Wxr4JN4ejA/beb5ac3IJzd0t/+MZL+3ooz+gzN0HI9Nv55+CIGAqzO3hvRUb3Zga8nyk4i
+	vENZt00vilFOBUJfk3h5Xx+Hbdb8vDU=
+Received: by mail-oi2-f13.google.com with SMTP id 5614622812f47-4b37a39a42dso86055b6e.0
+        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 15:48:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789598911; x=1790203711; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=O//kPRqm92umksxbPoaUg/VRllgTguXLWE1QLEZxLq0=;
+        b=eb+cjHL5R0LSluwlKFpbvURMEL0AhJ4BLREiJ/5cFTtoAmtiRVMzaNa9n1nqtL5gZw
+         mNzbhzg2kKib0MxykkBqWjw9yT1LRCdV/dra9TwbJAPHq0uSqwsw4//b7T7h+MKlAtvi
+         rmhcogX3mhxSrlwFGpUeetawqTbiZiVBhdpX3u6xYHrfhJsl8G1xE7tJiIRWJpMnwjJ9
+         l3BYQEPGSX/cjtlF2cwWi1iM2dCqF5ODSfqgBI8HITPiRcDEpNLxcs7nyed+6XEGruHB
+         R7GYI11JjJGcFBzuF7IVS+U9fknLtZHIozexnWfe8MwucXFdxxWmR1/rbwPKEofAuhA3
+         y5dA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789598402; x=1790203202;
-        h=content-type:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=eWbhpWk71ccWdwuOVmq402NHgmE8BaqjoYuvIsrzF3g=;
-        b=f5ryO7Z9L7WwGtBqIC6xHMz8aPUqFeisHrPltcRGOFge20/5AvbqJ6bhFJ5Sh36LBN
-         ydkePBqou7qUuWQKNI+NXGk92ynFgtr0HiDynzAUsZTos110zVRx6/SZn0519+qNqQNk
-         bct+toxPOY9v6fzTxjjHORuE2GLWXsFl7znESB9edzUkHC7Ea3EiS3svIXgeBgehzcoG
-         DNzZed+FsotSWcjdr8RX74pGvbmt3L0csnMwb3m7c2NTYRo2LKnawP+VLXxwt3VenR7i
-         lt7u2joVDwpisP8n3QwrT+6IarTLkm+lWYo/U4WrX15HfpKfVkVif3/C0FCOohoDvfWV
-         cOZg==
-X-Forwarded-Encrypted: i=1; AKwUvBxhYi2CNML+4w/bPjlM0gNBrt1rvsOLWz/7dNZ2JQf5utSkayH0TPGJXDbj9quC2WYXV7aCzQb9ow==@kvack.org
-X-Gm-Message-State: AFuF++mO2P7VNKz2hyzMdihTXoE+D1haF94uahnV0FSPLoAMGy9EyLl0
-	GCMXpyC6MPf/vtn/CsOMHysLg+hO8v9YDUilQon/OdTlviWSvMnF30lB1Y/KJfwdfUPJRQZ8VPL
-	AxweETXvuQ186kQQjCzRSHbFfuICDv2hJcdSalgWoOZQabKoLudwczUzPe+U=
+        d=1e100.net; s=20260707; t=1789598911; x=1790203711;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=O//kPRqm92umksxbPoaUg/VRllgTguXLWE1QLEZxLq0=;
+        b=0P0A7KQAQwV4oQInKkTeD9ZXWktKOdFn2LAC/+jhbz4fogL/mwQrZ5aphf2+SvTN91
+         lqEDdTDgV4EcchB6MySXlxFXNvAw8VgPJxEW4ZZhUSEYjgavkaOdaU/RZpDek0m7V8du
+         qZLD7ha2NaOwQzxFkzJvsGScnN3jQzFC+b+b6ibF35Fzo2yvaDyvQbd4aaxY1KzrtSXd
+         2Iqnt5SdtfDuuL32+GCIP5pGqBmSLW+KfUPWkdoUoieF/53I3RCahKupm7apwPjozEEx
+         dhjVw9xmOieQDPxkSMonQ3J8egmxcMJwkMIPAKLeMKAEKqssRKCwC3/EhmfMPisnqm/s
+         x9Xw==
+X-Forwarded-Encrypted: i=1; AKwUvBziEZyt3LXWrTQN/+C6rrRLW5/WeHxiTULJOjev355dL3Hg9jFtcu9swrJeYvI3snbn6dLB3fqx4Q==@kvack.org
+X-Gm-Message-State: AFuF++nxn+00iOb6pV5gWjwYM7pDIJWyGvboKpvY6aJNsXDEIuQVhdyo
+	zvEiJko9u09pjt8uPLYcnaHeEzUD7QZzzUBW9NORpHuC90Y+9UA3nqp9
+X-Gm-Gg: AYBFou275q1Xusz95CC9xL+pk/DklF8W5CnjfZcIOUZ2vHV3stehalrgp/F4fZMw+8D
+	CEFGi/vcwJhwTeTKZ/y6FL5kAVynOlYWzL1cK0hI1kfxXKkFjR8AjcO//tOT1DiWrMn5lA4gvam
+	GE5oXUHEevsVRwamEVZF3c5Lq+TPfs8lLSHNE2IOZ8HfRE8abYVu4Hkw7tEX3Ft6VqPThno0xhO
+	joCivpwWCXMEFok9qz0KwLrqmIeinxgYS65WKHA+Nl9cPzoTLCsebX1p2PMlx9fCgyYDondlTXv
+	O4NSdj2WyqvIkX0Xl6FPO9exYV5eM8zu2FRUbJyoeV/wxCB7P6NgzJXPJqBa9muh+lUO1N4r3Vd
+	eZJ6pkaX6XUqHzGM6D3Xse1GsI20m6bQPTh+WIuA6XxH3rAspRdkDHWUHb4cY0sHWjQJzyYGUFS
+	h8Y2q4WWs5v2SWF4eXb7fgvAj6p5DuZdhujlBKwgcw7yR7Dp6ALXFMqd2XBN/Pt0U77NMbH35+h
+	T0Sxpa4oirb9iDtLY/ORUd3d7/dD1RSYk224Ie5KMI3I5XuMKw=
+X-Received: by 2002:a05:6808:5027:b0:4b3:3e1:499b with SMTP id 5614622812f47-4cb6958bf2emr1048250b6e.6.1789598911506;
+        Wed, 16 Sep 2026 15:48:31 -0700 (PDT)
+Received: from localhost ([2a03:2880:ff:59::])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-4cb6a3d9bf9sm1117762b6e.1.2026.09.16.15.48.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Sep 2026 15:48:29 -0700 (PDT)
+From: Joanne Koong <joannelkoong@gmail.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org
+Cc: usama.arif@linux.dev,
+	hannes@cmpxchg.org,
+	baohua@kernel.org,
+	alex@ghiti.fr,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	liam@infradead.org,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	lance.yang@linux.dev,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	willy@infradead.org,
+	linux-mm@kvack.org
+Subject: [PATCH v2 1/3] mm/huge_memory: make thp_underused() work for mTHP folios
+Date: Wed, 16 Sep 2026 15:44:35 -0700
+Message-ID: <20260916224437.1164512-2-joannelkoong@gmail.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260916224437.1164512-1-joannelkoong@gmail.com>
+References: <20260916224437.1164512-1-joannelkoong@gmail.com>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:5087:b0:4b8:4703:db8b with SMTP id
- 5614622812f47-4cb69b976f2mr1049869b6e.20.1789598402258; Wed, 16 Sep 2026
- 15:40:02 -0700 (PDT)
-Date: Wed, 16 Sep 2026 15:40:02 -0700
-In-Reply-To: <6a1b9770.fd5edf16.2e7427.0008.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6aab1ac2.71f81b7d.278072.0000.GAE@google.com>
-Subject: Re: [syzbot] [ntfs3?] possible deadlock in page_cache_ra_order
-From: syzbot <syzbot+8bd419f88e25ab12cb75@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, almaz.alexandrovich@paragon-software.com, 
-	gality369@gmail.com, jack@suse.cz, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ntfs3@lists.linux.dev, 
-	syzkaller-bugs@googlegroups.com, willy@infradead.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam04
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: zr7976ihmf5grg6mx1sasr3c5jdi9diu
-X-Rspamd-Queue-Id: 2AAAB80003
-X-HE-Tag: 1789598403-996104
-X-HE-Meta: U2FsdGVkX18R9Fk/Hx0v0viKrpgLV63DjE2VgYfiIgU1TdLPGaCuwdAC7a/G6sMySer5KUo6PadjDBHsTNiWvTP/ydr1h5Hyg4WjKSYr32/CZ2fsYV4ARmejXmIRlS/kOzvhB5WXBKdh8wIC6l5P6mIZ727Hbfv5OiET+nKlNp5ovRBjdM2/3le5aR7t2agmAeuwwcaZEeGg9YL1m1t3FapDFBJdN4SRjz0iKwA6w5rrtANkv6oNeIReCYAKzSr4hMIovAwwZGNJvpfaQfNVJhu6sOg4r5DYWwuvC+AxUJDCtzU0FBS7wlp71vobDDb+FIW420hnk1je6UtUZ1LwBBflXW8vOhJAa82lgwUOh1UKJwCn3kEMBXvcRwqloco+sFwaMGWwTdTZ5ArmpUVscImXSgf435dVym2b54dG1u0gFKizt0d0zGONfa/akhBLFYc3hUqkwlBx+sBILNL7WibL299PIBb5NIOpXmqBmhWJ0wuxt2H6424q8rDbVUlJHRJK7BTP6YcArM+OvSbX/fTNJaNq9OaRiVmyre2oeM2QHiii+euzBbkBrj/gjmp7rL40AHfmSLDaFe1zjDqNxvs7VUHEuVabuIytL+y+PYEnumcqR1JCFoeseYurwE7uAeXExhk8jDFUNDJ8AGDP9kUJckBfVYulpHAUzRgPhYJ2/N0QwRazV30hZsWgF2wyttfppOQ+TfuMYB1M/gvUQQo/hBaQ5Vwpj88Z04xGWE5sixYOwITniFdEugcqGJ+jXAdrghilM0k3fJ+zsQk7KhMBGmwvHxRrPl5F5Zzrq0Sg/BT4CT3al8OaBvIg0i0ql54i24CQ1BsHkJRXX45ZZM4YWQtgGzcBPl7K9cW2cPWAThLw9lGW+ZMz0le0gHB4kgyx+xLZhvuLgQhxXJsUOYLz+vQKnVYRkAGNGW+hShqEsh8qkwO5X9/Gxw32WeSABeYQCFzSAv51DD9bqDU
- Y8u7EGOI
- QhVlLIZRETIvPBxr5dowIo001FziatNQO8LAO6YBLhIXzQvHWdBPWpvvdtJv1n12Pq/wzmeKw0p7Egc3A8t4rLyBedT/0u/n5hEhtoeBHPKnT+p+KUnXeguTxJEFblNiOaYE+6OdHSWtWdk//lfFP1XXZSN85Bl96i+EC7Ry0LKWbbXEscahZcE6NwQf19YQwM17nRNzAQqb3Di5sKxMsqvkCxz4VZIqD/bNPcAygInwp48T3GuIf+m4XQYFozwW924i1KYjRwbVnnvxosE12/pWy9cnBaW+FsXoXTjY0m0rbVG1INYybEVz5hEbobf43WOFUQuT3q+7Pj+3RJDDg3gHJS7XgcQT0n12bAZAAFkLn6G2a/6aziUzRrrTytw3eMpmBfi/SItTWcYwdzIKnkAcxA+yiB2ObLYMWRV5VxkbOVpBtZYvvIhU22elxWHH9YkfEQn7zTQfrkPr2vxK7cnvBCriO/uquPIpkuVQd24XSwDGYiCT4KeupwJ7GwfAs5i/glBenv5CnHUR9/Drg7SkH5ydiMPn/yMgxpm40COCQrYo9cC9S2zLjmE5rim7HkmPRvE1LP0/tAUmA6hSPibhpYpKH84Z8ONcH5AB8b60nczkv3g7B5cXihimzjoQKxTl56WFM5c+JL8OK1bl4knZ+RMUl1qWhtNsRXV+IT13PqQwv2lneM1X1mT47pYMGRNakb2ll76j30l+d7jCTYBCz3eYTyZ7UL+JVBMON2ZeP62Trn6LJhqhIKn5iTbCMPg7rPJjZ0Fm++Ls0Bhn6nmO2Oly+oLvqCf2ZguoE7nrWlSaU+597sqENzWfFEU+EnONw8bdsTkZ/4t9wHQQGK1+lgfHO1+r6exZMV46kgnaiWZdCfm1uwbVR5LERFs0uquAV6vDnFSnL2jf+3J51kzq/bbT84xFHVk/UjMU+TkuwLaJa77pU8Qqv8YAHCEhi6Gf1fgql9QAGWjdymPC9oSo7IPCy
- ksgMsbk0
- 7wqAViDaNg0M2L3nd5euEhkHPJvbg/5oCAee/msJT2D8uad2v05mcDmj3q9l/GGoZIv0BcL+SJyxM4ijakM3UxiN4YPnbE4qfenmlO/GJKMqsRbe1mPHFa4VftyY2Iqp0m6ixjwRqcbGQtxpJTAIKg==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 83EE0C0005
+X-Stat-Signature: yrkhu6kz9upj8qtpkubaghfqoj45kacy
+X-HE-Tag: 1789598912-90138
+X-HE-Meta: U2FsdGVkX1/0lQxToUKBtwKx6+KcfLi/QZ0FL/KNZg2BuhtnnzoasWF+EeX23gZnm+rDwqQoR0jHjMX1oTC1j39KKE58Z3Y7S384CxA4kAgVuVroIBeXL2AwShkfy1DdCmF+++vk/ysUVXKC48WkXbOQ/mHQVFSJRvO8UmBkieRlrpR3CK5glaP/+UG0adNqizOuJgLyCiTOkj/DXmOtSGHTZleGb2TXjiCBbU1HO1+Y/cASLX76ufXiyWnVApZmi1QKKjrlpMy4YSVzRCY2dmijqG+T/kFwqNcIL+WN97rdxNVfaUppUkkN49CYpqcwk/UoEO7R8MWxXEWVStaI47tU8AGQU91G977lJAV4axKTHT5XaA2SK7x3LjX0D+6boulCeeNRpZJIzUvb9dZlubSCY87KLmO8ltQe1dlpRrL89Jz57C/IcaI0FkYOPZsu3Hn1A/uSVIuWrDAlqw+BvRRj0kQAUtOY5PdZUXzdat2SB5Ep80lXKJbiuVMup0q38zuVUfSIgmHgq46I+0X+vtmYpFMf5JCUyRMUJNjVlhpcjsKYHbxlf9JQ479RwcKAmn+6tMRegIt/qTG5M/QrkSs7O6qGKkfGaVZ9eZ2YVIBHqjvVKfanHe45sHUR0no34MRj8RWLatTD4tBDKi3Yv1uK6aLYBWDJY0Y1zqbfXRmfBpN+MbTUYcImduoFrElOK8ICVzEP9iNaEQb1SRODAb/tdZhCU0mREkcroHmjJ9Bd2P2XkSr7YYwV5jND4hs+Bj/J+4lLzh2yaEU8jz/cjG/czaCvvg0uID8vZ5bd//5vCt0xZd2OFv5eGTS+Gc48DEWSPTEW8tFQXguqwe67NTIDqHKCkZHBdAA3LcB4rbgy3C2yLIzAmqTXdBB8C0lXAV4oKBDB9v3DuHlRGCk37CpGySKvU/NauBM5kmVi0W2FXcsjAPc0pyKDws0vj/UNZAv22EamdQjoM4Hf39U
+ 8FXekZK4
+ h7uxFGOGL7A7nRYkF0qLm+T6R2zF8CwZ8N+bfivaXFXq9h0Drm1O8GNMxrhgzZTLGExqJ2xO+2LKPp2nxPIaLg+vUQsPzPCHYhdkqkc1IYB3JTrXOLS4NKgJX1/xmJixPcszUhnmF/Ak42uYbmuxSAR4O+Fo9EKyRrwwIgYlpkimIiMVySYaNco7aUz+y/rtoIC0LCR64STiT6DSENf5D69DH+qBvJ8StfGAIRF+UWAdp2wlbvxUy2SzyFot/M5X4WzKaudlbFWkH0PQ5GdkFzcW3doA/8S/hZl7tvTKWdcyVF2uH2uX2WkqugkoJZDRGhpqXoKYHi/iIRhyjukCNkBvGWri/zKvE/XNLQbJKJPJCeVkkhWZpksfrVEY5brvtoL2sNbcRVI/5BZEMb9gr2cza/Nl7N5ptqbdvbIZ4byop06dV/C64+APQ/CdhLuyhRTNRhduYF5k7fs6XygezurIE83J+xMnP6HHb4tnoR2Rw2Mtjwpz97AeJZ7XprjeNUhSbgqlhTMmAZuWW0O70KZfbUSfQCXaiDtvJIcmQZLB2TnpDq9IQxFp7CFUiI1L7h/uG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,26 +135,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-syzbot has bisected this issue to:
+thp_underused() decides whether a large folio on the deferred split list
+is underused and should be split so that its zero-filled subpages can be
+reclaimed.
 
-commit d62cf685d12e95cc0a4122c43cd9f0eb8bba0b4c
-Author: ZhengYuan Huang <gality369@gmail.com>
-Date:   Mon Apr 27 07:26:50 2026 +0000
+Today it only ever checks if the folio is underused on PMD-sized folios.
+As such, thp_underused() assumes throughout that the folio has
+HPAGE_PMD_NR pages. A later patch will be queueing anonymous mTHP folios
+on the deferred split list as well, at which point this assumption will
+not be correct anymore.
 
-    fs/ntfs3: hold ni_lock across readdir metadata walk
+Generalize thp_underused() to be folio-size-aware instead of hardcoded
+to PMD-sized folios. The check for whether a folio can ever be underused
+is moved into its own function, thp_can_be_underused(), as this will get
+reused in the next patch when determining if the folio should get added
+to the deferred split queue.
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=1540dbf9580000
-start commit:   704340f1cd0d Merge tag 'x86_urgent_for_7.3-rc4' of git://g..
-git tree:       upstream
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=1740dbf9580000
-console output: https://syzkaller.appspot.com/x/log.txt?x=1340dbf9580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=b454dc6b1b7acd30
-dashboard link: https://syzkaller.appspot.com/bug?extid=8bd419f88e25ab12cb75
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=154788c9580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=134788c9580000
+khugepaged_max_ptes_none keeps its meaning as an absolute number of
+pages, which is also how khugepaged applies it when collapsing to PMD
+order. It is deliberately not scaled down per folio order (collapse
+rejected proportional scaling of intermediate values because it either
+lets the memory footprint creep or ends up confusing to reason about).
+Read as an absolute count, this knob gains a useful second meaning for
+mTHP as being the smallest folio size that takes part in underused
+splitting at all.
 
-Reported-by: syzbot+8bd419f88e25ab12cb75@syzkaller.appspotmail.com
-Fixes: d62cf685d12e ("fs/ntfs3: hold ni_lock across readdir metadata walk")
+There is no functional change, as for a PMD-sized folio nr_pages is
+HPAGE_PMD_NR.
 
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
+Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+---
+ mm/huge_memory.c | 31 +++++++++++++++++++++++++------
+ 1 file changed, 25 insertions(+), 6 deletions(-)
+
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 1e5d68acf62a..c6ca2a541128 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -4541,6 +4541,23 @@ bool __folio_unqueue_deferred_split(struct folio *folio)
+ 	return unqueued;	/* useful for debug warnings */
+ }
+ 
++static bool thp_can_be_underused(unsigned long nr_pages,
++				 unsigned long max_ptes_none)
++{
++	/*
++	 * The sysctl maximum means the user tolerates any number of zero-filled
++	 * pages, so nothing is ever underused.
++	 */
++	if (max_ptes_none == HPAGE_PMD_NR - 1)
++		return false;
++
++	/*
++	 * A folio no larger than the number of zero-filled pages the user
++	 * tolerates can never exceed it. It can never be underused.
++	 */
++	return nr_pages > max_ptes_none;
++}
++
+ /* partially_mapped=false won't clear PG_partially_mapped folio flag */
+ void deferred_split_folio(struct folio *folio, bool partially_mapped)
+ {
+@@ -4602,25 +4619,27 @@ static unsigned long deferred_split_count(struct shrinker *shrink,
+ 
+ static bool thp_underused(struct folio *folio)
+ {
+-	int num_zero_pages = 0, num_filled_pages = 0;
+-	int i;
++	const unsigned long max_ptes_none = khugepaged_max_ptes_none;
++	const unsigned long nr_pages = folio_nr_pages(folio);
++	unsigned long num_zero_pages = 0, num_filled_pages = 0;
++	unsigned long i;
+ 
+-	if (khugepaged_max_ptes_none == HPAGE_PMD_NR - 1)
++	if (!thp_can_be_underused(nr_pages, max_ptes_none))
+ 		return false;
+ 
+ 	if (folio_contain_hwpoisoned_page(folio))
+ 		return false;
+ 
+-	for (i = 0; i < folio_nr_pages(folio); i++) {
++	for (i = 0; i < nr_pages; i++) {
+ 		if (pages_identical(folio_page(folio, i), ZERO_PAGE(0))) {
+-			if (++num_zero_pages > khugepaged_max_ptes_none)
++			if (++num_zero_pages > max_ptes_none)
+ 				return true;
+ 		} else {
+ 			/*
+ 			 * Another path for early exit once the number
+ 			 * of non-zero filled pages exceeds threshold.
+ 			 */
+-			if (++num_filled_pages >= HPAGE_PMD_NR - khugepaged_max_ptes_none)
++			if (++num_filled_pages >= nr_pages - max_ptes_none)
+ 				return false;
+ 		}
+ 	}
+-- 
+2.52.0
+
 
