@@ -4,175 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F5E4C88E7F
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 17:51:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97847C982C9
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 17:52:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 04E1F6B0092; Wed, 16 Sep 2026 13:51:16 -0400 (EDT)
+	id 55A6B6B0095; Wed, 16 Sep 2026 13:52:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F41426B0093; Wed, 16 Sep 2026 13:51:15 -0400 (EDT)
+	id 531A36B0096; Wed, 16 Sep 2026 13:52:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E088A6B0095; Wed, 16 Sep 2026 13:51:15 -0400 (EDT)
+	id 46F5E6B0098; Wed, 16 Sep 2026 13:52:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BBF196B0092
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 13:51:15 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 020C6140757
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 17:51:14 +0000 (UTC)
-X-FDA: 85220366910.04.6990AE6
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by imf25.hostedemail.com (Postfix) with ESMTP id C6440A0007
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 17:51:12 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=E7FjhsZ1;
-	spf=pass (imf25.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F6446B0095
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 13:52:32 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 69A3F404BC
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 17:52:31 +0000 (UTC)
+X-FDA: 85220370102.23.97FBC9D
+Received: from mail-lf2-f12.google.com (mail-lf2-f12.google.com [74.125.229.204])
+	by imf16.hostedemail.com (Postfix) with ESMTP id AEEFF180005
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 17:52:29 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=FEqGqiza;
+	spf=pass (imf16.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 74.125.229.204 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789581073;
-	b=ELfKwY6zdYNVuNFF90gk2qHdqYZhY3qEmqkaMhgjkGxftQE6mKtFlnanysYzj+NbrCLWk7
-	edisRyp5YhIQ/oo7IULawKO5HFhDkDCA27TyfqW1+VXTTs5P7DgThsmVwT8vGw4tphA1BA
-	nJVCQQK4vU7rZGwztATNMYO1xsfrIqM=
+	t=1789581149;
+	b=hPrk8MTsV8ToYL28I38h3/1pDH0iFRAq0s+6Rpc8IJfG1QynMABNsBcxXBw5W7KdUZ9ipD
+	s7+JDkr3MjV3ItyYtXXPCN1n8qYLiSgPLiXf8RIoSCoEd7jI1YLBmGaVKQbmF1jtY7+oIq
+	omADFsSdq1PF4tXV7+F7gyDRHl6goDU=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=E7FjhsZ1;
-	spf=pass (imf25.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=FEqGqiza;
+	spf=pass (imf16.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 74.125.229.204 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789581073;
+	s=arc-20220608; t=1789581149;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=or2++1LeeipZYCb3G9WRgyA4slOHEhMs91sMxm37PrE=;
-	b=3BqK1q42VXekRjgIcA9lOahto+UPkPAEXLfcfH9spWnxm8Eee9ktYcD/gl2KtZOnDTq3Oz
-	Z8eG6NdRW93FnZrFzJ3ShkINY5okx5hmuB2XEl+miVH4lN3knKsFrF7lKLmlxXn7wjvMbU
-	v2ckcpdNxhakPvSL7WRSzTBUWM4doUE=
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 99E4540E00E8;
-	Wed, 16 Sep 2026 17:51:09 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 9zV9muLWubjt; Wed, 16 Sep 2026 17:51:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1789581064; bh=or2++1LeeipZYCb3G9WRgyA4slOHEhMs91sMxm37PrE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=E7FjhsZ1898C+iRkHA2e9itQoyiqH/Ch3CRAiwQscnU0CXAU1B3A58i/8qF7CWRQh
-	 G9fmEyLGGIFdYQql64Uc91Gneuv+SDG6aDTZnURc3lGHscWFc5r5ZPh1vPnn+mqjo9
-	 KFHhO1O53B1kflUQZ5pwBl1X+TZ/YeOf6S4ukWau6F9Oy2bvc2AkWVFtpJFZA/d20Q
-	 giWI8kOs24tcni/YN9qyJ2ifRbE9E3/xTzGmQUWsiuXTEhyoEZljOUczoL/sJ+VORm
-	 Jkvi5hPfZD2JyHdgx2JTUeJM+9EfC5lNAKlo3wpXrtxjuZdy0HbqzBa/nrDlGGXUEB
-	 T6ChTVHnrHjzueQm9iG6UjvNvWs1Ci2nBGXVxdIW5G0N5g5YvMPiyWBQmN/KIt+8BJ
-	 4nMWbx4zbda4r5Pe4F71yKd9gdBn5WVrThXpykty5Y9ZS6rxK/Zy/4imk+qiuwIQBK
-	 +J/Y7B2Xd/vbfAw0NWAJZRMYwlCrFpuzM/A8ynROZCZpyn7YbI8CMVxBS6k2Zrpwya
-	 T6Y4mlUo4kZxEKXRc1Vy6jsORFjfP4A+DtCjZKq1wSzIccfVVxpJX103Kp6LkYYPGE
-	 WV11UFcMReR+2ndH81MYlmJrtQ8QF3VCSlMJid4YqIKWMK9eHGy2UwsKc4B1bjlrvo
-	 ZcjWPKxqQS0jjFQdEECxxF+M=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 6DA8240E00B9;
-	Wed, 16 Sep 2026 17:49:32 +0000 (UTC)
-Date: Wed, 16 Sep 2026 10:49:29 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-crypto@vger.kernel.org, linux-pci@vger.kernel.org,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jini Susan George <jinisusan.george@amd.com>,
-	Kees Cook <kees@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>,
-	Nikunj A Dadhania <nikunj@amd.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Kim Phillips <kim.phillips@amd.com>, Joerg Roedel <jroedel@suse.de>,
-	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	"Tycho Andersen (AMD)" <tycho@kernel.org>,
-	Liam Merwick <liam.merwick@oracle.com>,
-	Michael Kerrisk <mtk.manpages@gmail.com>,
-	Suresh Siddha <suresh.b.siddha@intel.com>,
-	Xiaotian Feng <dfeng@redhat.com>,
-	Venkatesh Pallipadi <venkatesh.pallipadi@intel.com>,
-	Andi Kleen <ak@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>,
-	Tony Luck <tony.luck@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Carlos =?utf-8?B?TMOzcGV6?= <clopez@suse.de>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Jori Koolstra <jkoolstra@xs4all.nl>,
-	Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	Ian Campbell <ian.campbell@citrix.com>,
-	Jeremy Fitzhardinge <jeremy.fitzhardinge@citrix.com>,
-	Petr Tesarik <ptesarik@suse.com>,
-	David Howells <dhowells@redhat.com>,
-	Haavard Skinnemoen <hskinnemoen@atmel.com>,
-	Kenji Kaneshige <kaneshige.kenji@jp.fujitsu.com>,
-	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Ilias Stamatis <ilstam@amazon.com>,
-	Sumanth Korikkar <sumanthk@linux.ibm.com>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Toshi Kani <toshi.kani@hp.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Jiang Liu <jiang.liu@linux.intel.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Palmer Dabbelt <palmerdabbelt@google.com>,
-	linux-coco@lists.linux.dev, xen-devel@lists.xenproject.org,
-	iommu@lists.linux.dev, linux-mm@kvack.org, aik@ozlabs.ru,
-	Santosh Shukla <santosh.shukla@amd.com>,
-	"Pratik R . Sampat" <prsampat@amd.com>,
-	Scott Soule Cheloha <scott.cheloha@amd.com>,
-	Ackerley Tng <ackerleytng@google.com>,
-	Fuad Tabba <tabba@google.com>
-Subject: Re: [RFC PATCH kernel 01/17] pci/dma/tsm: Call disable DMA bus hook
- on cleanup
-Message-ID: <20260916174929.GCaqrWqZ1fIhi4Rgbn@fat_crate.local>
-References: <20260916115159.1938195-1-aik@amd.com>
- <20260916115159.1938195-2-aik@amd.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=99q2Kz8VLvsm/yvtFk2tFIeyCDvYHKpqJj7kva7BYPs=;
+	b=ifbg4mT+WAsxDBxpsLCEmwCHhmGc7+E4D2JMbzBzQqI4xVRDcutriT0M/V8TWy935Lzh26
+	P7YGa8DobE8GZ8z5DOb4nwofUM06gMEFQUGMlnoFhA71AlpkDSkL5L+xe90pfC7lIEmrZX
+	KBafuWH4YjplZFSeq8q+mVaa/xEsFWs=
+Received: by mail-lf2-f12.google.com with SMTP id 2adb3069b0e04-5b79786cdafso166310e87.1
+        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 10:52:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789581148; x=1790185948; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=99q2Kz8VLvsm/yvtFk2tFIeyCDvYHKpqJj7kva7BYPs=;
+        b=FEqGqiza6YKGkM1TZX4ifnJ2OmcbSJiEg6rPnBipr2XRc5dOluVsPYYCv/GAUbew1M
+         qOiGJ5lRvXjnrGXiTIJB6UFzjnt0Vvg5DMVsgrfhTAWVAGYMO50mjdsIMwmJmNIuPhkA
+         QsBnHISC6eZFh11y2Q1p2v1NBS4PQt6/ghNdFQosFRHfM+d45hMEEnWFaU+xmUn6are3
+         LxzfanpLxcfT5b1oUJKoFt6gamX14kX/iPeEYkwdcjS3gKeY2g5/3g/1JmXdOtdMXVkt
+         CHbdI1Xdl6Yum7xkx0loM/5rZcKbWb7Mpc5Ltoi/nLmU8Y7M0m25gtpcBPXFky1WEh8k
+         UopQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789581148; x=1790185948;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=99q2Kz8VLvsm/yvtFk2tFIeyCDvYHKpqJj7kva7BYPs=;
+        b=2ewMcVhw47UpbDqgaQeqXz1yZR21lKn83KtLdBtJoFVNTi6ZGsSbTEUgbjbO125/dQ
+         iYEAbffBRYWNjrqieiflDNFtISlITmMrRuIdTYRKFG8E2KvoiyX3P2c2SZlBlmS3HV6R
+         CgydLE0JmKwi7U8Z+2Xzogka2C9ssIjuVe8k3h76/uwZmy0U0EXZ76387kBId97MSZj+
+         KKHY10zfYA7oFYAqNui+WP5J0F4e1WKtO6PgK0gmfYaHsnUyYz/x1RndFwejAcWBvxJB
+         HMNneVF5frA/IApw+GyqbXNnvEry0rI/3OefhKlqJuXJbJPXUjt45CQqk35+AIL5xdcR
+         5slA==
+X-Forwarded-Encrypted: i=1; AKwUvBx4PKIUkwahlp5Xan/EhTN3cEKvijd64qbjn6bQnMHu1So4U9yVUuoboRLDESHcNYer2ScnuUjw0w==@kvack.org
+X-Gm-Message-State: AFuF++n/v/pQ/ORHKv2LCqA50LWvx7X8L2Xfu+zHpAufC1GY+49VMV1A
+	RBfEzqH2cacjf5Y2xs/9pRUFLEimHj5GTJCPS9YT8ZdmemvoTZ997CS7
+X-Gm-Gg: AYBFou0CHBWUESaPGQfOweoq1DL3InLxzi6o5NKVvgQY1qOV0ji91UrUgcxozvvtL5G
+	rRo1F8aEGt7dSQoA/OxMl2R2vWYxCPJN1aFfFEAXoYqWgXmc4Vjsw20E4rbg/JxloxMpVrXg23X
+	lOvCggdYGsguA5tzus3qnhJrNjG4bs8cIe/YBaxrVfyYd/pNIlzc8hNTh3xL4vln+s0+aNzw4JF
+	uiI51iB+8zh46TovzjCujPyZcczdc+i8Y9KemPoR+zMXAFH6niEdFL9X2Wur+S9DvVmU4Ch8EsK
+	Y+oHa6usQ2dmRWJIXPklqH49kUg8xyMB7b4IMMdmeV9VbtXFw3OnAPCXZHU+eNMoSRG9HGURqNK
+	5bBGad4uRGIhl6fLrSmecEchdU46hYozMKx6whmpiits7xSms7uytTjHzYV3eb4s+iWtdrPnC7e
+	SD6M9l98mb2UVVlQo69Sx+7Uu1nFjqzZT7opclXjPouK5JmnqgNhPB3fmumC9b5kAIK+xsHHUk6
+	xr7RLJ4g1JV
+X-Received: by 2002:a05:6512:3182:b0:5b8:b53d:89c3 with SMTP id 2adb3069b0e04-5b8b661a3e0mr1304622e87.2.1789581147601;
+        Wed, 16 Sep 2026 10:52:27 -0700 (PDT)
+Received: from dellarbn.yandex.net ([80.93.240.68])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b8b57897easm1080649e87.5.2026.09.16.10.52.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Sep 2026 10:52:25 -0700 (PDT)
+From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Alexander Potapenko <glider@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Shaobo Huang <huangshaobo3@xiaomi.com>,
+	"Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	kasan-dev@googlegroups.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] kasan: unpoison task stack below watermark only in generic mode
+Date: Wed, 16 Sep 2026 19:51:13 +0200
+Message-ID: <20260916175113.1327454-1-ryabinin.a.a@gmail.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260916115159.1938195-2-aik@amd.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: C6440A0007
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: zombqqyhbucj6tsktbqwuz6d73hckr7f
-X-HE-Tag: 1789581072-350043
-X-HE-Meta: U2FsdGVkX1+WP8wReWzpFCvkABkc7GrYbbrzO1yQCSpSv6eAMTJg/wRLxZR5t2Oqu2b0RB+6jgu4A7X0i8KRkjZlF3pRzjA5xEl4X2o98Sf1XSn2qqkn/o5JXaWA4kFOQyLGxYgFw1v3F0qGuR8gCAvT9qC/pZtHjYcW1UDDDN4eTraSWu6LmGIhUXQk+go/HAI6szVXDmmqyWaxCHYnFh9+jb7loHQv7B57BoiVdtxF4JbfqMpYSNxkHUfJcfK/WjivHA9QuGcJIL4qRpjrds4bQdemxBGjnnqXGUzNjD5MHH3mIcJipfnnbRm2IoPTOEZMTdUjr9me/NHL4ME8lqQWapNwxbc38fGIlJZVL+n3Zo1YDR+OGj924ufAXZyNxyl0MFQVyvnfqBX4QMavLrsTgvi7eSiZn4hCgwFlUBX5owS044hMMhQC8TeXippTgusoXo1C2d2tgfXcZHkoC4SL5dASRls2JgHFNkGM7f5zClNInyZn80AS6E+ijXQMdPS/42/2F0TMLvHBR++eF5ZUfEpA+Em2JUnjySnCwNSj6gZNlHCW3QWDHdjRJ78+jcKvgRWDvsmoego9hr6t2fZzfwdEUoP7GSWaciA/He/vD4Mrr4iU7mu6mnYFYBhs5jXK/k9Io75KsSrUohvMXqCTqRaVeVM1/mJvipclECXHfuXRvhzb9Q/v14VJArA/4mVUv+847gGOba0MWvHp86sTTgF+tliDtlCxiITJRE/i35usm9wotYycVWPKbb8mfxr0Zu/SgNjou5XbReHtg3Q/l2JRfBJRYpym+5RR/xdd58y/Yvj6+jM8kh4aqcYr1vD2V37SoPFZGn8gnE1zTD2myEv0NxZDXXQ4UJ2P6/+3uEYK5xZLGGLuAzSrxNnCsR19qPn+VQDffKZdGGHvO5QknmUR5m/jzb3wyuPTPqJ+vtn/rlMFoBa2f74vKheMv+yYKm4BxgD3HWQjppY
- DeVEuspK
- 9fyKCsfmssFHNlrVftfkyJhw2EEq/FmlT2Tv83CXoy+az76ViCU7UrcEseWMjLS5HlmqILIF68GmM+pY4vfqwb4mZu2671AhMax504o8vRtCTwVrvfXDkxiBPuHFkrMh5D9syFmaUuRsAqjpUA1pRW4dhKqW2fx2UfR5XHHDKUcliC2Xmwcpfu3tg8BVytlYMXfbatlNqKSertWEOtaW9ULMOZCuJSID4wd2fSyzeNiSgtRuVLdZrtGps4kE7f0OaLriQMlMzLQkQdVw82Xje9uHoHb4m264BA720IJYxuIzY8O/bjK9WK+2v2xG2nlq8+4i5j+3vLpYPb0eVTSbYRIgJmket0NAoqwQkymLq7qkROP3l6xQuU6LTCtWp1bG+9uSV+u0Y4LJGhBQIvV80Za4ds5XOful9TPmlAVVu4e92qEQ=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: AEEFF180005
+X-Stat-Signature: ckczo5eeuo5uai5dowechkcrk458twr8
+X-HE-Tag: 1789581149-410244
+X-HE-Meta: U2FsdGVkX1/pidBVc3zGvyNE9sCmrbCfPFSmdg9XzbghsY4WxBaSmUOGgWg+3YFXejCD1b9zEVNlbLq9qqAV3UEv6vlONuh3wNrk++wmUPQZw4o01TgnRIPwm/mmrbCIP/krtU8arudeoGnsfs+KUTbtq6QjcGCYhDctmNm60SUNn3b2rVezsgXlmtQ1crzQCSSMk4p3pofnTCIbqtupicvnFeMaF/VjphSQO/yKekC0yMdZ7+EAGgT0db/3Q6oFz8J2/Fa1UOMeuXD96NDUDdYhKNFpznVeqV3BJ4xgx0JX3E0S+CkkhVgOckczdWtWiho+vhIctiIrtpGXthrO/S7+0LADy9ekN/hP59oxsmSSg50ZndvRwiblXFajOIZbdz4SrxnToLRRX7sKiUxPAWXJEdQqb5HGKMeAm4ba9jdUprvyvJrjdkqy7UCTyYR4D2q8oSc+kW9HN6FhRTDVTGR9nZ+x5kAW0fX1GxtSrcA5mVb96w5L/+fkeAhpdTYKGsDAhOtdVr6RSd7o8NAPXQ5lKEXnqTF7x//bN/x7SVXbSy2uvMO5LtJRAhfX8EmlxkBdTB/J+PGDrBL8FUR/ImgrvwlQOeEjRDjmYaWQuwXf0H3e0yUb0k9j/dq85RNhSTN0meS79W2TLWOdq+rFKZS3lGGKNrY6tY3xiZmBSp1buCnqHlQEOtqiIZdEVKonTqILhrAi5xst4ejWUsqOhr7P674FZZVdyCbqFrEmv/H8J+mp9am+e3IhGh+PMIrFNIdMLNUpJdUhFe3z2+yrmbiEyMdU3LsuDu24cUBxeLAMlPHuGHSQ0Yg9Ioh450ZQ/VqPfNPyQBjdI2XACo+D+GAtQbZq8HU2n8C7jLDB9kSOgPZrEJH1meZbbXh95Pz/xhy1Nre12tq7cWwSFR3cALgaUVvLEJRUGo7kzsiRsAWCf5wZ3XmkMjFHy01V3dZijOFVj9l43apLFmmYgw7
+ YHab9Haw
+ kjKQpQCIn8MddSF8Zarp4OyJt2LTfBM2UMGuOYVBMUKwIqKRqo3ApTRBdBqz5WOpUM/gg2qaqDqkQa5ITSCGfYSRAfV9Ir3hyhLwpQ5wlDGnSnQH9J5/4Y6MEOQX2oMN9X3v5sWC/GfxRErf9Tz5V4NFns/0fH0dxVPYjGO3M+1f9aJ+OFTg8z2aNde4wyrA7yqXjZcPgRKVK1YQv+WXbR7wSbMFqE1jTefEkDT6P9FoIw9l1pG3RW7SS7EJkJWquSIluDRYAcN93VP1seMKh67/Fjjd/saJ6cTYfQzH7YvpFp2vsFPtuKHWKWDboygduHlClKm5plL0AjtJ2VZVBobEkpSw0DurwPUcm7SedXyUGjWAFHIRXLTEwckrWH9qmW9eh/aMoSs5+dONlrdVIqLthCFxGnZt+7sHnyB0dctLfVW8DrSFVW6ILljSTWAdpBjb2kqMcKOdSxmj2Z2PL5qoNHM3Z96Wb3iL5GP13rmWxUTFnxHtUTkcnEcRQ4hc4D1GO/YHoPMQ17dq7clRhq+s2Ww==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -180,23 +125,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 16, 2026 at 09:51:41PM +1000, Alexey Kardashevskiy wrote:
-> +	if (device_tcb_trusted(dev))
+CPU resume and BPF exception handling can discard stack frames without
+running their compiler-generated epilogues. Generic KASAN needs
+kasan_unpoison_task_stack_below() to clear the redzones left behind by
+those frames before the stack is reused.
 
-Where is that function and the rest of the gunk needed for me to apply before
-I review those?
+CONFIG_KASAN_STACK also enables this helper for SW_TAGS. The helper
+derives the stack base from an untagged stack pointer, so
+kasan_unpoison() writes KASAN_TAG_KERNEL (0xff) into the shadow for
+[base, watermark). For a vmapped task stack, vm_area->addr still
+carries the original random allocation tag. This creates a tag mismatch
+at the stack base even if that memory has never held an instrumented
+stack object.
 
-The patches on that branch:
+When the task exits and its stack is not cached, thread_stack_free_rcu()
+passes vm_area->addr to vfree(). In RCU callback context this reaches
+vfree_atomic(), whose llist_add() writes to the allocation base through
+the tagged pointer and triggers a false KASAN invalid-access report:
 
-https://github.com/AMDESE/linux-kvm/commits/tsm-next
+  BUG: KASAN: invalid-access in vfree_atomic+0x90/0x150
+  Write of size 8 at addr c2ffffc0a8f70000 by task rcuop/7/75
+  Pointer tag: [c2], memory tag: [ff]
+  Call trace:
+   __hwasan_store8_noabort+0xe8/0xf8
+   vfree_atomic+0x90/0x150
+   vfree+0x220/0x298
+   thread_stack_free_rcu+0x3c/0x4c
+   rcu_do_batch+0x308/0xaf0
+   rcu_nocb_cb_kthread+0x33c/0x708
 
-which come before those here are enough?
+The deferred-free path started using the tagged vm_area->addr in
+commit 449e0b4ed5a1 ("fork: clean-up naming of vm_stack/vm_struct
+variables in vmap stacks code"). Previously it freed the untagged
+pointer derived from tsk->stack, so the write was never tag-checked.
 
-Thx.
+SW_TAGS does not need the blanket shadow reset to make subsequent stack
+accesses valid: untagged kernel pointers have the match-all 0xff tag,
+and the compiler initializes the shadow tags of instrumented stack
+objects before use.
 
+Return early unless CONFIG_KASAN_GENERIC is enabled. Keep the mode check
+in the common helper so it covers both resume and bpf_throw().
+
+Fixes: 449e0b4ed5a1 ("fork: clean-up naming of vm_stack/vm_struct variables in vmap stacks code")
+Cc: stable@vger.kernel.org
+Reported-by: Shaobo Huang <huangshaobo3@xiaomi.com>
+Closes: https://lore.kernel.org/all/20260806123020.90869-1-huangshaobo3@xiaomi.com/
+Assisted-by: LLM
+Signed-off-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+---
+ mm/kasan/common.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/mm/kasan/common.c b/mm/kasan/common.c
+index b7d05c2a6d93..7d21c4db68d2 100644
+--- a/mm/kasan/common.c
++++ b/mm/kasan/common.c
+@@ -114,12 +114,23 @@ void kasan_unpoison_task_stack(struct task_struct *task)
+ /* Unpoison the stack for the current task beyond a watermark sp value. */
+ asmlinkage void kasan_unpoison_task_stack_below(const void *watermark)
+ {
++	void *base;
++
++	/*
++	 * Only the generic mode needs this. In the tag-based mode the
++	 * compiler fully initializes the shadow of stack variables on
++	 * function entry, so stale tags left below the watermark are
++	 * harmless.
++	 */
++	if (!IS_ENABLED(CONFIG_KASAN_GENERIC))
++		return;
++
+ 	/*
+ 	 * Calculate the task stack base address.  Avoid using 'current'
+ 	 * because this function is called by early resume code which hasn't
+ 	 * yet set up the percpu register (%gs).
+ 	 */
+-	void *base = (void *)((unsigned long)watermark & ~(THREAD_SIZE - 1));
++	base = (void *)((unsigned long)watermark & ~(THREAD_SIZE - 1));
+ 
+ 	kasan_unpoison(base, watermark - base, false);
+ }
 -- 
-Regards/Gruss,
-    Boris.
+2.55.0
 
-https://people.kernel.org/tglx/notes-about-netiquette
 
