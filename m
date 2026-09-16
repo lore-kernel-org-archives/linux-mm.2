@@ -4,99 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45D9FC88E7D
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 04:42:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59F6DC88E5C
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 04:49:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 42F626B0088; Wed, 16 Sep 2026 00:42:03 -0400 (EDT)
+	id 466A56B0088; Wed, 16 Sep 2026 00:49:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3BAF06B008C; Wed, 16 Sep 2026 00:42:03 -0400 (EDT)
+	id 4179D6B008C; Wed, 16 Sep 2026 00:49:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2A8B26B0092; Wed, 16 Sep 2026 00:42:03 -0400 (EDT)
+	id 332756B0092; Wed, 16 Sep 2026 00:49:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0616B6B0088
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 00:42:02 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9EE0FA5BE7
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 04:42:02 +0000 (UTC)
-X-FDA: 85218378084.24.6478219
-Received: from mta0.migadu.com (out-155.mta0.migadu.com [91.218.175.155])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 7AB0F80005
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 04:42:00 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=XFl9vTiM;
-	spf=pass (imf02.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.155 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B29D6B0088
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 00:49:41 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 659101C2AD6
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 04:49:41 +0000 (UTC)
+X-FDA: 85218397362.15.846E6D6
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 5EC5580004
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 04:49:39 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=N7Tenfye;
+	spf=pass (imf30.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789533720;
+	s=arc-20220608; t=1789534179;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jMPrE7snG0MLaQ8uHTyTD8lbZcpyzSnhFQ73TGfwWEo=;
-	b=vIlzKnv94W2kQ4Q8mCsHpoS1J/NvPlX6aD/FYyRyfkL1cSylaGDLCnkWjDBHD/foCr5sTL
-	5E6hhEyd5rg6oMHE0yGxQZHWfI9zIs+Q/jAHnMZM9T8592xiXyznDYzXSpIRpTBCOMrJuI
-	WkOE/OXq/7Vol9464V8KFAkbmS6RKVM=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=F/a4aK+gN/7WQgr9WGLAxW26AQdjhDeu9mCp96kKnlY=;
+	b=pT/9ide8SB9EUo/TaDEOJorqUKdGzT7tM6olnsA1rqxdk/hlb2n8XQfJhAJL2OG8Mh/vd9
+	gSQ5IFx2AQ5fSibE5gHAOgBBO2x7TsrzP8sIA5HFFlWUW/axUzdgFDLjf3i1J8UAtmcxFW
+	T1Q8dIhvCt2fJObq9YqlBN6OCdU3hHY=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=XFl9vTiM;
-	spf=pass (imf02.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.155 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf30.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=N7Tenfye;
+	spf=pass (imf30.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789533720;
-	b=KVDAc8NHABotX4czXUEu0ZWIXS+WMkpBBkW5+1PotYQzX1tGEmWQ26QNNDR9kVzAHOPj7/
-	4eLYBz7Ek7eds7qdZgHDsE4/IfNXXS5tdos5q/57+6gSmrwOsyVrQHv15lW4acK9ARL5ZB
-	rtBEGLqaM6rrLtZeqIIHibY1eNIDbOo=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=csk+huPoq9Uf1TQgms2r3QUbeMYTjSPHnReXbJBHu7k=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789533718; v=1; x=1790138518;
- b=XFl9vTiM8k380r/49IwlQRxFiBRp+w7Y+TEJpXNnNS9YvYfG9x23rK6m3T19S2etFDj6/xrj
- S3iMeyndPYEiHlMR2un3s4ewiLfrwPGhQhaEsMNRzF0Hipy39MoDqkzaXxlX+Ho4U9kVbF5MI8Q
- +kiLM85QvyTXiwTuZIje8xng=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 52e16c50c9bcfb05;
-	Wed, 16 Sep 2026 04:41:48 +0000
-X-Mizu-Trace-ID: 52e16c50c9bcfb05
-X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: david@kernel.org
-Cc: lance.yang@linux.dev,
-	akpm@linux-foundation.org,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	liam@infradead.org,
-	nico.pache@linux.dev,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	usama.arif@linux.dev,
-	kas@kernel.org,
-	ljs@kernel.org,
-	surenb@google.com,
-	linux-mm@kvack.org,
+	t=1789534179;
+	b=zb/AkjjnSkA0Y1coSyUWJf2XO08pBYTS25PtEr5Z6oiWbiPo48oeuJYUjeCN9V5HaFIvGN
+	wtEzrbmbrZ8F/gQGsOp9E+xCDKq1j47f3H+GIwZCNY+ssmb/m2rkkl5PTJ0uMrqIxFo8pi
+	s5FfCxVROJwtY27sEeHgRDJhz3KK7uY=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 83D271516;
+	Tue, 15 Sep 2026 21:49:34 -0700 (PDT)
+Received: from localhost (a085714.arm.com [10.164.19.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 60B6F3F86F;
+	Tue, 15 Sep 2026 21:49:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1789534178; bh=jycAePJzGoWD7iuHXNX/pHzEJqNW9LDecK84UF0GsGc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=N7Tenfyeb/B92byMKzxo1+YO/EFOWyugBUnMdXx1oEjuQ9cSSD5iIVZ474nePzmoX
+	 CwMZwNXxrUMYvcukYA/lHLlG7CkOn+z+ffmh+TMx9ZYdbPhPCxyzmm5AWUl9od8SiA
+	 sKMCxSgd0qLhr75AsY9BQ8BLyfVOHmbWuLoxwixk=
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: linux-arm-kernel@lists.infradead.org
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
+	David Hildenbrand <david@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/1] mm/huge_memory: fix pgtable withdrawal for huge zero PMDs
-Date: Wed, 16 Sep 2026 12:41:42 +0800
-Message-Id: <20260916044142.95044-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <83a1287b-8589-4408-96f4-4f78dfca1bc9@kernel.org>
-References: <83a1287b-8589-4408-96f4-4f78dfca1bc9@kernel.org>
+	linux-mm@kvack.org
+Subject: [PATCH V3 0/2] arm64/mm: Standardize printing for pgtable entries
+Date: Wed, 16 Sep 2026 10:19:31 +0530
+Message-ID: <20260916044933.2689426-1-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 7AB0F80005
-X-Stat-Signature: 9n1cruw6tu868tekz8n8c6juuwzt9r6s
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 5EC5580004
+X-Stat-Signature: a7zbythmyphca4o3ugsz96iaxgdqs38w
 X-Rspam-User: 
-X-HE-Tag: 1789533720-503685
-X-HE-Meta: U2FsdGVkX1/KrYCRAcKGKasI/TvzTT/eRwfQjvdMZqr4NdYiZmZBcvcXwjmXGcJXAE3zoqDNKLH34bAZyeB300AOvFhnhHtnGFmMOA+6eXqs0b9Eq+WU0SFrJ+vnlpMqIAPnNmEBPUZDFU06U9E4OC0En+MfCEhocc0bdaKwUcZlWuvcKUBGXhwfLUHbFDDJs85XPfLDZDU4Zs3Tsvcl1Cjb+GMczWuJ/VgNYXFL5xjtmJyevxB3FPdwkzrHWw1hL2lny8+vXfdrjj0X4P86UDlUqt7FfmxmRl8uc9qYX81cZlV+lzWY/ZcEhu8Sc5b23RYb1NZoAlwCaqRiBWnW0llht2VxrECVVF8CD75SKvPS1anNEganoHNghwUya5GNafm8+ry4GvkJ5eXyHkAe//ByFk4lSi+fy0Zn3xPbbuMizZRE2f0M5O2NNIf0jadkLxuX2g7DJOH2T2ixcKNM10MgkNHQyTN6mtJuNqdIpzbP3NZc7RgmdwI4ijWH57TI7Owi82SQihxzVC1ekJQAdan18nM8EaowsaFd2m2zRJm+CDFF0GIJZxFOVxfWOSHzr1WEsMuGUcEg8X5Pm4ik1AfRB52Xos8dyxuAbv3WHffw+/pkKcr8gTcreLHL4JGfr2XkmI7Ufu4KQJcXdHMTi8qx6JD02lK0fQCPyJJQ43Dh4oxknQ8W3pVmQL9jkGAJ5aDd/9dEacCXKzGF7FSBQD3A07K3lWLf5v4bwSk6OPInDRJKJecUSlZZeS2Hob9mbJrZh6udG46+0h7LkK1RW1+2yYcIuMH9Lt4JxzKqJQ1jtNiGKtYAPQBQ+p5f7sov2ppdgnQASLMFbOQ090HaEEfT5uONe5cj6xrbkz7qQxnxVAaGQT5I96nHhxG5z8fk19fJbD8CFiSMzl4eGd6btoOeJ2+AWQ0nLCpO8v56MeDUFHSAdn7DOQz8ns/tq5Le27o6UORTw4fT1StqHYl
- zE8iAJWG
- E/oW1geEOq6tYsCMk5igtP+TTR4+//Q/9Gs735AY/5MsX0gbmz0F+Z5IXPrgjWfNvC80pFsX7opXhSml2g6r9OjYgGjaPew2rDeBuJGsw1MUuoORtTtUxAdVAT6LuOv18mcj2utZT1MXvesVrf6i8UMwWIac8e1Bn8xfcO9lbI/nHEeiPm37dYAlOD6xPN6B/teO8DIMx8intpownxdhEc90sy+NmQLCpmLhCdg1Yd0Beso/JoauCKp3E/uky3wemYLXz8vH+qzgMF/Us4DbXGm3+uRN229u8JjzD
+X-HE-Tag: 1789534179-238216
+X-HE-Meta: U2FsdGVkX19Y9mjkk+PCi7SrVuHYQMuANBoABUG0aEdcoln1GVWuqDAUx+iwnztf8x5gN/X/JdIaNsJrgeNLd6ajJjXvFECw3iGkXn+N/DhGgAfbyhG1RcJfleMfaEdTP3CbYU9Xc21Za7t4hdI9dHzBvp08FdbQW94dpzIE7EyflOYGJZOuh0q6ZDcj4Wt3LrBF9PDPV+lFnaFfSE/uSxaWvn6OerZzFBvoTbE23EsPZqGB4uo6wlwJUmYoE4MwCW+h3WK1IRQaw4plM8gnZm6cxlZFuRvC2LCgr8UBG9oF4E+uo2EwsEmQttZna0gjGutlVKGt+8iS0/VPVv+fXiQ3OyiZ9e2UnHCHsgX9PH2TvjHOLubVYC0OAtR++WC1Kq46JvZBVjBmQJsx1ikEAy3Vdqfcehm0EDEdc+VWqmfTyld69B/Zys+mrl3QzsUtkdwK78b8ZwXuLa6P09b6+rZEVpDv0ceYtX+pWkQlm8ZJlng+utvD69SHR1zPhg9zPb/7Fl3J9i3PG+smVkhz6np1ZYF3lgs3OFcdAIFXJk8iGCnDAc+XRId9Na8eChUsioIrkrSOEM9NH98upff62xhH8LTlvJ8hVpBD9W8kj5ZGo5ZP6NNH/MzeMNSeyrl+Kc+h3r777vHN5Znt58wxSfT6tRLE9ulI6NOiEfS6LYg2k96GG1UFthXJKDr6OTt51SJA/QQ1tghqpwQs8TruwMPgp5NKJHhj/192evmSztOI60byZzSHDsU5KrJ23G/g9DNLPvQyC2yyu2bANiflMF+9q8qqUewLMVpwczO2waVmilDHWghB4KH/tpx9cUNo73QNJaRFRcBtL0UIiOyWGC4yOX025dEppYY6GKrO7Vzh7nGIlpUtVjuOPmLMLi4TzTyMVkb1svPWKVJinLIekT5c8G5BPPkxCGsn2MCSmRoIiPtg9O/wFueJL6MXIWrflmVqZ6aqsqR/d50qbf0
+ 0/I3+YcI
+ TPtva5QGLUTN6I+2ZQ8li2q+GuTKTJrrGskJrd1vd8yDy6HxNnCTqzKtSTRpFCltPNF2euKYaKdVXA9VX10Ik4N/mPGuBFjmMhpUcwjKwPdLZx9OLCiJvX1ENdHMCn/8XUaK8GueAxphoIHHuKFVJPWhkP8QBlJ4Ik6d8CuenFOKsG8fMutDVcQ50o+uIsb5B2wL5OcjPVfelwLVvAtJ0vtsDQglFN+kYErXccynTFGPsMvcZ5odsO3HlHyJ77UAiaejFfostINklnmpcuv1ujxxl1SI+4cAUWl68y7R5gSYkyj6C+D/rS1kN+Z/VeP4xebGWY7aqSFVKXK5A5ZZsuDxWzoNdzO0S/1k7IAoUXSVTsamX8uE0D21jhf3mL53vXl8D0aC4X0+zrkNjpY0a2j9AYWsOieYxD7/w872Udse89IiNYn2gqAc+fO1qmiRUqNP8Crhvr/6y4bYSLhbK+sOQRpdigaPKugDeOfcflLdlzQw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,40 +92,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Standardize printing for pgtable entries using recently introduced generic
+helper ptval_bytes_to_hex_str() in core MM which automatically enables 128
+bits entries when added later.
 
-On Tue, Sep 15, 2026 at 05:13:17PM +0200, David Hildenbrand (Arm) wrote:
-[...]
->
->Ok, it's really only DAX and anonymous VMAs that use the huge zero folio. Other
->(module) code would have a hard time using it, as mm_get_huge_zero_folio() is
->not exported to modules.
->
->DAX uses dax_pmd_load_hole()->vmf_insert_folio_pmd()->insert_pmd() where we
->deposit a page table only if arch_needs_pgtable_deposit().
->
->
->So I think the rule is simply:
->
->arch_needs_pgtable_deposit() -> always deposited
->vma_is_anonymous() -> always deposited
->
->?
+But first move __check_safe_pte_update() outside <asm/pgtable.h> to avoid
+a cyclic dependency while accessing these afore mentioned core MM helpers
+defined in <linux/pgtable.h>. This replaces the original page table entry
+print standardisation proposal which was part of the D128 series.
 
-YES!
+https://lore.kernel.org/linux-mm/20260729122452.3797443-11-anshuman.khandual@arm.com/
 
->
->The trick is that we don't have anon THPs in non-anon VMAs.
->
->So could this be simplified further or am I missing something?
+This series applies on v7.3-rc3 but after the following.
 
-Ah, cool! I hadn't thought of that :) You're right, anon THPs cannot live
-in non-anon VMAs, so pmdval and folio aren't needed here. Will simplify
-it as suggested :) and add a comment explaining the rule.
+https://lore.kernel.org/linux-mm/20260831054331.625505-1-anshuman.khandual@arm.com/
 
-static bool has_deposited_pgtable(struct vm_area_struct *vma)
-{
-	return arch_needs_pgtable_deposit() || vma_is_anonymous(vma);
-}
+Changes in V3:
 
-Cheers, Lance
+- Added tags from David
+- Added comments in section closure for CONFIG_DEBUG_VM block
+
+Changes in V2:
+
+https://lore.kernel.org/all/20260909040005.4148136-1-anshuman.khandual@arm.com/
+
+- Moved __check_safe_pte_update() inside #ifdef CONFIG_DEBUG_VM
+- Added empty stub for __check_safe_pte_update() when !CONFIG_DEBUG_VM
+- Dropped IS_ENABLED(CONFIG_DEBUG_VM) from __check_safe_pte_update()
+- Replaced pgtable level specific strings with pxd_str[] in show_pte()
+
+Changes in V1:
+
+https://lore.kernel.org/all/20260901065454.1906343-1-anshuman.khandual@arm.com/
+
+Cc: David Hildenbrand (Arm) <david@kernel.org>
+Cc: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org
+
+Anshuman Khandual (2):
+  arm64/mm: Move __check_safe_pte_update()
+  arm64/mm: Standardize printing for pgtable entries
+
+ arch/arm64/include/asm/pgtable.h | 49 ++++----------------------------
+ arch/arm64/mm/fault.c            | 16 +++++++----
+ arch/arm64/mm/mmu.c              | 48 +++++++++++++++++++++++++++++++
+ 3 files changed, 64 insertions(+), 49 deletions(-)
+
+-- 
+2.43.0
+
 
