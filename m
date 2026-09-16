@@ -4,66 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B862C88E77
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 14:09:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92137C982C3
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 14:13:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 474EA6B0092; Wed, 16 Sep 2026 10:09:05 -0400 (EDT)
+	id 95F546B0093; Wed, 16 Sep 2026 10:13:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 42B906B0098; Wed, 16 Sep 2026 10:09:05 -0400 (EDT)
+	id 936C36B0095; Wed, 16 Sep 2026 10:13:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3156F6B0099; Wed, 16 Sep 2026 10:09:05 -0400 (EDT)
+	id 84C026B0096; Wed, 16 Sep 2026 10:13:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A9496B0092
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 10:09:04 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6380E6B0093
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 10:13:02 -0400 (EDT)
 Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 76AE21C2DAB
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:09:04 +0000 (UTC)
-X-FDA: 85219807008.20.B8059D3
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 98454C0754
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:13:01 +0000 (UTC)
+X-FDA: 85219816962.20.D028D8E
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id E153212000F
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:09:02 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k3IOKsrV;
-	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 0583B40004
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:12:59 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BNbqf9U+;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789567980;
+	b=gyxctFgH6Yqv6Lr3evekuvZclEIT7x5fwqn8mwiruPtlhpnUXfx3TyoDd9wOgr9KHaIqbt
+	PMIAdGLZAA5G4s6eA3a8uMUyjY9dw6Tm5yqJXjddgl0Vcnoa3tgG/kxmjNItaYVzTcQoEw
+	F/zPk7/7WQVHU/TzLomTKEIifDlINns=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BNbqf9U+;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789567742;
+	s=arc-20220608; t=1789567980;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P2FyxGgw1ikYY2FCX/RdMpWGC88woDzIrvMXKz3/vl8=;
-	b=444VbCbImGVaQvkoZ+DKqGz7/+oRBdDVcfZQTv7e4W9ns1XVfhnItFdPHxROOcgzocuK8c
-	AKNFuO/ckivEsK4U0iyIp7wx7gqTX1sZIaKTXKyuxKfEELlpInvnyX6yKS4L9VpE0Zv7gR
-	vbfbtvi55Vfvma0DJaaGN+4zKu5cP3Q=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789567742;
-	b=5DfljacdyM2+bmCUkuy4hoyesGaiqHKw3xpYZu9kQPpD1TLpsHiwUk9L2rQFPn2fZPJWl9
-	TMB/Ja1oMJARrmI9jLNjxI9uEbL4vP5pKsmNcNrdqDptCLPTLw/S8qXhTEPEtERYK3IEIb
-	6iGoi9qdH8NaLEUnnNb/3G+N2vmWBJ0=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k3IOKsrV;
-	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=V9BvKqoMA2UwcJ0p6bue8Tv/N7Zz0zZu76H109sCcw0=;
+	b=8Jf7w0Si/lWdx/Og4MbqsuOP6AJXitYlRt3ijIo28S7aOcX3aTOsO5KKwdR5VXGvb2fRXH
+	6ADWh8q8lU6MX/UEgezKWKmUFg7DN8lEpZZ0M4p5jxa8lYQwoMWrZQN2zS7H4qdX5PRIor
+	AQ5EaSznshdq7atdujPrtsQE3Xvuyic=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id BE50260234;
-	Wed, 16 Sep 2026 14:09:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FB6F1F000FF;
-	Wed, 16 Sep 2026 14:08:58 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 96D4560234;
+	Wed, 16 Sep 2026 14:12:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 222021F000FF;
+	Wed, 16 Sep 2026 14:12:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789567741;
-	bh=P2FyxGgw1ikYY2FCX/RdMpWGC88woDzIrvMXKz3/vl8=;
+	s=k20260515; t=1789567979;
+	bh=V9BvKqoMA2UwcJ0p6bue8Tv/N7Zz0zZu76H109sCcw0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=k3IOKsrV9yyi/4efi5YTBfCdN6BT4WiFqtM9xMibfeZ8L1JLvwZnt6FH4xJ5EPlj7
-	 fbcF7iBBEBjlNYvZH0Zl1AevtDgRZ+t/3/Wo91VAtHPzDOSH6Wbo1AyjsPi8xrWtS6
-	 f+9fp1cRGGUS8dJV3qx2C2524oHeoyofz1cnix+QBGaaZyEXNVK1m5aY0eFnWS0HfT
-	 WG/4Lbir4gbnFT/FxZOTj8JXJEu1ogRq6aeB3Si12XyNlz3aybYnQiqy6A9LCcTkLF
-	 BLGY4dBxqbXGvK3jCfMxqNgl/TzycjY5J/AsYTyFaXLDTJ/L/r9ytSIv6NIFFLCx1L
-	 xJ3iqBqVDOtPg==
-Date: Wed, 16 Sep 2026 15:08:55 +0100
+	b=BNbqf9U+xd8eNMek3w+m7W2aF6pGr2mM9pbehi4DYkeN5VFbz4RQIYK8fUqx2s2sE
+	 G9twMG102Bf+0PhP/gvNWqXQ0aumAMk0RA3b4IPVBZhpVgpJdAWis5SDpuHjKq9gt3
+	 4OR9r793/aLxM5Fkixycul6E3yfKLZ1Iq9hVvBX+ejNZklHC4GfyXT3Gdv1G5JtCa2
+	 oHZcSzM2RxqDxKSGhX1hSWGhQt2oPBqoiS87ylpDSOOkj5qSu56zo5eK+j88BdWWzv
+	 fKN3+qtZ9bpaE/ruSk1gKdvfHlLSmO7GzLw67qHtoioFaqVkE7uLExXCEld0Bp8xFD
+	 6hd1xpAE9km1w==
+Date: Wed, 16 Sep 2026 15:12:53 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 To: Gregory Price <gourry@gourry.net>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
@@ -71,24 +72,25 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
 	jannh@google.com, wangjiexun@tinylab.org, sashiko-bot <sashiko-bot@kernel.org>, 
 	stable@vger.kernel.org
 Subject: Re: [PATCH] mm/madvise: reclaim isolated folios if PTE restart fails
-Message-ID: <aqqi1KWDD9KMa0FO@gremlin>
+Message-ID: <aqqjW5dpyznijYLh@gremlin>
 References: <20260912110832.3203902-1-gourry@gourry.net>
  <aqloB0zm3RjJ47m1@gremlin>
- <aqlzzwLOVT79Ti_7@gourry-fedora-PF4VCD3F>
- <aqqTtW3vjfzH8bcY@gremlin>
- <aqqgeOtYBcRdVqmI@gourry-fedora-PF4VCD3F>
+ <aql65IhMobL5Al9B@gourry-fedora-PF4VCD3F>
+ <aqqTbGMJL86TzDrf@gremlin>
+ <aqqbB_nFAOGenDhy@gourry-fedora-PF4VCD3F>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aqqgeOtYBcRdVqmI@gourry-fedora-PF4VCD3F>
-X-Rspamd-Server: rspam04
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aqqbB_nFAOGenDhy@gourry-fedora-PF4VCD3F>
 X-Rspam-User: 
-X-Stat-Signature: 5sgh7do6zdiksc8bbqtyam7stm7qiwbg
-X-Rspamd-Queue-Id: E153212000F
-X-HE-Tag: 1789567742-200098
-X-HE-Meta: U2FsdGVkX18mAwEv8iY5UG3qTUGxSeSv0Sj5xBVY6VcYaUTCh/lJeSjRwBEWpay6roavA+qJZ19ldXnTyRxC8bUVs8XdIrqkaekch6fWWRmPKNI7LpbcZ1pGp4MRo34czcXmm8P5kSH99cQu1JnX5KxNEfFjYArUDNfKvM29uXD1AVw/n5MlC8CA4HF4EpISTDel7/DPRPmOhaCcDMe4jYriuG7f7vp4y3ldA3JycAIKK2k0SRClZ1tUqh0FGqp2G0DQ8dEhQzZn9Gzla9+HA0FdyeQZKgoPgFtG4pbFBo3oV59JAe1y3i9bF7GT1Jdcnf6lv+h0mwXXQtGU3qdDVs/qmlVfsonPEtKKGRwiW5rHn4YB0T1V2B+Bbc+5KVIgUAr5gFEXZt/oTFz7qU62YnyySI4s4oIYUIBJl0U7AiaSnQPZnYI6LFEo4e0b1vN+zftBLQ3hYluAQfQ0nT9WRNa8/f3pd6wHM39/wF84pbvgcdPdCWy+dugWEkIawUIratd7g+kgGq9Bzb+Qdo8Fh5vDrufz3RBtVqRfsI/KK1SpoDJ/egjpqYv2IbBYLy8uELpsPSJNnvqv2k9VYiMlJRofLiUEtcyLC9/v9THqh7xfInrrO4QV8NHXE/A6Tv/9b/TeXW9YDwUlEtQn9iCKB7ZSZWOTAiILwkokMxLUov2vupP28XQ5+MFNnbgGMtvfjvSfaTQDzwQzDEqsVEo7yPQ8he9JXiYgG4L//nJG50eAR4UGxuikAqeSfd0l0vF5Z+3B2tY3xv1dulaGKyjE231Zh46MS4Zr69ZtYaN3aaD9nYHcY7OVUffkaaCa+PZxotcQNiz0A5MPKJveTfLtbHx5qgcUXbqvS3jsRz5aMYJ2mfLOZBCG9N3eQz+Mx0q4gjLG8MgLC90c/4xp2XPudRP2EiahtG+IYp+SHM0Wd4qlZTwq5hhblUpug2r6BeZ2OzLQQBtFF0uG0kHjbLz
- sT9UfMA7
- Vnv4pmla/FU6yf/1pgi2t6rQj+uXWnQiupaqTWDYsA+9MiXlcf93Dlvvp7PUNU7m2rCFw8fmprRIhLCGop4GrIKczWqMWKsijZvYZHoGlQ5a2alr57k24LvJc7Knq6RNOUz6SBfpDn9V8T3f3YvHZPLsv0pZq7J8n2WumAwAmGNw4by0xEKclU+4eZh6Vnn5gfRM+4+GzYQ8FkgAI+PObut0tp4zWgOlOS4iKx7Z19BJ3zaPQhu25GrNfaQ/MMfsHWobSnZLuIQne99N0wdNvaAT5JL8Ybtlz9ajBQjkUwgYSUS+xNh8uYsqxVrWCnCmAPgp4kfK885Adw02HWp1I1c7W30mD//+2+xtHqTE01GH4T5bD/bMGlxg5Z1xELMj2tnDPnMkajD18J+FPDYjQxqzcdA==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 0583B40004
+X-Stat-Signature: t1k47swf1oganyjqwsmpzui4z3hebqmr
+X-HE-Tag: 1789567979-953093
+X-HE-Meta: U2FsdGVkX18MgziY3dkuZ2xbcfY8MmnXqwASm6aSqfy5rSVLTBp6uS+oikY3KXeVDxn/9SoQwt+owOtPZlrcKpqhJxJKxpdmAG30BupjvQ6x5/5n8C7o+zvgZLSwYUYzB2nF5lBdl8EVX5IZOf+eL7WM92Kk97oIsQeASihrTT/d4Jr6Bd7zrhRT74txqJ5paKMtTEcmuXzxr19ZXgqRxmphyE+54SXYMUC4mMWgJb6IBIYsYgSwk90/VchOPIGN018XqgzkClO58aDQpJFYNIj3xuH4O1BvUHqX4K+suMvJOsfUTnb17LAZZ4rBwSCKuU7hpnYfxy4gViFjDtPy9r4NIdN8OR05hqyS2UrIdWA8L1LR21xKvoBMB4RcMToEDKFQAtDHRep2MYb6UF5PM3bnO+zBSpLaUPwNR5qNahrHxdHzXoVNPiGvumP/Q55DkTtjEagJaIjKMQsIAG5B6J0PK8x9MjSIkSAKAW7wp6w4+YCuzBHKy2ndHv+0al5sibReokjupVWHflMQpthcKvUX2Wbg81NOR6L1TYpXDsZMXb1UYIqM0l1JD0h9Iuzg3qKo/7J6M9VfVksfQJIHbIgixIGu6RA9vq8Zg7PdSnG5ksbidVaFDlNCytXpkc/rkb14B6mQq7zVCRCs3ji6Xpjg20HhEX1m7Y9lJOTNvV1Q4sS62eX+AEsNpsGS1pY/fX3RBwm+4A+TiHUbuQ2QqYLTFsc6ngsIUCWVBnVvbTqXUSPD3+NGWhZhHHE+uQ665W1Zl/E/9QCLIsErXlSVcn6onYQZY8BjJUA1gxfpMi4uA9uHYzRwzNGTu0YwlLfxw50YMOXNy+OFZHTqAJ+Jqlsnw8EY8yp5AHkGJL6bQc1IZuwVZnwI2J4Iuy1w0uUmrM3TwXOfuZJ0HUDS9AKY8l+Rt78jxQ/+mhyMI5lmLnNTjgKALDM328UKDW/9QsXrEEjo+DaU/vw1zrMqlIy
+ pCsJ7RF7
+ aeA+FruvVC/919nPKO5Ir3Y+0e81marRME6n/oKqeo6KkFT+uMZhO5b0xsaYIfeI+tfldLG79XdgQw7rx7KYavqyp55cyR8FzOpiXWRPJlLHr2QlZH9/TC9jRVZV3btU6Lw9PgZ3Z8S7QF+SHxgvHZnnTcEBQRK3yC7Co9Cu3YLoaFHpSiCuJWoCPq315duqPUbKhdgFiJ4J3GYSGGgKlbznVoSyY/nrI+4LVMsdmhMwFJ268GKUgtXkIP2gm3Exi+HhoImP7gBm+guAv3Jy65TvZpw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,68 +98,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 16, 2026 at 10:02:45AM -0400, Gregory Price wrote:
-> On Wed, Sep 16, 2026 at 02:18:36PM +0100, Lorenzo Stoakes (ARM) wrote:
+On Wed, Sep 16, 2026 at 09:57:44AM -0400, Gregory Price wrote:
+> On Wed, Sep 16, 2026 at 02:03:29PM +0100, Lorenzo Stoakes (ARM) wrote:
+> > On Tue, Sep 15, 2026 at 01:12:03PM -0400, Gregory Price wrote:
+> > > On Tue, Sep 15, 2026 at 04:55:47PM +0100, Lorenzo Stoakes (ARM) wrote:
+> > > > On Sat, Sep 12, 2026 at 07:08:32AM -0400, Gregory Price wrote:
+> > > > > MADV_PAGEOUT collects isolated folios on a local list before reclaiming
+> > > > > them after the PTE walk.  The reschedule path drops the PTE lock and then
+> > > > > restarts the mapping with pte_offset_map_lock().
+> > > >
+> > > > Is this reschedule path even necessary? It's pretty bloody sketchy.
+> > > >
+> > > > I thought the modern approach (TM) was to not do cond_resched() and friends so
+> > > > can we actually look at removing this?
+> > > >
 > > >
-> > > relevant meme: https://i.imgur.com/W0N40BK.png
-> >
-> > Content not viewable in my region :'( seems I do not have a loicense for
-> > that!
-> >
->
-> google "reading other people's code meme" and find the comic with
->
-> // this is bridge
->
-> :]
->
+> > > Sorry - meant to reply to this.
 > > >
-> > > No argument here. This function in particular is really horrendous.
-> > >
-> > > I think i'm now 4 or 5 stacks deep on the "Thanks for fixing a bug, but
-> > > while reviewing your fix sashiko found yet another CVE-worthy bug".
+> > > Honestly there's so much jammed into this function i can't give you a
+> > > straight answer. I can take a short detour to figure out if we can
+> > > rework this as a whole.
 > >
-> > Yeah, I WISH it wouldn't do that.
-> >
-> > I mean it's helpful to some degree and it finds real stuff.
-> >
-> > But it's _where_ it does that and the workload++ aspect of it.
+> > s/short detour/long journey through hell/ perhaps? :P ;)
 > >
 >
-> In some senses - yes it's annoying.
+> Not as much as you'd think.
 >
-> In other senses, it's saved me a lot of pain debugging my new work, and
-> I'm willing to do some cleanup on the way to new functionality.
+> I did it yesterday and left an agent to validate it overnight with
+> existing in-tree tests, LTP tests, and added some new tests.
 >
-> Someone's gotta be the janitor I guess.
+> The naming could use some work (cold_or_pageout -> lru_op, bleh),
+> but new call graph / pseudo-code:
 >
-> > > I suppose reasonable to say the goto is worse.
-> >
-> > Yeah I know it's all a bit much of a muchness, and obviously my suggestion
-> > _duplicates code_ which is also not wonderful.
-> >
-> > But the control flow in the function I think is a bigger issue.
-> >
-> ...
-> > > I'll spin a v2.
-> >
-> > Thanks!
-> >
+> • walk_page_range_vma()
+>   └── madvise_lru_op_pmd()              [PMD callback]
+>       │
+>       ├── PMD is a huge mapping
+>       │   └── madvise_lru_op_huge_pmd()
+>       │       ├── acquire PMD lock
+>       │       ├── madvise_lru_op_huge_pmd_locked()
+>       │       │   ├── process whole folio, or
+>       │       │   └── return locked+referenced split candidate
+>       │       ├── release PMD lock
+>       │       └── split folio / reclaim isolated folios
+>       │
+>       └── PMD points to a PTE table
+>           └── madvise_lru_op_ptes()
+>               ├── map PTE table and acquire PTL
+>               ├── madvise_lru_op_pte_range_locked()
+>               │   └── madvise_lru_op_pte_batch_locked()
+>               │       ├── process one folio/PTE batch, or
+>               │       └── return locked+referenced split candidate
+>               ├── leave lazy-MMU mode
+>               ├── unmap PTE table and release PTL
+>               ├── split candidate if necessary
+>               ├── reclaim isolated folios
+>               └── reschedule and restart from current address if necessary
 >
-> Given i already started rewriting and validating the entire garbage
-> pile (see other response), mind if i just leave this as-is?  This gets
-> completely replaced anyway and i'd rather not have to go backward at
-> this point.
+> Looks like a normal table walk now.  Significantly easier to review and
+> doesn't make my eyes vomit. (there's still an ifdef wart, but it's not
+> mid-function anymore... so that's nice).
 
-Sure
+OK nice, I will have to see the code to comment intelligently though I
+think :)
 
-And feel free to add:
+>
+> Going to spend a little more time testing and tweaking before I post it.
+>
+> I've been working on a making more extensive unit tests for certain
+> parts of mm/ and this might be a good time to look at whether I can
+> introduce a piece of it.
 
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Nice, curious as to how?
 
-If I didn't say already
+Have you tried the userland VMA tests btw? Not tooting my own horn so to
+speak :P but it's nice, though it comes at a bit of a cost in how the files
+have to be set up...
 
-Because the code is right (or so I convinced myself) :)
+I always feel like I should do more with it but don't have the time
+atm. May set the LLM on it though...
 
 >
 > ~Gregory
