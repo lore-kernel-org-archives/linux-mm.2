@@ -4,78 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 435C4C88E77
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 11:55:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20243C88E77
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 11:56:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 043476B009D; Wed, 16 Sep 2026 07:55:33 -0400 (EDT)
+	id 155426B009F; Wed, 16 Sep 2026 07:56:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 01A596B009E; Wed, 16 Sep 2026 07:55:32 -0400 (EDT)
+	id 12C746B00A0; Wed, 16 Sep 2026 07:56:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E4BF36B009F; Wed, 16 Sep 2026 07:55:32 -0400 (EDT)
+	id 01BD16B00A1; Wed, 16 Sep 2026 07:55:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B54A76B009D
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 07:55:32 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3DC7CC06FB
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:55:32 +0000 (UTC)
-X-FDA: 85219470504.09.2F74743
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011054.outbound.protection.outlook.com [40.93.194.54])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 2905440007
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:55:29 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=hJHVgTgw;
-	spf=pass (imf11.hostedemail.com: domain of Alexey.Kardashevskiy@amd.com designates 40.93.194.54 as permitted sender) smtp.mailfrom=Alexey.Kardashevskiy@amd.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CDBFE6B009F
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 07:55:59 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1F1861A06D3
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:55:59 +0000 (UTC)
+X-FDA: 85219471638.12.3F48A5E
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012023.outbound.protection.outlook.com [40.93.195.23])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 0154320007
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:55:55 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=msinSkf7;
+	spf=pass (imf31.hostedemail.com: domain of Alexey.Kardashevskiy@amd.com designates 40.93.195.23 as permitted sender) smtp.mailfrom=Alexey.Kardashevskiy@amd.com;
 	dmarc=pass (policy=quarantine) header.from=amd.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789559729;
+	s=arc-20220608; t=1789559756;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1fOSelVshB8tt+z9i3a63f+uWxxjJMxzG7NNd33A9O0=;
-	b=w7wO64f8zNyBWN1dgfmLNZCefrxXL7IllNglm6NwLY0ZM2FLiJjIZFJsVfOEMHzObAiV/d
-	TUVEJsc3vzxVZ8YUkuRlHPXML5BmX4kx5qtFGSZitDGxIECfhnMqzjoQUqtcTQM98LVcm8
-	iNq51GraQHWCRoDfX/nXkGxGCk3qnq8=
+	bh=v0t8hG0A53D6hUuYqrsRHML1F/umVz5zdX/nWs1UwOo=;
+	b=D/uwFE+iotAazoSxB6UdaIZX7rx04wmW3oC8AxRByDs08zuHksMQCuuC1p8hcy65muWSsU
+	OCdWUIMHbmD+uMzgBKuhE8fd0ytn7FzuoIrZP0l34ylitVF/qg9a3v/Yx1CrxeXcUtTdoa
+	pWyl16jDcn2LDv74Rbb53VSqq1NJW64=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1789559756;
+	b=LcOXtygFy47wWGfeIe3Hz+jUhJsboNl/Nirlh2XYaK0u08JVLjRKydE6GmkRESAOs6WsOV
+	mloAsw9b2lW3MTLlfrA1ZJQATy91EEHtQLBa19caQ5+KfXr7BqOEvfj1kjXtgzmfkdhsaw
+	E/IvoZzPWhxU+kfYIX0/MWNG21oLeas=
 ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=hJHVgTgw;
-	spf=pass (imf11.hostedemail.com: domain of Alexey.Kardashevskiy@amd.com designates 40.93.194.54 as permitted sender) smtp.mailfrom=Alexey.Kardashevskiy@amd.com;
+	imf31.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=msinSkf7;
+	spf=pass (imf31.hostedemail.com: domain of Alexey.Kardashevskiy@amd.com designates 40.93.195.23 as permitted sender) smtp.mailfrom=Alexey.Kardashevskiy@amd.com;
 	dmarc=pass (policy=quarantine) header.from=amd.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789559729;
-	b=NK6SatyYc2SSIRGv5pdehatXYaGvpDMBI4nV9fca18MaODe7HvisNdfF6vT1w8+QOVv8d/
-	uwquz+MBfD/Mm1B9lVcQ3bekHAjpPsV0l5z+O9XKF+JNWzQO024bPYbjevANY7nkasWwLm
-	pBsg2cKVrn++FtcQ8Pxi6f6mt0QKl0o=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TZy2ZJrkMF7OCH9yN7sKyjTdWF7pgDVN6EGs0NLiBABwnnfINtahWOBYqwOz/NWr6N0AN5xk3KZ9gnYsR5DRJMFpXYxh6z5BOA4SqDov1+Py1rv1VdX8JfLWi2Iu9VC//4ZTsve+l1KibkrziEneP494mzlK+fKQ8Y6ZYsA72HeYMG2Hr2hrH/eH1tEk+QrUFUMbjHI1RdRPodHPy4kbR8OzqIx9MnVk7cuU+a0TdPj82AuZaqRcYaxYTHwARqMM06dsFTyWbujX389/moTRtNEA9l6ZTCBwS/3FOhSuXIjxLzfOGe+Ae7jc9Z5xx92b3zLyVpM45P9ZGWWrKZixBA==
+ b=LQfhMPYkhD6AnR3K8tdXf9QINnpy/KelrwnnDKg8EXRBdKD5of7YfSCTWdYSnWOsr0I1VYtFD35pu4D2udoh2lwT7n+aWyHtcfLM8eiK+6MMLJnbiGXsAZ7g7/b0RZhuEjRnuK9qZFWawxSaB5ABeeYkymtRbvub0kuSGYcZTZgc5f3w7ZudNJye3VGGqZA9mRWofXcfvs3d4xoGVYv2yTkAKTz1JQV9yJsp9oX3ehDxru2HNYJAxnvuUe0rYlpjD87snl2N5POoCnMxVWdVdvi7fUSG3k9jm9EzBv/bfLH2Ck+YIwo5A3A52Y2CtCPdKsvHIjB8rUBJ7Bw4x84O/g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1fOSelVshB8tt+z9i3a63f+uWxxjJMxzG7NNd33A9O0=;
- b=jvahsYYrSSADIREzYZklS3cfIwMu0Zmjl3U5BvdwOD0bHjS79vNZLV1090cMPL6Uddm1Hw+ha8DsRIl6P3D7x0Ofg7n5e0eXwx40OjAREYnsDswkBOv39tT7q/bKNNpUmqXWpuNLksT0urT9O7eswM+0t9pB45isrHcK6lFqM8UdcQiBDw4Vb33gF6dsB3eyhqYeP32eJFGEnfmG5DILEG7wekx+bPb9r8qXvsuX1N7LC/toA2ovW1QUEOVq6z514RTOhjhfZBxnBBRn+Dlr186XJ+X6ysknfcEZXH08zx1mABhTDn64ZziAWAzDtRO8T9+PFyMF6nB9sRZuzltbiQ==
+ bh=v0t8hG0A53D6hUuYqrsRHML1F/umVz5zdX/nWs1UwOo=;
+ b=EzdtJjB28ig+7GsTxViWodfdnFK6WufDnsBFEiO1UwZIo17Tcz25r3ejAPYwQJydY57Nl1h9wYB4IiARz1qyJs6NuD1klpbFoeDR6qXIke2xYhkWTyHALBr9cRTlrCBYbsI2lHbqgWF4N1b3eJuz/4sPgOqFRtYUUoa/of0m3KFZOqnWcohj1slFfaYBXPk8vLMsuhaUmvIAEmUZ/q6QU8sMW7QOnJdvFbm/nywajodTdM7mTFc49uPK0VyZqNanscCphpSWAE9S7XW7dsVbq/w1PnSnOSNgjq4/1cTW9hh3tdO7CQepZlV1RLYebeXM44aOtDLRC09UVng/PrzDQQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1fOSelVshB8tt+z9i3a63f+uWxxjJMxzG7NNd33A9O0=;
- b=hJHVgTgw40xSH04nc9KEY2kTfcBikFvdZzQOK6y8fFdlPWQ206tziMwKbuHLq2YsQdsWnXpxBJBN+nC+uIlM7TQItN4B4LBXEVkNpnzIbo0qAVLlJlMgBl/jaNSuWF8TLglwQGLQXYoBSkSvj44AiMmqUoZVh4d3hV9YFqdWZsw=
-Received: from BN0PR04CA0192.namprd04.prod.outlook.com (2603:10b6:408:e9::17)
- by CY8PR12MB7267.namprd12.prod.outlook.com (2603:10b6:930:55::17) with
+ bh=v0t8hG0A53D6hUuYqrsRHML1F/umVz5zdX/nWs1UwOo=;
+ b=msinSkf7Cpw75oiMTS2aiOWLwlb2KTeD6N02xI3NUB3lkqrXiCYf5cqgrZhvjcor9u0jz7IU2WTVgRWhwjRHkYRzThUKIqa2E80Ewfzu+4aQDo+fC6yLyJjOVWT/8zBaB8ULBRJoVWrIKVs7xr2fHRlUDzE85kFEG7NdNyGUS7o=
+Received: from IA1P220CA0022.NAMP220.PROD.OUTLOOK.COM (2603:10b6:208:464::11)
+ by PH8PR12MB7027.namprd12.prod.outlook.com (2603:10b6:510:1be::19) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Wed, 16 Sep
- 2026 11:55:12 +0000
-Received: from BN1PEPF00018545.namprd05.prod.outlook.com
- (2603:10b6:408:e9:cafe::a) by BN0PR04CA0192.outlook.office365.com
- (2603:10b6:408:e9::17) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.10; Wed, 16 Sep
+ 2026 11:55:44 +0000
+Received: from BN1PEPF0001854A.namprd05.prod.outlook.com
+ (2603:10b6:208:464:cafe::29) by IA1P220CA0022.outlook.office365.com
+ (2603:10b6:208:464::11) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.428.11 via Frontend Transport; Wed,
- 16 Sep 2026 11:55:12 +0000
+ 16 Sep 2026 11:55:44 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -83,13 +83,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- BN1PEPF00018545.mail.protection.outlook.com (10.167.248.4) with Microsoft
+ BN1PEPF0001854A.mail.protection.outlook.com (10.167.248.9) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.428.7 via Frontend Transport; Wed, 16 Sep 2026 11:55:12 +0000
+ 15.21.428.7 via Frontend Transport; Wed, 16 Sep 2026 11:55:44 +0000
 Received: from aiemdee.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 16 Sep
- 2026 06:54:44 -0500
+ 2026 06:55:20 -0500
 From: Alexey Kardashevskiy <aik@amd.com>
 To: <x86@kernel.org>
 CC: <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
@@ -142,9 +142,9 @@ CC: <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
 	Santosh Shukla <santosh.shukla@amd.com>, "Pratik R . Sampat"
 	<prsampat@amd.com>, Scott Soule Cheloha <scott.cheloha@amd.com>, Ackerley Tng
 	<ackerleytng@google.com>, Fuad Tabba <tabba@google.com>
-Subject: [RFC PATCH kernel 04/17] crypto/ccp/tsm: Use TSM API for DOE
-Date: Wed, 16 Sep 2026 21:51:44 +1000
-Message-ID: <20260916115159.1938195-5-aik@amd.com>
+Subject: [RFC PATCH kernel 05/17] tsm-core: Register nevertheless
+Date: Wed, 16 Sep 2026 21:51:45 +1000
+Message-ID: <20260916115159.1938195-6-aik@amd.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260916115159.1938195-1-aik@amd.com>
 References: <20260916115159.1938195-1-aik@amd.com>
@@ -156,38 +156,38 @@ X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF00018545:EE_|CY8PR12MB7267:EE_
-X-MS-Office365-Filtering-Correlation-Id: 95b0368a-0e2f-42c3-de47-08df13e95d65
+X-MS-TrafficTypeDiagnostic: BN1PEPF0001854A:EE_|PH8PR12MB7027:EE_
+X-MS-Office365-Filtering-Correlation-Id: f0628022-b809-4ddf-e51b-08df13e9703a
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700016|32650700020|1800799024|23010399003|7416014|376014|22082099003|18002099003|56012099006|11063799006|10067099003;
+	BCL:0;ARA:13230040|23010399003|1800799024|36860700016|376014|32650700020|7416014|82310400026|10067099003|56012099006|11063799006|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	78xBYQC3+wj95ztS+jhBh7cicxBkBZUOOlFcfH+bxAVFisXGI8GTXus06sBoYkM4BHUkb5zK5O7yhQwpaF6Ip7ekJl/G+pCPCtnHlkIbjjDv8+KUNHhK+PJ5RhP6SlzTgoe81C/Eh+DyMDQXye78SzFJwQW40rgBDQmTb9VchioXMTf4z/5CzwrtVTOPqbyMg+Y8jjHpiDtfFf8zitapJgCESsXZOSM9HNHyJ0Um1NQ7D9s0uHUfcT/dzxDylcymM2S+Ld5yStPeE7mCxLl6qhrLFr3BSHwHwIQKghVjXLTcDnqt3GYaRiw1yz3V3OyeUjtuGPCVf3AbPcfXsEjBmGX3h2tdEuTQRVG2yu5p2hVO7DHZiUoLYTEA8rUsbspBT4rewvZj80kJwOFeoOC9mrD53/WOfp4jUrKfPm1SisbB+kyVpNsgZZv5etsg5Ftvdv2z1q+jSldsTRs0LfdHF3TNYwTFEs1O7ZDtHQkyvUMGi8Wd0Q4cAhiexEAvh9HeKXdpy7ly9noT4dc7jyjth76Lc412wIb3GxzcBx4uGvx9TbHy30dbUYFWfGVgiRyJ4kKr6lWWtTrwgeUS8GP8q2WbaMspMBnT3PljHdlQYUHCU206jA3P1Ax0KDSFRZmCQHobtyHO4o9tJVYCppnHdmpteVaf6qX9JvzuwR/35nR2qu87SdsvzIJ/RRzcLYid
+	7y+YJ5Z+OyMGOf2iurea6gWtIJXfcQNlJ0b9e0e2ih6oXqh9RVnwVlOKmPJLGMLMS6FZcGH4V6tgofrJMpnmvNmT3QePntJclBhTe4VKupQBAuiwbR9H79UATphkzqpFzkWlblZDDX9yazeeCUCNS5MpFkOetKOx02UbALu3b9eO5owPfy4OLOxFlFqV/o3vkI+bDZ8K7SDC05IwrAtkvFCQc5+HxLHYR/rpE+fg3arpfN+l8PnhQhB1b8uA/v7XsYGtzl1PKpYg2dVhJb1/nI5NGKqoKTMcPdCiu7vxkN84812ys0WVum587F9iiI05Eeu2pW/kTv0tkeZ0UFE1oS/gaDC+dxrummeYBtKnQon0zn+8VOMQSxAUrDajnM/ZA1b/+KaOCO1dlMauuUh3Om0Uz3TaS8Bjptwi0eOetEq8KZfzm32mXgwFsxjn/3x5v7nDS7Pwq6+ao5rhwXx9DgiIs+c04mY3+QYreV/B1j6V833CBCe9RDV3XCArkxJVka7fmYIE/hIftnRsQ19pRInVx/zRmYRnLEMVHorNHCIbSliJkLdTV6ioxSP1hU+nx4u2h7OEGQcbl7BYvtWHmTUpJydOz6Gr77oCqF4/sUyr/c5HERIvY/RPq1CQKe4suHTwchv99EAEG9HM54+eUwc5mstMh0e3kVG8B2bQxKjgvrTXE9XJjUQoVE1hbhdLidU1hUqNS/UcIjNiaYtHEg==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(32650700020)(1800799024)(23010399003)(7416014)(376014)(22082099003)(18002099003)(56012099006)(11063799006)(10067099003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(36860700016)(376014)(32650700020)(7416014)(82310400026)(10067099003)(56012099006)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	2+d9WKfuRzwiWgMdluOVo4qJNhnH2FvmuZhqqjP8Ga5RudmSdxm4o30kD3JGM+JEJhea7Mw6INW7XT3nm6ypzdPviJMk9OK4Pvzn2FWUxcA7Vdl/e56ub2ci729tDDVfvh9CVw61K6ffH4bM+JOXA9hNl5odzX2HLX/1echQ9gdSp7MdJwUJI64mKFNnvbf9aUbAqNw4+4SJCg+XD9XffbZf6fjl0LBtuDu0HjfarKrIabaGlv54VhQ3oyYEtE9psLNTPckbXz1N2avdxAcXqsvWJ2kLmfkkwZ5KVqB55EFLafOAfCbw5IMEhQaZWZfVjmI54+4RWFQcol/rYF1TFVzsYPTn+eBGFcEeCuS6BT7+MsDtPowlpnYvJ/R4X0x3YM5wuUYpDWv4dKXLhb6UuiqPb5UM6Mz5WR/m9mvvSwqSgI6A6Nq+5hSnCXyY+hAU
+	7gfBfw3cwrGt/CVo84j1pCRkyKykdOlikms4I9xrPxtU7a2fA0pHJxQRzxTWM+6b8a0csSjVoT8mKS6Fh5S4p3/YacTgzDsLs29wKHI/s+zpKWUZ9S53dJFYpvBTT8StmCj/fj7zbUsH6N3b3bTHkmBQGnkn/4VaLDkXK1yxeo1yCrpPf2lmJw5/PllWcJJ1K/31arILyJ5yLqnpqII+99EtP/UBjAfpsm3m91xjaz98+aj2kvIGKlc37TDCjygAK12BGRa0qB1t6adk5ILZ5QyUIz9UON+TI362rNKmbMy3uhfCJSbGQeiK/Z6JtG/alh0EOQsQ1KHtKtn0fEg+o8r4RyTZSwI8qaVd+PCCgOLfSASKmbQA3ZdpRcL0VYNSVfc+YyIvcuBrdeIIq8yhycKS3ykvz2dFWZDSJIsRnWvuMUrENy0ph0XkYNEq2Oau
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2026 11:55:12.4634
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2026 11:55:44.0564
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 95b0368a-0e2f-42c3-de47-08df13e95d65
+X-MS-Exchange-CrossTenant-Network-Message-Id: f0628022-b809-4ddf-e51b-08df13e9703a
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BN1PEPF00018545.namprd05.prod.outlook.com
+	BN1PEPF0001854A.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7267
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2905440007
-X-Stat-Signature: ssqzirp8ji6igk7tde8rf4wj8a5zrff7
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7027
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1789559729-847255
-X-HE-Meta: U2FsdGVkX189V3HPvy4eC9Zv2TmmNZgzbHnS7slJtvaVblVeuyMcQ5PbX4acZJ32MOft2DeYystFOKivOr5hILL0xvqOaMNcMljSc70rC0MMdOL4N8Z58ftYJVx03OQnr/tFoDzXHoaSio4YdSuT6Nz2kZNCq7YUeY/W1FOPn5Y1URN/NH6ddJT0GlPbmxF/SsNUg6YXQRTrK2NADSeZBajkNlcPXorjmVwzenjahVQOzrUBGDmXwh7KtZTb0YFco1Aka6GOrfsgAdMP670J7ZHxpBFhqvuyEF40Fql/GqiIiUlRH2bjbI3hEj2tE2mbbbBWGWnEx+lK3S5qVL3K7nGozwJdR/i01qICznu+INC1GNRUSkgJ8K2uqitzXQ5i6UaIyAfnHlZi8y1DNUsfpzj96kn9ZzHVMaY2AqubgH7t0wAS+Z/Df/63muZXO4jsrtS0uY26AQT1gxQHMZnPgz9IEhwo+j6lbzruKeQWl4m1wuFtjtAYI5PMyigow/t6rcuQJmOZ/QQU4PWO052MgrdlkyBl6OKWfDQ0r9ilbO1taLai6WY/Y3E3NQwTGhR43IrinRD2SmuFafUc39GnlesEvsGsZgnKf1OJUs1ss0G9w1SOUi1xTGhfNd4z0QiVh1+pngHk3BW3O3tXIlv50h7RoY/tG7QLBVBzjJUBNzJjVdwBN++OQUiSsRgHn3rBpFutExYXyRTn+SUsbLIwUbeRt8ElyPBKwcBMDfQA5Fn0pQhwXcmRUm1eEiQ6UJG/34GKXPVolYCDX/kiHO76N9G06lQ60VOReCqxccmNcBZn8apoaPHHvX0/CiBClZvZXJulQ5nSuZPhB8Qgel9wUPb7Up/khOH5G9VGlUhsJzVjZu1vI9PCQUJCSoOxUhYQsQB2HpVyrh9mJU+4Jdqk1XyWdJNAO7RVKvSynvYVdp/ygtxDJms3e6BdnXJqoaRiXTuNRTC/Yn4jpsl3YC+
- tYKib/7l
- g2TLzLFZp3smHifMLfXyNkEbWXJ4j0DvpPbOn0Xb1YJwVbluQ6CY3ZSAR5d2AkCjP1YbitXtWUnJypj7bbeevdUDS0NlNVPeU1f4Rm0uiVcXwzlCTvK2ZgT+xQrWz9muuAxjc4JsdrbcUCI8lLZ3HRaf4R4JBZtmKTvNdxI43gd/dIhujkeg3OJC84GPXgMd3+QBR8ZDSHBEMtSyfDr+nax6Fe8iMQgsAke8UZBgAtbTJd7SW0OKUutC4LfflXc9nAET/olmNk5Dnf+hZc82jNuP1vIZGtnkaU7dDZUOT9q5eZmP8objg5Pr3FQqTKwzeBnpiO6VoDuC1r4ymT2zCErM+SbQhmcVklXo7pF9wWOinfGPCG+UWHxSMG/xDmeYbclMwOoatBsgJZJqFyPVqWvNF8IIBjKeucPoIiZQuLt+fUBtpaTAVLbyocRATNv0WAYpfuXwd67tXa1BOwt9pItjOE882Fc6KEBR1B5nxqJGu0AzFSIcpUg0nNJXW25rd5nko0I46RLtgskHsUzYUd3jQzTcKhTX8HVl8avkw+01Y4dpC95SRBwskbQKdZUnsYLU5LlqN8HprWIv3jBqc9IDi3hgZvUURelRUeWKEJQyUDFx3nE0n1IYBa32UA6iPgrR46oDuGIVjD8hc8Q9gJSNrvCjt/dCUQXym
+X-Stat-Signature: wjfemcynx3rt5uugn3uzzs3966bs5unq
+X-Rspamd-Queue-Id: 0154320007
+X-HE-Tag: 1789559755-507730
+X-HE-Meta: U2FsdGVkX18oCnMkqaT7vlwUNW8IvPsmBt8rrmi/rCHesysFyFNEM5xWy522SnB6xbBEguKX5ZT16ix9fdVbgICcQutbwbuJLdCNQ3yd28WSy3g8R6Ce70adKLk54PtH6zfRAq1FjmUaYXW84ajD/09SLBU31qKhhduff4dFk2TXfonYPSagQFsIvG1NZjQJ37f7d/BIV/7ozOab/QPwyHA/gyvoyfJTLNE/y57mBjRwat+eYqEOGh2WUFSvaY8r1DliwiX2yprrDOpAU/8sI6QbaQCKSmOgaRlm8B6S8NILpHsOFF/PfCgX3TRiVrSh1m+qMWBcNCor5PWFZYAWoW/isTtrBohh7lhxMyo8j4UC4Nm7kQV9lG2Xa4VxWn/CfJTM+KU17N82YOZLQ8eo0EhPuuNemgzmOEANjsElSm8kCM/AQwTFt1uL/O639yTuqbz1YvXEpCU+kgfBVJd25eBYuwQexzagrjKUvFcjx3dGzup0p35xBmduWo20I/CNrjhDTqsM1KO+JL6ym2XEiJ1cmc7IdYRq+P35Gnu56zLhexgMGabKiB0jPGEt+C9xtu0DLGo6qb3P+9TdOvflAKxoq+Ag5H2fHAUHJpDrLSfn9T9P837pv3FY3iEAQU0kcm8HG/OmXiWrsrPwD3gwoI8PyrfXN76xs671nJRs1KXwuUn8OXy13mCQZfSGECQELrRA47s696vVgblPhrwdFxMeySIhPOSy0PH06RrfF87em5qltVKmzvFYJgLoQr01kAk48+X3uXq6d0rOxA2RabUYsCIFiZBzkDESrcURpM4QGmfjvUmObhmuQyCYfToQDpHo46HzFC0ZPIHeCojfVbL/2sq7R1dFaydyBS4S0YhfYn5Y2XbQX7R880kyuPatMduQJScxqkT8uBI7RHWeQHweGHZG+n/Mo/lytjKp1bBHjqiY7YZyf+8WduZDp3c/OPT2YyLpUqF5fe55lWk
+ FMBe3lWe
+ zJX7QEzvGyGyDtvVimBHeGlQaNUwxBUMJnbqkfLZH4szcKTSNgy0cU+IxpGXg6hjBUDP0aUlcO55+fFa3Ivrjrh30+dC7PqR1vCPAj6DibxC4Qmc4YxqdavGRKBJKTHh90V6W+MxINgXhAewbuKE6vUVzUCSvC/S62BZuLYOLGLJha2Q/XOMk4XM6cKbdfRzmAey27PccpER8LLCjJgeHHUzSHSkf1hzvemYnfRo8AQpn+PHqPTt+7Jg21obwi4Vd/kckcpy7UFbxiqCGx7YXY5y+3ENx809wzFu07tZSv+eWGGL2GSxsfkmko+DqY1gpjATolifjAQo+oUGpIEk2B+WsSYhAoK8wDtP+0AIz12i3TVfKZAWHagwPYXfIQt/zGom9AA8myGODz1uohN/h8CD9Q9zu8B/vVgvc2A5uyR5J1eytfe8lVSKLYNQfEQN+RGaHph10qdhWreO1t/ApGtdRDPSyUEJ+gW7vPbEqO936TQ6RTvfvz5mHvhn5wr2c0tRn9UbO/Vm2yXDWiutmUzpGPCQZH0hOkPWYdidmkjuifP2MxFteW3YTuRZifl2MtTxFmixdrZxbl/FVuX1ncG8lAU5yuGaV8j8NeqB0qZRzcqRqf+YKGKcQnoAOPrLlVQpdchTar9v8J2A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -195,30 +195,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Compared to the currently used pci_doe(), the pci_tsm_doe_transfer() helper
-performs a few more sanity checks, use that helper now.
+When this and platform TSM are built-in, there is no way to control
+the init order other than alphabetical.
+
+Force the class init when a TSM platform driver registers itself.
 
 Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
 ---
- drivers/crypto/ccp/sev-dev-tsm.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/crypto/ccp/sev-dev-tsm.c b/drivers/crypto/ccp/sev-dev-tsm.c
-index 46f2539d2d5a..6e704ad239af 100644
---- a/drivers/crypto/ccp/sev-dev-tsm.c
-+++ b/drivers/crypto/ccp/sev-dev-tsm.c
-@@ -40,8 +40,9 @@ static int sev_tio_spdm_cmd(struct tio_dsm *dsm, int ret)
+The alternative is making it a subsys_init() and drop tsm_exit().
+---
+ drivers/virt/coco/tsm-core.c | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/virt/coco/tsm-core.c b/drivers/virt/coco/tsm-core.c
+index 0843b77c6549..accee6a5cba8 100644
+--- a/drivers/virt/coco/tsm-core.c
++++ b/drivers/virt/coco/tsm-core.c
+@@ -51,6 +51,7 @@ static const struct attribute_group *tsm_pci_groups[] = {
+ };
  
- 	/* ret > 0 means "SPDM requested" */
- 	while (ret == PCI_DOE_FEATURE_CMA || ret == PCI_DOE_FEATURE_SSESSION) {
--		ret = pci_doe(dsm->tsm.doe_mb, PCI_VENDOR_ID_PCI_SIG, ret,
--			      spdm->req, spdm->req_len, spdm->rsp, spdm->rsp_len);
-+		ret = pci_tsm_doe_transfer(dsm->tsm.base_tsm.pdev, ret,
-+					   spdm->req, spdm->req_len,
-+					   spdm->rsp, spdm->rsp_len);
- 		if (ret < 0)
- 			break;
+ static void tsm_release(struct device *);
++static bool tsm_class_registered;
+ static const struct class tsm_class = {
+ 	.name		= "tsm",
+ 	.dev_release	= tsm_release,
+@@ -58,6 +59,14 @@ static const struct class tsm_class = {
+ };
+ static DEFINE_IDA(tsm_ida);
  
++static int tsm_class_init(void)
++{
++	int ret = class_register(&tsm_class);
++
++	tsm_class_registered = ret == 0;
++	return ret;
++}
++
+ static int match_id(struct device *dev, const void *data)
+ {
+ 	struct tsm_dev *tsm_dev = container_of(dev, struct tsm_dev, dev);
+@@ -82,6 +91,9 @@ static struct tsm_dev *alloc_tsm_dev(struct device *parent)
+ 
+ 	struct tsm_dev *tsm_dev __free(kfree) =
+ 		kzalloc_obj(*tsm_dev);
++
++	tsm_class_init();
++
+ 	if (!tsm_dev)
+ 		return ERR_PTR(-ENOMEM);
+ 
+@@ -254,12 +266,14 @@ static void tsm_release(struct device *dev)
+ 
+ static int __init tsm_init(void)
+ {
+-	return class_register(&tsm_class);
++	return tsm_class_init();
+ }
+ module_init(tsm_init)
+ 
+ static void __exit tsm_exit(void)
+ {
++	if (!tsm_class_registered)
++		return;
+ 	class_unregister(&tsm_class);
+ 	xa_destroy(&tsm_ide_streams);
+ }
 -- 
 2.55.0
 
