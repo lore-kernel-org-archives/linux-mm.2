@@ -4,116 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59F2BC88E77
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 03:27:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80327C88E75
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 03:32:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F4486B0092; Tue, 15 Sep 2026 23:27:56 -0400 (EDT)
+	id 2773C6B0095; Tue, 15 Sep 2026 23:32:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A4826B0093; Tue, 15 Sep 2026 23:27:56 -0400 (EDT)
+	id 225506B0096; Tue, 15 Sep 2026 23:32:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2BB306B0095; Tue, 15 Sep 2026 23:27:56 -0400 (EDT)
+	id 0EEE16B0098; Tue, 15 Sep 2026 23:32:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 02A626B0092
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 23:27:55 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D2236140541
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 03:27:53 +0000 (UTC)
-X-FDA: 85218191226.20.0E4023D
-Received: from mail-qk2-f43.google.com (mail-qk2-f43.google.com [74.125.230.235])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 0977380003
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 03:27:50 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="OT/+2sfP";
-	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.235 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D53526B0095
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 23:32:03 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4FC58405BF
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 03:32:03 +0000 (UTC)
+X-FDA: 85218201726.21.054EAC6
+Received: from mta0.migadu.com (out-104.mta0.migadu.com [91.218.175.104])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 722D5C0005
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 03:31:59 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LwWPvvae;
+	spf=pass (imf22.hostedemail.com: domain of yanjun.zhu@linux.dev designates 91.218.175.104 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789529271;
+	s=arc-20220608; t=1789529521;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LpcV4akiuPw6ooaHeQwzYvlzeYD38qF2Fr1gPzg9K6U=;
-	b=YUGlSZhx2nFA8D2ApiGYoezBIAJ4dybp2FxF1DMuoS32nJhRHQgDjq//+UevMP94q1dTpR
-	vd6t7a9G90aFOXeXhe3ui2wSR2c+M/1TdkDKFTlY6ob5ATYFX4bxwbNRUJCicBpBCWToDf
-	4asPh4oW69sZ5NoF2bVeIZ5ju+qmYKo=
+	bh=GHHetD7z2LKY658fw/GAuF9X+vsebDmUpxUUa3RkYoM=;
+	b=qtW1n0bP53tUcz6mDE0oXmSCvDfCoF8IsxR2iOkmCxsEircAUuhptAx+/39GMLgh9iP0Og
+	7um0bqagvQOKBcp7+7K/8XI4fjOqL96TBXGtG7FzQFpNCcI3rybxVgSAZibc+ao5nmIykT
+	TlCqlTMrL++D7g28tiYyQLTqaltVzhY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789529271;
-	b=7RRe8FTJ4j3XmkUTVdU+2jZjGvto0TW9pmuA27AXmE3OmaH2bO4L6fQvIb/ta6Yk2RZ+0E
-	h4XdD4X3OPxHr/1PNDiZKRe+1XEOSiRcvUB8Sy74/kWOjoQ15V5TLndISeCbSisdVmfXvy
-	W5UgJMSjw6WiVNIZmFbkxMJEaxR6hSA=
+	t=1789529521;
+	b=Uh2xumolt0AdjbBl/HdT66OYnF1ISEDae5kQh1LwVrMsryNrkyJKWqutSFJNzmVkF2DRmU
+	rDQPJHWq5uyIEDzSylyn8V7Ha/bl3RfooGUa4ZmKubawojmxd79RYTy4i7ko0oZ1c6Tikq
+	iFV9U+FXjJJLp4YpL+zs4AcAG4qb3Q8=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="OT/+2sfP";
-	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.235 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qk2-f43.google.com with SMTP id af79cd13be357-93910a0cefaso40508585a.2
-        for <linux-mm@kvack.org>; Tue, 15 Sep 2026 20:27:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1789529270; x=1790134070; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=LpcV4akiuPw6ooaHeQwzYvlzeYD38qF2Fr1gPzg9K6U=;
-        b=OT/+2sfPNRW+bI2q92TS8FODPsHCFCUS7UnaqJji4s2QknfoO8/GBNPj57/TGIftSv
-         SHJVZNPbuoO/pIPkxPOh8IulROLBQT5O01j57nPkDCgcFTV7om281B2dkGrrZ1/23cy+
-         E8TvprLDyxbR/5+rB7sulqD4idIbNoEWDZWGmhf7p9wlbyOMbSBT9b/LqoPhy1KKcSHp
-         82OY4J6FcVJiv7IbHnkDaYC1a7zF72kpUZPZuE2LyFjfqkbcmMI3Z0M5sJzp8MvLJTMD
-         AdtaycsXWLIzcHdSGrr2Oj7J9S0InigAfsJ6mh1ul+EYTKakg3hxTj0kwupmXsVsquvb
-         sAvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789529270; x=1790134070;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=LpcV4akiuPw6ooaHeQwzYvlzeYD38qF2Fr1gPzg9K6U=;
-        b=V2wAFvXpPwWAalmMpstZKaaydLNM8baiFmx/KeqM+6IeW6mNs/YM0rMCNBtt9I9e1t
-         lzHdNWxeHsfVCV53GTrqrKTYzORTqNmAxzuSxtbCcXXod+M89dbkQdRY4MDTZ4BjKJuD
-         9H0xNrtUSHBbE4mWGLoM56ani5KP3O1y+oYQr59StWJkYyC7lWIYd24tAxTi0buom/MG
-         rNp+RerjU5qryNXeDn40cf1EHyK9jzx8DoB6mOkVwu63IfAnm0r5vCemPAPmFkG4eLTT
-         c5vYOXK7qok3s4m5B4qR0zLfak2f/3bkqhy1jC1i2gcaYid+g9B2gxFY51wGvI6eBScU
-         33zA==
-X-Gm-Message-State: AFuF++mKB7gONYaKzT5lEGJLiY2D/0Yr+VanlQriUpQ8IcD+hQ/5sioK
-	vqD8TQc5bCkRTpwyXeOriuMQnOCA/0ofiQcy5zBNgKjFz5NQchNJwPQcOdhkMnOztF4=
-X-Gm-Gg: AYBFou3N6TA12SPhwzVhdKHMvlSMrmlOgtyfiBse7yWj73QFLwilme0ZngNPOKqHQxo
-	sU4Bz+YzI3qxc9CDEDDjCBnhEFQigZKxZFPVFW1pFzGwfadpkyWj9TPXXfAv5jM9lgtBWF2HyMm
-	yZkD5fmY9bhLN53/SSKBDd0zmZrn4eYzwbtT0xweb4RHQGadRwAX5stxiGe9gMEkwmMJZUrOAkv
-	EBjkcOILvBYSvL6OntZtT0sfqMwY69ouxOuE+XFI3n/DNP+3SWQQ3jcfKGG2XDWgeuXsWfqVi2X
-	vg1ZD7VgMN3IZ03jf4Js+Rhe2N/OOIQECG9fk3g0M3Duowjf16scqZMMDjTHk8zcthOgKQ8fE1+
-	5zV3hh/9puKRvVEVEg2TbNDX808oAU3linZsZ05qE4a0Ubvjb5m+MoUiIsN0N35/Fr+nturj24p
-	rB9eillC2jBe6QYA1SZ4hpK5HsC1L/gOK2v5ZhkSZXyHDKgofCcAJ6HbgWIaijjr37PZcTWmB37
-	cYI2zA5SeP0iTBGD+4xItj83o7afvCUhqFpvZ23XNz963gPP+WHuio=
-X-Received: by 2002:a05:620a:4512:b0:939:13a7:70f0 with SMTP id af79cd13be357-93bb770c2a0mr153460185a.5.1789529270091;
-        Tue, 15 Sep 2026 20:27:50 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93b81d19df1sm115328585a.45.2026.09.15.20.27.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2026 20:27:49 -0700 (PDT)
-Date: Tue, 15 Sep 2026 23:27:47 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
-	liam@infradead.org, ljs@kernel.org, david@kernel.org, vbabka@kernel.org, 
-	jannh@google.com, sashiko-bot <sashiko-bot@kernel.org>, stable@vger.kernel.org
-Subject: Re: [RESEND PATCH] mm/madvise: use folio_trylock() in the
- cold/pageout PMD split
-Message-ID: <aqoKLlzgsMc7VwJ3@gourry-fedora-PF4VCD3F>
-References: <20260912110540.3203010-1-gourry@gourry.net>
- <20260915184633.e2d8cf719e5eed186d087a8a@linux-foundation.org>
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LwWPvvae;
+	spf=pass (imf22.hostedemail.com: domain of yanjun.zhu@linux.dev designates 91.218.175.104 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=/gKDc1UJUEW3gZkDgmnO4FI9/og2soBWPviRlsd2j9E=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789529516; v=1; x=1790134316;
+ b=LwWPvvaeOVIcO+QfTmpcnPfm4GG+j31VryVD+rtm579dAsPPrwrq2KsAqD0sQuVdPjJI7Ty5
+ uvCli8zJ7Tm/JoeU5gFrW2h54M0MLpJZQpTaE43NaBbjwkMwjKdHpAOVafvQPxXs4TTTTujCZec
+ Bauja0qz4PkkxVOvJBt7A7tM=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 0f83172af188618d;
+	Wed, 16 Sep 2026 03:31:56 +0000
+X-Mizu-Trace-ID: 0f83172af188618d
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <e099cbaf-3185-4c39-ae36-7f0e074ebff7@linux.dev>
+Date: Tue, 15 Sep 2026 20:31:45 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260915184633.e2d8cf719e5eed186d087a8a@linux-foundation.org>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 0977380003
-X-Stat-Signature: 1cc5iitugqj493bfahufuj8k4sz1oght
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 03/12] PCI: liveupdate: Track incoming preserved PCI
+ devices
+To: David Matlack <dmatlack@google.com>, kexec@lists.infradead.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-pci@vger.kernel.org
+Cc: Adithya Jayachandran <ajayachandra@nvidia.com>,
+ Alexander Graf <graf@amazon.com>, Alex Williamson <alex@shazbot.org>,
+ Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
+ David Rientjes <rientjes@google.com>,
+ Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>,
+ Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
+ Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
+ Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pranjal Shrivastava <praan@google.com>, Pratyush Yadav
+ <pratyush@kernel.org>, Saeed Mahameed <saeedm@nvidia.com>,
+ Samiullah Khawaja <skhawaja@google.com>,
+ Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>,
+ William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>,
+ "yanjun.zhu@linux.dev" <yanjun.zhu@linux.dev>
+References: <20260728221007.2098560-1-dmatlack@google.com>
+ <20260728221007.2098560-4-dmatlack@google.com>
+From: Zhu Yanjun <yanjun.zhu@linux.dev>
+In-Reply-To: <20260728221007.2098560-4-dmatlack@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1789529270-624149
-X-HE-Meta: U2FsdGVkX19Q0OXBoYXVcb1D9uMSNymjoRciqrtFMi0PZoyhTYOX6+i6KZY9kBRFa5Qq0Pw1c02hq2OEwh00/xHgOzsZP7AMnOZ5mOVbJJ5DUcRaEtIYDfAfL9CiLYmyykJrhKPaHauT5rti+6afWrPUMLG4RnP8EKa9Y24IMfliN1ec4U3m3ftkIFmk60PJqGTYult7wCcSesOuyaSrMIK7KNdU/XxXzS8Kg1YSUSMCD+/efhIdoLoLkqVkS/b2dH/0N8no2hR/O7sfd7/tZuzHSOQj3jfINlYiZJa0tZOeQcNmVYPuV/LAjn2jDTpyzcyLaRjHhccQSnDICsIFhaiIgo9ccIaqr5whsf2QaYMWlmPjZv8chcNmVKEdSbunhd/IRqNKxVRO0vUHyeTvOgCTch0qHIRNcwcGESDbOjYNMlJeckgJCFcvS1WPJoZRdcNHV3bFIVYwSAVV8G4q/Byqi/crfZvY+KDMN9/fcz97eahKBzFrPWZinO1a/SrLXYqDwXiG+ePBtAgw2Bnfvho78lRAh18SfrgR/+FwFECwEUgc/FDMySYO7dhU6/1FrRwXD7GgGzEFJIjHwmGBhVhWOSvduBz9ArQ4j5sf8SBw91t60bKH/XFtJRvfh3Pl070LqEcu0+VzpH9rTu/Fs+leyYaCai8Vdhlat231WC7jwAWxEVBrvzC9ojxUzpT3nl0h606BLsYB6C5kKLfaxXiMBTynefe/j9695ood6uaJtxGbEfnulBVpqlcgO4xsuId3WgSnvIUzPhXb9pfTXm1RPAY/DA+oyM6No4Gt9Pe+sLkcsgsTXf/kL8s6DKuSJgM7B+it18ZMdfPXqAxt22bBEAkvV3yxH1YbJiH42uHQ0Ib3E+eC39L1qb+v62W1lBgfK75968fWT5YUAZ2Lse7BJ+HD6Dxc29HyY3fuSLFm/QQWQtfI+70PTvk5wQR2vravLNzmgNCGnDA+Z+Y
- 18un6jC7
- 2gjO5N1s9gjQVUGPTulp9qqkp4TLuwe40sZIU2QtwdA33iouX1AnGDdrl8j2623nbDcZ3VvyEcvDSh9InAM3b2+nG7kl5xtH8qWgPiFPNoc6KSuRpDg1t+qiFaRJe1wuLR3sm87P9QZSkd2AMxiA1PAmRLmTlnkB7b10W09qDhMtmQRkNYO8tk6ELedLOROALq78yyUIC56IJ8fMGVhEBCLXO3WRsfVW1KZj+nHeSbVONZqzGkEMDC46LWhKiuZSpzfyc6ulU3OV1TYMQJQ4amFGAzjrv73JU6LsrCCzwxhEq/FYuANFyIGqfEtrkGoGaGPLSzb4ICGidhou76dA9ssKKAM2PXqRaTLLeZTc8eU7H59YInKzV6M2Ds0Ps7VwPf0aWpBYU1F+bSLQKTHRFqdvKl+Xssirt3bk5w/59peFVD3CpTCQnJBY46ZAl+E5G/CcGjpaVTckiceZ1WRx4ObKIscN/CV7uFv3kpx3PBX880Rc=
+X-Stat-Signature: mpcygdpwkaypi9o6acqhj4rnne4ws5nz
+X-Rspamd-Queue-Id: 722D5C0005
+X-HE-Tag: 1789529519-649154
+X-HE-Meta: U2FsdGVkX18vuWFatU5zkDSAW+QIHDDANkcXiON2UEdMUufdsqYHIeiUxUxRRf261l6VDIUmiBjqrABAJu4qBHUmLUIE8PKFJb23Iic+8tFjMipMlKS4uAKaY1m27/ltVMM1I2ziUcu9yu5Q97KrNMx+eUGxxazuoPvByviSfNtYOtn42bGouQR47id1ThnA3LKYSYdxh7y+CzmL1OY0ehqyY0x9DX7qHfIP+EKDksV7wMh6ggAKoTYPrm5M4ZLt+eJxOiT5FL4BIwRGD/j631PN4oXrYG4tMQnh4b6flRGIm3YMEvAaDzt452HbJyaLCF5ekX1ceFNYikTGyFmQgd9NbEbySZhoMCIiAb0VjaNkTEKfv2LTT2jdvrlQ9PnJ/onNgYCnZKgG0SSB+ivueDxDIlXF/LhwGldcxcVJ2UYtLVyoo8+HIW4Y0O+1xpAii52BKwAPntU3kJ3ai1VViTs4ZNWQnGFzDZ9PkRdN/8bszz1gCkNNHEhsZYGe8JHb5+CUh+oEP38iWbYD5hwJLQq8dxsLymZ2+hM2H9Nzzz2WprGBLJvpiNWK/kfWxd2zFo2ImgY2PRyCm3WITepsuwsu019pAEwc4QFJ+xOBqCdFchP+91E0OKBsXj0ntxveMQlI7/44N2nRIrDHjQZNpRkXRkvl07+RKj8Xj4R9LDgW/XzQxff0r2aTficZzJUAedKijH+xX9gRfC1tQMPVAt/L6uqbuZPi59zZmT91rwN+g+PHPcZUvmG3TTXeXa3GCF6gMXPWntncnKYQjjWNjK8mVN6JSKwKWriOwkRGcYQhTy/qhQHMJT2haqDIo0gyOPEFL2CkDGg1aRSJfp1oQq0ZEME2Iu+x3v91d7WCo3u47fWXs1BLjSb1SjVc46ivaYd5221a+foiaU+3JWeKP2lrvTHc7vbaKzoXwlMF1fz+GX51un0pJHEhHeCaQJGXagiivY9Sdzc7MqtltDH
+ Lt1pniHC
+ YfVRckWT72eMswfQ4Z/Plt6wVSeorZ/6qlICn3Gu8gWfCt3Or3WzuPDQ6zNtS1K6366g+tWIj46BP1/76fkkCbqFa1YvObS/fri1L6oMhyEuw265SXCz/pZal4irCXbFBftnapy2v1pRPb2uIumMhOzhdJQOaesTsQ8aQ7Jq2aaZxOQxQkANLpQsUUZM9ZVCnDkEFJxatUVur2O3aM0wfGYhjmXVqcGSysQs2ptN68NCKloyD+K75tX0NUM6n+gy3DBHwIQBnye/kNPO8rc4oDrMLY8T1syI0NV4nGQwrXIhlmGxiSBRWgHhhuiRj3vJsR7iE6dVXga63zU3TJmwveYE65GqkycTaDK/VuRVo56DlA7W7rucitYtOhxHsZjXdLeGhxiJGMtCaIIM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,54 +107,465 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 15, 2026 at 06:46:33PM -0700, Andrew Morton wrote:
-> > 
-> > On failure the walker returns 0 and nothing retries.  The PMD path becomes
-> > best effort when the folio lock is held elsewhere - same as the PTE path.
+在 2026/7/28 15:09, David Matlack 写道:
+> During PCI enumeration, the previous kernel might have passed state about
+> devices that were preserved across kexec. The PCI core needs to fetch
+> this state to identify which devices are "incoming" and require special
+> handling.
 > 
-> Can this result in more EAGAINs being returned to userspace?
->
-
-I don't see where this can result in more EAGAIN, at least from the
-madvise side.  The race is the same, we're just giving up and saying
-"I tried, doesn't matter if i succeeded".
-
-> > --- a/mm/madvise.c
-> > +++ b/mm/madvise.c
-> > @@ -419,9 +419,10 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
-> >  		if (next - addr != HPAGE_PMD_SIZE) {
-> >  			int err;
-> >  
-> > +			if (!folio_trylock(folio))
-> > +				goto huge_unlock;
-> >  			folio_get(folio);
-> >  			spin_unlock(ptl);
-> > -			folio_lock(folio);
-> >  			err = split_folio(folio);
-> >  			folio_unlock(folio);
-> >  			folio_put(folio);
+> Add pci_liveupdate_setup_device() which is called during device setup
+> to fetch the serialized state (struct pci_ser) from the Live Update
+> Orchestrator. The first time this happens, pci_flb_retrieve() will run
+> and convert the array of pci_dev_ser structs into an xarray so that it
+> can be looked up efficiently.
 > 
-> Sashiko shares my reaction, "dear god, why does that function exist".
->
-> 	https://sashiko.dev/#/patchset/20260912110540.3203010-1-gourry@gourry.net
+> If a device is found in the xarray, the PCI core stores a pointer to its
+> state in dev->liveupdate_incoming until pci_liveupdate_finish() is
+> called by the driver. This pointer allows the PCI core and drivers to
+> apply Live Update-specific logic to incoming devices in subsequent
+> commits.
 > 
-> Like the entire function, that random mix of "goto foo" with "return
-> whatever" needs to die.
+> Drivers can check if a device is an incoming preserved device (e.g.
+> during probe) by calling pci_liveupdate_is_incoming().
 > 
-> Anyway, please check it out while you're on a roll.
+> CONFIG_64BIT is now required to enable CONFIG_PCI_LIVEUPDATE so that the
+> domain and bdf can be guaranteed to fit in an unsigned long and be used
+> as the xarray key.
+> 
+> Reviewed-by: Pranjal Shrivastava <praan@google.com>
+> Signed-off-by: David Matlack <dmatlack@google.com>
+> ---
+>   MAINTAINERS                    |   1 +
+>   drivers/pci/Kconfig            |   2 +-
+>   drivers/pci/liveupdate.c       | 256 ++++++++++++++++++++++++++++++++-
+>   drivers/pci/liveupdate.h       |   5 +
+>   drivers/pci/probe.c            |   3 +
+>   include/linux/pci_liveupdate.h |  13 ++
+>   6 files changed, 277 insertions(+), 3 deletions(-)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 9cc7b9291ace..08a724b860dc 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -20834,6 +20834,7 @@ L:	linux-pci@vger.kernel.org
+>   S:	Maintained
+>   T:	git git://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git
+>   F:	drivers/pci/liveupdate.c
+> +F:	drivers/pci/liveupdate.h
+>   F:	include/linux/kho/abi/pci.h
+>   F:	include/linux/pci_liveupdate.h
+>   
+> diff --git a/drivers/pci/Kconfig b/drivers/pci/Kconfig
+> index 3781e2b5f095..8af20f558086 100644
+> --- a/drivers/pci/Kconfig
+> +++ b/drivers/pci/Kconfig
+> @@ -273,7 +273,7 @@ config VGA_ARB_MAX_GPUS
+>   
+>   config PCI_LIVEUPDATE
+>   	bool "PCI Live Update Support"
+> -	depends on PCI && LIVEUPDATE
+> +	depends on PCI && LIVEUPDATE && 64BIT
 
-I've been trying to shore up the sashiko garbage first in a backportable
-manner before doing a full restructure.
+One question about adding 64BIT to the dependency:
 
-I would hate to rewrite this just to carry bugs forward, and clearly the
-code isn't even remotely correct as-is.
+As I understand it, enabling CONFIG_64BIT essentially means that we are 
+building a 64-bit kernel, and a 32-bit architecture cannot normally 
+enable CONFIG_64BIT.
 
-The remaining issue on that link is the memory leak patch you already
-looked at.
+If that is the case, would depends on 64BIT be necessary here? Or is PCI 
+Live Update already inherently restricted to 64-bit architectures by the 
+existing LIVEUPDATE/architecture configuration, so that this dependency 
+would be redundant?
 
-It's taken a bit to generate positive tests for these bugs and go
-through validation, but I think we are finally at the end of the
-nasty part and can actually get to cleaning this up.
+If this problem has already discussed, I am very sorry about this.
 
-~Gregory
+Yanjun Zhu
+
+>   	help
+>   	  Enable PCI core support for preserving PCI devices across Live
+>   	  Update. This, in combination with support in a device's driver,
+> diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
+> index b003b7069cdb..5ce5f8b36902 100644
+> --- a/drivers/pci/liveupdate.c
+> +++ b/drivers/pci/liveupdate.c
+> @@ -49,6 +49,20 @@
+>    * This allows the PCI core to keep its FLB data (struct pci_ser) up to date
+>    * with the list of **outgoing** preserved devices for the next kernel.
+>    *
+> + * After kexec, whenever a device is enumerated, the PCI core will check if it
+> + * is an **incoming** preserved device (i.e. preserved by the previous kernel)
+> + * by checking the incoming FLB data (struct pci_ser).
+> + *
+> + * Drivers must notify the PCI core when an **incoming** device is done
+> + * participating in the incoming Live Update with the following API:
+> + *
+> + *  * ``pci_liveupdate_finish(pci_dev)``
+> + *
+> + * The PCI core does not enforce any ordering of ``pci_liveupdate_finish()`` and
+> + * ``pci_liveupdate_preserve()``. i.e. A PCI device can be **outgoing**
+> + * (preserved for next kernel) and **incoming** (preserved by previous kernel)
+> + * at the same time.
+> + *
+>    * Restrictions
+>    * ============
+>    *
+> @@ -100,6 +114,26 @@ struct pci_flb_outgoing {
+>   	struct kho_block_set block_set;
+>   };
+>   
+> +/**
+> + * struct pci_flb_incoming - Incoming PCI FLB object
+> + * @ser: The incoming struct pci_ser from the previous kernel.
+> + * @xa: Xarray used to quickly lookup devices in @ser.
+> + * @block_set: The KHO block set holding the incoming devices.
+> + *
+> + * This structure holds the runtime state for the incoming PCI Live Update
+> + * state. It wraps the serialized pci_ser, the block_set used to restore
+> + * the serialized entries, and an xarray for fast lookups.
+> + */
+> +struct pci_flb_incoming {
+> +	struct pci_ser *ser;
+> +	struct xarray xa;
+> +	struct kho_block_set block_set;
+> +};
+> +
+> +static unsigned long pci_ser_xa_key(u32 domain, u16 bdf)
+> +{
+> +	return (unsigned long)domain << 16 | bdf;
+> +}
+>   static int pci_flb_preserve(struct liveupdate_flb_op_args *args)
+>   {
+>   	struct pci_flb_outgoing *outgoing __free(kfree) = NULL;
+> @@ -140,15 +174,91 @@ static void pci_flb_unpreserve(struct liveupdate_flb_op_args *args)
+>   
+>   static int pci_flb_retrieve(struct liveupdate_flb_op_args *args)
+>   {
+> +	struct pci_ser *ser = phys_to_virt(args->data);
+> +	struct pci_flb_incoming *incoming;
+> +	struct pci_dev_ser *dev_ser;
+> +	struct kho_block_set_it it;
+> +	int ret;
+> +
+>   	pr_debug("Retrieving struct pci_ser (0x%llx)\n", args->data);
+> -	args->obj = phys_to_virt(args->data);
+> +
+> +	if (ser->version != PCI_LUO_FLB_VERSION) {
+> +		pr_err("Incoming PCI FLB version (v%d) is incompatible with this kernel (v%d)\n",
+> +		       ser->version, PCI_LUO_FLB_VERSION);
+> +		ret = -EINVAL;
+> +		goto err_restore_free;
+> +	}
+> +
+> +	incoming = kzalloc_obj(*incoming);
+> +	if (!incoming) {
+> +		ret = -ENOMEM;
+> +		goto err_restore_free;
+> +	}
+> +
+> +	incoming->ser = ser;
+> +	xa_init(&incoming->xa);
+> +
+> +	kho_block_set_init(&incoming->block_set, sizeof(struct pci_dev_ser));
+> +	ret = kho_block_set_restore(&incoming->block_set, ser->devices);
+> +	if (ret)
+> +		goto err_free_incoming;
+> +
+> +	kho_block_set_it_init(&it, &incoming->block_set);
+> +	while ((dev_ser = kho_block_set_it_read_entry(&it))) {
+> +		unsigned long key;
+> +
+> +		if (!dev_ser->refcount)
+> +			continue;
+> +
+> +		key = pci_ser_xa_key(dev_ser->domain, dev_ser->bdf);
+> +		ret = xa_insert(&incoming->xa, key, dev_ser, GFP_KERNEL);
+> +		if (ret)
+> +			goto err_block_set_destroy;
+> +	}
+> +
+> +	args->obj = incoming;
+>   	return 0;
+> +
+> +err_block_set_destroy:
+> +	kho_block_set_destroy(&incoming->block_set);
+> +err_free_incoming:
+> +	xa_destroy(&incoming->xa);
+> +	kfree(incoming);
+> +err_restore_free:
+> +	kho_restore_free(ser);
+> +	return ret;
+> +}
+> +
+> +static void pci_check_all_devices_finished(struct pci_flb_incoming *incoming)
+> +{
+> +	struct pci_dev *dev = NULL;
+> +
+> +	if (READ_ONCE(incoming->ser->nr_devices) == 0)
+> +		return;
+> +
+> +	for_each_pci_dev(dev) {
+> +		if (READ_ONCE(dev->liveupdate.incoming))
+> +			pci_emerg(dev, "Preserved device was never finished!\n");
+> +	}
+> +
+> +	/*
+> +	 * This should only happen if a driver violated the contract to call
+> +	 * pci_liveupdate_finish() (something is extremely broken).
+> +	 */
+> +	panic("Some preserved devices were never finished!\n");
+>   }
+>   
+>   static void pci_flb_finish(struct liveupdate_flb_op_args *args)
+>   {
+> +	struct pci_flb_incoming *incoming = args->obj;
+> +
+>   	pr_debug("Finished struct pci_ser (0x%llx)\n", args->data);
+> -	kho_restore_free(args->obj);
+> +	pci_check_all_devices_finished(incoming);
+> +
+> +	xa_destroy(&incoming->xa);
+> +	kho_block_set_destroy(&incoming->block_set);
+> +	kho_restore_free(incoming->ser);
+> +	kfree(incoming);
+>   }
+>   
+>   static struct liveupdate_flb_ops pci_liveupdate_flb_ops = {
+> @@ -325,6 +435,75 @@ void pci_liveupdate_unpreserve(struct pci_dev *dev)
+>   }
+>   EXPORT_SYMBOL_GPL(pci_liveupdate_unpreserve);
+>   
+> +static struct pci_flb_incoming *pci_liveupdate_flb_get_incoming(void)
+> +{
+> +	struct pci_flb_incoming *incoming = NULL;
+> +	int ret;
+> +
+> +	ret = liveupdate_flb_get_incoming(&pci_liveupdate_flb, (void **)&incoming);
+> +
+> +	/* Live Update is not enabled. */
+> +	if (ret == -EOPNOTSUPP)
+> +		return NULL;
+> +
+> +	/* Live Update is enabled, but there is no incoming FLB data. */
+> +	if (ret == -ENODATA)
+> +		return NULL;
+> +
+> +	/*
+> +	 * Live Update is enabled and there is incoming FLB data, but none of it
+> +	 * matches pci_liveupdate_flb.compatible.
+> +	 */
+> +	if (ret == -ENOENT)
+> +		return NULL;
+> +
+> +	/*
+> +	 * There is incoming FLB data that matches pci_liveupdate_flb.compatible
+> +	 * but retrieve failed (pci_flb_retrieve() returned an error or LUO
+> +	 * failed to acquire a reference to pci_liveupdate_flb_ops.owner).
+> +	 */
+> +	if (ret)
+> +		panic("Failed to retrieve incoming FLB data (%d)\n", ret);
+> +
+> +	return incoming;
+> +}
+> +
+> +static void pci_liveupdate_flb_put_incoming(void)
+> +{
+> +	liveupdate_flb_put_incoming(&pci_liveupdate_flb);
+> +}
+> +
+> +void pci_liveupdate_setup_device(struct pci_dev *dev)
+> +{
+> +	struct pci_flb_incoming *incoming;
+> +	struct pci_dev_ser *dev_ser;
+> +	unsigned long key;
+> +
+> +	guard(rwsem_write)(&pci_liveupdate.rwsem);
+> +
+> +	incoming = pci_liveupdate_flb_get_incoming();
+> +	if (!incoming)
+> +		return;
+> +
+> +	key = pci_ser_xa_key(pci_domain_nr(dev->bus), pci_dev_id(dev));
+> +	dev_ser = xa_load(&incoming->xa, key);
+> +
+> +	/*
+> +	 * This device was not preserved across Live Update, or it was preserved
+> +	 * but has already been probed and gone through pci_liveupdate_finish(),
+> +	 * e.g. due to removing and re-adding the device. Either way, it's not
+> +	 * treated as incoming-preserved.
+> +	 */
+> +	if (!dev_ser || !dev_ser->refcount) {
+> +		pci_liveupdate_flb_put_incoming();
+> +		return;
+> +	}
+> +
+> +	pci_info(dev, "Device was preserved by previous kernel across Live Update\n");
+> +	dev->liveupdate.incoming = dev_ser;
+> +	pci_liveupdate_flb_put_incoming();
+> +}
+> +
+>   void pci_liveupdate_cleanup_device(struct pci_dev *dev)
+>   {
+>   	/*
+> @@ -336,7 +515,80 @@ void pci_liveupdate_cleanup_device(struct pci_dev *dev)
+>   	 */
+>   	if (READ_ONCE(dev->liveupdate.outgoing))
+>   		pci_WARN(dev, 1, "Destroying outgoing-preserved device!\n");
+> +
+> +	if (READ_ONCE(dev->liveupdate.incoming))
+> +		pci_WARN(dev, 1, "Destroying incoming-preserved device!\n");
+> +}
+> +
+> +static void pci_liveupdate_finish_device(struct pci_ser *ser, struct pci_dev *dev)
+> +{
+> +	if (!dev->liveupdate.incoming) {
+> +		pci_warn(dev, "Cannot finish preserving an unpreserved device\n");
+> +		return;
+> +	}
+> +
+> +	if (dev->liveupdate.incoming->refcount != 1) {
+> +		pci_WARN(dev, 1, "Preserved device has a corrupted refcount!\n");
+> +		return;
+> +	}
+> +
+> +	/*
+> +	 * Drop the refcount so this device does not get treated as an incoming
+> +	 * device again, e.g. in case pci_liveupdate_setup_device() gets called
+> +	 * again because the device is hot-plugged.
+> +	 */
+> +	dev->liveupdate.incoming->refcount = 0;
+> +
+> +	pci_info(dev, "Device is finished participating in Live Update\n");
+> +	dev->liveupdate.incoming = NULL;
+> +	ser->nr_devices--;
+> +}
+> +
+> +/**
+> + * pci_liveupdate_finish() - Finish the preservation of a PCI device
+> + * @dev: The PCI device
+> + *
+> + * pci_liveupdate_finish() notifies the PCI core that a PCI device that was
+> + * preserved across the previous Live Update has finished participating in Live
+> + * Update. Drivers must call pci_liveupdate_finish() from their struct
+> + * liveupdate_file_handler finish() callback to ensure the incoming struct
+> + * pci_ser is allocated.
+> + */
+> +void pci_liveupdate_finish(struct pci_dev *dev)
+> +{
+> +	struct pci_flb_incoming *incoming;
+> +
+> +	guard(rwsem_write)(&pci_liveupdate.rwsem);
+> +
+> +	incoming = pci_liveupdate_flb_get_incoming();
+> +	if (!incoming) {
+> +		pci_warn(dev, "Cannot finish preserving device without incoming FLB\n");
+> +		return;
+> +	}
+> +
+> +	pci_liveupdate_finish_device(incoming->ser, dev);
+> +	pci_liveupdate_flb_put_incoming();
+> +}
+> +EXPORT_SYMBOL_GPL(pci_liveupdate_finish);
+> +
+> +/**
+> + * pci_liveupdate_is_incoming() - Check if a device is incoming-preserved
+> + * @dev: The PCI device to check
+> + *
+> + * Check if a device was preserved across Live Update by the previous kernel,
+> + * i.e. the device is incoming-preserved. Note that a device is only considered
+> + * incoming-preserved prior to pci_liveupdate_finish(). It is up to drivers to
+> + * synchronize usage of pci_liveupdate_is_incoming() with their own call to
+> + * pci_liveupdate_finish() to avoid acting on stale data.
+> + *
+> + * Returns: True if the device is incoming-preserved, false otherwise.
+> + */
+> +bool pci_liveupdate_is_incoming(struct pci_dev *dev)
+> +{
+> +	guard(rwsem_read)(&pci_liveupdate.rwsem);
+> +	return dev->liveupdate.incoming;
+>   }
+> +EXPORT_SYMBOL_GPL(pci_liveupdate_is_incoming);
+>   
+>   /**
+>    * pci_liveupdate_register_flb() - Register a file handler with the PCI core
+> diff --git a/drivers/pci/liveupdate.h b/drivers/pci/liveupdate.h
+> index b2335581f8d0..eaaa3559fd77 100644
+> --- a/drivers/pci/liveupdate.h
+> +++ b/drivers/pci/liveupdate.h
+> @@ -11,8 +11,13 @@
+>   #include <linux/pci.h>
+>   
+>   #ifdef CONFIG_PCI_LIVEUPDATE
+> +void pci_liveupdate_setup_device(struct pci_dev *dev);
+>   void pci_liveupdate_cleanup_device(struct pci_dev *dev);
+>   #else
+> +static inline void pci_liveupdate_setup_device(struct pci_dev *dev)
+> +{
+> +}
+> +
+>   static inline void pci_liveupdate_cleanup_device(struct pci_dev *dev)
+>   {
+>   }
+> diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+> index 14b66acbdb15..5dc9d86e3597 100644
+> --- a/drivers/pci/probe.c
+> +++ b/drivers/pci/probe.c
+> @@ -2065,6 +2065,8 @@ int pci_setup_device(struct pci_dev *dev)
+>   	if (pci_early_dump)
+>   		early_dump_pci_device(dev);
+>   
+> +	pci_liveupdate_setup_device(dev);
+> +
+>   	/* Need to have dev->class ready */
+>   	dev->cfg_size = pci_cfg_space_size(dev);
+>   
+> @@ -2188,6 +2190,7 @@ int pci_setup_device(struct pci_dev *dev)
+>   	default:				    /* unknown header */
+>   		pci_err(dev, "unknown header type %02x, ignoring device\n",
+>   			dev->hdr_type);
+> +		pci_liveupdate_cleanup_device(dev);
+>   		pci_release_of_node(dev);
+>   		return -EIO;
+>   
+> diff --git a/include/linux/pci_liveupdate.h b/include/linux/pci_liveupdate.h
+> index 894052ad6961..710026ada2d5 100644
+> --- a/include/linux/pci_liveupdate.h
+> +++ b/include/linux/pci_liveupdate.h
+> @@ -16,9 +16,11 @@
+>   /**
+>    * struct pci_liveupdate - PCI Live Update state for a struct pci_dev
+>    * @outgoing: State preserved for the next kernel.
+> + * @incoming: State preserved by the previous kernel.
+>    */
+>   struct pci_liveupdate {
+>   	struct pci_dev_ser *outgoing;
+> +	struct pci_dev_ser *incoming;
+>   };
+>   
+>   struct pci_dev;
+> @@ -28,6 +30,8 @@ int pci_liveupdate_register_flb(struct liveupdate_file_handler *fh);
+>   void pci_liveupdate_unregister_flb(struct liveupdate_file_handler *fh);
+>   int pci_liveupdate_preserve(struct pci_dev *dev);
+>   void pci_liveupdate_unpreserve(struct pci_dev *dev);
+> +void pci_liveupdate_finish(struct pci_dev *dev);
+> +bool pci_liveupdate_is_incoming(struct pci_dev *dev);
+>   #else
+>   static inline int pci_liveupdate_register_flb(struct liveupdate_file_handler *fh)
+>   {
+> @@ -46,6 +50,15 @@ static inline int pci_liveupdate_preserve(struct pci_dev *dev)
+>   static inline void pci_liveupdate_unpreserve(struct pci_dev *dev)
+>   {
+>   }
+> +
+> +static inline void pci_liveupdate_finish(struct pci_dev *dev)
+> +{
+> +}
+> +
+> +static inline bool pci_liveupdate_is_incoming(struct pci_dev *dev)
+> +{
+> +	return false;
+> +}
+>   #endif
+>   
+>   #endif /* LINUX_PCI_LIVEUPDATE_H */
+
 
