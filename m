@@ -4,125 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C399C982C9
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 15:37:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F7D4C982C9
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 15:40:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C0CA6B0088; Wed, 16 Sep 2026 11:37:55 -0400 (EDT)
+	id 6320C6B0093; Wed, 16 Sep 2026 11:40:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 171AE6B0093; Wed, 16 Sep 2026 11:37:55 -0400 (EDT)
+	id 5E23E6B0095; Wed, 16 Sep 2026 11:40:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 061766B0095; Wed, 16 Sep 2026 11:37:55 -0400 (EDT)
+	id 4D0856B0096; Wed, 16 Sep 2026 11:40:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D6C966B0088
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:37:54 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4BBFC1202B9
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 15:37:54 +0000 (UTC)
-X-FDA: 85220030868.05.86F06BA
-Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 7DED840007
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 15:37:52 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=hWNXC0FO;
-	spf=pass (imf27.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.205 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789573072;
-	b=KvTDe4hnepH/uo3tNB1KcPi6NnUrVTqrQM6F/6HhjIMW84Zba5lrsK6NIbN9CVafN972j3
-	b/5+XkhCvq5oefACoblfiItBbNpiMsp6eAzXzrriDvABcUFC2sZn8m0kMGNR81NQ/bS4c2
-	xq8cITcmoP4vKrmPBeFlLQw839uZIw0=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=hWNXC0FO;
-	spf=pass (imf27.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.205 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 297506B0093
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:40:04 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4383A8077A
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 15:40:03 +0000 (UTC)
+X-FDA: 85220036286.08.B91F7A2
+Received: from mta0.migadu.com (out-11.mta0.migadu.com [91.218.175.11])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 074C1120011
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 15:40:00 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=S2GkJ7ud;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf29.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.11 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789573072;
+	s=arc-20220608; t=1789573201;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yrYalls8fAkvyVlQP9FlmP4RxEorGFK72anR8WExHtQ=;
-	b=mnAjY6IU4hgZ0x8VExk7XcgLoJXVURzHadA8RkHjCMM6bl8MKZQuXvwvBOqSMiIr7qL6i9
-	4cv5NuV20zgp/5nROXWk+DBudYqpJoZxcShjQUT/qwnZk69VLJ1IfvZuSl6jcqeTK+iehJ
-	+KomDEnrlVemx1OMKJ9vi7X0D2cvbVg=
-Received: by mail-qk2-f13.google.com with SMTP id d75a77b69052e-530e28a62abso13278801cf.1
-        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 08:37:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1789573071; x=1790177871; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=yrYalls8fAkvyVlQP9FlmP4RxEorGFK72anR8WExHtQ=;
-        b=hWNXC0FO4QMm19zPALRqcNce5PKBqbKSgpdOHKfSDI9boU7oo+b1RMgf4z9C455iqI
-         6nW4F4CMqMTSi4XAJCsbfMLl7YJuC4kMNTzr4m2af9gXNhrQmJywl4GFgviClmgyESKZ
-         Lxz6AMy+homSeagzmizoNcE3tJhrrKTE4PLYhxWEJumFg/U2TL3mOH41QyMEr99i8yR0
-         y4nYZNksFD3AleCngua7mDoedK0lmLF7qyRRrUUpiQyJc/EyD20HYGd9rRPQwShXaX2x
-         nuMc1+jrOaqyizIwtCM7D/gn+GRnTV7T7ZvLpH38BAkGaav4fl4u9a9F3exxu8yGG5kd
-         0Zxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789573071; x=1790177871;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=yrYalls8fAkvyVlQP9FlmP4RxEorGFK72anR8WExHtQ=;
-        b=ALTivr2eKtL9VuE9ckVAx6t7Hw/fonYjDfgNWvA5Upd7HFvHyGOTNL6ZaWyw+rIJvM
-         Af4225qZk46V44300toCaq8HtrFM7xoE4t4Ce/L727m/IqnNRHc2pprWiS/IC8oY2pKN
-         WCPzUAwoK3HDScYDraMJk70FIe810ypUxEcpUocXkuMD/JFwNgDC3bJUXv1CJSeXjtEI
-         ViAOYM/tWN6kwFz2LPFO+FSRrgB83C3fZd1snYVyEFRBxGg3uppJdjZyYkY7DoQMfGZm
-         xax+9Nppide1EIoNO6E/hzUKYP8chlmxFgINCozJ60PoOf779oeMdeKeUfH5DvltsRd9
-         XL8w==
-X-Forwarded-Encrypted: i=1; AKwUvBwJWyu7tmovvpeGEGNwlF4mvnBqLEaxv+M8bPyW7BsZQvDDBG6iw11NqGxVtyzH+w92UqsM8eO9TQ==@kvack.org
-X-Gm-Message-State: AFuF++lFrGiJZeDs4TIV/w2WoaFDaAy5L8oUYaE2tFRVjQgNxtYpj8UV
-	66bK/Jmz1EjvfBhpi8mVW3AOO3yudlKIJSvhOvToyIMQi/YIOfYc3J0zpCs5XBjpgno=
-X-Gm-Gg: AYBFou3WMd9cDAq86GRk0+WyMpbpcQin8iFP7JE0yVy3YDnhdIVoncek+Ud8PqIfNwf
-	yhxfAkFReOHCS89GB+x6pmS3BOmBKf5DSyitGJQkevOtglShk2BiVVbTl6j3a3lJvrpYrfkipI+
-	vt1FvlelYBKtwsb1kFweOdKKqNk6J1Gz/vXgmJrwoDBZJX37QVYQLFJ0Hurg2m1dF9DhRdZp2ah
-	aRnUdwNCY62s0l2KQmz+rs6DK2p980XssOWWseRYAVMwEO0ib1x8WTXdBRAsYhNaXljNecTzeBY
-	aO9nuvJ2Af/OR6c7OwvnJipVacds3jLbmzXyAlcB2SrWw/N0TKgiS5joZZ7QMkbvtwMMNEEZItH
-	XiOxrCw8DkktfU8Nnn8x6qh0uivHFlgTrYzq5b7O8WjtK69eBhegBAse+Tm0sf0mnVlWFkRnAxI
-	ws+IzWEkQ/WFpNZ8Iz5rMcy/IwUkQ1MmnMyfmMR5cUb02mvxYwbIRuOfXfIwHS2KzE8DzVTrN0N
-	RmKIe5VpQ/qllL9CUbUDgaA8Ri92ZgPXU4+vpXFaejAUkG7Jzo6JvE=
-X-Received: by 2002:ac8:6f0d:0:b0:530:cbf7:6bb7 with SMTP id d75a77b69052e-5327f201bdemr54089991cf.49.1789573071567;
-        Wed, 16 Sep 2026 08:37:51 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-53262024a94sm24407431cf.15.2026.09.16.08.37.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2026 08:37:49 -0700 (PDT)
-Date: Wed, 16 Sep 2026 11:37:46 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com, akpm@linux-foundation.org, 
-	liam@infradead.org, vbabka@kernel.org, jannh@google.com, wangjiexun@tinylab.org, 
-	sashiko-bot <sashiko-bot@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/madvise: reclaim isolated folios if PTE restart fails
-Message-ID: <aqq23i9824-GWdhg@gourry-fedora-PF4VCD3F>
-References: <aql65IhMobL5Al9B@gourry-fedora-PF4VCD3F>
- <aqqTbGMJL86TzDrf@gremlin>
- <aqqbB_nFAOGenDhy@gourry-fedora-PF4VCD3F>
- <aqqjW5dpyznijYLh@gremlin>
- <aqqk89oTigJ9LS2N@gourry-fedora-PF4VCD3F>
- <5437871c-d9ee-49d2-b24f-965c73c29c3e@kernel.org>
- <aqquDtEZL1ndymGN@gourry-fedora-PF4VCD3F>
- <46d923e6-5724-4df6-b0d5-8dda7c547f6e@kernel.org>
- <aqqyhkZqcXDUrzeb@gourry-fedora-PF4VCD3F>
- <4fadcda7-d96a-4cd9-9b0f-5d387b6f82af@kernel.org>
+	bh=8rNAbUEn+P2bvvYOlZ5debpHxHDk94L90O6Ky42mqxw=;
+	b=dzFvkV3lR0++fjkbdTFtQiIwwKFOIxmmmYW/D0MY2SSHyblWXE7CuhjxP+hYgKerQqUlMS
+	77jGZpZOIYu00szaLkHUvKt4jwFNW1JW2hR1qPC+rvY3WBP2YFlHcqVNr+fdMKp7+GPtRX
+	NSzSY4fU6MsKTNq9Q14XScyZAbINAPE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789573201;
+	b=h5/b9M/DqRSH/EvnkdOD3SSCWtUy338erWa/xx5zgpYx+Nwsi7SgEYgHUh/Ik9LzAwmcfo
+	SNlsLI9t9IK85F+R4j9IjqtFoncYvYyEX45ALVex/uiZAFTCWTiCk9rFvBwhMRxhIjYaLY
+	oDMUG5fBX0vTaq8+TMf+3WCzMCYZ3Ks=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=S2GkJ7ud;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf29.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.11 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=7tSYx1YNaVm49StAg6iVU/9rtvR8g/9RYPq4x+SxYQs=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789573199; v=1; x=1790177999;
+ b=S2GkJ7udYAy1rj1ZYrcWezocAALqVdwo5zRefftGOE/6y8e9BIQ8quM0fEIK/i8Fhw67S0qx
+ DmkSoXzNoaR+J6Pdxt5NHzZO0Rqzt3f6ZHlrS6EXXu6qoQfEDG65gw5mWOEiYEBwCRW2qmGUbZk
+ HCslw6VmCq3AZASQkAAn4yfI=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta12.migadu.com with ESMTPS id 55f1b8f3b5fd4211;
+	Wed, 16 Sep 2026 15:39:57 +0000
+X-Mizu-Trace-ID: 55f1b8f3b5fd4211
+X-Migadu-Flow: FLOW_OUT
+From: Usama Arif <usama.arif@linux.dev>
+To: Breno Leitao <leitao@debian.org>
+Cc: Usama Arif <usama.arif@linux.dev>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	kas@kernel.org,
+	kexec@lists.infradead.org,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	hannes@cmpxchg.or,
+	shakeel.butt@linux.dev,
+	linux-efi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	rmikey@meta.com,
+	riel@surriel.com,
+	harry@kernel.org,
+	linux-cxl@vger.kernel.org,
+	driver-core@lists.linux.dev,
+	kernel-team@meta.com
+Subject: Re: [PATCH v5 3/9] mm/memory-failure: libstub: install the poisoned-memory EFI table
+Date: Wed, 16 Sep 2026 08:39:53 -0700
+Message-ID: <20260916153954.1054456-1-usama.arif@linux.dev>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260915-hwpoison-kho-v5-3-3bc7a57bd503@debian.org>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4fadcda7-d96a-4cd9-9b0f-5d387b6f82af@kernel.org>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 7DED840007
-X-Stat-Signature: maoja7nhwjw8xqk1f66cja4im9nm7d7j
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1789573072-983897
-X-HE-Meta: U2FsdGVkX183aBrP4jqKtf/PxCywcUcCJ3lTiZaYF9t2KOarrVdO1m9hB9yrr80V4iolJJ1/wzv/7HmB+jDNoNVfiZOmPmHVQ564s1jP72dy+dkbOyyjIcTCxz6Qkq12Rjl2vpjYfxeWTStmMoK72g7JSuZBZC5bQqyahP4oSjQDa+jpIJMBb/mMcFexgYvBZNTpXijzByuFAk4omTHAka6RD1scN83sQFz8dT2FYRG7ZFu1VHrdYEZ5Xl4DLvmVKWY1W5NS7WzBHN7lL0ljaezwRHj8bRMfvOR5Nan0050G8d3R2zRtbVZL/ptjiSMRAR5Gs8nVboNYdv2DHUuP6AKhZJcU+niv3W1cKsplMfp25JQDbK2r9RFPr+WpWU3w1jNNl74H26N7Voa7d845Xqtopu1l+sDauxxEZwbH/h2UhljjvcVGeRLp+oAmYpGG/P+CCG9W3xVoKZCi/wFFOzM6vt5m+6fgD6AkQ+9a5l5rWeWGXdOlXL5SlcT5kd/u9Ha6EIjIBnJPdEcgPOrNSYHI4q5EHwmTb6vYocCQJszlU6OCXX4MupsnYwiUgX7lVWu7DMFzQ683wLvLGzLdwnEsPzkDhcmz2T4tDIkYcejb5cNawXxtgQrfQo8ctnJe8CGF3JAQ0zSuLEB0pHh6swcBJ0jOQAxQMgnLMwHuSxAupF7+2Fm59DnGtV52aQRht6WUbWqQWogJ20aPlmprlGymftRuxOtTmOMar3+nXZ0WfFsdQDmkSy8jg3FkOUL+5J4vBAhhV4lFtuQnfElZbGteXgLJjY6Wu0JxBgzOLjeycXq0Vys0x5p/h2hxwlWcf/IC5Pls0MPEmgFZzYR4eB4npLlYQCBgN/Cj3sV5sFPsxqLJfPOr6HwZ3cc6j7JQGkl1GYFTT4QKXgUPdNdFIJXu9A7ZddiIv45fFE2pJ0aYxZDuriKdgKCCkriBwRM5SMpXp9inu2v99hr7isp
- Y7uo7yMe
- eVOILZBorjigqXmUzc7YzFAIV+1eowHHoHswF8fcRL5+PX5ec3KADY5QcXX3OwigGnd3J8VsIy5tujgVj824HLq82atzqr4On/m+Eu4SsFwHbWcMF7L8VYUui0I1Y4NCpJ/EsSKNydf9NFIadiOx3UzxBfAhFPthjH/FB12IZzWtc0dNkd3lF1+2C3ztyjyFsE/Nl5sNJfZPhsjh7KEDhUgDCJqth7IaZ2dZp1dYFbA3iPz4FtFsZRyOrsEl7a370zDTET5Kbyl5k1vb6wOUQEbq3ZDvU+KJcZDzpe0f7LSaG8YdwcIaCON3D9mHgspdJzzCM/C8dHjX6a1o=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 074C1120011
+X-Stat-Signature: 9qj36msg91zk7kkrkcn8g3dgqxfabxu8
+X-HE-Tag: 1789573200-432185
+X-HE-Meta: U2FsdGVkX1/0lSIu9Z/P0DYt2slRq5cWPItjHGR2skyINvIOd/0QfiRku4gj23GZyH7zfyFPru4k20tTTS3B5N4ljf9bWDE3WWgRlSreOQazGDbfjElFFfvUkknnlxyZCZUwwQsfZ+87xJqWqzSQ2b7b13QFplWJWR6rT6WfEjJ/BH98y7vyosfvfmjQXGzChQNooZlQEmz8XF4RSU2dFO8A0jIw90DaUgp05mlFjgkwL6sDxaJoXpg2c8TovR/5opKc7VJtTnER9u/Otm5Gd2Saua3OaEIYEXLt7hm4YYa8VAkl9BR0ipvzrMsUrpWx5KEhKgypXWVwIq9y7pzvnzKXSoCcQMV2eb9Zf+6SeqYqUUZuF6lUMWwVaSmdZCTeAogmZv+USoo9MK8D8bYwCcvlNk3z6iqriw5p7gqo73ylqvrYgjHGmYgksuYttk/KqHUufA02bmsu8w/LUcb0JBN6wTS2fRwQluXoi6366qoiY1mR8MAE0R+HXKy7fqAFBdChZ/9fAYsFRmgPTFpM/ejc2Q89JZZLkvdiCvWqVJoHTGnXviMZnSZ2vD4N9+s4rdyXvbL04eaSG2BQ6IF/eze44qf0dPXUhr09Mdxa1ATq5AVytadANbbAzND0WDKe3pSo9+cBx+JFZFzzqFdMsrilQ4XNLM04g5Pwcx43KXk/IuchDMGONtw75B9RYpUJbvELdP06eNWy09aSK06fbRnhSbU62NGut+pxSEFefsdjv0KkFCmcW1kAhCyitCf8QhpzN02rZ4do7rPRja3Hy8sGkMOtKtKlYlvd8oFrFDVEWPrilmM1BAw5do90oTtjwmnlGebZclhrNw+edczGLrZU3Tdoc9seSu8KcVspjY/TLlMEALoeT6mIHVdVIrXmWmo42W3w1vvUm/UmRRoLKIjrYGx3/zB3livRuFl+oFYO8ecpCzZmrcn2JGt16+sGnF8pRSNwojg/ohmXC+R
+ CY+yvqZr
+ ix6RHosnP7L/FBIbLJRvgvKDQ5+A4ezOyD57qJmOqruwc60UpKkSXquwPtSAKTRii96Sz9hfEwOborr371K68U+bKvJWkoqznDkIZPvccSnDWV2lqYsNzByjgOt92qULV2tWFuMQuY11C/YndvIz+Kl/75ha08LKLh9u7DNNWDRq0OmlSzdBDTC4HYGXmWA09z0ikoqVyXb62JhAm3QVcR5tLlT1ex/sagiatUZmlBYlOKWp0GwqCXyf8t17gIey02iO3FeaTWdNrjRs1LSpAYWXDXhyho/ZBLgK74ThaPCZRg85cbNDaZBKQit2xpcDeGsbYYOfsZVovHBc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,30 +124,228 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 16, 2026 at 05:24:43PM +0200, David Hildenbrand (Arm) wrote:
-> On 9/16/26 17:19, Gregory Price wrote:
-> > On Wed, Sep 16, 2026 at 04:59:32PM +0200, David Hildenbrand (Arm) wrote:
-> >>>
-> >>> LLM go brrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
-> >>
-> >> No schlop like that please, I don't want to hate my life
-> >>
-> > 
-> > You missed this part:
-> > 
-> > "I'm trying to be careful about not causing a bigger maintenance burden"
-> > 
-> > I wouldn't do that to you :]
+On Tue, 15 Sep 2026 05:53:37 -0700 Breno Leitao <leitao@debian.org> wrote:
+
+> A EFI config table can only be installed while boot services are still
+> up, so the stub has to create it; the running kernel can only flip bits
+> in a table that already exists.
 > 
-> I just wanted to make it very clear that I don't need another schlopped gigantic
-> patch series in my inbox that I'll mostly have to ignore because it's
-> un-reviewable ;)
+> Size the bitmap from the span the UEFI memory map describes, which
+> efi_get_ram_range() walks since the stub has no max_pfn. Bit 0 covers
+> the bottom of that span, recorded in phys_base, so a machine whose RAM
+> starts high does not pay for the hole below it. Memory the firmware
+> hot-adds later sits outside the span and is not carried across a kexec.
 > 
+> One table has to serve every architecture, and what they agree on is the
+> attribute: setup_e820() takes a descriptor as RAM only if it is writeback
+> cacheable, and so does is_usable_memory() on arm64.
+> 
+> The bitmap spans from the lowest to the highest descriptor that is
+> write-back cacheable or unaccepted memory, as discussed with Kiryl. That
+> leaves out the MMIO apertures, which sit high enough to stretch it far
+> past the RAM it needs to describe.
+> 
+> At one bit per 2M that is 64K per TiB, and 256M at the 4PB x86
+> architectural maximum. The 2M granule is called "unit" here, and the
+> table carries it so the granule can change later without breaking the
+> kernels already reading it.
+> 
+> Allocate it as EFI_ACPI_RECLAIM_MEMORY so the next kernel does not take
+> it for free RAM, and install it empty.
+> 
+> A table installed by an earlier boot rides the system table across kexec
+> and is reused as-is.
+> 
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> ---
+>  drivers/firmware/efi/libstub/efi-stub-helper.c | 103 +++++++++++++++++++++++++
+>  drivers/firmware/efi/libstub/efi-stub.c        |   1 +
+>  drivers/firmware/efi/libstub/efistub.h         |   6 ++
+>  drivers/firmware/efi/libstub/x86-stub.c        |   2 +
+>  4 files changed, 112 insertions(+)
+> 
+> diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
+> index 48f93f7758e9e9..9c66e06c972c5a 100644
+> --- a/drivers/firmware/efi/libstub/efi-stub-helper.c
+> +++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
+> @@ -774,3 +774,106 @@ void efi_remap_image(unsigned long image_base, unsigned alloc_size,
+>  			efi_warn("Failed to remap data region non-executable\n");
+>  	}
+>  }
+> +
+> +#ifdef CONFIG_EFI_POISONED_MEMORY
+> +/*
+> + * Find the base and top of the memory, so, we can create the bitmap for
+> + * the full range.
+> + */
+> +static efi_status_t efi_get_ram_range(u64 *base, u64 *top)
+> +{
+> +	struct efi_boot_memmap *map __free(efi_pool) = NULL;
+> +	u64 ram_base = ULLONG_MAX, ram_top = 0;
+> +	efi_status_t status;
+> +	int i, nr_desc;
+> +
+> +	status = efi_get_memory_map(&map, false);
+> +	if (status != EFI_SUCCESS)
+> +		return status;
+> +
+> +	nr_desc = map->map_size / map->desc_size;
+> +	for (i = 0; i < nr_desc; i++) {
+> +		efi_memory_desc_t *d;
+> +
+> +		d = efi_memdesc_ptr((unsigned long)map->map, map->desc_size, i);
+> +		if (!(d->attribute & EFI_MEMORY_WB) &&
+> +		    d->type != EFI_UNACCEPTED_MEMORY)
+> +			continue;
+> +		ram_base = min(ram_base, d->phys_addr);
 
-I would never :]
+Can this use the architecture's full RAM predicate?  On x86,
+setup_e820() maps EFI_LOADER_CODE, EFI_LOADER_DATA, both boot-services
+types, and EFI_CONVENTIONAL_MEMORY as E820_TYPE_RAM without requiring
+EFI_MEMORY_WB.
 
-But *motions generally at madvise* if this isn't schlop i don't know
-what is lol.
+If a non-WB descriptor is at either end of RAM, this code omits it
+from the bitmap span.  efi_hwpoison_record_pfn() then rejects a
+poisoned PFN there, so the next kernel can allocate the bad frame.
 
-~Gregory
+One possible way to preserve the x86 behavior before applying the WB rule is:
+
+    if (IS_ENABLED(CONFIG_X86) &&
+        (d->type == EFI_LOADER_CODE ||
+         d->type == EFI_LOADER_DATA ||
+         d->type == EFI_BOOT_SERVICES_CODE ||
+         d->type == EFI_BOOT_SERVICES_DATA ||
+         d->type == EFI_CONVENTIONAL_MEMORY))
+            goto include;
+    if (!(d->attribute & EFI_MEMORY_WB) &&
+        d->type != EFI_UNACCEPTED_MEMORY)
+            continue;
+include:
+    ram_base = min(ram_base, d->phys_addr);
+
+
+> +		ram_top = max(ram_top,
+> +			      d->phys_addr + d->num_pages * EFI_PAGE_SIZE);
+> +	}
+> +	if (!ram_top || ram_base == ULLONG_MAX)
+> +		return EFI_NOT_FOUND;
+> +
+> +	*base = round_down(ram_base, EFI_POISON_UNIT_SIZE);
+> +	*top = round_up(ram_top, EFI_POISON_UNIT_SIZE);
+> +
+> +	return EFI_SUCCESS;
+> +}
+> +
+> +/* The size of the bitmap */
+> +static u64 efi_poison_bitmap_size(u64 span)
+> +{
+> +	u64 bytes = DIV_ROUND_UP(DIV_ROUND_UP(span, EFI_POISON_UNIT_SIZE),
+> +				 BITS_PER_BYTE);
+> +
+> +	return round_up(bytes, sizeof(unsigned long));
+> +}
+> +
+> +static struct linux_efi_poisoned_memory *efi_poison_alloc(u64 phys_base,
+> +							  u64 bitmap_size)
+> +{
+> +	struct linux_efi_poisoned_memory *pm;
+> +	efi_status_t status;
+> +
+> +	status = efi_bs_call(allocate_pool, EFI_ACPI_RECLAIM_MEMORY,
+> +			     sizeof(*pm) + bitmap_size, (void **)&pm);
+> +	if (status != EFI_SUCCESS)
+> +		return NULL;
+> +
+> +	pm->version = 1;
+> +	pm->unit_size = EFI_POISON_UNIT_SIZE;
+> +	pm->phys_base = phys_base;
+> +	pm->size = bitmap_size;
+> +	memset(pm->bitmap, 0, bitmap_size);
+> +
+> +	return pm;
+> +}
+> +
+> +/* This needs to be done while boot service is still active */
+> +void install_poisoned_memory_table(void)
+> +{
+> +	efi_guid_t poisoned_memory_table_guid = LINUX_EFI_POISONED_MEMORY_TABLE_GUID;
+> +	struct linux_efi_poisoned_memory *pm;
+> +	u64 ram_base, ram_top, bitmap_size;
+> +	efi_status_t status;
+> +
+> +	/* A table installed by an earlier boot rides the system table across kexec. */
+> +	pm = get_efi_config_table(poisoned_memory_table_guid);
+> +	if (pm) {
+> +		if (pm->version != 1)
+> +			efi_err("Unknown version of poisoned-memory table\n");
+> +		return;
+> +	}
+> +
+> +	if (efi_get_ram_range(&ram_base, &ram_top) != EFI_SUCCESS) {
+> +		efi_err("Failed to size the poisoned-memory table!\n");
+> +		return;
+> +	}
+> +
+> +	bitmap_size = efi_poison_bitmap_size(ram_top - ram_base);
+> +	pm = efi_poison_alloc(ram_base, bitmap_size);
+> +	if (!pm) {
+> +		efi_err("Failed to allocate poisoned-memory table!\n");
+> +		return;
+> +	}
+> +
+> +	status = efi_bs_call(install_configuration_table,
+> +			     &poisoned_memory_table_guid, pm);
+> +	if (status != EFI_SUCCESS) {
+> +		efi_bs_call(free_pool, pm);
+> +		efi_err("Failed to install poisoned-memory config table!\n");
+> +	}
+> +}
+> +#endif
+> diff --git a/drivers/firmware/efi/libstub/efi-stub.c b/drivers/firmware/efi/libstub/efi-stub.c
+> index 235c9738da2d63..22a315e2814a1a 100644
+> --- a/drivers/firmware/efi/libstub/efi-stub.c
+> +++ b/drivers/firmware/efi/libstub/efi-stub.c
+> @@ -179,6 +179,7 @@ efi_status_t efi_stub_common(efi_handle_t handle,
+>  			 EFI_RT_SUPPORTED_SET_VIRTUAL_ADDRESS_MAP);
+>  
+>  	install_memreserve_table();
+> +	install_poisoned_memory_table();
+>  
+>  	status = efi_boot_kernel(handle, image, image_addr, cmdline_ptr);
+>  
+> diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+> index fd91fc15ec810b..44436869c4efe1 100644
+> --- a/drivers/firmware/efi/libstub/efistub.h
+> +++ b/drivers/firmware/efi/libstub/efistub.h
+> @@ -1169,6 +1169,12 @@ efi_enable_reset_attack_mitigation(void) { }
+>  
+>  void efi_retrieve_eventlog(void);
+>  
+> +#ifdef CONFIG_EFI_POISONED_MEMORY
+> +void install_poisoned_memory_table(void);
+> +#else
+> +static inline void install_poisoned_memory_table(void) { }
+> +#endif
+> +
+>  struct sysfb_display_info *alloc_primary_display(void);
+>  struct sysfb_display_info *__alloc_primary_display(void);
+>  void free_primary_display(struct sysfb_display_info *dpy);
+> diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+> index 0bae0f06b6763a..3136132b9628ab 100644
+> --- a/drivers/firmware/efi/libstub/x86-stub.c
+> +++ b/drivers/firmware/efi/libstub/x86-stub.c
+> @@ -1024,6 +1024,8 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
+>  
+>  	setup_unaccepted_memory();
+>  
+> +	install_poisoned_memory_table();
+> +
+>  	status = exit_boot(boot_params, handle);
+>  	if (status != EFI_SUCCESS) {
+>  		efi_err("exit_boot() failed!\n");
+> 
+> -- 
+> 2.53.0-Meta
+> 
+> 
 
