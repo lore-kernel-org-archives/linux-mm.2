@@ -4,93 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85472C982C9
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 22:55:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54C89C982C1
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 22:55:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6CDB76B008C; Wed, 16 Sep 2026 18:55:37 -0400 (EDT)
+	id 6CE3B6B0098; Wed, 16 Sep 2026 18:55:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 657B96B0092; Wed, 16 Sep 2026 18:55:37 -0400 (EDT)
+	id 6804F6B0099; Wed, 16 Sep 2026 18:55:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 546616B0098; Wed, 16 Sep 2026 18:55:37 -0400 (EDT)
+	id 56EF26B009B; Wed, 16 Sep 2026 18:55:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 28C036B008C
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 18:55:37 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 65AA31C0598
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 22:55:36 +0000 (UTC)
-X-FDA: 85221133872.18.04A4BAF
-Received: from mail-oi2-f12.google.com (mail-oi2-f12.google.com [74.125.231.204])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 9164B80002
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 22:55:34 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=YV2Y+rWj;
-	spf=pass (imf02.hostedemail.com: domain of joannelkoong@gmail.com designates 74.125.231.204 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789599334;
-	b=ETkIg7SrGE1hOVZaaFpC/fasCM7z9z37EpaOqzYPtOsbh7e0gJjShoSigPH7Nm/4dXJH17
-	jOXM1r2NnzqOFOWkKFTWiyYpUDthv4sIVpP00BwK/63Dalyeph5gc4ymRpIBpnHePaiQrk
-	FMNThb1u+GTo6QW0yST47DuSgxhCC7k=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=YV2Y+rWj;
-	spf=pass (imf02.hostedemail.com: domain of joannelkoong@gmail.com designates 74.125.231.204 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 2C0236B0098
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 18:55:54 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id BBC7F160195
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 22:55:53 +0000 (UTC)
+X-FDA: 85221134586.01.CBD3AA6
+Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 1F60CA0004
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 22:55:51 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TgEXbY8M;
+	spf=pass (imf15.hostedemail.com: domain of joannelkoong@gmail.com designates 74.125.230.205 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789599334;
+	s=arc-20220608; t=1789599352;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gODPpc0D3faf2BH7sO0ryHejlY60ik6Qifsk28IBlL8=;
-	b=tWXeBxR06mUdqanO9+mGXLXsm35oNDoZ35M6CpoBWOwMKoRtfSwsuhRf2EJJ707UcRGaOE
-	C9+fOTZZk8xELKTQdbfEzL9zpqx/nyQDwWrT9kVp4Ot2AI+OSaxWoji8FyhmSlIREqRxf8
-	o/5iw8jTqNStAIRGd+ijix/EzmO2PzQ=
-Received: by mail-oi2-f12.google.com with SMTP id 46e09a7af769-7fcb425fb68so142002a34.0
-        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 15:55:34 -0700 (PDT)
+	 in-reply-to:references:dkim-signature;
+	bh=2eUVOCI5+eWirt1vw7IRjVEOaV+AYfQdFXP1BlZzklc=;
+	b=SkulzXktTer6hwgJhHhmPokgQj132PuykAOQq422mjpxN5cnTjAmXJdSOrBS1gxcW+pnsy
+	d/0a4qLJ50/DacAaaCfncy3EBsNPppKGzadwwgwTepbKkfH5NIHkReg0hvmOs1LcIDQSiO
+	G2evy5C8Df7frMJXe3jtMn0GAYOEM1E=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TgEXbY8M;
+	spf=pass (imf15.hostedemail.com: domain of joannelkoong@gmail.com designates 74.125.230.205 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789599352;
+	b=zcDavWhKaVJ6k4odzkSVtqP5cQjRhplbWD9WPFRkQR9jy0JOi6X7QCAi/eurV5E1UnDl4L
+	RFh4iJwon4grWxu9M7va4taTUcnsFXymMq9C+nuQI5W7xPzx+hmAmkMCEk+ng9byTFSd0S
+	pS1x04pTE1cJsmEQsFzYd/ZGzL59mps=
+Received: by mail-qk2-f13.google.com with SMTP id d75a77b69052e-530e2f50d01so1760781cf.0
+        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 15:55:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789599333; x=1790204133; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=gODPpc0D3faf2BH7sO0ryHejlY60ik6Qifsk28IBlL8=;
-        b=YV2Y+rWjHC5rdW6qiy4WURZ9ZtKVMTLIknetR8BbQ8tKD/4ZF5IzoPAupkI8LM651+
-         DfFdnEEkMmMFbh7OUBxInGc739BHHNccnPz192uf/e0FUcHoVrx1TcmIooUR0MO4NRVY
-         5t0+bXUAB+TflIcbYBDjWEZy1ouWFbba3VSgT6EREuQFYZN3upPN2YqT0gJ8br0Zehfd
-         TiQEFWWKAAnFSREYCAmA8UrTRYEoFlV7lwo2DysO5zuBc/f/Y6izZsnECgsf7e3bi+Uj
-         Sb6ZJRHpLncWNFFgIgpe696ZO1fcbA98Kxw8o7i5VyF8K6Jru0UMMM+B/AswTW5pUgbs
-         t1nQ==
+        d=gmail.com; s=20251104; t=1789599351; x=1790204151; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=2eUVOCI5+eWirt1vw7IRjVEOaV+AYfQdFXP1BlZzklc=;
+        b=TgEXbY8Myje1jvwEvKbX9Encyjh6cTQUPXBr+w/D8xnRzlbsmR4J0JcXBuSzv5kOh9
+         mZn5UIcDFQFcwPe3iJPA077HVizuC4acKfH7yukAPr0Opqbm2VTHCi/6DmubsUkP5wG3
+         uVdFkmVSq0QODjdZoryyChoL6TlN03GvCC4fDods7CE9BW4UgK46HiVys+DqKw8Mw2hM
+         13to7kSIEKk8LFH5zZULOY600gw8VbAXOcmQLsjkVUQe99kBXCgmn0StMN30cbRLikqe
+         gfQ40vghOmBbeMNESVnJrQUnxbJGyAAzTMuHSe9ZgcQUwtb4FX6gE+FtuyQO2zv0Z5xR
+         iWKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789599333; x=1790204133;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=gODPpc0D3faf2BH7sO0ryHejlY60ik6Qifsk28IBlL8=;
-        b=s/ZsBSK8x21bmhndzQ0BPGc86Ap4oO1kB9f5e9JfFZNdu6tyBvesKBAd3Xlt6Ji63a
-         bwb7zCq7wlszj2FnewWyB/vxu/GS7qfIMbfUrCcQH1avE0Xdqj7qIPXKKm5GaLz7TjjK
-         7o9jOXVXGkq12atvEIyCuDc9TYrCfJLFCI0B8jUrqU88fpHy338z2xZ7HYmP+cLcjOm6
-         ZnH+gwYtEGqLT2xo5j7wC2ihP3Udf8un6vMZA4oLZ/m1HBL/QT+Bjn1lMC7Qvd1Prv65
-         WfU4UiL5rI0lN/X+jFyGY1wb/c0/CBrCwluos58oCxkq9fjx6/nJdkcwdYyB8PEI48fn
-         0Uow==
-X-Forwarded-Encrypted: i=1; AKwUvBycoLY9JaFNHmZT0L5wQdfpHh08AtnDd6MJYFAwMSjTailuJ4aCovW7hUhQbMBhl93CsrV5T5IHkg==@kvack.org
-X-Gm-Message-State: AFuF++mtxvWz0zuoO3bDpgAy7ixnVBgZLlP9NUbKyPD5NEe3epzFo1Ee
-	psdt48FOxw4SVkDkJgljsVMkrG7WKo/FBOHT7AaGR3M3tjY1gUUfWkv3vMciJA==
-X-Gm-Gg: AYBFou1jP7dO2k0ranLuwmRhOQ2uzj2uRf3NPPKMouvoOZbmQQX69gs0FQXJaiClIZx
-	5eCE8av040nzYT04bHv/sYWDoO6NmYKWu2nXWyixD6G/Dab628bwkb+ZqGtK/e+LONAxZj4Jhj/
-	uxgv6oSwlf4PVfnDqoWbNPbJWBVYvGbipdLSRwxfvbMAvxFglyoziV2DKCJyDz2o79OO1DtVurB
-	3v7gNcG9oQk+/mr1IZRAe7RhsNdw5GEV5m+Kfbk61oLKeaL6+unxy1hjIeQduqrF5in/bkAn/Uz
-	ASGyJpBk9SDpaEwSn9Q+tXJTHmS6FW+9IYLUBJY/qwXH0Z55wQU8Vd8gIpXF3V+eLWX2F2SYI6/
-	FIh5H23nuDwqL8/Rpxg5k3a4/TVlkdBklJVVIqSwCNdaw8+HHXY1CVQtyEUGzlUPas2jRQG1tzq
-	S8+Xs1mc1M4BkyQeT0ixk95Z8IbcYA0TvXiAwQlFGnjIIgI7Gegb7p2ZjjEZageIx9is58yzOWP
-	DieYDCo2DAuQJYGXEg3jpRzmPZ7d33ScA02zhzvw4QzifXDI2k=
-X-Received: by 2002:a05:6830:6815:b0:806:e047:cd7d with SMTP id 46e09a7af769-80b2c28e95cmr4952106a34.7.1789598915663;
-        Wed, 16 Sep 2026 15:48:35 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1789599351; x=1790204151;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=2eUVOCI5+eWirt1vw7IRjVEOaV+AYfQdFXP1BlZzklc=;
+        b=mgOH6p9QXNJk8vefunmeT/ZkguJT+mqbuqAXjZW/QTtM2cBEKxszaBEmAKymjmlFdE
+         w7ZLbtDrnHvZAUo1tZrqRIdsRAvBYJK+Uk3qEwMwHDA6medf63MOrEho7sE2jgs4XGkv
+         XkZ7oU1ctsu3ZMyiBtbJ8cdYMsYLtImdZh6chQ47XJHDwHah/h/a3p6pZGo+XqMv8lDW
+         9GQyhxSuuvG9BfXMLE//Uv2x22ojIYTWOBwgvLccvgr2FUmnnHnoqGROlGmLA9rL8Vax
+         JQtlhMkySswHJKJQTuNdHmNdyJ1WE94RO7qaJXBz6A39vj+eBC6TN7VMmmMNDwg4i9Mv
+         kMvA==
+X-Forwarded-Encrypted: i=1; AKwUvBxprUwyLSKniXiqwp6TNbR7Eizri4BjDroQ9Yiy9A/ivDKpRxZYHkSpqNJyiuIT8oXjrkm/zWzSQQ==@kvack.org
+X-Gm-Message-State: AFuF++ka+hNAxEdEJitNxV9LKNXhwOb7XX8oGMwnkz2C+hp2o8qr6ND7
+	RKPmC1HN21bw5PcvA/wuSztVxMucNmFrV44Yif1xGYTlJNddVtuOU+zj/lL7vw==
+X-Gm-Gg: AYBFou2mNtYpnYVTe78OxrSZRlG2ZAAqsmWh00kwNgyZpvFGz6peGxaWhCkM1ZoFPEv
+	i9UH4VHIhYkNT/gP5fFNBHK0vxK7gLF7ClWTF8EOaoKBTpsyiN+aRiKGBnfJgzNVtebjSsG9MMG
+	ew3Qa2VsoiqOMd3q3nhvqFqg/rkb0HyX56SYQZpMJVhxGd+MlAzEEJdCvF4UtzRMGNPsNoqC81r
+	V9uUOvctN23SE4qPlsHJzYpNY09wFVIm8yDZ6nq6m8CshwEN8FG95q8C7NIw61G/K18NaXZ40CG
+	XeLRfWmR88WrQ6l3rQS20IlqsrYN4B/PdpBez4k0hOHyojbr1qx7myWHkaPJs2m9+TbsD5aJ7UQ
+	3WjtAMYhrjvZUm76T8piHQcHx9Ho0meSU4npK4khkHVzq9txFtt6C0x5IdUk/XENPo2WvE8GTLE
+	UkMJC2Y0mBSddshdTp7jMDAgzNobAmlwhVMDO9fx2aDYTyPeXwllW2nnf7RGDmaESkeK1RU3AYg
+	bYcUKPvDOiVo52DKI6Ix9pgL9UirXJBay2fJoR3cbOfZmB/tjI=
+X-Received: by 2002:a05:6808:19a2:b0:4c3:7073:8c4d with SMTP id 5614622812f47-4ca4be646ecmr5210481b6e.20.1789598906677;
+        Wed, 16 Sep 2026 15:48:26 -0700 (PDT)
 Received: from localhost ([2a03:2880:ff:4b::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-80c46199e96sm1154633a34.6.2026.09.16.15.48.33
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-4cb6d16d9f5sm1117571b6e.11.2026.09.16.15.48.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2026 15:48:34 -0700 (PDT)
+        Wed, 16 Sep 2026 15:48:25 -0700 (PDT)
 From: Joanne Koong <joannelkoong@gmail.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -112,22 +111,20 @@ Cc: usama.arif@linux.dev,
 	mhocko@suse.com,
 	willy@infradead.org,
 	linux-mm@kvack.org
-Subject: [PATCH v2 2/3] mm/huge_memory: don't queue folios that can never be underused
-Date: Wed, 16 Sep 2026 15:44:36 -0700
-Message-ID: <20260916224437.1164512-3-joannelkoong@gmail.com>
+Subject: [PATCH v2 0/3] mm: split underused anonymous mTHP folios
+Date: Wed, 16 Sep 2026 15:44:34 -0700
+Message-ID: <20260916224437.1164512-1-joannelkoong@gmail.com>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260916224437.1164512-1-joannelkoong@gmail.com>
-References: <20260916224437.1164512-1-joannelkoong@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 1F60CA0004
+X-Stat-Signature: u69363n7ac9uh4bhtptjxu1yjtsh7yo3
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 9164B80002
-X-Stat-Signature: ydnfargnxbaz3en55x3bfqrmc51rntbi
-X-HE-Tag: 1789599334-785824
-X-HE-Meta: U2FsdGVkX18rKIp3p+Ud2HTX+ce9i2E2rMhPBlKPhwlsdr3EU2UW3spa7FTOjuDx31ihsGLWgcnxjmusKIvPwBC73F6owEy8ZkfBkIN6KfPx4ZAVEmel9mnm5ud2Rs3UPLr527Br66ju/tavKCKKPQaFH5fBtoqVxbO5n4Vj5C8naRxk3/n8RAQRk5DYiCP0kFByw0SWJvKJzfnSUh+SAueV9ZEzGapfpUa7Q3U1ociL1XMk4mpWRZE2OK/nwknKLOgJzuPl47YEsoD9hGsaJwsTorEkvpjGHGn0h5Nvh3t7pVP5I17361Y3JQ6hfLBXzel+cofRmebKYnMDj7IkucXOIB0sNvSw7JeRW7+3GSNeGDX3uitmyejEJPw8IALpYJai8/WC0Vm/dbf3lShU+5L4PhYo8pSlfxV7hXYLDLkS47f7a0iURdO9oGj15eFNhJrvLwaRVVJfk9CY9IVfVDDD0PO7s2R7m8mvCKuJwuAZP6PRgCBLdoMPLjrD/oxpgAoPHV19t6pVl0kZEM7wKQOc1GGyZv4ROAmOj5CozfGUEbCZUu1yv7z8tgsgep6Lh5T7u7taoxCT+TX6J7l8ppUGB5pXG1gykJSzJGd/Gz2Jez032JW//j0AJyyDONhITTJjBe+MLEO/K2MGRyOhW9fjJuitfPgtFc5NQ5BuYJSOh9Wt5l0oqgS3BhHAmsar7/DSBEzRc8LQL1lrWzah4z6QExI0JRM09Br3fIz1jDJUDqH9gTBMi3pvBj/qZtVovUsqDWW3SHDvcf71obb7Gqh7ko2SAlxCimzl8/jwnerdAeaMV/THJw9bsDwpRCdDh3XzlMd38q6mHg4kBHG4/JE0WudmCYJv+nOoZC/QlxWU8DlYkuCs4hvW2aOP6TyLiClhpdTe5auwevufb6eJ8r7QM/ovq98EwUpcFgqSQfSjd0QuChqw5UNzZUkfdmu3r8cXHn7Kng8wbiHir02
- Mh3t3KR5
- cxtX83UEZAK2IIvwxNMsT/JOlZVME3/RP6eo4sueFpVxEbF3vdTyP+q3lSa+lEzPcs+niF8CVLwvK1rsHLCueL4dkgZHOmv3GGNlhpjMSe+efYEqNBdHSNphZCg2nGMTChMxoWlIoXrTXb8KGlEZJdetLd9uGBOkHnCr6QXn4d897bb04s1pSFsO4OhT3+fsGpmz5FfVYVXmwNl+4Y3N7KRjB++V1K6VX1t4dnqLARFOipgbfFT0M327KcLRGno+L+y3VI4/E7PNhgrCEt+m1mXA9yD00L3Ws5FVOq4bZxK7JzocAx1XGEdXxduDrQfAUuGYgqh9d1bq0I4AkARl5fcicFWhRtjPpw4Latc+BibLv9tLHr9Tk05B+8csZi6VYkTWYoeYCMhS1ZpfEMpN1FJ04S/H0UY7whw6EGL61gP6l8UnbtU9hpFwXmihOBFKbqyr1JNeVs03Y6f0KxPSqvwDinISLctSvjs97+/5SaBkQVuV1v3o1xM30SGL6weirp6RI48D+w8PDQTRG88J0yNT+4WfSQKkb+BvjGjAq7QCRt7sY8HKvbkWm8AWLypUUmVrw
+X-HE-Tag: 1789599351-846545
+X-HE-Meta: U2FsdGVkX18MYYWSEauJIz1pgQ2KrKw3xJjrAgZYthiF5RBSRU26/mo9e8pQhOrN+TjvmNBNo2ruo2l7K6aCMh+IWm2cjrkbUKY/0QTp9U/or7P6cHYDLPZ5Wns8UfZwYTrkzelCiVD4NmGG8iaViX5HlXrooUMKkmu31x41Lna4n28myxktu1Mb/X+XfqFqoCjM7nnjzNtuD0fGidg4BRnTaoR+ygdDCmLtsk4GzE3cmYGuEF8cihcYTdTrodNUgoxt6lDmeryJnpeSQB0dffgtTQArGu0jxEF3J4wRI5Jt8fQF0ogj1PaSZlVbczoPwQy1F5bFKykwEeovW2Q6NeTCLAgDONqwaljIscf22APWJxuo8E5xiT0KvrbWml2qMDmAwCbgZRTvjBZMFczTwQboGWi2x0WnsjlSfEBSdcKDKgoQupzfOAQbnn2YcwfAo4nmpOcbfajSv3Qm5XMQzHDAn/TiGSdAIoFUHKkT/IgmDZeUdtvAjJBlUZtE5pH2QUWMihKVoXmGlcgyHevgzUsoL/Z9axdTuvQZ4M4uGEYw50t+CRl4/MeP6w///T9ROzZ4r/mHp/CDmzM1Q9ka95RddfV07Y6pxsdia78E/zbf8uMrLlxTnbWTv7A9KyQ+mso3p3OqOhhA6MPl6igiBsEtY/lFt0HGAtfCZj5o7/3F+PlE/hfo/taBSOPB7HQgkYaDw3qNh/X4z91hTCQdQEZSH4jcbwB++Wd1hiU3Gyh1seq2VMBa5ZfjnBC9fdBcGtIl75TOoWvs3xhB6BAsVOKFGPXaDXRm7CaUzkS0Y8JSfXoYaSPRjQTykSkN9jdazZKNLK0ojlxfRQllHjeXfwT8GJhsrBTnCJrryo8q9AIPAOH3mXPYCv839Fg9yUT0mLhCUXG/rTM9fZyCpL0w17+XSTHC3dLm1XrfXIGhUvIBtAogCN1+tYQYzUAZht4ZiTc6TBKsgsMszkvW2E3
+ VfbcZ0Vw
+ D41xw0q6J0a9VO7qAqPijb1CklpOs6AVBTNCgypnijeY5xQYuN4L3/dJqsuYOPkjUlKPTuu6lvwxKnKBavLrdaOEP3M270cFDnzE0n4hClrQMmSCJhIjoB+ElQTtFOQ0AeJLZX2OoOm+vEGI9x4c4L0aBJFidN049YK7Et2iy2+KgCkuOvbFDdCr+8j0IYwM15G6+E1gyea6g1Sl+rawymnfsmikjyYlH4mcBUZrzT6VCYFScXbJ0PJunwZKYHhY8NDsFCrah1m8jFkA5QV/E9fgkC7KN7pw2xwlLR0Ve82asztn2PnILjMkL/D8VrWSZjMgtzsp/+n6qEiDvOI7Vw32yTw+fbiEVuThImbm5+NMvX+lI0q431awVF6BSSy1VqIxPr6hwcAnRuvUjdE78iv4MHSpZTbLnvPznqFmMTrH1wMick6eSgnHhqqR5ou8fEJB5MT2XBMKvgMkApGFPqWChpO0p+O4hz/51+njyskBTSKY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,62 +132,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Every anonymous PMD-sized folio is put on the deferred split queue when
-it is first mapped, so that the shrinker can find it under memory
-pressure and split it if it turns out to be mostly zero-filled.
+PMD-sized THPs that are mostly zero-filled are reclaimed under memory
+pressure by the deferred split shrinker, but this is not done for mTHP
+folios. At Meta we would like to deploy 2M THP=always on arm64 with 64k
+base pages, as 2M provides the contpte benefits while the PMD size there
+(512M) is too big to use. However, 2M THP=always causes memory regressions
+unless the unused portions of those folios can be broken down and
+reclaimed.
 
-With the default khugepaged/max_ptes_none this is wasted work. The
-default is HPAGE_PMD_NR - 1, which tells thp_underused() that any number
-of zero-filled pages is tolerable, which means the shrinker will never
-split any of these folios for being underused. They take the list_lru
-lock at fault time, inflate the object count the shrinker reports, and
-are then walked and dropped when they're first scanned.
+v1 did two things. It scaled khugepaged_max_ptes_none down per folio order and
+it queued every anonymous mTHP folio. David objected to the scaling since
+collapse had already rejected proportional scaling as either letting the memory
+footprint creep or being confusing to reason about. David and Barry separately
+objected to the queuing, which adds list_lru lock contention on every anonymous
+fault, and hurts lower-order use cases such as Android's order-2-only
+configuration. Johannes suggested keeping khugepaged_max_ptes_none absolute and
+simply not queuing folios that could never exceed it, which addresses both.
 
-Skip the queuing for folios that thp_can_be_underused() says can never
-qualify. At the default khugepaged/max_ptes_none that is all of them,
-and once the knob is lowered only folios with more pages than it are
-queued. This matters for a subsequent patch that adds anonymous mTHP
-folios to the deferred split list, as it prevents small mTHP orders from
-taking the list_lru lock on every anonymous fault.
+Read as an absolute count, khugepaged_max_ptes_none also implies the
+smallest folio that takes part in underused splitting. A 2M folio on 64k
+base pages is 32 pages, so the knob has to be set below 32 for those to
+be queued at all, and any folio with no more pages than the value stays off
+the queue entirely.
 
-Please note that the queue has always been best-effort. A folio that was
-queued before khugepaged/max_ptes_none is lowered gets dropped from the
-queue by the first scan that finds it's not underused, so changing the
-sysctl has never retroactively applied to folios that were already
-scanned. Requeueing eligible folios when the sysctl changes will be
-addressed in a separate patch.
+Patch 1 makes thp_underused() folio-size aware. Today it only ever sees
+PMD-sized folios, so it assumes HPAGE_PMD_NR pages throughout. Patch 3
+breaks that assumption, so patch 1 generalizes it first. No functional
+changes are introduced.
 
-Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
-Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
----
- mm/huge_memory.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+Patch 2 keeps folios that can never be found underused off the deferred
+split queue, as suggested by Johannes. This changes/optimizes existing
+behavior. With the default khugepaged/max_ptes_none, PMD folios are queued
+today and then dropped again by the first scan without ever having been
+splittable. After this patch they are not queued at all.
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index c6ca2a541128..e3349f2314cb 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -4573,8 +4573,18 @@ void deferred_split_folio(struct folio *folio, bool partially_mapped)
- 	if (folio_order(folio) <= 1)
- 		return;
- 
--	if (!partially_mapped && !split_underused_thp)
--		return;
-+	if (!partially_mapped) {
-+		if (!split_underused_thp)
-+			return;
-+		/*
-+		 * Nothing will ever split this folio for being underused, so
-+		 * keep it off the queue entirely rather than paying for the
-+		 * list_lru lock here and a shrinker scan later.
-+		 */
-+		if (!thp_can_be_underused(folio_nr_pages(folio),
-+					  khugepaged_max_ptes_none))
-+			return;
-+	}
- 
- 	/*
- 	 * Exclude swapcache: originally to avoid a corrupt deferred split
+Patch 3 queues anonymous mTHP folios from map_anon_folio_pte_nopf(),
+mirroring what map_anon_folio_pmd_nopf() already does for PMD folios. This
+covers both the fault path and the khugepaged mTHP collapse path.
+
+One consequence of keeping the knob absolute is that it is shared with
+collapse. A value low enough to be useful for 2M mTHP is a tiny
+fraction of a 512M PMD, so khugepaged will only collapse to PMD order
+when the region is almost fully populated. That is fine for the deployment
+this series targets, which does not use PMD THP on arm64, but anyone wanting
+both PMD THP and 2M mTHP on 64k pages should be aware of it.
+
+Thanks,
+Joanne
+
+Changelog
+---------
+v1: https://lore.kernel.org/linux-mm/20260707201735.4113107-1-joannelkoong@gmail.com/
+
+Changes since v1:
+* Drop the per-order scaling of khugepaged_max_ptes_none. Keep it
+  absolute, matching collapse (David, Johannes)
+* New patch 2 (suggested by Johannes): don't queue folios that can never
+  be underused, which both bounds what patch 3 adds and stops queuing PMD
+  folios under default settings (Johannes, David, Barry)
+* Fix the thp_underused() early exit to scale to the folio's own size
+
+Joanne Koong (3):
+  mm/huge_memory: make thp_underused() work for mTHP folios
+  mm/huge_memory: don't queue folios that can never be underused
+  mm/memory: add anonymous mTHP folios to the deferred split list
+
+ mm/huge_memory.c | 45 +++++++++++++++++++++++++++++++++++++--------
+ mm/memory.c      |  2 ++
+ 2 files changed, 39 insertions(+), 8 deletions(-)
+
 -- 
 2.52.0
 
