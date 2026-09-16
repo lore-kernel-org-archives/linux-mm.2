@@ -4,98 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67740C88E7F
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 19:24:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C00CC982C1
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 19:48:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 784276B0092; Wed, 16 Sep 2026 15:24:09 -0400 (EDT)
+	id 73CD66B0088; Wed, 16 Sep 2026 15:48:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7351C6B0093; Wed, 16 Sep 2026 15:24:09 -0400 (EDT)
+	id 6EDF46B008C; Wed, 16 Sep 2026 15:48:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6246B6B0095; Wed, 16 Sep 2026 15:24:09 -0400 (EDT)
+	id 5DCEB6B0092; Wed, 16 Sep 2026 15:48:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 414A56B0092
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 15:24:09 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B83F71C00B9
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 19:24:08 +0000 (UTC)
-X-FDA: 85220600976.16.500DA26
-Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 1022040008
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 19:24:06 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of 31uyqagkbALcpvwhXiiboXmmfa.dlldibrpboZlkqbkq.Zlj@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.200 as permitted sender) smtp.mailfrom=31uyqagkbALcpvwhXiiboXmmfa.dlldibrpboZlkqbkq.Zlj@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A8396B0088
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 15:48:46 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id EBFDFA0104
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 19:48:43 +0000 (UTC)
+X-FDA: 85220662926.30.1B6A11A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 5ACC120003
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 19:48:42 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G+TcsGVv;
+	spf=pass (imf13.hostedemail.com: domain of mason@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=mason@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789586647;
+	s=arc-20220608; t=1789588122;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=gGav+E6NmhUVSh9XUjVdcV/Auw85chnTv3eOmsCDzNk=;
-	b=S4Bp5pgCzwDeAuVGaWX7D3sPk0m93IIKi01s6CBH8Y8Uafnwl2lA85sgWASqz95fxnf6Ep
-	pY/GIGBE/8GUCxT+2z8LiyHW3qoH8Cx/Ad38Rh1z5tZ8SODzod/fmoNeNFl9zt1GFIeIiU
-	xqC6c5iyJVGdt7aKUDmK8gIvjqoHBW0=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=7lUJSxEgNohuUAfwQ6ykoq54FcKmmAc0TQEIhkx3s6I=;
+	b=IfZFrrsXHHy5xvMwVVIp7naXqkzzcdi1qAJBwqIKJeM7lgxewEMdmjiyxAjXW04o04i5/K
+	LQBmECjH6Hm0vFnNlzxgWVKsuag4Djfutd0uX6aO0/0m4BfekOxio/YEPZCLp1ZOGd88cS
+	syMIa734KsEaewcFqLmbPYZMpsau4gg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789586647;
-	b=J0veSC3cSHq17iUbSHiuNRQDctUlPU9Uwbo04RaXRTPtFRUsQix4WLxkuc4QE/OXI+jyQw
-	6L7yBA5k7IiYENMO/K1AIGqvChLmMkvaOBAxtAjxmERhgN2mvrRPnZU3cz8lkhsOzr71Ta
-	XNcsDxfqvV9ygHf7w5jMWUkqup0Ils0=
+	t=1789588122;
+	b=qs7PA1uw1pv0L8XD6s9+l8MgwVm8qf1M71YmTC2vqE1PQk0zzsasA9Jb9B6LkNFcOl8BzW
+	UYn0svCFLYmYyDPW0ImlWrIoS4/rr0V8Zk4rKLET94GWQdJETsnXtgcUY3FqQT2/q6rl0B
+	Uc9rKZcfYVavUHpaMCGhsa8HaKizpgQ=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of 31uyqagkbALcpvwhXiiboXmmfa.dlldibrpboZlkqbkq.Zlj@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.200 as permitted sender) smtp.mailfrom=31uyqagkbALcpvwhXiiboXmmfa.dlldibrpboZlkqbkq.Zlj@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-4a41f46d629so152668b6e.3
-        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 12:24:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789586646; x=1790191446;
-        h=content-type:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=gGav+E6NmhUVSh9XUjVdcV/Auw85chnTv3eOmsCDzNk=;
-        b=X8mRsEX+9rw9H5BCPEgEUfOgtFn3MZdK9v75t8MBBYq0diRptuNDbWowccIvVRJ9SG
-         aDw0i8ave+UKUI4AHblPoJpaSX1ATAwSjSFAUaI/TZRiyLrqUhkxAkMuGhwV6CSFLn2R
-         jnWuwcyh1fDxEysu2SvJMR0o4ylxlTMkbV1n4/0wEG/2n5/A8DOgfGTG1B5sErFBB0pN
-         Sb1I8ojJ26sBwZZ4aEizctH+KsqSlXptNq7wYDJg3onX2oJVQI1xj/hkWx410R66lz0N
-         uLoqAeFph2anmWjvUFlaJuBvAdlSsuBpoffq3COsnYV/fssTKIDQkMhutL2ddQxLQXRj
-         nB+w==
-X-Forwarded-Encrypted: i=1; AKwUvBzxGB4OL1fLEfrdJg7vPaL+AG3fjjGF6PqR9RfptR76e+ZY6hIflx1MBF7my2vb2ShlvszStCLEBw==@kvack.org
-X-Gm-Message-State: AFuF++knboO6ug2y+jAz1HurQbx9fzuOFRlC2yIExGE0PT/9r96d1VNJ
-	btfJHVzooGpDhlGgRD1DD/qQYIvfTiBud1UczTBzpZ5EQ3udxqFXpJwPnixPl7uCiei6pfw+Gl9
-	4HojSNga6q1XAuxyDGxdlW0YMQSrEdV5QeHtcpMgxmHypbKb5z/2hhj2cmgU=
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G+TcsGVv;
+	spf=pass (imf13.hostedemail.com: domain of mason@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=mason@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id A95246022C;
+	Wed, 16 Sep 2026 19:48:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88F031F000FF;
+	Wed, 16 Sep 2026 19:48:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789588121;
+	bh=7lUJSxEgNohuUAfwQ6ykoq54FcKmmAc0TQEIhkx3s6I=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=G+TcsGVvyTZUrzt4jNFU/fFzltaz3jcKlTCvOTDtO4Ct3FmuHHvRDBXQMWItqnbFA
+	 9/1/aI+IQhhfYqtkR2wldq2H3fRmzhNPxNT+euOaJBpOU41PBbax6N5ErcxGjTMVAW
+	 gESrX+MtDRgAU/lSLfx/LWR8/yoBWWLx60/Tz0D3A+yryguIXeS0gkX/C2leh7eAlJ
+	 O09RuJaQ3K2i+o4TYwM73wlm4sAnr9sX12wQDYe2pWH6mmcqy/w6vOIdpXjFretJev
+	 cQjdcTDwGpn4LgRbdXviWzGuU3yd+Q96Laz8dceamz1pv1/PhB8FxVrLIiI4UsPLf3
+	 VQfpe33Q9cQ7A==
+From: Chris Mason <mason@kernel.org>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Chris Mason <mason@kernel.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	linux-fsdevel@vger.kernel.org,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Jan Kara <jack@suse.cz>,
+	NeilBrown <neil@brown.name>,
+	Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	linux-mm@kvack.org,
+	io-uring@vger.kernel.org
+Subject: Re: [PATCH 1/6] coredump: don't switch a dumper that has no files table
+Date: Wed, 16 Sep 2026 19:48:34 +0000
+Message-ID: <20260916194837.3732307-1-mason@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260915-work-coredump-fixes-v1-1-f354ca41780c@kernel.org>
+References: 
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:1a24:b0:4c3:7695:d30 with SMTP id
- 5614622812f47-4ca4a1dc406mr4599160b6e.14.1789586646123; Wed, 16 Sep 2026
- 12:24:06 -0700 (PDT)
-Date: Wed, 16 Sep 2026 12:24:06 -0700
-In-Reply-To: <aqrZMReaQPG0M9oV@gremlin>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6aaaecd6.4e05fbd6.392abc.0003.GAE@google.com>
-Subject: Re: [syzbot] [kvm?] BUG: sleeping function called from invalid
- context in kvm_mmu_notifier_invalidate_range_start
-From: syzbot <syzbot+c3178b6b512446632bac@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, bigeasy@linutronix.de, dwmw2@infradead.org, 
-	dwmw@amazon.co.uk, kvm@vger.kernel.org, liam.howlett@oracle.com, 
-	liam@infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-rt-devel@lists.linux.dev, ljs@kernel.org, lkp@intel.com, 
-	llvm@lists.linux.dev, lorenzo.stoakes@oracle.com, me@brighamcampbell.com, 
-	mhocko@suse.com, nogikh@google.com, oe-kbuild-all@lists.linux.dev, 
-	pbonzini@redhat.com, rientjes@google.com, rppt@kernel.org, seanjc@google.com, 
-	shaikhkamal2012@gmail.com, shakeel.butt@linux.dev, skhan@linuxfoundation.org, 
-	surenb@google.com, syzkaller-bugs@googlegroups.com, vbabka@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam04
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: kp75cbg3g7mwyhxgu6bnmc1s7ob7kcp5
 X-Rspam-User: 
-X-Stat-Signature: en3omuei7rdqnpih87koq9s1rfb7p3ii
-X-Rspamd-Queue-Id: 1022040008
-X-HE-Tag: 1789586646-129370
-X-HE-Meta: U2FsdGVkX1/4TimiNVQdoHwfiCX78R2eWK7ijiFNF9/XBewTeYktQO4AiNQ9NSo7H1QWqMKWK6T4pS1V4E+UAeyt2CxKIrss08PSz8AkZxAoxCGWgmZPVS4gX16Vuq5l1/uNjkUR0aLoPHLNS4qa/EznKz17aGagm0xAlPe/qMbOPX/o0NSIk8Hw6SX6GEc1RCZZeuAXnbEzgqT78Xy6ugyATynNNMdJZ1PNUpHo6nQih8QDXNhUQYStXWndkSEvLctI9Le2bc4WcmOR4Uo/LRmXB/WmecwDP6Nq6mrVKKrjuIZSfBPicR34G8PWSRfeDdQkV07kiML59ITtKPaaeYanXYi/48KVXHz2JX0tr9phtffsrmofMK4bQzzu2EsgqezWc+cQwNw8HFqN7Oyv+o0rQyLHtj9c45XchzG6rvg+6MnwPQXk0ajfL1krHjMoDDUqynMYcooiMkTgwY/pifsZrxRCJ8lLw8MH8HH5HDhwIOSjcrF/ZHakcv92H37wbGLfET6AFMn0Q9Ykb/UuP/yB/0NsglyPwjgxGrmISZEIgKmMNVa6gtLKHiigFTeEB8yZSQ2JrlyULM54l4IHjwkBHe48PHoKJtBgl3RJXH42pDfec1eL01f9W4Hnxo2ZV1en+xd0/5lRTCS/o6ThSuYZtlTi1YAxU+AEXqh5ceXO8854xgYzZKOualq2Dmmf8QL0vKcm1DFQxO9sKLIP0Lzulh7rQ+pimfGQVuD2RqHYy0pEDdh4m6Jm/UIkEs6r+8O/xkaOwePDXi4StTaFQl2e/zLEOWTtmYpwokcSXaRgG/odya4PxjQJ58jt274SDJ6G7DwYQtjqIwmS63nneQgpnGlQPgrhk5r7io56mghwcrkAb/PsclKSEVcoYl2OpbQ606M6Pi44xtiWFc6UGW8/A4SQCBX/fyMYm1HKHEvmibRQP/e11uJA6siq+duSs8s0HHAYVFXlRnwRvfz
- SXZ/+sB8
- wyn5atSkiV6e5viNHkV9LXLGFYts6S1OxlEqg3fQrJ2jixY8d+PKNSjiS3PouZpxjbna0lRt6EeWQU2EiJ1KWodaPHqQ8RedxqW9QSpWNySW0cyXictiUO69vIvSwFgaoFTs6++sVpT660+IvjV1WAzZVLFJI2Sw44opzTZweRu4n4HiPdGd2Z9FWJ147N8hubFm5nClPFucjcvn48/1YepRgYAsm2wGPJty6myjHcTUWykeJZey2aTettfcZ/EFlYMpGPc2r2OS9ONYmIm5MjqmEjDwVQhaf4K4ptwnKT49nRI0BtTyKewK/qHC4hAiZPLY2Y0JU+yz96dIsDnBaZtMUmSkr/Gzs1Dpkp58EbG3C++TWkfKM/DBoRT0CtRdWsLxhoZTfHdMhe7fCqJN88ZUceRo6X5eB2U7rOz/kayx/mNlYS7Qvg4udWsO6C7TQ6w7xlYRFErQg//IjSOkaDAVetkv/F+6JqTl3QrDXMZj+IOPzfASaDdSRzW/yjKAYla2GOCdZm2cn727mVVmWCK7mOHONv9kvfT/RUlMhjE6Y5Od0bVbO9BBfqDBCFBsdL3Ez5o7lsrR5wxzIVGkMP3RTT8fQUromnh15aimaskuEGncMrt59L7mTWuMyBUeNdZNQgwyGe4g3M7fOQLcHZEVSP1/LNF6bRUGSm4Wdw4tblZnOB/IJzHzTlZ40GdLAA8y9pBlFgm4vNBVk+RXFcSFM+3ukaL/f97x+48CSstktvPaZLWRFMN1PcKCqWRtj6lQbt5Gu0ZrGVT1rgYZjNDUBSQUh3MandY6zAycHtivLjvH0x+PB/iaKyAnct7YGyg6zS+9vd3BUT9+S1jnMWQ96aF4DG3CxFRGTCi46JPi/u4EXNpcrP11MIpLGQQ4sJLDx894w5Rsto0wA3afzu4dqr3RjNGb7j1+0GyL3ox7oPuc4ig51pTOWT8lHQGz2YuKMpHLxUSdAMv/I2MaSLsy/Lg==
+X-Rspamd-Queue-Id: 5ACC120003
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789588122-344786
+X-HE-Meta: U2FsdGVkX1+JzKq4T3sNJSKe+ocw+drLdFJAeqsYl/oRSsRR82m98qXRLrBWiIKV/DX+z+gjQ1kWaMoSzkpeLsvuN27OSd2+5UP7rggDTQ9bY4sidLIV5n2TMVosvR87xEhm0WkaD3cUXbx5GeGkM0u2AkbMFC6Y90DfIwoEEX8y8uI8iMIp19xjUPMslSuGEEs7gwTHrcXJAvqr62c4VMjd+Tq5evKNxktZ19gLriF0if6E9BAuEq/yY+TVwTKHYXOW6OmZXooZuTUS1uMxVJICN+ZX04tDW/fy2lTpHxD16bnzchYZ59ogBozB5hbNc6qGXKacnI47Mx3UPC0FOfGDcFty35C/abJMGIafHngOolezIqmSjAMHmTXWWto77M2KS0y7XLvklCkyyyTCowgbsWaV42BFIzOzDM+6NBy7abRpkFDiYsndp1LZqYok6+r3bC3f7Ni7BxrfJnUUxVbOmjnuLc/uubDl9BGlfQ4P/vpc5pNuyRPcNpoCx5QcbwzbW+bRDSVU7IxeQoFfQWhvS22gk7QeILAf0B0M6nO5wrjCIbEuapBL7xXchVQFMFKntOa45Mr0rZtbxMlPqxpnZDmZ3YpiKLpkz1ofD4S9WCxXU+7FRHkVmCSVoYIRohzmtqKVbfu5FlzniCJWL/jPChEIsgYzMUlDByXJ8TUaSMlN8JuNWOo3/VSyuEokTp5iJffj+D8+ozfcOa/J/rKpIDQnn/ijL0yQBKScKXb6boMXwVr5W3X7CjfasdZ+dYQCiprpA62wkyo7Egz9xP5zvb6xBeJxYTWVZ0x09WwVVD4aXHySss2dOOPXtXxtzZwD+DjmiNuREBlZ+Ua2lK+CboAcAB9pAEyVQQt0YlArBqTKmsbC/wswAsNL/PE3vOVMQAYd0JETr/ut1Xy0bTS+0kXiwQAecM2QRAipNF8cNDQ3b/PbhP3jkx4XEcnujbq+S1QOGvMJhDLgTIs
+ gu064fTM
+ BL8N2IBmD6yRIOx6Z5F9ldIbXxQCYn0NDHNxvHH0mVn3KzjQ+gCfjX9+GhpAnGHyP4VctudyS5aAVLoMYGdcMaPcyeao5VJDrDQfLVOhxQNyL84ZxTpxP0M3o7YIU7viS8Or4lP1Nl6rWQJLeT6Nk2COuQ+xeUDwP0X6u5vAERSj3f4+Arpj2+3Q9DNZx3iEmSrlfFX/rhewPiQI+C8a2rkm69NX9U4HfcMBMtSLp3hIRddo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,22 +99,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On Tue, 15 Sep 2026 12:22:16 +0200 Christian Brauner <brauner@kernel.org> wrote:
 
-syzbot tried to test the proposed patch but the build/boot failed:
+> Tasks without an fdtable are skipped in coredump_close_files(). The
+> coredump client itself doesn't use the same check. Since
+> put_files_struct() doesn't tolerate NULL it will oops for such tasks
+> without an fdtable. The prime suspect for this behavior are vhost
+> workers. Skip the switch for a coredump client without a table.
+>
+> Fixes: b2b36bcb13ea ("coredump: add COREDUMP_CLOSE_FILES")
+> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+> ---
+>  fs/coredump.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+>
+> diff --git a/fs/coredump.c b/fs/coredump.c
+> index 1fba3fed1a07..791a9268ed96 100644
+> --- a/fs/coredump.c
+> +++ b/fs/coredump.c
+> @@ -579,7 +579,11 @@ static bool coredump_close_files(struct core_state *core_state)
+>  	/* Use the dumper's real creds not the overridden ones. */
+>  	scoped_with_creds(current_real_cred()) {
+>  		io_uring_task_cancel();
+> -		switch_files_struct(current, files);
+> +		/* The dumper itself may be a vhost worker without a table. */
+> +		if (current->files)
+> +			switch_files_struct(current, files);
+> +		else
+> +			put_files_struct(files);
+>  	}
+>
+>  	coredump_wait_inactive(core_state);
 
-failed to apply patch:
-error: corrupt patch at line 7
+When I reproduced this one, it ended up deadlocking with the fix applied.
 
+vhost worker (the dumper)          sibling thread
+=========================          ==============
+get_signal() -> vfs_coredump()
+  coredump_close_files()
+    hands sibling a new table ---> switch_files_struct()
+    coredump_wait_inactive()         put_files_struct(old table)
+      waits for sibling's switch       last close of the vhost fd
+                                     vhost_net_release()
+                                       __vhost_worker_flush(): waits
 
+AI suggests making the vhost thread requeue the signal for someone more
+suitable?
 
-Tested on:
-
-commit:         9b87fdc9 Merge tag 'sched_ext-for-7.3-rc3-fixes' of gi..
-git tree:       upstream
-kernel config:  https://syzkaller.appspot.com/x/.config?x=b454dc6b1b7acd30
-dashboard link: https://syzkaller.appspot.com/bug?extid=c3178b6b512446632bac
-compiler:       
-patch:          https://syzkaller.appspot.com/x/patch.diff?x=15a16bf9580000
-
+-chris
 
