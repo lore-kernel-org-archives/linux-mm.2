@@ -4,118 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61B62C982C1
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 16:27:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D995FC982C9
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 16:27:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 15B366B0088; Wed, 16 Sep 2026 12:27:20 -0400 (EDT)
+	id D1D2D6B008C; Wed, 16 Sep 2026 12:27:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 10C2C6B008C; Wed, 16 Sep 2026 12:27:20 -0400 (EDT)
+	id CF2D96B0092; Wed, 16 Sep 2026 12:27:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F3D596B0092; Wed, 16 Sep 2026 12:27:19 -0400 (EDT)
+	id C095C6B0093; Wed, 16 Sep 2026 12:27:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CBB486B0088
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 12:27:19 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 049F8A07A2
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 16:27:18 +0000 (UTC)
-X-FDA: 85220155398.09.896B77A
-Received: from mail-qk2-f42.google.com (mail-qk2-f42.google.com [74.125.230.234])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 38B2B8000B
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 16:27:17 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=TNijMdhn;
-	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.234 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9BD6A6B008C
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 12:27:57 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3B3EE1C1D6E
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 16:27:57 +0000 (UTC)
+X-FDA: 85220156994.28.37A3321
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 9B120C000F
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 16:27:54 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=MYoC32Ma;
+	spf=pass (imf10.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789576075;
+	b=Av3KUevreI4L1Hjjza6pX1XpGSpdNkckIri0RmoC7E6TBdpQcvCyoTmQIHQGaVQ/gl+3FD
+	QKe5pY6ozLtD66cQU0wTanT4l8QHHBrXRtZABGDaD11XJCukilFIvbPTOvEzM+zXmIV5la
+	szt17QVQ5D6NkbZeVxJ0a26YZbRrWwg=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=MYoC32Ma;
+	spf=pass (imf10.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789576037;
+	s=arc-20220608; t=1789576075;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iod3dGEx4O5QNllF/Jv59fKBS+1dGXD0we4CmqbHy1M=;
-	b=QywaUgYWdlQwt5WePNsZU+9zl5XE6HteoZve1KWAHa6SltKUYf8Sb5J22hC8rAcZbCWOVP
-	kFkeVnirQj/0/3XZasuQXeV3H3kLSifFT4dwaWXWHUTpPNzIdKFOz23EnaQ4F23u1lDoq0
-	67CmP1WeX1dm7tN8O3nMpSgGkEvTNVU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789576037;
-	b=XsDLonCLd8USg2DCheTOGPSfx4NWZ3EjpwnyzAwFUDB1zWoVGTu/RSU8sPUJky9VqysB6/
-	EvUXMQwX7lM5WcQUzBeXNhRG3yJUTuZowBOVZsu0u+4sUvT9fQCFbMo8/ugc+SN62adsY9
-	1e2HEF2i0rO3uYFL3FbbzxIFIdvpNC8=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=TNijMdhn;
-	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.234 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qk2-f42.google.com with SMTP id d75a77b69052e-52fb767cc97so10195491cf.3
-        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 09:27:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1789576036; x=1790180836; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=iod3dGEx4O5QNllF/Jv59fKBS+1dGXD0we4CmqbHy1M=;
-        b=TNijMdhntRMk7mSn0zZGEODzWlpKOfp47QR/5wmUxWS9vWlwzHRa2HZGlsWALLpYcn
-         aehsSxNwEmDSSFMqp0PwwtbtZs0n0NoVbstum8kXYUfCaBHyQ42HC0OFVJYF1OgGF2yC
-         HKsRwDomrp0tjXpCtOsQUDseie00XyCoZpRd5jx6b+y+9GNx1vXKrRpl6X/+oJQ/wS5i
-         cCOd115xl8AMDFgqvPz/SqIRJ8kYuiNy/5MedXh/i/CYK5Tma8jBofTd+RZqcIOco3bc
-         BWcl//aNw5AFDemGphfP0dffAcJVnFABxptOUuJ7jul0qDxziY35UYewKUrmxGGXHdQv
-         07aw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789576036; x=1790180836;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=iod3dGEx4O5QNllF/Jv59fKBS+1dGXD0we4CmqbHy1M=;
-        b=rSyrVHI7BM7w8sxqephtKNIwLhES/Mrteq0eZpbL27z3/9UH5TpCukn7RxnF2QqJBZ
-         or8EaSeHfwuY/nDRxXMpSf0FoLUV2yBRB8JOBJCldpz5QIZNOsTatfmcmtWBLjTBGMFU
-         7SbRcfNjqEQx9Z91yL6VTHJb+LTpDwiWzi6uiR7UrY4K3qgxqLtlQzcs7NN+CvhCVPwQ
-         dKgyhpEv1RceQitROFQb7FUqPDyb1lFf+mpDSyF0FaXFWLjjZZ4TKZ1GkyTn9bhcLN7P
-         jaqyKrXwJ3/V2thMqhbTiM6sXbOSvCvxftK09pCrbjx+tfdziK2EkNir3Ln67evJNqnx
-         ENUQ==
-X-Gm-Message-State: AFuF++keYotr1NbFjuDwHU4cngI8lI388N+aG9baU0gFjs4Y0MzkcfSF
-	x+iH7425UR0UN+ibeoRJW9ctmKn/+Dx3wTMjOoAiytTcfUE25ZrRHtbvK6g6Ro4IJYw=
-X-Gm-Gg: AYBFou0WvPIuHIMunC/EoX24pZdPjCbqADSUzncoaIHzRo9gdjzXdf0l/YvWgUvXzZT
-	IgYoaNDJK00FTqI2b1gXLfP4pLGq6myV/0lZWFmCP3HZwT8vFeptRoTGQv0BTRgkjBIIeLGLBLC
-	br3uwcT8Hacp96+UB1szitXV+e/sPM+ZV6Oi4HLg+vLq+/3OEElo9j4CKSbnHEdyxdHVxQsYCEC
-	i9XX5rCyZTqKeXhOz+6oMGML+xd5DkQy7/cBoV8SmEdkCtrtGua55cvqBUDB2EG/jh0y/guD7mq
-	VFL/VYLGjQdNpQn4Dtrf+zZEgDjt6HkavMGsYQpAgWc6VU/ZSzAb+MyUfldePblnTRbdZccNxbY
-	+PGO0FlesETE446PDpOQiFVDRDmhl/zPgozKYEBAFtVa0Lds5wEf3NVtIx/bFnSYqOem2QDbjuf
-	myPLan7SY/GdJhOZcd3IbVb6MzExErwsSoPAS9rQpnNPVQB4hwWuTGK0JhfdfczJUSLUBV4Ui0M
-	N4aFQimihe6NOaIcWrrC/toz1ymSyX+9U6JbgLhgGs4bJUr2BFzmGGzZHJ93JVJ/Q==
-X-Received: by 2002:a05:622a:1e19:b0:530:b2e4:91c3 with SMTP id d75a77b69052e-5327ef19588mr56557701cf.60.1789576036216;
-        Wed, 16 Sep 2026 09:27:16 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-53262091423sm25381111cf.23.2026.09.16.09.27.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2026 09:27:15 -0700 (PDT)
-Date: Wed, 16 Sep 2026 12:27:13 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
-	akpm@linux-foundation.org, ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
-	rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com, 
-	apopple@nvidia.com, urezki@gmail.com, chenwandun@huawei.com
-Subject: Re: [PATCH 2/2] mm/mempolicy: stop copying the nodemask in the
- interleave paths
-Message-ID: <aqq_yv-cQvzuxr5D@gourry-fedora-PF4VCD3F>
-References: <20260829015943.1258774-1-gourry@gourry.net>
- <20260829015943.1258774-3-gourry@gourry.net>
- <d7f162eb-4214-456c-9d1b-a8623da61b45@kernel.org>
+	bh=XeMuHz9L3o84HRGeotYyUHn6FZauhqILbGmQBe2dDms=;
+	b=c/pM0q7Phbws0aFeSPWYNnrajk4UyqLVNsWramBgB1Pwa1q7d99iVDZPs3Xix8H2NNJP1N
+	XOGFArUvTUosnfauz+IFKnrXa8Kt5Mm6m1AbXa6GwPB73PkPGrn5YVw+BftRCIUAvseN5D
+	N3cRNFTgt69cGUA7OdL73aDoB1Rg6KQ=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=XeMuHz9L3o84HRGeotYyUHn6FZauhqILbGmQBe2dDms=; b=MYoC32Mabv+JwyI5UU+dcCFhDU
+	1KhbGSiCxO2o+794mXo5pj31oJzpuTSaDCRUz++LppEHEYuSFp3rJF38uRQhDqybWIAZpBj9RsrPQ
+	fNeKt9eGgjasvXYESP550Qj6JCqYGVVqNKFF4g054Kv5NESOoK01pVOtJGqA1cFFRJU/u16osc4iv
+	98dIBU38gw25pwifsotx6OVfUatuMOMePjcXGj6Orb0E2oVLRRzDJBniHETHJMq52ygYLUUgZIYX/
+	mSm+WDHueQYoRFUJ+a2UAZnaq9hZdqZ6n4R54r8c4C+WvXIEfcfrxXDnlOtKWGNGZWmqahUBALfmF
+	g9fQcz7A==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1x6sU2-00000005LUz-1s9o;
+	Wed, 16 Sep 2026 16:27:42 +0000
+Date: Wed, 16 Sep 2026 17:27:42 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: akpm@linux-foundation.org, David Hildenbrand <david@kernel.org>,
+	Boris Burkov <boris@bur.io>, Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>, Jann Horn <jannh@google.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>, Usama Arif <usama.arif@linux.dev>,
+	Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [RFC PATCH 0/5] mm: sub-folio dirty tracking for PTE-mapped mmap
+ writes
+Message-ID: <aqrDfoFFr8o0Mf0G@casper.infradead.org>
+References: <20260903182943.662461-1-kirill@shutemov.name>
+ <ap6LFvuOuWf_BkGi@thinkstation>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <d7f162eb-4214-456c-9d1b-a8623da61b45@kernel.org>
-X-Stat-Signature: dxcciahg8dmwmps6u185r13iko7y179f
+In-Reply-To: <ap6LFvuOuWf_BkGi@thinkstation>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 38B2B8000B
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789576037-934800
-X-HE-Meta: U2FsdGVkX189Z2vKGpt+No1+Kgieg88OxdLgFeHAjZsHhA/qR+K+KqF1idHuqxNzEv2e2HcECi9CtE6ef9MmahaEf0MCxFZuKpIo5zyWz1bRJL5WxFdkl/OSEaifJFN9eea84oHTeS7Hev8NRK0Hvj7m1BYfDb+b5SoxeztEqm9v/8SIG6OmC5QlPcMxGHo62Re6iO9YsSGMi4QGQBnwyrUiwTX+lmv4umWHDWEBbbSJ1bu4rvp1C3I5/GIRsDajtIbgoPteJQ90buGYqEXyo4cKhhT4QhbK+YjQkDMCqk9USqHjt3enSVAT2opomsb2SNdV/loFNWGJyOi2gKtTQ215tfBepCCxuV06MhtRdDQujlCwt8eSJ/rKHolfVV1RMroeYqaueTJUb/oqNfUmPN7lDi6yHshaYSxHMntr7hZ9SAcDX/0hJZB1BXUpQmxXG571cOWsEIMHPRsQbCK9PjuyJdQW+i9ebxJyZKoOqatUeFVXj32/AM0or+uzWCJz7/PrRwxqYaIwJIe2/X9BrQnJ4aJi/UqpX76e7PNlnq4nclpxSz0SYMsEAQc4SiqndVpZqbSEGj/fik2guHT7gr+SHQSJDwbx+qmTxxGRWdCgSGt9SXZTlt0rlTFGI/i0noXdKP2gzFik1VXJ5HKJG/KnLuh8SkM++58TNcRjNQLHiZMK33yLBPRVDgaVOXNNRSpKnYjvhK13NfT+LEWzq0+rqz3Fb0IoLfYBSdMJpzVes7kshK0Fz7ZHcf3uk5wSbtEsG6yJyUonUMXwO+WQjtBvF0wU48iPfxtoISW+EruB0otezJEmyW+eXM2OcsCMnqMovAq2znWxDE4yLJzsBYsY6xmOfy6+7CGI26QsicwTDkMAkgKJVmPG6Jmm3laKCBtpY/K5DpSesjt77FzAuKURndUuDoIqlw7gM5jVV1sVwbw/jV2jZbhFvUHFOzSE2721A2FW2WB+QOK2xk8
- UsXlvRO6
- we55VQ7JwXLy77+hw+2BWxnds3SIkb4op5oEwFwDHYY6qnTaeIzcB4agTUkCaLyfTyyJe7jhCg466Ck2mv3SCKOWdVK//zPBJ+JOxEdHjAA8bshclYSNlilCCe+GRSbBvLv3vLW/L/q8IW8cvjf2Xvs05gcDfgMJFdTp9N0ZnpDXYvSxn/8MV3ep9f6fAJ4V6/wfhIyi/7jYTdVR2l/dAdwg7igjpDg46VcsLkGn+8jTW15ennmVdivRAXkzy16Mxr3/8GrFsqaSt7ZJKYfGXvESdwvDlaQuktfR2z7PQDt0VWwYxpcwG8Qc+NTP9xI89Q2AW8mjaaHR1bx47J35XE905aw01r9EOs0sf9Ui3YSTkMJOr3FTCzOKdSV5t1yqsJQUvvDfKrXtgxX111B6muZY8lA==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9B120C000F
+X-Stat-Signature: bqw8krr9uhgffr6ef6uenp1kha1w3hs5
+X-HE-Tag: 1789576074-153725
+X-HE-Meta: U2FsdGVkX1/Xw0G1/O7jI2MpOdcfNJjR265KsKLAsw/6YHXMztjArKeDx3cyh24li37Q+2WtunKyDrm3kE0+uAbZzmWMH7ZjTYJc7z2fmBIAij2krBGGWQmUbeOpB2P6E/u50RdBysgpqChqJzhYH0Kduz1v7RFepTqwEY+HVyT6K1no7+DaekTzKhx/+bATG+/HM+Qm+m5OtesVf9Uc+9l0zsrKQ8sd+XEDSjIA1O5Qu0XTfFiTszy76uFt6dkJRt0FRzBN9VyVVQV2DtEx2650377Anub1+gediFZmjfT39wZpVtfUMCY1ETM16IJrdJGMKtGSPd4p+rRpqhjyADUEQPXtsSjzU4noeJd7UfRgmb25idHrMoU+z0MPo2iac6WD1Tzk6gBXj04n/KZG5E0ClouKeO2Zu3wOqMI+4bZGd2bTDkVIZQaQVc/IUpRPpFCY1lRFC0SFGgWGZWf89XkuLEPK2EAkJXPg+4duXpPiZOtX+lz25MeYEz6dIGxGxzTIbMpGkuAYjAo40B9zSBPL06yTepgIY9mLg31yBB+txyRc3eIrwBmnpzjNLR2x1XxtrkqRbhKpajN3wymlmWkSiAGA2/L6WoKUpEqkbJbtjRDvFLn5TJ0+XNnZtwYlyh8E8FAVgudKB2wOyLQyGtMESDuKj3rd7A8OIxccr7mRLPcMJFvsVoXJbKZWTMWpLqMVlXRji/XKJhvEQC3oOdQ5ZZJTSvuVz5PW0dOiCtkeASVnfo2TSJUnYohvtOuK7tLoERlF7UiB6AR/GC4f9zJkTqGEfZNRb0Q0zmfktf+wXYVCUSKoClfuOA/8FtQ9pTjghMD0DYaLC6A0FaD0SqfDAvh45+YyAG0X3T45XieG/v4Ss52RJeSlCVoQo0E/URdPEndFglat43aw6UR2VMjP1JMAfkI/wTQhLgxO1vytRIdFWbPl7xGlHSJCzQjf7WIxg1ls/KKJYSz+Veu
+ W8WLXSAj
+ PVRjvUq97Q1C35XgUB3RbB6MzwFHOHkz2abPupSg/EBuRxPt3a0mJk+cvjuKv6f6pnKDe7Hb/sSWqjMJO9SHW5nWIqB1yu4Okl8dnp2xa761i4qY6GnJC4bZOYzLy2wj1YOaSUZGTu/9vL0GIZywEtUORslupLhJtG7gMpYDbAJhkSfnNAcM1U0f3KHh0p7TxkKPlfO+B6GvEabgMrJPNFgSUbC/dqOviKGhRaJwtplEyd6lQoSh19nYSwwsh7FHsqqnf11jrMTDPnFMTgoO+PmONr825RxENRjKPCUgLB5W9kM+bOffQQfM0p26bJKuNF+5Y/iEIx6fb5dUh4F2h910gZRWTpylN3hEX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,58 +104,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 16, 2026 at 05:57:22PM +0200, David Hildenbrand (Arm) wrote:
-> On 8/29/26 03:59, Gregory Price wrote:
-> > The interleave node selectors copy pol->nodes onto the stack so the mask
-> > cannot change while they walk it.  nodemask_t is 128 bytes at
-> > MAX_NUMNODES=1024, and two of the three run per folio fault.
-> > 
-> > The copy only buys consistency between the node count and the walk.
-> > Drop the consistency and just bounds check the walk instead.
+On Mon, Sep 07, 2026 at 11:15:15AM +0100, Kiryl Shutsemau wrote:
+> Boris pointed me to Matthew's proposal to remove ->dirty_folio:
 > 
-> I think you should document here that accessing the node bitnmap is safe (is RCU
-> responsible for that? I think yes), but it can get updated concurrently.
+> https://lore.kernel.org/all/aoyWln-Gt-yvZQkE@casper.infradead.org
+
+Thanks, Boris ;-)
+
+> I agree that the current ->dirty_folio() makes little sense and that
+> dirtying the folio can be bundled into ->page_mkwrite(), as they are
+> matched 1-to-1.
 > 
+> My proposal makes the distinction between making the folio writable and
+> making it dirty meaningful. ->page_mkwrite() allocates whatever is needed
+> on the filesystem side to track dirty state and drive writeback for the
+> *folio*, while ->dirty_folio_range() marks part of the folio dirty.
 
-Actually, not quite.
+Why do you think that's a meaningful distinction?  We create a writable
+PTE because we've taken a page fault for write.  There's probably a few
+naoseconds where the PTE is writable+clean before it becomes
+writable+dirty, but even then sometimes we do both pte_mkwrite() and
+pte_mkdirty() as an optimisation in the write fault path.
 
-RCU stabilizes the weights and makes accessing them safe. RCU doesn't
-help us with the node bitmasks themselves (we were using a cpuset cookie
-to stabilize them to take a copy - but we're killin that here).
-
-What makes it safe is that we detect the torn read condition (check for
-an empty nodemask) and otherwise don't care about weight skews in the
-weighted variant.
-
-I think it's reasonable to add a couple comments to spell out.
-
-Are you ok if I just spin an additional commit to tack on rather than
-spin a new version just for comments?
-
-> > +	 * The target was calculated in a separate loop, and a concurrent
-> > +	 * rebind can change the total number of nodes.  Clamp this loop to
-> > +	 * a single pass (nnodes) to keep the walk bounded by node count.
+> We can still drop ->dirty_folio(). A filesystem can provide
+> ->dirty_folio_range() if it wants fine-grained (sub-folio) dirty
+> tracking.
 > 
-> Might want to explicitly comment here that we are looking at a moving target and
-> might race with node bitmap modifications.
+> A separate question is whether we want to avoid installing a writable PMD
+> entry for filesystems that want fine-grained dirty tracking. I have a
+> patch for this, but it deserves a separate discussion once we agree that we
+> want this for PTE-mapped folios first.
 > 
+> Any feedback?
 
-ack.
+It's very odd to be optimising for shared-writable-mmap.  This is a
+horrid model for I/O.  https://cs.brown.edu/people/acrotty/pubs/p13-crotty.pdf
 
-> > -	nnodes = read_once_policy_nodemask(pol, &nodemask);
-> > +	nnodes = nodes_weight(pol->nodes);
-> >  	if (!nnodes)
-> >  		return numa_node_id();
-> >  	target = ilx % nnodes;
-> > -	nid = first_node(nodemask);
-> > -	for (i = 0; i < target; i++)
-> > -		nid = next_node(nid, nodemask);
-> > +	nid = first_node(pol->nodes);
-> 
-> Similarly, I wonder whether we should spell out the raciness.
->
-
-ack.
-
-~Gregory
 
