@@ -4,91 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B40DC88E77
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 13:41:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECD82C88E77
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 13:46:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0482B6B00A1; Wed, 16 Sep 2026 09:41:44 -0400 (EDT)
+	id 04FC66B0092; Wed, 16 Sep 2026 09:46:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 01F2C6B00A2; Wed, 16 Sep 2026 09:41:43 -0400 (EDT)
+	id F1C0B6B0093; Wed, 16 Sep 2026 09:46:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E77426B00A3; Wed, 16 Sep 2026 09:41:43 -0400 (EDT)
+	id DBED46B0095; Wed, 16 Sep 2026 09:46:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CF9326B00A1
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 09:41:43 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 69C6980665
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 13:41:43 +0000 (UTC)
-X-FDA: 85219738086.03.8BC5807
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id B0C89140004
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 13:41:41 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jlLD6yuF;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789566101;
-	b=Ot73+rs4AOycw2ssFQQWHYnsjXCd5lD+7GOl+1XwYcuAiVXl37hIfjrWgS4ccLslQLsmBO
-	+l/eFC21ytLVuC8HitPUjFBSJ7t4aAqCsxEkKrgwxT8qVGpL39CXSCc7UPsTCqaFoyAu4t
-	v9g/u4XYidO1RCkpwW1/aJvgEX+PUP8=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jlLD6yuF;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id A88086B0092
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 09:46:03 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 17B7DA5E91
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 13:46:03 +0000 (UTC)
+X-FDA: 85219749006.02.C9EE8F1
+Received: from mail-ed2-f12.google.com (mail-ed2-f12.google.com [74.125.228.76])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 1DD204000E
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 13:46:00 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=fkfyTRsb;
+	spf=pass (imf11.hostedemail.com: domain of mhocko@suse.com designates 74.125.228.76 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789566101;
+	s=arc-20220608; t=1789566361;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a6kjCxP9yBKoDCDGJpxropE2U03Q16iuU4HbhIBJf+A=;
-	b=mvq12i4p6Xt4Y2Y/uIMgsU+8F2vJHrjNT8gbzLbLwwRO+wrowsutHK6FjpSfg6q1lMyxe4
-	8/ymhoMVry1KqwdiOIiwDHt5mxKNX4F+be498Xs19Ktewb232fyTxllLVdS83Ca928kIYG
-	GGJuncq6A4Ph5pcaoKIQKuctty67y18=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A9F3C41A21;
-	Wed, 16 Sep 2026 13:41:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F4001F000FF;
-	Wed, 16 Sep 2026 13:41:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789566100;
-	bh=a6kjCxP9yBKoDCDGJpxropE2U03Q16iuU4HbhIBJf+A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=jlLD6yuFDosHEmd6JzFv/rPZm04Jd/L0IencJCYXxb65CisXMkNidUNhwaDOZsD5p
-	 cM7KEQ8mbz1fxDWDQPDd02HLkioIVNmVIPX+9pme9NckO9RuD92oU52O33Y/0rLS5L
-	 yp23VOHR8uJX3zOEqKf+Sst8wyQEgidw7WkMwhPW6M+bNXp8YU+/ztMXgqkpCIvvuv
-	 +33wxUGO31GXBEGLK/j8nNTVK5CNaJsu61ffdl4mKBVty8Vv+K//kufvTaJ+E9+yfh
-	 eFanxfBigamyNqn/1TCCvEiMOw4MINMe4k4fnxLc31nAxIeYFCX/Cb5czHSrTIsVzZ
-	 hlJfasBj+UcZQ==
-Date: Wed, 16 Sep 2026 14:41:34 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+	bh=gS5Urd2oK4cUSLkPyZ8kKu9K7ELV+4PGRJOBXjNcmpA=;
+	b=1csnFKWUKsLrikS6TSKEqj5ZJ32QdibEo+LKm652RHpY3sUb4fN5jTrTofTCdoJw9ZaPLZ
+	UtmhuqAaPJDAbEau6GKsGVc0pjw/MoH4u5IehXZHhT8yNnGf399h2G6qmuJk7lOo0xvx99
+	bTn/My8l0OjtjMOkjyZYX91gBcbncco=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789566361;
+	b=RHBW2Ve2xvdJNJS4/ovYvgGypmsl5aYRg3nvZl0nOblssD5CurMcWl5FTR8A0+SbqLtABg
+	OXDOBafpXgDTQpEhJd8oGwi7dXSPcL/1ZQXqrCISEnsYUy4fo1FOJTy4ch52RSnzAgVprN
+	uDx8s7fsOs1+LZsGsssdQVowBCaJ+ZM=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=fkfyTRsb;
+	spf=pass (imf11.hostedemail.com: domain of mhocko@suse.com designates 74.125.228.76 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: by mail-ed2-f12.google.com with SMTP id 4fb4d7f45d1cf-6a6056be4d2so795537a12.1
+        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 06:46:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1789566360; x=1790171160; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=gS5Urd2oK4cUSLkPyZ8kKu9K7ELV+4PGRJOBXjNcmpA=;
+        b=fkfyTRsb8/xzYi5kf0J9jsAD9jJ0LH9vKzZive9FWF9KcyvbXlm62etoluBWgJL0r6
+         JcHUKz+u1prg1SVEOUzleHxjCiq7o3LgfxGT1xhgB6OvxiJLfKwaZvV/u+/9FczWM5xt
+         vhZEy7lW05qbXFNcJxiRxMGVcovt3LTHkpckKi8SInn0xGgHB31gmcS+KgvXMSYL1ybp
+         ybex3cklyfnbcqpOEEiDeycausRqyStYxf4ZCCzeuEihIxE3nVUqIAR44G8EIdXJgN39
+         LZLUd34wVfKmMm/yy4FT0v9srIqA+Z3fAgZzg6imkSkIphaWMkPA7+WvFpcTHqY5NmZ5
+         pilw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789566360; x=1790171160;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gS5Urd2oK4cUSLkPyZ8kKu9K7ELV+4PGRJOBXjNcmpA=;
+        b=ckv4V/p8dMGI3N3gsZj7AAfQxM4JUFO44izCQMPDd8vS/rKTUQsDA2AXrqYIxMkvPq
+         Ee9uFKExrZMxU855EpuQM0FyoA/8aLwQrgZrIB5PKBX4fmhvXs//U2AF5b4O3SMu4szm
+         z8A2mgG5bRN3aS/VVwUZgm8/urv2PjNZnc9mcoFr+JQwO+YIE8721OnCyqSasn+1Y0W4
+         t4u2/PwskNhtqbou2+miA0tMm3/zCPgZIJpkWRmGagw9BwfO/hbU4kLoPbYyRwKyV5Mm
+         K/b8W1xNrM2RkPaTks8v/fBUfWQ7RvlQXPRAtf6ZQMHqIwdbfo3D6YfAnLxx+xuXyROy
+         FTjg==
+X-Forwarded-Encrypted: i=1; AKwUvBwxXn7SFPwQlCUB3R7Kcmsk6FjaL8wCov6iWtI7OHevkvfTOgY6njJ4wkHMQQHzovv7+HJG/Zr+PA==@kvack.org
+X-Gm-Message-State: AFuF++nAUxG2adXPM/ptFOdtJWZlDh5MdX6pxOltJBhScmkMtgGJkGgt
+	b/zG58NNdUE04B1/kCmsJsmZB3tXg989GgknBc5VPw3mh/3Lmh8hvyumOElN9RQRzU0=
+X-Gm-Gg: AYBFou0aU0d4YlIypJUKkQZ46wF3hvtKMUeQrfOdEQ1FZMIXVLCUlDocP/eBfbXhNoB
+	TfF1komWyVM9y6o8vXe+DVbvLjA4spRC9MZDSBRZ8YYNT4lBsDKJ85G1Zgkr+j98Z1SLZKBhXDY
+	M48Y5In7dD6XdYONhgj21i3ok3eKsWMkmX9W8Qev2aXVl7pODsbcnwwRgUvAZygXgeCLJtplgDR
+	2eBnZXt1OpT7I3FVTLM+ZSFX+dAZuonh7YM1/KQ8osfgUijqRC4wHfrXlhRqlFIxOELqp0SguL+
+	37pmnYvCgIuTPO5/+70BX+slf9gmZKjYidnk+vB/QjZvIrkb+LUfrHMNkHbgWzSe7PUzaWMa1Li
+	2U5rxXa/3oOoAT9OTAtO8bOJicoHuYMEca0wiEqco/QQ0/757vuPoNOJQv4dCGeBNa8hyFnP4Lz
+	f28RRDbU9OT1WSj5CVthYZOGLnYNjwlMV6ZVJ82yib9m+XGdveiojjl4duCu3D
+X-Received: by 2002:a05:6402:52d9:b0:6a9:9840:f3d with SMTP id 4fb4d7f45d1cf-6aa2288f30amr2016738a12.4.1789566359636;
+        Wed, 16 Sep 2026 06:45:59 -0700 (PDT)
+Received: from localhost ([2a02:aa7:4656:2314:c23c:9eda:81d:3])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6aa1cfe07e4sm1792644a12.2.2026.09.16.06.45.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Sep 2026 06:45:59 -0700 (PDT)
+Date: Wed, 16 Sep 2026 15:45:58 +0200
+From: Michal Hocko <mhocko@suse.com>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>, 
-	linux-arm-kernel@lists.infradead.org, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>, 
-	Mark Rutland <mark.rutland@arm.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Mike Rapoport <rppt@kernel.org>, Linu Cherian <linu.cherian@arm.com>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Subject: Re: [PATCH V2 01/14] mm: Add read-write accessors for vm_page_prot
-Message-ID: <aqqchzV9bgKYPPyn@gremlin>
-References: <20260907035030.2839978-1-anshuman.khandual@arm.com>
- <20260907035030.2839978-2-anshuman.khandual@arm.com>
- <69a7987f-15fb-4793-81b6-cc436525224e@kernel.org>
+Cc: Kyle Meyer <kyle.meyer@hpe.com>, akpm@linux-foundation.org,
+	corbet@lwn.net, linmiaohe@huawei.com, shuah@kernel.org,
+	tony.luck@intel.com, jane.chu@oracle.com, jiaqiyan@google.com,
+	Liam.Howlett@oracle.com, bp@alien8.de, hannes@cmpxchg.org,
+	jack@suse.cz, joel.granados@kernel.org, laoar.shao@gmail.com,
+	lorenzo.stoakes@oracle.com, mclapinski@google.com,
+	nao.horiguchi@gmail.com, osalvador@suse.de,
+	rafael.j.wysocki@intel.com, rppt@kernel.org, russ.anderson@hpe.com,
+	shawn.fan@intel.com, surenb@google.com, vbabka@suse.cz,
+	linux-acpi@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v3] mm/memory-failure: Support disabling soft offline for
+ HugeTLB pages
+Message-ID: <aqqdlndHq9vHeX8s@tiehlicka>
+References: <aqiIEkrc6aDBOqRg@hpe.com>
+ <aqkCbgHmMGxI_GLG@tiehlicka>
+ <aqmGd0GGUCkbZpkZ@hpe.com>
+ <aqpYxAktjexhaMGc@tiehlicka>
+ <ad36cd54-7319-4bb4-bf8f-9fcc7b009158@kernel.org>
+ <aqqXbwglwYTyTuUG@tiehlicka>
+ <36480c86-fc59-4387-91a4-cad839f502f2@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <69a7987f-15fb-4793-81b6-cc436525224e@kernel.org>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: B0C89140004
+In-Reply-To: <36480c86-fc59-4387-91a4-cad839f502f2@kernel.org>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 1DD204000E
+X-Stat-Signature: oiiwp7jq1emgngafs5ghk8qsztdtfpf4
 X-Rspam-User: 
-X-Stat-Signature: 3boocgxbmtuadhcyc14id4dm474d9u5a
-X-HE-Tag: 1789566101-977421
-X-HE-Meta: U2FsdGVkX19OJW3YxkipNT2b/blLveageyXYKuVERVNvzYP1tO5a7wZ1R+V9aALuwkBzSxN/xIK3VNTkYNRBt0i5h1o8Sp853q3WitRO5YwWlB6g9v295k8z1lgy5FPD8V1hERViBRvq/xzmSqqfEv/gbeB6YCcwEAIXetZwuchHPCnTDYTM7kMaNcZ3J6zkwmeTqTL2W5udvwGA4AaMdAtGbIzfZzdc+kmCpM5yAbHK3OmIjff7udEoPtpLgCIbJBlicLRJbyP6Wg1j4SamzAea78ibT35jPEz5zc7l78X3DuPg1I7td4cPckL7koArHoAeXyQlP9A2FAEsvFZAWwomfFCQTBxI+1ECcxDIwjEe1iPLoOSvZRZhMvhG81xm1gzA12Ibsx7KNQzgDnxg+/lUpI1viBhsztDiIJHpBVnc4+5KJ2zRQuGA1MRU6TbpIcblAPwU4y7EOLcgboWKJUgfOqWjlFxmUnIMyhkY4k3HUCQ6zvOMejZ3Kb4xzrLvHFt9lltXASWK2KFhXsAgxeuqVM0K/htsMzw2VtIYeeD3yIYw2GTg7XUUW/2ayrdVVXcKTKJlG/VuqS5OtuKdJxWzDx4lbzRu260ENIHnnRZhmRzSNHFvrlDrBnTZ/KLmPPPVaqbygeMigeUKOOacK41Zdn1XBZPyb/E/ItJcf4QCoD8zD6I90e/1ODyh39pEBqW1o4Tbgd3IrQy+PFzjnPA+VfQNclTKirUGIVsB6iZ1Ber1ejUJHvnx19K9hpE/030dPBqwGjq/8vKQQvSfO9n8whS7ThDgNmTQwFu5xqAdYT7GQEAhtvJV+ePDauf6S65j59rRAJNArSP4b+QtnOSntLYq/YvTHWUNngDocyNLElHvC7O6gPfEJaJEEe9FZ9bkurfEawq44onpzCifZI3qq+b1tVY2nb9QMF830iVqV5N5qkOTsY1U/EhSFZC8EnbeCOFe/yRu/X2Ycxo
- MZt+h4IQ
- QSh/0+m/C1VjYQHz76APH89SvSyCq8052Jdo7cgrEu+ZaKPl+tVhoRZ4RAXWNVuq/xQ9wiEVbBlUe59C8eYCsnVeXN/XLDlrSGG8bKirS4L/dCV1uzjJThu+FJAtCIHg5c3OwkvbpgfLORQZ1wXk1hZEGFJhC7+Fzwbxgka4eLGe0T1eBx80J+EomXLGE6sus9I+PKLGOV/kLyYczxnVJ+5n8J8bO6fvUfALY5NXu8N1+ZhokoEGyEGK+sR4GZav9pkiThC5t0hGbm7hbv/BNOqyi/9g4aIw4SnRZ355peqA/2ZemKycvSqXor/cgaPM8Q3I3dqwK+lUGIeUfCxtr80ky8RRqUvLh17wE4ZVzWFNnfZLQJf32iQQq/aNb6DvFqmmVPKJEEIg5yqvzALOrtj2GVDVhh30q3mOnOwzV8nT44eQPqQF1y0P9f7nAbKxpv1ibsCUlJ92MAD2taqt6PLwduLy4BAovxBinTzhHTDVXOM0uDWqUNE4nBHVCYXfH5h/qDRUVP6u/pqUk/z/siJyq3w==
+X-HE-Tag: 1789566360-313180
+X-HE-Meta: U2FsdGVkX19z//Poa81/H44LPIxpn0aNdR/gPUcaJEDAy+I9QKMhFz1vhloXD98+MDBou+idGH909GCudkCjebdO80uvEOb5pMMeQ/4wX6ESfaF12/KMPnB/UOh+GqhksgiB2WTSHyc4vjfJGi/qRozGQ44bP3HSr1JxvD6xbzkTiwTTMowHJxwR0olOan7YhDSYW4nhMB0sxVLoknRE37ZRdmjCssHyXC0SuKwRn/+vhoZE0CWR/O5jT4ujCSqR+fqXpg1ORy4cvc+vJXuwBikeaVUcrbCdgYVAxxq2iSaC+/gIpOmQkbyNf3llGvs687rTWbxmlaPKSm2g4ryVO9BWBAQ9N3vi8FLvNX/02Piu80kD4oHE1s6ab0qocqjUaxyde98l4+v66i4AdfcLuaYcZouOXwo6FVlYTk9r1lzowmxw+knxGOpGJ1ktzpNLEQ5+rrWRZBa+nJtu5QIlBGJrdMOSrT4GigbZrZiUbgYXzuaXmesoX8S/Ix2AN5zchicNytT2BkzRjY+gXY7W3+i8kAIorv48b49SWS3Rhc1wQt6ggNIivDNlwVTtSdMum5buPU/g/BSazOg+q2l844YYhgEZ0UqP2qzM4LxNLZhYH5R1H2nDP/UTZjbOTa4h3uiAGHbUAgElkVA6n069MVco4q/ZIzFZy29d03uj5L+SADLWW4jnCc+4OJWi+rAbaG/UigKifUg06RD5rVcDjxyay56UThf4uLIYicnfAt2wG+7PlagwjTK6vAZjC8KtlXX1mvMcvz0BXLtUmSSRtb0qriyYFGxj3wW1PF2EYsYg23HQ6SAaahx7LTSEicCaESzYUscmsmOAdLRfh3WQntigO9em+GfMuP5xp/sGcxS8AnacD/uToLMgCEB3+PsPxWIitp8/7MVFIX+koIHDAuEZM5oq9g2BMS447pykiLmHRA6hBlOitJYgxzpqQ8scmL7p/nAI/p/XiDXzpyi
+ Yat9iACS
+ hfh5Rm1JJ9gq0gWoDFliuETlef2EJOkD3AGvUwygD3EOaFhvv4hUaPNb2V1iP9B3EFJZzzMV6E5ZNMGeeHtFTEtLPqshbYVMb+iZuL09eTjI7TXURtg92a0u9njT7lliVkvZ42Dm95iBnvAIkJEcIsdu5laC9dpFzOCjZoinRR1G90mn8eltXoXWXPN1sNLBZo7VNJFakphLl68cpyQVM1CxU9eXbtQclxpVOTqlaUG/xt3nVUjxj0Q5TOvFQzGep+btxPX5Orqi0KSLBVb6nkxoSARWd2nh0zb09xUQ+wQbZjiit8LFOmm2Uu1IcfWglNd7TrQF9UCElaBnA+gp3WFOeQ2DQAzpJOHbTyqLbHefDdy83Tn+YcnwTWW+T+oJrs3h92+ZNTXkp1G652/CEUa41lbFRbULc1cpxh42wg59ngjN3C0Xgld9eAPoqgFrTnki4LK4A0H0dWQ0Hx0s8yEHDMZ8t9Ajsj/N7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,90 +135,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 16, 2026 at 03:23:13PM +0200, David Hildenbrand (Arm) wrote:
-> On 9/7/26 05:50, Anshuman Khandual wrote:
-> > Currently vma->vm_page_prot is safely read from and written to, without any
-> > locks with READ_ONCE() and WRITE_ONCE(). But with introduction of D128 page
-> > tables on arm64 platform, vm_page_prot grows to 128 bits which can't safely
-> > be handled with READ_ONCE() and WRITE_ONCE().
-> >
-> > Add read and write accessors for vm_page_prot like pgprot_[read|write]()
-> > which any platform can override when required, although still defaulting as
-> > READ_ONCE() and WRITE_ONCE(), thus preserving the functionality for others.
-> >
-> > Cc: Andrew Morton <akpm@linux-foundation.org>
-> > Cc: David Hildenbrand <david@kernel.org>
-> > Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> > Cc: Mike Rapoport <rppt@kernel.org>
-> > Cc: linux-mm@kvack.org
-> > Cc: linux-kernel@vger.kernel.org
-> > Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> > Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> > ---
-> >  include/linux/pgtable.h | 14 ++++++++++++++
-> >  mm/huge_memory.c        |  4 ++--
-> >  mm/memory.c             |  2 +-
-> >  mm/migrate.c            |  2 +-
-> >  mm/mmap.c               |  2 +-
-> >  5 files changed, 19 insertions(+), 5 deletions(-)
-> >
-> > diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> > index e3c8ab96941c..0df57a5c19ef 100644
-> > --- a/include/linux/pgtable.h
-> > +++ b/include/linux/pgtable.h
-> > @@ -524,6 +524,20 @@ static inline pgd_t pgdp_get(pgd_t *pgdp)
-> >  }
-> >  #endif
-> >
-> > +#ifndef pgprot_read
-> > +static inline pgprot_t pgprot_read(pgprot_t *prot)
->
-> Try passing "const pgprot_t *prot" instead.
->
-> [...]
->
-> > diff --git a/mm/migrate.c b/mm/migrate.c
-> > index 15b45832bcfa..579152cce502 100644
-> > --- a/mm/migrate.c
-> > +++ b/mm/migrate.c
-> > @@ -387,7 +387,7 @@ static bool remove_migration_pte(struct folio *folio,
-> >
-> >  		folio_get(folio);
-> >  		new = folio_page(folio, idx);
-> > -		pte = mk_pte(new, READ_ONCE(vma->vm_page_prot));
-> > +		pte = mk_pte(new, pgprot_read(&vma->vm_page_prot));
-> I do wonder whether a
->
-> ogprot_t vma_get_page_prot(const struct vm_area_struct *vma)
->
-> where we hide the pgprot access would be a good complement for vma_set_page_prot().
+On Wed 16-09-26 15:28:01, David Hildenbrand wrote:
+> On 9/16/26 15:19, Michal Hocko wrote:
+> > On Wed 16-09-26 15:08:45, David Hildenbrand wrote:
+> >>
+> >>>
+> >>> OK, so apparently there are some BIOSes which abuse this feature to
+> >>> mimic a real HW poisoning. This doesn't change the overall picture
+> >>> though
+> >>
+> >> Is this really abusing? We know that a page is shaky and will likely go bad in
+> >> the future, For now it is still accessible. Trying to migrate off that page stop
+> >> using it right away sounds pretty logical to me.
+> > 
+> > Yes, no dispute on that. But we have HW poisoning for exactly that
+> > purpose, no?
+> 
+> Well, that tells you that the page content is effectively gone and should be
+> tried to be recovered / migrated away. Unless I am messing up terminology here.
 
-Yes please! :)
-
->
-> Just a thought.
->
->
-> > diff --git a/mm/mmap.c b/mm/mmap.c
-> > index 4bf26b0f1e6e..729bc244b317 100644
-> > --- a/mm/mmap.c
-> > +++ b/mm/mmap.c
-> > @@ -89,7 +89,7 @@ void vma_set_page_prot(struct vm_area_struct *vma)
-> >  		vm_page_prot = vma_pgprot_modify(vm_page_prot, vma_flags);
-> >  	}
-> >  	/* remove_protection_ptes reads vma->vm_page_prot without mmap_lock */
-> > -	WRITE_ONCE(vma->vm_page_prot, vm_page_prot);
-> > +	pgprot_write(&vma->vm_page_prot, vm_page_prot);
-> >  }
-> >
-> >  /*
->
->
-> --
-> Cheers,
->
-> David
-
---
-Cheers, Lorenzo
+Maybe it is me messing up the terminology...
+But I guess we have established that whether soft offlining is being
+abused or not, excluding hugetlb through a configuration is just a wrong
+thing to do.
+-- 
+Michal Hocko
+SUSE Labs
 
