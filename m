@@ -4,135 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0707AC88E75
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 01:39:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 016C8C88E77
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 01:46:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C4F056B0088; Tue, 15 Sep 2026 21:39:56 -0400 (EDT)
+	id 024A46B0088; Tue, 15 Sep 2026 21:46:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BFFA56B008C; Tue, 15 Sep 2026 21:39:56 -0400 (EDT)
+	id F18C26B008C; Tue, 15 Sep 2026 21:46:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AEE436B0092; Tue, 15 Sep 2026 21:39:56 -0400 (EDT)
+	id E2E3B6B0092; Tue, 15 Sep 2026 21:46:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8175D6B0088
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 21:39:56 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E39A21603F7
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 01:39:55 +0000 (UTC)
-X-FDA: 85217919150.07.D9C747A
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 02F0B140008
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 01:39:53 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=RBd+YWln;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf23.hostedemail.com: domain of kunwu.chan@gmail.com designates 74.125.225.141 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789522794;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C94C96B0088
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 21:46:37 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 68A791A05C8
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 01:46:37 +0000 (UTC)
+X-FDA: 85217936034.20.C9487C3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id BFC8E40002
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 01:46:35 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=xe4wnLPM;
+	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789523195;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=F7/Be39iQ67QXJSJm73iOaskwF1HV5SnLrr7SsaSjB4=;
-	b=hCxD0vLGr55YSoW/jfGk3Sm1ES0XFWwP1aAmYc7xwGjJ9GwIC1fdNnMud1raFDDrr5QgNQ
-	T2Vvz9rIWBJGgtKUW/B5di3sdHBtcKIexYMDSGwKRg7jspsueNQZBBLwAEz/03G68S+RuE
-	F1ybOS4YNpncBu0DosriP3Plgpzymto=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=RBd+YWln;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf23.hostedemail.com: domain of kunwu.chan@gmail.com designates 74.125.225.141 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789522794;
-	b=XFSDG7NXzO94H8HHwkfAtEzb8uD3HehuT9Tri/JKndZXyfdATlfHllczKj/G1az2mSH0T9
-	Yrkb8ffpXZWI9D61OJ+T+jbfLaXyCWr/ui15FhgWrlbimH8FRukHb8Oa4jtct9GXWSX2uj
-	n8CAeRlSf/AGB/M755+CKGe2brcYfss=
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e83a388f8so2745065e9.1
-        for <linux-mm@kvack.org>; Tue, 15 Sep 2026 18:39:53 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789522793; cv=none;
-        d=google.com; s=arc-20260327;
-        b=GSX47rYJB0GVzkfpwnSYE4ELuOv1sHKrJOz4EFli0GZVPfQ0ynQPRGvDzIiJ0BA+MB
-         B2Mg0GyobpSFPIUIzbJElz9c1eLyRhefG/sM9tPPVPYQJvaPI2dFtr2IJhRpjNOOf44e
-         fbWHCuKSfdbqflOcxSlFRr90mznkGq3ezFLgz5VEOGyMSjyUsWo3oe0Vmoqirub36Ifd
-         o5iYxq/Xt+CKIlxD6dyzeHUfljMSWfq6dTO2DdhS7pdgLY7l74w/SDF+ajuNy5ComFuo
-         jFmbYZHJXHOo1tM/P16HSqCWaczcIjlX9qqVwYW/AaQOLjjJa4QqXM8cVL62N9gIQ/e/
-         Ic8g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=F7/Be39iQ67QXJSJm73iOaskwF1HV5SnLrr7SsaSjB4=;
-        fh=nPjUk/tyVW2jPDdfhewHYgjcam5tLaCBtOrW6X2AHzs=;
-        b=KWRBU3wnTxd7mQa7VzT9yDixqVJ+ga1wjxiJMqVeBrh8cs/HOzOTpPIMw+UwxQEZTE
-         WzEtnV5is24T5/FmzlKi8WXUjCFj8ytin937tw8B9WqgWIDFJV+OqcwP9F0a/014tXgd
-         biXWpx45VVfvHRJcCw/SNmYL/wSk61hRTPEGs1iQMDRCQuzBB2J6YMO9wW1qRL1PSN3L
-         Ae3RkPTBjenGp2bj4bt+8WdwSPqVgpJZdBrH5hGPVnJwmA/4ayjWVr39QwIdRQfNmg4i
-         U+7SjAoMIyoHLNXjkPaWhz1lKiTbT9sLfUnfvSDJg5dweCzvlvqbYjPich2xOY5T+Y4t
-         x+QQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=yUYa/GvKq0t1HPLtH/seZWJgrC2GfmJGoFRdt2lTvSU=;
+	b=agri19r18qoDpnts4FNOlib0Ai7Na/7RgEKu4nhT8xUWdfQqFQI496JadXLy6gZoGg0Wey
+	B200AA3HptMAUvBkrOy4rK1T3OkJqUb1vBSngjP92+QouiWGtqVNcj2Fjq607Dazn0Xc96
+	n4mRjSqHbNIeU3ort1H1Plp+tj70JCM=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=xe4wnLPM;
+	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789523195;
+	b=ME/GqWeFST+GmZy7MDFTIy3mYyQIOOeZxgPsC2sT/PvR5SRpC3ROgQnzDA1ZAI23Dv0OGF
+	x2A8mI4paKrXIVB9akyvvCNMW4Wwf4JLVFCiY4EiJ+B3VVrdZpqfzqYqdT5CI6+ZlCVJWn
+	WfUellSbKPx7vENXfklw/BCVf+a4oeU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id EC97560008;
+	Wed, 16 Sep 2026 01:46:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4978D1F000FF;
+	Wed, 16 Sep 2026 01:46:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789522793; x=1790127593; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=F7/Be39iQ67QXJSJm73iOaskwF1HV5SnLrr7SsaSjB4=;
-        b=RBd+YWlnmHgAQlbQFRKJEq9vLZl4WLF10b989YQAVWHGl+SOwA+AYoFh1QE2CEMaRx
-         7Dhn8kppYfHl30ViPFlf/N6basg1uE6Y4o8qZXhjfo7foIea3PTUpSv/XddVaJGlu4Ps
-         dYcH1PlICtrMYOWNkLXcAa0DBqJzgM+8txs9v8mtwlEse1yEc5lmV4/l4ekFChvl0kES
-         U8SgxZzTPhqwANlfS2F/XfiPZEr/ZJp8sr0qZcR/ogal/D8gnN3N5lk8bSj3wrexdJnC
-         JrasRAa5AC/8d1nr10JFr4vs5vdPtaaKFiaTEHcSZUTiIGEPsbQpcHbQHaeDT9IOTI1F
-         5B1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789522793; x=1790127593;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=F7/Be39iQ67QXJSJm73iOaskwF1HV5SnLrr7SsaSjB4=;
-        b=FYs5QXO+3PbkL1utgT+9XooDaPv8F1TokxLdKv9GRBELjq7Gk+8PV+1q3VQ5w3xKlA
-         atFVwRLBeXsfK6aMxjQssVtRhXsQX95ktbK9MB21kK2p8itauDTG5mD8YZn6w9wVfwku
-         3hvGrsU9guLVp/Fx5XLJT7OHAbTnPQgw2iX6O+f2apcwUoA/eF9sE1+LacgtvoHQsUTJ
-         qJnnCcaf7mBigAhvuEDW3aJoUCTbP5tOSyzlADwjNXxnY3z9nA1keACscKznYg06OjeA
-         k0/1EH0q9MuZKjbnC5ErdfHrhjQ2YAKeWDjWijRYxo1DeDIXYdUCtvf6bNXYUUNIuqiE
-         2QiQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxdQSNulcHWq7AIjNJfekkfNBxNa0QeTH4XwIwg7fQj0l+yHxu3eUuMmIebBbzpU8+wJaUPs/dP6A==@kvack.org
-X-Gm-Message-State: AFuF++mQCvg+xXZ+aqCfyoNjgRVNG0mto157ZdDiv7DBBsqKnXTEugCQ
-	cIj7mD6yAIrhAqOg6uB1pIuZX/BEBJK4xcHL+evyeVuLpyVViJTtU41p46BypfcJd5IL6S30GDn
-	540Ie5tdEVwRgVnheO7+0LzuUOrvml00=
-X-Gm-Gg: AYBFou1/FbXUY0b7HLNX1KSc4IPFPUW517xwjiB9qPErrmeo8dch/mcjO4uQDu4fAoz
-	sG2owFxOV/mrKKhOZtXRihNFSBUp5Ta89ASpVBQt/yVw6fvszZTR5dCEeQlagcLw70vZWz5x6iq
-	rNp0hvYWB0mSThX0Oaq02cZSlLQTVOZyRHGG6PJw3RmWz6jM0qY6dWUziSzs5JxMF5xWonKHDjF
-	HE4G25Uw/2+DFqULJhSq87IVvo5V2dYUnSq5Kaf3bs2K6Xpqy2bQ6KaZOGexyyZYwU7y2wThOzj
-	oyXK+zkHv63U2dgBuBYMKHtyjj9sYcBsQ0hnfob4TN44zetdKIYYyZmSl1OzizG7RGConr3f+om
-	992fvw0jmX0Su
-X-Received: by 2002:a05:600c:3487:b0:499:b65e:49c9 with SMTP id
- 5b1f17b1804b1-49eb7326671mr12886295e9.10.1789522792473; Tue, 15 Sep 2026
- 18:39:52 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260915033050.1579457-1-kunwu.chan@gmail.com> <20260915141428.90098-1-sj@kernel.org>
-In-Reply-To: <20260915141428.90098-1-sj@kernel.org>
-From: KunWu Chan <kunwu.chan@gmail.com>
-Date: Wed, 16 Sep 2026 09:39:41 +0800
-X-Gm-Features: AcwNN1WkItfrjGuvh4D30_0jXdjk_3N_mQEQU9h1o2CriinlbmIT02nd1bs-e_4
-Message-ID: <CAN_Opa8kqT3veKMw2Efir1p4mKH3oQuD5OqyBigjiBMvw7pjnQ@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 3/8] mm/damon/core: return an error from damos_commit_filter_arg()
-To: SJ Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lianux.mm@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	d=linux-foundation.org; s=korg; t=1789523194;
+	bh=yUYa/GvKq0t1HPLtH/seZWJgrC2GfmJGoFRdt2lTvSU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=xe4wnLPMzAF02PpoBtQdWpAESwFpnQgwqHUHHMwArKEQ3kVC7isdYXV2pWRF8ZeQW
+	 D8+bH/HFkmCtEHk2qeU9BcJuDhoUKKswmdshZhvxE/RT/Qinu2ONkvRa+8SO0iCfKZ
+	 LhOCPmhz4FG8PZFU9nRsJ6OBYvPcr+vFVAaHf4H4=
+Date: Tue, 15 Sep 2026 18:46:33 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ liam@infradead.org, ljs@kernel.org, david@kernel.org, vbabka@kernel.org,
+ jannh@google.com, sashiko-bot <sashiko-bot@kernel.org>,
+ stable@vger.kernel.org
+Subject: Re: [RESEND PATCH] mm/madvise: use folio_trylock() in the
+ cold/pageout PMD split
+Message-Id: <20260915184633.e2d8cf719e5eed186d087a8a@linux-foundation.org>
+In-Reply-To: <20260912110540.3203010-1-gourry@gourry.net>
+References: <20260912110540.3203010-1-gourry@gourry.net>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: a91qcwqizrsk9z9fugy4orafnckuac6a
-X-Rspamd-Queue-Id: 02F0B140008
+X-Stat-Signature: byzkp76ftncb4qguue41fus74wojay4j
+X-Rspamd-Queue-Id: BFC8E40002
 X-Rspamd-Server: rspam07
-X-HE-Tag: 1789522793-727298
-X-HE-Meta: U2FsdGVkX18MR0FCXjo3SdUwYvLA36stygb84khUBeTBkD3Mg2V+POjDhSrMAyGAu5AHoGqAPG+8qotGamIh8UXTkY2RT3KtFlAFNNc0VwzphAMsNSleY2LzCayez+y3hWHUshQaSvxPcPppOs5UyB8MJfzCDX/MNGnrsRwt4btAx2QW5FNU81GRxC0CCtckGkUYUlJl5R0/VIbld+3BRndmlU9NL5j5NYxpv3hV9S537F/YWLf6TYO9fsy+fDBfZT6qaus3xxqG4hBFTZYvPJ5sNcqF7MAatb9fgpeuuQbf8Aydj5q619KasjQ6a1t6Lf6YjbHCx6iz9rLxXIXclm1Nt+lRGeW9QRucJ0MbyNIFU0FrEC0GPsdotdKqCOHFruaVEw1uexdy9jKNI/jYP7+iZxP+2isLgAtRCHSOwphZI9JN2Id3+u6JFLRHfZR2S62ES48teFYGGexqaRFx2YM7Y5/eagTVYVHrj/GOzpzs6IhN+dt+RUWF+WYvM8ldx0JnZkqozaZ9cqFk0Y7PL11nsi9TcjCJd6xALsEm61miQ1vYQhh7eYhtZI4nKVXY/XxNyRJncasxadwIRnshRQHjvkVYHwVSng3AReFrrLLB+E3xaBx22r1rBQgjeLQH+5iwTPCLp3oDCBght8/a/0+CirDOHl6yrKqyOPZeP4/k9q47BMHLIsg2IwoJLxBMoLdtYr3MuKULT0b/LZ3qkfNSUHqQ0f1/2wlU2AsOZbqA64vXgIqgu2q1NZ/9A+6IGWtLpY+gj9AYrHSxpBG3UN8C1JtREM59NuGrbrDaG2ldIaAHMH1YcEi4+NenJ3op9uSfXlahg3sn9WyTu4eEs9M4zJNqNTHSqW89n74c8tbR1Jv2MejmMUDBpXI7oYxhonqCemwQ7X3Xe+RGF6mFQ52Ii1xZCseAU6pL27N1PFTb9R4Ap93DzNi1izL17irWwHdhc24e0pE5cKGLo2L
- NBbxJyA8
- TypvhYMIxf4mYwh+NfNJSCbekFo5MflQ3EqkeXnizIrktwK2x9wxVJhyLy8LEfusvgGbshrmVjHyI0vqPcuuYyiLCI93QZ3jadyMZhirTwWUlXyohjOFx7wevwKoUcYIQ4YvchIGsDt+F1MbSkJ3UFQ78gfNfmMRPlddYLb6ENXRqBXk4PYEb2WkV3a+BJPEToU7ZBMt457hqO0vDxZawyH3RZJbbpZqtR63GDD0dVyMt5YpVuEIdkHSrETGKy4BqwTeuQkIOyWlYTcI3fbsO9AMp13mojv1uLj5tDP0p8FnbYywBwjA/eLMXARVxCyjRiWkFTpV6Vw3ygP71K4ingfwm5qFKyEHRRSf6BmDwFANaqE+XldrvUj/W7r2+LqSVIo14mOAM11qD0N8yOQYzmRpFs8VFs0MlsEbxmXVOgJM3s9Z8pVanUq9/jRAXnHEhOWbgvYsO6J/AgxDjHZp+jRCo98veghFXH976seBHE82Cq2dIg+6E0iN9uA+kmYwsSgJoMJiqp8htK06sV3d5TZOPytciZT+otR5Ep4Iqn5mzgKSHh1cWIJgXTA==
+X-HE-Tag: 1789523195-200360
+X-HE-Meta: U2FsdGVkX1/X0H/RI50KE8YguaZC24gwctrn+0ioxpxKe9lltfgnnQ1nC1Eq39XzJRM8XLOwxAWgor9X0cxYw3/HJdADR6/uQTh1zNh+j0gC8I6aOIFbrdVLqB4ZGKSCGoAThAGI6VqGJWmAG1kGwdU2AQo8xzRbecEQGo4CAGaIxHbglrjAkpDOrwEpPEJh7Vr8COYh2SMx+NLIilRQy0bPF06iaP710EyVvzZSERiqCNe4MmyIW73fOpyCgoGQW6XHNdFBNgtn3GvCH857d2UGLHfNaUt6TIKBq1gOG0payX40b2TZxIspA88ocLvnDGOvo+yWqEC6IGIgm1Ze+tFsZtfh+ojkvddIskfLvbQlHmIqf4dPy7H7cQGpf0XEbgNP9cPAtRIF4doMK7ExEJr67tYdWHQgpiCtIhAP+KZhXk6O8oEXQZgMmjzgti/t6ngRMP5O/2i+nKPO32/Eb6cte3+7atUk6+yOewBWPK0/jxbLxp71HAoGu0biK9w30YEDCRyv/IKjqmREC2iJpZ54skvB4Lg8LoCVsj5alw6XLT6qj6A1klg/6nIwmF2Xp3RLq7M6/ZYzX6t6SZPpua/AAkBSzvJYj/MKURIlEhcdPu+KV6Vm/TWzMMWCCMcCcSMUNrsWc+niztHr0yG736q0tGoS9puxWuca90ySHPw+7NQjXfsKXsxIIx2wLYrIJRVZ5xuOPAnu7sQv+zswCr6edbIXG7uOacnuk3ZsKabbxsa24c/Qzypq8m1cvw5dK0HFmO94kcuRMBrSKk41uBouM809rzMbNMx8WVzP2An/7t4kSiqys0W+/g5rV+LB5x5UtYQcV2fpkJSOfhHOU/CuoLic7bcAONd482E1E6DIa+awzfx5VphZUd+0aBfJAFLGWCowOE+kSXyMG5xen5opIIdUY33BSFemfEmh8+Udw/Xf8ZEAvv1vAWYK9HonaSbIxc6p+OGSpjuQc+u
+ kykTjq6Q
+ p5Ywtl1nso8h15XbFflbhmqZIzlNsrN3RMX2+vZgROwqxxF2fROByWxXDfrinFTPqxomzZPkKUCwMRqSYnTscx3oNmSsGDpX0KFG8gFlvlCDLUWOXGBaObed6z1HXX8bUAqPcb2Dg+yk9teFL5+sWBHfHxmyhDIzQAJq0z83cQhGm2SssMJI2C5M0C4Kyr52H6SLsAx9IuVwYeM3iNkwLxdLNlFvbFzNDEth/PyD/iIIPVyzaQjDM1ta5lm4U16n5YKoA24rYFRP/mpMIwqmJsAp6bwjrZNDOzK0fML3UoG8+RWNJD1f5SVQQv3vjBqAOuNPf+PaE8pHxwNQITlLWTL8q8dfMR2UeqU2nR/zpNtoadAOkBDObF54yyN5+Sgss15FlxB0foOon/sXeb4wN766TcrgY/hBTb8vt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,38 +92,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 15, 2026 at 10:14=E2=80=AFPM SJ Park <sj@kernel.org> wrote:
->
-> Hi Kunwu,
->
-> On Tue, 15 Sep 2026 11:30:49 +0800 Kunwu Chan <kunwu.chan@gmail.com> wrot=
-e:
->
-> > On Sun, 13 Sep 2026 10:17:00 -0700 SJ Park <sj@kernel.org> wrote:
-> [...]
-> > Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
->
-> Thank you!
->
-> >
-> > I'll take another look at the remaining patches.
->
-> A new version of this series is available at
-> https://lore.kernel.org/all/20260914142327.92510-1-sj@kernel.org/
->
-> It has no real difference to this version, but it would be better to revi=
-ew on
-> the latest version in my humble opinion.
+On Sat, 12 Sep 2026 07:05:40 -0400 Gregory Price <gourry@gourry.net> wrote:
 
-Thanks, SJ. I'll review the latest version.
+> MADV_COLD or MADV_PAGEOUT over part of a PMD splits the THP in
+> madvise_cold_or_pageout_pte_range().  Two threads doing that to
+> the same THP create spurious failures.
+> 
+>   CPU0                          CPU1
+>   ----                          ----
+>   folio_get()
+>   spin_unlock(ptl)
+>   folio_lock()
+>                                 folio_get()
+>                                 spin_unlock(ptl)
+>                                 folio_lock()  <- blocks, keeps its ref
+>   split_folio()
+>     folio_expected_ref_count(folio) != folio_ref_count(folio) - 1
+>     -EAGAIN
+> 
+> CPU1 cannot drop its reference until it gets the lock CPU0 holds, so CPU0's
+> split always fails.  folio_trylock() makes CPU1 leave without ever taking a
+> reference.  The PTE branch of this same function already does this, as do
+> madvise_free_pte_range() and madvise_free_huge_pmd().
+> 
+> Reproducer: 400 rounds of eight threads calling MADV_COLD on half of each
+> of eight THPs, re-formed with MADV_COLLAPSE between rounds.  From
+> /proc/vmstat:
+> 
+>                      thp_split_page   thp_split_page_failed
+>     before                     3186                     860
+>     after                      3200                       0
+> 
+> The short before count is rounds where every thread failed and the
+> advice was dropped for that THP entirely.
+> 
+> On failure the walker returns 0 and nothing retries.  The PMD path becomes
+> best effort when the folio lock is held elsewhere - same as the PTE path.
 
-Thanks,
-Kunwu
+Can this result in more EAGAINs being returned to userspace?
 
->
->
-> Thanks,
-> SJ
->
-> [...]
+> --- a/mm/madvise.c
+> +++ b/mm/madvise.c
+> @@ -419,9 +419,10 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
+>  		if (next - addr != HPAGE_PMD_SIZE) {
+>  			int err;
+>  
+> +			if (!folio_trylock(folio))
+> +				goto huge_unlock;
+>  			folio_get(folio);
+>  			spin_unlock(ptl);
+> -			folio_lock(folio);
+>  			err = split_folio(folio);
+>  			folio_unlock(folio);
+>  			folio_put(folio);
+
+Sashiko shares my reaction, "dear god, why does that function exist".
+
+	https://sashiko.dev/#/patchset/20260912110540.3203010-1-gourry@gourry.net
+
+Like the entire function, that random mix of "goto foo" with "return
+whatever" needs to die.
+
+Anyway, please check it out while you're on a roll.
 
