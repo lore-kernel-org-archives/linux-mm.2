@@ -4,153 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2624DC982C5
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 14:51:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D2C6C982C3
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 14:52:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1B7966B0088; Wed, 16 Sep 2026 10:51:53 -0400 (EDT)
+	id 6C0E96B0095; Wed, 16 Sep 2026 10:52:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 168B06B0095; Wed, 16 Sep 2026 10:51:53 -0400 (EDT)
+	id 64A926B0099; Wed, 16 Sep 2026 10:52:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 02F986B0099; Wed, 16 Sep 2026 10:51:52 -0400 (EDT)
+	id 539986B009B; Wed, 16 Sep 2026 10:52:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CA9506B0088
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 10:51:52 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 61B3AA5B4D
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:51:52 +0000 (UTC)
-X-FDA: 85219914864.13.8772E83
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 33DD16B0095
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 10:52:36 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C191A160693
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:52:35 +0000 (UTC)
+X-FDA: 85219916670.06.1D4CA48
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 9101AC0007
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:51:50 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DJmX77mg;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf15.hostedemail.com (Postfix) with ESMTP id B247FA000A
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:52:33 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n5+lHe5C;
+	spf=pass (imf15.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789570310;
-	b=a1yRwWrDF9KctEB8G0M5zH65hBu5NTdJ23VekFAGZWaY8LZKwLqE7td6Gt5DiP1losux4M
-	8hWgPCK0k8a+7ijRUmR2x3R8QmZSzaC58QFG8omwuRgwmwyLfZmyhxE5Yg/q5aFUBj2wNk
-	NOTLkKmkmU7Of4ISKVQ1eLBYedGI4eA=
+	t=1789570353;
+	b=tW12AbUSA+N6pNQGvKYg1we/nGy1inxOcMsrmyyWPyi4w3jgisgQpPd0Yjd0Yl5t33mYN8
+	VcUTpvlnoHGjGjtoiayRPeCs9f/B49Dht7VAYEzCY2GBHdT/8HAppEalWcAOIubH4hxRfx
+	sWFXD8ImINNb/oktW1HYHbwsHYXrc9w=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DJmX77mg;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n5+lHe5C;
+	spf=pass (imf15.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789570310;
+	s=arc-20220608; t=1789570353;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s9b/9Hwh5vUHfr3h3yI1jv7U58Y0A9HgrBxLkX3sPvA=;
-	b=4f2tpXlJQPWONxjrZ9XhS91vhQUvxkjRLuVdZVLq+XgqA4kSFw8qF1rBVk4zez5rnfJw+1
-	wmS+4P2E9UvSndArinuvfkV1kTIOaR8bh2HjZnUZlgbtaWuzlnUukEBFv12jeBPbkt8/bZ
-	FYHZ4SN0Ffz+Dh58uiLZVu2HcOklT1s=
+	bh=TkGGqC3RMjVvrwfy5PwG4mz/vkltLL19QkUFctkO/vw=;
+	b=B4l0/lyVoXvw/UjPTIVI42LjjEIrKz+f0uKgGMWBFkpB7YRcLLXxcxlwU6vqOFzQApku/0
+	/Zrlgp9By+6V9eY2noika3fv/GqpdjzehQ77zbZptKSRWmmYrtmgAJu1PGyQTcG+9dV9/0
+	V3XcwhbaYhgNZXaWBYbKauJxSUOoBjk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B742540367;
-	Wed, 16 Sep 2026 14:51:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1141A1F00898;
-	Wed, 16 Sep 2026 14:51:42 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0E8FF40F07;
+	Wed, 16 Sep 2026 14:52:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45DC81F000FF;
+	Wed, 16 Sep 2026 14:52:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789570309;
-	bh=s9b/9Hwh5vUHfr3h3yI1jv7U58Y0A9HgrBxLkX3sPvA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=DJmX77mgdbs6Q8GAXeo0braYp2Bik3mxuTOg0XuCWiVphbHAn0kd2P/Gl+uG+6WHV
-	 Nj7WIlnKvMiHz2i5VCCjR0CKoRaRenUKdVTz4v8buhxLZCDYs7IWCtsnkMkJY5qML5
-	 abKuZvlhV5VK8XsDgdsDHh2VJyTT/NPOcB+cu8l4dl4wTx3cP9yEipHHWuu3Sstsgs
-	 w2BFWBemQKvOXthe2X/HXPSb4U4WjkI1WB1QXgotSE6z7uqoNYpuGUaxbqDGsHaugi
-	 qFBqz/j/wpD9Z4FAxE0BIjGvJbIomrHP3AiW+U8sR6kKKimRJUHOhADx5jFJ6fVP0H
-	 hUGLHYw9SMtJQ==
-Message-ID: <b8ad366a-a019-4462-9dce-f687f60ee7f2@kernel.org>
-Date: Wed, 16 Sep 2026 16:51:40 +0200
+	s=k20260515; t=1789570352;
+	bh=TkGGqC3RMjVvrwfy5PwG4mz/vkltLL19QkUFctkO/vw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=n5+lHe5CWEWL2KtQmFkFB55b5iXu4N9Vek0dyGZX1/3zO3ka8nm6/J9Ov3Uj+Twdj
+	 oZldKiVpGMPSt7OcgjlmFSWnMS/exKe6A2pnW9s1kh5304G4Lx0wP1JhVWJlv0A1pJ
+	 iFShXHn3WBtgXYPWGZ539lIZ9fl6yZvh5/dprhSO7jjKRNI8hSfJo0uZT/O8N8rdR+
+	 v8/wkxAhlUAABocYQX2cNdmIDYSMZvBLU8kbehw2VwMGkg2pCL/gj5ll41fUIPPhxA
+	 YSTkOrIzqmrECES5q8nUpza3n6FL8lUJhmcUvDHJGiPm3SGSKJf5hVjqr0mGH3r07p
+	 vz9mwlnt3vLDQ==
+Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 2F234198003A;
+	Wed, 16 Sep 2026 10:52:25 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-12.internal (MEProxy); Wed, 16 Sep 2026 10:52:30 -0400
+X-ME-Sender: <xms:KK2qaoHqtAINeNtGRzs1bE4Or1Idw98GmCNo7yvp41p8sHitUvCovg>
+    <xme:KK2qajpVBmvzQkmEYsGWHVTg8yM_vmXkodksSZldIgXfwWRjUSgHH3LWiXwuoFgpv
+    bcL-CF7740d_Z8JNlZts4mMMbGlmAZ0_nUO64i2DP3V5-bQ6xJ61kibPw>
+X-ME-Received: <xmr:KK2qag6NZ0z5r-gHaF-grFcuWVlB11opbmTnXReLIiT7MVmlhJLugr7FVYU>
+X-ME-Proxy-Cause: dmFkZTFzC/SjMeXXYY7YnWd3sVIZz68pRPeSBwlUQuzQ26K4k+iWC1VyTPjTOqnFxtjXHM
+    W+YMnfQ6l3qQK5dykE8MoWFvEFfnx5MIry9NjqzHKL2Ec5pJpS9Q7SksQNlgzvfkwIKbVF
+    oW082Dc2+YFWvz85JNW7R14spIgFcnNMSYHY2HFrVIrBU4VXhIPN94DOg1fkGdV/6cpPI+
+    0IXahSkrs6gw44MEjwRtsMCkDTWG+VJhTHbz2pkYOSy2rISqm8afDQp+IA0s98PUVOUPPX
+    eaRTiqmCx/zCy6Mw3tqLGr05WwD78p33GgJa84mbueHlZb9u5obu9GWKZTmbsmdQW8CugE
+    /606BWJpaqYpYVdKXebre5PN3BaydsB1N6Nzp8zQ8MGhLHrejFhhX9dMqLWNsmRuaUqJae
+    XfrmXUu/Cud+YTFoRhxcEho8ftXAl87qUivoOg1HQx/oGfqycEVMCdUSUi92hGuLnypDj7
+    LhbZS1kYAxEKHQOHdzmgvUMbMZK6naSOpJHoI0kHcdXOIk6ZlynEG2hmqhAtnIHhW68lnY
+    7YewUskzTjR/ngkqwNIdRuHY0eLneIWm53ya0cn73ls6UWyRp96a3bYZAu7akT0KZ0bbjC
+    j67aoGD5Aj2Gy2/JB6+fG5MCjofwib3Bupn67WA9x6D0303UOFDeOxMNyLNA
+X-ME-Proxy: <xmx:KK2qakQPScdB7OJALGudxXnH-3-BbzUl1YXCMJyU6EEInS2pQ2s-VQ>
+    <xmx:KK2qag7TDVEdRyDMWRjoqZkl5P2gU85hqDlXjFHdJI5sA_dfeAN9jw>
+    <xmx:KK2qam2D551vsUIl4CMorYd6gC2AYPELFyRQQ-TLIj5Vtyi9h_b9Xg>
+    <xmx:KK2qann2JoRQaIxtNsPm0grXVthoz223TdcDfMcqvc4pvr4B0tnQpQ>
+    <xmx:KK2qalkdTbUAKqx4tr0L4tfabsAqurcYNp45tH53pVGWD6p9sytvv02h>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 16 Sep 2026 10:52:23 -0400 (EDT)
+Date: Wed, 16 Sep 2026 15:52:23 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, 
+	chrisl@kernel.org, kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, 
+	linux-mm@kvack.org, ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>, 
+	willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org, riel@surriel.com, 
+	shakeel.butt@linux.dev, alex@ghiti.fr, baohua@kernel.org, dev.jain@arm.com, 
+	baolin.wang@linux.alibaba.com, Nico Pache <nico.pache@linux.dev>, 
+	"Liam R. Howlett" <liam@infradead.org>, ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>, 
+	lance.yang@linux.dev, linux-kernel@vger.kernel.org, nphamcs@gmail.com, 
+	shikemeng@huaweicloud.com, yosry@kernel.org, qi.zheng@linux.dev, luizcap@redhat.com, 
+	kernel-team@meta.com
+Subject: Re: [RESEND v7 09/29] mm/debug_vm_pgtable: test PMD swap-exclusive
+ helpers
+Message-ID: <aqqtFKfRDap3ksTl@thinkstation>
+References: <20260914122950.3283997-1-usama.arif@linux.dev>
+ <20260914122950.3283997-10-usama.arif@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 7/9] drivers/base/memory: count inherited poisoned
- frames into the block
-To: Breno Leitao <leitao@debian.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
- <nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>,
- kas@kernel.org, kexec@lists.infradead.org, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Brendan Jackman
- <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>, Oscar Salvador <osalvador@suse.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
- hannes@cmpxchg.or, shakeel.butt@linux.dev, linux-efi@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, rmikey@meta.com,
- riel@surriel.com, harry@kernel.org, linux-cxl@vger.kernel.org,
- driver-core@lists.linux.dev, kernel-team@meta.com
-References: <20260915-hwpoison-kho-v5-0-3bc7a57bd503@debian.org>
- <20260915-hwpoison-kho-v5-7-3bc7a57bd503@debian.org>
- <de41b78a-8471-4832-be0c-35d410a4499a@kernel.org>
- <aqpczrtIwSG948iv@gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <aqpczrtIwSG948iv@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 9101AC0007
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260914122950.3283997-10-usama.arif@linux.dev>
 X-Rspam-User: 
-X-Stat-Signature: sxqmtpc9sbkxd655onj9maceejmx4ysa
-X-HE-Tag: 1789570310-341643
-X-HE-Meta: U2FsdGVkX18GcmCEPtUDLvFDgr5Q6/n0aK5w/zm0Flc4lWDJmcCLyj94jGNCKj++T+1cA+PRRUvT+hGWEZUN5IOulPT+L5yBK/ouO2Pv6ea+FB31Bq8OORj1C9BU44dcJZP29WAN2sFs4+2iU/9YN+KTSVS4E/kzj6pCqwh4M/WIxaF8wcI1HbXWmx47uUjMGChCq5chbmbgkAJW/25DBY5/09/eJwd7CcISR+RCZpSYEbF/GpYJpBmPLe2E/Gwwj2sjRa9xz/i0BlHJKK9jDRLrMZmCTaG9jgp1u2mQ3YbOs/ox75mceJU4TDVEAb9iqmzW2vWmQXQoL7+/EFysxrqpkYXma1OzKunZtOfXagrFhmLeDJhilvqOPtepxqCCqH5G7pwm+5Im37hFs27E3L9shx7y733RV0+Nd+GH00nXoqkkFEdGsK2zAuIEQvnCVvDPt0x4d2NXB6R1RyQq7i2iIBYvfPjKAxB8scC0WZI4WtKIN1DC3e3FLzbTWHoSd4Ub9RBp5SRY7JxLC/Bpm8DHVWtUNNhBLuRldxuMazXduyp7S56A/Q6e22k5Y/oAH0ZSh34y+tZQ5w+BvaNCHbs9ZupqlNsFS9PeWboz/l7G0JVrtZtKqE8DHkm+q3NN2fowpY4ptOJzaGk+m5UuOA1C8zn5ouAklzvw7ffYIdYKYOKkRu4+mtywMnQZozPQE3mWaVLZZekRsDSkDPffqFMI9zOIugdzJEdj3v/eO3fwXQodR6AwwX6Xqa5ZKuWbm7v4s4ZVw4jog1Dg7Ws0+mHcF4FVOAFzLePwoMKjAZfKS3+yDqeGn0MMjui9DCsrnOfCICJkLJJdy7CjBQuLRlV+VEetsCBo+3jqjutJ+g9S/9Gku6hmprVsRWPa0SC658+rZDm0pOpYjTMvLRUngEGaKWE21eNBorcHtB7uyMquqvbqst+FEWWL9U5ad/rvpgwlmzv23Q1d1P3dzJ7
- lVe2juL1
- qonWLBdxPgtrqQnS6Aw2ypyZ5lQakH95OtIfQfDYfGeQzLd9pZ5h0UyyRfW4gLCTz0VinH3XRi6I6q7BBZZWJ0OG+dv3uaOhvQ5WmM5Jx7meEuX62NhS86HGMMJFfli8OKpnY1OUiT3yt3pjafrA+oZQVuZ09h7His38p8WahWzNmnNVQkjO4R/GUMi0j3wWaXTjLXxV6+HRJK434lKHqCVH5bZl2ouRvxeSgEZ25G4I6pDTI44Q3p7YN+Qs8uCZwMF+ZnMoo6NNlnDE3kZCeaiomy5FzQHDLV4IwFRe2KEX9k7gYwYKHaWfjocQPCg3foFUmKMWux5FcMu0ZE253WLXi6bJOiGS3jgI7hkQKHr0Ab84=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: B247FA000A
+X-Stat-Signature: bns7xoywy4kbh74eg3okom6j3akeusqa
+X-HE-Tag: 1789570353-672712
+X-HE-Meta: U2FsdGVkX18WSolPaDmjkfcI9QwPVG/R59eDWKQbB0YTPAbHR+jeunvtp7wt2KcrQY/5QwuEO2DWCVKTituzkC+0b1qpW0zxbWhRbDjFcQ9Lg5AuMgdzo8AnWmznzMkhUKkiUPnNgMKil6ZreYdS3vJNxSAL3giDUu0mSu5/GVOhCzgqyNVg0xZzG2R47R28pnGH/bmgPBJsYUEpK0uP5ioiSIi4+BTJfZBV4mPse7H+SKNAV9yQ5mQfJWYv7A0of0jTkOdTT/qTIMKagev9FcAAoWBsMIu7uX1XgUqRZC96MOwiwQq2zDwWJa2Fva9xhH+sOozRoq0/NqWdyb4QzCC34nOrw1DBj2f4qDrxHCbi4tDLsOOvlhFujPvmBvIc//9JnUr011s8AFtDgwx2J8iBOtysB9OmqIrxil4i8QRe6YJv+9xtk1+JUeLz//mbwFp7LZfkeHbGAmYUNREgUIEOUqDinM5+RrIp1hdGiVgvO8y3oqKzTeGQEsOxMoaAEZMmbWRZzdvYul00Sos4FzaVGT5XC2B+oEBXb+1H22eZgccY/lkDW4jvPcZq1d2Wbet/a6xodCJxU8wHKXv1pcOgAdjUqDK3UvqqaNAP5uubSf47LXXVDTG3lde7Jc/yNuNPMz7L8O3k/7mA0s53dR1bxd+PDjh5mjD2SlCiFBV/IrLdY/fvVz18xmjw2+9ZygWzMYikNmPnLkVXzwWJvagaFpdP78KlZOOaMyULzEV05NQEPy7dPz/i3GuY12UToDDxLVxzdG0htW53b6mniUcbZes7Ba2nEjy8edTvvrmVHd/dAlHyC8D4xFulg4xYDk/71ciZwhwURAkbDVANUVnn7kjDpezdNJAkmsNhuXP5vRVjMcz6Li9hzbX+Zyiz0kuL5liuk9B6tl6W5bwWmmI9M6P/S6P4+pNOzBBYu+n3aj204+tzs0BIlXWV4uRzgmmcU4UbHd7bRJA94+R
+ bUpUcbfI
+ Vdb6Xkxb62m5CLZ/RrQVhs/cBGKn314Jv2e2hDlYeK+72DhwEVw+952G7Rp9pr4El3LGlymDiSY2zfP5M3W347julsQsew/gpslDOnWRaRuLBs6Nu38JXFBdDrZgKD/qoLDwyGyKEVbKHEabe0niqmdlPiUtOiFPyXTk3rXuiw0CJ+YkLx33bp2/60hwKvmF1x2uVsIqV2tZZCqbIulhfRHPTEPDjE82t/eb4Oi/gfTNqY+8l8TLpzw1k5pZDM1Vqhr6/M0zZ0VwEE9vGzKeD84m7g7kBgniqtAX3it4rYEU2Z6TU5maeLHMEd6ory0Kz6QMAFIwcGqRh2xueY/Z3GCPqZr+S6AZ4B68U
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,73 +127,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/16/26 11:35, Breno Leitao wrote:
-> Hello David,
+On Mon, Sep 14, 2026 at 05:27:59AM -0700, Usama Arif wrote:
+> An architecture that picked a PMD exclusive bit overlapping the swap type
+> or offset field would otherwise only be caught by data corruption at
+> runtime. Mirror pte_swap_exclusive_tests() at PMD level.
 > 
-> First of all, thanks for your time looking at this patchset.
-> 
-> On Wed, Sep 16, 2026 at 08:48:56AM +0200, David Hildenbrand (Arm) wrote:
->> On 9/15/26 14:53, Breno Leitao wrote:
->>> +static void memblk_nr_poison_init(struct memory_block *mem)
->>> +{
->>> +	unsigned long pfn = section_nr_to_pfn(mem->start_section_nr);
->>> +	unsigned long nr_pages = PAGES_PER_SECTION * sections_per_block;
->>> +	unsigned long i, nr_poison = 0;
->>> +
->>> +	/* A hotplugged block is created before its pages are online. */
->>> +	if (mem->state != MEM_ONLINE)
->>> +		return;
->>> +
->>> +	if (!range_contains_poisoned_memory(PFN_PHYS(pfn),
->>> +					    nr_pages << PAGE_SHIFT))
->>> +		return;
->>> +
->>> +	for (i = 0; i < nr_pages; i++) {
->>> +		struct page *page = pfn_to_online_page(pfn + i);
->>> +
->>> +		if (page && PageHWPoison(page))
->>> +			nr_poison++;
->>> +	}
->>
->> That just slows down boot unnecessarily on 99.9999999999999999999% of all
->> systems out there.
-> 
-> hmmm, I am not sure I see it that way.
-> 
-> The loop only runs for a block the bitmap marks. On a machine with nothing
-> recorded the bitmap is all zeros, the range_contains_poisoned_memory() check
-> right above it returns false, and the loop never executes.
-> 
-> What every boot does pay is that check, once per block. The stub installs
-> the table whether or not anything was ever recorded in it, so this is not a
-> NULL test: it is two 64-bit divisions by the unit size plus a
-> find_next_bit() over the single word a 128M block covers at one bit per 2M.
-> 
-> The real cost (that "for loop above"), comes when you kexec (not on cold
-> boot -- given the bitmap is empty), and you are trying to init
-> a memory block that has poisoned pages into it. Which seems the right
-> trade-off, no?
-> 
-> That said, can we do better? Yes. The silly win is to let the table say
-> whether anything was ever recorded in it, something like a
-> linux_efi_poisoned_memory->empty that the first recorded frame clears,
-> and return on that before the bitmap is reached at all.
-> 
-> Is this what you are looking for, or something more drastic?
+> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
 
-Ah, that magical "range_contains_poisoned_memory" does a bitmap scan?
-
-I'm sorry, but that is absolutely confusing.
-
-There is no way someone will figure out that range_contains_poisoned_memory()
-queries some efi specific bitmap that won't even be able to represent any memory
-outside of it's range.
-
-I don't really have time to give a better solution, but starting with the
-naming, range_contains_poisoned_memory() is just absolutely misleading.
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
 -- 
-Cheers,
-
-David
+  Kiryl Shutsemau / Kirill A. Shutemov
 
