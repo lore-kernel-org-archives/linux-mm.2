@@ -4,142 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2599C88E5C
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 09:25:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A095C88E77
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 09:27:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 76A086B0095; Wed, 16 Sep 2026 05:25:18 -0400 (EDT)
+	id 12D2A6B0098; Wed, 16 Sep 2026 05:27:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 71B356B0096; Wed, 16 Sep 2026 05:25:18 -0400 (EDT)
+	id 0DEF46B0099; Wed, 16 Sep 2026 05:27:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 60A966B0098; Wed, 16 Sep 2026 05:25:18 -0400 (EDT)
+	id F14E06B009B; Wed, 16 Sep 2026 05:27:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A0E16B0095
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 05:25:18 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 664BFA067D
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 09:25:17 +0000 (UTC)
-X-FDA: 85219091874.16.33BBF3A
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 1097B40002
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 09:25:14 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=ldIN66i8;
-	spf=pass (imf27.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=hca@linux.ibm.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C76806B0098
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 05:27:33 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id F1A751A0665
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 09:27:32 +0000 (UTC)
+X-FDA: 85219097544.26.27BD1D2
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf06.hostedemail.com (Postfix) with ESMTP id B33C818000C
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 09:27:30 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=RUzpbz8Y;
+	spf=pass (imf06.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=hca@linux.ibm.com;
 	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789550715;
-	b=8RcllZSyZOWHMv3ZfHMhAh43+72GeFeLjBDmx+LyCziCYSK90Yoq8IdiHSC25rVBD8VZ4Q
-	/StMOSauIs6xiOJdLGMGy9OYUsmbtSgzCQP9w+kTMPf66MHmkw3+SzCY/1VdDWqsGMc1e3
-	IdBFEj235LX22ebZ5lVz42GxAVXA7hU=
+	t=1789550850;
+	b=OyLdDzgPqziX/r1iAMuqwxkJZgUy8Cb/eYF8p3LhG42GFjWqEWToKt7MoY13rw6mWMtoaK
+	tT0i1mMt7lIXuOv5SROlpd68kS2bGtfdg8fwFYgYvV1Qj9pmTqyLkI9UYFE/jHxr4W2dPQ
+	Sp7tXKEqX7Z+s9z8cTnb0joGeDbvtMc=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=ldIN66i8;
-	spf=pass (imf27.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=hca@linux.ibm.com;
+	imf06.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=RUzpbz8Y;
+	spf=pass (imf06.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=hca@linux.ibm.com;
 	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789550715;
+	s=arc-20220608; t=1789550850;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HZ+Ccevsvuty6HV46TCyBPDp7xS5D2OwvS5lkpCi+iQ=;
-	b=yl+HkdMudyRY1hRMF+65LVKdaiT8N92tOl3zv9wcGSZItTGXISrSjLORQW30aEmu0bbCuc
-	pBEdIsHpqwgo4PsLhpyBptx/hnHd5ETVYoKIidlNx7w9pNAVo54YoTSo9XohIKkoE0Ofvk
-	UmH4gkEgvfnbPSl9JBEzioTEp4+VpFo=
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68FLVe6i1951647;
-	Wed, 16 Sep 2026 09:25:12 GMT
+	bh=2/3jT32KmSfKpWdIJD3/VNO8qiz+e7Q3XqDSL2uo5is=;
+	b=VYoKI4P8f9lAn5Kaifv3qCjOVoY0pymptK9IT8ywlDZSLHf4x/EZ4WTAcXkQkzOUk9SNXS
+	tivbVzVM2Jju0sEpHIsWFzeBrKhCOrnNMVLPlNpcF74iqK0l3apVbnhJxIequgXOd7ISZ3
+	9A1cr5s/CHAMkuXqL1+/3L+9vNldXUc=
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68FLW5W91806375;
+	Wed, 16 Sep 2026 09:27:27 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=HZ+Ccevsvuty6HV46TCyBPDp7xS5D2
-	OwvS5lkpCi+iQ=; b=ldIN66i8vpDl8fqfqbjs6PXetPPKso944h32ENdyEUBAxs
-	zCgkX7x276q/nxizdxKzDbYIX/iLYzKCMQIDTSkNgEZQVURxGniql8F4gChoOZgb
-	jMJsfx0eKtV7Q8wQSf1hrlxrGfm12R7pW+bRR7D9kpSxxYhfW3cWXKR7qNZWQMyC
-	qKyrHXIlQAmXnXRRV1Wv3VP69G1KO5UwmL0Q/V3IrkVIjluOljeyFg9AgveB2NMO
-	bgLBcnNK6Xo5uPz6eHDJwU7XEVt3siQkYmIl3yY/YIgl/xfFgnUyu1UmgLB7k7CC
-	N6K4htIZ5fteMsWEXuEFUXRjDYTXF1f/JzIiNdmA==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gmx83ur9y-1
+	:references:subject:to; s=pp1; bh=2/3jT32KmSfKpWdIJD3/VNO8qiz+e7
+	Q3XqDSL2uo5is=; b=RUzpbz8YZ8dmoapigdBVgcIdHZcQoMTpLGiLc6gBzIIVPK
+	v3SD78t8WXI4WIhko8iwi/myapHcDILEhB5pym4TTweV7MnK0Bw9j2WVNYLSgPtU
+	mx3NMaj/l+lls/DLFl+JNSeWL+k5W8FOdkJKKtnfHyGJR1vf9soaNWZDqeeLmqiN
+	CU4Y5JZ3TVMB+IT5Ih9togOTHBw4XOMxmHGGzBM805fAnIPpgs/zVB4/tw1ESWIh
+	mkBdXmW4KnB/HxI3/kXfeLO4d0vGpYOvb40ciaTGyqYj2s1RqZ5adeCWHCrzO7Ra
+	RTWSJ5M4VoZn7XBrUzmsZDSBaTe12P0CNlcOskNg==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gmv5huq9d-1
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Wed, 16 Sep 2026 09:25:12 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68G7eegd414559;
-	Wed, 16 Sep 2026 09:25:11 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gq03bwkt8-1
+	Wed, 16 Sep 2026 09:27:27 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68G7Wcml1354827;
+	Wed, 16 Sep 2026 09:27:26 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gpw6d65wq-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 16 Sep 2026 09:25:11 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68G9P7hU27066864
+	Wed, 16 Sep 2026 09:27:26 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68G9RM0Z31064636
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 16 Sep 2026 09:25:07 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AA10A20043;
-	Wed, 16 Sep 2026 09:25:07 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 423A120040;
-	Wed, 16 Sep 2026 09:25:07 +0000 (GMT)
+	Wed, 16 Sep 2026 09:27:22 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 92C7E20043;
+	Wed, 16 Sep 2026 09:27:22 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2F45320040;
+	Wed, 16 Sep 2026 09:27:22 +0000 (GMT)
 Received: from osiris (unknown [9.111.77.138])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed, 16 Sep 2026 09:25:07 +0000 (GMT)
-Date: Wed, 16 Sep 2026 11:25:05 +0200
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed, 16 Sep 2026 09:27:22 +0000 (GMT)
+Date: Wed, 16 Sep 2026 11:27:20 +0200
 From: Heiko Carstens <hca@linux.ibm.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Vineeth Vijayan <vneethv@linux.ibm.com>,
-        Peter Oberparleiter <oberpar@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: Vasily Gorbik <gor@linux.ibm.com>,
         Alexander Gordeev <agordeev@linux.ibm.com>,
         Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Peter Oberparleiter <oberpar@linux.ibm.com>,
         Sven Schnelle <svens@linux.ibm.com>,
+        Vineeth Vijayan <vneethv@linux.ibm.com>,
         Vlastimil Babka <vbabka@kernel.org>, linux-s390@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 06/13] s390/cmf: Use kmalloc() for the CMB area
-Message-ID: <20260916092505.15587Ae2-hca@linux.ibm.com>
+Subject: Re: [PATCH v2 11/13] s390/qdio_setup: Use kzalloc() for the storage
+ list
+Message-ID: <20260916092720.15587B52-hca@linux.ibm.com>
 References: <20260910-s390-cio-ready-v2-0-e931086fdde1@kernel.org>
- <20260910-s390-cio-ready-v2-6-e931086fdde1@kernel.org>
- <20260914175952.14910Fc6-hca@linux.ibm.com>
- <aqmQf-H4yeSnE2Ko@kernel.org>
+ <20260910-s390-cio-ready-v2-11-e931086fdde1@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aqmQf-H4yeSnE2Ko@kernel.org>
+In-Reply-To: <20260910-s390-cio-ready-v2-11-e931086fdde1@kernel.org>
 X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE2MDExNiBTYWx0ZWRfX69fUZptnnHUU
- LrrBMk4p73kYj02sbSnZri/y2AhmHbqevea4IIiaytd0Kq+FJB2PQ/W0U3wmgWlO5WFi+MOvuEV
- oEkveSBkpOAgaUHmMMwc9cmVp8KN+8BWe6xWmHtDXR56RAmVhCVE2H/SoEvTGpDwuJDvgpi+AFx
- 1gaxDpuGfCuL+zHWZdN6sQ8fD0VLA62fTeKZA/UxwKXsdCAf802MGlJgVXmS6I3KmY1H69Ig4MP
- IBY2iq2h8QeCFiZ1AIjfBVlOVvjdoajgMYnvzd8MVWQ7DVVfmawNNRxMw51OJUDu+HO3MIsdo2a
- 4gaPfomddxQooCUrBSxj4UJ0INoijEAxCcqOvMbUl0IL9K0lgruC89rzkIgzg+I+rNjrNTHIQAj
- cCOrgpq4wKQtRkZCNtWHbYG7/BfzZBJah5SI3vxXPlrkgBtvPjl/J4lpNLXtlEdOCEvw/HQUQw+
- zHKYMUNbh+94N9+NLYw==
-X-Proofpoint-ORIG-GUID: g8mDs6ZcI7hyKXA-rqQ11cv1ZxLPEDED
-X-Proofpoint-GUID: g8mDs6ZcI7hyKXA-rqQ11cv1ZxLPEDED
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE2MDExNiBTYWx0ZWRfX71SwQcJHROeH
- /6MGV/0cYTm5Hq6vhhaLZcR2912LzjWY7QKhUJzheCgdzmrVZzXwocHdeMDW7u4cJ1GJxlq7no5
- TVlSmYQKWN4NI5m5xCGkWfCaDzulRwU=
-X-Authority-Analysis: v=2.4 cv=cY9HPXDM c=1 sm=1 tr=0 ts=6aaa6078 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE2MDExNiBTYWx0ZWRfX3EfgxXjPBT5o
+ BBUjfOoIbHpPqoaIMHP7eooh33xckQldVv2ACcxJptWGjGm072Wf2o8f+AQMtzoHo8t+AfDN/Je
+ jJePbNj379FOrKCNLjNGz4iAIrLUGd8gmTNXewHn+8BqjnudqCUcKQM+uYlllLJMKssGOha69eT
+ 6DA8YUTD8KOrcnwAfPEGZwHO7yig3iJRxtpAF9wBtcmRpBN9O/Rh8NxbYw1qYrLQsFwRX+xQXos
+ UKS2wfjfim8TucXX7kUz9WjvC5HZBVM+3RHOaNi8G97dHZS1sFNV7Z+iLN0gxGADILdqEN/s+up
+ aNnMjFvwRBF+767uSltCBStRsIYztL0kaWeHJwCkI0J6Z3Gy3eG2B4O8Va9DMJNV2Iw4tbDZr4j
+ VTui0MD9SH32Vc+4rI8luLcZzaDvAfeXTzWAuhVQtxY3p/gGHleYBURkxYY1vbtdQbguZRDj15v
+ +eE4tpocfE3IEJ9yVqg==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE2MDExNiBTYWx0ZWRfX/spbEafXLIZk
+ qPDrbpGZsKtGMKS2mpEw43VfY8k44CX7phBrfDUXkE3Si507jeJO9y5LjMxsKaMefZnkR1++19z
+ /vbLROzXSS1WOe0ZmMFv0u/su7dOUXE=
+X-Authority-Analysis: v=2.4 cv=Zsx4uN7G c=1 sm=1 tr=0 ts=6aaa60ff cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
  a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=jh9rqw0bRQUQ3So_9I0A:9
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=qeVUGtoKjQMzvgjGzkwA:9
  a=CjuIK1q_8ugA:10
+X-Proofpoint-ORIG-GUID: fUUTaSIfwXODyVtJLznONvEXRuGwHtSo
+X-Proofpoint-GUID: fUUTaSIfwXODyVtJLznONvEXRuGwHtSo
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-09-15_05,2026-09-15_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 spamscore=0 bulkscore=0 clxscore=1015 suspectscore=0
- impostorscore=0 malwarescore=0 phishscore=0 adultscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609160116
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 1097B40002
+ malwarescore=0 impostorscore=0 clxscore=1015 priorityscore=1501
+ lowpriorityscore=0 bulkscore=0 adultscore=0 phishscore=0 spamscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
+ definitions=main-2609160116
 X-Rspam-User: 
-X-Stat-Signature: 1e35uaxumw5woepr39d1x9ecnt1wkgta
-X-HE-Tag: 1789550714-50559
-X-HE-Meta: U2FsdGVkX18UWtW8bmSjIiRevNUEz+LyVr8im8wDHK4wiDfVrNLHNg6Um+AV09LLZB9OMDB5WqvYt6MHhWdJ0f6fr8sLHKAic4BafeCCOpyiQ26oT4ZsQzlV4Jf3gj8a+6ZIJXSI7m79BG2EPT4aNomms6Vp/SI0cEUvq/bR1qjdsC3dY51JLEMzRwPZZGhGh4F2jWll9Nao22Kb/s/2II/jckeni73DB5d8SeFpv2/GIRO0VBjOXuaBRDfEkud1LzvTyuzIk9FRD3bSvMrojKcloGmOhSUvZzmP+RYLrStBSbakYrSVHfEGkudAaNwuVpO28Ni0hjwSwK9tIFEygI2HJGsnubtoeDxIUAy7UfwoAVBr0pO8+vHpOVeEMcJapLlRbMEVL4E2BLIdH5u1ZG+7d87Qa85fmGmWG4a1ZHzxYxlZz9qD4d3ogNC77nIfXIXYzDMvRakSryGaLvZ0Kx14vc94a3fgEETOTrLx4kHuJN68kYqDEgM8qWh3ou+FpG6obkRXKUKItKN00e1ahX36X5XhwHyXZfuPeKmKm28NscI7O6KGmm+XSt7mwz3SUPeNnWiSwA+qMyO8cErzCbjFEpg0XQqzu9vdWRSSxlQEkcB19irfNPaJZBey048Sf0wrRLHHoevJ6HGco58+ce07/zbP6diqg9B4W3ZqR8HoFmqZ0198dCCKmTdvehFONBXTr+RMn9PqAxKk3pnpPcUMULtC1SgtNA8EHO0iP0kexUvPvPodYRPB653wR41slvjZiaCodgSbdGvv4XcMBsDUvL+WBjKfeRrVzaHBilCA7dmVBrKcRW2ECtBZznPhdo3mX5HKDC6jniwMipU/C625HELnjnJYXIDo42KWdP7MkTHvJ4qbGtTUwa6S3HM6vv7/b2cxS4ApROUrYGVOFy9s4lCBb4IQBX7yhOTxsE9vIRvi6kGYnIBqO1H+4d5RiZFBFpXAOntqzDJocgv
- Vw+70eDI
- wMlAWuyDAgtsL2yqgKk4ApF2QqSj062YWXlgWVky5Ae1fsUCzUSNVDnPm00LNCtOo6wX/HQtjYpUAPts9jNrGa9OiV3g5wJFLnn9AX2R57YJZ56dseprB0pwRtdqcpXUaXitd15B+IIw4ZgIj6yS6GPNCY0BN8jcSufHwj7Y2dHTd03ZazNuvL46cdNUQhfh0UbqiPGGYN4kDs10IyM0vPB1wBgcgzSwRV1yC
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: B33C818000C
+X-Stat-Signature: pyszg7d4hcp68xaipe6gaycskezpgkxc
+X-HE-Tag: 1789550850-357800
+X-HE-Meta: U2FsdGVkX1+ltyYn/8XDHsX3uj0VrbD3N1yR9r0IemoxGJWzcpmlkHvQk4G+d0DKVTorRxar+gmIOHx3C2n7+fKii6i19NdoryBE8BW4PX6vK1FmEdOqrfWQsst9lS9NKzt2AjEA8Xdfyr0b0CmJMqTo2nOwBNrbG08KfjY+xOSJeo5rzVgF9S9Qo6/Tqne0Oa13XuNnxf8wbsjEN8xQEYbyqYPclJlIVAiwtlSAeJrvElXaJiP2TzM0xpBs2CW0usav2ishb4O24+InHJaTq/2HpBHMrj0/SCKb4f0oJBTzZbRsImXErM7ImPG2DsqFEFmGFlr3Zh5zP2A74e6jExqLpVvdpQbrkIb1kHoDVlbETLAVXMAM8BczXzBIOt1C7EhjJ5YE6rXNPQmG6h4M7/z/1YqFRQ3z+UuIxGFb1WdrjdPa0KgtvNrBYr6a7XKNFFF8HiOB6TwLua+SHPSr7w2gBtHQhfsPQM/OwvPTUbeXVaIQwO+B4k0m3YE/j29HYto05v1tssmFYZ6K8j5Q27ddzaQR/NyL4jkRCtFFapiaRTNCYrtCBJTVx4vzdxuuyX2d74yDVFEbCEwIlZxK7l+Jr7U8yTW7Eim29cZ2thHzdKJKxrIKBnHdjT6pXC09hp9KYGJgUDvOCRpJR9RN3n7H9mAxTMvWlW7YHkIvadxh5OT1suJ1pM6NE2I4uzkLYJHj3WU/QZvpph/TdUmer2i9Pd8+Q0de1xuA20OcS+f8C5634auLiPBVQwqH8IQfGV6ChMCXHxj9nxSwdYYn/+awJZpHDeWXFb6bA+4ESnm7jiTefuQgIValKM80o8Fl45jdYPtYN6rd+uBfUoQVPgOILRaRDIc04TcmPikxz/lczxI2awHFm51zfIzx+2Gmm8E22rfmI9iqOXxpZ3D0+0+d5zC6DzPtsu3TBgh/lnRg0Xz2IHMf1nSf+B8lR/V6gxFHKBCmLxINOQeQnrD
+ ZvYbFqw6
+ 88E8sOUhBNNqWe13T8aUCgaws9TZ67sWnG99hZe4j5CA7nKIuPL7TRBSfSn8u9AkQgoaZRaGCigOO6C/3astwmAm9rIW15b0KCXa0SYfGXh7C1TZPcj+3mGJM0nErsIl6n2rK3nrA2BjFMTzEcT1kJri6MT5epqUma9NZbEoF/KYca2DNsf9rioUDswx6iTgV3CdFF5AfVmeWb9KzhgSF18wjC/BsZ+vJAscEqr1aUa5vPft+m1gRsR0JKUe/ahQ1hbftMjCSjmsvQGfNusbQWuB2TeVP8lPf4ob021CSR+iiG1QfN2FKvR3XVRsw6RUYhO7klqZ5d0J8/VObEHnndw9gVBmQ31Nxn+cs8OyQqTucmIk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,31 +147,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 15, 2026 at 09:37:51PM +0300, Mike Rapoport wrote:
-> On Mon, Sep 14, 2026 at 07:59:52PM +0200, Heiko Carstens wrote:
-> > On Thu, Sep 10, 2026 at 02:00:08PM +0300, Mike Rapoport (Microsoft) wrote:
-> > > -		mem = (void *)__get_free_pages(GFP_KERNEL, get_order(size));
-> > > +		mem = kmalloc(size, GFP_KERNEL);
-> > >  		spin_lock(&cmb_area.lock);
-> > >  
-> > >  		if (cmb_area.mem) {
-> > >  			/* ok, another thread was faster */
-> > > -			free_pages((unsigned long)mem, get_order(size));
-> > > +			kfree(mem);
-> > >  		} else if (!mem) {
-> > >  			/* no luck */
-> > >  			ret = -ENOMEM;
-> > 
-> > This is the only patch which made me raise an eyebrow, since the allocated
-> > area is smaller. But it looks all good according to the architecture.
-> > Since the allocation changed anyway, it might also make sense to switch to
-> > kzalloc() and get rid of the subsequent memset() (not in the context of the
-> > above diff).
+On Thu, Sep 10, 2026 at 02:00:13PM +0300, Mike Rapoport (Microsoft) wrote:
+> __qdio_allocate_qs() allocates the storage list information block of a
+> queue.
 > 
-> I suppose separate alloc and memset() are there to save a couple of cycles
-> when another thread is the first to allocate, no idea how important this is
-> though :)
+> This memory can be allocated with kmalloc() as there's nothing special
+> about it to go directly to the page allocator.
+...
+> @@ -109,7 +109,7 @@ static int __qdio_allocate_qs(struct qdio_q **irq_ptr_qs, int nr_queues)
+>  			return -ENOMEM;
+>  		}
+>  
+> -		q->sl_page = (void *)__get_free_page(GFP_KERNEL);
+> +		q->sl_page = kzalloc(PAGE_SIZE, GFP_KERNEL);
+>  		if (!q->sl_page) {
 
-I don't think this is important. Anyway let's keep this as simple as
-possible and just do the conversion without any further changes.
+Speaking about unnecessary changes: why is this a conversion to
+kzalloc() instead of kmalloc()?
 
