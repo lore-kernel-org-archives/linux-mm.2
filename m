@@ -4,79 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5B3FC982C4
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 15:27:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD262C982C4
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 15:30:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BBE016B0088; Wed, 16 Sep 2026 11:27:16 -0400 (EDT)
+	id D24016B008C; Wed, 16 Sep 2026 11:30:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B95856B009E; Wed, 16 Sep 2026 11:27:16 -0400 (EDT)
+	id CD3EE6B0092; Wed, 16 Sep 2026 11:30:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A84B66B009F; Wed, 16 Sep 2026 11:27:16 -0400 (EDT)
+	id BC2EB6B0093; Wed, 16 Sep 2026 11:30:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 85EF16B0088
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:27:16 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 20CE914079D
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 15:27:16 +0000 (UTC)
-X-FDA: 85220004072.16.C677F27
+	by kanga.kvack.org (Postfix) with ESMTP id 9361F6B008C
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:30:21 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 14E178077F
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 15:30:21 +0000 (UTC)
+X-FDA: 85220011842.07.3B392C0
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 8315F80007
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 15:27:13 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M147Y4WN;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789572433;
-	b=SOthbxOP8wSL6ntXpNV19hx8OH6Rs/xrHhresSTZ8Uf8bbh5ciGN7syYDA2A37KvJnt7z0
-	4967HOAqZFbfibuyS6vpf9336AX8iT/oiKC1I0yn2/ArskeNrybU1kcdUdTk3xDfKBuriK
-	+fB2fsYFFUP2MH91qmcGxKlWBwf0u7I=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M147Y4WN;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf20.hostedemail.com (Postfix) with ESMTP id 52CF31C0013
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 15:30:19 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YCWEXLU7;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789572433;
+	s=arc-20220608; t=1789572619;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pEp4ZnPbrejlMbShDfgZlS9JJ0BVmM1UYTzr+qTasEE=;
-	b=w0gN0QxfFB+SMrB9Ux87We7bQa+jLZm9q5LMfw6ItqLSGM8ATWjZNHw8IZU0jQcQ960v2M
-	ze2ZXYNMmpoOeEV1uCzr9sPOxBATgN20tfefvcT2wN20iSQ/JweiOprmhMcP+61Z4jbNav
-	bqcxNP0DMX03AuEvTsPL6YLutGNGtGY=
+	bh=Zwm/p1nyzNJMkp1pYGg0loyufpT3OLyoisEPtQ8zWEg=;
+	b=CUpRlXl8Vg/h0RBXsT3QjdiOE8W8VO2DbZQ/kF1PtyQvSkhJn6TbFFhlfudrwSPXrbKKg5
+	i+IJmPSgu0mup/Vrn68ecsQJ4ab0Y7W/jyAP5WfLefszwAuGUPBWY02o+7iEePoU0ofa2P
+	5BUwzc4bWCxEACP04OErAkjAHeg1eyU=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YCWEXLU7;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789572619;
+	b=a8YQ/IvHdCAE/LL+MQ8+Gv+T93/rZjWu/4aGv5QEjrIcUQFYUjdKG4L6M7mmiM7N4+JZzh
+	XqJmGBnlMZaHnDC1FH7eJlndQpZWGlJeHSBtFbfIf9hDUBL+2IqCqVMsHVEoZ+1VayOX0H
+	ReMME5hCzlcub7Pv61WHkIBajacDp3s=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 01BE860234;
-	Wed, 16 Sep 2026 15:27:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 396991F00898;
-	Wed, 16 Sep 2026 15:27:10 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C843E60234;
+	Wed, 16 Sep 2026 15:30:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3968E1F000FF;
+	Wed, 16 Sep 2026 15:30:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789572432;
-	bh=pEp4ZnPbrejlMbShDfgZlS9JJ0BVmM1UYTzr+qTasEE=;
+	s=k20260515; t=1789572618;
+	bh=Zwm/p1nyzNJMkp1pYGg0loyufpT3OLyoisEPtQ8zWEg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=M147Y4WNSRLQzLz095+KM8Q0tz8N4DxvBUKJ4Z1D6WyxX19+dYyjefg3rZGCnN3gC
-	 jGZASvaW1D0vNi/vmu1kfxeuULgNODd29T16eicployzlDPWQjTOuf8Y83Uyfft1FU
-	 iwQ5EiVCmg/SNdqMqQouOSxKothPEymGg24/WlS4SJ/A+2o37vS5Ie6Jjcaew79+bb
-	 XNF9+5Ymfy9YJFIA4vsG4xWjagM5OLwQTgXChBKTZeeih7yNO+G5Ab5PryIjS+NUJf
-	 D681IKJHKhNfiXD1M2t7sbtihOOg1W3nde2w4nRq09CPyo9FdA4UCJ5g4O8W66HbGa
-	 Zfut5LYDRi49w==
-Message-ID: <88807afb-06a6-46df-a936-ec2a56cb4319@kernel.org>
-Date: Wed, 16 Sep 2026 17:27:07 +0200
+	b=YCWEXLU7Ho0eK2dCD4wWUTu+jg+3YfdTNXIS7vLT6hWD4fZbBsgoVrqAKTI5EXN4j
+	 4EIHOueKpzwfKorjR+heQNQjUQVfiJAHmosWvRpe2h/CLxK+4CjSQiQD5xx5YAyPkG
+	 R3HMcMOuvpgTFJO0XaBD23b6CQVqkyKKDS7SDRtJ0VSdAZKgvqlZaDpGcfvLtRvcn2
+	 Z4nhpIBsvK4LNJGmgvTRLybBOKOHb3L5K0DF9vGrqSn5UYuFkSrroZrB9GZRKWPSGs
+	 c3fogHHH2EFC9HvHkDdy3rRARFlCLlrrq2a8PCXOxucrmi+jL1ZzJRyCQ/aPX9i4/A
+	 kRzAlsI2vt/+A==
+Message-ID: <b1f2a146-1a61-42bd-98c5-fc4380b6ae49@kernel.org>
+Date: Wed, 16 Sep 2026 17:30:13 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] selftests/mm: mark file-local symbols of
- pagemap_ioctl.c static
+Subject: Re: [PATCH v2 3/3] selftests/mm: init page sizes early in
+ pagemap_ioctl test
 To: Zenghui Yu <zenghui.yu@linux.dev>, linux-mm@kvack.org,
  linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
 Cc: akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org,
  vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
  shuah@kernel.org, gourry@gourry.net
 References: <20260908134117.84405-1-zenghui.yu@linux.dev>
- <20260908134315.84431-1-zenghui.yu@linux.dev>
+ <20260908134405.84448-1-zenghui.yu@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +123,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260908134315.84431-1-zenghui.yu@linux.dev>
+In-Reply-To: <20260908134405.84448-1-zenghui.yu@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 8315F80007
-X-Stat-Signature: rmgu4t5juw94uzd7jjiq7bkszdhzwuw1
-X-HE-Tag: 1789572433-874472
-X-HE-Meta: U2FsdGVkX18ZfGFzt+vAIP7ICWcrALYIll5YZ6yHmRNslSXFakYG5IR7RM/AWvGJc1Iz/9+TMzzwpLftJdj+tPb3xC5UFBlUjChN7+4f0SA81oZW10bWkGC4q4lgQcoX6b/kZc9yID3LpmspxA7MENuBSkBdLDjzVu61q4btGIt84oXfZ53MCYnwxphsZyS/ro7Rgmg1ncHeY7ME1SlZc2zc0lqHNhABYM3OE1gC6K4ZU1BUqhgpiTKnwiEPemPS89YjUQwgqyYbxjCc39lrssTgzdV6Co72wZHJSXBl4M+u6jwc5pw3u2I27o2YN3OYAhu51xVtha9mLZQyTBP2IjOp41Ovc66WWE1B0zcw3hggZw48/1937SdSX8HlHVVE47KGm0UqZ36smvStL3jN0wWEDCQxuZzt4CBzjOja3J+vPi5mIW30AWDYpilBW14zLTTYzOy+0qKU6aGLXnS+mxh07IYApL/GDCyKDJlzOUk+pIZfU39+NWshAn3ukbVgjYiBSLylgHM5LuZC7yr6Z8uhmAyO0bPAFeDMC0g2Ui1kQQYB/6SPXuWOj5hWp/r34N999WdNzkcs948oHoVKvBZi4QMXl2O79096BmD1/gFdF4zGq6V8xwXaJuXElMfKJjVWAfC3M0EJMm+2jSjhGtgexrZqU3GuyUZxoq4vyJdIRSdtAE75EkCWeMTWmiI5xN3nZLZArghk55U0RAcpSKXlui1ZhZwdt3k/j9Za8P762f1QoVVclhXvkbfDXLr3biHMuDZVTxNSugJ260bxWJIQ1UMuaaplzbZE2AqnuOnLkoLIoUwJO5UEqP5JHsw1t1PcFH2GUC1sVb8nOEJwejXxBgyBlp/oT1S1AlksYyYZ/bt8NFjbzFGVuvYvw5Mmcywktlfw+2m+OdgCSwmadS8VLgmJLHzLQBGKJvD79SSwYp0aeAFnXokz5QF2Px8O3TfW8H5M8yHBjFogIEu
- 5+NF0TW6
- FBfrTxSw7IXCh+IUrizXtoDARAOhSh4zRhEbvuDWH8mG03adAIJL5bVUION1weWDiYm+nvMip5DydREbr6etgO0dJnnX/tyav7VBGATx8zquwpdIpQn/thv25vCuMPY8f8VwADJOwu7rYgbtgcHB/31wEs/Iq/fjkBE6iFzQ8fkJ7nwsNPUngmuz0rUUl2xNJMgKiM7eZs7qijhroD7HYl+1MjU+z3VDlsQASxIBdLAdexp1JTE7b13WruXG3pKVR8hPOxNEn/GtpnO09GdO3D0druV6YMj2IrqO+64x/BYxurAMw2mrIhoFLBQX+uu/QYcJoNnrkHaIILGwIXSiUlJlfuTImafHpyMdfWXF7uje88LiqbugOZtUC0/FxwQbzFrQQ0hqTqruHYmg=
+X-Stat-Signature: 5ejmmrgfr53mdob5mbr59nobacesq3ut
+X-Rspamd-Queue-Id: 52CF31C0013
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789572619-781104
+X-HE-Meta: U2FsdGVkX19ZzjKxmi0XJCI79mtakEtkziniQ1g+KXjUdFYPf2JnfDxBtq8g5OKxrv8HYC5WAy9rsr60FsgGVymsabbgY7woizQJ1iCwvhAVNH+ihX8FRazabjOz6VrzKWDlmtrY/2mDHfJCFyc+boq+MczIAmh/JEINCGOK+JHcRBp+MrqAQNWJuVjH83MZxGTRx79nO+gvSVWHZgT7282dfamOCDe2+1uKMimJ4PKLxeErk0S7tAc9QeiKiN2/52U76rzFOME3tG4ntOtoSAa4H+wUm/1lseLCMJYN8vB27Q2vnTmis5VTgUYt9hra+Lr7G+DZCB6tzbT8H7cwZmA4MB6bt7xg6VnUr6LOuT3Z1gYUsSvO99YCqT7GFaJO9UnEyh379JD2kFxBm6IqsODfSB0k6aLK/s2Oe8vYMnsmTklZsvedhTKvqMP+UtHO1I4T642p1XTfXg7w0jX5xNpEwXJ8Fw6lBEKgMrXMb1f0A5K0uGMhzxUUzCzwl86gStDUBooYUfGi8RVfSEe+OqMQy4AK0lSB+5tVzT9kJ7z0bD+/VgYI8bPpEj0epvXaHEkSLJ5se74ygP5d3V0et3YnAHFe3G2Kxog/Xh+jqRAwkeDhq0ZRlUwynPRnKIFFuTGHuti/gLH4ukGHNTtYPkTbayWiwdYQEKvF6WtAnLb25cjBkX7kM9eX1sCkIdhNJjUNhVhH6P+fMZXuYXopRXTYcpOFNiS8amwajka5YTfL5YBW4WdpqhGt6EihYOzLRB23TmufuKiPslEJ5/UpAFucIvFrajfVjBVx+iiQukF3GdiktVFub6+HMXUOGsgjuVpJiBmJdJOhrZ7YmTEf1he0FF1WqV1jY9772H3PHTkVzLlCwOss9iUP/27G3KFWXPu3eTzsvugOOAtnaR5g6WdIcqp9DRGruRF3g6cwe14DSWYOIZsitm5HqvHd5o60o0Os4UfTfDe3y0Pneio
+ BsWsJCl2
+ 8Ple/p2SyF1vI5DIZz/gw0RT/ylghQ+O7nk3JBsgV/TXpHl5kvNcwnHjMDYSqhTZLZHYrrgU+EZW/U64UMKOhgUsh+ak5KL1yIjxtvBDg6zL/aRVW6hv/pzbRPuu3EXaq9EePZcZFsF/MveO94qpwNOtWRKpMslWQ9Pv07EK3Hnmwi1L++bAVNpRJWGoqLSqTgWrm+5tAKdK+2vi2PZcSDc4j7y9CLP3+Rq0aqZl4YdabGueTQ4xUf4t+Ji639ZhFMw/Kkv8JW+fIk97sI/2QA0Cg15PzFRedDTaO3Rl+6zneoUoEy9RjFNOSx+tzL2syV28lHy9qkjBO3Pne8zllCuDNS0hf/lqLQ9RRTFoX/6cq60M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,21 +141,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/8/26 15:43, Zenghui Yu wrote:
+On 9/8/26 15:44, Zenghui Yu wrote:
 > From: "Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
 > 
-> The file-scope variables (pagemap_fd, uffd, page_size, hpage_size and
-> progname) and most functions of the pagemap_ioctl test are only used
-> locally, but lack the static storage class.  Mark them static so that the
-> compiler can catch accidental outer references.
+> Initialize page_size and hpage_size before calling init_uffd(),
+> hugetlb_setup_default(), etc.  That won't fix anything, but it is safer and
+> saner to get these globals set up before doing other things.
 > 
-> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+> While at it, drop the page_size parameter of transact_test(), which is
+> actually unnecessary.
+> 
+> Suggested-by: Andrew Morton <akpm@linux-foundation.org>
 > Signed-off-by: Zenghui Yu (Huawei) <zenghui.yu@linux.dev>
 > ---
+>  tools/testing/selftests/mm/pagemap_ioctl.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/mm/pagemap_ioctl.c b/tools/testing/selftests/mm/pagemap_ioctl.c
+> index 1a87b7483316..d9a4fb782ecf 100644
+> --- a/tools/testing/selftests/mm/pagemap_ioctl.c
+> +++ b/tools/testing/selftests/mm/pagemap_ioctl.c
+> @@ -1489,7 +1489,7 @@ static void *thread_proc(void *mem)
+>  	return NULL;
+>  }
+>  
+> -static void transact_test(int page_size)
+> +static void transact_test(void)
+>  {
+>  	unsigned int i, count, extra_pages;
+>  	unsigned int c;
+> @@ -1653,6 +1653,9 @@ int main(int __attribute__((unused)) argc, char *argv[])
+>  
+>  	ksft_print_header();
+>  
+> +	page_size = getpagesize();
+> +	hpage_size = read_pmd_pagesize();
+> +
+>  	if (init_uffd())
+>  		ksft_exit_skip("Failed to initialize userfaultfd\n");
+>  
+> @@ -1661,9 +1664,6 @@ int main(int __attribute__((unused)) argc, char *argv[])
+>  
+>  	ksft_set_plan(119);
+>  
+> -	page_size = getpagesize();
+> -	hpage_size = read_pmd_pagesize();
+> -
+We have some other code rework that part, so I expect some conflicts for whoever
+goes in first.
 
-Thanks!
+Why not
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+initialize them right when defining the variables, marking them const?
 
 -- 
 Cheers,
