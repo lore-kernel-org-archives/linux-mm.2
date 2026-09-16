@@ -4,136 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD262C982C4
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 15:30:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C399C982C9
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 15:37:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D24016B008C; Wed, 16 Sep 2026 11:30:21 -0400 (EDT)
+	id 1C0CA6B0088; Wed, 16 Sep 2026 11:37:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD3EE6B0092; Wed, 16 Sep 2026 11:30:21 -0400 (EDT)
+	id 171AE6B0093; Wed, 16 Sep 2026 11:37:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC2EB6B0093; Wed, 16 Sep 2026 11:30:21 -0400 (EDT)
+	id 061766B0095; Wed, 16 Sep 2026 11:37:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9361F6B008C
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:30:21 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 14E178077F
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 15:30:21 +0000 (UTC)
-X-FDA: 85220011842.07.3B392C0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 52CF31C0013
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 15:30:19 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YCWEXLU7;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D6C966B0088
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:37:54 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4BBFC1202B9
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 15:37:54 +0000 (UTC)
+X-FDA: 85220030868.05.86F06BA
+Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 7DED840007
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 15:37:52 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=hWNXC0FO;
+	spf=pass (imf27.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.205 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789573072;
+	b=KvTDe4hnepH/uo3tNB1KcPi6NnUrVTqrQM6F/6HhjIMW84Zba5lrsK6NIbN9CVafN972j3
+	b/5+XkhCvq5oefACoblfiItBbNpiMsp6eAzXzrriDvABcUFC2sZn8m0kMGNR81NQ/bS4c2
+	xq8cITcmoP4vKrmPBeFlLQw839uZIw0=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=hWNXC0FO;
+	spf=pass (imf27.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.205 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789572619;
+	s=arc-20220608; t=1789573072;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Zwm/p1nyzNJMkp1pYGg0loyufpT3OLyoisEPtQ8zWEg=;
-	b=CUpRlXl8Vg/h0RBXsT3QjdiOE8W8VO2DbZQ/kF1PtyQvSkhJn6TbFFhlfudrwSPXrbKKg5
-	i+IJmPSgu0mup/Vrn68ecsQJ4ab0Y7W/jyAP5WfLefszwAuGUPBWY02o+7iEePoU0ofa2P
-	5BUwzc4bWCxEACP04OErAkjAHeg1eyU=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YCWEXLU7;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789572619;
-	b=a8YQ/IvHdCAE/LL+MQ8+Gv+T93/rZjWu/4aGv5QEjrIcUQFYUjdKG4L6M7mmiM7N4+JZzh
-	XqJmGBnlMZaHnDC1FH7eJlndQpZWGlJeHSBtFbfIf9hDUBL+2IqCqVMsHVEoZ+1VayOX0H
-	ReMME5hCzlcub7Pv61WHkIBajacDp3s=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C843E60234;
-	Wed, 16 Sep 2026 15:30:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3968E1F000FF;
-	Wed, 16 Sep 2026 15:30:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789572618;
-	bh=Zwm/p1nyzNJMkp1pYGg0loyufpT3OLyoisEPtQ8zWEg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=YCWEXLU7Ho0eK2dCD4wWUTu+jg+3YfdTNXIS7vLT6hWD4fZbBsgoVrqAKTI5EXN4j
-	 4EIHOueKpzwfKorjR+heQNQjUQVfiJAHmosWvRpe2h/CLxK+4CjSQiQD5xx5YAyPkG
-	 R3HMcMOuvpgTFJO0XaBD23b6CQVqkyKKDS7SDRtJ0VSdAZKgvqlZaDpGcfvLtRvcn2
-	 Z4nhpIBsvK4LNJGmgvTRLybBOKOHb3L5K0DF9vGrqSn5UYuFkSrroZrB9GZRKWPSGs
-	 c3fogHHH2EFC9HvHkDdy3rRARFlCLlrrq2a8PCXOxucrmi+jL1ZzJRyCQ/aPX9i4/A
-	 kRzAlsI2vt/+A==
-Message-ID: <b1f2a146-1a61-42bd-98c5-fc4380b6ae49@kernel.org>
-Date: Wed, 16 Sep 2026 17:30:13 +0200
+	bh=yrYalls8fAkvyVlQP9FlmP4RxEorGFK72anR8WExHtQ=;
+	b=mnAjY6IU4hgZ0x8VExk7XcgLoJXVURzHadA8RkHjCMM6bl8MKZQuXvwvBOqSMiIr7qL6i9
+	4cv5NuV20zgp/5nROXWk+DBudYqpJoZxcShjQUT/qwnZk69VLJ1IfvZuSl6jcqeTK+iehJ
+	+KomDEnrlVemx1OMKJ9vi7X0D2cvbVg=
+Received: by mail-qk2-f13.google.com with SMTP id d75a77b69052e-530e28a62abso13278801cf.1
+        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 08:37:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1789573071; x=1790177871; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=yrYalls8fAkvyVlQP9FlmP4RxEorGFK72anR8WExHtQ=;
+        b=hWNXC0FO4QMm19zPALRqcNce5PKBqbKSgpdOHKfSDI9boU7oo+b1RMgf4z9C455iqI
+         6nW4F4CMqMTSi4XAJCsbfMLl7YJuC4kMNTzr4m2af9gXNhrQmJywl4GFgviClmgyESKZ
+         Lxz6AMy+homSeagzmizoNcE3tJhrrKTE4PLYhxWEJumFg/U2TL3mOH41QyMEr99i8yR0
+         y4nYZNksFD3AleCngua7mDoedK0lmLF7qyRRrUUpiQyJc/EyD20HYGd9rRPQwShXaX2x
+         nuMc1+jrOaqyizIwtCM7D/gn+GRnTV7T7ZvLpH38BAkGaav4fl4u9a9F3exxu8yGG5kd
+         0Zxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789573071; x=1790177871;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=yrYalls8fAkvyVlQP9FlmP4RxEorGFK72anR8WExHtQ=;
+        b=ALTivr2eKtL9VuE9ckVAx6t7Hw/fonYjDfgNWvA5Upd7HFvHyGOTNL6ZaWyw+rIJvM
+         Af4225qZk46V44300toCaq8HtrFM7xoE4t4Ce/L727m/IqnNRHc2pprWiS/IC8oY2pKN
+         WCPzUAwoK3HDScYDraMJk70FIe810ypUxEcpUocXkuMD/JFwNgDC3bJUXv1CJSeXjtEI
+         ViAOYM/tWN6kwFz2LPFO+FSRrgB83C3fZd1snYVyEFRBxGg3uppJdjZyYkY7DoQMfGZm
+         xax+9Nppide1EIoNO6E/hzUKYP8chlmxFgINCozJ60PoOf779oeMdeKeUfH5DvltsRd9
+         XL8w==
+X-Forwarded-Encrypted: i=1; AKwUvBwJWyu7tmovvpeGEGNwlF4mvnBqLEaxv+M8bPyW7BsZQvDDBG6iw11NqGxVtyzH+w92UqsM8eO9TQ==@kvack.org
+X-Gm-Message-State: AFuF++lFrGiJZeDs4TIV/w2WoaFDaAy5L8oUYaE2tFRVjQgNxtYpj8UV
+	66bK/Jmz1EjvfBhpi8mVW3AOO3yudlKIJSvhOvToyIMQi/YIOfYc3J0zpCs5XBjpgno=
+X-Gm-Gg: AYBFou3WMd9cDAq86GRk0+WyMpbpcQin8iFP7JE0yVy3YDnhdIVoncek+Ud8PqIfNwf
+	yhxfAkFReOHCS89GB+x6pmS3BOmBKf5DSyitGJQkevOtglShk2BiVVbTl6j3a3lJvrpYrfkipI+
+	vt1FvlelYBKtwsb1kFweOdKKqNk6J1Gz/vXgmJrwoDBZJX37QVYQLFJ0Hurg2m1dF9DhRdZp2ah
+	aRnUdwNCY62s0l2KQmz+rs6DK2p980XssOWWseRYAVMwEO0ib1x8WTXdBRAsYhNaXljNecTzeBY
+	aO9nuvJ2Af/OR6c7OwvnJipVacds3jLbmzXyAlcB2SrWw/N0TKgiS5joZZ7QMkbvtwMMNEEZItH
+	XiOxrCw8DkktfU8Nnn8x6qh0uivHFlgTrYzq5b7O8WjtK69eBhegBAse+Tm0sf0mnVlWFkRnAxI
+	ws+IzWEkQ/WFpNZ8Iz5rMcy/IwUkQ1MmnMyfmMR5cUb02mvxYwbIRuOfXfIwHS2KzE8DzVTrN0N
+	RmKIe5VpQ/qllL9CUbUDgaA8Ri92ZgPXU4+vpXFaejAUkG7Jzo6JvE=
+X-Received: by 2002:ac8:6f0d:0:b0:530:cbf7:6bb7 with SMTP id d75a77b69052e-5327f201bdemr54089991cf.49.1789573071567;
+        Wed, 16 Sep 2026 08:37:51 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-53262024a94sm24407431cf.15.2026.09.16.08.37.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Sep 2026 08:37:49 -0700 (PDT)
+Date: Wed, 16 Sep 2026 11:37:46 -0400
+From: Gregory Price <gourry@gourry.net>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kernel-team@meta.com, akpm@linux-foundation.org, 
+	liam@infradead.org, vbabka@kernel.org, jannh@google.com, wangjiexun@tinylab.org, 
+	sashiko-bot <sashiko-bot@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/madvise: reclaim isolated folios if PTE restart fails
+Message-ID: <aqq23i9824-GWdhg@gourry-fedora-PF4VCD3F>
+References: <aql65IhMobL5Al9B@gourry-fedora-PF4VCD3F>
+ <aqqTbGMJL86TzDrf@gremlin>
+ <aqqbB_nFAOGenDhy@gourry-fedora-PF4VCD3F>
+ <aqqjW5dpyznijYLh@gremlin>
+ <aqqk89oTigJ9LS2N@gourry-fedora-PF4VCD3F>
+ <5437871c-d9ee-49d2-b24f-965c73c29c3e@kernel.org>
+ <aqquDtEZL1ndymGN@gourry-fedora-PF4VCD3F>
+ <46d923e6-5724-4df6-b0d5-8dda7c547f6e@kernel.org>
+ <aqqyhkZqcXDUrzeb@gourry-fedora-PF4VCD3F>
+ <4fadcda7-d96a-4cd9-9b0f-5d387b6f82af@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] selftests/mm: init page sizes early in
- pagemap_ioctl test
-To: Zenghui Yu <zenghui.yu@linux.dev>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org,
- vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- shuah@kernel.org, gourry@gourry.net
-References: <20260908134117.84405-1-zenghui.yu@linux.dev>
- <20260908134405.84448-1-zenghui.yu@linux.dev>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <20260908134405.84448-1-zenghui.yu@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4fadcda7-d96a-4cd9-9b0f-5d387b6f82af@kernel.org>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 7DED840007
+X-Stat-Signature: maoja7nhwjw8xqk1f66cja4im9nm7d7j
 X-Rspam-User: 
-X-Stat-Signature: 5ejmmrgfr53mdob5mbr59nobacesq3ut
-X-Rspamd-Queue-Id: 52CF31C0013
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789572619-781104
-X-HE-Meta: U2FsdGVkX19ZzjKxmi0XJCI79mtakEtkziniQ1g+KXjUdFYPf2JnfDxBtq8g5OKxrv8HYC5WAy9rsr60FsgGVymsabbgY7woizQJ1iCwvhAVNH+ihX8FRazabjOz6VrzKWDlmtrY/2mDHfJCFyc+boq+MczIAmh/JEINCGOK+JHcRBp+MrqAQNWJuVjH83MZxGTRx79nO+gvSVWHZgT7282dfamOCDe2+1uKMimJ4PKLxeErk0S7tAc9QeiKiN2/52U76rzFOME3tG4ntOtoSAa4H+wUm/1lseLCMJYN8vB27Q2vnTmis5VTgUYt9hra+Lr7G+DZCB6tzbT8H7cwZmA4MB6bt7xg6VnUr6LOuT3Z1gYUsSvO99YCqT7GFaJO9UnEyh379JD2kFxBm6IqsODfSB0k6aLK/s2Oe8vYMnsmTklZsvedhTKvqMP+UtHO1I4T642p1XTfXg7w0jX5xNpEwXJ8Fw6lBEKgMrXMb1f0A5K0uGMhzxUUzCzwl86gStDUBooYUfGi8RVfSEe+OqMQy4AK0lSB+5tVzT9kJ7z0bD+/VgYI8bPpEj0epvXaHEkSLJ5se74ygP5d3V0et3YnAHFe3G2Kxog/Xh+jqRAwkeDhq0ZRlUwynPRnKIFFuTGHuti/gLH4ukGHNTtYPkTbayWiwdYQEKvF6WtAnLb25cjBkX7kM9eX1sCkIdhNJjUNhVhH6P+fMZXuYXopRXTYcpOFNiS8amwajka5YTfL5YBW4WdpqhGt6EihYOzLRB23TmufuKiPslEJ5/UpAFucIvFrajfVjBVx+iiQukF3GdiktVFub6+HMXUOGsgjuVpJiBmJdJOhrZ7YmTEf1he0FF1WqV1jY9772H3PHTkVzLlCwOss9iUP/27G3KFWXPu3eTzsvugOOAtnaR5g6WdIcqp9DRGruRF3g6cwe14DSWYOIZsitm5HqvHd5o60o0Os4UfTfDe3y0Pneio
- BsWsJCl2
- 8Ple/p2SyF1vI5DIZz/gw0RT/ylghQ+O7nk3JBsgV/TXpHl5kvNcwnHjMDYSqhTZLZHYrrgU+EZW/U64UMKOhgUsh+ak5KL1yIjxtvBDg6zL/aRVW6hv/pzbRPuu3EXaq9EePZcZFsF/MveO94qpwNOtWRKpMslWQ9Pv07EK3Hnmwi1L++bAVNpRJWGoqLSqTgWrm+5tAKdK+2vi2PZcSDc4j7y9CLP3+Rq0aqZl4YdabGueTQ4xUf4t+Ji639ZhFMw/Kkv8JW+fIk97sI/2QA0Cg15PzFRedDTaO3Rl+6zneoUoEy9RjFNOSx+tzL2syV28lHy9qkjBO3Pne8zllCuDNS0hf/lqLQ9RRTFoX/6cq60M=
+X-HE-Tag: 1789573072-983897
+X-HE-Meta: U2FsdGVkX183aBrP4jqKtf/PxCywcUcCJ3lTiZaYF9t2KOarrVdO1m9hB9yrr80V4iolJJ1/wzv/7HmB+jDNoNVfiZOmPmHVQ564s1jP72dy+dkbOyyjIcTCxz6Qkq12Rjl2vpjYfxeWTStmMoK72g7JSuZBZC5bQqyahP4oSjQDa+jpIJMBb/mMcFexgYvBZNTpXijzByuFAk4omTHAka6RD1scN83sQFz8dT2FYRG7ZFu1VHrdYEZ5Xl4DLvmVKWY1W5NS7WzBHN7lL0ljaezwRHj8bRMfvOR5Nan0050G8d3R2zRtbVZL/ptjiSMRAR5Gs8nVboNYdv2DHUuP6AKhZJcU+niv3W1cKsplMfp25JQDbK2r9RFPr+WpWU3w1jNNl74H26N7Voa7d845Xqtopu1l+sDauxxEZwbH/h2UhljjvcVGeRLp+oAmYpGG/P+CCG9W3xVoKZCi/wFFOzM6vt5m+6fgD6AkQ+9a5l5rWeWGXdOlXL5SlcT5kd/u9Ha6EIjIBnJPdEcgPOrNSYHI4q5EHwmTb6vYocCQJszlU6OCXX4MupsnYwiUgX7lVWu7DMFzQ683wLvLGzLdwnEsPzkDhcmz2T4tDIkYcejb5cNawXxtgQrfQo8ctnJe8CGF3JAQ0zSuLEB0pHh6swcBJ0jOQAxQMgnLMwHuSxAupF7+2Fm59DnGtV52aQRht6WUbWqQWogJ20aPlmprlGymftRuxOtTmOMar3+nXZ0WfFsdQDmkSy8jg3FkOUL+5J4vBAhhV4lFtuQnfElZbGteXgLJjY6Wu0JxBgzOLjeycXq0Vys0x5p/h2hxwlWcf/IC5Pls0MPEmgFZzYR4eB4npLlYQCBgN/Cj3sV5sFPsxqLJfPOr6HwZ3cc6j7JQGkl1GYFTT4QKXgUPdNdFIJXu9A7ZddiIv45fFE2pJ0aYxZDuriKdgKCCkriBwRM5SMpXp9inu2v99hr7isp
+ Y7uo7yMe
+ eVOILZBorjigqXmUzc7YzFAIV+1eowHHoHswF8fcRL5+PX5ec3KADY5QcXX3OwigGnd3J8VsIy5tujgVj824HLq82atzqr4On/m+Eu4SsFwHbWcMF7L8VYUui0I1Y4NCpJ/EsSKNydf9NFIadiOx3UzxBfAhFPthjH/FB12IZzWtc0dNkd3lF1+2C3ztyjyFsE/Nl5sNJfZPhsjh7KEDhUgDCJqth7IaZ2dZp1dYFbA3iPz4FtFsZRyOrsEl7a370zDTET5Kbyl5k1vb6wOUQEbq3ZDvU+KJcZDzpe0f7LSaG8YdwcIaCON3D9mHgspdJzzCM/C8dHjX6a1o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,61 +130,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/8/26 15:44, Zenghui Yu wrote:
-> From: "Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
+On Wed, Sep 16, 2026 at 05:24:43PM +0200, David Hildenbrand (Arm) wrote:
+> On 9/16/26 17:19, Gregory Price wrote:
+> > On Wed, Sep 16, 2026 at 04:59:32PM +0200, David Hildenbrand (Arm) wrote:
+> >>>
+> >>> LLM go brrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
+> >>
+> >> No schlop like that please, I don't want to hate my life
+> >>
+> > 
+> > You missed this part:
+> > 
+> > "I'm trying to be careful about not causing a bigger maintenance burden"
+> > 
+> > I wouldn't do that to you :]
 > 
-> Initialize page_size and hpage_size before calling init_uffd(),
-> hugetlb_setup_default(), etc.  That won't fix anything, but it is safer and
-> saner to get these globals set up before doing other things.
+> I just wanted to make it very clear that I don't need another schlopped gigantic
+> patch series in my inbox that I'll mostly have to ignore because it's
+> un-reviewable ;)
 > 
-> While at it, drop the page_size parameter of transact_test(), which is
-> actually unnecessary.
-> 
-> Suggested-by: Andrew Morton <akpm@linux-foundation.org>
-> Signed-off-by: Zenghui Yu (Huawei) <zenghui.yu@linux.dev>
-> ---
->  tools/testing/selftests/mm/pagemap_ioctl.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/mm/pagemap_ioctl.c b/tools/testing/selftests/mm/pagemap_ioctl.c
-> index 1a87b7483316..d9a4fb782ecf 100644
-> --- a/tools/testing/selftests/mm/pagemap_ioctl.c
-> +++ b/tools/testing/selftests/mm/pagemap_ioctl.c
-> @@ -1489,7 +1489,7 @@ static void *thread_proc(void *mem)
->  	return NULL;
->  }
->  
-> -static void transact_test(int page_size)
-> +static void transact_test(void)
->  {
->  	unsigned int i, count, extra_pages;
->  	unsigned int c;
-> @@ -1653,6 +1653,9 @@ int main(int __attribute__((unused)) argc, char *argv[])
->  
->  	ksft_print_header();
->  
-> +	page_size = getpagesize();
-> +	hpage_size = read_pmd_pagesize();
-> +
->  	if (init_uffd())
->  		ksft_exit_skip("Failed to initialize userfaultfd\n");
->  
-> @@ -1661,9 +1664,6 @@ int main(int __attribute__((unused)) argc, char *argv[])
->  
->  	ksft_set_plan(119);
->  
-> -	page_size = getpagesize();
-> -	hpage_size = read_pmd_pagesize();
-> -
-We have some other code rework that part, so I expect some conflicts for whoever
-goes in first.
 
-Why not
+I would never :]
 
-initialize them right when defining the variables, marking them const?
+But *motions generally at madvise* if this isn't schlop i don't know
+what is lol.
 
--- 
-Cheers,
-
-David
+~Gregory
 
