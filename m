@@ -4,121 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33011C982C4
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 14:58:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35D40C982C4
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 14:58:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 45C5C6B0098; Wed, 16 Sep 2026 10:58:53 -0400 (EDT)
+	id 371176B009B; Wed, 16 Sep 2026 10:58:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4340D6B009B; Wed, 16 Sep 2026 10:58:53 -0400 (EDT)
+	id 349866B009D; Wed, 16 Sep 2026 10:58:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 323066B009D; Wed, 16 Sep 2026 10:58:53 -0400 (EDT)
+	id 260186B009E; Wed, 16 Sep 2026 10:58:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0ECE66B0098
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 10:58:53 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4EDCB1C2D97
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:58:52 +0000 (UTC)
-X-FDA: 85219932504.17.8C9F366
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 3BD9C100006
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:58:50 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="E/65TVji";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789570730;
-	b=nYQAgT7SSWaRm7T5gI1YxBB0S5neKOFE7Pvo2JmOTm6rWgz2ijAZf2kYQt72oDUX5HLyGQ
-	dTWizo3P0uS3Dz0T9TnzLqSJcnpUv8SwezEi7aAm8mC7I/e1fy2tATgFaHRZ1NV8r2q1zh
-	aB82XSzwigtZs3iSJkWUr5uriuCYxI4=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="E/65TVji";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789570730;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E079D6B009B
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 10:58:55 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 69D958071F
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:58:55 +0000 (UTC)
+X-FDA: 85219932630.02.0882E66
+Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com [74.125.228.140])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 7BED5160004
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:58:53 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=KXluu9j8;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf08.hostedemail.com: domain of dmatlack@google.com designates 74.125.228.140 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789570733;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KxAsq6mlrlRgY8e/8njCByVAcxEtv6lXs6ng+qgkRns=;
-	b=ocvixDVTQ0WyFlWc0cARiWNbHHhMwX1QdJOKWlIdW+QiBYT31Q9/1/uieFYq2BmfRuU1/I
-	O5dWX1wpljCjIM9DDBwTx7d6sFj3vpbzAgJxtXr97eb8yJoIimL6CRdmKiuPhGj6wQMzPF
-	b92UtEw5rrQ17SQgshNN3XFFtADKs4E=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 441E26053C;
-	Wed, 16 Sep 2026 14:58:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 487561F00893;
-	Wed, 16 Sep 2026 14:58:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789570729;
-	bh=KxAsq6mlrlRgY8e/8njCByVAcxEtv6lXs6ng+qgkRns=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=E/65TVjibw0F1o/3no6+Uev4R6Dq4VnCVqEcHL36mowbuDt3lXNpzCUkdLFQM5S7/
-	 M/yCsV0V+li0ym7yjwiyeGTCgaPUmnOfN7GBMou446maD9eWFzKMdrIiS0FJbcM5Bi
-	 rWcRycEtn/3uR0VyDtYmQMt9gnuZ4Vplq7/qnao6KgqXeZfs9X8WFe6OwTlDhy7ysP
-	 FbhzvGYOgyHbrCAlm3nzsx9GVX+228SIi9DzwAE2ziyBNZ+l8KdgRcFzYctzBMvv5F
-	 B04wuli31nyeyKNhjfqzqFNmR2JapqM3Gxvz1qio/ykVdNLeESoPCxn/VUyrMp3UOD
-	 RWEnJ1O7PASmg==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 163591980047;
-	Wed, 16 Sep 2026 10:58:41 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Wed, 16 Sep 2026 10:58:45 -0400
-X-ME-Sender: <xms:oK6qamBZ5gTzffPWX-HGjDTTZoZEF0APcqLdlUXOhc05nocB0Q8gjw>
-    <xme:oK6qai3kQlu4jPL2Qvu0Kxz_s6Rrr56CBkLyU4V0Lp9D11hxc8oVCOHRtMhRmgCg_
-    oAHc-7sI2TBrvZ36eE3GEjTjzdYA-8NEcdsGO5Mfu3tXkqlDCLTimIJ>
-X-ME-Received: <xmr:oK6qaoW8ooCkOQQjBi-OjYcnpCAMQOLkps_EmJmWzbkY1V5GAJhKaF-YH4A>
-X-ME-Proxy-Cause: dmFkZTFnpmf2cGNwLkZB02TtYoQfXJ9CYV4Z6v6aWvRoWtlSDu/ryXy+f1A0x8yggrT6pc
-    74E1O46vF2Ghy3wWTQKsuryfYPAHQWdgKyHFYusv5Hp2PFKCX2b0YoW5TpB/FMOmgTRU3e
-    0rPdq8Nm4X3aaX52mXDmdfUjVnpqLxyZJtxgWB2J9Y7N+Ads7wL6SM8cD9T0bR/yRxkVbz
-    ul4lGtKVXF83IjqQm8oQwLPVRtgSwlpzF2Lgwx9bu1MIQiWR5J6oqV8z0Lss21/BiVArkl
-    ED0Xe7vVfYMHRQTNozB95yux7Vilk9hKmoonRC15QkVqCZD1prbWRZ9xp98mhGjkL0omSH
-    9zcAaLfvETIEYKPBR7mU6pFQRrH/oI1296OKFPe8lRZSWQeNYaYMzer3lX2CIIG4Uirr58
-    L94BB4SRia4Wgd/xgt+8eh9jrIZLVk44Vz4A0Ue2mQt45eOajNHF6gJWehH9Z8Unh5LhAq
-    bmCFWB/qawZyUpKHtb2COIYxDMHab0zRXYubycnp5rAJeSZZyVePCub848zUQwrsBOj5pJ
-    q6VF71UDjWEBW61gEqHQoJaIswvc9PmggCzLNwPfbSPanJmNkVcfb4aOA/lGxaiii+FkYk
-    6Cict8JHxm/PpzzSVgnAoliVBS9hCF2Ugk10XA2DBHDQc0sb5Z2Iix4xOj+Q
-X-ME-Proxy: <xmx:oK6qau8u1SRu7HNgsWn6eLaKFBBh11y_uWDR2g01gJGHPWkLtU16lw>
-    <xmx:oK6qat3wzoXuXuiyX23xlTOpwO06F1O2dgmCnSE0PTZ04l7qjuVHQw>
-    <xmx:oK6qapAuvZErVqBXnqXnPNZHFUjnf9oA5wxzvpamX6g8H-Hdyi_eYQ>
-    <xmx:oK6qamBGJmy0pkBE4mVZpoartKTlLYUNJHn8Vixhd8ImrMoAdiC3Vg>
-    <xmx:oK6qarSsv9kFkHQYS1fcmNx0s-vloq93B7HFvnC1nMSIKoMG5lKZ1PwS>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 16 Sep 2026 10:58:39 -0400 (EDT)
-Date: Wed, 16 Sep 2026 15:58:22 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, 
-	chrisl@kernel.org, kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, 
-	linux-mm@kvack.org, ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>, 
-	willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org, riel@surriel.com, 
-	shakeel.butt@linux.dev, alex@ghiti.fr, baohua@kernel.org, dev.jain@arm.com, 
-	baolin.wang@linux.alibaba.com, Nico Pache <nico.pache@linux.dev>, 
-	"Liam R. Howlett" <liam@infradead.org>, ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>, 
-	lance.yang@linux.dev, linux-kernel@vger.kernel.org, nphamcs@gmail.com, 
-	shikemeng@huaweicloud.com, yosry@kernel.org, qi.zheng@linux.dev, luizcap@redhat.com, 
-	kernel-team@meta.com
-Subject: Re: [RESEND v7 10/29] mm: make PMD migration-entry splitting explicit
-Message-ID: <aqquaDH9gFrdCqHK@thinkstation>
-References: <20260914122950.3283997-1-usama.arif@linux.dev>
- <20260914122950.3283997-11-usama.arif@linux.dev>
+	bh=7B8AGM6usS6/DkOynGbVPS6pps2aTMeSLXoc/PLBLeU=;
+	b=xhkn3m7rqAQQttaR1FCcatXNsfUCOOSOMxwAw4mKBOJ86ZhxcgXWEuC7Mq4UCA/pMfFko0
+	2mLdDY/nBZ1l9lm/3XhKzwlXScEX6xnhjXEmCskePjQ9jJAbyvSWSZj2iZxF8G2gUz+BtQ
+	RbW82FRVFwWj3TDhAn5+ToF0bf37y2w=
+ARC-Authentication-Results: i=2;
+	imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=KXluu9j8;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf08.hostedemail.com: domain of dmatlack@google.com designates 74.125.228.140 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1789570733;
+	b=12pm1DbEdd08PnJ4o42Hy4jVPC1rxhSudf8ktncBiga4DGxVJ48xZEA/HZGTjURvuiBcRM
+	6mOjl5DLBNsFiSaV/r2SjNopoGYDNNgVh/lkvJhqk3FXrTZ08qeYhmJDDuwOte8dgqCgpm
+	xkiWwnun6r4pkqQZlrypEvxHrBgq9j8=
+Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c254fa4c24cso174507966b.2
+        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 07:58:53 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789570732; cv=none;
+        d=google.com; s=arc-20260327;
+        b=tAphUKywi92zAY1pHKX3MwkpAOhxLKwvnUUgChWbFN54rx+1Sd0kXIZxmBaHcZFldQ
+         3lcMpolYn8VeNEYlOrPToIQrR/La1BeU0/CO2ZvE4Qwi9ZMmSwn+snHBw8wJmI3FhnPP
+         ZBrswKaB7qKXAT3FT0WN1ukSjZBH2+HWEngN6fr6r0LGKkuNYK6XmwfHcxWwFqtiq5gK
+         cfZKRj7KtPMywC/WmqjzCwhUreVHXhdqrn7Xps8KUQS6zVzz19bafpX/HWl4qhO3Beei
+         QxjfggQCAuEt4EiNG5Zw/u46Lvts4i7MqLAWfgcj2NvEc8S1ZPmsBwcdlYzscM3frxou
+         5lTw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=7B8AGM6usS6/DkOynGbVPS6pps2aTMeSLXoc/PLBLeU=;
+        fh=59zzKI6+dJq+y9sAp7ElfeArojbOJoI3B8xNjvGvyxg=;
+        b=owmoLK0zzdW57QVlWnHkuvZKjSIR+3hroBRx1NYde+bDF7H2kJ+XGSbrw3NMKrpAJT
+         rrDFlIAAtxrS+JP272FLo/QnFlAbUIbAElF08Rc9JrWf+P2BLlaR4R6fCja5yiN5Ccd0
+         vlVynGcdLGM5Z1oRc+Uk+rLH4SXrzqq3C2vZsTir5s7j1aHJujgEvA2DW/peo6s+4fRa
+         TR6OZb1FxGckiO85iwjPuCIE/lMomzY/2I2brQQMrE6X+GeXviawiEQTPgWSs9YCDrHG
+         /WryXumMG4gwvgT2vmRV8wJxI85iIQPupt0kyRp6+gJt68D4+dJdVGpPUunif8CPSs8s
+         xLGg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789570732; x=1790175532; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=7B8AGM6usS6/DkOynGbVPS6pps2aTMeSLXoc/PLBLeU=;
+        b=KXluu9j8U8x15XwbtQ6wzdkwpgqjQtEZYB8E9S8wkgjPf0cQPxXphU91lURHcmx9+u
+         IjGKRotxwwwaNVvCA5h8QWGfKTo4/H6huuB8kZBGjHNK7uAgC4s8pSWUnnIss2xXALXD
+         leZQI8LJqwnwf+rHHu3VXJ+DXrAZI661cQDZdYDggL4InEf5HAN613LpbQFdc/EvUwyn
+         zbpRIZUboQB9R5qUog834/6yRTuEZsuXMRqXGZITAeKVKbnFMAjAihgfq7J9Ci874FsW
+         6lFYCRRlT1fUvUKi4OojwRJg/Fb5Vz0nm9zvzG5/1titogjvU9k3F14368n1tcbTra2b
+         /mxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789570732; x=1790175532;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=7B8AGM6usS6/DkOynGbVPS6pps2aTMeSLXoc/PLBLeU=;
+        b=KCnYehNwXd2euSahsDt5C1PAtPxpHVcB4sfe3BzpRWsKPdopCMtSWrYvmVcBCoYc5p
+         TS9dGmvGMLLaQvJabkE1Yu70ZWYKdO23dv26eUDGmcDwx/wz6vozDbePXjdX4RFgGAV4
+         R7C/KISD+xjDRcMgRQaQsJL3niOF3A7kb/Ej3JT5IpGTR4jGqFNFGqFZFaxTCl33Bt8X
+         /3Be6LQ58N94iHmiqEi/k4nDtyeiZ6V06IM8TFGrFrUkuMIrJjj7QjastNKXlaAFkvKy
+         UOL/moiq9KGDgweZuU8sXnBvT/SV7/dWBzFzbbMYTg0iaAkWdFcbhiD4QyZz+bF47arM
+         xvhw==
+X-Forwarded-Encrypted: i=1; AKwUvBxDN1/CxwljOnd08wTKUrGeJbIUspFiMjWBbXIsFt6oDdoKJPgZxXvS/G67iwMcElbNfX2uXL98eA==@kvack.org
+X-Gm-Message-State: AFuF++kWr3ySLIChoVBuqm9ymSFP/MSCDk5zxqf58v25keDlxWfTajgN
+	xdJ1Ed6AVVaM5JzA7qGPJ+28betB2W2pIS8tzt5VtDxDXVA6Ee8OWdpsUBeFKm0hzsXfsKcQi75
+	q82NgdfMclyOLlBeXYa2lXUGXpr5MOVGBFOVTPq4H
+X-Gm-Gg: AYBFou2qcGo4RkGJL8CGRvO0S70fc0bqs6fLzMeHpwvqi/uzfnwX1uQALdNCGV1C9B0
+	HIa1OOC9NbQR4nHeDZOieBjfKYUpDqWz5CEWp9XSsa56QN5PStWIijvPPM1+sEl9S2ERroRUSh2
+	hdShyoVUw5jQnuVeGtJyYLNB9LxN/5QNk/Y629bvp0EFQDy+tm0qFWXKxPIvvyQsakpW4XvsThZ
+	JfclXk/qXd/XLHKiplBZ9L0j+k9cBbz2boaAS9+ZjDBa72g4I3z0ZLWyrMPCdNHKv+VbYbtyXT0
+	tBqLOiCjQPhJ+GworecEu1N2NlHjUzTUHVst9fHgZGlxERUN8vnZhzw=
+X-Received: by 2002:a17:907:c49a:b0:c28:fb3f:fe20 with SMTP id
+ a640c23a62f3a-c29e52c71e0mr199279166b.30.1789570731516; Wed, 16 Sep 2026
+ 07:58:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260914122950.3283997-11-usama.arif@linux.dev>
+References: <20260728221007.2098560-1-dmatlack@google.com> <20260728221007.2098560-3-dmatlack@google.com>
+ <9211b2b6-9fca-4ef7-a141-84636d56e67e@linux.dev>
+In-Reply-To: <9211b2b6-9fca-4ef7-a141-84636d56e67e@linux.dev>
+From: David Matlack <dmatlack@google.com>
+Date: Wed, 16 Sep 2026 07:58:23 -0700
+X-Gm-Features: AcwNN1V694h9Klbei55CjXCXrLccfSPzJ9ZF9qWXraB-n35v9TC4KupB_2aeuGo
+Message-ID: <CALzav=dJUiZe+Hxck9X+kKVXoRn-Ks2WxV7B5i0RHRFGy7-Mpw@mail.gmail.com>
+Subject: Re: [PATCH v8 02/12] PCI: liveupdate: Track outgoing preserved PCI devices
+To: Zhu Yanjun <yanjun.zhu@linux.dev>
+Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, 
+	Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>, 
+	David Rientjes <rientjes@google.com>, Jacob Pan <jacob.pan@linux.microsoft.com>, 
+	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, 
+	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>, Mike Rapoport <rppt@kernel.org>, 
+	Parav Pandit <parav@nvidia.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Pranjal Shrivastava <praan@google.com>, Pratyush Yadav <pratyush@kernel.org>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>, 
+	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 3BD9C100006
-X-Stat-Signature: 485qoqauspn9d1zji9ankpfarnsuejic
-X-HE-Tag: 1789570730-516204
-X-HE-Meta: U2FsdGVkX19enAf79uIL2Yi01pUDx28TCeGzWiKoAQSK7MXbRTGSRQMFAQLFhT/vvh6q7iEOd16/cl106358+ZMmObZ4Q3IBIc5avEyEs6Kd8InhBnJZWNiP9YK8fp+tNbAmZnSqEuzFCE9Peb3gJR0HjLSv43lvEQ1bV4u3goa6GmKdWpvJq3sty6pj1//HzrKaY53Z8ytI+0Ym1hfXW7T7JEMv7c0corUsc/3S7AJT9sDDShbIQkwkwIa16RnvKL6L28VEqqxc9vY7X+h+PqdMEYaV2jrtiBg3ktKi7b1H/G4uHgIDuD80vT1Ih8kTyFuveCoAZHxtV4p1VuIPyN6bddLwYVdXs7KwetNgzffJuSvvnLxrO0ov5vBwygTCrLL+Vi6D4uvLp5RJMR9D7vTrKLIR8GBOtGavk/BOGTx7SH+dpgOr/jI7gh8lYlT5BShu6FmrxAFDLDm+y0GupK7ryO/KeZsoZRPqMBaUr8+SQf2Sa2ZLpu3VWAHgWQuxKzY4LZIlzMh6k5cOFGiJL5X8IXTbBz1Ab4KNja8Idk/FSHiVCRxzKRJFvNowntknbripQywyDklMY0JzyxdVgvdrPRWWlPEElhClqjblRYykT7R2ovIxboqbU4Clsxk6jR6W5ulbT7n+1BZderJ4hpzb++CD29i3E0l1JIlDNiAUvz56fHP3fojZJAjetKwTGPMgY2p5NikhKH+kCilJIVZ4Ln5Y8Qv1UJXJW3XILlqFQlUZP/sYYAeyj12Rl93f8DHonynIQsMOELB7ZvUrf2DHnOkARDfQXRSqHt2JaxmmX56CxUStp2Kz9RnJhqnOTEcALS6uVJk4WfgIhoubSR/FPhFdKyjazPFH3r4E+VvEs2I9fg+ZpkncceOTEdvx2FbJ60lfAC003U3uSoEVTOoHHgEknl04bu2irVmQXt7YJ7eUo6I9Q5HTHirknSByKtf9kitc2HHAEcAczhC
- hjrjdsFA
- quJAoydf+XGi+tARA/kvbJpx8uWTMXnC2EZNJQR6/qOxXHXtM9OHbXwcHGYd0UNMDTfMJksRYWDca+GigJPT7wQEDMmtj+Hc8cRkB2DTrFk/ox7XshRf9EBiN2AsZABHd/RrYTfc1rthPbnwQb5+AtO4LjbNvcAr1hEiTPZ3/QGNFj7wFAP9EihhtIjy72H7JZB6XL6Y+s788Fl8rCFXiMvFZWMIR+wK2CIY5UaSKrorHTu0DizZCEcoCQHnHzGCT58KK0dEz5JRYIunSFVyZH0jbiWWU+AUCtexcvlu/kI5uii8=
+X-Stat-Signature: xitk59ki4to7sn9dxcnbudnpxkr1zhy8
+X-Rspamd-Queue-Id: 7BED5160004
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789570733-715672
+X-HE-Meta: U2FsdGVkX197o660WZ3oZ81UEK9nrJFyS16wUMOem6OglKdr9EeL2i6oG6PAb09DcSGoz9zk8qxULuNPlPTRUguuz7JKqLlDsswZgdB91noKkNsGH6uOxNwj87n5UlnL7qUZno5Yq7wjgsSHvrDThC8OJDeBUtNZBZfv4TOF5vFD/QaqQIVwOZJ+/GB9qF61cWVgwd4rRZH2LWg6KzFTlQz8LtFAe0QPlOR2KkvZibV56CZ1xHsLP5+An1pms98JYTsT1VHAyzBcNRSrL7oLSj261qAuoPCVA8scB8tvzP1l8yhVSa9SlJIxFo/TODaw67E3mRcfzS2LJsv5GiktoVmqZXCFtri5Mow2Sk5VWHO7DlhiEMkfESfDCOKI53NtmDeG7NrJlfQcbrr1ZZA9ZjykXSNM51S7AzaCnwBuknlQwjA4GXhTV9KQwDX/gtuRbliOvYalt0z8ztGBKE5p9hcpMrUVJyfA2+WpcL8dCY7u9vUdb6EPHd2x5aPuYgUrXBWGZ6WSyKgOcambKdI/alcWgAJroImK2FJobuiIkjLwpdCquqmRERl77hZg/85MfZ+8Qo7dAQQytIe266H4KNXytmi4reFLbNBbVhhY/eezTcmfbDp2TxixJKVf8IHZPwvy+h5FMyH2VhcAOjcr8JQ89s0LheuJV/ZI9IZe0NDBTtCS/1OKZjvgPgvAbVLv0RCldKHlLfCOUEJKI6S7QjYBBV51dTS/cGC4EPRNmMnPTRdHx3V/WZJzzx/1BVNWCDruQXDV/uWsuPI3Cav1oPW/UmVVcWtMZ48DATayTtRhShWotThIZuuz6YCl7Oc9/sNqIWyIV4KCUi3YWkArmDW+2DwbDWXa4JlFu+kFLeuWYP4/fKvZeyYKnQr0uZ6FdXJPvJrQCHNuEbOW+U1wIX3OfsDI5pBfXs3W/SwX0mtpCmnoWPWNHcYaVV3ZnKt21UsPwuB4DjL+6jDRaee
+ /fsatmFU
+ bGjxJWJH/dwvWC9di55C4mO2voKyU2xSAKOgNmH245+G9Po31Qp2QtgTCXrCI+KCt7ulWaDlE63GvFqGfSDiO6/NBN9PwJIniNo0ETvOW8KZPQjImOQZmquaSexCN1p89d+sBoVhWZCyFtS5GBrQqG9kLG1alq0eV9JUd6EF2ayMLhQxMHisiNoC7UCoR6frwty7NUkLqcxZFu9Q2tv/vMZjOfNGfoHwX2MRzRpWufXwIvls=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,31 +150,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 14, 2026 at 05:28:00AM -0700, Usama Arif wrote:
-> __split_huge_pmd() and friends take a "freeze" boolean that every caller
-> has to pass and almost every caller passes as false. The name says nothing
-> about what it selects, and the one thing it does select - PTE migration
-> entries instead of PTE mappings - is only ever wanted by the rmap migration
-> path.
-> 
-> Rename it to use_migration_entries, keep it private to mm/huge_memory.c,
-> and add split_pmd_to_migration_entries() for try_to_migrate_one(), the only
-> caller that wants it.
-> 
-> migrate_vma_split_unmapped_folio() also passed freeze=true, but only ever
-> runs on a PMD that is already a migration entry, which the generic helper
-> expands into PTE migration entries either way. Its folio_get() only existed
-> to balance the put_page() that freeze=true performs, so both go.
-> 
-> No functional change intended.
-> 
-> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+On Tue, Sep 15, 2026 at 8:10=E2=80=AFPM Zhu Yanjun <yanjun.zhu@linux.dev> w=
+rote:
+>
+> =E5=9C=A8 2026/7/28 15:09, David Matlack =E5=86=99=E9=81=93:
+> > Add APIs to allow drivers to notify the PCI core of which devices are
+> > being preserved across a Live Update for the next kernel, i.e.
+> > "outgoing" devices.
+> >
+> > Drivers must notify the PCI core when devices are preserved so that the
+> > PCI core can update its FLB data (struct pci_ser) and track the list of
+> > outgoing devices. pci_liveupdate_preserve() notifies the PCI core that =
+a
+> > device must be preserved across Live Update. pci_liveupdate_unpreserve(=
+)
+> > reverses this (cancels the preservation of the device).
+>
+> Hi David,
+>
+> I have a question about the pci_liveupdate_preserve() and
+> pci_liveupdate_unpreserve() APIs.
+>
+> Is it supported to call these APIs multiple times for the same PCI
+> device? For example, a driver could do:
+>
+> pci_liveupdate_preserve(pdev) -- > pci_liveupdate_unpreserve(pdev) -- >
+> perform some operations -- > pci_liveupdate_preserve(pdev) again, before
+> the actual Live Update starts.
+>
+>  From the implementation, it looks like an unpreserved pci_dev_ser entry
+> can be reused, so I wanted to confirm whether this preserve -- >
+> unpreserve -- > preserve sequence is an intended and supported usage.
 
-Nice cleanup!
-
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Yes that is a completely supported use-case. A device can be preserved
+and unpreserved any number of times up until pci_device_shutdown(),
+where the preservation status of the device is frozen (see patch 10).
 
