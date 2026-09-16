@@ -4,197 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AD4BC88E5C
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 12:48:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F7E7C88E5C
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 12:51:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7ACB96B0088; Wed, 16 Sep 2026 08:48:54 -0400 (EDT)
+	id 8E8566B0092; Wed, 16 Sep 2026 08:51:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 75CDE6B008C; Wed, 16 Sep 2026 08:48:54 -0400 (EDT)
+	id 899EE6B0093; Wed, 16 Sep 2026 08:51:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 624A06B0092; Wed, 16 Sep 2026 08:48:54 -0400 (EDT)
+	id 7AF876B0095; Wed, 16 Sep 2026 08:51:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3686B6B0088
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 08:48:54 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6AC971606B1
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 12:48:53 +0000 (UTC)
-X-FDA: 85219604946.17.0F2EB15
-Received: from mail-qk2-f43.google.com (mail-qk2-f43.google.com [74.125.230.235])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 8488A14000D
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 12:48:51 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5BBE76B0092
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 08:51:43 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 05ED01A06D7
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 12:51:43 +0000 (UTC)
+X-FDA: 85219612086.11.6DBCF06
+Received: from mta0.migadu.com (out-111.mta0.migadu.com [91.218.175.111])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 04B1E140007
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 12:51:40 +0000 (UTC)
 Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=R+U+t9mr;
-	spf=pass (imf23.hostedemail.com: domain of jgg@ziepe.ca designates 74.125.230.235 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
+	dkim=pass header.d=linux.dev header.s=key1 header.b=qLfThpJn;
+	spf=pass (imf23.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.111 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789562931;
+	s=arc-20220608; t=1789563101;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VzaI7ZYbqdoJC4coFReri2t1Bm12kg0MhPi/KYFxqXI=;
-	b=cgzVqlzIiLVQrTyiWWCoQ/6APHX8GLiAUYtxGiuMZ5/bq2pkGvd4qmeevlKFbo0gdIdTOd
-	myrR4kDQJCCG5vVd6DcFHhlAGpyecGE1JJKKEqt2i+/IY0Gbq+xPL8Lv868pgqwRvVW6bP
-	9Vb8x1mGYbT6f29qKE2r+d+GS6PXX7A=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=+qAu95NlLgiI5sYTT8Qr8gOpJeUvt0eaVuwkSzqyWgg=;
+	b=KSnX+a+poziOdmvezbGpgEhXCBmnv7f5e8be9TjdWCJl/xN/9cpx45ltCvnfYbvXIeoXnN
+	/pBwIOBstcJWVchrHicN6dQqBmBi1EPr3HhBc1A4Ud3iEjwRTNL2z7RvFR5okqpnZTTL+r
+	Mx7s9KSnvWGz/F+yjQrCIKGsRUsPhfw=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789563101;
+	b=aKwmOln6lbARSodGiuVINZeV8Pi2u8qpjNIKN1peNBl3ovAFSYg21Ddw3bCg2Z3h6ayZJa
+	BjpwN7Afv2ZX7h3Us6WCsOfbtyGxKS46ma7T76VteaLhyzO0QcCGVh6F5T1L0dLttTybtB
+	TT+jsMvG78HmejIUQJpP05/QQscKiyM=
 ARC-Authentication-Results: i=1;
 	imf23.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=R+U+t9mr;
-	spf=pass (imf23.hostedemail.com: domain of jgg@ziepe.ca designates 74.125.230.235 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789562931;
-	b=LwoQlRBtIHKtFYTrB8JNXSFXUiJl5l7esCl4ZbP1BbuaJITAIIyQBtBqhFgbb39K/oRa/M
-	3Plr7D9Hm1xEVcMpdildyR8TphLQFjGJoSUigUr2EZotZTCcrXuooAK6gra/mWcqND8cW5
-	jfRSVCG9O3dCzl5+hyHDtFPVt//nVgc=
-Received: by mail-qk2-f43.google.com with SMTP id af79cd13be357-93910c9ff1cso75977585a.3
-        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 05:48:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1789562930; x=1790167730; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=VzaI7ZYbqdoJC4coFReri2t1Bm12kg0MhPi/KYFxqXI=;
-        b=R+U+t9mrRt8+WrHVP4KqzOuvD61Kn0o2BzsfkZtFHjy6z711fD1d9DUBawuBwlue77
-         0LOM0qlNbhu/cQPmg1DagIUsQ85ISSbtN5VdZxBQHJFBO5IQWT7MMtIDL/woSZQPGMFh
-         pByB/mhHpujkbWJIC8PKxhH0G1CfNQJu2VGlAw41LHrIo89MVtRzunNGOeVm97wqbO+0
-         IoesEm8Kp8HPqfKR4eGUR84cekCEOBpndrN5F54/ulPxaxROZuDSk/FxV1tklPHPjlXy
-         a3n4912AZKQ8XG9RSqC/GDnFdNQUfUjIbVi1nwQc6KNKfXZFCk36RicKbtDvvtNTwabJ
-         5srA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789562930; x=1790167730;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=VzaI7ZYbqdoJC4coFReri2t1Bm12kg0MhPi/KYFxqXI=;
-        b=jDexAm+S9SkKtz7Zvuq5O+xArjDhNvN+AR7498xQ22hEjbKueMYg042FFrTsO9AsSP
-         SJ4CqZlY7bPjQJjfnMKhmk2/yF6NAmwqggk/Y0+vJ6H2ZvKF+kv8GKPpAw1IrSCwehMH
-         Bhb1GypksNbPkXjtPKU7kWH0vB2/rDKOI3bjqEpbLMAjtbgv2Db30H1YFw2SpKYKQV78
-         vLZlbGCZOuXXq+3xMj3QTAPqc7YA36deOSZn1iq+Fd8vX0aXNXEgrvJRxTwvAvt4y7gg
-         7UZoOocGpKi29DIV/Gwc9TBAu3rBz8ufWmq92vum113GaWEqP/+ckHVBEAzTnPFOKgeD
-         bBCg==
-X-Forwarded-Encrypted: i=1; AKwUvBw8jae8ROGpGqdg/DiVTS5NjE/G+RJKqlJ4c6BDx2ZlIfexAChQuQbWss7gnTC/WQ2fMEqoeq5kfw==@kvack.org
-X-Gm-Message-State: AFuF++m78wh0VaeKNfVfhqvp0J4XHKVGRIgkooqfDwMPtU17MJSkFC9O
-	vNWrbOOp/SHUMYnIXFAMCVmb/gbDh4/vZfQXN8+q+gDTMYwW7kOaOB6Od3AeCoTbHbc=
-X-Gm-Gg: AYBFou3yfBsOein3BeHR6Uikfcv6gfv26Clw+01gGA/RHJLlJ7tBkIuqLnQihOA0YKU
-	gpZeDerxvESgn/fJztspvaDqD6iVEjYhovTglt2wPtu8XsPcIi/pwDfkKQRhnHyNj0z5ZnnDyBJ
-	slfD1I9ydExr6B6Vs8eecf62ONg3L83YD2GCOFD4Yq9njEOMikmX9uQRBktQmKOGlyws3N9tfj+
-	NX3C8+r7kldv2KikLCioEanOZiGlcZtCD28Zl1e0Uv45RFH6S8xsO/tzZnNyULqyf0ZGIb63tBn
-	fHY0RC3V8MeKHhs6t7V1OSlrT4SZoh89qWOxRrpOQxxBiaCy55+UT0ZFPYJE4f0dFzWSay9Iv8T
-	duLITw0dVVuF90Dy8XevngQQokG5ZCjmyqOYr/aX+sqD/nNj/RuoScc+xHyEq4H6Kvw7Xqrgub7
-	6CNgxnYXu8z5M35l+CZBFxyd89wOenLMvXP0AnesjVTSqdBUruSn50ehIRO1XubevQTBVXO4O03
-	cCDHm/XJ9CjRz496afXqTVlhFoLKDXc1fnCoif2lbQH+LVc09b1RhC9lQ==
-X-Received: by 2002:a05:620a:d8e:b0:939:6de9:4cff with SMTP id af79cd13be357-93bb7907fecmr386232885a.45.1789562930363;
-        Wed, 16 Sep 2026 05:48:50 -0700 (PDT)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93b7821dcfesm208481285a.18.2026.09.16.05.48.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2026 05:48:49 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1x6p4D-000000099Zm-0Jbp;
-	Wed, 16 Sep 2026 09:48:49 -0300
-Date: Wed, 16 Sep 2026 09:48:49 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-crypto@vger.kernel.org, linux-pci@vger.kernel.org,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jini Susan George <jinisusan.george@amd.com>,
-	Kees Cook <kees@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>,
-	Nikunj A Dadhania <nikunj@amd.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Kim Phillips <kim.phillips@amd.com>, Joerg Roedel <jroedel@suse.de>,
-	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	"Tycho Andersen (AMD)" <tycho@kernel.org>,
-	Liam Merwick <liam.merwick@oracle.com>,
-	Michael Kerrisk <mtk.manpages@gmail.com>,
-	Suresh Siddha <suresh.b.siddha@intel.com>,
-	Xiaotian Feng <dfeng@redhat.com>,
-	Venkatesh Pallipadi <venkatesh.pallipadi@intel.com>,
-	Andi Kleen <ak@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>,
-	Tony Luck <tony.luck@intel.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Carlos =?utf-8?B?TMOzcGV6?= <clopez@suse.de>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Jori Koolstra <jkoolstra@xs4all.nl>,
-	Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	Ian Campbell <ian.campbell@citrix.com>,
-	Jeremy Fitzhardinge <jeremy.fitzhardinge@citrix.com>,
-	Petr Tesarik <ptesarik@suse.com>,
-	David Howells <dhowells@redhat.com>,
-	Haavard Skinnemoen <hskinnemoen@atmel.com>,
-	Kenji Kaneshige <kaneshige.kenji@jp.fujitsu.com>,
-	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Ilias Stamatis <ilstam@amazon.com>,
-	Sumanth Korikkar <sumanthk@linux.ibm.com>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Toshi Kani <toshi.kani@hp.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Jiang Liu <jiang.liu@linux.intel.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Palmer Dabbelt <palmerdabbelt@google.com>,
-	linux-coco@lists.linux.dev, xen-devel@lists.xenproject.org,
-	iommu@lists.linux.dev, linux-mm@kvack.org, aik@ozlabs.ru,
-	Santosh Shukla <santosh.shukla@amd.com>,
-	"Pratik R . Sampat" <prsampat@amd.com>,
-	Scott Soule Cheloha <scott.cheloha@amd.com>,
-	Ackerley Tng <ackerleytng@google.com>,
-	Fuad Tabba <tabba@google.com>
-Subject: Re: [RFC PATCH kernel 10/17] x86, dma: Allow accepted devices to map
- private memory
-Message-ID: <20260916124849.GD3196566@ziepe.ca>
-References: <20260916115159.1938195-1-aik@amd.com>
- <20260916115159.1938195-11-aik@amd.com>
+	dkim=pass header.d=linux.dev header.s=key1 header.b=qLfThpJn;
+	spf=pass (imf23.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.111 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=/GTEXjAO8G07aQ62TimyMku3VnOjLh/C2zIWvY7maY0=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789563099; v=1; x=1790167899;
+ b=qLfThpJnuV2qzRJzau+BUNAKZxTbQM+pZ2bPZOLeVdrT0Tj1iAyNvR1J7z7DaYC6vJoSLkbV
+ ViHJ7KnN9aka+1FrYZcFJaaSAU86jfcPdfuOEkYVqPDCTE/d6gSw8FxLPoBPIyRBDdtBy2Ohn7L
+ 3nu48xdYKNXCBxiNmmQYI81w=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta12.migadu.com with ESMTPS id 13cff38a12b166cd;
+	Wed, 16 Sep 2026 12:51:29 +0000
+X-Mizu-Trace-ID: 13cff38a12b166cd
+X-Migadu-Flow: FLOW_OUT
+From: Usama Arif <usama.arif@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	jack@suse.cz,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	willy@infradead.org,
+	david@kernel.org
+Cc: hannes@cmpxchg.org,
+	mhocko@kernel.org,
+	roman.gushchin@linux.dev,
+	muchun.song@linux.dev,
+	riel@surriel.com,
+	shakeel.butt@linux.dev,
+	kernel-team@meta.com,
+	Usama Arif <usama.arif@linux.dev>
+Subject: [PATCH] mm: filemap: move lruvec accounting outside the xarray lock
+Date: Wed, 16 Sep 2026 05:51:22 -0700
+Message-ID: <20260916125122.2696271-1-usama.arif@linux.dev>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260916115159.1938195-11-aik@amd.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 8488A14000D
-X-Stat-Signature: dtnaq4wqa9t7qy7anhiwj77zcoe5715z
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ph799hi4u7hoh9goyjj8w6q6z89nhpco
 X-Rspam-User: 
-X-HE-Tag: 1789562931-809441
-X-HE-Meta: U2FsdGVkX1+hrVfKLRnI+YIZw0OT1ow9PzYMBrHWfn6+bLosOCqDWiy7aFicMzEAnr8QJ8ZENOFoHjzyuTxbJb7lHglweS8vVJgKNyKNEVN0a7X/LBnFuS8arQuMrN7lzQipRYUUMBklRKlZNY8qsii6/OWLpOeq4T7sx8Vf7UWuTM91i7wbBmDr7cmGlL16FcN4r8/py1HEkRenlpBjXJ8iazSk1dMKLVa24gWH6Te7BBv0mEN8iHAIfKBRYTuEfH3HtDRsvqBNbNOd1m3WdwQ0rN9kaJ4mqg5jhHns0cfe9cEjGopHMDdfYWW0b4iAQ0cqLkeEMEYCa2N3TSqGgbaA8F1aieNy19pD07W7/J7B5ywkCpddIZ4eOw16CCpr/xvctaB0nUeCljDLXasoP2kNdI9mLkF9Dekpq3eLJIcPsKeUPpWS3wFrq2w2aQu2YyXX8gvOdj+cCP/pziLBHdHa8l8A513fMLoBTvqb5fweSyaa2OCkC5H5yJPUJkHDFWOlwqETiQwCu6CsjpH0NEIsJ+o3umyOA8ZhpB68FLVXAatpV0c4d3oPde8xNsaasafaxPYPr3IDO380JZ3Fm2rzWI8FUTGs/I+Lbwi8WKU4h3NmigBCpXTuxilp1tjVQ2Ws/HpTDWNColLFsJn/30ihCGDd5GuLP9wTHEmOyCEgKfN9vqnd06Vxwj8jpZZZMwHDTpXSKMrzCO1wX6Af+6OwC30FzMMnPIN2HKaEFR/lCIfgv1Je1m7FUjnjJIkUK91Ns9/S7QYub/c6FSWa4cZ1dTQiiRgSrdpo9sjonJYAV8EQ7BA+/8o6Mzbn+uz80dy4xsdtopRi/S8y2grKgkINRZENJ2gPbaM4gGcvBrb+VccC0ip3XQ+mm5Vhjlw5YCde2P6RRMjxruDiLQoIaoeaYYA77fjtx+zEOj4d/YNtIY5kXXHlMpjXconMQ9jPXlP7reJnOfZCnHTx/MQ
- +EsRcOn0
- Gc8d5g8qzDPQlN3VpmYxl4p8eTszhXWDQpTq7g/Pt0I4HwEKGsijPd1KiQMqAeqzp1hUSVgUNTpPRvc73s8euj07zLDsNea9VULkM9pB27OUf1c32YBDK3GQu7I0/NlR04M9Zxns695qGpGkjCPkhTX5tlKxsxRiQO2hrsacwItTBQ3vU4RrdVI5OIqjfsVeW5BPOzo55K3yHgLbZH1VHwOCTJVLEILk7cKetopv+aQPVypePOitO04XRzL9IJHC1P29lzu0dQOq3gKh+EkBvATbdeOdPLAGPBMnO9AThwy1WTZl9dRbRP1vA9CRaQrw8oAuSjXhm0JLjPUrourCHBiOH3YksJehCHxzZRPPbyPxSRyoB0XOK7yPH/DGY17pqW8Bty+DlH+6jh1pA/d6c7nwOaA==
+X-Rspamd-Queue-Id: 04B1E140007
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789563100-598472
+X-HE-Meta: U2FsdGVkX19iRTvEZtZZlqCb6BfQnRIcJf69cOGBZedeBQanG+8ctqz6I4UlJHzQ7+vN+TTJa6UGzHwRJxWQDmzMxKcjYinIW86F0fZPoirGoErutbtEyVtjefYvmeJi6BSY28BVrD1MufDb9rMHiDEfzGQL2Qk6qJnRglNdmGmG7a2OYR0XrfgcG+VjGMuM04M4s7zaDbMUo6MuBuc51mGPDPlwopyy02uYGmvrSXw58zwcYF0G+vi16D57/lgfUp4wv5n20pAvgcQCqd13TYESr5UyouXNKEr33JAgl9hQNFLKoB2ZSpoNKGnllu3gh8kkvN5Wh22CrRv0HUf7YCMUmsUnZDeKdgsqHiHGxT1ito1yUfxmcYzk5ifZOQTv3PkjsiqWDHDeqMiVmPOum6kyLJg74jAjX0d0F7BZZho7du4oIG9477o1gKZXvhQY6A5rsT6L0ieEulQvjfKr8BP7TOOIPhoRTAm4/sJ2G6okvEGVwt/XG+2/CSheXVfmUqeNyV8WIbVbphpv+EplATCOiFxpPzvISHn6a1mq5at+lGhJCGCZZRiPYFgeLd8vitH1gd7U/J9tTPVT1GbMxSCycF1RxiEB/6AOSsALYRt9PIsR4gc9NN4soCfx3Tz2VTXTi3+lcUavSfFO//LzWVAjKtwl6yBfoDn9/ko+nb+btfjCXm0LycZO0fl1SVCRoDou5xccfMHVsMGRKj4YBbeYgS6n1Aw6sN1kZ5guuSmxR2J6Z72hL1evOx6+E4YQPpG3/D/t7qMLRW+P7q19KQ3ZjKPahjvHbYXF2Qkqi12lms2s/itCZXSh9i0rQ+mcXY+QS8unrxyAG5tUdyfj6WINBRJbi4Z0HIBKlnPKxsU84O/5KIlawJE2jIfJ2DWIDiV371CAlBQsLEWVIL70bSTK3121qTa97+D/3fVwExuIqvc9iDTtjmsZhjpm/dyOKuZhqbNtXo3EgCP9Dga
+ a80AZtrm
+ mrVa5FBiFbpO1tAF/Uq/YB7lgwYkUBTCOnXnPBZV+hu8DJbUFovbod/LYwTeNWBYrsbKaIlQCQr0ug2lPYoTmXNRRzKoIzj7e58Q+QELIEdsRdIb6usmw4i8MgjM/LWrsgJ8xuhVhjoCskwOjka3kR+7P4j03MdxV3PtCeFNCUI+IiozhvBNnirUL0r9MM/d+MhIpYX+02PuqGii6vPp3wG/Pf+8coSYF4L0n
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -202,22 +98,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 16, 2026 at 09:51:50PM +1000, Alexey Kardashevskiy wrote:
->  bool force_dma_unencrypted(struct device *dev)
->  {
->  	/*
-> -	 * For SEV, all DMA must be to unencrypted addresses.
-> +	 * Require unencrypted DMA unless the device has been "accepted",
-> +	 * enabled by a TSM driver to DMA to private encrypted memory.
->  	 */
->  	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
-> -		return true;
-> +		return !__device_cc_accepted(dev);
+__filemap_add_folio() inserts a folio and updates mapping->nrpages
+while holding mapping->i_pages.xa_lock with interrupts disabled. The
+XArray insertion and nrpages update require the lock, but the lruvec
+statistic updates do not. With CONFIG_MEMCG, those calls also update
+per-CPU memcg and lruvec counters and notify cgroup rstat, extending the
+critical section.
 
-I want this out of arch code, after Aneesh's recent rework Nicolin is trying
-this approach:
+Move the lruvec accounting after a successful XArray insertion and
+after xas_unlock_irq(). The page-cache references pin the folio, while
+the folio lock keeps folio->mapping stable and prevents removal until
+accounting is complete. This moves one lruvec update for ordinary folios
+and a second for PMD-mappable folios out of the serialized section.
 
-https://lore.kernel.org/all/abddd433493324a6bfdf8ba9710e96d90f0d1ccc.1789010941.git.nicolinc@nvidia.com/
+In a 30-second system-wide perf lock contention -ab capture on a
+production host, the hottest caller-stack record attributed to
+__filemap_add_folio() had 20,867 contentions and 557.930 ms total wait.
+That was 14% of the 3.998 seconds of aggregate lock wait in the
+capture. Moving lruvec accuting outside of critical section should
+help optimize it.
 
-Jason
+Signed-off-by: Usama Arif <usama.arif@linux.dev>
+---
+ mm/filemap.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
+
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 00fd89cf6f550..4720bbfc1a663 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -918,14 +918,6 @@ noinline int __filemap_add_folio(struct address_space *mapping,
+ 
+ 		mapping->nrpages += nr;
+ 
+-		/* hugetlb pages do not participate in page cache accounting */
+-		if (!huge) {
+-			lruvec_stat_mod_folio(folio, NR_FILE_PAGES, nr);
+-			if (folio_test_pmd_mappable(folio))
+-				lruvec_stat_mod_folio(folio,
+-						NR_FILE_THPS, nr);
+-		}
+-
+ unlock:
+ 		xas_unlock_irq(&xas);
+ 
+@@ -942,6 +934,13 @@ noinline int __filemap_add_folio(struct address_space *mapping,
+ 	if (xas_error(&xas))
+ 		goto error;
+ 
++	/* hugetlb pages do not participate in page cache accounting */
++	if (!huge) {
++		lruvec_stat_mod_folio(folio, NR_FILE_PAGES, nr);
++		if (folio_test_pmd_mappable(folio))
++			lruvec_stat_mod_folio(folio, NR_FILE_THPS, nr);
++	}
++
+ 	trace_mm_filemap_add_to_page_cache(folio);
+ 	return 0;
+ error:
+-- 
+2.53.0-Meta
+
 
