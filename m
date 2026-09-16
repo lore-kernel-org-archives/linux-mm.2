@@ -4,89 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D979BC88E77
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 10:21:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35E49C88E77
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 10:22:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC61E6B00A7; Wed, 16 Sep 2026 06:21:31 -0400 (EDT)
+	id 513FA6B00A9; Wed, 16 Sep 2026 06:22:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D9BAB6B00A9; Wed, 16 Sep 2026 06:21:31 -0400 (EDT)
+	id 4EBA26B00AA; Wed, 16 Sep 2026 06:22:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CDBB76B00AA; Wed, 16 Sep 2026 06:21:31 -0400 (EDT)
+	id 429AB6B00AB; Wed, 16 Sep 2026 06:22:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A670A6B00A7
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 06:21:31 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 245906B00A9
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 06:22:52 -0400 (EDT)
 Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 99EE01A0698
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 10:21:30 +0000 (UTC)
-X-FDA: 85219233540.26.1B24709
-Received: from mta0.migadu.com (out-120.mta0.migadu.com [91.218.175.120])
-	by imf31.hostedemail.com (Postfix) with ESMTP id B112220004
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 10:21:28 +0000 (UTC)
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B447A14069F
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 10:22:51 +0000 (UTC)
+X-FDA: 85219236942.26.A346E36
+Received: from mta0.migadu.com (out-175.mta0.migadu.com [91.218.175.175])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 722CB20003
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 10:22:49 +0000 (UTC)
 Authentication-Results: imf31.hostedemail.com;
-	spf=pass (imf31.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.120 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf31.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.120 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789554088;
-	b=6KKS67e6yKvGlxpru4FyTr5C5MACsdiFf7hJCgG6QAiWp0SWbt/ySt7TcGpm8OwUQyJi9Z
-	jVvRj6d2cUbOD6/WTaXjRcqSmZjUlZcOH9G3IPkWnU8MozMhqyIiehEO2s2DMq2IQyuz2t
-	+Au1KCMy2OMtL2KkS7zCqGB1qESgBuo=
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Y+QNkmNS;
+	spf=pass (imf31.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.175 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789554088;
+	s=arc-20220608; t=1789554169;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jO7Mslqz46+OMbBqU3sd8eyWIGUkg31OzWiHtF16w+I=;
-	b=W5AK9czczeUDWtPmqy0SBYQNcUhZJa+RIwpXfk4AVrQHaJV/uVsA0qaZO41OlhH0kutUb7
-	06M/NI/PFHnHzk/b2TBKsMAE4R9UoojAQ+DumEAposJyPyaXw+O8dxurmwATq3uUKJjN9M
-	m0n0XFG/3ShIY4/hxb7Q0CbQuKo+mUE=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=t8i0LXdk5qjkZdMQm5F1CAFohDI7OIZ1S+nddO26KQI=;
+	b=gPLAVwl4ydPZ0LSbQlS5BAneJ31EjMZwfoL8jFOHnHdHNZzQYASf7BVxMxEj0bpzn/5wyI
+	zx5osft9QjtBKPFLfd5VSwMfsclxJFTWTtVP51ftBcZGXf2UgsXbAZj5bV/P56RYydMkql
+	3jp1fbKUozeZF9Od482SjpOncXEDmTw=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789554169;
+	b=k5i+l8D+72x6mBOyON2eD/7e0k0GqzTbsdGjEDf/CrHa3ENR+swbnzd2IC5yxrAkUVPDzV
+	6jvmdd47wadW4wtNEf+htopWk31hQkn7wVtjg9QWEDC8qDdlZQiIQSu+Mb14ZoDRf87s7c
+	bYyOSr13T/EBIMehuCegjiNj0UaG5U4=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Y+QNkmNS;
+	spf=pass (imf31.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.175 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=PT4zk2r1uBSOi61HrDnCALYdUMVvyDSIHnzcu3tFfUY=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789554168; v=1; x=1790158968;
+ b=Y+QNkmNSQkBNQZUOK5mdRaepomyjNARR7qgsuJBWKzjTyCv5bziMJRQLw/gM1Pp8h6SW+EfR
+ TXUCbAdLswbJHmVr4aIxcdvahIBoSXKy0BmU177uN+aA67mkr0JVRUt5HlnBziItM4Mb2O+0Vld
+ 44LeG8sih3IPQh7bg1+3FAlw=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id c0bf29a0ffc9229e;
-	Wed, 16 Sep 2026 10:21:27 +0000
-X-Mizu-Trace-ID: c0bf29a0ffc9229e
+Received: by smtp.migadu.com with ESMTPS id 6d5276e9e29299c1;
+	Wed, 16 Sep 2026 10:22:48 +0000
+X-Mizu-Trace-ID: 6d5276e9e29299c1
 X-Migadu-Flow: FLOW_OUT
-From: Baoquan He <hebaoquan@kylinos.cn>
-To: linux-mm@kvack.org
-Cc: akpm@linux-foundation.org,
-	chrisl@kernel.org,
-	kasong@tencent.com,
-	nphamcs@gmail.com,
-	baohua@kernel.org,
-	youngjun.park@lge.com,
-	hannes@cmpxchg.org,
-	yosry@kernel.org,
-	shikemeng@huaweicloud.com,
-	chengming.zhou@linux.dev,
-	baoquan.he@linux.dev,
-	david@kernel.org,
-	linux-kernel@vger.kernel.org,
-	kunwu.chan@gmail.com,
-	Baoquan He <hebaoquan@kylinos.cn>
-Subject: [PATCH v3 14/14] mm, swap: shrink xswap to the ceiling when it drops
-Date: Wed, 16 Sep 2026 18:19:21 +0800
-Message-ID: <20260916101929.149106-15-hebaoquan@kylinos.cn>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260916101929.149106-1-hebaoquan@kylinos.cn>
-References: <20260916101929.149106-1-hebaoquan@kylinos.cn>
+Message-ID: <7666a248-4411-419f-a2ce-42a71a51126a@linux.dev>
+Date: Wed, 16 Sep 2026 11:22:45 +0100
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RESEND v7 00/29] mm: PMD-level swap entries for anonymous THPs
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: david@kernel.org, chrisl@kernel.org, kasong@tencent.com, ljs@kernel.org,
+ ziy@nvidia.com, linux-mm@kvack.org, ying.huang@linux.alibaba.com,
+ Baoquan He <baoquan.he@linux.dev>, willy@infradead.org,
+ youngjun.park@lge.com, hannes@cmpxchg.org, riel@surriel.com,
+ shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org, baohua@kernel.org,
+ dev.jain@arm.com, baolin.wang@linux.alibaba.com,
+ Nico Pache <nico.pache@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
+ ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>,
+ lance.yang@linux.dev, linux-kernel@vger.kernel.org, nphamcs@gmail.com,
+ shikemeng@huaweicloud.com, yosry@kernel.org, qi.zheng@linux.dev,
+ luizcap@redhat.com, kernel-team@meta.com
+References: <20260914122950.3283997-1-usama.arif@linux.dev>
+ <20260914203237.7cdfcd4c320470f4ae5cafd2@linux-foundation.org>
+ <ae847e8a-8c16-4170-a18c-19adb1a50de2@linux.dev>
+ <20260915170010.0667b6dee268fb6fb29a3fee@linux-foundation.org>
+Content-Language: en-US
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <20260915170010.0667b6dee268fb6fb29a3fee@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: nhhmrwfg9k69qwt8qd1eaczm8c3z9rse
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B112220004
-X-Stat-Signature: ihrr4ksshynrjxx5qop9qs6jac4enktz
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789554088-671844
-X-HE-Meta: U2FsdGVkX1/5lrnWzwcH1nEY2/SSzJ5eV1SMNVJLMMHg++L6CNpUARY+JJUXm77beccXqOmyEUxv2i5q6taEaTauGg4q6GYGZIdqyLnW7hqbJLr5gquenvDSmG83xUkB5m2dCPNrZaqyFSv1IF//fDNK189Qpbs1tZqqOcUN5xP4EVwL1Bf06gx0aJej+pdn3z36qda9Lng/koeybtuFC5V27EVhddfR1FzjqBLL5QyMgGB/FR/0wFLeIRMEc11Ktv7tkcebAfqiyeP1G+B6RiH59s206sk2dLbpibosT4tV3RW6xNYti5BYeTmBMT21I9zTod79Rz+Sq4RTHCiuoldGQpfxIe6UkU3ddji2dL0TbPQZ++JC/2GRprT/z4BgvCHYf4JZKG6wPE2Fj11GmGWy4nC0jwi3m+aVJ4LwoqmaStIpTxXtIaG9EJqM/YZz4sfJM1egonBe51jtZS1hcIGbeNMeEf8yH+f6zsHzTHj1Toe/f2CeSFkfmSiRJC8mf5YNRj+TyHx+kra15EK5pKi/MZ0isTHA2gA2OS6F0asq4aSS3LQAIu7RduUuAjuoT75FMuCNrPbmHqo5yWkVlI5McVz+n5COL2Wp+UVzJlBf3tmMuu0humoeWsnPaGrGNDoe3FQdDX0ZXgViCzPmLLlJOQ8gU2s4+2TDMCw5rNWwOCHA/6ww/MDX0WJi51Zsb7wqZ7ftS+N2m4Pvrg7yNvONG1h6WqgpNZXFNFxCi9+QVy/0cWs0tz703Rv45Hi9TjcYMM/IGbqqTHpEmYdNz6f8RjTvC/jp1VxZOOS+zBmj6S7TmbvlnjR2jIf3n0oq65ISEzlj5fhTuPPtYtcAUzmCmHyvtELKQhFhScBEdkxac8MPkaAhkwdf/eJCv7rbNWTWVrJwGJeJXZ3v2FYMfOsbp19jOkfdjKP043W8AqD/xe/r6hT4C0b5eWh6sX6Eb7gFXgg75IpgmUjL9kS
- S3l+FlQ5
- U9It96WjkadVylQkofVB9EhAgawwn0Rm3/rQ5ip5bo5h54MEg5xtZ5XMO3fy2pbUxOSaJM6y7VnmtdNNIS3p5/M/bCNBYv1gzWQZ9YOV/mieRNwKcx8vEquDfo6+y7XyLIsYCqgX8r/pyHcmyP69wZ8tutPmeGk5xYfM4cfUSiFnzLKXgPrB8k+oCYn42xj89I8c1JZqMTJtSzuPWM/iCtpo56YHd53HKjy+I/ZmKWNpavptP+GcjtFrl07Go8XjiBEo/1Hf9wbcZAmw3kMy8XtXOG5zbiYuETcboWBD+LV9kYqY=
+X-Rspamd-Queue-Id: 722CB20003
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789554169-764769
+X-HE-Meta: U2FsdGVkX1/Pf2OyBUL081KIHCeTTtqcnqw7TqTGIXahOi8f7/v6hpNSUP15SQOcFBK2Fj6WqXzoa2tWEsQzyccdXbWUsNqLxnwuLQNKN+C4xL54nHlm1vFkSRauHpTkyKlov+/n1nstYmr29W4CpoADGgDmz6zZxyerc0IRuVT3tDn3NonorGjrbGlkEW/YhS2y16AUqdKbEpfdz1OVO0SFcwN+1a9Ifzdxour6wxQFhwSdvwB1bP6OdJFcsXQekbRCzal5e0KBQRlAZr2t+RnfqlZo/c2gOcWZ8BseXA4Jf+nzSsgT6vGkQxZlz2szjHuyWfprm+aT8YWCY24ScxRdksd8x+lUjQClkrTJDQGxMY87rOuHk7zTZI2GznV9f1aHy6XehY2Ywq7YCGpt6fhqqBKTt33nSXD8+hwTf/YBymZPHwOpb4EVg8qRhwxlUmqp9NScfrV9N3MYhk5hEJWoiD4kJybW0lgheKYtu7IAJZaT7Un/zO+F7gtdVS4u6Buv+h5rMk6hqVlPD4DkcxVY6Zeq5r4w2yIuhewipzio7V/Eiqh/GHZvtp15mp2SBV6AOXhmqdngZPwILG9dv3bN8fzX8JsiRtH5IF8kwe9LD0+rJcVISz895I++8in7/r8/BEmVw9g+1zHK2TaQJ4hEiaFrJMwO0UiaaCg+gzwgSoOUGWlkleZ4f4T/NgpaU6R180TvRv35ZxUoq6cHjg/a8ud7as7dGZgsHodGjbzovMaj2NtQlFMcSQRp1bC0q+p1S2iHfRDZfAlO81ZMHb0jlfr00aLOsIiHfibFYbNsM0Axdeac1ctSVpFBRmgmXlG1zpfvHysiKt4nc5XPJzFUo3fitGG/8zsJ10Vrg6PDA1flrQAcQIkQae1qPN8ujnSCFS2NLVFYZDXqbi2TS7BKg16YpRO6lVWhDRDWq7vWz/ky68pfHllMCqQAkGILR6CPzvrlktUh1s41abI
+ cMAzbAOT
+ ivicysgLM4cPUoxBJ23sXd9V/YOGhI4Kv96VyhO9pV1C/+k2YYoEIwSdGs38QXBRiR21ivj+uvNgmOSN0tfSfDR5HS80O/377UVVeZCF8tTJ8UZPWJGa2IvY442vLs0/9+gSXmHr6LN17duwbE2Ee8X8F9/hrPatoiNQTDGhPCqrbQ74SOmTnMVTrq0pixegRH/DcaLK/agB1vcURQZCinDYZFMsriKSracqbpbGkx9o2TD9DlnnHCVAIN+cd1IR4EzqsoZPovog8+o8emptUyIS3MA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,109 +103,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Make xswap_try_shrink() shrink down to the ceiling when the ceiling is
-lowered below the mapped range, and trigger the shrink directly from a
-limit write instead of waiting for the next free cluster.
 
-Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
----
- mm/swapfile.c | 59 ++++++++++++++++++++++++++++++++-------------------
- 1 file changed, 37 insertions(+), 22 deletions(-)
 
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 0fcbaf1cf0e2..ab64bfc4e0f7 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -4190,8 +4190,9 @@ static void xswap_shrink_work_fn(struct work_struct *work)
-  */
- static void xswap_try_shrink(struct swap_info_struct *si)
- {
-+	unsigned long nr_mapped, nr_ceiling, nr_tail, nr_unmap;
-+	unsigned long start_idx, i;
- 	struct swap_cluster_info *ci;
--	unsigned long nr_mapped, nr_tail, nr_unmap, start_idx, i;
- 
- 	if (!(si->flags & SWP_XSWAP))
- 		return;
-@@ -4203,35 +4204,45 @@ static void xswap_try_shrink(struct swap_info_struct *si)
- 		goto out_unlock;
- 
- 	nr_mapped = READ_ONCE(si->nr_clusters_mapped);
-+	nr_ceiling = READ_ONCE(si->nr_clusters);
-+
- 	if (nr_mapped <= 1)	/* keep cluster 0 */
- 		goto out_unlock;
- 
- 	/*
--	 * Reclaim on our own, but only once the mapped range is at most
--	 * half in use: growth is demand driven, so reclaiming on a smaller
--	 * dip would only map the same clusters again, and every unmap costs
--	 * an RCU grace period.
-+	 * A cap below the mapped range shrinks on its own.  Otherwise wait
-+	 * until the range is at most half in use: growth follows demand, so
-+	 * shrinking above that would only map the same clusters again.
- 	 */
--	if (swap_usage_in_pages(si) * 2 > nr_mapped * SWAPFILE_CLUSTER)
-+	if (nr_ceiling >= nr_mapped &&
-+	    swap_usage_in_pages(si) * 2 > nr_mapped * SWAPFILE_CLUSTER)
- 		goto out_unlock;
- 
--	/*
--	 * Count the free clusters at the tail of the mapped range.  Scanned,
--	 * not tracked: the count must be exact to size the unmap, and an
--	 * incremental count falls behind on out-of-order frees.
--	 */
--	nr_tail = 0;
--	while (nr_mapped - nr_tail > 1) {
--		ci = &si->cluster_info[nr_mapped - nr_tail - 1];
--		if (READ_ONCE(ci->count) ||
--		    READ_ONCE(ci->flags) != CLUSTER_FLAG_FREE)
--			break;
--		nr_tail++;
--	}
--	if (nr_tail < XSWAP_SHRINK_SLACK + XSWAP_SHRINK_MIN)
--		goto out_unlock;
-+	if (nr_ceiling < nr_mapped) {
-+		/* Take the excess exactly; rounding could zero a small cap. */
-+		nr_unmap = nr_mapped - nr_ceiling;
-+		/*
-+		 * Keep cluster 0: it always holds the header slot, so it is
-+		 * never free and must not be unmapped.
-+		 */
-+		nr_unmap = min(nr_unmap, nr_mapped - 1);
-+	} else {
-+		/* Count the free tail; scanned, not tracked. */
-+		nr_tail = 0;
-+		while (nr_mapped - nr_tail > 1) {
-+			ci = &si->cluster_info[nr_mapped - nr_tail - 1];
-+			if (READ_ONCE(ci->count) ||
-+			    READ_ONCE(ci->flags) != CLUSTER_FLAG_FREE)
-+				break;
-+			nr_tail++;
-+		}
- 
--	nr_unmap = rounddown(nr_tail - XSWAP_SHRINK_SLACK, XSWAP_GROW_CLUSTERS);
-+		if (nr_tail < XSWAP_SHRINK_SLACK + XSWAP_SHRINK_MIN)
-+			goto out_unlock;
-+
-+		nr_unmap = rounddown(nr_tail - XSWAP_SHRINK_SLACK,
-+				     XSWAP_GROW_CLUSTERS);
-+	}
- 	if (!nr_unmap)
- 		goto out_unlock;
- 	start_idx = nr_mapped - nr_unmap;
-@@ -4507,6 +4518,10 @@ static ssize_t xswap_limit_store(struct kobject *kobj,
- 
- 	spin_unlock(&swap_lock);
- 
-+	/* Enforce a lowered ceiling at once; raising needs no shrink. */
-+	if (clusters < READ_ONCE(si->nr_clusters_mapped))
-+		xswap_try_shrink(si);
-+
- 	return count;
- }
- 
--- 
-2.54.0
+On 16/09/2026 01:00, Andrew Morton wrote:
+> On Tue, 15 Sep 2026 15:09:16 +0100 Usama Arif <usama.arif@linux.dev> wrote:
+> 
+>>
+>> Four workers repeatedly write the working set, forcing memory to be
+>> swapped out and back in. The results below are the medians of five
+>> interleaved runs per kernel, following one warm-up run:
+>>
+>> Metric                           Baseline median   Patched median   Change
+>> Aggregate benchmark throughput   584.3 MiB/s       2,408.9 MiB/s    +312.2% (4.12x)
+>> Elapsed time                     85.43 s           20.72 s          -75.7%
+>> Major faults                     1,814,699         228,466          -87.4%
+>> Swap I/O rate                    1.02 GiB/s        4.10 GiB/s       +303.9%
+>>
+>> The results look good as this is a swap-intensive workload.
+>> It primarily demonstrates the reduction in swap-fault and page-table
+>> overhead from preserving PMD mappings.
+>>
+>> For long-running workloads, where I believe the series will shine, I expect
+>> benefits from fewer TLB misses, less khugepaged work as well as less kernel churn
+>> due to larger folios, although there aren't a lot of benchmarks to test that.
+>> PMD swap entries also move us closer to eliminating page-table deposits for
+>> anonymous THPs, which would provide memory savings.
+>>
+> 
+> Thanks.  Wow.
+> 
+> This doesn't look totally real-world but it's close enough to indicate
+> that real people doing real things will see nice benefits from this
+> change.  As expected - leaving post-swapin thp reassembly to khugepaged
+> was so lame.
+> 
 
+Yes, exactly! I initially left it out because case-swap-w-seq is a
+swap-intensive synthetic workload and might not be a representative
+application benchmark. Completely agree that lower reliance on
+khugepaged will be a much bigger impact of this series. Unfortunately
+I cant find any benchmark that would capture the affect of that.
+
+> Please add the above info to the [0/N] and maintain it.
+> 
+
+Will do!
+
+> (I'm itching to get this moving ahead, but we do need eyes on those
+> core bits).
+
+Thanks for helping move this forward!
 
