@@ -4,88 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4FE3C88E77
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 12:58:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C786AC88E5C
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 13:02:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C04EB6B009D; Wed, 16 Sep 2026 08:58:44 -0400 (EDT)
+	id B96406B009E; Wed, 16 Sep 2026 09:02:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BDAEF6B009E; Wed, 16 Sep 2026 08:58:44 -0400 (EDT)
+	id B46BA6B009F; Wed, 16 Sep 2026 09:02:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B19646B009F; Wed, 16 Sep 2026 08:58:44 -0400 (EDT)
+	id A36F76B00A0; Wed, 16 Sep 2026 09:02:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 92EA26B009D
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 08:58:44 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 15BC7A06E7
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 12:58:44 +0000 (UTC)
-X-FDA: 85219629768.09.DF395E1
-Received: from mta0.migadu.com (out-59.mta0.migadu.com [91.218.175.59])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 2AE8440003
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 12:58:41 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=iYnhF8Km;
-	spf=pass (imf17.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.59 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8CEB66B009E
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 09:02:51 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 329531A06FC
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 13:02:51 +0000 (UTC)
+X-FDA: 85219640142.27.B61B6B6
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 17AB11A0009
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 13:02:48 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=YtFeZrsn;
+	spf=pass (imf19.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789563522;
-	b=KnI/VXQF2BqfvzeRsxECCZ473SD/n67BqDNXxiPRgbY20OoU7mL0F6JCcU0CeKNCe1ywaI
-	bR7QmNOXpFli/0meoI0S3uwiFi0KgkDRkOmqOqhnqXmKjESEOAczJZ7QLspPs7I04aO58u
-	8C1vbUaG0c+wgMKqjiPP9/Iv6nsy54c=
+	t=1789563769;
+	b=XdpyUy5JwIeEgUiTSzOT1+D6aVoA10A59pS03Kv577Ox8AMXZrHgrQnCc2DHQ19cW9JEy/
+	RM9oaa+w3Z2AKBwWFoJ/TfRtPFcmMhyEB3R4Y8uEJ03b26G8ZSy22a3X4PAT/vLDIRVPi6
+	9RjRT74XAP613HJOudzNwWUSFsfKFT0=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=iYnhF8Km;
-	spf=pass (imf17.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.59 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf19.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=YtFeZrsn;
+	spf=pass (imf19.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789563522;
+	s=arc-20220608; t=1789563769;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JVzD85tW0fgO21RteQQbzdHEsRsdigW4cVMseg4WEFg=;
-	b=ZA3uurnfXaEaei3cPgBny2xIXM8M+8GGVIx3djn8bVd5POcJ9awsLs6yO4c0jNakSi40yw
-	uOn7wh/nTAU0hWl9ZwjSRvEciKhfV7uRn8euF5o27ChV0QKEfePDzFtfTTcJoisdfQi7l2
-	EML+nWLvsg86AjmZtQcaGupXg/y66zo=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=NqgpLka1U0uH8PVx/qAWnt0LZxjjNxyG5vubBu2izC8=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789563521; v=1; x=1790168321;
- b=iYnhF8KmvZRguvgPZf84ZU8GxsIikoL3a9j1/Ou5Ps0gdAck+GnYitPMQMHdJHdHQIpYwLEO
- SxzI+CwHzNMQGQUxk8Kt2m9AxjlpGT4Zul9XFS5mdDPlY80xaOiPyaWOuOExCvQdPxflYy+plVX
- M+JrttAJcDXMheBVWPTjdkg8=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id b341f15ade355bd8;
-	Wed, 16 Sep 2026 12:58:40 +0000
-X-Mizu-Trace-ID: b341f15ade355bd8
-X-Migadu-Flow: FLOW_OUT
-Date: Wed, 16 Sep 2026 20:58:32 +0800
-From: Hao Li <hao.li@linux.dev>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: harry@kernel.org, akpm@linux-foundation.org, cl@gentwo.org, 
-	rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Pedro Falcato <pfalcato@suse.de>
-Subject: Re: [RFC PATCH 0/2] mm/slub: reduce list_lock contention with slab
- parking
-Message-ID: <aqqOk9ULIuV-5mQg@fedora>
-References: <20260824122004.3652-1-hao.li@linux.dev>
- <a3e5581a-e039-45bb-b570-a01158b154bb@kernel.org>
- <aqPg5YRKdaZiBj9b@fedora>
- <4d9ebf64-e3b4-4b6c-9576-e8be59193f80@kernel.org>
+	bh=bywUojkkDxv7YhCqZv+tPm5XeEwqdNL7YKjmi3qlnMo=;
+	b=kw6BjD+hRKBcaMhpe0eTQmuwFXJZKs9fwWrqxfugWCZckPo668VeSQhM/QqS5mAZQ3jDQO
+	XiGLLHkdYBL8UL/vVtWikUjHmZFWz1XidbDph0sINoR8Mv/unYmcpGwGf+qVt82iiXExIK
+	w16fgD0G/N68CfxhYqFbkUGWjEOIlFU=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=bywUojkkDxv7YhCqZv+tPm5XeEwqdNL7YKjmi3qlnMo=; b=YtFeZrsnU+A7BU1JaX4MyXUmv0
+	Afu3u0xlzKl09/oYqpikzQAlV95NIXZVXjc0zFmWkjmIgY73Q37I8wvWN0GbTkXOjuuNQ2PjHAp/o
+	TSIp1/ZpiG+WTquDJjQCFQZ9TDty73m7pQijpYxw//tytzQqs7rqvrs5BOInr+ho68tZOsra2OE+u
+	RzQpdzqBLqC7ZkvTRIdt9tWetnBoa4CFxkc2J1jtvmvyR/STiXUfZa0cAxDtDcO254OOsE+Piectw
+	zYpreQeVIdF4Vsz4cACf3CfOOuR6eTqOBfgKt+GqYfiTbsDnLcMtQt6vKWnoMso93wLRnPkfh5A7S
+	2mfphi+g==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1x6pHY-00000004VjY-1lcM;
+	Wed, 16 Sep 2026 13:02:36 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id F144A300328; Wed, 16 Sep 2026 15:02:35 +0200 (CEST)
+Date: Wed, 16 Sep 2026 15:02:35 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Chen Yu <yu.c.chen@intel.com>
+Cc: Tim Chen <tim.c.chen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Kees Cook <kees@kernel.org>, Christian Brauner <brauner@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Qais Yousef <qyousef@layalina.io>,
+	Aaron Lu <ziqianlu@bytedance.com>,
+	Srikar Dronamraju <srikar@linux.ibm.com>,
+	Vineeth Remanan Pillai <vineethr@linux.ibm.com>,
+	Ricardo Neri-Calderon <ricardo.neri-calderon@linux.intel.com>,
+	Lu Wang <wanglu.priv@gmail.com>, Hyunwoo Kim <imv4bel@gmail.com>,
+	Zhan Xusheng <zhanxusheng@xiaomi.com>,
+	Zhan Xusheng <zhanxusheng1024@gmail.com>,
+	Yi Lai <yi1.lai@intel.com>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 4/4] sched/cache: Introduce task_struct->sched_cache_grp
+Message-ID: <20260916130235.GG776954@noisy.programming.kicks-ass.net>
+References: <cover.1789061845.git.tim.c.chen@linux.intel.com>
+ <4532ec4fd5beb829bccb85822a19360fa4191fe6.1789061845.git.tim.c.chen@linux.intel.com>
+ <20260910191901.GW776954@noisy.programming.kicks-ass.net>
+ <72bd9014ee83d5833bc1c78379ead84458045867.camel@linux.intel.com>
+ <aqgF7JHKxQaE0W4b@chenyu-dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4d9ebf64-e3b4-4b6c-9576-e8be59193f80@kernel.org>
+In-Reply-To: <aqgF7JHKxQaE0W4b@chenyu-dev>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 17AB11A0009
+X-Stat-Signature: w8q5i6mrbudugyd3jpduhq7ebzz1x8ww
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 2AE8440003
-X-Stat-Signature: dyo8o1j1kbd3qzy8ontsnf9igisucybq
-X-HE-Tag: 1789563521-655372
-X-HE-Meta: U2FsdGVkX180NfzcjjQX4aEDmZ5b6B3F+umZrAG9NWWt67LL7cleHTeOOVk90ANXY3SbitoCi1c8SP/oLoHF7IxtpTczCoc/GrordL//ouJK9n5rnE0zw+U0ih3vAhJOtbjm3EdkuUlLJiblQHt4BcR/LeytuefO5soIGHwpJk+Qc1Lnn6AC3cmu02Sr3EAMuSFGGg+RpAnBActulQ8jy5BzqIMyDY2VWGaW/fXwYuweICK9Cd+dzl+0JcGnSPR0M/MKXlQShEsXXt0NhlmRajrYZrT/+BSxFL0+Lh3LaMPA567Eg1p64sf9p+pjUNwXjph3j9cexGUcwYl6s9nF8v+0X40udUfgSsDE2qEdNPtGKUPYlHcC+iIbWoIvFGr7TWoZwbzhc5OwoViWK54DOp8YlTm3FuLrhC2Sd7Fz4/F5yywLnFEk8M1miJOYh4nBO107xtqRYB3RVDW2VyaloKuHUSGJB+5KnzRpeoVy7/Qy0enRXUq8k1Zp5qeCt2eWfZnIk38h49XfgKE/KLza8OW85AINVibGA0fDEFbjj2OjKmk/HMQLFPHDICLKD2z5fYYySkiyF6pFOk4uzFuN31QWiyOl0kAyINVhznTYysYRkXfbi9PT6ZlzUpur9LoR1rd7DYbfuU99L2ZWUsI6NBT/JcWmPe0RaGfsb2E1TuTXY//xfmGVJEHNstr2Jt1NkJCStpLOdUqoV5M5xm06E8yRVwBi2WIhTsLAnpy8RNhQEKd1Jq2o9LaZxqE/x2qXDF4k3y5KfING4fJbuyWe00Mte2aMg16cg2SOql0Tasw7ttP9FTPArkAQBn9vBVKsDF+J+G6v1qG+2M1/P5rmmsXUseK6KJ/V4v/fv2mxbLh9Nhv3I3KU6ASHqYx0m/MgpWnwy+UD3tW0e4GJEB+5b0AhCCH0NN0PujABJLoiACwDIl4Beqxdt4TPXYe5JJJT5x4gzJytaGN60avaMcH
- 3ERaErmt
- AgQ9dy9z9hfTbNOmfxCEjAiNGj8cpLBxbgN8pe4l/4pmt5v9lTOdbVTUwxHWxATvGzWG+7qV3/gBrjNv44+XioEs3Zd/qBiPj5TmSzMSiiDSqcmpafgWIXKt1NN5Wa8MqoXosW1gJD6xbcebBvK8OGd1vfrS5z61OgF/94U+O+eeNB2cqV+lgQUUr3W5PBjvnkRSddqi0zHNlSogSy2IWiQdwDHjb+6yCYmYjclwG4Xm+iPs7Qqkjd63Z3T/Pv2l9UyEOVXfpkCbFuPYkgN9Jp7IUcdpkqt+nNvT89FYrjh3nvqf84NoL8d3o/pyMbtVhug+l
+X-HE-Tag: 1789563768-159054
+X-HE-Meta: U2FsdGVkX1+SZiVnV5kogdOJ7N+pAVgVt1h7eIuvRM8C57CLZNJ83aRjilrcLONH8oDb4XSBKpB5vQUKTAX3u1FmBDrnM56OQ3P3gQX/cDKoZHkF2THOcDJd9Ah0lgqXZ5M+pehp8ygCJCk5uy5W16brKvR6Qgk/9AuGVG/JSAB+DJ1P4mRew7KzApySa7iHUHVR1m7exYxEn2uD0uuELENtKvjROoRnCKxM6GaH9DWc4TcinvDoth8MZdmjyvoC6APq7PoObR4xMVl/SG7SeuhpaQ7tlP+7m0p4C5VidqVeJ/ks22v+RM+tR5E14oTb7vRgPZxmb7yT85qNzMLNU0bD39efPlMTyPRENnLzoS7LV2/ejxcVQqN+Y5MW1qdqEnSVDyWvXqFVlw/OPphtef0su7cqjCxVVKiYtUX39wbf1B9w9B6fG/3UUEh3YWptVjLTWL6v9OpiHTTGY5F9Ix3M+G7p8axrSBbxnOawMdglRH9gIL/+fUdxYOaur53XuT0XPaE2jydhTsNr5IS9o/tojW23gwqmYP6F3agFG1x51TfWi1cGRcwNE5aShEht4zSQEEGMA68OZ0Arxvh7J7il5kpCr4F+Hojak/tNNGNkNYMgQbwAzukmeBXitFt0jU/G91qM34jgMFnEwBFlt5ShwJnz+dmyEFXf5i0MMEpmXKnU8LKHAq+zILIWn/AUIoRgGwlZgY2UMStK255+aojzslrOH26aAmwiepExgedFVwrcSzdydt0pNCVGa4pTs1eRk9X64hY/d9OViIAh55iyzYOq1LFssRe4Av6mfyD5DFnUD149Sp1NW1UJhOgwEfk0KcBtjRDH41W4G2Z7gQTbpJG54W1tcl5KIBmWDD3IUc/IVCujqwFT0FhLx7W+UEkLIwj3TyE+YAEEMQiOMg3sWORJPEH7yPY7nwJ0OPx3uYkklOYgOSDMAlSkw/3BYn1GOG2kTOZtMWWdahe
+ kWCz56m5
+ U3hupyBeBnoy0odrx684KVR2dmR2Q1FPXsGP+Rm+YeqOfbHf0U6DwE0xiFJ5C5QDjH/zaHlAu6ZWjImRArSTIZBvY0RChqLsKQxEVT/fUp/kHoJhUrDqAJwe9tCs0a8W7lfVV5Z3AVwIzbuAPL+4zhCw99ixuziO4W4zb93BFvLjADYORS+CacM9qV2jkgpsEo+HzxA1BJ6Bc+XWjv87DoAEerHaU0q/7MWNKygklnqZ676qfmRYjemdtPROKrveyJkN8+jq9X5RNpEruzHHTK1lHX0fGVArio/u1xCE/cZv28MUeraJSaKUVu+nPk0i2CM4+MWS9qdgLxdOs7qUVdnyo/Q/5T11UThKOk5m9w32srT4eTZ6VPTC4LJTkNHwqy2mFanHkHtE0BjY5NNiVBmqM2w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,54 +114,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 15, 2026 at 09:10:22AM +0200, Vlastimil Babka (SUSE) wrote:
-> On 9/11/26 13:24, Hao Li wrote:
-> > On Mon, Sep 07, 2026 at 03:44:08PM +0200, Vlastimil Babka (SUSE) wrote:
-> >> On 8/24/26 14:19, Hao Li wrote:
-> >> > 
-> >> > Detailed data
-> >> > -------------
-> >> > 
-> >> > metric                              before             after             delta      change
-> >> > ==========================================================================================
-> >> > alloc_fastpath                     155,417           168,534            13,117      +8.44%
-> >> > alloc_slab                      55,679,646        26,702,510       -28,977,136     -52.04%
-> >> 
-> >> It's interesting that this is reduced so much. Is it because parked slabs
-> >> cause more slabs to stay around for reuse, despite they are unparked
-> >> immediately when trying to allocate/refill? That seems odd?
-> > 
-> > Yeah, it does look counter-intuitive at first glance. My understanding is that
-> > the parking mechanism helps by bypassing the partial list spinlock, allowing
-> > partial slabs to be parked onto the llist locklessly at any point. Because of
-> > this, the refill path gets to see and reuse more partial slabs instead of
-> > having to allocate fresh ones so frequently.
+On Mon, Sep 14, 2026 at 10:34:20PM +0800, Chen Yu wrote:
+> On Thu, Sep 10, 2026 at 03:50:56PM -0700, Tim Chen wrote:
+> > On Thu, 2026-09-10 at 21:19 +0200, Peter Zijlstra wrote:
+> > > On Thu, Sep 10, 2026 at 10:46:12AM -0700, Tim Chen wrote:
+> > > > @@ -882,6 +882,20 @@ static int exec_mmap(struct linux_binprm *bprm)
+> > > > +
+> > > > +		old_grp = rcu_dereference_protected(tsk->sched_cache_grp, true);
+> > > > +
+> > > 
+> > > Also: rcu_dereference_protected(.c = true) is another offence, that's
+> > > just wrong.
 > 
-> Hmm that's an interesting effect, surprisingly large if true. Because the
-> slabs we'd be parking are transitioning from full, there would be most often
-> just a single free object to reuse?
+> Got it, will fix it.
+> If I understand correctly, the "c" should never pass an explicit const value?
 
-That makes sense. That said, it might be more than a single object, since
-build_detached_freelist() tries to free objects from the same slab together.
+Right, that is a bit of an anti-pattern. The 'c' thing is there to
+validate your claim of this in fact being an update side, eg. you
+holding the write lock and all that.
 
-Even though we "park" the parking series for now, I was still curious to
-understand the underlying behavior. So I add a counter in
-get_partial_node_bulk() to see how many partial slabs it can see.
-(counting freed objects directly is tough, so the partial slab count gives us a
-rough picture)
+> The original idea was that, in exec_mmap(), the current running task is the only
+> writer to change tsk->sched_cache_grp, so the condition is true,
+> 
+> To fix it, it might be turned into the following for now:
+> rcu_dereference_protected(tsk->sched_cache_grp, tsk == current);
+> like deref_curr_numa_group().
+> 
+> In the future if task tagging is supported, the race condition of multiple
+> updates would require a pi_lock for this task, and it will become:
+> rcu_dereference_protected(tsk->sched_cache_grp, lockdep_is_held(&p->pi_lock));
+> like what we have done in the prctl based cache aware scheduling patch set:
+> https://lore.kernel.org/lkml/50fe2db1a62ea2376a87d0c14778b1ff456d11ec.1787955777.git.tim.c.chen@linux.intel.com/
 
-Interestingly, each get_partial_node_bulk() on the patched kernel saw about
-3-4x more partial slabs on average compared to baseline. This suggest that the
-parking mechanism can supply more allocatable objects even under lock
-contention, since it can avoid waiting for list lock.
+Right, it might also make sense to have a helper, like:
 
-For example, in the baseline kernel, if the lock is held by an allocator, a
-freer has to wait on it. Once it's released, the lock might just get grabbed by
-yet another allocator, leaving the freer stuck waiting. As a result, the
-partial list ends up starved of free objects.
+#define rcu_deref_sched_cache_grp(tsk) \
+	rcu_dereference_protected((tsk)->sched_cache_grp, (tsk) == current)
 
+such that you don't have to keep repeating this thing over and over.
+Also consider if rcu_dereference_protected() makes sense, I tend to
+unconditionally use rcu_dereference_*check().
 
--- 
-Thanks,
-Hao
+The only architecture where it really makes a difference is Alpha, and
+nobody cares about that anymore.
 
