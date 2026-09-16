@@ -4,78 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB0B9C88E5C
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 11:54:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 435C4C88E77
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 11:55:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D61226B0099; Wed, 16 Sep 2026 07:54:44 -0400 (EDT)
+	id 043476B009D; Wed, 16 Sep 2026 07:55:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D29186B009B; Wed, 16 Sep 2026 07:54:44 -0400 (EDT)
+	id 01A596B009E; Wed, 16 Sep 2026 07:55:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C00C96B009D; Wed, 16 Sep 2026 07:54:44 -0400 (EDT)
+	id E4BF36B009F; Wed, 16 Sep 2026 07:55:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 993806B0099
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 07:54:44 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A4A1B406B0
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:54:42 +0000 (UTC)
-X-FDA: 85219468404.23.F43B714
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010046.outbound.protection.outlook.com [52.101.85.46])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 922F3140007
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:54:39 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=H4qYp44q;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B54A76B009D
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 07:55:32 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3DC7CC06FB
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:55:32 +0000 (UTC)
+X-FDA: 85219470504.09.2F74743
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011054.outbound.protection.outlook.com [40.93.194.54])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 2905440007
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:55:29 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=hJHVgTgw;
+	spf=pass (imf11.hostedemail.com: domain of Alexey.Kardashevskiy@amd.com designates 40.93.194.54 as permitted sender) smtp.mailfrom=Alexey.Kardashevskiy@amd.com;
 	dmarc=pass (policy=quarantine) header.from=amd.com;
-	spf=pass (imf26.hostedemail.com: domain of Alexey.Kardashevskiy@amd.com designates 52.101.85.46 as permitted sender) smtp.mailfrom=Alexey.Kardashevskiy@amd.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789559679;
+	s=arc-20220608; t=1789559729;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OKUdPqVU6vcP8IIVfw9k2l6nR9BJplx9o3NZa4hjOck=;
-	b=5GNMs34/q4kkahwROX1rkrJtyUeqNHpsMKuz/IGfZBVB5wp4dYCj+TpqqJ7vvhAoHfg6dj
-	0ZsH0Qwqk014nsIigLa4uZvN6WhGlyW4RJ6L4yiFyT3Duzwk6XzD/sD8UpHGoJKCygfrHQ
-	nD73MJ8l52/7vfgBgXDEqJ6uNaxLIsA=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789559679;
-	b=ew1wRZqMc0oWr3ONFH1ZklgOYys3oqlHW9132tdOTpAxbH+UX9v6HKpc6uMWnflaEIxmUn
-	m86H21q32H+nePoQnl3GlEzu49dAN2z7pBkeV8flm1Je3ylRfNR6+dkARh4bXlislO2Rdx
-	u925RXkLLAzgaIUmHpI4LL3kdyUX+wE=
+	bh=1fOSelVshB8tt+z9i3a63f+uWxxjJMxzG7NNd33A9O0=;
+	b=w7wO64f8zNyBWN1dgfmLNZCefrxXL7IllNglm6NwLY0ZM2FLiJjIZFJsVfOEMHzObAiV/d
+	TUVEJsc3vzxVZ8YUkuRlHPXML5BmX4kx5qtFGSZitDGxIECfhnMqzjoQUqtcTQM98LVcm8
+	iNq51GraQHWCRoDfX/nXkGxGCk3qnq8=
 ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=H4qYp44q;
+	imf11.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=hJHVgTgw;
+	spf=pass (imf11.hostedemail.com: domain of Alexey.Kardashevskiy@amd.com designates 40.93.194.54 as permitted sender) smtp.mailfrom=Alexey.Kardashevskiy@amd.com;
 	dmarc=pass (policy=quarantine) header.from=amd.com;
-	spf=pass (imf26.hostedemail.com: domain of Alexey.Kardashevskiy@amd.com designates 52.101.85.46 as permitted sender) smtp.mailfrom=Alexey.Kardashevskiy@amd.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1789559729;
+	b=NK6SatyYc2SSIRGv5pdehatXYaGvpDMBI4nV9fca18MaODe7HvisNdfF6vT1w8+QOVv8d/
+	uwquz+MBfD/Mm1B9lVcQ3bekHAjpPsV0l5z+O9XKF+JNWzQO024bPYbjevANY7nkasWwLm
+	pBsg2cKVrn++FtcQ8Pxi6f6mt0QKl0o=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Urn84h68Kv1NiW1kUjFhGSLpejB7pKDouEqo54M/qmMxqqUURd6ehj7mM9xpJoyNrMOyUCwditYWutF0X2+l0E9N6rbyp7n7T93fYm75aTFSiMm3PWzBQ+EzDba/ohbFoxZMLDEtYQ1KMmI8f5qJucPcqUgzNSHQSRCwKOJghCsJdwF34jAnX0AJGV7mjpTDuVJ835sAoA+8mt2dLoBHWmWxVbsPI9P5Pn6LMSuK6og9lrcTYvcgozQynqSEb07n+m9GO1XMQ/tOeOWdpd9q73+IScNGeTdee02ynit+Phwjbohxr+Vsj9onyxl/yw6v5FMtv8Fn2PQ7QgGYuWBOaA==
+ b=TZy2ZJrkMF7OCH9yN7sKyjTdWF7pgDVN6EGs0NLiBABwnnfINtahWOBYqwOz/NWr6N0AN5xk3KZ9gnYsR5DRJMFpXYxh6z5BOA4SqDov1+Py1rv1VdX8JfLWi2Iu9VC//4ZTsve+l1KibkrziEneP494mzlK+fKQ8Y6ZYsA72HeYMG2Hr2hrH/eH1tEk+QrUFUMbjHI1RdRPodHPy4kbR8OzqIx9MnVk7cuU+a0TdPj82AuZaqRcYaxYTHwARqMM06dsFTyWbujX389/moTRtNEA9l6ZTCBwS/3FOhSuXIjxLzfOGe+Ae7jc9Z5xx92b3zLyVpM45P9ZGWWrKZixBA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OKUdPqVU6vcP8IIVfw9k2l6nR9BJplx9o3NZa4hjOck=;
- b=EDrGQU+zjyMIoBNBObg/r6jTe0H5NY8XWxArKdQBcDcekZYrh0UbRIh0tmCOcCfHp+dP6Wztd+oV40oofWIb4PFbFrxaTyiu/fxvMKTsdJyfUDuQBzh63awmNCIlzw2kxvb5izGceKhpYEkaujCzyL/utidKOJh+2vZjiyRqmTUXA9/cQePrUksl8uf6C0grj3ZJTzNp5u8EZzpUEviQPAjjmdTPZeGYvt8v8f/WO3Xzv8VITj5VSvEuFuOEads2rBd6M5Dm/XYx0+tsXPMX9v/5O/KZVSEJUGfxZpb+NPctjB7Uw3AuYXTo9rForv4T9S6RWtJhg4NX8Ej5WJRPrQ==
+ bh=1fOSelVshB8tt+z9i3a63f+uWxxjJMxzG7NNd33A9O0=;
+ b=jvahsYYrSSADIREzYZklS3cfIwMu0Zmjl3U5BvdwOD0bHjS79vNZLV1090cMPL6Uddm1Hw+ha8DsRIl6P3D7x0Ofg7n5e0eXwx40OjAREYnsDswkBOv39tT7q/bKNNpUmqXWpuNLksT0urT9O7eswM+0t9pB45isrHcK6lFqM8UdcQiBDw4Vb33gF6dsB3eyhqYeP32eJFGEnfmG5DILEG7wekx+bPb9r8qXvsuX1N7LC/toA2ovW1QUEOVq6z514RTOhjhfZBxnBBRn+Dlr186XJ+X6ysknfcEZXH08zx1mABhTDn64ZziAWAzDtRO8T9+PFyMF6nB9sRZuzltbiQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OKUdPqVU6vcP8IIVfw9k2l6nR9BJplx9o3NZa4hjOck=;
- b=H4qYp44qyY8gpvkWf1Ci8lBKgSKe4gGnaL0LZRKfWPHAKK1lwWWi+ubOgacGhxO5O1FzaozHGsrB/86eOm8Ue4BleHqQnDCWrO2eOb1cPtrNH5hsFjJTDNBzzppowIKl9d0/tzYyGSbtYSUiVlSk/3S/fYLmtLs6HF6Luzu27Rw=
-Received: from BN9PR03CA0556.namprd03.prod.outlook.com (2603:10b6:408:138::21)
- by CH3PR12MB9124.namprd12.prod.outlook.com (2603:10b6:610:1a7::6) with
+ bh=1fOSelVshB8tt+z9i3a63f+uWxxjJMxzG7NNd33A9O0=;
+ b=hJHVgTgw40xSH04nc9KEY2kTfcBikFvdZzQOK6y8fFdlPWQ206tziMwKbuHLq2YsQdsWnXpxBJBN+nC+uIlM7TQItN4B4LBXEVkNpnzIbo0qAVLlJlMgBl/jaNSuWF8TLglwQGLQXYoBSkSvj44AiMmqUoZVh4d3hV9YFqdWZsw=
+Received: from BN0PR04CA0192.namprd04.prod.outlook.com (2603:10b6:408:e9::17)
+ by CY8PR12MB7267.namprd12.prod.outlook.com (2603:10b6:930:55::17) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Wed, 16 Sep
- 2026 11:54:31 +0000
-Received: from BN1PEPF0001854C.namprd05.prod.outlook.com
- (2603:10b6:408:138:cafe::7b) by BN9PR03CA0556.outlook.office365.com
- (2603:10b6:408:138::21) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.406.9 via Frontend Transport; Wed, 16
- Sep 2026 11:54:31 +0000
+ 2026 11:55:12 +0000
+Received: from BN1PEPF00018545.namprd05.prod.outlook.com
+ (2603:10b6:408:e9:cafe::a) by BN0PR04CA0192.outlook.office365.com
+ (2603:10b6:408:e9::17) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.428.11 via Frontend Transport; Wed,
+ 16 Sep 2026 11:55:12 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -83,13 +83,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- BN1PEPF0001854C.mail.protection.outlook.com (10.167.248.11) with Microsoft
+ BN1PEPF00018545.mail.protection.outlook.com (10.167.248.4) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.428.7 via Frontend Transport; Wed, 16 Sep 2026 11:54:31 +0000
+ 15.21.428.7 via Frontend Transport; Wed, 16 Sep 2026 11:55:12 +0000
 Received: from aiemdee.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 16 Sep
- 2026 06:54:07 -0500
+ 2026 06:54:44 -0500
 From: Alexey Kardashevskiy <aik@amd.com>
 To: <x86@kernel.org>
 CC: <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
@@ -142,9 +142,9 @@ CC: <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
 	Santosh Shukla <santosh.shukla@amd.com>, "Pratik R . Sampat"
 	<prsampat@amd.com>, Scott Soule Cheloha <scott.cheloha@amd.com>, Ackerley Tng
 	<ackerleytng@google.com>, Fuad Tabba <tabba@google.com>
-Subject: [RFC PATCH kernel 03/17] tsm/core: Store range_id in pci_tsm_mmio_entry
-Date: Wed, 16 Sep 2026 21:51:43 +1000
-Message-ID: <20260916115159.1938195-4-aik@amd.com>
+Subject: [RFC PATCH kernel 04/17] crypto/ccp/tsm: Use TSM API for DOE
+Date: Wed, 16 Sep 2026 21:51:44 +1000
+Message-ID: <20260916115159.1938195-5-aik@amd.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260916115159.1938195-1-aik@amd.com>
 References: <20260916115159.1938195-1-aik@amd.com>
@@ -156,38 +156,38 @@ X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF0001854C:EE_|CH3PR12MB9124:EE_
-X-MS-Office365-Filtering-Correlation-Id: d59d45d3-0f08-439b-d6d0-08df13e944b8
+X-MS-TrafficTypeDiagnostic: BN1PEPF00018545:EE_|CY8PR12MB7267:EE_
+X-MS-Office365-Filtering-Correlation-Id: 95b0368a-0e2f-42c3-de47-08df13e95d65
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|23010399003|32650700020|7416014|376014|1800799024|82310400026|56012099006|10067099003|11063799006|18002099003|22082099003;
+	BCL:0;ARA:13230040|82310400026|36860700016|32650700020|1800799024|23010399003|7416014|376014|22082099003|18002099003|56012099006|11063799006|10067099003;
 X-Microsoft-Antispam-Message-Info:
-	rI3FUyxtUsFrikLPRCWOe3jkIJpu8Ayez//FbHvA7EZPaqMJ28NzEM4VhJ4uFsUfHOrPAJb/7UHnkmYOiZsZByETBO7LqwDolMkGk+NuIkrgD4qgEv4RzEDqahiEUr6RmoqLOB4/nnuarOms1DULPJLjrKyDmeOUAEEoyYHWB5A273Gc3ieXPZf/pG8FYsRMtuGwuUM0kd2jypZAIucOFIPlseEW6Tidon+1+G+qvbnitCdEbepShhBJZCMdJvcbi2vS4qERdzgmPEUsJ3ylIy1Ob5JKPPqLHOQxCE0Qe2/CCLBuIYsjqzVwfGEXXNSuZ2BN207i2oGm20r9eqcOgEt3kaOz34+dHkchUmel6U3bjs2AQ+EvxIjcvZ+I/wsFwRJXZHaO71FmXafnt71PBAcdJEK6qVYfgqy2v5S3Uj+vyR+1IKmg6Rfr4z3YMDSg+ptuH+K9bmzONBteIzA0bli1GHUAA4BrfnH2iDkYHuBxYRfVK9Xxfa3cxTwYqdojQDJQ4wX9c/N0NYNBfz8h9ph3umCHa0RhWXWwSESKEBn+FZY+jNWIHHce+uQnoGNf7r5KtJkpLdjT8wtA4XS8UGoRQZRBGqToFDemJKAzlXlGC45dacLPHVyAKBXcIcQK1KSkr1cjUWaUbUoGTGzCb1wvFKZUGANi+ZFG81a1RXGumrPU+cxRi4EFst/iIx9UAMPQNzjE4joretksZWLINw==
+	78xBYQC3+wj95ztS+jhBh7cicxBkBZUOOlFcfH+bxAVFisXGI8GTXus06sBoYkM4BHUkb5zK5O7yhQwpaF6Ip7ekJl/G+pCPCtnHlkIbjjDv8+KUNHhK+PJ5RhP6SlzTgoe81C/Eh+DyMDQXye78SzFJwQW40rgBDQmTb9VchioXMTf4z/5CzwrtVTOPqbyMg+Y8jjHpiDtfFf8zitapJgCESsXZOSM9HNHyJ0Um1NQ7D9s0uHUfcT/dzxDylcymM2S+Ld5yStPeE7mCxLl6qhrLFr3BSHwHwIQKghVjXLTcDnqt3GYaRiw1yz3V3OyeUjtuGPCVf3AbPcfXsEjBmGX3h2tdEuTQRVG2yu5p2hVO7DHZiUoLYTEA8rUsbspBT4rewvZj80kJwOFeoOC9mrD53/WOfp4jUrKfPm1SisbB+kyVpNsgZZv5etsg5Ftvdv2z1q+jSldsTRs0LfdHF3TNYwTFEs1O7ZDtHQkyvUMGi8Wd0Q4cAhiexEAvh9HeKXdpy7ly9noT4dc7jyjth76Lc412wIb3GxzcBx4uGvx9TbHy30dbUYFWfGVgiRyJ4kKr6lWWtTrwgeUS8GP8q2WbaMspMBnT3PljHdlQYUHCU206jA3P1Ax0KDSFRZmCQHobtyHO4o9tJVYCppnHdmpteVaf6qX9JvzuwR/35nR2qu87SdsvzIJ/RRzcLYid
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(23010399003)(32650700020)(7416014)(376014)(1800799024)(82310400026)(56012099006)(10067099003)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(32650700020)(1800799024)(23010399003)(7416014)(376014)(22082099003)(18002099003)(56012099006)(11063799006)(10067099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	3PXzb1uIYISSNMY+R0m2gI1Golc9yZxyHNjo9mqcVW1iX+W8QOAgaw0Jx0+Ta1VKAjQN4QvuQJSWrTEiqdmnJWGdsiX9SXLTV7KsO1jkKL+RbUtl3rM6lse+vVwlHmd+IzaKPKUqMnAJwfSIsMv+aCwgqXOJHqF/H7s5tLLKw2PLKZUtD1ZyNYccxLICbLJnupx7vGu1T6MszIipxPfFngv9Ym+30x0Q2ajKbHjL0uPDpj7E5wgANp2xo3ZVGlO1/icucw65fAYiw3XHyAOEuraigI/3+qS1j8myjEMuJ4CLxEAyULrUad8gSQ6vE9GGBcTDKo8iENf0+SwfAW4PoJeJq0iP70PPpGHtspLqITaJWMzTVVn3E+S6NBglTQqsv+5r2fAzrn5fFPMMl+5p05yA4VJJHiI+sj+qmhIWaBwI9YGSh9HQT9Re3VgfsDTs
+	2+d9WKfuRzwiWgMdluOVo4qJNhnH2FvmuZhqqjP8Ga5RudmSdxm4o30kD3JGM+JEJhea7Mw6INW7XT3nm6ypzdPviJMk9OK4Pvzn2FWUxcA7Vdl/e56ub2ci729tDDVfvh9CVw61K6ffH4bM+JOXA9hNl5odzX2HLX/1echQ9gdSp7MdJwUJI64mKFNnvbf9aUbAqNw4+4SJCg+XD9XffbZf6fjl0LBtuDu0HjfarKrIabaGlv54VhQ3oyYEtE9psLNTPckbXz1N2avdxAcXqsvWJ2kLmfkkwZ5KVqB55EFLafOAfCbw5IMEhQaZWZfVjmI54+4RWFQcol/rYF1TFVzsYPTn+eBGFcEeCuS6BT7+MsDtPowlpnYvJ/R4X0x3YM5wuUYpDWv4dKXLhb6UuiqPb5UM6Mz5WR/m9mvvSwqSgI6A6Nq+5hSnCXyY+hAU
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2026 11:54:31.0614
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2026 11:55:12.4634
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d59d45d3-0f08-439b-d6d0-08df13e944b8
+X-MS-Exchange-CrossTenant-Network-Message-Id: 95b0368a-0e2f-42c3-de47-08df13e95d65
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BN1PEPF0001854C.namprd05.prod.outlook.com
+	BN1PEPF00018545.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9124
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7267
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 2905440007
+X-Stat-Signature: ssqzirp8ji6igk7tde8rf4wj8a5zrff7
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 922F3140007
-X-Stat-Signature: 7tzi1fsjcbef89mjdqkodyyi6i4ea41m
-X-HE-Tag: 1789559679-677376
-X-HE-Meta: U2FsdGVkX19BFX9pUs3m8lthl5WHxrGJ1e7L6a7UFzraYEWUj//hX3xnOAjDaB/gqX7CIFdoklYBOCj9KHi6ZutuxiXkeKV9Q3UKC16XdjokooTOfSi7fkARe7fgVYwsiEYx9Yl5sARFPU53qfVejK855Mjbiscd22O8rrAPfiZAlP7gyVmUfEPjt4r8DNn9l2ZOFHYLGvKxReXgalu5z6nUgokCeLuDzOW9OYo9QJx8XoihdFfYE5LrgSvEFfmPYimJ9e8BW6ncdl6IdvQT9PPt2cY2eWiNpt1zPC5PMKO4OH//VWT+9TDkYXxYh8pcV1bfsxBysBmWy6DqaV8GO4ulOYlR4Vv6xW4Wsmhxdd81dhapXwtxDunmp2nRkEKcFDyj22754Te7RTWPoBuNyzkDwsfDDNiMMo67CjRxT4zPy/s2UL6ZurXoY+4RaqONLy+dVO++6FQpbUr1HpE902LnFPuAsWePBXtd/x8IznDJ+nKsFrMPWgPuM+As5RITNbRm8U80OXntYLTU4Mif8Ltb0cyF1x4XxVaiU+Cvi5tujbd3u2WVZ1HAXVCSXaeV7PhLMgbbsOX0c6Ij4yUvf8dDtqajJE64xazlcH52hA/Gxs/nvxUdMJnfAzotAGMECLm2SkcwKN7c+4sMWCFu0xvCG6LBRt9YAaQJi0yGr3PYXvii7cMO0TwepVmzx0ipp1Fg/mGwkC0V4TSXkk2VjpKTrgu+1OdKREkWZbczzaBTF7opUQZ9a/vyFupy9FYIPCwVdvcGVF2ImNsztSFDC6H2gkKUw9/KgTHNivFFW/tqygEnGP43xgFZCmon7jt9E0Bd2W428A1feuHE4oygbI8309Nd8x4YuB3IOnWLct1GP4URWddqZsW8Z4y6cr0sxVkrrvagbaaTsI1bom5nZmZ+0FpZP1UfqlZ5/xV4kdK952c90EkczeOLra3ZGrF8y9mFEqW1sBTodZDtWqM
- lc51GyVM
- L6SSyWXCm6GnTa7DgMMIlxyDLIWwW5ZhKdJter/Ey3scLCHwz4lT94Tr40E9XoJ+PDxAVMwWXj0KZ84KqL2kVsprtJ4BNpZFhUZ9hdFqFwRhri2quYx7fMVh2/MmuGCCFHwnv0u6Ouqi9niBZ5J+vneI55NwY8m2LYawAWSd/50qBIYH1Hb/QA000ZWxOzVw6syzfbx8hNpjhTLoco1mz6QjWEmO00V0L+8PfDniY1OH53r6FqexAbss4QLjd24/1LO9mCP1CZEmPoIelfnkXQWqpoUn79XD7D3Cj1cNVIYFIRTr45E69cJWisCCHNwzcYLbGeQah8mbhD1rgxh3UFYbExjC+KjNaPY9Hb3DWMO78QEjiiV1Xq6UkHBihIXegHLsJ8MariBmLX+vLmNO4hYdJjHTKWwxTKVMfQ3TD0m3sDIjxiS72hJ5dU8gs88CX+MELv0mzEy/zLxFY7pTVzk/92CraU66B02jCN5K5cJBtbJrdZKXMUfYpy17T3egnXYTFn8aiVAGLr5yAkrg8L8Pwasu2AgBHyGXiKA6Rv26e7Bfe4ESIBkXqh/gpM7Au5DpxhecAIKXf1d3IdlXCYUHRJfLzNj0lXKBmxZwExFOEHUUQSpMSW1zzeKHZPcCbboeu+yrsZFqR0dZ6Tf+zYg/ZazxO3tRv7Lxt279f/VnqcPTUZsTbIbmRrw==
+X-HE-Tag: 1789559729-847255
+X-HE-Meta: U2FsdGVkX189V3HPvy4eC9Zv2TmmNZgzbHnS7slJtvaVblVeuyMcQ5PbX4acZJ32MOft2DeYystFOKivOr5hILL0xvqOaMNcMljSc70rC0MMdOL4N8Z58ftYJVx03OQnr/tFoDzXHoaSio4YdSuT6Nz2kZNCq7YUeY/W1FOPn5Y1URN/NH6ddJT0GlPbmxF/SsNUg6YXQRTrK2NADSeZBajkNlcPXorjmVwzenjahVQOzrUBGDmXwh7KtZTb0YFco1Aka6GOrfsgAdMP670J7ZHxpBFhqvuyEF40Fql/GqiIiUlRH2bjbI3hEj2tE2mbbbBWGWnEx+lK3S5qVL3K7nGozwJdR/i01qICznu+INC1GNRUSkgJ8K2uqitzXQ5i6UaIyAfnHlZi8y1DNUsfpzj96kn9ZzHVMaY2AqubgH7t0wAS+Z/Df/63muZXO4jsrtS0uY26AQT1gxQHMZnPgz9IEhwo+j6lbzruKeQWl4m1wuFtjtAYI5PMyigow/t6rcuQJmOZ/QQU4PWO052MgrdlkyBl6OKWfDQ0r9ilbO1taLai6WY/Y3E3NQwTGhR43IrinRD2SmuFafUc39GnlesEvsGsZgnKf1OJUs1ss0G9w1SOUi1xTGhfNd4z0QiVh1+pngHk3BW3O3tXIlv50h7RoY/tG7QLBVBzjJUBNzJjVdwBN++OQUiSsRgHn3rBpFutExYXyRTn+SUsbLIwUbeRt8ElyPBKwcBMDfQA5Fn0pQhwXcmRUm1eEiQ6UJG/34GKXPVolYCDX/kiHO76N9G06lQ60VOReCqxccmNcBZn8apoaPHHvX0/CiBClZvZXJulQ5nSuZPhB8Qgel9wUPb7Up/khOH5G9VGlUhsJzVjZu1vI9PCQUJCSoOxUhYQsQB2HpVyrh9mJU+4Jdqk1XyWdJNAO7RVKvSynvYVdp/ygtxDJms3e6BdnXJqoaRiXTuNRTC/Yn4jpsl3YC+
+ tYKib/7l
+ g2TLzLFZp3smHifMLfXyNkEbWXJ4j0DvpPbOn0Xb1YJwVbluQ6CY3ZSAR5d2AkCjP1YbitXtWUnJypj7bbeevdUDS0NlNVPeU1f4Rm0uiVcXwzlCTvK2ZgT+xQrWz9muuAxjc4JsdrbcUCI8lLZ3HRaf4R4JBZtmKTvNdxI43gd/dIhujkeg3OJC84GPXgMd3+QBR8ZDSHBEMtSyfDr+nax6Fe8iMQgsAke8UZBgAtbTJd7SW0OKUutC4LfflXc9nAET/olmNk5Dnf+hZc82jNuP1vIZGtnkaU7dDZUOT9q5eZmP8objg5Pr3FQqTKwzeBnpiO6VoDuC1r4ymT2zCErM+SbQhmcVklXo7pF9wWOinfGPCG+UWHxSMG/xDmeYbclMwOoatBsgJZJqFyPVqWvNF8IIBjKeucPoIiZQuLt+fUBtpaTAVLbyocRATNv0WAYpfuXwd67tXa1BOwt9pItjOE882Fc6KEBR1B5nxqJGu0AzFSIcpUg0nNJXW25rd5nko0I46RLtgskHsUzYUd3jQzTcKhTX8HVl8avkw+01Y4dpC95SRBwskbQKdZUnsYLU5LlqN8HprWIv3jBqc9IDi3hgZvUURelRUeWKEJQyUDFx3nE0n1IYBa32UA6iPgrR46oDuGIVjD8hc8Q9gJSNrvCjt/dCUQXym
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -195,57 +195,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The pci_tsm_mmio struct represent a parsed TDI report which platform
-TSM driver will apply at the TDI accept step.
-
-On top of what the existing structure stores already, the AMD TSM driver
-is going to need a range ID for the PSP communication.
-
-Instead of calculating it in the platform TSM driver, just pass it along.
-
-While at this, set the flag as resource_contains() checks for the type
-when pci_tsm_mmio_setup() inserts the range.
+Compared to the currently used pci_doe(), the pci_tsm_doe_transfer() helper
+performs a few more sanity checks, use that helper now.
 
 Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
 ---
+ drivers/crypto/ccp/sev-dev-tsm.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-Not quite sure if IORESOURCE_MEM deserves a separate fix;
-also if it is just me who hit this.
----
- include/linux/pci-tsm.h | 2 ++
- drivers/pci/tsm/core.c  | 2 ++
- 2 files changed, 4 insertions(+)
-
-diff --git a/include/linux/pci-tsm.h b/include/linux/pci-tsm.h
-index 6d5fadd79360..9b34304d9a1f 100644
---- a/include/linux/pci-tsm.h
-+++ b/include/linux/pci-tsm.h
-@@ -161,10 +161,12 @@ struct pci_tsm_pf0 {
-  * @res: MMIO address range (typically Guest Physical Address, GPA)
-  * @tsm_offset: Host Physical Address, HPA obfuscation offset added by the TSM.
-  *		Translates report addresses to GPA.
-+ * @range_id: PCI BAR index for this range
-  */
- struct pci_tsm_mmio_entry {
- 	struct resource res;
- 	u64 tsm_offset;
-+	unsigned char range_id;
- };
+diff --git a/drivers/crypto/ccp/sev-dev-tsm.c b/drivers/crypto/ccp/sev-dev-tsm.c
+index 46f2539d2d5a..6e704ad239af 100644
+--- a/drivers/crypto/ccp/sev-dev-tsm.c
++++ b/drivers/crypto/ccp/sev-dev-tsm.c
+@@ -40,8 +40,9 @@ static int sev_tio_spdm_cmd(struct tio_dsm *dsm, int ret)
  
- struct pci_tsm_mmio {
-diff --git a/drivers/pci/tsm/core.c b/drivers/pci/tsm/core.c
-index 2a18be5be56e..a197d56edbfb 100644
---- a/drivers/pci/tsm/core.c
-+++ b/drivers/pci/tsm/core.c
-@@ -746,6 +746,8 @@ struct pci_tsm_mmio *pci_tsm_mmio_alloc(struct pci_dev *pdev)
+ 	/* ret > 0 means "SPDM requested" */
+ 	while (ret == PCI_DOE_FEATURE_CMA || ret == PCI_DOE_FEATURE_SSESSION) {
+-		ret = pci_doe(dsm->tsm.doe_mb, PCI_VENDOR_ID_PCI_SIG, ret,
+-			      spdm->req, spdm->req_len, spdm->rsp, spdm->rsp_len);
++		ret = pci_tsm_doe_transfer(dsm->tsm.base_tsm.pdev, ret,
++					   spdm->req, spdm->req_len,
++					   spdm->rsp, spdm->rsp_len);
+ 		if (ret < 0)
+ 			break;
  
- 		entry->res.start = range.start;
- 		entry->res.end = range.end;
-+		entry->res.flags = IORESOURCE_MEM;
-+		entry->range_id = bar;
- 		entry->tsm_offset = tsm_offset;
- 		mmio->nr++;
- 	}
 -- 
 2.55.0
 
