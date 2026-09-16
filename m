@@ -4,117 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48127C982CC
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 16:50:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21AD7C982CC
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 17:00:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F19A6B008C; Wed, 16 Sep 2026 12:50:10 -0400 (EDT)
+	id 040606B0088; Wed, 16 Sep 2026 13:00:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 09A326B0092; Wed, 16 Sep 2026 12:50:10 -0400 (EDT)
+	id F058A6B008C; Wed, 16 Sep 2026 13:00:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ECC026B0093; Wed, 16 Sep 2026 12:50:09 -0400 (EDT)
+	id DCE026B0092; Wed, 16 Sep 2026 13:00:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B120A6B008C
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 12:50:09 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0EE8A1C2EAA
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 16:50:09 +0000 (UTC)
-X-FDA: 85220212938.21.9DDF52D
-Received: from mail-qv2-f18.google.com (mail-qv2-f18.google.com [74.125.230.146])
-	by imf31.hostedemail.com (Postfix) with ESMTP id EE81920004
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 16:50:06 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=h3qmQM4m;
-	spf=pass (imf31.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.230.146 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+	by kanga.kvack.org (Postfix) with ESMTP id AE4276B0088
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 13:00:19 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 17696160777
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 17:00:19 +0000 (UTC)
+X-FDA: 85220238558.03.CE028E1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 834F01C0014
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 17:00:17 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PmVw4wXS;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789577407;
+	s=arc-20220608; t=1789578017;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RsW3GrpW0HCe9cpgsGq1CDgI5c4v//i9fXbu19rssIo=;
-	b=FdRnKFMEHp4cZoNqu9U0NJSCAyGldErgbwR6t0jK0jvCFQ/HcZ7Mnyd92o9X3l8i3FSkpE
-	js+cXlkdSJnwbbq99Z7Otk9eWHBqeKoD+QvNjxuPd5rgtCMjXypQnlJishOWg8av/I6rn1
-	JJ+ckCRFCh1YPDjBgNKsKwXkaT61j84=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=h3qmQM4m;
-	spf=pass (imf31.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.230.146 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+	bh=JNZtWdKCogaGrWtyvhM6z027Qg7RFwkG7Shw9zuVQhE=;
+	b=YxT9OtF/h4YbfEUX8qe2b0UZWG2yxKEjc3+kT3yCX5jAmYem0CY/5R4FJLNl5iASONp431
+	qmD4DHnhg9rL/DKtCFNw+F9HFEsHN1YtdxmL7vaqQbQvGCvuHT0FGHUMqw5yBi3ZIPqWYm
+	jETePo5MYqFkw/DuQA1MbHE61Dh0eAE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789577407;
-	b=FkBHsigij+1mPLUrkUk+hOMQn3f7AhnFUkF0ENN9B4t/uiXHuSAovoSYn9QUE48EJziYRw
-	JvDxdnguz3pc1b5AyyY32PjdvEewvilrg/rxub78+wSxOKkuu2L8J7DV0yOZdituurk3MY
-	HZ1K0pacWwi4YmbShjMQ+iYmE2iMz/U=
-Received: by mail-qv2-f18.google.com with SMTP id 6a1803df08f44-90cdfc6db0bso10360656d6.3
-        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 09:50:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1789577406; x=1790182206; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=RsW3GrpW0HCe9cpgsGq1CDgI5c4v//i9fXbu19rssIo=;
-        b=h3qmQM4mxk0pvqJAw907u2cDZpisbLfiEUBqwLuoH0mJADUxUI4RCLFCaRorgklccO
-         1AuHGszNDtG0Ha2aCXaIOsD0OhA9t+h1uNYQyFKiAVZv/7FOyK1eSjorSu7nSz0jGksf
-         Kt8dm56rxYlJ048BtaCLk0wiHRsaYg96gVvL1IKKwNH9J2YkqukP0VamfesAUEIFrObI
-         9QSBxEgPQEUaHU9aAUYpDMJgbfAQqxWzsjScNsf0r9xrtBZ0awL+9WRQDJiojaufHf5E
-         IV11mpT3PXQv/eJGq6Fdb711KvYGKfLN83Y7ZQ1IW+xt4UVbBj3bfsxrLxNRzmSpgwKk
-         Pghw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789577406; x=1790182206;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=RsW3GrpW0HCe9cpgsGq1CDgI5c4v//i9fXbu19rssIo=;
-        b=Avc7JjVWz7JiYHIR23k0MQ4/5XMR0AR9/rVI9DIkp/5dpkUyoXy3aIHn3UAs3Rq2di
-         e+WPLNiIrIZKPEvLkUUUpvPVdBfkSMQsUheaD6oSDpJmejKMhjiR6jD1k0syE2eYGVJC
-         sBwUaZJUOXkKdoEZ3s9dB1G2px46FIzAQ9RvGk/eZ+MyPzBMGaUlX/rvCKMV7uFIy9GQ
-         aDvoi2dBWKyeAmWkG5EJ1uiB+hQZzm8oTYm5oBTEnQ3J5J5nIp5j8GgPiKYoIspa/e25
-         wBm1jD2LsLUgqc0QQz5CO/GHWrVugYOJvBYFIMo0B+HPNN3P/yOT/L5IyIQjqaFGK1/T
-         J7hg==
-X-Forwarded-Encrypted: i=1; AKwUvBx5wWB26+tx62K9ABDTi42cAdiOwIou/BrCg1tRtAXC2MHrdAnkD1uliAXIxYT02pLHgt5c66Lxzw==@kvack.org
-X-Gm-Message-State: AFuF++l/iwVxFojdmRa1GAgN8BTBvmHPCct4cElV1lIcPsCSgQiFKFEN
-	V4w/lXq2e3lt3SwvLsKKk0gv4y/y5fd31YIywdv0cthJMeu5aUhTdYpcQuEct/g5VnE=
-X-Gm-Gg: AYBFou0kGUcDoo8+wwrbcn0+bybhTgxSvtWbUO9Zbug2fcc/Ih/I6fQaljVZ9GCOOZC
-	R+70xJJOYr1qNaEoK+gaUR647uY62GN8qpnRmgpaJM71Xso0Hg20H059gc0A+vUpeZILPWkmB7+
-	2nt3IppYRbmXi01EfFflbXmDit3ivM3F5X9JwONkbArZr8wDBPK7lftUWH8/dbTwV4OvEPCJlkx
-	Ocd2/vY2KjkQmyp43s+uYTrbuTCQG43sYr2QbMFvgwqEGtv1VrxCuko8CbHvjyBJ5nha5av+0p6
-	xrkPsgpjW78+xx/MKCwemGewItMf4sy28vw0EjQF48vO0YeiM7y2HvH2yKcCBshKq9ldF28dY+S
-	hUZ7OwObmwTrW/9OadyFeyinZx1sOEe6Kxqs7A7dl7LeRrdfH3zp6ev/wpGAErm2XHKhxXhqrRa
-	zm028vOGwJy3oHwG8KvrNcya58oOzEnKiv1LkZ9J10YcXo1gcbgKEuQaxuMELPZtpd8JVV+Q==
-X-Received: by 2002:a05:6214:3c9b:b0:90e:995c:42d2 with SMTP id 6a1803df08f44-9123d72c6c3mr68034436d6.12.1789577405749;
-        Wed, 16 Sep 2026 09:50:05 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9123be5fcfasm29739106d6.12.2026.09.16.09.50.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2026 09:50:05 -0700 (PDT)
-Date: Wed, 16 Sep 2026 12:50:04 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Yuanhe Shu <xiangzao@linux.alibaba.com>
-Cc: akpm@linux-foundation.org, vbabka@kernel.org,
-	mgorman@techsingularity.net, linux-mm@kvack.org, surenb@google.com,
-	mhocko@suse.com, brendan.jackman@linux.dev, ziy@nvidia.com,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	henry.willard@oracle.com, david@kernel.org
-Subject: Re: [PATCH v2] mm/page_alloc: do not boost watermarks in kdump
- capture kernels
-Message-ID: <aqrIvPY6iJOJ0mVf@cmpxchg.org>
-References: <20260916112545.3707893-1-xiangzao@linux.alibaba.com>
+	t=1789578017;
+	b=USPt5B1F9LYnrC4JLAvdcu7cehjWZPkZ2La0OeDfiXEOzvG+R+cxkYLxSjgyuE+C9u000U
+	BL/xLa07i0V4PPIQq1X5FN6Ur3YqKJC9xOqZP3nRIbk26QyYgm5oaBVaFOMBqeNV/UzEhm
+	A5ZADhoIxL/PBmHfkW04bkwhE1cIpX8=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PmVw4wXS;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 46BE4600CB;
+	Wed, 16 Sep 2026 17:00:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4114D1F000FF;
+	Wed, 16 Sep 2026 16:59:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789578016;
+	bh=JNZtWdKCogaGrWtyvhM6z027Qg7RFwkG7Shw9zuVQhE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=PmVw4wXS/r9CpHfAOn2amzHMwnGPXSnlrGas83Xpi7dsydIKsArkblukiVIHwBAY6
+	 ubpGfFGa7kqrykL1Pa6q3MkO4GKMCQQXpCmITVG/PeoahA3HJxtDyVnKBlsOT5y6Mm
+	 wozpolIxCIhxuWjx0aQRah90ZewUiZ9k5Elj1dLiF8CCivxp3p7w6OaDY/5H9Oq45S
+	 O6mv0zYlNEHZcdRLCgzvK/ZrOJVz1jz48dKYZvJ7Oi+o5KCdWId8DKOgPiN8pVOlBz
+	 jm/9rlekEwQE9XCQ+GkKAffM26w81NuZfKTTB+nUUF3sGMC9I2pcmKHTHWSj4DPFxw
+	 A9hfwpouwGpWQ==
+Date: Wed, 16 Sep 2026 17:59:52 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Guo Ren <guoren@kernel.org>, 
+	Brian Cain <bcain@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>, 
+	Dinh Nguyen <dinguyen@kernel.org>, Simon Schuster <schuster.simon@siemens-energy.com>, 
+	Jonas Bonn <jonas@southpole.se>, Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, 
+	Stafford Horne <shorne@gmail.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, 
+	Rich Felker <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+	Russell King <linux@armlinux.org.uk>, Vineet Gupta <vgupta@kernel.org>, 
+	Michal Simek <monstr@monstr.eu>, Chris Zankel <chris@zankel.net>, 
+	Max Filippov <jcmvbkbc@gmail.com>, Will Deacon <will@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
+	Peter Zijlstra <peterz@infradead.org>, "David S. Miller" <davem@davemloft.net>, 
+	Andreas Larsson <andreas@gaisler.com>, Richard Henderson <richard.henderson@linaro.org>, 
+	Matt Turner <mattst88@gmail.com>, Magnus Lindholm <linmag7@gmail.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Mark Rutland <mark.rutland@arm.com>, 
+	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+	Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Richard Weinberger <richard@nod.at>, 
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>, Johannes Berg <johannes@sipsolutions.net>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org, 
+	linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org, linux-sh@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linux-snps-arc@lists.infradead.org, linux-arch@vger.kernel.org, sparclinux@vger.kernel.org, 
+	linux-alpha@vger.kernel.org, loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
+	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
+	linux-um@lists.infradead.org, Hugh Dickins <hughd@google.com>, Qi Zheng <qi.zheng@linux.dev>
+Subject: Re: [PATCH v3 01/12] mm/huge_memory: zap deposited page tables after
+ an RCU grace period
+Message-ID: <aqrAflIQbwcNKlQL@gremlin>
+References: <20260911-rcu-pagetable-freeing-v3-0-7b8c86103821@kernel.org>
+ <20260911-rcu-pagetable-freeing-v3-1-7b8c86103821@kernel.org>
+ <467b6599-b73a-4f58-a29a-b6c6d1ffc3a5@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260916112545.3707893-1-xiangzao@linux.alibaba.com>
+In-Reply-To: <467b6599-b73a-4f58-a29a-b6c6d1ffc3a5@kernel.org>
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: jye3mc9u9b38ocxs6qow9z6zjshi7xwn
-X-Rspamd-Queue-Id: EE81920004
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789577406-800022
-X-HE-Meta: U2FsdGVkX185b94kND8skzd2v3uxLBAvBzFDNwzXfwTBplGZDmOtfDgPF3DO+/7/nsUVSxcoYqBvOpRuzwmxLco4nkSACf7/chG/p5EbUB2RlNDbZpGYEJLHFb43SniigNM5f4unKb3YKxb9q12XQcCRaPzX7McGmHCsx5GSPGVk/PSwU8c8JM22vPQ87ptIfqhQrTmkBhthDqLWykUesHrHGc5VCUjHKLgQipD/vYT6oxpnLmmx/tcu7DJe0txGVc5YuERDaqR1lCPDzSzoWPv2MZVRTm7+CUBEG+abZWKURvsGrAU+VG5IVwlUDxwjUfqQPHYF08oT1lc2MrNcMUbJsg1IZBR2z9f7wckZHxmc0aFHg9U6S1m0xlblD8rG9PnancUrQAn04KYIDh81IX+1hclfIKhQN5caK2CmtxlrNIt1vi4LuQcmwIIn4Cz5dDVLHWE0i3LllwGzbE4/Nq33c+2Q/ARzKPemEc+zuaeRNz1YGh2zOjuVualqZ6bV3MFkJx+X5t4xq8RELqJkarZklZ+3j9mvRlbTNmZCtXnBiqCTCdz6G5qSKKuLRxTYZaDsEkjoI2iz9gzlvfnz/mSETLVLihuQcnKrFPK6usXFphmx8xI3bPp5x0TVbvghr6Ti4bgiPZhXW00Wl5iFkxSbUsNB+6yRmFxDUlylVFZ/JT+9PTeyRsNXTvu0bdTEKwFu9w0V3uAtVSf65LeV0vZ9V2KAsASmuU+2fmFH3Otj0fUvX0Je5sNsM8OrODT+pjmUtIXcwmzp8Lp7OZBxZ0Dpcr4hCTVIUPc28yfrDPBHDVeI4Blw1A8E6pV83QCzSvJT+BBYhpqikbLqtrXyVoqr28/dx+ytH7HSMe3OtpBnwS5j2ZCK6p2+6aQ42vZZyyJKLb4S8TV2jEFHGYU0JPAUOJvBM/8+albSBv7hfB7/9pZJx6P45d2kj8jqqr1ELwi8w6leP1IgWc7pdos
- kMMtljQ0
- PexF71unVr6Lxp8BXcKZ5Q+Ieiv8U2ILH10ub6nxdYVjw4juENywVdQI0PLARbjzZHvm4HKUxo5JzNAex29Pw4RHH14sHDrS/tDwHF/uwSwWzAWLacYpa5J94IzTNXh3+/niKjKPiy+5fCmvDtJAqtr8TiBENbbffCVCFCRfs6h+y15V3XE1YXwzsq9oaik7H9CgJabewxifFiRiZOM+DKddu1GyvG5K3KfQdol3iVD9CKlNu84zMWXxZqWsEPGn482rUe175P4hj+Q3gFx3zvlmDFd5tbaGwBEPOFt/IWL5o4JYMDxDO8u/MkyoZg4A3BrgQzAnt0a3M/uV8brRFDEE8Pib9BP56m1dImdkGk41qS/ZLkaAS0GFzsc+UXy3FoK/TmhZrSZUyH9HVd83UQ/WYwM7sxdxmIy0+WOJOPiLRRnPaoWyUcVCzg62sC5jlGyEhoMcwg1bTxeeZVUTwXh4+yY4qBLpb3F3zX2BecH25r6RvXsVnDwi4II/LYsqZCNJs2HZkrps1UZkSP2V5eUnsrFsdR0X77h6G
+X-Stat-Signature: aqzfmsgxich7nkwupiqxo9d76as6ydkm
+X-Rspamd-Queue-Id: 834F01C0014
+X-HE-Tag: 1789578017-89819
+X-HE-Meta: U2FsdGVkX1+qNLmBpczz4RJ74CtTJpFf8l3iJ5V8ddBAvBE8xPDmVDnXFa2AfvoNjCVLCkDtenP/vJ2K78DD0SNE2o0sqnnlPI+j3eWVzrnJdTXN0XDzXA2Pr67Ca+PF48FQDj+H+j6l1sIxGbiDby5A6UjD/8SSC27cuyDKqJV1poP5ZypYIBEAGcAwZyHxNdh8XQHR35NqmkECMtEjvtAR3vleR1jtL5M6gGrROEiO5OEagNhLAiMyJwgiXFPNl+ebjG9dmt8bD4td1DUSdoVFwfiuGv6+jtPaMeSFK+JBx0ZSRWCHm1PY5msiI66ZQa4n3TIM557Q5Bhik8o+IltTadtworoaOPnK/csLVEjtFMugA6cDDfkFfIIjqQZyC91AR8Vl9klKaFHwnOKDEjkn8/VA2XeOOKl8eeCGdRq9XKCwmmKoL7D9iMzQ6pmke2Tk/nspAnl4Z99pShso6scs4yIG45J0zw2sptqYRQ+qPp9wVhKJyhcngAWql6IyQCMPeWWAfVMV7LTOd/+/kfRJvK4L0qCL8Gnqltz1pI0IFGbR68qAftI3lOvgi3Epts38Ag3ZaP3pcFKNHlzvZisij4xzGYPpZdA10MyMCn0aC8rr/GqabCvWtWRBt3XHRo2+t/bvnPlqtZ+GPYWvPZ1Zg9RGLoCX2+qxYDlp6K8gdgq54GA69GtCPofHKc1cb7MuwXGE6WYa2ZJSe4qCyco+huLO1DtMpIzS0onsYQ7qf/rQ9is4pskEBNid2PkWKUBz36RnNwyNco1+wCqqK/0E796QX5BCvTTwH6EZO+Lx9rVgH94ABPpjrBiik3cxJ514ylAkuHMpFVWvXzexqTKZRHiuXCazHJ5cfAe9lAD/NTMi0faQpO/na/1gx20LGB112VvgqAChtHGNEjDy6BU0auarLl48esbv/UrsF+RCZDUO9tCAoh7WqPLr3B9FJMIKOJP02wBpSoBpdWa
+ m8Kictu/
+ 73kd6raCB/Y42X+njwvcV8FlKPhkw8RRtsb6OmpHISwwldtLv5texploQ2mw2ZCyTsGforXJbg4y6rDGXV8xTJzu3YEFces4xU/vpYspWR1mgVUWTFpbHIhwiMq6c4T0Y1O9KX1H7wkNvj73Hi99zmuLJRjekk4zXOtDSUMriszJMXY5H6gLDFCQ5s4QgL6HAWu0XsK+/WVv8CBKlH8M+291MNhGbPqOtMhHQ6D12l3UjTHlbxtkESGZg4iCGzeb8r5rrr+rul8Dfi/X03f/7hg5wRXiv0Ew7yhuJOP0raqH70IsenB6YcZkkXPLc8rqATWZWV7LDkHUZCUZTBzPeU+RwDYq/HLSXuxo7QQ6cOB6dX4Iiu6L5yjPM1w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,56 +132,159 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 16, 2026 at 07:25:45PM +0800, Yuanhe Shu wrote:
-> A watermark boost is not confined to one watermark: wmark_pages() adds
-> it to min, low and high alike, so every watermark check sees it,
-> including should_reclaim_retry() and the last ditch ALLOC_WMARK_HIGH
-> attempt in __alloc_pages_may_oom().  Once the boost exceeds the memory
-> still free the allocator gives up and invokes the OOM killer, and a
-> capture kernel that is still booting has nothing to kill: the boot
-> panics and the vmcore is lost.
-> 
-> Seen on an arm64 machine with 64K pages, CONFIG_PAGE_BLOCK_MAX_ORDER=10
-> (pageblock = 64M) and crashkernel=512M, running a distribution kernel
-> based on 7.0.14.  A high order UNMOVABLE allocation fell back to a
-> MOVABLE pageblock while the capture kernel was still in do_initcalls():
-> 
->   Node 0 DMA free:68096kB boost:65536kB min:68160kB
->   low:68800kB high:69440kB managed:479168kB
->   Out of memory and no killable processes...
->   Kernel panic - not syncing: System is deadlocked on memory
-> 
-> The zone was not short of memory.  Subtracting the boost gives
-> min:2624kB low:3264kB high:3904kB, so the 68096kB still free sat 17
-> times above the high watermark and the allocator would not even have
-> entered its slow path.  The boost supplied 65536kB of the 68160kB min
-> and by itself put the zone 64kB under water.  It is that large because
-> boost_watermark() clamps it with max(pageblock_nr_pages, max_boost);
-> watermark_boost_factor alone would have allowed 5824kB.
-> 
-> Commit 14f69140ff9c ("mm: limit boost_watermark on small zones") already
-> tried to protect capture kernels, but it infers them from the zone size
-> and skips the boost only below four pageblocks.  arm64 64K pageblocks
-> were 512M then, so the guard reached zones up to 2G;
-> CONFIG_PAGE_BLOCK_MAX_ORDER can cap them at 64M, which shrinks the guard
-> to zones under 256M and lets this 468M zone through.
-> 
-> kdump is a property of the kernel, not of the zone, so test for it
-> directly.  A capture kernel exits within seconds and never uses the
-> fragmentation avoidance the boost buys.  Normal kernels are unaffected:
-> the size based check still covers their genuinely tiny zones.
-> 
-> Passing sysctl.vm.watermark_boost_factor=0 to the capture kernel does
-> not cover this window: sysctl.* parameters are written through procfs
-> by do_sysctl_args(), which runs after do_initcalls() where the panic
-> above happened, and watermark_boost_factor has no early_param of its
-> own.
-> 
-> Fixes: 1c30844d2dfe ("mm: reclaim small amounts of memory when an external fragmentation event occurs")
-> Cc: stable@vger.kernel.org # v5.0
-> Cc: Henry Willard <henry.willard@oracle.com>
-> Cc: David Hildenbrand <david@kernel.org>
-> Signed-off-by: Yuanhe Shu <xiangzao@linux.alibaba.com>
+On Wed, Sep 16, 2026 at 04:42:04PM +0200, David Hildenbrand (Arm) wrote:
+> On 9/11/26 21:36, Lorenzo Stoakes (ARM) wrote:
+> > When an anonymous mapping is collapsed for THP, a PTE page table is
+> > 'deposited' with the installed PMD entry.
+>
+> Right. Or when we allocate an anon THP.
 
-Reviewed-by: Johannes Weiner <hannes@cmpxchg.org>
+That case doesn't interact with page walking though, as they're
+just-allocated right?
+
+Am focusing on collapse case for that reason rather than listing all
+possible places deposit can happen.
+
+>
+> >
+> > This is done in order that a split can be performed without needing to
+> > allocate additional memory.
+> >
+> > The freeing occurs in zap_deposited_table() and is done directly without
+> > any delay via pte_free().
+> >
+> > This is currently not a problem as existing page table walks are protected
+> > by the mmap or anon rmap lock.
+>
+> Or VMA lock?
+
+Yup indeed, can update on respin/ask Andrew to add VMA lock here.
+
+>
+> >
+> > However this becomes problematic in a future where RCU-only page table
+> > walkers exist, as there is nothing to prevent a page table walker that
+> > started the walk prior to collapse having its PTE table freed underneath
+> > it.
+>
+>
+> Wait, but wouldn't it be really problematic to punch a page table that is still
+
+Punch? You mean deposit?
+
+> being walked into the deposited list where it can just be allocated from another
+> PMD->PTE split?
+
+In general, RCU-only page table walkers are _only_ guaranteed that the page
+tables are not freed from underneath them, as per the cover letter:
+
+	"As a result, page table walks can now be performed safely under RCU without
+	 any risk of page tables being freed underneath a walker.
+
+	However, this is the only guarantee that this work provides - page table
+	walkers must still ensure that page table entries are as expected
+	throughout."
+
+So this series doesn't actually have to answer that :)
+
+But a PTE PTL -> pmd_same() check will flag anything like that,
+a.k.a. pte_offset_map_lock().
+
+The RCU lock replaces stablisation on stuff other than VMA/mmap or rmap
+lock.
+
+If the walker needs to be sure the PTE is actually valid and belongs to the
+expected walk then further is required.
+
+Alternatively (like GUP-fast) if you wanted to avoid locking at all, IRQs
+off would be required paired with the tlb_remove_table_sync_one() in
+collapse_huge_page().
+
+Another strategy could be used I guess with looped checks but it gets a bit
+sketchy with timing etc.
+
+But actually maybe we can avoid all that...
+
+>
+> Note that pgtable_trans_huge_withdraw() just dequeues *some* PTE page table in
+> the list attached to the PMD table.
+>
+> Something is odd here.
+
+...Since this code path already allocates (the huge folio), so allocation
+here isn't an issue (as long as done outside of lcosk), why not have it
+also allocate a new PTE to deposit and RCU-free the existing PTE instead?
+
+That eliminates the one place in the kernel (afaik) where a
+page-table-walker-visible table can just get yoinked over somewhere else.
+
+Then a lockless PMD check works.
+
+E.g. something like the below?
+
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index f49a6710933b..d9cb6b406ebb 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -1293,7 +1293,7 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long s
+ 	LIST_HEAD(compound_pagelist);
+ 	pmd_t *pmd, _pmd;
+ 	pte_t *pte = NULL;
+-	pgtable_t pgtable;
++	pgtable_t pgtable = NULL;
+ 	struct folio *folio;
+ 	spinlock_t *pmd_ptl, *pte_ptl;
+ 	enum scan_result result = SCAN_FAIL;
+@@ -1310,6 +1310,12 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long s
+ 		goto out_nolock;
+ 	}
+
++	if (is_pmd_order(order)) {
++		pgtable = pte_alloc_one(mm);
++		if (!pgtable)
++			goto out_nolock;
++	}
++
+ 	mmap_read_lock(mm);
+ 	result = hugepage_vma_revalidate(mm, pmd_addr, /*expect_anon=*/ true,
+ 					 &vma, cc, order);
+@@ -1433,8 +1439,8 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long s
+ 	spin_lock(pmd_ptl);
+ 	VM_WARN_ON_ONCE(!pmd_none(*pmd));
+ 	if (is_pmd_order(order)) {
+-		pgtable = pmd_pgtable(_pmd);
+ 		pgtable_trans_huge_deposit(mm, pmd, pgtable);
++		pgtable = NULL;
+ 		map_anon_folio_pmd_nopf(folio, pmd, vma, pmd_addr);
+ 	} else {
+ 		/*
+@@ -1453,6 +1459,9 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long s
+ 	}
+ 	spin_unlock(pmd_ptl);
+
++	if (is_pmd_order(order))
++		pte_free_defer(mm, pmd_pgtable(_pmd));
++
+ 	folio = NULL;
+
+ 	result = SCAN_SUCCEED;
+@@ -1463,6 +1472,8 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long s
+ 		anon_vma_unlock_write(vma->anon_vma);
+ 	mmap_write_unlock(mm);
+ out_nolock:
++	if (pgtable)
++		pte_free(mm, pgtable);
+ 	if (folio)
+ 		folio_put(folio);
+ 	trace_mm_collapse_huge_page(mm, result == SCAN_SUCCEED, result, order);
+
+
+>
+> --
+> Cheers,
+>
+> David
+
+--
+Cheers, Lorenzo
 
