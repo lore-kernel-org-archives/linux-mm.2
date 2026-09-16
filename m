@@ -4,123 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F3A8C982C3
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 14:58:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33011C982C4
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 14:58:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 720D56B008C; Wed, 16 Sep 2026 10:58:30 -0400 (EDT)
+	id 45C5C6B0098; Wed, 16 Sep 2026 10:58:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6CB166B0092; Wed, 16 Sep 2026 10:58:30 -0400 (EDT)
+	id 4340D6B009B; Wed, 16 Sep 2026 10:58:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B9306B0098; Wed, 16 Sep 2026 10:58:30 -0400 (EDT)
+	id 323066B009D; Wed, 16 Sep 2026 10:58:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 24FC06B008C
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 10:58:30 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 666D9140715
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:58:29 +0000 (UTC)
-X-FDA: 85219931538.05.345ECFB
-Received: from mail-qv2-f12.google.com (mail-qv2-f12.google.com [74.125.230.140])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 98C8220003
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:58:27 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=i+L2wgMi;
-	spf=pass (imf31.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.140 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0ECE66B0098
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 10:58:53 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4EDCB1C2D97
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:58:52 +0000 (UTC)
+X-FDA: 85219932504.17.8C9F366
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 3BD9C100006
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:58:50 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="E/65TVji";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789570707;
-	b=QbIUYIjVQFYEXQwErtYZBt2NpR5wdT1jYQNOYkof0D3WJWul4nygNHez1Vie5licI3bUda
-	0hqkd709/rLEWf2yopN4glU95Df1IOzvxzwi7cEVZyQZHYV3sjm/RnMxwRnIFNNzcnZfoG
-	Ld8DeMUPHznAKw73wWUoOq8zqkSIo+o=
+	t=1789570730;
+	b=nYQAgT7SSWaRm7T5gI1YxBB0S5neKOFE7Pvo2JmOTm6rWgz2ijAZf2kYQt72oDUX5HLyGQ
+	dTWizo3P0uS3Dz0T9TnzLqSJcnpUv8SwezEi7aAm8mC7I/e1fy2tATgFaHRZ1NV8r2q1zh
+	aB82XSzwigtZs3iSJkWUr5uriuCYxI4=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=i+L2wgMi;
-	spf=pass (imf31.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.140 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="E/65TVji";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789570707;
+	s=arc-20220608; t=1789570730;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wJ/7KRGCLt2483GTzu4rmQfCVmqSHc3OynN8gOawIhg=;
-	b=yoNqBmM6bAU3/V97T8pjGrVpF7swqyB1RhBd1QYE5eXXvhEKQ2EhCw6+zP3zEBhzEQSQH2
-	GqSCTC858SCWmYqvOpm7gW+gvBI6rxy3j6yW3CiujKG3y+q5mDpjjFr9L9AwFwGgegDYos
-	ogA5lBrCBexpCTKtAqz9wso03nQkQRY=
-Received: by mail-qv2-f12.google.com with SMTP id 6a1803df08f44-90cdfcb5cb3so10338996d6.3
-        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 07:58:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1789570707; x=1790175507; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=wJ/7KRGCLt2483GTzu4rmQfCVmqSHc3OynN8gOawIhg=;
-        b=i+L2wgMitt0BNInJBYldEG55kC/haIcQ35iqozKZWNCOhaJDQ6b1971jrki1qyXfzZ
-         ZzLhYFOOss84+iLrV+tWBG5Y1jVvtRbVOecmxvPZ6wCk0tGldEQRQFRG2C3dBt6wf36H
-         mHYh2uAjOofmmkOyg9/SNEFYtJOgIWYzChroyDSU/ybtsXflO2DAfIX28AZqh3J6TxdB
-         oIRbCVrF8J14jdJETpTDu9DlnEfiMIaDq4BbVHwuwVF4LljmqaD/51XHn/BpprMSf42f
-         TSgb/iCitqfW6tp7PvBo+4H63UGe5ASe3sU48ElXx/QnIa1VMBYpiT6frgjBLQDiqnJn
-         SoYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789570707; x=1790175507;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=wJ/7KRGCLt2483GTzu4rmQfCVmqSHc3OynN8gOawIhg=;
-        b=yf+J9f1JJ3bqW8xby7ww0zE8E14eMKjbR3aCRc20WeWIoilRFoX5E5VrJY1uvRV9be
-         4YBTzGfL8DhT+t2fTFKZEXrngqxWhwh5SiH5z14XeduDjEFoc/Qm0iUfikR7GNqBsErD
-         N89KEvtCBUT0hW+L7u9XnjEE5N3hU0KjBG76+F2zcuEvaJVQ1KoUXFqgcReLkWDPPEnT
-         tiIg19S0iCU8qwV21eaXFd2o1n1LN1w9LCOevTvodlclfr3j8SB9cc1D8k5Emv+EjeO5
-         uLDUqwEcdn5GO7kM7NrJTX3+nCo5tUFPNOX+Lczvu9pdJ3D3FY9j27IGGnDKDwtwqLsQ
-         Fy4w==
-X-Forwarded-Encrypted: i=1; AKwUvBz7A92YL4iuK4qjvbU77JitZk5ClCqbFfUiv1nZ1FpJBcWAes0USCMuG8j9uM1MM4ILYL1VvHL0DA==@kvack.org
-X-Gm-Message-State: AFuF++mOp4ZXGUqxTaC3Br6/IdJJFjcZTVNuYo8qGqvt2duHFEwdGyle
-	a06bOEGjRqNnLDMpQ0o22geOs1X8RBuv5iOCYwZZExVjX3/am3zobcWf4NfwnmAhzyA=
-X-Gm-Gg: AYBFou3byDtev1c4WZuOKSv6v+658xUdinYJUpcjwc2wJd+vqMuG5rJX3229MwieUKd
-	bIonknUomGGbgs6s4A1m/xpsmbujzQ4zC5MFxvDHWsBNLM8k2kb8gj/+5dAZ2iPV3ivHqbwuSUN
-	EIeh0prtJWMmJAReJGArXxmBsOCuR3g2YJqSPf7Ar4PcaZFpy0T3BMSA8NZCxdX/3+5aI+WtHH5
-	pdct2pUK2bHSjvymNi0VOHTZbn1jJA91WWSM3BvB/dYqR2JL3L9DWN4LQBT2FQar5aY5BF+9xVn
-	DceEdGJGe4Rb4J8IFXC1IogVpUzn0HBQgoIv5z60HxgrDTWGAomvj+RfGN9RZDfAS4sMrBfM4mV
-	0vjyiZaj1ojiHZFfzwaPoAGkYQW/44pmC9M3yIwwSy9CjUIhSvKdjRJ2bnqE3Rsmq34K7Zt0Gmf
-	Fr9U6cgdW8/Mfjn/UXaV07iVZThAntfIf3qj4rp8B1amOyrC6SyE8zo+oukbC/A84BtOSUZ2GYr
-	0eW+ISYzl6EABqporz0C5NcDNw6SH4w++M1tDHi+KI30zF2UU9xUq+mDV3aysZDEQ==
-X-Received: by 2002:a05:6214:21c2:b0:910:47af:7b5b with SMTP id 6a1803df08f44-9123d7ace93mr52499256d6.20.1789570706029;
-        Wed, 16 Sep 2026 07:58:26 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9123beeec67sm27942276d6.48.2026.09.16.07.58.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2026 07:58:25 -0700 (PDT)
-Date: Wed, 16 Sep 2026 10:58:23 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com, akpm@linux-foundation.org, 
-	liam@infradead.org, vbabka@kernel.org, jannh@google.com, wangjiexun@tinylab.org, 
-	sashiko-bot <sashiko-bot@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/madvise: reclaim isolated folios if PTE restart fails
-Message-ID: <aqquDtEZL1ndymGN@gourry-fedora-PF4VCD3F>
-References: <20260912110832.3203902-1-gourry@gourry.net>
- <aqloB0zm3RjJ47m1@gremlin>
- <aql65IhMobL5Al9B@gourry-fedora-PF4VCD3F>
- <aqqTbGMJL86TzDrf@gremlin>
- <aqqbB_nFAOGenDhy@gourry-fedora-PF4VCD3F>
- <aqqjW5dpyznijYLh@gremlin>
- <aqqk89oTigJ9LS2N@gourry-fedora-PF4VCD3F>
- <5437871c-d9ee-49d2-b24f-965c73c29c3e@kernel.org>
+	bh=KxAsq6mlrlRgY8e/8njCByVAcxEtv6lXs6ng+qgkRns=;
+	b=ocvixDVTQ0WyFlWc0cARiWNbHHhMwX1QdJOKWlIdW+QiBYT31Q9/1/uieFYq2BmfRuU1/I
+	O5dWX1wpljCjIM9DDBwTx7d6sFj3vpbzAgJxtXr97eb8yJoIimL6CRdmKiuPhGj6wQMzPF
+	b92UtEw5rrQ17SQgshNN3XFFtADKs4E=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 441E26053C;
+	Wed, 16 Sep 2026 14:58:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 487561F00893;
+	Wed, 16 Sep 2026 14:58:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789570729;
+	bh=KxAsq6mlrlRgY8e/8njCByVAcxEtv6lXs6ng+qgkRns=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=E/65TVjibw0F1o/3no6+Uev4R6Dq4VnCVqEcHL36mowbuDt3lXNpzCUkdLFQM5S7/
+	 M/yCsV0V+li0ym7yjwiyeGTCgaPUmnOfN7GBMou446maD9eWFzKMdrIiS0FJbcM5Bi
+	 rWcRycEtn/3uR0VyDtYmQMt9gnuZ4Vplq7/qnao6KgqXeZfs9X8WFe6OwTlDhy7ysP
+	 FbhzvGYOgyHbrCAlm3nzsx9GVX+228SIi9DzwAE2ziyBNZ+l8KdgRcFzYctzBMvv5F
+	 B04wuli31nyeyKNhjfqzqFNmR2JapqM3Gxvz1qio/ykVdNLeESoPCxn/VUyrMp3UOD
+	 RWEnJ1O7PASmg==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 163591980047;
+	Wed, 16 Sep 2026 10:58:41 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Wed, 16 Sep 2026 10:58:45 -0400
+X-ME-Sender: <xms:oK6qamBZ5gTzffPWX-HGjDTTZoZEF0APcqLdlUXOhc05nocB0Q8gjw>
+    <xme:oK6qai3kQlu4jPL2Qvu0Kxz_s6Rrr56CBkLyU4V0Lp9D11hxc8oVCOHRtMhRmgCg_
+    oAHc-7sI2TBrvZ36eE3GEjTjzdYA-8NEcdsGO5Mfu3tXkqlDCLTimIJ>
+X-ME-Received: <xmr:oK6qaoW8ooCkOQQjBi-OjYcnpCAMQOLkps_EmJmWzbkY1V5GAJhKaF-YH4A>
+X-ME-Proxy-Cause: dmFkZTFnpmf2cGNwLkZB02TtYoQfXJ9CYV4Z6v6aWvRoWtlSDu/ryXy+f1A0x8yggrT6pc
+    74E1O46vF2Ghy3wWTQKsuryfYPAHQWdgKyHFYusv5Hp2PFKCX2b0YoW5TpB/FMOmgTRU3e
+    0rPdq8Nm4X3aaX52mXDmdfUjVnpqLxyZJtxgWB2J9Y7N+Ads7wL6SM8cD9T0bR/yRxkVbz
+    ul4lGtKVXF83IjqQm8oQwLPVRtgSwlpzF2Lgwx9bu1MIQiWR5J6oqV8z0Lss21/BiVArkl
+    ED0Xe7vVfYMHRQTNozB95yux7Vilk9hKmoonRC15QkVqCZD1prbWRZ9xp98mhGjkL0omSH
+    9zcAaLfvETIEYKPBR7mU6pFQRrH/oI1296OKFPe8lRZSWQeNYaYMzer3lX2CIIG4Uirr58
+    L94BB4SRia4Wgd/xgt+8eh9jrIZLVk44Vz4A0Ue2mQt45eOajNHF6gJWehH9Z8Unh5LhAq
+    bmCFWB/qawZyUpKHtb2COIYxDMHab0zRXYubycnp5rAJeSZZyVePCub848zUQwrsBOj5pJ
+    q6VF71UDjWEBW61gEqHQoJaIswvc9PmggCzLNwPfbSPanJmNkVcfb4aOA/lGxaiii+FkYk
+    6Cict8JHxm/PpzzSVgnAoliVBS9hCF2Ugk10XA2DBHDQc0sb5Z2Iix4xOj+Q
+X-ME-Proxy: <xmx:oK6qau8u1SRu7HNgsWn6eLaKFBBh11y_uWDR2g01gJGHPWkLtU16lw>
+    <xmx:oK6qat3wzoXuXuiyX23xlTOpwO06F1O2dgmCnSE0PTZ04l7qjuVHQw>
+    <xmx:oK6qapAuvZErVqBXnqXnPNZHFUjnf9oA5wxzvpamX6g8H-Hdyi_eYQ>
+    <xmx:oK6qamBGJmy0pkBE4mVZpoartKTlLYUNJHn8Vixhd8ImrMoAdiC3Vg>
+    <xmx:oK6qarSsv9kFkHQYS1fcmNx0s-vloq93B7HFvnC1nMSIKoMG5lKZ1PwS>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 16 Sep 2026 10:58:39 -0400 (EDT)
+Date: Wed, 16 Sep 2026 15:58:22 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, 
+	chrisl@kernel.org, kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, 
+	linux-mm@kvack.org, ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>, 
+	willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org, riel@surriel.com, 
+	shakeel.butt@linux.dev, alex@ghiti.fr, baohua@kernel.org, dev.jain@arm.com, 
+	baolin.wang@linux.alibaba.com, Nico Pache <nico.pache@linux.dev>, 
+	"Liam R. Howlett" <liam@infradead.org>, ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>, 
+	lance.yang@linux.dev, linux-kernel@vger.kernel.org, nphamcs@gmail.com, 
+	shikemeng@huaweicloud.com, yosry@kernel.org, qi.zheng@linux.dev, luizcap@redhat.com, 
+	kernel-team@meta.com
+Subject: Re: [RESEND v7 10/29] mm: make PMD migration-entry splitting explicit
+Message-ID: <aqquaDH9gFrdCqHK@thinkstation>
+References: <20260914122950.3283997-1-usama.arif@linux.dev>
+ <20260914122950.3283997-11-usama.arif@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <5437871c-d9ee-49d2-b24f-965c73c29c3e@kernel.org>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 98C8220003
+In-Reply-To: <20260914122950.3283997-11-usama.arif@linux.dev>
 X-Rspam-User: 
-X-Stat-Signature: f8it5ysj6i7ikj955etbzbfwjn8qzmuu
-X-HE-Tag: 1789570707-729094
-X-HE-Meta: U2FsdGVkX18XTZI8S1XekRLYw+EaR72rtjHRmCcVo737RR/N7UyLWV+EQlZ0Snmkv55ydUIw33ALH7spJ9tMSIAceBlYnEpqf7C89wImvzlXy3ZzJT7tvWz9BjIO1itpILF0nl10uZR+rLzAGURaZ3rmubzsxcqsfVKTgsnhye5mK5kDWJet9rx/j8UqWQd9/OnvT74+Fte+DXYwhfwvVlLIXkZNR0etyJL+Cn87wlzFLc39p1zzvVB6YILovjCOHxwurHB3z25ajyGvZGzxTNewX64dy+fAjYdOpqRhB2/aI8o9aA/KMV8W26uqX+/wxJpP6ZCHqgc2LZ3nhkIeqUjbs++ZN/YEr5xLftEhdcxb2/36T7rcTfagVfjmL2g6dZi6V0g3gJLyVCkH7z1Qug8hXHkWzKEIIL2KIJpG3rxa/g28KNL6okonZOb1J6/39gV/ccUL1eNid7nda774C6kiE9znpfOdqS9eRjjmKvGG0Kj5/H8YfF7p4j6WOoyq4VA8D+Yrdd7yA32f5gHLHM+r43HZC8qKkNKp8ozEUEUjgNtn6cBVZt1VdYYVsZxdiDb1+zKOf5WSckRguk1z4wwdj87yQ3A/zzNld2Leuq/JAboXw6yTXEBPqX5k2RiLJawLiTNdmcRO3cQXqC/6iAx2Jp0Cv3Y0SaM1CkvgZbB2bCxpIhtkiPU8W1icBIhpXtQjbj3Q35KNy8RkxFB/cGqHFSQxQMJVVOwOldQrJyOk91rMEilhNEGN9KWj1t8hROQMEV1Opxi/1a2PVgg/GGE8g8B5LNzY7kKMRLQpEXIbiCy8RlZLdi/K4KTk+pOoDOptWa0WvTNFm9WpWu0WOJ66RL+gV1ZVi/pxPikAW7c0HRyPbBXaef1/YxHLjJTBypErMp3vOqKuRIRlemPJ9y9lDYIuHOSp+N4x2dRq75Gc4r0D4sVtgGuc8vIq9G37qxrl4JQIUPfD3MMs1el
- D5FsF4nP
- RmDwOFu1ZsvUxVmTMVYtMYaQ2lvEN4OINxsgdBXRsZxRp+WwbiwswrG1zCRJoivgipwyiKHAUI68kZI2kS5xAJFog8vv6AZivDfTNISxkyuCxVL2UOEYVDsy4BNORWoCz/82SUygQ8LYT5JxOJprR3DzQc1riW1SLUW2+VQjcdXF6he0JR3B7e65Im0Nzsv3egdcLx3lhxzH+Yr2SIy6b7bj9+OHMWz5S6cJpdzfRIyfefCI5QGUfe09ltUR4MUshgK8JkmN6VI/e/lw8teqU49GaKJAJDaS3suzJg789Xi3qcTY/Ef9oPZ7ZSnAraiWRJa2I4KhQjD8xk0o=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 3BD9C100006
+X-Stat-Signature: 485qoqauspn9d1zji9ankpfarnsuejic
+X-HE-Tag: 1789570730-516204
+X-HE-Meta: U2FsdGVkX19enAf79uIL2Yi01pUDx28TCeGzWiKoAQSK7MXbRTGSRQMFAQLFhT/vvh6q7iEOd16/cl106358+ZMmObZ4Q3IBIc5avEyEs6Kd8InhBnJZWNiP9YK8fp+tNbAmZnSqEuzFCE9Peb3gJR0HjLSv43lvEQ1bV4u3goa6GmKdWpvJq3sty6pj1//HzrKaY53Z8ytI+0Ym1hfXW7T7JEMv7c0corUsc/3S7AJT9sDDShbIQkwkwIa16RnvKL6L28VEqqxc9vY7X+h+PqdMEYaV2jrtiBg3ktKi7b1H/G4uHgIDuD80vT1Ih8kTyFuveCoAZHxtV4p1VuIPyN6bddLwYVdXs7KwetNgzffJuSvvnLxrO0ov5vBwygTCrLL+Vi6D4uvLp5RJMR9D7vTrKLIR8GBOtGavk/BOGTx7SH+dpgOr/jI7gh8lYlT5BShu6FmrxAFDLDm+y0GupK7ryO/KeZsoZRPqMBaUr8+SQf2Sa2ZLpu3VWAHgWQuxKzY4LZIlzMh6k5cOFGiJL5X8IXTbBz1Ab4KNja8Idk/FSHiVCRxzKRJFvNowntknbripQywyDklMY0JzyxdVgvdrPRWWlPEElhClqjblRYykT7R2ovIxboqbU4Clsxk6jR6W5ulbT7n+1BZderJ4hpzb++CD29i3E0l1JIlDNiAUvz56fHP3fojZJAjetKwTGPMgY2p5NikhKH+kCilJIVZ4Ln5Y8Qv1UJXJW3XILlqFQlUZP/sYYAeyj12Rl93f8DHonynIQsMOELB7ZvUrf2DHnOkARDfQXRSqHt2JaxmmX56CxUStp2Kz9RnJhqnOTEcALS6uVJk4WfgIhoubSR/FPhFdKyjazPFH3r4E+VvEs2I9fg+ZpkncceOTEdvx2FbJ60lfAC003U3uSoEVTOoHHgEknl04bu2irVmQXt7YJ7eUo6I9Q5HTHirknSByKtf9kitc2HHAEcAczhC
+ hjrjdsFA
+ quJAoydf+XGi+tARA/kvbJpx8uWTMXnC2EZNJQR6/qOxXHXtM9OHbXwcHGYd0UNMDTfMJksRYWDca+GigJPT7wQEDMmtj+Hc8cRkB2DTrFk/ox7XshRf9EBiN2AsZABHd/RrYTfc1rthPbnwQb5+AtO4LjbNvcAr1hEiTPZ3/QGNFj7wFAP9EihhtIjy72H7JZB6XL6Y+s788Fl8rCFXiMvFZWMIR+wK2CIY5UaSKrorHTu0DizZCEcoCQHnHzGCT58KK0dEz5JRYIunSFVyZH0jbiWWU+AUCtexcvlu/kI5uii8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,56 +126,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 16, 2026 at 04:48:04PM +0200, David Hildenbrand (Arm) wrote:
-> On 9/16/26 16:42, Gregory Price wrote:
-> > On Wed, Sep 16, 2026 at 03:12:53PM +0100, Lorenzo Stoakes (ARM) wrote:
-> >>>
-> >>> Going to spend a little more time testing and tweaking before I post it.
-> >>>
-> >>> I've been working on a making more extensive unit tests for certain
-> >>> parts of mm/ and this might be a good time to look at whether I can
-> >>> introduce a piece of it.
-> >>
-> >> Nice, curious as to how?
-> >>
-> >> Have you tried the userland VMA tests btw? Not tooting my own horn so to
-> >> speak :P but it's nice, though it comes at a bit of a cost in how the files
-> >> have to be set up...
-> >>
-> > 
-> > Yes, in fact I used that as a start for exploring how I might make other
-> > components testable the same way.
-> > 
-> > "Stubs... stubs everywhere"
-> > 
-> > There's basically 4 testing mechanisms i explored:
-> > 
-> > 1) selftest
-> > 2) Usermode Linux (UML)
-> > 3) Userland stuff like VMA
-> > 4) Linux Test Project (for syscall and ABI testing)
-> > 
-> > selftests are really limited and actually create a maintenance burden,
-> > they're not real unit tests and are highly dependent on the actual
-> > machine configuration which is super annoying.
-> > 
-> > But, lets take the page allocator as an example.
-> > 
-> > The only piece of the page allocator that "should" (cough, simplifying
-> > here a bit) be machine specific is zone and node configurations... but
-> > I'm not convinced that this should require a full VM to unit-test.
+On Mon, Sep 14, 2026 at 05:28:00AM -0700, Usama Arif wrote:
+> __split_huge_pmd() and friends take a "freeze" boolean that every caller
+> has to pass and almost every caller passes as false. The name says nothing
+> about what it selects, and the one thing it does select - PTE migration
+> entries instead of PTE mappings - is only ever wanted by the rmap migration
+> path.
 > 
-> I told Brendan exactly that (try stubbing it) and he tried ... and had to give
-> up at some point because it just wasn't feasible. ;)
+> Rename it to use_migration_entries, keep it private to mm/huge_memory.c,
+> and add split_pmd_to_migration_entries() for try_to_migrate_one(), the only
+> caller that wants it.
 > 
+> migrate_vma_split_unmapped_folio() also passed freeze=true, but only ever
+> runs on a PMD that is already a migration entry, which the generic helper
+> expands into PTE migration entries either way. Its folio_get() only existed
+> to balance the put_page() that freeze=true performs, so both go.
+> 
+> No functional change intended.
+> 
+> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
 
-LLM go brrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
+Nice cleanup!
 
-I'll try to clean up my current pile and see what I can pull out for
-some select components.  Something is better than literally nothing.
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
-I'm trying to be careful about not causing a bigger maintenance burden
-while also having some confidence in my own code.
-
-~Gregory
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
