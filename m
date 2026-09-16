@@ -4,150 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F20EC88E5C
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 05:06:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78117C88E5C
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 05:12:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 76AAD6B0096; Wed, 16 Sep 2026 01:06:04 -0400 (EDT)
+	id 552056B0088; Wed, 16 Sep 2026 01:12:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 71CD66B0098; Wed, 16 Sep 2026 01:06:04 -0400 (EDT)
+	id 504566B0099; Wed, 16 Sep 2026 01:12:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 60B0D6B0099; Wed, 16 Sep 2026 01:06:04 -0400 (EDT)
+	id 419846B009B; Wed, 16 Sep 2026 01:12:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 334D06B0096
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 01:06:04 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C61FF1A0601
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 05:06:03 +0000 (UTC)
-X-FDA: 85218438606.12.35762A1
-Received: from mail-pl1-f225.google.com (mail-pl1-f225.google.com [209.85.214.225])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 9AD534000A
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 05:06:01 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=broadcom.com header.s=google header.b=DJrGhvTa;
-	dmarc=pass (policy=reject) header.from=broadcom.com;
-	spf=pass (imf11.hostedemail.com: domain of zack.rusin@broadcom.com designates 209.85.214.225 as permitted sender) smtp.mailfrom=zack.rusin@broadcom.com
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=broadcom.com header.s=google header.b=DJrGhvTa;
-	dmarc=pass (policy=reject) header.from=broadcom.com;
-	spf=pass (imf11.hostedemail.com: domain of zack.rusin@broadcom.com designates 209.85.214.225 as permitted sender) smtp.mailfrom=zack.rusin@broadcom.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1A1146B0088
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 01:12:01 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8043D1205FB
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 05:12:00 +0000 (UTC)
+X-FDA: 85218453600.13.32B558C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id EE129C0006
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 05:11:58 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FLQGCWUr;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789535161;
-	b=LjJZNR9eWFnheldQrUq33VBevbMDVirkfCaOs2l4Rrclj2qwvGgTOYEh74HXBMOCiIZe+M
-	dcPsTMpBXVU9prvWOYAOOIsCR6D+7DSB+bxo0kYcR3uO1BNjIHCtR+TCfM4LATVwVxygpd
-	j024ZMi2VuOL5WjrLqGt52WPux46BjE=
+	t=1789535519;
+	b=D5jGJe7bmqNrLaddwGVY1dzj3b/Whqvls02PksV9BzwVEKpIlbEZKd0T83lIr15MH0AsBZ
+	xOLa0CR1Zo+7qXlHReAiudk79zseDQkzQG7NWK+/LeQK1AUsvNkuDKOO36STnd6Kd47moA
+	05eUsIIQsP9LT/QTqxKZWBdIVMZR+6M=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FLQGCWUr;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789535161;
+	s=arc-20220608; t=1789535519;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qEqGUwhuGtd/IQ00br0ru4/E+DR8RR02AnrUv6Zwxpk=;
-	b=XeRtsfJv1Yhj8iiyQWT1zTrFkIEpRpsBhgz1wqeAtXUZh3BxRnym1P71aNWe2kVUqEOVoq
-	Ux1gHCjKAnQcp8qa6hfYFbMjkN28kTJ9bU56gTjUC781IBWWXr92erWVANpdnmRf759M3k
-	3enQLwLkYCGZJXQr26PPl4m7dFZwptk=
-Received: by mail-pl1-f225.google.com with SMTP id d9443c01a7336-2dd664da0f5so20373545ad.0
-        for <linux-mm@kvack.org>; Tue, 15 Sep 2026 22:06:01 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789535160; x=1790139960;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=qEqGUwhuGtd/IQ00br0ru4/E+DR8RR02AnrUv6Zwxpk=;
-        b=CbI1s/ZW8wZ32Tn9j2RTD8uA1v5dUw0NwMlogRnVbWDBRtR7ZjLb3A0wEGbB0jzf2V
-         VwofEcYsGIfr9AoUA84lxD51P+ZD+UTB/ei6+6PrFomYZbIg130xHCNsTS3zcnTAOutU
-         s5AInvwXA7gFQ6mCGuaGeSvR+0rNghrrTwI+mKBBPXJNrgWlo2+nml9zBy8diI+9atBi
-         k0/UqwvoWF2pNevV4f+AL92pv8+j8VHJmbJLzd+lVF5OQZ+LSUHplDMfaymmF5KDaMGu
-         a3qyVtpBJg6W3PTYxsLqiRfye6SQxTHrGmNU3gbXRlVURf0Pg4H71nbOXhhrkO99sUrB
-         qORg==
-X-Forwarded-Encrypted: i=1; AKwUvByDRtF8bnPOsplXGQbhO4wvafVMenFvX9xyv9TbM2/pGME/EXq2yBge2GKYmhilDYYaesjZBpK15A==@kvack.org
-X-Gm-Message-State: AFuF++mq9MdyB8NHEusZEYog97AB7lWoAFsR2HJnncd+i4HzYnIef+Q/
-	tiLmrSvcFrnfBiGugrQFoQHRH2fT7XRmxCAu2IOcJV7xN6h2i+vTY+nYC5aQbrx1Xp6J3Dt9E5d
-	/chKxS390axBfczVEGTlsWlGqsNvHx405/Q+tUzqUfLNW6AON/MEZhgLvhvpQZNSOTveheekz1x
-	s+LBIwE4K0ziBKHLwiM01UChSgSP16T4iplxk7sft4xF6EjStmU7S9WqUACo/PX5N/jns8ERb3r
-	YM=
-X-Gm-Gg: AYBFou1mkpOPGGphw6dTOhpukigWxS+5VZo7jw3mUStHV56qGb6bG4me3p6GYps17fd
-	fj2TbUfFiA8/zeLrPqmG+goUEFEL7iCpem1ycoFEKXo6ERj7pGUiTV+IAb63pOb86n3l7fDHs5q
-	wWMYILaZ533/OmW3g+UjcdCEKuI5sfa2nzd8itRgXm4giTfYTUvad5bB4vUUDu2inwiXmMfMgL0
-	f5on9Hxalmvcnk/HzLx9iGnR76DAQU0G/SPZlxeDUP6ELRQphYThMil6ECl1jlbGShgClcOFk5W
-	wlpulmW4oy/LBC6DUX2J1Nf3O9mVkJzYgTKfDydb99F2T/2GpdhkGl+BjPkEhqgZ8iUtARdy6Us
-	TTfOkq+YDSwlrAQPDswxS01aADlM3WTdCJTulzZeZinVmKIc/dtOV7+CVw26MWeYMjI76lFFsIG
-	db7JgpmkhESktjHtuEEO7y9eUTTsHcSG6Iy3c=
-X-Received: by 2002:a05:6a21:4910:b0:3c4:3767:adb2 with SMTP id adf61e73a8af0-3dd5f407ff7mr3083702637.1.1789535160381;
-        Tue, 15 Sep 2026 22:06:00 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-125.dlp.protect.broadcom.com. [144.49.247.125])
-        by smtp-relay.gmail.com with ESMTPS id 41be03b00d2f7-cc50acd74a6sm770455a12.6.2026.09.15.22.05.59
-        for <linux-mm@kvack.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 15 Sep 2026 22:06:00 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cc1a439db36so4351581a12.2
-        for <linux-mm@kvack.org>; Tue, 15 Sep 2026 22:05:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1789535158; x=1790139958; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=qEqGUwhuGtd/IQ00br0ru4/E+DR8RR02AnrUv6Zwxpk=;
-        b=DJrGhvTayWFjiqmtyXqhKQSM/vR6bf3Nko8Cgdx0UhZSV3DPQUhfiiMmzc3zwtkt1V
-         MKQ8Zw2CaYCbzB0cVuYo9E/Tjz1vb6t6p4iqCHFYEWrCWJRtSrXjxwL+z1i4TR7z8abU
-         a/sX9AFxg7zVyqSbFSRdF32Pho7V5ds/x7CjY=
-X-Forwarded-Encrypted: i=1; AKwUvBwQ+Nr6yHMIPnaTHzaMID9YqrEuI5Zmieb08yfzuX9wly+EdJYaErb83+SpV7QEryRtmPE0FpVRoA==@kvack.org
-X-Received: by 2002:a05:6a21:1343:b0:3da:80a1:f2f with SMTP id adf61e73a8af0-3dd5f5dfd69mr2927552637.14.1789535158385;
-        Tue, 15 Sep 2026 22:05:58 -0700 (PDT)
-X-Received: by 2002:a05:6a21:1343:b0:3da:80a1:f2f with SMTP id adf61e73a8af0-3dd5f5dfd69mr2927490637.14.1789535157892;
-        Tue, 15 Sep 2026 22:05:57 -0700 (PDT)
-Received: from vertex.localdomain ([192.19.144.250])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33bf5e40494sm3951386eec.15.2026.09.15.22.05.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2026 22:05:56 -0700 (PDT)
-From: Zack Rusin <zack.rusin@broadcom.com>
-To: Borislav Petkov <bp@alien8.de>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Alexey Makhalov <alexey.makhalov@broadcom.com>,
-	x86@kernel.org,
-	Dennis Zhou <dennis@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	virtualization@lists.linux.dev,
-	bcm-kernel-feedback-list@broadcom.com,
-	linux-kernel@vger.kernel.org,
-	Christoph Lameter <cl@gentwo.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Bo Gan <bo.gan@broadcom.com>,
+	bh=kNEW7NhnOUY8v9q+C+Hpu+A+v8WziHcF3NFyEfbmrH8=;
+	b=8DJi9fGrT/b/jjSqBBaw14SE82/LwKVcIHq/J2HHVXbw4WjLENq/pHoTb1rag/5BQvtNIA
+	eVcOfRJaZ/imrNtL1qQu+fclUsdM88lTq/NtanYWq1yctndMnc3Jyzt/IbHGJEpAFafRIj
+	0cuaZOQNXb5U9UF1cTk8sujizK29KpQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id CE19D60008;
+	Wed, 16 Sep 2026 05:11:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E23D01F000FF;
+	Wed, 16 Sep 2026 05:11:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789535517;
+	bh=kNEW7NhnOUY8v9q+C+Hpu+A+v8WziHcF3NFyEfbmrH8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=FLQGCWUrq4wrW/Oa3OqlQ5cNqAUaO3UEA49euXSpwoEG5p2n1OFcnoRNbwUgX7sMC
+	 ln7tCuXC8SL1cuAcqZYIXev2KqfozXLELQT+Gl2IEqpCNxfbCpQ1k/aA0t21wKLm38
+	 8NWpPW5fKFGqU/mQ7p/8x+Xw7wejdA0M4qf7HSxMnyV9HfeG4GF+4PjgTpQVU7IIDM
+	 cge+ZUq7HpmCFI49B+HjLpo3ua1E5lNrwpFvHQtm40eNzy0CVXOZBQUjwATPyPRoQr
+	 hs+HvFbzDzatb2hcwj3KioP8m1gbCHmCwbHCfJY83+/FpYjV+6miW6FNRXk+F5DaWI
+	 jyesMs//9cc8w==
+From: SJ Park <sj@kernel.org>
+To: "Lian Wang (ProcessMission)" <lianux.mm@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	Ravi Jonnalagadda <ravis.opensrc@gmail.com>,
+	akinobu.mita@gmail.com,
+	damon@lists.linux.dev,
 	linux-mm@kvack.org,
-	linux-arch@vger.kernel.org,
-	linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org,
-	Zack Rusin <zack.rusin@broadcom.com>
-Subject: [PATCH v1 2/2] x86/vmware: Decrypt steal-time storage before sharing it
-Date: Wed, 16 Sep 2026 01:05:40 -0400
-Message-ID: <bbdb89067cd07d07fe4963ad229932faf87b0ef9.1789488039.git.zack.rusin@broadcom.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <cover.1789488039.git.zack.rusin@broadcom.com>
-References: <cover.1789488039.git.zack.rusin@broadcom.com>
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	akpm@linux-foundation.org,
+	corbet@lwn.net,
+	bijan311@gmail.com,
+	ajayjoshi@micron.com,
+	honggyu.kim@sk.com,
+	yunjeong.mun@sk.com,
+	rientjes@google.com,
+	weixugc@google.com,
+	jic23@kernel.org,
+	gourry@gourry.net,
+	Kunwu Chan <kunwu.chan@linux.dev>
+Subject: DAMON reporting more hot memory on huge pages (was: "Re: [RFC PATCH v2 0/9] mm/damon: hardware-sampled access reports")
+Date: Tue, 15 Sep 2026 22:11:49 -0700
+Message-ID: <20260916051150.107931-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260916034439.28517-1-lianux.mm@gmail.com>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: EE129C0006
+X-Stat-Signature: c3p6bbasgo4skprz1k9sj1thf93rp6h3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9AD534000A
-X-Stat-Signature: hfwd1fpbcknpp3pijyaz4tn5rak9ar3h
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789535161-569753
-X-HE-Meta: U2FsdGVkX1+3oyrrfdPQ/jopF5T+vErM5K4Ax9ij2gMDpxpKRwQ+BzgHNmTlpeyG6lLzV58FT75tp12laphwccNowoqrT0gwN1MGsEeqDhro/d5HO6FnyJ56KLXyzgEn+Id89YYSZUHM1uh2T6nHLl0WSr9vbPomi/9SKpUay4s7H3LH9JSpunEST19f4Nt/p+dZIiBHXbbzM5mX95u57wHlLuUuZ3Oromw+ZWbgNgzYLvEgXx/0h34AeSG+blkfN0uk5c/+XFGKxlZpmypzu62oNdONYG5LnmEo9YNM/+HEhkHnfdhzGnZ0yUSLbP2W3QSMLztJ2pLYYMX+fIV+qf8+sgHeTijOuXwMbgRP88OirGieN30SutMNJgUJzFqYu8IlfrAeX4QVvWB1mG2GGWvQupE5l9fN62wsxSgmmQ1PqLmQ2SJXu7+nZ5oF/jZTfm8WhcEjL4u+4+V5zOWNj9vUjxWcgZBkhtqaEoqqi+18BKq21b6e5yQEXBs9SuRgYGfQUxuAbC6pBGwiSoSVb232rZ3Ua0+zjxsjkgnK8h1/xkpyGuxRcM0TTGTAT3/Ue2r8K6jWgysDt7oEA7rIRUJ+cplpVlb/q3poTL1NClNzjqOpoJKkXok3Ntnt22MnDdJ+vsP9pkvLK0cUWLwkEatektKRVS+1A6Wk5Ao5EQSaeHW9qTfrPinuzbWsAZw45uPqNLSTUcLL/5WLq0bQi4li41p1UAxW4T79DNajqIfDibxwOUvH023aPZSrR55W5SQP4pXEuX1Ggh/ba9tWPNT73uug7di/ahIhIQheOKU7hcWjwRPkO/LDilwetwU7Qln3TBTpROaYqQ/ju8yEpBcFUdUsDT//65cPA0eRADX72JB8UEofq+w5Ycs8rbLggs7swLz4JaZZF0hW0AcrLdmt4Pf6cPQOlpRnv/u/Q4e5h2gARH3ClBfvI2ugLkfRYUj4bLLospqbnQsoUd7
- B8H0/5+I
- myJtD/RxiBc6ITFw/e4nztWYavpf+NHv/GLOC+nigdsxfPXqexdtLDNY4HibZLkxmRHI1i/oU2RbW1Aqy06lxsVfpoVZHhuffCTUHxDByl1GFSkAiyKLoOxhpHFpVp2gD6PBv1UHT4b92not+VGn38RD7QdQdYHIUi47qnnFWJ0p8Fl4Hn23GdspVe2e0QC52116E/7gbQjZYPasBUCkdvNLUZU+xLyIlG4c1/CbFOtap9be8AbVrTL7ytvnHF8wQYVbAkoXNnHjErGFoXrpm0aaM20ExHPqpR6/8EMv8Z832TSubHDdUNodnMLWbKXr+NiprcxX4XB9rPV7660kXcUH7Eymk3BA4IUL3N7R+uHm1GL0bkk6LN1Cy8KsBC7oP5qiZKT5mswyeyAWITFfR7SvEDw==
+X-HE-Tag: 1789535518-996628
+X-HE-Meta: U2FsdGVkX191XpwtMdilzyFP4SwSlICuxpapH1W0NXNOxWkQtSEbuBknWzL4jB7+O4pf3EF6Kfc4VdRtX5RhNS7/iDiHAJTSDn5YamHdmhrtq0oHxU9PrCv8Vg2SrJXeIz/aiSp6P1KslGH8sR3vOjDQ+7v3TM/EkXosM1hkV0FDXfjcFjZII+EOvIz12gqH3s5v5SGGyfX9hPAGBuw2mTwKJZInbrsX/5dgCmyRaHLUAyw6xobINx5GaVCTJnX4k/7kjLE/9kIXfVMyDQQWeczyaAbiy5fn7VSC9rQJVQwrQEpQYBYos+zSNj9/ddE1ke+veU2vFqmiojWgSq3x5OybAGMFeuNQI6d6k3JtSrIZO1rSZb4vt4utHin3JJaCn+EknjYZKwBjtLDKVsGUStIPmPxs1QmBhcFRHkr3MbJ+FfW3ROUToVdMXj22OM1fbUxqwdvt8+oW2IZ22fVIc+PLBQbo5Ko4n0CHu+qcGiEzRp2y4zeryLAj1XlZwej5WAo7hm6i2Bb8ogLyrStiDMJCUTuKowFxbtGiaWanl9olOmwGFN4bL3DLdQtB/73y63SuqFO9y2UAjI+gNwxxA+isH2lXOc48NtaFmWbfDQvk1iCGWU+7kN43uQrb2FltsAA/h6HNq+SZ8E82hJNqbASZP64j4+O3Gbt+2NHEnGp6L+IkLi2ahxAZb9ET+k2gxqVcS7oRykEfEJ0OXjzXeWoHECvlcBEhEz5Pi3pYoOuD9HWZAfZbRHQhnEn/sq//B1/POMLYaeuxX5YWe5nOqTP/PiRNZ1BeUH+sNtGtzKiFC0hhH6TRtk2cnKkTSk51+JPMkbu+vRs5y1v7KjnFfnFLEZzgATydH/lQB+HjlrEYw4sZ9YwlgfkCdwNicGzn0pVB51oUFnc4KPcjMMeBb9dNrecPo1Ns4hfXUmfzjiSwhdZVSZmv+hzJwAFoAKTH2KPM7V9HkvP8TbC7HtU
+ j/INFUcR
+ rXgBnXvCEzQjTqbDI5vU+ZuKnJnjhuI7Et7Z48fju0ccMUxUq/Br6DjVC7Bb8JAPcyQK3C27bLZtnxRjc0VIwyW7RS7zdMe8rsQOo8KLNm6SxLF29/QpF6HbQf3z4sboK7tklI+FaAp0583bxtHcczsT4g2T7XQMOnyaIT9xLpVsEAZoW4197/zbKLZpKAO7TsjiiHBmJKRiMq3SZAhseXaSQVxDT2I39AgxRRUFyzx6ZqFjHpkkxb5owtVU4kGG6iKjy5qPlkhozHoohUFSq/ISVFrk9tLgXXfrfGyJnwIp57Kevs9i9s1t8Sw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,173 +106,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-VMware's steal-time counter must be in shared memory so the host can
-update it. Encrypted guests currently register its address without
-decrypting the storage. Move their setup to an early initcall, when the
-memory allocator is available for page-table splitting, but before
-secondary CPUs start. Leave ordinary guests' setup unchanged.
+On Wed, 16 Sep 2026 11:44:30 +0800 "Lian Wang (ProcessMission)" <lianux.mm@gmail.com> wrote:
 
-Convert every possible CPU's storage before registering any address.
-Zero each object after conversion, since its contents may not survive
-conversion and the host initializes only the counter. Register the boot
-CPU with preemption disabled; the existing hotplug callbacks handle the
-others. If conversion or boot-CPU registration fails, attempt to re-encrypt
-all affected ranges, including a partially converted failing range, and
-disable steal time.
+> Hi SJ,
+> 
+> Thank you for the questions.  I mixed the original field scenario and our
+> controlled reproducer in my previous mail.  I also jumped from the observation
+> problem to PMD mapping demotion before explaining why the deployment needs both
+> huge pages and finer-grained observation.  That made it sound as if our goal
+> was simply to stop using huge pages.
+> 
+> > The observation makes sense.  However, does the sparse access pattern
+> > realistic?  If so, what is the purpose or expected benefit of using huge page
+> > for workloads having such access pattern?
+> 
+> The original case is not a lab-created request to use huge pages for a sparse
+> microbenchmark.  It was reported by SXF from a KVM/QEMU deployment where the
+> VM has a large memory allocation backed by a shared tmpfs file, host THP is
+> enabled, and Oracle runs inside the guest.  They use host-side DAMON to measure
+> the VM's hot-memory proportion.  With the same business memory use, they
+> observed a much larger hot proportion when THP was enabled.
 
-TDX's conversion path requires directly mapped memory. Check all per-CPU
-objects before converting anything, and disable steal time if a TDX guest
-uses the page per-CPU allocator, which supplies vmalloc mappings. This
-also covers automatic fallback from the embedded allocator. AMD guests
-are unaffected by this restriction because their conversion path supports
-those mappings.
+Thank you for clarifying this.  So I understand it is an issue from a real
+world workload.  I'm still curious how sparse the real access pattern in the
+real world workload is, and if there is a low haning fruit.  There might be
+rooms to improve in their DAMON usage.
 
-Link: https://lore.kernel.org/r/20260309235250.2611115-5-alexey.makhalov@broadcom.com
-Co-developed-by: Bo Gan <bo.gan@broadcom.com>
-Signed-off-by: Bo Gan <bo.gan@broadcom.com>
-Co-developed-by: Alexey Makhalov <alexey.makhalov@broadcom.com>
-Signed-off-by: Alexey Makhalov <alexey.makhalov@broadcom.com>
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
----
- arch/x86/kernel/cpu/vmware.c | 96 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 95 insertions(+), 1 deletion(-)
+Could you share more details about the real world setup and findings?  More
+specifically, how they define the hot proportion and how they collect the
+number?  What is DAMON setup?  What are the real numbers they saw?
 
-diff --git a/arch/x86/kernel/cpu/vmware.c b/arch/x86/kernel/cpu/vmware.c
-index 34b73573b108..f49898275d87 100644
---- a/arch/x86/kernel/cpu/vmware.c
-+++ b/arch/x86/kernel/cpu/vmware.c
-@@ -25,14 +25,19 @@
- #include <linux/init.h>
- #include <linux/export.h>
- #include <linux/clocksource.h>
-+#include <linux/cc_platform.h>
- #include <linux/cpu.h>
- #include <linux/efi.h>
-+#include <linux/mm.h>
-+#include <linux/preempt.h>
- #include <linux/reboot.h>
-+#include <linux/set_memory.h>
- #include <linux/static_call.h>
- #include <linux/sched/cputime.h>
- #include <asm/div64.h>
- #include <asm/x86_init.h>
- #include <asm/hypervisor.h>
-+#include <asm/cpufeature.h>
- #include <asm/cpuid/api.h>
- #include <asm/timer.h>
- #include <asm/apic.h>
-@@ -147,6 +152,7 @@ static struct cyc2ns_data vmware_cyc2ns __ro_after_init;
- static bool vmw_sched_clock __initdata = true;
- static DEFINE_PER_CPU_DECRYPTED(struct vmware_steal_time, vmw_steal_time) __aligned(64);
- static bool has_steal_clock;
-+static bool vmw_steal_time_ready;
- static bool steal_acc __initdata = true; /* steal time accounting */
- 
- static __init int setup_vmw_sched_clock(char *s)
-@@ -280,7 +286,9 @@ static void vmware_disable_steal_time(void)
- 
- static void vmware_guest_cpu_init(void)
- {
--	if (has_steal_clock)
-+	if (has_steal_clock &&
-+	    (!cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT) ||
-+	     vmw_steal_time_ready))
- 		vmware_register_steal_time();
- }
- 
-@@ -325,6 +333,92 @@ static int vmware_cpu_down_prepare(unsigned int cpu)
- }
- #endif
- 
-+static void __init vmware_steal_time_range(int cpu, unsigned long *start,
-+					   int *numpages)
-+{
-+	unsigned long addr = (unsigned long)per_cpu_ptr(&vmw_steal_time, cpu);
-+
-+	*start = addr & PAGE_MASK;
-+	*numpages = DIV_ROUND_UP(offset_in_page(addr) +
-+				 sizeof(struct vmware_steal_time), PAGE_SIZE);
-+}
-+
-+static int __init vmware_decrypt_steal_time(void)
-+{
-+	int cpu, failed_cpu, numpages, ret;
-+	unsigned long start;
-+
-+	if (!has_steal_clock ||
-+	    !cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
-+		return 0;
-+
-+	/*
-+	 * TDX's conversion callback derives the physical range with __pa(),
-+	 * so the storage must live in the direct map. The page per-CPU
-+	 * allocator, which is also the automatic fallback when the embedding
-+	 * allocator fails, hands out vmalloc addresses instead. Reject those
-+	 * before converting anything, so no page is left converted.
-+	 */
-+	if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST)) {
-+		for_each_possible_cpu(cpu) {
-+			if (!is_vmalloc_addr(per_cpu_ptr(&vmw_steal_time, cpu)))
-+				continue;
-+
-+			pr_warn("steal time disabled: TDX requires a direct mapping\n");
-+			has_steal_clock = false;
-+			return 0;
-+		}
-+	}
-+
-+	for_each_possible_cpu(cpu) {
-+		vmware_steal_time_range(cpu, &start, &numpages);
-+		ret = set_memory_decrypted(start, numpages);
-+		if (ret) {
-+			failed_cpu = cpu;
-+			goto rollback;
-+		}
-+
-+		/*
-+		 * Conversion need not preserve the zeroes. The host
-+		 * initializes only the counter on enable, so the guest
-+		 * must initialize the reserved words itself.
-+		 */
-+		memset(per_cpu_ptr(&vmw_steal_time, cpu), 0,
-+		       sizeof(struct vmware_steal_time));
-+	}
-+
-+	vmw_steal_time_ready = true;
-+	preempt_disable();
-+	vmware_guest_cpu_init();
-+	preempt_enable();
-+	if (!has_steal_clock) {
-+		pr_warn("failed to register boot CPU steal-time memory\n");
-+		failed_cpu = nr_cpu_ids;
-+		goto rollback_pages;
-+	}
-+	return 0;
-+
-+rollback:
-+	pr_warn("failed to decrypt steal-time memory for CPU %d: %d\n",
-+		failed_cpu, ret);
-+
-+rollback_pages:
-+	for_each_possible_cpu(cpu) {
-+		vmware_steal_time_range(cpu, &start, &numpages);
-+		ret = set_memory_encrypted(start, numpages);
-+		if (ret)
-+			pr_warn("failed to re-encrypt steal-time memory for CPU %d: %d\n",
-+				cpu, ret);
-+		if (cpu == failed_cpu)
-+			break;
-+	}
-+
-+	vmw_steal_time_ready = false;
-+	has_steal_clock = false;
-+	return 0;
-+}
-+early_initcall(vmware_decrypt_steal_time);
-+
- static __init int activate_jump_labels(void)
- {
- 	if (has_steal_clock) {
--- 
-2.53.0
+Also, I understand they want to understand real working set size of guests.
+Could you further share what they are planning to do with the monitored working
+set size?  The required level of accuracy of the monitoring could depend on the
+purpose.
+
+> 
+> The guest tmpfs 4 KiB/2 MiB writer is their controlled diagnostic case for
+> isolating that observation; it is not a claim that the Oracle workload is
+> exactly a one-page-per-2-MiB loop.  We then reproduced and quantified the same
+> effect on a PC and on the x86 server.
+> 
+> For this deployment, keeping large pages is a real requirement at the host
+> virtualization layer.  QEMU owns a large resident guest-RAM mapping.  Host THP
+> allows that mapping to use PMDs and allows KVM to use large secondary mappings,
+> reducing host page-table memory, TLB and nested-page-walk pressure, and KVM
+> mapping/fault overhead.  These benefits are independent of whether every 4 KiB
+> page inside a particular 2 MiB range is hot at one observation time.
+
+Thank you for clarifying this.  Now I understand why they use THP, and I fully
+agree they should keep using THP.
+
+[...]
+> The performance requirement and monitoring use case come from the deployment,
+> not from our lab model.  We will also report the measured Oracle/VM benefit and
+> the production access distribution when those data are ready.  The diagnostic
+> result establishes the observation mechanism, but it should not substitute for
+> those workload-level measurements.
+
+Thanks to your detailed and nice explanation, I don't doubt about the needs to
+use huge pages.  So I wouldn't insist on Oracle/VM benefit from huge pages.
+
+I'm still curious the real access distribution, though.  I understand you don't
+have the data yet.  It would be very helpful if you could share that in future.
+
+> 
+> > I'm not very sure if this is the right direction.  PMD mapping demotion sounds
+> > like you just don't want to use huge pages.  If so, you could disable huge
+> > pages.
+> 
+> I agree.  My reasoning in the previous mail was too jumpy: I went from a coarse
+> observation directly to a possible MM response, and that obscured the actual
+> goal.  PMD mapping demotion is not part of our current proposed solution.  The
+> current direction is to keep both the huge folio and PMD mapping unchanged and
+> use a genuinely fine-grained access primitive to improve the observation and
+> the stat-only decision.  We should first find out whether that is sufficient
+> before discussing any mapping change at all.
+
+Thank you for clarifying.  Yes, if you really need sub-pmd access, I believe
+the perf event based DAMON could be more useful.  Nonetheless, as I requested
+above, knowing the DAMON usage and purpose in more detail might let us finding
+a low hanging fruit.
+
+[...]
+> With this context clarified, we will return to the immediate work: use the
+> existing IBS/perf-event proposal as the concrete strategy under test, and see
+> whether its fine-grained evidence can improve the observation and DAMOS
+> decision for this case.  We will use the results to test and review this series,
+> report both improvements and remaining gaps, and not assume in advance that it
+> is the final solution.
+
+That makes sense.  Because Ravi thankfully already implemented this nice
+working version prototype, there is no reason to not test it right now.
+
+> 
+> I hope this clarifies why keeping huge pages and requesting finer-grained
+> observation are not contradictory requirements in this case.
+
+Yes, it is now clear to me.  Thank you for patiently englightening me, Lian.
+
+> 
+> If I am still misunderstanding any part of your questions, or if any part of
+> this explanation remains unclear, please continue to correct me.  We will keep
+> sharing our findings and would like to make sure we are aligned before going
+> further.
+
+I believe testing the perf event based monitoring with Ravi's implementation is
+a good path forward.
+
+I'm curious about the real setup and results your clients got from their real
+world wokload.  But that's not necessarily a blocker of the perf event based
+monitoring test.
+
+
+Thanks,
+SJ
+
+[...]
 
