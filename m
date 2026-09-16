@@ -4,89 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28326C982C1
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 22:10:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6D7FC982C1
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 22:34:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B7EEB6B0088; Wed, 16 Sep 2026 18:10:17 -0400 (EDT)
+	id 7B6516B0088; Wed, 16 Sep 2026 18:34:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B31976B008C; Wed, 16 Sep 2026 18:10:17 -0400 (EDT)
+	id 741CD6B008C; Wed, 16 Sep 2026 18:34:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A46A66B0092; Wed, 16 Sep 2026 18:10:17 -0400 (EDT)
+	id 607D06B0092; Wed, 16 Sep 2026 18:34:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8032A6B0088
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 18:10:17 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id AECE2A012D
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 22:10:16 +0000 (UTC)
-X-FDA: 85221019632.09.7AA6439
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 2D4EC80009
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 22:10:15 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VhawZNoB;
-	spf=pass (imf02.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 3B6006B0088
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 18:34:31 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A73DEA0193
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 22:34:30 +0000 (UTC)
+X-FDA: 85221080700.14.1907BF4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id D7A8F40007
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 22:34:28 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=lYtE7NpR;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789596615;
-	b=FwyUx7q5URpd/1JtJiEYaa92fYnn1ARP3dXSeEzZwTNAHwQebCmI+KTP6zgpVdD4gX6VJS
-	hqKZ2RUrWDxje+iG89HSDJV4MHgq8H/NeNu+ll/KXzA3Z4mss15YpUQaLDUzI7EJKpDuGP
-	D2GonfstTfaYVscnq4fRx0hmlXXAb+A=
+	t=1789598069;
+	b=fdX+jRFEycUQJKA3yDhHYtZ+htgUoJ02lyKXw/dkm8vqS7NMo/DkVNN2ZFGJglnziX813D
+	+YnHEKFWDwrB1SxvSkQ3gupzeEr9osvCBVEsfafuhKVKRnB+too6tpMdfJyJiJBq8Sn9vA
+	uB9ISFrWj9A9EXMaJT7iwF89TmIPYuU=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VhawZNoB;
-	spf=pass (imf02.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=lYtE7NpR;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789596615;
+	s=arc-20220608; t=1789598069;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=woRF4U7BLisY6PTyIk1Ijf+XxzogYfb21SXAKp3A0dw=;
-	b=oABD1r7Akikor36g31lNxHY0BGNYYNHxvtSimw9wM64HBysdGXxwsqGlvp6SebNUEfPAXv
-	EPhpd1XOdQbTTCHJbHZDPK9S4rpiMZAUK8jZQN9Cmr/tPVuzCFp9C7Db9nQMt+/mJi95z4
-	cfYCqQ/e2bQPllcy+FdSdIF2mhrbC6A=
+	bh=K5HGV9rZHuGPaUvmcsvJ1HKNnHbuikTZmwdlniM6kvo=;
+	b=rqiDX6PD4xRY6lqDU3L6MxDnSVXwScQ7d+QSGAq/dYB7hINmRG8kXtHzqPoo3lV9wKM7bX
+	0wdZ0Uzb2IDHkaX0X+gzxuNc4um1G1KzbbcVmXpPkHppZmhhM9C3lRQbdcZMdYKBYwlzaN
+	4BIyK1O5y2IvqQsBcyV/hQqW8ura5Zw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 89E21601FD;
-	Wed, 16 Sep 2026 22:10:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0DC31F000FF;
-	Wed, 16 Sep 2026 22:10:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789596614;
-	bh=woRF4U7BLisY6PTyIk1Ijf+XxzogYfb21SXAKp3A0dw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=VhawZNoB5UJHRilP1LPvfF5h0tTPz+8hESGYkVJCxAOesduiF/LJzfWdU3OnHeFNb
-	 THRUJTnD4lFjt0mpkkegHFhLgu6kni9ewoB76ysHNbbjKDtZ0Z6E6DZMywGVWUIYAv
-	 RBgxvoTCu3ayVwIBsDF9Cn0DAEaVphWiINL+tNSzTix43KR2gFDXe+eyXgRGAyYXAO
-	 bbFaOMVmFPgGbkQCxUq7O7ImfLXEKYzS9ZP6bNrzq2CckMsE1HNqOQpgyuMz6Q4+lR
-	 IRdalDVp6/HXW206F0NP31qqZOR/HBCG+iYDvsHb3iotj8X34pSHgcHNncfpiFHsko
-	 lmmTYVbPTWUJQ==
-Date: Thu, 17 Sep 2026 00:10:09 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: Chris Mason <mason@kernel.org>
-Cc: Oleg Nesterov <oleg@redhat.com>, Jens Axboe <axboe@kernel.dk>, 
-	linux-fsdevel@vger.kernel.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Jan Kara <jack@suse.cz>, NeilBrown <neil@brown.name>, Ingo Molnar <mingo@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, linux-mm@kvack.org, io-uring@vger.kernel.org
-Subject: Re: [PATCH 1/6] coredump: don't switch a dumper that has no files
- table
-Message-ID: <20260917-staunen-sparsam-infusion-83238c68d21f@brauner>
-References: <20260915-work-coredump-fixes-v1-1-f354ca41780c@kernel.org>
- <20260916194837.3732307-1-mason@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260916194837.3732307-1-mason@kernel.org>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 2D4EC80009
-X-Stat-Signature: kxdfmnz89z3qihdexpbeeg791bbi4d7r
+	by sea.source.kernel.org (Postfix) with ESMTP id 9C9F641295;
+	Wed, 16 Sep 2026 22:34:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD8241F00898;
+	Wed, 16 Sep 2026 22:34:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1789598067;
+	bh=K5HGV9rZHuGPaUvmcsvJ1HKNnHbuikTZmwdlniM6kvo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=lYtE7NpReDeqKVQNw/98ReJ6SxlDMOQ/EcHsikRsCshszDuVl14Mr6Dbg+F3d2Juh
+	 PpAR/zm/AEq+CpbMqaoiVt0iwDCwGb4v7MTXNtEEpGiGCKtdWNqr0sImp6J93F747s
+	 OhAMWvV3FlxawJoxTSRnhyW9yyLFsFcKYM3sMAlM=
+Date: Wed, 16 Sep 2026 15:34:26 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Salvatore Dipietro
+ <dipiets@amazon.it>, abuehaze@amazon.com, alisaidi@amazon.com,
+ blakgeof@amazon.com, brauner@kernel.org, brendan.jackman@linux.dev,
+ david@redhat.com, dgc@kernel.org, dipietro.salvatore@gmail.com,
+ djwong@kernel.org, hch@infradead.org, hch@lst.de,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-xfs@vger.kernel.org, mhocko@suse.com,
+ ritesh.list@gmail.com, rvvandan@amazon.com, stable@vger.kernel.org,
+ surenb@google.com, willy@infradead.org, ziy@nvidia.com
+Subject: Re: [PATCH v4] mm/page_alloc: avoid direct compaction for costly
+ __GFP_NORETRY allocations
+Message-Id: <20260916153426.3265e2e152cebb6a8d66373d@linux-foundation.org>
+In-Reply-To: <aqq8pWI0u1IZNWHT@cmpxchg.org>
+References: <20260905174239.99e31515fabe220aa7d8e6fa@linux-foundation.org>
+	<20260910114602.926944-1-dipiets@amazon.it>
+	<aqQlUr-1h07G8JWM@cmpxchg.org>
+	<8d6a8a63-4adc-458a-b548-a47bf5ff8eb7@kernel.org>
+	<aqq8pWI0u1IZNWHT@cmpxchg.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: D7A8F40007
 X-Rspam-User: 
-X-HE-Tag: 1789596615-195104
-X-HE-Meta: U2FsdGVkX19lOhRge8mamkU5M5jC3vnhAbRx2Cd7zjTCvLGXQgT53H71ecEovvyJJEe2BLpnKrHw9/+nsXU0WpL+YdeC9Zr4l79r4qzDuMZTX7v4yYH4T9tSmbFOynLt1MYyxkj6N7GkawqgWZZYgsOys2bLkuEmhT4q+HUszLIOTSG7ISFypeGwIOtlw/PLgcwUh94uG4odJpj7u+7iISGmc5t5F2UCQCengQxC/2EMdCwl9p+aHEeeroHm2XDWvZDziMTcFp0hkyoa/j1gl965ooRlpkjiOEZUKsHmM2In/+owJEnPcBphqSOKEkXxABUZYyygnMt92VY7e5CvOGMvPmrjxWuMakD7YNznfYhuSuZVEfaBred/O8GF258Ae20RIfBCki3LPtMgelEKFpHrctNJis9bQc5crHh6DdhAzJ0O1VY8YMDdhvqVObm/6dNFWa6q5yenuRNYIXY8kuOapKtHun77wPJGz/E1BM5ysBnb0bmYG3CvQQOEeGw/+FUHqynwZ1zodAhNV0ZHM0KFjfQcJ4Prcw/U940z2dYxO8VdicWX3sYiU0rypyr/LGrdhvMRS+IBNNgRiBDAyOK205OiIb9/bY1JwggLPmJw97lzcKV7UD6Z+jxCl+rw7TV6kSQ45YSeGQ3Kj05BBii9TbJQlZnXtxySvdJNtQP/j5kTEWSLf2GYpi3o7fpGHnjTvOkhxwyRismJD70XfJvG7qfdHKKmBcvOdABFf+llBu7XGxAC2GggY4euI7Qr2z8c/tluOdlcv1ynqDpsiDTYtPVHBCdpv3njFc/4hEGGGcuAVLYzIdsv32I8kCsjKtw6JqwbETPw9SCkpNTf2in2vZGYBkY5XaUXZI0oscu8f5mkja9DhFOafUMNU19CiwJZx/oPt/UUVFYtcIzYPYDI14fuTY/W/sHMZf2PH73dtU3+drMz0zJJglwAiNnsbIloVuuqoSy0EV0U6rL
- EJdbXlE9
- CnoYejzItcUWVHvVZSKqFMtjmVM3JQLjt720meraaGuQhjUVsfjrdcJxN7cp5aR2ftgCbz0FRBz5Nho7hwNwXTjhajGZTVgohJ0qZrmofrx6fo0evuTxssOLLZqPRME6My49RcwAyOhKPQfhOFazL8tO+MpyHOsRjNmvtzJ4A2waYAsLrbX6nhG1asVAUBVEXGrUIFkF35gbueIOqmT0C0XrEJx/fMNiLW47dt6WMmfJEYLyrf3OjlPRXVaqQ98l47j17svAJ8mOMDV9CHHGk0XLgOSkOGZDaoID5F8w8sPYLLqE=
+X-Stat-Signature: rkifyefp4a1gxkwjft67q4uct8tboz9j
+X-HE-Tag: 1789598068-842968
+X-HE-Meta: U2FsdGVkX19MNPGbkdgN5nDy3GrunuOssfycnsRL25U/XAA3YPR+gr3/GINMODZWL/74ySEqZgeHJGC67SyMOBVe2tMHzat9IBdj+ZwLuS4+DNBjcSal4l8vokFFExaBtxeX05BmCRXEb5r1lN9+5iJ5WoCR0h8ducHBxtbF9H217kbPKMQrDnz0WU2IsCVX7ZnTX39odO2PfJ4U4itqkRm2QaCBQ0SdWiqDx14aC0VdjsfYKuUiIAOc9xeGySPKCSeTpe+cLjB2X/UHI48MRGOcphG+I/P9+HhU8qwQQRVPue7Niwp32FlonyaehPQtgoe4VCG4lqF/uWZnJoJx98e/ZVEXoC3Qb9/A+PaG+79Ku2giAHvCXGOM7rCIDUDsy66NWn9LvBdTvPh8OYMeVko+w1KppYx/39pw89pcp+28ZVrWk2baWHNaqIutObdHh+X/DtefvXZgPgH7tcWPz18XZLo9Sle08fQEwXn29lORH/2IIPIw2u5K61U6j6IwJ3KF7nYba3S5xoOqJ4RZc7IVB8R3R6UZ46szbb6E2+sMdfx/c+jk0p9R++tB0hHwsrZSvx6Ig3JPOUZ5fAUVRSqvk06ASRSiVPKIlLdQRjxsrrvfXcd6Ul7MvCfUbZlGDnkVQKgPPHdg5+CE2CFkVy82TW1VsgbTeJZOc8CGHYbU0B+7rbLJ+9rvgks07Q9/SVe2XOOMmBZHPSIcqOt2G5OLxceRkeZrZRElPA68DB0DE78u2zA8ncM+FrCCHNtThIyObjy26H33ocDgwW6eyYl9jsHSUoX9wF7C1Vzbb4eO2Qc+zZrqp/arKiJlleLY+iqiCGZkKU2Y8RH4hJF5ua54lv067rRtAvmTvMQiWWd5348X7IviYt1GdcFElboxTVQz7Amidau08b/AlPWSd/66OnC7pFRNtK70myKRqaM4xRpjzCV8XJnHEmtAeiGbukJ94xGI1Tvdv+A59o9
+ 9UryxPb8
+ xbkN+UhI+9hvACDl4TIrE692NmBySxaspK9A2dp7XH9aJ84zhK9OWDxPeWsVyGkpEdTRKGauuhjcTLqTGFZY+vk0fIJLv8XPNthMMt4kEP2e2ooM5pP1NNJ7AxwYgnAa9vZKH3pavmEEw8cg8j7M/VHLO1m657xXV3NCqXNc6J5Q2FS1R2HOi0A4IIm5/eRXkg+9qYxxq2YgMmsruPQ25lSXHZEOWaEj3oY4uB/dZ8cp8KTLebeWQFznsPsyfRX12ILOKfDzU7v3968EpMMgO+zxNsT3y7dG8+OsxiONYQuxCkrTu1FEOwjBiXRWBfvwydEdutMeyCnJusalZTE2tzuszpMsIhx2u45cuQFtnsJBEQh6wOf3Efd9Z3b38Iv1nUBYSO0cg2V/7Kyb5EG5MKrSsioEpNpn/bCFb1a3DVUn/OwLNlrK7+7E9IA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,24 +101,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> When I reproduced this one, it ended up deadlocking with the fix applied.
-> 
-> vhost worker (the dumper)          sibling thread
-> =========================          ==============
-> get_signal() -> vfs_coredump()
->   coredump_close_files()
->     hands sibling a new table ---> switch_files_struct()
->     coredump_wait_inactive()         put_files_struct(old table)
->       waits for sibling's switch       last close of the vhost fd
->                                      vhost_net_release()
->                                        __vhost_worker_flush(): waits
-> 
-> AI suggests making the vhost thread requeue the signal for someone more
-> suitable?
+On Wed, 16 Sep 2026 11:58:29 -0400 Johannes Weiner <hannes@cmpxchg.org> wrote:
 
-Afaict, this is conceptually a generic problem with letting coredump
-close files for any type of user worker where the worker is the dumper
-and the sibling thread closes the fd that causes it to be stopped and
-waits for it to exit. So this needs thinking and we should drop coredump
-closing files for now.
+> > Unless I'm mistaken about that MIGRATE_HIGHATOMIC part, it seems all sashiko
+> > concerns can be dismissed and then indeed v4 is the better version.
+> 
+> It looks like a real issue to me, but one that already exists
+> independent of Salvatore's change.
+
+So I'm hearing that I should drop v5 and revert to v4?
+
+
 
