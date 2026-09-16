@@ -4,98 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E84FC982CC
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 17:28:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11252C982C9
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 17:29:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 04DB56B0088; Wed, 16 Sep 2026 13:28:50 -0400 (EDT)
+	id 186E56B008C; Wed, 16 Sep 2026 13:29:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F40836B008C; Wed, 16 Sep 2026 13:28:49 -0400 (EDT)
+	id 15F396B0092; Wed, 16 Sep 2026 13:29:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E559E6B0092; Wed, 16 Sep 2026 13:28:49 -0400 (EDT)
+	id 064EC6B0093; Wed, 16 Sep 2026 13:29:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C1A4E6B0088
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 13:28:49 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 52EA4A600A
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 17:28:49 +0000 (UTC)
-X-FDA: 85220310378.01.1357C96
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id B3DF240002
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 17:28:47 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cnA3Mnwc;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789579727;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D2C576B008C
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 13:29:24 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id EDE151207B6
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 17:29:23 +0000 (UTC)
+X-FDA: 85220311806.23.75D93DC
+Received: from mail-ej2-f18.google.com (mail-ej2-f18.google.com [74.125.228.146])
+	by imf25.hostedemail.com (Postfix) with ESMTP id F040AA0005
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 17:29:21 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=kbc5kHcn;
+	spf=pass (imf25.hostedemail.com: domain of dmatlack@google.com designates 74.125.228.146 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1789579762;
+	b=gJm8T2trmDCiDht965QBAPBoTB8itIXAZce5Za9N9QNNIA5OAYYgOSyiWYZmtljMm1BpiN
+	a3gvyV/45EwKn39B4zEQ7RFXDlrX8M3VgMMEgQ1k/dtnmqYc9HNUv+3WbaEpL1/W5zIuzu
+	gApfj7x2xzbgm3YI8Hhe4pRmDNgaxkc=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=kbc5kHcn;
+	spf=pass (imf25.hostedemail.com: domain of dmatlack@google.com designates 74.125.228.146 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789579762;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8NtqovApGf8dvKnjUST6br5s7d5zKceLLw06RUJrpIw=;
-	b=ctLmaUFTeFFfgH/zvp3pAHjfx8NHmXmH4zprqTrS1GzgnG7VJg2WZF2DQfcqcUTh7gacUd
-	bB5RSTCB5Zvhiqy6Bih5pzpV0Y1KKXKJeH09DkAXvlVqhku2xe7Eh84EYTTouAbGL0FOjn
-	f18H+ZsJ2w6CdHH5gSLdF+6Gax2PnC8=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cnA3Mnwc;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789579727;
-	b=Ea+oK786AXmFvrLNEyloaoJOCD2meUTrPQI6slb399bJqXp6eAbkHzmS10TalcMd8RMBxh
-	TfVyzA7dq4C2Xwes5zLpXercUDpKTXdrPyNNxcif+fLNLSSCioOUgk7tZNsfuy4K9mViyg
-	uPQFl/AsxszeKAXInk1ysH0pcBAAWJw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3ABAB600CB;
-	Wed, 16 Sep 2026 17:28:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADD261F000FF;
-	Wed, 16 Sep 2026 17:28:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789579726;
-	bh=8NtqovApGf8dvKnjUST6br5s7d5zKceLLw06RUJrpIw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=cnA3MnwcbVLsJ11I+8hYtmzPV27C3NRL5NVBmMMsbRrnYusv1fuUyeDaEcrEylZ4Q
-	 TPDczkYw3kZbarkCsiptbpLP2ywaNSrq6VJL0PtRbMwBnbC53v0hDsYqujLYQL+YIh
-	 itAiwVGFDPnTEmWE6Fe2qmgdBc6Zqi7Sd98tgG0rMD8CE0BccS9nbJf4SAY37iQU/M
-	 5XbvEAV2bqAZf2L+E2GrKEaR2M58wnZUBUIOzdw/Lg63m1e0IYJVjq3WPaqKaxO+wP
-	 zMpQyU3Acqw6M8uuLPRGlXbJPV+B2zZbWYlphDkAFDyYkbFa9BzLOeZBiGJ5r+gN1N
-	 EVY6U32ALGvBw==
-Date: Wed, 16 Sep 2026 18:28:20 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Tal Zussman <tz2294@columbia.edu>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, cgroups@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 00/11] mm: memcontrol: constify the read side of the
- memcg API
-Message-ID: <aqrRewVuKfPk7y1U@lucifer>
-References: <20260915-folio_memcg-const-v3-0-c239a6010b58@columbia.edu>
- <20260916035222.GA19557@shakeel.butt@linux.dev>
+	bh=MsBp/K/8Mh4fs+CJj0dFevHba775OvfQ8W0kzE3hMzk=;
+	b=3TTmaVwlZTBxr0LSPgoNs/7+kjkdq/xnLyE91hWwoWyNVCovRfo/a39JixpZ7cIxpAV2zq
+	ZnQawTNLzd174K9dh8hCcqjMymfPo9h+O+Pc1/UQT1uGoIRoXvnFwo3AHFpkEn8OX0lE2X
+	G3qMyiqan0lb5cszojqGwKYvra2bkOE=
+Received: by mail-ej2-f18.google.com with SMTP id a640c23a62f3a-c254fa65080so166468866b.3
+        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 10:29:21 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789579760; cv=none;
+        d=google.com; s=arc-20260327;
+        b=o1U2C0WTquFcpBNH65amagd7QJZ2JKc3WoT33BRIWrbAx536pa+zRNnoaGmA+GEFSC
+         n5axWTGD12vXzDUrbxoIRC75av7tLax1r9jwuLXID6I695qFp4hjPvUWWjKop6cqqv54
+         WdN63cSCpkn8cJyT/mJ3kmlUiAPW0GteGxYA2UtNZuCua/HDs3b7QgvKyQwYs0LHC0TQ
+         LC0iID8VqszDgtLPnbkXHn7eNJ0hqFVOoBUz7z1RL2YtozRwX6UiMBJBw1+DwsM9i75p
+         h/mhxXhOm2+hxvT0kv3O62wbpwgc62r8RwTjjmdo5wWdfk/Giv0g6PGSK+Ev/OwsU41S
+         Bwbg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=MsBp/K/8Mh4fs+CJj0dFevHba775OvfQ8W0kzE3hMzk=;
+        fh=9Xzjq8bPeiNq0cgvpo+joK2Sn9ETibJHLcV9NrInD7o=;
+        b=CoEJDyP+UUvo+SkbsqJd6cZXY7yjoafoSqwnKTEhmHrrihkFmHejJGSA5d1Pa1Twzu
+         TSCb/s+Cgh6zOWLU2OABq34TWASzE3zDQFj9YCDHq8App/rxcloyiIyroiNSHWO5zTze
+         dz79VdICCRpNZWCvsToYMAq/pkbQhqnOKDj7JIGZqPkJPC2+ZAKNkwH5/LTgs9EjunjI
+         lqzvgW7O67O4LenyS3TBcXY7YOVuRLmbRPDZxaesQCMOKOa/mdmppvndl9UjzvaS3Oxs
+         LlueFMeZtN5zBodHGUk/EAYo/Ido04PTu+qVUbdbYc+pObOx5iVt4IhpMXf6SG/iXee6
+         P6zA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789579760; x=1790184560; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=MsBp/K/8Mh4fs+CJj0dFevHba775OvfQ8W0kzE3hMzk=;
+        b=kbc5kHcnx/zWxk0pCMBjevtKD3r9Pppf5PY/at6X0R1432t17RW2ho9pdU5NlQTXHy
+         13XooXFv/RtHWheMWST5WhgAObCxoUjKtOlr2AgDFaxnjSH4nP9pV45NIVhZLhKG2Jre
+         d+nI7NDEFHaLBUiemns45f9OGdJrg9j86pAGufeGyhrBFp2ZuL9k+UU3Tfzmjvqot6hq
+         xmF/bj3BZeVdicihUs3RYbVriUpiSVRGwBPIxLzB1GTK1yw7joGIMe08BagQQ1y1axEc
+         Ipd7vw4QSfQrAhr3ORFehSlKxqS5wyRvMW5sfH1djgdub9MO85wv3d4Zrpt6+ltVJhP8
+         uSEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789579760; x=1790184560;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=MsBp/K/8Mh4fs+CJj0dFevHba775OvfQ8W0kzE3hMzk=;
+        b=I1YtOdX6x7IKaVqY4V6dnfBFrV99kliw1Bhjda/98gxHajx+wNrrnHjDKXIbQsQq6b
+         adY0STsqMsQiY7kerO6hQkLyN2rEgwXPx3qBR+doGVfYH7DwsUbxvOXovjaIouwtV4jh
+         ZubF7pRHOW2Rx0zCp748Jo5BqtfJocNoluIeo7Wqg5dRTZDqVZFTSJRr4I0AhdA130Oo
+         xCblZ96MPpyTpAgIf1YCIt8BFQQjv+gpV0Bx5G1CGNV5+vdVYew/tJ38oyolSHzaqB1C
+         jyC7e+erbbOOoUhedbH1nIO7/iBtxIYCSA27T7XyEsYFuWhYtt23HtbVOSeLkJcVTU5n
+         t0qw==
+X-Forwarded-Encrypted: i=1; AKwUvBysyoNT8qaGbRNTcKkFQTyDLlyqricE3YEJbyPe/aji/NCMBWHnXW6ho1/FDp0e7940PDG4vVduYQ==@kvack.org
+X-Gm-Message-State: AFuF++kYJz0bt3zjM1eRyy8H9dLL14WBQmEUdUM/2VNnbamDNqaqwANw
+	OIrjnactSDrYTWg3i+bTZxdxh5ZDQ+tFNnNeqOjcxj01POcbszqiAD5twTEBZIsQtwZNH2AbZAF
+	dVPBO6cYO0SpkHnNv2dnTUx0Sl4MYYanPHvkJBNmk
+X-Gm-Gg: AYBFou18p80v5MUC9Y5aXTuBGHzBYZVDnPI/X/YDuxMd14BDhli01l+Rxj9QjjZtaxt
+	idCghaQMVJLOOABR/oLtWgaRnlaea2jYphSiityuG8IkTX4IQVbppemnpsCQTkrYnwuWf7s2ifK
+	4wpWt6TFDdT2SueILHcH5HArvWrdUQsaMsVI9Awf1pRXxm/+4y2KvhuY/odAIE16RqSkNZ/mfBJ
+	X3BB0lEigVmwn1ZCkL4FfntEdxKukXXhLd7mPRgqsU+AQgFB7NsxUyCYYJPcQe5O1OosW1oGWc0
+	8k7+1Qd3hMcNmxtSPO460EqMVia8IcKTlh9LHRZY4ZZB5zlK6AcMA4hzBSyNftDlKrbu7gkGxjK
+	2BmxOsfmaBFyDNUQdbBWx
+X-Received: by 2002:a17:906:c114:b0:c29:52dd:317c with SMTP id
+ a640c23a62f3a-c29e52ff5aamr253749566b.30.1789579759601; Wed, 16 Sep 2026
+ 10:29:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260916035222.GA19557@shakeel.butt@linux.dev>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B3DF240002
-X-Stat-Signature: u9g1kxwyxduwnodkd6mtdsgqksjqug59
+References: <20260728221007.2098560-1-dmatlack@google.com> <20260728221007.2098560-4-dmatlack@google.com>
+ <e099cbaf-3185-4c39-ae36-7f0e074ebff7@linux.dev>
+In-Reply-To: <e099cbaf-3185-4c39-ae36-7f0e074ebff7@linux.dev>
+From: David Matlack <dmatlack@google.com>
+Date: Wed, 16 Sep 2026 10:28:52 -0700
+X-Gm-Features: AcwNN1X8OtlPLlB_fEFGTTxlBHL1RWBLk55_RIeZg7bMhopD1i4pmTuVWaDvZaI
+Message-ID: <CALzav=eX0gVrbWCnYGwfqPHUkoVxqdr2nw3Tx6Aqze0XOcuwzA@mail.gmail.com>
+Subject: Re: [PATCH v8 03/12] PCI: liveupdate: Track incoming preserved PCI devices
+To: Zhu Yanjun <yanjun.zhu@linux.dev>
+Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, 
+	Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>, 
+	David Rientjes <rientjes@google.com>, Jacob Pan <jacob.pan@linux.microsoft.com>, 
+	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, 
+	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>, Mike Rapoport <rppt@kernel.org>, 
+	Parav Pandit <parav@nvidia.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Pranjal Shrivastava <praan@google.com>, Pratyush Yadav <pratyush@kernel.org>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>, 
+	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1789579727-629167
-X-HE-Meta: U2FsdGVkX1+QWhcU0+obE2TDbzL0e9hy1pCHk6akdbAmHeRqSkKYFL24Sh6ID84f/BIi0Bcv+phBdyJ6o63gS1ZS//jLkI9krMHGv0w5Xpg1wlJKPDH9JxXfsL5UiGad49a6EMfSbMYOz+Vudu2pguXReJKtzoKG7yhq+gEcaJ9KNCzCopNMPmi3Xkw0xdyoHuF1ltSUSr3dbR19GE5lgSu9bVvCIdc33Cj1MbQSjML5PmOcENsAa0Xg+MbigtpNKT/9F+iLhMu35zxpDnKQjJA6u5E0JDHAsdAkAg00ZcVtzNGuACCEvt69lFoVstz0vh8PHIjC+/1iIrDe4fhhZ5RYFYXfiuRnDousUHjTNPXJClB7XcvtffP/zM3xVbGuTGpr05vUY3JxW15vg8tQ0btRb8JZp8aiVzZwEffnC84JOyOq/PfmY2J035kgFxMt5A+zOrzXn6Ckwpwf6m4IkYIt5/wSEpCNP/oxOVOreeWaT2jDe2JNRY2JtpA5JVBQHOTd/KFfJi4QL2n8eTo+NGziMLSGkpXrXyPu2Mgr3yKqk+TAQUq2ijHi3uy4cXe5MewTa1bx0Wtso+i4WAas/x9bv+jWXMAvxZWkR8nQ38yOooePTA2RDLjm8Mme+oRJxwq5y2RD6r9wg0vN/jDjOpXfuPHi9wmGtVx8h9Z+dPNu5Ll9If8j6oyvq/G4WAjEXZJ0ffSKGoKOdnv0HRCuq26m0O1zSF2j+WHOiip1sot6a5hA4rDgTHrETQSX/fMSd8POq+r2zm9SQVAqurgmGohkEJSvlnd/+pKxec7Hk824WulnO1XBhM6wdd92xAP2dVrge2E4JdiLg44tQHLRkGQPXG+koq0a260IDREdBdONVj7w9az92EglhLNtAViIH8thUZJc2kiufJ9XvDqPKsBrxvbk52U49Zd1sPMLYDYGRZ0A8nkayH5LHx76exi8OfoVvRBZm4zcXaBYeci
- oL6nHcsO
- uvS0maZ7YWsmn2B8N8FJ4cKQj6lCk25X2OTWuQd2NpZv++xdQMxHogxUzxG9WGifjygUyiBtZV5IrcPCUWqZsABo6gKvZxWe6vssusAg96EJbiT4R5Y0tltYl+a5VxdcxOZlLcXvpp2/rBrH94YvI89D26RP0OF35A7W2leDiKa/oOQNGQZx/yceUAcTna6rtyuxReiDfnEowpeQzDPaQ+dfkg2UD+iJO/tGorGpmFAKumkNGb52sFf1As3aZmddqIThTnXmI9rhXMdSXBvUk95rkONZEduQ6jP9r2du3YUPg4OzpHJL0Ba7vvLP+VHr1jqzLXQaZPXV3sCUz2J3F72vqXQ==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: F040AA0005
+X-Stat-Signature: u7kh7oopysqc16rk9dzky78meby7dh7c
+X-HE-Tag: 1789579761-394015
+X-HE-Meta: U2FsdGVkX19aXv5A+5JLhUZogqaQiqmPwif7smeCX2pYUphiwmN/gHxELBp6+2XevZxMpkuX98rvAFinFjh2peRygBW4Ex4Sl93X+WEvsHhN2jPznhE+gzb0v5osE8jJbiDfUxG58s4Y11unpZBBXAyeWth+Io71DTf5UlmgvKfmNpj0XdubwRLPc7j02qerkBRMNpSeIMKLC7Ktd9j0H7rTTEC5u4bjPW2j33HkZMIOc+0iM9jUeIt8xocyNN8nE8lVwfaq9POUWnC5YloMf9NXCxUkDgvF8hUi43o6JnP/c02zjVcLX38/GOi+GfhdeVJjky/UIW07k2ZcGitJkh1cdMJCYMNEsnUOXw80oW8mHT3hPIeQn48HOLEgkUA88povh95FG/jsNLPpiyP2PpnfNuQLYxtB/17jbc4FmBV+yWz8mTpj0Edd3SmzT6wR9K8yxpAP35SQWHggd/1PiJNfg6EXY1DAF2RzhjFnM3pztrZpMFFFAcN8FpEhKfEk/wrTUUz9xey6KXghi7r161ZU3CoIHxyhB6RogsLoboFqhfk8X88exqBRDCVpF56fIRvwpNUh7k0kM+TF81VaYefZGXDHxigKYmEf7wnMHlsnWATOdFAxo5m8wAIQ2L9g+SrjwZ/JL29xRRUV1BoEVLK7qQP0CLWKscx+LOnFXho46AoOhhi7nT6txHLIPu3xY9j5n4C7J07/S/zg+itkkWCHdPMMGyCqvEZSI3n4AtDjCqaPUMUsrSGZkmxi77pOnvaUS4Ztb6EGgdnCLYu1kzqlbJV3NlGgVSbT8Liq01LLU4yvlQj89fQiK5nTIiVJ517Ol3T81byqBGr0t/ijLdIdyw1LMoI1P2CoF/WyzwW1XM6Fq6RChsdncB9aoPOwCgI6RCJyrfbcHtQWwWlY4SnItI0UnAnGjDfuvXcqMGudKcb42yUEoDEIn9omR41OdbZR1gnSK3yYG7XbS9S
+ 7xF+/HnG
+ yAM1ANw2Ug1m6Ou7bbxmK7I7qNY92gvJFqlYgAuFdxlpXazvnotjMLfCHqmY0TjDsRcsQV1iFEbtStG+gpw5lq4Z4aLK1QnAlCvtcd4dkSi7zt2neRlYrDwIOeD4okK8eWkwV+xF0xS5cpZSXU1ny/bAjyAteGmMOns9LFYkYMbb/FZTy+THjpMaNmhS9LzbzoRqGJdvXeoxV2Bbh2f5hMTNc7srtF8GWeQM3zpUUOMjxOU0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,31 +151,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 15, 2026 at 08:53:10PM -0700, Shakeel Butt wrote:
-> On Tue, Sep 15, 2026 at 07:20:04PM -0400, Tal Zussman wrote:
-> > The memcg accessors, lruvec helpers, and stat readers only read from
-> > the memcg, folio, or lruvec they are given, but take non-const
-> > pointers. Constify them, along with the page_counter readers and the
-> > swap I/O blkg helpers along the way.
+On Tue, Sep 15, 2026 at 8:31=E2=80=AFPM Zhu Yanjun <yanjun.zhu@linux.dev> w=
+rote:
+> =E5=9C=A8 2026/7/28 15:09, David Matlack =E5=86=99=E9=81=93:
+
+> > CONFIG_64BIT is now required to enable CONFIG_PCI_LIVEUPDATE so that th=
+e
+> > domain and bdf can be guaranteed to fit in an unsigned long and be used
+> > as the xarray key.
+
+> > diff --git a/drivers/pci/Kconfig b/drivers/pci/Kconfig
+> > index 3781e2b5f095..8af20f558086 100644
+> > --- a/drivers/pci/Kconfig
+> > +++ b/drivers/pci/Kconfig
+> > @@ -273,7 +273,7 @@ config VGA_ARB_MAX_GPUS
 > >
-> > This started as a follow-up to [1] that quickly grew in proportions :)
-> >
-> > [1]: https://lore.kernel.org/linux-mm/anYqSDnC2BbJXv1h@casper.infradead.org/
+> >   config PCI_LIVEUPDATE
+> >       bool "PCI Live Update Support"
+> > -     depends on PCI && LIVEUPDATE
+> > +     depends on PCI && LIVEUPDATE && 64BIT
 >
-> For the whole series:
+> One question about adding 64BIT to the dependency:
 >
-> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> As I understand it, enabling CONFIG_64BIT essentially means that we are
+> building a 64-bit kernel, and a 32-bit architecture cannot normally
+> enable CONFIG_64BIT.
+>
+> If that is the case, would depends on 64BIT be necessary here? Or is PCI
+> Live Update already inherently restricted to 64-bit architectures by the
+> existing LIVEUPDATE/architecture configuration, so that this dependency
+> would be redundant?
+>
+> If this problem has already discussed, I am very sorry about this.
 
-Oops, I replied on the v2 with the same:
-
-https://lore.kernel.org/linux-mm/aqqaaDqTDahlZ7bR@gremlin/
-
-but obviously, equally so for v3 :) thanks for doing this!
-
-For whole series:
-
-Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
---
-Cheers, Lorenzo
+The necessity is that the PCI core needs to store more than 32-bits in
+the unsigned long xarray key (see the snippet above). The dependency
+on CONFIG_64BIT ensures that unsigned long is big enough. We could
+probably remove the dependency but I would rather wait until someone
+with a 32-bit build has a real use-case for using PCI_LIVEUPDATE
+before putting any effort into it.
 
