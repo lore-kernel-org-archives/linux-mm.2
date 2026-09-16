@@ -4,86 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B57DAC982C9
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 23:36:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23472C982CC
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 23:39:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2FBE16B0088; Wed, 16 Sep 2026 19:36:49 -0400 (EDT)
+	id 08CE36B0092; Wed, 16 Sep 2026 19:39:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 235E26B008C; Wed, 16 Sep 2026 19:36:49 -0400 (EDT)
+	id 0163C6B0095; Wed, 16 Sep 2026 19:39:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0B2BC6B0093; Wed, 16 Sep 2026 19:36:49 -0400 (EDT)
+	id E4C916B0092; Wed, 16 Sep 2026 19:39:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D8B1D6B0088
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 19:36:48 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 802DB1601BC
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 23:36:46 +0000 (UTC)
-X-FDA: 85221237612.21.99C4B0B
-Received: from mta0.migadu.com (out-94.mta0.migadu.com [91.218.175.94])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 5E3B3180004
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 23:36:44 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=CSYKYSSs;
-	spf=pass (imf16.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.94 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AA7856B0092
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 19:39:09 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1E419401C0
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 23:39:09 +0000 (UTC)
+X-FDA: 85221243618.10.D4DADFF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 362FD1C0008
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 23:39:07 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YLHXdzls;
+	spf=pass (imf20.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789601804;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1789601947;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xQ2WhXjZQcs7dOdUbW1cFsewyIzIB+WiRGJP8M6lARc=;
-	b=V2m067XCZENnzLfsoA4DvOlhiMsE5gFPDrpz0FU2qqchwhjXs+oPEuoUH618wv3Ru8+XPV
-	cDb+s8OAB5McGEObKRCwS77l5NDi+JjNoDfXTseDuULyJIvzOEAjFgNDuxgsxnYOWTL7Wx
-	fl4uzNK0WISygtZQyspgH8ksuQLv3hU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789601804;
-	b=wb++R49ex0lFSVYsewvI/lqWXPewHUR0iyW1Y55q4v0QiA17/FXk2d34Sk6tVnzOMYysX3
-	uUXMGxp0KC3BSBaTQ4HRfRjHSFXK3EnvmzTr3CElqWQrpfTHPkMy54r0+jcbkxMkQSmhSe
-	UJkbypLs8D7fHxHgOb5A7uSgxZkMoUo=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=7oMeCnhAkrjzyvARCIHr0BDKU/uZWwQiLXxUtLsdJK0=;
+	b=VhdOAM+V0us0sPVpSNp3nnddkum9HDUy7rIBOPTW7Ftr31roDgraKo/sXkEzOUWyrS5Yzx
+	Hy6xS+9s1HgKaPXbdH72JZv5+KofG0bqyMzfacebhhyyY62oHgMxYFoGPxh7D0SurFwsfl
+	9mlw+2Ig3rTodKn4LBzj8e14+BEr0dc=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=CSYKYSSs;
-	spf=pass (imf16.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.94 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=aIdtu2I76j/DiWgc8Qm/F+IYAetiKvaeuxEq+WvqmeQ=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789601802; v=1; x=1790206602;
- b=CSYKYSSsHDrr/1LEPdYZWXPkx2B4IGIC3rTUCrNaLWzQkZaEPaVLoInHtvBnH4WsFYIiSUiM
- prnewEIAExPf10/owxuXNg/NELT8M59C4CLsbV7E75+wLIGddNmtXxnjQu+L7Jnd65Wf7xPrQIN
- DO/fmpr5rPWxnsC3u4wRT3RU=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 4af75b0470ea2add;
-	Wed, 16 Sep 2026 23:36:42 +0000
-X-Mizu-Trace-ID: 4af75b0470ea2add
-X-Migadu-Flow: FLOW_OUT
-Date: Wed, 16 Sep 2026 16:36:41 -0700
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, jack@suse.cz, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	willy@infradead.org, david@kernel.org, hannes@cmpxchg.org, mhocko@kernel.org, 
-	roman.gushchin@linux.dev, muchun.song@linux.dev, riel@surriel.com, kernel-team@meta.com
-Subject: Re: [PATCH] mm: filemap: move lruvec accounting outside the xarray
- lock
-Message-ID: <aqsn7pG3UTECs3N9@linux.dev>
-References: <20260916125122.2696271-1-usama.arif@linux.dev>
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YLHXdzls;
+	spf=pass (imf20.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789601947;
+	b=x7rKgMhGPaxNp58HccCbT+UfhpD18kjoXocVeMkIjnJUnClanaKw8pzntuiu0Gn7sAgdVt
+	UKBt6r6UrOIhDIiv8CLQjo/5q3EHU0RvushLc30wZ+64z5uYUStYJPqkE6C2dG1mj2U0iz
+	AZucZpMYmC0HfRag/ekcfe21zaiD0Tc=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 89C78601EF;
+	Wed, 16 Sep 2026 23:39:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 12F63C2BCB3;
+	Wed, 16 Sep 2026 23:39:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1789601946;
+	bh=Dswu9zsCEsbMKYUfI58iswHURG052TIHJ8r8CFIpEHY=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=YLHXdzls85mYvdXkRJNcF/o48MWZ20lilprXr12ykvF32U3l3NRdZ8IU+mmTg1etc
+	 Y87xAyQlx4VfwFnIa/sWfPc6TDmrEfV74A3/696vyZRnarWHNheV5Q6lIypONyUuuR
+	 7zM4nUx/9jkVqgmSAOKougYHAhpZsLnj0YZU/3RMljbzFJx80VJqFi5y8khPHSBTTn
+	 CztVeBkOrDQ+e31Kkc2mPfIpq/1+Zq8v1d/bX6fMq3D1AWHDqN4GGnkq/7ivhHOOOy
+	 ij0NE6GosTqxdW0OTDvkYg1ifcyEglpgl9vOhmgIl9w+V/o4sFXsDCeK3SEQ400Bz9
+	 uf5E4GdunPfGg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DB48FC982CC;
+	Wed, 16 Sep 2026 23:39:05 +0000 (UTC)
+From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
+Subject: [PATCH v3 0/4] Fix HugeTLB subpool used_hpages tracking
+Date: Wed, 16 Sep 2026 16:39:00 -0700
+Message-Id: <20260916-hugetlb-subpool-always-track-used-v3-0-38aae9b5ccdd@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260916125122.2696271-1-usama.arif@linux.dev>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 5E3B3180004
-X-Stat-Signature: 91gwpj6wfbn34zafjzy6hjnnoycfsip8
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJQoq2oC/5XNOxKCMBSF4a0wqb1OHry0ch+ORUguISMSJgGUY
+ di7gUo7Lf9TfGchAb3FQM7JQjxONljXxRCHhKhGdgbB6tiEU57TE+XQjAaHtoIwVr1zLcj2Kec
+ Ag5fqDmNADTznaZnSOlW0JNHpPdb2tX9cb7EbGwbn5/1yYtv6jz4xoKCRKc3SShdMXIxzpsWjc
+ g+y8RP/JE+/kDySgqpMl6LKCi6/yHVd3216AbQmAQAA
+X-Change-ID: 20260902-hugetlb-subpool-always-track-used-2624840f4c08
+To: Alex Shi <alexs@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Dongliang Mu <dzm91@hust.edu.cn>, 
+ Hongxiang Lou <louhongxiang@huawei.com>, 
+ Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>, 
+ Joshua Hahn <joshua.hahnjy@gmail.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+ Nhat Pham <nphamcs@gmail.com>, Oscar Salvador <osalvador@suse.de>, 
+ Peter Xu <peterx@redhat.com>, Randy Dunlap <rdunlap@infradead.org>, 
+ Roman Gushchin <roman.gushchin@linux.dev>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, 
+ Shuah Khan <skhan@linuxfoundation.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Usama Arif <usama.arif@linux.dev>, 
+ Vlastimil Babka <vbabka@kernel.org>, Wupeng Ma <mawupeng1@huawei.com>, 
+ Yanteng Si <si.yanteng@linux.dev>, 
+ Naoya Horiguchi <nao.horiguchi@gmail.com>, fvdl@google.com, 
+ jthoughton@google.com, rientjes@google.com, vannapurve@google.com
+Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-mm@kvack.org, Ackerley Tng <ackerleytng@google.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1789601945; l=4449;
+ i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
+ bh=Dswu9zsCEsbMKYUfI58iswHURG052TIHJ8r8CFIpEHY=;
+ b=tZ5c/LelNfH0teOFwwHcB+51dSHMOtfpAUHlSeNCULgokAeR1g0kBdwQSqAZfMj00+/z7/nIh
+ plRVYhBRjP3A1V4VddwNUHRPIXQLEzxqYuZdALb0T7kNNMz42q6PGNa
+X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
+ pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
+X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
+ auth_id=649
+X-Original-From: Ackerley Tng <ackerleytng@google.com>
+Reply-To: ackerleytng@google.com
 X-Rspam-User: 
-X-HE-Tag: 1789601804-500737
-X-HE-Meta: U2FsdGVkX18QfNfhJXuI2hLoVsIkRYvyfbYjLkygMxfzBk/snj/foJyvR6Zs7MhdqLsgFGnLF9IX388855fRLT6BZWBbDZUNBlHJEqCnIdimGcsLG42WOQA+PbmbFtPj87kTQ0fsuRcJuTi2NzUTw+tse/9Q94Vd84tIlq5x9/VqXkJo9KwwcZrnJ37CMSSzdLjf0hWMAmI5OEPX8Hx+lE+DYVeaHYrNVDj7BzvBiPWHaBi9TQUlEd6tfqubZTcZSNQ3hnP4CvcQb96Poh1o1TjHziA6Tbu5t+S9PuSvWCuobZsCLeE4sevqFMwnsFqzKuG+jFkZqoFgixeedVWy9Af24JyDen8R7FCg2xQVHlYnJEh6g4Rsf4i1U84VKA0v9S0hIDF7AzyJiYfgHY88bg34eA+2/DmbhvQIKwApf2bMZYVro0XgeTjQedqxoombCXbg6GKUcpjhZ3Z8UmlNba2jBWNuI3nh7W553o2KVuJAtIdOGr5TpNGYHxlMdPW6DPeOfs/1hMf7KL1Ph6FWueWU8KflSyLleFiv4CyoZK8Syrw5JakNe7EFapWjulTfMmUNNm9e4dISdr5vif2MZUcmFI3ShlpV8qRyA5Rs1d6byRDscpiLuT2bSZCSLmBL7qUfWAHa/5BjwbbRf6N0+VScEOOkbKoZdOeLhJfPAvMaRY4mrFPxXxZULekH+mtA5yz7Rn956mLeLpXS4+4wC0CjWpwDhcXLGfRsJMhQCjIZY4GDIA/jdXWjlmeJ3Qvu3wTXulXnZqq8FjuU+u8OPJ1nwrucpu5zMINUQ3VvMIHUgNbIlZBNpdKhr3+eQfyL8YnzWBLeYAbP/FCVA0yDPvzZRGCKUYDs2SKJzlkKjBYlOSaOXQ7a47BuKwAdo6CI+32G2xA2rScMItHIEPg57xFEvj1EYuG+GjZ1QgylKC6bN8BWaln2JHjvy2kxRwbl5SV0lf32ux36+f+nJdT
- cGcwZvW2
- oKwn1kkliGY0L+ciXcJC63FVQYu85S7wbxv85RPLNvEQzZrJa0/IrClQE4Peg3u3rhiaXXcMO9Is6BCNIOhUeBoRW1FJee09FW6iTugftwmxN7TWsQon88L7geLdkX8yvDA1nysRWqCenSx5NooVWNbqyz9IleUyd0JiRNRFF09Pz80HfeudYuNOL2q7LPfgqQZN9lZiFnwIH4WuXJcpMhDj7noAYCCWGwvT56+Vzdxu8WZwhyqXAxU+Shm+qN1LK85Q/oQ2GXu0siU0gXDmVsgWdbA==
+X-Stat-Signature: igtywc6nyijebpdauuusjpxjqcy5wqr5
+X-Rspamd-Queue-Id: 362FD1C0008
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789601947-520330
+X-HE-Meta: U2FsdGVkX1/IbJV3lNHSiMXDv8fEDK/jjzuoZrja0HbtFbDOos8D7LTYienKItWC6UDPcSiXFpLOyUwAK1wvqOKv6zgI0thRveYmthE4pBkmHSiDppfFMI5zZGwgB1VXg0tNpX4zJ8iuzJSkESQdsA2tnpbLD7RCq5xS7m8ZKbIyrxaGoZBdLpxfnpsl6K3qnYXvm3hr6P9NuB7ZCYvufmQBBdL7qs7cEd/GUSPCE4q+ful2hSIRZW57CaFrkU8LDgZScBUlQL6tdYewV/aOhfr1JoO/K1Qr8HBOrb8ZhIZPgjflMq25JHZoun8QrPqyj0OoQTyvmQ3v8ZSnhGiI73eDtWK38/azJVBNQIRtwvda/6gQzsJep+uVkkyHu3U2w4GzirBIRrImXr+v2wWyFWoPjcNuP91A2OTX0A5c/khByT7NQF3AtZfj8SJTnghwNrD5zCn++YKczeIdQ8Xb9yNbECaV4m6+uS0SRjCGE36doIB8DYYACpS1aMbgiXe2cimP8F9i2AbgeDEkHNkiDeQo7FHLzqpTQgDM5DCLWuJKknfRCpD3W229W0yAdXuYC72Rs7q4Dwm/TATPXpIAZe/0zHwP/LpAZFU6nngoQUr4PMUWFbOV7viEFiBCXOtDabEv7leAJ6iHTQsjP6c4OkJX/k6uITP2RLmt+5ak/odmLtnYY/AS8Ktn8WZi+I2x3kDZpPebxHNMOGbhmSWM+zLe8P0e4all1B/JMsM589RDjBl2Co56ENpIx5wP4kM4CsnNz1zlaixq9j3wWpwG4flz0kLJd4bQwFmIzZoSlAEXpF5ZpUmp/gcCCvtviiyetiGyQYCZE7BAi+10ASh1K2liJSe9tqxIiljQwI7Asb9v0uhObi5zcGJ+YRWKmFvjlQL+gZIiBnAGCSOtIYdE0wZplBcLwCy3bQJWpY4kNkjx4WTV9wUyXIFVp+CUPfah/7PriJnFQs892Gnd06t
+ UuIvwouP
+ jBDDbsB9kZJjR24TJaIYUTl3pDxpZaL4TI1GH/7MJAHLtVq6knW8LiMziYYvbCe/3QLPbfnKeF10g6yWU5iAmEDMsez7KbWLcEiPW37Ks0EPhJ3VoQl8syWoK910m7GbWJJA78bK/i6rTO9lkv6CyTFaypTIkMUnG1w2fJq/oE9skKC/Imu/tEVcqNPKQHEIYiTtM6eD5b4lJmNSHazWxizW9InoxmPaa/qVmH0EBZOkD/J5GAgSxfaV6Tlsxfr8kF3ACBDH5eTxFPSYMjqbksj0nmAlrx3tKIpgEh4CXIGwkWpGQyTxin7GUPNsdBaZHfY762nhtfVFNlxfW7qu4e4nugHktzwIVyx8PbGXBoC0xdTnCdmueSmTW1Wru2QPdxfbHwZ5hcDIVuIpqkVi8uE3xcNNv9NX+ZMqfXqIpkcFV4dgf95TQXNdaMUPEnJb3c1b6gxPT0+UPG5OoZkCnDYzUN63jTBv9lcmWfXOFZxk3wDFYIXwPxJAcxVvc/wYMQ7aWJ44xoLHLxmJW1HcTkX//osQasOKiMFc43Lvp+A2Th38=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,28 +126,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 16, 2026 at 05:51:22AM -0700, Usama Arif wrote:
-> __filemap_add_folio() inserts a folio and updates mapping->nrpages
-> while holding mapping->i_pages.xa_lock with interrupts disabled. The
-> XArray insertion and nrpages update require the lock, but the lruvec
-> statistic updates do not. With CONFIG_MEMCG, those calls also update
-> per-CPU memcg and lruvec counters and notify cgroup rstat, extending the
-> critical section.
-> 
-> Move the lruvec accounting after a successful XArray insertion and
-> after xas_unlock_irq(). The page-cache references pin the folio, while
-> the folio lock keeps folio->mapping stable and prevents removal until
-> accounting is complete. This moves one lruvec update for ordinary folios
-> and a second for PMD-mappable folios out of the serialized section.
-> 
-> In a 30-second system-wide perf lock contention -ab capture on a
-> production host, the hottest caller-stack record attributed to
-> __filemap_add_folio() had 20,867 contentions and 557.930 ms total wait.
-> That was 14% of the 3.998 seconds of aggregate lock wait in the
-> capture. Moving lruvec accuting outside of critical section should
-> help optimize it.
-> 
-> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+HugeTLB subpools currently only track used pages (used_hpages) when a
+maximum size limit (max_hpages) is configured on the mount.
 
-Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
+This breaks minimum size (min_hpages) guarantees. The subpool guarantee
+requires that the sum of used pages and remaining subpool reserves
+satisfies the configured minimum:
+
+  used_hpages + rsv_hpages >= min_hpages
+
+where used_hpages includes both allocated folios and active reservations.
+Therefore, when pages or reservations are released, the maximum number of
+reservations the subpool can absorb is:
+
+  limit = max(0, min_hpages - used_hpages)
+
+When a mount specifies a minimum size guarantee without a maximum limit,
+used_hpages is untracked and remains zero. The subpool assumes limit ==
+min_hpages, falsely restoring reservations to the subpool even when
+existing usage already satisfies the guarantee.
+
+This series addresses three problem areas resulting from untracked usage
+and asymmetric error handling:
+
+1. False restoration and premature subpool freeing (Patch 1):
+    + Global reservations (resv_huge_pages) are not decremented when
+      reservations are released, depleting available huge pages host-wide.
+    + On unmount, subpool_is_free() checks (rsv_hpages == min_hpages).
+      Because of the false reservation restoration, this evaluates to true,
+      freeing the subpool while folios are still active in the page cache
+      and causing a use-after-free when they are later released.
+      (See Patch 1 for a detailed step-by-step trace.)
+
+2. Reservation rollback races and underflow (Patches 2 & 4):
+    + On hugetlb_acct_memory() failure in hugetlb_reserve_pages(), the
+      error path manually calculates rollbacks using local variables.
+      This is race-prone when concurrent threads interact with the
+      subpool, risking reservation leaks or counter underflows.
+    + On region_add() failure, prematurely releasing global reservations
+      forces error cleanup to attempt fresh allocations that can fail
+      under memory pressure.
+
+3. Subpool usage leak on allocation failure (Patch 3):
+    + In alloc_hugetlb_folio(), when folio allocation fails and
+      gbl_chg == 1, the cleanup path skips hugepage_subpool_put_pages(),
+      permanently leaking used_hpages.
+
+Always tracking used_hpages establishes a single source of truth within the
+subpool. Allocation and reservation error paths can now handle failures
+symmetrically: return the full page count to the subpool via
+hugepage_subpool_put_pages(), and rely on its return value to reconcile
+global reservations with hugetlb_acct_memory().
+
+This series is a subset of patches from [1] and replaces [1].
+
+[1] https://lore.kernel.org/all/20260722-hugetlb-alloc-failure-fixes-v4-0-88e8b81970dc@google.com/
+
+Tested:
+
++ Reproducers (see below) pass
++ tools/testing/selftests/mm/ksft_hugetlb.sh passes
++ libhugetlbfs tests pass
+
+Changes in v3:
+
++ Rebased on 7.3-rc3.
++ Picked up Reviewed-bys.
++ Rename resv_get_accted to resv_get_accounted as Joshua requested.
++ Now Cc-ing stable on patch 4.
++ Moved trace of a false reservation restoration from cover letter into
+  patch 1.
+
+v2: https://lore.kernel.org/r/20260909-hugetlb-subpool-always-track-used-v2-0-30c5d83b572a@google.com
+v1: https://lore.kernel.org/r/20260902-hugetlb-subpool-always-track-used-v1-0-de1cd14bd713@google.com
+
+Get reproducers from:
+
+https://github.com/googleprodkernel/linux-cc/commits/hugetlb-subpool-always-track-used-with-reproducers-v3
+
+Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+---
+Ackerley Tng (4):
+      mm: hugetlb: Track used_hpages when getting/putting pages from subpool
+      mm: hugetlb: Fix out_put_pages subpool reserve calculation
+      mm: hugetlb: Fix subpool usage leak on allocation failure
+      mm: hugetlb: Avoid re-allocating global reservations on region add failure
+
+ Documentation/mm/hugetlbfs_reserv.rst              |  17 +--
+ .../translations/zh_CN/mm/hugetlbfs_reserv.rst     |  11 +-
+ fs/hugetlbfs/inode.c                               |   8 +-
+ include/linux/hugetlb.h                            |   4 +-
+ mm/hugetlb.c                                       | 142 +++++++++++----------
+ 5 files changed, 85 insertions(+), 97 deletions(-)
+---
+base-commit: fd73f4a6659897191fa0d40695fe370925dd3780
+change-id: 20260902-hugetlb-subpool-always-track-used-2624840f4c08
+
+Best regards,
+--
+Ackerley Tng <ackerleytng@google.com>
+
+
 
