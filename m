@@ -4,100 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62365C88E5C
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 14:08:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B862C88E77
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 14:09:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 537956B0088; Wed, 16 Sep 2026 10:08:30 -0400 (EDT)
+	id 474EA6B0092; Wed, 16 Sep 2026 10:09:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4EEA66B008C; Wed, 16 Sep 2026 10:08:30 -0400 (EDT)
+	id 42B906B0098; Wed, 16 Sep 2026 10:09:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D69A6B0092; Wed, 16 Sep 2026 10:08:30 -0400 (EDT)
+	id 3156F6B0099; Wed, 16 Sep 2026 10:09:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0E5866B0088
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 10:08:30 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 98ECE14074F
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:08:29 +0000 (UTC)
-X-FDA: 85219805538.11.918CAC0
-Received: from mail-oi2-f10.google.com (mail-oi2-f10.google.com [74.125.231.202])
-	by imf11.hostedemail.com (Postfix) with ESMTP id E04D740008
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:08:27 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of 32qKqagkbACcVbcNDOOHUDSSLG.JRRJOHXVHUFRQWHQW.FRP@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 74.125.231.202 as permitted sender) smtp.mailfrom=32qKqagkbACcVbcNDOOHUDSSLG.JRRJOHXVHUFRQWHQW.FRP@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A9496B0092
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 10:09:04 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 76AE21C2DAB
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:09:04 +0000 (UTC)
+X-FDA: 85219807008.20.B8059D3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id E153212000F
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 14:09:02 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k3IOKsrV;
+	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789567707;
+	s=arc-20220608; t=1789567742;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=htUCy0q7FG4YSd/XI01PpxHhl9O1HtPtmWa1pKHUGLE=;
-	b=WL1pyru/yGAlq+SUEjwSqeG5l2roM6X3yLR0YhWW6IGXBiaNx1QSYWEDoPXUYSpGCBNxwh
-	bezvbNnSGmiSZb8/jfIrGIGGLuWQ7pWxmx0TOIlNKeAtbgWCkT4nBsJih3dHYHs5KQ7ZRr
-	M1JAyegebWPpsoPe0TZ+oJ98Exic++I=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=P2FyxGgw1ikYY2FCX/RdMpWGC88woDzIrvMXKz3/vl8=;
+	b=444VbCbImGVaQvkoZ+DKqGz7/+oRBdDVcfZQTv7e4W9ns1XVfhnItFdPHxROOcgzocuK8c
+	AKNFuO/ckivEsK4U0iyIp7wx7gqTX1sZIaKTXKyuxKfEELlpInvnyX6yKS4L9VpE0Zv7gR
+	vbfbtvi55Vfvma0DJaaGN+4zKu5cP3Q=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789567707;
-	b=cS6TqCWJHhNEBB3ab3MuMXATsPqAjf9hbjw6IsUkeZ9aeFaMMAyL4t/DzSkuIPP6nuZscz
-	SROq/5jrAM6xQxo4ACqiE/J1WldAak1XsoL/KlVzYdlSTYxsmfMokg+N/xQbXE43fyDS0G
-	QLJHqDZLOADamTl6LwDJEIXYDQ1aTs4=
+	t=1789567742;
+	b=5DfljacdyM2+bmCUkuy4hoyesGaiqHKw3xpYZu9kQPpD1TLpsHiwUk9L2rQFPn2fZPJWl9
+	TMB/Ja1oMJARrmI9jLNjxI9uEbL4vP5pKsmNcNrdqDptCLPTLw/S8qXhTEPEtERYK3IEIb
+	6iGoi9qdH8NaLEUnnNb/3G+N2vmWBJ0=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of 32qKqagkbACcVbcNDOOHUDSSLG.JRRJOHXVHUFRQWHQW.FRP@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 74.125.231.202 as permitted sender) smtp.mailfrom=32qKqagkbACcVbcNDOOHUDSSLG.JRRJOHXVHUFRQWHQW.FRP@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-Received: by mail-oi2-f10.google.com with SMTP id 5614622812f47-4b94bb43008so924854b6e.0
-        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 07:08:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789567707; x=1790172507;
-        h=content-type:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=htUCy0q7FG4YSd/XI01PpxHhl9O1HtPtmWa1pKHUGLE=;
-        b=gvnJNzFBqXkrG2hu4jQQUlVkkq1zm6g1c5psNt0LNEgtPJERpJwdyZcaS6PhgT6yTF
-         e15je4v6DYSdJaup4jU2w/1732gvd0dXkF7g+eOoUDIKGjSB0Ocqdf2tp6gkESurTGkA
-         HiF3rSdsx/sDXx/3OPzMSjLIE4iyPmC/ORXj/UleipCIGtQDny274Wl3Uo0MIrey+c2x
-         q5VkReSrUvwFTqAUADtauvq2EnylMe/an4OXb9tbZbOxcGZ2yuHB4RLZE0mZkiMlmNQ4
-         fkMiahllk8+kfFUGmURwJ7pspir/3YbUDOkkemKnUbz6nfQy7chH6TFSj3za9GyK94QW
-         iSYg==
-X-Forwarded-Encrypted: i=1; AKwUvBwJvG/UcJaz66rnaGtJEsLgWW57RcAnqEfv1aXTVuLp3/6p/VCDHPsiSYhM576vKE5qapK2ldOvuQ==@kvack.org
-X-Gm-Message-State: AFuF++nisSQ1MO51jm3XkpbMKZOBKfePb1oOu4WqvqVzNZR9eG2J6UY9
-	CMUmkBqqfzXZ7aFV8nCJLE8Xg1hmtsXo4P9AWeZkUWS9GAaGY+TnFJizGZiUebZKEo1LdI7QRGM
-	OwHG3ZT7l+REazPjZweWxVgLH8CWT6Ijsc5M909L9wyo9N79NKP1jdNxNR8U=
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k3IOKsrV;
+	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id BE50260234;
+	Wed, 16 Sep 2026 14:09:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FB6F1F000FF;
+	Wed, 16 Sep 2026 14:08:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789567741;
+	bh=P2FyxGgw1ikYY2FCX/RdMpWGC88woDzIrvMXKz3/vl8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=k3IOKsrV9yyi/4efi5YTBfCdN6BT4WiFqtM9xMibfeZ8L1JLvwZnt6FH4xJ5EPlj7
+	 fbcF7iBBEBjlNYvZH0Zl1AevtDgRZ+t/3/Wo91VAtHPzDOSH6Wbo1AyjsPi8xrWtS6
+	 f+9fp1cRGGUS8dJV3qx2C2524oHeoyofz1cnix+QBGaaZyEXNVK1m5aY0eFnWS0HfT
+	 WG/4Lbir4gbnFT/FxZOTj8JXJEu1ogRq6aeB3Si12XyNlz3aybYnQiqy6A9LCcTkLF
+	 BLGY4dBxqbXGvK3jCfMxqNgl/TzycjY5J/AsYTyFaXLDTJ/L/r9ytSIv6NIFFLCx1L
+	 xJ3iqBqVDOtPg==
+Date: Wed, 16 Sep 2026 15:08:55 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+	akpm@linux-foundation.org, liam@infradead.org, david@kernel.org, vbabka@kernel.org, 
+	jannh@google.com, wangjiexun@tinylab.org, sashiko-bot <sashiko-bot@kernel.org>, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mm/madvise: reclaim isolated folios if PTE restart fails
+Message-ID: <aqqi1KWDD9KMa0FO@gremlin>
+References: <20260912110832.3203902-1-gourry@gourry.net>
+ <aqloB0zm3RjJ47m1@gremlin>
+ <aqlzzwLOVT79Ti_7@gourry-fedora-PF4VCD3F>
+ <aqqTtW3vjfzH8bcY@gremlin>
+ <aqqgeOtYBcRdVqmI@gourry-fedora-PF4VCD3F>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:81c9:b0:6be:4eb3:e1c0 with SMTP id
- 006d021491bc7-6c7d3fe744bmr2517440eaf.45.1789567706922; Wed, 16 Sep 2026
- 07:08:26 -0700 (PDT)
-Date: Wed, 16 Sep 2026 07:08:26 -0700
-In-Reply-To: <6936812a.a70a0220.38f243.0090.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6aaaa2da.86093f18.33004f.0001.GAE@google.com>
-Subject: Re: [syzbot] [kvm?] BUG: sleeping function called from invalid
- context in kvm_mmu_notifier_invalidate_range_start
-From: syzbot <syzbot+c3178b6b512446632bac@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, bigeasy@linutronix.de, dwmw2@infradead.org, 
-	dwmw@amazon.co.uk, kvm@vger.kernel.org, liam.howlett@oracle.com, 
-	liam@infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-rt-devel@lists.linux.dev, ljs@kernel.org, lkp@intel.com, 
-	llvm@lists.linux.dev, lorenzo.stoakes@oracle.com, me@brighamcampbell.com, 
-	mhocko@suse.com, nogikh@google.com, oe-kbuild-all@lists.linux.dev, 
-	pbonzini@redhat.com, rientjes@google.com, rppt@kernel.org, seanjc@google.com, 
-	shaikhkamal2012@gmail.com, shakeel.butt@linux.dev, skhan@linuxfoundation.org, 
-	surenb@google.com, syzkaller-bugs@googlegroups.com, vbabka@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aqqgeOtYBcRdVqmI@gourry-fedora-PF4VCD3F>
 X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: 557hbanbkuon16zbxaywtg5otr7sws4z
-X-Rspamd-Queue-Id: E04D740008
-X-HE-Tag: 1789567707-178999
-X-HE-Meta: U2FsdGVkX18mDBUIyQrYKOcK7NBGHQUAJhsHoSkn9MpuwKKQdt4AC5W34nHnPC7tnPEj6KFwrd/zz9X2uVBw3cULHgPsbaXP+nfwoP0j6twGb2pKzDB5O1Jk/EpwpdVfpkIVZDtF85udDHOHOpkNtAVutym/DHNwEo6oxsu5GqTqvBGba1BFeS6jVN2aC4TaMLuSS08ObTZr5suuEN0Eud8Ob8Y9r4I66xRulwVJFhso6uvEvltnw5LIfRrD9Jq4SeWJLi93S9G2JdMQWxi3wYuRXU0tRVDKYfD+Y55fqdODpoKZ9TCUtJ7B1wmiPbytfxNPDY8NpqW0jkJVYUUFOGuKQdD8SSrLJ29H5eZ0cNmQLLwRf61CWFk1pNVXq3V//acmM4oyPaiyXVUyZN6sC+NByDhxujpbi7NfJhrVCGiy6KlKMCu1xtBD+6YzNXK6z6oteL8Ggz+T61dD39Fhsnw/WzWylRxSWQXKNOLEMQrKE1fYqCsSB8kJl0ZKaKZ4krlslx8lVQTvTpXBqg32l+SAnXloUMc0HRLTqW4uVNj6o9zBdlkP78nN8lQVzAvj946WJr/WxwsRZPLHQAbmRYJYbJTiqo34Db18+U2BMFNyhXWt2cYwWP9ZEur0Sk5gT2VYukuVF3wI0Bpjt3Qa/ibQKYAkZuMUTXuUfPMoviu9hPzQh/1OatYTjRgVW5A1uWYL7nbvhjTMwYJ9WCJYsj+pvE2bIe58AjPFbkY34uo6XAEolhZLddrBfmoPVrnn7Gfvm6Avnav8cYIIAQxXcRTH7JFjyKuXkZljTz5bqLR26hvf4Io1GC1oVmfrAJreNCj/8BxeZTtuDQbf1wTNDZbOv55CWY5BY68io7khD9+ZAHP7Y8ZOw1Ajv+oFtEbFj1Jd4sDvVGE1LoyWOSJvoKg03YWE6U3yLe4KPYpMn3Zj2w97jVo/0zHXqUKRqoDQDxaCDA2LzlrhbJ4CTS7
- bR2j2fqT
- 5UkNrbhbDmv5NBTYs34vlSuF7Gcay1qpe9iK0fsssysi+j6FGOYTBd7+WYIe13CjeWhIZrL00DAjjJw3AA364tUz6qE9WoJkp/JqIsKJlynlSLI3i9uHp7sQ0pHW+rQCrW7pDTIBGPZgnV80HdGEFcuyktBfqg4DYUJjWHqU6B9kzqjG9BeuYjCo2tgct8ZY/eY4ewi7IzlvwTpDn6SQRl/x068vSoNq6pl7hOcJCgdOxhkcQGoSPfx9MgXlfLPz9RACGIUePBbyVlaCWLsAnlpQfPLpfvN8rOL+V9855f4mNOoWV5JvOwGiXtY03cL1HVP/cliGe/Fo/dup5BfJkD/UuyYZKMOcDOBalMBbVK3wnQ/o+CFQpwNEu/dPthn6VmketSunYTokfvuYGP+OhXD00Xei+0QuGarjTfx5KH5u8f/MuQRzTkB29BssV3JkopLUucEssVE8v7tBnNJ383cQ/pYe4PMM91EzgJ//WTSvAwNLM9oOQNKckaRJm2aY6H1mO+5/zYEKg3mqqY4tNMafjYDY5ZRWxbz/40riozgIGOszB6IXcfC+01y1Q8qoWaNEZX2KMme+/qPYQKN+IL98IMbPiZOXLdJk0NW7Iafn9fxtTTxK9/ZMpBSGosZKo7TNUM0jo9jvpHidRFYktTmgMm1XWKDcqwPZOU18q0O2b+txxQvlDgPdixh4BTdR3hB7Vj7y3rnh9vZmc+N0ktww1Qr8VEXHnH8wLPFtR3OLlhiDtlRuGj56GEesmBlFXJKgmE0oK0RoIKUhQKWftiEwFiiTRt0rueZ3C2HEfkVhCLsTUtaevPJjnq5+fwXmJ5AoGMLXYzxRnEEIeiUDHvScmm3XuQLZ+bSXngCXVZe6PsRLAIlhEIun0o4fBBocsk8QTYedfT31awzuDy4xUv5tNybYAFapnp2jSJG3wKR4D8QLC+wEOFHslNiLoIXQ6RCPYUlJrmMyCu1opD9JAUrjbeTuu
- EKdcEBEm
- vo5JegwuEglzfi+QEJ28MV46jrvvjrgLIyhgpaqjRQ9rugD5y7jWS9+ZrGh+EnyL7w6k9gQTJfcMpSfokhD73QnCbO6tCb8FM3AjcNmft8lH9ZrApxmBanikDwrHFTaY+B6XoAdbllvr91CSugxryEYJwXK0a0l9K4VogE5JjpuzvPLTqR7uewsaUzK2mjbTLorQyNehDgg76LLJ+LL+DLZnV9RzkuRKzxuQ0r/zBNIS7JD5dm/xXO7vFZrENxvq12hBGKL2RLlb23JLy4XDL8CzTsVxprGQ
+X-Stat-Signature: 5sgh7do6zdiksc8bbqtyam7stm7qiwbg
+X-Rspamd-Queue-Id: E153212000F
+X-HE-Tag: 1789567742-200098
+X-HE-Meta: U2FsdGVkX18mAwEv8iY5UG3qTUGxSeSv0Sj5xBVY6VcYaUTCh/lJeSjRwBEWpay6roavA+qJZ19ldXnTyRxC8bUVs8XdIrqkaekch6fWWRmPKNI7LpbcZ1pGp4MRo34czcXmm8P5kSH99cQu1JnX5KxNEfFjYArUDNfKvM29uXD1AVw/n5MlC8CA4HF4EpISTDel7/DPRPmOhaCcDMe4jYriuG7f7vp4y3ldA3JycAIKK2k0SRClZ1tUqh0FGqp2G0DQ8dEhQzZn9Gzla9+HA0FdyeQZKgoPgFtG4pbFBo3oV59JAe1y3i9bF7GT1Jdcnf6lv+h0mwXXQtGU3qdDVs/qmlVfsonPEtKKGRwiW5rHn4YB0T1V2B+Bbc+5KVIgUAr5gFEXZt/oTFz7qU62YnyySI4s4oIYUIBJl0U7AiaSnQPZnYI6LFEo4e0b1vN+zftBLQ3hYluAQfQ0nT9WRNa8/f3pd6wHM39/wF84pbvgcdPdCWy+dugWEkIawUIratd7g+kgGq9Bzb+Qdo8Fh5vDrufz3RBtVqRfsI/KK1SpoDJ/egjpqYv2IbBYLy8uELpsPSJNnvqv2k9VYiMlJRofLiUEtcyLC9/v9THqh7xfInrrO4QV8NHXE/A6Tv/9b/TeXW9YDwUlEtQn9iCKB7ZSZWOTAiILwkokMxLUov2vupP28XQ5+MFNnbgGMtvfjvSfaTQDzwQzDEqsVEo7yPQ8he9JXiYgG4L//nJG50eAR4UGxuikAqeSfd0l0vF5Z+3B2tY3xv1dulaGKyjE231Zh46MS4Zr69ZtYaN3aaD9nYHcY7OVUffkaaCa+PZxotcQNiz0A5MPKJveTfLtbHx5qgcUXbqvS3jsRz5aMYJ2mfLOZBCG9N3eQz+Mx0q4gjLG8MgLC90c/4xp2XPudRP2EiahtG+IYp+SHM0Wd4qlZTwq5hhblUpug2r6BeZ2OzLQQBtFF0uG0kHjbLz
+ sT9UfMA7
+ Vnv4pmla/FU6yf/1pgi2t6rQj+uXWnQiupaqTWDYsA+9MiXlcf93Dlvvp7PUNU7m2rCFw8fmprRIhLCGop4GrIKczWqMWKsijZvYZHoGlQ5a2alr57k24LvJc7Knq6RNOUz6SBfpDn9V8T3f3YvHZPLsv0pZq7J8n2WumAwAmGNw4by0xEKclU+4eZh6Vnn5gfRM+4+GzYQ8FkgAI+PObut0tp4zWgOlOS4iKx7Z19BJ3zaPQhu25GrNfaQ/MMfsHWobSnZLuIQne99N0wdNvaAT5JL8Ybtlz9ajBQjkUwgYSUS+xNh8uYsqxVrWCnCmAPgp4kfK885Adw02HWp1I1c7W30mD//+2+xtHqTE01GH4T5bD/bMGlxg5Z1xELMj2tnDPnMkajD18J+FPDYjQxqzcdA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,69 +96,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-syzbot has found a reproducer for the following issue on:
+On Wed, Sep 16, 2026 at 10:02:45AM -0400, Gregory Price wrote:
+> On Wed, Sep 16, 2026 at 02:18:36PM +0100, Lorenzo Stoakes (ARM) wrote:
+> > >
+> > > relevant meme: https://i.imgur.com/W0N40BK.png
+> >
+> > Content not viewable in my region :'( seems I do not have a loicense for
+> > that!
+> >
+>
+> google "reading other people's code meme" and find the comic with
+>
+> // this is bridge
+>
+> :]
+>
+> > >
+> > > No argument here. This function in particular is really horrendous.
+> > >
+> > > I think i'm now 4 or 5 stacks deep on the "Thanks for fixing a bug, but
+> > > while reviewing your fix sashiko found yet another CVE-worthy bug".
+> >
+> > Yeah, I WISH it wouldn't do that.
+> >
+> > I mean it's helpful to some degree and it finds real stuff.
+> >
+> > But it's _where_ it does that and the workload++ aspect of it.
+> >
+>
+> In some senses - yes it's annoying.
+>
+> In other senses, it's saved me a lot of pain debugging my new work, and
+> I'm willing to do some cleanup on the way to new functionality.
+>
+> Someone's gotta be the janitor I guess.
+>
+> > > I suppose reasonable to say the goto is worse.
+> >
+> > Yeah I know it's all a bit much of a muchness, and obviously my suggestion
+> > _duplicates code_ which is also not wonderful.
+> >
+> > But the control flow in the function I think is a bigger issue.
+> >
+> ...
+> > > I'll spin a v2.
+> >
+> > Thanks!
+> >
+>
+> Given i already started rewriting and validating the entire garbage
+> pile (see other response), mind if i just leave this as-is?  This gets
+> completely replaced anyway and i'd rather not have to go backward at
+> this point.
 
-HEAD commit:    9b87fdc9af2f Merge tag 'sched_ext-for-7.3-rc3-fixes' of gi..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=16f46bf9580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=b454dc6b1b7acd30
-dashboard link: https://syzkaller.appspot.com/bug?extid=c3178b6b512446632bac
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12f23925580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16f23925580000
+Sure
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/d9d20c79bd3c/disk-9b87fdc9.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/2a6a8f176798/vmlinux-9b87fdc9.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/db8864d1c812/bzImage-9b87fdc9.xz
+And feel free to add:
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+c3178b6b512446632bac@syzkaller.appspotmail.com
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
-in_atomic(): 0, irqs_disabled(): 0, non_block: 1, pid: 38, name: oom_reaper
-preempt_count: 0, expected: 0
-RCU nest depth: 0, expected: 0
-locks held by oom_reaper/38: 4, last CPU#1:
- #0: ffff8880370147b0 (&mm->mmap_lock){++++}-{4:4}, at: mmap_read_trylock include/linux/mmap_lock.h:619 [inline]
- #0: ffff8880370147b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reap_task_mm mm/oom_kill.c:566 [inline]
- #0: ffff8880370147b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reap_task mm/oom_kill.c:609 [inline]
- #0: ffff8880370147b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reaper+0x2b4/0xc10 mm/oom_kill.c:650
- #1: ffffffff8e30af80 (mmu_notifier_invalidate_range_start){+.+.}-{0:0}, at: mmu_notifier_invalidate_range_start_nonblock include/linux/mmu_notifier.h:495 [inline]
- #1: ffffffff8e30af80 (mmu_notifier_invalidate_range_start){+.+.}-{0:0}, at: zap_vma_for_reaping+0x193/0x380 mm/memory.c:2266
- #2: ffffffff8e30afd8 (srcu){.+.+}-{0:0}, at: srcu_lock_acquire include/linux/srcu.h:198 [inline]
- #2: ffffffff8e30afd8 (srcu){.+.+}-{0:0}, at: srcu_read_lock include/linux/srcu.h:305 [inline]
- #2: ffffffff8e30afd8 (srcu){.+.+}-{0:0}, at: mn_hlist_invalidate_range_start mm/mmu_notifier.c:515 [inline]
- #2: ffffffff8e30afd8 (srcu){.+.+}-{0:0}, at: __mmu_notifier_invalidate_range_start+0x5c6/0xb80 mm/mmu_notifier.c:580
- #3: ffff8880465ad560 (&kvm->mn_invalidate_lock){+.+.}-{3:3}, at: spin_lock include/linux/spinlock_rt.h:45 [inline]
- #3: ffff8880465ad560 (&kvm->mn_invalidate_lock){+.+.}-{3:3}, at: kvm_mmu_notifier_invalidate_range_start+0x1b6/0xc10 virt/kvm/kvm_main.c:745
-CPU: 1 UID: 0 PID: 38 Comm: oom_reaper Not tainted syzkaller #0 PREEMPT_{RT,(full)} 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
-Call Trace:
- <TASK>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- __might_resched+0x31b/0x470 kernel/sched/core.c:9257
- __rt_spin_lock kernel/locking/spinlock_rt.c:48 [inline]
- rt_spin_lock+0xc2/0x400 kernel/locking/spinlock_rt.c:57
- spin_lock include/linux/spinlock_rt.h:45 [inline]
- kvm_mmu_notifier_invalidate_range_start+0x1b6/0xc10 virt/kvm/kvm_main.c:745
- mn_hlist_invalidate_range_start mm/mmu_notifier.c:525 [inline]
- __mmu_notifier_invalidate_range_start+0x709/0xb80 mm/mmu_notifier.c:580
- mmu_notifier_invalidate_range_start_nonblock include/linux/mmu_notifier.h:498 [inline]
- zap_vma_for_reaping+0x1f7/0x380 mm/memory.c:2266
- __oom_reap_task_mm mm/oom_kill.c:548 [inline]
- oom_reap_task_mm mm/oom_kill.c:585 [inline]
- oom_reap_task mm/oom_kill.c:609 [inline]
- oom_reaper+0x519/0xc10 mm/oom_kill.c:650
- kthread+0x38b/0x470 kernel/kthread.c:436
- ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-oom_reaper: reaped process 8617 (syz.2.1028), now anon-rss:0kB, file-rss:72kB, shmem-rss:0kB
+If I didn't say already
 
+Because the code is right (or so I convinced myself) :)
 
----
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+>
+> ~Gregory
+
+--
+Cheers, Lorenzo
 
