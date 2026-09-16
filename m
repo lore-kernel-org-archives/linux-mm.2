@@ -4,88 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95EB7C88E5C
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 04:14:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C9D7C88E77
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 04:27:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 55A476B0088; Wed, 16 Sep 2026 00:14:22 -0400 (EDT)
+	id 462E86B0088; Wed, 16 Sep 2026 00:27:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 50CC66B008C; Wed, 16 Sep 2026 00:14:22 -0400 (EDT)
+	id 43B5E6B008C; Wed, 16 Sep 2026 00:27:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3FA5C6B0092; Wed, 16 Sep 2026 00:14:22 -0400 (EDT)
+	id 37CED6B0092; Wed, 16 Sep 2026 00:27:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 257136B0088
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 00:14:22 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0C62A6B0088
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 00:27:00 -0400 (EDT)
 Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8CA9614052C
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 04:14:21 +0000 (UTC)
-X-FDA: 85218308322.06.BF9B6AB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 850ECA0004
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 04:14:19 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="BZJRom/D";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9AA4E1C2A5F
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 04:26:59 +0000 (UTC)
+X-FDA: 85218340158.06.A983FA0
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 192291A0003
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 04:26:56 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="lVobnHU/";
+	spf=pass (imf19.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789532059;
-	b=na0xM1aU05FwHuWf3fAYt0hxOg8NsV87qIMMTXjBWPmVxv2/RolUrDo4/aj3nwNsAyOoDR
-	QTgcAPlbQX2ppWs4QpAMkq1n23wAbFIfxc8mnJSSBHj/BU1QqXgeCwPe/9d3RlFitmAogH
-	4C7nF2gWquKSTOI2AoXvQ/8HXZX+AT0=
+	t=1789532817;
+	b=SMtzDD9bpz/TlSVRi797c9Jj3+vqA/o77nMIpOiM2fHKohVum4q25GHCTO4cVfCQ0gTFGW
+	BZ5wdFG6KT1stMRenSs7To58+n67lsPPr9eYetScNRhTIYqRuLLOA2LeeXKUDzbSqg05nl
+	M8xeiHJlOj3lGfTHBcb5V8Mh1fZNoAU=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="BZJRom/D";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf19.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="lVobnHU/";
+	spf=pass (imf19.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789532059;
+	s=arc-20220608; t=1789532817;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=ngB0o9g4kbXSDf2BCTzrsj2PffWjgQlLeBpYdVht6aM=;
-	b=ET1B0bzCDlZmibCEL8vgg5h9djIgvSjorvaVAxYv/jLfAG4z073O3S7tCs+c3bN0MCXqZs
-	5e4Nv8NFzJ/PclYaa9ryc1C9RYp6ovEHba6+sUdjUi1VnWKpWe4ebvjrfwjdp8gihjtqPE
-	HvKMtX5jM5/ExgbtIsV4Xp9qDOHETgQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7DE51405DF;
-	Wed, 16 Sep 2026 04:14:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AFC21F000FF;
-	Wed, 16 Sep 2026 04:14:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789532058;
-	bh=ngB0o9g4kbXSDf2BCTzrsj2PffWjgQlLeBpYdVht6aM=;
-	h=From:To:Cc:Subject:Date;
-	b=BZJRom/DI/Ux21V7gINb+PGv8pXlzoM2t/8vwmUySYk3k0Pun6FbVEkoOZ1vo/7YD
-	 0fT0RQu9+lG6ss92glHjyMRe1kTS6qGyssu8H3UArPTWLgL6jqC3KX6mgKckwmvKqD
-	 5xnhHRVAlFy36W0a1IE31g8DVwSuEl9pbnBuRx/gAaZ4GtSydqOKTglV7LhI/pQvij
-	 lxl89iGXEPbcmw7V5d2Tp18Zbe9tswws24i8UURFW+BPUy3/3qdHgZCKbIQR9MmRAw
-	 SaULT/+OeNAStLDv/W/EFKt4H7XPfHWjzEwgN8yP9M+wjMU2bl7ySj54xaR0FCnHji
-	 hDwW7v9YpWHaw==
-From: SJ Park <sj@kernel.org>
-To: 
-Cc: SJ Park <sj@kernel.org>,
-	stable@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kunwu Chan <kunwu.chan@gmail.com>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH v2] mm/damon/core: don't skip damos_adjust_quota() while esz is not zero
-Date: Tue, 15 Sep 2026 21:14:08 -0700
-Message-ID: <20260916041409.106926-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=S8yQdWROPFbZrtkwHc1+P64nzM13/IMmJDol6ypIqoU=;
+	b=8Lmpb07na3PjM5X4kqfmeYHBrBaOtAX/dTVOQAQ1x5kCh2A3S70mqB3LX+DqSWwQfNWLY+
+	nhEzu+68z8DKztiMylwXNFGlHUi7A2ExhtO9rf51EwZJMRLq/JujXYv+pAwpVpoHIfsOQd
+	1acRZebfP406r73OqoH13IRTiW4nub0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789532817; x=1821068817;
+  h=date:from:to:cc:subject:message-id;
+  bh=H1F7OYseeUqDrYPk0vo1Gp/5wZAda03MTZ9fwO7JlAo=;
+  b=lVobnHU/oVAqtQrUo1oCAfa5eJEB2dT+Mwqv9OYwNvAOnATT0iwnmhxY
+   2bbUtpkXIl0pD1kytN26ICNVYUT1gvTiiQX1DJ2ShFrC+aHESInBcjWoH
+   5xg5uPbagq6dRcB/Zo25AO2egwx2R7Gnx71c+TabDkEZCms5mqGvKgzbA
+   x3IuQadX/V6xmArIkwNa2wfObz/qm7attxuW5qDmRp4OG2dzL4o1lzjtZ
+   NOPwxz6ujd3o9O1RfJu9Yj0cgSzwg99fHULEEObg4LF2YF3DgC0LaNl3f
+   elHmF6tSMaT32Aj0UAcxkHHxPZYCohwhb4X4GtJJLqoce7MYRMZWoerIl
+   g==;
+X-CSE-ConnectionGUID: GLhrKSVPSZCW0jkrVERgwg==
+X-CSE-MsgGUID: kS8VFsU2SWai9F3drq4mFQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="101249885"
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="101249885"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2026 21:26:56 -0700
+X-CSE-ConnectionGUID: LNCGauBNR9S+hS7GeXMMCg==
+X-CSE-MsgGUID: YJhXFVtgQnWYZE0MRk8gLg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="269532247"
+Received: from lkp-server01.sh.intel.com (HELO 462990a40a85) ([10.239.97.150])
+  by fmviesa010.fm.intel.com with ESMTP; 15 Sep 2026 21:26:54 -0700
+Received: from kbuild by 462990a40a85 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1x6hER-000000005VN-3MrG;
+	Wed, 16 Sep 2026 04:26:51 +0000
+Date: Wed, 16 Sep 2026 12:26:22 +0800
+From: kernel test robot <lkp@intel.com>
+To: David Hildenbrand <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ mm-commits@vger.kernel.org
+Subject: [akpm-mm:mm-new] BUILD REGRESSION
+ b08a65b93426d86e3f354d655d6225397b591877
+Message-ID: <202609161219.C8Ab4FMv-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 192291A0003
+X-Stat-Signature: pdun3zfkaxbe8exyqe943gnaw63x4kmr
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 850ECA0004
-X-Stat-Signature: jhhran4ss1sosdareccfcr94j8db8sxf
-X-HE-Tag: 1789532059-557337
-X-HE-Meta: U2FsdGVkX18N5v9+7qa2ml6ZAnlyBbaG+x7hMMXWXGdXCectP1ZEuqZfO+53twiH0J20KUCtW4bHZyyotugziWQ5b8nKQRQTS7nDZeQOaoDPM75/HEmAWl70Sx20BNGER1S9P36HqnkWNBKdzWI+LlbgdR1l2ZYj+5VHCqO84bzQDZzoj65gBky8I7XcXvBVj2RprfntBVfSQpgTTiweGTKTB1Qubl1HtukCh361uVxMIswyWbsayVhT9lXp5RlSEoFLkKzpAyMkduf/oktICqT1oQfmUwtb8GZnUkd0jWubv/QNIvcF1gEtSO6k1knDD6Au7VloYEeSdaGNtQnxz1dT7p4jrQhga6IjXkeyWjzS6Om1XTeX2GScafyB+VLs7uW0I+sTsAE3kOMpI8GrD2qTV9XjvPPCpV9rLVv60xVH3bif86X9Bh/wMXuKnAhB5y3OaUDrTVbyNj7Hrn1gH2JFJjRGTsg6+8pn4ybLz5Divtp9SDPKQpcyRy0PYd84Mvds05KZM6a/8n3m7/7sfFl/9srH32yP+MwcQdG9S4uhgrf0q9Cigdew9d2jvjUuHg539qq4vnf4BcLXZVsE8affnniXsnSJVc7/CfZzqxKeAIfAGqBw6jroFkkgtCIh/60mvHSfnXiYRdQdbq5qgUmqzEkRDn0vCLPXUTosEYKi/G4qtBvY8smbY7FGwwm3liYUvRt0EAuEAZ0pa4ipRaQYQ/rTePxFwWsETWipyLkYMhteR3B/J4epAT0evFYSr8QMdrDTHpjBkVKkE8dqAslud9WQ4g60VKypHNnEW8+tHS1nUQ1/yBq7c9JsgP0mUGbeqz3wk6mvNCeA8c8yMxD1GHhXDq7TybxQPCMz3zqaKtACGHguBNtMhMljBjfoE1mTLMeXkv/TnuLCbHE0KTOLYFWk8Z0guzb61Lhc6Jf0QSqFOrsuHfw7vxUD6OaxbrEZ+l+Ja8nyq6rBPlL
- 4oJ3p4FS
- zKbkeCrUIKoxdGnIByVIMKKr9dwephpUIGMuNqFjeplI7Wwzoric+CNo1w+JoEZ8zVnbi5tx/yC5vTKxtqtrrqRqMMkBKP6oGP6J8SIx0quz+jJB9foDdiYrsZNOBvln/2tXGyxd1tMD+Q3izOV57vMKfzlPJrzwGsU7feALS1GzP3at7/vOkJnslrWrVsVzBb1ZBFdzHjlmsG/TIHNm3i5+u93Ps7VAJ6T4kTYg+ItwxN+YyXUTIqDONjXkXXDbYAYoSwck9OcTjxbaGBxKHxWhFv58hUvJ6/UgddHCfsS105pgxjAnY7BSRsB17j9uY3zCMGJHvFPmq2anyaMUJJknxEwmvTx+NFX0lLZjCji5+SYuByMQo4KKdcNsRrLTvEARx
+X-HE-Tag: 1789532816-780804
+X-HE-Meta: U2FsdGVkX18q7CE+3UiOASC0U6NDDqoZU2qOBJNPJw+yYNt31PkT/8efqamH+la6KMQmDyvL96QAbEnfufOCH39zWjMIA8f0eqqShNH5OP1fncGxZ2JGL74eG+QeSvMt7Mv9pT16uXvJEwjE92kQL/8uj8vtIGmvAk7PS1n1YCTBoPBE8v9SWXnQaztF1nDS/bqOEpNj+cDef2WFe7V5xOZqgvQwYr4KrWT6irmDmwm4VJC/6dZUKccqKfBOk150NKbwFx9rnMa3Q651OtNDZNQtkDVcbbAS0OXXTtcI9br9I27ekZMjMRopfDcZuH3ZBRs9UQlImeGT2x59Mh/513EX9A/neDjvP8eB3Hn48D2omudGuCfKpZ0I+9eo61t9U5oURfiaMuq1nuEKV5pwhwBy+SwTAvrh6ybHR2ZWIZZtARSK87IHJzpr6LpCMjLvX3IzshIBiglCMwzl37HwPpvr2BrYA/HscV/geFGhIUS1fevrKRzieSDr29ht2E5Vp03Ug6C1f6Z44pzrZnA6derk8Q1dHCsBHhGIqLAj224Pgqi15y07+EvyOkJTMbfUIAU7WF88zxHkDoX1DzRaldvD+bQdxFcAIIlGyaaR4EcArd7n+F/fp+LS6r2dV8vZyj+5EkK3e+ajz/dkIaGKnz0vjpYHo1wa9KKT7ufsutTzefSzNwSrLrEUQXU7F/iYoqAK6crJPcZed8l7Tltpvw6LwRzYM/VTcTnvpjW//nYYpiffBwDWC2+vwmibUC676LvnJVZOnlWgr1RjLs25Fz3r2oOy/dxkry5O0F7PP/Jhx6bglTtxBAcU0Hs5PHRAZkdHjswmQlSq8/aqF9lw1BsXpYjGxX/+K7RGppX9Fa2S1sqRsgtA5hOUN4/p+1IZVmRhdXTV5UXq2IwFPbOdxKIZ55Ow1bjcrxBzkj6L5MtIL2jG/GfXRrzoc+l9URFt0qiSNBd8sYIusyel1E+
+ vObWe5T4
+ /Yj67+L/vUtxzn7umiY1cEixXFrj5IV5njUsuNFDrri92P29CNv2za3/BC/rw18jbVbdrlCEXbiCKIIA3rRgQ3SJ5JYbvpCXgf24BrIPtAmqrK1vLnwnwipN/i/f2WeokPlz88YOF50Q/7IC6Kb9y5Vi3y+Hut8WEXospOo7dLtysXjmLEHAJudRQXgDqM9jgbXMROgoW7AZSnd1Y0lZj4eCQN2Vw0Ft1Cw1T
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,77 +102,195 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMOS could unexpectedly stop working when a user disables quota using
-the online parameters commit feature.  Fix it by correcting a wrong
-quota unset check in damos_adjust_quota().
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+branch HEAD: b08a65b93426d86e3f354d655d6225397b591877  mm/swap, PM: hibernate: atomically replace hibernation pin
 
-DAMON users could disable all quotas by unsetting time and size quotas,
-and removing all quota goals.  The intention of disabling quotas would
-be making DAMOS run at full speed.  When such quota disabled setup is
-detected, damos_adjust_quota() skips all its work.  The skipped works
-include effective size quota (damos_quota->esz) updates and charged
-quota amount (damos_quota->charged_sz) resets.  The intention is to
-avoid doing unnecessary work when quotas are disabled.
+Error/Warning (recently discovered and may have been fixed):
 
-However, users could do the setup while effective size quota is
-non-zero, by doing the disabling with the online DAMON parameters commit
-feature.  In this case, because the effective size quota exists, DAMOS
-will keep working with the quota until it is fully charged.  After the
-effective quota is fully charged, the charged quota amount
-(damos_quota->charged_sz) cannot be reset because damos_adjust_quota()
-skips it.  Then, DAMOS stops working until the quota is newly set or
-DAMON is entirely restarted.
+    https://lore.kernel.org/oe-kbuild-all/202609160337.WJiD9BqX-lkp@intel.com
 
-The problem happens because damos_adjust_quota() assumes the user setup
-for disabling quota immediately disabled it.  In reality, the quota is
-still working until the effective size quota is also updated to zero.
-Other logic for catching that uses damos_quota_is_set(), which
-understands the fact and therefore checks the effective size quota in
-addition to the user setup.  Fix the issue by using damos_quota_is_set()
-in damos_adjust_quota() to determine if its works should be skipped.
+    fs/proc/task_mmu.c:3448:3: error: implicit declaration of function 'drop_rcu'; did you mean 'drop_slab'? [-Werror=implicit-function-declaration]
+    fs/proc/task_mmu.c:3450:3: error: implicit declaration of function 'reacquire_rcu'; did you mean 'get_file_rcu'? [-Werror=implicit-function-declaration]
 
-The user impact is a non-deterministic and unexpected DAMOS stop
-behavior.  That is, users would disable quotas using the online
-parameters commit feature, expecting DAMOS will run at full speed.
-However, depending on the timing, the setup can be updated while the
-effective size quota is non-zero.  Due to the above mentioned internal
-mechanism, DAMOS stops working instead of running at full speed.  It is
-unexpected behavior.  It is also non-deterministic because sometimes the
-setup is done when the effective size quota is zero, depending on the
-timing.  It doesn't cause critical issues like crashes or leaks.  Users
-can simply set a reasonable quota again, or restart DAMON.  But
-definitely it is an unexpected and non-deterministic behavior that makes
-it difficult to reliably use.  Also investigating the root cause of the
-behavior would be quite difficult.
+Error/Warning ids grouped by kconfigs:
 
-Fixes: da87878010e5 ("mm/damon/sysfs: support online inputs update")
-Cc: <stable@vger.kernel.org> # 5.19.x
-Cc: Kunwu Chan <kunwu.chan@gmail.com>
-Signed-off-by: SJ Park <sj@kernel.org>
----
-Changes from RFC
-- RFC: https://lore.kernel.org/20260912200814.145612-5-sj@kernel.org
-- Split out from the cleanup series for taking hotfix path.
-- Describe the real issue.
+recent_errors
+`-- riscv-randconfig-002-20260915
+    |-- fs-proc-task_mmu.c:error:implicit-declaration-of-function-drop_rcu
+    `-- fs-proc-task_mmu.c:error:implicit-declaration-of-function-reacquire_rcu
 
- mm/damon/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+elapsed time: 1007m
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index e0414d2adcb41..89390897a0d8e 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -3330,7 +3330,7 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
- 	unsigned long cumulated_sz, cached_esz;
- 	unsigned int score, max_score = 0;
- 
--	if (!quota->ms && !quota->sz && list_empty(&quota->goals))
-+	if (!damos_quota_is_set(quota))
- 		return;
- 
- 	/* First charge window */
+configs tested: 164
+configs skipped: 8
 
-base-commit: 191c4a84eef1db85cc7e1a853761e8ce8683afd4
--- 
-2.47.3
+tested configs:
+alpha                             allnoconfig    gcc-16.1.0
+alpha                            allyesconfig    gcc-16.1.0
+alpha                               defconfig    gcc-16.1.0
+arc                              allmodconfig    gcc-16.1.0
+arc                               allnoconfig    gcc-16.1.0
+arc                              allyesconfig    gcc-16.1.0
+arc                                 defconfig    gcc-16.1.0
+arc                   randconfig-001-20260915    gcc-8.5.0
+arc                   randconfig-002-20260915    gcc-10.5.0
+arm                               allnoconfig    clang-17
+arm                              allyesconfig    gcc-16.1.0
+arm                                 defconfig    clang-24
+arm                   randconfig-001-20260915    clang-24
+arm                   randconfig-002-20260915    clang-24
+arm                   randconfig-003-20260915    gcc-10.5.0
+arm                   randconfig-004-20260915    clang-24
+arm                  randconfig-r113-20260915    gcc-15.2.0 sparse
+arm64                            allmodconfig    clang-24
+arm64                             allnoconfig    gcc-16.1.0
+arm64                               defconfig    gcc-16.1.0
+arm64                 randconfig-001-20260916    gcc-8.5.0
+arm64                 randconfig-002-20260916    clang-24
+arm64                 randconfig-003-20260916    gcc-8.5.0
+arm64                 randconfig-004-20260916    gcc-9.5.0
+csky                             allmodconfig    gcc-16.1.0
+csky                              allnoconfig    gcc-16.1.0
+csky                                defconfig    gcc-16.1.0
+csky                  randconfig-001-20260916    gcc-9.5.0
+csky                  randconfig-002-20260916    gcc-16.1.0
+hexagon                          allmodconfig    clang-24
+hexagon                           allnoconfig    clang-24
+hexagon                             defconfig    clang-24
+hexagon               randconfig-001-20260915    clang-17
+hexagon               randconfig-002-20260915    clang-24
+i386                             alldefconfig    gcc-14
+i386                              allnoconfig    gcc-14
+i386        buildonly-randconfig-001-20260915    clang-22
+i386        buildonly-randconfig-002-20260915    clang-22
+i386        buildonly-randconfig-003-20260915    gcc-13
+i386        buildonly-randconfig-004-20260915    gcc-14
+i386        buildonly-randconfig-005-20260915    clang-22
+i386        buildonly-randconfig-006-20260915    clang-22
+i386                                defconfig    clang-22
+i386                  randconfig-002-20260915    gcc-14
+i386                  randconfig-003-20260915    gcc-14
+i386                  randconfig-004-20260915    clang-22
+i386                  randconfig-005-20260915    clang-22
+i386                  randconfig-006-20260915    gcc-13
+i386                  randconfig-007-20260915    clang-22
+i386                  randconfig-061-20260915    clang-22 sparse
+i386                  randconfig-062-20260915    gcc-14 sparse
+i386                  randconfig-063-20260915    clang-22 sparse
+i386                 randconfig-r134-20260915    gcc-14 sparse
+loongarch                        allmodconfig    clang-19
+loongarch                         allnoconfig    clang-20
+loongarch                           defconfig    clang-24
+loongarch             randconfig-001-20260915    clang-24
+loongarch             randconfig-002-20260915    clang-21
+loongarch            randconfig-r132-20260915    clang-24 sparse
+m68k                             allmodconfig    gcc-16.1.0
+m68k                              allnoconfig    gcc-16.1.0
+m68k                             allyesconfig    gcc-16.1.0
+m68k                                defconfig    gcc-16.1.0
+m68k                       m5235evb_defconfig    gcc-16.1.0
+microblaze                        allnoconfig    gcc-16.1.0
+microblaze                       allyesconfig    gcc-16.1.0
+microblaze                          defconfig    gcc-16.1.0
+microblaze           randconfig-r122-20260915    gcc-8.5.0 sparse
+mips                             allmodconfig    gcc-16.1.0
+mips                              allnoconfig    gcc-16.1.0
+mips                             allyesconfig    gcc-16.1.0
+mips                           gcw0_defconfig    clang-24
+mips                      maltasmvp_defconfig    gcc-16.1.0
+nios2                            allmodconfig    gcc-11.5.0
+nios2                             allnoconfig    gcc-11.5.0
+nios2                               defconfig    gcc-11.5.0
+nios2                 randconfig-001-20260915    gcc-8.5.0
+nios2                 randconfig-002-20260915    gcc-8.5.0
+nios2                randconfig-r133-20260915    gcc-8.5.0 sparse
+openrisc                         allmodconfig    gcc-16.1.0
+openrisc                          allnoconfig    gcc-16.1.0
+openrisc                            defconfig    gcc-16.1.0
+parisc                           allmodconfig    gcc-16.1.0
+parisc                            allnoconfig    gcc-16.1.0
+parisc                           allyesconfig    gcc-16.1.0
+parisc                              defconfig    gcc-16.1.0
+parisc                randconfig-001-20260915    gcc-13.4.0
+parisc                randconfig-002-20260915    gcc-15.2.0
+parisc64                            defconfig    gcc-16.1.0
+powerpc                          allmodconfig    gcc-16.1.0
+powerpc                           allnoconfig    gcc-16.1.0
+powerpc                       eiger_defconfig    clang-24
+powerpc               randconfig-001-20260915    gcc-10.5.0
+powerpc               randconfig-002-20260915    clang-24
+powerpc64             randconfig-001-20260915    gcc-8.5.0
+powerpc64             randconfig-002-20260915    clang-24
+powerpc64            randconfig-r121-20260915    clang-24 sparse
+powerpc64            randconfig-r131-20260915    clang-24 sparse
+riscv                            allmodconfig    clang-24
+riscv                             allnoconfig    gcc-16.1.0
+riscv                            allyesconfig    clang-24
+riscv                               defconfig    clang-24
+riscv                 randconfig-002-20260915    gcc-8.5.0
+s390                             allmodconfig    clang-24
+s390                              allnoconfig    clang-24
+s390                             allyesconfig    gcc-16.1.0
+s390                                defconfig    clang-18
+s390                  randconfig-001-20260915    gcc-9.5.0
+s390                  randconfig-002-20260915    clang-17
+sh                               allmodconfig    gcc-16.1.0
+sh                                allnoconfig    gcc-16.1.0
+sh                               allyesconfig    gcc-16.1.0
+sh                                  defconfig    gcc-16.1.0
+sh                    randconfig-001-20260915    gcc-10.5.0
+sh                    randconfig-002-20260915    gcc-16.1.0
+sh                           se7712_defconfig    gcc-16.1.0
+sparc                             allnoconfig    gcc-16.1.0
+sparc                               defconfig    gcc-16.1.0
+sparc                 randconfig-001-20260915    gcc-8.5.0
+sparc                 randconfig-002-20260915    gcc-13.4.0
+sparc                randconfig-r111-20260915    gcc-8.5.0 sparse
+sparc                       sparc32_defconfig    gcc-16.1.0
+sparc64                          allmodconfig    clang-20
+sparc64                             defconfig    clang-24
+sparc64               randconfig-001-20260915    gcc-15.2.0
+sparc64               randconfig-002-20260915    gcc-9.5.0
+um                               allmodconfig    clang-17
+um                                allnoconfig    clang-17
+um                               allyesconfig    gcc-14
+um                                  defconfig    clang-24
+um                             i386_defconfig    gcc-14
+um                    randconfig-001-20260915    clang-24
+um                    randconfig-002-20260915    clang-24
+um                   randconfig-r112-20260915    gcc-12 sparse
+um                           x86_64_defconfig    clang-24
+x86_64                            allnoconfig    clang-22
+x86_64      buildonly-randconfig-001-20260915    clang-22
+x86_64      buildonly-randconfig-002-20260915    clang-22
+x86_64      buildonly-randconfig-003-20260915    gcc-14
+x86_64      buildonly-randconfig-004-20260915    clang-22
+x86_64      buildonly-randconfig-005-20260915    gcc-14
+x86_64      buildonly-randconfig-006-20260915    gcc-14
+x86_64                              defconfig    gcc-14
+x86_64                randconfig-011-20260915    gcc-14
+x86_64                randconfig-012-20260915    clang-22
+x86_64                randconfig-013-20260915    clang-22
+x86_64                randconfig-014-20260915    clang-22
+x86_64                randconfig-015-20260915    gcc-14
+x86_64                randconfig-016-20260915    clang-22
+x86_64                randconfig-071-20260915    clang-22
+x86_64                randconfig-072-20260915    clang-22
+x86_64                randconfig-073-20260915    clang-22
+x86_64                randconfig-074-20260915    gcc-13
+x86_64                randconfig-075-20260915    clang-22
+x86_64                randconfig-076-20260915    gcc-14
+x86_64                randconfig-121-20260915    clang-22 sparse
+x86_64                randconfig-122-20260915    clang-22 sparse
+x86_64                randconfig-123-20260915    gcc-14 sparse
+xtensa                            allnoconfig    gcc-16.1.0
+xtensa                           allyesconfig    gcc-16.1.0
+xtensa                  audio_kc705_defconfig    gcc-16.1.0
+xtensa                randconfig-001-20260915    gcc-15.2.0
+xtensa                randconfig-002-20260915    gcc-8.5.0
+xtensa               randconfig-r123-20260915    gcc-11.5.0 sparse
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
