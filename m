@@ -4,79 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7029C88E77
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 07:25:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 161D8C88E5C
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 07:26:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A159C6B0092; Wed, 16 Sep 2026 03:25:41 -0400 (EDT)
+	id CBE576B0096; Wed, 16 Sep 2026 03:26:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E5426B0093; Wed, 16 Sep 2026 03:25:41 -0400 (EDT)
+	id C57216B0098; Wed, 16 Sep 2026 03:26:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D44D6B0096; Wed, 16 Sep 2026 03:25:41 -0400 (EDT)
+	id AF79D6B0099; Wed, 16 Sep 2026 03:26:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 697926B0092
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 03:25:41 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E8F6BC063E
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 07:25:40 +0000 (UTC)
-X-FDA: 85218790440.21.25704CA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 43DFB180006
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 07:25:39 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="aPllAhP/";
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789543539;
-	b=SdYAwQganjwOEBaQFQJI5v8cOgQM/fG85zVBAxkW0nGpRM+98NVl/mgTNNnkdR6isScKcY
-	uS5TZNl/Mgh3l3nV+P2+ehCVu01egoeufj3v6AnmYctTXiR1/7P2GYFUeClWax3B+M73tt
-	UwCAzd8QJ2iertw8A9WHDlmeFZk5B1c=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="aPllAhP/";
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7DED76B0096
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 03:26:14 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0C772A5C44
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 07:26:14 +0000 (UTC)
+X-FDA: 85218791868.10.068038E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 3FC43A0007
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 07:26:12 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oJMnzF5C;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789543539;
+	s=arc-20220608; t=1789543572;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OTAbzpbd689UtjWc7ueN/qun11QEBcpbtvPP6kcJl3A=;
-	b=J/YiunWDeJbYA/7zpk0DJ7eT9SHvnTt39JVAQ4XHUWcRvthBPJwtkKyEbozhMJ6j1CjNz6
-	nkVgjVsuLDJc8JO+jj3QxlsEuY/Bx+XO09gHErA06JF+G3GRgrXXqjKpC3gTu0b5WCibDT
-	Kn2PfmVYLM4Q9sRzv4/S9LyTeUARzOk=
+	bh=uiduZlpOSzqWe+j41tpJG7GtdSaFaqUdX9h65p2QPhU=;
+	b=13bZ87BV2dnSfqjitFPA6XLTBqDqS48qyL25KRYdxf7vckTQNrxrbIQ3Fi5M4zj2shZ1d+
+	YQWTrn6RDQw4SR6ZJZm9fqcT6jTAvU0KC+kbja5nj3ZUKZAiCJlb0xCcNCpVKEIeDCsK9L
+	AD5/U1+O/HoWf5njI4oVKy7O5HSBex4=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oJMnzF5C;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789543572;
+	b=qfQWLoHBlHmKQeTHUt2gajC57Sj7rsyuMhJVwSMnRqe0KkWHAcjtCVGwTKMLcP9/w3voHx
+	J5DF9s+R7vxMAH4gigWW8lzwy4gMe2NCGdRyz9EtzvYvohgfkiNG/dUahc2S6uEHdRZSjm
+	rkiknOEDfcciHjKhgyy6c5XD+os9dNk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0856C6020C;
-	Wed, 16 Sep 2026 07:25:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4042C1F000FF;
-	Wed, 16 Sep 2026 07:25:35 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7F99943A22;
+	Wed, 16 Sep 2026 07:26:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF07B1F00893;
+	Wed, 16 Sep 2026 07:26:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789543537;
-	bh=OTAbzpbd689UtjWc7ueN/qun11QEBcpbtvPP6kcJl3A=;
+	s=k20260515; t=1789543571;
+	bh=uiduZlpOSzqWe+j41tpJG7GtdSaFaqUdX9h65p2QPhU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=aPllAhP/D260wKxa1eciVF4i58bkw1K3RnRin3bsjAe6M+xJNytQAyh7itdX0YOK/
-	 bgCT4pwsqEJx0iuzAk/B1k9JChuKeZsVglHn2Z/6H1qE9Ly1KgZBcQyFObCzB5+38j
-	 x1h51re/UC3f6kHfe4FLPyeT3bsmQVjb/MLTXinlPt74rVQh+489dHUkUzzAgOnQfM
-	 pUv4O1Ig1W+n1CXnaFBmvFvYDnrRjm8DVU1PxCgiVwwziGjclOS1HVRdS0PTXd2aQK
-	 JgYIbWTxpnGfF1yB1xkEdCX8lIBjudQaiTRv3mPSs+QGyB5d4oLjGJ0ZXCtrmrNcXc
-	 9Wvvqwx8lWjDg==
-Message-ID: <1018bcc2-fa80-4e88-a845-d8c4bb59b2e4@kernel.org>
-Date: Wed, 16 Sep 2026 09:25:32 +0200
+	b=oJMnzF5C7Ev3Dp3N/bV4RJunca3jlNa4TqP6Tj6wD/sqhaf1CRL+n1udXp+dqT4WV
+	 eFwQbg8CoIfWO2+GGOfrhngEwutzN69U/TRLUtq6rcLi3SUIlNtU8ZF5YdjTw7ZOob
+	 vs7u+mjt807w0erMTUVqxlTY1i1HBswBBh+r0uYT85FpfeFcw3ZdYCFC3vOptMKJaM
+	 jlW6tBfOeNLhMb7tU38QVTUhvk4NTCc10iK13orqu2ElcuJ5XW2RGAaMfiG7Ln0yHG
+	 ocTNsYde7HHddUhAp2JRBNVWCLB+xGV1aMmukXbGwcBogIQzk/XLcwYOP3uvMGHkhC
+	 mreQEkfBjRSkA==
+Message-ID: <4efdbc78-308f-46cd-ba3d-ae59b53c7ee2@kernel.org>
+Date: Wed, 16 Sep 2026 09:26:05 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] selftests/mm: skip khugepaged file tests if mkfs.xfs
- is unavailable
-To: Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>, akpm@linux-foundation.org,
- shuah@kernel.org
-Cc: ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- Zi Yan <ziy@nvidia.com>
-References: <20260912202903.16157-1-jaeyeon.lee.dev@gmail.com>
+Subject: Re: [PATCH v2 2/2] mm/madvise: use vm_normal_folio_pmd() in
+ cold/pageout PMD range
+To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ akpm@linux-foundation.org, liam@infradead.org, ljs@kernel.org,
+ vbabka@kernel.org, jannh@google.com, ziy@nvidia.com,
+ matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+ byungchul@sk.com, ying.huang@linux.alibaba.com, apopple@nvidia.com,
+ peterx@redhat.com, jgg@ziepe.ca, sashiko-bot <sashiko-bot@kernel.org>,
+ stable@vger.kernel.org
+References: <20260912034833.2952750-1-gourry@gourry.net>
+ <20260912034833.2952750-3-gourry@gourry.net>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260912202903.16157-1-jaeyeon.lee.dev@gmail.com>
+In-Reply-To: <20260912034833.2952750-3-gourry@gourry.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 43DFB180006
-X-Stat-Signature: dmmcydom4jtd4aomrbbkgzgcnyywi4en
 X-Rspam-User: 
-X-HE-Tag: 1789543539-671873
-X-HE-Meta: U2FsdGVkX1+ybHAGmF+xnl5IzHst7FNNTs2CNL2Sqc8O/i7jsGv0Etf2SNuPrZ5cInQZK2jx0NiS3NnNJgodI851f7sEmsKf1Lfh1F9N1V1qHkCYe8gaXFI4ymLkRFioofwwbbj9QHvDLQZh1YI/w5saisOVozt5o1SMzrcbDzKhrFX80ln7x+TdqMgSBydVurIxE04Q2VievgVkKsZSI+uKCb+BvB6qNHZi8Jqxr+CEygr6k+FxVUs0CwuEnI3uButS0WrGXGAY8UTJmhiz65Zhx6pUEOmRQUb3Lqc32EuWsW6NMaH3TBF0avHYOzgES3Yjo4Svqo+7Ym47WC6bqdjJwGu8hQLsgBt7BR0w5ukrVMmVI3wGVQe1pXdRcw7/0kWXT3X6Kpq/YBHS635VwfK9wmZwaxsiUqnnSvH7u1014NLrKZXUxAoLRV9VP712nswpONcU/6U6eTqplGAkHagu0G4hhAcuzaXMVwm/FCbVONRmvg8q5rVFj9HTKsxXLgGCNJbTCYWRvmbYGRx1VA6k2WLuXettqL8f5w0RycydbnnQwt1ryw83ZYAHUqbzYfDkgPbfZXQRATXJrRCewlYEsPWaRnQmJnYgwYOjVFTFSgn13srBrxioYIIGTTvDNgJEoaatTC2eL59FSINi95dZCPVN3juAsOJiiMV6XfPct1hpoBbXvMddovJK3wFANPt0Qnj1p24FZtCmSIRaS5Sk0ixjU0Y+/MXWViILFT0kg2nI3O2Db8m1xBSQQ4rxpbaOaT0URkY6cT8+O+QhE5JQ5tEMPz5NoMxlLWxGj/KbaiBHwy0APNGx17r6U07SZt/bEZZP3UA/gu2dzbTqBc50YdhQijJXWveoQNFGoadeWRB8yUac4gPg6ZbH4tWVvocRp4f1YHIs+gzzXS1vgQwJw0i6gExlNcVm5kr7Lc6EFwqrt1MwzV8IspliQFRKm5VP8BHDCTceutW8KZR
- sUBMKy+0
- zcgZoA1G+Bh/laZmtcvEWXSlQYZP984jxsEXfuy648OdGKPXEPUoX/EiYIIzQ9iQl5R2tefLqQQaN4bq6IDm1vIq0UB4bwSw2Y5qjItwogpqgHLTRF/OvWKWq66JWRQGVFxDWlsZVBiV0QyXqhr978S/8RfV5Ik0JWciIuy25INzpE4Qv2g+LtFCHNo+bjhIAKP8LTpxJD96wFo3THX+zv86ZvOOdXoz2ozMzE22NF3xpEaDpB7himvzjelw7oqgDkx/Ld4+UGf5HA5bhPYtmQh8jDV+4SRu9yDEANhU3nuLDFzAnOwPqNOL3XXl6JeSkBGJ+cx1nOVucT5AA4iEEjLqxngRINnpvuBK1xGsstjqknY9BzpiwPehkcYRYWEYhWjYbgD2+atLXUAZaGpypvY5MwA==
+X-Stat-Signature: o9fqz6w953nney9ejruo65w39kxxpgw5
+X-Rspamd-Queue-Id: 3FC43A0007
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789543572-230734
+X-HE-Meta: U2FsdGVkX19OSDUbvvL+UJ5ezWXA+s+sg/LY2nijYvd1bJLxQHuMUb5YRIQQEZ22K333Y2wB0ynsfvJdhBkk38R7+AWEFrtduLb2yTNgUB1HLdUNC7kJDeVNBW+x6vh9esjRUwPWB2ddTlAqodqMBCaaz3ccGItgYE+PKLBJda9ouIXBSvB3mIAsaebPAxEF/IgBQlT6+tgxZzQXMFiOVH+GRvu/bglFzO2j7BgT4SglA3Rjdq5K3sxy0YF8PauIIFgQBXPLwtvjQROQuyOTigMsy7q18uOtWlUoXZWUhmaFzWsNDlZ5vazO4xilTHVV8oM9LI1a6l1MPk85D1zdqOZ83S/u/t4aX8xOWIqJX2YLGSuuDxWX5v81JSTA09NtklAtyzTbpVWpn+z33h1ssQPUZQOZ1ilYbQTdh2fe8H23CIN3UXhRH1ps/tT5pZ6H4yDNql5oxOEUamEBkMwRqGruxX6sIJYPqZ2JoJUioE0G8kiUwqx30jxlv6BoAABWW6sgrDYAEiApjZMiLC1h0dEhDKDk2dZbAPJiLAwmWbTSEppdyfsoXf3mqBsGmNs3uZojKkNSbqLR90j/js7veqOdli7Ekg7++Y+ZgTrRrVEsP2TSnhuCXKNpx4Y7yQWceaPnDOG/6j+ON3Bvlhvzo+ytVrDitOTD5RJ3TZIBir+tYA6ek2we8OBConvtV/6iLhehYnZZG8ga/aMZqinkveA2HyCR46wZ8vJ+Qbyo7r+EFV/ukQJKxP5N+NvsaTHNqlH0Y7iPDPH4MLnyXUjgKSCzjwaytZRrsd8kWplTZ4v+9bN8/SI+FDClM+e9c3j3nCOfe2kzdwfaxwg2BZmb+bVk67RT9QyoQoZyQS68Z96Lai+0prY4ioT1FleKXCLA+0rqDXEYnt8qhXovvoJre1tAEcEwEvgI15LWjrNE8BNpcu53fkQnPgd7E0OgwG7uCLb+EKD6VXrkVklNA+1
+ +HFQmsBO
+ lhsTH0maoFimHQwgF2DUonT8hnY+H7cI4AwzOCGddwFonIXatBQaCcmCpzKAxiRULTrMoqaljR+qpmJaFOoUr1qJV4J+yjAPTLcDJ2DkZg/jx6x6DNJRcNfH10gdVxLwWMSFiDt/HQXGwgPHWt4nnI2kSufWKos8KTO2acHDQ2x8CfacPOo5RSH+LKqfGtNPuRjuJVfFfjrWOxv2FgMY3tSk1z9Ba2DG0sRGh5tv0vnbJ7uGpgVBdONl2qpHwpRHav3S82C+f8F55sE9eXowCPkbi+iclnKk72+4SKZWmKvTKbt05zcpAUFW5dIgz8t1q29DF53bJz6bNdqoOV7LYyUq2wIdhaLppDaksXEWnjQp0ZhX1ASEc98PEPDETmZxiZPoTuQPn7+dTYEJcUDFwQ8EK9CCkEVCjOyfkSjY2sKii0POFNMnZMV8GIz5XTJnC38ESXvUeh/52avwSEHLf335M0q0RxXjIeEXJrw3KV8mttTnnF+hIH6e9z90pt3B6x1NRPYHJdBoviDA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,21 +144,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/12/26 22:29, Jaeyeon Lee wrote:
-> The XFS setup for ./khugepaged all:file checks that the kernel supports
-> XFS but not that mkfs.xfs is installed. When CONFIG_XFS_FS=y and
-> xfsprogs is missing, mkfs.xfs and mount both fail, but
-> SPLIT_HUGE_PAGE_TEST_XFS_PATH is assigned from mktemp -d and stays set.
-> The test then runs against plain tmpfs and six subtests fail.
+On 9/12/26 05:48, Gregory Price wrote:
+> mmap a VM_MIXEDMAP region whose ->huge_fault installs a PMD through
+> vmf_insert_pfn_pmd() - mshv_vtl_low does this, and needs CAP_SYS_ADMIN
+> to open - then:
 > 
-> The script already has a skip path for this test, but it never runs
-> because the path variable is always set. Assign
-> SPLIT_HUGE_PAGE_TEST_XFS_PATH only once mkfs.xfs and mount have both
-> succeeded, and remove the image and directory otherwise.
+>   madvise(p, PMD_SIZE, MADV_PAGEOUT);
 > 
-> Suggested-by: Zi Yan <ziy@nvidia.com>
+> With a stand-in module for the driver:
+> 
+>   BUG: unable to handle page fault for address: fffff587c0000008
+>   RIP: 0010:madvise_cold_or_pageout_pte_range+0x410/0x9b0
+>    walk_pgd_range+0x52b/0xaf0
+>    __walk_page_range+0x6a/0x1d0
+>    walk_page_range_vma_unsafe+0x8e/0x120
+>    madvise_pageout+0xb2/0x180
+>    madvise_vma_behavior+0x46b/0xa90
+>    do_madvise+0x108/0x190
+>    __x64_sys_madvise+0x26/0x30
+> 
+> Nothing validates the pfn on the way in:
+> 
+>   can_madv_lru_vma()     rejects VM_PFNMAP, but not VM_MIXEDMAP
+>   can_fault()            *pfn = vmf->pgoff & ~(mask >> PAGE_SHIFT);
+>   vmf_insert_pfn_pmd()   no pfn_valid() check
+>   pmd_folio()            pfn_to_page() -> unpopulated vmemmap
+> 
+> Even with a valid pfn the path is wrong.  The mapping carries no rmap, so
+> folio_maybe_mapped_shared() sees mapcount 0, and the walker goes on to
+> folio_deactivate(), or folio_isolate_lru() plus reclaim_pages(), against a
+> folio this mapping does not own.
+> 
+> Use vm_normal_folio_pmd() and skip on NULL, as the PTE half of this same
+> walker already does with vm_normal_folio().  This also filters the huge
+> zero PMD, so its separate check is no longer needed.
+> 
+> Fixes: 3c8e44c9b369 ("mm: mark special bits for huge pfn mappings when inject")
+> Reported-by: sashiko-bot <sashiko-bot@kernel.org>
+> Closes: https://sashiko.dev/#/patchset/20260817220810.1175596-1-gourry%40gourry.net
+> Cc: stable@vger.kernel.org # v6.19+
 > Assisted-by: LLM
-> Signed-off-by: Jaeyeon Lee <jaeyeon.lee.dev@gmail.com>
+> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 > ---
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
