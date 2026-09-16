@@ -4,129 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AD00C88E77
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 03:45:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BE4EC88E77
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 03:47:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 720766B0088; Tue, 15 Sep 2026 23:45:00 -0400 (EDT)
+	id 108976B008C; Tue, 15 Sep 2026 23:47:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D0886B008C; Tue, 15 Sep 2026 23:45:00 -0400 (EDT)
+	id 0BBD86B0092; Tue, 15 Sep 2026 23:47:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C12D6B0092; Tue, 15 Sep 2026 23:45:00 -0400 (EDT)
+	id F14C86B0093; Tue, 15 Sep 2026 23:47:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2DC1E6B0088
-	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 23:45:00 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C7F261405FF
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 03:44:58 +0000 (UTC)
-X-FDA: 85218234276.17.9E2BCAD
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 02D96180004
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 03:44:56 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=bOSPZYSo;
-	spf=pass (imf24.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 749D36B008C
+	for <linux-mm@kvack.org>; Tue, 15 Sep 2026 23:47:12 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7CD3716046E
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 03:47:11 +0000 (UTC)
+X-FDA: 85218239862.02.47673EB
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 7955E20004
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 03:47:09 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=tnJJ08F2;
+	spf=pass (imf13.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789530430;
+	b=BOMdP+0mJ6HJmG1G07MFROgI0ZlZGjAgWatdVxlDnfm/qR82oveX2douqo3htl3J4ZzHfp
+	QlJmm+yEKg70+cuCP10Gw4LITF5KYNYUfENd2XIxBlGMAo2cyIFsrJumYriJ8AoKTrSykJ
+	D1SqHYMUexrG7TonFILagRfXtVYCLho=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=tnJJ08F2;
+	spf=pass (imf13.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789530297;
+	s=arc-20220608; t=1789530430;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MnDdBBFYGdDerxU4AbUc/Vqzv/CMmRt4z5XHr/nlcM0=;
-	b=MWMJDvp4JP2WQ+B6H9qktmWCSeVXErLw1GFnm8sqA09v8K/pW0y9J+6WN1DtzpqYgWIhno
-	ByS9seYwg68AHH7RJfACJTiWcFb7rE8ee2i6lha0432PrSgA7yU1g57bk1jyYRen6hHjqB
-	0e7AMkD2YX4YMFzXJEVTEzyE/y4d27g=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=bOSPZYSo;
-	spf=pass (imf24.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789530297;
-	b=PtAWClTTg5Rb0oqtZ9KTuFxNLPxTQdN2qr3+xpB6gduRRGTRSZcbadXFGdzgEO1Zsj+61t
-	fxayRtdRwOupLvc18A7qRhmY6ypG9CoF2EP1Y3i/J9e36/cBV4297OfgduediPph95HZSv
-	hzXkzye2UO7uCM2Nhv7U4agbMYEKGSU=
-Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-398c066106cso341213a91.1
-        for <linux-mm@kvack.org>; Tue, 15 Sep 2026 20:44:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789530296; x=1790135096; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=MnDdBBFYGdDerxU4AbUc/Vqzv/CMmRt4z5XHr/nlcM0=;
-        b=bOSPZYSoY2qkBBipWxvWo0UBWpqX6ax8ePp3ble8YCk1piSd7c1whQNJqBzPA29KZJ
-         DADAy0VOgpWogDKlwgZ/ImQZzl66klcqsYaD+8VtkrJ+ESRj1hvnMduxdsxk0vOSmo7p
-         wsQLXGqP/dokOvPGH/g1aCOUTMVNrE+CZDjJQM1qor5ZyRM66VoZCbLssmMOjsTHLLac
-         cH0c3O0jPbglvkFU1Wp8oZHhvkwFa0dsqP4rlVuYOMwXcRD/PJJU9m9+P5trRRX8KMUP
-         jaCDvqNoLwpckbcHieY+E9dLApWBXH0CQVoFOiIAbWHndOmo7zq9SjQHMbRqvpbrcpUs
-         /97w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789530296; x=1790135096;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=MnDdBBFYGdDerxU4AbUc/Vqzv/CMmRt4z5XHr/nlcM0=;
-        b=xcu4zG587Qhoa8TjwFr+MiuQwYuL8iIEy8qAPIoMtOzGStHTFat2HPPReCxwhENgBw
-         HwOLO1dMzFnVcMQ/3E+lAzEEf7lv7KvZySG3kxqK4alV50q1rFiNeGS72GT6gu8LJL+v
-         M8weUhYxuimr5x7k8NT4cn5e3sgCVoeNGHzP1aYfX8VOvgNJtXD0XpkYiSrwOW1t5uC4
-         Kpg9N0vk1BlcXTBLZKp//Q3yCXGlpkpXGZgFgdNt90q+QSAY/0rfBhUH/ZGMGD+cxbzR
-         fT3rVuzaLztTHjnrLMI+gGdWgcSG3YMC5Ig2nRStetunoEGgPol51mlW4haofoU1qFwZ
-         060w==
-X-Forwarded-Encrypted: i=1; AKwUvBxX7ebhhscbWKy74SSmny1qyEDjRvFxCLOTvP2CHH1x8GWWIAaTZUnkR4QmXVe0sSeDFXa5NYzLNg==@kvack.org
-X-Gm-Message-State: AFuF++nac2BRcLvggnz95nz2mPgpnzWC03wE1uwMR+HpDq0nYCITxjUi
-	5VGBfovNiG65IJ3P1JZLZMZqgOijaXRU1GKgECXy1WR/E2yCyV1V0EhX
-X-Gm-Gg: AYBFou2o/U4/UUq+1Gnj0f2kvJblFNWb2cjMUq9tmTWvJ/TmUILKZAwwT2jmbRe/1KM
-	XbhXteMWqihlk20S85lEQp/j+67HUFx/t/jAFuTIO2XwRYnV40HRMZOLAFsX/jzfw1It2T4ASRB
-	s1tFvSGBljKXyo4kibn32LGTlxlz103bQy8hoH/HV2EZLpe/Hi1U4Dn7vDNdmW5/59wt7XU1gjH
-	t5MDBLRnjwy5vpk+dwcUGJS9SHZfNWN2zW8Ira8MGauZc1vw2BArsLcbOlYLRR4gyLA/18Pn8bF
-	ZjPinauecWS5RJim3Sss1/KSXGaOvJGH5QVuOhs9LOpOlv2tmgaOiT+79MgWjXBVdJ9QX1hhfb1
-	1QWj1G4ZTRGIcALoZAbjIuYdYZW4tntx55QarGcTkWO+78aQvgJP8RHn7//4PP4Nj6p2B/SMwBl
-	5gLC1WODCt8eAUgKcoDKExl70hHlTDhCyj2jmXVmv+YfH6Y/swoghTZcUv9f/KZKS8Nmug3T/oT
-	SUw7y5lYS227Cj4EazAWB/a1wS/tFkCEWn4PS9L
-X-Received: by 2002:a17:90b:3b91:b0:398:a486:81ec with SMTP id 98e67ed59e1d1-39e1e380e12mr2394470a91.11.1789530295541;
-        Tue, 15 Sep 2026 20:44:55 -0700 (PDT)
-Received: from localhost.localdomain (vmi2317699.contaboserver.net. [85.239.239.237])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e1bbfdd49sm1915990a91.11.2026.09.15.20.44.47
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 15 Sep 2026 20:44:54 -0700 (PDT)
-From: "Lian Wang (ProcessMission)" <lianux.mm@gmail.com>
-To: SJ Park <sj@kernel.org>
-Cc: Lian Wang <lianux.mm@gmail.com>,
-	Ravi Jonnalagadda <ravis.opensrc@gmail.com>,
-	akinobu.mita@gmail.com,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	akpm@linux-foundation.org,
-	corbet@lwn.net,
-	bijan311@gmail.com,
-	ajayjoshi@micron.com,
-	honggyu.kim@sk.com,
-	yunjeong.mun@sk.com,
-	rientjes@google.com,
-	weixugc@google.com,
-	jic23@kernel.org,
-	gourry@gourry.net,
-	Kunwu Chan <kunwu.chan@linux.dev>
-Subject: Re: [RFC PATCH v2 0/9] mm/damon: hardware-sampled access reports
-Date: Wed, 16 Sep 2026 11:44:30 +0800
-Message-ID: <20260916034439.28517-1-lianux.mm@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260916005810.101606-1-sj@kernel.org>
-References: <20260915025514.2434-1-lianux.mm@gmail.com> <20260916005810.101606-1-sj@kernel.org>
+	bh=9efYSZJn9a/CzhHEaT/SrO6qZOgETJFVf5gs3eb/8ZM=;
+	b=VdiZ2LA+hIFrUCBASg83ejOgqhU2j+t1AxaaCLSZsHmq9KFLXRdQhFAy1Pnzbrzd4s9gMm
+	zo09eqG7YLUvIGgfSVBToADiE+j2+wW0oM99ersjXDi+NhfYJC95saHsWEd2Lme3DIO87r
+	hF/dYZ/6R1KDfHRH4ySMVcvgxC52+Oo=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D8ADC1516;
+	Tue, 15 Sep 2026 20:47:04 -0700 (PDT)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D860B3F882;
+	Tue, 15 Sep 2026 20:47:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1789530428; bh=gOP7mzIR6JicHMR6kpk3glCyrPVAZFRo2ZW+FrgmoTc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tnJJ08F2B08v+fsmMrIYOk0W1spMzOSuvw85ZIxDRL/cerfM015Dh3CGI9V7nyzyf
+	 pN74mS7hOpVty/3zNCtYAkuo4HA6jeKDhcnCFOMGC7vZcmFtYKiYsulg+fFme8yPHo
+	 CeN5iGihTx4JeaKQbPMyN1tnhGhFIBW2U9blnLao=
+Date: Wed, 16 Sep 2026 04:47:03 +0100
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Zi Yan <ziy@nvidia.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, Shuah Khan <shuah@kernel.org>
+Subject: Re: [PATCH 2/2] kselftest: mm: fix intermittent failure khugepaged
+ test
+Message-ID: <aqoRN6_qo2nEy27c@e129823.arm.com>
+References: <20260915-fix_khugepagd_fail-v1-0-bb6f04c8759f@arm.com>
+ <20260915-fix_khugepagd_fail-v1-2-bb6f04c8759f@arm.com>
+ <24690e82-3aab-4f2d-95a7-3bba332ca5bc@linux.alibaba.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <24690e82-3aab-4f2d-95a7-3bba332ca5bc@linux.alibaba.com>
 X-Rspam-User: 
-X-Stat-Signature: xsc1jzw7thi5zjfx3iaxrwgd48s83wix
-X-Rspamd-Queue-Id: 02D96180004
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789530296-404503
-X-HE-Meta: U2FsdGVkX19Lc4A2sRrcehWoeY3WMqk3vpV3NItwpiKMu9xSHInSIxF/ql+C7T8xqRbomAzoklcT82bYN4BOG7+GTqQICYdEDSrJB2O/2lIPqH0+ZwF8DRaDqyjwsM7q47togOc3+re4XqmC7JFCTVl6YeRUKeV/e8pgjv05aAhAJsJMXMJws8EpD4ah5bSsLC00UseHtwRaFF2KSeNfZwpTb3GtjljzUCtGRS2B1P4Ow7tksBkut6Q1HCcuxvcYAPuYTWNZ5qED7pwGKnPwyDqssAQY2HdHci1pmbORSD5PQPelKOHJcgkvlfOEeLc4OKuqq+hKvDTx1Jm1DWmy96yZ658QKzv7hOu1tOOz57qzFgyx5VPJnh+VT7wq0BEmpqGankIj2vTVbFz9qg9hyWAckWQW2afpqtRecPBGyx81Ej8g8slglDK3ii1RnDuaEVTGftPkUfM6LtjN+yehYeD0O4+zqpHvOpd8n3PnAybD4W86wVbJCiG9zd83/kXPekeUTLyYtJ2VtayTnL6rVCl8Oz5m78AVri9vKQ8Z6KmAfxP2NbNwvJ2h++JdwoizB7z+nO6XsNHd7hI5mQ+8YmfsABusinm9M3dCCAZWfZJCf9n9delGcCo8Inm/B6Ji4azA1DLDjD6dmR6Ly5wHefZCo/Ja/oQ1ciejFm3pNqRoEYmatIE7ixY3k1q5OqT6ycvI1TNb64JQuW7auPux5pWLJSbSVAL/ieV/AHv+o9iFEq/62RxZJ3FsRnCe9xv+pKpCPpjbzI8lk6EVX48fHb5Qp9KEhqqowSx+FbE/C15VN43hwrH5GUGBCQ8gzFjV4uuArYpbJKSfeM6dG4VQjJefPEcxf+DuGC70wGYz0lrQbVnJ07OKWjW1KZQQ2QiJZ5v52pwK7eNDxJ3MYdq1f3u4PK5DQTvv7BaBRmQLLn+qbgmgkGcABm84fU/bJDS82YLF7w5mGG/ZBxoHmGY
- /jRGaji4
- 61QU5EndKzQv+sthEkYtnV3ZAtgQRXceJVT2ICbJ3VuaiQ7k5PtRoDknWbZHneS2SPL8lQbf5/OggTHMvpV/Goy9fxgQIla4QJmMdi0flW6gZZ7qJlxJj4ku38Qop5oxJEk/CWiUSjck5N1toWmzdMGxWIPmu1rcIS6K7UipCC3mEk8rBwrjZ/KO7/iCaldCz65nNbXQSLiCUsC6Ds3tUYVjxyjbCONHbahT65dwe41zMulaErjB/QwwiFrZEX1A+FlvmhDT/XNC62wVFHB6APvuDlb43IoS7c8vmKHuAddPlvzD0McLEszUk6uT4bA8EtV6zTDVHNc03C1MWkgWt1LwX78BpDURVvNVfHJdJb+EQmajkYn73ok9zrOrH7swQVtwJjBT8RfvuhCezykDaIdQoJ9Tm1UfVpcsjUOIE3hIMmRF9RqG4T6r3Fhhb/IrgmVWQGbHLRtgSnGOVTJ8qtAtNig==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 7955E20004
+X-Stat-Signature: iu94a9pzwqrdk4h4cg5fgnhz5knnaag5
+X-HE-Tag: 1789530429-641623
+X-HE-Meta: U2FsdGVkX1/q0R6K+yW7j7BqEHOFcOpTWRgpkVOKI1phkDRypVUEN6BJedC4qwpwP0LnDF2VfH+Isgp9JiBJ10kUECHPGhLrpyFspDNMulbSswfR5Zh+1lRNyJ5+qEzjNpj+kSCTAuhyzyHtFoSXbVbICo6ni+MCHsV0oSYnxrQXaGIsw5GaPpWi53RozNuG+VWZThVrNYNVplxl0CJs8DQI8Et+ES4mPlRiM5cSfVz/cYYclhUaQXm7rMrMa5N5BEtXVPqK8GIXlLGJhrw5fAz9yB96b9W60E0VhI3+po9kdo9Q0z/ZERf57Aznm+xjgEKQqfB394zcNJSHrJd6M6qbzBRJXxuPP9OSn/ZDgAY/rAmgZtKV08iCWl4XI6UfKAm6+ajkYoUogDZFDuYqi7R2CuJBwwvAXKl+facaUOSay5/+3aIjhM3zKg7vjGvqbyYlWLG1WLRfwvxZ3+6ximi21T/zGMEqm96KXqGKl2fzer6JnfIk+88vVFAeGTjJgy6i98qIV31r6GBS6Kz08LWhEWHKmz9jezadC/8/jQzxFpDcgZtFLyJ9E4pW2s6/gOSEFheTpoy3n932nAczHJTQ3sThjba/S0wkG4VrY+LMRPsO/T0Zg/hKGd4J86d0dNsp7GtJO+ZCgFOu+stSg+DL1vmkI43u/fvAqNtMat9Yt0BuEZad4VmGMTIl66JwLQ/eJb/XYA1yH4zwOPPPCUqkEd+EfxnWaGjcfUQ5kMtY1MzYrf/4O1mhUkbd7q32xtAnAXmVi5ShADTv1j8BHFlp/EzSDxAAwdA2vodMm1x1xKWIokyTegcPisdRiuV4pvzTUxR0xajFFD7C2rwRJoSp2eT6R2mCtP5PyTxv33iAED4O0hX/V1jXHdQHDAToLSp86OsVLrbDuFD0pNPQTUDezJ+9jiehrURxOAaBudAsB4pKGxaSbEoAUQk/CehNhL0e1PBfjvQkkpvT/Cp
+ 0XULSJnT
+ LBqMoqNxOUSnO2NxXx6bManSLBrUt3j+dZMObWVZrV1qBOslGl42a2KmZBiMCSC5uyQb/mbb5ECRfMOsvAWQyU6K5lGr5orAlKF+TO6d99kGUv5T9k4DWnj1/zDgkijIx/GcugvwNgQzI5Gr7G6qeiGL7wR3hK88UQbZiZeJ6K0KwF07nWxopFc30n1xAzuxVqz5qs6kg833ZBQhIcPaIhipSZdgmZaHdbJmejBw3q0ZLQO9WKUj4DpqMbJNEFthWumGUIu/h+UzZdO4susdH2LhRZlOVPLc26VeipwUATExvOds=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,106 +102,161 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi SJ,
+> 
+> 
+> On 9/15/26 5:21 PM, Yeoreum Yun wrote:
+> > There are intermittent failures in collapse_max_ptes_swap() and
+> > collapse_max_ptes_shared() when using the khugepaged_context:
+> > 
+> >    // while running ./khugepaged -s 2
+> > 
+> >    # Run test: collapse_max_ptes_shared (khugepaged:anon)
+> >    # Allocate huge page... OK
+> >    # Share huge page over fork()... OK
+> >    # Trigger CoW on page 1023 of 2048... OK
+> >    # Maybe collapse with max_ptes_shared exceeded.... OK
+> >    # Trigger CoW on page 1024 of 2048... Fail
+> >    Bail out! Unexpected huge page
+> >    # Planned tests != run tests (26 != 23)
+> >    # Totals: pass:23 fail:0 xfail:0 xpass:0 skip:0 error:0
+> > 
+> >    # Run test: collapse_max_ptes_swap (khugepaged:anon)
+> >    # Swapout 257 of 2048 pages... OK
+> >    # Maybe collapse with max_ptes_swap exceeded.... OK
+> >    # Swapout 256 of 2048 pages... OK
+> >    Bail out! Unexpected huge page
+> >    # Planned tests != run tests (26 != 17)
+> >    # Totals: pass:17 fail:0 xfail:0 xpass:0 skip:0 error:0
+> > 
+> > This happens because khugepaged may collapse the pages before wait_for_scan()
+> > is called, causing a sanity check that expects uncollapsed pages to fail.
+> > 
+> > For example, in collapse_max_ptes_swap(), after faulting the pages back in
+> > and paging out up to max_ptes_swap pages, khugepaged may collapse them again
+> > before c->collapse() is called.
+> > 
+> > To prevent this, change the khugepaged setting from ALWAYS to MADVICE for
+> > the affected tests, and mark the VMA with MADV_NOHUGEPAGE after it has been
+> > collapsed by wait_for_scan(). This prevents khugepaged from collapsing it
+> > again before c->collapse() is called.
+> > 
+> > This failure was observed on NVIDIA Spark with 16KB page.
+> > 
+> > Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+> > ---
+> >   tools/testing/selftests/mm/khugepaged.c | 15 +++++++++++++++
+> >   1 file changed, 15 insertions(+)
+> > 
+> > diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
+> > index c32244b565658..83e9386bbc842 100644
+> > --- a/tools/testing/selftests/mm/khugepaged.c
+> > +++ b/tools/testing/selftests/mm/khugepaged.c
+> > @@ -578,6 +578,8 @@ static bool wait_for_scan(const char *msg, char *p, size_t len,
+> >   		usleep(TICK);
+> >   	}
+> > +	madvise(p, len, MADV_NOHUGEPAGE);
+> 
+> This looks incorrect to me and would reintroduce the previous problem.
+> Please see commit 7962e05a835f ("selftests: khugepaged: fix the shmem
+> collapse failure").
 
-Thank you for the questions.  I mixed the original field scenario and our
-controlled reproducer in my previous mail.  I also jumped from the observation
-problem to PMD mapping demotion before explaining why the deployment needs both
-huge pages and finer-grained observation.  That made it sound as if our goal
-was simply to stop using huge pages.
+But, after the thp_enabled changed the THP_MADVISE and then fault,
+there is the chance to be collpased for anon.
 
-> The observation makes sense.  However, does the sparse access pattern
-> realistic?  If so, what is the purpose or expected benefit of using huge page
-> for workloads having such access pattern?
+I overlook the shmem case. but simple could we do like:
 
-The original case is not a lab-created request to use huge pages for a sparse
-microbenchmark.  It was reported by SXF from a KVM/QEMU deployment where the
-VM has a large memory allocation backed by a shared tmpfs file, host THP is
-enabled, and Oracle runs inside the guest.  They use host-side DAMON to measure
-the VM's hot-memory proportion.  With the same business memory use, they
-observed a much larger hot proportion when THP was enabled.
+diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
+index c32244b565658..047524f001532 100644
+--- a/tools/testing/selftests/mm/khugepaged.c
++++ b/tools/testing/selftests/mm/khugepaged.c
+@@ -578,6 +578,9 @@ static bool wait_for_scan(const char *msg, char *p, size_t len,
+                usleep(TICK);
+        }
 
-The guest tmpfs 4 KiB/2 MiB writer is their controlled diagnostic case for
-isolating that observation; it is not a claim that the Oracle workload is
-exactly a one-page-per-2-MiB loop.  We then reproduced and quantified the same
-effect on a PC and on the x86 server.
++       if (!strncmp(ops->name, "anon", 4))
++               madvise(p, len, MADV_NOHUGEPAGE);
++
+        return timeout == -1;
+ }
 
-For this deployment, keeping large pages is a real requirement at the host
-virtualization layer.  QEMU owns a large resident guest-RAM mapping.  Host THP
-allows that mapping to use PMDs and allows KVM to use large secondary mappings,
-reducing host page-table memory, TLB and nested-page-walk pressure, and KVM
-mapping/fault overhead.  These benefits are independent of whether every 4 KiB
-page inside a particular 2 MiB range is hot at one observation time.
+> 
+> > +
+> >   	return timeout == -1;
+> >   }
+> > @@ -839,6 +841,7 @@ static void collapse_swapin_single_pte(struct collapse_context *c, struct mem_op
+> >   static void collapse_max_ptes_swap(struct collapse_context *c, struct mem_ops *ops)
+> >   {
+> > +	struct thp_settings settings = *thp_current_settings();
+> >   	int max_ptes_swap = thp_read_num("khugepaged/max_ptes_swap");
+> >   	void *p;
+> > @@ -860,6 +863,9 @@ static void collapse_max_ptes_swap(struct collapse_context *c, struct mem_ops *o
+> >   	validate_memory(p, 0, hpage_pmd_size);
+> >   	if (c->enforce_pte_scan_limits) {
+> > +		settings.hugepages[collapse_order].enabled = THP_MADVISE;
+> > +		thp_push_settings(&settings);
+> 
+> I'm not sure why the collapse_order setting needs to be changed here. In
+> your test case, you did not use the '-c' parameter to specify the collapse
+> order.
 
-This host configuration should also not be confused with the guest database
-page policy.  Oracle may separately use explicit HugePages for its SGA inside
-the guest; the guest policy and the host THP backing of QEMU RAM are different
-translation layers.  The requirement reported to us is to retain the host
-large-page benefit while measuring the guest working-set proportion from the
-host.  Disabling host THP merely to make DAMON's number smaller would change
-the deployed VM configuration and remove the benefit the user is trying to
-keep.
+What a stupid of me and I post wrong one... thie should be thp_enabled...
+Apologise :(
 
-The monitoring requirement is different: DAMON is expected to estimate how
-much of the guest memory is actually hot.  A host PMD is a translation unit for
-guest RAM, not a semantic hotness unit for Oracle.  Guest allocation can place
-small accessed pages across many guest-physical 2 MiB ranges, and one access
-then makes each corresponding coarse mapping look accessed.
+> 
+> > +
+> >   		ops->fault(p, 0, hpage_pmd_size);
+> >   		ksft_print_msg("Swapout %d of %d pages...", max_ptes_swap,
+> >   		       hpage_pmd_nr);
+> > @@ -869,12 +875,15 @@ static void collapse_max_ptes_swap(struct collapse_context *c, struct mem_ops *o
+> >   			success("OK");
+> >   		} else {
+> >   			fail("Fail");
+> > +			thp_pop_settings();
+> >   			goto out;
+> >   		}
+> >   		c->collapse("Collapse with max_ptes_swap pages swapped out", p,
+> >   			    1, ops, true);
+> >   		validate_memory(p, 0, hpage_pmd_size);
+> > +
+> > +		thp_pop_settings();
+> >   	}
+> >   out:
+> >   	ops->cleanup_area(p, hpage_pmd_size);
+> > @@ -1075,6 +1084,7 @@ static void collapse_fork_compound(struct collapse_context *c, struct mem_ops *o
+> >   static void collapse_max_ptes_shared(struct collapse_context *c, struct mem_ops *ops)
+> >   {
+> > +	struct thp_settings settings = *thp_current_settings();
+> >   	int max_ptes_shared = thp_read_num("khugepaged/max_ptes_shared");
+> >   	int wstatus;
+> >   	void *p;
+> > @@ -1100,6 +1110,9 @@ static void collapse_max_ptes_shared(struct collapse_context *c, struct mem_ops
+> >   			    1, ops, !c->enforce_pte_scan_limits);
+> >   		if (c->enforce_pte_scan_limits) {
+> > +			settings.hugepages[collapse_order].enabled = THP_MADVISE;
+> > +			thp_push_settings(&settings);
+> 
+> Ditto.
 
-Our latest capture makes this mechanism concrete.  The sparse diagnostic
-touched 24,576 guest 4 KiB pages spread over 24,575 guest-physical 2 MiB
-buckets, while the dense control touched 12,582,912 pages.  They are 0.146%
-and 75% of the monitored 64 GiB backend, respectively, but host DAMON reported
-about 75% for both.  This is why the user needs huge-page mapping for VM
-performance and, independently, finer-grained observation for a meaningful
-hot-memory ratio.
+Sorry this should be thp_enabled...
 
-The performance requirement and monitoring use case come from the deployment,
-not from our lab model.  We will also report the measured Oracle/VM benefit and
-the production access distribution when those data are ready.  The diagnostic
-result establishes the observation mechanism, but it should not substitute for
-those workload-level measurements.
+> 
+> > +
+> >   			ksft_print_msg("Trigger CoW on page %d of %d...",
+> >   			       hpage_pmd_nr - max_ptes_shared, hpage_pmd_nr);
+> >   			ops->fault(p, 0, (hpage_pmd_nr - max_ptes_shared) *
+> > @@ -1111,6 +1124,8 @@ static void collapse_max_ptes_shared(struct collapse_context *c, struct mem_ops
+> >   			c->collapse("Collapse with max_ptes_shared PTEs shared",
+> >   				    p, 1, ops, true);
+> > +
+> > +			thp_pop_settings();
+> >   		}
+> >   		validate_memory(p, 0, hpage_pmd_size);
+> > 
+> 
 
-> I'm not very sure if this is the right direction.  PMD mapping demotion sounds
-> like you just don't want to use huge pages.  If so, you could disable huge
-> pages.
+Thanks!
 
-I agree.  My reasoning in the previous mail was too jumpy: I went from a coarse
-observation directly to a possible MM response, and that obscured the actual
-goal.  PMD mapping demotion is not part of our current proposed solution.  The
-current direction is to keep both the huge folio and PMD mapping unchanged and
-use a genuinely fine-grained access primitive to improve the observation and
-the stat-only decision.  We should first find out whether that is sufficient
-before discussing any mapping change at all.
-
-> technically speaking, it is not the report semantics.  Reporting allows any
-> information to be reported.  Page faults like information could be coarse
-> grained, same to the current page table accessed-bit based one.  Only finer
-> grained access primitive reports, like those from perf events, would increase
-> the accuracy for the sparse access pattern monitoring.
-
-Agreed.  The report interface is the transport, not the source of accuracy.
-Our recorded-address replay is intended only to test whether the DAMON
-consumer and decision can use complete fine-grained address evidence.  The
-eventual accuracy has to come from a fine-grained primitive such as an
-appropriate perf event source, with its coverage and loss accounted for.  We
-will use that terminology in the follow-up results.
-
-With this context clarified, we will return to the immediate work: use the
-existing IBS/perf-event proposal as the concrete strategy under test, and see
-whether its fine-grained evidence can improve the observation and DAMOS
-decision for this case.  We will use the results to test and review this series,
-report both improvements and remaining gaps, and not assume in advance that it
-is the final solution.
-
-I hope this clarifies why keeping huge pages and requesting finer-grained
-observation are not contradictory requirements in this case.
-
-If I am still misunderstanding any part of your questions, or if any part of
-this explanation remains unclear, please continue to correct me.  We will keep
-sharing our findings and would like to make sure we are aligned before going
-further.
-
-Thanks,
-Lian
+-- 
+Sincerely,
+Yeoreum Yun
 
