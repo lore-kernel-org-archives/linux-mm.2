@@ -4,148 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04AE4C88E7F
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 19:23:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67740C88E7F
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 19:24:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1431B6B0088; Wed, 16 Sep 2026 15:23:36 -0400 (EDT)
+	id 784276B0092; Wed, 16 Sep 2026 15:24:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0CBEB6B008C; Wed, 16 Sep 2026 15:23:36 -0400 (EDT)
+	id 7351C6B0093; Wed, 16 Sep 2026 15:24:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EAE416B0092; Wed, 16 Sep 2026 15:23:35 -0400 (EDT)
+	id 6246B6B0095; Wed, 16 Sep 2026 15:24:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BA3DC6B0088
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 15:23:35 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D3E23C0115
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 19:23:34 +0000 (UTC)
-X-FDA: 85220599548.07.0F4D626
-Received: from mail-ej2-f23.google.com (mail-ej2-f23.google.com [74.125.228.151])
-	by imf08.hostedemail.com (Postfix) with ESMTP id EC095160003
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 19:23:32 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=FgKmKP6C;
-	spf=pass (imf08.hostedemail.com: domain of dmatlack@google.com designates 74.125.228.151 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789586612;
-	b=Oe2hTj2AVnjyTi3m9tv93O15VgczvQYMWOEdS/WYtRgsank7M3WwJSvjC89pdA7JerMjlL
-	2p4C/MaPguUJvo9kOdK2zqRTsGOlMA+isZifmNxCKws9rWZ1OxWh8PNqwBSCyE6ra73EKz
-	OKeD5tN1BHjYKIAlDALtuVw4ArtTJLU=
-ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=FgKmKP6C;
-	spf=pass (imf08.hostedemail.com: domain of dmatlack@google.com designates 74.125.228.151 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789586612;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 414A56B0092
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 15:24:09 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B83F71C00B9
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 19:24:08 +0000 (UTC)
+X-FDA: 85220600976.16.500DA26
+Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 1022040008
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 19:24:06 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=none;
+	spf=pass (imf11.hostedemail.com: domain of 31uyqagkbALcpvwhXiiboXmmfa.dlldibrpboZlkqbkq.Zlj@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.200 as permitted sender) smtp.mailfrom=31uyqagkbALcpvwhXiiboXmmfa.dlldibrpboZlkqbkq.Zlj@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789586647;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1KLYZ+iH6BwF1ulRTppUoaxI/s8uMQmLIUDs0MP8toU=;
-	b=JdRmSjVRc+ny7Ken0/8DNj7ORDMu7EW4bcWX90qlmUjG/VfYWv/nZ+xltHc+xC6UXDa13J
-	I/tszIGHRzzgOLuoO3wx7Et1ZxhiusqOlO6n93uR7RValmIqcnItVMXl8oTWLb21n4CqF8
-	OCQgidhcEqVTGHemunuaB8PpZaiwHjA=
-Received: by mail-ej2-f23.google.com with SMTP id a640c23a62f3a-c25ef7a3ce9so15350166b.3
-        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 12:23:32 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789586611; cv=none;
-        d=google.com; s=arc-20260327;
-        b=OdtBWNjoyup97c9s3wwvVRpluqhVscjUKBpD8OmSqa/wTXePcJELvKdCD1MFezc7j0
-         v37ajZsnbZdablVC7HGUaM6Rk7FNEYDa2b/ViGcwx6cgS8cFRcpfKQbCd7j7mJVvONSD
-         UbCB6VhGSxwNQ92kpAw91lDikOiGPTyHq5mB0MN1ziM8HLWs0Y8XWe0Uad8wAdytcsb+
-         Jy8dg0zUc9Q72pJ2GSKhjYh6s2wcYFwqt0hDhlP0WH6TIMd8jmWTJixTsvs/MpKxFsjX
-         Uyj+c/aaVV6YGGigo2/TnzOD75gv8WJisKx2Frus/KG/rC7KUxpOWhdDYRGQIe09lSSY
-         GwPw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=1KLYZ+iH6BwF1ulRTppUoaxI/s8uMQmLIUDs0MP8toU=;
-        fh=24xRlcWXCUI2msJBvZPwt/Bsy96C+gE9zOnC5nracGI=;
-        b=CQAa6sqhD87X6FQIZbElOGvCjtTybkc0o7UtVvy0oJsrp6RV/wFCtNgJt7H575yFW4
-         fNOURmzRdqPQ/2FIrg4LKbBOGXaATiPRw3jIfPSfNNzG7R95mJPMl/yqnE61ELz0M6Ai
-         zom8VVOBLxYUBiQjAq5XgL88m1Uyv/bax/KKNbdK04P8I3gs/IxJe6pPmJezpMf28FBX
-         HwV50U/uYi+29cZd/iRcQ9eC/0v4EQS+9qwGesDrldqlx5I/JHJa1n/lGQciK5+6keij
-         rfhLoyB7OZA9QQEDsDGQgXsYQN2g0FkuimsgL5okqZKKhga1hQxDLHk0tk4XSf/0oIzP
-         teBw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789586611; x=1790191411; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=1KLYZ+iH6BwF1ulRTppUoaxI/s8uMQmLIUDs0MP8toU=;
-        b=FgKmKP6CazUe3M7vzXiFKh6+IaJpUgp9ejoz7DhEh95Bvit47GPUrCI/Hm9k5G5Io7
-         gVrea1xF4wFixHCsHL4kIKCQsBIK5wZkc6YQJ87zHdQPSW61f8wPpVM7jKF/94xUo8fi
-         UfkdqoQU7SeSWv6oteO2K7jKF+DFAnn8SA5RynFnd6wMJVh5D4kFQVDIAjWIWQTgjlR3
-         4JI9ZgQRCgyQNKNWNarvFdU8TL9B+dOgforQgcXyqLUCZN5TukeGUpj5V7Y+oGq9Q2/c
-         WDIKN3W9aCK4ADCYTmrKiHdPrhAyr9Jg27cXcxy681ElrtXO144O9PKOH6qOdF9SuuiJ
-         vFtw==
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=gGav+E6NmhUVSh9XUjVdcV/Auw85chnTv3eOmsCDzNk=;
+	b=S4Bp5pgCzwDeAuVGaWX7D3sPk0m93IIKi01s6CBH8Y8Uafnwl2lA85sgWASqz95fxnf6Ep
+	pY/GIGBE/8GUCxT+2z8LiyHW3qoH8Cx/Ad38Rh1z5tZ8SODzod/fmoNeNFl9zt1GFIeIiU
+	xqC6c5iyJVGdt7aKUDmK8gIvjqoHBW0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789586647;
+	b=J0veSC3cSHq17iUbSHiuNRQDctUlPU9Uwbo04RaXRTPtFRUsQix4WLxkuc4QE/OXI+jyQw
+	6L7yBA5k7IiYENMO/K1AIGqvChLmMkvaOBAxtAjxmERhgN2mvrRPnZU3cz8lkhsOzr71Ta
+	XNcsDxfqvV9ygHf7w5jMWUkqup0Ils0=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=none;
+	spf=pass (imf11.hostedemail.com: domain of 31uyqagkbALcpvwhXiiboXmmfa.dlldibrpboZlkqbkq.Zlj@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.200 as permitted sender) smtp.mailfrom=31uyqagkbALcpvwhXiiboXmmfa.dlldibrpboZlkqbkq.Zlj@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-4a41f46d629so152668b6e.3
+        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 12:24:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789586611; x=1790191411;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=1KLYZ+iH6BwF1ulRTppUoaxI/s8uMQmLIUDs0MP8toU=;
-        b=OcQKT+ys4RrXWsHMWdFi2Ly3Q+Ot1zjZV46NfIGMaaQiFFCNnDNIfqA+mWVXJE6xOh
-         SggtEqx76u1cqjFBK+IxXwfbqGhpThHj8nWZrRC/Mt3MSkDfM/2Jwk7xyI4IPDVeDw/m
-         KIlcey3uXVKN9630DMK2Icvfv5LPg4DBKLnvbzkWvNzfS3MHnc6DovjTELVk77iLnka+
-         ju+IFIX/4HNTiKGNKk21jSV7XuvgXEcwnwY/yZjOwHatsclixSYg+oUzb2u/jTg2P5lb
-         RxsJrT8jD7Hfgr7cfK63MIfFQoJp+RdG7WeRA1G3I+KhectbYtiO1R4pWiWB4AteL2fQ
-         viiw==
-X-Forwarded-Encrypted: i=1; AKwUvBxY6MDbxIERP1r/QpoT0VMoSIX3qaOV7gIXoWrQavBNsjQSteDkgmvRf5myRUSRZOGEmxGSxpvJSA==@kvack.org
-X-Gm-Message-State: AFuF++lyVYvGA+60IX1FrRBqGNBQGvVqK/uvxrKzz/EmC44GclcZUc8H
-	bcAfoxoHgSgkEtQtAEQQxSh9/vAfp0G/L0RDtPPac42PNCXs12BHzXIcj+RpO/CVHugZ34ro8qP
-	GUxqGNyHeoVN1eZTC/xiqrRKF8qawzlxxQEXuPzCQ
-X-Gm-Gg: AYBFou0rZtsh9r9cZax3SwED01rCEr+hyMlXxVca97eGGwLy9BT162hpkeQNZ+kFFb8
-	UzUEpnlEcx3RxUfagNlTI6WfyPWfOjjus3J+MWrEgP7DiQcvNM111N3y44rZSE9nu8MZq35rylA
-	Lzo17Z5xoo6YAclBodefZHvUIeWxVaHYsOXzPGR3V2IUh8HUk13f35JzH1ZjJmCC7Pb2U1NGey5
-	pWIWQUMhpquORf4eHcmbpFZOHvUnGpfwZJ/t75ybk3eHPPN+UH5cwAssue9kMMeXTfCPpg+FfEP
-	sBCJcb3Tzi3QirgOQEtLvTjY52iqzj1rFRApqYZjFTYbzU3nHbSeAy/5bihEufUvIiRxZ9FN4mp
-	r+Hgkp3HXr6E=
-X-Received: by 2002:a17:907:3cd4:b0:c29:3711:626f with SMTP id
- a640c23a62f3a-c29e52c97cemr277311666b.24.1789586610730; Wed, 16 Sep 2026
- 12:23:30 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1789586646; x=1790191446;
+        h=content-type:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=gGav+E6NmhUVSh9XUjVdcV/Auw85chnTv3eOmsCDzNk=;
+        b=X8mRsEX+9rw9H5BCPEgEUfOgtFn3MZdK9v75t8MBBYq0diRptuNDbWowccIvVRJ9SG
+         aDw0i8ave+UKUI4AHblPoJpaSX1ATAwSjSFAUaI/TZRiyLrqUhkxAkMuGhwV6CSFLn2R
+         jnWuwcyh1fDxEysu2SvJMR0o4ylxlTMkbV1n4/0wEG/2n5/A8DOgfGTG1B5sErFBB0pN
+         Sb1I8ojJ26sBwZZ4aEizctH+KsqSlXptNq7wYDJg3onX2oJVQI1xj/hkWx410R66lz0N
+         uLoqAeFph2anmWjvUFlaJuBvAdlSsuBpoffq3COsnYV/fssTKIDQkMhutL2ddQxLQXRj
+         nB+w==
+X-Forwarded-Encrypted: i=1; AKwUvBzxGB4OL1fLEfrdJg7vPaL+AG3fjjGF6PqR9RfptR76e+ZY6hIflx1MBF7my2vb2ShlvszStCLEBw==@kvack.org
+X-Gm-Message-State: AFuF++knboO6ug2y+jAz1HurQbx9fzuOFRlC2yIExGE0PT/9r96d1VNJ
+	btfJHVzooGpDhlGgRD1DD/qQYIvfTiBud1UczTBzpZ5EQ3udxqFXpJwPnixPl7uCiei6pfw+Gl9
+	4HojSNga6q1XAuxyDGxdlW0YMQSrEdV5QeHtcpMgxmHypbKb5z/2hhj2cmgU=
 MIME-Version: 1.0
-References: <20260728221007.2098560-1-dmatlack@google.com> <20260728221007.2098560-4-dmatlack@google.com>
- <e099cbaf-3185-4c39-ae36-7f0e074ebff7@linux.dev> <CALzav=eX0gVrbWCnYGwfqPHUkoVxqdr2nw3Tx6Aqze0XOcuwzA@mail.gmail.com>
- <2vxzcxud6ol3.fsf@kernel.org> <CALzav=eBXsaZKNv1SNtuT9F6aX_2TS3u5kUtko5WMv2NWt3e+A@mail.gmail.com>
- <2vxz5x056n1b.fsf@kernel.org>
-In-Reply-To: <2vxz5x056n1b.fsf@kernel.org>
-From: David Matlack <dmatlack@google.com>
-Date: Wed, 16 Sep 2026 12:23:03 -0700
-X-Gm-Features: AcwNN1XBA5tWfpFye7fMRURIMgABlK_FSM1i3xHnxeEQBrBN_oHQDGfs58Y6KSU
-Message-ID: <CALzav=e3_m_53PHTpMbwj0kFwVQdjx=MU8iHKwGcSa13V0R5cg@mail.gmail.com>
-Subject: Re: [PATCH v8 03/12] PCI: liveupdate: Track incoming preserved PCI devices
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Zhu Yanjun <yanjun.zhu@linux.dev>, kexec@lists.infradead.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-pci@vger.kernel.org, Adithya Jayachandran <ajayachandra@nvidia.com>, 
-	Alexander Graf <graf@amazon.com>, Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Chris Li <chrisl@kernel.org>, David Rientjes <rientjes@google.com>, 
-	Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, Leon Romanovsky <leonro@nvidia.com>, 
-	Lukas Wunner <lukas@wunner.de>, Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pranjal Shrivastava <praan@google.com>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>, 
-	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
+X-Received: by 2002:a05:6808:1a24:b0:4c3:7695:d30 with SMTP id
+ 5614622812f47-4ca4a1dc406mr4599160b6e.14.1789586646123; Wed, 16 Sep 2026
+ 12:24:06 -0700 (PDT)
+Date: Wed, 16 Sep 2026 12:24:06 -0700
+In-Reply-To: <aqrZMReaQPG0M9oV@gremlin>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6aaaecd6.4e05fbd6.392abc.0003.GAE@google.com>
+Subject: Re: [syzbot] [kvm?] BUG: sleeping function called from invalid
+ context in kvm_mmu_notifier_invalidate_range_start
+From: syzbot <syzbot+c3178b6b512446632bac@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, bigeasy@linutronix.de, dwmw2@infradead.org, 
+	dwmw@amazon.co.uk, kvm@vger.kernel.org, liam.howlett@oracle.com, 
+	liam@infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-rt-devel@lists.linux.dev, ljs@kernel.org, lkp@intel.com, 
+	llvm@lists.linux.dev, lorenzo.stoakes@oracle.com, me@brighamcampbell.com, 
+	mhocko@suse.com, nogikh@google.com, oe-kbuild-all@lists.linux.dev, 
+	pbonzini@redhat.com, rientjes@google.com, rppt@kernel.org, seanjc@google.com, 
+	shaikhkamal2012@gmail.com, shakeel.butt@linux.dev, skhan@linuxfoundation.org, 
+	surenb@google.com, syzkaller-bugs@googlegroups.com, vbabka@kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: EC095160003
-X-Stat-Signature: qg9jacrrbx5jm5weewr6ra731yuguu5a
-X-HE-Tag: 1789586612-961841
-X-HE-Meta: U2FsdGVkX1+/xbF/4TJ9SL27a52TwaYW3ZAUO4a6wHKQYj4F27BD38NInnM0c6yb/+4j6C6zmk+iIkkrLLq8hoaeF4nXC1d8TN4o+M199DEpTPQkYsQfK5iPkYzcO+M5dKH6SOsn6ltLFDWyTj6n1wmr5vtbVfu+FklzvCTaw2e+oANE24eWdTLjn1U3vx7MAXM3bTC3SOIMx0enrreZph57hWy8KCXvS3ZLS4WPBowoiVn3nnPed5B4CyavoLZc1a9nA1EDMBpOBLRs/14OgnQvTfzx5AuVr1/kJ21dEaT3z/xU1FqCZMr0Hfv/e0MbPlGslyIEsAyYei6565or3qcDHzrE4Y6ESvQkRPcjuHkq6Mkag4FRrqezn76DCagrxpPOBwgnDbTWOQUjapz6Zj6aaxVyRF0w8+xft/X5rGpLkgl5N/blBu8st2rjs/KrkuuJTMjXYd3kLNZen80kLTBhw6xAXJOCbFADdPaDOur34PExWPJ7a1xEsYVfVNLXBgBgd8PorhIxB3PGQLHWtkgZ2jBJt80vCXGxSAY4McbfhSnuBMXzBZkoHdzP5lpFPCRWSV9mosRfq2jf3k4hGMRt9eKrpKq8UCq3fzqqfuyddPoz0ry49+oUyB61J5qSXFyQ7+g6bqW6Se8PonD3gAnjvWxU8PpAhxWDnGeK1X5BcBUqkiTb+Pp4V0QcfKCE9MOqQNR7IalEfe0Ba4TTQUyoJsYnoM1CxXf4lx4LArjOu4yFyBRDSQunm1Jk0yEImjKEixlcBFHozl2VxWD5E5ai6XUpkMzKFlBOfMBSDzGtk8udHCPYFPQCFcHNgBVG7/qiflnkANxE0Wj+UKMypLroOBY7DrSDk3m4sMr+8M+kDA9bg7FJQYiYJ67hqPsfb3aGN7xummFUk10x59FKWQeVwIaiFEVIr2tCHloR+fbEUsG4CnlRZEc8msOfBzuHw3TAs9e19JbsUuRhbpo
- fVBzMxvj
- VyEswNfKiE0UPVu4azgZ1n71R/AUI3QIg/vDCarPE7Lv4WlF1wZjVesANKnebOeomImNhtX2rO5MKYbNe6ociN/OiwJaG/BhvTDe1tJEVwvZPO4csXcYuJr/swdUd9DDplw9AsdEmeV6vdWLgqiWxnv9CM4GgIZNdUe1yDtmZ4VM6Vqxq/ogEiKa+whS3kFuT6SryQlke602CZrHy31eiHE3Eg7PEwl0dIq5wDMTIAtWTdajylonOWzBL9nf6HvER5yvC
+X-Stat-Signature: en3omuei7rdqnpih87koq9s1rfb7p3ii
+X-Rspamd-Queue-Id: 1022040008
+X-HE-Tag: 1789586646-129370
+X-HE-Meta: U2FsdGVkX1/4TimiNVQdoHwfiCX78R2eWK7ijiFNF9/XBewTeYktQO4AiNQ9NSo7H1QWqMKWK6T4pS1V4E+UAeyt2CxKIrss08PSz8AkZxAoxCGWgmZPVS4gX16Vuq5l1/uNjkUR0aLoPHLNS4qa/EznKz17aGagm0xAlPe/qMbOPX/o0NSIk8Hw6SX6GEc1RCZZeuAXnbEzgqT78Xy6ugyATynNNMdJZ1PNUpHo6nQih8QDXNhUQYStXWndkSEvLctI9Le2bc4WcmOR4Uo/LRmXB/WmecwDP6Nq6mrVKKrjuIZSfBPicR34G8PWSRfeDdQkV07kiML59ITtKPaaeYanXYi/48KVXHz2JX0tr9phtffsrmofMK4bQzzu2EsgqezWc+cQwNw8HFqN7Oyv+o0rQyLHtj9c45XchzG6rvg+6MnwPQXk0ajfL1krHjMoDDUqynMYcooiMkTgwY/pifsZrxRCJ8lLw8MH8HH5HDhwIOSjcrF/ZHakcv92H37wbGLfET6AFMn0Q9Ykb/UuP/yB/0NsglyPwjgxGrmISZEIgKmMNVa6gtLKHiigFTeEB8yZSQ2JrlyULM54l4IHjwkBHe48PHoKJtBgl3RJXH42pDfec1eL01f9W4Hnxo2ZV1en+xd0/5lRTCS/o6ThSuYZtlTi1YAxU+AEXqh5ceXO8854xgYzZKOualq2Dmmf8QL0vKcm1DFQxO9sKLIP0Lzulh7rQ+pimfGQVuD2RqHYy0pEDdh4m6Jm/UIkEs6r+8O/xkaOwePDXi4StTaFQl2e/zLEOWTtmYpwokcSXaRgG/odya4PxjQJ58jt274SDJ6G7DwYQtjqIwmS63nneQgpnGlQPgrhk5r7io56mghwcrkAb/PsclKSEVcoYl2OpbQ606M6Pi44xtiWFc6UGW8/A4SQCBX/fyMYm1HKHEvmibRQP/e11uJA6siq+duSs8s0HHAYVFXlRnwRvfz
+ SXZ/+sB8
+ wyn5atSkiV6e5viNHkV9LXLGFYts6S1OxlEqg3fQrJ2jixY8d+PKNSjiS3PouZpxjbna0lRt6EeWQU2EiJ1KWodaPHqQ8RedxqW9QSpWNySW0cyXictiUO69vIvSwFgaoFTs6++sVpT660+IvjV1WAzZVLFJI2Sw44opzTZweRu4n4HiPdGd2Z9FWJ147N8hubFm5nClPFucjcvn48/1YepRgYAsm2wGPJty6myjHcTUWykeJZey2aTettfcZ/EFlYMpGPc2r2OS9ONYmIm5MjqmEjDwVQhaf4K4ptwnKT49nRI0BtTyKewK/qHC4hAiZPLY2Y0JU+yz96dIsDnBaZtMUmSkr/Gzs1Dpkp58EbG3C++TWkfKM/DBoRT0CtRdWsLxhoZTfHdMhe7fCqJN88ZUceRo6X5eB2U7rOz/kayx/mNlYS7Qvg4udWsO6C7TQ6w7xlYRFErQg//IjSOkaDAVetkv/F+6JqTl3QrDXMZj+IOPzfASaDdSRzW/yjKAYla2GOCdZm2cn727mVVmWCK7mOHONv9kvfT/RUlMhjE6Y5Od0bVbO9BBfqDBCFBsdL3Ez5o7lsrR5wxzIVGkMP3RTT8fQUromnh15aimaskuEGncMrt59L7mTWuMyBUeNdZNQgwyGe4g3M7fOQLcHZEVSP1/LNF6bRUGSm4Wdw4tblZnOB/IJzHzTlZ40GdLAA8y9pBlFgm4vNBVk+RXFcSFM+3ukaL/f97x+48CSstktvPaZLWRFMN1PcKCqWRtj6lQbt5Gu0ZrGVT1rgYZjNDUBSQUh3MandY6zAycHtivLjvH0x+PB/iaKyAnct7YGyg6zS+9vd3BUT9+S1jnMWQ96aF4DG3CxFRGTCi46JPi/u4EXNpcrP11MIpLGQQ4sJLDx894w5Rsto0wA3afzu4dqr3RjNGb7j1+0GyL3ox7oPuc4ig51pTOWT8lHQGz2YuKMpHLxUSdAMv/I2MaSLsy/Lg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,92 +103,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 16, 2026 at 11:58=E2=80=AFAM Pratyush Yadav <pratyush@kernel.or=
-g> wrote:
->
-> On Wed, Sep 16 2026, David Matlack wrote:
->
-> > On Wed, Sep 16, 2026 at 11:25=E2=80=AFAM Pratyush Yadav <pratyush@kerne=
-l.org> wrote:
-> >>
-> >> On Wed, Sep 16 2026, David Matlack wrote:
-> >>
-> >> > On Tue, Sep 15, 2026 at 8:31=E2=80=AFPM Zhu Yanjun <yanjun.zhu@linux=
-.dev> wrote:
-> >> >> =E5=9C=A8 2026/7/28 15:09, David Matlack =E5=86=99=E9=81=93:
-> >> >
-> >> >> > CONFIG_64BIT is now required to enable CONFIG_PCI_LIVEUPDATE so t=
-hat the
-> >> >> > domain and bdf can be guaranteed to fit in an unsigned long and b=
-e used
-> >> >> > as the xarray key.
-> >> >
-> >> >> > diff --git a/drivers/pci/Kconfig b/drivers/pci/Kconfig
-> >> >> > index 3781e2b5f095..8af20f558086 100644
-> >> >> > --- a/drivers/pci/Kconfig
-> >> >> > +++ b/drivers/pci/Kconfig
-> >> >> > @@ -273,7 +273,7 @@ config VGA_ARB_MAX_GPUS
-> >> >> >
-> >> >> >   config PCI_LIVEUPDATE
-> >> >> >       bool "PCI Live Update Support"
-> >> >> > -     depends on PCI && LIVEUPDATE
-> >> >> > +     depends on PCI && LIVEUPDATE && 64BIT
-> >> >>
-> >> >> One question about adding 64BIT to the dependency:
-> >> >>
-> >> >> As I understand it, enabling CONFIG_64BIT essentially means that we=
- are
-> >> >> building a 64-bit kernel, and a 32-bit architecture cannot normally
-> >> >> enable CONFIG_64BIT.
-> >> >>
-> >> >> If that is the case, would depends on 64BIT be necessary here? Or i=
-s PCI
-> >> >> Live Update already inherently restricted to 64-bit architectures b=
-y the
-> >> >> existing LIVEUPDATE/architecture configuration, so that this depend=
-ency
-> >> >> would be redundant?
-> >> >>
-> >> >> If this problem has already discussed, I am very sorry about this.
-> >> >
-> >> > The necessity is that the PCI core needs to store more than 32-bits =
-in
-> >> > the unsigned long xarray key (see the snippet above). The dependency
-> >> > on CONFIG_64BIT ensures that unsigned long is big enough. We could
-> >> > probably remove the dependency but I would rather wait until someone
-> >> > with a 32-bit build has a real use-case for using PCI_LIVEUPDATE
-> >> > before putting any effort into it.
-> >>
-> >> KHO or live update themselves don't support 32-bit platforms and there
-> >> are no plans to do so either. So I don't think you even need to have a
-> >> dependency on 64BIT in PCI_LIVEUPDATE. Only 64 bit architectures defin=
-e
-> >> ARCH_SUPPORTS_KEXEC_HANDOVER, so PCI_LIVEUPDATE and others indirectly
-> >> inherit the dependency.
-> >>
-> >> If you'd like to be extra safe, then probably you should add a
-> >> dependency to 64BIT in KEXEC_HANDOVER directly. Though I think that ca=
-n
-> >> be a separate patch independent from this series.
-> >
-> > It should be in both places then. PCI_LIVEUPDATE explicitly requires
-> > 64BIT for its own use of unsigned long, so it should have an explicit
-> > dependency. If KEXEC_HANDOVER requires 64-bit for its own specific
-> > purposes, then it should have an explicit Kconfig dependency as well.
-> > That way if and when someone wants to add 32-bit support we know
-> > exactly which configs need to add support.
->
-> Well, I don't think we are ever adding 32-bit support. Most 32-bit
-> support in the kernel is being deprecated or removed, so I really don't
-> think it makes much sense to extend KHO/live update to 32-bit
-> architectures.
->
-> But anyway, if you'd like to explicitly mark PCI as needing 64-bit, that
-> sounds fine too in the very very unlikely event we do add 32-bit
-> support.
+Hello,
 
-Agree we will probably never add support for 32-bit to KEXEC_HANDOVER
-and PCI_LIVEUPDATE. But I do prefer explicitly documenting the
-dependency. It costs nothing and makes the 64-bit requirement crystal
-clear, just in case someone tries to do something crazy :)
+syzbot tried to test the proposed patch but the build/boot failed:
+
+failed to apply patch:
+error: corrupt patch at line 7
+
+
+
+Tested on:
+
+commit:         9b87fdc9 Merge tag 'sched_ext-for-7.3-rc3-fixes' of gi..
+git tree:       upstream
+kernel config:  https://syzkaller.appspot.com/x/.config?x=b454dc6b1b7acd30
+dashboard link: https://syzkaller.appspot.com/bug?extid=c3178b6b512446632bac
+compiler:       
+patch:          https://syzkaller.appspot.com/x/patch.diff?x=15a16bf9580000
+
 
