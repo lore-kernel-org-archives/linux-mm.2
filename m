@@ -4,137 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83488C982CC
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 15:57:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3186EC982C9
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 15:58:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A32D6B0088; Wed, 16 Sep 2026 11:57:31 -0400 (EDT)
+	id 25D7C6B0092; Wed, 16 Sep 2026 11:58:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6792D6B008C; Wed, 16 Sep 2026 11:57:31 -0400 (EDT)
+	id 20DA16B0093; Wed, 16 Sep 2026 11:58:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5681A6B0092; Wed, 16 Sep 2026 11:57:31 -0400 (EDT)
+	id 0D7F76B0095; Wed, 16 Sep 2026 11:58:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 19F5A6B0088
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:57:31 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6EDB81C2E2F
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 15:57:30 +0000 (UTC)
-X-FDA: 85220080260.01.92C979E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id A98AEC0007
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 15:57:28 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CPmWOdUc;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789574248;
-	b=7QfzZvld+7icvC6K1sX4iMuMUJ1UfVPcbcOhqX3xbiWSuHpNL0l0HPvx8f/b0vfxsfYeSi
-	FitfVvrpSbT0ZtW0RoPrropJxdy5Kw8VHOaUFl4GJdES3NPj8YoWnj9H2z9/fCLBt4Mjhl
-	QMAcBvayFSAr6JZ7yvyq4htrHUb9Ilc=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CPmWOdUc;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DAA586B0092
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 11:58:37 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5EAE81407C2
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 15:58:37 +0000 (UTC)
+X-FDA: 85220083074.05.CBDB5BB
+Received: from mail-qv2-f12.google.com (mail-qv2-f12.google.com [74.125.230.140])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 14CB01A000B
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 15:58:34 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=A5RihjBC;
+	spf=pass (imf19.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.230.140 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789574248;
+	s=arc-20220608; t=1789574315;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XN+Zp9/GNf101whKzUoJhTi8UW65xULFMuNHBkfGcuA=;
-	b=wUddROz+/MRpDMiKGQyLWMMXKk2XmPCIbwxLv4eLZXj02l0xL8fB2U38magX/I/YdznNXc
-	rHp9nI25uqFcK2ordkXf+4gmGG6b/m2yncPpzWey+xtuiID3siHKGyIyXFl4tVJJyXSwFe
-	mDyISEcCi6mcVjBSxvqkspTGFUAEO1g=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1B3C960234;
-	Wed, 16 Sep 2026 15:57:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 303251F000FF;
-	Wed, 16 Sep 2026 15:57:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789574247;
-	bh=XN+Zp9/GNf101whKzUoJhTi8UW65xULFMuNHBkfGcuA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=CPmWOdUcWYOk0Bg/VDgSvDyRu5zASVMzHcID6o5azxbk2nZhuxHgyNYA+Ppz52ohF
-	 ZxqHXao6kQZKEGDPkED8gFUGKQwrYGtGsRMNmH6LhdXLgbWFu28O/mjS0Mp4z+7zqc
-	 Eh2Uh+8BKqAs0R55QoRsfjjqwZZtGh3yZQk/IyPnN3azypSr1NlDux0C+635plufhJ
-	 Wi5m8WQohlZVEavxVQ1Rq2xr4yJP8/rI+ANbT/P0pUQ+bm6J+klXikzHldtaY0md8m
-	 IIahutEc8ADm6yAURbBhRcBF6CHpDx4r+ygMjo6mlM6NJd1WDT8F77cHs09RHsULcb
-	 MW6wpuv6VUK3g==
-Message-ID: <d7f162eb-4214-456c-9d1b-a8623da61b45@kernel.org>
-Date: Wed, 16 Sep 2026 17:57:22 +0200
+	bh=bjcBGUR39i2CtxsYZA+y8R1kv00jh+PXwHXxQnV1eiQ=;
+	b=AkqmGe5XPpPYyIqwM85M5TuNDJ9yFJpbsiuWhAT+3QYOOEYk5AzrXn1UO4h9sosXrV8JdF
+	Qqxa1Rhp8OwFGDXjn0y2RSz0YY/x6Mt1NhRLzCZzocLb3dyCPkz10v7KUqYqgRegm3A1eb
+	CBr3vyklbg6ybKwSLKTJ4u0gpqykbXI=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789574315;
+	b=CzHt2a0hv0GfAaVlnYngCZ0eGBun0eC6iXdltOm7LoztMiUOD4uV39IfoJ9QMh9hINTclk
+	GUanYx4auPflVFX11s2LrPOVL8D8DFKnO6wy3wm8KHyLGY0/CDFlttM/iS0j2cPq9qg/gE
+	m5m0/IEH0ul9QnAaq6jBRsdxQ4LgqYU=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=A5RihjBC;
+	spf=pass (imf19.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.230.140 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: by mail-qv2-f12.google.com with SMTP id 6a1803df08f44-90cdfcbe207so9986456d6.3
+        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 08:58:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1789574314; x=1790179114; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=bjcBGUR39i2CtxsYZA+y8R1kv00jh+PXwHXxQnV1eiQ=;
+        b=A5RihjBCs1aIZD0m7uXL5sp0VlVf0xSshmlSlW8MAAQW2EM+Cd6R7lNDagFqXDpRUp
+         5+97nO37iqW/ZYYO1WVoKs3AkVEtWhvx0SSa36DxIB8nCoRMPccyXr8QfEObg/j9uWXh
+         wPWX9Z/cT+lx2EhoGSPci+AiDLvhfbXyhUcL1hh3oIaKIC+JvALKQVs7xO5Z2rNH9K+I
+         Z5cYYYBPXzWJ3o2LoXk2CF9f4U7PupH61ckPDOKQqeICxYY0vr3SsQ46o33XIPGDFYGQ
+         ZAxeLfFLJ5p0LK7NSvuoHiFZSI+7MztrmAHjnZI2yyhWkKlQJxkoTLpjrzpviJnJcDnl
+         lkKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789574314; x=1790179114;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=bjcBGUR39i2CtxsYZA+y8R1kv00jh+PXwHXxQnV1eiQ=;
+        b=Ob7zz2mX04w21c6ol5951VrrDUUOS1BXDaupTVFUmsQR6cTOJGPUyGAGJQ9Fy41Aje
+         8Ct5DmUpeeKox6aUB71oykHVgWw3+F0h5ncsSeMTVf5mag5y+ZjBZoafiPdNtuaeoa09
+         8JypNlqcwHuBdxfN7B58W28ZaRThCHsd/fSQsYTt+anBIbiBiKs7m+dEM/W9o9dioOWt
+         mD6H74r9CwARc9v4Zw55MoPUZ1g3FxRvORwjJp31zihvP1R9beTt55llo1xXvgt0JNy1
+         tOEKJOyUw965WRhJ4q/UaHBopZXAjbI1ZOyVRB0FEQfxWPkLS8NtBML/F0hD1BKA78z7
+         xblw==
+X-Forwarded-Encrypted: i=1; AKwUvByi/HwIgElkjtqFUT1Ap3Aw6jOY6UEipS9txAKtDoueBwMezox1sqKRzonR65JO7Cl+zX+O8QSP0w==@kvack.org
+X-Gm-Message-State: AFuF++nSIEsi8YKU+ZxqoP1wIKRxF8KyUTz6N2ul/F/YypF2LL89fWSb
+	89OTWfX5jCBbLpT6PymIZ4vWnpF301NdqiKZZVz6EWMm/aiDKFELbTdE8IruVWG/skU=
+X-Gm-Gg: AYBFou2caJQW5LEAlolhbrExPKv+EZ3wUDbzVzZI7cmxukfvqBfw5nQnOZ7MykuvTT8
+	LC93bEJdPvop0SSdfPWsqSNSAcDuqkX1FxQlQIjtg8WMpzQnDo45Nih46j2HBs5tTMOokt8Yj5t
+	jtOUfdOSC/WumRaTBqucPNtag4wbKrt1z7ery5IPvU04avAOyl+wM4ku4OM3KLeH1foiVHEkTXa
+	tDJ7H+lAyayQq/3HyNcQqe6AkyoKeev0tG0I4j1pvqpXD/Ghvgd/oB/2QJ7HDBckmrh3y5m8MbP
+	oNLw2WNYubGXgYEWmUDXwoSOL4O453ajoUtQYbn0/4ejRjJa5LURDIK+29jVtTGZtuoNCrwRWWl
+	inDj72brZ9aG7Q6rU+mPdP1fG9Uynls7koyHcMFqNXpaf6oxHCI3z6kcsOuhssPcvZNFlvWf/Qx
+	fAbrhtcVdMoEZrAEK8ReBXwy22lS+HQdFjXqLln755QxzHFY4QCoS3oTOSkcUvrLppWoqfFg==
+X-Received: by 2002:a05:6214:1248:b0:90e:96d1:40d3 with SMTP id 6a1803df08f44-9123d7a5b32mr54271566d6.20.1789574313980;
+        Wed, 16 Sep 2026 08:58:33 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9123be609dcsm28537916d6.15.2026.09.16.08.58.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Sep 2026 08:58:32 -0700 (PDT)
+Date: Wed, 16 Sep 2026 11:58:29 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Salvatore Dipietro <dipiets@amazon.it>, akpm@linux-foundation.org,
+	abuehaze@amazon.com, alisaidi@amazon.com, blakgeof@amazon.com,
+	brauner@kernel.org, brendan.jackman@linux.dev, david@redhat.com,
+	dgc@kernel.org, dipietro.salvatore@gmail.com, djwong@kernel.org,
+	hch@infradead.org, hch@lst.de, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-xfs@vger.kernel.org, mhocko@suse.com, ritesh.list@gmail.com,
+	rvvandan@amazon.com, stable@vger.kernel.org, surenb@google.com,
+	willy@infradead.org, ziy@nvidia.com
+Subject: Re: [PATCH v4] mm/page_alloc: avoid direct compaction for costly
+ __GFP_NORETRY allocations
+Message-ID: <aqq8pWI0u1IZNWHT@cmpxchg.org>
+References: <20260905174239.99e31515fabe220aa7d8e6fa@linux-foundation.org>
+ <20260910114602.926944-1-dipiets@amazon.it>
+ <aqQlUr-1h07G8JWM@cmpxchg.org>
+ <8d6a8a63-4adc-458a-b548-a47bf5ff8eb7@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] mm/mempolicy: stop copying the nodemask in the
- interleave paths
-To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
- akpm@linux-foundation.org, ziy@nvidia.com, matthew.brost@intel.com,
- joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
- ying.huang@linux.alibaba.com, apopple@nvidia.com, urezki@gmail.com,
- chenwandun@huawei.com
-References: <20260829015943.1258774-1-gourry@gourry.net>
- <20260829015943.1258774-3-gourry@gourry.net>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260829015943.1258774-3-gourry@gourry.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: A98AEC0007
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8d6a8a63-4adc-458a-b548-a47bf5ff8eb7@kernel.org>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 14CB01A000B
+X-Stat-Signature: 6dai1eh89yb4hi3nh66mu9g38z7qezca
 X-Rspam-User: 
-X-Stat-Signature: jykphgkwodd63xtprx7ty96o5gep98n1
-X-HE-Tag: 1789574248-903401
-X-HE-Meta: U2FsdGVkX19aGK49XVImIp0FYBiRdEp6AXqwTzfyJd8jBuFYyAZuSUJppkINN3t9JzReZx6yGBfTCftvRt4rYqST5jvbN6oTJePXubTmzi2MLL20WG1qHMY0Xj3ycfLYlKzFhWnFp5XZ+x1ZV7XuFsK2irVPshXYqIr2QgBayA2lzYERLh9oRZF1Jt+oAJm3QwTNBFFOyb5H7CTVrQYtMEwrlQKAhozovq8XJEcWQhhY/lmGtcSsP9mMdsQMoYTCpDtCDqPJnR5EhlwGwd3Dj3Ec7/qz180FBp5VF/wacOgFUnc1ifC4yQkEamqbE6O6+rmeUQWYUcDljN0Q7DV3o3vh4M3EYPrL3s5f55cL68BbJHFq6Mot8wVHJlMHuDDU1Ua7wd1gP/NIT4KChQDYktD/s8JCW+NEfbndbiXmdOEIQXZ8bWCGJiNE7Lgrj1IWgT+ND1Vxmnvgaa9ra00BYE1SDU/mpjmDYk/qQwFbeUVEiKyyOElge0RPbc2+Aaqar6wovFHnKhFtTdNwHZp403vPPKpR7aCAz+I1xYRaXOLmIB4Nxh+ylsXZzb5sjsVpM0pCan0iQiAlJTt70g0lsq7lK2xlHdI7qNCRmIm6gaV6g/BtMneBUjd2lwwACQY2QbaZsf0YJvHpi+jH7TPSiXBvdQJMJIpHTMc4BrujqhskQhif8AKdTIBzGgGLJL9OIzAfPosIuUlQHtxZVCWJB+b6QVeFPx5sSZp2fVUKgHg80Ax02+ybkpgG1ysFR5+VHTP8L/U80z6OyVDhJz9C13Wyu/QO9P9xZc1P0XaZm/jHctnggyLwSvhtGOtLOg7E1knUM41hvsz3u7ZjuSPOxcmSG6yYAL1n3mnI0FO/xR8d1WifbjVyiN44GfCy6bF2o8DccJA57aMVRSO9fN2Jfmw8wo9TXhunbglnWwNGGAET5ZEOtm9tq3hbZ48/6ItJ0cerHYSHCG9j3aaQwWg
- T6Iy8eq4
- InkjUrqmOUviGoIfGygFU/FCm0y7lrugEWKmOVmm5FXGdMgmyY75lJ0Urckss88GRQrxwSsupNQinLO615QkorwwV3hLZ2Y76dXCouCSOwBZRD0iGpWorVKDHegAUby6PKnCkWuS6oQtoe/K0tr95wdT/I5oUn+RovUaKt3/gz+TPSFja3m3PH8DgXljGWitBon3fuZBeE8ah+u4oWi7Y0uteV7fSyXBRN/kGXINHCAril5ZFvXpMRal+SkaNAnpGR0les1EQhanrBqnY7XkscBda6eqx8Z6ccNvtVjmk+atwQqLpEgYwrzMTtCKKYiv+SsDjY5EyN0qEtong9mwkqZLQTZWRhYwBj5yHwnT41eNDcAg=
+X-HE-Tag: 1789574314-124273
+X-HE-Meta: U2FsdGVkX19ggf1SrNordWxxggLhO78eXAgK4Hq9dCcL3hix9XoFeuM49XMFO6svG4iOklS6LpebU2niBkIAQAtd+y2Sagb90/Ht8bE6EWbt8jslYvAXzkT2KY7QxyXXDPSNi9CqDqDOG4QSphOI+j6EN6jWfN4a9NNHJ7GU+vKHKg5WwI85jt/aL+lK4WiaLR63V6h3ZFjZKh9phVse6YIII53+4du9bjLNk0wRE1XE4KaSbEx4k7RPGFta/NZ8tzUgcv26yz0FRxYpsfeUCOlnPywgmR23Gv4GZ5MnP8eE9wThJ2BauDTw38T9c00INclmag7GL7eg90BHH9NEGGOa1iyDEGFPJWz2EQp37UpREQ8BkejDqN5ftxFVUrrlJApqrYhYhLDUHDtzFJ7YYAUR5e0eostuEzFF7H0HbTHqPcJ26axUI9XxJjBpZv2vaxg+o0ktrnDwXomIoJnKZX/SIzowrbjIbI0JHsEh6XTSld+Yofwgwfwi51/kGyLlkNhOMqi58OjVcnjyqTlfunaaR1aSsXdwcgru/KAm0FMaO3u1ERegJ8TaOyUp/2ehnZa892Zs7AYYLaOlZPj+wi3ddrXjul9eXVC92qxOmEagG/4OOJs1QumwzWQkBeYD2Tit0+v+5l+srMQQ5r4t/b7bHa2+PnRx8cXcf4dIuufUuP1Vyi8Sbbg2lMxlL2qvCsAwi/VArdFpZOUgE/Zk6glHfaUUihxhkvgLC6puopUkSMct5FymHVESdcBTsl6SOtdV5Wc08qfrQ5h6sk5Cp1iDHzj2PUt8CpaSodLuHLrMuIRui1DMYwgxHaoZyCmnETEeF8MYKFsQUSjCZeigHYOG7jnuTQhsD4Zpzzit5D6ZCvtL84VGc/zKJdvJM5MboIF2qyyISc+LbauwrQnTa00GeggVk1+u4RJKeAE3sI6VeBkyWqz+Fyw3KMs8sn6cIifQznPwikFxNzWGcWu
+ 0HdXOvcM
+ GF6fyNqe9Dbx5/p4jRjT3zl7dVFM0FVYKqEsJ+K/aV7ehRfN94mW8+kPRswCI7Eh64hhULbDCa8oTlLuhWRVhrdwvwXq23fqeaZrya4qLmUMaWODTkmMJDqyqOSAHn/VmHP9CUA0HLl0qs3bu1iU3myzEinOMWau204IMNxhc/w4ufmh5yvjedlDy3Q9K6cFjumzrzA6onx3yzB3d9eWlFX9FHGfngEdoFuIYErcEXrLDHETocUYNlLmuJtoXYQyIRDY+uH0LcjNFR3Qo364tocuPgVXZuvgkwAQweg+qrWaZfdL8eNqTkajGN+JptL+3Jn6099NFOjxSGq/AjTTd6YDJpPj8NLclzhsidMd2xY6nGSz85c4dqoBEXWnyohPhyKlk1LCz95Sl5wjiZ+3ekTgA8WsaW281cxT8Mzq0vbvCsnoZz8vNsXazvbHHN84g2SSyygYkB6IBNCd/RRnTbcofmQN3scw2eIQVtZbucZRopM/BvJnABKdf/3q7QX3X0bSfij4ZQG0aZNL6EK2UOfjDlg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,152 +129,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/29/26 03:59, Gregory Price wrote:
-> The interleave node selectors copy pol->nodes onto the stack so the mask
-> cannot change while they walk it.  nodemask_t is 128 bytes at
-> MAX_NUMNODES=1024, and two of the three run per folio fault.
+On Wed, Sep 16, 2026 at 01:24:31PM +0200, Vlastimil Babka (SUSE) wrote:
+> On 9/11/26 17:59, Johannes Weiner wrote:
+> > The access to
+> > MIGRATE_HIGHATOMIC that it points out is in itself too generous. This
+> > seems like a real but separate bug. It will allow GFP_TRANSHUGE_LIGHT
+> > into the highatomic reserves as well, for example.
 > 
-> The copy only buys consistency between the node count and the walk.
-> Drop the consistency and just bounds check the walk instead.
+> I don't follow this part. For ALLOC_HIGHATOMIC you need __GFP_HIGH in
+> alloc_flags_nonblocking(). So GFP_TRANSHUGE_LIGHT won't get the access, no?
 
-I think you should document here that accessing the node bitnmap is safe (is RCU
-responsible for that? I think yes), but it can get updated concurrently.
+rmqueue_buddy() has this:
 
-> 
-> If an empty nodelist or weight is perceived, fall back to numa_node_id(),
-> which is what the functions already did when the copy came back empty.
+			/*
+			 * If the allocation fails, allow OOM handling and
+			 * order-0 (atomic) allocs access to HIGHATOMIC
+			 * reserves as failing now is worse than failing a
+			 * high-order atomic allocation in the future.
+			 */
+			if (!page && (alloc_flags & (ALLOC_OOM|ALLOC_NON_BLOCK)))
+				page = __rmqueue_smallest(zone, order, MIGRATE_HIGHATOMIC);
 
-Makes sense.
+It says "atomic", but it's checking only ALLOC_NON_BLOCK, which is
+broader than GFP_ATOMIC. alloc_flags_nonblocking();
 
-> 
-> weighted_interleave_nid() counts the nodes as we sum the weights. We use
-> that node count to limit the maximum skew a single node can host.
-> 
-> interleave_nid() walks with next_node_in() rather than next_node(), so a
-> mask that shrank mid-walk wraps to a node still in the policy.
-> 
-> alloc_pages_bulk_weighted_interleave() derives per-node counts from a
-> weight total summed over the mask, so a changing mask can make them exceed
-> the request.  Clamp each chunk to the space left in page_array.
-> 
-> A cpuset cookie will not work here: two of these take VMA policies, which
-> mpol_rebind_mm() rebinds under mmap_write_lock(), not mems_allowed_seq.
-> 
-> Cost is distribution accuracy during a rebind - but the copy never
-> corrected this anyway, it was just a safety mechanism to prevent div/0
-> and overrunning the alloc request buffer.
-> 
-> Remove read_once_policy_nodemask(), now unused.
-> 
-> -fstack-usage at MAX_NUMNODES=1024:
-> 
->   weighted_interleave_nid            184 -> 56
->   interleave_nid                     168 -> 32
->   alloc_pages_bulk_mempolicy_noprof  360 -> 136
+	if (gfp_mask & __GFP_DIRECT_RECLAIM)
+		return 0;
 
-Nice!
+	if (gfp_mask & __GFP_NOMEMALLOC)
+		return 0;
 
->  static unsigned int weighted_interleave_nid(struct mempolicy *pol, pgoff_t ilx)
->  {
->  	struct weighted_interleave_state *state;
-> -	nodemask_t nodemask;
-> -	unsigned int target, nr_nodes;
-> +	unsigned int target, nnodes = 0;
->  	u8 *table = NULL;
->  	unsigned int weight_total = 0;
->  	u8 weight;
->  	int nid = 0;
->  
-> -	nr_nodes = read_once_policy_nodemask(pol, &nodemask);
-> -	if (!nr_nodes)
-> -		return numa_node_id();
-> -
->  	rcu_read_lock();
->  
->  	state = rcu_dereference(wi_state);
-> @@ -2232,22 +2213,40 @@ static unsigned int weighted_interleave_nid(struct mempolicy *pol, pgoff_t ilx)
->  	if (state)
->  		table = state->iw_table;
->  
-> -	/* calculate the total weight */
-> -	for_each_node_mask(nid, nodemask)
-> +	/* calculate the total weight and the node count */
-> +	for_each_node_mask(nid, pol->nodes) {
->  		weight_total += table ? table[nid] : 1;
-> +		nnodes++;
-> +	}
-> +
-> +	/* the mask is empty */
-> +	if (!weight_total) {
-> +		rcu_read_unlock();
-> +		return numa_node_id();
-> +	}
->  
->  	/* Calculate the node offset based on totals */
->  	target = ilx % weight_total;
-> -	nid = first_node(nodemask);
-> -	while (target) {
-> +	nid = first_node(pol->nodes);
-> +
-> +	/*
-> +	 * The target was calculated in a separate loop, and a concurrent
-> +	 * rebind can change the total number of nodes.  Clamp this loop to
-> +	 * a single pass (nnodes) to keep the walk bounded by node count.
+	alloc_flags |= ALLOC_NON_BLOCK;
 
-Might want to explicitly comment here that we are looking at a moving target and
-might race with node bitmap modifications.
+	if (order > 0 && (gfp_mask & __GFP_HIGH))
+		alloc_flags |= ALLOC_HIGHATOMIC;
 
-> +	 */
-> +	while (target && nnodes-- && nid < MAX_NUMNODES) {
->  		/* detect system default usage */
->  		weight = table ? table[nid] : 1;
->  		if (target < weight)
->  			break;
->  		target -= weight;
-> -		nid = next_node_in(nid, nodemask);
-> +		nid = next_node_in(nid, pol->nodes);
->  	}
->  	rcu_read_unlock();
-> +
-> +	/* the mask emptied under the walk */
-> +	if (nid >= MAX_NUMNODES)
-> +		return numa_node_id();
+So this can apply to random !direct_reclaim requests, no?
 
-Makes sense.
+I have to correct myself on GFP_TRANSHUGE_LIGHT because it happens to
+include __GFP_NOMEMALLOC, and so won't actually get ALLOC_NON_BLOCK.
 
->  	return nid;
->  }
->  
-> @@ -2258,18 +2257,21 @@ static unsigned int weighted_interleave_nid(struct mempolicy *pol, pgoff_t ilx)
->   */
->  static unsigned int interleave_nid(struct mempolicy *pol, pgoff_t ilx)
->  {
-> -	nodemask_t nodemask;
->  	unsigned int target, nnodes;
->  	int i;
->  	int nid;
->  
-> -	nnodes = read_once_policy_nodemask(pol, &nodemask);
-> +	nnodes = nodes_weight(pol->nodes);
->  	if (!nnodes)
->  		return numa_node_id();
->  	target = ilx % nnodes;
-> -	nid = first_node(nodemask);
-> -	for (i = 0; i < target; i++)
-> -		nid = next_node(nid, nodemask);
-> +	nid = first_node(pol->nodes);
+But what about random GFP_NOWAIT and & ~__GFP_DIRECT_RECLAIM sites?
+Those explicitly don't get watermark exemptions already, and weren't
+the intent of the rmqueue_buddy() exemption above.
 
-Similarly, I wonder whether we should spell out the raciness.
+Something like this?
 
-[...]
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 12fac9084c48..c79cc7aa4dff 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -3246,7 +3246,8 @@ struct page *rmqueue_buddy(struct zone *preferred_zone, struct zone *zone,
+ 			 * reserves as failing now is worse than failing a
+ 			 * high-order atomic allocation in the future.
+ 			 */
+-			if (!page && (alloc_flags & (ALLOC_OOM|ALLOC_NON_BLOCK)))
++			if (!page && ((alloc_flags & ALLOC_OOM) ||
++				      ((alloc_flags & ALLOC_MASK_ATOMIC) == ALLOC_MASK_ATOMIC)))
+ 				page = __rmqueue_smallest(zone, order, MIGRATE_HIGHATOMIC);
+ 
+ 			if (!page) {
+diff --git a/mm/page_alloc.h b/mm/page_alloc.h
+index b9259deddb59..11714ddca254 100644
+--- a/mm/page_alloc.h
++++ b/mm/page_alloc.h
+@@ -60,6 +60,9 @@
+ /* Flags that allow allocations below the min watermark. */
+ #define ALLOC_RESERVES (ALLOC_NON_BLOCK|ALLOC_MIN_RESERVE|ALLOC_HIGHATOMIC|ALLOC_OOM)
+ 
++/* Flag combination from GFP_ATOMIC */
++#define ALLOC_MASK_ATOMIC (ALLOC_NON_BLOCK|ALLOC_MIN_RESERVE)
++
+ /*
+  * Structure for holding the mostly immutable allocation parameters passed
+  * between functions involved in allocations, including the alloc_pages*
 
+> Unless I'm mistaken about that MIGRATE_HIGHATOMIC part, it seems all sashiko
+> concerns can be dismissed and then indeed v4 is the better version.
 
-Nothing jumped at me
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-
--- 
-Cheers,
-
-David
+It looks like a real issue to me, but one that already exists
+independent of Salvatore's change.
 
