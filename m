@@ -4,85 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 544C7C88E77
-	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 13:34:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91111C88E5C
+	for <linux-mm@archiver.kernel.org>; Wed, 16 Sep 2026 13:36:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 67B316B009D; Wed, 16 Sep 2026 09:34:32 -0400 (EDT)
+	id 93E8B6B009F; Wed, 16 Sep 2026 09:36:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 62C8C6B009E; Wed, 16 Sep 2026 09:34:32 -0400 (EDT)
+	id 9166B6B00A0; Wed, 16 Sep 2026 09:36:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 543656B009F; Wed, 16 Sep 2026 09:34:32 -0400 (EDT)
+	id 806266B00A1; Wed, 16 Sep 2026 09:36:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 21BA96B009D
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 09:34:32 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B4A46A5A20
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 13:34:31 +0000 (UTC)
-X-FDA: 85219719942.16.81A2302
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id F19F5140012
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 13:34:29 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="AK/o8eNs";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="AK/o8eNs";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789565670;
-	b=WpHy/AKAJVJ75gCh1272xIrhdkWaMc+/EcoVJpz2sdoQMlrQUfHdNjioc25vEj7xC7Saia
-	eFFQc3/1eJwCmBGRvy4VKbks93lyIm+wto3DG6P55JiFYYvrbvlJ4qIoHJCV1G2OHLSZeC
-	xfMx71c6e1ZF7h5rdVEbXDKGEnPwRlM=
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4CE726B009F
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 09:36:06 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7EE0FA0716
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 13:36:05 +0000 (UTC)
+X-FDA: 85219723890.19.E288691
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id A6F92160013
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 13:36:03 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=it8+Cdwk;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789565670;
+	s=arc-20220608; t=1789565763;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0pwhDPf1ZcMsFXr2wFtOfi9zYP8FgQyGaMxEJBJLxLs=;
-	b=RaSyPUlbR2a8F7DMsFsme6pN+KQhkUkWPa+GbIGgMWaWKa/1tepcc+GIAJ1L0bVd9EHGlt
-	35sZm0yRzXN0ru5LBHQDWG19xAKZR0yZgAPyaA/BmE7XRToHv2WAI+8snSWtO/2l5r6KJg
-	4RFcA6t+ki9vOyjez3NR0R1fZzqre9E=
+	bh=bwyk+5gUmPQM5HlVeH3up+pJy3bi1L00FIGnnBnAiJY=;
+	b=0JVDPquQTpzgZTuL1DsFszLPTUPkUd9sl9FHKaJdWdS4Ra9t7IhfL9mwVUon3tz4EsP1Rf
+	AcBQmD+OlHtKulDlO9Cn3NgKEXP5ZnY44h07zHqaOEuHoMFrOwTwCfAyR6BCNWv7PFNwtW
+	IhcxToUYl90a7Dd5YzrR/lAmiO1iUVM=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=it8+Cdwk;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789565763;
+	b=fsP9QtvwP5mdO48YieEquGs9PxsEnV2knBapvNTDcOtg5UArHiuyDixP2TLKl5ScoOY/Ha
+	BaUPd4pcvtXpZ5GPXSoZ1TCO5QCX6OA6cMKIIvynUtmI5MLCAhekKlzDDzWD8nJC8L3/zB
+	NnYQL1kNOoZK6DH3UEuviPi7GyXWvEQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7F7DD6057A;
-	Wed, 16 Sep 2026 13:34:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B0531F00899;
-	Wed, 16 Sep 2026 13:34:26 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C911740B46;
+	Wed, 16 Sep 2026 13:36:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90E7C1F000FF;
+	Wed, 16 Sep 2026 13:36:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789565669;
-	bh=0pwhDPf1ZcMsFXr2wFtOfi9zYP8FgQyGaMxEJBJLxLs=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To;
-	b=AK/o8eNsta406tALZ4n9LY9LZcOKGvZzHbQFlv4LP5s4xN7btezfxtDaU9z81nya+
-	 l6U8c5hPVqwXmGK/Kl0DYNG4ENW9dbQNIkJwlLwoiRsvbF2S7+CCFUKopJXF78x2wp
-	 qtg8qNMIMIr8JhD+3m3EU4wdBXE1Vdh8nuk5QpIwFq+AJ/w0/372Fan5CtjG06xRDO
-	 cZFRNtt/b06Dt6qADOU/M9gHizfEDHokFdaBR03wKLBw/+ZcKTW/5ZG0aWDVpccajh
-	 NHNe4gIQm7cJHXhzEGDMJjNRiYJyXS/umqRLIBpjKwnB2O4sntJSe1exsXm+zqiRTL
-	 T9FweJd2d5C/w==
-Message-ID: <0deef591-d82a-4034-9514-abde0e73e5e5@kernel.org>
-Date: Wed, 16 Sep 2026 15:34:24 +0200
+	s=k20260515; t=1789565762;
+	bh=bwyk+5gUmPQM5HlVeH3up+pJy3bi1L00FIGnnBnAiJY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=it8+CdwkIuYEVwHgoARhILclAx9xQneyJikZNFw5FuiXfBQKZjuHAWEm1zRK0HBEZ
+	 MBu8dds16gBsPre5OB1tdPNsQ7AjwC6eW7VT293sDASWfg9+7a48j7tkMR5WSTWBrR
+	 MQ3ogNFN3BPDxIc2an8RVAS0fZ8ZLOBdLClqi18I0wbMhkJmcCXLWK111NF7U8OHz7
+	 Qo9Nlk4gyT0emWDUu+ufaY+JkFfXl/FeYDomMFI+af5BkmAhJVhVY2w5tdRVIuXMr2
+	 R4LMRQYCkHDCI7geEAOMv3M4ixqW1W/ccumk8vv55zTvPL9ytZ6NtixXG/NRqT+xD0
+	 triSr+ZAmcSaw==
+Message-ID: <1d2108bc-6b67-43ce-ab13-70ed241024e4@kernel.org>
+Date: Wed, 16 Sep 2026 15:35:58 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/17] arm64/mm: Convert READ_ONCE() as pmdp_get() while
- accessing PMD
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
+Subject: Re: [PATCH V2 02/14] arm64/mm: Route all pgtable reads via
+ ptval_get()
+To: Anshuman Khandual <anshuman.khandual@arm.com>,
  linux-arm-kernel@lists.infradead.org
 Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
  Ryan Roberts <ryan.roberts@arm.com>, Mark Rutland <mark.rutland@arm.com>,
  Lorenzo Stoakes <ljs@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
  Mike Rapoport <rppt@kernel.org>, Linu Cherian <linu.cherian@arm.com>,
- linux-kernel@vger.kernel.org, Mark Rtland <mark.rtland@arm.com>,
- linx-arm-kernel@lists.infradead.org, linx-kernel@vger.kernel.org,
- kasan-dev@googlegrops.com
-References: <20260729122452.3797443-1-anshuman.khandual@arm.com>
- <20260729122452.3797443-3-anshuman.khandual@arm.com>
- <dc0e039e-49ef-4692-a07b-2e4e4a067b3a@kernel.org>
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20260907035030.2839978-1-anshuman.khandual@arm.com>
+ <20260907035030.2839978-3-anshuman.khandual@arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -128,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <dc0e039e-49ef-4692-a07b-2e4e4a067b3a@kernel.org>
+In-Reply-To: <20260907035030.2839978-3-anshuman.khandual@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: A6F92160013
+X-Stat-Signature: cabo69whsumzfjm3u6zrjom6rrp877p1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F19F5140012
-X-Stat-Signature: hzpi5khzaj3gkwus75qecfc6z4q3fq5r
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789565669-782254
-X-HE-Meta: U2FsdGVkX1+2Kz6d7k4Vrxd+fzXSEIZMSKRlf2kJY9DzaIw2HzyOy2DgwXO24EtjX7RBkICXVqzQWYTAeFURuWa54lxNTXEGvoKsIiXLZgUQYIrLgn5UxzLhLge64btyqnb5/+EqUPV4wvO1xiik0j+NWRCUsWQALm9RfCWte68PITaMN22vr3pmfTzEaESY+TIsYIZb3sr9kT839/2KfF+oWTSqzRs3laF35qBeAOLrzppCrtxJ/uZYUK3UPitWzOiQbMMkQVVANAcxePPMUC9QMsu2PPsT6xdW/3I5aclHK1BbADsrHwhnVdTUA2uIqMXzgJsi8l2LFdTSzfiLoHhltn6soz41kAZ5jJ9cFe4zHdqK/uawM2D9QqvPQNcErsGV1uRPcG/8/leLk7J7xryuCLQeihc92YpGqt5jTyvlk+SpiSegDHNMPVKcoAG14C+BuvFhoIaPhhFw37Ifw1t/j7dMrtt0PXdVGaLiL1PeyQcY5vGZYAqhxEXWyw51eF6tcIL+3kVhqCBON1dIhfgtK+onnUvn96rVbDk2IPBiaZ/SaMb2ihnT6J/eUuIZ7XFbPl6PRTD6qbP2oNmNWwUsgGVSnXBTG3r4ULV6ln38MAIB0GY2AKezh+i6eZGmlBL7dfRitQJj7A98R8pVMVOhtZ4ghSArndc037a6urpR8edzcXDVFET0buNVzgRhBAq/q8hXR5l2Hkm50sgumuKUM0oCa0y7zg7idOE5ULivEevW9TTQQPKqZOKCKdMRaenJjZjCdapTisDBEsYc2rOE1pqxZV8SzKSUz990Z7jGP6swsGAgC+Tbfdn9/J6XLYYqmqNtqYjsE7+RxaJng3G7bEMayDaTOpsdPJiYEFgPhOlcyBAFwa1T0335W/vd3EZuJCnD4j7c0Lf2lFB7gqVaHKxR6GTFpQWBtjtj1COKLgdKQDr2CskEAvB8GxvRtwnrklDmk6ItjGHnSmZ
- f0gQ6J6o
- MjdKQtA1vhHWxKy6qDMmW3EVaJmfKbgt8ZNfX/5k2XNoYvL3P1RYy/1D/q7PFRh2cfwYukf0ZGswTTkZJFM6GpXVOCiMG0LZe3f3lDkELPyAqOfoXxxaDEDeIX4/yOjWRoEluRQfpPD2a3AXptELQ0qsVGj/vTL5Nhq4GQD1KIgcRXlGXwnPs/rmUlMGCANXES4OtLwsAZ5pqnwrPPd3Hv89WZ1URNwzI+TBQjTA79yBQ3Mvcd8I99YzFZ4dAgUslVJswcpHiMihiViUP1UVYC5E4tKgO6o3VNm8dpNVuBSy1RmURYNSeJKeBiLjOlxGphLVqVigrPMriQ0g=
+X-HE-Tag: 1789565763-304693
+X-HE-Meta: U2FsdGVkX181Yknb8EO29jjQOo4jrMaKjVpR7tCfVPm2KXK/hp5bDr99KWFju7mljaECQAUgXhtYv5UwOx8wSdWetRjUxcDEmEEHUym0+3BCW2NHhq8/Ts6+JZeVSmqv/QdOrNScPow+wJr8YNrhM9x4L6Tlz3GqDu4l77E6jjFYV1GLgmh3a3WqaEFELxYfEA6upO140eORPqP+zSy+zhl/2cSMMIH6CxSwP83Xr831lvm6iHsQomwRBfml6rU3cs1wx8pju+tqDtalOf/QtLc4NAgBEd1aFFEMy2DXoNdceIDE7C8JkKdYfiI7x92Y8wRQgL6eX2PtAfs/oEOM/sDDWFg95hOu84Kf198FqycxJSTnkeRcNeAr4yNm7E9AF3xJzhpeJkV7hFilq/xNxjV6yeqGmlrtFiPmY1SNA8CaWIrl0WjSMQArUEvO5Mrwr3AXQkF8qBFnB1kXVNNOpp0AF9HeYoMlJLFwoFwOR2Mz1G7KeSHe3DEaMtHyXrJABb2mFNpw5zJnUv+lx0oeG10toOjn2SShPhfovAnwX9bk+XrhZOnG5vcwfoSvafyiQvsRXR8bgGHbgi7hI4e4lW1zSfKd9wdrGEkf05ZM3QcsDCzXA5Ag792s3+5P+bTTrGmMBL/BCh3gKYyjMlq4UdLH0tHZ0Lr47YVOxTVZ8rRp9W638jwR0YYgNMPENkFQwU87q5mR9njKpoaX1IQvjnV8xHFnshLEq89jzKHfH/4U3tbZui4nXum/rY0dL6KJmZ0TmA3erSFbVHGvyM8Gi6PjwaZZXCyXxFXknba/RNg8fdEhUtQRR5QYlFpIUa41lshVCMgllieGoej/2PsCB4FCgz9kMqmsNMUVBYKOzGzf7Pa2Wv//N+gqmH6C4Byv0eOvuznIAu28yQm56RHePOalEG+D4zBWRC6BpfP5KDij/3IaJC+rekvGO17I4u5rFPmZgoVOBoiXno93kr3
+ WbJZvgZV
+ zGpKBqpQoDndXHSvOAmtTn6DN/pAatdeDVZov2Qb9kYP7Bf5eQsAce5/euLkv1xAS2s91tpcyHFKsJwB2LYRlzxFEYRoXQl0NObnMR5RhDZSA0dyYfjHU+CTyUYpmtpS1a5F1mdQWwl/CyvDeADHnUrbinNy53oJcUHtjJ0jvdDrfYI5vJQzRfuc6l/L3sgy6v/zUcN0mU5/fdTJUD/ngfcnSUERqnXHOOatqu0tRXYe2xD8593d7YFcuTEP3KBzYGqX5npfT3whO2ko+XC5G3gWJ/xWBK9Wl/R7GvYVXArVkTfZvXb4rcH8aZT+pvWYjOHjiYhrrl+eVlSC2CrqVrXG515JRxDVAQl1adNO1x0XmKUUGrS/vC0xUqr/XeEAKe3Xqf6NeHoK3gA60U7+59Fti1/xh9a1cbeAxhzu+N1Dfpl9IyVEgf1H33Gn7wMfp51NM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,37 +143,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/16/26 15:32, David Hildenbrand (Arm) wrote:
-> On 7/29/26 14:24, Anshuman Khandual wrote:
->> Convert all READ_ONCE() based PMD accesses as pmdp_get() instead which will
->> support both D64 and D128 translation regime going forward. That is because
->> READ_ONCE() would need 128 bit single copy atomic guarantees, while reading
->> 128 bit page table entries which is currently not supported on arm64. Build
->> fails for READ_ONCE() while accessing beyond 64 bits.
->>
->> Load Pair/Store Pair (ldp/stp) are only single copy atomic if FEAT_LSE128
->> is supported (which is required when FEAT_D128 is supported). Currently 128
->> bit pgtables is a compile time decision - so we could have chosen to extend
->> READ_ONCE()/WRITE_ONCE() to allow 128 bit for this configuration. But then
->> it's a general purpose API and we were concerned that other users might
->> eventually creep in that expect 128 and then fail to compile in the other
->> configs.
->>
->> But worse, we are considering eventually making D128 a boot time option, at
->> which point we'd have to make READ_ONCE() always allow 128 bit at compile
->> time but then it might silently tear at runtime.
->>
->> So our preference is to standardize on these existing helpers, which we can
->> override in arm64 to give the 128 bit single copy guarantee when required.
->>
+On 9/7/26 05:50, Anshuman Khandual wrote:
+> Define arm64 platform specific implementations for new pxdp_get() helpers.
+> These resolve into READ_ONCE(), thus ensuring required single copy atomic
+> semantics for the page table entry reads.
 > 
-> Best to mention here that no functional change is expect because the common-cde
-> pmdp_get() etc helpers do exactly that.
+> In future this infrastructure can be used for D128 to maintain single copy
+> atomicity semantics with inline asm blocks.
 > 
-> Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
-> 
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Ryan Roberts <ryan.roberts@arm.com>
+> Cc: Mark Rutland <mark.rutland@arm.com>
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> ---
 
-Whops, accidentally stumbled into v1 in my inbox after starting to look at v2 :D
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
