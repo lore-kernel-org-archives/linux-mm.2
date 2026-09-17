@@ -4,101 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEE66C88E72
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 09:48:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E4D4C982D2
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 09:50:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ACE276B009B; Thu, 17 Sep 2026 05:48:32 -0400 (EDT)
+	id EC9A96B009D; Thu, 17 Sep 2026 05:50:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A58586B009D; Thu, 17 Sep 2026 05:48:32 -0400 (EDT)
+	id E79E46B009E; Thu, 17 Sep 2026 05:50:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 91FCA6B009E; Thu, 17 Sep 2026 05:48:32 -0400 (EDT)
+	id D42AE6B009F; Thu, 17 Sep 2026 05:50:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 66F316B009B
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 05:48:32 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9266D1C1F2F
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 09:48:31 +0000 (UTC)
-X-FDA: 85222779222.07.AB68C3A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 0EE94C0008
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 09:48:29 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RXQbRdQb;
-	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789638510;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SSQlyaKBFOXmjTXXwb4CnAc04mzkW2ufkK1lWWnGyPE=;
-	b=Eum7QnTCy5pJY06DbBcjVKCwRze8GB0Yxhw4siwU3EGiukMfixgemTMUPJdcWEyYuLKJLV
-	zjrCcqNP8IgtSg7m2iDAhi1qMVwzNpQu6axV+0C185B/CQ7bL64wtB9h5+kQOZdGHrXLZi
-	7k2pNRJRH/PmTEwMpqNhs/F1Q6L7iVQ=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RXQbRdQb;
-	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A7DF86B009D
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 05:50:01 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E177A14029E
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 09:50:00 +0000 (UTC)
+X-FDA: 85222782960.29.335FEB4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 1A29080003
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 09:49:58 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ddAunACc;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789638510;
-	b=WkIHSDohtq0uAxnn0txJSQ1yy2lb9VxptVlx1LJM93UAgBhq8zomQoX1o0AhF/MIAZY/j+
-	2/sWxKKRX5G/3+NntRq1yqGCyNGt/+cqEiWAn79RNQpMLPj2lBX2FG96oIwXrHhnjpW2BS
-	YFT0+hJuF18E1lifkGfBSYt0vDWpm7w=
+	t=1789638599;
+	b=O7a8QqNTDMm8seaUuuQcwu6V+MOgvgRD0YSkEUAo6EIX352+4Vrk/+gJMk2NJIcEv4xVfI
+	3qQwDNvjVFSQuHtmO+yeYO6K9d18E1hxzHLsSdRgjN2CTsKG2GvcrrjrekeUfXVfLcCX5Z
+	Y7zrKfoT+pHsV+Lr1EckPl1kQ1qDKxI=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ddAunACc;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789638599;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=vSU+xrAEcsvkHu26lr1G4pEJ8rlPYCT7TOEWzjoc1DQ=;
+	b=IkLOOxKJTJlNyHsxv2tHTAkyauTyEipBLVD/7/cye5xkjcdgwe1oZTaN8Uu72FRpKWtzAP
+	+rwJlwqGT9V2fVAdUVvLfItJGmCKXSrA59o8njOxGe84NVtei3q7eBpR06LhjN9Le2lWOA
+	qYfO4HXh3k4MdEYp7QpYI8MZzeXTYus=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8C2CB600D4;
-	Thu, 17 Sep 2026 09:48:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A58101F000FF;
-	Thu, 17 Sep 2026 09:48:20 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4EFAE416DA;
+	Thu, 17 Sep 2026 09:49:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2C411F000FF;
+	Thu, 17 Sep 2026 09:49:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789638509;
-	bh=SSQlyaKBFOXmjTXXwb4CnAc04mzkW2ufkK1lWWnGyPE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=RXQbRdQbaMBgU589o6W6PG3uphqN8mz/5BLM7kb4FOOK2HUFAR93FxbAoJTEAO8Bu
-	 eBoMaio317U16mMAW0vaD84KGV27INu10hhQohZWaKuKgfSOO3qZzptjmllqY/CUt/
-	 IuuDdJMQ0mKaF3URDpMUpD2v9wmA5TOXdERqKfg6G4aBNbU+E4K218mD0RumAFV1Mt
-	 COnZBQ1CMqCB/u9P+dkXryFycmkanLLTAJtGqNyQEtHTufZKXMU081Bw99vgtS9b0W
-	 qM4li9bj33ALeGiPbwdYhg9T2fzZ9DGvn14y4LfOgNz2xVrwZu3cOup4lJ6KfrLH9o
-	 JwkgKTsO8Aq7Q==
-Date: Thu, 17 Sep 2026 10:48:17 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Kiryl Shutsemau <kas@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Suren Baghdasaryan <surenb@google.com>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, Xu Xin <xu.xin16@zte.com.cn>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Youngjun Park <youngjun.park@lge.com>, Peter Xu <peterx@redhat.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-Subject: Re: [PATCH v2] mm: implement and use vma_anon_tracked(), silence
- KCSAN
-Message-ID: <aqu3VY-PgJQYJVHz@gremlin>
-References: <20260910-vma-is-faulted-v2-1-e81ebc7d146b@kernel.org>
- <aqKzUTPbh1qcKs4a@thinkstation>
- <aqgQw6moAuJYCVw8@gremlin>
- <4b2c99f6-d7c0-42a2-bf9a-e85061d53c93@kernel.org>
+	s=k20260515; t=1789638598;
+	bh=vSU+xrAEcsvkHu26lr1G4pEJ8rlPYCT7TOEWzjoc1DQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=ddAunACcGySEBxWygGGBQBOZW5Kc9y9fwixAr9AgU4hqTclBfnONuRYqSKoyfYk0m
+	 3pZboHgJIlAY4irh8yRMsCcdYPYen+IGMChqimfTE1u5zGBOGIejfZBJSR+gnChYGm
+	 6iCXlEWzDGX2UACyLmMePk1m61Vs9ABpZMBL6MvxFje0oUPHy4InNf+E7BBdXrkRzy
+	 ONQZ4tWJO/zZsl/JEIAxSFQKoNEAM7JiD0oKrwMNCQAVzr0rqyjLY0mNY23TLcWqS+
+	 P7+WShn0xdG+PeZKjmbKiKqydX/1jLD58t+SOBYr5srCMSoBLfLV9gDXpWzLCZDtuR
+	 dFKk13Yg8SgtA==
+Message-ID: <7eb8f4c0-6e14-4f91-a3b9-77e82f76ed00@kernel.org>
+Date: Thu, 17 Sep 2026 11:49:52 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4b2c99f6-d7c0-42a2-bf9a-e85061d53c93@kernel.org>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 0EE94C0008
-X-Stat-Signature: kjwjw66z6be9px91q5944tczajo3otgk
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] mm/mempolicy: stop copying the nodemask in the
+ interleave paths
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ akpm@linux-foundation.org, ziy@nvidia.com, matthew.brost@intel.com,
+ joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+ ying.huang@linux.alibaba.com, apopple@nvidia.com, urezki@gmail.com,
+ chenwandun@huawei.com
+References: <20260829015943.1258774-1-gourry@gourry.net>
+ <20260829015943.1258774-3-gourry@gourry.net>
+ <d7f162eb-4214-456c-9d1b-a8623da61b45@kernel.org>
+ <aqq_yv-cQvzuxr5D@gourry-fedora-PF4VCD3F>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <aqq_yv-cQvzuxr5D@gourry-fedora-PF4VCD3F>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1789638509-35879
-X-HE-Meta: U2FsdGVkX1+svURHTQXZlt7uZZfAy8gQwdBEizHzBplagR/o9AE25MoGuFqnzIIXUq5p0bVZ0TSr6xSTe1Cr/eiuslUiozjjtFk0A9Tx1gNOmq9eN3cGudnledmyghL3pp96pWM4tNKzHlDhKO1mCMqiP6lR2ltSRBrUMaElXsffr9hI9270rROBRkMJxQI43vLmn3LdSPAsnVDvWsHHmfTXHzeKJ4B5Auk+RugWt/LsipciyfZBVpWR3ANDOi2nD5yXlOfDncoTmTpCKnGjEqH4+8ID3SUT9mnuaV2B0ReNgspKRpb6rsV7VvApZQc7WEpVgFWr2Yl0scW9gnjoBqSHEbdhi4sUCb1p9Dek+KdvovFl0epB53bUf1qb1r08YsrFgqhIU7pBnQQs4p5fcqhiQ3YggXJgU9NW+XrtQAxaeRRgfhM0G/wdtzvCHOZMpYXuERdjdiMK9B7IyeD/ORtpkqt2psmL0QWmQ8nynCF2/awfU4+vH6HRDzelPn7nYvia7yRPDyv4e3v9Q0DVR+mDMWIJenGdW6FD51b2PhJIuFBBIoq7ZBJviBoRYrRKZkVQzr1kinaPDCJQHdOBccUJhEZKghWrzNA3u0hbCJDaNkL0xHNLyuxqf2xWAW0tX+ESyHGhR/nUPqgR5zxueyKjVasQnfY67gfldGCQQU8hDLTZynFjkyfRtYlQdRj0WM8Z+qFH5s2HLZ6/BocEckZ0bL8JSXWtOHF+vV5ED19g2kBh2gqbDCnFEZz402b9H3nwMxeKIDMyjDKC94pkych5YFmWzZ8B0Ag/m+9NaVFF6PPtlrjBLjkoqL4B4DCUNmPzXzI1LHH2czSBscyl16qF6NPpoTiy3mzL87kniukJLzNMxDC7LL7zI/Ao/L9FaH39xsieG0xlYh7ebS+wO0h6ImTQZXk0F372WUTEJNGXso+PG3V/BL6n6GPcrw9tofR5mHotJosZ1bCrPJM
- 6DjU1lN8
- eIgKP+SpzyYFs8s10dj9XqdK+tHVUJBmv+RBl231DnRBEgCDYbJYgMwJjUFNIgB1EhfVUaMT528dsIU6D6P/UIODdB4SEIgAHaCgeoDjmJESIR7wqOeH1c67lCNUbbVJIOtOHiHRKKAQc6d53A8QYkK2sxBO/DIG8kNGpBmBIlc75t2OrfmyVot+DEb+tfo4Jjfbt+4YaYjCgPnOS/vidBMONsLS3ZVWpLJu2tV7M/CXjjTLNaGyKxU4O3tJZLqthhhHAno9PPWNJMCh4+Y/PgbUqTbaN5ROGzylKXkIFvzDvSCTt+UBXsfuAIalhW+OFRFxHMcM798hhCo+4sm4fgM+nqA==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 1A29080003
+X-Stat-Signature: 3f5dkfsnnfzbgry576fg61wdhker9r78
+X-HE-Tag: 1789638598-44150
+X-HE-Meta: U2FsdGVkX1/u/3NVi7AjqFcbLgClMaTpII0nan1L43x16FqHxY1bxTBnXbttg6+66rHMnd3zQhbkN9wMnv66cbJfWQTWkm4MFvKTwr4xwBz5ZQMiOeBt9gPCxpIRjpXuVfcPg8TWSRTXXuyXPLCbANJkA6pXV7xsnkGmqogdqI893/gXxim3gM0qNnANySMzNToPfwYPn407tMzCo+H02p6+Inhpe1PoNGw+yRNhYV42zNsnHCfuhJyo2/eEeOYvxNFOnnrZaElPU5+nw0UWKlO+KGKKfzaNWeGMWZAOIVpxluortMNXj2aaWnCsSNpo6/3hnUHYFBEbMLfgxGOVNXhw4U2n0nUAtlURJL9MJ12Krs/zNA8bUF1Mh0DtjhTGKDCoKbayCgAJuUDCSP106XFN/r0Lu0eTcNr/s8O9ocmyYgDRC6//brc76yBxMK4kImhDcWDvkb0ws3P8/HE3JAEnvnSDE3kHB1XpfiMOTryPFYkir1sUxisn44df9yENxF8Xv31cyBW4+denSGcREZYfHwd03yq3ZePXo8JQTrmqJwRNkDmfSWi1f3c+OyXSoH2pKsW6Og/H4I7geCtS7mjVa3aAHOx6J/6IYoapw5l6+3LBkj2wBrEr7xj7GVRzwW1aqjrg1vIatxdRD3XhnEhayRwuGu5deLnD9S4TZzNNIvDq9vYwiKAHHxgnFQREpPsspOv4fuT9Ny/w+mY4a+B6YxYU7nlaxXZPMJF/w/dZuoxw71AkOcDomtfUOm8wzK3TLXcNe1HRMgFFOXCSzNh/Uc3NSQfYoQi10sPxCgtiTxkIvEfzGCuLqvgnmET/r2UgkLAVn05FsvXROPT4jit4u6rzXEU6VM7LVoPeKqYC14+TVF9uFWlZSTSlIQXrgqc7xVzmbRb8L/0GgkQwBzf/ZkF9kUM/ViWr/sQZ3ghalJKd+g3QX/S0BmMFhikS/lS9WlUC6XKyexvtI1f
+ wP/0oOhr
+ Yt7dqYuh7ZnrpzkDViikIgkiuHOLrHLn5GfPvZ/eI6WT2jfwp6nTCUsQWUrSKGZ/NaUw0oXl3FoRBYNjwQjpt8N9bZai/Z53DKbFxJb0xqEoDJyBgU+pR/Plgxjy8G75vDfvBa9aSyl9MWsnrljaODt6StZKAmupm7R3IamY0RoSYCnLROL508dXQNagvb0ooWbwiSd+TmASOrHBGegWew5/Stwot2pbs1yyB3rfzP8ZHpKT3M/qRD/HZBRZAS9rPs/3C23dOeKHi2Q8njXPb47DvCGXVI9+ROdEm/PpqJq4xRZ3aCUffw5FFG0GhGfhnvpgt+s9oK3usS3UsI9Q3Gti5wA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,78 +144,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 17, 2026 at 11:45:12AM +0200, David Hildenbrand (Arm) wrote:
-> On 9/14/26 17:21, Lorenzo Stoakes (ARM) wrote:
-> > On Thu, Sep 10, 2026 at 02:50:25PM +0100, Kiryl Shutsemau wrote:
-> >> On Thu, Sep 10, 2026 at 02:18:35PM +0100, Lorenzo Stoakes (ARM) wrote:
-> >>> Provide a function to abstract the common task of checking whether
-> >>> a VMA is faulted in or not.
-> >>>
-> >>> A VMA or mmap lock must be held when calling this function. For an attached
-> >>> VMA the transitions between unfaulted/faulted state are:
-> >>>
-> >>>        Transition        |              VMA/mmap Lock state
-> >>>  ------------------------|-----------------------------------------------
-> >>>    unfaulted to faulted  | write lock OR read lock + mm->page_table_lock
-> >>>    faulted to unfaulted  | write lock
-> >>>
-> >>> So vma_anon_tracked() never provides a false positive (the lock precludes
-> >>> it), but if only a read lock is held, a negative result must be re-checked
-> >>> with mm->page_table_lock held.
-> >>>
-> >>> Detached VMAs cannot be concurrently manipulated as they are removed from
-> >>> the maple tree so require no guarantees.
-> >>>
-> >>> Use data_race() to silence KCSAN about non-existent data races between
-> >>> concurrent vma->anon_vma read/write on optimistic fault tests.
-> >>>
-> >>> Also while here, const-ify vma_is_attached(), vma_assert_stabilised() and
-> >>> dependants.
-> >>
-> >> If you end up respinning anyway, this would be a natural separate
-> >> prep patch.
-> >
-> > Yup will do, Pedro also asked for this!
-> >
-> >>
-> >>> Finally, update the core VMA merge/split, rmap, mremap, KSM and fault
-> >>> preparation callers which test vma->anon_vma directly to use
-> >>> vma_anon_tracked() instead.
-> >>>
-> >>> Note that the lockless read in reusable_anon_vma() is doing more than
-> >>> checking whether the VMA is faulted - it is returning the anon_vma to be
-> >>> used on fault, so this check is not altered.
-> >>>
-> >>> There is one odd one out - file_backed_vma_is_retractable() - which holds
-> >>> neither a VMA nor mmap lock and is stabilised by the file rmap lock only.
-> >>>
-> >>> Therefore just add a comment to explain why the direct vma->anon_vma check
-> >>> is required.
-> >>>
-> >>> Reported-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-> >>> Closes: https://lore.kernel.org/all/20260829100034.423064-1-trintaeoitogc@gmail.com/
-> >>> Closes: https://lore.kernel.org/all/20260909115723.528501-1-trintaeoitogc@gmail.com/
-> >>> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> >>> ---
-> >>> v2:
-> >>> - Renamed vma_is_faulted() to vma_anon_tracked() as per David.
-> >>
-> >> I don't particularly like vma_anon_tracked(), but naming is hard...
-> >
-> > Yeah it was a compromise because David and I disagreed on naming (again ;)
-> >
-> > I think vma_has_anon_rmap() is a better compromise?
->
-> Yeah let's go for that.
+On 9/16/26 18:27, Gregory Price wrote:
+> On Wed, Sep 16, 2026 at 05:57:22PM +0200, David Hildenbrand (Arm) wrote:
+>> On 8/29/26 03:59, Gregory Price wrote:
+>>> The interleave node selectors copy pol->nodes onto the stack so the mask
+>>> cannot change while they walk it.  nodemask_t is 128 bytes at
+>>> MAX_NUMNODES=1024, and two of the three run per folio fault.
+>>>
+>>> The copy only buys consistency between the node count and the walk.
+>>> Drop the consistency and just bounds check the walk instead.
+>>
+>> I think you should document here that accessing the node bitnmap is safe (is RCU
+>> responsible for that? I think yes), but it can get updated concurrently.
+>>
+> 
+> Actually, not quite.
+> 
+> RCU stabilizes the weights and makes accessing them safe. RCU doesn't
+> help us with the node bitmasks themselves (we were using a cpuset cookie
+> to stabilize them to take a copy - but we're killin that here).
 
-Ack will do thanks!
+Ah, my memory comes back. So confusing.
 
->
-> --
-> Cheers,
->
-> David
+> 
+> What makes it safe is that we detect the torn read condition (check for
+> an empty nodemask) and otherwise don't care about weight skews in the
+> weighted variant.
+> 
+> I think it's reasonable to add a couple comments to spell out.
+> 
+> Are you ok if I just spin an additional commit to tack on rather than
+> spin a new version just for comments?
 
---
-Cheers, Lorenzo
+A resend is probably easiest when modifying the commit message.
+
+For adding more code comments an inline patch we can squash is also good enough.
+
+(I prefer a resend because that shows the full clean picture, but without actual
+code changes I don't care that much)
+
+-- 
+Cheers,
+
+David
 
