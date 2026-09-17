@@ -4,98 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F3A6C982C1
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 06:08:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 190EEC982C1
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 06:18:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 41E7E6B00A3; Thu, 17 Sep 2026 02:08:32 -0400 (EDT)
+	id 1268E6B008A; Thu, 17 Sep 2026 02:18:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F6F16B00A4; Thu, 17 Sep 2026 02:08:32 -0400 (EDT)
+	id 0D8246B0092; Thu, 17 Sep 2026 02:18:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 336FF6B00A5; Thu, 17 Sep 2026 02:08:32 -0400 (EDT)
+	id F0AFA6B0093; Thu, 17 Sep 2026 02:18:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1393F6B00A3
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 02:08:32 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 44D051A0237
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 06:08:31 +0000 (UTC)
-X-FDA: 85222224822.16.7C3349C
-Received: from mta0.migadu.com (out-175.mta0.migadu.com [91.218.175.175])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 0B1A840009
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 06:08:27 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=uM1ofARJ;
-	spf=pass (imf07.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.175 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789625308;
-	b=nePAopeH4XlL2iIkHcrXtpUx3n64RdU4opj/2EmunTZjOy+Mtf3++d7/xZ2MdpCBZtdi53
-	b5UPSMW/m0J7kg5skbU+TDEJ9adqilDz/1njXVJoYniHFb0ubbhrA8s01sTmIfezqEGbPo
-	dd+DwOkr7F/jle8rlMsR2ma6M9o0iSI=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=uM1ofARJ;
-	spf=pass (imf07.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.175 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C6D516B008A
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 02:18:44 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 875EC120241
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 06:18:42 +0000 (UTC)
+X-FDA: 85222250484.02.5AD0FFB
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 98F841A0006
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 06:18:40 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=kJtvYv00;
+	spf=pass (imf19.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789625308;
+	s=arc-20220608; t=1789625921;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fJucBStbrluE/UkSCfQnojy+iXzfLDJLO8j3Jn9U1fA=;
-	b=ImcR1AHQcJ5q0PFMmQtmLJs6V1d6jfvwfOhI7xe/pxv6tfx1+lk3mhMpwlPxtjpzQ6jycQ
-	s8xePoA2YqbehjxrvQ2M6K+HSJEFLAhOP38sS+CCMaUyKIRPmQetFMAiXTkECB2z88uLdD
-	Z/CYxrrtfK9+CwVW2ghR7aus9MOMx88=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=ElFJqSc+70lL1/cQRQceNiS69ssSlpSJfebxt7yM0jk=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789625303; v=1; x=1790230103;
- b=uM1ofARJhQpH3pstizTba6PiCYLqihbk5UGbAQudPaISrrlyS4p+uEdHbnApIwEfpskJvNQ2
- 1Sub5infXZsXtwY+bdFgYNaoZj7UtcXsksZUjJgZg147h+BIJUWYh6HAHeOtPxS0O0gJURHwqWm
- HlFD8tUYhGnSR15RWZ8b/vhY=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 3f0bbeab4455297c;
-	Thu, 17 Sep 2026 06:08:23 +0000
-X-Mizu-Trace-ID: 3f0bbeab4455297c
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.700.51.1.1\))
-Subject: Re: [PATCH 2/2] mm/hugetlb_cgroup: move per-node usage on cgroup
- reparenting
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260916-for-hugetlb-charge-v1-2-70fb708b2e4a@kylinos.cn>
-Date: Thu, 17 Sep 2026 14:08:01 +0800
-Cc: Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Kees Cook <kees@kernel.org>,
- Colin Ian King <colin.i.king@gmail.com>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Mina Almasry <almasrymina@google.com>,
- Mike Kravetz <mike.kravetz@oracle.com>,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- Hongfu Li <lihongfu@kylinos.cn>,
- stable@vger.kernel.org
-Content-Transfer-Encoding: 7bit
-Message-Id: <595A571A-C790-4AAA-BA11-F95D44BB063D@linux.dev>
-References: <20260916-for-hugetlb-charge-v1-0-70fb708b2e4a@kylinos.cn>
- <20260916-for-hugetlb-charge-v1-2-70fb708b2e4a@kylinos.cn>
-To: Hongfu Li <hongfu.li@linux.dev>
-X-Mailer: Apple Mail (2.3864.700.51.1.1)
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 0B1A840009
-X-Stat-Signature: cquwiwr64h71pk47m7bd8sc7fdos5hf9
+	bh=SiRMaoY3cRTa9MhpKbPocPbsr/YaGM7PATKxMZxjze4=;
+	b=bI53WndKMNL3iCRGJI894LbaXehafICUmL9+egbjzkOWXyfOcGW8QEQmc9o326a9Tq2HTx
+	aQUb5JkBnCfsm7RIvWQ3w8MZjjt/4iGurDu74U4UZ+KnfCGsCUu3wpkw12PV5uRlNMWqrE
+	Vxf5Ar73b+qlo8jbjD0tCVvt+UOOuCo=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=kJtvYv00;
+	spf=pass (imf19.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789625921;
+	b=H8abHMB6d8qMVbgxJSQ+wtC5NvK68fHORrhTlZCTQMF/5Q/7sOI7tJ0D7zl36Io52Q6d78
+	9Gt8Ooy/LMZONLGPJT07IqfXF6oWT/bHVmT1vmsuRrH8dlhPPwxONG6Pb+bITi6hLzbuvz
+	b8x28Vx0mBeeFyTpnf+LqCoPZmLn/M8=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EA7F41476;
+	Wed, 16 Sep 2026 23:18:35 -0700 (PDT)
+Received: from localhost (a085714.arm.com [10.164.19.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C32C13F882;
+	Wed, 16 Sep 2026 23:18:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1789625919; bh=5r38bdBPwTF0dKcq39wGt84GgYIEr0WGkYnRDt6n+mU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kJtvYv00iOOtQNWrUiPJgkunbZExZ9AoaM+TawX53wEJeFEfHYJnbH9aeFZT81Y91
+	 MEMhDAFakHNbfdim7oqxayZbv5pf5JaGb0mBpGx/dtTNOhjzCgL1ulUdTWkr/Caupb
+	 +d4+lEau/tWsjjqSA5GLJiGG/qd1lBQYl0PSilro=
+Date: Thu, 17 Sep 2026 11:48:36 +0530
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Mark Rutland <mark.rutland@arm.com>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Mike Rapoport <rppt@kernel.org>, Linu Cherian <linu.cherian@arm.com>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH V2 06/14] arm64/mm: Enable fixmap with 5 level page table
+Message-ID: <pi6o4hjdaz2tndzlx64qvzbgxhuyh3kyewpfetiqnnetbtpzpa@prrxusgc3lpm>
+References: <20260907035030.2839978-1-anshuman.khandual@arm.com>
+ <20260907035030.2839978-7-anshuman.khandual@arm.com>
+ <be1c0a62-4589-4fe4-a500-d3fe16a6e610@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <be1c0a62-4589-4fe4-a500-d3fe16a6e610@kernel.org>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 98F841A0006
+X-Stat-Signature: 5xigw6rfhknq1rii5a34jidkdyf96ghh
 X-Rspam-User: 
-X-HE-Tag: 1789625307-87270
-X-HE-Meta: U2FsdGVkX19c4a9DRO5dsxrgWGHRdhYIrkpupUQSMsCrtBsIL0aM9SeMyCQTDuqB1UKpmL6lWJrwD6H9vDrX6vrS2iJ4EGDdPZR3OKKaq3bNctQN6I6BLjDGVwOtxTXa7y6M+Ui8hQMu9iJK57pAA9chWclyoy+hPr9UepVRGCXb7nm7+TqENBDiS7GjAkvI39ap2e19sM//ltWsMleuKAJTa3idU3p+PJ8GGsClMIdxU2UyuJcb+9LZjTr2WtB0VOurXCgN6JBXe3M0zFyTsexnMasdMS64c28OJWPTp393pdtIOSLVVusG9Hx2azfUigL0zRMKLt49ZBTtWPqLvaU+g3x6TKk8u6zO4b2VXKhE3ANBqVSMOjaTLQlh5vesn3TEjG/AV3bvcoyCVTDluyhe3sGpdHe5EeK6F1CUg1drYnJQJz6B0mE26+IbRAeJOgS+dMIkXXTmNo1BiP6aeOwL7iFSC+udYWxI6hEvHvbOzeKrW/r1Od5jJpovZqEfW2zZQLyKHwMkb8aKpkV5wMxrxRu51osBSn6juZ+f1qAR2e77WtaNWpH8sp4sLY9Pv4YXlJDz6dbxH1fKRwBFT48G5ZgKWbLYWxZwm8CkErYsuJbG34eLhQzQpYDGTgeS3HPPUUutcgr5N3kXZl8qjUUKPX+Caa6EN3bTgyrCRRCLEbFdxvkVRM3PYe/QO3ni5wOGyyRAo6LmBR3w2vsGq0A3KDnwDkchoARSTEgL8AdXkABipfLz4208TwZFmjyv97RN/4vVYSJLph1B4sCPjEsvrlCLL6/RBnGew7vLmBYRWPWS75nHSaPWN6u5fQBYrCR4MlpiUVaGVj759HwLoLsVTXZ9g3iwkOhkRDJPlhsAUHLXUm9IdOenbNu0zv2Bvcv2+LXT6aLNmWNns5lXUFkpyfefxCy7F8dOwGgZxv7x5ODfVxUp3pUHUKzRNoginQ5+0aqhqh2BL+DbxwF
- 5tLr8qGB
- dYYdeFFRAgVj+wmYojLKAG+9eluzHnIfiIZ4bTxABXqSL+LFnQrSrFx/QSZ+G4tRhQDbWeoMoq4SuX39Cz5qRQvnISDAuJcpB1rRPaKr5Yj9q3Y+eghJszcBc6QidRluFTaO1nB3ihLaaSSSUxr+khh2tIBsuMpl0ds3b/flvD9z+vuW08fcK81l4hcBnY7CwgzN+h7WM9uZhR1hJQswzOONwSyg7kgL1yaMg8akMkJH+WK8kXzqB+Mb30KlCX0+aRNjQMwPZinduEeKDUE9/oxqXa2Y4G5BkLXmozouO0CB7ozBi4SslZuE/4H1UZyKa9rRLzvbAEeqwSuz3LaxztEpTJ9CSDOqQdhX4GJHtmkMpxIWbIqk1RuEk/BFswPCEnrmIz42OfA2Yyw6niYSdBTuwiNDXtBvGTCE3iFHNwRXmbN+WWQoGCpYkZcirffQNKlLa
+X-HE-Tag: 1789625920-516020
+X-HE-Meta: U2FsdGVkX19Je4T0eIh+kTsdZMRLQN/OUCp5v/io+uzyjxyk5b+DzEIlDO5+y1FnWtdz7ywZv2ZMeonPiuJPtCK9HBCFywIAwKWfOCGDaYlX0Fym2yc497RlioRoXS05chAkzB7AWH9qOSFMuUouhG63dEwf1SwSPkd78VcJKmePPYTkhk+fESFS+TuI13isZTIq0hwI6FhuJuOyDrtqFlJV/oiUBZ4g+EU14+2KYfUBF+8jl9RS7UcZD38QEdaP+3kWu+L9IEw0AWoI+TmiVO40qxbN2WDhrAuxXxFLsi+xlVZiCtznko+VNnbP+/0cfaVxDRIGWmQC+vjK29pTDBX/dMp0qhCmKpva4f+DCqGB/hQukTQqBtI/3Os4BHC6VHh6f+HPccVbZyiEkGWAXILmWHdT7nIdPfvppQMmZ85/onCbKg3Ja8grfebmHgm9hD11PfBfYD7tpToi/PdH7EUjq64Mp58YMhsm/dWvj4hMLImFUq50TE4xMKMZFnkZz9HTl1rq8rmSqVQvy02cFLj0vbu9WN8H1NzlblDeNQCD4hDgZlJUTaBuAHPJ9EhKBh8C003TJzmclz/gAqfbSYkglWgh5qG1Vi3LbLG7v4/1tzA6xa8RK1dS1hdaXDLIbVGYUnxSg3TUeXw1sB2uxMqL3iush9G3zbMs0ajB8UsamSim/4mQrKVulOZzOWCPi/TuQNRgF+AG+il7EDP4B6X5Ta9Q086RUierS+oFU1nUpmXwPfCwQbrh7TAzcpBZhtDf3pBA2qCZ0QKL2Wzv9tP8rc6ToN4IfCS8iO7rXZARG3jMSlbJVKKO6HYf4votufFZlXEMnbJBsqczj8i0Yj0bSjotrw9JuxOglvdYK1z31h02zHMaPv531EIjMrXAW+VRWziidlaqOyFEqqzovg+iQzxtGDwC61mdwiQuVC14mRsNVDa+N+MTdDJQcacxucObtNp7gMpCj5p61DF
+ BQSFM1W5
+ 0MxnQjpZQWUMU3eKJuLT51vUQFwFxlW98qlsQMFHMJA36hxEdbmwJ2Ajd4E5cz/OyjCYoW2m+7eXxW1Px/R2MZlqGSAeXvUxR+NoFHoRHo8kUYA2B10gIz6np2xfFjhtBMMuWry3XcnX2E2Bw4ogV5PnLqPQl2/1DJgOvs4BTZHa/5ltRO8iJPZWOy250GvOlXv25ZQjVzGcszZN1nC0ye17VQ5aB5HhaeRahsy/M2poJ/dz4rAK10TndYNyfVq3gexif9ZJ2kiZSypn4qdDKR1DceA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,27 +93,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-> On Sep 16, 2026, at 16:30, Hongfu Li <hongfu.li@linux.dev> wrote:
+On Wed, Sep 16, 2026 at 04:30:05PM +0200, David Hildenbrand (Arm) wrote:
+> On 9/7/26 05:50, Anshuman Khandual wrote:
+> > FEAT_D128 halves PTRS_PER_PXX thus shrinking the VA range coverage
+> > for each page table level. Hence in order to preserve all existing
+> > VA range configurations, some geometry now need to become 5-level.
+> > 
 > 
-> From: Hongfu Li <lihongfu@kylinos.cn>
-> 
-> hugetlb_cgroup_css_offline() hands the folios of a dying cgroup over to
-> its parent with hugetlb_cgroup_move_parent(), which moves the page_counter
-> charges and the hugetlb_cgroup pointer of the folio but not its per-node
-> usage.  The parent's hugetlb.<size>.numa_stat is short by that usage while
-> they are charged, and underflows once they are freed, exposing incorrect
-> per-node usage values to userspace.
-> 
-> Move the per-node usage to the parent as well.  The folios keep their node
-> here, so only the cgroup which holds the usage changes.
-> 
-> Fixes: f47761999052 ("hugetlb: add hugetlb.*.numa_stat file")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
+> Hmm, wasn't this 5-levels before, but other code allocated+initialized the p4d
+> table for us?
 
-Acked-by: Muchun Song <muchun.song@linux.dev>
+But fixmap was never 5 level earlier.
 
+> 
+> I mean, I see how we are filling in another level, but I don't see how we would
+> reconfigure something to use 5 page table levels?
 
+IIUC existing configurations which never required 5 levels would not need
+this reconfiguration even now.
+
+> 
+> > Since fixmap is used to build and manipulate page tables early on
+> > during boot the mapping must also gain that additional level which
+> > was not required earlier.
+> 
+> I am no expert ... but I am confused :)
+> 
+> We do have a loop only in early_fixmap_init_pmd(). So we cannot possibly span
+> more than a single ... PTE table?
+> 
+> > 
+> > Enable fixmap with 5 level page table when required. This creates table
+> > entries at the PGD level. Add a fallback stub for pgd_page_paddr() when
+> > (PGTBALE_LEVELS <= 4) which helps in intercepting any unintended usage.
+> 
+> 
+> Again, I am very confused. Is it really just "As the page table layout changes,
+> we might no longer have a p4d table pre-populated for the range our fixmap falls
+> into. So if there is no p4d table yet, populate a static one just like we do for
+> the other levels."
+
+Right.
+
+> 
+> -- 
+> Cheers,
+> 
+> David
 
