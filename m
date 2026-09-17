@@ -4,70 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E61CC88E72
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 10:04:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A879C982D2
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 10:04:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2ACBD6B0092; Thu, 17 Sep 2026 06:04:29 -0400 (EDT)
+	id 51E5C6B0093; Thu, 17 Sep 2026 06:04:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 25DF86B0093; Thu, 17 Sep 2026 06:04:29 -0400 (EDT)
+	id 4F6896B0099; Thu, 17 Sep 2026 06:04:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 14D7A6B0099; Thu, 17 Sep 2026 06:04:29 -0400 (EDT)
+	id 434B16B009B; Thu, 17 Sep 2026 06:04:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EB7E26B0092
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 06:04:28 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7EA7B802CB
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 211436B0093
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 06:04:31 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AD0E61602C9
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 10:04:30 +0000 (UTC)
+X-FDA: 85222819500.09.BA8215E
+Received: from mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+	by imf28.hostedemail.com (Postfix) with ESMTP id A3BEFC0002
 	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 10:04:28 +0000 (UTC)
-X-FDA: 85222819416.07.DA90368
-Received: from mta0.migadu.com (out-175.mta0.migadu.com [91.218.175.175])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 4732F140006
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 10:04:26 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QVR71EpC;
-	spf=pass (imf09.hostedemail.com: domain of li.wang@linux.dev designates 91.218.175.175 as permitted sender) smtp.mailfrom=li.wang@linux.dev;
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ueSc98HZ;
+	spf=pass (imf28.hostedemail.com: domain of li.wang@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=li.wang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789639466;
+	s=arc-20220608; t=1789639469;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4ACPbDwr+1T+EFXGWZajuYln3pYOXIAuvexrw7M7PaQ=;
-	b=x3ZWIFy5MEMpxUKFYxXDteAiMLloqsgdX6BWiZSOuWJSCHT59uTmC8wvdQaocIj6H2H31y
-	aaY7kwKOMfiqEs1DuoKRtUnp0oIXCD61oVE2gnN86cTAu97bXtBJdSZu/bZgU2gnZ9fQJk
-	vQbJf9hD1xUYSP/rUwvF7xpKwpq0+X8=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QVR71EpC;
-	spf=pass (imf09.hostedemail.com: domain of li.wang@linux.dev designates 91.218.175.175 as permitted sender) smtp.mailfrom=li.wang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=fabKLAC3bKr5t5Kyp0RM2pRzYxTpx/MWHp/+zdor2Eo=;
+	b=OZplqINP/q3vvnMBf7Zj5W2Zs+I6515fyrPSIk0cvPTSCHlU9K7CohVpfrJX6Y3hpMJyea
+	PALCJRLHN6PF+qzWKmR+SkMFaLMboyQ/qgO75q4PMspvOU/b/Cb4oxL3BodYL5xJMmbQkn
+	2J3RIM97U5QZyqm2MG0J8Kh37tCMTLA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789639466;
-	b=ws+LVP2zQW0hjQcIvGA564hmJpUaVl4XulGUxbvYY62RKRaozmtpT2KVFZpEb5WS/w1sSH
-	8tih9VLGyBps9JGZ+XnPfZngl5BHWYMQDL+sIMYZfWwAKu7xSmd4pFgQNB+7p3wuDTg+AM
-	xo3ILx9RjbjPgMUTx0ZQ1eu4bXFIDbo=
+	t=1789639469;
+	b=zN0pvtUAaqi8N46aFNw2b3kPYF9JaI6d4x72fXOCyJNeKm7IzED/jB+pNLCP9FEwYvrYIf
+	9zmLK/neIiWtVH/d+ydtWXTNuxSrt8BKc8X6t1QX2Bb7U+0C9LCA/FgTLtVZ7J9Ls3m4Xj
+	fAtXXJrtZA4+tFwRdXDwmDTr4HUsWuQ=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ueSc98HZ;
+	spf=pass (imf28.hostedemail.com: domain of li.wang@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=li.wang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=um+kB+/1dd3CrZpB7pm7ZqNd5aTE9oIXH5aBLAcW9WU=;
+DKIM-Signature: a=rsa-sha256; bh=kf4yD5Q427qFgBm9Eg16ajofX01qSgJCx3NFLn2NNWU=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789639464; v=1; x=1790244264;
- b=QVR71EpCz0PgY6oK/noJmZH71vrf1S/sB7dtcl2QkvQmu1FQj2vEhV1XyW3oJfQGYQ4zB5Q5
- Gb3YVEXkKorYYXX/5CaB0Jxa2SwoW3Hx1DNkjJ+9t96IU+8vRWQT1Wt3RnsjKwUcA7j7U8DFxHr
- FlbtefRU/UUWFcoUVGuNtY6A=
+ t=1789639467; v=1; x=1790244267;
+ b=ueSc98HZiHZXHy14wrUv9eFtrGd/x+WRTiw3LFVL5QOjOUyxFzxhXAFF35zjkNWEpDU2Ay8Q
+ rpNTAUv00n2MpSQ95nOUvBCcvLiJ7u6lGvLXIbACxiS/VbGhenZCIpUkuf6/YxX1UKAzRk0qHwf
+ DnGMJ3hvYXijDQe2M+QA0vKc=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 4b18fe0d830ae10e;
-	Thu, 17 Sep 2026 10:04:14 +0000
-X-Mizu-Trace-ID: 4b18fe0d830ae10e
+Received: by smtp.migadu.com with ESMTPS id 0b148f135692a024;
+	Thu, 17 Sep 2026 10:04:27 +0000
+X-Mizu-Trace-ID: 0b148f135692a024
 X-Migadu-Flow: FLOW_OUT
 MIME-Version: 1.0
-Date: Thu, 17 Sep 2026 10:04:14 +0000
+Date: Thu, 17 Sep 2026 10:04:27 +0000
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 From: "Li Wang" <li.wang@linux.dev>
-Message-ID: <3f7c7f35866b47158369bd526cc4a17244cbcd92@linux.dev>
+Message-ID: <52d4bc05e867f675fda9f1d5dc34769c10f371c8@linux.dev>
 TLS-Required: No
 Subject: Re: [PATCH] mm/hugetlb: account for allowed nodes when gathering
  surplus pages
@@ -77,14 +77,14 @@ Cc: david@kernel.org, akpm@linux-foundation.org,
  linux-kernel@vger.kernel.org, "Huaisheng Ye" <yehuaisheng@open-hieco.net>
 In-Reply-To: <20260909074642.7308-1-yehuaisheng@open-hieco.net>
 References: <20260909074642.7308-1-yehuaisheng@open-hieco.net>
-X-Rspam-User: 
 X-Stat-Signature: k83k4d1e6k8fki7jjh81siop5chzyoyb
-X-Rspamd-Queue-Id: 4732F140006
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789639466-421893
-X-HE-Meta: U2FsdGVkX1/SXE8TFCNw0h4mfh539urv71unSrMjF53HfqtX+I7BVCmxpXqctw6LsaufLtDCZoC8ilOwCfaFvqA4PYcBvMOE7e9fzUO0LN7wZ0Z5A+b+N5Q9UuvplsNn1DczIVHrW4uDNVA1x8BUz/t8xCdvwnbgYzDr4x/4b0b3Xit5Jn/MQQyVeLMB1jTzWbn3y1xwjvze+Py3+BXY40qvJSCJjaDDaEFWTN7Bq98vPp+b9F4odhLSYNrU1Y6dIlQoPEtNM9OtaMsqs0+mDdn2SbArBmyw3e9uExtKnI5qMkeLUd06w6buk9mmQ4sHD877ucP05F2P9yuvOBLIaGlLzPyU1ZGecOk3qRTd/2Le5h4yY3vbJ16FP1v3GjnHelwVBbdLtRDWLArpY7LGpA2OqM4aaXfwxbVeCGaAnhNjuNjmr9lg+LDerZELbq/z8SmvsxxIJCOLcrNYaQ93rvzCTM5VyiCtzBWb1B+3d3ac8xiRvu1gv9IOc8q6rrDqnCd4uXmWoaYqdRdPzxZcwpEMr1C0K8Gz/iL5Tg01Uru8r7qO0n6DAxt9ZaVAt1m1tUfdKO4kmQ+ADkgyWBVPjIHR7iVtlS9cbDkZyii0oIh/4xZ/9XcwWyST7006qvsfxWiZ6iucCB7zOEeIiTcGAWdBkB7De9HD/Xp1bSX881CyBSxcqGHpnHsN2oRVmwgCMCxcHfDg9BAjxaPOsd0xgFJ2eYoXmzD3dgwXPl8b5pKBY/5WMYtnMyKJ66wCHNxIns5S++d9o51wGSaQgtfNnU6EO+gmjdKHGDRiM5TCU2N2SEyr2l7JRW9QfpUsh9wGVdGf0MC9T4GTURkImVKigY55i0ofPwQXFCRmvIdnWcKRG8HgQBEiwnv3pkDuIh5u+nCaDfITKwG6C+asSkc7tdJrvFJoXj3aO+w8SPqLZPqLiO82nlL02EHYAJGyfd1mVuvYYJQPi11WRCAA6xL
- ggaxVJAT
- bfcdOKrUW82Rp5OYj47h7NE+euBoigPtO+RmFyEbPCAfYxZYBwLsFwRZI9XIdfsazLrOJHa7OO8y4G5MTKT42UCEabGOeqKDQ1SHmU03UoW/1068PBKgD5etk2MnOJ9R3pC/YXVWlb0hvkigkup+bXFnAddi9MewB+uDpyPMYtOhvvpzB6uOt0L3qBlSffMrSn55mndqinny+2O6ChAIUz6z+SxAfXjIU9bKlyg/zySu20iLM2JXSV3FUH3SxEusDXEeTW4Kz6x2x3yhMgjP9vqll62mxasZEaKXUOXkVJCeuDqab4yiUFeVUcfodKUSuLdzsxjdREIokuSM=
+X-Rspam-User: 
+X-Rspamd-Queue-Id: A3BEFC0002
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789639468-641450
+X-HE-Meta: U2FsdGVkX19T6Gr1Cc+/f9tK1OA06hPdyExeW0eqLDS4oyeo4l5vhGWxlrUH0YzEzJhqDH5ud5bqd8ZpJPcAb3TyfK7AwYgZlP2Nb9CUovBx8lU1bjYR7zJMw2xMUdwXmkmFcezummmuJ50oK4P7rvUwWB6aYfs7faD8UirEbG7TY3hz4X+OcLu4uHybLaAAj826hT0Ecw+ZSlJ7UdnlwD+XK8lC1PvjSFWGzp4vJh9oEOIH5MlLlWnVbF19M/pml2ztl3D2x5ECJjYqerId41Uk3DwIJuTl33WuWCZPE7tpgK4C4hb8Eq1DW8abDjKPWSgFchbDBr8Oyyl25Q0GwXoUHCAdCNMXW/J6Hjk10xFrk52gRkyLIwFB4UotTgtHJT7sx1hq6pHb2752zjbNV3L0/0SF6edmEmj3gpl0IXwPejZIdtpIeVmCo1VGG7UGs772QJBI0QnsA8ySEgo/1irqVzTwmod1aVcN4W3b9DA/53nC5j9u4wqqvsMYvdN5TJ/uPtkVkq4wNocrryL8O2ouYU1A07rBduj/F2s6p2Qjk30FeMElH+YK1kojRofWDl5XTaBEaCFQmu0GlPVuhKthHR6DINZHJBEeSx6W5GRbxOf/a7SRynpqOptOO60mu+iCExjnWWQLL3EQxUKMs88PWTjg9Tjt47gGIeXWxYphTOl1LN3evOFRyTvquuxLXKqcruzxC9c2cAyKgm9oWtKJPxKycQr9k6Co6xi2d/nwoRIUEe3tE5k0A/Oq6tKR2hYNCkYC+a70dHb6vMKBepHG5dGjsGYMuwH3ER7yn5xk81OlGg4WtbdqHzlmLjOr4oYJy1ljWUHDPIVVWspT/znxVqs8hQEQdt7ocIGbhIoDjCnzLXCbKmM/ov2+5fjqnmZ5JAC4M9Kz8Hx/fSBJ9RBxx+rfCOpbCuUbxiMwx127BMF+pu5bg2GK1NHNgVmRN0qO5mWfG0PUs9umq8T
+ omNbT+Tz
+ 4yQTt+PWWIxnGGv6ILJ7epoMS2nRkxSIQvnRHuMnuIn9tc4jlbDZdGZdK/lJMNJVXV2+Xaqno8cVkxcaek+m/DVlzGSzEewBSiFgXsmW2ci3Aq2sVLrI//8AABISBkgeCwVqO/rfaiLACdcukxqUc7H6pb+J1L77u1wnqOWwUEuF0MD29Saer77Y/LU8+ehrcnFK+UEmvdLb/OoeqXT4UVFQnZB6stAuuUq57+yia7838fb6Hi7uwZFxdO/mlijjbQuq/QBDciAfJz9AiKjh/gq5SMReVSCNfwl7NLGy3b/Wv+KuSVsjdMS9ICnBYE2UMLj0PCTRGkZB8Fo4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,9 +92,7 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->=20
->=20Hugetlb reservations are accounted globally, but hugetlb_acct_memory(=
-)
+> Hugetlb reservations are accounted globally, but hugetlb_acct_memory()
 > also verifies that the current cpuset and MPOL_BIND policy contain enou=
 gh
 > free huge pages to add a new reservation.
