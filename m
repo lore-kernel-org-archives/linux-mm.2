@@ -4,102 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1171C982D2
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 09:10:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AF9CC982D0
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 09:13:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 99AB96B009B; Thu, 17 Sep 2026 05:10:14 -0400 (EDT)
+	id 423DB6B008C; Thu, 17 Sep 2026 05:13:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 94B2A6B009D; Thu, 17 Sep 2026 05:10:14 -0400 (EDT)
+	id 3D51B6B0092; Thu, 17 Sep 2026 05:13:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C6B36B009E; Thu, 17 Sep 2026 05:10:14 -0400 (EDT)
+	id 2EC336B009D; Thu, 17 Sep 2026 05:13:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3CCDA6B009B
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 05:10:14 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2CFB8402AF
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 09:10:13 +0000 (UTC)
-X-FDA: 85222682706.28.CE1974A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 5D1BAC0008
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 09:10:11 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TU+vHQdZ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 014BD6B008C
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 05:13:49 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7B84DC0288
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 09:13:49 +0000 (UTC)
+X-FDA: 85222691778.27.2ACC4E4
+Received: from mta0.migadu.com (out-222.mta0.migadu.com [91.218.175.222])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 6E4928000A
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 09:13:47 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QRy2KXqQ;
+	spf=pass (imf02.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.222 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789636211;
-	b=m0xNJac0lwuFh/MLo5QMVp7/KCrOTmk3T4WFWRV/6pbjmkaETI+pVfWB4ku8xFtcwr+Fd2
-	atKbpftV2UFfBwtDklZBhe7zN3g6GcFFUP5nbLo1EbELK8FkdRi4liNSTYpzSYiV2XCT0d
-	KtV4rdxdm3sfsYHE5ZKfrOeKu1Wreo8=
+	t=1789636427;
+	b=Svewta+8zNV7uqSvhIrkYJ75yOiMuXyLAcYUBgZEfcHPFZen8VUFLG3U/yDAiSCmCv3Upn
+	2yGUjrchRgDRwI+u9CG0tZ7g5AtMlUC+7pNFRj3Gl1ayHlZ6McSBwCaRxNMcZBvxdSV2Ax
+	i79F9QdrC/9bOvVyzgFxjA5L4iDFcsM=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TU+vHQdZ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QRy2KXqQ;
+	spf=pass (imf02.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.222 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789636211;
+	s=arc-20220608; t=1789636427;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QH2WDKb8N1csYIAwFwWTZJ+veVOResNI8NfDe/HwrVs=;
-	b=LrM4i4I6jHqMZ8Kq8c2OvOb+NXA3VzkTYSU3rcI+pvUiAApt/PlK96UPwgfKDjQrFRx8QX
-	VNlxZf2ec67mK4zji+k42hedOJeNTmzHrU6XCF43UGdOyovRgHZCin+d91sVCzgSIqWLMr
-	LTOAXmGM3xwlgA4ScAUJj+tOEWcYACo=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8D90140743;
-	Thu, 17 Sep 2026 09:10:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CBED1F000FF;
-	Thu, 17 Sep 2026 09:10:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789636210;
-	bh=QH2WDKb8N1csYIAwFwWTZJ+veVOResNI8NfDe/HwrVs=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=TU+vHQdZQFBVLHxYRqINdkcmjBoejnE/VDffiTWv+Kv0ML+iwy2Y+tKyasd6eZNpq
-	 Ck2IUqodncPwUTEXsLZoJzMgTfRfhLR7DsFm2GcUdUjT/2lZWfH7ztoLl1UCDhTbkv
-	 gLFkFO1WSeI0495U5lwO8kxpWovsLK+TF9XFdy5XIYfpMXSqEVla/FIXyRPp2k5dAN
-	 dFh7T9VkaAP+4ZepAOOHB3VoqESKk/1BclxtaSO4Msqhmo5pYMcCmbbrzjjQJwSdPV
-	 Gk1zhpUdM1ksiPoUhJD0naTEyyqMNCXIjnknl8nng0c8tK0y9mdRQIbsKjFbyeTCGA
-	 IXqfi8QJ6WYfw==
-From: Christian Brauner <brauner@kernel.org>
-Date: Thu, 17 Sep 2026 11:09:45 +0200
-Subject: [PATCH 4/4] file: make struct fd_prepare const and kill its err
- field
+	bh=YPtwYOVDllfTigYn6WwV0UAuadX7yRLBIaKQhkAiL84=;
+	b=xU8e1TW5cxPadMfDFqD4HqwtIST1u+hYZOWFgYrXZcq/tSikNfz5Dveo14QeFTxeysggw2
+	gHOiTnnthBr/7TyH6x/KlBCmI0zZqsZ1gGtxKmYusHPzVDsuzfh3C50nHJs8ecZ3ZKSAa3
+	NL8/XK6MMJNOMN5TvwnL6Qehcs8hmBg=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=BvI+zmx0bHsSDRwo8/eGXtzYLY6Y0EC/pcKbtQ5XLG8=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789636426; v=1; x=1790241226;
+ b=QRy2KXqQu6WCdJRyUYRN2Tg1fZOy//8PfYrpGbsf7QCOQd8NyM0i6hjR88ZEhcxdxBb4TERl
+ i9bRu34LxQbzjSS3tDfZkO9+8JKRt5dKsM1KVurw4QuKt7ff6PHV6OQg+BVg0jY6dK7V3DdW4Fj
+ 8RZ/hKulSICy/cI5dRnUMqkE=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id ec8b15142238164a;
+	Thu, 17 Sep 2026 09:13:45 +0000
+X-Mizu-Trace-ID: ec8b15142238164a
+X-Migadu-Flow: FLOW_OUT
+Date: Thu, 17 Sep 2026 17:13:39 +0800
+From: Hao Li <hao.li@linux.dev>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Pedro Falcato <pfalcato@suse.de>, harry@kernel.org, 
+	akpm@linux-foundation.org, cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 2/2] mm/slub: introduce slab parking to reduce
+ list_lock contention
+Message-ID: <aqun4pdMge4QVmnL@fedora>
+References: <20260824122004.3652-1-hao.li@linux.dev>
+ <20260824122513.3829-1-hao.li@linux.dev>
+ <20260824122513.3829-2-hao.li@linux.dev>
+ <8d73f087-42e2-454c-8e5f-93c1b64cb969@kernel.org>
+ <aqPlMzUIw-4g2iOX@fedora>
+ <23b15032-01c3-43fa-866f-296138228b5a@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260917-work-file-fd_prepare-v1-4-b87534ca49f3@kernel.org>
-References: <20260917-work-file-fd_prepare-v1-0-b87534ca49f3@kernel.org>
-In-Reply-To: <20260917-work-file-fd_prepare-v1-0-b87534ca49f3@kernel.org>
-To: linux-fsdevel@vger.kernel.org
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
- linuxppc-dev@lists.ozlabs.org, linux-gpio@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- freedreno@lists.freedesktop.org, linux-media@vger.kernel.org, 
- wine-devel@list.winehq.org, linux-xfs@vger.kernel.org, 
- io-uring@vger.kernel.org, bpf@vger.kernel.org, linux-mm@kvack.org, 
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- "Christian Brauner (Amutable)" <brauner@kernel.org>
-X-Mailer: b4 0.17-dev-db0b7
-X-Developer-Signature: v=1; a=openpgp-sha256; l=19031; i=brauner@kernel.org;
- h=from:subject:message-id; bh=4TVATxkIdSojFG8h8ibaa3nhcXlk0rv552POIhYv3M4=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWStXhdZ41vZpHLF51FP6LTChIeFL7vbmKVjdjH4/TBPs
- V3PpTq5o5SFQYyLQVZMkcWh3SRcbjlPxWajTA2YOaxMIEMYuDgFYCIKcgz/0xeJLtmzKHxmOeui
- 4KDnWxuk57UzZjk43Di8tvZzovPjLob/Ka9m8bpar2fZebD59WXH8jWM0YVMumx7dDb4XNjmcUm
- aDQA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <23b15032-01c3-43fa-866f-296138228b5a@kernel.org>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 6E4928000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 5D1BAC0008
-X-Stat-Signature: adwh7jw36u7qofj3r3zz8dobhdm4ejrw
-X-HE-Tag: 1789636211-684439
-X-HE-Meta: U2FsdGVkX1/cOfLFdAgMcmdRuXoBXJpeCgVsDlCGPLW3yN1x5Pgzl9wkQ1N6D/FjVHsXk+tw7odUxY/E9eXbjoVMxi3z1BV1mH12YFJRY7avwgac21PQYg2n3YPuiy0OWTnJHHtlWSZDph1Yt3hQ0SAGZ19ePn0i6jezGojs4lS3TUFd6avBHJAu3P0VYACMTbMY11rqN0sBv4T6rm0YpoEy13/nH5P4BHcuj3eE2ymkhTH1jJYRg0qypSdPbhTRcPjM6/LfdYjlu+ASTnThmvNryBNxiTUgzVNjldAgdpWR4i2bdmwc0KSmkRaG3InHSPqRv3ZzDp7Soz0PMFgSUHKJL3fKGTwnuXsWtDc/SCdErvWWUANlUzfE8rfu6qp6Il0/wmnAx0C1f/jI/Y9m1V4slWEBjnsaYucT+WqzS7cLSSNm2w/O5zprOBBhW7E35WS6qoemuMwT9Mfez5Vdp2SyRdJG090fDKiUTE6Y8ZOo23MOPheoc7wEBXZ3KRnceNdAChlWC+1AvQKP9WZoxMf3sYbWJs/s9UiYTCdzA6/5gIAczX1Ph19Ey3kliPQqUzmQxx1imfy/SZMTf354QDURs5x9l3iLJ0Ph5hq8nBR947vtusWmmcnFRa5ZasjSu/m+PabNDsSTL5kkVYoeMqijATHFlPmJrdeqhsk0GO3FqFJDj3k/5Z1QpDYM27t094P215RMLdWFucSrfQkf/TBkiCj/OTxQusoNkwqIrS9KbjfwzCwdJLh9olGeh1DDNbGLhUlYb2fqCZM0XnRHH2uoLCXg4KqG77akyEZsG7MR129kP6OGVCaztePgFkYJW+ZEQzrISRCGmaW/mg0UR0dphdCdx8WPvRq1H9JKunqi/GT/muHy7xXIqxikxm6sFHiLv5DKxbXITki0h6EXNfJvqd+8V7hNgxzSvixvOPEDZyyN7ViU6hhgECIUrF/QXU99AE1Vmv6W184t4IA
- y0AuldHX
- LUvGxjhyEQfUmfdncaFcB7su5zSSCcsv7gNrebUsC4VRp3q1mcrRYhF1JUQqjweIa2aIYSCz06fAZ0/SdB4o/9m5ndYWlrjyif/imc/w3IvMGqO7kgn8oe3PemQg42cjyW+i0hVtp+SSu09W9oIA7gk/czgAh2dOdXrK/pmNlW5BEd3+Y5alcFh6SG4Jox9kdJvGjzx5Yu3kESXWibSpAHZGz6hegbM7JTNAIRuCQy+WAZPipTqRe0nyh8BP2xsRdtSEPZcsjOWK/YGr+fCFVQdYu6++Y7JsCvSeCkeGpavIR4kg=
+X-Stat-Signature: gfbwtbhzmyqeswozwxcy3d69im54incj
+X-HE-Tag: 1789636427-554723
+X-HE-Meta: U2FsdGVkX18p4UIg7+kxQTNozC+M1iumHn0DohjO75BpGJ/TwaiyBtz2vygriFPXcigwwjOWfp+1VU/GWEbkDnnV0J4BUtvoYaG/hTutIiCTvfegtvi84UVTzumQDZJSo/1fV2McrfWD8sfXbbaJ8xGR7yvX4DEtE4YYCmteM8JxZrux+m9I3FhhWY+hEnRHFwQoLVirHIpdc9ZKs+Kjo92ovLUUKArwGlWdyQXID68iCJVoDamejwtQVZAW/fuHodgcpDLEUI2DpTjZe8SFts36bfhj49he6APmq/a0m/kUCnu7rBfWku9v8GhlqU6MJtnDMyQMjcCkKzfuGI3Vck3ztNFkHIXlhD3HGM04n0ZmRA1KAfIhO7oWSb5nARkFdMJhHkDAuB3NNnhOPpv7kusUsgMlCMrBWagP2P4URygEJeuU+1v23eiNPFSS7WKcgDcQ4xGvmdoKNK/0Bsb8V6imXAjOzfkFAyv62xZNvcVCEwoxibEVzyr2zmXezWhwOtC7/mOyYRdkvAfJi5B3uajHDCra5+cknMgHPWszH8rlhUXMaKaOsc5r8045B6LCjDF//Rser1rBlQtTTQW4wLL0f1zuhYVUpoppNmrbh1eKRfSIr5Jc8Z7Gy88m1rCkw8hXeQQxCoEjlIbu9ijCXahqrMpi7z2HwvFFZcvkD1aV3DKBEd1mLurotbfzhbi/hm4+K/En8ec+Bd0sdVAJn7e+T+JeZ1rjJutFwx4hKSl2lqJHVhTO5IMMpP+QenaHCS87mb8Ga0YdqTBJsUKmaBGLq1UL3tuuWDy/Vq6zpsLSx/8PJvRb0z7u7YUd8qC+liUI3mZWHebbc09S39MfmMHbrZvevjpFA+4QMnmmrNpEv6ofzkEMuC+QbJ7kvreqR9fNVB9GpfYLaL1O7nOHlKGVhyM7IVKpy9nvdDL1T5WBwI4ZibKghGdp8ZjSPlkVlzH8zyigVRvvM9naSdo
+ 057tcUo4
+ KZrRdUWdcjjh2VvNvJEazzUPmb3n2qUZdgEiUmDXDVahi98MSmLIgU1SFKckbmX9IhKBBl3B0X3sPyG/ulgcG4o5722jt6Vnuur8uormc+i5X8lgZXQAOIHb/9C1IIfCOqKgFTlpoCteaG2tC72/grmfJNlT9TTpNGNd9RfyO79ljaaXP8nRrmqnRCcXrqNgwQbjgrhl4C2DShB+pNc/vzG+UtcChX1Jpqhi+j3E+eUwVaE4aPZAZm4JKIuGmhCdT0O9Tmk9+9N+ufvVC8rUd9iUWQanoRyJdidioDlPbBalxYdQqX8F2KE4gdwV4pUSe7uAS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,583 +95,256 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-FD_PREPARE() releases the fd as soon as the file expression fails. The
-fd either holds the descriptor or the error. The separate field is
-redundant. Make fd and file plain members and struct fd_prepare simpler.
+On Wed, Sep 16, 2026 at 10:01:00AM +0200, Vlastimil Babka (SUSE) wrote:
+> On 9/11/26 15:06, Hao Li wrote:
+> > --- >8 ---
+> > mm/slub: refill prefilled sheaves from the barn
+> > 
+> > For evaluation.
+> > 
+> > ---
+> >  mm/slub.c | 118 +++++++++++++++++++++++++++++++++++++++++++++++++++---
+> >  1 file changed, 112 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/mm/slub.c b/mm/slub.c
+> > index 27a78d63f537..7d337dbe26a5 100644
+> > --- a/mm/slub.c
+> > +++ b/mm/slub.c
+> > @@ -427,6 +427,8 @@ struct node_barn {
+> >  	spinlock_t lock;
+> >  	struct list_head sheaves_full;
+> >  	struct list_head sheaves_empty;
+> > +	/* leftovers of prefill or refill, protected by barn->lock */
+> 
+> All the fields are protected by the lock so I don't think it's worth
+> pointing out specifically.
 
-Callers of FD_PREPARE() get a const pointer to the guard. Simplify all
-users as they can now easily access the trivial struct.
+Yeah, make sense to me.
 
-No functional changes.
+> "prefill or refill" sounds like it may include also internal sheaf refill,
+> which is not the case
 
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
----
- arch/powerpc/platforms/cell/spufs/inode.c | 12 +++---
- drivers/gpio/gpiolib-cdev.c               | 18 ++++-----
- drivers/gpu/drm/msm/msm_perfcntr.c        |  4 +-
- drivers/media/mc/mc-request.c             |  8 ++--
- drivers/misc/ntsync.c                     |  6 +--
- fs/eventfd.c                              |  4 +-
- fs/eventpoll.c                            |  6 +--
- fs/file.c                                 |  8 ++--
- fs/namespace.c                            | 12 +++---
- fs/nsfs.c                                 |  4 +-
- fs/xfs/xfs_handle.c                       |  6 +--
- include/linux/file.h                      | 66 +++++++++++++------------------
- io_uring/mock_file.c                      |  8 ++--
- kernel/bpf/bpf_iter.c                     |  6 +--
- kernel/bpf/token.c                        |  6 +--
- mm/userfaultfd.c                          |  6 +--
- net/core/scm.c                            |  8 ++--
- net/handshake/netlink.c                   |  8 ++--
- net/kcm/kcmsock.c                         |  6 +--
- 19 files changed, 95 insertions(+), 107 deletions(-)
+Yeah, agreed, refill is a generic word, so I will remove the comment and let
+the code speak for itself.
 
-diff --git a/arch/powerpc/platforms/cell/spufs/inode.c b/arch/powerpc/platforms/cell/spufs/inode.c
-index 2b54afb31529..5c06f69c9f7f 100644
---- a/arch/powerpc/platforms/cell/spufs/inode.c
-+++ b/arch/powerpc/platforms/cell/spufs/inode.c
-@@ -266,9 +266,9 @@ spufs_mkdir(struct inode *dir, struct dentry *dentry, unsigned int flags,
- static int spufs_context_open(const struct path *path)
- {
- 	FD_PREPARE(fdf, 0, dentry_open(path, O_RDONLY, current_cred()));
--	if (fdf.err)
--		return fdf.err;
--	fd_prepare_file(fdf)->f_op = &spufs_context_fops;
-+	if (fdf->fd < 0)
-+		return fdf->fd;
-+	fdf->file->f_op = &spufs_context_fops;
- 	return fd_publish(fdf);
- }
- 
-@@ -499,9 +499,9 @@ static int spufs_gang_open(const struct path *path)
- 	 * in error path of *_open().
- 	 */
- 	FD_PREPARE(fdf, 0, dentry_open(path, O_RDONLY, current_cred()));
--	if (fdf.err)
--		return fdf.err;
--	fd_prepare_file(fdf)->f_op = &spufs_gang_fops;
-+	if (fdf->fd < 0)
-+		return fdf->fd;
-+	fdf->file->f_op = &spufs_gang_fops;
- 	return fd_publish(fdf);
- }
- 
-diff --git a/drivers/gpio/gpiolib-cdev.c b/drivers/gpio/gpiolib-cdev.c
-index 9f3b628d5793..6526ce27ea44 100644
---- a/drivers/gpio/gpiolib-cdev.c
-+++ b/drivers/gpio/gpiolib-cdev.c
-@@ -377,11 +377,11 @@ static int linehandle_create(struct gpio_device *gdev, void __user *ip)
- 	FD_PREPARE(fdf, O_RDONLY | O_CLOEXEC,
- 		   anon_inode_getfile("gpio-linehandle", &linehandle_fileops,
- 				      lh, O_RDONLY | O_CLOEXEC));
--	if (fdf.err)
--		return fdf.err;
-+	if (fdf->fd < 0)
-+		return fdf->fd;
- 	retain_and_null_ptr(lh);
- 
--	handlereq.fd = fd_prepare_fd(fdf);
-+	handlereq.fd = fdf->fd;
- 	if (copy_to_user(ip, &handlereq, sizeof(handlereq)))
- 		return -EFAULT;
- 
-@@ -1715,11 +1715,11 @@ static int linereq_create(struct gpio_device *gdev, void __user *ip)
- 	FD_PREPARE(fdf, O_RDONLY | O_CLOEXEC,
- 		   anon_inode_getfile("gpio-line", &line_fileops, lr,
- 				      O_RDONLY | O_CLOEXEC));
--	if (fdf.err)
--		return fdf.err;
-+	if (fdf->fd < 0)
-+		return fdf->fd;
- 	retain_and_null_ptr(lr);
- 
--	ulr.fd = fd_prepare_fd(fdf);
-+	ulr.fd = fdf->fd;
- 	if (copy_to_user(ip, &ulr, sizeof(ulr)))
- 		return -EFAULT;
- 
-@@ -2115,11 +2115,11 @@ static int lineevent_create(struct gpio_device *gdev, void __user *ip)
- 	FD_PREPARE(fdf, O_RDONLY | O_CLOEXEC,
- 		   anon_inode_getfile("gpio-event", &lineevent_fileops, le,
- 				      O_RDONLY | O_CLOEXEC));
--	if (fdf.err)
--		return fdf.err;
-+	if (fdf->fd < 0)
-+		return fdf->fd;
- 	retain_and_null_ptr(le);
- 
--	eventreq.fd = fd_prepare_fd(fdf);
-+	eventreq.fd = fdf->fd;
- 	if (copy_to_user(ip, &eventreq, sizeof(eventreq)))
- 		return -EFAULT;
- 
-diff --git a/drivers/gpu/drm/msm/msm_perfcntr.c b/drivers/gpu/drm/msm/msm_perfcntr.c
-index ce65b1160955..7fa2e858bd08 100644
---- a/drivers/gpu/drm/msm/msm_perfcntr.c
-+++ b/drivers/gpu/drm/msm/msm_perfcntr.c
-@@ -543,8 +543,8 @@ msm_ioctl_perfcntr_config(struct drm_device *dev, void *data, struct drm_file *f
- 
- 		FD_PREPARE(fdf, O_CLOEXEC,
- 			   anon_inode_getfile("[msm_perfcntrs]", &stream_fops, stream, 0));
--		if (fdf.err)
--			return fdf.err;
-+		if (fdf->fd < 0)
-+			return fdf->fd;
- 
- 		INIT_WORK(&stream->sel_work, sel_worker);
- 		kthread_init_work(&stream->sample_work, sample_worker);
-diff --git a/drivers/media/mc/mc-request.c b/drivers/media/mc/mc-request.c
-index 13e77648807c..e1387f039780 100644
---- a/drivers/media/mc/mc-request.c
-+++ b/drivers/media/mc/mc-request.c
-@@ -316,15 +316,15 @@ int media_request_alloc(struct media_device *mdev, int *alloc_fd)
- 	FD_PREPARE(fdf, O_CLOEXEC,
- 		   anon_inode_getfile("request", &request_fops, NULL,
- 				      O_CLOEXEC));
--	if (fdf.err) {
--		ret = fdf.err;
-+	if (fdf->fd < 0) {
-+		ret = fdf->fd;
- 		goto err_free_req;
- 	}
- 
--	fd_prepare_file(fdf)->private_data = req;
-+	fdf->file->private_data = req;
- 
- 	snprintf(req->debug_str, sizeof(req->debug_str), "%u:%d",
--		 atomic_inc_return(&mdev->request_id), fd_prepare_fd(fdf));
-+		 atomic_inc_return(&mdev->request_id), fdf->fd);
- 	atomic_inc(&mdev->num_requests);
- 	dev_dbg(mdev->dev, "request: allocated %s\n", req->debug_str);
- 
-diff --git a/drivers/misc/ntsync.c b/drivers/misc/ntsync.c
-index 4a805919bb0c..2857ae37d3c8 100644
---- a/drivers/misc/ntsync.c
-+++ b/drivers/misc/ntsync.c
-@@ -724,9 +724,9 @@ static int ntsync_obj_get_fd(struct ntsync_obj *obj)
- {
- 	FD_PREPARE(fdf, O_CLOEXEC,
- 		   anon_inode_getfile("ntsync", &ntsync_obj_fops, obj, O_RDWR));
--	if (fdf.err)
--		return fdf.err;
--	obj->file = fd_prepare_file(fdf);
-+	if (fdf->fd < 0)
-+		return fdf->fd;
-+	obj->file = fdf->file;
- 	return fd_publish(fdf);
- }
- 
-diff --git a/fs/eventfd.c b/fs/eventfd.c
-index 9d33a02757d5..52426795752e 100644
---- a/fs/eventfd.c
-+++ b/fs/eventfd.c
-@@ -403,8 +403,8 @@ static int do_eventfd(unsigned int count, int flags)
- 	FD_PREPARE(fdf, flags,
- 		   anon_inode_getfile_fmode("[eventfd]", &eventfd_fops, ctx,
- 					    flags, FMODE_NOWAIT));
--	if (fdf.err)
--		return fdf.err;
-+	if (fdf->fd < 0)
-+		return fdf->fd;
- 
- 	ctx->id = ida_alloc(&eventfd_ida, GFP_KERNEL);
- 	retain_and_null_ptr(ctx);
-diff --git a/fs/eventpoll.c b/fs/eventpoll.c
-index e0c4bf88a838..f48b829a710f 100644
---- a/fs/eventpoll.c
-+++ b/fs/eventpoll.c
-@@ -2514,11 +2514,11 @@ static int do_epoll_create(int flags)
- 	FD_PREPARE(fdf, O_RDWR | (flags & O_CLOEXEC),
- 		   anon_inode_getfile("[eventpoll]", &eventpoll_fops, ep,
- 				      O_RDWR | (flags & O_CLOEXEC)));
--	if (fdf.err) {
-+	if (fdf->fd < 0) {
- 		ep_clear_and_put(ep);
--		return fdf.err;
-+		return fdf->fd;
- 	}
--	ep->file = fd_prepare_file(fdf);
-+	ep->file = fdf->file;
- 	return fd_publish(fdf);
- }
- 
-diff --git a/fs/file.c b/fs/file.c
-index 628ca07dc4b1..2a01b22eb65a 100644
---- a/fs/file.c
-+++ b/fs/file.c
-@@ -1391,17 +1391,17 @@ int receive_fd(struct file *file, int __user *ufd, unsigned int o_flags)
- 		return error;
- 
- 	FD_PREPARE(fdf, o_flags, file);
--	if (fdf.err)
--		return fdf.err;
-+	if (fdf->fd < 0)
-+		return fdf->fd;
- 	get_file(file);
- 
- 	if (ufd) {
--		error = put_user(fd_prepare_fd(fdf), ufd);
-+		error = put_user(fdf->fd, ufd);
- 		if (error)
- 			return error;
- 	}
- 
--	__receive_sock(fd_prepare_file(fdf));
-+	__receive_sock(fdf->file);
- 	return fd_publish(fdf);
- }
- EXPORT_SYMBOL_GPL(receive_fd);
-diff --git a/fs/namespace.c b/fs/namespace.c
-index 1ecd96c918b3..0f5c00816775 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -4544,16 +4544,16 @@ SYSCALL_DEFINE3(fsmount, int, fs_fd, unsigned int, flags,
- 
- 	FD_PREPARE(fdf, (flags & FSMOUNT_CLOEXEC) ? O_CLOEXEC : 0,
- 		   dentry_open(&new_path, O_PATH, fc->cred));
--	if (fdf.err) {
-+	if (fdf->fd < 0) {
- 		dissolve_on_fput(new_path.mnt);
--		return fdf.err;
-+		return fdf->fd;
- 	}
- 
- 	/*
- 	 * Attach to an apparent O_PATH fd with a note that we
- 	 * need to unmount it, not just simply put it.
- 	 */
--	fd_prepare_file(fdf)->f_mode |= FMODE_NEED_UNMOUNT;
-+	fdf->file->f_mode |= FMODE_NEED_UNMOUNT;
- 	return fd_publish(fdf);
- }
- 
-@@ -5198,12 +5198,12 @@ SYSCALL_DEFINE5(open_tree_attr, int, dfd, const char __user *, filename,
- 		return -EINVAL;
- 
- 	FD_PREPARE(fdf, flags, vfs_open_tree(dfd, filename, flags));
--	if (fdf.err)
--		return fdf.err;
-+	if (fdf->fd < 0)
-+		return fdf->fd;
- 
- 	if (uattr) {
- 		struct mount_kattr kattr = {};
--		struct file *file = fd_prepare_file(fdf);
-+		struct file *file = fdf->file;
- 		int ret;
- 
- 		if (flags & OPEN_TREE_CLONE)
-diff --git a/fs/nsfs.c b/fs/nsfs.c
-index c3b6ae76594a..56ea0bb9ef3a 100644
---- a/fs/nsfs.c
-+++ b/fs/nsfs.c
-@@ -348,8 +348,8 @@ static long ns_ioctl(struct file *filp, unsigned int ioctl,
- 			return ret;
- 
- 		FD_PREPARE(fdf, O_CLOEXEC, dentry_open(&path, O_RDONLY, current_cred()));
--		if (fdf.err)
--			return fdf.err;
-+		if (fdf->fd < 0)
-+			return fdf->fd;
- 		/*
- 		 * If @uinfo is passed return all information about the
- 		 * mount namespace as well.
-diff --git a/fs/xfs/xfs_handle.c b/fs/xfs/xfs_handle.c
-index 0689cade8f74..303bcff64459 100644
---- a/fs/xfs/xfs_handle.c
-+++ b/fs/xfs/xfs_handle.c
-@@ -272,11 +272,11 @@ xfs_open_by_handle(
- 	path.mnt = mntget(parfilp->f_path.mnt);
- 
- 	FD_PREPARE(fdf, 0, dentry_open(&path, hreq->oflags, cred));
--	if (fdf.err)
--		return fdf.err;
-+	if (fdf->fd < 0)
-+		return fdf->fd;
- 
- 	if (S_ISREG(inode->i_mode)) {
--		struct file *filp = fd_prepare_file(fdf);
-+		struct file *filp = fdf->file;
- 
- 		filp->f_flags |= O_NOATIME;
- 		filp->f_mode |= FMODE_NOCMTIME;
-diff --git a/include/linux/file.h b/include/linux/file.h
-index 926cc58d0b7f..41c3c0be1064 100644
---- a/include/linux/file.h
-+++ b/include/linux/file.h
-@@ -130,38 +130,26 @@ extern unsigned int sysctl_nr_open_min, sysctl_nr_open_max;
- 
- /*
-  * fd_prepare: Combined fd + file allocation cleanup class.
-- * @err: Error code to indicate if allocation succeeded.
-- * @__fd: Allocated fd (may not be accessed directly)
-- * @__file: Allocated struct file pointer (may not be accessed directly)
-+ * @fd: Allocated fd
-+ * @file: Allocated struct file pointer
-  *
-  * Allocates an fd and a file together. On error paths, automatically cleans
-  * up whichever resource was successfully allocated. Allows flexible file
-  * allocation with different functions per usage.
-  *
-- * Do not use directly.
-+ * Do not declare directly, use FD_PREPARE().
-  */
- struct fd_prepare {
--	s32 err;
--	s32 __fd; /* do not access directly */
--	struct file *__file; /* do not access directly */
-+	int fd;
-+	struct file *file;
- };
- 
--/*
-- * Accessors for fd_prepare class members.
-- * _Generic() is used for zero-cost type safety.
-- */
--#define fd_prepare_fd(_fdf) \
--	(_Generic((_fdf), struct fd_prepare: (_fdf).__fd))
--
--#define fd_prepare_file(_fdf) \
--	(_Generic((_fdf), struct fd_prepare: (_fdf).__file))
--
- /* Do not use directly. */
- static __always_inline void __fd_prepare_cleanup(const struct fd_prepare *fdf)
- {
--	if (unlikely(fdf->__fd >= 0)) {
--		put_unused_fd(fdf->__fd);
--		fput(fdf->__file);
-+	if (unlikely(fdf->fd >= 0)) {
-+		put_unused_fd(fdf->fd);
-+		fput(fdf->file);
- 	}
- }
- 
-@@ -175,11 +163,7 @@ static __always_inline struct fd_prepare __fd_prepare(int fd, struct file *file)
- 		fd = err;
- 		file = NULL;
- 	}
--	return (struct fd_prepare){
--		.err = fd < 0 ? fd : 0,
--		.__fd = fd,
--		.__file = file,
--	};
-+	return (struct fd_prepare){ .fd = fd, .file = file };
- }
- 
- /*
-@@ -191,35 +175,39 @@ static __always_inline struct fd_prepare __fd_prepare(int fd, struct file *file)
-  * was allocated. If fd_publish() was called the fd and file are
-  * published and cleanup becomes a nop.
-  *
-- * @_fdf: name of struct fd_prepare variable to define
-+ * @_fdf: name of the const struct fd_prepare pointer to define
-  * @_fd_flags: flags for get_unused_fd_flags()
-  * @_file_owned: struct file to take ownership of (can be expression)
-  */
--#define FD_PREPARE(_fdf, _fd_flags, _file_owned)			\
--	struct fd_prepare _fdf __cleanup(__fd_prepare_cleanup) = ({	\
-+#define __FD_PREPARE(_guard, _fdf, _fd_flags, _file_owned)		\
-+	struct fd_prepare _guard __cleanup(__fd_prepare_cleanup) = ({	\
- 		int __fd = get_unused_fd_flags(_fd_flags);		\
- 		__fd_prepare(__fd, __fd < 0 ? NULL : (_file_owned));	\
--	})
-+	});								\
-+	const struct fd_prepare *const _fdf = &_guard
- 
--/* Do not use directly. */
--static __always_inline int __fd_publish(struct fd_prepare *fdf)
--{
--	VFS_WARN_ON_ONCE(fdf->__fd < 0);
--	fd_install(fdf->__fd, fdf->__file);
--	return take_fd(fdf->__fd);
--}
-+#define FD_PREPARE(_fdf, _fd_flags, _file_owned) \
-+	__FD_PREPARE(__UNIQUE_ID(fd_prepare), _fdf, _fd_flags, _file_owned)
- 
- /*
-  * fd_publish - Publish prepared fd and file to the fd table.
-- * @_fdf: struct fd_prepare variable
-+ * @fdf: struct fd_prepare pointer defined by FD_PREPARE()
-  */
--#define fd_publish(_fdf) __fd_publish(&(_fdf))
-+static __always_inline int fd_publish(const struct fd_prepare *fdf)
-+{
-+	/* Callers only get a const view, the guard itself is writable. */
-+	struct fd_prepare *guard = (struct fd_prepare *)fdf;
-+
-+	VFS_WARN_ON_ONCE(guard->fd < 0);
-+	fd_install(guard->fd, guard->file);
-+	return take_fd(guard->fd);
-+}
- 
- /* Do not use directly. */
- #define __FD_ADD(_fdf, _fd_flags, _file_owned)			\
- 	({							\
- 		FD_PREPARE(_fdf, _fd_flags, _file_owned);	\
--		_fdf.err ?: fd_publish(_fdf);			\
-+		_fdf->fd < 0 ? _fdf->fd : fd_publish(_fdf);	\
- 	})
- 
- /*
-diff --git a/io_uring/mock_file.c b/io_uring/mock_file.c
-index b318ed697998..9f0b4d850c12 100644
---- a/io_uring/mock_file.c
-+++ b/io_uring/mock_file.c
-@@ -257,17 +257,17 @@ static int io_create_mock_file(struct io_uring_cmd *cmd, unsigned int issue_flag
- 	FD_PREPARE(fdf, O_RDWR | O_CLOEXEC,
- 		   anon_inode_create_getfile("[io_uring_mock]", fops, mf,
- 					     O_RDWR | O_CLOEXEC, NULL));
--	if (fdf.err)
--		return fdf.err;
-+	if (fdf->fd < 0)
-+		return fdf->fd;
- 
- 	retain_and_null_ptr(mf);
--	file = fd_prepare_file(fdf);
-+	file = fdf->file;
- 	file->f_mode |= FMODE_READ | FMODE_CAN_READ | FMODE_WRITE |
- 			FMODE_CAN_WRITE | FMODE_LSEEK;
- 	if (mc.flags & IORING_MOCK_CREATE_F_SUPPORT_NOWAIT)
- 		file->f_mode |= FMODE_NOWAIT;
- 
--	mc.out_fd = fd_prepare_fd(fdf);
-+	mc.out_fd = fdf->fd;
- 	if (copy_to_user(uarg, &mc, uarg_size))
- 		return -EFAULT;
- 
-diff --git a/kernel/bpf/bpf_iter.c b/kernel/bpf/bpf_iter.c
-index 14a5fdfa0421..5f790d12f72e 100644
---- a/kernel/bpf/bpf_iter.c
-+++ b/kernel/bpf/bpf_iter.c
-@@ -643,11 +643,11 @@ int bpf_iter_new_fd(struct bpf_link *link)
- 	flags = O_RDONLY | O_CLOEXEC;
- 
- 	FD_PREPARE(fdf, flags, anon_inode_getfile("bpf_iter", &bpf_iter_fops, NULL, flags));
--	if (fdf.err)
--		return fdf.err;
-+	if (fdf->fd < 0)
-+		return fdf->fd;
- 
- 	iter_link = container_of(link, struct bpf_iter_link, link);
--	err = prepare_seq_file(fd_prepare_file(fdf), iter_link);
-+	err = prepare_seq_file(fdf->file, iter_link);
- 	if (err)
- 		return err; /* Automatic cleanup handles fput */
- 
-diff --git a/kernel/bpf/token.c b/kernel/bpf/token.c
-index e85a179523f0..da915a4f972b 100644
---- a/kernel/bpf/token.c
-+++ b/kernel/bpf/token.c
-@@ -169,8 +169,8 @@ int bpf_token_create(union bpf_attr *attr)
- 	FD_PREPARE(fdf, O_CLOEXEC,
- 		   alloc_file_pseudo(inode, path.mnt, BPF_TOKEN_INODE_NAME,
- 				     O_RDWR, &bpf_token_fops));
--	if (fdf.err)
--		return fdf.err;
-+	if (fdf->fd < 0)
-+		return fdf->fd;
- 
- 	token = kzalloc_obj(*token, GFP_USER);
- 	if (!token)
-@@ -190,7 +190,7 @@ int bpf_token_create(union bpf_attr *attr)
- 		return err;
- 
- 	get_user_ns(token->userns);
--	fd_prepare_file(fdf)->private_data = no_free_ptr(token);
-+	fdf->file->private_data = no_free_ptr(token);
- 	return fd_publish(fdf);
- }
- 
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index 23fb68fce000..ea382aedfc90 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -4809,12 +4809,12 @@ static int new_userfaultfd(int flags)
- 		   anon_inode_create_getfile("[userfaultfd]", &userfaultfd_fops, ctx,
- 					     O_RDONLY | (flags & UFFD_SHARED_FCNTL_FLAGS),
- 					     NULL));
--	if (fdf.err)
--		return fdf.err;
-+	if (fdf->fd < 0)
-+		return fdf->fd;
- 
- 	/* prevent the mm struct to be freed */
- 	mmgrab(ctx->mm);
--	fd_prepare_file(fdf)->f_mode |= FMODE_NOWAIT;
-+	fdf->file->f_mode |= FMODE_NOWAIT;
- 	retain_and_null_ptr(ctx);
- 	return fd_publish(fdf);
- }
-diff --git a/net/core/scm.c b/net/core/scm.c
-index f0d44ecdb11f..15c330784a69 100644
---- a/net/core/scm.c
-+++ b/net/core/scm.c
-@@ -364,14 +364,14 @@ int scm_recv_one_fd(struct file *f, int __user *ufd, unsigned int flags,
- 		return notrunc ? put_user(error, ufd) : error;
- 
- 	FD_PREPARE(fdf, flags, get_file(f));
--	if (fdf.err)
--		return fdf.err;
-+	if (fdf->fd < 0)
-+		return fdf->fd;
- 
--	error = put_user(fd_prepare_fd(fdf), ufd);
-+	error = put_user(fdf->fd, ufd);
- 	if (error)
- 		return error;
- 
--	__receive_sock(fd_prepare_file(fdf));
-+	__receive_sock(fdf->file);
- 	return fd_publish(fdf);
- }
- 
-diff --git a/net/handshake/netlink.c b/net/handshake/netlink.c
-index 3fd4fef9bab1..73b8314d9010 100644
---- a/net/handshake/netlink.c
-+++ b/net/handshake/netlink.c
-@@ -107,17 +107,17 @@ int handshake_nl_accept_doit(struct sk_buff *skb, struct genl_info *info)
- 	req = handshake_req_next(hn, class);
- 	if (req) {
- 		FD_PREPARE(fdf, O_CLOEXEC, req->hr_file);
--		if (fdf.err) {
-+		if (fdf->fd < 0) {
- 			fput(req->hr_file); /* drop ref from handshake_req_next() */
--			err = fdf.err;
-+			err = fdf->fd;
- 			goto out_complete;
- 		}
- 
--		err = req->hr_proto->hp_accept(req, info, fd_prepare_fd(fdf));
-+		err = req->hr_proto->hp_accept(req, info, fdf->fd);
- 		if (err)
- 			goto out_complete; /* Automatic cleanup handles fput */
- 
--		trace_handshake_cmd_accept(net, req, req->hr_sk, fd_prepare_fd(fdf));
-+		trace_handshake_cmd_accept(net, req, req->hr_sk, fdf->fd);
- 		fd_publish(fdf);
- 		return 0;
- 	}
-diff --git a/net/kcm/kcmsock.c b/net/kcm/kcmsock.c
-index 71af69d442f2..962ee2c4acd2 100644
---- a/net/kcm/kcmsock.c
-+++ b/net/kcm/kcmsock.c
-@@ -1580,10 +1580,10 @@ static int kcm_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
- 		struct kcm_clone info;
- 
- 		FD_PREPARE(fdf, 0, kcm_clone(sock));
--		if (fdf.err)
--			return fdf.err;
-+		if (fdf->fd < 0)
-+			return fdf->fd;
- 
--		info.fd = fd_prepare_fd(fdf);
-+		info.fd = fdf->fd;
- 		if (copy_to_user((void __user *)arg, &info, sizeof(info)))
- 			return -EFAULT;
- 
+> (but maybe something worth exploring later)
 
--- 
-2.53.0
+Yes! later we can see if partial_sheaf can have more use cases.
 
+> 
+> > +	struct slab_sheaf *sheaf_partial;
+> >  	unsigned int nr_full;
+> >  	unsigned int nr_empty;
+> >  };
+> > @@ -3183,6 +3185,69 @@ static struct slab_sheaf *barn_get_empty_sheaf(struct node_barn *barn,
+> >  	return empty;
+> >  }
+> >  
+> > +/*
+> > + * Exchange @sheaf, which holds fewer objects than requested, for a full sheaf
+> > + * from the barn. The objects of @sheaf stay in the barn: it becomes the barn's
+> > + * partial sheaf, or its objects are merged into the existing one, which becomes
+> > + * a full sheaf when it reaches capacity. That way the leftovers neither occupy
+> > + * a full-sheaf count nor have to be flushed.
+> > + *
+> > + * Returns NULL if the barn has no full sheaf.
+> > + */
+> > +static struct slab_sheaf *barn_replace_partial_sheaf(struct kmem_cache *s,
+> > +						     struct node_barn *barn,
+> > +						     struct slab_sheaf *sheaf)
+> > +{
+> > +	struct slab_sheaf *full, *partial;
+> > +	unsigned int to_move;
+> > +	unsigned long flags;
+> > +
+> > +	if (!data_race(barn->nr_full))
+> > +		return NULL;
+> > +
+> > +	spin_lock_irqsave(&barn->lock, flags);
+> > +
+> > +	if (unlikely(!barn->nr_full)) {
+> > +		spin_unlock_irqrestore(&barn->lock, flags);
+> > +		return NULL;
+> 
+> Hmm what if there's no full, but there's sheaf_partial with enough objects
+> to make a full sheaf together with @sheaf?
+
+This is very inspiring, thanks!
+
+And I feel this doesn't just apply when barn->nr_full == 0. At any time, as
+long as the @sheaf and sheaf_partial together have enough objects to make a
+full sheaf, we can always complete a full sheaf out of the two and skip the
+barn list operations entirely.
+
+This small optimization is essentially equivalent to what the current patch
+does, because the current code basically takes a full sheaf from the barn, then
+put the newly assembled full sheaf back into the barn, which is an
+unnecessary round trip.
+
+On top of that, to be more efficient, we could compare their sizes first to
+make sure we always copy from the one with fewer objects to the one with more.
+
+I ran a quick test, the performance and stats difference isn't very noticeable,
+but logically it feels much more elegant.
+
+I'll roll this into a non-rfc patch and send it out later.
+
+> 
+> > +	}
+> > +
+> > +	full = list_first_entry(&barn->sheaves_full, struct slab_sheaf,
+> > +				barn_list);
+> > +	list_del(&full->barn_list);
+> > +	barn->nr_full--;
+> > +
+> > +	partial = barn->sheaf_partial;
+> > +	if (partial) {
+> > +		to_move = min(sheaf->size, s->sheaf_capacity - partial->size);
+> > +		sheaf->size -= to_move;
+> > +		memcpy(&partial->objects[partial->size],
+> > +		       &sheaf->objects[sheaf->size], to_move * sizeof(void *));
+> > +		partial->size += to_move;
+> > +
+> > +		if (partial->size == s->sheaf_capacity) {
+> > +			list_add(&partial->barn_list, &barn->sheaves_full);
+> > +			barn->nr_full++;
+> > +			barn->sheaf_partial = NULL;
+> > +		}
+> > +	}
+> > +
+> > +	if (sheaf->size) {
+> > +		/* no partial sheaf, or it just became full */
+> > +		barn->sheaf_partial = sheaf;
+> > +	} else {
+> > +		list_add(&sheaf->barn_list, &barn->sheaves_empty);
+> > +		barn->nr_empty++;
+> > +	}
+> > +
+> > +	spin_unlock_irqrestore(&barn->lock, flags);
+> > +
+> > +	full->capacity = s->sheaf_capacity;
+> > +	full->pfmemalloc = false;
+> 
+> I think this belongs more to the caller which deals with the prefilled
+> sheaves specifically, and this helper is more low level.
+
+Makes sense to me! will do.
+
+> 
+> Otherwise LGTM!
+
+Awesome, thanks!
+
+> 
+> > +
+> > +	return full;
+> > +}
+> > +
+> >  /*
+> >   * The following two functions are used mainly in cases where we have to undo an
+> >   * intended action due to a race or cpu migration. Thus they do not check the
+> > @@ -3317,6 +3382,7 @@ static void barn_init(struct node_barn *barn)
+> >  	spin_lock_init(&barn->lock);
+> >  	INIT_LIST_HEAD(&barn->sheaves_full);
+> >  	INIT_LIST_HEAD(&barn->sheaves_empty);
+> > +	barn->sheaf_partial = NULL;
+> >  	barn->nr_full = 0;
+> >  	barn->nr_empty = 0;
+> >  }
+> > @@ -3334,6 +3400,10 @@ static void barn_shrink(struct kmem_cache *s, struct node_barn *barn)
+> >  	barn->nr_full = 0;
+> >  	list_splice_init(&barn->sheaves_empty, &empty_list);
+> >  	barn->nr_empty = 0;
+> > +	if (barn->sheaf_partial) {
+> > +		list_add(&barn->sheaf_partial->barn_list, &full_list);
+> > +		barn->sheaf_partial = NULL;
+> > +	}
+> >  
+> >  	spin_unlock_irqrestore(&barn->lock, flags);
+> >  
+> > @@ -5233,12 +5303,49 @@ void *kmem_cache_alloc_node_noprof(struct kmem_cache *s, gfp_t gfpflags, int nod
+> >  }
+> >  EXPORT_SYMBOL(kmem_cache_alloc_node_noprof);
+> >  
+> > +/*
+> > + * Refill by swapping *@sheafp for a full sheaf from the barn. The old sheaf and
+> > + * its objects stay in the barn. Returns true when the new sheaf is full.
+> > + */
+> > +static bool refill_sheaf_from_barn(struct kmem_cache *s,
+> > +				   struct slab_sheaf **sheafp)
+> > +{
+> > +	struct node_barn *barn = get_barn(s);
+> > +	struct slab_sheaf *sheaf = *sheafp;
+> > +	struct slab_sheaf *full;
+> > +
+> > +	/* objects from pfmemalloc slabs must not enter the barn */
+> > +	if (!barn || sheaf->pfmemalloc)
+> > +		return false;
+> > +
+> > +	full = barn_replace_partial_sheaf(s, barn, sheaf);
+> > +	if (!full)
+> > +		return false;
+> > +
+> > +	stat(s, BARN_GET);
+> > +	*sheafp = full;
+> > +
+> > +	/*
+> > +	 * The sheaf may hold fewer than capacity objects: rcu_free_sheaf()
+> > +	 * puts it in the barn as full even when slab_free_hook() has taken
+> > +	 * some out (KFENCE, KASAN). __prefill_sheaf_pfmemalloc() then
+> > +	 * continues to refill it.
+> > +	 */
+> > +	return full->size == s->sheaf_capacity;
+> > +}
+> > +
+> >  static int __prefill_sheaf_pfmemalloc(struct kmem_cache *s,
+> > -				      struct slab_sheaf *sheaf, gfp_t gfp)
+> > +				      struct slab_sheaf **sheafp, gfp_t gfp)
+> >  {
+> > +	struct slab_sheaf *sheaf;
+> >  	gfp_t gfp_nomemalloc;
+> >  	int ret;
+> >  
+> > +	if (refill_sheaf_from_barn(s, sheafp))
+> > +		return 0;
+> > +
+> > +	sheaf = *sheafp;
+> > +
+> >  	gfp_nomemalloc = gfp | __GFP_NOMEMALLOC;
+> >  	if (gfp_pfmemalloc_allowed(gfp))
+> >  		gfp_nomemalloc |= __GFP_NOWARN;
+> > @@ -5331,7 +5438,7 @@ kmem_cache_prefill_sheaf(struct kmem_cache *s, gfp_t gfp, unsigned int size)
+> >  		sheaf->pfmemalloc = false;
+> >  
+> >  		if (sheaf->size < size &&
+> > -		    __prefill_sheaf_pfmemalloc(s, sheaf, gfp)) {
+> > +		    __prefill_sheaf_pfmemalloc(s, &sheaf, gfp)) {
+> >  			sheaf_flush_unused(s, sheaf);
+> >  			free_empty_sheaf(s, sheaf);
+> >  			sheaf = NULL;
+> > @@ -5401,11 +5508,10 @@ void kmem_cache_return_sheaf(struct kmem_cache *s, gfp_t gfp,
+> >   * the given size.
+> >   *
+> >   * Return: 0 on success. The sheaf will contain at least @size objects.
+> > - * The sheaf might have been replaced with a new one if more than
+> > - * sheaf->capacity objects are requested.
+> > + * The sheaf might have been replaced with a new one.
+> >   *
+> >   * Return: -ENOMEM on failure. Some objects might have been added to the sheaf
+> > - * but the sheaf will not be replaced.
+> > + * and the sheaf might have been replaced.
+> >   *
+> >   * In practice we always refill to full sheaf's capacity.
+> >   */
+> > @@ -5427,7 +5533,7 @@ int kmem_cache_refill_sheaf(struct kmem_cache *s, gfp_t gfp,
+> >  
+> >  	if (likely(sheaf->capacity >= size)) {
+> >  		if (likely(sheaf->capacity == s->sheaf_capacity))
+> > -			return __prefill_sheaf_pfmemalloc(s, sheaf, gfp);
+> > +			return __prefill_sheaf_pfmemalloc(s, sheafp, gfp);
+> >  
+> >  		if (!__kmem_cache_alloc_bulk(s, gfp, sheaf->capacity - sheaf->size,
+> >  					     &sheaf->objects[sheaf->size]))
+> > 
+> 
 
