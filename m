@@ -4,102 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29EAFC982C1
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 01:23:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EAC9C982CC
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 01:24:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 03C4F6B008A; Wed, 16 Sep 2026 21:23:51 -0400 (EDT)
+	id 1C4236B0092; Wed, 16 Sep 2026 21:24:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F08D86B008C; Wed, 16 Sep 2026 21:23:50 -0400 (EDT)
+	id 1752C6B0093; Wed, 16 Sep 2026 21:24:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD0BE6B0092; Wed, 16 Sep 2026 21:23:50 -0400 (EDT)
+	id 064B06B0095; Wed, 16 Sep 2026 21:24:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BBC066B008A
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 21:23:50 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 26E9DA01AF
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 01:23:50 +0000 (UTC)
-X-FDA: 85221507420.05.343D2CD
-Received: from mta0.migadu.com (out-104.mta0.migadu.com [91.218.175.104])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 134CCC0003
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 01:23:47 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=NSXjE+eQ;
-	spf=pass (imf22.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.104 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D4BF36B0092
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 21:24:31 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BD993801E6
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 01:24:30 +0000 (UTC)
+X-FDA: 85221509100.23.72EE349
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 24421100002
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 01:24:28 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="IlX87D/L";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789608269;
+	b=uG7MdeqlGafs3RNc23CjfZqcd5fjPIfIVmFjCWL6qcuGNi1Bkb4jLLiNKgGioFWMlk+I3O
+	abk5h19fjeO7lZtOnSxNeXjxjomHxi5+74B8lTlhIbm65OsdETeZKsKDkUSDRo3VqAM/tK
+	rcO38pbFnU28FRz3bfKVqMYJUzJSDX0=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="IlX87D/L";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789608228;
+	s=arc-20220608; t=1789608269;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h7fiYg1MNVDZQns0GKIp0vaxCcewKTvOceR72hHoWUg=;
-	b=qJ4s6nosOEzHgxKqzfzb+23jOVxhjPElpmv5Qu126Z6YeFxruWTsHhJuPKH/EJksPtYnqe
-	hGThmBmp5X34AG7FuKldJoAjAFMf6cj3rJlM0SMg9wos3iEgO+dva2oLxvwhKiGuVu+HWf
-	5CRUgiERT5PYBHo+iX1fojKPj5latqw=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=NSXjE+eQ;
-	spf=pass (imf22.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.104 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789608228;
-	b=ASKjwG4ClqDAywivlNP+tyZRg9lpCWwC9BpTwMfVvRElMexXBlBGCgvaAJLzREz3uEN9Tk
-	VEKV2usguata9EbUPdJ/R/3u7+tR1/d6/O7nsFuO6kMws6+mdfOPluuSeWzmYlokLKahTn
-	eCQK5i+DPFRR8Q1E63cjSwHvgMFXt3Q=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=wDg1fKXgo2gnh1KZoLEb6HenGD7qVnWNZCNvYn7EiGM=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789608226; v=1; x=1790213026;
- b=NSXjE+eQjTHs61mS8ahOdvlpL97CYi3Oil7vbxswIjGlHKEgS5xxU62Mx1lYLoYG0Bfa1DrG
- zOKJP4j8FYwIPImThj88zDmnj7iuq7IKZi1chAB9Lsl/+cfQZh8ej3sNWqww9qhZaAeDv+Dh3Y7
- 2SAgwrYf/1MAFCRZ6hyVz3cE=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 19db6483ce23b745;
-	Thu, 17 Sep 2026 01:23:46 +0000
-X-Mizu-Trace-ID: 19db6483ce23b745
-X-Migadu-Flow: FLOW_OUT
-Date: Thu, 17 Sep 2026 09:23:39 +0800
-From: Baoquan He <baoquan.he@linux.dev>
-To: Steven Rostedt <rostedt@goodmis.org>,
-	Ridong Chen <ridong.chen@linux.dev>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	David Hildenbrand <david@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-	"open list:MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)" <linux-mm@kvack.org>,
-	Ridong Chen <chenridong@xiaomi.com>
-Subject: Re: [PATCH v2 2/3] mm/mglru: add tracepoint for scan_folios()
-Message-ID: <aqtBG9Oyu-RVI7jv@fedora>
-References: <20260911102939.2485750-1-ridong.chen@linux.dev>
- <20260911102939.2485750-3-ridong.chen@linux.dev>
- <aqkoeJvFzqpoGeaP@fedora>
- <e38f2b80-20f2-4787-9e07-fb601552f550@linux.dev>
- <aqn7h3BVCCRFI2TI@fedora>
- <20260916095122.50cbb620@robin>
+	bh=lZ1/JqShDzbJ7IZu7QOMEIySEk70KUHs+UhoEK32jik=;
+	b=c63TNyWFYmH3XWDy4Ptn/S75OYMaPlN4L9EboHz98XLSXx/0hLKYDk3FwgzZoGtBsbrv2e
+	kxdy789ni5ha8jUqqM3qDHrVz4dTG6t0hmAs9iJ4pwiQV9uMbKqUk3gJ430+vFrUJs64MS
+	IlzX2ClTqgchmB623g/ExiSG2VRp4qs=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4EBEF601EF;
+	Thu, 17 Sep 2026 01:24:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8BC61F000FF;
+	Thu, 17 Sep 2026 01:24:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789608268;
+	bh=lZ1/JqShDzbJ7IZu7QOMEIySEk70KUHs+UhoEK32jik=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=IlX87D/Lq6R17YTQTyg93CU3XzxNg0LyM3R516eJBKICYpiceSdQBusGt9JxbwAEY
+	 Oetopq4JPfNlc51yws7g3VFOllGU7RnvGvMJ/IDBbvF0s1NwRFdxsHETeTVJwcPfz4
+	 kBf7PsyHKeql9NIFUHUuzLd1iVk/zA2+RDkeRcpVToRyKEQRgo4L+KHWhMbocTLpwP
+	 iZLmKnR0prC5s0ikktVP/0z/7YoHQquIEdNsZ53gQRgE5ooCJnRNHiJeW8QTXZzCQx
+	 jnjAhSzs4eBYFKatCXzMxLp0tr9uMUlNhdNx+YiOZx09TPEy72jGOXhM4pcmoirpqC
+	 dbtTtVxXSbeBg==
+From: SJ Park <sj@kernel.org>
+To: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 1/2] mm/damon/core: charge only the part of a region the filter left
+Date: Wed, 16 Sep 2026 18:24:19 -0700
+Message-ID: <20260917012420.101087-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260917003553.2465523-2-donggeunyoo.kernel@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260916095122.50cbb620@robin>
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: rb5ogpztraz9i4ckcadyr1jcicmd8b3x
-X-Rspamd-Queue-Id: 134CCC0003
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789608227-875271
-X-HE-Meta: U2FsdGVkX19YBocrZ0mbVdpamRSk4xfRWK+6JaPAi4XANLqHl7tW8msTlfC7iCk+A0GGgFI3rvrVGoYYTSO/SaJUL1vn5X62T58FzNjEj8G/L88Dw7lh4EQZcFvVAUoi1IsyUMg4LpIhO82+Qcsf95hi7vJuzWtE55HTKTLpDJ8JftpJQewvS4b0kp1hcHFB20xHshqaAQ3LucY4tCsNP6uUU93qU3AZExpi3zHg/735QPGXI+5WnWUFwcflO3QcPdhtTYDGOuigtJS+U+utSxZqxzxp/AsZbvXo63zH72LzAvkxw1RtEqqgsuP6JmSzVzlUU52Vl3ASpdF0ZRtERRomMgp7+/8L8bwkffmDuOUzqK65Y7pJbCiAYzzgfePs8lUMW6uR2xw+9NUJpKIawbryfjCk3lxsNb5CNYuCtWSHg3ZyRCqyWRzDM3qNJdPp/uVsKrVqVYdrRcGl7Om+SDZZiz+wVkQzWCF8eMqv9UEH5uiuRab869wDpSQ/fNeTAmitoETZ/F4pwTwg7NMphc68vaC4xlr6SgwYKFWCqkmiaz42DqYBeRKbDy/fcg2QTK8eX4thUof6PaBuR+hbf8Xzu1oYngxmwb7/WQ9tQqDt23N88ufkGrk2bEWnNlFg+tTR5BxrHbP0XNh9L9npE6tdjEkzZhJr6+JUWYvIz37Ie3hZcqhwdm74MfFJD0Z5LLBlgtvUvPT5evHIPD9c+Xxx9mkS07pvPl0IWX6JaQvlx1q4SfIKBKPSFdFoZ4w1lcBRA9XUBxGCz/nU4F6+2IM4EPahOyXmKdCJIsMR9448gQzsIMQTldid6Yw85NAxgcSoEiBOgPkCzq+5OW16iUAc6vsOQBV4Y7g6LKfkgLznVxc9GoKz6Fm4GyWA6OGqa/hu/GSDyq47hs5AMit2PTgXuDrZUcNKVc4GH2GpvB67NnuiEIhk92WdyL1m6wVUAdu+71w6sTU4f22SM8U
- AnGeDlvk
- 0gct0QUrsf13Fzn2QwjvKqXu98FRvnWM8fLcpMr21ikBV9Wi7cLTyw/ikXGJWSnPj3BG4AtLPbNy59CqWlIN7z0Qc+7rQjECAUoP9nUI9gzt5RwFM2YhOWv6PMXgw6VksPgYJrzDBKANGug+j/BR1IMSmb/LtLuTuoOL33I4op6SgCn2MU7lAKzfyTs4aeo3eBPQs6GOSKKhZM0h4LamldGfM9XfJBr3OahkwsU58yXwFuHvYxahILIJq7cNr4maPVwgrReBaktC+R1AKQRIpeAzxxqwk5Kdj7COG76GnnQObqI+6YQjINF9zTVaOYtqRpDI7
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 24421100002
+X-Stat-Signature: iy86st6ejc9nd3nfknprykdkrsfr5359
+X-HE-Tag: 1789608268-215105
+X-HE-Meta: U2FsdGVkX1/04acEi1kTQj7zppYt5wIRL5Yg+PZd6cmvajZCpDnrGOJ0vPpWgkvUEBCm4fQhj87TgbbVE6zGk863IRRbJC2LgLvS1oaqfONhsk5S6y8hyxFzwa9q6T9JDTmqiO2dF8z4FYAmhcPC2AdYg1qXXmyVJSo3zjx8Y+FMECjPV6FhiTsM+dfusoeS52ejmsGo7Y3Vd5G/4FRAHSJUpHOAwNlz2QdigHjq3sHSr+Xj68a4+s7if86skiQVLzYMZBrEc/C8g6YqDv7LQlXGkLPfHFhlPr9tt6SFpJiqAcYsa1h1LvubAClulnoaclZYKQr+XREK6Mngsp9EakqX1LyFrO0M1WhZytnEEIJYVxXFjnmrkPT9XX7QgaUEB1UKLOzkF1mMAYGr9EPlFnZzx2pPNNaBpwHTUyt45iA4iKSaeVhR62qQIS9Z4sTqLAvfhIuO7y8aExcGAq4kY7SfERCERrh7r43vJrPZS7PGUbehFK+KB9iTYtE20WsSZN5jMgeebBaexyUpxjh9fcRG9nro7w2fXL8gky/BB/Wzq+CB+qIFKgCBRmASKohUrB6WKp8sMuGNQq2LVgMVejeQHxFg8wMwOvFWCexJpuKGBdOCIFJtSeWOQqDPB9SrMVmSR1YUHevFcIUohAOkCn5v1ZZ/eukPyCQVnMWKhkDFainTYfXV7COxOYfb3NpQ9ZE6tRmcl/Ejj2BJZNzhEGJegubpui9CcfU/MQZ0YcAiVDG3qeikw4++HK6Vx8DAXGjYpgEkK9e1XO55VuMFhvAdqWCHKDRHP+ilBAt2w2HD9//avDT5SKtCQBrEZIC51N2+fxJtQHhIZWBBrBf8JC6/8UsZqKzHF9AiXza4px7HJfQ3JZ3T1K5pQw8F+FasQZjAhoDRFM84IKSpxVRPgCu/etCVdn93KgWRvDUfOv9f2sSsaRITwLAPUjAn1n8Erxcs9Z/Ltq+jyEomlSy
+ dLdFrOBt
+ qkBl8+kbatIf0eZkHvYoYAJERhWQMUdER5gbrzxNpov45LSU1QWp4P+ov7VYtoKHpfx2ef0wQ+aK6yZX+3BJ5fQlnts4W/tsP5WirHFkELifCTWVejKSSLatzJ5OOooWcHOPxeO4uX+NWA7pQPbvLWbSdkWy7UpZ3tVauwbmzr0QeUuFuc2vHx3uE1eIeX4qMA2+4MkrekhWisURSnvtHQqSKz7Rwdd2iV2Y7qnErjdvn6WTL0ImP8mI5ECtulMOkrHgYDgg1628SWqcwD24csROmLwtsjkLQUfohfeY0mqIaqu8GEqJDpMPZDBDtaRqpvcW3KgFr4kvy0t4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,26 +93,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09/16/26 at 09:51am, Steven Rostedt wrote:
-> On Wed, 16 Sep 2026 10:14:31 +0800
-> Baoquan He <baoquan.he@linux.dev> wrote:
+On Thu, 17 Sep 2026 09:35:52 +0900 Donggeun Yoo <donggeunyoo.kernel@gmail.com> wrote:
+
+> An address range DAMOS filter that partially overlaps a monitoring
+> region splits the region at the filter boundary, so the scheme action is
+> applied to only one side of it.  damos_apply_scheme() reads the region
+> size once on entry, before damos_core_filter_out() performs that split.
 > 
-> > > However, 'sc' is an internal structure, so sc->order cannot be accessed in
-> > > TP_fast_assign(), and I don't think it is worth making scan_control an
-> > > external structure just for this.  
-> > 
-> > Agree.
+> The quota charge and the statistics update therefore account for the
+> region as it was before the trim.  schemes/<S>/stats/sz_tried counts
+> memory the filter excluded, which Documentation/mm/damon/design.rst says
+> is not counted as tried, and with quotas/bytes set the excluded part is
+> charged against the budget, throttling the scheme to a fraction of what
+> was configured.
+
+The user impact is that DAMOS could work unexpectedly slow, due to over-charged
+quota.  Also DAMOS stat could be confusing.  No critical events such as crashes
+or leask happen.
+
+If above is not incorrect, I will add that to the commit message when I add
+this patch to damon/next tree.  Let me know if anything is incorrect.
+
 > 
-> Or what you can do is to move include/trace/events/vmscan.h to
-> mm/trace_mm.h (or whatever you want to call it) and struct scan_control
-> into "vmscan.h" and then you can use internal structures within the
-> trace event.
+> Re-read the region size after the core filters have run.
 
-Sounds very reasonable, thanks for the valuable input.
+Thank you for finding and fixing this bug!
 
 > 
-> Up to you, but this is what other subsystems have done.
+> Fixes: ab9bda001b68 ("mm/damon/core: introduce address range type damos filter")
+> Cc: <stable@vger.kernel.org> # 6.6.x
+> Signed-off-by: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
 
-Yeah, leave this to Ridong to decide.
+Reviewed-by: SJ Park <sj@kernel.org>
 
+
+Thanks,
+SJ
+
+[...]
 
