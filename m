@@ -4,98 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A4AAC88E72
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 20:45:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5397C982D2
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 20:45:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4A57C6B008C; Thu, 17 Sep 2026 16:45:11 -0400 (EDT)
+	id E49436B0092; Thu, 17 Sep 2026 16:45:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 42F1D6B0092; Thu, 17 Sep 2026 16:45:11 -0400 (EDT)
+	id DA5FF6B0093; Thu, 17 Sep 2026 16:45:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 31FF26B0093; Thu, 17 Sep 2026 16:45:11 -0400 (EDT)
+	id C6EBB6B0095; Thu, 17 Sep 2026 16:45:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 08DDE6B008C
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 16:45:11 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 976761604B3
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 20:45:10 +0000 (UTC)
-X-FDA: 85224433980.06.0F9A6AC
+	by kanga.kvack.org (Postfix) with ESMTP id 9365D6B0092
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 16:45:13 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B2E311604BD
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 20:45:12 +0000 (UTC)
+X-FDA: 85224434064.19.EF26BC7
 Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	by imf26.hostedemail.com (Postfix) with ESMTP id AFAA3140010
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 20:45:08 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=j9vZPGkK;
-	spf=pass (imf26.hostedemail.com: domain of 3U1GsagYKCAQ02mlerksskpi.gsqpmry1-qqozego.svk@flex--wyihan.bounces.google.com designates 209.85.216.69 as permitted sender) smtp.mailfrom=3U1GsagYKCAQ02mlerksskpi.gsqpmry1-qqozego.svk@flex--wyihan.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by imf23.hostedemail.com (Postfix) with ESMTP id DFD1B140007
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 20:45:10 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=kPnl2odP;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf23.hostedemail.com: domain of 3VVGsagYKCAY24ongtmuumrk.iusrot03-ssq1giq.uxm@flex--wyihan.bounces.google.com designates 209.85.216.69 as permitted sender) smtp.mailfrom=3VVGsagYKCAY24ongtmuumrk.iusrot03-ssq1giq.uxm@flex--wyihan.bounces.google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789677910;
+	b=TlDUY5cIzpLceeMALMoDgmkcMvf0xBFRXXU80W+0fWqSnedMs929+AXEsg2L34Gh/YmZ30
+	4ilAOopdDP4zD+flBEqayoUNcFRg6bQSNKLgMfKRT4ofqF5KgoAxyCMZohjhuD5vZ7Wom3
+	XUPEdTPzs7EQbsSq3Iw4Kd3mXpGQonQ=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=kPnl2odP;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf23.hostedemail.com: domain of 3VVGsagYKCAY24ongtmuumrk.iusrot03-ssq1giq.uxm@flex--wyihan.bounces.google.com designates 209.85.216.69 as permitted sender) smtp.mailfrom=3VVGsagYKCAY24ongtmuumrk.iusrot03-ssq1giq.uxm@flex--wyihan.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789677908;
+	s=arc-20220608; t=1789677910;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=jMNh0+jAAa1Kr4+QO+vi3xyA58GWdIBX9d8ih4uK1uA=;
-	b=U8C4qPVBVabXn20qnzo3aKwub0kivRpHOAnbQe1DWo1IWZEZkti1a8hPr20v8yMMcm1wRZ
-	iU6SKV0+JopL4PjVxxySxJ02XO4Mc42vh1U/LKzjK+iC9hqzbDjim+j6F4GjV/B5laXc5T
-	8cQFFdXerD8f4lfRLx6KUUTKJjbV6Vs=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789677908;
-	b=gCQJNj72wNYsHyy9FH9c8zj0NfcXUM6FqQYsLf7Cd2Cef0Alc+dbkgQ+qVteIiqtPCFu9o
-	6JjcSCfIoLCuQDQd739ylLD/AR+dtL6WweuRHokenDlz5NaC8WSHNxj32fV4bEVyFphvt9
-	Lk0k76rQXpRcq9U5bXtM5yzbNbjZ7NA=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=j9vZPGkK;
-	spf=pass (imf26.hostedemail.com: domain of 3U1GsagYKCAQ02mlerksskpi.gsqpmry1-qqozego.svk@flex--wyihan.bounces.google.com designates 209.85.216.69 as permitted sender) smtp.mailfrom=3U1GsagYKCAQ02mlerksskpi.gsqpmry1-qqozego.svk@flex--wyihan.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-38e8e864ef0so161865a91.0
-        for <linux-mm@kvack.org>; Thu, 17 Sep 2026 13:45:08 -0700 (PDT)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Hoad39omJnatpjgiztoN01A08gT8UYIlksvJjwoC6QM=;
+	b=FBRNzKv8R5PkDdpljYPQec5T/4HiVznGqFh/RVMKergTS75erGxkUFRIo+/Dv3S+PEZBwz
+	qWOvrolEG7Cncv8FjyoleH3Af3+LgW03/SUFxDRgdZ6E0QDAxl+oLb7sPMURc4tMxMXl4C
+	iRluUr/nHoxu+2jCGIt0HijYB7n2dwQ=
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3965ba1ba3eso86257a91.2
+        for <linux-mm@kvack.org>; Thu, 17 Sep 2026 13:45:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789677907; x=1790282707; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:mime-version:date:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=jMNh0+jAAa1Kr4+QO+vi3xyA58GWdIBX9d8ih4uK1uA=;
-        b=j9vZPGkKEt6z/bWxKj+4SZ2AiU+PKZO7JHk9RbHzeaUoWdUltNy2bfp6kyTPqH2L3s
-         64yZvaLYLdqrSIIsQli14atsTNEKdzTIHw2IjivYhbmz93hi7c/zZSgz3LGtIpF4SVVp
-         mjou24yIWxeRuc1nbiAGrbfbBSI4WIpSOeMaVK5dHJF4or/shUcW/3SayLpA3tT/wI/M
-         OHC7YBu/ESiJa97KnGm1+NRtxWnVqAwalzNJPibpG/iXO83mlGNYiLfVQmNx703/mRS0
-         bxW392aEZ2gYpgYabB26kDbmf7V0Nv1fdfYXshb8GYpBYBj375kmdTD7WVERwfRNEZQk
-         42wA==
+        d=google.com; s=20251104; t=1789677910; x=1790282710; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Hoad39omJnatpjgiztoN01A08gT8UYIlksvJjwoC6QM=;
+        b=kPnl2odP5dTzQAqJfn+Tr2IIddelVgftf2zf1HcHczSQ4O0cyWbVJZ8FVA7fmsXwdO
+         oLjSNEV0R9aM+4YnQs9f1J0zyfAc1UqCW36pxkPTdFRbSX2fDMabCdhOY+awerOkRZHC
+         UsZpg6cuCIbcNh2ruPtoslylDekA6kXwIwD9NjaxQF3U4MXwwa1rqxwINfkLEfxcdb4S
+         F6Wg6+6hs8o1nYzyXvIZwAY8vmCz3dz7Us4mb5FkxzVpHi49IMOmiO/SuWs0O5rfdyrU
+         tu5Jch4mjCCGkQg2kA/22F7tBYghscQflJS/KalWXvtLiNLJRTe8X+hY1crdFJZwNcvH
+         9gog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789677907; x=1790282707;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:mime-version:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=jMNh0+jAAa1Kr4+QO+vi3xyA58GWdIBX9d8ih4uK1uA=;
-        b=WXNao+f9gRR09jPQXe+AbFhhPn/QA39CrYpnzC3wUafws53wPps/CAN1JCSb6KNLrv
-         GxaKEmveinWUij/H/fdxrmgSlmPZXZ7STfiSDfTXqcd6rBwq8NrwY4yRrCK+3iUEH5/x
-         J2QIhgsZDp95YNMZdkxlzk8nkvEZgogBzev8npCXr3qs2dVD18IQOyKK3brnVBxwaQyE
-         QVqlIbp7ViBOGYrbnX+aJSP5my8Yd0FkMljHlz6YBFepVeVqLfBhDXxDK5/doShZe0Ce
-         EpNlBvvlz3LXrlMd9DoL3MF+G8SA3BLGY3O16MI5eKpzK/xTRexz6LBMdhaW71hbuHb+
-         0pLw==
-X-Forwarded-Encrypted: i=1; AKwUvBwj1iOUzvHCb6s0cXDIhbgeXCW1muYxgiPKh+gkGu0UGgyIpnH2yTB1iCeLS+CFVFbJH9WZafhr1A==@kvack.org
-X-Gm-Message-State: AFuF++mfQv/0FVzsfIEUx00+Yi1dDBAMnKkDmbtO+PAR0AOoDg1A7CP4
-	rRCsroJWxUJNEetFTUmNdEO6nVrtYGxgY0zDfm3ZqYQ7SKKdv/mqMGnInBXreG9dQ/BgPlw2QWB
-	csCPt2g==
-X-Received: from pje10.prod.google.com ([2002:a17:90b:550a:b0:39b:a3c6:1ea1])
- (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:280a:b0:39e:2530:2102
- with SMTP id 98e67ed59e1d1-39e54f4221amr1221121a91.11.1789677907330; Thu, 17
- Sep 2026 13:45:07 -0700 (PDT)
-Date: Thu, 17 Sep 2026 20:43:46 +0000
+        d=1e100.net; s=20260707; t=1789677910; x=1790282710;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Hoad39omJnatpjgiztoN01A08gT8UYIlksvJjwoC6QM=;
+        b=YxnDul5IGAeJYLLt6BEFrxnUg5/XTL5sjqO3wTEjDYc30qYFbFSdSiBnoMX1FOKShI
+         yycawvq160Zl1FtTyTtu0UTI1AkyDjrXXSmO0c1153gjM4iUOXQwhozwWOPxHhyXXEQm
+         M5bII0IKcM00C/UffJRcJ1pWmD2in0oVpRBkZEUDYGxo8K0QZwdGr3dJ4yRyBpzr4XB2
+         by+FVV1xEA2x6ZPGZScuUt7SxurA8aqq598GnOX/hNmI7yrOzloaeBDBMZkmE112jJR7
+         vpC7RGpVD7dXaj/QXEHiye0LFr1h/EdQXs+YMaZAtoBWXu108mYipg1/OJxt0WXS4zSR
+         TXjg==
+X-Forwarded-Encrypted: i=1; AKwUvBxgD8x/zA9P+gBr9qfvD7l9Y9vhtP83cxO0Ay/gm5JaqRhJ9b2BFvIlai6jZTMbP1Rwt10Ga3z3wA==@kvack.org
+X-Gm-Message-State: AFuF++kOFia3UQIWyeY/KyiaigLH6AQHaIYt35HexPisd2+rHrT5qPAn
+	3EHK1iA+FmuvO4rJaQ7z8uowwiCuGwa3CN+YOY5eRBeImpfK1lu1KSSi0WJ0a1zo23yxE2lH55D
+	WB9keYQ==
+X-Received: from pjbei24.prod.google.com ([2002:a17:90a:e558:b0:39e:ac:d0a2])
+ (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:224c:b0:39d:f317:44cd
+ with SMTP id 98e67ed59e1d1-39e54eab3dbmr1101051a91.14.1789677909569; Thu, 17
+ Sep 2026 13:45:09 -0700 (PDT)
+Date: Thu, 17 Sep 2026 20:43:48 +0000
+In-Reply-To: <20260917-memory-failure-mf-delayed-fix-v6-0-4b00856b5364@google.com>
 Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAAJRrGoC/4XNQQ6CMBCF4auQrh3TFErBlfcwLqZ0Ck2AmlaJh
- HB3Cy6MK5b/S+abhUUKjiK7ZAsLNLno/JiiPGWs6XBsCZxJzQQXJZdCwUCDDzNYdP0rEAwWDPU
- 4kwHr3qCMxMoWWGGlWTIegdK8+7d76s7FZzrf303Ftn7lkosDeSqAA0rdKKMl1lpcW+/bns6NH 9hGT/LHVSI/4mTiTK1QKp5TIfGPW9f1Ax+ywPUaAQAA
-X-Change-Id: 20260527-memory-failure-mf-delayed-fix-7d5a8f4a8a8b
+References: <20260917-memory-failure-mf-delayed-fix-v6-0-4b00856b5364@google.com>
 X-Developer-Key: i=wyihan@google.com; a=ed25519; pk=cRi0fKzS5BMxlHyHY2pJv3w/1zcgfYKr6EYGYppdMYc=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1789677906; l=1740;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1789677906; l=2010;
  i=wyihan@google.com; s=20260319; h=from:subject:message-id;
- bh=Am2jKIW9EJEt0JmvNafH4y2xjpYHkskddR3CBeqh7Zw=; b=/wh3h4RwP/TLeQrHX1ATtrr76sHTMiPuM2R+SJAOB0ZNs9zkKo19zhJPXOol9dk/vZK8KxzTh
- kMzeBBM0ciYCOfVQNYSBsGFmVAddo2DxqCG+W/jupYzZWJ8KL9ooBKj
+ bh=AkbxLkF/+nAmGEf9KgEr5gQ3H9mZvwt0D27L0+zaegU=; b=l43vikXXPWbiYd0vKIvQqVDarn1Ty3l6Vrm71axmlmmBFUC/OJBsLcDslWeQrnqbkktxP00pO
+ rxclAE9wwFRBWLRaf58fDlGZj9/LGabzo7cne5Pv9ImCfAttWfE42ZJ
 X-Mailer: b4 0.14.3
-Message-ID: <20260917-memory-failure-mf-delayed-fix-v6-0-4b00856b5364@google.com>
-Subject: [PATCH v6 0/5] mm: Fix MF_DELAYED handling on memory failure
+Message-ID: <20260917-memory-failure-mf-delayed-fix-v6-2-4b00856b5364@google.com>
+Subject: [PATCH v6 2/5] mm: memory_failure: Allow truncate_error_folio to
+ return MF_DELAYED
 From: Lisa Wang <wyihan@google.com>
 To: Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
 	Andrew Morton <akpm@linux-foundation.org>, Paolo Bonzini <pbonzini@redhat.com>, 
@@ -113,15 +112,14 @@ Cc: rientjes@google.com, seanjc@google.com, ackerleytng@google.com,
 	tabba@google.com, dave.hansen@linux.intel.com, Lisa Wang <wyihan@google.com>, 
 	Isaku Yamahata <isaku.yamahata@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: gqdzxzm8egs3rmieabqzp916cwx9jy3h
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AFAA3140010
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789677908-907566
-X-HE-Meta: U2FsdGVkX1+bBiXM0bSy09LjPVU67u0qVLE41Khp1/0SA4RO4gSl+gImw/c97UGmwz3pwjG25N76UwGU1a9UurAeguHrLQBaC0R8FwvWMABiUgTNKHyxTJw1RpAnZLxXeoC+pePwFkU8+cpzId+r5sSoPZC3CIiHX8F+DL14bCnYSLvMKS7kOwTyxBYu2qPb6wQLT7grukqM5HfquvpS7GM8xk7mnpN9ozhAFnIGtWoRHwEL1NNwltpVlhVCofzh8mRynHng0gIGwmrCuIztWkF4jIq+rWFQGE9ZiblLDtpBfwm38u1xa3w+v3o0n+Mln7Ch+t1RpOMwvAlqAVQbZb2GiCZ+f2p0j9yHQ8+57+hWXsObAoPSeCLKo/n6PR8ldvOQwC64T3KA0HM9GnDQZVx/IBbbTEyxjsB63qpriaNinkYqgOsbzUE18hcONUtKzA2niaie2WR+Y+IYFRHmvnqvO0JpNOWGvYP0LaMPUToA1raYxvKE0DXZk8sKHPDT8Gu32lrkYC5ScCrcjJxFbJxXNiwYJDogbO69hJvTybLZn4qx6PtYMJEmVVYuHKEznlVmE/aV8kPDaD/bPAyXehMKLK8xPqjEVfD54TH3wJOaFjQHeYwnqaEZRs7C9q5j5W9JVU6+OzWUBAlyA3EefNT2YRJEzTlOavKSwSNlFwqip2Zyv63M8VO/6MYx+9pPQGf52E0KL6mxEvp7W2XqkIpDfB0Bzoz2gg84ipZKylyxs8OrqUYMz+XdFWaDrB4CMddiInCc9Y5D+ZM5xVX5wHkHi5WpQPGOakkMTF04u5pfX0si4Z1Ze+kTtRJEgIgsRODepEUYVyxUp0LQewWD+TkS9UQkSV4iD0QVrkW/yl8asdvcTYkh5hsGTa28YNA6RiaSJFYy6VCa/7srz1s+KdLBix8CWRTjivQNdUmL8NIvyRJpOVqHJmzS53bf5yjv1uUOWZOhZP1Yl0YuIhI
- e5IVU0rc
- S+/qcRi6agpk3sFYcK3Om/qWeJ5h80o6Mp2hk070u7N74iqOx+UkG3Wf5RvgddVfX14OqlzyvvZtBQW8m5KbeFe9q77NY0BwVLaH24DjQhFJFMktYHaExj6XHcfwzQPehtxnVKMUUqMVOMt4l2gwh2Yub8ULwxr5uRdSR0mOgLKGHuUb8e9sc9qdHQqfZHFfywMVMRi2OyqOMJjarVJTVO8Jy7KAGmaTtfFZDoPjs55kQtLgx3jKdW4lVu/peTcpfZXuPlXK7P0IqDgkxCs2oaW7lT00WJ42cf9EHe58GjTz98QWJ/FqdYEjJ77m/D6hI6goJH4uCboANqdmIZd+f8U5nLKtPZFPuYLcyJqsN+wJmd+LtehJeIlzOZrsgz+0oH15dtaVJoXoMmUdM1vypdK4ABcx1WQeSTxrsCvl8mit8auNwO4Ejgyz99DIlUj/ZfyC4p/2z56S6T5uxjHcPlaBcW39J7byIvm1hT14GB+WfjhKiKr13zoxMA+QRDyeEJm/0m36uiTA02aTv1aKs2qghIC8htJ8zdys5j3FyYiunSEgpqXLARUlLr8u/ir48WuU2jY8+aOPoDbdQF+sjEQhUfjG4qPWYq3pmtPT8rBO7qj8kG88nwFpSJPennJczzQxAp2PM06TFF5zYcM1tMfTQsJ/Xv/RyTKeLFWUeBw9IV9JNhuCOrd0ogg==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: DFD1B140007
+X-Stat-Signature: 5nnc99q9ppawt9w7hbi5u35eta3ccpy5
+X-HE-Tag: 1789677910-20787
+X-HE-Meta: U2FsdGVkX19XZA/f9UENDFujyau4pUzafk2x4xDiWk617ZpNbrABgyo8luz5UJJ9VQ81UgJMbQVCobOuaQTGJjsuh7lTkis8hq+roT+tPd4VDofFbt0pl3aukcqK3Vq8gw6omS+aQpboLNo3/2OnQRoI5WEmTpz08IkwmiRYB3VyLY9QsIpcgTqMq4CKmo9tcg/c3yqHIcSjuOwLgYau9z1yRdjYKAcoY/hcyvKjlvCFZDCPUe8hHIPhawvAKnNrsaWwsTH/RbzqBIbkukXpTR87Eh5/v1ThHTw5nAB+8QwQyBkMuxxeyRnVrCP3kilq5FZbgXFP9xuASoWgRjZeuWEmPzvRrV1HYGnRw6gjb+VumvkT9m09C/kgbsBWYBKcj3y0F22So/jUjtBTRcWKtVL65WqsYDrbvr4VqKgTr893PEVbKyBi5Wb4gz+5sETPKOYI0dSYND8u3UlDVjk8UdtopEwcylGDa3Z1pjEB89ebsbB1Wc+u1+y+PuroVCMV6z31bYto6O8Y3PnCvgN5WeBg9kCDG01luWdtJ+J/N3ffDvrHGgRGhhm4+pQ6zZMJipgVMz4QOHzcvYrYdUF9TQejC+dj3shjRkjysBP9RYXIBjDvwFDFlTDm09MgDtXCpn83OZ6Eqgfh27SZnTstCHfUAAVYLihPCZAzF3zrFjRAKFkq3oXENoUhsTtg/ImaRMpFBsnlUtXoQQmQiZ3L1Vx7z1/yWPYVTsocRpvzezBlzKRgd7ysu0Bn3ZngvzBJiRItO4DOC+rWbr7/bsfOjW6GT3tJRyaxVXcAPcDkajDFUk0YyShD3elZQmFBBrL3Tc910X/uIpKI3fjAPSljbqBK9tTkQJZDvxP+KFl5fMvOpPxlSihR1ivG87352oZyEvKdwn4+I28bqdqxg8GaXcNiIF3oRuaQMQJMLcwglHm5u6cSiDnv0pUs7zvU4kSXCNSO9x4Q8lvwMOpW4b1
+ jHR5isV/
+ oBPumcZ3qOV+yKA2Hjkd1Z6oK6hzYGc6QnUnUpYYJuwqWQQ6ienY4uv/iKNXEeJxJJOiIfvVUWlLvS7r5nHUcAPCgvvhnJj8emghGGQMy72ydWBD4x5ubpM5U1p+Ic2NtM5OXtAxicYIGW1E009sYupxNqolld0+l3Jjx1j+tdncD3QjmVnoQZfVz3yqAcBmzaRbkaEWXlb5LaZEr+5PmzvIi3esyY8NzCXZ6D44NR1S4tUHiwrbXU0OaL4CVYdIwuH1f02KzsUC2LvP7eNDpwtQW89z+JlltTgX8Mbctv4uMfNJjEuaxGGcOKSQU6I+R4B0t4zLSnlKCJoeUijEtoTSZLelm/nPVgqKZWc8JCKnckTLAtnxVSICbPoQkh0yFXQXmF5mZ/oX16j08xKr+2ziK6hF8OC1hHmEzz5smqzfVF31+LyFaTw3zF18AD/E0h7aMwgliH9tzJ7Ay/k5weltejKGMwM7H2f55DHYPOak/LdIjFpJFFlMoe1XkEyeb2C48X4EMXiJp06D+hqd46Tkf0Mv9k8NzpF8GkQmiykkfzXPIsTPuq9c9uZ4De1C7oYDvjJb9cG+XIto/I6iaGCLlAvYCdXGgAZE36WQeWTJgY5/AgimpxeVdI4/r4AEoFZV+cn3kp1h9Md3U9rMFIlNSB1bEOAUz9yVM99z3HHqmK1KVQWQ+RfWsCop+j5qTsLcknvAwPBd5NelRwmcKsGtgiw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,48 +127,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Here's a sixth revision to fix MF_DELAYED handling on memory failure.
+The .error_remove_folio a_ops is used by different filesystems to handle
+folio truncation upon discovery of a memory failure in the memory
+associated with the given folio.
 
-This patch series addresses an issue in the memory failure handling path
-where MF_DELAYED is incorrectly treated as an error. This issue was
-discovered while testing memory failure handling for guest_memfd.
+Currently, MF_DELAYED is treated as an error, causing "Failed to punch
+page" to be written to the console. MF_DELAYED is then relayed to the
+caller of truncate_error_folio() as MF_FAILED. This further causes
+memory_failure() to return -EBUSY, which then always causes a SIGBUS.
 
-The proposed solution involves -
-1. Clarifying the definition of MF_DELAYED to mean that memory failure
-   handling is only partially completed, and that the metadata for the
-   memory that failed (as in struct page/folio) is still referenced.
-2. Updating shmem=E2=80=99s handling to align with the clarified definition=
-.
-3. Updating how the result of .error_remove_folio() is interpreted.
+This is also implies that regardless of whether the thread's memory
+corruption kill policy is PR_MCE_KILL_EARLY or PR_MCE_KILL_LATE, a
+memory failure with MF_DELAYED will always cause a SIGBUS.
 
-Changes from v5:
-Add comment-style fallthrough in the memory-failure test, as suggested
-by Ackerley and David
+Update truncate_error_folio() to return MF_DELAYED to the caller if the
+.error_remove_folio() callback reports MF_DELAYED.
 
-+ RFC v5: https://lore.kernel.org/all/20260823-memory-failure-mf-delayed-fi=
-x-v5-0-d97a5703e45a@google.com/
-
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Acked-by: Miaohe Lin <linmiaohe@huawei.com>
+Reviewed-by: Ackerley Tng <ackerleytng@google.com>
+Fixes: 6a46079cf57a ("HWPOISON: The high level memory error handler in the VM v7")
+Fixes: a7800aa80ea4 ("KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for guest-specific backing memory")
 Signed-off-by: Lisa Wang <wyihan@google.com>
 ---
-Lisa Wang (5):
-      mm: memory_failure: Clarify the MF_DELAYED definition
-      mm: memory_failure: Allow truncate_error_folio to return MF_DELAYED
-      mm: shmem: Update shmem handler to the MF_DELAYED definition
-      mm: memory_failure: Generalize extra_pins handling to all MF_DELAYED =
-cases
-      mm: selftests: Add shmem into memory failure test
+ mm/memory-failure.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
- mm/memory-failure.c                         |  29 ++++---
- mm/shmem.c                                  |   2 +-
- tools/testing/selftests/mm/memory-failure.c | 114 ++++++++++++++++++++++++=
-+++-
- 3 files changed, 126 insertions(+), 19 deletions(-)
----
-base-commit: 08745c62350126bc31b09548137be87e2866f628
-change-id: 20260527-memory-failure-mf-delayed-fix-7d5a8f4a8a8b
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index e698d0e9711d..37ea23489b75 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -939,10 +939,12 @@ static int truncate_error_folio(struct folio *folio, unsigned long pfn,
+ 	if (mapping->a_ops->error_remove_folio) {
+ 		int err = mapping->a_ops->error_remove_folio(mapping, folio);
+ 
+-		if (err != 0)
++		if (err == MF_DELAYED)
++			ret = err;
++		else if (err != 0)
+ 			pr_info("%#lx: Failed to punch page: %d\n", pfn, err);
+ 		else if (!filemap_release_folio(folio, GFP_NOIO))
+-			pr_info("%#lx: failed to release buffers\n", pfn);
++			pr_info("%#lx: Failed to release buffers\n", pfn);
+ 		else
+ 			ret = MF_RECOVERED;
+ 	} else {
 
-Best regards,
---=20
-Lisa Wang <wyihan@google.com>
+-- 
+2.55.0.1082.g2b9226bbc0-goog
 
 
