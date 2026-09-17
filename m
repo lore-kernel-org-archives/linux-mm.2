@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86117C88E72
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 15:30:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08382C982D6
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 15:30:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A23F06B0099; Thu, 17 Sep 2026 11:30:47 -0400 (EDT)
+	id 8EA2D6B009B; Thu, 17 Sep 2026 11:30:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F9D66B009B; Thu, 17 Sep 2026 11:30:47 -0400 (EDT)
+	id 87A286B009D; Thu, 17 Sep 2026 11:30:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E95E6B009D; Thu, 17 Sep 2026 11:30:47 -0400 (EDT)
+	id 7144B6B009E; Thu, 17 Sep 2026 11:30:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 618B86B0099
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 11:30:47 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A5B46403CB
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3B5EA6B009B
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 11:30:49 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C2B8B1403C5
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 15:30:48 +0000 (UTC)
+X-FDA: 85223641776.18.35B33E2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id D873820010
 	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 15:30:46 +0000 (UTC)
-X-FDA: 85223641692.10.2FA71B3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 92A9A180018
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 15:30:44 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="gfk0nTg/";
-	spf=pass (imf16.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=iQDA90xp;
+	spf=pass (imf13.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789659047;
+	b=nglH4t3XnYHLiKEF97QETy0YotR+35g5RJoR6V0v68fRzjePHvMVd9EvuxOeILwW+kZuBe
+	vCe1I+feGtF1zEHYgNQ6sTqujeI21UYpLVco5nthnL9ITcqVVRi37/brbMiv1gZxHjkUoh
+	Osb9mfpoWPRZZP+50C2zIeWcK7Vlrfg=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=iQDA90xp;
+	spf=pass (imf13.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
 	dmarc=pass (policy=none) header.from=linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789659044;
+	s=arc-20220608; t=1789659047;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eKEyMdEoeiIPIwtGyct2nf92DfrT25kTIa23Y2eS+wo=;
-	b=U0u6KPQYStk/91xa5wzqlodUH2876PfrMy7tdUl3mrPKqO2uxv3zTfsqq24bFwUbFPLnGp
-	dEwptoESFeJXqCbLG+PiVni2gQROWjPqBTQVPVyZlsSPo2fJP/DkEaYCm0i/knfRcGUmkc
-	8Ir+PepYAucptQJBx5Sp85r+1MufuDg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789659044;
-	b=vIkqHgkUePHtSUNtQ9H63psmL/GCZTgOJxEGuBHqX9Ti4rTw8pg+9TDoL/eHN4rKKRrUSh
-	2qoQMTY3fnmupDDEBib3mv6Ea2ees3Rp7UVgFJjdXR0xSG3mwLb2Nonuq0dI+eKtvMuQJS
-	IqYY1GcYh9VhcNpQUEK2jkYLEv32OIc=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="gfk0nTg/";
-	spf=pass (imf16.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
+	bh=0fLK7XjatI06hcjpyIEYmuQxh2KfI18xNUyIIl0+iuQ=;
+	b=wtmzzX+tJ2ajasx1IzFyYTYVSf17cLSPSPt0oh9/fHC3sSY0oY7y+6gBOwUKklTS//hsMi
+	OatwZTcj1tvGlWHG5zBgUic13kBqqKB0IObb2/LbPO4mW1J1d1CLtv46To5RdJb8Jcc/hR
+	TSh8F1APRZ1+44bENdQnV8kZxmIcNRY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 437894097F;
-	Thu, 17 Sep 2026 15:30:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C6A21F00898;
-	Thu, 17 Sep 2026 15:30:42 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6361260214;
+	Thu, 17 Sep 2026 15:30:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 945901F000FF;
+	Thu, 17 Sep 2026 15:30:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1789659043;
-	bh=eKEyMdEoeiIPIwtGyct2nf92DfrT25kTIa23Y2eS+wo=;
+	s=korg; t=1789659046;
+	bh=0fLK7XjatI06hcjpyIEYmuQxh2KfI18xNUyIIl0+iuQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gfk0nTg/7mbcvnfR3Ek+wtTAKryGWxHMa3i8H0fu0AfHWzzNjsOeEK32kYm2LZHrm
-	 8WG7hU45cr94XfHu2QiRysikleuvBvDct8hbsRqjX+pjtgT5k7Q87QJCt4n2CohDh0
-	 HQnfsrdKxHLLnFS4YVgIJv3yW/47vPbo4VPc0vdU=
+	b=iQDA90xphzTA0s0KCUFq76VSjKbgEwi1oyXMSxJpR+L0gzll4HRvCmL8I9BjI09+L
+	 jCvs9VjXgm+xAy1OJfPSVFkdJlisk8Wdtz7JidGRQmHdT+vFIDHF7OAUkjjZqDuUpt
+	 YSdU1Plqez0Ma5D1lmxeEPRBHqhJ1Mv29xlOAmck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -72,9 +72,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	linux-fsdevel@vger.kernel.org,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.2 085/733] netfs: Fix readahead synchronisation issues by loading all folios upfront
-Date: Thu, 17 Sep 2026 16:06:33 +0100
-Message-ID: <20260917151353.018900325@linuxfoundation.org>
+Subject: [PATCH 7.2 086/733] netfs: Mark folios with COPY_TO_CACHE whilst issuing subreqs
+Date: Thu, 17 Sep 2026 16:06:34 +0100
+Message-ID: <20260917151353.047219849@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260917151350.597953846@linuxfoundation.org>
 References: <20260917151350.597953846@linuxfoundation.org>
@@ -83,14 +83,14 @@ X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 65a8sij941wt1ouwg8bi586psf8natbz
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: D873820010
+X-Stat-Signature: tz4g15wtt7wfqengsc4z4dtahtja3rhy
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 92A9A180018
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789659044-872505
-X-HE-Meta: U2FsdGVkX19chyS3JOo4XlW+QzU5GYsg+AJ/mrm03HQv1JpRcyfxTEoD4rCg13FmxprarP4sPT+1u6+hRJ6+L9/4Qexs3dn9AwiWhSaXR11ix1wkBMyQlkNAVj4A3UBaZ5IQ8hQMJ2e26Zijhwo/461yl/hYLQvqjSEFSuENqPYn9mjdpCG0MVQaocl3nACDwQ9lLWGs6p9s+GXFVmt89ZQeHwZnFEUIB0L+jNhxxG9Dz5fQRKOU2M1WD52Pv/68511R5zV/pyJFyPLFzaicUCWc94n+Bj6RVbx/d9JJUOoujIFZAoZihr6RTDsh387EjwzRT7kcPw8dWg8iy2+NAugQTA/TkXTnNH6JOFlrIlnDx/PicB0vg32JzApjV+fSlTndILWVYxpXsMHz/HV/UxXrgWoVCBPNgVKk/rpbR+r65XxPgbmcIcp4ah9upr0tB6RLRxL9AnAm5XydWCdIqWwsIf2AwurEwxB80rvGrWpjy/9t7JC+VAzauLYWpsy9Pm6kw+OkQ7FFDljxN55t5WXXaWmyw71rMMC8dSyi8I9fFxxp0RawlKGfTCbvP9edB+IU0G3UMZRlXvLL2+zWMwceU/DCOu+82Epd6vB9OldIVR1BQzaxqkaSlSqeMn3DIFb2bu1gGo7LgEgtwatR4QbvDjCQIcebZA26A7Wf+axIf800NpyC0B1tNDJku3qqAx8zT7G5JumTSCAXniTjigR8/LDkbfnsf9+9aKbusqFnNw3ESCBmODCE1Z7Xb9lXPDFo2c6ZozA0JfYtAgwkzz1bsd6egfmf98vN1lIhr3NSUbQ3Y8paP3EIhq4rj/VnGZezn1wWrysJJ7MtynRHlP//jZQmCQ4EmoQCwPOh3R3PY+avagIDd+JMALuN8UzH9xc5c78hkdw7qitBD2uPB4JsL54fTZB0z5tNMRZleGpIU3yYrndaM1CUC3eIjanCA52e7IX0TThAVLjAZ55
- 8D5YAahU
- NNd6Gwg4uIvto1Fwe3s+a/KFeO/18ObTp+lAsR6AgBnsokqm/XSpqmBEtdSEybG141uaNTm0RusYDQcix1LUtzN/R/3QdGnGJjx1qyUKqQ3lliwIraHIN6fLhxLGmplL7pUzo3SRAbUGJbJ4R5ykTjk815yUi1IjF3WrsIkbBNNZS7yZL9L3GCkbdBmgWN88kW3Of4Mb8weeSs10dYCK8UEODfXVh6AiawXibC5gcU/4ZhrX/2FS7HQg0z48nCeg73XQdCjcr/7M03rjUJSq5ifTV2mi3DLJ/7ge/q3SrWjVwWnQbj5IyznB3Z/+tSMD4l4gIhcuDgMlFFtzm6ULyEZHHtSkxYVW6lwKzjtPRNP5Vu+8gI3dV0JIyWsZF5CB+dYfvihyKunA22B9ccRgldkPu8ihqV310gxvLq2eXdKDquWNBa5DH4mq2DQVz/dm6ibigDwJu27A78Jbvo1yJfrI7HxKZvLSbVW2VJMsYuz+mXhs4bLbTKN+HFDQajBwllXh+v2rk8MbSE9NsWFBkgirR013JTzIk/Z0egoLvo4raOicopesWQzRzZUmByS46DAt6GU9RfMgDIgDsGmTS7JQ49DVrp5RbsNNx
+X-HE-Tag: 1789659046-670730
+X-HE-Meta: U2FsdGVkX18nEqKo8rzaz1TxvS8PgNNeUyrpHncwadVclRgeYiNbeUkUMIA7UEdq/yjrqZ/KAhuDx5fAb7+SU7qUddQgNIA2CV5uL3cg2vysi7c5ZLoKa8F87hAHlKzVowAIxJPbTPfaK9H428x7GOVmAWFtnYj6r2zPffdeKrNY2U5UyQQRMzfWHZomtxQoIQfcSZsDliqPA82SV77REuTaJpUsxH+mWpOxBfdt8YtD32BuP2XYsaV/gspduEkzSMJSo7rFYzAkRI53lya5YIF10capbNo9OEHgj4Fw2fD90C/bw+KJhP0zURsAMLP893SpbPvSFs+GaeQD21PPDoJG7HEfs7lHFnIwLT0Ii1Vt5CIUJ6qH+5ks+RNlyCXS8kj2DYbly36Smth4Rw5bCERqmpCZvoR7t0KnWV/OR2rslceUT1PRyWoC+F6zaU1C6TC2z1L37Qjb6JI++Lb5wUrZ73THF48Y9SwRtgsZ/ljqJEF12PIsDfCw7IcpzDZg5O9zAtB1Cvoc1t858weYiCj/qS3qev/EPjj6yK+JdNj1y/rJZqOOIPwiY1bbMTcU2rHPebyPa447tceaMrOAmWbWN6VXWNt/7bAgQfuvnLS6b9mCmdJR7x+AExzLQt3qU1a8SSGvxeLEW8V1zGhbADDoZxVCja9gA8Fphi4905RslfSVJvPnn1Enj1CfQAve6kOQ9lN3JgtiAFvlJdlVpm+ehfOyCXzsMJIMfBknfPZM197WWQsFQdqmSVSN9guM4Ek6WkkgAYkyuPL6CLLSDbhO9omwF0EXOkfxqvujrJw+D3UCQABCQl5Bi3Oc1oAZZfFURKz9OgrF9IvGk29RegGQ32L68mJBQtWv8OtDiBNaOAGM+8QicDgXwXxL4yBfaPU+qfOx+z91uT3HwBxtZeBSSfSKPNZHfTDnxM54DA2Wa1Er6sgTjw04MX2mTtPDTCqLBjGHdb70+GKM5u9
+ tcatFoOk
+ GMSc6vffv1UjnAx5bSJdYxymyStlJqqVQ+c93iOkhlKMgb8x1hrQcJyjs1leyFXuWXx0L17LKKFojczRQg5KQEFcYRoLloAW5f2CyCsLVWRoPbEmIejC4qzGTnSuji5BbrZxXZ14KZGM6l58Y3JjQOZEB36dUPpKfw05gEuyj0ASRY5/PaLQdzhVXs8skY0ffnnikKYn6G/W2qmpV2riKrXn11vezUAzLgwjxnRLkUTt/fxgJz4DLiVA3sZ3wP5gVyPEWefPnPZm+xla7xjZ71AbsmvId0ob13I7VopcOay8SoDU8Apt/fCQgCh6IqFCXLGbZmjnZ76YRtO4xS8SQRmRIybz/BmZWw7IZUkv9ZPN8zdhNsJ/d3DTyrcUSNeW+tWPIvT4rO3z6PFvXs3yTquF3byCVc1S/peAVy0mlgEqnOBtEIBfsyxot5/cR5pk5q9FuJtKyQLBBgAvLOEskb7G4mvqX9D4cAKqKRZogvoFb7MFQ7EDZOV684JuRRuQz3FitLFDU839brKtzzwypwlAVy2xWaIjEyNuE/CAdeRp6fiPWMcIJO9R9DL5b6Aak4Av+X5CbnEXsuaF+lExmLUeGSw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,41 +104,24 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit fed0b33e6c584986ba70018ec9f9787a98216e64 ]
+[ Upstream commit 533203c4183123dad8ffecd694e7573a0ccd0da0 ]
 
-There are some synchronisation issues that derive from the app thread
-adding more folios to the rolling buffer whilst the collector thread is
-looking at them or trying to clear them, such as determining the setting of
-front_folio_order when the next folio hasn't been added yet,
+Mark folios with NETFS_FOLIO_COPY_TO_CACHE whilst issuing subreqs rather than
+when collecting them.  This means that the collector thread doesn't have to
+try and keep track of which subreqs contribute to which folios - and thus
+which folios will need to be copied to the cache because at least one byte
+wasn't in the cache.  Instead, this is marked on the folios up front and the
+collector need only consider the folios.
 
-The reason for the rolling buffer approach is that loading the buffer
-upfront and then dropping all the refs just acquired is quite a slow
-operation, and loading progressively allows some of the cost to be deferred
-until after at least some of the I/O is started.
+For PG_private_2-using filesystems, PG_private_2 is set instead of
+NETFS_FOLIO_COPY_TO_CACHE, but otherwise it works the same.
 
-Instead, a better way is to load all the folios into the rolling buffer
-upfront - and then drop the refs later, once the I/O is in progress.  (Even
-better would be for the refs not to be there at all.)
+The NETFS_RREQ_COPY_TO_CACHE is replaced with NETFS_RREQ_CANCEL_CACHING, which
+is now set if caching fails somewhere, thereby causing the collection thread
+to cancel the copy-to-cache marks on the remaining folios.
 
-Fix this by changing the rolling buffer loader to load all the folios
-selected by the VM for readahead upfront into the folio queue.  The folio
-queue is allocated a batch worth at a time as we don't know how many folios
-are involved (the readahead_control struct, alas, has a page count, not a
-folio count).
-
-The folio refs acquired from readahead are then dropped in bulk once the
-first subrequest is dispatched as it's quite a slow operation.  The
-collector waits for NETFS_RREQ_NEED_PUT_RA_REFS to be cleared so that it
-doesn't unlock folios before the xarray has been scanned for them.
-
-This simplifies the buffer handling later and isn't noticeably slower as
-the xarray doesn't need to be modified and the folios are all already
-pre-locked.
-
-Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
-Link: https://sashiko.dev/#/patchset/20260824120224.504575-1-dhowells%40redhat.com
 Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://patch.msgid.link/20260827134304.2075713-8-dhowells@redhat.com
+Link: https://patch.msgid.link/20260827134304.2075713-9-dhowells@redhat.com
 Acked-by: Paulo Alcantara <pc@manguebit.org>
 cc: Paulo Alcantara (Red Hat) <pc@manguebit.org>
 cc: Matthew Wilcox <willy@infradead.org>
@@ -146,438 +129,356 @@ cc: netfs@lists.linux.dev
 cc: linux-mm@kvack.org
 cc: linux-fsdevel@vger.kernel.org
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+Stable-dep-of: e00827a4d0cf ("netfs: Fix read progress reporting")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/netfs/buffered_read.c       | 101 ++++++++++++++++++++-------------
- fs/netfs/internal.h            |   1 +
- fs/netfs/misc.c                |  19 +++++++
- fs/netfs/read_collect.c        |   7 +++
- fs/netfs/read_retry.c          |   7 +++
- fs/netfs/rolling_buffer.c      |  81 ++++++++++++++++----------
- include/linux/netfs.h          |   1 +
- include/linux/rolling_buffer.h |   6 +-
- include/trace/events/netfs.h   |   3 +
- 9 files changed, 154 insertions(+), 72 deletions(-)
+ fs/netfs/buffered_read.c     | 61 +++++++++++++++++++++++++++++++-
+ fs/netfs/internal.h          |  1 +
+ fs/netfs/read_collect.c      | 67 ++++++++++++++++++++++--------------
+ fs/netfs/read_pgpriv2.c      | 15 ++++----
+ fs/netfs/read_retry.c        |  6 +++-
+ include/linux/netfs.h        |  2 +-
+ include/trace/events/netfs.h |  6 ++--
+ 7 files changed, 121 insertions(+), 37 deletions(-)
 
 diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
-index 7fdfa4f27e349..303fdce54fbaf 100644
+index 303fdce54fbaf..16d4db776f6ae 100644
 --- a/fs/netfs/buffered_read.c
 +++ b/fs/netfs/buffered_read.c
-@@ -54,6 +54,42 @@ static void netfs_rreq_expand(struct netfs_io_request *rreq,
+@@ -211,6 +211,56 @@ static void netfs_issue_read(struct netfs_io_request *rreq,
  	}
  }
  
 +/*
-+ * Drop the folio refs acquired from the readahead API.
++ * Mark folios that we want to copy to the cache.  For filesystems that use
++ * netfslib fully, we set folio->private to NETFS_FOLIO_COPY_TO_CACHE;
++ * otherwise we set the deprecated PG_private_2.
 + */
-+static void netfs_bulk_drop_ra_refs(struct netfs_io_request *rreq)
++static void netfs_mark_copy_to_cache(struct netfs_io_request *rreq,
++				     struct folio_queue **fq,
++				     unsigned int *offset,
++				     int *slot,
++				     size_t len,
++				     bool copy)
 +{
-+	struct folio_batch fbatch;
-+	struct folio *folio;
-+	pgoff_t nr_pages = DIV_ROUND_UP(rreq->len, PAGE_SIZE);
-+	pgoff_t first = rreq->start / PAGE_SIZE;
-+	XA_STATE(xas, &rreq->mapping->i_pages, first);
++	while (len > 0) {
++		struct folio *folio;
++		size_t fsize, overlap;
 +
-+	folio_batch_init(&fbatch);
-+
-+	rcu_read_lock();
-+
-+	xas_for_each(&xas, folio,  first + nr_pages - 1) {
-+		if (xas_retry(&xas, folio))
++		if (!*fq)
++			break;
++		if (*slot >= folioq_count(*fq)) {
++			*fq = (*fq)->next;
++			*slot = 0;
++			*offset = 0;
 +			continue;
++		}
 +
-+		if (!folio_batch_add(&fbatch, folio))
-+			folio_batch_release(&fbatch);
++		/* Determine how much the subreq overlaps the folio, if at all. */
++		fsize = folioq_folio_size(*fq, *slot);
++		overlap = min(len, fsize - *offset);
++
++		if (overlap > 0 && copy) {
++			folio = folioq_folio(*fq, *slot);
++			if (unlikely(test_bit(NETFS_RREQ_USE_PGPRIV2, &rreq->flags))) {
++				if (!folio_test_private_2(folio))
++					folio_start_private_2(folio);
++			} else {
++				if (!folio_get_private(folio))
++					folio_attach_private(folio, NETFS_FOLIO_COPY_TO_CACHE);
++			}
++			trace_netfs_folio(folio, netfs_folio_trace_mark_copy);
++		}
++
++		len -= overlap;
++		*offset += overlap;
++		if (*offset >= fsize) {
++			*slot += 1;
++			*offset = 0;
++		}
 +	}
-+
-+	rcu_read_unlock();
-+	folio_batch_release(&fbatch);
-+	trace_netfs_rreq(rreq, netfs_rreq_trace_ra_put_ref);
-+	clear_bit_unlock(NETFS_RREQ_NEED_PUT_RA_REFS, &rreq->flags);
-+	wake_up(&rreq->waitq);
-+}
-+
-+static void netfs_maybe_bulk_drop_ra_refs(struct netfs_io_request *rreq)
-+{
-+	if (test_bit(NETFS_RREQ_NEED_PUT_RA_REFS, &rreq->flags))
-+		netfs_bulk_drop_ra_refs(rreq);
 +}
 +
  /*
-  * Begin an operation, and fetch the stored zero point value from the cookie if
-  * available.
-@@ -74,12 +110,8 @@ static int netfs_begin_cache_read(struct netfs_io_request *rreq, struct netfs_in
-  *
-  * Returns the limited size if successful and -ENOMEM if insufficient memory
-  * available.
-- *
-- * [!] NOTE: This must be run in the same thread as ->issue_read() was called
-- * in as we access the readahead_control struct.
-  */
--static ssize_t netfs_prepare_read_iterator(struct netfs_io_subrequest *subreq,
--					   struct readahead_control *ractl)
-+static ssize_t netfs_prepare_read_iterator(struct netfs_io_subrequest *subreq)
- {
- 	struct netfs_io_request *rreq = subreq->rreq;
- 	size_t rsize = subreq->len;
-@@ -87,30 +119,6 @@ static ssize_t netfs_prepare_read_iterator(struct netfs_io_subrequest *subreq,
- 	if (subreq->source == NETFS_DOWNLOAD_FROM_SERVER)
- 		rsize = umin(rsize, rreq->io_streams[0].sreq_max_len);
- 
--	if (ractl) {
--		/* If we don't have sufficient folios in the rolling buffer,
--		 * extract a folioq's worth from the readahead region at a time
--		 * into the buffer.  Note that this acquires a ref on each page
--		 * that we will need to release later - but we don't want to do
--		 * that until after we've started the I/O.
--		 */
--		struct folio_batch put_batch;
--
--		folio_batch_init(&put_batch);
--		while (rreq->submitted < subreq->start + rsize) {
--			ssize_t added;
--
--			added = rolling_buffer_load_from_ra(&rreq->buffer, ractl,
--							    &put_batch);
--			if (added < 0) {
--				folio_batch_release(&put_batch);
--				return added;
--			}
--			rreq->submitted += added;
--		}
--		folio_batch_release(&put_batch);
--	}
--
- 	subreq->len = rsize;
- 	if (unlikely(rreq->io_streams[0].sreq_max_segs)) {
- 		size_t limit = netfs_limit_iter(&rreq->buffer.iter, 0, rsize,
-@@ -208,8 +216,7 @@ static void netfs_issue_read(struct netfs_io_request *rreq,
+  * Perform a read to the pagecache from a series of sources of different types,
   * slicing up the region to be read according to available cache blocks and
-  * network rsize.
+@@ -218,9 +268,11 @@ static void netfs_issue_read(struct netfs_io_request *rreq,
   */
--static void netfs_read_to_pagecache(struct netfs_io_request *rreq,
--				    struct readahead_control *ractl)
-+static void netfs_read_to_pagecache(struct netfs_io_request *rreq)
+ static void netfs_read_to_pagecache(struct netfs_io_request *rreq)
  {
++	struct folio_queue *fq = rreq->buffer.tail;
  	unsigned long long start = rreq->start;
++	unsigned int offset = 0;
  	ssize_t size = rreq->len;
-@@ -288,7 +295,7 @@ static void netfs_read_to_pagecache(struct netfs_io_request *rreq,
- 		break;
+-	int ret = 0;
++	int ret = 0, slot = 0;
  
- 	issue:
--		slice = netfs_prepare_read_iterator(subreq, ractl);
-+		slice = netfs_prepare_read_iterator(subreq);
- 		if (slice < 0) {
- 			ret = slice;
- 			netfs_cancel_read(subreq, ret);
-@@ -302,6 +309,7 @@ static void netfs_read_to_pagecache(struct netfs_io_request *rreq,
+ 	do {
+ 		struct netfs_io_subrequest *subreq;
+@@ -308,6 +360,13 @@ static void netfs_read_to_pagecache(struct netfs_io_request *rreq)
+ 			set_bit(NETFS_RREQ_ALL_QUEUED, &rreq->flags);
  		}
  
- 		netfs_issue_read(rreq, subreq);
-+		netfs_maybe_bulk_drop_ra_refs(rreq);
- 
- 		if (test_bit(NETFS_RREQ_PAUSE, &rreq->flags))
- 			netfs_wait_for_paused_read(rreq);
-@@ -339,7 +347,8 @@ void netfs_readahead(struct readahead_control *ractl)
- {
- 	struct netfs_io_request *rreq;
- 	struct netfs_inode *ictx = netfs_inode(ractl->mapping->host);
--	unsigned long long start = readahead_pos(ractl);
-+	ssize_t added;
-+	uoff_t start = readahead_pos(ractl);
- 	size_t size = readahead_length(ractl);
- 	int ret;
- 
-@@ -360,11 +369,23 @@ void netfs_readahead(struct readahead_control *ractl)
- 
- 	netfs_rreq_expand(rreq, ractl);
- 
--	rreq->submitted = rreq->start;
--	if (rolling_buffer_init(&rreq->buffer, rreq->debug_id, ITER_DEST, rreq->gfp) < 0)
-+	/* Load the folios to be read into a bvecq chain.  Note that this
-+	 * acquires a ref on each folio that we will need to release later -
-+	 * but we don't want to do that until after we've started the I/O.
-+	 */
-+	added = rolling_buffer_bulk_load_from_ra(&rreq->buffer, ractl,
-+						 rreq->debug_id, rreq->gfp);
-+	if (added < 0) {
-+		ret = added;
- 		goto cleanup_free;
--	netfs_read_to_pagecache(rreq, ractl);
-+	}
-+	__set_bit(NETFS_RREQ_NEED_PUT_RA_REFS, &rreq->flags);
++		if (fq) {
++			/* See if the cache indicated this should be cached. */
++			bool copy = test_bit(NETFS_SREQ_COPY_TO_CACHE, &subreq->flags);
 +
-+	rreq->submitted = rreq->start + added;
-+	rreq->cleaned_to = rreq->start;
++			netfs_mark_copy_to_cache(rreq, &fq, &slot, &offset, slice, copy);
++		}
++
+ 		netfs_issue_read(rreq, subreq);
+ 		netfs_maybe_bulk_drop_ra_refs(rreq);
  
-+	netfs_read_to_pagecache(rreq);
-+	netfs_maybe_bulk_drop_ra_refs(rreq);
- 	return netfs_put_request(rreq, netfs_rreq_trace_put_return);
- 
- cleanup_free:
-@@ -457,7 +478,7 @@ static int netfs_read_gaps(struct file *file, struct folio *folio)
- 	iov_iter_bvec(&rreq->buffer.iter, ITER_DEST, bvec, i, rreq->len);
- 	rreq->submitted = rreq->start + flen;
- 
--	netfs_read_to_pagecache(rreq, NULL);
-+	netfs_read_to_pagecache(rreq);
- 
- 	ret = netfs_wait_for_read(rreq);
- 	if (ret >= 0) {
-@@ -532,7 +553,7 @@ int netfs_read_folio(struct file *file, struct folio *folio)
- 	if (ret < 0)
- 		goto discard;
- 
--	netfs_read_to_pagecache(rreq, NULL);
-+	netfs_read_to_pagecache(rreq);
- 	ret = netfs_wait_for_read(rreq);
- 	netfs_put_request(rreq, netfs_rreq_trace_put_return);
- 	return ret < 0 ? ret : 0;
-@@ -689,7 +710,7 @@ int netfs_write_begin(struct netfs_inode *ctx,
- 	if (ret < 0)
- 		goto error_put;
- 
--	netfs_read_to_pagecache(rreq, NULL);
-+	netfs_read_to_pagecache(rreq);
- 	ret = netfs_wait_for_read(rreq);
- 	netfs_put_request(rreq, netfs_rreq_trace_put_return);
- 	if (ret < 0)
-@@ -754,7 +775,7 @@ int netfs_prefetch_for_write(struct file *file, struct folio *folio,
- 	if (ret < 0)
- 		goto error_put;
- 
--	netfs_read_to_pagecache(rreq, NULL);
-+	netfs_read_to_pagecache(rreq);
- 	ret = netfs_wait_for_read(rreq);
- 	netfs_put_request(rreq, netfs_rreq_trace_put_return);
- 	return ret < 0 ? ret : 0;
 diff --git a/fs/netfs/internal.h b/fs/netfs/internal.h
-index 420ee7b26580f..bd8b2d633f968 100644
+index bd8b2d633f968..dfe7939f35f37 100644
 --- a/fs/netfs/internal.h
 +++ b/fs/netfs/internal.h
-@@ -79,6 +79,7 @@ ssize_t netfs_wait_for_read(struct netfs_io_request *rreq);
- ssize_t netfs_wait_for_write(struct netfs_io_request *rreq);
- void netfs_wait_for_paused_read(struct netfs_io_request *rreq);
- void netfs_wait_for_paused_write(struct netfs_io_request *rreq);
-+void netfs_wait_for_put_ra_refs(struct netfs_io_request *rreq);
- 
+@@ -110,6 +110,7 @@ static inline void netfs_see_subrequest(struct netfs_io_subrequest *subreq,
  /*
-  * objects.c
-diff --git a/fs/netfs/misc.c b/fs/netfs/misc.c
-index 5d554512ed23a..f5c1c463f4ff7 100644
---- a/fs/netfs/misc.c
-+++ b/fs/netfs/misc.c
-@@ -563,3 +563,22 @@ void netfs_wait_for_paused_write(struct netfs_io_request *rreq)
- {
- 	return netfs_wait_for_pause(rreq, netfs_write_collection);
- }
-+
-+/*
-+ * Wait for the readahead-acquired refs to be put.
-+ */
-+void netfs_wait_for_put_ra_refs(struct netfs_io_request *rreq)
-+{
-+	DEFINE_WAIT(myself);
-+
-+	for (;;) {
-+		trace_netfs_rreq(rreq, netfs_rreq_trace_wait_put_ra_refs);
-+		prepare_to_wait(&rreq->waitq, &myself, TASK_UNINTERRUPTIBLE);
-+		if (!test_bit(NETFS_RREQ_NEED_PUT_RA_REFS, &rreq->flags))
-+			break;
-+		schedule();
-+	}
-+
-+	trace_netfs_rreq(rreq, netfs_rreq_trace_waited_put_ra_refs);
-+	finish_wait(&rreq->waitq, &myself);
-+}
+  * read_collect.c
+  */
++void netfs_cancel_copy_to_cache(struct netfs_io_request *rreq, struct folio *folio);
+ bool netfs_read_collection(struct netfs_io_request *rreq);
+ void netfs_read_collection_worker(struct work_struct *work);
+ void netfs_cancel_read(struct netfs_io_subrequest *subreq, int error);
 diff --git a/fs/netfs/read_collect.c b/fs/netfs/read_collect.c
-index 23660a5901246..edf7cea7e2f91 100644
+index edf7cea7e2f91..12a786be1ea26 100644
 --- a/fs/netfs/read_collect.c
 +++ b/fs/netfs/read_collect.c
-@@ -118,6 +118,13 @@ static void netfs_read_unlock_folios(struct netfs_io_request *rreq,
- 		slot = 0;
- 	}
- 
-+	/* We have to wait for readahead refs to have been released before we
-+	 * can unlock any folios as the ref-dropper walks i_pages and the only
-+	 * thing preventing these folios from being removed is the folio lock.
-+	 */
-+	if (test_bit(NETFS_RREQ_NEED_PUT_RA_REFS, &rreq->flags))
-+		netfs_wait_for_put_ra_refs(rreq);
-+
- 	for (;;) {
- 		struct folio *folio;
- 		unsigned long long fpos, fend;
-diff --git a/fs/netfs/read_retry.c b/fs/netfs/read_retry.c
-index 2b42758e01ec9..dd463a485139c 100644
---- a/fs/netfs/read_retry.c
-+++ b/fs/netfs/read_retry.c
-@@ -292,6 +292,13 @@ void netfs_unlock_abandoned_read_pages(struct netfs_io_request *rreq)
- {
- 	struct folio_queue *p;
- 
-+	/* We have to wait for readahead refs to have been released before we
-+	 * can unlock any folios as the ref-dropper walks i_pages and the only
-+	 * thing preventing these folios from being removed is the folio lock.
-+	 */
-+	if (test_bit(NETFS_RREQ_NEED_PUT_RA_REFS, &rreq->flags))
-+		netfs_wait_for_put_ra_refs(rreq);
-+
- 	for (p = rreq->buffer.tail; p; p = p->next) {
- 		for (int slot = 0; slot < folioq_count(p); slot++) {
- 			struct folio *folio = folioq_folio(p, slot);
-diff --git a/fs/netfs/rolling_buffer.c b/fs/netfs/rolling_buffer.c
-index 8c0026836f9c1..424e77a9a1098 100644
---- a/fs/netfs/rolling_buffer.c
-+++ b/fs/netfs/rolling_buffer.c
-@@ -115,42 +115,65 @@ int rolling_buffer_make_space(struct rolling_buffer *roll, gfp_t gfp)
- }
+@@ -19,7 +19,6 @@
+ #define MADE_PROGRESS	0x04	/* Made progress cleaning up a stream or the folio set */
+ #define BUFFERED	0x08	/* The pagecache needs cleaning up */
+ #define NEED_RETRY	0x10	/* A front op requests retrying */
+-#define COPY_TO_CACHE	0x40	/* Need to copy subrequest to cache */
+ #define ABANDON_SREQ	0x80	/* Need to abandon untransferred part of subrequest */
  
  /*
-- * Decant the list of folios to read into a rolling buffer.
-+ * Decant the entire list of folios to read into a rolling buffer.
-  */
--ssize_t rolling_buffer_load_from_ra(struct rolling_buffer *roll,
--				    struct readahead_control *ractl,
--				    struct folio_batch *put_batch)
-+ssize_t rolling_buffer_bulk_load_from_ra(struct rolling_buffer *roll,
-+					 struct readahead_control *ractl,
-+					 unsigned int rreq_id, gfp_t gfp)
- {
- 	struct folio_queue *fq;
--	struct page **vec;
--	int nr, ix, to;
--	ssize_t size = 0;
-+	ssize_t loaded = 0;
+@@ -34,6 +33,30 @@ static void netfs_clear_unread(struct netfs_io_subrequest *subreq)
+ 		__set_bit(NETFS_SREQ_HIT_EOF, &subreq->flags);
+ }
  
--	if (rolling_buffer_make_space(roll, GFP_KERNEL) < 0)
--		return -ENOMEM;
-+	while (ractl->_nr_pages - ractl->_batch_count > 0) {
-+		unsigned int nr;
- 
--	fq = roll->head;
--	vec = (struct page **)fq->vec.folios;
--	nr = __readahead_batch(ractl, vec + folio_batch_count(&fq->vec),
--			       folio_batch_space(&fq->vec));
--	ix = fq->vec.nr;
--	to = ix + nr;
--	fq->vec.nr = to;
--	for (; ix < to; ix++) {
--		struct folio *folio = folioq_folio(fq, ix);
--		unsigned int order = folio_order(folio);
--
--		fq->orders[ix] = order;
--		size += PAGE_SIZE << order;
--		trace_netfs_folio(folio, netfs_folio_trace_read);
--		if (!folio_batch_add(put_batch, folio))
--			folio_batch_release(put_batch);
-+		/* Allocate a folioq to put some folios into and attach it to
-+		 * the rolling buffer.
-+		 */
-+		fq = netfs_folioq_alloc(rreq_id, gfp,
-+					netfs_trace_folioq_make_space);
-+		if (!fq)
-+			goto nomem_unlock;
-+		fq->prev = roll->head;
-+		if (!roll->tail)
-+			roll->tail = fq;
-+		else
-+			roll->head->next = fq;
-+		roll->head = fq;
++/*
++ * Cancel the copy-to-cache mark on a folio.
++ */
++void netfs_cancel_copy_to_cache(struct netfs_io_request *rreq, struct folio *folio)
++{
++	if (!test_bit(NETFS_RREQ_USE_PGPRIV2, &rreq->flags)) {
++		if (folio_get_private(folio) == NETFS_FOLIO_COPY_TO_CACHE) {
++			folio_detach_private(folio);
++			trace_netfs_folio(folio, netfs_folio_trace_cancel_copy);
++		} else if (netfs_folio_group(folio) == NETFS_FOLIO_COPY_TO_CACHE)  {
++			struct netfs_folio *finfo = netfs_folio_info(folio);
 +
-+		/* Get a batch of folios and note their orders. */
-+		nr = __readahead_batch(ractl, (struct page **)fq->vec.folios,
-+				       folioq_nr_slots(fq));
-+		if (WARN_ON_ONCE(!nr))
-+			break;
-+		fq->vec.nr = nr;
-+
-+		for (int slot = 0; slot < nr; slot++) {
-+			struct folio *folio = folioq_folio(fq, slot);
-+			unsigned int order;
-+
-+			order = folio_order(folio);
-+			fq->orders[slot] = order;
-+			loaded += PAGE_SIZE << order;
-+			trace_netfs_folio(folio, netfs_folio_trace_read);
++			finfo->netfs_group = NULL;
++			trace_netfs_folio(folio, netfs_folio_trace_cancel_copy);
 +		}
- 	}
--	WRITE_ONCE(roll->iter.count, roll->iter.count + size);
- 
--	/* Store the counter after setting the slot. */
--	smp_store_release(&roll->next_head_slot, to);
--	return size;
-+	WRITE_ONCE(roll->iter.count, loaded);
-+	iov_iter_folio_queue(&roll->iter, ITER_DEST, roll->tail, 0, 0, loaded);
-+	return loaded;
-+
-+nomem_unlock:
-+	for (fq = roll->tail; fq; fq = fq->next) {
-+		for (int slot = 0; slot < folioq_count(fq); slot++) {
-+			folio_unlock(fq->vec.folios[slot]);
-+			folioq_mark(fq, slot);
++	} else {
++		// TODO: Use of PG_private_2 is deprecated.
++		if (folio_test_private_2(folio)) {
++			folio_end_private_2(folio);
++			trace_netfs_folio(folio, netfs_folio_trace_cancel_copy);
 +		}
 +	}
-+	rolling_buffer_clear(roll);
-+	roll->head = NULL;
-+	roll->tail = NULL;
-+	return -ENOMEM;
++}
++
+ /*
+  * Flush, mark and unlock a folio that's now completely read.  If we want to
+  * cache the folio, we set the group to NETFS_FOLIO_COPY_TO_CACHE, mark it
+@@ -48,37 +71,37 @@ static void netfs_unlock_read_folio(struct netfs_io_request *rreq,
+ 
+ 	if (unlikely(folio_pos(folio) < rreq->abandon_to)) {
+ 		trace_netfs_folio(folio, netfs_folio_trace_abandon);
++		netfs_cancel_copy_to_cache(rreq, folio);
+ 		goto just_unlock;
+ 	}
+ 
+ 	flush_dcache_folio(folio);
+ 	folio_mark_uptodate(folio);
+ 
+-	if (!test_bit(NETFS_RREQ_USE_PGPRIV2, &rreq->flags)) {
+-		finfo = netfs_folio_info(folio);
+-		if (finfo) {
+-			trace_netfs_folio(folio, netfs_folio_trace_filled_gaps);
+-			if (finfo->netfs_group)
+-				folio_change_private(folio, finfo->netfs_group);
+-			else
+-				folio_detach_private(folio);
+-			kfree(finfo);
+-		}
++	if (unlikely(test_bit(NETFS_RREQ_CANCEL_CACHING, &rreq->flags)))
++		netfs_cancel_copy_to_cache(rreq, folio);
+ 
+-		if (test_bit(NETFS_RREQ_FOLIO_COPY_TO_CACHE, &rreq->flags)) {
+-			if (!WARN_ON_ONCE(folio_get_private(folio) != NULL)) {
+-				trace_netfs_folio(folio, netfs_folio_trace_copy_to_cache);
+-				folio_attach_private(folio, NETFS_FOLIO_COPY_TO_CACHE);
+-				folio_mark_dirty(folio);
+-			}
++	if (!test_bit(NETFS_RREQ_USE_PGPRIV2, &rreq->flags)) {
++		if (netfs_folio_group(folio) == NETFS_FOLIO_COPY_TO_CACHE)  {
++			trace_netfs_folio(folio, netfs_folio_trace_sched_copy);
++			folio_mark_dirty(folio);
+ 		} else {
++			finfo = netfs_folio_info(folio);
++			if (finfo) {
++				trace_netfs_folio(folio, netfs_folio_trace_filled_gaps);
++				if (finfo->netfs_group)
++					folio_change_private(folio, finfo->netfs_group);
++				else
++					folio_detach_private(folio);
++				kfree(finfo);
++			}
+ 			trace_netfs_folio(folio, netfs_folio_trace_read_done);
+ 		}
+ 
+ 		folioq_clear(folioq, slot);
+ 	} else {
+ 		// TODO: Use of PG_private_2 is deprecated.
+-		if (test_bit(NETFS_RREQ_FOLIO_COPY_TO_CACHE, &rreq->flags))
++		if (folio_test_private_2(folio))
+ 			netfs_pgpriv2_copy_to_cache(rreq, folio);
+ 	}
+ 
+@@ -131,9 +154,6 @@ static void netfs_read_unlock_folios(struct netfs_io_request *rreq,
+ 		unsigned int order;
+ 		size_t fsize;
+ 
+-		if (*notes & COPY_TO_CACHE)
+-			set_bit(NETFS_RREQ_FOLIO_COPY_TO_CACHE, &rreq->flags);
+-
+ 		folio = folioq_folio(folioq, slot);
+ 		if (WARN_ONCE(!folio_test_locked(folio),
+ 			      "R=%08x: folio %lx is not locked\n",
+@@ -156,8 +176,6 @@ static void netfs_read_unlock_folios(struct netfs_io_request *rreq,
+ 		WRITE_ONCE(rreq->cleaned_to, fpos + fsize);
+ 		*notes |= MADE_PROGRESS;
+ 
+-		clear_bit(NETFS_RREQ_FOLIO_COPY_TO_CACHE, &rreq->flags);
+-
+ 		/* Clean up the head folioq.  If we clear an entire folioq, then
+ 		 * we can get rid of it provided it's not also the tail folioq
+ 		 * being filled by the issuer.
+@@ -255,9 +273,6 @@ static void netfs_collect_read_results(struct netfs_io_request *rreq)
+ 			stream->collected_to = front->start + transferred;
+ 			rreq->collected_to = stream->collected_to;
+ 
+-			if (test_bit(NETFS_SREQ_COPY_TO_CACHE, &front->flags))
+-				notes |= COPY_TO_CACHE;
+-
+ 			if (test_bit(NETFS_SREQ_FAILED, &front->flags)) {
+ 				rreq->abandon_to = front->start + front->len;
+ 				front->transferred = front->len;
+diff --git a/fs/netfs/read_pgpriv2.c b/fs/netfs/read_pgpriv2.c
+index c31190993b762..a4b7bb88cbdb6 100644
+--- a/fs/netfs/read_pgpriv2.c
++++ b/fs/netfs/read_pgpriv2.c
+@@ -54,8 +54,8 @@ static void netfs_pgpriv2_copy_folio(struct netfs_io_request *creq, struct folio
+ 
+ 	/* Attach the folio to the rolling buffer. */
+ 	if (rolling_buffer_append(&creq->buffer, folio, 0, creq->gfp) < 0) {
++		set_bit(NETFS_RREQ_CANCEL_CACHING, &creq->flags);
+ 		folio_end_private_2(folio);
+-		clear_bit(NETFS_RREQ_FOLIO_COPY_TO_CACHE, &creq->flags);
+ 		return;
+ 	}
+ 
+@@ -122,13 +122,14 @@ static struct netfs_io_request *netfs_pgpriv2_begin_copy_to_cache(
+ 	netfs_put_failed_request(creq);
+ cancel:
+ 	rreq->copy_to_cache = ERR_PTR(-ENOBUFS);
+-	clear_bit(NETFS_RREQ_FOLIO_COPY_TO_CACHE, &rreq->flags);
++	set_bit(NETFS_RREQ_CANCEL_CACHING, &rreq->flags);
+ 	return ERR_PTR(-ENOBUFS);
  }
  
  /*
+  * [DEPRECATED] Mark page as requiring copy-to-cache using PG_private_2 and add
+- * it to the copy write request.
++ * it to the copy write request.  PG_private_2 should already be set on the
++ * folio.
+  */
+ void netfs_pgpriv2_copy_to_cache(struct netfs_io_request *rreq, struct folio *folio)
+ {
+@@ -136,11 +137,13 @@ void netfs_pgpriv2_copy_to_cache(struct netfs_io_request *rreq, struct folio *fo
+ 
+ 	if (!creq)
+ 		creq = netfs_pgpriv2_begin_copy_to_cache(rreq, folio);
+-	if (IS_ERR(creq))
++	if (IS_ERR(creq)) {
++		set_bit(NETFS_RREQ_CANCEL_CACHING, &rreq->flags);
++		netfs_cancel_copy_to_cache(rreq, folio);
+ 		return;
++	}
+ 
+-	trace_netfs_folio(folio, netfs_folio_trace_copy_to_cache);
+-	folio_start_private_2(folio);
++	trace_netfs_folio(folio, netfs_folio_trace_pgpriv2_copy);
+ 	netfs_pgpriv2_copy_folio(creq, folio);
+ }
+ 
+diff --git a/fs/netfs/read_retry.c b/fs/netfs/read_retry.c
+index dd463a485139c..4f6a36c6e214f 100644
+--- a/fs/netfs/read_retry.c
++++ b/fs/netfs/read_retry.c
+@@ -303,7 +303,11 @@ void netfs_unlock_abandoned_read_pages(struct netfs_io_request *rreq)
+ 		for (int slot = 0; slot < folioq_count(p); slot++) {
+ 			struct folio *folio = folioq_folio(p, slot);
+ 
+-			if (folio && !folioq_is_marked2(p, slot)) {
++			if (!folio)
++				continue;
++			netfs_cancel_copy_to_cache(rreq, folio);
++
++			if (!folioq_is_marked2(p, slot)) {
+ 				if (folio == rreq->no_unlock_folio &&
+ 				    test_bit(NETFS_RREQ_NO_UNLOCK_FOLIO,
+ 					     &rreq->flags)) {
 diff --git a/include/linux/netfs.h b/include/linux/netfs.h
-index d0b62d53eea99..e60539f039f19 100644
+index e60539f039f19..029456e034849 100644
 --- a/include/linux/netfs.h
 +++ b/include/linux/netfs.h
-@@ -279,6 +279,7 @@ struct netfs_io_request {
- #define NETFS_RREQ_FOLIO_COPY_TO_CACHE	10	/* Copy current folio to cache from read */
+@@ -276,7 +276,7 @@ struct netfs_io_request {
+ #define NETFS_RREQ_SHORT_TRANSFER	5	/* Set if we have a short transfer */
+ #define NETFS_RREQ_OFFLOAD_COLLECTION	8	/* Offload collection to workqueue */
+ #define NETFS_RREQ_NO_UNLOCK_FOLIO	9	/* Don't unlock no_unlock_folio on completion */
+-#define NETFS_RREQ_FOLIO_COPY_TO_CACHE	10	/* Copy current folio to cache from read */
++#define NETFS_RREQ_CANCEL_CACHING	10	/* Set to cancel caching */
  #define NETFS_RREQ_UPLOAD_TO_SERVER	11	/* Need to write to the server */
  #define NETFS_RREQ_USE_IO_ITER		12	/* Use ->io_iter rather than ->i_pages */
-+#define NETFS_RREQ_NEED_PUT_RA_REFS	17	/* Need to put the folio refs RA gave us */
- #define NETFS_RREQ_USE_PGPRIV2		31	/* [DEPRECATED] Use PG_private_2 to mark
- 						 * write to cache on read */
- 	const struct netfs_request_ops *netfs_ops;
-diff --git a/include/linux/rolling_buffer.h b/include/linux/rolling_buffer.h
-index 9e5dad29669cf..a97f7cfaacaad 100644
---- a/include/linux/rolling_buffer.h
-+++ b/include/linux/rolling_buffer.h
-@@ -45,9 +45,9 @@ struct rolling_buffer_snapshot {
- int rolling_buffer_init(struct rolling_buffer *roll, unsigned int rreq_id,
- 			unsigned int direction, gfp_t gfp);
- int rolling_buffer_make_space(struct rolling_buffer *roll, gfp_t gfp);
--ssize_t rolling_buffer_load_from_ra(struct rolling_buffer *roll,
--				    struct readahead_control *ractl,
--				    struct folio_batch *put_batch);
-+ssize_t rolling_buffer_bulk_load_from_ra(struct rolling_buffer *roll,
-+					 struct readahead_control *ractl,
-+					 unsigned int rreq_id, gfp_t gfp);
- ssize_t rolling_buffer_append(struct rolling_buffer *roll, struct folio *folio,
- 			      unsigned int flags, gfp_t gfp);
- struct folio_queue *rolling_buffer_delete_spent(struct rolling_buffer *roll);
+ #define NETFS_RREQ_NEED_PUT_RA_REFS	17	/* Need to put the folio refs RA gave us */
 diff --git a/include/trace/events/netfs.h b/include/trace/events/netfs.h
-index 082cb03c61316..9bda9302be90c 100644
+index 9bda9302be90c..a22084813cb59 100644
 --- a/include/trace/events/netfs.h
 +++ b/include/trace/events/netfs.h
-@@ -59,6 +59,7 @@
- 	EM(netfs_rreq_trace_free,		"FREE   ")	\
- 	EM(netfs_rreq_trace_intr,		"INTR   ")	\
- 	EM(netfs_rreq_trace_ki_complete,	"KI-CMPL")	\
-+	EM(netfs_rreq_trace_ra_put_ref,		"RA-PUT ")	\
- 	EM(netfs_rreq_trace_recollect,		"RECLLCT")	\
- 	EM(netfs_rreq_trace_redirty,		"REDIRTY")	\
- 	EM(netfs_rreq_trace_resubmit,		"RESUBMT")	\
-@@ -70,9 +71,11 @@
- 	EM(netfs_rreq_trace_unpause,		"UNPAUSE")	\
- 	EM(netfs_rreq_trace_wait_ip,		"WAIT-IP")	\
- 	EM(netfs_rreq_trace_wait_pause,		"--PAUSED--")	\
-+	EM(netfs_rreq_trace_wait_put_ra_refs,	"WAIT-P-RA")	\
- 	EM(netfs_rreq_trace_wait_quiesce,	"WAIT-QUIESCE")	\
- 	EM(netfs_rreq_trace_waited_ip,		"DONE-IP")	\
- 	EM(netfs_rreq_trace_waited_pause,	"--UNPAUSED--")	\
-+	EM(netfs_rreq_trace_waited_put_ra_refs,	"DONE-P-RA")	\
- 	EM(netfs_rreq_trace_waited_quiesce,	"DONE-QUIESCE")	\
- 	EM(netfs_rreq_trace_wake_ip,		"WAKE-IP")	\
- 	EM(netfs_rreq_trace_wake_queue,		"WAKE-Q ")	\
+@@ -198,7 +198,6 @@
+ 	EM(netfs_folio_trace_clear_cc,		"clear-cc")	\
+ 	EM(netfs_folio_trace_clear_g,		"clear-g")	\
+ 	EM(netfs_folio_trace_clear_s,		"clear-s")	\
+-	EM(netfs_folio_trace_copy_to_cache,	"mark-copy")	\
+ 	EM(netfs_folio_trace_end_copy,		"end-copy")	\
+ 	EM(netfs_folio_trace_filled_gaps,	"filled-gaps")	\
+ 	EM(netfs_folio_trace_invalidate_all,	"inval-all")	\
+@@ -209,16 +208,19 @@
+ 	EM(netfs_folio_trace_kill_cc,		"kill-cc")	\
+ 	EM(netfs_folio_trace_kill_g,		"kill-g")	\
+ 	EM(netfs_folio_trace_kill_s,		"kill-s")	\
++	EM(netfs_folio_trace_mark_copy,		"mark-copy")	\
+ 	EM(netfs_folio_trace_mkwrite,		"mkwrite")	\
+ 	EM(netfs_folio_trace_mkwrite_plus,	"mkwrite+")	\
+-	EM(netfs_folio_trace_not_under_wback,	"!wback")	\
+ 	EM(netfs_folio_trace_not_locked,	"!locked")	\
++	EM(netfs_folio_trace_not_under_wback,	"!wback")	\
++	EM(netfs_folio_trace_pgpriv2_copy,	"pgpriv2-copy")	\
+ 	EM(netfs_folio_trace_put,		"put")		\
+ 	EM(netfs_folio_trace_read,		"read")		\
+ 	EM(netfs_folio_trace_read_done,		"read-done")	\
+ 	EM(netfs_folio_trace_read_gaps,		"read-gaps")	\
+ 	EM(netfs_folio_trace_read_unlock,	"read-unlock")	\
+ 	EM(netfs_folio_trace_redirtied,		"redirtied")	\
++	EM(netfs_folio_trace_sched_copy,	"sched-copy")	\
+ 	EM(netfs_folio_trace_store,		"store")	\
+ 	EM(netfs_folio_trace_store_copy,	"store-copy")	\
+ 	EM(netfs_folio_trace_store_plus,	"store+")	\
 -- 
 2.53.0
 
