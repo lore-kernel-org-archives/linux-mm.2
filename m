@@ -4,99 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4AC6C982C1
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 06:56:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 976D2C982CD
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 06:56:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 676D36B008A; Thu, 17 Sep 2026 02:56:12 -0400 (EDT)
+	id 4EF6C6B008C; Thu, 17 Sep 2026 02:56:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 626A86B008C; Thu, 17 Sep 2026 02:56:12 -0400 (EDT)
+	id 4C8CF6B0092; Thu, 17 Sep 2026 02:56:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 515966B0092; Thu, 17 Sep 2026 02:56:12 -0400 (EDT)
+	id 390666B0093; Thu, 17 Sep 2026 02:56:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 32A3A6B008A
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 02:56:12 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 84DEB1A026B
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 168AF6B008C
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 02:56:15 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9EEA91C1D91
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 06:56:14 +0000 (UTC)
+X-FDA: 85222345068.28.5A03E6C
+Received: from out162-62-57-137.mail.qq.com (out162-62-57-137.mail.qq.com [162.62.57.137])
+	by imf13.hostedemail.com (Postfix) with ESMTP id EBDC920006
 	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 06:56:11 +0000 (UTC)
-X-FDA: 85222344942.29.DF25C8C
-Received: from out162-62-57-210.mail.qq.com (out162-62-57-210.mail.qq.com [162.62.57.210])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 31BFE180005
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 06:56:07 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=QlkL6Xoi;
-	spf=pass (imf24.hostedemail.com: domain of zhenghui.hao@qq.com designates 162.62.57.210 as permitted sender) smtp.mailfrom=zhenghui.hao@qq.com;
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=PqGbtwEU;
+	spf=pass (imf13.hostedemail.com: domain of zhenghui.hao@qq.com designates 162.62.57.137 as permitted sender) smtp.mailfrom=zhenghui.hao@qq.com;
 	dmarc=pass (policy=quarantine) header.from=qq.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789628169;
+	s=arc-20220608; t=1789628173;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/Gw4qlBm6AwOO9f3v1AjzWTUa+PP0TWvSh7qf0BcJ+o=;
-	b=z6oOP1vhV4+ROvrCtns4IavRdIosqtWHtSE7w87MXDfLTYVLgmuIOSxsqnvNKaTVcj+0aM
-	aJe+wFcEGMayqqPsP/JDB5u8Kokpb4MjYFHqzV2ipqin/StxMD++anXfD5iywHUF22RwdA
-	m0gYyQyECILcirDjOqrAzK8iEiJdj1g=
+	bh=j1Fc/4Xsm/exGsgjT4jGufeye/rOfxrIgfcyhzDzAv8=;
+	b=zGGjKc2P3drhnGYpSSxpLhc1ExX7uSPyPRw88DliQdYM+syRmuUAaayHz4KpXCNrTaVmCQ
+	/Qptxy5VBPqJr6CagFKebtq0Z5eFpuyKGhJsSR1/IbEbZtABeKuTHGsA4DeewYnzUJJbd0
+	b6zvJmPEsC8r/Db+jKRQ9ghqGmJndv4=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=QlkL6Xoi;
-	spf=pass (imf24.hostedemail.com: domain of zhenghui.hao@qq.com designates 162.62.57.210 as permitted sender) smtp.mailfrom=zhenghui.hao@qq.com;
+	imf13.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=PqGbtwEU;
+	spf=pass (imf13.hostedemail.com: domain of zhenghui.hao@qq.com designates 162.62.57.137 as permitted sender) smtp.mailfrom=zhenghui.hao@qq.com;
 	dmarc=pass (policy=quarantine) header.from=qq.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789628169;
-	b=gtOgZV1fzq+TNVUL2TPg0lygPTEJsC4i0dTuiaJ8BOnEf+7XHYCO6o6zTpQ6PQoXkunY0S
-	z+FDHZRYMfPg+kGkV0vK81dP+8V0VZG5nFY2MQfjdr8eSncFhdnrpKdbuDzWI76Q1i4obJ
-	bjg8Jt5trV738U4/CEzry4gY/CKgt90=
+	t=1789628173;
+	b=DLr+2MeGmdfu1/pwkkOFczB2qQ3tA3dcMHj3ICTrN7lEiiUcOTs+3nc3ny/3rAHrWRD5/R
+	M84fiCcIhcBa29+Pqs4tD5YKFYeircI2Ut0hfsHjyTB9gbDeUDhZdFLExmDsYUvMT6G6Ls
+	llfnbWBAOp0DiUDr8FWaOR0+7nS5HVk=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1789628163; bh=/Gw4qlBm6AwOO9f3v1AjzWTUa+PP0TWvSh7qf0BcJ+o=;
+	t=1789628168; bh=j1Fc/4Xsm/exGsgjT4jGufeye/rOfxrIgfcyhzDzAv8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QlkL6XoiajoxE1YRt1P4cYPyUq15YiRaPMQlniQCnR7q2KpQabOe0aMHylFY6wW9a
-	 hQmG+mnjn/DvxAMKFK63VgzPhOqwylLIXdU7X5HLxyHr5jTBJt8ZBt+uoRNrIrCHOa
-	 SbHkwQECoJYZ22RxX4aRTUC67R8r/x0C72rcswlc=
+	b=PqGbtwEUZZ1TIzE2q2KtgcGmeDRG7GF1XifWTaxo8RyPwWmc+DnDpFiV6gDL9cMTx
+	 UYW0uBNIeahEDiuhlxqerECXl16CnLdnklbh/HdhlsroSq0FMxw+WT1sY3OOEpFwVO
+	 pJE8kaTfaXHvwILlruPS7+s1hiC5Rr/QM/rnU7Hg=
 Received: from XJSH01426.meizu.com ([210.13.72.171])
 	by newxmesmtplogicsvrsza53-0.qq.com (NewEsmtp) with SMTP
 	id E0103260; Thu, 17 Sep 2026 14:56:01 +0800
-X-QQ-mid: xmsmtpt1789628161t6wm6c29w
-Message-ID: <tencent_0490E1CAA4336214AB70F813325F3020A608@qq.com>
-X-QQ-XMAILINFO: MllZffuBkEb5IDDSwlR44w363NKaPSXoFFztIYYIE9nq8IFqj6QiMqzVbvj+lM
-	 lgaAUcXvi9S+FhsvJ3SfXcHAO7kPtrIdhsDch7GFjJar4SsVIPfKEbrgD2CAIQlfIh23Ck5R9GI3
-	 fM4CFGa2shtVXEaG2byNsT+v0mu34w2bo2+oamvoK5n2e4yEV7683dy+btJY3nAPVckx5yJrc19g
-	 xdhQ3Ze5UvVM8np4HtDfq4xUrnOCcRuVBVB+p284afZ5qeJ9RsqgBV4nuKW4sqekwYxzkIMVRVSM
-	 ZVbLAtFZIpoIRY3lxWMb1bznnZQMR2L+9ioyoWkxLADyLIGmCiEP9PzF5wm0CEBYZtPZQ1BfzTy8
-	 SnRWxaOODZQbgzt9uD4MvffoL1TXsxgtdiXdjLnquAv1tLT8o0728OyNbLE5M+Vj5mEIdaWnnp12
-	 /UWxJiA8g05eghyytDrEKZmd44HgMj7JfK6gxHrKzxNry9vRtwFydBAl/9WeM+9qYDHj0F0t6Dyq
-	 6pDCrb40cqzhLT+ewOvzpybp/sKgaHcrYr8ccQKlI/6C8seEPZsX0RXExNpd2syaKlmgz/0weWd4
-	 aGyhUVc7+hJb3VYDlqrGaAI9a5yzFbk9WT8jVfb6EfX8EqLlDIkG1XeFd9tvxd18Y/EXg6FhHRbY
-	 vDCOC80grqgDrClXJxQMJZw9D7IMbRpVIVv8wsLTeYMfFkTVYlvwTTTnEAeGzEirYbQ4WZklpXpv
-	 YjGg0EPulTx/HLSag1//v4wgk7iyLuw9p+FmWGZ8yVU6V69jcVN1upCvNPiPW1NDHXFMXiszGo5t
-	 W1GXurAXC5v4Lwzmi4Pkf7sdjgx8s4cU8bg8eGAsIjFP32iH4QMScnu9Ll1pBd+5acajSnJHypmv
-	 Ib2qopG/K/TxGjfG1M4m7hc39Za+lmZDCOpxjJQt6TsbLmzJaeK8fTDplPAcw0CAB5d9us6lZ8uY
-	 2BHjSfjwzDlBXdStd4CqVZROo4EjvJMLjbfdXlBjXl6uxa6F1MieMejqwcnI/q6TOGEGh9XGApyo
-	 un33hB+mvWLnBRRiRlGi+aIgQbYF0dj2MUlSL1OLKq2FxMLkDPcXEBqqaZKk3Y6797lyX0IYGhAP
-	 QTVD+MnTbJLvl6jK7y4W431VEWww==
+X-QQ-mid: xmsmtpt1789628165tsbw3z5sx
+Message-ID: <tencent_7359E1D8A4256237AB06F816324B30F3A608@qq.com>
+X-QQ-XMAILINFO: M+CCxu5Z1xuSmDX1Vf8Y3UUXjh2hdOApX30dVrTbenI56A0V2HKRBcztpEorbn
+	 KdHXoWD/z15JTjp5JIHGshfa0dMRK7XW7NjfacimCl4tUqdlPIpNKElcKl2UK6wfI15JyZyf0z9b
+	 IwqfunUwyQQ+FWUdJKo68WGVNS6t46KQtA6DlXBhMOMJBycEMb3Q6K/isHD52BQ+ivUkrlp4Rccr
+	 7TzS1EKh6cbBdqa0Lae/Ks6pMXhOFKLfiQ6dxXWUq4sbqa5a4osdj+J7kTVUxTHdzLcO0Jhh5aOX
+	 +bX1jX5PTiHC5Qkob+j+5G1t+p0yi0sGkJMEE47v+uAVyw2WhQVekrvUbXNfSSvDm8n8gupM4fpw
+	 0bMI5GrRwRjXboBvbBXxzo/VIzJFbdsswsuzNdyjgM7Didz5gkxjXQoRwwS0fsXKesMefN46HwEL
+	 L3L8T7SgAyyO28PSg/Y5CrC+elV4BSL/SI7ibbzdgf5w3fcA0NtcmxV6FeBwHS8lmdZ3FvP9AguO
+	 pYloSwZ/pLE/piKcio2VvM0Ha3CdCYV9N+jaC3pHmGo5ozZJq8V4xZLopwtKpTSlHwKJVmxTFi21
+	 JZJleZnl7GB44WWJ/pYUK/AVgoqVMn6LKaJn7zFw5MDAO7sEflggbReT2NlR4431QPsepAfnU4aT
+	 Izx7A20BsOz6BNvhQRqtKSLsQ5T4OtLevnC1DuksIuTbMeKW49xlM8v7usk47y/57gF7M+Q3upL3
+	 x3LABGuUuFN6M0mbfK7qIbDmsVnzc+xyYirZQoZinIvXRgvZRPbay/fSz9ksSvdNbUWsogSZJuLL
+	 eWP5q2l6kH5uI/GAW+Yd6d19YbGPebW3zRdWec9fej+ZdZ8GC7K30KIPcotkyqH02Emi2SNTUrgD
+	 wUnWQ+E1IC05z3sINOpQuQuRbbxIFmYqDFXaWZD2BqFo8nHQkyxB4yvmn9xaDB4BXuzdjeZ7q8yl
+	 w/SYkkvgFhiK9p7HT8BJrxZx2LHP+6dhHMs26MZPHQok9rMMzDzr47LJcEZqSugEYJsHwM5usRI3
+	 oHBLAZpCUGSVMx9aIHzUETM8/BWnyIZU0EZJN38G9FFF+jSkewInoaiUWmTYhg8LDS5nFbfgFkxw
+	 j2kTw5xMXQ8MJHKNqHGgafIRSOBzs5QrNDQivtt12fw8sObpkJdqonr+FqKMSQAI51rkOJC2KWjt
+	 oFnoA=
 X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
 From: Zhenghui Hao <zhenghui.hao@qq.com>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-mm@kvack.org,
 	linux-parisc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 0/2] init, hugetlb: fix early parameter ordering
-Date: Thu, 17 Sep 2026 14:55:55 +0800
-X-OQ-MSGID: <20260917065600.564083-1-zhenghui.hao@qq.com>
+	linux-kernel@vger.kernel.org,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	Helge Deller <deller@gmx.de>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>
+Subject: [PATCH 2/2] hugetlb: report cmdline parameters recorded too late
+Date: Thu, 17 Sep 2026 14:55:57 +0800
+X-OQ-MSGID: <20260917065600.564083-3-zhenghui.hao@qq.com>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260917062837.558251-1-zhenghui.hao@qq.com>
+In-Reply-To: <20260917065600.564083-1-zhenghui.hao@qq.com>
 References: <20260917062837.558251-1-zhenghui.hao@qq.com>
+ <20260917065600.564083-1-zhenghui.hao@qq.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 31BFE180005
-X-Stat-Signature: fud64k7kf7sgzz1p51g5tmq8e1p6akf1
 X-Rspam-User: 
-X-HE-Tag: 1789628167-186483
-X-HE-Meta: U2FsdGVkX1/VWVJHYU782rHQCmxGClJywjM5cqTM2Yz62YdaUwarZWehfB2u+dgTc7+TdO10DbNChceijl24stdH1Zcyyzu0jawph7UKCXdmiTpsiar7Yvqmv740PcrSh3z1Vd5+DcsFTbQECgq/EGuM93a8DxWIDGYzUe+qaPD8Ja1FxnMDJAQkKUSSy/K61uqpY5j3qg3X7SzLTotaxmW0bnOIwjjake0hBG1tOFzmagAYJleakgjrFhWTI/8fSeZ7X+bvQiAVx7X32VuHT97XzFnQxbzG+bm8wOj3GUOLp/nj7esNaLE/JNut7GlDix1hlTlNriqpQvXFVcQttdQmPsHbAsevGDuPxRrGT/aNTJiIEEDt6JnFKFW9uqah5MGOlDS0lXrtMoCGwUhvUVJ7w+8/DPutYazNniBgL7pAddM65/iVlyu7xxF8xdgquooPugHukpP+sP58lXOw0B5NCdsLIegBzT1NtkjGeOG+kZ11FjKr65oB/w7C96AEa+k2mTRNB+QYekQiFrABVDWB0wwY9T2NpsihNEzuxgz6n7ZsJtGMwqM91qsjKrh4SLlTX9ZCV2rohS8PTha7tH+eZftiJy56d5xSUnVWJghKO5FJfFJEjKpwQzaH9SidNZGMBZxCuHuyvNmbhCDba8/n1xqHkb+XzBLFJgMxxBXjMGiPYD0FSOAthCrfQJqxCcCYQq7TTczjL1cUmjJ0EY8eeQ0tGdTWxFGJVeQ8jVSAYgO/xeNP3j8KejcUYM7W4S/j548l1iJ9Rj6BZLx03/9SV2AwbSegOSIMSi+sbCk/pHP+Y5XHfUD90FCH+tl18MxQU1cLh71j0aT5NuJGNeA4IF4y5SvpTbAboF1MujHCLFtPGX5hpEf1PSE7yx2IBm1mSpDC9Kl8iwesYvD0OqQJR4LZmeWDP6L/BzTW+/NqOhaFwHbm2jlFdkLfbU4RnKfLj1rkpbEpqu/Th40
- jZtcLIOW
- i9PJsgP79YsILjteZl/8jlS3mFLk+uRFBFmrQMpBMbEwDU7zpodxnlv4o9gAhXUbGdmlCtKty+M7V+zbrxVEbgLwYqvEYCKHBj/Kmlc/gsnYfut4GFgNf7+kctolKGUUoenypOAaOrw2wsvfwo/IXomxeaoho3TlE34tyISKT+K+e4mfvZ50Cu1Cujb6wvtQuIxgI9rPWV//ax5GI+M+kZyXoiK0aFlScZJlNG9XiBllih0iPYSwQHdUkuagWy9z9ZpxJivB/u/+NUENtEsXENwkNnMCLchAh1MHmsMNaeRPZENg+DsQkXCFSpVJxbpBM/qod1igdepunRnnLPGlCfPig1awcyTcLVHA83bElnHvIw0g=
+X-Stat-Signature: fu33jjewdegqfz54jc9o1e59mwpqizxq
+X-Rspamd-Queue-Id: EBDC920006
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789628171-226996
+X-HE-Meta: U2FsdGVkX1/t2Rl/sUgU9cZIyUVBecOuMuTSbQQHiDB1wS+TUM8zEgBctncs4h35AWCe87CXW7DvSz0FvtbCnYIpMMTWrU0PqqfjaEqqVrrTm/Ue5MMeg5GGZlpJCy7Tc37otM4iDSAeo2Qzq9YhcVV61A+7EzdEcxHU4NVuV2CLgrg9CwK9JvF1xqZMhd8md6ASjZYpXXwszR1nYvUZqnoiHblj6PSPx/8ADhgzq1zFRV6Ba3ErCP7lWRhBicWDWlXxCBoDq4m21PsI9rdLWXN62t+jCjoLFdWgKSJXlAIZw65N98NcsbCSep7t1JGZGBF89JgM7y6yjcE1OIU97x/e0Pa8rA98t27FXpWMgFbrMVBDBcIHpc1TJzkA32pfR6OClbj8dSlGEusc4zG2j8dZnjfqXudPU6c+qhNE2ipaeh0AmRDOXaIMdsZnnG2D/g/Nm5UPw/GeYcUkJUQA7DRr1nZgXhdpAqiqkM18HJbOa7bKB5T2N3YgvKF6MQfdehYNdJVI+t6R8GX5qre1pmzjLC/pzsTsZ6lthI6Z16m8mv4saafgcHG7zTSRfhg4dPPYNOHIdsOsoRo9mwA5q3tshBhn6G+v6iqWz/K+BpxhU78a2bLSfI1dzpsNYQlwi9ofeKxe6lW69GN+91kocHVsY1RmEqYu3/FpTdZ+8i4MtZY/vv+u8wlJuDxZ1yITx1l8w0W/2uX6p6cSJoQ61PLavekZr/cdQzj7WIHq5b9l19ClmGoNvAK+Zl1b52bFbpeb/cPAh/LmcgSDUp8rjh+Qoe0lj8iiO5Xit14TLGAT01oXWIVP+u+b3sOiZ2N42I18tkDHtNf0Wj7JT1A6UpFuTx/rR0Qh5Lepv6xM2tTtbmHbz3JWiMRXkuYw/HPEZsUD/UPlF8pWDe3hKqUWPyQHfFyQecDUOVJe9Va/uZxqt1KAMOxS71ccUOYgkVNqVYa9W2dFOvaWHK3HcHE
+ gxBthmbt
+ NffQS/L8FHuZnm2coHH9FHyNxq0b62+xeRoofpjORkgd9IbNoT2HQG4/cIBoNNhiqp4K6DWvkqd5PPp6wP4qczWf22cLQDQcnLiPtUumEoDWQ/QTT8nFh/ig1wWVAmGaxXj43lxHZ3MaavlufrdBTMHJoOHHwYp7l8Yef3QYeBlXB1Xc9Je8fx3uI4VV0vAdk10uOBXMNbnADMMZ0VDA7n0xidopaVS/YSZ8FOLJnUy6T/XLgefrDg/eIdFE4KVNTG17Rb6R3Qb0zJD9iJje4iXUbrOwu4DiWC35o
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,37 +111,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-hugetlb records its command line parameters from early_param()
-handlers and consumes them later from hugetlb_bootmem_alloc().
+hugetlb command line parameters are recorded by the early_param()
+handlers registered through hugetlb_early_param() and consumed later by
+hugetlb_parse_params(), which is called from hugetlb_bootmem_alloc().
 
-Commit d49004c5f0c1 ("arch, mm: consolidate initialization of nodes,
-zones and memory map") moved that consumer into mm_core_init_early(),
-which runs before the generic parse_early_param() call in
-start_kernel().  Architectures that call parse_early_param() from
-setup_arch() are not affected, but on parisc the parameters are then
-recorded after they have already been consumed and are silently
-dropped.
+Since commit d49004c5f0c1 ("arch, mm: consolidate initialization of nodes,
+zones and memory map") that consumer runs from mm_core_init_early(),
+which is called before the generic parse_early_param() in start_kernel().
 
-Patch 1/2 moves parse_early_param() before mm_core_init_early(),
-together with jump_label_init() and static_call_init() so that the
-"parameters may set static keys" guarantee still holds.
+On architectures that do not call parse_early_param() from setup_arch(),
+such as parisc, the parameters are recorded only after they have been
+consumed, so they are dropped without any diagnostics: do_early_param()
+stays quiet because the handlers return 0, and obsolete_checksetup()
+treats early parameters as already handled.
 
-Patch 2/2 makes this class of ordering problem non-silent.  It cannot
-fire once 1/2 is applied; if you would rather take only the fix,
-please drop 2/2.
+Warn in that case instead of dropping the parameter silently.
+Returning non-zero from the wrapper would also work, but it makes
+do_early_param() print "Malformed early option", which points at the
+command line instead of at the ordering problem, so print an accurate
+message and return 0.
+
+The check cannot produce false positives: the wrappers are reachable
+only from do_early_param(), and hugetlb_parse_params() is called exactly
+once, so once hugetlb_cmdline_consumed is set, any further recording is
+by construction too late to be honored.
 
 Not tested on parisc hardware.
 
-Zhenghui Hao (2):
-  init: parse early parameters before memory initialization
-  hugetlb: report cmdline parameters recorded too late
-
- init/main.c  |  8 ++++----
+Cc: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Cc: Helge Deller <deller@gmx.de>
+Signed-off-by: Zhenghui Hao <zhenghui.hao@qq.com>
+---
  mm/hugetlb.c | 14 ++++++++++++++
- 2 files changed, 18 insertions(+), 4 deletions(-)
+ 1 file changed, 14 insertions(+)
 
-
-base-commit: 9b87fdc9af2fbfcdb5c24a64139685ef80f6573f
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 4f6f58bf3db6..bda8af614a70 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -91,12 +91,24 @@ static char hstate_cmdline_buf[COMMAND_LINE_SIZE] __initdata;
+ static int hstate_cmdline_index __initdata;
+ static struct hugetlb_cmdline hugetlb_params[HUGE_MAX_CMDLINE_ARGS] __initdata;
+ static int hugetlb_param_index __initdata;
++/*
++ * Set once hugetlb_bootmem_alloc() has consumed the recorded parameters.
++ * A parameter recorded after that point can never be honored, so report it
++ * instead of dropping it silently.  This happens if an architecture calls
++ * parse_early_param() only after mm_core_init_early().
++ */
++static bool hugetlb_cmdline_consumed __initdata;
+ static __init int hugetlb_add_param(char *s, int (*setup)(char *val));
+ static __init void hugetlb_parse_params(void);
+ 
+ #define hugetlb_early_param(str, func) \
+ static __init int func##args(char *s) \
+ { \
++	if (hugetlb_cmdline_consumed) { \
++		pr_warn("HugeTLB: %s=%s recorded too late to be honored, ignoring\n", \
++			str, s ?: ""); \
++		return 0; \
++	} \
+ 	return hugetlb_add_param(s, func); \
+ } \
+ early_param(str, func##args)
+@@ -4491,6 +4503,8 @@ void __init hugetlb_bootmem_alloc(void)
+ 		INIT_LIST_HEAD(&huge_boot_pages[i]);
+ 
+ 	hugetlb_parse_params();
++	/* Anything recorded from here on can no longer be honored. */
++	hugetlb_cmdline_consumed = true;
+ 
+ 	for_each_hstate(h) {
+ 		h->next_nid_to_alloc = first_online_node;
 -- 
 2.53.0
 
