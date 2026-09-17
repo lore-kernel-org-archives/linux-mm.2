@@ -4,96 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A61FFC982D6
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 14:10:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E48FC982D6
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 14:11:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 744DF6B008A; Thu, 17 Sep 2026 10:10:53 -0400 (EDT)
+	id 5EDE16B0092; Thu, 17 Sep 2026 10:11:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F5466B008C; Thu, 17 Sep 2026 10:10:53 -0400 (EDT)
+	id 5968C6B0093; Thu, 17 Sep 2026 10:11:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5BD6A6B0092; Thu, 17 Sep 2026 10:10:53 -0400 (EDT)
+	id 4ACC76B0095; Thu, 17 Sep 2026 10:11:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2EFEF6B008A
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 10:10:53 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BB44CA03AF
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 14:10:52 +0000 (UTC)
-X-FDA: 85223440344.28.CD1160B
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2104B6B0092
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 10:11:27 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B2F14C0360
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 14:11:26 +0000 (UTC)
+X-FDA: 85223441772.07.C6A1462
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id AF93D140010
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 14:10:50 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W1OQSPQh;
-	spf=pass (imf26.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf13.hostedemail.com (Postfix) with ESMTP id C219020009
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 14:11:24 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aIaKJjIb;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aIaKJjIb;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789654284;
+	b=ed7+aBEU51pCa0E/kTCBXLaVpUMrCjH6kZcFH3Yntouc7rGpGlH1+0pGO1Yiq7wTysox/C
+	2AKpqfPzq7S3EZS0K4sXzc3YF69p65M+2t2kqtt8HsEYVGJcbIrtZNk8lCLzvLtdVAgd1t
+	FSJtv8hxGap1SIPdQoRigeY1n4JSiSo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789654250;
+	s=arc-20220608; t=1789654284;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KbrDS6hKlC0VTaC9BV7+naLsGbVr14Ol/r0dwCCcssI=;
-	b=zUwPjc7cPkBSgH8lU4m5Iyvr6txtbAbzOnNin7jwA0xK+yAMIaeGVet/l7ynvWi1BnnT70
-	TKBYLsYrjHfyT0iH5DZc3CPwi9sKJUHC/8+vKWsv9gmXqGDmqIZ7T/u4dPtvem2rnWDAvz
-	Q8W17Hps9mj1Kxb9LUsZ31TluGqJE/c=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W1OQSPQh;
-	spf=pass (imf26.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789654250;
-	b=QIx81ql18I7dLcRIAEDmeKqY9XIDnE2sZcahUtG8LRUP9RSUeXdN9vQua1WP91wgyXzh4Q
-	00o+Beo8zuspcqFPHfnw+Taoq8kAYu1KAv8JMAcVx06w5ysneoI69m1ksNklBkf2Xne98P
-	HesSZIm6nEDSJjzH8MpJiRmLW9T/wZw=
+	bh=sw4l7egVZZpkPzWMWuKshNPwKQcv/aeVFEewmWZph6U=;
+	b=CQWzd2SCiOvnelebrVSa7bQLjkRZFugtVCyKKFNTOPsfIHBC88KK8VjbnsP5OZt7Qw+cBy
+	pQblci36MEE0D8eYYBpjanXawjVKMsnsWMLB4bnwmC6BxDJqhvWw9iU/qtzgKy2ywXIIX7
+	kaBPoKGBF+Mu9D9LK9vOIoJOUkpWiVQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 934FC60204;
-	Thu, 17 Sep 2026 14:10:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB69F1F000FF;
-	Thu, 17 Sep 2026 14:10:48 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5B42D60211;
+	Thu, 17 Sep 2026 14:11:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C4741F00893;
+	Thu, 17 Sep 2026 14:11:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789654249;
-	bh=KbrDS6hKlC0VTaC9BV7+naLsGbVr14Ol/r0dwCCcssI=;
+	s=k20260515; t=1789654284;
+	bh=sw4l7egVZZpkPzWMWuKshNPwKQcv/aeVFEewmWZph6U=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=W1OQSPQh322nQaohrMaAxOagWwbvl9nfa1M8/bJfBh0BVO2wIDl50kW+0OZlfAY9W
-	 I8TRDsOX/HJXa0PKXXSg3zbiITkFW7y0z/NWU4OXDcMlOaG+DI7FxP3vZNlMvJBf3Q
-	 s4BWwM4qRiDe46bp4aSjSK4+BzIY3PD4mAA0IvWHyhgKcP013CBl7DGA1jrzzPq4Z9
-	 XhM0GnOREVbuDkMQVJt1m0PHIDNXJRlaoPvuGHmCCWqjBKgBaa9tv8Gw1LDojsZm3o
-	 M36krUXURWBS3Sc095w9ic0+ppCVGElFpESwfj7+Pmq8CdLtbTXHTLgG85lvR+ni7t
-	 y85DiRIBQEmIg==
-Date: Thu, 17 Sep 2026 15:10:47 +0100
-From: Harry Yoo <harry@kernel.org>
-To: Tim Menninger <tmenninger@everpuredata.com>
-Cc: linux-mm@kvack.org, Chuck Lever <cel@kernel.org>, 
-	linux-nfs@vger.kernel.org, Jon Curley <jcurley@everpuredata.com>, 
-	Eric Badger <ebadger@everpuredata.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
-	Adrian Hunter <adrian.hunter@intel.com>, James Clark <james.clark@linaro.org>, 
-	linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [SLUB] nfs_page cmpxchg_double_fail and perf lock perturbation
- on dual-socket NFS/RDMA
-Message-ID: <aqvy8NqRRRmUlxjR@thinkstation>
-References: <20260916232227.4098143-1-tmenninger@everpuredata.com>
- <aqvq8-6IJBDer90O@thinkstation>
+	b=aIaKJjIbccvkrYBH0+v46ZwCGpX8u2/Y7+TtCKCBGh6qM+mDBNq41vdcklxwv+kIv
+	 Yn5vdiVCHzlGfOciw/YRms0lPnT8om1qUARsis6mc4+ZHscBj2J+mXafkSH5xAAZzW
+	 viCO6XlKeTNkRbwB6BypWO6wKj6/t2QEei/K638tn6Suapt4WMtLvfVKsGyU/qU/uf
+	 jXW1VC9LaXRAYOK+JkVwirV9QlKiGKTgVriJyuRll/Bun0U2cJ4NKs1eGYtsmD0oOt
+	 JPWUreOx8VFkcdfFqVTht2Xe9j31J1WPSckRX5G0i9nTiIf5rxbX0LnoRGhbmoZecs
+	 agjxo/s79L0zA==
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfauth.ams.internal (Postfix) with ESMTP id DC180198004A;
+	Thu, 17 Sep 2026 10:11:17 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Thu, 17 Sep 2026 10:11:21 -0400
+X-ME-Sender: <xms:BfWrasERx0bB0bQpen8UY-FjGVSE7vCNnIZ2D0aRNJTX5pjpsZJkFg>
+    <xme:BfWrau3XEvQvuLMxZ9WELL-eWCyvs0ZTR171fgmFImTRM0M4G-DO2K_NUF6p9cQ_g
+    ixdxYBTMwsdbhqIguHadeIrfg2msPjONvCvamirrUh1PviCBlpRAONd>
+X-ME-Received: <xmr:BfWraqYKNKGLnqsM5J2q7-ZHNFwYUxgMtKlaJL_Mz4SgnHGx5nKaGoZTmkw>
+X-ME-Proxy-Cause: dmFkZTFQhJTCOy0YHIilx9900UfTpNvB34YFJiLNooiGSVb0X0+i17bCb5sAQsuLM4KruI
+    dvsoPorMOMMYqAxO2DV21waGwNq85WpddXnct2choRCqkriiPtWZwJSD/E+2sC/TR/5LJC
+    QAXCpBpPsqJAESSaRrlPaePdvhn7KHnK3U3kCpoo+lao8OupTd1eF1VCtRg0LwmpTVEpHm
+    WYB3aLcRIwUWTuU/E2rpNvbjSQwXo/nbf71ZypkmtdH5i3YDnrSNkgb2ZQZg4hCpLWQpap
+    ZS8iBYkdEdu7VwyUz17Hbw5Z1Ztfq2J376o2mKktQqYnxRczNYRLsD8XZ4ZIzI1LQoxvR4
+    7vfmFO60v62faua+6UuZ/FWXjMhET8yC0owKNgiolW8HG4g+JBBhKJZ1JGW5aTKw8/LnwK
+    vYfO9iVoP2uUVfzvkEbxeWeuHRr7etQL41JftUTG0QTvYmj762Ikfj8G60IjYN0aS54m4E
+    87UOdPS1OclRtHI5oHufH45DAiqQBfREpGW7qfaSjyk45Iy6Umfl5qmHXsn/ALoFC+ZinD
+    TygddqlYc4pXgQMnTmjbZI+gBUZ2YUMze9+L074Ub7p4Qz9IIc2XVs4VxnZN0RdS0avSxP
+    gDNtd2nFUxqJUJ0fzGHDpmm2qgtliD0UN1bnTXF0R5tOJajKPrDzMO998uZA
+X-ME-Proxy: <xmx:BfWralr3PphkjPXQ1w6ofPx7F9fh_RVIqjs7iioZ-5QP97J9akp7UQ>
+    <xmx:BfWraq1933UaajS6j7oE36Kyne2rgqCmOhxHTmssnyS7ALzgzy3uJA>
+    <xmx:BfWrauUM6FfwyBX7iyjn7m6bI7Ll9uUv0cRzvNmloyri599Lpb2G4A>
+    <xmx:BfWrarU_R-VIRJxSjt5VfBYNlNFCobVMeltrAZ3edhioruVNhPFrXA>
+    <xmx:BfWraiDP36XwqmVTsJk_pmZ0BVHsjaBgAmARcAGw24PmOEFtS11wilkY>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 17 Sep 2026 10:11:16 -0400 (EDT)
+Date: Thu, 17 Sep 2026 15:11:15 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Zack Rusin <zack.rusin@broadcom.com>
+Cc: Borislav Petkov <bp@alien8.de>, Ajay Kaher <ajay.kaher@broadcom.com>, 
+	Alexey Makhalov <alexey.makhalov@broadcom.com>, x86@kernel.org, Dennis Zhou <dennis@kernel.org>, 
+	Tejun Heo <tj@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	"H . Peter Anvin" <hpa@zytor.com>, virtualization@lists.linux.dev, 
+	bcm-kernel-feedback-list@broadcom.com, linux-kernel@vger.kernel.org, Christoph Lameter <cl@gentwo.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	Bo Gan <bo.gan@broadcom.com>, linux-mm@kvack.org, linux-arch@vger.kernel.org, 
+	linux-coco@lists.linux.dev, kvm@vger.kernel.org
+Subject: Re: [PATCH v1 0/2] x86/vmware: Share steal-time storage in encrypted
+ guests
+Message-ID: <aqvxQoIoYhJTZpAC@thinkstation>
+References: <cover.1789488039.git.zack.rusin@broadcom.com>
+ <aqqGUAX65s4LdJkr@thinkstation>
+ <CABQX2QMAfszf3z+Auo0AdwGsf94kTX0DrTrd8k6G1PTNMYsdXQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aqvq8-6IJBDer90O@thinkstation>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: AF93D140010
-X-Stat-Signature: htajshtfhta5x586wdmtzuhtezw7k8z5
+In-Reply-To: <CABQX2QMAfszf3z+Auo0AdwGsf94kTX0DrTrd8k6G1PTNMYsdXQ@mail.gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1789654250-945478
-X-HE-Meta: U2FsdGVkX18P1QTqEOkrpVJiTKD504pKtJV+pr3QODUm7uawIsbbfbQw0AkDdlBQmW6cmQTkqDXxxJLHzCDchDuIKomIJXTnomYBXsIIAashPlPttmFrUjm8GoVbhSsfMSrgnnyUhqwDXi5TjT1pUfvjUJyRYmrUxjDL9CToSgafEWh08fA0N+8y/oH/u+dHZOppS384LH5UfW/e1G/dEBorCk6yYoS04ghssno/9uqHLKYglA0nUOItX/rcZGAr7Vw51/oFnHBVSuTA2gJyzPpL75wjbfO89BMVpFR11fdvQr2sAwT8aYZspuMZvKXI2V7hukZfE6vwTrsQGi2qEPn+slCYMUZ6XR934gYX3m8Gnai65bPfZqJ2Ym0VbznN47ms6o2NNwoYWf3o2qvFg0jFiHSL6RloFj0oirY+k6PMnwGhSKF8ZR01quEZRvh293h8kDT4pUGhTFS/WWu83QMDSGZ86ft6RzaH0GoTyQuXzA+UtT2nVOhhPP28T3ZOEmu4/+hHyTlWmkLq/M7hNBhBuuobDpPHuzlP1a+TxuCQ/L2glYKzGny1uXXlZDWMtGvXqJ5DI7ppahOZ0v48od+5yxJuNy8eCSVZ1u2Q/mMLyIPBa8H9KXmZRJ/GXt0fdoyW2s0+AKA0LaA+UD/zCcnIQs3BZ+qnSjG6AHkaxWT1waiL3gUY65GSBQDZ10vNoUN0y2QlLV4t18/PKTOTvEx9KodV5yI/slSayCISwG4d0Z/IquGt+Ltfb63ScJMa4Svklpvg7Mf7XNP5C3Ket/NgIZnbDU6xaBGizTxxcryVFSHVolLn/qYd8hB3ttU1GccIBt/IevqKpXknT0sUh/uo6KAmWqzHk8LCQBlMYFea6FJXzit3CpcBtBVR5srVFzh26H+nXoJFuvA5LxeBGV5jcIvzWIXCm4iSl4T1s7p51I2Z6v//jhrGXohWcMUSIIhf1U2yxKjA0FoCNq2
- Zdi1eaOf
- 15iAOZ1jrw4ADsDfi/Jb9xUf4Pt3OvhVIfA8k2PPeb5p+pL5/5n1DweRHyrUvRzCfztXw6yifI7+NGYpIsHmtTK71TD1Y4jpeMqgBnWPbpX5DM2zrX74BBYy/mNL3A7f5yWveLLBmKKymspU3l+5XH7mHyt/CAOzNupBRtip0z6DbGNNfQQxE9H+Qn/JOKASEkRsB/2AM0ivdGLSdOuVV8e0zsmCg28LDBbgrxzainw7gkp8n8WN8jXtuQGNLfov8HjQ78l9EY/+vsEMJ1mWQLDSh29olsA+k6kf/f2+pw9bjq1qurOxGUZ9UDpPq6lcIrW9D
+X-Rspamd-Queue-Id: C219020009
+X-Stat-Signature: 8hmhso7nt34tc1ewt8sjfby5i3q3q1o4
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789654284-795256
+X-HE-Meta: U2FsdGVkX1/quv+e2vXMh1I/8YvwxPh6GXaVRHAIbDQYVTjtdr9BvQxnCefrcR7rBFQjTgw0fp7X44jWPN0UAAJDEHudwJQUpGpW3B2g3EynSbIjdsEkppJ5850Ig6YBJFCIBoNKHwkMOp/AXySLyFzKJAedXQXv1R8TF8ew74b3ou988FM7gvVlsGBVd+fJd2+71j0Hyy8ksSU8invYlC4r/hr9CMorwUqed4oWiGuolYtMBfxR5vS/I5vmkgxfAlTw6TG8iaZFeOSJiLeeuCQK2f4c7L4wkBAcozNUHUhnls8CEHmnURxlLiAnjDdrQDB5x4FpF1kr6t/D61odaQULX9p11pcEmJH4LYSowvSDcgdO/JkygJs/Fg4YBPA9YobB4/Roh0QWnmkUbY3zqXzhzWi9Qntedw2LRCDtEimlORaZqGpCDhjTUDC5VZYGVOykA7AQDWuYKceSZKfey+o6ulLFRDZZaCbXnk7RU9FcJkCPJqjh7+nLVxqbYnmuQWDYzbm86rsrdKWiJyHJ4TgMv19KAFhhwauwPtIxXJAStoO0cHdrrAqKfwsINNR0o6Tz/2fJFQ05h+m6BEFhZaf5q+uP4N6G+u4pFycn8D9qVQV3FvCraUxf2xYPtH5ebvL3OyG4Gb2yLW8Dpp3PeghXRyuiaDAOX7Vs5tdQwDWbXZy6oldxo5q6kumTkccewAiyxG8Mtonip4jzW3yBhxL90gylsy3vnJNxBdtiNgFcpEkaMLk1p2aoYaSLiprQufmJGlQFZHVLxoIeJyZn7xuU3VnOiId9YYS4TWuaOB9RFeA6G20HSUHSb7eDIh/+AqkrZhjEdHYyZnDMDucM5afFK5aUZ+d8jOlZQNa+2cM7Z/zCrMM6FVjU3kO2cLD7+0w2TC+OVO3Nn1jAu04n1nUoNn5XJN4XNUnZS1Pi94jQppqzYiebtYg1KsQXj1KXRPdDl9uWvKSFQ2IOdQa
+ EI113MOl
+ Qemfk0gZszvpZTpjIJrr3g9ylYx+Bn0v8Ba4tbAGomXllokAJogT2jTULBdaJTi1cKzjEpFV54LLAlNR2l9GV/4vg2VhnuedXTfNzW5O8O4JeDePhwM7uwQQCkdCwVjRO04ZEjnP/fRSMbHk338fvuftlopzeAIPFMLLjbIeAvvcw76eJUiZOYz0Ubo2Q9TpaFp8wGKT2hvP/HHhDDkpBO8wkjKoJhB0EFWhHbwW9rV5/+X7G1vnYXoIMkDzLVAjiCR0DZOzc6Bv4dLQ1nQszEwQ3oA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,224 +128,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-... now I realize we need to add PERFORMANCE EVENTS SUBSYSTEM folks 
-as well ;-)
-
-Hmm, sounds like perf lock is somehow triggering slab allocations
-and interfering the workload.
-
-It could be because SLUB is merging nfs_page cache with some other
-cache that perf uses.
-
-Could you please check if it reproduces with slab_nomerge kernel
-parameter?
-
-On Thu, Sep 17, 2026 at 02:46:24PM +0100, Harry Yoo wrote:
-> Hi Tim and Chuck, thanks for reporting this to linux-mm.
-> Will take a look at this but let me Cc SLAB ALLOCATOR folks here first.
+On Wed, Sep 16, 2026 at 11:41:19AM -0400, Zack Rusin wrote:
+> > I acked 1/2, but I don't like where 2/2 does the conversion.
 > 
-> -- 
-> Cheers,
-> Harry / Hyeonggon
+> I saw that, thank you. Since I'll be respinning v2 of this I can go
+> ahead and drop the unused DECLARE_PER_CPU_DECRYPTED in that one if you
+> want as well.
+
+Yes, please.
+
+> I went through the linked thread, including the dropped 2022
+> Quote-buffer alias approach and the 2024 netvsc work's kexec
+> regression, fix and re-review discussion. I will keep TDX vmalloc
+> support out of this series and correct the explanation to cover alias
+> consistency, direct-map splitting and load_unaligned_zeropad(),
+> including removing the suggestion that per-page GPA lookup alone
+> resolves it.
 > 
-> On Wed, Sep 16, 2026 at 11:22:27PM +0000, Tim Menninger wrote:
-> > Chuck Lever suggested I bring this to linux-mm after we found some SLUB
-> > measurements we could not account for while investigating an NFS/RDMA
-> > throughput regression.
-> > 
-> > The original NFS discussion is here for context:
-> > 
-> >     https://lore.kernel.org/linux-nfs/0e2f9688-097c-4bb9-a7ec-82b41bdb3653@slotpi15m67/
-> > 
-> > The NFS regression itself has been separated from this issue. What
-> > remains interesting here is the behavior of the nfs_page slab cache on
-> > this machine, particularly the measurements with and without perf lock.
-> > 
-> > The system is:
-> > 
-> >     Intel Xeon Silver 4516Y+
-> >     2 sockets
-> >     24 cores/socket
-> >     2 threads/core
-> >     96 logical CPUs
-> > 
-> >     NUMA node0 CPUs: 0-23,48-71
-> >     NUMA node1 CPUs: 24-47,72-95
-> >
-> > The workload is a high-throughput NFS/RDMA direct-read workload using
-> > 1 MiB I/O, 160 threads, and iodepth 64.
-> > 
-> > The relevant debug options are all disabled:
-> > 
-> >     # CONFIG_KASAN is not set
-> >     # CONFIG_PROVE_LOCKING is not set
-> >     # CONFIG_LOCK_STAT is not set
-> >     # CONFIG_DEBUG_SPINLOCK is not set
-> >     # CONFIG_DEBUG_LIST is not set
-> > 
-> > All measurements below were collected on the unpatched base kernel:
-> > 
-> >     $ git rev-parse HEAD
-> >     940de590b839f71d6dc846160534bf202401b8b7
-> > 
-> >     $ uname -r
-> >     7.3.0-rc1-mainline+
-> > 
-> > The initial observation was a high apparent contention rate on the
-> > nfs_page slab's list_lock. In 10-second perf-lock captures I was seeing
-> > roughly 4.5M contended acquisitions and about 170-185 us of average
-> > reported wait.
-> > 
-> > Chuck reproduced a similar acquisition rate on a single-node EPYC
-> > system, but saw only about 7 ns average wait and fewer than 100
-> > cmpxchg_double_fail events over a corresponding interval. He suggested
-> > checking cmpxchg_double_fail because __slab_free() drops list_lock and
-> > retries when the freelist cmpxchg fails.
-> >
-> > I repeated the measurements in three placement configurations:
-> > 
-> >     A. workload unpinned, CQs all on node0
-> >     B. workload pinned to node0, CQs all on node0
-> >     C. workload unpinned, CQs balanced across the nodes
-> > 
-> > Without perf lock, throughput is similar in all three:
-> > 
-> >     A. unpinned / CQs node0:       ~45.5 GB/s
-> >     B. node0 pinned / CQs node0:   ~45.7 GB/s
-> >     C. unpinned / balanced CQs:    ~45.5 GB/s
-> > 
-> > During the perf-lock captures, throughput is approximately 25 GB/s.
-> > 
-> > For each instrumented 10-second window I ran:
-> > 
-> >     sudo perf lock record -a -g -o "$D/perf-locks.data" -- sleep 10
-> >     mpstat -P ALL 1 10
-> > 
-> > Before and after the same window I sampled the counters under:
-> > 
-> >     /sys/kernel/slab/nfs_page/
-> > 
-> > I also collected separate 10-second counter and mpstat windows under
-> > the same workload configurations without perf lock.
-> > 
-> > The resulting slab counter deltas were:
-> > 
-> >                             A               B                 C
-> >                      unpinned/node0    node0/node0   unpinned/balanced
-> > 
-> >     free_fastpath
-> >     instrumented        655,917,745    457,936,140       328,670,030
-> >     uninstrumented       34,906,233    119,984,226        59,469,931
-> > 
-> >     free_slowpath
-> >     instrumented        236,735,724      7,720,917       270,716,506
-> >     uninstrumented       85,039,753          2,814        60,145,870
-> > 
-> >     sheaf_flush
-> >     instrumented         39,842,700     42,706,800         8,341,440
-> >     uninstrumented        1,286,400     13,487,700           887,700
-> > 
-> >     barn_put_fail
-> >     instrumented            663,994        711,745           139,037
-> >     uninstrumented           21,464        224,762            14,765
-> > 
-> >     barn_get_fail
-> >     instrumented          4,609,925        840,344         4,651,225
-> >     uninstrumented        1,438,643        224,787         1,017,006
-> > 
-> >     cmpxchg_double_fail
-> >     instrumented             70,524          8,077            28,062
-> >     uninstrumented            7,471            713             1,503
-> > 
-> >     alloc_slowpath
-> >     all cases                     0              0                 0
-> > 
-> > The SLUB counter profile changes substantially with perf lock despite
-> > the lower NFS throughput, and the exact mix depends strongly on
-> > placement.
-> > 
-> > The uninstrumented node0/node0 run also reproduces the barn/sheaf
-> > relationship Chuck pointed out earlier. The nfs_page sheaf capacity is
-> > 60:
-> > 
-> >     sheaf_flush / 60 = 13,487,700 / 60 = 224,795
-> >     barn_put_fail                      = 224,762
-> > 
-> > The placement dependence of free_slowpath is also large. It falls from
-> > about 85M events per 10 seconds in the unpinned/node0 case to 2,814 in
-> > the node0/node0 case.
-> > 
-> > The reported perf-lock result, however, is similar across all three
-> > placements:
-> > 
-> >                          contentions    total wait    average wait
-> >     unpinned/node0         4,782,839      14.39 min      180.47 us
-> >     node0/node0            4,582,012      14.13 min      185.05 us
-> >     unpinned/balanced      4,572,196      12.81 min      168.14 us
-> > 
-> > I also revisited an inconsistency Chuck noticed in my earlier
-> > measurements. Previously I had compared aggregate perf-lock wait from
-> > one 10-second capture with CPU utilization measured during a different
-> > window.
-> > 
-> > I now have paired 10-second mpstat samples for each placement, with and
-> > without perf lock. The node values below are averages of the per-CPU
-> > %idle values for the CPUs in each NUMA node:
-> > 
-> >                                   system-wide       node0       node1
-> >                                   %idle             %idle       %idle
-> > 
-> >     A. unpinned / CQs node0
-> >        uninstrumented                 31.46           8.0        54.6
-> >        instrumented                    3.60           0.06        7.1
-> > 
-> >     B. node0 pinned / CQs node0
-> >        uninstrumented                 84.26          69.2        99.4
-> >        instrumented                   12.07          10.4        13.8
-> > 
-> >     C. unpinned / balanced CQs
-> >        uninstrumented                 66.86          66.7        66.9
-> >        instrumented                   14.83          19.0        10.6
-> > 
-> > This resolves the accounting inconsistency in my earlier measurements.
-> > The large aggregate perf-lock wait and high idle percentage had come
-> > from different windows. In the aligned samples, the system is much
-> > busier during the perf-lock capture than in the corresponding
-> > uninstrumented run.
-> > 
-> > I am still unsure how representative the reported ~170-185 us average
-> > wait is of the uninstrumented workload.
-> > 
-> > The remaining number I am less sure how to interpret is
-> > cmpxchg_double_fail. In the uninstrumented windows I see:
-> > 
-> >     unpinned / CQs node0:       7,471 / 10 sec
-> >     node0 pinned / CQs node0:     713 / 10 sec
-> >     unpinned / balanced CQs:    1,503 / 10 sec
-> > 
-> > compared with fewer than 100 in Chuck's test.
-> > 
-> > I understand that cmpxchg_double_fail counts failed slab freelist
-> > updates rather than failed logical frees, so I am not sure what the
-> > appropriate denominator is here. In particular, the node0/node0 case
-> > still has 713 failures while sustaining full throughput and only 2,814
-> > free_slowpath events over the interval.
-> > 
-> > My questions are:
-> > 
-> > 1. Do the uninstrumented cmpxchg_double_fail rates above look abnormal
-> >    for this workload/topology, or are they within the range one would
-> >    expect from this degree of concurrency and NUMA placement?
-> > 
-> > 2. Is there a less invasive way you would recommend measuring the
-> >    nfs_page list_lock/freelist contention? I would like to distinguish
-> >    the steady-state behavior from what is observed during the perf-lock
-> >    capture.
-> > 
-> > Thanks,
-> > Tim
+> After tracing the boot paths, I think there are two distinct pieces
+> here. The SEV boot GHCB needs .bss..decrypted before BSS is cleared,
+> whereas the SMP per-CPU instances do not exist until
+> setup_per_cpu_areas(). KVM then registers its boot-CPU per-CPU buffers
+> in smp_prepare_boot_cpu(), so the common conversion needs the early
+> primitive you proposed. A shared early_initcall would be too late for
+> KVM. The UP registration path probably also needs handling separately
+
+Agreed on all of that. Leave .bss..decrypted alone in this series; the
+SEV boot GHCB pins its conversion to the startup code and nothing on
+TDX needs it today.
+
+With the primitive called before smp_prepare_boot_cpu() there is no
+readiness state to track.
+
+For the vmalloc-backed case, I would rather not handle it at all. Force
+the embed allocator when memory encryption is on: ignore
+percpu_alloc=page with a warning and don't fall back to page mode if
+embed fails, just let it hit the existing panic. On 64-bit embed only
+fails on memblock exhaustion at boot or when the NUMA groups spread over
+more than 3/4 of vmalloc space. Neither happens in a guest.
+
+> My suggestion would be to do one of two things (or at least I think
+> those two options are realistic to me, given that I'm no expert here):
+> - add the central per-CPU infrastructure and migrate KVM/VMware
+> together, removing both loops and putting the TDX vmalloc rejection
+> and readiness state in common code. Would you and the KVM maintainers
+> be happy with that first, and generalizing .bss..decrypted separately
+> while preserving its earliest SEV setup? afaict the latter also needs
+> to broaden the annotation and linker guards, and changes kvmclock
+> storage and sharing on TDX-only builds.
+> - a smaller VMware fix using a separately allocated, direct-mapped
+> page per CPU while the common infrastructure is developed. Using the
+> normal allocator would also defer ordinary-guest registration, unless
+> I kept their current static storage as a second path. This option
+> would retain caller-managed sharing and buffer lifetime handling.
+> 
+> The second option is, of course, easier for me, but I'm happy to do
+> the first to get steal-time storage working for us. Do you have any
+> thoughts on this?
+
+The first one, please. It is the better long-term shape and it removes
+the KVM loop as well, so the per-CPU section finally does what its
+name says.
 
 -- 
-Cheers,
-Harry / Hyeonggon
+  Kiryl Shutsemau / Kirill A. Shutemov
 
