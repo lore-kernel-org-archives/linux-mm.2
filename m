@@ -4,97 +4,151 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4114C982D0
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 05:19:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CB8CC982D0
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 05:23:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EBDB16B008A; Thu, 17 Sep 2026 01:19:53 -0400 (EDT)
+	id C52EC6B0092; Thu, 17 Sep 2026 01:23:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E94936B008C; Thu, 17 Sep 2026 01:19:53 -0400 (EDT)
+	id C04376B0093; Thu, 17 Sep 2026 01:23:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D859D6B0092; Thu, 17 Sep 2026 01:19:53 -0400 (EDT)
+	id AF26D6B0095; Thu, 17 Sep 2026 01:23:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AAC656B008A
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 01:19:53 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A64CEA0237
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 05:19:52 +0000 (UTC)
-X-FDA: 85222102224.12.E8CDC00
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.6])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 0AD9380003
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 05:19:49 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=cI01zzOG;
-	spf=pass (imf02.hostedemail.com: domain of lkp@intel.com designates 192.198.163.6 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789622390;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 800DE6B0092
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 01:23:40 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id F0E5D140218
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 05:23:39 +0000 (UTC)
+X-FDA: 85222111758.28.2CCF6CC
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011059.outbound.protection.outlook.com [40.93.194.59])
+	by imf13.hostedemail.com (Postfix) with ESMTP id BD14020005
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 05:23:36 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=G2lDo0QZ;
+	spf=pass (imf13.hostedemail.com: domain of bharata@amd.com designates 40.93.194.59 as permitted sender) smtp.mailfrom=bharata@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789622617;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=l8Mm4Gh2D29J5+N6nMkJfen83hF3sc4PLTLajOUSuOs=;
-	b=QqEo1IeVzoU2HzXlh079gDeWGcIUOHKalYCKVbnkzeqz5/Mo93WhO4hbyFAENrjZ1xT8bK
-	nklQo5adHG9kBGjlMkKSQDkKTBwfI6HQB2MbLXstE0cL6+6na5vJjbpLMoAxY/JPBiL+rL
-	8r0hSxP6J7bqcOEcMtbt0Fi8Akb62To=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789622390;
-	b=0kgzE15N5f6lVC4GES5zuH2VYiMB0/+ktjJK5ebSZbPL/3bFRuQUUeNcE9apOoaVG8zoDd
-	YS1ut1jIKDfolJpzFRP6u2us/321E8JEuWL/HnIy414Ef8F5n7F+f0D6IBjhAauXJQ2F59
-	pbEb5RvvK5aJntvZFffAGjKk6on3UTA=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=cI01zzOG;
-	spf=pass (imf02.hostedemail.com: domain of lkp@intel.com designates 192.198.163.6 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789622390; x=1821158390;
-  h=date:from:to:cc:subject:message-id;
-  bh=CdiQS81nfPpUfZ6GRGBXDuYx72eCP70wurrdrexS1+o=;
-  b=cI01zzOG9zMkLncFj5s72XL6GgkLmnVP0JnAeub1vyWh2tu2jrETcoC5
-   yy9T/n/OI4TVBwX9dLH4BcrYWADZ9ZMXzQUfUSvWTBNT/LrEWxbDbwyxM
-   oUUaWMU30zostbhcEWX/iRtG0beRFJDy1n9hDMiMNqKOOfdnV93SFgM2E
-   B2HzhTsaBSceo4pmjXyp+yX6VpLFpVVd1ulSZGJ9M11JjqFAVCy9brzTU
-   48S+0iY1T0XzTJxradKnTygrR+nE49Qd8S63q9H9AAcvQDeus2HAiZKB9
-   /I6qAfC3ZlAAaowqdbGZLSnjMTnFXanxblZdIpCwJGxenTCSsWucO0eBi
-   A==;
-X-CSE-ConnectionGUID: 7bTK7Uw4TvioavAvYft8tw==
-X-CSE-MsgGUID: 0XV1Q9OrRgalR4K8YNY4uw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="514818"
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
-   d="scan'208";a="514818"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa116.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2026 22:19:48 -0700
-X-CSE-ConnectionGUID: tZZxEQEURE23TTUPfDEjNQ==
-X-CSE-MsgGUID: HMN8ui49RPyjPzBzvsY0GA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
-   d="scan'208";a="297065317"
-Received: from lkp-server01.sh.intel.com (HELO 462990a40a85) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 16 Sep 2026 22:19:45 -0700
-Received: from kbuild by 462990a40a85 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1x74X9-0000000078x-0DLN;
-	Thu, 17 Sep 2026 05:19:43 +0000
-Date: Thu, 17 Sep 2026 13:19:32 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ye Bin <yebin10@huawei.com>
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>
-Subject: drivers/acpi/x86/s2idle.c:165:51: warning: '%s' directive
- argument is null
-Message-ID: <202609171325.a3EAE6OV-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Server: rspam04
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=mjcQpIle4mUkeOOzrC/Nzhu6u0fdTBchXgOrRnT/q2s=;
+	b=NP0vTprDZP7QejHGctK0eE+zIyVIW6gAteObmC4V6RUydo5XFFpsZvsB/xrU9FK1iJLm1u
+	wpBwSP1Tf3WaupzcAL9Hrx/8bDot4qx23TJbd/L9q5yN14ayrXkvIdQ3I5Hgmv9qosShvR
+	6/XeB7CgNgi2SO0H+aZA3bBBKzjTkJE=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1789622617;
+	b=yazzRQR35sSSbflo9fMKW5LRQbcCcJRra9dz10wrZMXicOsqeOyo1qcMr9mjg5di1PQ8mc
+	1mvR/kuhU/+uw9KE6iEOGJ9gtHeq8xmLphe+eGqofcg7FYoXWW5HW+7id1kZ+sJJKlVjLq
+	Hedj9h+0UGc3UcQTvVN5zLSotCe3Too=
+ARC-Authentication-Results: i=2;
+	imf13.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=G2lDo0QZ;
+	spf=pass (imf13.hostedemail.com: domain of bharata@amd.com designates 40.93.194.59 as permitted sender) smtp.mailfrom=bharata@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=eP4/tIw7IWEKVM0ndQE31Zbn/exiX40wldVCCMgtqWOBRMXM4IbKqGxOg7ooYjO1DWmUwHgM9cDIdQi3ad0m8ioJjjRC4uEDX7271LdXzECzkIgLKwxtCI8vvWh8cwfCit8ySIrouxdkf3BxML5GYlUYJUdrArfcpwHPbspf+nBPdpjCf8tw6mta3LN/77NicNrcOrwCul9nisqN55mw3G1FFIbCrixTh6mU6MTQu1vcgIsjr9N5FzshmT1EM+o+XCjvYvYXmjOiOwAiXjgjsfqzA7D3IzA1Nxb5DD/NuFxBGr17/c4GlHRA1iwDpD/vQ8dNOKtbT+YjN386dvWFtQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mjcQpIle4mUkeOOzrC/Nzhu6u0fdTBchXgOrRnT/q2s=;
+ b=S8b3CY1OhpHvgBqf8GZutd/vimxvoy6w4BsS6ZTXedWQzzgCfd2U9ZgLiyiNKUwJLnT9bcuhFmo0yEMNtrhYBOf1ukd1MSd7TTRuImOaBFBYNd0XHWu5fJ0+ZoL5NCCBpdhLhm7DpQBfZvO4tatrvEVFhFRWrow2gnn2cwB5u+kqYkIwvAaDtyLMAHnsDZM1yzJrpCPb4G1Nk8tyMuWn7bEcY6RrkqMD6a66uiyGHqnx4RkDAfVKcn0ERJF52In+gtlXEOvPjiLFY6jBdm2EH7wU4e20TzLmRCw2DB31A39AU6QAGHtqji4WknnaZvOh2tH4qLyIyY6ogFT371Z3CQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=gmail.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mjcQpIle4mUkeOOzrC/Nzhu6u0fdTBchXgOrRnT/q2s=;
+ b=G2lDo0QZuuu36Hih7LiOqWnYHMjZXRzuzBHhQRL6hTFYW0RadWuGgiq3SVRne2za61O3q9efbHliQfTxp3+++f71yqhZv6MbZUNWvMDC7v1OImyodoeXlezDJp14blJUX7tJD3aDTqu/aQPByN8vKw+rFCV4HTPqAIYbzUHXKoI=
+Received: from SCXP298CA0159.CHLP298.PROD.OUTLOOK.COM (2603:10d6:300:14d::20)
+ by IA1PR12MB6115.namprd12.prod.outlook.com (2603:10b6:208:3e9::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Thu, 17 Sep
+ 2026 05:23:31 +0000
+Received: from MWH0EPF000C618E.namprd02.prod.outlook.com
+ (2603:10d6:300:14d:cafe::a9) by SCXP298CA0159.outlook.office365.com
+ (2603:10d6:300:14d::20) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.428.12 via Frontend Transport; Thu,
+ 17 Sep 2026 05:23:30 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ MWH0EPF000C618E.mail.protection.outlook.com (10.167.249.100) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.451.8 via Frontend Transport; Thu, 17 Sep 2026 05:23:30 +0000
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Thu, 17 Sep
+ 2026 00:23:29 -0500
+Received: from [192.168.0.152] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
+ Transport; Thu, 17 Sep 2026 00:23:21 -0500
+Message-ID: <92c26cce-0608-4c0d-bb13-fe87afc225ba@amd.com>
+Date: Thu, 17 Sep 2026 10:53:19 +0530
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 0/8] mm: Hot page tracking and promotion infrastructure
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+CC: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<Jonathan.Cameron@huawei.com>, <dave.hansen@intel.com>, <gourry@gourry.net>,
+	<mgorman@techsingularity.net>, <mingo@redhat.com>, <peterz@infradead.org>,
+	<raghavendra.kt@amd.com>, <riel@surriel.com>, <rientjes@google.com>,
+	<sj@kernel.org>, <weixugc@google.com>, <willy@infradead.org>,
+	<ying.huang@linux.alibaba.com>, <ziy@nvidia.com>, <dave@stgolabs.net>,
+	<nifan.cxl@gmail.com>, <xuezhengchu@huawei.com>, <yiannis@zptcorp.com>,
+	<akpm@linux-foundation.org>, <david@kernel.org>, <byungchul@sk.com>,
+	<kinseyho@google.com>, <yuanchu@google.com>, <balbirs@nvidia.com>,
+	<alok.rathore@samsung.com>, <shivankg@amd.com>, <donettom@linux.ibm.com>
+References: <20260916205211.267720-1-joshua.hahnjy@gmail.com>
+Content-Language: en-US
+From: Bharata B Rao <bharata@amd.com>
+In-Reply-To: <20260916205211.267720-1-joshua.hahnjy@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MWH0EPF000C618E:EE_|IA1PR12MB6115:EE_
+X-MS-Office365-Filtering-Correlation-Id: 717d4ca0-167a-4875-40bd-08df147bcf68
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|376014|7416014|82310400026|1800799024|23010399003|10067099003|11063799006|56012099006|5023799004|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	QKgCfi+dutYGf47/sjF777b+xW/z9o9iCAKynJXATxJiHISsd/MuWm4QHhVM9LnbdHoT5qNy3WgpZXeh36JU6nloAvLRTPo7neE9ukPtY1oglX15BOgRnoCd83t99TXtCIgA79+GJrceXWjqn9syQhgjQ+ffDJ+aOW2G+AhDaRU6/Ud5uTzhYCqN8GtqbVJlgse8+8L6reVyjW6x3upw1z1L8Q8DEyW9fK4AM1Eze+jIbtCsLLTL7Y2F3C0SEwvkShzL7aDdpPL4iEiqlgfTzgaOBwWFBOCL1ik8HrwiYgtp1h6GNxW0USeYADjHcsmc5sQqN1+kIAcXKTSGEl/iRePKo5wN62La58sRrRuTFIA51Ub+Fhn6ZqAYi+Sjs3Rh/wjK8L7E+3SDLjZFlMOZDoqfA74xBWG4yEPu1TOM3T+WwB+AWys8oRMtn5EvxajbHMDjeqjCq7PQZFlDzZ70rtaq404RtFTWij+hHb2zaR8vGdJI3xI7MMV0bsVf8jOj8E8hfdk50cb0eNUzywo6jYWEHsToBb9zhPy+5Sr2K92zgD1suENfa34PgJlhtRO50RIQOgu8VecnMuEuo9jU4dWHGNKyocDHBHduPZxZ2oa6ES1kQGOewRS8g2QtsHi8qVIr1aV+3APVuy2nIyWnEzbhX/gDaf58SI026aUFvAiuBytlTNnJ+a3DdMYw/C1T6hiaPVYQKYp3VQ6z4TpLfA==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(376014)(7416014)(82310400026)(1800799024)(23010399003)(10067099003)(11063799006)(56012099006)(5023799004)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	EwPEDyIH3OebCaHgfELjTzzyg1h5EF7pYgZVLUxmwMI1tJ46iOv/fSZ5d+PBAue7JuAQD929oBDcwpbnFcwL5/s2+eIb8rtOaRKGlDoqAG7xlA0raGV4SGUOK4TIB525w7a0+Iy/AyaitG+EhdUp8CdnBy1zGPVzahLfyzDNyJFSCIlaKwB3TAtXVr7fEP+udIudVq1FFAVkbKQFsDeysEFH/sN9/Lv5G76qiTrstJcDUKlrQuBevTv/7keQ4jk6AozEJH2tIAvycP00eUTwnYpRKA7Wu0IaN1h7qJN3emd8DJ9PXlaX3WZK4HWOK+A7qpbNvRKSkMyS7NwOkkobghQwCFIGUM+wcYCHLJh8H1+8961PM7F4jKRZic69jIIkt/nxhu9x/9tRGwpjImkdo1tenJW5vn+MjuUWWG9jyZP49VuTrRCx9rvcdGWCfhZ9
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2026 05:23:30.1830
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 717d4ca0-167a-4875-40bd-08df147bcf68
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	MWH0EPF000C618E.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6115
+X-Stat-Signature: ge8h4ctqo367nwm31ist6uc5dexooo1e
 X-Rspam-User: 
-X-Stat-Signature: kzwzku51c6eco616su11tek1sbbejaky
-X-Rspamd-Queue-Id: 0AD9380003
-X-HE-Tag: 1789622389-843522
-X-HE-Meta: U2FsdGVkX1+vYpk8VluviAJuzoBOk0thbUohpl8f19hSvPeIjGVQWFLXIfsz+dw3PSFTbqvTlsuTadVbAMF0HPAAIwVhuB/2qohv0cn0jDXjH14J548/JAd4gAjHgNZqAC6A1LVoL/UwY/BiuTzscgshLMDNUnY/KRMm7K7B6pT5owgrJWAgbXUzlpoyq6hC37Ez39R1G+bjVUPrdaddAS/lyBjIC0i7Ih2rBw1vXyJREyBKvzRCvWXtE4IjDxPtV88q7j2H4IeJe3tdGdEpUqjH819UPojcHpxPPmoeTMTQBd8qV0/xmGApxQToNNt217YFBmn7+7AZBg+7Q1qhH9SpDW4D/stpaRpISd8vG8I5JqC8MFnWSCo6kZI7mHTWRY3i0CnT67evQm47DajZ/UuFmdIPC9Fj/+YnB9mLDI7v2Y03l+/fu/zlg80zoDYc5ibuhpsVG83j8BNpRW4YrHI625B8KeVeyTi6RmtNWl1vmDM/iMwVjjBPNmnSx9pKHPAea+O7TeQ/SEsryIeLfaTULdHC3054r/pTafcIWKGT/v1BZU+mhs6RLgjzZSIJZWXKfVHuB4auhw8GFJm1H6On/0GSOrjhRykRClhjJTk7axUtYPLiF8NoH5V7ojH6urdTO1qGcdgSWnF+ks25Er8CpdC+aFMNjLs2itwNbkjbKiPSd0hV5VJwBjWnfuDN1DxicfKi7PWtC+HKurSJjRrTc8kPkfa3gt1hqJwYpYWdfOvNNsJnv3IaHrYNo310AphChPeYDNHalM30hRk1/M3ZmN0wXoKFywRmFXG+7L3/nDYBPXZDJ/7uigBtVGTIfJH6v57R6tDphNwwtQ4o7sKH2Y6AEbd6/L11GMFrS6Hj9zmNyWJk0rc2Mleuu9PI+5kL1FofnyV0H2buIfYGjAeBQa3u9o+uXJk/zGc/H4XNf6NT2dsFziry5v9f3pvChTsxo/ek42W593rGuOZ
- n0/1VuVk
- k0mA3f0nBWEnUtqCo9BOkBuz/trypAzVcjrXbLJp9dze1aQwbJ14Z0AXgi1Yab5j/TbYRYeaO34uu1lI9UQ/gCRcVydLN3Ro9285Z7eAMgvaSFwfJuM7+asIGEtNHFKa7lNTSKBdzLiZxXsFmtBjUaBzmxXDfRLzVLja0fSfLx5ppHBeRGA3n/t1flby19yhYEHyx7QjOr1iOSpXDJi48EgQqDqfirJLH9ew/SDDfzZ0jTWg2vwh6qpe4d32MeEru6eWQ4i/y9zNbjiki0dmGWno+22qcugZonOt0F2rk8X3nOeyZ4E3eolw+6g==
+X-Rspamd-Queue-Id: BD14020005
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789622616-268065
+X-HE-Meta: U2FsdGVkX19isqMT33Qw3LAdxRiU/xwWI5BX1l01IQCnr7VQao8R8HoxPWdS0tjWUyCg0cQttYqvmSFn3TYJN4HSaE3BD2zztxKPmkaT2lq8NM/FTAQEy0puZ298cX7LLvjfiJLXdCMpnhSGjRto2p9k+Vl9WvzgmiNIoLNGCQql9EWtDcbdGTK5kMTxeCbmdvxdhmYh3b6y/D6rwwUatlKOYf4eW/XZbt5fWeLWNfpIe3ihuEo/yygvhy3Ri4dNyLNnCEivgiFDLySHG1NTOWKS7m8HhZtR3AQZL6t/aZzxySjER4GyeMzJJjRvy7vo0ls7swxMb1OxWC8yiBduWGMrTKXkAZbMEkI4rrvhSNB4+K+uLZu6ltKeco5F3df7PWrVL7cRX+FDCQHx9WeED8OWCE/6q3lwjd/yfzulvbYfDqI+BzhQPq3mdAf3aN1zSCYQFZAzC1674cT7nJVfyRy7hgGBcFequUZIRNGp/ntCRGrYfoaCH9/8ZMBOh6bjzVe3DMpHYO0QP+ZMt36Q8eRhFvf125rWmS1auPw1Bzeo8gErcm+88H+JHyAceca51Y7UIBf1+slV4yzOs6wii81Znd+hQz3hOzWwecvVojSf5pIkbxP4GZkxbqpN7BuJ15ti8Z8oNV4w62GqFMZfDEy3cISSaNwCxhCrBvMOOd+UP0y2CnErynkDHswb6DTyGKHRSQadj3/SyIgqYnRectNENXYTAUHg9w3paWAmavpuPEozHBJ1SQ5XbR+vYEHBM6VSyfCigW6WXmj1DXSjY7VKKJ7XlwumcbL6O8ahOLWV/rlbXGvzLouBga5/pAbCmbu4l9w2gNqhkNuydTbhxoJbe16cHda+1omt/MVtmsLY3cPgSSxN0tUVUBQ3Lhtx88qmCKmcTi14mAnjZoT32GUracHGGPsHc2YlqRadDa3FSenGloqkoMhURUvbxHslUjdrITHfZaAzff2dH8k
+ V7nS47je
+ jqOiOwMTmpFZwuD8y8p3Txae+FtjWb7q6/O46Fxf9R10aAe1E3Ozto1xtU0/2FDgfukEDDwFMU29qmldt6Dt6e6OrI+kEbEFizdT6Z5hzkXccChfFg2EBotukDEOZ/HWWlisLGedmORBpbDJVo1GRICrV2v1OQFzCM1NEofC1gHOT9F2ghgidCNI6Uen0+5hI0/2jEKbULcZnelyPylWzVYMC3dA4s/xWnpFmLRCgdhj34+jcFbvqxd7pvqRmlA4Mx7yx4dDBxWT7lz7V90P4xy5Iz7p5/EHzi8Ds0W/1aR1cUlohsWpgAKgluEgyd/OltpteSx4zGcowThhQmpmelRhQLr6KlWmYL5cowqQJNE5zl0pif81XT80Vvw4x4S3cSw0cx1UFxDmKHvXTGTfpnSePbZhj6vAlQ3IS1medsJazHm6k8ORbO0cvaUqx8Y6F/NmSYUZ+k5FUwpSgVCItGaujuc4MWZ+DBGwi
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,164 +156,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Ye,
+On 17-Sep-26 2:22 AM, Joshua Hahn wrote:
+> On Wed, 16 Sep 2026 08:38:17 +0530 Bharata B Rao <bharata@amd.com> wrote:
+> 
+>> On 12-Sep-26 2:38 AM, Joshua Hahn wrote:
+>>> Hi Bharata,
+>>>
+>>> We've been testing pghot in a Meta kernel with worklaods to try and see
+>>> what the performance characteristics look like. I wanted to report
+>>> some of the findings that we've found in our testing. Note that these
+>>> results are from a modified kernel that has my tiered memcg series [1]
+>>> backported, as well as Gregory's numa balancing scanning fixes [2]
+>>> as well. 
+>>
+>> Hi Joshua,
+>>
+>> Thanks for testing pghot with your workload!
+>>
+>>>
+>>> - Without tuning and using the default tunables that pghot comes with,
+>>>   we've found around a slight performance regression against raw NUMAB2.
+>>>   This was being run on a host with 750G DRAM and 250G CXL.
+>>
+>> pghot promotes on 2nd access by default since pghot_freq_threshold is 2
+>> by default. This will result in slower promotions compared to NUMAB2
+>> which promotes on 1st access. Could you please try with setting
+>> pghot_freq_threshold to 1? I think I should make the default as 1 going
+>> forward.
+> 
+> Gotcha. Out of curiosity, I'm wondering why you decided to make this a
+> tunable. Specifically, I'm wondering if there are any workloads that
+> benefit from making it require a second access. To me keeping it at
+> first access makes a lot of sense. Obviously you could say that
+> scanning workloads would want to use 2 accesses, but there should be
+> other ways to prevent that from happening rather than counting the
+> number of accesses before promotion. Just my 2c.
 
-FYI, the error/warning still remains.
+The basic idea is to consider two factors for determining the page hotness: the
+frequency of access and the recency of access. Hence I have kept both of them as
+configurable so that users can tune them for their workloads.
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
-head:   9b87fdc9af2fbfcdb5c24a64139685ef80f6573f
-commit: 6c2e6e2c1af1809d1d9cdbd50ac80f54f5995bdb dynamic_debug: add support for print stack
-date:   10 months ago
-config: x86_64-randconfig-007-20250922 (https://download.01.org/0day-ci/archive/20260917/202609171325.a3EAE6OV-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260917/202609171325.a3EAE6OV-lkp@intel.com/reproduce)
+However since the immediate comparision of pghot-hintfaults source is with
+existing NUMAB2, it makes sense to have the default freq as 1 to get closer to
+apples-to-apples comparision by default.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Fixes: 6c2e6e2c1af1 ("dynamic_debug: add support for print stack")
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202609171325.a3EAE6OV-lkp@intel.com/
+> 
+>> In any case, will it be possible to provide more information on what your
+>> workloads are, and the exact performance metrics? Any representative workload
+>> that can be substituted to reproduce this behaviour can also help.
+>>
+>> And when you say slight perf regression, how much is it exactly?
+> 
+> I'm seeing that average latency is about 20% higher and p99 latency
+> is about 5% higher.
 
-All warnings (new ones prefixed by >>):
+I hope this gap should get closed with pghot_freq_threshold=1.
 
-   In file included from include/asm-generic/bug.h:22,
-                    from arch/x86/include/asm/bug.h:108,
-                    from arch/x86/include/asm/alternative.h:9,
-                    from arch/x86/include/asm/barrier.h:5,
-                    from include/linux/list.h:11,
-                    from include/linux/resource_ext.h:9,
-                    from include/linux/acpi.h:13,
-                    from drivers/acpi/x86/s2idle.c:18:
-   drivers/acpi/x86/s2idle.c: In function 'lpi_device_get_constraints_amd':
->> drivers/acpi/x86/s2idle.c:165:51: warning: '%s' directive argument is null [-Wformat-overflow=]
-     165 |                                                   "Name:%s, Enabled: %d, States: %d, MinDstate: %d\n",
-         |                                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/printk.h:402:21: note: in definition of macro 'pr_fmt'
-     402 | #define pr_fmt(fmt) fmt
-         |                     ^~~
-   include/linux/dynamic_debug.h:259:9: note: in expansion of macro '__dynamic_func_call_cls'
-     259 |         __dynamic_func_call_cls(__UNIQUE_ID(ddebug), cls, fmt, func, ##__VA_ARGS__)
-         |         ^~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/dynamic_debug.h:261:9: note: in expansion of macro '_dynamic_func_call_cls'
-     261 |         _dynamic_func_call_cls(_DPRINTK_CLASS_DFLT, fmt, func, ##__VA_ARGS__)
-         |         ^~~~~~~~~~~~~~~~~~~~~~
-   include/linux/acpi.h:1268:9: note: in expansion of macro '_dynamic_func_call'
-    1268 |         _dynamic_func_call(fmt, __acpi_handle_debug,                    \
-         |         ^~~~~~~~~~~~~~~~~~
-   drivers/acpi/x86/s2idle.c:164:33: note: in expansion of macro 'acpi_handle_debug'
-     164 |                                 acpi_handle_debug(lps0_device_handle,
-         |                                 ^~~~~~~~~~~~~~~~~
-   drivers/acpi/x86/s2idle.c:165:57: note: format string is defined here
-     165 |                                                   "Name:%s, Enabled: %d, States: %d, MinDstate: %d\n",
-         |                                                         ^~
+> 
+>>> Finally, we've seen some issues with pghot causing userspace crashes,
+>>> which leads us to believe that there might be some bugs that manifest
+>>> in userspace as well (we have not been able to find out where in pghot
+>>> these bugs are introduced).
+>>
+>> That's something I have never seen till now with any of the benchmarks that I
+>> have run. Any kernel messages attributing the failure to pghot? Anything
+>> attributable to access reporting or  kmigrated threads?
+> 
+> We're doing A/B testing with NUMAB2 only and pghot, and we are seeing
+> the userspace crashes in the pghot host only. It seems like there
+> are some segfaults trying to reference ip 000... and a warning that
+> references "Too many tries to read user space".
+> 
+> I don't have anything in particular that would direct us right to pghot,
+> but this crash has repeatedly come up, only on pghot (across reboots)
+> and not on our NUMAB2 worklods. 
 
+When you find out more about this failure, please let me know.
 
-vim +165 drivers/acpi/x86/s2idle.c
-
-fef98671194be0 Rafael J. Wysocki  2020-12-17   96  
-41233988112f0f Andy Shevchenko    2023-08-18   97  #define for_each_lpi_constraint(entry)						\
-41233988112f0f Andy Shevchenko    2023-08-18   98  	for (int i = 0;								\
-41233988112f0f Andy Shevchenko    2023-08-18   99  	     entry = &lpi_constraints_table[i], i < lpi_constraints_table_size;	\
-41233988112f0f Andy Shevchenko    2023-08-18  100  	     i++)
-41233988112f0f Andy Shevchenko    2023-08-18  101  
-fef98671194be0 Rafael J. Wysocki  2020-12-17  102  static void lpi_device_get_constraints_amd(void)
-fef98671194be0 Rafael J. Wysocki  2020-12-17  103  {
-fef98671194be0 Rafael J. Wysocki  2020-12-17  104  	union acpi_object *out_obj;
-fef98671194be0 Rafael J. Wysocki  2020-12-17  105  	int i, j, k;
-fef98671194be0 Rafael J. Wysocki  2020-12-17  106  
-fef98671194be0 Rafael J. Wysocki  2020-12-17  107  	out_obj = acpi_evaluate_dsm_typed(lps0_device_handle, &lps0_dsm_guid,
-904d4a6c074b9d Pratik Vishwakarma 2021-06-17  108  					  rev_id, ACPI_LPS0_GET_DEVICE_CONSTRAINTS,
-fef98671194be0 Rafael J. Wysocki  2020-12-17  109  					  NULL, ACPI_TYPE_PACKAGE);
-fef98671194be0 Rafael J. Wysocki  2020-12-17  110  
-fef98671194be0 Rafael J. Wysocki  2020-12-17  111  	acpi_handle_debug(lps0_device_handle, "_DSM function 1 eval %s\n",
-fef98671194be0 Rafael J. Wysocki  2020-12-17  112  			  out_obj ? "successful" : "failed");
-fef98671194be0 Rafael J. Wysocki  2020-12-17  113  
-4a012dc82d504f Pratik Vishwakarma 2021-06-17  114  	if (!out_obj)
-4a012dc82d504f Pratik Vishwakarma 2021-06-17  115  		return;
-4a012dc82d504f Pratik Vishwakarma 2021-06-17  116  
-fef98671194be0 Rafael J. Wysocki  2020-12-17  117  	for (i = 0; i < out_obj->package.count; i++) {
-fef98671194be0 Rafael J. Wysocki  2020-12-17  118  		union acpi_object *package = &out_obj->package.elements[i];
-fef98671194be0 Rafael J. Wysocki  2020-12-17  119  
-aa7a1bb02bb443 Rafael J. Wysocki  2021-01-05  120  		if (package->type == ACPI_TYPE_PACKAGE) {
-883cf0d4cf2883 Mario Limonciello  2023-08-18  121  			if (lpi_constraints_table) {
-883cf0d4cf2883 Mario Limonciello  2023-08-18  122  				acpi_handle_err(lps0_device_handle,
-883cf0d4cf2883 Mario Limonciello  2023-08-18  123  						"Duplicate constraints list\n");
-883cf0d4cf2883 Mario Limonciello  2023-08-18  124  				goto free_acpi_buffer;
-883cf0d4cf2883 Mario Limonciello  2023-08-18  125  			}
-883cf0d4cf2883 Mario Limonciello  2023-08-18  126  
-fef98671194be0 Rafael J. Wysocki  2020-12-17  127  			lpi_constraints_table = kcalloc(package->package.count,
-fef98671194be0 Rafael J. Wysocki  2020-12-17  128  							sizeof(*lpi_constraints_table),
-fef98671194be0 Rafael J. Wysocki  2020-12-17  129  							GFP_KERNEL);
-fef98671194be0 Rafael J. Wysocki  2020-12-17  130  
-fef98671194be0 Rafael J. Wysocki  2020-12-17  131  			if (!lpi_constraints_table)
-fef98671194be0 Rafael J. Wysocki  2020-12-17  132  				goto free_acpi_buffer;
-fef98671194be0 Rafael J. Wysocki  2020-12-17  133  
-fef98671194be0 Rafael J. Wysocki  2020-12-17  134  			acpi_handle_debug(lps0_device_handle,
-fef98671194be0 Rafael J. Wysocki  2020-12-17  135  					  "LPI: constraints list begin:\n");
-fef98671194be0 Rafael J. Wysocki  2020-12-17  136  
-3c6b1212d20bbb Mario Limonciello  2023-08-18  137  			for (j = 0; j < package->package.count; j++) {
-fef98671194be0 Rafael J. Wysocki  2020-12-17  138  				union acpi_object *info_obj = &package->package.elements[j];
-fef98671194be0 Rafael J. Wysocki  2020-12-17  139  				struct lpi_device_constraint_amd dev_info = {};
-fef98671194be0 Rafael J. Wysocki  2020-12-17  140  				struct lpi_constraints *list;
-fef98671194be0 Rafael J. Wysocki  2020-12-17  141  				acpi_status status;
-fef98671194be0 Rafael J. Wysocki  2020-12-17  142  
-9cc8cd086f05d9 Mario Limonciello  2023-08-18  143  				list = &lpi_constraints_table[lpi_constraints_table_size];
-9cc8cd086f05d9 Mario Limonciello  2023-08-18  144  
-3c6b1212d20bbb Mario Limonciello  2023-08-18  145  				for (k = 0; k < info_obj->package.count; k++) {
-fef98671194be0 Rafael J. Wysocki  2020-12-17  146  					union acpi_object *obj = &info_obj->package.elements[k];
-fef98671194be0 Rafael J. Wysocki  2020-12-17  147  
-fef98671194be0 Rafael J. Wysocki  2020-12-17  148  					switch (k) {
-fef98671194be0 Rafael J. Wysocki  2020-12-17  149  					case 0:
-fef98671194be0 Rafael J. Wysocki  2020-12-17  150  						dev_info.enabled = obj->integer.value;
-fef98671194be0 Rafael J. Wysocki  2020-12-17  151  						break;
-fef98671194be0 Rafael J. Wysocki  2020-12-17  152  					case 1:
-fef98671194be0 Rafael J. Wysocki  2020-12-17  153  						dev_info.name = obj->string.pointer;
-fef98671194be0 Rafael J. Wysocki  2020-12-17  154  						break;
-fef98671194be0 Rafael J. Wysocki  2020-12-17  155  					case 2:
-fef98671194be0 Rafael J. Wysocki  2020-12-17  156  						dev_info.function_states = obj->integer.value;
-fef98671194be0 Rafael J. Wysocki  2020-12-17  157  						break;
-fef98671194be0 Rafael J. Wysocki  2020-12-17  158  					case 3:
-fef98671194be0 Rafael J. Wysocki  2020-12-17  159  						dev_info.min_dstate = obj->integer.value;
-fef98671194be0 Rafael J. Wysocki  2020-12-17  160  						break;
-fef98671194be0 Rafael J. Wysocki  2020-12-17  161  					}
-9cc8cd086f05d9 Mario Limonciello  2023-08-18  162  				}
-fef98671194be0 Rafael J. Wysocki  2020-12-17  163  
-a879058d01e2f6 Mario Limonciello  2023-08-18  164  				acpi_handle_debug(lps0_device_handle,
-a879058d01e2f6 Mario Limonciello  2023-08-18 @165  						  "Name:%s, Enabled: %d, States: %d, MinDstate: %d\n",
-a879058d01e2f6 Mario Limonciello  2023-08-18  166  						  dev_info.name,
-a879058d01e2f6 Mario Limonciello  2023-08-18  167  						  dev_info.enabled,
-a879058d01e2f6 Mario Limonciello  2023-08-18  168  						  dev_info.function_states,
-a879058d01e2f6 Mario Limonciello  2023-08-18  169  						  dev_info.min_dstate);
-a879058d01e2f6 Mario Limonciello  2023-08-18  170  
-fef98671194be0 Rafael J. Wysocki  2020-12-17  171  				if (!dev_info.enabled || !dev_info.name ||
-fef98671194be0 Rafael J. Wysocki  2020-12-17  172  				    !dev_info.min_dstate)
-fef98671194be0 Rafael J. Wysocki  2020-12-17  173  					continue;
-fef98671194be0 Rafael J. Wysocki  2020-12-17  174  
-9cc8cd086f05d9 Mario Limonciello  2023-08-18  175  				status = acpi_get_handle(NULL, dev_info.name, &list->handle);
-fef98671194be0 Rafael J. Wysocki  2020-12-17  176  				if (ACPI_FAILURE(status))
-fef98671194be0 Rafael J. Wysocki  2020-12-17  177  					continue;
-fef98671194be0 Rafael J. Wysocki  2020-12-17  178  
-fef98671194be0 Rafael J. Wysocki  2020-12-17  179  				list->min_dstate = dev_info.min_dstate;
-fef98671194be0 Rafael J. Wysocki  2020-12-17  180  
-fef98671194be0 Rafael J. Wysocki  2020-12-17  181  				lpi_constraints_table_size++;
-fef98671194be0 Rafael J. Wysocki  2020-12-17  182  			}
-fef98671194be0 Rafael J. Wysocki  2020-12-17  183  		}
-fef98671194be0 Rafael J. Wysocki  2020-12-17  184  	}
-fef98671194be0 Rafael J. Wysocki  2020-12-17  185  
-fef98671194be0 Rafael J. Wysocki  2020-12-17  186  	acpi_handle_debug(lps0_device_handle, "LPI: constraints list end\n");
-fef98671194be0 Rafael J. Wysocki  2020-12-17  187  
-fef98671194be0 Rafael J. Wysocki  2020-12-17  188  free_acpi_buffer:
-fef98671194be0 Rafael J. Wysocki  2020-12-17  189  	ACPI_FREE(out_obj);
-fef98671194be0 Rafael J. Wysocki  2020-12-17  190  }
-fef98671194be0 Rafael J. Wysocki  2020-12-17  191  
-
-:::::: The code at line 165 was first introduced by commit
-:::::: a879058d01e2f6e324cc98ff2ffbe4f574c100a6 ACPI: x86: s2idle: Add more debugging for AMD constraints parsing
-
-:::::: TO: Mario Limonciello <mario.limonciello@amd.com>
-:::::: CC: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Regards,
+Bharata.
 
