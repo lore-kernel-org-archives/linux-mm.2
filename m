@@ -4,88 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DB0EC982C1
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 08:15:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F04AAC982C1
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 08:25:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 75EF86B0095; Thu, 17 Sep 2026 04:15:51 -0400 (EDT)
+	id C528E6B0092; Thu, 17 Sep 2026 04:25:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 735EE6B0096; Thu, 17 Sep 2026 04:15:51 -0400 (EDT)
+	id BDF0E6B0093; Thu, 17 Sep 2026 04:25:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 673C06B0098; Thu, 17 Sep 2026 04:15:51 -0400 (EDT)
+	id AA7FA6B0096; Thu, 17 Sep 2026 04:25:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4232E6B0095
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 04:15:51 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 83749160225
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 08:15:50 +0000 (UTC)
-X-FDA: 85222545660.20.99890CF
-Received: from mta0.migadu.com (out-147.mta0.migadu.com [91.218.175.147])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 69700A0009
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 08:15:48 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=oviWyruF;
-	spf=pass (imf25.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.147 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789632948;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DqfDG4k5JTeMOBTZkf5CyX5+rM0cvpC9W4QM6kxTSso=;
-	b=iPAwBT9VEotEy3O1UxmTexAqU7LNh3jZ0apu/gYE2neb0EB38VRcvKLAgTSgSkppNfMnHY
-	cwEw+Actm4DmNpEQpU3Ts+H/rOWjohr6M4ozVpV0kOuKAlvOKkO3Zb7kc2Hsyq6PrhPzQ7
-	8ZJiJRzvFRfoMfoCppBwAEGKapGLUug=
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 809616B0092
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 04:25:05 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DFCDB1A0245
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 08:25:04 +0000 (UTC)
+X-FDA: 85222568928.14.3F5898D
+Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 3EDE740007
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 08:25:03 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=none;
+	spf=pass (imf11.hostedemail.com: domain of 33qOragkbADEflmXNYYReNccVQ.TbbTYRhfRePbagRag.PbZ@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.200 as permitted sender) smtp.mailfrom=33qOragkbADEflmXNYYReNccVQ.TbbTYRhfRePbagRag.PbZ@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789632948;
-	b=I78xwTuR9pC9PUWDj/GZMUHSmhFCj9mztEW7mfsvolYbr/Bx6qUHwsKJKcSUk1lih4yMCD
-	kYzYqLU/RataPYq6aI1ykZcJRwGWYJ7NJeuJS82wVeU4g525fNZfX2bej6R/koHYiY4CHD
-	ZCBgcJDnX1Nw5QW/euBizjw0Mq+ubqA=
+	t=1789633503;
+	b=W+VVHotGl403FdhZw3fnhxs04e6N/F2HFz3Zp6dwQ3guuuyqe/a12G2WACMBHBmhG6JbG2
+	l/RNle4QuUFftpdaQOGvJIuN4O324ur292SR8aR+rDaBtrFogZ1rlhRoFbMCldgHP6gi3I
+	oFjws+pWGsiPjN1QVu5aPKcJoAyVS0A=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=oviWyruF;
-	spf=pass (imf25.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.147 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=NvPx8OfXlBjTydmRGXNV9+CIy/MtUUq+PQTUgas3+4I=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789632947; v=1; x=1790237747;
- b=oviWyruF+4T200BNL7mm2/MDkUTTdMb1Fbap8fbhjJqu85qSD/3FQFT9D1ahTNOXPhBYrbDQ
- gsUhsEMpseop1RKZKUwP654Cppeg0Qd6wc5W/xqROu42eLSTmUIeSGDnLxQiS+oBQAXZ+ViiK6A
- hEcInPFIJUViOnXRt3Dfveww=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id e159dc0f4017a5ad;
-	Thu, 17 Sep 2026 08:15:47 +0000
-X-Mizu-Trace-ID: e159dc0f4017a5ad
-X-Migadu-Flow: FLOW_OUT
-From: Kaitao Cheng <kaitao.cheng@linux.dev>
-To: Mike Rapoport <rppt@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>
-Cc: Priyanshu Kumar <priyanshukumarpu@gmail.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Kaitao Cheng <chengkaitao@kylinos.cn>
-Subject: [PATCH 2/2] memblock: Remove unused memblock_alloc_exact_nid_raw()
-Date: Thu, 17 Sep 2026 16:15:04 +0800
-Message-ID: <20260917081504.30426-3-kaitao.cheng@linux.dev>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260917081504.30426-1-kaitao.cheng@linux.dev>
-References: <20260917081504.30426-1-kaitao.cheng@linux.dev>
+	imf11.hostedemail.com;
+	dkim=none;
+	spf=pass (imf11.hostedemail.com: domain of 33qOragkbADEflmXNYYReNccVQ.TbbTYRhfRePbagRag.PbZ@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.200 as permitted sender) smtp.mailfrom=33qOragkbADEflmXNYYReNccVQ.TbbTYRhfRePbagRag.PbZ@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789633503;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=uBkL6ZMYYdQOBhaz18ohIP2qWIBpLXjs4rOb70E61hY=;
+	b=PHrkVWUI3JLCFukrFvQCQ0eLlNwyqEVrFc9E97I+46D4D1oHzKEz9nrmS3Q0vu5xDAILg0
+	71OlERDK+ZP68okeBKBKNJvQYp83DbxvydWZs3otC/WBAcOEM/9XLglxB1vO5KOSSc5Cfw
+	DgcHTkE0BW1Ic5Z9/KtVFvHcofalWXo=
+Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-4a49f09233dso540415b6e.2
+        for <linux-mm@kvack.org>; Thu, 17 Sep 2026 01:25:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789633502; x=1790238302;
+        h=content-type:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=uBkL6ZMYYdQOBhaz18ohIP2qWIBpLXjs4rOb70E61hY=;
+        b=ZqYLAocaFSzSQ8gJACNVd9e3fMtTAc/upbKw14EmbPzIANguVjEd3641+myLI3CeJ2
+         jXNzwj5QNVFvMRtklw7PdY7rvy9mKrYJwliilFp0teo8FQz+vFdNyIXDseU/BJCXg600
+         oq3eF8jl4LLIO0jlUhQNYmlVpUmwTLjsJo6TT7+3n6yQun4vdLbDIgtNZW8GSwuoOg5C
+         7eqbsmRHlcE7KKwbw57/PPi4HfdkVLWYRFVexfcYeon/logJagYH+gksIXeJXYCeRt0I
+         G+nk0gMBXmR/NGLqen/c+LoLzqews30lkxRiUeKxJSk7JIvbhHBnbU9woDg9WwexKbjY
+         SpBA==
+X-Forwarded-Encrypted: i=1; AKwUvBwrEq4j/XPWIAW3xlLtpDhBCzILxV/Jq9E4I9aJyoZBq28UoqgkBk4bzJHsGqWHrtienjHQuorM7g==@kvack.org
+X-Gm-Message-State: AFuF++kWAuZUlX8YNUMnd42owtIl/z/4X0GaY8qDbj+bYMxhiqo1Sh+4
+	6eW1ddB+VzB7WyHtX4toxhWOo8FIZYwcARarF1tU946qjePoI50yAoUD63aX3LN3mEzwoUtii1T
+	R/uDw3YlPIUwBskVNPVYgAU8x5HEhy4sZV+OelgFUXbVX19TbyfDdBwKYLrY=
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 69700A0009
-X-Stat-Signature: oyc7xah6kh3pfniuixtgz47wde6rxzrh
+X-Received: by 2002:a05:6808:1692:b0:4c5:92fb:218d with SMTP id
+ 5614622812f47-4ca4be66e9dmr5399582b6e.22.1789633502228; Thu, 17 Sep 2026
+ 01:25:02 -0700 (PDT)
+Date: Thu, 17 Sep 2026 01:25:02 -0700
+In-Reply-To: <aqubuvR_2XCNav28@gremlin>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6aaba3de.87c06881.1db2b3.0013.GAE@google.com>
+Subject: Re: [syzbot] [kvm?] BUG: sleeping function called from invalid
+ context in kvm_mmu_notifier_invalidate_range_start
+From: syzbot <syzbot+c3178b6b512446632bac@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, bigeasy@linutronix.de, dwmw2@infradead.org, 
+	dwmw@amazon.co.uk, kvm@vger.kernel.org, liam.howlett@oracle.com, 
+	liam@infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-rt-devel@lists.linux.dev, ljs@kernel.org, lkp@intel.com, 
+	llvm@lists.linux.dev, lorenzo.stoakes@oracle.com, me@brighamcampbell.com, 
+	mhocko@suse.com, nogikh@google.com, oe-kbuild-all@lists.linux.dev, 
+	pbonzini@redhat.com, rientjes@google.com, rppt@kernel.org, seanjc@google.com, 
+	shaikhkamal2012@gmail.com, shakeel.butt@linux.dev, skhan@linuxfoundation.org, 
+	surenb@google.com, syzkaller-bugs@googlegroups.com, vbabka@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-HE-Tag: 1789632948-26249
-X-HE-Meta: U2FsdGVkX18PXcrTBNjtVWP2Vl2YzrBZy53NTlHkkUeKvaHntgFbEcFGDAvUgWUQa0C8Gcsh+2X1boc4ORenS+FwBg0WmRpPmSwpdl4O3cN/wAgmq/nxPW53S9NxPo8L7t/I7VvPZmxLnLUgz57n27qtkxo3jKB/zf0pQgGMuf8OXvpflynXwow5brv5N6Xr5oNKRIIZpifxWfUfHGsLSv8KUZesH/5b2CFeF7AiIoNlYWn1AmPc8FAnzSXGYBTK1EkGIz2trdGxYZYpM0eqfzkktMk81xriey3AUveRQu0KdM7XHkPgA1+BXp6Ju6+Jfp9BSA8hVVfB47YBHapX/zhz+ZP5Xr/dlVZCCIZNa6cfMOWjWSGTmoTcaDeMJrGoct0AU+bvoopTcMv1BsONOkK9PCKIlt5Zc/1AiC7mxTROKS63hDzNW5fG3yI+God1nBs6rzbccjy/5syAWgoAjhtJioHaegQo6W+kpBHxr2PfxrPEyRMUtIYrluFEglj2f9KIce7vb2o6E5bG2ZlXZ5RflhbVpu31OSRnQ981RFtkwdjNjyvynaVyeNE6K75CXtNe43Msn0hCrYeP0ZlHJJeCbATyNLGG9cwJ4sBp3VltTw1fnYRG0qPVw+CU6VEDsJ44D7xn+evRY8a1Pj19CZzqIsjVZZTCnBOHs5pSvQojlUn6ZkQB+oT6eHu8lVRdwet2WzzLNpMLKbOb2yCYKQ1pTXHonqVMqvAjMIEqlSTQ1X2t8puApM8KvFVqW5kxXrvprkcHwu3o+JhvAzmJbW+IugrgX92DB0ru2BQMbwSz0b/R8+V3BG5IuVLuFamgdEp7mBD11w4OYL64A3vygD2/HY1+iOn5ee1Ovc2yKqZAEYzSHhlVsv8l4sqrPSjyT3biCIde9uXvuCnohReKiCEq8zk/xdcdAfQ9Q+o2d6itKNpYBRBd8SpFNiUrdNJHYo6ds5DywnMB+wXphSJ
- szqTEYc9
- lUxNqgAJcMfvSRMCfpdLZVQly6ID4kzkptPtj0ukedKXob5hnhehkoai1ew59QLOVUnLO+ubtk2e/IG32eD58NNgHuVdrZoSy6sufuJcdBQO0ceVuu+WNZ4SAANFMo0gCYZdif0chZyVZc2vwC9QUNP8YdPVmNxHj8uAEL0+nkszSRDyxF13qy9ogzIbH6VRCkHqqO2tMgex4s4MAyb009dgqW+sKvVIoUYNo0pR6DBFks5yIF073DeE0sUjeFgLutGATjgeLRRPwW4jukt+C0M4WGtRfxz8STDIsgTbOWjB4xi0=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 3EDE740007
+X-Stat-Signature: itbbkamg6fjj61mpsx1pt94ysppg5w13
+X-HE-Tag: 1789633503-455656
+X-HE-Meta: U2FsdGVkX18KlCakyx5bCaojN8H1cqYoyhL0B0/ElNyD63s3vf5dV3hhPj/RZS/NoYxJnp9NUuI4++LDV0aIbKn6RouKHzhTj14qlDABcTgGDlDDdNzBzH6lv8+WnJku9ho8uWB3oZqa+MZbL66S7oUXpuq6SDVxf+g6TIqKPalde1/x+4IOjgFBKUqerWd8ZOezjnPC8KFmmERic/YKk4lJLzIpViFFcjbLZNg3zPE4Mdr/fWZBXDrqwgBnKzNAcJwdhrYqU5j68NbDu3Qy1guq4RJ84/OYwFSJD7tnixTV2c8HgwNavXHyMzLvwMU5IwaM+bKN2kYtYVxC8e+3gZUc5Woms8mQUkab4U3denEAKvQhNSuxhk3znNjty1664pkG/e2gkPvxXTFf6eGVnkufnrEXa92Q3FcHxx+cueaVyUueKd937giiKDcP5Wbw48aLZkZBU1m9Lq06R/wG/uNgqXQeOFVwCyEAcy1TEpWsi/H3U3HWKG/xGnvwG+5kB0vn/LI+UcuVG4uteZK7N/ruVYuVnIQD+RLaDeFhfiZPfPn8gb1OKr8LR8Giu7hPG3+4s+QzN8XEJbsD3ZPsEi3dFqTLz9UZIWLBBW3yYsol7G1TWkA2otPY6nlcJ7Rl3SO9zNwgyCuAZGwIzy29xfCdAEFn+cy+W27FOYb31dTz2zLF5DDGbrWgbivOxfWvEp9shhrbzShYb++iToOKb4DQJGi4+9nkuqMxuY40Ul5AU9ZO3WGyi4W/PM1AbQ7uK/gVwCs+fMk8Bi3JlU9VPv7CA0cAMGGsFdEfAbJkAn/Mm+Af6e4guNLGum0PoIxfGrbuW6e08ss50I25zrJGqyHnX/FoHFguKSaxWWISPcWreAJ9iwx0T9ODjjVteIC4f+9duGORP4DJaihZe+RYvwnUXNyXoqV1gMyuSYKkiJwPCY6oDvZA3QmQsPRQu54PcglhJPPgr0wc725MkRM
+ XgcQsYzp
+ ksy0jKx7hC0vB2JavruPKz3yeF3qqs/d3rXgkDI+C3iUYRCLK//sa7e9RCr5uwlSiwjVmqyNRJKbQie3DKPStqSFKFD2YliyVzn0KqDoEoKbsPOjfCvRlWHvCISCc4G0HqYymk3IPTCcGfzDPrm3fGP9RHgV0tgQ7dHngRdrsyNJ/Xu14as5F1qsXOudrM1l66vxqsrmHqVe+Lyxs6/XLgIFjiBeaT3VcWE8OsK6cHMMqfL6dE407WH4+d+L/LMJUaOM3nY5XMZadh6FDk4etettNYVV4YOcoFjOHOnyw7ZGcrY1toY2BzamS4FYdqFzJK5n+o+7m5Tfs7yZjTz9Le8MmGMHH9fC0vRwOgUL2EtvmF+nkEpvbDYRtseDPB8FaFThTUitRnTSDpHrdY6LRYSD2QSeHhluenb+TUnwaAbT/4oL7xz6RLMmFU7Z5xZ/Zdvkx1mx9dUt/FZj4QNnuI2h4SZ27D5b2JQfa9zrw/rTN1nKn9gcnXgd7zI/uqUavQrti2VgujQnQ01axe0GA9xKpRq80uHWqZKgDMdAS3XzXe84+FHl8hFHvZx10EM/NPIsoA5PFro8W+r6Wl3LD6ZG5xvlSxlLMQninbmOx8Yz9up76B6NkfC2iVZFs06796IrNazX5nLirRyems4YwazhfLxR7mXulww7VeG5zDh46Nho0UH4EdU98FGZfJyc1JLVeaPYu6ghbyagsR66eH2rpogDl1i2sFtAyQgiiBo/8ijgfGT/c7fsn9AM0qVNkkwBoXqAuYW0jQSvIEqoYyt+eMV6+tmjXc0rLeDOT5qabxT3BzLPjYXWqssmU7W10DrI09SqANjYabRPX8zllbFplTHHgs3G7rEoU6fUWVgzU+Dyzo/lLIL/6ar8XtTGcVko5bYCbbbzWMDNZ/EJJ/QIRzfF49Tp7h3MlwhkAmCtlZXot6LODh+o6jnUi02iiZUVL/da5gvJ3PYI9yyIucHleobQp
+ YgwL9EZR
+ xVR9b4Sqmf4Oo2oxbFz/zjlEY4Hj79d4xkzryLEQNYS672dKE1x5fHb8W6FuohB3xaKaT9ilQi4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,133 +105,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Kaitao Cheng <chengkaitao@kylinos.cn>
+Hello,
 
-memmap_alloc() was the only in-kernel caller of
-memblock_alloc_exact_nid_raw(). After removing its unused exact_nid
-argument, the function no longer has any callers.
+syzbot has tested the proposed patch and the reproducer did not trigger any issue:
 
-Remove memblock_alloc_exact_nid_raw() and its declaration. The remaining
-callers of memblock_alloc_internal() always allow allocation to fall back
-to other NUMA nodes, so remove its exact_nid argument and pass false
-directly to memblock_alloc_range_nid().
+Reported-by: syzbot+c3178b6b512446632bac@syzkaller.appspotmail.com
+Tested-by: syzbot+c3178b6b512446632bac@syzkaller.appspotmail.com
 
-Suggested-by: Lorenzo Stoakes <ljs@kernel.org>
-Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
----
- include/linux/memblock.h |  3 ---
- mm/memblock.c            | 44 +++++-----------------------------------
- 2 files changed, 5 insertions(+), 42 deletions(-)
+Tested on:
 
-diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-index aa845f488327..01a2dea5aa11 100644
---- a/include/linux/memblock.h
-+++ b/include/linux/memblock.h
-@@ -412,9 +412,6 @@ static __always_inline phys_addr_t memblock_phys_alloc(phys_addr_t size,
- 					 MEMBLOCK_ALLOC_ACCESSIBLE);
- }
- 
--void *memblock_alloc_exact_nid_raw(phys_addr_t size, phys_addr_t align,
--				 phys_addr_t min_addr, phys_addr_t max_addr,
--				 int nid);
- void *memblock_alloc_try_nid_raw(phys_addr_t size, phys_addr_t align,
- 				 phys_addr_t min_addr, phys_addr_t max_addr,
- 				 int nid);
-diff --git a/mm/memblock.c b/mm/memblock.c
-index 22d14a637f24..51f816ce0cd9 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -1659,7 +1659,6 @@ phys_addr_t __init memblock_phys_alloc_try_nid(phys_addr_t size, phys_addr_t ali
-  * @min_addr: the lower bound of the memory region to allocate (phys address)
-  * @max_addr: the upper bound of the memory region to allocate (phys address)
-  * @nid: nid of the free area to find, %NUMA_NO_NODE for any node
-- * @exact_nid: control the allocation fall back to other nodes
-  *
-  * Allocates memory block using memblock_alloc_range_nid() and
-  * converts the returned physical address to virtual.
-@@ -1675,7 +1674,7 @@ phys_addr_t __init memblock_phys_alloc_try_nid(phys_addr_t size, phys_addr_t ali
- static void * __init memblock_alloc_internal(
- 				phys_addr_t size, phys_addr_t align,
- 				phys_addr_t min_addr, phys_addr_t max_addr,
--				int nid, bool exact_nid)
-+				int nid)
- {
- 	phys_addr_t alloc;
- 
-@@ -1684,12 +1683,12 @@ static void * __init memblock_alloc_internal(
- 		max_addr = memblock.current_limit;
- 
- 	alloc = memblock_alloc_range_nid(size, align, min_addr, max_addr, nid,
--					exact_nid);
-+					false);
- 
- 	/* retry allocation without lower limit */
- 	if (!alloc && min_addr)
- 		alloc = memblock_alloc_range_nid(size, align, 0, max_addr, nid,
--						exact_nid);
-+						false);
- 
- 	if (!alloc)
- 		return NULL;
-@@ -1697,37 +1696,6 @@ static void * __init memblock_alloc_internal(
- 	return phys_to_virt(alloc);
- }
- 
--/**
-- * memblock_alloc_exact_nid_raw - allocate boot memory block on the exact node
-- * without zeroing memory
-- * @size: size of memory block to be allocated in bytes
-- * @align: alignment of the region and block's size
-- * @min_addr: the lower bound of the memory region from where the allocation
-- *	  is preferred (phys address)
-- * @max_addr: the upper bound of the memory region from where the allocation
-- *	      is preferred (phys address), or %MEMBLOCK_ALLOC_ACCESSIBLE to
-- *	      allocate only from memory limited by memblock.current_limit value
-- * @nid: nid of the free area to find, %NUMA_NO_NODE for any node
-- *
-- * Public function, provides additional debug information (including caller
-- * info), if enabled. Does not zero allocated memory.
-- *
-- * Return:
-- * Virtual address of allocated memory block on success, NULL on failure.
-- */
--void * __init memblock_alloc_exact_nid_raw(
--			phys_addr_t size, phys_addr_t align,
--			phys_addr_t min_addr, phys_addr_t max_addr,
--			int nid)
--{
--	memblock_dbg("%s: %llu bytes align=0x%llx nid=%d from=%pa max_addr=%pa %pS\n",
--		     __func__, (u64)size, (u64)align, nid, &min_addr,
--		     &max_addr, (void *)_RET_IP_);
--
--	return memblock_alloc_internal(size, align, min_addr, max_addr, nid,
--				       true);
--}
--
- /**
-  * memblock_alloc_try_nid_raw - allocate boot memory block without zeroing
-  * memory and without panicking
-@@ -1756,8 +1724,7 @@ void * __init memblock_alloc_try_nid_raw(
- 		     __func__, (u64)size, (u64)align, nid, &min_addr,
- 		     &max_addr, (void *)_RET_IP_);
- 
--	return memblock_alloc_internal(size, align, min_addr, max_addr, nid,
--				       false);
-+	return memblock_alloc_internal(size, align, min_addr, max_addr, nid);
- }
- 
- /**
-@@ -1858,8 +1825,7 @@ void * __init memblock_alloc_try_nid(
- 	memblock_dbg("%s: %llu bytes align=0x%llx nid=%d from=%pa max_addr=%pa %pS\n",
- 		     __func__, (u64)size, (u64)align, nid, &min_addr,
- 		     &max_addr, (void *)_RET_IP_);
--	ptr = memblock_alloc_internal(size, align,
--					   min_addr, max_addr, nid, false);
-+	ptr = memblock_alloc_internal(size, align, min_addr, max_addr, nid);
- 	if (ptr)
- 		memset(ptr, 0, size);
- 
--- 
-2.54.0 (Apple Git-157)
+commit:         f902e69c sched: Allow sleeping spinlocks on PREEMPT_RT..
+git tree:       git://git.infradead.org/users/dwmw2/linux.git seb-nonblock-rt-test
+console output: https://syzkaller.appspot.com/x/log.txt?x=17d63bf9580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=8a263b38e64491d5
+dashboard link: https://syzkaller.appspot.com/bug?extid=c3178b6b512446632bac
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
 
+Note: no patches were applied.
+Note: testing is done by a robot and is best-effort only.
 
