@@ -4,89 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E632CC88E72
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 04:06:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEF31C88E72
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 04:06:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D294F6B009E; Thu, 17 Sep 2026 00:05:51 -0400 (EDT)
+	id 0CD706B009F; Thu, 17 Sep 2026 00:05:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB2556B009F; Thu, 17 Sep 2026 00:05:51 -0400 (EDT)
+	id 0A50D6B00A0; Thu, 17 Sep 2026 00:05:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B53706B00A0; Thu, 17 Sep 2026 00:05:51 -0400 (EDT)
+	id ED4AB6B00A1; Thu, 17 Sep 2026 00:05:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D1EB6B009E
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CFA4B6B00A0
 	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 00:05:51 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 247C31C19DA
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6C8C840208
 	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 04:05:51 +0000 (UTC)
-X-FDA: 85221915702.26.E583CB3
+X-FDA: 85221915702.17.C1B8673
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 93E84180009
+	by imf27.hostedemail.com (Postfix) with ESMTP id E77C44000B
 	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 04:05:49 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EbEGiilU;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EbEGiilU;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GhN2puzE;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1789617949;
-	b=vhxIkrgEkT/toD7iY8fzWbAMxtBQlkKSU5Mc0c517ewX8GB5ikrXmAWzRkOJSkK+SRsJRq
-	pLMi33WMUCq4BeDBlo51ivG1ym40pvbo1e4J8SHWF0TYwu3ZX/nlxOCXXq0bxBodm2CYA9
-	mqgjvnajYbH93tOyN3Y1FEHqaccjHak=
+	b=naTyaIvuHtMy45O5nkD0PSc3mOURDeVouwKetov/egD21th6mBh9O5+Njyl1RUn8TI60xf
+	MVsMjQOl3e2woqOzGdfaLj5U/TcofosTfuO1sUu81nqNznK6L8ZABFiC9M4vT9uuTbaLw7
+	jiclTUc3UtuL3IVTd5BLjVT8RW9dtxw=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GhN2puzE;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1789617949;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x2I5kTm00UAvsmFfDHBSWc1OoiPGJbIihaNhsLMlExs=;
-	b=SYoWPPhfDC5NOzzubgcFRGvHm9vC9234dHUJIZlbl0aRFgHINCIvRYECpg5T+BeFbzOnyv
-	fFbopkxN7tiLFxF0DekFeZ3XEdnQlsZUlE4YCHr+Ugjdm26d/6rH34l0Pi5OydeLMT3nZp
-	wR2HbOGCLcEgPVkP8ixT9bXfmrBNGUs=
+	bh=Mozf9eR83klndQFJraTt18kHcl1hxd6yOHCmDoYKrX8=;
+	b=u1dJzd15Jn07rxUZIn7E5eUcHXF0Y6J9BMYpEjAoIYQHoasG8uG1+HD9BFD3rkT9vN1Sbg
+	a8v9VtlkGWWNx1/QcYCPx98rZxp5BLXn9jjC9rtDhgH83regehNK5+wJ/WVVfvebc/UY5g
+	AJW+CvLn4EPHlNNh7Yn+vZ0y9XnazRI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D5C1460A5F
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 04:05:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BCD21F00893;
+	by tor.source.kernel.org (Postfix) with ESMTP id 9168160A5A;
+	Thu, 17 Sep 2026 04:05:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B48691F0089B;
 	Thu, 17 Sep 2026 04:05:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789617948;
-	bh=x2I5kTm00UAvsmFfDHBSWc1OoiPGJbIihaNhsLMlExs=;
+	s=k20260515; t=1789617949;
+	bh=Mozf9eR83klndQFJraTt18kHcl1hxd6yOHCmDoYKrX8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EbEGiilUtHvbzcSVprrfwDriaLz1NcBFIFM7f+aKOBKL5mNKgovest/pgKTyy5YD4
-	 q8G5E7jBqfdniulKmM4jZQ3ocxy1WRjfza8t48i0O9pG7meisCBpe6X+F2LFa1/Qef
-	 DAIcZ/A8WAgBUOuEHnvM+oc7e3acTkiGT/g5992vV7hzAOy4IUF8Opf72l9/s4xu+o
-	 uRzTsCjXOn943Tow283EKz63/wja1kzfJq04X58A78KYd+k5zDXLOFdcf2YCiSRQJE
-	 CSIkjSovOmcpaB1sT7B69qa8jRDMee6hDfAEuWcSr8o0ke+3xJ8ffdab/PhuGj1aJQ
-	 QKmaZrT1cOEQw==
+	b=GhN2puzEsWiLv7s8wcGaPWWWFYfc1kACptDmFKSTdaoePt3/+GPX8BMMgRD3+GIKC
+	 S4nfxqpdKNvJqtKASnnu/vk47kNDkTULgZCFUH0L7TowQXoA0A7UiFeWHBloVXRa5n
+	 FrNaeF9cNUq3qq1RyAX1viVPh6HwjgiYC3VR/Ap4tkMhLfZ+3ufUSti61FyoU4JRDe
+	 DX9CC8elLVbULwp0z+5LPeilDddi0plmtHLv+XK+GIVpP7jxItIuMB+t2UHOCRqDec
+	 7raemiTAjfgKfRywm7kLR5JKOGzLnt1U9hDheawk4CluP8C5YojvSHQ9cnMtR/URik
+	 V8rYQJKHyUPkg==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
 	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v2 09/10] selftests/damon/sysfs_memcg_path_leak: fail only for real DAMON leak
-Date: Wed, 16 Sep 2026 21:05:35 -0700
-Message-ID: <20260917040537.107341-10-sj@kernel.org>
+Subject: [RFC PATCH v2 10/10] Docs/mm/damon/design: clarify bp is basis point
+Date: Wed, 16 Sep 2026 21:05:36 -0700
+Message-ID: <20260917040537.107341-11-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260917040537.107341-1-sj@kernel.org>
 References: <20260917040537.107341-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 93E84180009
-X-Stat-Signature: zea89tombeyfjfk5i4cgptwcsb8ipc39
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789617949-787319
-X-HE-Meta: U2FsdGVkX19uzA11skSBTWMjKmE76YBKngoC6pFmTo+IGbgjpkctNHYsZQGBZZWOIXZkIRxwZdv7me1chpO5USq+0FmY0/CZwF3tytAfQeAsxB+DwQLLiX9Fhf1tJfMQELjPkKqRXuBl5p8TrpIlo0y9Ser3IJ4jE2FGA5psfA6Zpj78OXwEsQou3tuzqCsTiu1lfN6FoOta2xsiGVd8oO6jMpK24EpGJnhkyDNJlakSq9Bubh8oC7uT99WMwzCYdiMd1LygATBroM9PucjpyCgYlGpNBXBCkIWCer1Yp84+DLxcZ43hhP+hDtkU5ZbPFHvR3uJ1SZdEYbJEUjQmwpCwMMmmwEn7xfGaHWAZ/HkF92hcrT+EvhLZsARNYq2b60HlaAabnd1wasJUsLdfXfwij5BH+718Vfd3z074d4iKNvGJoLc/Ah1nEGEWqU1qjAJQhnSwZQsOQpSRcNqNX0q2Aj6Whihl5jJfJSKBdxiGNxgf4lObacLRvgjn5ZTDPoT+kAo8nEwKE0D5fzMRsGzSidgMnzLtgVrnDwYFuY5oi+v32x/d5PG8qHEpW21CqKhI420FFOQvG3+smIysnOIVzhlclE+3X9BoFpB/Jge21OXHLq2Nv17OZMBf2gE0ft1nIhZVyL+FH1Oc3EPQ0S3bL6ke080Qi7mr/4nZTry5gZxbpiV5QZG70JHHGc8AQ5NX5C3SYr86c3+S6ZFMsmgRXNYR/qkA9EfeAvtaBPlLTEvpjyAFWuiZs8TJLX5Or7n+x38UOUYdsqVqP/zrCk43v0onpQFtwycwx3wCBnmUf4lm4j7zrzfGJWeoGodac7SkLjxpiKrrkixnjRKu9Y9HblhgywL7NWo391OL/CyZdVdsufiA21iIGKhVtMovrLeeKLcS3p1JAgWip3QG1sgZ/Bvem4/0ZdFcYePfwhX0gD8huUO/fCQTJE0H9ZZV7vMOZ7LTylT+RvNqAHN
- fmrhb9Yn
- BOr8pCPZ1UEbZdabQqUr+9MKMmVMVitO97Dfw4ykH74smHTXCkn3AM+gIH2sqcA0RuNVY0Lnf/0LRcWeKMf4CzozJdEEMDwQsJOlw8rt+CkmxtrpNLf6c2SxOzzOIe4nhvmtPIRF8LxH7sRd9BD4jZXpFyQoV2WqzKOM0F/QY80/jrHrIezM3ishiYQcu6APicUF0ROvRQdLxt1MHD2xfTnB9T0jg6SsL/5mIBvte7i/Jdgs0h3ov2KFrHXYS9CjRUIEkaOsrQj/Zl11rCERDlws+aJTIqzVz8Y1sK5D4ucEc2W02LECBvNdkWAtddfLJBEvyAuHPEGrxeJeyhFfmupFowACTTKLeRN3XcdfqMkBNrqvNjupA9M1GPw==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: E77C44000B
+X-Stat-Signature: hxggwz16aa7d3gfjxhm618gwfi7bhn8o
+X-HE-Tag: 1789617949-498393
+X-HE-Meta: U2FsdGVkX1/zTEvzFlqfh6yGziIB7aGuavmrlgmsnYO0NbkxlSaU3r3kXGeAX0aqnifkIx+oCtULJU9h+GX22oEmKsV1SXu/vC4An7xqdU3MavGHYUdUR4BcmHHV/UbRZEKrZLBj+iM5cMjbltu3VVKJZrV6t23UT/wk69ZRhYMQHsldFrLa5mOnrDKn1H0+iLwXikSO56/mGAxT1QR+Oevae3YCJb17/x+nuqOMdAL4fQ/qh9XUkOUm4z0fIZBEJEpZ4115zO4Xt9op/HHLcz4ikhkwj5kMhbQt41ggajYSvgJwd7YmS1C/U159RXStNAYNtvLVSgB61USbsgRcu8qW1j0C+tVAjuBFj4Pwoj2Ei3gyyQiC4s/ZmEijlDXVsRfxhvgvTKLhKK3zuqBfw/2zacWcvW1X+v4E9Tv5GGQH4xNC0ffbNT6WZ/3RyYcb3AuxRKJ4WFuo6kNc8QN3EzBfnQLDgLz3WGaJkROjayTTOCqlzcyjVsF8MZYJ6PAszv7uEsmTEIyWmTeJQttlq9z6wfFcIdHhaAZzh15llladyLM6UHg8XEYsbou9z1fUtcui19TMZkgtgFuOXUad5WQFBRM3iAXuHCF1jJy9zl+OCc/zwto6GDSxTWvSCzYlK2Ah6qtu0d/bt+6ILHJZrHKSo5u+eJRGOA3irZC65WMg42ir98wzVcGkXxuinrCDrfGtMQkBemb4Pf5jQLiCqjf9EXebCQSTP0vrl5ZKkjer83V4Io4YPJlCW+dAm0KMYwf5Ri6Hcopg7/714uvG5630I4vci3arhwTrCsDoeeuBRmceiuZVUTixpT7O+QFH+g2c/BdNY7BSJuf4koeCbagWfs336jy9HvjAo4LlxantSOdK3XfagIvPXJFfUm8F5eea3XMKXk7Jr9a3guFxuPmJ4GJOkKWlMxqStTfdC6r5RK07bVojbmxof4lSkyDOPE5j03c9Y3JeTz/w2J/
+ DRrRPbii
+ XLF72XlHJYmaHPmHZrxXTwbra/jSmoKyvxm1BlNj8E5o7mXAYG9dkOqNS93b7RUAt6kFF68WGYet9DyvqSiXZI3EN2TLqD7IvwaoJFdVF57OJUod4XcH5w2jBm/wsP7k39ukqxFNzqkTj1nP9htFLcsXs/8ovooL/g/g1N4YilRJO1WMiD2PsX2m46tb9O7q9Wos4AL9EO52tRuqnJEu26p2bMW0LrppFThxAb9a8jKlz4t9gdrrxrsmPnowImdHZ8SMQnaQqWMM/3y19a6vf1P0a+T7MoYzZwFyL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,32 +104,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The selftest can fail for any leak if it happens while the test is
-running.  Remove the false positive test failures by further checking if
-the expected leaking function is called out on the report.
+DAMON design document uses "bp" for "basis point" in multiple places.
+Because it is not clearly mentioned, it is difficult to understand what
+"bp" stands for.  Add the clarification.
 
+Reported-by: Randy Dunlap <rdunlap@infradead.org>
+Closes: https://lore.kernel.org/107dc6ba-697e-4b25-ba3e-8ce2499cac9a@infradead.org
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- tools/testing/selftests/damon/sysfs_memcg_path_leak.sh | 7 +++++++
- 1 file changed, 7 insertions(+)
+ Documentation/mm/damon/design.rst | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/damon/sysfs_memcg_path_leak.sh b/tools/testing/selftests/damon/sysfs_memcg_path_leak.sh
-index 33a7ff43ed6cc..34c37129c49fe 100755
---- a/tools/testing/selftests/damon/sysfs_memcg_path_leak.sh
-+++ b/tools/testing/selftests/damon/sysfs_memcg_path_leak.sh
-@@ -41,5 +41,12 @@ if [ "$kmemleak_report" = "" ]
- then
- 	exit 0
- fi
-+if ! echo "$kmemleak_report" | grep "memcg_path_store" --quiet
-+then
-+	echo "[WARN] memleak found; apparently not from DAMON, though"
-+	echo "$kmemleak_report"
-+	exit 0
-+fi
-+
- echo "$kmemleak_report"
- exit 1
+diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
+index 0a86792f90a18..e82390e77a70a 100644
+--- a/Documentation/mm/damon/design.rst
++++ b/Documentation/mm/damon/design.rst
+@@ -445,7 +445,7 @@ users to set the aimed amount of access events to observe via DAMON within
+ given time interval.  The target can be specified by the user as a ratio of
+ DAMON-observed access events to the theoretical maximum amount of the events
+ (``access_bp``) that measured within a given number of aggregations
+-(``aggrs``).
++(``aggrs``).  The ratio is in basis point (bp or 1/10,000).
+ 
+ The DAMON-observed access events are calculated in byte granularity based on
+ DAMON :ref:`region assumption <damon_design_region_based_sampling>`.  For
+@@ -717,7 +717,8 @@ mechanism tries to make ``current_value`` of ``target_metric`` be same to
+   in microseconds that measured from last quota reset to next quota reset.
+   DAMOS does the measurement on its own, so only ``target_value`` need to be
+   set by users at the initial time.  In other words, DAMOS does self-feedback.
+-- ``node_mem_used_bp``: Specific NUMA node's used memory ratio in bp (1/10,000).
++- ``node_mem_used_bp``: Specific NUMA node's used memory ratio in basis point
++  (bp or 1/10,000).
+ - ``node_mem_free_bp``: Specific NUMA node's free memory ratio in bp (1/10,000).
+ - ``node_memcg_used_bp``: Specific cgroup's node used memory ratio for a
+   specific NUMA node, in bp (1/10,000).
 -- 
 2.47.3
 
