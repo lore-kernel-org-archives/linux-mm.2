@@ -4,104 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BF8BC982CC
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 00:07:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A18EC982CC
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 00:08:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 220B76B008C; Wed, 16 Sep 2026 20:07:29 -0400 (EDT)
+	id 813DC6B0092; Wed, 16 Sep 2026 20:08:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1F73F6B0092; Wed, 16 Sep 2026 20:07:29 -0400 (EDT)
+	id 7EC246B0093; Wed, 16 Sep 2026 20:08:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 135BC6B0093; Wed, 16 Sep 2026 20:07:29 -0400 (EDT)
+	id 7031C6B0095; Wed, 16 Sep 2026 20:08:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D47766B008C
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 20:07:28 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id F042114019A
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 00:07:27 +0000 (UTC)
-X-FDA: 85221314934.13.6C8927B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 715D42000A
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 00:07:26 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UjbTsEtV;
-	spf=pass (imf03.hostedemail.com: domain of helgaas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=helgaas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1C3616B0092
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 20:08:00 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id AC188A016B
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 00:07:59 +0000 (UTC)
+X-FDA: 85221316278.02.0E86C60
+Received: from r3-25.sinamail.sina.com.cn (r3-25.sinamail.sina.com.cn [202.108.3.25])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 9D79A140004
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 00:07:56 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=sina.com header.s=201208 header.b=vNt79vPy;
+	spf=pass (imf09.hostedemail.com: domain of hdanton@sina.com designates 202.108.3.25 as permitted sender) smtp.mailfrom=hdanton@sina.com;
+	dmarc=pass (policy=none) header.from=sina.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789603646;
+	s=arc-20220608; t=1789603678;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=+yFcjzj37ujFduHmXiBvfG9JBS833j3YXgLJ04CFxHE=;
-	b=qdnfQ4OmXJjvrJ03jNW3ubr/P2+s2wdvmytVamRwv22b72hKDoutQlH8IjPAK3tXU7DekI
-	Fd0qPDw/kNEjl+VhFeupwaPm1GEp7QS8NUhUkBXGuVHpR05IgfWE1goNKVS8RnTxQvFK3V
-	uZe9OoCki0wSehZ7J+BowQjdkuhZ8Yc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789603646;
-	b=whC8l2hWYOKBkW1pmEhz7TGQvzf2EQ8mOfOJ926xHm3xgPUzvVhtJary/MlSRQj159OVMU
-	x2ZzfmxV8XYyNzOWT983DrPEoiSbpow5LLccth5qeL2b6E1zae6RZZ3TfZwHDoCjS3bIw+
-	qej/k6ujAjNGj8KOQCXQknzyL0W831E=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=hKjnpvXTojaVU5YIzpdNIrqfBtMirn+eCnJFcui5yEg=;
+	b=11vSnQ2DrJg1JRqZVzgnrRcDFB1tHsutz8fgCDuV2Wqg1EV28ibuZg2/fE0aJWN/5keeZu
+	gajFkoLdPEUcCLldQv4dh+swbD8+OD/nd0WuKz5HZv8jK8LORlZMRQ4V8c58NFsOAqgJGE
+	y5M/1svyew/M10jRrgFaNZ2oQU6TJoU=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UjbTsEtV;
-	spf=pass (imf03.hostedemail.com: domain of helgaas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=helgaas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1BB6E601EF;
-	Thu, 17 Sep 2026 00:07:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C5DF1F000FF;
-	Thu, 17 Sep 2026 00:07:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789603644;
-	bh=+yFcjzj37ujFduHmXiBvfG9JBS833j3YXgLJ04CFxHE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To;
-	b=UjbTsEtVaPtsiaZUuZNq+T2sPIquKhVFlF6WCE1Nit+LYL5byUhUnUswsWKHVH8wK
-	 7qMsN9mQuJsHdDVnrFzUsqc9srPE2TyNRfy5sfQGHZd2IhIXBj2X/t95jvsRKjbxes
-	 lW4C1s7A5Nc0siyJhxlMktOEclBcFv0GC8ZCkpoYvvrYb+6YZUqa5gzAF92LNEhiWG
-	 fbkCpan3pHHSqNMPeNzv/+c7N/vuVGzf8tIrVMWvAFsKjZw1wSbvxtDjUqQoHSjPIh
-	 af2nNUqh3M0izEpdLd5+JAe9EJ8BchGBTY8vR4TP4CD1d2d1+4+nNv6FNem2o7XMVr
-	 6IuBrI0whhNvw==
-Date: Wed, 16 Sep 2026 19:07:23 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: David Matlack <dmatlack@google.com>
-Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-pci@vger.kernel.org,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Alexander Graf <graf@amazon.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
-	Josh Hilke <jrhilke@google.com>,
-	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
-	Yi Liu <yi.l.liu@intel.com>
-Subject: Re: [PATCH v8 06/12] PCI: liveupdate: Auto-preserve upstream bridges
- across Live Update
-Message-ID: <20260917000723.GA992337@bhelgaas>
+	imf09.hostedemail.com;
+	dkim=pass header.d=sina.com header.s=201208 header.b=vNt79vPy;
+	spf=pass (imf09.hostedemail.com: domain of hdanton@sina.com designates 202.108.3.25 as permitted sender) smtp.mailfrom=hdanton@sina.com;
+	dmarc=pass (policy=none) header.from=sina.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789603678;
+	b=u2/rgtzG6JWvi8x4p765XBcE2H8ieOPVZwPAK8b4uxQhFQCGAVPOfkVnJPJOrOlDqOb5wT
+	fpIaIgTogqWL+/Ns5rmDToLK9h7NCHkczV4B6YZvC0pBcSPEWbRQ164cgsGPKGODpBfCSd
+	mL2Rws7pcp1h+dbZwxFElfPEx4p9M+o=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1789603676;
+	bh=hKjnpvXTojaVU5YIzpdNIrqfBtMirn+eCnJFcui5yEg=;
+	h=From:Subject:Date:Message-ID;
+	b=vNt79vPykNoNngXEx5JT9Q5/HxV6TDIMfxVnloiGvfRk4IuuMOKLxgGWMF0tagFb/
+	 BzEnkUCiz6M6IUchQWLA81wvsHtkYUYpqH7f+lErODeyg4JBLNmG284gpLnXLRoby+
+	 rdt55LzDepinCQDrCe0c3aF71MQEcLXFenaYrXVc=
+X-SMAIL-HELO: localhost.localdomain
+Received: from unknown (HELO localhost.localdomain)([114.249.62.194])
+	by sina.com (10.54.253.31) with ESMTP
+	id 6AAB2F5500000181; Thu, 17 Sep 2026 08:07:51 +0800 (CST)
+X-Sender: hdanton@sina.com
+X-Auth-ID: hdanton@sina.com
+X-SMAIL-MID: 8931646815926
+X-SMAIL-UIID: 98200398C3E643C3AC30E941A3E8AE43-20260917-080751-1
+From: Hillf Danton <hdanton@sina.com>
+To: Uladzislau Rezki <urezki@gmail.com>
+Cc: linux-mm@kvack.org,
+	Baoquan He <bhe@redhat.com>,
+	LKML <linux-kernel@vger.kernel.org>,
+	Dev Jain <dev.jain@arm.com>,
+	lirongqing <lirongqing@baidu.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH RESEND] mm/vmalloc: Use dedicated unbound workqueues for vmap drain
+Date: Thu, 17 Sep 2026 08:07:37 +0800
+Message-ID: <20260917000738.115-1-hdanton@sina.com>
+In-Reply-To: <aqq9FM3ti6NIHxQ0@milan>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260728221007.2098560-7-dmatlack@google.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 715D42000A
-X-Stat-Signature: jooa4fxiwjk1h7atiron5tcfddwymb5y
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1789603646-204190
-X-HE-Meta: U2FsdGVkX186gyjHF4chuJmshmJFiNmeiYp2YuSNL2pOlCISM1muTwe2r1R4c+SUqTTZdlznJ4vVk+sNvLjN4Kc3PoxXUnjuA845WDy6SoDv7w3puFhIT1aUAme4I9nHZEeLGExks3SwdBK4agQWSu/RTbBLLmEelfCbVi6SKYzR1Y40Cp7rO8SGRAjn/UwTqiPodhCTobIvN4wdoIqEFhzxiO4yHK87cRg/ZRjsyzZS7bhEQayZsDOt1mE4t0lBB3XE9HAZ9Fd5sANdwF0ORkeY2EaqnR3CiMmHw/8pbozjHTnqCuYvaltiRpfQ/muxeukQ2CBRxNwIBrmnAeT4RBshyR7p1VhwCLdgdg3925la/cA/0C7BMjMI7fVUguENfmeRV0DucTH453qw7Ym1Y1maeNowTGLOvoVxpfHnxzGhVlXlPTQBHmebZoaX2auk44FJI8HyZx6UysR9zFsk2B4tFzD88P1XuhOx8m/YELXZ8hic4QnJHrV3yz4FM7lYRPYOQxNwCn7rP6fAbvCoYtmkofkHU0EeRZgCxi57vNRRSzwYJVLVp5X8nydyoWjY1EppwuylSGusDhG86ff18wuwO0cz0WQ1j8k29RdUWou1/Fph7gdoKmzeYKYXr0V/SfDREkPkWILHtZ+IJfic65V56sBDQ3d9UTcOQvGUxl9eKYXflhSnYzqhAZ/EnekbumPvoTLi8J9HfeZM3rjaMinpTvaM3KnT0WHhC0saAkawVr25uh7Z+2m3Xmlfd4AVtAmlguovI28qJ456eX6dray220Bm7HYxi0o96tej2CBlbEdklJKhsfyLuTCQ0Y8Zp6GButMzpLczbrkWk4XCs6aHmJXenNUDdgEHOdUvpGMG/zhkTl8hRGt1C7p48DQhl+0FayIIBrThEo/JvoFrwVVKlDPDP9E41SxLmUANxfO6mm1NIQ+W5N5XEhuPBLttFRrBNAp9dz+31RPjoEP
- dT7RFNFw
- UFvzzLCJu/Rqy6q+OpKQONm/g6Vb4hu1RmQ1uVcSLx5b6Z5FkWMQEHCo+qOZe3Gr/CcxxjRLA8DY8+RgrEGU6qrZWEz9LXfkHSmLNTP4bc9ARYsVn/kFhfb2AM5IzjQFXtx8fl9vcOO9/V8ooOnQtTpaN6i5f2V3GwM33+LQ8uEvVVUxEZre8lltziXbP8YKHzvMYn4b55Vy9xkXdQHoEDa5OAz40HlQ77ibyUWOWi1U9Jc1gjLURqRSjVfycUBPCGjjH
+X-Stat-Signature: ihubh61mtb3kdjgj4zxg3qu3yjxppmfw
+X-Rspamd-Queue-Id: 9D79A140004
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789603676-850061
+X-HE-Meta: U2FsdGVkX19Nbk9ogBl73b6pk7+Mf2D/sCIC+Sb5/t6M46rbtiZKlcFjU9kC0gjNi1o52FuWF7SGaclipLzbor/xsmzarKtTbqkm3Hx9RF/ShvszmsLuK2dhp5dwGJLw9e7uP0G6V0Qua4JhnjN6//DT2SIhERocEAciZmtBAl4F5R07VtxWJg6da8/z4qieDKxmdpvifT7n+JxAQDZAv78XDA7bccotVue0GlVb9MTrR2MQdL2zWpekIGC6w0qHwSG7dfL2KhYYL6MavkB/3ZS4J5KV1GscJi3jcAT4/uwt/ua7sOBlKZDt0aAqY5JHXmY7bGI3WdWzZIclzWa5/Jj8+2S2zt7ySMwG74GLsfI0otFdAc3g+rvjdyiEVP19uC7vBkN1139sVGiJNAM3lACkxAcMAeB1iJ8jatJFxm82v6ix3rhB4k3PyK7YjcORpTpZjlF8L7ESs70flw7vlGArrlL3huWxxgKEzTyovwK/bcf7Jlu7Yz1UhPdyNQIFM4JcnpKySrhRe/6SIbf9qyc1c4ZpoVRR1ulwFen7MnbKpigCENkOKzyYkE0huc+xZi1y1ZTc4jZykglwQ3tCNg6vS7ZJXT/hz4TQgdrQjCagY8dMyAEo29fcn582TMoEyflDHR5VLTQsFbIZ/+C0UREdKQDjJ6GTWJACbAZ1eJw8fwYDCzCi4nyRnhnDot1JLWh0WZECnNSzWCHCIWySgK/hcmU4wkO3TawAJHOQbUzb/aC2DpaaP/Rp8mqmpyEqHSoHSiw7tZSZQxrU4JBL1yoEDu96Knu9K/JVY6nnipQn8a1vczbhUrcKiSN/Bt9ol79FGWNYR9MpcgL6fieespIhyrQLC9lDXeq5Tj8osxJkhdK1mau4BnF9XhrBEYHBpQJc2YNn1SgSOEomUqeJcvL8o5TWRlOvFBcSO9zH1JAeTVajdhdKHWCStqxmA/2QDk1varsKqGr0U0EmPYI
+ sgE3WhET
+ MKLcxCaGUsE/EoOszHs+b7Bjgsqiy2b701X9XHBLdrYlZGQU+Tg/LqqTtlY2LApXKRoYf9IYkvXVkWPa8C5CsodbjDYuVLVrIS7ovpp9h85ZTdobYxCL5COYkIpEtekwJfTB680ian0NwXp1TaeV9aK7quy6JaMlmtoaZfQdrJ3K5UDjkq50Vrrvi/LU4m+X0F5YrmPqkWdhCMvfqTQVLT4I6e2hkvTeyEn+co0uYNJNwgWPNzZ/o4PDX14UuUP1PaQJYgkcbWnI9V1rIFmi6s1N6iLuX9EdSTS96oMRSswJ7OmRsM0nRWEdUCGMhKwn0hoIIfeVINB1u2oqGngf9W2ZWrUwFq/xbtgUR9VB8HRxbBI0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,87 +92,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 28, 2026 at 10:10:00PM +0000, David Matlack wrote:
-> When a PCI device is preserved across a Live Update, all of its upstream
-> bridges up to the root port must also be preserved. This enables the PCI
-> core and any drivers bound to the bridges to manage bridges correctly
-> across a Live Update.
+On Wed, 16 Sep 2026 18:00:20 +0200 "Uladzislau Rezki (Sony)" wrote:
+> On Wed, Sep 16, 2026 at 08:12:27AM +0800, Hillf Danton wrote:
+> > On Mon, 14 Sep 2026 18:56:26 +0200 "Uladzislau Rezki (Sony)" wrote:
+> > > This patch does not use queue_work_on() semantic thus i do not want to
+> > > queue all helpers on current CPU. Instead scheduler does balancing and
+> > > that is it.
+> > > 
+> > [Fair queue in the Eric Dumazet accent]
+> > 
+> > +static bool
+> > +schedule_drain_vmap_work(struct workqueue_struct *wq,
+> > +		struct work_struct *work)
+> > +{
+> > +	if (wq)
+> > +		return queue_work(wq, work);
+> > +
+> > +	return false;
+> > +}
+> > +
+> > 
+> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/linux/workqueue.h#n697
+> > 
+> > static inline bool queue_work(struct workqueue_struct *wq,
+> > 			      struct work_struct *work)
+> > {
+> > 	return queue_work_on(WORK_CPU_UNBOUND, wq, work);
+> > }
+> > 
+> > queue_work_on
+> >   __queue_work
+> > 	if (req_cpu == WORK_CPU_UNBOUND) {
+> > 		if (wq->flags & WQ_UNBOUND)
+> > 			cpu = wq_select_unbound_cpu(raw_smp_processor_id());
+> > 		else
+> > 			cpu = raw_smp_processor_id();
+> > 	}
+> > /*
+> >  * When queueing an unbound work item to a wq, prefer local CPU if allowed
+> >  * by wq_unbound_cpumask.  Otherwise, round robin among the allowed ones to
+> >  * avoid perturbing sensitive tasks.
+> >  */
+> > static int wq_select_unbound_cpu(int cpu)
+> > {
+> >  	pr_warn_once("workqueue: round-robin CPU selection forced, expect performance impact\n");
+> > }
+> > 
+> /**
+>  * worker_attach_to_pool() - attach a worker to a pool
+>  * @worker: worker to be attached
+>  * @pool: the target pool
+>  *
+>  * Attach @worker to @pool.  Once attached, the %WORKER_UNBOUND flag and
+>  * cpu-binding of @worker are kept coordinated with the pool across
+>  * cpu-[un]hotplugs.
+>  */
+> static void worker_attach_to_pool(struct worker *worker,
+> 				  struct worker_pool *pool)
+> {
+> 	mutex_lock(&wq_pool_attach_mutex);
 > 
-> Notably, this will be used in subsequent commits to ensure that
-> preserved devices can continue performing memory transactions without a
-> disruption or change in routing.
-> 
-> To preserve bridges, the PCI core tracks the number of downstream
-> devices preserved under each bridge using a reference count in struct
-> pci_dev_ser. This allows a bridge to remain preserved until all its
-> downstream preserved devices are unpreserved or finish their
-> participation in the Live Update.
+> 	/*
+> 	 * The wq_pool_attach_mutex ensures %POOL_DISASSOCIATED remains stable
+> 	 * across this function. See the comments above the flag definition for
+> 	 * details. BH workers are, while per-CPU, always DISASSOCIATED.
+> 	 */
+> 	if (pool->flags & POOL_DISASSOCIATED) {
+> 		worker->flags |= WORKER_UNBOUND;
+> 	} else {
+> 		WARN_ON_ONCE(pool->flags & POOL_BH);
+> 		kthread_set_per_cpu(worker->task, pool->cpu);
+> 	}
 > ...
+> }
+> 
+> A local CPU preference for WQ_UNBOUND is not the same as executing on
+> the __bound__ per-CPU system kworker.
+>
+As Ulad, like Yu Zhao, is one of the couple black horses I saw in mm the
+past a couple years, lad, I make the difference between BOUND and UNBOUND
+workers as clear as it is.
 
-> +static int pci_liveupdate_unpreserve_device(struct pci_flb_outgoing *outgoing,
-> +					    struct pci_dev *dev)
->  {
->  	struct pci_dev_ser *dev_ser = dev->liveupdate.outgoing;
->  
->  	if (!dev_ser) {
->  		pci_warn(dev, "Cannot unpreserve device that is not preserved\n");
-> -		return;
-> +		return -EINVAL;
-> +	}
-> +
-> +	if (!dev_ser->refcount) {
-> +		pci_WARN(dev, 1, "Preserved device has a 0 refcount!\n");
-> +		return -EINVAL;
->  	}
->  
-> +	if (--dev_ser->refcount)
-> +		return 0;
+Given numa node1 including cpu8-15 without cpu hotplug cared, a bound worker
+for cpu9 can not migrate to any other cpu, while a unbound worker can run on
+any cpu of node1, that is all.
 
-I guess this is a nit: I was looking for a dev_ser->refcount++ in this
-patch to correspond with this decrement.  I *guess* the
-"dev_ser->refcount = 1" in pci_liveupdate_preserve_device() starts
-that, and the "dev->liveupdate.outgoing->refcount++" there is an
-increment of the same refcount?  The connections there don't seem
-quite obvious to me.
+Important UN/BOUND have nothing to do with eevdf (and balancing cpus) because
+of different layers.
 
-But I guess "dev_ser->refcount = 1" was added by a different patch, so
-probably *not* the same?
+And at best I suspect what you missed is the difference between drain_vmap_work
+and lru_add_drain_work, but I do not like the latter as it annoyed the RT/full
+nohz apps more than thought [11].
 
->  	pci_info(dev, "Device will no longer be preserved across next Live Update\n");
->  	outgoing->ser->nr_devices--;
->  	memset(dev_ser, 0, sizeof(*dev_ser));
->  	dev->liveupdate.outgoing = NULL;
-> +	return 0;
-> +}
+static DECLARE_WORK(drain_vmap_work, drain_vmap_area_work);
+static DEFINE_PER_CPU(struct work_struct, lru_add_drain_work);
 
-> @@ -385,13 +418,23 @@ static int pci_liveupdate_preserve_device(struct pci_flb_outgoing *outgoing,
->  	}
->  
->  	if (dev->liveupdate.outgoing) {
-> -		pci_warn(dev, "Device is already preserved\n");
-> -		return -EBUSY;
-> -	}
-> +		if (!dev->liveupdate.outgoing->refcount) {
-> +			pci_WARN(dev, 1, "Preserved device with 0 refcount!\n");
-> +			return -EINVAL;
-> +		}
->  
-> -	if (!pci_is_root_bus(dev->bus)) {
-> -		pci_warn(dev, "Cannot preserve devices behind bridges\n");
-> -		return -EINVAL;
-> +		/*
-> +		 * Endpoint devices should not be preserved more than once.
-> +		 * Bridges are preserved once for every downstream device that
-> +		 * is preserved.
-> +		 */
-> +		if (!dev->subordinate) {
-> +			pci_warn(dev, "Device is already preserved\n");
-> +			return -EBUSY;
-> +		}
-> +
-> +		dev->liveupdate.outgoing->refcount++;
-> +		return 0;
->  	}
->  
->  	dev_ser = pci_flb_alloc_dev_ser(outgoing);
+[11] Subject: [PATCH v4 3/4] swap: apply new pw_queue_on() interface
+https://lore.kernel.org/lkml/20260519012754.240804-4-leobras.c@gmail.com/
 
