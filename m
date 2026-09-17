@@ -4,109 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 007D7C982D0
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 18:15:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A799C982D2
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 18:28:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C1D3D6B0098; Thu, 17 Sep 2026 14:15:43 -0400 (EDT)
+	id 2C00B6B008C; Thu, 17 Sep 2026 14:28:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BCDDC6B0099; Thu, 17 Sep 2026 14:15:43 -0400 (EDT)
+	id 2894E6B0092; Thu, 17 Sep 2026 14:28:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A962D6B009B; Thu, 17 Sep 2026 14:15:43 -0400 (EDT)
+	id 160456B0093; Thu, 17 Sep 2026 14:28:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 808C86B0098
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 14:15:43 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 27D11A5A87
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 18:15:43 +0000 (UTC)
-X-FDA: 85224057366.21.A2EF99E
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 2EC75100007
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 18:15:41 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=roYFaSY2;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf05.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789668941;
-	b=1VHh9IZrAAb4z50VqxOSMSACDyvCG3D5wnefnOdgz6FXKnyTnLTxXEN//4PuRRW7QNVPoM
-	RULB4VL7aoWwe1dUqhK/X4aguX9dZjiQyzoPlLbXatwXpFkj7IzTUo3xFXQRgKrL9+836q
-	HY6DFNrFbHviLBTetnIZydCwZGrdG3k=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=roYFaSY2;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf05.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E3EF06B008C
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 14:28:24 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E41971A0433
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 18:28:21 +0000 (UTC)
+X-FDA: 85224089202.05.432413B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 0B57FC000C
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 18:28:19 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="hx4f6/Jv";
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789668941;
+	s=arc-20220608; t=1789669700;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H8Wh7N4cq/t88nKN8ZqZ4f+oRUbvezWnn3f++63qp34=;
-	b=tHF9VU3yFmzGuMJZ4zydqp+YL8C65ozaj+VeOcOh8d5OWdQg04Z4ZvWeBHFzCTCi9viUHa
-	BM8lvQU6BrpzxotM634TDba2T69aOfZAzNevxahgd+W77KSviwsbna23rOnr8YMTZ5kQTV
-	1CqNd5gybSULjc76WVjQVtl4e37ZoM0=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B37601F91;
-	Thu, 17 Sep 2026 11:15:36 -0700 (PDT)
-Received: from [10.57.7.135] (unknown [10.57.7.135])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7C76C3F86F;
-	Thu, 17 Sep 2026 11:15:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789668940; bh=H8Wh7N4cq/t88nKN8ZqZ4f+oRUbvezWnn3f++63qp34=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=roYFaSY285gwN/8IzsFOtN0+e8Iltix2FpDfvQ3utTYL+K/fJKmz1KXzTmdsXwN+S
-	 WAMAddn6lBMF4PqxGiGTEo0pOprPlbr/cZxNj8ql3o575Mymat7lIXSIibWHw+fpmU
-	 bkqsEF4P/sS5BnYk4WQFSwVQavKpnE4kImkX3gsQ=
-Message-ID: <258a124e-bdc5-4c25-b649-b4ed0a1415ac@arm.com>
-Date: Thu, 17 Sep 2026 20:15:31 +0200
+	bh=b5zVLhEkKOWEwakOfls77zzn3VcbclTffxYn4L85i8c=;
+	b=J1myLX1+mzIuv6fdttmMNWokugRLF8qyd8HJj4gd+Zy3/qtdnrc+qfANOWjCG21Illnwe4
+	w+zYCRwqfXElI7F5W00kHFi7quht/z5AOQ2shcrmOPbZdmeWVo6o9ECfVhnssc8mobV5fc
+	MgdCAG8pZeY0uvCrr7HgDfA9iquBIKE=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="hx4f6/Jv";
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789669700;
+	b=rwAtCDNDJ1K0fIyDtREdezxH+pR+7zz2TNpFRthbmBC/hyd5UpGuDSC34T29Uedimes6pK
+	3AqFmvG/cv6X0tYEa08Rzr/S+/UBp+td5aej9HiEKUpndL8JrB43OcTvBL0HqPR0uA03wg
+	WjL/yOjTjDzZpbxs8uLXZBVeYzJiAsE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0FFF6435A7;
+	Thu, 17 Sep 2026 18:28:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4D881F000FF;
+	Thu, 17 Sep 2026 18:28:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789669697;
+	bh=b5zVLhEkKOWEwakOfls77zzn3VcbclTffxYn4L85i8c=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=hx4f6/Jv3cwrMptmmP/azM4P7NNl4TgzLMYGPYxUvgj5fA03oSL4gHfl55lsCvHTT
+	 pn5EvppKp1xmJVGJoCg35YpgKo//7RnjqDcC6S8a+5bv13BmFQXoavodtPLD14ATOC
+	 rmLLzfgKdbwPSczeH8sX7PRwlBQtwwRWVY2CYFlhqSagmfzeq2QSmTyLzn5Sn1v1ez
+	 GsYSrSrknJk0CULzb4njUW5QsatEUpC4El2M6cPUEGGYdRiyicyK7Mntpp8rww/Avk
+	 Qil1cbyfX1lJNXxc5p1cZu4mSWyl9wU4Cbmp/v2R2k2C3fUf7DbdZRhNL48WnmlEFp
+	 ySmtFZ+wMOr1w==
+Message-ID: <efdec0bc-cab0-451f-ad70-ac24c1f69fdd@kernel.org>
+Date: Thu, 17 Sep 2026 20:28:10 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 6/6] Revert "arch: introduce
- set_direct_map_valid_noflush()"
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: =?UTF-8?Q?Adrian_Barna=C5=9B?= <abarnas@google.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Alexander Gordeev
- <agordeev@linux.ibm.com>, Alexandre Ghiti <alex@ghiti.fr>,
- Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>,
- Brendan Jackman <brendan.jackman@linux.dev>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- David Hildenbrand <david@kernel.org>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Huacai Chen <chenhuacai@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Len Brown <lenb@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
- Pavel Machek <pavel@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- "H. Peter Anvin" <hpa@zytor.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Ryan Roberts <ryan.roberts@arm.com>, Sven Schnelle <svens@linux.ibm.com>,
- Thomas Gleixner <tglx@kernel.org>, Uladzislau Rezki <urezki@gmail.com>,
- Vasily Gorbik <gor@linux.ibm.com>, WANG Xuerui <kernel@xen0n.name>,
- Will Deacon <will@kernel.org>, x86@kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-pm@vger.kernel.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- loongarch@lists.linux.dev
-References: <20260903-execmem-set-vm-perms-v0-2-v3-0-949b64a9f755@kernel.org>
- <20260903-execmem-set-vm-perms-v0-2-v3-6-949b64a9f755@kernel.org>
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-Content-Language: en-GB
-In-Reply-To: <20260903-execmem-set-vm-perms-v0-2-v3-6-949b64a9f755@kernel.org>
+Subject: Re: [PATCH V2 06/14] arm64/mm: Enable fixmap with 5 level page table
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Ryan Roberts <ryan.roberts@arm.com>, Mark Rutland <mark.rutland@arm.com>,
+ Lorenzo Stoakes <ljs@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Mike Rapoport <rppt@kernel.org>, Linu Cherian <linu.cherian@arm.com>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20260907035030.2839978-1-anshuman.khandual@arm.com>
+ <20260907035030.2839978-7-anshuman.khandual@arm.com>
+ <be1c0a62-4589-4fe4-a500-d3fe16a6e610@kernel.org>
+ <pi6o4hjdaz2tndzlx64qvzbgxhuyh3kyewpfetiqnnetbtpzpa@prrxusgc3lpm>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <pi6o4hjdaz2tndzlx64qvzbgxhuyh3kyewpfetiqnnetbtpzpa@prrxusgc3lpm>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 2EC75100007
-X-Stat-Signature: ixfrxc95jgdrzhcg1rwb9g3f9j6s8yxi
-X-HE-Tag: 1789668941-253836
-X-HE-Meta: U2FsdGVkX1/Nuu2FvFfanrnvqGwdAEYPI7JKdUMn/ULf16lR6O7GwjPQTdpYdi2CRO6l2LdbkaR5FE8sTzEYmYzlLbwepj60YXLJfgN1cVYA2jzGHb9cCGK1cgy+amvP0x8XXxSZNKDpXnjlj35dYrn/G2UEQ++r/8F6532cMhtLBd0om8m8vmQHUWalm44Lj5syHWhRTpoWRZjr3kIYh1kv9BgHToCdUO66vCLCJ+y1rmkxXrMzOc6jDfSwZeKLcaRdeYfXIuPfRfGTXnrA43FQOEnlntVEOJdZ9ZQffaSyWpGgcAJI+oDumGX5fOp3ihzO4FYmFJ2cr0LvO2/O8dbJkA2U/NgWE0oThm6ZbyT/Ubo3TEBTLhrJSGm0+ONls5Pl2aw1uLR/Qj3pk+bt9kBuso2DC0USFHZITn/6FbDLnUCOErfQuU2vKfuJQZdgRdS1tqLA7uxsu2aSW743HhSpTr2sExkM72fkIaW/Y+2QoXPK8mnZKljTKIskk2FtIH95Dg3BOxWQGiDvFByP34jH2dpFrRXofiRTlJo+7l9otd/6Z6ZGiUhqH3KicrOKhlBjMxHQT2iLYNfmMYUElQWs1SjHlvnkQLqeB10KYA0iUslhxMxhpvkX+FktPhpVraPyTpGDIDnquHtzGjEGQLGWfEavNy2xS6+WWsGO6DyGbybhSpomiynwgh5RWcm1i+utAKJM0JboPCCbGtdN2nnm91QsKMha0il+smPPpVkCpZC6iOpPJuAKdYTw8Glhn478gllsIvmzA7PuVDC0IcmhrNqYYG+qAGHGJL4R3yl+gZMP1/u+h9IzYAQCx8zsbURgKbq/FA1dlLDhyJvD7zgpaYdjA20dI0ngPzbdL24gpVRZKlGo/eTEB8kQDGVza6GMdjRaUO0uEsYv6pwTHDylWUP6yEm8YMQW0gTJCMTvfpTAjEe51iXRJqCCNozoO/C4n2fchQN7DUdusOO
- UAQFetm4
- 3t5rjfm//sCoTVjO1ji04PKzHPt8w1mx6EhppOLGlwob1sx0+6VtLgGurt9tkaJuQ0IoviPd7HMIprzvqxARvKBeFAvidzKWoYAqrhVGMry7AeBlNrImZiVTaoZwYdA5jfdj7UmIoCP1dX2BzCJKyuqnQ6cjQpKD8viMHZo52R39vp1wktFfpenxVDAuSHq7wPIpzP1IEGn6YOO1mk/ZPnceesE5jyME9OhVdzRakCW5AG43nVDPrgRAUm8cy0Ov3/+HseQpn0bLofPfs9y8EmQTIF+eMM+/vU1kVCLNGDyBe+1YRIt+aPuVOpnY5AMBQ/WL2DWN/RYsTYZ4QF5FHGOTjiGLYuNmg/pSJox1V4MeIJfs=
+X-Stat-Signature: xa3c5xnsr5iuak914binct8hjjkfuu8n
+X-Rspamd-Queue-Id: 0B57FC000C
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789669699-576018
+X-HE-Meta: U2FsdGVkX190aL87Y7nX39NAIrli8MDkA+5ua0F3bgwjgl3DKWCpsQBGed1qEiO3dzFpCaZG17Qts233QHOha768t15iwqmXvbAqlKtjtefvi5B19z40m3FHLjUiHsHXn/5tzWTJg60+QmGrFZI6QoxedibSZ7YB/iKVPvSsmU7Pb2aHlmJI8wrdnwz7DqaGBhZXk34pQ1xOpan3c2aUHwetKgf19iT/OVLELNvyE2mgsODo8Sok7qXQTAXvSjOFARs6yHA2eVPQ3eb1NJG54Qz+7xTJ5LOtSf/SMyohQuAWRziawqXF1wjWG3wLsZHJSwJb0DKmcyCsAHauyFJIdubYWI9pil3g21nP9+n3/XTQrQ8j45WEi6Z4SXBGMQYLtyN93i0142qxdU0QnMTYM+DRjihUtTptDrh4TgktyQGH+8OFakmwx569gFmOjLCJ9/sVtr2tTgQrfJh3S6Apk8wHTHVpkmvkxZew+RFQxxhByq6zecINW7tAp1n9JkOveJOSqSGAaz1uejackz4EDtwirCCC+bmqwZVIzMWH4DhPnhH54HmY6fBM2TnpHj2sPL1qcpMKO4ULv4xzJyDZwQ8J6XAvdUhUgu2molfzTUW969YBeVA/fLFDrmw/gT5XZsp2Qqk8GfESQhpOv/178GbKHWPqbT9kMMDLcBriydPlm/jYEq2Ohq6+XTEBmAGyvlMVF9GxMQzItQ6G319YUkT3zA8S9+lFNq4cjwDVq9UL8zpIo2XVLsQrcVsLao2KvIzjLRfX6eKFNEV+4IsJANeWBzXQ5D/0vFbk3aUFkv/PF5KBdTGXbb0SXaAxBDYAIoO5odw1bo9sGGetMWt07B2jMWncN/9dYxntyPsNX7rl1T4Hx7tY6FzO2pFNwDxInDsri0AJqrlpka5bY2XZq64zorVMOfeVbxSrUXi72aWwjOw4RkdHAIo98f4e4hv0qiNemQcoPLQSpPuA2m0
+ lCxxabdk
+ 7EMW0oaGTpxAfxd3xcBAS1DrWvePF0+fcTv/rCDTxVVDZagI7Dcpy6ZfuVIUbMRuKkdZ1ofESgBfXBfufRGQwZwn/CHNlA2zipwgFnDSsbXieYwyetaegLb2DUamgXa8mkI1dUcphGLSv4HD1F0pL6rjeU7m0Cwh7cZcDmMJckcdM9IzRCaTOs9cvy8dLSZX12vOfJo5Fn1BB5ZvVZaKvd+R63ogITGnBijXsanfmopy7jU1nlMr/XSgRxya5NwBo3Qx1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,38 +144,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 03/09/2026 11:28, Mike Rapoport (Microsoft) wrote:
-> Commit 0c6378a71574 ("arch: introduce set_direct_map_valid_noflush()")
-> added set_direct_map_valid_noflush() to allow updating the direct map
-> for a physically contiguous range in execmem.
->
-> As Brendan recently pointed out [1], this API is confusing because on
-> arm64 it means that is sets VALID bit in ptes, while on other
-> architectures it is an analog of set_direct_map_default_noflush().
->
-> The only user of set_direct_map_valid_noflush() was execmem's ROX cache
-> freeing path and it was switched to utilize VM_FLUSH_RESET_PERMS for
-> resetting permissions of the direct map alias.
->
-> With the last user gone and with set_direct_map_{invalid,default}_noflush()
-> accepting number of pages as a parameter, set_direct_map_valid_noflush()
-> become a copy of set_memory_valid() on arm64 and a duplicate of
-> set_direct_map_{invalid,default}_noflush() on other architecture, it is
-> safe to remove set_direct_map_valid_noflush().
->
-> Also drop a stale comment in arm64::__kernel_map_pages() that Linus
-> bothered to add when merging changes containing set_direct_map_valid_noflush()
-> to his tree.
->
-> This reverts commit 0c6378a71574daa6cd1534ad42a956e3262756c7.
->
-> [1] https://lore.kernel.org/all/DJ69RCVRBO0Y.3JCYSW50IC4RC@linux.dev
->
-> Reviewed-by: Brendan Jackman <brendan.jackman@linux.dev>
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+On 9/17/26 08:18, Anshuman Khandual wrote:
+> On Wed, Sep 16, 2026 at 04:30:05PM +0200, David Hildenbrand (Arm) wrote:
+>> On 9/7/26 05:50, Anshuman Khandual wrote:
+>>> FEAT_D128 halves PTRS_PER_PXX thus shrinking the VA range coverage
+>>> for each page table level. Hence in order to preserve all existing
+>>> VA range configurations, some geometry now need to become 5-level.
+>>>
+>>
+>> Hmm, wasn't this 5-levels before, but other code allocated+initialized the p4d
+>> table for us?
+> 
+> But fixmap was never 5 level earlier.
 
-It's a great feeling to see the set_direct_map API get a little
-streamlined :D
+I mean the page table hierarchy. It's confusing.
 
-Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
+> 
+>>
+>> I mean, I see how we are filling in another level, but I don't see how we would
+>> reconfigure something to use 5 page table levels?
+> 
+> IIUC existing configurations which never required 5 levels would not need
+> this reconfiguration even now.
+
+We only map a handful of MB into a single leaf page table. The only reason why
+we have to install more page tables into upper levels is because they were not
+instantiated by other code.
+
+> 
+>>
+>>> Since fixmap is used to build and manipulate page tables early on
+>>> during boot the mapping must also gain that additional level which
+>>> was not required earlier.
+>>
+>> I am no expert ... but I am confused :)
+>>
+>> We do have a loop only in early_fixmap_init_pmd(). So we cannot possibly span
+>> more than a single ... PTE table?
+>>
+>>>
+>>> Enable fixmap with 5 level page table when required. This creates table
+>>> entries at the PGD level. Add a fallback stub for pgd_page_paddr() when
+>>> (PGTBALE_LEVELS <= 4) which helps in intercepting any unintended usage.
+>>
+>>
+>> Again, I am very confused. Is it really just "As the page table layout changes,
+>> we might no longer have a p4d table pre-populated for the range our fixmap falls
+>> into. So if there is no p4d table yet, populate a static one just like we do for
+>> the other levels."
+> 
+> Right.
+
+Best to rewrite the patch description along these lines.
+
+-- 
+Cheers,
+
+David
 
