@@ -4,151 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CB8CC982D0
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 05:23:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68DE1C982D0
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 05:24:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C52EC6B0092; Thu, 17 Sep 2026 01:23:40 -0400 (EDT)
+	id 2DE8B6B0095; Thu, 17 Sep 2026 01:24:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C04376B0093; Thu, 17 Sep 2026 01:23:40 -0400 (EDT)
+	id 2B6D26B0096; Thu, 17 Sep 2026 01:24:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF26D6B0095; Thu, 17 Sep 2026 01:23:40 -0400 (EDT)
+	id 1F41D6B0098; Thu, 17 Sep 2026 01:24:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 800DE6B0092
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 01:23:40 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id F0E5D140218
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 05:23:39 +0000 (UTC)
-X-FDA: 85222111758.28.2CCF6CC
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011059.outbound.protection.outlook.com [40.93.194.59])
-	by imf13.hostedemail.com (Postfix) with ESMTP id BD14020005
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 05:23:36 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=G2lDo0QZ;
-	spf=pass (imf13.hostedemail.com: domain of bharata@amd.com designates 40.93.194.59 as permitted sender) smtp.mailfrom=bharata@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789622617;
+	by kanga.kvack.org (Postfix) with ESMTP id E8E1D6B0095
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 01:24:55 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C7B4C8022F
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 05:08:15 +0000 (UTC)
+X-FDA: 85222072950.02.26A54D5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id CF6BC40007
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 05:08:13 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=g1jSnoMW;
+	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789621694;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mjcQpIle4mUkeOOzrC/Nzhu6u0fdTBchXgOrRnT/q2s=;
-	b=NP0vTprDZP7QejHGctK0eE+zIyVIW6gAteObmC4V6RUydo5XFFpsZvsB/xrU9FK1iJLm1u
-	wpBwSP1Tf3WaupzcAL9Hrx/8bDot4qx23TJbd/L9q5yN14ayrXkvIdQ3I5Hgmv9qosShvR
-	6/XeB7CgNgi2SO0H+aZA3bBBKzjTkJE=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789622617;
-	b=yazzRQR35sSSbflo9fMKW5LRQbcCcJRra9dz10wrZMXicOsqeOyo1qcMr9mjg5di1PQ8mc
-	1mvR/kuhU/+uw9KE6iEOGJ9gtHeq8xmLphe+eGqofcg7FYoXWW5HW+7id1kZ+sJJKlVjLq
-	Hedj9h+0UGc3UcQTvVN5zLSotCe3Too=
-ARC-Authentication-Results: i=2;
-	imf13.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=G2lDo0QZ;
-	spf=pass (imf13.hostedemail.com: domain of bharata@amd.com designates 40.93.194.59 as permitted sender) smtp.mailfrom=bharata@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eP4/tIw7IWEKVM0ndQE31Zbn/exiX40wldVCCMgtqWOBRMXM4IbKqGxOg7ooYjO1DWmUwHgM9cDIdQi3ad0m8ioJjjRC4uEDX7271LdXzECzkIgLKwxtCI8vvWh8cwfCit8ySIrouxdkf3BxML5GYlUYJUdrArfcpwHPbspf+nBPdpjCf8tw6mta3LN/77NicNrcOrwCul9nisqN55mw3G1FFIbCrixTh6mU6MTQu1vcgIsjr9N5FzshmT1EM+o+XCjvYvYXmjOiOwAiXjgjsfqzA7D3IzA1Nxb5DD/NuFxBGr17/c4GlHRA1iwDpD/vQ8dNOKtbT+YjN386dvWFtQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mjcQpIle4mUkeOOzrC/Nzhu6u0fdTBchXgOrRnT/q2s=;
- b=S8b3CY1OhpHvgBqf8GZutd/vimxvoy6w4BsS6ZTXedWQzzgCfd2U9ZgLiyiNKUwJLnT9bcuhFmo0yEMNtrhYBOf1ukd1MSd7TTRuImOaBFBYNd0XHWu5fJ0+ZoL5NCCBpdhLhm7DpQBfZvO4tatrvEVFhFRWrow2gnn2cwB5u+kqYkIwvAaDtyLMAHnsDZM1yzJrpCPb4G1Nk8tyMuWn7bEcY6RrkqMD6a66uiyGHqnx4RkDAfVKcn0ERJF52In+gtlXEOvPjiLFY6jBdm2EH7wU4e20TzLmRCw2DB31A39AU6QAGHtqji4WknnaZvOh2tH4qLyIyY6ogFT371Z3CQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=gmail.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mjcQpIle4mUkeOOzrC/Nzhu6u0fdTBchXgOrRnT/q2s=;
- b=G2lDo0QZuuu36Hih7LiOqWnYHMjZXRzuzBHhQRL6hTFYW0RadWuGgiq3SVRne2za61O3q9efbHliQfTxp3+++f71yqhZv6MbZUNWvMDC7v1OImyodoeXlezDJp14blJUX7tJD3aDTqu/aQPByN8vKw+rFCV4HTPqAIYbzUHXKoI=
-Received: from SCXP298CA0159.CHLP298.PROD.OUTLOOK.COM (2603:10d6:300:14d::20)
- by IA1PR12MB6115.namprd12.prod.outlook.com (2603:10b6:208:3e9::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Thu, 17 Sep
- 2026 05:23:31 +0000
-Received: from MWH0EPF000C618E.namprd02.prod.outlook.com
- (2603:10d6:300:14d:cafe::a9) by SCXP298CA0159.outlook.office365.com
- (2603:10d6:300:14d::20) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.428.12 via Frontend Transport; Thu,
- 17 Sep 2026 05:23:30 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- MWH0EPF000C618E.mail.protection.outlook.com (10.167.249.100) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.451.8 via Frontend Transport; Thu, 17 Sep 2026 05:23:30 +0000
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Thu, 17 Sep
- 2026 00:23:29 -0500
-Received: from [192.168.0.152] (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
- Transport; Thu, 17 Sep 2026 00:23:21 -0500
-Message-ID: <92c26cce-0608-4c0d-bb13-fe87afc225ba@amd.com>
-Date: Thu, 17 Sep 2026 10:53:19 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 0/8] mm: Hot page tracking and promotion infrastructure
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-CC: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<Jonathan.Cameron@huawei.com>, <dave.hansen@intel.com>, <gourry@gourry.net>,
-	<mgorman@techsingularity.net>, <mingo@redhat.com>, <peterz@infradead.org>,
-	<raghavendra.kt@amd.com>, <riel@surriel.com>, <rientjes@google.com>,
-	<sj@kernel.org>, <weixugc@google.com>, <willy@infradead.org>,
-	<ying.huang@linux.alibaba.com>, <ziy@nvidia.com>, <dave@stgolabs.net>,
-	<nifan.cxl@gmail.com>, <xuezhengchu@huawei.com>, <yiannis@zptcorp.com>,
-	<akpm@linux-foundation.org>, <david@kernel.org>, <byungchul@sk.com>,
-	<kinseyho@google.com>, <yuanchu@google.com>, <balbirs@nvidia.com>,
-	<alok.rathore@samsung.com>, <shivankg@amd.com>, <donettom@linux.ibm.com>
-References: <20260916205211.267720-1-joshua.hahnjy@gmail.com>
-Content-Language: en-US
-From: Bharata B Rao <bharata@amd.com>
-In-Reply-To: <20260916205211.267720-1-joshua.hahnjy@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+	bh=YxF+quTmMkP88JVINsM1zjO8HUUAwhac5Ig08+pXxYY=;
+	b=qgOy3n5u1e3Xu9xKOSad8QZa4mjIMrITD//bOv0obpRJccO04GXxMhkRFsY2lxL3W/zdb+
+	Wb+uVDUX7huNAAtzX9LJwa7TyRCMW+75Qucfod8GhMY1PzCe1ahFg6MMS26OKI91PvSRuk
+	b3m7HEq8FAAVTeFXXetN+jor9fozHdU=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789621694;
+	b=E0ZiakEXi1aF9eqmnHCY3buANG01jc0vSZz/4iqJOjp1jAsOZcjCFz8NMup9f2gXh6VPwb
+	QhnQAaN1fwsTQD5J1Y/r6O887IYS9BCUV4K6ChSFQQlkf4uKIAyR8s5Lojx9CoRpNpfFNa
+	5I2J5DY32H97D20C4+2ts8DEl+u2R2E=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=g1jSnoMW;
+	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 815E441141;
+	Thu, 17 Sep 2026 05:08:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB2F21F000FF;
+	Thu, 17 Sep 2026 05:08:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1789621692;
+	bh=YxF+quTmMkP88JVINsM1zjO8HUUAwhac5Ig08+pXxYY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=g1jSnoMWakdlm2eR7r1XwyTF+mBNmpJp6/UepjWi4ImTULFCe+SnQg/HpKD95NlqQ
+	 SQCdCLzKlKGiu6jhqHq9NwS/olHflcEfKa6VOujpPzMeThOjT934m0d8eW5AhH1wJG
+	 wZp4HdBatUxRgBfEUZ7Jg0KNgZ9vZJzz9HN3UcFg=
+Date: Wed, 16 Sep 2026 22:08:11 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Hui Zhu <hui.zhu@linux.dev>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, David
+ Hildenbrand <david@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, Lorenzo
+ Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>, Barry Song
+ <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie
+ <yuanchu@google.com>, Wei Xu <weixugc@google.com>, cgroups@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, Hui Zhu
+ <zhuhui@kylinos.cn>
+Subject: Re: [PATCH v5 0/4] mm: workingset: fix the shadow node budget under
+ MGLRU
+Message-Id: <20260916220811.c83d7d4e0761f645f3f3808c@linux-foundation.org>
+In-Reply-To: <cover.1789096175.git.zhuhui@kylinos.cn>
+References: <cover.1789096175.git.zhuhui@kylinos.cn>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWH0EPF000C618E:EE_|IA1PR12MB6115:EE_
-X-MS-Office365-Filtering-Correlation-Id: 717d4ca0-167a-4875-40bd-08df147bcf68
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|376014|7416014|82310400026|1800799024|23010399003|10067099003|11063799006|56012099006|5023799004|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	QKgCfi+dutYGf47/sjF777b+xW/z9o9iCAKynJXATxJiHISsd/MuWm4QHhVM9LnbdHoT5qNy3WgpZXeh36JU6nloAvLRTPo7neE9ukPtY1oglX15BOgRnoCd83t99TXtCIgA79+GJrceXWjqn9syQhgjQ+ffDJ+aOW2G+AhDaRU6/Ud5uTzhYCqN8GtqbVJlgse8+8L6reVyjW6x3upw1z1L8Q8DEyW9fK4AM1Eze+jIbtCsLLTL7Y2F3C0SEwvkShzL7aDdpPL4iEiqlgfTzgaOBwWFBOCL1ik8HrwiYgtp1h6GNxW0USeYADjHcsmc5sQqN1+kIAcXKTSGEl/iRePKo5wN62La58sRrRuTFIA51Ub+Fhn6ZqAYi+Sjs3Rh/wjK8L7E+3SDLjZFlMOZDoqfA74xBWG4yEPu1TOM3T+WwB+AWys8oRMtn5EvxajbHMDjeqjCq7PQZFlDzZ70rtaq404RtFTWij+hHb2zaR8vGdJI3xI7MMV0bsVf8jOj8E8hfdk50cb0eNUzywo6jYWEHsToBb9zhPy+5Sr2K92zgD1suENfa34PgJlhtRO50RIQOgu8VecnMuEuo9jU4dWHGNKyocDHBHduPZxZ2oa6ES1kQGOewRS8g2QtsHi8qVIr1aV+3APVuy2nIyWnEzbhX/gDaf58SI026aUFvAiuBytlTNnJ+a3DdMYw/C1T6hiaPVYQKYp3VQ6z4TpLfA==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(376014)(7416014)(82310400026)(1800799024)(23010399003)(10067099003)(11063799006)(56012099006)(5023799004)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	EwPEDyIH3OebCaHgfELjTzzyg1h5EF7pYgZVLUxmwMI1tJ46iOv/fSZ5d+PBAue7JuAQD929oBDcwpbnFcwL5/s2+eIb8rtOaRKGlDoqAG7xlA0raGV4SGUOK4TIB525w7a0+Iy/AyaitG+EhdUp8CdnBy1zGPVzahLfyzDNyJFSCIlaKwB3TAtXVr7fEP+udIudVq1FFAVkbKQFsDeysEFH/sN9/Lv5G76qiTrstJcDUKlrQuBevTv/7keQ4jk6AozEJH2tIAvycP00eUTwnYpRKA7Wu0IaN1h7qJN3emd8DJ9PXlaX3WZK4HWOK+A7qpbNvRKSkMyS7NwOkkobghQwCFIGUM+wcYCHLJh8H1+8961PM7F4jKRZic69jIIkt/nxhu9x/9tRGwpjImkdo1tenJW5vn+MjuUWWG9jyZP49VuTrRCx9rvcdGWCfhZ9
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2026 05:23:30.1830
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 717d4ca0-167a-4875-40bd-08df147bcf68
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MWH0EPF000C618E.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6115
-X-Stat-Signature: ge8h4ctqo367nwm31ist6uc5dexooo1e
+X-Stat-Signature: h9g88dif9rtf8aofbijz8dwgfx65yn33
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BD14020005
+X-Rspamd-Queue-Id: CF6BC40007
 X-Rspamd-Server: rspam03
-X-HE-Tag: 1789622616-268065
-X-HE-Meta: U2FsdGVkX19isqMT33Qw3LAdxRiU/xwWI5BX1l01IQCnr7VQao8R8HoxPWdS0tjWUyCg0cQttYqvmSFn3TYJN4HSaE3BD2zztxKPmkaT2lq8NM/FTAQEy0puZ298cX7LLvjfiJLXdCMpnhSGjRto2p9k+Vl9WvzgmiNIoLNGCQql9EWtDcbdGTK5kMTxeCbmdvxdhmYh3b6y/D6rwwUatlKOYf4eW/XZbt5fWeLWNfpIe3ihuEo/yygvhy3Ri4dNyLNnCEivgiFDLySHG1NTOWKS7m8HhZtR3AQZL6t/aZzxySjER4GyeMzJJjRvy7vo0ls7swxMb1OxWC8yiBduWGMrTKXkAZbMEkI4rrvhSNB4+K+uLZu6ltKeco5F3df7PWrVL7cRX+FDCQHx9WeED8OWCE/6q3lwjd/yfzulvbYfDqI+BzhQPq3mdAf3aN1zSCYQFZAzC1674cT7nJVfyRy7hgGBcFequUZIRNGp/ntCRGrYfoaCH9/8ZMBOh6bjzVe3DMpHYO0QP+ZMt36Q8eRhFvf125rWmS1auPw1Bzeo8gErcm+88H+JHyAceca51Y7UIBf1+slV4yzOs6wii81Znd+hQz3hOzWwecvVojSf5pIkbxP4GZkxbqpN7BuJ15ti8Z8oNV4w62GqFMZfDEy3cISSaNwCxhCrBvMOOd+UP0y2CnErynkDHswb6DTyGKHRSQadj3/SyIgqYnRectNENXYTAUHg9w3paWAmavpuPEozHBJ1SQ5XbR+vYEHBM6VSyfCigW6WXmj1DXSjY7VKKJ7XlwumcbL6O8ahOLWV/rlbXGvzLouBga5/pAbCmbu4l9w2gNqhkNuydTbhxoJbe16cHda+1omt/MVtmsLY3cPgSSxN0tUVUBQ3Lhtx88qmCKmcTi14mAnjZoT32GUracHGGPsHc2YlqRadDa3FSenGloqkoMhURUvbxHslUjdrITHfZaAzff2dH8k
- V7nS47je
- jqOiOwMTmpFZwuD8y8p3Txae+FtjWb7q6/O46Fxf9R10aAe1E3Ozto1xtU0/2FDgfukEDDwFMU29qmldt6Dt6e6OrI+kEbEFizdT6Z5hzkXccChfFg2EBotukDEOZ/HWWlisLGedmORBpbDJVo1GRICrV2v1OQFzCM1NEofC1gHOT9F2ghgidCNI6Uen0+5hI0/2jEKbULcZnelyPylWzVYMC3dA4s/xWnpFmLRCgdhj34+jcFbvqxd7pvqRmlA4Mx7yx4dDBxWT7lz7V90P4xy5Iz7p5/EHzi8Ds0W/1aR1cUlohsWpgAKgluEgyd/OltpteSx4zGcowThhQmpmelRhQLr6KlWmYL5cowqQJNE5zl0pif81XT80Vvw4x4S3cSw0cx1UFxDmKHvXTGTfpnSePbZhj6vAlQ3IS1medsJazHm6k8ORbO0cvaUqx8Y6F/NmSYUZ+k5FUwpSgVCItGaujuc4MWZ+DBGwi
+X-HE-Tag: 1789621693-928056
+X-HE-Meta: U2FsdGVkX1+QVMQQ5A1eiTpEJ7V94YzzhI/DpRPyYvqnvLusbNU2wnHKUp8FhU7q/Ffk7pqt741Smb6vhl7Um5KKiykiaAB0wpDgM/hTB47FMJ9aU32/zvCijgG73/8oDNoELcVRVTPKo0DpA0/PlXcaWBCsGubqpfoDBZOBRyPLLmlSzla2Wj9yEhEDvOlxOhYu+AwBQ7RfECG7YgePTbIfHDJABgvRG/SFvwo7QA5Aw7/yVHEV63XsoEPtWnpg+M9RdIQTxi/z44bInC1m72WJpjI3M5ryumOWqoDlru9UkefazXoRnTWZBAaHjLpqA11Gc/aT6guDRnvEdZ7fq7Zb/lOa5QRI6LeIYshNzfko1pwRD71R0pSEm7H1ov39XzSLvQOWljU3UyWFpOsuoe/V1RRd7ZRv2/Jg4NEyWn4N5glUUvhjaOdFx4DypnyYrgq7beVWvsewDzRECidFhoVr+p/yX7C5Dpk0NZRQjMdcAuVFc0oNbJVZa7eShfk6q8U0fpBPaiNj/xRYi10AbcCW8dMFKX0t+IGSWCA/a0UkSlVyj4nYjFPqwW/iOBDwqUOThuvyXQ8JvIObk2BfOr+ul59A1dsDEqrOjnTf6v42IRbOyUQc3062GX0pm2kkDl92C/r0tL3acuEzh7qAtltl/pUkTR3ruYRtD1z0DbORjbDXAxWbshLE/g3oG4ZSrNRRfvrlasiOdsGDuP8XCr4d+JccuPa/VacAN3rFtkMLLMvhmUWjoke9v2+XEKas0YWrpxJOaaSv/tRY1XOIjTCtb+Zycr/negPqxX2W+hdwiWlWYkkf4D1UmcWghfnYebzlJmlnxpVWq/Mo6UBWBQhhBh5oGTy3RAWZimJnGzhRWC/2yQ6m8JjtaKurbDP5UOrmWZ6pz8QeaZ8U7CVB0cYfxH47MK333+VzAy9aM2EVPlnV6qK3/F+s9Z1EIuzdOpTtsLyvjiDhM3HP36O
+ rWhZtUgf
+ uSoC5HYyeTFkMeTkM0obFDmoc8X9nlkrrYOUzW0nB8lFz+FJnQe0jicO8NYF3mKakG69cGibFNsV3yIPolhiC+Z+dQIFa0BvroB3EDOgpDQjnC0cHA8g4xGniq2rkRkdDPdMNfjF6J/U1RIZaA3wVUHHQEzq9K9D3ZSaSsBqjI/8f9TH6ZEdtFMqKWAwsOj+bQ3r6vz371b2nQNbiM1F2YNTkLddaTUecHTME2xvPfpGdCBS5Xy/1wT026z/tPTCCIYBw
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,83 +97,138 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 17-Sep-26 2:22 AM, Joshua Hahn wrote:
-> On Wed, 16 Sep 2026 08:38:17 +0530 Bharata B Rao <bharata@amd.com> wrote:
-> 
->> On 12-Sep-26 2:38 AM, Joshua Hahn wrote:
->>> Hi Bharata,
->>>
->>> We've been testing pghot in a Meta kernel with worklaods to try and see
->>> what the performance characteristics look like. I wanted to report
->>> some of the findings that we've found in our testing. Note that these
->>> results are from a modified kernel that has my tiered memcg series [1]
->>> backported, as well as Gregory's numa balancing scanning fixes [2]
->>> as well. 
->>
->> Hi Joshua,
->>
->> Thanks for testing pghot with your workload!
->>
->>>
->>> - Without tuning and using the default tunables that pghot comes with,
->>>   we've found around a slight performance regression against raw NUMAB2.
->>>   This was being run on a host with 750G DRAM and 250G CXL.
->>
->> pghot promotes on 2nd access by default since pghot_freq_threshold is 2
->> by default. This will result in slower promotions compared to NUMAB2
->> which promotes on 1st access. Could you please try with setting
->> pghot_freq_threshold to 1? I think I should make the default as 1 going
->> forward.
-> 
-> Gotcha. Out of curiosity, I'm wondering why you decided to make this a
-> tunable. Specifically, I'm wondering if there are any workloads that
-> benefit from making it require a second access. To me keeping it at
-> first access makes a lot of sense. Obviously you could say that
-> scanning workloads would want to use 2 accesses, but there should be
-> other ways to prevent that from happening rather than counting the
-> number of accesses before promotion. Just my 2c.
+On Fri, 11 Sep 2026 16:00:47 +0800 Hui Zhu <hui.zhu@linux.dev> wrote:
 
-The basic idea is to consider two factors for determining the page hotness: the
-frequency of access and the recency of access. Hence I have kept both of them as
-configurable so that users can tune them for their workloads.
-
-However since the immediate comparision of pghot-hintfaults source is with
-existing NUMAB2, it makes sense to have the default freq as 1 to get closer to
-apples-to-apples comparision by default.
-
+> From: Hui Zhu <zhuhui@kylinos.cn>
 > 
->> In any case, will it be possible to provide more information on what your
->> workloads are, and the exact performance metrics? Any representative workload
->> that can be substituted to reproduce this behaviour can also help.
->>
->> And when you say slight perf regression, how much is it exactly?
-> 
-> I'm seeing that average latency is about 20% higher and p99 latency
-> is about 5% higher.
+> Commit 7404bd37cfbe ("mm: workingset: use lruvec_lru_size() to get the
+> number of lru pages") broke the workingset shadow node budget under
+> MGLRU: lruvec_lru_size() reads mz->lru_zone_size, which MGLRU never
+> maintains, so count_shadow_nodes() sees the evictable LRU lists as
+> empty and the shadow shrinker reclaims eviction tokens almost as fast
+> as they are created, losing thrashing protection.
 
-I hope this gap should get closed with pghot_freq_threshold=1.
+Thanks, I've updated mm.git to this version.
 
-> 
->>> Finally, we've seen some issues with pghot causing userspace crashes,
->>> which leads us to believe that there might be some bugs that manifest
->>> in userspace as well (we have not been able to find out where in pghot
->>> these bugs are introduced).
->>
->> That's something I have never seen till now with any of the benchmarks that I
->> have run. Any kernel messages attributing the failure to pghot? Anything
->> attributable to access reporting or  kmigrated threads?
-> 
-> We're doing A/B testing with NUMAB2 only and pghot, and we are seeing
-> the userspace crashes in the pghot host only. It seems like there
-> are some segfaults trying to reference ip 000... and a warning that
-> references "Too many tries to read user space".
-> 
-> I don't have anything in particular that would direct us right to pghot,
-> but this crash has repeatedly come up, only on pghot (across reboots)
-> and not on our NUMAB2 worklods. 
+> Changelog:
+> v5:
+> According to the comments of Andrew, clarify the performance testing
+> section: the w2-file-churn differences are within run-to-run noise;
+> w1-anon-churn is the meaningful signal.
+> v4:
+> According to the comments of Andrew, Fix "follow-up patch" to
+> "preceding patch" in the commit message to match the reordered series.
+> According to the comments of Sashiko, add patch 4 to reparent the
+> non-hierarchical lruvec stats on cgroup v2 to fixing the state_local
+> underflow.
 
-When you find out more about this failure, please let me know.
+Here's how v5 (and v4) altered mm.git:
 
-Regards,
-Bharata.
+
+ mm/memcontrol-v1.h |    5 +++--
+ mm/memcontrol.c    |   42 ++++++++++++++++++++++++++++--------------
+ 2 files changed, 31 insertions(+), 16 deletions(-)
+
+--- a/mm/memcontrol.c~b
++++ a/mm/memcontrol.c
+@@ -233,14 +233,29 @@ static inline struct obj_cgroup *__memcg
+ 	return objcg;
+ }
+ 
+-#ifdef CONFIG_MEMCG_V1
+ static void __mem_cgroup_flush_stats(struct mem_cgroup *memcg, bool force);
+ 
+-static inline void reparent_state_local(struct mem_cgroup *memcg, struct mem_cgroup *parent)
++/*
++ * Reparent the non-hierarchical lruvec stats that count_shadow_nodes() reads
++ * to approximate the shadow node budget.  They are not exposed to userspace
++ * on cgroup v2, but they must follow the reparented folios; otherwise the
++ * ancestor would only receive the negative deltas when the folios are freed
++ * without ever having received the positive base, and its local stats would
++ * permanently underflow.
++ */
++static void reparent_v2_lruvec_state_local(struct mem_cgroup *memcg, struct mem_cgroup *parent)
+ {
+-	if (cgroup_subsys_on_dfl(memory_cgrp_subsys))
+-		return;
++	int i;
+ 
++	for (i = 0; i < NR_LRU_LISTS; i++)
++		reparent_memcg_lruvec_state_local(memcg, parent, NR_LRU_BASE + i);
++
++	reparent_memcg_lruvec_state_local(memcg, parent, NR_SLAB_RECLAIMABLE_B);
++	reparent_memcg_lruvec_state_local(memcg, parent, NR_SLAB_UNRECLAIMABLE_B);
++}
++
++static inline void reparent_state_local(struct mem_cgroup *memcg, struct mem_cgroup *parent)
++{
+ 	/*
+ 	 * Reparent stats exposed non-hierarchically. Flush @memcg's stats first
+ 	 * to read its stats accurately , and conservatively flush @parent's
+@@ -249,17 +264,18 @@ static inline void reparent_state_local(
+ 	 */
+ 	__mem_cgroup_flush_stats(memcg, true);
+ 
+-	/* The following counts are all non-hierarchical and need to be reparented. */
+-	reparent_memcg1_state_local(memcg, parent);
+-	reparent_memcg1_lruvec_state_local(memcg, parent);
++	if (cgroup_subsys_on_dfl(memory_cgrp_subsys)) {
++		reparent_v2_lruvec_state_local(memcg, parent);
++	} else {
++#ifdef CONFIG_MEMCG_V1
++		/* The following counts are all non-hierarchical and need to be reparented. */
++		reparent_memcg1_state_local(memcg, parent);
++		reparent_memcg1_lruvec_state_local(memcg, parent);
++#endif
++	}
+ 
+ 	__mem_cgroup_flush_stats(parent, true);
+ }
+-#else
+-static inline void reparent_state_local(struct mem_cgroup *memcg, struct mem_cgroup *parent)
+-{
+-}
+-#endif
+ 
+ static inline void reparent_locks(struct mem_cgroup *memcg, struct mem_cgroup *parent, int nid)
+ {
+@@ -571,7 +587,6 @@ unsigned long lruvec_page_state_local(st
+ 	return x;
+ }
+ 
+-#ifdef CONFIG_MEMCG_V1
+ static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
+ 				     enum node_stat_item idx, long val);
+ 
+@@ -593,7 +608,6 @@ void reparent_memcg_lruvec_state_local(s
+ 		__mod_memcg_lruvec_state(parent_pn, idx, value);
+ 	}
+ }
+-#endif
+ 
+ /* Subset of vm_event_item to report for memcg event stats */
+ static const unsigned int memcg_vm_event_stat[] = {
+--- a/mm/memcontrol-v1.h~b
++++ a/mm/memcontrol-v1.h
+@@ -25,6 +25,9 @@ int memory_stat_show(struct seq_file *m,
+ struct mem_cgroup *mem_cgroup_private_id_get_online(struct mem_cgroup *memcg,
+ 						    unsigned int n);
+ 
++void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
++				       struct mem_cgroup *parent, int idx);
++
+ /* Cgroup v1-specific declarations */
+ #ifdef CONFIG_MEMCG_V1
+ 
+@@ -67,8 +70,6 @@ void reparent_memcg1_lruvec_state_local(
+ 
+ void reparent_memcg_state_local(struct mem_cgroup *memcg,
+ 				struct mem_cgroup *parent, int idx);
+-void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
+-				       struct mem_cgroup *parent, int idx);
+ 
+ void memcg1_account_kmem(struct mem_cgroup *memcg, int nr_pages);
+ static inline bool memcg1_tcpmem_active(struct mem_cgroup *memcg)
+_
+
 
