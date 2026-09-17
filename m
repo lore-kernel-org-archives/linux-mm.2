@@ -4,89 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBBBFC982D0
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 10:05:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 720FBC88E72
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 10:15:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F32566B008C; Thu, 17 Sep 2026 06:05:29 -0400 (EDT)
+	id 644A46B008C; Thu, 17 Sep 2026 06:15:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0D846B009D; Thu, 17 Sep 2026 06:05:29 -0400 (EDT)
+	id 5F5876B0093; Thu, 17 Sep 2026 06:15:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E4EB76B008C; Thu, 17 Sep 2026 06:05:29 -0400 (EDT)
+	id 4E55A6B0098; Thu, 17 Sep 2026 06:15:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BCC896B008C
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 06:05:29 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 52994802CD
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 10:05:29 +0000 (UTC)
-X-FDA: 85222821978.03.A1B6654
-Received: from mta0.migadu.com (out-209.mta0.migadu.com [91.218.175.209])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 55B714000E
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 10:05:27 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=m1JarKV7;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf11.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.209 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=m1JarKV7;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf11.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.209 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789639527;
-	b=Je9WNUy4jIiaBapSmztN4S1u2tZjtKU/BggajIfhuBRcSQflk8au/VG3Db3uFC5W87OYZV
-	5TKjqGAILbLDruKNssr+Dfpyy95jC3GaAboC/Q2Y3+Be6rC5wdX2I/KoEE6CbCBN5YkzN4
-	B3CZ9Bk/ivftRnYVP9TgsI1zRGgahBE=
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 23CE06B008C
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 06:15:53 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A711CC02AF
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 10:15:52 +0000 (UTC)
+X-FDA: 85222848144.09.D1EF994
+Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 999E620002
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 10:15:50 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm3 header.b=cmmcxxUC;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="Q 8FPGS+";
+	spf=pass (imf03.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.144 as permitted sender) smtp.mailfrom=arnd@arndb.de;
+	dmarc=pass (policy=none) header.from=arndb.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789639527;
+	s=arc-20220608; t=1789640150;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Hy5qF7E6/OGFnGn3QJpj712E+skXs7QyWTazkT10GjA=;
-	b=2thCTFG58Z1EqLYLzIVhouzU804LLthHpdM8pISWksv+kht6VmP6QNSlE9nQVv59J6aVTx
-	6i5CjgUasjpEXCQ8SB5tfnZpJTLeRH1weRrX/pO7MloKzUJ7QWofS3ZwH6AeczYetIRhxg
-	2u2mICe6JT2SgJToIbbp9TWNaYaz2Tk=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=/tZHzVllun6wYA77y8xQTAiwknDz8pgNlCRFsI3jAaQ=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789639526; v=1; x=1790244326;
- b=m1JarKV7M95Mq42QKfMDdZaYwWiEr3ICR8J+aYSD7riHxtlODHAgN9uzF+QcgoVqiHMwP7/Y
- 81CWhGMdJSxkSmnRJMby9JV1Gc69nF371FEAFPR5oNdCRE1bspChElQr4IIhLQepSVUwhia/1s2
- SZTlDEjDNhZP7fCyENJxZsEI=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 5049fdc33711d8e9;
-	Thu, 17 Sep 2026 10:05:06 +0000
-X-Mizu-Trace-ID: 5049fdc33711d8e9
-X-Migadu-Flow: FLOW_OUT
-Date: Thu, 17 Sep 2026 18:04:57 +0800
-From: Baoquan He <baoquan.he@linux.dev>
-To: linux-mm@kvack.org
-Cc: akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com,
-	nphamcs@gmail.com, baohua@kernel.org, youngjun.park@lge.com,
-	hannes@cmpxchg.org, yosry@kernel.org, shikemeng@huaweicloud.com,
-	chengming.zhou@linux.dev, david@kernel.org,
-	linux-kernel@vger.kernel.org, Baoquan He <hebaoquan@kylinos.cn>,
-	kunwu.chan@gmail.com
-Subject: Re: [PATCH v3 00/14] mm, swap: extendable swap devices (xswap)
-Message-ID: <aqu7Sep9nHUS2DmR@fedora>
-References: <20260916101929.149106-1-hebaoquan@kylinos.cn>
+	bh=63zrAy46gSsb3p8yj1mhK5xaAA+erR8iZLYTbk/Bg7g=;
+	b=MIpvGjmYtxcBSZetCVaRAe2xxP8yUN4e1+b2O+ut+I7WPWhozcvMWQNwX350DdY3Gy4l/Q
+	u5NU8wE+lxbThuNOZvNu2cVbHQGFSAv4+nlZMg3p5dirBqfZRCN/qGaFUID6rOkWI5Ajde
+	Jh+riaua5LopcYV0bC0z7/RSx4hxLdc=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789640150;
+	b=8ojFuLCLHUk0d1311JgloamhKwNeebbk456nnDD1UnCU3lAdYhlAWh6ez+VsgXsUjm52lO
+	+G1Z+TgM9Qvzeh/mi6hGfugvn8Lsn1wlDvLxmQ2+WVsCNcdV+SzqkLPCl5+xG7d9L064gY
+	ogpfgH6a92KVTcg27SkWnVl6q2bTEZY=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm3 header.b=cmmcxxUC;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="Q 8FPGS+";
+	spf=pass (imf03.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.144 as permitted sender) smtp.mailfrom=arnd@arndb.de;
+	dmarc=pass (policy=none) header.from=arndb.de
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailfout.phl.internal (Postfix) with ESMTP id 75DFAEC016F;
+	Thu, 17 Sep 2026 06:15:48 -0400 (EDT)
+Received: from ams-imap-03 ([10.64.2.23])
+  by ams-compute-02.internal (MEProxy); Thu, 17 Sep 2026 06:15:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1789640147;
+	 x=1789726547; bh=63zrAy46gSsb3p8yj1mhK5xaAA+erR8iZLYTbk/Bg7g=; b=
+	cmmcxxUC4Yi8AtHYQy91rc8pGq6Xpn4y7Yp26rffQNYtBaHR6QAFPWSfLW/Ivfb3
+	6LWSteiLaz3xcojERQcbjvCmtQVLAPKBuwJW2VciWjTnACI4gQzZ1/O7W5f2sTda
+	K/+abxzeWBdw5WMTd97MC4QfA+CUdSVUWYS4ql6ClDTDBF3xjdcOgY2J02Sdfwqw
+	JFcNSeP9KyNPHMy4eMBmu2LLLyRD2BGNanGT5tBWfKTAKhHVsZ1/YluxzBbZDowO
+	rrIrJw7XBGU4fN5R7Dpe10KzUBd6ife0h69ksaA5tGxt1n2rmRv9rFDnwSBK9K6S
+	PJX0bvP+iVUE0x8cwTGyXg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1789640147; x=
+	1789726547; bh=63zrAy46gSsb3p8yj1mhK5xaAA+erR8iZLYTbk/Bg7g=; b=Q
+	8FPGS+HRS1XIEdvfZ0cy9o50f7DsczXNCvv+ICNQX1R02obIkacTU/NuUtA3FAgb
+	jJgLTi1+1DGL42eoJA1PTf3MDIn4uiZQtLNJ/eieN3CW3dNuSQsWq+BgU9ZY3TZU
+	H/m7tZIiDiVnHrxxF7H3eHfe2xlv2F3L7O1jbnawl0CV9vY9t+KYVwvHGYXePMOX
+	PZOPYLy9xYhh/C5RHyTgr6ktBVJPWubyIurApnWt4aHac3OfgnTQB65GoybkHSdm
+	HyjsH/AiKxjNubkKOij0hvdpVd/dZoautdrlVd+zZOq8r3ibKb9bbu9BhtWR7pCV
+	i+EYyRd0Msg2OAIJ5trhQ==
+X-ME-Sender: <xms:zL2rau8fojYY1T7ifVW8MYSwQJGUi5wdVbPFkcvf9kS5aOiirAO7Ew>
+    <xme:zL2rapgmm3mHHb5y3DZgcOhualtkMgt2pR4JyldCVLDl3bebCBXStWH0yp1DKzi8N
+    -F_w0cCjc04GWLh9-tTRyp0CV6IXnjEzjxqwbjq5MIiwYdeH5WSz2w>
+X-ME-Proxy-Cause: dmFkZTGObiLov0ZhD65vCMEDs7FyeO+N6gOc227aZ2EcrWzGLk1cuphQJxG6jEp+lPjKa8
+    dTdXUGAKPunOpPiE/cTsQtkTFTW7xc9M+3DHGqvYZkk8VUwTrXJ9n400/RbHDBkmYPUAPS
+    hNq0mR03tMRt3tMGmmdAn2WVC6m8+G/vEOzoMK6dwHdpQO/5F1OBLh1sjweUYPmCh2ELL7
+    B9F4gGnChXUf0SadPnzjhGR9l8+TJVxJwQwRoeYRsU57cdyC7Sa8p2t1CgG2+E/O7RlThr
+    fBboBI98bf2eB4h3KhE+Hhb+D2fTyYa2bhswd2XaFShan9En180bV3glzF9myTMzGgpBmD
+    vc31QPMpol3Sm6ZVgUy8nzj/n30k9T7AeTKdQuar5/6BYWyfLWmVbtYTuoBHBgDFSGqzjW
+    o3SrbCeDRQ76JQ+kKfALY6W9ggzHGssCBafTz3YLPhAMZwB4S4CX79LR13sSk3702n043Q
+    LZWatXQ58f6FFIZIJmso5mpi5qdfMbobFukWp0o/Q7PzOpRDDY0ZFwdDqra4QpyqVcPUo4
+    j+Oi6OnqikXwUxQQ/Bge00wrpu4p+HVXs3dQkgH5E3XbOMx9XCaQ8Rx+HcMHqicGrkAi3r
+    j39SGU/OhSpfiU076jcDU1SgRaHiSLYKGzR4AMPkYalflphI7KJX5sWIva/w
+X-ME-Proxy: <xmx:z72ral1a3RUM5nYAjM03H8uzFlvvRc9InpOucU09R-fKDSkRVXYQog>
+    <xmx:z72ramzg0ET3x2TBkBsJjAb4zRQbfXYUIcMw1Uk7KSsazpMzgBG2Vw>
+    <xmx:z72rashI4I64YgMFKEShgvbjjop6axEMGsyqMdoeht8Vb1IH_O-D7w>
+    <xmx:z72ratxIa3zN7AKNzH4GgwK7DabzDbSXJQlcxN6AsFW1SZpSaapWCQ>
+    <xmx:072rasUZzw3xiVye1Gv2_hKwH9obB2pTZJyF01cUIWJ7zoF6_LbwYr5r>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id C695632A0084; Thu, 17 Sep 2026 06:15:40 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260916101929.149106-1-hebaoquan@kylinos.cn>
+X-ThreadId: ACGBcqtoOIMw
+Date: Thu, 17 Sep 2026 12:15:00 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Andrew Morton" <akpm@linux-foundation.org>
+Cc: "Arnd Bergmann" <arnd@kernel.org>, "Johannes Weiner" <hannes@cmpxchg.org>,
+ "David Hildenbrand (Red Hat)" <david@kernel.org>,
+ "Michal Hocko" <mhocko@kernel.org>, "Qi Zheng" <qi.zheng@linux.dev>,
+ "Shakeel Butt" <shakeel.butt@linux.dev>, "Lorenzo Stoakes" <ljs@kernel.org>,
+ "Kairui Song" <kasong@tencent.com>, "Barry Song" <baohua@kernel.org>,
+ "Axel Rasmussen" <axelrasmussen@google.com>,
+ "Yuanchu Xie" <yuanchu@google.com>, "Wei Xu" <weixugc@google.com>,
+ "Baoquan He" <baoquan.he@linux.dev>,
+ "Baolin Wang" <baolin.wang@linux.alibaba.com>,
+ "Ridong Chen" <chenridong@xiaomi.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Message-Id: <d832c2d1-d691-4583-852a-f05d4335e9ce@app.fastmail.com>
+In-Reply-To: <20260916230330.f0923cdb679de0b39d1c5d3a@linux-foundation.org>
+References: <20260916083456.4136132-1-arnd@kernel.org>
+ <20260916162816.39f0f33f6a48d30a71be3575@linux-foundation.org>
+ <20260916163044.3daa3811d9b2bf7d958f1f27@linux-foundation.org>
+ <75939625-482c-464f-83fb-fa12d3e1d79c@app.fastmail.com>
+ <20260916230330.f0923cdb679de0b39d1c5d3a@linux-foundation.org>
+Subject: Re: [PATCH] mm/vmscan: avoid false-positive -Wuninitialized warning, again
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: uejsenpf9bamuu4e53efy56ekdguuarc
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 55B714000E
-X-Stat-Signature: 65xcy5gc5s96ou6ab6zbpqrms9i6q16o
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789639527-597339
-X-HE-Meta: U2FsdGVkX1+K1vAPmhi6KUvFg8UhKBxgaLrVKSq3RxOsXuHv59KjmxrMkXyf4S6PRzOL61aB+vYoUpOXJ43B50TAYfRaoaQRGmWdIiSJaZLll/l3FQU5Ow4UVMpQhoPWkjZzAmeDvgUxh9Y0AiEvsOHDv8EDqZRSLR0GpaFHaRCJVDKU/XAiMOSm0FxCpU18l/1j9ipN3zN+Kl60dG2L4kgOnYoE00ydC7/NTRiMciBmyBWuYCY0mo+fBGjIXXLOVoo7XFJjLCOtzfjQ+jwPDboHbo+eSQkxB1qYSu6dmLtsHOMAahuK26q1HnP6VSBYHl/ihk5y69GGud+8rjH1Upp5EJIxF3/LC+mHi1Xw9V5C2+Ur3toDjief89Da8U7KpwfgyjxEyhRtIRtrglJ/o11Y0dLdGLAG6v6UjOpQ0yuTAGW0ZsMStNsCfQo31kuW8OJTXVXR8Ng4u3N1EJTGEAd/wekfK+3KWzaqOL0kDA8tO3waPxKOgWS7HkHJkrnpnA1E8ZctuB7o0LZWLrU6sGim4kK4IyaK1FEqRVXPnvUgYs1IsjwFDs6tYaBo0RdGw9xm1Mr8rWDqI/Zsv2Wu6lRSMQGS2L77NZQqQ40ZqvOhzpcODb9kN69ZpWdLjavYcXw7aEa2tM8XPni+2Orf07KIb0gJwPoYjIGxj/MimR+QsJSfPQ2iiGcyFEHvieLqe4aF5dPxPLITSQDf40zi8pF6afvY1ly8K3LFHLajeSFGgZNlmi7K2oVnOCU1wgwmpvqDFjUsQnNTn62suB/YHqxioXx/USSvajLM9R4WKcLPXeBkf1nrBgcAgQWnSAs7Lm4a3N1lSNzCBARag6meeuIW4y0jsz8ybLdbgA2LF6FFoLlqYify2G6oPjGt4El0g1hYljoenqlNaF0dfA8yxeKozx4JxwHvSQKX6y8Clt+mrV/8R7zf+GCgM5XK60+FicYLgWrzdHVneVRgGxb
- ALI2Bd00
- utTE357LDTMpPnUwqeOWvJdw8tD239vtrHXwwKGSqovNZPKo9fQVXHjixMoLP0a80jORjcnYk74Y0I1aItwipfNnFM/eS8Zpi7eaIwIc7aOrqL4JFP7K8XOMXuCVE0QQH1ORhpTTzDRTZPYIp5qLyKLc0UdEQRi2HaR4upvAz7MaxoYULcHCvfph1v9COrso1HNS7iWy7Gt1SFNtsOSksf9bXxPLr/iF1pLbB/915bDB/mtKn/f7Ljq4JkRIaeC7DCyRgD3KMX1zbqo7KFNR4K4h/gnKRvQAB6W1tNAAPnpBTTJKWkBPtvZGshfQc57WKuDv3gaZ+GU+NkXlBqCcjdcjf0VgyJjvbw6WXufT+D6aH+wOT73jqtyz1Og==
+X-Rspamd-Queue-Id: 999E620002
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789640150-728314
+X-HE-Meta: U2FsdGVkX18DEc1a5Uo0QH03cfMkbiNobf45GMc69zGBEIa4YN0kZYzc5fsaSF34JCyBBcc7NbUR/KVwZn9olb68DtO7u8/xvQjyDI/b46MR2Wsz/ZXvF/2UUGnlIGyP/ZuJQRzCGkcSv9WEmjae4o3qGMjLpOw0ZSxC0w8ijkcacWmUPCEM4N0KwwyFPunLza3eisNajHgxxH/rCvHNdhu4+yABf43J+tRwU1JYsRPc/mKtDBLD1wAYQQDAMLpLs6k0vm7ry0CA4++qijCq8E1jzW92/jyFy3ZfBAbonHz8WEJ7/b8d+bTO9a3lh7EdK9cWYXSpb4YFzqNTnmqcGjHiyB0urIMgflQAHyjsTx48i/dfIH713FmhXdW2QL9ltKR7+a+RkZpox5xV40E/GSa8UJfekA+cg7Zr3GLh7xdDq//6/U6T8mpPjApmt1go2bDcAbsKfQLcF4GwYrsnbPnLy90t1JH5iGbFFzoIUpAfGOSGe1Yu86M9+YuQLsxMJe3tHtSkXvwTMBmaO+p26Uw3WERp5u+tmvR3Me5J1HVyw7L7dslVcB9RB5HZJeXhkmfmutBzSiPvbJpe/U27FPc5jyZeM3iLXZF2qWDvTaw+LALGzEfU8s4XOr96WWt9DnCxDGoiCpcgXKT6Wn6BJkKuo8Z0HRq0v9m/5AEFDyNYs81kX3U1seTCOP90iyxGPkPIYzT7jMeHw/d9J3M0QYZJ4YPZDofYDVBO59+k+p43URaFr37qZJPvTq+/wfzV7zT1MZ8MU6/lNmBPGWbhlpVqpqCUSLiYi0Uzs4lzlcPTvGs+PtCP5ekipvhAZvO8JYFrM7a/OBCsEpZysM9Bpxg2/14MEbLNv0KksLUItdP6sn9TJFJmuU81jnvp9gcMjrRgf6Oi92FJ5NAse4uT8aYu5C+yYFOhUFxTJVIq/v98l4/zevmqs8uRHE4uKv9XjlRcvaY5tQB6vppRo9Y
+ dKKoMSpa
+ 611ac552Rqs2M53ps4MRUvv+xYMRoTgJOqX91b4dP/kdxGgZcCjtThEqvuEr+3xcydlsD+0wUBDXPMbGT6CdyDHHpZTOGv58w4e0PbpTN8ehqGB9z+3DWrP06xjZpkBTbEvF2U7nGjQn/DiI2sv51AKRXDEET0PmUjCL8wzcauxlM5Dh4AYaE737fu+w/Y+3DOkHObILEvNLKxyUkIXZPQiissBPtgbkEFBWB/0bvmhnykWpbkfwoq2IYFB+IJzp9bG0nzaua7hxPn3eEeVfoQ7EwQMA1EJhnv34sR1G0ypSXLBC3dM5mzcn10A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,149 +143,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09/16/26 at 06:19pm, Baoquan He wrote:
+On Thu, Sep 17, 2026, at 08:03, Andrew Morton wrote:
+> On Thu, 17 Sep 2026 07:50:43 +0200 "Arnd Bergmann" <arnd@arndb.de> wrote:
+>> On Thu, Sep 17, 2026, at 01:30, Andrew Morton wrote:
+>> What I found now is that the __noipa is only needed on top of 
+>> "mm/mglru: use explicit tier range in read_ctrl_pos()", which was
+>> in next-20260915 but disappeared in next-20260916. This patch
+>> also removed the min().
+>
+> So we don't need cc:stable?
 
-For Sashiko complaints: 
+Correct
 
-============================================================                                            
-Subject: Re: [PATCH v3 01/14] mm: xswap support for zswap                                               
-                                                                                                        
-│ xswap entries are added to the zswap writeback LRU but                                                
-│ zswap_writeback_entry() rejects them with -EINVAL, so shrink_memcg_cb()                               
-│ retries and zswap_reject_reclaim_fail keeps climbing.                                                 
+>> I think the reason why __noipa causes the warning about min() is
+>> that it prevents the constant propagation into read_ctrl_pos() and
+>> in turn the hack that suppresses warning about mixed types in
+>> minmax.h when both sides are constant.
+>> 
+>> Is the mglru series currently expected to make it into 7.4?
+>
+> Yes, "mm/mglru: use explicit tier range in read_ctrl_pos()" is in
+> mm-unstable at present.
+>
+>> If not, I would withdraw my __noipa and hope that the next
+>> round of changes to read_ctrl_pos() does not run into this
+>> problem again.
+>
+> OK, I'll drop "mm/vmscan.c: fix min() signedness mismatch" and shall
+> rely on "mm/mglru: use explicit tier range in read_ctrl_pos()" to fix
+> the min() thing.
 
-Right. An xswap entry has no backing store, so it should not be a
-writeback candidate. v4 no longer adds it to the zswap writeback LRU;
-zswap_lru_del() tolerates that (__list_lru_del() checks list_empty()
-first, and entry->lru is initialized before free). The shrinker then
-neither scans nor counts these entries. 
+Ok
 
-│ swap_vma_readahead() does not skip xswap, unlike swap_cluster_readahead().
-                                                                                                        
-Right, I only added the check to the cluster path. v4 adds the same                                    
-SWP_XSWAP check to swap_vma_readahead().                                                                
-                                                                                                        
-============================================================                                            
-Subject: Re: [PATCH v3 04/14] mm, swap: add xswap cluster grow via VM_SPARSE vmalloc                    
-                                                                                                        
-│ Returning -EBUSY from vm_area_map_pages() skips vm_area_unmap_pages(),                                
-│ then the pages are freed while their PTEs are still populated.                                        
-                                                                                                        
-This path is unreachable. vmap_pages_pte_range() does return -EBUSY, but                               
-vmap_pages_pmd_range() and vmap_pages_pud_range() normalize the return to                               
--ENOMEM, so vm_area_map_pages() never returns -EBUSY. A collision takes                                
-the -ENOMEM path, which calls vm_area_unmap_pages() before freeing the                                  
-pages, so no freed page is left mapped.                                                                 
-                                                                                                        
-============================================================                                            
-Subject: Re: [PATCH v3 05/14] mm, swap: add sysfs create interface for xswap                            
-                                                                                                        
-│ maxpages smaller than SWAPFILE_CLUSTER skips the rounddown(), leaving                                 
-│ si->max unaligned.                                                                                    
-                                                                                                        
-That needs 2 * RAM < SWAPFILE_CLUSTER, i.e. RAM below about 1MB. Not                                   
-reachable in practice.                                                                                  
-                                                                                                        
-│ sysfs_create_group() failure leaks xswap_kobj.                                                        
-                                                                                                        
-Fixed in v4: kobject_put(xswap_kobj) and clear the pointer on that path.                                
-                                                                                                        
-│ pr_info() after enable_swap_info() races with swapoff reading si.                                     
-                                                                                                        
-Fixed in v4: the message is printed while swapon_mutex is still held.                                   
-                                                                                                        
-============================================================                                            
-Subject: Re: [PATCH v3 06/14] mm, swap: add xswap grow trigger on cluster allocation                    
-                                                                                                        
-│ free_clusters can be populated concurrently after the scans, so the grow                              
-│ block is skipped and the allocation fails.                                                            
-│ -EAGAIN from xswap_map_clusters() (another grower won) is not retried.                                
-                                                                                                        
-Fixed in v4: retry alloc_swap_scan_list(free_clusters) once after the grow                              
-attempt, which covers both cases.                                                                       
-                                                                                                        
-│ backing pages are leaked on swapoff.                                                                  
-                                                                                                        
-That is fixed by the patch that follows ("mm, swap: free backing pages in                               
-xswap_unmap_clusters"); patch 06 has no unmap path yet.                                                 
-                                                                                                        
-============================================================                                            
-Subject: Re: [PATCH v3 08/14] mm, swap: free backing pages in xswap_unmap_clusters                      
-                                                                                                        
-│ The teardown callers retry the unmap in an unbounded while loop.                                      
-│ kmalloc_array() under memalloc_noreclaim_save() is a high-order,                                      
-│ non-reclaimable allocation that can fail under fragmentation.                                         
-                                                                                                        
-Both fixed in v4. The array is now allocated with kvmalloc_array() and                                
-GFP_KERNEL. It can fall back to vmalloc and it can reclaim, and the                                   
-unmap always runs in process context, so this is fine. If it still                                    
-fails, we unmap in small batches using a stack array. So teardown                                     
-always makes progress, and no page is lost. The function cannot fail                                  
-now, so we removed the while() loops and the shrink rollback. The                                     
-counters are unsigned long now, and an overflow gives a warning.
-                                                                                                        
-============================================================                                            
-Subject: Re: [PATCH v3 10/14] mm, swap: refactor swapoff and add xswap_destroy                          
-                                                                                                        
-│ sysfs_create_group() failure leaks xswap_kobj.                                                        
-                                                                                                        
-Same as patch 05; fixed in v4 in xswap_sysfs_init().                                                    
-                                                                                                        
-│ sys_swapoff() mixes goto-based cleanup with scope-based cleanup.                                      
-                                                                                                        
-This is pre-existing upstream style in sys_swapoff(): CLASS(filename,                                   
-pathname) and out_dput/filp_close(victim) are already there before this                                 
-series; the patch only moved them while extracting __swapoff(). Both
-pathname and victim are released on every path.  I left it unchanged to                                 
-avoid unrelated churn, and there is no standard CLASS for a struct file *                               
-from file_open_name() anyway.                                                                           
-                                                                                                        
-============================================================                                            
-Subject: Re: [PATCH v3 11/14] mm, swap: require zswap for xswap devices                                 
-                                                                                                        
-│ The fix only checks zswap at create time; runtime disabling of zswap and                              
-│ runtime zswap_store() failures are not handled.                                                       
+> And I'll stage "mm/vmscan: avoid false-positive -Wuninitialized
+> warning, again".  ahead of "mm/mglru: use explicit tier range in
+> read_ctrl_pos()" to fix the build glitch wihout a bisection hole.
+>
+> Does that sound sane?
 
-Yes, this is a known issue. The create-time check cannot cover (a) zswap                              
-being disabled after creation, or (b) zswap_store() failing at runtime                                
-(pool full, allocation failure). In both cases swap_writeout() cannot                                 
-write the folio out, so it stays in the swap cache until it is faulted                                
-back in.                                                                                              
-                                                                                                      
-So this is a temporary state. The writeback series on top adds the                                    
-fallback (write to disk when zswap refuses an xswap page), and then this                              
-case becomes the normal swap IO error path that every swap device has.
-                                                                                                        
-============================================================                                            
-Subject: Re: [PATCH v3 13/14] mm, swap: add sysfs per-device size limit for xswap                       
-                                                                                                        
-│ del_from_avail_list()/add_to_avail_list() use try_cmpxchg() without a                                 
-│ retry loop.                                                                                           
-                                                                                                        
-That is the pre-existing pattern in these functions (they already used                                  
-atomic_long_try_cmpxchg() and skipped on failure before this series); this                              
-patch does not change it.                                                                               
-                                                                                                        
-│ DIV_ROUND_UP(val, SWAPFILE_CLUSTER) overflows for a huge val.                                         
-                                                                                                        
-Fixed in v4: clamp against (unsigned long)nr_clusters_max * SWAPFILE_CLUSTER                            
-before dividing.                                                                                        
-                                                                                                        
-│ a limit write that makes the device full leaves it on swap_avail_head.                                
-                                                                                                        
-Fixed in v4: after updating si->pages, call del_from_avail_list() when the                              
-device is full, add_to_avail_list() otherwise.                                                          
-                                                                                                        
-============================================================                                            
-Subject: Re: [PATCH v3 14/14] mm, swap: shrink xswap to the ceiling when it drops                       
-                                                                                                        
-│ the hardcoded excess can include an in-use cluster, and the whole shrink                              
-│ aborts.                                                                                               
-                                                                                                        
-The limit write clamps the new ceiling up to the clusters covering the                                  
-pages in use, so [ceiling, mapped) is free and the validation loop passes.                              
-The only remaining window is an allocation racing the shrink, which just                                
-defers the shrink to the next trigger.                                                                  
-                                                                                                        
-============================================================ 
+I think the "mm/mglru: use explicit tier range in read_ctrl_pos()"
+patch should come first because the -Wuninitialized warning only
+happens in some randconfig builds with that, while the  "mm/vmscan:
+avoid false-positive -Wuninitialized warning, again" patch on
+its own would always warn about the min().
+
+Somehow I fear this is not the last we've heard of this bug, and
+I wonder reworking read_ctrl_pos() would be better. I tried that
+in my original suggestion before adding the initialization, but
+that had other problems:
+https://lore.kernel.org/all/20260213123902.3466040-1-arnd@kernel.org/
+
+I have checked the latest gcc-17 snapshot and see that this still
+produces the warning.
+
+I also managed to create a reduced test case, see
+https://godbolt.org/z/xofecssz4 but this still doesn't make sense
+to me. I do see that gcc creates a both an out-of-line version
+of read_ctrl_pos() and also inlines it. Marking it either
+__always_inline or noinline avoids the warning.
+
+      Arnd
 
