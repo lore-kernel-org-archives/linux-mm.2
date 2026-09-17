@@ -4,122 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAF5FC982D2
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 17:16:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 646E1C982D2
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 17:25:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A50E76B008A; Thu, 17 Sep 2026 13:16:48 -0400 (EDT)
+	id 3AA9D6B008A; Thu, 17 Sep 2026 13:25:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A01D56B008C; Thu, 17 Sep 2026 13:16:48 -0400 (EDT)
+	id 35BDD6B008C; Thu, 17 Sep 2026 13:25:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8EFF56B0092; Thu, 17 Sep 2026 13:16:48 -0400 (EDT)
+	id 249666B0092; Thu, 17 Sep 2026 13:25:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 621476B008A
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 13:16:48 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B367A1403E3
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 17:16:47 +0000 (UTC)
-X-FDA: 85223908854.11.26E1808
-Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
-	by imf15.hostedemail.com (Postfix) with ESMTP id E647AA0012
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 17:16:45 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=kuNNxtjx;
-	spf=pass (imf15.hostedemail.com: domain of kmanaouil.dev@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=kmanaouil.dev@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789665405;
-	b=Lb3STlCi63H5pkP1IQPsFtzU/TPjMPnxIBOqp9qLDeJEOD0OQfyZvOgRUik8q6eCp39fTR
-	7pNEie3K5qjQEMnmcdSHjibyNE6MB0DTb0OPiMG56tzmYXathVcFTyJL+TnT/Pz+Y9+PLx
-	tUzDgSKgcXcI+oQ0WSe2vUgVGzQmPo0=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=kuNNxtjx;
-	spf=pass (imf15.hostedemail.com: domain of kmanaouil.dev@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=kmanaouil.dev@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789665405;
+	by kanga.kvack.org (Postfix) with ESMTP id 00AA66B008A
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 13:25:52 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8FA378043D
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 17:25:52 +0000 (UTC)
+X-FDA: 85223931744.17.55FBADC
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 9252BA0007
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 17:25:50 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=mRsX5erM;
+	spf=pass (imf25.hostedemail.com: domain of surenb@google.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789665950;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Lvc4+TpMUxQ7MOz+O0C7vMiwmJqsd+n4APfPejatdr0=;
-	b=Lo1OPIGxq0yVuLicOS4CMg73K7AoCO/+bPTBFzBbyaJowCerBYEFjIScb+DN7kK6v0ylqK
-	P/6dF9wbaZSijcZp5DUDm85Pgwo6x6pHJqHuNcrACtqp3iauEbj0Q57WpRvXPmvw+YwFUs
-	O1xGrhTCmyPQW4LnkqC8VhP0T5ITydU=
-Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-4843796e373so653483f8f.1
-        for <linux-mm@kvack.org>; Thu, 17 Sep 2026 10:16:45 -0700 (PDT)
+	bh=KsTRDsiQkb6uPtn9uEZQZ4pGk/1dXT9fj39UbJRrdLw=;
+	b=KSUG7gxNXoAL3UngAP/zCNjCIbq61PIQZFh6lDlMTJLlBLCe4yhC70XSjBtaqGsm9SBj/o
+	Usu6lCJilxUfDEosvMG2s4qCWDctzH4AF98qWHcREI34jpfc93ZyMGd+2mqIOfBJQrE53q
+	mvUmoSd0n+WkVXdEXFt6dlclhYX2K5Y=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=mRsX5erM;
+	spf=pass (imf25.hostedemail.com: domain of surenb@google.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1789665950;
+	b=r+l3zARHqui1AAJY5KmdnEv+lx6BF1//cSQp+VD/4smll8pPaMb75+b9hEqvj2yNikE5yX
+	lhM7pwCV5NXwmyRVQoOLCYXEkjB9JvgKRBLXI6bRcFVABzCbb6xsvoQPerlKwyeMm+d3Uu
+	RuI926QjM5SatnIATJjZ7pj+MnRy5kY=
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6a5f9b036f9so422a12.1
+        for <linux-mm@kvack.org>; Thu, 17 Sep 2026 10:25:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789665949; cv=none;
+        d=google.com; s=arc-20260327;
+        b=M7jpRrbnq2GrSc/DxBRe3KVPq/vwSvjePW/9IJOaobjv84XVHsAeLzX3g2eiu/VatE
+         cstScbfJgajwEErCUZwwTIJ3YXkoOGW1KXviOs6Bu33EPLwePs4QSbT7XuNlq42qEHKW
+         xvMCp0DwHhEIC5Gq6kCnAnb1JrfPJq3GSJGrJqGKHEivNZg76m7YYnTOv8K3j3a5WS9P
+         YLUiZrOfkNJLGP7jWFSIpfYwJFxtuEFLcuvHBAe5kjH+Kj3uk1m2wrlN4zVDunlB5knx
+         eqsxgTV/dRu8Trhv+4HVMcRbwSaskw6GNs9S1cb+cG46WGoqBOMsqepvOkE3q70ZL0AD
+         15rQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=KsTRDsiQkb6uPtn9uEZQZ4pGk/1dXT9fj39UbJRrdLw=;
+        fh=PFoeIicEL4YNffuRVWSl4oqMyh1POyKArP+k3AB52Dw=;
+        b=dVLd9Y+UBQCZn/7feSVh5mzGNy381GtKf74M7FT5yies3meyLllGW0DoPZOv+GRZLm
+         +SgszyKwuzviZa0IsHpiNuXax/cFZg+GfwGHEqoB6aH6OqKNgnjq6X7QoL6XAf46s2eL
+         DwzxTrgedm/QYQIXwH1d6SG3VBMUuwzpVnPXiedmdUevW7hyDf1NM+xCCcueufoAt6BQ
+         E6Q7es7gRmgGIPugIDBhgdAA3i01/7GAQ4CL1wR/k8nvqO7nWDEO5nKdBv7L9wMv+w43
+         rGoz1De2VWGR7g9C6r8tsF2K3wDh1jTnmEhpYbmzUUmNTxja9A5fEbR2j1Bz0CpS24kr
+         QKDA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789665404; x=1790270204; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=google.com; s=20251104; t=1789665949; x=1790270749; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=Lvc4+TpMUxQ7MOz+O0C7vMiwmJqsd+n4APfPejatdr0=;
-        b=kuNNxtjxtkxLsOU9vHpSSSRUv84qsVw4Pn51h6p7UIcd7s5VZoszgDcbt4V1zggZvy
-         oEgCaPJGLrtXTA3ddFD4Y82VZEKheMccttzfR1xFFVGwVfaVxDKWnE0PYJomHtf5FUtq
-         2YdvC258CJ5oVtD2932Qcta88LZXWw1aNZlUeNOoOIBzw+95VGx0YToWP3ExBBZYDNCp
-         q1fzbgkruxffR3u7WbKINCQfrqlx5tRd713AxNVVml2IUPAMtNQjyXmwIb3pnbEzMlaK
-         dq3vMaSHPi2ArBz56zFEJ0onJxl+b0g/jcBnFUfIZI5kjYxlLzl9xa3a8Mmu9CFs1Xq+
-         QDmQ==
+        bh=KsTRDsiQkb6uPtn9uEZQZ4pGk/1dXT9fj39UbJRrdLw=;
+        b=mRsX5erMSrkcuVeyH/jh60TvBvqQh978hMp08KHhPzRJqppWUnDV14y1IFyeLH+owF
+         fCdat/V6gAy5Zk5eyRo/ZDo1WEcXkNUnZPc1GYv85CDNH0bttQ6yfCUok6+kQ7zqhtkM
+         G3n6WUJjyfNxtM6/WEjjhcruydo8NCKd7kplJmOaVf8x3d1+qYXV6/VstZ2PVgAmq+EY
+         JMtwt37XpLLilR/grCq7ykHSC7QHNHk0SNpxId0nzzQC2jJ0kZyRfRWSajVyzUa87rLL
+         mspYgYJiYD3XZ6MPjhbhzIFeV6bRHGyrgL/a+DeJq3og+aXWSlzb3DSvUFX1+58wgQCG
+         85Uw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789665404; x=1790270204;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1789665949; x=1790270749;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Lvc4+TpMUxQ7MOz+O0C7vMiwmJqsd+n4APfPejatdr0=;
-        b=dN5A0iuvtRlHb5NdcSM0lYnfMZeGcFPZjPjJJ1AR0ZnRv1ONnPIrVzWoROsk/KBnmY
-         DPloNcSPyWCH102N9Bs7mYtDKdOf2wQdgnWuL8xqeWtmoMgANl5uFAt0Tf1umRilkeaQ
-         SXh2OytYLMBk2yZNJrJGMfFJWHihF1s8IkPnPisIi8PpcEArfLHBPYXhPjk/uz0LtY9E
-         xac1ab82clbBx89+DXjdBEw95yfAXDOU7fK4gciLYBL0SXcW/a4xM6///+pKbXVgcdIO
-         inExvVwIcZsW7Rq325rklB5hXlYckNynRJ4dUFDfg81y7mmnRHt2DmusMgWrZpAM/R7W
-         y0mw==
-X-Forwarded-Encrypted: i=1; AKwUvBwKQINNd6BXbDLmBg3eu1xLUw3TdoRmYpQU/zuWpS7cMffGbDkWqYA7Belac7jVmFieYdm+TbqDuA==@kvack.org
-X-Gm-Message-State: AFuF++m2pp/hEtnBQzt4gNOP3tgDCZK/579EvH2EdHCbRgzclq+YI51f
-	BN+HSpwmYhAFxW/cY1Ytn/2PXShFezo7I7skV3FI8BuNTUdSUNWujwx1
-X-Gm-Gg: AYBFou0GKOwFGVDf3rFoYc6ZxoyYDGi5fhDRQznbhjuQyNUDpDge7rT55EKFq5bfJCW
-	uAF/qW9H4/SNFX3TlikuOQ4dcOL9DKiJn60LXfv9IzQsOngEGqL7k7O03c97C1AFhxJz0HB8jSP
-	COFLvktBihmKQIaOJgpV/jACGRhDMped/iBuMtxklOmT1CkB8J0Bs5NytU5rMNm4gUNIxMDZ4uV
-	+ZISiVMORDJHjjlPX03wujBKN/NzbCpJYJK5ZN8RImiWaKqcqLhhjaZRKjtiw2P3R7F7C4XpifI
-	L2GUGVG3UIkooZyLel0xOqPy+kCNrEMHNiMgFnioMlteP2b9xJ63XmH5DvkRnj5nccY5RKczy4M
-	PlaA6je4vHBEk0/qwyTFU0pnTxtcOcEfsXAJ3O5UZIBqUvGFrf6FtB+daB77Fgwn1dhonfF9wPn
-	t5Vq4KkdSSZ8NcEUEA61mAWbFEBZEdLeNylBqqsfARfFhrv+9btMBCIZZrDMzhmVWiiFZk35pBX
-	u2oYjrbL8+ls5nvnmF3mWGLRYXgVbX5r8hDHuYwvKYMJZ5saSr/b1f153EgezmZyQ9VuZFc
-X-Received: by 2002:a05:6000:2997:10b0:485:c240:20ec with SMTP id ffacd0b85a97d-4870d26961cmr7299030f8f.37.1789665404188;
-        Thu, 17 Sep 2026 10:16:44 -0700 (PDT)
-Received: from localhost (pat-125-254.wlan.net.ed.ac.uk. [192.41.125.254])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4870bf37e69sm16896117f8f.29.2026.09.17.10.16.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Sep 2026 10:16:43 -0700 (PDT)
-Date: Thu, 17 Sep 2026 18:16:42 +0100
-From: Karim Manaouil <kmanaouil.dev@gmail.com>
-To: Bo Zhang <zhangbo0325@gmail.com>
-Cc: akpm@linux-foundation.org, vbabka@kernel.org, david@kernel.org,
-	surenb@google.com, mhocko@suse.com, brendan.jackman@linux.dev,
-	hannes@cmpxchg.org, ziy@nvidia.com, ljs@kernel.org,
-	liam@infradead.org, rppt@kernel.org, qi.zheng@linux.dev,
-	shakeel.butt@linux.dev, kasong@tencent.com, baohua@kernel.org,
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
-	zhaonanzhe@xiaomi.com, lipengfei28@xiaomi.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Bo Zhang <zhangbo56@xiaomi.com>
-Subject: Re: [RFC PATCH 4/4] mm: adjust free_pages to make
- __zone_watermark_ok() mTHP-aware
-Message-ID: <20260917171642.b4pkhqmvjwnq3vmq@wrangler>
-References: <20260825043833.2659350-1-zhangbo56@xiaomi.com>
- <20260825043833.2659350-5-zhangbo56@xiaomi.com>
+        bh=KsTRDsiQkb6uPtn9uEZQZ4pGk/1dXT9fj39UbJRrdLw=;
+        b=eRHPYoaFdYnBsm2ZL3fjz0Bo/JUhbTNNDV3blwDDKphDLlZQliIfrkSdgxre1DX9ph
+         e0IzWbpuinqnHQrMqc4A3QMHUp3/tawl3pS2b4dnj+pdXjT1jCWZTbsv1k6cz0Sd2GIj
+         S1kx4i0ZmWDqop8wFXrGgziuHWruhsxjZShRwpIRPpy+xO03Pb5J55rSjUWWVjnZke2c
+         qOBT2GRLa0wDZGsvbLKxHT9KNqEnYTQ0uO+NXvP4wk28wDgjj6OPwuIaj/95H7DkaM1/
+         yd261l6A6p7dWpagvNpl4beVeYQRyGK2QrCIDX3QO9YCDozG228b2louFdPz3IWNfJ6Y
+         fj+g==
+X-Forwarded-Encrypted: i=1; AKwUvByr60mu0LfXYFqZEccOwoPdCQ3EHle8Cj/44QJybCRO1pfwUAsc30760JDS3BIT4UwZpUtbxV+6EQ==@kvack.org
+X-Gm-Message-State: AFuF++kHvgV1/7R+tyoKEHRsL7VUJ5B2iO+5efZi2+MyuAz4yEQeA+1z
+	UGWrvEV5eXde/E2UdTmrRSyJuACAasSmy1K8/LwjC9QyuEsBpJi7WxUH4sIbZ55Jef3j6ZfDTvN
+	on47IDoF2nP/n2ISv/lLH8jNl7pAyaYBfYnGfqGo9
+X-Gm-Gg: AYBFou0Ep9mDSdzy0nnyMrG+OisnakVg7reCl1nQ1ywKs+zTjmcD9ulMziNSjegaARb
+	gYF/jCloSMWpxwV37oGy4ikAZX+Ow8WuPrkSHt2HONLqUolcNNiD+DzSIklbRw9FWLNiCJxIpwE
+	fQifyH7Z3fvlsaylyfAMDLDRLk+7eEd8UnkefFVKkKeRGOSMD331xaXS9xyt2uosBQHQOqCONKG
+	QxRXv0zUOsYsfan243RSEc8impT6LllkauMk7hUJsLEO40QHKiEPut7+7xtxyLG+UMfALkj0q+J
+	45KM1wqGtkSX8tQt1SpBuSE4CjuhTdqkOzv8YFkU62/u6Sh08B7A0wkU6VOwaKh51ZzSq+a8vLM
+	fDZSCp6A=
+X-Received: by 2002:a05:6402:c318:b0:6a7:ef71:28e0 with SMTP id
+ 4fb4d7f45d1cf-6aa4de2f154mr1263a12.0.1789665948368; Thu, 17 Sep 2026 10:25:48
+ -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260825043833.2659350-5-zhangbo56@xiaomi.com>
+References: <20260915070001.113559-1-hao.ge@linux.dev> <20260915070001.113559-4-hao.ge@linux.dev>
+In-Reply-To: <20260915070001.113559-4-hao.ge@linux.dev>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Thu, 17 Sep 2026 10:25:34 -0700
+X-Gm-Features: AcwNN1XYvpWm4JKrRXV9ykFLQYiWSqvvLPav3S2pb3RC8LMV6NkXRBZ6FuHBL-c
+Message-ID: <CAJuCfpHz6V0zT5+QkYdQsBzG9kWCFhP+gris2XRrvSu4hHD6Hw@mail.gmail.com>
+Subject: Re: [PATCH v10 3/6] module: introduce SH_ENTSIZE_STANDALONE for
+ separately allocated sections
+To: Hao Ge <hao.ge@linux.dev>
+Cc: Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
+	Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
+	Aaron Tomlin <atomlin@atomlin.com>, Kent Overstreet <kent.overstreet@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-modules@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Sashiko <sashiko-bot@kernel.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 9252BA0007
+X-Stat-Signature: cai3y5zd9uxw17c7x75bojog6ew61a3h
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: E647AA0012
-X-Stat-Signature: qotwcutudog3t6pn8innqdxsdtargxzp
-X-HE-Tag: 1789665405-687516
-X-HE-Meta: U2FsdGVkX18K0mbAkUEqojFe3fCLCUVzzW4JIB+QRBzvqWkiCAiYqUI1nm76BQjRgHaD8Fo8NHp4+vE8Pe3Zp2urCEaDeFUUD5jZWTFHqLngdPOgGkYBVJHxPFaaudE8Lt6XcfZwLZIksD8ZQkwEiFeLWoZcT8mZWq4v0mQTFxVvN/ErkcJ86+Bei4djDpsK6wFZYfVD00MnIXDgszRhtxmP9/cyHt9R9/3Y3bYtNQCLlw4zbISyRMUxGbh9rjyL2f7TZygC7wB/fIYD3mxYoiVyeM0ZEIWN8drmL1E56NB5naFWIbuhVlT8ZUpqvdiLWDd6RBZzK5XJR3gk+Le0Q0UEsRaBz85H+/oYpS8RZkiYpV5Sfs/2ZptHPRhQJr19kSu+ddm92xSLE90Sq1Rn8S4Dr6qPmsiGGCoxTrLhs/wvXhR/KbgyIjK7p+oJeuKiDtWuWN5Xhulk/IkUMRriGaTXGgAM3j+DJ9I0cwxkiku6v5+sW/wI6Crnldj3wOIjDPaHoOk/L1mNhUcvS7sEXEW5+k8aFLOtOhLvoJfSNN6FjEoVPcSKSvzPZ3a+Owr/sOBaduXlfigjI9j+BGWRN6MPjRZsgm+3dJwe8Dd9GeZ83QkA1GcFYXTEZLm0tLsJCGtGiqLUw4R2ubcCgqJTQKe4oAX3prB0Eh2oQ2BDNZG/L2tAsxHnFCqKs4rA6rvDo+jhoP4UJ2KZn8DaMr7XYhDz5jxkI7/OsnKnkzVpv873dXVJrlZtg2U4p0VvlCn/XhGP8aD5LDbjdXx2V310KImBVXi3w36gXQyWBgRRId+3Q1sztN6rDYytQKqBXK8rRwe6iWGZUB0mgANRU++pZCLuurOua4xxcvgXaHz9Jw1okC8eruFLSk35Qz0B+9NvsIKzRy2v8gIAMg7Sjt0ocwDNtvLNCjNOFasKq1kAPiDjetVPOao7/CgJZuJiIbKXTHsG20WwtSUfsmElw/G
- MahBaZBH
- sSF2JvbhFsLUaUmA5B2I8OuB1fic0uvfuFPFSwxrb5WiMZgrtJwenpLykq7zobe35fLfdXbD0YDZ9+B/jEueiH3n2gP0CP5YPaLDYyBUVeVsysWTxQhMejnkIDqpMdNtv5HPtZU1aZmixp0inPgZ+ojpG24NcBw7b7MHfwDHGSE/pshgWprdDHTjrPjT1/1UU4lRJ+FCECgImHWQaUYQ0rwqfpFba6ewZGdBnHgac919yaZEK2D8x4cVPy3/Jyjor9E3LEuHcmtkX0IEFfHMVpcEG0eXZUF0oQxtYS33Cmi8MKHmSDFxaHCn+110+VIj1lMM/kmOSJ5o6A/dvRMkE/kGvpoxrukrrz/R/BOgVC6aL77JJsuMN7Vm1xcrGodZmLg/7KG93EJih0y+NReuM7LUjAHouAvuN5u2AlRBPhAUN39/5O24Fk3izZkhN/JgXoGZWa3hUNOD3fgTKQME00Ghatsnntcw9R2dBA31OHr6hhlC1wQZYLXTQaNoPcgD2v5EXcB0DxbLOR1dOjrZ6rz46PVLSKImr6Wg6sGxeRzH7sq2dkZNHLkhtAtmh3OLJzG83/dnzCnC3NiulS71GX6Dj0G+RS0fMA9hWieR7BpykHZMfSGBTbr68a8uYHuNPo6XW5g45OiTmQ29oavF6f3VokPWUn6yusV7Ntk9Ihg47ZT8=
+X-HE-Tag: 1789665950-757928
+X-HE-Meta: U2FsdGVkX1+MqlPeO4OQQjEtoiwaAcaYJlUMJ4IOiu/0ydBOiffWQlwMMy8Io2W6HAQ8SzcCYVS7o4WrfXPZ2eNMPbtFFgg1rCaUC7i5jwWWzvICLux8O0LKk+5aY8T/fMThNzDPqs1sKo6SthyMNV4E+ocpxJZ+607YxTcST9P0O6hhHV2HHJ/sD372nBTJ1TmNtnMn4NZ+W4JBLfkQCOEEcM31vfwu4v+2Pf+7PCcRCR8lF7w1BR0jDBuFnhn8y6z2iANfYd46119q1+VVObmcwTLgE9nHFkKNzzdIGLKSRzBOuaWyyicdJ7OY74QhtEgn682/pJypYVd7M43uansftoRsQHRKXClowG1j6suWKm9LcvNdj6JSRkCqszEIv3TUZAFMAnPx0d03LqkxGT/1gT2pIlOtw33mxDhjdGkJjIm/sueYf7J0X1kdL1MG6QPhYbnPtJ0Ou/w1XXOFdb2ncPs+lVLWMZANN+LMCeQwQmnBUgQw5hVPSL3mJ/XP1CWG+a/Pswcb7UczkgXk9aJMJEGFtVCTbXzca04pTQFNNFEmy6C1mjtPbO9zKhxoXWoNIIjNCX4AMounnwk4AIcsbhVfy3JsdKJr0APlA//xJySnYHdZt9VvDscBPHTPUhDyZjH9VEbrezkF6rBqSfiSHCNwe46y97vCm3lZQQV8vbKlZwQox/IeoavIytj4FOV3Wfh7eZguH8cJFj7EQdu2xQ+AKFQ6l16L/QpKMY9S3YectkT52yEaeXZlAJekzXVY+eY3utDGAoHj2w0cJvkqsFnL9HV9WDhv62cr6NDBE999zNsIZ/vZSeNoFxiBe/GpLhb9BLbm77vN8zMoz6ioCvLenTFFiFG3Kv7GpuY+pVG/mcsK0jbgYwDUmclaX3ooT2lEs7535XOLNIA3S1D9q1fbQVSAh+QytS0UfrvG8BZGRjxtcnIO4zoj5e8y1WjzCjIZyrr/JtccLWH
+ 7X1O76th
+ miqd4CKp0hnLC93m6zD4ZmqEVSG/1vHknHi46jXsUIdEzxqZXwtO58DTlN2klLmP8BPjuWcoz6XYduYe87+eJkp95UKC8EyrztH6plzAAO2odsVNe/NN/TJZztpRjXaneeZDq6zU533FJBVM4jAGbDJSUjxvhgS0kv58B1f+/MqGf1mpiTp4v14AcFOh3J5KGOM+hKamSQtHbRpWrRz4gb77A3lR4keRvbN0cMxwbs+yRmpjYmLyRI3svwYxllZUqn+I9uy0dtXK0+j7BOmIuXfO03ulD0m5Qn9CF9HyxVjjparBL9Z9NkHr1HEalRHakICBwd8HGoUzpIkCJJaX3OKHhegCo4D/s9tNUJy1c0Pypq6IN9vQakIrBQsHkIN6OemuyzW4QrR235y8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,155 +145,302 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 25, 2026 at 12:38:33PM +0800, Bo Zhang wrote:
-> To improve the mTHP allocation success rate and reduce
-> fragmentation over time, introduce
-> zone_effective_free_pages() for mTHP-aware free page accounting.
-> 
-> Refactor the free page counting logic used by pgdat_balanced() and
-> compaction_suit_allocation_order() into a shared helper function
-> zone_effective_free_pages().
-> 
-> The function selects the appropriate free page metric based on context:
-> - defrag_mode: use NR_FREE_PAGES_BLOCKS (whole pageblock accounting)
-> - mTHP always-enabled: count only free pages in buddy blocks >= the
->   minimum always-enabled mTHP order, since smaller fragments cannot
->   satisfy mTHP allocations
-> - otherwise: use NR_FREE_PAGES
-> 
-> Signed-off-by: Bo Zhang <zhangbo56@xiaomi.com>
+On Mon, Sep 14, 2026 at 11:59=E2=80=AFPM Hao Ge <hao.ge@linux.dev> wrote:
+>
+> SHF_ALLOC means, per the ELF spec, that a section occupies memory
+> during process execution. Some module sections occupy memory
+> outside the regular module layout, for example the percpu section
+> with its per-CPU allocations. The loader currently excludes such
+> a section from the layout by clearing its SHF_ALLOC, which
+> overloads the flag with a loader-internal meaning.
+> apply_relocations() needs a special case for the section, and
+> find_sec(".data..percpu") returns different results before and
+> after layout_and_allocate().
+>
+> Introduce SH_ENTSIZE_STANDALONE to mark sections with a separate
+> allocation. The percpu section is its first user. layout_sections()
+> and move_module() skip marked sections, and apply_relocations() goes
+> back to testing only SHF_ALLOC. Based on a patch by Petr Pavlu [1].
+>
+> .data..percpu keeps SHF_ALLOC, so it would now show up under
+> /sys/module/*/sections/. The section has one instance per CPU and no
+> single address to report, and the entry never existed before, so
+> skip it in add_sect_attrs(). add_notes_attrs() indexes its attrs[]
+> array and skips it too. No functional change otherwise.
+
+And IIUC no userspace-visible changes too, right?
+
+>
+> Fixes: 4835f747d3ed ("alloc_tag: support for page allocation tag compress=
+ion")
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Link: https://lore.kernel.org/all/499bb60c-c6e3-43a3-bd92-95a0567ece5e@su=
+se.com/ [1]
+> Suggested-by: Petr Pavlu <petr.pavlu@suse.com>
+> Reviewed-by: Petr Pavlu <petr.pavlu@suse.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hao Ge <hao.ge@linux.dev>
+
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+
 > ---
->  mm/compaction.c | 38 ++++++++++++++++++++++++++++++++++----
->  mm/internal.h   |  3 +++
->  mm/vmscan.c     | 23 +++++------------------
->  3 files changed, 42 insertions(+), 22 deletions(-)
-> 
-> diff --git a/mm/compaction.c b/mm/compaction.c
-> index 15b92475562a..29be72597415 100644
-> --- a/mm/compaction.c
-> +++ b/mm/compaction.c
-> @@ -2528,6 +2528,38 @@ bool compaction_zonelist_suitable(struct alloc_context *ac, int order,
->  	return false;
->  }
->  
-> +/**
-> + * zone_effective_free_pages - get free pages relevant to allocation order
-> + * @zone:       target zone
-> + * @order:      allocation order
-> + * @use_blocks: if true, use NR_FREE_PAGES_BLOCKS
-> + *
-> + * In defrag_mode, watermarks must be met in whole blocks to avoid
-> + * polluting allocator fallbacks. kswapd usually cannot accomplish
-> + * this on its own and needs kcompactd support.
-> + *
-> + * When mTHP always-enabled orders are configured, count only free pages
-> + * in blocks >= min mTHP order, as smaller fragments cannot satisfy mTHP
-> + * allocations.
+>  include/linux/module.h   |  2 ++
+>  kernel/module/internal.h |  8 ++++++++
+>  kernel/module/kallsyms.c | 13 +++----------
+>  kernel/module/main.c     | 32 +++++++++++++++++---------------
+>  kernel/module/sysfs.c    | 17 +++++++++++++----
+>  5 files changed, 43 insertions(+), 29 deletions(-)
+>
+> diff --git a/include/linux/module.h b/include/linux/module.h
+> index 96cc98568eea..0c6f32ddcbf2 100644
+> --- a/include/linux/module.h
+> +++ b/include/linux/module.h
+> @@ -325,6 +325,8 @@ enum mod_mem_type {
+>         MOD_INIT_RODATA,
+>
+>         MOD_MEM_NUM_TYPES,
+> +
+> +       MOD_STANDALONE =3D -2,
+>         MOD_INVALID =3D -1,
+>  };
+>
+> diff --git a/kernel/module/internal.h b/kernel/module/internal.h
+> index 061161cc79d9..4c738074a27b 100644
+> --- a/kernel/module/internal.h
+> +++ b/kernel/module/internal.h
+> @@ -29,6 +29,14 @@
+>  #define SH_ENTSIZE_TYPE_MASK   ((1UL << SH_ENTSIZE_TYPE_BITS) - 1)
+>  #define SH_ENTSIZE_OFFSET_MASK ((1UL << (BITS_PER_LONG - SH_ENTSIZE_TYPE=
+_BITS)) - 1)
+>
+> +/*
+> + * Marker for sections with a separate allocation, which are not placed
+> + * into mod->mem[].
 > + */
-> +unsigned long zone_effective_free_pages(struct zone *zone,
-> +					unsigned int order,
-> +					bool use_blocks)
+> +#define SH_ENTSIZE_STANDALONE                                  \
+> +       (((unsigned long)MOD_STANDALONE & SH_ENTSIZE_TYPE_MASK) \
+> +        << SH_ENTSIZE_TYPE_SHIFT)
+> +
+>  /* Maximum number of characters written by module_flags() */
+>  #define MODULE_FLAGS_BUF_SIZE (TAINT_FLAGS_COUNT + 4)
+>
+> diff --git a/kernel/module/kallsyms.c b/kernel/module/kallsyms.c
+> index f23126d804b2..0dca6d40160e 100644
+> --- a/kernel/module/kallsyms.c
+> +++ b/kernel/module/kallsyms.c
+> @@ -76,7 +76,7 @@ static char elf_type(const Elf_Sym *sym, const struct l=
+oad_info *info)
+>  }
+>
+>  static bool is_core_symbol(const Elf_Sym *src, const Elf_Shdr *sechdrs,
+> -                          unsigned int shnum, unsigned int pcpundx)
+> +                          unsigned int shnum)
+>  {
+>         const Elf_Shdr *sec;
+>         enum mod_mem_type type;
+> @@ -86,11 +86,6 @@ static bool is_core_symbol(const Elf_Sym *src, const E=
+lf_Shdr *sechdrs,
+>             !src->st_name)
+>                 return false;
+>
+> -#ifdef CONFIG_KALLSYMS_ALL
+> -       if (src->st_shndx =3D=3D pcpundx)
+> -               return true;
+> -#endif
+> -
+>         sec =3D sechdrs + src->st_shndx;
+>         type =3D sec->sh_entsize >> SH_ENTSIZE_TYPE_SHIFT;
+>         if (!(sec->sh_flags & SHF_ALLOC)
+> @@ -131,8 +126,7 @@ void layout_symtab(struct module *mod, struct load_in=
+fo *info)
+>         /* Compute total space required for the core symbols' strtab. */
+>         for (ndst =3D i =3D 0; i < nsrc; i++) {
+>                 if (i =3D=3D 0 || is_livepatch_module(mod) ||
+> -                   is_core_symbol(src + i, info->sechdrs, info->hdr->e_s=
+hnum,
+> -                                  info->index.pcpu)) {
+> +                   is_core_symbol(src + i, info->sechdrs, info->hdr->e_s=
+hnum)) {
+>                         strtab_size +=3D strlen(&info->strtab[src[i].st_n=
+ame]) + 1;
+>                         ndst++;
+>                 }
+> @@ -199,8 +193,7 @@ void add_kallsyms(struct module *mod, const struct lo=
+ad_info *info)
+>         for (ndst =3D i =3D 0; i < kallsyms->num_symtab; i++) {
+>                 kallsyms->typetab[i] =3D elf_type(src + i, info);
+>                 if (i =3D=3D 0 || is_livepatch_module(mod) ||
+> -                   is_core_symbol(src + i, info->sechdrs, info->hdr->e_s=
+hnum,
+> -                                  info->index.pcpu)) {
+> +                   is_core_symbol(src + i, info->sechdrs, info->hdr->e_s=
+hnum)) {
+>                         ssize_t ret;
+>
+>                         mod->core_kallsyms.typetab[ndst] =3D
+> diff --git a/kernel/module/main.c b/kernel/module/main.c
+> index c1b34dc1e89a..ae2678ac7840 100644
+> --- a/kernel/module/main.c
+> +++ b/kernel/module/main.c
+> @@ -1619,12 +1619,13 @@ static int apply_relocations(struct module *mod, =
+const struct load_info *info)
+>
+>                 /*
+>                  * Don't bother with non-allocated sections.
+> -                * An exception is the percpu section, which has separate=
+ allocations
+> -                * for individual CPUs. We relocate the percpu section in=
+ the initial
+> -                * ELF template and subsequently copy it to the per-CPU d=
+estinations.
+> +                *
+> +                * Note that .data..percpu has separate allocations for
+> +                * individual CPUs. We relocate the section in the
+> +                * initial ELF template and subsequently copy it to the
+> +                * per-CPU destinations.
+>                  */
+> -               if (!(info->sechdrs[infosec].sh_flags & SHF_ALLOC) &&
+> -                   (!infosec || infosec !=3D info->index.pcpu))
+> +               if (!(info->sechdrs[infosec].sh_flags & SHF_ALLOC))
+>                         continue;
+>
+>                 if (info->sechdrs[i].sh_flags & SHF_RELA_LIVEPATCH)
+> @@ -1715,7 +1716,7 @@ static void __layout_sections(struct module *mod, s=
+truct load_info *info, bool i
+>
+>                         if ((s->sh_flags & masks[m][0]) !=3D masks[m][0]
+>                             || (s->sh_flags & masks[m][1])
+> -                           || s->sh_entsize !=3D ~0UL
+> +                           || s->sh_entsize !=3D ~0UL /* offset or stand=
+alone */
+>                             || is_init !=3D module_init_layout_section(sn=
+ame))
+>                                 continue;
+>
+> @@ -1745,16 +1746,10 @@ static void __layout_sections(struct module *mod,=
+ struct load_info *info, bool i
+>  /*
+>   * Lay out the SHF_ALLOC sections in a way not dissimilar to how ld
+>   * might -- code, read-only data, read-write data, small data.  Tally
+> - * sizes, and place the offsets into sh_entsize fields: high bit means i=
+t
+> - * belongs in init.
+> + * sizes, and place the offsets into sh_entsize fields.
+>   */
+>  static void layout_sections(struct module *mod, struct load_info *info)
+>  {
+> -       unsigned int i;
+> -
+> -       for (i =3D 0; i < info->hdr->e_shnum; i++)
+> -               info->sechdrs[i].sh_entsize =3D ~0UL;
+> -
+>         pr_debug("Core section allocation order for %s:\n", mod->name);
+>         __layout_sections(mod, info, false);
+>
+> @@ -2822,7 +2817,8 @@ static int move_module(struct module *mod, struct l=
+oad_info *info)
+>                 Elf_Shdr *shdr =3D &info->sechdrs[i];
+>                 const char *sname;
+>
+> -               if (!(shdr->sh_flags & SHF_ALLOC))
+> +               if (!(shdr->sh_flags & SHF_ALLOC)
+> +                   || shdr->sh_entsize =3D=3D SH_ENTSIZE_STANDALONE)
+>                         continue;
+>
+>                 sname =3D info->secstrings + shdr->sh_name;
+> @@ -2954,6 +2950,7 @@ core_param(module_blacklist, module_blacklist, char=
+p, 0400);
+>  static struct module *layout_and_allocate(struct load_info *info, int fl=
+ags)
+>  {
+>         struct module *mod;
+> +       unsigned int i;
+>         int err;
+>
+>         /* Allow arches to frob section contents and sizes.  */
+> @@ -2967,8 +2964,13 @@ static struct module *layout_and_allocate(struct l=
+oad_info *info, int flags)
+>         if (err < 0)
+>                 return ERR_PTR(err);
+>
+> +       /* Repurpose sh_entsize to track where each section is allocated.=
+ */
+> +       for (i =3D 0; i < info->hdr->e_shnum; i++)
+> +               info->sechdrs[i].sh_entsize =3D ~0UL;
+> +
+>         /* We will do a special allocation for per-cpu sections later. */
+> -       info->sechdrs[info->index.pcpu].sh_flags &=3D ~(unsigned long)SHF=
+_ALLOC;
+> +       if (info->index.pcpu)
+> +               info->sechdrs[info->index.pcpu].sh_entsize =3D SH_ENTSIZE=
+_STANDALONE;
+>
+>         /*
+>          * Mark relevant sections as SHF_RO_AFTER_INIT so layout_sections=
+() can
+> diff --git a/kernel/module/sysfs.c b/kernel/module/sysfs.c
+> index 01c65d608873..15c6baeb39c4 100644
+> --- a/kernel/module/sysfs.c
+> +++ b/kernel/module/sysfs.c
+> @@ -62,6 +62,15 @@ static void free_sect_attrs(struct module_sect_attrs *=
+sect_attrs)
+>         kfree(sect_attrs);
+>  }
+>
+> +/*
+> + * .data..percpu has a separate allocation per CPU and no single
+> + * address to report.
+> + */
+> +static bool sect_visible(const struct load_info *info, unsigned int i)
 > +{
-> +	if (use_blocks)
-> +		return zone_page_state(zone, NR_FREE_PAGES_BLOCKS);
-> +
-> +	if (READ_ONCE(huge_anon_orders_always) && order == compact_hpage_order()) {
-> +		unsigned long free_pages = 0;
-> +
-> +		for (int o = order; o < NR_PAGE_ORDERS; o++)
-> +			free_pages += zone->free_area[o].nr_free << o;
-
-I understand that you don't need a precise value here, but in every
-instance in the kernel source tree where nr_free is accessed, it's
-accessed under the zone lock. Do we need to use READ_ONCE()?
-
-> +		return free_pages;
-> +	}
-> +
-> +	return zone_page_state(zone, NR_FREE_PAGES);
+> +       return !sect_empty(&info->sechdrs[i]) && i !=3D info->index.pcpu;
 > +}
 > +
->  /*
->   * Should we do compaction for target allocation order.
->   * Return COMPACT_SUCCESS if allocation for target order can be already
-> @@ -2543,10 +2575,8 @@ compaction_suit_allocation_order(struct zone *zone, unsigned int order,
->  	unsigned long free_pages;
->  	unsigned long watermark;
->  
-> -	if (kcompactd && defrag_mode)
-> -		free_pages = zone_page_state(zone, NR_FREE_PAGES_BLOCKS);
-> -	else
-> -		free_pages = zone_page_state(zone, NR_FREE_PAGES);
-> +	free_pages = zone_effective_free_pages(zone, order,
-> +					       kcompactd && defrag_mode);
->  
->  	watermark = wmark_pages(zone, alloc_flags & ALLOC_WMARK_MASK);
->  	if (__zone_watermark_ok(zone, order, watermark, highest_zoneidx,
-> diff --git a/mm/internal.h b/mm/internal.h
-> index 38b1165212c9..14bb9543879b 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -1654,4 +1654,7 @@ static inline bool can_spin_trylock(void)
->  	return true;
->  }
->  
-> +unsigned long zone_effective_free_pages(struct zone *zone,
-> +					unsigned int order,
-> +					bool use_blocks);
->  #endif	/* __MM_INTERNAL_H */
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index c1404a59523d..a419a2c2fca4 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -6966,7 +6966,6 @@ static bool pgdat_balanced(pg_data_t *pgdat, int order, int highest_zoneidx)
->  	 * meet watermarks.
->  	 */
->  	for_each_managed_zone_pgdat(zone, pgdat, i, highest_zoneidx) {
-> -		enum zone_stat_item item;
->  		unsigned long free_pages;
->  
->  		if (sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING)
-> @@ -6974,21 +6973,6 @@ static bool pgdat_balanced(pg_data_t *pgdat, int order, int highest_zoneidx)
->  		else
->  			mark = high_wmark_pages(zone);
->  
-> -		/*
-> -		 * In defrag_mode, watermarks must be met in whole
-> -		 * blocks to avoid polluting allocator fallbacks.
-> -		 *
-> -		 * However, kswapd usually cannot accomplish this on
-> -		 * its own and needs kcompactd support. Once it's
-> -		 * reclaimed a compaction gap, and kswapd_shrink_node
-> -		 * has dropped order, simply ensure there are enough
-> -		 * base pages for compaction, wake kcompactd & sleep.
-> -		 */
-> -		if (defrag_mode && order)
-> -			item = NR_FREE_PAGES_BLOCKS;
-> -		else
-> -			item = NR_FREE_PAGES;
-> -
->  		/*
->  		 * When there is a high number of CPUs in the system,
->  		 * the cumulative error from the vmstat per-cpu cache
-> @@ -7001,9 +6985,12 @@ static bool pgdat_balanced(pg_data_t *pgdat, int order, int highest_zoneidx)
->  		 * counter won't actually be per-cpu cached. But keep
->  		 * things simple for now; revisit when somebody cares.
->  		 */
-> -		free_pages = zone_page_state(zone, item);
-> +		free_pages = zone_effective_free_pages(zone, order,
-> +						       defrag_mode & order);
->  		if (zone->percpu_drift_mark && free_pages < zone->percpu_drift_mark)
-> -			free_pages = zone_page_state_snapshot(zone, item);
-> +			free_pages = zone_page_state_snapshot(zone,
-> +					defrag_mode & order ?
-> +					NR_FREE_PAGES_BLOCKS : NR_FREE_PAGES);
->  
->  		if (__zone_watermark_ok(zone, order, mark, highest_zoneidx,
->  					0, free_pages))
-> -- 
-> 2.34.1
-> 
-
--- 
-~karim
+>  static int add_sect_attrs(struct module *mod, const struct load_info *in=
+fo)
+>  {
+>         struct module_sect_attrs *sect_attrs;
+> @@ -72,7 +81,7 @@ static int add_sect_attrs(struct module *mod, const str=
+uct load_info *info)
+>
+>         /* Count loaded sections and allocate structures */
+>         for (i =3D 0; i < info->hdr->e_shnum; i++)
+> -               if (!sect_empty(&info->sechdrs[i]))
+> +               if (sect_visible(info, i))
+>                         nloaded++;
+>         sect_attrs =3D kzalloc_flex(*sect_attrs, attrs, nloaded);
+>         if (!sect_attrs)
+> @@ -92,7 +101,7 @@ static int add_sect_attrs(struct module *mod, const st=
+ruct load_info *info)
+>         for (i =3D 0; i < info->hdr->e_shnum; i++) {
+>                 Elf_Shdr *sec =3D &info->sechdrs[i];
+>
+> -               if (sect_empty(sec))
+> +               if (!sect_visible(info, i))
+>                         continue;
+>                 sysfs_bin_attr_init(sattr);
+>                 sattr->attr.name =3D
+> @@ -159,7 +168,7 @@ static int add_notes_attrs(struct module *mod, const =
+struct load_info *info)
+>         /* Count notes sections and allocate structures.  */
+>         notes =3D 0;
+>         for (i =3D 0; i < info->hdr->e_shnum; i++)
+> -               if (!sect_empty(&info->sechdrs[i]) &&
+> +               if (sect_visible(info, i) &&
+>                     info->sechdrs[i].sh_type =3D=3D SHT_NOTE)
+>                         ++notes;
+>
+> @@ -181,7 +190,7 @@ static int add_notes_attrs(struct module *mod, const =
+struct load_info *info)
+>
+>         nattr =3D &notes_attrs->attrs[0];
+>         for (loaded =3D i =3D 0; i < info->hdr->e_shnum; ++i) {
+> -               if (sect_empty(&info->sechdrs[i]))
+> +               if (!sect_visible(info, i))
+>                         continue;
+>                 if (info->sechdrs[i].sh_type =3D=3D SHT_NOTE) {
+>                         sysfs_bin_attr_init(nattr);
+> --
+> 2.25.1
+>
 
