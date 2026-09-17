@@ -4,117 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34DDBC982D6
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 16:03:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39D66C982D6
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 16:03:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1D32A6B008A; Thu, 17 Sep 2026 12:03:21 -0400 (EDT)
+	id 3CFCB6B008C; Thu, 17 Sep 2026 12:03:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1857D6B008C; Thu, 17 Sep 2026 12:03:21 -0400 (EDT)
+	id 3A8B26B0092; Thu, 17 Sep 2026 12:03:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0746B6B0092; Thu, 17 Sep 2026 12:03:21 -0400 (EDT)
+	id 2E5E16B0093; Thu, 17 Sep 2026 12:03:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DBC0D6B008A
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 12:03:20 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8386A1603E9
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 16:03:18 +0000 (UTC)
-X-FDA: 85223723676.15.21240E4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 6E12E40004
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 16:03:16 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GwxOw8PR;
-	spf=pass (imf12.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 0CF6A6B008C
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 12:03:48 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 58E201603F4
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 16:03:47 +0000 (UTC)
+X-FDA: 85223724894.14.C8E00BE
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	by imf03.hostedemail.com (Postfix) with ESMTP id AAB1120004
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 16:03:44 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b="Dc/UafXL";
+	spf=pass (imf03.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789660996;
+	s=arc-20220608; t=1789661025;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Cpr1q5iPo4prGN6gHLTCnzlEG3QCR+sTiAllOyw0NCg=;
-	b=3jGDB7yoqGAjz0FfhmLgqmq513JEdJ5cdzTTFlGbTtiEv/5RSrGmaUgcEVZBS6WuzzCGGL
-	+70eCm4NdQs1G9A6RG5FpDWvZsFlRxWbB1fjSs4PmCEW+HtpF65ipL7p9Pd6ON4ytW0iA0
-	oOCHCE1c41o493qK76YC5SLnDFbQvBs=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789660996;
-	b=IUt4tsIfLQYstNIXMbMfScXOBkdI0YLr6htTz0Z38k03uCXGg04x9lP+5E/34kxb3avujL
-	SZm5caD1GYP+e9daahiHx0lA64nGSLjzAVbf92uCAsTDDrrsk94i8O46GaHAnM8eCgBRyY
-	sQflLH0m6ErX1a7GPXfhTwYjE4D5fdo=
+	bh=oJfQJG5iT9cSY6fKM1qSSeZ2RGZpeZorLQrHQDxjtWs=;
+	b=zq30DIP+G0EKknKqZU7h1X6X6He3mswmIQGdX8i3dYu2N4InT9Qw8ZdbgqsXcQKu5EPynb
+	1poRMPO0Bo9JfWJQTKU9DJpueOcwBYU8d3wpxIOFmqGRcy10hPJTaROA17IKg5j2RJhurc
+	ow2QdqKow/HTjQoKtlwXHju3gQvTllc=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GwxOw8PR;
-	spf=pass (imf12.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id EA27460204;
-	Thu, 17 Sep 2026 16:03:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFD5A1F00893;
-	Thu, 17 Sep 2026 16:03:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789660995;
-	bh=Cpr1q5iPo4prGN6gHLTCnzlEG3QCR+sTiAllOyw0NCg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=GwxOw8PRLCERpuIoY7hX0rjG1CCPahbE1tyiQ17QjRo+F0ZwzPVG++WkIGNOreqtT
-	 cG/EpuK1TLpVyj7YrGyRtj2eZQgDN4/RpiDYkmVXzznpqLYtxVlgXoX0i+i1n75y5e
-	 ghLh5aeBMHY/d+ykCdJ6j9+WauDLHc4jxozYYbkgfTjLHN+CvUanamZdf/nTIAPmfl
-	 x8OUkqmQ0NZUnd6feBHDwgp+Gmlfhw3sEwuAnqUsoVRQzlsMAZ7YxR/NQaycjZYV5V
-	 Oq5oFOCiOG77WSLrUbJkvJZoKPPMfBrSbc1hyoKX848J/cmBQvMONSlHj5S+M0o052
-	 PtrtPXHWGw8Ww==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 79507198003A;
-	Thu, 17 Sep 2026 12:03:11 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Thu, 17 Sep 2026 12:03:13 -0400
-X-ME-Sender: <xms:Pg-sajjONsWks_q7-E0ZfFSYS96rOgSPkfg-OER_k6I0tWXUpwi6DA>
-    <xme:Pg-sav6cHgJBDbIA2BYLi88IIpJXIcmxT2MLD0QfijW_zHun5g9-1mBf0GWd5R42W
-    Ita3O6nF6fy-Hfgani08AEI9nYEtEKVy9xegZ9jIn7aJgyTQNb97qM>
-X-ME-Received: <xmr:Pg-sagYTFb3P4h_bHFb9T63eODSYGOgGosdJISQH2fP_YwnYIIs1Pvs_NPs>
-X-ME-Proxy-Cause: dmFkZTFnWkP/oAjipqhpTyrH15eGRA2bD+A1Xse0B1GSy4xsn8XucvU9sl01MM0Ad0L70K
-    RV8rNBOACHl/J1H6Nd7+ghCe17B4OtPsza4h/afczVaboD6XRqg2guprqOWvlU/5CndUAg
-    sQ6kUD57YdyJu/WvN0rt/M5l5nKVGS591lpJ/WU2LBIWGf7Vp6j+m5x98KMIj2AD66Tsjw
-    KWbEf23UJsl1IsBoDBtObZNzY/nesLje/i595bUpiDidS6up0Icxc7FOr2hpXeOxO6Jrul
-    EhWqE8wLo1kUgPbR7ABGGoWKKCdzS3x+CNyoU4etePtnXw8nYT+SRbEW9s8SpefM/Vconi
-    E/N6yZH/A04TnMVgCjMdA1NuwXfBgqBFW2TpWi2bm6r643LmRbAHWO0Zx8bdtplEuPGQSQ
-    EOZc2tyGZtU8z9wgpFhPqBSx7J+CEdwfkBHoGpkZ3rdh5nwD+zBEelJEkoc0Yie39JVFjb
-    Na98vLAMsiOUHwPQUGEcM9bButD8GnTmzzCYGVQDVIYQMOGWS/hbwZj+WMe0wlaeeaQgDN
-    rEHmbHAWKWKL9gXUV0Evous+WVXD8DN3NPJwJ9fV77QPCfN6ftjx/c4ia9EUdmqsedZUI2
-    sDbBalUG3HP9Ee4TCZKbMDvgTArPeS7pkSYvcoodvihft81sk6egcXWFKwpg
-X-ME-Proxy: <xmx:Pg-sasc0SRbuaaM32D9HWaijW5Dm9oC1pwOWdO7zVxm8nD2xfeGOig>
-    <xmx:Pg-sat4XkrLWtgPIHrvRMkxfbWuWILjpjl3qlsxuGy7tQIdafnVHhQ>
-    <xmx:Pg-saoXjJyFEED-Rrp8mP0TAqAw9UvCNr8PXWxUtZprcynxzdUW8KQ>
-    <xmx:Pg-sakYZUierAGOZfbyBTikdsoUxPjvSLBKkIJlT5kYUNGHuJ7Wj_w>
-    <xmx:Pw-sanw_dutvM2gvxEXJ0awKigW7SUKTXr92icOa2M7k7oeqoNgR5ATL>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 17 Sep 2026 12:03:10 -0400 (EDT)
-Date: Thu, 17 Sep 2026 17:03:09 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org, 
-	ziy@nvidia.com, baolin.wang@linux.alibaba.com, liam@infradead.org, 
-	nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
-	usama.arif@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/1] mm/huge_memory: disallow raw PMD mappings of the
- huge zero page
-Message-ID: <aqwPHfWhKGty-Q_4@thinkstation>
-References: <20260917121010.60966-1-lance.yang@linux.dev>
- <aqv5r6Ar0vyKXa_x@thinkstation>
- <8c70259a-94ed-415c-89c1-572145c64670@kernel.org>
+	imf03.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b="Dc/UafXL";
+	spf=pass (imf03.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789661025;
+	b=k8+/Oi9vTb2MbCDy5pKmjPAq6VVRMIhitxvqX7FAVDvG+1HIROlR6kt8qipT5Oztz2RgTP
+	0Rn3NPzsqL9rFTcXZETWYCC1gGpTKsb68PEiq5iUQkaHBCbwH3K4cIxNnxL4w06VgOR3dv
+	WnsQkt0unR8ezPUHXbwNT8eChT6ytD0=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=oJfQJG5iT9cSY6fKM1qSSeZ2RGZpeZorLQrHQDxjtWs=; b=Dc/UafXLFe6Lpm2iB9pKZSfnKm
+	70AhP14R7laKdBUH0QblXc8jkv6ORqi4r6KW07dyY0V2dGkxYL+9hymJ47S+D/fSXgUG3dzX4YEuu
+	EnDfRCSLkHpKQB5WSz2BQUNdN7sIzbNug4+Osu/F9Ire3k9CZMwcxWe+PtqdsvebSm7grTDvBmbYp
+	LvTdHwszMqEclOIhxseR4UEIHwIHuLwk1kQLLtvMsiceDHoTheY+jDoyzewioM8hp/qIK8fqn8w8W
+	KNDdiVEYn4DS7rg/BgrwE16nCTmpJh5ZIkkviDpZNnUYbKABCCqLrwjp/I3B+YKpMqIvzFtDdqhqI
+	Boll4onw==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.99.2 #2 (Red Hat Linux))
+	id 1x7EaA-00000009135-2mPg;
+	Thu, 17 Sep 2026 16:03:33 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 94F49301BD5; Thu, 17 Sep 2026 18:03:28 +0200 (CEST)
+Date: Thu, 17 Sep 2026 18:03:28 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
+	akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, mingo@redhat.com,
+	juri.lelli@redhat.com, vincent.guittot@linaro.org,
+	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
+	mgorman@suse.de, vschneid@redhat.com, kprateek.nayak@amd.com,
+	ziy@nvidia.com, baolin.wang@linux.alibaba.com, nico.pache@linux.dev,
+	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+	lance.yang@linux.dev, usama.arif@linux.dev, kas@kernel.org,
+	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+	byungchul@sk.com, ying.huang@linux.alibaba.com, apopple@nvidia.com,
+	jannh@google.com, pfalcato@suse.de, osalvador@suse.de,
+	hannes@cmpxchg.org, raghavendra.kt@amd.com, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/4] mm: support promotion-only NUMA hinting scans
+Message-ID: <20260917160328.GM4121339@noisy.programming.kicks-ass.net>
+References: <20260911001826.2109390-1-gourry@gourry.net>
+ <20260911001826.2109390-2-gourry@gourry.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <8c70259a-94ed-415c-89c1-572145c64670@kernel.org>
-X-Stat-Signature: f1n8f75yfb673z3uxbgx1rkytfn5ckqp
+In-Reply-To: <20260911001826.2109390-2-gourry@gourry.net>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: AAB1120004
+X-Stat-Signature: ui6d9ew4xi7fqrhn38x3uzwihxts3u9p
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6E12E40004
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789660996-787224
-X-HE-Meta: U2FsdGVkX190FRHZ4wPj8b84dysfEr3MoNLvQR0bVuGMJWfyGE8bgd6rKCgd5jilhKTNF3ndMXfdU1SluPr4I+AV32wYLUk7jm8Fxay31Iraq2m38acIgjielm1UfUrKhrcJud0ETgawbpWNphRok/BRO5RPPJRiI+cx3V+7Cc6WlN3EhSGt9iZJkK6ea+Ng9Zq8Lbv3xDOFqJSzahBEtIK8HXOscc/DnrcwxQVBlexWZsM+Jg63hduHA+vduV00v8eGKeqmBVtrJAf+JBOtZmtotsnuxosKH8qcuionaOFILzEE6PKrVYw/f/JNmVSz2I6PVev8cejS9C2zC8HlkdlKuI8MbTG5TPoSnNiFufw/CEShPlN7YRmlncuk3kKcVA3KzrCJ3SR5bAl6be6xYMpF6ZnQWb0TY8nJAMWrxns0DpZtT2XAQSHix5fHWO+P+9yaYoR3zcBdZYl4uxs5iuntC751Mdku+wAnJAMaMFpAbhF0Mtoox6lr/MXq4vx2vLla/1RUQ/9ZXXyCkj40Orhb4JGl+q9lss18lCWifAO0MBHARnm8I8hIGBkQnBXRLxZntk30E3TOePAm36YbRV7H3ghPJDa97Sp2U4XM0LybDHk57Dhr3dCVvncuD0qBv0OUkeu4Soq7odGol4jY2jhMZ+a9p3aOqJlZ30Ivh51uqDyskMLerrBToGtGSY7hDVH951T8xmrU/gpaiqLXjqef5Hu3HIG0++z21oWUST9N4o3EUdO7MBwivhIR/nGSa3z9T5oyBZCMiAB1GdHRG8K+lcDXyu6CmxzFpyu8P00VUBbuVwCIg7xiUOZI+UF8cbJpd1387EkTxrubdDe2eWTQYMkTA+uNp4ICwtajHW3GAG9liKIXKD9iVqnReedRFsYi0/+l30rEyHALGtiSOdlihd1kH65l05UlOLfp00mhYJWDfhYyE9dUqXPgGUBPx6yS66EbB3Mn+gJ36Ff
- olZ1mwMI
- kXLM88I2Ckll5wmoxdx6fDCOIBZIixujQtnnrdFOVTt01msCIo2gaOU55p4FXKFCXS69Qojl/obWdGYPeScQ5te8sKl+CSsEwhAQBJJvScxl6v91TyqKftAMzi6d2BBhpdYmzI/LvJkSzfLxBop5N4gj8esXbPSNgJD7AObROJUkl0Xo6ph36GGccAi0zyRflKaoHjpuCzrQeTdMWEwxg0jrvKLrSF3QkEkNsqGbWzVIC1llAcSyzRGE9/093H7EeOdRu+pFgh97uNbqMJoGU8lXT/wYNc9d71SYwOUkahasBK+7AFRbceAvA/534sMewG1tCZ6wGccLsVNxikTf2g+PlIORQwqtlEehJ
+X-HE-Tag: 1789661024-571747
+X-HE-Meta: U2FsdGVkX18IeZ97huKj1cLXDc6RbIwtiz0l0pRt9SQ9vZ4iqyi78iQdsn56d2HQ9LfTQ8FOPmGbqAD3tUfT0XOgypg2/BY4f0j8tuAfn/Rw5HZATopUQjYH4OL9oBtqExBDvFO7pnRUC7sMeZtXuMOjeAl+8Uq81b823LxSI9F47WC/ufz6YW0JGziGI03S7d6BDidC6XdhIrWQ0vnOdJYym/qVSK+1SpwGvo54UV4XflelSoba5nxEjl8/f7f0MNqupoNrlGw5Bf6qYU+ALV7UaFFBEsGUQ9eZSsvhVqEaEVIj4GJe20JirxTfpXER6oI+gcirkRW7aLCPkUSpiTU81dzaQO5A8fUjbgjgdp0hPhVDeiwiaQ5/mypCTHBpwmYVk0hzKPq9FceNuaj4ZG2kgKq4UmH9ZLAPiG+dT0nLCySVFUoEW+IneKc+3pmp6wYApJJbcihO1cqe5OGMTn+kXzQRQKIZFWcxZ8RPUWa3BlqVLvBeLXOWF5OoJS1pwWPsJbW2GOPDfwSGJHDHgoVknKLrQbVkke34/GPhaNHRtUm1avAlL5qqG340d2jri8GMT0Z1SbUA0tSYpE/PJqf3ASZqC6rUyyI82ZfEu7Ol4+AORmyjRmBK7VDRTHGv9Zhkbfxuy8QrKTkwl1oOKmuhWn3+fher3OQhy9twGANfQYx83PiMlM0b8P7QI5RclDzA9wH5hkC9djAzrEG2Jk+IoM2SwvrVy6HZpco5/jaGyGTEcNxf1boAH8Zraoqktn9tx1kqVX59maLxsBPCsACA6NOAmhFW7NmTvg6tHY4xfLoAmAvbvOhSB1LAlYjBICgmTdCNDgA5Gd121C6zcSpEOZtAkjEnDRPnD9q9uFYFyl8VIoOQ0Bk5bf8y2DakOy+F/CmdY9gQxTpPHt528LxtsJV1mYVRItm4PShbgBnAeoVGnjpfNrurAp2cbhOGwut6SNSt/3C1wvnrtLG
+ dRlwiVVo
+ Pu4hIFsvwRaZaPvFxXmyba/1tZc0vng4RQxAabY8MKHD5sNkT8mgxkIQ8jXSrOSGJbBFlKfOi7PZIFd1XtpCPOl8beb6dtsx9cdEF7naf0l51lBsRHVIiUMjOkL1dKKFhYu78UgRi/j6P7f4yadKYMIFRDw7KBeAjS2iAlhjDDpIyCG/fBa+Sv67c4x2w3/qJ/vSoHwvlCbS0rndn02pvYcX7IK50f+/vqGHrxNWwUqs64kAUrlnnJjezKTbNZf6wTWsaGfX186VT28KzsnHqxaHAzUCaxIkW2fXl
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,27 +104,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 17, 2026 at 05:29:48PM +0200, David Hildenbrand (Arm) wrote:
-> On 9/17/26 16:32, Kiryl Shutsemau wrote:
-> > On Thu, Sep 17, 2026 at 08:10:10PM +0800, Lance Yang wrote:
-> >> vm_mixed_zeropage_allowed() validates zeropage insertion into
-> >> VM_MIXEDMAP VMAs. No in-tree user needs to insert the huge zero page
-> >> through vmf_insert_pfn_pmd().
-> >>
-> >> Return VM_FAULT_SIGBUS if vmf_insert_pfn_pmd() is asked to map it.
-> >>
-> >> Link: https://lore.kernel.org/linux-mm/f76beaf8-351a-4b22-b362-a945a5e1af6a@kernel.org/
-> >> Suggested-by: Kiryl Shutsemau <kas@kernel.org>
-> >> Suggested-by: David Hildenbrand <david@kernel.org>
-> >> Signed-off-by: Lance Yang <lance.yang@linux.dev>
-> > 
-> > The patch looks fine, but don't we want to cover the same for non-huge
-> > zero page in vmf_insert_pfn_prot()?
-> 
-> Why would the zeropage be a problem in PFNMAP mapping?
+On Thu, Sep 10, 2026 at 08:18:23PM -0400, Gregory Price wrote:
 
-Nothing enforces that it is read-only.
+> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+> index 8dff37059faf..81359b414947 100644
+> --- a/kernel/sched/fair.c
+> +++ b/kernel/sched/fair.c
+> @@ -4129,8 +4129,10 @@ static void task_numa_work(struct callback_head *work)
+>  	unsigned long nr_pte_updates = 0;
+>  	long pages, virtpages;
+>  	struct vma_iterator vmi;
+> +	unsigned int numab_mode = READ_ONCE(sysctl_numa_balancing_mode);
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+This thing sticks out like a sort thumb, does that want to be on top?
+Typically reverse xmas is preferred and all that.
+
+>  	bool vma_pids_skipped;
+>  	bool vma_pids_forced = false;
+> +	bool promo_only;
+>  
+>  	WARN_ON_ONCE(p != container_of(work, struct task_struct, numa_work));
+>  
+
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -1237,11 +1237,12 @@ static inline bool vma_is_single_threaded_private(struct vm_area_struct *vma)
+>  
+>  #ifdef CONFIG_NUMA_BALANCING
+>  bool folio_can_map_prot_numa(struct folio *folio, struct vm_area_struct *vma,
+> -		bool is_private_single_threaded);
+> +		bool is_private_single_threaded, bool promo_only);
+
+Two bools rather than updating the existing bool to a flags?
 
