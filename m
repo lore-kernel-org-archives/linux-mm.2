@@ -4,124 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 885EDC982CD
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 06:59:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7622EC982CD
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 07:01:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 98C166B009B; Thu, 17 Sep 2026 02:59:52 -0400 (EDT)
+	id 76C2F6B009D; Thu, 17 Sep 2026 03:01:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 93C7D6B009D; Thu, 17 Sep 2026 02:59:52 -0400 (EDT)
+	id 6F6036B009E; Thu, 17 Sep 2026 03:01:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 832D56B009E; Thu, 17 Sep 2026 02:59:52 -0400 (EDT)
+	id 5BE8F6B009F; Thu, 17 Sep 2026 03:01:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 536316B009B
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 02:59:52 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D5E448026D
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 06:59:51 +0000 (UTC)
-X-FDA: 85222354182.25.29BB638
-Received: from mail-qk2-f12.google.com (mail-qk2-f12.google.com [74.125.230.204])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 0A72C10000A
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 06:59:49 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=JE1Wx8to;
-	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.204 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 35E856B009D
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 03:01:32 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BF72C1A0264
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 07:01:31 +0000 (UTC)
+X-FDA: 85222358382.28.B95DF81
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 6D0B140007
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 07:01:28 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b="FAx7/NTE";
+	spf=pass (imf27.hostedemail.com: domain of sunjunchao@bytedance.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789628390;
-	b=bppKVgAbz7GwJu/G462RmJavZlzCF42gQtuINvB8Q8BdPdJfMHCD9ft72UBx/RBAUdOy8u
-	ptciiOzPZ4Lx+jMEL4rFp4XGg497iHDIRaC74JscrQS5lloZ/JYS84RnUnxHK2M9Q+W12L
-	gQsAeWQGhi4kB12PKecY8A7zeeZPCzQ=
+	t=1789628488;
+	b=uxQJ3iW9mLXRhabt0rDXSFopuRYiWVBm9BiqM2IMR48rlZhyxLgLym2HIUUoMCnDbrsWSP
+	c4biQBzqxxf/me1SDZUadXb5pLyzIWgI9NCVR+dXkKlCX4IwK7noJE2ESqyufxS5n4JYsU
+	gO4hm7NQgzSuzarotpWczqI6+MksXu4=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=JE1Wx8to;
-	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.204 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	imf27.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b="FAx7/NTE";
+	spf=pass (imf27.hostedemail.com: domain of sunjunchao@bytedance.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789628390;
+	s=arc-20220608; t=1789628488;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AKGEnw/rGHEkMgptaV8n9ekSmooVW4BhmhAnYjj/TSI=;
-	b=AnHishSDSWt8W2EByshqDexrT7PU2up/mnRMCpnnNYEBmch6pkdZ9Qzq26h//ZRi7iWz4T
-	yYFYb5BBkNio5PsbrgFTN2NV2tHyMX9Qc8o+PhmqoCCDfFVdXU+DECswbAc4//ve05YA90
-	T6hMseLlceqpReVIKv+AqdOdGMX/G04=
-Received: by mail-qk2-f12.google.com with SMTP id d75a77b69052e-531034aa31bso3523721cf.2
-        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 23:59:49 -0700 (PDT)
+	bh=CWcZ32DEcvckTxaHfwF/iY9dOheOeLm1G2879tq/8J0=;
+	b=jkcIu4bhEyFYs3cfddLydWCAmLv9z7Dzym02gsnWGlifNArbtb1uB6HA/eDfBqn1LIMGas
+	7qeVbIWqAbwDNBLcV2CQIc5JIdMv4YcGaJ3xmIkM8QRvGguH4NqWUFiIUUPpuN2NeJseKF
+	kIwKj7BLeQg9zzkHsxHU5wuu9HOYNsI=
+Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-396ccafb74fso488029a91.3
+        for <linux-mm@kvack.org>; Thu, 17 Sep 2026 00:01:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1789628389; x=1790233189; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=AKGEnw/rGHEkMgptaV8n9ekSmooVW4BhmhAnYjj/TSI=;
-        b=JE1Wx8tovuqlos6YVfi5lRazC2vIkCuGfn11KiQyxrVnHhGwzAX3fQISv7zLxSyZMI
-         zMk6XW5zp3Wmntxt5KvR3HeHwUwipi3dyvjQ27jzKOyAVViqnhQtZElRtWhjfF+I13c6
-         rTEybiKHy55VIkUu9y9chdQdCptjX/fdwD5EsQvWy5yJpo+C9WJiVYAe+n/DhsjxBbOC
-         W9Vg0quM9yOBcjNCB08nMmVeNWFHpBGnjTnLpPRQiuVW+zb9g16PIHHoGq5qjJ8/MPk6
-         QeRkibspOXiMMHRLmLGwmHj7tsxmPg4iTSNY6U9QIT21gyXW61KUl7Ci3+2cJgKnslx7
-         5pAQ==
+        d=bytedance.com; s=google; t=1789628487; x=1790233287; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=CWcZ32DEcvckTxaHfwF/iY9dOheOeLm1G2879tq/8J0=;
+        b=FAx7/NTEHQEtxNRrl9b8ngncrnC5RJbNIFki58u3PIBInuWT8iK80HiVD6h9LwXku7
+         qDUbwNDgI/k266DtZpSc4PY0dhFAvfAErkzEcbs9W61HQ9GJu/rcoEbDXY4xguNX8ROZ
+         XpMMps6ZsxCGbYMQAG2VgI377+JdvOjvCbgyebcPTSWNdkeDgKOdJeT6DLu2cezICTBP
+         v144IPZ6QKFxqX7H4JBpwBRkKwpqWoxSXcFr2sP8dShYgr4ehYGUp/WQlAbsial5ZYHQ
+         0v/StyRLlBeyI2q/Xchct787h5rskXxJojxEIARd4rIZyuhsBqkHT3uiq5logN58u1H8
+         dkxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789628389; x=1790233189;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=AKGEnw/rGHEkMgptaV8n9ekSmooVW4BhmhAnYjj/TSI=;
-        b=puB+9uJWFxOEmaAdu1PAAgH3ExL/WNGdI/xvnwFZtbRaUKjoNvU0pUv8VFgiEdiUpR
-         NIl9VXhT916HP7i/DrYujsagwkeyIvjJxgxvnAlmmzP032mQriQRGG7wrSNnnvBJB1gq
-         bQznKrve3y8DCb861TMZGphOPmgsWwNa3KuyFI4p7WOrMPFB59zY6FusrQ+e87LGKPfS
-         +4MYgiD/B9KKVDn8v2nh67mMNxiq9kksUWniBrnNceYw+WDdFrhIWdPw2gzbCqRAJtrB
-         qdfM11dQf3vpu05ctcKb9X5u3a1syxqS87lYiaO3FRsRVFB/ZVqax9TQWjprSp/z7OA0
-         2z5w==
-X-Gm-Message-State: AFuF++kcwcSakb8bYPnV8xi1+rSJXTNXwwEJ6efgtThblkvy6PmPx8T/
-	G4o8GcmD09aXPXuFLqkthn5s4l3P5bkhAFEMNm6Zw2pvD5WyYz3VMLb9I6JwEc6rNnc=
-X-Gm-Gg: AYBFou1qVlHNLdbqYVcVyXOGm7lH1ijeFRYas+U88XX/31/oRVmWW6ikBOLRlCnJhBH
-	ZwtRBHmllFy3WAXq9h+AzHV45u9kOl3psvyouYh6g4o9yoFjfE2fD5jqnIgZe2g3aAwBzkqWRcf
-	xUtj7GfEKs1OjkIkdyTXPyzHT4aRJZAFTSINIEIDa6S+bWadSgbvHk8muDXYJLJlpEgTyc9lIDa
-	rovbRjCBaZT/4GvqwT+w2n92KXVdDECzeUeIL+4oclmQ9QqF2q7wKFQfxiD6gAufYMsYSuF91on
-	VDDZ25CqaU9MCvDbJ31PdewRPZeMTdi9F5z1rJ3suYZ71s7VUJq3+r+CttK9TJ4P/bqB4Rr78WC
-	xSu2Be/kO8NN9I0y+5QSh5UB12F7EwZeyrg/DARJ0+SZojhrG3hP/uoaqpcweBpuXrgmAiyC/07
-	nDQbOQqgUIUYilh1rxaslGlevZZSUEylrVLfp9ndlVtxN5alBr/LYT9rMoAyoNoWw+9i3P7kaoV
-	vm6f+4OBXCJHm66/KEIbPaTdJcas5+l0dupcatyndLS/Q85RD+vo88=
-X-Received: by 2002:a05:622a:1388:b0:530:ea12:caad with SMTP id d75a77b69052e-5327f1622e2mr94436001cf.50.1789628389177;
-        Wed, 16 Sep 2026 23:59:49 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5326200b8d1sm41492531cf.12.2026.09.16.23.59.47
+        d=1e100.net; s=20260707; t=1789628487; x=1790233287;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=CWcZ32DEcvckTxaHfwF/iY9dOheOeLm1G2879tq/8J0=;
+        b=CjQkW7c/nORE3m2beDcREUHMv+IkgIk5nQGin8hTEUeZju64CCDUQY8Or72EMprbQy
+         CUgKIfspQUIzn278ZN1C0I+vnHRZ11pwvrNtUc95l1V5QJF2W7S0+Rm8Lx5GWtK0a3qS
+         amU4Wd/dVIq1U1UgLGGMBBFF/N7ILROkbfSzwJ7fnndf3dUbaOnMGO0na/59nemGGCxe
+         37TrkQBGSxlZ6DHvXmtOmm21hkV5MN66t+Np0pwTeBuITruespRde1jHxKYZ6akAwpGw
+         EP3YJrzvpZpnQJ1mTZsdxbP60U3yQc9RepQcqD8ac9RE4u2OriTITyyNTwS/vLcwgOmT
+         Z10Q==
+X-Forwarded-Encrypted: i=1; AKwUvBzSMSvPGf0LLPdk4twCW6Cztp6KgPBgydSpzfG90rDA6CY2hnp0a+HilZNsE3HTga6E1zD+3uR7rg==@kvack.org
+X-Gm-Message-State: AFuF++lux78xGSJJ9LKw/4xCNMSlx+7StnsXts2hy1cRId7rI7OeiXq1
+	qBBQCEoF26LL1MqEZPUPeUg3tRvJqlPcOetUIg6r0sJfa2kaCed6oAOrTxLZW4kystI=
+X-Gm-Gg: AYBFou15vPW74EZEsX0Ybru5xN2KOVutoJg37wH25FEmea1LJ9y4HEGxluBuH8L1fRg
+	xB4NlmSRnkIlq++zs0vLuVEs+G1PWjMO14fjBiWOTIkqyyLFVdX16joOqg0xsXDMXMvMUmYTzVy
+	goQ6zPXp1aTbEiPKaB5ioOsJI1UqSrgfEUoejMitwtE4DOOnnUBgQDNer6taBdSmPXkm2g3LLE5
+	Vs6C8Bm+ghkX+0WpMT+3CHWvr6K7qfEQvOj1pQBci/rolcaoL5bAU9awMXjyVVFD0HQhcQ1Nwz9
+	XQDDla7pBp3m6ow9sZFkLF2pRm3PqoGfm3UgGSUbpW31zD6YX02Zvrgs0FOYYE3E/zRGGTrc53+
+	xBuHoHuxo9or/rHDi70pFL6Twrr7BTazbIGRsznaytD0V5b6C2YHAnsMtylcHcagPQdZmKBQBhS
+	1+w/Tbjoi5aU0gXZ67Ts/F8XsZ9y1CARH0YOrLIHIXg6VhFUBJwixMh7DU+5RqIn7vy2RgB+68D
+	g==
+X-Received: by 2002:a17:90b:390e:b0:39e:8d5:fcee with SMTP id 98e67ed59e1d1-39e1e4d750emr15487090a91.17.1789628487085;
+        Thu, 17 Sep 2026 00:01:27 -0700 (PDT)
+Received: from localhost ([106.38.226.93])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e361b3a39sm3418041a91.11.2026.09.17.00.01.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2026 23:59:48 -0700 (PDT)
-Date: Thu, 17 Sep 2026 02:59:46 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
-	david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, 
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, mingo@redhat.com, 
-	peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org, 
-	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de, 
-	vschneid@redhat.com, kprateek.nayak@amd.com, ziy@nvidia.com, 
-	baolin.wang@linux.alibaba.com, nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com, 
-	baohua@kernel.org, lance.yang@linux.dev, usama.arif@linux.dev, kas@kernel.org, 
-	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, 
-	ying.huang@linux.alibaba.com, apopple@nvidia.com, jannh@google.com, pfalcato@suse.de, 
-	osalvador@suse.de, hannes@cmpxchg.org, raghavendra.kt@amd.com
-Subject: Re: [PATCH v2 0/4] sched/numa: stop VMA scan filters from gating
- promotion
-Message-ID: <aquOLzXGdLmyBaIT@gourry-fedora-PF4VCD3F>
-References: <20260911001826.2109390-1-gourry@gourry.net>
- <20260916223525.65ae1628b1457a716efc298f@linux-foundation.org>
+        Thu, 17 Sep 2026 00:01:26 -0700 (PDT)
+From: Julian Sun <sunjunchao@bytedance.com>
+To: linux-block@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org
+Cc: axboe@kernel.dk,
+	hannes@cmpxchg.org,
+	mhocko@kernel.org,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	muchun.song@linux.dev,
+	willy@infradead.org,
+	jack@suse.cz,
+	tj@kernel.org,
+	akpm@linux-foundation.org
+Subject: [PATCH v6 3/3] writeback: record bdev targets in foreign writeback tracepoints
+Date: Thu, 17 Sep 2026 15:01:19 +0800
+Message-Id: <20260917070119.2648123-2-sunjunchao@bytedance.com>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20260917065759.2643940-1-sunjunchao@bytedance.com>
+References: <20260917065759.2643940-1-sunjunchao@bytedance.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260916223525.65ae1628b1457a716efc298f@linux-foundation.org>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 6D0B140007
+X-Stat-Signature: 8a7939wn38t8d8spsa749ud4iqgrswz3
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 0A72C10000A
-X-Stat-Signature: 7wudq3nf7uy5yuq63xmbjndi4wfw4uq5
-X-HE-Tag: 1789628389-69770
-X-HE-Meta: U2FsdGVkX1+xhqwqagAITD7fPE8dn//gJUexj5pqrAHwz2+IYosgZIZkOXZvTJaCT0/ftHSqUcJYU1bKWBOnCJNVJbAV3sm10GsXuPAA7ZUQY5MUyF8VWJdqCXSsM2+xfKi2i2qT9asFQ1PLti8Ac/WxyIahxZf2/F4z2MiSPHbbIN/MuPG2aGAvuLmJXj5hsEDsEhjCEFxBJGmlv+xqPuCo3OXBsPQXNHD6vYy03IatHV5TtQXqsdEv+CvDrxJcFP2Wvrjco+gbRkidjBuf4Xj28fwJ9oE221KuOHWcfO+IqD8RhrOeNfWio5n+eJbJ0Kan/6tFqsL27uafgHjiuXbf/DJpkfQvWpSLJT2hvwwEyTMSC4UVKmAmViDgyrRW6Cp8lvBUI75XaWb7ao7ZQGF8nMv2BSXKxwe7cgiXi5M33M9EdaMf3t+KIWjyiiaQpdrjc4uHYf0qmqf2EIno2TBZyyhCFQCcyyNokKotP7VIaBMj/owkI6zyavp3PiQWBn12DSXyRg/cFzOrClP43oL91ZzNfjYonSMxJzRD0TiwOBhG8jUE/yVAImSZD8TuKVtyrqJkl4kYIy85bqTefkyLhmC8plWM1lTt3QmVOYDRX/xyJu2UY8pLNNbPScenuqI+DRC3l19yFPywYupTz9zB45ZxAGE1cobO2LKTX56x6Tr3aiWXnadTnkL20mnrevs7NglX2cObcObG4srte1VsJ5nZ0dyLhYniAnah9GQuKKbCo+hPavLC0ldLUYxww8Z6vrWjFGLleT6D0PDs0nUyRRBgV9aS3TZ4xxsmDG3eTcGaBtBel+VCk/vbpL9ORZ7B3APuOWcITbJ/Ev91svrnF/xla6bCbc/0PhN9rq1+LwNFmM8ME6KWLOxt7GKcBVbWrda186b0eafQW60t6QwUEwrbRi40bDQ7rFD+KjG9335cEZ4jf5JeNFUpADZGupnuMmVCIuT8mYaVlUU
- C9qGEzf2
- JDX3drMKCX1yJjQSs47KGETQDfL+tUHkCm1xKnIJTyE8sOb1i//FN3/senPyi5quJ5bTO3rEOjas1qNhznpHwFW1YkTD3vGMGn21cjErGxyeqyQV4ibLHDdo4k5ylrNdC/MAAqX3+dqLGjN7Nqcl/bT/U9G1RowL71DtWlVZWGqFFCpiQ3eGb/vAuflq1Jo5B+s2rG9/qPxIvVF5YYNtowvWsWUEFGwfpTaFmw6KzKc+bTOEfcfhbdX1DVovFsHUJPmttW6oTIGQKBIyyQTO1cxC3Kkjvt11wTRjLg1sEnBf09r9DBXEeY5zhh7EfNnGSbEgJwYUHJmhJnvWAc1wLB4Ke8tVsfvBt6kr1xo5f8jBNgvMyKfAE7EbpIYnG3o5mUxYlzr0Gfoj0t9m5Ur8CthKmOA4tluaNjF7Fj6WWfgtnw8jNBIbKF2wReNbnkaoRjvhSm0RTkWjiFYCnPDb7NrptARA16aOoMIJTYCGWRegJIKnXXVpNSv8x0HuS/wCNLFH9Eq7BpNK/GxkmoxySQC7AoPxVP2C1n2Lh
+X-HE-Tag: 1789628488-4964
+X-HE-Meta: U2FsdGVkX188jlDYKIXHTr0e1NWyjmaXR14jNYj2V+LOfHgKp9rkZf3OjKK02X3DL1NpkMBLgWvx9rySFOi++UbknHqUjfpYs/PzTPaLNg5ZXV+ijMcmV6XNdgKztU3+hEhWSICeV5t7lMvRkaXymSZ6tIXSUh5i3v4Ph46Vu3/6SmM1xIz6L8wkJT95yxLPUMyUF8qu1RnV4zGeCGCZiT5reM9AcxvXrpUMeBeeFPfPmV0oMiZhhepr6RJ1GEn3ahYfgVw9j2y0loKNLOZw9SJ2seDCen7IhTWGINekCBX598pCIFUROIdNVMLB3AX/l4Frknt3lo+jtGiUVHz4D6S+RtqSQcBL/WmynpAQdrsBSVCCXZQbfEBi2ePaNDohbSBy9mdyxJELdeavErya3uwGPeyBEvUNh5JpJxIqR2grHihru9wrYupQRD8HdCHMOxn5x6LnloOgxIRhnf/BlB/LiZHohKEGiwhZoSqv3QbeeMnz6P30eKUsuEUXOuFMsofHwtWG2wf5Bqbdy8e/3cNyuDTE+08c5lMAmV+e5Yy69ub66zWyWzeD7EP1mmaYu0n6uWjxF5mwL61e5F/eRM1N+WSa20fq1JE+LdjSvdSievJm+nPpWsdysNA5LIJpzfg3s2+GthPrx+YHn3ja5Mt89+8Z49hvkQbKu3EdSgCZhYMjWxE9ouG9fwN6LkvrXMiw7+CROMHgJPeccSbEoDfBQE6HJWA1xem0acv4hJLt3NFmofAfouCLUdNzPy5rvy3Um1IbrkbuqXJaWF9TvJbfwCjB/2cX5GZ4FvU158fCBuNKQurLXDvEUKKD0fCtFE/SAlRf7daMONu7ng9koplmpIrlQZtC9D47oXQvYrbTKs5wKv1ijJ0W+jz5PZvbgESPMueXUVGe+fyoNllrQaYxnaN6wz3i+Chw9gK5AZREdjyavCcCqN6qidEe5GyZT/mVkQH0OkB2x0inDKz
+ ZNHcg1dO
+ 3jEP3O4dsR5jqZ2iobLQM2jReP+CkWmUQFrcO2oFOlmlehahbrnUW7l6xt/YvEKEYSz+yvqRFf092tN5npV9N+K9gNhdVkK6A0KdME9czf5As28ue/rITQYdS253lHXLUUIiDZy5ZEDuHEeuk4Ex9wWFKu0dCDWiHri6BLTQ3RRE3WebczudaIOqJt7wWZh3LzzE6xPHF62cfJDOGXp5FYO0YgMrkgaluRbSOgMUV1D4sgNWY33Y44eqeYAI1SJBD6W13KgAUV+vo5ySCAoz5c++Us8ZeKd9Xdw229/RGhVUxXjiWADT3mUmv4NUo/hzjUe6TwxgQaak517G3qRZvzUvBC+m67/KtqwuxSvSJ4St1nTQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,40 +129,142 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 16, 2026 at 10:35:25PM -0700, Andrew Morton wrote:
-> On Thu, 10 Sep 2026 20:18:22 -0400 Gregory Price <gourry@gourry.net> wrote:
-> 
-> > 
-> > Functional observation:
-> >   A 20 GB hash table VMA that previously remained entirely on CXL was
-> >   split evenly between DRAM and CXL after the changes - and tier
-> >   residency tracked hotness.  This was previously affected by the
-> >   stavation issue caused by the "unaccessed VMA" filter.
-> 
-> This seems very significant?
-> 
-> Why cc:stable and Fixes:?  Is this something which ran at these sorts
-> of speeds before the offending commits?
-> 
+Add dev to track_foreign_dirty and flush_foreign so traces can
+distinguish foreign-wb tracking from the bdev-only path. Append the
+field to each event and print it as major:minor; zero denotes the
+normal foreign-wb path.
 
-It's actually that the changes functionally broke numa balancing to the
-point that it just became completely ineffective for very common use
-cases.
+Signed-off-by: Julian Sun <sunjunchao@bytedance.com>
+---
+ include/trace/events/writeback.h | 22 ++++++++++++++--------
+ mm/memcontrol.c                  |  9 ++++++---
+ 2 files changed, 20 insertions(+), 11 deletions(-)
 
-We only didn't notice because another bug:
-https://lore.kernel.org/all/20260629163337.1264881-1-hannes@cmpxchg.org/
+diff --git a/include/trace/events/writeback.h b/include/trace/events/writeback.h
+index 13ee076ccd16..ffd1b8df4231 100644
+--- a/include/trace/events/writeback.h
++++ b/include/trace/events/writeback.h
+@@ -273,9 +273,9 @@ TRACE_EVENT(inode_switch_wbs,
+ 
+ TRACE_EVENT(track_foreign_dirty,
+ 
+-	TP_PROTO(struct folio *folio, struct bdi_writeback *wb),
++	TP_PROTO(struct folio *folio, struct bdi_writeback *wb, dev_t dev),
+ 
+-	TP_ARGS(folio, wb),
++	TP_ARGS(folio, wb, dev),
+ 
+ 	TP_STRUCT__entry(
+ 		__array(char,		name, 32)
+@@ -284,6 +284,7 @@ TRACE_EVENT(track_foreign_dirty,
+ 		__field(u64,		cgroup_ino)
+ 		__field(u64,		page_cgroup_ino)
+ 		__field(unsigned int,	memcg_id)
++		__field(dev_t,		dev)
+ 	),
+ 
+ 	TP_fast_assign(
+@@ -295,34 +296,37 @@ TRACE_EVENT(track_foreign_dirty,
+ 		__entry->ino		= inode ? inode->i_ino : 0;
+ 		__entry->memcg_id	= wb->memcg_css->id;
+ 		__entry->cgroup_ino	= __trace_wb_assign_cgroup(wb);
++		__entry->dev		= dev;
+ 
+ 		rcu_read_lock();
+ 		__entry->page_cgroup_ino = cgroup_ino(folio_memcg(folio)->css.cgroup);
+ 		rcu_read_unlock();
+ 	),
+ 
+-	TP_printk("bdi %s[%llu]: ino=%llu memcg_id=%u cgroup_ino=%llu page_cgroup_ino=%llu",
++	TP_printk("bdi %s[%llu]: ino=%llu memcg_id=%u cgroup_ino=%llu page_cgroup_ino=%llu dev=%u:%u",
+ 		__entry->name,
+ 		__entry->bdi_id,
+ 		__entry->ino,
+ 		__entry->memcg_id,
+ 		__entry->cgroup_ino,
+-		__entry->page_cgroup_ino
++		__entry->page_cgroup_ino,
++		MAJOR(__entry->dev), MINOR(__entry->dev)
+ 	)
+ );
+ 
+ TRACE_EVENT(flush_foreign,
+ 
+ 	TP_PROTO(struct bdi_writeback *wb, unsigned int frn_bdi_id,
+-		 unsigned int frn_memcg_id),
++		 unsigned int frn_memcg_id, dev_t dev),
+ 
+-	TP_ARGS(wb, frn_bdi_id, frn_memcg_id),
++	TP_ARGS(wb, frn_bdi_id, frn_memcg_id, dev),
+ 
+ 	TP_STRUCT__entry(
+ 		__array(char,		name, 32)
+ 		__field(u64,		cgroup_ino)
+ 		__field(unsigned int,	frn_bdi_id)
+ 		__field(unsigned int,	frn_memcg_id)
++		__field(dev_t,		dev)
+ 	),
+ 
+ 	TP_fast_assign(
+@@ -330,13 +334,15 @@ TRACE_EVENT(flush_foreign,
+ 		__entry->cgroup_ino	= __trace_wb_assign_cgroup(wb);
+ 		__entry->frn_bdi_id	= frn_bdi_id;
+ 		__entry->frn_memcg_id	= frn_memcg_id;
++		__entry->dev		= dev;
+ 	),
+ 
+-	TP_printk("bdi %s: cgroup_ino=%llu frn_bdi_id=%u frn_memcg_id=%u",
++	TP_printk("bdi %s: cgroup_ino=%llu frn_bdi_id=%u frn_memcg_id=%u dev=%u:%u",
+ 		__entry->name,
+ 		__entry->cgroup_ino,
+ 		__entry->frn_bdi_id,
+-		__entry->frn_memcg_id
++		__entry->frn_memcg_id,
++		MAJOR(__entry->dev), MINOR(__entry->dev)
+ 	)
+ );
+ #endif
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 55bd5d100caa..f634874bbcef 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -3949,14 +3949,15 @@ void mem_cgroup_track_foreign_dirty_slowpath(struct folio *folio,
+ 	struct address_space *mapping = folio_mapping(folio);
+ 	struct inode *bdev_inode = mapping ? mapping->host : NULL;
+ 
+-	trace_track_foreign_dirty(folio, wb);
+-
+ 	if (memcg_bdev_frn_wq && bdev_inode &&
+ 	    sb_is_blkdev_sb(bdev_inode->i_sb)) {
++		trace_track_foreign_dirty(folio, wb, bdev_inode->i_rdev);
+ 		mem_cgroup_track_foreign_bdev(memcg, bdev_inode->i_rdev);
+ 		return;
+ 	}
+ 
++	trace_track_foreign_dirty(folio, wb, 0);
++
+ 	/*
+ 	 * Pick the slot to use.  If there is already a slot for @wb, keep
+ 	 * using it.  If not replace the oldest one which isn't being
+@@ -4031,6 +4032,7 @@ void mem_cgroup_flush_foreign(struct bdi_writeback *wb)
+ 		spin_lock_irqsave(&memcg->frn_lock, flags);
+ 		if (!ctx->inflight && ctx->dev) {
+ 			ctx->inflight = true;
++			trace_flush_foreign(wb, 0, 0, ctx->dev);
+ 			queue_work(memcg_bdev_frn_wq, &ctx->work);
+ 		}
+ 		spin_unlock_irqrestore(&memcg->frn_lock, flags);
+@@ -4048,7 +4050,8 @@ void mem_cgroup_flush_foreign(struct bdi_writeback *wb)
+ 		if (time_after64(frn->at, now - intv) &&
+ 		    atomic_read(&frn->done.cnt) == 1) {
+ 			frn->at = 0;
+-			trace_flush_foreign(wb, frn->bdi_id, frn->memcg_id);
++			trace_flush_foreign(wb, frn->bdi_id, frn->memcg_id,
++					    0);
+ 			cgroup_writeback_by_id(frn->bdi_id, frn->memcg_id,
+ 					       WB_REASON_FOREIGN_FLUSH,
+ 					       &frn->done);
+-- 
+2.39.5
 
-hid almost all these issues from being apparent on large workloads
-(which was differently horrendous - that bug made ~70-90% of some
- database workload memory ineligible for tiering)
-
-Once the shmem fix went in, all the starvation and filtering issues
-become more apparent when the bandwidth numbers stopped making sense
-(see above).
-
-Basically numa balancing has been broken since 2022/2023, and anyone
-who has done any testing with it since then has been working off of
-bad data (incomplete VMA coverage).
-
-~Gregory
 
