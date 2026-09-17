@@ -4,95 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9118DC982CF
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 02:56:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65B3FC982C1
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 03:11:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A6756B008A; Wed, 16 Sep 2026 22:56:33 -0400 (EDT)
+	id 1A1556B008A; Wed, 16 Sep 2026 23:11:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 557166B008C; Wed, 16 Sep 2026 22:56:33 -0400 (EDT)
+	id 12C436B008C; Wed, 16 Sep 2026 23:11:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 46BA36B0092; Wed, 16 Sep 2026 22:56:33 -0400 (EDT)
+	id F3A736B0092; Wed, 16 Sep 2026 23:11:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 239FE6B008A
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 22:56:33 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B2A461601EA
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 02:56:30 +0000 (UTC)
-X-FDA: 85221740940.21.5772477
-Received: from mta0.migadu.com (out-158.mta0.migadu.com [91.218.175.158])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 8B9E3C0005
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 02:56:28 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pNlthdPi;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf28.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.158 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789613789;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IXjNvfbfvMQLStGSco8GHavmkRqXpU9JCAETdbNf2BA=;
-	b=lfocXeBsWgRRAOesMpCdI47d2QP0BW0sKq/oo/cBUBPqBzDd6w1//Y7c0kBCs0ClT9rwZc
-	mzjzYMim8h9EXISOgtDcTIFKM1SQQ2zcwH6ID2WLTG/nfQaxVmmICX31OeRm8L9J80HEPk
-	prrkeH9HoR7Hj4QrWyrCZfWqt68gnxU=
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C7D276B008A
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 23:11:46 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E9E881201F0
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 03:11:45 +0000 (UTC)
+X-FDA: 85221779370.01.1F63B19
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 35BE140008
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 03:11:43 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=WdZ+LOnW;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789613789;
-	b=UOW1dSKR/iglTCVvFDs6JH07/XnYPeyzDd7idnmdibju3DzOHBGzT/TOM1FUAy8OD/IiVK
-	XpV2TsY5fLZhB1mOr4bD8h2nP7J0MExHWiQ6bo8li0/wntUVRD3dQn0FjXtLfO4hLGPfPJ
-	B/JRI5FVvXCHkKk+VaP1tsTOdLDXPEs=
+	t=1789614704;
+	b=Po1crSMdoQkXc3lYnygbv5fjev5ZyCB65r+vGRUnaK7+KxQLygyZ8Wcw2GVvY1zMFA7oH7
+	4N6oFm2eAomvGoefekokjDxKFT3AHa+Bf56gk1lF6wF/HvTDlgJ6o2yMtl5YqFX4GZR9FW
+	6zSPR6H+mJ9FBWSO9B2FfyI3CEkm0sE=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pNlthdPi;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf28.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.158 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=FhTMxEbI+Hm7knFbU8ZHAQCuFqyobe/xTUTkOpgFmSQ=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789613787; v=1; x=1790218587;
- b=pNlthdPiVvdHJYAlRecZ7TL1llP87xUxqNpIkLSE+6eepTAZvDqLnq5PKlZkTH6LZcF1SM3I
- ChrLTF/oD/6ccEwe4oUKZD50ZM20VZEvybBS/OrRTQEy+QmylvyGM/vNhu0rztvE5hxXeM+IkVd
- LGJjp5XtTQ1XxOh4Kx8qUWqI=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id af011a6eef206229;
-	Thu, 17 Sep 2026 02:56:26 +0000
-X-Mizu-Trace-ID: af011a6eef206229
-X-Migadu-Flow: FLOW_OUT
-Date: Thu, 17 Sep 2026 10:56:22 +0800
-From: Baoquan He <baoquan.he@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Arnd Bergmann <arnd@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
-	Arnd Bergmann <arnd@arndb.de>, David Hildenbrand <david@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Ridong Chen <chenridong@xiaomi.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/vmscan: avoid false-positive -Wuninitialized warning,
- again
-Message-ID: <aqtW1iW9WLJfl7hp@fedora>
-References: <20260916083456.4136132-1-arnd@kernel.org>
- <20260916162816.39f0f33f6a48d30a71be3575@linux-foundation.org>
- <20260916163044.3daa3811d9b2bf7d958f1f27@linux-foundation.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260916163044.3daa3811d9b2bf7d958f1f27@linux-foundation.org>
+	imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=WdZ+LOnW;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789614704;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=RSz67puNDLLfG/cdO7rVexztqG1VgqGI9fm9ivmtMH8=;
+	b=x8mI1Z2JeTueknSWkc3745BcWvKNPpyEATcrsWFm8FRoWzPf/YCLnw0yN6iW4S0+Y78bum
+	RTDVjloE0+bAB4kx0n5IbRsfeUjv8F30ntPoq1JvFkntZFVQ9rBj43MqvCxB484I3jEi5C
+	6WuSzYdMGRQJh7bzGSgqmPgVgL1g2y8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789614703; x=1821150703;
+  h=date:from:to:cc:subject:message-id;
+  bh=NbGYQfvcFVItkR9TIAHQyFOTWfE9cJM/aBYDvFnjBIQ=;
+  b=WdZ+LOnWpuGCaoqRufP/7XNyQJpWb5AF3E8NiCv+BSinaSlsn9dXwbw0
+   Xmdv0HtnlogPh09Ketwq3D/yuNsbMkQHrrbH7F6RhxC7NR+px4WsTS3E5
+   51+KtuTjbKECF7ShbN5Gips0T+n1iP8kBiPKIMsy4EQn9k2QHHyfPsE7/
+   n+zbKkRp+6MT6kXuG318NtasttZeq9AIQUdSjnDMAomlDWZ2Q/oHQV7qL
+   xvdNBrwileeTo0oJaHglGZVHqWMUhh620za/lzMvV35E4ODLBe+Toe4pa
+   8h2EzqiANro86sngi0HpmF8SB8d/PyxEyelqWJi+DLAXZmCAkCGk3AUv8
+   w==;
+X-CSE-ConnectionGUID: N9660963QPa1yniMAq+BEw==
+X-CSE-MsgGUID: oRA2tkjDSmqnQpD9boyXTQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="115534557"
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="115534557"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2026 20:11:41 -0700
+X-CSE-ConnectionGUID: nfpyEJFmSmCGwPAjYY/nIQ==
+X-CSE-MsgGUID: 8qE6xmIJSbGsPWxGK4PnTg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="277079898"
+Received: from lkp-server01.sh.intel.com (HELO 462990a40a85) ([10.239.97.150])
+  by orviesa003.jf.intel.com with ESMTP; 16 Sep 2026 20:11:39 -0700
+Received: from kbuild by 462990a40a85 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1x72XA-0000000073l-2czK;
+	Thu, 17 Sep 2026 03:11:36 +0000
+Date: Thu, 17 Sep 2026 11:11:15 +0800
+From: kernel test robot <lkp@intel.com>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+ David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ mm-commits@vger.kernel.org
+Subject: [akpm-mm:mm-new 479/575] fs/proc/task_mmu.c:3448:3: error:
+ call to undeclared function 'drop_rcu'; ISO C99 and later do not support
+ implicit function declarations
+Message-ID: <202609171159.oaB1OaSG-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 8B9E3C0005
-X-Stat-Signature: smcau9urnpm4uub83s3fkrux6osuww3h
-X-HE-Tag: 1789613788-344628
-X-HE-Meta: U2FsdGVkX19RnbUPoCsoacb9ZXh+a/hyY1Jjl794QEzLLj5444aSxSOUjSNrTFi8PSEZ0BrSbooJ85X6Oi1V7PaEfGubzX459dmqmxL2xA3EoJkz58OEElEHdx4Ib0G9L+ouBrVcRdejHWcivoA7JT8Q1tTe3Zl8gKV7hOz62yIC0fco0JxWNHYk2lpkuvA5Jw+MNX6jLBAKG+O+4hWTDi4JLkJt+tJhHktu3TgQt9E8tQU2s613k2bTPdNnJz/VjD8UsRkwVdC9d7pemxU+MFD/DeIK2nOhHjf5knFQRvA995yW/FwY15BoVVDobLhT13kp03WzoHJCqA3Y2Rmz8asJ+vW1ci/jkFWdJlpE0G/e8QoNymQa+MKyIaxLxQ1pfUpT1kqOcENqT4kFfZO4z+K6npqiQKdc3xOnaUjqooPRJnmS0kTO1OyVsCxx54d0JA7XybWXTWYMguLGFSVisqQ1ijbYDLkYlfzx40g6emoP+eVEohND9ncr/WdcjfMOozIiPq6k3+9g+LxEdHAY4POKY/suxhc8lfgapZNzKERwo96T+FpYoIm2gLjeOcis+OoCyw2Pu0wN1x65U4aaEp/7mjwhdd2sx0Ldr1EOZSnSGQT8h7bi6X5Tfcu6ifO8p9FUYzI920yqMTevLX+0MS1xf+Nv/Az2rmev3G33qiM8A8wrHSPR+cckaL5pHoG1QVyh49GlZjx5n1SwV8dMLJ8fAeCnYqPV+1H5faTOReurcj48v1n9cK1wf9HAl+F45UFBwgjmswBt86s1hnMxM34gG/uBAVsnVXXsaehQOxFOEIPt0GhPRkJcOt+Le5ZleQD745QYACZjW9vwMxXhPBe1gaeISx/TtrRBgx2cRgaZKvNDGqnMfC9nv/otQmBT8vXdnlRhmVVQF/Cl+QxXA0qQyvshXQwfYRo90X+eK6DU8xllP3lLpHK342knzFPDHCADjXqy6mwcq1IqAA5
- Eps39j/k
- HNIwddoFHtxc4nYfen3c76Q+7hHndzymSLksn7uKSeyH21hGwJsUNZaDMLIKimisLYbQuntTR3Pkc9BSyeeOopvjRn9YoAn5zky8ataEt8WDkRa+xEPink91K67Ya+Lm15BFSeH7puFlKwiZnj2Z11p38zsCEzME3o2vRjI6H7ZOGJON21i6fiaGkJnVhujc8FTUr4AJ9xgMgdMeI8EjAAh1SwfT23znlFS3jN1GPmqgMJnNGEEj+BuwTwRlt07Z2vdIhiaRGcbTdOiHGpxbFEt9my0VHskWBBcO9z/SPhcKl0ixcdvs9rqN9IAscRYKTkXPkDNnAN50PctXEbhsEnoqZ//DOwLp8CAqX8GueleVzKZY=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 35BE140008
+X-Stat-Signature: 3z7yikaotijewcfacnmbqsrxe87pydqb
+X-HE-Tag: 1789614703-134579
+X-HE-Meta: U2FsdGVkX1+vBYjy7OR+McseYtrgX+XhbVFlQYpnRZsjT0syQdh7aWVunOBPYh3bG2JYZ2vn3osMgLd9tv+CIeRzOvYo0dGzCN8IGmpEbvbL3OQVJgJFv470Mv8Ovpn/Cz3Wj+iEmzMFJlIku81gtOQjojPM/DJaoxuy/dz6Z8klmqrcqe1SRlRI3hu31GbmuBgKELKwwKFa5oKbGzef2HR4Zpnct1OHONANKUELXpvORg4/VpakaVswTiFfZlp0KFwzGclMmI4IVIRBshz1dRW6XDekBoMCKajU+aZRIciMXonxGLkyHnKlGiQFhWtg+wVzhhWI6TFX2VCyHxUIrfVw7M3WhZkuE12gK8Gc1vR2E7HuyqhQAZ+4YX6xLK9yCvsfDS0wSutC+l37ThUO4poJO/JQ+m2P8jfGXAFa5gZagARGzBnqYUvmpCeHwfUcaD5BJd7fSypgxdjxXef3I9DbcTinRbrZk0gKRhntEHPV0ouP05bFs+2A+wUCygBfmZS6Nb76bApautDoP8KiO6ZN2GIXEFJFhbD1edLHuNJ3VouWo3/eJOgleu/+rc3xhgIrL2QhlFgLwSQBKNgn5aZgpOCkgOyiKr6+iRLwhsFRR+p5DrzwQRqseFXubveQ3ENq9HTRfGELLui8FJGyg2hRxSlqg1+fk1my6YNv6KDEInCmX1BAgcTVwBB4g8futOGn1DGi2QJ7zu6WykQyhPDTx8XLSM2te7SP/qJM1Fg2V0U2Aw66w8uzQJ2mxFMHCbPWoxYnCJPj8Kx+wS6DggnGsc1IhdML4nShQ6678ba0P3EqPsn4DN/jNFsKmZdVwi0vSzVbBcf/vMf+IAcVxSez3hvM8yJgqy29cYwGmlqukBSg0wgeXdCBvDnqy2AKiwNPZVh/2PnmoXnU0DucJvM8FvlXDGOYD+3C5mKpqljX32C3+5NBC2jJqnYm6H6uw4i9a4gbMuB2aMKxNvQ
+ N1GEomSS
+ QSnJ6V8JdZtJXaWfjkf76t7DQAy2kQ6bEgFseNqrwrENFJ0xzNHs7NmfqxzAIz3r0R4GEWj2q2lYFksF0Ai8GMnr0z4nOwywhPWNfu/6lGksbVfZX/GxFauTpgevbF86AK7DuD30vnAlxngz7D8NwfbM0RDWchBy50MENKZkHHdVBB5Gq+o/lz2oWOgBsYhnm5r3OnCbdAUdW2QjCRVB83tS2VG1uP6J0sR6VlcR3i/DZxyKXDCd8MwgZaE6/bdfXJcrQZfCxGZ5mOT0bpxZLIFBiJHk56+wHfmXBHn/N6rOVU0F90RvG799g5KOPsqo9tu4e1Jf3xcwybKOOnooqIaLuwTxvsRLqg3cYQh5qUYWCK07McA7aQGQ+GdTaipAazkuAaMTvIWr77FX/V6/okowrwdvvNyNscw/UwKamZASnEKv07vF3A3ZSx2dd6XBPla9K
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,97 +105,126 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09/16/26 at 04:30pm, Andrew Morton wrote:
-> On Wed, 16 Sep 2026 16:28:16 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
-> 
-> > >
-> > > --- a/mm/vmscan.c
-> > > +++ b/mm/vmscan.c
-> > > @@ -3274,8 +3274,10 @@ struct ctrl_pos {
-> > >  	int gain;
-> > >  };
-> > >  
-> > > -static void read_ctrl_pos(struct lruvec *lruvec, int type, int tier_min,
-> > > -			  int tier_max, int gain, struct ctrl_pos *pos)
-> > > +/* __noipa works around  gcc-16 warning for uninitizled use of pos->refaulted */
-> > > +static __noipa void read_ctrl_pos(struct lruvec *lruvec, int type,
-> > > +				  int tier_min, int tier_max, int gain,
-> > > +				  struct ctrl_pos *pos)
-> > >  {
-> > >  	int i;
-> > >  	struct lru_gen_folio *lrugen = &lruvec->lrugen;
-> > 
-> > Current code has changed here somewhat, but I expect the error is still
-> > there.  I fixed that "uninitizled" while in there.  Altered patch is
-> > below.
-> 
-> 
-> Then the build blew up in unexpected ways.  gcc-15.2.0.
-> 
-> The failure looks like a legit min() signedness thing which has been
-> there quite a while.  I'm thinking that __noipa surfaced this for some
-> reason?
-> 
->   CC      mm/vmscan.o
-> In file included from <command-line>:
-> mm/vmscan.c: In function 'read_ctrl_pos':
-> ././include/linux/compiler_types.h:702:45: error: call to '__compiletime_assert_798' declared with attribute error: min(tier, 4U - 1) signedness error
->   702 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
->       |                                             ^
-> 
-> I'll queue a fix to switch this to min_t (yuck) for now.  It would of
-> course be better to use more appropriate types in this code.  Unless
-> tiers can be negative!
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+head:   892f5b3b07e5b07f2f29c87750ff94fa58dcab73
+commit: ba1552b2bcbd7adc40512846abeabb02659e6f92 [479/575] proc-task_mmu-remove-unnecessary-inlines-in-function-definitions-fix
+config: x86_64-randconfig-1014-20260917 (https://download.01.org/0day-ci/archive/20260917/202609171159.oaB1OaSG-lkp@intel.com/config)
+compiler: clang version 22.1.3 (https://github.com/llvm/llvm-project e9846648fd6183ee6d8cbdb4502213fcf902a211)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260917/202609171159.oaB1OaSG-lkp@intel.com/reproduce)
 
-I drafted one to change 'tier' as 'unsigned int'. While in mm-new this
-issue has gone away because Kairui's patch change 'tier' to 'tier_min'
-and 'tier_max' and remove min().
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202609171159.oaB1OaSG-lkp@intel.com/
 
-commit b447513eee2f ("mm/mglru: use explicit tier range in read_ctrl_pos()")
+All errors (new ones prefixed by >>):
 
-I personally think your one line change is better for backporting to
-stable tree.
+>> fs/proc/task_mmu.c:3448:3: error: call to undeclared function 'drop_rcu'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+    3448 |                 drop_rcu(proc_priv);
+         |                 ^
+>> fs/proc/task_mmu.c:3450:3: error: call to undeclared function 'reacquire_rcu'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+    3450 |                 reacquire_rcu(proc_priv);
+         |                 ^
+   2 errors generated.
 
-From: Baoquan He <hebaoquan@kylinos.cn>
-Subject: [PATCH] mm/vmscan: fix min() signedness mismatch in read_ctrl_pos()
 
-read_ctrl_pos() declares 'tier' as int, but MAX_NR_TIERS is 4U, so
-min(tier, MAX_NR_TIERS - 1) compares int with unsigned int and min()
-reports a signedness error:
+vim +/drop_rcu +3448 fs/proc/task_mmu.c
 
-  error: min(tier, 4U - 1) signedness error
+ea3085dd7a4ec2 Suren Baghdasaryan 2026-04-25  3400  
+f69ff943df6972 Stephen Wilson     2011-05-24  3401  /*
+f69ff943df6972 Stephen Wilson     2011-05-24  3402   * Display pages allocated per node and memory policy via /proc.
+f69ff943df6972 Stephen Wilson     2011-05-24  3403   */
+871305bb202808 Vlastimil Babka    2018-08-21  3404  static int show_numa_map(struct seq_file *m, void *v)
+f69ff943df6972 Stephen Wilson     2011-05-24  3405  {
+5b52fc890bece7 Stephen Wilson     2011-05-24  3406  	struct numa_maps_private *numa_priv = m->private;
+5b52fc890bece7 Stephen Wilson     2011-05-24  3407  	struct proc_maps_private *proc_priv = &numa_priv->proc_maps;
+f69ff943df6972 Stephen Wilson     2011-05-24  3408  	struct vm_area_struct *vma = v;
+5b52fc890bece7 Stephen Wilson     2011-05-24  3409  	struct numa_maps *md = &numa_priv->md;
+f69ff943df6972 Stephen Wilson     2011-05-24  3410  	struct file *file = vma->vm_file;
+f69ff943df6972 Stephen Wilson     2011-05-24  3411  	struct mm_struct *mm = vma->vm_mm;
+948927ee9e4f35 David Rientjes     2013-11-12  3412  	char buffer[64];
+ddc1a5cbc05dc6 Hugh Dickins       2023-10-19  3413  	struct mempolicy *pol;
+ddc1a5cbc05dc6 Hugh Dickins       2023-10-19  3414  	pgoff_t ilx;
+948927ee9e4f35 David Rientjes     2013-11-12  3415  	int nid;
+f69ff943df6972 Stephen Wilson     2011-05-24  3416  
+f69ff943df6972 Stephen Wilson     2011-05-24  3417  	if (!mm)
+f69ff943df6972 Stephen Wilson     2011-05-24  3418  		return 0;
+f69ff943df6972 Stephen Wilson     2011-05-24  3419  
+5b52fc890bece7 Stephen Wilson     2011-05-24  3420  	/* Ensure we start with an empty set of numa_maps statistics. */
+5b52fc890bece7 Stephen Wilson     2011-05-24  3421  	memset(md, 0, sizeof(*md));
+f69ff943df6972 Stephen Wilson     2011-05-24  3422  
+ddc1a5cbc05dc6 Hugh Dickins       2023-10-19  3423  	pol = __get_vma_policy(vma, vma->vm_start, &ilx);
+498f237178a3d3 Oleg Nesterov      2014-10-09  3424  	if (pol) {
+948927ee9e4f35 David Rientjes     2013-11-12  3425  		mpol_to_str(buffer, sizeof(buffer), pol);
+f69ff943df6972 Stephen Wilson     2011-05-24  3426  		mpol_cond_put(pol);
+498f237178a3d3 Oleg Nesterov      2014-10-09  3427  	} else {
+498f237178a3d3 Oleg Nesterov      2014-10-09  3428  		mpol_to_str(buffer, sizeof(buffer), proc_priv->task_mempolicy);
+498f237178a3d3 Oleg Nesterov      2014-10-09  3429  	}
+f69ff943df6972 Stephen Wilson     2011-05-24  3430  
+f69ff943df6972 Stephen Wilson     2011-05-24  3431  	seq_printf(m, "%08lx %s", vma->vm_start, buffer);
+f69ff943df6972 Stephen Wilson     2011-05-24  3432  
+f69ff943df6972 Stephen Wilson     2011-05-24  3433  	if (file) {
+17c2b4ee40beae Fabian Frederick   2014-06-06  3434  		seq_puts(m, " file=");
+08582d678fcf11 Amir Goldstein     2023-10-09  3435  		seq_path(m, file_user_path(file), "\n\t= ");
+11250fd12eb8a5 Kefeng Wang        2023-07-28  3436  	} else if (vma_is_initial_heap(vma)) {
+17c2b4ee40beae Fabian Frederick   2014-06-06  3437  		seq_puts(m, " heap");
+11250fd12eb8a5 Kefeng Wang        2023-07-28  3438  	} else if (vma_is_initial_stack(vma)) {
+17c2b4ee40beae Fabian Frederick   2014-06-06  3439  		seq_puts(m, " stack");
+f69ff943df6972 Stephen Wilson     2011-05-24  3440  	}
+f69ff943df6972 Stephen Wilson     2011-05-24  3441  
+fc360bd9cdcf87 Andrew Morton      2011-10-31  3442  	if (is_vm_hugetlb_page(vma))
+17c2b4ee40beae Fabian Frederick   2014-06-06  3443  		seq_puts(m, " huge");
+fc360bd9cdcf87 Andrew Morton      2011-10-31  3444  
+ea3085dd7a4ec2 Suren Baghdasaryan 2026-04-25  3445  	/* Skip walking pages if gate VMA */
+ea3085dd7a4ec2 Suren Baghdasaryan 2026-04-25  3446  	if (vma != get_gate_vma(proc_priv->lock_ctx.mm)) {
+ea3085dd7a4ec2 Suren Baghdasaryan 2026-04-25  3447  		/* Might sleep. Drop RCU read lock but keep the VMA locked. */
+ea3085dd7a4ec2 Suren Baghdasaryan 2026-04-25 @3448  		drop_rcu(proc_priv);
+ea3085dd7a4ec2 Suren Baghdasaryan 2026-04-25  3449  		walk_page_vma(vma, get_show_numa_ops(proc_priv), md);
+ea3085dd7a4ec2 Suren Baghdasaryan 2026-04-25 @3450  		reacquire_rcu(proc_priv);
+ea3085dd7a4ec2 Suren Baghdasaryan 2026-04-25  3451  	}
+f69ff943df6972 Stephen Wilson     2011-05-24  3452  
+f69ff943df6972 Stephen Wilson     2011-05-24  3453  	if (!md->pages)
+f69ff943df6972 Stephen Wilson     2011-05-24  3454  		goto out;
+f69ff943df6972 Stephen Wilson     2011-05-24  3455  
+f69ff943df6972 Stephen Wilson     2011-05-24  3456  	if (md->anon)
+f69ff943df6972 Stephen Wilson     2011-05-24  3457  		seq_printf(m, " anon=%lu", md->anon);
+f69ff943df6972 Stephen Wilson     2011-05-24  3458  
+f69ff943df6972 Stephen Wilson     2011-05-24  3459  	if (md->dirty)
+f69ff943df6972 Stephen Wilson     2011-05-24  3460  		seq_printf(m, " dirty=%lu", md->dirty);
+f69ff943df6972 Stephen Wilson     2011-05-24  3461  
+f69ff943df6972 Stephen Wilson     2011-05-24  3462  	if (md->pages != md->anon && md->pages != md->dirty)
+f69ff943df6972 Stephen Wilson     2011-05-24  3463  		seq_printf(m, " mapped=%lu", md->pages);
+f69ff943df6972 Stephen Wilson     2011-05-24  3464  
+f69ff943df6972 Stephen Wilson     2011-05-24  3465  	if (md->mapcount_max > 1)
+f69ff943df6972 Stephen Wilson     2011-05-24  3466  		seq_printf(m, " mapmax=%lu", md->mapcount_max);
+f69ff943df6972 Stephen Wilson     2011-05-24  3467  
+f69ff943df6972 Stephen Wilson     2011-05-24  3468  	if (md->swapcache)
+f69ff943df6972 Stephen Wilson     2011-05-24  3469  		seq_printf(m, " swapcache=%lu", md->swapcache);
+f69ff943df6972 Stephen Wilson     2011-05-24  3470  
+f69ff943df6972 Stephen Wilson     2011-05-24  3471  	if (md->active < md->pages && !is_vm_hugetlb_page(vma))
+f69ff943df6972 Stephen Wilson     2011-05-24  3472  		seq_printf(m, " active=%lu", md->active);
+f69ff943df6972 Stephen Wilson     2011-05-24  3473  
+f69ff943df6972 Stephen Wilson     2011-05-24  3474  	if (md->writeback)
+f69ff943df6972 Stephen Wilson     2011-05-24  3475  		seq_printf(m, " writeback=%lu", md->writeback);
+f69ff943df6972 Stephen Wilson     2011-05-24  3476  
+948927ee9e4f35 David Rientjes     2013-11-12  3477  	for_each_node_state(nid, N_MEMORY)
+948927ee9e4f35 David Rientjes     2013-11-12  3478  		if (md->node[nid])
+948927ee9e4f35 David Rientjes     2013-11-12  3479  			seq_printf(m, " N%d=%lu", nid, md->node[nid]);
+198d1597cc5a12 Rafael Aquini      2015-02-12  3480  
+198d1597cc5a12 Rafael Aquini      2015-02-12  3481  	seq_printf(m, " kernelpagesize_kB=%lu", vma_kernel_pagesize(vma) >> 10);
+f69ff943df6972 Stephen Wilson     2011-05-24  3482  out:
+f69ff943df6972 Stephen Wilson     2011-05-24  3483  	seq_putc(m, '\n');
+f69ff943df6972 Stephen Wilson     2011-05-24  3484  	return 0;
+f69ff943df6972 Stephen Wilson     2011-05-24  3485  }
+5b52fc890bece7 Stephen Wilson     2011-05-24  3486  
 
-'tier' is never negative, it is a tier index or MAX_NR_TIERS to mean
-all tiers. Make it unsigned int, then min() compares two unsigned
-values and no min_t() needed.
+:::::: The code at line 3448 was first introduced by commit
+:::::: ea3085dd7a4ec212d6c4b50efca584e0928caa72 fs/proc/task_mmu: read proc/pid/{smaps|numa_maps} under per-vma lock
 
-Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
----
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index f11491ee9ed5..1844d92a6732 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -3195,10 +3195,10 @@ struct ctrl_pos {
- 	int gain;
- };
- 
--static void read_ctrl_pos(struct lruvec *lruvec, int type, int tier, int gain,
--			  struct ctrl_pos *pos)
-+static void read_ctrl_pos(struct lruvec *lruvec, int type, unsigned int tier,
-+			  int gain, struct ctrl_pos *pos)
- {
--	int i;
-+	unsigned int i;
- 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
- 	int hist = lru_hist_from_seq(lrugen->min_seq[type]);
- 
-@@ -4801,7 +4801,7 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
- 
- static int get_tier_idx(struct lruvec *lruvec, int type)
- {
--	int tier;
-+	unsigned int tier;
- 	struct ctrl_pos sp, pv = {};
- 
- 	/*
+:::::: TO: Suren Baghdasaryan <surenb@google.com>
+:::::: CC: Andrew Morton <akpm@linux-foundation.org>
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
