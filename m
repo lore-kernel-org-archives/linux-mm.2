@@ -4,94 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36C5CC982C1
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 07:51:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C29DEC982C1
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 08:15:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 50D306B0093; Thu, 17 Sep 2026 03:51:28 -0400 (EDT)
+	id 784EC6B008A; Thu, 17 Sep 2026 04:15:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E6156B0098; Thu, 17 Sep 2026 03:51:28 -0400 (EDT)
+	id 7362D6B008C; Thu, 17 Sep 2026 04:15:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3FC736B0099; Thu, 17 Sep 2026 03:51:28 -0400 (EDT)
+	id 64B846B0092; Thu, 17 Sep 2026 04:15:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F7306B0093
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 03:51:28 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 93FB3C021A
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 07:51:27 +0000 (UTC)
-X-FDA: 85222484214.28.4B76A8D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id F195C140004
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 07:51:25 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m3xwywF1;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 419FE6B008A
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 04:15:39 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E962512026A
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 08:15:36 +0000 (UTC)
+X-FDA: 85222545072.12.D94DAF1
+Received: from mta0.migadu.com (out-132.mta0.migadu.com [91.218.175.132])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 05468C0004
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 08:15:34 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=qRqOE7sA;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf22.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.132 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=qRqOE7sA;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf22.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.132 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789632935;
+	b=DtTbmBps9LMmV/WTnwDBbl7ezHb6Eg/CUN1GGe+v7o08w9cw5WPDxNP04YgirCcVMIvrSa
+	M4PlhgwfxqliBqMUSRZTc4AmkQHvHFdp7+rR0IGT53Y3j1i02HWRbayDuir79dp/Muv1DX
+	cgIJ2XnCPzhUb3x5FGjASRctA0BJkB8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789631486;
+	s=arc-20220608; t=1789632935;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gnTwlE8vXLouBpo3zgoY8WtBR+qNusYyWfPZr7YNzr0=;
-	b=xwgZf8RTq50iz4JA6bWW0yIkCuPGaqNA/OTQHWE1gbFuatlB97ZLrWRovrAHji6pSWxlTW
-	9lzW9kMfYk/Jv/CZ4dw2UMFfStcTA8A+xpIW7mr5xvTaViinDRUlp3OGyfs9x0A8UpgEjn
-	2bZ4g5g/ASEHCIqVTqICAQ71970uZoQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789631486;
-	b=1+y0iXJT2rdKpN4FucOjH7y74l7kkr8wVqMKBWAlZKHDeBLtkPyU/aJoB4mRFgfJ7BESxx
-	MU/33qTXI1EX3FoatlkPjwbqTusnR3A36De2Y6HujL3TkQM5T7MESKXxMdsv2AgDiL8q9z
-	yOUlY+1a2ojXIV6XcnF1pKr6LwodscM=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m3xwywF1;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 29640402E3;
-	Thu, 17 Sep 2026 07:51:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D58361F000FF;
-	Thu, 17 Sep 2026 07:51:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789631485;
-	bh=gnTwlE8vXLouBpo3zgoY8WtBR+qNusYyWfPZr7YNzr0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=m3xwywF1x2dNxru/88y11Jm0HWHD1B/6Wwuw8lE+KPMVIo+xdkMnfJB99wlL98z1B
-	 ycrANUp/YWFNcoeDY49fP27elybl+V3a1ox+5GWpmXlGpPJeR0wWOHn7BrAMM3kKH6
-	 AWtvNopbVC/e0fKHODRAI9g5LILH33nLB0Tzu6PZGx1oXeJS9x62xAF6um5MtgkJzD
-	 ZAT/+yrU/4+jARQeGadxY4AYcJ4BuEwgduQO0DZNaE6WJWco4iRxYc7zBAg4tslFga
-	 a+VQF+h5AK6WplXcMmz4JAaeH4ikbTY/0GgR2pDzxr+JcLElty9iyKD2+ff8+gxwus
-	 w+eQBJufdlZOg==
-Date: Thu, 17 Sep 2026 08:51:15 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: syzbot <syzbot+c3178b6b512446632bac@syzkaller.appspotmail.com>
-Cc: akpm@linux-foundation.org, bigeasy@linutronix.de, dwmw2@infradead.org, 
-	dwmw@amazon.co.uk, kvm@vger.kernel.org, liam.howlett@oracle.com, liam@infradead.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-rt-devel@lists.linux.dev, 
-	lkp@intel.com, llvm@lists.linux.dev, lorenzo.stoakes@oracle.com, 
-	me@brighamcampbell.com, mhocko@suse.com, nogikh@google.com, 
-	oe-kbuild-all@lists.linux.dev, pbonzini@redhat.com, rientjes@google.com, rppt@kernel.org, 
-	seanjc@google.com, shaikhkamal2012@gmail.com, shakeel.butt@linux.dev, 
-	skhan@linuxfoundation.org, surenb@google.com, syzkaller-bugs@googlegroups.com, 
-	vbabka@kernel.org
-Subject: Re: [syzbot] [kvm?] BUG: sleeping function called from invalid
- context in kvm_mmu_notifier_invalidate_range_start
-Message-ID: <aqubuvR_2XCNav28@gremlin>
-References: <aqrZMReaQPG0M9oV@gremlin>
- <6aaaecd6.4e05fbd6.392abc.0003.GAE@google.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=cGCcgCa7/A8ey2mJvtXKdDl0A80am5ezlJnzsQuD/js=;
+	b=PR6s39QDAIYqK3XJZH0ydvJq6EErye5W38pu272c5cjTRoGhtwOqU6nfkeiFFstp3feuKW
+	VQUd72OBzSuhiEAgUkAh9RKkrQus6jlnRgUQOoUyoDaLUlR6GBMKPiVaSJFMmsfoWVZMO1
+	4nVxJUJxkLtB6kbtHJiLjJqg75bGx5Q=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=qeGk3zdozLcG9Sl7yQQPW4sC6MwYHbHe3QIG6n9Q47s=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789632933; v=1; x=1790237733;
+ b=qRqOE7sACV1CyL5htRmuRCMISU5rt3w0+Drrmfv7A/P99mM7RzIEcjfPUcNnFoUkmNg8DUeD
+ 4NcpBbCIgAqFlZBthxBAowiuaa8pe1XDoNlsFsIjn/PPbmsgKCaMfGi2aykFgvhNvkmCVnr6VB5
+ FUUMVlp96FogY9ZoheiciW70=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id f48e50a38c1503ca;
+	Thu, 17 Sep 2026 08:15:19 +0000
+X-Mizu-Trace-ID: f48e50a38c1503ca
+X-Migadu-Flow: FLOW_OUT
+From: Kaitao Cheng <kaitao.cheng@linux.dev>
+To: Mike Rapoport <rppt@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Lorenzo Stoakes <ljs@kernel.org>
+Cc: Priyanshu Kumar <priyanshukumarpu@gmail.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Kaitao Cheng <kaitao.cheng@linux.dev>
+Subject: [PATCH 0/2] memblock: Remove unused exact nid allocation API
+Date: Thu, 17 Sep 2026 16:15:02 +0800
+Message-ID: <20260917081504.30426-1-kaitao.cheng@linux.dev>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6aaaecd6.4e05fbd6.392abc.0003.GAE@google.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: F195C140004
-X-Stat-Signature: 5zq85pxi3pzkorgry14gujem7saqrrer
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1789631485-220776
-X-HE-Meta: U2FsdGVkX19N1HSuDAEQvlTt+3hs5IfiAxwL1bwXerIPOfLwUa+sazRAeUidExtY/gSWuTOWve9qsYlkOKdAmXj4cjLjsxGySuT5P84RN+Li8is9lP8nk4om98qTeAEPAvq8yZ8O07zjJPrITodG0BdBK+f+LGrJ9kg7HMUO6HQZiMAEt2k3moSMvaPLsS6G0892VWxPMRr8epoNKtRmFeSuA0yXkUr3+mNBc0F89ZiTj/sKp1pv04yguCX3jZ4h+1PCJwU7MkIdefy5M6URfg1yttbiV4bkKWA6bgSVBP3UNJKFxUYvYzq6Kcck92SAHAukDwLARtGsKzX2Y2TSqA5OZrqvpL7Opt6VZZTwCqNk/JD9J5oD4ZWix2Lio2HNTjyn+h75ikDW1PDPtTA5Fa9dvpQSHbjDR5maIlyaPVIsKGxwrhaIC4NKUjTzkhcy/iWKg6yo7Z5qOnrLUBjxWEMZoOaX9WeDeooGkmEKUmA9uqTEcdQrVyc3suS9fGHGEm9kUTvGdL+LH37C1B/cUQ841xubBPuASRm0WbXpgiacH13X94V5tRTsmeHPeXSVSOYXye3adQlyw/UkLGrVy8GKV+kimHT8x/RjuSdfn9BE6LZFmzuMcLW193yPcwoTYNgy/1Mvv2qlKf1HEDszTu0+ELCIm+OOZfboZYOlh0HZ3zVSD3+Bmu3NZwzIGR8vXMWIOc7xzL/s0LTW91Nh4HpUABDWLj27MsFHGYVr8yL0wuJEwCWNZQiq22lwmBgXPn8dwLOnU6YrtIpshWhF7/nugBsbn71VnbMhtHjjEoWSTHoP75cpIs5QWXqPvaeJ8cMzJlJCIWfHmP7CpSzskmT/JH56AW9AGCKl1YjrEeQF7mCsErd1JOheWIPrn8LTbmzlpVhf5BdxhoIwQfqa+NPAgs3F8hqIcKlcRkB8261FA5C8v9F/QbG5hyAFssy/oFQVq10xAf7kC/65EZZ
- vImg6Hws
- mo6lOMuIDVQd3qmomRE41At8kGmJIb87MwVoTxEqZV2pOE+UtijsDhNgoHcovnjyTpY127nlvWedK3P/4BN3jWRmAuTXRaGIcZEilLmA7Wv706sFs264q8lUwNzV63R4+S5u09PpzzG0WvC/dCL2CIbVMBj2vdTTaaO+IOCNcZbbW+QrGb33BLFVz8jjKmN3l8SJ89uJjWQuXYt2u6jgjj+8lWhXrD1PDSd6tvggKMTdG3tSwcHgJVEKidlBOlmNixCOYCu9rlJtiWmHfLmXXAyUiDZFw1Qm9oSBpsw/j6/PGup4Am0rZKWcoeTdPloXAvZwp95ObLsps8J4E/AGxyq8bpdQCAiFD594X1iYlzVYR04rnoLwE8E91W+/XgVDaaG29RyT85aDRwE629ar0fuFUpBQt+C7DCgY/BIAdQib1InZUeNndfPQlMiHRzvgeeRKZyhLd8wWZhPSkGkYRN7Br83BbxTqx4hsYAXE0MaqjysOZkUSBcFBaj4dNl6R5Z8Io5tZjENQgnlKFg4uOpXyZmKFXu8tZRNCpFkC0b+28DnXTivB/yfkHziPFRJkFWnSX0Od6aAfQb/R4i0Mq7WCqAjqHBvNK0f6NS4Pn0rurnEWYOwwYyEUjb/sgR4yr0FmVCnBmFy/xt+xTDN2E7aoybfoRaYk1MyW9Mb0+rM31yOTpa5cR1Zws4l8Pwcz4ZgGwRXFEOHdKJ2AePINg5ksrHuWgn1eGE/rQ
+X-Rspamd-Queue-Id: 05468C0004
+X-Stat-Signature: eesippxrxfffhjoe4q6mswispfue46qh
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789632934-12016
+X-HE-Meta: U2FsdGVkX19i2mxt29cd0gbYOoymfwqZ87YGVmThwanM6H4k2sGSiI7BGVmfSEc4vkq19ff+O5p6ixkAtdUhe5KDm7FmSUN7hKb4TXpTVQj9dDXN5QjchAKOB6kuyl0efnN24pN/0xHVE7ByM42vR0XAFvG1jizbSn390D36f0+YvbkCk8rxSfSlRxu9i+QuHkndzv9D4k3hrTTO65q7VJSx44CIhmQTRAPtgTKBuw0dc6QP/ikgA5+Np6nxvVKbBWJCH3pLhJSxv1jX/6PB9iQIrzWj5zbEG4k+3oRkxMttvyexGmUv9nP+Azrec/CjVRSn8wVo5np/j10+6b4z8OOdrrQXvx5hBRTRg0Ww3pHJ/wUHp2kjhIHYioIo1IkBjJqsjWFhwHzk0J+hBcKadDYlDecSCN+BEttZmx36EXZhLUTr6t9mJu4r7QMBrYmLRGn2Bl5wTB4q891A00pax/q+ijxLTBfW5+TIzovcc23p1gUH4g6NYYCltxLPcHnDmOIJSYWL5p7wsw+HS9k1ZUg8J06xp2UXDVRDgFRyLsh/WEE6pSRymsewY4cWbJ/KouM/BwTyQlq9bo0cIUjkpykL2544WlQ5phIfmGx1o7U/vGsbCa/uy4tFA2WFrtsgvjs9bjEjeGw3hgliLtxQslP4mXpXfXblkfiBJMXf3PYPOgapQF/VkWlNLO5WpxxS67z0AKzD6yWqWiotT2+RPWBAdBre8x51bmaEOcPwG8q6gw1o82tjpajFWcIh10VBLEg6VQpiFVtkMYeN242zqsFMTBlMZVtKuy63KVQ6V5vzmJGqD/1Z7FmnaxmKZR9RUnw6uPkrM2LpAvLMtgPKYAUnJOXqOCnIWfmu+qDyiJh7tWMCZhPu1Fp9MJv7duLtG09AWhlUd7M4stFFIuLjmX+4gQMQsCQPvaUkAAAqJDvEWimEgFnQ79S99NB8igrlFXgFEo77nZyaeVVwRSe
+ shS9blee
+ sC5EX4x/oR+K08Abc4NA5Hfv/y2i7VSVpAABMhNgy7N9jSlBv8btMRH7HkGCgGPpVW6L+KhVKMUfmO74m5pBY4iWl84aEUJJbxS0d4ETHb6S8w4JFz2jRe321GTW1zBbOwaarpK0eGuOdN8lXx+3owedwX0+zdqV5jtWxoclvOcyfOdIdPmEaQxCG9xClazH47MwSPdno3ZG79HT/xQgjw0PkAngVzpsHPZI6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,33 +91,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 16, 2026 at 12:24:06PM -0700, syzbot wrote:
-> Hello,
->
-> syzbot tried to test the proposed patch but the build/boot failed:
->
-> failed to apply patch:
-> error: corrupt patch at line 7
+This series follows the removal of the unused exact_nid argument from
+memmap_alloc(). That change removed the last in-kernel caller of
+memblock_alloc_exact_nid_raw(), leaving only the memblock simulator
+tests using the function.
 
-OK let's try again, aping
-https://lore.kernel.org/all/b434f7828a4d7b24de76aa5609dadda2871a932a.camel@infradead.org/
-as I see this branch is still there (David W - I hope this is OK! :)
+The first patch moves the applicable exact-node allocation tests to
+memblock_alloc_range_nid(). The second patch removes
+memblock_alloc_exact_nid_raw() and drops the exact_nid argument from
+memblock_alloc_internal(), as all of its remaining callers allow
+fallback to other NUMA nodes.
 
-#syz test git://git.infradead.org/users/dwmw2/linux.git seb-nonblock-rt-test
+The investigation cannot be extended to removing the exact_nid argument
+from memblock_alloc_range_nid(). CMA passes true when reserving per-node
+CMA areas. Allowing such an allocation to fall back to another node
+could leave the CMA area's recorded nid inconsistent with the physical
+location of its memory. KHO also passes true when allocating per-node
+scratch areas and requires those allocations to remain on the requested
+node.
 
->
->
->
-> Tested on:
->
-> commit:         9b87fdc9 Merge tag 'sched_ext-for-7.3-rc3-fixes' of gi..
-> git tree:       upstream
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=b454dc6b1b7acd30
-> dashboard link: https://syzkaller.appspot.com/bug?extid=c3178b6b512446632bac
-> compiler:
-> patch:          https://syzkaller.appspot.com/x/patch.diff?x=15a16bf9580000
->
+Since exact-node allocation remains a required behavior of
+memblock_alloc_range_nid(), deleting all of the tests in
+alloc_exact_nid_api.c would remove useful coverage. Preserve the
+applicable NUMA tests by making them call memblock_alloc_range_nid()
+directly with exact_nid set.
 
---
-Cheers, Lorenzo
+Some tests cannot be preserved unchanged because they exercise
+memblock_alloc_internal() retrying below min_addr. Unlike
+memblock_alloc_internal(), memblock_alloc_range_nid() treats its start
+address as a hard boundary and does not retry from address zero. Remove
+those tests together with the now-unused TEST_F_EXACT dispatch from the
+shared allocation tests.
+
+Kaitao Cheng (2):
+  memblock tests: Move exact nid tests to memblock_alloc_range_nid()
+  memblock: Remove unused memblock_alloc_exact_nid_raw()
+
+ include/linux/memblock.h                      |   3 -
+ mm/memblock.c                                 |  44 +-
+ .../memblock/tests/alloc_exact_nid_api.c      | 454 ++----------------
+ tools/testing/memblock/tests/alloc_nid_api.c  |  20 -
+ tools/testing/memblock/tests/alloc_nid_api.h  |   1 -
+ tools/testing/memblock/tests/common.h         |   2 -
+ 6 files changed, 42 insertions(+), 482 deletions(-)
+
+-- 
+2.54.0 (Apple Git-157)
+
 
