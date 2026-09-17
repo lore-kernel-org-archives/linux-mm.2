@@ -4,95 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1821FC982D7
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 23:38:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29C8AC982D0
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 23:42:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F0A896B008A; Thu, 17 Sep 2026 19:38:40 -0400 (EDT)
+	id E01736B008C; Thu, 17 Sep 2026 19:42:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EBB476B0092; Thu, 17 Sep 2026 19:38:40 -0400 (EDT)
+	id DD8CE6B0093; Thu, 17 Sep 2026 19:42:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DAA386B0093; Thu, 17 Sep 2026 19:38:40 -0400 (EDT)
+	id CC7436B0095; Thu, 17 Sep 2026 19:42:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B5A106B008A
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 19:38:40 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 51F5E1A04AA
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 23:38:40 +0000 (UTC)
-X-FDA: 85224871200.02.2499FE9
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 6BF2440003
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 23:38:38 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=t0E8sJK9;
-	spf=pass (imf12.hostedemail.com: domain of dmatlack@google.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A125D6B008C
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 19:42:24 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2EABC1C28D7
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 23:42:24 +0000 (UTC)
+X-FDA: 85224880608.14.00B0697
+Received: from mail-pz2-f43.google.com (mail-pz2-f43.google.com [74.125.228.43])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 56D5720004
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 23:42:22 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=HhR8u8c5;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf31.hostedemail.com: domain of dmatlack@google.com designates 74.125.228.43 as permitted sender) smtp.mailfrom=dmatlack@google.com
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=HhR8u8c5;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf31.hostedemail.com: domain of dmatlack@google.com designates 74.125.228.43 as permitted sender) smtp.mailfrom=dmatlack@google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789688542;
+	b=A8TddxoWlFXyMP8gy1KzXVGhBtX3/te0Oy9ErtYz6LVAED1Zq4ucEA12Q3KB19flUrzF4W
+	Lxuga2LF2rzqDkDoS89LtdVwkVwxhYmwiORsUbropH76lwCeVQjnUeLXOWRdaqGJsFa4IR
+	wu2r9j530WSxXy6mOGCn3MvqepcDATc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789688318;
+	s=arc-20220608; t=1789688542;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7fnbLCpb26KXPMnHq1G3sv+CyiTND7rvG+kHXBaTg0g=;
-	b=codH14RxvTxddoWjIco2QXM3gUbyeXD7zlQGgqg4mW8wnzv2XIA6qX2+q2MVhvUOMjlib+
-	70DHL4KdOpq5axZcuc1S8ab2akgZrq67uMXq3IJTpmxifsU1AMpooHG5zAHL5vnyJs6Z3y
-	krJhDrpQklsWgNpsviaGVMS28QotJWE=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=t0E8sJK9;
-	spf=pass (imf12.hostedemail.com: domain of dmatlack@google.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789688318;
-	b=zQuRAhf8T3nt1scx0CuTQh+i6n+R5PGrpH8VI0j9WR8wDZBeDkKTIbNRPdjLNnNea5cIs7
-	PFsEO268jz7B4dXcBaqVkWrTeBvpGjPDGoQFmehWM5+xO+BFgwMS7vnVmeBsFj3b1ru1GR
-	4yF1T5qPI7sRYVkLxeT1Dxd6osJ/lNY=
-Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2d8fdc579daso1742695ad.1
-        for <linux-mm@kvack.org>; Thu, 17 Sep 2026 16:38:38 -0700 (PDT)
+	bh=FrwLbYHW+qBSkERcNwvno713R7/9AiFADa/N4qgCkwM=;
+	b=XwmVyDQP4YqNgsUd9QdDZH/DA2ypZDOS4mxS5ZPThvvCNfuXXwLYLY6TQM5R+IDqdzH3+7
+	mb2YVtBLLF49Tr9j/9wB4Cu8MqnRK+Ir8plgm+4nuy8NG34a7y3NNuO0UCfAo/B3UgWdMK
+	JvKucBH28KeXHtwIS+vxgyUrY1o9efc=
+Received: by mail-pz2-f43.google.com with SMTP id d2e1a72fcca58-8692a8568e9so151470b3a.3
+        for <linux-mm@kvack.org>; Thu, 17 Sep 2026 16:42:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789688317; x=1790293117; darn=kvack.org;
+        d=google.com; s=20251104; t=1789688541; x=1790293341; darn=kvack.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=7fnbLCpb26KXPMnHq1G3sv+CyiTND7rvG+kHXBaTg0g=;
-        b=t0E8sJK9VoQm/nXeC2SLV0D+EifweFoWADWnb+TAt49Yi9q04PONFds7S74xw5WDr9
-         RghbRVBcfookyfIaY68wiHg3WJoxJrzd5121P+nxxHpGuEOyjBU+8yOPG6oI1LYo4lVk
-         6MV3wHiKlp2pbxVPnS7BhRsUX09omPYfdqanlu/lK9RDluF/DRPbom4vXRgy1R6Z6qCt
-         VcG0WlV+7KX3H9BoriZZUiJBAC0PUzLrhaAcjttThlXb7vWo70leWbZDpNmn+8zDf4hT
-         Tv26HdQrVEjLlXouyFiHH7LvLRu0Q12qJ2qO9EGGFVG4EuqCPU4FrwGKdhrdN4Z5Sqxk
-         oevA==
+        bh=FrwLbYHW+qBSkERcNwvno713R7/9AiFADa/N4qgCkwM=;
+        b=HhR8u8c5QqOYKt8Wi4ij+GS9UqV8hqxlVG421wqI2nKbFJd1YnE35TgjAHjbBtbltN
+         9lGx9hRxrYTMAutUWPF5iTPrKisDNu0+8PsfefzBRALx+y37OBi5IftvE8ra5Ch4bA+A
+         lgWwp9FiZiVSeG4/AWC0f+4sxTTUJ9PoD5tC9MKrfh3ixzfKkhbuNp7frPli6V3CBCio
+         uYPRzHAxV9XmFUcrRRIxzqsc7OXH09nsVcX2vMuJ/Q6fni+q0D1SWpw7AfwYQ0EfiNgo
+         oK4xS5lokydXjMbxECnsX1uwnmmRlN2oadi713mwFVzVVPSgsqjj8pjcsaccrBuiLiIL
+         6HWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789688317; x=1790293117;
+        d=1e100.net; s=20260707; t=1789688541; x=1790293341;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=7fnbLCpb26KXPMnHq1G3sv+CyiTND7rvG+kHXBaTg0g=;
-        b=dwjfUZNUGXRy3Uz4xQ4Tr8X76DhfR/vhh+lRC26ha5eCZT+y0ypRRWb8AMpaITqFHR
-         Gu8S8pIWNQr70fDvtoNpDe273SwD64wUjelINPUg9PJq5QK5EXOCWXNOSpPCjdev8+zx
-         QNaITz3BZiOOU9YRwK7fC3Ra1X2P75jvUTpDroQIwFW2pBCEph/+2Q3VsDrnZvUkLQ7w
-         IfvEf6MDgHGqo6a1i6IyFuDm2qTPh1Yre6JFMsoBxwS3VQvdGeln5GHrTyz1kEaG2nGf
-         lvxnclDSnKqS6zFJbKNW6q0mKXwbhWQkcVQAsgkbcg0o06BWWnVuS1VQef5Qt7JkWKsn
-         Pjmg==
-X-Forwarded-Encrypted: i=1; AKwUvBwxsf3mDmXOwdA+8ecSCdQ/KnfBneM41UPAauvO+e7Cda143QmPa1/oaovN9eH2G2df9ky7uUu7uw==@kvack.org
-X-Gm-Message-State: AFuF++nxlBCNNrsYow74qL14aRuFgU8BI0SOHcUWNRpgB+AL4KYs6r37
-	Fk9ZIVaxqzmm9zpMBTTBgg7GuvteT7DdlwAPdrCDeAw/X8qQwwR0kiU5hvGAmQG2lw==
-X-Gm-Gg: AYBFou0ZtYZG49gjyqXEFpLhnDHcYHrXRobv1n7Ab+9oRXa0N/NlTE0ek80HzgzV+ie
-	mFljYNe6W2f/cNjqmV3PFLMgDwWmqr+FPtSPkY2ggSg6HC0Z/j12G3lIDbGjRK7hW0TXIiysxmM
-	vHkWhoYvus0MbnXc9BAPeNXXOCsFmQxPCgwWJstLwOtuKDiDE/lhiQX+RxTpz34F/Nc6gBZLCrG
-	MEdIRLHMC6helLKIsVPgHxu3PzOO06Wtl1zpk/GhTav2LhWoXiLMJu87DaiMc5GY7KZ5TYnv3m3
-	50Vslmo9bofhiHlCZVcIRfKgtUwJC/S+u0H611VIjlzVW2l2irxHzSK1ruR04me2itJDB0gPrY7
-	Dt/bTr/vDE3cHiYnbz16QWdEKJkA1zrGPKHCUDI9gyTLNctrtvTM+x+agw1pFduAr19KDGTV1yq
-	rlGetG2NVC71WVBlB8fk70xZ7eFH23wH2S+TIWmMzc7t/4KkDRaxj+xK5w/c/S0wtGPLiGGQ4v6
-	oJcW7oLdWrH0orw6oXx0FkdRKBJmlscooO+Ur7ofRnSeg1A+yM=
-X-Received: by 2002:a17:902:c944:b0:2d6:ffa1:429b with SMTP id d9443c01a7336-2ddb1adf381mr15539635ad.7.1789688316616;
-        Thu, 17 Sep 2026 16:38:36 -0700 (PDT)
+        bh=FrwLbYHW+qBSkERcNwvno713R7/9AiFADa/N4qgCkwM=;
+        b=tM84UMsLj8ISNsAjzVi6gekD5tIJeKY/DjDlhTRSgnTIenYC8Slw1ecH8qKTjYa1b8
+         S1jjzQyNKz2vdRsRNQncDeNWCQ06A8Q286TH7hWv8KkQDXnJgtj0TqQAtHAjktQ4YSSU
+         kcBBT9nl0fH2FiMCmZQONP7Cyb8Nmitqa2yYcxyWbleFaaCzWaRAALDnr0jbOFYtY7b6
+         eCKH2ND4jyRVAceIPoJLaznICMMUMDTiAW7+7XU8JbTx5k1F8TDloXmzz9nx75yrGq2A
+         MtuxF2trqX0NPak/75PEJ4PK715Uh5y4OomsHqOr21Wxoz5LWeEzodQ+7px/loUkDWfQ
+         +iGw==
+X-Forwarded-Encrypted: i=1; AKwUvBzIvLp0iLLIHumNLN61u7Mo4299H/DdPhOLgoxfcyULXO/EUN/yC8awYPBlaQBdHOMrMGiStTlNmw==@kvack.org
+X-Gm-Message-State: AFuF++nYVN/prY4h1iVO3LOEqtJkfAcFiimm7lHkFfurLWs5uGUHvT70
+	Zb1c5P0i9kWacU6byf5uck6SDj8TNbQ0cvK7shtTdF8w1xClmcdFj+jBphJXHYiKiw==
+X-Gm-Gg: AYBFou2OO4EOafF/15bTSk79g/J6EaMvDpJCIHUJifXOHAQ9E8OshnkgDIBGk+o12kd
+	VBmkXhgUrcxiHBYvCKr8qLPlGuZb5jVuctpw1zZj9SCXsQMrx2FZ63qE321ijmRhrou+YR+DraX
+	0Lg8Fvuhrsed4aw3VZQs7/HCiRGZRIufBTDSzkzru0vmPrnFHVRg+vC3YOmy9wthCSBlUVUZftO
+	jlcqAjjpt/GnSTIDeFfvLqTIflLQKbsNq6rOH0uMOnJBwSbIzedXKDDRKtiUxh+FLeutBhDQpuk
+	YG9ndEbv5uyrp+vbhVny2UwwkjnYLNskVN5eLFDRtduHfpHkxB5SuYY7Ueq8jN26322cQKhzaj1
+	1Qac00Ayo8186boWvwLJ3hdAWQQLBeaSHYeHxYz7/yg9auQjSkSIOGQEI/GMKYYmFeA5nhrLw2S
+	D000Rl5FvuW2xPbsZMm0EhTXYCQMpRWAnvf2+BQ3WmdGHQe2r/4fk6PbnQrTZWx2uBuwFwvf7g/
+	08Mhc8aoj8ZiTLxS2/U3iIn0ysDoYYTLCb4wuyS
+X-Received: by 2002:a05:6a00:2d26:b0:857:72f8:dc98 with SMTP id d2e1a72fcca58-874dddfe1ffmr1080071b3a.25.1789688540476;
+        Thu, 17 Sep 2026 16:42:20 -0700 (PDT)
 Received: from google.com (132.200.185.35.bc.googleusercontent.com. [35.185.200.132])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dd89e96cccsm32897375ad.22.2026.09.17.16.38.35
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-872024e5acfsm3586862b3a.57.2026.09.17.16.42.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Sep 2026 16:38:35 -0700 (PDT)
-Date: Thu, 17 Sep 2026 23:38:32 +0000
+        Thu, 17 Sep 2026 16:42:19 -0700 (PDT)
+Date: Thu, 17 Sep 2026 23:42:16 +0000
 From: David Matlack <dmatlack@google.com>
 To: Bjorn Helgaas <helgaas@kernel.org>
 Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
@@ -116,23 +116,23 @@ Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
 	Shuah Khan <skhan@linuxfoundation.org>,
 	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
 	Yi Liu <yi.l.liu@intel.com>
-Subject: Re: [PATCH v8 10/12] PCI: liveupdate: Freeze preservation status
- during shutdown
-Message-ID: <aqx5-KH_GcSvsvqs@google.com>
-References: <20260728221007.2098560-11-dmatlack@google.com>
- <20260917201737.GA1047708@bhelgaas>
+Subject: Re: [PATCH v8 06/12] PCI: liveupdate: Auto-preserve upstream bridges
+ across Live Update
+Message-ID: <aqx62Czdkh9unP86@google.com>
+References: <aqQzmvgILmU8F4TR@google.com>
+ <20260917001847.GA993118@bhelgaas>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260917201737.GA1047708@bhelgaas>
+In-Reply-To: <20260917001847.GA993118@bhelgaas>
 X-Rspam-User: 
-X-Stat-Signature: 4gtnydtz44xcpdfmgmzyoqpk61jbrmh8
-X-Rspamd-Queue-Id: 6BF2440003
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789688318-50023
-X-HE-Meta: U2FsdGVkX1/xHG02Td5eKSRw0U7ZeTdJABH3aUVC6Mx55OdxgLa+blcGb+193dZz6D/m3upqgiP0hzW4V21jeOGkX4itOOXJASvWgNCtOWL514kF4at8yEqte3JR4SnMqgfBaCYVaHjVCSqbcqS60K2eLXiU+egL3EOBcQ3F5PBxtqF7416voRkxYAL76uqzLdqgHAqzjVqzX6pZx9FcdkrBRtYp4aGz9WV3jeHRM0QsIg84ukXslezrKBVmcUoH+UaQ1bNBiQex/BukvVBosSapvywYAJqzU0sXx4lVG1g0dFMttYR8E/qVF7B6oiTgEm11BEpg2LejFcSGZajysy6JW5IIGdmgldNUgVmFibiQum0q5kc79EEHrsiAE+ThvLbaqx78M798zBR8QeBsQU2/rbFX7IsBlBWQJsQq22zEo1Ssh5NvXjSv57ZoZ1Dm4y1dlg+fsekMJy//Iii6yM8FZCnAF3MT5fwG7o9GIAXhvkleli3i1C6/X3SOWyNTwNHJbL4TIg8FceJ3U2r5crGAHmB4pTCn9ZGEPhNLCUgUjIS/KWVUPPd1S7gQK/SNsZRfzOY9dvMO4dp1sCRvmjTbAKvOzKsXD9k6Eqq6WESJvTQSQpA0kJqnXhULhnilpJd6Q5avcpG2dSZgoKGIDZoGnUpFp6GTJ7zedgKaZWKpKVFoTxAUCjMnqqoAIL8O5LAY0Vm/XkT/By/Rj/N1Swzay8OxTO4zF8qnfsWJFIPeTxB9SKFR4yIz9YPYKMUI56njP2eRwIQJSapTORlhU20XRZ8LdfytqXEzYgcrS7s+ppmpcz8o2HEuUN6ZeUl9pm9UJw0zDep20vlNrMn+6qz21oCGQQV2Kup4Sn25SasyqnYm9YYbvGv5wQlC1LG+uZzhddeRFX8/jbVRv6k4yF4b60OhyCEScdxRt5YypFTQkM4Qef8d0GscvbGCVb0hcHmCJpCoUuTcTgjfLuO
- Sk4r2jtX
- vFeqcFnXZXfqdPz2X/KBQsAx0V/m8cR0bAyQEp4mK/OMnNZG9aAmRzcYPmVj2iOxtnlwEPLjoug78G1uow+Cg2SEk9tydz6Yl+Fu1By0JAMaBWaxjwmc9ZZ76hAvAGNlzybJ/wqmYwqmJKVwV5x0OITG2HMT1+KG2Yw5CXVnrIvjZrCS9BKTjiCZVUR6WhLOZbzyJCHYnvpCzAYWnegqf6TtDhRbZzgoKbV0lV0rnRYC8OHyvrO4Y5qFKnhQ5om+xhC4+vvehmcCzVQOtzL5ntXjxCpFPA0gCi5Et+jvBmJ7jJRMLNuDCUNmI3Y0FjEQHXzBNdsGaefmbHIaVTyj8UdOS8bnfUcTpoUom2U2IkM0KGCcoJmPRYSwAslGmqc2K/tgE/lNcOjREnfLCLlEDyQTNfQ==
+X-Rspamd-Queue-Id: 56D5720004
+X-Stat-Signature: ppha3sbu8aycei6s7xmm9hk38kd1fwq7
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789688542-180912
+X-HE-Meta: U2FsdGVkX1925pK5mCqmZmD7G85m4MP5e1UDEPgJVbPnCi+TrgBeAkerNyEBNkXrMKZybhpGu3cxgEfhkIvvhtI6vIf6wE4cZA+TpYUSapoFNrFUQjcvSwuEfev83km5EIuqOX9sk0wWCvPRvQ7LMGxdx2kDe5Va9+94xASbPMQTVZpInXyYLIvJ9g9LnD54lun9qMqMaONzuYN6WhDLKkYKqo40YYMlnoKLbcp9x48AFezViKs12fzjJWNSF71C7qjrwAb45x6LDALun4MqVeH4WXogx1RQXoA+BhOzGAvNHvE3KOn4+hBYLEh77nuqXEOLQo66uUO7SNdVAG4u6RiHsoqdT778ZHS5p2K8VLxL/O3eb+YYQv1gfWzskRSHFFufcb3o1i4VHV9A/t+KJAZKBiB2HunmBuZ2Jpqd2R9+hndhW0Sm/8Hsa9MXP6WuUe1dJjD+/lanUZQhiGpmdP67U/CucJpXqoWJG/TNR0FHAiKyRumXT6uoMes2ar1K0t2PiC+uy9FjH9v6UgEOKRMdBr7lb1ULAAb5D9nH+BNHeCW7uNqsWwHV8h+85eTo0VPmgabZcqFnZbHZ7lQANRF3SL/N5Gna7kkGLyuw+DE+2Yr8Ov0uVkifCUW/XKlC9nXMIyk0Z/1eP2O3aW4gvR/+YtWHo7wXkm1jnBbbk4ITU3HVB2nz4pzRcUtjruG+xqdSMGuCNmk54XMPmPfkYmq88YpgniNW3X1skZ8lF5pOjRVb5LU4rHOrAs1wU+TWZtoL1yHfD6tb7vxsSVlycqVbAkCz7tHY7H1rIZfnScSt80mlmHusydyqj/Xyp7shwHraEW3AnwIbAfhm0icVOYhRjQSxRCHSCQ0kPtm7i/0m4HkYuHOs2bjypP7egyO+JzCRzqyYY6194YGhd9ois7E0bTe3/w6nKcmE56JwmUbqONc+cJl6lYz2jB0PT1s4Z5BQYLD7bI1RlrdijgX
+ oX1Kjbh1
+ 5186NLEuc74mlOwRHtBzvTIso8CyLxW1k4i6jaoYbHk3+29s6Mi9CEKNOZ3aUfJKCnA3TnbHmWRj0bGCI/oHwBKE6534t7cLLI9JLLYo5eMCHz7/S+IyfgMrEEw3qAg18OIgj6gxAcKPnT6vKPk8b8Ijlqr1mR+iDarRDA7xMLQ10J+Frol6DB8cAiWrAedOA2nphgl9K+pt7P0dVQ+xuRIhmfgEdqWQx1LUufID74dMmNDi9Ps0HLwmKzBhEaRaTikkNq9WChmDLTYebHwLkd0ayXIpL6EhUwHxc/DGVNteiYYE8uLcCNONtVMc8IgdIwGI4ZGbt8J4UbF68a7OJUyGlIslnDrafSGMNqGqOXFhjjhkptUGla9c0LFBmkQ1bFYEL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,83 +140,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-09-17 03:17 PM, Bjorn Helgaas wrote:
-> On Tue, Jul 28, 2026 at 10:10:04PM +0000, David Matlack wrote:
-> > Freeze a device's outgoing preservation status (preserved or not
-> > preserved) during shutdown. This enables the PCI core and drivers to
-> > safely make decisions based on the device's preservation status during
-> > shutdown.
+On 2026-09-16 07:18 PM, Bjorn Helgaas wrote:
+> On Fri, Sep 11, 2026 at 05:00:10PM +0000, David Matlack wrote:
+> > On 2026-09-10 06:51 PM, Bjorn Helgaas wrote:
+> > > On Tue, Jul 28, 2026 at 10:10:00PM +0000, David Matlack wrote:
+> > > > When a PCI device is preserved across a Live Update, all of its upstream
+> > > > bridges up to the root port must also be preserved. This enables the PCI
+> > > > core and any drivers bound to the bridges to manage bridges correctly
+> > > > across a Live Update.
+> > > > 
+> > > > Notably, this will be used in subsequent commits to ensure that
+> > > > preserved devices can continue performing memory transactions without a
+> > > > disruption or change in routing.
+> > > > 
+> > > > To preserve bridges, the PCI core tracks the number of downstream
+> > > > devices preserved under each bridge using a reference count in struct
+> > > > pci_dev_ser. This allows a bridge to remain preserved until all its
+> > > > downstream preserved devices are unpreserved or finish their
+> > > > participation in the Live Update.
+> > > 
+> > > This seems to hint that we're going to allow bridge reconfiguration in
+> > > some cases, e.g., for hot-adds.  The simplest case is "leave config of
+> > > all bridges the same", and I thought that was what the previous patch
+> > > commit log said.
+> > > 
+> > > What's the benefit added by this patch?
 > > 
-> > Note that pci_liveupdate_freeze() is triggered by the PCI core rather
-> > than from drivers participating in Live Update so that all devices can
-> > have their status frozen (i.e. prevent non-preserved devices from
-> > getting preserved late).
-> 
-> This calls pci_liveupdate_freeze() from pci_device_shutdown(), the
-> pci_bus_type .shutdown() method, which I think is only called from
-> device_shutdown() in the kexec or restart paths.
-> 
-> Since there's no error exit after we get as far as device_shutdown(),
-> and this applies to all devices and dev->liveupdate.frozen is never
-> set to false (at least at this point in the series), is there benefit
-> to tracking this per-device?
-
-I think this could be global. But I don't see any obvious place to add
-that hook and keeping it per device is one less global variable to
-worry about.
-
-> > Reviewed-by: Pranjal Shrivastava <praan@google.com>
-> > Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> > Signed-off-by: David Matlack <dmatlack@google.com>
-> 
-> Reviewed-by: Bjorn Helgaas <bhelgaas@google.com>
-> 
-> > ---
-> >  drivers/pci/liveupdate.c       | 16 ++++++++++++++++
-> >  drivers/pci/liveupdate.h       |  4 ++++
-> >  drivers/pci/pci-driver.c       |  2 ++
-> >  include/linux/pci_liveupdate.h |  3 +++
-> >  4 files changed, 25 insertions(+)
+> > It is used in the following patches:
 > > 
-> > diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
-> > index 744513ee11ed..65bcecb1b64e 100644
-> > --- a/drivers/pci/liveupdate.c
-> > +++ b/drivers/pci/liveupdate.c
-> > @@ -394,6 +394,11 @@ static int pci_liveupdate_unpreserve_device(struct pci_flb_outgoing *outgoing,
-> >  {
-> >  	struct pci_dev_ser *dev_ser = dev->liveupdate.outgoing;
-> >  
-> > +	if (dev->liveupdate.frozen) {
-> > +		pci_warn(dev, "Cannot unpreserve device after it is frozen!\n");
-> > +		return -EINVAL;
-> > +	}
-> > +
-> >  	if (!dev_ser) {
-> >  		pci_warn(dev, "Cannot unpreserve device that is not preserved\n");
-> >  		return -EINVAL;
-> > @@ -447,6 +452,11 @@ static int pci_liveupdate_preserve_device(struct pci_flb_outgoing *outgoing,
-> >  		return -EINVAL;
-> >  	}
-> >  
-> > +	if (dev->liveupdate.frozen) {
-> > +		pci_warn(dev, "Cannot preserve device after it is frozen!\n");
-> > +		return -EINVAL;
-> > +	}
-> > +
-> >  	if (dev->liveupdate.outgoing) {
-> >  		if (!dev->liveupdate.outgoing->refcount) {
-> >  			pci_WARN(dev, 1, "Preserved device with 0 refcount!\n");
-> > @@ -718,6 +728,12 @@ void pci_liveupdate_cleanup_device(struct pci_dev *dev)
-> >  		pci_WARN(dev, 1, "Destroying incoming-preserved device!\n");
-> >  }
-> >  
-> > +void pci_liveupdate_freeze(struct pci_dev *dev)
-> > +{
-> > +	guard(rwsem_write)(&pci_liveupdate.rwsem);
-> > +	dev->liveupdate.frozen = 1;
+> >  PCI: liveupdate: Adopt ACS controls in incoming preserved devices
+> >  PCI: liveupdate: Adopt ARI Forwarding Enable on preserved bridges
+> >  PCI: liveupdate: Do not disable bus mastering on preserved devices during kexec
+> > 
+> > to preserve certain configuration on bridges that have downstream
+> > endpoints that are being preserved. To support P2PDMA we will also have
+> > to preserve bridge memory windows (future series).
+> > 
+> > If we are ok with applying those policies to all bridges on the system
+> > whenever one or more endpoints anywhere on the system are being
+> > preserved, then I agree we don't need this patch. But I thought it would
+> > be cleaner to track things per-device.
 > 
-> Nit, the series assigns "true" to other booleans
-> (preserve_bus_numbers, was_preserved).
+> Yes, I agree tracking it per-device is good.  I was looking for a
+> traversal upstream to increment refcounts on bridges, and I guess that
+> happens via for_each_pci_dev_in_path() in pci_liveupdate_preserve().
+> 
+> The actual refcount still confuses me a bit (see
+> https://lore.kernel.org/all/20260917000723.GA992337@bhelgaas).  Maybe
+> it would help if pci_liveupdate_preserve_device() alloc the dev_ser
+> *first* (right after all the bail-out checks)?  I wonder if the
+> refcount increment could then happen in exactly one place, separated
+> from the one-time dev_ser housekeeping?  E.g., something like:
+> 
+>   if (!dev->liveupdate.outgoing) {
+>     dev_ser = pci_flb_alloc_dev_ser(outgoing);
+>     ...
+>     dev->liveupdate.outgoing = dev_ser;
+>   }
+> 
+>   dev->liveupdate.outgoing->refcount++;
 
-Ack, will fix.
+Ack, will fix
 
