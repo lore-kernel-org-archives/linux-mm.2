@@ -4,69 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B9C3C982D2
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 18:13:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 007D7C982D0
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 18:15:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 143746B0096; Thu, 17 Sep 2026 14:13:33 -0400 (EDT)
+	id C1D3D6B0098; Thu, 17 Sep 2026 14:15:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 11B386B0098; Thu, 17 Sep 2026 14:13:33 -0400 (EDT)
+	id BCDDC6B0099; Thu, 17 Sep 2026 14:15:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 058266B0099; Thu, 17 Sep 2026 14:13:33 -0400 (EDT)
+	id A962D6B009B; Thu, 17 Sep 2026 14:15:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D57216B0096
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 14:13:32 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 06DEE120454
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 18:13:32 +0000 (UTC)
-X-FDA: 85224051864.16.E5F8B5D
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 808C86B0098
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 14:15:43 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 27D11A5A87
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 18:15:43 +0000 (UTC)
+X-FDA: 85224057366.21.A2EF99E
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 2B8801A000F
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 18:13:30 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=aYA7qe3T;
-	spf=pass (imf19.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by imf05.hostedemail.com (Postfix) with ESMTP id 2EC75100007
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 18:15:41 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=roYFaSY2;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf05.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789668810;
-	b=a5X3awK7RvBh9irsTkfW6/JBH1xjfdUDZio3lSEPvfje+rFUG5/SuFPNY2R57CtBrikuyO
-	I0LlkzB7z5fOUX1A+aYxkqsijntC2/5UO3mZV1occVi8yZXe0UEG914KKlsUvSq5PNtY2g
-	4u7qgSx5Ap8PpxdkjHhG71NGoaBK5dw=
+	t=1789668941;
+	b=1VHh9IZrAAb4z50VqxOSMSACDyvCG3D5wnefnOdgz6FXKnyTnLTxXEN//4PuRRW7QNVPoM
+	RULB4VL7aoWwe1dUqhK/X4aguX9dZjiQyzoPlLbXatwXpFkj7IzTUo3xFXQRgKrL9+836q
+	HY6DFNrFbHviLBTetnIZydCwZGrdG3k=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=aYA7qe3T;
-	spf=pass (imf19.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf05.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=roYFaSY2;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf05.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789668810;
+	s=arc-20220608; t=1789668941;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QAr23lhx8wGsXT6yVi+oXiSZp/vetZhFYtO/kqi1324=;
-	b=nfeUxg+TXFT8SR+degDzBo8XiBDzeLGcP+8ORHn3tpEVt4Wb3m55Igeh6S4XLuKvSZusRn
-	7XXl5m8n1sEbgswCj8KVLSvcZvLVKbXjsIN3XuI2q96scCLX9i4qkulperxpIH59F/BnpN
-	Idi544xLRPS58EE36FsRdcFqoiR6xlQ=
+	bh=H8Wh7N4cq/t88nKN8ZqZ4f+oRUbvezWnn3f++63qp34=;
+	b=tHF9VU3yFmzGuMJZ4zydqp+YL8C65ozaj+VeOcOh8d5OWdQg04Z4ZvWeBHFzCTCi9viUHa
+	BM8lvQU6BrpzxotM634TDba2T69aOfZAzNevxahgd+W77KSviwsbna23rOnr8YMTZ5kQTV
+	1CqNd5gybSULjc76WVjQVtl4e37ZoM0=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AB24D1F91;
-	Thu, 17 Sep 2026 11:13:25 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B37601F91;
+	Thu, 17 Sep 2026 11:15:36 -0700 (PDT)
 Received: from [10.57.7.135] (unknown [10.57.7.135])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D69F63F86F;
-	Thu, 17 Sep 2026 11:13:21 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7C76C3F86F;
+	Thu, 17 Sep 2026 11:15:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789668809; bh=QAr23lhx8wGsXT6yVi+oXiSZp/vetZhFYtO/kqi1324=;
+	t=1789668940; bh=H8Wh7N4cq/t88nKN8ZqZ4f+oRUbvezWnn3f++63qp34=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=aYA7qe3TJmI5eXy7zuCDNvjC424BNkx9TqHpOMlyNEkNvwpgRn5lsECsH9o7hC0RG
-	 5jIxS0q8ZHaQOP2dIWzY39HZw+w/QDzFAaZ5etprv7QyoTOG2UkZgMUVBbr0E0ztmK
-	 wHMiHRGdA5HaFJ3DgcETN41w6QqxGhhxvHgViRbE=
-Message-ID: <685fa7b1-af6d-4dc0-8764-5bcb169b39ae@arm.com>
-Date: Thu, 17 Sep 2026 20:13:19 +0200
+	b=roYFaSY285gwN/8IzsFOtN0+e8Iltix2FpDfvQ3utTYL+K/fJKmz1KXzTmdsXwN+S
+	 WAMAddn6lBMF4PqxGiGTEo0pOprPlbr/cZxNj8ql3o575Mymat7lIXSIibWHw+fpmU
+	 bkqsEF4P/sS5BnYk4WQFSwVQavKpnE4kImkX3gsQ=
+Message-ID: <258a124e-bdc5-4c25-b649-b4ed0a1415ac@arm.com>
+Date: Thu, 17 Sep 2026 20:15:31 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 5/6] mm/execmem: use VM_FLUSH_RESET_PERMS for ROX cache
- allocations
+Subject: Re: [PATCH v3 6/6] Revert "arch: introduce
+ set_direct_map_valid_noflush()"
 To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>
 Cc: =?UTF-8?Q?Adrian_Barna=C5=9B?= <abarnas@google.com>,
@@ -93,20 +93,20 @@ Cc: =?UTF-8?Q?Adrian_Barna=C5=9B?= <abarnas@google.com>,
  linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
  loongarch@lists.linux.dev
 References: <20260903-execmem-set-vm-perms-v0-2-v3-0-949b64a9f755@kernel.org>
- <20260903-execmem-set-vm-perms-v0-2-v3-5-949b64a9f755@kernel.org>
+ <20260903-execmem-set-vm-perms-v0-2-v3-6-949b64a9f755@kernel.org>
 From: Kevin Brodsky <kevin.brodsky@arm.com>
 Content-Language: en-GB
-In-Reply-To: <20260903-execmem-set-vm-perms-v0-2-v3-5-949b64a9f755@kernel.org>
+In-Reply-To: <20260903-execmem-set-vm-perms-v0-2-v3-6-949b64a9f755@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 2B8801A000F
 X-Rspam-User: 
-X-Stat-Signature: grtnsrpym617jqrhrc4tfaaex334qn4b
-X-HE-Tag: 1789668810-248290
-X-HE-Meta: U2FsdGVkX19zDT1zBizpjXkowSQptS7bjY6s4s+hvWPP0VW1v6vjM7dHXsZkchxLTC9EyzrH9to3GK2RYVldPJAt2S7I2RQuopiOy/xgwj9wzOv6FFb/7c7cOHp9dlgow7NeUtRmFBoAV6CThL9NGvIj5rv2rZaqgKbkpKh+iz0M5Z/txBn+ThJQbZ/la4dEHwpAxMAKwW3mRAPdO2HOxXqbci8P5nNYfnEkU1a+i11neEvKf2bvtp8ee7Uw+0+e2g/XXqyYHCsN/ITcWMCkPW4zaTdsUN1qPcoopP8LWLLwq26uQO+09FsR4RAJhUImCEwqxck+UtIHAlKfFhzwVfIU7F2CcR9X5Ns6B126h39CCMiwQMhB1jSTIOMRJ+egJ5nVVHvg3hfmU5LB15zaMQlIb/7D/Hh49SNiyTGMmTkA2ZMiBCqFIYoeeHeyDAXGxB2bQYr++u+cZ0ZvLoyraN/3hnJhjVFeCViDg35OicLkfpJhpewyGs7uOsmBMGHtZjRwjWqBHge2UawYIRG7gPBmYttuSj1ssvwr2iZ+pd6ebYjDU0D/ZL00eohTlbg6ZzAxNo2QvH+C/mycPOAo2SABhxtPNborKHpuo2fpot5VMS3A4y+IjJZ8jbhZ7oX7mPBaqzi7PlZoBU9j8fUnPlzbkgEZsbDcMr513FGWk7TeOtJOACBCvNeK/b6ZgEv1tRIn6nwSZVpJ7OyBHKACO9FROT3eTynEDZbC6ck9qjutd4mxpeiGXSqppAOaBLzLD2zeT6aIMaO5Z4mOHmCEuJ6JSOtV9O9DyynXYr09zXuDU5GAIXegj7axXrWfmKZyQsYYo8ehlAOD6Mj7kpiDINnVylL+7EQr8yHROJ/X6yxps/OMraYDjdLbe0dMsSR2mDWnx7XQ2FkUNS45yioavFYVGP+Wf49nwvaEh0Mj+5YdL2cqiV8dgpQJDGIw19AqN7QgcvKPV/26jldCOjC
- xdMwgV9X
- ulMg9c0LuriqyEPmAjVYLSmlNkas/G5W+CQ9DBK1Kf6Mf9yibXQq3BjBsnozyl1VJ/TBeBNQL//hVirv4zDGjWf2kSPghoNc12T0sZP8GJNH38xG43zyD2a9styubhccdzr6sijIb4TLqEA40iqWSjQIrtKRz2nGiQmX+FmLcmbrdldZfeUsBlwsQqTaxRj1iYDbQoTct0R7yuqv85yHaBDPD1WWrFI65vFNLJ7SmhntbXJEWty4GoZIU68i7LZXz8jOXc70B1IyI2gLj7IKLT2yzYhAKzQKxgVj35RLTnqjJ0E908wkxgUNp1j7EVVFTwNQ21WsoaSWSwHI7FeyRQiPWRzpbMv+BiE+LTRA9R0bwYS0=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 2EC75100007
+X-Stat-Signature: ixfrxc95jgdrzhcg1rwb9g3f9j6s8yxi
+X-HE-Tag: 1789668941-253836
+X-HE-Meta: U2FsdGVkX1/Nuu2FvFfanrnvqGwdAEYPI7JKdUMn/ULf16lR6O7GwjPQTdpYdi2CRO6l2LdbkaR5FE8sTzEYmYzlLbwepj60YXLJfgN1cVYA2jzGHb9cCGK1cgy+amvP0x8XXxSZNKDpXnjlj35dYrn/G2UEQ++r/8F6532cMhtLBd0om8m8vmQHUWalm44Lj5syHWhRTpoWRZjr3kIYh1kv9BgHToCdUO66vCLCJ+y1rmkxXrMzOc6jDfSwZeKLcaRdeYfXIuPfRfGTXnrA43FQOEnlntVEOJdZ9ZQffaSyWpGgcAJI+oDumGX5fOp3ihzO4FYmFJ2cr0LvO2/O8dbJkA2U/NgWE0oThm6ZbyT/Ubo3TEBTLhrJSGm0+ONls5Pl2aw1uLR/Qj3pk+bt9kBuso2DC0USFHZITn/6FbDLnUCOErfQuU2vKfuJQZdgRdS1tqLA7uxsu2aSW743HhSpTr2sExkM72fkIaW/Y+2QoXPK8mnZKljTKIskk2FtIH95Dg3BOxWQGiDvFByP34jH2dpFrRXofiRTlJo+7l9otd/6Z6ZGiUhqH3KicrOKhlBjMxHQT2iLYNfmMYUElQWs1SjHlvnkQLqeB10KYA0iUslhxMxhpvkX+FktPhpVraPyTpGDIDnquHtzGjEGQLGWfEavNy2xS6+WWsGO6DyGbybhSpomiynwgh5RWcm1i+utAKJM0JboPCCbGtdN2nnm91QsKMha0il+smPPpVkCpZC6iOpPJuAKdYTw8Glhn478gllsIvmzA7PuVDC0IcmhrNqYYG+qAGHGJL4R3yl+gZMP1/u+h9IzYAQCx8zsbURgKbq/FA1dlLDhyJvD7zgpaYdjA20dI0ngPzbdL24gpVRZKlGo/eTEB8kQDGVza6GMdjRaUO0uEsYv6pwTHDylWUP6yEm8YMQW0gTJCMTvfpTAjEe51iXRJqCCNozoO/C4n2fchQN7DUdusOO
+ UAQFetm4
+ 3t5rjfm//sCoTVjO1ji04PKzHPt8w1mx6EhppOLGlwob1sx0+6VtLgGurt9tkaJuQ0IoviPd7HMIprzvqxARvKBeFAvidzKWoYAqrhVGMry7AeBlNrImZiVTaoZwYdA5jfdj7UmIoCP1dX2BzCJKyuqnQ6cjQpKD8viMHZo52R39vp1wktFfpenxVDAuSHq7wPIpzP1IEGn6YOO1mk/ZPnceesE5jyME9OhVdzRakCW5AG43nVDPrgRAUm8cy0Ov3/+HseQpn0bLofPfs9y8EmQTIF+eMM+/vU1kVCLNGDyBe+1YRIt+aPuVOpnY5AMBQ/WL2DWN/RYsTYZ4QF5FHGOTjiGLYuNmg/pSJox1V4MeIJfs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,31 +115,37 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 03/09/2026 11:28, Mike Rapoport (Microsoft) wrote:
-> Initially execmem completely removed direct map alias for the memory
-> allocated for the ROX cache in PMD_SIZE chunks. When that memory was
-> freed, its direct map was restored also in PMD_SIZE chunks to avoid
-> fragmentation of the direct map caused by vmalloc::vm_reset_perms().
+> Commit 0c6378a71574 ("arch: introduce set_direct_map_valid_noflush()")
+> added set_direct_map_valid_noflush() to allow updating the direct map
+> for a physically contiguous range in execmem.
 >
-> This required execmem to implement the wrappers for set_direct_map APIs for
-> proper sequencing of removal and restoration of the direct map aliases.
+> As Brendan recently pointed out [1], this API is confusing because on
+> arm64 it means that is sets VALID bit in ptes, while on other
+> architectures it is an analog of set_direct_map_default_noflush().
 >
-> Since then x86's CPA gained support for collapsing the direct map page
-> tables for ROX pages and execmem switched from removing ROX caches from the
-> direct map to making them ROX there, so execmem only needs to update direct
-> map alias permissions when freeing the ROX cache memory.
+> The only user of set_direct_map_valid_noflush() was execmem's ROX cache
+> freeing path and it was switched to utilize VM_FLUSH_RESET_PERMS for
+> resetting permissions of the direct map alias.
 >
-> vmalloc already handles those updates for areas with VM_FLUSH_RESET_PERMS
-> set and vmalloc::vm_reset_perms() does not force split of the direct map
-> for PMD_SIZE chunks.
+> With the last user gone and with set_direct_map_{invalid,default}_noflush()
+> accepting number of pages as a parameter, set_direct_map_valid_noflush()
+> become a copy of set_memory_valid() on arm64 and a duplicate of
+> set_direct_map_{invalid,default}_noflush() on other architecture, it is
+> safe to remove set_direct_map_valid_noflush().
 >
-> Set the area permissions with set_vm_flush_reset_perms() when populating
-> the execmem cache just before flipping the area to ROX.
+> Also drop a stale comment in arm64::__kernel_map_pages() that Linus
+> bothered to add when merging changes containing set_direct_map_valid_noflush()
+> to his tree.
 >
-> This way freeing an allocated area on an error path won't incur two
-> updates of the direct map alias of that area and TLB flushing in
-> vm_reset_perms().
+> This reverts commit 0c6378a71574daa6cd1534ad42a956e3262756c7.
 >
+> [1] https://lore.kernel.org/all/DJ69RCVRBO0Y.3JCYSW50IC4RC@linux.dev
+>
+> Reviewed-by: Brendan Jackman <brendan.jackman@linux.dev>
 > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+
+It's a great feeling to see the set_direct_map API get a little
+streamlined :D
 
 Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
 
