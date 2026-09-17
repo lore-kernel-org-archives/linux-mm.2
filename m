@@ -4,104 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02F37C982D2
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 21:39:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E1F7C982D0
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 21:44:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 77A0E6B008A; Thu, 17 Sep 2026 17:39:18 -0400 (EDT)
+	id 8667A6B0092; Thu, 17 Sep 2026 17:44:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 723456B008C; Thu, 17 Sep 2026 17:39:18 -0400 (EDT)
+	id 817786B0093; Thu, 17 Sep 2026 17:44:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 639536B0092; Thu, 17 Sep 2026 17:39:18 -0400 (EDT)
+	id 72D496B0095; Thu, 17 Sep 2026 17:44:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C3FC6B008A
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 17:39:18 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B75A0A050B
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 21:39:15 +0000 (UTC)
-X-FDA: 85224570270.11.7D285D3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 38C6B1C0003
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 21:39:14 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NbP9X+YW;
-	spf=pass (imf21.hostedemail.com: domain of helgaas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=helgaas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789681154;
-	b=zk1l+3fO3FPdNTuBwqbmoemBWTSFVOzvulJwTO5ZC5Dugx6a/Md7FwVWW8IP1ieyFUAYCn
-	jKjv6W1iuFLO0CDJyt4mCU4hKmFgbdavbdyDvLD0YM57ql+AvaE9tufkJd2YVX4GSQ9Gzz
-	oSGtPT06EZmx1XGXiYHWSLsLY3sQOgc=
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 417126B0092
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 17:44:57 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 899AF1C289D
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 21:44:56 +0000 (UTC)
+X-FDA: 85224584592.12.190CEB8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 6B07440008
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 21:44:54 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=npcV7UoW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NbP9X+YW;
-	spf=pass (imf21.hostedemail.com: domain of helgaas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=helgaas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=npcV7UoW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789681494;
+	b=Rj+Px6jaWyC7RU7omTtqoNX8bM5ihsaqdZ9mj3tWkDyLhkZLIOcAlxYKpFIZT/NmAHVM3N
+	h6Ou2ptB6M9d6stbeEXCGCtek7+UI8vTU8gE+gLye8zbFaQdpRpiiv2iHRubkhT4srY5ez
+	iaNlpbAafa3IKKvzaHAgpudrzD4wx28=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789681154;
+	s=arc-20220608; t=1789681494;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=k/6t/GikBHxugOsJ+dBD227K5m8z7pCCXMsSTk25Xz0=;
-	b=uZvlKiLvgq0eokapTi5nBav1eqVsCVNp/Qsu+N4fT6lDXAGMa1u56qwOseupqlI3kpxbpg
-	8Ux52AHlP6wwH+wdQ/MQsNtoLGh9uej9+Jt4Xi4pHzBfyLY8nKGu3X55n3mI3rwFdC6OCH
-	TQExZPi4nMuUtSrYSP5NkKwB5Zm8ks8=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=exG/AXyrr+JXl9+ykc8tK7skhSydPCBzrUM83og95Qc=;
+	b=D4DFonfEf+gfNvCYKWn6vqjEulCQOw2uatjQBfieZq59V12SYjbvXik4AXCgHvcWzKwLwi
+	seBuYtDWZ9/Cigd9IQIlSp5iFcY8pzrddmKY/0SGwPXjdgmIsAafYM6fVgdSJA27nupLhV
+	qcspJVdZFf85ynSuH9w5rVv/1yBqFOc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A7C0E600AA;
-	Thu, 17 Sep 2026 21:39:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 380321F000FF;
-	Thu, 17 Sep 2026 21:39:13 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E011D4408A
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 21:44:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA8371F008BC
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 21:44:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789681153;
-	bh=k/6t/GikBHxugOsJ+dBD227K5m8z7pCCXMsSTk25Xz0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To;
-	b=NbP9X+YWncmvMuxndz4qUfEghuzl86DRrMSTCxqgT/YNwqK/HEnvZtwSFt79RSKAK
-	 xoErzHMOyrD3sCRiN/7HDD4gzJ7HDZJ6Kimrxvr0BjM8PyIHBctpgeH9KHhKEt34JG
-	 GlTH6h9ByjAKjWlV/DFUNBx4Wzg2gvuig+LpFnErUDT8KdHEYxgLlcZs9DVO3T4SAN
-	 0uraRJMyAV+5iSTuKw1NVEtMYB+KsND+3M7ehE1re7WmFPKb7HRgVHBt2aTu1qI6pE
-	 EQDusijHmss/+c8YE7OMIOtuNIDYMqiVSyDNNoRa5DRMO4pMBHuNaFpoYWUORcPohc
-	 KcBh2J4m4WNSw==
-Date: Thu, 17 Sep 2026 16:39:12 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: David Matlack <dmatlack@google.com>
-Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-pci@vger.kernel.org,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Alexander Graf <graf@amazon.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
-	Josh Hilke <jrhilke@google.com>,
-	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
-	Yi Liu <yi.l.liu@intel.com>
-Subject: Re: [PATCH v8 12/12] Documentation: PCI: Add documentation for Live
- Update
-Message-ID: <20260917213912.GA1049556@bhelgaas>
+	s=k20260515; t=1789681491;
+	bh=exG/AXyrr+JXl9+ykc8tK7skhSydPCBzrUM83og95Qc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=npcV7UoWW8Jdj8dCOiJjPz7NjvHEweQKVyJTOE6EGl+6CXaSXa7Cw5OVetwNA0yjL
+	 h6TfoM6Dfif4CAsnrhQwtPWh9kFaQNiTS/ftDGCbVLNPOVI9S/lJcEmj5xyQDqYTmN
+	 4ggdves30XSDnwvnOFL4hI3msybJF/Lz7+iqcOZPOOzu46+i0EIy/6sj+UOBlD1JFo
+	 ILbB39sk6mpXz/GPDWpGqIe4Mx0g+kV9n4XGrwO9HrCL1sQqEDYUt6q1x/2esCOndY
+	 FlVZRxvROq3asnpA7qRe55ewDZVxSRiT7yskG6bEOsB4CTOzEyN7jIbb3SY4BaZOsZ
+	 ORbUBr6pMgLsA==
+Received: by mail-qk2-f37.google.com with SMTP id af79cd13be357-93910cc46c8so10354585a.0
+        for <linux-mm@kvack.org>; Thu, 17 Sep 2026 14:44:51 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvByd8Pbx6PXohnk4YtifVnAetIbWq23A94RF48B2Uw7leZyDiHd7uVJed8rxLAz1EYKm6iDkxpP8KA==@kvack.org
+X-Gm-Message-State: AFuF++kk0rVAhT2AwCUSReg7Lod7Obp+sw+KKf0QYwEGpoJZxRcha88x
+	twP1dW8K7qK3yRYdeTqBg6unLGQbDZ2p2/J++y0NXr0rx/Xb3Byy7v2vSceS+NXdkPR5Aw7gGuX
+	/II6CkcgXP8OfEP+eAF7y2d6tOUgpsxk=
+X-Received: by 2002:a05:620a:1a28:b0:939:b099:d52f with SMTP id
+ af79cd13be357-93bdc6d9164mr57128485a.20.1789681490948; Thu, 17 Sep 2026
+ 14:44:50 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260728221007.2098560-13-dmatlack@google.com>
+References: <20260917052933.188679-1-jiangwenxiaomi@gmail.com>
+ <20260917052933.188679-4-jiangwenxiaomi@gmail.com> <27072d94-13bf-4bea-948a-d8a67976601e@kernel.org>
+ <CAHKocdE_zyUQT459AiTBDzQHk0jh+VpXuSMDdgHjkg-dAkgBNg@mail.gmail.com>
+In-Reply-To: <CAHKocdE_zyUQT459AiTBDzQHk0jh+VpXuSMDdgHjkg-dAkgBNg@mail.gmail.com>
+From: Barry Song <baohua@kernel.org>
+Date: Fri, 18 Sep 2026 05:44:39 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4yJ-KCHbJ9S2GKXfO51KB8g-y2Q_MikqE9-6VesR-RC9Q@mail.gmail.com>
+X-Gm-Features: AcwNN1UtqgSSOa91gBxdyOasYnD1juDs3qwDvpJofhPchMKWgrPs9IOwN7QDNfg
+Message-ID: <CAGsJ_4yJ-KCHbJ9S2GKXfO51KB8g-y2Q_MikqE9-6VesR-RC9Q@mail.gmail.com>
+Subject: Re: [PATCH v8 03/10] mm/vmalloc: use pte_set_huge()/pte_clear_huge()
+ for PTE-level block mappings
+To: Wen Jiang <jiangwenxiaomi@gmail.com>
+Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, akpm@linux-foundation.org, catalin.marinas@arm.com, 
+	linux-mm@kvack.org, urezki@gmail.com, will@kernel.org, 
+	Xueyuan.chen21@gmail.com, ajd@linux.ibm.com, anshuman.khandual@arm.com, 
+	david@kernel.org, dev.jain@arm.com, jiangwen6@xiaomi.com, leo.yan@arm.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, mpe@ellerman.id.au, 
+	npiggin@gmail.com, rppt@kernel.org, ryan.roberts@arm.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 38C6B1C0003
-X-Stat-Signature: 7p36c9pceypchp41hwef13dfuz6n3hhw
-X-HE-Tag: 1789681154-976824
-X-HE-Meta: U2FsdGVkX1+yPSygeWE5R6WPoA6Vm501MWyioXmXKwAUhOSAbeTGMnPT5hZeZNUXvtp1NPZdQb7FDtQQjgWD1BUd0wld4D6+Ek+jRQDaysR2StXwkhYjcwIKPOz0dLQMl20rzNUKOs6rz99MMBEx12c8fN9ZGFaagIMKMJpKXzwRKokP+v1nV5NpLeeC5b0q965DEC8z51Uqbtauix0F8KZiKZWM+4KmZ+MQuZPvc+UfND8K4zOA3mqsTt9M+wU822x1d2F4m80FXBOPcMkPQcEzUwgpfzTurYZ8znbMvqKP8gCz1VfMdEDn72ncnOV5TwBQoujntVG1Z5noP3IQIxLJTqjcULx7IUJWV2QOV4Wdmia2snBYjQ0lZhKg9LN4/AfwCBte1gVW0zuGUSGWqRPDlZQioq3N6g6/b4sRcHCsRW0dmUI+cYrBBXzKGU+cCSAcP40I0oaXdsNXGAPjkjDr0xTilQyHc5FBeQnzU4aw5OHHPz8OJ+tvdUoHXiLvYdeUS7LXnHxaGXJdZhoa3CSgPvNC2SuEI4Dd1VYnQjCGfvPW80KE8lckJef3B8mEyteHLldLcuXwGBDET96Aw3Ow/dWfM/abwfHUypCeRuPsk7olt3CvKeOcABroDuKZ9PMqxxsQFYlrhqqoPh19HlHyEPJclxu9o1yKP7oqxJOomt7WehX/tqLLVh0MR0UrwWOy6uf+jqZjf2TCQekiQ/fPhj+MYhe/iRZP7t95YUivAxYfGRgdxs/x/ZPQ8lbwQx+HZTv6wntt4MxstGbIY/hTWi37ErpnvJaZskdal1b/n+5WryKN9AkwBlTmYwo++SLn5+TZMh1G3rmpI6YT1uC9ZQn5lq6uJ5err/5ot91iA9QXAHkGW4s1wg8tBctTxankPySWa+CdiV1jBBVK9ymSjQVMz33wucPtWXq7xFBGJ3sU3AXo1MR+ZRsUVU1d+MhPlg84UbjcWAzFlmC
- jFRKgPPv
- 7DkGujyPsfjAPd6t1iozqn5O3epnMilUOu9dzr3CxxAICg0Zde+ch+WLY8iW9LbWiCA9iObvXbDe510vYoc4dYLSOzaDsIVvoTrW0xb2fmig+JmHFjpxxtEVEvmHPdbxTZJqFZw3glzyWDd6Au4st1+U8/JT3oVhh8QhVtitufKeAaV4NnUx6XYnuOcimudyQwJXLpiLhgkGF4yowzVaIR5k7f/fbTTzqLFo2KkH/iTk5lNz0wf56jMYXgNh34IyR9p7x7ht43O2ozI9Z5JD5rLDswTM8zmfjfUqYg4AQDg1yImiWPxDz8U9N4E65Ak/LFM++cYs8hSSGm0w+NHBLkZLIVdmir3oU5rACUD09NxHyXjQ=
+X-Rspamd-Queue-Id: 6B07440008
+X-Stat-Signature: 6mppf6yzsorrpk489ga33oiqtyeofs14
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789681494-463609
+X-HE-Meta: U2FsdGVkX1+YPtlmKAuH1XMK49YhryLZ2giTcc+TbmcgLIgvJgB2s2owlN7EXwHBtcl2TzB6EE+eTMlpBkSz9gignfXcBQ0FTXSzfmazyLTtGLBa6ClrZA7/wFuiMfok7y6s7c2K3DTKFdOJ2vfqyLHFvrW9HdjwhqI4cifd6mS3g8TMuueBUPBYkbZWnvsNme4cFi4T5gR+XWkmzzm/5N+J0B+/8UdKY82iI4qQMz19StHUcmWzJclLyIQjCLKrPa9UEaSEYzRbGc20Wa053BZPeVZvohAl1WN8MQQdEgR/Ql7yPxsxoprM4ONp4dlWzLALAG1XAZNf/KIIWzUtOZSurqwTs4J+SmA13SxJR7IDmSolW1ybCyXxhAmvks6bd0T3DGMnRRiXLtGxxTGvR9yDTcs50x2iGIMWgo/yHTLFj5cLoRKo2X6oAbz0v9RD3g/E5+CjqG5compIoXyJkBM6YUw5W44eI0H+UbyIrzgo7b0/b/AdhuAn5N8AlXKHpgZc6D8iTfcbupFe5IrPnE+7pjzIKg42ALedfSb7Co0x6+P0fnekHc78fasbY2I1pIGEUNUjLu9U7Q8YNOwtWOfmkr/VrkzhyvV9nupXlzzIewNl7YDHgmldGyYtWQGTIK4JqFDjCNo7KDatxh0ow67vXbi4c5v1sJ3TYCzxfmQIoClzoVW5hB+A0hmeegzSPeyit1c9do1uhPy/TqOGVyft1HREorhf7fMU4qN4ouRz9X6rWicOilQjA5kNezKhBZNOHpa/EN6kseQehOn8ZXomh+suc+WJqm6bR/aNxwcvP6TrXnpRw3x6NxXm+orQJcv8ROZDC044+hvvoPz/AK/W6YI/SCSE6elO71Ms08nZWtb3Z5xO/Lotg64TvWNeSfrm+nPvsDEu4Gc0tvxLtS/Nr6ulEXj7iAOwAf982Mv4CNhAyeksXPmvqhhe+d6+NvsnKilZ1sxQLr7ZeLs
+ YKHZvjNC
+ 31FK6yfYeI0WKRR+1Sj9GCJbouJUXasxxVGGzC3ONEhF+ytv7fs4ao5IFpa0VeBYgQDcia4tCQgOyqZw9Lj1hDbN1A3i+Hnj5vw0VtJtgh4bFBuRgj2CY3BjnrnlnS1PCEnj8YfhKo33T1D0eAvinNMOAp40gFfrhfk9aHgK94QbG6ouMuJVH5c27PagXId/4nIY9EwGaLrUpNUIsMMy2sQd2BSYtHi3MR+1b+6O8D1ZiQAMnY5Gr3qmq6UwCn6zP4uoeTBaEdbFLnbXqKA5555+mAutlKcEaLn2IBh4J9lABWbczzaluGw4Ef7PosZCtzRTHy1ncXfXCjviVedkZ8GYGPF4R1tKGnIuJ6WrOQnh0ydF92LbCsbm02/nSvkSXHLJ1Gtix4C//kip3i7rRCzkZUmEMzmYYHWmkHbx/RaydHs3usZ1m7dY5xoAmJkAJQ8cheK1uor1EsrxVp50DNXpofyM513O0uTfp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,154 +110,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 28, 2026 at 10:10:06PM +0000, David Matlack wrote:
-> Add documentation files for the PCI subsystem's participation in Live
-> Update.
-> 
-> These documentation files are generated from the kernel-doc comments
-> in the PCI Live Update source code. They describe the File-Lifecycle
-> Bound (FLB) API, the device tracking API, and the specific policies
+On Thu, Sep 17, 2026 at 10:41=E2=80=AFPM Wen Jiang <jiangwenxiaomi@gmail.co=
+m> wrote:
+>
+> On Thu, 17 Sept 2026 at 22:00, Christophe Leroy (CS GROUP)
+> <chleroy@kernel.org> wrote:
+> >
+> >
+> >
+> > Le 17/09/2026 =C3=A0 07:29, Wen Jiang a =C3=A9crit :
+> > > From: Wen Jiang <jiangwen6@xiaomi.com>
+> > >
+> > > vmap installs PTE-level block mappings by reusing set_huge_pte_at() a=
+nd
+> > > huge_ptep_get_and_clear() under #ifdef CONFIG_HUGETLB_PAGE. This make=
+s
+> > > the feature silently unavailable on CONFIG_HUGETLB_PAGE=3Dn kernels a=
+nd
+> > > couples mm/vmalloc.c to HugeTLB internals it does not otherwise need.
+> > >
+> > > Now that arm64 and powerpc/8xx provide pte_set_huge() and
+> > > pte_clear_huge(), add the generic fallbacks next to the existing
+> > > pmd/pud_set_huge() family and convert vmap_pte_range() and
+> > > vunmap_pte_range() to the new helpers. The CONFIG_HUGETLB_PAGE guards
+> > > around the block-mapping paths are dropped, so PTE-level block mappin=
+gs
+> > > now also work on CONFIG_HUGETLB_PAGE=3Dn kernels, and mm/vmalloc.c no
+> > > longer includes <linux/hugetlb.h>.
+> > >
+> > > The fallbacks exist only to keep the build working on architectures
+> > > without PTE-level block mapping support. They are unreachable there:
+> > > the callers only run when arch_vmap_pte_range_map_size() or
+> > > arch_vmap_pte_range_unmap_size() return a size other than PAGE_SIZE,
+> > > which requires an arch implementation. WARN_ON_ONCE() makes that
+> > > explicit rather than silently doing nothing.
+> > >
+> > > Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
+> > > ---
+> > >   include/linux/pgtable.h | 29 +++++++++++++++++++++++++++++
+> > >   mm/vmalloc.c            | 19 ++++++-------------
+> > >   2 files changed, 35 insertions(+), 13 deletions(-)
+> > >
+> > > diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> > > index cdd68ed3ae1a9..349ced999f959 100644
+> > > --- a/include/linux/pgtable.h
+> > > +++ b/include/linux/pgtable.h
+> > > @@ -2134,6 +2134,35 @@ static inline int pmd_free_pte_page(pmd_t *pmd=
+, unsigned long addr)
+> > >   }
+> > >   #endif      /* CONFIG_HAVE_ARCH_HUGE_VMAP */
+> > >
+> > > +/*
+> > > + * PTE-level block mappings for vmap.
+> > > + *
+> > > + * pte_set_huge() only has to be implemented by architectures whose
+> > > + * arch_vmap_pte_range_map_size() can return a size other than PAGE_=
+SIZE.
+> > > + */
+> > > +#ifndef __HAVE_ARCH_PTE_SET_HUGE
+> > > +static inline void pte_set_huge(pte_t *ptep, unsigned long addr,
+> > > +                             phys_addr_t phys, pgprot_t prot,
+> > > +                             unsigned long size)
+> > > +{
+> > > +     WARN_ON_ONCE(1);
+> >
+> > BUILD_BUG_ON() would be better here.
+> >
+> > It should be possible because fallback arch_vmap_pte_range_map_size()
+> > will constant-fold PAGE_SIZE so pte_set_huge() will never be called.
+> >
+>
+> Agreed. These fallbacks exist only to keep the build working on
+> architectures with PTE-level block mappings and should never actually
+> be reached, so BUILD_BUG_ON() is right. I'll make that change in v9.
+>
 
-Most uses fully hyphenate this: "File-Lifecycle-Bound" data, object,
-etc.
+I am not quite sure. It won't be called at runtime because
+`vmap size`/`unmap size` return `PAGE_SIZE`, so the code won't
+reach this branch. But it will still be built.
 
-> applied to preserved devices (such as bus number inheritance and bus
-> mastering preservation).
-> 
-> Reviewed-by: Pranjal Shrivastava <praan@google.com>
-> Signed-off-by: David Matlack <dmatlack@google.com>
+So, would a `BUILD_BUG_ON()` trigger a build failure here?
 
-Reviewed-by: Bjorn Helgaas <bhelgaas@google.com>
-
-> ---
->  Documentation/PCI/index.rst           |  1 +
->  Documentation/PCI/liveupdate.rst      | 35 +++++++++++++++++++++++++++
->  Documentation/core-api/liveupdate.rst |  1 +
->  MAINTAINERS                           |  1 +
->  4 files changed, 38 insertions(+)
->  create mode 100644 Documentation/PCI/liveupdate.rst
-> 
-> diff --git a/Documentation/PCI/index.rst b/Documentation/PCI/index.rst
-> index 5d720d2a415e..23fb737ac969 100644
-> --- a/Documentation/PCI/index.rst
-> +++ b/Documentation/PCI/index.rst
-> @@ -20,3 +20,4 @@ PCI Bus Subsystem
->     controller/index
->     boot-interrupts
->     tph
-> +   liveupdate
-> diff --git a/Documentation/PCI/liveupdate.rst b/Documentation/PCI/liveupdate.rst
-> new file mode 100644
-> index 000000000000..96b1d7f5df3a
-> --- /dev/null
-> +++ b/Documentation/PCI/liveupdate.rst
-> @@ -0,0 +1,35 @@
-> +.. SPDX-License-Identifier: GPL-2.0-or-later
-> +
-> +===========================
-> +PCI Support for Live Update
-> +===========================
-> +
-> +.. kernel-doc:: drivers/pci/liveupdate.c
-> +   :doc: PCI Live Update
-> +
-> +Driver API
-> +==========
-> +
-> +.. kernel-doc:: drivers/pci/liveupdate.c
-> +   :export:
-> +
-> +Internal API
-> +============
-> +
-> +.. kernel-doc:: drivers/pci/liveupdate.c
-> +   :internal:
-> +
-> +Live Update ABI
-> +===============
-> +
-> +.. kernel-doc:: include/linux/kho/abi/pci.h
-> +   :doc: PCI File-Lifecycle Bound (FLB) Live Update ABI
-
-Ditto (and in include/linux/kho/abi/pci.h itself).
-
-Trying to understand the FLB concept, I found
-kernel/liveupdate/luo_flb.c.  I know that's already merged so this
-isn't really the place to ask about it.  But FWIW here are some
-questions from this naive reader:
-
-   File-Lifecycle-Bound (FLB) objects provide a mechanism for managing
-   global state that is shared across multiple live-updatable files.
-   The lifecycle of this shared state is tied to the preservation of
-   the files that depend on it.
-
-I understand "global state", but I don't know whether "global" is
-relevant here.
-
-I don't know what "shared across live-updatable files" means.  Is the
-sharing a fundamental aspect or just a typical use case reflecting the
-level the data is for (e.g., bus vs device)?
-
-I'm imagining a *kernel* being "live-updated", i.e., a kernel being
-updated while things around it (devices, some user-space things) stay
-alive, so I guess "live-updatable files" would be preserved across a
-kexec?  I don't think of devices as being "live-updated" since they
-themselves aren't being updated; in fact, the whole point is that they
-*aren't* updated.
-
-Do these FLB objects appear in a filesystem?  Or are they merely blobs
-of data that are preserved across kexec?  I suppose there must be a
-mechanism for the new kernel to identify and request one of the
-several FLB objects saved by the pre-kexec kernel?
-
-What does "lifecycle is tied to preservation of files" mean?  I
-expected to learn about the beginning and end of the object lifetime.
-
-   An FLB represents a global resource, such as the IOMMU core state,
-   that is required by multiple file descriptors (e.g., all VFIO fds).
-
-I have the impression that the important thing about FLB is the
-lifetime of some data, e.g., something that lasts longer than the
-kernel that produced it.
-
-   The preservation of the FLB's state is triggered when the *first*
-   file depending on it is preserved. The cleanup of this state
-   (unpreserve or finish) is triggered when the *last* file depending
-   on it is unpreserved or finished.
-
-Maybe this means .unpreserve() (in pre-kexec kernel) or .finish() (in
-new post-kexec kernel) is the end of an FLB object lifetime?
-
-> +.. kernel-doc:: include/linux/kho/abi/pci.h
-> +   :internal:
-> +
-> +See Also
-> +========
-> +
-> + * :doc:`/core-api/liveupdate`
-> + * :doc:`/core-api/kho/index`
-> diff --git a/Documentation/core-api/liveupdate.rst b/Documentation/core-api/liveupdate.rst
-> index b3c689e633c1..2bce2644eba2 100644
-> --- a/Documentation/core-api/liveupdate.rst
-> +++ b/Documentation/core-api/liveupdate.rst
-> @@ -74,3 +74,4 @@ See Also
->  
->  - :doc:`Live Update uAPI </userspace-api/liveupdate>`
->  - :doc:`/core-api/kho/index`
-> +- :doc:`PCI </PCI/liveupdate>`
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 08a724b860dc..347c435ca404 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -20833,6 +20833,7 @@ L:	kexec@lists.infradead.org
->  L:	linux-pci@vger.kernel.org
->  S:	Maintained
->  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git
-> +F:	Documentation/PCI/liveupdate.rst
->  F:	drivers/pci/liveupdate.c
->  F:	drivers/pci/liveupdate.h
->  F:	include/linux/kho/abi/pci.h
-> -- 
-> 2.55.0.487.gaf234c4eb3-goog
-> 
+Best Regards
+Barry
 
