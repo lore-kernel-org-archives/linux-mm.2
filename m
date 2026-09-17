@@ -4,126 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 316AEC88E72
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 16:14:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 715AFC982D7
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 16:16:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2380A6B008C; Thu, 17 Sep 2026 12:14:39 -0400 (EDT)
+	id 4AC766B0096; Thu, 17 Sep 2026 12:16:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E9466B0092; Thu, 17 Sep 2026 12:14:39 -0400 (EDT)
+	id 45F306B0098; Thu, 17 Sep 2026 12:16:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0DA4E6B0096; Thu, 17 Sep 2026 12:14:39 -0400 (EDT)
+	id 34D016B0099; Thu, 17 Sep 2026 12:16:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DFD6D6B008C
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 12:14:38 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4F5F2A0430
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 16:14:38 +0000 (UTC)
-X-FDA: 85223752236.04.6EFC6DB
-Received: from mail-qk2-f42.google.com (mail-qk2-f42.google.com [74.125.230.234])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 8AA9E10000B
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 16:14:36 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=ufolOzMW;
-	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.234 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=ufolOzMW;
-	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.234 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789661676;
-	b=YbJOhhr5lfvFojUIdWLJn4WsBFdR4pyHHJCHzuxmEesFux3YsYwTxjV+ZTARPYePLyr6O3
-	O6n6zxZH+d/z2Z4hnCBrEUvcO6X75DKgpNa7O34HnoHlEB8lfHI/7SptwWj0PT1dA19htg
-	po2wZElPO0G2o8x+rE4zNyYl9YHPcqE=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789661676;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 020806B0096
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 12:16:31 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 342F1A5879
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 16:16:31 +0000 (UTC)
+X-FDA: 85223756982.01.ADCB29C
+Received: from mail-qv2-f12.google.com (mail-qv2-f12.google.com [74.125.230.140])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 3F23D18000C
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 16:16:29 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=A6guVt4I;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf06.hostedemail.com: domain of ekffu200098@gmail.com designates 74.125.230.140 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Authentication-Results: i=2;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=A6guVt4I;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf06.hostedemail.com: domain of ekffu200098@gmail.com designates 74.125.230.140 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1789661789;
+	b=chh6kZt+LZdmmRTNaSD38u14frCeNeg6vnAYjpHZxGY5kf7Qu17DmCunUVqwdxPFI5Zv22
+	Esw3qu/gxt2G5r6+Zt3GCwR4VbxN4QFNtpQaRGLOOgVZbRrjLsIMVfHDDtAA3MKOJyMa2J
+	KJefoiyMw4un8WAFTUk2trC/0uqYXE8=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789661789;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LsJba/wwthkDPTXMKxwEUJe6vAc8xqzF49EUX8rDHcw=;
-	b=0vVZ6K/uuieUh//EXefsRLDs8bv9SGKcg77bxswc5Tfnp0iux3UMNxzkHoSdPJlTnjkEmM
-	XJmXoYcTo9M+3VYIOCiTuWjNjAVW0e9vJluvXkMUTq7Yocstis2qd1RS9L8cwPvcpPIVHk
-	9gTBWIn0CWNap3cXEoxu0Bc2ca2UmNo=
-Received: by mail-qk2-f42.google.com with SMTP id d75a77b69052e-5311edbc154so8204271cf.3
-        for <linux-mm@kvack.org>; Thu, 17 Sep 2026 09:14:36 -0700 (PDT)
+	bh=Utnj2BUg2wgBn65CQTDS0GpKi8jE06RpdxKfTfpq1t4=;
+	b=zLzY6ognXjX3Rses+gVkt3n6xSTX3S7SNuM2EKq8Kik0MpxmpO2oxJA1aZKnh2xSPb7h9q
+	T8gMFJ7vPpWTmUrpFkGI1NUjc376MIWMKHmNy9cmCFrOca7Dy7z4dwrlB1pm8cH1cG2exR
+	qE5hrp7wNrIhifSw0zNvxU5AL1Gdtmk=
+Received: by mail-qv2-f12.google.com with SMTP id 6a1803df08f44-91219376dd6so10640296d6.2
+        for <linux-mm@kvack.org>; Thu, 17 Sep 2026 09:16:28 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789661788; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ME/OUG6V/btnptN5aKPmRxgBXk4LcGYkXMNNv4ISb1vs33VF1kMUARNLljcMHK/+C1
+         ExShvDnw/DzRSpL8CzfxUE7qeDDdNNcM5zlu4pPmc1r83nh10RtVh7g64Qjo/5KDYz4m
+         xMaCeULORYei8J9r9xzpNBjuWj8YxbPOOV6MUE+3r0Jx7kj+D+IlFrKMJqcHqgMN+2/u
+         0L27DYkF8B4htoO53Lzmrv8Sv2in/s11wHFliABl7hHLzB59+AnUjQjvGfr952jBtRTe
+         IJNyf0apLqcfiwLoKo1+8n2fGYPLhSG/GJXGQUEAwaDiSCjthope2KaLdERo5wHabWVN
+         WXjA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Utnj2BUg2wgBn65CQTDS0GpKi8jE06RpdxKfTfpq1t4=;
+        fh=MieX8wCahpVxZZjXpElWr8jrzpuj327fRc3tOoo1GGU=;
+        b=hDy8pA163N/YaNGJE79lSG5iQyjPIiIo9T9k79tyx64JNYNcllH6z19L8q7MwCbxNr
+         2npPQ64Xo+L16hB4P9c0FOELjep0C90e9TP7V3UCajOXwHDtQ2H+AOUUemINM+UwV4qk
+         d3p/yM1UbDarEacOddSXj3dmnE9aW7oH0r0kYLwMG/5GHgRcBWs5ZnYA1dQcW/JFyego
+         VYidEdbZG/inXBqW7ez1J0wNLlWdGVtlybsFPnIPyIZJQN6T/JVYc3kHHqSuqqqRErrj
+         g4kQwygreiQX/u1ZyoZeX0JlL0vFabkcrWDZidkDcTQIwCFB3YGr3TA6Wx2vonscINua
+         tkQw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1789661675; x=1790266475; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=gmail.com; s=20251104; t=1789661788; x=1790266588; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=LsJba/wwthkDPTXMKxwEUJe6vAc8xqzF49EUX8rDHcw=;
-        b=ufolOzMWxZ2fot26IwkeIF74Yf8TbEwgCjzp4pTtkit1yY//KQN5i6ei+rXC6D/byO
-         +GyIvMuUYdnKZPzn6iF+dGnYy7TuggYI6Ynabz3Z4q+zT7O9R+0/v0Qd551/fknK7qU1
-         qSNG7LwTtBu2BKbD2WVs0JRj4nebC4VDeixpBB/fTo6MAGHAZZTOkAdQdR9bt3MnOKc2
-         rzm2QA6bNXly9j/0sFL07xTsZQXv+IdPU4KXe9Ah5F2QPO7GvJRVylXxharJNw+xoIJW
-         DsMiu6CAy2IQ6EKnDqsK5wn+2m3ew+FGlGkk74yIU5Dpv5yWyBxLJnWHwosMaNGaKp3x
-         xtkg==
+        bh=Utnj2BUg2wgBn65CQTDS0GpKi8jE06RpdxKfTfpq1t4=;
+        b=A6guVt4IbWtePEjU4UlQJ0VbqEaGpNmgAAT9K2EguzPo8Pb2i//MaMlndne5wAKIC8
+         6KGO/cyR6SOFQqmEulkpjIOwYmrL+8P/fquvkBr3lhuW/gLDhrwCSPQyZgL756SO+VIE
+         q0MyNk1bmpAG+imUV2yxe/KuIB6dxCpRkbj2mLf6xx9db+rvjbq96zsOhSUc2BDKjKXx
+         /3w9KLnkCEuAGSSQcCDcNVCQgYjXLLVDoEg0kG9qIx2AIjB9SMB+Dtgua90SJlOvNJcd
+         c7x7vb7S2i9iGbek5btIpP3rYncsgZnVUFOlpKQhd10Hm109aQZmhBdTgjeO/pCM5XSY
+         cRVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789661675; x=1790266475;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1789661788; x=1790266588;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=LsJba/wwthkDPTXMKxwEUJe6vAc8xqzF49EUX8rDHcw=;
-        b=Rah84hsiMlqnwK8/wbyqV3WqT7gNPu2qsLNP+nAu4SLI3vZQVK6hX062qm4oSDIpuX
-         oqJe51dzZbvbRvvIQ9DPAzcrr6pYhXuJdzWUd5q1CWKMKRLhVmhp8bz+Pjy/m+V54wQi
-         FNrd95A3s1UKbST/FYHbm3IQHVVaO0S5ZV64SgZ+j9FiwKSOmcki1uzYY2OpS+uFJO21
-         KZxOrhVjecrgnTkt/oXZYDZQYQdbfLX6CSxPqdfoBoqcbxaVQ2JpWWoPI+yUCPuTS2Yu
-         +t385v9YIwslRjItfSfJ6yujD6Iipw6gUvm3Q8xm+3xGhNF16HcaA7OlrWLz/PfW8KwF
-         Hwnw==
-X-Gm-Message-State: AFuF++kowH55Mnh2JhmvPyBoPyQgdbbaqRwXY6mcs+fd1qyC5bnIoIa7
-	7AgaUi4kgM0KYr7wy86dilcJ7WFaZcESbQ2hfWbZ75Gpf6VIhOQj5QNQHd5cAb4PJYIDJ3vciiI
-	MS/D0
-X-Gm-Gg: AYBFou3ZzVPmyJiAnRcD95RQyLi6ucNbFqHp0EkNnVjFiCgE69RKn995+cDdGu80iLW
-	JfmJq3GqekAP2wl/z9/1pHJ81VD/po6enJhbQCiAy/DCA+9dvoPgkKj5kCRbTumPwXkIByFuDS4
-	eJqtk3dzFmwAIA+c9L3UWOLutTc0XPMblPjwcjm7H7me0mkQ/7a7npUpFBDXW6mGV8PV+aQ3pv1
-	jRLTgof86Jd+TG7q0/URHHJmcf9evkETBwPBq1gSoH/xA+5cLIgng7o28iVoDGWWgRXnTKc9f6T
-	3819h47LnZk2fIXCP+NB04qJ0vNYYv3fkcGSgapjeV705jROsHfYgzKbK+6Sdg7F5P9t9nctK3p
-	6pMB1nvJfYaz6FmCuJMS8LiS49ZJiiyQepDK6zaQH1l2ev4xVIptE0UA1wIcB1OPpAJY/KXnbcJ
-	EksMWPgH8hUyKwDWs97VFOMkydgw2Gz6bvgooK+MFZh/JjTgrqW5yBKssCkwAQLqK3IkwEVFr20
-	/dmBwoHYqV1iOlP9paV7SUiCw3lvc0mTIzyeGijGX7IsKHQjlj5tKI=
-X-Received: by 2002:a05:6214:e87:b0:912:517b:90a with SMTP id 6a1803df08f44-912517b0c9emr19817166d6.41.1789661675506;
-        Thu, 17 Sep 2026 09:14:35 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91252c7cb8bsm1199036d6.20.2026.09.17.09.14.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Sep 2026 09:14:34 -0700 (PDT)
-Date: Thu, 17 Sep 2026 12:14:31 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
-	akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, liam@infradead.org, 
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
-	mingo@redhat.com, juri.lelli@redhat.com, vincent.guittot@linaro.org, 
-	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de, 
-	vschneid@redhat.com, kprateek.nayak@amd.com, ziy@nvidia.com, 
-	baolin.wang@linux.alibaba.com, nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com, 
-	baohua@kernel.org, lance.yang@linux.dev, usama.arif@linux.dev, kas@kernel.org, 
-	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, 
-	ying.huang@linux.alibaba.com, apopple@nvidia.com, jannh@google.com, pfalcato@suse.de, 
-	osalvador@suse.de, hannes@cmpxchg.org, raghavendra.kt@amd.com, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/4] mm: support promotion-only NUMA hinting scans
-Message-ID: <aqwRX7Ula6ImRw3c@gourry-fedora-PF4VCD3F>
-References: <20260911001826.2109390-1-gourry@gourry.net>
- <20260911001826.2109390-2-gourry@gourry.net>
- <20260917160328.GM4121339@noisy.programming.kicks-ass.net>
+        bh=Utnj2BUg2wgBn65CQTDS0GpKi8jE06RpdxKfTfpq1t4=;
+        b=n6UEYVO+WctOmQAiA23AyPNZ3QwaspDO4kiCPq4Qf4UCyiZLEn2he1bf3ywITaQW0V
+         k6s29JU3FarPjQCq9mowtRS8UeDA0mRYWxUCBUfp7jdHK1za8iGXac3li7X06RW/2xCd
+         g77S3H21s+OpKCt2PyDmLnO4egkCUdvHbDLcjxjwY4yJHuFoNgfyRjLU79TmIbCVIo+l
+         b3DavgQdOSV2Hai+gyf0fm6ZzQ+wHMzJMoXoHPBcrGiwl8T28tnvtMknCxkGsc6slukz
+         StmT8UvpUbpYBSpIgs1sYESdHWz4DLmD4odtJbFosnkskF+a2N3l/0fi9H/1//RV/Wz0
+         ypzA==
+X-Forwarded-Encrypted: i=1; AKwUvBzoiBXA3DSDyEIilzj8Yjz/9tjV2jjoHOvWK1N0k8DQI59jt+gflTocuZebq+CY5EdLvi+v1D8uiw==@kvack.org
+X-Gm-Message-State: AFuF++kQ+v2XDJNesZkBE87M1CX1HSSv8AFacrDdBrU9zjUPKodzZcK9
+	m8cJ/zRas04UR5YiE68Eo4yT3Qrr+tUU/eKj3Nf+DGqSKlspTPP/uyZf3TMnzSrnagQFgHsu3uK
+	uEyhOx5SSeK0bTAlrO3wKCPDQhKAJUjXL6VBVUlk=
+X-Gm-Gg: AYBFou2q2ZxZWduY+K029HeFKX1Be8thRV9AdJ0kSVWe23HuJNHlLqlRCrEwmTbeYKN
+	umxY1bMVbNd19LVTGb7bTR/zQZswPww8+F7royCh90fWB/NJwumu5WOxKD7dUkTK7k+BzeZ6Ikt
+	+N4zRNmL6AM6Qg0NVRnbY37kgixczmaBvKBiAa6d7HdJ9CMDGBTZ0Ri3Vc9oZsamI9BpuahLfjX
+	5zykbuPRu5N8Dm7S0P+NW+ZUmakXUwRxqP+hajHYqf1+ys9SFxvjprtSsoZghdGLyjoCjITaWsc
+	zZnL+uYqxpWhpKn36SYmo9RMzvakRBlOEK6PPAf5X+g+7TvFjMam
+X-Received: by 2002:a05:690e:454e:10b0:671:4099:2195 with SMTP id
+ 956f58d0204a3-6716321104dmr1607824d50.26.1789661375920; Thu, 17 Sep 2026
+ 09:09:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260917160328.GM4121339@noisy.programming.kicks-ass.net>
+References: <20260917150631.1138698-1-karthiproffesional@gmail.com>
+In-Reply-To: <20260917150631.1138698-1-karthiproffesional@gmail.com>
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+Date: Fri, 18 Sep 2026 01:09:24 +0900
+X-Gm-Features: AcwNN1Uk9UpyoJUob1Iy_YX5RVhaLvh8gpmUhgIMopwOfP5aLXWiHdFhc1xctuM
+Message-ID: <CABFDxMHjbQhzvrQmRjo_F9Tf0_zQ20FxaSHFEQN8nfN+VgsF2Q@mail.gmail.com>
+Subject: Re: [PATCH] mm/damon: reject zero sampling interval
+To: Karthikeyan KS <karthiproffesional@gmail.com>
+Cc: SJ Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8AA9E10000B
-X-Stat-Signature: 5bzdzeo713qdzd8sp5jbzno5tmooq97g
+X-Rspamd-Queue-Id: 3F23D18000C
+X-Stat-Signature: bewrbgc6h8x5qxm6kucjnpcd7of1xo7e
 X-Rspamd-Server: rspam01
-X-HE-Tag: 1789661676-957368
-X-HE-Meta: U2FsdGVkX19pKUvDUtXej8s6bmQiImd3U9kvzzNn9YWKi4/rG9rWng9ryqGI8x73gUyTxkV0ZshUB6+SGGsTKuZDKDoIXV6uJ9hjnt5uMrhUGqv3vsMhCjVFzD/+veJ0ShvusGDEWS+l40iwvHN6kqvaXBvgCg6CF+mU8rfK1fjX4X0s2jcxpWh2vqOaUh7AJ1CJsL0otDbM8O3EWaMHvrDyrfRwk2BPdCr69uXSZ0zqjM1oWt5i3hsBbrgCix5tLaRldXhm8NMR2sG7VaQ/xnZ8EuvjujRFP6J6rW6feCHcITIvDrPzgUBcKi3BLpR4EAi/eKBoNO+b9Jbl/GMPUZMbPybC1T4Ct7BXTX8hbREpp0QS5cdXF6CUd8bnRqU48tpO5YAIgrmZSKCGwFjMLCCaSKkWw0mLydlrbW/CFxPeYhIYBrHDft0yBHP0dlUJerRe3QOki2fVL1Yb7ycYEXFdtcufqFAqY4WH6mvwVUoEMofMIPFM8VpbTk06cVTF39D6gI117yi0+ez+DHuH42XDg9ff3jpj5sA8//DZt36xYcX4VZHqDwd7eG//iFInCtKf4TtRT5ecHY4ELmu3VIS7u0ed3r+surWUMqkv9fOVqyWHw2URd5T4xsE+sUpOBjdDYZN/NLiiiOOGEo6YlPX3fuTYwduRLMkL+eFTMuP6YJhnJq72Wu7J33MztqNAcriijs1m7rABzyCPO8aL9mc3P6apTipcfhD8c7GtozRY+SzKR3E4Wig3uwZj+QS4C9B0ac+FRlTI0UlAMy/L6KKGbZDbV/i6y+0bTgt18F+QG1ryEHH8u21FeFOpadi+Ng7I6lqTK4TlHrNfQcJ8VTVhmEO8p8i7kLEY9zy4UyJNMGkRsCDUA/YAhTc0ui7NOeonKLLDDCL5XGCAI5o0S8Ks4h+pYqnFKZkzDSEAmIKQoFOoN23yXtBHGq+GXsAMlvqHmdFe0OoBzNbjuln
- hAdeYTVd
- npy6Iak04dQxHxIb/Rs+RF1XRB5T4IrKYfl9HcuV+PfLlWNGqWtdAajoNDW8yNMvIR6+PHqKhQf/CZhzBy+ewM2J7+rDjN6qusCzwH2gCcis4hNsdxqF6uo8E/XUnnsY2w3KdJYp3Ob4nOBgw3tUkm4FGMKsxZE9BefNIvrtWruhQAuXh0uKsXnXyeFT0uSJAIvdC6ccs6ox9bdowJSN9xwpIwA1EdeDBvGwByB+9/yHfNTSL4vO7fivzyCW6CxXtvgE1NlR9jOBWHv0Q2RxLUM0SPxh3jgSYzZQaCkIWq2vhhBidYyny8WC73XgyBoG3hpH3boldx1KMQBbNpwPTCIflFi+TU1M3dKj/00xZquaVaqFm/78ONlY9soDZ0VuP7ttOyytxF4zWheS0VV7OZtaKrw==
+X-HE-Tag: 1789661789-994963
+X-HE-Meta: U2FsdGVkX19pS+N3fNvVdWEfbsyfjbIPczDZjDjo61dFonGTSPteqh8tq246nzWwg3/xF1Fq5OrJPmG0q2+uWiW4VWj7P9jstKkS2Zzx9Jp6OzQuAE0t2CGR3IqjUYeNUi2PPQcKDFrSc1uzZMc3GIVqj6W7vPK4Ra7oM5UwWHnIcwfKFL9Ytq3aN21jlCk6rDwCfrUGUdvTCg4ezWD4Nby0pYMvEUbHJ9hTURXtl9tXYHygNo1K4HcAmqnpEkgj1ePMgtFmBtOlwfWoIkRl1gq/zZsXeuCv0eZRzuSMo6K6PSuMi1qkAc6dnB9RARPdJPPPRqJn742QI5nnf5C1JjGFLGFn6gShrIp5BSRT5Kn89ZatxTqk/VW7zT0dCS2KxjHKRzsVrdJd3jo14AspVkCWtvGBjyTwb1oKdflI91J67pGG6z3CnolAxD6wLge9+CO/7SiUoV+KPvqO7ODlHtw3Vd9mbddwDm2/MMpvu5EknU8jRVM1gPLHwc26TDN4fBMGycassY1nUwEul68mgM2ge4Iv7R5c6BQepGQ3OWr8gSaH9T2c3Xj0qTDbSaIRBG439lfqK/w8TZJda8Wic9vlRY0PAqegNgZu1W+nVFOd+tRggW3MRC3Or955HVesDqZoAPc5pmLlPgN3Y577muPFRoOTmLJFKZfdg8ui7imIRYiyX3sRgIVwxB7hNY775KMMlYbP2fdVIMqLzOyLOMKtcSU2C8DC1VFIQqnxzrp2tHw+zsuzLGMhS6/WlvcJdSEJEU53QWeX/8EPiGeTRI/tFY+JG6B4HtrL/Ex145+iUXxk4XSxYTCwio6A9V/uKT5TAHSrJ5amV6EF5WvQ16mzIzwSdcP+w8o/HUM1WvvLg68uTx+yj1amPFRUuOLtwwTiuDQ4vx129HQa29UNgg3SOxK2cFgIp8PcEHtuB+HNFMpt7nl3Ok4+zHckwI7JKZgYM7FuFtTD/GAst5J
+ +AAvUSCq
+ X5S3843hgiKmNA4JaXi+NFKURZoReGIamO93nFgGDsL2dKCIpNwHLTzY7xyZ2WXsT+7gs8cDIRCiK1AbPJdaLm617i4i4ybhoCYJ1BDkf83nnyv3jKZJD3a2elXz0KBo6wxHnIZnlBcc+/VGOhUveVbKixzTBo2LtJZ4VPx+fDODHED1Vo9MqhpD5Lr/BmUoXCtT5R6ZtQlxUoKc0f1WbRLy7RMN91OG310MiPwbdJxgA2ixmxO9lXOHnyPaHqkXWoFzI1aecO19o/tI5Ewg7eLpPR3EVq6Ou4JjKNxUYlAfeYfEvMWnjyKbeMqWs2cNbocBa9M1ehaW6N2+svaAgyR8kBrs/VHaUkHACXspLaqPX0T7zy5HJ5Ftf/U1PRFp64Nd0bmfnkEhXc4jgF6O/6ivlsvcgyaJpzK86gFjf8fKMN/1LJf5TlxiA8mmjtcQCZiLswIhZ0jFwr5yeyqBdwlQq7Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,49 +139,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 17, 2026 at 06:03:28PM +0200, Peter Zijlstra wrote:
-> On Thu, Sep 10, 2026 at 08:18:23PM -0400, Gregory Price wrote:
-> 
-> > diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-> > index 8dff37059faf..81359b414947 100644
-> > --- a/kernel/sched/fair.c
-> > +++ b/kernel/sched/fair.c
-> > @@ -4129,8 +4129,10 @@ static void task_numa_work(struct callback_head *work)
-> >  	unsigned long nr_pte_updates = 0;
-> >  	long pages, virtpages;
-> >  	struct vma_iterator vmi;
-> > +	unsigned int numab_mode = READ_ONCE(sysctl_numa_balancing_mode);
-> 
-> This thing sticks out like a sort thumb, does that want to be on top?
-> Typically reverse xmas is preferred and all that.
-> 
+Hi,
 
-oi yeah sorry, should have given this a closer style look.
+On Fri, Sep 18, 2026 at 12:14=E2=80=AFAM Karthikeyan KS
+<karthiproffesional@gmail.com> wrote:
+>
+> damon_set_attrs() already rejects inverted intervals (sample_interval >
+> aggr_interval) and invalid region counts, but it accepts
+> sample_interval =3D=3D 0.
+>
+> A zero sampling interval is not a valid monitoring period.  Sysfs "on"
+> and "commit" both install attrs via damon_set_attrs(), so kdamond then
+> calls kdamond_usleep(0) and busy-spins.
+>
+> Return -EINVAL if sample_interval is zero.
 
-will fix it up.
+I think SJ already commented on a similar patch. please refer to [1]
+If this happens a lot, maybe should we document or add a comment about this=
+?
 
-> >  	bool vma_pids_skipped;
-> >  	bool vma_pids_forced = false;
-> > +	bool promo_only;
-> >  
-> >  	WARN_ON_ONCE(p != container_of(work, struct task_struct, numa_work));
-> >  
-> 
-> > --- a/mm/internal.h
-> > +++ b/mm/internal.h
-> > @@ -1237,11 +1237,12 @@ static inline bool vma_is_single_threaded_private(struct vm_area_struct *vma)
-> >  
-> >  #ifdef CONFIG_NUMA_BALANCING
-> >  bool folio_can_map_prot_numa(struct folio *folio, struct vm_area_struct *vma,
-> > -		bool is_private_single_threaded);
-> > +		bool is_private_single_threaded, bool promo_only);
-> 
-> Two bools rather than updating the existing bool to a flags?
+[1] https://lore.kernel.org/all/20260722094304.3132750-1-dayou5941@163.com/
 
-every time i've added a flag field someone screeches at me, so I tend
-to avoid it now - but i can do that's the preference here.
+> Signed-off-by: Karthikeyan KS <karthiproffesional@gmail.com>
+> ---
+>
+> Hello,
+>
+> I recently started reading DAMON and just found this one.  This
+> change only tightens damon_set_attrs() validation, in the same place
+> as the existing sample > aggr and min_nr_regions checks.  It is not a
+> crash, UAF, or race.
+>
+> sample_us=3D0 is accepted today, so kdamond_usleep(0) busy-spins (about
+> one core).  Sysfs "on" and "commit" both go through damon_set_attrs();
+> one check covers both.
+>
+> Checked on v7.3-rc3 (238650ef6c7c):
+>
+>   unpatched: echo on with sample_us=3D0 succeeds; kdamond uses ~97% of
+>              one core.  echo commit of 0 onto a running kdamond also
+>              succeeds and it starts spinning.
+>
+>   patched:   both on and commit return -EINVAL.  Valid sample_us=3D5000
+>              still starts.  After a rejected commit the same pid stays
+>              on and does not spin.
+>
+> aggr_us=3D0 with a positive sample_us is already -EINVAL from the
+> ordering check.
+>
+> Thanks,
+>
+>  mm/damon/core.c             |  2 ++
+>  mm/damon/tests/core-kunit.h | 13 +++++++++++++
+>  2 files changed, 15 insertions(+)
+>
+> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> index 644daf5a1656..376c3e2cbe00 100644
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+> @@ -1060,6 +1060,8 @@ int damon_set_attrs(struct damon_ctx *ctx, struct d=
+amon_attrs *attrs)
+>                 return -EINVAL;
+>         if (attrs->min_nr_regions > attrs->max_nr_regions)
+>                 return -EINVAL;
+> +       if (!attrs->sample_interval)
+> +               return -EINVAL;
+>         if (attrs->sample_interval > attrs->aggr_interval)
+>                 return -EINVAL;
+>
+> diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
+> index 4a536d41cdb2..ec8ef71956c8 100644
+> --- a/mm/damon/tests/core-kunit.h
+> +++ b/mm/damon/tests/core-kunit.h
+> @@ -658,6 +658,19 @@ static void damon_test_set_attrs(struct kunit *test)
+>         invalid_attrs.aggr_interval =3D 4999;
+>         KUNIT_EXPECT_EQ(test, damon_set_attrs(c, &invalid_attrs), -EINVAL=
+);
+>
+> +       invalid_attrs =3D valid_attrs;
+> +       invalid_attrs.sample_interval =3D 0;
+> +       KUNIT_EXPECT_EQ(test, damon_set_attrs(c, &invalid_attrs), -EINVAL=
+);
+> +
+> +       invalid_attrs =3D valid_attrs;
+> +       invalid_attrs.aggr_interval =3D 0;
+> +       KUNIT_EXPECT_EQ(test, damon_set_attrs(c, &invalid_attrs), -EINVAL=
+);
+> +
+> +       invalid_attrs =3D valid_attrs;
+> +       invalid_attrs.sample_interval =3D 0;
+> +       invalid_attrs.aggr_interval =3D 0;
+> +       KUNIT_EXPECT_EQ(test, damon_set_attrs(c, &invalid_attrs), -EINVAL=
+);
+> +
+>         damon_destroy_ctx(c);
+>  }
+>
+> --
+> 2.34.1
+>
 
-Otherwise, i tend to follow rule of 3 for generalizing.
-
-~Gregory
+Best regards,
+Sang-Heon Jeon
 
