@@ -4,98 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEF3DC982D6
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 14:23:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 464C1C982D6
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 14:24:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B78A66B00A1; Thu, 17 Sep 2026 10:22:25 -0400 (EDT)
+	id 53CC66B008A; Thu, 17 Sep 2026 10:24:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B268B6B00A2; Thu, 17 Sep 2026 10:22:25 -0400 (EDT)
+	id 4EC3B6B0092; Thu, 17 Sep 2026 10:24:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A2426B00A3; Thu, 17 Sep 2026 10:22:25 -0400 (EDT)
+	id 3DA536B00A5; Thu, 17 Sep 2026 10:24:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 69B186B00A1
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 10:22:25 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D43D680365
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 14:22:24 +0000 (UTC)
-X-FDA: 85223469408.04.C110880
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 3C81C14000E
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 14:22:23 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fbxk3B1k;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 15B0C6B008A
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 10:24:36 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9144FA5451
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 14:24:35 +0000 (UTC)
+X-FDA: 85223474910.17.A8733FC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 74FCD4000C
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 14:24:33 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AHIQSD+h;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789655073;
+	b=GFsLJmCdN3vu//+nijUnb04l7c/ZuJhi8S/82AXDbecCz653pua5y1KBczPM7/IwotelW0
+	4MCDdpiCr/ZuT6OZSOqMz30VKGi/TTNiZWqHT7wLE1IVVvvC6fUOy2rsiivGwcMP6bF4pc
+	6mwIs733ut62cmOLiWrspIrtvLb3cRU=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AHIQSD+h;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789654943;
+	s=arc-20220608; t=1789655073;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Mozf9eR83klndQFJraTt18kHcl1hxd6yOHCmDoYKrX8=;
-	b=O1g7Zdh8ZX3r7w/0tOhbzpYhCupeN+EUiiGikSeSRnZKWKWz0/stw8U2CociyX2ynKsBza
-	8NDSbHj2u/kDIbeBOdn23QcZ4XycmRjZpLgfyHgu2hcoKlXbU/07OwZlzJCH+jLPi91F8o
-	YOzmp59EZLs3X4ZQxuQBJwoJp5j9CQs=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789654943;
-	b=4SW2Sy9+1uZUcuoOzH4HqQLLnVZMZ0tKWDOHj9JrH3C+u2VD0h7Qe274r+e6mvgh2Y47D/
-	Q4ZkWhEpbC+HGdvKjcaX/sYHk2ZbGHyt6CXqM7boVcYz7WI5/0ZZQJkUkWh2sSESE/OjSS
-	oV8FFputKUc+gAk86QmEBU2+g09QATc=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fbxk3B1k;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=6jvbgmg7xBtScoD3A0f2vhmMoi9r4XqdACuqMBZf3Ck=;
+	b=FRtF283GE76fNMP5O2B7cgam246YmTBTTVPP6ik1D6Fw+8qcPGrHyXljjonQSUTwWJXcNO
+	n5/2O6dSg/kDcAY0/8YdUXG9FL58/H9pnazankFczaTvw8tHxiTP+80Rq6YsG4Y+JurkPa
+	vyD6tNAaCph8pfhp3kuo6r9M/QZLpNM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8D9CD43D1E;
-	Thu, 17 Sep 2026 14:22:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8CD41F0089F;
-	Thu, 17 Sep 2026 14:22:21 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1609160210;
+	Thu, 17 Sep 2026 14:24:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C985E1F00893;
+	Thu, 17 Sep 2026 14:24:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789654942;
-	bh=Mozf9eR83klndQFJraTt18kHcl1hxd6yOHCmDoYKrX8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fbxk3B1kVQa/Rmy2plmyyuHyctTxT8yCGXvhut/j2pz7uiz+QbAlLv8/6UztAXe41
-	 tLJg8cKGIynm6fLnBghsnGt6GCd+jYC7M+RYUhe1vzhfTqX3dOZ4C1BId14gforUo+
-	 Mpqj4T/S6kQMSBWZ180eQEfmNUJFLRFNss0AzQc3oQrGPO3n5O+L7sZsfgrNHslSA5
-	 aGPofrVcWeRQSeyLDDMfGqp36KBQBcc2Kpb/M1Zuol0PY0FqPB/wrkDwU9zD5C7/EA
-	 xT3EQzQInjk9Cx/S/7zF+BBGo6a7I5x/aPeqb6BVAs+d4FNyYRhwezk/i5o+sFkLYR
-	 EPfhO8Oy0rVtA==
-From: SJ Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SJ Park <sj@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 10/10] Docs/mm/damon/design: clarify bp is basis point
-Date: Thu, 17 Sep 2026 07:22:08 -0700
-Message-ID: <20260917142210.90829-11-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260917142210.90829-1-sj@kernel.org>
-References: <20260917142210.90829-1-sj@kernel.org>
+	s=k20260515; t=1789655072;
+	bh=6jvbgmg7xBtScoD3A0f2vhmMoi9r4XqdACuqMBZf3Ck=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=AHIQSD+h1jIAoULc5w1mw2MyZqWiLrZtHAKmAcoKDntOnOeV0+yqpesaoOoMR7eVi
+	 IpMHSZCG+c+ok3HLCcdLj4pWkmSj5+lcRf494LfPj5Th6eCASKd0UJEZJNd1OG6w9Z
+	 B9rzrsy5CWHQANyIY7pgE6rwi7SuFoG/71O9vpD5E6RaCfRAduztW8rodtLhcSf6Cl
+	 q5zPbZL+OamuWhIv4/BuI6c86ck139ABhqwv9BHZfszpLen41pzoFP8ghmtYnDpTvh
+	 aY9g6XKoMfWhlVwpJASX933yAbx49rH8e5fKGxeRFXHeyOZnCEGCZDjKouhgRM7QGm
+	 vy3lzx1yBVMvQ==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 6F5261980058;
+	Thu, 17 Sep 2026 10:24:28 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Thu, 17 Sep 2026 10:24:30 -0400
+X-ME-Sender: <xms:G_iram7feomC7yHwoinUmV_EtURuOT0zCp1oq-VywvzhfxAriT5yoQ>
+    <xme:G_iravx0WGzz525s18ZiaN_-9RCEPwRrPcGsb5-Pqd0s90r6kz8_b3jjIBEhiQg_J
+    OteLnfpvNC1KosPmBSxjs8qlEwdV6HmaRVjtL7LfqqL2MNDtuZ6TQNQ>
+X-ME-Received: <xmr:G_iraiw-7FGHmDWJxUNTC9kcBQNFuNMNLeA-qWZRyrZ9IaPP3rYnTd03ZyY>
+X-ME-Proxy-Cause: dmFkZTFiJne9d7ut4379TdaEhOYJEfhNk6de6RP62W62P6FcjK5SF6md/cm+0pDsJ25MrT
+    /q6b15+QdXJ4Q1HGGR/b3YzO/kHRjEJgJEiAF+bLeugjD8pgFSavNNW5zgHiVI/booYvZf
+    kqEKROzApTaL7eavowumjxtah55MGiGQyJ0/sMX7tH7eTbOYHPwAAaPYo6WH8oB7SLZdNv
+    s8uL89t5P21QtKRiN+SY57IOX8vl4IdH8LZbaBXCWmf80ijDQCW/BPea8fNAamtw/cwwt7
+    DvTEPOpwvT3NLW8y1fDd58r+ope38dheM434OKaEhZ27no1CzKhT/lnNIik1REnIdS/Qnx
+    mi8Z25zrHV6+kn79/GCdIQnPr6oqUUU67MmaMLSYY7Z4GH7aWCZkGwpB/+1CA4NVjY6omy
+    CYFOfJgyetf9iqIM7ckIEs8i7/rc8+uid6ArZcOZAIsIcr6QbiGTwp1ceBl/3GvbPM3lZg
+    Fw7oCJ/gsWpzA3/CGZ6QM5Qz+m3JAIU//z2KpUpI4YfwRLYNdHnc6Tfp54d652QoQtVwYN
+    +GzoXKTcu55PdT3fa7PR8bYTLWlixiEOYX5J8DqT9Ae76+kAd+YLBBkZgcfi0EyL9YTdVG
+    ST5pzni+bfMhUA8V+D2XS6NHTccps8iMVuAs0gRAptXOgIZvxUbVVn9keTnQ
+X-ME-Proxy: <xmx:G_iravW3soFWJBvmG4AbpX0rIC0cOvK6wD7ei3yKMjZXYvRACs4Ssw>
+    <xmx:G_iranRGwgxnIUqS_DVePtf7AhH_7oEw7inC343PgTqXMCytVCSnQA>
+    <xmx:G_iramN9zte4BK_h9dAAH_-WqYZoVXN0xLZWha1S8k6UHPzWX6Dung>
+    <xmx:G_iraswQJ_c-x_GaCZD00s3uuePekcUo5PCaf9FRyGLseDdTP07Iqg>
+    <xmx:HPiraooHDiMj3vUXgdjlUgDQvalcmd_5bMD4uWYPym_kQj2ncEaytHCU>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 17 Sep 2026 10:24:27 -0400 (EDT)
+Date: Thu, 17 Sep 2026 15:24:26 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: akpm@linux-foundation.org, david@kernel.org, ziy@nvidia.com, 
+	baolin.wang@linux.alibaba.com, liam@infradead.org, nico.pache@linux.dev, ryan.roberts@arm.com, 
+	dev.jain@arm.com, baohua@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/1] mm/huge_memory: simplify pgtable deposit detection
+Message-ID: <aqv1gZso6EwHEcoI@thinkstation>
+References: <20260917054015.23553-1-lance.yang@linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 3C81C14000E
-X-Stat-Signature: 7jaddswghnf79xpixxpu9ybi73ouj76p
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260917054015.23553-1-lance.yang@linux.dev>
 X-Rspam-User: 
-X-HE-Tag: 1789654943-87194
-X-HE-Meta: U2FsdGVkX1+4H5zgcvriRSJLCGQNktY0pj1Q9HjtCmmAWb84kf3XEocVQ9L8aNFWtj6QLLFyOaMRS6+1+APFGy7Bn7dXmqgqL3HYWcMC0Hd5LDvU12f33jjRyjbAZi7kOLN15jyWS6NvQKEahn7w0kvwLfhwoBauXGt/LGx8DylmcxjSnDlY63S4N7xblajPUPsrBBilQWxywxo9W/in7u25237gJd2UMVqmiYnT693sqdyqM2IRs4Oq/DdlXyIwxEbbzB4nRjSxljWorIhetLhvgaQ6MOG6XgYgyJ/WTlWNWXoAo1Mu4o/3SkMu+0T4MCgyQKyK+l6bhzD5USFBDF67K1j7csQPmzV/j/Ulkjcz7SgnxsGVZdgGLd6JJ3eYHQLtK26AqGkK773QV677Xsn1Fhz3GMI4/rRSV1jGgbPncI13do4O0XhRBY34jpbJPnmXOuGASG+/kW5KJwaZ5aKtEv5BNEWWwS4Z17qM26dM4cYZ943yFUnYFnu7AZnUmMDqImhG6BlmAwUhe/A9RHZKazNgAyf7SQIMFifUggDi/B4WodgknqqvwDiToBesUDMkfSds4Q1QrPlq9VlEu1ipiv9ThaSJiTFciIDHKDastKEr27uY0ZMUs6Tws0T+8J6l7wRj6K5GebdXMTq1yfGzMbQZetWYVWEZtVZ/N77zc7FP63r0l/wEo7SRy2j6ResZIYMKRCI7cdiEMX5E/ww4GeUsFC0gaeU2U/RnFil96UEHlK7rEMSDJ35VhEDkQMWv5PWOm5jmcHw2GLpQFCllxGUXDl2m/9lbldLiuSbPE+qU8syGh8w3iwISLcusOBTuP93d5lLRhDf7WzMxBgEEsb5FXNUwtYjdJUeyf7zqYqOaX9F4ElwtJS2HFZwvfnfnVzeM1OyGZMaD1uWItJYeJgo4xvajrufXDCNSSicHGN/ls/7Yx4PecWjqO4KY9ieK2F66MF3lNlCqrcW
- xaCNFBqA
- HwiGKeLaTV0NDOAkctwlrdg2Mleramq1ZMU1rGixVhU2a0YwE37/9BU3+41NtebQnFTdiYd4/V59S6R3YbNF4IW7SMOuvvBImjos5JruFpq/2+bdtPQ1Jpc0Ax4RkKGHP9dEvJL7mEfYqmED7EgC/mcI89JLNdiXIR+ThCVbx/4ipVu+QfgMsyI+YIBCGN5q1StAWa36nHfvbI98edukgrlqohGe+CeRMuD6CzxDY7kUbMaadbPDQq2lA4QZFM6ucu6vpQmLsrWEm4pJi1lhWdPbpg+fiH5L6GS8gnf0afHNrfMA=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 74FCD4000C
+X-Stat-Signature: 7rapo7daum84e8tqumgmgd496rrg5zfp
+X-HE-Tag: 1789655073-786556
+X-HE-Meta: U2FsdGVkX1+T0NzfZ0E3JIqGX+ZWLSmhC1QY5J7ZQVPhFxvjQ6XsjkWE/2DcSMB+TS9s81FbEEskkbFuL7yo/UKboZuOJKFgPwFf6mlDkZItpop1LVjpFc9iAmneXQnkVnIhfUE6TZkVzIVt2sZEv4AJ9qQlTDzRn5lgDnlbKTAyLHJdIrouZCPD+A7r6jCxMWrD5N8+4H8Zl2Qms+8FvuWucXcPh/T4unjXJIRvConue/oKNQVSGKCYkWv/Lmigy6Enx+sBt7V/v6QfmibXs+J1ukYRZfZuDTolSLuJqLsfLcq7bdmhT19isEoHFSjPmxl3IM5EqRDpHeVJXOn3Evm4shbgFmXUcTXKMkq6eB/qCR8U+hizwmwzE2VtVpOOEM87cn2StiHQ0z7wgQE8k8qR11A4KNAw5vTLSu+UzXq/fqaYfdWrivEQkwx9cF9nGaahFnNkoOg/59Bwq/apRp8Vjm1rY8ayegv8dcIqN/xdHK8MDrdkIMhDDoQvt4ZnpWkiY/XbLL81/B7PZjFBivzOpJ+BoQzcV0gNGG93vsCp74aPp3C7LNipF+Hf2+3huWEBTlwZYCcZsepGCYK//pmRaBtzP2i8UXiZoX2KEZZ7daBAMcrB2Fxw9vMXZPqTWf3usl45M5i4shEZQQAAn25LUTg3ncv53whJXMibmoKJbOee3iW+p6d6qUHEfKB+9cwPq+XBLPVyNI1+skoDgmcAQms2BKhF+xEFVbFuIsSAtHc7q9AJKLEtV8kmI7Mi5IWSJogyJVpEa+vtVmDabDSUDwbil9xmSNm6Xu41oDGgeOq7WxKE6uuG5bDJs1qz0l7mv8fb9uALPwIKoXNKi1ay2PmxG+lwkqHPWui6rgwMUc5pYOmBVYYFjIaApHHlHpjzprhVA6GJUOJp4HKVvn2h9pzSOTrbSYFlvaPRxlmCaaXIrfUp5Gy/R5EzkurWvq7NNrndAX+gdNCwvlW
+ buUFVxzh
+ 9lNzU96xHGQWAJnWFz7G1brdUqBV7v9eHcDTa5/sc85TlGNgWdiEvwoxsos8yfMdYCyvd2Pl6hzuadczqVVW9WJmBYyvu9FSBxhMyjGfy0UOhwQzOwY4XUFI6Gtt9J52sfAnhIAOUcpm/G9yicVVuTDfDkUBZ3nVjc7WiHbmOn3NvI/0ALRftdseIa1THaaRd6NDfWf69RCLYJFSoVRXFaGyUY95ZsC8ZjQS4zVPEc/jZotz2KIz7Dp3Qy141z/Qqn20QpcwHw9EoljoLf0XSGLv1X7lV66d083uaaGp9Ipq43bEWrSdzIfL/+v8r5R+WWWPZ6URHeo49KV2JhYShJCSXey1wxL/iYKYS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,41 +119,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON design document uses "bp" for "basis point" in multiple places.
-Because it is not clearly mentioned, it is difficult to understand what
-"bp" stands for.  Add the clarification.
+On Thu, Sep 17, 2026 at 01:40:15PM +0800, Lance Yang wrote:
+> Whether a PMD has a deposited PTE page table only depends on whether the
+> architecture requires deposits or the VMA is anonymous.
+> 
+> Implement this rule directly in vma_has_deposited_pgtable(), avoiding
+> mistaking a non-anonymous raw PFN PMD for one with a deposit and attempting
+> to withdraw a page table that was never deposited.
+> 
+> Suggested-by: David Hildenbrand <david@kernel.org>
+> Signed-off-by: Lance Yang <lance.yang@linux.dev>
 
-Reported-by: Randy Dunlap <rdunlap@infradead.org>
-Closes: https://lore.kernel.org/107dc6ba-697e-4b25-ba3e-8ce2499cac9a@infradead.org
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Signed-off-by: SJ Park <sj@kernel.org>
----
- Documentation/mm/damon/design.rst | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
-diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
-index 0a86792f90a18..e82390e77a70a 100644
---- a/Documentation/mm/damon/design.rst
-+++ b/Documentation/mm/damon/design.rst
-@@ -445,7 +445,7 @@ users to set the aimed amount of access events to observe via DAMON within
- given time interval.  The target can be specified by the user as a ratio of
- DAMON-observed access events to the theoretical maximum amount of the events
- (``access_bp``) that measured within a given number of aggregations
--(``aggrs``).
-+(``aggrs``).  The ratio is in basis point (bp or 1/10,000).
- 
- The DAMON-observed access events are calculated in byte granularity based on
- DAMON :ref:`region assumption <damon_design_region_based_sampling>`.  For
-@@ -717,7 +717,8 @@ mechanism tries to make ``current_value`` of ``target_metric`` be same to
-   in microseconds that measured from last quota reset to next quota reset.
-   DAMOS does the measurement on its own, so only ``target_value`` need to be
-   set by users at the initial time.  In other words, DAMOS does self-feedback.
--- ``node_mem_used_bp``: Specific NUMA node's used memory ratio in bp (1/10,000).
-+- ``node_mem_used_bp``: Specific NUMA node's used memory ratio in basis point
-+  (bp or 1/10,000).
- - ``node_mem_free_bp``: Specific NUMA node's free memory ratio in bp (1/10,000).
- - ``node_memcg_used_bp``: Specific cgroup's node used memory ratio for a
-   specific NUMA node, in bp (1/10,000).
 -- 
-2.47.3
+  Kiryl Shutsemau / Kirill A. Shutemov
 
