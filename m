@@ -4,140 +4,179 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 646E1C982D2
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 17:25:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 681C0C88E72
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 17:49:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3AA9D6B008A; Thu, 17 Sep 2026 13:25:53 -0400 (EDT)
+	id 4D7906B008A; Thu, 17 Sep 2026 13:49:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 35BDD6B008C; Thu, 17 Sep 2026 13:25:53 -0400 (EDT)
+	id 4492E6B008C; Thu, 17 Sep 2026 13:49:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 249666B0092; Thu, 17 Sep 2026 13:25:53 -0400 (EDT)
+	id 338A26B0092; Thu, 17 Sep 2026 13:49:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 00AA66B008A
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 13:25:52 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8FA378043D
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 17:25:52 +0000 (UTC)
-X-FDA: 85223931744.17.55FBADC
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 9252BA0007
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 17:25:50 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=mRsX5erM;
-	spf=pass (imf25.hostedemail.com: domain of surenb@google.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 11BE26B008A
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 13:49:23 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 87A61C0404
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 17:49:22 +0000 (UTC)
+X-FDA: 85223990964.11.4529E81
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010009.outbound.protection.outlook.com [52.101.85.9])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 7ADD818000D
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 17:49:19 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=uH2kgrbD;
+	spf=pass (imf16.hostedemail.com: domain of ziy@nvidia.com designates 52.101.85.9 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789665950;
+	s=arc-20220608; t=1789667359;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KsTRDsiQkb6uPtn9uEZQZ4pGk/1dXT9fj39UbJRrdLw=;
-	b=KSUG7gxNXoAL3UngAP/zCNjCIbq61PIQZFh6lDlMTJLlBLCe4yhC70XSjBtaqGsm9SBj/o
-	Usu6lCJilxUfDEosvMG2s4qCWDctzH4AF98qWHcREI34jpfc93ZyMGd+2mqIOfBJQrE53q
-	mvUmoSd0n+WkVXdEXFt6dlclhYX2K5Y=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=mRsX5erM;
-	spf=pass (imf25.hostedemail.com: domain of surenb@google.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
+	bh=dyKBzB7EXBQhz1eW5bQ7J+ZiLg6/sI2nMu8MiGCsZeM=;
+	b=OppstN5EojfBrT4H7Uth23w/QqdC4cvBbRYUl7yrqwWPDVfNtNNHgLgMCAZyqCrBQ4wAFx
+	GrnE+Zalww4urHk5FBz+lCpW8Hm3YHXaDTb67Im4+FpUBnYl8fWJF7M1YeQhJm6JoYkS2e
+	cTkEMXAK40UeKRiolp7hLlwlPF+x7/o=
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789665950;
-	b=r+l3zARHqui1AAJY5KmdnEv+lx6BF1//cSQp+VD/4smll8pPaMb75+b9hEqvj2yNikE5yX
-	lhM7pwCV5NXwmyRVQoOLCYXEkjB9JvgKRBLXI6bRcFVABzCbb6xsvoQPerlKwyeMm+d3Uu
-	RuI926QjM5SatnIATJjZ7pj+MnRy5kY=
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6a5f9b036f9so422a12.1
-        for <linux-mm@kvack.org>; Thu, 17 Sep 2026 10:25:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789665949; cv=none;
-        d=google.com; s=arc-20260327;
-        b=M7jpRrbnq2GrSc/DxBRe3KVPq/vwSvjePW/9IJOaobjv84XVHsAeLzX3g2eiu/VatE
-         cstScbfJgajwEErCUZwwTIJ3YXkoOGW1KXviOs6Bu33EPLwePs4QSbT7XuNlq42qEHKW
-         xvMCp0DwHhEIC5Gq6kCnAnb1JrfPJq3GSJGrJqGKHEivNZg76m7YYnTOv8K3j3a5WS9P
-         YLUiZrOfkNJLGP7jWFSIpfYwJFxtuEFLcuvHBAe5kjH+Kj3uk1m2wrlN4zVDunlB5knx
-         eqsxgTV/dRu8Trhv+4HVMcRbwSaskw6GNs9S1cb+cG46WGoqBOMsqepvOkE3q70ZL0AD
-         15rQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=KsTRDsiQkb6uPtn9uEZQZ4pGk/1dXT9fj39UbJRrdLw=;
-        fh=PFoeIicEL4YNffuRVWSl4oqMyh1POyKArP+k3AB52Dw=;
-        b=dVLd9Y+UBQCZn/7feSVh5mzGNy381GtKf74M7FT5yies3meyLllGW0DoPZOv+GRZLm
-         +SgszyKwuzviZa0IsHpiNuXax/cFZg+GfwGHEqoB6aH6OqKNgnjq6X7QoL6XAf46s2eL
-         DwzxTrgedm/QYQIXwH1d6SG3VBMUuwzpVnPXiedmdUevW7hyDf1NM+xCCcueufoAt6BQ
-         E6Q7es7gRmgGIPugIDBhgdAA3i01/7GAQ4CL1wR/k8nvqO7nWDEO5nKdBv7L9wMv+w43
-         rGoz1De2VWGR7g9C6r8tsF2K3wDh1jTnmEhpYbmzUUmNTxja9A5fEbR2j1Bz0CpS24kr
-         QKDA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789665949; x=1790270749; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=KsTRDsiQkb6uPtn9uEZQZ4pGk/1dXT9fj39UbJRrdLw=;
-        b=mRsX5erMSrkcuVeyH/jh60TvBvqQh978hMp08KHhPzRJqppWUnDV14y1IFyeLH+owF
-         fCdat/V6gAy5Zk5eyRo/ZDo1WEcXkNUnZPc1GYv85CDNH0bttQ6yfCUok6+kQ7zqhtkM
-         G3n6WUJjyfNxtM6/WEjjhcruydo8NCKd7kplJmOaVf8x3d1+qYXV6/VstZ2PVgAmq+EY
-         JMtwt37XpLLilR/grCq7ykHSC7QHNHk0SNpxId0nzzQC2jJ0kZyRfRWSajVyzUa87rLL
-         mspYgYJiYD3XZ6MPjhbhzIFeV6bRHGyrgL/a+DeJq3og+aXWSlzb3DSvUFX1+58wgQCG
-         85Uw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789665949; x=1790270749;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=KsTRDsiQkb6uPtn9uEZQZ4pGk/1dXT9fj39UbJRrdLw=;
-        b=eRHPYoaFdYnBsm2ZL3fjz0Bo/JUhbTNNDV3blwDDKphDLlZQliIfrkSdgxre1DX9ph
-         e0IzWbpuinqnHQrMqc4A3QMHUp3/tawl3pS2b4dnj+pdXjT1jCWZTbsv1k6cz0Sd2GIj
-         S1kx4i0ZmWDqop8wFXrGgziuHWruhsxjZShRwpIRPpy+xO03Pb5J55rSjUWWVjnZke2c
-         qOBT2GRLa0wDZGsvbLKxHT9KNqEnYTQ0uO+NXvP4wk28wDgjj6OPwuIaj/95H7DkaM1/
-         yd261l6A6p7dWpagvNpl4beVeYQRyGK2QrCIDX3QO9YCDozG228b2louFdPz3IWNfJ6Y
-         fj+g==
-X-Forwarded-Encrypted: i=1; AKwUvByr60mu0LfXYFqZEccOwoPdCQ3EHle8Cj/44QJybCRO1pfwUAsc30760JDS3BIT4UwZpUtbxV+6EQ==@kvack.org
-X-Gm-Message-State: AFuF++kHvgV1/7R+tyoKEHRsL7VUJ5B2iO+5efZi2+MyuAz4yEQeA+1z
-	UGWrvEV5eXde/E2UdTmrRSyJuACAasSmy1K8/LwjC9QyuEsBpJi7WxUH4sIbZ55Jef3j6ZfDTvN
-	on47IDoF2nP/n2ISv/lLH8jNl7pAyaYBfYnGfqGo9
-X-Gm-Gg: AYBFou0Ep9mDSdzy0nnyMrG+OisnakVg7reCl1nQ1ywKs+zTjmcD9ulMziNSjegaARb
-	gYF/jCloSMWpxwV37oGy4ikAZX+Ow8WuPrkSHt2HONLqUolcNNiD+DzSIklbRw9FWLNiCJxIpwE
-	fQifyH7Z3fvlsaylyfAMDLDRLk+7eEd8UnkefFVKkKeRGOSMD331xaXS9xyt2uosBQHQOqCONKG
-	QxRXv0zUOsYsfan243RSEc8impT6LllkauMk7hUJsLEO40QHKiEPut7+7xtxyLG+UMfALkj0q+J
-	45KM1wqGtkSX8tQt1SpBuSE4CjuhTdqkOzv8YFkU62/u6Sh08B7A0wkU6VOwaKh51ZzSq+a8vLM
-	fDZSCp6A=
-X-Received: by 2002:a05:6402:c318:b0:6a7:ef71:28e0 with SMTP id
- 4fb4d7f45d1cf-6aa4de2f154mr1263a12.0.1789665948368; Thu, 17 Sep 2026 10:25:48
- -0700 (PDT)
-MIME-Version: 1.0
-References: <20260915070001.113559-1-hao.ge@linux.dev> <20260915070001.113559-4-hao.ge@linux.dev>
-In-Reply-To: <20260915070001.113559-4-hao.ge@linux.dev>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Thu, 17 Sep 2026 10:25:34 -0700
-X-Gm-Features: AcwNN1XYvpWm4JKrRXV9ykFLQYiWSqvvLPav3S2pb3RC8LMV6NkXRBZ6FuHBL-c
-Message-ID: <CAJuCfpHz6V0zT5+QkYdQsBzG9kWCFhP+gris2XRrvSu4hHD6Hw@mail.gmail.com>
-Subject: Re: [PATCH v10 3/6] module: introduce SH_ENTSIZE_STANDALONE for
- separately allocated sections
-To: Hao Ge <hao.ge@linux.dev>
-Cc: Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
-	Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
-	Aaron Tomlin <atomlin@atomlin.com>, Kent Overstreet <kent.overstreet@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-modules@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Sashiko <sashiko-bot@kernel.org>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+	t=1789667359;
+	b=an4IiYcZzwY1iVy8uaZKYSQs/myp6uyfFidJzj+SI7yN4tmYRKzW38ktnztM8YvB8CdfjI
+	XJndj5gGF5CltAOnACZhjnrzhhYpFKNpR75fD5w2btTPV24Iw7qQntjJwrvFDgK8N5j2vr
+	hJVUvtvZjPnZKu2Tl4uJRbpwTjhKH7k=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=uH2kgrbD;
+	spf=pass (imf16.hostedemail.com: domain of ziy@nvidia.com designates 52.101.85.9 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=U4SO/Wb9B7gaPRazQZuKBzfOUcz4DUeEkx3UJWOac3g167vZrtvd3uP12eHl/Cydw2CkEkoqQ7aAg9PojfZBVqmUYLtDis8GcKkmde0Rh0YeddDUnAlyPiIbORTo6ZpZuUX7l7dXwBi5n3P1KjaXcyQZ80BmjV605icvqNE64HuPjRNq6FcugvprkHsOj8hHaai2G31bLsUybqAFYeAkVzVRm75Rrze8H7yovNgdIkuNzxWa2RoXLVYGW061CECDsD/5LIzIfDN5D0x0cElFFbxtTH6B8oLGUcalYt3iQK/F49pKHDOIrWuZ/fgJX/PeEyd0asVXW++QTP1pfADPqw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dyKBzB7EXBQhz1eW5bQ7J+ZiLg6/sI2nMu8MiGCsZeM=;
+ b=Ny7/HpB3wO9f6T5Kqy8cp4dwybHBlomfo+VWgXf2MSt1LQG2PXxmMTIoSgEIJJfGsl+rdtNsQhpOJQGufbYNotS/8cI99LeX/FQGtKboF4uM1cB/C8VFxE1F60OXiMcXQ5U0O6Q3R1h41yeQdaFP4PqTkt8UtSXFvEVZQwWNVJOOsNJhMSOAHX28CmlyeOr4jTKFcl29EclY0EhxmLDmsrWDrXPCsrkPigOYwQ2+Iw66Hzr/oWXTdxGBRr74fZiXkVJdtUj0i17MBb3XZaoaCDgDMYHx/CioX00SkD3INZe4UigztySqiFFPpXk6rF4kkzhLVK8Dv3n+c+SwDRVjbQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dyKBzB7EXBQhz1eW5bQ7J+ZiLg6/sI2nMu8MiGCsZeM=;
+ b=uH2kgrbDmps5imGN3tbzhY+hjHFu4/Vqi9l61RroURjHlhs4Dnk5Oqy84ECgEBm0Wu7sAeW4OU3n9saHw1UW2Kwctw0lUMEnZCDCUK/XCDkeoBhRgp9PFHflVDtdvUau7unobFVHAu260zRAztK9YJhIF75i/1wUUuKEq8P32w3r26Z1sGHQe0KUE3gp4Ysc+6ytHKR+6tNmUMY53hjXQhOBTBK6kRP/GKcoffPN/MOnuZp50PIomCdiWZiA/bE/Zk2FhP9fnjaaCwcaAAGFYH+t3gu6ieFtFmAE+RLKpAY2PV9xmhgxRxE5tKhL+UKYurUsi//k8WKBA3eHmFs+qw==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by MN2PR12MB4336.namprd12.prod.outlook.com (2603:10b6:208:1df::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.13; Thu, 17 Sep
+ 2026 17:49:13 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0428.011; Thu, 17 Sep 2026
+ 17:49:12 +0000
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 9252BA0007
-X-Stat-Signature: cai3y5zd9uxw17c7x75bojog6ew61a3h
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 17 Sep 2026 13:49:05 -0400
+Message-Id: <DLHS4KFPQ86I.1J4LN3352RI71@nvidia.com>
+Subject: Re: [PATCH v2 2/4] mm: allow shared folios to be promoted to a fast
+ tier
+Cc: <linux-kernel@vger.kernel.org>, <kernel-team@meta.com>,
+ <akpm@linux-foundation.org>, <david@kernel.org>, <ljs@kernel.org>,
+ <liam@infradead.org>, <vbabka@kernel.org>, <rppt@kernel.org>,
+ <surenb@google.com>, <mhocko@suse.com>, <mingo@redhat.com>,
+ <peterz@infradead.org>, <juri.lelli@redhat.com>,
+ <vincent.guittot@linaro.org>, <dietmar.eggemann@arm.com>,
+ <rostedt@goodmis.org>, <bsegall@google.com>, <mgorman@suse.de>,
+ <vschneid@redhat.com>, <kprateek.nayak@amd.com>,
+ <baolin.wang@linux.alibaba.com>, <nico.pache@linux.dev>,
+ <ryan.roberts@arm.com>, <dev.jain@arm.com>, <baohua@kernel.org>,
+ <lance.yang@linux.dev>, <usama.arif@linux.dev>, <kas@kernel.org>,
+ <matthew.brost@intel.com>, <joshua.hahnjy@gmail.com>, <rakie.kim@sk.com>,
+ <byungchul@sk.com>, <ying.huang@linux.alibaba.com>, <apopple@nvidia.com>,
+ <jannh@google.com>, <pfalcato@suse.de>, <osalvador@suse.de>,
+ <hannes@cmpxchg.org>, <raghavendra.kt@amd.com>, <stable@vger.kernel.org>
+To: "Gregory Price" <gourry@gourry.net>, <linux-mm@kvack.org>
+From: "Zi Yan" <ziy@nvidia.com>
+X-Mailer: aerc 0.22.0
+References: <20260911001826.2109390-1-gourry@gourry.net>
+ <20260911001826.2109390-3-gourry@gourry.net>
+In-Reply-To: <20260911001826.2109390-3-gourry@gourry.net>
+X-ClientProxiedBy: YQBPR0101CA0084.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c01:4::17) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|MN2PR12MB4336:EE_
+X-MS-Office365-Filtering-Correlation-Id: 413f4f1c-4cb9-4576-641a-08df14e3fbbb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|23010399003|18002099003|22082099003|6133799003|3023799007|10067099003|11063799006|56012099006|4143699003;
+X-Microsoft-Antispam-Message-Info:
+	QBwW7OoWt4ix/OWkXzbLNEihAfxjhHiHjEnpgxHZHnEjnfOzm8RCWaaLlV4nan62Bfjt/cMx9Hy3Kz0CEiSU0k2pLOoGLJhgWvzbUMR7hmfgMAeG972Ad1gB+V6VLWKblZvzRO/Zd7ghy9yMsZ+SNH2exU2mzyId60/aqUR3Y9PCFLft2C4/KTiVq3180AEc42D/Y9yLt228IqV6k5dT/zSR8VL8ZAeEIaVUGKYoErx+q0ahILt2z62TVOO/PpiqAliM+LNTHKGAPMxFOHbIMJqnQ7vKaN+lVu9Y5/ajXOSWKbobDl0a0MLjyylP5jSa8pfV5gZug2MmegFjhEGg0qEF4CAFSI9wUMRVbZI0uW4Ym7lNMYpIuCvh7ju27GcY5AEj42YmFSMjxE8Jj8fKoXHh94TBlBzniD4DDMSCXItXzPtjveyvX3sNa8hA0QFeGdIgV7gcol3FQtWzgpznDIRrz8UeUrjZU2pRQKSUG9mzUwCGWMgWVrIzFgIiRr2wiM+rVCHs+9UBKq4UWtMqS1rNy09GVIE03fqaw8TWMYz54r0HTR//I/spC0LJQxGmXO4EvkQ+6Fje0+/deZ1nrG2RUcxiUB8ytkzAAxQ0g//YV/ChrscfklUfQH1+gCs+AjRkr5wFq+/XTk8m7uva0PT/ghQDdbf9Xi+HU+lWP2k=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(23010399003)(18002099003)(22082099003)(6133799003)(3023799007)(10067099003)(11063799006)(56012099006)(4143699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?VmVoendiMFVHTElpWDlVZHFoMEsyb05tVDF1Wll1em5BY2pPajRBZzJJQmM4?=
+ =?utf-8?B?VldzOFNnVlVpRVFqbTFHS3lpSGswUy8vblFKMEY5Mm12VE9GRG95dmt0eG1W?=
+ =?utf-8?B?L2lRcTdHdFdrRFlSbktHNDVNYlZTSzNmV3JpdHdxUkpNNHk2dnZXbkN2S1Rj?=
+ =?utf-8?B?aHdQK0ZrOEg0SnVyK21nRklpT0JmVHZPeVFWaU90dHZkNlRzSkgzeEpnVzg0?=
+ =?utf-8?B?clRpZFIzMzBVM3YyVGdRbXdQNkV1ckM4Q1M3am5NWDBVWmozTEVSMktyOEhr?=
+ =?utf-8?B?VzJ6YU11Z2ZEL08rNVlJSTl3Z00zQlhZazlRNHRFVHg4UUpEcG00RmhHbUE1?=
+ =?utf-8?B?YTZHVHBOSmo0UmxRTWlraHYvNGRIRHdEajdSb2xSQTVQbko4WGR6RXE3UWYw?=
+ =?utf-8?B?UTRyTW1idVI1UmtwY3VwTTJtazlldnFPVFhFYXlFYmRZdnpOc1J0NVB3cW1l?=
+ =?utf-8?B?ck1HbDhzMk1kMG81aVFJc1hza053SkNvZW5jSG44WjE5aW1QeFNudWdJbHlq?=
+ =?utf-8?B?ZjdXNnltWU9zcEw4TVFOdHlYa0hsU3JMVWpZenZkRFRDQ1dzQXNXaCtiOEhF?=
+ =?utf-8?B?YWwwMElhQ2NidEtrSFBvTThJYmE1M3hIVlJrblEreVNXN25TR0tLS0gzQ000?=
+ =?utf-8?B?bVpwS0UyR0pMNHRnZG96SWVCcE95QlNiT3JBQTNML1NEVXltNHhRdlM5SmRE?=
+ =?utf-8?B?QjFRRXNURmZiV0ZnOXpmT1d3VUhTRm5DWWpvK0VBZ0lsRzgvMnMra2JJaXp3?=
+ =?utf-8?B?cVdDRWkzbUFqQ1dRTW5UQ2x2R1hlMll3dS8zMTM2b3l2MHdFbzhzL1ExQy8v?=
+ =?utf-8?B?eWFHVmtSa29Wd3ZOVWdMc1RwbXdmRS9aend2M1F2UWVZMkRReEs1dUJ1ZGQ5?=
+ =?utf-8?B?Vk1tR1J2aFJFNVdtUEt3aHQ5Uk1xbi9uNGJWK1c3UCtvMks5TThHbHdsYTJQ?=
+ =?utf-8?B?NExBM3NpRjdSM3AxRmRFSkxQazcrOHBUVGpXMHVrK21TeGwweVBxN251dy81?=
+ =?utf-8?B?V0ZsTUZXS2x0OURuTHoyTm9VOEdKUXhiN3BJRTl5SzhZYnB6TVM2OTlZTElq?=
+ =?utf-8?B?a1BkaUtOUk01d0ZvYWs4QTN2WVhJUVo5L0UrZ3UrZSt6TUZPMGlOY2F2UTJT?=
+ =?utf-8?B?NVd0VlRQaDZDRktaU1JYZDgzTjRXU1VnYUJYM2hqemE4UnBwWlVJZXVPWXpN?=
+ =?utf-8?B?L3lUUVV5MTVsZUkvTm5GSzVzdTFrT1ZrMmV0WEZDQ3htbmpRMTN4VUNoblVD?=
+ =?utf-8?B?V3lCczI5enpaQk1sb04xQXFkOVkwVXZqWmw5ZEJOYno1enJiUnE0Snc4NkZV?=
+ =?utf-8?B?NGxKK2Z2a0wxdFAxbWtHNnNnUUVvaU1ScFVwSk05RmxTemdsZlJ3Qk83SFN5?=
+ =?utf-8?B?NEJqaHpnZ0kzSWZucWRZREJlVVFxNzNiM2k5aktRaGdUVVliK1RZdlJCMzBI?=
+ =?utf-8?B?a3R1VVNLY3lXQjk5TlV2UUsxZ0JiWC9Ddm9pcWZHSlRZU0N2Y0lCWFk3cHRo?=
+ =?utf-8?B?RERRakNOLzRwQW5OTTlEQldEY0dud214ckx1U3VKS1JJOFpnVitPN1prdzUw?=
+ =?utf-8?B?U1YvS2hPUTFUQ0cybS9MYW5hbk04MjZ2M3pGY0hyRElHYkdnTnA4YWtmMzRQ?=
+ =?utf-8?B?RjB6ZlFxSjExUndoODA2ZVIyUTRNNWVjaTRVRFNFb01PeEJGZTJiTHZyY1hM?=
+ =?utf-8?B?VnAzL21WZWMzTFVpT3UySzBOV3BNVlJ3c3NMVFRNdzEybzRibldBSHFTY1Jr?=
+ =?utf-8?B?bjI0bnlCL2lLKzBnd0lSNlFTaXcxYzNDVEZKSjNNemNwRUFmK0tVTUtMZllx?=
+ =?utf-8?B?Z0xtZUFvWmhidE54SUMwcTB0cFRyVVFuZ25XM3JJdWJmMytpRGg5R0ZRQ3F0?=
+ =?utf-8?B?QVovZW5BUTVBS1ZsOEg4QXQzSmF4Q1dHSVZ0SFV5WXNHanV0Y2lNQU5mSmRE?=
+ =?utf-8?B?ZU1vMnNTUUIrajF0bFBIRDgyL2R0SE1hUWtCeENsY3g1RjZ0QklWVGdBRjFl?=
+ =?utf-8?B?RjhKaGJRZ3NoMGdzNERWUVpFUGdkN2NjKzkzT1ZmUTlnSHYyL0d3dHkzTmFY?=
+ =?utf-8?B?Q0JhK01DWjIxMUlKcVFsV296c1E0UWR5MlRpVmlZSWdVZ2xObDdkQ2owODFY?=
+ =?utf-8?B?YlhncmVWZEN3MlhzdDBHZEtWWEJTU1BCb1dBN3I5L3VIR0xrZXNUZHNVYXY3?=
+ =?utf-8?B?NkJ6aHowR2tMbC96WlYwWWVqekZxTHZUMmEyVWhCQmhZUk15U21oSHEvZ0FO?=
+ =?utf-8?B?T1BrazJGSGJYRnN2bHZ0azlSZlhQZ1hKWGMvdTVNTHAxdXJNM0tTNWFIV1B3?=
+ =?utf-8?Q?uAuikg5x7gynuEXsie?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 413f4f1c-4cb9-4576-641a-08df14e3fbbb
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2026 17:49:12.4887
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: SKRopGlJThsABZOuaynq1N2xcR4ly3Vy8AqjWtVyRRu8Zdrcx3qpsz5H3rvCRPcr
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4336
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 7ADD818000D
+X-Stat-Signature: oqrz4mofsstc1s96pdcg9ptthox97gm1
 X-Rspam-User: 
-X-HE-Tag: 1789665950-757928
-X-HE-Meta: U2FsdGVkX1+MqlPeO4OQQjEtoiwaAcaYJlUMJ4IOiu/0ydBOiffWQlwMMy8Io2W6HAQ8SzcCYVS7o4WrfXPZ2eNMPbtFFgg1rCaUC7i5jwWWzvICLux8O0LKk+5aY8T/fMThNzDPqs1sKo6SthyMNV4E+ocpxJZ+607YxTcST9P0O6hhHV2HHJ/sD372nBTJ1TmNtnMn4NZ+W4JBLfkQCOEEcM31vfwu4v+2Pf+7PCcRCR8lF7w1BR0jDBuFnhn8y6z2iANfYd46119q1+VVObmcwTLgE9nHFkKNzzdIGLKSRzBOuaWyyicdJ7OY74QhtEgn682/pJypYVd7M43uansftoRsQHRKXClowG1j6suWKm9LcvNdj6JSRkCqszEIv3TUZAFMAnPx0d03LqkxGT/1gT2pIlOtw33mxDhjdGkJjIm/sueYf7J0X1kdL1MG6QPhYbnPtJ0Ou/w1XXOFdb2ncPs+lVLWMZANN+LMCeQwQmnBUgQw5hVPSL3mJ/XP1CWG+a/Pswcb7UczkgXk9aJMJEGFtVCTbXzca04pTQFNNFEmy6C1mjtPbO9zKhxoXWoNIIjNCX4AMounnwk4AIcsbhVfy3JsdKJr0APlA//xJySnYHdZt9VvDscBPHTPUhDyZjH9VEbrezkF6rBqSfiSHCNwe46y97vCm3lZQQV8vbKlZwQox/IeoavIytj4FOV3Wfh7eZguH8cJFj7EQdu2xQ+AKFQ6l16L/QpKMY9S3YectkT52yEaeXZlAJekzXVY+eY3utDGAoHj2w0cJvkqsFnL9HV9WDhv62cr6NDBE999zNsIZ/vZSeNoFxiBe/GpLhb9BLbm77vN8zMoz6ioCvLenTFFiFG3Kv7GpuY+pVG/mcsK0jbgYwDUmclaX3ooT2lEs7535XOLNIA3S1D9q1fbQVSAh+QytS0UfrvG8BZGRjxtcnIO4zoj5e8y1WjzCjIZyrr/JtccLWH
- 7X1O76th
- miqd4CKp0hnLC93m6zD4ZmqEVSG/1vHknHi46jXsUIdEzxqZXwtO58DTlN2klLmP8BPjuWcoz6XYduYe87+eJkp95UKC8EyrztH6plzAAO2odsVNe/NN/TJZztpRjXaneeZDq6zU533FJBVM4jAGbDJSUjxvhgS0kv58B1f+/MqGf1mpiTp4v14AcFOh3J5KGOM+hKamSQtHbRpWrRz4gb77A3lR4keRvbN0cMxwbs+yRmpjYmLyRI3svwYxllZUqn+I9uy0dtXK0+j7BOmIuXfO03ulD0m5Qn9CF9HyxVjjparBL9Z9NkHr1HEalRHakICBwd8HGoUzpIkCJJaX3OKHhegCo4D/s9tNUJy1c0Pypq6IN9vQakIrBQsHkIN6OemuyzW4QrR235y8=
+X-HE-Tag: 1789667359-639842
+X-HE-Meta: U2FsdGVkX18GcWSQkQzaa+HIB97jihT307nODKiwKHBqvXkwpnBTX1BuJ8WxWFclXoL12F6Gd79oIQS29X8EbpG3ifK5R+6YGB1kKsu0eQ+JBx2bZ0ZGF8CRO8QuLh71VtPp7juZswju/0HcLmZrgwZGidDe0W+u7T8BJS34oMZ6PkfHUJ/x2IeWKGicrUMR4GLqiwyk9ZFTse/dbziI8V+W1vO+4c09svLrmz7lfSjLE+WrnT/+Ev/DWoqbN625OMyD8jVOqCriwKVNI6fzoccBwn3FmEWhTqXDNIdPl12htNeV4HQ0CPUNPemr8wUZzZ/mlMqs7OZyHBRubsu1NGj8q/DcclnhQUd8XutcMq6vY5heOkiT7zVXrdF/OMnQysPsaViFriS6YfVnq7byoqvq3qImtdclOo0HGumlZ6kuIH4az+0CjCHLr4PJP4NlTJzEX8rCrB8OEM8X/uKkKxJXi/vWuHvdZXkummY2Ff3riNhKdHRVj/+bmVzRMtM5hcYJPGT1PBrpBw/PrafJ9t+zuctgazXgCr7/WZFsu9nPZJcitsVDTTPvKb3MtimIXgcaJr9vLS9nfemqlzsO6ChYddSkTsdv4bgxKubGdtJWVAhSbkSk4MAacNkw4nWziiogXP1DAT2ZmZY2S/4w4qFSGN4sJbKamvcE/RRW4xkYx9INZ8wMRws7HKFmIQkeQBwVQ3hiOI9J3CfEJlcvF3VDlPFySyKW/BMYLcR1ZpyRQSUAOnjB2xu+24RKy7Im4GWpwwvI8jrGFtY0UqdJ6vcfSAkt4ZYdcegMItpjR/pr4zaqzJDsnad8k5TeIqBwMLJiSVkK96e8mRC6qreFp+LE7wuGeo/b1JrH6nigWxLJFlvxZyqhXQuTbvf8FK0vpGbhV/1jNGATCj8ulGVecAp065dNUm914FFlELIGEqANo5RxKtyVM4M8vCVzOAC626Ns89iGlfJeBbjmpO3
+ tplBFvyI
+ 2eCmNjm2JlPfPPG1xOAMeKsUATh1y/e3ig6w9PARsdFWkAwsA7+YunOEjoJMrgJiDeGs0fT7BvuJmrwVeJP9S9AdNLo+FEQwHwEtTX0IxahVALEOEsjC8hWxjz1YmB9LQKozJ686zDIheKxtENAxb8NAaajgbzIPY0kRPykV78h4sRn1dsmo8UbDoKBfZp9PrKsJiuObS6QAXYWRWEPBXx/QkV5/k9VhAJRedARSvgLFSh1ZzSvKKTay9AlXJkmugu28QszzZGDuJAU8g/g/KfThx5kOPSXw3cigxq2gyyI0sW97dPvbIrDamhcCEXBFOH+zENL3xRwSRfN58yoLiNEGVIlDBvEjU56UvJPFsm02zf4FopnG3TuUftTfF9OTqqdYvz7NcfCliZ3CGKvKDY4Hcs3xPl3rcylFtxsir7K2fCnbwBLa21RSjitmNx0UMJjQ+qxkd10Zln/0d6OSwMnyM7gkKPDhOOxqUAClPmaKgfc7wge9U9GL8L7vy9lIVSqtKxpL+UCWOfBGQ4X/fhnO1Bw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,302 +184,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 14, 2026 at 11:59=E2=80=AFPM Hao Ge <hao.ge@linux.dev> wrote:
+On Thu Sep 10, 2026 at 8:18 PM EDT, Gregory Price wrote:
+> From: "Gregory Price (Meta)" <gourry@gourry.net>
 >
-> SHF_ALLOC means, per the ELF spec, that a section occupies memory
-> during process execution. Some module sections occupy memory
-> outside the regular module layout, for example the percpu section
-> with its per-CPU allocations. The loader currently excludes such
-> a section from the layout by clearing its SHF_ALLOC, which
-> overloads the flag with a loader-internal meaning.
-> apply_relocations() needs a special case for the section, and
-> find_sec(".data..percpu") returns different results before and
-> after layout_and_allocate().
+> NUMA balancing rejects shared copy-on-write folios and executable
+> file folios mapped by multiple processes to avoid placement bouncing.
+> These checks also block promotion from slow memory.
 >
-> Introduce SH_ENTSIZE_STANDALONE to mark sections with a separate
-> allocation. The percpu section is its first user. layout_sections()
-> and move_module() skip marked sections, and apply_relocations() goes
-> back to testing only SHF_ALLOC. Based on a patch by Petr Pavlu [1].
+> Allow such folios to participate when moving from a slow tier to a fast
+> tier. Keep the existing restrictions for ordinary placement.
 >
-> .data..percpu keeps SHF_ALLOC, so it would now show up under
-> /sys/module/*/sections/. The section has one instance per CPU and no
-> single address to report, and the entry never existed before, so
-> skip it in add_sect_attrs(). add_notes_attrs() indexes its attrs[]
-> array and skips it too. No functional change otherwise.
-
-And IIUC no userspace-visible changes too, right?
-
->
-> Fixes: 4835f747d3ed ("alloc_tag: support for page allocation tag compress=
-ion")
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Link: https://lore.kernel.org/all/499bb60c-c6e3-43a3-bd92-95a0567ece5e@su=
-se.com/ [1]
-> Suggested-by: Petr Pavlu <petr.pavlu@suse.com>
-> Reviewed-by: Petr Pavlu <petr.pavlu@suse.com>
+> Fixes: c574bbe91703 ("NUMA balancing: optimize page placement for memory =
+tiering system")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Hao Ge <hao.ge@linux.dev>
-
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-
+> Assisted-by: LLM
+> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 > ---
->  include/linux/module.h   |  2 ++
->  kernel/module/internal.h |  8 ++++++++
->  kernel/module/kallsyms.c | 13 +++----------
->  kernel/module/main.c     | 32 +++++++++++++++++---------------
->  kernel/module/sysfs.c    | 17 +++++++++++++----
->  5 files changed, 43 insertions(+), 29 deletions(-)
+>  mm/mempolicy.c | 8 ++++++--
+>  mm/migrate.c   | 6 ++++--
+>  2 files changed, 10 insertions(+), 4 deletions(-)
 >
-> diff --git a/include/linux/module.h b/include/linux/module.h
-> index 96cc98568eea..0c6f32ddcbf2 100644
-> --- a/include/linux/module.h
-> +++ b/include/linux/module.h
-> @@ -325,6 +325,8 @@ enum mod_mem_type {
->         MOD_INIT_RODATA,
->
->         MOD_MEM_NUM_TYPES,
-> +
-> +       MOD_STANDALONE =3D -2,
->         MOD_INVALID =3D -1,
->  };
->
-> diff --git a/kernel/module/internal.h b/kernel/module/internal.h
-> index 061161cc79d9..4c738074a27b 100644
-> --- a/kernel/module/internal.h
-> +++ b/kernel/module/internal.h
-> @@ -29,6 +29,14 @@
->  #define SH_ENTSIZE_TYPE_MASK   ((1UL << SH_ENTSIZE_TYPE_BITS) - 1)
->  #define SH_ENTSIZE_OFFSET_MASK ((1UL << (BITS_PER_LONG - SH_ENTSIZE_TYPE=
-_BITS)) - 1)
->
-> +/*
-> + * Marker for sections with a separate allocation, which are not placed
-> + * into mod->mem[].
-> + */
-> +#define SH_ENTSIZE_STANDALONE                                  \
-> +       (((unsigned long)MOD_STANDALONE & SH_ENTSIZE_TYPE_MASK) \
-> +        << SH_ENTSIZE_TYPE_SHIFT)
-> +
->  /* Maximum number of characters written by module_flags() */
->  #define MODULE_FLAGS_BUF_SIZE (TAINT_FLAGS_COUNT + 4)
->
-> diff --git a/kernel/module/kallsyms.c b/kernel/module/kallsyms.c
-> index f23126d804b2..0dca6d40160e 100644
-> --- a/kernel/module/kallsyms.c
-> +++ b/kernel/module/kallsyms.c
-> @@ -76,7 +76,7 @@ static char elf_type(const Elf_Sym *sym, const struct l=
-oad_info *info)
->  }
->
->  static bool is_core_symbol(const Elf_Sym *src, const Elf_Shdr *sechdrs,
-> -                          unsigned int shnum, unsigned int pcpundx)
-> +                          unsigned int shnum)
->  {
->         const Elf_Shdr *sec;
->         enum mod_mem_type type;
-> @@ -86,11 +86,6 @@ static bool is_core_symbol(const Elf_Sym *src, const E=
-lf_Shdr *sechdrs,
->             !src->st_name)
->                 return false;
->
-> -#ifdef CONFIG_KALLSYMS_ALL
-> -       if (src->st_shndx =3D=3D pcpundx)
-> -               return true;
-> -#endif
-> -
->         sec =3D sechdrs + src->st_shndx;
->         type =3D sec->sh_entsize >> SH_ENTSIZE_TYPE_SHIFT;
->         if (!(sec->sh_flags & SHF_ALLOC)
-> @@ -131,8 +126,7 @@ void layout_symtab(struct module *mod, struct load_in=
-fo *info)
->         /* Compute total space required for the core symbols' strtab. */
->         for (ndst =3D i =3D 0; i < nsrc; i++) {
->                 if (i =3D=3D 0 || is_livepatch_module(mod) ||
-> -                   is_core_symbol(src + i, info->sechdrs, info->hdr->e_s=
-hnum,
-> -                                  info->index.pcpu)) {
-> +                   is_core_symbol(src + i, info->sechdrs, info->hdr->e_s=
-hnum)) {
->                         strtab_size +=3D strlen(&info->strtab[src[i].st_n=
-ame]) + 1;
->                         ndst++;
->                 }
-> @@ -199,8 +193,7 @@ void add_kallsyms(struct module *mod, const struct lo=
-ad_info *info)
->         for (ndst =3D i =3D 0; i < kallsyms->num_symtab; i++) {
->                 kallsyms->typetab[i] =3D elf_type(src + i, info);
->                 if (i =3D=3D 0 || is_livepatch_module(mod) ||
-> -                   is_core_symbol(src + i, info->sechdrs, info->hdr->e_s=
-hnum,
-> -                                  info->index.pcpu)) {
-> +                   is_core_symbol(src + i, info->sechdrs, info->hdr->e_s=
-hnum)) {
->                         ssize_t ret;
->
->                         mod->core_kallsyms.typetab[ndst] =3D
-> diff --git a/kernel/module/main.c b/kernel/module/main.c
-> index c1b34dc1e89a..ae2678ac7840 100644
-> --- a/kernel/module/main.c
-> +++ b/kernel/module/main.c
-> @@ -1619,12 +1619,13 @@ static int apply_relocations(struct module *mod, =
-const struct load_info *info)
->
->                 /*
->                  * Don't bother with non-allocated sections.
-> -                * An exception is the percpu section, which has separate=
- allocations
-> -                * for individual CPUs. We relocate the percpu section in=
- the initial
-> -                * ELF template and subsequently copy it to the per-CPU d=
-estinations.
-> +                *
-> +                * Note that .data..percpu has separate allocations for
-> +                * individual CPUs. We relocate the section in the
-> +                * initial ELF template and subsequently copy it to the
-> +                * per-CPU destinations.
->                  */
-> -               if (!(info->sechdrs[infosec].sh_flags & SHF_ALLOC) &&
-> -                   (!infosec || infosec !=3D info->index.pcpu))
-> +               if (!(info->sechdrs[infosec].sh_flags & SHF_ALLOC))
->                         continue;
->
->                 if (info->sechdrs[i].sh_flags & SHF_RELA_LIVEPATCH)
-> @@ -1715,7 +1716,7 @@ static void __layout_sections(struct module *mod, s=
-truct load_info *info, bool i
->
->                         if ((s->sh_flags & masks[m][0]) !=3D masks[m][0]
->                             || (s->sh_flags & masks[m][1])
-> -                           || s->sh_entsize !=3D ~0UL
-> +                           || s->sh_entsize !=3D ~0UL /* offset or stand=
-alone */
->                             || is_init !=3D module_init_layout_section(sn=
-ame))
->                                 continue;
->
-> @@ -1745,16 +1746,10 @@ static void __layout_sections(struct module *mod,=
- struct load_info *info, bool i
->  /*
->   * Lay out the SHF_ALLOC sections in a way not dissimilar to how ld
->   * might -- code, read-only data, read-write data, small data.  Tally
-> - * sizes, and place the offsets into sh_entsize fields: high bit means i=
-t
-> - * belongs in init.
-> + * sizes, and place the offsets into sh_entsize fields.
->   */
->  static void layout_sections(struct module *mod, struct load_info *info)
->  {
-> -       unsigned int i;
-> -
-> -       for (i =3D 0; i < info->hdr->e_shnum; i++)
-> -               info->sechdrs[i].sh_entsize =3D ~0UL;
-> -
->         pr_debug("Core section allocation order for %s:\n", mod->name);
->         __layout_sections(mod, info, false);
->
-> @@ -2822,7 +2817,8 @@ static int move_module(struct module *mod, struct l=
-oad_info *info)
->                 Elf_Shdr *shdr =3D &info->sechdrs[i];
->                 const char *sname;
->
-> -               if (!(shdr->sh_flags & SHF_ALLOC))
-> +               if (!(shdr->sh_flags & SHF_ALLOC)
-> +                   || shdr->sh_entsize =3D=3D SH_ENTSIZE_STANDALONE)
->                         continue;
->
->                 sname =3D info->secstrings + shdr->sh_name;
-> @@ -2954,6 +2950,7 @@ core_param(module_blacklist, module_blacklist, char=
-p, 0400);
->  static struct module *layout_and_allocate(struct load_info *info, int fl=
-ags)
->  {
->         struct module *mod;
-> +       unsigned int i;
->         int err;
->
->         /* Allow arches to frob section contents and sizes.  */
-> @@ -2967,8 +2964,13 @@ static struct module *layout_and_allocate(struct l=
-oad_info *info, int flags)
->         if (err < 0)
->                 return ERR_PTR(err);
->
-> +       /* Repurpose sh_entsize to track where each section is allocated.=
- */
-> +       for (i =3D 0; i < info->hdr->e_shnum; i++)
-> +               info->sechdrs[i].sh_entsize =3D ~0UL;
-> +
->         /* We will do a special allocation for per-cpu sections later. */
-> -       info->sechdrs[info->index.pcpu].sh_flags &=3D ~(unsigned long)SHF=
-_ALLOC;
-> +       if (info->index.pcpu)
-> +               info->sechdrs[info->index.pcpu].sh_entsize =3D SH_ENTSIZE=
-_STANDALONE;
->
->         /*
->          * Mark relevant sections as SHF_RO_AFTER_INIT so layout_sections=
-() can
-> diff --git a/kernel/module/sysfs.c b/kernel/module/sysfs.c
-> index 01c65d608873..15c6baeb39c4 100644
-> --- a/kernel/module/sysfs.c
-> +++ b/kernel/module/sysfs.c
-> @@ -62,6 +62,15 @@ static void free_sect_attrs(struct module_sect_attrs *=
-sect_attrs)
->         kfree(sect_attrs);
->  }
->
-> +/*
-> + * .data..percpu has a separate allocation per CPU and no single
-> + * address to report.
-> + */
-> +static bool sect_visible(const struct load_info *info, unsigned int i)
-> +{
-> +       return !sect_empty(&info->sechdrs[i]) && i !=3D info->index.pcpu;
-> +}
-> +
->  static int add_sect_attrs(struct module *mod, const struct load_info *in=
-fo)
->  {
->         struct module_sect_attrs *sect_attrs;
-> @@ -72,7 +81,7 @@ static int add_sect_attrs(struct module *mod, const str=
-uct load_info *info)
->
->         /* Count loaded sections and allocate structures */
->         for (i =3D 0; i < info->hdr->e_shnum; i++)
-> -               if (!sect_empty(&info->sechdrs[i]))
-> +               if (sect_visible(info, i))
->                         nloaded++;
->         sect_attrs =3D kzalloc_flex(*sect_attrs, attrs, nloaded);
->         if (!sect_attrs)
-> @@ -92,7 +101,7 @@ static int add_sect_attrs(struct module *mod, const st=
-ruct load_info *info)
->         for (i =3D 0; i < info->hdr->e_shnum; i++) {
->                 Elf_Shdr *sec =3D &info->sechdrs[i];
->
-> -               if (sect_empty(sec))
-> +               if (!sect_visible(info, i))
->                         continue;
->                 sysfs_bin_attr_init(sattr);
->                 sattr->attr.name =3D
-> @@ -159,7 +168,7 @@ static int add_notes_attrs(struct module *mod, const =
-struct load_info *info)
->         /* Count notes sections and allocate structures.  */
->         notes =3D 0;
->         for (i =3D 0; i < info->hdr->e_shnum; i++)
-> -               if (!sect_empty(&info->sechdrs[i]) &&
-> +               if (sect_visible(info, i) &&
->                     info->sechdrs[i].sh_type =3D=3D SHT_NOTE)
->                         ++notes;
->
-> @@ -181,7 +190,7 @@ static int add_notes_attrs(struct module *mod, const =
-struct load_info *info)
->
->         nattr =3D &notes_attrs->attrs[0];
->         for (loaded =3D i =3D 0; i < info->hdr->e_shnum; ++i) {
-> -               if (sect_empty(&info->sechdrs[i]))
-> +               if (!sect_visible(info, i))
->                         continue;
->                 if (info->sechdrs[i].sh_type =3D=3D SHT_NOTE) {
->                         sysfs_bin_attr_init(nattr);
-> --
-> 2.25.1
->
+> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+> index a082ccfa09ec..19b599bc2dd1 100644
+> --- a/mm/mempolicy.c
+> +++ b/mm/mempolicy.c
+> @@ -863,8 +863,12 @@ bool folio_can_map_prot_numa(struct folio *folio, st=
+ruct vm_area_struct *vma,
+>  	if (!folio || folio_is_zone_device(folio) || folio_test_ksm(folio))
+>  		return false;
+> =20
+> -	/* Also skip shared copy-on-write folios */
+> -	if (vma_is_cow_mapping(vma) && folio_maybe_mapped_shared(folio))
+> +	/*
+> +	 * Shared copy-on-write folios are poor NUMA placement candidates, but
+> +	 * a hot folio on a slow tier still needs a hint fault for promotion.
+> +	 */
+> +	if (vma_is_cow_mapping(vma) && folio_maybe_mapped_shared(folio) &&
+> +	    !folio_use_access_time(folio))
+>  		return false;
+> =20
+>  	/* Folios are pinned and can't be migrated */
+> diff --git a/mm/migrate.c b/mm/migrate.c
+> index a369d0c95c38..afd9c97d2389 100644
+> --- a/mm/migrate.c
+> +++ b/mm/migrate.c
+> @@ -2697,12 +2697,14 @@ int migrate_misplaced_folio_prepare(struct folio =
+*folio,
+>  		/*
+>  		 * Do not migrate file folios that are mapped in multiple
+>  		 * processes with execute permissions as they are probably
+> -		 * shared libraries.
+> +		 * shared libraries, unless this is a promotion from a slow tier.
+>  		 *
+>  		 * See folio_maybe_mapped_shared() on possible imprecision
+>  		 * when we cannot easily detect if a folio is shared.
+>  		 */
+> -		if ((vma->vm_flags & VM_EXEC) && folio_maybe_mapped_shared(folio))
+> +		if ((vma->vm_flags & VM_EXEC) &&
+> +		    folio_maybe_mapped_shared(folio) &&
+> +		    (!folio_use_access_time(folio) || !node_is_toptier(node)))
+>  			return -EACCES;
+> =20
+>  		/*
+
+Should we rename folio_use_access_time() to folio_in_lowtier()?
+Otherwise the code is really hard to understand. I admit that I
+introduced folio_use_access_time() and it was probably because it
+decides the use of folio_xchg_access_time() in
+folio_can_map_prot_numa(). But in the other callsites, folio_in_lowtier()
+makes more sense.
+
+After the rename, a comment "only record access time of folios in low tier"
+above folio_xchg_access_time() should work.
+
+--=20
+Best Regards,
+Yan, Zi
+
 
