@@ -4,99 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C09EC982CC
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 02:31:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9118DC982CF
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 02:56:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E9A46B008C; Wed, 16 Sep 2026 22:31:55 -0400 (EDT)
+	id 5A6756B008A; Wed, 16 Sep 2026 22:56:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 79A616B0092; Wed, 16 Sep 2026 22:31:55 -0400 (EDT)
+	id 557166B008C; Wed, 16 Sep 2026 22:56:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 63AC66B0093; Wed, 16 Sep 2026 22:31:55 -0400 (EDT)
+	id 46BA36B0092; Wed, 16 Sep 2026 22:56:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 365A26B008C
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 22:31:55 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9670512015D
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 02:31:54 +0000 (UTC)
-X-FDA: 85221678948.19.7FDD433
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 239FE6B008A
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 22:56:33 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B2A461601EA
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 02:56:30 +0000 (UTC)
+X-FDA: 85221740940.21.5772477
 Received: from mta0.migadu.com (out-158.mta0.migadu.com [91.218.175.158])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 4D1B240003
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 02:31:52 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=oV2M92L+;
+	by imf28.hostedemail.com (Postfix) with ESMTP id 8B9E3C0005
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 02:56:28 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pNlthdPi;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf17.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.158 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789612312;
-	b=2Ld9/h9Y4bab552Etib4VAkrxPVCmbgOiTZenUfKvjWvCwnQCatuapH+GEqFGdtxJrVBFe
-	aZyGozEta/2PgBg7XMJqU1uOsUl3dCMvkIxiiK2F16CIgXjFuQGQtlGl/qAaDuRnDH6W7n
-	CIpf9V9v8i8pgwBUdEYnzOFK0vtSgAM=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=oV2M92L+;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf17.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.158 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+	spf=pass (imf28.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.158 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789612312;
+	s=arc-20220608; t=1789613789;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pt+4v2f0ZRarfoytBQqNp4wbwQ4SRGR9QbXZ60rndEI=;
-	b=NPNAjxwMInfvIrsmi9BZ63j/cr+iR2/1l890cwH9LiXG+H3ZfvKhuktl53VmHpIrgaduvA
-	rdpW/mXwmH2q4EP6eHPrgLfgSYrtrZy91vclQ1t2U1nuS34dg1jpHy61OXMvyysW1VbU/n
-	7NncS1v06efRGjBGQgLuGzv54Nh6/9A=
+	bh=IXjNvfbfvMQLStGSco8GHavmkRqXpU9JCAETdbNf2BA=;
+	b=lfocXeBsWgRRAOesMpCdI47d2QP0BW0sKq/oo/cBUBPqBzDd6w1//Y7c0kBCs0ClT9rwZc
+	mzjzYMim8h9EXISOgtDcTIFKM1SQQ2zcwH6ID2WLTG/nfQaxVmmICX31OeRm8L9J80HEPk
+	prrkeH9HoR7Hj4QrWyrCZfWqt68gnxU=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789613789;
+	b=UOW1dSKR/iglTCVvFDs6JH07/XnYPeyzDd7idnmdibju3DzOHBGzT/TOM1FUAy8OD/IiVK
+	XpV2TsY5fLZhB1mOr4bD8h2nP7J0MExHWiQ6bo8li0/wntUVRD3dQn0FjXtLfO4hLGPfPJ
+	B/JRI5FVvXCHkKk+VaP1tsTOdLDXPEs=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pNlthdPi;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf28.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.158 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=OhFJYx2GLjFlM0DLOO0Nerpkg49eVGE1lC/5sreFBm0=;
+DKIM-Signature: a=rsa-sha256; bh=FhTMxEbI+Hm7knFbU8ZHAQCuFqyobe/xTUTkOpgFmSQ=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789612310; v=1; x=1790217110;
- b=oV2M92L+Y4HS1jEHfAg7Psl5AchH93cD5oFaB815hE8m87I0XiLFBrKOHC9nzijOJ7Isbt+i
- amA30oHxD8XddBTnZSsLpS1sd1XgSJ5cTgVMO+wY0pMzQ/xGj2RTY46rSjFLOgFgswlbnHRceG+
- p8ed6ZdTNQXLrcF0m9K2t658=
+ t=1789613787; v=1; x=1790218587;
+ b=pNlthdPiVvdHJYAlRecZ7TL1llP87xUxqNpIkLSE+6eepTAZvDqLnq5PKlZkTH6LZcF1SM3I
+ ChrLTF/oD/6ccEwe4oUKZD50ZM20VZEvybBS/OrRTQEy+QmylvyGM/vNhu0rztvE5hxXeM+IkVd
+ LGJjp5XtTQ1XxOh4Kx8qUWqI=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id e34d9e405c99d802;
-	Thu, 17 Sep 2026 02:31:50 +0000
-X-Mizu-Trace-ID: e34d9e405c99d802
+Received: by mta12.migadu.com with ESMTPS id af011a6eef206229;
+	Thu, 17 Sep 2026 02:56:26 +0000
+X-Mizu-Trace-ID: af011a6eef206229
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <b8005c24-ecac-45c4-840a-fd282f9693b5@linux.dev>
-Date: Thu, 17 Sep 2026 10:32:48 +0800
+Date: Thu, 17 Sep 2026 10:56:22 +0800
+From: Baoquan He <baoquan.he@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Arnd Bergmann <arnd@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
+	Arnd Bergmann <arnd@arndb.de>, David Hildenbrand <david@kernel.org>,
+	Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Ridong Chen <chenridong@xiaomi.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/vmscan: avoid false-positive -Wuninitialized warning,
+ again
+Message-ID: <aqtW1iW9WLJfl7hp@fedora>
+References: <20260916083456.4136132-1-arnd@kernel.org>
+ <20260916162816.39f0f33f6a48d30a71be3575@linux-foundation.org>
+ <20260916163044.3daa3811d9b2bf7d958f1f27@linux-foundation.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 2/6] alloc_tag: clean up the populate failure path
-From: Hao Ge <hao.ge@linux.dev>
-To: Suren Baghdasaryan <surenb@google.com>,
- "David Hildenbrand (Arm)" <david@kernel.org>,
- "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>,
- Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
- Aaron Tomlin <atomlin@atomlin.com>,
- Kent Overstreet <kent.overstreet@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, linux-modules@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Sashiko <sashiko-bot@kernel.org>, stable@vger.kernel.org
-References: <20260915070001.113559-1-hao.ge@linux.dev>
- <20260915070001.113559-3-hao.ge@linux.dev>
- <CAJuCfpHJSwNhgotMVpmjVvdv=m52_7Kvzpztf0WcN0AaoSeGGw@mail.gmail.com>
- <60642a7f-2949-428a-8290-40d69c989a77@linux.dev>
- <CAJuCfpG3d7n=z5WnUQYZsqvrt1pemF8TFvGiGyZGLO7ykVvqAQ@mail.gmail.com>
- <CAJuCfpGeRdFY6UPF-vXxwHvP2+tN=BKgRkmLR3PMLuWhxgzPRA@mail.gmail.com>
- <1dff448c-9cbe-4276-bca1-d91283b0c7b4@linux.dev>
-Content-Language: en-US
-In-Reply-To: <1dff448c-9cbe-4276-bca1-d91283b0c7b4@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260916163044.3daa3811d9b2bf7d958f1f27@linux-foundation.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 4D1B240003
-X-Stat-Signature: uoj5oy7fjqfkg1yxhzd55cugcik1o4j4
-X-HE-Tag: 1789612312-310720
-X-HE-Meta: U2FsdGVkX1/mgtGkWeFReDCu6HQjkehosPrGHg2LqbifxnC4vhlwM1gJ+1fNmeznqcOhvd8RRP0OFpU0vuZ6wsW1tj2FCSEOflsuj8wkUiCmLpiQJHrxFnhpKuC7O9e5yih5TJypa040n/AAqH7tgMXUB3aOBomxAAI06Lk4bW7dK2yuHCCdqQDLIFxmp1CGVFpIsqkc1wblQQJxqbcxYEJiwapZKf94Uj91RigwxBzRaVR+MY7ZwUq5/vax+Mo8J6i65oao6u2PNuXgZU7g/YTMlLEhQ9Ty1OEL4K/e8UogKpHn4HAPV0nhYDhkrvelE4ZpbP25fD7XeCVRaRz2NuwdeovRVMiJDLkfScls84zbOeNmEDkbrQUm4F4TXyHCIhmddQmCJbLQj9pkCK3f7mchtJloJo2QSzewE3LZFdMTpYxjbtugzI65H8NzesVsOSIJLlcyL5E7L0Zfc1mYxRJHItygAUX3rLksaR4Pkkevvx2ORxtz9H6r+B+wqHiN9i3ZLSywNb8eLjJX7Y+YPeWmZobaI69kuU6q6qea5OogOekIfGU/BuCoLC5RDntN7rsHvfRW+WXcZDj3q4mkZ8AAw+NF/s9F3wEBpq0kYS0WSiUidKX9xPsK2AtCUnJrP09dacjLj8cSS0OYAG7DlO0qDyWhO3FrdPBdD9GkXH+5ytToBGW8HDWdTpK6fd5a3e7lsv6kU0Wye9igHde1uD0FD2gaZZb1MYIhvOeVrt4PLMDhksOLpkjvkecQOVI73xLlHC4QN9CgMomwigImCXSHY4CO0Zw03UghwvCRvr+2dT/CRqGz2symcd8HoGGFL3H4wOtE6sVRmPJa4/OzIZRJhli6HbXLMht2FQ13RLFrdrHilvTHzLYCJzBGcc/kdc7YCC/tWPgOOMMUUDghv/NiCUt8kMRSrnxQBNkvWt4WvvghLbWThTYmDOyIFeXGPeGG1xMSejT1iFlQiNv
- mTCUXUXL
- UQMKBvkfB6MgdHOPwHMJn1RZSIPLdVtKLqU0un3UgB8eU1wEw+vlW6jFjdZeKEvH+uIrNDtyyEu55K82sFIE7cG5FEQ+jsISerI3VKkeim9iUIoTMWLVC4z3jFpEkGsKNDCs4XQndoYS/1XVr0nb/QPGVHm/HG0t5ejURXQQ11DFk4ItyJ8D5OQDPBo5rCosifVikyEJUO1lTgPIZSdlS+flYmWxMbDr6vSfV9L2g89WZQ2QElY5cEnRBTgBfIkzCX3QDhEEuytiXSenqZ4HpX0PJWApuV5CMYc2P6mNtub+zTP55nICOCwvqnvosJZLuqTuHUjDposLmkIe8i/EXANfslY2z1OTjg4zmNl9Eu3gY4GQ5bl+Ar4a9tEbAJE7gXcg8uz5EFpXLwcgjA2CQ74F0dCQ3aBOtKY794GNzxkTVFuIDuK+JKXFLvcRM12jqEnnFkLuOuwrvZV8=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 8B9E3C0005
+X-Stat-Signature: smcau9urnpm4uub83s3fkrux6osuww3h
+X-HE-Tag: 1789613788-344628
+X-HE-Meta: U2FsdGVkX19RnbUPoCsoacb9ZXh+a/hyY1Jjl794QEzLLj5444aSxSOUjSNrTFi8PSEZ0BrSbooJ85X6Oi1V7PaEfGubzX459dmqmxL2xA3EoJkz58OEElEHdx4Ib0G9L+ouBrVcRdejHWcivoA7JT8Q1tTe3Zl8gKV7hOz62yIC0fco0JxWNHYk2lpkuvA5Jw+MNX6jLBAKG+O+4hWTDi4JLkJt+tJhHktu3TgQt9E8tQU2s613k2bTPdNnJz/VjD8UsRkwVdC9d7pemxU+MFD/DeIK2nOhHjf5knFQRvA995yW/FwY15BoVVDobLhT13kp03WzoHJCqA3Y2Rmz8asJ+vW1ci/jkFWdJlpE0G/e8QoNymQa+MKyIaxLxQ1pfUpT1kqOcENqT4kFfZO4z+K6npqiQKdc3xOnaUjqooPRJnmS0kTO1OyVsCxx54d0JA7XybWXTWYMguLGFSVisqQ1ijbYDLkYlfzx40g6emoP+eVEohND9ncr/WdcjfMOozIiPq6k3+9g+LxEdHAY4POKY/suxhc8lfgapZNzKERwo96T+FpYoIm2gLjeOcis+OoCyw2Pu0wN1x65U4aaEp/7mjwhdd2sx0Ldr1EOZSnSGQT8h7bi6X5Tfcu6ifO8p9FUYzI920yqMTevLX+0MS1xf+Nv/Az2rmev3G33qiM8A8wrHSPR+cckaL5pHoG1QVyh49GlZjx5n1SwV8dMLJ8fAeCnYqPV+1H5faTOReurcj48v1n9cK1wf9HAl+F45UFBwgjmswBt86s1hnMxM34gG/uBAVsnVXXsaehQOxFOEIPt0GhPRkJcOt+Le5ZleQD745QYACZjW9vwMxXhPBe1gaeISx/TtrRBgx2cRgaZKvNDGqnMfC9nv/otQmBT8vXdnlRhmVVQF/Cl+QxXA0qQyvshXQwfYRo90X+eK6DU8xllP3lLpHK342knzFPDHCADjXqy6mwcq1IqAA5
+ Eps39j/k
+ HNIwddoFHtxc4nYfen3c76Q+7hHndzymSLksn7uKSeyH21hGwJsUNZaDMLIKimisLYbQuntTR3Pkc9BSyeeOopvjRn9YoAn5zky8ataEt8WDkRa+xEPink91K67Ya+Lm15BFSeH7puFlKwiZnj2Z11p38zsCEzME3o2vRjI6H7ZOGJON21i6fiaGkJnVhujc8FTUr4AJ9xgMgdMeI8EjAAh1SwfT23znlFS3jN1GPmqgMJnNGEEj+BuwTwRlt07Z2vdIhiaRGcbTdOiHGpxbFEt9my0VHskWBBcO9z/SPhcKl0ixcdvs9rqN9IAscRYKTkXPkDNnAN50PctXEbhsEnoqZ//DOwLp8CAqX8GueleVzKZY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,164 +100,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Suren、David、Lorenzo
+On 09/16/26 at 04:30pm, Andrew Morton wrote:
+> On Wed, 16 Sep 2026 16:28:16 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
+> 
+> > >
+> > > --- a/mm/vmscan.c
+> > > +++ b/mm/vmscan.c
+> > > @@ -3274,8 +3274,10 @@ struct ctrl_pos {
+> > >  	int gain;
+> > >  };
+> > >  
+> > > -static void read_ctrl_pos(struct lruvec *lruvec, int type, int tier_min,
+> > > -			  int tier_max, int gain, struct ctrl_pos *pos)
+> > > +/* __noipa works around  gcc-16 warning for uninitizled use of pos->refaulted */
+> > > +static __noipa void read_ctrl_pos(struct lruvec *lruvec, int type,
+> > > +				  int tier_min, int tier_max, int gain,
+> > > +				  struct ctrl_pos *pos)
+> > >  {
+> > >  	int i;
+> > >  	struct lru_gen_folio *lrugen = &lruvec->lrugen;
+> > 
+> > Current code has changed here somewhat, but I expect the error is still
+> > there.  I fixed that "uninitizled" while in there.  Altered patch is
+> > below.
+> 
+> 
+> Then the build blew up in unexpected ways.  gcc-15.2.0.
+> 
+> The failure looks like a legit min() signedness thing which has been
+> there quite a while.  I'm thinking that __noipa surfaced this for some
+> reason?
+> 
+>   CC      mm/vmscan.o
+> In file included from <command-line>:
+> mm/vmscan.c: In function 'read_ctrl_pos':
+> ././include/linux/compiler_types.h:702:45: error: call to '__compiletime_assert_798' declared with attribute error: min(tier, 4U - 1) signedness error
+>   702 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+>       |                                             ^
+> 
+> I'll queue a fix to switch this to min_t (yuck) for now.  It would of
+> course be better to use more appropriate types in this code.  Unless
+> tiers can be negative!
 
-On 2026/9/17 09:12, Hao Ge wrote:
-> Hi Suren
-> 
-> On 2026/9/17 03:07, Suren Baghdasaryan wrote:
->> On Wed, Sep 16, 2026 at 9:31 AM Suren Baghdasaryan <surenb@google.com> wrote:
->>>
->>> On Tue, Sep 15, 2026 at 11:00 PM Hao Ge <hao.ge@linux.dev> wrote:
->>>>
->>>> Hi Suren
->>>>
->>>> Thanks for you review.
->>>>
->>>> On 2026/9/16 05:09, Suren Baghdasaryan wrote:
->>>>> On Mon, Sep 14, 2026 at 11:59 PM Hao Ge <hao.ge@linux.dev> wrote:
->>>>>>
->>>>>> The reservation is already stored in the maple tree when
->>>>>> vm_module_tags_populate() fails. A failed load never unloads the
->>>>>> module, so nothing releases the entry. Release it and roll
->>>>>> module_tags.size back. Without the rollback a concurrent load that
->>>>>> already passed needs_section_mem() can reuse the freed gap, skip
->>>>>> vm_module_tags_populate() and write to unmapped memory.
->>>>>>
->>>>>> vmap_pages_range() may have installed some PTEs before failing. A
->>>>>> retry to populate the same range would BUG on them, so undo them,
->>>>>> but only if vmap actually ran.
->>>>>>
->>>>>> Fixes: 4835f747d3ed ("alloc_tag: support for page allocation tag compression")
->>>>>> Fixes: 0f9b685626da ("alloc_tag: populate memory for module tags as needed")
->>>>>
->>>>> If a patch fixes two other patches, it likely needs to be split so
->>>>> that each part fixes one patch only. But read on please. I'm not sure
->>>>> if one of the fixes is correct.
->>>>>
->>>>
->>>> Kept them in one patch because they only make sense together.
->>>>
->>>> After a failed populate the reservation is released and the
->>>> size rolled back, so the next load takes the same gap and calls
->>>> vm_module_tags_populate() again, and that retry would trip over
->>>> the PTEs the failed vmap left behind.
->>>>
->>>> Without the rollback a load that already passed needs_section_mem()
->>>> just reuses the gap, skips populate and writes to unmapped memory.
->>>> So splitting them leaves each half broken.
->>>
->>> Yeah, that's why I think vmap_pages_range() cleanup should be a
->>> completely separate patch with vmap_pages_range() doing cleanup
->>> itself.
->>>
-> 
-> I think I get where you're coming from now.
-> Thanks for taking the time to explain.
-> 
->>>>
->>>>>> Reported-by: Sashiko <sashiko-bot@kernel.org>
->>>>>> Cc: stable@vger.kernel.org
->>>>>> Signed-off-by: Hao Ge <hao.ge@linux.dev>
->>>>>> ---
->>>>>>  mm/alloc_tag.c | 10 ++++++++++
->>>>>>  1 file changed, 10 insertions(+)
->>>>>>
->>>>>> diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
->>>>>> index 2070e682fe10..95ddf5b743d0 100644
->>>>>> --- a/mm/alloc_tag.c
->>>>>> +++ b/mm/alloc_tag.c
->>>>>> @@ -804,6 +804,13 @@ static int vm_module_tags_populate(void)
->>>>>>                                      next_page, PAGE_SHIFT) < 0) {
->>>>>>                         release_pages_arg arg = { .pages = next_page };
->>>>>>
->>>>>> +                       /*
->>>>>> +                        * vmap_pages_range() only runs once all pages were
->>>>>> +                        * allocated, and it may have installed some mappings
->>>>>> +                        * before failing. Undo them.
->>>>>
->>>>> If vmap_pages_range() failed to map the range, why should we need to
->>>>> undo it? If it indeed leaves some partial mapping when failing then I
->>>>> would argue that vmap_pages_range() should be undoing these partial
->>>>> mappings itself before returning the error.
->>>>>
->>>> Yeah it does - none of the paths under vmap_pages_range() undo themselves on error.
->>>
->>> Hmm. I wonder if this behavior is intentional or requires a fix. The
->>> only possible reason I can think of is performance but I can't imagine
->>> a failure to map is a performance-critical case.
->>>
->>> +David Hildenbrand (Red Hat), +Lorenzo Stoakes (Oracle) what do you
->>
->> Huh, my gmail thinks you are still at your previous companies :)
->>
-> 
-> I manually fixed it on the mailing list for this thread.
-> 
->>> guys think? Shouldn't vmap_pages_range() undo its possible partial
->>> mapping when it fails?
->>>
->>>
->>>> pcpu_map_pages does perform cleanup on its own as well. There may be other similar sites.
->>>> https://elixir.bootlin.com/linux/v7.3-rc3/source/mm/percpu-vm.c#L255
->>>> so I did the same here.
->>>>
->>>> If we really want vmap_pages_range() to handle this cleanup internally, I believe that would
->>>> be a relatively large change, and we would need to consider many more cases. So I think we keep
->>>> the current behaviour for now.
->>>
->>> Yeah, I understand it would require a deeper cut but if that's the
->>> right way to handle this we might as well do that. Let's see what MM
->>> folks think.
->>>
-> 
-> Sounds good to me. Let's wait and hear what the MM folks say.
-> 
+I drafted one to change 'tier' as 'unsigned int'. While in mm-new this
+issue has gone away because Kairui's patch change 'tier' to 'tier_min'
+and 'tier_max' and remove min().
 
-I just looked into the call sites for __vmap_pages_range.
-And I found there's a bug in one vmalloc caller [1].
-When gfp_mask has __GFP_NOFAIL, the code keeps retrying
-__vmap_pages_range. If there are leftover PTE mappings,
-this can trigger a BUG(); [2]
-https://elixir.bootlin.com/linux/v7.3-rc3/source/mm/vmalloc.c#L3946 [1]
-https://elixir.bootlin.com/linux/v7.3-rc3/source/mm/vmalloc.c#L121  [2]
+commit b447513eee2f ("mm/mglru: use explicit tier range in read_ctrl_pos()")
 
-> Thanks
-> Best Regards
-> Hao
-> 
->>>>
->>>> Thanks
->>>> Best Regards
->>>> Hao
->>>>
->>>>>> +                        */
->>>>>> +                       if (nr == more_pages)
->>>>>> +                               vunmap_range(phys_end, phys_end + (nr << PAGE_SHIFT));
->>>>>>                         /* Clean up and error out */
->>>>>>                         release_pages(arg, nr);
->>>>>>                         return -ENOMEM;
->>>>>> @@ -947,6 +954,7 @@ static void *reserve_module_tags(struct module *mod, unsigned long size,
->>>>>>                 return ret;
->>>>>>
->>>>>>         if (module_tags.size < offset + size) {
->>>>>> +               unsigned long prev_size = module_tags.size;
->>>>>>                 int grow_res;
->>>>>>
->>>>>>                 module_tags.size = offset + size;
->>>>>> @@ -961,6 +969,8 @@ static void *reserve_module_tags(struct module *mod, unsigned long size,
->>>>>>                         shutdown_mem_profiling(true);
->>>>>>                         pr_err("Failed to allocate memory for allocation tags in the module %s. Memory allocation profiling is disabled!\n",
->>>>>>                                mod->name);
->>>>>> +                       release_module_tags(mod, false);
->>>>>> +                       module_tags.size = prev_size;
->>>>>
->>>>> Yes, this one is a valid fix. It fixes 0f9b685626da commit.
->>>>>
->>>>>>                         return ERR_PTR(grow_res);
->>>>>>                 }
->>>>>>         }
->>>>>> --
->>>>>> 2.25.1
->>>>>>
+I personally think your one line change is better for backporting to
+stable tree.
+
+From: Baoquan He <hebaoquan@kylinos.cn>
+Subject: [PATCH] mm/vmscan: fix min() signedness mismatch in read_ctrl_pos()
+
+read_ctrl_pos() declares 'tier' as int, but MAX_NR_TIERS is 4U, so
+min(tier, MAX_NR_TIERS - 1) compares int with unsigned int and min()
+reports a signedness error:
+
+  error: min(tier, 4U - 1) signedness error
+
+'tier' is never negative, it is a tier index or MAX_NR_TIERS to mean
+all tiers. Make it unsigned int, then min() compares two unsigned
+values and no min_t() needed.
+
+Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
+---
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index f11491ee9ed5..1844d92a6732 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -3195,10 +3195,10 @@ struct ctrl_pos {
+ 	int gain;
+ };
+ 
+-static void read_ctrl_pos(struct lruvec *lruvec, int type, int tier, int gain,
+-			  struct ctrl_pos *pos)
++static void read_ctrl_pos(struct lruvec *lruvec, int type, unsigned int tier,
++			  int gain, struct ctrl_pos *pos)
+ {
+-	int i;
++	unsigned int i;
+ 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
+ 	int hist = lru_hist_from_seq(lrugen->min_seq[type]);
+ 
+@@ -4801,7 +4801,7 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 
+ static int get_tier_idx(struct lruvec *lruvec, int type)
+ {
+-	int tier;
++	unsigned int tier;
+ 	struct ctrl_pos sp, pv = {};
+ 
+ 	/*
 
