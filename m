@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E73EC88E72
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 20:17:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DFEE0C88E72
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 20:19:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F23036B008A; Thu, 17 Sep 2026 16:17:41 -0400 (EDT)
+	id BF1D96B0092; Thu, 17 Sep 2026 16:19:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED4246B008C; Thu, 17 Sep 2026 16:17:41 -0400 (EDT)
+	id BA3196B0093; Thu, 17 Sep 2026 16:19:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE8E76B0092; Thu, 17 Sep 2026 16:17:41 -0400 (EDT)
+	id ABA646B0095; Thu, 17 Sep 2026 16:19:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B5C1D6B008A
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 16:17:41 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BB14CA04AE
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 20:17:40 +0000 (UTC)
-X-FDA: 85224364680.05.DD7C06B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 4834D10000E
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 20:17:39 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Cifno/se";
-	spf=pass (imf05.hostedemail.com: domain of helgaas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=helgaas@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8AD9D6B0092
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 16:19:57 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D75DF804E0
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 20:19:56 +0000 (UTC)
+X-FDA: 85224370392.23.52FD133
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id BF499140008
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 20:19:54 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fPn5Yy6F;
+	spf=pass (imf23.hostedemail.com: domain of helgaas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=helgaas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789676259;
+	s=arc-20220608; t=1789676395;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=rAg/Yg/DqWx7Pxj9VVqEz4+jt8Yppr1YHw8Z6DY3rWg=;
-	b=Zx/Lx/Ly9cfCVlrKYg6bFBvEq5YIgzmdAHqa/U70eLPRNGrI0F4fHw4aP3JWBlY9M43p+m
-	BLEslGYfpdM4pF++SessGRoszc+HQaSUYPrpiSksExr4sfcp0eMYZoFeIu9np3FoHJssJk
-	e4jYMw2pT4+k5RPOg5Mfc4v89TXGf8M=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Cifno/se";
-	spf=pass (imf05.hostedemail.com: domain of helgaas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=helgaas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=FVPFyILB0p9mKi052GhepayT1vMbxqjB1Nhk/upvblM=;
+	b=x1Q0pek4fYSDGyQYBvUKSKpwjpnkZKbnLMCa5LGbARFOSXaHao+lCA6ZezoTHCivCd+1BI
+	VsPuBtg+7y7oByFUR8HxTRFMoF6vkLDrMh0OjjqFufaysgaXu4up1wCEVfZYv0i27czPUP
+	RyR8v2K1f3JWrpLeEU5gVvqZF0YycNY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789676259;
-	b=POq/+CEhs90kVHbLdPp9hDvRMT7CVJ5+8+s3cO9/s7H/59m7dwZ4t7RPsExfHnRqOLPGdV
-	zCcRk/nBZs6c5NwZmT6Jn3pl5VtVpbHZIMIEwH77asdya1lksAtpK8mgjbo84wDQ1+dsD4
-	/ojpF+pV10mGZgrERb5sMzwCFKX/YUw=
+	t=1789676395;
+	b=WM+/qbzcd5nIvmXO0xCzx352TtT0h76+YjT6DYDGWvVIl+7u6mxl+ZTGrdghxj55ddO4uG
+	bRrdS/dUhs84hIbv2IsY2xPj7f2SY5LMPS2hztrVNN9L+NKbyHcuL7XLGSLOaVv1ILsMk7
+	GYH0uqx/r/AoRF5K/fdrkabLzoyob6I=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fPn5Yy6F;
+	spf=pass (imf23.hostedemail.com: domain of helgaas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=helgaas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D94E3601EF;
-	Thu, 17 Sep 2026 20:17:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67BD01F000FF;
-	Thu, 17 Sep 2026 20:17:38 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5DA3442A50;
+	Thu, 17 Sep 2026 20:19:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 177331F000FF;
+	Thu, 17 Sep 2026 20:19:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789676258;
-	bh=rAg/Yg/DqWx7Pxj9VVqEz4+jt8Yppr1YHw8Z6DY3rWg=;
+	s=k20260515; t=1789676393;
+	bh=FVPFyILB0p9mKi052GhepayT1vMbxqjB1Nhk/upvblM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To;
-	b=Cifno/seyID/kYnwEs9+FDv8lDl1iWkhIbTZOCPYv/Zl3U125NOEahqqxlcPptx84
-	 Lp+WwS5UwXz/cE4pxyhTPmDq18IuA97tb6+2/EXTfb40xf7gXew560HWki//BNg5Md
-	 H7BSt20m8+K0EtOHWRWg13d3vTanCYcfD/ZnAmCnqUvBVdF93rIQGxmXbUx+PpnZDU
-	 crxNVg/ZxechdqZsl3il8cA/fsemgpg3ig+1w7IAHO7YmVWbOnOqiGbOl8yoGm3Ihh
-	 Tqqfwyso+aUaiAND0Smu6s+0pb3Z1KrGeXCrJ14Q2T0e5PjzzsNNugJznZbfYTAcPi
-	 Mpe8P3u+jQcjQ==
-Date: Thu, 17 Sep 2026 15:17:37 -0500
+	b=fPn5Yy6FfiqKTmfjU5oYceM12GCmiYpT11w/2EyEPdKZGB9CPcBNkVv2+BwFLzu6X
+	 xSgkGQj5+WhLzGvcmRurhfvuOQGHvSLSKl4teDAJZ6QR/QG7VnV959jPcTz+HVEaZK
+	 CuD8XS5L28gUkvAbrICdalmnnCwxmYFcPuyhzJDJRcJ2dL8dpzKDBT7Z38/9T65arE
+	 LY8nGXBX//YUlL/TndeGkCuR1dbAH8rbGwzFuTEWxVYd14ZqNgn+y/iXdiTaJOcVDu
+	 NcVTytHagvF9lKoqQdw5+GoOIioEKAtSHIhUTx/SJFFATlpqz1u3d3zNwsKQDDY+v+
+	 SECBXMxIYkoGg==
+Date: Thu, 17 Sep 2026 15:19:52 -0500
 From: Bjorn Helgaas <helgaas@kernel.org>
 To: David Matlack <dmatlack@google.com>
 Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
@@ -87,21 +87,21 @@ Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
 	Shuah Khan <skhan@linuxfoundation.org>,
 	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
 	Yi Liu <yi.l.liu@intel.com>
-Subject: Re: [PATCH v8 10/12] PCI: liveupdate: Freeze preservation status
- during shutdown
-Message-ID: <20260917201737.GA1047708@bhelgaas>
+Subject: Re: [PATCH v8 11/12] PCI: liveupdate: Do not disable bus mastering
+ on preserved devices during kexec
+Message-ID: <20260917201952.GA1049400@bhelgaas>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260728221007.2098560-11-dmatlack@google.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 4834D10000E
-X-Stat-Signature: dca99ixrcu4jwz5nks19sejsnp49pzjf
+In-Reply-To: <20260728221007.2098560-12-dmatlack@google.com>
+X-Stat-Signature: xz1n54hknoyik8s519k3dyz8fgmw3drg
 X-Rspam-User: 
-X-HE-Tag: 1789676259-764278
-X-HE-Meta: U2FsdGVkX18NHm/6Raj9IWdO6iKLcPkCNb9K8MoaCEtN/4iEOilc6Kgna+SQQF54KyWSzNdP5XC9px0H+i40NsCXyZp9D2JegTOmEYKqCOOSAOTUOTV9YHEGhIP8tCdKxgZJLZhM/RHuN+t5sXhMLzA21Vw00jGJ3GuIIHDku4wIRA8/XrN0HVl1C9SguoUJELXiRupZTc9yWnJvYekmdUJJLc52VsmgtALbk0OFjwENeDjUcA5UztJFXFbC8wGgGqektFckvcOJAXQl4xabRONAdVAJxxUg+y8sns3p5C7ovB8paF5S7OjGWoX7dLR+N4WoxyzW2zwZw8PzzWYgrGUKjVJ6+EX9cCvSKNZUvSbCYlTroCAUm1oeWoQ37xRiIcETwQvpFOh2oV0lm+EoW2PqOFg7HLm3x8rgHj3vCYSDhCVjAqHW3WX0FubjLi9zIL/ocgrcsvMiKQ3XFeyzS8SYhbved4OeB1HRsqIgtsrTo5uCTX54e+CsfE9ChkDs209M9EfeE0sWXmcsPHwWhJaN1k7GHrP1F7U6uyitQSG2P4EV9yX2rQXq9k1WvnxY/LzM4LpJrczzBvb9IvQ4Sa3GZ+GBvKZMj8IkAFvaezIPq7TX86PnczDjRk6kGSGizTZdNBx20HKwL+VJjcpfrWtFZMyllLBW8wmKii8UbN4gzseuIRE8NH9fxGJaA7kV70OoOv/qKrGnHzuncuOc8y+DUqTVD8JihNEvnuwUlsmhDg6fWOVRe8C3og+mJZIcfahVxbIM5V6FwZFR9xX1DEX3Ex524slLFntmJX2BAkzxFsWApeFt/DabM7Qb/zKCe2cAwILNj3VAI+ghCInoEJxIYpnRPoRk92m00zs5IoZj6+CABAoOMb4o6rNma5un71iRfSCyT1+g8oBJc9rlRhWj1Vz2j0oSRFO+gfOVLqkFo7E2y2d4Cl8y2DknltkiWlMu33m07fwQhyKGm0a
- zlNe5lHO
- x5bj4QwDP/vAsCYhwveKgp5OErxt8WWan8Ftfvtr2px78ijmR54IRhIhZqmrRDyAYMOhcddqthNf/wVu5r+e/hr7sIuAEDjLk9AsxLG3HErM/K/VLlRoR41hv01FnML4UXrdve/0+KdZ1Y7H9gHTlX8MCLjs3OEyYGilgC62+Zru9HzMVmCZPy5/S00QvuCzMmIlG21W6Su0dxcnzU+cIY5G3wjamfXAKPcSkcgp3USmYW9FFWtc11xlDbMgbOmTRsHg29VguVPC+rbDq4o8ntHOPERRanBV1WVJGLo87fNrgTajYtFLasvBgh/2NhFx3xUz4dXjGVxXTAJBP+rgslmMlvQ==
+X-Rspamd-Queue-Id: BF499140008
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789676394-284102
+X-HE-Meta: U2FsdGVkX18sD8RdCcM04TesXmG4RPwJ106fc/IRa6nIbTwoZJPirQ6xzoWQ+gimz8tGzXuXFDDz448lua/AtUuRDVVxPD8ltv6ME7IQs3aykaxY/gmtglkabL/KP7euZ0ttHwmWZPJMmBL0Veo9Ek3jh5BJsIsPRRKnk7XiJy3gzAIl9Pu7jsPb0fJCk/iyhHtyvQJXz6SSa/gSE1tC9Tn5mf8J/j1QXHvXErGzMOkfcvVYb0Ck/2yTc3po6p7j+aaTu8jy8rhA6aiKmabYQp93Ud4h1j3we2mFtx5Mpdqj3k12hvTzjJc+V8I0ssPz5vcPL7Xr/es8/F6jRFefDEFS+y3uUxlOlEl7fupGNiWnKklrfDbGJkoU3DNSYHKzMzdYkFhsHTStJK+nHr1N2ODVsuKiU+DsjMfj55Daglu+yecOzczW9Mg5+bA0xX1EHNLTdw4xAL9ZSi9v5bBvkdLmZShfCUtKsYdu0L4+aeylctHS+Ay9PeTIbCgUXleI+jLoDxVJH9uUnOsiFaQH/CgjimteA/hDN8Qjei11Tn/tJmkWoYJf3YcM1TbCAJtYFxgTCVnUg0UhRCybif5AXLDNA56rS9jRgQeq2jpCnUHwh+MW/45I62PkvtlubrI3XaaZphUabeJzG6p/wMtTrQGlb+OUv/bAd6cDJsmImPoO5Zi4wHLOpy4Sr7Ok7KBJn9aoXdhOOxZ9XpPQO3rTrpirp+DjBeynjHNvtRfiC8b2sl5c62jeu8SikWdXhLoos1gfboDXnVgriEnVBHSVfWgZqmEdwWCpU+zRF0u3eudtIE1vcY5UO7s3scHHGFF/bOrKk8Pc4na5yRuPhtLT48rimKqsn3QIZmWgn/z5EXZ/WGfe3pW4WeQ6KJfV5mz8xMCop3dNLuP/VVst+PiYeF9zX8HLTvsMaKKOeg7jsEbKvt2rXH//udOcpBZHdsyghB4ZjBT72/A2STrEKL6
+ DBVjYQCL
+ rVF7ORQ9mV344Yx+2/EKMnBcdEqzGJjWGBAUkECd2KRzqA6xYwxKlsq/CjJWChIEh7iLxm690SUmSmOXRx94CoqZ7iMjuxvRcQtwsd5TaF+rJEhf4pYGVLIDdTLXHucVjYI5uc5rZ3nnp3w+3yEIWGU3EfdEDZOQYB9ZxV0dadK5Dc6sea1pbbQzjOWG0I0md8PJ1bE/LUZmlPA5UoIs3Arp48hTiQJjV0Yi/O4Vkr63TYuO+qZmYObjIN6adiy7wTTQQJoAibjsjozR473V9blGAIGlMci0b722Hdv570o/dg8VS7vOKGEa+cWnsyli2HGNWcXDG28RqJmh7rnxP15lBUw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,26 +109,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 28, 2026 at 10:10:04PM +0000, David Matlack wrote:
-> Freeze a device's outgoing preservation status (preserved or not
-> preserved) during shutdown. This enables the PCI core and drivers to
-> safely make decisions based on the device's preservation status during
-> shutdown.
+On Tue, Jul 28, 2026 at 10:10:05PM +0000, David Matlack wrote:
+> Do not disable bus mastering on outgoing preserved devices during
+> pci_device_shutdown() for kexec.
 > 
-> Note that pci_liveupdate_freeze() is triggered by the PCI core rather
-> than from drivers participating in Live Update so that all devices can
-> have their status frozen (i.e. prevent non-preserved devices from
-> getting preserved late).
-
-This calls pci_liveupdate_freeze() from pci_device_shutdown(), the
-pci_bus_type .shutdown() method, which I think is only called from
-device_shutdown() in the kexec or restart paths.
-
-Since there's no error exit after we get as far as device_shutdown(),
-and this applies to all devices and dev->liveupdate.frozen is never
-set to false (at least at this point in the series), is there benefit
-to tracking this per-device?
-
+> Preserved devices must be allowed to perform memory transactions during
+> a Live Update to ensure continuous operation.  Clearing the bus
+> mastering bit would prevent these devices from issuing any memory
+> requests while the new kernel boots.
+> 
+> Because bridges upstream of preserved endpoint devices are also
+> automatically preserved, this change also avoids clearing bus mastering
+> on them. This is critical because clearing bus mastering on an upstream
+> bridge prevents the bridge from forwarding memory requests upstream (i.e.
+> it would prevent the endpoint device from accessing system RAM and doing
+> peer-to-peer transactions with devices not downstream of the bridge).
+> 
 > Reviewed-by: Pranjal Shrivastava <praan@google.com>
 > Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 > Signed-off-by: David Matlack <dmatlack@google.com>
@@ -136,120 +132,85 @@ to tracking this per-device?
 Reviewed-by: Bjorn Helgaas <bhelgaas@google.com>
 
 > ---
->  drivers/pci/liveupdate.c       | 16 ++++++++++++++++
->  drivers/pci/liveupdate.h       |  4 ++++
->  drivers/pci/pci-driver.c       |  2 ++
->  include/linux/pci_liveupdate.h |  3 +++
->  4 files changed, 25 insertions(+)
+>  drivers/pci/liveupdate.c | 11 +++++++++++
+>  drivers/pci/liveupdate.h |  6 ++++++
+>  drivers/pci/pci-driver.c |  7 +++++--
+>  3 files changed, 22 insertions(+), 2 deletions(-)
 > 
 > diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
-> index 744513ee11ed..65bcecb1b64e 100644
+> index 65bcecb1b64e..32b73ebf71f7 100644
 > --- a/drivers/pci/liveupdate.c
 > +++ b/drivers/pci/liveupdate.c
-> @@ -394,6 +394,11 @@ static int pci_liveupdate_unpreserve_device(struct pci_flb_outgoing *outgoing,
->  {
->  	struct pci_dev_ser *dev_ser = dev->liveupdate.outgoing;
+> @@ -132,6 +132,10 @@
+>   *  * The PCI core adopts ARI Forwarding Enable on all bridges with downstream
+>   *    preserved devices to ensure that all preserved devices on the bridge's
+>   *    secondary bus are addressable after the Live Update.
+> + *
+> + *  * The PCI core does not disable bus mastering on outgoing preserved devices
+> + *    during kexec. This allows preserved devices to issue memory transactions
+> + *    throughout the Live Update.
+>   */
 >  
-> +	if (dev->liveupdate.frozen) {
-> +		pci_warn(dev, "Cannot unpreserve device after it is frozen!\n");
-> +		return -EINVAL;
-> +	}
-> +
->  	if (!dev_ser) {
->  		pci_warn(dev, "Cannot unpreserve device that is not preserved\n");
->  		return -EINVAL;
-> @@ -447,6 +452,11 @@ static int pci_liveupdate_preserve_device(struct pci_flb_outgoing *outgoing,
->  		return -EINVAL;
->  	}
->  
-> +	if (dev->liveupdate.frozen) {
-> +		pci_warn(dev, "Cannot preserve device after it is frozen!\n");
-> +		return -EINVAL;
-> +	}
-> +
->  	if (dev->liveupdate.outgoing) {
->  		if (!dev->liveupdate.outgoing->refcount) {
->  			pci_WARN(dev, 1, "Preserved device with 0 refcount!\n");
-> @@ -718,6 +728,12 @@ void pci_liveupdate_cleanup_device(struct pci_dev *dev)
->  		pci_WARN(dev, 1, "Destroying incoming-preserved device!\n");
+>  #define pr_fmt(fmt) "PCI: liveupdate: " fmt
+> @@ -879,6 +883,13 @@ int pci_liveupdate_adopt_ari(struct pci_dev *dev)
+>  	return 0;
 >  }
 >  
-> +void pci_liveupdate_freeze(struct pci_dev *dev)
+> +bool pci_liveupdate_is_outgoing(struct pci_dev *dev)
 > +{
-> +	guard(rwsem_write)(&pci_liveupdate.rwsem);
-> +	dev->liveupdate.frozen = 1;
-
-Nit, the series assigns "true" to other booleans
-(preserve_bus_numbers, was_preserved).
-
+> +	guard(rwsem_read)(&pci_liveupdate.rwsem);
+> +	pci_WARN_ONCE(dev, !dev->liveupdate.frozen, "Preservation status is unstable!\n");
+> +	return dev->liveupdate.outgoing;
 > +}
 > +
->  static int pci_liveupdate_finish_device(struct pci_ser *ser, struct pci_dev *dev)
->  {
->  	if (!dev->liveupdate.incoming) {
+>  /**
+>   * pci_liveupdate_is_incoming() - Check if a device is incoming-preserved
+>   * @dev: The PCI device to check
 > diff --git a/drivers/pci/liveupdate.h b/drivers/pci/liveupdate.h
-> index ccc23031e99d..49d07fd02132 100644
+> index 49d07fd02132..9c31fb60207d 100644
 > --- a/drivers/pci/liveupdate.h
 > +++ b/drivers/pci/liveupdate.h
-> @@ -13,6 +13,7 @@
->  #ifdef CONFIG_PCI_LIVEUPDATE
->  void pci_liveupdate_setup_device(struct pci_dev *dev);
->  void pci_liveupdate_cleanup_device(struct pci_dev *dev);
-> +void pci_liveupdate_freeze(struct pci_dev *dev);
->  bool pci_liveupdate_preserve_bus_numbers(struct pci_bus *bus,
->  					 struct pci_dev *dev);
->  void pci_liveupdate_scan_bridge_end(struct pci_dev *dev);
-> @@ -28,6 +29,9 @@ static inline void pci_liveupdate_cleanup_device(struct pci_dev *dev)
+> @@ -20,6 +20,7 @@ void pci_liveupdate_scan_bridge_end(struct pci_dev *dev);
+>  void pci_liveupdate_cache_adopted_acs_controls(struct pci_dev *dev);
+>  int pci_liveupdate_enable_adopted_acs_controls(struct pci_dev *dev);
+>  int pci_liveupdate_adopt_ari(struct pci_dev *dev);
+> +bool pci_liveupdate_is_outgoing(struct pci_dev *dev);
+>  #else
+>  static inline void pci_liveupdate_setup_device(struct pci_dev *dev)
 >  {
+> @@ -55,6 +56,11 @@ static inline int pci_liveupdate_adopt_ari(struct pci_dev *dev)
+>  {
+>  	return -EINVAL;
 >  }
->  
-> +static inline void pci_liveupdate_freeze(struct pci_dev *dev)
+> +
+> +static inline bool pci_liveupdate_is_outgoing(struct pci_dev *dev)
 > +{
+> +	return false;
 > +}
->  static inline bool pci_liveupdate_preserve_bus_numbers(struct pci_bus *bus,
->  						       struct pci_dev *dev)
->  {
+>  #endif
+>  
+>  #endif /* DRIVERS_PCI_LIVEUPDATE_H */
 > diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
-> index f36778e62ac1..51616e4327d3 100644
+> index 51616e4327d3..47cb3dcaa927 100644
 > --- a/drivers/pci/pci-driver.c
 > +++ b/drivers/pci/pci-driver.c
-> @@ -21,6 +21,7 @@
->  #include <linux/acpi.h>
->  #include <linux/dma-map-ops.h>
->  #include <linux/iommu.h>
-> +#include "liveupdate.h"
->  #include "pci.h"
->  #include "pcie/portdrv.h"
+> @@ -546,11 +546,14 @@ static void pci_device_shutdown(struct device *dev)
+>  	/*
+>  	 * If this is a kexec reboot, turn off Bus Master bit on the
+>  	 * device to tell it to not continue to do DMA. Don't touch
+> -	 * devices in D3cold or unknown states.
+> +	 * devices being preserved for Live Update or in D3cold or
+> +	 * unknown states.
+> +	 *
+>  	 * If it is not a kexec reboot, firmware will hit the PCI
+>  	 * devices with big hammer and stop their DMA any way.
+>  	 */
+> -	if (kexec_in_progress && (pci_dev->current_state <= PCI_D3hot))
+> +	if (kexec_in_progress && !pci_liveupdate_is_outgoing(pci_dev) &&
+> +	    pci_dev->current_state <= PCI_D3hot)
+>  		pci_clear_master(pci_dev);
+>  }
 >  
-> @@ -536,6 +537,7 @@ static void pci_device_shutdown(struct device *dev)
->  	struct pci_dev *pci_dev = to_pci_dev(dev);
->  	struct pci_driver *drv = pci_dev->driver;
->  
-> +	pci_liveupdate_freeze(pci_dev);
->  	pm_runtime_resume(dev);
->  
->  	if (drv && drv->shutdown)
-> diff --git a/include/linux/pci_liveupdate.h b/include/linux/pci_liveupdate.h
-> index 04a2b2a3102a..31898685a406 100644
-> --- a/include/linux/pci_liveupdate.h
-> +++ b/include/linux/pci_liveupdate.h
-> @@ -24,6 +24,8 @@
->   * @was_preserved: True if this struct pci_dev was preserved by the previous
->   *                 kernel. Unlike @incoming, this field is not cleared after
->   *                 the device is finished participating in Live Update.
-> + * @frozen: True if the outgoing preservation status of this device is frozen
-> + *          and thus cannot be changed.
->   */
->  struct pci_liveupdate {
->  	struct pci_dev_ser *outgoing;
-> @@ -31,6 +33,7 @@ struct pci_liveupdate {
->  	u16 acs_ctrl;
->  	bool preserve_bus_numbers;
->  	bool was_preserved;
-> +	bool frozen;
->  };
->  
->  struct pci_dev;
 > -- 
 > 2.55.0.487.gaf234c4eb3-goog
 > 
