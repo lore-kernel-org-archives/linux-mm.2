@@ -4,126 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01B59C982D6
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 16:18:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A65CC88E72
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 16:20:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 107C06B0099; Thu, 17 Sep 2026 12:18:33 -0400 (EDT)
+	id 306346B008A; Thu, 17 Sep 2026 12:20:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BBFD6B009B; Thu, 17 Sep 2026 12:18:33 -0400 (EDT)
+	id 2DECC6B009B; Thu, 17 Sep 2026 12:20:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EEF4C6B009D; Thu, 17 Sep 2026 12:18:32 -0400 (EDT)
+	id 21C546B009D; Thu, 17 Sep 2026 12:20:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BB45F6B0099
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 12:18:32 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E167F1C24E4
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 16:18:31 +0000 (UTC)
-X-FDA: 85223762022.06.2C9AA17
-Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 240D41C000C
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 16:18:29 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=uQbRYfkk;
-	spf=pass (imf18.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.205 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id EC64B6B008A
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 12:20:12 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 630DFC03E6
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 16:20:12 +0000 (UTC)
+X-FDA: 85223766264.16.FD35427
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf05.hostedemail.com (Postfix) with ESMTP id E91D010000B
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 16:20:09 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=d8pRWvyF;
+	spf=pass (imf05.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789661910;
+	s=arc-20220608; t=1789662010;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=q2Hi4m2vwNF2BZX3mSCnm4rmtg2QaJGcI1RAR8lvzaY=;
-	b=f5ddO6iu1GrSClBu1XPvkuO2GVzzNbiyKMamE+8eH8ASRvSGV1MQ0qbVcui3dmfBSBwfUN
-	SSkHENRlg7rCC6cHSS5jfhCm+yPZPXGhcXbfg2ji3dnl89qfuGYOILOYIaO463pkpBwF0l
-	26CqMBvZH4KYsnMhBgfkW67k4pTgUvA=
+	bh=nb+0cojbEAyK8TGRBzLK8l83EOixpqcagNWfFDhOHak=;
+	b=2VcHPeP6RD/b9wsgcypSLIvhpXUEwz7sMwwcrw7NEy63RZu50tFcrafK2LWyFGZIMOHImO
+	QXaa/ln451ZW9hG0bwb9XvdPYPGs83eXqtO9vDgCd2LBfl3OBMRJTx34puIdCT+sc/Xagm
+	Ud3KF5bGOHbT51Go5wBgWe8x5Owc7NQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789661910;
-	b=JEoZceaw7+yqBTu3p+o61oNqEcoMZDtCRfuSSIcdD7kU8CU3ii5AfkJwSWoBzgjRKH3/LY
-	I/HSxAqQqTWhU/5W5QHEpfe85/mjTZkjDGnic38ZpTQTIoBqiTG69dyR7bC0+qzDFTOVK2
-	9+IO2dCNxBeJCM23yWLGVJ1oWl+iEFI=
+	t=1789662010;
+	b=nU7boh+DDe9vLGoGzyGrfrD/vEggFvgsJ+gqNDH3MSoMwVYxYHVb1bgdGg5jEA/T40Zx2l
+	cP/gzUVK6vVVaXcsX7TCDGi6qv+t+oWqgSxVuAw1Q2FzkV+MRzAsVG4czpzzu+JA0LdYc1
+	soZp6mqutFtFyVtZ22jKPiTLolqLTZY=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=uQbRYfkk;
-	spf=pass (imf18.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.205 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qk2-f13.google.com with SMTP id d75a77b69052e-52fb769ca02so10788931cf.0
-        for <linux-mm@kvack.org>; Thu, 17 Sep 2026 09:18:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1789661909; x=1790266709; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=q2Hi4m2vwNF2BZX3mSCnm4rmtg2QaJGcI1RAR8lvzaY=;
-        b=uQbRYfkkd2ZgFOK8EVLDvlGXcqEnCisojhV0eJbNPndCXDpyO/DaGCuxmBh5aJiEY6
-         tnw0vCJvxX4SOL1UgleS+uYLr9YMo8Mp0DgnFy9IDDLffi4Dz6lHqpS+C4BvEEAHweE1
-         Ykd7rzw8M61xTefmyp6D8wY2oKASrwn7sADg4iqE/aYTKZbqLy/Zz3n++xU9MvCrNwFP
-         KmQi0jW7PZ5PJ3b92nKreGYaN495vsChHSiUs9KzhpnGa0UZpKe3gpM6vtHrC0nLU/CF
-         7BFykcWHPZqyIYLJAonmT1kslnGYfiz9vA24q795E4DvD7tpUAKulfFqniQtXO/VHGrR
-         2L5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789661909; x=1790266709;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=q2Hi4m2vwNF2BZX3mSCnm4rmtg2QaJGcI1RAR8lvzaY=;
-        b=Uy1TUc2QZINOvN7LuSvcqQzotd5vSA9ymtgH7/k1CoO6bfFUUVnM5RZpXzIjDCHd5N
-         qPY2nsNXQcX8fS64m2Crj399+7qBH9BFXq0mEXZrQvVLnGWleLUkAy08zBOKSMoZBRpe
-         dWCIoHdQhwk5dWKtFWIuwbflq3Vi6Gdnu0XyWyBB2TiTUFed6OPk4Rkk3N6a1GiHjoQX
-         k50v/EBQgHuTbfJ8L0MfeKNO8D33xu7Ck1f+hUn261BugeIiWzwF27o3jLONWGjOJQXB
-         /3Eheuxb62esTF0a2LZD/fXfejtDTyPi80+4DJKqX3oEdUO9onfg1Am0RT2YtuY0I5KP
-         0A/A==
-X-Gm-Message-State: AFuF++mphNlewCpm8kX0ZQ8tSm1ZBYdLTzvqMTTyl8f3FCn5IvgNQNTt
-	dtv1eu0gcV2JuSnKTq8MYuvm0uwI0L6t+1p8SZnXlsgztOEhUlZ3k5qaFkeBGHaQDKw=
-X-Gm-Gg: AYBFou3VTuc+7y/QL6UHPE6LAyuVFBImTK+XfvAPyuArjl4mPs6CKTG5GMD6GCJwOGn
-	gHuP/0Jv0K9ZNcApJOoI2hcBkBEntwLA8bBmA4EJ6M4IjDk3/tVePrtnAdXPkZWRlfk3NSv9xWe
-	cMKPAmXbTMoc/zXo9XbNPqElGC7wbDf5j4EYZhsYXchGIYBzgACiuTLRD1npObT8xhLbFOASHJn
-	clnICW63HPcWxCDlzLaK1gF93cDCME85U8GJzh5Bp2/4RXUh4WqP39VsDpcYykA/ZP6CBjkM/nu
-	vGjoPeoNcdjUKa9OwIkOoOqOAXCUTcWdU/JgEymqkt7REuKRUg0qeWLH6+fBFt1oBrDT3svKJi3
-	qP4QnNUMB6QeiwPoN3yKB/US3iHYSP6Y3NINiIaoBILYuZbUV6UKigCZ7XzmMehDSafCSYUiQlU
-	THgzxTIRdfTh3tGstaKFGtl+DS0UTdUcChMh1fk+41FL8mxO+N07A4A084BxszX7jNxf4I3+vUF
-	YFmD+gUFD5zrAO+u0RNCOR+xxVJRKaFGg3XR3mYqOLGco2S/E3NE9X6Jxt7Gf0nlA==
-X-Received: by 2002:a05:622a:90c:b0:530:f9e4:a0eb with SMTP id d75a77b69052e-5327ee3c420mr143369761cf.18.1789661909071;
-        Thu, 17 Sep 2026 09:18:29 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-532620ea2efsm54577441cf.31.2026.09.17.09.18.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Sep 2026 09:18:27 -0700 (PDT)
-Date: Thu, 17 Sep 2026 12:18:24 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
-	akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, liam@infradead.org, 
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
-	mingo@redhat.com, juri.lelli@redhat.com, vincent.guittot@linaro.org, 
-	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de, 
-	vschneid@redhat.com, kprateek.nayak@amd.com, ziy@nvidia.com, 
-	baolin.wang@linux.alibaba.com, nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com, 
-	baohua@kernel.org, lance.yang@linux.dev, usama.arif@linux.dev, kas@kernel.org, 
-	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, 
-	ying.huang@linux.alibaba.com, apopple@nvidia.com, jannh@google.com, pfalcato@suse.de, 
-	osalvador@suse.de, hannes@cmpxchg.org, raghavendra.kt@amd.com, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/4] mm: allow shared folios to be promoted to a fast
- tier
-Message-ID: <aqwSBkeP-Df2GBLa@gourry-fedora-PF4VCD3F>
+	imf05.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=d8pRWvyF;
+	spf=pass (imf05.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=nb+0cojbEAyK8TGRBzLK8l83EOixpqcagNWfFDhOHak=; b=d8pRWvyFcOG/jj1FbSmrzWq965
+	B+9sYnTbXATIY8ZEWg1Jj/TVFjAY8Y0YQLAtNuIhYxyW7EHab1OaLSrqtI0fCRMmqE0gJ96q/53Vm
+	8Gjz8uj9+HQn2jeTqgVopG886BvnaKFKAGVwQqDuWDY3SsMPTcR9KMBYd4OSPQ38i8OcaDZn5GCxB
+	4IuitwTQyiJV5IsrDhdfvWlp4xPAS5Zy32HbTP9u5vM8mxRJbihDWaN6TN4WZoKomOY0bEOszyZ08
+	HbsxgHPKlTP4jy5TWSS9WCwhO+KNVVRFmKye+F8RuxH0/wXYkpk+H0zE9UxIWKg8erJj9iXQpxZHF
+	lF29JHfw==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1x7Eq8-0000000B0Sy-3mMV;
+	Thu, 17 Sep 2026 16:20:01 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id CBD72301BD5; Thu, 17 Sep 2026 18:19:57 +0200 (CEST)
+Date: Thu, 17 Sep 2026 18:19:57 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
+	akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, mingo@redhat.com,
+	juri.lelli@redhat.com, vincent.guittot@linaro.org,
+	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
+	mgorman@suse.de, vschneid@redhat.com, kprateek.nayak@amd.com,
+	ziy@nvidia.com, baolin.wang@linux.alibaba.com, nico.pache@linux.dev,
+	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+	lance.yang@linux.dev, usama.arif@linux.dev, kas@kernel.org,
+	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+	byungchul@sk.com, ying.huang@linux.alibaba.com, apopple@nvidia.com,
+	jannh@google.com, pfalcato@suse.de, osalvador@suse.de,
+	hannes@cmpxchg.org, raghavendra.kt@amd.com, stable@vger.kernel.org
+Subject: Re: [PATCH v2 4/4] sched/numa: do not let VMA PID activity gate
+ promotion
+Message-ID: <20260917161957.GO4121339@noisy.programming.kicks-ass.net>
 References: <20260911001826.2109390-1-gourry@gourry.net>
- <20260911001826.2109390-3-gourry@gourry.net>
- <20260917160827.GN4121339@noisy.programming.kicks-ass.net>
+ <20260911001826.2109390-5-gourry@gourry.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260917160827.GN4121339@noisy.programming.kicks-ass.net>
-X-Rspamd-Server: rspam04
+In-Reply-To: <20260911001826.2109390-5-gourry@gourry.net>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: E91D010000B
+X-Stat-Signature: xngpqzubt9777szjmyxuk7m8cpyp867d
 X-Rspam-User: 
-X-Stat-Signature: kertac1m4txyxw3bmw6ogf6xgf75xei7
-X-Rspamd-Queue-Id: 240D41C000C
-X-HE-Tag: 1789661909-664307
-X-HE-Meta: U2FsdGVkX1+ym4iQfxlM7y21E0dTaOBvJg9iiZkCw9CL//M1ucSt6oLd2NBwVDvYrxNDSZmQpXHPN3DkS3ueZRCd2KL9RSBJRFwAdE/gSmeVEGYaj9qAvqQYVkqb+m9LpcPKv4l5JmoTmwegx/OK+Nyd1jtWj2qhS8cXL2V4fx4JnXuGRaSJ6gVt4rzLl5FvZMjn42v8z5SGT7GZQYDIMZd6W62F0YIIMWRGI+qVXaMOrgqfZLYqBF4zLEFbXe3QvLKyhi15hnwdSspcV3beg+39xCe0FUbq3oWK7vGMI3hynMVOV0Wo6HRku/bqEkni0SMHO68u6ILwpbVG7wYEPVVMGAOvP5YxsoNo0HblWc4/Q2r9pojiz//I8qb8rADisWcPMqa27g/OVendfnxB++Ei/gaGjIe188r2Mm0fP0uu/pVAZHrZ9OIND2T/fk1Y2dOwE8pcoBQNVCTh+7s6WbRpe/b6r+QnNZAfHvxb8/rjlBST/lWuXv4e6mpBaUnfB7wHR4OXT2p8KbC2uqYP+MgTUxaRoUm2/d9GqeSiOxVZhozclcBJhHvN28zEMQIFeEy0OdB/pFuLV4EwdFL6g7fO/zVFHLTR+CuBsVFVlgfqalG1g37d87uRR3wTOzaXUobAAedNHXJ+evKX4iJ3+Ahg1RMGZk0mm4A+94UjXknrM5CHyXN3WNK8YT43M1/7Jy/q+BKgYpY5YFUo2ZDwZTzkvO1kyjHnY+m+CC0hoSC7mq4n3y0PzNZh7h75dpu9UJm5ckVf45JlpFOmELaMMAq7gySGBHDldb1V2n6l8H/0ZZ6bbgU9EIvzIF65b6CexVOoKt2o8+XH5WLZvyI+UzDjB91+ZwNJN/kjf85BHpPa5F8NaXMIyawPAvA3Zw/Npc6ldi9BXrpRJAfMo6+WdHRPJFzNpwI1IPgAQmutikrRKZDbzmc6/Bp8cPl9GPNUvfYwa9UfZjnVq/nAf9s
- xZeqSfat
- dWbjjjzYuaho58g40JxYcin2BrjMzxZF2tQPF0Z20jgBcnJ7C0L2+hXcmnt80YtJ2EcApHwQm5THTsfcmW8TaBrbSAsgI/HP4pXqmj7C3BtTg90lPjZK3XkMr8AV0aTERONVQEImF67zL/M24CY8uzmyTYYFav+cdk3mAnnNq/Z5xS7oTgVoE+9CJpNqtjac6AsPdduyF5DZ77uFARejPVund8xQq9BS9PRuuwrx1a4siaT4P2SwICLnlRLAw5w/jlN/hTcs1RE5xUXlWTb9c4zDfaKgJNuL/YV875kGQVdtTs7cTubCYqLMNVr/j+ilWcK+dVHEmpW8eJoTabtSTCeFec0TqBcb4YGyxkNa0ip9w623L3i8OZAKYt5rvRAqwskALVY+inyT9qXAXxQBSZXFTBg==
+X-HE-Tag: 1789662009-407844
+X-HE-Meta: U2FsdGVkX1/rrpWVYIsxGC/biKc6eVrKvToyXBVtF5rV36wSq9G8gNwzslXp7vEdLJYW1AoOBtMwZcPdN3HdQGa4Fffkuxu/swEztprPAhi6AjTCPkl0yrKnEtQ884+JkC8WD8nwTTLi6/LqZOAxW2pVutIOheZrBS9j8T+3NzpR6lQQeC8XB6OfkOeQJZLX3673D56SNOmoICwlF3f77yOpDtJfMPGX6rHov3stKbDdbAbI354saPi6iSLkoLX2YwOEqa+z5RpHzicYVY3AiJR1Pg4RsYdlNzVHg9EECId7CVKQeWvbEL8da/IsKg2W6yByO0Qm8CEylH+g+crXqHHSonjK1JG01yoQ1QRWSosFTeZ3jYi/ekFYjqXgq1ZfFtaRfsHB5ZoO8oaZ5xPeMMKe4erFSvBsoU1wOM/vvGJOVGumNJ3YHQ+UCLou5smSlI2c0yatLzwUt9LqKm9kGjcA1v9AIVSgudFUGwvS2WcMFF5DGCBHe5Aum/be7FzU9+U+/PfH6/McPsY7lOXkmL70EHxKekPuB0oxTZ8OX7ecnMsLH+qEsKFbagmbN2xcCspFAzK2YftxISWLJledJTN6xbYwnn/OFXfwGC1retyCg5x2D1xS3koGaSCRAaDouUTPorTdjHsFvo/rdBOCv4OnMvcQ93eqXQcskxLVrcROEHg4Lp65PQ3cNglQuDcT+we7QNRRfm75lqL9umBl0O5OLBA4doGQyp9XUyTQyNqMvswhl6yskEK8Jg2fZ8+6RFAXSlMPBZIzJROu2TFTcoUms3Llluxiwt/xygbWSnR+aY8kJELpqyP4U3recRmp3RWk5ix4FvDhguGxP7qnx4Nu7Kp5Hd5XRK97LDZuF/3TEi+795x6h+qT8U5DJvdF9AiQOfgbLI7H9sMnHHgUkEjqWHg0KJEgI2iVxICrEIVSAWlxV4nEZ4ar1Jf+y8V6Rw66Q9XSuNH5GP8dmV6
+ +vWt04S/
+ pP7TpGM6apuoD5k0hbA2xVNSWAfalcAKHHGJwiBFnHoAr250wg73XSg+BUDAL7VP+fVuPkFdwm16561SXraUs3rwuZUMFvvUas7EbP4oi7nWdmaY+d/Fyh/CxpMU0kK/LknVhqj6jApjyfKiS1rawZqJria5jm3D91VQcCqyWMXj05k3DrOfTI5RVMSX2pFGeRFojaBHU80sEGUq9IxwlmAib6iOwxnl+qEBeidDo5mS0PM8nXxjesPfHlZOShxd0K0JTbFd2iQ3obqQ2l5esgsvd20l6eEKSrjScXrQEplv5fiWGJzgc8vC1noOzTNA4L/1kAzULxX5JfS6pB+krrpciAQv40wWXKIyLpzxqiBtGUo4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,51 +105,165 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 17, 2026 at 06:08:27PM +0200, Peter Zijlstra wrote:
-> > diff --git a/mm/migrate.c b/mm/migrate.c
-> > index a369d0c95c38..afd9c97d2389 100644
-> > --- a/mm/migrate.c
-> > +++ b/mm/migrate.c
-> > @@ -2697,12 +2697,14 @@ int migrate_misplaced_folio_prepare(struct folio *folio,
-> >  		/*
-> >  		 * Do not migrate file folios that are mapped in multiple
-> >  		 * processes with execute permissions as they are probably
-> > -		 * shared libraries.
-> > +		 * shared libraries, unless this is a promotion from a slow tier.
-> >  		 *
-> >  		 * See folio_maybe_mapped_shared() on possible imprecision
-> >  		 * when we cannot easily detect if a folio is shared.
-> >  		 */
-> > -		if ((vma->vm_flags & VM_EXEC) && folio_maybe_mapped_shared(folio))
-> > +		if ((vma->vm_flags & VM_EXEC) &&
-> > +		    folio_maybe_mapped_shared(folio) &&
-> > +		    (!folio_use_access_time(folio) || !node_is_toptier(node)))
-> >  			return -EACCES;
-> >  
+On Thu, Sep 10, 2026 at 08:18:26PM -0400, Gregory Price wrote:
+> From: "Gregory Price (Meta)" <gourry@gourry.net>
 > 
-> Semi related; I've often wondered if we should still account shared and
-> pinned vmas in the fault statistic, even though we should not migrate
-> them.
+> Commit fc137c0ddab2 ("sched/numa: enhance vma scanning logic")
+> skips VMAs without recent PID activity. Since only NUMA hint faults record
+> that activity, the filter can suppress the fault needed to promote hot
+> slow-tier memory.
 > 
-> After all, those pages are still used and by not accounting them in the
-> fault statistics, it becomes easier to migrate a task away from them.
->
+> In tiering mode, scan PID-inactive VMAs using promotion-only scans.
+> Reevaluate this choice whenever the scanner visits a VMA and pass it with
+> each protection walk.
+> 
+> Record socket-placement scans in prev_placement_scan_seq. Promotion-only
+> scans still update prev_scan_seq, but no longer postpone the starvation
+> fallback for placement scans.
+> 
+> On a host with 768 GB of DRAM and 256 GB of CXL memory running two roughly
+> 430 GB database workloads, a large shmem VMA occupied each scan while 2,537
+> other VMAs covering 84 GB were skipped as inactive. A hot 20 GB hash table
+> remained entirely on CXL before this change and was split evenly between
+> DRAM and CXL afterwards.
+> 
+> Fixes: fc137c0ddab2 ("sched/numa: enhance vma scanning logic")
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
+> ---
+>  include/linux/mm_types.h |  7 ++++++
+>  kernel/sched/fair.c      | 48 ++++++++++++++++++++++++++--------------
+>  2 files changed, 39 insertions(+), 16 deletions(-)
+> 
+> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> index 5413bd10fff2..9f042d6ad465 100644
+> --- a/include/linux/mm_types.h
+> +++ b/include/linux/mm_types.h
+> @@ -803,6 +803,13 @@ struct vma_numab_state {
+>  	 * A VMA is not eligible for scanning if prev_scan_seq == numa_scan_seq
+>  	 */
+>  	int prev_scan_seq;
+> +
+> +	/*
+> +	 * MM scan sequence ID when the VMA was last scanned for placement.
+> +	 * The starvation horizon in vma_is_accessed() counts against this, so
+> +	 * promotion-only scans cannot postpone placement indefinitely.
+> +	 */
+> +	int prev_placement_scan_seq;
+>  };
+>  
+>  #ifdef __HAVE_PFNMAP_TRACKING
+> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+> index e636e8de53f1..6d1da13a2ef5 100644
+> --- a/kernel/sched/fair.c
+> +++ b/kernel/sched/fair.c
+> @@ -4085,6 +4085,10 @@ static void reset_ptenuma_scan(struct task_struct *p)
+>  	p->mm->numa_scan_offset = 0;
+>  }
+>  
+> +/*
+> + * Decide whether this VMA should be sampled for NUMA placement.  In addition
+> + * to recent accesses, periodically allow a scan to avoid starvation.
+> + */
+>  static bool vma_is_accessed(struct mm_struct *mm, struct vm_area_struct *vma)
+>  {
+>  	unsigned long pids;
+> @@ -4101,22 +4105,13 @@ static bool vma_is_accessed(struct mm_struct *mm, struct vm_area_struct *vma)
+>  	if (test_bit(hash_32(current->pid, ilog2(BITS_PER_LONG)), &pids))
+>  		return true;
+>  
+> -	/*
+> -	 * Complete a scan that has already started regardless of PID access, or
+> -	 * some VMAs may never be scanned in multi-threaded applications:
+> -	 */
+> -	if (mm->numa_scan_offset > vma->vm_start) {
+> -		trace_sched_skip_vma_numa(mm, vma, NUMAB_SKIP_IGNORE_PID);
+> -		return true;
+> -	}
+> -
+>  	/*
+>  	 * This vma has not been accessed for a while, and if the number
+>  	 * the threads in the same process is low, which means no other
+>  	 * threads can help scan this vma, force a vma scan.
+>  	 */
+>  	if (READ_ONCE(mm->numa_scan_seq) >
+> -	   (vma->numab_state->prev_scan_seq + get_nr_threads(current)))
+> +	   (vma->numab_state->prev_placement_scan_seq + get_nr_threads(current)))
+>  		return true;
+>  
+>  	return false;
+> @@ -4142,7 +4137,7 @@ static void task_numa_work(struct callback_head *work)
+>  	unsigned int numab_mode = READ_ONCE(sysctl_numa_balancing_mode);
+>  	bool vma_pids_skipped;
+>  	bool vma_pids_forced = false;
+> -	bool promo_only;
+> +	bool accessed, scan_started, promo_only;
+>  
+>  	WARN_ON_ONCE(p != container_of(work, struct task_struct, numa_work));
+>  
+> @@ -4278,6 +4273,7 @@ static void task_numa_work(struct callback_head *work)
+>  			 * first scan:
+>  			 */
+>  			 vma->numab_state->prev_scan_seq = mm->numa_scan_seq - 1;
+> +			 vma->numab_state->prev_placement_scan_seq = mm->numa_scan_seq - 1;
+>  		}
+>  
+>  		/*
+> @@ -4307,17 +4303,30 @@ static void task_numa_work(struct callback_head *work)
+>  		}
+>  
+>  		/*
+> -		 * Do not scan the VMA if task has not accessed it, unless no other
+> -		 * VMA candidate exists.
+> +		 * The PID filter must not gate promotion.  Scan PID-inactive
+> +		 * VMAs in tiering mode using promotion-only scans.
+>  		 */
+> -		if (!vma_pids_forced && !vma_is_accessed(mm, vma)) {
+> +		accessed = vma_is_accessed(mm, vma);
+> +		scan_started = mm->numa_scan_offset > vma->vm_start;
+> +
+> +		if (!vma_pids_forced && !accessed && !scan_started &&
+> +		    !(numab_mode & NUMA_BALANCING_MEMORY_TIERING)) {
+>  			vma_pids_skipped = true;
+>  			trace_sched_skip_vma_numa(mm, vma, NUMAB_SKIP_PID_INACTIVE);
+>  			continue;
+>  		}
+> +		if (!vma_pids_forced && !accessed &&
+> +		    !(numab_mode & NUMA_BALANCING_MEMORY_TIERING) &&
+> +		    scan_started)
+> +			trace_sched_skip_vma_numa(mm, vma, NUMAB_SKIP_IGNORE_PID);
+>  
+> +		/*
+> +		 * In combined mode, only VMAs the task uses need placement
+> +		 * samples. Without tiering, every VMA reaching here does.
+> +		 */
+>  		promo_only = !(numab_mode & NUMA_BALANCING_NORMAL) ||
+> -			     vma_is_ro_file(vma);
+> +			     ((numab_mode & NUMA_BALANCING_MEMORY_TIERING) &&
+> +			      !accessed) || vma_is_ro_file(vma);
+>  
+>  		do {
+>  			start = max(start, vma->vm_start);
+> @@ -4345,8 +4354,15 @@ static void task_numa_work(struct callback_head *work)
+>  			cond_resched();
+>  		} while (end != vma->vm_end);
+>  
+> -		/* VMA scan is complete, do not scan until next sequence. */
+> +		/*
+> +		 * VMA scan is complete, do not scan until next sequence.  A
+> +		 * promotion-only scan reached the end of the VMA but did not
+> +		 * sample placement, so it does not count towards the starvation
+> +		 * horizon in vma_is_accessed().
+> +		 */
+>  		vma->numab_state->prev_scan_seq = mm->numa_scan_seq;
+> +		if (!promo_only)
+> +			vma->numab_state->prev_placement_scan_seq = mm->numa_scan_seq;
+>  
+>  		/*
+>  		 * Only force scan within one VMA at a time, to limit the
 
-I don't have a strong opinion here to be honest, I'm just trying to get
-tiering back on track.  There's some scheduler voodoo there that I will
-happily claim ignorance on, so I just tried to keep things as-is here.
+Not a fan of what that tiering code is causing :/
 
-> Using the scanning for two different things has made a mess of things
-> though :/
-
-This has been my takeaway from this fix as well.
-
-Honestly I'm starting to think hint faults are a big hammer making up
-for the lack of hardware support for getting this data.
-
-Would be nice to just have the hardware report what's hot (and how hot)
-rather than depending on a software-heuristic like deriving hotness
-from a page fault.
-
-~Gregory
+But I suppose this will do; Mel?
 
