@@ -4,123 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA583C88E72
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 12:29:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4A65C982CF
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 12:32:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4F8AD6B0095; Thu, 17 Sep 2026 08:29:44 -0400 (EDT)
+	id D15216B008A; Thu, 17 Sep 2026 08:32:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4A9CD6B0096; Thu, 17 Sep 2026 08:29:44 -0400 (EDT)
+	id CC6646B008C; Thu, 17 Sep 2026 08:32:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 398C16B0098; Thu, 17 Sep 2026 08:29:44 -0400 (EDT)
+	id BB5066B0096; Thu, 17 Sep 2026 08:32:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 09CCE6B0095
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 08:29:43 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 460E6A02DF
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 12:29:43 +0000 (UTC)
-X-FDA: 85223185446.06.0516F18
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 5B6EEC000B
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 12:29:41 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 910866B008A
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 08:32:48 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1FA291A032E
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 12:32:48 +0000 (UTC)
+X-FDA: 85223193216.16.2FADB9D
+Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 47180C0002
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 12:32:46 +0000 (UTC)
 Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=NC9bDN2L;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of david.laight.linux@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=JQu6iV4r;
+	spf=pass (imf28.hostedemail.com: domain of yizhang089@gmail.com designates 74.125.227.141 as permitted sender) smtp.mailfrom=yizhang089@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789648366;
+	b=GrVlQp2flK/2yd9LCUJNgPLzX1ba/Ql7nnsQP217WHaKXtpxfDBiLlh0DK6gfcyH3b699v
+	WaQBERd5j4kNZ2u0+NZpr4am4s9tdTpCkWac/OJYVJ5ln2dnFlXKQFHY4NF0wwoOlg9NY1
+	ec0CHi1VSeRQZ76qedvjrRypJQSwrTg=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=JQu6iV4r;
+	spf=pass (imf28.hostedemail.com: domain of yizhang089@gmail.com designates 74.125.227.141 as permitted sender) smtp.mailfrom=yizhang089@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789648181;
+	s=arc-20220608; t=1789648366;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Dtz+Uqi8FvhezfQGwgUreP+CufNocr9p+NqbDN0Xcok=;
-	b=IDUDvLNf8osJIt/2V7D+45Kte2yEPSSlK+iGKnimXL0BXSys5vYyV0x9pkTTEWH0hwlNOj
-	tencZ9cUpX84RcbYbF83swl2Vx+5lENuz6wjj55os9uVjnd1snj/f9HxMi81XWQHgtYU9o
-	TbYU9k/LUz4dpY6GZeFnyxe8obn4jv0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789648181;
-	b=F/VdiRRL/93hsJtt+2JG3X+P0FyR1GSOhkvxQMXwOWwQjJssZN8e9HQz9H7UEmjxxMILRC
-	tJyJkkfcj1rJ8GtopdEhFVpTQhthi2Fs3qkfRhCa3AYQ8BMXx9seAkB8zMMr65lbCpCjXA
-	pVVLolksgfErXcy5NC0BFAVviY0eLSw=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=NC9bDN2L;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of david.laight.linux@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49cd5462b69so4683615e9.1
-        for <linux-mm@kvack.org>; Thu, 17 Sep 2026 05:29:41 -0700 (PDT)
+	bh=pX0fdZFc2RLefcqbAqYKYTVdyFNxhnyETiiYgD7pF2c=;
+	b=JecEtD+xC28KocNPmdn/h94v7McO778R3f01NVene56tUBrHzUMdqZEfE0ux5skc5Udb7w
+	LV90g00ueRNGIRQXqCWvdIHVC8Q9APmJLEdqlN6Z5GVuPq3ucu8qoHwL4ItxbZodBYhqtO
+	Ze6Nu6EeM0deaZUbgMEq5v+ZVv+ezmw=
+Received: by mail-pj2-f13.google.com with SMTP id 98e67ed59e1d1-396ccd5cef0so551500a91.0
+        for <linux-mm@kvack.org>; Thu, 17 Sep 2026 05:32:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789648180; x=1790252980; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Dtz+Uqi8FvhezfQGwgUreP+CufNocr9p+NqbDN0Xcok=;
-        b=NC9bDN2LrAh9EpHxe/iXiLUWI1ElK/a1TRkXg/mCjZl6vdUOX5x8e9zKTbROBBiihw
-         kvMGCvGhwYiARkUQjnFMjqdWHZCfYgHRrCYpsAcn2jGtbjuWJbiTQ9soNN+aYHDWd9ql
-         WXS+bRX0X79J0AC3ona0FaPXwb7aGLh8LDojBUR3HAdsWzkqCYTQIvEcbU3dKwRaohr3
-         a7BECGBRU5A6z7hW1NdIOuYY536HWPCFHEMClcALBv/o2A4jcMHeZxY2z5aYAKVL4loB
-         yqC4d6XJJLghtecaWE2Ub5G/knfRP/VrxBx2K0uP5QkbKhsfpTdJkhkDmxHYiEB5FsHZ
-         S9xA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789648180; x=1790252980;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1789648365; x=1790253165; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Dtz+Uqi8FvhezfQGwgUreP+CufNocr9p+NqbDN0Xcok=;
-        b=nmRxGp35YJrbIMtB2nR2AU69BiI91e8O8hWrVdRvLH7i0rTYg78vA6612ovz6rcae3
-         XafZar6g+TEfVSj0FmivBFka6eQb0/WfMJpvje5MPXEE4NNu53j1c1DxOk9jwE3UlYNy
-         hG0ZPx/NQ3qZgNVPyymsn7gjtSuX1IGKSww60AN2m5Gql1+hzWzc3QgCGBXrp2ZZXdfy
-         Btp2mCnPBYsUDZXgCYZ9koIqL0Gw1Kj9LXY3pod2anRPlLQcTKEg0qPQ6FuYZTBAoF/7
-         Q3eDJg7VBbyRKdDmRYpWiP6/Wa7KEBFaO7RbbElbDdUzWaOfTQcE1eztpF5EYJO3AG7m
-         KwzA==
-X-Forwarded-Encrypted: i=1; AKwUvBw/N5jzMxOw3UCjbo4gCRw8jZTvzLIfwB5uixDalrcCrfBVo4OzV1rKz9M3ez7paMMCt1eQdhHbgg==@kvack.org
-X-Gm-Message-State: AFuF++mL7GaeP4I1p1ELs4p3mtp51Aqn5P/76FD+XEDdQ9iNa5gUhOgv
-	ql9x3BSYbLXoBDfHYYlzz2Kg3Du7niQSyTK4P0eZckwtSuIanc9JqEUc
-X-Gm-Gg: AYBFou0DxNFs4wZPzWNMimc1yuhsU52WFdyfIoksKXuKcQ+JjlHMotJM4NIfaDP9X52
-	20kuiRp/YzFiIhkkle2pzH4ULiYMFdFSh0VRgMhgCcDwer6uAxY8xOl3xcEAhhl0n2BXPzaMebJ
-	XuDKad08qlE1CIug/JaYQ26KPu+X7Y/GwWUG3KC4aPb4JiGvnfWDx3jMYYOCIjr175RWQS6TpCf
-	ome3jnH+bkJshrG9OGZSzJlIsm8HeCRd+fyCfjolJIB1esE1sLWq1luMRQoXdltpfGkjdpNrlD9
-	53H8ObXUXhs4A7o9VCUv8/f8oPB4oOQzKoSgbzcgOPoF3HrZD8jLNiqrarXn8UkV3c88XA/o6Ds
-	MgS4ov6NjMu4vvLqpotPczbi5FBlQ5b4QOG4TQlDd9KNZnH8GJzBwPRTu2+KOT/M6r3TFxfQaEF
-	HgZfju6j3irQVruYNnIG2CX1d7nJgWL6f5zhXqmHlydBybOumOyRbTzk+czkdreiE1+nMkpUTxp
-	NvSvn9wF1aI69VyGNU8/Bn81YLNymCbaaWe
-X-Received: by 2002:a7b:c35a:0:b0:49f:bcb7:8e9 with SMTP id 5b1f17b1804b1-49fbcb70a1bmr64001725e9.9.1789648179633;
-        Thu, 17 Sep 2026 05:29:39 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fbd1ce79csm82621135e9.0.2026.09.17.05.29.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Sep 2026 05:29:39 -0700 (PDT)
-Date: Thu, 17 Sep 2026 13:29:37 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Christian Brauner <brauner@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, Alexander Viro <viro@zeniv.linux.org.uk>,
- Jan Kara <jack@suse.cz>, linuxppc-dev@lists.ozlabs.org,
- linux-gpio@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
- linux-media@vger.kernel.org, wine-devel@list.winehq.org,
- linux-xfs@vger.kernel.org, io-uring@vger.kernel.org, bpf@vger.kernel.org,
- linux-mm@kvack.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/4] file: make struct fd_prepare const and kill its err
- field
-Message-ID: <20260917132937.5a15904e@pumpkin>
-In-Reply-To: <20260917-work-file-fd_prepare-v1-4-b87534ca49f3@kernel.org>
-References: <20260917-work-file-fd_prepare-v1-0-b87534ca49f3@kernel.org>
-	<20260917-work-file-fd_prepare-v1-4-b87534ca49f3@kernel.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+        bh=pX0fdZFc2RLefcqbAqYKYTVdyFNxhnyETiiYgD7pF2c=;
+        b=JQu6iV4rR1rHBy5doyrBeoAg/ijWr+zFXcy646NtKaGAkxnayEbJdUzSxyFXxPPn4o
+         pkyiA23621xIi19t5LsqQUmNyRCteOuxKRkM0OGC0rmlSoz1XnK3PctfYs2VVw/sCItL
+         fk20LJogL5MBLUgkzMUC9DdGovr2/LHwWWP3lJIDsEIfYmh63gELQpmz+O7/1TpXUE63
+         8G8693tfHVN3iTVcDU0RYkGZ4Um608QE56WFppmY25gGVyqRG5ZkldH+F56iT0xguosj
+         xTPosU1G0/qKWBBgrHR+HYP/Rq9gARuX2LXrR7NiYgAymTZKYNJXT2bI9ta/5WE1TRA4
+         +0dw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789648365; x=1790253165;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=pX0fdZFc2RLefcqbAqYKYTVdyFNxhnyETiiYgD7pF2c=;
+        b=nNbF2mTMja7bopypTo2Hu8pliU7HzWl+c0olgv8+aC6zDFFCFwqZY7r3bQkWwqcVyZ
+         /RL9TiU/xcd9sFUn37OCPPdq4q8toJ0RJEc7hROQP+hDzPpf6+l/Ys58/Mj7CzRbi5BC
+         SO/YJMidMdw96EUw1mnRwKsvkY8wS3wUTj11gh45GNHBBo2lraHpwiig/5O68ZKQa+Fg
+         t0ZiAKAy6pSzUxcpiCcDuYbXblpcACds5j7c3SxtebkqClRKeA3f6ifXqHIBkluYHWxS
+         0PFYqpiKXpO9TF4dGWO2Cki1ILnCZsGRkWRGp/PkTrDND3FcZoyc8LzrWLbCZY5J5qWi
+         ueUA==
+X-Gm-Message-State: AFuF++l1NhWaSL1G0YjtBxagJybebM/nNjoR5q1+SW52eJV8QbHBC2N9
+	ANdDu9T+CQ5Ifk90aKtfJHCMFkFtNTufOO3E7bVqihJlguHreuzUQiCG
+X-Gm-Gg: AYBFou0Mtm+UuMj07p2ueuEtJPZ9nBDQgsKlOYMuslZTBi1Fwg/CIHB0vTjJS+e6O9g
+	U3PoMhBY4gArHenZdjr31Kji11WcAyVhc9vfOFNY22veeLGTAHVq60y+eOUtFuWs7Fx7gNTAE2u
+	SY9wcErm/Q0vDrwrPcNj/h+bMmVAUAqUIdihnMpr2JF7bxjQHeSY4x9exIxIjXfdU0A7gHiUWAy
+	Cp2z1IC99lu71ZGwUFFwJIlpou9XWJR2Uq8LJGzGOEK80FFpiXKHwi67vZ8rLZPMxkOtYUnx36w
+	xbiHsF1jHFeZTJR867pFtFBEuNJA8Rey3olPvBQnEmvh1cPVAF74BcmZIaYC2ZykNJsYVRUeQES
+	vNGmgMTEKOsGLh4wUq/eH6qdsnTyTT8TDEmGlEhj0glaj5sqjV2ebg99UpaHGcDGPAnOrUSZLr/
+	XTmRPcRgGtixgimw8rTGJgtACLG2FAGFSPITPUHJ/Nfqd1PFOC7ZFzhyHh9BLEGkLYVWaP5AJD3
+	gdxrhImd1UdbyV76kA=
+X-Received: by 2002:a17:90b:2c86:b0:39e:4c80:f67d with SMTP id 98e67ed59e1d1-39e4c80f73cmr236031a91.28.1789648364901;
+        Thu, 17 Sep 2026 05:32:44 -0700 (PDT)
+Received: from [100.125.248.95] ([124.70.231.46])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e35d9869csm5164981a91.4.2026.09.17.05.32.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 17 Sep 2026 05:32:44 -0700 (PDT)
+Message-ID: <997ebbdf-efc9-4dc2-91ee-254c66176c32@gmail.com>
+Date: Thu, 17 Sep 2026 20:32:19 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/3] mm/truncate: align truncation boundaries to
+ mapping minimum folio order
+To: Zi Yan <ziy@nvidia.com>, Zhang Yi <yi.zhang@huaweicloud.com>
+Cc: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-ext4@vger.kernel.org,
+ akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+ liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, hughd@google.com, baolin.wang@linux.alibaba.com,
+ willy@infradead.org, jack@suse.cz, bfoster@redhat.com,
+ joannelkoong@gmail.com, djwong@kernel.org, yi.zhang@huawei.com,
+ yangerkun@huawei.com, chengzhihao1@huawei.com, wangkefeng.wang@huawei.com,
+ yukuai@fnnas.com
+References: <20260916092450.654408-1-yi.zhang@huaweicloud.com>
+ <20260916092450.654408-3-yi.zhang@huaweicloud.com>
+ <DLH1V7L6ECGU.3AIRGWUODR779@nvidia.com>
+Content-Language: en-US
+From: Zhang Yi <yizhang089@gmail.com>
+In-Reply-To: <DLH1V7L6ECGU.3AIRGWUODR779@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 5B6EEC000B
-X-Stat-Signature: stdwicztm7y9cenppf56ai6i9wcjihwz
-X-HE-Tag: 1789648181-168695
-X-HE-Meta: U2FsdGVkX1/J43f1fVQTrlJmQIr1uTwTtzPFE2kMFtawMxe233GXa0gcrqjsZ1mf7cBkcqAVcyvL35bsXK4zSFIyUNV62sbbdUXeWgOhdd2Z9YjF+Sy00m3MBi1wbRDjZgMvWrF3iK/u2qvkx4RvXDIzp2rsSyPy9e04392LC88Sn607+phbyBq/gvzeZ0CWEWPOsIvO1c2vrwriZtcNEdxJblZ2IoOIRwraFxrJKusibJkAthDsj9QfN3J9b2LBSgl9nR2R43DYGmtbBVbgSeSaKas/EZerXrk5qtQfvQZ33Bz2W6mif2U0FthFDNVjL6C8kfSiUH1EhAO9exIaFpbksjb0BZYudwggmG2tqo2nrKQaioiZ9582pPMNsV4DNtHQXbCt6u1NmRezi8eZbe54OZ65wzrzenP1alhD2PsgpiRgesA2taSH/UzXHA48Bcs8Y0OKhfD+mIGIBlrvsnZBeTzbvl40uD971P11mr3EdJenlExba3yENGeveG7HreSOYuQDDcMnnWAS7pJ+mrHiZuWUkRyDQAdYXoFHeL1+Lu/C0/LA8J52oJwVUDtIYS+ebnkvOQY03dMXhVC/Gb2ZEZei+pPVL6VtfmFoW5oAyO/irDCtFxEe+CQfsAMf6o2WWBYqN0PfXeMWPi0qD3G1nf7rw2ksThGciqeUdRXx0z6+tcoWQdP+jtvP+o+iGaXbAeWp0S+VH8ApdW5eEyEK1BYvBKrjOBcQqbXPVfUFrPKpFXv3BkBSsabSpoM8PR6cL8hDEwAGQrE7bckBvpIlq2PFjdl3zZiy4fA0kO8tEL+4ol1lRetvdSa4ZsnPQr6OHEusndw0quEJXMgNzRzWtdwyZmwOu6laxy8/6P0W5NdM+kROiFLqz+3BJciPT3iCqd1W36osM3QH1CXsfEMpHCbsJ9ZDVHIdHA4EvdVcP/udOg49sTmAQ5APoeMTd/aQwtMWGavlbIDVxJW
- VD3R19NS
- ub2fOHo9rlLy+HMXnKA7lgDMj4CmpkrgMmaNAHnQJzZ2vSzP0Etried584XBZr8ZP0SRCp9S27FxmULIELhnt35VPZ/s7bgF8nDHFBrIJN4vI9ar6sYS0FOBZTSR6ADGtT86WtbL8/y5x5ypZHt37RzpooDE2LeuuRlWsWmHbJO2hIE81QnYIkh6UWucHSFsxPbJBhbhRR9kcmlr97HRMPc2/vb5/o4UmTQcgkhQDOQFVtACift3XD8THkmTadv7LmVhpgoney6ip9wnxjTWh3MOdNkUvxDEvB6LNl84NoY26aCZ4fp5g8+Xo4y7fY/A5NJpnCs9J41YGG6y/13VhYOZfD6Z4L97Pl2H7R3SylICjeRhvU+QuL5PbOl64uJL98iA2C+0ib/DJDuR/q/dHxW56oETZBDiVdhz9xjYoH8XZuaBxWWHfKTkanysMKivFwipeNh5p1OjFP7eOQPNpjHPkXxNO75IEqPxR488MOEVKI1VVOxFthZU1fOp/4uZiM9pJ
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 47180C0002
+X-Stat-Signature: 8c7oufsa4xtr9xehwarey5w5pwo19kso
+X-HE-Tag: 1789648366-611973
+X-HE-Meta: U2FsdGVkX1+A1qR96SYrTwF/LUcrmriqll8g2oWVn3d4iLGRkea4rTxbOt8zQvTtRwja6w0LeCesd3LPIIltyrC3JYZoFMS6uUhq8v1iDz3N2uJWK6Vzd8HoHuGVyYNq6sqan86Ey+QgYpZzzvL6yzTZ3j9kZaaSJUEAY3Gf8JxPul9VLat94WZXFYAxWdRCd+hn2YUxonPv1cDKEaKjBnQbqauygzDFlU3FjO9Rnfy8rtE4jwHgcTTDwnSr4GJtENhijc5ZTBJiA6+oXobPONc/A98JVe1tlU2I8XyRM7v4MN4a2tmKv5gt20UQPgVF7zm4z5WaAemtm//OHzY40Ef+pPi5shlY2NUg6o6uQe79erXtwtpKUGVR6Bo+zKLKhjaLM0u4rMFPgPJju2g+J3HYTb8Q9hM/YvXy2B7C+rPMTaBhkteLPllzduSduRyIOc5d/K4gY3G3PaHTCAAlePlb2pMnEEAUgQRve7ty9S3JXofPoox30CrIY38gRV96ELa9t/1tyzcQCbEuetNDj6OjS+kmyr4X0R4qUwvCPZJ3hTxfmzKh08jQWQw4zcue1UfUak+QwQ+8zu+xkGd7N6kSohAvN7fJXP13gYFIe+xkqsYqoLum0NWkuB2uIRiT+1f2WZsiZASDDqyZS0DB9kRH1+X48uYlvaRFpjuJNw7tA+na3zvTnu2+L218ia9Mbflk73TifJ5PWJtMav2r84KUlkwoLmDU0OR47wa7oKINNM2djOEQF5m/eOcFGEXdrEKFEmRvnkFC0hz8Oo5cP4aqlDnNiF+2jaGoi7cW7dLUknyHyiUa5KgbC28xB9vZ18r2qnNg8aXJ+LWIX/GkwC0Gi672dNAp9ckRM0fLQKQ4RI+E5Bed6A/fQfle5T6r77c2qoSpxAAY+1geDRjVeLR1W8PCTLcXPjiWSiGbhUUs7+3ftFiFAndhm4CSayXd/NlRfTE6JLDQoUmTWGd
+ JWe3dpJs
+ E2mL8pv5OXIaEzayWXqIMctbxuenojbE+4cWIF4lxUVZaZNdVLM0YKgJsT0RbP8QsP3a3/POaL3yGXDKhZE/CSvvyVDky0HTj4r4n6VZi/5Rk9GEbCInDji5que2+p23/QwVIXmgmmDaUQoj74dcl0oX3wd0mqVnY5drERtp3WLbPTzqT1GqR2TQJqFs9So0VeqcsRGgS+nVR3nKuyTG7s0O558dBonzP4xowduwNoX05QfQt4FrQmxr8L1c5yV/wltl9mA3VRu5xOzJ/UbkdFPp/tNuMb2rr3Jovu88edwxIgectxG0emlsv9gizM1Yhh4U7duZ8qUmc9Hc196xIJ8jN7kPeyAz5H4HEzIad0Q4dR2io58dzT+c+7zNLpekt6FP4d3gOLw4LWvSIQpPf6EHHeOr8OLE6OzG2/Bc0H/ISoDFXqfwKJ0xAViHLjPCM2W63PSw3O0vWk+ZoNWvT/twiyzHV1xnHQ3P+AtoR9zFFbqBMAym3DNrwcqdY0quYvftf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,38 +132,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 17 Sep 2026 11:09:45 +0200
-Christian Brauner <brauner@kernel.org> wrote:
-
-> FD_PREPARE() releases the fd as soon as the file expression fails. The
-> fd either holds the descriptor or the error. The separate field is
-> redundant. Make fd and file plain members and struct fd_prepare simpler.
+On 9/17/2026 5:14 AM, Zi Yan wrote:
+> On Wed Sep 16, 2026 at 5:24 AM EDT, Zhang Yi wrote:
+>> From: Zhang Yi <yi.zhang@huawei.com>
+>>
+>> When the mapping has a non-zero minimum folio order (min_order),
+>> folio_split() stops at min_order instead of order 0, so the sub-folio
+>> containing a split point stays aligned to 1 << min_order rather than to
+>> a single page. The original boundaries were based on page granularity,
+>> so either boundary could land inside the min_order chunk at its edge,
+>> and the truncation loop would drop that whole chunk, valid out-of-range
+>> tail included.
+>>
+>> For example, a 64K (order-4) folio with min_order = 2 (16K) punched from
+>> offset 0 to 36K:
+>>
+>>    split @p0 -> [p0-p3, p4-p7, p8-p15]         # non-uniform, min_order
+>>    folio2 = p8-p15           # straddles: p8 in range, p9-p15 tail valid
+>>    2nd split of folio2 -> [p8-p11, p12-p15]    # success
+>>    end(old) = p9                               # BUG: p9 inside [p8-p11]
+>>    loop truncates ... p8-p11               # p9-p11's valid tail is lost
+>>
+>> It has gone unnoticed so far for two reasons. A non-zero min_order is
+>> only used by filesystems with a block or sector size larger than the
+>> page size, and those either always write back the affected range before
+>> punching a hole or truncating, or they carry filesystem private data on
+>> dirty folios (e.g. buffer_head), which makes filemap_release_folio()
+>> fail and folio_split() abort with -EBUSY, so the folio is never split
+>> and the old start/end boundaries remain valid. The bug only becomes
+>> reachable on paths that truncate dirty large folios without prior
+>> writeback and without filesystem private data, such as the upcoming ext4
+>> iomap buffered I/O path.
+>>
+>> Align both start (rounded up) and end (rounded down) to the mapping
+>> minimum folio order so they always fall on a folio boundary.
+>>
+>> Reported-by: Joanne Koong <joannelkoong@gmail.com>
+>> Link: https://lore.kernel.org/linux-mm/CAJnrk1bQYUe6+1ryyJur5EEnZYrC+_5AYsy=OWzVRgD4202y1g@mail.gmail.com/
+>> Fixes: e220917fa5077 ("mm: split a folio in minimum folio order chunks")
+>> Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+>> ---
+>>   mm/truncate.c | 14 ++++++++------
+>>   1 file changed, 8 insertions(+), 6 deletions(-)
+>>
 > 
-> Callers of FD_PREPARE() get a const pointer to the guard. Simplify all
-> users as they can now easily access the trivial struct.
+> This should be the first patch, since Fixes is older than the one in
+> patch 1.
 > 
-...
-> @@ -191,35 +175,39 @@ static __always_inline struct fd_prepare __fd_prepare(int fd, struct file *file)
->   * was allocated. If fd_publish() was called the fd and file are
->   * published and cleanup becomes a nop.
->   *
-> - * @_fdf: name of struct fd_prepare variable to define
-> + * @_fdf: name of the const struct fd_prepare pointer to define
->   * @_fd_flags: flags for get_unused_fd_flags()
->   * @_file_owned: struct file to take ownership of (can be expression)
->   */
-> -#define FD_PREPARE(_fdf, _fd_flags, _file_owned)			\
-> -	struct fd_prepare _fdf __cleanup(__fd_prepare_cleanup) = ({	\
-> +#define __FD_PREPARE(_guard, _fdf, _fd_flags, _file_owned)		\
-> +	struct fd_prepare _guard __cleanup(__fd_prepare_cleanup) = ({	\
->  		int __fd = get_unused_fd_flags(_fd_flags);		\
->  		__fd_prepare(__fd, __fd < 0 ? NULL : (_file_owned));	\
-> -	})
-> +	});								\
-> +	const struct fd_prepare *const _fdf = &_guard
+> It can adjust start and end in truncate_inode_pages_range() instead,
+> since shmem's min_order is always 0.
+> 
+> Something like below.
+> 
+> Am I missing anything? Thanks.
 
-Since the struct is only written by its initialiser, can't it just
-be 'const' ?
+Yeah, this makes sense to me, thanks for your suggestion.
 
-David
+Yi.
+
+> 
+> diff --git a/mm/truncate.c b/mm/truncate.c
+> index b58ba940be474..803ee61ebf624 100644
+> --- a/mm/truncate.c
+> +++ b/mm/truncate.c
+> @@ -374,6 +374,7 @@ void truncate_inode_pages_range(struct address_space *mapping,
+>   	int		i;
+>   	struct folio	*folio;
+>   	bool		same_folio;
+> +	pgoff_t		min_nrpages = mapping_min_folio_nrpages(mapping);
+>   
+>   	if (mapping_empty(mapping))
+>   		return;
+> @@ -395,6 +396,10 @@ void truncate_inode_pages_range(struct address_space *mapping,
+>   	else
+>   		end = (lend + 1) >> PAGE_SHIFT;
+>   
+> +	start = round_up(start, min_nrpages);
+> +	if (end != (pgoff_t)-1)
+> +		end = round_down(end, min_nrpages);
+> +
+>   	folio_batch_init(&fbatch);
+>   	index = start;
+>   	while (index < end && find_lock_entries(mapping, &index, end - 1,
+> 
+
 
