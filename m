@@ -4,91 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 095A4C982D0
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 08:49:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB686C88E72
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 08:54:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C595F6B0092; Thu, 17 Sep 2026 04:49:45 -0400 (EDT)
+	id BED226B008A; Thu, 17 Sep 2026 04:54:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE6616B0093; Thu, 17 Sep 2026 04:49:45 -0400 (EDT)
+	id BA0066B008C; Thu, 17 Sep 2026 04:54:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD1EC6B0095; Thu, 17 Sep 2026 04:49:45 -0400 (EDT)
+	id A932E6B0095; Thu, 17 Sep 2026 04:54:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8273E6B0092
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 04:49:45 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 977D21C186A
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 08:49:44 +0000 (UTC)
-X-FDA: 85222631088.18.B8FA595
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 04C6AA0006
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 08:49:42 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kxDyCvLn;
-	spf=pass (imf15.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789634983;
-	b=OabLZp2pLiYs0EXmPMkKVX5cVCSBxTa1wWc1XpdKBH6lu3gRvem70laaJTP9VlQr1dP0Mo
-	IG+buzcdrSH8uBLZ6Rh7ff4GdW4/V4Yma2VboHzyvZOZchOUh/v7paGvWo7fewU8LtMlk+
-	2jU7rOzukFluI/tNk15aB8VI0PxeMW0=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kxDyCvLn;
-	spf=pass (imf15.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 802FA6B008A
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 04:54:21 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E46724029D
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 08:54:19 +0000 (UTC)
+X-FDA: 85222642638.22.3395F2C
+Received: from out203-205-221-210.mail.qq.com (out203-205-221-210.mail.qq.com [203.205.221.210])
+	by imf18.hostedemail.com (Postfix) with ESMTP id C2F3B1C0002
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 08:54:16 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=Tp7RD04S;
+	spf=pass (imf18.hostedemail.com: domain of 758910018@qq.com designates 203.205.221.210 as permitted sender) smtp.mailfrom=758910018@qq.com;
+	dmarc=pass (policy=quarantine) header.from=qq.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789634983;
+	s=arc-20220608; t=1789635258;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xCY9xH2my2ZnWedJPgq/0TqPw8q3Z6WWbTIkvwNYddc=;
-	b=PXZNdAoTWKrANhpvupbp8BoySfGUECVsLwz6CYMkllD5JI6vG1NY9vuolOp8xrRSIw23Ji
-	4XojlCYUu5SowV5FjYFseLcWQ8SBcDnstFCgkTiqYp0KjNywRvXXqTHDARFPDcQoyb+dBz
-	/mKcsWajphtuWG8AtEtM7LIX5zSwGOg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 18F97600D4;
-	Thu, 17 Sep 2026 08:49:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E86C21F000FF;
-	Thu, 17 Sep 2026 08:49:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789634981;
-	bh=xCY9xH2my2ZnWedJPgq/0TqPw8q3Z6WWbTIkvwNYddc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=kxDyCvLnMnzBnJzFQz4yjaU0fYLwlj8qKXZleBVaEJywAYykaWGMp8RLDUbiCYxR4
-	 MIFtAm1qjzUVH5dv0Q4SZw8u8jalnuENXTV9TjbxRdFj0WYCpGUkETWmQAClZ6K48H
-	 dGhnNfEggRqodxZZQi9TQ14szc8PAKZpIRGr6tbtkKJ2HMGsj+JOC9CBOMDHOrafj9
-	 kFRDBedtmCm723sXEGd5+KY+SOmfBOAJwkNY34hVHhdqFE4Cf++MyBLOoJfefx+aRa
-	 uFOP1cUVPoAjhoTE3nagfnflHKuivDypE1MsmdCM4qCiYaC/C5QVaQsEZ+AXjVuFdE
-	 8E+g02bsLio3Q==
-Date: Thu, 17 Sep 2026 10:49:36 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: NeilBrown <neil@brown.name>, Chris Mason <mason@kernel.org>, 
-	Oleg Nesterov <oleg@redhat.com>, Jens Axboe <axboe@kernel.dk>
-Cc: linux-fsdevel@vger.kernel.org, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Ingo Molnar <mingo@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, linux-mm@kvack.org, io-uring@vger.kernel.org
-Subject: user workers as coredumpers [Re: [PATCH 1/6] coredump: don't switch
- a dumper that has no files] table
-Message-ID: <20260917-zahnpasta-aufweichen-flackern-1182320f5c81@brauner>
-References: <20260915-work-coredump-fixes-v1-1-f354ca41780c@kernel.org>
- <20260916194837.3732307-1-mason@kernel.org>
- <20260917-staunen-sparsam-infusion-83238c68d21f@brauner>
- <178960987412.207413.3957049392884487413@noble.neil.brown.name>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <178960987412.207413.3957049392884487413@noble.neil.brown.name>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 04C6AA0006
-X-Stat-Signature: 6n7oatrabhmy59qy7jojxeq3izyoasa4
+	bh=5ZaKKzLi9np0jHY0VAD2LL7KUZqJ3e6D8N3aG7QQfwA=;
+	b=NBDWM2MBhrGd4s/KmnngrcTnYsy6dpInGyyU96fSlAFxHgJkOjbrmF2xhcrMSWjn7FD1OY
+	KMgvqsWroJ67X/1BC2SDsDp0QNeoGnbKHVnZaAXMI68joM+56NwM+JVRxzunabdLXjEuRX
+	cuJcCp57qaxf4BBtC5IX0k7jKAJsu7k=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789635258;
+	b=13GzS+89XOOECFfL13AR18RGt7HdCHJ6Z2v7irXPa1O6W2MOR+bYZXG2jiik0nQ75FGuoM
+	rr81ZNiremisBxw9nhbJhwoU4n7rPSqhpSHm1Gd62cQPvpQrr+exOH/ZGUOnsaYR2Dc4bv
+	oB10hCJyycKQBYTlWqC1guEK2PYmv74=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=Tp7RD04S;
+	spf=pass (imf18.hostedemail.com: domain of 758910018@qq.com designates 203.205.221.210 as permitted sender) smtp.mailfrom=758910018@qq.com;
+	dmarc=pass (policy=quarantine) header.from=qq.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1789635231; bh=5ZaKKzLi9np0jHY0VAD2LL7KUZqJ3e6D8N3aG7QQfwA=;
+	h=From:To:Cc:Subject:Date:References:In-Reply-To;
+	b=Tp7RD04SXAZTeDTOniHQGc0rL6WYMBBR379hn2DJ3dM4gk1MmnvaM5LTKIykYyUyw
+	 Cg9tPF46R6Lju7OirUvyOYAOwocSO4GoHf0tFd2SjhyZ6XbynCID/Ad8ttY1La4WeI
+	 ruVQYvwR90Ww+V8ESOkOtOp/TJjxcqjLDIm2QMus=
+X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
+X-QQ-XMAILINFO: NUc28+eEq/iR9MF7cPdE3qedwP+yQBYH1zJWs9p00FAxwAeBn/FTJ0PRtl+Euy
+	 WhBbPQ5REGXQJ00c8V7SNMPksnfSA8I4+fec47r+ZCa/B6fhE9gGvFlxnhf5zQ8YwBl3UtgiB1OKf
+	 iJfNczzrzyvWKBdbbTnzUoIYaI1YA1P7nGW/Mks5c/JTPTtYTB7coRgbop9d4RAdeyWvqbKYFCjLi
+	 sXSbECO0dj3MG5hbVSxEbh6N1f8Pkef66s/SIwuG0PthMzUdrBWKPeLOhgQZbeCiiAHO1GXuwi0E6
+	 iH2Q25syZOSgX9lkHCa/fKoGKYskpPx2+6LSUELJckNvUdruF9zxSA13nDqbYe3s0l+weKO3vepcJ
+	 LfvL6+tXN9URjzuM9T8sZa/xajXDRadLIck3hb4zlC7MNFjGxNjVBt1aatd1JV5r5oxP/pSwP+d2o
+	 q5m+6kgsf+X8OwtM3R3glGDN40g3gu4KrNA9c3haLxlR+ZS7lWpJJfNShWAOiXh370LtmEccbeTPr
+	 /LNC9aEJrS4vqGjd3e+jVUS4Zprp/vMPBqkDTw5wf1ujvAEeX5tpkmbS8QxqPH3LXiHUzP4J3jpLM
+	 MzLk1x3a5SM1yuEA/Ktjr96soWVMv36QQpT7aaDnoTMecT/rwgNlyQGUrKZ7eYfVclYGdNZ6nhPLr
+	 PrSZHiK29jRpph6MUZDqd7DbC2AjkVchqI/ph4dy+KuEYUBZF1X1yeLWdM98C/n8xArtwjWLYPyBU
+	 p60+ZHtcAIPZuaZjhs5o/a5UfWEl12jj0A86dmox96QwcywgMSbP3gqtTiRQE4nSBPV6uGPgP3oFK
+	 yDfx+/qrTH9v1bbEGnT2y2H7iQTMD16L939gaRKSwpHziPJ/urzxQT5KF3nhfeLlUaul8nTwTRIPM
+	 iFTr/leJTMRVuC18RHv5Ia8stuTMfjOR9+y560Lvx4RgwK1m40fMCCR9xCCm8Ca4j0reFYly+6v8E
+	 e9oA2LIFw1EkSxiFVgmJca0MWYW18igA5gk1eAVZnYKtD8/W2tHfZx6AoVIlqtNlZzxpcLBHFY9US
+	 T9M76HhG/xPT8kLwT6TDTz9+W3U6rMkDS9AYtlaDqMuxsw1d4D3INOjvvDohY44ZzclkYyCh8S0FS
+	 0vp8La5NIRPk0iaL2Q45of/OzgGW0RIdQSeA0Lu2dNCt+F5vBDz0XS8pI7THAHt+Ej4=
+From: "=?utf-8?B?NzU4OTEwMDE4?=" <758910018@qq.com>
+To: "=?utf-8?B?TWlrZSBSYXBvcG9ydA==?=" <rppt@kernel.org>, "=?utf-8?B?WmhlbmdodWkgSGFv?=" <zhenghui.hao@qq.com>
+Cc: "=?utf-8?B?QW5kcmV3IE1vcnRvbg==?=" <akpm@linux-foundation.org>, "=?utf-8?B?bGludXgtbW0=?=" <linux-mm@kvack.org>, "=?utf-8?B?bGludXgtcGFyaXNj?=" <linux-parisc@vger.kernel.org>, "=?utf-8?B?bGludXgta2VybmVs?=" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 0/2] init, hugetlb: fix early parameter ordering
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_6AABAA9D_566A31E0_76F70AFC"
+Content-Transfer-Encoding: 8Bit
+Date: Thu, 17 Sep 2026 16:53:49 +0800
+X-Priority: 3
+Message-ID: <tencent_B4700AD229B1E6D517FC751924185FD3BB07@qq.com>
+X-QQ-MIME: TCMime 1.0 by Tencent
+X-Mailer: QQMail 2.x
+X-QQ-Mailer: QQMail 2.x
+References: <20260917062837.558251-1-zhenghui.hao@qq.com>
+ <tencent_0490E1CAA4336214AB70F813325F3020A608@qq.com>
+	<178963086483.2200502.14463144472620315064.b4-reply@b4>
+In-Reply-To: <178963086483.2200502.14463144472620315064.b4-reply@b4>
+X-QQ-mid: xmappuc5-0t1789635229tgvsoc51g
+X-Stat-Signature: didpjjhgjgkniaap95cddyd786jn3qny
 X-Rspam-User: 
-X-HE-Tag: 1789634982-173151
-X-HE-Meta: U2FsdGVkX1/NtRoGSt+/FYQ1qVf+lOdLmseKyt1bY/sg0g/urW0zAHHtrpAL8jgW4ECOvChEzk6hLt6Da1cOaX9bqCXWwd7yfE0ZiEjTf7aXCWPV9QYb8KK74gkOD5T0ujga6wkcIjzdehhxNqTcMUFlSgp5hWYmK2A+PifbZbZByDe4mfrG2699fa0DHoyvRUSlI7VwpuBGtXcen66TYCX8pZ5cUJlCPCn0itSkLvcyDJwp29WeiPqcO7eEvl/jufBu0eR+Vpw6S+qH3wtflSOl/lcnltHpB1Hzsbc4ENepFsk7v/+qgqg6+P+KYHOfIArKASBtsB0WD1o/XZaG8KlObf1IA/dGd6IifqGyxHcgGED2kWDRFIY1bWsOd6iOSP460JaRXOH+UME6grwp/tASqA70zhdn0Dj2j19VN/zLwkv/aknujtI+fNWVh3ZR4XUBPz/b/qDWMbX5HitgNZh9ElsPV9v3qLfi9mEOKcUzZ5MQrpJwimrFH2CXL9z3fvwAX9RdGvWeegdz61Bv0NrNnQeOGe9fkzwkesGfOG7Gfb60s21teUuP/jF6Bnlbvd2huXGAiq4JpEJSIKRcjdpPuV+IWm3iLGz5SDYzTre9c3skcHU1KbqF5Q0fqfHZK3LKjkOPTDCC1P4Ygnr+1TGOdniL/Hs9AjYRjf08C8+be4bQoVnkg0Z8D1DU8aEw0NODfFFWfFOOysNEZ9iNz7SyIX9c94hM8rIbsrWCx92Pke2NBERaNSrbypN7ZNfcxxA7JBT5UUZe3i87pAtFe0Z5v3IA5yVsr/71EgGXp0Fdzh62+uD/af0ciQJ7fauxkedhoJdS1vW1k89zagjOl6Za5VkeBO9whOuvTkGKnkLnPy88d15fQvkH4AIjl2SzhhCnHt01TIgEfjXtR60QE9xfR8mTqPRqw+Ev4i+gTC1hpt38LLrbM6vJ8B93qlHQZw5B25FB91MR5P9IjaT
- GCC03uWh
- u6e8/ScEVmdFwvtAhXIjipar59r4nfIhdj3pmapJ7FAHn4gD+QMv0F1wJy65MBURp9ftZKl4gfdfpOA5JMVsreIkC9bRf4ElBOdwj6udcFXKzNz/FNrJQw4wMhDsdZDnRVx+kNMjQr34gqH6DaSGYidlHj+DpN8Vfttx9PFQzFU5xGoahkpYzHxtxtkePbhHonxSk4Uadb9AVSFYdeg/4M4G35Wra7HB3+FieYlEyMkKdnmSuT9T30bkvzXGXPXo6xXWS1izDi7C0J3LZzNZ+tGmZFH3y193IqBDrKvOXKGqQGz1ElcZS8gh69HOOEnZVVddw3b7hMZmd9vE=
+X-Rspamd-Queue-Id: C2F3B1C0002
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789635256-318206
+X-HE-Meta: U2FsdGVkX1+46U89FVC6QlDo4u/2kiHv9d6Kmtv/NGm4o+W87PZ+lfbnq20JXRHKE7G1tlw/aoU3gwOcK+8Mb2FxiYMaibPOQUfPWQJgPNMciKLiT/dhZG0MJARaniFVDqkhbkZfI4xNJQGZdNwwGi4ddm/z65BHig5Xa+rGHWXQbjOIXjw2iT9Y3WawYI08M/+N9qpC1zQytD/15bvwQN5+HxVjgwMrMJM6/97J8Y1RSnzaMSEkmkKgEEQU0UsjLGNrJ+fL5ezTLhQcHpMxmOutgxd49Jewq8N6iV0m96Gw2M0JVgiEhohCo+2Lx5fuj5OL5uNCH80Yv75xmxDbxYl0Xs4qi01WZSSlQFHFG+jwRECq0JXysGpNT5fv8c8Tr4CojcZx4QPYJ/unSqi/qTTPHRjyvxToYgaLE58yB0ePiXj2w8ueNveWgGEe3N44cjPt8FjsOqzfGFYwg6dCiaFauQe3rW+3FHaLgkhlD/I2PO3cF7bD/JMi1Q2Gq/9rwkq1/JT96h9aBAvMEieLFvM1biJcJ2yP+p4vQnWQrWZ5Sh2hbyn24NfZEKx76G0Xw1WWRmiHOLLtiwQDLxQzgmRgPhwD72vsoqzwPykNvJXGAP16rnQaML2TK2a2/BY4zgU4nN77vsZdTM8SKmytbCSHDj5pIlg+xODcKeMRpO0g7BpHoi6ICRSzRiJCJaPCKAVo8Y9MCDj3uDEhJbvNkl91dVWY43vS7RBlskbQ5Iw2QIFyDSb07ZCmT8G8LHzUkoByANWox3e0PHQ5Mb0jAw5B/0+D29A5H1j1w+WlyRQG4BbSSKO4i6Jutcjhd17PMA8BPKihPC/a6Pf6Hua7mSc+XdCvq39I+fOCL08qsJ+k6lsiMtDb1uJLWwOmbIdb7VTEPqRmQ2voxJ66cmyBDi6vyO5D1N4FY3xaRu1QrsvL97Bk/M9fk+eOY+e0l12rraa0ElcaNMBzB2EN8yW
+ sojwEgZn
+ ASpcpkTZsDa4+BG76VCso3Gf9Y/uvmwO9f8zAE0zEXAHqMEHcEl1950vQ+L5jBYguAecQusfc/jF7CEsRvcPjyiBjKOIWVpPUyjItgdFL7ucBUTOHKdkTmfBBncVl/Ts4YQOC7ONeDqWB8mh1vjvLH/Z6CMjdeJ9b4xkmASbEoR8MALlckUnLtRLeQ+kR4YPKZt8uQAlIxN5tojEXdJC77fOnbg3xq2KDkH7OWuO/nIrlIIafzQmsGrzDQ18ZbBHu6OYWxWgS/VYfTRwVFbI+qGXfjiDRYM19ZVw2YrAjs18+5RztUIVHRlbWuqa8t0xf1aIdXzK1soNyw0AWjHL7kmcQoVOHv4i1R4kP2jY7Mgh/qSamt2TiMeMjvnCUuXhbbIH36RoaXXw0yoxjo2mEo9jLKahU9xZ7XQFFkokhM6dLHa3pQn3/2F17IvcYKdIQap7hw1LltCOg1kex2dIzeET1Ta85Emu4m2aTGWwk2Qu5FXGqmNN+cld3FFTs/JruVS/NOzeVTROV8lBKUFBGAqA1UvRjlq+BTw3IdPaqFKpLbjChb0Ujol8m0hGY5Odu0EcoeQYPPRChMx0h/Afvx8AmCuRJXHASHFvkXuvS8IqXIW5iszPljdTynNXebdgPN46AdaMz0jRn8sE5vTyeNvd03mIv+Kb70fd6sORAjpd5c83tC89QTTCGGk1kkbWqXqzZR180ZoQOdCs+UPgP6Rh+CIR/Xq8ERNlkFCFoCMeP6g8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,578 +106,184 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 17, 2026 at 11:51:14AM +1000, NeilBrown wrote:
-> On Thu, 17 Sep 2026, Christian Brauner wrote:
-> > > When I reproduced this one, it ended up deadlocking with the fix applied.
-> > > 
-> > > vhost worker (the dumper)          sibling thread
-> > > =========================          ==============
-> > > get_signal() -> vfs_coredump()
-> > >   coredump_close_files()
-> > >     hands sibling a new table ---> switch_files_struct()
-> > >     coredump_wait_inactive()         put_files_struct(old table)
-> > >       waits for sibling's switch       last close of the vhost fd
-> > >                                      vhost_net_release()
-> > >                                        __vhost_worker_flush(): waits
-> > > 
-> > > AI suggests making the vhost thread requeue the signal for someone more
-> > > suitable?
-> > 
-> > Afaict, this is conceptually a generic problem with letting coredump
-> > close files for any type of user worker where the worker is the dumper
-> > and the sibling thread closes the fd that causes it to be stopped and
-> > waits for it to exit. So this needs thinking and we should drop coredump
-> > closing files for now.
-> > 
-> 
-> It appears to me that there is already infrastructure in place to handle
-> the generic problem.  vhost_task has a "handle_sigkill" function which
-> cleans up on sig kill so that siblings won't keep waiting for it.
-> get_signal() detects PF_USER_WORKER tasks and lets them complete
-> normally rather than aborting them, so that handle_sigkill can be called.
-> 
-> So the problem is "simply" an ordering problem. vfs_coredump() closes
-> files before handle_sigkill can run.
-> Maybe handle_sigkill() could be passed to (a version of) get_signal(),
-> or maybe get_signal() could indicate to the PF_USER_WORKER caller that
-> vfs_coredump() still needs to be run.
+This is a multi-part message in MIME format.
 
-Oh good, it's worse. This isn't specific to this patchset. This class of
-bugs I mentioned is reproducible on current mainline with SQPOLL:
+------=_NextPart_6AABAA9D_566A31E0_76F70AFC
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: base64
 
-  io-wq worker (the dumper)               SQPOLL thread
-  =========================               =============
-  io_wq_worker()                          io_sq_thread()
-    get_signal()                            io_sqd_handle_event()
-      vfs_coredump()
-        coredump_wait()
-          zap_threads()
-            zap_process(): SIGKILL ---->      get_signal(): SIGKILL, returns
-          wait_for_completion_state(        io_uring_cancel_generic(true, sqd)
-            &core_state->startup)             io_uring_clean_tctx()
-          waits for every thread to             io_wq_put_and_exit()
-          reach coredump_task_exit()              io_wq_exit_workers()
-                                                    wait_for_completion(
-                                                      &wq->worker_done)
-                                                    waits for the worker's
-                                                    io_worker_exit(), which
-                                                    runs after get_signal()
+SGksDQoNCg0KJmd0OyBTaW5jZSBwYXJpc2MgaXMgb25lIG9mIHZlcnkgZmV3IGFyY2hpdGVj
+dHVyZXMgdGhhdCBkb2VzIG5vdCBjYWxsDQomZ3Q7IHBhcnNlX2Vhcmx5X3BhcmFtKCkgZnJv
+bSBzZXR1cF9hcmNoKCksIEkgdGhpbmsgYW4gZWFzaWVyIGZpeCB3b3VsZCBiZQ0KJmd0OyBs
+b2NhbCB0byBwYXJpc2MuDQoNCg0KQWdyZWVkLCB0aGF0IGlzIHNpbXBsZXIuDQoNCg0KV2hl
+dGhlciBhIGZpeCBpcyBuZWVkZWQgYXQgYWxsIGRlcGVuZHMgb24gdGhlIGFuc3dlciB0byB5
+b3VyIHNlY29uZA0KcXVlc3Rpb24uJm5ic3A7IElmIGh1Z2V0bGIgaXMgbm90IG5lZWRlZCBv
+biBwYXJpc2MgYW55bW9yZSwgdGhlcmUgaXMgbm90aGluZw0KbGVmdCB0byBmaXggYW5kIEkg
+d2lsbCBkcm9wIHRoaXMgc2VyaWVzLiZuYnNwOyBJZiBpdCBzdGF5cywgSSB3aWxsIHNlbmQg
+djINCndpdGggdGhlIGNoYW5nZSBpbnNpZGUgcGFyaXNjJ3Mgc2V0dXBfYXJjaCgpLCBrZWVw
+aW5nIDIvMiBzbyB0aGF0IHRoZQ0Kc2FtZSBraW5kIG9mIG9yZGVyaW5nIHByb2JsZW0gd291
+bGQgYXQgbGVhc3Qgc2hvdyB1cCBpbiB0aGUgbG9nLg0KDQoNClNvIEkgd2lsbCB3YWl0IGZv
+ciB0aGUgcGFyaXNjIG1haW50YWluZXJzIG9uIHRoYXQgb25lLg0KDQoNClRoYW5rcywNClpo
+ZW5naHVpDQoNCg0KDQoNCg0KDQotLS1PcmlnaW5hbC0tLQ0KRnJvbTogIk1pa2UgUmFwb3Bv
+cnQiPHJwcHRAa2VybmVsLm9yZyZndDsNCkRhdGU6IFRodSwgU2VwIDE3LCAyMDI2IDE1OjQx
+IFBNDQpUbzogIlpoZW5naHVpIEhhbyI8emhlbmdodWkuaGFvQHFxLmNvbSZndDs7DQpDYzog
+IkFuZHJldyBNb3J0b24iPGFrcG1AbGludXgtZm91bmRhdGlvbi5vcmcmZ3Q7OyJsaW51eC1t
+bSI8bGludXgtbW1Aa3ZhY2sub3JnJmd0OzsibGludXgtcGFyaXNjIjxsaW51eC1wYXJpc2NA
+dmdlci5rZXJuZWwub3JnJmd0OzsibGludXgta2VybmVsIjxsaW51eC1rZXJuZWxAdmdlci5r
+ZXJuZWwub3JnJmd0OzsNClN1YmplY3Q6IFtQQVRDSCAwLzJdIGluaXQsIGh1Z2V0bGI6IGZp
+eCBlYXJseSBwYXJhbWV0ZXIgb3JkZXJpbmcNCg0KDQpIaSwNCg0KT24mbmJzcDsyMDI2LTA5
+LTE3Jm5ic3A7MTQ6NTUmbmJzcDsrMDgwMCwmbmJzcDtaaGVuZ2h1aSZuYnNwO0hhbyZuYnNw
+O3dyb3RlOg0KJmd0OyZuYnNwO2h1Z2V0bGImbmJzcDtyZWNvcmRzJm5ic3A7aXRzJm5ic3A7
+Y29tbWFuZCZuYnNwO2xpbmUmbmJzcDtwYXJhbWV0ZXJzJm5ic3A7ZnJvbSZuYnNwO2Vhcmx5
+X3BhcmFtKCkNCiZndDsmbmJzcDtoYW5kbGVycyZuYnNwO2FuZCZuYnNwO2NvbnN1bWVzJm5i
+c3A7dGhlbSZuYnNwO2xhdGVyJm5ic3A7ZnJvbSZuYnNwO2h1Z2V0bGJfYm9vdG1lbV9hbGxv
+YygpLg0KJmd0OyZuYnNwOw0KJmd0OyZuYnNwO0NvbW1pdCZuYnNwO2Q0OTAwNGM1ZjBjMSZu
+YnNwOygiYXJjaCwmbmJzcDttbTombmJzcDtjb25zb2xpZGF0ZSZuYnNwO2luaXRpYWxpemF0
+aW9uJm5ic3A7b2YmbmJzcDtub2RlcywNCiZndDsmbmJzcDt6b25lcyZuYnNwO2FuZCZuYnNw
+O21lbW9yeSZuYnNwO21hcCIpJm5ic3A7bW92ZWQmbmJzcDt0aGF0Jm5ic3A7Y29uc3VtZXIm
+bmJzcDtpbnRvJm5ic3A7bW1fY29yZV9pbml0X2Vhcmx5KCksDQomZ3Q7Jm5ic3A7d2hpY2gm
+bmJzcDtydW5zJm5ic3A7YmVmb3JlJm5ic3A7dGhlJm5ic3A7Z2VuZXJpYyZuYnNwO3BhcnNl
+X2Vhcmx5X3BhcmFtKCkmbmJzcDtjYWxsJm5ic3A7aW4NCiZndDsmbmJzcDtzdGFydF9rZXJu
+ZWwoKS4mbmJzcDsmbmJzcDtBcmNoaXRlY3R1cmVzJm5ic3A7dGhhdCZuYnNwO2NhbGwmbmJz
+cDtwYXJzZV9lYXJseV9wYXJhbSgpJm5ic3A7ZnJvbQ0KJmd0OyZuYnNwO3NldHVwX2FyY2go
+KSZuYnNwO2FyZSZuYnNwO25vdCZuYnNwO2FmZmVjdGVkLCZuYnNwO2J1dCZuYnNwO29uJm5i
+c3A7cGFyaXNjJm5ic3A7dGhlJm5ic3A7cGFyYW1ldGVycyZuYnNwO2FyZSZuYnNwO3RoZW4N
+CiZndDsmbmJzcDtyZWNvcmRlZCZuYnNwO2FmdGVyJm5ic3A7dGhleSZuYnNwO2hhdmUmbmJz
+cDthbHJlYWR5Jm5ic3A7YmVlbiZuYnNwO2NvbnN1bWVkJm5ic3A7YW5kJm5ic3A7YXJlJm5i
+c3A7c2lsZW50bHkNCiZndDsmbmJzcDtkcm9wcGVkLg0KDQpTaW5jZSZuYnNwO3BhcmlzYyZu
+YnNwO2lzJm5ic3A7b25lJm5ic3A7b2YmbmJzcDt2ZXJ5Jm5ic3A7ZmV3Jm5ic3A7YXJjaGl0
+ZWN0dXJlcyZuYnNwO3RoYXQmbmJzcDtkb2VzJm5ic3A7bm90Jm5ic3A7Y2FsbA0KcGFyc2Vf
+ZWFybHlfcGFyYW0oKSZuYnNwO2Zyb20mbmJzcDtzZXR1cF9hcmNoKCksJm5ic3A7SSZuYnNw
+O3RoaW5rJm5ic3A7YW4mbmJzcDtlYXNpZXImbmJzcDtmaXgmbmJzcDt3b3VsZCZuYnNwO2Jl
+DQpsb2NhbCZuYnNwO3RvJm5ic3A7cGFyaXNjLg0KDQpBbmQmbmJzcDt0aGVyZSZuYnNwO2lz
+Jm5ic3A7YW5vdGhlciZuYnNwO3JlbGF0ZWQmbmJzcDtxdWVzdGlvbiZuYnNwO21vcmUmbmJz
+cDt0byZuYnNwO3BhcmlzYyZuYnNwO21haW50YWluZXJzOiZuYnNwO2RvJm5ic3A7d2UNCnJl
+YWxseSZuYnNwO25lZWQmbmJzcDtodWdldGxiJm5ic3A7b24mbmJzcDtwYXJpc2MmbmJzcDt0
+aGVzZSZuYnNwO2RheXM/DQoNCiZndDsmbmJzcDtQYXRjaCZuYnNwOzEvMiZuYnNwO21vdmVz
+Jm5ic3A7cGFyc2VfZWFybHlfcGFyYW0oKSZuYnNwO2JlZm9yZSZuYnNwO21tX2NvcmVfaW5p
+dF9lYXJseSgpLA0KJmd0OyZuYnNwO3RvZ2V0aGVyJm5ic3A7d2l0aCZuYnNwO2p1bXBfbGFi
+ZWxfaW5pdCgpJm5ic3A7YW5kJm5ic3A7c3RhdGljX2NhbGxfaW5pdCgpJm5ic3A7c28mbmJz
+cDt0aGF0Jm5ic3A7dGhlDQomZ3Q7Jm5ic3A7InBhcmFtZXRlcnMmbmJzcDttYXkmbmJzcDtz
+ZXQmbmJzcDtzdGF0aWMmbmJzcDtrZXlzIiZuYnNwO2d1YXJhbnRlZSZuYnNwO3N0aWxsJm5i
+c3A7aG9sZHMuDQomZ3Q7Jm5ic3A7DQomZ3Q7Jm5ic3A7UGF0Y2gmbmJzcDsyLzImbmJzcDtt
+YWtlcyZuYnNwO3RoaXMmbmJzcDtjbGFzcyZuYnNwO29mJm5ic3A7b3JkZXJpbmcmbmJzcDtw
+cm9ibGVtJm5ic3A7bm9uLXNpbGVudC4mbmJzcDsmbmJzcDtJdCZuYnNwO2Nhbm5vdA0KJmd0
+OyZuYnNwO2ZpcmUmbmJzcDtvbmNlJm5ic3A7MS8yJm5ic3A7aXMmbmJzcDthcHBsaWVkOyZu
+YnNwO2lmJm5ic3A7eW91Jm5ic3A7d291bGQmbmJzcDtyYXRoZXImbmJzcDt0YWtlJm5ic3A7
+b25seSZuYnNwO3RoZSZuYnNwO2ZpeCwNCiZndDsmbmJzcDtwbGVhc2UmbmJzcDtkcm9wJm5i
+c3A7Mi8yLg0KJmd0OyZuYnNwOw0KJmd0OyZuYnNwO05vdCZuYnNwO3Rlc3RlZCZuYnNwO29u
+Jm5ic3A7cGFyaXNjJm5ic3A7aGFyZHdhcmUuDQomZ3Q7Jm5ic3A7DQomZ3Q7Jm5ic3A7Wmhl
+bmdodWkmbmJzcDtIYW8mbmJzcDsoMik6DQomZ3Q7Jm5ic3A7Jm5ic3A7Jm5ic3A7aW5pdDom
+bmJzcDtwYXJzZSZuYnNwO2Vhcmx5Jm5ic3A7cGFyYW1ldGVycyZuYnNwO2JlZm9yZSZuYnNw
+O21lbW9yeSZuYnNwO2luaXRpYWxpemF0aW9uDQomZ3Q7Jm5ic3A7Jm5ic3A7Jm5ic3A7aHVn
+ZXRsYjombmJzcDtyZXBvcnQmbmJzcDtjbWRsaW5lJm5ic3A7cGFyYW1ldGVycyZuYnNwO3Jl
+Y29yZGVkJm5ic3A7dG9vJm5ic3A7bGF0ZQ0KJmd0OyZuYnNwOw0KJmd0OyZuYnNwOyZuYnNw
+O2luaXQvbWFpbi5jJm5ic3A7Jm5ic3A7fCZuYnNwOyZuYnNwOzgmbmJzcDsrKysrLS0tLQ0K
+Jmd0OyZuYnNwOyZuYnNwO21tL2h1Z2V0bGIuYyZuYnNwO3wmbmJzcDsxNCZuYnNwOysrKysr
+KysrKysrKysrDQomZ3Q7Jm5ic3A7Jm5ic3A7MiZuYnNwO2ZpbGVzJm5ic3A7Y2hhbmdlZCwm
+bmJzcDsxOCZuYnNwO2luc2VydGlvbnMoKyksJm5ic3A7NCZuYnNwO2RlbGV0aW9ucygtKQ0K
+Jmd0OyZuYnNwOw0KJmd0OyZuYnNwOw0KJmd0OyZuYnNwO2Jhc2UtY29tbWl0OiZuYnNwOzli
+ODdmZGM5YWYyZmJmY2RiNWMyNGE2NDEzOTY4NWVmODBmNjU3M2YNCiZndDsmbmJzcDstLSZu
+YnNwOw0KJmd0OyZuYnNwOzIuNTMuMA0KJmd0OyZuYnNwOw0KJmd0OyZuYnNwOw==
 
-Here's a selftest to reproduce it:
+------=_NextPart_6AABAA9D_566A31E0_76F70AFC
+Content-Type: text/html;
+	charset="utf-8"
+Content-Transfer-Encoding: base64
 
-From 3099604cb701a7a5242986653add8c52d4b6d2c6 Mon Sep 17 00:00:00 2001
-From: Christian Brauner <brauner@kernel.org>
-Date: Thu, 17 Sep 2026 10:20:49 +0200
-Subject: [PATCH] selftests/coredump: test a user worker as the coredumping
- thread
+PGRpdj48ZGl2PkhpLDwvZGl2PjxkaXY+PGJyICAvPjwvZGl2PjxkaXY+Jmd0OyBTaW5jZSBw
+YXJpc2MgaXMgb25lIG9mIHZlcnkgZmV3IGFyY2hpdGVjdHVyZXMgdGhhdCBkb2VzIG5vdCBj
+YWxsPC9kaXY+PGRpdj4mZ3Q7IHBhcnNlX2Vhcmx5X3BhcmFtKCkgZnJvbSBzZXR1cF9hcmNo
+KCksIEkgdGhpbmsgYW4gZWFzaWVyIGZpeCB3b3VsZCBiZTwvZGl2PjxkaXY+Jmd0OyBsb2Nh
+bCB0byBwYXJpc2MuPC9kaXY+PGRpdj48YnIgIC8+PC9kaXY+PGRpdj5BZ3JlZWQsIHRoYXQg
+aXMgc2ltcGxlci48L2Rpdj48ZGl2PjxiciAgLz48L2Rpdj48ZGl2PldoZXRoZXIgYSBmaXgg
+aXMgbmVlZGVkIGF0IGFsbCBkZXBlbmRzIG9uIHRoZSBhbnN3ZXIgdG8geW91ciBzZWNvbmQ8
+L2Rpdj48ZGl2PnF1ZXN0aW9uLiZuYnNwOyBJZiBodWdldGxiIGlzIG5vdCBuZWVkZWQgb24g
+cGFyaXNjIGFueW1vcmUsIHRoZXJlIGlzIG5vdGhpbmc8L2Rpdj48ZGl2PmxlZnQgdG8gZml4
+IGFuZCBJIHdpbGwgZHJvcCB0aGlzIHNlcmllcy4mbmJzcDsgSWYgaXQgc3RheXMsIEkgd2ls
+bCBzZW5kIHYyPC9kaXY+PGRpdj53aXRoIHRoZSBjaGFuZ2UgaW5zaWRlIHBhcmlzYydzIHNl
+dHVwX2FyY2goKSwga2VlcGluZyAyLzIgc28gdGhhdCB0aGU8L2Rpdj48ZGl2PnNhbWUga2lu
+ZCBvZiBvcmRlcmluZyBwcm9ibGVtIHdvdWxkIGF0IGxlYXN0IHNob3cgdXAgaW4gdGhlIGxv
+Zy48L2Rpdj48ZGl2PjxiciAgLz48L2Rpdj48ZGl2PlNvIEkgd2lsbCB3YWl0IGZvciB0aGUg
+cGFyaXNjIG1haW50YWluZXJzIG9uIHRoYXQgb25lLjwvZGl2PjxkaXY+PGJyICAvPjwvZGl2
+PjxkaXY+VGhhbmtzLDwvZGl2PjxkaXY+WmhlbmdodWk8L2Rpdj48L2Rpdj48ZGl2PjxiciAg
+Lz48L2Rpdj48ZGl2PjxiciAgLz48L2Rpdj48ZGl2PjwhLS1lbXB0eXNpZ24tLT48L2Rpdj48
+ZGl2PjxkaXYgc3R5bGU9ImZvbnQtc2l6ZToxMnB4O3BhZGRpbmc6MnB4IDA7IiBjbGFzcz0i
+eG1fbWFpbF9vcmluZ2luYWxfZGVzY3JpYmUiPi0tLU9yaWdpbmFsLS0tPC9kaXY+PGRpdiBz
+dHlsZT0iZm9udC1zaXplOjEycHg7YmFja2dyb3VuZDojZjBmMGYwO2NvbG9yOiMyMTIxMjE7
+cGFkZGluZzo4cHghaW1wb3J0YW50O2JvcmRlci1yYWRpdXM6NHB4O2xpbmUtaGVpZ2h0OjEu
+NTsiPjxkaXYgY2xhc3M9InhtX21haWxfb3JpbmdpbmFsX2Rlc2NyaWJlIj48Yj5Gcm9tOjwv
+Yj4gIk1pa2UgUmFwb3BvcnQiJmx0O3JwcHRAa2VybmVsLm9yZyZndDs8L2Rpdj48ZGl2IGNs
+YXNzPSJ4bV9tYWlsX29yaW5naW5hbF9kZXNjcmliZSI+PGI+RGF0ZTo8L2I+IFRodSwgU2Vw
+IDE3LCAyMDI2IDE1OjQxIFBNPC9kaXY+PGRpdiBjbGFzcz0ieG1fbWFpbF9vcmluZ2luYWxf
+ZGVzY3JpYmUiPjxiPlRvOjwvYj4gIlpoZW5naHVpIEhhbyImbHQ7emhlbmdodWkuaGFvQHFx
+LmNvbSZndDs7PC9kaXY+PGRpdiBjbGFzcz0ieG1fbWFpbF9vcmluZ2luYWxfZGVzY3JpYmUi
+PjxiPkNjOjwvYj4gIkFuZHJldyBNb3J0b24iJmx0O2FrcG1AbGludXgtZm91bmRhdGlvbi5v
+cmcmZ3Q7OyJsaW51eC1tbSImbHQ7bGludXgtbW1Aa3ZhY2sub3JnJmd0OzsibGludXgtcGFy
+aXNjIiZsdDtsaW51eC1wYXJpc2NAdmdlci5rZXJuZWwub3JnJmd0OzsibGludXgta2VybmVs
+IiZsdDtsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnJmd0Ozs8L2Rpdj48ZGl2IGNsYXNz
+PSJ4bV9tYWlsX29yaW5naW5hbF9kZXNjcmliZSI+PGI+U3ViamVjdDo8L2I+IFtQQVRDSCAw
+LzJdIGluaXQsIGh1Z2V0bGI6IGZpeCBlYXJseSBwYXJhbWV0ZXIgb3JkZXJpbmc8L2Rpdj48
+L2Rpdj48YnIgIC8+SGksPGJyICAvPjxiciAgLz5PbiZuYnNwOzIwMjYtMDktMTcmbmJzcDsx
+NDo1NSZuYnNwOyswODAwLCZuYnNwO1poZW5naHVpJm5ic3A7SGFvJm5ic3A7d3JvdGU6PGJy
+ICAvPiZndDsmbmJzcDtodWdldGxiJm5ic3A7cmVjb3JkcyZuYnNwO2l0cyZuYnNwO2NvbW1h
+bmQmbmJzcDtsaW5lJm5ic3A7cGFyYW1ldGVycyZuYnNwO2Zyb20mbmJzcDtlYXJseV9wYXJh
+bSgpPGJyICAvPiZndDsmbmJzcDtoYW5kbGVycyZuYnNwO2FuZCZuYnNwO2NvbnN1bWVzJm5i
+c3A7dGhlbSZuYnNwO2xhdGVyJm5ic3A7ZnJvbSZuYnNwO2h1Z2V0bGJfYm9vdG1lbV9hbGxv
+YygpLjxiciAgLz4mZ3Q7Jm5ic3A7PGJyICAvPiZndDsmbmJzcDtDb21taXQmbmJzcDtkNDkw
+MDRjNWYwYzEmbmJzcDsoImFyY2gsJm5ic3A7bW06Jm5ic3A7Y29uc29saWRhdGUmbmJzcDtp
+bml0aWFsaXphdGlvbiZuYnNwO29mJm5ic3A7bm9kZXMsPGJyICAvPiZndDsmbmJzcDt6b25l
+cyZuYnNwO2FuZCZuYnNwO21lbW9yeSZuYnNwO21hcCIpJm5ic3A7bW92ZWQmbmJzcDt0aGF0
+Jm5ic3A7Y29uc3VtZXImbmJzcDtpbnRvJm5ic3A7bW1fY29yZV9pbml0X2Vhcmx5KCksPGJy
+ICAvPiZndDsmbmJzcDt3aGljaCZuYnNwO3J1bnMmbmJzcDtiZWZvcmUmbmJzcDt0aGUmbmJz
+cDtnZW5lcmljJm5ic3A7cGFyc2VfZWFybHlfcGFyYW0oKSZuYnNwO2NhbGwmbmJzcDtpbjxi
+ciAgLz4mZ3Q7Jm5ic3A7c3RhcnRfa2VybmVsKCkuJm5ic3A7Jm5ic3A7QXJjaGl0ZWN0dXJl
+cyZuYnNwO3RoYXQmbmJzcDtjYWxsJm5ic3A7cGFyc2VfZWFybHlfcGFyYW0oKSZuYnNwO2Zy
+b208YnIgIC8+Jmd0OyZuYnNwO3NldHVwX2FyY2goKSZuYnNwO2FyZSZuYnNwO25vdCZuYnNw
+O2FmZmVjdGVkLCZuYnNwO2J1dCZuYnNwO29uJm5ic3A7cGFyaXNjJm5ic3A7dGhlJm5ic3A7
+cGFyYW1ldGVycyZuYnNwO2FyZSZuYnNwO3RoZW48YnIgIC8+Jmd0OyZuYnNwO3JlY29yZGVk
+Jm5ic3A7YWZ0ZXImbmJzcDt0aGV5Jm5ic3A7aGF2ZSZuYnNwO2FscmVhZHkmbmJzcDtiZWVu
+Jm5ic3A7Y29uc3VtZWQmbmJzcDthbmQmbmJzcDthcmUmbmJzcDtzaWxlbnRseTxiciAgLz4m
+Z3Q7Jm5ic3A7ZHJvcHBlZC48YnIgIC8+PGJyICAvPlNpbmNlJm5ic3A7cGFyaXNjJm5ic3A7
+aXMmbmJzcDtvbmUmbmJzcDtvZiZuYnNwO3ZlcnkmbmJzcDtmZXcmbmJzcDthcmNoaXRlY3R1
+cmVzJm5ic3A7dGhhdCZuYnNwO2RvZXMmbmJzcDtub3QmbmJzcDtjYWxsPGJyICAvPnBhcnNl
+X2Vhcmx5X3BhcmFtKCkmbmJzcDtmcm9tJm5ic3A7c2V0dXBfYXJjaCgpLCZuYnNwO0kmbmJz
+cDt0aGluayZuYnNwO2FuJm5ic3A7ZWFzaWVyJm5ic3A7Zml4Jm5ic3A7d291bGQmbmJzcDti
+ZTxiciAgLz5sb2NhbCZuYnNwO3RvJm5ic3A7cGFyaXNjLjxiciAgLz48YnIgIC8+QW5kJm5i
+c3A7dGhlcmUmbmJzcDtpcyZuYnNwO2Fub3RoZXImbmJzcDtyZWxhdGVkJm5ic3A7cXVlc3Rp
+b24mbmJzcDttb3JlJm5ic3A7dG8mbmJzcDtwYXJpc2MmbmJzcDttYWludGFpbmVyczombmJz
+cDtkbyZuYnNwO3dlPGJyICAvPnJlYWxseSZuYnNwO25lZWQmbmJzcDtodWdldGxiJm5ic3A7
+b24mbmJzcDtwYXJpc2MmbmJzcDt0aGVzZSZuYnNwO2RheXM/PGJyICAvPjxiciAgLz4mZ3Q7
+Jm5ic3A7UGF0Y2gmbmJzcDsxLzImbmJzcDttb3ZlcyZuYnNwO3BhcnNlX2Vhcmx5X3BhcmFt
+KCkmbmJzcDtiZWZvcmUmbmJzcDttbV9jb3JlX2luaXRfZWFybHkoKSw8YnIgIC8+Jmd0OyZu
+YnNwO3RvZ2V0aGVyJm5ic3A7d2l0aCZuYnNwO2p1bXBfbGFiZWxfaW5pdCgpJm5ic3A7YW5k
+Jm5ic3A7c3RhdGljX2NhbGxfaW5pdCgpJm5ic3A7c28mbmJzcDt0aGF0Jm5ic3A7dGhlPGJy
+ICAvPiZndDsmbmJzcDsicGFyYW1ldGVycyZuYnNwO21heSZuYnNwO3NldCZuYnNwO3N0YXRp
+YyZuYnNwO2tleXMiJm5ic3A7Z3VhcmFudGVlJm5ic3A7c3RpbGwmbmJzcDtob2xkcy48YnIg
+IC8+Jmd0OyZuYnNwOzxiciAgLz4mZ3Q7Jm5ic3A7UGF0Y2gmbmJzcDsyLzImbmJzcDttYWtl
+cyZuYnNwO3RoaXMmbmJzcDtjbGFzcyZuYnNwO29mJm5ic3A7b3JkZXJpbmcmbmJzcDtwcm9i
+bGVtJm5ic3A7bm9uLXNpbGVudC4mbmJzcDsmbmJzcDtJdCZuYnNwO2Nhbm5vdDxiciAgLz4m
+Z3Q7Jm5ic3A7ZmlyZSZuYnNwO29uY2UmbmJzcDsxLzImbmJzcDtpcyZuYnNwO2FwcGxpZWQ7
+Jm5ic3A7aWYmbmJzcDt5b3UmbmJzcDt3b3VsZCZuYnNwO3JhdGhlciZuYnNwO3Rha2UmbmJz
+cDtvbmx5Jm5ic3A7dGhlJm5ic3A7Zml4LDxiciAgLz4mZ3Q7Jm5ic3A7cGxlYXNlJm5ic3A7
+ZHJvcCZuYnNwOzIvMi48YnIgIC8+Jmd0OyZuYnNwOzxiciAgLz4mZ3Q7Jm5ic3A7Tm90Jm5i
+c3A7dGVzdGVkJm5ic3A7b24mbmJzcDtwYXJpc2MmbmJzcDtoYXJkd2FyZS48YnIgIC8+Jmd0
+OyZuYnNwOzxiciAgLz4mZ3Q7Jm5ic3A7WmhlbmdodWkmbmJzcDtIYW8mbmJzcDsoMik6PGJy
+ICAvPiZndDsmbmJzcDsmbmJzcDsmbmJzcDtpbml0OiZuYnNwO3BhcnNlJm5ic3A7ZWFybHkm
+bmJzcDtwYXJhbWV0ZXJzJm5ic3A7YmVmb3JlJm5ic3A7bWVtb3J5Jm5ic3A7aW5pdGlhbGl6
+YXRpb248YnIgIC8+Jmd0OyZuYnNwOyZuYnNwOyZuYnNwO2h1Z2V0bGI6Jm5ic3A7cmVwb3J0
+Jm5ic3A7Y21kbGluZSZuYnNwO3BhcmFtZXRlcnMmbmJzcDtyZWNvcmRlZCZuYnNwO3RvbyZu
+YnNwO2xhdGU8YnIgIC8+Jmd0OyZuYnNwOzxiciAgLz4mZ3Q7Jm5ic3A7Jm5ic3A7aW5pdC9t
+YWluLmMmbmJzcDsmbmJzcDt8Jm5ic3A7Jm5ic3A7OCZuYnNwOysrKystLS0tPGJyICAvPiZn
+dDsmbmJzcDsmbmJzcDttbS9odWdldGxiLmMmbmJzcDt8Jm5ic3A7MTQmbmJzcDsrKysrKysr
+KysrKysrKzxiciAgLz4mZ3Q7Jm5ic3A7Jm5ic3A7MiZuYnNwO2ZpbGVzJm5ic3A7Y2hhbmdl
+ZCwmbmJzcDsxOCZuYnNwO2luc2VydGlvbnMoKyksJm5ic3A7NCZuYnNwO2RlbGV0aW9ucygt
+KTxiciAgLz4mZ3Q7Jm5ic3A7PGJyICAvPiZndDsmbmJzcDs8YnIgIC8+Jmd0OyZuYnNwO2Jh
+c2UtY29tbWl0OiZuYnNwOzliODdmZGM5YWYyZmJmY2RiNWMyNGE2NDEzOTY4NWVmODBmNjU3
+M2Y8YnIgIC8+Jmd0OyZuYnNwOy0tJm5ic3A7PGJyICAvPiZndDsmbmJzcDsyLjUzLjA8YnIg
+IC8+Jmd0OyZuYnNwOzxiciAgLz4mZ3Q7Jm5ic3A7PGJyICAvPjxiciAgLz48L2Rpdj4=
 
-A tracer can clear the signal mask of an io-wq worker or an SQPOLL
-thread with PTRACE_SETSIGMASK and inject a coredump signal. The worker
-then runs vfs_coredump() itself. Cover that:
-
-- a child keeps a ring, an idle io-wq worker and with SQPOLL the SQPOLL
-  thread alive
-
-- seize the chosen thread, stop it with SIGSTOP, clear its mask and
-  detach with SIGSEGV
-
-- require the thread group to be gone in bounded time, by the dump or
-  by SIGKILL
-
-The io-wq worker of an SQPOLL ring fails: the SQPOLL thread waits for
-its workers to exit before it parks, the dumping worker waits for the
-SQPOLL thread to park and the group is stuck in D state.
-
-This reproduces the following hang when SQPOLL becomes the coredumper:
-
-  io-wq worker (the dumper)               SQPOLL thread
-  =========================               =============
-  io_wq_worker()                          io_sq_thread()
-    get_signal()                            io_sqd_handle_event()
-      vfs_coredump()
-        coredump_wait()
-          zap_threads()
-            zap_process(): SIGKILL ---->      get_signal(): SIGKILL, returns
-          wait_for_completion_state(        io_uring_cancel_generic(true, sqd)
-            &core_state->startup)             io_uring_clean_tctx()
-          waits for every thread to             io_wq_put_and_exit()
-          reach coredump_task_exit()              io_wq_exit_workers()
-                                                    wait_for_completion(
-                                                      &wq->worker_done)
-                                                    waits for the worker's
-                                                    io_worker_exit(), which
-                                                    runs after get_signal()
-
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
----
- tools/testing/selftests/coredump/.gitignore   |   1 +
- tools/testing/selftests/coredump/Makefile     |   4 +-
- .../selftests/coredump/coredump_worker_test.c | 427 ++++++++++++++++++
- 3 files changed, 431 insertions(+), 1 deletion(-)
- create mode 100644 tools/testing/selftests/coredump/coredump_worker_test.c
-
-diff --git a/tools/testing/selftests/coredump/.gitignore b/tools/testing/selftests/coredump/.gitignore
-index c198f2ca5872..e32f6e9006f6 100644
---- a/tools/testing/selftests/coredump/.gitignore
-+++ b/tools/testing/selftests/coredump/.gitignore
-@@ -3,3 +3,4 @@ stackdump_test
- coredump_socket_test
- coredump_socket_protocol_test
- coredump_signal_test
-+coredump_worker_test
-diff --git a/tools/testing/selftests/coredump/Makefile b/tools/testing/selftests/coredump/Makefile
-index bfb53f512d8e..9459ba3692c1 100644
---- a/tools/testing/selftests/coredump/Makefile
-+++ b/tools/testing/selftests/coredump/Makefile
-@@ -5,7 +5,8 @@ TEST_GEN_PROGS := stackdump_test \
- 		  coredump_socket_test \
- 		  coredump_socket_protocol_test \
- 		  coredump_close_files_test \
--		  coredump_signal_test
-+		  coredump_signal_test \
-+		  coredump_worker_test
- TEST_FILES := stackdump
- 
- include ../lib.mk
-@@ -15,3 +16,4 @@ $(OUTPUT)/coredump_socket_test: coredump_test_helpers.c
- $(OUTPUT)/coredump_socket_protocol_test: coredump_test_helpers.c
- $(OUTPUT)/coredump_close_files_test: coredump_test_helpers.c
- $(OUTPUT)/coredump_signal_test: coredump_test_helpers.c
-+$(OUTPUT)/coredump_worker_test: coredump_test_helpers.c
-diff --git a/tools/testing/selftests/coredump/coredump_worker_test.c b/tools/testing/selftests/coredump/coredump_worker_test.c
-new file mode 100644
-index 000000000000..81cadde0e752
---- /dev/null
-+++ b/tools/testing/selftests/coredump/coredump_worker_test.c
-@@ -0,0 +1,427 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+/*
-+ * A user worker as the coredumping thread.
-+ *
-+ * io-wq workers and SQPOLL threads are threads of the process that never
-+ * return to userspace. They block every signal but SIGKILL and SIGSTOP,
-+ * but a tracer can replace that mask with PTRACE_SETSIGMASK and inject a
-+ * coredump signal. get_signal() then runs vfs_coredump() in the worker.
-+ * The worker's own exit bookkeeping runs only after the dump, so a
-+ * zapped sibling that waits for it in its exit path deadlocks with the
-+ * dumper and the whole thread group is stuck in D state.
-+ *
-+ * Inject SIGSEGV into a chosen thread and require that the thread group
-+ * is gone in bounded time, either because the dump completed or because
-+ * SIGKILL still works. A failure leaves the stuck process behind.
-+ */
-+#include <ctype.h>
-+#include <dirent.h>
-+#include <fcntl.h>
-+#include <sys/mman.h>
-+#include <sys/ptrace.h>
-+#include <sys/resource.h>
-+#include <sys/stat.h>
-+#include <sys/syscall.h>
-+#include <sys/wait.h>
-+#include <unistd.h>
-+#include <linux/io_uring.h>
-+
-+#include "coredump_test.h"
-+
-+#ifndef PTRACE_SETSIGMASK
-+#define PTRACE_SETSIGMASK 0x420b
-+#endif
-+
-+/* The dump of the tiny child takes well under a second. */
-+#define EXIT_TIMEOUT_MS 5000
-+
-+FIXTURE_SETUP(coredump)
-+{
-+	FILE *file;
-+	int ret;
-+
-+	self->pid_coredump_server = -ESRCH;
-+	self->fd_tmpfs_detached = -1;
-+	file = fopen("/proc/sys/kernel/core_pattern", "r");
-+	ASSERT_NE(NULL, file);
-+
-+	ret = fread(self->original_core_pattern, 1, sizeof(self->original_core_pattern), file);
-+	ASSERT_TRUE(ret || feof(file));
-+	ASSERT_LT(ret, sizeof(self->original_core_pattern));
-+
-+	self->original_core_pattern[ret] = '\0';
-+
-+	ret = fclose(file);
-+	ASSERT_EQ(0, ret);
-+}
-+
-+FIXTURE_TEARDOWN(coredump)
-+{
-+	const char *reason;
-+	FILE *file;
-+	int ret;
-+
-+	file = fopen("/proc/sys/kernel/core_pattern", "w");
-+	if (!file) {
-+		reason = "Unable to open core_pattern";
-+		goto fail;
-+	}
-+
-+	ret = fprintf(file, "%s", self->original_core_pattern);
-+	if (ret < 0) {
-+		reason = "Unable to write to core_pattern";
-+		goto fail;
-+	}
-+
-+	ret = fclose(file);
-+	if (ret) {
-+		reason = "Unable to close core_pattern";
-+		goto fail;
-+	}
-+
-+	return;
-+fail:
-+	/* This should never happen */
-+	fprintf(stderr, "Failed to cleanup coredump test: %s\n", reason);
-+}
-+
-+/* A raw ring, no liburing. */
-+struct uring {
-+	int fd;
-+	struct io_uring_params params;
-+	void *sq;
-+	size_t sq_len;
-+	struct io_uring_sqe *sqes;
-+	size_t sqes_len;
-+	unsigned int *sq_tail, *sq_mask, *sq_array;
-+	unsigned int *cq_head, *cq_tail, *cq_mask;
-+	struct io_uring_cqe *cqes;
-+};
-+
-+static int uring_setup(struct uring *r, unsigned int flags)
-+{
-+	size_t cq_len;
-+
-+	memset(r, 0, sizeof(*r));
-+	r->params.flags = flags;
-+	if (flags & IORING_SETUP_SQPOLL)
-+		r->params.sq_thread_idle = 2000;
-+	r->fd = syscall(__NR_io_uring_setup, 8, &r->params);
-+	if (r->fd < 0)
-+		return -1;
-+	if (!(r->params.features & IORING_FEAT_SINGLE_MMAP))
-+		return -1;
-+
-+	r->sq_len = r->params.sq_off.array + r->params.sq_entries * sizeof(unsigned int);
-+	cq_len = r->params.cq_off.cqes + r->params.cq_entries * sizeof(struct io_uring_cqe);
-+	if (cq_len > r->sq_len)
-+		r->sq_len = cq_len;
-+	r->sq = mmap(NULL, r->sq_len, PROT_READ | PROT_WRITE,
-+		     MAP_SHARED | MAP_POPULATE, r->fd, IORING_OFF_SQ_RING);
-+	if (r->sq == MAP_FAILED)
-+		return -1;
-+	r->sqes_len = r->params.sq_entries * sizeof(struct io_uring_sqe);
-+	r->sqes = mmap(NULL, r->sqes_len, PROT_READ | PROT_WRITE,
-+		       MAP_SHARED | MAP_POPULATE, r->fd, IORING_OFF_SQES);
-+	if (r->sqes == MAP_FAILED)
-+		return -1;
-+
-+	r->sq_tail = r->sq + r->params.sq_off.tail;
-+	r->sq_mask = r->sq + r->params.sq_off.ring_mask;
-+	r->sq_array = r->sq + r->params.sq_off.array;
-+	r->cq_head = r->sq + r->params.cq_off.head;
-+	r->cq_tail = r->sq + r->params.cq_off.tail;
-+	r->cq_mask = r->sq + r->params.cq_off.ring_mask;
-+	r->cqes = r->sq + r->params.cq_off.cqes;
-+	return 0;
-+}
-+
-+/* Submit one sqe, wait for its completion and return the result. */
-+static int uring_submit_wait(struct uring *r, const struct io_uring_sqe *sqe)
-+{
-+	unsigned int tail = *r->sq_tail, idx = tail & *r->sq_mask;
-+	unsigned int flags = IORING_ENTER_GETEVENTS;
-+	int i;
-+
-+	r->sqes[idx] = *sqe;
-+	r->sq_array[idx] = idx;
-+	__atomic_store_n(r->sq_tail, tail + 1, __ATOMIC_RELEASE);
-+
-+	if (r->params.flags & IORING_SETUP_SQPOLL)
-+		flags |= IORING_ENTER_SQ_WAKEUP;
-+
-+	for (i = 0; i < 100; i++) {
-+		if (syscall(__NR_io_uring_enter, r->fd, 1, 1, flags, NULL, 0) < 0 &&
-+		    errno != EINTR)
-+			return -1;
-+		if (__atomic_load_n(r->cq_tail, __ATOMIC_ACQUIRE) != *r->cq_head) {
-+			unsigned int head = *r->cq_head;
-+			int res = r->cqes[head & *r->cq_mask].res;
-+
-+			__atomic_store_n(r->cq_head, head + 1, __ATOMIC_RELEASE);
-+			return res;
-+		}
-+		flags &= ~IORING_ENTER_SQ_WAKEUP;
-+		usleep(10 * 1000);
-+	}
-+	return -1;
-+}
-+
-+static bool uring_available(unsigned int flags)
-+{
-+	struct io_uring_params params = { .flags = flags };
-+	int fd;
-+
-+	fd = syscall(__NR_io_uring_setup, 2, &params);
-+	if (fd < 0)
-+		return false;
-+	close(fd);
-+	return true;
-+}
-+
-+/*
-+ * Keep a ring, an idle io-wq worker and with SQPOLL an SQPOLL thread
-+ * alive. The last worker of a ring never exits on its idle timeout.
-+ */
-+static void worker_child(bool sqpoll, int fd_ipc)
-+{
-+	struct rlimit rl = { RLIM_INFINITY, RLIM_INFINITY };
-+	struct io_uring_sqe sqe = {};
-+	static char buf[64];
-+	struct uring ring;
-+	int memfd;
-+
-+	if (setrlimit(RLIMIT_CORE, &rl))
-+		_exit(EXIT_FAILURE);
-+
-+	memfd = memfd_create("coredump_worker", 0);
-+	if (memfd < 0 || write(memfd, "hello", 5) != 5)
-+		_exit(EXIT_FAILURE);
-+
-+	if (uring_setup(&ring, sqpoll ? IORING_SETUP_SQPOLL : 0))
-+		_exit(EXIT_FAILURE);
-+
-+	/* IOSQE_ASYNC forces the read through io-wq so a worker appears. */
-+	sqe.opcode = IORING_OP_READ;
-+	sqe.fd = memfd;
-+	sqe.addr = (__u64)(uintptr_t)buf;
-+	sqe.len = sizeof(buf);
-+	sqe.flags = IOSQE_ASYNC;
-+	if (uring_submit_wait(&ring, &sqe) != 5)
-+		_exit(EXIT_FAILURE);
-+
-+	if (write_nointr(fd_ipc, "1", 1) != 1)
-+		_exit(EXIT_FAILURE);
-+	close(fd_ipc);
-+
-+	for (;;)
-+		pause();
-+}
-+
-+/* Find the thread of @pid whose comm starts with @prefix. */
-+static pid_t find_thread(pid_t pid, const char *prefix)
-+{
-+	char path[64], comm[64];
-+	pid_t tid = -1;
-+	struct dirent *de;
-+	ssize_t bytes;
-+	DIR *dir;
-+	int fd;
-+
-+	snprintf(path, sizeof(path), "/proc/%d/task", pid);
-+	dir = opendir(path);
-+	if (!dir)
-+		return -1;
-+
-+	while (tid < 0 && (de = readdir(dir))) {
-+		if (!isdigit(de->d_name[0]))
-+			continue;
-+		snprintf(path, sizeof(path), "/proc/%d/task/%s/comm", pid, de->d_name);
-+		fd = open(path, O_RDONLY | O_CLOEXEC);
-+		if (fd < 0)
-+			continue;
-+		bytes = read(fd, comm, sizeof(comm) - 1);
-+		close(fd);
-+		if (bytes <= 0)
-+			continue;
-+		comm[bytes] = '\0';
-+		if (!strncmp(comm, prefix, strlen(prefix)))
-+			tid = atoi(de->d_name);
-+	}
-+	closedir(dir);
-+	return tid;
-+}
-+
-+/*
-+ * Attach, stop the thread with SIGSTOP, drop the signal mask that
-+ * copy_process() gave it and resume it with SIGSEGV instead.
-+ */
-+static bool inject_coredump_signal(pid_t pid, pid_t tid)
-+{
-+	__u64 mask = 0;
-+	int status;
-+
-+	if (ptrace(PTRACE_SEIZE, tid, NULL, NULL))
-+		return false;
-+	if (syscall(SYS_tgkill, pid, tid, SIGSTOP))
-+		return false;
-+	if (waitpid(tid, &status, __WALL) != tid)
-+		return false;
-+	if (!WIFSTOPPED(status) || WSTOPSIG(status) != SIGSTOP)
-+		return false;
-+	if (ptrace(PTRACE_SETSIGMASK, tid, sizeof(mask), &mask))
-+		return false;
-+	return !ptrace(PTRACE_DETACH, tid, NULL, (void *)(long)SIGSEGV);
-+}
-+
-+/* Reap @pid within @timeout_ms, -1 when it is still there. */
-+static int wait_exit(pid_t pid, int *status, int timeout_ms)
-+{
-+	int i;
-+
-+	for (i = 0; i < timeout_ms / 10; i++) {
-+		pid_t ret = waitpid(pid, status, WNOHANG);
-+
-+		if (ret == pid)
-+			return 0;
-+		if (ret < 0)
-+			return -1;
-+		usleep(10 * 1000);
-+	}
-+	return -1;
-+}
-+
-+static void log_threads(struct __test_metadata *const _metadata, pid_t pid)
-+{
-+	char path[64], line[256], comm[64] = {};
-+	struct dirent *de;
-+	DIR *dir;
-+	FILE *f;
-+
-+	snprintf(path, sizeof(path), "/proc/%d/task", pid);
-+	dir = opendir(path);
-+	if (!dir)
-+		return;
-+	while ((de = readdir(dir))) {
-+		if (!isdigit(de->d_name[0]))
-+			continue;
-+		snprintf(path, sizeof(path), "/proc/%d/task/%s/status", pid, de->d_name);
-+		f = fopen(path, "r");
-+		if (!f)
-+			continue;
-+		while (fgets(line, sizeof(line), f)) {
-+			line[strcspn(line, "\n")] = '\0';
-+			if (!strncmp(line, "Name:", 5))
-+				snprintf(comm, sizeof(comm), "%s", line + 6);
-+			else if (!strncmp(line, "State:", 6))
-+				TH_LOG("tid %s (%s) %s", de->d_name, comm, line + 7);
-+		}
-+		fclose(f);
-+	}
-+	closedir(dir);
-+}
-+
-+enum dumper {
-+	DUMPER_MAIN,
-+	DUMPER_WORKER,
-+	DUMPER_SQPOLL,
-+};
-+
-+static void run_dumper(struct __test_metadata *const _metadata, bool sqpoll,
-+		       enum dumper dumper)
-+{
-+	bool killed = false;
-+	char path[64], c;
-+	int ipc[2], status, fd;
-+	pid_t pid, tid;
-+
-+	ASSERT_TRUE(set_core_pattern("/tmp/coredump.file.%p"));
-+	ASSERT_EQ(pipe2(ipc, O_CLOEXEC), 0);
-+
-+	pid = fork();
-+	ASSERT_GE(pid, 0);
-+	if (pid == 0) {
-+		close(ipc[0]);
-+		worker_child(sqpoll, ipc[1]);
-+	}
-+	close(ipc[1]);
-+	ASSERT_EQ(read_nointr(ipc[0], &c, 1), 1);
-+	close(ipc[0]);
-+
-+	switch (dumper) {
-+	case DUMPER_MAIN:
-+		tid = pid;
-+		break;
-+	case DUMPER_WORKER:
-+		tid = find_thread(pid, "iou-wrk-");
-+		break;
-+	case DUMPER_SQPOLL:
-+		tid = find_thread(pid, "iou-sqp-");
-+		break;
-+	}
-+	ASSERT_GT(tid, 0);
-+	ASSERT_TRUE(inject_coredump_signal(pid, tid));
-+
-+	if (wait_exit(pid, &status, EXIT_TIMEOUT_MS)) {
-+		/* No dump. Whatever happened, SIGKILL must still work. */
-+		log_threads(_metadata, pid);
-+		kill(pid, SIGKILL);
-+		killed = true;
-+		ASSERT_EQ(wait_exit(pid, &status, EXIT_TIMEOUT_MS), 0) {
-+			TH_LOG("thread group %d is stuck after SIGSEGV to tid %d",
-+			       pid, tid);
-+		}
-+	}
-+
-+	ASSERT_TRUE(WIFSIGNALED(status));
-+	if (killed) {
-+		TH_LOG("tid %d did not dump, the group was killed instead", tid);
-+		ASSERT_EQ(WTERMSIG(status), SIGKILL);
-+		return;
-+	}
-+	ASSERT_EQ(WTERMSIG(status), SIGSEGV);
-+	ASSERT_TRUE(WCOREDUMP(status));
-+
-+	snprintf(path, sizeof(path), "/tmp/coredump.file.%d", pid);
-+	fd = open(path, O_RDONLY | O_CLOEXEC);
-+	unlink(path);
-+	ASSERT_GE(fd, 0);
-+	ASSERT_TRUE(check_coredump_extent(fd));
-+	close(fd);
-+}
-+
-+/* The mechanics: an injected SIGSEGV into a normal thread dumps core. */
-+TEST_F(coredump, main_thread_dumper)
-+{
-+	if (!uring_available(0))
-+		SKIP(return, "io_uring is not available");
-+	run_dumper(_metadata, false, DUMPER_MAIN);
-+}
-+
-+TEST_F(coredump, plain_worker_dumper)
-+{
-+	if (!uring_available(0))
-+		SKIP(return, "io_uring is not available");
-+	run_dumper(_metadata, false, DUMPER_WORKER);
-+}
-+
-+TEST_F(coredump, sqpoll_thread_dumper)
-+{
-+	if (!uring_available(IORING_SETUP_SQPOLL))
-+		SKIP(return, "io_uring SQPOLL is not available");
-+	run_dumper(_metadata, true, DUMPER_SQPOLL);
-+}
-+
-+/*
-+ * The SQPOLL thread leaves its loop on the zap and waits for its io-wq
-+ * workers to exit before it parks. The dumping worker never does.
-+ */
-+TEST_F(coredump, sqpoll_worker_dumper)
-+{
-+	if (!uring_available(IORING_SETUP_SQPOLL))
-+		SKIP(return, "io_uring SQPOLL is not available");
-+	run_dumper(_metadata, true, DUMPER_WORKER);
-+}
-+
-+TEST_HARNESS_MAIN
--- 
-2.53.0
+------=_NextPart_6AABAA9D_566A31E0_76F70AFC--
 
 
