@@ -4,138 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 720FBC88E72
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 10:15:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D751C982D0
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 10:18:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 644A46B008C; Thu, 17 Sep 2026 06:15:53 -0400 (EDT)
+	id 473E86B0098; Thu, 17 Sep 2026 06:18:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5F5876B0093; Thu, 17 Sep 2026 06:15:53 -0400 (EDT)
+	id 425D86B009B; Thu, 17 Sep 2026 06:18:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E55A6B0098; Thu, 17 Sep 2026 06:15:53 -0400 (EDT)
+	id 33BC76B009D; Thu, 17 Sep 2026 06:18:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 23CE06B008C
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 06:15:53 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A711CC02AF
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 10:15:52 +0000 (UTC)
-X-FDA: 85222848144.09.D1EF994
-Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 999E620002
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 10:15:50 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm3 header.b=cmmcxxUC;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="Q 8FPGS+";
-	spf=pass (imf03.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.144 as permitted sender) smtp.mailfrom=arnd@arndb.de;
-	dmarc=pass (policy=none) header.from=arndb.de
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0E6C16B0098
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 06:18:04 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 62BC5A02EE
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 10:18:03 +0000 (UTC)
+X-FDA: 85222853646.08.472D3A2
+Received: from mta0.migadu.com (out-144.mta0.migadu.com [91.218.175.144])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 3DB81100004
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 10:18:01 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Lmbcvlxa;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf14.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.144 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789640150;
+	s=arc-20220608; t=1789640281;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=63zrAy46gSsb3p8yj1mhK5xaAA+erR8iZLYTbk/Bg7g=;
-	b=MIpvGjmYtxcBSZetCVaRAe2xxP8yUN4e1+b2O+ut+I7WPWhozcvMWQNwX350DdY3Gy4l/Q
-	u5NU8wE+lxbThuNOZvNu2cVbHQGFSAv4+nlZMg3p5dirBqfZRCN/qGaFUID6rOkWI5Ajde
-	Jh+riaua5LopcYV0bC0z7/RSx4hxLdc=
+	bh=X443I1m6NVZaZuXgr2Ck1DkA3WUgWOnaMbaSo3syV70=;
+	b=3UNaiPmw1QXQKmVxfPg5enUF9nX58PMGzXBGg+L+lI5f2nHntrWVtXeCiTxdQUs3g8Vcc0
+	cpOh39pzSYxHE0SoK0vueFiTTeCBwGseZmaLp4EdYfBKbreXd1H7tk0yPglrCi3PC8IBSU
+	LvFpqkMqsNwMXgkmSTCPSV3xW6OhlcM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789640150;
-	b=8ojFuLCLHUk0d1311JgloamhKwNeebbk456nnDD1UnCU3lAdYhlAWh6ez+VsgXsUjm52lO
-	+G1Z+TgM9Qvzeh/mi6hGfugvn8Lsn1wlDvLxmQ2+WVsCNcdV+SzqkLPCl5+xG7d9L064gY
-	ogpfgH6a92KVTcg27SkWnVl6q2bTEZY=
+	t=1789640281;
+	b=OijAxbl7tc4sn8s05HFYwJSZbTfyHH+5IwYuIHaeY30V72eWP8pGb59Wqqe0+xyeeW2ZHH
+	J0giiMAf2a4CkIhJso7venKcI9D2495Tl5XJDtxADSnmq7e1uJIz6pRMHK7Y9mNEIveAOA
+	qLzQRVAaGb0m/jY/sr6gHxQv8jPrX30=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm3 header.b=cmmcxxUC;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="Q 8FPGS+";
-	spf=pass (imf03.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.144 as permitted sender) smtp.mailfrom=arnd@arndb.de;
-	dmarc=pass (policy=none) header.from=arndb.de
-Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
-	by mailfout.phl.internal (Postfix) with ESMTP id 75DFAEC016F;
-	Thu, 17 Sep 2026 06:15:48 -0400 (EDT)
-Received: from ams-imap-03 ([10.64.2.23])
-  by ams-compute-02.internal (MEProxy); Thu, 17 Sep 2026 06:15:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1789640147;
-	 x=1789726547; bh=63zrAy46gSsb3p8yj1mhK5xaAA+erR8iZLYTbk/Bg7g=; b=
-	cmmcxxUC4Yi8AtHYQy91rc8pGq6Xpn4y7Yp26rffQNYtBaHR6QAFPWSfLW/Ivfb3
-	6LWSteiLaz3xcojERQcbjvCmtQVLAPKBuwJW2VciWjTnACI4gQzZ1/O7W5f2sTda
-	K/+abxzeWBdw5WMTd97MC4QfA+CUdSVUWYS4ql6ClDTDBF3xjdcOgY2J02Sdfwqw
-	JFcNSeP9KyNPHMy4eMBmu2LLLyRD2BGNanGT5tBWfKTAKhHVsZ1/YluxzBbZDowO
-	rrIrJw7XBGU4fN5R7Dpe10KzUBd6ife0h69ksaA5tGxt1n2rmRv9rFDnwSBK9K6S
-	PJX0bvP+iVUE0x8cwTGyXg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1789640147; x=
-	1789726547; bh=63zrAy46gSsb3p8yj1mhK5xaAA+erR8iZLYTbk/Bg7g=; b=Q
-	8FPGS+HRS1XIEdvfZ0cy9o50f7DsczXNCvv+ICNQX1R02obIkacTU/NuUtA3FAgb
-	jJgLTi1+1DGL42eoJA1PTf3MDIn4uiZQtLNJ/eieN3CW3dNuSQsWq+BgU9ZY3TZU
-	H/m7tZIiDiVnHrxxF7H3eHfe2xlv2F3L7O1jbnawl0CV9vY9t+KYVwvHGYXePMOX
-	PZOPYLy9xYhh/C5RHyTgr6ktBVJPWubyIurApnWt4aHac3OfgnTQB65GoybkHSdm
-	HyjsH/AiKxjNubkKOij0hvdpVd/dZoautdrlVd+zZOq8r3ibKb9bbu9BhtWR7pCV
-	i+EYyRd0Msg2OAIJ5trhQ==
-X-ME-Sender: <xms:zL2rau8fojYY1T7ifVW8MYSwQJGUi5wdVbPFkcvf9kS5aOiirAO7Ew>
-    <xme:zL2rapgmm3mHHb5y3DZgcOhualtkMgt2pR4JyldCVLDl3bebCBXStWH0yp1DKzi8N
-    -F_w0cCjc04GWLh9-tTRyp0CV6IXnjEzjxqwbjq5MIiwYdeH5WSz2w>
-X-ME-Proxy-Cause: dmFkZTGObiLov0ZhD65vCMEDs7FyeO+N6gOc227aZ2EcrWzGLk1cuphQJxG6jEp+lPjKa8
-    dTdXUGAKPunOpPiE/cTsQtkTFTW7xc9M+3DHGqvYZkk8VUwTrXJ9n400/RbHDBkmYPUAPS
-    hNq0mR03tMRt3tMGmmdAn2WVC6m8+G/vEOzoMK6dwHdpQO/5F1OBLh1sjweUYPmCh2ELL7
-    B9F4gGnChXUf0SadPnzjhGR9l8+TJVxJwQwRoeYRsU57cdyC7Sa8p2t1CgG2+E/O7RlThr
-    fBboBI98bf2eB4h3KhE+Hhb+D2fTyYa2bhswd2XaFShan9En180bV3glzF9myTMzGgpBmD
-    vc31QPMpol3Sm6ZVgUy8nzj/n30k9T7AeTKdQuar5/6BYWyfLWmVbtYTuoBHBgDFSGqzjW
-    o3SrbCeDRQ76JQ+kKfALY6W9ggzHGssCBafTz3YLPhAMZwB4S4CX79LR13sSk3702n043Q
-    LZWatXQ58f6FFIZIJmso5mpi5qdfMbobFukWp0o/Q7PzOpRDDY0ZFwdDqra4QpyqVcPUo4
-    j+Oi6OnqikXwUxQQ/Bge00wrpu4p+HVXs3dQkgH5E3XbOMx9XCaQ8Rx+HcMHqicGrkAi3r
-    j39SGU/OhSpfiU076jcDU1SgRaHiSLYKGzR4AMPkYalflphI7KJX5sWIva/w
-X-ME-Proxy: <xmx:z72ral1a3RUM5nYAjM03H8uzFlvvRc9InpOucU09R-fKDSkRVXYQog>
-    <xmx:z72ramzg0ET3x2TBkBsJjAb4zRQbfXYUIcMw1Uk7KSsazpMzgBG2Vw>
-    <xmx:z72rashI4I64YgMFKEShgvbjjop6axEMGsyqMdoeht8Vb1IH_O-D7w>
-    <xmx:z72ratxIa3zN7AKNzH4GgwK7DabzDbSXJQlcxN6AsFW1SZpSaapWCQ>
-    <xmx:072rasUZzw3xiVye1Gv2_hKwH9obB2pTZJyF01cUIWJ7zoF6_LbwYr5r>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id C695632A0084; Thu, 17 Sep 2026 06:15:40 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Lmbcvlxa;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf14.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.144 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=DIFoReXqzCCEdyzOnHZyO/KDl68bNqQoPzIWJqoTfqE=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789640279; v=1; x=1790245079;
+ b=LmbcvlxaUExQL4VcOJKr+GUiLIlTdT/2R4qkbzkUCRVM0EDI80cHZqHr0brrZyH4Z4oP3n3h
+ WiBzCSzR7l+OpFxsq+xU2tFy3I3YxjbClsuGx2Wm56B7XoNE52Owm1HpLY0qH2GUqMx7JblLwT/
+ OE2HhM700apRuS4hHy0xm04Y=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 8f42acc8c86f58c5;
+	Thu, 17 Sep 2026 10:17:59 +0000
+X-Mizu-Trace-ID: 8f42acc8c86f58c5
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <534d67fb-8b5c-455b-ab75-cfc5c73e677a@linux.dev>
+Date: Thu, 17 Sep 2026 18:17:55 +0800
 MIME-Version: 1.0
-X-ThreadId: ACGBcqtoOIMw
-Date: Thu, 17 Sep 2026 12:15:00 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Andrew Morton" <akpm@linux-foundation.org>
-Cc: "Arnd Bergmann" <arnd@kernel.org>, "Johannes Weiner" <hannes@cmpxchg.org>,
- "David Hildenbrand (Red Hat)" <david@kernel.org>,
- "Michal Hocko" <mhocko@kernel.org>, "Qi Zheng" <qi.zheng@linux.dev>,
- "Shakeel Butt" <shakeel.butt@linux.dev>, "Lorenzo Stoakes" <ljs@kernel.org>,
- "Kairui Song" <kasong@tencent.com>, "Barry Song" <baohua@kernel.org>,
- "Axel Rasmussen" <axelrasmussen@google.com>,
- "Yuanchu Xie" <yuanchu@google.com>, "Wei Xu" <weixugc@google.com>,
- "Baoquan He" <baoquan.he@linux.dev>,
- "Baolin Wang" <baolin.wang@linux.alibaba.com>,
- "Ridong Chen" <chenridong@xiaomi.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Message-Id: <d832c2d1-d691-4583-852a-f05d4335e9ce@app.fastmail.com>
-In-Reply-To: <20260916230330.f0923cdb679de0b39d1c5d3a@linux-foundation.org>
-References: <20260916083456.4136132-1-arnd@kernel.org>
- <20260916162816.39f0f33f6a48d30a71be3575@linux-foundation.org>
- <20260916163044.3daa3811d9b2bf7d958f1f27@linux-foundation.org>
- <75939625-482c-464f-83fb-fa12d3e1d79c@app.fastmail.com>
- <20260916230330.f0923cdb679de0b39d1c5d3a@linux-foundation.org>
-Subject: Re: [PATCH] mm/vmscan: avoid false-positive -Wuninitialized warning, again
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Cc: hongfu.li@linux.dev, Muchun Song <muchun.song@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>,
+ Kees Cook <kees@kernel.org>, Colin Ian King <colin.i.king@gmail.com>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Mina Almasry
+ <almasrymina@google.com>, Mike Kravetz <mike.kravetz@oracle.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Hongfu Li <lihongfu@kylinos.cn>, stable@vger.kernel.org
+Subject: Re: [PATCH 0/2] mm/hugetlb_cgroup: move the per-node usage along with
+ the folio
+To: Andrew Morton <akpm@linux-foundation.org>
+References: <20260916-for-hugetlb-charge-v1-0-70fb708b2e4a@kylinos.cn>
+ <20260916175302.be1e68f24b96b7c639cbd7f5@linux-foundation.org>
+From: Hongfu Li <hongfu.li@linux.dev>
+In-Reply-To: <20260916175302.be1e68f24b96b7c639cbd7f5@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: uejsenpf9bamuu4e53efy56ekdguuarc
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 999E620002
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789640150-728314
-X-HE-Meta: U2FsdGVkX18DEc1a5Uo0QH03cfMkbiNobf45GMc69zGBEIa4YN0kZYzc5fsaSF34JCyBBcc7NbUR/KVwZn9olb68DtO7u8/xvQjyDI/b46MR2Wsz/ZXvF/2UUGnlIGyP/ZuJQRzCGkcSv9WEmjae4o3qGMjLpOw0ZSxC0w8ijkcacWmUPCEM4N0KwwyFPunLza3eisNajHgxxH/rCvHNdhu4+yABf43J+tRwU1JYsRPc/mKtDBLD1wAYQQDAMLpLs6k0vm7ry0CA4++qijCq8E1jzW92/jyFy3ZfBAbonHz8WEJ7/b8d+bTO9a3lh7EdK9cWYXSpb4YFzqNTnmqcGjHiyB0urIMgflQAHyjsTx48i/dfIH713FmhXdW2QL9ltKR7+a+RkZpox5xV40E/GSa8UJfekA+cg7Zr3GLh7xdDq//6/U6T8mpPjApmt1go2bDcAbsKfQLcF4GwYrsnbPnLy90t1JH5iGbFFzoIUpAfGOSGe1Yu86M9+YuQLsxMJe3tHtSkXvwTMBmaO+p26Uw3WERp5u+tmvR3Me5J1HVyw7L7dslVcB9RB5HZJeXhkmfmutBzSiPvbJpe/U27FPc5jyZeM3iLXZF2qWDvTaw+LALGzEfU8s4XOr96WWt9DnCxDGoiCpcgXKT6Wn6BJkKuo8Z0HRq0v9m/5AEFDyNYs81kX3U1seTCOP90iyxGPkPIYzT7jMeHw/d9J3M0QYZJ4YPZDofYDVBO59+k+p43URaFr37qZJPvTq+/wfzV7zT1MZ8MU6/lNmBPGWbhlpVqpqCUSLiYi0Uzs4lzlcPTvGs+PtCP5ekipvhAZvO8JYFrM7a/OBCsEpZysM9Bpxg2/14MEbLNv0KksLUItdP6sn9TJFJmuU81jnvp9gcMjrRgf6Oi92FJ5NAse4uT8aYu5C+yYFOhUFxTJVIq/v98l4/zevmqs8uRHE4uKv9XjlRcvaY5tQB6vppRo9Y
- dKKoMSpa
- 611ac552Rqs2M53ps4MRUvv+xYMRoTgJOqX91b4dP/kdxGgZcCjtThEqvuEr+3xcydlsD+0wUBDXPMbGT6CdyDHHpZTOGv58w4e0PbpTN8ehqGB9z+3DWrP06xjZpkBTbEvF2U7nGjQn/DiI2sv51AKRXDEET0PmUjCL8wzcauxlM5Dh4AYaE737fu+w/Y+3DOkHObILEvNLKxyUkIXZPQiissBPtgbkEFBWB/0bvmhnykWpbkfwoq2IYFB+IJzp9bG0nzaua7hxPn3eEeVfoQ7EwQMA1EJhnv34sR1G0ypSXLBC3dM5mzcn10A==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 3DB81100004
+X-Stat-Signature: ax5jmkfwxq4ah8fsbi9d4og6tojhtpz5
+X-HE-Tag: 1789640281-316212
+X-HE-Meta: U2FsdGVkX1/Z3hP6I+mfdhUIksfpf2UzebiTzLvtd0ysqVPLOhzyOUsv0y2cZcmRFLrmB1EMX/olWZA53Xi8NQB0m90W/fzXlrZu8hYJw0kMgydEgZpudRAUIoMd7hthnpAzJr9roWup7ZFRboGKITn3ehfqvTTt2tyhB7ZIml/4lQhPrNOK9zvC9arkLRNmPZQjFAxcBNi9YcXiIMw+6nthuEa8IBmsjrhuwpuwsNzjCA7R02KgznD1rx0pb06cDgfasJj6boNgj5sd0/Ijcv2l3aiADvG0D54uFmOK5WOJqA6lpOXQ/0M8A8S0/EiBsuhU61GdModLnOL3K0nfPFiq09NC4n41nDBFiXacYRf8HIyQbpTMw40ZDLnWxLAVLu3TM6gup++0il7tEkYcfzSEQ1kpAEo4haJrRk9XXm95eWm6jyKstrw0wATzreHY5bQREKcExYkrdQS9ORrvJA8hT8XMYXsqe/Beatpn7SUExSok0FiUVt/tC6Zcuf2C0UpgjtGoy3wdzRmgBQrqLWO0/SyO65sxbwhmrbWTKErSgu8cTXAyFiQlTJu5z+HcH2d+djpeZTiN1E82ebHaGMMzIgR9lLGLqW3uCcWXX8ZtKKMv/kpr36AzqJV/Ce9DOJVxkLUFKxvQ0gmLvtSvZePs6Vr3yaMDNQpPxkxbiJtOVWNYWdShDS9Q7ZN0OavKDD4eLzrPVGyqlgMNXTtBsmtPynZ6XSNTBJDcAOlLH59ZuW/BZhGk0JGd3Lqb/1mX5Mq6FJjAP1/1eQPTXjoqXMkXL4dp3mtI7oCimSpBEbwCfvttE4rwayF4x+dnnLMQ69mHROf6BggDQXbfH1L9Z/w5dKzctjYK49ATuUahJgpHxffNXGUJgyoGCHPuLgvtX7dL6d1zZH/d+gWecw2XOYOiN5fJJJtGl38wfD5bHtzZDeDXyLsndjpekceoz4kzdeqWvEmG7u7rBj7VscM
+ jXOBIFZd
+ cTorb73Alk7FahVpj8amMq9bihukQutmtAX1sGA+K0sKHYERPOhpf6BSQvrhM0Lm+eLRPgD5aV20UBWQGrwIVF4wydIH9Pr+Z6pf8TkxTBN+olEXx8FNth3i5HNnrLbSU3BC1BxfbgHbT8ndgIbS0kgtRW4NFc8qbRfJgG0seEgRuK9BDYDCMpytJOQSMhuohf6UeknVXc5jsUFjAc/XrTAyU50DCbiSdPFHg3Vp9iTshgZSwCHwimP7VnBPWUpkPftx3q2lvu9xbf3bnVGqIKNbURQeTvtUAyhir1Dqs1gVtX+F/AssEHKQL7EaI/weumPgx4LVKa583jujzGZNSHZjlwRFPEzdXz95xNqB+Xgll2uh/zlUDGM2OfIpntKm89low8BjSRUZytjsvr9+Cn4BTuQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,64 +97,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 17, 2026, at 08:03, Andrew Morton wrote:
-> On Thu, 17 Sep 2026 07:50:43 +0200 "Arnd Bergmann" <arnd@arndb.de> wrote:
->> On Thu, Sep 17, 2026, at 01:30, Andrew Morton wrote:
->> What I found now is that the __noipa is only needed on top of 
->> "mm/mglru: use explicit tier range in read_ctrl_pos()", which was
->> in next-20260915 but disappeared in next-20260916. This patch
->> also removed the min().
+
+On 9/17/26 8:53 AM, Andrew Morton wrote:
+> On Wed, 16 Sep 2026 16:30:26 +0800 Hongfu Li <hongfu.li@linux.dev> wrote:
 >
-> So we don't need cc:stable?
+>> The per-node usage reported by hugetlb.<size>.numa_stat is accounted
+>> against folio_nid() in __hugetlb_cgroup_commit_charge() and
+>> __hugetlb_cgroup_uncharge_folio(), so it is only correct while a folio
+>> stays charged on the same node and in the same hugetlb_cgroup.
+>>
+>> Two paths move a folio which stays charged, and neither moves the usage
+>> with it. hugetlb_cgroup_migrate() only moves the hugetlb_cgroup pointers
+>> of a folio migrated to another node, and hugetlb_cgroup_move_parent()
+>> only moves the page_counter charges and the hugetlb_cgroup pointer of
+>> the folios of a dying cgroup. In both cases the node (or cgroup) which
+>> was charged keeps a usage which never goes away, while the node
+>> (or cgroup) which ends up uncharging the folio underflows as soon as
+>> the folio is freed.
+>>
+>> Patch 1/2 moves the usage along with the folio on cross node migration,
+>> patch 2/2 does the same for the folios a dying cgroup reparents.
+> As I understand it, this series affects numa_stat output but has no
+> actual runtime effects?
 
-Correct
+Yes, that's right. The per-node usage[] is only read by
+hugetlb_cgroup_read_numa_stat(), so this series only fixes the values
+reported in hugetlb.<size>.numa_stat. It has no effect on charging or
+limit enforcement, which go through page_counter and are already
+handled correctly by hugetlb_cgroup_migrate() and
+hugetlb_cgroup_move_parent().
 
->> I think the reason why __noipa causes the warning about min() is
->> that it prevents the constant propagation into read_ctrl_pos() and
->> in turn the hack that suppresses warning about mixed types in
->> minmax.h when both sides are constant.
->> 
->> Is the mglru series currently expected to make it into 7.4?
 >
-> Yes, "mm/mglru: use explicit tier range in read_ctrl_pos()" is in
-> mm-unstable at present.
+> Do you (and maintainers) think that we should fix this in earlier
+> kernels?
 >
->> If not, I would withdraw my __noipa and hope that the next
->> round of changes to read_ctrl_pos() does not run into this
->> problem again.
->
-> OK, I'll drop "mm/vmscan.c: fix min() signedness mismatch" and shall
-> rely on "mm/mglru: use explicit tier range in read_ctrl_pos()" to fix
-> the min() thing.
+> (I do - a lot of userspace infrastructure makes expensive decisions
+> based on this sort of info).
 
-Ok
+I agree with you that this should go to stable.
 
-> And I'll stage "mm/vmscan: avoid false-positive -Wuninitialized
-> warning, again".  ahead of "mm/mglru: use explicit tier range in
-> read_ctrl_pos()" to fix the build glitch wihout a bisection hole.
->
-> Does that sound sane?
+Patch 1/2 and Patch 2/2 already carry Fixes: and Cc: stable tags.
 
-I think the "mm/mglru: use explicit tier range in read_ctrl_pos()"
-patch should come first because the -Wuninitialized warning only
-happens in some randconfig builds with that, while the  "mm/vmscan:
-avoid false-positive -Wuninitialized warning, again" patch on
-its own would always warn about the min().
+-- 
+Best regards,
+Hongfu
 
-Somehow I fear this is not the last we've heard of this bug, and
-I wonder reworking read_ctrl_pos() would be better. I tried that
-in my original suggestion before adding the initialization, but
-that had other problems:
-https://lore.kernel.org/all/20260213123902.3466040-1-arnd@kernel.org/
-
-I have checked the latest gcc-17 snapshot and see that this still
-produces the warning.
-
-I also managed to create a reduced test case, see
-https://godbolt.org/z/xofecssz4 but this still doesn't make sense
-to me. I do see that gcc creates a both an out-of-line version
-of read_ctrl_pos() and also inlines it. Marking it either
-__always_inline or noinline avoids the warning.
-
-      Arnd
 
