@@ -4,98 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACA92C982D0
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 05:58:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2374C982CD
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 06:03:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD4256B008A; Thu, 17 Sep 2026 01:58:39 -0400 (EDT)
+	id ACB336B0092; Thu, 17 Sep 2026 02:03:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B5E646B008C; Thu, 17 Sep 2026 01:58:39 -0400 (EDT)
+	id AA3956B0093; Thu, 17 Sep 2026 02:03:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A24C86B0092; Thu, 17 Sep 2026 01:58:39 -0400 (EDT)
+	id 9BAB56B0095; Thu, 17 Sep 2026 02:03:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F9E66B008A
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 01:58:39 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 19FD9A4A0C
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 05:58:39 +0000 (UTC)
-X-FDA: 85222199958.01.F8B2ADE
-Received: from mta0.migadu.com (out-30.mta0.migadu.com [91.218.175.30])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 82D1880004
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 05:58:35 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=YjTmazg9;
-	spf=pass (imf02.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.30 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 78A736B0092
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 02:03:34 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id EC9C880256
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 06:03:33 +0000 (UTC)
+X-FDA: 85222212306.24.11F0C9D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 2371C1A0006
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 06:03:31 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Wd9u84st;
+	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789625012;
+	b=3FRrSnlBPm1Qsc8osJkkfsOJDULU5Nu6G3ZouA32uclv3GgnZJ/qwCrYbuCMYVPTmjh5I3
+	xSr6WZUwuuO6dgetP+d7BkSNlGDDGRdyxPOD9BgR3efuA33VrDJx3y3SIUUoWpZrJMGHWe
+	JRjWoTzCocaa0mtXNTaoG4g/9UmQmLk=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Wd9u84st;
+	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789624717;
+	s=arc-20220608; t=1789625012;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T6sskj9GLiZ9PhHGpWEzfx92mj2D3CU0O4mIIDyV7XY=;
-	b=XoU4l2FUA1HZFD1cy3r8HcZ0p8BZA1DwIDL3osPp4NXDmivnjwpypCR+t7GAs5gZ3V6pZD
-	NJu9zkFEvNgpAbWokINPf9NBdNzN84Ewyab4GPJ1AuK8ka+gjTAXgIiU9Wp0HMZ3+qUHvT
-	rWJksh0fOHJ2RmMfvJurC/WKJgPj5z8=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=YjTmazg9;
-	spf=pass (imf02.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.30 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789624717;
-	b=iwFOlywHm2NCrIGF+pDyp0idvCkSpu9dgcQuD8LRZ7/CLMymeCBYLPrCJRpdS4wIkm21O/
-	dUB5Vs2S4PuCYL56XoGEtdYUTyJISjLGGJGYR2eHb+QdmBh2XjBbifRKVlqAyG1w2Bac4+
-	icswwjfyQJkrcB8CsG2iHnZY5fkJZ20=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=J8DscqG4a4GeiQzq3/0ZMuMoJ5VdAvhrxumKrU8mFcI=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789624714; v=1; x=1790229514;
- b=YjTmazg9aIQBpzd39HD+qdjdHyMQ6IWhBBlRR3dFFJuYswwbtw9NutY2Wvkq8zHBRWlR/wXv
- QSoUrX9UyeYdZ7JPEhyY3cxYOz71ydRYsLA3ZZN2QTexx8OQi605WPUH2GaUBqauuIIDhwCMS5I
- Od/QQGNhp1SqgHUx99quepG0=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 67928f8b5859cc35;
-	Thu, 17 Sep 2026 05:58:33 +0000
-X-Mizu-Trace-ID: 67928f8b5859cc35
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.700.51.1.1\))
-Subject: Re: [PATCH 1/2] mm/hugetlb_cgroup: move per-node usage on cross node
- migration
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260916-for-hugetlb-charge-v1-1-70fb708b2e4a@kylinos.cn>
-Date: Thu, 17 Sep 2026 13:58:11 +0800
-Cc: Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Kees Cook <kees@kernel.org>,
- Colin Ian King <colin.i.king@gmail.com>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Mina Almasry <almasrymina@google.com>,
- Mike Kravetz <mike.kravetz@oracle.com>,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- Hongfu Li <lihongfu@kylinos.cn>,
- stable@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <E35A1286-33DF-4B54-8338-888EE28BFD06@linux.dev>
-References: <20260916-for-hugetlb-charge-v1-0-70fb708b2e4a@kylinos.cn>
- <20260916-for-hugetlb-charge-v1-1-70fb708b2e4a@kylinos.cn>
-To: Hongfu Li <hongfu.li@linux.dev>
-X-Mailer: Apple Mail (2.3864.700.51.1.1)
+	bh=HSrhie3ypuW83vFReYxjzy5OGcpm75lW5CqYyN+TEsk=;
+	b=OGL9LdT12UheBtToFE/PNRRmGcRDrTJgYaAacV+SobilmXq65f1hTcbNt5q4nWNNepnvqV
+	ZFZuVQIqmCuGDYcVH3PLfKvpI7nXVu+TYZQi/57uHrDlLsAFn/FEcPNCo/S7M2O5ct22Vs
+	Q0L0NTn6iQU6SI4alNrOKt2sjvZAHKw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4222440254;
+	Thu, 17 Sep 2026 06:03:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95C4D1F000FF;
+	Thu, 17 Sep 2026 06:03:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1789625011;
+	bh=HSrhie3ypuW83vFReYxjzy5OGcpm75lW5CqYyN+TEsk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=Wd9u84st6s+3ZhZdO82k19nVHM8EAnqO3+U/8oQITZkdGudQybJigXBMhtM6CAyGW
+	 baMfzhKJwf9EVmkJ87qdiD1rcmBHgV4FNMaU0FXOgWAzme9oBLXFcOFwQ5Ef7yKHyy
+	 /XvF2GFD9UzKCTU0nX38fqf2qtJk3AijlOthZw6k=
+Date: Wed, 16 Sep 2026 23:03:30 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Arnd Bergmann" <arnd@arndb.de>
+Cc: "Arnd Bergmann" <arnd@kernel.org>, "Johannes Weiner"
+ <hannes@cmpxchg.org>, "David Hildenbrand (Red Hat)" <david@kernel.org>,
+ "Michal Hocko" <mhocko@kernel.org>, "Qi Zheng" <qi.zheng@linux.dev>,
+ "Shakeel Butt" <shakeel.butt@linux.dev>, "Lorenzo Stoakes"
+ <ljs@kernel.org>, "Kairui Song" <kasong@tencent.com>, "Barry Song"
+ <baohua@kernel.org>, "Axel Rasmussen" <axelrasmussen@google.com>,
+ "Yuanchu Xie" <yuanchu@google.com>, "Wei Xu" <weixugc@google.com>,
+ "Baoquan He" <baoquan.he@linux.dev>, "Baolin Wang"
+ <baolin.wang@linux.alibaba.com>, "Ridong Chen" <chenridong@xiaomi.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/vmscan: avoid false-positive -Wuninitialized
+ warning, again
+Message-Id: <20260916230330.f0923cdb679de0b39d1c5d3a@linux-foundation.org>
+In-Reply-To: <75939625-482c-464f-83fb-fa12d3e1d79c@app.fastmail.com>
+References: <20260916083456.4136132-1-arnd@kernel.org>
+	<20260916162816.39f0f33f6a48d30a71be3575@linux-foundation.org>
+	<20260916163044.3daa3811d9b2bf7d958f1f27@linux-foundation.org>
+	<75939625-482c-464f-83fb-fa12d3e1d79c@app.fastmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: r4y8x1nsy8hr6k38uhgex79wi1y5w577
-X-Rspamd-Queue-Id: 82D1880004
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789624715-669813
-X-HE-Meta: U2FsdGVkX1+BQXbQTcEbXpRdigdqVUlPUkCJNcbIziqZ+RSvkxPqDAquGHlnYivJzVianvFNZ0fmG3VqBA/KU2ZFpD74PAJ5zd9VV/OkmWDVTi4uZ6cDGuiPdDoVjj5OyBJpLk6lRO25flShTlS/mG3TXMoc0SwOHbuLYWqrKePBeILSQP20A146trQL6CzpKu3LPfhcWiSsykhWGrhgNWfmHSmhpVDiEKsHJAYr3mllPgbXNZOJBtY4K2F3EsbCGFGWShIXDgQb/87PciuVDuieV9vbcF3TOKo+vO5P8w/kMWTCZ2Bb730z2RXaIsNbW4w2V0t0a3Td5Y4AYXPl8eXvAzCAL7D+fCe+GU7Xc3zAVAjQbR2xzz0umLuaAFB1lzbf9NA/AvKt9yFDtaV/AztCZTgSVY5ljWKnKsp+WqxTWNucNZfx0L9zltQwUItUg98ZoiaPAnIorUtHOuE9DeWurYwsUIy7nmP7o1ORTjmeD5lZko3jj4hERhJ/cEeJhGlA7l+I/WeZM+d4xgyEyi2q+1Rm3w8WrfAz3gE/p4xYoJsp8irm3KRIYI4Y6vNpzwtC8OHmaiiCpknxV2RptyRuWkEHEtbvvLCYNe56KLZkWhOD8p6UFMXFpKixoEgcqbhLRj2gZub3//V9ucc/vilIC8dJfjU7U/m7MqcBmHwNgwK4pbaBeQqVyo/fl/woP2oWwMkN88HiIOC4kzGK0j/6VAyg6J1AJpz3xZtIIU6WDl65BrKY2fRZe/4b9uWOU7LkoWgm4xwKXzcouAR4XNyQFYDLJkvHCYd7NjmoNzIG+sMm1qG2yfDo1gP5cQfDFxtpytovOr0XvG2SK2IyqpHEOs71u6p0VhXPQhLBhiyxBonsESiuO0CsY7XYe626q5KDuGw0B22dRqBjUZoKrHXSHGOsos6uSBCGq4dvwg7yu1xKVvcqCbx/t8QjQzfoZqzt4EHA5ayUtSMzrD+
- /JSu9Tkm
- M1dn0lNFyK6Cif5h0ZXX3J/Gn9ByRvDodlZj5PAgfhfk4aYxuKd8dBetfs8AxN3YcLimt8FQVdX6P6E0U0FLL7HmtsypTLZiqJGUMw294VADA/kWidHqnXB+6kAzQutN085H1Bu68pq8/KmpNbQkg7n9TBXg/Sx+hEvvq3azvsrQ1y2z79cTHZTIdzNKA1u7UScOIV+zpAlQemDzh8ohwfSfabkiLMfAjTwO58Oc8mIfVkPZe2snZofpXZUlTiHZA3VJ54CT7fYuX/URPxwdXNCkLezjenYJoQbbfDshkbrrwPnmh7uxZZwHP8NyG/fX3sMNBHt6eYinaAAqOzZdFgVGe/EkhtRVcUKXIykf+NkuTTuZMgklDVV9vQgIRQm/gdducz1jkdY8AlEAQsbqYvBgk4yV+WXFNrr38q5rcyJxslV49IwG5TmlxejfkUl6u0Y6X
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 2371C1A0006
+X-Stat-Signature: 8hkx56gkjm61p846x7zc1us8bf7qpnxx
+X-HE-Tag: 1789625011-479195
+X-HE-Meta: U2FsdGVkX18sqGrNLfRx/kFNm+trOzWDPUCYYrBRc4NzIDo3zBcHvakLd2mhyCCXhzINoZiTcKC8oGUYiA1le5yuE3btB1FUzAHnEb+OBwtnPHOr4mQSU0K37qdHZv8RUP4fcoo/NMFUWp3AAaS83qCoDh6pHeo9HMFM2U6XDp0PMaGkLeHmGEIM25uUBL6Gj5DF4VOpJ529T1p1X2C7hDE30S6c5Ds9+2o66I9MVd/PwOX529PzYSetSApXhN/eFTlOV730Hj82MKJdptuqI80IJIs/3+xV1hoyhRa8TKQHaiCgiO24dbcE7lZKxpvBTpaiBuJwShHoOhRZLfa8QmRNJerwJWJUDg7vZ5kaZKstjj+2kV0heBmxCqs8Ii9/g8NL+yHzBB1+LDkkyn7csAkD1T3+F3kiz5vD/ETRl1WzQI3HKQekpbR7UaiNQSKIFOvANvhOlRvIWxmhDM+DLCtdV8Sx6dMN4tCPwbHVX7V30KEz5NUo804EFcWoZ26zf3inytT4ZQJLlUxtdcjoz1poYSkVImYDdbMK+RrJadc77AHQ+51ohylXaussClg+n60bqBEt+05dmksRMijHtGbNfawO4f+VMmIHEVcF7zammc5VtGhjdE3AWNSSPnzWMAZg0xmpos7JkJ8GTBqDsEC7ImAnggI6IdLcX/NVq9ERn6aI1W/Y/2CKxZNELck+e59m2peSADTJOZJ5udCW05plzh1BRAdWCRRSats5/UAyvoR0T8vvNMkDzl9x1TnqyAUvBi6KmsfS0aICSq8FXBxB01dqn9/G5BNGndDp8Bf0gtI664QPibSuH+MVef36g0tdPcqnDI5TehupJaBO0GqtEspSNPOjpg7VOtsr1lARfTBGsC5dvWPHZNy6eC9lfTWRHGqf5j0qni7P7/CzNDkxJDOtke6m7KuB3S1pn3jou3gukhBCIt9SDmnb27hbnAvpPNP0xARsluk8Bey
+ 4Fs/hBC/
+ 1RBFkKx6O2lRaiFWv99+MagjSKQ4/ZcFxBFvCxQBAAMQiYSHbKwb1WtVCR1EwAJKZmioGxWmUDHVX+83+6Z2aQTagIL5aBygCECNyYxuLgH05uubWTyz2ifEmkiACxTUwgzjVd7/l0k5SkTZ7k7bbHBONRPWFauqo6rKDnpolV71coESiNSaJMyKIUK5Fz6JHRpHUmPN/X6hxH8VC2BrBBkSVUzox28zAQe3vr2PsIqaJ9qOpJ51Dl9lKMQMlEWy2l0K8bN4e4BNI9+XQhsdL3k0Ia6DxdoiO4SB534ic/dgwlDkAlHUv9wiD3g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,97 +101,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, 17 Sep 2026 07:50:43 +0200 "Arnd Bergmann" <arnd@arndb.de> wrote:
 
+> On Thu, Sep 17, 2026, at 01:30, Andrew Morton wrote:
+> > On Wed, 16 Sep 2026 16:28:16 -0700 Andrew Morton  <akpm@linux-foundation.org> wrote:
+> >> >
+> >> > --- a/mm/vmscan.c
+> >> > +++ b/mm/vmscan.c
+> >> > @@ -3274,8 +3274,10 @@ struct ctrl_pos {
+> >> >  	int gain;
+> >> >  };
+> >> >  
+> >> > -static void read_ctrl_pos(struct lruvec *lruvec, int type, int tier_min,
+> >> > -			  int tier_max, int gain, struct ctrl_pos *pos)
+> >> > +/* __noipa works around  gcc-16 warning for uninitizled use of pos->refaulted */
+> >> > +static __noipa void read_ctrl_pos(struct lruvec *lruvec, int type,
+> >> > +				  int tier_min, int tier_max, int gain,
+> >> > +				  struct ctrl_pos *pos)
+> >> >  {
+> >> >  	int i;
+> >> >  	struct lru_gen_folio *lrugen = &lruvec->lrugen;
+> >> 
+> >> Current code has changed here somewhat, but I expect the error is still
+> >> there.  I fixed that "uninitizled" while in there.  Altered patch is
+> >> below.
+> >
+> >
+> > Then the build blew up in unexpected ways.  gcc-15.2.0.
+> >
+> > The failure looks like a legit min() signedness thing which has been
+> > there quite a while.  I'm thinking that __noipa surfaced this for some
+> > reason?
+> 
+> Right, I now saw the same thing here on the current linux-next.
+> 
+> What I found now is that the __noipa is only needed on top of 
+> "mm/mglru: use explicit tier range in read_ctrl_pos()", which was
+> in next-20260915 but disappeared in next-20260916. This patch
+> also removed the min().
 
-> On Sep 16, 2026, at 16:30, Hongfu Li <hongfu.li@linux.dev> wrote:
->=20
-> From: Hongfu Li <lihongfu@kylinos.cn>
->=20
-> hugetlb.<size>.numa_stat uses folio_nid() to account usage in
-> __hugetlb_cgroup_commit_charge() and =
-__hugetlb_cgroup_uncharge_folio().
-> hugetlb_cgroup_migrate() only moves hugetlb_cgroup pointers, leaving
-> per-node usage behind on the source node during cross-node migration.
->=20
-> When the migrated folio gets uncharged, we subtract usage from the
-> destination node counter. This creates stale usage on the source node
-> and unsigned long counter underflow on the destination node.
-> The hugetlb.<size>.numa_stat interface exposes these incorrect =
-per-node
-> usage values to userspace.
->=20
-> Add a hugetlb_cgroup_move_usage() helper which moves the usage from =
-the
-> old node to the new node, and call it from hugetlb_cgroup_migrate().
->=20
-> Fixes: f47761999052 ("hugetlb: add hugetlb.*.numa_stat file")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
-> ---
-> mm/hugetlb_cgroup.c | 31 +++++++++++++++++++++++++++++++
-> 1 file changed, 31 insertions(+)
->=20
-> diff --git a/mm/hugetlb_cgroup.c b/mm/hugetlb_cgroup.c
-> index ecb6e0b7819a..1040406e7e1d 100644
-> --- a/mm/hugetlb_cgroup.c
-> +++ b/mm/hugetlb_cgroup.c
-> @@ -179,6 +179,34 @@ static void hugetlb_cgroup_css_free(struct =
-cgroup_subsys_state *css)
-> hugetlb_cgroup_free(hugetlb_cgroup_from_css(css));
-> }
->=20
-> +static void hugetlb_cgroup_move_usage(struct hugetlb_cgroup *from,
-> + 				     struct hugetlb_cgroup *to,
-> + 				     struct folio *from_folio,
-> +  			             struct folio *to_folio)
-> +{
-> + 	int idx =3D hstate_index(folio_hstate(from_folio));
-> + 	unsigned long nr_pages =3D folio_nr_pages(from_folio);
-> + 	int from_nid =3D folio_nid(from_folio);
-> + 	int to_nid =3D folio_nid(to_folio);
-> + 	unsigned long usage;
-> +
-> + 	lockdep_assert_held(&hugetlb_lock);
-> +
-> + 	if (!from || !to)
-> + 		return;
-> +
-> + 	if (from =3D=3D to && from_nid =3D=3D to_nid)
-> + 		return;
-> +
-> + 	usage =3D READ_ONCE(from->nodeinfo[from_nid]->usage[idx]);
+So we don't need cc:stable?
 
-READ_ONCE is unnecessary because there is no concurrent writer.
+> I think the reason why __noipa causes the warning about min() is
+> that it prevents the constant propagation into read_ctrl_pos() and
+> in turn the hack that suppresses warning about mixed types in
+> minmax.h when both sides are constant.
+> 
+> Is the mglru series currently expected to make it into 7.4?
 
-> + 	if (WARN_ON_ONCE(usage < nr_pages))
-> + 		return;
-> + 	WRITE_ONCE(from->nodeinfo[from_nid]->usage[idx], usage - =
-nr_pages);
-> +
-> + 	usage =3D READ_ONCE(to->nodeinfo[to_nid]->usage[idx]);
+Yes, "mm/mglru: use explicit tier range in read_ctrl_pos()" is in
+mm-unstable at present.
 
-Same here.
+> If not, I would withdraw my __noipa and hope that the next
+> round of changes to read_ctrl_pos() does not run into this
+> problem again.
 
-> + 	WRITE_ONCE(to->nodeinfo[to_nid]->usage[idx], usage + nr_pages);
-> +}
-> +
-> /*
->  * Should be called with hugetlb_lock held.
->  * Since we are holding hugetlb_lock, pages cannot get moved from
-> @@ -906,6 +934,9 @@ void hugetlb_cgroup_migrate(struct folio =
-*old_folio, struct folio *new_folio)
-> 	/* move the h_cg details to new cgroup */
-> 	set_hugetlb_cgroup(new_folio, h_cg);
-> 	set_hugetlb_cgroup_rsvd(new_folio, h_cg_rsvd);
-> +
-> + 	hugetlb_cgroup_move_usage(h_cg, h_cg, old_folio, new_folio);
-> +
-> 	list_move(&new_folio->lru, &h->hugepage_activelist);
-> 	spin_unlock_irq(&hugetlb_lock);
-> }
->=20
-> --=20
-> 2.54.0
->=20
+OK, I'll drop "mm/vmscan.c: fix min() signedness mismatch" and shall
+rely on "mm/mglru: use explicit tier range in read_ctrl_pos()" to fix
+the min() thing.
 
+And I'll stage "mm/vmscan: avoid false-positive -Wuninitialized
+warning, again".  ahead of "mm/mglru: use explicit tier range in
+read_ctrl_pos()" to fix the build glitch wihout a bisection hole.
+
+Does that sound sane?
 
