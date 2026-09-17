@@ -4,78 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDC47C88E72
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 15:38:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2168C982D6
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 15:54:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C0C656B008C; Thu, 17 Sep 2026 11:38:50 -0400 (EDT)
+	id A9AAF6B008A; Thu, 17 Sep 2026 11:54:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BDCCB6B0092; Thu, 17 Sep 2026 11:38:50 -0400 (EDT)
+	id A2BB46B008C; Thu, 17 Sep 2026 11:54:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ACCC26B0093; Thu, 17 Sep 2026 11:38:50 -0400 (EDT)
+	id 9139A6B0092; Thu, 17 Sep 2026 11:54:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 936396B008C
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 11:38:50 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D813E1A03BB
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 15:38:49 +0000 (UTC)
-X-FDA: 85223661978.15.BC7A4EF
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 706066B008A
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 11:54:05 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 66104C03D1
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 15:54:04 +0000 (UTC)
+X-FDA: 85223700408.24.1EA0BEB
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 1601120008
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 15:38:47 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YQZwVmSX;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YQZwVmSX;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf06.hostedemail.com (Postfix) with ESMTP id 98DAA18000D
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 15:54:02 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PK1JV148;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789659528;
-	b=1IMUPomBZ4sHL7lRapSTD26OKvnIGhcTQVKXBUjnSF9VkHA+Xcru2t8FrSVRhi5zOPmA0T
-	JcWaCvvv9bEVoxkPyv0gvzUev1f+B10mbyrDIbnsq8tL0P+zBLz0GH0qh7WT5jrhTd+l+p
-	2fbhvZBofJXyFPZfL2ow7AUKgon3Q30=
+	t=1789660442;
+	b=Mqmux4ctCcrAcc/IZjWYEjoDxsGQ3BkDiw+WidjdPkOGZ/fmxWQBJFLf6pnmNQL6bm27/r
+	EtX0BwxzlzqQFPSutqX/W5MImP8ujo1f5rqDBm8s1g4AlHSSIQBTZ9KlZisdjRkIGxWB3+
+	iDXUE33rl74oVlQNwgZVdywzzGDpZjM=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PK1JV148;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789659528;
+	s=arc-20220608; t=1789660442;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zbSgagK4EFOCUpu2UGkI95umgUxv4F6MMs1fhwfHLOM=;
-	b=UJ3O84jNAULTdpE6KDdIZju5A3KWluD3hZUVHYOXMVg67d1YLCrsDuGesNRJKr+LdFBFcs
-	FDsQkqMjXcVneSjufTKieSpwYiZgD7mBW56VKI2ZMuf1D0Xunw863v+ro3Ob3qeCCWqd6l
-	2lE1FDFWXj/Zs1nEc3lcL/vj/T9F1qo=
+	bh=hPH6qf9tTmILRDRkSSFPngCp/v4lHSqWdSjRppjcWwA=;
+	b=EA9m2ml6Os+ZUcn/eBA6oEYcE2AGJVbFuuHp3MTdN6RTJL4VEKjEBsc/1qdLARfWF521Q0
+	o/cECaVreknSUA7HSMu0YcC7iMUQvgm9D/DQDMLSANf8dcYuzlka1csE/s1DzBHjPWtjtY
+	6PRTJBpqFOy1Bq28AfggO583Galh4m8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 737CC601F1;
-	Thu, 17 Sep 2026 15:38:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45DEB1F00898;
-	Thu, 17 Sep 2026 15:38:44 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D2B2D601F1;
+	Thu, 17 Sep 2026 15:54:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D3141F000FF;
+	Thu, 17 Sep 2026 15:53:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789659527;
-	bh=zbSgagK4EFOCUpu2UGkI95umgUxv4F6MMs1fhwfHLOM=;
+	s=k20260515; t=1789660441;
+	bh=hPH6qf9tTmILRDRkSSFPngCp/v4lHSqWdSjRppjcWwA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=YQZwVmSXvyJGDGxoiIKuILLAsmdM03f+GMfUozW8IVPM7vAEbHpx8A2UTwTex3jHf
-	 DifV3qiO4PBwahZum1RTZFZGYdnV1lJwKpDYrawDZ6vHn233grx/DJDDdsbQLnMF99
-	 GgIYJrm1CE/B7BdcJrccaQ16wJIF22i/Nf5MUKCFpuRkGTPwPZUJRAXdj4fbkYF+Vs
-	 UBEGjHU6DnDn14B6ltXxuUfyosVkJpwNhOJPi12iwasHixlxEqvlEI6AQ4YnpsUJxt
-	 t1ZVlKu0aPEMvUqour9cd3YjV1lNaKfadqLD48IqwghpXrEVWwtEjw6yGEUdfHK8Xv
-	 Me9TNxuE23Shg==
-Message-ID: <15977036-c5a4-477f-8cef-3bfd0a585c55@kernel.org>
-Date: Thu, 17 Sep 2026 17:38:41 +0200
+	b=PK1JV1485YMoCcTJI72m37Jd9fm5S31VtwW0gFIPi4GiOJ9d9hVaqtqb0Nj3ArSgy
+	 pG1CeBw8mSrtzjQDiCbKQF1Kg1XLF63MLu/gbuSJHt6IGXRcqQVcu2c+NotiTYb0BR
+	 22dZ8DCIY5m9HsBkSsfQ+2lISgPJBFSoqoOhqV3AWu/RQ1/nmCdvsnjEDqNXSaO+yd
+	 oVx/WnAOz1QU9r7Lgv33Mb6Fz8qJOEelSnJhg2OVoD+fFyDpxvtxtUiQ3Cjg0Bg2ps
+	 mPIf8zBuuiCPZ0mtv5nXg7OLUTfxSgyhcPgZEJNLxJE6P14tBsa70vLnZCDmmaWOup
+	 b+Mb2BgTtToPQ==
+Message-ID: <248118c1-b204-4d79-97ce-1406439ed08f@kernel.org>
+Date: Thu, 17 Sep 2026 17:53:44 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] mm/huge_memory: disallow raw PMD mappings of the huge
- zero page
-To: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org
-Cc: ziy@nvidia.com, baolin.wang@linux.alibaba.com, liam@infradead.org,
- nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com,
- baohua@kernel.org, usama.arif@linux.dev, kas@kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260917121010.60966-1-lance.yang@linux.dev>
+Subject: Re: [PATCH v2 0/4] sched/numa: stop VMA scan filters from gating
+ promotion
+To: Gregory Price <gourry@gourry.net>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, mingo@redhat.com, peterz@infradead.org,
+ juri.lelli@redhat.com, vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+ rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
+ vschneid@redhat.com, kprateek.nayak@amd.com, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, nico.pache@linux.dev, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
+ usama.arif@linux.dev, kas@kernel.org, matthew.brost@intel.com,
+ joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+ ying.huang@linux.alibaba.com, apopple@nvidia.com, jannh@google.com,
+ pfalcato@suse.de, osalvador@suse.de, hannes@cmpxchg.org,
+ raghavendra.kt@amd.com
+References: <20260911001826.2109390-1-gourry@gourry.net>
+ <20260916223525.65ae1628b1457a716efc298f@linux-foundation.org>
+ <aquOLzXGdLmyBaIT@gourry-fedora-PF4VCD3F>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,17 +134,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260917121010.60966-1-lance.yang@linux.dev>
+In-Reply-To: <aquOLzXGdLmyBaIT@gourry-fedora-PF4VCD3F>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 98DAA18000D
+X-Stat-Signature: tg31dqnpd59px7ghpwoupssuhymm8qxk
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1601120008
-X-Stat-Signature: chncpssps6zrx6s4icmd4um5699fhs9h
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789659527-501579
-X-HE-Meta: U2FsdGVkX1+3G9GxJNxQAGJj7+ja5zUf4A2FFFWzANsQnm0PzSLJHXnF2ZSdx32U851zQKo33WpTx1qQqKe3miI9yiZnoNogRbAVX+HdGjRZOJqCsNaVpy8Q1agC0jc/gIfqzXJN8U35c8cFCwWV6/2W+AHad2jjVc2HYT/sHXA55fav8pLstEDx179fxRNZ+Ae04rAJxMr5/lfkUvUKhi9w4F+VWivlp3zcPHxn3rPMD0E1q9C4AzhOuZjCrGZMWDIsQb2fptC18hWH4kuSG7flw+jKpnBcTJbHr+wxSJdhceU/VZaN1OeFoP+gmrHndmFEAEluBJOMDedR7s0fhm/gQFJ7Rn1yMczqdo6SRxpV5aSp8GJr26/ABjIE6xR3tAglkfz0Ie1s0vDGQtoSE7bCSJwKa3+bLoF9hOlb3ClT1ZHxZoN4bAbdg/6eSttHAIfHoQk8hc/O3DRrlAg/xCTudIDyrdPcGijMx3ihq56C8aLhiCecd/zGETh0bDxJWdo8BsBkQ+ZMoKoE15Dbwi2wzfHem+M2CIp5eNBM8Kh4/ccLlNKiyU0oHlOfrrPflMG2GkpCd5RFI2YbX4ElwVL0uOBLipQpR7PNj0GuTdf0zyJiEF64GXZXXX01eUruOmTMFkUXKVSjIZst7Px1598MmbLlsJajW/ta+pwHHsdlIh3aqiUO36zQP3HvXj1iq+WiFC8ADskNXQJSUg2fnltbnmeDkOCaNkY79Mbuh2iRArKoHG3bWz1MLgSTd4OHNn6A4CeShELhLqzmKNBUSdGXUzCFUSg0mARMEQFBhrt31nDc0gm0A/ixJuR7HGDXkCkjcxKen6/toyg9RIEvzNaHf4mNj1QHIOUD5gYjNtCM+eVnXaK5VozeG/FtS3qbJG5RvP0yMuWogfltK99wD7yjzW4hobpTmVEjHlV/aCJWQGYzAKjHy0ZozLDaKF83V/jIammYDMLw/D9ojnz
- Lr5Qezta
- zP2cNBJRhcpRUnCbiUnXNfixq1yhfCLCqiKVpq0XNxy3kEmU24v9et0aSuxE/iVkEd1MlPlHPfIWw92Zxe31Uw/+mTuMqVbhA0Ds4NsMN6vs6WWOZgWXFqR7AlNeAyxLOJwLPcKEBy7u9wvTTbTNt0FZ8iw+Qfuf7DEgmS4s+YM8U6zjlkVczwATJ0z7K9jYmHh2+Afxp2QpqITAe9Yw8/YcvcsE7F17zTsG5rSUQqcgYCKM1OTqOPlSnjvLXsXJ1Ou0RoIXoTzRm2yTEp5TbzTNh91kIZP3wd5CTuDOtmJCq5J+H0pteGmGephYSPDlPMfRT+evmY+jOw/k=
+X-HE-Tag: 1789660442-231831
+X-HE-Meta: U2FsdGVkX191OKgkQ8yL+LkYXPJz2yF0Sc+g516OVmOw+BU26SiiaDPhRPg76ro1XANndQCI2vNpXRfwPPkMTqE2SQBtW1RLzcqll2BPuHMJa5jL7/zYcM7kRE8j1+KMPAFJ4lNlr6rfKH2LqiwdmGQlvb+m7DxCRUXVyKZxYT4cFVOzNDlNvS44FxNvfApu7K3C21W++p4Bzwip6jmjIOwvBM6b1xciY2NSIIuwMRG8xFsmVdlFVRPgrlzDgldPz22ZkNuqGQobW4fWzUFS/th5cX4vW+SrmB070ro7xAjxFfMb9Kz9IV6rUGPqngX1GiH8KW81DW+2OZ9e9LvmQzO7xXvUVrW2xS8RUcs6Ba06f9yHMV67MO0j9AesrAYztXJ8zmXShChcOu42WVa9F239khvxX1igS/EBaQ6NoJKSnzr+ZG7z/cFXyajq9y935+9tNlQNsyPnkPNvG0RLMhfYfGKFXH00aqOjlf9/d/y6BdrLcupUCp2raM2LiNKtk2ngtoTlPPvm+jMwOpn3yDNFrYw3UtJ1GpECCaMeaM0sN9iiCVjENSA+pW1txQvR6uOqchHhPumiEROTSxWmN5lwGPOgCUtgsP95Q/h2QdYvomacuPqQ8zowxdyJGb+2N3mw4t8RUgjal6zQfRX+SeNnhjv0v1DL50KnIebCE6p7lsS2wkk6Bxnvp68Bal4rx3bYbM4E471nvsPyaL1xy6jgigjkmIps54gQnI+/w6KmevX9E6rKyHiZhPClJ2ui6fK7sLchYX0iAcapWYPQzBbc+vJIw80kpmlXdtSMtFdCUp3fOl4UPvGh5bphC0LlzTlMzwQWUhCujXGz4Tj74PIZ4jN9TSouKO/sH3UOATARozDUxtpY0lOkB8v38NsAkpvKBRCfl9rXIAUCuYa2lcbTkp7Wi+3rmnQgdVgAJGvY9rp2Cs2IWe9UR22Fv6J3j5E6C69NZEva6KaS6x1
+ rMSBWS2a
+ RXlltxlpm6HAo4bkDDGXTvaSLn/QMSF9LC23fyPxwEbfEbKq6HJ4AKssBa/2WfbJY03tFbu7PjIdUZtetCA4Y9J/Gb0D+zLqhXXPpKFPJgbDXuNpzoOZTJtzH/vNqd0EafUZjlhlvFqc6T9MDWbqIFFvOZeKwZ1L225qK3tqH9xeWD832spQ+2O1UttpVTgY6tqUQO59SEs/uJowWhVEt243zcAHnWgCujANGDGvJL1Jj3ZE+Q2zz5YfMQXlM9XZjZJhJTmzlGVYIW9DFC8cZVwAeaOqUYKnCqtTwtikR3LkfciKwq9Hrz17JJU3yL8yjyC0XX02FyebB6UdMu47BA6aO7k2tcK4tx3VIYvTQnRFemBqzzHrXSaZbizNRPg9PI7di+7o0E07kT6cpCpZkOm5TCDf+US50Hk2ugCkbKEHvMO2YBRPBPrj1Mlamx7U2c5UguIBkDWs+kWymAgwjJJV8h6YSAz9Ly+OM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,40 +152,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/17/26 14:10, Lance Yang wrote:
-> vm_mixed_zeropage_allowed() validates zeropage insertion into
-> VM_MIXEDMAP VMAs. No in-tree user needs to insert the huge zero page
-> through vmf_insert_pfn_pmd().
-
-I think we want a clear description why we would want to forbid it. Is it
-related to vm_mixed_ok/vm_mixed_zeropage_allowed?
-
-Once again I am confused about which interfaces are actually valid for
-VM_MIXEDMAP.>
-> Return VM_FAULT_SIGBUS if vmf_insert_pfn_pmd() is asked to map it.
+On 9/17/26 08:59, Gregory Price wrote:
+> On Wed, Sep 16, 2026 at 10:35:25PM -0700, Andrew Morton wrote:
+>> On Thu, 10 Sep 2026 20:18:22 -0400 Gregory Price <gourry@gourry.net> wrote:
+>>
+>>>
+>>> Functional observation:
+>>>   A 20 GB hash table VMA that previously remained entirely on CXL was
+>>>   split evenly between DRAM and CXL after the changes - and tier
+>>>   residency tracked hotness.  This was previously affected by the
+>>>   stavation issue caused by the "unaccessed VMA" filter.
+>>
+>> This seems very significant?
+>>
+>> Why cc:stable and Fixes:?  Is this something which ran at these sorts
+>> of speeds before the offending commits?
+>>
 > 
-> Link: https://lore.kernel.org/linux-mm/f76beaf8-351a-4b22-b362-a945a5e1af6a@kernel.org/
-> Suggested-by: Kiryl Shutsemau <kas@kernel.org>
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Signed-off-by: Lance Yang <lance.yang@linux.dev>
-> ---
->  mm/huge_memory.c | 3 +++
->  1 file changed, 3 insertions(+)
+> It's actually that the changes functionally broke numa balancing to the
+> point that it just became completely ineffective for very common use
+> cases.
 > 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index bfd972b997f9..c02f21ce4f4c 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -1728,6 +1728,9 @@ vm_fault_t vmf_insert_pfn_pmd(struct vm_fault *vmf, unsigned long pfn,
->  						(VM_PFNMAP|VM_MIXEDMAP));
->  	BUG_ON((vma->vm_flags & VM_PFNMAP) && vma_is_cow_mapping(vma));
->  
-> +	if (unlikely(is_huge_zero_pfn(pfn)))
-> +		return VM_FAULT_SIGBUS;
-> +
->  	pfnmap_setup_cachemode_pfn(pfn, &pgprot);
->  
->  	return insert_pmd(vma, addr, vmf->pmd, fop, pgprot, write);
+> We only didn't notice because another bug:
+> https://lore.kernel.org/all/20260629163337.1264881-1-hannes@cmpxchg.org/
+> 
+> hid almost all these issues from being apparent on large workloads
+> (which was differently horrendous - that bug made ~70-90% of some
+>  database workload memory ineligible for tiering)
+> 
+> Once the shmem fix went in, all the starvation and filtering issues
+> become more apparent when the bandwidth numbers stopped making sense
+> (see above).
+> 
+> Basically numa balancing has been broken since 2022/2023, and anyone
+> who has done any testing with it since then has been working off of
+> bad data (incomplete VMA coverage).
+
+I'll go through the patches from a MM side. I am not a big expert on
+kernel/sched/fair.c side of things. Would be good if someone could have a look
+on that.
 
 -- 
 Cheers,
