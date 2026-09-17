@@ -4,88 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18137C982C1
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 07:41:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2AEFC88E72
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 07:49:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD4A26B0095; Thu, 17 Sep 2026 03:41:11 -0400 (EDT)
+	id BC20F6B0092; Thu, 17 Sep 2026 03:49:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D84BB6B0096; Thu, 17 Sep 2026 03:41:11 -0400 (EDT)
+	id B99896B0093; Thu, 17 Sep 2026 03:49:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC1F56B0098; Thu, 17 Sep 2026 03:41:11 -0400 (EDT)
+	id AD6726B0098; Thu, 17 Sep 2026 03:49:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AFC796B0095
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 03:41:11 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 37A04C0271
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 07:41:11 +0000 (UTC)
-X-FDA: 85222458342.01.49EE3F7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 81FD240003
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 07:41:09 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VCKcHToy;
-	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 86C2C6B0092
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 03:49:58 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 07457A3B0D
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 07:49:58 +0000 (UTC)
+X-FDA: 85222480476.07.4289036
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 76508A0007
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 07:49:56 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mPrnrGDl;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789630869;
-	b=ZAlFkULE7AhnSY0Q6RH7lF6YJSiZxFWd6ACewLfcqK8Rmn7M7yA2jdDRK4dpaOyepd/n3s
-	1mQD3BMDTuwuXh6B/puF3bNzphS5CQLfIl9ogtGCB8pLQ3ZGUjGjEZ2JXxKQQUVLdYGeQA
-	zNLKNHlilCDAAklHaBuG52CLnVcCStI=
+	t=1789631396;
+	b=FRyhGbjLGu16+hvOyYxSpZHsJYR+JU4ARcBMXY7Ws7ncOsXEGEhRGg/3d4GJnXmYRqfVWk
+	zMEwFFMgfc3Fcmd0EN7RPfUl69SdweR7UAztT/RbNCltkHFp0chlc9aNfZGPF6NEKpwFqE
+	hAx7ouibFKGn/7/439GLK2/a5Wg3rik=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VCKcHToy;
-	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mPrnrGDl;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789630869;
+	s=arc-20220608; t=1789631396;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=unHzs8AmLeied82z5XajBgVCmX9rGOIH63gfwiwzlEw=;
-	b=0nwXOGJLh2UrNSeh754gHRDwY6CXIxLw5hJZCiw8wGpBJyNH1MU3439VNjF7v/AhMalxVr
-	D1boXOcmONIgbsnKUEWydfJXxn5akyhv0dFXUdytwInZvtFTksYl9N2OI4KwX20V+LzSZU
-	RxYSku4EiA4go88wBGuNlQsSM5b+Q7M=
+	bh=GCqSR8xT+K91LfjRnuBwTlwBBPOS+Tdfm5v39XYfcwA=;
+	b=uGP//riXXJtC+dmBd5N8o/wem0uFrFz7dvpnQudfI+nVpKe/B6w5U2zpPCAhJ/FRM24KPK
+	QX5pZKwE/6ROZyyNqMIGQERoiQRwATu10jq1bJoFQT6PavzY20gKzKdVGF9u5yUUm/bo4O
+	4ZAbh7rbXYSVxQYJru1vR5qZa6RY8bc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7507441B60;
-	Thu, 17 Sep 2026 07:41:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2678A1F000FF;
-	Thu, 17 Sep 2026 07:41:06 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E7EE660210;
+	Thu, 17 Sep 2026 07:49:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C26FA1F000FF;
+	Thu, 17 Sep 2026 07:49:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789630868;
-	bh=unHzs8AmLeied82z5XajBgVCmX9rGOIH63gfwiwzlEw=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=VCKcHToykQHUK3KLMsFOfJi52WtYj2xDx3YhcffiTyYFiTbT6rrW1T5/H8XRz9fsd
-	 LwPark6HFPoxdThTzS6OjSLTavEOAzfI4e6KFNCjcc6t68ZN5YdbcsukTWnFLPqikw
-	 kk5B+/tgSEHiHx89VgzD8r/RrqJ6Xt9JvPtghBnZsrhePaUSTIGEwwYF+50ivLUeKC
-	 NdAmMTPpwmtziWognzeSs1qypOIVOh1Cl5O17iYd7c079S+3BMFDCo7FWvPjfaTYNc
-	 sGRsIhNTs+gKnb+GhDLX/tJU+MChR5gernDXVU4gEJMEJqpXTmpgpSF5uSSSz7BKNO
-	 RCfUNUBOB/o9w==
+	s=k20260515; t=1789631395;
+	bh=GCqSR8xT+K91LfjRnuBwTlwBBPOS+Tdfm5v39XYfcwA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=mPrnrGDl1B0O0DCjj5NSbukmuO+NaJ/CVMhVOTh8pz/dER+cyNq+5QbbPOYN5OoTs
+	 CuHsuK9JrztoMrYyANJfzVPU6BdOM3vB1DYAvVe0RE2P3aP6MDSt7zHqQTj4h7+Vpo
+	 ME/8jK0SEHE79sp2vlmJqtgVSstMCn/iT86UOBp9UKHfMnJW2oFRGnQtXz3dhcxNDf
+	 5HXmthe8259/mMkoJZFj2gaHLA0T+/0LnyqaXOLkr/nFBpenGCE2/DduX+HQBuJYms
+	 wtCASsQnZlyL/mth6PwCKBLbkxQM2O6yyHz0u2WEizQ4fEZ42FYu2ZHmZlhvziGKc3
+	 0I9yPBG3NeBlw==
+Date: Thu, 17 Sep 2026 08:49:46 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: syzbot <syzbot+c3178b6b512446632bac@syzkaller.appspotmail.com>, 
+	akpm@linux-foundation.org, dwmw2@infradead.org, dwmw@amazon.co.uk, kvm@vger.kernel.org, 
+	liam.howlett@oracle.com, liam@infradead.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-rt-devel@lists.linux.dev, lkp@intel.com, 
+	llvm@lists.linux.dev, lorenzo.stoakes@oracle.com, me@brighamcampbell.com, 
+	mhocko@suse.com, nogikh@google.com, oe-kbuild-all@lists.linux.dev, 
+	pbonzini@redhat.com, rientjes@google.com, rppt@kernel.org, seanjc@google.com, 
+	shaikhkamal2012@gmail.com, shakeel.butt@linux.dev, skhan@linuxfoundation.org, 
+	surenb@google.com, syzkaller-bugs@googlegroups.com, vbabka@kernel.org
+Subject: Re: [syzbot] [kvm?] BUG: sleeping function called from invalid
+ context in kvm_mmu_notifier_invalidate_range_start
+Message-ID: <aqubYaxM1zQMdGN1@gremlin>
+References: <6936812a.a70a0220.38f243.0090.GAE@google.com>
+ <6aaaa2da.86093f18.33004f.0001.GAE@google.com>
+ <aqrZMReaQPG0M9oV@gremlin>
+ <20260917073931.iggMficE@linutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: [PATCH 0/2] init, hugetlb: fix early parameter ordering
-From: Mike Rapoport <rppt@kernel.org>
-To: Zhenghui Hao <zhenghui.hao@qq.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
- linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <tencent_0490E1CAA4336214AB70F813325F3020A608@qq.com>
-References: <20260917062837.558251-1-zhenghui.hao@qq.com>
- <tencent_0490E1CAA4336214AB70F813325F3020A608@qq.com>
-Date: Thu, 17 Sep 2026 10:41:04 +0300
-Message-Id: <178963086483.2200502.14463144472620315064.b4-reply@b4>
-X-Mailer: b4 0.17-dev
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 81FD240003
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260917073931.iggMficE@linutronix.de>
 X-Rspam-User: 
-X-Stat-Signature: sgaa83ziemyp47bkcae771yk8au65cr4
-X-HE-Tag: 1789630869-155316
-X-HE-Meta: U2FsdGVkX19QfGIcJ+931FhFhQ3rKz6VnuQrfFxiJzpmabjoH7tPFF005ViVjLN5ZP9X9ldy8Cd69pAstyriMtIIq37TO8hL3co93i8uwtjJWtcc7D+nwUFX9VoRTfK/jpvnxXcrTGIDpiREqiGgzEzl2TFRtpcP5Ww+GUQHa2O5KLuGZON0iX6+T3Q16hxQorAh1uikinZFMnF5TwSkA7hPgLU8bggjV6PHYbo5Rb3FJRlzjIni+PyLqBah4Drzw2zVeIPBdh5oHM2UqqXa83lJunnR8S9M38Jk1ZVXaUDreLpLRybApbBEjD8Oesf/pzBcqtKDnCUdFfZNoPSERT+S3983LvKbH0drtdYaATUX6Ic+FibfWxZoRN5eXTqABq3Y9F6tdC+ttp72I/9BnoaNtgyXNLC3/L2Q31U5UtT4aw+R0HDxnUmCxCfIHERjpZAMJrnQc6bT9eF/XbIqy0dQe0H+96PAS4O5rfjeV4seOC9gFx9UMeWvm//7Zv6kuYo4IA+E4G8SP+R9dpeAlJ1RrUbxEkxeYRsuuS05tFq0/KptTV+W+iHDpXW2YkrNf7inTjxBjZ/ZOyZwwfXVMRfC1fxhNgjjR5+PO6edilCkL/fYfUpe4XzpF6YEWK+TdZ0Qbc296oCJ3/jXoQhm/6ZIgK8SF6/7Y4ck7xDY9MjTGQT2sKRTXE7zCqiexmgXHdxWAj5FwSZjbyi8sAMt+1+mwx3OPrqUQobgRKjpArtHO6XJMHUu1mIu3RdOJ0WkmD2wRlOsbDSAHzKDlp+OQU8w+B5sJwYxU17n/1ExaDryAsVQJwPvFOBON54ZFVlr+fMR9Cxb0a6LoADXwCNeO4hYDahCSqb4uKd4Y5Oby1CzIZ8287cCofFI8YP4b0aj4AhJohS4JqEBfw+nnPWavg0z6niD66uVUXNii7lBmtmVH/wMgV+lMWt4pN0hEWmNGH6vKZaTWau+vN9upcX
- inLctdGU
- a1dMLxFxbjE9Ei0WUVQlqLlh2OjDEkixc6LjONxEnOqXzAQoXeHMixQXIkR0z24xUDMD8Ad0d9vWQv9DMZyiBRg8dyyrYEBmG0gE2YDmcqbehTXM3vTxz0Eo5oR92asJFY2tl724hyVNtopkJW0g+vwV1XzxdNGgAMh9FfH+UQ+ovOoDVj2V3mx/WqGD9NZ+EDLon7HTP9E/22Hpp3PsWiK9QHQ==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 76508A0007
+X-Stat-Signature: r5cdii88i4yurr8fh9rmnk89yhbqmexp
+X-HE-Tag: 1789631396-646355
+X-HE-Meta: U2FsdGVkX1+uaz9wcUtfKNcvCj01ks/VN0pVGBzTUoP3TawZhHfgj67zYnQJO5xOZE2nmrhQEtahQ6dvlx3u4MadQs9Kaih2ZlWMEsfIuwyhkT/gDYTwdYuJoFV1zXNbz9yeJ+JLnYPlFK2MC9tTnZSN2IqMChvHdhBRSB7/mXVAnhZll6+bGhItXGh7WiywAVcZaoAzPB5Hf75zB0tqyEak5Mpw2DWoAr2BFty0AQ0ipvbeZYL4/k1erDg3zN6THriJNDjyE2cyQIg/yh927F3Z6Nqnpg/50xiVZXGzIl/v3SXURg/LLTwHFhoZPcqzPXUCooEA01sIsOyc2+bF4iQJXHiMvZ3zQ9mUSpDOYsSVvx/L65ttzMihbbE9+0WNPErM3ZEjEFG0SHdgNv3SHgO0wT355Q0GRNVe8R6pAdlRDSTG+j2f/sptHVM5lZGs0YgaAhRG7FkLU67DCb77vmnWru+wgU9kKsf6X/bUq3qlxTB4dz5vg6vHnf1XikrZBuZBXPvi+uQ4d4+3qdgC640GH5Vw+b5zaymrlWBNOO/izasQFszkMY1+S7GZvdqEibDIJUi4TvzdnZYd7m9ipYrJdOUQfTYqm6msVlhDSiIpv+LjVboIzBKMkzPMHKGemB9zCSc6r2WU/FgMoD3mqurTmjB/Nfzk2FoEP2FH8/UDRurEKTdVlby0epNtIKBm73aCo0wnqNSFyKXtFhygEEGei1q423h8Ct8Mk+wUoFT1sZjznbQIqwAh9MOW9H3GX56YZQYoCNDlX6Z0PzK8MXfE+34bmbCEj7wU82XN7ceuT7XnnPM+vyb99dLOII8C5dMXlloknIZXIq+tbjS3ZHmljbuS6RDtQCQ9DSCitl6rIQw7l5LDi7XOTOCEg/uqg5dzVVGlUj5P+VAoTSqXbmjLLNvJA8uVTt8YDrS7muP+IHeDohekxVjy26/HhLmFHF+92hK366ebGBsJlYP
+ 0fIPRgbu
+ d68UNKQTrPsFlhSGQdlt1f/a9lTpEBMc8wD5bsOP6slKr+gLExJAkieP4+2okRwoig5urEi/MGst8EqCpMApp81MQTNgo/lPQiz8EKUU+4Ty6lXeESLVThpoIOTXuesamlVf9+OGCt9C4X6eRMDMGEiYwkrnWZcFD6j1p0SO5aBptZCKxF94Y/vzr0bQ8Oz7NcQR9NIlp8yefi1bf+Caw7OLZLr3Jih1ZFc/poSiW+sXxDD26PUMutqGE5ltZnlY1hOY2m108zpn6xaTj+23DbV2vTvF79Qf4J+RxNS1GUMzZT/mdjc+sDUF7TZ0D099b1QItnL5VR9+NANbIuvmRLQ/T15+WagVgPnYoWVtblDbbNXAki6jV2AE3wkXFrZBptFFzrN+858S/KZ092BIMvNrE4Q77WfI7dVyOnnAT/7U7fauvjBpHBP+QRFKHRFBWF4QEliAMKNt4M+3boDP8tMwdmntdILpdnqDjtERqToUJxNgIYmghUaFTEGbG4hsnc0cdgBSSuVz8dS9tgC/60xCM1ZlbhLz4Q1LyzAPUr9J6P+dnegOcsQnGUpszC3faakTBr3A1/le46ksviUhJhqHfulPiqWr54KPfp+W38zyVO3RxzyimIkOMfIQJ5T6hl5eu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,51 +101,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On Thu, Sep 17, 2026 at 09:39:31AM +0200, Sebastian Andrzej Siewior wrote:
+> On 2026-09-16 19:05:03 [+0100], Lorenzo Stoakes (ARM) wrote:
+> > > dashboard link: https://syzkaller.appspot.com/bug?extid=c3178b6b512446632bac
+>
+> > Seems like a false positive and an RT thing?
+>
+> yes, it does. The proposed patch has a matching reported-by of the
+> report. dwmw2 did test it via his tree
+> 	https://lore.kernel.org/all/6a8d9a7e.a5a502ce.31d34.0069.GAE@google.com/
 
-On 2026-09-17 14:55 +0800, Zhenghui Hao wrote:
-> hugetlb records its command line parameters from early_param()
-> handlers and consumes them later from hugetlb_bootmem_alloc().
-> 
-> Commit d49004c5f0c1 ("arch, mm: consolidate initialization of nodes,
-> zones and memory map") moved that consumer into mm_core_init_early(),
-> which runs before the generic parse_early_param() call in
-> start_kernel().  Architectures that call parse_early_param() from
-> setup_arch() are not affected, but on parisc the parameters are then
-> recorded after they have already been consumed and are silently
-> dropped.
+Thanks! I may try that here then as my attempt at a test failed, but I think
+v. v. likely this is what it is.
 
-Since parisc is one of very few architectures that does not call
-parse_early_param() from setup_arch(), I think an easier fix would be
-local to parisc.
+>
+> Sebastian
 
-And there is another related question more to parisc maintainers: do we
-really need hugetlb on parisc these days?
-
-> Patch 1/2 moves parse_early_param() before mm_core_init_early(),
-> together with jump_label_init() and static_call_init() so that the
-> "parameters may set static keys" guarantee still holds.
-> 
-> Patch 2/2 makes this class of ordering problem non-silent.  It cannot
-> fire once 1/2 is applied; if you would rather take only the fix,
-> please drop 2/2.
-> 
-> Not tested on parisc hardware.
-> 
-> Zhenghui Hao (2):
->   init: parse early parameters before memory initialization
->   hugetlb: report cmdline parameters recorded too late
-> 
->  init/main.c  |  8 ++++----
->  mm/hugetlb.c | 14 ++++++++++++++
->  2 files changed, 18 insertions(+), 4 deletions(-)
-> 
-> 
-> base-commit: 9b87fdc9af2fbfcdb5c24a64139685ef80f6573f
-> -- 
-> 2.53.0
-> 
-> 
-
-
+--
+Cheers, Lorenzo
 
