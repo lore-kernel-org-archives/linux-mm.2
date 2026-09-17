@@ -4,96 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2AEFC88E72
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 07:49:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36C5CC982C1
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 07:51:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BC20F6B0092; Thu, 17 Sep 2026 03:49:58 -0400 (EDT)
+	id 50D306B0093; Thu, 17 Sep 2026 03:51:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B99896B0093; Thu, 17 Sep 2026 03:49:58 -0400 (EDT)
+	id 4E6156B0098; Thu, 17 Sep 2026 03:51:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD6726B0098; Thu, 17 Sep 2026 03:49:58 -0400 (EDT)
+	id 3FC736B0099; Thu, 17 Sep 2026 03:51:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 86C2C6B0092
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 03:49:58 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 07457A3B0D
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 07:49:58 +0000 (UTC)
-X-FDA: 85222480476.07.4289036
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 76508A0007
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 07:49:56 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mPrnrGDl;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789631396;
-	b=FRyhGbjLGu16+hvOyYxSpZHsJYR+JU4ARcBMXY7Ws7ncOsXEGEhRGg/3d4GJnXmYRqfVWk
-	zMEwFFMgfc3Fcmd0EN7RPfUl69SdweR7UAztT/RbNCltkHFp0chlc9aNfZGPF6NEKpwFqE
-	hAx7ouibFKGn/7/439GLK2/a5Wg3rik=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mPrnrGDl;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F7306B0093
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 03:51:28 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 93FB3C021A
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 07:51:27 +0000 (UTC)
+X-FDA: 85222484214.28.4B76A8D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id F195C140004
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 07:51:25 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m3xwywF1;
+	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789631396;
+	s=arc-20220608; t=1789631486;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GCqSR8xT+K91LfjRnuBwTlwBBPOS+Tdfm5v39XYfcwA=;
-	b=uGP//riXXJtC+dmBd5N8o/wem0uFrFz7dvpnQudfI+nVpKe/B6w5U2zpPCAhJ/FRM24KPK
-	QX5pZKwE/6ROZyyNqMIGQERoiQRwATu10jq1bJoFQT6PavzY20gKzKdVGF9u5yUUm/bo4O
-	4ZAbh7rbXYSVxQYJru1vR5qZa6RY8bc=
+	bh=gnTwlE8vXLouBpo3zgoY8WtBR+qNusYyWfPZr7YNzr0=;
+	b=xwgZf8RTq50iz4JA6bWW0yIkCuPGaqNA/OTQHWE1gbFuatlB97ZLrWRovrAHji6pSWxlTW
+	9lzW9kMfYk/Jv/CZ4dw2UMFfStcTA8A+xpIW7mr5xvTaViinDRUlp3OGyfs9x0A8UpgEjn
+	2bZ4g5g/ASEHCIqVTqICAQ71970uZoQ=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789631486;
+	b=1+y0iXJT2rdKpN4FucOjH7y74l7kkr8wVqMKBWAlZKHDeBLtkPyU/aJoB4mRFgfJ7BESxx
+	MU/33qTXI1EX3FoatlkPjwbqTusnR3A36De2Y6HujL3TkQM5T7MESKXxMdsv2AgDiL8q9z
+	yOUlY+1a2ojXIV6XcnF1pKr6LwodscM=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m3xwywF1;
+	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E7EE660210;
-	Thu, 17 Sep 2026 07:49:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C26FA1F000FF;
-	Thu, 17 Sep 2026 07:49:48 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 29640402E3;
+	Thu, 17 Sep 2026 07:51:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D58361F000FF;
+	Thu, 17 Sep 2026 07:51:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789631395;
-	bh=GCqSR8xT+K91LfjRnuBwTlwBBPOS+Tdfm5v39XYfcwA=;
+	s=k20260515; t=1789631485;
+	bh=gnTwlE8vXLouBpo3zgoY8WtBR+qNusYyWfPZr7YNzr0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=mPrnrGDl1B0O0DCjj5NSbukmuO+NaJ/CVMhVOTh8pz/dER+cyNq+5QbbPOYN5OoTs
-	 CuHsuK9JrztoMrYyANJfzVPU6BdOM3vB1DYAvVe0RE2P3aP6MDSt7zHqQTj4h7+Vpo
-	 ME/8jK0SEHE79sp2vlmJqtgVSstMCn/iT86UOBp9UKHfMnJW2oFRGnQtXz3dhcxNDf
-	 5HXmthe8259/mMkoJZFj2gaHLA0T+/0LnyqaXOLkr/nFBpenGCE2/DduX+HQBuJYms
-	 wtCASsQnZlyL/mth6PwCKBLbkxQM2O6yyHz0u2WEizQ4fEZ42FYu2ZHmZlhvziGKc3
-	 0I9yPBG3NeBlw==
-Date: Thu, 17 Sep 2026 08:49:46 +0100
+	b=m3xwywF1x2dNxru/88y11Jm0HWHD1B/6Wwuw8lE+KPMVIo+xdkMnfJB99wlL98z1B
+	 ycrANUp/YWFNcoeDY49fP27elybl+V3a1ox+5GWpmXlGpPJeR0wWOHn7BrAMM3kKH6
+	 AWtvNopbVC/e0fKHODRAI9g5LILH33nLB0Tzu6PZGx1oXeJS9x62xAF6um5MtgkJzD
+	 ZAT/+yrU/4+jARQeGadxY4AYcJ4BuEwgduQO0DZNaE6WJWco4iRxYc7zBAg4tslFga
+	 a+VQF+h5AK6WplXcMmz4JAaeH4ikbTY/0GgR2pDzxr+JcLElty9iyKD2+ff8+gxwus
+	 w+eQBJufdlZOg==
+Date: Thu, 17 Sep 2026 08:51:15 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: syzbot <syzbot+c3178b6b512446632bac@syzkaller.appspotmail.com>, 
-	akpm@linux-foundation.org, dwmw2@infradead.org, dwmw@amazon.co.uk, kvm@vger.kernel.org, 
-	liam.howlett@oracle.com, liam@infradead.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-rt-devel@lists.linux.dev, lkp@intel.com, 
-	llvm@lists.linux.dev, lorenzo.stoakes@oracle.com, me@brighamcampbell.com, 
-	mhocko@suse.com, nogikh@google.com, oe-kbuild-all@lists.linux.dev, 
-	pbonzini@redhat.com, rientjes@google.com, rppt@kernel.org, seanjc@google.com, 
-	shaikhkamal2012@gmail.com, shakeel.butt@linux.dev, skhan@linuxfoundation.org, 
-	surenb@google.com, syzkaller-bugs@googlegroups.com, vbabka@kernel.org
+To: syzbot <syzbot+c3178b6b512446632bac@syzkaller.appspotmail.com>
+Cc: akpm@linux-foundation.org, bigeasy@linutronix.de, dwmw2@infradead.org, 
+	dwmw@amazon.co.uk, kvm@vger.kernel.org, liam.howlett@oracle.com, liam@infradead.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-rt-devel@lists.linux.dev, 
+	lkp@intel.com, llvm@lists.linux.dev, lorenzo.stoakes@oracle.com, 
+	me@brighamcampbell.com, mhocko@suse.com, nogikh@google.com, 
+	oe-kbuild-all@lists.linux.dev, pbonzini@redhat.com, rientjes@google.com, rppt@kernel.org, 
+	seanjc@google.com, shaikhkamal2012@gmail.com, shakeel.butt@linux.dev, 
+	skhan@linuxfoundation.org, surenb@google.com, syzkaller-bugs@googlegroups.com, 
+	vbabka@kernel.org
 Subject: Re: [syzbot] [kvm?] BUG: sleeping function called from invalid
  context in kvm_mmu_notifier_invalidate_range_start
-Message-ID: <aqubYaxM1zQMdGN1@gremlin>
-References: <6936812a.a70a0220.38f243.0090.GAE@google.com>
- <6aaaa2da.86093f18.33004f.0001.GAE@google.com>
- <aqrZMReaQPG0M9oV@gremlin>
- <20260917073931.iggMficE@linutronix.de>
+Message-ID: <aqubuvR_2XCNav28@gremlin>
+References: <aqrZMReaQPG0M9oV@gremlin>
+ <6aaaecd6.4e05fbd6.392abc.0003.GAE@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260917073931.iggMficE@linutronix.de>
+In-Reply-To: <6aaaecd6.4e05fbd6.392abc.0003.GAE@google.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: F195C140004
+X-Stat-Signature: 5zq85pxi3pzkorgry14gujem7saqrrer
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 76508A0007
-X-Stat-Signature: r5cdii88i4yurr8fh9rmnk89yhbqmexp
-X-HE-Tag: 1789631396-646355
-X-HE-Meta: U2FsdGVkX1+uaz9wcUtfKNcvCj01ks/VN0pVGBzTUoP3TawZhHfgj67zYnQJO5xOZE2nmrhQEtahQ6dvlx3u4MadQs9Kaih2ZlWMEsfIuwyhkT/gDYTwdYuJoFV1zXNbz9yeJ+JLnYPlFK2MC9tTnZSN2IqMChvHdhBRSB7/mXVAnhZll6+bGhItXGh7WiywAVcZaoAzPB5Hf75zB0tqyEak5Mpw2DWoAr2BFty0AQ0ipvbeZYL4/k1erDg3zN6THriJNDjyE2cyQIg/yh927F3Z6Nqnpg/50xiVZXGzIl/v3SXURg/LLTwHFhoZPcqzPXUCooEA01sIsOyc2+bF4iQJXHiMvZ3zQ9mUSpDOYsSVvx/L65ttzMihbbE9+0WNPErM3ZEjEFG0SHdgNv3SHgO0wT355Q0GRNVe8R6pAdlRDSTG+j2f/sptHVM5lZGs0YgaAhRG7FkLU67DCb77vmnWru+wgU9kKsf6X/bUq3qlxTB4dz5vg6vHnf1XikrZBuZBXPvi+uQ4d4+3qdgC640GH5Vw+b5zaymrlWBNOO/izasQFszkMY1+S7GZvdqEibDIJUi4TvzdnZYd7m9ipYrJdOUQfTYqm6msVlhDSiIpv+LjVboIzBKMkzPMHKGemB9zCSc6r2WU/FgMoD3mqurTmjB/Nfzk2FoEP2FH8/UDRurEKTdVlby0epNtIKBm73aCo0wnqNSFyKXtFhygEEGei1q423h8Ct8Mk+wUoFT1sZjznbQIqwAh9MOW9H3GX56YZQYoCNDlX6Z0PzK8MXfE+34bmbCEj7wU82XN7ceuT7XnnPM+vyb99dLOII8C5dMXlloknIZXIq+tbjS3ZHmljbuS6RDtQCQ9DSCitl6rIQw7l5LDi7XOTOCEg/uqg5dzVVGlUj5P+VAoTSqXbmjLLNvJA8uVTt8YDrS7muP+IHeDohekxVjy26/HhLmFHF+92hK366ebGBsJlYP
- 0fIPRgbu
- d68UNKQTrPsFlhSGQdlt1f/a9lTpEBMc8wD5bsOP6slKr+gLExJAkieP4+2okRwoig5urEi/MGst8EqCpMApp81MQTNgo/lPQiz8EKUU+4Ty6lXeESLVThpoIOTXuesamlVf9+OGCt9C4X6eRMDMGEiYwkrnWZcFD6j1p0SO5aBptZCKxF94Y/vzr0bQ8Oz7NcQR9NIlp8yefi1bf+Caw7OLZLr3Jih1ZFc/poSiW+sXxDD26PUMutqGE5ltZnlY1hOY2m108zpn6xaTj+23DbV2vTvF79Qf4J+RxNS1GUMzZT/mdjc+sDUF7TZ0D099b1QItnL5VR9+NANbIuvmRLQ/T15+WagVgPnYoWVtblDbbNXAki6jV2AE3wkXFrZBptFFzrN+858S/KZ092BIMvNrE4Q77WfI7dVyOnnAT/7U7fauvjBpHBP+QRFKHRFBWF4QEliAMKNt4M+3boDP8tMwdmntdILpdnqDjtERqToUJxNgIYmghUaFTEGbG4hsnc0cdgBSSuVz8dS9tgC/60xCM1ZlbhLz4Q1LyzAPUr9J6P+dnegOcsQnGUpszC3faakTBr3A1/le46ksviUhJhqHfulPiqWr54KPfp+W38zyVO3RxzyimIkOMfIQJ5T6hl5eu
+X-HE-Tag: 1789631485-220776
+X-HE-Meta: U2FsdGVkX19N1HSuDAEQvlTt+3hs5IfiAxwL1bwXerIPOfLwUa+sazRAeUidExtY/gSWuTOWve9qsYlkOKdAmXj4cjLjsxGySuT5P84RN+Li8is9lP8nk4om98qTeAEPAvq8yZ8O07zjJPrITodG0BdBK+f+LGrJ9kg7HMUO6HQZiMAEt2k3moSMvaPLsS6G0892VWxPMRr8epoNKtRmFeSuA0yXkUr3+mNBc0F89ZiTj/sKp1pv04yguCX3jZ4h+1PCJwU7MkIdefy5M6URfg1yttbiV4bkKWA6bgSVBP3UNJKFxUYvYzq6Kcck92SAHAukDwLARtGsKzX2Y2TSqA5OZrqvpL7Opt6VZZTwCqNk/JD9J5oD4ZWix2Lio2HNTjyn+h75ikDW1PDPtTA5Fa9dvpQSHbjDR5maIlyaPVIsKGxwrhaIC4NKUjTzkhcy/iWKg6yo7Z5qOnrLUBjxWEMZoOaX9WeDeooGkmEKUmA9uqTEcdQrVyc3suS9fGHGEm9kUTvGdL+LH37C1B/cUQ841xubBPuASRm0WbXpgiacH13X94V5tRTsmeHPeXSVSOYXye3adQlyw/UkLGrVy8GKV+kimHT8x/RjuSdfn9BE6LZFmzuMcLW193yPcwoTYNgy/1Mvv2qlKf1HEDszTu0+ELCIm+OOZfboZYOlh0HZ3zVSD3+Bmu3NZwzIGR8vXMWIOc7xzL/s0LTW91Nh4HpUABDWLj27MsFHGYVr8yL0wuJEwCWNZQiq22lwmBgXPn8dwLOnU6YrtIpshWhF7/nugBsbn71VnbMhtHjjEoWSTHoP75cpIs5QWXqPvaeJ8cMzJlJCIWfHmP7CpSzskmT/JH56AW9AGCKl1YjrEeQF7mCsErd1JOheWIPrn8LTbmzlpVhf5BdxhoIwQfqa+NPAgs3F8hqIcKlcRkB8261FA5C8v9F/QbG5hyAFssy/oFQVq10xAf7kC/65EZZ
+ vImg6Hws
+ mo6lOMuIDVQd3qmomRE41At8kGmJIb87MwVoTxEqZV2pOE+UtijsDhNgoHcovnjyTpY127nlvWedK3P/4BN3jWRmAuTXRaGIcZEilLmA7Wv706sFs264q8lUwNzV63R4+S5u09PpzzG0WvC/dCL2CIbVMBj2vdTTaaO+IOCNcZbbW+QrGb33BLFVz8jjKmN3l8SJ89uJjWQuXYt2u6jgjj+8lWhXrD1PDSd6tvggKMTdG3tSwcHgJVEKidlBOlmNixCOYCu9rlJtiWmHfLmXXAyUiDZFw1Qm9oSBpsw/j6/PGup4Am0rZKWcoeTdPloXAvZwp95ObLsps8J4E/AGxyq8bpdQCAiFD594X1iYlzVYR04rnoLwE8E91W+/XgVDaaG29RyT85aDRwE629ar0fuFUpBQt+C7DCgY/BIAdQib1InZUeNndfPQlMiHRzvgeeRKZyhLd8wWZhPSkGkYRN7Br83BbxTqx4hsYAXE0MaqjysOZkUSBcFBaj4dNl6R5Z8Io5tZjENQgnlKFg4uOpXyZmKFXu8tZRNCpFkC0b+28DnXTivB/yfkHziPFRJkFWnSX0Od6aAfQb/R4i0Mq7WCqAjqHBvNK0f6NS4Pn0rurnEWYOwwYyEUjb/sgR4yr0FmVCnBmFy/xt+xTDN2E7aoybfoRaYk1MyW9Mb0+rM31yOTpa5cR1Zws4l8Pwcz4ZgGwRXFEOHdKJ2AePINg5ksrHuWgn1eGE/rQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,21 +99,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 17, 2026 at 09:39:31AM +0200, Sebastian Andrzej Siewior wrote:
-> On 2026-09-16 19:05:03 [+0100], Lorenzo Stoakes (ARM) wrote:
-> > > dashboard link: https://syzkaller.appspot.com/bug?extid=c3178b6b512446632bac
+On Wed, Sep 16, 2026 at 12:24:06PM -0700, syzbot wrote:
+> Hello,
 >
-> > Seems like a false positive and an RT thing?
+> syzbot tried to test the proposed patch but the build/boot failed:
 >
-> yes, it does. The proposed patch has a matching reported-by of the
-> report. dwmw2 did test it via his tree
-> 	https://lore.kernel.org/all/6a8d9a7e.a5a502ce.31d34.0069.GAE@google.com/
+> failed to apply patch:
+> error: corrupt patch at line 7
 
-Thanks! I may try that here then as my attempt at a test failed, but I think
-v. v. likely this is what it is.
+OK let's try again, aping
+https://lore.kernel.org/all/b434f7828a4d7b24de76aa5609dadda2871a932a.camel@infradead.org/
+as I see this branch is still there (David W - I hope this is OK! :)
+
+#syz test git://git.infradead.org/users/dwmw2/linux.git seb-nonblock-rt-test
 
 >
-> Sebastian
+>
+>
+> Tested on:
+>
+> commit:         9b87fdc9 Merge tag 'sched_ext-for-7.3-rc3-fixes' of gi..
+> git tree:       upstream
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=b454dc6b1b7acd30
+> dashboard link: https://syzkaller.appspot.com/bug?extid=c3178b6b512446632bac
+> compiler:
+> patch:          https://syzkaller.appspot.com/x/patch.diff?x=15a16bf9580000
+>
 
 --
 Cheers, Lorenzo
