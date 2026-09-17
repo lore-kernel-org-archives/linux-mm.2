@@ -4,91 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFEDDC982D6
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 14:23:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEF3DC982D6
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 14:23:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 229BA6B009E; Thu, 17 Sep 2026 10:22:25 -0400 (EDT)
+	id B78A66B00A1; Thu, 17 Sep 2026 10:22:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 202926B009F; Thu, 17 Sep 2026 10:22:25 -0400 (EDT)
+	id B268B6B00A2; Thu, 17 Sep 2026 10:22:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 13FD56B00A1; Thu, 17 Sep 2026 10:22:25 -0400 (EDT)
+	id 9A2426B00A3; Thu, 17 Sep 2026 10:22:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DCE3E6B009E
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 10:22:24 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 23C76140349
+	by kanga.kvack.org (Postfix) with ESMTP id 69B186B00A1
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 10:22:25 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D43D680365
 	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 14:22:24 +0000 (UTC)
-X-FDA: 85223469408.24.9DA7F3D
+X-FDA: 85223469408.04.C110880
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 87833120009
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 14:22:22 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ldfonNik;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789654942;
-	b=he2QOTdJxGLMv1zfBHtr2X9wPjCZRhokomBRWCwr/mi0ewqTvGWiNhk2x+NpcHqtCujrFi
-	WHBj3qUygcypYey7/ZU1PgpAsLOrUjeqOIGCEwWB709AgnB7qOB0/GXrnqXGinX46s5sIn
-	ZEtu8eBArGuiOJl/9lfWdv35cFSXBPk=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ldfonNik;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf23.hostedemail.com (Postfix) with ESMTP id 3C81C14000E
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 14:22:23 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fbxk3B1k;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789654942;
+	s=arc-20220608; t=1789654943;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fE3VSG475bLo7Rafe0HxYfu5RyrdwRMonEKmjNKbeoE=;
-	b=uroofCnm8jPLGKtQ5uveM7Wmty+XzQPhzKKeggEtmDhjMzPxH99Rgduog301bsahpJR5w+
-	pH4kdBH4ekkjH+c7PG2mbLLaBnlucQVooMFLLMmfEvLOM1FgnbN7LXhpfcp9f+GFHvfl6D
-	p8qlBwUdcjYsNfsejUPbYwzH5DQpJaY=
+	bh=Mozf9eR83klndQFJraTt18kHcl1hxd6yOHCmDoYKrX8=;
+	b=O1g7Zdh8ZX3r7w/0tOhbzpYhCupeN+EUiiGikSeSRnZKWKWz0/stw8U2CociyX2ynKsBza
+	8NDSbHj2u/kDIbeBOdn23QcZ4XycmRjZpLgfyHgu2hcoKlXbU/07OwZlzJCH+jLPi91F8o
+	YOzmp59EZLs3X4ZQxuQBJwoJp5j9CQs=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789654943;
+	b=4SW2Sy9+1uZUcuoOzH4HqQLLnVZMZ0tKWDOHj9JrH3C+u2VD0h7Qe274r+e6mvgh2Y47D/
+	Q4ZkWhEpbC+HGdvKjcaX/sYHk2ZbGHyt6CXqM7boVcYz7WI5/0ZZQJkUkWh2sSESE/OjSS
+	oV8FFputKUc+gAk86QmEBU2+g09QATc=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fbxk3B1k;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8205E43C3D;
-	Thu, 17 Sep 2026 14:22:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2040D1F00898;
+	by sea.source.kernel.org (Postfix) with ESMTP id 8D9CD43D1E;
+	Thu, 17 Sep 2026 14:22:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8CD41F0089F;
 	Thu, 17 Sep 2026 14:22:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789654941;
-	bh=fE3VSG475bLo7Rafe0HxYfu5RyrdwRMonEKmjNKbeoE=;
+	s=k20260515; t=1789654942;
+	bh=Mozf9eR83klndQFJraTt18kHcl1hxd6yOHCmDoYKrX8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ldfonNikCJco+lq05YdWxGYXoi7MtGns/iW5fY3Tpy9ce2H2k551ftpQMsGuCANb3
-	 Zr8ZOE8xM0sB4o9U1b+U0zBuRPVAnqdXz8vhyMUPoKJR02phbs7IWby77bhcjJHEQj
-	 SAdtQyApnW3oBY75ZzFNExDRCiqCZ90ozvm/f1XdL25qEw9pBxRlnZfFnCIkS1mKNO
-	 ++jqtlqfoapQbpnZUiUjk4BS8hzfy6eVDxYyiFH1KMC8P5JoENiN2UIxUgNUOcdaMu
-	 xdKOLqEvVi3xAoToXKtC9CqGopxJZY+ipI+9qoyt5J7UdvlLvV1bQ68qLHhQhx8gsE
-	 1hA1qIKgDeq8A==
+	b=fbxk3B1kVQa/Rmy2plmyyuHyctTxT8yCGXvhut/j2pz7uiz+QbAlLv8/6UztAXe41
+	 tLJg8cKGIynm6fLnBghsnGt6GCd+jYC7M+RYUhe1vzhfTqX3dOZ4C1BId14gforUo+
+	 Mpqj4T/S6kQMSBWZ180eQEfmNUJFLRFNss0AzQc3oQrGPO3n5O+L7sZsfgrNHslSA5
+	 aGPofrVcWeRQSeyLDDMfGqp36KBQBcc2Kpb/M1Zuol0PY0FqPB/wrkDwU9zD5C7/EA
+	 xT3EQzQInjk9Cx/S/7zF+BBGo6a7I5x/aPeqb6BVAs+d4FNyYRhwezk/i5o+sFkLYR
+	 EPfhO8Oy0rVtA==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SJ Park <sj@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@davidgow.net>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
 	damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 08/10] mm/damon/tests/core-kunit: add probe_hits_wsum damos filter commit test
-Date: Thu, 17 Sep 2026 07:22:06 -0700
-Message-ID: <20260917142210.90829-9-sj@kernel.org>
+Subject: [PATCH 10/10] Docs/mm/damon/design: clarify bp is basis point
+Date: Thu, 17 Sep 2026 07:22:08 -0700
+Message-ID: <20260917142210.90829-11-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260917142210.90829-1-sj@kernel.org>
 References: <20260917142210.90829-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 3C81C14000E
+X-Stat-Signature: 7jaddswghnf79xpixxpu9ybi73ouj76p
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 87833120009
-X-Stat-Signature: j4u6udao9ido5jrspzsdmbqoqtym7i3j
-X-HE-Tag: 1789654942-54911
-X-HE-Meta: U2FsdGVkX19eChJZC5vLPycQJKfgk/BqnrXhH3rNIREH5O20PDNgzVDf2OwTkmfloX27g1Bf63YktYTso1fQnjEOTYFRovpL0ix8eCK447v0A5MMyIwpC31x7GkY9DtVhL3PsjxqhaU1b+o/NWtwX46S9dMVyq9/evdj4n6WCAWG7BpOi+y0OdGUC02yfTddwzE/vJL9SKrqRcu7q0kQ2195OnvLZnB0fTtzlXpWYoQcVt6D9fCTlcRLnXzOe7G+Ta4UJVfBRhdYUEpxdkjCSusFjvHyiz9qMcGhrq9pjE7wU9iQP8IZUHQXeMkqH6qvZVdWNDYaPjTB1TwhMHMEuGWB92aB5i5mVoCcSU6wFO8C+DMBoqRfd0PL7jhlB9ZtuTMOAkZSf3PtJYUq0pSlK23IwcotYaVcm3pxZPU10pXdb7dAQL5KB6odtfo0Sgfr0b6h0gRhTwmzCVuCDJ+i8dT/a72RiRp/n8kvfTOvZLpxMaR1Ev0vIuXLrCjtUrIGEESsfDJ0eUgXii66ojz6cBfuN9DfYmq5IYo1fC3pWrzXwbvlpSta6/mrVVScxOKSN1UC5pTegyuHJZkp+Sj3XzmMYJx6pS+WXO7NEvf09qC6hzZHgRTWcyFfrkUvRhkhdzTGsC5VteoPDi6k6fXFcMtIIVB16uHprynhSUSW8zLNYQWLALedfV4IbIKTQbTXhlvpbQPJvITYEtBGymSx99/5gNXpKLNpUkVOKRjgGUCj2Yu1XbtoXqux+0q6M01S0hcs39E64g2o0b+kCBR+uE9aDUowSWbHNoyXygZnFSElcA2XQamZUxizZSp/j878pmcT5V5/iuEiR7yhDSeJUYPNMj3sv1a70I98WUISEUzbnr+93KcXUqmssngZiSkkauDwAzro2QIlKp9uvkD8tDIH5RMgL0jcW9BXWD7CloTgKAhORwHEU6aYBjPd9OQssiztXHjwW7yBZR0bfFC
- XtXFec9p
- B0MrIuOghrxYjJIVVzeI8DTEIf0Yaeq0SH2v27eH/d19+697I+fHK7zG7KriWe3COZyXWuQzgttHARXWt1D95uxz2XqqpGTRLHfvMaC6DDZCwIqeL+8TQoRFeNHK6GBqi4M3G+08yp0jxy99LlYGbqfBry76zwHmYcoptC5Ky9jSAzCzRsWb9w15zuhYuqJKmngKElfph575FBapKmFM+5LIY9HAnnGZKldEUfWPuA0/Wv+X++idjKfUSIrHUffILvRwg80U+osWShAOFPEY//fElYA==
+X-HE-Tag: 1789654943-87194
+X-HE-Meta: U2FsdGVkX1+4H5zgcvriRSJLCGQNktY0pj1Q9HjtCmmAWb84kf3XEocVQ9L8aNFWtj6QLLFyOaMRS6+1+APFGy7Bn7dXmqgqL3HYWcMC0Hd5LDvU12f33jjRyjbAZi7kOLN15jyWS6NvQKEahn7w0kvwLfhwoBauXGt/LGx8DylmcxjSnDlY63S4N7xblajPUPsrBBilQWxywxo9W/in7u25237gJd2UMVqmiYnT693sqdyqM2IRs4Oq/DdlXyIwxEbbzB4nRjSxljWorIhetLhvgaQ6MOG6XgYgyJ/WTlWNWXoAo1Mu4o/3SkMu+0T4MCgyQKyK+l6bhzD5USFBDF67K1j7csQPmzV/j/Ulkjcz7SgnxsGVZdgGLd6JJ3eYHQLtK26AqGkK773QV677Xsn1Fhz3GMI4/rRSV1jGgbPncI13do4O0XhRBY34jpbJPnmXOuGASG+/kW5KJwaZ5aKtEv5BNEWWwS4Z17qM26dM4cYZ943yFUnYFnu7AZnUmMDqImhG6BlmAwUhe/A9RHZKazNgAyf7SQIMFifUggDi/B4WodgknqqvwDiToBesUDMkfSds4Q1QrPlq9VlEu1ipiv9ThaSJiTFciIDHKDastKEr27uY0ZMUs6Tws0T+8J6l7wRj6K5GebdXMTq1yfGzMbQZetWYVWEZtVZ/N77zc7FP63r0l/wEo7SRy2j6ResZIYMKRCI7cdiEMX5E/ww4GeUsFC0gaeU2U/RnFil96UEHlK7rEMSDJ35VhEDkQMWv5PWOm5jmcHw2GLpQFCllxGUXDl2m/9lbldLiuSbPE+qU8syGh8w3iwISLcusOBTuP93d5lLRhDf7WzMxBgEEsb5FXNUwtYjdJUeyf7zqYqOaX9F4ElwtJS2HFZwvfnfnVzeM1OyGZMaD1uWItJYeJgo4xvajrufXDCNSSicHGN/ls/7Yx4PecWjqO4KY9ieK2F66MF3lNlCqrcW
+ xaCNFBqA
+ HwiGKeLaTV0NDOAkctwlrdg2Mleramq1ZMU1rGixVhU2a0YwE37/9BU3+41NtebQnFTdiYd4/V59S6R3YbNF4IW7SMOuvvBImjos5JruFpq/2+bdtPQ1Jpc0Ax4RkKGHP9dEvJL7mEfYqmED7EgC/mcI89JLNdiXIR+ThCVbx/4ipVu+QfgMsyI+YIBCGN5q1StAWa36nHfvbI98edukgrlqohGe+CeRMuD6CzxDY7kUbMaadbPDQq2lA4QZFM6ucu6vpQmLsrWEm4pJi1lhWdPbpg+fiH5L6GS8gnf0afHNrfMA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,53 +103,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMOS filter commit kunit test lacks test cases for probe_hits_wsum
-filter type.  Add test cases for probe_hits_wsum type DAMOS filter
-commit.
+DAMON design document uses "bp" for "basis point" in multiple places.
+Because it is not clearly mentioned, it is difficult to understand what
+"bp" stands for.  Add the clarification.
 
+Reported-by: Randy Dunlap <rdunlap@infradead.org>
+Closes: https://lore.kernel.org/107dc6ba-697e-4b25-ba3e-8ce2499cac9a@infradead.org
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/tests/core-kunit.h | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ Documentation/mm/damon/design.rst | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index 1f19fefdd98c3..5ff0436c58441 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -1166,6 +1166,10 @@ static void damos_test_commit_filter_for(struct kunit *test,
- 		KUNIT_EXPECT_EQ(test, dst->sz_range.min, src->sz_range.min);
- 		KUNIT_EXPECT_EQ(test, dst->sz_range.max, src->sz_range.max);
- 		break;
-+	case DAMOS_FILTER_TYPE_PROBE_HITS_WSUM:
-+		KUNIT_EXPECT_EQ(test, dst->range_min, src->range_min);
-+		KUNIT_EXPECT_EQ(test, dst->range_max, src->range_max);
-+		break;
- 	default:
- 		break;
- 	}
-@@ -1239,6 +1243,22 @@ static void damos_test_commit_filter(struct kunit *test)
- 			.allow = true,
- 			.target_idx = 6,
- 			}, false);
-+	damos_test_commit_filter_for(test, &dst,
-+			&(struct damos_filter){
-+			.type = DAMOS_FILTER_TYPE_PROBE_HITS_WSUM,
-+			.matching = false,
-+			.allow = true,
-+			.range_min = 12,
-+			.range_max = 34,
-+			}, false);
-+	damos_test_commit_filter_for(test, &dst,
-+			&(struct damos_filter){
-+			.type = DAMOS_FILTER_TYPE_PROBE_HITS_WSUM,
-+			.matching = false,
-+			.allow = true,
-+			.range_min = 34,
-+			.range_max = 12,
-+			}, true);
- }
+diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
+index 0a86792f90a18..e82390e77a70a 100644
+--- a/Documentation/mm/damon/design.rst
++++ b/Documentation/mm/damon/design.rst
+@@ -445,7 +445,7 @@ users to set the aimed amount of access events to observe via DAMON within
+ given time interval.  The target can be specified by the user as a ratio of
+ DAMON-observed access events to the theoretical maximum amount of the events
+ (``access_bp``) that measured within a given number of aggregations
+-(``aggrs``).
++(``aggrs``).  The ratio is in basis point (bp or 1/10,000).
  
- static void damos_test_help_initailize_scheme(struct damos *scheme)
+ The DAMON-observed access events are calculated in byte granularity based on
+ DAMON :ref:`region assumption <damon_design_region_based_sampling>`.  For
+@@ -717,7 +717,8 @@ mechanism tries to make ``current_value`` of ``target_metric`` be same to
+   in microseconds that measured from last quota reset to next quota reset.
+   DAMOS does the measurement on its own, so only ``target_value`` need to be
+   set by users at the initial time.  In other words, DAMOS does self-feedback.
+-- ``node_mem_used_bp``: Specific NUMA node's used memory ratio in bp (1/10,000).
++- ``node_mem_used_bp``: Specific NUMA node's used memory ratio in basis point
++  (bp or 1/10,000).
+ - ``node_mem_free_bp``: Specific NUMA node's free memory ratio in bp (1/10,000).
+ - ``node_memcg_used_bp``: Specific cgroup's node used memory ratio for a
+   specific NUMA node, in bp (1/10,000).
 -- 
 2.47.3
 
