@@ -4,129 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D1C5C982CF
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 12:26:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA583C88E72
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 12:29:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2F86C6B0092; Thu, 17 Sep 2026 08:26:58 -0400 (EDT)
+	id 4F8AD6B0095; Thu, 17 Sep 2026 08:29:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A91E6B0093; Thu, 17 Sep 2026 08:26:58 -0400 (EDT)
+	id 4A9CD6B0096; Thu, 17 Sep 2026 08:29:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1975B6B0095; Thu, 17 Sep 2026 08:26:58 -0400 (EDT)
+	id 398C16B0098; Thu, 17 Sep 2026 08:29:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EE6106B0092
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 08:26:57 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5C6A9C0317
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 12:26:57 +0000 (UTC)
-X-FDA: 85223178474.23.026BD1E
-Received: from fout-b3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 48FA614000B
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 12:26:55 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="Y c0v/qp";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=ALN8pvoY;
-	dmarc=none;
-	spf=pass (imf23.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.146 as permitted sender) smtp.mailfrom=kirill@shutemov.name
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789648015;
-	b=I/YFY02nXe6GtLvjjHb26IOiqxkyBITonmvGSpGlHzrOjORBAhJ25li6FhrRv+j+QnYxVv
-	oDTNpFXzm9rCkMiOnpxSq1eHGwK7ZHRD4ubzyp2by/7jvZvfZa+Ph52WFeUQB5yZw5EsXN
-	5s0mpojMyszDFOXi2T+Eu2u9TwfaKkw=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="Y c0v/qp";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=ALN8pvoY;
-	dmarc=none;
-	spf=pass (imf23.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.146 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 09CCE6B0095
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 08:29:43 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 460E6A02DF
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 12:29:43 +0000 (UTC)
+X-FDA: 85223185446.06.0516F18
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 5B6EEC000B
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 12:29:41 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=NC9bDN2L;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of david.laight.linux@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789648015;
+	s=arc-20220608; t=1789648181;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0lyJ8zqBoEOycT5nzPuEdvgCgVgM2x5/iPvVMuCaVJY=;
-	b=6PFA6SVsEHCc8iHyw/GDecQ/4Kv9fRYQn21vRWzy6oZ0D73P/XWhrit49Nr2RVTrhsL5YU
-	rlm2CovvWK8oVbcif57MJ7/Rwe1/AhiYprTysVtIjWmWnUBf7qsDIZy4uf6IweevHyZbd0
-	Jay230A72YBtYnPd8WF3c0nUdGNQ9Cg=
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfout.stl.internal (Postfix) with ESMTP id BCC361D00019;
-	Thu, 17 Sep 2026 08:26:53 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Thu, 17 Sep 2026 08:26:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1789648013; x=
-	1789734413; bh=0lyJ8zqBoEOycT5nzPuEdvgCgVgM2x5/iPvVMuCaVJY=; b=Y
-	c0v/qpweF+XkmUFfjS8UkDWrnJbtI7+FEdnJLT3S6mGvvyPZAEo7YZEANPn/fq+z
-	O28S+HKUZjjWNqF3JwyhyJKKwbAxIle1lxw4rL/ZKjmqB+STh1vy2CUi42FX9BTy
-	2L6HzF/M3WO24FuaQSUvE7d4HBWgbPEAy7wiVYsQLtJN7N71jXNoH2SDo1Rj6PM+
-	mCXnie2NZoYz6n4JNbQpXMo77/dUrBBMO6Ud/dnxAFR8Wm5roLQFV/e4eviOXTRS
-	q1+Ot8g4fSKXPZa8EIr1u+2hsQEH71EEsYambYO4Mwtqk/yPo4AAa6Wj46r9lAIO
-	Ql6QQGI3e6iBlSNX+eCDg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1789648013; x=1789734413; bh=0lyJ8zqBoEOycT5nzPuEdvgCgVgM2x5/iPv
-	VMuCaVJY=; b=ALN8pvoYJsRMNe433abxYc6n5sOtCrv4CBuFxOaMJKsyCjQfJdG
-	QiKair/ubRVxfFl7+g0c6w7OWwEES5gjDl8qJbpOLcAm86RycrEEMwoDSaO143Mo
-	ObpVVDA9qTYYLde/gyWvs+THbAH6YP7OBl0F1mqZjRx2CAym3NhM8y+6GBAhHdqA
-	BGQZoLFmqRQ0i4fHeP9HNmF4uyOfuq5hI2+JKWrLPPT91uUPw+doU3Jsk/t4iNLr
-	fS0cgiw2aWzjPbGI1NIUfOiIpJRogfrB2GEAUc9WMser4WZwLiI8LU9rZMsMMGNw
-	9GMRSay8jiALrXKBZmMugPxuuAGU0ViB22A==
-X-ME-Sender: <xms:jdyrakRoZI92Tp6sc8CLBoOhDnwe92mamuZmAB2XALyp9poloaoEcg>
-    <xme:jdyravY3vadlYzNchPVd6w2zwZN9SUoC6gRe5tigCjmSxumI_2I9y8ArRgihc-tyd
-    jipFsucr9hpRfDfrWmZJoJF4NPuZ1WTUMCEktmeu2MlwfA2YYpRwGFS>
-X-ME-Received: <xmr:jdyrapNp2CUcfXxLANiniFIsJ7Ev3t6Wmil50whE255GfTZlYG3lp44Ghyg>
-X-ME-Proxy-Cause: dmFkZTGIiRiuQ5PMdB2WYxmL16h5CDXoi1BFdRa7lEVtBzpOMWHvb9A4/pu05WY++SyB+h
-    qExORmtkwcpdpBx8kTLTdD2wg0WhATVYsrhgOD5W+6ELkRdhoGJssibkTiIJKtVXEjtk7A
-    abZuYwWU65Tb9ms4R2+ualLkQ9DW57htukuLgBJ1T3SoWy8/WQzkTiBwuJv5n84UkwNxs5
-    M3SXhPj97KF9C7Fzth0o/d9Mv0/WeFzA4nIgaD/nn4wtzFBm6/B82Nx8Qb5vXsDuOk0wnJ
-    okZKZfIrf3eyA3N1pS9qk8io4H+hh41gcNmq+1pesqMZ+KVqRTIiVkArDwfY3zihPAo/cp
-    shq6EuhFEI+p78q5WfCrVdjXX6r/GfGohjsYha8rR2ghFknr8HzMI20hLV4AkFwzXcCotj
-    oDEh8kOdZ9V/fG5MToWJIhktomfB0yGIF0rLqhGX9hRLmte0KUdjqZ/sq2eRmnIvgwd+KQ
-    FrwwLRffN7dh8onZo2ufvtN0LasncW4XM/AACBKhjhzhGOZiMZQdQ5iC0BNOarm5fckdIB
-    +LXF4HO8ZzS97Ze5a+Vdw+vlJ15cERKPbcfCKPScZcVuarkG6laBE0ODrtaNV+js+SwXxA
-    Un+vN6ZcLtrhw/FhRk9d11voZB7nEz9UWPp38Xrpc1HK+2NU2L28Xqm5SYww
-X-ME-Proxy: <xmx:jdyragPSqitgC1MlxnXpN6bbVDo49IBbMen0y8FE8q9LkTXAAE-4Hw>
-    <xmx:jdyralPVFU_zzhXlw1oGsEuxEX3vmI98H7BAL7mN0tHGvMdCDw4zVA>
-    <xmx:jdyrakbnB9DM8HUjWyVvDaDbfkEeDiKaB8g4V_03s5FkbAFTiHll9w>
-    <xmx:jdyrarinjKDK4oeu8C-8eC1662fFcY_Idh8x26i2DejmRWtNbbn1vg>
-    <xmx:jdyraqhwaZ0ZEZMIr5H9bj7ikmZa54srOOa3YA6BcW051TM7hTWYIZ-F>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 17 Sep 2026 08:26:52 -0400 (EDT)
-Date: Thu, 17 Sep 2026 13:26:51 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>
-Subject: Re: [PATCH v3 00/12] mm/collapse: separate a collapse from its
- callers
-Message-ID: <aqvcElQxmtysJwbA@thinkstation>
-References: <20260916093145.4022188-1-kirill@shutemov.name>
- <20260916154826.a55591eec86b5514dab898ca@linux-foundation.org>
+	bh=Dtz+Uqi8FvhezfQGwgUreP+CufNocr9p+NqbDN0Xcok=;
+	b=IDUDvLNf8osJIt/2V7D+45Kte2yEPSSlK+iGKnimXL0BXSys5vYyV0x9pkTTEWH0hwlNOj
+	tencZ9cUpX84RcbYbF83swl2Vx+5lENuz6wjj55os9uVjnd1snj/f9HxMi81XWQHgtYU9o
+	TbYU9k/LUz4dpY6GZeFnyxe8obn4jv0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789648181;
+	b=F/VdiRRL/93hsJtt+2JG3X+P0FyR1GSOhkvxQMXwOWwQjJssZN8e9HQz9H7UEmjxxMILRC
+	tJyJkkfcj1rJ8GtopdEhFVpTQhthi2Fs3qkfRhCa3AYQ8BMXx9seAkB8zMMr65lbCpCjXA
+	pVVLolksgfErXcy5NC0BFAVviY0eLSw=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=NC9bDN2L;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of david.laight.linux@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49cd5462b69so4683615e9.1
+        for <linux-mm@kvack.org>; Thu, 17 Sep 2026 05:29:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789648180; x=1790252980; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Dtz+Uqi8FvhezfQGwgUreP+CufNocr9p+NqbDN0Xcok=;
+        b=NC9bDN2LrAh9EpHxe/iXiLUWI1ElK/a1TRkXg/mCjZl6vdUOX5x8e9zKTbROBBiihw
+         kvMGCvGhwYiARkUQjnFMjqdWHZCfYgHRrCYpsAcn2jGtbjuWJbiTQ9soNN+aYHDWd9ql
+         WXS+bRX0X79J0AC3ona0FaPXwb7aGLh8LDojBUR3HAdsWzkqCYTQIvEcbU3dKwRaohr3
+         a7BECGBRU5A6z7hW1NdIOuYY536HWPCFHEMClcALBv/o2A4jcMHeZxY2z5aYAKVL4loB
+         yqC4d6XJJLghtecaWE2Ub5G/knfRP/VrxBx2K0uP5QkbKhsfpTdJkhkDmxHYiEB5FsHZ
+         S9xA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789648180; x=1790252980;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Dtz+Uqi8FvhezfQGwgUreP+CufNocr9p+NqbDN0Xcok=;
+        b=nmRxGp35YJrbIMtB2nR2AU69BiI91e8O8hWrVdRvLH7i0rTYg78vA6612ovz6rcae3
+         XafZar6g+TEfVSj0FmivBFka6eQb0/WfMJpvje5MPXEE4NNu53j1c1DxOk9jwE3UlYNy
+         hG0ZPx/NQ3qZgNVPyymsn7gjtSuX1IGKSww60AN2m5Gql1+hzWzc3QgCGBXrp2ZZXdfy
+         Btp2mCnPBYsUDZXgCYZ9koIqL0Gw1Kj9LXY3pod2anRPlLQcTKEg0qPQ6FuYZTBAoF/7
+         Q3eDJg7VBbyRKdDmRYpWiP6/Wa7KEBFaO7RbbElbDdUzWaOfTQcE1eztpF5EYJO3AG7m
+         KwzA==
+X-Forwarded-Encrypted: i=1; AKwUvBw/N5jzMxOw3UCjbo4gCRw8jZTvzLIfwB5uixDalrcCrfBVo4OzV1rKz9M3ez7paMMCt1eQdhHbgg==@kvack.org
+X-Gm-Message-State: AFuF++mL7GaeP4I1p1ELs4p3mtp51Aqn5P/76FD+XEDdQ9iNa5gUhOgv
+	ql9x3BSYbLXoBDfHYYlzz2Kg3Du7niQSyTK4P0eZckwtSuIanc9JqEUc
+X-Gm-Gg: AYBFou0DxNFs4wZPzWNMimc1yuhsU52WFdyfIoksKXuKcQ+JjlHMotJM4NIfaDP9X52
+	20kuiRp/YzFiIhkkle2pzH4ULiYMFdFSh0VRgMhgCcDwer6uAxY8xOl3xcEAhhl0n2BXPzaMebJ
+	XuDKad08qlE1CIug/JaYQ26KPu+X7Y/GwWUG3KC4aPb4JiGvnfWDx3jMYYOCIjr175RWQS6TpCf
+	ome3jnH+bkJshrG9OGZSzJlIsm8HeCRd+fyCfjolJIB1esE1sLWq1luMRQoXdltpfGkjdpNrlD9
+	53H8ObXUXhs4A7o9VCUv8/f8oPB4oOQzKoSgbzcgOPoF3HrZD8jLNiqrarXn8UkV3c88XA/o6Ds
+	MgS4ov6NjMu4vvLqpotPczbi5FBlQ5b4QOG4TQlDd9KNZnH8GJzBwPRTu2+KOT/M6r3TFxfQaEF
+	HgZfju6j3irQVruYNnIG2CX1d7nJgWL6f5zhXqmHlydBybOumOyRbTzk+czkdreiE1+nMkpUTxp
+	NvSvn9wF1aI69VyGNU8/Bn81YLNymCbaaWe
+X-Received: by 2002:a7b:c35a:0:b0:49f:bcb7:8e9 with SMTP id 5b1f17b1804b1-49fbcb70a1bmr64001725e9.9.1789648179633;
+        Thu, 17 Sep 2026 05:29:39 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fbd1ce79csm82621135e9.0.2026.09.17.05.29.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Sep 2026 05:29:39 -0700 (PDT)
+Date: Thu, 17 Sep 2026 13:29:37 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Christian Brauner <brauner@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Jan Kara <jack@suse.cz>, linuxppc-dev@lists.ozlabs.org,
+ linux-gpio@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+ linux-media@vger.kernel.org, wine-devel@list.winehq.org,
+ linux-xfs@vger.kernel.org, io-uring@vger.kernel.org, bpf@vger.kernel.org,
+ linux-mm@kvack.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 4/4] file: make struct fd_prepare const and kill its err
+ field
+Message-ID: <20260917132937.5a15904e@pumpkin>
+In-Reply-To: <20260917-work-file-fd_prepare-v1-4-b87534ca49f3@kernel.org>
+References: <20260917-work-file-fd_prepare-v1-0-b87534ca49f3@kernel.org>
+	<20260917-work-file-fd_prepare-v1-4-b87534ca49f3@kernel.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260916154826.a55591eec86b5514dab898ca@linux-foundation.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 48FA614000B
-X-Stat-Signature: acmpexmyzk5py4y3f3atb95hspuq48g1
-X-HE-Tag: 1789648015-806389
-X-HE-Meta: U2FsdGVkX1/9DYcAq7n2KFyS/kW8NOy/LX1LlgR9Au8Bb0ocajJnwxVbQmWvSS0cvqzwjB9EOI/hDPsLAotC6RdZ/bZBFxpH7MMgTC9LdLrbyyNwp2Ah0/t/2FSad9lPrEQTTuhMlBiAgaAJ0xAeFM4NkIDqdFzc4wmT8GDmUIbYFkM10+LEwKp+aoHR6w/RYSllssXvBkHZp/B6OxGvpxJOFMmKjdWWldtmlIzpLxV+0OcC4rHpq/AqJupb1WkQx5qiPCI2eHIkkBnCa2ofxjyt4E3V5xON4VBM0X10QIWeQiCBmyz3ALPPI4YgHXm1o3bxDuHTy6+eOsIWbqAQk0mEUxjwlBfrJreHQEyHImlaJ3qsK2uqUwfSCkQtsJGBua0OBw9XtE1OzSNp1Et9Mv7VZYoppr4tDShCdXIWmljtb/kSMUOHKU9FGCbhA0m6j22AqL5JrhShZQqtOaXS7Zq6NJC9OuE6Wifa72fRS+u5qpA3j7l9dbO9cBEdUpHPCXiLrYFWNB+rY9zF4FN+X0E0Pe4eyVq217qfMDaYo4IumI4seKEBFeO5eXGTEB/73KOcIdFzVBfqmWrvcj3hBkC2QDxcAETviH2nhyb47jRcx0WiaZesGL6vYxYtOszEdiOD5kNmkDulPcpf4wTzT44cEXp6ebZ0kTjCbPPnlSSDkpvug0BTCFnLmBVjRkzlmc+exJ7JRplePU9s7gzuYLqChFmLutNsCgbwoBBbZm8Y8RqrCbOrgyztUNxC+bEBtJGubn8xJZryTnWUH3ZMP+wdcWyuMtm1qBbnHYYQjr1FTcolGungx3RLhPfZliqbczjSRdBxoxYzjNYvGX9DULT6PTGK/ijjix5Uj9k6+VtoNBgkJSmwPbcUvobpYIVq5GMC/uy+yewEetE+3qsRZTHg7DeA2f4f7dwzmuZR4lsovBdHoZh8zJF5xGWCsfYy5ogqG1PcIMkKcKzoX0a
- 5bPoD+uT
- Cirx+L8Dcbbg1VQMl5mHrpSGFs+p+8EyjvSA/1ZBy0KbEuRPRgDL7jsnHlPRiSfV8Mr3tM1osWGUNwSUmnglLi4lyz97VBPPAlZdM+os7DdlvUoU8V/RbCUYmOfY1QAUVUNovu/5dxzQuhUFpKExk5QDVWGxMzV5qrDI7ph0UfdhtgSVYK64XGjJp+8UY6P7f4zAJ1Jz0tCZ0viHKx1Qp2tkkmem/lP/W7FFUnvSF6Ttu2RPNw6coyWO6dQqDfS9BtAX2z3WW8sDySpQW9TFCmCWHMH4CVC7R9nKv/3E8FuSzBAiCZahOeY3OXOKxGvAihfgZAl/hShT2+KZMmvNgKQA8mh0PeTTjRv+lSRWQld6S7nL/beH4I6SSIyyrcxwtcj43xKQLntEY9pxU4F1TgMPZwZGZ6JxO4PxjdXk0n0iMbpYLfLBijXS/VIatLun8p7kp
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 5B6EEC000B
+X-Stat-Signature: stdwicztm7y9cenppf56ai6i9wcjihwz
+X-HE-Tag: 1789648181-168695
+X-HE-Meta: U2FsdGVkX1/J43f1fVQTrlJmQIr1uTwTtzPFE2kMFtawMxe233GXa0gcrqjsZ1mf7cBkcqAVcyvL35bsXK4zSFIyUNV62sbbdUXeWgOhdd2Z9YjF+Sy00m3MBi1wbRDjZgMvWrF3iK/u2qvkx4RvXDIzp2rsSyPy9e04392LC88Sn607+phbyBq/gvzeZ0CWEWPOsIvO1c2vrwriZtcNEdxJblZ2IoOIRwraFxrJKusibJkAthDsj9QfN3J9b2LBSgl9nR2R43DYGmtbBVbgSeSaKas/EZerXrk5qtQfvQZ33Bz2W6mif2U0FthFDNVjL6C8kfSiUH1EhAO9exIaFpbksjb0BZYudwggmG2tqo2nrKQaioiZ9582pPMNsV4DNtHQXbCt6u1NmRezi8eZbe54OZ65wzrzenP1alhD2PsgpiRgesA2taSH/UzXHA48Bcs8Y0OKhfD+mIGIBlrvsnZBeTzbvl40uD971P11mr3EdJenlExba3yENGeveG7HreSOYuQDDcMnnWAS7pJ+mrHiZuWUkRyDQAdYXoFHeL1+Lu/C0/LA8J52oJwVUDtIYS+ebnkvOQY03dMXhVC/Gb2ZEZei+pPVL6VtfmFoW5oAyO/irDCtFxEe+CQfsAMf6o2WWBYqN0PfXeMWPi0qD3G1nf7rw2ksThGciqeUdRXx0z6+tcoWQdP+jtvP+o+iGaXbAeWp0S+VH8ApdW5eEyEK1BYvBKrjOBcQqbXPVfUFrPKpFXv3BkBSsabSpoM8PR6cL8hDEwAGQrE7bckBvpIlq2PFjdl3zZiy4fA0kO8tEL+4ol1lRetvdSa4ZsnPQr6OHEusndw0quEJXMgNzRzWtdwyZmwOu6laxy8/6P0W5NdM+kROiFLqz+3BJciPT3iCqd1W36osM3QH1CXsfEMpHCbsJ9ZDVHIdHA4EvdVcP/udOg49sTmAQ5APoeMTd/aQwtMWGavlbIDVxJW
+ VD3R19NS
+ ub2fOHo9rlLy+HMXnKA7lgDMj4CmpkrgMmaNAHnQJzZ2vSzP0Etried584XBZr8ZP0SRCp9S27FxmULIELhnt35VPZ/s7bgF8nDHFBrIJN4vI9ar6sYS0FOBZTSR6ADGtT86WtbL8/y5x5ypZHt37RzpooDE2LeuuRlWsWmHbJO2hIE81QnYIkh6UWucHSFsxPbJBhbhRR9kcmlr97HRMPc2/vb5/o4UmTQcgkhQDOQFVtACift3XD8THkmTadv7LmVhpgoney6ip9wnxjTWh3MOdNkUvxDEvB6LNl84NoY26aCZ4fp5g8+Xo4y7fY/A5NJpnCs9J41YGG6y/13VhYOZfD6Z4L97Pl2H7R3SylICjeRhvU+QuL5PbOl64uJL98iA2C+0ib/DJDuR/q/dHxW56oETZBDiVdhz9xjYoH8XZuaBxWWHfKTkanysMKivFwipeNh5p1OjFP7eOQPNpjHPkXxNO75IEqPxR488MOEVKI1VVOxFthZU1fOp/4uZiM9pJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,12 +128,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 16, 2026 at 03:48:26PM -0700, Andrew Morton wrote:
-> Here's how v3 altered mm.git:
+On Thu, 17 Sep 2026 11:09:45 +0200
+Christian Brauner <brauner@kernel.org> wrote:
 
-BTW, is it helpful to append a range-diff to the cover letter on a new
-revision of a patchset? I can do it in the future if it is useful.
+> FD_PREPARE() releases the fd as soon as the file expression fails. The
+> fd either holds the descriptor or the error. The separate field is
+> redundant. Make fd and file plain members and struct fd_prepare simpler.
+> 
+> Callers of FD_PREPARE() get a const pointer to the guard. Simplify all
+> users as they can now easily access the trivial struct.
+> 
+...
+> @@ -191,35 +175,39 @@ static __always_inline struct fd_prepare __fd_prepare(int fd, struct file *file)
+>   * was allocated. If fd_publish() was called the fd and file are
+>   * published and cleanup becomes a nop.
+>   *
+> - * @_fdf: name of struct fd_prepare variable to define
+> + * @_fdf: name of the const struct fd_prepare pointer to define
+>   * @_fd_flags: flags for get_unused_fd_flags()
+>   * @_file_owned: struct file to take ownership of (can be expression)
+>   */
+> -#define FD_PREPARE(_fdf, _fd_flags, _file_owned)			\
+> -	struct fd_prepare _fdf __cleanup(__fd_prepare_cleanup) = ({	\
+> +#define __FD_PREPARE(_guard, _fdf, _fd_flags, _file_owned)		\
+> +	struct fd_prepare _guard __cleanup(__fd_prepare_cleanup) = ({	\
+>  		int __fd = get_unused_fd_flags(_fd_flags);		\
+>  		__fd_prepare(__fd, __fd < 0 ? NULL : (_file_owned));	\
+> -	})
+> +	});								\
+> +	const struct fd_prepare *const _fdf = &_guard
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Since the struct is only written by its initialiser, can't it just
+be 'const' ?
+
+David
 
