@@ -4,73 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C029DC982D9
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 16:26:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4380EC982D6
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 16:27:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C3A3D6B00AB; Thu, 17 Sep 2026 12:26:37 -0400 (EDT)
+	id 6204A6B0098; Thu, 17 Sep 2026 12:27:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C19D26B00AC; Thu, 17 Sep 2026 12:26:37 -0400 (EDT)
+	id 5D16A6B00AD; Thu, 17 Sep 2026 12:27:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B017A6B00AD; Thu, 17 Sep 2026 12:26:37 -0400 (EDT)
+	id 4C2056B00AE; Thu, 17 Sep 2026 12:27:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 856596B00AB
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 12:26:37 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C51C5C03D7
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 16:26:36 +0000 (UTC)
-X-FDA: 85223782392.24.37600A0
+	by kanga.kvack.org (Postfix) with ESMTP id 275F36B0098
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 12:27:08 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B6E8AC03D3
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 16:27:07 +0000 (UTC)
+X-FDA: 85223783694.25.20C9056
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 178BC40006
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 16:26:34 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D8IdL7ri;
-	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf02.hostedemail.com (Postfix) with ESMTP id DDF5A8000A
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 16:27:05 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ViDv2WyE;
+	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789662395;
+	s=arc-20220608; t=1789662425;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6WNH4ajOGiRyME4gV0hKpqyimaBUBR6xvgBKJbfZQV4=;
-	b=FBC5cMlVH7K4Tl2MRnItdQFXV/Cm4mnzCUjSCIKWKFrDamedGaB5dzQZzMl3VrYAw6hwTl
-	03B3illb4AftSjPz1yAClYIYCeBBOJJMl9ZdlH6EYQ7sK/hk5s2iWfPlfWaOKqnXoAwLUL
-	SgFigW3N2EHOtLjfBm3HOaLsaHlV3ms=
+	bh=nW++sIH5+QkDbGxq2Vus9hcdCzRLPa1+Wdw4UyVQp4I=;
+	b=X+53Lg7HtoRz2DVervU0XrFCsCqaGA2xaUv4drp8o/djiENAEdeP3TRiHTxe1RQMOU7EiP
+	wdd6Mwd+Pwmi6+dUW18caPiGrlaOt+8jN+3EaXzLTc1xiVYjlY9cST1uSaMMtpx14osn4a
+	eJfh1/ffz9idAHWSrmdjcWWdUzkyDEc=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D8IdL7ri;
-	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ViDv2WyE;
+	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789662395;
-	b=CUxLO+tUVyB/kT7HdzonL/E7VRu0EB0aAToneW1KLt+OIQ1zNMs1ixYGEQ2eg5CwCUn/gd
-	zCDbVwYw+oK5tnMCoLe23qo3Nvmu16Q/TT9RYYqSjZJLxZQSKTtkMNZ9Y/zg+ry/IbUieP
-	Jyi8gnHDWF9m5UcBO7nDXMj1/WZvOGo=
+	t=1789662425;
+	b=h4+nitq/8vRbOJHSaWVwUvxFWOdHfYf+hT7kyNakCVBzBV++kl3fTF0FgZ85Qstsyucxvk
+	s1qEfgDI4fYtpc4rJejiBCWcvhQVc2ZeXoDniHtXtcp+Yyn31WAUbqpNhWruK7JHv61uzL
+	E6d9PHOCPCoQdaoEyecITd6pbs7SOCw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 873C1601EF;
+	by tor.source.kernel.org (Postfix) with ESMTP id 0E05360214;
+	Thu, 17 Sep 2026 16:27:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0D441F00899;
 	Thu, 17 Sep 2026 16:26:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42E521F000FF;
-	Thu, 17 Sep 2026 16:26:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789662394;
-	bh=6WNH4ajOGiRyME4gV0hKpqyimaBUBR6xvgBKJbfZQV4=;
+	s=k20260515; t=1789662424;
+	bh=nW++sIH5+QkDbGxq2Vus9hcdCzRLPa1+Wdw4UyVQp4I=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=D8IdL7riodczGnX2g7Ly+2X6aSiAwz4EPzGrUsxSBrMPJJobLo7PYqAj1ZR+bimYM
-	 1vu7lCSys1fJJVkf85oR6/ZuSbQ/tbBQLdX3ewGiFk8JZUxpd7CwlkH4b8ZMJ8lIi4
-	 TwxzSbzqRu847qAEUbxBRSHhV6kJqfvGJw9qd9GZY0XTjJUOU7SZ4ibkGeS4IzEkjz
-	 Zs0/arTkyh9T1fDD97IlBz1yW49oyPFEDmAQbrqxOxsVNNLtswpJiNgggDx8CeF5oX
-	 2qPEd7di6MpkeozZynKitl3ZSUJEmKidyX66JgD/6HIAgBBZdksmlaPZeRoqMZ7sTn
-	 dQbbKZaoA67XQ==
+	b=ViDv2WyEnlMmU8htS9pYWkRicYlC2W7lHbLK/fwluAUN8aPruh0xtEtHeInjKh7QJ
+	 AeJfNoCdhcDmfNw61s0Mqo7zYj3Y3adfWR9lVLXgJpaJuJUM79bFJ0H1qYFplfJm3F
+	 uQ+f3olQ1O1fprNr/rcci/pcbuxBdH3N4RXBXHd3pUMqwU8aM/TC2l+JlBXY7Ow0Q5
+	 FWKY0BekVQJvUG/SDDHsff9wJ1NnNbD/1uWKhTsAyKgCQvIgGfp8XpljtvcxoNbBTS
+	 9nedK21t77r+eo1zNk2P75uxDiXnpoZiKFyzgBKX6C7TbMYuGsoT0agcJy778NEAi2
+	 tpQzHnBvanbrA==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Thu, 17 Sep 2026 17:22:16 +0100
-Subject: [PATCH v3 07/40] mm/vma: tidy up map kernel pages enum values
+Date: Thu, 17 Sep 2026 17:22:17 +0100
+Subject: [PATCH v3 08/40] mm: add mmap action for discontiguous kernel page
+ mapping
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260917-b4-mmap-prepare-vma-flag-sanify-v3-7-4583d8a23bca@kernel.org>
+Message-Id: <20260917-b4-mmap-prepare-vma-flag-sanify-v3-8-4583d8a23bca@kernel.org>
 References: <20260917-b4-mmap-prepare-vma-flag-sanify-v3-0-4583d8a23bca@kernel.org>
 In-Reply-To: <20260917-b4-mmap-prepare-vma-flag-sanify-v3-0-4583d8a23bca@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -154,28 +155,28 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, 
  fuse-devel@lists.linux.dev, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3944; i=ljs@kernel.org;
- h=from:subject:message-id; bh=HY4Q3Cfycqa6fp8N5aZLFaoVFjw/3MQxTeg608Oh/QQ=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLWCO+fvuN7XXp8+tu63Nwv7b77p3Kb7Ji0+qXaO3aZ1
- NVHxSt1OkpZGMS4GGTFFFmefxHfHyQSNq/zgr8bzBxWJpAhDFycAnCRWYwMe55v7PZcHOa1vNd+
- /urH9pPPR+2tED21/JY7N8duARYTZ4Z/2v+2LFJ1l3V/E3DxOeu/LLFy/6cd96u71Jrkvn7+EZH
- MCAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=13000; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=9WhzIDxv6aNjRmRkyTl/IVkqdbWFVNggqlZznMVJ7GU=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLWCO9/pG81r+Tdrewtj304bJ5ckZ2xsvUxl2eIv5/00
+ biFN08f7yhlYRDjYpAVU2R5/kV8f5BI2LzOC/5uMHNYmUCGMHBxCsBEbtkyMrx8pWF3+1jS/JTe
+ LxFTDi/1Pu9XxpmX9i3ubzPb4QfaspEM/zTMjzrOuTiN03LHv/on7UceSdk0WL350G3pdzPZRad
+ 2EisA
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 178BC40006
-X-Stat-Signature: so8dk3jny8rh798zpnmjkrfipksimyky
 X-Rspam-User: 
-X-HE-Tag: 1789662394-751345
-X-HE-Meta: U2FsdGVkX1/B0lGgvrmmL5lYMj7bLci0DDbB4UbMYDffsGf/3PrFPVteF9AyubOqpSZtZ8+pymtCjQ1m4lrXsZQmSGz5TiQd6WTXKvmrZlEM2Jx3L5sWJ++U0gomaiUiOiK86gzIAerHwjxDQLozYy30Tk+6xf9zJ6AvV/E2WP3xfYUQ4sNkzwuYIkiSKEtYuonSldGg3wBgVXFpYy9ETE7xb1ZI48xXR1E/SfceF/5RKE5Uuak8hi8bu+x/wbkqnyai5s9FC3uTgxvMBYMIaWiLutIUHMoErvJKEetpVf4ZyE0k9wAJxiTkMaAATnXWM+wsyNs2HqqXFckeyKYmdFZ8DDBDecvz+O38JFi8DAgu/j3IGEm5cGL4Iy8QvYzDgkU8mqQucK3XGVThwprIVzFhKvHPybN/QQpeW1t9pBF7CcXREuHrUrRHMjpjZXdQb2YLDmOe1BQ/d//boSihODDrVOD+6XJ+MmVr1ThSG2en4uv7nEZurViKvv/wYkrnf/YocDI1oWNjINGzleLr2aD+gtoHF0KVErb6QUo6wWxIvy1BXti9X09Wtdar5sGahvN3BlbXVpkLbEkDkOrpY3oM5j3ukbfnZLkB9b8tCKFQnFXODQy3CyirGPJtdo5GcpftBvW9lgx5RCaKOnRv7VLEO7Fe3L0jp8YSnXLpvkLNerh7Go2Ln7SCK57H7ciD8mEQ3Nv0iLU9bOEM2FC6++is28X138/wJqGwv5gk2Go8EK8t2RV1VaHge8q1isPhP32mHXehASaKvCcDTU09735gUvj7B8rtLI7gxHhveImSfCPcucczN60esEgBEKvb0h8GymoT4Qu6iml9YMdbR+DDlhgVDqrfHdd6e3NiKKhVV2Eff1tiGFxllWNIgUDQddvWbdwswZ5LSQGWHWlxsSatTKgcKAeWwa5/OeaBNyp0Le3sjQRm5EtUhRZLgm01wugCNQ6fyRfeMfD1TGH
- 1X2YteOo
- 8lDnbDcL4Gvdztcko+iM8SeB99rGNM1nVQOzQ9E6txT3DMXr41FIlVh3LG95U3rJ748Dl9ui4ERcSqynedpNPm+HC+Ib9UWNMos4JNS/3wbxbN6OsPi4Iwl6iYCzklU5oR0w8KAUO3KHYXK2PmpJFBrXKeH4uFkSaPNb5x8iC7A8G/flb6Paip5Xz5tXPONEeCl153aXxds+S75L6iYbN2SdDnMTnmmsrsbwWAKTNArvliBAjx8CrA3Sd3Xknze62RM2Wxbzo/m/vUevKTvyRjb/HT+Ed210ChlshOHC8AM87V76qV1OhBvQ61pQQBsnK826qSnRAOFrmd72YGo33KBw0i7sO/kcZMjpJKx+IxBetCouzAA9XY8OGSHP8Eg6CvuS72F0HHEIPXORdqb/BiSuc1W3WgnqDwvT0omIE17cXKg0zv7BwShiXY+7wAMY0xU2kDG3wqYMFeyhX0BFLdlPrEj6k9kARlp1ZCgJjAAPhI+TLMj11h/krRb9aFA671AHRu+DfC3bh8gUyQTupu9eSn5mx8zrJOeXsUv9v8gYOQHqlGGwrL9c8kbTVDSfkodbuZOmcV1Y/D69HIpwF7mGv+3eAeTr1CLRLJmh3SORsXyU0AMXYTNUYZ1p+I50TnjphUHTg9NhQHxjwkk6RQG+o8XNfbc+ad6GjOdGBquH5UY6JpJShIW7TwxgkMVEU7dr+M1ZhC8xsqSu+hJuOeYY4Z+TwyTFf55z+/UXo/F8WjmuJYpc5KGumAb5eTeZMkkIksjnQxg+Peke6ATbrBMyFTyiYHBlxHE5nMHu56BBiNtYpeIm4SeTiS5i5Wh5Si0KmHnGYba/UxrvBQ5sArJthWl///h7UVDefOL5n9R141BdiqUdt0YX2vVsOkuiKcsla6nWcZG6sT1gG/uwwbpTol43woUcsgtazbz/S0v8Ynby4oKUolzOFhQURWsQTrwolFqdXH21zDdl26ZBOPGA0lSBO
- YhSTeG1i
- qTxojpcnWPNnHpHNcaZ9j1ngx96EOzkL+taNo9qjBcpnhD4DqV5u0CkFCyx5EmwT5B+k0rU3BoNKQqKeDBaybkGEM7YCJr2ZND7Gaye5y4KuWxp2kPE8tb7uukhWHB0k7buh4WkMQmZYMUw5TW8b4HEdeT9/sapqdGPm/6hE8ekvrlHjKeQTk0LU89welvMUb3jD++JKUWSY7pg/JIWw5u4h9HlSK+ww3YIcS+aIyRaidmNzhMHPjzr5gazY2NLSmJJ/R4YtiOjtfb4lsLeyjmNAQ7k7Y6krg1WGABGxcWMet9YhHyruQnBom8HknX8h0u625iQwa+MJ+YLZu3uVz7fdVknkjyejH+u3bFPIPWLB0IgCj10tYIOMefxe5bIv/uSREbwDp1oyvwOG0MirJ1myxkh4HqMxBtkUCxI5sav+o+F/AdhFsw/sHGgfAVIrkfwAu71gIRAPQgj8XrJQlLiQkpjhY5J9c4pxa4y8oXAKKk03MFYEm5eE2LOocqLlHO3Yh+hWmFUOvGk5/xKR0rB/hmVcJ67qYfWTP0Cow7ILnfVcPwYxovmKVA/Dd0Yz4cV+yGAm8Wvh04wqv/2pAvskb1kRo1iA9Mx78yaIspcFjZJLgM2QZzHskFMPza9L1ewsgBy8BDColRv3IbyZyHSY5jOznzY+9WGqjomcv/VNsDsvCguiR1ekRsOA6YFjZ+fqwTUiRH3bm1mX2wQgj+/Joi9YNljpP5lpDymGmLgEW83AdtXfSOoIRLExWQbGEV8Hn0wyk2YD9xLvzBQyVldF89sPlv/ASXLiBHJ/gDVUfW9fgFAHhQ05hySGtdd/lt8xy0PmucBbZuMGWtE+LUAeAh5kA/XfJDVvuhdaxxK8RcNKpP2+mZ6HUyYJWD2B0a7+IpykSkLicZcpw/THiclyNA/MJA/QRqj1jLfKGqTK07FyfNdVUGtAIAtwm+E7Zs15M1AFvGbR/lc/as8hKLIDME5DD
- Pes84mH3
- BV9yyCODx+8rlp3alPCWTmXwm4CVRLXa+MxB/FcElKSpK3bMnYgkNW/I05dqtiXVS7vGXS3uam8Zms6Jw4g6pA3xTNfLzhKb6HbdYNhYGIYUR6fRoI8AIl9XKUNYL4WX7h6PYpzZST9q8PPMLwRF94T3CFn/1UPzE0DebqS9CShfp/tBsCjU+hNvZ9MEqSxSHl+Qvh20wNWe1JkCZD7a4AYSbs+oDndsy68f+Ry7xvlnwHANY4p+5KKZQWbwTBuU6A2GgNQ6B6jSD27tMRpcrztIDF4nY0UwvJPGe6WBU30dr0M8NlteDWHz+rF0okLeW1DlO/TP8Z8xvMFRe/xsQiU3ntKPIGdFdKLiSpEBu0F0PZqRCd2AVcPJ3E0XKQcNBZS/+ccSzJikzTpO9f7x9GzJ++OILXJaLaqq56zK3DJT5J0Ha35yjs8AIv26PItYn+uKI/R39ffxPW/Ot1XMCNbWOjapZPY6Ivr6l2Xp+9asAZmHnvpnTEnxsZLyYS2Noyz1haki+C6aZz8cMrVqHC+Xkm6l25/YT63MJCvbcTBiL4N3fzmzfCpcCfNIcdj4wBopkBkrOIsDuxOgW27sv9NFYtAD+8U8SyNMaZSfT3ydyY9CGecu7uvRHhteDm0vNDfFh7RqG5E5on6iJTd9kVPtoqVZaTab4OVKQqXuL9acwyBknnLAEenmVxeJpBZr+HBICLv7fiiwKuhXY7qplTVHWFhdcetWpOgMNJqDNPe/caSl9Qme5fPuPXZcs6Km7aZnDV8fiDkvQJa+ju+1VIh1/ftD4EZlPy8bL50LmoKChVOCcl4EggRsiF45nx+gE0F9O1ncLZmSnjP+GSYqRL6tsEcorcbOxDyqzugs+KTWHzkhpKpAcTBJ5XE1yGCi0pEcg0ivZxiV8RifFkLjc7yTPqoLKFvNYCjblFJvR4GnqPjB/otEhE4NLRkjYqR5f4yguuyI+obMrX9KvRtBDNpyfNt2A
- tEfNmP8l
- YH46h3SVsGP5Vxr3lZ0Fj1Ub8dXVwSOIhGT31KQLIRByEf8xsiu3pvRN4t0IqCG8GLvS5UdrcEHUNgWRBgQsQ9a2+95Eu+LKkVhfP2I1XhoqWFrAcJrbxIYBgAkpRLT7pKWPuTYD8xrMzvHH4TN7pbVVzl2OsVvsh52CZhJ8sSJ1n7YFsaAdC1ZN1xeQxYAq+pAo7iuo97ML6DDnW3EnB5EBFIdi24WQ71UcKkjpMVo2x1Ty/5ozHzUy8XPDZzRPhJ4wHfTBck3nf4WInu1V5I6DsRlF7ymGOUObD/YP14M0Thkh7NvCYvKDb7QtKD+N5svrv0+gVQyIVRRaNOaJXg3hq0/Kz7ihkCi0SL1zmWMg==
+X-Stat-Signature: g51js1gdzn14fe5gaj1n9kpuzyyi5ctc
+X-Rspamd-Queue-Id: DDF5A8000A
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789662425-776514
+X-HE-Meta: U2FsdGVkX19aOhMJcsLyCsYz6kqIxyiDzLvnpBV4RRTOuZzk3SrUoKudCMB9Mn2Ru0thRBzI0y3dnH27eH7kRMldf9atx7Q6ZvpG0d07kloidSTc+hE21rbzl++MsYx3sDzh/9I0JNq1xCcs5Ofe14124BXEhsDSs4fkMF6YUNbl2tWU3jUm2En9+/fpWgqAxhbYW1k+WqGG26/ha7y6CfolbweizHKcmXLmzkE1i5gAJhTVN6BijCsNeoygXdOEwxE2gcIgtNpIhufHSrV14280gUOZUlyRz0oMJ9kwUD7xBDA5N33eaZer5WPHsJy4JqeXrB7lMKe+KdtM8ngkHzxsvwyfu2Jkk0R1A7J8CNYzbS17vpRIBGq9UgMgSAAzDaY3G+HuOsPSSZpS1nFgTdY5mNyASZyCGYGv1GXWRozM/ZhxsZa2nl+FIWwWQs57oun6212Tn2hLNDcqRbsdtVcNiFJ14uqMh99IAfGunoInTFo09LCV2O1IqyI2ZShb6VqXP6kR39+7uDplkc3HQN8etmkTp8V/LNULSHkiSk4QnMkcxzVDEv4p6X12kNIJG9FaugpSdbWEC/uRVldGjRNyW5uBdl0+G/M03DA0O8WGLvyKOgWb81+WJ7NOGzOPBr2fP4QY9GzTd8LQomvAmVXKDBYy2WwGVZTOZVWgKuQiVJ+7EMqXiu2wP1keTHK2ukJ6mBhWXWwm+kdM3FheJsnsjtv3ZdyCR/5bPP9TjSNVHEB1Qmqh7ESLPAUo6c+LeGA+UoLM/462HKrpqFjp/cTB7gM3l5GMKdWyBThtP2r2vkuesxOhJwdAz9zkaqTqNG7nm0vFNUGc7TkkaAPES9L+Wjfpw5+x7s0/wTptiGrdcI9Mm6a2nuMUVArtA2z4E4IU0I23/hSjujUGsVa0XLC3NT6dhZwCYRsumvdfT15Aijgk0Itm6b+UpIRhAhtGTtyzy1kcsEeywtaHrPQ
+ bStI3ddB
+ MQxZv1KH3odVfnRuPGDMJMCekxMTDBHztFgqEGFcbrsrQ8EtOed8DhcE4hHi3ccViOp3Y9s9+vbv+QHHIMvazpRBtGmye3O48WAN1U9bzEVg3sZlqi5Qz7+r5DCQnlsEe0Dkvb6lBDzmocYoKqBUSbIek/jAW+BGje5ORLmHab1daU27oRIOgnyMZ9S1EFpuavIR2uMmu9bYUAzidjPY7Jh1o0PtIUNRvmhnS5Z/uHaivf3n1v/ORfNo2Cs/TgsmIqdxqGTeaT5UwMwg9+Dza/4YpnwiqxCsudEb+fOWY1BjRBEAKOSVHgNLNWFZmByHxcaMxwNLss4fAsMECthGfRJRwBHZY2Zz4Ca8D5srgUU3YSpseXKXLY2+6A3oFWBZPTy3Olxt6D9cHp3epDw/5O45r6kHjC9CXolJOrCyuZVBlL0586x0yia1E0uSaq3cdc/D41w868NRgr08SFyI3I8Sw4R7phZuE799imOU+MIAoGzNfF9HrEEzcwdjd3du8XmhRMxH3AT8A4iRMmM8ER/khK7Fbd7zEZiY/kybO5dgnKpKHwz4o3IUnl8om2iqRMJCBO1GP/u799nHHDPW9q8YP+Tej81e7WOlTz32vFKWrVttv6B7r9Bk0ZbCR6OqXUBfN1UDOhzgCQRfZjAj3icoIO4BwKsxUXmdhZtCujd8vVP42YdhoU7WhPAeGkJtTG3fs8Wzlhx7ukwv62AIPhv6Ny6SHUAmrlLYRsJwB7ycK3KfhHMLQrqMy2Lyocil1f7MV5z51//RiyrgHSF+UEDsQVGMDX5ypp3ZKf0r8SoRRh1owSvhj/Csv1MW2SRqEmlyKk9xrI/FHHoPJVDwvIymPZOA2iuSvyI37j+Hk2QUlI4UbwOv3am4wz6+aYV5oUIbCgFKVTNzIogyHQTWPXffR5i/anESRO/gVjuGiGqxudfgjTe+XZRryYdWvebznc80GdX3K9ei4QAoAkaPO55J2S9UT
+ P0NhOTB1
+ GQpsQo8B2s/lmveTc4Eqxw0JD3z4Rrom0RopFtYlPx1yl/7Z5d5SWmNUYFmpkoLZqoizyYIvRlutpQPNALvoB4mNP+RAFUZzSVFa/6X3S5rIaAPjaUi30/x5NT005DZehluX9xMshA/sLVn2FtDRF8JRuZvRLUHq+PoNjJCrjvbce32hBjAVXA7n51XOFCivEKbyZsXZGov6vSCg9m6d8ubj7v7kQ7aFGyME0Dijw9xCKTYlcELiYfzrYVRAu532b48l/QFhgrlVOZmP2Xy8wtNmFBe9isYDsc7cvMCAAOELWe+VQW7mUWHxQijSRphnt0vy2rp3y1EooMPK/y7L0JpCa9pH9bhqbyB9ZIJZr1kdWlFUl2hJUwmHgKg9v73Oy7EPHeb5Xz50bLzlFkYvYb1DnEfodqJmJj66OJOglW87gK5scKuAYuUqUUJk8+iDRdOGPz1kAatMOMLTkFV+QVOLlsyEbkgZ0/9eiirUc6JA8Zox5vro4lg2FB57MyqKPBIAmtxXPENs32IcXuKw+7jBHesd1OPzULExvXhgVT4bU67mFP9XEJ8RN+nuiKCJKxk6RoiECSr6Qd1RMxpCqG6wXxWIhY08daHl0z7oF+TXOiDE6aaJBgOVFnNikCCYsd/rS08l1w/plSB4QiRjwqSytg4vA89Z1qMXok5b2k5HNuAYe8+mnVx3nQWfS9goeJk6EDOEQHwAnt6TQr0VpGOKQPRUH5KslUV5TjAW3LSuAUkHSUNJ5jmyeaqS4ICEHmlWvdo9azEDL5QPyz0mx1CZdzoBvtNg6xjUamx1tbXtVJa6zTCRKhKeZP4JJQ51LQJJRC0TSkPQw89o6+6VmZYz5SVG+m8bMvaHtmTc9qj9LFfqS46pMPsvV8X1FOsVboMmntPAEXszlICDVSlq1jxpjhRBT2YFG7cS7jedILncv9Ax5G3p7C9nbVlU9hXlCydXMAaDOOYQQ2hQ9RWdFs7CMx58M
+ 9mLwbgbH
+ 4MDb+w1cNzN+HyfDXgD3d9KlIVX4FbhKIx6Zc0grqXw7kdiack0aElDJwAB0I80kHhQEYbqRpWxGsWyWL/xhU5Bps0poLX503yXtoOUk4yWp1+6wm31TBgIl4Qh+vDP8fYPkDWtc1UryUm035+h0afxUKPXhhI7TcuZ2N9DE0zjwO+EXrM66AqxiAie9QFlBIoTJFn6VJ2GIDAy1mG9MtszAmARY3xGaSiUUCg+vBa1RYriA46cf+Rya5feuti9vPOL3TolKOE756iJYarUGdGOzkEDAXD6nT+A/zRzsoGiP2WumhHHm2tJ0pPW3lfkgLuxrG75bciVhiiJcPuaUmlk/rhn+6wEeZH0EawMEpvMpOacPtc2uO3H8ANGtP1lzhSvtiWIeb3iexJ7M3WZaZuKvJHeouaUJcCSERvTihm2z3fX9GQpLeuX7WMaYCRdYJWCI14d3YIdRs9+bNptR6yMCZ/XWpQaMbC7OtN24KcYTpq6X7YggoMrFbl29CLbobIGpgqA6C/wNITXkc7fkzC6ARrYt90Ymai4PtOfMcJxVwStpZcDmHWk7rylchsxSL0UKeB1xG8yNJ0hzlRCDZCvTPMHhc9NbcO5GQzv3ZImvXjBfJVG4/226T4D5IUEud6r86elPW/bp3RasuKHKbVCzgX9BVtosK2v4TXjUZP2Mwu9DRDBjAe83bKxd29GWeuKi/SxfrLxCH46jzfpsMeNHztCYGytVBZ02UY2IIebUbXvQJvynBcnkqf3kJFbeGKtwNUt9AHAJ3VE/LqppMJc8UY+PFBQL20HFMDsMovho8zGCnwPP+Tcbu0vchtvMDTHxllsoI8t5ITfMRJ52yOH7Q7vKwGnhAD6og7TyKukoZzfAIGpl4rWFae4Nw//xrPQUCWLc5DCZM7lqvwZy5n2f3nGjbfMx+2NCng8NWTtywBFXyR5CSRlkdvITvtdtDBnnokrA9gNI+3B8bVyxGmwHcDlA5
+ D0z/4wuV
+ JVZ03XUJB6JOf3WmBp8/ctpp7qzQnrlzPmlG2L+8SCfBw52b5Ck/r+zdR+yrkYEQEsudLEQvebNPm3w5cZFZ5Zx/GtkbICMejrX7M+bVTQA6TNIrDT1vvZUxPbkFG5cHDliAPy1Js10UFl/RsdJP96mM2jxFASJ6rzecMmDlH8m5DVYfxBl7l/6BweK9A2EQFMTJNimE5dHnkNv0MOzCeZtd4bfGR4xDCTEzbltzz0ewvDPx+qBzGxcr4SKDRTDR2+zLMBWnK0de7GyCGeC9SO8CbT3lNVqQg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -183,117 +184,393 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-MMAP_MAP_KERNEL_PAGES is a mouthful, discard the MAP_ as that's implied by
-MMAP.
+The existing kernel page mapping mmap actions allow for partial and full
+mapping of an array of struct page pointers.
 
-Also while we're here delete useless comments for mmap actions whose names
-clearly indicate what they are for.
+However some drivers require the mapping of discontiguous ranges. Permit
+this by providing discontig_kernel_page_ops which allows a driver to
+specify how the operation should begin and how batches of pages should be
+retrieved.
 
-Also update the userland VMA tests to reflect this change.
+It uses the minimum exposed interface to do so, providing address, page
+offset and both vm_private_data state and a local private state object.
 
-No functional change intended.
+ops->init can establish state for the operation, and ops->get outputs the
+pages to map and their count. Should an error arise the core unmaps the
+VMA, invoking vm_ops->close, which is therefore where any state established
+by ops->init is released.
+
+Batches may not exceed the VMA, but may map less than its full range in
+case the driver wishes to allow the user to map an area larger than the
+available data.
+
+To use it, users invoke mmap_action_map_discontig_kernel_pages() with
+initial local private state and a set of operations.
+
+Users can then use one of the provided helper functions to perform an
+action:
+
+* discontig_kernel_map_abort() - Abort and leave the mapping as it has
+  been accumulated so far.
+* discontig_kernel_map_page() - Map a single page, or a compound page given
+  its head page.
+* discontig_kernel_map_page_range() - Maps a struct page ** array of a
+  specified count.
+
+The userland VMA tests are updated accordingly.
 
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- include/linux/mm.h              | 2 +-
- include/linux/mm_types.h        | 8 ++++----
- mm/util.c                       | 8 ++++----
- tools/testing/vma/include/dup.h | 8 ++++----
- 4 files changed, 13 insertions(+), 13 deletions(-)
+ include/linux/mm.h              |  45 +++++++++++++++++
+ include/linux/mm_types.h        |  44 +++++++++++++++-
+ mm/internal.h                   |   3 ++
+ mm/memory.c                     | 108 ++++++++++++++++++++++++++++++++++++++--
+ mm/util.c                       |   7 +++
+ tools/testing/vma/include/dup.h |  11 +++-
+ 6 files changed, 209 insertions(+), 9 deletions(-)
 
 diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 0c17f0932b76..a1f2d375cf7d 100644
+index a1f2d375cf7d..2a92193ac6a5 100644
 --- a/include/linux/mm.h
 +++ b/include/linux/mm.h
-@@ -4623,7 +4623,7 @@ static inline void mmap_action_map_kernel_pages(struct vm_area_desc *desc,
- {
- 	struct mmap_action *action = &desc->action;
+@@ -4647,10 +4647,55 @@ static inline void mmap_action_map_kernel_pages_full(struct vm_area_desc *desc,
+ 				     vma_desc_pages(desc));
+ }
  
--	action->type = MMAP_MAP_KERNEL_PAGES;
-+	action->type = MMAP_KERNEL_PAGES;
- 	action->map_kernel.start = start;
- 	action->map_kernel.pages = pages;
- 	action->map_kernel.nr_pages = nr_pages;
++static inline
++void mmap_action_map_discontig_kernel_pages(struct vm_area_desc *desc,
++		void *init_private, const struct discontig_kernel_page_ops *ops)
++{
++	struct mmap_action *action = &desc->action;
++
++	action->type = MMAP_DISCONTIG_KERNEL_PAGES;
++	action->map_kernel_discontig.init_private = init_private;
++	action->map_kernel_discontig.ops = ops;
++}
++
+ int mmap_action_prepare(struct vm_area_desc *desc);
+ int mmap_action_complete(struct vm_area_struct *vma,
+ 			 struct mmap_action *action, bool is_compat);
+ 
++static inline void
++discontig_kernel_map_abort(struct discontig_kernel_page_state *state)
++{
++	state->action = DISCONTIG_KERNEL_PAGE_ABORT;
++}
++
++static inline void
++discontig_kernel_map_page(struct discontig_kernel_page_state *state,
++			  struct page *page)
++{
++	struct folio *folio = page_folio(page);
++
++	if (folio_test_large(folio)) {
++		VM_WARN_ON_ONCE(page != folio_page(folio, 0));
++		state->action = DISCONTIG_KERNEL_PAGE_MAP_COMPOUND_PAGE;
++		state->__folio = folio;
++		state->__nr_pages = min(state->nr_pages_remain,
++					folio_nr_pages(folio));
++	} else {
++		state->action = DISCONTIG_KERNEL_PAGE_MAP_PAGE;
++		state->__page = page;
++		state->__nr_pages = 1;
++	}
++}
++
++static inline void
++discontig_kernel_map_page_range(struct discontig_kernel_page_state *state,
++				struct page **page_arr, unsigned long nr_pages)
++{
++	state->action = DISCONTIG_KERNEL_PAGE_MAP_PAGE_RANGE;
++	state->__page_arr = page_arr;
++	state->__nr_pages = nr_pages;
++}
++
+ /* Look up the first VMA which exactly match the interval vm_start ... vm_end */
+ static inline struct vm_area_struct *find_exact_vma(struct mm_struct *mm,
+ 				unsigned long vm_start, unsigned long vm_end)
 diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 5413bd10fff2..9ca2ea3664bc 100644
+index 9ca2ea3664bc..0cb4f9603956 100644
 --- a/include/linux/mm_types.h
 +++ b/include/linux/mm_types.h
-@@ -815,11 +815,11 @@ struct pfnmap_track_ctx {
- 
- /* What action should be taken after an .mmap_prepare call is complete? */
- enum mmap_action_type {
--	MMAP_NOTHING,		/* Mapping is complete, no further action. */
--	MMAP_REMAP_PFN,		/* Remap PFN range. */
--	MMAP_IO_REMAP_PFN,	/* I/O remap PFN range. */
-+	MMAP_NOTHING,
-+	MMAP_REMAP_PFN,
-+	MMAP_IO_REMAP_PFN,
- 	MMAP_SIMPLE_IO_REMAP,	/* I/O remap with guardrails. */
--	MMAP_MAP_KERNEL_PAGES,	/* Map kernel page range from array. */
-+	MMAP_KERNEL_PAGES,	/* Map kernel page range from array. */
+@@ -818,8 +818,44 @@ enum mmap_action_type {
+ 	MMAP_NOTHING,
+ 	MMAP_REMAP_PFN,
+ 	MMAP_IO_REMAP_PFN,
+-	MMAP_SIMPLE_IO_REMAP,	/* I/O remap with guardrails. */
+-	MMAP_KERNEL_PAGES,	/* Map kernel page range from array. */
++	MMAP_SIMPLE_IO_REMAP,		/* I/O remap with guardrails. */
++	MMAP_KERNEL_PAGES,		/* Map kernel page range from array. */
++	MMAP_DISCONTIG_KERNEL_PAGES,	/* Map kernel discontig page range. */
++};
++
++enum discontig_kernel_page_action {
++	DISCONTIG_KERNEL_PAGE_ABORT,
++	DISCONTIG_KERNEL_PAGE_MAP_PAGE,
++	DISCONTIG_KERNEL_PAGE_MAP_COMPOUND_PAGE,
++	DISCONTIG_KERNEL_PAGE_MAP_PAGE_RANGE,
++};
++
++struct discontig_kernel_page_state {
++	/* Map state. */
++	const unsigned long start;	/* Start address of VMA. */
++	const unsigned long end;	/* End address of VMA. */
++	unsigned long addr;		/* The current address to be mapped. */
++	pgoff_t pgoff;			/* The current pgoff to be mapped. */
++	unsigned long nr_pages_mapped;	/* The number of pages mapped. */
++	unsigned long nr_pages_remain;	/* The number of pages remaining. */
++
++	/* User-defined state. */
++	void *vm_private_data;		/* VMA private data. */
++	void *private;			/* Mapping private data. */
++
++	/* Users should not touch these, use discontig_kernel_map_*() helpers. */
++	enum discontig_kernel_page_action action;
++	union {
++		struct page *__page;
++		struct folio *__folio;
++		struct page **__page_arr;
++	};
++	unsigned long __nr_pages;
++};
++
++struct discontig_kernel_page_ops {
++	int (*init)(void *vm_private_data, void **private);
++	int (*get)(struct discontig_kernel_page_state *state);
  };
  
  /*
+@@ -844,6 +880,10 @@ struct mmap_action {
+ 			unsigned long nr_pages;
+ 			pgoff_t pgoff;
+ 		} map_kernel;
++		struct {
++			void *init_private;
++			const struct discontig_kernel_page_ops *ops;
++		} map_kernel_discontig;
+ 	};
+ 	enum mmap_action_type type;
+ 
+diff --git a/mm/internal.h b/mm/internal.h
+index c767007c2187..b81fce5fe510 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -1516,6 +1516,9 @@ int simple_ioremap_prepare(struct vm_area_desc *desc);
+ int map_kernel_pages_prepare(struct vm_area_desc *desc);
+ int map_kernel_pages_complete(struct vm_area_struct *vma,
+ 			      struct mmap_action *action);
++int map_discontig_kernel_pages_prepare(struct vm_area_desc *desc);
++int map_discontig_kernel_pages_complete(struct vm_area_struct *vma,
++					struct mmap_action *action);
+ 
+ static inline int io_remap_pfn_range_prepare(struct vm_area_desc *desc)
+ {
+diff --git a/mm/memory.c b/mm/memory.c
+index 448342883e9d..45b21bb04a18 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -2609,17 +2609,23 @@ int vm_insert_pages(struct vm_area_struct *vma, unsigned long addr,
+ }
+ EXPORT_SYMBOL(vm_insert_pages);
+ 
++static void __map_kernel_pages_prepare(struct vm_area_desc *desc)
++{
++	if (vma_desc_test(desc, VMA_MIXEDMAP_BIT))
++		return;
++
++	VM_WARN_ON_ONCE(mmap_read_trylock(desc->mm));
++	VM_WARN_ON_ONCE(vma_desc_test(desc, VMA_PFNMAP_BIT));
++	vma_desc_set_flags(desc, VMA_MIXEDMAP_BIT);
++}
++
+ int map_kernel_pages_prepare(struct vm_area_desc *desc)
+ {
+ 	const struct mmap_action *action = &desc->action;
+ 	const unsigned long addr = action->map_kernel.start;
+ 	unsigned long nr_pages, end;
+ 
+-	if (!vma_desc_test(desc, VMA_MIXEDMAP_BIT)) {
+-		VM_WARN_ON_ONCE(mmap_read_trylock(desc->mm));
+-		VM_WARN_ON_ONCE(vma_desc_test(desc, VMA_PFNMAP_BIT));
+-		vma_desc_set_flags(desc, VMA_MIXEDMAP_BIT);
+-	}
++	__map_kernel_pages_prepare(desc);
+ 
+ 	nr_pages = action->map_kernel.nr_pages;
+ 	end = addr + PAGE_SIZE * nr_pages;
+@@ -2640,6 +2646,98 @@ int map_kernel_pages_complete(struct vm_area_struct *vma,
+ 			    &nr_pages, vma->vm_page_prot);
+ }
+ 
++int map_discontig_kernel_pages_prepare(struct vm_area_desc *desc)
++{
++	const struct mmap_action *action = &desc->action;
++	const struct discontig_kernel_page_ops *ops =
++		action->map_kernel_discontig.ops;
++
++	/* At minimum need to be able to get pages. */
++	if (WARN_ON_ONCE(!ops || !ops->get))
++		return -EINVAL;
++
++	__map_kernel_pages_prepare(desc);
++	return 0;
++}
++
++static int apply_discontig_action(struct vm_area_struct *vma,
++				  struct discontig_kernel_page_state *state)
++{
++	unsigned long nr_pages = state->__nr_pages;
++	unsigned long addr = state->addr;
++	unsigned long i;
++
++	if (state->action == DISCONTIG_KERNEL_PAGE_MAP_PAGE)
++		return insert_page(vma, addr, state->__page,
++				   vma->vm_page_prot, /*mkwrite=*/false);
++	if (state->action == DISCONTIG_KERNEL_PAGE_MAP_PAGE_RANGE)
++		return insert_pages(vma, addr, state->__page_arr,
++				    &nr_pages, vma->vm_page_prot);
++
++	/* Compound folio - have to iterate through each page. */
++	for (i = 0; i < nr_pages; i++, addr += PAGE_SIZE) {
++		struct page *page = folio_page(state->__folio, i);
++		int err;
++
++		err = insert_page(vma, addr, page, vma->vm_page_prot,
++				  /*mkwrite=*/false);
++		if (err)
++			return err;
++	}
++	return 0;
++}
++
++int map_discontig_kernel_pages_complete(struct vm_area_struct *vma,
++					struct mmap_action *action)
++{
++	const struct discontig_kernel_page_ops *ops =
++		action->map_kernel_discontig.ops;
++	struct discontig_kernel_page_state state = {
++		.start = vma->vm_start,
++		.end = vma->vm_end,
++		.addr = vma->vm_start,
++		.pgoff = vma->vm_pgoff,
++		.nr_pages_mapped = 0,
++		.nr_pages_remain = vma_pages(vma),
++		.vm_private_data = vma->vm_private_data,
++		.private = action->map_kernel_discontig.init_private,
++	};
++	int err = 0;
++
++	if (ops->init)
++		err = ops->init(vma->vm_private_data, &state.private);
++	if (err)
++		return err;
++
++	do {
++		unsigned long end, pgoff_end;
++		unsigned long nr_pages;
++
++		/* Default to abort. */
++		state.action = DISCONTIG_KERNEL_PAGE_ABORT;
++		err = ops->get(&state);
++		if (err || state.action == DISCONTIG_KERNEL_PAGE_ABORT)
++			return err;
++		nr_pages = state.__nr_pages;
++
++		if (!nr_pages || nr_pages > state.nr_pages_remain)
++			return -EINVAL;
++		end = state.addr + PAGE_SIZE * nr_pages;
++		pgoff_end = state.pgoff + nr_pages;
++
++		err = apply_discontig_action(vma, &state);
++		if (err)
++			return err;
++
++		state.addr = end;
++		state.pgoff = pgoff_end;
++		state.nr_pages_mapped += nr_pages;
++		state.nr_pages_remain -= nr_pages;
++	} while (state.addr < vma->vm_end);
++
++	return 0;
++}
++
+ /**
+  * vm_insert_page - insert single page into user vma
+  * @vma: user vma to map to
 diff --git a/mm/util.c b/mm/util.c
-index bdd5923eebc7..438170490e7f 100644
+index 438170490e7f..c5ee52aede1e 100644
 --- a/mm/util.c
 +++ b/mm/util.c
-@@ -1467,7 +1467,7 @@ int mmap_action_prepare(struct vm_area_desc *desc)
- 		return io_remap_pfn_range_prepare(desc);
- 	case MMAP_SIMPLE_IO_REMAP:
+@@ -1469,6 +1469,8 @@ int mmap_action_prepare(struct vm_area_desc *desc)
  		return simple_ioremap_prepare(desc);
--	case MMAP_MAP_KERNEL_PAGES:
-+	case MMAP_KERNEL_PAGES:
+ 	case MMAP_KERNEL_PAGES:
  		return map_kernel_pages_prepare(desc);
++	case MMAP_DISCONTIG_KERNEL_PAGES:
++		return map_discontig_kernel_pages_prepare(desc);
  	}
  
-@@ -1498,7 +1498,7 @@ int mmap_action_complete(struct vm_area_struct *vma,
- 	case MMAP_REMAP_PFN:
- 		err = remap_pfn_range_complete(vma, action);
- 		break;
--	case MMAP_MAP_KERNEL_PAGES:
-+	case MMAP_KERNEL_PAGES:
+ 	WARN_ON_ONCE(1);
+@@ -1501,6 +1503,9 @@ int mmap_action_complete(struct vm_area_struct *vma,
+ 	case MMAP_KERNEL_PAGES:
  		err = map_kernel_pages_complete(vma, action);
  		break;
- 	case MMAP_IO_REMAP_PFN:
-@@ -1521,7 +1521,7 @@ int mmap_action_prepare(struct vm_area_desc *desc)
- 	case MMAP_REMAP_PFN:
++	case MMAP_DISCONTIG_KERNEL_PAGES:
++		err = map_discontig_kernel_pages_complete(vma, action);
++		break;
  	case MMAP_IO_REMAP_PFN:
  	case MMAP_SIMPLE_IO_REMAP:
--	case MMAP_MAP_KERNEL_PAGES:
-+	case MMAP_KERNEL_PAGES:
+ 		/* Should have been delegated. */
+@@ -1522,6 +1527,7 @@ int mmap_action_prepare(struct vm_area_desc *desc)
+ 	case MMAP_IO_REMAP_PFN:
+ 	case MMAP_SIMPLE_IO_REMAP:
+ 	case MMAP_KERNEL_PAGES:
++	case MMAP_DISCONTIG_KERNEL_PAGES:
  		WARN_ON_ONCE(1); /* nommu cannot handle these. */
  		break;
  	}
-@@ -1542,7 +1542,7 @@ int mmap_action_complete(struct vm_area_struct *vma,
- 	case MMAP_REMAP_PFN:
+@@ -1543,6 +1549,7 @@ int mmap_action_complete(struct vm_area_struct *vma,
  	case MMAP_IO_REMAP_PFN:
  	case MMAP_SIMPLE_IO_REMAP:
--	case MMAP_MAP_KERNEL_PAGES:
-+	case MMAP_KERNEL_PAGES:
+ 	case MMAP_KERNEL_PAGES:
++	case MMAP_DISCONTIG_KERNEL_PAGES:
  		WARN_ON_ONCE(1); /* nommu cannot handle this. */
  
  		err = -EINVAL;
 diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
-index 2986ae6ca1e5..1098655a5f4a 100644
+index 1098655a5f4a..1d5f6b3cbd21 100644
 --- a/tools/testing/vma/include/dup.h
 +++ b/tools/testing/vma/include/dup.h
-@@ -454,11 +454,11 @@ static __always_inline bool vma_flags_empty(const vma_flags_t *flags)
- 
- /* What action should be taken after an .mmap_prepare call is complete? */
- enum mmap_action_type {
--	MMAP_NOTHING,		/* Mapping is complete, no further action. */
--	MMAP_REMAP_PFN,		/* Remap PFN range. */
--	MMAP_IO_REMAP_PFN,	/* I/O remap PFN range. */
-+	MMAP_NOTHING,
-+	MMAP_REMAP_PFN,
-+	MMAP_IO_REMAP_PFN,
- 	MMAP_SIMPLE_IO_REMAP,	/* I/O remap with guardrails. */
--	MMAP_MAP_KERNEL_PAGES,	/* Map kernel page range from an array. */
-+	MMAP_KERNEL_PAGES,	/* Map kernel page range from array. */
+@@ -457,14 +457,17 @@ enum mmap_action_type {
+ 	MMAP_NOTHING,
+ 	MMAP_REMAP_PFN,
+ 	MMAP_IO_REMAP_PFN,
+-	MMAP_SIMPLE_IO_REMAP,	/* I/O remap with guardrails. */
+-	MMAP_KERNEL_PAGES,	/* Map kernel page range from array. */
++	MMAP_SIMPLE_IO_REMAP,		/* I/O remap with guardrails. */
++	MMAP_KERNEL_PAGES,		/* Map kernel page range from array. */
++	MMAP_DISCONTIG_KERNEL_PAGES,	/* Map kernel discontig page range. */
  };
  
  /*
+  * Describes an action an mmap_prepare hook can instruct to be taken to complete
+  * the mapping of a VMA. Specified in vm_area_desc.
+  */
++struct discontig_kernel_page_ops;
++
+ struct mmap_action {
+ 	union {
+ 		struct {
+@@ -483,6 +486,10 @@ struct mmap_action {
+ 			unsigned long nr_pages;
+ 			pgoff_t pgoff;
+ 		} map_kernel;
++		struct {
++			void *init_private;
++			const struct discontig_kernel_page_ops *ops;
++		} map_kernel_discontig;
+ 	};
+ 	enum mmap_action_type type;
+ 
 
 -- 
 2.55.0
