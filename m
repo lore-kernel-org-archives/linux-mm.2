@@ -4,121 +4,160 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BFE4C982D0
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 20:45:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18D54C982D8
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 21:23:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 199626B0099; Thu, 17 Sep 2026 16:45:16 -0400 (EDT)
+	id CFD406B008A; Thu, 17 Sep 2026 17:23:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 122F86B009B; Thu, 17 Sep 2026 16:45:16 -0400 (EDT)
+	id CAEB56B008C; Thu, 17 Sep 2026 17:23:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 010A66B009D; Thu, 17 Sep 2026 16:45:15 -0400 (EDT)
+	id B9C1C6B0092; Thu, 17 Sep 2026 17:23:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C67BA6B0099
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 16:45:15 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 62EDC1604C7
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 20:45:15 +0000 (UTC)
-X-FDA: 85224434190.27.CC3E6CB
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 8B7C6100002
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 20:45:13 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ndqakYgs;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf05.hostedemail.com: domain of 3WFGsagYKCAk57rqjwpxxpun.lxvurw36-vvt4jlt.x0p@flex--wyihan.bounces.google.com designates 209.85.214.197 as permitted sender) smtp.mailfrom=3WFGsagYKCAk57rqjwpxxpun.lxvurw36-vvt4jlt.x0p@flex--wyihan.bounces.google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789677913;
-	b=3g4/8R7D29MPPFl8ABuk0iP52AHaJKggzsi07cz7qEKU/tG1m+/2pQbZFA+kKpUZAQcTWd
-	y5HAkaQxQz4j/7jKrr4ecTED6B+hkWAuNuDbnD7kyLFoz3ibnpHjGuzS2Kmksbwy03gaR4
-	BkYnY/DouQzRPsXjwrhwemlcFTo0JTc=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ndqakYgs;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf05.hostedemail.com: domain of 3WFGsagYKCAk57rqjwpxxpun.lxvurw36-vvt4jlt.x0p@flex--wyihan.bounces.google.com designates 209.85.214.197 as permitted sender) smtp.mailfrom=3WFGsagYKCAk57rqjwpxxpun.lxvurw36-vvt4jlt.x0p@flex--wyihan.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8F7EB6B008A
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 17:23:39 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8ADB4804CE
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 21:23:37 +0000 (UTC)
+X-FDA: 85224530874.20.AF69ACE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id BCCAB80003
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 21:23:35 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=VUF866Xg;
+	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789677913;
+	s=arc-20220608; t=1789680215;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GhFaT1pWqaSYrZ5igcNnVG6b2J5qZxAlydhAJEnR0ZM=;
-	b=JUpEBRTRAsh0HNe5Jz5oZOFuDJsBTWgAD2LmfCKQD+BisTzjHLtqTHP6GkGEtpNjtp1Qtk
-	x2BePSzM5afknuZR767ycdbSFG1rjmWt2QecrJd33jDRBQ5fU633k9cWQeeOQb/lIr1ykA
-	ZoUjI8Xso/WhKXeAm/OICYQ+P+8bU1g=
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2dd753a52bbso1434455ad.0
-        for <linux-mm@kvack.org>; Thu, 17 Sep 2026 13:45:13 -0700 (PDT)
+	bh=NUNrBmtamoGTZdnjr2/yL2y2w6DcpJMvTMICnOHXcqc=;
+	b=lt6QrMVeFT4fRvKLmKe1ZTgd8MF5PwP12qIVjwRIgGhUdbewP9gke6dCQGpRw+O+KS3nMO
+	0RYugiyTKdSScJpJjvEGwzBugkKy++lKCi3N0pV+toCRNHXnYhxVNsbsR9H4KrpSBFjkNu
+	FcLk1HXWtMHfXjWLl/6/aUE5fEMSoWE=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=VUF866Xg;
+	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789680215;
+	b=pLw7TpUMoY0tfsHGvSSYHyMTEm/1ExvZnmO+8vHs7GYAPN42ZglDOQVDgOqS5F3clDZGb+
+	H9cVRr4yytfKVUTaND7pB4Z4it7llyWTvgg8LXl+vtP37ruAE3agLlUumfHmkQZG1cqOsW
+	eWzoT2MqcpFtLL1EOP2VJMN3B6/5Gjw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 68D49601EF;
+	Thu, 17 Sep 2026 21:23:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5062D1F000FF;
+	Thu, 17 Sep 2026 21:23:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789677912; x=1790282712; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=GhFaT1pWqaSYrZ5igcNnVG6b2J5qZxAlydhAJEnR0ZM=;
-        b=ndqakYgsB0UHsfa8H2l3N6BvFmhi5j5TuH5NkPvPjO9ArBl/eFs9oVVdzBVZ1VRiy2
-         9yb97AGsHHWtbFK8VUu8PVyYUH4dlALtlDRuH3BxncRHKtyD+5KdFig+MtpSjDr0fJR7
-         lnthW59akdi/XPK6iZdaLg0McOlxdbOuPb5NtrEvVtYudkdjDZnrtP4Nb4KXaMSmSYo0
-         Hgghk980+XX39zDi6DL4oKWsU0//G+3Lo/BQMOtiBSnmbpKE+F43kmrbH7jjIf94hYzJ
-         JbAsXglmwNejT3TBwdPWTewTGs4r7DA0ojbS0mx48qKPCIzxWXqiFcDLI73lyefFinp4
-         hC2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789677912; x=1790282712;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=GhFaT1pWqaSYrZ5igcNnVG6b2J5qZxAlydhAJEnR0ZM=;
-        b=DtusvrcxZSog4bgpu1JHeldWp3hf/2mfUuqe4DTLgeWxveW5H4XYI8qk4iJjm6iNY3
-         g4POPoZdu0MuEMvKTGF3x/MfHaUKouBH4HhAhsIRRH4Z4Nf2z6Dr1iV5T/WxJCPRetY6
-         Xe0MUHKL+tOHaJ5d3OnfU32vDTfG6W/qVGHSyv2CuZ1eIuzoqOjwC9IxkbHtqy8q4zHZ
-         DMaTWzAHzRvLogCs2klwqEjFLbEYUAItj+taFMvCg4+gWPgKyuxM9p51Mwr6uLglQJ3f
-         H8uBqOAl8iN/uLUfZQKCHrXhPzKQwk1mjmr51IM6EoYt2bXx967mGFs0lxmZEpIqOMAW
-         nTag==
-X-Forwarded-Encrypted: i=1; AKwUvBw3tPiJOSTjjAyWb0gMoIXObOiTaCxODykEax+4w6XMQ4qFWUYQjYc8ydkYKxaQP6JP4QwKdryEAQ==@kvack.org
-X-Gm-Message-State: AFuF++lyjZ2i8qiaBeiW/qJCVrhkaY23H4P46ZsxrKfSfQ4h3gTKo3CG
-	6xaaEfuhF+ZCrz2iyqNmSF1TjFVqLp3dpbhuU73JQW6zXSnAcvFRqWjkS4Uthz4TG61M4xZAAij
-	gtFAylQ==
-X-Received: from pjzm16.prod.google.com ([2002:a17:90b:690:b0:39d:9b47:4551])
- (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:224c:b0:39b:61f1:8032
- with SMTP id 98e67ed59e1d1-39e54e7c18emr677747a91.16.1789677912150; Thu, 17
- Sep 2026 13:45:12 -0700 (PDT)
-Date: Thu, 17 Sep 2026 20:43:51 +0000
-In-Reply-To: <20260917-memory-failure-mf-delayed-fix-v6-0-4b00856b5364@google.com>
+	d=linux-foundation.org; s=korg; t=1789680214;
+	bh=NUNrBmtamoGTZdnjr2/yL2y2w6DcpJMvTMICnOHXcqc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=VUF866Xg25rkEYuIAeRh8+Jby3Nsgi0QqQgf+tcoe0C7lFWZo2kW07wobdbQTXONa
+	 IrDTi0vtFdOje+nXofZ7qVIuq8UFrLKFeRBPgY0JvevdHLKjcg92+cAb0Z4/yQgheh
+	 XekOEPMPEkzPT/6xM5Mwlpf+y3YNL1+GloA5Mf1w=
+Date: Thu, 17 Sep 2026 14:23:29 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato
+ <pfalcato@suse.de>, David Hildenbrand <david@kernel.org>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+ <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Dennis Dalessandro
+ <dennis.dalessandro@cornelisnetworks.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Leon Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>,
+ Stephen Smalley <stephen.smalley.work@gmail.com>, Jaroslav Kysela
+ <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, Alexei Starovoitov
+ <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko
+ <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya
+ Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, Ryan
+ Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
+ <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Usama Arif
+ <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert
+ <dgilbert@interlog.com>, "James E.J. Bottomley"
+ <James.Bottomley@HansenPartnership.com>, "Martin K. Petersen"
+ <mkp@kernel.org>, Jaya Kumar <jayalk@intworks.biz>, Simona Vetter
+ <simona@ffwll.ch>, Helge Deller <deller@gmx.de>, Sebastian Reichel
+ <sre@kernel.org>, John Hubbard <jhubbard@nvidia.com>, Peter Xu
+ <peterx@redhat.com>, Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov
+ <oleg@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner
+ <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+ <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim
+ <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, Rik van Riel
+ <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Juri Lelli
+ <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
+ <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
+ <airlied@gmail.com>, Will Deacon <will@kernel.org>, "Aneesh Kumar K.V"
+ <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, Arnd Bergmann
+ <arnd@arndb.de>, Muchun Song <muchun.song@linux.dev>, Oscar Salvador
+ <osalvador@suse.de>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan
+ Kara <jack@suse.cz>, Marc Zyngier <maz@kernel.org>, Oliver Upton
+ <oupton@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, Madhavan
+ Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>, Paul
+ Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
+ <aou@eecs.berkeley.edu>, Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Janosch Frank <frankja@linux.ibm.com>, Claudio Imbrenda
+ <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens
+ <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, "David S. Miller"
+ <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, Alexander
+ Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
+ Matthew Brost <matthew.brost@intel.com>, Joshua Hahn
+ <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park
+ <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, Chris
+ Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Kemeng Shi
+ <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He
+ <baoquan.he@linux.dev>, Youngjun Park <youngjun.park@lge.com>, Johannes
+ Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Chengming
+ Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@kernel.org>, Miklos
+ Szeredi <miklos@szeredi.hu>, Xu Xin <xu.xin@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-usb@vger.kernel.org, linux-rdma@vger.kernel.org,
+ selinux@vger.kernel.org, linux-sound@vger.kernel.org, bpf@vger.kernel.org,
+ linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+ kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+ fuse-devel@lists.linux.dev, Takashi Iwai <tiwai@suse.de>, Emil Tsalapatis
+ <emil@etsalapatis.com>
+Subject: Re: [PATCH v3 00/40] mm: make VMA flag semantics explicit,
+ eliminate VM_SPECIAL
+Message-Id: <20260917142329.369cd6539261d590600ce7ec@linux-foundation.org>
+In-Reply-To: <20260917-b4-mmap-prepare-vma-flag-sanify-v3-0-4583d8a23bca@kernel.org>
+References: <20260917-b4-mmap-prepare-vma-flag-sanify-v3-0-4583d8a23bca@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
-References: <20260917-memory-failure-mf-delayed-fix-v6-0-4b00856b5364@google.com>
-X-Developer-Key: i=wyihan@google.com; a=ed25519; pk=cRi0fKzS5BMxlHyHY2pJv3w/1zcgfYKr6EYGYppdMYc=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1789677906; l=5191;
- i=wyihan@google.com; s=20260319; h=from:subject:message-id;
- bh=oCZbQTSw2Yyl7B5BQDviNb8o0kDmMbfd/szlr3bi9Xc=; b=2sjWrqtdOcssMiZtTNK//2RmRxIpXb5yhivrXeyIB1v0t2FyBFn36kmbEWN2P8Ax0XR7UqVYg
- PdjG1ilLGPiDeSDyMaCfp7cPG5UuHvIdRtwg6rJOtaSMWsW7wX2rc6R
-X-Mailer: b4 0.14.3
-Message-ID: <20260917-memory-failure-mf-delayed-fix-v6-5-4b00856b5364@google.com>
-Subject: [PATCH v6 5/5] mm: selftests: Add shmem into memory failure test
-From: Lisa Wang <wyihan@google.com>
-To: Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Shuah Khan <shuah@kernel.org>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, Andi Kleen <andi@firstfloor.org>, 
-	Hidehiro Kawai <hidehiro.kawai.ez@hitachi.com>, Rik van Riel <riel@redhat.com>, 
-	Yu Zhang <yu.c.zhang@linux.intel.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>
-Cc: rientjes@google.com, seanjc@google.com, ackerleytng@google.com, 
-	vannapurve@google.com, michael.roth@amd.com, jiaqiyan@google.com, 
-	tabba@google.com, dave.hansen@linux.intel.com, Lisa Wang <wyihan@google.com>, 
-	Isaku Yamahata <isaku.yamahata@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: BCCAB80003
+X-Stat-Signature: n7achckfh6bub8q9wmhynckoqopus8yo
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 8B7C6100002
-X-Stat-Signature: h6adjzqarmciuto9sjmdshnf5n95j35b
-X-HE-Tag: 1789677913-288350
-X-HE-Meta: U2FsdGVkX1/3Pv5ZPCt4/YT5Zxmqujz1n+DJpQNuVU7hLsveIVUsTpSW44vfkUgg7UERyEP1dz921GLcLp8vR3rAZOf7XMjYD3+qDuUGKvuydz/Sth/IPt5ExGj77AdFYCs2wHzmpRfogZhpjwpMdNHyPVGdN7xPkV7y/BB8C0Ruu5r1I6ltJ5SB2+32/DN3FMf9yAsvoLPp6tosSlSaqqjUSOmRSJ0MWtfGczATR4zoGbwDlgmipg7LaXACaFg1mSn3m3LkGXm75H1M9TCHDyoN6SrUpX3Ny6DBbIBWcWRV5xi2k4wDpQnjGQ/chQicVCKA+/8fWElC2VtBLg7XITj+I5LZBjNq7eehy3JDStrGx7lhgDQI4E801kZ+ks7xc6NODHYgZ26MbhNl4tfUK5y1B89+7HT14SSnvQAqsQk6n8h8hdCxzvhL3jflz2OiGtDba1jNVanpDROTt/7Gq0IwAngCAuWVtTJyFwDGKDRCOAkzdGVsq10G9Q0Zikt5w15yIQWT9QYir+S5So0zMvwC/nJ2hVFu4Qq2dktmP4JgWDlGrMgqiL9a6X9ewbW6YOucQCFiCKhURvv/oP6niML/8Uo4J/7i33KAoKoC3kBd9T4QwlSU4OodNmCXVgiQDpodcwMvEVLpEfvdMeN+C4vpeAqhjUR2wQMhYgzXzoL22xBFkfp1zT47/r6zbgukT+ej+r5agRGz41tV4G/xWEu1ih/iHM0EfFL08/XWxcDEZR77syj+nvVV/GlVEpIGrlKxjsOj1xS0b/2qaQh1wIC8F7t9HSr0ja02y1XXIiZFfxhJfjqu753c2LgxNOStXHg4ZGle2RkvM4SwHxu63zyGBqq0vyhr01urxYAZdlJymVhH5QT5NRLdeiV81k0PtQPSl+QFNRkr8ycqtvna8y5H7GsnkstMqS5MwIH6rZ0mBjP2hNtI1dF/xBGwjNstc5cjfkt5HMsReHJ/ube
- CwIsc2Jn
- STLR57epSA/G/sZgedHBZSspvUbD4p8k1w7vMzsaKD2aWsuCUUBYSO8tTPKC81044F9lNl6y21fANvCdeWqyVJBMBw+PfzMiYruVlQIm6WoUSVdrcB8mABVWJAq+YyteTtmsSe50e2m/klcYb1F7HhaIp5UpExPebVOWz0Au9lxxyeHFUlq+8giFQK72vbnYCh7RCqIkTiOz8R3MhwUt6Mp5qIkzlkGwbERTNpVqfUM+jLav/lsD3ajQz1bkNgr+4u5H1vzHPK94oo0S9I0yyCu8jJG/5hsemZjJcaAAxGD63cBBPQX0OdI/yNV1L3c8scgXn419BzmEPxJPk8Mbq5YEDd/4VN8cs5Ul5RwxhX3aBlKer+WgZXjs7qMYfn4+T+AJtOZRiJ3X1+aR9iJRVx6JsgDNxzO+OVKakhQMRXUT5hl7SiieAW//bSAjpHTTVjLOnVK3wim5gjH9Ct1aUP0EIBWL9Kr2v4Uyru3ujCdTYpdxMmYwX9bya8vDjY/ChAS2YiPp+RN2tNxpmMPZgcXrZe18SoGB/djIUlovBUj7IFtMVbhKqFEVPzV3+NIj1k1xlZTwybGdxk1CxsXcThxWTDmobTANJH77VHBgQqnz6Xd5bqLCjharLwLmGLbmm6ymdEadSdg14V94=
+X-HE-Tag: 1789680215-642259
+X-HE-Meta: U2FsdGVkX182Nyxa5/UtOAgpGpt04PyPevQ8DPNiUlnQHTXUDgl9VMFHQbi4rKdlDQAUUavY2rJe8+dRNuZqIltHEc2HwSNdb3q46nlHF2YV6G8KX5rYpCAaR1lqVI1LPYxirwkt31/3uH6U80plUWZrD2ZlJYLmbED1gxigPUSqA+SWB+viJ9CufpUEhFkyPVUJW0NupTz+gHXXQ9Sht1UGaqFyvZcMl7r4112FOgqA4rYLasGknUnNGhjB1k3ueFkV9RpodIcFc5STY+vVkBg/gTqZiMGTUBp9/W4urGG/V0r5EPgpJ44YKjpa+EoB+HfQX3sHQQ3xaONuRPXLM3zHt6GRXSrsYFu1PPiAzRxyDCksDYRdvFfUGR4cxb2bdbzSlglTEJIGzEWeO0pM0n9Jrrca+tvJAoJ2IyCv0rR4FBXLOIJJPUgxB8CxNckvD+SX3uT7rOLkAsBbm0KEL6AMHN7ajwQKj+XVvoiwrgmusw08Y/VmSCk0cUIFVUvIP2iIcVvpZ8spLIGI9h0NFN2Wz8FAAutpIyG/ZUwuQXnvSuqcZzjNWccBJhZoWiXHcLhIDG+AAst8XbmkvXm1Fi+CM5EtjLGtIK50VuC0RqdedIxdKHVNEKj0UbLOrXaA9QjVlxXZpPAz2m8FnESzsK3SKbXSXmBpo4ZHlYWf6UZioZhZUHaSEo/oi/qV7yQl967l7LPfqSGZNhaH/+yhTtWJNHMTz7+diisCkl2rCUJcSCxoKVUYinLEwQFDbRGY/WxXeCmgOoDXU3zE3fkBfXNizsnd3uGA8IWNBG7jThKfGZZCDUlOHqNsFZvoAbfEjOgSOtsKcT8ThYLLrPomauB337ZMdlxjrtk/gvhHUFeANe92NkE72VfS0/oLeNVJ0uLz63bIcOkqinBN5LUaVLUDyCOuT5MCSKD/xa+7X4ogx+JLCcuR3rbkSO23lguU4j0x0q+oHoJxSOX2caS
+ vKfutgPW
+ olpCWZVQCh/JiXE8XS4sInxZEvdZSiCNsts3Kif8puVPHdbL4WOSyAidwj/c5EgrQP/3czS3lr8RKx0UJOxnTAzIjOkp4Hy9W0wU5b38hJOA7525hBPDr4foqF97Cu6h5hWJ6RURJtkGIvMwNP8NZ+SXqQMgqf6GRbWuOAEfG7dCu/NG2f+SPaz0QFdPxCoCfUd1mLTHH3f/ogZAjLeYVe+L5eE+rwwwZx4B/o6pSb5v5AjC3cfjLHq9vlaipQW0m7aJyqrff/pNIp+VZcnsqisYKkN6x1Ltl2DTge9XvCazCxW3foU/WOjq0G6rh4dWuUgV/115HdZZ0/q84JG9I2hr3pf8265+LMCt61Y90ssOneU6lZBsHY93k7vKZ4yajPCWZM+Wh6FmhbBweqIpK+yGl26V1Rk1wItIx09eveLhvavSMeVGdhJSgbX0VB8Syj/ZZLmhVvKHrQICcW9BVvBk0HiLx7CywZNckkpPqyLNTg9WWHkhQzY5LPOubHaa5arpOS4n5qFLdmzptGo8X4J0RHazO/GucR0G711JgNYnYuIaDvlH+88CVvbWFZoo1WM/frCaT9TQ19PuVrzmkIaKDEpc3+DOZN2gTtJdaN4VkomTEZY5aHALxWspAh3PeNNl9n18avvZIf6/HuQqe7c/7x96hLm0F2KLXTQnA7uq3ROLy0HLPT8cTtH6sTpkWEDn5w9JpRYqOaiC7kgSPRlaiwG//Kb5YKDvjpRtmoQqsNd2GGGYgcNeJ7SZKZFLRT2rOYADcAeN2mmYwFpepunaPRINKkLMmwAkvDZ/3oM3EhFDTrPv2hZ0WT7OYtH0yHWZIey6tsX5w4WSyW2fBoEQ1Ot9HCXf/uIpG7k+FUoanyU4jO8xmdsxfn8Rz/10AHwt/KrE3Ipxus8S+0vxZ/xReA6E5ujsURf5xKxAoFzOg8Zav4VvYiEnV9IYaiW+3lLcaKpC6/fySAHkJNjyetYrQ0r4P
+ 7vGWMI8p
+ uNRrez/0YUtyGTPDAyOU3K6dYaW7ptTk0m4M6WajsoynowSkmlYpimsNL7+Wa55vinWc+s/GhBET14ADvdx8veStzgFC85RMe60uXrft7i3CWe1BmloNeUzIfryiCoJdWp36lNsYvPjEAvVcvFgyrXP77GjkB06ba7QL3l4x8F326hYJfzLL2Ii5q05n8fpS+ULgGIjdxDcTp9E9DAwgiClLfaVRu5tHISn8boEOzMOeeURl5k/0plrJ5CKS4c/Bg1Gg/zGZ+g4IzwxA0hzRLQ3+G7yoALGZPs69pjudHIupw1oI/awms7LAuSez3yH3nUlVlE4FzY4Dwf6q8FTXPzodN0p3VNUD4z8+rWlyiFKwXJdkOlRVO8BjuJzp1UAKALz1buL2HtbN0rZBw/UMOlleH0v0lbYP25JJ60RRedFet6BjFHyGuaSiJHeB5yJqtAwFSHKa2YQWnfNDTuV70iRnZM5DzWxlmquL0autqiiIdepBa42R1yIk6jQLcsaJjPVLWwls3rcZWfLgCmD5Ap/olnWK3DGdx53znogFvflPqYRYiQpF1Mj/9OLnyzAS419+FPFsy/UpjsqQHJA0E3hyxq7Ro+gnWXrwht6BfQoVWNgvCfpMogXQxA8v6T05UJJTWV7o66DhM6FrQsI6hBUHxdR5k3zRXKByPWSRBYCOqG3pVk2Vr0OzcStSclennt2BeDTvc19zEnprZhTvBx2fMI7Wa6fGh6VX3WR8rKypxGUFIfy8VAoW+mBamJnif3dElJW4vafhMRjqqqSZsueuTPS1XPGZNISPxVx+t/Eo8sGTOKe7aPw96OgU778BF/+p4euaRouni/r1iO1rkjghPtCYp/LAOtALdiSmTR/9hPwLK2NW46RVxTO54jXjrNOCtAEqJetJVynQnnN6Uew04qCpNC8uv28JYd/EhdmJ/cIpxJLWbhfnqsHepx2ZL1dswBIkwx9IR4LRWC8EwhG1ZcgFZ
+ v7dHn8h8
+ eJtvEpV/MIhP5s8VyoFreoi8tnGOk4CuTIwN7ZZPT1xpzjMrBdyXtUuX64uMXLpo50Q1DLIRC5xkWfZ8jyY0nZlIrvixuah7FadgQuizk5NW61BwEWN6AxNaJRp8cszdzRL/FqVRET6bkHDoU2+ai6G4cCzef5GXkVCzwB5m73x7Lm0uXaRU7Rohj6AeeChDkbXecJ+xyKZKc3PMczVGygj01lkwMKmtDYLmX+/ysA0Zsdra2FF2/Yv/Ou/52yNpQhzUeiKN+k042hS9+7L6TO+pl0jKy+MKXwArrcJWJ0/DIENY65nckVKmoot5BRztuFdLa44CMnDc4uie/O9edSYjfx6qYAaVI6vpEnLoPPtu+VICn7n0rjUyEpNNvCl4iXe7FBTxy+NVQPiR0b/RV6DQG3OX4X+QrqPiI/XRv1PuMAhT9yiVejubx982+b9bEh5rK7hLOQTAL8Qch3HX107fW8zp0lXfAYKm6BpI1pPRiSEtMs5irPjIjSxFL8xFwWomsHFP71Q+PYEdIp0MI9OsLeuHJ57kROmDji3JLOa9RIPnPkhm6qzwO/If+XK3HjkbfNfhdatEMuOyaqjRYeYPKOrUDZZkkES5soAYzE8CMoDXk74KrhT4qDbUoCTQvIDPVjvCLuJUZzC+DLfDnG+EwLLSZjrYIkPDFBy1c/G7cVm0KFLLXnkyQNMnKu8SqaBeyFhUQgrC6vk1ITwTkxXJhqBOzsMd6CZqRGaPdWW+CoYx2Pwm5XCitbUekOCY2jldcMAnC1pfVEOpli77/O9tYO3tw8ftODGRtDNM+tiJxsusw+xT/w7tl0s2+ytNecMyAehg+2mlIq7qp1++jQ8VqpB5vIpWcvLnT1GEVP7mai80pWyP7GdvTvCiB28esMw4ZKKP5hwVvGX9SxIq0gaHFza5QeIc3yj4fVabuAIuC9hfGj0c23p53Bu1rMLS+gqyhD82Gi2mdfowFeV62IDcqBNWX
+ iB2zGatN
+ g4yztOc6xPevKridOXXNyTijswUO9s4c3/oLbZutztz9T9aLfxAZcZLDqQsHq8v1ar/Xl8h9TAXYFa4eB9JYOO21RAP3DttJwquZnNPPZ2NlQvmswkwLqCcYgu7ifC274K7MDdPgrVqNNujpCdrghs1ldTTfe9T0DD4isLxDQ1ZS1SFrDWO3P2m92ptnZaqfRzqybuK9MYR5JRzpsrD4BIgYbz/dl9oH4FNzrRTTAfXozzdRsBIY9kuhRcA2Rin6v21FFkfaaJ7eocj9NSaUGdO2o8O2i7WtAc73P0QjiSO1lB/IEHtTb74bOnTquBwZ/pSqdagsiWQGI8k9VJl0fjPNEg0aut2i8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,184 +165,234 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a shmem memory failure selftest to test the shmem memory failure is
-correct after modifying shmem return value.
+On Thu, 17 Sep 2026 17:22:09 +0100 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
 
-Specifically, test the expected behavior under various scenarios
-combining page dirtiness (dirty vs clean) and failure types (hard vs
-soft):
-+ Dirty + Hard: Trigger a SIGBUS on injection, and trigger another
-  SIGBUS when reading the page again.
-+ Dirty + Soft: No SIGBUS is triggered, and the original value can be
-  read successfully.
-+ Clean + Hard: No SIGBUS is triggered on injection, but trigger a
-  SIGBUS when trying to read the page again.
-+ Clean + Soft: No SIGBUS is triggered, and the page can be read
-  successfully.
+> The VM_SPECIAL / VMA_SPECIAL_FLAGS mask conflates several unrelated
+> properties:
+> 
+> * Is this kernel-owned, whether MMIO, kernel-allocated pages, or ordinary
+>   pages a driver maps itself?
+> * Can it be expanded or merged?
+> * Is this a 'weird' case like mlock where migration might race and we
+>   'have' to set invalid flags to notify?
+> * Is it another 'weird' case where we just want to stop GUP from touching
+>   it?
+> 
+> ...
+> 
+> This series brings some order to things by both limiting what drivers can
+> do with VMA flags and switching to using predicates that describe
+> behaviour, not arbitrary flags.
 
-Acked-by: Miaohe Lin <linmiaohe@huawei.com>
-Signed-off-by: Lisa Wang <wyihan@google.com>
----
- tools/testing/selftests/mm/memory-failure.c | 114 +++++++++++++++++++++++++++-
- 1 file changed, 111 insertions(+), 3 deletions(-)
+Thanks, I've updated mm.git's mm-unstable branch to this version.
 
-diff --git a/tools/testing/selftests/mm/memory-failure.c b/tools/testing/selftests/mm/memory-failure.c
-index 1a5a32e22cce..d5d17a262c00 100644
---- a/tools/testing/selftests/mm/memory-failure.c
-+++ b/tools/testing/selftests/mm/memory-failure.c
-@@ -29,9 +29,14 @@ enum result_type {
- 	MADV_HARD_ANON,
- 	MADV_HARD_CLEAN_PAGECACHE,
- 	MADV_HARD_DIRTY_PAGECACHE,
-+	MADV_HARD_CLEAN_SHMEM,
-+	MADV_HARD_DIRTY_SHMEM,
- 	MADV_SOFT_ANON,
- 	MADV_SOFT_CLEAN_PAGECACHE,
- 	MADV_SOFT_DIRTY_PAGECACHE,
-+	MADV_SOFT_CLEAN_SHMEM,
-+	MADV_SOFT_DIRTY_SHMEM,
-+	READ_ERROR,
- };
- 
- static jmp_buf signal_jmp_buf;
-@@ -157,17 +162,22 @@ static void check(struct __test_metadata *_metadata, FIXTURE_DATA(memory_failure
- 	case MADV_HARD_CLEAN_PAGECACHE:
- 	case MADV_SOFT_CLEAN_PAGECACHE:
- 	case MADV_SOFT_DIRTY_PAGECACHE:
--		/* It is not expected to receive a SIGBUS signal. */
--		ASSERT_EQ(setjmp, 0);
--
-+	case MADV_SOFT_DIRTY_SHMEM:
- 		/* The page content should remain unchanged. */
- 		ASSERT_TRUE(check_memory(vaddr, self->page_size));
-+		/* FALLTHORUGH */
-+	case MADV_HARD_CLEAN_SHMEM:
-+	case MADV_SOFT_CLEAN_SHMEM:
-+		/* It is not expected to receive a SIGBUS signal. */
-+		ASSERT_EQ(setjmp, 0);
- 
- 		/* The backing pfn of addr should have changed. */
- 		ASSERT_NE(pagemap_get_pfn(self->pagemap_fd, vaddr), self->pfn);
- 		break;
- 	case MADV_HARD_ANON:
- 	case MADV_HARD_DIRTY_PAGECACHE:
-+	case MADV_HARD_DIRTY_SHMEM:
-+	case READ_ERROR:
- 		/* The SIGBUS signal should have been received. */
- 		ASSERT_EQ(setjmp, 1);
- 
-@@ -263,6 +273,20 @@ static int prepare_file(const char *fname, unsigned long size)
- 	return fd;
- }
- 
-+static int prepare_shmem(const char *fname, unsigned long size)
-+{
-+	int fd;
-+
-+	fd = memfd_create(fname, 0);
-+	if (fd < 0)
-+		return -1;
-+	if (ftruncate(fd, size) < 0) {
-+		close(fd);
-+		return -1;
-+	}
-+	return fd;
-+}
-+
- /* Borrowed from mm/gup_longterm.c. */
- static int get_fs_type(int fd)
+> v3:
+> * Fixed up bug in patch 1 as reported by Mike - have to delay setting
+>   map->vma_flags until after action prepare, though map->vm_file needs to
+>   be set before for correct reference count management.
+> * Updated 4/40 to add a symmetric vm_end check as well as vm_start in case
+>   of a dangerously insane driver, as per Sashiko.
+> * Updated 8/40 to check if a driver did something REALLY stupid like having
+>   a NULL discontig_kernel_page_ops ptr, as per Sashiko.
+> * Updated 15/40 to trivially synchronise userland test comments.
+> * Updated 17/40 to correctly duplicate code to the userland VMA tests as
+>   per Sashiko.
+
+Here's how v3 altered mm.git:
+
+
+ mm/internal.h                   |    4 ++-
+ mm/memory.c                     |    2 -
+ mm/vma.c                        |   34 +++++++++++++++++-------------
+ mm/vma.h                        |    3 +-
+ tools/testing/vma/include/dup.h |   24 ++++++++++++++++-----
+ 5 files changed, 45 insertions(+), 22 deletions(-)
+
+--- a/mm/internal.h~b
++++ a/mm/internal.h
+@@ -244,6 +244,7 @@ static inline void vma_close(struct vm_a
+ static inline int mmap_file(struct file *file, struct vm_area_struct *vma)
  {
-@@ -355,4 +379,88 @@ TEST_F(memory_failure, dirty_pagecache)
- 	ASSERT_EQ(close(fd), 0);
+ 	const unsigned long prev_start = vma->vm_start;
++	const unsigned long prev_end = vma->vm_end;
+ 	const vma_flags_t prev_flags = vma->flags;
+ 	int err;
+ 
+@@ -263,9 +264,10 @@ static inline int mmap_file(struct file
+ 	if (unlikely(err))
+ 		return err;
+ 
+-	err = mmap_hook_validate(prev_start, &prev_flags, vma);
++	err = mmap_hook_validate(prev_start, prev_end, &prev_flags, vma);
+ 	if (unlikely(err)) {
+ 		vma->vm_start = prev_start;
++		vma->vm_end = prev_end;
+ 		vma_close(vma);
+ 	}
+ 
+--- a/mm/memory.c~b
++++ a/mm/memory.c
+@@ -2653,7 +2653,7 @@ int map_discontig_kernel_pages_prepare(s
+ 		action->map_kernel_discontig.ops;
+ 
+ 	/* At minimum need to be able to get pages. */
+-	if (WARN_ON_ONCE(!ops->get))
++	if (WARN_ON_ONCE(!ops || !ops->get))
+ 		return -EINVAL;
+ 
+ 	__map_kernel_pages_prepare(desc);
+--- a/mm/vma.c~b
++++ a/mm/vma.c
+@@ -2797,15 +2797,15 @@ static int mmap_validate_vma_flags(const
  }
  
-+TEST_F(memory_failure, dirty_shmem)
+ /* Check to ensure a driver hasn't done something crazy. */
+-static int mmap_validate(unsigned long prev_start,
+-			 unsigned long curr_start,
++static int mmap_validate(unsigned long prev_start, unsigned long prev_end,
++			 unsigned long curr_start, unsigned long curr_end,
+ 			 const vma_flags_t *prev_flags,
+ 			 const vma_flags_t *curr_flags)
+ {
+ 	bool was_maywrite, is_maywrite;
+ 
+-	/* Drivers cannot alter the address of the VMA. */
+-	if (WARN_ON_ONCE(prev_start != curr_start))
++	/* Drivers cannot alter the range of the VMA. */
++	if (WARN_ON_ONCE(prev_start != curr_start || prev_end != curr_end))
+ 		return -EINVAL;
+ 
+ 	was_maywrite = vma_flags_test(prev_flags, VMA_MAYWRITE_BIT);
+@@ -2843,7 +2843,8 @@ int mmap_prepare_validate(const struct v
+ 	    WARN_ON_ONCE(desc->action.type != MMAP_NOTHING))
+ 		return -EINVAL;
+ 
+-	return mmap_validate(prev_desc->start, desc->start,
++	return mmap_validate(prev_desc->start, prev_desc->end,
++			     desc->start, desc->end,
+ 			     &prev_desc->vma_flags, &desc->vma_flags);
+ }
+ 
+@@ -2851,19 +2852,22 @@ int mmap_prepare_validate(const struct v
+  * mmap_hook_validate() - Ensure the driver hasn't violated invariants in
+  * its f_op->mmap hook.
+  * @prev_start: The start of the mapping prior to the mmap hook.
++ * @prev_end: The end of the mapping prior to the mmap hook.
+  * @prev_flags: The VMA flags set for the VMA prior to the mmap hook.
+  * @vma: The VMA after the hook has been applied.
+  *
+  * Returns: 0 on success, otherwise an error.
+  */
+-int mmap_hook_validate(unsigned long prev_start,
++int mmap_hook_validate(unsigned long prev_start, unsigned long prev_end,
+ 		       const vma_flags_t *prev_flags,
+ 		       const struct vm_area_struct *vma)
+ {
+ 	const unsigned long start = vma->vm_start;
++	const unsigned long end = vma->vm_end;
+ 	const vma_flags_t *flags = &vma->flags;
+ 
+-	return mmap_validate(prev_start, start, prev_flags, flags);
++	return mmap_validate(prev_start, prev_end, start, end, prev_flags,
++			     flags);
+ }
+ 
+ static int call_action_prepare(struct mmap_state *map,
+@@ -2900,15 +2904,9 @@ static int call_mmap_prepare(struct mmap
+ 	if (err)
+ 		return err;
+ 
+-	/* Update fields permitted to be changed. */
+-	map->pgoff = desc->pgoff;
++	/* Update first so file refcount tracked correctly. */
+ 	if (desc->vm_file != map->vm_file)
+ 		map->vm_file = desc->vm_file;
+-	map->vma_flags = desc->vma_flags;
+-	map->page_prot = desc->page_prot;
+-	/* User-defined fields. */
+-	map->vm_ops = desc->vm_ops;
+-	map->vm_private_data = desc->private_data;
+ 
+ 	/* It's invalid for mmap_prepare hooks to clear vm_ops. */
+ 	if (!desc->vm_ops)
+@@ -2923,6 +2921,14 @@ static int call_mmap_prepare(struct mmap
+ 	if (err)
+ 		return err;
+ 
++	/* Update fields permitted to be changed. */
++	map->pgoff = desc->pgoff;
++	map->vma_flags = desc->vma_flags;
++	map->page_prot = desc->page_prot;
++	/* User-defined fields. */
++	map->vm_ops = desc->vm_ops;
++	map->vm_private_data = desc->private_data;
++
+ 	/*
+ 	 * MAP_PRIVATE-/dev/zero mappings are an ancient way of getting
+ 	 * anonymous mappings. Rather than allowing these mappings to be odd
+--- a/mm/vma.h~b
++++ a/mm/vma.h
+@@ -786,7 +786,7 @@ void vm_area_free(struct vm_area_struct
+ int mmap_prepare_validate(const struct vm_area_desc *prev_desc,
+ 			  const struct vm_area_desc *desc);
+ 
+-int mmap_hook_validate(unsigned long prev_start,
++int mmap_hook_validate(unsigned long prev_start, unsigned long prev_end,
+ 		       const vma_flags_t *prev_flags,
+ 		       const struct vm_area_struct *vma);
+ 
+@@ -851,6 +851,7 @@ static inline int mmap_prepare_validate(
+ }
+ 
+ static inline int mmap_hook_validate(unsigned long prev_start,
++				     unsigned long prev_end,
+ 				     const vma_flags_t *prev_flags,
+ 				     const struct vm_area_struct *vma)
+ {
+--- a/tools/testing/vma/include/dup.h~b
++++ a/tools/testing/vma/include/dup.h
+@@ -1667,22 +1667,36 @@ static inline bool vma_is_kernel_owned(c
+ 	return vma_flags_is_kernel_owned(&vma->flags);
+ }
+ 
++static inline bool vma_flags_is_fixed_mapping(const vma_flags_t *flags)
 +{
-+	int fd;
-+	char *addr;
-+	int ret;
-+
-+	fd = prepare_shmem("shmem-file", self->page_size);
-+	if (fd < 0)
-+		SKIP(return, "failed to open test shmem-file.\n");
-+
-+	addr = mmap(0, self->page_size, PROT_READ | PROT_WRITE,
-+		    MAP_SHARED, fd, 0);
-+	if (addr == MAP_FAILED) {
-+		close(fd);
-+		SKIP(return, "mmap failed, not enough memory.\n");
-+	}
-+	memset(addr, 0xce, self->page_size);
-+
-+	prepare(_metadata, self, addr);
-+
-+	ret = sigsetjmp(signal_jmp_buf, 1);
-+	if (!ret && !self->injection_attempted) {
-+		self->injection_attempted = true;
-+		ASSERT_EQ(variant->inject(self, addr), 0);
-+	}
-+
-+	if (variant->type == MADV_HARD) {
-+		check(_metadata, self, addr, MADV_HARD_DIRTY_SHMEM, ret);
-+		ret = sigsetjmp(signal_jmp_buf, 1);
-+		if (ret == 0)
-+			FORCE_READ(*addr);
-+		check(_metadata, self, addr, READ_ERROR, ret);
-+	} else {
-+		check(_metadata, self, addr, MADV_SOFT_DIRTY_SHMEM, ret);
-+	}
-+
-+	ASSERT_EQ(munmap(addr, self->page_size), 0);
-+
-+	ASSERT_EQ(close(fd), 0);
++	/*
++	 * VMA_PFNMAP_BIT should imply VMA_DONTEXPAND_BIT, but some callers set
++	 * only the former.
++	 */
++	return vma_flags_test_any(flags, VMA_PFNMAP_BIT, VMA_DONTEXPAND_BIT);
 +}
 +
-+TEST_F(memory_failure, clean_shmem)
++static inline bool vma_is_fixed_mapping(const struct vm_area_struct *vma)
 +{
-+	int fd;
-+	char *addr;
-+	int ret;
-+
-+	fd = prepare_shmem("shmem-file", self->page_size);
-+	if (fd < 0)
-+		SKIP(return, "failed to open test shmem-file.\n");
-+
-+	addr = mmap(0, self->page_size, PROT_READ | PROT_WRITE,
-+		    MAP_SHARED, fd, 0);
-+	if (addr == MAP_FAILED) {
-+		close(fd);
-+		SKIP(return, "mmap failed, not enough memory.\n");
-+	}
-+	FORCE_READ(*addr);
-+
-+	prepare(_metadata, self, addr);
-+
-+	ret = sigsetjmp(signal_jmp_buf, 1);
-+	if (!ret && !self->injection_attempted) {
-+		self->injection_attempted = true;
-+		ASSERT_EQ(variant->inject(self, addr), 0);
-+	}
-+
-+	if (variant->type == MADV_HARD) {
-+		check(_metadata, self, addr, MADV_HARD_CLEAN_SHMEM, ret);
-+		ret = sigsetjmp(signal_jmp_buf, 1);
-+		if (ret == 0)
-+			FORCE_READ(*addr);
-+		check(_metadata, self, addr, READ_ERROR, ret);
-+	} else {
-+		/* Test the address accessability without check_memory(). */
-+		FORCE_READ(*addr);
-+		check(_metadata, self, addr, MADV_SOFT_CLEAN_SHMEM, ret);
-+	}
-+
-+	ASSERT_EQ(munmap(addr, self->page_size), 0);
-+
-+	ASSERT_EQ(close(fd), 0);
++	return vma_flags_is_fixed_mapping(&vma->flags);
 +}
 +
- TEST_HARNESS_MAIN
-
--- 
-2.55.0.1082.g2b9226bbc0-goog
+ static inline bool vma_flags_can_merge(const vma_flags_t *flags)
+ {
+ 	/*
+-	 * VMA merging assumes that the properties of a VMA completely describe
+-	 * the properties of that VMA.
++	 * VMA merging assumes that a VMA's flags and fields completely describe
++	 * its state.
+ 	 *
+ 	 * However, kernel-owned mappings may have established state upon mapping
+ 	 * not embodied in any attribute of the VMA.
+ 	 *
+-	 * Additionally, PFN maps encode the source PFN of the range in
+-	 * vma->vm_pgoff, which may otherwise cause spurious merges.
++	 * Additionally, private (CoW) PFN maps encode the source PFN of the
++	 * range in vma->vm_pgoff, which may otherwise cause spurious merges.
+ 	 */
+ 	if (vma_flags_is_kernel_owned(flags))
+ 		return false;
+ 	/* VMA explicitly marked as being unmergeable. */
+-	if (vma_flags_test(flags, VMA_DONTEXPAND_BIT))
++	if (vma_flags_is_fixed_mapping(flags))
+ 		return false;
+ 
+ 	return true;
+_
 
 
