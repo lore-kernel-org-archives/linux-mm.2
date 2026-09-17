@@ -4,78 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B189C982D0
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 19:48:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7410C982D0
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 19:48:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D3F8E6B0092; Thu, 17 Sep 2026 15:48:07 -0400 (EDT)
+	id E51AF6B0093; Thu, 17 Sep 2026 15:48:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D17366B0093; Thu, 17 Sep 2026 15:48:07 -0400 (EDT)
+	id E2C8B6B0095; Thu, 17 Sep 2026 15:48:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C2DD06B0095; Thu, 17 Sep 2026 15:48:07 -0400 (EDT)
+	id D183F6B0096; Thu, 17 Sep 2026 15:48:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9ADE06B0092
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 15:48:07 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2856D1C26CC
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 19:48:07 +0000 (UTC)
-X-FDA: 85224290214.02.7D9A2F3
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AB7776B0093
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 15:48:17 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3CCC4140470
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 19:48:17 +0000 (UTC)
+X-FDA: 85224290634.13.86DDA09
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 69618A000A
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 19:48:05 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nzZ94X10;
-	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf31.hostedemail.com (Postfix) with ESMTP id 7832820003
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 19:48:15 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ND4CNBlX;
+	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789674485;
+	s=arc-20220608; t=1789674495;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=SKCZtymFejY399Tv50swKvjYDiRpa1vybAFKL886URM=;
-	b=Bm36Z2sB1fElnQ1zGCY6WurLObAN2w2yHbAYs1zYSLro6aMF9B9BjOyqhMREObKxkRzJ2/
-	M473KwwtQO/+Oc8VEOZdcxP6imXEwyyHixaXtpHmOWjSbDS4IJvEPphG2+lzNKcTfaX72S
-	Z7fLJkfMU6jpn4NomSHDMNEV0t14hzE=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=62s9qkXq6r17IuwiNPx+api5etWusepzLRBx4u3FLR4=;
+	b=F8LldJ3Jo3/1uDjROPUHuqf8g8SeoGBmNmzGCjw5l+jL2WiwofZ4YUU+Kr6ttDxQ9wtQ+8
+	oy8BIipnXzunocQi1o9terxNkuSQ9yxjToI6Hvt8mbNj4VAortKcIAoq7Oj1zpYjZCVQ1V
+	v7hkIYkGQQC5/Ora5NOHNaOciHbdvAk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789674485;
-	b=TrHlX7FMgQYbw0A1mQ/SKX49POXEuSqn9QuHCBWzU4ry9SJJUWsgVO9lzW2WxwxryzCNqg
-	uvS9hMZUGHQK2MWTSnePIBo+zzsbkNKgOEt86UbsBJeE9uA8Zp5gbzLeP2iMr6DZQF555j
-	I769qyv1QzzDNjC79rtxbbDNUQ9YvgI=
+	t=1789674495;
+	b=qQWGhgla3FYKOlbBiEcjfsIbeVL7NwHw9Ip8hd2COIXC4C/pflpIjNHdsXhHWHDJFLWZye
+	k3NWfWZ/rHtx3kY3S+EKUXmZq15fMpMWReab7FHtqfg50slZPcqgO9stfxkK6+s1tE5P3x
+	TgoZdd3wD72KyyP5IvMNVUfPy93B7L8=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nzZ94X10;
-	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ND4CNBlX;
+	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 06F94601EF;
+	by tor.source.kernel.org (Postfix) with ESMTP id 1818B6020C;
+	Thu, 17 Sep 2026 19:48:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F6AA1F00893;
 	Thu, 17 Sep 2026 19:48:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D0FB1F000FF;
-	Thu, 17 Sep 2026 19:47:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789674484;
-	bh=SKCZtymFejY399Tv50swKvjYDiRpa1vybAFKL886URM=;
-	h=From:Subject:Date:To:Cc;
-	b=nzZ94X10WN1rmG1Ujm9ASeObZPM1xl2YtZNwu4dtqxYpjEyV1huRr4rAzA3gdDaUQ
-	 cTYUQMFCnKCL62poZqeTo3t5fQLOhl/ROHFE15LyMwsdMk8uzkgR6SFQz4CJNiVyXV
-	 SMm9DOQxCzo0MOpvkR9rYCKDdlSuzQ/V1tjS0kytUmUmiNTVGhAS7Ruy7lb9Ism3VU
-	 2YpX4iwlYAvx9761wKq7oFiItuIo/c55SpXjiJV8QzjdCgu5z/5mN+3woIvh2Pmnqn
-	 ZTWHyDQe5DSb3gxNPK60vl0VJpAdz/6v6cC6CS5rd5yPZ7nMkwv8LFbqJrQyupz3lD
-	 piIM6f6Q8FR1A==
+	s=k20260515; t=1789674494;
+	bh=62s9qkXq6r17IuwiNPx+api5etWusepzLRBx4u3FLR4=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=ND4CNBlXtyj77nav8hEVmG2jfavMgyjiDYBFcaBqvISYMRdlgUaKK6dKJGLKPlL/S
+	 f82ud7i4gFmufXGzFcFLWIi46VHHpl3s0qzWO+XjQnzdFN2sATVOFuAQuJCUQAKHEz
+	 3Bc26ykBomOzbOTFyEVOyTKRhlJW2n6T1Na7HsxTUcHh7v+2t3v3SG/57As6y+VoTY
+	 QqCahhK9tkOyyYEH5kiSpzMlS8NQAFK/2pRn5UE4f84BV7TbXLwbn58jPWEDgVG75O
+	 PRYca0Zyqe8QzejEXH9GnqM6le8kZ9GIOxqlnHMMRvzZfWBOQ8jEGMBhydcayxh8tp
+	 XbOuCFDlFrrYA==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Subject: [PATCH v3 0/3] mm: implement and use vma_has_anon_rmap(), silence
- KCSAN
-Date: Thu, 17 Sep 2026 20:47:40 +0100
-Message-Id: <20260917-vma-is-faulted-v3-0-5c22314a72e7@kernel.org>
+Date: Thu, 17 Sep 2026 20:47:41 +0100
+Subject: [PATCH v3 1/3] mm/vma: const-ify vma_assert_stabilised() and
+ associated functions
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3XMSw6CMBSF4a2Qjq25ffCoI/dhHBR6gRsVTIuNh
- rB3CyONcXhO8v0zC+gJAztkM/MYKdA4pKF2GWt6O3TIyaXNJMgCDBgeb5ZT4K19XCd0XKED0Ln
- KTQksobvHlp5b8HROu6cwjf619aNY37+pKLjgypYgWl2ZStvjBf2A1/3oO7a2ovzwAn68TB4rg
- XVTOqGL+ssvy/IGiNh6Ee0AAAA=
-X-Change-ID: 20260909-vma-is-faulted-3ed004535970
+Message-Id: <20260917-vma-is-faulted-v3-1-5c22314a72e7@kernel.org>
+References: <20260917-vma-is-faulted-v3-0-5c22314a72e7@kernel.org>
+In-Reply-To: <20260917-vma-is-faulted-v3-0-5c22314a72e7@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
  Suren Baghdasaryan <surenb@google.com>, 
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
@@ -99,25 +97,24 @@ To: Andrew Morton <akpm@linux-foundation.org>,
  Ying Huang <ying.huang@linux.alibaba.com>, 
  Alistair Popple <apopple@nvidia.com>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, 
- Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+ "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2919; i=ljs@kernel.org;
- h=from:subject:message-id; bh=rE+GgG5lo7kLvRik8sUqKlJkAvF+DMB1bmJcti/7mbM=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLWOL+UybscKnJzyYpEK6bdF7pSdSr3NgvM+b01aduhj
- daLdtkEdZSyMIhxMciKKbI8/yK+P0gkbF7nBX83mDmsTCBDGLg4BWAifvMZGTo3rndbt2lu3xGV
- f7OEHoizi15a4pny3ZNZQ/B7Sn3tvL8M/wzkkyUmGIVHzzc/eHxGj7iBi12NwUx7tnSB6Af3Z85
- MZgYA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3347; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=vloWjrSgn5PFdU4AaKDJGM/wu9+6TuZ0V219iHLmchc=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLWOL9c29Prv+7T2mnMn/Q4Vv77selyisGDM7/iMmTXh
+ hyOuqvO0lHKwiDGxSArpsjy/Iv4/iCRsHmdF/zdYOawMoEMYeDiFICJhAkxMmx7e5P7qg3P67sr
+ uy+xvwjSk1u579IWk+pLDudzc1ZmT7vP8FfqR/KNbXaF8ybPnMpzdLH4sVOHm+ZM9DhaFC18dH/
+ ERjVOAA==
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Rspamd-Server: rspam04
+X-Stat-Signature: 4fqjzg6mbujnicf78xy3oqsqtjt3kgr7
 X-Rspam-User: 
-X-Stat-Signature: 4ujgqujobfqizmm8hambkgfb5p8usggq
-X-Rspamd-Queue-Id: 69618A000A
-X-HE-Tag: 1789674485-888677
-X-HE-Meta: U2FsdGVkX1+7JWdD89KAXKGRvuiFH4soq/ZxTucF+Yp9kwoOTVzfXcRXInVNZ0E4ieNEDSvoYXu0SgoFjY/I3armYtv2P8wM27Fbl31v02VbnkTbdolw6hMJUu3PVtrQItUwq4+2CEp/ub9fN+2FP6vgMasFe2vi40t6ghYmau0qB2YpTuKsScMDyjI+avB5Q6aT24VZEsfwkHE4RasjFlWKbjFUYR3ZF9XfLFu/MNlL7/pHrLyeQZwocKMtjoZBEE8uG790/wCY0+4u5e+iMIfglwd2cUzoorcMAudGevkW2E9kVQRlmBOB0/VL+mowvsdRF1v5eD8zB3JkpKBoECAkMwVA8FXycqLP8xSbnLv4VQo1QZlJuz9mAgiPg5brmJvKD9CFIxpKRLIIv2aJtWUwxEkszkONy8RRVJhHvClKKRRYGhxCBulV+9AoScQkx6umc1/f9nQtAwjUE27hSlj/zTuo4StmBzPis2YFWAoccuB9OHRQIYBplCASO9Xs6LueF7Ij5rkxfLYTIICKBqTrBPHpAPT1nQXoJLbNWJJBm/RC/ZK9jRWfca4Kn4L1SZMSzJ7V6g5Wjw1yvvywz5gXW2tvorumc4MEMi3fE0mR/gGMwWH6sTt6xmQh7CZK+Fs6UMWt9LHwPe21dAjiSg9N2gU8TY/6SM5oYTVwSklmgrTynadIdjvUYYJsihmcDLFHzEWoszjt6N5JojU/oSVxtLMT7NzIlTPZE24NSU456E1OwToKjETX9Y+83Q1Z79DAT+SzrMfTQklUupuUDGRKmzNf+i35REWJ4E/BPr094b3njQZlVhrasDJwwSO7iwfngBB7a0Vq0JFttWu1sUmLCVLYEKuZ4VKkNKmgv2Xv84kVDEWfFlNY5chh0LiuzfP/oJROqKtKYpHGTWT+W2t2k+/XwLUgh+c7dBICjXQnJPVVNASvblJtg846xNqeI2+jtixx6XzEeV+KChZ
- WEEXCEvB
- yT6HyKvI8i2y44gUzv7Calq1gq1drTh6TK/8xrKOAjPVEUGaGA+KOfIBr+XXtnlwYCF2Lv53Jz40VBw/3H/j5Krvkavp51qsTVh8rtSBZMSkSfeY4vPVRzEOPhX92U32NX6xCONx8eG6VBqAtdKbozpZAx6CKSQBWYmSvt2QLtqHRLhaZqgdvcU3AwL6ZOFqxA7szqQ0/DZUfU0CkbWM4nsEU0/98RhzRQlT7f68RQZTMtghLSObcYcBbre/GPVnWRwTSTVyVxPzuAu30uqlJcopmlHjrzVFh6e0/tusFnA5S4NoahwSzaOKDpXE7u17MckR+cSZ1lbWY0obgIAPdbotVEyl5SQeZUnNOc5oBjEkFljA=
+X-Rspamd-Queue-Id: 7832820003
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789674495-718594
+X-HE-Meta: U2FsdGVkX187I8UxjC7UQw5DD+8qZQapojzQfo30BxHULtIaYkdb/lawHPpJIn/pj5pLrOQhR3Bz11ki6rzudBa3cf4H6eqWmGgh+RCxyHb7MsEdrRkNJrXE4BxPDNm6OTc94DSN+ovKcrnjInUqAeolY/Nb5eA2rGR7nk3Ja8zz2MZ88qGP3ATF7GDHx2wotoufWTwG8bJ2doAJciWsa7vS594/xqx8+5nEdoiSb+J3nHeicDpF1l2KWyBa72VVJ62QGAwYs5+O6LW+tzmisN0vrruIxO90EDcKHuz4dxgtML+/3clLKrkXc0kdAzMmUGIYRIXIrGCi8BfiR+PYBKolT7lo/9w3PnUzefXUb3QqhU9VT3mROhccAz63Uyj5ZBXjS1pEkNuiu72uhX6oCHK5KYiWGIIEfdcwHlA90lmm5ta8/N8DrLkD8iHAnboTl+Ryt6hqjOzoCg9mb0GBhY9AA1SZUTSO2QSWu66nfne1pcC7r2GqePyckIjhcpS6GT6a1OGaO7NpV1F9oc72gFkJCDCdBCoozyERzfpqzUN1qbCByJ/sT/PyH/1gFGzlM/pjdQTNW8ZMMo67rRizcTJZanz+1ey6ksvSQchclF0MxGSgqCxFwhhDIkQchV+EcCQEbuHVNBVhPtPbeDfugGt2x6MCVal1EvXnR5W2NjarxUt4EjxmKD1Gsc8A38Y5MVjWFlPy+ZZTTGRrubxdjufPz+nEpJvvE2vO8TrTu3ob22riqf9m6mSeLb/h3Og0XAAgBcFa5pDjP6U08Zo8CkwYVvaqcWnpljpigod8p5bZEIh73SxqPH1AwbRXHK3o2lwhe/oP9qHtFwaT6EHuWfqKCWhN8Yu+dzZwOXpGDHaRaINaeFWmk4O5NoWt5Bdq7M1MDQA8ASbl4hb4mLuXiD9453LKwKmpsKzydMbGRfRL4sHG4/ieBIWXjEmL9eiL1x7dUwH2XgEnJ5qNCHb
+ FwONbDwe
+ ilFhx+wBF2EJ1cTd/KB2c3wAOBXb15AMoTd0nagO8At3d0X9hzvxBhz3S2j/Q4p/7s54cghgsdpkx26BimvWfB+xBWHGMh9UKwO49VWg55dpNm6A9M3a919y9ij0rERlvlTPyPQ1KRxJwDJ4ew7/FMf9QzSETvldrmWC3A73mxydFuefoxIkjTkYLKFkEVNM4XeJam9T4ztc6CkpFRqppJX1HrdjwqeXqIpL5lfajnxV4wlXfNuZZxzHi3Y1JqPorcj4AWTwoeWtZTC85DITAYeX+agnMyJ8y1yJ1QHV4ML36iSlrEkwC9dEKCC36/kJPBRfK/6OTVYcNxTgYa99ULU5jPH3hmO/t4XKgxBBQgHybJ7x3QSOrrS4mKA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,75 +122,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Provide a function to abstract the common task of checking whether
-a VMA has an anonymous reverse mapping associated with it.
+The vma pointers are not modified in any of these functions so make it
+official by const-ify them.
 
-In the first patch, const-ify vma_assert_stabilised() and related
-functions so that vma_has_anon_rmap() can reference a const vma pointer.
+Propagate this throughout the call stack.
 
-In the second patch, introduce vma_has_anon_rmap().
-
-Finally in the third patch, update comments referencing anon_vma to instead
-reference the anon rmap to abstract this conceptually to avoid confusion.
-
-There are still other functions which reference anon_vma directly, those
-can be addressed in a follow up.
+No functional change intended.
 
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
-v3:
-- Updated tags (thanks everybody!)
-- Separated out const-ification changes as per Kiryl and Pedro.
-- Renamed vma_anon_tracked() to vma_has_anon_rmap() as per Kiryl and Pedro.
-- Converted the missed hugepage_vma_revalidate() and vma_needs_copy() callers
-  as per Kiryl.
-- Update the kdoc comment for vma_has_anon_rmap() to highlight that it implies
-  anon folios may be associated with the VMA, as per David.
-- Updated anon_vma comments as per David.
-- Updated the vma_has_anon_rmap() patch commit message to avoid saying
-fault as per David.
-- Various prose improvements.
+ include/linux/mmap_lock.h       | 12 ++++++------
+ tools/testing/vma/include/dup.h |  2 +-
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
-v2:
-- Renamed vma_is_faulted() to vma_anon_tracked() as per David.
-https://lore.kernel.org/r/20260910-vma-is-faulted-v2-1-e81ebc7d146b@kernel.org
+diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
+index 00eae65b74bd..03e1eb136111 100644
+--- a/include/linux/mmap_lock.h
++++ b/include/linux/mmap_lock.h
+@@ -273,7 +273,7 @@ static inline void vma_end_read(struct vm_area_struct *vma)
+ 	vma_refcount_put(vma);
+ }
+ 
+-static inline unsigned int __vma_raw_mm_seqnum(struct vm_area_struct *vma)
++static inline unsigned int __vma_raw_mm_seqnum(const struct vm_area_struct *vma)
+ {
+ 	const struct mm_struct *mm = vma->vm_mm;
+ 
+@@ -288,7 +288,7 @@ static inline unsigned int __vma_raw_mm_seqnum(struct vm_area_struct *vma)
+  *
+  * Returns true if write-locked, otherwise false.
+  */
+-static inline bool __is_vma_write_locked(struct vm_area_struct *vma)
++static inline bool __is_vma_write_locked(const struct vm_area_struct *vma)
+ {
+ 	/*
+ 	 * current task is holding mmap_write_lock, both vma->vm_lock_seq and
+@@ -344,7 +344,7 @@ int vma_start_write_killable(struct vm_area_struct *vma)
+  * vma_assert_write_locked() - assert that @vma holds a VMA write lock.
+  * @vma: The VMA to assert.
+  */
+-static inline void vma_assert_write_locked(struct vm_area_struct *vma)
++static inline void vma_assert_write_locked(const struct vm_area_struct *vma)
+ {
+ 	if (!IS_ENABLED(CONFIG_MMU)) {
+ 		mmap_assert_write_locked(vma->vm_mm);
+@@ -359,7 +359,7 @@ static inline void vma_assert_write_locked(struct vm_area_struct *vma)
+  * lock and is not detached.
+  * @vma: The VMA to assert.
+  */
+-static inline void vma_assert_locked(struct vm_area_struct *vma)
++static inline void vma_assert_locked(const struct vm_area_struct *vma)
+ {
+ 	unsigned int refcnt;
+ 
+@@ -410,7 +410,7 @@ static inline void vma_assert_locked(struct vm_area_struct *vma)
+  * With lockdep disabled we may sometimes race with other threads acquiring the
+  * mmap read lock simultaneous with our VMA read lock.
+  */
+-static inline void vma_assert_stabilised(struct vm_area_struct *vma)
++static inline void vma_assert_stabilised(const struct vm_area_struct *vma)
+ {
+ 	/*
+ 	 * If another thread owns an mmap lock, it may go away at any time, and
+@@ -445,7 +445,7 @@ static inline void vma_assert_stabilised(struct vm_area_struct *vma)
+ 	vma_assert_locked(vma);
+ }
+ 
+-static inline bool vma_is_attached(struct vm_area_struct *vma)
++static inline bool vma_is_attached(const struct vm_area_struct *vma)
+ {
+ 	return refcount_read(&vma->vm_refcnt);
+ }
+diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
+index 16c09dac59d9..17505bcf9cf6 100644
+--- a/tools/testing/vma/include/dup.h
++++ b/tools/testing/vma/include/dup.h
+@@ -1179,7 +1179,7 @@ static inline struct vm_area_struct *vma_next(struct vma_iterator *vmi)
+ 	return mas_find(&vmi->mas, ULONG_MAX);
+ }
+ 
+-static inline bool vma_is_attached(struct vm_area_struct *vma)
++static inline bool vma_is_attached(const struct vm_area_struct *vma)
+ {
+ 	return refcount_read(&vma->vm_refcnt);
+ }
 
-v1:
-https://lore.kernel.org/r/20260909-vma-is-faulted-v1-1-3a701f48984a@kernel.org
-
----
-Lorenzo Stoakes (ARM) (3):
-      mm/vma: const-ify vma_assert_stabilised() and associated functions
-      mm: implement and use vma_has_anon_rmap(), silence KCSAN
-      mm: update comments to refer to anon rmap rather than anon_vma
-
- include/linux/mmap_lock.h         |  12 ++--
- mm/huge_memory.c                  |  21 +++----
- mm/hugetlb.c                      |   2 +-
- mm/internal.h                     |   2 +-
- mm/khugepaged.c                   |  17 ++---
- mm/ksm.c                          |  16 ++---
- mm/madvise.c                      |  10 +--
- mm/memory.c                       |  16 ++---
- mm/migrate.c                      |  12 ++--
- mm/mmap.c                         |   6 +-
- mm/mprotect.c                     |   6 +-
- mm/mremap.c                       |  10 +--
- mm/pgtable-generic.c              |   2 +-
- mm/rmap.c                         |  22 +++----
- mm/swapfile.c                     |   2 +-
- mm/userfaultfd.c                  |  12 ++--
- mm/vma.c                          | 127 +++++++++++++++++++-------------------
- mm/vma.h                          |  29 ++++++++-
- tools/testing/vma/include/dup.h   |   2 +-
- tools/testing/vma/include/stubs.h |   4 ++
- 20 files changed, 182 insertions(+), 148 deletions(-)
----
-base-commit: b02c77c78ff74d3d88ea614335ae833e01ed5d30
-change-id: 20260909-vma-is-faulted-3ed004535970
-
-Best regards,
 -- 
-Lorenzo Stoakes (ARM) <ljs@kernel.org>
+2.55.0
 
 
