@@ -4,128 +4,222 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9666BC982C1
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 02:07:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EC32C982CC
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 02:29:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6F6BC6B008A; Wed, 16 Sep 2026 22:07:12 -0400 (EDT)
+	id 23F526B008A; Wed, 16 Sep 2026 22:29:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6802A6B008C; Wed, 16 Sep 2026 22:07:12 -0400 (EDT)
+	id 1CBD76B008C; Wed, 16 Sep 2026 22:29:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5465D6B0092; Wed, 16 Sep 2026 22:07:12 -0400 (EDT)
+	id 0440F6B0092; Wed, 16 Sep 2026 22:29:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 24C9E6B008A
-	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 22:07:12 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9C74F1C0BA9
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 02:07:11 +0000 (UTC)
-X-FDA: 85221616662.08.F46026C
-Received: from mail-pz2-f25.google.com (mail-pz2-f25.google.com [74.125.228.25])
-	by imf19.hostedemail.com (Postfix) with ESMTP id D58DD1A0003
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 02:07:09 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Fmz1E8wO;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf19.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.228.25 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789610829;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C595A6B008A
+	for <linux-mm@kvack.org>; Wed, 16 Sep 2026 22:29:35 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0A7F2A020A
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 02:29:35 +0000 (UTC)
+X-FDA: 85221673110.17.B520A18
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011034.outbound.protection.outlook.com [40.93.194.34])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 0FD4F140007
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 02:29:31 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=ChHaTJWz;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	spf=pass (imf26.hostedemail.com: domain of Alexey.Kardashevskiy@amd.com designates 40.93.194.34 as permitted sender) smtp.mailfrom=Alexey.Kardashevskiy@amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1789612172;
+	b=fMXVk+STyhjVS7zMF0NMG4TyBS57Em2r4g6IhiF76LPMnQwi8HCL7tMw93fF7596BNlolp
+	r9vD8bCEItSO9ZtG4HR1+6cU3mciBrJ55M2yuO/71f7P/BCgMeQJKSCY4QM10pjWPU33+R
+	QKyV2PdlgA2QFQ7MSvZ6F8levJSXLoM=
+ARC-Authentication-Results: i=2;
+	imf26.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=ChHaTJWz;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	spf=pass (imf26.hostedemail.com: domain of Alexey.Kardashevskiy@amd.com designates 40.93.194.34 as permitted sender) smtp.mailfrom=Alexey.Kardashevskiy@amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789612172;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Veq/d5GG4sWMYx11wlD0mjBLYK1jExJiTNsjFaM3d/s=;
-	b=GLgl7uuXTANBHZhVPte4NYf0MMbdgGpZGCitDOAZuJKIlZyiXywZeo/sMK7Ejkub2iRTAN
-	kIO8djd+NHgtHouRwOfG/rbOlCXZfdANBzduHm7C1Z5TA/Uk+8magDQwbTiCpSKou6cCKf
-	L/2LPbcvHptsHOeJ95GXp6BVkREw9R8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789610829;
-	b=Cqg9MIgJWZyW29rLyf8Eey9pbWkO4/QcQWUpybsu6yMFbchmyn4wwZEGuqwbX6o5a7G2c+
-	ScYuU7/9RP9M/3BYpdzzmkBrikR0NaWmOt0Z5G2ee4ioVicoNtLmBkKZEuibeT3qYoamUU
-	Gubn7Pj/0ZgTzbCRpL0W5I+3rvRDyv0=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Fmz1E8wO;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf19.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.228.25 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
-Received: by mail-pz2-f25.google.com with SMTP id 41be03b00d2f7-cc1cebad4aeso200565a12.2
-        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 19:07:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789610828; x=1790215628; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Veq/d5GG4sWMYx11wlD0mjBLYK1jExJiTNsjFaM3d/s=;
-        b=Fmz1E8wO9GsGsoNZkE7rPt7L6e0zkXVdSJ1SFyDL0S2xLXujhL41R/WVq1bHbvzngT
-         7bi8h+zwYd2vTs9M9L+cVl8guddrPxnGR0vCQDf9Th2RkdpZz1jTGQRP/MDxmmJIoDqv
-         o0wd4+Yl76rKVOqNbjnMhWAkI8tcpqRoEzODA5FJFfNfMawf2xSFOf90ZC0reofmv4Er
-         B6LakwBkwN4GT4bEV5ANKNWolliN2zgXMEsgki4GfUXYBR/GtyID0IQ0sjjuDDciMVKg
-         jrzi+2p6/y3L5+GJhsh5rm4w7J/1i52CJKj/NIi3HLpIt415zxEZ/mslKJBUkJQaadYn
-         AyHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789610828; x=1790215628;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Veq/d5GG4sWMYx11wlD0mjBLYK1jExJiTNsjFaM3d/s=;
-        b=YvfJQNtPjSAI3oJqpMS7bAbTX5Sd2J6cSZpV9KMX0mrfBa5jDt9SUTNFChjl0ifhXs
-         rDJU1lTWEVMOKhwAxxFz2585vOfSiFfvaNBcANJtGMywHggOb71C7j17nabxTmYcBP2J
-         Cf2yUpytaS9X7C3Go4nDQ06UgixBeBNbh/nNDjudT9bdSqq6B3OsUBb8pvR20ARIYptq
-         EnFpo1uHSnx1Z98lyddK8tiINKXPuK3Ut42pDMA/Pj5Nakew1QW5NurrL2ZwUOGJFXsT
-         jxx5tN+Mh876m70rGqMVuuJ+4mjl7WgjD6C+LRVaGUKVD0MdC8X7SipslR1U8kHZ88Dq
-         dBBw==
-X-Forwarded-Encrypted: i=1; AKwUvByCgdTq13v63DDWiKSaK4x7K+1sRw40WfKeajFkKPwIf9m0MbGoCyxITfpMpciPY9/Pcx46qrNIHw==@kvack.org
-X-Gm-Message-State: AFuF++kcXFzc6sBI1yLe26DsR3yDcsrW3sbp37xnLi3+yZUwvPt0riTg
-	3md55K652z3siEFcA8PZB4G99DvNun8H9t9k0xTSf8fR+Yf3NdzTs797
-X-Gm-Gg: AYBFou0JafB42RgBieGRKHZE6B8RErk2Ml8xpLTxcQJrS8ydSq7vIsULwuUZmgjgNYs
-	5TKe1ZQF1bTl8V9zSEwQbGEsA5UR+Vu4Spu6uPrZTeqanCbqYMjWys9jhKRAoo6yeTKo2flT5Hg
-	CB+dCARoQdptG3q03L/uZSyX/nc6MGY8M8uhZe33gwbs9eoOOvu88S55h6cbH/sLP2yhaVJgX60
-	oZq+CJQQ9hXGKGyTmEHi5SDHxoNYzs8JZ5ifS+v3SvnQ9XpZe3QXk41rS6T0FXECP5K9besYmKJ
-	ba31CQwhqQwcxyH80U+MRFrSlehI5Ig8UxKVnIAxF0ewVSyw/80rht02IBIgXoWKg8Yz2VwVa2K
-	qzMQkWeDEy2NKl9/88u7hXO1lDtuZ2W4F9sGAq9EIy+p1spvM9EmVG8PVZNv98EjghlxZgAbCS2
-	/82cs7ov6EfkJ93yynOvZLUJ8hWC7h7+xyUEy3WFP+PmgIf5pMGfhUNk+jrGoFa+lkZVewTV6iv
-	G7AUUBg0OFf33dU1cntP8Z+Iyx5gGTzq3JF0N+D
-X-Received: by 2002:a17:90a:28f:b0:39e:2530:2102 with SMTP id 98e67ed59e1d1-39e253026d9mr9151823a91.11.1789610828473;
-        Wed, 16 Sep 2026 19:07:08 -0700 (PDT)
-Received: from localhost.localdomain (vmi2317699.contaboserver.net. [85.239.239.237])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e39b0399bsm383108a91.2.2026.09.16.19.07.03
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 16 Sep 2026 19:07:08 -0700 (PDT)
-From: Lian Wang <lianux.mm@gmail.com>
-To: SJ Park <sj@kernel.org>
-Cc: Ravi Jonnalagadda <ravis.opensrc@gmail.com>,
-	akinobu.mita@gmail.com,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	akpm@linux-foundation.org,
-	corbet@lwn.net,
-	bijan311@gmail.com,
-	ajayjoshi@micron.com,
-	honggyu.kim@sk.com,
-	yunjeong.mun@sk.com,
-	rientjes@google.com,
-	weixugc@google.com,
-	jic23@kernel.org,
-	gourry@gourry.net,
-	Kunwu Chan <kunwu.chan@linux.dev>
-Subject: Re: DAMON reporting more hot memory on huge pages (was: "Re: [RFC PATCH v2 0/9] mm/damon: hardware-sampled access reports")
-Date: Thu, 17 Sep 2026 10:06:37 +0800
-Message-ID: <20260917020653.46010-1-lianux.mm@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260917004533.89744-1-sj@kernel.org>
-References: <20260916051150.107931-1-sj@kernel.org> <20260917004533.89744-1-sj@kernel.org>
+	bh=pnOSeT827JqM1WHSr2HBLUMH3Xd9V0DEn2LgQLiflk4=;
+	b=G+dbCuCj6WYl/uFnplN3CvHbDukutuXQg0KxlWN/0li3bEeXZ4Vu3l/axvy2tkEci5Q/Wz
+	h3tWXi/tDB+aNkxPCI3oI1f9G7oyDUHH/oinMLuVmu1kQwsitRtnyc8V4YBirlV4IiQB19
+	OiQeGUwZ3ODVHI/oW7FcB/BKknKUvQw=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=aU5atneVhycdmMhtLSwfg54zKU3yGrUYjvprNXNstXA6CZ2sIEs9AK1SdM+nPwa/q8huXKd8M97yd/JlaAbJ6lseyYr2G4qrpEdECyIPSTk5E9m2LwcJ5rAfGCJG1R/11dJBFbmQiZBwXtxfgcScinUMMQ5h3q4EVQ+d8O8Vo50z3pk/EGsPDgVUri4pg7Y8jE+/vlkZSa7m9Za46n6i+bmfdsWwX5f4lPPN4ISl+VJ6pSwc+DD6eh4yFNv2BbuBfmqSqV4t6t7l0CiNeAM/DvYjxBcKqHG6AqOr9VMrJeWTOrW2ZOYFmCD1T1bFNTvR+56tAP3878Y5fRcud0QAhQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=pnOSeT827JqM1WHSr2HBLUMH3Xd9V0DEn2LgQLiflk4=;
+ b=TtI7glOzplsZ/P8IzLNNf9lZYdYnB0qW2c28zQlXq1hrzFoXPbvBG+ZAiPMWCSrgoL2cilXPR+CkY8/87z3cijXZyUtKGCMMtf7rNud0LeWpp+gZkGbhmQ/1eJmNYln794C63W8e+0dqi504QHI44byMjHdeEEZ5YBbaGZwPYs1KYLoTsGp9zBkm3t+xkgT0eZmyrexJuWBQKyor++xqUTP8CApPWa/baMtBdmLZMsI61JoFrqdTbXYLISRuZHul93jY12ta1FbIK7Dh/BPyc7tloWtdnExLiVvnRnRwK719jpfaRQsYT1Yq+Y8JghNs1AM934wloSPBQ3xcYCGLzw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pnOSeT827JqM1WHSr2HBLUMH3Xd9V0DEn2LgQLiflk4=;
+ b=ChHaTJWzZ+TxxrfC9iMO2WNgY60TZrG4LmDyunjLzpNzxCq2HVuEjwdJKOn+6zpHMSHNL2Hknt3xRIv89K4z4pIEi1WgGeQac6Tc3TGO1EMQmJ0JVXx9cp+zdfw0dW595Bv+9O1zLelSOaq7vB1xbppzV+hy3X2HsGm+SmzvXLg=
+Received: from CHXPR12MB999219.namprd12.prod.outlook.com
+ (2603:10b6:610:2fd::8) by DSVPR12MB999123.namprd12.prod.outlook.com
+ (2603:10b6:8:388::13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.9; Thu, 17 Sep
+ 2026 02:29:23 +0000
+Received: from CHXPR12MB999219.namprd12.prod.outlook.com
+ ([fe80::da19:941f:da0c:2408]) by CHXPR12MB999219.namprd12.prod.outlook.com
+ ([fe80::da19:941f:da0c:2408%2]) with mapi id 15.21.0406.007; Thu, 17 Sep 2026
+ 02:29:23 +0000
+Message-ID: <9c83efe9-9367-472f-bf39-e07252e70c3c@amd.com>
+Date: Thu, 17 Sep 2026 12:28:50 +1000
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH kernel 01/17] pci/dma/tsm: Call disable DMA bus hook
+ on cleanup
+To: Borislav Petkov <bp@alien8.de>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ linux-crypto@vger.kernel.org, linux-pci@vger.kernel.org,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Andy Lutomirski <luto@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Ashish Kalra <ashish.kalra@amd.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ "David S. Miller" <davem@davemloft.net>, Bjorn Helgaas
+ <bhelgaas@google.com>, Juergen Gross <jgross@suse.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Robin Murphy <robin.murphy@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Catalin Marinas <catalin.marinas@arm.com>,
+ Jini Susan George <jinisusan.george@amd.com>, Kees Cook <kees@kernel.org>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nikunj A Dadhania <nikunj@amd.com>,
+ Ard Biesheuvel <ardb@kernel.org>, Eric Biggers <ebiggers@kernel.org>,
+ Kim Phillips <kim.phillips@amd.com>, Joerg Roedel <jroedel@suse.de>,
+ Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+ "Tycho Andersen (AMD)" <tycho@kernel.org>,
+ Liam Merwick <liam.merwick@oracle.com>,
+ Michael Kerrisk <mtk.manpages@gmail.com>,
+ Suresh Siddha <suresh.b.siddha@intel.com>, Xiaotian Feng <dfeng@redhat.com>,
+ Venkatesh Pallipadi <venkatesh.pallipadi@intel.com>,
+ Andi Kleen <ak@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>,
+ Tony Luck <tony.luck@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Lu Baolu <baolu.lu@linux.intel.com>, Xu Yilun <yilun.xu@linux.intel.com>,
+ =?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>,
+ Jonathan Cameron <jic23@kernel.org>, Jori Koolstra <jkoolstra@xs4all.nl>,
+ =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+ "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+ Ian Campbell <ian.campbell@citrix.com>,
+ Jeremy Fitzhardinge <jeremy.fitzhardinge@citrix.com>,
+ Petr Tesarik <ptesarik@suse.com>, David Howells <dhowells@redhat.com>,
+ Haavard Skinnemoen <hskinnemoen@atmel.com>,
+ Kenji Kaneshige <kaneshige.kenji@jp.fujitsu.com>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ Christian Marangi <ansuelsmth@gmail.com>, Dave Jiang <dave.jiang@intel.com>,
+ Michael Kelley <mhklinux@outlook.com>, Ilias Stamatis <ilstam@amazon.com>,
+ Sumanth Korikkar <sumanthk@linux.ibm.com>,
+ Simona Vetter <simona.vetter@ffwll.ch>, Toshi Kani <toshi.kani@hp.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Vinod Koul <vkoul@kernel.org>, Jiang Liu <jiang.liu@linux.intel.com>,
+ Arnd Bergmann <arnd@arndb.de>, Anshuman Khandual
+ <anshuman.khandual@arm.com>, Kefeng Wang <wangkefeng.wang@huawei.com>,
+ Palmer Dabbelt <palmerdabbelt@google.com>, linux-coco@lists.linux.dev,
+ xen-devel@lists.xenproject.org, iommu@lists.linux.dev, linux-mm@kvack.org,
+ aik@ozlabs.ru, Santosh Shukla <santosh.shukla@amd.com>,
+ "Pratik R . Sampat" <prsampat@amd.com>,
+ Scott Soule Cheloha <scott.cheloha@amd.com>,
+ Ackerley Tng <ackerleytng@google.com>, Fuad Tabba <tabba@google.com>
+References: <20260916115159.1938195-1-aik@amd.com>
+ <20260916115159.1938195-2-aik@amd.com>
+ <20260916174929.GCaqrWqZ1fIhi4Rgbn@fat_crate.local>
+From: Alexey Kardashevskiy <aik@amd.com>
+Content-Language: en-US
+In-Reply-To: <20260916174929.GCaqrWqZ1fIhi4Rgbn@fat_crate.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SY6PR01CA0119.ausprd01.prod.outlook.com
+ (2603:10c6:10:1b8::13) To CHXPR12MB999219.namprd12.prod.outlook.com
+ (2603:10b6:610:2fd::8)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CHXPR12MB999219:EE_|DSVPR12MB999123:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5c5369cd-ffef-47fb-d79a-08df14637cb1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|23010399003|1800799024|7416014|376014|56012099006|11063799006|10067099003|4143699003|18002099003|22082099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	OTWkJ3BzLvXlpYrhzvzJ/m6bDLG6FVqhqVagagcJJmrDwex9mkmlsGSPyD9vZbM1EorDdeY5zKRT2tKL3AwI/77eRPKsj8+0JjxUGKuqVkCtXvgYVHwHyS/uYGS7cOh2d5NtBtDAx1RGUTLnGBmfyHSkGKtRJWFbP2Oz4QdmrLHy/3tmWtTLREvL78kzH8AXrMHNDj6ePCq/fJiOEiezoiSdL3Si90dGeEcVxGLU/z02aAx1L5fJX+gAztzdfHBlvf4TJLbKg6eIttIJjLnZRYIIsgPlOK+mT3piX3Do7D2sGM4ifLcEeg5LS15cwCnkluKzId3YlyGxXllznR6+JejZgHECA/1s6tJxny8I3oXWdRe+bUkGeX7y6zKdgElS7rqTOE4b4kBg/0S6nDdhVvLH+eYGU9+FJM6aRrJKlVCpdS3Ir7cqZ8TjJ9CV76xmgFiNjVxuc5cjPmL7AyTPKC//iSRb/5xKpLQtIL6Qz384357y9I6YF3u7GKlv2K1MORL7kdBwPo2WR0VhuOuDXxiQrGMjiRPcBu9oR0kVhPAo9iKn1Mn5D3dloVVmz2VPCdlyxE0Xqgf6GKJxgVvqCnvUPG2lHFvPj76Po8MxlKqS98nek9hAhC54VcRzdvJMXLv1L7KJtjXjCJuBmpala/hD/nk4Mg8YbJVWeuy0rdY=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHXPR12MB999219.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(7416014)(376014)(56012099006)(11063799006)(10067099003)(4143699003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?N3phOU4xTkYvemVvS0duR2YzKzVHY3BFVmdnQ3VIbERGSmFQZ3NNdXhKRGx4?=
+ =?utf-8?B?b3BDUlRZMUpiUGVTQ1MzbThWRlRZZFcyYVFSMVFLNldzbDh2TDNBTVl0MmNv?=
+ =?utf-8?B?amcySUpwTWRuMFFtcDNCVWNHWUw5VzFlU0dPMWdrT3RKNjhIa0tTcXAvL2lJ?=
+ =?utf-8?B?TDZnN2JMaFdwblR2aTd3aTVaUEphNWFVUE1yNTZvRlpCT01WcXU3SDljY3Mz?=
+ =?utf-8?B?aTYzeWVING80UjR1V29vcGJEQmlXaEc4andDL3p4ajUzMGxIRXZkbUZiQk1T?=
+ =?utf-8?B?Q0lDQ29wMlprN1JsVnNJQk8xSDRuOEJKRzhqSllydnlQWDNudTVaQUpkVm5H?=
+ =?utf-8?B?RXJRczJQWlcwaGx0MHdJUWN6T3UzSGhhZ0VTUFFBaEJPcWlocEhENEVXK3M1?=
+ =?utf-8?B?Zkp2Q1lBdm9LYXh0MkIvOFh2b0JFZWxjUFNkMTE5ZnVUdlpVUTdrbzg0QXdk?=
+ =?utf-8?B?ai9pVTBrTkF5azZXaW9DOFV4VDhDeFJBb0xZR2d0bEJsbFcyNVlUbTRaOXZa?=
+ =?utf-8?B?Q1owbHV6UHpXZUNselRyeVBMSzZhR1JKendIcUJId09CQUZGdWtSeW5sTVdJ?=
+ =?utf-8?B?ZmE4MzArejJ3RThDWUJwYWlzdjRsMHRscDJjVjVMOXpZRjVDRWNxNjlZczd6?=
+ =?utf-8?B?VHR0ZTMxcDdtUWlXQUUzSFlLR2dJSTRPeTdSOHhuQ0Q4NHY4VEN3a2laNHVt?=
+ =?utf-8?B?TDc4NmhZT1cxWUpBbGVNaytCRkJMckVIaDQySERqSEN4WTZmUzdya0kreGVU?=
+ =?utf-8?B?eTBQTWlHRHQ2aFlFNnd6UHpxT3h2M09GRnZtTFE1eDhIVE5ZNWhVdXVkMFpH?=
+ =?utf-8?B?a3cvS0UwNURYQUZuSkRiVUZhTTJkTldURWhUTDgyS3oyVU5VcGdWRE9Cc0d1?=
+ =?utf-8?B?a2pxbEcxL2xMaFJodFVVakFMYXlzY29QS09aMnVMeFlIdE96WlRtaGt0clo3?=
+ =?utf-8?B?dGZvbjY2T3gxMkVoenYxakM0L21kSFczb2RqeU54YTBaWXFKOXI0M3ptdVZX?=
+ =?utf-8?B?MkRhSEZsY2lYRktnMUtZSnE3bVNiS0VrcVRucGpxcTRpdkFtY0M5amtkTmZ2?=
+ =?utf-8?B?MTNVUDNISS8xekxOVkxadnAvb0pJWGRUdHUrR3NpVDVCSFl0ajZ5MUpHdk1p?=
+ =?utf-8?B?R1BhQXFUMGVrRkxkYm51dXJVWFoxZHVwMWlMRGp3L1k3TEpkREdkaTM1K3Bs?=
+ =?utf-8?B?aVpHUG51bXBTVFpnY0g4TFM0SStRNWRjK3hpM295ODV2QTJzTVl6Qk5Ba09z?=
+ =?utf-8?B?cS9NQlhXcWhOUGV2NlVIdFJ4SGdnOFZNdEl6TU8xL2JSQi9QdytxUjdBclNI?=
+ =?utf-8?B?ZUVLazRoL29YT0dtdlN0L3dtUjc2ckorN2ZRTUl6blZ0MTR0TjRPWDkyaTVX?=
+ =?utf-8?B?VVhVbkFZQ2NOdXIzUFkwdUhOZ25YYUYyeXhQNE9YWUYzQ1BhK2NIejBoM0FW?=
+ =?utf-8?B?N1FHeHBKZjlkc3FPSnJGSUdoUG9tNnIrSGlQZnFqQytleEZtdWpqR2VFNS83?=
+ =?utf-8?B?ZHpTeFliSHRhWEFMQTE4YVBxcHFvc243cjNJOVNGYWZPdjZaQk9vOU1UK0lX?=
+ =?utf-8?B?QzlLcHJHbmkxMnYxYnI0clc2d2QyY2lGUERUem1xVXNtUVdKeWVZcnRhNXFV?=
+ =?utf-8?B?VUFxWXhGZFROaUowbWRFMGQ2NlNzQ2JrWjZqOGhSNEMzQXlGS3VNdk0zck81?=
+ =?utf-8?B?L29CNzkzWXJNUmxtQmNONjFsUTdONjFtK0JTbUNEcGMyaXYwS3MxYlJ2MTlr?=
+ =?utf-8?B?WmVIN3pZQjZYSUxjdkFyODdQZHgzdzZqYlNWeUtmcGR3VkFuaWIraU4yazVx?=
+ =?utf-8?B?STFoNURCalJxQURuekxKdW1qRlUvaGdUQkFva0dtaUZyN2djRUppNTdvTU1H?=
+ =?utf-8?B?S1pYbkRXc1dxM1h6M0dycWRDREdGR1ZQWngxcUZwYnQxYXdjTW1qcW1Md2JR?=
+ =?utf-8?B?a1Q4K0w2RHE4czVBQm9pNHQ2U3J3TzBDb3N1U3V1TFVheTlwc2ZJZzdLSFVi?=
+ =?utf-8?B?dld0UEE3MTBBY3BQdVk0YVNZdXJqVzFlcW9EU2p4Z0cyL0NZc2FDaFM5QnNk?=
+ =?utf-8?B?K2xnN1hVU2JmTmpPTU8xL09nd2lFYWRQYVdLSTlmOWozMG4vV2FURVJ3bzBK?=
+ =?utf-8?B?Wi8vL1VDMkV5MzFBVnpNZ09hZE8yTjJaMGY5V3RaOWxnZ0U4WXNVNGV0cFdl?=
+ =?utf-8?B?cDNTZGJRV0tkNHFzUEJvUTR1d2g0SXYvS09xcnQ0L1pGaDJFZFNzOFBjM2dy?=
+ =?utf-8?B?aWtBOTlPQjU2dTBoN3BEVkZKRE0weFpxOC80bGVrbHI4eVR6bkUrTnBPWlJR?=
+ =?utf-8?B?ck5aWUh3NnJ0dUoxN0JRYzlka2NXSTlJZzN0RmNHL0JuNWk4Wllvdz09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5c5369cd-ffef-47fb-d79a-08df14637cb1
+X-MS-Exchange-CrossTenant-AuthSource: CHXPR12MB999219.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2026 02:29:23.7911
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: T2crqjoZUBnh2uJavoqc94OSC7soEz1LMPV53bIpK5Sn65abFUdpyx8ya+Nl4NVL1fkkL22sad+ivtm+rsm8XA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DSVPR12MB999123
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: D58DD1A0003
-X-Stat-Signature: gidrtsp34k9k6fdjth75fmbtkupxhts8
-X-HE-Tag: 1789610829-615197
-X-HE-Meta: U2FsdGVkX1/nXhMjvVY/dxkpPkZI2lhqpTt5hUYxv3rlT28HMiUrYDDApOaG1lrqBLYKV/5VVRQ2xsAt8ZrpWjtdoDncOYKeVvE8tIb/+tzOsplQwoCfWmZK7zsgUmvSlQcoRPfB6dZpWR7GpLE54vDYzXw8MQ91NzKBXVJVzelnHzejtHbqQOX3boH555SReBcs4rOhIx1k7qKp7cr/dy0PXhGuZpo+JU23qcvIdh2oBDjrCDK7jVELtNUPAwlA7tIP0Ed8aR+jCC4vsdNMjpcV4eq5r3y91criAOYYes9XdagDygZPqoQIf1u+otIXjNzrXCHFPgiapL8e94PXJ/ndmH9aAkbUA80aExOA4oC41qhVZ4v9j8SmAbalPIG1scI8vW/W6ZmsmAQRmdzvlXjJQlMNE7y1dwCm8u8gvewj78t1uz+CSgvwe3Z7PlPsfeKHv3Uiu7tnPU3JEq5oMIanHpLfyhaGDfM8yeSaiqVKOjObZGvoRk1h4teskJLNIHb+lbKAtybRO0n48LrmSOnju14sLnUOrW3Dvpz6P3JHdT0SOfxLwbDqsGj8c8/hvbsSFCvzvkGw3BeXxbWgm5bh9ymP6R9YcbZsdnkb56CSonok3RIGZbsqLGYatry3nIyjav1FOgjIDRIpa5HHXVYNbaNWab1C97dNmdzxD2MLIC+Ez6PWAmtLzwSbzEWv1pZDDn2rrA21t3i9IoevqR9RkoRel2/ifKKdUUJJINEm1kH50UMLXd8VS6hbdLSJ5wHMSrembe0G+/S/DDnGPLksl0DRXbETu1TnK3On15bLxiXw7YiXbKjZ9w55dpGuL2KaJTbPKMgsNPGk6yDpH6TEQGpF0LGIpZyPVY3L0Sxp3qRdUv+DwPZRGk2zOqNGUQb2+4PX4+QOewHVC9cmDvvCuiaYeVPI5YwI7vxrt/jFxlbvVPIPUM+RrD6Fac48mg99JsremzIPIXtIFN7
- IsWMoOeM
- XO/3s1BMwKPyoOlLUzBz2+KbZ4DyGVWEFVNf4jKnKxZ2mpMAroKdKrwr8t5jOAjhE7Xkx0byWcJSgn3SLLy/49hjSgzS8K7NMhBTzHdEZ3dy9bcqQk0nHe97HAsfGn6i3+/RFaLd5mjILbezeWAB1MZjHxwxFMioq1+5jKBZnMyfp0gCQcD5HJd+Bm/ELGBzFLuR3JF7Kn/aIjvbJnzelWA1mBUTZLDsJDRBavguTbPHMXVUabgzptvKQeFqjqzfXSZirsFiooNgIuPZkoR3jwG9onc1ruRs79JDwozRSOsGpVdsEVnioFTsXGcpyPwocf4+4lC/BIgqcOoEd4rs4GNQ/rkqno++BpWqjkHIjLqKwtRYW7NMXCV+kht+hM/u/J54q5NZg3kCp40V/Pek61K4I7Pt6mpcKRxq0OwK4196bZPXBrfArjyrLjqfhOnguOj7ArhCQDKIOOeIYtd0eZ/Ioig==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 0FD4F140007
+X-Stat-Signature: jaar9ayae3me5ihm3iu3eubcqekyef9e
+X-HE-Tag: 1789612171-950362
+X-HE-Meta: U2FsdGVkX1/51LhciGhAFSREVLUzSqWrBXjueYmyKkb+04Db9LL+2B100JeW/9wNjaRzPBwwyNxA6wMQx4ycktPCp53msBrQkeqfQUY+2EHseDi0Pi6GQ9G4L6xjzeuyES2VQF7qOPLtCYtBERD9jLRPw0d7a9fD1iAkUxVAjN6X2uZUC8x7jvhMddlzP0zqB4joAiHDJhfF2Jhz17VDX4ZkGm+QmP96OphDWYVC8gwX3uEdtkynHxb96yOs/8jR20PTLozxcG84K05nKxxpRY3hFV6Du9pxN52RrHvKr3gJcaeF5a3rGboW8ABnvIyZxwZ3snaz9cER3sebi/4TqjBqudgaNoHAt51CvEj5BChpjb7eWUC90IyIktBj4FGHjGUtS6UzWF3c8pG2L3VwVn8ur2mKA3TzHosqIQsMDDrv9tN4t1rfRR1HjRJb+T/oaFREBmw3ul1B4mf9AwD7aJfM55tLtL+6gXgxZ8Ivaq7U1a5A3oJyNxg/5P6ORTHGywAX0JBzJxEFcUErpz3ndGQv8hsz/lcoodAkWPeCXoYybDu8Du0xLpXUEqMH/VyW7+A5Y6XuHcdHQoEBPIR6NheRd/qQ+9VsHJbYDWDjbxdStiwldzGGVd9PcO2w2+ajNX3SL81UO68j3lp6SsVp1IgrqL4fqjnssVQh0Hpi8DM1SfP/M7c/js4oEockhWUGxQvXPjGEXCja6/Z9PUuNUZCdqdOcQNSxDQlAkkdprTH75VxWTmDOhzS5UriHu1NaUxp45wDs7KKwuprF9Hs3xZjGQiFyOyIHQstghPLIQN3sf4qiRyH2rh9E8iCnyPNIk+pYpQeaqJ7SihAOZf3Bynv0Ke3bqaPEgn3/p0olJv0kBrxoJUHiiZGlZ/e5MZeN7+CFgDZd1YRfy1nIU0n9A3chya3IrOD3s1vEslwOYj+kkxl+NOusKaZ2q35LfWNZktf+LmafXbrLYTZ3ufJ
+ +3wuYq1G
+ cfn1haTzMc4TlgwWaAo6CCY5UHAzaADGhlCqC5M/uIoOXbWtcSAkFeQG19zy2CWJD1YfowCH0nmE/WBv9WA5JHfUYulRmQXtvdaPha6+DajdcZvHl3krWo+6kOAnhKVQYt6EW6FwYnOEUJ9SMSz5R1WJJNmZDG2ami0tyVZHRH1OMkFcXX9BuF4w7zPBn1Rh566xyLnTF0yFt4O2COsb3l3XCUxTtqyka4DyrDsMgRr6Z3XBO3OKfwSGGMtpLv5VJDPAgDc1ilWtqdEvRswNYh5/hGVpym+9oaDSY+bJAYBaxjMIYusaM5EVUyGlp65fpoqIX4+kjtUHlbxB8LVTihdKJ9lbmD/KpyJsknrvFO139usncgxwp/f3HDC5hsv/5PmmvxBlkiaZxziKmq/IzxU3dvjeMR9eJNY36XrZZlCbzmm17dmA+K1uwNQOk8a4O/SsgCjYp26UmEWpqAb6MEcEiei2XpFgi6/sO44+nlyG2JLSbB2thaje7PXeKTbCMUYHUrOgyIKUf0X0SXmAQfjfC9bRP1GDX0lpGBKUyqRAE+8YBdFJetjV5A5GId2ZbdBvte47+O0NtyH9mDFN6vbV0Ovgo+GHZ0Ia5oOQMfsn8KBn2fm4/uu0wOStsf/tonr0mZfhFJuW0U1VRXlvoTOFMx2ycyeQuL+Ds
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,120 +227,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi SJ,
 
-Thank you for thinking further about this and for suggesting the damon_prep
-direction.  Let me first clarify the real-world use case and correct one
-expectation that I created in my previous mail.
 
-SXF develops a hyperconverged infrastructure platform.  The workloads running
-in the guests are customer workloads, and their types, memory sizes and access
-distributions are not controlled by us.  Oracle is the workload in the case
-that exposed the problem, but we cannot define one Oracle access distribution
-as representative of the platform or provide one generally applicable
-workload-specific THP performance number.
+On 17/9/26 03:49, Borislav Petkov wrote:
+> On Wed, Sep 16, 2026 at 09:51:41PM +1000, Alexey Kardashevskiy wrote:
+>> +	if (device_tcb_trusted(dev))
+> 
+> Where is that function and the rest of the gunk needed for me to apply before
+> I review those?
+> 
+> The patches on that branch:
+> 
+> https://github.com/AMDESE/linux-kvm/commits/tsm-next
+> 
+> which come before those here are enough?
 
-The platform has two requirements:
+Correct, the patches between v7.3-rc2 and 01/17 (can drop samples and tools, obviously) are enough. It is basically recent tagged upstream + rebased Dan's https://lore.kernel.org/r/20260705220819.2472765-1-djbw@kernel.org
 
-  1. Host THP is enabled by default.  Large mappings generally provide useful
-     translation and virtualization benefits, so disabling THP merely to make
-     monitoring easier is not an acceptable general solution.
-
-  2. We also need an estimate of each VM's active memory as an input to later
-     memory-tiering configuration.  If a small number of distributed 4 KiB
-     accesses makes many 2 MiB mappings appear fully active, the hot-tier
-     requirement can be substantially overestimated.  VM sizes vary, so the
-     absolute error can become large on a large VM when accesses are spread
-     over many huge mappings.
-
-The reported setup is a KVM/QEMU VM whose large guest-RAM allocation is backed
-by a shared tmpfs file.  Oracle runs in the guest, host THP is enabled, and
-host DAMON vaddr monitoring targets the QEMU process.  The field observation
-is that, for the same business memory-use case, the measured hot proportion is
-much higher with THP.  The guest-side tmpfs 4 KiB/2 MiB writer is a controlled
-diagnostic for isolating this mechanism, not a model of the complete Oracle
-access distribution.
-
-The DAMON setup is:
-
-  operations=vaddr
-  monitoring_attrs/nr_regions/min=500
-  monitoring_attrs/nr_regions/max=2000
-  monitoring_attrs/intervals/sample_us=500000
-  monitoring_attrs/intervals/aggr_us=20000000
-  monitoring_attrs/intervals/update_us=60000000
-  schemes/nr_schemes=1
-  schemes/0/action=stat
-  schemes/0/access_pattern/age/min=0
-  schemes/0/access_pattern/age/max=18446744073709551615
-  schemes/0/access_pattern/nr_accesses/min=1
-  schemes/0/access_pattern/nr_accesses/max=18446744073709551615
-  schemes/0/access_pattern/sz/min=0
-  schemes/0/access_pattern/sz/max=18446744073709551615
-
-The hot proportion is derived from the bytes selected by this stat-only scheme
-(at least one observed access in a 20-second aggregation window) relative to
-the monitored QEMU scope.  It is used for later configuration, not as a
-request for DAMOS to split or migrate memory.
-
-As shared in my previous mail, our controlled PC and server runs reproduced a
-large THP-off/on observation gap.  The exact-address capture also showed a
-512-times difference in unique 4 KiB spatial coverage while the two aggregate
-DAMON hot proportions remained nearly identical.  The conclusion is that the
-current coarse observation can substantially inflate active-memory estimates,
-and configuration-only tuning cannot reconstruct the missing within-PMD
-spatial information.
-
-> I still want to better understand the real world use case before digging into
-> the specific solution.  But, I was thinking perf event based monitoring might
-> not feasible for the case.
-
-We agree that perf-event feasibility should be established rather than
-assumed.  We will test the address space reported while a KVM vCPU is running,
-per-VM attribution, coverage and loss before relying on that path.  If you had
-a specific feasibility concern in mind, please let us know so that we can
-include it in the test.
-
-> That is, we can request DAMON to do some preparation action for the data
-> attribute sampling, using damon_prep.  At the moment, set_pgidle prep action is
-> supported.  Maybe we could add a new prep action, say, split_pmd?  Then, the
-> following sampling memory access check probe (would be a kind of "allow
-> pidle_unset" probe filter) will be able to show the access on exactly the pte
-> accessed bit, not the pmd accessed bit.
->
-> Breaking pmd would cause the overhead, but it would be capped by the
-> max_nr_regions.  So the user could at least consider about the tradeoff.  I
-> think this is simpler and more intuitive than DAMOS-based pmd breaking, at
-> least.
-
-This placement makes sense to us.  A split_pmd preparation for access sampling
-is clearer than exposing PMD breaking as a DAMOS action.  We understand it as
-refining the mapping used for observation, without splitting the underlying
-huge folio, and then letting the following probe observe PTE accessed bits.
-
-We will follow this idea and validate it.  In particular, we will measure the
-active-memory result and mapping cost, check whether max_nr_regions also bounds
-the cumulative number of mappings that remain PTE-mapped over time, and verify
-whether splitting the host process PMD is sufficient in the QEMU case or KVM's
-large secondary mapping remains the limiting layer.  We will compare it with
-the perf-event path, stat-only first, without proposing a user-visible DAMOS
-split action or physical folio split.
-
-Please rest assured that we see this as a long-term technical discussion and
-collaboration, not an attempt to rush one mechanism into the tree.  We will
-continue sharing both positive and negative results.  I also plan to present
-the scenario, evidence and tradeoffs in more detail at LPC.  Please feel free
-to share any concerns or ideas at any time; we are happy to keep iterating on
-them together.
-
-This topic has now become broader than Ravi's hardware-sampled report series.
-If you think it would keep the discussions clearer, I can start a separate
-thread focused on huge-page observation and the damon_prep approach, while
-keeping perf-event implementation and testing comments on Ravi's thread.
-
-Please let me know whether this clarifies the intended use and whether our
-reading of the split_pmd damon_prep proposal matches what you had in mind.
+What device_tcb_trusted() means is still debatable, the earlier proposal was including a module flag saying that the driver is trusted too, I think we are ditching it now.
 
 Thanks,
-Lian
+
+-- 
+Alexey
+
 
