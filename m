@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF167C982CF
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 13:26:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D86DAC982CF
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 13:26:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0FB396B0092; Thu, 17 Sep 2026 09:26:42 -0400 (EDT)
+	id AC0066B0095; Thu, 17 Sep 2026 09:26:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D4EC6B0093; Thu, 17 Sep 2026 09:26:42 -0400 (EDT)
+	id A70DA6B0098; Thu, 17 Sep 2026 09:26:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F04BD6B0095; Thu, 17 Sep 2026 09:26:41 -0400 (EDT)
+	id 93A856B0095; Thu, 17 Sep 2026 09:26:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C4C906B0092
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 09:26:41 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6071AA53C8
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 13:26:41 +0000 (UTC)
-X-FDA: 85223329002.05.F70FE64
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C76B6B0095
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 09:26:43 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D29C71C22BA
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 13:26:42 +0000 (UTC)
+X-FDA: 85223329044.24.EE2034F
 Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
-	by imf21.hostedemail.com (Postfix) with ESMTP id A16411C0004
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 13:26:39 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=starlabs-systems.20251104.gappssmtp.com header.s=20251104 header.b=KZ1Y8C3l;
-	spf=pass (imf21.hostedemail.com: domain of sean@starlabs.systems designates 74.125.225.76 as permitted sender) smtp.mailfrom=sean@starlabs.systems;
-	dmarc=pass (policy=none) header.from=starlabs.systems
+	by imf17.hostedemail.com (Postfix) with ESMTP id 0612A40007
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 13:26:40 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=starlabs-systems.20251104.gappssmtp.com header.s=20251104 header.b="axsQs/qc";
+	dmarc=pass (policy=none) header.from=starlabs.systems;
+	spf=pass (imf17.hostedemail.com: domain of sean@starlabs.systems designates 74.125.225.76 as permitted sender) smtp.mailfrom=sean@starlabs.systems
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789651599;
+	s=arc-20220608; t=1789651601;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GKh+va21iR5NhJ1aJ3Y13UNlm+0FMnv30u4Z223eMLE=;
-	b=YEJotklRntBKdK/n1czoPq2IR82hhbmaJ1C7leJXaEEl12r4eNFXdsc8AyTwN//5gtYphg
-	rO5A2Ek5vABELISkHgS9vjtVJO2ioeSvtfeme0CVJSa9vt4J7MLhwBQI0+mFXFIvNPT9OM
-	46guGLrsYnvGIS6SzTJg7/leC4Gdxak=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=starlabs-systems.20251104.gappssmtp.com header.s=20251104 header.b=KZ1Y8C3l;
-	spf=pass (imf21.hostedemail.com: domain of sean@starlabs.systems designates 74.125.225.76 as permitted sender) smtp.mailfrom=sean@starlabs.systems;
-	dmarc=pass (policy=none) header.from=starlabs.systems
+	bh=cYqy4JvgQiRzCuvqvHp97HhL8V2ft2LLYeHwmXteui8=;
+	b=CdNoYvG3abGvRF46qcD9yFh4c1SBAt/NLd5oGNVPAx/6qo6Tu/oX72QSXplHT2IIuBHw+Z
+	/LT6qCM+rkLUcq/6VOzZUqJ0prZPipMj6RFtYwG+QSZqh28FYb+ezNU65Ip81NnUZ8keZw
+	5Ju8U5AQREnAgwGwrTL20O8PVOtmDLA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789651599;
-	b=ZzNnnU7nj8RWbVT4cIDWl8OzqLvRpRcTe4qoJMlbBONv5p/ItHKdku6gnhcFhkiM8gQkHL
-	5cDPFtkG5eW+3ZUyw8h0h8kcA/snjIR3+N4syDC0ta/5tvOlljek5unpTQp35D/BFywGaN
-	WIedW0y3GsmG9ZoI54jGqiksJ84mytE=
-Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-482f62ccdb1so293685f8f.1
-        for <linux-mm@kvack.org>; Thu, 17 Sep 2026 06:26:39 -0700 (PDT)
+	t=1789651601;
+	b=6GBUzGynSVSLMFVZ1qXr1CZVDhNjkEg8Ab2AQ9wpsjJAkCDxoxQxtNlyoop3ye+zD32q4c
+	XsVEkh8soGklQ+uEYwwg7v5PSKWEr0LJ2T2OuIMzA0IgDAi0M9cCRy9Zqa0FuoYOOI0ipL
+	AyJENOyb8GGbwVZqrE4XLNtzI+Es/UQ=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=starlabs-systems.20251104.gappssmtp.com header.s=20251104 header.b="axsQs/qc";
+	dmarc=pass (policy=none) header.from=starlabs.systems;
+	spf=pass (imf17.hostedemail.com: domain of sean@starlabs.systems designates 74.125.225.76 as permitted sender) smtp.mailfrom=sean@starlabs.systems
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-482f6350f91so589582f8f.1
+        for <linux-mm@kvack.org>; Thu, 17 Sep 2026 06:26:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=starlabs-systems.20251104.gappssmtp.com; s=20251104; t=1789651598; x=1790256398; darn=kvack.org;
+        d=starlabs-systems.20251104.gappssmtp.com; s=20251104; t=1789651600; x=1790256400; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=GKh+va21iR5NhJ1aJ3Y13UNlm+0FMnv30u4Z223eMLE=;
-        b=KZ1Y8C3lGCJPLfy8LVtpshjpnqVGeh6LcETMUfoyxluuH0LTuJVPnLRLmeAVg8biWy
-         QcPrFKNRhV2FIVq4A/gvgukOhyoeRYObfoSIINWvqfPaKKxNopfiG4p8OoyLY8qZo9ms
-         +DJ24giYPR4c5G4F7CVO0VwKN0GSAce++IehsGybAEjSImxZtCzmjhypzJtWiafgLJcX
-         YcKNnM/c7u4l3Ndx5X3EJVtkx2W8ua2aPHsSTxNPDR6AIrXggcnEQIBB4D8Gb8KShRMC
-         7eCmIhZsdOHF2I/Kus3ijhzlJ8pgf3lTooGKmEEyenoA/zmA/69CozIcdb5b7amVZeto
-         aBbQ==
+        bh=cYqy4JvgQiRzCuvqvHp97HhL8V2ft2LLYeHwmXteui8=;
+        b=axsQs/qcRtLLUru56b+UGiwlNd47nwe3+0/X8fCvgOJIfAVbuSc8DhyugOWYAzyq02
+         /XCz/SU0oMScPE9zVuQ5XoARQL3g+X5dxvwQwEqkET6b8x0wAgAQuBkgLZoRntTqVP4r
+         Fr7ORtDmPITMxA7/C6bawrTFZDdPA+W42udnPCnil+ou6nbsEFYNCrRyRs0KZ7+b4ocK
+         K4bkFiTQ+U3clcJd2vOXcCUV8xCdh+q30wIRQPZOpelNNSlGMMnDidcrSZY0V6J3wRLd
+         eglDVluX0mDO/6xhdD9oONY8dn7hkOAA3Ecia9eMb0bOo2nwU3jjhQKWqR7wGN54MyBk
+         1nwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789651598; x=1790256398;
+        d=1e100.net; s=20260707; t=1789651600; x=1790256400;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=GKh+va21iR5NhJ1aJ3Y13UNlm+0FMnv30u4Z223eMLE=;
-        b=R3MR2OT6ZYs0Yj9x5fSQRUx7A305K0CIqr9fJQj+nLLj4IxpeIfLozSeA5CRs1wTsW
-         PkTeSBPW5a8QbHM1V4/GVe93LDejuKIgoY2xapORHhVJ+9y0h0zVTQRyXn5Tf37lwhUf
-         yfilYYRaF/dOTejhUQe0uUEjhUbONB1MUWvsCuN8hSX1rptTbsNFlvhNlOpQ0euhLcR8
-         MdHljN5YyBfhv9MR3SVtDk8QOCOYSVD4SH8/qeauCfKgg7e1QHHPQ4ETo9f3S1YtWXK7
-         Y1fZffG89XbPk+tMw/E2qiAyz94uduP3Xs8Yr4e4/bn6PGH0AzfJh55cdYee8VnZICCd
-         CFLw==
-X-Forwarded-Encrypted: i=1; AKwUvBx+9tqb2m0AdViir07tTo1+qwLoSU684/ZnVxWNl+dl6A3jPor7oI+LMuNCDjIk/nyUkJtB0Gy55A==@kvack.org
-X-Gm-Message-State: AFuF++mytXzYXIThkDRYgSoN5JhBW7Wf1XVPhi/4lZvuusAY6GKxyf3B
-	BFsMpHgi9d5DQHJMYL76IXxuOql5lyUjVP1ToTSzfQHmi1643AoNi32QetLusJHM4Q==
-X-Gm-Gg: AYBFou352i802hdY1Q5Pf8paW0/UUFBTHW+ax9UqwBzxsVIXMF66fR0+krb0PuTBe3T
-	7ZNAh0cc8GdYD01h2W9YUZ+dl8ZpvMoBVzmkqGTmClJztbIKNgkO3jTdXUAdyYbWb9naQb36N+J
-	SUSo1e8ShivoMzrxp0bad0BEVsxUJncJyY47/YOEarXp4N3s3iw/qFptbddXnLHWugIEzE1FENc
-	PYTUFRPZWhhsLyQmvyHTSwRm9Sh1SvTQ1BDIWmX6yZBim6iHQ/P91k3MvJ8yDdQtcdUIfAEi9T4
-	JPLN48ywQMmVB+CUGB4EpKL8I3ReMSutK6ZMCCZUbtjMT2RYc4i/3Fo2/9bHDdk7HQrqUGei788
-	+JBUVvgB87kEKIehucdD2JZpyPOuh0kTClIAjPZfuRoh+LqnNQq7WEt/Z7BvopexM10gcNfPOb8
-	riYUI46EukeToq7OYjaiZF7aE1KIOad8ECkX0u9HeGCvfne4UD3zHsAJSb1RUDPtgUYXVx26nOy
-	I4KDzdKx06MOvOY0I2odqjnnTw=
-X-Received: by 2002:a05:6000:614:b0:486:e3bf:606 with SMTP id ffacd0b85a97d-48713c01017mr5790407f8f.18.1789651598051;
-        Thu, 17 Sep 2026 06:26:38 -0700 (PDT)
+        bh=cYqy4JvgQiRzCuvqvHp97HhL8V2ft2LLYeHwmXteui8=;
+        b=J0OvT+6Lejmq5Hb/3ygpSdpucMpZQOV0WTzNULyMjHVBPZiY17e4BcHX+ceK73unYk
+         R6+ejg/qITaoir0JVGLezu8/Cxh/mfmdJ5iQx0RGT7lBl89Niu23kTBbWDYyMnHPKKF1
+         94fzwGfxkxcOh41SFCeNVfetBE/iGnFnv/7pnrwGISXoLzQM46SBlbUrb2ePrNuf+6G0
+         mZ5Bi0fU3unZynTJZBD7kPrT0J0ZCtilzTqPa/AyTC/S1F/Q2XAMQrr26mn0/8e3Da84
+         tYjdn2mZd76y1nIvzaY38L64UqzH3By7Z2BaZekJy9EiaWPvUp1Kgi03okzOzXP7utX2
+         xPAw==
+X-Forwarded-Encrypted: i=1; AKwUvByEegYqQTKrLCKE0NyxugRHcXUkHz5Xrx4fqCiXy8jSMVoh/yrLHSql/Kg0cjTrQnWr8y6N5maNdg==@kvack.org
+X-Gm-Message-State: AFuF++l28T/7ELpPtdkHBUh4aXl+R/tjrW9tuSumfq8burU6Z0XjnlIq
+	2LVgye15oL1Ew5on+z6IOT4Te/GiNUtcHyIxqTESLczTawUn6I1YxJZEN/AgQvBi6w==
+X-Gm-Gg: AYBFou3QMGIuolubr8bbhd7x2pD7j8wKtxZc4kXcrcrpaTr2eyYjl+EZi1SKxrp8iPQ
+	LezV3UMOZExnrxk4+rv1661BwWVMiz50DYqv6yV2xm7v8rVAM7kKIm0EbZ0W+e2zSdYvtYQDD1r
+	r9k4VkqFkyYlYfaaQesu25odGXxcjB1bawUiMvEa2XjtJVUkmjGgQ2s5VtRXCmzCfgSOa8/52Pg
+	q97uQg5N3gPMs5MF9mQQ9wyBms+Vk4E0OL0e45kMoKkIbKUEooSHJIvcUwuet6CIQAZOLLoA8cJ
+	LkHS6FzI6Wyr5KI1nhjcxdbTQqaOJKwhHtxgONNug97h1bfo8BjN272imyxV2tikqMMgY0sXxCJ
+	3PejOCcO791K5oU0Xyh7hIGolsuuUtQTNyjL6o35ZRCWwF1DwYJNRERes6deF7udv2aVhjJ3Jd3
+	5JuNxqq3ygirjUhtgTi4mg9rgziH9VPwJqyJc9TwzG7t3h5KVJOhSTWC+uVsmfjCOdmHTAeRWN9
+	wD9Ql+FXvK+veLW7XSUa2eYnc8a
+X-Received: by 2002:a05:6000:4209:b0:487:77c:f6c4 with SMTP id ffacd0b85a97d-4870d0667a0mr8425263f8f.35.1789651599627;
+        Thu, 17 Sep 2026 06:26:39 -0700 (PDT)
 Received: from fighter ([216.128.28.240])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4870bf1f6cfsm15879947f8f.13.2026.09.17.06.26.36
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4870bf1f6cfsm15879947f8f.13.2026.09.17.06.26.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Sep 2026 06:26:37 -0700 (PDT)
+        Thu, 17 Sep 2026 06:26:39 -0700 (PDT)
 From: Sean Rhodes <sean@starlabs.systems>
 To: linux-pm@vger.kernel.org
 Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -112,22 +112,22 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	linux-mm@kvack.org,
 	Xueqin Luo <luoxueqin@kylinos.cn>,
 	Nicolas Bouchinet <nicolas.bouchinet@oss.cyber.gouv.fr>
-Subject: [PATCH v3 2/4] PM: hibernate: confine encrypted snapshot writes
-Date: Thu, 17 Sep 2026 14:26:29 +0100
-Message-ID: <afbc2f0ca0cf680c3e47c931ed62a4d49065c72f.1789651581.git.sean@starlabs.systems>
+Subject: [PATCH v3 3/4] PM: hibernate: permit encrypted snapshot device under lockdown
+Date: Thu, 17 Sep 2026 14:26:30 +0100
+Message-ID: <f237b56e8444ea7b477dbcf4aa6dafd2ff0c1dc7.1789651581.git.sean@starlabs.systems>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <cover.1789651581.git.sean@starlabs.systems>
 References: <cover.1789651581.git.sean@starlabs.systems>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: nzkghfnhq1mqaaq3xjsy5r1k1f7rowu5
-X-Rspamd-Queue-Id: A16411C0004
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789651599-550672
-X-HE-Meta: U2FsdGVkX1+6BOAzd1iZ0nNOTYocK3zHw+986NfhxYatfoehNqNuA7J2eJ68PeXGqdWBzyZyhlRyYzKMHoIBH34v2jS+2TNs/lRCPLjfbkloTB86HGxP24c6zWv9ZzXjEe6YvGvbolrlSCmdq4UeeugmRouwQNOAVezU6UhZpp2u2gZhMzpUvDagA0CmWo4iHrzj1PU1Deem5KnmUjSIFB63iEwVeNbmSCJVjBKey+aviFQ43Ob0AXDOr/QgINCAKEV7ithROpKpig7EacR/X36gbumgTVIHM9NWwyhfyuWR/YB0jHSvSct3TcXGR9Bm6P4JQuU26Vy4NaaOolIRTXRt9Y8ScDjV8/LgDJlNH+y0aQJ+JRiYn8sfvplZrU9ndXWVFIVuRsyj9mTz5OCbe3pZp5zEzJTHD6S0xy9N5DECFOFX6FL7Xev3DSO908wubzp9lpbx03lafg2fJlV7W0cZxXDcmzxSVkqSikTfzZp9KwaFXAokzYwt+oN04NDDF3kVp6KOTYj3lBBtHam9Mqy5Dc4mXOyrcG8PYfpgz9fnHscnksWI8C9N6z75icjdRJAuCBpEYdSi8Ccc1HAoI/e0YbaQjMp51G+6DLraoxqAKFo2edixyWYtLIJ719IkupQuGADnC517/Fj8CtFMte+tT1o0yjyGWXlPyJcRjjAmmHl3puIH0KcEUBA5AIDtEmDkAsYJEZh982uZ/MyRTydVsPPIFLGWaCzaKw0CLy1LGGPgluknl8FBPey9v9gi3lgSSIz7cmxyU9z4tU2aMU4+3BJj0rrp1fYLY4HVJ8hzS5rufGQ3gRhRI9Vx4k7esDOkTakzGup29ToQma3NFLduTrRoBTI2rOjXo6PmmuYOYcdMOa9ycH2tKTpUUdRB61tALgYPx0Upv0AFnp7m4g1aXzFxnFxvSBQbZZi7i5SOcCRqM89EUtmiYcwese35HKKoV1EdjHGar2YEqx4
- ojlubLj3
- ye+Ly+nCA4B3QInkR0YV1xtR5PuYkNeW0VmrrVSPhSbkpgXiZiVPpbdxMGUaf+RUesvcKAOQsKzsKAAZ5bh268yeQGs3UottkPvaguvRaCSpCt6HS1Ek7YEXknZNQNW8EfeTUu3kyBxM8SgfJ+z7h4LlRzEhaNUoWUl/QcKJH8Cjkabo6DvMnjRnt+svZgJniuyVIE81DXc53yVAlJL1nzbr2hwjluWWqfh1jSeWdMd6z7x/h4hlti0vMZI+cvU481/IEtut0GB0fRW/P7PhYlnVAcbKbhZSArqYFtTTi0rxfZ027bA/HJvg1LMCPmUSQTtY+L0Z9o1BI8FIIoEV6slQEhBB7OnbXKeQqUGZRvz0Fybhn3wo7+O8wl2hjad9hi7XVvowmA8ec9ms=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 0612A40007
+X-Stat-Signature: i5zb3ogkrdz1bjm35nw4j7iej7w7m8nt
+X-HE-Tag: 1789651600-619452
+X-HE-Meta: U2FsdGVkX1+ZivjXO9H01Gk0myYKCZQufgiZr8Cacj6HsSM/VEK+uFleOqCYjWLj8vTbRlNOlwlFSjfAKgJEEY/4V7eYOHjHxQ7RediEDUeODP9mPWB8RF1nCvkPq31DqwzGFa0Ry+SxUBSLSAHA6h57ugjpdnTEA3jWbf9PsT7WBcDrKUlfvM20apmguiJ7LEoC5fSIkfyQMvPvXC3ppgq5zR8rNSBRRB7lJhYjragE6AsYwH9CF0jjDCEQpzXAAbQBhbHtF9wvGGGaaCpsTfykfb7oPo4s/IyJHp8fVHh9gcYpsoysPu6cPxOOChxqdqYZpXT7XvuyTy0MUNFQzXJLNFBEE4QF0up2L7l0z3z43UoCkNF672G/q+jO6K+XPDrR0276UPOO/IF3nudshJWKT57RBO49QBezZdaFMhxU9I+mlVkujC0G0vucWWhgjZLNMzw/I8olI8TcnC9VhxCKNeBMqO3O++kpUFjc8L+iYrTScwlgYFJqSgRW1vWjG6haWuGWOFH3RaEqDnXM7woHOaclLhmiNsAUzpn+vU+jodIBEweyRWahzwzql7AoK0dBJoeUqE058ak9KU4ASN8TreLVbn8jv77Brtpp8L8J2yeSUFhrc9WXOLHXggy3BAo+B8SB37hOpivTYnEWToQu9Ad3zsMvDXUbGVSSa+eeWOeDqD3gxqsQWXEDId1PiIvrmx1VBKPiXQO4vn1vr8GLTIB6rDNBmzTMM4FcgNFo3cpfKqvDcL7MCsHBlalwIzUGKNVVOdFQW7TB1TboW4z+hyxcgGIyfsq8Qcudusw0hQcC/AaOLxLK1kuAsKvFSCrdH85URvQz0UiR1Xq9MkO/YpGgrs0S6YVy8Na6CabrkiEwPDD1HNIRp7+Ws1+kghYGfVSE/o2G8kyW4pLfBrYMMftToRbMhFx7axu/12PI4jTFPc63QFESOAlELMwseY4+aIsB8t1xUpfrzPM
+ WQiPHQZU
+ sgb7qsQk+7XAMnbbgookJ3dTyKQG4tL9OXqe0ocVBwyM9IN4+Apb07mpl0AdyMZO18ZXWbPGDuMBcoY6l+yaiETzEHRJ0kbp6vXeOH25Lg0cyvkvtZxXjRb8SukEIdZgUqR4E0gpIgxhipgryc3O/iVT0+xJ4CZE+rB45Rh+RiXrjhmITv5pJoFcDQOC2JYNsdolXhZdEqPr6LGd9/r31XxVBAgAwbt8+SPabfkK7siYVv/nmw3a+ji2Kfe6FpTAKChPVw1VAT341GAVPlND3KVNCApfuM8gY8aD++CaF5iWP5pzMP6n93JObRnRVfCfLUzwjbOCbz9dgMst7xws7hx3WvoKKYI0MTBTgDP+BSbWrnoPUoYr8flDaKYSVMg72gnlpPqek0coobWo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,709 +135,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Userspace writes a uswsusp image through the normal block path. Before
-allowing encrypted hibernation under lockdown, restrict direct writes to
-the process that owns the active snapshot, the swap extents allocated
-through the snapshot API, the recorded swap-header page, and the total
-number of pages allocated for the image.
+Lockdown disables hibernation because restoring attacker-controlled image
+data can modify kernel memory. Permit opening the userspace snapshot
+device under lockdown when encrypted hibernation support is built, but
+require encryption to be enabled before image data can be read or written
+and before restore or power-off ioctls can proceed.
 
-Apply the checks to the active swap backend even when its block-device
-inode is not itself marked as swap. Require synchronous buffered writes
-so reservation accounting follows completed I/O, and release reservations
-for partial writes.
+Tested on StarFighter MTL with lockdown enabled: encrypted uswsusp
+hibernate and restore used the snapshot device path.
 
 Signed-off-by: Sean Rhodes <sean@starlabs.systems>
 ---
- block/fops.c            |  58 ++++++++---
- include/linux/suspend.h |  24 +++++
- include/linux/swap.h    |   9 ++
- kernel/power/power.h    |   1 +
- kernel/power/swap.c     |  87 +++++++++++++++++
- kernel/power/user.c     | 211 ++++++++++++++++++++++++++++++++++++++++
- kernel/power/user.h     |  11 +++
- mm/swapfile.c           |  25 +++++
- 8 files changed, 413 insertions(+), 13 deletions(-)
+ kernel/power/hibernate.c | 8 ++++++++
+ kernel/power/power.h     | 1 +
+ kernel/power/user.c      | 2 +-
+ 3 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/block/fops.c b/block/fops.c
-index 2ce7c6c4714e..bdc9f2cf7156 100644
---- a/block/fops.c
-+++ b/block/fops.c
-@@ -725,43 +725,68 @@ static ssize_t blkdev_write_iter(struct kiocb *iocb, struct iov_iter *from)
- 	struct file *file = iocb->ki_filp;
- 	struct inode *bd_inode = bdev_file_inode(file);
- 	struct block_device *bdev = I_BDEV(bd_inode);
-+	dev_t dev = bd_inode->i_rdev;
- 	bool atomic = iocb->ki_flags & IOCB_ATOMIC;
- 	loff_t size = bdev_nr_bytes(bdev);
-+	enum hibernate_snapshot_write hibernate_write;
-+	bool hibernate_active;
-+	size_t hibernate_len = 0;
- 	size_t shorted = 0;
-+	ssize_t hibernate_written = 0;
- 	ssize_t ret;
- 
- 	if (bdev_read_only(bdev))
- 		return -EPERM;
- 
--	if (IS_SWAPFILE(bd_inode) && !is_hibernate_resume_dev(bd_inode->i_rdev))
--		return -ETXTBSY;
-+	hibernate_active = hibernate_snapshot_write_active(dev);
-+	if ((IS_SWAPFILE(bd_inode) && !is_hibernate_resume_dev(dev)) ||
-+	    hibernate_active) {
-+		if (!is_sync_kiocb(iocb) || !iocb_is_dsync(iocb) ||
-+		    (iocb->ki_flags & IOCB_DIRECT))
-+			return -ETXTBSY;
-+
-+		hibernate_len = iov_iter_count(from);
-+		hibernate_write = hibernate_snapshot_write_begin(dev, iocb->ki_pos, hibernate_len);
-+		if (hibernate_write == HIBERNATE_SNAPSHOT_WRITE_NONE)
-+			return -ETXTBSY;
-+	} else {
-+		hibernate_write = HIBERNATE_SNAPSHOT_WRITE_NONE;
-+	}
- 
--	if (!iov_iter_count(from))
--		return 0;
-+	if (!iov_iter_count(from)) {
-+		ret = 0;
-+		goto out_hibernate;
-+	}
- 
--	if (iocb->ki_pos >= size)
--		return -ENOSPC;
-+	if (iocb->ki_pos >= size) {
-+		ret = -ENOSPC;
-+		goto out_hibernate;
-+	}
- 
--	if ((iocb->ki_flags & (IOCB_NOWAIT | IOCB_DIRECT)) == IOCB_NOWAIT)
--		return -EOPNOTSUPP;
-+	if ((iocb->ki_flags & (IOCB_NOWAIT | IOCB_DIRECT)) == IOCB_NOWAIT) {
-+		ret = -EOPNOTSUPP;
-+		goto out_hibernate;
-+	}
- 
- 	if (atomic) {
- 		ret = generic_atomic_write_valid(iocb, from);
- 		if (ret)
--			return ret;
-+			goto out_hibernate;
- 	}
- 
- 	size -= iocb->ki_pos;
- 	if (iov_iter_count(from) > size) {
--		if (atomic)
--			return -EINVAL;
-+		if (atomic) {
-+			ret = -EINVAL;
-+			goto out_hibernate;
-+		}
- 		shorted = iov_iter_count(from) - size;
- 		iov_iter_truncate(from, size);
- 	}
- 
- 	ret = file_update_time(file);
- 	if (ret)
--		return ret;
-+		goto out_hibernate;
- 
- 	if (iocb->ki_flags & IOCB_DIRECT) {
- 		ret = blkdev_direct_write(iocb, from);
-@@ -779,9 +804,16 @@ static ssize_t blkdev_write_iter(struct kiocb *iocb, struct iov_iter *from)
- 		inode_unlock_shared(bd_inode);
- 	}
- 
--	if (ret > 0)
-+	if (ret > 0) {
-+		hibernate_written = ret;
- 		ret = generic_write_sync(iocb, ret);
-+	}
- 	iov_iter_reexpand(from, iov_iter_count(from) + shorted);
-+
-+out_hibernate:
-+	if (hibernate_len)
-+		hibernate_snapshot_write_end(hibernate_write, hibernate_len,
-+					     hibernate_written);
- 	return ret;
+diff --git a/kernel/power/hibernate.c b/kernel/power/hibernate.c
+index a95cb447a13a..0b8626bdf81a 100644
+--- a/kernel/power/hibernate.c
++++ b/kernel/power/hibernate.c
+@@ -114,6 +114,14 @@ bool hibernation_available(void)
+ 		!secretmem_active() && !cxl_mem_active();
  }
  
-diff --git a/include/linux/suspend.h b/include/linux/suspend.h
-index b02876f1ae38..a2a8863f89cf 100644
---- a/include/linux/suspend.h
-+++ b/include/linux/suspend.h
-@@ -426,10 +426,34 @@ static inline bool pm_hibernation_mode_is_suspend(void) { return false; }
- 
- int arch_resume_nosmt(void);
- 
-+enum hibernate_snapshot_write {
-+	HIBERNATE_SNAPSHOT_WRITE_NONE,
-+	HIBERNATE_SNAPSHOT_WRITE_IMAGE,
-+	HIBERNATE_SNAPSHOT_WRITE_HEADER,
-+};
-+
- #ifdef CONFIG_HIBERNATION_SNAPSHOT_DEV
- int is_hibernate_resume_dev(dev_t dev);
-+bool hibernate_snapshot_write_active(dev_t dev);
-+enum hibernate_snapshot_write
-+hibernate_snapshot_write_begin(dev_t dev, loff_t pos, size_t count);
-+void hibernate_snapshot_write_end(enum hibernate_snapshot_write type,
-+				  size_t reserved, ssize_t written);
- #else
- static inline int is_hibernate_resume_dev(dev_t dev) { return 0; }
-+static inline bool hibernate_snapshot_write_active(dev_t dev) { return false; }
-+
-+static inline enum hibernate_snapshot_write
-+hibernate_snapshot_write_begin(dev_t dev, loff_t pos, size_t count)
++bool hibernation_snapshot_dev_available(void)
 +{
-+	return HIBERNATE_SNAPSHOT_WRITE_NONE;
++	return nohibernate == 0 &&
++		(!security_locked_down(LOCKDOWN_HIBERNATION) ||
++		 IS_ENABLED(CONFIG_ENCRYPTED_HIBERNATION)) &&
++		!secretmem_active() && !cxl_mem_active();
 +}
 +
-+static inline void hibernate_snapshot_write_end(enum hibernate_snapshot_write type,
-+						size_t reserved,
-+						ssize_t written)
-+{
-+}
- #endif
- 
- /* Hibernation and suspend events */
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index 5658a1634b85..deab983ef3d6 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -377,6 +377,8 @@ extern int find_hibernation_swap_type(dev_t device, sector_t offset);
- int find_first_swap(dev_t *device);
- extern unsigned int count_swap_pages(int, int);
- extern sector_t swapdev_block(int, pgoff_t);
-+int swapdev_block_to_extent(int type, sector_t block, pgoff_t *offset,
-+			    pgoff_t *nr_pages);
- extern int __swap_count(swp_entry_t entry);
- extern bool swap_entry_swapped(struct swap_info_struct *si, swp_entry_t entry);
- extern int swp_swapcount(swp_entry_t entry);
-@@ -472,6 +474,13 @@ static inline int add_swap_extent(struct swap_info_struct *sis,
- {
- 	return -EINVAL;
- }
-+
-+static inline int swapdev_block_to_extent(int type, sector_t block,
-+					  pgoff_t *offset,
-+					  pgoff_t *nr_pages)
-+{
-+	return -EINVAL;
-+}
- #endif /* CONFIG_SWAP */
- #ifdef CONFIG_MEMCG
- void lru_reparent_memcg(struct mem_cgroup *memcg, struct mem_cgroup *parent, int nid);
+ /**
+  * hibernation_set_ops - Set the global hibernate operations.
+  * @ops: Hibernation operations to use in subsequent hibernation transitions.
 diff --git a/kernel/power/power.h b/kernel/power/power.h
-index e080230f97fc..815c84c1e0dd 100644
+index 815c84c1e0dd..351b5f68bde3 100644
 --- a/kernel/power/power.h
 +++ b/kernel/power/power.h
-@@ -170,6 +170,7 @@ extern bool hibernate_acquire(void);
+@@ -168,6 +168,7 @@ extern int snapshot_image_loaded(struct snapshot_handle *handle);
+ 
+ extern bool hibernate_acquire(void);
  extern void hibernate_release(void);
++bool hibernation_snapshot_dev_available(void);
  
  extern sector_t alloc_swapdev_block(int swap);
-+bool swsusp_swap_range_allocated(int swap, loff_t pos, size_t count);
- extern void free_all_swap_pages(int swap);
- extern int swsusp_swap_in_use(void);
- 
-diff --git a/kernel/power/swap.c b/kernel/power/swap.c
-index c78f1593600b..ac736d2b59e3 100644
---- a/kernel/power/swap.c
-+++ b/kernel/power/swap.c
-@@ -166,6 +166,93 @@ static int swsusp_extents_insert(unsigned long swap_offset)
- 	return 0;
- }
- 
-+static bool swsusp_extents_contain_range(unsigned long swap_offset,
-+					 unsigned long nr_pages)
-+{
-+	struct rb_node *node = swsusp_extents.rb_node;
-+	struct swsusp_extent *ext;
-+	unsigned long end;
-+
-+	if (!nr_pages)
-+		return false;
-+
-+	end = swap_offset + nr_pages - 1;
-+	if (end < swap_offset)
-+		return false;
-+
-+	while (node) {
-+		ext = rb_entry(node, struct swsusp_extent, node);
-+		if (swap_offset < ext->start)
-+			node = node->rb_left;
-+		else if (swap_offset > ext->end)
-+			node = node->rb_right;
-+		else
-+			goto found;
-+	}
-+
-+	return false;
-+
-+found:
-+	for (;;) {
-+		if (swap_offset < ext->start)
-+			return false;
-+		if (end <= ext->end)
-+			return true;
-+		if (ext->end == (unsigned long)-1)
-+			return false;
-+
-+		swap_offset = ext->end + 1;
-+		node = rb_next(&ext->node);
-+		if (!node)
-+			return false;
-+
-+		ext = rb_entry(node, struct swsusp_extent, node);
-+	}
-+}
-+
-+bool swsusp_swap_range_allocated(int swap, loff_t pos, size_t count)
-+{
-+	u64 block;
-+	u64 end;
-+	u64 end_block;
-+
-+	if (swap < 0 || pos < 0 || !count)
-+		return false;
-+
-+	end = (u64)pos + count - 1;
-+	if (end < (u64)pos)
-+		return false;
-+
-+	block = (u64)pos >> PAGE_SHIFT;
-+	end_block = end >> PAGE_SHIFT;
-+
-+	for (;;) {
-+		u64 remaining_pages = end_block - block + 1;
-+		pgoff_t swap_offset;
-+		pgoff_t mapped_pages;
-+		sector_t page_block = block;
-+		u64 pages;
-+
-+		if (!remaining_pages)
-+			return false;
-+		if ((u64)page_block != block)
-+			return false;
-+		if (swapdev_block_to_extent(swap, page_block, &swap_offset,
-+					    &mapped_pages))
-+			return false;
-+		if (!mapped_pages)
-+			return false;
-+		pages = min_t(u64, mapped_pages, remaining_pages);
-+		if ((u64)(unsigned long)pages != pages)
-+			return false;
-+		if (!swsusp_extents_contain_range(swap_offset, pages))
-+			return false;
-+		if (pages == remaining_pages)
-+			return true;
-+		block += pages;
-+	}
-+}
-+
- sector_t alloc_swapdev_block(int swap)
- {
- 	unsigned long offset;
+ bool swsusp_swap_range_allocated(int swap, loff_t pos, size_t count);
 diff --git a/kernel/power/user.c b/kernel/power/user.c
-index 07dbb1e82847..de41f590c98d 100644
+index de41f590c98d..b8d3342f1548 100644
 --- a/kernel/power/user.c
 +++ b/kernel/power/user.c
-@@ -21,6 +21,9 @@
- #include <linux/console.h>
- #include <linux/cpu.h>
- #include <linux/freezer.h>
-+#include <linux/pid.h>
-+#include <linux/sched/signal.h>
-+#include <linux/security.h>
+@@ -184,7 +184,7 @@ static int snapshot_open(struct inode *inode, struct file *filp)
+ 	unsigned int sleep_flags;
+ 	int error;
  
- #include <linux/uaccess.h>
+-	if (!hibernation_available())
++	if (!hibernation_snapshot_dev_available())
+ 		return -EPERM;
  
-@@ -35,6 +38,146 @@ int is_hibernate_resume_dev(dev_t dev)
- 	return hibernation_available() && snapshot_state.dev == dev;
- }
- 
-+bool hibernate_snapshot_write_active(dev_t dev)
-+{
-+#if defined(CONFIG_ENCRYPTED_HIBERNATION)
-+	struct snapshot_data *data = &snapshot_state;
-+
-+	return data->encryption_required && data->mode == O_RDONLY &&
-+		data->ready && data->dev == dev &&
-+		snapshot_encryption_enabled(data);
-+#else
-+	return false;
-+#endif
-+}
-+
-+#if defined(CONFIG_ENCRYPTED_HIBERNATION)
-+static bool snapshot_encrypted_output_owned(struct snapshot_data *data, dev_t dev)
-+{
-+	return hibernate_snapshot_write_active(dev) &&
-+		data->owner_tgid == task_tgid(current);
-+}
-+
-+static bool snapshot_header_write_range(struct snapshot_data *data,
-+					loff_t pos, size_t count)
-+{
-+	loff_t header_offset = data->swap_header_offset;
-+	loff_t offset;
-+
-+	if (pos < header_offset)
-+		return false;
-+
-+	offset = pos - header_offset;
-+	return offset < PAGE_SIZE && count <= PAGE_SIZE - offset;
-+}
-+
-+static u64 snapshot_swap_write_budget(struct snapshot_data *data)
-+{
-+	if (data->crypt_swap_allocated > U64_MAX >> PAGE_SHIFT)
-+		return 0;
-+
-+	return data->crypt_swap_allocated << PAGE_SHIFT;
-+}
-+
-+static void snapshot_reset_swap_write_state(struct snapshot_data *data,
-+					    bool reset_allocation)
-+{
-+	spin_lock(&data->crypt_lock);
-+	if (reset_allocation)
-+		data->crypt_swap_allocated = 0;
-+	data->crypt_swap_reserved = 0;
-+	data->crypt_header_reserved = 0;
-+	spin_unlock(&data->crypt_lock);
-+}
-+#endif
-+
-+enum hibernate_snapshot_write
-+hibernate_snapshot_write_begin(dev_t dev, loff_t pos, size_t count)
-+{
-+#if defined(CONFIG_ENCRYPTED_HIBERNATION)
-+	struct snapshot_data *data = &snapshot_state;
-+	enum hibernate_snapshot_write type = HIBERNATE_SNAPSHOT_WRITE_NONE;
-+	bool image_range_allocated;
-+	u64 swap_budget;
-+
-+	if (!count || !snapshot_encrypted_output_owned(data, dev))
-+		return HIBERNATE_SNAPSHOT_WRITE_NONE;
-+
-+	mutex_lock(&system_transition_mutex);
-+
-+	if (!snapshot_encrypted_output_owned(data, dev))
-+		goto unlock;
-+
-+	image_range_allocated = swsusp_swap_range_allocated(data->swap, pos, count);
-+
-+	spin_lock(&data->crypt_lock);
-+	swap_budget = snapshot_swap_write_budget(data);
-+	if (snapshot_header_write_range(data, pos, count) &&
-+	    data->crypt_header_reserved <= PAGE_SIZE &&
-+	    PAGE_SIZE - data->crypt_header_reserved >= count) {
-+		data->crypt_header_reserved += count;
-+		type = HIBERNATE_SNAPSHOT_WRITE_HEADER;
-+	} else if (image_range_allocated &&
-+		   swap_budget >= data->crypt_swap_reserved &&
-+		   swap_budget - data->crypt_swap_reserved >= count) {
-+		data->crypt_swap_reserved += count;
-+		type = HIBERNATE_SNAPSHOT_WRITE_IMAGE;
-+	}
-+	spin_unlock(&data->crypt_lock);
-+
-+	if (type == HIBERNATE_SNAPSHOT_WRITE_NONE)
-+		goto unlock;
-+
-+	return type;
-+
-+unlock:
-+	mutex_unlock(&system_transition_mutex);
-+	return HIBERNATE_SNAPSHOT_WRITE_NONE;
-+#else
-+	return HIBERNATE_SNAPSHOT_WRITE_NONE;
-+#endif
-+}
-+
-+void hibernate_snapshot_write_end(enum hibernate_snapshot_write type,
-+				  size_t reserved, ssize_t written)
-+{
-+#if defined(CONFIG_ENCRYPTED_HIBERNATION)
-+	struct snapshot_data *data = &snapshot_state;
-+	u64 *reserved_total;
-+	size_t unused;
-+
-+	if (type == HIBERNATE_SNAPSHOT_WRITE_NONE)
-+		return;
-+	if (!reserved)
-+		goto unlock;
-+
-+	if (type == HIBERNATE_SNAPSHOT_WRITE_HEADER)
-+		unused = reserved;
-+	else if (written <= 0)
-+		unused = reserved;
-+	else if (written < reserved)
-+		unused = reserved - written;
-+	else
-+		goto unlock;
-+
-+	reserved_total = type == HIBERNATE_SNAPSHOT_WRITE_HEADER ?
-+		&data->crypt_header_reserved : &data->crypt_swap_reserved;
-+
-+	spin_lock(&data->crypt_lock);
-+	*reserved_total -= min_t(u64, *reserved_total, unused);
-+	spin_unlock(&data->crypt_lock);
-+
-+unlock:
-+	mutex_unlock(&system_transition_mutex);
-+#endif
-+}
-+
-+static bool snapshot_encryption_required(struct snapshot_data *data)
-+{
-+	data->encryption_required = security_locked_down(LOCKDOWN_HIBERNATION);
-+	return data->encryption_required;
-+}
-+
- static int snapshot_open(struct inode *inode, struct file *filp)
- {
- 	struct snapshot_data *data;
-@@ -60,6 +203,14 @@ static int snapshot_open(struct inode *inode, struct file *filp)
- 	data = &snapshot_state;
- 	filp->private_data = data;
- 	memset(&data->handle, 0, sizeof(struct snapshot_handle));
-+#if defined(CONFIG_ENCRYPTED_HIBERNATION)
-+	spin_lock_init(&data->crypt_lock);
-+	data->crypt_swap_allocated = 0;
-+	data->crypt_swap_reserved = 0;
-+	data->crypt_header_reserved = 0;
-+	data->swap_header_offset = 0;
-+	data->owner_tgid = NULL;
-+#endif
- 	if ((filp->f_flags & O_ACCMODE) == O_RDONLY) {
- 		/* Hibernating.  The image device should be accessible. */
- 		data->swap = pin_hibernation_swap_type(swsusp_resume_device, 0);
-@@ -90,6 +241,11 @@ static int snapshot_open(struct inode *inode, struct file *filp)
- 	data->ready = false;
- 	data->platform_support = false;
- 	data->dev = 0;
-+	data->encryption_required = snapshot_encryption_required(data);
-+#if defined(CONFIG_ENCRYPTED_HIBERNATION)
-+	if (!error)
-+		data->owner_tgid = get_task_pid(current, PIDTYPE_TGID);
-+#endif
- 
-  unlock:
- 	unlock_system_sleep(sleep_flags);
-@@ -107,6 +263,10 @@ static int snapshot_release(struct inode *inode, struct file *filp)
- 	swsusp_free();
- 	data = filp->private_data;
- 	data->dev = 0;
-+#if defined(CONFIG_ENCRYPTED_HIBERNATION)
-+	put_pid(data->owner_tgid);
-+	data->owner_tgid = NULL;
-+#endif
- 	free_all_swap_pages(data->swap);
- 	unpin_hibernation_swap_type(data->swap);
- 	if (data->frozen) {
-@@ -141,6 +301,11 @@ static ssize_t snapshot_read(struct file *filp, char __user *buf,
- 		res = -ENODATA;
- 		goto unlock;
- 	}
-+	if (snapshot_encryption_required(data) &&
-+	    !snapshot_encryption_enabled(data)) {
-+		res = -EPERM;
-+		goto unlock;
-+	}
- 
- 	if (snapshot_encryption_enabled(data)) {
- 		res = snapshot_read_encrypted(data, buf, count, offp);
-@@ -183,6 +348,12 @@ static ssize_t snapshot_write(struct file *filp, const char __user *buf,
- 
- 	data = filp->private_data;
- 
-+	if (snapshot_encryption_required(data) &&
-+	    !snapshot_encryption_enabled(data)) {
-+		res = -EPERM;
-+		goto unlock;
-+	}
-+
- 	if (snapshot_encryption_enabled(data)) {
- 		res = snapshot_write_encrypted(data, buf, count, offp);
- 		goto unlock;
-@@ -255,6 +426,9 @@ static int snapshot_set_swap_area(struct snapshot_data *data,
- 	if (data->swap < 0)
- 		return swdev ? -ENODEV : -EINVAL;
- 	data->dev = swdev;
-+#if defined(CONFIG_ENCRYPTED_HIBERNATION)
-+	data->swap_header_offset = (loff_t)offset << PAGE_SHIFT;
-+#endif
- 	return 0;
- }
- 
-@@ -321,6 +495,11 @@ static long snapshot_ioctl(struct file *filp, unsigned int cmd,
- 			error = -EPERM;
- 			break;
- 		}
-+		if (snapshot_encryption_required(data) &&
-+		    !snapshot_encryption_enabled(data)) {
-+			error = -EPERM;
-+			break;
-+		}
- 		pm_restore_gfp_mask();
- 		error = hibernation_snapshot(data->platform_support);
- 		if (!error) {
-@@ -331,6 +510,11 @@ static long snapshot_ioctl(struct file *filp, unsigned int cmd,
- 		break;
- 
- 	case SNAPSHOT_ATOMIC_RESTORE:
-+		if (snapshot_encryption_required(data) &&
-+		    !snapshot_encryption_enabled(data)) {
-+			error = -EPERM;
-+			break;
-+		}
- 		if (snapshot_encryption_enabled(data)) {
- 			error = snapshot_finalize_decrypted_image(data);
- 			if (error)
-@@ -356,6 +540,9 @@ static long snapshot_ioctl(struct file *filp, unsigned int cmd,
- 		memset(&data->handle, 0, sizeof(struct snapshot_handle));
- 		data->ready = false;
- 		snapshot_teardown_encryption(data);
-+#if defined(CONFIG_ENCRYPTED_HIBERNATION)
-+		snapshot_reset_swap_write_state(data, false);
-+#endif
- 		/*
- 		 * It is necessary to thaw kernel threads here, because
- 		 * SNAPSHOT_CREATE_IMAGE may be invoked directly after
-@@ -398,6 +585,13 @@ static long snapshot_ioctl(struct file *filp, unsigned int cmd,
- 		if (offset) {
- 			offset <<= PAGE_SHIFT;
- 			error = put_user(offset, (loff_t __user *)arg);
-+#if defined(CONFIG_ENCRYPTED_HIBERNATION)
-+			if (!error) {
-+				spin_lock(&data->crypt_lock);
-+				data->crypt_swap_allocated++;
-+				spin_unlock(&data->crypt_lock);
-+			}
-+#endif
- 		} else {
- 			error = -ENOSPC;
- 		}
-@@ -409,6 +603,9 @@ static long snapshot_ioctl(struct file *filp, unsigned int cmd,
- 			break;
- 		}
- 		free_all_swap_pages(data->swap);
-+#if defined(CONFIG_ENCRYPTED_HIBERNATION)
-+		snapshot_reset_swap_write_state(data, true);
-+#endif
- 		break;
- 
- 	case SNAPSHOT_S2RAM:
-@@ -416,6 +613,11 @@ static long snapshot_ioctl(struct file *filp, unsigned int cmd,
- 			error = -EPERM;
- 			break;
- 		}
-+		if (snapshot_encryption_required(data) &&
-+		    !snapshot_encryption_enabled(data)) {
-+			error = -EPERM;
-+			break;
-+		}
- 		/*
- 		 * Tasks are frozen and the notifiers have been called with
- 		 * PM_HIBERNATION_PREPARE
-@@ -429,6 +631,11 @@ static long snapshot_ioctl(struct file *filp, unsigned int cmd,
- 		break;
- 
- 	case SNAPSHOT_POWER_OFF:
-+		if (snapshot_encryption_required(data) &&
-+		    !snapshot_encryption_enabled(data)) {
-+			error = -EPERM;
-+			break;
-+		}
- 		if (data->platform_support)
- 			error = hibernation_platform_enter();
- 		break;
-@@ -442,6 +649,10 @@ static long snapshot_ioctl(struct file *filp, unsigned int cmd,
- 			error = snapshot_get_encryption_key(data, (void __user *)arg);
- 		else
- 			error = snapshot_set_encryption_key(data, (void __user *)arg);
-+#if defined(CONFIG_ENCRYPTED_HIBERNATION)
-+		if (!error)
-+			snapshot_reset_swap_write_state(data, false);
-+#endif
- 		break;
- 
- 	case SNAPSHOT_SET_USER_KEY:
-diff --git a/kernel/power/user.h b/kernel/power/user.h
-index b0c20e5d5ee9..0e1e123e3230 100644
---- a/kernel/power/user.h
-+++ b/kernel/power/user.h
-@@ -5,10 +5,13 @@
- 
- #include <linux/crypto.h>
- #include <linux/scatterlist.h>
-+#include <linux/spinlock.h>
- #include <linux/suspend_ioctls.h>
- #include <crypto/aead.h>
- #include <crypto/aes.h>
- 
-+struct pid;
-+
- #define SNAPSHOT_ENCRYPTION_KEY_SIZE AES_KEYSIZE_128
- #define SNAPSHOT_AUTH_TAG_SIZE 16
- 
-@@ -23,6 +26,7 @@ struct snapshot_data {
- 	bool ready;
- 	bool platform_support;
- 	bool free_bitmaps;
-+	bool encryption_required;
- 	dev_t dev;
- 
- #if defined(CONFIG_ENCRYPTED_HIBERNATION)
-@@ -42,6 +46,13 @@ struct snapshot_data {
- 	bool user_key_valid;
- 	u64 meta_size;
- 	u64 crypt_meta_size;
-+	/* Protect the swap allocation and block-write reservations. */
-+	spinlock_t crypt_lock;
-+	u64 crypt_swap_allocated;
-+	u64 crypt_swap_reserved;
-+	u64 crypt_header_reserved;
-+	loff_t swap_header_offset;
-+	struct pid *owner_tgid;
- #endif
- 
- };
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 601979b97f95..ebddf954ad84 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -2379,6 +2379,31 @@ sector_t swapdev_block(int type, pgoff_t offset)
- 	return se->start_block + (offset - se->start_page);
- }
- 
-+int swapdev_block_to_extent(int type, sector_t block, pgoff_t *offset,
-+			    pgoff_t *nr_pages)
-+{
-+	struct swap_info_struct *si = swap_type_to_info(type);
-+	struct swap_extent *se;
-+	struct rb_node *rb;
-+
-+	if (!si || !(si->flags & SWP_WRITEOK))
-+		return -ENODEV;
-+
-+	for (rb = rb_first(&si->swap_extent_root); rb; rb = rb_next(rb)) {
-+		se = rb_entry(rb, struct swap_extent, rb_node);
-+		if (block >= se->start_block &&
-+		    block - se->start_block < se->nr_pages) {
-+			pgoff_t page = block - se->start_block;
-+
-+			*offset = se->start_page + page;
-+			*nr_pages = se->nr_pages - page;
-+			return 0;
-+		}
-+	}
-+
-+	return -ENOENT;
-+}
-+
- /*
-  * Return either the total number of swap pages of given type, or the number
-  * of free pages of that type (depending on @free)
+ 	sleep_flags = lock_system_sleep();
 
