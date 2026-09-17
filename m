@@ -4,135 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69D54C982D0
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 23:44:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17FC5C982D0
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 23:49:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8381D6B0095; Thu, 17 Sep 2026 19:44:27 -0400 (EDT)
+	id D27F46B0092; Thu, 17 Sep 2026 19:49:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E8AA6B0096; Thu, 17 Sep 2026 19:44:27 -0400 (EDT)
+	id CD43B6B0095; Thu, 17 Sep 2026 19:49:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6D9DC6B0098; Thu, 17 Sep 2026 19:44:27 -0400 (EDT)
+	id C11C76B0096; Thu, 17 Sep 2026 19:49:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id F05B06B0095
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 19:44:26 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2585DA04E8
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 23:44:26 +0000 (UTC)
-X-FDA: 85224885732.25.1766977
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 5B47910000B
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 23:44:24 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=SjdC0NOm;
-	spf=pass (imf05.hostedemail.com: domain of dmatlack@google.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789688664;
-	b=jPpsha7rFyBzaM9zm7pzvam0qWuIk2LmDj0v/zteI8qiHV6yV2Uqn84a76LO+8Huf3R8aP
-	KV5FAxhlilCeursi/tUtzp0XSH66xSUow2lx+N6W6QvIK+SumfZiduVuk7Fj+9ejPN+Iha
-	5XWTgJoBKR/cYRcVZwXny4IAnUo55Fc=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=SjdC0NOm;
-	spf=pass (imf05.hostedemail.com: domain of dmatlack@google.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 98DD46B0092
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 19:49:47 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 83A78801B9
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 23:49:46 +0000 (UTC)
+X-FDA: 85224899172.26.B09C2B0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id EA92A140007
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 23:49:44 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TfsMhic9;
+	spf=pass (imf23.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789688664;
+	s=arc-20220608; t=1789688985;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u0O1lZsSl6FgDJ9eTYr2jlFm3jSIkWmZkODdW+Q8s2I=;
-	b=fumT5j27WyQJOTuv6BQG4Ki3VhYbWTC88DBYUu4hDT7XuCmH3HQBsAX4u8cHeFWTJLH2ou
-	bP/w2oZEr0nzFJRU9U9/R63cXmJrQtOIP653gLl7CO4rnWNv1skZN29pdTwsWZFxGYwiOv
-	U+mSJ+EYAd7U1y0faOEIVbHiTfpKyrU=
-Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-396ccd4f99dso187650a91.2
-        for <linux-mm@kvack.org>; Thu, 17 Sep 2026 16:44:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789688663; x=1790293463; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=u0O1lZsSl6FgDJ9eTYr2jlFm3jSIkWmZkODdW+Q8s2I=;
-        b=SjdC0NOmvnwNIi6wYzoRxelMem+dFRbQrUf8XdfM25//OqLss9StOe4xGdKyUwQ9ew
-         kGMsKIopS0qd6XS3zgF/hYlqtay7f9baH7YiYZY7cTzE4zslhOYxlBoSxoZAP7fiV2iW
-         SLK8nD63zxhTaQUAwUqshQEMma6/Wd6N5Z1Q/trCIsp23Z22e3XTDZ5F677O9sF5mA3+
-         7/uswOQMJTQpdEravIxyneokS2JWtWdl/snalvPJ+/7o3xsJ88S8oQPXVvos5Yc3jHHU
-         dEUzzOIezCbnTX/znmDeVMWoP9gOafv69KwuEEIjIa4X1BMmPtFpnBSDKyauxsqP5OZq
-         Piow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789688663; x=1790293463;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=u0O1lZsSl6FgDJ9eTYr2jlFm3jSIkWmZkODdW+Q8s2I=;
-        b=C89yXf+4pn2fq60/6rknPq+LlLhcWXN3OlcUAsKfxVD5/kiy6boGA4WReUOLrj3Oml
-         12NFU+9NDH6weZf1Ip1aomsESM2MhM9jckI6VEBX/lGrc5a7wM+sq9g/JNhS21zpxMtu
-         qees93BqCKfwkwvg0GzqBdb3gv2oRRfsZMrzFMdBZLr3rSmdDwPnIvQ11i2jtIgrESiv
-         MlJvotg7Tn78/lz+ne8fauzQM4fliLtvH/utXzYxVhDtMbO5jxCbMh6STtfTf1vKtnnX
-         t+8xqNgBU2UMwJuO/68yOkItCfdpD7mcb9TIc84MboCWZMX20UEhce0JUows628wCgrm
-         MCKQ==
-X-Forwarded-Encrypted: i=1; AKwUvBy5VkvYaSm/zARjt3bwO+MBK3fjsQwhkGCu0GVgRPnW3a2XPy6q9xnhftRC3ZwfuWm6+bpZDmg9iA==@kvack.org
-X-Gm-Message-State: AFuF++kusBpfLHAuePyTlYPHvY9sSGuAeXYg18lk0Z3kUi9iZfDP+9+e
-	fnbxfRr+L1MR2sA375WkHqQzkyTdxHxTC0IvZoPCyHalV/xIKkBOVCtgl9HaFsXKeQ==
-X-Gm-Gg: AYBFou1KN1f48BPhoNmv5PyA8K3MCJ+Fn77DvbAAhAawfD9B4PwA2cr19GsuqI+1H0Z
-	bflYv365h8j/B4sbRBfSrpIv8LYcrJPAh0NTgaqinFLEwuqjjJf5uboFm7uTJ+/OQl0LS0nxwYY
-	Xx7zAfCURqobzvr15H20FUz+qNWGP2FFzZZa3aFlFtx+OK5iMM93xpU30M2izIbYx+X4LJG7Gxh
-	jKmqoPCJh+jJDCrScRuBZj0iAYLCuEpDltGULdVDtnhoLDgcrfCq+oTEhw9rLvaFNV/MezCwUy2
-	t1M7uKFLnjpQ3k2UfQfrdMib7p+8xldougFaQQRugVqvHXB15f5UK2ZyqAkdNXoKkMfyPenX/Lw
-	PHPesPTaovgZedKxDhdgmg44w3RdGSXNYaYiQVc+HZdNW7f10USpGNMoHLG/OklXZFN0VOnR0qy
-	xLU8L+XM26PGT50HJrET9aygN0PEbq2QYOzJozE3LGdurChqcl5d85Eyrp//K317QuWlmEOFmLe
-	wsQzJ8q1DpEIeurPtPqlu7sKRlYRZT0yilWLMgRCVdYqTE/6SQ=
-X-Received: by 2002:a17:90b:2ecb:b0:39e:4c81:6c9a with SMTP id 98e67ed59e1d1-39e54fafb06mr1575707a91.32.1789688662542;
-        Thu, 17 Sep 2026 16:44:22 -0700 (PDT)
-Received: from google.com (132.200.185.35.bc.googleusercontent.com. [35.185.200.132])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e535f0421sm443246a91.1.2026.09.17.16.44.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Sep 2026 16:44:21 -0700 (PDT)
-Date: Thu, 17 Sep 2026 23:44:17 +0000
-From: David Matlack <dmatlack@google.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-pci@vger.kernel.org,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Alexander Graf <graf@amazon.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
-	Josh Hilke <jrhilke@google.com>,
-	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
-	Yi Liu <yi.l.liu@intel.com>
-Subject: Re: [PATCH v8 06/12] PCI: liveupdate: Auto-preserve upstream bridges
- across Live Update
-Message-ID: <aqx7USJxZrk9GIWm@google.com>
-References: <20260728221007.2098560-7-dmatlack@google.com>
- <20260917000723.GA992337@bhelgaas>
+	bh=r+s0LiPHCI9anNwog1q1wCmxZuy74xNwMr5QmaPk9ZM=;
+	b=VhSOEJYduyh7j/zA28mVQiXqX+Abx3RMzUnADhFMz4V3OUtScS5qdB1HJ5eRl6u9VX56s9
+	YIJ0Wpeg5B0BxOhn/J8pfF2YGClIQBNWgvAPdg/ERYQB6bnXpZRO3b0hZNl9wM1K0TVyDR
+	tEa1ztKtXChR1P3UWJXZbB8Z7Sj5JGM=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789688985;
+	b=Mxb2pL5cvxLaYrAoRAvI3wkKYAm9xMA+f3CrcxaYXbswAHFwsFCXbLe7T4gktee2TH3agN
+	w/ELYS3WZD4TyX6/A9hToA3qMETfVVuzIild37se1YuFOt7lEFN2NZqcr2+j0XCB2HjjoD
+	Yjw/SB7bbu58/BMuO7RHTMdnUEw2xkE=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TfsMhic9;
+	spf=pass (imf23.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 251CE4184E;
+	Thu, 17 Sep 2026 23:49:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E0781F000FF;
+	Thu, 17 Sep 2026 23:49:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789688984;
+	bh=r+s0LiPHCI9anNwog1q1wCmxZuy74xNwMr5QmaPk9ZM=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=TfsMhic9doUbsB42YOZng4qb/OEY8ycWIK+/HxMLPdrnnK/XcZvCH8XBTVwHMHnwD
+	 b1K/ES113ArKc6RJFl/7qc0khZYsrIW/DmKux9tzrAGYnH2UzxT4CiKelFtWLhb6gR
+	 1ZGKtQjyoyghPjecZA3S7ZuQshkjtU3PAFTGoIJodlHw1xFt+aHcMZ7OsOC0SZgWcH
+	 G4IhDihfBsiMYy+28qqVoFDCM/TzrbRrQVKwqCJYowbQTsdzlIyGXEBkLKFgl1o3Qa
+	 +KPbQTAeaIqGx/8LkctLSd9Vh4P62c3EC3IE+sFOOiaK0ab73ANUAn7G66MF+Y7eQq
+	 EHQDF4f4UsXBA==
+Content-Type: multipart/mixed; boundary="===============0095006719181285834=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260917000723.GA992337@bhelgaas>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 5B47910000B
+Message-Id: <fc85d83ac07c116cd243a2bbfff0a994abcea9e9588048e80f9a1234d772b757@mail.kernel.org>
+In-Reply-To: <20260916195203.1099646-4-ihor.solodrai@linux.dev>
+References: <20260916195203.1099646-4-ihor.solodrai@linux.dev>
+Subject: Re: [PATCH v3 3/5] x86/cpu: Inline generic_identify() into identify_cpu()
+From: bot+bpf-ci@kernel.org
+To: ihor.solodrai@linux.dev,bp@alien8.de,dave.hansen@linux.intel.com,mingo@redhat.com,tglx@kernel.org
+Cc: ast@kernel.org,andrii@kernel.org,ryabinin.a.a@gmail.com,akpm@linux-foundation.org,hpa@zytor.com,andreyknvl@gmail.com,linux-kernel@vger.kernel.org,x86@kernel.org,bpf@vger.kernel.org,kasan-dev@googlegroups.com,linux-mm@kvack.org,kernel-team@meta.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
+Date: Thu, 17 Sep 2026 23:49:43 +0000 (UTC)
+X-Stat-Signature: by3a4qnbar7jr59myj6ewd88wxbkhez1
 X-Rspam-User: 
-X-Stat-Signature: ak6jyzqcf9g89oa3hgkp5i6b586nbm68
-X-HE-Tag: 1789688664-808512
-X-HE-Meta: U2FsdGVkX19VfG7qIYpT6gWBgGwA5vevZJ0HBchWflWZRoZ7omH7KlXZA0JmrGIIvE9TJuItJ+ZOP5THNVUaL93PrZ4+F0Hu6yxloDJZmZqhA//ioaeHjA7jLB18hLXgy2GC3vSLc4njkm/ZQ6SA6yXqTRUHmFgNSEQoOogck4elwjSLRoisKp6B803W21uQpHi38FoMqUUYY4kGUk19coKQtjr70vlz2KTU1GGun7ffYjbY6SfwBGzQRDmEoJ89l6Glne7ftLgMh5vjwwf4LjS6Z3bVoz38M9ktL2P64lCez0ZPqM7gtPTSZuT+eT/gesCSEDdCC5Kyi6RqOatTr+Uejb9TPXyQLPgE+2n8cGy6DLtiGRB05g4INP158JAM6CeeC04y/M6NJpYhlsdbqUD/7EyaPE00VFlZgLa7rXg7DiwovmALTP0zJhVxrTzJASGU7plpDi59gwXLGCgSsaPPCXZfJVTfEUWYbsdsBzL+mAqvr/tGA81k9gHdUxRQv2n6UPkoCi6P/QG7HzIx45CbWTQxz26Cu+LgtLd315msLYUgrfLWnvDJqGKVM0dLot6x4q2aV1NJYIE0gex1C0g4wOzC+2DDr/Rt1NjwcaSyPRnJ54alho9T5r0zRtN9uo8ienQ3Vg5lNvtO3Gltq8V6/gKQcMmvWwFOJsCMqGxXRMf/PqGxMCFmZrTGU18SdZacNijYz7xWZUucKULW1bjVwx4956txjEPBgkR4Jhhx73pXNyhf4VlpGoLEJVDsD6gWkYv6Xyq6tS+l6kJAzTbkN925WGmUDmMr38RpEgLJP77sMkZBIBW8pR67g44j7K1NO931M3G85ydeE/QtHOj76NRHOcuhtuXxEPjMuFbHGQ85NfZ2uF7fZ4UfB/ueOjEJd/WN9vIdmAhiRty2mj70r06OJIge2AdhTz6skyAC6IsxoFHR1l9J+KQ4YmJ7i2OQ/8PbYZYqmkOvOVS
- ax38DxhG
- +flUwSGMn1E/auP5i5MQ3doZenG0/+eymYwIped1N+9YDumnzKEHSBL4sfE4aGsvE5wNC/0EvqMQaQCdnm1rB8fNdr/89WdAkYPg0LF5MCjAPHF+/DiDzrl4eJm/x24fOugSapJ7aJSt7wcNsSyi1Zui9OsxsUBIQatjo/TXsn0VCvnAZONt8pRiCUj9KOK9kdi/tvK5rIpTP8Ts/8l+8GyK0uN5M6vYLD12Fgji9lJ2o1UdG+TGx6bLZDOd1PPHZd3iQv1p4+w/Lf0sO9lafjkgoUioAmsGbp83Ypzjxk4iPbI91qvKN+Cphc7zSlLvnxB4dKjNBVa2IZtK2lPjWhUOR6OvBSqEAZ6j4gC5HtP5k1K4=
+X-Rspamd-Queue-Id: EA92A140007
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789688984-72109
+X-HE-Meta: U2FsdGVkX19mjG1G9Cb7SJuUjU3kRubDCpcpF/+gabcLjphmkJd1DvXkgF9VQnHd2zJ0TIqooPx2oIYm5LsmcIWgDeisDYOF6v/ar+iV8eo3v1V6swtgMcz1P/+8x3VRujSOZEk0ZBxgOe+a/JeEMfk6oNTUuPfAbA9uT0ZsoKEokxZLw7Rea90LHViKNRIGRYYS4Pe+W/LfCmGmQK9PFaBWH+bmMUbtNw2a9zNoIcjlB2+OLyP3Sg2Pm479v6qVeZy72531xxmypMm1fMy6nxAThtkufTxuwZbw0Pl9jN4axgwOOaZrZJYpB19aXUp6ZQDDJzBO3ZoF4xBmZbtELUbi6jMurXAmvF6vEjlv3hb+5cSc+TDk4qPNeCDBcb/0w5YzKcxLJAUU95uWX3jNqryvbIoOLx6JzJ4Bk80bB9lWpdY28/fR+XYiUp0jQP5BKc+PEfgm6Ochw1+c7H3AXG7zBNEmjqe/nZlpwcdqYtUYEB0v8SRDDS+D1RdCY9V3166qtEuo24yZCo6zmhp1zNzO3EYRaMw3h/h4Zdtpxz/Yi6CEWw4FdcLWO+79jcj1/vpMhizoCa9NYjIFnytnJ8C3/uW9LB4pVgLLmw6vH292ZCHJCAS96WBpmyWMRALGJ9K4I5CTrLwx2dg5s8xSc0YVxj+HXBcLaen6lZE5cF+o+ookJac9k2l+qsHBGLhvuHjo80EFIPDWY9ZaPAUhrOgmDbhO1cniiEU0WJdxjd/3uWRHPT6mdJAC/eGsHjQhIoXSnEZEFliPkWSsZ9FVd3mMFPGX4lGJsMhGCEV2mCKVCNncnvxjN/M3QUJd/AWx2BQus4aJfnW4y0TB5kXiB6uj4cSlQW+crr7ps4WB75CrhoCrEvkCmCqpzT7MDHicBZ5zPt+Zqu7YWLVVcPlmEckQj2lkNXLZItyR5llXcbyrf7CUZcanlr7EwmjEtSkmp/vCwS/P8T+ka/0KDER
+ LsO5SLI/
+ vSvNOSJjwV9yhNNauZX7PbacTCWRLsUXm7lSD3q/x8Zjit4rKRKRnLsyleasaKlWC0id8iDayl5Cy+8Fra2GUZmEgwc47icGBORu2RFwFVHB5S8LrR8FSIoISS8UATuNOhqovjKDX9P9GtHAEN5duYuovPz2yKuH9/La9c2ZI/4i7xdnVBOTAEB7gnY/4jBczR+JtyBtcjhFlvNbcWVukIPSynfU/yJtqtNp3mf7K/wvylCTMng66YCnZzx3UoTJ4etLdEdY7AVtx0ab5KMq8Mx2az1I45Zx3O6wTcEJBzWPyoEnE1EUS9TSPTX9Lf558k6haHpNx/M53YnUGIpDOvNqZBbY1LrUONnC+YmxzgrO6r6OeMMG3/BdpXWua56YtiIvGslhNfZE2YE/mO93i6Rm0qR9awGxPFtOn3yfSNxtAksI04zrDoHbaIrZFT/Pc9j8fQY9/M+VGOhHyaMXQbA1oouipzPs11Bf/jx7Ug82Ypv/Rgl9C0fVYntKLl1gZGCbWaEnpJ5kaCHjaEVIP4+qlN3D35NgmlG7T
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,97 +88,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-09-16 07:07 PM, Bjorn Helgaas wrote:
-> On Tue, Jul 28, 2026 at 10:10:00PM +0000, David Matlack wrote:
-> > When a PCI device is preserved across a Live Update, all of its upstream
-> > bridges up to the root port must also be preserved. This enables the PCI
-> > core and any drivers bound to the bridges to manage bridges correctly
-> > across a Live Update.
-> > 
-> > Notably, this will be used in subsequent commits to ensure that
-> > preserved devices can continue performing memory transactions without a
-> > disruption or change in routing.
-> > 
-> > To preserve bridges, the PCI core tracks the number of downstream
-> > devices preserved under each bridge using a reference count in struct
-> > pci_dev_ser. This allows a bridge to remain preserved until all its
-> > downstream preserved devices are unpreserved or finish their
-> > participation in the Live Update.
-> > ...
-> 
-> > +static int pci_liveupdate_unpreserve_device(struct pci_flb_outgoing *outgoing,
-> > +					    struct pci_dev *dev)
-> >  {
-> >  	struct pci_dev_ser *dev_ser = dev->liveupdate.outgoing;
-> >  
-> >  	if (!dev_ser) {
-> >  		pci_warn(dev, "Cannot unpreserve device that is not preserved\n");
-> > -		return;
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	if (!dev_ser->refcount) {
-> > +		pci_WARN(dev, 1, "Preserved device has a 0 refcount!\n");
-> > +		return -EINVAL;
-> >  	}
-> >  
-> > +	if (--dev_ser->refcount)
-> > +		return 0;
-> 
-> I guess this is a nit: I was looking for a dev_ser->refcount++ in this
-> patch to correspond with this decrement.  I *guess* the
-> "dev_ser->refcount = 1" in pci_liveupdate_preserve_device() starts
-> that, and the "dev->liveupdate.outgoing->refcount++" there is an
-> increment of the same refcount?  The connections there don't seem
-> quite obvious to me.
-> 
-> But I guess "dev_ser->refcount = 1" was added by a different patch, so
-> probably *not* the same?
+--===============0095006719181285834==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-As mentioned in the other reply I can combine refcount=1 and refcount++
-into a single refcount++ to make this simpler.
+> generic_identify() has exactly one call site: at the top of
+> identify_cpu(). Fold it into identify_cpu() so that a single function
+> does the job for both the boot CPU and the secondary CPUs.
+>
+> While at it, fix up both copies of the Cyrix comment.
+>
+> No functional changes.
 
-The refcount=1 is for when a device is first preserved. refcount++ is
-for when a device is preserved a subsequent time. Bridges are the only
-devices that can have a refcount > 1 so that's why this patch introduces
-the refcount++.
+This isn't a bug, but since identify_cpu() already covered both the
+boot and secondary CPUs before this patch, could the changelog instead
+say what the fold enables for the following patches (e.g. making the
+init_cpu_info() placement explicit)?
 
-> 
-> >  	pci_info(dev, "Device will no longer be preserved across next Live Update\n");
-> >  	outgoing->ser->nr_devices--;
-> >  	memset(dev_ser, 0, sizeof(*dev_ser));
-> >  	dev->liveupdate.outgoing = NULL;
-> > +	return 0;
-> > +}
-> 
-> > @@ -385,13 +418,23 @@ static int pci_liveupdate_preserve_device(struct pci_flb_outgoing *outgoing,
-> >  	}
-> >  
-> >  	if (dev->liveupdate.outgoing) {
-> > -		pci_warn(dev, "Device is already preserved\n");
-> > -		return -EBUSY;
-> > -	}
-> > +		if (!dev->liveupdate.outgoing->refcount) {
-> > +			pci_WARN(dev, 1, "Preserved device with 0 refcount!\n");
-> > +			return -EINVAL;
-> > +		}
-> >  
-> > -	if (!pci_is_root_bus(dev->bus)) {
-> > -		pci_warn(dev, "Cannot preserve devices behind bridges\n");
-> > -		return -EINVAL;
-> > +		/*
-> > +		 * Endpoint devices should not be preserved more than once.
-> > +		 * Bridges are preserved once for every downstream device that
-> > +		 * is preserved.
-> > +		 */
-> > +		if (!dev->subordinate) {
-> > +			pci_warn(dev, "Device is already preserved\n");
-> > +			return -EBUSY;
-> > +		}
-> > +
-> > +		dev->liveupdate.outgoing->refcount++;
-> > +		return 0;
-> >  	}
-> >  
-> >  	dev_ser = pci_flb_alloc_dev_ser(outgoing);
+
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/35285131592
+--===============0095006719181285834==--
 
