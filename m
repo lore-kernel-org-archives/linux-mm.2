@@ -4,115 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69DD8C88E72
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 14:32:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F166C982D6
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 14:37:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5022B6B008C; Thu, 17 Sep 2026 10:32:24 -0400 (EDT)
+	id 4DD516B0099; Thu, 17 Sep 2026 10:37:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4AC3D6B009F; Thu, 17 Sep 2026 10:32:24 -0400 (EDT)
+	id 4B6226B009B; Thu, 17 Sep 2026 10:37:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C3FE6B00A5; Thu, 17 Sep 2026 10:32:24 -0400 (EDT)
+	id 3F2616B009D; Thu, 17 Sep 2026 10:37:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1BBE26B008C
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 10:32:24 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 79A881403A7
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 14:32:23 +0000 (UTC)
-X-FDA: 85223494566.10.7AEF882
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 37A40C000E
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 14:32:21 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QjpiprcR;
-	spf=pass (imf22.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 1DF056B0099
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 10:37:18 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 54BACA53B5
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 14:37:17 +0000 (UTC)
+X-FDA: 85223506914.12.F61FC7F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id C007F100003
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 14:37:15 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KJuPtYUr;
+	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789655541;
+	s=arc-20220608; t=1789655835;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5jl05X/VB2n88uxND/5yjViHDY91tVPj4RXTflzReqQ=;
-	b=6QRhgUCInL81HqiuDnwyV/AGZF2LrT26kBPJtCQ4LF8ehVIZln3mdP/V2HPF3SXWmbG7BJ
-	r4Q2aOHxiiKnyQHLHHBrqhq34nR5OGgH+D+cqdBa/gIbAg3NLGv1oiLKvCQ3B9wbOFMCZe
-	nCof3rWgATtMrprcTx9P0sYz270AzR4=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QjpiprcR;
-	spf=pass (imf22.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=1YrFDyne4Mw/5P6NtQygUYrYZ/7F2ZHeKeQK62aWTkU=;
+	b=kuoRsa2/mZga50fwtnhUogqDMJxj/qUNeXXE0iePlxj2M13ndWLiiZ7x9CLGrMtB7nEZuZ
+	iIQECast8IVXdXRZLlFUlJk09B74iTqrUWB7XRznig3vGd6LwW5n170sb/Ymmh24RT/Kp+
+	ECkNlHDn18ue6KehJENy2kLxKBJMybc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789655541;
-	b=epq4JULYxtSgYiJFaJNzsRBht1O7S1M4D6Iw7JH/giVauM2MqDM9a2i6ATkNBIQjfH8zJM
-	6xTjUjWTXAvdU8FzW2fyqzHB6uIxg0ZX4Mca9p2h5bYLDsbNvZGZjSSkOlDStw1MBu5UY+
-	V4jvjewKIYkvzYIcLUQEqNDaMaFDHDA=
+	t=1789655835;
+	b=LbWJqlcuB+mztxC0KUZ6oVOXUYGqv6Co+wAzSuPOxdg/57WQ2lUV1XGKFI/HFLZx5f7niO
+	ycYiC7s8nF85EJSpr18UHrX0IRllHWxU6qXA99EJs7PINZoevOhu+nXKkWlnOHDr5RqeTp
+	v+r+nsEuP0Gh5Ti69LzGhuy5tnhebFA=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KJuPtYUr;
+	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6D289439F0;
-	Thu, 17 Sep 2026 14:32:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B0111F00898;
-	Thu, 17 Sep 2026 14:32:19 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4642560211;
+	Thu, 17 Sep 2026 14:37:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 469181F000FF;
+	Thu, 17 Sep 2026 14:37:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789655540;
-	bh=5jl05X/VB2n88uxND/5yjViHDY91tVPj4RXTflzReqQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=QjpiprcRqK3vCH4f4Etr8j638WmWy3VWyLBFZ724HWdTnUmUym27GROQOwWT9FVzF
-	 d0qfaPGf99hEXcqjW4QeoCsyxsFMgG4WgVbeN/UPDOXXDXxW4xIGz2U2JKjqBhW7Ui
-	 HrTE00kOTY7dl/86w75OHxE/joksE1TT4Iy1ZETiImJR9nRxAdzGd3HGuM1IcxOWNB
-	 esxkPNu196OlhF9Akcj6/1sEuvMIB+AH6iof6oZYN0R5cZYn91N5sHxLrg2LC5MLmD
-	 3x2gjfrlU36lit6F5EI3oMELGVIbwm/j4FJcM0Go0yRwRiH17NkrzuzXZKdp+iBHgR
-	 QIbum1OmeN8EQ==
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.ams.internal (Postfix) with ESMTP id D24E3198005A;
-	Thu, 17 Sep 2026 10:32:15 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Thu, 17 Sep 2026 10:32:17 -0400
-X-ME-Sender: <xms:7_mrakqOox-1DH90pxvy9rxQZ4HGBwW5qZjVtl9mFXq9p7N0V6lA8g>
-    <xme:7_mramIYihn0xemjLPVSce-Sv-zF45ROyjeqCfZAemVagJtygloKr9a0euudsaL-n
-    R-0BV6QLnGM2Cqec9p5NLe8cLmbb7ODT9LpOwROCwBt3n_vFAKRMNI>
-X-ME-Received: <xmr:7_mravMkvU9BqVVKgyQZH9i99gxe9jAx-4QuRTf82fM5G4o_fwMZtMl0TbQ>
-X-ME-Proxy-Cause: dmFkZTFbhvfv6QAxTKLX7KYLpUU6bYLQl9nD8TDfhuzlXvIEAstW1SJyoWTvfI54B/0oCp
-    WrISYsacht0e+cZUNFLJhLNg/aQQGP9H4iKU7tXJROYipt8RGAKqklntwqu2rlbUszx//x
-    6CXVk0VCsfdLLoCuotdaw+OD6+xHO9iMzDT91daJqo8GKzOp36j0AZIXyXk7+AElXzoGmI
-    8Z8cneQVNE4FQh7S/R6PNAioI7nQgGwZxNr3VD2BjfGfcLVc6C2s0ZOW/IXvFeJYeBLS+E
-    q3dnZlMQTM0hDyA5GYSvaaCp/mthujNxyjGWuZ4NwjBE1p8jbKJTn8t8RB2DtL+FfcdWi/
-    fZbjvuf+15ZSrVTu1N21l1c+DnHqqfIeO/V/x7dLJaCvY9c3xTlZZmvYXoytqWr0Ad7sqZ
-    c0SmFKB2hzftKYY9UVOKEbA11CUqe9KjluTeDcltspGgP7Y3mlZK0Oa7CDKiwHf30ILBdY
-    deu/+BpjQZuk7885gubB8sH9Tuwx8DuzdYPKIObNUrdCsKyBnXW2FdblRZy/cv0pPYered
-    ukGtBxhEo9dkvvXlgOLiewL9VbsDGBIby+HIqxZMZKFWrHV6frGCi8KG6UiiOIv++tRrLL
-    dkmctRz4OJO64A2OMJckjLWSsV4AqOm8XVADFf7metkvGzkxxQnGqZ7HndzA
-X-ME-Proxy: <xmx:7_mrapriRuN2AvBtTMqFElIZB2NMUC5cCSPp4d2Y6FS8KgOgr9du1g>
-    <xmx:7_mrapEdlzmZca9jhprMtb3YVbYaRC5IKyiCHMOOsxgm2kg03CLJCQ>
-    <xmx:7_mramKY5GfguctbBD7FsDKjDa-8_vrYJsHIRO2qPMhRJjwbLq6hPg>
-    <xmx:7_mramiG2X0Wanrk3goNhv_lrKSuBFlcTwveHu-D0I5mXkGhvJVawA>
-    <xmx:7_mrao4CBEeLlGjcS0PXjgic62T4IEGwKeftYYtdE_1UIfBI70BBPdBX>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 17 Sep 2026 10:32:14 -0400 (EDT)
-Date: Thu, 17 Sep 2026 15:32:13 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: akpm@linux-foundation.org, david@kernel.org, ziy@nvidia.com, 
-	baolin.wang@linux.alibaba.com, liam@infradead.org, nico.pache@linux.dev, ryan.roberts@arm.com, 
-	dev.jain@arm.com, baohua@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/1] mm/huge_memory: disallow raw PMD mappings of the
- huge zero page
-Message-ID: <aqv5r6Ar0vyKXa_x@thinkstation>
-References: <20260917121010.60966-1-lance.yang@linux.dev>
+	s=k20260515; t=1789655835;
+	bh=1YrFDyne4Mw/5P6NtQygUYrYZ/7F2ZHeKeQK62aWTkU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=KJuPtYUrTYQGek3CmOas+vaeay56yXNJlPharuTziS0HuGlv9+bFj/ng4L9Gqzw6X
+	 hbpaKm3VOtxa0FgbVaXIOP9wrqWNNOD5jxtUSdiCMlJ23GDiLKRUqDAB2K7ezJoG7Q
+	 vSrwhA5gdOE2jvEuvVmcoXyGNO3SMivVMty3JoUNg4CSOH2RxmA/og+GLIRfI/WeY9
+	 L3R58YHYfK0xLMYcRKW43nU/p7Atc8VcsmEP0qpenjTPt5XTS4eySByP+xz7CsjRMv
+	 Gpndqtq8HYdEZuExkh0B23Pv24u9Ne3OCLxV5/ApNZ89mpRUte/JZyyYP1sMQUC7x9
+	 Ur9U5xfQ7qZhQ==
+From: SJ Park <sj@kernel.org>
+To: SJ Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@davidgow.net>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	damon@lists.linux.dev,
+	kunit-dev@googlegroups.com,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 00/10] mm/damon: improve readability, clarity and test coverage
+Date: Thu, 17 Sep 2026 07:37:06 -0700
+Message-ID: <20260917143707.91700-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260917142210.90829-1-sj@kernel.org>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260917121010.60966-1-lance.yang@linux.dev>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 37A40C000E
-X-Stat-Signature: qjbb5bpog1hppws4pf7mnjt8qxg1b7ij
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C007F100003
+X-Stat-Signature: 1bpx3iswsyp15z7td7dzf65za65mcqfo
 X-Rspam-User: 
-X-HE-Tag: 1789655541-923613
-X-HE-Meta: U2FsdGVkX1+pOAx8HLEoJJSa2vt+RftHYMwLn3IvuLHu3xXRoMRc+/tvXuzyB6PYZe2u2sEeKZMGLP1oO/2XONYMrWkHC3UqzhEPJUU5u29tgoWCjpIem4yj2jybACfZp0ye0aK9zj1z6Pkt2ugI8gaGVYq0Apt9kshucldJdDvG0VPSiOtStDmI1Dal/yM1PgWo0/kEdVvCdIacB/e8I7Cj4/8uXo8BGM89XtWQszV+SxFF7pm9LYSShooVhho8ANCUeVbitmrVt0NRNJdtYiDtVQi7i8MzzIR92tT1CrM0qEN2aqKfjrxOC8vfH9Kuuofdu2NF3Ugq3QQdBtWugxzZuLCHF6Z48BkKeC7/x+qR2iUfuk7IszgaIVBaVdzgR7k1oOKdDC9Jk4s6jKJC+wtqDR0XOIqIK893PZAVC2ozlu4eJN6Tah+P7MesMeNJjJw33Ma9kvGqi5Cp0QxN9yjW+MfL6r0Wv/Vwz5eRvlJdiq1L4QkdBrriKXxELJ3FAEyVn+4ewAcNiV1nEmNepwagDSwmBolTXzf0QM1DfeAcuZhmTQYXT4hNaFuaK/ydjBEZtwpLSHwGJjTYLIOOZvWrAwMdjpiRURlI/eiNkjEWX5gfcuvqAenwkMQbAgZKXi5U3FabYE7UgR26iqVIBbRirvWf1eiQGBAi0gGvLE3AZZyc6oZF1cg9cnd4wcCkLbdvoYgv4GJBFxWx/BRAqe+ZnA6RZ2CX+DTNM8g6UgUSkqbv5OEhP8e2k7KCi0IcEa0zuKoEoJPdYglviZLSHPcP/SwGHqPSbWY7vppYO6AVlCTsqN5sCasSl0sP67ehNxlOhn/NYSuvYvqHWQI5RFdI0o4Ci2MTxec1gA3mxeCf4Tpvd6q28gpDW4qiNPWW+GF54zZ3WS2yfIswu1n/6Z7qGHrXW53Nlc4iCv1B5/ZoaTXAxirX/Uvcs8GT2OPdlRlCexEDXyZJDN8WQdA
- Fjvx7ttM
- EIHoczGP062iq92qdjiAjbKbwqtiKXneG2RVNheP55KkeszwEInuZN1+pcA0LzLi8Qj6QxT1AMC1S98gYJZk+1Iddhn+Ky8N3ReJ5jT8UW/Uq34zQXlX4hrsoaTr1sDcxoiy6+zjrUOF3j+C4O0uz1vxYBo+KEVtGi3pd6d/gxnsZFusltFZiJ3Ed3jI25jWMutZ0oFcqDCiBYzRCndpgwFdNrHatMuGIJUVoUCtBejh5iZDG7eIPn7hrVjLOHuUkfYzia3VJyq4LKkqeayeELbwGuvUcEbBnnGPNod4skI7F0OkaMTaqwDJ6GAeybonAwZm3K7WgJEMYHc4lweZ5bwHzlEq7UrF+xphN
+X-HE-Tag: 1789655835-130405
+X-HE-Meta: U2FsdGVkX18o08xYQHUg+C5UGw68DOG0DdwOlUY0J8xxjmJy8AqgEyLrip7Iv4cd78otMSLO+3NTOduYEJcFJO7S98Y8BsNxiU5ulRMfCWZSFLIsLXxHq36ZEFxCDXRtjUMExZ+XLDLsgMPsQ69GCNcujrt3IGVBUytpHOlM0pg93clP/RCSMArsqvhX9ID50R/tYp+IdMmYlFijHtmRCk6EcXu1doB43u8cS/QHb8b1oWe0thhQED5YkHZVARrRboGD654Z5exUx0REyCrJIcCv14IBnqZfONKUCbrjQzti/772fUmg+mwiYgvX57G+N3QeyAPEO6KcOyzDRtn2UtaWy/UVgCf7IxWeg3xZirKZIv4Cn2g4hJEka1zieH7XkVWTb8Fq/b7/XvI2YFWkr56GZ21nuWLHOoFCTnBmuLE7E6USzFcdLafujlypYQtRF4IqzDi02pCcGouS4yIfXe9Tz/UBzumMOonQrcvdcXPCOyVqODN1kMN5w3s44Es3u4atTCq+uYzqnxnvOHS7MKI3wcTzAY2xFg6LWFhgyl4tUQjP90OJNfKZ/0yBY2ePxZ8F6LPwvsi0t0fyp55w2If8YhLvQ5i+EpdAFiHRwipjtnN8GisAD/0oYxN+CaHJ/AP+JGpvqlDBxcqEAoOqBv7k+OJTQakwaq/7mWzc6Kdzjo0L0kuYWOjZTc5wJxw+rVZsqoYPPr2VHUcyFy3d21bIaf6VWlb4AI/wFq3BNWEh2CwSQH81SNy2+0hOIqNn9i9EY+zNRY9rLz0wzjl7MhJPWQIQCoHXyqhM3fwUY1RwkZ6qvewo5FGKTmKMdssi/ERzRtZX3gKs393Ml6w2c1mgBC+odltth6hW3jXvXWDSKBU8svhjD70Qto4qvlW3uPWYbHhmQGgY6+fpd9VFS8aJkNo4kMiar9kEz/tK8EH+y6G0HCTg/5pt4DxDXim/7FtcSSeZJpnTontRx1j
+ pDvr+R/g
+ /wzuVdcLi64+ZYaQurA2BQRM0d/lTBpeRNlXqOQ0KNiI12WlDYn6bJyoMwecxLhi4Clrhd9y5QWFrIKkAtpoCR5+x351HxljcAAjCjgHxOPorAsm1wGaIrA2luMbz7pywjw/Yo4W41V8fdDSt4uW88KJ0G//4qAMjo1da/RLjkwSahAlv/hpyHn2LzVeVYntzbUH+t+lDAO0cgcW23I3D9uEEXyKPH0Q2biq8jPZdEFsbg6E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,21 +108,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 17, 2026 at 08:10:10PM +0800, Lance Yang wrote:
-> vm_mixed_zeropage_allowed() validates zeropage insertion into
-> VM_MIXEDMAP VMAs. No in-tree user needs to insert the huge zero page
-> through vmf_insert_pfn_pmd().
-> 
-> Return VM_FAULT_SIGBUS if vmf_insert_pfn_pmd() is asked to map it.
-> 
-> Link: https://lore.kernel.org/linux-mm/f76beaf8-351a-4b22-b362-a945a5e1af6a@kernel.org/
-> Suggested-by: Kiryl Shutsemau <kas@kernel.org>
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+On Thu, 17 Sep 2026 07:21:58 -0700 SJ Park <sj@kernel.org> wrote:
 
-The patch looks fine, but don't we want to cover the same for non-huge
-zero page in vmf_insert_pfn_prot()?
+> Yet another batch of miscellaneous DAMON minor improvements.  Mostly
+> focused on readability and clarity of code and document, and unit/self
+> test coverage.  No user-visible behavioral change is intended.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Sashiko found no blocker for this series.  Sashiko send its findings to damon@
+mailing list [1], and I reply those if anything needs to be clarified.  Please
+refer to those for details.
+
+[1] https://lore.kernel.org/damon/
+
+
+Thanks,
+SJ
 
