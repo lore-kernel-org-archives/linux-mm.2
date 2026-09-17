@@ -4,96 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA25BC982CF
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 14:00:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A61FFC982D6
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 14:10:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC02D6B0093; Thu, 17 Sep 2026 10:00:13 -0400 (EDT)
+	id 744DF6B008A; Thu, 17 Sep 2026 10:10:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D711C6B0096; Thu, 17 Sep 2026 10:00:13 -0400 (EDT)
+	id 6F5466B008C; Thu, 17 Sep 2026 10:10:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C87A16B0098; Thu, 17 Sep 2026 10:00:13 -0400 (EDT)
+	id 5BD6A6B0092; Thu, 17 Sep 2026 10:10:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9BDAD6B0093
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 10:00:13 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 28BCBC035E
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 14:00:13 +0000 (UTC)
-X-FDA: 85223413506.25.9C3C843
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 23D091A0003
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 14:00:11 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V5zw2bKn;
-	spf=pass (imf19.hostedemail.com: domain of chleroy@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2EFEF6B008A
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 10:10:53 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BB44CA03AF
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 14:10:52 +0000 (UTC)
+X-FDA: 85223440344.28.CD1160B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id AF93D140010
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 14:10:50 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W1OQSPQh;
+	spf=pass (imf26.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789653611;
+	s=arc-20220608; t=1789654250;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rF0BtYMFWD7pbUoewLZT8mBNaLMLep6fnG7M6eFSgew=;
-	b=zTKqWFLTaoeaO5At0dB2NwH6hveaJfQe7JIJZhEY8yzmV+/c9JZ2WqvE5Yoihgd/xA60qS
-	R/0iDqwKXGneJQfYAa2qp9mEsiGqssndk0JJI6wUblYwazGLYg+cMkUsBams15z5F2oVvm
-	udy0WUx1em+MrwxvREBbc8d57FdWzXw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789653611;
-	b=UMkTW/K1/vOSYa0qaVi+tOIvwZTUr+Wyvf/LbgQt7ESxXybFhK1Ebdylovp3AuleokRkER
-	29p9Pf5KgyzsZZ4Mu26CVAQnlJfr2CovAV2fgpFc+dijTF3jT8M6FU616Ua5DB5kf22ZQd
-	q+QmylzIylpZ2WsM5aC8lf/XBqVbLBw=
+	bh=KbrDS6hKlC0VTaC9BV7+naLsGbVr14Ol/r0dwCCcssI=;
+	b=zUwPjc7cPkBSgH8lU4m5Iyvr6txtbAbzOnNin7jwA0xK+yAMIaeGVet/l7ynvWi1BnnT70
+	TKBYLsYrjHfyT0iH5DZc3CPwi9sKJUHC/8+vKWsv9gmXqGDmqIZ7T/u4dPtvem2rnWDAvz
+	Q8W17Hps9mj1Kxb9LUsZ31TluGqJE/c=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V5zw2bKn;
-	spf=pass (imf19.hostedemail.com: domain of chleroy@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W1OQSPQh;
+	spf=pass (imf26.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789654250;
+	b=QIx81ql18I7dLcRIAEDmeKqY9XIDnE2sZcahUtG8LRUP9RSUeXdN9vQua1WP91wgyXzh4Q
+	00o+Beo8zuspcqFPHfnw+Taoq8kAYu1KAv8JMAcVx06w5ysneoI69m1ksNklBkf2Xne98P
+	HesSZIm6nEDSJjzH8MpJiRmLW9T/wZw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 04964436B7;
-	Thu, 17 Sep 2026 14:00:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F2351F000FF;
-	Thu, 17 Sep 2026 14:00:04 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 934FC60204;
+	Thu, 17 Sep 2026 14:10:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB69F1F000FF;
+	Thu, 17 Sep 2026 14:10:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789653609;
-	bh=rF0BtYMFWD7pbUoewLZT8mBNaLMLep6fnG7M6eFSgew=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=V5zw2bKn13/jSs5oYoBaVSxDvVGNH5RAFypAh0bqZw5RVdBazKjorZGSozYJi0rKR
-	 qrdBhf5YWC9rDRmzz0bTjcnXOH0CZrAYY8VRSqierzDIf04pI6MBlHJKlLpkPJj+UC
-	 nDwhjPVTlRNWwld+zl03AF+e0uBDLKdcrOm3+KRSRq6omTdsOlcsPBngKo8TtXxeTd
-	 JlrwIqe3ielkYtrwB8L8P53XLDPu4aCUv22o/hwzZvUmLcq1kJr5MUUjcTupngwM+Q
-	 Y5ZLpMsUJn2tIFiQoKXR/3PjxO8yUmnFLk046Qu4tSIGQrLGr6mZN59Tn5kliAmrQm
-	 d+k0M8EebydDw==
-Message-ID: <27072d94-13bf-4bea-948a-d8a67976601e@kernel.org>
-Date: Thu, 17 Sep 2026 16:00:03 +0200
+	s=k20260515; t=1789654249;
+	bh=KbrDS6hKlC0VTaC9BV7+naLsGbVr14Ol/r0dwCCcssI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=W1OQSPQh322nQaohrMaAxOagWwbvl9nfa1M8/bJfBh0BVO2wIDl50kW+0OZlfAY9W
+	 I8TRDsOX/HJXa0PKXXSg3zbiITkFW7y0z/NWU4OXDcMlOaG+DI7FxP3vZNlMvJBf3Q
+	 s4BWwM4qRiDe46bp4aSjSK4+BzIY3PD4mAA0IvWHyhgKcP013CBl7DGA1jrzzPq4Z9
+	 XhM0GnOREVbuDkMQVJt1m0PHIDNXJRlaoPvuGHmCCWqjBKgBaa9tv8Gw1LDojsZm3o
+	 M36krUXURWBS3Sc095w9ic0+ppCVGElFpESwfj7+Pmq8CdLtbTXHTLgG85lvR+ni7t
+	 y85DiRIBQEmIg==
+Date: Thu, 17 Sep 2026 15:10:47 +0100
+From: Harry Yoo <harry@kernel.org>
+To: Tim Menninger <tmenninger@everpuredata.com>
+Cc: linux-mm@kvack.org, Chuck Lever <cel@kernel.org>, 
+	linux-nfs@vger.kernel.org, Jon Curley <jcurley@everpuredata.com>, 
+	Eric Badger <ebadger@everpuredata.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
+	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
+	Adrian Hunter <adrian.hunter@intel.com>, James Clark <james.clark@linaro.org>, 
+	linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [SLUB] nfs_page cmpxchg_double_fail and perf lock perturbation
+ on dual-socket NFS/RDMA
+Message-ID: <aqvy8NqRRRmUlxjR@thinkstation>
+References: <20260916232227.4098143-1-tmenninger@everpuredata.com>
+ <aqvq8-6IJBDer90O@thinkstation>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 03/10] mm/vmalloc: use pte_set_huge()/pte_clear_huge()
- for PTE-level block mappings
-To: Wen Jiang <jiangwenxiaomi@gmail.com>, akpm@linux-foundation.org,
- catalin.marinas@arm.com, linux-mm@kvack.org, urezki@gmail.com,
- will@kernel.org
-Cc: Xueyuan.chen21@gmail.com, ajd@linux.ibm.com, anshuman.khandual@arm.com,
- baohua@kernel.org, david@kernel.org, dev.jain@arm.com, jiangwen6@xiaomi.com,
- leo.yan@arm.com, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, rppt@kernel.org,
- ryan.roberts@arm.com
-References: <20260917052933.188679-1-jiangwenxiaomi@gmail.com>
- <20260917052933.188679-4-jiangwenxiaomi@gmail.com>
-Content-Language: fr-FR
-From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-In-Reply-To: <20260917052933.188679-4-jiangwenxiaomi@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 23D091A0003
-X-Stat-Signature: rt5nwbjbfkfb9efueceno6x6grj8rgot
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aqvq8-6IJBDer90O@thinkstation>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: AF93D140010
+X-Stat-Signature: htajshtfhta5x586wdmtzuhtezw7k8z5
 X-Rspam-User: 
-X-HE-Tag: 1789653610-472612
-X-HE-Meta: U2FsdGVkX18uA8zhNCMURu05KgRBogaiNaE0wx/0s47qmiuFGAxiXgYmIFQEoFIf9fgdGShPnUAHoQial9Fgp2GqzH0QU/UdfYz2z7iL/y9/XRa0ArKlCfz8OTo1JO6FF+SZaCihGNYfCgMrbeOYSqrsGiGxpVKPCUrlb/6xGpk5+Hpqvc9MDDUhvImbrxnzFhzInYFQvW1IXBBMdbQYDKEoIqgGTceIQ0PtMKGR09Qp68VNUDA1Qzb+Vcksi1GI7Ci88N62BfOpyK6g07Mk8UcYkQibjEeEz3p+5IesxFLUoktMFeCFZv7z9pmOhPtDK06gaPXzsaCpdGbkjSyner3fRwyRa4JGFXfGBWBn7Ghz2b9TVPo3mltdkvPo0Zf+JvoES1gx+7fNRecVrP0cz8lQ/bKlzoMqk07RQKkmlTKTkhQOrTFP2w4VhURncctrOUvs2tEqr9IN1G3j6qe9EKuFY0LU79MI1QjVUil9nhfOyddRaxXmp2zwCfKtZtCbwmvZfRKrq+ZPHWliPxL7nYfM/O87GeSXm2kSGZakAamDRVb2lOP76iBY1pfTmDFopx6+iSMvHj8MVtOFF2Rqr2ctubwNBFMvNVV0CgaTrBuZj1gK0cdx5J8b0+rpseTCYjLQtq5A/uCrC/su1puzehYPcHfaNFlnoQhtJkkVRNWWPXJ1jgyN+feRrlLUGTJKBS1JzaW6MzPt4BFL4hS/PiOXj+Kg5kFJtMjJkTPY+wHR0AdYTVETRAl1gapvsusswyT1Oa3uqw69M4G+G+hOvWXiUNgY7MjE3wISsSUoC+pKsb/38n0SEyFfd2dvkyigOn77iaRhsjmBGFcNjn1v0j4A/csPLtZ+NL+xm1SIdLAoaA3u37CS1YVlzpMydWMQrsl1Sz/c9eO3As+Ty196nEJwXDW1Ocs5XWY7ghX31rEaZ0F/+iqNIpQyWrFydBDwGnkGBoszst/rXQg9un2
- cLEOekPL
- CEgYrf78xqYG6+2iybXoGHRRHIPYAZa9V4zv0CTrL0nopk0pt05PkrVP1sVAURkUmNowz2GRUgsM+IounzCygRwZz4I3rYUTmfL1tT88LFAe8I+3eUGD9diTNNO4Asqx4H5x/swJiPR6oaj+ibXOnyewvrvZkScprb4ZKexX9HnhxDw+w29xpoVJbGdnmO5mWnGtFgwZLhpa+PWSsyuSKBdg0Ja2Ycrclz0lAOMQCQhM2A+f6rqlt8lnwMJKiKReoZsgStq8k6Sqi8wWJe/eIiTdfgsiaAoqLBj+ucWaHSxa9OwjSRJNXb/WvckHp0O28Qtazdr7xIVafePXRiYSsq/eBfrPBer62pMnjInhSRCQGt7rnUz8UnTYtO7VoDRdxi7hkMtrF+qBXfn9n6apwdIllAYQY/NrC+wuCxIruhnf0Rcw=
+X-HE-Tag: 1789654250-945478
+X-HE-Meta: U2FsdGVkX18P1QTqEOkrpVJiTKD504pKtJV+pr3QODUm7uawIsbbfbQw0AkDdlBQmW6cmQTkqDXxxJLHzCDchDuIKomIJXTnomYBXsIIAashPlPttmFrUjm8GoVbhSsfMSrgnnyUhqwDXi5TjT1pUfvjUJyRYmrUxjDL9CToSgafEWh08fA0N+8y/oH/u+dHZOppS384LH5UfW/e1G/dEBorCk6yYoS04ghssno/9uqHLKYglA0nUOItX/rcZGAr7Vw51/oFnHBVSuTA2gJyzPpL75wjbfO89BMVpFR11fdvQr2sAwT8aYZspuMZvKXI2V7hukZfE6vwTrsQGi2qEPn+slCYMUZ6XR934gYX3m8Gnai65bPfZqJ2Ym0VbznN47ms6o2NNwoYWf3o2qvFg0jFiHSL6RloFj0oirY+k6PMnwGhSKF8ZR01quEZRvh293h8kDT4pUGhTFS/WWu83QMDSGZ86ft6RzaH0GoTyQuXzA+UtT2nVOhhPP28T3ZOEmu4/+hHyTlWmkLq/M7hNBhBuuobDpPHuzlP1a+TxuCQ/L2glYKzGny1uXXlZDWMtGvXqJ5DI7ppahOZ0v48od+5yxJuNy8eCSVZ1u2Q/mMLyIPBa8H9KXmZRJ/GXt0fdoyW2s0+AKA0LaA+UD/zCcnIQs3BZ+qnSjG6AHkaxWT1waiL3gUY65GSBQDZ10vNoUN0y2QlLV4t18/PKTOTvEx9KodV5yI/slSayCISwG4d0Z/IquGt+Ltfb63ScJMa4Svklpvg7Mf7XNP5C3Ket/NgIZnbDU6xaBGizTxxcryVFSHVolLn/qYd8hB3ttU1GccIBt/IevqKpXknT0sUh/uo6KAmWqzHk8LCQBlMYFea6FJXzit3CpcBtBVR5srVFzh26H+nXoJFuvA5LxeBGV5jcIvzWIXCm4iSl4T1s7p51I2Z6v//jhrGXohWcMUSIIhf1U2yxKjA0FoCNq2
+ Zdi1eaOf
+ 15iAOZ1jrw4ADsDfi/Jb9xUf4Pt3OvhVIfA8k2PPeb5p+pL5/5n1DweRHyrUvRzCfztXw6yifI7+NGYpIsHmtTK71TD1Y4jpeMqgBnWPbpX5DM2zrX74BBYy/mNL3A7f5yWveLLBmKKymspU3l+5XH7mHyt/CAOzNupBRtip0z6DbGNNfQQxE9H+Qn/JOKASEkRsB/2AM0ivdGLSdOuVV8e0zsmCg28LDBbgrxzainw7gkp8n8WN8jXtuQGNLfov8HjQ78l9EY/+vsEMJ1mWQLDSh29olsA+k6kf/f2+pw9bjq1qurOxGUZ9UDpPq6lcIrW9D
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,84 +101,224 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+... now I realize we need to add PERFORMANCE EVENTS SUBSYSTEM folks 
+as well ;-)
 
+Hmm, sounds like perf lock is somehow triggering slab allocations
+and interfering the workload.
 
-Le 17/09/2026 à 07:29, Wen Jiang a écrit :
-> From: Wen Jiang <jiangwen6@xiaomi.com>
+It could be because SLUB is merging nfs_page cache with some other
+cache that perf uses.
+
+Could you please check if it reproduces with slab_nomerge kernel
+parameter?
+
+On Thu, Sep 17, 2026 at 02:46:24PM +0100, Harry Yoo wrote:
+> Hi Tim and Chuck, thanks for reporting this to linux-mm.
+> Will take a look at this but let me Cc SLAB ALLOCATOR folks here first.
 > 
-> vmap installs PTE-level block mappings by reusing set_huge_pte_at() and
-> huge_ptep_get_and_clear() under #ifdef CONFIG_HUGETLB_PAGE. This makes
-> the feature silently unavailable on CONFIG_HUGETLB_PAGE=n kernels and
-> couples mm/vmalloc.c to HugeTLB internals it does not otherwise need.
+> -- 
+> Cheers,
+> Harry / Hyeonggon
 > 
-> Now that arm64 and powerpc/8xx provide pte_set_huge() and
-> pte_clear_huge(), add the generic fallbacks next to the existing
-> pmd/pud_set_huge() family and convert vmap_pte_range() and
-> vunmap_pte_range() to the new helpers. The CONFIG_HUGETLB_PAGE guards
-> around the block-mapping paths are dropped, so PTE-level block mappings
-> now also work on CONFIG_HUGETLB_PAGE=n kernels, and mm/vmalloc.c no
-> longer includes <linux/hugetlb.h>.
-> 
-> The fallbacks exist only to keep the build working on architectures
-> without PTE-level block mapping support. They are unreachable there:
-> the callers only run when arch_vmap_pte_range_map_size() or
-> arch_vmap_pte_range_unmap_size() return a size other than PAGE_SIZE,
-> which requires an arch implementation. WARN_ON_ONCE() makes that
-> explicit rather than silently doing nothing.
-> 
-> Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
-> ---
->   include/linux/pgtable.h | 29 +++++++++++++++++++++++++++++
->   mm/vmalloc.c            | 19 ++++++-------------
->   2 files changed, 35 insertions(+), 13 deletions(-)
-> 
-> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> index cdd68ed3ae1a9..349ced999f959 100644
-> --- a/include/linux/pgtable.h
-> +++ b/include/linux/pgtable.h
-> @@ -2134,6 +2134,35 @@ static inline int pmd_free_pte_page(pmd_t *pmd, unsigned long addr)
->   }
->   #endif	/* CONFIG_HAVE_ARCH_HUGE_VMAP */
->   
-> +/*
-> + * PTE-level block mappings for vmap.
-> + *
-> + * pte_set_huge() only has to be implemented by architectures whose
-> + * arch_vmap_pte_range_map_size() can return a size other than PAGE_SIZE.
-> + */
-> +#ifndef __HAVE_ARCH_PTE_SET_HUGE
-> +static inline void pte_set_huge(pte_t *ptep, unsigned long addr,
-> +				phys_addr_t phys, pgprot_t prot,
-> +				unsigned long size)
-> +{
-> +	WARN_ON_ONCE(1);
+> On Wed, Sep 16, 2026 at 11:22:27PM +0000, Tim Menninger wrote:
+> > Chuck Lever suggested I bring this to linux-mm after we found some SLUB
+> > measurements we could not account for while investigating an NFS/RDMA
+> > throughput regression.
+> > 
+> > The original NFS discussion is here for context:
+> > 
+> >     https://lore.kernel.org/linux-nfs/0e2f9688-097c-4bb9-a7ec-82b41bdb3653@slotpi15m67/
+> > 
+> > The NFS regression itself has been separated from this issue. What
+> > remains interesting here is the behavior of the nfs_page slab cache on
+> > this machine, particularly the measurements with and without perf lock.
+> > 
+> > The system is:
+> > 
+> >     Intel Xeon Silver 4516Y+
+> >     2 sockets
+> >     24 cores/socket
+> >     2 threads/core
+> >     96 logical CPUs
+> > 
+> >     NUMA node0 CPUs: 0-23,48-71
+> >     NUMA node1 CPUs: 24-47,72-95
+> >
+> > The workload is a high-throughput NFS/RDMA direct-read workload using
+> > 1 MiB I/O, 160 threads, and iodepth 64.
+> > 
+> > The relevant debug options are all disabled:
+> > 
+> >     # CONFIG_KASAN is not set
+> >     # CONFIG_PROVE_LOCKING is not set
+> >     # CONFIG_LOCK_STAT is not set
+> >     # CONFIG_DEBUG_SPINLOCK is not set
+> >     # CONFIG_DEBUG_LIST is not set
+> > 
+> > All measurements below were collected on the unpatched base kernel:
+> > 
+> >     $ git rev-parse HEAD
+> >     940de590b839f71d6dc846160534bf202401b8b7
+> > 
+> >     $ uname -r
+> >     7.3.0-rc1-mainline+
+> > 
+> > The initial observation was a high apparent contention rate on the
+> > nfs_page slab's list_lock. In 10-second perf-lock captures I was seeing
+> > roughly 4.5M contended acquisitions and about 170-185 us of average
+> > reported wait.
+> > 
+> > Chuck reproduced a similar acquisition rate on a single-node EPYC
+> > system, but saw only about 7 ns average wait and fewer than 100
+> > cmpxchg_double_fail events over a corresponding interval. He suggested
+> > checking cmpxchg_double_fail because __slab_free() drops list_lock and
+> > retries when the freelist cmpxchg fails.
+> >
+> > I repeated the measurements in three placement configurations:
+> > 
+> >     A. workload unpinned, CQs all on node0
+> >     B. workload pinned to node0, CQs all on node0
+> >     C. workload unpinned, CQs balanced across the nodes
+> > 
+> > Without perf lock, throughput is similar in all three:
+> > 
+> >     A. unpinned / CQs node0:       ~45.5 GB/s
+> >     B. node0 pinned / CQs node0:   ~45.7 GB/s
+> >     C. unpinned / balanced CQs:    ~45.5 GB/s
+> > 
+> > During the perf-lock captures, throughput is approximately 25 GB/s.
+> > 
+> > For each instrumented 10-second window I ran:
+> > 
+> >     sudo perf lock record -a -g -o "$D/perf-locks.data" -- sleep 10
+> >     mpstat -P ALL 1 10
+> > 
+> > Before and after the same window I sampled the counters under:
+> > 
+> >     /sys/kernel/slab/nfs_page/
+> > 
+> > I also collected separate 10-second counter and mpstat windows under
+> > the same workload configurations without perf lock.
+> > 
+> > The resulting slab counter deltas were:
+> > 
+> >                             A               B                 C
+> >                      unpinned/node0    node0/node0   unpinned/balanced
+> > 
+> >     free_fastpath
+> >     instrumented        655,917,745    457,936,140       328,670,030
+> >     uninstrumented       34,906,233    119,984,226        59,469,931
+> > 
+> >     free_slowpath
+> >     instrumented        236,735,724      7,720,917       270,716,506
+> >     uninstrumented       85,039,753          2,814        60,145,870
+> > 
+> >     sheaf_flush
+> >     instrumented         39,842,700     42,706,800         8,341,440
+> >     uninstrumented        1,286,400     13,487,700           887,700
+> > 
+> >     barn_put_fail
+> >     instrumented            663,994        711,745           139,037
+> >     uninstrumented           21,464        224,762            14,765
+> > 
+> >     barn_get_fail
+> >     instrumented          4,609,925        840,344         4,651,225
+> >     uninstrumented        1,438,643        224,787         1,017,006
+> > 
+> >     cmpxchg_double_fail
+> >     instrumented             70,524          8,077            28,062
+> >     uninstrumented            7,471            713             1,503
+> > 
+> >     alloc_slowpath
+> >     all cases                     0              0                 0
+> > 
+> > The SLUB counter profile changes substantially with perf lock despite
+> > the lower NFS throughput, and the exact mix depends strongly on
+> > placement.
+> > 
+> > The uninstrumented node0/node0 run also reproduces the barn/sheaf
+> > relationship Chuck pointed out earlier. The nfs_page sheaf capacity is
+> > 60:
+> > 
+> >     sheaf_flush / 60 = 13,487,700 / 60 = 224,795
+> >     barn_put_fail                      = 224,762
+> > 
+> > The placement dependence of free_slowpath is also large. It falls from
+> > about 85M events per 10 seconds in the unpinned/node0 case to 2,814 in
+> > the node0/node0 case.
+> > 
+> > The reported perf-lock result, however, is similar across all three
+> > placements:
+> > 
+> >                          contentions    total wait    average wait
+> >     unpinned/node0         4,782,839      14.39 min      180.47 us
+> >     node0/node0            4,582,012      14.13 min      185.05 us
+> >     unpinned/balanced      4,572,196      12.81 min      168.14 us
+> > 
+> > I also revisited an inconsistency Chuck noticed in my earlier
+> > measurements. Previously I had compared aggregate perf-lock wait from
+> > one 10-second capture with CPU utilization measured during a different
+> > window.
+> > 
+> > I now have paired 10-second mpstat samples for each placement, with and
+> > without perf lock. The node values below are averages of the per-CPU
+> > %idle values for the CPUs in each NUMA node:
+> > 
+> >                                   system-wide       node0       node1
+> >                                   %idle             %idle       %idle
+> > 
+> >     A. unpinned / CQs node0
+> >        uninstrumented                 31.46           8.0        54.6
+> >        instrumented                    3.60           0.06        7.1
+> > 
+> >     B. node0 pinned / CQs node0
+> >        uninstrumented                 84.26          69.2        99.4
+> >        instrumented                   12.07          10.4        13.8
+> > 
+> >     C. unpinned / balanced CQs
+> >        uninstrumented                 66.86          66.7        66.9
+> >        instrumented                   14.83          19.0        10.6
+> > 
+> > This resolves the accounting inconsistency in my earlier measurements.
+> > The large aggregate perf-lock wait and high idle percentage had come
+> > from different windows. In the aligned samples, the system is much
+> > busier during the perf-lock capture than in the corresponding
+> > uninstrumented run.
+> > 
+> > I am still unsure how representative the reported ~170-185 us average
+> > wait is of the uninstrumented workload.
+> > 
+> > The remaining number I am less sure how to interpret is
+> > cmpxchg_double_fail. In the uninstrumented windows I see:
+> > 
+> >     unpinned / CQs node0:       7,471 / 10 sec
+> >     node0 pinned / CQs node0:     713 / 10 sec
+> >     unpinned / balanced CQs:    1,503 / 10 sec
+> > 
+> > compared with fewer than 100 in Chuck's test.
+> > 
+> > I understand that cmpxchg_double_fail counts failed slab freelist
+> > updates rather than failed logical frees, so I am not sure what the
+> > appropriate denominator is here. In particular, the node0/node0 case
+> > still has 713 failures while sustaining full throughput and only 2,814
+> > free_slowpath events over the interval.
+> > 
+> > My questions are:
+> > 
+> > 1. Do the uninstrumented cmpxchg_double_fail rates above look abnormal
+> >    for this workload/topology, or are they within the range one would
+> >    expect from this degree of concurrency and NUMA placement?
+> > 
+> > 2. Is there a less invasive way you would recommend measuring the
+> >    nfs_page list_lock/freelist contention? I would like to distinguish
+> >    the steady-state behavior from what is observed during the perf-lock
+> >    capture.
+> > 
+> > Thanks,
+> > Tim
 
-BUILD_BUG_ON() would be better here.
-
-It should be possible because fallback arch_vmap_pte_range_map_size() 
-will constant-fold PAGE_SIZE so pte_set_huge() will never be called.
-
-> +}
-> +#endif
-> +
-> +/*
-> + * Likewise, pte_clear_huge() only has to be implemented by architectures
-> + * whose arch_vmap_pte_range_unmap_size() can return a size other than
-> + * PAGE_SIZE.
-> + */
-> +#ifndef __HAVE_ARCH_PTE_CLEAR_HUGE
-> +static inline pte_t pte_clear_huge(pte_t *ptep, unsigned long addr,
-> +				   unsigned long size)
-> +{
-> +	WARN_ON_ONCE(1);
-> +	return __pte(0);
-
-Same I guess.
-
-> +}
-> +#endif
-> +
->   #ifndef __HAVE_ARCH_FLUSH_PMD_TLB_RANGE
->   #ifdef CONFIG_TRANSPARENT_HUGEPAGE
->   /*
+-- 
+Cheers,
+Harry / Hyeonggon
 
