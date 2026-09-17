@@ -4,97 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9AB62C982D0
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 20:45:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BFE4C982D0
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 20:45:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 652A46B0098; Thu, 17 Sep 2026 16:45:15 -0400 (EDT)
+	id 199626B0099; Thu, 17 Sep 2026 16:45:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 58FF66B0099; Thu, 17 Sep 2026 16:45:15 -0400 (EDT)
+	id 122F86B009B; Thu, 17 Sep 2026 16:45:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E1446B009B; Thu, 17 Sep 2026 16:45:15 -0400 (EDT)
+	id 010A66B009D; Thu, 17 Sep 2026 16:45:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0CA3E6B0098
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C67BA6B0099
 	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 16:45:15 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9023BA04ED
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 20:45:14 +0000 (UTC)
-X-FDA: 85224434148.08.755290C
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
-	by imf28.hostedemail.com (Postfix) with ESMTP id B46A3C000B
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 20:45:12 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=OtR8+MsL;
-	spf=pass (imf28.hostedemail.com: domain of 3V1GsagYKCAg46qpivowwotm.kwutqv25-uus3iks.wzo@flex--wyihan.bounces.google.com designates 209.85.215.199 as permitted sender) smtp.mailfrom=3V1GsagYKCAg46qpivowwotm.kwutqv25-uus3iks.wzo@flex--wyihan.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 62EDC1604C7
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 20:45:15 +0000 (UTC)
+X-FDA: 85224434190.27.CC3E6CB
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 8B7C6100002
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 20:45:13 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=ndqakYgs;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf05.hostedemail.com: domain of 3WFGsagYKCAk57rqjwpxxpun.lxvurw36-vvt4jlt.x0p@flex--wyihan.bounces.google.com designates 209.85.214.197 as permitted sender) smtp.mailfrom=3WFGsagYKCAk57rqjwpxxpun.lxvurw36-vvt4jlt.x0p@flex--wyihan.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789677912;
-	b=myo+nqITYuh9ihy0V4ijJ1I+YC5HkrCD9l/c/WLG5iVuYJAmq8NZjrTr8nrKzt18bstHaw
-	d6Wcjiz/bbRRrr1P7Hn19xa1IZCYX1IKsp9OA8T/ug/C2YxSQMAhKxMqS8UaTmy3+UeeAK
-	2h9uZF11GlHSiGKEQRbVti/hOwNxSoI=
+	t=1789677913;
+	b=3g4/8R7D29MPPFl8ABuk0iP52AHaJKggzsi07cz7qEKU/tG1m+/2pQbZFA+kKpUZAQcTWd
+	y5HAkaQxQz4j/7jKrr4ecTED6B+hkWAuNuDbnD7kyLFoz3ibnpHjGuzS2Kmksbwy03gaR4
+	BkYnY/DouQzRPsXjwrhwemlcFTo0JTc=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=OtR8+MsL;
-	spf=pass (imf28.hostedemail.com: domain of 3V1GsagYKCAg46qpivowwotm.kwutqv25-uus3iks.wzo@flex--wyihan.bounces.google.com designates 209.85.215.199 as permitted sender) smtp.mailfrom=3V1GsagYKCAg46qpivowwotm.kwutqv25-uus3iks.wzo@flex--wyihan.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=ndqakYgs;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf05.hostedemail.com: domain of 3WFGsagYKCAk57rqjwpxxpun.lxvurw36-vvt4jlt.x0p@flex--wyihan.bounces.google.com designates 209.85.214.197 as permitted sender) smtp.mailfrom=3WFGsagYKCAk57rqjwpxxpun.lxvurw36-vvt4jlt.x0p@flex--wyihan.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789677912;
+	s=arc-20220608; t=1789677913;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kGFXLYLaJ+InCA49wUVYw7NUJomlNkAd8fgmCjgGvRw=;
-	b=V6ySN4YAQjySfcp2AdfN+ZOikO5Tws+8SRVmh2PN+ZJDNGGNdGF7YjNBtVgFHs5Cyu0/zY
-	x6kLOzoyivj+eZSxJtuEe4K1aX7dxrTLQivPu3U2tpmlEaQ/YDGBO0fmwyB2YA9vjhS3FL
-	BZiT2VgWchWsKP08TXzF6oWuQ68BX20=
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cc4c1fc9ceaso1064695a12.3
-        for <linux-mm@kvack.org>; Thu, 17 Sep 2026 13:45:12 -0700 (PDT)
+	bh=GhFaT1pWqaSYrZ5igcNnVG6b2J5qZxAlydhAJEnR0ZM=;
+	b=JUpEBRTRAsh0HNe5Jz5oZOFuDJsBTWgAD2LmfCKQD+BisTzjHLtqTHP6GkGEtpNjtp1Qtk
+	x2BePSzM5afknuZR767ycdbSFG1rjmWt2QecrJd33jDRBQ5fU633k9cWQeeOQb/lIr1ykA
+	ZoUjI8Xso/WhKXeAm/OICYQ+P+8bU1g=
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2dd753a52bbso1434455ad.0
+        for <linux-mm@kvack.org>; Thu, 17 Sep 2026 13:45:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789677911; x=1790282711; darn=kvack.org;
+        d=google.com; s=20251104; t=1789677912; x=1790282712; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=kGFXLYLaJ+InCA49wUVYw7NUJomlNkAd8fgmCjgGvRw=;
-        b=OtR8+MsL39niKsTCtOpSbp6ewDH/6DkU/XCmhPzlZG3Zl9MwMMA5uWUxkhxG3vhquJ
-         FiODC8Y3XWjx5WE9X3O5cSBlwjnw02eKdeREArH8FcwZR4cnGzHgqyKm30SLCppQByeO
-         Rqq8iyEIMG3Pr+PhQXjrGqvQ2qZ5nlmTPpeusbm4wK3hDEBcXqZrDIpzFtR5D0duNrF9
-         UMWlhktgLfLpcCAjXHcRHEPOsFDu3sj3vNjIqqc77sZMQMnI6A2zBmZeTHtqcwmIHKfx
-         zhj8J5h3LkpTe4/S/CxHwsJ1yzw8CWBRp3oQ7LJN6gAtGFr8Fky4AH4loec0iR1izFwF
-         1rAw==
+        bh=GhFaT1pWqaSYrZ5igcNnVG6b2J5qZxAlydhAJEnR0ZM=;
+        b=ndqakYgsB0UHsfa8H2l3N6BvFmhi5j5TuH5NkPvPjO9ArBl/eFs9oVVdzBVZ1VRiy2
+         9yb97AGsHHWtbFK8VUu8PVyYUH4dlALtlDRuH3BxncRHKtyD+5KdFig+MtpSjDr0fJR7
+         lnthW59akdi/XPK6iZdaLg0McOlxdbOuPb5NtrEvVtYudkdjDZnrtP4Nb4KXaMSmSYo0
+         Hgghk980+XX39zDi6DL4oKWsU0//G+3Lo/BQMOtiBSnmbpKE+F43kmrbH7jjIf94hYzJ
+         JbAsXglmwNejT3TBwdPWTewTGs4r7DA0ojbS0mx48qKPCIzxWXqiFcDLI73lyefFinp4
+         hC2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789677911; x=1790282711;
+        d=1e100.net; s=20260707; t=1789677912; x=1790282712;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=kGFXLYLaJ+InCA49wUVYw7NUJomlNkAd8fgmCjgGvRw=;
-        b=RSGITHCHusnbV3O4AGBcw9Koex8/v3xDWrJj1lrwt03Dih/4RHvvZaDrgfIo+EsMfI
-         05Wdbxp5VoqDT1Hqcq68LSUPA3XL8af8XzgW3sURCUvquNz5+Z2VfVcue8ZU0tvv5WuO
-         oHJRsHjhsAL/6jrrm5FFf2ST4WjPFKURqn+D5rI330JkZseX6QFNHO3q+d5vLYTM8Hw5
-         QqLS9f5ssc0SfwctFcIs97URgK7tQSp2wadnKRDmO9IRDTnjvq4KY2TWGVD+w5sLGIiw
-         ibNOSgxsd4vje27RN4KWF1A69cxJ1ft/69rLFoENZL/yrTNUkEKwk8r58DYPMcf06Wl6
-         L9RQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxmOlbxceax/St3tS2OussLCr3RFidVSeLcaCopd/iQtjagO/jMB7SneNwzsrKRaXT6ZLS1Ifshbg==@kvack.org
-X-Gm-Message-State: AFuF++m/Wcr37zWdy0zT9u5stTykcoP9cQkMU6UF4KKXppz8oaioSO6X
-	vMr56+QjeMMFcmutu0FWSnxCMIIikJNI1uaqlnGCpSq8ytqElpPZBALhZm0EFaFw6JFoq7tx3vA
-	GTyHR2w==
-X-Received: from pgby18-n1.prod.google.com ([2002:a05:6a02:6512:10b0:cc4:b427:4edc])
- (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:2586:b0:3dd:85aa:452a
- with SMTP id adf61e73a8af0-3dd8c53aa87mr322161637.37.1789677911269; Thu, 17
- Sep 2026 13:45:11 -0700 (PDT)
-Date: Thu, 17 Sep 2026 20:43:50 +0000
+        bh=GhFaT1pWqaSYrZ5igcNnVG6b2J5qZxAlydhAJEnR0ZM=;
+        b=DtusvrcxZSog4bgpu1JHeldWp3hf/2mfUuqe4DTLgeWxveW5H4XYI8qk4iJjm6iNY3
+         g4POPoZdu0MuEMvKTGF3x/MfHaUKouBH4HhAhsIRRH4Z4Nf2z6Dr1iV5T/WxJCPRetY6
+         Xe0MUHKL+tOHaJ5d3OnfU32vDTfG6W/qVGHSyv2CuZ1eIuzoqOjwC9IxkbHtqy8q4zHZ
+         DMaTWzAHzRvLogCs2klwqEjFLbEYUAItj+taFMvCg4+gWPgKyuxM9p51Mwr6uLglQJ3f
+         H8uBqOAl8iN/uLUfZQKCHrXhPzKQwk1mjmr51IM6EoYt2bXx967mGFs0lxmZEpIqOMAW
+         nTag==
+X-Forwarded-Encrypted: i=1; AKwUvBw3tPiJOSTjjAyWb0gMoIXObOiTaCxODykEax+4w6XMQ4qFWUYQjYc8ydkYKxaQP6JP4QwKdryEAQ==@kvack.org
+X-Gm-Message-State: AFuF++lyjZ2i8qiaBeiW/qJCVrhkaY23H4P46ZsxrKfSfQ4h3gTKo3CG
+	6xaaEfuhF+ZCrz2iyqNmSF1TjFVqLp3dpbhuU73JQW6zXSnAcvFRqWjkS4Uthz4TG61M4xZAAij
+	gtFAylQ==
+X-Received: from pjzm16.prod.google.com ([2002:a17:90b:690:b0:39d:9b47:4551])
+ (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:224c:b0:39b:61f1:8032
+ with SMTP id 98e67ed59e1d1-39e54e7c18emr677747a91.16.1789677912150; Thu, 17
+ Sep 2026 13:45:12 -0700 (PDT)
+Date: Thu, 17 Sep 2026 20:43:51 +0000
 In-Reply-To: <20260917-memory-failure-mf-delayed-fix-v6-0-4b00856b5364@google.com>
 Mime-Version: 1.0
 References: <20260917-memory-failure-mf-delayed-fix-v6-0-4b00856b5364@google.com>
 X-Developer-Key: i=wyihan@google.com; a=ed25519; pk=cRi0fKzS5BMxlHyHY2pJv3w/1zcgfYKr6EYGYppdMYc=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1789677906; l=1694;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1789677906; l=5191;
  i=wyihan@google.com; s=20260319; h=from:subject:message-id;
- bh=y+kljbprzv16FEW0R5LMRlVvQbhp1uI0L+ucmxjcblI=; b=dGqQYjedOERCKiCjnJKisYhsTZMBcs8c13M3JPpg6A9i4it98kymjesDKoJjNEGSRfSyI5HCc
- ODtrd4OL3p8AnfgcbvoGkMFMPXtlua/Nkbp4d/SrhzytfRXP5wu1rg0
+ bh=oCZbQTSw2Yyl7B5BQDviNb8o0kDmMbfd/szlr3bi9Xc=; b=2sjWrqtdOcssMiZtTNK//2RmRxIpXb5yhivrXeyIB1v0t2FyBFn36kmbEWN2P8Ax0XR7UqVYg
+ PdjG1ilLGPiDeSDyMaCfp7cPG5UuHvIdRtwg6rJOtaSMWsW7wX2rc6R
 X-Mailer: b4 0.14.3
-Message-ID: <20260917-memory-failure-mf-delayed-fix-v6-4-4b00856b5364@google.com>
-Subject: [PATCH v6 4/5] mm: memory_failure: Generalize extra_pins handling to
- all MF_DELAYED cases
+Message-ID: <20260917-memory-failure-mf-delayed-fix-v6-5-4b00856b5364@google.com>
+Subject: [PATCH v6 5/5] mm: selftests: Add shmem into memory failure test
 From: Lisa Wang <wyihan@google.com>
 To: Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
 	Andrew Morton <akpm@linux-foundation.org>, Paolo Bonzini <pbonzini@redhat.com>, 
@@ -113,13 +112,13 @@ Cc: rientjes@google.com, seanjc@google.com, ackerleytng@google.com,
 	Isaku Yamahata <isaku.yamahata@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>
 Content-Type: text/plain; charset="utf-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: B46A3C000B
-X-Stat-Signature: df4d7aqsokaim5k9tgh435j3ek4dgkc9
-X-HE-Tag: 1789677912-256497
-X-HE-Meta: U2FsdGVkX19GgGmDJiqVXaXpykUIZukwFEnFy8w8rFLkkpld2N9EkoIG7udlx6/1PFICKb4Ib9fqysWl2sT3vL17sd8JfoblQxkajbePjjfo8GjexlqPoJzXRJjeTNnv6WcS8ZbbKrZfeI19U1GkP2FwnXqeBYokLpLF20TEyVbmdL0ZheA9G0XZxZsSZAtZZ/uxrReZkLUpmo2i8V23SdYHYrDB7cgUphZMZfYTgq5bJhVeIlqC8bRv3w0RPIU7+u2SyjORQmUAeLQQp9IqbeZMNcwV+1vUho+oiHBlCEYyTtN4VArzrsYddzXXu0pB1YxwowVLsJgWLwLVG0pz6Ssf74K0RbsKTC1VKRxDj31Aeu15zzsv2gf5URlK+U8s6oyc0qAuImhfeDZH72NQsdSunoyvdDhcSGHx4gx6uBi+ooeBb4j46e5MWUB6BlyvW/oDVrdLWA3cGAXsIVIbp8lfNXuLGibNAeNbzV3v+77UAhSZNGpFp5nX3g0MBgTRtQPQrvdFTGbjUviZbVYzymShB2NOV/BpBVopx18my0TE51viQdKVBPg5hWLcSHHiTLTFg3UM8SfgN1eHaYGjadBTBHrAxHXdbIZj528JhCtrOMsCMbKSqVT7c20/6s5wxQyN9JldT56IwP7sq6iDgQM/fXWVJJ4vS+0q51mDKMtc8Rx0mK3ICKFcNa/MQnXUPQBMf4Fh2ohxwyalPurM+8FJaijLlk+AfRyzzwAUsXCBAsQWekbqmEpXP3ygew/THWjgri4rejk79EizXWv7ghTyo8mjkbk7i9gobaNDPnELvB8sexKAcIYKLQSHsGZUBNIIw9Vc5gqPfUYbjTRwp4sFj5hKacdqhmnK8cCV6BtwC90eZq7W+v+58QHu4jmqf627+AVE25GqH7cVBgPgZ1nwgOxritdq9KjtnBMe4IeAZcfX8hujJ53OJ+YkW+brT4M9QUMmieDM/kEWqHW
- +aReuiI+
- 9z8j1ArfSS7ybI+AgZVVF6p12WfVER7C5AUiiQAKkKsAlnK8hOhykgpZuOBm8jTK1hGLDwZBMAWexnqUaR4huTsLjIsCHI3FIyl9hNyWfSmK8crpdnEddVYeBw7hH3nDyy4wRxxrQxzLPKy3et6zg7n5w4dXlFOx+YzfPHYOsc3UccCumQtu3A+d1UYyVCRAZBNB1rzZmBLuySCbMzVUQ4XSBu523iY4uy3Oi+NzXMw4s5lBHPsOaGdan3iLKTV7Y91POIsyDpBrPMxKsRt9Oo9MykWBEQxamcoLcXvyST2U6vAADOh18DPJvrzHI934lj9xRq5kMe4C/n52c8/FVfzwNKRxxruC6rcvQJvPift4g5vG1ux+kh/EzXpoCmiid2KXay9lU8I58eehQ5UUs4eTI3bBEUbEXMk4YqnYTtqdkLxcjz+DdIQXsl9vXvWFSsqoQes8YWBSf9ZCWjgHoPai5dxdB5qmmMrIkrkZJudE9kPnB4uJOPwqrWmxgr3aLVTXMvb/50JGo4xiQOgAU1lLPFkjd5DL+1FJtKwXMTPWkn9uWK0upmXsJYoFrokJjUBEiPuZI2k6aHUEGTIt3FYfVyXJ3+VumOoQac5kCWvoUpCRyqWmHbbHSZZGj+rgGO8aZH0jE5DZ37w/RUWe8foPcI+RrzgjxKszclmG91G7T7HLHAO9D7XVLBI3GwHkGQ5VD2pkf53ZtNs0n1ksDFMSKfQ==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 8B7C6100002
+X-Stat-Signature: h6adjzqarmciuto9sjmdshnf5n95j35b
+X-HE-Tag: 1789677913-288350
+X-HE-Meta: U2FsdGVkX1/3Pv5ZPCt4/YT5Zxmqujz1n+DJpQNuVU7hLsveIVUsTpSW44vfkUgg7UERyEP1dz921GLcLp8vR3rAZOf7XMjYD3+qDuUGKvuydz/Sth/IPt5ExGj77AdFYCs2wHzmpRfogZhpjwpMdNHyPVGdN7xPkV7y/BB8C0Ruu5r1I6ltJ5SB2+32/DN3FMf9yAsvoLPp6tosSlSaqqjUSOmRSJ0MWtfGczATR4zoGbwDlgmipg7LaXACaFg1mSn3m3LkGXm75H1M9TCHDyoN6SrUpX3Ny6DBbIBWcWRV5xi2k4wDpQnjGQ/chQicVCKA+/8fWElC2VtBLg7XITj+I5LZBjNq7eehy3JDStrGx7lhgDQI4E801kZ+ks7xc6NODHYgZ26MbhNl4tfUK5y1B89+7HT14SSnvQAqsQk6n8h8hdCxzvhL3jflz2OiGtDba1jNVanpDROTt/7Gq0IwAngCAuWVtTJyFwDGKDRCOAkzdGVsq10G9Q0Zikt5w15yIQWT9QYir+S5So0zMvwC/nJ2hVFu4Qq2dktmP4JgWDlGrMgqiL9a6X9ewbW6YOucQCFiCKhURvv/oP6niML/8Uo4J/7i33KAoKoC3kBd9T4QwlSU4OodNmCXVgiQDpodcwMvEVLpEfvdMeN+C4vpeAqhjUR2wQMhYgzXzoL22xBFkfp1zT47/r6zbgukT+ej+r5agRGz41tV4G/xWEu1ih/iHM0EfFL08/XWxcDEZR77syj+nvVV/GlVEpIGrlKxjsOj1xS0b/2qaQh1wIC8F7t9HSr0ja02y1XXIiZFfxhJfjqu753c2LgxNOStXHg4ZGle2RkvM4SwHxu63zyGBqq0vyhr01urxYAZdlJymVhH5QT5NRLdeiV81k0PtQPSl+QFNRkr8ycqtvna8y5H7GsnkstMqS5MwIH6rZ0mBjP2hNtI1dF/xBGwjNstc5cjfkt5HMsReHJ/ube
+ CwIsc2Jn
+ STLR57epSA/G/sZgedHBZSspvUbD4p8k1w7vMzsaKD2aWsuCUUBYSO8tTPKC81044F9lNl6y21fANvCdeWqyVJBMBw+PfzMiYruVlQIm6WoUSVdrcB8mABVWJAq+YyteTtmsSe50e2m/klcYb1F7HhaIp5UpExPebVOWz0Au9lxxyeHFUlq+8giFQK72vbnYCh7RCqIkTiOz8R3MhwUt6Mp5qIkzlkGwbERTNpVqfUM+jLav/lsD3ajQz1bkNgr+4u5H1vzHPK94oo0S9I0yyCu8jJG/5hsemZjJcaAAxGD63cBBPQX0OdI/yNV1L3c8scgXn419BzmEPxJPk8Mbq5YEDd/4VN8cs5Ul5RwxhX3aBlKer+WgZXjs7qMYfn4+T+AJtOZRiJ3X1+aR9iJRVx6JsgDNxzO+OVKakhQMRXUT5hl7SiieAW//bSAjpHTTVjLOnVK3wim5gjH9Ct1aUP0EIBWL9Kr2v4Uyru3ujCdTYpdxMmYwX9bya8vDjY/ChAS2YiPp+RN2tNxpmMPZgcXrZe18SoGB/djIUlovBUj7IFtMVbhKqFEVPzV3+NIj1k1xlZTwybGdxk1CxsXcThxWTDmobTANJH77VHBgQqnz6Xd5bqLCjharLwLmGLbmm6ymdEadSdg14V94=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,51 +126,182 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Generalize extra_pins handling to all MF_DELAYED cases not only
-shmem_mapping.
+Add a shmem memory failure selftest to test the shmem memory failure is
+correct after modifying shmem return value.
 
-If MF_DELAYED is returned, the filemap continues to hold refcounts on the
-folio. Hence, take that into account when checking for extra refcounts.
+Specifically, test the expected behavior under various scenarios
+combining page dirtiness (dirty vs clean) and failure types (hard vs
+soft):
++ Dirty + Hard: Trigger a SIGBUS on injection, and trigger another
+  SIGBUS when reading the page again.
++ Dirty + Soft: No SIGBUS is triggered, and the original value can be
+  read successfully.
++ Clean + Hard: No SIGBUS is triggered on injection, but trigger a
+  SIGBUS when trying to read the page again.
++ Clean + Soft: No SIGBUS is triggered, and the page can be read
+  successfully.
 
-As clarified in an earlier patch, a return value of MF_DELAYED implies that
-the page still has elevated refcounts. Hence, set extra_pins to true if the
-return value is MF_DELAYED. This is aligned with the implementation in
-me_swapcache_dirty(), where, if a folio is still in the swap cache, ret is
-set to MF_DELAYED and extra_pins is set to true.
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 Acked-by: Miaohe Lin <linmiaohe@huawei.com>
-Reviewed-by: Ackerley Tng <ackerleytng@google.com>
 Signed-off-by: Lisa Wang <wyihan@google.com>
 ---
- mm/memory-failure.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ tools/testing/selftests/mm/memory-failure.c | 114 +++++++++++++++++++++++++++-
+ 1 file changed, 111 insertions(+), 3 deletions(-)
 
-diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index 37ea23489b75..c7a00c7be368 100644
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -1039,18 +1039,14 @@ static int me_pagecache_clean(struct page_state *ps, struct page *p)
- 		goto out;
- 	}
+diff --git a/tools/testing/selftests/mm/memory-failure.c b/tools/testing/selftests/mm/memory-failure.c
+index 1a5a32e22cce..d5d17a262c00 100644
+--- a/tools/testing/selftests/mm/memory-failure.c
++++ b/tools/testing/selftests/mm/memory-failure.c
+@@ -29,9 +29,14 @@ enum result_type {
+ 	MADV_HARD_ANON,
+ 	MADV_HARD_CLEAN_PAGECACHE,
+ 	MADV_HARD_DIRTY_PAGECACHE,
++	MADV_HARD_CLEAN_SHMEM,
++	MADV_HARD_DIRTY_SHMEM,
+ 	MADV_SOFT_ANON,
+ 	MADV_SOFT_CLEAN_PAGECACHE,
+ 	MADV_SOFT_DIRTY_PAGECACHE,
++	MADV_SOFT_CLEAN_SHMEM,
++	MADV_SOFT_DIRTY_SHMEM,
++	READ_ERROR,
+ };
  
--	/*
--	 * The shmem page is kept in page cache instead of truncating
--	 * so is expected to have an extra refcount after error-handling.
--	 */
--	extra_pins = shmem_mapping(mapping);
+ static jmp_buf signal_jmp_buf;
+@@ -157,17 +162,22 @@ static void check(struct __test_metadata *_metadata, FIXTURE_DATA(memory_failure
+ 	case MADV_HARD_CLEAN_PAGECACHE:
+ 	case MADV_SOFT_CLEAN_PAGECACHE:
+ 	case MADV_SOFT_DIRTY_PAGECACHE:
+-		/* It is not expected to receive a SIGBUS signal. */
+-		ASSERT_EQ(setjmp, 0);
 -
- 	/*
- 	 * Truncation is a bit tricky. Enable it per file system for now.
- 	 *
- 	 * Open: to take i_rwsem or not for this? Right now we don't.
- 	 */
- 	ret = truncate_error_folio(folio, page_to_pfn(p), mapping);
-+
-+	extra_pins = ret == MF_DELAYED;
- 	if (has_extra_refcount(ps, p, extra_pins))
- 		ret = MF_FAILED;
++	case MADV_SOFT_DIRTY_SHMEM:
+ 		/* The page content should remain unchanged. */
+ 		ASSERT_TRUE(check_memory(vaddr, self->page_size));
++		/* FALLTHORUGH */
++	case MADV_HARD_CLEAN_SHMEM:
++	case MADV_SOFT_CLEAN_SHMEM:
++		/* It is not expected to receive a SIGBUS signal. */
++		ASSERT_EQ(setjmp, 0);
  
+ 		/* The backing pfn of addr should have changed. */
+ 		ASSERT_NE(pagemap_get_pfn(self->pagemap_fd, vaddr), self->pfn);
+ 		break;
+ 	case MADV_HARD_ANON:
+ 	case MADV_HARD_DIRTY_PAGECACHE:
++	case MADV_HARD_DIRTY_SHMEM:
++	case READ_ERROR:
+ 		/* The SIGBUS signal should have been received. */
+ 		ASSERT_EQ(setjmp, 1);
+ 
+@@ -263,6 +273,20 @@ static int prepare_file(const char *fname, unsigned long size)
+ 	return fd;
+ }
+ 
++static int prepare_shmem(const char *fname, unsigned long size)
++{
++	int fd;
++
++	fd = memfd_create(fname, 0);
++	if (fd < 0)
++		return -1;
++	if (ftruncate(fd, size) < 0) {
++		close(fd);
++		return -1;
++	}
++	return fd;
++}
++
+ /* Borrowed from mm/gup_longterm.c. */
+ static int get_fs_type(int fd)
+ {
+@@ -355,4 +379,88 @@ TEST_F(memory_failure, dirty_pagecache)
+ 	ASSERT_EQ(close(fd), 0);
+ }
+ 
++TEST_F(memory_failure, dirty_shmem)
++{
++	int fd;
++	char *addr;
++	int ret;
++
++	fd = prepare_shmem("shmem-file", self->page_size);
++	if (fd < 0)
++		SKIP(return, "failed to open test shmem-file.\n");
++
++	addr = mmap(0, self->page_size, PROT_READ | PROT_WRITE,
++		    MAP_SHARED, fd, 0);
++	if (addr == MAP_FAILED) {
++		close(fd);
++		SKIP(return, "mmap failed, not enough memory.\n");
++	}
++	memset(addr, 0xce, self->page_size);
++
++	prepare(_metadata, self, addr);
++
++	ret = sigsetjmp(signal_jmp_buf, 1);
++	if (!ret && !self->injection_attempted) {
++		self->injection_attempted = true;
++		ASSERT_EQ(variant->inject(self, addr), 0);
++	}
++
++	if (variant->type == MADV_HARD) {
++		check(_metadata, self, addr, MADV_HARD_DIRTY_SHMEM, ret);
++		ret = sigsetjmp(signal_jmp_buf, 1);
++		if (ret == 0)
++			FORCE_READ(*addr);
++		check(_metadata, self, addr, READ_ERROR, ret);
++	} else {
++		check(_metadata, self, addr, MADV_SOFT_DIRTY_SHMEM, ret);
++	}
++
++	ASSERT_EQ(munmap(addr, self->page_size), 0);
++
++	ASSERT_EQ(close(fd), 0);
++}
++
++TEST_F(memory_failure, clean_shmem)
++{
++	int fd;
++	char *addr;
++	int ret;
++
++	fd = prepare_shmem("shmem-file", self->page_size);
++	if (fd < 0)
++		SKIP(return, "failed to open test shmem-file.\n");
++
++	addr = mmap(0, self->page_size, PROT_READ | PROT_WRITE,
++		    MAP_SHARED, fd, 0);
++	if (addr == MAP_FAILED) {
++		close(fd);
++		SKIP(return, "mmap failed, not enough memory.\n");
++	}
++	FORCE_READ(*addr);
++
++	prepare(_metadata, self, addr);
++
++	ret = sigsetjmp(signal_jmp_buf, 1);
++	if (!ret && !self->injection_attempted) {
++		self->injection_attempted = true;
++		ASSERT_EQ(variant->inject(self, addr), 0);
++	}
++
++	if (variant->type == MADV_HARD) {
++		check(_metadata, self, addr, MADV_HARD_CLEAN_SHMEM, ret);
++		ret = sigsetjmp(signal_jmp_buf, 1);
++		if (ret == 0)
++			FORCE_READ(*addr);
++		check(_metadata, self, addr, READ_ERROR, ret);
++	} else {
++		/* Test the address accessability without check_memory(). */
++		FORCE_READ(*addr);
++		check(_metadata, self, addr, MADV_SOFT_CLEAN_SHMEM, ret);
++	}
++
++	ASSERT_EQ(munmap(addr, self->page_size), 0);
++
++	ASSERT_EQ(close(fd), 0);
++}
++
+ TEST_HARNESS_MAIN
 
 -- 
 2.55.0.1082.g2b9226bbc0-goog
