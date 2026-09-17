@@ -4,90 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09DF3C88E72
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 09:42:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 519B5C88E72
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 09:45:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 19AB46B008A; Thu, 17 Sep 2026 05:42:10 -0400 (EDT)
+	id 4AE5F6B0092; Thu, 17 Sep 2026 05:45:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 175886B008C; Thu, 17 Sep 2026 05:42:10 -0400 (EDT)
+	id 485936B0093; Thu, 17 Sep 2026 05:45:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 08B176B0092; Thu, 17 Sep 2026 05:42:10 -0400 (EDT)
+	id 39C326B0095; Thu, 17 Sep 2026 05:45:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E08DF6B008A
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 05:42:09 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5AB5A402A2
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 09:42:09 +0000 (UTC)
-X-FDA: 85222763178.13.1852566
-Received: from mta0.migadu.com (out-114.mta0.migadu.com [91.218.175.114])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 514F4A0004
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 09:42:07 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=TpbjXrAF;
-	spf=pass (imf15.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.114 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789638127;
-	b=BnSystdUaEdfP2RczxXrWkX3EBWL19mVOvH1e7hnSvh8PWMqo7LADe5scg4BqYGAnLYDOe
-	AVVjItQkYAYUQe1EhRLl1kCVUrlDyYC+JHuEUaBgbHwWXdxal1u18k4B8uMktj9wNfsz0i
-	UbYPu3IKuKNus069SD5Dr0F2LnZgDcE=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=TpbjXrAF;
-	spf=pass (imf15.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.114 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 21E5B6B0092
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 05:45:01 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9D58A802C4
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 09:45:00 +0000 (UTC)
+X-FDA: 85222770360.24.A6DF2AF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 074E640003
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 09:44:58 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="lA/oD3Xi";
+	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789638127;
+	s=arc-20220608; t=1789638299;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oXB/UvnmUFtfbyRU+b4KBIkCm164Ahw4cZUDK45bqdM=;
-	b=NICXvNtPELiH62R7D8ozkRSZFhI1QRNRr3fXgk8PmpqV8hev74fWU5r+XLtvDH4XVKie9D
-	SquzSHUJEr4svMzDnra11f79Amw2ldKCNvPULGfpdKadWrxUqya/37sm+VJwQsMOKWBgre
-	25x9uhuTiWBwxLq7DtMJOk2hKbUKKyE=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=YYJrWaqktW2v8Vyez8Pxr3lxoWZVgUI/CaHPFaSCn5k=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789638125; v=1; x=1790242925;
- b=TpbjXrAFSZLzLkaCVcIrD82dAjOK79ngrEx0POrVwCO7bX8rMaOTeuivShRYWnpLQlbsu81W
- IeTMndpuh824OE+qTRLgbesa/CBrJaopX/AfUAqL80YWVkDOfh00xzRASqaQTqb/yva3YOHYkzx
- Ul6kSnsUKMR6MAKzUnXjqrY8=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 8a1219f40738e52c;
-	Thu, 17 Sep 2026 09:42:05 +0000
-X-Mizu-Trace-ID: 8a1219f40738e52c
-X-Migadu-Flow: FLOW_OUT
-Date: Thu, 17 Sep 2026 17:42:00 +0800
-From: Hao Li <hao.li@linux.dev>
-To: Harry Yoo <harry@kernel.org>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
-	Pedro Falcato <pfalcato@suse.de>, akpm@linux-foundation.org, cl@gentwo.org, rientjes@google.com, 
-	roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 2/2] mm/slub: introduce slab parking to reduce
- list_lock contention
-Message-ID: <aquvTkJ1sf8sbrvQ@fedora>
-References: <20260824122004.3652-1-hao.li@linux.dev>
- <20260824122513.3829-1-hao.li@linux.dev>
- <20260824122513.3829-2-hao.li@linux.dev>
- <8d73f087-42e2-454c-8e5f-93c1b64cb969@kernel.org>
- <aqPlMzUIw-4g2iOX@fedora>
- <aqqMIBejvh60JyMO@thinkstation>
+	bh=D1skJUV0DdBu4g2bOw3ZBlDk+5R5phbl6b1ujncvlfo=;
+	b=uJdrX/KBPXY1mw0nKkhRhOwvQDVB1RkQvDFfVa7pC6wSoTNdWU+WnX04CopJIrAlf2p/bE
+	hxrnK2AbIZVG1rHswuPoZqLCOzLrN7N5se5zP+rEJ4igTLnIVa/roTMm/nmbfjJ4aoW0R1
+	popxDgexty1NBjqFc4HqN/o6trGxXus=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789638299;
+	b=0HGEnUccWi0QaXdeiNQHYxbVOVRKn0l0RoHNwvLzO+8k4/43BQyPOH7MOzbg2HKjGLyUNm
+	m6bMJ87EMJ+No6MXwHaNlqyQpyTsdrTeQUUarNptuEhvrtb7aLled+CzRa3KElQ9ONugn5
+	iSeWyq7YiVhdmmxGrE5nzTQVmNFUDx8=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="lA/oD3Xi";
+	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 30BA44382D;
+	Thu, 17 Sep 2026 09:44:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4FAE1F000FF;
+	Thu, 17 Sep 2026 09:44:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789638298;
+	bh=D1skJUV0DdBu4g2bOw3ZBlDk+5R5phbl6b1ujncvlfo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=lA/oD3Xi/R7OGRfWv0XtB2ZJULQzeebJ0WnCL3HhKF5gfSpng//lWwlWDveRr1v3u
+	 XnHKqt9K4kONwsNb/4byXHynuDo7i9vRnvTK6jwmJQVSv9Q14qvCMpo+jteHhUo0Et
+	 QsdR7S7bppX81g2kyyWMrDikoznTWHTESjFjO/h/N7FnlWIa3GVRPceIS03Na96Puc
+	 CwNk1JL5xC/buoc9Mm8Axflsv/VdtLgeXQhjXhyugkY0f4+a6k0+fyfYtWFphoUG6W
+	 S3bvpSWujQghG5IqqSChyaaG9wwbRD9sHq/W4ji+P2RUHGdFIpjzZ1cPBCakka1Vfk
+	 XvPRQtSdy0D9w==
+Date: Thu, 17 Sep 2026 12:44:52 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Kaitao Cheng <kaitao.cheng@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Priyanshu Kumar <priyanshukumarpu@gmail.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/2] memblock: Remove unused exact nid allocation API
+Message-ID: <aqu2lCK5Nkw-9fHW@kernel.org>
+References: <20260917081504.30426-1-kaitao.cheng@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aqqMIBejvh60JyMO@thinkstation>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 514F4A0004
+In-Reply-To: <20260917081504.30426-1-kaitao.cheng@linux.dev>
+X-Stat-Signature: 6qznuyziq6ctrrgwx5z4dcxq5akgrgz9
 X-Rspam-User: 
-X-Stat-Signature: wuio7eh3ep1h8ek6oed11yyn9kts7hx5
-X-HE-Tag: 1789638127-964670
-X-HE-Meta: U2FsdGVkX1+0kzGOCes+e96TsrWaArkcfiUPTCD+1kBgEEfvOpEEuR0fYfQgNVdvrpwEvCMr1PQFTi89GwSUOOP8gGBowPbRR0tiYGSPtLCJHA2HypY/2MrZvdnoXeqGfr9u79z56Q0DJBBUhTLkcHFF0HwNtkEy/AR5KbDIfzS1Z1KvkeGSWg0p4bV7KXnqBZ6qoe+jjQVrZ025Hudpey8SQsAwJWCTCxjnOUiNLwN6sypftkMChbe/LlYL/cfN69spmZWSuVczrlktlafMvBrS++2+slAQ4xDwKjNF/LMeNxj1Xv+HOTritwNEbcoJFYUzfP9cpHajr2ZN+AVZa1QEbWYgV6CbcVeQgOPa2tdzLJnBIbc7CDg7WXY7b0OQLXvHtp+AyWh7FoBvWrcwj3Bcvylknh80fNHxU7K7hJw6DXpRxtLenXclNKCWuz4mw11kSt/Sb6+KlE7meRX6TzqjQxxGjyn++FVtCwqVA0UVdnGpoYbHK7qdL1P+WDac6lAJE7RXbzo6DKn51VDOCHlc3XGl2AONSKjJQdSBHgMbALqQWqy7SzNs0PWmLGeKuvLNr5YGCX3/VOeuvK0vPbipMEio5ASfc/VmbRFZf4T1NtFuxxDUjVYLI8XBXnrrXa1wVFabg1gKwBUvzTBUcOfefUAdQ8k196Goyu4aFcAx8zwwkoLxM+kaI+0xssE5e+gFcjNZilSUxrF8dmVfCpP/TLRajl8pEd4kyeRvomX1F8PvFamOnzoKCkq79dKXQDuZvsIKySnZWGf6cemoQnEFEy/mZNb25uFmEeTcySost/O2Foqa+MpwNrDd6FgERB+xJEK9873/nk1oBZzRq5N6ql7iEwma+55ZkSoCypSX/WSCtEMh1dwFywAR/XQtmhd6xtskm8rRxjfCv4Ivzoh4d2lksi2+TWN2G8phJTtirBSJV1qk1Hg6lEdLniGW376W/n+sUaIRtiVaNQd
- hVhwvFsX
- NKP27X+8i9p8039+iHZuQ494KUBTI711Vcn43vv0tEDnS2MOZnsX7fqrqRXNWIkztDwRMMYeQrRLQA5+gedxb1cd3mE/NQnJox50Ss7YKTrYBLVCBjn4p+7j/UVKuHvHZruqo/3W88kKuQiA/Kk7Ztp4nMZLeSvwM429VvSxgoM8byfqIr4tVtFqE5B7DYxsCbXZDR7sgRpgN1JhdMIkotB2HnxNd7L6IPUSY9iPe+Y1ZeCpd2VIASlRvGkN+j9QvHYLij4UYUjKYBpe+XKvGHJxpQHC6LTiFnU3iuNuIV6c5Xc8oP5cx1tUAqjXat3EMTjJV
+X-Rspamd-Queue-Id: 074E640003
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789638298-380359
+X-HE-Meta: U2FsdGVkX18QH1gwE5nTqPWvpa9GGGF75PJohgf29ObW0MuA/xev77c9C7nVuXPksSu/vz9zaqB6uwGlCQutwp06AHvDhuG/qLwN4zgCvyM33KpApU2/tgFdE+8aNUqrNznWJt1VazxkLSxCIKgjpl65vb4mo/3oAQpzqpoBbrw4lc2iO2Y7B01+q9+htee/yxA83XBICy1qGKxMlcYpeH1XWNnQiuhwhc8Iy2YO7qLSzHu7f5ZaM9ivyCyapR9eysB1s0bBaYQGFVn9cK0nnEzG4q8K5ejq04NQ7emvkvwmc0NucBr6CZbtKVPJVDJYahe59NtdwjQkbG8g3jEaU1dVi1GIzyrsPhm4tRxZolSkDgl+KwHuajYdSDimEpViiiu4OlWGGD/lPXNtviOhQl9HFHYVSJK6XCOo3ApjlS0B4VRI9uY+j2FkEjWsz2O+GQx/KvK08dGHVD6BKkLo+v0qlVDOg5RiRVJRAEDn2ta99DuP8bpLPXc/dVNOIhzliX5W3WNAXAkiQwNGDj97Et409GXuehV7WG/t+H75yffQ797FwqoLgZxlsk28ZGaNPxdECP2+a3U4BZ3SjIor+NaxjFJuFgMF5p/WCA/WaD0UUEw/9cW+/jA6LFZlWZl0QsrDoXZ9SdUm1IKMqdo/tobSoDsITiNQ+P2Q42fset7Zriv9Djbovo/9j7A+TKaXVffyI5H9P1o1bfUZtF+nzSg7cdPbli1vLYaM+q2qIDPIPLCDgTKFMDRYY5q39l9522csPL7t98z4qFUKpxM3YqEfiLeAuI5qjxFEQtGIW8qB0MqzpA7EC2ITBNsoEqzC8Gas6h6v2YbzFJK8qx78lcgvmmyrk4KgV6KXSRrtXJufJCWnbUT3xkS52brEfLu5zTsc5NctmmVtvhn9FasN71wGzf8MfTFrsQWlDsuXTv80uhh8Of6iljYi24Fys8nmTz6tR9dvH6J1guscOBD
+ q0zV1bvy
+ a9C0dpswnUHxbbvwFHI1x52xIG0+VR9o3fPay8m0adNN1aFOcBhWxJrXvq/LsMIm2BZsc6k2gsxqVq69VhWex4S3QrlPqGitNj3Ko2/kmgrTcE1++dUt1TqByp1R6J3YFfvy4H2yZkv8dM/5fq7Z9X4NxhvgK2mWn83MZ++fUYILAXNM40PrxMVrrAthPs9XzKNAnV8bPtJdz4kN28SmVfNwz8u4gfTlFqrxqVrT6Dyv1ZEGjl+wpCJ7S2rG1mnsaVvjj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,198 +93,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 16, 2026 at 02:50:06PM +0100, Harry Yoo wrote:
-> Apologies for chiming in late, trying to catch up...
+On Thu, Sep 17, 2026 at 04:15:02PM +0800, Kaitao Cheng wrote:
+> This series follows the removal of the unused exact_nid argument from
+> memmap_alloc(). That change removed the last in-kernel caller of
+> memblock_alloc_exact_nid_raw(), leaving only the memblock simulator
+> tests using the function.
 
-No worries at all, thanks for taking a look!
+Please resend the patch that removed exact_nid from memmap_alloc() and
+these patches as a single set.
+ 
+> The first patch moves the applicable exact-node allocation tests to
+> memblock_alloc_range_nid(). The second patch removes
+> memblock_alloc_exact_nid_raw() and drops the exact_nid argument from
+> memblock_alloc_internal(), as all of its remaining callers allow
+> fallback to other NUMA nodes.
+> 
+> The investigation cannot be extended to removing the exact_nid argument
+> from memblock_alloc_range_nid(). CMA passes true when reserving per-node
+> CMA areas. Allowing such an allocation to fall back to another node
+> could leave the CMA area's recorded nid inconsistent with the physical
+> location of its memory. KHO also passes true when allocating per-node
+> scratch areas and requires those allocations to remain on the requested
+> node.
+> 
+> Since exact-node allocation remains a required behavior of
+> memblock_alloc_range_nid(), deleting all of the tests in
+> alloc_exact_nid_api.c would remove useful coverage. Preserve the
+> applicable NUMA tests by making them call memblock_alloc_range_nid()
+> directly with exact_nid set.
+> 
+> Some tests cannot be preserved unchanged because they exercise
+> memblock_alloc_internal() retrying below min_addr. Unlike
+> memblock_alloc_internal(), memblock_alloc_range_nid() treats its start
+> address as a hard boundary and does not retry from address zero. Remove
+> those tests together with the now-unused TEST_F_EXACT dispatch from the
+> shared allocation tests.
+> 
+> Kaitao Cheng (2):
+>   memblock tests: Move exact nid tests to memblock_alloc_range_nid()
+>   memblock: Remove unused memblock_alloc_exact_nid_raw()
+> 
+>  include/linux/memblock.h                      |   3 -
+>  mm/memblock.c                                 |  44 +-
+>  .../memblock/tests/alloc_exact_nid_api.c      | 454 ++----------------
+>  tools/testing/memblock/tests/alloc_nid_api.c  |  20 -
+>  tools/testing/memblock/tests/alloc_nid_api.h  |   1 -
+>  tools/testing/memblock/tests/common.h         |   2 -
+>  6 files changed, 42 insertions(+), 482 deletions(-)
+> 
+> -- 
+> 2.54.0 (Apple Git-157)
+> 
 
-> 
-> On Fri, Sep 11, 2026 at 09:06:25PM +0800, Hao Li wrote:
-> > On Mon, Sep 07, 2026 at 03:38:22PM +0200, Vlastimil Babka (SUSE) wrote:
-> > > On 8/24/26 14:25, Hao Li wrote:
-> > Thanks for pointing this out. I looked into this bursty alloc-and-free behavior
-> > a bit deeper and ran some further experiments.
-> > 
-> > The core question we want to answer is: why does such a massive volume of
-> > object allocations and frees fall straight through to the node partial list
-> > layer, rather than being caught and handled at the barn/sheaf layer? In SLUB's
-> > current design, the per-CPU main/spare sheaves act as the L1 cache, the barn as
-> > L2, and the node partial list as L3. For the mmap1 benchmark (which heavily
-> > stresses the maple tree), the allocation path uses kmem_cache_prefill_sheaf()
-> > rather than the generic allocation APIs, and the frees go through kfree_rcu().
-> > 
-> > Then, here is what happens during allocation: kmem_cache_prefill_sheaf()
-> > normally borrows the spare sheaf directly. If the sheaf holds fewer objects
-> > than requested, it refills it to capacity from the node partial list layer and
-> > this completely bypasses the barn layer.
-> 
-> Nice observation, Hao!
-
-Thanks, Harry!
-
-> 
-> > Once the maple tree finishes
-> > allocating a batch of objects, it returns the sheaf back to pcs->spare via
-> > kmem_cache_return_sheaf(). So in essence, this prefill path is just funneling
-> > objects directly from the node partial list into the maple tree through the
-> > spare sheaf. It skips the barn layer.
-> 
-> Nice observation.
-> 
-> > Then on the free side: these objects are freed via kfree_rcu, and then
-> > rcu_free_sheaf() checks if there is still room on the barn's full list. But
-> > since the allocation path never actually pulled from the barn, the full list
-> > stays permanently saturated. As a result, rcu_free_sheaf() always falls back to
-> > sheaf_flush_unused(), flushing objects straight into the node partial list
-> > layer. It skips the barn layer too.
-> 
-> Nice observation.
-> 
-> > So looking at this behavior, the benchmark does seem to reveal a gap in this
-> > allocation path, where a huge amount of traffic ends up bypassing the barn
-> > layer entirely.
-> 
-> Indeed.
-> 
-> So, either refilling or flushing partial sheaves bypasses the barn layer.
-> This is particularly a problem for prefilled sheaf users because they
-> perform refills and flushes more frequently.
-
-Exactly!
-
-> 
-> Partial sheaves serve alloc and free for ordinary users, but often times
-> that's not the case for prefilled sheaf users.
-
-Yes, prefill is special.
-
-> 
-> > To see if we can address this, I draft an experimental patch. It introduces a
-> > new field, barn->sheaf_partial, which is a single sheaf rather than a list.
-> > 
-> > [The patch code is included at the end of this email.]
-> > 
-> > Whenever kmem_cache_prefill_sheaf() runs, it detaches pcs->spare and checks
-> > whether it holds enough objects for the request.
-> > 
-> > If so, it returns it right away as in the original code.
-> > 
-> > If not, call __prefill_sheaf_pfmemalloc() and then go into
-> > barn_replace_partial_sheaf() to swap the non-full spare sheaf with a full sheaf
-> > from the barn. The full sheaf is handed to the caller, while the non-full sheaf
-> > is temporarily stashed into barn->sheaf_partial. This largely avoids falling
-> > back to the node partial list. If barn->sheaf_partial already has a sheaf, we
-> > merge them together, and any resulting full or empty sheaves are placed back
-> > into the barn accordingly.
-> > 
-> > The key idea here is simply to let __prefill_sheaf_pfmemalloc() pull a sheaf
-> > from the barn's full list, which makes room on the list for future
-> > rcu_free_sheaf() calls.
-> 
-> And the idea is to provide a place for a partial sheaf to say to avoid
-> flushing and refilling it, and which helps avoiding bypassing the barn
-> layer.
-
-Yes.
-
-> 
-> The reason why we don't need a list of partial sheaves because we want
-> to merge them and move the partial sheaf to full or empty list.
-
-Right, and a single partial sheaf is lightweight and sufficient.
-
-> 
-> Makes sense to me :-)
-
-Awesome, thanks!
-
-> 
-> > Here are the numbers with just this experimental patch applied (without the
-> > parking patch):
-> > 
-> > baseline: 28779879
-> > after experimental patch: 35550211 (+23.5%)
-> > 
-> > metric                              before             after             delta      change
-> > =============================================================================================
-> > aliases                                  0                 0                 0      +0.00%
-> > align                                  256               256                 0      +0.00%
-> > alloc_fastpath                      23,259            59,287            36,028    +154.90%
-> > alloc_node_mismatch                      0                 0                 0      +0.00%
-> > alloc_slab                      10,171,378         4,796,346        -5,375,032     -52.84%
-> > alloc_slowpath                           0                 0                 0      +0.00%
-> > barn_get                               441       193,807,528       193,807,087  +43947185.26%
-> > barn_get_fail                            0               377               377         new
-> > barn_put                               441       181,694,607       181,694,166  +41200491.16%
-> > barn_put_fail                  272,868,220       156,335,632      -116,532,588     -42.71%
-> > cache_dma                                0                 0                 0      +0.00%
-> > cmpxchg_double_fail                744,975           357,255          -387,720     -52.04%
-> > cpu_partial                              0                 0                 0      +0.00%
-> > cpu_slabs                                0                 0                 0      +0.00%
-> > destroy_by_rcu                           0                 0                 0      +0.00%
-> > free_add_partial               337,390,126       162,178,648      -175,211,478     -51.93%
-> > free_fastpath                        5,204            14,081             8,877    +170.58%
-> > free_rcu_sheaf               8,731,794,372    10,816,953,777     2,085,159,405     +23.88%
-> > free_rcu_sheaf_fail                      0                 0                 0      +0.00%
-> > free_remove_partial             10,170,229         4,794,785        -5,375,444     -52.85%
-> > free_slab                       10,170,229         4,794,785        -5,375,444     -52.85%
-> > free_slowpath                   18,697,056        11,563,127        -7,133,929     -38.16%
-> > hwcache_align                            0                 0                 0      +0.00%
-> > min_partial                              5                 5                 0      +0.00%
-> > object_size                            256               256                 0      +0.00%
-> > objects                             14,774            14,596              -178      -1.20%
-> > objects_partial                     14,774            14,596              -178      -1.20%
-> > objs_per_slab                           64                64                 0      +0.00%
-> > order                                    2                 2                 0      +0.00%
-> > order_fallback                           0                 0                 0      +0.00%
-> > partial                              1,913             2,544               631     +32.98%
-> > poison                                   0                 0                 0      +0.00%
-> > reclaim_account                          0                 0                 0      +0.00%
-> > red_zone                                 0                 0                 0      +0.00%
-> > remote_node_defrag_ratio               100               100                 0      +0.00%
-> > sanity_checks                            0                 0                 0      +0.00%
-> > sheaf_alloc                    145,870,437       151,536,660         5,666,223      +3.88%
-> > sheaf_capacity                          32                32                 0      +0.00%
-> > sheaf_flush                  8,731,787,311     5,002,740,743    -3,729,046,568     -42.71%
-> > sheaf_free                     145,870,431       151,536,655         5,666,224      +3.88%
-> > sheaf_prefill_fast           3,500,187,266     4,331,383,393       831,196,127     +23.75%
-> > sheaf_prefill_oversize                   0                 0                 0      +0.00%
-> > sheaf_prefill_slow                     322               646               324    +100.62%
-> > sheaf_refill                 8,750,484,664     5,014,304,944    -3,736,179,720     -42.70%
-> > sheaf_return_fast            3,500,187,348     4,331,383,596       831,196,248     +23.75%
-> > sheaf_return_slow                      240               443               203     +84.58%
-> > slab_size                              256               256                 0      +0.00%
-> > slabs                                1,913             2,544               631     +32.98%
-> > slabs_cpu_partial                        0                 0                 0      +0.00%
-> > store_user                               0                 0                 0      +0.00%
-> > total_objects                      122,432           162,816            40,384     +32.98%
-> > trace                                    0                 0                 0      +0.00%
-> > usersize                                 0                 0                 0      +0.00%
-> > 
-> > derived                                                  before             after      change
-> > =============================================================================================
-> > page allocator churn (alloc_slab + free_slab)        20,341,607         9,591,131     -52.85%
-> > 
-> > As we can see from the data, barn_get and barn_put spike significantly, which
-> > shows a large part of the traffic is redirected into the barn. This eases slab
-> > alloc/free churn and cuts page allocator allocations/frees by 52.85%.
-> 
-> Cool!
-> 
-> > All in all, I feel we could probably focus on evaluating and pursuing this
-> > experimental patch first. For maple tree performance specifically, it seems
-> > like it might be the better fit compared to the parking mechanism (which is
-> > probably better suited for generic allocation pressure outside of maple tree).
-> 
-> Sounds good.
-> 
-> Keeping eyes on seeing if we do (or don't) need the parking idea after
-> this.
-
-Yeah, we can always revisit it if needed.
-
-> 
-> [ now moving on to the actual code... ]
-
-Thanks, and formal patch will follow later.
+-- 
+Sincerely yours,
+Mike.
 
