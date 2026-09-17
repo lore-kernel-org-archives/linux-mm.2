@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB675C982C1
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 05:30:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95483C982C1
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 05:30:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1FD3F6B009D; Thu, 17 Sep 2026 01:30:15 -0400 (EDT)
+	id 99E6F6B009F; Thu, 17 Sep 2026 01:30:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 187356B009E; Thu, 17 Sep 2026 01:30:15 -0400 (EDT)
+	id 94F6A6B00A0; Thu, 17 Sep 2026 01:30:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 09E156B009F; Thu, 17 Sep 2026 01:30:15 -0400 (EDT)
+	id 865776B00A1; Thu, 17 Sep 2026 01:30:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E41B96B009D
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 01:30:14 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7371780234
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 05:30:14 +0000 (UTC)
-X-FDA: 85222128348.21.C90E910
-Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 923B84000C
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 05:30:12 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ULTvPNJI;
-	spf=pass (imf01.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 74.125.227.141 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 65E156B009F
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 01:30:22 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EC875A49AF
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 05:30:21 +0000 (UTC)
+X-FDA: 85222128642.02.B15CC87
+Received: from mail-pj2-f43.google.com (mail-pj2-f43.google.com [74.125.227.171])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 29D8240008
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 05:30:20 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=LOCwZIkt;
+	spf=pass (imf17.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 74.125.227.171 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789623012;
+	s=arc-20220608; t=1789623020;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ynKYarepbWl9Bt2lXEeL1/lRyqq80+H1joWy3Adf4T8=;
-	b=0iKSSiH3iPJd+ptgtrTurEzu1zcs/5XFhHW+EHWIfuV9Gso3to+TyTEKT+K1W2A+7ArsTb
-	jxlqZhUSt1pvjQfv/y86Uor5HrTNuoI+8AUMfpGRWoxT6qMzmwyI53bPAeI5TaGF0EGU8E
-	l7XFtRlZ6ovkAC88PMRw1qWaB3pYTT8=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ULTvPNJI;
-	spf=pass (imf01.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 74.125.227.141 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	bh=RRHIBzX1Ph+VWLlGic49OjVgc6epG84F5iB9tVuXpJQ=;
+	b=diggG5+IVMd2CVEq8/Au0RFtjqkX0Z/SJVR0xq+e4R0DvcgbO8ouxr93C9DjWPJu3pbz/l
+	5LdzWcCRBldgG5uA70V6Na55kIr8WxFkIML4JWwFIPEyPYiUlahLiy2iwky4R7re7KkQz+
+	xvrpovS0gzbVrhE0vlZE2YGpMdhAW/E=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789623012;
-	b=O5U5P1zLRpQYDRtTD4qFrAuDZZiPdf33cAIPHaHw2s5dNmly4Gnz0mHG9LyZBnQqHPX47g
-	p/lVK5EI5YUWDcSXJAC7X/t3YqpI6ABn52WD3PlbX8F54buvVTHIMwFBum8j2DFiGab5Pd
-	DFDDJUtxBH+G6gCWX9oz1lcxUKW1xqg=
-Received: by mail-pj2-f13.google.com with SMTP id d9443c01a7336-2d747eb79f7so3209835ad.1
-        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 22:30:12 -0700 (PDT)
+	t=1789623020;
+	b=OEb5AEYT2HFciq4IQoX6vI+MA5lIDHGovHEhdw0R4xdCiM1/RXmGLfxQHky5J0S7C88V/i
+	0rmo7u7gJQjGL4pQh155B/M9TLUwRIiTZhO4eswLyvQR/kvvj7hlL6YN1BHAEY5iABWIw5
+	PJ7XEv9K1cd5xrufLVVeanDVv5nMWaQ=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=LOCwZIkt;
+	spf=pass (imf17.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 74.125.227.171 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj2-f43.google.com with SMTP id 98e67ed59e1d1-39b350c6920so379070a91.1
+        for <linux-mm@kvack.org>; Wed, 16 Sep 2026 22:30:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789623011; x=1790227811; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1789623019; x=1790227819; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ynKYarepbWl9Bt2lXEeL1/lRyqq80+H1joWy3Adf4T8=;
-        b=ULTvPNJIshTLbDbRqgRdPy4VmnTyHYkvs6MtRE99tX2kBsXZC6dqUaFxX98gZp1u6P
-         7tqPgM8oUUOovQNXpQkFprBASQVqYYcdYQUGKFjdzonMSKLDqO03RIMrTu1Ym2OnBTze
-         6o4FjOYxkeQpMUR80BkrxNPTK3/leSSZRt33YjjtcaoED/LSUQCvowl28WEYK8QWHWoq
-         qo3HAF5ZlGK3eNV97CJusUZiO54LQs4lQwMTF7TfPWyH7bquet+c9WTQdZBlv6GcchoG
-         4EHaYF6KwcBiRAx8Y5gKPq3Drl0EypTxEeVzMkKKrdI3gGBLpUYt13K3HzFS+uMA9kun
-         3Q2A==
+        bh=RRHIBzX1Ph+VWLlGic49OjVgc6epG84F5iB9tVuXpJQ=;
+        b=LOCwZIktUFHfrpQPSfJF1ClbMzC47mFgdNU5zcNoiEBs+QJW9dRw2C0SuN8LKuG7of
+         NXFHZgJ42vAyHvM86eiYJdM837mVvDNWOzbtLnt0QzkGEs4Y3fTHsOaXAZu9F9HCg0Ia
+         ZOp/0kVFrwfVS7AMmy5YGG3w4kEhaEw2yhZDsVxgov9PkrfqTke2YYY+ineaY9TnuHym
+         vpJ6bZAkO+ynltX2UGZYEUQbl38Kl5QtSzGONDQ4ejNmQs/L9cxRwMbDi1rbKwb6VyXV
+         +iILmCzBzGXL5PMcq9yFjXW6lZzIQHtKIhNNlafSp6vuae1Ld0k+vMWJ0zRZ0bBUo1iN
+         34gA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789623011; x=1790227811;
+        d=1e100.net; s=20260707; t=1789623019; x=1790227819;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ynKYarepbWl9Bt2lXEeL1/lRyqq80+H1joWy3Adf4T8=;
-        b=po6Eks4eNt6DJc3dPxm+UzcHnrsvcvNgOV7WC6FxclvKtMUDKjPRMN+tgFj1E3RKMB
-         nYK2qkKhIHEhbMYMrwA6bSeJjO5At2FWmIXk/zGTFf7f6c/AAm5Ojb9T/XhmY0Z5L4p7
-         Yw5Bsbvg1fzC+dGYrvs2YroxqTi2hXrauyaRCVLiDCrZCWOBoIBlykPHfXzDetpZS1WS
-         GLIF91mCCIsBsHUALkOZq1NXGQtikIQZjzOfZmuGVDtxede21/qNaldmd+9n+bbzGVSz
-         p56QDKjAW9cZHVEX8hazVc3yfXHS9B9jEM0CnRVn5zJ9pdD6HFdrhPKVHwDFOmkWmI92
-         c/zQ==
-X-Forwarded-Encrypted: i=1; AKwUvBx8gWDRQ/KHb2tP6v1uaBkZElYGeblQBVGUooY3KNNVNCJsvV5khZP/Q+CwJuqy8IBesYW+6MFktg==@kvack.org
-X-Gm-Message-State: AFuF++n5yLwk4MO/nU2u/FXJBVMBJrH76UPeUa5RzBTKzR2A0rNAgf+b
-	CP3StdRBEv+n+6sBNwwXjktNrutu2zzxtkzPZJqu6kztjfo9Bes5NmwB
-X-Gm-Gg: AYBFou1s9klmjEACa4mGEDwKO8AJViepjWab2PuB8DefmOeQSJPHKJNgPkilSI9Hzm8
-	qOraUDLbJdoMUsMFYhjyZKy+fZoppxaE60TiPqKreTP2AYZweYTJaMIM9Qpj4XkvX8L6INmxBqv
-	C2NaA50xtNsGQPNMOywjn60h+o0N6C6m5UqfO4gjiIIl6VfOCqHxFZQihpM8ekypjXdmS2ZbPzA
-	vV6m52XfxiCCITWtD9skuL5z3hlMukWq8DggRZ/z3IaE+JOBNpeiht/nhCeS5vhhvdAb3lyPIcA
-	FUBeHZAWK5Jxvk7TwpmqvH7wk/PyZXUGjv13MjSHroz7Hb9OEqZxHZXLCtmCjtfJPOReQhni1Ow
-	dyvEoO1J7GaorxDjLfXsAd5OhMncEfRMrI8yv16EHlUres/d7VCvQkRTpciOkNP3+fL9FyMBZM9
-	uZzs7FpjirCLXiX9E5Fz6r5SVLJHmp0UQDD3OeqwJSUgr8rUK8ljpSMn3NKC2pXYkD0SIr8xIf6
-	3BVhY6+bKV6qSrcZO7Gyc+fzok=
-X-Received: by 2002:a17:90b:2803:b0:39d:ef3e:9035 with SMTP id 98e67ed59e1d1-39e1e324463mr17718864a91.10.1789623011402;
-        Wed, 16 Sep 2026 22:30:11 -0700 (PDT)
+        bh=RRHIBzX1Ph+VWLlGic49OjVgc6epG84F5iB9tVuXpJQ=;
+        b=PmjGUFxgFAnwrWNJC4T2W7Mw6OnZfboztNXWhEeA2nudie8VJarhyAexh+eNkK8f2M
+         q7TGg0i2V/gUEFsDQ/rGcLb/TKtj2BYY9cnrD/02ZAWYqpbsDxVQhrAqxHotsYqvODYA
+         0AYC7gP8yU26//J+0wsM8ylnRFxXfVk5sfmVKKh5vub8EcJTvv/DXiiGuMvbw9rfYF4G
+         pJRxaF2FPNxx85PO+M8UPIllEs5WHbuTU2mSQS3Sgid72F/c/wYeuxdRFSt737JC1l/F
+         ViLpLopATg47m2pX3gJ/vlygi3NihED+TuBI9fdrQZUCLJU27J8nJMqWAn+jj5JPHkdm
+         IYFA==
+X-Forwarded-Encrypted: i=1; AKwUvBwXljq1Sr3O3aoGA4HvGlGMqgfRM/bD0EHeuYZIoegtyLS/6Ug/UJEbVCRwxzRDOsNRBZvjrsoO9w==@kvack.org
+X-Gm-Message-State: AFuF++lwfSIlauu1CACxLLB3g48ta/fNUzb/9NxArwQWe64vGQg3euP2
+	R17Vw+DXq/80RkXTEFy085eY/s9iWZRWb2wgfxs3kHQHzLJCXFUzd+TG
+X-Gm-Gg: AYBFou1q4EM76irvBs1JWjy8LOQ9XBVAwgQQaJYIDbCinNT/pyFbJHcwsd40ytN7UoQ
+	3T19K8bxsASuR8UChGGVgmsx28P2yjo6VuhaoqWo6RlhWC/JaIyfWL9YfkVeT9TncCIVGm0uq7F
+	8BcTjl5FmJnYRW6YEUjVrr1bBpOTrkvWpGdKFhwj44fyURy+vtiuKubDXBVWi3jf1Be6Jd8sJAf
+	KmQHWTk6xPXiNsN2OZVxWUDNRklwzoqqi1SerLPpyVemh6nrvyi8TX8WjyV0FeSI0w2Zzk0zh4+
+	Fu84q3oNG+zQ2hFU0GcSA4L2CiaAmEN/YM6034nOuYhjFCPhx1XZR8P2zi1XcnrlwIRSNFowwYd
+	gdjemLjB8INfTCyazLd1FXc5mHVo+zS9QB62SFFlOHJKqmIhs8FuHskuugmVKsAtjccC93ZCEtH
+	DGc27t35sWrXS5O6Ualhp6LP+KLZMB+5nZtEFtoQMWDZ5958s8NNlFVJ4/eui8rr74sL72PZc67
+	HWxlkyWvDa46ku0HQfURnuAYSJWFcJkpI4RiQ==
+X-Received: by 2002:a17:90a:d644:b0:39e:288:80c9 with SMTP id 98e67ed59e1d1-39e1e4d3fd1mr12367022a91.19.1789623018896;
+        Wed, 16 Sep 2026 22:30:18 -0700 (PDT)
 Received: from mi-OptiPlex-7060.mioffice.cn ([43.224.245.234])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e3abada87sm1955836a91.14.2026.09.16.22.30.04
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e3abada87sm1955836a91.14.2026.09.16.22.30.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2026 22:30:10 -0700 (PDT)
+        Wed, 16 Sep 2026 22:30:18 -0700 (PDT)
 From: Wen Jiang <jiangwenxiaomi@gmail.com>
 To: akpm@linux-foundation.org,
 	catalin.marinas@arm.com,
@@ -113,23 +113,24 @@ Cc: Xueyuan.chen21@gmail.com,
 	mpe@ellerman.id.au,
 	npiggin@gmail.com,
 	rppt@kernel.org,
-	ryan.roberts@arm.com
-Subject: [PATCH v8 04/10] arm64/hugetlb: drop the init_mm special case in clear_flush()
-Date: Thu, 17 Sep 2026 13:29:27 +0800
-Message-Id: <20260917052933.188679-5-jiangwenxiaomi@gmail.com>
+	ryan.roberts@arm.com,
+	Xueyuan Chen <xueyuan.chen21@gmail.com>
+Subject: [PATCH v8 05/10] arm64/vmalloc: allow arch_vmap_pte_range_map_size() to batch multiple CONT_PTE
+Date: Thu, 17 Sep 2026 13:29:28 +0800
+Message-Id: <20260917052933.188679-6-jiangwenxiaomi@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260917052933.188679-1-jiangwenxiaomi@gmail.com>
 References: <20260917052933.188679-1-jiangwenxiaomi@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 923B84000C
-X-Stat-Signature: ttdr71633t9wicracpur7umkbm4b8g95
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 29D8240008
+X-Stat-Signature: j17bhqybrx8ej3f95sx6tra3h1runj5f
 X-Rspam-User: 
-X-HE-Tag: 1789623012-911143
-X-HE-Meta: U2FsdGVkX19ZrOq682cRAoUQoXNun4JqSuarTynGoppMDbrCdlhMoVRdh9zOEfu7wVsS0V3c/arXIzGXRutMP/9PItZsV6AymwGkxiO2Hd3zSaAZYVqxskfQSQA7V5DsWXslb5NN5ctFg32FxbTGZYgWjRN22GLcJmRwPLZHcqMOqrb6PQb3G+j5aCfP2tl0E2sBnclRKiKBhOTTj4Co2DZfY4joTIyNPkS5N41wJADupmA8ZLw4MG2GTBNXOTwBQ1nex/d9Qhfie9jF0SJzJYMQCpu3SjqqspTChCCgw29nTX9+9VUbtosKrp41gZlyLyye6iztdGSW6Pw/d+4E6rnNiP+PeWq3r+dRuu+lrAzoF67liXtpkdzGsChkomaP97HFGbYSSmpsFCvThZrhzsPEu+Seu05uqUdnuWaCPzCmkmpT25KscB2eAA75CKOYBJ6AGWojo+qyzvTpdd7D4lqfObB/6bUzRk/B9mP2YsuSIYhfirg1ofMmAxNXfRPEcWqv4jZ1agvd5/ovZSOzSGTLxqoyLilzFYXMibmj+8V3YXeMBxS+bNZEehp5r6NgtpxiYgFS4gMfw5Gr+bbjxMor/VRHs+EiO4BxrMYPt3IooLTakF5l5Z17mNndgnjnEUN0cI85xnRyA/w5AcaJJpQMUvt5e/56zYT/rYOJo4CUd9yWhaXOLCJj2wkS6ZvJM97SJb97jDiRUx7rRdFAbFGSyfgfE9qQh/xe2/JQTH6IEOSdGyoT6DhlSzaYS7FiedtP6ikiMy9DA+1zm+gOBG37Lgjosk/pafKZZRlVYPoF2QkQDzAc1w51DNrEScaN+h/X8nPYi9kuntuskHHfc6REe20QmgKQGgUMqKm1ckeuB9uW+k3GARg0MvX4TLve8g1zy3zn4KOxIFRpqEFw7bT2soVoYMmdQtmznCI760a3HuwMkJPG0vtIieYoNvx3EPfoxEuI7rph7nER3By
- IYhX5Fdn
- 1fSZ1Ed1z9eGffmYR90FXhWtQYW0K0et8qCx90c+8F6T9bBbh9aSidvC+IU3pNzXmDgM8X1FQ94wwPuO25GWye35R8Vn1cD9R7ZFf6e3iXrBd+SVZ2CdyG37cda0tPvQOVqT22q4DXx042VNFBMRxANbQxH+1Ev21s5e/F/b5F5hY61FeUi5GW7uzkcHUJdjN6tHLe4IEAx3O4wQHA/FfS0DTnaGollno4BxTE+F59FHXd8f4ZBkHSQg1wm43nX1ThlOQbQN4or/CAsELdyn12bZuBGxnrhBlqxbK61aNXpj8ScCQ2KvqlZl/0veSuIm1pi/7/+yiZpj1i6114eV+901CrGsC8NrujwdSiEogUv7gEOwjoN2qI22FrgpDtgD75zyB/d61BR/zPOPHFBANgFsccMmmRNOmlWwP0xC+1+qUUdDFy1gYb2WAR2l391X4a57xv0EIM0r/CJQ+4IsJJxe9ZQNuhjA+7GpUTqQwp4YMr/SFuf0h6eA4CT8qN34Izif5zBitAZKlxx97l+KQtb8hgg==
+X-HE-Tag: 1789623019-89552
+X-HE-Meta: U2FsdGVkX19g3Nbxz6LjYoVGPhuei+RLD3gKgDumzpEjyZ+RKGYcNZsJppSFi6mGLV9ZLx9c/VGptFq8tnihk4YXEz3TCBuKSnGMz/Z5/ydReuzYlz2n65eb01wTWCeH4DpNSAw24RV5YG0Xq8f52hDn6Foi23U6owyn138lrseMtO4hqfyQUa/UvnB1wuEHCgXCd980UYLSHVb1Slbg/QI2y387RZbkTkkk4MJ5Y+jyGfyUvZs+fLwlDq4gkQK2Dt8+ZGEfZtAQivFXHa+0QaufPeeH3mEskKA1dDRWl4KJFLAkbtidz1NN/CiCAGCD/BOwPx0j0XkKRQ8OcE3lay/qyOB4JYHY5+lkzJh3OHUXRDbYYAZ5z5L62YGjdChnOy+SUApZo1inRKrQx8m22FgCfptG3euktdo2ilcD1FF8ThJUB81+gJ0j/+Q654L4u2GUOInJLHYNpaXAkNfHfbuB+9JMlyJYWzpzCdJ9KHuz2m9mns7JSPM1BtAAyHXx5HgHmwspxXeEs1Sk/8cqAisUaoTWimQWBBowCvELoMm4vAmneynMsI1lGO129W9uy42/OqLMpYij4oaUidK/wlIf3jk7CTgTBJmqw1sOjwbZ15g+2ytzFWCUy7YffC0PdnCaFDXJ2XvlHlkFMHp+QAVvS4w+yO9CHjUXjmQmslEHSWUk22ahFi9SOcDqxQ98iqSin3MTFSBb2+GtuOnUprPsWtJHfHYvf/a0NKcVRz3cn9GcltasV2hnugxpKsDKgxeWrqv/wXmYRVV6neyqF/V3OEHYiD5MSqEbuMzkyEFIY053PzePifJWqwPwuZFL7lQM5n7/x9nYiHgxSyxISn0SifGUdeNk6HG48nmocyi0GAWv7QmSkzjUBXVSwKs6tLGJE60SgnV6qR8F4h2OHUer7Ice233jqnI9eHvEotqt2fP2n4vBhpOICjN/091zmkuGLCPzK5dQQr2TgW9
+ lg5lrO5A
+ HW91B4+5Vw/EzcIVxx8g61b2T+GhSKxrA0/RYWdaioBWyZ6rLG9+mO3Ehr/R23G+eIjwG1Fvfau60arjhIiKPSL0JtsE/uLD9Hi2LKd6o9mcnAG7gv2X09QwOPE170QBV7GhvhUERptb33Nu4Bz2vlJhBwGx5DeExwzyQ9yBlGN2J4QMPqtSNaQvcKO4TK/VKiTmx3wqtI/110DpO66uCIqEZPUp4TRf59QqBbi6bmpBfMdxORm1vwDLjCec/knXWfI3Yacm3uC5UDTda9LodsKtNSSzsLEiLVq8vCfGkQfeKmlnFaxomZsgmtuA4vEEMGgiFx4QHoD9Kd6f7/Xvmc/fCQyQmhltCueYFga3tdx6TlqQ5DHdJkfRdrmIKZuuCBnxuWG/HZq32MJPUCNSsykxms3r1j7t89cG2VrheHNI5tpXiFlU5hNYPRdY04s/CJeY3o8wb37hUNekU6KpM/tIisRDMK9cnWQpx9mpjUeTeq9bPuFsDnJAQDdn1WpiPT/Fd5rn4+rzIomm7SH5TtOiMjGz0CaBXjrGFyrIMwp0b4uVQ5pCoyW9binv4kA/zmPxq5wqbEtH6B6oir5nkDSrs2qWt7jN8QYIU/hcoflyN6BtGXhCxP3H/tC6G1wbH5XyIzfWDoftNTTU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,40 +138,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Wen Jiang <jiangwen6@xiaomi.com>
+From: "Barry Song (Xiaomi)" <baohua@kernel.org>
 
-clear_flush() calls flush_tlb_kernel_range() when mm is &init_mm. This
-was added by commit 06fc959fcff7 ("arm64/mm: Support huge pte-mapped
-pages in vmap") because vmap called set_huge_pte_at(&init_mm, ...).
+Allow arch_vmap_pte_range_map_size to batch across multiple CONT_PTE
+blocks, reducing both PTE setup and TLB flush iterations.
 
-Now that vmap uses pte_set_huge()/pte_clear_huge(), mm/vmalloc.c is no
-longer a caller of set_huge_pte_at() on arm64. The only remaining
-callers passing &init_mm are in arch/powerpc, which uses its own
-implementation. Remove the dead branch.
+For CONT_PTE_SIZE-aligned ranges, return a mapping size that may cover
+multiple CONT_PTE blocks, capped below PMD_SIZE. These sizes are vmalloc
+mapping spans, not HugeTLB hstate sizes.
 
-No functional change.
-
+Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
 Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
+Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
+Tested-by: Leo Yan <leo.yan@arm.com>
 ---
- arch/arm64/mm/hugetlbpage.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ arch/arm64/include/asm/vmalloc.h | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
-index 8e799c1fe0aa6..ce247b06fe03d 100644
---- a/arch/arm64/mm/hugetlbpage.c
-+++ b/arch/arm64/mm/hugetlbpage.c
-@@ -206,10 +206,7 @@ static void clear_flush(struct mm_struct *mm,
- 	for (i = 0; i < ncontig; i++, addr += pgsize, ptep++)
- 		__ptep_get_and_clear_anysz(mm, addr, ptep, pgsize);
+diff --git a/arch/arm64/include/asm/vmalloc.h b/arch/arm64/include/asm/vmalloc.h
+index 4ec1acd3c1b34..4053b1ec1902e 100644
+--- a/arch/arm64/include/asm/vmalloc.h
++++ b/arch/arm64/include/asm/vmalloc.h
+@@ -23,10 +23,14 @@ static inline unsigned long arch_vmap_pte_range_map_size(unsigned long addr,
+ 						unsigned long end, u64 pfn,
+ 						unsigned int max_page_shift)
+ {
++	unsigned long size;
++
+ 	/*
+ 	 * If the block is at least CONT_PTE_SIZE in size, and is naturally
+ 	 * aligned in both virtual and physical space, then we can pte-map the
+ 	 * block using the PTE_CONT bit for more efficient use of the TLB.
++	 * The returned mapping size may cover multiple CONT_PTE_SIZE blocks,
++	 * capped below PMD_SIZE.
+ 	 */
+ 	if (max_page_shift < CONT_PTE_SHIFT)
+ 		return PAGE_SIZE;
+@@ -40,7 +44,9 @@ static inline unsigned long arch_vmap_pte_range_map_size(unsigned long addr,
+ 	if (!IS_ALIGNED(PFN_PHYS(pfn), CONT_PTE_SIZE))
+ 		return PAGE_SIZE;
  
--	if (mm == &init_mm)
--		flush_tlb_kernel_range(saddr, addr);
--	else
--		__flush_hugetlb_tlb_range(&vma, saddr, addr, pgsize, TLBF_NOWALKCACHE);
-+	__flush_hugetlb_tlb_range(&vma, saddr, addr, pgsize, TLBF_NOWALKCACHE);
+-	return CONT_PTE_SIZE;
++	size = min3(end - addr, 1UL << max_page_shift, PMD_SIZE >> 1);
++	size = round_down(size, CONT_PTE_SIZE);
++	return size;
  }
  
- void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+ #define arch_vmap_pte_range_unmap_size arch_vmap_pte_range_unmap_size
 -- 
 2.34.1
 
