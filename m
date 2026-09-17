@@ -4,79 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 976D2C982CD
-	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 06:56:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9ADA4C982CD
+	for <linux-mm@archiver.kernel.org>; Thu, 17 Sep 2026 06:56:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4EF6C6B008C; Thu, 17 Sep 2026 02:56:15 -0400 (EDT)
+	id 7FDD16B0095; Thu, 17 Sep 2026 02:56:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C8CF6B0092; Thu, 17 Sep 2026 02:56:15 -0400 (EDT)
+	id 7AE6F6B0096; Thu, 17 Sep 2026 02:56:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 390666B0093; Thu, 17 Sep 2026 02:56:15 -0400 (EDT)
+	id 6C5D06B0098; Thu, 17 Sep 2026 02:56:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 168AF6B008C
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 02:56:15 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9EEA91C1D91
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 06:56:14 +0000 (UTC)
-X-FDA: 85222345068.28.5A03E6C
-Received: from out162-62-57-137.mail.qq.com (out162-62-57-137.mail.qq.com [162.62.57.137])
-	by imf13.hostedemail.com (Postfix) with ESMTP id EBDC920006
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 06:56:11 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=PqGbtwEU;
-	spf=pass (imf13.hostedemail.com: domain of zhenghui.hao@qq.com designates 162.62.57.137 as permitted sender) smtp.mailfrom=zhenghui.hao@qq.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 474376B0095
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 02:56:33 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A0237A47F8
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 06:56:32 +0000 (UTC)
+X-FDA: 85222345824.06.B3F2040
+Received: from out162-62-58-211.mail.qq.com (out162-62-58-211.mail.qq.com [162.62.58.211])
+	by imf19.hostedemail.com (Postfix) with ESMTP id D59D31A0003
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 06:56:29 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=ROJs14Fb;
+	spf=pass (imf19.hostedemail.com: domain of zhenghui.hao@qq.com designates 162.62.58.211 as permitted sender) smtp.mailfrom=zhenghui.hao@qq.com;
 	dmarc=pass (policy=quarantine) header.from=qq.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789628173;
+	s=arc-20220608; t=1789628190;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j1Fc/4Xsm/exGsgjT4jGufeye/rOfxrIgfcyhzDzAv8=;
-	b=zGGjKc2P3drhnGYpSSxpLhc1ExX7uSPyPRw88DliQdYM+syRmuUAaayHz4KpXCNrTaVmCQ
-	/Qptxy5VBPqJr6CagFKebtq0Z5eFpuyKGhJsSR1/IbEbZtABeKuTHGsA4DeewYnzUJJbd0
-	b6zvJmPEsC8r/Db+jKRQ9ghqGmJndv4=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=PqGbtwEU;
-	spf=pass (imf13.hostedemail.com: domain of zhenghui.hao@qq.com designates 162.62.57.137 as permitted sender) smtp.mailfrom=zhenghui.hao@qq.com;
-	dmarc=pass (policy=quarantine) header.from=qq.com
+	bh=PXj5mWDpDOqjhTb00e+XGy84HCvylbuQfYwN5uzyfd0=;
+	b=5GOUZic+pv9KmnOLX34BChP6JZhuBjs0YV86XR438/frI2U37sNhPis7BPKYqMoBc6SPBP
+	xC5SRU5AOcfY08Ic/baFxXCVmMNq4IPxexu0v48Z0IFu7gGXS40fSvkJZ02JIy2q73TOza
+	avUS7T88MqwqMT8gdys+n4OkHaB8zUk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789628173;
-	b=DLr+2MeGmdfu1/pwkkOFczB2qQ3tA3dcMHj3ICTrN7lEiiUcOTs+3nc3ny/3rAHrWRD5/R
-	M84fiCcIhcBa29+Pqs4tD5YKFYeircI2Ut0hfsHjyTB9gbDeUDhZdFLExmDsYUvMT6G6Ls
-	llfnbWBAOp0DiUDr8FWaOR0+7nS5HVk=
+	t=1789628190;
+	b=mKv6popanQWsoIR2EL+a2fxr0w43lejRBx0KXZleVcbkW/6DJbYewJ/JYkIW9GkxFKskDy
+	01VEjsQNElNF9EsXvd1ONn9IeveaDid1Tkk2DEecolAZdOuso4B0ZS85KR6ckkzOlqQ3RK
+	dIrdVutPUx2fbeuvNUc1dTEAzCKZQ/0=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=ROJs14Fb;
+	spf=pass (imf19.hostedemail.com: domain of zhenghui.hao@qq.com designates 162.62.58.211 as permitted sender) smtp.mailfrom=zhenghui.hao@qq.com;
+	dmarc=pass (policy=quarantine) header.from=qq.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1789628168; bh=j1Fc/4Xsm/exGsgjT4jGufeye/rOfxrIgfcyhzDzAv8=;
+	t=1789628166; bh=PXj5mWDpDOqjhTb00e+XGy84HCvylbuQfYwN5uzyfd0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PqGbtwEUZZ1TIzE2q2KtgcGmeDRG7GF1XifWTaxo8RyPwWmc+DnDpFiV6gDL9cMTx
-	 UYW0uBNIeahEDiuhlxqerECXl16CnLdnklbh/HdhlsroSq0FMxw+WT1sY3OOEpFwVO
-	 pJE8kaTfaXHvwILlruPS7+s1hiC5Rr/QM/rnU7Hg=
+	b=ROJs14FbPxVJpvdJv2LuAGMh0r8D4/uUKup7h8VZN/dzfAqRF5idLfyn4lKULwa7H
+	 CulJaKURF73oGuRnmsyBZ9d7qSY3bYGxg8Xawquz6aI/YU6RTTtJV16MGm9GLNOv0o
+	 xYC1VnUJI7MmnaGtWTt+NxSi3Faac5PzJjOOLmAQ=
 Received: from XJSH01426.meizu.com ([210.13.72.171])
 	by newxmesmtplogicsvrsza53-0.qq.com (NewEsmtp) with SMTP
 	id E0103260; Thu, 17 Sep 2026 14:56:01 +0800
-X-QQ-mid: xmsmtpt1789628165tsbw3z5sx
-Message-ID: <tencent_7359E1D8A4256237AB06F816324B30F3A608@qq.com>
-X-QQ-XMAILINFO: M+CCxu5Z1xuSmDX1Vf8Y3UUXjh2hdOApX30dVrTbenI56A0V2HKRBcztpEorbn
-	 KdHXoWD/z15JTjp5JIHGshfa0dMRK7XW7NjfacimCl4tUqdlPIpNKElcKl2UK6wfI15JyZyf0z9b
-	 IwqfunUwyQQ+FWUdJKo68WGVNS6t46KQtA6DlXBhMOMJBycEMb3Q6K/isHD52BQ+ivUkrlp4Rccr
-	 7TzS1EKh6cbBdqa0Lae/Ks6pMXhOFKLfiQ6dxXWUq4sbqa5a4osdj+J7kTVUxTHdzLcO0Jhh5aOX
-	 +bX1jX5PTiHC5Qkob+j+5G1t+p0yi0sGkJMEE47v+uAVyw2WhQVekrvUbXNfSSvDm8n8gupM4fpw
-	 0bMI5GrRwRjXboBvbBXxzo/VIzJFbdsswsuzNdyjgM7Didz5gkxjXQoRwwS0fsXKesMefN46HwEL
-	 L3L8T7SgAyyO28PSg/Y5CrC+elV4BSL/SI7ibbzdgf5w3fcA0NtcmxV6FeBwHS8lmdZ3FvP9AguO
-	 pYloSwZ/pLE/piKcio2VvM0Ha3CdCYV9N+jaC3pHmGo5ozZJq8V4xZLopwtKpTSlHwKJVmxTFi21
-	 JZJleZnl7GB44WWJ/pYUK/AVgoqVMn6LKaJn7zFw5MDAO7sEflggbReT2NlR4431QPsepAfnU4aT
-	 Izx7A20BsOz6BNvhQRqtKSLsQ5T4OtLevnC1DuksIuTbMeKW49xlM8v7usk47y/57gF7M+Q3upL3
-	 x3LABGuUuFN6M0mbfK7qIbDmsVnzc+xyYirZQoZinIvXRgvZRPbay/fSz9ksSvdNbUWsogSZJuLL
-	 eWP5q2l6kH5uI/GAW+Yd6d19YbGPebW3zRdWec9fej+ZdZ8GC7K30KIPcotkyqH02Emi2SNTUrgD
-	 wUnWQ+E1IC05z3sINOpQuQuRbbxIFmYqDFXaWZD2BqFo8nHQkyxB4yvmn9xaDB4BXuzdjeZ7q8yl
-	 w/SYkkvgFhiK9p7HT8BJrxZx2LHP+6dhHMs26MZPHQok9rMMzDzr47LJcEZqSugEYJsHwM5usRI3
-	 oHBLAZpCUGSVMx9aIHzUETM8/BWnyIZU0EZJN38G9FFF+jSkewInoaiUWmTYhg8LDS5nFbfgFkxw
-	 j2kTw5xMXQ8MJHKNqHGgafIRSOBzs5QrNDQivtt12fw8sObpkJdqonr+FqKMSQAI51rkOJC2KWjt
-	 oFnoA=
-X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
+X-QQ-mid: xmsmtpt1789628162t7il4l9db
+Message-ID: <tencent_5B0AF81532EB30CCA672E144A475625EAB08@qq.com>
+X-QQ-XMAILINFO: M1rD3f8svNznUYzJAzdxZL7clo0Cw8Megp5KcEry5FLmcnF1PBKjb0Jn+Z2/ty
+	 1NAsWfFolJNasymySCRGUCepec7QkFYgn3ziPoXirYS5OPJkIf4dbkMXlcqSvjUJ9bopRMk/uIXa
+	 3t5fYiKTTUisQuPK8bwWCeQB60zcobFfH/8l9gM/XCVSS1F1GMHXSmHGN9JtrbgPvVENMmPbZP5R
+	 oc8Aou5NVPKJnJ9iKx12OP0dATMGy3HX9JojyDdzGe5/Os36Tuz+dF18RRduPHADgcLrAaZ/TyjC
+	 65LP9PaCdgAWxL1QNrHcwUUD9wTqEtrRxG2pbN0rkFBPglrrV1CkukfJR8nRoLzoFjjlBKrxMMU5
+	 bJmy0bTOHaaNkA4CKDfzsOF2YToiVCjBC2GvqlLYO3cXLYGm3Vubg1wqdw0om08JaLbVivufkr8s
+	 KcH/P5oxOXP8gjV4u2KrnsYye+Dszo1OIJXTuZNnuTz7K60zmZU7JIVjk3wL4kGIYK/6ENwWCpuK
+	 JncnHNeq3RNMSFdyaVMXa6Uex0BocMyPEVTLCAiW/WgB/F1vfN2bqUhuMgTrHeGIBzwxKm/8eWvO
+	 Ni5JI9qduMraRdFAOgn6wp/5XzNdHPdj77dZ2IFcN/25SkOzX36XI8xTHdzmfuHdHhVe0OuOLrr7
+	 0OcA5Lx1MFvLkrjM9DhuvRSNJsctvnbOogrN3KGA3YtRwaWCnTpeIE231muIkjb/1Fej92Olf5tY
+	 ju4cbT8jPdLf0gVdwUsSzif6EJTOGUQddhLELZv6c4v/pGTPv4dc8Fv4ODkpRTYWVQHPetj8PEGR
+	 0WVOwV0egOOOf9a5CQXnX173vr+QnC+xhHrjjVMv/IW0YsbCvzQEtB/+k+3ZKBSoOhGJTSYFqnjO
+	 FBdM6Q7hOhqBNyZA905JVR/0TgPAGjKHudnWkuO76YB89Yb0kt6ke8krUB13fN4SOvTTwMBfpWBh
+	 MsNfRynpr4Sy3/nqyBMeGO9sZSz5F8h8HzjoC2WF7X6ziAipg3s/Ia2S90Dl0H5P+UJ2spC6cYZ1
+	 RsOPYCHl1tTQdliiPB8In8U6v9FKbKpdcO12S8xecAUTjs4gocxKMdCnuOrAiecjPK5xvRy7tgzC
+	 mjo19XdK8mSMXUCgzemYyvaGqViXnErcyoM4Gh3whL1DkAHRVUuVXLeqY97g==
+X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
 From: Zhenghui Hao <zhenghui.hao@qq.com>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-mm@kvack.org,
@@ -84,26 +83,30 @@ Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
 	Helge Deller <deller@gmx.de>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>
-Subject: [PATCH 2/2] hugetlb: report cmdline parameters recorded too late
-Date: Thu, 17 Sep 2026 14:55:57 +0800
-X-OQ-MSGID: <20260917065600.564083-3-zhenghui.hao@qq.com>
+	Christian Brauner <brauner@kernel.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Breno Leitao <leitao@debian.org>,
+	Kees Cook <kees@kernel.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Lillian Berry <lillian@star-ark.net>,
+	Douglas Anderson <dianders@chromium.org>
+Subject: [PATCH 1/2] init: parse early parameters before memory initialization
+Date: Thu, 17 Sep 2026 14:55:56 +0800
+X-OQ-MSGID: <20260917065600.564083-2-zhenghui.hao@qq.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260917065600.564083-1-zhenghui.hao@qq.com>
 References: <20260917062837.558251-1-zhenghui.hao@qq.com>
  <20260917065600.564083-1-zhenghui.hao@qq.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D59D31A0003
+X-Stat-Signature: 4175dc6fwcicj43dm36qsturc19akr79
 X-Rspam-User: 
-X-Stat-Signature: fu33jjewdegqfz54jc9o1e59mwpqizxq
-X-Rspamd-Queue-Id: EBDC920006
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789628171-226996
-X-HE-Meta: U2FsdGVkX1/t2Rl/sUgU9cZIyUVBecOuMuTSbQQHiDB1wS+TUM8zEgBctncs4h35AWCe87CXW7DvSz0FvtbCnYIpMMTWrU0PqqfjaEqqVrrTm/Ue5MMeg5GGZlpJCy7Tc37otM4iDSAeo2Qzq9YhcVV61A+7EzdEcxHU4NVuV2CLgrg9CwK9JvF1xqZMhd8md6ASjZYpXXwszR1nYvUZqnoiHblj6PSPx/8ADhgzq1zFRV6Ba3ErCP7lWRhBicWDWlXxCBoDq4m21PsI9rdLWXN62t+jCjoLFdWgKSJXlAIZw65N98NcsbCSep7t1JGZGBF89JgM7y6yjcE1OIU97x/e0Pa8rA98t27FXpWMgFbrMVBDBcIHpc1TJzkA32pfR6OClbj8dSlGEusc4zG2j8dZnjfqXudPU6c+qhNE2ipaeh0AmRDOXaIMdsZnnG2D/g/Nm5UPw/GeYcUkJUQA7DRr1nZgXhdpAqiqkM18HJbOa7bKB5T2N3YgvKF6MQfdehYNdJVI+t6R8GX5qre1pmzjLC/pzsTsZ6lthI6Z16m8mv4saafgcHG7zTSRfhg4dPPYNOHIdsOsoRo9mwA5q3tshBhn6G+v6iqWz/K+BpxhU78a2bLSfI1dzpsNYQlwi9ofeKxe6lW69GN+91kocHVsY1RmEqYu3/FpTdZ+8i4MtZY/vv+u8wlJuDxZ1yITx1l8w0W/2uX6p6cSJoQ61PLavekZr/cdQzj7WIHq5b9l19ClmGoNvAK+Zl1b52bFbpeb/cPAh/LmcgSDUp8rjh+Qoe0lj8iiO5Xit14TLGAT01oXWIVP+u+b3sOiZ2N42I18tkDHtNf0Wj7JT1A6UpFuTx/rR0Qh5Lepv6xM2tTtbmHbz3JWiMRXkuYw/HPEZsUD/UPlF8pWDe3hKqUWPyQHfFyQecDUOVJe9Va/uZxqt1KAMOxS71ccUOYgkVNqVYa9W2dFOvaWHK3HcHE
- gxBthmbt
- NffQS/L8FHuZnm2coHH9FHyNxq0b62+xeRoofpjORkgd9IbNoT2HQG4/cIBoNNhiqp4K6DWvkqd5PPp6wP4qczWf22cLQDQcnLiPtUumEoDWQ/QTT8nFh/ig1wWVAmGaxXj43lxHZ3MaavlufrdBTMHJoOHHwYp7l8Yef3QYeBlXB1Xc9Je8fx3uI4VV0vAdk10uOBXMNbnADMMZ0VDA7n0xidopaVS/YSZ8FOLJnUy6T/XLgefrDg/eIdFE4KVNTG17Rb6R3Qb0zJD9iJje4iXUbrOwu4DiWC35o
+X-HE-Tag: 1789628189-794628
+X-HE-Meta: U2FsdGVkX1/cPId8zFAcjGw9vGsV5nUvAn7Em14h7gV/hCfxd8TdwhKbJy0nn6E3ToYb22sIfd7PLoEHRRl1kM/aeYIEdQ4NzNfLh1demt3/0OLf8Tsc0IRwOiA0pDqANt25vWXcH7+JMwuc8bogqytEzdvf+uEdVJ2WzGZkX+CSpLjCIt0BfYw5axpe0YAhh7OvU7NmfkxOy6PrJjggg/OhcFqerJ8y9bIfmlKaqXaCiRN4SqjJ8xlsi7K1B/GMVnr/0lISsp3AbgvUcnTHNPk9RzKpAlskOEOuIBEtjmQj7IdmpKQ3kXJcSHLWF5JDk6lOEqDvvDonxW7IWnrk1w8muTK/KoLRlDMMc+KODpdbMTxhUhrvOW4hkjO82suQunoqTFKrPk6ug2jBm0u7tM8Q9gfoweGlJhhJdVxw7uTQGHLvew55/9NFavEm3hrws9LNCAhCAHPkuNXO6mGb2hr2IXUNw+Mp72ts79cFxWMM3KAHQDz0D5FKVzVlyUKze/6Z19be4WqbhgnYk5HJ6OYF7fJsugGCMz/5Q9aFnNMntvqww8HTKLONqfGgj8btR09Y2cxsuEv5jtYYb690kYCrOfR8G/K2R6jCbVm0OMY2Jg/cKy6XVMzss+09uUZgdYW06oCepZbg+Zs1wlmMo80dgtQnGlJrVdADPaCf9ryEFsK4kjb4iFS+TLXXJwReUehd4vbTFnbkl/8BlHvCQ8gE9d591Bf3RqXH7YpShdXq3bxUHp4CyjDISX6PfjTy043thw30KEnfwLRGg0NrKaCUlF9NVa9CnAtD1agIRcxLnjYzQfUKrSQZFkM2UckNMiffd/VUbsHViw0lwFgkwNOYNabMP+nbKKPp0I3q4qroQqiUz5y17NisN1UQr0Jbx4uQh84ZJtlYgeNQ9XV3laIrSkTJtQpomHZ4l2UQ6P8qlcK/FUO9pBvKDxTGrZASam7eb7fmuyDTb78ESI+
+ 6HtZpggQ
+ 183MBBT0E3Vnh/KVRXASULbi1JSOHFIJCpDWuOyjAr+oTOKFNskRaQZzhEvoYJjWnpdJjKz7ArnTVwO01UIkiAyJ8Vv9ScB2wfGXoxFi7SlsAXoYxryzDXQoctTwvS2ZICOOKgYpOHz8glr+58k/BK/XyTctk/O5SB0D913QiCzxGUvgChAxYDmU5A0HorbLDmJP9XZVn9GD2TAd+QTmQZCK0oDmpyjOoPZe7R3zUstAc8kz5Wj/MGlrbveFZ0VJ1CHJtqaWPsXui2MmNm237DFmbefAfiNSacwKS3ekD63b7UFCBpE59+jrkBG8nbaWynTr0ZiLVLabQaP2L95HA6EALYZjmPBY7GIuTo+7Vpq11zCMsjKz+NCpml5rFZsRalhgBiwBS/iM1Yb+H/fuIwXp7DC44OkQ8i1Am
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,78 +114,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-hugetlb command line parameters are recorded by the early_param()
-handlers registered through hugetlb_early_param() and consumed later by
-hugetlb_parse_params(), which is called from hugetlb_bootmem_alloc().
+The hugepages=, hugepagesz= and default_hugepagesz= parameters are
+recorded by early_param() handlers and consumed by
+hugetlb_bootmem_alloc(), which is called from mm_core_init_early().
 
-Since commit d49004c5f0c1 ("arch, mm: consolidate initialization of nodes,
-zones and memory map") that consumer runs from mm_core_init_early(),
-which is called before the generic parse_early_param() in start_kernel().
+Commit d49004c5f0c1 ("arch, mm: consolidate initialization of nodes,
+zones and memory map") introduced mm_core_init_early() and placed it
+immediately after setup_arch(), i.e. before the generic
+parse_early_param() call in start_kernel().  Before that commit,
+hugetlb_bootmem_alloc() was called from mm_core_init(), which runs
+after parse_early_param().
 
-On architectures that do not call parse_early_param() from setup_arch(),
-such as parisc, the parameters are recorded only after they have been
-consumed, so they are dropped without any diagnostics: do_early_param()
-stays quiet because the handlers return 0, and obsolete_checksetup()
-treats early parameters as already handled.
+Architectures that call parse_early_param() from setup_arch() are
+unaffected, since parse_early_param() only does anything on the first
+call.  On parisc, which relies on the generic call, the parameters are
+recorded after they have been consumed and are therefore silently
+dropped: neither do_early_param() nor obsolete_checksetup() reports
+them.  hugetlb_cma= and hugetlb_free_vmemmap= are affected in the same
+way, because hugetlb_cma_reserve() and sparse_init() also run from
+mm_core_init_early().
 
-Warn in that case instead of dropping the parameter silently.
-Returning non-zero from the wrapper would also work, but it makes
-do_early_param() print "Malformed early option", which points at the
-command line instead of at the ordering problem, so print an accurate
-message and return 0.
+Move parse_early_param() before mm_core_init_early().  To keep the
+"parameters may set static keys" guarantee, move jump_label_init() and
+static_call_init() up as well, so that they still run first.  None of
+the functions called from mm_core_init_early() uses static keys, so
+running it after jump_label_init() is safe.
 
-The check cannot produce false positives: the wrappers are reachable
-only from do_early_param(), and hugetlb_parse_params() is called exactly
-once, so once hugetlb_cmdline_consumed is set, any further recording is
-by construction too late to be honored.
+Moving the generic call, instead of adding a parse_early_param() call
+to parisc setup_arch(), fixes all architectures at once and makes
+"early parameters are parsed before memory initialization" an
+invariant.
 
 Not tested on parisc hardware.
 
+Fixes: d49004c5f0c1 ("arch, mm: consolidate initialization of nodes, zones and memory map")
 Cc: Mike Rapoport (Microsoft) <rppt@kernel.org>
 Cc: Helge Deller <deller@gmx.de>
 Signed-off-by: Zhenghui Hao <zhenghui.hao@qq.com>
 ---
- mm/hugetlb.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ init/main.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 4f6f58bf3db6..bda8af614a70 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -91,12 +91,24 @@ static char hstate_cmdline_buf[COMMAND_LINE_SIZE] __initdata;
- static int hstate_cmdline_index __initdata;
- static struct hugetlb_cmdline hugetlb_params[HUGE_MAX_CMDLINE_ARGS] __initdata;
- static int hugetlb_param_index __initdata;
-+/*
-+ * Set once hugetlb_bootmem_alloc() has consumed the recorded parameters.
-+ * A parameter recorded after that point can never be honored, so report it
-+ * instead of dropping it silently.  This happens if an architecture calls
-+ * parse_early_param() only after mm_core_init_early().
-+ */
-+static bool hugetlb_cmdline_consumed __initdata;
- static __init int hugetlb_add_param(char *s, int (*setup)(char *val));
- static __init void hugetlb_parse_params(void);
+diff --git a/init/main.c b/init/main.c
+index 31f2bf54976a..bccf521910be 100644
+--- a/init/main.c
++++ b/init/main.c
+@@ -1007,10 +1007,12 @@ void start_kernel(void)
+ 	page_address_init();
+ 	pr_notice("%s", linux_banner);
+ 	setup_arch(&command_line);
+-	mm_core_init_early();
+-	/* Static keys and static calls are needed by LSMs */
++	/* Static keys and static calls are needed by LSMs and early params */
+ 	jump_label_init();
+ 	static_call_init();
++	/* parameters may set static keys */
++	parse_early_param();
++	mm_core_init_early();
+ 	early_security_init();
+ 	setup_boot_config();
+ 	setup_command_line(command_line);
+@@ -1021,8 +1023,6 @@ void start_kernel(void)
+ 	boot_cpu_hotplug_init();
  
- #define hugetlb_early_param(str, func) \
- static __init int func##args(char *s) \
- { \
-+	if (hugetlb_cmdline_consumed) { \
-+		pr_warn("HugeTLB: %s=%s recorded too late to be honored, ignoring\n", \
-+			str, s ?: ""); \
-+		return 0; \
-+	} \
- 	return hugetlb_add_param(s, func); \
- } \
- early_param(str, func##args)
-@@ -4491,6 +4503,8 @@ void __init hugetlb_bootmem_alloc(void)
- 		INIT_LIST_HEAD(&huge_boot_pages[i]);
- 
- 	hugetlb_parse_params();
-+	/* Anything recorded from here on can no longer be honored. */
-+	hugetlb_cmdline_consumed = true;
- 
- 	for_each_hstate(h) {
- 		h->next_nid_to_alloc = first_online_node;
+ 	print_kernel_cmdline(saved_command_line);
+-	/* parameters may set static keys */
+-	parse_early_param();
+ 	after_dashes = parse_args("Booting kernel",
+ 				  static_command_line, __start___param,
+ 				  __stop___param - __start___param,
 -- 
 2.53.0
 
