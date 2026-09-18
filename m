@@ -4,91 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57A14C982D8
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 16:56:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2F6BC982D7
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 16:56:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E6AC66B008C; Fri, 18 Sep 2026 12:56:19 -0400 (EDT)
+	id 086B46B0093; Fri, 18 Sep 2026 12:56:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E1A2C6B0093; Fri, 18 Sep 2026 12:56:19 -0400 (EDT)
+	id 05FF96B0095; Fri, 18 Sep 2026 12:56:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D088E6B0095; Fri, 18 Sep 2026 12:56:19 -0400 (EDT)
+	id EB80C6B0096; Fri, 18 Sep 2026 12:56:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F5C86B008C
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 12:56:19 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 933DF160745
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 16:56:18 +0000 (UTC)
-X-FDA: 85227486036.14.B3E2F38
-Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
-	by imf07.hostedemail.com (Postfix) with ESMTP id BA89E40006
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 16:56:16 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Uiz4680w;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf07.hostedemail.com: domain of ekffu200098@gmail.com designates 74.125.227.141 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id BA65E6B0093
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 12:56:21 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0FE31120744
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 16:56:21 +0000 (UTC)
+X-FDA: 85227486162.03.9F6CC5F
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 43DAFC0008
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 16:56:19 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=LcoooWNU;
+	spf=pass (imf10.hostedemail.com: domain of ekffu200098@gmail.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789750579;
+	b=7xyPnErdGG0Mpo6dvVRsEJxLNJfxPzNldNHUTmtmjwdqpE/9DJLtvgCik8PA6eoZ/3thfM
+	vK787Qyeke3OSbfosedaFUBm/ntJtt5jmRglxJrsg2/xlVW/JycPi6UCeAKRssdYtHHC9W
+	2o3Z7zNqsqdGAVUiDeUZ7LHuxSnDcec=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=LcoooWNU;
+	spf=pass (imf10.hostedemail.com: domain of ekffu200098@gmail.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789750576;
+	s=arc-20220608; t=1789750579;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=vlZnDcCseMui9jUINJQcjoCRqZxi7W4Ng1w2zFUjkmM=;
-	b=lymnoomuNWS0llWpXa283Gbt8pBbFo0tGDFjZ/5kNhISJvK6mz7yNLnQLInXY3nOo8k9rN
-	RYyEzmTiTFoo7xQQ4aECGfVuYkR9zRdCaO4ZNIQWgWdESbgPLRFsVtPKWOPB2Gt03r44jX
-	ClYTmYspcYrDf+UaFKQEEkD2vIjwV5g=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789750576;
-	b=I0KSZR3xCs5+BGirgLrlHEQXAiDt0XTHkUCsIL9HPUYNszYsEy4ZKMg4CnvBq9eYBPwaNn
-	wjku2oHZ8adnuT9HF6S54TX2WcLbF5BXmp+6oPC33RWWMPDbZ+KgRXkdz/GVyCaCmFqCmv
-	vgF82XqgFqM5WvWLqzfUZUzRJLFx+As=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Uiz4680w;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf07.hostedemail.com: domain of ekffu200098@gmail.com designates 74.125.227.141 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
-Received: by mail-pj2-f13.google.com with SMTP id d9443c01a7336-2d747ec6185so6616675ad.0
-        for <linux-mm@kvack.org>; Fri, 18 Sep 2026 09:56:16 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=neVDt5BLYMfRKzGN8kfWno0gbQY9XV/RBxErvToTgFI=;
+	b=rWYt0Y6hihCuN/RU2FVn8GlH/SItB5n0qh5DH9WVuD5RO0LK9UFQ+O4Lx8QFDhEO8FEtTO
+	oaoCog6tB7Bh23s5Srg/a3up16oPjoRSAbrtfSDeaw7SdwunML0o4GYxyU/27HmEAac7JG
+	ogj7z4WezmBFni6QvoGHeoIHxWbgmqs=
+Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2dd77300825so10350415ad.1
+        for <linux-mm@kvack.org>; Fri, 18 Sep 2026 09:56:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789750575; x=1790355375; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=vlZnDcCseMui9jUINJQcjoCRqZxi7W4Ng1w2zFUjkmM=;
-        b=Uiz4680wU0I3ueNpxsBKSkD7r754mNJt0E/I8KjnNk7GSiVhBcg1fOnGlN1SOwpWbx
-         ErkEJo7NaQUBHduR5u65TTKj+tJIeQlzHbfoxIxhKI+S25IoU+qkZYv0Hcd3+byYaVoC
-         9bZQUppMEZ/I5c/d0Ahr7QhLV6m0IfBPMSez/zOFa0cU8r7KJus1EKyEnhTQHlA7aBD0
-         fXlMEVbvmHt4AsqMACqJuIIgYQDzUpMKw5YOvYrBNOO+/oBspisUY8dzVlFzWWB+5Ej7
-         qEUSwaIoAtqyr7XDwB4z//2PBsOuv1ggRiEtoelyFbXmRgvFcj4QqsuiSWgbR0N8/Ag3
-         isTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789750575; x=1790355375;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1789750578; x=1790355378; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=vlZnDcCseMui9jUINJQcjoCRqZxi7W4Ng1w2zFUjkmM=;
-        b=ZP4F2X5o6wHsNPYgEEFfFcdZ7XDOEmU9TLLBmvHY6n0yCTFSPjM3363wTIweDD1BnD
-         4cbPOQAyIMxlsWwKjV9QRKGAL8ckwLJOSxu2YFcW28MrRDD9M0fNKi+lBvkmf/2u27ig
-         QMnPmmg/qmdembLuAsYCK0p5lSVdrrz63ogkWCnMwXsXRyUHYayqrUNbJIgOXA9UsaOb
-         jXvl5fKWfY9FP1HCiNUe5pmwxG55byYKuqRsY1rqiFGZrRwjQyazsYyhR14eoHBOTnZ1
-         G5lNH4vqfnTgR7ZSyBOVGgKl4IBTVlbF3qC/ACMB1Jq3EEAIlTSd038Myi2Ly4ElFAa6
-         XCdQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwsVOId+UqJ65XYwT6XEaBBDT4K9dhWjJdIXAHI6mZvy6y3vpUs6A8LGYsPQ3XkuUo/Spl8H3Zjxw==@kvack.org
-X-Gm-Message-State: AFuF++l+7olgCSHdIBEZTkjORbQFn5Mx68Dw214PO+rS9/iE10fpeqVL
-	1ILzzVG6lNRhx/0NT3TIL+RSwA/DcMfElENN3J8A/84aiuHjScqRwLbu
-X-Gm-Gg: AYBFou0P7Vu6TFLR8cwaQ4fzO8g103/wN8b44H6KPBcp5Xp4LGdbhLfZKO1zMM1SE/O
-	b5C9oTzFo4Pu2wABnCy2J48jgR/hlAzxJXRiASvCcQBTynkwe3umbvkLIzGz41BFxPa8ZhOMOeU
-	mpc4PpMSMINdXqhTo4Mndsg8r7FWLimLT796oJTBcjbDcvzx7CQKhuSbErVSp+BOMcZCjb9yqLw
-	64HnnoAHf6nBPwRkoHVfXKgQ/LlAjwAADM4uDH+zadKkxBakMhTskqaRK+lsDaasHCU0wRIfetC
-	LBqSHhxYnUgCGjRK6WMHw9sy2TbBC2l6gdKDmtRj3q7sn3geOt2XDHgMXkZC9P4DKV2fyDb4Ubr
-	fq0DIwxpuuR6GnOG1z1z5bL8cEDnNdVSmpVDMCHA8gf+wC5l2HJIUKQF21ZqHJIJsfOqSFMM7lm
-	BKutjYLAHQvj8jHjGlw1oCIraxZj8VP10HtPibKe9rxQlLBOMZ41/34TYalmN86J99gQ==
-X-Received: by 2002:a17:903:3205:b0:2d8:f965:7e48 with SMTP id d9443c01a7336-2ddb1ab3990mr72792395ad.1.1789750575418;
-        Fri, 18 Sep 2026 09:56:15 -0700 (PDT)
+        bh=neVDt5BLYMfRKzGN8kfWno0gbQY9XV/RBxErvToTgFI=;
+        b=LcoooWNUebE5IO8ZG4poldR00NbJ2+Te7I36IKJA2bjs0oRLiCH+lC+pAD/ND6jvDM
+         4As0gywamq1CWGKvkki7PIBHrKl4ZV8ewoyWwCwm2dZE2xpX0a/Dd/d8ss1mx2Gadiob
+         6AWyYoi24/JXt9mc3EO+QIwGQPmi2qfli4jCzu2i385O2TaaJWBs/S16P1v8ta8z86LR
+         8dA6/S1oTT4RSsbOrx1GGeD5eXnrcpvsU6uznrW+txt7QsUUHL4ow2VOg8uumeul6CI7
+         vXjmpvqsKnGMPBiDXi3JOVZeZlNCN9oAeV4v92QRWNoojdbN2Piv3xCUzqhbzsHK8a3T
+         Oacw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789750578; x=1790355378;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=neVDt5BLYMfRKzGN8kfWno0gbQY9XV/RBxErvToTgFI=;
+        b=WvErWW+/N79KbcMve3yl/2DrT+m+2NwccXI1PTnWMyJ+61AzOtwo3yd/mIx9LxlBr9
+         UFNl+Yufm4PyyqWHCA7EDD+M+vku+Um1isU07bQ9Tf2lJi85+nM4tA3dVGUaRID7/eyU
+         dCuWnlRJdJM9OZopcinA1cMtRnfe7AMgrimc3Tv3uCKIdG7J8zLVoi4iHmIM3byTXdEW
+         v00Jy9hvtWfQF4TTMBYbue5C3oM/HmNDKlKzP6guY91dywp37A/cRZ5XLchIDUqjN+Xu
+         iZHFxFCWiP9igJpIJQGeERL5fkKSUgB1LsdBfwO3ZeBRx2pMzizksaHR9QoerM5rXbm0
+         eo9g==
+X-Forwarded-Encrypted: i=1; AKwUvBw7mBLQNsMgrtPZdaRAf/gpFafIJoOOl9Z4SEi7tgd/iTlpB2fBTvtdgWmr/w0adDGTo9kigpjW6g==@kvack.org
+X-Gm-Message-State: AFuF++m53OAXG6wplUycOXmlgoTno1QPsl40segTqn7jJziw9UU4v7NF
+	PKvLtzwi8FWwvVQwbBNpR2IZMrQvZ9lm/2iIGFiuJo10dzSxVV66ZJZJ
+X-Gm-Gg: AYBFou1kAaTqEYL/67Rg1XH0ccjAhSHdXcp9qSWX9QDw+hVN+V5KGes5iU8bkHUNNiB
+	aNq1gbJRHpItFPP9+MIvUAvUjANpR0DHiolHdJqQAF06oHmKoOqRM+7q3lCf+y1wUXTs2ylbuMc
+	DUkkAVPmYttntmn6ohRLjAY+ZX5g7W5bPUXI80+R/Y74aE2wCvd5BnkrHwg4dkkpzWvvZWgEQeN
+	moPF2ci0yDuYik1a5P1gccDLm4D3NDGs0cBtgtJ1zmYCwVvHARYNCZN7wiow6WPrlNFHVtCYtQ0
+	KpY7t2KS86D+gx8G6O1MCs+J0Uq8v2FvsCKPbCtqD2dAOul4KtYEqsfK/1uyiu5CZ2Gn2mS/qgV
+	l9bjZqm4ZgfsoBkurV/bX7VYs99W+CtxaHdtTbEpkn6Q7ZtAZljOpvC26sniv1t+imks8DhpbQN
+	kiOWSPN51uM9meDI9nvxlZm4vMH7Qy5NR7gdlfJVDFz6t3zDUxWZ1v2vEHSOqj1h+r
+X-Received: by 2002:a17:902:e951:b0:2db:7269:38ef with SMTP id d9443c01a7336-2ddb1b77ac2mr79752805ad.14.1789750577966;
+        Fri, 18 Sep 2026 09:56:17 -0700 (PDT)
 Received: from ubuntu.. ([110.9.142.4])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ddb75bfe10sm11409685ad.64.2026.09.18.09.56.13
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ddb75bfe10sm11409685ad.64.2026.09.18.09.56.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Sep 2026 09:56:15 -0700 (PDT)
+        Fri, 18 Sep 2026 09:56:17 -0700 (PDT)
 From: Sang-Heon Jeon <ekffu200098@gmail.com>
 To: Johannes Weiner <hannes@cmpxchg.org>,
 	Michal Hocko <mhocko@kernel.org>,
@@ -98,20 +99,22 @@ Cc: cgroups@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	Muchun Song <muchun.song@linux.dev>
-Subject: [PATCH 0/2] memcg: remove unused page-based helpers
-Date: Sat, 19 Sep 2026 01:55:56 +0900
-Message-ID: <20260918165601.1014666-1-ekffu200098@gmail.com>
+Subject: [PATCH 1/2] memcg: remove unused page_memcg_check()
+Date: Sat, 19 Sep 2026 01:55:57 +0900
+Message-ID: <20260918165601.1014666-2-ekffu200098@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260918165601.1014666-1-ekffu200098@gmail.com>
+References: <20260918165601.1014666-1-ekffu200098@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: BA89E40006
-X-Stat-Signature: fmc5sb6xsuiz1iirfnspx9z5j6bcp3cn
-X-HE-Tag: 1789750576-699208
-X-HE-Meta: U2FsdGVkX1/OS48R5+xQDkS/8VzzwsgZcBU/BjxgIimX2lNRG1PoPbq6Xy+KUu9l8zHQWBdwzPpDMTjnlcGfw0aHPx0gFQckX5mvpK2cYau2w8t0hQm6iidWMBSr94ySN7ArHwjZ12jDz0TAbONTEsfDX+5/fkopOLAZLlT9/nhUrAhyQlXsryDWz6mm71J6jFABaZxbC95WqyzCi8I46qzdZQkPH65iRXwE0OW0dBFIlISVIKrU94haNrsiWkcskKruGt8ewXhiZA8AMCnAhrXCXIuVxjf5Ekoqn9QVCjsUCC+TeU5Kdq5AUjYFdE03Mh3KhDC6+R7OEqApFhggsWtz4w6jx6TD9e/179IdFHrPlOcWVhbQiAGUCjU3aiTUK48LY9jlFJljNByXr+p/Z47Xd0MkvZlcgr5uMhlvYsE6YVVhebeqO0GWRS6PX/iBDSmcSHcusIul2Yt3vSdQv4hs0LHZBoNWSmgaLBJJEnhQbjKTkwIjYQaykgW44MKl+6oI1c57ZBSpiEfgCQc2WMDwNVM6AOX5j3MPcqri+QKEM3OjKnste6xILtWZOVNP3wTh+O4nygzcXKCTsyCF0SGTvfotFrzlFq837PEZZc5iqGuWXNrrYbuwHvwWici3dIY/oNj/Q+33mbShBEQK1eD5YJ6UzPbeMnNekAMMbP1WloQMp4Vd4+qwVM8wdGtqx3HIQRvLzrBSatoU0GyAfw+Uqtll4OuiVdciCBukUa4Z43fPi06jpu8C4HbnJkY+PodFAE7gyIXBoENjNwNVvmJWduyiFwsc2oSO7bQhsM4+wV0jKlqMappAlpAu0JJwthlPOiL6dvOdthd/RMVSfG2vf0hHwRuRCBbNA/y0Tx0kw2GUwlpyIGoSlBcEIx8CaUnekL9wCR9PKoFPYU2TaRlC6cw+ATpUgiEt30PVo/b+b8MoHqJtIYPt6rDRfg0RifRLDGNkyzeiqRr3aPW
- OKos443O
- wim4nA8gUmzzedZhDgfMND1pzCUJQAy6Zbis+mWS1HZNhHDUm/oMPzm4P8bIm313fsA1+Q6w0Dyvx/CNqLOIGFYVvAE/FFkCfR4vA8VL+KPNuwqMJ/NG70VdSdXOtHOk5Wno/aUjlSzHEHgmSgfiBQ4T+T8JXrfc1g6kBbTEAG9eQv0/3jnGOiCbEa5MbliwwMkdkF+aEqEgx4cLSlA+ffCHvHcD6yhzvP7r7LToMF+vRQiVdLAFit9tjo+KXBoyimVUJcltOugmesNXXcQXLGC2QL7KLdtzyCBazoqgD0VUtj+RDBAjYpKwwlyxYK8iihcdcL/SakIABimsCnjVTctTwfr1ueRh4LfcJ0yVy4xh369+BRclI0CBQ8scH+ugoY7JE
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 43DAFC0008
+X-Stat-Signature: gr7cx3ejira1ky66c1ji3qm1xibxkkzh
+X-HE-Tag: 1789750579-365952
+X-HE-Meta: U2FsdGVkX19uFIHOwxxpWLQfCfctRZ8Up5eCcIeRuCIrIXnXG3ENY4jDo3yq2iDhMzEIzqCIUKeoDPgTBaN0MA1d/YVFADblip/bYbyyWblY6AZzvsAPwFMQA60AQ1OzIOVhGhckP7m1m77sQcRGRRgu93G2jLgX0qLSiZgJJcISZ3cOA+zMPI3IHcRGN3DjiqCyI0Dv1Y+6XldNu47sGblmUjfExs5DZVenSoCWmK2eRAvP3nx1rlzi0LUX4SljagIK3YQ9vuulpzUhbclvksTs9VweSwVxD6aUBltbyjzk8Xz5ehDZ2EoH0sS0yYiwfO0bw9hhAVi+fz38Zu1li+q8hwC9Hk6yVxkU8NjSYkX6hRMiIfrEFU6ZSZ/270y+eJoK4S9enBHP8esa3OMiZGiVeJeS/Cvrz+7OPwuNQgL2/sOlx0HXTZz/J+YEkPrtbXBCIg9/LlsFTUeBANyS/T84PxEwxv7EEYuqDslNdzsmopv7RAu4J17jXAiPLeoaZeXcXFQzUm6iKr1GsPvB9ec6Nr6yg9yBz1PkSgH2I0Xudwvti4/JOV2NnWJ9EDDKzitRSzKSVUwmM0Y6XxjnLToqeRUAr4CeMBax+hBMAWnGZ51Rucp/v4XtiPqvaI9P4g2OfQDVhoDc0HBVGqI0O6KyyZJ4VWgEJsSCIB7w5bMJSTIG+HxsSMdTa/8tY+5qe7iM2FMv6jg5eBcGzFVQ91WHec5w9Dgf/4+Oj9A/Qx2IwJMi98GW1Cn3btiLqekuN+jt5Igy1gDKjo8fODlQ4vG19vILb/jwYN7D/3yJw6B6le7ngun7jxhgxP9Msw9ASQhicUVEpFotH/q74Z3AKvOMgt9Z9tcLarVfljPG5QINVjw+huyB3CDb9x/IkLmKryDQVbw1sp5XNIAf7ebOzdfS+i3mK5pHNGMFcTcD8aGniq+3KvSNhpFOQd5WNjKLS6M6y0AzcR3LqqRvte0
+ 9wTSlY0i
+ MwKKjuoxiG2uUd4Gka+0Dox4vR/heobb+SL72O1MPsYAFSNR5wWFrWreQPHNtkOjPEO4y06Tj0oTuojP4jkbKIse+xZKdtMiMplALO25FSmtU7EITwrzJ5oZ2sog9RB8evuvjKyQiUulRD5xLlgX0a1HVhOQqKCAAzDl3nUuM4BtrV0iyTSz1HLoqO1sKMvVGD62d1e+apI0KeevYv1ZtI7olYw/4SN6v0P68ej6h/gk0I0us3nMPJTnvGLG5hJ84NikiCCf3pvHlk4QvG3C1pXImiu/QHWkH1tvrqjgVMahgm4VyzLF3FdkZHkOq6Szsz35vnIAaSAE+aVuQRiNHTg5i4T3Jy9v5gHFlgG2pfawZ3BNSYFNAJzQesiKDDwQJFQnwMO0C+OsrR9aODUNussXzxwes+WiTwBPM60QbFvKTSfER9w9zC+uf1kR9xIr+T3ZE5XRnRR9FgWQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,20 +122,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+Since commit 90f095b816e2 ("mm/page_owner: use memcg_data snapshot to
+avoid TOCTOU in print_page_owner_memcg()"), page_memcg_check() has no
+callers.
 
-While reading memcontrol.h, I found two page-based helpers that have
-no callers.
+So remove it.
 
 No functional change.
 
-Sang-Heon Jeon (2):
-  memcg: remove unused page_memcg_check()
-  memcg: remove unused mod_memcg_page_state()
+Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+---
+ include/linux/memcontrol.h | 12 ------------
+ 1 file changed, 12 deletions(-)
 
- include/linux/memcontrol.h | 32 --------------------------------
- 1 file changed, 32 deletions(-)
-
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index 64c183be8cbf..b57a74617b0b 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -498,13 +498,6 @@ static inline struct mem_cgroup *folio_memcg_check(const struct folio *folio)
+ 	return obj_cgroup_memcg(objcg);
+ }
+ 
+-static inline struct mem_cgroup *page_memcg_check(const struct page *page)
+-{
+-	if (PageTail(page))
+-		return NULL;
+-	return folio_memcg_check((const struct folio *)page);
+-}
+-
+ static inline struct mem_cgroup *get_mem_cgroup_from_objcg(const struct obj_cgroup *objcg)
+ {
+ 	struct mem_cgroup *memcg;
+@@ -1100,11 +1093,6 @@ static inline struct mem_cgroup *folio_memcg_check(const struct folio *folio)
+ 	return NULL;
+ }
+ 
+-static inline struct mem_cgroup *page_memcg_check(const struct page *page)
+-{
+-	return NULL;
+-}
+-
+ static inline struct mem_cgroup *get_mem_cgroup_from_objcg(const struct obj_cgroup *objcg)
+ {
+ 	return NULL;
 -- 
 2.43.0
 
