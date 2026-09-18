@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 965C5C982D7
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 10:04:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71D10C982DA
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 10:04:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C7E336B0096; Fri, 18 Sep 2026 06:04:22 -0400 (EDT)
+	id 3CB896B0098; Fri, 18 Sep 2026 06:04:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C07E36B0098; Fri, 18 Sep 2026 06:04:22 -0400 (EDT)
+	id 3551D6B0099; Fri, 18 Sep 2026 06:04:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A81216B0099; Fri, 18 Sep 2026 06:04:22 -0400 (EDT)
+	id 21CB96B009B; Fri, 18 Sep 2026 06:04:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A1796B0096
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 06:04:22 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 49356405A0
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 10:04:20 +0000 (UTC)
-X-FDA: 85226447880.03.72E00FB
-Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 57FC540006
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 10:04:17 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=h1jxo3g6;
-	spf=pass (imf04.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DF06C6B0098
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 06:04:24 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 68ECB80638
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 10:04:24 +0000 (UTC)
+X-FDA: 85226448048.26.C9F24C1
+Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 3220720004
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 10:04:22 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=xq1YbTvD;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf31.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789725862;
+	b=rMIkXEl4f7IEK2seZT129e+HAQvwB7eAgTAv5ZqV7gaCRHMmDnT2M91wB/LKRkA63chw+K
+	HFet396OXmF6QLtHKyPEe5zQFinyTUB/ryQzzsWmSCnx+TVe7vNog2Rkd7S5XLIdALnlqf
+	NnL2Dg0rVu91luiKcFWahj3hF6Y70N0=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=xq1YbTvD;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf31.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789725858;
+	s=arc-20220608; t=1789725862;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=g746orfjBM5FKI/4ioFM0MPbnRDGHMAm7NJngqq6WSA=;
-	b=HVQcdDygEv4y0+kOArhibv9ectWiGhkLMcJP2ZKXdASvv5dEjuTORHY8+qQZWSmg5egzX9
-	DUuwkxUkspnlenP7Bb6zs8fbPDXlKSa4Oj0/wLULQgDoDxqMFpvuJir7ngOxJBv2u0GqQd
-	8qwDQN84TwDL8nw9bhbcRXWqP4Ep4D4=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=h1jxo3g6;
-	spf=pass (imf04.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789725858;
-	b=sVy29sz78rjqCuaqeyIS0jF8lPEpozCKMyeVtFoW3wAlTcRJlmXpP7wepHoJ4TvcJZUWz4
-	9KN4HjaP5HD21KCS2fUPjVOAJ2qG4tBlTeCI5VCMaF2D5fSeH8dv3G8tADq+p/LZGSA+5j
-	Ew2s4QKYHxzbiPnU/UpgiOWeteiNCl0=
+	bh=C/N27OffVwB9HknmerMZN+vGpNQOngX4+yhYYxhlpgs=;
+	b=HyGMEzfPgbSoalhNkTsf8ihtMD2hbkdN4cWSL8C7Ye8SQfnFpLw4+VAo9P7sC2inwoJeK/
+	9U3ylpon1r83mOEt8F83PvfkO582aHFEYuQPN8nvlyz2FTWKOQUSqN603uV+Rx1pUzzn2w
+	tpWccYuGPXsLOGPjRLV6n7X8v4wDTkM=
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=g746orfjBM5FKI/4ioFM0MPbnRDGHMAm7NJngqq6WSA=;
-	b=h1jxo3g6i+Np9G/ygFulWombg/WWMVz/nTSO7gjsBS9mUvrsf8A1hYwT/QK9YNw/PYEjbGJJP
-	flmsFMVVXB+OPm2NGt/WJCIxlXEKLJyUYJ29/n9rb9hEiJCkb2OYQAVDWCoW/izsogrfAUkYoKj
-	HDssVLSCyfy0uWkUl/kaLnw=
-Received: from mail.maildlp.com (unknown [172.19.162.144])
-	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4hmScB70ylzRhXT;
+	bh=C/N27OffVwB9HknmerMZN+vGpNQOngX4+yhYYxhlpgs=;
+	b=xq1YbTvD3XNNnXqFEYm+rNDxG6EdsqcQH0HTMN1s5TayGIm1XkNSyQvmkbCWJmLw2RC3Hg9MW
+	03OTT0taTlXRmwul+dn+StNpv/it+wBQ3leQZDkbShT3eaE7XAglReIYtuKqLTKOKW4s7jvAaSh
+	i66n7enwbsFGUXQhFmGkLKQ=
+Received: from mail.maildlp.com (unknown [172.19.163.214])
+	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4hmScB0ybcznTVd;
 	Fri, 18 Sep 2026 17:53:14 +0800 (CST)
 Received: from kwepemk200008.china.huawei.com (unknown [7.202.194.74])
-	by mail.maildlp.com (Postfix) with ESMTPS id 6093540538;
-	Fri, 18 Sep 2026 18:04:12 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 0BD9C4057C;
+	Fri, 18 Sep 2026 18:04:18 +0800 (CST)
 Received: from huawei.com (10.90.53.73) by kwepemk200008.china.huawei.com
  (7.202.194.74) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Fri, 18 Sep
- 2026 18:04:10 +0800
+ 2026 18:04:16 +0800
 From: Jinjie Ruan <ruanjinjie@huawei.com>
 To: <catalin.marinas@arm.com>, <will@kernel.org>, <mark.rutland@arm.com>,
 	<chenhuacai@kernel.org>, <kernel@xen0n.name>, <maddy@linux.ibm.com>,
@@ -91,9 +91,9 @@ To: <catalin.marinas@arm.com>, <will@kernel.org>, <mark.rutland@arm.com>,
 	<loongarch@lists.linux.dev>, <linuxppc-dev@lists.ozlabs.org>,
 	<driver-core@lists.linux.dev>, <kexec@lists.infradead.org>,
 	<linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>
-Subject: [PATCH v5 02/17] kexec: Record allocated CMA pages to fix release size mismatch
-Date: Fri, 18 Sep 2026 18:04:27 +0800
-Message-ID: <20260918100442.3841135-3-ruanjinjie@huawei.com>
+Subject: [PATCH v5 06/17] LoongArch: kexec_file: Fix CMA page leaks in segment placement retry loops
+Date: Fri, 18 Sep 2026 18:04:31 +0800
+Message-ID: <20260918100442.3841135-7-ruanjinjie@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260918100442.3841135-1-ruanjinjie@huawei.com>
 References: <20260918100442.3841135-1-ruanjinjie@huawei.com>
@@ -103,14 +103,14 @@ Content-Type: text/plain
 X-Originating-IP: [10.90.53.73]
 X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
  kwepemk200008.china.huawei.com (7.202.194.74)
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 57FC540006
-X-Stat-Signature: 8hinqaarzsddywphowgk4qij1k8yoe6o
 X-Rspam-User: 
-X-HE-Tag: 1789725857-270789
-X-HE-Meta: U2FsdGVkX1/s/w5cuXTgE9hPcCa0r1z2owjOVz5Pk+G76AlTnpaXldp6UWqtz52mdUTNmQd2pcpiqeLSv3Gcqn5J8f8UAPgYX1DOHMkiOZ6Go284+vhW2+TzYGU2NIQb3p9EZ72ryTKF+aOZXfi23cVWZ3BBTPJgXOSsf5cbXuwdXmHEbg7On4KkT0P8tUi90VS6qPXaz8hLYG7jpoTp5PTGd2W/H0hkz/RpGru88i129PPbMguHrmEJGXmU6kksJdhfG3xXBzbFjL/78+P3dNN1o6RpQy75VVC6APvjhtEK02sRhxpmcHr40ywXPSzxUePfrpqQTTLgHlDEcrLjip6krgzBS0z/JClZHBUd0L02eF2fnTdElwdcl2uj6qf9Evye9iN0tlFfi1ZZXxZ44Gsrm2NkH6KZoXtNkWll2x1xCPiOmBxSOmTyVuz9nl8m2yxATGln/VIQNN1u1mwKymn3mc8ZgR2P79vD2SFv6eNaa4KWGKOXXtbMjP1Hfp5wmIS5voZN5DmbaWZ07jxlUz4b//cdshQdSrsZFccsff1BWJV4Qf1QRgbmGTZvfqF/GTD1gXeGb27GvZpsDNHsFL6Wfp25VPLkRqnlqnkR1USZnJMJeyG+YAzplNIy4NKk8rOZyiyWcPwLtEYAObxZiSFHqgPdZkd4U5dzFKkn65QAkOfeipyuvJMs315EtqjLg3NXM7wANApUrKe3XjnOQMTASAkl8veOgLxpchvgwcB4r1qZxPgnBQYg1zEwW9C010z+hpMIvxHlcwb9W3WGj9jcr8KGPaaMH9ktoGoeJM8c+qgdcojFvm3pgbTyQOLqjPr2cjNt1ZmO+tG1PnvOEQSMuNTxRB/L7iez/jnZc68XYVbFshxaDsenB7xWEWVQxzLY3p9wYkhenvM2QbZzbQkhjXk57yxCrBpaLvD0hoTtJcjdoqbO9pDVXZGqb12NOZOEZbb9NsELTkXa63Z
- sYtHAE7Q
- m0PkUbW/+VoLljG/spWolAvx4m9+KPVd6T00EKC1deH5QCB24zDeWlUpvlv5WPZ3DLcJm5ZToR0Bu3U49gjvSwHrwdnerUXQbNBD7xQoSv88CIewc1m9D9mGj0Je15ct8co1jgpjCxewm2SNii+E0G7pVvHWEGWH+mCdpk+Fv0dikcJWtXj9ikLW4kUPd771foZdAnHBsMV2VcuKQzU8eJQO1X91fgDBnyaV7xVubqgup+C90UUbACrLrNxauyc6uPa75hvOZ9bwlQ/WpuGrjTm+CchHmNQQY3/j3DzTfTBzsi4wP79cMXl83GEWhi/DPYI1iygUqoLdw2DUNnbLyUVmX/wAlLbH35qe9xR+3URf7WoqrG82kuVT9w2VdhSy0ShESMhTEcIuEKiEoTUbV30+W0K/NMOciN4xhG0mDofqdfBwpGwbcbIQ71i3caZ+0rCd7gt1CGgmQp7dMJOeFhaVhw6vYQPDf8R/Vt6Z9JUjUBpDV9HuiMEYl9y+dBmJF3cxjw32unkA5bX1igsWONgpa1tX6q2AKWr8L3XB1KI3MLW94F1jmcZqd9tNF6QeZpNkQDtBPkl5Yk2DmI0XdYO81Mu2PFbsIZdF6p7E/q7k2sbXK1bgDZCkUWGDZFKxpzpx1Wh3CQ+Z0ZnyUcofkH3wn+RHqtu3d6hxB8Z95zck11sR8D1gM33CSAmHXz0q9DbSn
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 3220720004
+X-Stat-Signature: axanoz9hqobd9z9uu4fwmm641ekekyss
+X-HE-Tag: 1789725862-873206
+X-HE-Meta: U2FsdGVkX18kda5UyI5J2GqDpS5fiMopcMZmpbeh0Ul+uRSubeA4e5ELSKRHqqSBJVji1WkPBeMhpNp8NkhFTTMAEMBtdstanEoCBcT9zfhjgnt4bHekPoXzfw1/iKvHL//8nWWQ3H96o4/6qeoVbNhQc71Yiw9g2SSTUFHevLL+sutobpYtneK1fRgKkHioLIlvonw6saprpjkLVhMyUgsRnA0FIY1LK9mQ97IJaiDe+wxvVEK4wO8TfoOaiTEgcB3pwoYPSrTjkExGeDsyjATGllb90exLMAbumY3VV4hIPoS0f61YnPB3oFCXxbss8JAUehgQp/jf8wyQj7BQeywY+TrRf0+HSeXspB+vO4gLQ/E0lzf7Pq6rZp6r3gt1x3ULSt1gkeXD9OoA7H+41S9+3wcNmmMw+Blwwyy3kzbsMlLuOjYP7G5scrh6kdrwYK/EqlupAuyQadasEdOnWg3Noip0UBA/uKW+vaMBJMvzMPYivX17Eg6llE5OHIts+UQsUwTX79Vz5yZDKArMKz9iuCvCsVQ79MYD53M5sjOqhmahRtLAUHa7XvOlXrOhJACQhv8D3jR7gnSXLCkhXFGmPbAWeNpjFZ1flYq3LNnFv9145HvfGD9X+zka2aaZ6BWuZvuPNNnACsFO572iUxTpfjMfpVbfSYtEhkKvz9+rl+ZY8ZEcjG5VUyDRhMFoq/Rcl09jnD3B9VlMSsmvj1O4OOTcpc70HuambSfNnpBddQy1/L3N0L0NS1FNSXM+zjxlI/Xjx55wbfEDJWEJFZdXuF9M1tkG2/V/twOPLMVh5rE/VerlqKJtbnPARHyVNPXDnFXv5FSUcLunDg5D8jCnrGNmcDkegW0W0okqCgDWWnUBMNEsUzFPJIR/wlWQIuPVMXLiY8Qi8JiGnBp1xxqTajPb8gYcWJIquSGmXqJhFqdqqUD0lJBRUe9xmWcW00COrPX1l9Bz3077i5u
+ jMWDTUcL
+ wM4upzk6x3swIr060gPpypFOY49VVlDuFJvq+eI4+bhKRqb3Jt/9CeqiQyWQwwJgugUJdhruocpKrWoOlLsbNBO1ltVoZK1nf8ayxf3m7Y/LoVQxPpq8ISwSO+uJuwRZ8Sl5dGt46g8DXJCKTcgCciMggvIVkbpc8p2OxSzSO51gz4drkytQZfzTOnW58BbNgp/KFQMJaT5e3Ci/QXt1u17SSfk8WOYTuD2g3uFBdRfk3nZj6FCfCCjptOn1jgi4XnbD1dSCSq8RaYQ7FYRuukVv3GgVTJTvEH+JAKc0uDl0m6rmDaUyO0ptErE903t1N7xfEJ3zBZmGmU4jetLrib/BTACN9+RQP1MhU/iV5LT6fWVT1K4cwPgQ4HXYbKwdbUvGSgPVHR89Bt0bAvHkzVF9olZFVExlM07BOfJc6FuGusvA8RU0Esl9g6J6jI87rzouaEfpX0Abu5GpSr0KvUKgq140sez104K+MccMhGyusIN467JymUldOIiOyFg2y27H+/CrTn9bSjT4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,124 +118,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The CMA pages allocated for a kexec segment are released using the
-segment's memsz to calculate the number of pages. However, some
-architecture loaders modify the segment's memsz after allocation
-(e.g. arm64 subtracts text_offset), causing the release function to
-free fewer pages than were originally allocated, leaking the remaining
-CMA pages.
+During kexec image placement retry loops, any midway failure causes
+the loader to truncate `image->nr_segments` back to its initial state
+to purge the failed segments.
 
-Add a per-segment `segment_cma_pages` array to store the number of
-pages actually allocated from CMA. Populate it during
-kexec_add_buffer() using the aligned memsz, and use it in
-kimage_free_cma() to accurately release all allocated pages.
+However, this truncation introduces a memory leak. The CMA pages
+allocated via kexec_add_buffer() during the failed attempt are tracked
+in the `image->segment_cma` array. Because the subsequent cleanup paths
+only iterate up to the truncated `nr_segments` boundary, these allocated
+CMA pages outside the new boundary are permanently leaked.
 
-This avoids relying on the potentially modified segment->memsz and
-prevents silent CMA memory leaks.
+Fix this by explicitly releasing the associated CMA buffers in
+the failure paths before `image->nr_segments` is reduced.
 
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Baoquan He <baoquan.he@linux.dev>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>
-Cc: Brian Mak <makb@juniper.net>
-Cc: Pingfan Liu <piliu@redhat.com>
+Cc: Huacai Chen <chenhuacai@kernel.org>
+Cc: WANG Xuerui <kernel@xen0n.name>
+Cc: Youling Tang <tangyouling@kylinos.cn>
+Cc: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 Cc: Sourabh Jain <sourabhjain@linux.ibm.com>
-Cc: Justinien Bouron <jbouron@amazon.com>
-Cc: Li Chen <me@linux.beauty>
+Cc: Kees Cook <kees@kernel.org>
 Cc: stable@vger.kernel.org
 Link: https://sashiko.dev/#/patchset/20260729031235.2840255-1-ruanjinjie%40huawei.com
-Fixes: 07d24902977e ("kexec: enable CMA based contiguous allocation")
+Fixes: 55d990f0084c ("LoongArch: Add EFI binary support for kexec_file")
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 ---
- include/linux/kexec.h |  1 +
- kernel/kexec_core.c   |  7 ++++---
- kernel/kexec_file.c   | 13 +++++++++----
- 3 files changed, 14 insertions(+), 7 deletions(-)
+ arch/loongarch/kernel/kexec_efi.c          | 1 +
+ arch/loongarch/kernel/machine_kexec_file.c | 6 +++++-
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/kexec.h b/include/linux/kexec.h
-index 0af8ae4fdd08..6b1df80524bf 100644
---- a/include/linux/kexec.h
-+++ b/include/linux/kexec.h
-@@ -349,6 +349,7 @@ struct kimage {
- 	unsigned long nr_segments;
- 	struct kexec_segment segment[KEXEC_SEGMENT_MAX];
- 	struct page *segment_cma[KEXEC_SEGMENT_MAX];
-+	unsigned long segment_cma_pages[KEXEC_SEGMENT_MAX];
- 
- 	struct list_head control_pages;
- 	struct list_head dest_pages;
-diff --git a/kernel/kexec_core.c b/kernel/kexec_core.c
-index 7f7cb77f0caa..5493591a9e4b 100644
---- a/kernel/kexec_core.c
-+++ b/kernel/kexec_core.c
-@@ -560,14 +560,15 @@ static void kimage_free_cma(struct kimage *image)
- 
- 	for (i = 0; i < image->nr_segments; i++) {
- 		struct page *cma = image->segment_cma[i];
--		u32 nr_pages = image->segment[i].memsz >> PAGE_SHIFT;
-+		unsigned long nr_pages = image->segment_cma_pages[i];
- 
- 		if (!cma)
- 			continue;
- 
--		arch_kexec_pre_free_pages(page_address(cma), nr_pages);
--		dma_release_from_contiguous(NULL, cma, nr_pages);
-+		arch_kexec_pre_free_pages(page_address(cma), (unsigned int)nr_pages);
-+		dma_release_from_contiguous(NULL, cma, (int)nr_pages);
- 		image->segment_cma[i] = NULL;
-+		image->segment_cma_pages[i] = 0;
- 	}
- 
- }
-diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
-index 59fb9d71e9d8..67d6df9824e6 100644
---- a/kernel/kexec_file.c
-+++ b/kernel/kexec_file.c
-@@ -670,7 +670,7 @@ static int kexec_walk_resources(struct kexec_buf *kbuf,
- 
- static int kexec_alloc_contig(struct kexec_buf *kbuf)
- {
--	size_t nr_pages = kbuf->memsz >> PAGE_SHIFT;
-+	size_t nr_pages = PFN_DOWN(kbuf->memsz);
- 	unsigned long mem;
- 	struct page *p;
- 
-@@ -756,14 +756,16 @@ int kexec_locate_mem_hole(struct kexec_buf *kbuf)
-  */
- int kexec_add_buffer(struct kexec_buf *kbuf)
- {
-+	unsigned long nr_segments = kbuf->image->nr_segments;
- 	struct kexec_segment *ksegment;
-+	size_t nr_cma_pages = 0;
- 	int ret;
- 
- 	/* Currently adding segment this way is allowed only in file mode */
- 	if (!kbuf->image->file_mode)
- 		return -EINVAL;
- 
--	if (kbuf->image->nr_segments >= KEXEC_SEGMENT_MAX)
-+	if (nr_segments >= KEXEC_SEGMENT_MAX)
- 		return -EINVAL;
- 
- 	/*
-@@ -789,12 +791,15 @@ int kexec_add_buffer(struct kexec_buf *kbuf)
- 		return ret;
- 
- 	/* Found a suitable memory range */
--	ksegment = &kbuf->image->segment[kbuf->image->nr_segments];
-+	ksegment = &kbuf->image->segment[nr_segments];
- 	ksegment->kbuf = kbuf->buffer;
- 	ksegment->bufsz = kbuf->bufsz;
- 	ksegment->mem = kbuf->mem;
- 	ksegment->memsz = kbuf->memsz;
--	kbuf->image->segment_cma[kbuf->image->nr_segments] = kbuf->cma;
-+	kbuf->image->segment_cma[nr_segments] = kbuf->cma;
-+	if (kbuf->cma)
-+		nr_cma_pages = PFN_DOWN(kbuf->memsz);
-+	kbuf->image->segment_cma_pages[nr_segments] = nr_cma_pages;
- 	kbuf->image->nr_segments++;
+diff --git a/arch/loongarch/kernel/kexec_efi.c b/arch/loongarch/kernel/kexec_efi.c
+index 5ee78ebb1546..15fd797ff3de 100644
+--- a/arch/loongarch/kernel/kexec_efi.c
++++ b/arch/loongarch/kernel/kexec_efi.c
+@@ -86,6 +86,7 @@ static void *efi_kexec_load(struct kimage *image,
+ 		 * We couldn't find space for the other segments; erase the
+ 		 * kernel segment and try the next available hole.
+ 		 */
++		kexec_free_segment_cma(image, kernel_segment_number);
+ 		image->nr_segments -= 1;
+ 		kbuf.buf_min = kernel_segment->mem + kernel_segment->memsz;
+ 		kbuf.mem = KEXEC_BUF_MEM_UNKNOWN;
+diff --git a/arch/loongarch/kernel/machine_kexec_file.c b/arch/loongarch/kernel/machine_kexec_file.c
+index 5412aa9f3568..62a5be102065 100644
+--- a/arch/loongarch/kernel/machine_kexec_file.c
++++ b/arch/loongarch/kernel/machine_kexec_file.c
+@@ -217,7 +217,11 @@ int load_other_segments(struct kimage *image,
  	return 0;
+ 
+ out_err:
+-	image->nr_segments = orig_segments;
++	while (image->nr_segments > orig_segments) {
++		kexec_free_segment_cma(image, image->nr_segments - 1);
++		image->nr_segments--;
++	}
++
+ 	kfree(modified_cmdline);
+ 	return ret;
  }
 -- 
 2.34.1
