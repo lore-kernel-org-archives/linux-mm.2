@@ -4,104 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C707C982D7
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 09:31:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4655C982D7
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 09:31:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 31B386B0095; Fri, 18 Sep 2026 05:31:34 -0400 (EDT)
+	id DF0C76B009B; Fri, 18 Sep 2026 05:31:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2F2686B0096; Fri, 18 Sep 2026 05:31:34 -0400 (EDT)
+	id DC8556B009D; Fri, 18 Sep 2026 05:31:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 22F1C6B009B; Fri, 18 Sep 2026 05:31:34 -0400 (EDT)
+	id D05596B009E; Fri, 18 Sep 2026 05:31:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 04AB06B0095
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 05:31:33 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 95150A0610
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 09:31:33 +0000 (UTC)
-X-FDA: 85226365266.11.497D2B8
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	by imf26.hostedemail.com (Postfix) with ESMTP id DA85514000C
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 09:31:31 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=none;
-	spf=pass (imf26.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
-	dmarc=pass (policy=none) header.from=lst.de
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AE58E6B009B
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 05:31:48 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8CACE80629
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 09:31:47 +0000 (UTC)
+X-FDA: 85226365854.18.13FEE77
+Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 7B388180004
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 09:31:44 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=HH8Z5fZU;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf16.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789723905;
+	b=QxsH1LqObdRLpPKQeG6s+UyB4mOXuNyv+rpjfUVoxK6BLC+MhfPOKMak6xI0KnpxBbYDjW
+	yGC9dfw68+3cPQuwaVk61zMaAf/nN5RpHVeWOGEHjzbTgjEIC01uYjy/013TJJu6O+zvQM
+	YxJH040CBxpUjOaZOfDm+sOMwi6UnCo=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=HH8Z5fZU;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf16.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789723892;
+	s=arc-20220608; t=1789723905;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=L7xWQ/Xh7OdKlEqXJRfBV/i+Oxkq0zbHq44/RJY53Ao=;
-	b=xgiAofUjfSXqCcqpUJ7+rXs7zs7Dd0z36aM/d0hEtxz03oVlef31TzIBJeNUVPI0xAUHhR
-	6zgHqjK3VJuvRnbh4E45k9nvQSN2hCdWmAAtV1TWdhrf4sYWGSQJdDPf7Rhw36hRHEEh3n
-	MahdMnVK0JbK9f/YkQ6RdHahKWIYciE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789723892;
-	b=YqMIhur2uZ5d95jKvO4P4ie5sbQ99n26B/h4UGLzFj9YvRW48Bb3DTZh78g/aYqcDfiywY
-	JH9ve3E4F2Ytv3ulMTs5KyEM1eO+dORmYKe7VUtgL3nR8csLdd8M17+t1ottUgPWgVD6nS
-	hu8UhmTFxI+HIrwrO6qUYSMFuXBIEE4=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=none;
-	spf=pass (imf26.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
-	dmarc=pass (policy=none) header.from=lst.de
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 6547168C4E; Fri, 18 Sep 2026 11:31:24 +0200 (CEST)
-Date: Fri, 18 Sep 2026 11:31:23 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: yu kuai <yukuai@fygo.io>
-Cc: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
-	Josef Bacik <josef@toxicpanda.com>, Tejun Heo <tj@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>, Coly Li <colyli@fygo.io>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Alasdair Kergon <agk@redhat.com>, Mike Snitzer <snitzer@kernel.org>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Benjamin Marzinski <bmarzins@redhat.com>,
-	Song Liu <song@kernel.org>, Li Nan <magiclinan@didiglobal.com>,
-	Xiao Ni <xiao@kernel.org>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Nilay Shroff <nilay@linux.ibm.com>, Tao Cui <cuitao@kylinos.cn>,
-	linux-block@vger.kernel.org, cgroups@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-bcache@vger.kernel.org, dm-devel@lists.linux.dev,
-	linux-raid@vger.kernel.org, gfs2@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	llvm@lists.linux.dev
-Subject: Re: dm review needed, was: Re: [PATCH v3 2/3] blk-cgroup: store
- blkcg in bio instead of blkg
-Message-ID: <20260918093123.GA13158@lst.de>
-References: <20260918041744.1526924-1-yukuai@kernel.org> <20260918041744.1526924-3-yukuai@kernel.org> <20260918071634.GA10884@lst.de> <daf4ba77-4c25-4993-900d-ee1fe713d9b6@fygo.io>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=nebxqloBPR+qahIcZagugq7FoabEe/MUo9EvuHQcjxY=;
+	b=8Tg1xlKSVVrPny2eT8LOz2PeFJwQ8+eYTBhkECEBaQH3R/YezsiakIeRguZ5SkxIx0g1xu
+	wE9iL4cYTyM6V0ikpZvFCzYpHRs9yfduikRodAQIS8eDVo+CTRUSAf7VGpzmK3nz3bNPwx
+	xgQ+jjY0qxVnlHoCBdtt8sd+taKsfvY=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1789723901; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=nebxqloBPR+qahIcZagugq7FoabEe/MUo9EvuHQcjxY=;
+	b=HH8Z5fZUaOgOdsgJHLxl7+8ckK7rPhPpuCjeMWMgx+smDx6CVl7bBuCoVEJ4V/foE3zhZI4pzQB26iDvOqrLDsp3kx8zGLMorh/x09acWui8sYBVlTD9FP8elQXYCVtXPfx2arTgoWsJkl0bG7CPNHiclU1P9V4je28hdjJq9AY=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0XBAoOVz_1789723897;
+Received: from 30.74.144.124(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XBAoOVz_1789723897 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 18 Sep 2026 17:31:39 +0800
+Message-ID: <31658d2e-6e97-4771-aca3-ddc60484f326@linux.alibaba.com>
+Date: Fri, 18 Sep 2026 17:31:37 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <daf4ba77-4c25-4993-900d-ee1fe713d9b6@fygo.io>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Rspamd-Server: rspam04
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 09/12] mm/collapse: open-code collapse_single_pmd() in
+ its two callers
+To: Kiryl Shutsemau <kirill@shutemov.name>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Zi Yan <ziy@nvidia.com>
+Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
+ Jann Horn <jannh@google.com>
+References: <20260916093145.4022188-1-kirill@shutemov.name>
+ <20260916093145.4022188-10-kirill@shutemov.name>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260916093145.4022188-10-kirill@shutemov.name>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: omx44tb58ppizdnqu3zfdyfjtotz6eq8
-X-Rspamd-Queue-Id: DA85514000C
-X-HE-Tag: 1789723891-869327
-X-HE-Meta: U2FsdGVkX18gWXJwb0uuYocMyGYD4atQD7VF2srY7N8rYaU1tKRExs4uDAOPLd70qza56rsOZPiBGoGYFU2fXHxB25mJAxSt4EFUPxBAWBqxqpDLPsFATL4ObWQcFsD+379C8bmIdAKh+Ci8eslNWnWid/nuZG7idMFZvmEQ1xtn+rO9WEQhpBTJLQfy71wLpRmJtCqtc6RGpqTayqZzltHmiq1VMRPwTB9KBya5y2y6+RL1brqnIpPDX7SVG953NjaSKHzmdaD2bOTppytBrY1sdp06SZprDuAtU2QZcz03/zhMGCWzcxJYUtthb138o3Eo4dD2GEbW42r7EYoNkalmRMpF6smcNcHftU80pWWQ3ZjvQjZgIJXxmHfEC9pbGb5e8GdXmt0Y9eORlyQH0bSRVASsPUxMvklY+/wvrDFwrAnNAnNn0Tu/OOvw1j2XTL6ucCaP8M7M0jWsr4RAssj2H3wutvusz5g3gzifSTwAblXxrEodaW1pc7dtGBOkOQVvm/bFsCP8Bx10WoKvMoxbWV4lDFDNw7U4LPfwFu0LElNbOC+2YMJMDyyzUP1GUGXJBRhC6hMixH8vJglCxN1nfl7TqQcrcnOmnuJpviLrxI03NJj9JoSiB44lR03xe6Xz6EGw1PC+Y7yNyMf5KgH0zCvCmkmXWdKnlTmmnOztjV0OjRJsHhxYQhg+FMzSSEk/3ljRhYQYsw7OZo6kFPtLup7lFgopAqEoJ1e27eGMfbIHRjPa8gSrgD32CZbhUIBoN7J1NxA6t1Jd53a/3E21t5vjXZTaJgtyKD6guiFU8InPEutjERsmLRPzupoZm+BdX3qpyTTtKGZXU4BZSEgtWjvkhgYF7FlbTqyrdliJsoBBwzVwujZVzjTfHMommXmLCOil/Hnu5P9Owa2XX9ubA0oYGsNmMylUP6CJUUb+o1QZ0ABOxonvVbitaCbRrujuEuTiACakpHZD6Vf
- ncJlgCCp
- CfC7Cuylhh+4dwkYVBl4iDZpxVRKcqVRWQjA7gmxXJQqBdTrDR+/3QYvqHxh4WHd2gM0iiqZiTF9gK0yhjdlqhWyCn8qekGvtMtrq5G7s7SCGoWLtDFFG84yzrQ==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 7B388180004
+X-Stat-Signature: xcx7nonpcye8yyaepw7dachbrhdkhewg
+X-HE-Tag: 1789723904-781609
+X-HE-Meta: U2FsdGVkX1/j6eRRRDLB0exMwP+hO5VhrepzIPSTtxL/r1XUwokZjGWBREkM5Vp0RaUUfMxpaFC/ozKjH2wv1qIH+Zxr/mUNyq3b+XPYw4Fmo0UZ51Dw+MRtYr9lgebtjmY+H1PKvPe1i5U+EM2PG/hRkETRSohgq/NJPVOXKRxvOPRWsfom5Hce0+LIpGoqQLwSjvJNha2HxwXpTQKx59AAxZtTXJLnIrl1AMgE4RmFdP9Vxr9e5d+OJo2pJ9OJfruYQKracgoTghMqNF1u9OTb0ls8dOK8qNHkgPWfq9E66Uf7P8NzE2CpkXAaOvtBbwwFITRum885DvmaGPUZI4Jxn0HbrjxlqEX//P5Xo3xUAQNqBuS2jPfFu7Lgjt3kxJjcg4yjP0DOFxGZ98VJT51tYEHKpPxvj/Isqyg0UX5ppvtEmcexofabGYgXY2sykK4piiNmihHt0enYKz9g/7gCxhkBHZyKFROmTEQ1449p99Typ73SreXHYw8VU+QiCpXHvvTcJI79wDu1274KkLdDw5AwINEGkSz8Swz2y0rFfYjOZ066VzaTi/gepX19btz1jD7e/clIYEB81Vm08YzxmedfyqgPJtzoaKl7B1iMuAtmHgQ5lrdkNQ1KfqLbCXHi1izluRr4buYslA3i11j6gErWUiSmqf2F3aLUadagO8V6Qt8nQFmhwbCS8Bb5pugBjmn2QATOTDnA2m2gpxl2lgQWUaVZk9ezcTMmPvA7j5ZQOwED1MiIwm5xcPDCisEN77PoakGXaKzDvs6aRgpGkps7Hqd4X8W0xpB33GEvptEea4TV1Pb4k/IUm+KlIDPmVuE06JXX5rTF9pE+qgwcvYM02qHjGV7C2BVeWe6Mt76sLRy3qB9OMO4TnlyIBQYeH9YQ4ly0uZQ++7RI85+EUYggbgy5XZLdI8hiaA5NCTZZWEOixoZtxFBW6uCk108yEkKSit+4OTt93cQ
+ 3MIpCXxd
+ V1P9ESBelo3WgqkLTX5LLBTuOgY41k/+A3oidZL0XBhHe6d00BC8OqKqo1C+gn0WADC7r9mTuqcTm/lxQPGtkDzzPCOhEgn8CEcQwmVfneeZwvZ6dsIWn5OZSaEPqlY7zadBwCnfE10p6EF4aSRKKjO+aYlWGfYjV7GgEVJmn0YD6HvybGLFDtUrtocf7zDt8yC9txV0smDOk0sPl2GcU45nXKpVTLtBjX8e+04PHXLVjs2nRggmTQYMhNIodROifFvqNeDKeII7tAJ9eNT8quUSMs4plmFcUuiXGI3+uPPyXDfWKOYVVKaPOv//KOitYrWoQ8sxjOCHTIsPPURfFkFonsynMTw60jEgz1SvshlGpSbFFD6PBbidk2R4CO1aNnPgjnYNRfglHnN0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,16 +96,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 18, 2026 at 05:19:53PM +0800, yu kuai wrote:
-> So I think we don't need to restore the reference, BTW, there is another approach to
-> avoid such problem in blk-throttle I don't take for now:
+
+
+On 9/16/26 5:31 PM, Kiryl Shutsemau wrote:
+> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 > 
-> For bio entering blk-throttle, we can clear the new flag and blkg reference directly
-> after the bio is throttled and before this bio is issuing to disk, because bio will
-> not enter blk-throttle in the completion path. And since blk-throttle is the only rq_qos
-> policy that can be enabled for bio-based disk, then dm_bio_record() will never see a
-> bio with the new flag set.
+> collapse_scan_pmd() and collapse_run_pmd() each have a clear locking
+> contract.  The scan is called with mmap_lock held for reading and returns
+> with it still held.  The collapse is called without it.
+> 
+> collapse_single_pmd() kept that boundary inside itself.  It dropped the
+> lock on some paths and not others, and reported which by way of a bool its
+> callers had to carry along and then act on.
+> 
+> Open-code it in the two callers.  Each scans under the lock it already
+> holds and, when the scan found work, gives the lock up before running the
+> collapse.
+> khugepaged's lock_dropped and madvise_collapse()'s mmap_unlocked both go:
+> the code dropping the lock is now the code that wanted to know.
+> 
+> khugepaged's walk carries on to the next table while the scan keeps
+> refusing, and ends once a collapse has taken the lock from under it.
+> madvise_collapse() re-finds its VMA after a collapse, which it did before,
+> and now uses a NULL vma to say that it has to.  It still reports the drop
+> to its own caller, from the line that does it.
+> 
+> The lock is given up and taken again at the same points as before.  No
+> functional change.
+> 
+> Assisted-by: LLM
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> ---
 
-That sounds much better, thanks!
+Thanks for removing the ugly 'lock_dropped', and I also did some testing 
+with my shmem mTHP collapse, and no issues found. So,
 
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
