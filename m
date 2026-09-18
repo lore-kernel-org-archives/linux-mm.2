@@ -4,128 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 175FFC982D6
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 10:53:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB653C982D9
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 10:59:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2ED7C6B008C; Fri, 18 Sep 2026 06:53:49 -0400 (EDT)
+	id D58E26B008A; Fri, 18 Sep 2026 06:59:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 29E5F6B0092; Fri, 18 Sep 2026 06:53:49 -0400 (EDT)
+	id D09026B008C; Fri, 18 Sep 2026 06:59:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 18CD46B0093; Fri, 18 Sep 2026 06:53:49 -0400 (EDT)
+	id BF84D6B0092; Fri, 18 Sep 2026 06:59:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DFD5C6B008C
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 06:53:48 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7C6A8A0630
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 10:53:48 +0000 (UTC)
-X-FDA: 85226572536.03.912F30B
-Received: from mail-pl1-f195.google.com (mail-pl1-f195.google.com [209.85.214.195])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 9994D1A0004
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 10:53:46 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="M5//GEIN";
-	spf=pass (imf19.hostedemail.com: domain of chenwandun1@gmail.com designates 209.85.214.195 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 9EC416B008A
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 06:59:29 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 03B67A0632
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 10:59:28 +0000 (UTC)
+X-FDA: 85226586858.02.38C793E
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf25.hostedemail.com (Postfix) with ESMTP id CCD37A0004
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 10:59:26 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=EInWYjd3;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=lB1Oxv5N;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="EwAOVwe/";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=2YsIelFU;
+	spf=pass (imf25.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789728826;
+	s=arc-20220608; t=1789729167;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TAR8zhCOEVqWXPt6vBsjOMeeQmFuBz9UsZFbgyML5lo=;
-	b=L06tqG8HFhw0tLqNotpILyyqvMbLrMRGCFSfd993Nw+HDDTNnc6tVuDF6ELZ0wsL3iu76t
-	xQpiLPjYjXuiXFvqou3Xkx6tO6jvgygea0IaR1Ch9vAHMHVmBl2RvdFDQvArrah8jn89wr
-	3Pbqa+/EQ1rjtX15wqxsWl6zeD5IvAw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789728826;
-	b=z99IYdvbZpYQuV/LCNwNJJTM/KaipfDUlECVRXg0sBD3xqxo4tTjciZyMUf2gErGvQ4Udy
-	6MWSn7yx17Nq65pJwoH9DN6WpTij/b6biSDK3Uaz15Q+RaCrcj9KcCLhnj2PmNHvJX42cl
-	ZGyb+LmRjSYvm+LxV0Xmc/Ca3u3KERY=
+	bh=FOJeqwwdyN7Rfx+8KM2mx7P+agbiN1R3+YCRT68JAO0=;
+	b=O0znd+h9r8xEyQ25N9A3KaBCwKpm41Lepfr+xD29MJNGKZincIYjEdOIDjzzYk3Se/ZrBe
+	aleB02TrvrLMsbKmfCXBY5Xigj4ThvVhILwku+a1oY7jc6H6XNMFEXNJoydHuVrpXBcXf5
+	KN7CY+S5l7WFDqX6G+pyF0e+9X09AbY=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="M5//GEIN";
-	spf=pass (imf19.hostedemail.com: domain of chenwandun1@gmail.com designates 209.85.214.195 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f195.google.com with SMTP id d9443c01a7336-2caced6038eso4986715ad.0
-        for <linux-mm@kvack.org>; Fri, 18 Sep 2026 03:53:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789728825; x=1790333625; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=TAR8zhCOEVqWXPt6vBsjOMeeQmFuBz9UsZFbgyML5lo=;
-        b=M5//GEINfX5bYzCUc5feQneCrAsoMZbvegR1ybYJGTADbN8dXbaQXmKtGRIwS/TDGr
-         ugLPlrTQglzRw5/XW8P6NrnkZ+hjq9dAijSQE3dwl4ncA2W/eAhdiTGmYT5MoEsrT9fA
-         N6Ax5RjmlniGPRi+FucKpQEbwWqp6aOsRRt5VDYseNV3SoDBON8wjvAlLk93oSZNENgl
-         s6pciU6tYwxdzcEz6nfPjgEDUjjDFIEzTgGyV+1AP1WEQBgpzmGA13mE465aD0fDbv56
-         KLizvSlxgPcSgu2cmpOhotC7FBwc9eG1LU4BiV5naG06aH+bDd2fLk8iKXObjlp4ETJx
-         4TyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789728825; x=1790333625;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=TAR8zhCOEVqWXPt6vBsjOMeeQmFuBz9UsZFbgyML5lo=;
-        b=ybntMQkCIoqwO8h5RqQ0wI8E+zRsOz0xZ/GNFqsyoJXCatDkHCxtjl1ly03EJJOpHY
-         TIAh7bcLvhJfiA+r7FafLRCdxN2sDufVjPHBl4F2Gwi4BFxzMI++8g+hrqFLYX/LrkxU
-         Utg3BJgKvHdkNH3tjLaZvtIqrteotE66wwP32aGYpU8OhvhH9k7NeKbfYOe17WJ6sF6H
-         syKU8p9N7eNo3iu/8+EmckGZkcVDNTRBr02JKJ8ieGOfwimThPuW1Me5uTKUyuCQNUxt
-         igCDxLdrIythfpqd1p67tV37XXheCECpzSnHAD+UqkhCRbw66T5WRF6OUVcOBRnmu89j
-         kl+g==
-X-Forwarded-Encrypted: i=1; AKwUvByTDrYCZZlPj+MwSI7z4BwBrlbSiKwB2CK16hfjj3+fi8IAA+aaCPS3drYqqM0cd+WsfPEY75sjog==@kvack.org
-X-Gm-Message-State: AFuF++mTUubl0zLgsQVvPgs90yFYiWd0mbw//ONxFKe3F7py/5JwUDJK
-	b3WaCESRcf0bjjdC037xsnVL+kuwv8YQ2monrIEG2HNW7PFiOvE+jvdm
-X-Gm-Gg: AYBFou1+FWVTfx7dhrb2MweMBvmnLqHOn5Rfl1oASX9QbQ+lPuD+2HbcgbUo+F+1P0w
-	Iu2oIy4EvVklv9vJoiF4UqyRKvz0ds4aS/YM1N7f2PRUlp6rb7bn0yeS9+V811c+KO58d1CWB6d
-	/KpCVg6VoXRuqjJaOp/+N+XWfvJEBCiyLKckBBLWT+Kt8qkTq0h+yPDS9kPkLK290K0pVzA8112
-	Hr7XtyrrbWNTnjGcu7r9uuPo9s4TEfn5i0wVBomm0dRkzPKzMP8U2xQ7E9VDq3260oP9BFcuFOU
-	9PDyESZVpKiJG2fQ5YpS8sdrPgy6hOW0ITdvE5P3674NScsnLuZcJyvBV1dEdoq4jBLRejuTfHK
-	cIXNYGGGHuTtgyGR3yIW/VpNjnCov42QwLBwFj7790zNyBaBHds/MxAljkzQ7zM7yTBSSeGnbMe
-	P7/RTdudmJjhccgRS0NIRmxCUlvOpEbH91EDU8+Wm/Jaq3EaTfqbJq4SzrfOVtfn0chVwovhiH1
-	ZzVow==
-X-Received: by 2002:a17:902:cecc:b0:2d8:d4d2:d139 with SMTP id d9443c01a7336-2dd9ca3f088mr93269015ad.21.1789728825328;
-        Fri, 18 Sep 2026 03:53:45 -0700 (PDT)
-Received: from [10.125.112.20] ([122.11.210.25])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ddb7525b2asm5835555ad.19.2026.09.18.03.53.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 18 Sep 2026 03:53:44 -0700 (PDT)
-Message-ID: <1a47d5de-fb68-4c10-a199-f0d274689cdc@gmail.com>
-Date: Fri, 18 Sep 2026 18:53:32 +0800
+	imf25.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=EInWYjd3;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=lB1Oxv5N;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="EwAOVwe/";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=2YsIelFU;
+	spf=pass (imf25.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789729167;
+	b=lKHifVHomgDCop1keTrb5IoBvnQ9Y4twvgy5NIWUs2VnvYlW4JGCATutRmLfAT2mM22mhU
+	Sp455L0Yq6upBeakgsQ+6PO1WRsa55IM0CgvQedwZnkbBjKL89IH556VMmBOCjbDnyNCEN
+	3hkF+uxUw4Z8M6Y0PZGrRsYtzCaS9t8=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 32D5A21DCD;
+	Fri, 18 Sep 2026 10:59:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1789729161; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FOJeqwwdyN7Rfx+8KM2mx7P+agbiN1R3+YCRT68JAO0=;
+	b=EInWYjd3wIEndLn+ncg16Kv+zlddW5yVr5w9o60XUCdtX5Px3RiLpGJDsi+LBxXg9RSSez
+	OZY/ozOIu+8i5LiGvEpuVXP5GRwANhkMaMjJ52bh9bmHIzRvAHc5XPwgrpnqQe2s7C0Ps1
+	BbLQEP0WupNyuvduH1sYaeLrW2oBI4Y=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1789729161;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FOJeqwwdyN7Rfx+8KM2mx7P+agbiN1R3+YCRT68JAO0=;
+	b=lB1Oxv5N0Vp7QFFcxurhoN4s4UL7Q6CiABKWsjNecsKCkg0cdxPXAdS7G8iHxmF4kavJB4
+	kI75+HmlGnYeOgAw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1789729157; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FOJeqwwdyN7Rfx+8KM2mx7P+agbiN1R3+YCRT68JAO0=;
+	b=EwAOVwe/O7Krjm024KAokp+SMBqLQdtVQduoVoqDau0C2i1pQ0T43em24ibX/ey5nHWrOK
+	F7ad4ddfgKH2kQ5cqZWGU6j/UB1OEEBa7b+WMuBj/7GzI+rNPSPZg6cyq0M9IAH48MwFgA
+	8g3qPAMWeSf9d4nCso1XFhc7nkfGQlM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1789729157;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FOJeqwwdyN7Rfx+8KM2mx7P+agbiN1R3+YCRT68JAO0=;
+	b=2YsIelFUwdq0AneCoq0ktLKn6yAxxvNR2JCTmxkx1MKbQyQXnBmOJT5wbQjqdqKsRGdLMP
+	rMqjMjvAaSP11dAA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8F050133CF;
+	Fri, 18 Sep 2026 10:59:14 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id xIqhFoIZrWo6HAAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Fri, 18 Sep 2026 10:59:14 +0000
+Date: Fri, 18 Sep 2026 11:59:12 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	Jann Horn <jannh@google.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Youngjun Park <youngjun.park@lge.com>, Peter Xu <peterx@redhat.com>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/3] mm/vma: const-ify vma_assert_stabilised() and
+ associated functions
+Message-ID: <aq0ZTaEHTeGEgYCQ@pedro-suse.tail5790ac.ts.net>
+References: <20260917-vma-is-faulted-v3-0-5c22314a72e7@kernel.org>
+ <20260917-vma-is-faulted-v3-1-5c22314a72e7@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 00/10] kdump: reduce vmcore size and capture time
-To: Baoquan He <baoquan.he@linux.dev>
-Cc: catalin.marinas@arm.com, will@kernel.org, chenhuacai@kernel.org,
- pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu, tglx@kernel.org,
- mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
- robh@kernel.org, saravanak@kernel.org, akpm@linux-foundation.org,
- rppt@kernel.org, pasha.tatashin@soleen.com, pratyush@kernel.org,
- m.szyprowski@samsung.com, mark.rutland@arm.com, kernel@xen0n.name,
- alex@ghiti.fr, hpa@zytor.com, ruirui.yang@linux.dev, robin.murphy@arm.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
- devicetree@vger.kernel.org, kexec@lists.infradead.org, linux-mm@kvack.org,
- iommu@lists.linux.dev
-References: <20260902073116.802752-1-chenwandun1@gmail.com>
- <aqzznOgILX2pZg7b@fedora>
-Content-Language: en-US
-From: Wandun <chenwandun1@gmail.com>
-In-Reply-To: <aqzznOgILX2pZg7b@fedora>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: fogg85qsa9nmzqen896ndp8bwdernxdu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260917-vma-is-faulted-v3-1-5c22314a72e7@kernel.org>
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: CCD37A0004
+X-Stat-Signature: pnsttuzam6ojrmgqfypbj1ejbiosm4ed
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9994D1A0004
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789728826-851189
-X-HE-Meta: U2FsdGVkX1//zZqSJUuL4D2FQsmBOtzPLSKZ/uer0tuze/EQdKdh4rPVF+Ulvv/406AjHTE2RzB6ZS8ociOUDS80b2fU9YyPGf7BAIAiroj+m6UDb5pVQ2plX2dkODlbY3e3uGSPmJYcQeXiz8SPn6NeYvHurT2ZePaUJBm2dc6BKrQD4xo7jbyI7HMTukhvety60bnGaA3vJQ7z7Na14q6R8CEQMWl3CkUvS+RWhAdtqc45eJb5Y5tjp3k2uh5oe13P3Khq+RTOM4LP9bcah5HUZxXd/Ux431KRz6TI0TpbuFkyVLdBl4gYBT7tIlO06+mG/N0T/kYt0FkUOaU5jn5WphguqNo5oQN89WWJHm0UdoB2fNAq7q5Di7WFB0MX1/EYLUsORB4wnBt70Xcmns2rj7p4ZyubA4pPA80BSvcYtMZvJHSAt+rQJcwNy/Ae9hXYMP/bT4jtbvg9vqXpDPnddCr3lWC6YRMVQwkZsP0Jtld3JdbxwhrxkARtmoVX6YjIgphjcIglroDzPpVwdrPga4anBg01RkAfiobe5kBFZvKoP6qJMk2/xpJUKQ2h7vYF1EQYV+u4neILabVHoIKGE4QCaUjlGHLeMnJWCvAdIm+f1i3o1TrAzA4g0zVLCUWuaubuFPLFosT6fkCjOApPnvlkZrKvVMYqNh31ZC2SmvkGiD72lIerKKvU5EKw1kMv6pejBoTN4OxUor3Pj23izLboJjnlJ6yv1khOWMymxOay8zLr6lo/OAM6dcgybwBxRKa26VQqcu831qe+sSS5I8AFgcJPKFAwuF8iqjFD1DIUW6wGJVCBEFwjb/yYTC0aCAKtb9mj1rv4GBzdJ0IJXhM+gzG5mMoB+djhZeyt1ZkYy85WTX6U61CWIlvS5qe1LvIkROmT9IpuMfTlV6bP39tunz7DYlfqjajxNRQgw8jrT4H/m503QxByQKMTnmk0+3KRTivAyed3qgx
- Bx2z5eHl
- RpkYgPTf0nhxcFdt39TpMrZjK0jzUzqGBlFYfhIdHrhQ6vRyk29M2Gxez+4Bh/74nJwYH6NL2lsa7JVia6gJtYaOgPCRozMg9NH+X94rUhfGbJrGw2B+uJtgjWzXpgtYEMQqOvXjhDNSwKCHfuhK9l/42PHN4SVVB4SD1CWEY/IpTmf6SCpyTJqVkB9kullDXQAxcuI1QxUrAmD94qKZZVvw2haJ6S+dU270QK5s6TkL/lpq5A687sbFghqEW96J3zi5x9lrRkwgMevy3pGkxrOk81E//G2uxcg2CtIALyQtXTZ00PIyc3rJEYyY85znF6Sdvqz09wm/UcqeajS8bzTLHAmSSZ0jkyByfNZT4AFuPQ1TVPzEL+TvRwQrihMlNbBAPw0bkhGCZzc+MhVDbs2j+1c3liv6T7LwZxI9uXq784zkO72yPiHVzYzIS5heLZ6jkS5T6QyczhyOTOgiUYGL5EV+Ek/Vb/x4EWuJ9j869GrQg2cGpQLVFnl1ZH3YpTOKUSg9idwc6zXWmfohWKNhPeg==
+X-HE-Tag: 1789729166-694360
+X-HE-Meta: U2FsdGVkX187cCqkBOd2dF1QievHTitTO6apOPq4F2Pxt6vzfWo2ga9iaQekZJR8TaGXzrlLekm4PDjqCo8bdZH8i0H0+0sviwH4cm8u7eiNWcoFvSTLzlaTQJT6he4SB6UVkbCnH3Ai5VV2QyByADh4GJSnzc2U0taUqPcvE3XXgbI32V8bWf7rH4XGUotwK7t4yIEVJJ8g6JzNXlFYkTu3r2/eMX368106kWlqRceczzfJhJnVxOQ5ZxvrPl2KP/5yqgdN4+3CHHsY6XiST60zGTWoOl2Ja9/47x9xEU3V1kn5kE5RS7L6MHEHQ5ThCo/+8Ybc+yv3gutZ4kr9u8/jtrlaOTkjS8mcPKfrdf8xrwx6PdJR09ixpGix3muJddvcivekJVdPMb5FGjeocaNHkOaGU9//dBUPezTTAZOsV80tqQP7/44wM5VDjsLg+YjxJblpEK7NVcf81xjDDslmZeNMwzUFJPGjVGr9IJLt9vYArjxlPmO9T6gCWkTe7quIz3v1nFiaX7hvVowi6ug+hXNuY3yMU748Q5eki1SRc/w3Ic1yPzSUrLD3vBBqlE7br5h44rkhttAGfUWtSDyABbrw87i+O/tyCbQs9SonIdAFT3KnIH4OhlvGQEF5jGZdahThsZP9h+auBFESgy0V4r0Iu0G5Eu8gInMda/w1wV5F7W5xzLpiai2yAHjlnqwR32+rTnlMEIiTg3x3M4xH18JV3Z6imsdc+vs3QTfvVUCpecX9q/cR+jrlKd058CKnkLq4/ThbwvYHFkIu6fiH8vzvXkzocs6+ZlinNrL69/SEVL+5/udnPirRaqYFlgluqppnSbLD1pBJl7+cktrWIouQ4RQgiNn7G3zlvNYD2+UeYR0OHeXn3lc6T6ZIaoioumz15fRQvxDwSJIQcA+9Xz3PvsERc95IATCtA4jD38903KpBVVhgHXVte00jkvpy8Dl9BuEx5uEu8xd
+ XCL58Ibk
+ 0lLSHIIeCvB1lPVjnJI/WV8KeQTTHQ5iQLvYoGfTAULeLZRLNDHF+R8dqHJnINVtNK7rFrdB8beyqj7b3vO141MYklfOU8rwfkkgz/plSJ5khhxPa8IMFMF29IV4zewWqIfMVxGgvGUjRhnl14mUgF8oD5TSQk45dWmWoR0fnKyam2KLevg6l8lq0Vm882l7bOuXyYAcBmgI1czrJABV6Z4qlAa8nj4egf3n46B5ewVKvgS7opbi58mlt+1ObBoqnDDo0IRckwxBAjv1VnMEKEhYstpkpB23NrjzRPegu76psovvjHWsud9xEqlDG7AwKbVO2u2nCz6PHfRd8x1Xl8jE0u/3NQtvQoWYNkpuifrH0xd2pytOBts7gA383xoEtbjCBfO94YHyIv8Wyo10DafQZVHWlC5vf1NmY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,71 +148,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 9/18/26 16:17, Baoquan He wrote:
-> On 09/02/26 at 03:31pm, Wandun Chen wrote:
->> From: Wandun Chen <chenwandun@lixiang.com>
->>
-> ...snip... 
->> ACPI systems already filter reserved memory out of the vmcore through
->> their existing path; only DT-based systems currently fail to filter these
->> regions, which is what this series addresses. The flag lives in memblock
->> itself rather than in a DT-only structure, so the mechanism is generic and
->                                                                  ~~~
-> The patchset itself looks goot to me, while I am concerned if it's
-> really generic. I raised that in sub-thread talking with Wandun. Imagine
-> I tried to exclude many driver regions and split memblock regions into
-> hundreds, cma could yell out: cma_declare_contiguous_multi()?
-
-Are you concerned that setting the MEMBLOCK_NODUMP flag could split a memblock
-region into many smaller regions, which might then prevent
-cma_declare_contiguous_multi() from satisfying a multi-range allocation?
-If so, IICU I don’t think that applies here.
-
-MEMBLOCK_NODUMP is currently only set on memory that has already been reserved.
-These regions are excluded when iterating over free memory, so marking them NODUMP
-does not increase the number of free regions seen by CMA.
-
-
-Before marking NODUMP:
-
-  memblock.memory:    [ free ] [ reserved ] [ free ]
-  memblock.reserved:           [ reserved ]
-
-Now, for memblock.memory, it is one region that contains free and reserved memory.
-
-
-After marking the reserved region NODUMP:
-
-  memblock.memory:    [ free ] [  NODUMP  ] [ free ]
-  memblock.reserved:           [ reserved ]
-
-for memblock.memory, it splits into 3 regions, 2 free regions, 1 nodump region.
-
-Although the memblock.memory array may be split internally, it does not create additional
-free ranges for cma_declare_contiguous_multi() to process.
-
-
+On Thu, Sep 17, 2026 at 08:47:41PM +0100, Lorenzo Stoakes (ARM) wrote:
+> The vma pointers are not modified in any of these functions so make it
+> official by const-ify them.
 > 
-> IMHO, withdrawing the claim can fix the nit concern. If I am wrong,
-> please help point it out to let me learn more.
-
-I will revise this description to avoid any misunderstanding.
-
-Best regards,
-Wandun
-
-
+> Propagate this throughout the call stack.
 > 
-> Thanks
-> Baoquan
+> No functional change intended.
 > 
->> both ACPI and DT systems can benefit from it (suggested by Rob, thanks) [1].
->>
->> Since the reserved memory regions are filtered out, the vmcore is
->> smaller in size and faster to produce. 
->>
-> ...snip...
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
+Reviewed-by: Pedro Falcato <pfalcato@suse.de> 
+
+-- 
+Pedro
 
