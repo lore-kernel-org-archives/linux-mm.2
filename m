@@ -4,94 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC442C982D0
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 02:36:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4C9CC982D0
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 02:39:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 769F66B008A; Thu, 17 Sep 2026 22:36:27 -0400 (EDT)
+	id D3ACE6B0092; Thu, 17 Sep 2026 22:39:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 71C676B0092; Thu, 17 Sep 2026 22:36:27 -0400 (EDT)
+	id CEAEC6B0095; Thu, 17 Sep 2026 22:39:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 630F36B0095; Thu, 17 Sep 2026 22:36:27 -0400 (EDT)
+	id BD9DA6B0096; Thu, 17 Sep 2026 22:39:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 38B6D6B008A
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 22:36:27 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 42ED54055C
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 02:36:26 +0000 (UTC)
-X-FDA: 85225319172.02.501E0E0
-Received: from mta0.migadu.com (out-65.mta0.migadu.com [91.218.175.65])
-	by imf08.hostedemail.com (Postfix) with ESMTP id CBCEF160004
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 02:36:23 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QUZwkVhE;
-	spf=pass (imf08.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.65 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A079F6B0092
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 22:39:04 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 05907A0560
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 02:39:04 +0000 (UTC)
+X-FDA: 85225325808.13.0693B3D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 63F43140002
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 02:39:02 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MiP7VDcR;
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789698984;
+	s=arc-20220608; t=1789699142;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Yp6fvch+AE++R7vgrTejWyuNgSzoEGtpe6oA3VzPSOs=;
-	b=mMTYlGdvcyDvudgIOyM8cVxyHn3gHVpxtX2xvYqCm+vAJUQW9RajIcrJ3ij0j2Db/m/u0I
-	Bc9/jTCar1KKFQs+koJ9jBgFoinF/1FJdSuAOYNEGgVzKDQt5SCfc7cLGvH8eND5H2C5uQ
-	5385W3+I7wQMdHHEiqFK8x6r8JxZAks=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QUZwkVhE;
-	spf=pass (imf08.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.65 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=XFn+Q7rC2VQ5SocqsOrcZJwTW1fdmqaD8YlZTdVp2Do=;
+	b=eQ3B2uSCiyeSjG/MzRCq0Irr7cUbwYznOAPtr0OON5R3Ya2T1+BCJtzOfVefahTKKzvfqT
+	k0vGwk9BGunEJERwkb7fjXtUo3lJpH4XIhqsq0m08d1QFDHjha7EKkl+euPnaZ3kQbZqfS
+	EvnVyEskOgzkdL3yy3qvdtjN+d0pqLM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789698984;
-	b=pGyRkeFbY2tC1VSyJfS3ilLG2hwf+IjJt/BDtAy6KaoDOmGzZQvsTcjbj0dyVSc7c4zQMs
-	BKMNtzpAX1Hp805lifTCTZnk8jqcMsNXmeATM4PpIcBZGJZhVZTqjYa2tvJ51U/X9vr35K
-	25UN90Vs5lel6mCJHokRJyc4O03JWDY=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=uokSLb5tIWKs9wmoZjlPpYDU82fxVQpNKwqAQMjHX7s=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789698982; v=1; x=1790303782;
- b=QUZwkVhEiApuqFBO2Qf3Sr/p7fX6co8bMIR4oUgIrzHtMdkY9hrcU4Xwy6OgO5607RIDk/bB
- 6qjBSzNIWGstCwnQKGTcu28ei6A/eIE/F631ACwqzzAqf9w6A04RsJQP1gpP6sBqu0PGdX8OIKs
- YhqyYcHEEz6kqXiD9SONN6ZM=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 3b51e68b3c915898;
-	Fri, 18 Sep 2026 02:36:22 +0000
-X-Mizu-Trace-ID: 3b51e68b3c915898
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <f16c55ba-3403-4721-9ff1-061d73e17fa5@linux.dev>
-Date: Fri, 18 Sep 2026 10:37:21 +0800
+	t=1789699142;
+	b=P/xUWvdP1nt0YYucI+sLYJqLO14VvioziILi98bLpy8sqcOOSLDMn74tOhE/Bz+WOywBE4
+	mlsU3pe2dSgOBR1WfMrgvDHnp/OemcTsbc2o96M4Gk1KTgnX6/x+Yfr2yVckXFOTAkWIsg
+	CjpUTRd9x0w9T4QkntkFLZDt2mn54LI=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MiP7VDcR;
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4F19D40631;
+	Fri, 18 Sep 2026 02:39:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEE8D1F000FF;
+	Fri, 18 Sep 2026 02:39:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789699141;
+	bh=XFn+Q7rC2VQ5SocqsOrcZJwTW1fdmqaD8YlZTdVp2Do=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=MiP7VDcRQNxMZAViYh9ABN4d1iXEi+V+WYJvnsLJAWfhT+7QAEotrRl6/3uITknyl
+	 6ttkv7XDTs0ivbLlBK3OAqzmDL9aj7TLgOpOkmxJYOqmcfG6CiWZX0VRwITgxVfG9O
+	 Ai0TSUZsRilaiaPW83IHQgYwu6lIZpA/s5BpV38Q8m2y40zOoOBC0Qu9oVv4AN72TB
+	 S46vabyDMQ5O725glZrJD9WbtjIOYpUauf3tuqnzBHLQN4aGPyd5VYRN1+7p4+kE4p
+	 uW4LOKg+ciwSt4XlhEXu+ClA50kwYL0IpZxAPoQnsuUsDECimD0zW5p1MueQwKA+HO
+	 qD+IjFaOgQtqw==
+From: SeongJae Park <sj@kernel.org>
+To: Karthikeyan KS <karthiproffesional@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	Sang-Heon Jeon <ekffu200098@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/damon: reject zero sampling interval
+Date: Thu, 17 Sep 2026 19:38:58 -0700
+Message-ID: <20260918023859.13556-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260917180013.1279018-1-karthiproffesional@gmail.com>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 5/6] alloc_tag: skip percpu counter allocation when
- profiling is disabled
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>,
- Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
- Aaron Tomlin <atomlin@atomlin.com>,
- Kent Overstreet <kent.overstreet@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, linux-modules@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Sashiko <sashiko-bot@kernel.org>, stable@vger.kernel.org
-References: <20260915070001.113559-1-hao.ge@linux.dev>
- <20260915070001.113559-6-hao.ge@linux.dev>
- <CAJuCfpFKGxOy9W+ZY9KasU5YaDVG4kbGsV6AYb2NNRyW4gT0mw@mail.gmail.com>
-Content-Language: en-US
-From: Hao Ge <hao.ge@linux.dev>
-In-Reply-To: <CAJuCfpFKGxOy9W+ZY9KasU5YaDVG4kbGsV6AYb2NNRyW4gT0mw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 63F43140002
+X-Stat-Signature: tj5cjuyk3ejhgrrqnkmm16gr8xczgyw8
 X-Rspam-User: 
-X-Stat-Signature: 34pndcntp95btid77maekau77g5uhn6f
-X-Rspamd-Queue-Id: CBCEF160004
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789698983-785667
-X-HE-Meta: U2FsdGVkX1+PB/lpwQWZ7uhH7BGFd5ee0o1/id2hVTNqK8yHSEZoo5vIcD2+w9kmY+LPoogIbtw2i1jq7hlZKLIvgk1F2N8bQm/Oi2wuSF5a6KGAluIvZ+0SAbfZC8pG9Lkn5p6TW804hKME47ZM+5ycjLyShnCGtEX8mUIxQWA3i5cdwnOgXFakigXKe6apR1N52ywdu2RmoIYAqDj8izQqy2pqjAYpX25Dp70Erovc7RLAPXdSDIpxzli2Wq8dH9i1LEuDPdKU2SkzXjRC+1uREtz/Felgt2BHCJEWeQUjTElWcNwE50Ib/A5CpRuy+ADrICq2wv3TQh+JQYKtyteAyU8RbGvOn1JyrlM5tjWqFIvhmfFJJ4D0/5DcOS1Yn420Hp9y+ZAIaV2F05PQTCgrtnr4aT6qycbikjlt4n3wvLj/FQLxkkNsQRrOdglTkAqTbKkp/nGoiIhDiX+hnowViEDu+FFZpnevGXPrbcoAE1B75+ePcSMBhKrIbbEH1Ljx1f48H/3uPcUpzVMlol2Cii9wHjDMRFvefciNgzw9ycYthIHG0lSCD2AX/DPgr2xXvFdPpkInNFLxQhcR00rRd5koi900Vv36KxTw93k1CR7gcloZoReTGI5Bo4urwvbHA4R9O1kIcOSofT2UEWj8tbyyvPTJoEGkv3VAf6iABKjyXIdddXO+qhqLNcAoQgT/GPPkaniaLLB5SLsoyWOjIAjYCFl7TTwK09+G33bQgdnDgQzLuawD+F45FI/a0COjvacr5XzyW0b8n11DVyODkiKsP4GegiUhJgCnGRFt02jx2YZEDUXSMEnuXW9SB9BjBKMevttTszJ7dl221druuC++P9ZULv0R7qUnAcCfMu44lByDz14wtBf9BHozsRy3GEnIi3O+UrLyoecSNqTmFpRbcRy+QpdoVKm7xpmGCfMgRyf0PVckxtKQ/r1+zrv8N6YG4ye+wX6ZW08
- mK8rqnzp
- 6M9LjCynHEEB/lLDHMXmLkiTlkUORN9J+ZLOT4jbh5ec3RHvkx6qR9BuoJT+2/BeXyEMl0+bvWwVAp4Hkw+JIFrMGRMq3vp9Di60Z2+oFysOGIRIEjKN+4dR7mC3w4uH2A1E+1qCQakAArSand8nZbbBTCEf4C/wQJpO+dbd4oNDLK7e6tRB6Ix/u7fpkL8zy8z4B7S0NnxWeTHCWAhY8vhMXqumJZ0hzGTJlX0jetc8QCAXF/JjO7Dvj2nDwbFcmhVLkDN5dshSIZsiw/RZDgZLpIX9oob++Jmcet0lYNuKgU2E41pp8m1wJTAwI7q0mZLq04wiq+lUplBi9JRBUBJVON8K4QtgUquvGIlKSgzL4rLFXCYNkgkTgZH44o+Te7uU4EFZrGjP/uBYDmuGbDZ7I+6opgPMNM7ROnbFzvISZx6cxeAKnHmpI4uLyR93VIOim4NxFashd8d4=
+X-HE-Tag: 1789699142-245096
+X-HE-Meta: U2FsdGVkX1/vofQqn185TyXNqt1BWQcnhXk5RsmuwPxuSxz5fbrVxS6uhds2lw7t4TjoiwZkKF6TerQZIOWN62MN8EQdDl2uoILHUrWirGWg1+uTc3v1XGHrEKT6ul7ZJNh+5MnUE9I6DYdfMNz7xlL1Bm3dTxRW8Na7MKtVpMBuJji4bXICdCLXzu+8wchhQwp8tdkU83Z+v0nKzvXc5ol+wT1x94M5kT4hv4SjF5PC3tj/SkdkSQRBY8hOYsEiiFzMFMKOowffQhh3wNxcdNOGJ0Ie3RyGd1sZwycp9ArOMpBglS8NGWTgReqBbZKyReGbfPWKnSUR7oMO/gtlgsAApOMzodpKauLc0Gd/8/1tKr70JNUiGXdJ9jFauKHgWSMYYMJhlWnzpV0p//iZtKS+4XF+qentKT4NE48PlqT7JoDtpVT4ISyLEI5yRUlcpWUwKe6vC1dLYekI9q9XrT7w0O9AfAxrusvUaM9sFQQS26YXy5VHwQS81XKmWMfEeX+CiC5WplAENVVTyjzEuXSK1RDPqGKZnKcsy5xMfJkJtkijhw9uhUDEpXeUhEgk7fXl4cLKcdkn1X9Y6gDYgSb6eBEFxgqup7J0F4+i6t0Ux8hvBAJyGQOa10fEvVj7ckJft4rQF4LD5A+tB3jlZUMSL06ARr9eqxjAnX9YyBwI81yJTBuni2+EY+f3NbvsoS+7zVBjsQQbrFhtvL5L41E4UARzM1YPsMvf0GYUumooZCHwulhp+HFIbABmNoX4c8JULTEJoiRb0uQfOGzcd7ptYyuOXJvLykj3QhFMa3+NImuc/UtAIChFEbwkx1vEoneapoXhMiAsqJgYC337WA5QQQK1HCqEQOr9zyNLrmgknt0tnbUtt/BYnIDthU7eZTjik12wiELWHq2jgB1f5X3nqdOVBxsW4BO2ptu21AfFw2vyq5oO8KAJiiZSlRMV3LLpxq+3yrMn3ialUEZ
+ D6pwqBEz
+ dUvdUhYPiiT+JpFz3u0qpBPU/tX8SnZ+bgotSFsURr1H8ZjNSF8hlGKipTaYyxMcEJ3MY2BBGU1yDsL+UUfWkWucF+HRA9yOuvHoPpK1ntyd2g7qGSmJ96/I/vNPSYkh2Ujsnijby+VTkQvyBT+tBE4qFUL274a48vv3Q7TpNgvA8pjPyAg2GpWd+NV+UiOG/m4QwHTNXQjr++bMz2F00Wfzxs4Mxc7ybB2TYtH0l+Iim7A2k7izMRkW6JxSonj7lkvdiD8mm6WzpR184OGOq7RG/sw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,116 +94,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Suren
+Hi Karthikeyan and Sang-Heon,
 
-On 2026/9/18 08:53, Suren Baghdasaryan wrote:
-> On Mon, Sep 14, 2026 at 11:59 PM Hao Ge <hao.ge@linux.dev> wrote:
->>
->> After shutdown_mem_profiling() clears mem_profiling_support,
->> needs_section_mem() returns false, so later modules have their codetag
->> section placed as regular data and never enter the alloc_tag maple tree.
->> codetag_load_module() still called load_module(), which allocated a percpu
->> counter for every tag; release_module_tags() could not find these modules
->> on unload, so the counters leaked.
->>
->> Return -EOPNOTSUPP from load_module() when profiling is off:
->> codetag_module_init() drops the module's cmod, no counters are allocated
->> and the module loads without its tags. codetag_unload_module() now always
->> calls free_section_mem(), since a module whose module_load() returned
->> -EOPNOTSUPP is not in the idr but may still hold a reserved section.
->>
->> Reported-by: Sashiko <sashiko-bot@kernel.org>
->> Fixes: 4835f747d3ed ("alloc_tag: support for page allocation tag compression")
->> Cc: stable@vger.kernel.org
->> Suggested-by: Suren Baghdasaryan <surenb@google.com>
->> Acked-by: Suren Baghdasaryan <surenb@google.com>
+On Thu, 17 Sep 2026 18:00:13 +0000 Karthikeyan KS <karthiproffesional@gmail.com> wrote:
+
+> Hi Sang-Heon, Hi SJ,
 > 
-> Yeah, I guess I didn't think about alternatives...
+> > I think SJ already commented on a similar patch. please refer to [1]
+> >
+> > [1] https://lore.kernel.org/all/20260722094304.3132750-1-dayou5941@163.com/
+
+Thank you for pointing this out, Sang-Heon!
+
 > 
-> When mem_profiling_support=false, why can't load_module() skip
-> allocating percpu counters, zero out the whole area between start_tag
-> and stop_tag and return 0 as success (mem_profiling_support is not
-> enabled, so we acted accordingly)?
-> Module will be added into maple tree and later codetag_unload_module()
-> will find the module, call release_module_tags() (which is a NOOP
-> because tag->counter==NULL) and finally call free_section_mem(). This
-> seems more natural than special-casing with EOPNOTSUPP. WDYT?
+> Thanks, missed that thread. Same objection applies to mine.
 > 
+> > Can't we keep supporting zero sample interval and fix the warning
+> > or the real bug instead?
+> 
+> I measured a few floors for kdamond_usleep():
+> 
+>   floor    kdamond CPU (3s)   vs sample_us=5000
+>   1us      84%                28x
+>   100us    42%                14x
+>   1000us   12%                ~3x
+>   5000us   ~2%                1x (matches control)
+> 
+> 5000us is damon_new_ctx()'s own default, and at that floor the spin
+> is just gone.
+> 
+> Would you rather we just document sample_us=0 as accepted/expected
+> behavior, or clamp it to that default inside damon_set_attrs()?
 
-I see, but the module would then sit in the idr with NULL-counter
-tags that become visible to readers which today never expect that state.
+I'd prefer adding a comment saying zero sampling interval is accepted.  I think
+damon_attr kernel-doc comment is a good place for adding that.
 
-alloc_tag_top_users calls codetag_next_ct() to find the next codetag
-and alloc_tag_read() would do per_cpu_ptr(NULL) for each cpu - plain
-pointer arithmetic onto a wild address, an oops straight out of the
-OOM report. 
 
-https://elixir.bootlin.com/linux/v7.3-rc3/source/mm/alloc_tag.c#L503
+Thanks,
+SJ
 
-So if the codetag section within this codetag_type ends up meaningless,
-is there a reason we still return success? We will still maintain cttype->count
-and allocate a slot for this module inside mod_idr.
-
-I'd rather keep the -EOPNOTSUPP version (your original suggestion),
-also because the comments in load_module() and codetag_module_init()
-already document this scenario.
-
-WDYT?
-
-Thanks
-Best Regards
-Hao
-
->> Signed-off-by: Hao Ge <hao.ge@linux.dev>
->> ---
->>  lib/codetag.c  | 10 ++++++++--
->>  mm/alloc_tag.c |  4 ++++
->>  2 files changed, 12 insertions(+), 2 deletions(-)
->>
->> diff --git a/lib/codetag.c b/lib/codetag.c
->> index a9cda4c962a3..a0b600720afc 100644
->> --- a/lib/codetag.c
->> +++ b/lib/codetag.c
->> @@ -240,7 +240,9 @@ static int codetag_module_init(struct codetag_type *cttype, struct module *mod)
->>
->>         if (err < 0) {
->>                 kfree(cmod);
->> -               return err;
->> +               /* -EOPNOTSUPP means we can load the module without its tag. */
->> +               if (err != -EOPNOTSUPP)
->> +                       return err;
->>         }
->>
->>         return 0;
->> @@ -388,7 +390,11 @@ void codetag_unload_module(struct module *mod)
->>                         ++cttype->content_id;
->>                 }
->>                 up_write(&cttype->mod_lock);
->> -               if (found && cttype->desc.free_section_mem)
->> +               /*
->> +                * A module whose module_load() returned -EOPNOTSUPP is not
->> +                * in the idr but may still hold reserved section memory.
->> +                */
->> +               if (cttype->desc.free_section_mem)
->>                         cttype->desc.free_section_mem(mod, true);
->>         }
->>         mutex_unlock(&codetag_lock);
->> diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
->> index 5836803898ad..1ca0409b492b 100644
->> --- a/mm/alloc_tag.c
->> +++ b/mm/alloc_tag.c
->> @@ -988,6 +988,10 @@ static int load_module(struct module *mod, struct codetag *start, struct codetag
->>         struct alloc_tag *stop_tag;
->>         struct alloc_tag *tag;
->>
->> +       /* Profiling disabled: load the module without its tags. */
->> +       if (!mem_profiling_support)
->> +               return -EOPNOTSUPP;
->> +
->>         /* percpu counters for core allocations are already statically allocated */
->>         if (!mod)
->>                 return 0;
->> --
->> 2.25.1
->>
+[...]
 
