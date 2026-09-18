@@ -4,39 +4,39 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3A7EC982D2
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 03:58:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 238BEC88E75
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 03:59:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6AAAB6B008C; Thu, 17 Sep 2026 23:58:57 -0400 (EDT)
+	id B87E86B0096; Thu, 17 Sep 2026 23:58:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6541F6B0092; Thu, 17 Sep 2026 23:58:57 -0400 (EDT)
+	id A74026B0098; Thu, 17 Sep 2026 23:58:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 56A436B0093; Thu, 17 Sep 2026 23:58:57 -0400 (EDT)
+	id 968DE6B0092; Thu, 17 Sep 2026 23:58:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C35C6B008C
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 23:58:57 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 870E6C0519
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 03:58:56 +0000 (UTC)
-X-FDA: 85225527072.15.CFD2C48
-Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 03787140002
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 03:58:52 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=GrvVkPxf;
-	spf=pass (imf26.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 715586B0092
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 23:58:59 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E6CAF12049E
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 03:58:58 +0000 (UTC)
+X-FDA: 85225527156.21.DA8C5EA
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 22E8D16000E
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 03:58:53 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=tHcGLHPZ;
+	spf=pass (imf08.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789703935;
-	b=BhhMFLrc0X0zOfTMXvqv+D000vUcScFd42uGQdDGvPnUKmIyUYozuNAxRaDvpbXTEXp32t
-	U2UWzuig9IoWCvuExgFBJYEv/tGJx6UPFNxIw3CKt5GhKdU7fwGQXrlDp14UdU6DydpOFi
-	QHAo5COkrILxsn3RgLX0QvwCWSWN/mM=
+	t=1789703934;
+	b=Y8rko85hdPGiCoIr5pfqFO2ZNYqM4g7Og43U15/ldBaZAY2H3VyG77RLaxqP1YjT7UCOiH
+	MuJn9oMGL0fckNvJTGeuqQTgiHM+9M2hGaEZjyA9UHLeoy20sOeDNLkD+c+CBFh01W51Dl
+	IkzNV0f8FTm7lli5Yrclnp2ZJK8mfdk=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=GrvVkPxf;
-	spf=pass (imf26.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=tHcGLHPZ;
+	spf=pass (imf08.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1789703934;
@@ -44,19 +44,19 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NP5OzPya8rOoaZGJQaokuW0ZH+2iZDJtaFBx3BRmKL4=;
-	b=qbquJ76HCTthef53Ijj2o+t9LVLQ637RKi3qIQJKQ+xqTtZPVRpkwXi2PcdpoDqHsgwsCs
-	aqcRV92vVHtMAkgZoav3PV16HzwHxwtJtNXuprBtjkUckhJRRmUss+/WjlNiQpW29vr0Up
-	1BiewB6JFEA0bJyqyp8nLXgkhDeCum0=
+	bh=Gj7KZoF9VTbSXIKMoovF+7EFs6uTwEiek6buK+yA5uo=;
+	b=hm7VSwkaN+TfWS9BlKlg6XpRR1ka1k8FwPNNuxFfezxF8JZ97fL3Krw4kFjIVVdH+p23aR
+	uAcFfco5+zBhCVkM4ewG9oTrUPeJSGEyeQUrxTpDz1eFwXPwj1YNh+0vWFNL6eREUcmUGh
+	BMS7O4+aTMo3dzJeptEsqXad8Ccbo8k=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1789703930; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=NP5OzPya8rOoaZGJQaokuW0ZH+2iZDJtaFBx3BRmKL4=;
-	b=GrvVkPxfDy8WwBczLWspMdMA32frYawtP1Q3WwSgQHeE97ZeK5oW3S2mkhzqfnARfT6P36gh4OmIfLYrumjiMWqRjMYe8fPkR9sN2ZbdUA+53Uk9vSBbYzWJIApSqa3uGKhcDeg+P+xRVNoCtJy6+uxfEu5jUldK8RgAvTEosfA=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0XB9uK4L_1789703928;
-Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XB9uK4L_1789703928 cluster:ay36)
+	t=1789703931; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=Gj7KZoF9VTbSXIKMoovF+7EFs6uTwEiek6buK+yA5uo=;
+	b=tHcGLHPZTifGG/dIk72HfKDu2dQ6hugIvvnccpyT2u+zhTq2oVcdjjpYXo82mG66z3HM/xgD1N4Rxb/YzoJcBa/+UrXCA569xzWCbhwb0zlpjluRR1UvWF+uYE3hVdY4qrD2LwB3ze3qhf8xyaPVbaGOZKaPpCvnC/1hVzU+lW4=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R881e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0XB9o3aj_1789703928;
+Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XB9o3aj_1789703928 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Fri, 18 Sep 2026 11:58:48 +0800
+          Fri, 18 Sep 2026 11:58:49 +0800
 From: Baolin Wang <baolin.wang@linux.alibaba.com>
 To: akpm@linux-foundation.org,
 	hughd@google.com,
@@ -74,22 +74,22 @@ Cc: ziy@nvidia.com,
 	baolin.wang@linux.alibaba.com,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 01/12] mm: khugepaged: remove outdated comments and check for shmem
-Date: Fri, 18 Sep 2026 11:58:32 +0800
-Message-ID: <12bac4614aa4b37490e92051d484f4f2cb215076.1789701677.git.baolin.wang@linux.alibaba.com>
+Subject: [PATCH 02/12] mm: khugepaged: drop the hugepage_madvise()
+Date: Fri, 18 Sep 2026 11:58:33 +0800
+Message-ID: <e4d6918e2e420a2378e8f8c502ccfbad2a7bc2d1.1789701677.git.baolin.wang@linux.alibaba.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <cover.1789701677.git.baolin.wang@linux.alibaba.com>
 References: <cover.1789701677.git.baolin.wang@linux.alibaba.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 03787140002
+X-Rspamd-Queue-Id: 22E8D16000E
 X-Rspam-User: 
-X-Stat-Signature: 1wmd4kzfmqqjh58zg7xkfygbzqphcrjr
-X-HE-Tag: 1789703932-172265
-X-HE-Meta: U2FsdGVkX197R+o8TjsHSs7v4KdK6j1QUz2RvlbPD/3qBUT9yq81sAiWGYKA3ixwCuSeKej44V6obPmXNjO3LobYm9hSyUxrnupHMF5iPcVaFdPak4rk2NLT84V6+tC54kbue5nJ4bWSYFShUIYwuy+DE2IWU13KRvEWsUsiSG0h03oxfkdNcJfICz50hP8t9C0Jk5vujaOVxyLj0XZ3G3qAGefhfAaeaCD9nparoXuP+gTrg/kqkfWzxpjzokYmT/CrgZ8GjbcfjK4njxT8Znorbbkebzolole92zcHASy9EJN8QrbOHjOX7I6BZyt7udZc3moNAG/LgFi4tnWq7mNNyktFaerUykv2u6O9lpgYgpZ9w0OrjxV5Mma+SwX/1NMS95U3FEd8nNdyQbdyyy/eRxgZTlZFDHgdFTF5ywOJSLRxxVSpMHqNWKfT0AFNi8pKqVdVXJ5Jnk5ZKAzeBw4Dsqbna0HToPDZGZUDNuOaBfV9jT9oAf0ndaTSLo+uuZXnNUAuuPBZxid1r8cY4nfJG7hkExcDqr1qVPOviWAch4l8OTqXwM2fH4Plms9lxwaNhMs0oNndpdLihbd8ly3pRE0RvSDbqV3fihp/yJU1BkTsc3qvkm7gy4h4nhQBGv+61lsUoHdvzfoGSA99Jbf2fcUAqTOoW9Ak8u9XGze4zMkTbuP5grb56qn0ZwGuQwCVfXngg9wgz/7Kr5JhDGvTlQ12KKmtDDIvD0JrJeFTbSC4qycack4cQY0/+j58FlM7TzyNBtjBgkR7Vc3W27F5ipGCHCI7UuEVvUW0WYMu4i5qBdxwW0Xc7+onji2VZpWiBiO7RxwwOeua0yGXKwoBawkoDBIsh++QNuDebfFuOcJuGuFXqTP7Jmm4M7INW2xzhc/vTRTbfalaaAWOpYkNRgtXytOauTLb1SywmN4Pyrtm2F6BfLoONbwHbBmMqEkfUmhb9Yk8Tf2hPaC
- oJqlWXgO
- XW7cJr5m0bPi2khBeL0iNUruSzC28vJ9PmEC0xpTmY38KYpwerHe34bTmY2DyY8UaGpJmLI76OfZX5/ATT2wBPWn90lilQcJWUceC21w/wRFSb6+fmHUJs+FXL9FGAFd0LS/hOBO0A5/+oqLF/iB/nk0EIG2TQQ5VkrCIlz9UukLlU13EAZU5rC9INUpZMZ0pCD1SqTp3GKg9RomNzuEKc01PA5Ue3hEXy87eikNvZCeC5hMnEI/iQMJKOTzaPEeKM2NW
+X-Stat-Signature: dppuuk3zyazs7zb7mraqcum4bj9xajpx
+X-HE-Tag: 1789703933-171611
+X-HE-Meta: U2FsdGVkX19rNMRcPpLWXHNGgYhzFokk0bkuP/mAesugkKGmLWddGqWJnBeb+cBuBejVZupRAUeLI7G3ReF+4HXJJp2U5XEtm5b665tFAxmTQi9zLVqtkZjx3ew26b/Kjyb5OnXnm6r3CfwrsOfvIHFnGb7aa+aBkUiwoKnopex2Kf4k1KuwncUtKgguBVj1ZP0/jDgqh9G/YHEaalVexGX4efYhKiwDJoKdmgRwE1wUbbZ4TsTuBc7xq5KcNroHNJZkuEgGoUFzj/+vPKrtaT+vlyq/IX+E9j3Ep0TZ42AGDCyMYUkIUlLU/o2xromVWX9N1zpYq4i+dnWGHRPnbJLFRyiFGAv2Fe3DgkrS3g4zgyV+KjHaT0iZWmFCtoXD1pzv9NlB5USg6/7JhrW8xoUWnBZZizKYi8KQ8DB70DY483ovaHKMDAMS/Q9NOlai5YjhIzZmrXu4NvKWbvjGUy8p6a1zQWsDxiXY+5NyHC2ZR2Pntkc8GLo48aSjDJ0BmkVU9r+g1IISbM/8asF2z5ULYhbsRoTNkysO1j+fgx3S4iwjNWw2PxZcsW3adkst2UIl5Sjdnjkj6yD1JSiCCX/mYXahv4RVPvPdl4dylgoW16HNJs3GsRXsFwMOSwrRFk5mC3W6cGRsiGtAK/nqdZjTdZbZfiJAmYZ0uWq42VhjrABYXA6zDYErTFts3KCcUCiGyPVr0esDYkg75Ci85Fsvlbt4edk6wcruZIn+Y7NcB/RtniQXCg2HcXjP1eKsoReV2X+ezCnG8aIy4AX9nUjwUwi2xfp863g6htg/mL3TEDr2qtEBVFiYkcaUmdXpzKOFVpb6EzZfZL5a8f5OKTPjzn57uWKv73lNcKqN3YHW636oDbwtynMkwrsD9ruFe2mrmoSLpDQpgW4lPc+pianG2+iuAcWn12WE/HXt+VMxKHaq+w5MaPHUpkUAVaLiRdNHft3cbZeH+dWS1Qn
+ ZegkAKjY
+ F+WeF92lMT4DqO0qI1nHncNQRa/hKxgtop2hHOGleE1OxtcZuvb4FZshzXt1xfZQ1toi3NbT0APQvPrRecz+Uln+73T2EittCM0bhrNO3w3e/OZGBHQtcyu4p86/zghH400hyJZr1VVM0UkokYuFTHmAWKBxVPKZlalQSoYHumU+wnl0O/2eFtcCfj5FbDCS76jDMRVyVhVb3CsrrorXSTeWYKjuK4GNMBuDS0ZvQCwjHMyc+cRyWVdQQ4yQIdWVBviRg0BDxQGwEVcwqo+9lTqD4n/asXP97JS93ntM6bfCKgwf3gbi/vZhmhg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,34 +97,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-After commit eb92d97f7e6a ("Revert 'tmpfs: don't enable large folios if
-not supported'"), all shmem mounts can support large folios unconditionally,
-so drop the outdated comments and the check for shmem in collapse_file().
+After commit 2fd4e7693674 ("mm: fix incorrect vm_flags usage when checking
+allowable orders for tmpfs"), hugepage_madvise() no longer calls any
+khugepaged related functions and only updates the VMA flags. So remove this
+helper and update the VMA flags directly in madvise_update_vma(), which
+simplifies the code.
 
 Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 ---
- mm/khugepaged.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ include/linux/huge_mm.h |  8 --------
+ mm/khugepaged.c         | 22 ----------------------
+ mm/madvise.c            |  8 +++++---
+ 3 files changed, 5 insertions(+), 33 deletions(-)
 
+diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+index 8ca0fa3be2ac..334c387ad997 100644
+--- a/include/linux/huge_mm.h
++++ b/include/linux/huge_mm.h
+@@ -508,8 +508,6 @@ change_huge_pud(struct mmu_gather *tlb, struct vm_area_struct *vma,
+ 			__split_huge_pud(__vma, __pud, __address);	\
+ 	}  while (0)
+ 
+-int hugepage_madvise(struct vm_area_struct *vma, vm_flags_t *vm_flags,
+-		     int advice);
+ void vma_adjust_trans_huge(struct vm_area_struct *vma, unsigned long start,
+ 			   unsigned long end, struct vm_area_struct *next);
+ spinlock_t *__pmd_trans_huge_lock(pmd_t *pmd, struct vm_area_struct *vma);
+@@ -707,12 +705,6 @@ static inline bool unmap_huge_pmd_locked(struct vm_area_struct *vma,
+ #define split_huge_pud(__vma, __pmd, __address)	\
+ 	do { } while (0)
+ 
+-static inline int hugepage_madvise(struct vm_area_struct *vma,
+-				   vm_flags_t *vm_flags, int advice)
+-{
+-	return -EINVAL;
+-}
+-
+ static inline void vma_adjust_trans_huge(struct vm_area_struct *vma,
+ 					 unsigned long start,
+ 					 unsigned long end,
 diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index a3a9e4d93b46..21d75f5b4b4d 100644
+index 21d75f5b4b4d..f81ecaaa4890 100644
 --- a/mm/khugepaged.c
 +++ b/mm/khugepaged.c
-@@ -2192,12 +2192,9 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
- 	bool is_shmem = shmem_file(file);
+@@ -380,28 +380,6 @@ static unsigned int collapse_max_ptes_swap(struct collapse_control *cc,
+ 	return cc->policy.max_ptes_swap;
+ }
  
- 	/*
--	 * MADV_COLLAPSE ignores shmem huge config, so do not check shmem
--	 *
--	 * TODO: once shmem always calls mapping_set_large_folios() on its
--	 * mapping, the shmem check can be removed.
-+	 * MADV_COLLAPSE ignores shmem huge config, so do not check shmem.
- 	 */
--	VM_WARN_ON_ONCE(!is_shmem && !mapping_pmd_folio_support(mapping));
-+	VM_WARN_ON_ONCE(!mapping_pmd_folio_support(mapping));
- 	VM_WARN_ON_ONCE(start & (HPAGE_PMD_NR - 1));
- 
- 	result = alloc_charge_folio(&new_folio, mm, cc, HPAGE_PMD_ORDER);
+-int hugepage_madvise(struct vm_area_struct *vma,
+-		     vm_flags_t *vm_flags, int advice)
+-{
+-	switch (advice) {
+-	case MADV_HUGEPAGE:
+-		*vm_flags &= ~VM_NOHUGEPAGE;
+-		*vm_flags |= VM_HUGEPAGE;
+-		break;
+-	case MADV_NOHUGEPAGE:
+-		*vm_flags &= ~VM_HUGEPAGE;
+-		*vm_flags |= VM_NOHUGEPAGE;
+-		/*
+-		 * Setting VM_NOHUGEPAGE will prevent khugepaged from scanning
+-		 * this vma even if we leave the mm registered in khugepaged if
+-		 * it got registered before VM_NOHUGEPAGE was set.
+-		 */
+-		break;
+-	}
+-
+-	return 0;
+-}
+-
+ int __init khugepaged_init(void)
+ {
+ 	mm_slot_cache = KMEM_CACHE(mm_slot, 0);
+diff --git a/mm/madvise.c b/mm/madvise.c
+index eb491fa88325..4150f6a8cf64 100644
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -1598,10 +1598,12 @@ static int madvise_vma_behavior(struct madvise_behavior *madv_behavior)
+ 			goto out;
+ 		break;
+ 	case MADV_HUGEPAGE:
++		new_flags &= ~VM_NOHUGEPAGE;
++		new_flags |= VM_HUGEPAGE;
++		break;
+ 	case MADV_NOHUGEPAGE:
+-		error = hugepage_madvise(vma, &new_flags, behavior);
+-		if (error)
+-			goto out;
++		new_flags &= ~VM_HUGEPAGE;
++		new_flags |= VM_NOHUGEPAGE;
+ 		break;
+ 	case __MADV_SET_ANON_VMA_NAME:
+ 		/* Only anonymous mappings can be named */
 -- 
 2.47.3
 
