@@ -4,96 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33F93C982DD
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 20:18:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FAFCC982D7
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 20:19:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 44F2E6B00A4; Fri, 18 Sep 2026 16:18:02 -0400 (EDT)
+	id 896F86B0088; Fri, 18 Sep 2026 16:19:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3FF206B00A6; Fri, 18 Sep 2026 16:18:02 -0400 (EDT)
+	id 846FC6B008C; Fri, 18 Sep 2026 16:19:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2EE9B6B00A7; Fri, 18 Sep 2026 16:18:02 -0400 (EDT)
+	id 736476B009F; Fri, 18 Sep 2026 16:19:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0BBC56B00A4
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 16:18:02 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 942901207E9
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:18:01 +0000 (UTC)
-X-FDA: 85227994362.29.9EE2445
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 1190F120005
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:17:59 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ic40wAoF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789762680;
-	b=Fb1NbDs3VP4dTNAoTkAl8jewCoPzuXBTP0Nr5ceuawA3PUnzTcOZVrUslrAS5nwzHY4H96
-	27RhuXWQZ5JW0uTUizulgAWEuMeI4RstBMehgaTn6ySzzr4Tx/Aih5cfK+EFVZStNPiiVz
-	Shsum9fC1y4ZdT0XB9j/AORAD8ahd0E=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ic40wAoF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 513066B0088
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 16:19:19 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DBD2980768
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:19:18 +0000 (UTC)
+X-FDA: 85227997596.26.C77FCE6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 4BE9A80006
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:19:17 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YPlYpnky;
+	spf=pass (imf30.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789762680;
+	s=arc-20220608; t=1789762757;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Rj26d3aL2UpD/OsbufCpnz9ZaAuE0EUthnpJ0sXROVk=;
-	b=KOCepMgxnGwwgImJa7Wz8gl6TQMMUJ36npHLdYQN5VynBrHUH+bwYt7HwBig7r6DNACqiZ
-	/AfOa2tbvHPSk/MRU4xcKPNBRPDP4ZS11OQtyPLLJPNk+Zc20CBHYVJxSI94+yafBOKZOK
-	xWL1WlDj2uNXIaSfKNMf+Xo34NeZlbI=
+	bh=sPMFs+N7+9joEThLRn1A4j3xw35F8/P+UFOYT3cS5vs=;
+	b=qsf+m1XYq+HoGCfKr3uugRBKbIZbik20q0dbzPybsBGT8f4C1YsPUARSPmH44i/lxsUGt7
+	U4z584I0OhlyE+W1Zdwn5gzYTyqIvdH2m3O2HjvcXTIWGelNn8j8ehoBqRwCIU+gOp90s0
+	2ueIe/ZJMTTMl9RNjU62FEpfTx1sQTE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789762757;
+	b=RvzeoLll1nTCmC3K5v5iRzNsI+owmZwGF8HUJtu0VlACJhF024ZW/1eX3jy1rVILLIuOF/
+	Nktxeu+EFrXngIfPW4djuCk0nyK1YleYuoZUtf8wCGJ9BM5UM6uRZxWD5rsM7+kf3939bm
+	VXTm+Kbs1WIoTz0RiNplyESQA6qLy3o=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YPlYpnky;
+	spf=pass (imf30.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8AA26602CC;
-	Fri, 18 Sep 2026 20:17:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA3871F000FF;
-	Fri, 18 Sep 2026 20:17:57 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 808F64125D;
+	Fri, 18 Sep 2026 20:19:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC1D1F000FF;
+	Fri, 18 Sep 2026 20:19:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789762679;
-	bh=Rj26d3aL2UpD/OsbufCpnz9ZaAuE0EUthnpJ0sXROVk=;
+	s=k20260515; t=1789762756;
+	bh=sPMFs+N7+9joEThLRn1A4j3xw35F8/P+UFOYT3cS5vs=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Ic40wAoFb5QI4S4AZtHCuYo7DpiDWYXy+Vg66oKsiZCf0vKs7mFaybs+eEkI2Ca0p
-	 LsvOzLbUd20yb6EfzbjtdXMW6+daSuF3ys9c3jtzvaWzy1+r+5mGc1fW74XF/5xHyW
-	 b8HuWqEy60y7RoYviDGVFDKJPsAyD0qU/Ws/i7DJ/dd3yXFha6vfyubXF5yueTE+jX
-	 ziihUo2gPcptS36xC6q1uUCmQUnVk+m3aIeKFzuZWUeN22ifPM8TEtaL7Iv1Dkxwc7
-	 Isj2sKpT1v3z952iVZ8xaJorgYZQ0GT0fOo9V0X8cIwBEDMIzs0NEPjHoY3bSChifJ
-	 /+vGQ/ZG08ZDw==
+	b=YPlYpnky7mi7B4nDnFiPWFOktxyeOfZ6KKSL7GtCns3H/qFcDP2ymrRRryPu9vgtG
+	 q3IxdutHh9FQV/SOx9Wfr7nM7nCvaF6c9fG3dRTc5Pwi6HbXkMEUHCpWm2l+XRvbMO
+	 jyeanBPSSs+r9gtihibrV5eci0c2MBoImHb46PnH+WRVi7fbVIbl1nqRcZ4IT6EXdJ
+	 lZg0alLcSFWRV3YTOLv2NZHPojAX5Wlyzk00C/tqasLB3LL6/+D84ZWFbIYsTxj4KJ
+	 4z1cNCOfQScLPAOORjL2DmtXqRtwA2LJtSLXY7mhhQ0A87b9VYfmZ+8i8MSYTSbUfP
+	 5LSVRzzVbIVGw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v9 12/13] PCI: liveupdate: Do not disable bus mastering
- on preserved devices during kexec
+Subject: Re: [PATCH v9 10/13] PCI: liveupdate: Adopt ARI Forwarding Enable
+ on preserved bridges
 Reply-To: sashiko-reviews@lists.linux.dev
-To: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, "David Matlack" <dmatlack@google.com>, linux-mm@kvack.org
-Cc: "Shuah Khan" <skhan@linuxfoundation.org>, "Vipin Sharma" <vipinsh@google.com>, "William
- Tu" <witu@nvidia.com>, "Alexander Graf" <graf@amazon.com>, "Jacob Pan" <jacob.pan@linux.microsoft.com>, "Mike
- Rapoport" <rppt@kernel.org>, "David Rientjes" <rientjes@google.com>, "Jonathan
- Corbet" <corbet@lwn.net>, "Chris Li" <chrisl@kernel.org>, "Josh Hilke" <jrhilke@google.com>, linux-pci@vger.kernel.org, kexec@lists.infradead.org, "Pasha
- Tatashin" <pasha.tatashin@soleen.com>, "Pratyush Yadav" <pratyush@kernel.org>, "Leon
- Romanovsky" <leonro@nvidia.com>, "Saeed Mahameed" <saeedm@nvidia.com>, "Adithya
- Jayachandran" <ajayachandra@nvidia.com>, "Jason Gunthorpe" <jgg@nvidia.com>, "Lukas
- Wunner" <lukas@wunner.de>, "Pranjal Shrivastava" <praan@google.com>, "Bjorn
- Helgaas" <bhelgaas@google.com>, "Samiullah Khawaja" <skhawaja@google.com>, "Alex
- Williamson" <alex@shazbot.org>, "Parav Pandit" <parav@nvidia.com>, "Randy
- Dunlap" <rdunlap@infradead.org>, "Yi Liu" <yi.l.liu@intel.com>
-In-Reply-To: <20260918200640.887030-13-dmatlack@google.com>
+To: linux-kernel@vger.kernel.org, "David Matlack" <dmatlack@google.com>, linux-doc@vger.kernel.org, linux-mm@kvack.org
+Cc: "Jason Gunthorpe" <jgg@nvidia.com>, "Leon Romanovsky" <leonro@nvidia.com>, "Vipin
+ Sharma" <vipinsh@google.com>, "William Tu" <witu@nvidia.com>, "Saeed
+ Mahameed" <saeedm@nvidia.com>, linux-pci@vger.kernel.org, "Mike Rapoport" <rppt@kernel.org>, "Parav
+ Pandit" <parav@nvidia.com>, "Pranjal Shrivastava" <praan@google.com>, "Shuah
+ Khan" <skhan@linuxfoundation.org>, "Alex Williamson" <alex@shazbot.org>, "Jacob
+ Pan" <jacob.pan@linux.microsoft.com>, "Alexander Graf" <graf@amazon.com>, "Adithya
+ Jayachandran" <ajayachandra@nvidia.com>, kexec@lists.infradead.org, "Josh
+ Hilke" <jrhilke@google.com>, "Lukas Wunner" <lukas@wunner.de>, "Pratyush
+ Yadav" <pratyush@kernel.org>, "Randy Dunlap" <rdunlap@infradead.org>, "Bjorn
+ Helgaas" <bhelgaas@google.com>, "David Rientjes" <rientjes@google.com>, "Jonathan
+ Corbet" <corbet@lwn.net>, "Samiullah Khawaja" <skhawaja@google.com>, "Yi
+ Liu" <yi.l.liu@intel.com>, "Chris Li" <chrisl@kernel.org>, "Pasha Tatashin" <pasha.tatashin@soleen.com>
+In-Reply-To: <20260918200640.887030-11-dmatlack@google.com>
 References: <20260918200640.887030-1-dmatlack@google.com>
- <20260918200640.887030-13-dmatlack@google.com>
+ <20260918200640.887030-11-dmatlack@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 18 Sep 2026 20:17:57 +0000
-Message-Id: <20260918201757.CA3871F000FF@smtp.kernel.org>
+Date: Fri, 18 Sep 2026 20:19:14 +0000
+Message-Id: <20260918201914.EFC1D1F000FF@smtp.kernel.org>
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 1190F120005
-X-Stat-Signature: u7ygga7p8wfqw13wqmabu1ocxcgpyu4n
-X-HE-Tag: 1789762679-361506
-X-HE-Meta: U2FsdGVkX19TYl6dJnitl1HWYZYIMN0rYDtzVUGgHbxinsG9q0IN3vbauabKwITKYQmfkfr7cSJD4WKZgItGDUU3P0dxoMuYP68SXhzHsHxIFnZw3ADfu2G5oItpIsXApmDMrxCY7awdOEOnjdiiss52Y1pd2kfqTC+VhxUs01D/rxbnG/KA945sVVPNq7iKo2SrkcDaIGWQash+APhcH2yh03W9MonjcYcET1SBIm5k7ZpcF5xzhXcWgJIzivWuIiExiF+GfJ8BEQLpq9qEktgqgZw1ILTl6MwC6pgAK3dJbHV2TXG5NSrIYPGd2huMMBDh2VZyae5l7hYATqk06RNj6OHjtAgz3Mfu9AAA+TjYojBPeYazgpLroZQRvDlbK8pDsWnmczSZ6UnGGT9bC2XXG8WTqVxUfQyx6nqaXXTtwh7kBr58UjHtvN1XcHurW6muJWZV7gyHsMXb38ADTyLUvmsSucNYim/5yKOWxMVmLGg+V3z/vxPPkPsRRwn6s2EJa50mP1cdofac/NN6WFd8CR3QTB153e6VrqdhDbpZh1Z6PWmYnBMCCuRId/xL9qHivDiE38C/ze8+MilDwgdVan/LluShsSrFzlRgWowypCZpnVKsJ1+q0NkMo+1UUUtfudSGXmcUjoa/PXlcDE5P4GGBH7Zs4nB/LDKFnV+L4wtp6nzH1k9yX75kEiSCXd0NNtpTcsWDSr17bC7DMtIhku/Ki8xTQMjBSIt0QvlJk4g7/vt+sv4Nn+862LsLcRE+Ho7pNY5CRoFm1MxxPzS57s3l8qDYUl+kEqn32zeXaABfS3Ppvs6HALy1sqkEyAuT/sabZXq8Q5A6uA7eiqAtG6PKHK4bjy6uY1TtrpiQ+1c1E251CiWsAYda9at77pidB0TcrpvPhhq8q2vIth3reqV2zr89AoxmZ+xVgE1KBroMrKapamULd1kOqshhYH58t190GdxZ+Jht+H+
- CI/j/GBL
- 3gj0jQlH+vvoPsMZh+6gb4eipb5/cNoxw0KlJ62uO9KzK1tmCXUMUB2mkFiH9wji8D7RyomtDrfYtW1CZ5pJHlIzuDSJowKau9Tiif83qXZDOawR4kz4H5Xwuw/Ujlzc8ca1+S35/7IDVqxC8xO4nNrPCvPzcOANRg38goORnTbEq2kt/TVoMmkXL0eIzDCq03Pan8JhTNhiBEmCWhgNIzQzS+C2DwLH2AcrKnFi8n8P8dJVDOb1ErgCvbmCgvCsXaM4aIg5+c7zpAKA4ZlhiFhzrf96JyUpnZzxYluHaQfF+/jpdWOHXxp0Y0bbZAwFEWkA1i2UzpOWG3/NqsIbo+PY6amEx/B1BAq/LUl72zNUo33cMKO/s5W5gLpX3lpreNzkyOV5ULX1+QM69QEdpjIws8x5DBw9EZawhiCOLnjYYvhxizRaK4L4Qa8Ai7iEz/QxbW2nX6rpWkMAM8KwHtWF0Uks0WjbJfn2/mheQAdtwHd5HnaifebWhE2/F7xufBoFjjVfSPdbKTmXIX4RKb4zFlP/+Uv//QNDsd+LoZRWy5v0ocmpI+xkm1ipRtKpp9Q4FsvvE2RgNtegnJys2wiX60mAd/Bb1qk7jgLvXSCQWKkTRig6TPr+i6KhufldhxOSQUfXuUREGDfHGGuKS5CBVZg==
+X-Stat-Signature: fx54c1yesntc65emr1uwt89kzxe7dwp3
+X-Rspamd-Queue-Id: 4BE9A80006
+X-HE-Tag: 1789762757-892974
+X-HE-Meta: U2FsdGVkX1+WNCrfSbGBCPc+rDlJUJcf+g62tNWwMCgxU08vcSTGzokUTDQGXO3s2jFlF2ur7PfLqEGm4/Xf8L0ATvdeL9UlMZGprfKZM8sAszvq7TMpmi2J/fo7q4ktIQA8msdvpNkMTdO+FGP1gKC0Z7ZxnerrJc9q8370a0rBjPYSRZACjQFDXuI/vJUCKIUszg6CwQdbw/NMOvr68N9PtmYM2AlBaBCQ3aHDKJWkYcyrT10S2jMWgOejsM3kkXATcu16zD0Gzuql+9GWIt4b7klv3svln+cdPKoRUy5pwSE/Wt/sIuHMCWzWBQyvRfXMP9LjQBlJlVxVCGuJw0mT59fWv2bBKuhcyEfKX0uTs/zLf9vzNrZa3pUpojUPjU1nRCwOjfTrFsxvzjFCh809zMeP9FuQPfdvrSpfTR9IamY5B+oudyjAofaEju/dU7jbCNzBG1H9PubXwuDnA26Gyuv+Fk1ch6G01gyu4pr2pOUDxoa0V+2aJ8/4Yj7W0YyfDGXSXOJPzTqMkzCK0jBXeBBcfnhw+NJcEh3FFtKFXAQ91thchaJj8zWaFCxplLjlzqaNMqZVfFmDEcDgu7ccvzFCtu9SLtlKP2Qnjdn7qVUOHWydVpY1JY24ek/R7RPyp61iPqtN92IVluc3Uw3MqhKMe/FvRE++w7nCUr1qusLbLzSXYyy7P6cKS/LUsQaZLF1TpHLS2LbFOcewXD1uMuNFw/NNiLms06Jr9q/5UF8JtNuKOnn6H+mluPL5nfY0MK0okh3K8fGnr9gaEyjX0EJ/q+F5HyXsddhXMggpZ1ELj7FK0aCl09YxlyLT6tju1hp/1+eT7huNTW5ZDAxTraV1X3+cKyXFDq+rQQMlwWc1fVF+ZUdJGQaVlu3e6KJyOR4SXf9GLnUsxuFl7KOhA2Az3cOBZpTEzzLYZxZKvuokMC7yqRRLt9LcFrVA3PaDvhkOshamP4ZffYR
+ kJ0Vs4if
+ oXmQk7ZqsgwgydyqEBGKhQDCWCqSeFgBuBN+AtbeHf+T7TIYNEO1zC+8M1GZqW7DH3WMiNI9ffyCWKPsBuy4B0Cd6qKtlEqLDIJ0TtN8h+aj1D3Yq/u0hWI0ZbTM7RYzT6QqIGnx5gKjd6DOi0nwQtwoOgotSOyjKaY28+PxgH9HTk/NrmbPWhICIMNZZ0C9RnKEWWXl8PPU1gAZf4efIU/6GM+ZRLKOd/hrY+MAEqz5n2UXN07lRoo743tX8TdcDu7bXpfVYVpAl/ULJwydECoDINIWoDMs+8Arm5NCkWP5SKIkh72Aapjo5vgWYcLnof2egOVa5ViyTxvYU+8VWAuzEhRwuuUkuV4opy2R+pesKtX6qQ07IW+T8Vw2qDB/g1iK3Wkr6PHMPPTaFjNE9LpVQeMecRIoCTB2ipxv+v6aeWd/goToMyfztdy50OcREH47CWS5j48xB45eJXMM2dtg1L3NX1zY7c6OV55KYoAuC50vxmTMjylHdi0b9mpZwt3sGIszNU4DWLSKZZt48/ZyYhIUySzgjEl5wjQkbBJlcxYDRauCWiu2BihQNGjASV/JBpfeOzeJGU4fjIvRiXnQ3HQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,31 +102,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Do not disable bus mastering on outgoing preserved devices during
-> pci_device_shutdown() for kexec.
+> Adopt the ARI Forwarding Enable bit on preserved bridges and update
+> pci_dev->ari_enabled accordingly during a Live Update. This ensures that
+> the preserved devices on the bridge's secondary bus can be identified
+> with the same expanded 8-bit function number after a Live Update.
 >=20
-> Preserved devices must be allowed to perform memory transactions during
-> a Live Update to ensure continuous operation.  Clearing the bus
-> mastering bit would prevent these devices from issuing any memory
-> requests while the new kernel boots.
->=20
-> Because bridges upstream of preserved endpoint devices are also
-> automatically preserved, this change also avoids clearing bus mastering
-> on them. This is critical because clearing bus mastering on an upstream
-> bridge prevents the bridge from forwarding memory requests upstream (i.e.
-> it would prevent the endpoint device from accessing system RAM and doing
-> peer-to-peer transactions with devices not downstream of the bridge).
->=20
-> Reviewed-by: Pranjal Shrivastava <praan@google.com>
-> Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
 > Reviewed-by: Bjorn Helgaas <bhelgaas@google.com>
+> Reviewed-by: Pranjal Shrivastava <praan@google.com>
 > Signed-off-by: David Matlack <dmatlack@google.com>
 
 Sashiko has reviewed this patch and found no issues. It looks great!
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260918200640.8870=
-30-1-dmatlack@google.com?part=3D12
+30-1-dmatlack@google.com?part=3D10
 
 
