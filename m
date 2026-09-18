@@ -4,130 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07C47C982D9
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 09:11:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FD1EC982D7
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 09:14:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1BD606B00A4; Fri, 18 Sep 2026 05:11:40 -0400 (EDT)
+	id CBEDA6B0093; Fri, 18 Sep 2026 05:14:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1952A6B00A5; Fri, 18 Sep 2026 05:11:40 -0400 (EDT)
+	id C70236B00A6; Fri, 18 Sep 2026 05:14:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0834E6B00A6; Fri, 18 Sep 2026 05:11:40 -0400 (EDT)
+	id B37A76B00A7; Fri, 18 Sep 2026 05:14:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CA4ED6B00A4
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 05:11:39 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id F3561A5E5B
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 09:11:38 +0000 (UTC)
-X-FDA: 85226315076.23.E24FDFF
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 2DD0620007
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 09:11:37 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Z9ReCRfc;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8D6B56B0093
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 05:14:24 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 04F411605B1
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 09:14:23 +0000 (UTC)
+X-FDA: 85226322048.16.13149D2
+Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 342E0A0004
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 09:14:22 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=gWQJ0925;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf31.hostedemail.com: domain of tasos.papagiannnis@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=tasos.papagiannnis@gmail.com
+	spf=pass (imf15.hostedemail.com: domain of tasos.papagiannnis@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=tasos.papagiannnis@gmail.com
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Z9ReCRfc;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=gWQJ0925;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf31.hostedemail.com: domain of tasos.papagiannnis@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=tasos.papagiannnis@gmail.com
+	spf=pass (imf15.hostedemail.com: domain of tasos.papagiannnis@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=tasos.papagiannnis@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789722697;
-	b=iJp4V66bZOAcNkZ7sfjArsiDUpIH2c7ZKjwpPZGZHyW0g1JwYsOQTTjGrMk1tk20RrRWCr
-	2iPzI5RtsYFlLey8zUgFJr83yABYY1B53Uv3HRiqI5PQsHFBlvyfzH5wqReK9y6zHFNIOy
-	FbAIPpMD1iX74IQ3e+Etxf42s/TtYJY=
+	t=1789722862;
+	b=IDUVUvSWn+H2u9/wW/ttXpOOzJHDZa5/UmLX8dcL/EIg7N3OYbo6un0rR+VufEvBxqwfTy
+	ymLljMFGCn3Gw0u97wYpqwRXDIvVaqMLm6AqDB5FUIAwW9JfmGh/7M8sGlO/i8cDzCRFC4
+	6BM1HrpKvhRlp1w1UqrxqrfyHtb+U/8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789722697;
+	s=arc-20220608; t=1789722862;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fpIPJYBrAn9lh0X90aJ+LjetM4Yd20S6QCxk4a13+gY=;
-	b=4KeB7q16whtA05ot8KWdkagrgMsIulx8RQClsFzaKdDCPkj9vB138TgmDV/E34+B+N/qFJ
-	C6CKx0xIXSgbVdhRj3xwHWzu+/9V7lMeZM2xnQJJdHIwqM/tVqXGMuTQq4FFjvtyR2Ej7E
-	vz7HtBvTPMdZ8FeJ1iwrnSYQ6nCLQcY=
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49e620fa473so3042905e9.1
-        for <linux-mm@kvack.org>; Fri, 18 Sep 2026 02:11:36 -0700 (PDT)
+	bh=SfKpB6hUtfeLMQ4pzuFq7L7CWOsyj3Ko5MJ4c1BBJiY=;
+	b=u/EaD87Y4nq5DAsuf9d8EuTocGxbag4QhlUy7yneUrnT6zDnG438ghz5bPPDfbmmuroya3
+	xjqZJvUnsyNlSBj/3IHWot25/++MoLrFF9nuOoJdHeRe3kImIvGOkJzMMj1h41MnGUCqyQ
+	ddmqPMEoIzbXagLAXQhANnDe7Wo1dFU=
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-485933b2522so330389f8f.0
+        for <linux-mm@kvack.org>; Fri, 18 Sep 2026 02:14:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789722696; x=1790327496; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1789722861; x=1790327661; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=fpIPJYBrAn9lh0X90aJ+LjetM4Yd20S6QCxk4a13+gY=;
-        b=Z9ReCRfcfVDm+ipDoUNlykydKzsJP5Kf1N99igsVWNyh7qY1XcYjf8gI+/F8tk8/iO
-         FpUH8GDOvAbcW7JGROKa6I4CFdJ23KpQ5XdEpdZKPyDJwuuojf4vVVsBKwgYhN3ZepEl
-         xZf/Sscri7qsrXzL3WTBafOwAOifm8VWs0v3MVgzcaiRXC2GrDWf3GklG2WCI+6wQOdW
-         V8v+EiN13pxKx5G+w3bbjbRSoNLCYAG3M0NW+2Ys05iRuzUaSbMLJx1/XtnzRMfE5cbq
-         MmjcB88VHBmifY5Ked8HgMlVNghvqBGQir/6tMDsyVMxZc+UK79q8BegKkKryTvYBBTO
-         7ADw==
+        bh=SfKpB6hUtfeLMQ4pzuFq7L7CWOsyj3Ko5MJ4c1BBJiY=;
+        b=gWQJ0925CO8d/uSOErkWYLSWJFDA1mMgPQcBcVPKHY6SWUijNYOXpxLrszPeXDqOfc
+         +zAPnbkjWmSpmxBu9Hu6OraaYM0gWXg6w3+IDz4Vbpx6yFzdsWy1s/WFfmw0OWVNFmlv
+         9EwbUXpY6k/xkbI31yGbWTHQ9tIw6U3RLx2C41dZZot6ER6hwT+qX8JJExXll44+Rh6H
+         t0hB9Qqu43iaHkzP925vrOTNp0qxZcmHtjbIjqSD4/pP5bao3dai/2DSPpV7d7CYY4Pu
+         0tzzcPSn4IKMn1Bv25mQsnbkZMAkACcGP/uyToWGN2/cYrZSpQv0uDw1Fm4OUqRwac3Q
+         pG7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789722696; x=1790327496;
+        d=1e100.net; s=20260707; t=1789722861; x=1790327661;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=fpIPJYBrAn9lh0X90aJ+LjetM4Yd20S6QCxk4a13+gY=;
-        b=klGR8vPmyFb7b1spbX8tFjesYTMeNKjO7h5T87hFh9g1LL4OJQdQJf8xbZ+gynGJ0X
-         nQsjzeTo8XTFV0rXyZbpbm6mZMxFm+14kMcfeZZIA4fqRRgU9vGKNU/VYtyS544MMK2J
-         NmgwrHdL8QVetuUYf2hf/DwpVzRTXGfLecBnNMqYSRrd1A+1VBDXKhpSwbf28XHjoQcT
-         y5V8dXeAmFhQAsWN9/w7iwRx0SCUXwNjCMRQOyiw8ThgBPjTDosAn34AKZ3V6ZA8+RlN
-         UE9u/8Kvi5A9f20W9vUG4RNtgbPnkSWaUtNVRbRpC5zVVcjeIRmMrWt/aRCtH4srAmrx
-         KPwg==
-X-Forwarded-Encrypted: i=1; AKwUvBznaVxtVlV2A0xHOlI/2OBEIfJVprsi+nptc2MRVfYOH8O6eaZw5/uUmbEPnnvFZ1zvahUXybc8qA==@kvack.org
-X-Gm-Message-State: AFuF++lAn9xztnEFiNCywoZ6VY3eoUtxhwygZOhOyBSbupHixBSJDu/+
-	jbs4oG3hCXmI2mO7sZfPoG4WpCIrOpqdj4kGrlH7la09334vRBauiyNw
-X-Gm-Gg: AYBFou3ppHXT4uWyrAHYiWlFDzIhQg/eF0X1QUhSglmYysgYYxvSP8Rg6B1Iri5Phgn
-	fnaI7eN/aQAJXAFszG83RMWf3IR9BxOaAAwhfpakdjEDwDIDjUrWZ4irUCFYvkvxPOIukd13Yiz
-	FWh7GQO+87NHxzOqvtK3FenJTqtDe7F4Ec3OPqTjwtgzvX5DhpPgjhgR95j4OdrpCz2b32bKSDN
-	dktTMTFDZExwUqs/IAzMuMjIrVed6rCuE6lGny+xmBz8SWZbqC+qfpTxeVDRj0FKlF7QHDON0yd
-	WkfeJzF/s5FEf1Q3EAx6VzyyLMFEcQyeIE7GdJgWasz79S2/ImEvXchofvbwSjlRYZYRkkBUzr1
-	hEi4/LyeVmxld1KzBfJNNLGK6+xl/GwGUllCcV0Hy0uQHNXOx+Plk+l5f+pCEgKJ2ELy7NPAEKg
-	IcBOtc9h8Iqemk/9trqR6RMPye4zHHtEKTBW63yAtuQIXTZ08ju2y3RuKQPyC60SCfnda6WOpc9
-	Q8HmHes27PkdBEo5c82rBEhfQ==
-X-Received: by 2002:a05:600c:3550:b0:49e:7d74:7b7a with SMTP id 5b1f17b1804b1-49fc56db8f3mr21040695e9.6.1789722695703;
-        Fri, 18 Sep 2026 02:11:35 -0700 (PDT)
+        bh=SfKpB6hUtfeLMQ4pzuFq7L7CWOsyj3Ko5MJ4c1BBJiY=;
+        b=yI6WEJAGAaHlOfTyy/wZXGO8+zg9c6zsDPxWaFk36GUieyr4ltc0MZ57mIXuYFiQEk
+         DWC3rD4XoRiTtFNgzAYhD8cIiTAvoX3AXFcIrYnWdymvruerIvsutKzhk0nlGVYpZAsD
+         durFzFBetAmMFdfvLrkC5VRiB8h3AtYNmEktuwfDa4XUVrtGes8Zd+SMHCJeNcGWZv12
+         QH36F2dhwwsRjgHXM1zSRCj/gl9XCpcs4ESSmV1IInarKIwmLU5Zevg/sstHknixdDh+
+         EmuPwISAt9FS50nKvGq3QCeA6LmfblhwvjlGAhG1DEmaaWPCEbkEKRIo7szloKMzUGbW
+         7d4A==
+X-Forwarded-Encrypted: i=1; AKwUvByYECPWx8yAhTcpqd7UyXGFeoqnfK3UAIH31CY5kfAhYeC/7BLBJFAx0O1FNot+/kRSQTj/cIWt0w==@kvack.org
+X-Gm-Message-State: AFuF++ke2uzyb98jQxG6ZiWi0v6WFYVbjs+Z6VvkCMpnLTg0caLGhW0C
+	LQZX/aOaujz57xWX5Z/nNx2oJTpWhHGzSFen1CBPTCMDkCQEw89K8kEz
+X-Gm-Gg: AYBFou0/uWsBMqQYHTQJMUBhMx0r2Lou854JbBqETNY0ahtxOS2o1glb1Q+51Ykzuwd
+	4gjI4ME3K0rfL1Yhk/FBJks9h4DZxF6MINEkTFQXo4MOMweBcUP+fnqUqiGuNFYTmodErT2BAEO
+	L722hfZaM/hTouvj6BQEAtqQeT46byFfrTNqK3rZub67RP9rMkaOpNBLQwQkv0WftLdV8TvkmRn
+	Lnvo1xici4ZXrXT6LNAuY8Sxpv8wxkXZMcsUpOn1CfvWWDFFotkb9GogmdEvwOuN2DrXhvlh8gt
+	78+SKCJzz1GqvS8lPbPM32McEDUlgP+OoV3J6datFve9LSgxXYudEMWfSIY51ijWq2102NfBcDe
+	GcYGUTmCF0cj8tHf2vWNJq2XpK00S4xafliCt7S2+ge0fXuRMrlxmpi1poDvn0BVRO5UK55zzal
+	EDvGYqVd/8lBRbHHROE9dRDwacHfxWeGIhgJfn+n4pNHL3LuA2Vix6wTb5V9tgAJR+mXKq0pZhX
+	fGrKt/t93Y311pu/dwj6wPMDw==
+X-Received: by 2002:a05:6000:990:b0:485:ad55:208d with SMTP id ffacd0b85a97d-4871e263f69mr5184001f8f.18.1789722860820;
+        Fri, 18 Sep 2026 02:14:20 -0700 (PDT)
 Received: from dell-desktop ([2a02:587:4b4e:8500:290c:210b:1c76:5710])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fbd1d0978sm138774275e9.2.2026.09.18.02.11.33
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4872008fe3csm2583357f8f.37.2026.09.18.02.14.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Sep 2026 02:11:35 -0700 (PDT)
+        Fri, 18 Sep 2026 02:14:20 -0700 (PDT)
 From: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
-To: bpf@vger.kernel.org
-Cc: linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
+To: andrii.nakryiko@gmail.com,
 	david@kernel.org,
-	akpm@linux-foundation.org,
+	ljs@kernel.org
+Cc: akpm@linux-foundation.org,
 	andrii@kernel.org,
 	ast@kernel.org,
+	bpf@vger.kernel.org,
 	brauner@kernel.org,
 	daniel@iogearbox.net,
 	eddyz87@gmail.com,
 	kpsingh@kernel.org,
-	ljs@kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
 	matt@bobrowski.net,
 	memxor@gmail.com,
 	song@kernel.org,
 	sun.jian.kdev@gmail.com,
+	tasos.papagiannnis@gmail.com,
 	utilityemal77@gmail.com,
-	viro@zeniv.linux.org.uk,
-	tasos.papagiannnis@gmail.com
-Subject: [PATCH bpf-next v8 5/5] selftests/bpf: Test mm_struct user memory kfuncs with linux_binprm
-Date: Fri, 18 Sep 2026 12:10:58 +0300
-Message-ID: <20260918091058.297740-6-tasos.papagiannnis@gmail.com>
+	viro@zeniv.linux.org.uk
+Subject: Re: [PATCH bpf-next v7 1/5] mm: Add copy_remote_mm_str()
+Date: Fri, 18 Sep 2026 12:13:59 +0300
+Message-ID: <20260918091359.297923-1-tasos.papagiannnis@gmail.com>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260918091058.297740-1-tasos.papagiannnis@gmail.com>
-References: <20260918091058.297740-1-tasos.papagiannnis@gmail.com>
+In-Reply-To: <CAEf4BzaH=PJh7QUhh7szGL+gCieYLOSbhriFWaZG92xFWDeGig@mail.gmail.com>
+References: <CAEf4BzaH=PJh7QUhh7szGL+gCieYLOSbhriFWaZG92xFWDeGig@mail.gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2DD0620007
-X-Stat-Signature: obok11ur7o6cpjmncnstifqca3i5dk7p
+X-Rspamd-Queue-Id: 342E0A0004
+X-Stat-Signature: 61i8khw1qd8mctupf377y741tp1kx589
 X-Rspamd-Server: rspam01
-X-HE-Tag: 1789722697-511030
-X-HE-Meta: U2FsdGVkX185f53+n53vF0Hd77KYuj1xihtM9wsrU3IPl4BFLEzr8n0W83HdXN0rixzYCzdHok7jsr6Nntzy0h4YV32dOBFVPXCU6NWS0XfmpVrVK8eU4x78DDJG2edHoykcMi/om9wxm/mMegBwKZP4oOXzDJUphBQVx5xo2Gmojbb+LJMc3xt1q0i/HbitYecHF5i7hMYUQhmkcNzSkl0bReTpP2cFhVTiBnsss6wVs8Z0mCN+1gKCim536ppdTwC9ylRgQgKESHSKmjHDn7KJEUsZOCZctmOFMA3/paGwFfkQ2qAiwPmBlixpLRZde0Ohqz0FDaOk0neflcJ2qDW6WdgRV/fyr3XA1K4kgeCppkO2Hjff0LCELGglNmaruAKODPT6deOQa44gewDkMW573JqDYYQp9nbMOxLoeyu4xo8JX5Xt4SI58MSLXVUFyCuPBJ++ON+dtqBFgWB+iWFskuTr9+gTSSrSqXWmkZ+RI4F2zFH00MfumlVr+ZCepPbgYeNPoZSgYEZ0VYAQJMV42Nftetd0lij4fGgMWu3Mf2HSiU7nfICvbkQzsWjuaKr+QnlMJhBV3dpacJlvMNudvC/qr8GGK6TWDYAwNFLlq+D6sF3UX6POM1OyA0J/hf845/1oJyE+zbiaB5Bcb36HXmtXtJOG4JpeWsiuMBJF/NENl8clic9j8mGF1RMAUahWyXWmQRCc9ynuRvBweuxLIcUKoeGbeq3rhUpijqOkvnBySAF4lX/3XrMREQGViN6W8GqOQLl0wyq0v7tDsLnmQZMwSguZsBzFWoSN/5G3D2GoCg70ayD+dbZkxywFWxuFTosuJlaelBJ+njXTQ1Lh8s7D7ix0uo8Rf7L1i+DgelmGeSy/uVmgJJpK5wvk30QLXC8gIgAAnrB4pPriyb3Jaytc1rcYbk2kSqIHO+8QTBR2ZsYWI1YaLerNsOimWWC3HEkzOPb22+8nMFA
- F7qjHfbZ
- +veeGY8/A11l6ZraJbpWUdXVu6KOQjou1grrbqcGEeEM18bGR2n0CXCZP+mWwI75tt6zMQCfSsMqK336W5kkBFLS8XPsINg1itf+nzV9ghEdOXVjR7Bu29ohvAFuVPSNmeqFaK/6ls75P4tHq2xPM16LgR6xnXte295mJXi4EVuDUwbn0kKdYXEtFXlh1eIkdoq5MCj/Wk/54q4gVcMedak1tCBlkL7ZSEEeLt4PuKc8R1uiuQhanC8JW+q0Y6ZiSIbwpqDowQ7nu4AweNTkSuGvRHpweVobldvyc9Ai9Hf+4AnlCu+nD/m7TmViwij2MMOe5kYE4W7K4Ko/fLBM5I0vHCRt+IDFkYp8A9N2Wb6tWhTn+vcGUYJ8LVW251xJyEyReF6P0KpCAQ/dL2RZqoL3L2+nLPx9ZVF0dfLUghpH473NxYg76lZZtKQPvB3ieLpauyxCokZJfYwWOBAIuSkBnogFhD3wgBPlgLSr3JNszWEuxyJKvH6hDSXixrYiklCDpuwmj6a8qt1PjRugZjDK3f0X1lKtgyhbZlmNdUqdIaRfAVogDfl6QzIvWJP/JHzcDpElTD3N5pBE=
+X-HE-Tag: 1789722862-98383
+X-HE-Meta: U2FsdGVkX1+old9dWnfnrP1HKfu7eAALcMCK+KPEdPfUxdTc25+ue4nrowOQrBD4qull2y3s7M8KOZL32ZQw+cBBrkXTIC1aP3TYyeRFzhhnBpAehKH0yztOKBYCf/4YneId0yHachhT9baD2Eoz/zK+Rwklx625se4TjQbx7sdy6LQDgRZE8FzGZ1I5VOFtwpnLOKGDWY7AtDFhhQNDVNVjnQhP7OTYZZYtXWUHRVu/gqm22WunfNlntklrv4saAXQaS4F/IrmR1b02864qROvwdbq5NbqrDGrJPTPB5SV4Le1j2a0DGcYUGv3ew4oSTcX/6ud6Q4i+jnsn+pEYUZEt0SpP5cWH+V9F3zlpivkCQNlv0gBVH+fsCA32wDiTqONsQBvjrIUzFgS+nKR6fEDl0cJPqyorCnSo1A8tCIhEEmK+vDXYIejTf7O+1RAufBncEJyjMCKkFucB9RveKpQzSg2pKaNEN7Mwfz35hwRdyUjfSA1YCyLLzaE1I/OhmHIyIC+cdOVoz0CvCqwJMuETCy9Y5fyrZD5j0oRWfnhgiJ0L9Sm0i7idXwR7hd1vs2A4oy84GiBRkzmseD5vgS170lHCF5h7WP3nG7AbOwli0+C0FRmFnvrxqrXqGnn61wWn4N96/G3vqPwdH0dz6E8opQR6d/dOxcV8LiYeREduIvVxw5eT193JMgOvaG7UausNOf6VcHubVFE4fZCZ//LIv/Ye9LY1kNqMrxMhiyTD2et3oLsV151OH1bBixGpr3Rn129KsifZxPgu06QaE2Hm7cffhauBqi/MhiM2KuAp29uKGvWuEbK/wxDSw1/jmbTwmgVXqC4wjoQXqsl0djSON+ih5j59ORk8ajBbnqpwX9MZs/RzM/8ORIJVyIAtlBVkh2HEYK7PuOdWjYLBrCAKyuexAb7bgNRy4o3IcM+F17K09J86hhmrsuHyDFsyh7qAr8PZfj7IfNx55zB
+ wd+fM5rx
+ 12HDfAQVF0lVsSBbqdfRmoBL7miH/saCev25Knxm6h3iq88b06E0CcxwW9GdfhO8rHFc4QkjOosPuSCYNxmFcg6+V8suZslYVk/L/i/WMxsNMpV15LTj3NK1qel7edDuwWbyYp2uKyWMSSW7oZkx9E0g/QZIzsKqdbdEHNktvu6YFb2KSEQPNJcomkppAFUYFQ1so8N0L2DpuLXsz3VDjKrvzuC6hZ8Z3vZS8OoPaM3DjyM74xvDC2JIUyBRMkIkqlXVrkJTLTs85vs7xyIMEeBtHYJ7I3tcriF2atHBvKoQQRBjZGp6gh00rtFI67JFTb8id1/jr6HYglQSVHWQsbm4P7Eq3NyrxjCTu15Y9Rw2H8ED4eIAzAtzLXfbLJ6JJxAiv1AJiJUgNaRjq0SI6B9dJBsAZgSX/20rKnx7CLd+/uAxm6SwT+jaNFHBd12gG6JHWytGK+nOI0QlFO1gcTBef4iZpIpzOe+1bxUKe31lCtu1P9pVQq9QAONrjCf0mQZcmsgiw+tJ0kCSWt2LCPvgo2XrYh6BaP6LaAVA8MltfCFzpiJ04LGX92xaO/5PjrOMD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,169 +136,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a sleepable BPF LSM program attached to bprm_check_security to test
-bpf_copy_from_user_mm() and bpf_copy_from_user_mm_str().
+> AI has a point, declarations in mm.h are not guarded by #ifdef
+> CONFIG_BPF_SYSCALL, no? These look generic, I'd remove BPF_SYSCALL
+> guard
 
-Starting at bprm->p, verify that bpf_copy_from_user_mm() can copy the
-contiguous NUL-separated argument and environment data. Then use
-bpf_copy_from_user_mm_str() to read each argument and environment string
-separately, advancing the offset by the length returned from each call.
+Yes, this sounds reasonable. I have removed the #ifdefs in v8 [1].
 
-Signed-off-by: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
----
- .../bpf/prog_tests/copy_from_user_bprm.c      | 65 +++++++++++++++++
- .../selftests/bpf/progs/copy_from_user_bprm.c | 69 +++++++++++++++++++
- 2 files changed, 134 insertions(+)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/copy_from_user_bprm.c
- create mode 100644 tools/testing/selftests/bpf/progs/copy_from_user_bprm.c
+CC David, who proposed removing the #ifdefs from the header file in [2],
+and Lorenzo, who has already acked the patch.
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/copy_from_user_bprm.c b/tools/testing/selftests/bpf/prog_tests/copy_from_user_bprm.c
-new file mode 100644
-index 000000000000..310370689427
---- /dev/null
-+++ b/tools/testing/selftests/bpf/prog_tests/copy_from_user_bprm.c
-@@ -0,0 +1,65 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <errno.h>
-+#include <sys/wait.h>
-+#include <unistd.h>
-+
-+#include <test_progs.h>
-+
-+#include "copy_from_user_bprm.skel.h"
-+
-+void test_copy_from_user_bprm(void)
-+{
-+	char data[] = "first\0second-argument\0SOME_ENV=a\0OTHER_ENV=something";
-+	char arg0[] = "first";
-+	char arg1[] = "second-argument";
-+	char env0[] = "SOME_ENV=a";
-+	char env1[] = "OTHER_ENV=something";
-+	struct copy_from_user_bprm *skel;
-+	pid_t child;
-+	int status;
-+
-+	skel = copy_from_user_bprm__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "open_and_load"))
-+		return;
-+
-+	if (!ASSERT_OK(copy_from_user_bprm__attach(skel), "attach"))
-+		goto out;
-+
-+	child = fork();
-+	if (!ASSERT_GE(child, 0, "fork"))
-+		goto out;
-+
-+	if (!child) {
-+		char *const argv[] = { arg0, arg1, NULL };
-+		char *const envp[] = { env0, env1, NULL };
-+
-+		skel->bss->monitored_pid = getpid();
-+		execvpe("true", argv, envp);
-+		_exit(errno);
-+	}
-+
-+	if (!ASSERT_EQ(waitpid(child, &status, 0), child, "waitpid"))
-+		goto out;
-+
-+	if (ASSERT_TRUE(WIFEXITED(status), "child_exited"))
-+		ASSERT_EQ(WEXITSTATUS(status), EPERM, "exec_errno");
-+
-+	ASSERT_EQ(skel->bss->bprm_argc, 2, "bprm_argc");
-+	ASSERT_EQ(skel->bss->bprm_envc, 2, "bprm_envc");
-+	ASSERT_EQ(skel->bss->data_len, sizeof(data), "data_len");
-+	ASSERT_EQ(skel->bss->invalid_flags_ret, -EINVAL, "invalid_flags_ret");
-+	ASSERT_EQ(skel->bss->copy_ret, 0, "copy_ret");
-+	ASSERT_EQ(skel->bss->arg0_ret, sizeof(arg0), "arg0_ret");
-+	ASSERT_EQ(skel->bss->arg1_ret, sizeof(arg1), "arg1_ret");
-+	ASSERT_EQ(skel->bss->env0_ret, sizeof(env0), "env0_ret");
-+	ASSERT_EQ(skel->bss->env1_ret, sizeof(env1), "env1_ret");
-+	ASSERT_EQ(memcmp(skel->bss->data, data, sizeof(data)), 0, "data");
-+	ASSERT_EQ(memcmp(skel->bss->arg0, arg0, sizeof(arg0)), 0, "arg0");
-+	ASSERT_EQ(memcmp(skel->bss->arg1, arg1, sizeof(arg1)), 0, "arg1");
-+	ASSERT_EQ(memcmp(skel->bss->env0, env0, sizeof(env0)), 0, "env0");
-+	ASSERT_EQ(memcmp(skel->bss->env1, env1, sizeof(env1)), 0, "env1");
-+
-+out:
-+	copy_from_user_bprm__destroy(skel);
-+}
-diff --git a/tools/testing/selftests/bpf/progs/copy_from_user_bprm.c b/tools/testing/selftests/bpf/progs/copy_from_user_bprm.c
-new file mode 100644
-index 000000000000..00ecba3ea567
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/copy_from_user_bprm.c
-@@ -0,0 +1,69 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include "vmlinux.h"
-+
-+#include <bpf/bpf_helpers.h>
-+#include <bpf/bpf_tracing.h>
-+#include <errno.h>
-+
-+char _license[] SEC("license") = "GPL";
-+
-+int monitored_pid;
-+int bprm_argc;
-+int bprm_envc;
-+int data_len;
-+int invalid_flags_ret;
-+int copy_ret;
-+int arg0_ret;
-+int arg1_ret;
-+int env0_ret;
-+int env1_ret;
-+char data[64] = {};
-+char arg0[32] = {};
-+char arg1[32] = {};
-+char env0[32] = {};
-+char env1[32] = {};
-+
-+SEC("lsm.s/bprm_check_security")
-+int BPF_PROG(check_exec_args, struct linux_binprm *bprm)
-+{
-+	u32 pid = bpf_get_current_pid_tgid() >> 32;
-+	struct mm_struct *mm;
-+	u64 offset = 0;
-+
-+	if (pid != monitored_pid)
-+		return 0;
-+
-+	mm = bprm->mm;
-+	if (!mm)
-+		return 0;
-+
-+	bprm_argc = bprm->argc;
-+	bprm_envc = bprm->envc;
-+
-+	/* this is the total size of args and envs starting from bprm->p */
-+	data_len = bprm->exec - bprm->p;
-+
-+	invalid_flags_ret = bpf_copy_from_user_mm(data, sizeof(data), (void *)bprm->p, mm, ~0ULL);
-+
-+	copy_ret = bpf_copy_from_user_mm(data, sizeof(data), (void *)bprm->p, mm, 0);
-+	if (copy_ret)
-+		return 0;
-+
-+	/* arg0 is at bprm->p */
-+	arg0_ret = bpf_copy_from_user_mm_str(arg0, sizeof(arg0), (void *)(bprm->p + offset), mm, BPF_F_PAD_ZEROS);
-+	offset += arg0_ret;
-+
-+	/* arg1 is at bprm->p + arg0_ret */
-+	arg1_ret = bpf_copy_from_user_mm_str(arg1, sizeof(arg1), (void *)(bprm->p + offset), mm, BPF_F_PAD_ZEROS);
-+	offset += arg1_ret;
-+
-+	/* env0 is at bprm->p + arg0_ret + arg1_ret */
-+	env0_ret = bpf_copy_from_user_mm_str(env0, sizeof(env0), (void *)(bprm->p + offset), mm, BPF_F_PAD_ZEROS);
-+	offset += env0_ret;
-+
-+	/* env1 is at bprm->p + arg0_ret + arg1_ret + env0_ret */
-+	env1_ret = bpf_copy_from_user_mm_str(env1, sizeof(env1), (void *)(bprm->p + offset), mm, BPF_F_PAD_ZEROS);
-+
-+	return -EPERM;
-+}
--- 
-2.55.0
-
+[1] https://lore.kernel.org/bpf/20260918091058.297740-1-tasos.papagiannnis@gmail.com/
+[2] https://lore.kernel.org/bpf/daeab5a8-44b8-4933-80c5-e4145b01a0a1@kernel.org/
 
