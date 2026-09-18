@@ -4,90 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3E74C982D2
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 01:26:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 514DAC982D0
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 01:38:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5F60C6B008A; Thu, 17 Sep 2026 21:26:50 -0400 (EDT)
+	id E247C6B008A; Thu, 17 Sep 2026 21:38:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A7756B008C; Thu, 17 Sep 2026 21:26:50 -0400 (EDT)
+	id DD5586B008C; Thu, 17 Sep 2026 21:38:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4BEAD6B0092; Thu, 17 Sep 2026 21:26:50 -0400 (EDT)
+	id C9C1C6B0092; Thu, 17 Sep 2026 21:38:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 258DA6B008A
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 21:26:50 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A481C1A0524
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 01:26:49 +0000 (UTC)
-X-FDA: 85225143738.13.E9B4C2A
-Received: from mta0.migadu.com (out-21.mta0.migadu.com [91.218.175.21])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 72384C0008
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 01:26:47 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=SRrNqewI;
-	spf=pass (imf10.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.21 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 85BEA6B008A
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 21:38:24 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E1A2E404FE
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 01:38:23 +0000 (UTC)
+X-FDA: 85225172886.09.A641683
+Received: from mta0.migadu.com (out-209.mta0.migadu.com [91.218.175.209])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 82D4520003
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 01:38:21 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HAvJJQz0;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.209 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789695502;
+	b=ZzAoqQqC247M6WDRo0qzrqz45T9ZmwsA+NAdJj5sXTZpbyabbIBoxNxOZknv2Hg/uSqc97
+	pBmPrOChpnwEgvUoOCQxiNs6aC1hwsX09vR70mVy8j2I39Stz0M9Jnq4AdO6E8nJ4iRjGL
+	eC5zz+8AOMIg5JiMICXc+ef+yTeNKXM=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HAvJJQz0;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.209 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789694808;
+	s=arc-20220608; t=1789695502;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aZgw48nQ6RrfHyMPZawE1rRcXu2urLNDx1tTguGkCs4=;
-	b=lVlvmCgN4c3IZV3iNfu3/1/X0s4V315vZ2Mg1vhcakhgXhUPYHQESOmRbJ7A328Sns5pOP
-	XLI/vrpWEB9veEdk8Bwp1WGn7jOyMTn15uWCwIeciONWKYmP65a7x2DAG00fLKcjZjYlKK
-	gDheJ8COXjFHdzWO6VjAWxbtWkiEIkA=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=SRrNqewI;
-	spf=pass (imf10.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.21 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789694808;
-	b=zjXC9hDYutX//NchuW73d3nm0T+D1dIuvDEoOkDwQDeCkxAfg+s8998lcad3JnP7QLLEAE
-	qHg5kiu4doL0XXmJrb7qz7ne6m4HpIMVSRAYkteyaE72Fj/YmOHe9SHw3oBv997OEMed9J
-	b12yNU+MQql5hFU61NUxlI96FW8eqEw=
+	bh=eNbq/pu/gt1YqRcwcDAaZLmzUiWN9G6WW7z1KlzwjUA=;
+	b=b7cbmw4j9Dr7n6enSLrmofexsNjMhmKiWM2n98DfgbbJH2waQHpBUF85uy3UKM0raNA58g
+	syML5zl1dWe5VWFmpvmO5ZJmPxrI0tOT/g2u/iAie9TlTY48CO63DoNG0m5hRtiBaDXAyr
+	zCkO1Z0MgRyWstzQx3he6wQ6L2FXRwg=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=oAXUSIcwbHVGGoUnEEnCx3HqkvSgoi10RnBttKf8Nkg=;
+DKIM-Signature: a=rsa-sha256; bh=nhaB4QCyvY2vj/8aUqYIKXSALA608i9qAGxN94zUC5o=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789694805; v=1; x=1790299605;
- b=SRrNqewI8RhBjZBR4vaR8VRxBo9X/LEEgzboE/AAj3BCNArHUKFRcZ1yF0Swv9wfVu45uBIv
- 4243GhDL3+2dAmNJ8iSxLB3WMc8XNJgo08zoO3I0lkfgbs1tNulXC55xm2wjsipoaNDHs8QCFda
- bel5//SMyN1dYIDMWdTWPISg=
+ t=1789695500; v=1; x=1790300300;
+ b=HAvJJQz0TIzLUIFAdl3YNUx8wR5LfXsxyzZEgqmASqxWFXXgizDSQfifrtIrPdNXMJ1PYVQt
+ jTrjTQqLJZDPgoVDGZzAtVGKUI0luDbEqDIVBhf0SZKlkDzkWoKMPXvaWY0kp/CZdpffFB4BuSQ
+ licyAOnlz1qtWlDCslxcgpyk=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 1a7595a3d0729dc5;
-	Fri, 18 Sep 2026 01:26:45 +0000
-X-Mizu-Trace-ID: 1a7595a3d0729dc5
+Received: by smtp.migadu.com with ESMTPS id 9f10f04cf85e3f6a;
+	Fri, 18 Sep 2026 01:38:20 +0000
+X-Mizu-Trace-ID: 9f10f04cf85e3f6a
 X-Migadu-Flow: FLOW_OUT
-Date: Thu, 17 Sep 2026 18:26:44 -0700
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Qinyun Tan <qinyuntan@linux.alibaba.com>
-Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, mhocko@suse.com, 
-	roman.gushchin@linux.dev, muchun.song@linux.dev, david@kernel.org, ljs@kernel.org, 
-	ziy@nvidia.com, baolin.wang@linux.alibaba.com, xlpang@linux.alibaba.com, 
-	liam@infradead.org, nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com, 
-	baohua@kernel.org, lance.yang@linux.dev, usama.arif@linux.dev, vbabka@kernel.org, 
-	rppt@kernel.org, surenb@google.com, chris@chrisdown.name, kasong@tencent.com, 
-	linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] mm: memcg: don't hand out large folios above
- memory.high
-Message-ID: <aqx5kcqRrbkuay4i@linux.dev>
-References: <20260915042546.279410-1-qinyuntan@linux.alibaba.com>
- <20260915042546.279410-2-qinyuntan@linux.alibaba.com>
+Message-ID: <d7327cdd-43df-46f8-92d4-c25dda7ae684@linux.dev>
+Date: Fri, 18 Sep 2026 09:39:12 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260915042546.279410-2-qinyuntan@linux.alibaba.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 6/6] alloc_tag: Defer /proc/allocinfo removal to a
+ workqueue
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>,
+ Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
+ Aaron Tomlin <atomlin@atomlin.com>,
+ Kent Overstreet <kent.overstreet@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-modules@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Sashiko <sashiko-bot@kernel.org>, stable@vger.kernel.org
+References: <20260915070001.113559-1-hao.ge@linux.dev>
+ <20260915070001.113559-7-hao.ge@linux.dev>
+ <CAJuCfpGMQqjHsAvW=XUA1Q3AyaVJKM2bKYVja_fgn0wa1tk7DA@mail.gmail.com>
+Content-Language: en-US
+From: Hao Ge <hao.ge@linux.dev>
+In-Reply-To: <CAJuCfpGMQqjHsAvW=XUA1Q3AyaVJKM2bKYVja_fgn0wa1tk7DA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: yxhrekuzthbogbg4e67ooaga8wbyhkb4
-X-Rspamd-Queue-Id: 72384C0008
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789694807-957433
-X-HE-Meta: U2FsdGVkX19BcYphrHg+Mra3n2rLDXP8+YZU71umLdst0kZCm1vxw4IYm2yTobvIMKpWQ1FdI1KO99BuNEnIvGsdwK6VlEoODy/RvrnkgQOcmhAsYfIkODZG1E9FJoCcR06iqEmZev18Bu8xZ+2sfZF9C/JhrhYPtaYAmkOjbQfRgh7nIZgcQDvuLpn5GocmYt/MiqosEaGlRV3BDZfXyWX4Ey4umU+FELeC994Q13ErB8OVd9NKB9hQp6UJ24pzoyTemCbRL844S0pvFbU1fpMzfwPwRgArNFSxWRiqWkmYoZhkYULbtCqdHj5qJHlPUyUFnNYA/9ClY6hKb+wPW1HJLVQbxBHgp7pib+4A0vRGjB6IMOgzawG7C01wD9Tz3imCNPm0SPJ2x0SxeQayBVPGl3CKP/V5F0cFv1O9ctE43GXq5x1SVjrAOFAMr8Vpv/qJ7FoaYeAuQR4dEfHDU3GWTjhca0WhCZ9/+CJ/9+gW/Ql8PkEjhJD+TCUhPylijMO4YGnvfDv5VaU2wHVfpWM9qaiM5qDm1le3CHuDTuHbTtz2K5vrumzN7TTyCdDxSO2LV8JnLGCcTOXuL3xms3dtaQezX+5iCEEkEpLQG3OHd9XRtxQ/C/uo26a/oCtqMka15ZZNZLFRni4OuB0bIDyKtNEnce2GTDFsHN682Tqu20LnJSjgvEn6DCx73qlppMakBkJ6R/m+nsu6Ik/2o75ASCxbE3X8t5mrWW3iX/JlsvkKl4vhyEkclhzenb8+1oxM5asVyMb7UGDumb5kaxzeHT9L9f/fZ31+fTh0KHuq/sZmJr1ebUKJAlHVpJIZ6HfKehhMRmeqO7fFjRfETPaM1anhQPlwmyrXkRwvwdBx1e/389bibK2Nod/PwBbX3QOvEjmWP5MVM7abapPHjYLZ5s66Zykb/083UVsKmo0rmVtnWIqJ2zFgUImNna7YcKforHce8LHPBe5taEn
- LBViighr
- QhL3OVQhn0l+YgG1gpr06mupGJ/Kc0CcJgnStuhIB4kfCCxQFfWD2jeX43ZiQMoHQxL7mY4wYK1dx7tuXouljXWzFIQABUizCsl+Oaum66SfE7CrYg7+VBukyTKYz1wRgwrNsUwO2MxvNZU8tp059fEgTHAsroEIK32tZDkoQOnOJEZ/KMMqbP5MVhLaK8uDW3uUDJmpk2NLWc3/+TnI1nzedGuzDvv2i51wNL9ucbNtAJzcOruAtzbfwSMg2FbGUzxml/ma3wBcPOFDy4qscIe8SKA==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 82D4520003
+X-Stat-Signature: rhmqydjz81idsdrh3ungz79wx5fszpgw
+X-HE-Tag: 1789695501-648599
+X-HE-Meta: U2FsdGVkX18TCfARmDd2qcUFtSmqARVRrvW9pgm4vYzCTkNkmjZ5lzRzs5xo6ZHimbHLHlFhnxND/aGNwzTAMfPKoGvFqvGYUozmBaplMvXoA4RC2nMxenL6f7HJOnlIi7fXf6T1D9GjIhw3Of+7dDGQd2TMhJEhW/5twM9jxQaU79wWhTGQGAu+KzTkEp+lstSY7jXkR2uqqf8ygjUiqYJraqQpaMf+dy1B6l7y7EGtaGmvQKAgQAE+eKS9N2MeqsC6HWz2WVBt+FsG8hd6kZyXMycaXQjvVX3kHse8XksohQ6D1gA8OXHf/nruZmXswzpzxCxlRoQoyu4HgbRpvTgSe9bHXHx+g0ZCYV1pUL2PIOgcbzW5L8nMRDern2AhBpXXIIbn++/RnSdoBTFjMTtQ+HRdlZghONWTTgozSxHG0bv0XgceJZc/EIzFnxRA9tN2fYbPqhYkPivBjXMhwpTq1wTQ6M/qXCWbXXJ3ai3e5//utxzrtJgFaUfx2NJwuA3qGMPdIFN8sXW77A0jho2hNV3CvMkwGrSZ4nXCs5+PhLAeXKYMW9ORRALD0OGznWzcIiv1IhztqCE/fhQQZFrinlV8sSA+5BXzrGDvYizlikGD1fzrGkyxv6oBmWxBrdf8v7XZE0GqmoWFEZ66LLXyUUwomWAge250XxTInIAbKOvarTQGfUhyAFlK429+vT72CD/wj02sMDGXeig39Be4foGLtjaV6N1e6LoYp+65Xr55t1G6Qo8qtog2DOuMSFhP0e2JPlCF4aGH+liZKhmOT2v+mW/SqYH8soQDAUIswss4HxN5fRPxfsMZ+UImDDuJJ2jth3qj39SHZllpzaV/gFZ8yGCj0JZ7s8hcNesPqeNDNfQo2imzZGZoyhEB3xbSyWdWAoT2VV9j9XK1EohDHhv+9Bs64dMZDlvSbbXCdmDCmUH5n+EYTEJPbYAC/ye50joPTeKnxVaGXl6
+ orxNPHA0
+ uu+l2Z08FSybpAKFGHCXCqV5Fusz8c/RiRqtUWhkogG4ngxij42zWW/7oOWglGVaCnfa/CjqkTzTsYpjgeediLo14BLcERO238tBRaIzBtr2r6rvy4KCC55igBbvVpvUc6h0ufM4+1i6hS4Ij6joFJCOaJBgcNbTzpbC6FC7wego++8KHrlAOvyHH8D17FT+aDBluAT/qmEK2RMmCDfq1RWvwOypAm3hVd7LwI9LGb5na4hA2B9EMJ/hQaE2YpZt8x9GtPU+uCGFrE7wPtpRUfnpLjDKBKcbMXVzSF2xK6fIAAjmQ2sBS6FYrMPfeTejzoWrOA8ciqOWmB7iCttJ3qOU3EcX8TUdGfuXWrlVwhqB2hf0SwuBM3ugNtA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,49 +99,157 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 15, 2026 at 12:25:46PM +0800, Qinyun Tan wrote:
-> memory.high is enforced on return to userspace, and synchronously in
+Hi Suren
 
-Over time I feel like this sync throttle for memory.high was a bad decision but
-that is an orthogonal discussion.
 
-> try_charge_memcg() for large overcharges, but only when the charge gfp
-> allows blocking.  A populate loop - mlock(), MADV_POPULATE_*, any
-> GUP-driven population - never returns to userspace, and large folios are
-> charged with the THP allocation gfp, which does not allow blocking under
-> the default defrag=madvise without MADV_HUGEPAGE, nor under defrag=defer.
-> So neither runs: usage grows from memory.high straight up to memory.max
-> with no reclaim and no penalty sleep.
+On 2026/9/18 09:09, Suren Baghdasaryan wrote:
+> On Mon, Sep 14, 2026 at 11:59 PM Hao Ge <hao.ge@linux.dev> wrote:
+>>
+>> shutdown_mem_profiling() calls remove_proc_entry() from
+>> reserve_module_tags(), which runs under mod_lock held for write.
+>> remove_proc_entry() waits for readers, and a reader takes mod_lock for
+>> read in allocinfo_start():
+>>
+>>   CPU0 (insmod)                      CPU1 (read /proc/allocinfo)
+>>   ----------------                   ----------------------------
+>>   reserve_module_tags()
+>>     down_write(&mod_lock)  [held]
+>>                                      use_pde()            [in_use++]
+>>                                      allocinfo_start()
+>>                                        down_read(&mod_lock)  <- blocks
+>>     shutdown_mem_profiling()
+>>       remove_proc_entry()
+>>         wait for in_use == 0         <- blocks
+>>
+>> Move remove_proc_entry() to a workqueue.
+>>
+>> The file creation is moved to the end of alloc_tag_init() as well.
+>> If alloc_tag_init() fails with alloc_tag_cttype still NULL or an
+>> error pointer, a concurrent reader of the leftover file would
+>> dereference it in allocinfo_start() and panic.
+>>
+>> Reported-by: Sashiko <sashiko-bot@kernel.org>
+>> Fixes: 4835f747d3ed ("alloc_tag: support for page allocation tag compression")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Hao Ge <hao.ge@linux.dev>
+>> ---
+>>  mm/alloc_tag.c | 26 +++++++++++++++++---------
+>>  1 file changed, 17 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
+>> index 1ca0409b492b..cfa0fc84b68f 100644
+>> --- a/mm/alloc_tag.c
+>> +++ b/mm/alloc_tag.c
+>> @@ -15,6 +15,7 @@
+>>  #include <linux/seq_file.h>
+>>  #include <linux/string_choices.h>
+>>  #include <linux/vmalloc.h>
+>> +#include <linux/workqueue.h>
+>>  #include <linux/kmemleak.h>
+>>  #include <uapi/linux/alloc_tag.h>
+>>
+>> @@ -591,6 +592,13 @@ void pgalloc_tag_swap(struct folio *new, struct folio *old)
+>>         put_page_tag_ref(handle_new);
+>>  }
+>>
+>> +static void remove_allocinfo_file(struct work_struct *work)
+>> +{
+>> +       remove_proc_entry(ALLOCINFO_FILE_NAME, NULL);
+>> +}
+>> +
+>> +static DECLARE_WORK(remove_allocinfo_work, remove_allocinfo_file);
+>> +
+>>  static void shutdown_mem_profiling(bool remove_file)
+>>  {
+>>         if (mem_alloc_profiling_enabled())
+>> @@ -600,7 +608,7 @@ static void shutdown_mem_profiling(bool remove_file)
+>>                 return;
+>>
+>>         if (remove_file)
+>> -               remove_proc_entry(ALLOCINFO_FILE_NAME, NULL);
+>> +               schedule_work(&remove_allocinfo_work);
+>>         mem_profiling_support = false;
+>>  }
+>>
+>> @@ -1358,16 +1366,10 @@ static int __init alloc_tag_init(void)
+>>                 return 0;
+>>         }
+>>
+>> -       if (!proc_create(ALLOCINFO_FILE_NAME, 0400, NULL, &allocinfo_proc_ops)) {
+>> -               pr_err("Failed to create %s file\n", ALLOCINFO_FILE_NAME);
+>> -               shutdown_mem_profiling(false);
+>> -               return -ENOMEM;
+>> -       }
+>> -
+>>         res = alloc_mod_tags_mem();
+>>         if (res) {
+>>                 pr_err("Failed to reserve address space for module tags, errno = %d\n", res);
+>> -               shutdown_mem_profiling(true);
+>> +               shutdown_mem_profiling(false);
+>>                 return res;
+>>         }
+>>
+>> @@ -1375,10 +1377,16 @@ static int __init alloc_tag_init(void)
+>>         if (IS_ERR(alloc_tag_cttype)) {
+>>                 pr_err("Allocation tags registration failed, errno = %pe\n", alloc_tag_cttype);
+>>                 free_mod_tags_mem();
+>> -               shutdown_mem_profiling(true);
+>> +               shutdown_mem_profiling(false);
+>>                 return PTR_ERR(alloc_tag_cttype);
+>>         }
+>>
+>> +       if (!proc_create(ALLOCINFO_FILE_NAME, 0400, NULL, &allocinfo_proc_ops)) {
+>> +               pr_err("Failed to create %s file\n", ALLOCINFO_FILE_NAME);
+>> +               shutdown_mem_profiling(false);
 > 
-> mlock(200M) in a cgroup with memory.high=30M and memory.max=140M.  Of the
-> 110M between high and max, the burst consumed:
-> 
->   4K pages                       3M in 5s, then still throttled
->   THP, defrag=always             6M in 5s, then still throttled
->   THP, defrag=madvise          110M in 13ms, then OOM killed at 16ms
->   THP, defrag=madvise, patched   3M in 5s, then still throttled
+> You need free_mod_tags_mem() here.
+>
 
-I don't really like polluting non-memcg MM code with memcg internal details.
-Let's first discuss the semantics we want here. Please tell why getting
-oom-killed by kernel in the scenario you have described (mlock() larger than
-memory.max) is wrong. How does throttling it will help? What can the external
-observer (userspace oom-killer) do other than killing it? Or you are thinking
-that the workload itself is observing itself and change the behavior (though
-the big mlock one can't do anything).
+Right. Another problem is exposed here: moving proc_create() to the end
+implies successful return from codetag_register_type(),
+so alloc_tag is already added into codetag_types.
+That looks a bit odd to me. Because all places inside codetag that access this
+linked list will access this incompletely‑initialized codetag_type.
+There is currently no matching unregister interface to tear it down.
+So I drafted one previously:
+void codetag_unregister_type(struct codetag_type *cttype)                                                                                                                                                                                                                      
+{                                                                                                                                                                                                                                                                              
+	struct codetag_module *cmod;                                                                                                                                                                                                                                                 
+	unsigned long id, tmp;                                                                                                                                                                                                                                                       
+                                                                                                                                                                                                                                                                             
+	mutex_lock(&codetag_lock);                                                                                                                                                                                                                                                   
+	list_del(&cttype->link);                                                                                                                                                                                                                                                     
+	mutex_unlock(&codetag_lock);                                                                                                                                                                                                                                                 
+                                                                                                                                                                                                                                                                              
+	codetag_lock_module_list(cttype);                                                                                                                                                                                                                                               
+	idr_for_each_entry_ul(&cttype->mod_idr, cmod, tmp, id)                                                                                                                                                                                                                       
+		kfree(cmod);                                                                                                                                                                                                                                                               
+	idr_destroy(&cttype->mod_idr);                                                                                                                                                                                                                                               
+	codetag_unlock_module_list(cttype);                                                                                                                                                                                                                                                 
+                                                                                                                                                                                                                                                                             
+	kfree(cttype);                                                                                                                                                                                                                                                               
+}
 
-What I am looking for is the real use-case you have for this case. Not
-mlock()ing big chunk or creating a lot of unreclaimable memory and going over
-memory.high. For example the reason I added the sync throttle in memory.high was
-to implement a feature Google has in their internal kernel where a workload hits
-its memory.max limit, kernel delays the kill for couple of seconds and during
-that time, the node controller may decide to increase the limit based on the
-memory situation of the memory. However even with sync throttle, we couldn't
-reliably implement the alternative because applications there have thousands of
-threads and there is threading library which keeps cloning more threads if it
-observes threads getting throttled.
+But looking back, do we really need to do this? I'm not so sure.
+I previously thought the issue reported by Sashiko was a false positive,
+and I laid out my thoughts back then:
+https://lore.kernel.org/all/afa606df-3d5b-47c2-9972-f3e0c2e13c12@linux.dev/
+and I thought the change would be straightforward, and defensive programming
+felt acceptable to me, but it turns out to be a little more complex than I expected.
 
-So, let's talk about some real use-case and then we can decide if throttling
-makes sense here. If we decide to allow throttling in such cases, I would rather
-do it in memcg code i.e. somehow inform memcg code that this is THP allocation
-and can be throttled.
+Suren, could you help me analyze this? Thank you very much for your valuable feedback
+
+Thanks
+Best Regards
+Hao
+
+>> +               return -ENOMEM;
+>> +       }
+>> +
+>>         return 0;
+>>  }
+>>  module_init(alloc_tag_init);
+>> --
+>> 2.25.1
+>>
 
