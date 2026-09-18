@@ -4,147 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44AA8C982DA
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 16:23:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4614BC982DA
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 16:24:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 444186B0093; Fri, 18 Sep 2026 12:23:16 -0400 (EDT)
+	id 1FB936B0095; Fri, 18 Sep 2026 12:24:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 41B2F6B0095; Fri, 18 Sep 2026 12:23:16 -0400 (EDT)
+	id 1AC636B0096; Fri, 18 Sep 2026 12:24:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 30B636B0096; Fri, 18 Sep 2026 12:23:16 -0400 (EDT)
+	id 09B0E6B0098; Fri, 18 Sep 2026 12:24:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 01B876B0093
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 12:23:15 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3C6DCA62CE
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 16:23:15 +0000 (UTC)
-X-FDA: 85227402750.08.582A502
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf09.hostedemail.com (Postfix) with ESMTP id B8D94140005
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 16:23:12 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=U164ZCfS;
-	spf=pass (imf09.hostedemail.com: domain of oberpar@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=oberpar@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CF9856B0095
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 12:24:14 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0C91F1C2FEA
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 16:24:14 +0000 (UTC)
+X-FDA: 85227405228.23.DFA4572
+Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
+	by imf17.hostedemail.com (Postfix) with ESMTP id CBB1740003
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 16:24:11 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=WDJd7G82;
+	spf=pass (imf17.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.230.205 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789748592;
-	b=r3JudNiWwI0BkUY629LPvIN1nFjrd8FWFxfht68XNAho4Ivw2imfl/PhIJLAIb5eu2qSLQ
-	YkFv71Ta2ZMuVqmVx4vVN6gVX1UyX9nIFE09dVG0zFDagMlf2oxI+D5mpFl2YQXtXAI+N9
-	7rmqqvtJ6Ac4wc/hjN5KW4+9qif7uYs=
+	t=1789748652;
+	b=CzOmG/iAO7HjCUfb9YY16cnuyGmQSQ/KVPgffMV0M8jkzY3r08t2a/Ihs54XVJBr6CFuhb
+	Y9N2jlA/JUG9+p254+scZEbdSEircoWvS3NlhzjVKJ5KxDs+srNZHhTwIShYT6PT1ueNCl
+	8hwkF7shA7hlAexPdjp1tP772KI4AVE=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=U164ZCfS;
-	spf=pass (imf09.hostedemail.com: domain of oberpar@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=oberpar@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	imf17.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=WDJd7G82;
+	spf=pass (imf17.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.230.205 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789748592;
+	s=arc-20220608; t=1789748652;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IrSrPGh89ZBDJ8ImJt+nz22I+rOlaK5hWlIv4GDrkKo=;
-	b=HoVeA/hD5IkP2gWHK/+EMMk+0nJBrTYr0DHMa2a18U8EoLB6M8BwX7NU1zKFmScghSst2t
-	S+I9I3qmtWaS0v79og9/sti00+w8Sw126FwMyc9DpNKsrpvF+fN+EMqoe6PkUBQBTjpzkB
-	k5VBaz/Xe3dWPp7+bj0rGaJKhknvbfM=
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68IDVZm71393547;
-	Fri, 18 Sep 2026 16:23:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=IrSrPG
-	h89ZBDJ8ImJt+nz22I+rOlaK5hWlIv4GDrkKo=; b=U164ZCfSbTri6NhwgGdd3A
-	OoIYNbQwf6mDGk/ZN7w8Ru+s+GGDPi7jYOhlIoGDlMrqjEqWYq92ruppUAa9NUwO
-	CG0fsRs5JefNx1W/Hdsrh4qtjwKMQ8v/5GrtRvuNbpFFKBxE28bvz/3Za8P0bzhq
-	P1gkqz8uUaNTxWXzufHcxsdRQ+0jmi98abs178Z3ffGngut6hFVqyrlR14A+H2e0
-	2XqfAstr4OqhE6z7mksk7I1jcjnV5YAZtWYtu1Bot1F9D+A/n+m1iqsUGJILvbgl
-	+eLk77feKSajb86IdZm2kzBFQmDS5rzm96q8jyIXCe9ZvuDcdA8Oo5BSBCEVSf9g
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gmxf5h770-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 18 Sep 2026 16:23:10 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68IDO2Fh771897;
-	Fri, 18 Sep 2026 16:23:09 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gr5ffg5yc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 18 Sep 2026 16:23:09 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68IGN8YI31982158
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 18 Sep 2026 16:23:08 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5A5B358055;
-	Fri, 18 Sep 2026 16:23:08 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 498C45804B;
-	Fri, 18 Sep 2026 16:23:06 +0000 (GMT)
-Received: from [9.111.192.138] (unknown [9.111.192.138])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 18 Sep 2026 16:23:06 +0000 (GMT)
-Message-ID: <bf57f67e-4a51-407a-b869-b9d78a9875b4@linux.ibm.com>
-Date: Fri, 18 Sep 2026 18:23:00 +0200
+	bh=22UHuqAYfKNfgslt+w3Gb+mOi1pe1zYpAqvus/G0CRA=;
+	b=vfN37aHOmBz13kkZ9k4yW4kXuCdxXs878nYuDpCnJzpmItUBF12yYQH5lrbItUEFCrM+EZ
+	yMFME0OHnaKuSKWeeOQCsNVflf6ALBcWZM45E8cVCZcB0t/oCTREHpLbYZ1MxJGloNpBaQ
+	28vzLjFKIAz64Y97VqX9hM8haQykZ30=
+Received: by mail-qk2-f13.google.com with SMTP id af79cd13be357-93910c9ff1cso77838285a.3
+        for <linux-mm@kvack.org>; Fri, 18 Sep 2026 09:24:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1789748651; x=1790353451; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=22UHuqAYfKNfgslt+w3Gb+mOi1pe1zYpAqvus/G0CRA=;
+        b=WDJd7G82zPrv97jmqmdxKRiq+aQ6NaZJk6fyHkH/x9zqPIdSkvpDHqK9pHnReBTZ+N
+         F4HeqE/KUqhdB34dRIA6+Jp24DriA8LTMyUMVSWRYmZFZKDQ2HmOPbddKCSAFNOGTXjQ
+         xaCyVcpR8G3Nsrmu5YzUxLamvFomEBGj0UJxEy3MYNY2sofdRg/H5OOchxTmv5XqFkpK
+         EEnyVcCcx5duuzRYtQb2Exjbrc8XbD1Th7JSxj0Kg5IjfvT0EUTirCLhjkbycIWK2EK6
+         G5qyOrYeIXgf4HDVyJQImJeBPvioMDbDJpxKeITVhlSuKHLHjK+ujKWr326giGCNdRvn
+         bRWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789748651; x=1790353451;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=22UHuqAYfKNfgslt+w3Gb+mOi1pe1zYpAqvus/G0CRA=;
+        b=GEUK+OyqMRMuxT4EwiSAmF36EtFI4pkh9MQSdulpjj5H/vDkmiBSPwBszX87iMdtvE
+         qevRdJCcrLi0kIJBsjSg4j/ZazzgHt/0qXRYQoVL38c/RpurPweWxjBtUyWP6Hc+3mhj
+         3n7CDoYrW7Vsy+Dm3ccDIjRHyiQ9x9raP4yD1FqeUys7RsFygJfYgyOg69dA9JJXSyiW
+         hsaSg4IgYM4VxwDJ5Bb1D9KWd8j9KvQYAvJmiA7WdigvKQyGxZf6guILeRHNUVJd5BSv
+         XnqHgUkETlKY2B56jUvoVVCZkC9dTAVOTE7QJ2tALFORhA5AKZnfc29WJoTVUJjTZEZb
+         rrrA==
+X-Forwarded-Encrypted: i=1; AKwUvBza3m0A59+pyDD17go36+xtrs4PW2lAyNFfgQkR921s9gcSa3tK3KlsR86xqpbSaUDJH8XbXchPcQ==@kvack.org
+X-Gm-Message-State: AFuF++l9T17+guypOi3PVFWKucMLoXERouwQxejgeVUwvP5LfnzhyF1g
+	dTXqd7OSm/qe9p23xGgK9AtvImNMjT1XAlcEoV1bClJp9GP5LsOag1rpTOY4FtHRvxo=
+X-Gm-Gg: AYBFou0fz9ONsPxktRL5aFHLiwQcMjs0grVDZFecauFzxkzuRXbtBjtXkoO7YG3by1g
+	PTSOmIBn6/gAqqr86bwcHbUV2xE5ve8nwBnd44K8C/eWdk5bICuE4fdgzgIPVwl6dIwHA974UOX
+	T7BWd6k3g1sWx2q6oX6hL6EW2mq/gOitARrMF7bB0fLR3ANuH2tLljsjCOy3FBoWFf6dngsD/eY
+	7aXgGt22CDgO5O8Yg1LMNv3hKrTo5fvNlUKh94IwkHD45+28WOYIg5v9NKle6V1l37itg3nWN/V
+	+atJxzYa/vNXWT7bAfWoZfxev2rupkDorsDO1ijdYU6IXu+Ejuf0/8xliIMSfuyqkqRY0vpuyBq
+	ODjd8y3gS6XHqn3Hrg49o0baOje23tBTAN17GjOTi9Er5bOWYjuOlqECXhplVyf0xniKNVOdYF3
+	9ErG/Cfiyc+sVCG2/0NEW/h7+8MqZx84YuNM4mmKp+4T99Ddla43qmOrSPehpGDprHpyUVVg==
+X-Received: by 2002:a05:620a:4455:b0:93b:da6f:50a4 with SMTP id af79cd13be357-93bdc6aef5amr427968285a.36.1789748650894;
+        Fri, 18 Sep 2026 09:24:10 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93be0e95a4asm173223285a.18.2026.09.18.09.24.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Sep 2026 09:24:09 -0700 (PDT)
+Date: Fri, 18 Sep 2026 12:24:08 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Michal Hocko <mhocko@suse.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>, Tao Cui <cui.tao@linux.dev>,
+	roman.gushchin@linux.dev, muchun.song@linux.dev,
+	cgroups@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Tao Cui <cuitao@kylinos.cn>
+Subject: Re: [RFC PATCH 0/3] mm, memcg: isolate deprecated v1 state from
+ struct mem_cgroup
+Message-ID: <aq1lqJdVZ1stTKCn@cmpxchg.org>
+References: <20260916125737.1095414-1-cui.tao@linux.dev>
+ <aqxMk6yaiFHeeAAg@linux.dev>
+ <aq0HNe5s3zvOnM_I@tiehlicka>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 00/13] s390/cio: replace page allocator calls with
- k[mz]alloc()
-To: Heiko Carstens <hca@linux.ibm.com>,
-        "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Vineeth Vijayan
- <vneethv@linux.ibm.com>,
-        Vlastimil Babka <vbabka@kernel.org>, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20260916-s390-cio-ready-v3-0-39e4894637d6@kernel.org>
- <20260916130613.15587F91-hca@linux.ibm.com>
-From: Peter Oberparleiter <oberpar@linux.ibm.com>
-Content-Language: en-US
-In-Reply-To: <20260916130613.15587F91-hca@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: vTyVM8gFf2TLxGe0RjdKNlWme4FkyRm6
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE4MDIyOSBTYWx0ZWRfX12DmjXrEm5MR
- h/AvVcvlh5F9Jzcx3msRny4416tysM3XT+DK1T4EAg1Tc8kI2m3sAh0MCVEE5m2jJsOzsor/lWm
- LhlGoZjGMZlGoTfMOpXBVOkV27ORGEo=
-X-Authority-Analysis: v=2.4 cv=cvgOAF4i c=1 sm=1 tr=0 ts=6aad656e cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
- a=IRwR5hotAdJOlb6Xvy0A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: vTyVM8gFf2TLxGe0RjdKNlWme4FkyRm6
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE4MDIyOSBTYWx0ZWRfX9VrQ2GokdTf/
- ij01HjXDQRKd9KcreIiqI/fXcgj3CFh8IV3Ywtcj5oFBp9ClR4zc1dWxHF+s+wNUqCODODzn0pz
- 62Hn7XGiwhK8ouluqvAn2U2Uv3R9hZ4nUA1k/ozSdmbdM3yLAouP2b7TjU+za74QNUP/SDs2kuV
- +TzM3unuJpH/QCI0WNt9zWl+flvufd6ShlibskDDOwZ/Wgrs7g7sEiVXHUAAMsiGIykrOcfZkZr
- aJYf1nfQqrxhYuQcle7w8QKFUsrgFS4tU2c6lyp9aiDUNFOues2xArRa4Dh+hp9pRGjSdWg2S+y
- 3Z97elu/WJo/mNnyWwADDXckyafk1reo63sgpjQ+FSiVjXUxVdlqeiU4eSitu4SDZeNzQe6busz
- pjpvKbW7ZS+wbhuVrz+xIv9PsUoHOGDu0h9PeCq1L05AK5Bult0pgC74RcUO75w2eNGm7Hyaopl
- jmnErCQwD70LaaCERwQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-18_04,2026-09-16_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 lowpriorityscore=0 clxscore=1011 priorityscore=1501
- suspectscore=0 bulkscore=0 impostorscore=0 phishscore=0 spamscore=0
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
- definitions=main-2609180229
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: B8D94140005
-X-Stat-Signature: ze68agy1b8zzrrfnwnzat84gwd5spxkz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aq0HNe5s3zvOnM_I@tiehlicka>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: CBB1740003
 X-Rspam-User: 
-X-HE-Tag: 1789748592-343320
-X-HE-Meta: U2FsdGVkX1/YQcv+8zyCmuqlASW+1e2BIu87uqu40VBSOFVIBzuO1L5tpAz1f9xxIOyHsCVf9+4Mm6xQKmKHtIvW8jGKY+78vcVPT22f18fZuA/R4XAGlqeBwOeWWQCIZYcO15PehWjQkos7HHMe1ihIawmpWawBjxm4pyokVjMWhPi9O3rS5JVYWcfMgOnZ/PnbtMx/l08j6YcfJ/whowpJKQTcuyKcbyeF8eQhDhnqJC/jfMdlog3pTxUsc3+GEQ84/6hk1NA5ECOKsZ2KPJtP+IoUx9A+YG92hUcz9RsYO81dSQaRC9Lbx/5i78C9bw489dywV8Vo73kP3ELPrLDpJC+3cmHg2YS1upLUYwFohMnRM80qgaX0NfYIzU+oDkCDV+drCxRl8hywUESi5mUyGAxT/mkGjdcbXI41ouhVSOUbdnQtATpJwSkSOfCYHYYSXK82BKBJlHSVM7xCvZgdJVeecmJD5HJ6wBjiXPjeMAa53SePwhxLWZEhy6j8TuQYq/z0VqzIlrZPXP3N/4i1ULzFYmgn9f/AoYELr6DJFcUAbDttAKWKM2lvBnf44uP9BxsWbs2yFpBzoYnma9pYa2sw9qqBXlJx4I4T3khXmAidgA0EOS/IjzPwxsCpJ3bjoCu8YWrzrRpoBZQDcPaYcB+Uv44X0+D0ER3vj/hw7Xzqp0xJTQK4vF38ZweXvPzuvrUSfgWxyYe9cWLBEOqYcTaCLRPt1CoNkDIMwaNIG/Nzo9U9rZKbb3WFM6m2x391xNm+2hIiVUzLmctcljZD0HkZ+OIdiCjumy0iz0jxQPjxbFFF6H2m8DB6pTc4ziEQfsKzJzC+dkVAnjumqXm+f0fh5e4dusE4VUsjdOkM98bwWMsL+E5PMmeWhDirfswruLdftsdP/Mn4GJcjB6AZLKt9ISvGS6R4gID/QHboSeN4T9+qz5+JrAKqSt6//N4fYnBIzFh9H43mtMu
- GmrrC8E3
- ZPMSs/VJe7kO4zRxgK2XPioIMRPw9DyOnP3giQ5GLhpQjSelsq1zdTFW4uuDxKhFZXX243v2+4NyS+41mkb/D6Q6mD1rJp2eubnZlP8v5qJIzp632Qt8s38WyxuqsJ/jc22Roz1lVG9qVKbr/c1EvRAFPXJ2VtR0Y6mxw6Zfd3RKSU6KgGg50ea1cEJcLe0fvT+8ulcuw1s9X/OfatnNJg08B5e/iieRehz2dFiLn0b/y1nGKys8seWu6Okdl/b9QV1/Nf6xeAzLELTBz3oIKjMrvrrDWulGSKeERFDRBuyZwskw+Hx54AHvS5dvmXLXtnPeK7vQ5vbqoAyNYhWY6vCU5uA==
+X-Stat-Signature: 38co3g1e5ntr43fb58nkbsuuj9wed9ho
+X-HE-Tag: 1789748651-84456
+X-HE-Meta: U2FsdGVkX192/icG1Ps0KMOR2anVuXBGxFai+IP9YmaSBq6L7Lhawt/yHi3Rz5ON4vtfdiudPXSU3kwtu+sGjsK+FQfHkCkSjnd6vNDzHSJu2kL8EeTeTimQJJBQzeyeJlPZq+ApzTu7XottxPUAVDdbzZah4FiVc0log/Zp5ShxdaOe8R2IsFxkqS89ZPu3s7TtEx1OKl+EEvFUx06baP1bHN365QUE8lUsUbe9B0n2Ew8S5yrkZ2KdcFw8B1QiKW4YfHSfvmdYj4AVxqbT83fhSs02ykcSAW6YEecI68A83h1wxDV7sGZDZgSx/w+QZicEOZQ9t0w0Amn6pnxRJPW2VfIvcuTiTU4zDGgDzPpACmbpLH6kJhFFAR7c6KX/4VA0GQakRvnvKaOTA5c+76PwfG44/0l201ofX7HAlc2z22Mmif0TmpwzMmzfyuFehQXy1/nPRWbAxLjqfqJLZxk65BdeMDna1CWPCsvIoFt1T6eQuiqM6MJfDjuTGF7DVW0WnsmqBNG49khNJ8+IYIAWQ5pYuMpEg2amFFPxWn8RMqI5uQcf29/99O9zUYLwE+kXdh1zM4ptwdLqlq5llEUibEeS+T/DedApORjxz4L2NyR/zvpc770ZgU3ox57v/1Ki/bJmgAdeICe7AXu1HoDtcIpq3UlT7DSv/PsRw8DYTFOX0XxrvcjsWEIuQ02j42mlMWxks9bsmCGdwaY+hvnGYXJffgAXyXfCgsuDMY9kc8rPuMVEI5RC8QIuGEZNzyQV+X+TJ0GScirw3d4qGDN8f0z1MhDyn+bfln0zALmR6fUVxDdGQmaOdjoMR2+HNpeLwxCdsX0ztzkhnWSzrJtM65LPIfRbTUNjFxnNNFkWmkXFo1KGZpz+uNn1XLGR31rhrFgC2nPtY3mGtnrc8bNT/KzPa4s8lu3L6Er0RMU/6OnZYooiqzWKp6RJHtvMpGBzAirgDApTa07Fq7f
+ ECJhnGfB
+ 0ISgPXLep9ol4DpZORvlL/beS9F/cGCFsiNDidIMi0tj2iUh49Abf+zDUzFbDXKBSDqwpGF1+/CxMtCbwLlNgVb7g/b7T2mDcXG5RerE+vVngbJ9jJ6uiczR74X5qZ8m+rjcaIbe1Xk3fSs2kzM+wz8AhBVfeSXX9cMKGwh5SydRnKGZlhZYH0e8nnDbEyT+ijVTLjbSQudyjloG/Kbwhp/kJmE4+Su9urQghjQhGtK1DPnnLnII53nni0B7SP9jC7Q0tuJ2GHS9SQyAnlLXc9NZFBFNb5en+nnRgQUGQhdvteDVkXYSziWR99ACLJDrD2EcJColyJXjlJS18SSdfLmRo218zGa9rn6wpulpb+7ijsA25/gZkAMyd0BtHq7PBus9+Vpo+HcyY/iqpv7t5Dk6sizvdkbGtwc+479UPN3dhFbnC0TJBQ56hUX+5LhLthGb7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,51 +123,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 16.09.2026 15:06, Heiko Carstens wrote:
-> On Wed, Sep 16, 2026 at 03:03:07PM +0300, Mike Rapoport (Microsoft) wrote:
->> The saga continues :)
->>
->> This series covers CIO, QDIO, SCM and IDAL buffer allocations.
+On Fri, Sep 18, 2026 at 11:41:09AM +0200, Michal Hocko wrote:
+> On Thu 17-09-26 13:26:40, Shakeel Butt wrote:
+> > On Wed, Sep 16, 2026 at 08:57:34PM +0800, Tao Cui wrote:
+> > > From: Tao Cui <cuitao@kylinos.cn>
+> > > 
+> > > The legacy cgroup v1 memory controller has already been moved out of
+> > > the shared implementation at the file level (mm/memcontrol-v1.c) and at
+> > > the Kconfig level (CONFIG_MEMCG_V1, default n since 6.11).  Its
+> > > per-cgroup state, however, still sits as individual members inside
+> > > struct mem_cgroup, guarded by #ifdefs.
+> > > 
+> > > This series isolates the deprecated implementation from the shared hot
+> > > structure: all v1-only members are grouped into a dedicated
+> > > struct mem_cgroup_v1, and every access goes through memcg->v1.X.
+> > > 
+> > > With this in place the v1 implementation is self-contained: its
+> > > interface in mm/memcontrol-v1.c, its state in struct mem_cgroup_v1, and
+> > > its eventual removal becomes a localized deletion of this struct
+> > > together with mm/memcontrol-v1.c, instead of unwinding
+> > > ifdef-scattered members across the shared header.
+> > 
+> > Sorry I don't see any benefit of this code churn. The code is already behind
+> > config. What exactly this code churn is giving us?
 > 
-> ...
-> 
->> Mike Rapoport (Microsoft) (13):
->>       s390/chsc: Use kzalloc() for CUBs
->>       s390/chsc: Use kzalloc() for the SEI work area
->>       s390/chsc_sch: Use kzalloc() for CHSC requests
->>       s390/chsc_sch: Use __free(kfree) for synchronous CHSC requests
->>       s390/cio: Use kzalloc() for CHSC work areas
->>       s390/cmf: Use kmalloc() for the CMB area
->>       s390/idals: Use kmalloc() for IDAL data buffers
->>       s390/qdio_main: Use kzalloc() for the IRQ structure
->>       s390/qdio_main: Use kzalloc() for the QDR
->>       s390/qdio_setup: Use kzalloc() for QDIO buffers
->>       s390/qdio_setup: Use kmalloc() for the storage list
->>       s390/qdio_setup: Use kmalloc() for the SSQD request
->>       s390/scm: Use kmalloc() for SCM information
->>
->>  arch/s390/include/asm/idals.h   |   9 +-
->>  drivers/s390/cio/chsc.c         |  20 +--
->>  drivers/s390/cio/chsc_sch.c     | 300 ++++++++++++++--------------------------
->>  drivers/s390/cio/cmf.c          |  11 +-
->>  drivers/s390/cio/qdio.h         |   2 +-
->>  drivers/s390/cio/qdio_main.c    |  23 ++-
->>  drivers/s390/cio/qdio_setup.c   |  14 +-
->>  drivers/s390/cio/qdio_thinint.c |   2 +-
->>  drivers/s390/cio/scm.c          |   7 +-
->>  9 files changed, 150 insertions(+), 238 deletions(-)
-> 
-> As far as I am concerned:
-> Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-> 
-> Waiting for IO folks before applying. Thanks!
+> The only arguable upside is that this would make it ever so slightly
+> easier to track v1 specific stuff (once that s@v1@memcg1@ or similar).
 
-Looks good to me! For the full series:
+I had the same thought. It's kiiind of nice to see which members are
+completely specific to memcg1.
 
-Reviewed-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+> I am not convinced this is sufficient to justify the churn either.
 
+IMO it helps that it's mostly in memcontrol-v1.c where the chances of
+interfering with other work are pretty slim.
 
--- 
-Peter Oberparleiter
-Linux on IBM Z Development - IBM Germany R&D
+The patch 1 + patch 2 split is a bit bothersome: indenting everything
+into a union, only to then move it out in the next patch.
+
+Tao, if you folded these two patches to make it one clean extraction
+and changed over the sites at the same time, I would probably lean
+supportive on this.
 
