@@ -4,83 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0147C88E75
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 08:07:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F6EBC88E75
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 08:07:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 034BF6B0093; Fri, 18 Sep 2026 04:07:23 -0400 (EDT)
+	id 1E3686B0099; Fri, 18 Sep 2026 04:07:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 00C896B0098; Fri, 18 Sep 2026 04:07:22 -0400 (EDT)
+	id 194286B009B; Fri, 18 Sep 2026 04:07:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E3E896B0099; Fri, 18 Sep 2026 04:07:22 -0400 (EDT)
+	id 0D21E6B009D; Fri, 18 Sep 2026 04:07:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B360F6B0093
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 04:07:22 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 20941A5F81
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 08:07:22 +0000 (UTC)
-X-FDA: 85226153124.29.247C631
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 7DCFBC0005
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 08:07:20 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EzLAjqFr;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789718840;
-	b=eOHIQ+ZqDdlbEj2Yax82y1hn+cXW62vwZ32bsDHhnkf7tFyoFWHXH3bb9O5R15v4wSIWnv
-	PAhEOTt9E9kIf2gqz+SxrXqEk+oLNO3XSBNP9Vx206w3ewwI5BOd4AMewxDsX2LAcFmTpP
-	iLO0qYTDH3mkbXbDpVg8GYX/qpoTu98=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EzLAjqFr;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D04876B0099
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 04:07:43 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1CEB81205C1
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 08:07:43 +0000 (UTC)
+X-FDA: 85226154006.24.C6337E9
+Received: from mta0.migadu.com (out-8.mta0.migadu.com [91.218.175.8])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 44AA680002
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 08:07:41 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fLKMwaM2;
+	spf=pass (imf02.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.8 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789718840;
+	s=arc-20220608; t=1789718861;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CN62GKBYW4Gh6bEa4wTsqXz2IMYSV3OeaKs617jAh5o=;
-	b=AAJiCbpskHNcOaPuedActN6ZPdGWTF3IYWUY6jc3jTEsVlJgSx8PZGsViBt2rNlhsedXlW
-	v8sUyR2vj57Hv70or3Urur2AFjNMvKSw04qKzBl9E3NBEzllw5yVYz+d4hEmTaEn9a5bjp
-	45HkxVtlAM3RhUCMBH5u6cR/s2ePoak=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 001D540264;
-	Fri, 18 Sep 2026 08:07:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88C4A1F000FF;
-	Fri, 18 Sep 2026 08:07:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789718838;
-	bh=CN62GKBYW4Gh6bEa4wTsqXz2IMYSV3OeaKs617jAh5o=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=EzLAjqFrG/HO3b+fLf1D9Lt53vKdK0OdUUVjk5YI3Lwzhadh+82qXHwYpuhwmQUCg
-	 eOXEM2M6FedgnfOSuonmYdMRy/5J7ClJ9gSZ2Lp+u74Me/uicrhxCgdBsWv9BwPwxu
-	 +YUYFNW3gjP3X5DMztp0Vuw3IIcTjj+viPvQKZz/HI1g2XQffgnEtZ08EbcVYBroRM
-	 uTDk0CsvRTpR+4zqn1AayHLHNSCjYPp3t9HH0kLoFBC578e7ZNcTnxZ/O8qqJxv3wT
-	 dTW1t1os0gil5fq9pnx5Q7gHqKbtNbp1WhYcclPslLeedj6HMicDWAf2A2p7UXOG57
-	 PMonpcJTaZ/Uw==
-Content-Type: multipart/mixed; boundary="===============2924590592151832210=="
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=CR3bafdCGqufTRFQvpqbfnC4WTTR3eKosEUB+VyPU/Q=;
+	b=IXdDdf2Py+rfQfn98JBZVbYRKXpji5KGa49ipBJQm9MzSi3eZzYrkRFaVHXt1csagZFgtJ
+	QR8IE8+0wen27pqjt2dN1kbwpKELQbOmY4C+rJb72g6P8Xu0QGBHCPZuj7ARobB80PkNQM
+	AQIJKhperdOBp/RvCubNtfrRKIAwazg=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fLKMwaM2;
+	spf=pass (imf02.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.8 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789718861;
+	b=aqkJxebGu7VTI2dTrwcUZYBM2W9naN6fuHfK6d5Rk08mK18ddZt4C1T5H2q3STczK0m3cF
+	RJke8rYZ7UBGYF6rULZhBiajAAoLZhhpGshCyRuBjpS++3elfQze/MI3cFp7cpDlJi1d5Z
+	cBuhANNuH7Kkf99Yv29vkuui+QEhIsA=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=E0Nmroful7jb3ppWghs4YpOSpLIFZgz+UAPsmrbruq4=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789718859; v=1; x=1790323659;
+ b=fLKMwaM23PNgO1xMELdXzMdDD+TPIEVnTAK4etDczmiEQhaLnBMyFLJhyiXasyDiBVgFYNu/
+ 31XCXaaBREKTLIjB6skmhp++bMkEGOj0IS0gIGNPDrIktXyIC7kGnxTFXsTw94Ucue5hZZ3jbPH
+ xt0t1onecmKE+pUrnHdoJUyA=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta11.migadu.com with ESMTPS id 950ab51559f25ce3;
+	Fri, 18 Sep 2026 08:07:39 +0000
+X-Mizu-Trace-ID: 950ab51559f25ce3
+X-Migadu-Flow: FLOW_OUT
+From: Hui Zhu <hui.zhu@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Kairui Song <kasong@tencent.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	David Hildenbrand <david@kernel.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: Hui Zhu <zhuhui@kylinos.cn>
+Subject: [RFC PATCH RESEND v5 0/2] mm/vmscan: fix NR_ISOLATED accounting and throttle MGLRU eviction
+Date: Fri, 18 Sep 2026 16:07:18 +0800
+Message-ID: <cover.1789718658.git.zhuhui@kylinos.cn>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Message-Id: <a96829b3ce33af67ccab9e1307714102daf95118dea89d95796ed440562acd12@mail.kernel.org>
-In-Reply-To: <44f7fcfafd5f33072dd2b9abc31aa9bf5eacd9bb.1789714023.git.zhuhui@kylinos.cn>
-References: <44f7fcfafd5f33072dd2b9abc31aa9bf5eacd9bb.1789714023.git.zhuhui@kylinos.cn>
-Subject: Re: [PATCH bpf-next v12 2/2] selftests/bpf: Add memcg async reclaim test
-From: bot+bpf-ci@kernel.org
-To: hui.zhu@linux.dev,roman.gushchin@linux.dev,inwardvessel@gmail.com,shakeel.butt@linux.dev,akpm@linux-foundation.org,andrii@kernel.org,eddyz87@gmail.com,ihor.solodrai@linux.dev,ast@kernel.org,daniel@iogearbox.net,memxor@gmail.com,martin.lau@linux.dev,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,emil@etsalapatis.com,shuah@kernel.org,david@kernel.org,baohua@kernel.org,geliang@kernel.org,linux-kernel@vger.kernel.org,bpf@vger.kernel.org,linux-mm@kvack.org,linux-kselftest@vger.kernel.org
-Cc: zhuhui@kylinos.cn,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Fri, 18 Sep 2026 08:07:17 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 7DCFBC0005
-X-Stat-Signature: cxnc7ajmtcg93313szcrcydxm9erejk7
-X-HE-Tag: 1789718840-385246
-X-HE-Meta: U2FsdGVkX19/NJKT+Zv1/C8ibEGSj++Q/wJ2vwGwI45XPBYjLM1pDaPRSTbhB0U/MuU60XIaH7RUiUKpnXMAIIK2v/QQBzu5RV4die5mJ4eKiyWPFdb4u94UtwNoV9oEyIGlxJi/xylO6np/1g6LqD75fYTWepYqGRfMX9WKjsg/Nckzdh6dHrZSeSQwEiMvP6l0+rwj3OyxzfXfoRI0QKeNohdzsWnf4ovQ4KdxudWIYwq32rJ2HVonjPaab48Q/1uqzK2sf/3f+1UJqs4MOeSLfPfHnfsjvN40OlBeMbi2Tj89HN7rY2Sb5SqxAC6AEpw7wN8vwto4jWadkocBstdsYe/9GIn6daPIyx1SGUI+7OJmHDRsdTEg5K5wE7nHY24a5ZnEUIprcH9FeAVe7N1f/hcT4M5LfF6a4p1UC1JsNzWfPo7fmgPfmSSSVPfAHDij7aOAmO21opyCxEmpuckNQinmdhZbxc0TMcs/p2IEO0kemz7M1viPD4hs3IyfIQWr9pHywwlpJ0uToWj7ZAyff8rd6UNw9g/L37y6XxZd+9fAaVF3Cyk3HYWMToGV7HQINEgFlDRJ6UESUwg7FXxzc5G/Y40eeRCvgyeyUWyUH9bSR9YixuObL+dFUGL8QpokAYJ2Kt9mbHY6BNoZ6e1KH/PxpJHQkHkLXfv9/wfSm+wTA2VUWp0cZyOxBKwv8kc+vl8L1SZTX4MTk0e+2FfhH0DbpkE1tw8fqdHA3t8NJai9CE2Pjto4uaOnaQM76ybYEbrHnKe91SOEkrfdPokDOwli2QZv1l/NptcJYYtV/CKBIaI/4C+7RKRllPVcMU+tvVBAQsI7eajGIMLnBFeqWmnvmzYpeEwsAVU0pHQgGGIm4/R6eJKmg099Sq2tBzpuUd/JmvqT2FZu7ybo6n/beNY+Yg7ayUv7XTQvojtxIEWBrvFZ9GQBail91zjrPwZ/SotxSuBl3DmhPc1
- HO1u9atg
- GR3l1vannxyMjliBc+zaPrw2j/ai0iF6A5HaGNnbOJfrcfODPlGMO/ocnY26t1xEcahGz/+Xg363FamNzASVwLNFUuVEgm0JrRqHqNJdhEUmDx8qYnSRXe9NYqFFPQhv/26Zw+Pswf0Uin1vZlfndiE3+YQ41Xmq1lGlAD7M+GxD4DwAnnECrHsFkypnobvs23WuBajnKU7NQnZfiarKaoice3M6RFv5Y5cpYtWphI6fEEC0pfTnVkr0Ywp2oZh9I3ymOFMdRq5UkVe7uPIG9W+I+pNt4qHpoWMnBrHPeclBqBakqcnOAmOXp7CoGOb3jiQfMjYx+oI0Y2y+koml7ivVvgVjiJwpuVfECsDESwpqzthdxTKxH2vTjOf7AHwRU0WhrAof6Ngfrw+ti4ZhTMhXEOhO9Y11DOaL3VeHPFKH1boynnq+W6EwONk4z334vaewy67XQBHek7Y2RDbn5mpuSmdNczEFnEVr7UuZBRb8+k04q3yifxRWbdg==
+X-Stat-Signature: zi9m7gof6kictkucp5po33tfq3nuisgf
+X-Rspamd-Queue-Id: 44AA680002
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789718861-233345
+X-HE-Meta: U2FsdGVkX1/g6nLRprvW25kh3mk/lyG8CfYrA1qm21g//iaCAMP3k/fsRl73G4iG4BPzH+R1GJcsrdDZF3jTB+6rTJMCvQKDvku4NgWIpvt8lyWllzy3D+9UWYOvMtSI/LKM5grX3TL/+yn6s3lHCJwoqT0hrNK4Cm4eybv9/8kcninCdvMlCjKmr8D8l8CoTSG+0G1D4Cym4rffAI8cGkBqbDxcP8sIKymtnHwXW7fSpzYZ0j+7+wJtZyNKX6Hy5WGn1w6lutZ9qufx7MWii8+Zj3uc+gKdg+VX5hnfaIFbmSFLGaR+x+nN8efKUVb3/Sotdy+1/P6ln8ZXFEEIfKs6rzaGryZpFwfYD35NXgKLPyUr1ZU3+owSutDFsE9+QlY09aZuhuMESIrTeYeLZXTJloFiABAJ9MHPTrhMtMJUGi/hnuIcerAY51aynextEH6q1GDi+qfHyQ23UCyHiwAF8kS2MNON29vzcDiYeVY75OY+2uK6IohrfiXT0R+NEy9xVfihgm98JnZmR2GtLAS5i6vSpqbmk7LcPjRYCkrg3sl/sBw/caShm8q6UD6sqfEX8LcWKNqmz/FpafYWOIe1NtEJMChbylTnGnuuQH/LQiW3jkNbzaMjQsrRRY9DA3bUDe4K0sLvddz+u3hSGBhBsTutrzf72mzRIVvS7edITT7vww0q/LYdsI2RPD2bG2PFKEJCaZJYQR9o+aqTdLlPLd5lZK8R6UoCbiMuSxw9jN28rS6ytQqOyh5JywbFtgC8CwqCws9Ui+xMRmTWU5GiTH9jpe0GXW3U5j6cqDG55NKutBHd7aTQO1DhvMmiSaUIxAL5Qf4zjhlZih/z9MeevYEpp5BEbUIb9Ci0lqtAST3Ry00XjPxLk0c2XOzqx4IeSmSyB7AdHK8QiCPvd3T6F6dilyM1svwKxznwq3ejrGcClxef7FSrKatNfJysFgyQvW88d/qI5Kr4TTJ
+ 2ysZYErs
+ jKaSjVHjJ+igXdAERc5tl5/we1SB/OtwOPGui0p/Oavfi9A2L/FEWGnvh75bmHvm8J8xUH5g8sZI6A+f+KcHdsyYbA0TJvEWnvBV/OIvY5Oeu/TIXHOx7EsbmeaZvQ+3HctCPICoRMvRi3Ovdwz1fmzV6MEXj/62g70MW2Hxa2ccPbKUmZdPGLXC/gQ/4RtIzAkTfmi5wGtEW9GaDBI4roFO0MJZF0XGw/lD4t9S4t1OP4g+mNTUkXxRDgsKfK383IWmI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,178 +99,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---===============2924590592151832210==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Hui Zhu <zhuhui@kylinos.cn>
 
-> diff --git a/tools/testing/selftests/bpf/prog_tests/memcg_async_reclaim.c b/tools/testing/selftests/bpf/prog_tests/memcg_async_reclaim.c
-> new file mode 100644
-> index 0000000000000..179b64fb6de84
-> --- /dev/null
-> +++ b/tools/testing/selftests/bpf/prog_tests/memcg_async_reclaim.c
+Previously the patch was based on mm-unstable, which caused issues during
+Sashiko apply.
+So I rebased it onto mm-stable and resend.
+Thanks Andrew for the heads-up.
 
-[ ... ]
+The legacy reclaim path has two mechanisms around isolated folios that
+MGLRU lacks:
 
-> +	/*
-> +	 * Optional baseline for the benchmark numbers below: run the
-> +	 * same workload once without the BPF program, so the log can
-> +	 * report how much async reclaim improved the pressured cgroup.
-> +	 */
-> +	if (bench) {
-> +		err = run_high_low_workload(dir, &base_high_time,
-> +					    &base_low_time, READ_TIMES);
-> +		if (!ASSERT_OK(err, "run_high_low_workload baseline"))
-> +			goto out;
-> +
-> +		/*
-> +		 * The baseline left up to CG_LIMIT of page cache charged to the
-> +		 * high and low cgroups, and memcg charges outlive the workload
-> +		 * processes. Recreate the cgroups so that the instrumented run
-> +		 * below starts from the same cold state the baseline did;
-> +		 * otherwise the reported speedup compares a cold run against a
-> +		 * warm one.
-> +		 */
-> +		cleanup_cgroup_environment();
+1. NR_ISOLATED_ANON/FILE counters are updated when folios are isolated
+   from the inactive lists. Compaction's too_many_isolated() relies on
+   them to decide when to back off. The MGLRU reclaim path never
+   updates them, so compaction cannot see MGLRU's in-flight isolation.
 
-Does this comment accurately describe why the cgroups are recreated?
+2. shrink_inactive_list() throttles direct reclaim via
+   too_many_isolated() when isolated folios pile up. MGLRU's
+   evict_folios() isolates folios without any such check, so many
+   concurrent reclaimers can over-isolate the same (oldest) generation,
+   leading to unnecessary swapping, thrashing and premature memcg OOM.
 
-Looking at run_high_low_workload(), its cleanup block closes all four file
-descriptors and then unlinks all four temp files after both children have
-been reaped. With link count zero and no remaining open descriptors or
-mappings, the inodes are evicted, their page cache is truncated, and the
-memcg charges are released - so memory.current for the high and low
-cgroups is already back to near zero when control returns here.
+Patch 1 fixes the counter accounting in the MGLRU isolation path.
+Patch 2 adds a per-lruvec throttle, mirroring the legacy behavior but
+adapted to MGLRU's per-lruvec contention and its dynamic type
+selection/fallback.
 
-What actually survives the baseline is memory.stat, particularly the
-WORKINGSET_REFAULT_FILE counter that the BPF program samples via
-should_reclaim_cgroup(). Without recreating the cgroups, wq_prog_init()
-would start elem->prev_event at 0 while the counter is already large from
-the baseline, so the very first timer tick would see a huge delta and kick
-off a reclaim round unconditionally. Recreating the cgroups zeroes those
-counters.
+Testing
+=======
+Two test scripts are provided to reproduce the problem and validate
+the fix. Both are available at:
+https://gist.github.com/teawater/3ef51251f2e91a5a600e3d26bb477e34
+Test environment: 10 CPU / 8GB QEMU guest, MGLRU enabled, a 16MB
+memory cgroup, anonymous working set, swap backed by dm-delay (50ms
+read/write delay) to slow swap-out and lengthen the isolation window.
 
-Could the comment be updated to describe that the recreation clears the
-WORKINGSET_REFAULT_FILE counters in memory.stat rather than page cache
-charges, which are already released when the files are unlinked?
+mglru_iso_repro.sh (64 threads, 48MB working set, 60s):
+Drives concurrent direct reclaim inside the memcg and measures scan
+efficiency, throttle events, in-flight isolation and throughput.
+Neither kernel OOMs at this concurrency; the value of the patch shows
+in reclaim quality:
+                        unpatched       patched
+  OOM kills             0               0
+  mm_vmscan_throttled   0               35645 (all
+                                        VMSCAN_THROTTLE_ISOLATED)
+  nr_isolated peak      0 (invisible)   230
+  total touches         246,499,132,369 301,456,426,692
+  scan efficiency       0.0261          0.0194
 
-[ ... ]
+The patched kernel completes ~22% more work in the same 60s: the
+throttle keeps concurrent reclaimers from trampling the same
+generation, so less CPU is burned in reclaim. Note nr_isolated is
+always 0 on the unpatched kernel - the over-isolation is invisible
+there, which is exactly what patch 1 fixes.
 
-> +	reader_pid = spawn_keepalive_reader(data_fd);
-> +	if (!ASSERT_GT(reader_pid, 0, "fork keepalive reader"))
-> +		goto out;
-> +
-> +	/* Wait for reclaim rounds to reach the live target cgroup. */
-> +	for (i = 0; i < EVENT_POLL_ROUNDS && !seen.called; i++) {
-> +		n = ring_buffer__poll(rb, EVENT_POLL_TIMEOUT_MS);
-> +		if (!ASSERT_GE(n, 0, "ring_buffer__poll"))
-> +			goto out;
-> +
-> +		/*
-> +		 * The reader loops until killed, so finding it already gone
-> +		 * means the refaults the BPF program waits for never started.
-> +		 * Report its exit code rather than letting the assert below
-> +		 * blame the kernel for the full poll window.
-> +		 */
-> +		if (waitpid(reader_pid, &status, WNOHANG) == reader_pid) {
-> +			/* Reaped, so cleanup must not signal a reused PID. */
-> +			reader_pid = -1;
-> +			if (WIFEXITED(status))
-> +				PRINT_FAIL("keepalive reader exited early: %s",
-> +					   child_exit_str(WEXITSTATUS(status)));
-> +			else
-> +				PRINT_FAIL("keepalive reader died, status 0x%x",
-> +					   status);
-> +			goto out;
-> +		}
-> +	}
-> +	if (!ASSERT_GT(seen.called, 0, "reclaim events")) {
-> +		report_timer_failures(skel);
-> +		goto out;
-> +	}
-> +
-> +	remove_cgroup(CG_DYING_TARGET_DIR);
-> +
-> +	/* Let reclaim passes that were already in flight drain. */
-> +	usleep(DYING_SETTLE_US);
-> +
-> +	calls_before = skel->bss->reclaim_calls;
-> +
-> +	/*
-> +	 * Wait for a reclaim round to hit the removed cgroup. Only TARGET_GONE
-> +	 * ends the wait: an attempt that lands inside the rmdir window reports
-> +	 * SKIPPED_DYING first, and stopping there would miss the events that
-> +	 * follow it.
-> +	 */
-> +	for (i = 0; i < EVENT_POLL_ROUNDS && !seen.target_gone; i++) {
-> +		n = ring_buffer__poll(rb, EVENT_POLL_TIMEOUT_MS);
-> +		if (!ASSERT_GE(n, 0, "ring_buffer__poll"))
-> +			goto out;
-> +	}
+mglru_iso_repro_v2.sh (192 threads, 48MB working set, 60s):
+Raises concurrency to the point where over-isolation becomes fatal:
+                        unpatched       patched
+  OOM kills             1 (task killed) 0
+  memcg oom events      51              0
+  mm_vmscan_throttled   0               512292 (all
+                                        VMSCAN_THROTTLE_ISOLATED)
+  total touches         0 (killed)      682,300,003,972
 
-The second poll loop here drops the keepalive-reader liveness check that
-the first loop performs, although both loops depend on the reader equally.
+With 192 threads the unpatched kernel cannot keep reclaim ahead of
+allocation and the task is OOM-killed; the patched kernel survives the
+full run and keeps reclaim making progress.
 
-TARGET_GONE is only emitted when a reclaim round actually starts, and a
-round only starts when should_reclaim_cgroup() sees a fresh
-WORKINGSET_REFAULT_FILE delta - which only happens while the reader keeps
-refaulting. If the reader dies during this second window, refaults stop, no
-TARGET_GONE ever arrives, and the test reports "no reclaim round hit the
-removed cgroup (gone=0, dying=0)", blaming the kernel for a dead child.
+Changelog:
+v5:
+According to the comments of Kairun and feedback from the test scripts,
+make the throttle check per lruvec (new nr_isolated counter) and skip
+empty types in the allowed mask.
+v4:
+According to the commens of Baolin and Barry, rework patch 2:
+drop the throttle_is_throttled() helper extracted
+from shrink_inactive_list() and leave the legacy path untouched.
+The new MGLRU-only throttle_evictable_types() only sleeps when all
+evictable types are over-isolated - v3 throttled as soon as any of
+them was, which unnecessarily blocked the reclaim of the other type
+and passes the mask of the remaining types to isolate_folios(),
+which restricts both its initial choice and its fallback, so that
+isolation never lands on a throttled type.  The v3 gate did not
+constrain the type actually isolated, so the fallback could still
+pick the over-isolated one.
+Re-run the tests and update the test log.
+v3:
+According to the commens of Baolin, remove the redundant nr_isolated
+check before restoring the NR_ISOLATED_* counters in evict_folios().
+rename the extracted helper to throttle_is_throttled() to avoid
+confusion with the existing wake_throttle_isolated() naming space.
+Use for_each_evictable_type() in the MGLRU throttle to check each
+evictable type's isolation instead of only the type returned by
+get_type_to_scan(), since isolate_folios() may fall back to the
+other type.
+Re-run the tests and update the test log.
+v2:
+According to the commens of Kairun, Rebased on mm-unstable.
+Split into two patches; patch 2 is new and adds the
+too_many_isolated() throttling to the MGLRU eviction path, which v1
+did not cover.
+Add test infomations.
 
-That is exactly the misattribution the first loop added a waitpid(WNOHANG)
-check to avoid. The reader's exit code is still available here, since a
-reader that dies during the second loop is left unreaped until the out:
-label. Should the second loop include the same liveness check to avoid
-misattributing a dead reader as a kernel issue?
+Hui Zhu (2):
+  mm/vmscan: fix missing NR_ISOLATED counter update in MGLRU reclaim
+    path
+  mm/vmscan: throttle MGLRU eviction when isolated folios pile up
 
-> +	/*
-> +	 * TARGET_GONE is what the test can rely on: by the time rmdir has
-> +	 * returned, bpf_cgroup_from_id() has stopped resolving the target.
-> +	 * SKIPPED_DYING only happens if an attempt lands inside the rmdir
-> +	 * window, so it is reported here rather than asserted.
-> +	 */
-> +	if (!seen.target_gone) {
-> +		report_timer_failures(skel);
-> +		PRINT_FAIL("no reclaim round hit the removed cgroup (gone=%d, dying=%d)",
-> +			   seen.target_gone, seen.skipped_dying);
-> +		goto out;
-> +	}
-> +
-> +	/*
-> +	 * Reclaim must have stopped with the target. Both counters stay put for
-> +	 * the same reason: once rmdir has returned, bpf_cgroup_from_id() fails,
-> +	 * so every attempt takes the TARGET_GONE path before it can reach
-> +	 * reclaim_calls++. This therefore checks that reclaim really stops, not
-> +	 * that cgroup_is_dying() works -- see that function in the BPF program
-> +	 * for why the dying window cannot be hit reliably from userspace.
-> +	 *
-> +	 * reclaimed_bytes is compared against 0 rather than against its
-> +	 * pre-removal value: the target is empty for the whole test, so
-> +	 * bpf_proactive_reclaim() has nothing to reclaim and must have returned
-> +	 * 0 on every call, before and after the removal alike. An "unchanged"
-> +	 * comparison would be 0 == 0 and could never fail.
-> +	 */
+ include/linux/mmzone.h |   2 +
+ mm/vmscan.c            | 173 +++++++++++++++++++++++++++++++++++++----
+ 2 files changed, 162 insertions(+), 13 deletions(-)
 
-Does the reclaimed_bytes explanation make sense? The comment argues that
-comparing reclaimed_bytes against a pre-removal snapshot "would be 0 == 0
-and could never fail", but by its own premise that snapshot is 0, so the
-snapshot comparison is literally the assertion that was written:
-ASSERT_EQ(skel->bss->reclaimed_bytes, 0ULL). Both forms read
-reclaimed_bytes after the removal window and both fail exactly when a
-post-removal reclaim adds bytes; neither is vacuous and neither is stronger
-than the other.
+-- 
+2.43.0
 
-As written the comment tells a reader that one of two identical checks
-cannot fail, which is misleading. Could it just state that
-bpf_proactive_reclaim() returns 0 on the empty target throughout the test,
-without the comparison that makes them sound different?
-
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/35318390791
---===============2924590592151832210==--
 
