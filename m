@@ -4,84 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D50FC982D2
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 05:33:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1D8FC88E75
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 05:45:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 52F2A6B0092; Fri, 18 Sep 2026 01:33:21 -0400 (EDT)
+	id 991236B008A; Fri, 18 Sep 2026 01:45:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4DF066B0093; Fri, 18 Sep 2026 01:33:21 -0400 (EDT)
+	id 93C2C6B008C; Fri, 18 Sep 2026 01:45:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3CE3E6B0095; Fri, 18 Sep 2026 01:33:21 -0400 (EDT)
+	id 82A486B0092; Fri, 18 Sep 2026 01:45:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 165786B0092
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 01:33:21 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 85B16A5E8A
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 05:33:20 +0000 (UTC)
-X-FDA: 85225764960.22.CA7BF14
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 9C687140009
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 05:33:18 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=STYojl8L;
-	spf=pass (imf09.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5EB1A6B008A
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 01:45:47 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DD284C053C
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 05:45:46 +0000 (UTC)
+X-FDA: 85225796292.14.378C663
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 145174000A
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 05:45:44 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IGzlyAgD;
+	spf=pass (imf17.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789709598;
+	s=arc-20220608; t=1789710345;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MrqgHKZBnXQS3LTmL5rUHDGXosNV/i35MDQkSDwdDWI=;
-	b=5fOZV8Kgl4kXskTzhZhytVu8ddRyOIPKJ3UpDJo153hZ9gtwhbPyNzfrqv9+9aFCmMP3S7
-	NvBIgVDsL81pe/H07KIu1iEgHzUZ/tBkv5aXDmnwSBVy74sdGAtrG0aK2h51vr5Cb01oIK
-	26jfG9qvoEmxxDpfVnHFxCyzfx82Wyw=
+	bh=tZIBQYdIkUIAuzb3c6Yftyghs4HLNorlFCx2qvx3BqI=;
+	b=RyLaLr+1Kpr2WGQ5wVvmwv8TgM7s+pBVDp4dcfR7Bv3QFCSmIpPhDPlXoTCfWW6BFfPsp1
+	gR5b5ZMVZJ9PNgMXGwGo/wfmJQyV8JS3nXcErZV+UBxUivJsiPeVGMhIeRQkGNaRL+r+8A
+	7pDa1scGITV90F6v8NzL127koXpExF0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789709598;
-	b=xsas7wsmWVqTj8+jl3hKh0R/BEYvIUXyI93ogoyIGhFlpJ2ou94X6YBgno+Dmzx7F6KcCJ
-	3EEm0R2YRzFIs1yKzqW6JJf2ckA6AfBtKz6E9as03Lro5uU4PIo/ZDSOFG7vuH0q+UMWXN
-	/wbYu9lJjJxGu/kCB+rTftlIXGQt7TU=
+	t=1789710345;
+	b=7CMP9CeaMmIgcef0K5oXve2x3Ae2AxbwtNCgDHDXNF7/kaycbbP4/K4NFN+hy/b7V8VmLp
+	KB6Ax9HaqgK5TySLq7p/WKAXkeuSes4xk3iQXHCVo+MIfOp1/hDn4vQG6SGq/mGTyUNzd5
+	dxoh9js0xp6+Nvv+02JFsSBSlgmS4pM=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=STYojl8L;
-	spf=pass (imf09.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IGzlyAgD;
+	spf=pass (imf17.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D3E9143B89
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 05:33:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B14831F0089E
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 05:33:17 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7F4156053C
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 05:45:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DB621F008A3
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 05:45:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789709597;
-	bh=MrqgHKZBnXQS3LTmL5rUHDGXosNV/i35MDQkSDwdDWI=;
+	s=k20260515; t=1789710344;
+	bh=tZIBQYdIkUIAuzb3c6Yftyghs4HLNorlFCx2qvx3BqI=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=STYojl8LLgSZ7rBrlPv5o0I6UROlGvodjFfimLAr//VC2GdJ/rpCRn/yUuNi/NW8h
-	 WWyDq0DQzXbXKBd+xO1mscTIEDIQBKbJpx+YZ4xEac7Cs6afGKTUh5loXxO7eGghhU
-	 mdN6rNBV0SCuQoELdk9V3LQ+jIIZX5UYSV+/XGmAzLnnzVPgTjxO3IouIDb2Wdcc6o
-	 xU3+tQSuiaVWElT+RdKGP1PFpzB5jGxnVldVfRbLwMdl1OaPHXeupIvZzAqwnf+HlI
-	 H+ZRs8Y4r1D9zORVktnUOQeS++cxqbbEQWpaIEnPIglBGM/hBAPeB8va+RyspmGigH
-	 liT8ztP1u99IA==
-Received: by mail-qk2-f12.google.com with SMTP id af79cd13be357-939109fafddso25154685a.0
-        for <linux-mm@kvack.org>; Thu, 17 Sep 2026 22:33:17 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBz+cygV6tu5z/hfEIzRN+Vl/3VwB1bbDJ0qFSjFX+SfWjpxThZXtSM7ddR1YoSssSLLEa9HtB2fXQ==@kvack.org
-X-Gm-Message-State: AFuF++mWcmEWXj0KwwJigcLbJrwINGLE1q5FxwH+fxS6Mmo7+Vs6nNu5
-	5h/rr527aM6oL+zSLP6GjHN5vJKIUrPV0f1Z8wDMg5CHb8zRibWFR5OX5VVCibCbcXgqd0ltoFV
-	fPw8Tu3dhJw3R2nhu8h3Q0FsYMpVed58=
-X-Received: by 2002:a05:620a:7114:b0:93b:d7b0:c96d with SMTP id
- af79cd13be357-93bdca1fbd8mr175287085a.78.1789709597052; Thu, 17 Sep 2026
- 22:33:17 -0700 (PDT)
+	b=IGzlyAgD5iCGTIAwfOZCRmAvZgLKKhKgnpxCzV6AaVy5VpNIeXJHRznv4261V4RD1
+	 P+rc0RyTn3gLXrafh6fGhL2wNnN2DNxiujRfGvHXPImPlZ3Rq0gNsZpVmydyb45d/4
+	 5AreMdB+Ig85mAN4h2+5fo7zhElIlp/y0H5oAJg/GlyjtZMOZ/d8joRoSfPEgZfHaZ
+	 TNBbiVFoG/GzqWerMJPbDs8wr1nJ7TjHTzOW8nfx0NDAewSaL2PbqvXXufzDVqKP7Q
+	 qOIGxfFNTVWEkvBcfYf+wWs5cTfsDYOItUG7LkFRZ9c2Rkkhxaa5WkRdvgeIvfYYQb
+	 S9XX0cUt1mGfg==
+Received: by mail-qk2-f38.google.com with SMTP id af79cd13be357-939109fafddso25582685a.0
+        for <linux-mm@kvack.org>; Thu, 17 Sep 2026 22:45:44 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxVrDaLtU/v6IBOPJn5xVR8rAz56QmaJvzxazbbo9z4ON3u0b7R9fp4pgydvwcWd2pNjlUkMtxpQA==@kvack.org
+X-Gm-Message-State: AFuF++kW5stHNZ1USOubOo95LuO2tgAvoC35t6BUzrtq21LlNKDwdWst
+	iTn9uDWNZQFrj2OajHZgNzWmRs4cdxP1v40ndboO5XE99ifZltLOt9McsT9ROmzovKD8Jk+muMP
+	rOjbY/gHJosFoef4kZXvjfkpig8mr/II=
+X-Received: by 2002:a05:620a:4047:b0:93b:d7d7:8739 with SMTP id
+ af79cd13be357-93bdc7abb16mr192170885a.46.1789710343466; Thu, 17 Sep 2026
+ 22:45:43 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1789701677.git.baolin.wang@linux.alibaba.com> <e4d6918e2e420a2378e8f8c502ccfbad2a7bc2d1.1789701677.git.baolin.wang@linux.alibaba.com>
-In-Reply-To: <e4d6918e2e420a2378e8f8c502ccfbad2a7bc2d1.1789701677.git.baolin.wang@linux.alibaba.com>
+References: <cover.1789701677.git.baolin.wang@linux.alibaba.com> <eeb806b057f2097a4d8d2edcb9ccf850aad8f38d.1789701677.git.baolin.wang@linux.alibaba.com>
+In-Reply-To: <eeb806b057f2097a4d8d2edcb9ccf850aad8f38d.1789701677.git.baolin.wang@linux.alibaba.com>
 From: Barry Song <baohua@kernel.org>
-Date: Fri, 18 Sep 2026 13:33:05 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4yLMG22e+ugYbzCy9nsFcYbMAgD6Yy2JnvSmGkeByqkNQ@mail.gmail.com>
-X-Gm-Features: AcwNN1VcNOsKJhYjJrG4_QwdawIGy_yHrffsBL1ZX4iaZwpmnTo8DG5_7w7tqZE
-Message-ID: <CAGsJ_4yLMG22e+ugYbzCy9nsFcYbMAgD6Yy2JnvSmGkeByqkNQ@mail.gmail.com>
-Subject: Re: [PATCH 02/12] mm: khugepaged: drop the hugepage_madvise()
+Date: Fri, 18 Sep 2026 13:45:32 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wRWYx8QkBNQqLUDwcBr014dErSqj4mmwL6u+3w7U2QPA@mail.gmail.com>
+X-Gm-Features: AcwNN1U4ukXCswakzGtSkgTbKuubC_WAgMbaEn_3U3tuvbZJPBNgMp1ALv2pB_M
+Message-ID: <CAGsJ_4wRWYx8QkBNQqLUDwcBr014dErSqj4mmwL6u+3w7U2QPA@mail.gmail.com>
+Subject: Re: [PATCH 03/12] mm: shmem: don't expose 'deny' and 'force' via the
+ kernel command line
 To: Baolin Wang <baolin.wang@linux.alibaba.com>
 Cc: akpm@linux-foundation.org, hughd@google.com, david@kernel.org, 
 	ziy@nvidia.com, liam@infradead.org, nico.pache@linux.dev, 
@@ -90,14 +91,14 @@ Cc: akpm@linux-foundation.org, hughd@google.com, david@kernel.org,
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam04
+X-Stat-Signature: qhcgnt4jrrxhmrq1wz7x5ogbcw5hq5zn
 X-Rspam-User: 
-X-Stat-Signature: aprpa1woroukepqqz95of1kiys66xh39
-X-Rspamd-Queue-Id: 9C687140009
-X-HE-Tag: 1789709598-39318
-X-HE-Meta: U2FsdGVkX18Bw1MWzboS3ZzB72eNAzqrnSgIk9kCf9hIX3Ik/Xs5VGLykYb3FKpIi77s6/gy0hokSQyVUZ59HcEaidEHwZUjPeByMtWPbo5g7UimyN+rwuHlpcmImF6wpavHC7jqTqW+mSKeVXm9h+HvRxx23TQz6NE1nhYVIXmDhClt2htCVwKbtkG+4cI8DOubGwA/LqXLFeUrlzPWynQnSTTGQyzHHi03BYAPRpco1d/7OAC1uzgz4NVNebMhPH2rSaQs7yBv+SsAX/RZU1prkJxfgcVg5uKb46qNlVL6q8xuABn0sMsKwq78lCa2cZ+ps8U3ao7HUQSvimZds2LoEAmiw2hEHkhCPKdiOhE39dAbwHQrFSLS8RK4A99ynlKaSvtOwX7/x7R36tKIALxnZ/NcVY5nXAFYHkiG0y2zLxF0fzjRV51bYUemjPD23vojCyzS6qePrpj2a0qsxl0YxwKnwhBvyqXFPbN1oOa0tBaKfZ4vZyNZ9RDCLfn7wU0OjWgp5bDCtQ0Uz6YYbmHADpVPphydJ05dalAYKy+KH/1ocLq1ILdV+Gitsow62l4N13sUPNECTtxOujuUgtclJqaIAxFjY6+N61G9/xcbNgnQ+TfuWwfNzB31zgvKyzsPhjxN/uhT4pmjwCD/WT4b2zDHotZT628EP242V5hR4gGG6LoUtZ5VqdCxVfzFAgsEXxEQ8ioS+NW9x/ePcl/Ex/z1VbCdPuqUCtM686i+IeGJ2vkj0MTbEkpq0CrPRvI+CpBbEpwuywXHjPlCs6Q3pI/BSMejNe4/Q7//vUE+IxunftVzsJATueChgEdUY0ic5nkvZKHtz33vxrHfyhLxQJcdM1YNvRJHM9FihWWVeUbCteZxfOsCIRwDo/PMXPeGrw/BHXctAQW02LwLY/N/hPpqZuEfNVVkmgBqGddjE8yfGjK8Cr4ZFvo0nl0Y6EXl6vshNUc3aa50wj5
- SFCDHMTQ
- V9Vg7dyTTO76vq29hq3P4KCZRh4/Kgtc4lvCV5mmY5nmrfMfXTzyJvzPZAg4wl7Lc/SOjMAWOTQIwwFIXgp+h5DJvXEelxNsGN2HjmpLqs/UIwR3q9Fz5mc6n99TQoT6WF5RfxuRFpJeNOxw6AlywxmE+W9NRh42/VeKmh9IhrDJ7GW0H6OJMB2qMMFs9+S/zLhT23cX9UyHIb+YQsFM4GeSkSxgA/97xa42Y5dIT99qf9SBB1vo60PgwbQyIxzsIbRQASeIMSGGy8mMyrcvnGFctzh39NymIPUtgoEaOoDvOvf2ewOdxHvertGJoHBMAEyFJCo6JrvuVpfxCJVuKOy4YGeAStZK/oIgME54aMIqY3CR4DpZlUJhNSZ2grUGQq5itf/YHV1g4WbUcA8hK7Ls2nw==
+X-Rspamd-Queue-Id: 145174000A
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789710344-982963
+X-HE-Meta: U2FsdGVkX1+GhufF7P7GhLzIsdwWaEvJSdx7d+KDVF/7Oe7nBlGwotYJTzir1+J3TsDSFJozVti6wfqdStpinJZEn4+5c0dRsz2BjsjZNbfcm9KQgFZj8mGLlGhLBJX3lsSA8JShMM01tauKeES/tWO4PEzPHCq3KyKAnjgkkvQKgASXSIEZOtfSHsOcPssLGGcWOV2nZvJWnf3jWN13OwrQvcYSSxQjjm/TkCwk2zT3AIsoF08WLraO3WY5CvIoZXHy148OfxBuCnoHXQYe+Li/CJppJG0BRvFZsbUL8VmVnTGG5K/UJer/I2g704/nIcsGgMfTLsqyhBYJrRTRWPy1aVlKDjhRWs1rI4QRU9v2WrVybWSjzIZ0dQ1X9rudGYiFycSnffpjlL1mPZU+UbseCzZtOaIbI/CgRC+9qtM4ye9n2VLyp7XpV1KQFEKYJhC+XQT7+SaHpwnz8tipEwC9043KkYGolM0Ve7LEfH2oOXn7fvgjVDA+71oENjqA5mpwlKVDP4i4pIjHEu8UvjvdytELlWe/tSltTj8JunzXAgLEsGvIm+oARIQWvSrXOX45NRx3iA0wGZAWNchiOLoULsNUh1yhIXMe0iPyvHVC/keBxrC/U6iQQBTn1iHKbZiiWVbTspeEFxt7pi6PHEfuAGLXw6bI7JL+WHYU1AOzexEu6L1lw+SYtwz4rLdlvHWTqdelWUaRxWLfu5JmDMWRUyK62ntFKRm16ZpJvPCe4PA/icVyfgY33GOzaTZ58oPvgJTEaS/fNi26/zXtJiE8OqFqInQkGxdF2qeifDzWFvuSlP4e/X4khuAXEXjZy84kROul4otzoQ5BV+Pb/GLUZZWUxawearYv1Q6UlNigsFzwVjSwBIksmyYkCNmzIt+icTtVBybRBds5ccAFuHRlRvNPTi/a3uCeCGl6VATjEoemHmWCH5Yym+/gFsYYcaWKDwBT7mPtKqF+6sP
+ o3Od/X4l
+ HspuHFHnLZmfsWaDoeTDycljfnybC3MtzOTVaJp7s2JqvGGinjhTJ8NkAhyZapcd3O07w2ZhtZPkMUXUaHvUsinko+tGtnpAA1RKPXOwCX+EUdBw7Ddfoan7bNswk77BNKPJrGjMUJZr9ijJ7j6WzUAriluY2EVCE/f9Si6pLcK/XnPvCSHCNiAIqt1/zdNVhy3pmQass5l6SopwgVOy52d09ur9MgGTnxemQjRedOJ1VOWjR6PFVYp85j8ISeBkwb/wIJ8k6mfXo3XMIfvXDAe3IXrjOJYMcp7I28jv5VADK+r/pnScXeEJJFEdQoBt9Z/5sFICyrIYJH6M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,18 +109,89 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On Fri, Sep 18, 2026 at 11:58=E2=80=AFAM Baolin Wang
 <baolin.wang@linux.alibaba.com> wrote:
 >
-> After commit 2fd4e7693674 ("mm: fix incorrect vm_flags usage when checkin=
-g
-> allowable orders for tmpfs"), hugepage_madvise() no longer calls any
-> khugepaged related functions and only updates the VMA flags. So remove th=
-is
-> helper and update the VMA flags directly in madvise_update_vma(), which
-> simplifies the code.
+> Based on the previous discussion with Lorenzo[1], the 'deny' and 'force'
+> options are testing-only configurations and shouldn't be exposed via the
+> shmem kernel command line.
 >
+> So drop these debug options from the shmem kernel command line and update
+> the documentation to make this clear.
+
+If it is a debug option, it should not be exposed through sysfs :-)
+
+Maybe we could rephrase this to say that it can only be switched at
+runtime through the `shmem_enabled` sysfs interface?
+
+>
+> [1] https://lore.kernel.org/all/6e4aae7b-2c71-4109-945c-6481efde3636@linu=
+x.alibaba.com/
+> Suggested-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 > Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 > ---
+[...]
+> +static int shmem_parse_huge(const char *str, bool skip_deny_force)
+>  {
 
-LGTM,
+The name is a bit weird. What about `allow_deny_force`?
 
-Reviewed-by: Barry Song <baohua@kernel.org>
+>         int huge;
+>
+> @@ -683,9 +683,9 @@ static int shmem_parse_huge(const char *str)
+>                 huge =3D SHMEM_HUGE_WITHIN_SIZE;
+>         else if (!strcmp(str, "advise"))
+>                 huge =3D SHMEM_HUGE_ADVISE;
+> -       else if (!strcmp(str, "deny"))
+> +       else if (!strcmp(str, "deny") && !skip_deny_force)
+>                 huge =3D SHMEM_HUGE_DENY;
+> -       else if (!strcmp(str, "force"))
+> +       else if (!strcmp(str, "force") && !skip_deny_force)
+>                 huge =3D SHMEM_HUGE_FORCE;
+>         else
+>                 return -EINVAL;
+> @@ -5680,7 +5680,7 @@ static ssize_t shmem_enabled_store(struct kobject *=
+kobj,
+>         if (count && tmp[count - 1] =3D=3D '\n')
+>                 tmp[count - 1] =3D '\0';
+>
+> -       huge =3D shmem_parse_huge(tmp);
+> +       huge =3D shmem_parse_huge(tmp, /*skip_deny_force=3D*/false);
+
+/*allow_deny_force=3D*/true
+
+>         if (huge =3D=3D -EINVAL)
+>                 return huge;
+>
+> @@ -5807,7 +5807,7 @@ static int __init setup_transparent_hugepage_shmem(=
+char *str)
+>  {
+>         int huge;
+>
+> -       huge =3D shmem_parse_huge(str);
+> +       huge =3D shmem_parse_huge(str, /*skip_deny_force=3D*/true);
+
+/*allow_deny_force=3D*/false
+
+>         if (huge =3D=3D -EINVAL) {
+>                 pr_warn("transparent_hugepage_shmem=3D cannot parse, igno=
+red\n");
+>                 return huge;
+> @@ -5822,7 +5822,7 @@ static int __init setup_transparent_hugepage_tmpfs(=
+char *str)
+>  {
+>         int huge;
+>
+> -       huge =3D shmem_parse_huge(str);
+> +       huge =3D shmem_parse_huge(str, /*skip_deny_force=3D*/true);
+
+/*allow_deny_force=3D*/false
+
+>         if (huge < 0) {
+>                 pr_warn("transparent_hugepage_tmpfs=3D cannot parse, igno=
+red\n");
+>                 return huge;
+> --
+> 2.47.3
+>
+
+Best Regards
+Barry
 
