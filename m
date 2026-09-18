@@ -4,106 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1AFBCC982DA
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 15:33:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B685FC982D8
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 15:35:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 791E46B00A1; Fri, 18 Sep 2026 11:33:39 -0400 (EDT)
+	id B1A336B0095; Fri, 18 Sep 2026 11:35:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7426D6B00A2; Fri, 18 Sep 2026 11:33:39 -0400 (EDT)
+	id AC9666B00A5; Fri, 18 Sep 2026 11:35:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 631AF6B00A3; Fri, 18 Sep 2026 11:33:39 -0400 (EDT)
+	id 9DFEE6B00A6; Fri, 18 Sep 2026 11:35:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 29E406B00A1
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 11:33:39 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A7EDFA6211
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 15:33:38 +0000 (UTC)
-X-FDA: 85227277716.30.CD56CEF
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
-	by imf30.hostedemail.com (Postfix) with ESMTP id DB74F8000B
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 15:33:36 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=UZpRUtoV;
-	spf=pass (imf30.hostedemail.com: domain of 3z1mtagYKCJQGIF2Bz4CC492.0CA96BIL-AA8Jy08.CF4@flex--surenb.bounces.google.com designates 209.85.214.198 as permitted sender) smtp.mailfrom=3z1mtagYKCJQGIF2Bz4CC492.0CA96BIL-AA8Jy08.CF4@flex--surenb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 78CDC6B0095
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 11:35:20 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D8D281C2F95
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 15:35:19 +0000 (UTC)
+X-FDA: 85227281958.21.8BB6447
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 248C714000E
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 15:35:18 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="i0MCptV/";
+	spf=pass (imf23.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789745616;
+	s=arc-20220608; t=1789745718;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qSlM5tp89ADGL7d7hsn2qc0Ifj+pabEAxR9BGEjE7ls=;
-	b=MYp1fcpjV7VAzmih1qoaFJ+2s/unVq3os5d46hj+IkBZqnJhekoVa63oyLTrnqbf24I2zK
-	S83i4lg/NciVZifD+u/5/mriq1IUxsj8Y0QqDIHMOrfoEjbC2mjbEtDWswxVLTDnkzqXKE
-	K4m83nVJ8Qykk/c5DmpozZdWwwmyL4I=
+	bh=os+ZB0D+705FI+w63ragnyl5EpLiV81b9g1IpQiTgrM=;
+	b=KQnaSoEojIXCw3+HJqO+Ye96mywMaIgvOQOuO/y6FMiN3FveXpRLVGAZ3A3FhjPg8HaCLO
+	7ReXBrfWuyo8ANrxH5//l95DHh+B3+aleukjYpGkJHWtizeBwghs9fpfVUiZ7tWPpPYpUa
+	2dvBrsoY20lzK4Ltlsdr8FS/umf63nY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789745616;
-	b=l8gFu0WfB/1kovqToXhcEZbl45Dqq08ddwm2dlPsnKs99bZjcMxUGwqS7tQ31pzC/9ykIs
-	cQ3DAcf9Q2hsvESIdk/sxZIfws8DImJQajhCL6FZ580mxl4IoTz5SK4uU3Rf2fa5oMU/Eq
-	A7/eVO2DR2Cj6y5/fcdIsYRkmYvhfug=
+	t=1789745718;
+	b=5tmL6Eu7yZwoeDRduYvY2iQzPgMbvXKY9tPjgteBzbnGuvw1uILPvi9R7Ph1LbauB3S7oG
+	0f6Y877SO12Mcwuybx8VOb546SDNHwSJdwi/7z0TUG+JepZDYsU2uVhH2cQJ3Frjxxt4Ek
+	8ZA7EWw3UPt93Sao57XT1Zj69X3IPIY=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=UZpRUtoV;
-	spf=pass (imf30.hostedemail.com: domain of 3z1mtagYKCJQGIF2Bz4CC492.0CA96BIL-AA8Jy08.CF4@flex--surenb.bounces.google.com designates 209.85.214.198 as permitted sender) smtp.mailfrom=3z1mtagYKCJQGIF2Bz4CC492.0CA96BIL-AA8Jy08.CF4@flex--surenb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2dc7337e2a7so12015405ad.0
-        for <linux-mm@kvack.org>; Fri, 18 Sep 2026 08:33:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789745616; x=1790350416; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=qSlM5tp89ADGL7d7hsn2qc0Ifj+pabEAxR9BGEjE7ls=;
-        b=UZpRUtoVBm/8TbjGZI64NgEWlv+IQSI5H5JAKe/x9Se9BGstSqjf89W3bgwm70CVmh
-         Yehck43O5vWpmo9qQYMGYXCq0y6RqaZvrwTbijdw7VQ52BBJrWCiMZ6+JJYP6Sge2gn2
-         ejdXxSWuZXkskqlb1BhFlfd936cR5wvc5tiM7C9bTxupAOWQqA7e9y2DSif4JE7lnBPt
-         pLFNlrSQTdLzXSrmH2UifJcQ8wTXz/VzFAVAY30E+7UoeQ7pf4cnb982nTWlARaQPzPZ
-         N6T4jwmHv2rthALGkprUF1SCX/7xSuudbzy10gybfFqUBEa75knvfaOEC08l4bCVUgnF
-         y+jw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789745616; x=1790350416;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=qSlM5tp89ADGL7d7hsn2qc0Ifj+pabEAxR9BGEjE7ls=;
-        b=UI0nsCcC9fjqcNHH23BDkXFciFzEscEOyCRXW4UqS6iz2Ovwrj5En1kiKMlOpnWXQ8
-         OXfiqm+InpZ75be8eZEIVtZ5MsmJMOhxo5a5mdZffBY9r7Epl5UbeEokUkxRiezHel+J
-         GUWTIRnwbNIGCN9U2rBPlNQFgZCuO+2g4Ag8FuczkahexEzkrg7oSmsloMc9hAfbjTv9
-         oY0wBg/9qwhcebjyt9hVlQ7FCOVIzHzm7Z0IJYwzKhRPw7Ye7FXHpNGELVZjwIIerXXq
-         QA6VJrau1kHPvBAHG4TwAxCZgjlsh2CvcdeUUcP1IAkP3kSWwj3EAO4blncv+nfw+bnK
-         wpLg==
-X-Forwarded-Encrypted: i=1; AKwUvByacnFfp8lkqzq4U3+/p0U/0k1+VrQ68YK8n0TIqfVc7eUecrYLrjrtjHhgs18rG2nOVKCmMAZ0BA==@kvack.org
-X-Gm-Message-State: AFuF++kPBflNAko0lajx5uRzUlyP5ENVusAt60LHMEIDCIHb2T5ysLhK
-	dNX6uK0IvV8tMQZS7Y/Nw/yFH4aazGVLTkfZBCSECvadGFAJUzxo6p9+esKEVW6cD+LHx89r6px
-	cYasI2g==
-X-Received: from plly11.prod.google.com ([2002:a17:902:7c8b:b0:2dd:c0fa:93f7])
- (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2ac4:b0:2dd:c0a5:6634
- with SMTP id d9443c01a7336-2ddc0a5674fmr2432485ad.15.1789745615483; Fri, 18
- Sep 2026 08:33:35 -0700 (PDT)
-Date: Fri, 18 Sep 2026 08:33:18 -0700
-In-Reply-To: <20260918153318.758387-1-surenb@google.com>
-Mime-Version: 1.0
-References: <20260918153318.758387-1-surenb@google.com>
-X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
-Message-ID: <20260918153318.758387-8-surenb@google.com>
-Subject: [PATCH v5 7/7] selftests/proc: add /proc/pid/smaps_rollup tearing tests
-From: Suren Baghdasaryan <surenb@google.com>
-To: akpm@linux-foundation.org
-Cc: liam@infradead.org, ljs@kernel.org, vbabka@kernel.org, david@kernel.org, 
-	willy@infradead.org, jannh@google.com, paulmck@kernel.org, pfalcato@suse.de, 
-	xueyuan.chen21@gmail.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, surenb@google.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam04
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="i0MCptV/";
+	spf=pass (imf23.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 66222408AC;
+	Fri, 18 Sep 2026 15:35:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D38CB1F000FF;
+	Fri, 18 Sep 2026 15:35:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789745717;
+	bh=os+ZB0D+705FI+w63ragnyl5EpLiV81b9g1IpQiTgrM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=i0MCptV/YkhLNOf1Pa0kPVwKcjspNX4GrvgozU57nBs7lz9Ycdi59VUD9PiiIzgGI
+	 D+/J9j/n30fktDBJBb9Vx1E/SOqiBWMee3doQxtUMmWp578i+3MxKRyUIFRkKO24H7
+	 4LMU67+2Bp2NLu7pvHPYFvBHkd8Yy2RPdppcOl+SVUxeO4JqZTA+8hSLp+QoCq75Jk
+	 goPNMpPzKnV2rKSzxaLUDKnGnNGR4Whz5xIsLH32zk0d9/rY9FpRb4ypeoR++/cgTs
+	 YmjqlzlwmHQokfqrQPyYIQ3LdRoNSERyP4PLIizs8WKeA7Ai6Swfr3GO0uecDLCvKX
+	 p7IWVxfVE002w==
+Date: Fri, 18 Sep 2026 16:35:15 +0100
+From: Harry Yoo <harry@kernel.org>
+To: Hao Li <hao.li@linux.dev>
+Cc: vbabka@kernel.org, akpm@linux-foundation.org, cl@gentwo.org, 
+	rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/slub: refill prefilled sheaves from the barn
+Message-ID: <aq0ylDidEHa2kg4X@thinkstation>
+References: <20260918114318.124346-1-hao.li@linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260918114318.124346-1-hao.li@linux.dev>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 248C714000E
+X-Stat-Signature: 5zadcbyoxxbc1gfqu81911tsufwsg1ke
 X-Rspam-User: 
-X-Stat-Signature: nogfbdwzm4j9mqng5jhg8oqyfpzrdp14
-X-Rspamd-Queue-Id: DB74F8000B
-X-HE-Tag: 1789745616-605920
-X-HE-Meta: U2FsdGVkX19WFuuI6fN4GrvadoO4LM12C3LYsXJRbNKH4Ituo3nZ59oDZuXO5nT8Gd1LQcNwlyyLaCk5uJdaMhev/zH1aUPhSRumGUUPOsymubGevErkUZRJTZQAgWby85UUHysGJPrHknWQGkfpzMAK/ptGqWprzxoq5fvoa8bC4cnsyOowIQNvyhmHWWYvjPJLOwx/u1DMd7L63lmUuqx646QPIkL/k1agkBnAnVtIzbxuHDnjHpFsNDKDTz9pJzcHOJiY+oc0iH3zleR97pdKOTZa6VNnsBXwZ6UhXIMiLWvSHsF31prRiV6M325lfUL0p3Rw8x9U1fD6dE5LLnhNfFpQfNx+4MAh3amaKkj1xtFyAqyrW92YjhRNW3sXUwHAbXPDlVwjlhhaJNnZ/mhWD/qqDJpnVFfe1zt07NjRkk948chVZQBOk1t4W0bZyAkyIFpAaYgC+WDZyUyG5nsZf6vXnbUIMNqWDHAHT2O3vVRKkUqvYMlbJr8fBbxmS/Em8fd43QLAOsEnCmW1A2BY68YUXUlxns3M95k33rDmkvJ/RS6/sbBo8ptj2TG/nrlCxiiRPPvYu6FVm35TSOs+sYqjArYZPmmqD6CAmJUMPrqao9EWLskqgZ8JhzEAaE1e4m7OfGHtGYNmXx6HWtGgyvfUyG+MKPIYzwK3rjYHGivjFkxTh6adMUZYngiOwvbP1gu4F4sSP0/44i9U5UnaucYljyKOIp8xVp2RUUnCLqcv49vMb8lfPSmd2ahA/MdAVrrfqIgJ0oJHKh8cZIUBZ1eE3wDPUXdZAkTeQcDdZ8K9ZDnW3FPVvt4anfq8ON/jVkwPX3u6KI6gjGXOUB140xk8HSE3pZ3R7ThZ8MkkA/g7aviNthXRVWrdlaK0aLaPwod7oEmIc0+4BCBn5KeU4JjwEDccKezJXhB7LskglKoDX4etqAc1Lkqg3fpgl9jT41D3qRawFnhXkib
- 22sq3OT1
- IAyShaIsP1QZ17x5Lr7Y0T/Pv0Yshf79LxE6phO7iL5PAeBQvKq/0iHPjjNALBNqcMd4IoleNJN1cvJHQJNGDMQuwnqIz1B1pCbPUiBWnhXvq1Cc3+MI0Y58FeT8YI8yBCMY+IYpMVy5RiSBzSw/fTRe3wYA/dxhzmWcW+jRqoeX+qko6uzxi3scTM7EIHXfruYzUNZrMmwprDX5Sg+QPhx8VUm9xB/BcImPB+auWYoXImyDUQgQ9WbkosNk7HsO2PuuFBRETj4lI5/WU3Mv7VcIj8Fct5m4jc7cF7iDVt0lwmY+Njkeqcw7GV20XxlErNhX3NT3M6WG1yiMSZhnSAv0l9HKNSLR/NXGTgC4xPVibpKc0M9eB01WQraB/ZbytK4/muWWFzJvYyAFZuCji6Na9iFf+IueY/WUyxv7q/V7MQrvXyvALLUQt+NAZVqvK6cXX6gyQKB5Ex6EQUGL5TANAFpwxMjtxTDRXRee3UkeUZ47c3/rpynOmxh6xPO2vfElhYGZ5wnhNbbjvoStEx9JzN2TF+gWjrURqy44Y1ol6ZvBqBWpAvBh0icC4dwrjJsVU5jgIDDqkglPmjostmvshwl64sscO7PXTPvuqo93DV5f11bCh3dg8OdejnYNnu+u3IwsPQulaQup41s7pBGkMiR2QmvC8ReZxt8h1H6fRPPQJLgWX21rxQA==
+X-HE-Tag: 1789745717-620023
+X-HE-Meta: U2FsdGVkX19+rEPhN7vpRQEECJatva5WX0PaL6Mhr8zFtt9+SzUvGxu84HgzMqL1q6wGRNNJy7dYjQuz0Y7a7O6qqh84KB3MJQHZ//xNu0kXR6a1gEuq+nvz7dGFJK2V2J9+ZXoYqE1C6wjpYzvQ318GBD5nkgUnTvTHj/+qWLte/yao1n/BphaFrtUjFgqRjg5atTn5sNYsVg84G/Z+nvmWH+M4uBej/z1g9r3gz85kj6mQ8jQw7YUZUInsN7hGcuTUHSzP89qKZEyu5fJ8ERJPFedc3NwTWkiGpDZXZhkpyGn7kvpmnuAvCn+RzIDtnqD9veCXgohownbmCjGofFMVmT/lnkQbMgEziMz9hj+pxdin1RdLVM0KPgXzwdd+Pp/KxhbW/oPF9sUX1CW6Pc2zHmAF1n3sXabPZndKniFol84j7lyUbg+C9Yl7DTnRWy+hF3fpxCn6nT1XE0DB8g+u0/J9VrDCHPvdUromCOhgTCYEbpyrzfOGVt+MJoqeIJedjP1O7J0BU/3PyjpvgE3f2UPsjE/vLJgBWvSqN+CJCUw8ywdFSafAByQlW8rWmRHsFdupYQ2JbParLnScFmTPKoX72b+BsosDMNuJNRTgDpPb16CqEqgUtdKLqE5csKSiUF1Zifgs9FiL8u6JlikwrzTn09nafrmMfMYRMY7tN6UOodepj0kOr6AhYhPbbcAWkcsXY1uYxWcnqmrEqWbcZ2aU42IOjFgHGhUxTrKGz3irwe3ImZKVe0RbLnkgBiuOyrKOQ7hkPp0QQPVbQAipdMJbe25Rla9dgmA6rIaB/Cun+JQhRBqJsK+VLotO83hKtZMY8K/bvvAiOKf07yEssnESAS1LGNDZU+FVJhBHXnXO0Y30eEK6GpodugHVxwyGx1VS3E0QOSrRjPNFTLNWFip1Viu1gRoyUrl4g9N752w2aucImgnHnGIqHsTasc96+5RMNHhS5MYE6YI
+ mC+TQ0V5
+ nlsDjIBgepbHOXpHY/sQxyzb0zIl+aoPhe2iJCSJ9EDG8+DrdkFK1UQmfyPRpBHkV7VnxIET+95jDN1vjMev/Hdgk99P6fSr9NJETXNUPOez81vSB+k2FKHvt5B5m0XpQH9/WgiGyB8ss3OoRmnoNTCfOlP9GcQnIe94ZhGzVr2TK4p1tvJWWy2+hUuphbMx/aHx5OfZrMKg3Ti0mCgTo9ZKm//1uy7yrro3tPbdiQCKIXbWhvMHI0T4ecrS6KkZubqJ3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,346 +91,145 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-During tearing tests, smaps_rollup Pss* metrics should stay constant.
-Extend /proc/pid/smaps tearing tests to also check for smaps_rollup
-consistency.
+On Fri, Sep 18, 2026 at 07:41:56PM +0800, Hao Li wrote:
+> Currently, when the prefill API refills a non-full sheaf, it takes the
+> objects from partial slabs and never from the full sheaves in the barn,
+> so once the barn's full list becomes saturated, it stays saturated.
+> 
+> For objects freed via kfree_rcu(), every RCU sheaf then has to be
+> flushed to slabs because the barn's full list has no room.
+> 
+> To fix this, let the sheaf refill from the barn first, and introduce a
+> partial sheaf in the barn, which holds the leftover objects.
+> 
+> If no partial sheaf exists, take a full sheaf from the barn and return
+> it to the caller; the non-full sheaf becomes the partial sheaf, or is
+> put on the barn's empty list if it holds no objects.
+> 
+> If a partial sheaf exists and the non-full sheaf and the partial sheaf
+> together reach capacity, the one holding more objects is filled up from
+> the other and handed out instead, so no full sheaf needs to be taken
+> from the barn.
+> 
+> If a partial sheaf exists but the two together do not reach capacity,
+> take a full sheaf from the barn for the caller; the objects of the
+> non-full sheaf are absorbed into the partial sheaf, and the non-full
+> sheaf, now empty, is put on the barn's empty list.
 
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
----
- tools/testing/selftests/proc/proc-maps-race.c | 186 +++++++++++++++++-
- 1 file changed, 181 insertions(+), 5 deletions(-)
+Perhaps let's explain why the slab allocator needs this partial sheaf
+handling only for prefilled sheaves path?
 
-diff --git a/tools/testing/selftests/proc/proc-maps-race.c b/tools/testing/selftests/proc/proc-maps-race.c
-index 415eccb70468..bf4c5073f6fc 100644
---- a/tools/testing/selftests/proc/proc-maps-race.c
-+++ b/tools/testing/selftests/proc/proc-maps-race.c
-@@ -80,6 +80,61 @@ enum maps_file {
- 
- struct vma_modifier_info;
- 
-+enum smaps_rollup_stat {
-+	Rss,
-+	Pss,
-+	Pss_Dirty,
-+	Pss_Anon,
-+	Pss_File,
-+	Pss_Shmem,
-+	Shared_Clean,
-+	Shared_Dirty,
-+	Private_Clean,
-+	Private_Dirty,
-+	Referenced,
-+	Anonymous,
-+	KSM,
-+	LazyFree,
-+	AnonHugePages,
-+	ShmemPmdMapped,
-+	FilePmdMapped,
-+	Shared_Hugetlb,
-+	Private_Hugetlb,
-+	Swap,
-+	SwapPss,
-+	Locked,
-+	RollupFieldCount
-+};
-+
-+static const char *smaps_rollup_stat_names[RollupFieldCount] = {
-+	"Rss",
-+	"Pss",
-+	"Pss_Dirty",
-+	"Pss_Anon",
-+	"Pss_File",
-+	"Pss_Shmem",
-+	"Shared_Clean",
-+	"Shared_Dirty",
-+	"Private_Clean",
-+	"Private_Dirty",
-+	"Referenced",
-+	"Anonymous",
-+	"KSM",
-+	"LazyFree",
-+	"AnonHugePages",
-+	"ShmemPmdMapped",
-+	"FilePmdMapped",
-+	"Shared_Hugetlb",
-+	"Private_Hugetlb",
-+	"Swap",
-+	"SwapPss",
-+	"Locked",
-+};
-+
-+struct smaps_rollup_stats {
-+	unsigned long values[RollupFieldCount];
-+};
-+
- FIXTURE(proc_maps_race)
- {
- 	struct vma_modifier_info *mod_info;
-@@ -91,6 +146,7 @@ FIXTURE(proc_maps_race)
- 	enum maps_file maps_file;
- 	int shared_mem_size;
- 	int skip_pages;
-+	int rollup_fd;
- 	int page_size;
- 	int vma_count;
- 	bool verbose;
-@@ -132,12 +188,12 @@ struct vma_modifier_info {
- 	void *child_mapped_addr[];
- };
- 
--static bool read_page(FIXTURE_DATA(proc_maps_race) *self,
-+static bool read_page(FIXTURE_DATA(proc_maps_race) *self, int fd,
- 		      struct page_content *page)
- {
- 	ssize_t  bytes_read;
- 
--	bytes_read = read(self->maps_fd, page->data, self->page_size);
-+	bytes_read = read(fd, page->data, self->page_size);
- 	if (bytes_read <= 0)
- 		return false;
- 
-@@ -175,7 +231,7 @@ static int locate_containing_page(FIXTURE_DATA(proc_maps_race) *self,
- 		char *curr_pos;
- 		char *end_pos;
- 
--		if (!read_page(self, &self->page1))
-+		if (!read_page(self, self->maps_fd, &self->page1))
- 			return -1;
- 
- 		curr_pos = self->page1.data;
-@@ -205,10 +261,11 @@ static bool read_two_pages(FIXTURE_DATA(proc_maps_race) *self)
- 		return false;
- 
- 	for (int i = 0; i < self->skip_pages; i++)
--		if (!read_page(self, &self->page1))
-+		if (!read_page(self, self->maps_fd, &self->page1))
- 			return false;
- 
--	return read_page(self, &self->page1) && read_page(self, &self->page2);
-+	return read_page(self, self->maps_fd, &self->page1) &&
-+	       read_page(self, self->maps_fd, &self->page2);
- }
- 
- static void copy_line(const char *line_start, const char *line_end,
-@@ -317,6 +374,61 @@ static bool read_boundary_lines(FIXTURE_DATA(proc_maps_race) *self,
- 		      &first_line->end_addr) == 2;
- }
- 
-+static bool parse_smaps_rollup(FIXTURE_DATA(proc_maps_race) *self,
-+		struct smaps_rollup_stats *stats)
-+{
-+	unsigned int dev_maj, dev_min, inode;
-+	unsigned long start, end, offs;
-+	unsigned long value;
-+	char name[32], perm[5];
-+	char *curr_pos;
-+	char *end_pos;
-+	char *line_end;
-+
-+	if (lseek(self->rollup_fd, 0, SEEK_SET) < 0)
-+		return false;
-+
-+	if (!read_page(self, self->rollup_fd, &self->page1))
-+		return false;
-+
-+	curr_pos = self->page1.data;
-+	end_pos = self->page1.data + self->page1.size;
-+
-+	line_end = strchr(curr_pos, '\n');
-+	if (!line_end)
-+		return false;
-+
-+	if (sscanf(curr_pos, "%lx-%lx %4s %lx %u:%u %u %31s",
-+		&start, &end, perm, &offs, &dev_maj, &dev_min, &inode, name) != 8)
-+		return false;
-+
-+	if (strcmp(name, "[rollup]"))
-+		return false;
-+
-+	for (int stat = 0; stat < ARRAY_SIZE(smaps_rollup_stat_names); stat++) {
-+		int len;
-+
-+		curr_pos = line_end + 1;
-+		if (curr_pos >= end_pos)
-+			return false;
-+
-+		line_end = strchr(curr_pos, '\n');
-+		if (!line_end)
-+			return false;
-+
-+		if (sscanf(curr_pos, "%31s %lu kB", name, &value) != 2)
-+			return false;
-+
-+		len = strlen(name);
-+		if (name[len - 1] != ':' || strncmp(name, smaps_rollup_stat_names[stat], len - 1))
-+			return false;
-+
-+		stats->values[stat] = value;
-+	}
-+
-+	return true;
-+}
-+
- /* Thread synchronization routines */
- static void wait_for_state(struct vma_modifier_info *mod_info, enum test_state state)
- {
-@@ -397,6 +509,40 @@ static bool print_boundaries_on(bool condition, const char *title,
- 	return condition;
- }
- 
-+static void print_smaps_rollup_stats(const char *title, FIXTURE_DATA(proc_maps_race) *self,
-+		struct smaps_rollup_stats *stats)
-+{
-+	printf("%s", title);
-+	for (int stat = 0; stat < ARRAY_SIZE(smaps_rollup_stat_names); stat++)
-+		printf("%64s %lu kB\n", smaps_rollup_stat_names[stat], stats->values[stat]);
-+}
-+
-+static bool cmp_smaps_rollup_stat(struct smaps_rollup_stats *s1,
-+		struct smaps_rollup_stats *s2, enum smaps_rollup_stat stat)
-+{
-+	return s1->values[stat] == s2->values[stat];
-+}
-+
-+static bool compare_smaps_rollup(FIXTURE_DATA(proc_maps_race) *self,
-+		struct smaps_rollup_stats *expected,
-+		struct smaps_rollup_stats *actual)
-+{
-+	/*
-+	 * Clean/dirty metrics might change but Pss-related ones
-+	 * should stay constant.
-+	 */
-+	if (cmp_smaps_rollup_stat(expected, actual, Pss) &&
-+	    cmp_smaps_rollup_stat(expected, actual, Pss_Anon) &&
-+	    cmp_smaps_rollup_stat(expected, actual, Pss_File) &&
-+	    cmp_smaps_rollup_stat(expected, actual, Pss_Shmem))
-+		return true;
-+
-+	print_smaps_rollup_stats("Expected stats:", self, expected);
-+	print_smaps_rollup_stats("Actual stats:", self, actual);
-+
-+	return false;
-+}
-+
- static void report_test_start(const char *name, bool verbose)
- {
- 	if (verbose)
-@@ -572,6 +718,7 @@ FIXTURE_SETUP(proc_maps_race)
- 	unsigned long first_map_addr;
- 	unsigned long last_map_addr;
- 	unsigned long duration_sec;
-+	char rollup_fname[32];
- 	char fname[32];
- 
- 	self->page_size = (unsigned long)sysconf(_SC_PAGESIZE);
-@@ -649,6 +796,9 @@ FIXTURE_SETUP(proc_maps_race)
- 		break;
- 	case SMAPS:
- 		sprintf(fname, "/proc/%d/smaps", self->pid);
-+		sprintf(rollup_fname, "/proc/%d/smaps_rollup", self->pid);
-+		self->rollup_fd = open(rollup_fname, O_RDONLY);
-+		ASSERT_NE(self->rollup_fd, -1);
- 		break;
- 	default:
- 		ksft_exit_fail();
-@@ -711,6 +861,8 @@ FIXTURE_TEARDOWN(proc_maps_race)
- 	for (int i = 0; i < self->vma_count; i++)
- 		munmap(self->mod_info->child_mapped_addr[i], self->page_size);
- 	close(self->maps_fd);
-+	if (self->maps_file == SMAPS)
-+		close(self->rollup_fd);
- 	waitpid(self->pid, &status, 0);
- 	munmap(self->mod_info, self->shared_mem_size);
- }
-@@ -723,6 +875,7 @@ TEST_F(proc_maps_race, test_maps_tearing_from_split)
- 	struct line_content split_first_line;
- 	struct line_content restored_last_line;
- 	struct line_content restored_first_line;
-+	struct smaps_rollup_stats orig_stats;
- 
- 	wait_for_state(mod_info, SETUP_READY);
- 
-@@ -736,6 +889,8 @@ TEST_F(proc_maps_race, test_maps_tearing_from_split)
- 	report_test_start("Tearing from split", self->verbose);
- 	ASSERT_TRUE(capture_mod_pattern(self, &split_last_line, &split_first_line,
- 					&restored_last_line, &restored_first_line));
-+	if (self->maps_file == SMAPS)
-+		ASSERT_TRUE(parse_smaps_rollup(self, &orig_stats));
- 
- 	/* Now start concurrent modifications for self->duration_sec */
- 	signal_state(mod_info, TEST_READY);
-@@ -799,6 +954,11 @@ TEST_F(proc_maps_race, test_maps_tearing_from_split)
- 				     vma_end == self->last_line.end_addr) ||
- 				    (vma_start == split_first_line.start_addr &&
- 				     vma_end == split_first_line.end_addr));
-+		} else {
-+			struct smaps_rollup_stats stats;
-+
-+			ASSERT_TRUE(parse_smaps_rollup(self, &stats));
-+			ASSERT_TRUE(compare_smaps_rollup(self, &orig_stats, &stats));
- 		}
- 		clock_gettime(CLOCK_MONOTONIC_COARSE, &end_ts);
- 		end_test_iteration(&end_ts, self->verbose);
-@@ -817,6 +977,7 @@ TEST_F(proc_maps_race, test_maps_tearing_from_resize)
- 	struct line_content shrunk_first_line;
- 	struct line_content restored_last_line;
- 	struct line_content restored_first_line;
-+	struct smaps_rollup_stats orig_stats;
- 
- 	wait_for_state(mod_info, SETUP_READY);
- 
-@@ -830,6 +991,8 @@ TEST_F(proc_maps_race, test_maps_tearing_from_resize)
- 	report_test_start("Tearing from resize", self->verbose);
- 	ASSERT_TRUE(capture_mod_pattern(self, &shrunk_last_line, &shrunk_first_line,
- 					&restored_last_line, &restored_first_line));
-+	if (self->maps_file == SMAPS)
-+		ASSERT_TRUE(parse_smaps_rollup(self, &orig_stats));
- 
- 	/* Now start concurrent modifications for self->duration_sec */
- 	signal_state(mod_info, TEST_READY);
-@@ -880,6 +1043,11 @@ TEST_F(proc_maps_race, test_maps_tearing_from_resize)
- 			ASSERT_TRUE(vma_start == self->last_line.start_addr &&
- 				    (vma_end - vma_start == self->page_size * 3 ||
- 				     vma_end - vma_start == self->page_size));
-+		} else {
-+			struct smaps_rollup_stats stats;
-+
-+			ASSERT_TRUE(parse_smaps_rollup(self, &stats));
-+			ASSERT_TRUE(compare_smaps_rollup(self, &orig_stats, &stats));
- 		}
- 		clock_gettime(CLOCK_MONOTONIC_COARSE, &end_ts);
- 		end_test_iteration(&end_ts, self->verbose);
-@@ -898,6 +1066,7 @@ TEST_F(proc_maps_race, test_maps_tearing_from_remap)
- 	struct line_content remapped_first_line;
- 	struct line_content restored_last_line;
- 	struct line_content restored_first_line;
-+	struct smaps_rollup_stats orig_stats;
- 
- 	wait_for_state(mod_info, SETUP_READY);
- 
-@@ -911,6 +1080,8 @@ TEST_F(proc_maps_race, test_maps_tearing_from_remap)
- 	report_test_start("Tearing from remap", self->verbose);
- 	ASSERT_TRUE(capture_mod_pattern(self, &remapped_last_line, &remapped_first_line,
- 					&restored_last_line, &restored_first_line));
-+	if (self->maps_file == SMAPS)
-+		ASSERT_TRUE(parse_smaps_rollup(self, &orig_stats));
- 
- 	/* Now start concurrent modifications for self->duration_sec */
- 	signal_state(mod_info, TEST_READY);
-@@ -963,6 +1134,11 @@ TEST_F(proc_maps_race, test_maps_tearing_from_remap)
- 				     vma_end - vma_start == self->page_size * 3) ||
- 				    (vma_start == self->last_line.start_addr + self->page_size &&
- 				     vma_end - vma_start == self->page_size));
-+		} else {
-+			struct smaps_rollup_stats stats;
-+
-+			ASSERT_TRUE(parse_smaps_rollup(self, &stats));
-+			ASSERT_TRUE(compare_smaps_rollup(self, &orig_stats, &stats));
- 		}
- 		clock_gettime(CLOCK_MONOTONIC_COARSE, &end_ts);
- 		end_test_iteration(&end_ts, self->verbose);
+while reviewing it i was wondering "why is this just not part of
+refill_sheaf()"
+
+I assume the reason is: usually we only refill empty sheaves because
+if it has at least one object, it can serve the allocation.
+
+> the gain comes from two sides: every full sheaf taken out makes room on
+> the barn's full list for a future rcu sheaf, and refilling from the
+> barn is cheaper than refilling from partial slabs under list_lock.
+> 
+> note that putting the non-full sheaf on the full list instead would not
+> work: it would occupy room on the full list, so the list would stay
+> saturated and rcu_free_sheaf() would still keep flushing.
+
+[..]
+
+> ---
+>  mm/slub.c | 142 +++++++++++++++++++++++++++++++++++++++++++++++++++---
+>  1 file changed, 134 insertions(+), 8 deletions(-)
+> 
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 54ec12503357..0b1de6b42b61 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -3164,6 +3165,89 @@ static struct slab_sheaf *barn_get_empty_sheaf(struct node_barn *barn,
+>  	return empty;
+>  }
+>  
+> +/*
+> + * Exchange @sheaf, which holds fewer objects than requested, for a full one,
+> + * keeping the leftover objects in the barn's partial sheaf instead of
+> + * flushing them.
+> + *
+> + * Returns a full sheaf, or NULL if the barn cannot make one.
+> + * The returned sheaf might be @sheaf itself or a new one.
+> + */
+> +static struct slab_sheaf *barn_replace_partial_sheaf(struct kmem_cache *s,
+> +						     struct node_barn *barn,
+> +						     struct slab_sheaf *sheaf)
+> +{
+> +	struct slab_sheaf *full = NULL, *partial;
+> +	unsigned int to_move;
+> +	unsigned long flags;
+> +
+> +	if (!data_race(barn->nr_full) && !data_race(barn->sheaf_partial))
+> +		return NULL;
+> +
+> +	spin_lock_irqsave(&barn->lock, flags);
+> +
+> +	partial = barn->sheaf_partial;
+> +	if (partial && partial->size + sheaf->size >= s->sheaf_capacity) {
+> +		/* Fill the larger one to capacity from the smaller */
+> +		if (partial->size > sheaf->size)
+> +			swap(partial, sheaf);
+
+Hmm but why switch sheaves when we don't have to?
+Sounds like we're losing cache affinity unnecessarily.
+
+I think we should try to refill from barn->sheaf_partial,
+or if that's not available, refill from a full sheaf, and then move
+the previously-full-sheaf to barn->sheaf_partial or barn->sheaf_empty.
+
+Then we'll never replace the sheaf with a new one.
+
+With that, the control flow could be simplified quite a bit.
+Something like this. (Warning: pseudocode, it won't compile)
+
+// refill a sheaf from barn.
+// return true when the sheaf becomes full
+// return false when the sheaf is not full
+
+bool refill_sheaf_from_barn(s, sheaf) {
+	struct node_barn *barn = get_barn(s);
+	struct slab_sheaf *partial;
+	unsigned int to_move;
+	unsigned long flags;
+
+	spin_lock_irqsave(&barn->lock, flags);
+
+	partial = barn->sheaf_partial;
+	barn->sheaf_partial = NULL;
+
+	if (!partial && barn->nr_full) {
+		// grab one from full list
+		partial = [...];
+	}
+
+	if (!partial)
+		// cannot refill from the barn. the caller will try
+		// refilling from n->partial list
+		goto done;
+
+	to_move = min(s->sheaf_capacity - sheaf->size, partial->size);
+	partial->size -= to_move;
+	// copy `to_move` objects from `partial` to `sheaf`
+	memcpy(...);
+	sheaf->size += to_move;
+
+	if (!partial->size)
+		// move it to empty list
+	else
+		barn->sheaf_partial = partial;
+
+done:
+	spin_unlock_irqrestore(&barn->lock, flags);
+	return (sheaf->size == s->sheaf_capacity);
+}
+
+What do you think?
+
 -- 
-2.55.0.1082.g2b9226bbc0-goog
-
+Cheers,
+Harry / Hyeonggon
 
