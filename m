@@ -4,93 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35301C982D7
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 16:38:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DABD1C982D8
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 16:38:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 08D1F6B0088; Fri, 18 Sep 2026 12:38:02 -0400 (EDT)
+	id E99186B00A1; Fri, 18 Sep 2026 12:38:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 03E576B00A1; Fri, 18 Sep 2026 12:38:01 -0400 (EDT)
+	id E49B36B00A2; Fri, 18 Sep 2026 12:38:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E96906B00A2; Fri, 18 Sep 2026 12:38:01 -0400 (EDT)
+	id D387B6B00A3; Fri, 18 Sep 2026 12:38:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C8CA46B0088
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 12:38:01 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1003612073F
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 16:38:01 +0000 (UTC)
-X-FDA: 85227439962.16.2683D9C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 508221C0002
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 16:37:59 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hGwnyY61;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789749479;
-	b=4JSFL2jiIbM6KTxgEkSatxtXv3XwlS4ndXncmZDPXbcruucDXTJfVqAXbisLJGYtQ/YoZX
-	zWQiC8CgB6xUIcIly91GMOzDvMi9n3fV7GpCYx++TEaQlbv+MxeDCRhB8BEb3K6mAs1sv1
-	+o9e9NVN5jWTfKA8a9WbZU5b4oM/QlQ=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hGwnyY61;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B3E566B00A1
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 12:38:42 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B18EAA0726
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 16:38:41 +0000 (UTC)
+X-FDA: 85227441642.28.3BEE140
+Received: from mail-qk2-f12.google.com (mail-qk2-f12.google.com [74.125.230.204])
+	by imf03.hostedemail.com (Postfix) with ESMTP id D7E6220002
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 16:38:39 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=etiBe2vk;
+	spf=pass (imf03.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.204 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789749479;
+	s=arc-20220608; t=1789749519;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iD5n9wZgFu9t1L3ANTHITm97oEB8VYi5DwC7XLPAORY=;
-	b=F952WBGpDg4ZAE1LthYrEP2+O1qtXNSpF/mOEfzS65xwOsv8+EbzVYy2cD8bS2mc/MJLXJ
-	icsLoeVmKY3so/ZZySCxNAdO+xUaDrKMHa5zD3L6aFxfSTZEZgKFsnVrkb5A9dsg7oh9hi
-	0cakCuQW3MDEuKDURJ1ocxKkho9V59w=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 826F44057E;
-	Fri, 18 Sep 2026 16:37:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 426101F000FF;
-	Fri, 18 Sep 2026 16:37:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789749478;
-	bh=iD5n9wZgFu9t1L3ANTHITm97oEB8VYi5DwC7XLPAORY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=hGwnyY611cszDR+4TPDrMQUZbBiqdoW5ZLKxi3j0ka0qbi07BvkgFcht3lFcgtMAN
-	 cUTZC/mnV94XiRp6wkg4b8j1YEZC6dGfY3hVTucL0vSwhj+pPResc5dB8SikiHA29v
-	 AJPQHog9QUpPVT6CEw1iRJxQgXH+gozatAQBF5TP2iBuHzqsmrJfnUNLtRoYjmYDGP
-	 V2TWmYDpdSP0Gr3RUv+ByFZDUpfKZJdMeK6nz+qPUndyTtBSRZHgMiS5JNPlYOfK1j
-	 LfM2HXrGLqH0npfDRJjKtvVhAP1TScMAQc962ur9z9Axg6xKl0qxHljlkCkwXmwWMV
-	 yGBw9UBuvUJFQ==
-Date: Fri, 18 Sep 2026 17:37:51 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Rakie Kim <rakie.kim@sk.com>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>
-Subject: Re: [PATCH 1/3] MAINTAINERS: split up MEMORY MANAGEMENT - MEMORY
- POLICY AND MIGRATION
-Message-ID: <aq1o04SylcmHpPVH@gremlin>
-References: <20260918-maintainers-mempolicy-v1-0-9a94cac6d135@kernel.org>
- <20260918-maintainers-mempolicy-v1-1-9a94cac6d135@kernel.org>
+	bh=Ycexu/7p8mN/PXe2TLXJ60lA5nKStrY7x+9HFkGFF0w=;
+	b=Yf+GrcnPXV15OVNaXo1mHW6Lr+RvDu5hviKnfyXg5fQ7BNkvKaxef+SqqHFvcc/8ECZzw/
+	f9VlFeeo897C+G/chqc47jvefZOYrizzxKUn8tVWPKOt6zRO4cTsRr1eC7UCrmwQz3wtO1
+	lp4ma8cxY8N5m5k1GNiV7cwJ1Rzgx0E=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=etiBe2vk;
+	spf=pass (imf03.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.204 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789749519;
+	b=qaOFFur9YZ59rG/4qkoQEMB0GR29SF5gYESWOG3t1m+s2Ak115qDmcq4V2BADp0wNfIlqU
+	4QihGBIKWeRX/X1qeYq1vQgIG6GP4hHtx1gvd7At4od3eISJBfsWUGML9wseb0teOZs4xf
+	l0RT2ujfjsHDuV9AZxjy0efzAYbFH2M=
+Received: by mail-qk2-f12.google.com with SMTP id af79cd13be357-93a2a8c29c4so101490385a.3
+        for <linux-mm@kvack.org>; Fri, 18 Sep 2026 09:38:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1789749519; x=1790354319; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Ycexu/7p8mN/PXe2TLXJ60lA5nKStrY7x+9HFkGFF0w=;
+        b=etiBe2vkbj2zJ1IC0nQ7lJ4tvjnRNFPisjG9Wk9USljhebpd7HidsH5EBIAbpmcwXz
+         RxEv3J2uVpEcQl/QjCLmFMtqY2N5MnRvE3PoYlGaR/9fa/BJqKNyHPXmn/183tVRugo3
+         zf0WM/m6FR3tNQk+TvXijjnE3BafmG0+6B0EfL1XLNm/JxXqo8GLmXZ/EkeDwh3JjfyU
+         M7Eo7LzAdvu/ksrpQ/8pDM945ogc9RYtp1f8xL8gCMDEuLxCH+RT39Hw8FTHk+x/tdBJ
+         7lD94iSLTvkw8+bYKqeVpLBLNm8tD1j4WFL1zIq5Qk2Yx5FknAL0VX+lsnCMHX/BIf3v
+         IbUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789749519; x=1790354319;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Ycexu/7p8mN/PXe2TLXJ60lA5nKStrY7x+9HFkGFF0w=;
+        b=gNHv7DC4RwMlaw7xIkB7K5cISzppZxEoX9WVURxfEz5KVFC3Hdl4ydgPq7t6+uy0G6
+         hgdHRDSkbNyVmwFhqj06Q4sSagL6ayCP8SVCx4+eyxmM7LDnOQ3XNqC+UJhYzY1AUFSc
+         LLGmsV4XSO9s9Jwatr4LqJ5T+W0av9o5K45zXdzvNX3jJBN8pqMaQZ+6WxsRPsBotlyG
+         XI2XdjWnbOMcdlmaA3acb78WHVUzrDlNAQmymKBnLFKgy5ZuFwmphDs6QF4eUvN9fXX4
+         ol+Q2nxQp3izhozcxUUJ/hdRnm9tAYAprIkEQvlG6upy37u/3J+rBuNpon0+W+iZsUcX
+         Uk0w==
+X-Forwarded-Encrypted: i=1; AKwUvBxCh46RtcO/3SLhSqmg0DkT9rE73uLvnDu5ghlt53qjaAQmz7+/eMtGXKmGeoMDZyTO9pIBHM26qQ==@kvack.org
+X-Gm-Message-State: AFuF++myllfrp3y1f6wNlbyJcjMV+yKz/9cRWFg9bJQQpbyRTimZ1uJi
+	vRlbHGNOxZCEqFhYAqxlqNvG071fVgcLr+b7Cn9ng1NORgk3Mj/cvm4j6QaVqmHn1E2fcuKXpga
+	4RPC6
+X-Gm-Gg: AYBFou042RdJlv7Wr+TM+cQlEWZnIO3WswzTrW0H2UtceyNwxa0XF5hu+kvk9ASG7+D
+	eGd3LJh9GXBgdCDP2Ehm6mjgIh8jpslrJTMSGkdiyVNfYL2ujZuoGULPBwEogkrqT1MOW3gqy/a
+	Bw3gPdXsEIc2CgcXeqSq1TsJPe6CbB7YITro3jmqtmelwH4IawxN0R2RIRV+wCynOWKZG5Vh7Rr
+	b5hBgX2f/7jPGVEg02cJcliYtvb6s0YJuFuKJh3J9Xh/oMewc78W7S7mSe8R45FykbylnzWTrR9
+	2u1xkx7R8wahzdCoNj5b5DQm3h56lmxmGv9ncneeauKayBWdScjOJIxP7/1xYbAaymrE4T3KYB4
+	l10ZZkayJojlet0WhGxwWatI7bmJPIclLFcGZk87fUpCmA6jYh2VNfNq2RV2elxEeFDD/XcIskb
+	gGD56vCkZ3YvMEk4iIiXwSG6GFDr356XDtKNgAagusoS22klUAL0bvvJK62DOo9HXBhTjDA81wE
+	SE8DeTFpFNWA5nBxoMHzOAy5ZDAYVuiZjUR8QSVnWHsDJX9AfuFoQY=
+X-Received: by 2002:a05:620a:17a3:b0:93b:d7a2:83c8 with SMTP id af79cd13be357-93bdc8c69f5mr461480685a.55.1789749519034;
+        Fri, 18 Sep 2026 09:38:39 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93be0e90276sm176813285a.21.2026.09.18.09.38.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Sep 2026 09:38:38 -0700 (PDT)
+Date: Fri, 18 Sep 2026 12:38:36 -0400
+From: Gregory Price <gourry@gourry.net>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kernel-team@meta.com, akpm@linux-foundation.org, 
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com, 
+	vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org, 
+	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com, kprateek.nayak@amd.com, 
+	ziy@nvidia.com, baolin.wang@linux.alibaba.com, nico.pache@linux.dev, 
+	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, 
+	usama.arif@linux.dev, kas@kernel.org, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
+	rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com, 
+	apopple@nvidia.com, jannh@google.com, pfalcato@suse.de, osalvador@suse.de, 
+	hannes@cmpxchg.org, raghavendra.kt@amd.com, stable@vger.kernel.org
+Subject: Re: [PATCH v2 3/4] sched/numa: scan read-only file mappings in
+ tiering mode
+Message-ID: <aq1o3TYZR9JNkXXP@gourry-fedora-PF4VCD3F>
+References: <20260911001826.2109390-1-gourry@gourry.net>
+ <20260911001826.2109390-4-gourry@gourry.net>
+ <0ed3ab3a-80b4-492f-867a-0584441722a9@kernel.org>
+ <aq1Cwh9hNw4wWEUP@gourry-fedora-PF4VCD3F>
+ <c445a20c-ae83-4571-ae97-031ce7facc45@kernel.org>
+ <aq1FDhy00epXXtgd@gremlin>
+ <aq1ZUTgLQfLBxn80@gourry-fedora-PF4VCD3F>
+ <aq1inYWiNWtZlyoo@gremlin>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260918-maintainers-mempolicy-v1-1-9a94cac6d135@kernel.org>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 508221C0002
-X-Stat-Signature: 7bewiy79gnpyrmkix61f7f41gc9jkcxg
+In-Reply-To: <aq1inYWiNWtZlyoo@gremlin>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D7E6220002
+X-Stat-Signature: 3bmrje7ge6p9ey9scrdgnssdypat34q4
 X-Rspam-User: 
-X-HE-Tag: 1789749479-223164
-X-HE-Meta: U2FsdGVkX186vsfjj+5BmZOo2ZnQpLN0i/ti3xTpW4SXFCZFddOVza8Le1bH/z9aahKoTDycX4wmx4l3lbN1nZDryIgmXEvn2xcVmUy5sJ8VVZlhHHZnSBDnYw3zjPiWbaUQA6/S7Qwn/Lh6PdWvTP5aQdUyvG8Vhgc2zqYiZixreO2/P8wI9PSXgKhwP0Zw7mL9UZSWai57f/+whbH1hKmh7JNVMrYPZIPTrOS5GvDErgK2HAA4oVM1Wy3be+kjJVXd5TYNv/c1QxG/M/pJM4mLGkwPPMzxvqrsw67v5rjdPMxdNoMfHwOX/LbA/7VDbqROPUgQpNA/7mlDQ1RqSbjZd+Ha4ZDfXmkOtFk+MnAh3yK87WCSbc+b9C5qpPVUqaSAjzMlmxI0eiOOlMXISpnqWoM2uA1ny+RAIGuYRygjJaU70Tx9bckyBXbSsnGfhwZ8y1Px7XdSlTPybYppE0iApIKqqUp5JZx1gHC8iAoXx592WGeeN617o96HPmH3SB81LCaO+1NgDBE5gZZhGvmcOlNgPu2+3Fq4AIJbLYujX65PGUzgxS5TYCgfdBgXsLrWIAifG338SgeUH93JrOmV62A4tIzjRZXtdP+hc0sTBcRZSvQgPrzG3OyjpCNcBLoqCA/xMunBmLVk1dxvRqVY5OzEXLDJ8IihrNV5MYVi9latehwH2iYfa4um2YrOt6a58KOekzAadhHNC1GC9pB2IRXww44oI7RjzIqkHVagGa/vZWBurLjzkP5nVNDpNWHu3IZmWdWuLGPsw1EWrYA9KnoJOrWB0dFA4Sp6gqiCpV4JkXY76Hg4luTQATY/edRJt7Gl4HPd4QhrYiF4mweuZm30AAk7DsqU7xlYlO/k4sS49rQwJA+bKbLrQ5pSrciUs8xdYjIeBFLjQqJJymVavHBtfMghu2IG3HcXGC3WGCJwZbxNH4vAVj1czKQi1hnsRGwGQVcCJjimGlg
- dQ57WN/q
- k0nodMR91heJjQ0br9kAyVKO3HzHB7RDtfDf+z3QIt6DHvocEBzO5kkBhNDGuIz+4I1sRkeZav2+FLZMsF92vsOh20h00NNFtNjiTw9Acbc0pdFNCR+u8I3b9aWGG9pUciZzYCw7LutSxprBZqZafq0+BJzQXpjrlC19SiA6jdWpHTsTpne6oj80Gy8yqI3Q82stLfxqH4hpXzaHz7MP8WvM2vSsuoZ9vYmrPNyAxM2Q3x1orMDWPnPl28sV28ZJAtVvHX9NYLyFAMUzG++HaXQm+ELAQTGmt1rDNRwl71+JguNzhxOUN7GO03RxiJ+6IYeoHUzc4F+ALw7x0OojwUNYlVgIYDYuerIgz2njc8XQ3gn2Z6NQohE1Ib4KWYxfMPMiFiIeHzr+3EFjrWeirz7o5fkvbRK/fVJ9kcTP8ipGMt75mpfK0Jy7u3a0QyKlseiFk9zM+7ouUTwuSCbwfEplEkhwSpVZGJdwZWL5rT0obGtyzKZv6o21Kc97SeHOZDs0sv8vuyB9IDuV2TFlH8tlu8JRD5tYtZVVQXUZINRwVF/8zr3PgoiwPGGiiNbZ00EFvSwTWy8rSWcahLsA+lHfPgJuRmKZd2C2VYisNeEbjUgYq0BorjBzgY29mw3muwlTG564hhjq2rV8SSRCJafdAyvUsl4ktZqXScBvKT1gEsEeoTCom5Tha/C5k1GtbLKCYLHxBGIFApmnKRhPP8Ss6/ZtVsOtiL8Wq/AVWrT3Na+OLtF4ONcTVv4zQKj/HFpZWsR6Lgph0gKdReViU3f2cEzVWZJbiDiBoTjy0h1TgiNfBC9ddb/rsetMKQCZJE9pggfUf0UvzrxODn9/KshyUKA==
+X-HE-Tag: 1789749519-678217
+X-HE-Meta: U2FsdGVkX19Ub6llcbIMxTzqJu9QqAcEw4+9d/h/pXro+vOkhwGiGzzhF5dmsF26RDyIOvHGkjs/uHCEVx/NC19OZryE+mJCVpYfHAiACYWoYygTcC/GFdlbWcqDRV2Eerm9OSIkq4eIAUQfgaYjQhWu5vfPEsIojTxVAb7iS6nWihli7bUrIgjlONEWV80dq9MLjAslXkLH3wTjhAupIXA8mN8oaxCypCPcr6Dh4ubw58M1js/9UQBdPTZugQOUd2QiQhzWH0Bs/C4JvySM85bT1gG5saNqWknRFHMb9DH8royoDCu4D05ExhVfKvhGF2hoX365qQFMwFUZr0j3w8CW5iTd4YrttxbLYhu9KUZYwuL7NOL0PhAXpSTdvAAmpHTVgaVcXPsOyyR8hjF9/7z474E7wSK/D7v/tawTJ/TEPowXhOm5I584tP0mUQpHNY+ii0Y+93M2Bl8pJPSdxCxTC4gJdmVJjMJv6/dnlL2F1jmuRyaNg81gYRf0jpXjKQsWiBNRUjseFqSNv27gHAe1DMLms1yUAOObj2vX1XmdQZODbj5gtvq0u2lN1TqO5Y9pX9QuW4R8UO4CyHfcYMjfBI0wU3eCNRVR7SFsd68NGdZ0kXmXaRah7Al2OiNV6cfuBU6ZhSCuVGX/5E98rvX5eoRhJd/TnK+kRhNM3opZFhJo07LIl9miubflakv8gK6BOlYR16EMpz+MFyiQjNrWV0gmUUAXtkVvxgvBzaK9ylXg9cf3Dpm8j88Z8psWcCHPURZclupy7aPQcU/inazYI4KX2s7BdOU86rNMWaSOfMH0W7EanZXfTGkj6Zyqd6YOYPibhLAiWTKLiKaqSTDGlTTyPRuiQCiGQpB5vicimp9onDZTFgMKJP0OZymC8QBE/Jtx27ujcl/EqqAuzJf7jRrSoh0LX+wCqXuEH6pLv9rorYJUv7xX9vi82zyykx/mQG88B0Z1b8Tkwfr
+ LlQgyBwP
+ KrXIRv5GLDl/FPaAfZHos8sCQP1MYYRbv1l8DOo7eK7T4aEaDq6HeeN6yUsYwhkTpyN5fmAmwqqVMbotDk/Xjgs/kq09UyD8+qlJ0u2wWqs+r0vFvjLxJG8gdCJUtciqk37xG/L+5rWaKKTl78KRdFH4PJnMNqBVlgUbhvcOCBqU9tJQYAKKoGyV8KI9cnVnV1S8Fg4od6LUlUHMolVunuGsdlAIbsilvrI/rxlcoNhvFwKVOqgYRJnAgHBtqr0W/OOqj7f7tNLuQpNsD6JeIW8Tu2iKguSRv/Ne1djN68jqLMgxczwJ/PBYClAnkUQqnRE1nAQcHIrG42tDkfC9N4GsT3cnr7zn8ytxE7HlCzvbOciPz6Oz6LJtVN4rIqOIxUSo2E6WKN9r+km8jChTBIPrKuA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,115 +138,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 18, 2026 at 06:34:24PM +0200, David Hildenbrand (Arm) wrote:
-> Let's split it up into MIGRATION and NUMA PLACEMENT. The latter is a
-> better fitting description for mempolicy.c.
->
-> Make a best guess about which pieces existing reviewers are interested
-> in. Move the split sections to keep alphabetical order.
->
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+On Fri, Sep 18, 2026 at 05:19:31PM +0100, Lorenzo Stoakes (ARM) wrote:
+> >
+> > Can you at least propose a patch on top that adds the cleanup you
+> > suggest? Much of the VMA stuff is lost on me because I haven't had
+> > the time to sit down and consume the novel.
+> 
+> What, literally writing the function for you wasn't enough? ;)
+> 
+> I can follow up on it _myself_ if you like + you nag me to (hard to keep
+> track of things...) good enough? ;)
+> 
 
-Makes sense, so:
+Sorry i got a bit triggered by "If you check out my 40 patch series" :P
 
-Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+give me the weekend, i'll see what i can clean up
 
-> ---
->  MAINTAINERS | 62 ++++++++++++++++++++++++++++++++++++-------------------------
->  1 file changed, 37 insertions(+), 25 deletions(-)
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 3b2eb2a7a89a8..77232db57b53d 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -17207,31 +17207,6 @@ F:	include/trace/events/ksm.h
->  F:	mm/ksm.c
->  F:	mm/mm_slot.h
->
-> -MEMORY MANAGEMENT - MEMORY POLICY AND MIGRATION
-> -M:	Andrew Morton <akpm@linux-foundation.org>
-> -M:	David Hildenbrand <david@kernel.org>
-> -R:	Zi Yan <ziy@nvidia.com>
-> -R:	Matthew Brost <matthew.brost@intel.com>
-> -R:	Joshua Hahn <joshua.hahnjy@gmail.com>
-> -R:	Rakie Kim <rakie.kim@sk.com>
-> -R:	Byungchul Park <byungchul@sk.com>
-> -R:	Gregory Price <gourry@gourry.net>
-> -R:	Ying Huang <ying.huang@linux.alibaba.com>
-> -R:	Alistair Popple <apopple@nvidia.com>
-> -L:	linux-mm@kvack.org
-> -S:	Maintained
-> -W:	http://www.linux-mm.org
-> -T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-> -F:	Documentation/ABI/testing/sysfs-kernel-mm-mempolicy
-> -F:	Documentation/ABI/testing/sysfs-kernel-mm-mempolicy-weighted-interleave
-> -F:	include/linux/mempolicy.h
-> -F:	include/uapi/linux/mempolicy.h
-> -F:	include/linux/migrate.h
-> -F:	include/linux/migrate_mode.h
-> -F:	mm/mempolicy.c
-> -F:	mm/migrate.c
-> -F:	mm/migrate_device.c
-> -
->  MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)
->  M:	Andrew Morton <akpm@linux-foundation.org>
->  R:	Kairui Song <kasong@tencent.com>
-> @@ -17252,6 +17227,25 @@ F:	include/linux/mmzone.h
->  F:	mm/vmscan.c
->  F:	mm/workingset.c
->
-> +MEMORY MANAGEMENT - MIGRATION
-> +M:	Andrew Morton <akpm@linux-foundation.org>
-> +M:	David Hildenbrand <david@kernel.org>
-> +R:	Zi Yan <ziy@nvidia.com>
-> +R:	Matthew Brost <matthew.brost@intel.com>
-> +R:	Joshua Hahn <joshua.hahnjy@gmail.com>
-> +R:	Byungchul Park <byungchul@sk.com>
-> +R:	Gregory Price <gourry@gourry.net>
-> +R:	Ying Huang <ying.huang@linux.alibaba.com>
-> +R:	Alistair Popple <apopple@nvidia.com>
-> +L:	linux-mm@kvack.org
-> +S:	Maintained
-> +W:	http://www.linux-mm.org
-> +T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-> +F:	include/linux/migrate.h
-> +F:	include/linux/migrate_mode.h
-> +F:	mm/migrate.c
-> +F:	mm/migrate_device.c
-> +
->  MEMORY MANAGEMENT - MISC
->  M:	Andrew Morton <akpm@linux-foundation.org>
->  M:	David Hildenbrand <david@kernel.org>
-> @@ -17304,6 +17298,24 @@ F:	mm/numa.c
->  F:	mm/numa_emulation.c
->  F:	mm/numa_memblks.c
->
-> +MEMORY MANAGEMENT - NUMA PLACEMENT
-> +M:	Andrew Morton <akpm@linux-foundation.org>
-> +M:	David Hildenbrand <david@kernel.org>
-> +R:	Zi Yan <ziy@nvidia.com>
-> +R:	Joshua Hahn <joshua.hahnjy@gmail.com>
-> +R:	Rakie Kim <rakie.kim@sk.com>
-> +R:	Gregory Price <gourry@gourry.net>
-> +R:	Ying Huang <ying.huang@linux.alibaba.com>
-> +L:	linux-mm@kvack.org
-> +S:	Maintained
-> +W:	http://www.linux-mm.org
-> +T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-> +F:	Documentation/ABI/testing/sysfs-kernel-mm-mempolicy
-> +F:	Documentation/ABI/testing/sysfs-kernel-mm-mempolicy-weighted-interleave
-> +F:	include/linux/mempolicy.h
-> +F:	include/uapi/linux/mempolicy.h
-> +F:	mm/mempolicy.c
-> +
->  MEMORY MANAGEMENT - OOM KILLER
->  M:	Michal Hocko <mhocko@suse.com>
->  R:	David Rientjes <rientjes@google.com>
->
-> --
-> 2.43.0
->
-
---
-Cheers, Lorenzo
+~Gregory
 
