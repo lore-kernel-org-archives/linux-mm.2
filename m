@@ -4,78 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65562C982DC
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 12:04:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B97BC982DC
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 12:04:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 82F156B0092; Fri, 18 Sep 2026 08:04:29 -0400 (EDT)
+	id 71D6E6B0095; Fri, 18 Sep 2026 08:04:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E0396B0093; Fri, 18 Sep 2026 08:04:29 -0400 (EDT)
+	id 6F5636B0096; Fri, 18 Sep 2026 08:04:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6CE236B0095; Fri, 18 Sep 2026 08:04:29 -0400 (EDT)
+	id 5E39D6B0098; Fri, 18 Sep 2026 08:04:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 47CE76B0092
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 08:04:29 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 76FCAA478C
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 12:04:28 +0000 (UTC)
-X-FDA: 85226750616.05.183A1E5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 8CEC114000B
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 12:04:26 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JDpOapUC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 36AF66B0095
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 08:04:35 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C535A14064D
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 12:04:34 +0000 (UTC)
+X-FDA: 85226750868.01.5407E64
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 0050CC0017
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 12:04:32 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HTbPGGwe;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789733073;
+	b=3WyfYYrGKlVM6WnbxJNoBF27odCX8kzkJylYkp2v1jR7XelwWlToQZrjWVHsP2xFWQuNfb
+	MHpXP1sOfUVKlYv6HnFSer2nIGCKvSNsCAHCR5lbcYoGMOcNQQRnvcr/Usvlctv7rxFBb7
+	+RUZS8Vn4Y9pdD+uxpzDuQEzYOrHNIs=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HTbPGGwe;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789733066;
+	s=arc-20220608; t=1789733073;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p+cr/MjUTgohr00sGyu9QvyQa5Bo46JesYoZtj8PYHg=;
-	b=R6KJgvigbuSesv6AOWu3PbW5ZfhEigdJXX1FLxfQOeIcgdr/ew/DUMpCU+U0S0+Wl4YhzG
-	WxCJwc9+aEr1gUfJcQu2q1i/tvNa10LorOpfGxTjjlWY2kJKpUAZ4SQznu+vzKvnzcPopy
-	GhfyBgolRbetfyqdKYt+6GRduVfcRfY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789733066;
-	b=G/3bG2A8Qdorc6QSe1mlvrCdZuFbxSgl0w3M0eiKwz3D2pmc+LhoRqBFAeOashnfDHrbRI
-	AANl5DdBTacYigJIlgUMoyeTcQWdpxOmxUHaOuSK/f2ZmlHlV/YKurYNrEuWvYEUenx6bx
-	9hBfelQnbsKmCgVDbHLi/SwEx34Uqb4=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JDpOapUC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=FBog0tEIxtunDlmJCDqYkdnZ6FAZrrX2ZayQiJl9Uzg=;
+	b=IYMAdRBpYI4Fnxz1BTiCB0QgzkXgmWyPWPBAyqEze3TlbtbYlbKJ/DUz4Ww/4eL9zL5IdA
+	lfBK7yE1j9OX+rHE9Xr7hpmXxTYdZSX8YAuGFu7WdXZGEx3RrvPhbfEtmIMv5brap5BIxQ
+	a74ccHEHRpp1Mhe2EzMajcXH/MPcr2g=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6BA0943D43;
+	by tor.source.kernel.org (Postfix) with ESMTP id 38E7360A8F;
+	Fri, 18 Sep 2026 12:04:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 077FC1F00893;
 	Fri, 18 Sep 2026 12:04:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DA181F000FF;
-	Fri, 18 Sep 2026 12:04:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789733065;
-	bh=p+cr/MjUTgohr00sGyu9QvyQa5Bo46JesYoZtj8PYHg=;
+	s=k20260515; t=1789733071;
+	bh=FBog0tEIxtunDlmJCDqYkdnZ6FAZrrX2ZayQiJl9Uzg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=JDpOapUC4lyxBS7OBzBbsX9la9jZguLY/7ZDWpQtqhskKwpWnVzhzdoiJGu8eL1ta
-	 QA3C8nrU0b3TsjiwKgTRsd08MPw8MxrMkmv+y9KmWqMEhKBXsTg3q0gjKJUTOBvZ8C
-	 rCM9nR/xfFdSAiMwGVWSv4bEiZtlBB1TUOqrtlO/r/1tzyF6dGpIYC91xK/soePw0d
-	 umZ2SvIKxdiozcutJrZpumH+VoipWMw8+oDMUBOvm5hEyAb+NAWcJtgODx0n2+Sthy
-	 CMero+r74dQcFLS0Q5KowSCFVVQGW3/t5RAhIRgNXJN+zvmISjxX0RaliIBx7hefCH
-	 0m1uc6nZv4BVw==
-Message-ID: <c57d9d3d-c007-4cf0-be9a-321e6ae62aae@kernel.org>
-Date: Fri, 18 Sep 2026 13:09:29 +0200
+	b=HTbPGGwelMhMsEqlgkhCIeYpAKWYO1pWQSabgJE6oYkB6oCr6m55UmbuXQiqXOvpY
+	 FqjSJ4BY060C/DJEoM1KyyDLyRhcaj08m6pCJDVF6HcYnAvMsgCgcQRtceqsJj+8hx
+	 ABzj4ttpLlFP6zD6t1zperT6GtrKJD31K0VZ6chJIX9pxNnZW/IBksh18FxQIFVlkB
+	 Rn0rAX3CbZQS+ymsFg9IX3ynUPFJVqM+wGooQRbCzGs71nRNBE6H1VELBoQFgy4tfK
+	 g4iPIZMVSP8PenNrOa4rGc311wG1z1suhG4MEcVqTwKzu7eoAM41InyyJMcI8x2shP
+	 /qCuVR3QyOYbA==
+Message-ID: <44d70b77-8ef0-4eb1-9f6a-11c244086761@kernel.org>
+Date: Fri, 18 Sep 2026 14:04:15 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] mm/huge_memory: simplify pgtable deposit detection
-To: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org
-Cc: ziy@nvidia.com, baolin.wang@linux.alibaba.com, liam@infradead.org,
- nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com,
- baohua@kernel.org, usama.arif@linux.dev, kas@kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260917161359.9ba88d2bcab42db8111130e1@linux-foundation.org>
- <20260918031905.92493-1-lance.yang@linux.dev>
+Subject: Re: [PATCH bpf-next v7 1/5] mm: Add copy_remote_mm_str()
+To: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>,
+ andrii.nakryiko@gmail.com, ljs@kernel.org
+Cc: akpm@linux-foundation.org, andrii@kernel.org, ast@kernel.org,
+ bpf@vger.kernel.org, brauner@kernel.org, daniel@iogearbox.net,
+ eddyz87@gmail.com, kpsingh@kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, matt@bobrowski.net,
+ memxor@gmail.com, song@kernel.org, sun.jian.kdev@gmail.com,
+ utilityemal77@gmail.com, viro@zeniv.linux.org.uk
+References: <CAEf4BzaH=PJh7QUhh7szGL+gCieYLOSbhriFWaZG92xFWDeGig@mail.gmail.com>
+ <20260918091359.297923-1-tasos.papagiannnis@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260918031905.92493-1-lance.yang@linux.dev>
+In-Reply-To: <20260918091359.297923-1-tasos.papagiannnis@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 0050CC0017
+X-Stat-Signature: zp3fwhay51kzgitemda9dkqcq8awxqhr
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 8CEC114000B
-X-Stat-Signature: 3c44u81ebp43bmzcjsh6au5gp36qpzkm
-X-HE-Tag: 1789733066-782309
-X-HE-Meta: U2FsdGVkX18gppAnbSYG+zVP4R8YBZ1yWnNePuhA2Ektywk+oZ+PEa6f3QcQintI9uZ4uOcVUA6lFPB7N/MboS6R5QoR8dbgSjha9fvSkTpoa6H1VQ9C73mPT2987bRhBmdBLafjFkszkP1KQ2gqQdcy8OQOcLYCXNVOvXgQrSTycmJjHMS3YtDzVwDVaNLcrni6I9d8mA7XueWIiPFsI4nw/Fu3MDudAbft3ZSp67vRZttlLTElGY7vqWh5fE3scjcu/dLYmU+BN6wzI+P3+8uoBJ/RABuYmbaJNHiLLq0tiOVLK8I+rflkM/S2x0Xa3k9twyFcIsfPLYslK8Fv8i5Cm1SA8u7S7tAuWtVt+YNkhLhooC4Z62P0v+7ZmEMU+dIE+OqE3uLb1SluFs+z/p1yZwaau8O1zQxV7XJNQXBXlefU4Mt040higt+Lsbz0bl7FdNA2ekRvEIygFD5FSi/Nb3vu7dwafoZtZQWzi+CA6lEMrSPd+Z/lhVIUIxoKqg+V7IccdiFg/YJZBv+S2uPvJSQfB2RCiRz859rfYyshpAAKizqwHiRZWeW/RukzzbWvQWg00awaDB9V765aVhLWmahx3zF3ydDib0gOT5rd0jvMVjY2BAOf/12ETK5UFvUtwzbfR6InCFDuhk4TMjdVFK0+AhAD49pLNUb4D7/HcNtjwda/Fy2A2fOn5lEiFh+GtAPXBqKzny+jyE/G7tMWFZKLQbXfjoZ+DCXFQo1B3l1NDImQs1d2HBaNo15l/YkYLTbnn/76+Sd5yQKhg2Gr66Da+fGTb8IzfYeUrs+qQsR32nVEoabLxPKTi5v+0pS50QSHadhE9fSD2cs7/DUCBMkwKUiOE3VATgnaXSeElOumo+jSj1t/kiKVs/mOV0ovEErqGGNGrrbUnGb4WUbMJ5w4SiXqPtSll9mG9+4EYiqqZJxT0CVb77VWmSMaFkpA9eUJaxBAqVwsQIS
- TKndK4MU
- 938pfS6CFZydAuwwrXJOLyJpzXkoDabFliqcjsQnSnmvwmHwTnEhD1KWR9NbWm9kfya8AQAQN6PpkE39DhhWvajhFKIge8lwmJ+mnmChLK3pDRRFaEDYfXugBzpN26MyRIvVs5nYwg6W+IvremfImcTqq8T40NVTBdjq/V09VRsiB8U5q3JKsN9i/pQtViQP/Kb2091bwFohk12KlOKRBJwxXtPI1bmz4kYelFeAhJlz4mlP73/xXWy2ip2qp3G2LYOhZ9B8Vs565alJGHfemHdbT4a3D5h9ZlX4C70w30zw5IlZ9Kf7CMsPzEg==
+X-HE-Tag: 1789733072-181151
+X-HE-Meta: U2FsdGVkX19bT9bn7pFymo4guYFBZGYCRHgdxTIhkPePysgsqslNdWwwxLXXvRR307UYrVwLdncxpx2BWKAmjO5wjziaQCSthm2eQqJleXKh40eOiG5Eu7Nvh0PT4bQTththmJYfuL6qIe1JfTCVLyyrrdv3YMcSRc6qLR2YM9gP+Gf/FpyiW8GZWKqAdr+HrXILhllO2plBU6o6xO/QMvh+T/ceBtvphT/uxRoRqoY9X7NurXnd0ulCKlVMvPNYBLMrjjiVQ9TvYMi0hbTdZ75jkgGWKuoLKjAUm8tjITvFm076CCPssA08CI/8FZvkRBY236/VqRus0eOr/OXE7qXKBkxxAxMej4yD6NO3Jzyob/As5UxauqyJZ9xgRXfwJqXVUsd6vGdgX+2eksL/4AfhgFwn8u3Um5BRvwMue7H5vpqpwV+AFsQ4wjhrvqdn2K43Os0GEv7stE4+GUZfRukHp7xBYBhGGlbw4Lt4TzW80EjRBpF3bvZQ2vuldCrB1/B4VB6d8GpOrZoCHUjK6Xz3oRlRoD0ihnjNkXeg7IbQk1EYg3VHRR1TVDEIVWFugV8B0ichpt0ntZZ6cve5i1MGhgUFpWwQKK977vDRuJYW+vAlkJlGK1dPopPCQtGAXN6mlK/RKFsybWInH/KxRsUZUDrJKwHa7+967Al7gJt+dm48z+sucGHXvekqMERYEFb7HzAWOxp3ctK1C7o7ZWbLo8h56er58MoRI6+L3oE4Iog0B96MX//yqANbxrU0I8J+a7LS0ADaCREVj4LBmhZg4J+K5EheOVn/W4oQ2ZVCPLUA3stGAsg5vf8zl9Hdd49LfCZP52FFGwF4X6loGcLFZeEar8WniQx7ZZ2rwfROnoQ7v9cu+G11Wct76CMktlsASZlPgaa4Sh80hXjCceHNkNKNjILYo/JXVEOUbKbVOq19PMUNGr+OA5VohMCxnYq76faenlEieqsKw69
+ akGGkW2B
+ G40qHPCWr5CT6mXLIqFOoUAxPIE388w+jZF6H5ymcJWrAsZXkGyuWXoSpIiEXK9CSQV6d8LClVgemOq/DZdzZui7mgdwejP44HX0Si2PLm2qXOjSJRQz1KQZKJ5VLy/EHqGFFgOOv4Z2NEJCTlwP3NaUqOQGudgFc+3c9N69YDPLGUwRCmxR9+0pYeg0iciigSjekT5TNykxATi2jtoD/zbFcLPAI64NZ4sBioBJ2YRrPf8USYpZrRrMsdU43netwcFNJQM5vUyGzC8ZAiZQHLoTbekojolV3Kn0lZa2HyQynMX3a1luRYs7rZ9e7HWinVOMY+G9bT8HGTrMIg0o5VgknbkO8Pt5ywDDI74YDVAU6Y1DdSd5zYfC3j/q3opo6iHOP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,31 +143,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/18/26 05:19, Lance Yang wrote:
+On 9/18/26 11:13, Anastasios Papagiannis wrote:
+>> AI has a point, declarations in mm.h are not guarded by #ifdef
+>> CONFIG_BPF_SYSCALL, no? These look generic, I'd remove BPF_SYSCALL
+>> guard
 > 
-> On Thu, Sep 17, 2026 at 04:13:59PM -0700, Andrew Morton wrote:
->> On Thu, 17 Sep 2026 13:40:15 +0800 Lance Yang <lance.yang@linux.dev> wrote:
->>
->>> Whether a PMD has a deposited PTE page table only depends on whether the
->>> architecture requires deposits or the VMA is anonymous.
->>>
->>> Implement this rule directly in vma_has_deposited_pgtable(), avoiding
->>> mistaking a non-anonymous raw PFN PMD for one with a deposit and attempting
->>> to withdraw a page table that was never deposited.
->>
->> A large part of my life is asking $LLM "what are the userspace-visible
->> runtime effects of this bug".  Because NOBODY EVER TELLS ME!!!
+> Yes, this sounds reasonable. I have removed the #ifdefs in v8 [1].
 > 
-> That's on me ... I trimmed too much from v1.
-> 
->> This time it says "Processes using PMD-sized raw PFN mappings can
->> trigger a kernel NULL-pointer dereference when the mapping is torn
->> down", which sounds kinda important if true.
-> 
-> There is no known in-tree workload that triggers it, though. Mostly a
-> defensive/simplifying change.
+> CC David, who proposed removing the #ifdefs from the header file in [2],
+> and Lorenzo, who has already acked the patch.
 
-Yeah, it's not a fix.
+No string opinion, fine with me.
 
 -- 
 Cheers,
