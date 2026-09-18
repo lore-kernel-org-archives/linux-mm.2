@@ -4,92 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78BF7C982DD
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 20:07:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18ED3C982DD
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 20:07:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D3A066B00A1; Fri, 18 Sep 2026 16:07:05 -0400 (EDT)
+	id B8CAD6B00A2; Fri, 18 Sep 2026 16:07:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D117F6B00A2; Fri, 18 Sep 2026 16:07:05 -0400 (EDT)
+	id B64A16B00A3; Fri, 18 Sep 2026 16:07:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BFFF76B00A3; Fri, 18 Sep 2026 16:07:05 -0400 (EDT)
+	id A04BC6B00A5; Fri, 18 Sep 2026 16:07:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8BBD66B00A2
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 16:07:05 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0D72D407FD
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6C7296B00A2
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 16:07:06 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A848416079B
 	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:07:05 +0000 (UTC)
-X-FDA: 85227966810.11.70B0971
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 46DA01C0003
+X-FDA: 85227966810.03.05DF80C
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+	by imf19.hostedemail.com (Postfix) with ESMTP id EC2C51A0009
 	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:07:03 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Zl2coNKG;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf21.hostedemail.com: domain of 35ZmtaggKCCwLUIbTIKSOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--dmatlack.bounces.google.com designates 209.85.214.197 as permitted sender) smtp.mailfrom=35ZmtaggKCCwLUIbTIKSOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--dmatlack.bounces.google.com
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Zl2coNKG;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf21.hostedemail.com: domain of 35ZmtaggKCCwLUIbTIKSOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--dmatlack.bounces.google.com designates 209.85.214.197 as permitted sender) smtp.mailfrom=35ZmtaggKCCwLUIbTIKSOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--dmatlack.bounces.google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789762023;
-	b=7Ni4aM73Z6CGapz30fWbQQVPhaYQz7cJlqo9haCo151v4jQ9vOCGtq5NPitCSWNugeWvAj
-	8Yj37kYu2losRM+S1S3MYzNeLRBvJG7tcQ/XA1PXdGOIlHmwbgbsdaq5ruB89gZ0ibrskM
-	O1ATj6la3PmmhY/0HQxmtgu1N5snzIg=
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=OnpcR0vo;
+	spf=pass (imf19.hostedemail.com: domain of 35pmtaggKCC0MVJcUJLTPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--dmatlack.bounces.google.com designates 209.85.215.199 as permitted sender) smtp.mailfrom=35pmtaggKCC0MVJcUJLTPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--dmatlack.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1789762023;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9BR71s6OXVqtI8pG8LyTaxh9Qe5FvWSAHHddp0nR9J8=;
-	b=NH/XI9YgrnEnUDkjBxzcliZvyYOA79VCEgaiAghO06Utq9oV9xi86SLlfj6uzcJdv2KCbG
-	YrvvtJQR3jJqZ+lxNb0+5yc0eX36yBFD7bYXjd35K3KQ2pdoW6M5ZrD2iHeWotM7EPOsgP
-	B7zbyjqIqosCQ5PBKAHTJ0X4JOCoHzI=
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2dd753a52bbso20145595ad.0
+	bh=DtzV4A7ubsZUgCkixUUqpezuoGcnB31d+FYFVqWSkUU=;
+	b=fliW7auNxJmUkywXQFrThfUpJ42hPx9mTq0edZtDfjOe96AZlNV68InFau7fj8FeEl2vyL
+	BOrmm6O5sAJXrC+qpKojdMGYPX+/ERqXN+/qqosrgGaUG6CvskU78fdg7GrfRxjXipIUp1
+	/o6Kmn4tuTpp5yyJdYqO6mws+Hu5/0M=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789762023;
+	b=YKJas38TCUW5wlo6w8t7bXfbRLpAt5ckMsYv4lyiJdUHOd/EBXnsbTz5CCcCmBiKrIwY2e
+	MvMilrPdcCmoqKi10EpRZVa32pW1pho0ctBiAra5GSDUSQhmROAbLautX1rSWFqsyIQaRn
+	2lU6dlMC+5/r1C7EQgPAJj1+ptb6O9w=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=OnpcR0vo;
+	spf=pass (imf19.hostedemail.com: domain of 35pmtaggKCC0MVJcUJLTPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--dmatlack.bounces.google.com designates 209.85.215.199 as permitted sender) smtp.mailfrom=35pmtaggKCC0MVJcUJLTPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--dmatlack.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cc435388657so1531903a12.3
         for <linux-mm@kvack.org>; Fri, 18 Sep 2026 13:07:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789762022; x=1790366822; darn=kvack.org;
+        d=google.com; s=20251104; t=1789762023; x=1790366823; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=9BR71s6OXVqtI8pG8LyTaxh9Qe5FvWSAHHddp0nR9J8=;
-        b=Zl2coNKGxRm6iV9Ac/rp3WWOk16BLiYb7RkvNh7mlQGWcc6aFqfBBX2r00rfcx/HwX
-         IcUReKveHTsKFnDJF/NbvspLKn+nUpz+1RJlJCciGnj8MhMHULtazd1maLb/vHmxHwFp
-         aWOiQwchjeRVEMu+j2jEmCc4U3ODgdcFQ2OKyPdghB+08FcSHX3KcwfXBb4EiaSeVQyy
-         3HgLPtB/QG6Gw34upJMQb4ideahgDogyEvJp+95y5yNIBegkssQ6TmvakeOZBXx+0Y3/
-         RwTTflYgq89cc0PU6zWUpcEKB0Hlm4PfRVM5AdFZO6nyaTCntA+LeBRr3QfnOL3D0omj
-         6kFQ==
+        bh=DtzV4A7ubsZUgCkixUUqpezuoGcnB31d+FYFVqWSkUU=;
+        b=OnpcR0vo3emDjzEKB4mQ6nZmEghB9TDy8kH7DGr86GidvChRQPwMLAOcdMnQhLzbSf
+         JcLwMQC4wilJ3ffEF2rQpovzbhI/49Pvg6KY+VUlnPXFeH7hjktQaP4QwN2WQiloQfja
+         20R1dpk5KZPOwY+EFTXRVEYydGzi4ZZ55vQZE8oOsvhCq4hlUu5yrKxj0RSc5leelIYR
+         do0731522WpHW7Cby/4OLvfuwN8Djmo9BAoH+5rySQeTFUap9jcfxnOYVxAFY5YR7fUN
+         tg4mypi0X+NOL1pB8VTZMpKl1/ssqQjexHnFMzZzNwtMK8Mz/sCNf6v3rodXp2Bnoes/
+         Eogw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789762022; x=1790366822;
+        d=1e100.net; s=20260707; t=1789762023; x=1790366823;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=9BR71s6OXVqtI8pG8LyTaxh9Qe5FvWSAHHddp0nR9J8=;
-        b=MwtnaFkABdadkUJ4XUGkXXKLzHQ2rex3bgn3czVeEoWuPS/Jg1P2naBoLiv3xMhmV7
-         Bg9b6+HJ+imiOhvqIldCcNR8yow/+px4LY5fosCCtGVC4SxrWMxGJIKC5SSS5vGd/FGb
-         SX+KZx7qsA7P0SXv+NkBj/cDYXhvaOWU6rHWn61SZZ3zsMW42mgfwggVBQRDKkUt/pfF
-         TFSGB59mxMqpcgJKetdbYoW3RuzbSbxmVIF3sHSfos3XXMoT7mOe/mwY1AWgO99LDXc5
-         YRflSg6Ro51YCpDhwrjiohWY+LRuKLeHAghCpxerpSxfu7BycuGdqyXH+DJShhWUNrUM
-         woIg==
-X-Forwarded-Encrypted: i=1; AKwUvBwZmuOQc5BnF1OkTV5hF8M+ihBhPBDX+FTEtR7Q4XW2r3UpaVT3F4HAgAmcs0r88zKsZKXUC8i4Xg==@kvack.org
-X-Gm-Message-State: AFuF++lJabcckGwHjRSSDmT8CJzZoFLJttB2I8yRQYZC1IdpKeVvgop9
-	d0cyIltFXdkxqG090gU3QXsFqzfEOR3EMutS7PaoGd7F4jqTU+xQlPwQY7bvQ7FMoIf6cexGKPW
-	A5tO/WjFiwonvjQ==
-X-Received: from pldv5.prod.google.com ([2002:a17:902:ca85:b0:2d9:e5f:1d26])
+        bh=DtzV4A7ubsZUgCkixUUqpezuoGcnB31d+FYFVqWSkUU=;
+        b=sBSVFvFtmafiNDvTj7BfHqAmV026B9u0hTd11ykYzCtNL6JHfrXdABYj6znbiIffPo
+         eGILJmcTak4YuqW1TBiOIw5iOPrws1Zqr3Ci3zOuW4sX/smPRusqnKDhvN1X8xYy9dkP
+         JON989hPHtycqvy9dTS9VSTWUzfIZat8qGvsZ4RYimMdArHCUpiKylDLT0bLaIkdloVE
+         yOXK8WN5CjXbSG6GLHF7xHx6PGTpLblcpygp2BOdaDBM8G7sKilIeKO7TYEAHQQUJzRo
+         U82kQfODVwItrsO+6MALy1xWXpvEny1ZX9kroJNYlC+6NCyhiahFyJ7pLSs8xz2Fzijd
+         HfGw==
+X-Forwarded-Encrypted: i=1; AKwUvBwzrD1bqTDSTCf+wzyVpzMqoL3ejbzunDkKMMaw+0U6/N6B6I04CYLE92xp00qMJKQ5dwub+lTsJg==@kvack.org
+X-Gm-Message-State: AFuF++kuDezsu2WqBdJygOgy375L+Pk9MihvfzU5jydDd3b+Y+CJHTOa
+	bjNlaecrrQOS2VF1b5XUjGbr2WmtQxSgSRlzH/znb8PpapoIBMmKgb6RB5Y+b9Akrbz8HMhq9gK
+	VEQ/12uzLfsWDAQ==
+X-Received: from pgvc3.prod.google.com ([2002:a65:6183:0:b0:cc4:56ea:7ae7])
  (user=dmatlack job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:ab8f:b0:2dd:c100:a5ea with SMTP id d9443c01a7336-2ddc100a6aemr7241285ad.62.1789762021877;
- Fri, 18 Sep 2026 13:07:01 -0700 (PDT)
-Date: Fri, 18 Sep 2026 20:06:36 +0000
+ 2002:a05:6a21:1b81:b0:3da:bea4:6215 with SMTP id adf61e73a8af0-3dd8c52948cmr7756540637.19.1789762022690;
+ Fri, 18 Sep 2026 13:07:02 -0700 (PDT)
+Date: Fri, 18 Sep 2026 20:06:37 +0000
 In-Reply-To: <20260918200640.887030-1-dmatlack@google.com>
 Mime-Version: 1.0
 References: <20260918200640.887030-1-dmatlack@google.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
-Message-ID: <20260918200640.887030-11-dmatlack@google.com>
-Subject: [PATCH v9 10/13] PCI: liveupdate: Adopt ARI Forwarding Enable on
- preserved bridges
+Message-ID: <20260918200640.887030-12-dmatlack@google.com>
+Subject: [PATCH v9 11/13] PCI: liveupdate: Freeze preservation status during shutdown
 From: David Matlack <dmatlack@google.com>
 To: kexec@lists.infradead.org, linux-doc@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org
@@ -105,14 +104,14 @@ Cc: Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.
 	Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>, 
 	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
 Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: 9q3i4ad9qb3qk83gusk1q8doj3p33dus
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 46DA01C0003
-X-Stat-Signature: er8fo7h94mkapqhpsb9dpa7xwmcpsdxm
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789762023-390006
-X-HE-Meta: U2FsdGVkX1+WC1NsMy7PxyqI4IHIKyYLlY27C0DbIucDLwStwV1SCw2xj4aAY8iKdFgVHkKKE33eEbMAKxoEkK8P1jj7KkPMkOlkjY9QkJ47DXxBhqMq3PuaZF0XdAuoD8Ew7MLRWhgdqiqnO0Nh1i6MLyHvwmYW7ps2XpzwoO6SQvz9Hq066f9RxGDIp4N/vyFvO2JPiot1eZVpWDFHGs6jso982xMKiNUHSxnD7IrRcz1Z0kldWqdz5giR8G5i7U85nVbaBNth9PKbYd3Q1yAIUnc70xCqdMqrTMjZxlyrpJ7sdR+mmjoC7ZJ2mkx298c4QYob65FC1UUTmUdyn/QbZaxOVTlJnbr4GFK2azFwFtaH4joorx03Xp5ZeQCtRRCtSYVbltzAW0sI20flgzk4Jp/+wskBZSwccef+EdAjfMJtMYupGqAoKbpzypY4K8of9DLlcrF8nJa3zbqn5lX3a3FHcyGlQ+2aDgcxWHLXKWP2VK9sO+yVaNAcYJ4RimZ9lVfRWOJrjfU2ilIjZYdnKqYxFaknf5tAHw5J3DZDcLUCz8T4niX7vJNxwTyzF68Nflq7y2mAlCLhIPC+DFV7XsZSzlE9kIKeyid6VFs6XGrrZS7hTGoR5DFXXUJAPB0mMCqTkPhVnf0Dy6eui3FdtS2zRf+9GpfoV/eycLWTCk1H3IAaDOX8GJHAy1OSY8Nq13GrlOKB8jbHjhT555fXAwvT0b9PH4cSxdrLNoL/3fIbSLsbllh/xmMfz0+4uNT7/pK1HZPQPardo01hifFWj59ANdiskD7b4jDKknEkKJD94oqs6VauTFQqmaQhAC4kI4B+/Q/NaMNBiUEzQNgM5VVvkpuT5FCPjHR2ylQ5WPQMvYtMn3SrzBmeRYrk+gRXhlCKAMwFZK3XNq2Xe+NGyZ0wKRGSdgdD40H/P74w+WmbbtvTTuyc5o4IGlZ396oJgBbE//mwp1P29dQ
- AyswHary
- D0I+yOxY61nqr6oD2mkYS6/4oreTrIX9zjl0H7yX250fB635RKs2cUbCvCRYlNHcHHaS+BfaG4ClYuqs8WbA9OdmOBVG7cpfyz+S398X6vs90bO8cId51TeP26WRHVnqi4YOofvViPV7EKGx7mpTDoysyDVfzIRu1UB3k05KWlH/OFPOFeZPb0OxvItroxvjhiFiSvDUjLd60Bq3EAZTEezFgViTDQULPacUYssFGPSYxN3tuDylIW0VwDYYE9RZxkUvEKwBpOQy18iBhBhqrp4MTI2OkISdWtlYPJOosZvJ3hnTg/LCeKn2yPoZbfvUAzhVDilwbXNH84RHkc0BI4+0eOQk1hEesoR5pE8FrdnNYCcVbf9t0b+PEOqlvWhCYM8W6vfxr5RHCncDszVRqP0c8S0k2cE1HuLbTgc04gwxy1NuLQj6ug5fGlh2+MyuEZ17LmE2ezooFysFb97kdYus+FmrDDx5rtiy1tU5oPyLfPyUS64STRoxukQ6bsCer5UsgDXnAfhbrfx+njCthF+cFSPFpNJn6LXkv4EavfEZHiN0gFJSNmC+uW3wA9mv4vzOMjuUuzwTfqaBJdNTaL6Ah3w==
+X-Rspamd-Queue-Id: EC2C51A0009
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789762023-526166
+X-HE-Meta: U2FsdGVkX1+sGaqzVtT8+PY47JVbOhlGKHF/wLOUmbVH1MN6kFMo3NL+DyDeKaccZPGeu9iTkwa75/70Dik24ERFudtJo6otTe5bqIfKyVywj2chKp8Q3XQJ14hkTs0gFh74V4L5+0xzlhrMY9+GFpq47fSZ7YWfyFgDDXOLOWYoWMra8FEdl3LQ1j50G7MtP30vlb/plLmkdBgOtDrtzXe0J/nzV8Z/25eULYoiG+/dhVUQyLTr4G3OVt9m6a8Y6y+BGMlW2CdDYqqljnBeWl8aU1lYdxIQi+5ImmWM7wbTwjzn69CCDehI1Hy1fLvV6zp+GGy7hA8lK2Sapz65Rh1kkTFkt0GH9Ju6qO6/Q2DAF4Ph5Pn1ttkQwSMCWiKVXsuez3IPL2v9biuu3OGj4c8YPruxweyDsLMGaXBSXnSWx0/Hz1kT/luLDHXKXKqw/aziqQ3ZRhoi2SYuN6JVRquGhIQW+lzKXTKXRL6Ao5lyr/hg/IB43rfDJfursyDJWs/sNvnf11acNVFaw9VoiJ6TfzhV0NcAjQDb068Ec/YZecwRkGFWcyieQSS0cvVEhQXGRKxAB3M3TMfLjYYqAsjgxKDRg+mgEd71eZR7W8juLMBNGUa/+syhUJq9037CV9/jbqxQWNTC02NHEgp2mpNQpTfTTIWqiwXyqvgMumolepKo82Aa6fs94Ok2EMxQavkqZwQ2DXLHKBVN6+S7tXoKRy7/9qsCBoAvnVW5VJ1Zgip/ARiU0dgj+4AjPsxRRMKDg3mPAEoJHDD/dwSzTu84aLn7UbSzA0F45mXfjGd4aVY3aZ9oN6JHCJVRTDRS6leOq+KRD/1ZKzzqY+JoUuuA5TScZPBGgpu2wiSH0jGgqhb1Rpvh/DNtgQZp1IGaH1FK6k/oY3H2NSZdMryN6t+gYJxdjRACk7KOV1D/hQ+AH0GrVzH7+jrED0iecjY91uenvLb7pskce6jfdYr
+ cGI+q5ul
+ 9EuL426YljdfswKFG8UhWPwO9MzTZG5oxdp9m0dClOt2rk1tZqNFuZnhBHYpu9ablS2frjKNQDoJqCDpGSlf00XnoohfHbi/Vkermrvcwpfw59a4eAmJH8JVg/1cgOOdXwGtDMXWIO4r3FK9A56uQ2c4ydypRhxaHpz9jOMv/RY6NDbz3DAdKr9av//3frREuzaaTQvDukz0v1iDK9yoAnw3WeRA8+maPsvL0LFvKor+GjISfG1fJyuIgQg8wNtzYj3PoY0jTweHfBTD9eWcdkuGVqR6U9fkiBfnHFGEZ4urcS1iWmEFcFtZ2iiDaUKij0GJnLPBDTXogt25oxnv009RGcLb/PpCysFGpk5uYVcz8auyKNPvl/c2y0V0hNNL4jz0micBuzbOqyQPwW9wP7lMxWp1YeQ7LeQJ41bboGz8UuY+LVX0F0okmsiPTCTAfil1cw7W7D+1WyZdOQbxtXG5creHN0n2PTd191JxGDKLDK1JfKBOhYYajQ/+Ux1hszhBd7kdBZ5xMo+scPOU4ivtbp1cgQ7WRLwOY4ko7KlJ1w9gMjHbwhyWZNujEir03ipneX00oZd5FmL7TAyMicxmaIbvHarTHmJKLCTTKtz9dvAZP9+RqFWnkg5e/yHl2HRpOEp/HR08VAu5AedMgL8HSAg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,118 +119,131 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Adopt the ARI Forwarding Enable bit on preserved bridges and update
-pci_dev->ari_enabled accordingly during a Live Update. This ensures that
-the preserved devices on the bridge's secondary bus can be identified
-with the same expanded 8-bit function number after a Live Update.
+Freeze a device's outgoing preservation status (preserved or not
+preserved) during shutdown. This enables the PCI core and drivers to
+safely make decisions based on the device's preservation status during
+shutdown.
 
-Reviewed-by: Bjorn Helgaas <bhelgaas@google.com>
+Note that pci_liveupdate_freeze() is triggered by the PCI core rather
+than from drivers participating in Live Update so that all devices can
+have their status frozen (i.e. prevent non-preserved devices from
+getting preserved late).
+
 Reviewed-by: Pranjal Shrivastava <praan@google.com>
+Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
+Reviewed-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: David Matlack <dmatlack@google.com>
 ---
- drivers/pci/liveupdate.c | 30 ++++++++++++++++++++++++++++++
- drivers/pci/liveupdate.h |  6 ++++++
- drivers/pci/pci.c        |  8 +++++++-
- 3 files changed, 43 insertions(+), 1 deletion(-)
+ drivers/pci/liveupdate.c       | 16 ++++++++++++++++
+ drivers/pci/liveupdate.h       |  5 +++++
+ drivers/pci/pci-driver.c       |  2 ++
+ include/linux/pci_liveupdate.h |  3 +++
+ 4 files changed, 26 insertions(+)
 
 diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
-index 0145399b3834..3c9a10a892fc 100644
+index 3c9a10a892fc..496ba74c26ce 100644
 --- a/drivers/pci/liveupdate.c
 +++ b/drivers/pci/liveupdate.c
-@@ -189,6 +189,10 @@
-  *    way after Live Update and ensures that IOMMU groups do not change. Note
-  *    that a device will use its adopted ACS controls for the lifetime of its
-  *    struct pci_dev (i.e. even after pci_liveupdate_finish()).
-+ *
-+ *  * The PCI core adopts ARI Forwarding Enable on all bridges with downstream
-+ *    preserved devices to ensure that all preserved devices on the bridge's
-+ *    secondary bus are addressable after the Live Update.
-  */
+@@ -481,6 +481,11 @@ static int pci_liveupdate_unpreserve_device(struct pci_flb_outgoing *outgoing,
+ {
+ 	struct pci_dev_ser *dev_ser = dev->liveupdate.outgoing;
  
- #define pr_fmt(fmt) "PCI: liveupdate: " fmt
-@@ -904,6 +908,32 @@ int pci_liveupdate_adopt_acs(struct pci_dev *dev)
- 	return 0;
++	if (dev->liveupdate.frozen) {
++		pci_warn(dev, "Cannot unpreserve device after it is frozen!\n");
++		return -EINVAL;
++	}
++
+ 	if (!dev_ser) {
+ 		pci_warn(dev, "Cannot unpreserve device that is not preserved\n");
+ 		return -EINVAL;
+@@ -547,6 +552,11 @@ static int pci_liveupdate_preserve_device(struct pci_flb_outgoing *outgoing,
+ 		return -EINVAL;
+ 	}
+ 
++	if (dev->liveupdate.frozen) {
++		pci_warn(dev, "Cannot preserve device after it is frozen!\n");
++		return -EINVAL;
++	}
++
+ 	if (!dev->liveupdate.outgoing) {
+ 		struct pci_dev_ser *dev_ser;
+ 
+@@ -797,6 +807,12 @@ void pci_liveupdate_cleanup_device(struct pci_dev *dev)
+ 		pci_WARN(dev, 1, "Destroying incoming-preserved device!\n");
  }
  
-+/**
-+ * pci_liveupdate_adopt_ari() - Adopt ARI configuration
-+ * @dev: The PCI device to adopt ARI configuration for
-+ *
-+ * For devices preserved across a Live Update, read the ARI state from
-+ * hardware and adopt it. This ensures the device continues to use the ARI
-+ * configuration established by the previous kernel.
-+ *
-+ * Return: 0 on success, or -EINVAL if the device was not preserved.
-+ */
-+int pci_liveupdate_adopt_ari(struct pci_dev *dev)
++void pci_liveupdate_freeze(struct pci_dev *dev)
 +{
-+	u16 val;
-+
-+	guard(rwsem_read)(&pci_liveupdate.rwsem);
-+
-+	if (!dev->liveupdate.incoming)
-+		return -EINVAL;
-+
-+	pcie_capability_read_word(dev, PCI_EXP_DEVCTL2, &val);
-+
-+	/* Safe to modify dev->ari_enabled bitfield during enumeration. */
-+	dev->ari_enabled = !!(val & PCI_EXP_DEVCTL2_ARI);
-+	return 0;
++	guard(rwsem_write)(&pci_liveupdate.rwsem);
++	dev->liveupdate.frozen = true;
 +}
 +
- /**
-  * pci_liveupdate_is_incoming() - Check if a device is incoming-preserved
-  * @dev: The PCI device to check
+ static int pci_liveupdate_finish_device(struct pci_ser *ser, struct pci_dev *dev)
+ {
+ 	if (!dev->liveupdate.incoming) {
 diff --git a/drivers/pci/liveupdate.h b/drivers/pci/liveupdate.h
-index d4721ffcecb2..90b2754ecc0c 100644
+index 90b2754ecc0c..5aac19f7bee6 100644
 --- a/drivers/pci/liveupdate.h
 +++ b/drivers/pci/liveupdate.h
-@@ -16,6 +16,7 @@ void pci_liveupdate_cleanup_device(struct pci_dev *dev);
+@@ -13,6 +13,7 @@
+ #ifdef CONFIG_PCI_LIVEUPDATE
+ void pci_liveupdate_setup_device(struct pci_dev *dev);
+ void pci_liveupdate_cleanup_device(struct pci_dev *dev);
++void pci_liveupdate_freeze(struct pci_dev *dev);
  bool pci_liveupdate_preserve_bus_numbers(void);
  bool pci_liveupdate_refuse_bus_numbers(struct pci_bus *bus, struct pci_dev *dev);
  int pci_liveupdate_adopt_acs(struct pci_dev *dev);
-+int pci_liveupdate_adopt_ari(struct pci_dev *dev);
- #else
- static inline void pci_liveupdate_setup_device(struct pci_dev *dev)
+@@ -26,6 +27,10 @@ static inline void pci_liveupdate_cleanup_device(struct pci_dev *dev)
  {
-@@ -40,6 +41,11 @@ static inline int pci_liveupdate_adopt_acs(struct pci_dev *dev)
- {
- 	return -EINVAL;
  }
-+
-+static inline int pci_liveupdate_adopt_ari(struct pci_dev *dev)
+ 
++static inline void pci_liveupdate_freeze(struct pci_dev *dev)
 +{
-+	return -EINVAL;
 +}
- #endif
- 
- #endif /* DRIVERS_PCI_LIVEUPDATE_H */
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 47d8229115b8..0ae405b86b2f 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -3625,7 +3625,7 @@ void pci_configure_ari(struct pci_dev *dev)
- 	u32 cap;
- 	struct pci_dev *bridge;
- 
--	if (pcie_ari_disabled || !pci_is_pcie(dev) || dev->devfn)
-+	if (!pci_is_pcie(dev) || dev->devfn)
- 		return;
- 
- 	bridge = dev->bus->self;
-@@ -3636,6 +3636,12 @@ void pci_configure_ari(struct pci_dev *dev)
- 	if (!(cap & PCI_EXP_DEVCAP2_ARI))
- 		return;
- 
-+	if (!pci_liveupdate_adopt_ari(bridge))
-+		return;
 +
-+	if (pcie_ari_disabled)
-+		return;
-+
- 	if (pci_find_ext_capability(dev, PCI_EXT_CAP_ID_ARI)) {
- 		pcie_capability_set_word(bridge, PCI_EXP_DEVCTL2,
- 					 PCI_EXP_DEVCTL2_ARI);
+ static inline bool pci_liveupdate_preserve_bus_numbers(void)
+ {
+ 	return false;
+diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
+index e16aa59dd7ac..dff60a03204f 100644
+--- a/drivers/pci/pci-driver.c
++++ b/drivers/pci/pci-driver.c
+@@ -21,6 +21,7 @@
+ #include <linux/acpi.h>
+ #include <linux/dma-map-ops.h>
+ #include <linux/iommu.h>
++#include "liveupdate.h"
+ #include "pci.h"
+ #include "pcie/portdrv.h"
+ 
+@@ -559,6 +560,7 @@ static void pci_device_shutdown(struct device *dev)
+ 	struct pci_dev *pci_dev = to_pci_dev(dev);
+ 	struct pci_driver *drv = pci_dev->driver;
+ 
++	pci_liveupdate_freeze(pci_dev);
+ 	pm_runtime_resume(dev);
+ 
+ 	if (drv && drv->shutdown)
+diff --git a/include/linux/pci_liveupdate.h b/include/linux/pci_liveupdate.h
+index d45a5b524909..bb79348769b7 100644
+--- a/include/linux/pci_liveupdate.h
++++ b/include/linux/pci_liveupdate.h
+@@ -21,11 +21,14 @@
+  *                set up, i.e. it was matched to state preserved by the previous
+  *                kernel. Unlike @incoming, this is never cleared, so it stays
+  *                true after the device finishes participating in Live Update.
++ * @frozen: True if the outgoing preservation status of this device is frozen
++ *          and thus cannot be changed.
+  */
+ struct pci_liveupdate {
+ 	struct pci_dev_ser *outgoing;
+ 	struct pci_dev_ser *incoming;
+ 	bool was_incoming;
++	bool frozen;
+ };
+ 
+ struct pci_dev;
 -- 
 2.55.0.1082.g2b9226bbc0-goog
 
