@@ -4,108 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B89DCC982DA
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 13:42:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A05A5C982D8
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 13:44:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A6BC36B008C; Fri, 18 Sep 2026 09:42:03 -0400 (EDT)
+	id 9D3A16B008A; Fri, 18 Sep 2026 09:44:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A1D576B0098; Fri, 18 Sep 2026 09:42:03 -0400 (EDT)
+	id 9AC286B0092; Fri, 18 Sep 2026 09:44:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 90BAA6B0099; Fri, 18 Sep 2026 09:42:03 -0400 (EDT)
+	id 8C2A76B0093; Fri, 18 Sep 2026 09:44:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A39C6B008C
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 09:42:03 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 81BC51C2EAC
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 13:42:02 +0000 (UTC)
-X-FDA: 85226996484.11.F4595BE
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 1E68D4000C
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 13:41:59 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="bX/l51XD";
-	spf=pass (imf01.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 571B96B008A
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 09:44:21 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DD0CC1A0649
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 13:44:20 +0000 (UTC)
+X-FDA: 85227002280.07.C54C960
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 1B13A120008
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 13:44:18 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HsKUSyLM;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789738920;
+	s=arc-20220608; t=1789739059;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T1G7pn6seS/SOuHvOw8pJc1Knwr72Zy5SeN7YDV021M=;
-	b=Tyk/6F4pv2RrOKsaAX4DZdNGWoLxtVCuUpNmxqgFCihCi04tv5oPOgkcBDxrj6qLrEknsE
-	GLIRptMaP/Eh8vyIZcpHNrw2EJTk9tbF3tCmvxzARq47VeOY7v/x95YFL77D9rtnyOMuKq
-	t8pTR1HDyM3G4mh3cHAdICazMvVeuys=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="bX/l51XD";
-	spf=pass (imf01.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	bh=a9VPaOBm5A7r04UHfa3NhklcbPIGLG2u7NqH+Abrs+k=;
+	b=ljz9vtffY8CyWFBDIlf12aBQ6+qBXqr1XOnJUilFAKtIKnC4Uea6K6QA2T5VK0Gt/9GMMY
+	Tb3TQGilIteOOqpYYofYH1NgYeukRw0RHD97YMCZ0ANIZUXa/8FR48ExTXVJArTUbUqYrL
+	n8sygaLMevgVF3hdM86i81R5F+ti4B0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789738920;
-	b=mapyj/YoS/55Vc2F0uu0h0KSNfo1gIpITEX2MUVIOi7dR4pyt+ujZ3QEdNgK+SJjH5gvrd
-	lD1b8JR7zBq7vSeCpaUBJGmSxQSnlSa932b96kqe52JjMmNTcC53RyO8lsdCQG1boZj0/+
-	hKsSRgre9ioh4w9CCT7DAT8Oc1NJbSo=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789738919;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=T1G7pn6seS/SOuHvOw8pJc1Knwr72Zy5SeN7YDV021M=;
-	b=bX/l51XDyTJGDG3oQfCJ6gjXjd2uihUTmvaNw/zhDGaxK/cwIEWaMVybcvL5Ib4NMOs3vV
-	FbGcIfzWSJfoGWq27eJKFxg+ye4ghHAjmIjgujWuiX+e1pyIiuYMp3HzXWk+epH0Ds1KaY
-	VwHJlTmeZ2JV3BV2SHNrHBcMY54r1XY=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-179-H0K6Lj2APcaU4-gCZgc4kA-1; Fri,
- 18 Sep 2026 09:41:50 -0400
-X-MC-Unique: H0K6Lj2APcaU4-gCZgc4kA-1
-X-Mimecast-MFC-AGG-ID: H0K6Lj2APcaU4-gCZgc4kA_1789738909
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D66E819776A8;
-	Fri, 18 Sep 2026 13:41:47 +0000 (UTC)
-Received: from fedora (headnet03.pony-001.prod.iad2.dc.redhat.com [10.2.32.114])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 3B334180034C;
-	Fri, 18 Sep 2026 13:41:44 +0000 (UTC)
-Received: by fedora (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Fri, 18 Sep 2026 15:41:47 +0200 (CEST)
-Date: Fri, 18 Sep 2026 15:41:42 +0200
-From: Oleg Nesterov <oleg@redhat.com>
-To: Christian Brauner <brauner@kernel.org>
-Cc: Jens Axboe <axboe@kernel.dk>, linux-fsdevel@vger.kernel.org,
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
-	NeilBrown <neil@brown.name>, Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>, linux-mm@kvack.org,
-	io-uring@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/7] fork: refuse new threads while a coredump or an
- exec is in progress
-Message-ID: <aq0_lvHDViIpX_Mu@redhat.com>
-References: <20260917-work-coredump-fixes-v2-0-f3787fcda051@kernel.org>
- <20260917-work-coredump-fixes-v2-1-f3787fcda051@kernel.org>
- <aq0VLTyxNatFmLOK@redhat.com>
- <20260918-irrsinn-pickt-vermummen-d7167c397398@brauner>
- <20260918-disput-maden-parkdeck-2bc22dd90398@brauner>
+	t=1789739059;
+	b=8V2KalhAu6NW9mI1jmNxzdQR39gy1icjjzhHl/hDN/yU+BtYrUBrti6VAzIShbnMi+i6FH
+	sUR9F+UxEA7WRsbVOS1DypxcBm2xQl8t7I8eSoBGfJYKKzbcIqhWuNPh1kNvsfq7iZE3h9
+	+ODimaYpIlOlbl+FPPlI4tjsDaxc7NM=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HsKUSyLM;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 51398410B7;
+	Fri, 18 Sep 2026 13:44:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0225C1F000FF;
+	Fri, 18 Sep 2026 13:44:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789739058;
+	bh=a9VPaOBm5A7r04UHfa3NhklcbPIGLG2u7NqH+Abrs+k=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=HsKUSyLMN/sYAQw7E49ibbB3T8ByiDDqcQDimeQKcDEKhP4tMRx5LC8I7GUrGejaX
+	 60RYN1Tgt1M0rILU9w5IiH5w9mnR24HwpP3urETACDOo87RmfIdy6kRqS+iR1zhNKG
+	 vrnSDPaxVveRqi2SBYmIQi1LIJ3YnMFtedH6nwiAyz/BQ+o8exiMFZsX04VqkOhcQC
+	 5kJbLaNtnQ8hMOCuOv1KAZU93zEjO/f0WUIkNtCwM+CGelVVZ5eyfAEFrIknKW7T2+
+	 xjLFUuFEVfk+zNulLbszGiWq8TPCwoOy6JzH0GakRuyKqkM8YFAu0QfBaeMMPfz5JZ
+	 uUWOja6unBl4g==
+Message-ID: <7608c80e-645b-4d07-bba3-ef45ee36fba4@kernel.org>
+Date: Fri, 18 Sep 2026 15:44:12 +0200
 MIME-Version: 1.0
-In-Reply-To: <20260918-disput-maden-parkdeck-2bc22dd90398@brauner>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-MFC-PROC-ID: jDMIx3zF1KnTPPs2S6ToTEM4NEWYdqUEHxc36-EjZgo_1789738909
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 08/15] hugetlb: Use the has_hwpoisoned flag
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Jane Chu
+ <jane.chu@oracle.com>, linux-mm@kvack.org,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
+ <nao.horiguchi@gmail.com>, Jan Kara <jack@suse.cz>,
+ linux-fsdevel@vger.kernel.org, Christian Brauner <christian@brauner.io>,
+ Jiaqi Yan <jiaqiyan@google.com>, "Gregory Price (Meta)" <gourry@gourry.net>
+References: <20260805210557.1118966-1-willy@infradead.org>
+ <20260805210557.1118966-9-willy@infradead.org>
+ <a51a6236-8881-4479-8f04-39676e0e1f14@kernel.org>
+ <an3uN4TAAZ2miXhe@casper.infradead.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <an3uN4TAAZ2miXhe@casper.infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: wm7ceyy6ddd8rfpsj7ujp9mhjmd9uyh9
 X-Rspam-User: 
-X-Stat-Signature: 74qehrqp4usxy6iqasg4w9qht4wdk18b
-X-Rspamd-Queue-Id: 1E68D4000C
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789738919-619631
-X-HE-Meta: U2FsdGVkX1/epUaMw2Wg8B+08jU0lI3cf1B+RNafLEWTHRiXJJZNeIniwnClBpKt1CUpvvDG8uTMa+pfh7fnjU+louwpTinXa9tpZ3uVEaDmM67OQ3TY4EUWrjI26FTPETfZGf76UPTf7s1cPydSSAcL2KipoITHBPBMPv3BK2gRJ9zecM3bNQDplQBDS9jD5UnP0w/I5rVBXeO09kjPbxxISUtMcueN9Xk/hXLT13m2mQ6sac+QKdy6TCDnRDXTXNlCH9rzAiQ+DQt8/MZWsFAhN4R+JMYZru+o8+LLU7pvMwVwztwXF0o8ZhXG0MP12deYkjE4mIkFWRxj+HIRpZQL8XNIF1wFeNEO70LDd0oeEYXbevwm28to0xiHl2UV39rTLmkZlFmIpwvLa4uUi8nWFamIt6iixUbK93jLMSAwVafDj5b7SVun1X1WTx/wB0MoWhJyU8WVGP3qqjAEbP67p28Y5pr6vxAORz4SDKhpXEtl2VVKVGBTRj60w6IDNWjf71Tb8NORD3Q3+DMlrXdBo4UmFZIlZoYkwTrZ3ChIH1c9YFGqxd5Qig9DWx4HL4Uj24XJeJx8Y18CnefE16VKxwqj8U8AbVs5RM5vNhmIxp5ynuurcROIPiOM629kWBJv2ivsp0H8iNTXQciJxmvsyjxauDD+hG/AB+uqiHs1mAUIktgCYtTQDNBJBC1RjalwzNsoI4Tr/UXGQmKQGcxU5lkSn0Or4HjG6jqw8qusJDykNPJj7UajsTxpcaAfH/YqnPQm3iEzWLdmXQqRbDTLQX/oMBiRCv72hLmb76oJVnNF21KbcTb1/RLLT6gt5P9YVxT5M0wnrATxFe1HlDLxsLkloNOTwwdkweoIpYe/HCL3XJguBhv+8NZ8ynA1RuMRXAH2MU5XaFEvV4HtannoAmCzLfhPAAsfHZrMmNR/PEiW36UlHeQPMFlVk8YPz/+iNE4vvwgJT7V88Rd
- Tzt8Nq6G
- OYNjzDAHd2G/Ui1iuVWY4Ze/3AK8Z+/5/r5r35l6OyE0i/ondkGp/RlKmFw7cB/ZMNdngCbPdVbuynFZIs1eIy/glECf7zbo22MOws7RPAisOyqimPkYw3pfNRgFm5oJgyOQGnnrZbk3m2tfkRBVTEzLrPWpKO/qjGgSpF0dEgtKjewvyja8wrAD7glIAj6fr87zFXn42PMMSZN8M8HoSiVh/L54Hge3UzUnRiTO8VTGJEx59G6JWhX52IknWbP9tjgfEh9MrFoosm6idWdCQPx/XGpIlXpHy687BGQaEGg876p0jS5QI7ACMUqWR2mR9KG4Lv64EM9HCs6W7mw825e5+BAPW7napp5t1
+X-Rspamd-Queue-Id: 1B13A120008
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789739058-383630
+X-HE-Meta: U2FsdGVkX18SAU1SR25lo43zpBz/xbgeebryZh5ZHAVs34cicjFRsk/yQeRZ++ExuCukIwjMVHlB/xPfdM2HygPt15CDBp/0nhjlTMVS6M3KV5nnmL5cwf4enDptNyBzuADEbsF3HoQN6HVGlRiTZ+oJMACJYVR3HO+euXjvP9B7b/GJ2mDcCPdk1O0QD6P/UzlYkWZVamQJscBQW2NnSt+iUmVF9znWCExf9H7Rjr+nop9H7cmd0QvJNZU/+e59dhPwA4lg+slqKyZBUgTTBK8mts19RkOOyg1GYUFCAqAgxzYsMgplaisLRJNL+5U3lDT2P073husIDr9JLXF3YbBVwbIPjgpzIPkiQCzKRJDDMz22AI4gdfx9hHbkBysbbM80FlFgs5PHgkSfGHV5RDqQy+d0Hxr/2gkxjatrWrpzb83TyheJFmMh77BN88aqmbOEBVqN+J6Rp6lLJLiItmBEex2yN6zczcCF5M5G9701QZ02DG4j+imPQnOrQw8XEws0h9DMH8/lP+IU/O3BbUrtAEX9sWIcZGMnBgDvyKaswx6PslVivJrsiHMVkOo77ZtRQHWQcxE1n1zZ9EA4NNFKRurL088zS9LYXM3BAmOw1Hu/qzGM87d0qX4NctduUTsXS26F5ublUkdGOzfPsLL5pIBCISxK1QdTGyQxxB1wlRN+FxphPJ89FSGq3aYZR9UHlc+9rt3qQh76v9mVoEJwSbSHpNDhWgjIdNotxl0TWtYSvOLK6zwbENDRf95DRKkZc/iqaLj2gcaCIJhiJ22k6PTcQpzMbEXhVTZsP4ejMYi6J1DdGpVhKp2GfmpVS7ag4SwJ4gzmm0WOWs0qbOksVOcLxW/8tktUz35i6VGGqCsrY+88AFpbFntnqOXM5Ln4iCytzkVLxCdFP/t5jj0XJ2YgelPPzvEurO8SbSRW8nC5WyK7QWN143oCAyeOzaaZZBnGRHbZgQyY6FK
+ /dYb0zBK
+ IA8aRgdBaZKbC3oCXCVf2dvozQFBuzoePJRkh/tHyVYTJUlmvINLpw23eOQUDjz5RxZ2YkoW8cCFFohtgVnVc1EXVUSRvPGq8Ms/Q3LqMAOfTYEPlkEINaQ6KoYw9D3Td0fuUvsWxzrpm1LS3Rpr4OBqqSSfsdGoQMHcXQ5vvEc6s8tyewX4dTm3Fa7bgKrb9alCrDRTl7TwYEULmnPMOCdYzWfziXZMDosWSYfPQL6YBK7s7Snho44AKICQzcTDyiJLc5NmCwySkEEUoWpN8PgwGBv3uJj7THa7Tg8GV+mKx8PSzc+RMss7bb57eHHDKZghpBerTCfD+St21bNG93u/QoqmWP8LNLpgRVla+eSWrL9YD+fdkaI/JOJy1k82M65wa
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,26 +145,152 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09/18, Christian Brauner wrote:
->
-> I think this works but they also need to check ->in_execve as the
-> exec'ing thread is obviously never signaled:
->
-> @@ -2709,6 +2707,10 @@ struct task_struct *create_io_thread(int (*fn)(void *), void *arg, int node)
->                 .user_worker    = 1,
->         };
->
-> +       /* A creator past its fatal signal or in execve gets no thread. */
-> +       if ((current->flags & PF_SIGNALED) || current->in_execve)
-> +               return ERR_PTR(-EINTR);
+I'm a terrible person and it took me way too long to get back to this :(
 
-Ah, I forgot to mention...
+> 
+> You make it sound so easy ;-)
 
-Can we shift io_uring_task_cancel() up, after setting bprm->point_of_no_return
-but before de_thread() ?
+Heh, as long as you hold a folio reference it really is :)
 
-I know nothing about io_uring, not sure this would be enough...
+> 
+> If we don't hold a reference on the folio, then the folio (whether it's
+> hugetlb or not) can be split.  And then folio_test_hwpoison() can hit
+> the assertion that it's now a tail page.
 
-Oleg.
+Right. I am/was missing the connection to "generic_file_read_iter() in hugetlbfs".
 
+> 
+>> Then you write:
+>>
+>> "This closes a gap where a page in a previously-poisoned hugetlb folio
+>> could be observed to not have the hwpoison bit set."
+>>
+>> When does the race you describe become relevant? When freeing the hugetlb folio
+>> or when demoting it? in both cases, we should be holding the hugetlb lock that
+>> nasty hwpoison code could sync with (if it doesn't already do that).
+> 
+> Before this patch series, we don't always hold the hugetlb lock when
+> splitting a hugetlb folio that contains hwpoison.  And we don't want
+> to have to grab the hugetlb lock if we can avoid it -- unprivileged
+> userspace can hammer these paths hard, and I don't want to see this
+> lock be contended.
+
+Right. But doesn't at least the pagecache always hold a folio reference when
+testing for hwpoison?
+
+I mean, there is other code that might need care (PFN walkers like memory
+offlining), but I was surprised to see pagecache code require a rework of
+lockless hwpoison checking.
+
+I'm sure I am missing something.
+
+> 
+>> I can understand that we want something that covers both scenarios: an
+>> indication whether any large folio has any hwpoisoned page. Such a unification
+>> would be good.
+> 
+> Right, and after this patch, we now have that.  Any unknowing part of
+> the kernel can test folio_has_hwpoisoned_page() (assuming it has a
+> refcount on the folio).
+> 
+>> But then, special-casing hugetlb *again* through folio_test_huge_poison(),
+>> that's rather odd, no?
+> 
+> Oh, I'm not happy about it.  But we need an atomic way to determine if
+> a page belongs to a hugetlb folio with hwpoison detected.  Short of a
+> complete rearchitecture of how we handle hwpoison, this is the best I've
+> come up with.
+
+(did I express how much I hate the hwpoison infrastructure and how it's racy
+left and right? :) )
+
+> 
+>> (what on earth is "huge_poison" is this supposed to be "hugetlb_poison" ? Why
+>> "poison" and not "hwpoison"? Really odd)
+> 
+> We're inconsistent in our naming on both of these things.  It doesn't
+> help that somebody decided to reuse the term "poison" to mean
+> "uninitialised struct page".
+
+Right, but let's be consistent with hugetlb and with hwpoison. ;)
+
+> 
+>> I'd expect that we actually get rid of folio_test_hwpoison entirely and
+>> exclusively work on per-page state and has_hwpoison. But IIUC, now it's some
+>> mixture of folio checks, page checks, folio_has, mixed with some hugetlb oddity.
+> 
+> If we could get rid of HVO, we could do it entirely on struct page.
+
+That's what I hope we will achieve at some point.
+
+> Or, as above, entirely rearchitecture hwpoison handling to not be based
+> around pages or folios any more.
+> 
+>> I am not quite clear whether the change you propose here is actually required
+>> for the remainder of this series?
+>>
+>> 	[PATCH v9 00/15] Use generic_file_read_iter() in hugetlbfs
+>>
+>> IOW, do we really need all this hugetlb hwpoison handling just to accomplish
+>> that, or could some of that (bigger hwpoison rework) be done separately?
+> 
+> Blame Sashiko!  I'm going to ignore it in future, but it's really good
+> at nerd-sniping "hey all of this is already broken and you could fix it
+> as part of this series".
+
+Right, and this is only the tip of the iceberg, because the entire hwpoison
+infrastructure is a complete hacked-on racy piece of ... engineering excellence.
+
+To summarize my question: is it possible to separate for this series the
+pagecache part (Use generic_file_read_iter() in hugetlbfs) from all the hugetlb
+hwpoison rework?
+
+OTOH, if it's really not avoidable, please let me know.
+
+> 
+>>
+>>> +/*
+>>> + * Since we cannot split a hugetlb folio, we want to insert a poison
+>>> + * entry into the page table for the whole folio even if only one page
+>>> + * is poisoned.  Otherwise, we've split down to the PTE level and we only
+>>> + * want to poison the precise page
+>>> + */
+>>> +static bool ttu_create_hwpoison(const struct folio *folio,
+>>> +		const struct page *page, enum ttu_flags flags)
+>>> +{
+>>> +	if (!(flags & TTU_HWPOISON))
+>>> +		return false;
+>>
+>> Why not keep the flag in the caller? Really looks weird given that we have two
+>> users and one of them doesn't even need the check and must fake it.
+> 
+> try_to_unmap_one() is already 200 lines and contains some tricky code flow.
+> I'm trying to at least make the problem not-worse.  I think we should
+> pull out even more code into helpers, but not in this patch series.
+
+Note that this code now was partly reworked such that this helper will soon no
+longer be required.
+
+[...]
+
+>>> @@ -2423,7 +2436,6 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+>>>  	struct mmu_notifier_range range;
+>>>  	enum ttu_flags flags = (enum ttu_flags)(long)arg;
+>>>  	unsigned long pfn;
+>>> -	unsigned long hsz = 0;
+>>
+>> While these size changes are reasonable, they make this patch harder to review
+>> and are not even described in the patch desription.
+> 
+> I suppose.  Do you want me to take them out?
+
+Cleaner, yes.
+
+
+Again, sorry for being so terribly slow.
+
+-- 
+Cheers,
+
+David
 
