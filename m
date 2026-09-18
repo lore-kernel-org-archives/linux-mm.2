@@ -4,123 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 325D0C982D0
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 00:12:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02E01C982D2
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 00:13:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 07B5E6B0095; Thu, 17 Sep 2026 20:12:20 -0400 (EDT)
+	id DA6366B0098; Thu, 17 Sep 2026 20:13:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EFA9F6B0096; Thu, 17 Sep 2026 20:12:19 -0400 (EDT)
+	id D50976B0099; Thu, 17 Sep 2026 20:13:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC2E56B0098; Thu, 17 Sep 2026 20:12:19 -0400 (EDT)
+	id C18D86B009B; Thu, 17 Sep 2026 20:13:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8088C6B0095
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 20:12:19 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 90AC91C275D
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 00:12:18 +0000 (UTC)
-X-FDA: 85224955956.04.75118BA
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
-	by imf08.hostedemail.com (Postfix) with ESMTP id D0659160004
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 00:12:16 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=Pc5hmSPZ;
-	dmarc=none;
-	spf=pass (imf08.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.179 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=Pc5hmSPZ;
-	dmarc=none;
-	spf=pass (imf08.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.179 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789690336;
-	b=3f9ytcjn7ye2bYX298ItNMu0pc8n9FhTsLaOOSBfGzIXAqqRUThJkYNDspO//w+Pltnj43
-	deCZVnx/fmG5RYr0heqbxN6AoxfBQTj2lkQdvdtGPDRG7IVY0lPG+W0orE5mcxc6K5dfsu
-	IzQEWni4kO1VYNHTcb74iOw4cH3pAvM=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789690336;
+	by kanga.kvack.org (Postfix) with ESMTP id 944336B0098
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 20:13:31 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9ED1C1C2709
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 00:13:29 +0000 (UTC)
+X-FDA: 85224958938.07.9E3FADD
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+	by imf28.hostedemail.com (Postfix) with ESMTP id C18C3C000B
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 00:13:27 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=bykuXFHK;
+	spf=pass (imf28.hostedemail.com: domain of nphamcs@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1789690407;
+	b=XMEGjWcCj2uIuXKDtSgIXaP/v/A/OsI6chQzA90mV4qXrW2JWxNp6cR9mbrYdnCj+2OCzs
+	JvjTy9RMba6uXnlOjK/rNVmASgTNHqJtKx9k/zuhqQchtPuHv6hxvI43zpnit6f3P1pqJO
+	iS+ngPFyJEXPWYDTgxzXl1lFzHWamOI=
+ARC-Authentication-Results: i=2;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=bykuXFHK;
+	spf=pass (imf28.hostedemail.com: domain of nphamcs@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789690407;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PrpI8WWxUlqmCCZ/KlwzqkhVdxs2Qx8EkwLTiy0oOLg=;
-	b=Qj3BIZuhZI5pbc27P7EsRWQT6rW7eR71kgnrz+q4Pc8ZwDNQ1kAb7HsvnerXpLXpbBCs/o
-	W96KlY5eByVsI49iqzl86EBJP+44qaTc80anekyv+2csHz9lteTadugywlQV7iXFkTaQuJ
-	/Li7wLrlqaqwvc7W1IOkltWtxi6TGLs=
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-93a40a9a01aso128268485a.0
-        for <linux-mm@kvack.org>; Thu, 17 Sep 2026 17:12:16 -0700 (PDT)
+	bh=aZxC2zmZBXNKohtVlSKjG/OT2cN2Az5DZgDZVOC3Qko=;
+	b=77FB4cUQznRK/IOLLb07SK6dfi+yixtM2+frVMuDV+ALek6eBnDQNDEAPQkCcG49QP8aK5
+	GMF4LltY90eIei/jrvwJDUgP9HLxzH2LRh/yV4/SqSk+iIaH8cMDw9CejnaiTeZey7m2DB
+	chgLeOk8qq2mcGXQycxhjlt65/SAYGs=
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49ccfd61ecaso1431305e9.3
+        for <linux-mm@kvack.org>; Thu, 17 Sep 2026 17:13:27 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789690406; cv=none;
+        d=google.com; s=arc-20260327;
+        b=NdvwrtffDzNu8T4OkXs+vAU6GWECi90WodwjAfXw3gQJKhUpunXKRe9jJKQHhj7C5S
+         jQ3gECWQxVFAUPogZ7DikxaIQSdKJas70dnvAeaQGGLIiFQ1Nq1T/vLswgzFddMDQ41H
+         CuSALAWpYsIPK9hsa1+HCEBd/z4Wu+KBshA0ZEYjjUOv7Hh4riMeNM7iGga3Sb+UatxB
+         lZk7VH9aZloEF41kz+M0SiLlBRbVqAAvEtXPkEqLfOA60oARS9jzJ1gh9eARZ4RJrGI8
+         DOTdgKd85pRVmtRzrcEOBQOAqJ1+XRHKYl30HcFIL6pM1WNTuJeLydlPYzu929Y2uOs7
+         /Dag==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=aZxC2zmZBXNKohtVlSKjG/OT2cN2Az5DZgDZVOC3Qko=;
+        fh=Mku5TSMXRT2R+rAT9VVy4aA5vRpquE1HQUuZQk8RgVc=;
+        b=YzLX1mvpghoSOR+slPR2VTPO4LS0J3R8SSm1c/cRDBoATuvDRAzoYyAg5q6cJXueqd
+         /elUYtsEb3AwMf8PvjX+6zo47il7T7Joexm9Av20xCvnmsNHp4ERtywAzI9Ho/Sth1VN
+         pODK+caKIcLxpmeqs2mZvGcwanSBFCtBL68262lfIfrNHo9b11IfVfYjJtc3RIopIMSv
+         81V9hbVW95D4mPIi7SgXYjgY5+dGZSmJi3f3RAbW/jEvvow/l4/uBv3d4ZtFxTn3iFdQ
+         KVXaXxhp8GOBnS6N6j6lZ9bXW/zC7nc5OsO+1Z2XTlr+GCeCgHvbPKQTH4X3tPBUnDaN
+         kQ2w==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1789690336; x=1790295136; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=PrpI8WWxUlqmCCZ/KlwzqkhVdxs2Qx8EkwLTiy0oOLg=;
-        b=Pc5hmSPZLfoFvGqob8Vu4iwzWHAxUyVn4+2yHEK1dcKffkOgydRxLABx+t1zLyj4uP
-         IAIwLhXK6PtA/gO7EujCUSSTBKrf/MgmgMUmujSIjLBaCPKcl3NOSPbLRqHYsicWwJ05
-         Yw3Qtd8ei4KgVNo5trUPtQVIEDFoDBwdhZxTLHAkgGF+28HLBr6ltcIAAjA+1H7mPWj4
-         fU1w20qIyLNwcwlpKj15fviZT2JuSvPZ3G/kDn0SkW8YUu4vnYaX7d0WBAtNL3gE8Deb
-         GsujOwTHyNJkLJMTgiZvJUfq213/tvoe3AkG/mZmDHSxOhELs6ywnUrO0dCdG1vcYVA/
-         JdXw==
+        d=gmail.com; s=20251104; t=1789690406; x=1790295206; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=aZxC2zmZBXNKohtVlSKjG/OT2cN2Az5DZgDZVOC3Qko=;
+        b=bykuXFHKKxG34tOr37PiM8kbFf2g6wgKTJ73Rg13QsP4AxVqB2NbmHH8pVvV/R9vQF
+         bY0e+OvwMPP430YWsHudktjxqkic16z1nFXvr/6YK2wDnR0DhIedSAza8mbJLGXGA9n2
+         e6GzjuE1rrp2GDmCMalj2b1fuuOIcvY1uYVDki87Q/4MaRvIB/4SsbgklHXNYxrG6VKS
+         B8wGCZoFhGwUdD35VqWN/o59bCrSoaHQpNXNZO5Xvu8nTUVA5qoY97TO2989xFoKqkQ4
+         +ChBRrRNHLO58ag9q9AOz1Ji9FocykGCcIC1EkrYnjZzxRXxyZPuNnNpZADUu7UqdGts
+         UkrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789690336; x=1790295136;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=PrpI8WWxUlqmCCZ/KlwzqkhVdxs2Qx8EkwLTiy0oOLg=;
-        b=GBFcY718uaX2c+j7akPAIaddUuOnXGWzuvEU32HrCu63B5pkqcXGbbt7bLj3M7F4VS
-         pfC1cPD94ii+Gc5UdwxiHtosMWp+9m91/yDp6mDgFkT5AbjOcZLYQVr1T+v2ullW0gY9
-         U+KQZAiGmUzRnpWo7MK2n3w/xPsTbNmqHpsYBdaVG2Ib7Scfz8LTiA6O69aLRQ8n8ej0
-         JbCtbATxc12H0TMHJNN/wj7aTtX8VG9dltSrp7/KQV2uz3V2nhkX8rxEA+wQIZVkN8Zz
-         qX19HNKhpfGiQKKSEb7WHwWN5MXTFLMSS2K0IexVnP8LNtoj0igKj1rLnuD416ZhGkv5
-         IsoQ==
-X-Gm-Message-State: AFuF++nhVAGG6nybXBy5K9pWt4YReB8eZUZwpFDVurWBfpV7D9MVwvNe
-	O1x4G3mqb0pBQHpi2q0IoJoeMkkLUK8WXFQTCcj5LDSjcpbvs12y8usi+eO2OU1qJgVaryXSt8+
-	qS7mQ
-X-Gm-Gg: AYBFou2XAd+tNm8S62k2zIA6//V0rRhTVwleQe2COZc4UtCPcrNF2G1ZHmUjTb1jSnV
-	2G7VzCjAozROiXi1TJlUQSPuWJ666nEHUxngbHRrnI2XOlde6xHmfDMQav5nM+JJcHa77TaYmJo
-	ke8aHSyNyDkZqqsflNcGxj3/h7jQxhUGzMiYHGphZIyKxeEdT7mR+6ly74rKIOlSDDWSxODG8f/
-	gRuNTQcDzK5ZiJCZ2n1ABSILW/2HYypW+bMPB8f+8Ql8wRwKJJwpbSUpKkHoEnew2HRyQPcNHxA
-	ZVOYXa5QD5zsbFl0FJxoucY70exy4+DLiUVWyg278P80ssAMrMLqsCYF+kV5L2sQ0jOMbE/97kf
-	hizvJFSy4lnxivv5jnFJr85FOHMF+qnE/kKPJtfiUrZEzcL9aARwIyjoqD6FAM/QE+3aeG3mcs7
-	kpi97VYm3GQJ1zPb+qcfY1l59Et187hmJ72OzBPwqfVCco533cAESLabxTsH/t1DYr8MZFuRtsm
-	rkD+2B4khzH5WI7LYN4wgdYC6sg3s0Z7Vr+E5WhjhkABjKVh5iwFCiljp+9
-X-Received: by 2002:a05:620a:19a4:b0:939:e6d9:b2c with SMTP id af79cd13be357-93bc62a9fbbmr758877685a.16.1789690335926;
-        Thu, 17 Sep 2026 17:12:15 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93b81cff7cbsm583762585a.41.2026.09.17.17.12.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Sep 2026 17:12:15 -0700 (PDT)
-From: Gregory Price <gourry@gourry.net>
-To: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org,
-	kernel-team@meta.com,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	ziy@nvidia.com,
-	matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com,
-	rakie.kim@sk.com,
-	byungchul@sk.com,
-	gourry@gourry.net,
-	ying.huang@linux.alibaba.com,
-	apopple@nvidia.com
-Subject: [PATCH v2 2/2] mm/mempolicy: stop copying the nodemask in the interleave paths
-Date: Thu, 17 Sep 2026 20:12:03 -0400
-Message-ID: <20260918001203.3389165-3-gourry@gourry.net>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260918001203.3389165-1-gourry@gourry.net>
-References: <20260918001203.3389165-1-gourry@gourry.net>
+        d=1e100.net; s=20260707; t=1789690406; x=1790295206;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=aZxC2zmZBXNKohtVlSKjG/OT2cN2Az5DZgDZVOC3Qko=;
+        b=AMot0Oyk1lIEUIxqAdThcBSkX9GjGgPn8EMYepDwSfgcHssfOBk6nXNrQAz5ZR0ZfB
+         O+ak5m2/UZu92NQUqQ2xKq3ERaZj7mOlAX8U5Ae3sgfWbtVXLB+kMMtJDuGuDaz2vFZ9
+         7sMaDdQAXLljU2z7CqmZwbEtYmrhwySmDAIQe/6aLen20xX2pdUhoVdEfVGDx+sf1Gi3
+         UYwPq/HMRbylt+jW6ln4zPD0KUH01kSX2BQNVF2oUQL/NWwuptEecjoIe+/jewTk1Mqt
+         Sk81Iyv7SOAUzEfPVJahOUwjAZTuxKd0IQpXntH2z6voJkLzXMhiHTgcRmO7KRZp6VJv
+         NNFg==
+X-Gm-Message-State: AFuF++mn/Xb9mHEADHInAm1l3/swaSyEG0AW8UIyrLxhPnCJ+1eFkuRl
+	2saLyzGa0HRfdBbhw03xtzVSTEZd3CbxCuDsYqRdpMqgk66oq22WT0r2qRFmF6PHraoqanlaxKL
+	mvuuJw7QMP3ym4pgYZYxb7IylKLNzIBI=
+X-Gm-Gg: AYBFou2RyvcRKENYej3HpxqQMbg8oGHhIQm2UEMol+776r/toQOu6XxU7AHFqX3aE1H
+	0T+SCXBINbtDks6QXdnEnxDFYIAfw24mURS7Xc9HxLTK3DX56DM9IoKCqxjnnpNqFPTYH045SfW
+	DAWTJHt7aG+Nm2pfKN0SM4YeIsXl00HfQpUo6fzgTiSJ72ydlBsEcl5nSSePSZ4Vh50fvApdMxM
+	q+mIp2q1MXWxUO2xHbQkaE+vlwiDVNfTQUltNB6WciaLTOVkzNM2wkbfGNc/KDnAL9zSrdlWsy4
+	ir/nmVEsKAzTYlwvADH3MqHbvEas0m5wExsJ3+Yz3HCdaawwDZt7Xze6kOA875CSINUqsnMayY/
+	+FOd2vanCjWo=
+X-Received: by 2002:a05:600c:138f:b0:49f:bbab:aa10 with SMTP id
+ 5b1f17b1804b1-49fc5741672mr5579525e9.20.1789690405281; Thu, 17 Sep 2026
+ 17:13:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260916101929.149106-1-hebaoquan@kylinos.cn>
+In-Reply-To: <20260916101929.149106-1-hebaoquan@kylinos.cn>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Thu, 17 Sep 2026 17:13:14 -0700
+X-Gm-Features: AcwNN1WpNUvbpMcj0o-RkcSZEW3mXC3Qne85caJPWZ5BGl0U5kjLLvyPTNmZXNI
+Message-ID: <CAKEwX=PEEkYiNRaVhCuM4E6mxB9huPKfkDa4m62VMTzedg1oYw@mail.gmail.com>
+Subject: Re: [PATCH v3 00/14] mm, swap: extendable swap devices (xswap)
+To: Baoquan He <hebaoquan@kylinos.cn>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org, 
+	kasong@tencent.com, baohua@kernel.org, youngjun.park@lge.com, 
+	hannes@cmpxchg.org, yosry@kernel.org, shikemeng@huaweicloud.com, 
+	chengming.zhou@linux.dev, baoquan.he@linux.dev, david@kernel.org, 
+	linux-kernel@vger.kernel.org, kunwu.chan@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D0659160004
-X-Stat-Signature: hjy9gqxmfy4zcx175utgecngxbu99wr6
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789690336-302497
-X-HE-Meta: U2FsdGVkX19RpQ4ir6MHINR+HM8aK/OR2uKuILtAJKXGbnTIjoUr60ihN1Kew7qLRQDuw0HJktEmMtdP18pVxezfYx5aDXwZprYRd8DVNE8VVMF4xVoOAEZl20uU1kLoEaddbic+ePjiK/CdaOzawF1d937V6h0lQQ3mvxvyyhxAaLrAltx8VzRjmOPamKTUReosRYmmlhLCIxhDFhMYxsYdIYPyF2WMYwmKx/4iyCExCRuSuJLIPbkUDGwgpkzn5VXoEHZPl26g34ffRD4a/18yowmjA+cjFbaQLVJKdsYSVDZH4evYO7OS1XosbTaRe7mR3AZcJwUNBXsIAGlPQCuomShRELBbAdio5J1B9U5kttHiDOo4wpmlJMiz49gC0CmpWx6GVxCCEq5PjASiWB19S5TtYLVwabrd1woN5h1NcCO596oursgxu11XhvxmqwUWeIq5Cvu4uK59O1uldYAWcXWxEVVEY1sxfnDCxaBi3uuYvxnWEo+m3f/DDOoSuZ/NsIIOjxrnQ7IKlaKEEpKJe8RZj22XOdt0Lm9OE4wWmdqGvY9tz1DWtO4stUm9Y6Ekx+LkN+PPiOpWn8Orb2Lpi7WQrXcCXwxxUxR0YhwXKUxzenESUETJvP3VclS4Dk05KaRL9sUGc7SRBAI4t0grK7N4v/oZfhreVObJBrxRfgKsBe9xg6RdnihNLA/z88H8s+iWvfsn6+LJnakuelmOmKQ2OzlvhP6jI8vakk3e3IZmFDsB6jxcIsIDxdZ85Of1og2l7vxxvPrPtfspqISQUWzPn9F53wXqBnsLTb0T816xYzBniuvnm+jFpgSNXWfMZ9JXJ8eLhEhb4Kz/M/2hxkE3/jR4qT8CpwRv2mzCMM14GmrcUuKaDAY0c8iqf2vXmS9ZGLgnXitrGdyiSUnQZze99yrJ/3pWlgvBGgITG8J8g2x2P5FyLYS6aZhbBVAImxysTJ9cZrITz7t
- IFDC/CNu
- jaDSjkn+sKNffGQYkqWrX2D2XCvWG74RCUTbzNXbn6LloHftRINl/cZU/f+mmSU2Zylz+WLCRI4MErilJzLw4LH+Sfp8pXdAoOJD15Jld48Q6ogWUKoGFHgjdi0XKXeDKuxWXQl86uXaYKW1wEJq3Izfwpmxl1YiHc0yBok4zALkFRkJAHPMju1c98xYhqYUThzajHpJXginy2oiJzgdVuy6CLICdanooO7nQHoF4AQphdV9WyXF965EondOijAAFEuuHABzlDriV9kMl+4HBmiv+dx1c47G82NaomjxshxpiXh/BRU6DWXhdefniQMxHTaRhDdXNhT9Ogw80hM9VMKLR6aLrLWJ/r5bLkoNP0m9dwdeCLIe+oTBC/kRc6fzrxNlfCLw5QaW/k6EXeOw6HDnoTMxo1UCOPdee/K2pCFov2wdHsUQP7GHiiNLQQlCYHc6/Ta8r/ozj1Doj5rLTcb/Nig==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C18C3C000B
+X-Stat-Signature: g3rzn4peauk54dwhq4bzy6w5yoe1huy5
+X-HE-Tag: 1789690407-613053
+X-HE-Meta: U2FsdGVkX1+uwJN9PBzssfMpBt9En4ceVaJdIzf4O/eCkBb1sjJvt+nnLXzcWXjDAL+wRqlncJWLc35nBraZKExUZaD4672BLKw22Hu1T3XRKSj8qAkcMEkF8uwCZ2nDHATDKg/W9MNH149JRzOXLEy3tyofGmr8Ne0tfl65eoXipu+brLauSfPXzgWdXfivZLXGmF1Oz32PJmFjrrKyLNlDtRKCcni06tjFZJ8CSYcrgmJFPnlX+t+NlJPssR20QweZ7glqgSu2l8Z+9j3gxfINGfKHjR+w/RQjV2CGdAbGSp6z8jbZaU5vnk2Lm6mBtL1J8udmnGiHKe37vA+4XA8B4Fd0CZhWFxexUUM+ifE0/JfN/wKvPS+qNmU5cYK/QzfU8GqdEUIzHPTwi6jeu+ulUZ/9kAeZUI/P0N3N1wBsW6TKQEJa4FPDEbi40cRwLTbjvtzZzC6K9pFGfXwUAsAAq/vWsHx+MJWeUY/iHsLfJK0FCMmTjirC9kfBooSF+gka3UB54kvnyyGEQHq6+uACnnQ7fcwXaUnIybDeUDM5FQ9sE5wUvtegqVenG4zOM7VEANb/HE3HWFclGMdB6lGjjK1lgIo68FGPgbV6EcusniKYZm3JBvWlK3ssDQsiVO7luCIIMSXGGDnITIjS1s0SQXZeVZ7+uvUZh8AgpeTI5Dv/3cDIs5FnyUdKhYPKUN99VTHnxScgHEaIKEY6mKWssjXdNusawef7n8usCjg+g7mWOIo55tjfG5fgVIzJ/ENVZTp/lPFAuwkiwTzutS9/f5Phhva1OciBLowVezG1YDSwJ5TYQHlouLemZ2Lkx/c5jwOyyb/kG2BQhE1PjvrgqP2+JYHtrSPTxuvPaKKjFRpJkpaeUckDsClPGnnIh93v93KsdL2DKQ9QDqzm/Rv/1DTMxo83Kep+Z230POGF+4Qb8q4eoUN5gfviGm4MEwdtINCPy7etHpchQHc
+ gYkzetT0
+ IWX3Bf5oWBeEUVQyzrpSu9JSaox8Zcdd+fZ1pNpE4bZ0PEQtyX0BdFIU9ycb4bYZuRT6lY/h2+/dFY22l/zcpnC3CUwwL3ff+FYdAryvYvG1hvSZlF6InaDincAaRPnAU2CmKrU9lwcc3P2N7qTp3+3OINj8DWuf2bs9vxHtX1XXWekNAKbITDPtWOGAVcKkf+7yp5bSWaSvHFENm/5Ospqx//m1wUiE+5K73rINImzr7jMRQY10VUcqs0AJZpS5LNdDmmVA8fz28bXxnGYFw9pVuqCqDpkGlvmnqKz9cbkib4/4E2YlgEewCkqZAbp8jgqnD3mY4WINoJMtWi7x2NxYYb4dOCi8D/orcoLLmIUUVhm+uRzs7X9G4eKYlg2UD11Y5mSKKJY1nwkieT60xeTW7CX2/BZd/XDypnIlScQUBWhC1FtaSTiA1tH1hHtvxI7Su6UjoCssF1C9RAMvggETQorZZFMTjq+qiQBv+D6DFnDoxDqnN3rvofwxulT7vLmJUo5eTiOxcDmowIFix3It4msSUn0sa+uSldicSmFliwbA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,258 +142,137 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The interleave node selectors copy pol->nodes onto the stack so the mask
-cannot change while they walk it.  nodemask_t is 128 bytes at
-MAX_NUMNODES=1024, and two of the three run per folio fault.
+On Wed, Sep 16, 2026 at 3:19=E2=80=AFAM Baoquan He <hebaoquan@kylinos.cn> w=
+rote:
+>
+> xswap is a swap device with no backing storage. Swapped-out pages live
+> in zswap. Its cluster_info[] array lives in a VM_SPARSE vmalloc area,
+> and the area is grown and shrunk on demand as swap usage changes.
+>
+> The problem being solved is the static size of compressed swap. Both
+> zram and zswap need the size fixed in advance, and neither gives memory
+> back when the workload shrinks. The solution should be a device whose
+> size can scale up/down as per usage. xswap does that by mapping the
+> metadata lazily instead of reserving it for the whole range.
+>
+> Design
+> ------
+> - si->cluster_info[] stays a plain array. Access is still
+>   &si->cluster_info[offset / SWAPFILE_CLUSTER]: no per-access branch, no
+>   RCU discipline, no tear-down state machine, no NULL return.
+> - Only an initial chunk is mapped at creation. The rest of the address
+>   space is reserved, not allocated, so an idle device costs nothing.
+> - Growth is driven by allocation. When no free cluster is left and the
+>   address space has room, the next chunk is mapped and added to the free
+>   list. No userspace involvement.
+> - Shrink is driven by frees. The free tail is scanned, and whole chunks
+>   are unmapped once the mapped range is at most half in use and several
+>   chunks can go. One chunk is left mapped as slack, so the next
+>   allocation does not map it straight back. A ceiling lowered below the
+>   mapped range skips the half-in-use rule and is enforced at once.
+>
+> Size
+> ----
+> A device starts at 1xRAM, rounded down to the cluster. That costs
+> nothing, because the mapping is lazy. The underlying address space is
+> 2xRAM. An optional per-device cap,
+> /sys/kernel/mm/xswap/type<N>/limit, lets an admin lower the ceiling;
+> the excess is unmapped right away. Grow and shrink both work without
+> it. Creating a device requires zswap.
+>
+> Interface
+> ---------
+>   /sys/kernel/mm/xswap/create           write an optional priority
+>   /sys/kernel/mm/xswap/destroy          write a swap type
+>   /sys/kernel/mm/xswap/type<N>/limit    read/write, in pages
+> The device shows up in /proc/swaps as xswap<N>.
+>
+> Note
+> ----
+> Writeback, rmap lookup, etc. are consumers of this base. I have a
+> writeback prototype on top of this base and will post it as a reference.
 
-The copy only buys consistency between the node count and the walk.
-Drop the consistency and just bounds check the walk instead.
+Thanks for posting v3.
 
-The nodelist access is racy by design, but safe as long as we handle
-the scenario where a cpuset rebind causes a torn nodemask read to
-perceive the nodemask as empty (weight_total == 0).
+I spent a while building the other half of what I want out of this on
+top of your series, to see how much work is needed if we are to expand
+from xswap to cover the vswap use case.
 
-If an empty nodelist or weight is perceived, fall back to numa_node_id(),
-which is what the functions already did when the copy came back empty
+It is actually way more work than I anticipated. And a lot of it is
+because of the way you indiscriminately apply the full swap device
+model to xswap, without careful consideration of actual use cases.
 
-Otherwise, iterating the nodelist during the actual allocation loop
-is perfectly safe - a concurrent rebind may simply cause a skew in
-in the distribution of memory (or fail and fall back the same as any
-other error condition).
+Johannes has already discussed one piece of that, the sizing knob [1],
+so here I would like to expand on other design and interface choices.
 
-weighted_interleave_nid() counts the nodes as we sum the weights. We use
-that node count to limit the maximum skew a single node can host.
+First, in terms of priority, an xswap device has to be preferred over
+disk swap. This is already zswap's model, as it is the *only* coherent
+swap tiering scheme. Exposing priority selection to userspace just
+invites misconfiguration - what if a user accidentally sets physical
+swap to be preferred over zswap?
 
-interleave_nid() walks with next_node_in() rather than next_node(), so a
-mask that shrank mid-walk wraps to a node still in the policy.
+Next, regarding the ability to create multiple xswap devices:
 
-alloc_pages_bulk_weighted_interleave() derives per-node counts from a
-weight total summed over the mask, so a changing mask can make them exceed
-the request.  Clamp each chunk to the space left in page_array.
+With at most one virtual device, there is no selection problem to solve
+at all: vswap's entire device-selection policy is reduced to two
+branches: if vswap is possible, go for it; otherwise try physical swap
+device. No need to think about policy to select which virtual device to
+allocate. No need to track virtual vs physical devices to select the
+right class for allocation, as you can just put the virtual device in a
+pointer, and off the avail list (which is only used for physical
+devices). These suddenly matter when you add multiple xswap devices.
+And for what purpose? This has never been properly justified to me.
 
-A cpuset cookie will not work here: two of these take VMA policies, which
-mpol_rebind_mm() rebinds under mmap_write_lock(), not mems_allowed_seq.
+On the flip side, there are cases where your treatment of the xswap
+device as "just an ordinary swap device" actually breaks *existing*
+deployment, and makes several code paths more complicated.
 
-Cost is distribution accuracy during a rebind - but the copy never
-corrected this anyway, it was just a safety mechanism to prevent div/0
-and overrunning the alloc request buffer.
+For instance, at allocation time, cgroups that disable zswap might get
+an xswap slot. At swap_writeout() time, it is *stuck* - we already do
+the unmapping step, so we cannot reclaim the page. Ironically a
+physical swapfile backend could have bailed you out here, but you have
+not implemented it yet :)
 
-Remove read_once_policy_nodemask(), now unused.
+The other way you can get around it is checking if the folio being
+reclaimed belongs to a cgroup that allows for disk swap or zswap, and
+bypass xswap/vswap if so. But that brings me to my next point: since
+you just treat xswap/vswap as a normal swap device and share all the
+allocation structures and logic, making such a selection becomes way
+more complicated code-wise, and less efficient at runtime too (since
+the per-cpu cache of clusters for allocation is shared for all swap
+devices in your code).
 
--fstack-usage at MAX_NUMNODES=1024:
+As of this version, it not only does not work for the writeback use
+case. It cannot even work in deployments where some workloads (cgroup)
+select zswap, whereas others select disk swap. It can only work if you
+intend to have a single class of device - either virtual/xswap or disk
+swap - but not both.
 
-  weighted_interleave_nid            184 -> 56
-  interleave_nid                     168 -> 32
-  alloc_pages_bulk_mempolicy_noprof  360 -> 136
+There are more, but I think these already illustrate my points.
 
-Assisted-by: LLM
-Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Reviewed-by: Rakie Kim <rakie.kim@sk.com>
----
- mm/mempolicy.c | 93 ++++++++++++++++++++++++++++++--------------------
- 1 file changed, 56 insertions(+), 37 deletions(-)
+The root cause of all of these is that xswap reuses the swap device full
+machinery and interface, even where it does not make sense, or where it
+exposes a policy decision the kernel should be making (priority, size,
+number of instances).
 
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index 2643915dc966..fd97fb0289bc 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -2197,34 +2197,15 @@ unsigned int mempolicy_slab_node(void)
- 	}
- }
- 
--static unsigned int read_once_policy_nodemask(struct mempolicy *pol,
--					      nodemask_t *mask)
--{
--	/*
--	 * barrier stabilizes the nodemask locally so that it can be iterated
--	 * over safely without concern for changes. Allocators validate node
--	 * selection does not violate mems_allowed, so this is safe.
--	 */
--	barrier();
--	memcpy(mask, &pol->nodes, sizeof(nodemask_t));
--	barrier();
--	return nodes_weight(*mask);
--}
--
- static unsigned int weighted_interleave_nid(struct mempolicy *pol, pgoff_t ilx)
- {
- 	struct weighted_interleave_state *state;
--	nodemask_t nodemask;
--	unsigned int target, nr_nodes;
-+	unsigned int target, nnodes = 0;
- 	u8 *table = NULL;
- 	unsigned int weight_total = 0;
- 	u8 weight;
- 	int nid = 0;
- 
--	nr_nodes = read_once_policy_nodemask(pol, &nodemask);
--	if (!nr_nodes)
--		return numa_node_id();
--
- 	rcu_read_lock();
- 
- 	state = rcu_dereference(wi_state);
-@@ -2232,22 +2213,45 @@ static unsigned int weighted_interleave_nid(struct mempolicy *pol, pgoff_t ilx)
- 	if (state)
- 		table = state->iw_table;
- 
--	/* calculate the total weight */
--	for_each_node_mask(nid, nodemask)
-+	/* calculate the total weight and the node count */
-+	for_each_node_mask(nid, pol->nodes) {
- 		weight_total += table ? table[nid] : 1;
-+		nnodes++;
-+	}
-+
-+	/* the mask is empty */
-+	if (!weight_total) {
-+		rcu_read_unlock();
-+		return numa_node_id();
-+	}
- 
- 	/* Calculate the node offset based on totals */
- 	target = ilx % weight_total;
--	nid = first_node(nodemask);
--	while (target) {
-+	nid = first_node(pol->nodes);
-+
-+	/*
-+	 * The target was calculated in a separate loop, and a concurrent
-+	 * rebind can change the contents of pol->nodes as we calculate.
-+	 * Access is safe, in the worst case we suddenly perceive an empty
-+	 * nodemask and return numa_node_id() below - otherwise we may
-+	 * simply cause a skew in allocations.
-+	 *
-+	 * Clamp this loop to a single pass (nnodes) to keep the walk
-+	 * bounded by node count.
-+	 */
-+	while (target && nnodes-- && nid < MAX_NUMNODES) {
- 		/* detect system default usage */
- 		weight = table ? table[nid] : 1;
- 		if (target < weight)
- 			break;
- 		target -= weight;
--		nid = next_node_in(nid, nodemask);
-+		nid = next_node_in(nid, pol->nodes);
- 	}
- 	rcu_read_unlock();
-+
-+	/* the mask emptied under the walk */
-+	if (nid >= MAX_NUMNODES)
-+		return numa_node_id();
- 	return nid;
- }
- 
-@@ -2258,18 +2262,23 @@ static unsigned int weighted_interleave_nid(struct mempolicy *pol, pgoff_t ilx)
-  */
- static unsigned int interleave_nid(struct mempolicy *pol, pgoff_t ilx)
- {
--	nodemask_t nodemask;
- 	unsigned int target, nnodes;
- 	int i;
- 	int nid;
- 
--	nnodes = read_once_policy_nodemask(pol, &nodemask);
-+	nnodes = nodes_weight(pol->nodes);
- 	if (!nnodes)
- 		return numa_node_id();
- 	target = ilx % nnodes;
--	nid = first_node(nodemask);
--	for (i = 0; i < target; i++)
--		nid = next_node(nid, nodemask);
-+	nid = first_node(pol->nodes);
-+
-+	/* A concurrent cpuset rebind may cause us to see an empty nodemask */
-+	for (i = 0; i < target && nid < MAX_NUMNODES; i++)
-+		nid = next_node_in(nid, pol->nodes);
-+
-+	/* the mask emptied under the walk */
-+	if (nid >= MAX_NUMNODES)
-+		return numa_node_id();
- 	return nid;
- }
- 
-@@ -2665,7 +2674,6 @@ static unsigned long alloc_pages_bulk_weighted_interleave(gfp_t gfp,
- 	u8 *table, weight;
- 	unsigned int weight_total = 0;
- 	unsigned long rem_pages = nr_pages;
--	nodemask_t nodes;
- 	int nnodes, node;
- 	int resume_node = MAX_NUMNODES - 1;
- 	u8 resume_weight = 0;
-@@ -2675,10 +2683,10 @@ static unsigned long alloc_pages_bulk_weighted_interleave(gfp_t gfp,
- 	if (!nr_pages)
- 		return 0;
- 
--	/* read the nodes onto the stack, retry if done during rebind */
-+	/* count the nodes, retry if a rebind happened during the read */
- 	do {
- 		cpuset_mems_cookie = read_mems_allowed_begin();
--		nnodes = read_once_policy_nodemask(pol, &nodes);
-+		nnodes = nodes_weight(pol->nodes);
- 	} while (read_mems_allowed_retry(cpuset_mems_cookie));
- 
- 	/* if the nodemask has become invalid, we cannot do anything */
-@@ -2688,7 +2696,7 @@ static unsigned long alloc_pages_bulk_weighted_interleave(gfp_t gfp,
- 	/* Continue allocating from most recent node and adjust the nr_pages */
- 	node = me->il_prev;
- 	weight = me->il_weight;
--	if (weight && node_isset(node, nodes)) {
-+	if (weight && node_isset(node, pol->nodes)) {
- 		node_pages = min(rem_pages, weight);
- 		nr_allocated = __alloc_pages_bulk(gfp, node, NULL, node_pages,
- 						  page_array);
-@@ -2712,9 +2720,13 @@ static unsigned long alloc_pages_bulk_weighted_interleave(gfp_t gfp,
- 	table = state ? state->iw_table : NULL;
- 
- 	/* calculate total, detect system default usage */
--	for_each_node_mask(node, nodes)
-+	for_each_node_mask(node, pol->nodes)
- 		weight_total += table ? table[node] : 1;
- 
-+	/* the mask emptied since it was counted */
-+	if (!weight_total)
-+		goto out;
-+
- 	/*
- 	 * Calculate rounds/partial rounds to minimize __alloc_pages_bulk calls.
- 	 * Track which node weighted interleave should resume from.
-@@ -2724,10 +2736,14 @@ static unsigned long alloc_pages_bulk_weighted_interleave(gfp_t gfp,
- 	 */
- 	rounds = rem_pages / weight_total;
- 	delta = rem_pages % weight_total;
--	resume_node = next_node_in(prev_node, nodes);
-+	resume_node = next_node_in(prev_node, pol->nodes);
-+	if (resume_node >= MAX_NUMNODES)
-+		goto out;
- 	resume_weight = table ? table[resume_node] : 1;
- 	for (i = 0; i < nnodes; i++) {
--		node = next_node_in(prev_node, nodes);
-+		node = next_node_in(prev_node, pol->nodes);
-+		if (node >= MAX_NUMNODES)
-+			break;
- 		weight = table ? table[node] : 1;
- 		node_pages = weight * rounds;
- 		/* If a delta exists, add this node's portion of the delta */
-@@ -2744,6 +2760,8 @@ static unsigned long alloc_pages_bulk_weighted_interleave(gfp_t gfp,
- 		/* node_pages can be 0 if an allocation fails and rounds == 0 */
- 		if (!node_pages)
- 			break;
-+		/* a rebind can invalidate the counts: never overrun page_array */
-+		node_pages = min(node_pages, nr_pages - total_allocated);
- 		nr_allocated = __alloc_pages_bulk(gfp, node, NULL, node_pages,
- 						  page_array);
- 		page_array += nr_allocated;
-@@ -2754,6 +2772,7 @@ static unsigned long alloc_pages_bulk_weighted_interleave(gfp_t gfp,
- 	}
- 	me->il_prev = resume_node;
- 	me->il_weight = resume_weight;
-+out:
- 	srcu_read_unlock_fast(&wi_srcu, scp);
- 	return total_allocated;
- }
--- 
-2.55.0
+vswap's interface came from the other end: what has to be true for
+zswap to be an independent AND co-existing tier, and what needs
+userspace's input for that to work. The answer was close to nothing, which
+is why close to nothing is exposed, and why there is so little to get wrong
+inside it. It also simplifies the logic in many places.
 
+Constraint liberates; liberty constrains.
+
+So let me flip it on its head. What if we keep the interface I already
+have, and use your data structure instead? I tried that too [2], and it
+was significantly easier, because it is just a data structure change,
+without having to accomodate for the full interface of swap device.
+
+Happy to expand on the prototype if necessary.
+
+Thanks,
+Nhat
+
+[1] https://lore.kernel.org/all/aqLi6cIjD2wJwk0B@cmpxchg.org/
+[2] https://lore.kernel.org/all/20260910232704.3364879-1-nphamcs@gmail.com/
 
