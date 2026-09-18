@@ -4,94 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CF19C982D8
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 15:01:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3905AC982D8
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 15:06:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D239A6B0093; Fri, 18 Sep 2026 11:01:03 -0400 (EDT)
+	id 2F4596B008A; Fri, 18 Sep 2026 11:06:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CACEC6B0095; Fri, 18 Sep 2026 11:01:03 -0400 (EDT)
+	id 2A4BC6B008C; Fri, 18 Sep 2026 11:06:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B4D7B6B0096; Fri, 18 Sep 2026 11:01:03 -0400 (EDT)
+	id 1BAFB6B0092; Fri, 18 Sep 2026 11:06:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9378C6B0093
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 11:01:03 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 07A221406BB
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 15:01:03 +0000 (UTC)
-X-FDA: 85227195606.21.BB9C1A3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 4DE6114000A
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 15:01:01 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h3tj+2SR;
-	spf=pass (imf23.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EC8C36B008A
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 11:06:36 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3C08A1606A4
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 15:06:36 +0000 (UTC)
+X-FDA: 85227209592.29.1A8E3D7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 9386C18000E
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 15:06:34 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d1ZbxweF;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789743994;
+	b=fCiPsYt2iiqwFsNtOraSVBGV5qJgQ4eo2aBH0Y5VV1LBeRtSHXsP9Lk5kPUItM9Kt1aXyj
+	MWmD8VC3lrIFylEhNT1ormgefDvfD7fo2lMKG3O4tJpIJFHGJ0qW4Gs9gFhsExqnEe7MJ8
+	bodxcwlW+0rb2QD2esoaibFPD38/Ezs=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d1ZbxweF;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789743661;
+	s=arc-20220608; t=1789743994;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m0lbIXYPWHNxCUA+ixIepaYl5/92+XFxrovY+YXT0Oc=;
-	b=hnNlavflCHVPQFvKHUWffjZoXyXBYiQ1F7/vetTvewgjU1MzxNonq2d7uHsArmH5OTOCff
-	X7RcK+mk+Hjwwidqwv/kZFB9X/fOmbk2GtyHoGeYP0EDAtSv5LmPMZCgq64Fbx4SAVis3o
-	YuqWCpMNds4ylP33TaXWSdHmuf0nUaE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789743661;
-	b=LQeCWY8YYiSrNPJcufmsbg4cNDOCmtdkf0ky5V8crEGIDhER8KbGrFXQdm/R6OjKCoStzu
-	VuQ6KTQEzXQ4i5h78/FYqpoPQmq9nzvlN0bsRaP8USwTtWSwABqKHUS5pbGxksPlvWjYvU
-	9ImVORSWwiBPKfnw/xilmGHW9u601Xk=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h3tj+2SR;
-	spf=pass (imf23.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=p9cktvIVfrWuCcGGi89dQHWVm/YZCSacNyQ6KdAlOEA=;
+	b=ylwpEKUm2KaiIO+eXbzrC/VWbXy7UCbXudK7tfSFm44gxvuqLvf5LV9bF7U3dwxi/CLo4g
+	fpswWSFgkC91ow+iGk2BDs4TFR9uER0/HhPN1Obg3SbnNPNAcFpUaiUInrskcZ/QdOSSXS
+	S+cqzitefCGjAzk3EIGjS134rQ1nCDI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9FB1C601EF;
-	Fri, 18 Sep 2026 15:01:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E77A1F000FF;
-	Fri, 18 Sep 2026 15:00:52 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7C90643900;
+	Fri, 18 Sep 2026 15:06:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 930451F000FF;
+	Fri, 18 Sep 2026 15:06:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789743660;
-	bh=m0lbIXYPWHNxCUA+ixIepaYl5/92+XFxrovY+YXT0Oc=;
+	s=k20260515; t=1789743993;
+	bh=p9cktvIVfrWuCcGGi89dQHWVm/YZCSacNyQ6KdAlOEA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=h3tj+2SRLdyyyh8u6EmUdZLxGnTCejPhtW7liS54uyDqfHII8uZGPJSjRKYeJknSC
-	 VcNwzzno0SonxatCkgMXDqtQ1GFAQEcHr6e5okErY/GhfEbhJZA+JVa0nf671uAmth
-	 3KmGDUSKIDQN6TFK6rx5Z7uBikGnd4JWH9oYOVdHNIEJLfjqCG/mByc8vHg/Cgv9mV
-	 d7D80DVQzaNDziO+TBHvSre0qgy1ldT2XNELzipdrmjj0qAAhSzKVTJqT0T2agG4N7
-	 v745yVxJlJVC7B/4Uj7vPZ3BntThlPrIkclP8BybCFg5P1sm4G0wOPjtHgsx5nuePv
-	 TIwGlDUdXinbA==
-Date: Fri, 18 Sep 2026 17:00:50 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: Oleg Nesterov <oleg@redhat.com>
-Cc: Jens Axboe <axboe@kernel.dk>, linux-fsdevel@vger.kernel.org, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, NeilBrown <neil@brown.name>, 
-	Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, linux-mm@kvack.org, 
-	io-uring@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/7] fork: refuse new threads while a coredump or an
- exec is in progress
-Message-ID: <20260918-oliven-lebst-wohltat-c633868711f1@brauner>
-References: <20260917-work-coredump-fixes-v2-0-f3787fcda051@kernel.org>
- <20260917-work-coredump-fixes-v2-1-f3787fcda051@kernel.org>
- <aq0VLTyxNatFmLOK@redhat.com>
- <20260918-irrsinn-pickt-vermummen-d7167c397398@brauner>
- <20260918-disput-maden-parkdeck-2bc22dd90398@brauner>
- <aq0_lvHDViIpX_Mu@redhat.com>
- <20260918-elstern-potenzieren-marotten-71ebd0744753@brauner>
+	b=d1ZbxweFS+tO6FC/DrHAuY6SY/g1m/h0JdmsPGXjGlJzavJ5MIa+Hl8Rr2b6exhXS
+	 CcMWVNtt4f+mNWp9grLhfX+DIAXKkpKMLWcWBZnKL1nEuxCQQw4bqo0HCYtfBLLWKc
+	 HVJTybDRthcujELXlekp6wclJQk0x3Avx96fTHbbGHtjExItsWNkkya8XFvehNJgaH
+	 ++pSwtcqM9w6z7kbhkITwYkp0MfIcjZxBli2VDySWX7wnA3chJcq2QKsbMUxdwBx/C
+	 mi/1LfJMvauGhwbWd/68kb9rTwmsyBPNAKkfirDY6KiWJN/OEY6Jcu6aICL/sS96gn
+	 ih3fUCFqwkDtg==
+Date: Fri, 18 Sep 2026 16:06:24 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Bo Zhang <zhangbo0325@gmail.com>
+Cc: akpm@linux-foundation.org, vbabka@kernel.org, david@kernel.org, 
+	surenb@google.com, mhocko@suse.com, brendan.jackman@linux.dev, hannes@cmpxchg.org, 
+	ziy@nvidia.com, liam@infradead.org, rppt@kernel.org, qi.zheng@linux.dev, 
+	shakeel.butt@linux.dev, kasong@tencent.com, baohua@kernel.org, axelrasmussen@google.com, 
+	yuanchu@google.com, weixugc@google.com, zhaonanzhe@xiaomi.com, 
+	lipengfei28@xiaomi.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Bo Zhang <zhangbo56@xiaomi.com>
+Subject: Re: [RFC PATCH 0/4] mm: compaction: mTHP-friendly memory compaction
+Message-ID: <aq1SrcniIRU-8f2W@gremlin>
+References: <20260825043833.2659350-1-zhangbo56@xiaomi.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260918-elstern-potenzieren-marotten-71ebd0744753@brauner>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 4DE6114000A
-X-Stat-Signature: b7d3xmnbhe6qmihqkk38ytthe9ixhici
+In-Reply-To: <20260825043833.2659350-1-zhangbo56@xiaomi.com>
 X-Rspam-User: 
-X-HE-Tag: 1789743661-519245
-X-HE-Meta: U2FsdGVkX1+j3xXLhoOUP+NVApUsxvB5NO3bJxI0QTsXIH/7F/3DbFQHSupN9l8H/D4LGqQ+7F+249M15LvJu+S2qmJsPIBQR2Bk4NS9RONW90RBqnEtBWCaeK4XxaC33mqoZwN8ZmBRHR5oCC4Ntcar5pv0grEyRPipvW1Fasq/zP4PKIIOvDHYi035THvL4CdiwKHmQFbJJf1yPSVa/1RW4Gs4t/sn7zl9OudGeSKJrSl86na3sqMOBZHVdWB792AJRPeCFylPFC+E8DdXEgRleDl47uK0UtAR6uGksn2pP9un6m7r5k2SgMCKKaBZCyrtW33ZvWHXJxgemfCCKPK3ng1i0msITkBPF39Uosc0PRo0c55geBWY7DY5lnCQJxtTgOc3awasqiUllI0eJHu/Zuy+miJfXFs1t+ANNZEn5Q9mELg1nPaCY9xCyvuv+zBd17ANHJ4LA3uRNLV673PD1HBF0MXf6/VukvbAgavNUKb8VNX7wvV7DZQ0Ocy8lO5l47Gwb9cBoA4rQIkP0VxTy1tPRRCT4/c1kT8oofKngC0bBspbgvSfKPPvZVVwL1UR7mmrnd3bbDiIBZgx2rGN3eh9m5svWu4rwupDYAZQfacLiZLOg0iZgxX2p+J3ukQwH8YkX3B/++EBKJh4J745pk5v//EEl8G+RK07i99ogkhQ7yuW9LBCoqhR8x2sn74jida5Qo4H5qSuYtNoqFdmmXZ0P+DfwOBcek6Eb2yxihZ/3PG/jxEFO2ydXAjxOQIWKAqrpSFegHSllxhW/X9NM1uOaPVlYeobgSagCVXy9V85UiQSLjsUzkyZ1i9Xf6Y0wnqsMa8CjhqAGo8AYROjKKNPxNqOgAT23xhWAMmpesHKUt5cRcxmuKO1ANBRNdwxAtH8HP7+lcV2lp6b3sLbvPU6doZTSE68tkWsq7vfA6II6tY6/EjCQ67dY1dKuaYJZ88wVr8cLgdlGb2
- C/WUSBVk
- QdiCHv9P+xFbtlMKCaftfns9t+h38OAu9vUeSH1gv79dRqJusFC93TzcTeuxPhtAI6LclcDd759BL1KxUPjwzH1NGijGfO2fvPHGEb/sClluZ3cOLqzBu80mWgDeqor9c+xT59KOMpmAh7g0aQ1y96ZFzGLMtARo00orKv5WtUPZ3B2vq7Vzim8p9GMihPJInscyQjIz8aChNnb5i0d0G0qfPCjA4+A2gp3HGnWKHoBz5AtoUqbgrijVBSc0akJzfwI9sUHKbP2KUuH64k8UAbfqWaLCFZOzT2+6gCLnm83eILFs=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9386C18000E
+X-Stat-Signature: w1s4iei3z5fmc7mggwtys7jhmh6ms5d7
+X-HE-Tag: 1789743994-545895
+X-HE-Meta: U2FsdGVkX18AfCf275QRWQNhs/ajpGUoR+bI5n6JJdvoBrYr5yi+lsIO9mM43d1cRIML54s4KOnSUuLOjVmyxowq1l1f6nUPm2QXhLbh8JvUgKU4QOukXsvjhM16YixZaAw7yIQp1WFdYl+ErWSnNGXBSYLW818QbRNRgPshsOXiEqJRLSLqyukzIu6AcUNFo0sI4ZBsyGxJ+WZo2NUgbKbttFAb1cpmbD/zr4Rr47qP4VG5m0+eAg6XNnwGfmdGV5ctx2yMPpC9NQiS4x6nC3b6aGDvcp+jgiFhqqLjnMF7W26gu8jIz2+eKPDpp9xGnBhegYJYi61PG/Lg08hzAghSCBxbWp9/oknt/Xs325DnTcgQjlzpWfu6ODqoCvsRCWwcHUggeyLik9L0TVL4olsR7LrvMS3c5jbgECqQn4EnPwI4ky4zIvGu0EQbQS7BQ8WtGDbqy6twZ5XmwB+KLqfQqsk5r4/+VR5Hz8oJjtrVrGoZVt6JSxKRNR+NUh4bneUqYAyDHWssVuo7LztHGRg0CUJahuJTOe81AbUZREVs4JzLR+M3lstB6GmIXcr7Jt7YV8L1XI0o9Z3oZcvR71dwqWmTKSsMe7m88OauxAtPq5nXlKqoKsv2OH1xu7T4fLPKZpPM7DvY3V3SH7BL2xaE0spryNururBMwROemSPulod2I7Pa6cogq5phfmd6un497D+mhs9kEXMTgrnSmSkOiDbBHHi5o2OVLT++6HoDIT92leZYrsEp/S7jZ0ye+pB85J97WIfDdCS9dYVWtGVso5OC5ZDNj1yfQvrDUMiX3EHSLVmnnZV4Jd4FFVBofHilYJPbAq148IljeGIjOoA5jYmvpZ73EgtDZ7yQTXHarYhs2Fw7DBEtHG528jKLCA8/QBbopRiM3x8CvE0MvYZ6r26vty08OqBzzV3EmLDDoY9dBamL22lfjl/1rL7kJI87ENq2zfS4zsNCmtF
+ mY57W2YX
+ /IbM2YKUFhZlgP9U8ilb6v6RdOtaSa5cuXH/qewlX0eiKzz3tdHaJ1y9skC81876hmin+zoLq2va+gNO931uSI7ySR8Ugc4qvmtaGITQA7bn1LV8TwUjfNCoaKr41nICmK+gIQcaHYXoFwVnvNqBHCIWCfkNlBvI6VBIBu0sFgthVJLsJxzXA33GH7mQp7oWZFgTr9W9zUwrSSnRpTyhynrZeV/A2DM3JgLTU+2yG65J/dFGuNPV4ja6KzPB+89937PutBNtIbfayXdUKhHT1igtXZ89zFE4+z1AypPTsmVIxF1iVcmkZ8bKavT8D1jw9LUjttsB2YPT+daY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,66 +95,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 18, 2026 at 04:29:41PM +0200, Christian Brauner wrote:
-> On Fri, Sep 18, 2026 at 03:41:42PM +0200, Oleg Nesterov wrote:
-> > On 09/18, Christian Brauner wrote:
-> > >
-> > > I think this works but they also need to check ->in_execve as the
-> > > exec'ing thread is obviously never signaled:
-> > >
-> > > @@ -2709,6 +2707,10 @@ struct task_struct *create_io_thread(int (*fn)(void *), void *arg, int node)
-> > >                 .user_worker    = 1,
-> > >         };
-> > >
-> > > +       /* A creator past its fatal signal or in execve gets no thread. */
-> > > +       if ((current->flags & PF_SIGNALED) || current->in_execve)
-> > > +               return ERR_PTR(-EINTR);
-> > 
-> > Ah, I forgot to mention...
-> > 
-> > Can we shift io_uring_task_cancel() up, after setting bprm->point_of_no_return
-> > but before de_thread() ?
-> > 
-> > I know nothing about io_uring, not sure this would be enough...
-> 
-> From my reading of this code it works.
-> The cancel runs task work and any create_worker_cb() queued before the
-> exec can still create an io-wq worker. If that happens before
-> de_thread(), that worker just becomes a sibling that de_thread() kills
-> and waits for. After the cancel nothing new can be queued.
 
-Right, one more thing to think about with this...
+This is the friendly patch-bot of Lorenzo Stoakes.
 
-zap_process() skips every thread that has PF_POSTCOREDUMP set.
-do_exit() sets PF_POSTCOREDUMP in synchronize_group_exit() and calls
-io_uring_files_cancel() right after that.
+You have sent him a patch/series that has triggered this response.
 
-That runs task work, create_worker_cb() runs and creates a new io-wq
-worker. If a thread started a coredump rgith before that worker gets
-created from a thread with PF_POSTCOREDUMP set which zap_processes()
-doesn't see. So two ways of fixing this:
+He used to manually respond to these common problems, but in order to save
+his sanity (he kept writing the same thing over and over, yet to different
+people), I was created.
 
-(1) mask off PF_POSTCOREDUMP in copy_process() -> probably the wrong
-    place
-(2) key on PF_SIGNALED | PF_POSTCOREDUMP
+Hopefully you will not take offence and will fix the problem in your patch
+and resubmit it so that it can be accepted into the Linux kernel tree.
 
-I think (2) is probably correct:
+When sending emails to mm:
 
-diff --git a/kernel/fork.c b/kernel/fork.c
-index a28fd3976cc0..94a652d933c8 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -2707,8 +2707,8 @@ struct task_struct *create_io_thread(int (*fn)(void *), void *arg, int node)
-                .user_worker    = 1,
-        };
+For one of several possible reasons this mail has triggered an AI
+detector script.
 
--       /* A creator past its fatal signal gets no thread. */
--       if (current->flags & PF_SIGNALED)
-+       /* A creator past its fatal signal or its coredump point gets no thread. */
-+       if (current->flags & (PF_SIGNALED | PF_POSTCOREDUMP))
-                return ERR_PTR(-EINTR);
+Note that, while we are fine with AI assistance, it is kernel
+policy that you must disclose this with an Assisted-by tag like:
 
-        return copy_process(NULL, 0, node, &args);
+Assisted-by: LLM
 
-Better ideas?
+See https://docs.kernel.org/process/coding-assistants.html
+
+It is also kernel policy that you must fully understand and take
+responsibility for every patch that you send.
+
+See https://docs.kernel.org/process/generated-content.html most
+notably:
+
+        If tools permit you to generate a contribution automatically, expect
+        additional scrutiny in proportion to how much of it was generated.
+
+        As with the output of any tooling, the result may be incorrect or
+        inappropriate. You are expected to understand and to be able to
+        defend everything you submit. If you are unable to do so, then do
+        not submit the resulting changes.
+
+        If you do so anyway, maintainers are entitled to reject your series
+        without detailed review.
+
+In general, if you are a newcomer to mm, we expect you to do smaller work
+before moving on to larger changes, so you build understanding of both the
+technical aspects of mm and how we do things.
+
+If you wish to discuss this problem further, or you have questions about
+how to resolve this issue, please feel free to respond to this email and
+Lorenzo will reply once he has dug out from the pending patches received
+from other developers.
+
+thanks,
+
+Lorenzo's patch email bot
+
+[ Idea shamelessly stolen from greg-kh ]
+
+-- 
+Cheers, Lorenzo
 
