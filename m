@@ -4,141 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD3C0C88E75
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 07:08:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A96DEC982D2
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 07:14:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 014BF6B00A3; Fri, 18 Sep 2026 03:08:48 -0400 (EDT)
+	id 8A90A6B0093; Fri, 18 Sep 2026 03:14:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F32A66B00A4; Fri, 18 Sep 2026 03:08:47 -0400 (EDT)
+	id 859A66B0095; Fri, 18 Sep 2026 03:14:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E439D6B00A5; Fri, 18 Sep 2026 03:08:47 -0400 (EDT)
+	id 795C86B0096; Fri, 18 Sep 2026 03:14:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AFD286B00A3
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 03:08:47 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E95D01602F1
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 07:08:46 +0000 (UTC)
-X-FDA: 85226005452.20.80D7446
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 4522C1C0003
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 07:08:45 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4DFFC6B0093
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 03:14:08 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 98BD4805D1
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 07:14:07 +0000 (UTC)
+X-FDA: 85226018934.05.EBB7174
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 0E5771C000B
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 07:14:05 +0000 (UTC)
 Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Awku+uV8;
-	spf=pass (imf21.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789715325;
-	b=Yhix3FbGaaMW1n0IOO+bb6YOJtlMRJy2PA5OuVISVzH1GgkOSWpi+km8rmlDm6zs5KxLjA
-	Z8EGnZjyQ6tl9JaAubK1+WV504jdGYoBTfWWFxG7K1hy8l8KPWp72GX0c13+w5PH2+yarP
-	DZJkRB/Q2LjVqHnkGixJOPzgzKuw8Xo=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Awku+uV8;
-	spf=pass (imf21.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VwQ9+HE4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of namhyung@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=namhyung@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789715325;
+	s=arc-20220608; t=1789715646;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WCL4dePjhuTX+CGE5tvS1dbBZl4n5dA5dLQyhLK3zT8=;
-	b=u66x5tkcS4SvbbGWRm+WJDdzr7dswNjdnK9HZZmuM30NY1XERTqQhc8VuKoV+o9R16h1iN
-	qhvvztrNS5mawiO0d2B4Gwm/cA1eW0QCqiCsL43wcHvroDGhYehqnLRkZfvvDtRBwOLQ1x
-	iBkmGuwx4MvuQPHzKM6FCLdziwBGj1c=
+	bh=qPja/cjHElFD0uzEegkx8fIwtmRtWZZ628xauj+vnig=;
+	b=aNH3JfCMBXf27Wnjb8yG44SZwP+X9zeUGswZQ5FzGwbgyM5xwFIiADO1aLwy8Xob66hXJa
+	3jw5pcIxT4uaMvkZZcDFVrdmNmLjHmU0NPD2CwjgsvZDcrDy7l655vUZIM9zzxbWqe1k2C
+	V//3cVGgQ7mdXHsrOEZwkghzo8WVirQ=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789715646;
+	b=Qz92DtAZ2U8+e3kHTQYtGWzVUvzNItdDvc/pJyJRHdZJwbDPBmPbiRUrwAol8bseGkA13m
+	s0P1zQe5vki+jxL/I7w8mp0kqUjBARbhAXjWpC0WFpM8EhA0SFQH3HrFrV6723CS8/ZYcC
+	9hZKB+9rKVWT9Cde0U//D+Z/+zXunmg=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VwQ9+HE4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of namhyung@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=namhyung@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C1C3D60A59;
-	Fri, 18 Sep 2026 07:08:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3E9E1F000FF;
-	Fri, 18 Sep 2026 07:08:39 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2F70940A5F;
+	Fri, 18 Sep 2026 07:14:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B8311F00893;
+	Fri, 18 Sep 2026 07:14:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789715324;
-	bh=WCL4dePjhuTX+CGE5tvS1dbBZl4n5dA5dLQyhLK3zT8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Awku+uV8pxJg2xgDDCtl5/l75ccjfY+SVllzMvrfHWYiQtLqHtEiXmIY92vIOOLqA
-	 sw+p8lDtPlpSpOCo6STc40T4j4ymvTQ8miSZNMQeBBBm5EA7WucrIMgYeH8wuuM/DG
-	 +BfgFttLkbWWOmkrZgLyIIMf/YZnzRxDgoxY8eXn76fo0NBew4JbrSvc+cRNfaFiAl
-	 QkEWcPh0v2r3CBUEUYOst7UeoaOyYdLc4pb1uRmVVT2l0puoiHyRr+BB00fdwvDOte
-	 zMTrahakOeCUcuHDF8D2CjLZFngzAzI+3HVShn15UKErn1OlTsiT38Xn3cVrzIAtYv
-	 8z5PR0qB8xmPA==
-Message-ID: <8705aa4f-5e02-45e7-ad45-0baa982a8c02@kernel.org>
-Date: Fri, 18 Sep 2026 09:08:37 +0200
+	s=k20260515; t=1789715645;
+	bh=qPja/cjHElFD0uzEegkx8fIwtmRtWZZ628xauj+vnig=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=VwQ9+HE4NY0tnT9IpCZZjkrYpUgU+Q3MI0b8/kYWYNXLBz0OBgneUCZ0sypjFtJsp
+	 uk8yMrodDG/EeLJ8Cw8NNo8KiwNI51f8ZD8ksE/h0ATyzWe0rOhA2zD55Bv4UGXOqW
+	 XN8cdNsIiGEswI8idXhx9LsXVV8pMBpdua0A2GKBMdibbYRuZmFHYhRVj+1e05f18V
+	 eH2pa2QHQGVyGAQKDpc8Rp21vRQpejf9qtKhrlKELzpduu2vOfPRzZeJau0po3nnmS
+	 8o+tIVL/BCsxVeANYa0wNC3Hgxqs9ydfhcyzw7TqvV+sVHAZ3QOve+6n3SeMFjIw8i
+	 5ToAQGv9yBMiQ==
+Date: Fri, 18 Sep 2026 00:14:02 -0700
+From: Namhyung Kim <namhyung@kernel.org>
+To: Harry Yoo <harry@kernel.org>
+Cc: Tim Menninger <tmenninger@everpuredata.com>, linux-mm@kvack.org,
+	Chuck Lever <cel@kernel.org>, linux-nfs@vger.kernel.org,
+	Jon Curley <jcurley@everpuredata.com>,
+	Eric Badger <ebadger@everpuredata.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	James Clark <james.clark@linaro.org>,
+	linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [SLUB] nfs_page cmpxchg_double_fail and perf lock perturbation
+ on dual-socket NFS/RDMA
+Message-ID: <aqzkugwB_I5X2JYx@z2>
+References: <20260916232227.4098143-1-tmenninger@everpuredata.com>
+ <aqvq8-6IJBDer90O@thinkstation>
+ <aqvy8NqRRRmUlxjR@thinkstation>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [SLUB] nfs_page cmpxchg_double_fail and perf lock perturbation on
- dual-socket NFS/RDMA
-Content-Language: en-US
-To: Tim Menninger <tmenninger@everpuredata.com>, Harry Yoo <harry@kernel.org>
-Cc: linux-mm@kvack.org, Chuck Lever <cel@kernel.org>,
- linux-nfs@vger.kernel.org, Jon Curley <jcurley@everpuredata.com>,
- Eric Badger <ebadger@everpuredata.com>,
- Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
- Adrian Hunter <adrian.hunter@intel.com>, James Clark
- <james.clark@linaro.org>, linux-perf-users@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <aqvy8NqRRRmUlxjR@thinkstation>
- <20260917162533.600472-1-tmenninger@everpuredata.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260917162533.600472-1-tmenninger@everpuredata.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 4522C1C0003
-X-Stat-Signature: z7dotsmiarit6zzdfdntxp1mh8f4f9qn
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <aqvy8NqRRRmUlxjR@thinkstation>
 X-Rspam-User: 
-X-HE-Tag: 1789715325-942635
-X-HE-Meta: U2FsdGVkX1+4GlzKaOJvXYX/RAPK716qV4/eprm+lBJPtbHu8LbHgonG2qKyGxuhWex1ZnRGjHOAA1klevvzB3M32RSKynBTR6xpuhAk6KtMFWSNOtiiDHYlLRxAcS3kGMQBcS749wpBSua6TqHB1Bqp5xBrD224qSCgOn3s/ZNbv6wvFlK7G32WgxTeQ7g1pOwuKbdr9Y6kTeI1y1tVtSb/6CWUv91tma9G+0kX/5L8HTAj7FcVnpKCx3nDVEwdDMxVR78GO7ROQuD8IVTWuJIC0gRX+GY23ag9UqCNDVaznJubHbFW2uc5kJnT06CvU4oafR7afydKQWODUfqrkozvPqda3/S2/yI2456aHpIKisCx1OntgUpUNckl0L5QqEXXVO8gDgM5CnLnoUS7TFwunscB2IqZ3nQADNq1+xo/hCZQTG4nrQ+f9DQIjAg+MMunan7OKot7cVpsFTBRCXeWc7uQyxfWFqgOUiLkU6CsrfRSRDmoi0UwX4UMI+g/scTdF+r3sw7nrzwY1fN/wFUKdn8FOvkSAr6hEHVAsJYrcCvRf5MYgJE6XXFsMheQfmDh8IOKq/Pfrfo3UlNmP6lu+GNQ3sqPTM+T4m6anUSJllIUjPISni2PAHoIpmAGSMuBhWC8MWLsFU4hvuNb/D1vqeHUz27xBQO8QybFhXllpiLEc4j+NHo6TCSctnv2WSUAm2qhykT0T7qgz/KKi4DhBh405e3C/PchFRXy2PF5jNVqqNGtpWG2WqCQGFXV2JbfRSomGGkVYFzLcEGpjj154ulpgYmBLg3vmhmO1ex7oPNM+Qh2AO3pxleHbnABnA7B7h1PDdiNIxpOOq1yQA05SxIdlmp70m+ILq5kUw8tF+whWp18ZalTKGLC1PYcDqfAJ+nai6g34YqDZkI11JUCzwMAEECbnJMr+hJf+FVOv59iN8TmRH2H69d39k16uuN/Q/1xbI6HJpq7zen
- TjYlpYmz
- MvbRlkuBYiOQpXgK6IHQDimgXBjBQ02K2ks8zY/gYLq9F9mCFGcQMflW0V74ToHUNI7fBkoIJf3r6OyzeG9geM06sNKRlMe3OC7gfTVFUKdTALMyKnYeHu2XDNDk+0JoF2sAdG35sET6SQxCFT88A9ehDZaBEjrbp89UWYhiyRVES6BQzf4c9723gmmkg07PJnHNx9mAh/RwRc+BYKQFVFfAQAAGCkinB7kZqjRq+J5YigvKkntvlRQlfya2kerQe6OOKnvmWHjLY3uZf6lFVM59aUr79fR/Vs0s59qdquHEpmX76nw900Qy+aQ==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 0E5771C000B
+X-Stat-Signature: 1kssk17oxdowgimjm536eh8u8bwxmt4f
+X-HE-Tag: 1789715645-670540
+X-HE-Meta: U2FsdGVkX1/HFiO/tNk1A0zBQj5pFdV/sqFxOsarU5CANpZAqVF/moRpCzGYpTJhC2rbixx7NPZbPZKkTyU6RL8wxtCEszTBa9bzB38STCbXmCpnc9rGkbP/gluTHAFciJRz51t6OVLBINtk4zTf0pi1RODY4TpSPzX8iNfUrKNpRyJ0rexS2xeLOT2MGVxN5+dsmXnOged+s9Pd+R8WSEJNnqV43Q5QXl1Wd9+rDdU5bjU2cSWmq4VnvgT8lVdyiNwhmDyIJaIqcqQmKAl5lqpw8j48B90AzPm+UVou3qyaN8awUiyaoAJwlIaYqrSlj+9azXoW3VXiuwOYv4/HTFAruVYu99DpVQxm9MUEwoB9q6jRkhM9jW9VBF0G4+ShDm3xEWmxi2nzipeDkLFXDm6QhQj0B82enXvJ9zaLvo7Rc7bfQTl6FQsHzdfG+4BzCHXfcDyV/2GzpEP9hJPvDcpz0S9KuGZpFKX7ISTi+yvvR3F+3zj4LfnPPxPBr35zqSgUYV0L2qc1A6BXJAvR0l4Xb8DVYJp4LSlvBvn1aM+RfGRrd5qj0ikpm0TCDNer6oJfSVCdt5Pzi+Eb6yXZ1L6uu69s74y4BEmt3Mz6LlUbvFIITpeMeVUeGyA8exLtN1axOzqNXEtD7KKh5Ds21GIgwNSWT5/+AeOM6wudDU8AhL0Yj5wFfsR3O2WlcpHwudkfgh2qBJypOaCx7eN0NeTuSF01ScvP6DcM251rovMXIPMzBCvSEHz5H4ZX8GXzdV7noxBbsqHPrcT4KrirVqnBbijZJ2IyNXn1oB3sTPhJoo3ax/TTePmOUPU+UU0YkdDHmKdKQMxQ6w2Lkx0pBm11I9IRjTraMSxKBVxhf7SAG/YRxWQ4Ig9CA8Du0Cd1LtxRP3D1oSk2UHxMvRFvU7GoTRuohF9L8GhiaTJ5DGVGmsa7O8SQb68UIvVLb0ra0nUpdES3gBtnqheZrN2
+ 3HOJOpSt
+ SXULAGhuKdV1SMuJFU0O4EI9KOJnUHn27PTXvCe6I/T5v446JAJSuza7czf2jVkF0LXs/CTSJ18ABW7hfdX998MJi0GQfJI1mxi+o8zi/Zi+kRmnVSXeAmCM28rv/c06PFeAJJqoXKak1+JeIYmPJ/Bhg0GaWU3iNv/5hL/wPjpWNxeGOkloeq7TzUVVk2sMnFTHoAMbie6YR78CgKSVqvnivtwSZ25EPUYhXq46JrGhUDVgmdCXUp27XaZzjOndNYnpUqFahsQCqvyZlEDKh+sdanRGf+jGWumA9IGvmhJwIXgY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,58 +109,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/17/26 18:25, Tim Menninger wrote:
-> It reproduces with slab_nomerge.
+On Thu, Sep 17, 2026 at 03:10:47PM +0100, Harry Yoo wrote:
+> ... now I realize we need to add PERFORMANCE EVENTS SUBSYSTEM folks 
+> as well ;-)
 > 
-> I booted the same kernel with:
+> Hmm, sounds like perf lock is somehow triggering slab allocations
+> and interfering the workload.
 > 
->     $ cat /proc/cmdline
->     ... slab_nomerge ...
+> It could be because SLUB is merging nfs_page cache with some other
+> cache that perf uses.
 > 
-> Uninstrumented throughput remains in the high-45 to low-46 GB/s
-> range, as before. During perf lock it was around 30 GB/s in these
-> runs, versus roughly 25 GB/s previously.
+> Could you please check if it reproduces with slab_nomerge kernel
+> parameter?
 > 
-> The dominant lock measurements are essentially unchanged:
-> 
->                          default             slab_nomerge
->     unpinned/node0
->       contentions        4,782,839             4,858,759
->       total wait          14.39 min             14.26 min
->       average wait       180.47 us             176.13 us
-> 
->     node0/node0
->       contentions        4,582,012             4,686,729
->       total wait          14.13 min             14.34 min
->       average wait       185.05 us             183.53 us
-> 
->     unpinned/balanced
->       contentions        4,572,196             4,544,677
->       total wait          12.81 min             12.56 min
->       average wait       168.14 us             165.84 us
-> 
-> The uninstrumented cmpxchg_double_fail deltas were:
-> 
->                          default     slab_nomerge
->     unpinned/node0          7,471          8,892
->     node0/node0               713            457
->     unpinned/balanced       1,503          1,504
-> 
-> The CPU-utilization change while perf lock is active also remains.
-> System-wide %idle for uninstrumented/instrumented windows was:
-> 
->                            default                  slab_nomerge
->                        uninstr.   instr.         uninstr.   instr.
->     unpinned/node0      31.46%    3.60%           23.02%    2.15%
->     node0/node0         84.26%   12.07%           84.62%   11.85%
->     unpinned/balanced   66.86%   14.83%           66.58%   14.78%
+> On Thu, Sep 17, 2026 at 02:46:24PM +0100, Harry Yoo wrote:
+> > Hi Tim and Chuck, thanks for reporting this to linux-mm.
+> > Will take a look at this but let me Cc SLAB ALLOCATOR folks here first.
+> > 
+> > -- 
+> > Cheers,
+> > Harry / Hyeonggon
+> > 
+[SNIP]
+> > On Wed, Sep 16, 2026 at 11:22:27PM +0000, Tim Menninger wrote:
+> > > My questions are:
+> > > 
+> > > 1. Do the uninstrumented cmpxchg_double_fail rates above look abnormal
+> > >    for this workload/topology, or are they within the range one would
+> > >    expect from this degree of concurrency and NUMA placement?
+> > > 
+> > > 2. Is there a less invasive way you would recommend measuring the
+> > >    nfs_page list_lock/freelist contention? I would like to distinguish
+> > >    the steady-state behavior from what is observed during the perf-lock
+> > >    capture.
 
-I believe the weirdest part in the original report was how slub stat
-counters such as free_fastpath etc got order of magnitude higher with
-instrumented vs non-instrumented.
-Did any of that change with slab_nomerge?
+You can use the BPF version of perf lock to check lock contention like
+below.  (it only work with 'contention' subcommand.)  It won't create
+a data file and just shows the result.
 
-> Thanks,
-> Tim
+  $ sudo perf lock con -ab sleep 10
+
+or
+
+  $ sudo perf lock con -ab -E 5 sleep 10
+
+to see top-5 locks only.
+
+Thanks,
+Namhyung
 
 
