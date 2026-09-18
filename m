@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A6FDC88E75
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 08:09:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23D12C88E75
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 08:17:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2AC306B0092; Fri, 18 Sep 2026 04:09:58 -0400 (EDT)
+	id 1CEDE6B008A; Fri, 18 Sep 2026 04:17:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2833D6B0095; Fri, 18 Sep 2026 04:09:58 -0400 (EDT)
+	id 17FA96B008C; Fri, 18 Sep 2026 04:17:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 198DF6B0096; Fri, 18 Sep 2026 04:09:58 -0400 (EDT)
+	id 06F186B0092; Fri, 18 Sep 2026 04:17:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EE45F6B0092
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 04:09:57 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 842BDA05EB
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 08:09:57 +0000 (UTC)
-X-FDA: 85226159634.30.F6579A5
-Received: from mta0.migadu.com (out-150.mta0.migadu.com [91.218.175.150])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 918CC80008
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 08:09:55 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ADFQDA+8;
-	spf=pass (imf30.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.150 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	by kanga.kvack.org (Postfix) with ESMTP id DA8D76B008A
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 04:17:46 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1A4E1A05B2
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 08:17:46 +0000 (UTC)
+X-FDA: 85226179332.22.9B8453E
+Received: from mta0.migadu.com (out-250.mta0.migadu.com [91.218.175.250])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 22CBE180005
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 08:17:43 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=OiC8qhaW;
+	spf=pass (imf24.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.250 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789719464;
+	b=6Om9UnYcBPWuV8WfmAORwjMo/K9kqhFRrVhr5e2ywcvvrAkdwdX8olJLo/sdFVag6SxWet
+	LuJEvgnf1G1uaSgyl1t+PNkkyhELUH6/DG66WoEGjCccagFDa0srkOKjJhXaheX0mb2Me8
+	9oA7CMM3lIdYHNu8PgEnhEa3WngJqgM=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=OiC8qhaW;
+	spf=pass (imf24.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.250 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789718995;
+	s=arc-20220608; t=1789719464;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ajXDT72SASPlUAIpfN0KU7YI2VHhEl8UztFZ5ElJ3Lc=;
-	b=ur8XrQbae7hZmlmaxU7UgZiwFIgVC4XGBRlW57ncA8YCd7IGJPAh24ce7apgIjf98pBNqJ
-	XDrt8UnVgExS0HPIcnutlKid4v/GH2baHDyWFGj+o0sH5eTiKHDCqQcL6tZjkYuexe97rT
-	uNdeDMAb0GZSRcMlPcJZNM4XwXqdcp4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789718995;
-	b=OQqazCGHJ6R4FvCrDeZaW23I9w5U9b7r1qzPTt/5pM6biKP/gBE0yLEZM/sbZSGg4+F5Iv
-	owZGwR7K1FJMcFAszMF7FTd/n8IhbL8dJkllw09+FRK/uTBjBbPn/rRQ6AE8I2v+hWYGC4
-	Fsyk8uUL0Whxj8mkEj7ivKcr8IEXVYI=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ADFQDA+8;
-	spf=pass (imf30.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.150 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=ZIXFX9rBIG9zQg5hvTNUaSYyxqeWifxp86PFRRFK6Cc=;
+	b=q+lCldjW7cr+GJrCQswUxafh5/l/SL2aFBj2nGXUrwwdCvocW4frhokHKjWFpe3/qnIY1E
+	gfjY2f8QYePeSNpFkWrkK3IQC3J6GwPhcskhoV7GuQIz61rgFaUVjdLcP7QGrbt4aTivEP
+	nkOz4UcuMKu/JOxt8xeBVf0pi+zFO/k=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=nOrA6LUUXVDyAS34aH1r5AVGEJg8nxE5D7IKoW8+wIQ=;
+DKIM-Signature: a=rsa-sha256; bh=j93Rw5e85f6pY7eCSjFAVhVix8y2aM8tStuN+RPXRkw=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789718994; v=1; x=1790323794;
- b=ADFQDA+8TsnOkukS5fm8rZm9Oyd+Iw4z2srzzl8WrTbKLBBVgPWXUyKgqFQPgR/K+hDwYhDb
- B7cGxqBI2yqG31O7adiQ76NoqZ5urKgGQZj3OxckVHflyNIep9ss948jyETzhw6XZeHIrjthTbY
- RT0ebUOZjFCZglV1SThXrPuE=
+ t=1789719462; v=1; x=1790324262;
+ b=OiC8qhaWNDJzjEhthmyQFnc4uzYwiPYNtFNPfXa9HpOYVFbaRC91p32pnH+cv2Jp3gpGwyAn
+ xUyvX0qNGfK98lkix16baIzuwWun/ft2uEwgm+w7nRG88jPCcsqOb/szmglVZZ/h7WrXVJq6XWC
+ vGpsrDM1EjJ+uAjhB6cNQIRI=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id db6dbc05fe83f0e0;
-	Fri, 18 Sep 2026 08:09:53 +0000
-X-Mizu-Trace-ID: db6dbc05fe83f0e0
+Received: by mta10.migadu.com with ESMTPS id d0581680cb0ed85c;
+	Fri, 18 Sep 2026 08:17:42 +0000
+X-Mizu-Trace-ID: d0581680cb0ed85c
 X-Migadu-Flow: FLOW_OUT
-Date: Fri, 18 Sep 2026 16:09:37 +0800
+Date: Fri, 18 Sep 2026 16:17:32 +0800
 From: Baoquan He <baoquan.he@linux.dev>
 To: Wandun Chen <chenwandun1@gmail.com>
 Cc: catalin.marinas@arm.com, will@kernel.org, chenhuacai@kernel.org,
@@ -77,23 +77,21 @@ Cc: catalin.marinas@arm.com, will@kernel.org, chenhuacai@kernel.org,
 	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org,
 	kexec@lists.infradead.org, linux-mm@kvack.org,
 	iommu@lists.linux.dev
-Subject: Re: [PATCH v6 10/10] crash_core: skip MEMBLOCK_NODUMP regions when
- building vmcore ELF header
-Message-ID: <aqzxwd6TXxbempxx@fedora>
+Subject: Re: [PATCH v6 00/10] kdump: reduce vmcore size and capture time
+Message-ID: <aqzznOgILX2pZg7b@fedora>
 References: <20260902073116.802752-1-chenwandun1@gmail.com>
- <20260902073116.802752-11-chenwandun1@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260902073116.802752-11-chenwandun1@gmail.com>
-X-Rspamd-Server: rspam04
+In-Reply-To: <20260902073116.802752-1-chenwandun1@gmail.com>
 X-Rspam-User: 
-X-Stat-Signature: fnzf1487zo5ustfk6f6pyxys1nu791i9
-X-Rspamd-Queue-Id: 918CC80008
-X-HE-Tag: 1789718995-75341
-X-HE-Meta: U2FsdGVkX19fSEe/T8e72RzIgbqCFz/rt9sV2nHhT/sEjmPFf8JbdBuM6YMndelPsXbovqG7xK4Ns/eitzi6eljDs2rnDLKjh8rNLvSs3Ma5g2EpGWG0kcijp5ByguRrQZNoLDiKqeJ7QF1YK0NKKj2Tj0f7QRLuujcsIyKjBgPH6FBTYIoUtAb6VE5/Sp6ZQaRgFTJ5EuoCZm+juFztbJQIP8i/GxsSh4uaKapmhxYM7ciBS5+QLnzVwgiMzHZcNEkTGY3rMjIfM9xH3+/WCWBDRGqbyvcppaUay3zeiKo44QekqXLNB03XRn6I7PwfWHYmvB1KUCO1oNWtb+7aRYcg3Z6th+QJE8FjHQ+GhS34TbFvqGjW/fzBca/sJU10xVcIngZd5NyjVHyN4xOKbwZnWHvUEZGvPQxjJo7xaCuWdBq1xvU9YL3aCdcx7Oxl2tuAHu7vRaWHsLRsQujavgUnLGrbV0Oj1Oh9o2h8WgESiCVhmk6G4JjuIafcscMjfBFJ++3IltzGBJuPaQkND0EsT7wdTW/f2AXOgPep+0aSifTlGakjhnXzN4ac6/Vc6dFDIivtVYIFBXCpMKCIr3WIrf5wjXifbBfoC1keU6Yh02kcHs/fIt+rmFftIxzx2+1ofdbn66DaWW063sVQD2zW0Qp22U/zcQGc70rbdN9/2Uif9OSVpHwp8jSblhx0039j9hUyfuZb34KKiIv4YP1/DuufTT8xwrqAbOT+Kf23BiIPxl1XoGTXsrOxZ4JsfE+cj5cSDBmA7UgL8Q+pKhuDQ4vbDSzd9nSKt9kbz+QtonSOsGu0RV5NHn6ldsDbhfHaOicqhCv5HthHCIXviC3LbeuwzuOd/BLKJvrWVjOAIq8blbzPmRQPli0nXvI9LPSYP92sXaSRftTXDQ4F1WHQJ91DJk1P3ueCykpYwClwmcXBIaHH2nP1VBCctwjF4dZ4SzHQwgOngYsI6M0
- 9eYHNW7l
- kzU2nO8p13BrU7wK83LCaVRPyIrHeykaRsnco1liMXMvshXUBSrGSYXhf6J60Drrikixi/+HPGzaHSaKbHdN4ftRu4uvLdr8pX3DpkxZLmu2T83hakJQotLBMZ0RpbS1yQH2rXDZnUlaLkSu15tHM6I2ETWjR+wE2f4hsqrHIRDLvM5sGiCM0RP/uqKTIQ4S7ORiH+0K6EKHY+gOdGD3yp4xXiuCtJY+LR02JO8c3wXNk088kHbyiM5uNJJ/W0zwGSmhrIpaYoH2ogWhUByNisNZh5GjXX+A4XBXuXXz5ZOmRaX0S7CzJkqmquv/rp/tsyNt5oXTuOSRyg05ivxSzwhacQ9nIunwgNo0Qp2Mb/dC7O1bcN4n0VvsF4gKqW4hcB+Z+KucFAYQemJhOP7xw8IaIe4qxywgcTB4p
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 22CBE180005
+X-Stat-Signature: x1kawmp4odfwan4tkudtynsjsm1hxzcy
+X-HE-Tag: 1789719463-375605
+X-HE-Meta: U2FsdGVkX18TUxgildBf3dPwUKuIkeXjZPu1XMQji6laBMbHuy/trPVfYz4SXnTa/RV5lP6ILaYto+K4xSwdxoqtqXwgDCQ3QKOQ+9IhgyItcsujj9D2UVuGXuSdOXQVtqWhkaVqqDE0HYhk9ybOGGDrjDSIT5a3aHbBunoofByMG1/orR98/saBViJDhmfu+dKCCKP40FMyIWxM4/hCXig5l4pNW0UCOQJRhhVptjzgvt6MsGFg0hy3ze9rao7R5G8f/U7DRm4cyWQNVLcfHPuBuNXAJL4vMmHFNtx7D1AZVQyL56n7ivw7lIQ8240O3nFDaToDfkyiBO/E8m1mPOyPRhJffSmZWFatb/XJuuYYKjI3Uq5pzz0rGLMPurxMRHnIsowEo4soKJqyQR2qHEi3+Uvm+CTYs1KfmmT3idoqLC8aDbF8K+wC2pMnRez2hykVTkinCe0nFqPtLpuzzQ4/RdSzPI+QcZVSURgfAtkd1lqRaXEArE57/hVFkcKTJXvRIbQPvwxpwruPs6gDjZOSAXBLf6WAyoDvv5HdcYhN1MFQsbHly7wy8p4bSTDVNyHvg5WTkRj0rylNPvEfnHkl2RxetVouHuYK82Gl1gre2DbDkididFdW5mQ403tt9zTF4nJEev9Y9iG/tAVXiFG5iotfMTnsFxV/hmM2PcLm88NL/fmJfuMLXuYkKkWNHOuzDIv+eU94DIgE/hM56CC6NIOC7oEshraaOT5BIMlZr3aLzMtHmtF7qx9CT2kMOQkUo3WeX7ESOjZsuCylLyQU3uY90qHNp6kpOcW/GUPJJ8eyvju+RAtBmzNoZ+Njrr5S3AyaQfMJJbyxolbM8DYY97h1LsD2+zXPRZJKZpKJ60dqvD3h8XAl4IHu1xotQ+TWYYpFSz/llpADbe29tUMV5M4buGfjSVYowquWj4t44OdxT6BSXRP2BrScSG2oRQColy8+gDpdbrHsZ/v
+ Z4JD9Agq
+ UIMuajvEhjz2K6kmGiIhkbkTo/wMbVFw29fITwiTQKC+iJDOMW8F9B41NT42sz4jpUupXSe8ygIpH4sWtPXAE8QQP+8jSt+m4wYwzVvESlUTUWylGZRY5x7Cxl6DUmbm+SWwue+V/YgRVGfPwIo/k5jjra3nevt+Mr7BNTizkZekTaoYsJI1BcraXfPNIaj2gEnZOY80wQYvPi6MmJVMeENa0i4u/oOKMElCsaknWXhhX79AggrYx9s4G3WT0hr73/nq+xnlaqu5jPCicbjFyunmpA0HT3wkbKl53AMJxQVhkjqzLQqyzgWlMc4xqJ9pzbXGSy2HaqYddH2s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,38 +102,27 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On 09/02/26 at 03:31pm, Wandun Chen wrote:
 > From: Wandun Chen <chenwandun@lixiang.com>
 > 
-> Reserve regions (for GPU, DSP, ...) carry no data useful for crash
-> analysis. Exclude MEMBLOCK_NODUMP regions from the vmcore ELF header to
-> reduce vmcore size and capture time. crash_should_skip_region() now also
-> returns true for MEMBLOCK_NODUMP.
-> 
-> Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
-> Tested-by: Meijing Zhao <zhaomeijing@lixiang.com>
-> ---
->  kernel/crash_core.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+...snip... 
+> ACPI systems already filter reserved memory out of the vmcore through
+> their existing path; only DT-based systems currently fail to filter these
+> regions, which is what this series addresses. The flag lives in memblock
+> itself rather than in a DT-only structure, so the mechanism is generic and
+                                                                 ~~~
+The patchset itself looks goot to me, while I am concerned if it's
+really generic. I raised that in sub-thread talking with Wandun. Imagine
+I tried to exclude many driver regions and split memblock regions into
+hundreds, cma could yell out: cma_declare_contiguous_multi()?
 
-Acked-by: Baoquan He <baoquan.he@linux.dev>
+IMHO, withdrawing the claim can fix the nit concern. If I am wrong,
+please help point it out to let me learn more.
 
+Thanks
+Baoquan
+
+> both ACPI and DT systems can benefit from it (suggested by Rob, thanks) [1].
 > 
-> diff --git a/kernel/crash_core.c b/kernel/crash_core.c
-> index bd64cf585795..b0e618e13588 100644
-> --- a/kernel/crash_core.c
-> +++ b/kernel/crash_core.c
-> @@ -270,10 +270,10 @@ int crash_prepare_elf64_headers(struct crash_mem *mem, int need_kernel_map,
->  	return 0;
->  }
->  
-> -/* Exclude NOMAP regions from the vmcore. */
-> +/* Exclude NOMAP and NODUMP regions from the vmcore. */
->  static bool crash_should_skip_region(struct memblock_region *reg)
->  {
-> -	return memblock_is_nomap(reg);
-> +	return memblock_is_nomap(reg) || memblock_is_nodump(reg);
->  }
->  
->  static struct crash_mem *alloc_cmem(unsigned int nr_ranges)
-> -- 
-> 2.43.0
+> Since the reserved memory regions are filtered out, the vmcore is
+> smaller in size and faster to produce. 
 > 
+...snip...
 
