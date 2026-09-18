@@ -4,124 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3BD4C982DC
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 12:40:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EE3EC982DA
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 12:53:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D2C556B0092; Fri, 18 Sep 2026 08:40:17 -0400 (EDT)
+	id 9721E6B008C; Fri, 18 Sep 2026 08:53:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D041F6B0093; Fri, 18 Sep 2026 08:40:17 -0400 (EDT)
+	id 949F56B0093; Fri, 18 Sep 2026 08:53:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BF2B46B0095; Fri, 18 Sep 2026 08:40:17 -0400 (EDT)
+	id 8873B6B0095; Fri, 18 Sep 2026 08:53:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9EF2C6B0092
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 08:40:17 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1C888406A1
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 12:40:17 +0000 (UTC)
-X-FDA: 85226840874.12.63BE897
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf21.hostedemail.com (Postfix) with ESMTP id F055A1C0005
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 12:40:14 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ePAluRwd;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=timBM+bS;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=CFEc+DX7;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sWb1hUom;
-	spf=pass (imf21.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6DAF66B008C
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 08:53:00 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E3263A067A
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 12:52:59 +0000 (UTC)
+X-FDA: 85226872878.15.9DF3A5B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 4404520003
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 12:52:58 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I+48af3L;
+	spf=pass (imf13.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789735215;
+	s=arc-20220608; t=1789735978;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VBIVTqQhbW9GkWkLw6tXoBpdra51UNuriIkEvcJiyds=;
-	b=R24ii+yanbUmVMEEftjYfsDwEuEkt0HzSMWwQ+Tw0D6C4yW8ypPtil6mNtohBl7DL53/dY
-	34h8j3qJaUFzQXSWAMbyPAQrVwcaitNR3XzvyUJWnI9jJeear2S6vzsQD6Zk57uKMbCKCi
-	AlYQ2FHf/SlUn9agaGOP89BqbRyQ/oI=
+	bh=URFVDzgpelJJ+jDhgim6DiODp4bS41sZLqrpRa8KViA=;
+	b=WESKAy0rDlXr8l2qivLeTM0ULT5C2A56MgUL6IPlxY+NNsraukrBSmV1fIQt8ZrPA+Nn4r
+	2C6MmNlF2RMciMUgE6PgS/TIZmO7jam6FENdN+U7Ny8A0ats2+pIb90lGJxS9cFhoxR2E4
+	RMHtOqbJPsdbn0DvAndLvL+nbin5oaU=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ePAluRwd;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=timBM+bS;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=CFEc+DX7;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sWb1hUom;
-	spf=pass (imf21.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I+48af3L;
+	spf=pass (imf13.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789735215;
-	b=wcSOQt3it4pe4KfrvkV8Rr4j5DPX9CBZDJIJ/m0BOIBYveiY1DzgThB5Z/varZ7yEm/0vU
-	FrtV7Y3Y924Vsd62Er27SeiN+5i5DNEssVHUFZ4X+FllS4SE4+VMkyfV3gPm+hMtqwuvs0
-	JRdzJb7BU7u8vIt6dxsCgDOREocZzqo=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 6CF841FFFA;
-	Fri, 18 Sep 2026 12:40:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1789735209; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VBIVTqQhbW9GkWkLw6tXoBpdra51UNuriIkEvcJiyds=;
-	b=ePAluRwdZrzW7izXIwcVz760jFmSfuOXshE5mGcOcWAozWskiRHHnAg7xbCn1ZIbPyTFNu
-	iPygsevUI9tDBSHwpzK0B+swkqm2fQ9ZMWTKXCUi6txs3CavTKssi1gohSgoqDxCQL90Ji
-	1x/wNXNTNtBEHf5DtYRJ/fq8/AYbU1M=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1789735209;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VBIVTqQhbW9GkWkLw6tXoBpdra51UNuriIkEvcJiyds=;
-	b=timBM+bSWKHBlO27cNXopOH7pQIYDuBMrGBnUDDwf1Z/gcAfAkg12Sgs7+59bchHChTvY7
-	5xAEOl8Cz9XjD/BQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1789735205; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VBIVTqQhbW9GkWkLw6tXoBpdra51UNuriIkEvcJiyds=;
-	b=CFEc+DX7S/mbXLxGzGeVtEU2/zMIZHVhL5nPH+lT6uOGTpEsaii8lH3AzVZQKn3ggnKItq
-	SPzu0/qn4woahHV/kGm628PDL58kT8Jq1uGB4Bwrw2XWYcF/Sl2ZUnyCTv0MMh3VLZg5By
-	6dYGLZmmF6mcC6+QAcCK/32pkysVVrM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1789735205;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VBIVTqQhbW9GkWkLw6tXoBpdra51UNuriIkEvcJiyds=;
-	b=sWb1hUom0CreOKzGoyRm0fiarkdRfcVVkA6epuqNz0U2S60lWbCfVGBdkSZwkYOHu8B+ln
-	JyC9za0AuuN2TcAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CE51013927;
-	Fri, 18 Sep 2026 12:40:04 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id mGsaJyQxrWpbCgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Fri, 18 Sep 2026 12:40:04 +0000
-Date: Fri, 18 Sep 2026 13:40:03 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: Constify arguments in default pxdp_get()
-Message-ID: <aq0wyECZk4D96O40@pedro-suse.lan>
-References: <20260918064928.793742-1-anshuman.khandual@arm.com>
+	t=1789735978;
+	b=B+xwa1HLledEUs4MH5D+6dl6qwkW82vuXSjQ68DBUIKmPhcNQSWAohrgxFY735ElXtp0X8
+	DWk8TN9H2jGVXlyxIAsWQXug/N1CW6OxW8lVqaww5fTemfdfpJeorylPXzXAUyYTnAkxmj
+	wiQW+1+5Vc+ueNhtF0JrjcsUa549ngo=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6A47C438E5;
+	Fri, 18 Sep 2026 12:52:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C16921F00898;
+	Fri, 18 Sep 2026 12:52:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789735977;
+	bh=URFVDzgpelJJ+jDhgim6DiODp4bS41sZLqrpRa8KViA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=I+48af3LUNbvFF0M3+2V6k077VkMdkXCMw8Tzm8fgogJIAAmrrhl/pZKR5ouKn8pZ
+	 +muGLNETLWA6HqkauxvPPoviHN/g9Nhnh91tTxenAf/9E9KA7Flsub2ItEXFDyJVN9
+	 Ld+fSiYZsNwBJV/MKfr12j2E1+UebbO2km/rQMj89KBNbPiYqHN9fwhqX0ngN26TqI
+	 KEzInAmEOdeTFvZxzU/BUrOHJuWIIq0OGV6lr4kerUBwuFA3KWRpKJbiCiDIA4u+VB
+	 eXBeBBtMMNmk6/OQb08Fk9NfbcMfU/OpvLCoppOXjPSMjxfpTY5WFW2grMdqaS6RKF
+	 sON1aXuXpBh1g==
+Date: Fri, 18 Sep 2026 14:52:52 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Oleg Nesterov <oleg@redhat.com>
+Cc: Jens Axboe <axboe@kernel.dk>, linux-fsdevel@vger.kernel.org, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, NeilBrown <neil@brown.name>, 
+	Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, linux-mm@kvack.org, 
+	io-uring@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/7] fork: refuse new threads while a coredump or an
+ exec is in progress
+Message-ID: <20260918-disput-maden-parkdeck-2bc22dd90398@brauner>
+References: <20260917-work-coredump-fixes-v2-0-f3787fcda051@kernel.org>
+ <20260917-work-coredump-fixes-v2-1-f3787fcda051@kernel.org>
+ <aq0VLTyxNatFmLOK@redhat.com>
+ <20260918-irrsinn-pickt-vermummen-d7167c397398@brauner>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260918064928.793742-1-anshuman.khandual@arm.com>
+In-Reply-To: <20260918-irrsinn-pickt-vermummen-d7167c397398@brauner>
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: F055A1C0005
-X-Stat-Signature: dk5jth16jhd6p14wza8u8k7owxtzauqo
+X-Rspamd-Queue-Id: 4404520003
+X-Stat-Signature: j983zgz4t9ne97dipj89ckxzx5yt9ijb
 X-Rspam-User: 
-X-HE-Tag: 1789735214-627579
-X-HE-Meta: U2FsdGVkX1+sKXDkYTM9Oe357AP29cCP9J9iTEJMORcFWrsW961aC4R+1EMN1b78lJM8BPzGqGXPHHGVgMAJjlE+a8m8To+G6B8kWijR+M/f3S+YivW2nHPOf4GnDaooCSchYR60Yzr05d7BrYmkOS/61RmE2tCTx9kg5d/rWV2uXosmkGoHoassZ5BVJ6xt/DD7Q80aSsoqJJk6IoXYB/uhGu0DHcqWbiXykTuPZzzjy8y3FUB1CKQpo6xDs7rRZQPJrILeLSjVrRSBDN4rwXsq7ue2HwSFX5PjsLvQkpibvsx5/FlPfGt4B6E8snaCyoxDIkBwHNeOdNPp1mP7obLzb5+1OjdJR04jwEHamkrbtJEKF2K0yZpd7dFjHrZ0iFOrH/fOeCF6N2LVDPPjWNKmsEiUhdf1pqWROTnX53zpgzD6UAuZ/MO0JHomae5IG3e8Ieiws1A2m24flVFbOEmxYvcuDZlDF3TuyQEl4Cry93L6ufJJiWqzA4smVWaKl66huO36JPhHTeb2qt/1ntVESmveQ5wcMtt7PjibAgCkvSw/9cNg59Mo7YIGMBI5ZOy3bapSdpsGn8fZoRvVwSUBB40v/PKQN5IO6gUjbVCi71cBu5Mn7JvRCirXPt2GfyQtWoq6lrlHKy+UC63K6UqKCbnPFW64kfq2/Bfv0icPNReCRLZc8A8oieOCM3p4SCmDMuNDeM5po35KTAB0sax+El2hWOYvFHbFNKu9cAeLiCzF2SxBrquGy784Zcvf5nOnrNkx2lpHGDZQai4QLEqvCKUDY0bkGngf/zOMZGLlBBzF01HpigZ6KFEknNACRQ0Z6LbwYSyNFvmYDCbvcA/rN3Hw0EzxLQvC9DVJ8Yc2NSgLtbDA0CCdr3geQwm87bsj+TF7c2CGX+gcIQOfnfwABs/cXC9MpBAORILSmUKDCnF3BYrhFJdLsYY97RrnR1YIhRq9heOt1b0aXf2
- WXzhSMVb
- O27xhUw6YiUPWOaOGiH9vh2ZPVQxg6q/gJLrpyHiuh/d9lk7QhDwm0XhhmPDQBdvorcVyJmtUDSE1y9ty7Nip31oUl1TvtwYRJtgXl8algkdBdujJIiEk1RDukBWFkI8Lshn0kZNGgfvaWrtMBOu60zEFvI6gR3jW/8olc/Cs4Jz+6gAnkNUZRBruDE8iSV0vLxQ0AQp0902KW3dwbL9it/s0lykq7l2ET35io9J2ZCpc8ElQMhZIekIVed5UtQkb4hrS3r2yw6cDD55l18NWank9vBIX40WzU28bELxU/wUKiuaWCoysU7cjjtcsFnYGJb7PT1a++rqAzxi2efCJhMSH51mhoViUllEdvGt0drAVhLICvpsJ0xZmTZ9yArW8OkdThRCdaKuE9Rr6vlXDDUdk6G6det9i548zkLQ9+s2jqug8fcbL7lca4tRhQm8juqC+BGctDuVCH3FfuGe3YDwnCamosYyQsWhtSgpLl/4pj9qiEO3qMGinJQD+EIzN+uoH
+X-HE-Tag: 1789735978-197682
+X-HE-Meta: U2FsdGVkX19WIiCIdHIPpOWd5c0ZkXd2m7ydhnM7kHoKzBVfGzqlx7xRPtc9F8VuqVr5rh99DrtSdie3HwNHIHpSXyVcV0kNNFfT0EytdoFRAalFQ+oF7Ob7FwwrOTbLu3RY5ztxmMEECsWXWlAyqEiDvHHMh/Z3XiThWcNzUgSF7TiuLXodMH7A08MTNsv4j1rpVNxDEuVK0IUXQJQfXPbDnjcIN3w4OHWmGjTSQ4Atee1/7F96v+7+CORU3OBRD7nG7GFhWkEglkifVRYNFMcPAwHR3120hh1+iYrnbrYaUZ3ehTy3NsGdYWEnTNJ+GpX5IqyP1YeOuKtZDnudOB+Fuwyh5OCefWi4+yV2uawBVYIqWV5CuTxA0ysxxQhXi/fzZl3THOtPfG1516dKOS6mulBuFeR4nzdoeUT87Cq990h36BHlAvdX5m2XIlG++5Xw9p2x4XWhEukLqTuBR81zrvbOFkv/je+zE63SF1NYazDYPpgTJ847GBQ9/mmcl2sFseCB5SQuDARuGHRuKwcLXp9tIOEgkgz4KIKsoFQtRJ7+6qfA+dSOUB6EZGqIUtA+k3qq23L5pBLszgPuIbYuQ0ZpEIeMEr0X5SRvFtNUOQc9rvi0xvVRRyNDmirFYa//RIKXtpFm0cXgz691zc2QvtEbcdw3xdgppt1KnpntCSh40eoxzG0D94phs5P3/EAKub+R1nQ+b/bJQTpdHtcnH99RNie+T0P0MZk61Ma0eS0C9vyNUElHavaDBPjyp9J1tVTNMyNOBv4URc7VfggyYex1VBSqBS51Z8538DWgEwtMs8hfwv5ncbOwBJT97jSb9M7nh6csLAPUpg4KqACK2akLvM31R9uyMdeJoCUGdNbu1kTEZuMgjpMelTIP21aeFrUiGNE7PDR7HN1Co6yGXs5ZyKRy63FDb3ZN2KyULZkfaV6l4FlwJn418SUQtnJ1qXznAlQNx9yYb97
+ E+sno8T1
+ 1WMqcYKgl1aYalj2rvwaZ2qdZp90Y21QnqZ7xOXc1ozZ0sEbAKIuWNlbXnmfbIuVQTgYX9DHbJnJpawO9IT/zLLey2ZVWHSiG+nFEVjhkyXy/qCcB7R3r/ADYS0zpazgpqiMu0sPdC+Ka/ZxwLnCBYdr3MmGz0ag7kz4DtTFqEkH1iYhIIdBOKm9te+CTWuiv1/LrznmvMUzXqja0aOnxckrdNsAkJqQmbxU2G8pRjYeXToYnM4U72giOLRd72IaMHsXllrRn65lsOzMysyLWiEXPta+4sqsGWogA14AGv3be3g4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,26 +96,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 18, 2026 at 12:19:28PM +0530, Anshuman Khandual wrote:
-> Generic MM default pxdp_get() helpers fetch the values contained in pgtable
-> entries via READ_ONCE() without modifying them. Just make their arguments
-> explicitly 'const' for some additional protection.
+On Fri, Sep 18, 2026 at 02:24:07PM +0200, Christian Brauner wrote:
+> On Fri, Sep 18, 2026 at 12:40:45PM +0200, Oleg Nesterov wrote:
+> > On 09/17, Christian Brauner wrote:
+> > >
+> > > Say a SQPOLL thread is a member of a thread-group that coredumps.
+> > > The coredump code uses zap_process() and sends SIGKILL. The SQPOLL
+> > > thread uses io_sqd_handle_event() and calls get_signal(). It removes
+> > > SIGKILL from the pending set and returns. The SQPOLL thread breaks out
+> > > of the loop and drains its own task work.
+> > >
+> > > Any pending io_req_task_submit() with REQ_F_FORCE_ASYNC creates a new
+> > > worker when no other worker is free. So it ends up calling
+> > > create_io_thread() from a thread whose fatal signal is gone.
+> > 
+> > Oh.. Can we fix this in the io_uring/ code somehow? The very fact that
+> > copy_process() can be called after get_signal() returns SIGKILL looks
+> > very wrong to me. See below.
 > 
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Lorenzo Stoakes <ljs@kernel.org>
-> Cc: linux-mm@kvack.org
-> Cc: linux-kernel@vger.kernel.org
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> Yeah, I agree but the io_uring solution I came up with all where a bit
+> involved...
+> 
+> > 
+> > > --- a/kernel/fork.c
+> > > +++ b/kernel/fork.c
+> > > @@ -2491,8 +2491,10 @@ __latent_entropy struct task_struct *copy_process(
+> > >  		goto bad_fork_core_free;
+> > >  	}
+> > >
+> > > -	/* Let kill terminate clone/fork in the middle */
+> > > -	if (fatal_signal_pending(current)) {
+> > > +	/* Let kill or a group exit, exec or coredump abort clone/fork */
+> > > +	if (fatal_signal_pending(current) ||
+> > > +	    (current->signal->flags & SIGNAL_GROUP_EXIT) ||
+> > > +	    current->signal->group_exec_task || current->in_execve) {
+> > 
+> > Well, the comment doesn't explain why should we care about exec or coredump,
+> > if we forget about the problem above fatal_signal_pending() must be true.
+> > 
+> > At least, can we move these additional checks into create_io_thread() ?
+> > To not uglify copy_process()...
+> > 
+> > Hmm... get_signal() sets PF_SIGNALED before it checks PF_USER_WORKER, so
+> > perhaps something like below can work?
+> > 
+> > And perhaps io_should_retry_thread() should check PF_SIGNALED too?
+> 
+> Hm, I like this idea...
+> Let's see.
 
-https://lore.kernel.org/linux-mm/20260803164400.531199-1-pfalcato@suse.de/
+I think this works but they also need to check ->in_execve as the
+exec'ing thread is obviously never signaled:
 
-I'll respin my series, since it addresses every architecture.
+@@ -2709,6 +2707,10 @@ struct task_struct *create_io_thread(int (*fn)(void *), void *arg, int node)
+                .user_worker    = 1,
+        };
 
-(apologies for not doing it yet this merge window, but it has been hectic
-downstream)
-
--- 
-Pedro
++       /* A creator past its fatal signal or in execve gets no thread. */
++       if ((current->flags & PF_SIGNALED) || current->in_execve)
++               return ERR_PTR(-EINTR);
++
+        return copy_process(NULL, 0, node, &args);
+ }
 
