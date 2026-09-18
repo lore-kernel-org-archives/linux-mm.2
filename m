@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F45EC982D8
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 18:03:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B11B5C982D8
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 18:03:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F38E56B0093; Fri, 18 Sep 2026 14:02:52 -0400 (EDT)
+	id 8A9546B0095; Fri, 18 Sep 2026 14:02:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F11DE6B0095; Fri, 18 Sep 2026 14:02:52 -0400 (EDT)
+	id 880CE6B0096; Fri, 18 Sep 2026 14:02:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DFFB76B0096; Fri, 18 Sep 2026 14:02:52 -0400 (EDT)
+	id 721406B0098; Fri, 18 Sep 2026 14:02:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B56496B0093
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 14:02:52 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9F3561A072E
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3D72A6B0095
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 14:02:54 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BA3FBC0717
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 18:02:53 +0000 (UTC)
+X-FDA: 85227653826.13.E3CF01A
+Received: from mail-oa2-f12.google.com (mail-oa2-f12.google.com [74.125.231.76])
+	by imf29.hostedemail.com (Postfix) with ESMTP id CBD70120009
 	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 18:02:51 +0000 (UTC)
-X-FDA: 85227653742.09.281C345
-Received: from mail-oo2-f39.google.com (mail-oo2-f39.google.com [74.125.231.167])
-	by imf30.hostedemail.com (Postfix) with ESMTP id CCBC880007
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 18:02:49 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=RZd7G2kL;
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=hsG+2YDc;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of nphamcs@gmail.com designates 74.125.231.167 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789754569;
-	b=j6eLLDsHPu6dlH+tfjvIjNJU27bPgrIc7arRaXBis2hGqhKl+fnkS1yP1nqNgXM6wQogAN
-	SjAFRFfqj1RIuBE6z23U2BOe54vdes/fjIrt6HiyGVwUjVnDZHoSKuPyeZgRAcl7HHHVEY
-	D/BK+URIaUI7WKqw/B6Y4F21cPiRA20=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=RZd7G2kL;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of nphamcs@gmail.com designates 74.125.231.167 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
+	spf=pass (imf29.hostedemail.com: domain of nphamcs@gmail.com designates 74.125.231.76 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789754569;
+	s=arc-20220608; t=1789754571;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ku1DiWNPMjUzjw3oBYfS28zIvxt+bdOecf2pjvKy8dE=;
-	b=aFS5mRmDOeUHhznxwZthLDrDoqWicDF46hOc6yHYtdhDaXvRlMVIGLpk/7bwjJnqpPEjF3
-	kzPk2hAL/N9uJ88eUClwhl9Nacf6n3jjGTSHMlP2JxKG5xYcudlvoSC7Kh5Fp/0f+nVwLN
-	8iRhYrL0q8mQUhuAqf+U21AMMat48ew=
-Received: by mail-oo2-f39.google.com with SMTP id 006d021491bc7-6c72bd8a017so662089eaf.3
-        for <linux-mm@kvack.org>; Fri, 18 Sep 2026 11:02:49 -0700 (PDT)
+	bh=x3hJ+4xEcO7dPr9U7rXAyf2WO4OSYhm84DLpduOrn64=;
+	b=HY4k9KFatXFaD9XbEJd6ypqdWL3JW7bSQPf7+m1kqMJw2EwVq8eJJT6rY5al2jiBEoCajy
+	TOKNrEXS3K6bRhsryNHw+JN3G49d8+H0IYnEJdSe2u67AH2y1UqXGSfkQjitwo1/K3Oo2Q
+	F1DBOd7J0AxtTn9ifZza5VKPUOVacok=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789754571;
+	b=4MJCjvw6P8biDXsUf3i0TopRB92hc4NDXLDYLF9rM3TKUUabBA5ZY7DnSD67coj1qD2hWC
+	VfosjGbB7PNwjU+6S/hxoFX5BNibKIM9FHNcxIM5u6F84SE86Tb5Qv3Wenp/V9xi/h6Ruh
+	x2+ZRni3yawq2UWh+3oHDWgYfydHNrs=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=hsG+2YDc;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf29.hostedemail.com: domain of nphamcs@gmail.com designates 74.125.231.76 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
+Received: by mail-oa2-f12.google.com with SMTP id 586e51a60fabf-46accbdfb21so1154641fac.1
+        for <linux-mm@kvack.org>; Fri, 18 Sep 2026 11:02:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789754569; x=1790359369; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1789754571; x=1790359371; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ku1DiWNPMjUzjw3oBYfS28zIvxt+bdOecf2pjvKy8dE=;
-        b=RZd7G2kLBRkjdI1cX8vXhE4sY3kCKIuorydTCGSOj7INU3lorqaQzDHm5GetyU6Dny
-         CgUVczhVOxVTQVAXqmg1L5LM0uWgFL5lWEgZpyYRITH7OZ2gxS74OW9ok6Y6Gv1JdVhH
-         m3Bkif1GlFqtJMH8CEE7p9/WaP/JEq0zCdf8hrV9Xg3oTyTuYiiKKbmV3TNwraVG4LsR
-         818GPb07oC+2ybdjbkP9adXg1b55M5cU+lRrn1rn9qpYDWdnzDOTEffgcoyARA+ddaMR
-         1lCA64Cl3WA/GZBhhWRP5mRVmneSsOna54QKOD8RZSUTXWbBogM6do/uxEvBf9Vhryf9
-         z6Yw==
+        bh=x3hJ+4xEcO7dPr9U7rXAyf2WO4OSYhm84DLpduOrn64=;
+        b=hsG+2YDcK1l9hiq0l1hAeAJ1C9gat3yFSMo7khG0B2SdylhsTzuDD7U/kqNIjvUwMg
+         siw4EwPqqfRHkI33snQ47wWVuRepkwxGd7qpyQX3kETj0a+WDeBbOABilEFLm0JvkOkk
+         iKfxO4oHFecTSjBg6h/zDob3dBBc7Oug0ALB2nWWH85wLUW3KZIW6BM/VwVpHqzEXDg2
+         LhSghia7Vgp/sBArA0x6LnoL5VGRS+JOxaTnfeiQjQTbNvO1tWfruI56jr8BNMJuuAXl
+         20W2YRvH1NoTy0pMGqpcJJa+J4JHDffOfvVH/lOf5Rs5ZfNEKZi9jlhz/pq5FZnFHzIt
+         DkRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789754569; x=1790359369;
+        d=1e100.net; s=20260707; t=1789754571; x=1790359371;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ku1DiWNPMjUzjw3oBYfS28zIvxt+bdOecf2pjvKy8dE=;
-        b=sFGdgGkQVVNhRj/F6MwTQ5FyhEcAD+oXZRiqwMbvdepJI4EonvTL+z3F1R2X+UKXNM
-         yylZCAOkiRTc3KN3/iKcVhEjvPbY55h7qN3ercZo5qzHS0/Nd941BiCIbr9ikomVT9oG
-         WH8qE65huHyPZYvgGLNOWhId3rFpRaE+MwzNMFoJsQGT6oXp+ER+cYsMQCcA8fBep+X1
-         gNpJas29tmrt5H00v9A6og7I5GuAOdG9OCzzEN0OxUGdct18tUucSdnH+jG2UbXdcVyA
-         hImWfoqFBbzE7l2JnHzyGdnBHU2X+28nUwZxR/D6Bazcp4dY4tjiR49FSAkkAUll/FmS
-         ckSw==
-X-Forwarded-Encrypted: i=1; AKwUvByHBGAMQzVmyu2+Xe0V00WlvoFQdYXPdxlOifb9uFWsbGrv4a/m7/hnKlx0RsVOpkigXDN+Zicl6A==@kvack.org
-X-Gm-Message-State: AFuF++njVcv8torgbI6D/BIlluzcoXhPaq+3fFWFvur2aNgCUNKQ6Q1v
-	b38chQHBLeRp06gIhtblamhXeJiTdy5rLpS63YLqlcNbckjX7zHic/By
-X-Gm-Gg: AYBFou3pQvs1+diXy7wDghf6gemO8zVjcOkCbOPoOBD5xeH2PhUP2Q7/miNVJb8JuaR
-	LnGppgJD6uP2RphWoGcLQBFrOc7O6YOZf/a9vVJT5Fkajjd3mG4x3zLI5F61bKbp9CWwCToqnUO
-	wYkFhEyxQcvj6SOM0o6u54DJ2z7W7SjbV16qQp08hZoE5TwA+6SNmLVrUP3hyQKxgSilhcKqMLR
-	mMrnXPTGUben1mCsgD2EIMo6El16pXjUgzg6Mo5aByIKWGTkM6v36UENnee0XNxNkcl6xGkIPV6
-	Bt/tZtMC+hAMM9jQme/s6c0U1VP5QzG1iQZ/im58CersgwGFT9ZzKR8EAx4OKISMzOgo0VE/rjc
-	doVAyLTrfC9j7JoGR+WjP912LvyhjUrF7jwO+m25ARLrvfTQ8U8Kr0rylxLUuYpztCMwBC2f5cj
-	8UcmRCXw/k0wHcVUp0ozdWKvh+j0D7wLb0ZGqZXGeHLI4HZyo2pu9Yujs+zR3ra28OPLLdc/uiz
-	m4P60nHujWYMoEdSbO7sA==
-X-Received: by 2002:a05:6820:f007:b0:6b7:83d6:292a with SMTP id 006d021491bc7-6ca9cb53b30mr3234729eaf.45.1789754568673;
-        Fri, 18 Sep 2026 11:02:48 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:11::])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6cd3591d0b6sm565054eaf.12.2026.09.18.11.02.46
+        bh=x3hJ+4xEcO7dPr9U7rXAyf2WO4OSYhm84DLpduOrn64=;
+        b=Q/+CubTEoEw3wbCzsymO+Pdhm2CWr9x/BcbKGFwhUG0zaruDDqWOd6ND8K3KDeMNDI
+         pT8S2g2l4SQMw7mBT7gcsUYP6ywNcrxW+wgw+pX8kCXbKmfcM/ocyIPoABZRUidQ/J9o
+         8+G6WEhSm2vrSEgDxRIpAx2fd8yO7FeNLZSqJHRylTl32SIJrnEqqa3AzajghAQBSTQW
+         Kc7NPGw/lHvOjzjOfCdoGbxXvoNILK5HJgIOL1d/6KpYg9GMtVDvWLSvcR93O62ktk5S
+         n7SC1xaXbzPCfNsv5hFwgrF7QH+j4gXWFL2JtRKTnQ/H/wOBt76w6aIudQW1Ervs+XrQ
+         kJLw==
+X-Forwarded-Encrypted: i=1; AKwUvBz3Ys0FBs+HdbmhO2JmLZcZYjhZ3Ci39bOl9Sts9/jCcdB6AVyZr2FiWHPgX9DZsSUiqy6zEpqRMA==@kvack.org
+X-Gm-Message-State: AFuF++mvVjdmHXl+JWd/hg8tsBrws3MK3D684xy8feyp8laCxOaLuzuY
+	5+a2OInCZp2SF6G8xTQYlNKeFmo7G55+r3JvDe4McyhBJKhFN1QJHJr2
+X-Gm-Gg: AYBFou2GfjTZW4ZONdjnVuw4MYBIuHlkc1nntyVU25TLs2qtFDZZzAk1WBoEi4t6R7K
+	l6i1YQ8Fb4g2PCJLttdK8E7bmKQquNYjBUO9nfbyVHv+NhoKphDLQD3k4L/sN2z4FRgnDITQgBF
+	BWee3uharFV6kJ3GnxD5SdYoZJEr6NL45RUNAzDdXSCyQ1vImLokr7xhG7fY97LOD+whSufqr5v
+	ES6xeYOY3a0bIQjpmGa9GaN7N9CuzOJ2pFC5px8Pl1jgCoI/CGuwBw1tFTNeCHxYlirO/awAFaE
+	BjMA5BVlobcNZ8lsznJ8Uz0Mychi+iUWMe8xYARM+MdVMLjLRqv35k/PfgjO1egUtlRn8ZeTNAs
+	/oAWwII26muLbCyBchzXqlD3MUlmWR6bhwGp5l1N14kwsZ3qt/Zu/BqiUz9xE+kW+kPM/ecH16+
+	yzwgvbTZTrBGLiUJ1skWeCesd0+IN4+Hp+EtnWWVlPfFR/2OiqxhSJxCKyLtSa+CeZSnn+NR50v
+	+oYh8JSL/M2pqOQ1ONOQQTTBQGpFYo=
+X-Received: by 2002:a05:6870:330d:b0:448:c946:9ae1 with SMTP id 586e51a60fabf-486e66b4448mr3606944fac.18.1789754570354;
+        Fri, 18 Sep 2026 11:02:50 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:6::])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-487398590c6sm1626103fac.8.2026.09.18.11.02.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Sep 2026 11:02:47 -0700 (PDT)
+        Fri, 18 Sep 2026 11:02:49 -0700 (PDT)
 From: Nhat Pham <nphamcs@gmail.com>
 To: akpm@linux-foundation.org
 Cc: chrisl@kernel.org,
@@ -132,22 +132,22 @@ Cc: chrisl@kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-doc@vger.kernel.org,
 	cgroups@vger.kernel.org
-Subject: [PATCH v5 03/11] mm, swap: prepare the swap IO path for vswap
-Date: Fri, 18 Sep 2026 11:02:33 -0700
-Message-ID: <20260918180241.3424851-4-nphamcs@gmail.com>
+Subject: [PATCH v5 04/11] mm, swap: support physical swap as a vswap backend
+Date: Fri, 18 Sep 2026 11:02:34 -0700
+Message-ID: <20260918180241.3424851-5-nphamcs@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260918180241.3424851-1-nphamcs@gmail.com>
 References: <20260918180241.3424851-1-nphamcs@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: CCBC880007
-X-Stat-Signature: pmwjt7z8f4tbbwpxzxmd41thj3ymhigo
-X-HE-Tag: 1789754569-480534
-X-HE-Meta: U2FsdGVkX18H++YQBLXcHw5+DAs4onu3RCvlqaL4GKiYM0t3kXeXRiYlFsfQrMgCmMW460TUU7Uumo0t0dM5qOEDBIxOtrw0HCKd5N1Zo3yjNQ96hF3kErp/k5XSh67tS9deYwR5jDTkXf24kEG3rOiXBdRV/hqtMDORvy3F27irZCWAvWqmtsMNQmhr7HVExm2LC+lCTrDErPuG5AfEmqYEkNqqNCHIY+Q9VPkjFAPa+K9L+4XlZw3ku2tEkxK/AKlsZSG8B+NZhUlYruyB4Y5pDjgLc8cW72gLMZwvOqocQ7D87XQzuyl9v8I2fQiCnQncGeY8XnWkI3faqjtAppmIH8erAlcmr4hAeEdEYPAcWkDMTyoHavJ+d0NOntk5OuLcWZbUOMVpqeV7g/E/sz38GFM83P3xooXaGxtH/9s/u0q295uBuwoXyTutoYcjSv58LlAE+BP1cGuKa9/Bgnr/S+RVISog9tpeXZbQ3xd6RSP0t9QHs5CtON1ESLVSfPj8KwKaK718rwsqguof26z/WVcP5IHMUZ5UKdf68gkLj9l8MYnJROvaaBL6Vml0lZ70kpDnIEZVwzJLWdJeMiEWUJsm6zauXdU9CoW9mXSRHRUfG5bRkTjI40D43L8Kocv7OidhC+sjHi9sZBrvgwqv3wjmH2ArkWSqeY0TgB06YZO9C1eVCqGh9GfWcuHrfThgTO00s4ZB/BZ59JNT8OSm1sHHYbw5q2mLWfwf2UsC3j/HCeHlw7ggQlSOdbRJ7up8zkgHZmSHfMEE1qKQWJr/tct2L2Z7om8vL9MXXJqqWW7vrvaKax75/gcKriZl5SCK64p0ijx5SLw5Oe0ZFjPAPfvwy8YXdnfd8Th86974GH2nlgVX76sZYBaieHmLyUE+ogPhLR3bqXkBd8E6We89nVkTKkDL0egDKlQWvmF+hH4Idt0PcwhW3J+9sBA7CnzbkDkGk9res9bxU40
- SIUFUNuR
- zGo+kCMhzq75N/RhqInMQb0w25AOpbeKuhgcfN3iLP5qAowyfYoVImNzcyk/hwX9+Vf1l6dE/0snlcOnA9El9qOaAsKq/9rLdecfcGbqu2PIfjOUGYkFjy5Dq4/+OtqyL9jvOUsSS9eRC7w+Cggynyya0agH/Hzj9an0xcOsNFAEMoWCMeEDovlMpQ0ds24FSTzP9bazd/CfqujtVQbZxwq9k0g4rnsMKREOZsVIQmiX1oeroWMEZ6BwRBm3znv68vaheKiV2YPJBqO/lySLq+oSneTBPXFlMPpzXjpGHgPkpLf2pKKU39wC+c5VoaH7VuLW1qClxw8bHoL6A/Hc3D5vb4I7ccvpo+tVBkRc0K6PKKOW+d3XSRs8gSF4UuF1zopZuoSQb/rhcnQ12s9naWvdkstUe7jnLKVE77+Ot+rDXdqKJWQqouqbkg1ouo8SE5uZAco0GH37Wd6rZAR0D0nCO2g==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: CBD70120009
+X-Stat-Signature: rtncbto8t3gynbcpgzopntza3him5mwk
+X-HE-Tag: 1789754571-314548
+X-HE-Meta: U2FsdGVkX187obMlMSjXVZvRWhrDTE7DZvU2FxUPumcdjpYLK3tTyRKXDgNOG+GyKDWfVt5vb9PI5VpuNXLV+uiEQggydAWfx5Abr3YK9Tj/rD9UfYfD8sHzX9BSrQSm5VrXKTDRVWdjPslpybSMAIuk5JPtOFEhislG0cVHCDHJuVBl1bRL8lZJT2/QaxBWbK16BeLS6q6j133QUeh3C4fEkoBsI1J82HPv7Lqe3tHfVlrYnZJU1WM49MiuGao/CPxe/N8/46WjDaFUmPNvmi2EJ7Efz8ylcdEhNLgeehVh6RWrC4zvQs7AJP8dkMaDDs+OlawAejFlNnahJuWV0UW0PsU1LgYUWMnO+yFIfsOB3NXUJzKkf6X1HSyHqVtAYZFLxCR5kAOzeM7lUoTfRmcYFSJL2FDAbTBaA0dx7uBsff6L9Dwj5KAuE62hZ1ieu1ybHn5ekY+XeSe8iPcJGLeooCyufpGMWRYbJ4EMbLCpr8rRuHIAatobrborm2rsrW1FsOvdmXs8muZH+s7rjAprSzfokkrSL3wzTMclFS1vSrLRh2OWrctILaw1x20738GyK1jC+/ioAZYq+Mw+kxHGNwwgV5NPHgQMIG0ezLtS+8MgGkiKvBVAIgWdRQZTcLQlHy1SL1K3SwJZNlXmoWg4QtOInZapOC0pcUGB1OAUlsWyfdZPd+AFK+QFmw6q4hjfVVa7ZgFHOQ3JpbYirU+UQmu+qN21h/8Jj6DqnYEpCsXJKRSSTS/oQkXyRcanol5slCTv/TibRgkzOXBxefqEg07e2rcSbaPA75RBkPqpkbGppxrRlbjPA9AqQHA26vf0/fP74WdtjFqNmlUKMvRZowtEVnqU7wxO1jqFeeWSGehPR5N49nyv1tXPWePpbxFFuKL4Kron4ypB0KIOdaH772G6FSwTEsz9gRXMCylGPN2Cdb/nTZhqDiAb60KHXMua6RihdpCno4w/7Dd
+ cH6ht6Z5
+ WCIz0rZiDOP7ZH6USzZ9xDmpDHW1HFcyVAUKW5aXNiJvqbIMBGnJK4wI7EQz0RaA7bVolrHC2z9n4aDbdxh0AkcoM9h6ogm8/ZY2fcQuEkQivVnC++y1/qhfqJuaWKBVrSr2vLYJzrV0htDry0f8T9y1p2L9tmXYtPTIvLz3c1B7c6UqAPcha4BId4C0BnOdAY53QxL1xSF9gIg+EoDKRvm87ADk00SF5Z/FYDz1mEkxC3nF4ZZYtGwLCzHC/108ckriY1d0YbRqpS9Bg2jg3U4mND9002zWsEzKy9V9RWrOkgq4ikDT3Ja9hlh+wCIxyUs/1qXCD8Lit7YSd4X/ARVYSk040BbFo/bm1hx98rejySF12VdTBunj5c6JdhoCoA4LLEKCEzcgiJs8gkfPBdQ7lkhqdd4PGI0cH0ipq//4qjRSCYgwyiGbL5NOKuEd6nPjIP07dvEuDVyGtWITDRval359RVi5MI6dE2FMK2SASZic=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,297 +155,1078 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In preparation for adding a physical swap backend for vswap, make the
-swap IO path able to submit IO for a swap entry other than folio->swap.
+Add physical swap as a backend for the virtual swap layer. When zswap
+declines a page, the swapout path allocates a physical slot on demand
+for swap out.
 
-The swap IO path derives the target device and sector from folio->swap.
-For a vswap folio backed by a physical slot that entry is virtual, so it
-identifies neither the backing device nor the sector to submit IO
-against.
+Each vswap entry's physical slot is tracked via a pointer-tagged
+swap_table entry on the physical cluster (an rmap back to the vswap
+entry).
 
-Compute the sector from an explicit entry (swap_folio_sector becomes
-swap_entry_sector), thread that entry through swap_add_folio,
-__swap_writeout and ops->can_merge, and stash it in swap_iocb so the
-submit and completion paths address the IO from it rather than from
-folio->swap.
+Physical readahead scans a whole offset window and would trip over
+these rmap slots, so __swap_cache_add_check() now skips
+swp_tb_is_pointer() entries. Nothing is lost: a backing slot is
+faulted through its owning vswap entry, never through the physical
+offset.
 
-This lets the batching path serve both vswap entries (backed by a
-physical slot) and physical entries mapped directly into PTEs.
+swapoff reads each vswap entry back through its rmap slot before freeing
+the physical slot. A failed read leaves the folio not uptodate, so drop
+it instead of marking it dirty: dirtying would write uninitialised memory
+out to swap, and the loss is now reported as SIGBUS on the next fault
+rather than silently returning stale data.
 
-ops->can_merge changes anchor with it: swap_bdev_can_merge() compares
-sectors and swap_fs_can_merge() byte offsets, and both now measure from the
-batch head plus the accumulated length instead of from the previous folio
-plus its size. The two agree at every step, since a batch only grows
-through merges that passed the same test. The blkg comparison is unchanged
-and still anchors on the last folio in the batch.
+If zswap is disabled at the host level or for the folio's cgroup, the
+folio still gets a physical swap slot, bypassing vswap and mapping the
+slot directly into the PTEs. In practice the swapfile backend is only
+reached when zswap declines the folio at swap_writeout() time, most often
+because the pool is full.
 
-All callers pass folio->swap, so there is no functional change.
+The machinery is in place, but its main consumer is not. Zswap writeback
+to physical swap is added in a following patch. Reclaim of physical slots
+backing cache-only vswap entries follows it.
 
+Suggested-by: Kairui Song <kasong@tencent.com>
 Signed-off-by: Nhat Pham <nphamcs@gmail.com>
 ---
- include/linux/swap.h     |  2 +-
- include/linux/swap_ops.h |  9 ++++---
- mm/page_io.c             | 54 +++++++++++++++++++---------------------
- mm/swap.h                |  3 ++-
- mm/swapfile.c            |  6 ++---
- mm/zswap.c               |  2 +-
- 6 files changed, 38 insertions(+), 38 deletions(-)
+ mm/memory.c     |  13 +-
+ mm/page_io.c    |  41 ++++--
+ mm/swap_state.c |   6 +-
+ mm/swap_table.h |  42 +++++-
+ mm/swapfile.c   | 352 +++++++++++++++++++++++++++++++++++++++++++-----
+ mm/vmscan.c     |   2 +-
+ mm/vswap.h      | 198 ++++++++++++++++++++++++++-
+ mm/zswap.c      |   2 +-
+ 8 files changed, 593 insertions(+), 63 deletions(-)
 
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index abf658f7861f..5ab050b2457c 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -409,7 +409,7 @@ extern int __swap_count(swp_entry_t entry);
- extern bool swap_entry_swapped(struct swap_info_struct *si, swp_entry_t entry);
- extern int swp_swapcount(swp_entry_t entry);
- extern struct swap_info_struct *get_swap_device(swp_entry_t entry);
--sector_t swap_folio_sector(struct folio *folio);
-+sector_t swap_entry_sector(swp_entry_t entry);
- 
- /*
-  * If there is an existing swap slot reference (swap entry) and the caller
-diff --git a/include/linux/swap_ops.h b/include/linux/swap_ops.h
-index 57ac6c703f68..223c84548bde 100644
---- a/include/linux/swap_ops.h
-+++ b/include/linux/swap_ops.h
-@@ -12,6 +12,7 @@ struct swap_iocb {
- 	struct bio_vec		bvecs[SWAP_CLUSTER_MAX];
- 	int			nr_bvecs;
- 	int			len;
-+	swp_entry_t		entry;	/* first slot in the batch; addresses the IO */
- };
- 
- struct swap_io_ctx {
-@@ -30,15 +31,15 @@ struct swap_io_ctx {
- struct swap_ops {
- 	unsigned int		flags;
- 
--	bool (*can_merge)(struct folio *folio, struct folio *prev_folio,
--			size_t prev_folio_size, int rw);
-+	bool (*can_merge)(struct folio *folio, swp_entry_t phys,
-+			struct swap_iocb *sio, int rw);
- 	void (*submit_write)(struct swap_io_ctx *ctx);
- 	void (*submit_read)(struct swap_io_ctx *ctx);
- };
- 
- void swap_fs_prepare_rw(struct swap_io_ctx *ctx, int rw, struct iov_iter *iter);
--bool swap_fs_can_merge(struct folio *folio, struct folio *prev_folio,
--		size_t prev_folio_size, int rw);
-+bool swap_fs_can_merge(struct folio *folio, swp_entry_t phys,
-+		struct swap_iocb *sio, int rw);
- int swap_fs_activate(struct swap_info_struct *sis, const struct swap_ops *ops);
- 
- #endif /* _MM_SWAP_OPS_H */
+diff --git a/mm/memory.c b/mm/memory.c
+index 73ebc59d2b03..e9e05e31c4f8 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -4713,8 +4713,11 @@ static inline bool should_try_to_free_swap(struct swap_info_struct *si,
+ {
+ 	if (!folio_test_swapcache(folio))
+ 		return false;
+-	/* A vswap entry holds no physical slot, so keeping it saves no IO. */
+-	if (is_vswap_entry(folio->swap))
++	/*
++	 * Non-swapfile backends cannot be reused for future swapouts.
++	 * Free the swap slot unless backed by contiguous physical swap.
++	 */
++	if (!folio_phys_swap_backed(folio))
+ 		return true;
+ 	/*
+ 	 * Always try to free swap cache for SWP_SYNCHRONOUS_IO devices. Swap
+@@ -4722,7 +4725,7 @@ static inline bool should_try_to_free_swap(struct swap_info_struct *si,
+ 	 * are fast, and meanwhile, swap cache pinning the slot deferring the
+ 	 * release of metadata or fragmentation is a more critical issue.
+ 	 */
+-	if (data_race(si->flags & SWP_SYNCHRONOUS_IO))
++	if (swap_entry_backend_has_flag(si, folio->swap, SWP_SYNCHRONOUS_IO))
+ 		return true;
+ 	if (mem_cgroup_swap_full(folio) || (vma->vm_flags & VM_LOCKED) ||
+ 	    folio_test_mlocked(folio))
+@@ -5035,7 +5038,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 		swap_update_readahead(folio, vma, vmf->address);
+ 	if (!folio) {
+ 		/* Swapin bypasses readahead for SWP_SYNCHRONOUS_IO devices */
+-		if (data_race(si->flags & SWP_SYNCHRONOUS_IO))
++		if (swap_entry_backend_has_flag(si, entry, SWP_SYNCHRONOUS_IO))
+ 			folio = swapin_sync(entry, GFP_HIGHUSER_MOVABLE,
+ 					    thp_swapin_suitable_orders(vmf) | BIT(0),
+ 					    vmf, NULL, 0);
+@@ -5200,7 +5203,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 			 */
+ 			exclusive = true;
+ 		} else if (exclusive && folio_test_writeback(folio) &&
+-			  data_race(si->flags & SWP_STABLE_WRITES)) {
++			  swap_entry_backend_has_flag(si, entry, SWP_STABLE_WRITES)) {
+ 			/*
+ 			 * This is tricky: not all swap backends support
+ 			 * concurrent page modifications while under writeback.
 diff --git a/mm/page_io.c b/mm/page_io.c
-index 2e7fb335eb01..632683232622 100644
+index 632683232622..4858953fc522 100644
 --- a/mm/page_io.c
 +++ b/mm/page_io.c
-@@ -265,7 +265,7 @@ int swap_writeout(struct swap_io_ctx *ctx, struct folio *folio)
- 		return AOP_WRITEPAGE_ACTIVATE;
+@@ -209,6 +209,7 @@ static void swap_zeromap_folio_clear(struct folio *folio)
+  */
+ int swap_writeout(struct swap_io_ctx *ctx, struct folio *folio)
+ {
++	swp_entry_t phys;
+ 	int ret = 0;
+ 
+ 	if (folio_free_swap(folio))
+@@ -241,8 +242,14 @@ int swap_writeout(struct swap_io_ctx *ctx, struct folio *folio)
+ 	 */
+ 	swap_zeromap_folio_clear(folio);
+ 
++	/*
++	 * For vswap: release stale non-swapfile backings (e.g. ZSWAP from a
++	 * previous swapout cycle) so zswap_store or folio_realloc_swap
++	 * starts on clean slots. Contiguous PHYS backing is preserved for
++	 * reuse by folio_realloc_swap.
++	 */
+ 	if (is_vswap_entry(folio->swap))
+-		folio_release_vswap_backing(folio);
++		folio_release_non_phys_swap_backing(folio);
+ 
+ 	if (zswap_store(folio)) {
+ 		count_mthp_stat(folio_order(folio), MTHP_STAT_ZSWPOUT);
+@@ -257,12 +264,15 @@ int swap_writeout(struct swap_io_ctx *ctx, struct folio *folio)
+ 	}
+ 	rcu_read_unlock();
+ 
+-	/*
+-	 * A vswap folio has no physical slot to write to, so keep it dirty.
+-	 */
++	/* zswap declined it, so it needs a physical slot. */
+ 	if (is_vswap_entry(folio->swap)) {
+-		folio_mark_dirty(folio);
+-		return AOP_WRITEPAGE_ACTIVATE;
++		phys = folio_realloc_swap(folio);
++		if (!phys.val) {
++			folio_mark_dirty(folio);
++			return AOP_WRITEPAGE_ACTIVATE;
++		}
++		__swap_writeout(ctx, folio, phys);
++		return 0;
  	}
  
--	__swap_writeout(ctx, folio);
-+	__swap_writeout(ctx, folio, folio->swap);
- 	return 0;
- out_unlock:
- 	folio_unlock(folio);
-@@ -336,24 +336,22 @@ int sio_pool_init(void)
- }
+ 	__swap_writeout(ctx, folio, folio->swap);
+@@ -475,6 +485,7 @@ void swap_read_folio(struct swap_io_ctx *ctx, struct folio *folio)
+ 	bool workingset = folio_test_workingset(folio);
+ 	unsigned long pflags;
+ 	bool in_thrashing;
++	swp_entry_t phys;
  
- static bool swap_can_merge(struct swap_io_ctx *ctx, struct folio *folio,
--		int rw)
-+		swp_entry_t phys, int rw)
- {
--	struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
--	struct bio_vec *last_bv = &ctx->sio->bvecs[ctx->sio->nr_bvecs - 1];
--	struct folio *prev_folio = bvec_folio(last_bv);
--	size_t prev_folio_size = folio_size(prev_folio);
-+	struct swap_info_struct *sis = __swap_entry_to_info(phys);
+ 	VM_BUG_ON_FOLIO(!folio_test_swapcache(folio) && !synchronous, folio);
+ 	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
+@@ -499,14 +510,24 @@ void swap_read_folio(struct swap_io_ctx *ctx, struct folio *folio)
+ 	if (zswap_load(folio) != -ENOENT)
+ 		goto finish;
  
- 	if (ctx->sis != sis)
- 		return false;
--	return sis->ops->can_merge(folio, prev_folio, prev_folio_size, rw);
-+	return sis->ops->can_merge(folio, phys, ctx->sio, rw);
- }
- 
--static void swap_add_folio(struct swap_io_ctx *ctx, struct folio *folio, int rw)
-+static void swap_add_folio(struct swap_io_ctx *ctx, struct folio *folio,
-+		swp_entry_t phys, int rw)
- {
--	struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
-+	struct swap_info_struct *sis = __swap_entry_to_info(phys);
- 	struct swap_iocb *sio = ctx->sio;
- 
--	if (sio && !swap_can_merge(ctx, folio, rw)) {
-+	if (sio && !swap_can_merge(ctx, folio, phys, rw)) {
- 		if (rw == WRITE)
- 			swap_write_submit(ctx);
- 		else
-@@ -366,6 +364,7 @@ static void swap_add_folio(struct swap_io_ctx *ctx, struct folio *folio, int rw)
- 		ctx->sio = sio = mempool_alloc(sio_pool, GFP_NOIO);
- 		sio->nr_bvecs = 0;
- 		sio->len = 0;
-+		sio->entry = phys;
+-	if (unlikely(swap_is_vswap(sis))) {
+-		folio_unlock(folio);
+-		goto finish;
++	/*
++	 * Resolve the physical slot to read from. A vswap entry keeps
++	 * folio->swap virtual, so map it to its physical backing; a folio with
++	 * no backing has nothing to read.
++	 */
++	if (swap_is_vswap(sis)) {
++		phys = vswap_to_phys(folio->swap);
++		if (!phys.val) {
++			folio_unlock(folio);
++			goto finish;
++		}
++	} else {
++		phys = folio->swap;
  	}
- 	bvec_set_folio(&sio->bvecs[sio->nr_bvecs], folio, folio_size(folio), 0);
- 	sio->len += folio_size(folio);
-@@ -386,7 +385,8 @@ static void swap_add_folio(struct swap_io_ctx *ctx, struct folio *folio, int rw)
- 	}
- }
- 
--void __swap_writeout(struct swap_io_ctx *ctx, struct folio *folio)
-+void __swap_writeout(struct swap_io_ctx *ctx, struct folio *folio,
-+		swp_entry_t phys)
- {
- 	VM_BUG_ON_FOLIO(!folio_test_swapcache(folio), folio);
- 
-@@ -402,7 +402,7 @@ void __swap_writeout(struct swap_io_ctx *ctx, struct folio *folio)
- 
- 	folio_start_writeback(folio);
- 	folio_unlock(folio);
--	swap_add_folio(ctx, folio, WRITE);
-+	swap_add_folio(ctx, folio, phys, WRITE);
- }
- 
- /*
-@@ -506,7 +506,7 @@ void swap_read_folio(struct swap_io_ctx *ctx, struct folio *folio)
  
  	/* We have to read from slower devices. Increase zswap protection. */
  	zswap_folio_swapin(folio);
--	swap_add_folio(ctx, folio, READ);
-+	swap_add_folio(ctx, folio, folio->swap, READ);
+-	swap_add_folio(ctx, folio, folio->swap, READ);
++	swap_add_folio(ctx, folio, phys, READ);
  
  finish:
  	if (workingset) {
-@@ -538,8 +538,6 @@ static void swap_fs_write_complete(struct kiocb *iocb, long ret)
- 	bool failed = ret != sio->len;
+diff --git a/mm/swap_state.c b/mm/swap_state.c
+index 54e4fefdab95..657622cfd7f1 100644
+--- a/mm/swap_state.c
++++ b/mm/swap_state.c
+@@ -177,6 +177,9 @@ static int __swap_cache_add_check(struct swap_cluster_info *ci,
+ 		return -ENOENT;
+ 	ci_off = swp_cluster_offset(targ_entry);
+ 	old_tb = __swap_table_get(ci, ci_off);
++	/* Physical readahead can hit a vswap-backing rmap slot; skip it. */
++	if (swp_tb_is_pointer(old_tb))
++		return -ENOENT;
+ 	if (swp_tb_is_folio(old_tb))
+ 		return -EEXIST;
+ 	if (!__swp_tb_get_count(old_tb))
+@@ -201,7 +204,8 @@ static int __swap_cache_add_check(struct swap_cluster_info *ci,
+ 	ci_end = ci_off + nr;
+ 	do {
+ 		old_tb = __swap_table_get(ci, ci_off);
+-		if (unlikely(swp_tb_is_folio(old_tb) ||
++		if (unlikely(swp_tb_is_pointer(old_tb) ||
++			     swp_tb_is_folio(old_tb) ||
+ 			     !__swp_tb_get_count(old_tb) ||
+ 			     is_zero != __swap_table_test_zero(ci, ci_off) ||
+ 			     (memcg_id && *memcg_id != __swap_cgroup_get(ci, ci_off))))
+diff --git a/mm/swap_table.h b/mm/swap_table.h
+index 3d64d1629882..7d094694ec37 100644
+--- a/mm/swap_table.h
++++ b/mm/swap_table.h
+@@ -4,6 +4,7 @@
  
- 	if (failed) {
--		struct folio *folio = bvec_folio(&sio->bvecs[0]);
--
- 		/*
- 		 * In the case of swap-over-nfs, this can be a temporary failure
- 		 * if the system has limited memory for allocating transmit
-@@ -547,7 +545,7 @@ static void swap_fs_write_complete(struct kiocb *iocb, long ret)
- 		 * folio_rotate_reclaimable but rate-limit the messages.
- 		 */
- 		pr_err_ratelimited("Write error %ld on dio swapfile (%llu)\n",
--				   ret, swap_dev_pos(folio->swap));
-+				   ret, swap_dev_pos(sio->entry));
- 	}
+ #include <linux/rcupdate.h>
+ #include <linux/atomic.h>
++#include <linux/swapops.h>
+ #include "swap.h"
  
- 	swap_write_end(sio, failed);
-@@ -619,7 +617,7 @@ static void swap_bdev_submit_write(struct swap_io_ctx *ctx)
- 	bio_init(bio, ctx->sis->bdev, sio->bvecs, ARRAY_SIZE(sio->bvecs),
- 			REQ_OP_WRITE | REQ_SWAP);
- 	bio->bi_iter.bi_size = sio->len;
--	bio->bi_iter.bi_sector = swap_folio_sector(bio_first_folio_all(bio));
-+	bio->bi_iter.bi_sector = swap_entry_sector(sio->entry);
- 	bio_associate_blkg_from_folio(bio, bio_first_folio_all(bio));
- 
- 	if (ctx->sis->flags & SWP_SYNCHRONOUS_IO) {
-@@ -639,7 +637,7 @@ static void swap_bdev_submit_read(struct swap_io_ctx *ctx)
- 	bio_init(bio, ctx->sis->bdev, sio->bvecs, ARRAY_SIZE(sio->bvecs),
- 			REQ_OP_READ);
- 	bio->bi_iter.bi_size = sio->len;
--	bio->bi_iter.bi_sector = swap_folio_sector(bio_first_folio_all(bio));
-+	bio->bi_iter.bi_sector = swap_entry_sector(sio->entry);
- 
- 	if (ctx->sis->flags & SWP_SYNCHRONOUS_IO) {
- 		/*
-@@ -657,13 +655,14 @@ static void swap_bdev_submit_read(struct swap_io_ctx *ctx)
- 	}
+ extern struct swap_info_struct *vswap_si;
+@@ -30,7 +31,7 @@ struct swap_memcg_table {
+  * NULL:     |---------------- 0 ---------------| - Free slot
+  * Shadow:   |SWAP_COUNT|Z|---- SHADOW_VAL ---|1| - Swapped out slot
+  * PFN:      |SWAP_COUNT|Z|------ PFN -------|10| - Cached slot
+- * Pointer:  |----------- Pointer ----------|100| - (Unused)
++ * Pointer:  |-------- vswap offset --------|100| - vswap rmap
+  * Bad:      |------------- 1 -------------|1000| - Bad slot
+  *
+  * COUNT is `SWP_TB_COUNT_BITS` long, Z is the `SWP_TB_ZERO_FLAG` bit,
+@@ -51,9 +52,8 @@ struct swap_memcg_table {
+  * - PFN: Swap slot is in use, and cached. Memcg info is recorded on the page
+  *   struct.
+  *
+- * - Pointer: Unused yet. `0b100` is reserved for potential pointer usage
+- *   because only the lower three bits can be used as a marker for 8 bytes
+- *   aligned pointers.
++ * - Pointer: Reverse map from a physical slot to the vswap entry that owns
++ *   it. See the layout below.
+  *
+  * - Bad: Swap slot is reserved, protects swap header or holes on swap devices.
+  */
+@@ -393,4 +393,38 @@ static inline unsigned short __swap_cgroup_clear(struct swap_cluster_info *ci,
  }
+ #endif
  
--static bool swap_bdev_can_merge(struct folio *folio, struct folio *prev_folio,
--		size_t prev_folio_size, int rw)
-+static bool swap_bdev_can_merge(struct folio *folio, swp_entry_t phys,
-+		struct swap_iocb *sio, int rw)
- {
--	if (swap_folio_sector(folio) !=
--	    swap_folio_sector(prev_folio) + (prev_folio_size >> SECTOR_SHIFT))
-+	if (swap_entry_sector(phys) !=
-+	    swap_entry_sector(sio->entry) + (sio->len >> SECTOR_SHIFT))
- 		return false;
--	if (rw == WRITE && !folio_blkg_can_merge(folio, prev_folio))
-+	if (rw == WRITE && !folio_blkg_can_merge(folio,
-+			bvec_folio(&sio->bvecs[sio->nr_bvecs - 1])))
- 		return false;
- 	return true;
- }
-@@ -679,7 +678,7 @@ void swap_fs_prepare_rw(struct swap_io_ctx *ctx, int rw, struct iov_iter *iter)
- 	struct swap_iocb *sio = ctx->sio;
- 
- 	init_sync_kiocb(&sio->iocb, ctx->sis->swap_file);
--	sio->iocb.ki_pos = swap_dev_pos(bvec_folio(&sio->bvecs[0])->swap);
-+	sio->iocb.ki_pos = swap_dev_pos(sio->entry);
- 	if (rw == WRITE)
- 		sio->iocb.ki_complete = swap_fs_write_complete;
- 	else
-@@ -690,11 +689,10 @@ void swap_fs_prepare_rw(struct swap_io_ctx *ctx, int rw, struct iov_iter *iter)
- }
- EXPORT_SYMBOL_GPL(swap_fs_prepare_rw);
- 
--bool swap_fs_can_merge(struct folio *folio, struct folio *prev_folio,
--		size_t prev_folio_size, int rw)
-+bool swap_fs_can_merge(struct folio *folio, swp_entry_t phys,
-+		struct swap_iocb *sio, int rw)
- {
--	return swap_dev_pos(folio->swap) ==
--		swap_dev_pos(prev_folio->swap) + prev_folio_size;
-+	return swap_dev_pos(phys) == swap_dev_pos(sio->entry) + sio->len;
- }
- EXPORT_SYMBOL_GPL(swap_fs_can_merge);
- 
-diff --git a/mm/swap.h b/mm/swap.h
-index 81e47dc36a02..df323d5e8da8 100644
---- a/mm/swap.h
-+++ b/mm/swap.h
-@@ -320,7 +320,8 @@ void swap_read_folio(struct swap_io_ctx *ctx, struct folio *folio);
- void swap_read_submit(struct swap_io_ctx *ctx);
- void swap_write_submit(struct swap_io_ctx *ctx);
- int swap_writeout(struct swap_io_ctx *ctx, struct folio *folio);
--void __swap_writeout(struct swap_io_ctx *ctx, struct folio *folio);
-+void __swap_writeout(struct swap_io_ctx *ctx, struct folio *folio,
-+		swp_entry_t phys);
- 
- /* linux/mm/swap_state.c */
- extern struct address_space swap_space __read_mostly;
++/*
++ * Pointer-tagged swap table entry: rmap for vswap-backing physical slots.
++ *
++ * On physical clusters, a Pointer-tagged entry stores the offset of the
++ * vswap entry that owns this physical slot (the reverse map). Only the
++ * offset is stored; the swap type is implicit (always vswap_si->type,
++ * since there is exactly one vswap device).
++ *
++ *   Pointer:  |---- vswap offset ----|100|
++ */
++#define SWP_TB_PTR_MARK_BITS	3
++#define SWP_TB_PTR_MARK		0b100UL
++#define SWP_TB_PTR_MARK_MASK	((1UL << SWP_TB_PTR_MARK_BITS) - 1)
++#define SWP_RMAP_ENTRY_MASK	(~SWP_TB_PTR_MARK_MASK)
++
++static inline bool swp_tb_is_pointer(unsigned long swp_tb)
++{
++	return (swp_tb & SWP_TB_PTR_MARK_MASK) == SWP_TB_PTR_MARK;
++}
++
++static inline unsigned long swp_entry_to_swp_tb_ptr(swp_entry_t entry)
++{
++	return (swp_offset(entry) << SWP_TB_PTR_MARK_BITS) | SWP_TB_PTR_MARK;
++}
++
++static inline swp_entry_t swp_tb_ptr_to_swp_entry(unsigned long swp_tb)
++{
++	unsigned long offset;
++
++	VM_WARN_ON(!swp_tb_is_pointer(swp_tb));
++	offset = (swp_tb & SWP_RMAP_ENTRY_MASK) >> SWP_TB_PTR_MARK_BITS;
++	return swp_entry(vswap_si->type, offset);
++}
++
+ #endif
 diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 67a2399cf1ae..af6a162c4450 100644
+index af6a162c4450..13d2ae60fe4c 100644
 --- a/mm/swapfile.c
 +++ b/mm/swapfile.c
-@@ -342,14 +342,14 @@ offset_to_swap_extent(struct swap_info_struct *sis, unsigned long offset)
- 	BUG();
+@@ -248,7 +248,7 @@ static int __try_to_reclaim_swap(struct swap_info_struct *si,
+ 	need_reclaim = ((flags & TTRS_ANYWAY) ||
+ 			((flags & TTRS_UNMAPPED) && !folio_mapped(folio)) ||
+ 			((flags & TTRS_FULL) && mem_cgroup_swap_full(folio) &&
+-			 !is_vswap_entry(folio->swap)));
++			 folio_phys_swap_backed(folio)));
+ 	if (!need_reclaim || !folio_swapcache_freeable(folio))
+ 		goto out_unlock;
+ 
+@@ -962,6 +962,8 @@ static bool __swap_cluster_alloc_entries(struct swap_info_struct *si,
+ {
+ 	unsigned int order;
+ 	unsigned long nr_pages;
++	swp_entry_t vswap_entry, v;
++	unsigned int i;
+ 
+ 	lockdep_assert_held(&ci->lock);
+ 
+@@ -981,8 +983,26 @@ static bool __swap_cluster_alloc_entries(struct swap_info_struct *si,
+ 		order = folio_order(folio);
+ 		nr_pages = 1 << order;
+ 		swap_cluster_assert_empty(ci, ci_off, nr_pages, false);
+-		__swap_cache_add_folio(ci, folio, swp_entry(si->type,
+-							    ci_off + cluster_offset(si, ci)));
++		if (folio_test_swapcache(folio)) {
++			/*
++			 * Folio already in the swap cache: we are allocating
++			 * physical backing for its vswap entry. Point each
++			 * physical slot back at its own vswap entry
++			 * (Pointer-tagged rmap).
++			 */
++			VM_WARN_ON(!is_vswap_entry(folio->swap));
++			vswap_entry = folio->swap;
++			for (i = 0; i < nr_pages; i++) {
++				v = vswap_entry;
++				v.val += i;
++				__swap_table_set(ci, ci_off + i,
++						 swp_entry_to_swp_tb_ptr(v));
++			}
++		} else {
++			__swap_cache_add_folio(ci, folio,
++				swp_entry(si->type,
++					  ci_off + cluster_offset(si, ci)));
++		}
+ 	} else if (IS_ENABLED(CONFIG_HIBERNATION)) {
+ 		order = 0;
+ 		nr_pages = 1;
+@@ -1478,12 +1498,14 @@ static bool get_swap_device_info(struct swap_info_struct *si)
+  * Fast path try to get swap entries with specified order from current
+  * CPU's swap entry pool (a cluster).
+  */
+-static bool swap_alloc_fast(struct folio *folio)
++static swp_entry_t swap_alloc_fast(struct folio *folio)
+ {
+ 	unsigned int order = folio_order(folio);
+ 	struct swap_cluster_info *ci;
+ 	struct swap_info_struct *si;
+-	unsigned int offset;
++	unsigned long offset, found = 0;
++
++	lockdep_assert_held(&this_cpu_ptr(&percpu_swap_cluster)->lock);
+ 
+ 	/*
+ 	 * Once allocated, swap_info_struct will never be completely freed,
+@@ -1492,25 +1514,28 @@ static bool swap_alloc_fast(struct folio *folio)
+ 	si = this_cpu_read(percpu_swap_cluster.si[order]);
+ 	offset = this_cpu_read(percpu_swap_cluster.offset[order]);
+ 	if (!si || !offset || !get_swap_device_info(si))
+-		return false;
++		return (swp_entry_t){};
+ 
+ 	ci = swap_cluster_lock(si, offset);
+ 	if (ci && cluster_is_usable(ci, order)) {
+ 		if (cluster_is_empty(ci))
+ 			offset = cluster_offset(si, ci);
+-		alloc_swap_scan_cluster(si, ci, folio, offset);
++		found = alloc_swap_scan_cluster(si, ci, folio, offset);
+ 	} else if (ci) {
+ 		swap_cluster_unlock(ci);
+ 	}
+ 
+ 	put_swap_device(si);
+-	return folio_test_swapcache(folio);
++	if (found)
++		return swp_entry(si->type, found);
++	return (swp_entry_t){};
  }
  
--sector_t swap_folio_sector(struct folio *folio)
-+sector_t swap_entry_sector(swp_entry_t entry)
+ /* Rotate the device and switch to a new cluster */
+-static void swap_alloc_slow(struct folio *folio)
++static swp_entry_t swap_alloc_slow(struct folio *folio)
  {
--	struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
-+	struct swap_info_struct *sis = __swap_entry_to_info(entry);
- 	struct swap_extent *se;
- 	sector_t sector;
- 	pgoff_t offset;
+ 	struct swap_info_struct *si, *next;
++	unsigned long found;
  
--	offset = swp_offset(folio->swap);
-+	offset = swp_offset(entry);
- 	se = offset_to_swap_extent(sis, offset);
- 	sector = se->start_block + (offset - se->start_page);
- 	return sector << (PAGE_SHIFT - 9);
+ 	spin_lock(&swap_avail_lock);
+ start_over:
+@@ -1519,12 +1544,12 @@ static void swap_alloc_slow(struct folio *folio)
+ 		plist_requeue(&si->avail_list, &swap_avail_head);
+ 		spin_unlock(&swap_avail_lock);
+ 		if (get_swap_device_info(si)) {
+-			cluster_alloc_swap_entry(si, folio);
++			found = cluster_alloc_swap_entry(si, folio);
+ 			put_swap_device(si);
+-			if (folio_test_swapcache(folio))
+-				return;
++			if (found)
++				return swp_entry(si->type, found);
+ 			if (folio_test_large(folio))
+-				return;
++				return (swp_entry_t){};
+ 		}
+ 
+ 		spin_lock(&swap_avail_lock);
+@@ -1542,6 +1567,7 @@ static void swap_alloc_slow(struct folio *folio)
+ 			goto start_over;
+ 	}
+ 	spin_unlock(&swap_avail_lock);
++	return (swp_entry_t){};
+ }
+ 
+ /*
+@@ -1900,6 +1926,23 @@ static bool vswap_alloc(struct folio *folio)
+ 	return false;
+ }
+ 
++static swp_entry_t folio_alloc_phys_swap(struct folio *folio)
++{
++	swp_entry_t entry;
++
++again:
++	local_lock(&percpu_swap_cluster.lock);
++	entry = swap_alloc_fast(folio);
++	if (!entry.val)
++		entry = swap_alloc_slow(folio);
++	local_unlock(&percpu_swap_cluster.lock);
++
++	if (!entry.val && !folio_order(folio) && swap_sync_discard())
++		goto again;
++
++	return entry;
++}
++
+ /**
+  * folio_alloc_swap - allocate swap space for a folio
+  * @folio: folio we want to move to swap
+@@ -1938,20 +1981,8 @@ int folio_alloc_swap(struct folio *folio)
+ 		}
+ 	}
+ 
+-	if (vswap_alloc(folio))
+-		goto done;
+-
+-again:
+-	local_lock(&percpu_swap_cluster.lock);
+-	if (!swap_alloc_fast(folio))
+-		swap_alloc_slow(folio);
+-	local_unlock(&percpu_swap_cluster.lock);
+-
+-done:
+-	if (!order && unlikely(!folio_test_swapcache(folio))) {
+-		if (swap_sync_discard())
+-			goto again;
+-	}
++	if (!vswap_alloc(folio))
++		folio_alloc_phys_swap(folio);
+ 
+ 	/* Need to call this even if allocation failed, for MEMCG_SWAP_FAIL. */
+ 	if (unlikely(mem_cgroup_try_charge_swap(folio))) {
+@@ -1973,6 +2004,11 @@ int folio_alloc_swap(struct folio *folio)
+ 	return order ? -E2BIG : -ENOMEM;
+ }
+ 
++static void __swap_cluster_free_phys_backing(struct swap_info_struct *psi,
++					     struct swap_cluster_info *pci,
++					     unsigned int ci_start,
++					     unsigned int nr_pages);
++
+ /**
+  * __vswap_release_backing - release the backing of a range of vtable slots
+  * @ci: the locked vswap cluster
+@@ -1988,8 +2024,11 @@ void __vswap_release_backing(struct swap_cluster_info *ci,
+ 			     unsigned int ci_start, unsigned int nr)
+ {
+ 	struct swap_cluster_info_dynamic *ci_dyn;
++	struct swap_info_struct *psi;
++	unsigned long phys_off_start = 0, phys_off_end = 0;
+ 	unsigned int ci_off;
+ 	unsigned long vt;
++	swp_entry_t phys_first = {};
+ 
+ 	lockdep_assert_held(&ci->lock);
+ 	ci_dyn = container_of(ci, struct swap_cluster_info_dynamic, ci);
+@@ -1997,7 +2036,30 @@ void __vswap_release_backing(struct swap_cluster_info *ci,
+ 	for (ci_off = ci_start; ci_off < ci_start + nr; ci_off++) {
+ 		vt = __vtable_get(ci_dyn, ci_off);
+ 
++		/* The free helper takes one contiguous run within one cluster. */
++		if (phys_off_start != phys_off_end &&
++		    (vtable_type(vt) != VSWAP_SWAPFILE ||
++		     swp_type(vtable_to_phys(vt)) != swp_type(phys_first) ||
++		     swp_offset(vtable_to_phys(vt)) != phys_off_end ||
++		     phys_off_end % SWAPFILE_CLUSTER == 0)) {
++			psi = __swap_entry_to_info(phys_first);
++			__swap_cluster_free_phys_backing(psi,
++					__swap_entry_to_cluster(phys_first),
++					phys_off_start % SWAPFILE_CLUSTER,
++					phys_off_end - phys_off_start);
++			phys_off_start = phys_off_end = 0;
++		}
++
+ 		switch (vtable_type(vt)) {
++		case VSWAP_SWAPFILE:
++			if (phys_off_start == phys_off_end) {
++				phys_first = vtable_to_phys(vt);
++				phys_off_start = swp_offset(phys_first);
++				phys_off_end = phys_off_start + 1;
++			} else {
++				phys_off_end++;
++			}
++			break;
+ 		case VSWAP_ZSWAP:
+ 			zswap_entry_free(vtable_to_zswap(vt));
+ 			break;
+@@ -2013,6 +2075,14 @@ void __vswap_release_backing(struct swap_cluster_info *ci,
+ 		if (__swap_table_test_zero(ci, ci_off))
+ 			__swap_table_clear_zero(ci, ci_off);
+ 	}
++
++	if (phys_off_start != phys_off_end) {
++		psi = __swap_entry_to_info(phys_first);
++		__swap_cluster_free_phys_backing(psi,
++				__swap_entry_to_cluster(phys_first),
++				phys_off_start % SWAPFILE_CLUSTER,
++				phys_off_end - phys_off_start);
++	}
+ }
+ 
+ /**
+@@ -2040,6 +2110,103 @@ void folio_release_vswap_backing(struct folio *folio)
+ 	spin_unlock(&ci->lock);
+ }
+ 
++/**
++ * folio_release_non_phys_swap_backing() - Drop a folio's non-physical vswap backing.
++ * @folio: the folio, occupying a virtual swap entry.
++ *
++ * Release the zswap backing recorded for @folio's virtual swap entry,
++ * leaving the slots empty so the writeout path can install fresh physical
++ * backing. Does nothing when the entry is already backed by physical
++ * swapfile slots, which are kept for reuse, or when it has no backing
++ * beyond the swap cache folio itself.
++ *
++ * Context: Caller must hold the folio lock; @folio must be in the swap cache
++ * and occupy a virtual swap entry.
++ */
++void folio_release_non_phys_swap_backing(struct folio *folio)
++{
++	struct swap_cluster_info *ci;
++	struct swap_cluster_info_dynamic *ci_dyn;
++	int nr = folio_nr_pages(folio);
++	unsigned int voff;
++	unsigned long vt;
++	enum vswap_backing_type type;
++
++	ci = __swap_entry_to_cluster(folio->swap);
++	ci_dyn = container_of(ci, struct swap_cluster_info_dynamic, ci);
++	voff = swp_cluster_offset(folio->swap);
++
++	spin_lock(&ci->lock);
++	/*
++	 * A folio's slots cannot mix swapfile with other backends, except
++	 * mid-backend-change, which always starts from slot 0.
++	 */
++	vt = __vtable_get(ci_dyn, voff);
++	type = vtable_type(vt);
++
++	if (type == VSWAP_SWAPFILE || type == VSWAP_NONE) {
++		spin_unlock(&ci->lock);
++		return;
++	}
++
++	__vswap_release_backing(ci, voff, nr);
++	spin_unlock(&ci->lock);
++}
++
++/**
++ * folio_realloc_swap() - Back a virtual swap folio with a physical swap slot.
++ * @folio: the folio, occupying a virtual swap entry.
++ *
++ * Ensure @folio's virtual swap entry has physical (swapfile) backing,
++ * allocating a physical slot on demand if it has none. If @folio is
++ * already physically backed, the existing physical entry is returned
++ * unchanged.
++ *
++ * Context: Caller must hold the folio lock; @folio must be in the swap cache
++ * and occupy a virtual swap entry.
++ * Return: The physical swap entry now backing @folio, or an empty entry
++ * (.val == 0) on failure.
++ */
++swp_entry_t folio_realloc_swap(struct folio *folio)
++{
++	swp_entry_t vswap_entry = folio->swap;
++	struct swap_cluster_info *ci;
++	struct swap_cluster_info_dynamic *ci_dyn;
++	unsigned int voff;
++	swp_entry_t phys_entry = {};
++	swp_entry_t pe;
++	int i, nr = folio_nr_pages(folio);
++
++	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
++	VM_BUG_ON_FOLIO(!folio_test_swapcache(folio), folio);
++	VM_WARN_ON(!is_vswap_entry(vswap_entry));
++
++	phys_entry = vswap_to_phys(vswap_entry);
++	if (phys_entry.val)
++		return phys_entry;
++
++	phys_entry = folio_alloc_phys_swap(folio);
++	if (!phys_entry.val)
++		return (swp_entry_t){};
++
++	voff = swp_cluster_offset(vswap_entry);
++
++	ci = __swap_entry_to_cluster(vswap_entry);
++	ci_dyn = container_of(ci, struct swap_cluster_info_dynamic, ci);
++	spin_lock(&ci->lock);
++	/*
++	 * Install PHYS backing without freeing any prior contents of the
++	 * vtable. Releasing the old backing is the caller's job.
++	 */
++	for (i = 0; i < nr; i++) {
++		pe.val = phys_entry.val + i;
++		__vtable_set(ci_dyn, voff + i, vtable_mk_phys(pe));
++	}
++	spin_unlock(&ci->lock);
++
++	return phys_entry;
++}
++
+ /**
+  * folio_dup_swap() - Increase swap count of swap entries of a folio.
+  * @folio: folio with swap entries bounded.
+@@ -2169,6 +2336,47 @@ struct swap_info_struct *get_swap_device(swp_entry_t entry)
+ 	return ERR_PTR(-EIO);
+ }
+ 
++/*
++ * Common tail for freeing swap slots: device-level accounting
++ * and cluster list management.
++ */
++static void __swap_cluster_finish_free(struct swap_info_struct *si,
++				       struct swap_cluster_info *ci,
++				       unsigned int ci_start,
++				       unsigned int nr_pages)
++{
++	lockdep_assert_held(&ci->lock);
++	swap_range_free(si, cluster_offset(si, ci) + ci_start, nr_pages);
++	swap_cluster_assert_empty(ci, ci_start, nr_pages, false);
++
++	if (!ci->count)
++		free_cluster(si, ci);
++	else
++		partial_free_cluster(si, ci);
++}
++
++/*
++ * Free physical swap slots that were backing vswap entries (Pointer-tagged).
++ */
++static void __swap_cluster_free_phys_backing(struct swap_info_struct *psi,
++					     struct swap_cluster_info *pci,
++					     unsigned int ci_start,
++					     unsigned int nr_pages)
++{
++	unsigned int ci_off;
++
++	spin_lock_nested(&pci->lock, SINGLE_DEPTH_NESTING);
++	VM_WARN_ON(pci->count < nr_pages);
++	pci->count -= nr_pages;
++	for (ci_off = ci_start; ci_off < ci_start + nr_pages; ci_off++) {
++		__swap_table_set(pci, ci_off, null_to_swp_tb());
++		if (!SWAP_TABLE_HAS_ZEROFLAG)
++			__swap_table_clear_zero(pci, ci_off);
++	}
++	__swap_cluster_finish_free(psi, pci, ci_start, nr_pages);
++	swap_cluster_unlock(pci);
++}
++
+ /*
+  * Free a set of swap slots after their swap count dropped to zero, or will be
+  * zero after putting the last ref (saves one __swap_cluster_put_entry call).
+@@ -2180,7 +2388,6 @@ void __swap_cluster_free_entries(struct swap_info_struct *si,
+ 	unsigned long old_tb;
+ 	unsigned short batch_id = 0, id_cur;
+ 	unsigned int ci_off = ci_start, ci_end = ci_start + nr_pages;
+-	unsigned long ci_head = cluster_offset(si, ci);
+ 	unsigned int batch_off = ci_off;
+ 
+ 	VM_WARN_ON(ci->count < nr_pages);
+@@ -2218,13 +2425,7 @@ void __swap_cluster_free_entries(struct swap_info_struct *si,
+ 	if (batch_id)
+ 		mem_cgroup_uncharge_swap(batch_id, ci_off - batch_off);
+ 
+-	swap_range_free(si, ci_head + ci_start, nr_pages);
+-	swap_cluster_assert_empty(ci, ci_start, nr_pages, false);
+-
+-	if (!ci->count)
+-		free_cluster(si, ci);
+-	else
+-		partial_free_cluster(si, ci);
++	__swap_cluster_finish_free(si, ci, ci_start, nr_pages);
+ }
+ 
+ int __swap_count(swp_entry_t entry)
+@@ -3024,19 +3225,94 @@ static unsigned int find_next_to_unuse(struct swap_info_struct *si,
+ 
+ static int try_to_unuse(unsigned int type)
+ {
++	struct mempolicy *mpol = get_task_policy(current);
+ 	struct mm_struct *prev_mm;
+ 	struct mm_struct *mm;
+ 	struct list_head *p;
+ 	int retval = 0;
+ 	struct swap_info_struct *si = swap_info[type];
+ 	struct folio *folio;
+-	swp_entry_t entry;
+-	unsigned int i;
++	struct swap_io_ctx ctx;
++	swp_entry_t entry, vswap_entry, phys;
++	unsigned long swp_tb;
++	unsigned int i, j;
+ 
+ 	if (!swap_usage_in_pages(si))
+ 		goto success;
+ 
+ retry:
++	/*
++	 * Free vswap-backing slots (Pointer-tagged) first. Walk physical
++	 * clusters, read the vswap entry from the rmap, ensure the data
++	 * is in the swap cache, and transition PHYS to FOLIO. Freeing the
++	 * physical backing is enough, so no page table walk is needed.
++	 */
++	i = 0;
++	while (vswap_is_enabled() &&
++	       swap_usage_in_pages(si) &&
++	       !signal_pending(current) &&
++	       (i = find_next_to_unuse(si, i)) != 0) {
++		swp_tb = swap_table_lookup(swp_entry(si->type, i));
++		if (!swp_tb_is_pointer(swp_tb))
++			continue;
++
++		vswap_entry = swp_tb_ptr_to_swp_entry(swp_tb);
++
++		folio = swap_cache_get_folio(vswap_entry);
++		if (!folio) {
++			folio = swap_cache_alloc_folio(vswap_entry,
++						       GFP_HIGHUSER_MOVABLE,
++						       BIT(0), NULL, mpol,
++						       NO_INTERLEAVE_INDEX);
++			if (IS_ERR(folio)) {
++				if (PTR_ERR(folio) == -ENOMEM)
++					return -ENOMEM;
++				continue;
++			}
++			ctx = (struct swap_io_ctx){};
++			swap_read_folio(&ctx, folio);
++			swap_read_submit(&ctx);
++		}
++		folio_lock(folio);
++
++		if (!folio_matches_swap_entry(folio, vswap_entry)) {
++			folio_unlock(folio);
++			folio_put(folio);
++			continue;
++		}
++
++		/*
++		 * Re-validate under folio lock: rmap holds folio->swap + j
++		 * for some j in [0, nr_pages). Check folio->swap still maps
++		 * to the contiguous physical run that includes our slot i.
++		 */
++		j = vswap_entry.val - folio->swap.val;
++		phys = vswap_to_phys(folio->swap);
++		if (!phys.val || swp_type(phys) != type ||
++		    swp_offset(phys) + j != i) {
++			folio_unlock(folio);
++			folio_put(folio);
++			continue;
++		}
++
++		folio_wait_writeback(folio);
++		folio_release_vswap_backing(folio);
++		/*
++		 * Drop a folio whose read failed rather than dirtying
++		 * uninitialised memory; the next fault finds no backing and
++		 * gets SIGBUS.
++		 */
++		if (unlikely(!folio_test_uptodate(folio)))
++			swap_cache_del_folio(folio);
++		else
++			folio_mark_dirty(folio);
++		folio_unlock(folio);
++		folio_put(folio);
++	}
++
++	if (!swap_usage_in_pages(si))
++		goto success;
++
+ 	retval = shmem_unuse(type);
+ 	if (retval)
+ 		return retval;
+@@ -3079,6 +3355,8 @@ static int try_to_unuse(unsigned int type)
+ 	       (i = find_next_to_unuse(si, i)) != 0) {
+ 
+ 		entry = swp_entry(type, i);
++
++		/* Pointer-tagged rmap slots have no folio; the pre-pass took them. */
+ 		folio = swap_cache_get_folio(entry);
+ 		if (!folio)
+ 			continue;
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 6cf689817f2e..2c9cc5c20ea9 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -1606,7 +1606,7 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+ activate_locked:
+ 		/* Not a candidate for swapping, so reclaim swap space. */
+ 		if (folio_test_swapcache(folio) &&
+-		    ((mem_cgroup_swap_full(folio) && !is_vswap_entry(folio->swap)) ||
++		    ((mem_cgroup_swap_full(folio) && folio_phys_swap_backed(folio)) ||
+ 		     folio_test_mlocked(folio)))
+ 			folio_free_swap(folio);
+ 		VM_BUG_ON_FOLIO(folio_test_active(folio), folio);
+diff --git a/mm/vswap.h b/mm/vswap.h
+index 5334c77b6b84..6f952b2591d1 100644
+--- a/mm/vswap.h
++++ b/mm/vswap.h
+@@ -20,6 +20,7 @@ struct zswap_entry;
+ enum vswap_backing_type {
+ 	VSWAP_NONE	= 0,
+ 	VSWAP_ZSWAP	= 1,
++	VSWAP_SWAPFILE	= 2,
+ 	VSWAP_ZERO,
+ 	VSWAP_FOLIO,
+ };
+@@ -50,11 +51,15 @@ static inline bool is_vswap_entry(swp_entry_t entry)
+  * pointer for a virtual swap slot. Tag in low 3 bits, payload in
+  * upper 61 bits.
+  *
+- *   NONE:   |----- 0000 ------|000|  - no separate backend pointer
+- *   ZSWAP:  |--- zswap_entry* |001|  - compressed in zswap (tag in low bits)
++ *   NONE:     |----- 0000 ------|000|  - no separate backend pointer
++ *   ZSWAP:    |--- zswap_entry* |001|  - compressed in zswap (tag in low bits)
++ *   SWAPFILE: |- type:5,off:56 -|010|  - on a physical swapfile
+  *
+- * Pointer payloads (ZSWAP) are stored directly with the tag OR'd into the
+- * low bits (kernel pointers are >= 8-byte aligned, same approach as xarray).
++ * SWAPFILE packs swp_type in the top MAX_SWAPFILES_SHIFT bits and swp_offset in
++ * the middle VTABLE_PHYS_OFF_BITS bits, both above the tag, so the type is
++ * not shifted off the word. Pointer payloads (ZSWAP) are stored directly with
++ * the tag OR'd into the low bits (kernel pointers are >= 8-byte aligned, same
++ * approach as xarray).
+  *
+  * vtable[i] = NONE does not by itself mean "free". The swap_table entry
+  * and the per-slot zero flag carry the rest of the state. The full
+@@ -68,6 +73,8 @@ static inline bool is_vswap_entry(swp_entry_t entry)
+  *   NONE      | *             | set   | zero-backed; cached if PFN set
+  *   ZSWAP     | PFN           | clear | folio cached + zswap entry
+  *   ZSWAP     | shadow / NULL | clear | evicted, only in zswap
++ *   SWAPFILE  | PFN           | clear | folio cached + physical slot
++ *   SWAPFILE  | shadow / NULL | clear | evicted, only on the swapfile
+  *
+  * Locking: a slot's vtable entry (the vswap entry's backend) is only
+  * stable while the caller owns and holds the lock on that entry's swap
+@@ -93,6 +100,23 @@ static inline enum vswap_backing_type vtable_type(unsigned long vt)
+ 	return vt & VTABLE_TAG_MASK;
+ }
+ 
++/* swp_offset field width in a physical backend slot; layout described above. */
++#define VTABLE_PHYS_OFF_BITS	(BITS_PER_LONG - VTABLE_TAG_BITS - MAX_SWAPFILES_SHIFT)
++
++static inline unsigned long vtable_mk_phys(swp_entry_t entry)
++{
++	VM_WARN_ON_ONCE(swp_offset(entry) >> VTABLE_PHYS_OFF_BITS);
++	return ((unsigned long)swp_type(entry) << (VTABLE_TAG_BITS + VTABLE_PHYS_OFF_BITS)) |
++	       (swp_offset(entry) << VTABLE_TAG_BITS) | VSWAP_SWAPFILE;
++}
++
++static inline swp_entry_t vtable_to_phys(unsigned long vt)
++{
++	VM_WARN_ON(vtable_type(vt) != VSWAP_SWAPFILE);
++	return swp_entry(vt >> (VTABLE_TAG_BITS + VTABLE_PHYS_OFF_BITS),
++			 (vt >> VTABLE_TAG_BITS) & ((1UL << VTABLE_PHYS_OFF_BITS) - 1));
++}
++
+ static inline struct zswap_entry *vtable_to_zswap(unsigned long vt)
+ {
+ 	VM_WARN_ON(vtable_type(vt) != VSWAP_ZSWAP);
+@@ -134,6 +158,33 @@ vswap_lock_cluster(swp_entry_t entry, unsigned int *voff)
+ 	return container_of(ci, struct swap_cluster_info_dynamic, ci);
+ }
+ 
++/**
++ * vswap_to_phys - resolve a vswap entry's physical swap backing
++ * @entry: the virtual swap entry
++ *
++ * Context: takes and drops the vswap cluster lock internally.
++ * Return: the backing physical swp_entry_t, or the null entry (.val == 0)
++ * when @entry has no physical backing (NONE/ZSWAP/ZERO).
++ */
++static inline swp_entry_t vswap_to_phys(swp_entry_t entry)
++{
++	struct swap_cluster_info_dynamic *ci_dyn;
++	unsigned int voff;
++	unsigned long vt;
++
++	ci_dyn = vswap_lock_cluster(entry, &voff);
++	if (!ci_dyn)
++		return (swp_entry_t){};
++
++	vt = __vtable_get(ci_dyn, voff);
++	swap_cluster_unlock(&ci_dyn->ci);
++
++	if (vtable_type(vt) != VSWAP_SWAPFILE)
++		return (swp_entry_t){};
++
++	return vtable_to_phys(vt);
++}
++
+ void __vswap_release_backing(struct swap_cluster_info *ci,
+ 			     unsigned int ci_start, unsigned int nr);
+ 
+@@ -184,6 +235,104 @@ static inline struct zswap_entry *vswap_zswap_load(swp_entry_t entry)
+ }
+ 
+ void folio_release_vswap_backing(struct folio *folio);
++swp_entry_t folio_realloc_swap(struct folio *folio);
++void folio_release_non_phys_swap_backing(struct folio *folio);
++
++/*
++ * Walk nr vtable slots starting at voff in ci_dyn. Returns the prefix
++ * length of slots sharing one effective backing type. For SWAPFILE,
++ * the prefix is also restricted to contiguous offsets in the same
++ * swapfile.
++ *
++ * Effective type per slot:
++ *   vtable=NONE + zero flag set       -> VSWAP_ZERO
++ *   vtable=NONE + swap_table PFN tag  -> VSWAP_FOLIO
++ *   vtable=NONE + neither             -> VSWAP_NONE
++ *   vtable=SWAPFILE                   -> VSWAP_SWAPFILE
++ *   vtable=ZSWAP                      -> VSWAP_ZSWAP
++ *
++ * *typep returns the effective type of slot 0. Caller holds
++ * ci_dyn->ci.lock.
++ */
++static inline int __vswap_check_backing(struct swap_cluster_info_dynamic *ci_dyn,
++					unsigned int voff, int nr,
++					enum vswap_backing_type *typep)
++{
++	enum vswap_backing_type first_type = VSWAP_NONE;
++	enum vswap_backing_type slot_type;
++	swp_entry_t first_phys = {};
++	unsigned long vt, swap_tb;
++	int i;
++
++	lockdep_assert_held(&ci_dyn->ci.lock);
++
++	for (i = 0; i < nr; i++) {
++		vt = __vtable_get(ci_dyn, voff + i);
++		if (vtable_type(vt) == VSWAP_NONE) {
++			swap_tb = __swap_table_get(&ci_dyn->ci, voff + i);
++			if (__swap_table_test_zero(&ci_dyn->ci, voff + i))
++				slot_type = VSWAP_ZERO;
++			else if (swp_tb_is_folio(swap_tb))
++				slot_type = VSWAP_FOLIO;
++			else
++				slot_type = VSWAP_NONE;
++		} else {
++			slot_type = vtable_type(vt);
++		}
++
++		if (!i) {
++			first_type = slot_type;
++			if (first_type == VSWAP_SWAPFILE)
++				first_phys = vtable_to_phys(vt);
++		} else if (slot_type != first_type) {
++			break;
++		} else if (first_type == VSWAP_SWAPFILE &&
++			   vtable_to_phys(vt).val != first_phys.val + i) {
++			break;
++		}
++	}
++
++	if (typep)
++		*typep = first_type;
++	return i;
++}
++
++static inline int vswap_check_backing(swp_entry_t entry, int nr,
++				      enum vswap_backing_type *typep)
++{
++	struct swap_cluster_info_dynamic *ci_dyn;
++	unsigned int voff;
++	int ret;
++
++	ci_dyn = vswap_lock_cluster(entry, &voff);
++	if (!ci_dyn) {
++		if (typep)
++			*typep = VSWAP_NONE;
++		return 0;
++	}
++	ret = __vswap_check_backing(ci_dyn, voff, nr, typep);
++	swap_cluster_unlock(&ci_dyn->ci);
++	return ret;
++}
++
++/**
++ * folio_phys_swap_backed - test whether a folio is backed by a contiguous
++ *                          range of physical swap slots.
++ * @folio: a swap-cache resident folio
++ *
++ * Return: %true if @folio->swap is not a vswap entry, or if these vswap
++ * entries are backed by a contiguous range of physical slots.
++ */
++static inline bool folio_phys_swap_backed(struct folio *folio)
++{
++	swp_entry_t entry = folio->swap;
++	int nr = folio_nr_pages(folio);
++	enum vswap_backing_type type;
++
++	return !is_vswap_entry(entry) ||
++	       (vswap_check_backing(entry, nr, &type) == nr &&
++		type == VSWAP_SWAPFILE);
++}
+ 
+ static inline int vswap_cluster_alloc_vtable(struct swap_cluster_info_dynamic *ci_dyn,
+ 					     gfp_t gfp)
+@@ -214,6 +363,47 @@ static inline bool is_vswap_entry(swp_entry_t entry)
+ 	return false;
+ }
+ 
++static inline swp_entry_t vswap_to_phys(swp_entry_t entry)
++{
++	return (swp_entry_t){};
++}
++
++static inline bool folio_phys_swap_backed(struct folio *folio)
++{
++	return true;
++}
++
+ #endif /* CONFIG_SWAP */
+ 
++/*
++ * Test a per-backend swap flag (SWP_SYNCHRONOUS_IO, SWP_STABLE_WRITES, ...)
++ * for @entry. For a vswap entry the property belongs to the current
++ * physical backing rather than vswap_si itself; resolve to the backing
++ * and test there. Returns false for zswap/zero/unbacked vswap entries
++ * as they don't have a backing bdev.
++ */
++static inline bool swap_entry_backend_has_flag(struct swap_info_struct *si,
++					       swp_entry_t entry,
++					       unsigned long flag)
++{
++	struct swap_info_struct *phys_si;
++	swp_entry_t phys;
++	bool has_flag;
++
++	if (!swap_is_vswap(si))
++		return data_race(si->flags & flag);
++
++	phys = vswap_to_phys(entry);
++	if (!phys.val)
++		return false;
++
++	phys_si = get_swap_device(phys);
++	if (IS_ERR_OR_NULL(phys_si))
++		return false;
++
++	has_flag = data_race(phys_si->flags & flag);
++	put_swap_device(phys_si);
++	return has_flag;
++}
++
+ #endif /* _MM_VSWAP_H */
 diff --git a/mm/zswap.c b/mm/zswap.c
-index 3466c80ac188..c2430dbfc653 100644
+index c2430dbfc653..bbfaeac00355 100644
 --- a/mm/zswap.c
 +++ b/mm/zswap.c
-@@ -1094,7 +1094,7 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
- 	folio_set_reclaim(folio);
- 
- 	/* start writeback */
--	__swap_writeout(&ctx, folio);
-+	__swap_writeout(&ctx, folio, folio->swap);
- 	swap_write_submit(&ctx);
- 
- out:
+@@ -1620,7 +1620,7 @@ bool zswap_store(struct folio *folio)
+ 	 */
+ 	if (is_vswap_entry(swp)) {
+ 		if (index > 0)
+-			folio_release_vswap_backing(folio);
++			folio_release_non_phys_swap_backing(folio);
+ 	} else {
+ 		zswap_invalidate(swp_type(swp), swp_offset(swp), nr_pages);
+ 	}
 -- 
 2.53.0-Meta
 
