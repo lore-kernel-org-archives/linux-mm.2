@@ -4,115 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CBE9C982D2
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 06:32:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0070C982D2
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 06:40:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4DA036B008A; Fri, 18 Sep 2026 02:32:28 -0400 (EDT)
+	id 7F6D76B008C; Fri, 18 Sep 2026 02:40:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 48AF26B008C; Fri, 18 Sep 2026 02:32:28 -0400 (EDT)
+	id 7A7846B0092; Fri, 18 Sep 2026 02:40:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 37AD06B0092; Fri, 18 Sep 2026 02:32:28 -0400 (EDT)
+	id 696CB6B0093; Fri, 18 Sep 2026 02:40:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1CB316B008A
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 02:32:28 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3DEC4A05CB
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 06:32:27 +0000 (UTC)
-X-FDA: 85225913934.18.A584030
-Received: from pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.42.203.116])
-	by imf26.hostedemail.com (Postfix) with ESMTP id DF95A140007
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 06:32:24 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=amazon.it header.s=amazoncorp2 header.b=qqUYGcGt;
-	spf=pass (imf26.hostedemail.com: domain of "prvs=714e84a9a=dipiets@amazon.it" designates 52.42.203.116 as permitted sender) smtp.mailfrom="prvs=714e84a9a=dipiets@amazon.it";
-	dmarc=pass (policy=quarantine) header.from=amazon.it
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 420496B008C
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 02:40:16 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A827CC055D
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 06:40:15 +0000 (UTC)
+X-FDA: 85225933590.28.78C65DC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id CDC1B180004
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 06:40:13 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gr6iWbfN;
+	spf=pass (imf24.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789713145;
+	s=arc-20220608; t=1789713613;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v1VBUuCGiCGHn6DMhi3GFEqygj/aAsvMykxntaLG+rE=;
-	b=Um/Yi4wEFeJYmBFj/YEC1RpEvRshhxisAjbE4yFIShg2UAJHKyBWF3mvztaS5IH7ZPex/I
-	5rIziEYz8ggHf6sYWCvblxxHIDXfp8jZAZQzFddeQKMq7+wT+pXGD/B6zW/ElcEZckLDDV
-	zsFBNPlHH5eHdCeJuAfzHeDsP333sB8=
+	bh=hDfUhIaZu4KPqHePo0HBKv6V2o+AaHKMEhi4wd6/0Kw=;
+	b=KXI6PzhcUaaN0Vf4OzzDCuTLGSNyEpvS5gF7ZWv9EaZDGHYJ2omRhPKd67O51JEE+7slM1
+	XQOb9UqsiNrRQn+YzBQMJWPNr/q5lctDSVBEu6UJUgIdriOWFGYEqSx786uiyoR7/zevYu
+	x6od9TtUer+Ok96UrXipTkSTh759Wpk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789713145;
-	b=pqHg2NN/9Y3S5f6EEtMTVWn/U1SntsPamZ6JkCBXqM92raZ5LZr7JBOniJTgRdOv3/CUjI
-	6Fph9ZSJErwqBICqkqc8TGKYNUoNk6j2tXQS7K0wg5zHcYD430lZOxcB+QlIaUEEZeoZjn
-	zMbS6P1T/x5BPC7MVXvMKd8q22VSI7Q=
+	t=1789713613;
+	b=W5p9fs4HG1ZOLrYmwMBWsa5ljOPeX6QSM8wJI+86aNVEaQDlIdlEflgXXhm9Y8UP1RK/qe
+	Ac4Ho/Y7dHGMJiiiy8x54qyevFoH+NnhpZGIXpQenXQQo4C/rBlxWjelZr35UD8hAi2yF9
+	2Bl8kzhC6tWA5jtYoOfJGt9khM2q6II=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=amazon.it header.s=amazoncorp2 header.b=qqUYGcGt;
-	spf=pass (imf26.hostedemail.com: domain of "prvs=714e84a9a=dipiets@amazon.it" designates 52.42.203.116 as permitted sender) smtp.mailfrom="prvs=714e84a9a=dipiets@amazon.it";
-	dmarc=pass (policy=quarantine) header.from=amazon.it
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.it; i=@amazon.it; q=dns/txt; s=amazoncorp2;
-  t=1789713145; x=1821249145;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=v1VBUuCGiCGHn6DMhi3GFEqygj/aAsvMykxntaLG+rE=;
-  b=qqUYGcGt3Tyiq7rOZjyj5GhwJ98lECW+zGBJp0FYtQZJ3iMVmkf51bxg
-   Lwa//h7bp1N94BTTd3uVZtAsRyTYf0+j3yLTAjRItguWbHkivW25tFB+9
-   yHMrR1WyHM0eCql71ibbFqcUEtP2NQVCBUAjZn4n9PHt3+eWf8NWkC6XH
-   ArLBzcfFIIhwsMnra5/LVQ3iAxva5RjiFnoTlsyuwHCzOYojEeDtbLySK
-   C3eZC41cvPJ+C1XHvQxEtYlL7vlmW092JGmDZUNaXzgO96CcdQklquC7F
-   o8PQNIne+o/Xu+8gz7YDD4Unzdj06fu3rZFqyLJGsSf4Mgw7WNPbZGecw
-   Q==;
-X-CSE-ConnectionGUID: grg7F6DNQJqEHQap4KfNQg==
-X-CSE-MsgGUID: Zvmx89DtROO9zU5quSqcRw==
-X-IronPort-AV: E=Sophos;i="6.27,103,1787011200"; 
-   d="scan'208";a="29037761"
-Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
-  by internal-pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2026 06:32:20 +0000
-Received: from EX19MTAUWA001.ant.amazon.com [205.251.233.182:4831]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.35.200:2525] with esmtp (Farcaster)
- id d6faa5cd-2b7e-433d-abc2-14217cad7632; Fri, 18 Sep 2026 06:32:20 +0000 (UTC)
-X-Farcaster-Flow-ID: d6faa5cd-2b7e-433d-abc2-14217cad7632
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWA001.ant.amazon.com (10.250.64.218) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.46;
- Fri, 18 Sep 2026 06:32:19 +0000
-Received: from dev-dsk-dipiets-1b-77b833da.eu-west-1.amazon.com
- (10.253.66.177) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.46; Fri, 18 Sep 2026
- 06:32:15 +0000
-From: Salvatore Dipietro <dipiets@amazon.it>
-To: <hannes@cmpxchg.org>, <akpm@linux-foundation.org>
-CC: <abuehaze@amazon.com>, <alisaidi@amazon.com>, <blakgeof@amazon.com>,
-	<brauner@kernel.org>, <brendan.jackman@linux.dev>, <david@redhat.com>,
-	<dgc@kernel.org>, <dipietro.salvatore@gmail.com>, <dipiets@amazon.it>,
-	<djwong@kernel.org>, <hch@infradead.org>, <hch@lst.de>,
-	<jackmanb@google.com>, <linux-fsdevel@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<linux-xfs@vger.kernel.org>, <mhocko@suse.com>, <ritesh.list@gmail.com>,
-	<rvvandan@amazon.com>, <stable@vger.kernel.org>, <surenb@google.com>,
-	<vbabka@kernel.org>, <vbabka@suse.cz>, <willy@infradead.org>,
-	<ziy@nvidia.com>
-Subject: Re: [PATCH v5] mm/page_alloc: avoid direct compaction for costly __GFP_NORETRY allocations
-Date: Fri, 18 Sep 2026 06:32:03 +0000
-Message-ID: <20260918063203.2802342-1-dipiets@amazon.it>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <aqlvnm8AKp5f_UhG@cmpxchg.org>
-References: <aqlvnm8AKp5f_UhG@cmpxchg.org>
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gr6iWbfN;
+	spf=pass (imf24.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id AB7E940D84;
+	Fri, 18 Sep 2026 06:40:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96D771F000FF;
+	Fri, 18 Sep 2026 06:40:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789713612;
+	bh=hDfUhIaZu4KPqHePo0HBKv6V2o+AaHKMEhi4wd6/0Kw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=gr6iWbfNeA85FUBO4vzbDmRqzAzqO/U6FyVeujEvSVdtuiMSQXXNP0JJ3mFzxgfxj
+	 pQWXc8thrMBiOyfp4JXjDpmnDu0FuuVs99NSQNAVwQTvIoYFpGKuxr+Jce8GRu076W
+	 zqPXGkP4aBvOQLE/w+dOcWtZ0KQ1u+DbDPJyuqHfp42X67GKQYTcfpcwjD0tVN9TGn
+	 aocNjhWuPZgDolbOCpssn9tVuMGldBcAmIMpOvdlx0Noj9/RAE/8DRuQE1zGdyFBjl
+	 nws+0zfzdfG3PL/GpqFg05fhvKhPtsgRAJF/qkvwgGygZtiP3rO0mDqv9JxZrV+h4A
+	 mqKeVU6T4oeeg==
+Message-ID: <23676471-d90c-40cd-a357-e71b3d426425@kernel.org>
+Date: Fri, 18 Sep 2026 08:40:05 +0200
 MIME-Version: 1.0
-X-Originating-IP: [10.253.66.177]
-X-ClientProxiedBy: EX19D038UWC002.ant.amazon.com (10.13.139.238) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
-Content-Type: text/plain; charset="us-ascii"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5] mm/page_alloc: avoid direct compaction for costly
+ __GFP_NORETRY allocations
+To: Salvatore Dipietro <dipiets@amazon.it>, hannes@cmpxchg.org,
+ akpm@linux-foundation.org
+Cc: abuehaze@amazon.com, alisaidi@amazon.com, blakgeof@amazon.com,
+ brauner@kernel.org, brendan.jackman@linux.dev, david@redhat.com,
+ dgc@kernel.org, dipietro.salvatore@gmail.com, djwong@kernel.org,
+ hch@infradead.org, hch@lst.de, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-xfs@vger.kernel.org,
+ mhocko@suse.com, ritesh.list@gmail.com, rvvandan@amazon.com,
+ stable@vger.kernel.org, surenb@google.com, willy@infradead.org,
+ ziy@nvidia.com
+References: <aqlvnm8AKp5f_UhG@cmpxchg.org>
+ <20260918063203.2802342-1-dipiets@amazon.it>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
+ KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
+ 87tMFA+u+L4Z5xAzIimfLD5EKC56kJ1CsXlM8S/LHcmdD9Ctkn3trYDNnat0eoAcfPIP2OZ+
+ 9oe9IF/R28zmh0ifLXyJQQz5ofdj4bPf8ecEW0rhcqHfTD8k4yK0xxt3xW+6Exqp9n9bydiy
+ tcSAw/TahjW6yrA+6JhSBv1v2tIm+itQc073zjSX8OFL51qQVzRFr7H2UQG33lw2QrvHRXqD
+ Ot7ViKam7v0Ho9wEWiQOOZlHItOOXFphWb2yq3nzrKe45oWoSgkxKb97MVsQ+q2SYjJRBBH4
+ 8qKhphADYxkIP6yut/eaj9ImvRUZZRi0DTc8xfnvHGTjKbJzC2xpFcY0DQbZzuwsIZ8OPJCc
+ LM4S7mT25NE5kUTG/TKQCk922vRdGVMoLA7dIQrgXnRXtyT61sg8PG4wcfOnuWf8577aXP1x
+ 6mzw3/jh3F+oSBHb/GcLC7mvWreJifUL2gEdssGfXhGWBo6zLS3qhgtwjay0Jl+kza1lo+Cv
+ BB2T79D4WGdDuVa4eOrQ02TxqGN7G0Biz5ZLRSFzQSQwLn8fbwARAQABzSNWbGFzdGltaWwg
+ QmFia2EgPHZiYWJrYUBrZXJuZWwub3JnPsLBsAQTAQoAWhYhBKlA1DSZLC6OmRA9UCJPp+fM
+ gqZkBQJqFFy6GxSAAAAAAAQADm1hbnUyLDIuNSsxLjEyLDIsMgIbAwUJGtCBUAULCQgHAwUV
+ CgkICwUWAgMBAAIeBQIXgAAKCRAiT6fnzIKmZJIUEADFx/tREzUImHrEwVHeSvDFmA7tJysI
+ UVrlvrM09E7GIuzphzv7jYmo8n3ANpCczLEVr4G0syYQdTigaZgv3+FQDIIzhKih1IHhu1Ei
+ XHlywNWKnQxxQEUNi5Mwx43wQz5XVw9F1A7gtKBKNtfogO511hAbrzagrYajyQacEJ/+sfhZ
+ 9Da8ltHIXD8pcYaHUfQgEusCgmEd9+KrUwrTbckFKmYq5chuE6yJ4J0EmWknL096jIE6CnzF
+ FRslQ3B1UKDjxVsm1ZHfir5NeWszLkTvGFsddFaWTgh8UycESG6VQzKXjjewXu2pG7YQYRpj
+ QKm1W5X2TkwWkXRBZTmfmbhxIUMh3+zf5wQ463rSmDN/8v81tdqBtAW6rH/kzg1GvkaTHXn0
+ 507yEHFzBksk2viAuIxxr7km8+/KARYLIdGtx30EG8cKzAUZOK6WqxtNCsXUJNrVE8CWrCaD
+ icoNu7Fs1c5hmPHdSTnU48ce67449DdnO4neLSNhRiGlMHJgfJUmgrxu/hcYeOZ3haWmEQ2w
+ uW1Mh01OHi8QZHCEyAbABrPs9GUgccc/4eYXX9hIgxfSkYzn8f+8NuIFPWl/0uTvjgqU29FQ
+ SbzOLxHq9439Ox40G5mS5eZXRGxITYR+6TXvRGI6P/264jvflnr/pDGUttaikU+0W+1uxgKH
+ cmYbEc7ATQRbGTU1AQgAn0H6UrFiWcovkh6EXVcl+SeqyO6JHOPm+e9Wu0Vw+VIUvXZVUVVQ
+ La1PQDUi6j00ChlcR66g9/V0sPIcSutacPKfdKYOBvzd4rlhL8rfrdEsQw5ApZxrA8kYZVMh
+ FmBRKAa6wos25moTlMKpCWzTH84+WO5+ziCTsTUZASAToz3RdunTD+vQcHj0GqNTPAHK63sf
+ bAB2I0BslZkXkY1RLb/YhuA6E7JyEd2pilZOrIuBGl/5q2qSakgnAVFWFBR/DO27JuAksYnq
+ +aH8vI0xGvwn75KqSk4UzAkDzWSmO4ZHuahKtQgZNsMYV+PGayRBX9b9zbldzopoLBdqHc4n
+ jQARAQABwsF8BBgBCgAmAhsMFiEEqUDUNJksLo6ZED1QIk+n58yCpmQFAmfIHFQFCRYU6J8A
+ CgkQIk+n58yCpmS2PA//bqN1LfcotmArgElsa+0EGZSQlYgK48pm8WAeTXTngudP9IJ4SuKY
+ HR5RNjHcBeqN+Me0zxRqYzRb8nGanHEkDyf4Im8DQM8d6vbyU+FcPmG4skud4kgS1zMHnlVd
+ SXfSIwKC/hKgdHG8aBV7545Lz9X6Iohea+94wneD0aw/hqF+QWewGZhWJriWAZtvEkzNjQOi
+ 4U9F/trLten/x7bpphDSnDMKJtITbtzATT1Dq7o7VpIUK1nCTQALMuMjKCdi8OdU/+V+R3O4
+ 0PXWvX8qrvqYapVbZ+9KqT74FsuB0Ya9uXwgBF2Q6cRuETZk5vqaqKxzqoQZCO8AOz/58j6O
+ 2RHNy/mZEN+7tJ5Tsq42zVJ4jxsT8b9YplavCMsnBgDeRWhcbYhCyttoL7nYISyWg4kQYZ/P
+ wIV3OuNv2f8iKYsxNsRuClOAF82+gvqOy1/1pprFjy8uo2pkoOrb63aOP3vO5VHnRKgra6dq
+ NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
+ OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
+ jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
+In-Reply-To: <20260918063203.2802342-1-dipiets@amazon.it>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: CDC1B180004
+X-Stat-Signature: 49zzr6qy3exjo1c53b4y86y4kp3nm5z9
 X-Rspam-User: 
-X-Stat-Signature: wczmhibfynbxe6kndxcsp4p7kdks338n
-X-Rspamd-Queue-Id: DF95A140007
-X-HE-Tag: 1789713144-564637
-X-HE-Meta: U2FsdGVkX1/uZH1oWzOvGc7Bflw8+qjGOwT5Fp2oUAVJNAEkYs7sZboKngpOt/0yKTEiV19/H9ZotZWrjyoI8wVHUWsyrZGcLMKyWeUYJZWp+VyEUMFzTzlsepEFd5fXi31YrWQ1CRSqyRPBShhCs4d4rdByNKjW263GUKVJzqmH0KNtq59bvVita2S7Jwh8/vg+OlGaY1qRu0QNl0cDL/ZIqSPv2MLO2Df+sIEb7fe6bLbD7C3pXuz9PDiWFE/SNC65YE+jr6KaozhFmMafNuXW3vcvVDY8EFaIdr+gPsnIC0zV0KPjExnXbd76KMKPj7s4VFMHdtTBEuUid8+HUEfoq3u78l+j6WKXUUUe7XZv+UnDn0tYcf311+qc+ovVsKKbE7a+zeexw73rOZtHU0/Yl8LBP57rCDAVgHjHS8JJnUEMgJDqd4iayt9C0YPuQb/lVF3iLk7trQbkNQwyEVbCh0zL3vZ3Z5CirSTRvVnKz29dvsPn29AsRr4Yg++VMf1Mmj2uWD7H14GFWMBvtOClUOLKrvUpCyiPZRxe+eQNaHuGfUQKGnbgiCbD/vxgwtDjI/5wQHb8haj9EXS2ef09pfqKhVYI2Qs8q2Wqxz6tjgZ5yz7objqWE9ZgKrppg/7e5Ku4jm5tHpT4we3cvO7F06vFXaAHDyw6OVu88Y/XkywHDK+B5WjEUBlfFYEKwrQtRMpyNAmL2Ss/AnVQ/gkQw7ANHfCk3Mew06b1lXmfHg1zYM+JAiI4JSSXTwIsmsKyjjQ1Vk5THkQB//PBRevxgVyhbrghFrt5ashEbCMQLhT+wjwsX/qis20gngLfHOLdJA4sZvLYl0081jeIz5odnTi1c5+u58LVIrqmMxnQ7wtRCaviNxbH0kji6QMikvjRmDfIYUjYM4C1ji8NsrGH7ljt+5YUZuxNyC/aKn3b/IH+GTxGlApIMcJzWnBE7bhGzlkNiLJaQYvmRSN
- bfkbUhvf
- s4tbxQ4bc4R+Te6RJuFGOTZFH9ZGUzhHpmCjj798tyPyFx2sVf2gCk8Z33q6uclDrgPbKKMMcfGCqo+Fajw0iDU9DDuV4cX+1Yvt82evWAuXJceIRlD+MYF7TKbeCIE06nS9xu7r61q+Jua0GOcFoNnj4I4/DirqJBMMErzRY7zGP70TFEx2NVhaJqkGWzlDBzpp+lvT9kZP8fBNaym9IZftVTzf6C/s+Hz6l/lH24+yoi8rD3aEQN+BrGbaXd8rqolnINbDESePoPYIU90NA0TQ5o3YM7fHq+bfLh1nz0dJUENUvvB+5dtcEpkbgRidpPV+rv+hh1VoTftT1NC2vb8Osxo+9SM1eC/UyJ5aOJaA+e/zTlBE/c2vcrrU/zvvk9f1SfWvsOVzU+MoayVp72I+Fo0bQy+4WrXEzeWpQTXkrCxv4EdG89mcDh8aSNFI7aqsYc54OHSWkGXHZcqUfYu5iB/xJZ2Zs1GP8Fk1VeOO7UUhVpXo3QqkqauSqz5tUXaSlRDQCnnoMoZLXlI43eIyBbyMQzZcrZz60oqo+h8d6qaCF/kX77ksxxeQ3XjQKvfzBcSuw1coT0KEXnac1AmuOIX2ZQztXUWqA/nSOJfTT/w2lZ7xzhKiWeDB7O1msVDgL1ZjT+i4Rp2xN099dC9c0Bu6uSjq2bvHi
+X-HE-Tag: 1789713613-1081
+X-HE-Meta: U2FsdGVkX18l7hSisEm/rJv64/BIHN3bQlk8NQryjbWDFMw6tRUp724oyuDG7b4GCnwqVfzuMd8/3QCoQbZImVMLTPmb8GS+mwC9RIF25NOmloa0yM96ebfRMhl7SDrM93JVNiVyPJM+1Hcq9vTHVwgC+2KhYgjOmanSXY75fVSlkwj3/aMuY2o5awpDARVZgrE//e0wGK37V6bo7NNsLSr6R2TH6fv330ZoeODCYRwC6onzL9k+boxfVZmkTwSJfmXWDgbVWFSX6IvRhfxumlm/oUaOxZXlEJw1V8QvgtxK0ntaktdx9Y2dacqcvEMxVgSk8j0ZLse1Eq+JEAgBNi3rRVT5W3ylgaIJiFPLDVgnkanONJv78uxTcvWTscuZmpO9/mduTYHZuCapl0y/ZV2z7PZdCMRK05BPJFd4I2kEO53JLTXyuIFuNAYRgcJqUZrE+cQ4Y6S4Py+jUq9GEqZCn74/zQMTfGiJaBcF2tA4/s/i43sAdjda0dCUBGWX1TP64GY4gpgXjYxn/eAUC74VD2JVFpN3MREq62FBrfaNPZlFIGv29Bn9Vm4q0SbKpm7hOUj/tNSyz1zIbnDg7AH0zKLm1CjYbL8puKCHMmtEXgSpypEkEddvaBPw+usRZWoMs6HdqdongQejHWIDfztQLklv5v+dxICIgvEmw9sgD2BSaDN/AWqmYOZjFmawQLlyl/GEPBmg91A6TC6LtdLGnOmuCva0LtWpvhzOW0uulFhjDLuLr2r3mdBw5n5ZWstG5GYrEwFc4KA7uXWmxPEZZlMPgZ+oFzFeihF1uoKGk45QBn+d8fvPCALycO+3D4Ofq+WSFPsC2xSbX5j7rivRaoC7jSqCFAsEoP0CqUoH0KCQ9RMeJr/PvKJmGUhYCobxa43F5dT38QHd/3GqYlw6tNcfUL+aA02Q0V4j1IsFccLScXXuzYs8kMwvv7+VfY3ZZWoXQ1O6tTKT/y6
+ nUBJt0KK
+ 424V6Ln87cKTxFyo1jVwLF7cF7QdFtXNrz7Ma1SosYE/8/2+nXd3IqjsC+2afGBx1BTDFIwa745Jabizyx9f2XlwQo9l/NcoCKywv6QIHgXQqiCG02gKwPEqkejLaidcRc2+tEX4ZHFTEEcuwKM0Q2EITdHjdCo5o0dyRvcx99UhR0nKTHhNvy9vz9s69+Frn5rv2EU/Ad6BCXG4chVRv4g2laDLLP5mh3V+HMjJw49oBgSuY1/105+Dj1Ha/WDoV1ZQ0twPmsdrbHlxdu0geEw0pN92GoVmQgUM2VnUGNXBXiG8dx2WAMKhiDwtwRLR5Tfe2G67NwP3e/DSkWCvgDe/Pi7BcTs/XflypszVNT9Ne6P69Gm2V3YNzbl8N5iWIyf9c
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,25 +141,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 9/18/26 08:32, Salvatore Dipietro wrote:
+> 
+> On Tue, Sep 15, 2026 at 04:17:00PM +0000, Johannes Weiner wrote:
+>> It would be possible to remove the costly_order gate here and just
+>> bail on __GFP_NORETRY. But no strong feelings.
+> 
+> Will do, I'll drop the costly_order gate and bail on __GFP_NORETRY.
+> 
+> Andrew, since you dropped v5 and restored v4 in mm-unstable, I'll send a
+> v6 (v4 plus the above change) unless you'd rather have an incremental
+> patch on top of v4. Let me know if anything else is needed on my side.
 
-On Tue, Sep 15, 2026 at 04:17:00PM +0000, Johannes Weiner wrote:
-> It would be possible to remove the costly_order gate here and just
-> bail on __GFP_NORETRY. But no strong feelings.
+v4 is in mm-hotfixes-stable now, so an incremental fix will be easier now I
+think.
 
-Will do, I'll drop the costly_order gate and bail on __GFP_NORETRY.
-
-Andrew, since you dropped v5 and restored v4 in mm-unstable, I'll send a
-v6 (v4 plus the above change) unless you'd rather have an incremental
-patch on top of v4. Let me know if anything else is needed on my side.
-
-Thanks,
-Salvatore
-
-
-
-
-AMAZON DEVELOPMENT CENTER ITALY SRL, viale Monte Grappa 3/5, 20124 Milano, Italia, Registro delle Imprese di Milano Monza Brianza Lodi REA n. 2504859, Capitale Sociale: 10.000 EUR i.v., Cod. Fisc. e P.IVA 10100050961, Societa con Socio Unico
-
-
+> Thanks,
+> Salvatore
+> 
+> 
+> 
+> 
+> AMAZON DEVELOPMENT CENTER ITALY SRL, viale Monte Grappa 3/5, 20124 Milano, Italia, Registro delle Imprese di Milano Monza Brianza Lodi REA n. 2504859, Capitale Sociale: 10.000 EUR i.v., Cod. Fisc. e P.IVA 10100050961, Societa con Socio Unico
+> 
+> 
+> 
 
 
