@@ -4,90 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 780B0C982D7
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 18:14:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56AD7C982D8
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 18:16:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7AC9F6B0098; Fri, 18 Sep 2026 14:14:17 -0400 (EDT)
+	id 29A196B0099; Fri, 18 Sep 2026 14:16:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 74E226B00AA; Fri, 18 Sep 2026 14:14:17 -0400 (EDT)
+	id 259CF6B009D; Fri, 18 Sep 2026 14:16:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 626826B00AB; Fri, 18 Sep 2026 14:14:17 -0400 (EDT)
+	id 16F536B009E; Fri, 18 Sep 2026 14:16:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D1E06B0098
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 14:14:17 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B41A9807A3
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 18:14:16 +0000 (UTC)
-X-FDA: 85227682512.02.BEACBC9
-Received: from mta0.migadu.com (out-108.mta0.migadu.com [91.218.175.108])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 20FA9120004
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 18:14:11 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lyPhmtDX;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf29.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.108 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id EAA8A6B0099
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 14:16:40 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7E299A06E1
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 18:16:40 +0000 (UTC)
+X-FDA: 85227688560.21.2B750F4
+Received: from mail-oi2-f13.google.com (mail-oi2-f13.google.com [74.125.231.205])
+	by imf25.hostedemail.com (Postfix) with ESMTP id A511AA0010
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 18:16:38 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=qepbQGdc;
+	spf=pass (imf25.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.231.205 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789755398;
+	b=WodSvHTd+Y718WfV7YLQuNPaJHccXZFtXIgPxMPdV8KJJMjIh7PQIIk9jyYRpK+jIkcRTY
+	bAW6PChGMUShTycMmQiXqYi0eNoPEQvMHn/y2Tsdc4hwiJDqk/u+QJFqr+PwoD8DNZ6WKc
+	mV+L5MMBEpsDy2QVsIzx2bV/VIDjrb4=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=qepbQGdc;
+	spf=pass (imf25.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.231.205 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789755255;
+	s=arc-20220608; t=1789755398;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=boW6IDDNzO9pEnZVQAmnXDxUH+UPgmW6l22NMMYR6+M=;
-	b=mQEOvEt/MzCB26B45TzHsO9qi6E3DaM689hspxrT2Te5g6kkS4/PECKktuoDeeIUNGboyf
-	W/Lp52oyixKfyR7NioBaSMBD9LbYSBUMZoWXqHJYzWn7n62X5pB9v50yVANkE9vHXjEGxA
-	i01LxuzSybL+tbtbEyY9pv31t/H7wh4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789755255;
-	b=y55sNxgb1KodVCb7aC3Rrr9irPy4kOgDZiugPD6XIGtGPYJvlibwsOau3hkcPZbLCtiJBQ
-	nA8XVpDicmp1st8auUu1I7u4ez37taknVytNVj3pEMcpF5gli3ujKk3d8SkVFW3UBoP19k
-	7RI36BYDbjcSEFpeTUij/Pbkbze3Fq0=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lyPhmtDX;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf29.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.108 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=FqlRlZbpY0aC0R6VarAfbvRXZpO3mHZ5xrmMHvOClk0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789755249; v=1; x=1790360049;
- b=lyPhmtDXHCj/isT64daxeJUXm+dxFtgqafQb8prfx+GRY6jEmgO2xyIF5X2QFgtMzhN6ggAc
- +BbuT5ZosduM3OLC2FfyNvBbPzzELOyIJooEYtChJPz07w886CpBkYRMrwXz7HCujRHmpt+b+6+
- Dze6BDBK6PHvSvvRA6GT00FM=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 49d6f23acb7f0677;
-	Fri, 18 Sep 2026 18:14:08 +0000
-X-Mizu-Trace-ID: 49d6f23acb7f0677
-X-Migadu-Flow: FLOW_OUT
-Date: Fri, 18 Sep 2026 11:14:03 -0700
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: bingfangguo@tencent.com
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Dave Chinner <david@fromorbit.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Bingfang Guo <bfguo@icloud.com>, cgroups@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/4] memcg: manipulate memcg private ID references by ID
-Message-ID: <aq1_Qhid7-62pHcW@linux.dev>
-References: <20260918-bingfangguo-memcgid-rework-v1-0-5bbf3220d88f@tencent.com>
- <20260918-bingfangguo-memcgid-rework-v1-3-5bbf3220d88f@tencent.com>
+	bh=1CoHLip16Ywr/lC9AnwYxCTtODZgmreI05p0Tb8d9mg=;
+	b=VlAYc61OGxq0eJtoiZdNtTYOQxYZeyRUofxAEqYMXnNPPQRAhesw/PNX7ruJgQCQYNl4Ze
+	qBjJJnoqSvvnVpFD1fMz4GIyaLpVM29On2bsQ0ogjfg4siUoIkhPwGTohJvMixvOAXRKZE
+	XHaO92kEu2Uz40BgN7T6a0s8cvVS0pQ=
+Received: by mail-oi2-f13.google.com with SMTP id 5614622812f47-4c4bf3defecso753521b6e.3
+        for <linux-mm@kvack.org>; Fri, 18 Sep 2026 11:16:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789755397; x=1790360197; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=1CoHLip16Ywr/lC9AnwYxCTtODZgmreI05p0Tb8d9mg=;
+        b=qepbQGdcU6qyn7z7ycnRrVfyedxS6FlR60QXVTsQ88JAw2u9ZwNjFkQL6a1NqV2l19
+         9OJJNuSTt0iNwYNx91krZlm5uP5XYjgt8UlBcu7s/TbvQJSCGHjvQYKBQyWOMJXDeCYa
+         Gf4g9b9ffZ3QbpbhQhkymSRIY3ytmG0f6kvoNGZOVCq6t48VkCYRQg4tBST5tYxcoX0Z
+         XM3CGI75SfSAE8g+uc/RydrHfH0rm/d5t8gvuQ7akY7pCwCRDcVC0sWd+sWJGDs13Gjc
+         ABAO+cJDdBg0lHSN2hj4VcZLDloTp5ulOssUXAkf10sKOukaBVIZquqn8TanZeQTD2EQ
+         AeSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789755397; x=1790360197;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=1CoHLip16Ywr/lC9AnwYxCTtODZgmreI05p0Tb8d9mg=;
+        b=wDPRXvStT6VOaezZdZ1GqkfxT1cBEbcptCqH0+6CZhztz97nv5Ltox12RTJpL+eM/k
+         Lcvx33CJRIOoux1B7Dt1GZBk9PBS3hDI5KMiaQeZM0/hqcJqD5cGLqcdDrzWM3FYcaaO
+         eqtGYoG0sc8le4P5XHjGpfbqn3aG6KNT2/egmACb33Qj5UAojzp0FDk1RSflUL7twKGC
+         a77TIZFmDt2xLVjbE6FZgEozCaVdeLGFgNTEQ+OVj8YL+yCr3BWMVzudY+azEeT9gNzU
+         PX5Ftau2V0XOs3Mx6LI8jYpszdju4VlZYURy+JThKufT4vn7lNGRYOeP+Bd9CntbMK9a
+         8hLw==
+X-Forwarded-Encrypted: i=1; AKwUvBxtxRtvjINIfcR3eNKo+hYN44/7TQLpTVrQbNWlDgCZpfFc7O4kV2FPUXEW4sgRUlWWFRSJ+fUgRg==@kvack.org
+X-Gm-Message-State: AFuF++kd7GPUreukzKYJvprJvz37ShNZQ5RvwM6loiA2A0mZPI+kswYy
+	zn/SgEDhf8nYB+oh9moFa0uHdVoAiW2e7Scetheu78kUkNtXrHghU+FWVueHTg==
+X-Gm-Gg: AYBFou2ktC9sfWTUIkMpqPTW3lVyLZ9QCUSGpJ+MPxWmQLkai+n+54J324v28LqnmcJ
+	cMnecfaAv1OQmZDpW5FbQRMb25IF0rhJO7h9IY+dHC1XcIDSzbE3cgN48aH+6JTVmcZhzDi65bj
+	FjUYeSP9APgqJ0kGTojg/v8N1RBs6uIUoi4hYI2Mzt/n6+gXzN4P/WFIEjVYoAPvbnqD30TcbxL
+	O7fdCJJeVJpxLxniaoAtFFhVTfDVhHA/p+R5MWmqZ5dX4kHfozJmZXXakkkg0K6aUOLytjoKij5
+	Vvp8FqDp4heaAAU7a1ZxrrK1VSxhgJV0Oi9AaEC5xadO65DrVdVGbedyylea6EK9o162Mqh+WRq
+	H3f4VlInucizSa6nLJnoUQ4W9gk5HYQoGecQhm8YmMCpYpCm+aeEXmubmg5AEjK0jOmC/ckldTU
+	f48EwQu5goi3sKmbQDx0CYhmF5scCgq5OdKdarwR0NQaRQg+TYVanMuQ856e5ugpROes+MnsKjf
+	6UqjKpAxxspSqp+R6yWpzQEXVYt4w==
+X-Received: by 2002:a05:6808:1a1a:b0:4b9:e65b:8c2f with SMTP id 5614622812f47-4ccf7efa991mr4138923b6e.29.1789755397623;
+        Fri, 18 Sep 2026 11:16:37 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:b::])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-4cf3f77781csm47b6e.18.2026.09.18.11.16.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Sep 2026 11:16:37 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>
+Subject: Re: [PATCH 0/3] MAINTAINERS: rework MEMORY MANAGEMENT - MEMORY POLICY AND MIGRATION
+Date: Fri, 18 Sep 2026 11:16:34 -0700
+Message-ID: <20260918181635.3251639-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260918-maintainers-mempolicy-v1-0-9a94cac6d135@kernel.org>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260918-bingfangguo-memcgid-rework-v1-3-5bbf3220d88f@tencent.com>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: A511AA0010
+X-Stat-Signature: f4qf41bsimwnkyuqrcfssusjwen8fz8y
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 20FA9120004
-X-Stat-Signature: m4nkf4p5mwuj5k9a7wdkibz5q8h833rz
-X-HE-Tag: 1789755251-705543
-X-HE-Meta: U2FsdGVkX18BCYSbtdUsk+i3ien5ixWwT8SX1hIixHsPdsyYQhvkLXjOlLEy+fr4eI70m/yFzu4KVyBqM+HtCDY5s8PKrlwrl70sXaYOJxHDo/n2Qo6hgHkPmH7QMpQQHlSDLpWiqy85WRKcsI2wij3pYpGLQ6E5VGg5nxxAgCMLmhx59WofGPrZit3SrGSwfJfw2pqQCpD34jyOskWpAmD7ljDCAFVBgqpuJNTAmDzpBzuJ/Kae/TTNe8EYnMvXeix8TzPPnm6ksH94//XK4WPOV4wd7znSz96dYkJGFfvPjAkLdlJTsgnXhgsaTRPvq5H0OA/jhz9JsyVKwK3llh3koQorfQbo72M+orx8/mc/2xu5ZlIfWqFOND7Z+yjydL0wRN9JQk77gWSvMfffvj2ubkh350gw44qqF0r2qxdcGG+suCq40F8gnPkmjzIkRm6m7lT+njJ7SrGJG6HCOgwzrIYEO8wsxeoc2OvQGjrKMIuIcc3TSO33NLY2jhEkot6gJyLzlyEEZk4k+wotTvwvd5N+E04s7lFOOXBa4u5beeZeykRE5QO5S9pQfviPAxotmTs5ocIyU/jNkTu89riwME24bDZoaS850dyelovgLnLUN/z75PxBJdwHtIXxaV3ptFhlnwKiwlQb72yaQ9ldeUdzQlcLgPNzjYgNIKetQgU95z0mOny+wLobxvd3clR2Tl9mRJyEVIihiQGwjQFZedwDjSwfsLoCUlFHyuNEW0GsjDH5xoGqSUeldKXdMxFbUqMPshzRx9qqK8il4sVkxG+S20UyCYVL1WeVCBGt10AZaAdgiXwZHsQR6WUZ8s7ZqnVNp8G5VaPtQVQVGQXDyEAIDlN5ebdpNbqLtDJLsyIWRqWU0w1ipbdIKfrF7WXiU7HZSTPzSOVa2MaNqsWmVeNmospJ4aOLTmLo95/WxjLVuOWxkY6MJEuIKevKdFowxymwM6ZDNXutTK5
- awr9h0e4
- 8pg1ekZwZBuk9c6OVAPA4P8IbqE9qp8mlVHxdKTfhvLG2qiVNysjPnPh2VvtNppj9SbXDZNnFP8jWfSQGTpDUn8yfwoRFo7rSNNkDI5hgx5NPUZM8haqVFfcalkrdEMvu6ph5sR/DZdA8+812xwti78gPbE0SaOHnv5UTwihq0ib257e155KNBpzdDfo+tsZXl9m9YlX8brsWSkrXTjrvoMmrOAeJbsimXfMPXX/YUoWMYGAH07NjHxaBh6841CiRPwN1IJwT171LSPJcba4o6x37F8TtRJtzsJ5fh82i13JYCkE=
+X-HE-Tag: 1789755398-346914
+X-HE-Meta: U2FsdGVkX1+4SXphyHeMPyfk6pe2c/6f1nCirWzRsny+0wG0keX0iq5+EGzsUuAot00VxuMeZhvNkXFAtUtjk7CpStzjQop7TaGagcMzMWASrUvHlvFqELUFPiMLQn7MskGxnVj1hXNMEFrudnbwf8ne6cLz2w+kfVddO3z+NWtLCtOwcudj75AVCPrPdqYLXTVoU+09PXVtkO17cqDKMWkknJjcjQm4Yn8Wz+eE5aomwRrGwaNs1Az4ZmSIkKIQ/C42bh5W3C/zrHBpTYhRDTJ7g+OmrqXnkAWyAit64NcwJIf7JsvMdfXdrkXhhCwIMXZKUWlGfMhHQPdTtB7Dgp8LbTKOxtOfIvfUYbvGUc0XrTxVLCBi/EUHwBLHr2Sn/VQ6OHzQyXGl/n5qAlTuH8vp89AQfq7nPn5AW+ZKPUG4JBfq6kaIlgyrA/gOicesJ7DuEBeazopkR9WYHuKkzB0PiMLOd1TxjPZ/yJUOwRHCtZsCZD+XjxkBjdTZd5K8ZbZPDFhl7yIOcD3AoDdx/oiKGS+O0KZMMi/heRxDLgIslbBa9850Hjc05Ivo1ti6dKvxdCLuXoz5q/pICd6DFNAaPGdvbD53pFqH9zE9fksOAQ8EkOyMWUgmPjzL4C33dKY1J2fkgDFpV+AQwTDPE5QqiV6BLD2l6T0OJCXM5X09gIjfJmcIq8oDrZKnaDxWGE19zZpdcUEU3bEgbzRT19GXEmKutJ3gqPYX7mhRFUVreB9o+GCA4h8wSgbotIXF7bvbBQGrr88PbeG3A8PKZlzKBb1xga7afqWhlkLLA1o4QCaobampoR3R7dnVduqo+AuJqyyOiF1xP1d8NMd+m64H2g5gWVHZFpSM6cwU0MJwouDVhJYjm+YhxO6xE1jMd3g1Ds6eyMpvEja1Ug21mktBqpO1CLIOdAJRWK6ek6o6gpj1DnhpOudrjhhLfXP1l3o0y2MCTrOctBpiKKi
+ W3ErWT9Y
+ lFkHpM9pXQ8BGK1pvJe9OG8oBtfxUQ335BM6R+u7a+AXXB03xkS7XA2zqE9RcJY4m663+kodnFlhgpHxr92KJTMFTdCWUC8i9GSDn1V4s+j+yQHMEhRlhfUTQvmrxMDS5FjdFZALd7FevzEB4PdALrhmU+WKeNtjB1bJrLDRLYG0xfn2Bbr7ksNQpabWCPkhD6k9iwJsSaFojQCVbTbmak42w+H0d+k0L14wI259s7LgwmQa3r3l3fL2CvFTUgM27HU/m8oPs/iwlxJ/PYjoi3dRQRZjZ0DmBuGKagnRDPj/PVUyVuogq+VsjKI+Sf+TfvwHGH9wGrkeJCx37Rc0Rdy7uWUmw+J6uyjbOx4xJ42sFIDg0ykiyHtdDHz4AT5npjlZ4B1bA63ZWt02zv8hV3WtFZltq1ozSCZoKhuPskr4TezGsy6wc29p8aA8X6mnb0gxjmBIGj/z8OnwfW0J6dW22UztR/ydmIvILM0q5AFsPGuPNU24IYNnHDuL1hiqKGyZarhs9NLAOAoP7O49M1nlR5A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,102 +132,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 18, 2026 at 05:18:42PM +0800, Bingfang Guo via B4 Relay wrote:
-> From: Bingfang Guo <bingfangguo@tencent.com>
-> 
-> This is a preparatory work for moving memcgid from memcg to objcg.
-> 
-> Swap entries retain a private ID rather than a memcg pointer. Once
-> private ID references are moved to objcgs, the ID can also outlive the
-> memcg to which it was originally assigned.  So it's better to make the
-> get and put functions accept the ID itself instead of the memcg.
-> 
-> Rename mem_cgroup_private_id_get_online() to
-> mem_cgroup_private_id_get(), and make it return the ID only.  If the
-> memcg is already dying, the dying memcg will still be used for charging
-> and stats accounting in v2 swap charging path. But they are hierarchical
-> and will be reparented after offlining so it doesn't matter.
-> 
-> Make mem_cgroup_private_id_put() take the ID and resolve the reference
-> holder internally. Convert swap uncharge and charge rollback to release
-> the reference using that ID.  This introduces an extra xarray lookup for
-> now, which will be removed in the final patch.
-> 
-> Separate the online-state reference release into
-> mem_cgroup_private_id_kill(). The offline path already has the memcg
-> pointer and can call the underlying put helper directly.
-> 
-> Signed-off-by: Bingfang Guo <bingfangguo@tencent.com>
-> ---
->  mm/memcontrol-v1.c |  7 +++----
->  mm/memcontrol-v1.h |  3 +--
->  mm/memcontrol.c    | 32 +++++++++++++++++++++++---------
->  3 files changed, 27 insertions(+), 15 deletions(-)
-> 
-> diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
-> index ed015fdd95123..b7f2868885071 100644
-> --- a/mm/memcontrol-v1.c
-> +++ b/mm/memcontrol-v1.c
-> @@ -268,7 +268,7 @@ void memcg1_commit_charge(struct folio *folio, struct mem_cgroup *memcg)
->   */
->  void __memcg1_swapout(struct folio *folio, struct swap_cluster_info *ci)
->  {
-> -	struct mem_cgroup *memcg, *swap_memcg;
-> +	struct mem_cgroup *memcg;
->  	struct obj_cgroup *objcg;
->  	unsigned int nr_entries;
->  	unsigned short private_id;
-> @@ -298,9 +298,8 @@ void __memcg1_swapout(struct folio *folio, struct swap_cluster_info *ci)
->  	 * if the ID refers to the root memcg.
->  	 */
->  	nr_entries = folio_nr_pages(folio);
-> -	swap_memcg = mem_cgroup_private_id_get_online(memcg, nr_entries);
-> -	private_id = mem_cgroup_private_id(swap_memcg);
-> -	mod_memcg_state(swap_memcg, MEMCG_SWAP, nr_entries);
-> +	private_id = mem_cgroup_private_id_get(memcg, nr_entries);
-> +	mod_memcg_state(memcg, MEMCG_SWAP, nr_entries);
->  
->  	__swap_cgroup_set(ci, swp_cluster_offset(folio->swap), nr_entries, private_id);
->  
-> diff --git a/mm/memcontrol-v1.h b/mm/memcontrol-v1.h
-> index 23be2512702dc..281425273ea97 100644
-> --- a/mm/memcontrol-v1.h
-> +++ b/mm/memcontrol-v1.h
-> @@ -27,8 +27,7 @@ static inline bool mem_cgroup_private_id_is_root(unsigned short id)
->  	return id == mem_cgroup_private_id(root_mem_cgroup);
->  }
->  
-> -struct mem_cgroup *mem_cgroup_private_id_get_online(struct mem_cgroup *memcg,
-> -						    unsigned int n);
-> +unsigned short mem_cgroup_private_id_get(struct mem_cgroup *memcg, unsigned int n);
->  
->  void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
->  				       struct mem_cgroup *parent, int idx);
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index bfe53e4392f09..ed44b3e7ac938 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -4082,7 +4082,7 @@ static void mem_cgroup_private_id_remove(struct mem_cgroup *memcg)
->  	}
->  }
->  
-> -static inline void mem_cgroup_private_id_put(struct mem_cgroup *memcg, unsigned int n)
-> +static void __mem_cgroup_private_id_put(struct mem_cgroup *memcg, unsigned int n)
->  {
->  	if (refcount_sub_and_test(n, &memcg->private_id_ref)) {
->  		mem_cgroup_private_id_remove(memcg);
-> @@ -4092,7 +4092,22 @@ static inline void mem_cgroup_private_id_put(struct mem_cgroup *memcg, unsigned
->  	}
->  }
->  
-> -struct mem_cgroup *mem_cgroup_private_id_get_online(struct mem_cgroup *memcg, unsigned int n)
-> +static inline void mem_cgroup_private_id_put(unsigned short id, unsigned int n)
-> +{
-> +	struct mem_cgroup *memcg;
-> +
-> +	rcu_read_lock();
+On Fri, 18 Sep 2026 18:34:23 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
 
-Use lockdep_assert_in_rcu_read_lock() here instead of taking rcu as both callers
-already taking rcu read lock.
+> Let's rework MEMORY MANAGEMENT - MEMORY POLICY AND MIGRATION.
+> 
+> As I can use some maintenance help in that area, add Gregory as
+> a new co-maintainer for the split out MEMORY MANAGEMENT - NUMA PLACEMENT
+> section.
 
+All of this looks good and makes sense to me. Thank you David,
+and congrats Gregory! : -D
+
+Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
