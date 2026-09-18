@@ -4,86 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE2EAC982D0
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 02:45:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 799ADC982D0
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 02:50:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D94F26B0098; Thu, 17 Sep 2026 22:45:11 -0400 (EDT)
+	id 8E5586B008C; Thu, 17 Sep 2026 22:50:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D465E6B0099; Thu, 17 Sep 2026 22:45:11 -0400 (EDT)
+	id 895ED6B0092; Thu, 17 Sep 2026 22:50:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C5B8E6B009B; Thu, 17 Sep 2026 22:45:11 -0400 (EDT)
+	id 787BF6B0093; Thu, 17 Sep 2026 22:50:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A2E706B0098
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 22:45:11 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0B0BEC0504
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 02:45:11 +0000 (UTC)
-X-FDA: 85225341222.14.383891B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 8385540006
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 02:45:09 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OtO4oQkX;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 5128E6B008C
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 22:50:38 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CA956C0506
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 02:50:37 +0000 (UTC)
+X-FDA: 85225354914.10.4F0AC61
+Received: from mta0.migadu.com (out-10.mta0.migadu.com [91.218.175.10])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 338781C0002
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 02:50:33 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=q8L+LzCh;
+	spf=pass (imf20.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.10 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789699509;
+	s=arc-20220608; t=1789699836;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R14pZAPKTWtI40ZADQt5vUsL+yTt0PnIysZP3xDrxNU=;
-	b=2deQlSeJBQMw6e6hTNZ3BXMDt8M9MYgjzW108CCetQXSiqHkUj0HMGvLMUjJhNv//naFnp
-	B7AJb5vjiRSfIU9P/KKpJi10/2yzDZbOy5pgNp11FsDB8P857SPkm029gjOf6BaOo57h0x
-	oFFFTf3VVTWvlU2PgX146UkR3hYos28=
+	bh=6K17Mevd06rppU+QI/QjJ/0CTqnOrJMyC6HzuXs2pnk=;
+	b=pKdtal5poesPe5KgBux8oJL0QNIeuGhK4/xsFNpezyfYuYIU44Yf495u7U/IhuiT5kEbJg
+	zFJ7yOZCOHd2qUkH8sCOLuagJzSblfvtVNW5PxMK/aSIuZ9tQPtlrWyMQ/yZlf1BxOe0Pf
+	k1fdv1nC4+197PN8uaB4DYbOgMnB1zw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789699509;
-	b=wOGk5j/TFCIgT3MhEujGet5TUw7PQvztYsSKVyhq9+khM9OAWK358KxyZTBCCSUuiSxu3K
-	PwBCHrGICC4xh0T/CZze1E9hLRvkh550bSmYHXubY5obW9ipiky/YGkKrqRSiv2/Cv61GW
-	a63dFVLQxOlhSHJD/NUtbsIxcD9cyeo=
+	t=1789699836;
+	b=b9BLwz88QjKfcd4qHjw9sDvLZVXCyr+B5VX/TWJY25yOo5fjoOClzSm46KHazQ1sklyG9D
+	fFcw3BjXlrWyy5SksR2EOYsjubxAtc15mBJmG3oCmFV+HMC1K/v/98KEXdXRGB6FA1zA5q
+	WnJmEuoyxMn9KgZW3ssAzNcBabuNfug=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OtO4oQkX;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 46A46600AA;
-	Fri, 18 Sep 2026 02:45:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 955701F000FF;
-	Fri, 18 Sep 2026 02:45:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789699507;
-	bh=R14pZAPKTWtI40ZADQt5vUsL+yTt0PnIysZP3xDrxNU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OtO4oQkXL394zylW82oIJ6NtcnuMCH0GboyXLkcRE82GQ1VqTcxYV0CF+943S/Mdt
-	 eM8i0IXyTk/PpqoSKLqaAMirncYISOzlieMlKabxQO6kSXkZ0fixNLYCpra6PK6k2F
-	 nLHcn8qwYISLNITyqWoIjKieG6F0PwiixB07KRyeV7oCxI5nu9iX1TOuBwDAGfIZbQ
-	 a1TtRotorlZd6hMU0Cdxrn/7JtfdA2m0C480ksgtghAT7oHfVf1mgMD9ShbLrwnDAM
-	 0Per22B5/ozytgIPdFZJjUqlaZ49mSwZYbV5RstHHMkopT/uuu8A2gP8FWwHOriT5v
-	 ic6D8ajN5ZMJQ==
-From: SeongJae Park <sj@kernel.org>
-To: Liew Rui Yan <aethernet65535@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: [RFC/Discussion] mm/damon: Implementation for paused kdamond
-Date: Thu, 17 Sep 2026 19:45:06 -0700
-Message-ID: <20260918024506.13715-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260917153238.76020-1-aethernet65535@gmail.com>
-References: 
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=q8L+LzCh;
+	spf=pass (imf20.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.10 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=N6CEd0l0gJW6eAjQ3ySm2d8Yd/dkGeFlWotcwVS5SyY=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789699832; v=1; x=1790304632;
+ b=q8L+LzChO5BJ4zN/c+/2DaJ/1RGJ8LSa8XmeBKkXK9Y3/ees52CMnAbfwvYH6EP/oxh/quPU
+ vLr0ldVTl6kib3XrtDxoqBVQTeJ7NV8dfPT1xrWAA/54XuhOOQsNqcswzNpU8g61oSv/rqkvYbv
+ Ul2ToTd5G9rOUsAnk23E8rTI=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 9d9f438652b75181;
+	Fri, 18 Sep 2026 02:50:12 +0000
+X-Mizu-Trace-ID: 9d9f438652b75181
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <887bab46-1959-4e1b-acba-082f91294055@linux.dev>
+Date: Fri, 18 Sep 2026 10:51:10 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 3/6] module: introduce SH_ENTSIZE_STANDALONE for
+ separately allocated sections
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>,
+ Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
+ Aaron Tomlin <atomlin@atomlin.com>,
+ Kent Overstreet <kent.overstreet@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-modules@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Sashiko <sashiko-bot@kernel.org>, stable@vger.kernel.org
+References: <20260915070001.113559-1-hao.ge@linux.dev>
+ <20260915070001.113559-4-hao.ge@linux.dev>
+ <CAJuCfpHz6V0zT5+QkYdQsBzG9kWCFhP+gris2XRrvSu4hHD6Hw@mail.gmail.com>
+Content-Language: en-US
+From: Hao Ge <hao.ge@linux.dev>
+In-Reply-To: <CAJuCfpHz6V0zT5+QkYdQsBzG9kWCFhP+gris2XRrvSu4hHD6Hw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: gsn5eia5on153zupoq1k4wkrnom6g5ac
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 338781C0002
+X-Stat-Signature: u9egw1i3gpakebhkj7m964kjabd3oxzb
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8385540006
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789699509-921714
-X-HE-Meta: U2FsdGVkX18QNta5Im5mF4IPU/CXha6b0402gm0x0TLVq4ZZLmKBq9DojL97zZUgmGJ0/QoWezBg+WODwcLTGObfqeTex4Jx8CxEczcQ05zwiOvvG1614yYJJEw0uEDOyggpOw0KbWtNSRT1M5pIm15PvJLMXYdWfPUTANhRF4dV9BivdgTmE0SNHZveBR83oGFe79mpizRA8KiQSK1Y03LSCYrgHuGpmgLwUSHFrTGajDEv4ll2E07cATH7unrsLMFgKkfxtVsSMpRf3d2SnoBPJEL/steGeQdnsP+2524l5jodeyT/hwmMAKOl3IEu+1c502G5c9szg55rxDc/Se0K1kGXkYMjaT5vrsQEHJ1Rk98M+/p4V/FzbMK/aj7bHvu2igrBXkih0xP0ervHBMMjL7nXHq1ejGMvuO7zmRtmdn/MhG7SG2dkE2EdtUqlQ8WypoG+vDC7VRZk6IcZgM6t1Rf3UYJ3qQ3C/B43YTkPFEExkXsXVPxI8fDbrkm+w47yglW20FqbMcgMVCpOspziPdOePBMU1Av3ORCPcEndXyvvnlYQWQHQeKU4OLZGxcbB2puIcQZEgF2qTJx5MHaboLBML7hdPIjwibqmsFNtTmDvLWsREjJhqIq9TKF4jobr21Sq1WmQ+Ja2tMK8yHExA8GiCcroX1LeR8pqGmZQ630pK1dCbUrvwii0KF9QpdkrwPS/QI0PFup07qk4+6o6cfQLWgvJeP97kqY9xRZmD7WQ29Yb6q0iyZdvk0AFbPLTkNrztLT4/AGb3OpewiNf7Ssol9Kw5OURDIMQ6SVI2+nKRKvla4HydcpANkS5E5ACdlHYI2HBn7GnX/lwrrqp7PfYMhbhk5QBd8aB4QrB0Ixhv5MeG6tAB0cNVFyX8Dk6DmSle9cylSCIIKsJ9uzZtpduCIZip25lPYY78iAdycRgiu8F4TP5MyIKmlx5Ic2tisgaK7ea+wP/gM4
- 4XoQwuOj
- bwI6snkseQjSv1ZaHQLKDLxsZMWRbqQmyf1XKY/d8u4cAGyDA++ANbLH60TUH36CXr+FKi+R/HHnlIEmsbcnJVU2EhpskqtlZYHWKUuLUE7IjiellDlgBFnceHTOMaEaRRQGG0AGGSbBhDLee61w5tg0QIzneRgEVSc2jWjsQbK+XrJNAC/fjondzn9qUVG05ZX6nlYXwobOrGPvWr5Mjt3pbMNhHldc4u4QOZxoIxM7t45jjNtpaTIVaz4GqVGlUta2m
+X-HE-Tag: 1789699833-780911
+X-HE-Meta: U2FsdGVkX18tp5EvOHwd+u1lRuneabKxYugCTjjIkV76LEz0TEXQ6e7bkcfCHsVR+CMJ3wefjEzbf2+xBvm4oph1d49T3fy6fox6oLwh5hfhLQPaNhSA7MKLPED8OPGHDVOY2gR3UXHY1x7YyA2ctvcNuZuz0vsk4gxBsNBaRPaE5//sJOsX1gzIn6O2FdFEwp7No3Rt5MYA+gRZEp5nhefnW3Zd/CMCFUZ0kWrWiaPH5Mkpto2SONibMm8bmBNHtVIMUZlzheELhv66flCY4I4w2Yazyg9vRK+NtpAza0eBsxajGwTt20QpiyBEwaiPw3BE52w6NpIV/J/EluRJ8qIs/9vobfpCSABtONSvJC/9OwnKL3b6vGLQ4q226whDdb5OEsEsgXvsYTU3xzi+KDFbfi51seIjd4TDiLN+LFbrzULHMlFuvy2diOMbIz0CzIlm4S6DsAAYO17g4SPcfmWkbdhHciZrfjqAb7m7wnP2x5+sXQTa4vINhseMVXue2VS9Vy7T1ZPA4n23D2Uzo0FTRRYLdf3/xgUrHIzovE4Q7cCFAf0l8bcHn12BBG9e3kAkLB9E2Qq4lfbbPZ/rqicAordDyMDP6VWl2ShNmeHYyrDYdECNa+FcRlOMlwZjXj1TXwvxFORz3jeT27oWz34lEEWYXwUhvuLcfLWPGarEX6yK45FfIh4rA7TxluX+B8/TieSA00Ro04zF55oAi8e/hB+TeFIzcQAk9a5dPr4C3XnsJMrvDIUmRCqtnQrH2WS0aYYLU0MsYbqfUZgIiS1T3BagXJ/OV3bQb8hLMn5CDWU3htLfQUIGseHBKpuL/uVMAqwvid/Wkq4fNTZO5/XZy5LTuIbmZbm50QIitE8yTeaTT2sn8vNBGsqfCbE65ACBbnz1LvFxkgejoVJLBtgSgTgJ/xPkgWVQi+JCY1W4t6wgORosDX+UGcwF8zU3kAOv6oGQjM6wyd8A5xV
+ jIO6kfIS
+ sh4qO6BfjhWCHjuwQzvB35QkpHAkZ76yDsq1gE2gvWHvDixGV/SY0anhmdqTH/4sDIQ9PUV2VClddTmVJAMcQ4Jvm527tXCWvyTj5DWXOkKuRJPG9mJWYhTPPGOPpltbLRq3LFVQlNkkJSsCptMbdJJ7uTLRxnb+Ge5MfoPXE8ojtLWFswCr+8FW+M4/IyiBA128xoqyrlGQh0AXeGiQW5m5VNvOGq1wo54FuKY+iLrWloJMso6nXb9MzCK6l3fjnHZhkkZF+zwsWm0HWKcLRGc69dt/E2iPUqFuLMiN8QIE+oz87WPDXwru0dgWtCvCnxhNgTEZauDtWHMIolqYUciMRLDl9FNcHpYszE6F9MCdpwmH2OR1EcmDMoopgYs16Duaw1hv+DPZbhZ+7ERfCWHdHXHyBf4eXV9ZUUw1/2zy+R6KOQ/Lwh0/px0U09vFWeMU+mHMM8aA0MAE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,80 +99,280 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 17 Sep 2026 23:31:53 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+Hi Suren
 
-> On Mon, 14 Sep 2026 17:28:35 -0700 SJ Park <sj@kernel.org> wrote:
+On 2026/9/18 01:25, Suren Baghdasaryan wrote:
+> On Mon, Sep 14, 2026 at 11:59 PM Hao Ge <hao.ge@linux.dev> wrote:
+>>
+>> SHF_ALLOC means, per the ELF spec, that a section occupies memory
+>> during process execution. Some module sections occupy memory
+>> outside the regular module layout, for example the percpu section
+>> with its per-CPU allocations. The loader currently excludes such
+>> a section from the layout by clearing its SHF_ALLOC, which
+>> overloads the flag with a loader-internal meaning.
+>> apply_relocations() needs a special case for the section, and
+>> find_sec(".data..percpu") returns different results before and
+>> after layout_and_allocate().
+>>
+>> Introduce SH_ENTSIZE_STANDALONE to mark sections with a separate
+>> allocation. The percpu section is its first user. layout_sections()
+>> and move_module() skip marked sections, and apply_relocations() goes
+>> back to testing only SHF_ALLOC. Based on a patch by Petr Pavlu [1].
+>>
+>> .data..percpu keeps SHF_ALLOC, so it would now show up under
+>> /sys/module/*/sections/. The section has one instance per CPU and no
+>> single address to report, and the entry never existed before, so
+>> skip it in add_sect_attrs(). add_notes_attrs() indexes its attrs[]
+>> array and skips it too. No functional change otherwise.
 > 
-> > On Mon, 14 Sep 2026 23:35:10 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
-> > 
-> > > Hi SJ,
-> > > 
-> > > I noticed that the current implementation for paused kdamond is
-> > > periodically applies online parameter updates by kdamond_usleep().
-> > > 
-> > > I'd like to know if we should change it to waitqueue to achieve a lower
-> > > power consumption?
-> > 
-> > I'd like to make a data driven decision :)
-> > 
-> > > 
-> > > Previous Discussion
-> > > ===================
-> > > 
-> > > I noticed that when you introduced ctx->pause [1], Sashiko asked the
-> > > same question, and your response at the time was:
-> > > 
-> > >     "sample internval is 5ms by default and recommended auto-tuning
-> > >     setup makes it hundreds of milliseconds.  So I don't think such
-> > >     change is required."
-> > > 
-> > > I'm curious that, did you think it wasn't neccessary to change it to
-> > > waitqueue when it was introduced, or it wasn't neccessary to do so even
-> > > after it had been introduced?
-> > 
-> > I guess I thought so when the quiestion is raised.
-> > 
-> > > 
-> > > Asussmption
-> > > ===========
-> > > 
-> > > This is just my assumption, not a real use case I knew:  When 'pause' is
-> > > set on an Android device, user might want DAMON to stop running
-> > > completely when the screen is off, thereby reducing the load on the CPU
-> > > without losing important information such as regions and age.
-> > > 
-> > > The current polling may make it harder for the phone to enter idle mode,
-> > > resulting in some unnecessary power consumption.
-> > > 
-> > > However, pause feature is only present in the stable version v7.2 or
-> > > higher, and since the latest Android kernel is 6.18, this highly
-> > > unlikely will affect any Android users.
-> > 
-> > If whoever comes with a data that require changes, we can discuss.
+> And IIUC no userspace-visible changes too, right?
+>
+
+Right, I'll fold this into the commit message for the next version:
+"No functional or userspace-visible changes otherwise."
+
+>>
+>> Fixes: 4835f747d3ed ("alloc_tag: support for page allocation tag compression")
+>> Reported-by: Sashiko <sashiko-bot@kernel.org>
+>> Link: https://lore.kernel.org/all/499bb60c-c6e3-43a3-bd92-95a0567ece5e@suse.com/ [1]
+>> Suggested-by: Petr Pavlu <petr.pavlu@suse.com>
+>> Reviewed-by: Petr Pavlu <petr.pavlu@suse.com>
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Hao Ge <hao.ge@linux.dev>
 > 
-> Thank you for your clarify.
-> 
-> I recently backported the pause feature to my phone.  However, due to
-> Android's screen-off mechanisms, I wasn't able to obtain any valid data
-> during testing.
-> 
-> Since we haven't identified any practical issues with the existing pause
-> feature, switching to waitqueue isn't neccessary at this time.
+> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+>
 
-Thank you for checking this.  I agree.
+Thanks.
 
-> 
-> Regarding the documentation, should we explicitly explain the
-> relationship between 'pause' and sample_interval in the documentation?
-> That way, users can adjust the sample_interval value when using pause
-> feature based on their specific use case.
+Best Regards
+Hao
 
-I think that is too much detail for normal users, unless we find a problem from
-the lack of the documentation.
-
-
-Thanks,
-SJ
-
-[...]
+>> ---
+>>  include/linux/module.h   |  2 ++
+>>  kernel/module/internal.h |  8 ++++++++
+>>  kernel/module/kallsyms.c | 13 +++----------
+>>  kernel/module/main.c     | 32 +++++++++++++++++---------------
+>>  kernel/module/sysfs.c    | 17 +++++++++++++----
+>>  5 files changed, 43 insertions(+), 29 deletions(-)
+>>
+>> diff --git a/include/linux/module.h b/include/linux/module.h
+>> index 96cc98568eea..0c6f32ddcbf2 100644
+>> --- a/include/linux/module.h
+>> +++ b/include/linux/module.h
+>> @@ -325,6 +325,8 @@ enum mod_mem_type {
+>>         MOD_INIT_RODATA,
+>>
+>>         MOD_MEM_NUM_TYPES,
+>> +
+>> +       MOD_STANDALONE = -2,
+>>         MOD_INVALID = -1,
+>>  };
+>>
+>> diff --git a/kernel/module/internal.h b/kernel/module/internal.h
+>> index 061161cc79d9..4c738074a27b 100644
+>> --- a/kernel/module/internal.h
+>> +++ b/kernel/module/internal.h
+>> @@ -29,6 +29,14 @@
+>>  #define SH_ENTSIZE_TYPE_MASK   ((1UL << SH_ENTSIZE_TYPE_BITS) - 1)
+>>  #define SH_ENTSIZE_OFFSET_MASK ((1UL << (BITS_PER_LONG - SH_ENTSIZE_TYPE_BITS)) - 1)
+>>
+>> +/*
+>> + * Marker for sections with a separate allocation, which are not placed
+>> + * into mod->mem[].
+>> + */
+>> +#define SH_ENTSIZE_STANDALONE                                  \
+>> +       (((unsigned long)MOD_STANDALONE & SH_ENTSIZE_TYPE_MASK) \
+>> +        << SH_ENTSIZE_TYPE_SHIFT)
+>> +
+>>  /* Maximum number of characters written by module_flags() */
+>>  #define MODULE_FLAGS_BUF_SIZE (TAINT_FLAGS_COUNT + 4)
+>>
+>> diff --git a/kernel/module/kallsyms.c b/kernel/module/kallsyms.c
+>> index f23126d804b2..0dca6d40160e 100644
+>> --- a/kernel/module/kallsyms.c
+>> +++ b/kernel/module/kallsyms.c
+>> @@ -76,7 +76,7 @@ static char elf_type(const Elf_Sym *sym, const struct load_info *info)
+>>  }
+>>
+>>  static bool is_core_symbol(const Elf_Sym *src, const Elf_Shdr *sechdrs,
+>> -                          unsigned int shnum, unsigned int pcpundx)
+>> +                          unsigned int shnum)
+>>  {
+>>         const Elf_Shdr *sec;
+>>         enum mod_mem_type type;
+>> @@ -86,11 +86,6 @@ static bool is_core_symbol(const Elf_Sym *src, const Elf_Shdr *sechdrs,
+>>             !src->st_name)
+>>                 return false;
+>>
+>> -#ifdef CONFIG_KALLSYMS_ALL
+>> -       if (src->st_shndx == pcpundx)
+>> -               return true;
+>> -#endif
+>> -
+>>         sec = sechdrs + src->st_shndx;
+>>         type = sec->sh_entsize >> SH_ENTSIZE_TYPE_SHIFT;
+>>         if (!(sec->sh_flags & SHF_ALLOC)
+>> @@ -131,8 +126,7 @@ void layout_symtab(struct module *mod, struct load_info *info)
+>>         /* Compute total space required for the core symbols' strtab. */
+>>         for (ndst = i = 0; i < nsrc; i++) {
+>>                 if (i == 0 || is_livepatch_module(mod) ||
+>> -                   is_core_symbol(src + i, info->sechdrs, info->hdr->e_shnum,
+>> -                                  info->index.pcpu)) {
+>> +                   is_core_symbol(src + i, info->sechdrs, info->hdr->e_shnum)) {
+>>                         strtab_size += strlen(&info->strtab[src[i].st_name]) + 1;
+>>                         ndst++;
+>>                 }
+>> @@ -199,8 +193,7 @@ void add_kallsyms(struct module *mod, const struct load_info *info)
+>>         for (ndst = i = 0; i < kallsyms->num_symtab; i++) {
+>>                 kallsyms->typetab[i] = elf_type(src + i, info);
+>>                 if (i == 0 || is_livepatch_module(mod) ||
+>> -                   is_core_symbol(src + i, info->sechdrs, info->hdr->e_shnum,
+>> -                                  info->index.pcpu)) {
+>> +                   is_core_symbol(src + i, info->sechdrs, info->hdr->e_shnum)) {
+>>                         ssize_t ret;
+>>
+>>                         mod->core_kallsyms.typetab[ndst] =
+>> diff --git a/kernel/module/main.c b/kernel/module/main.c
+>> index c1b34dc1e89a..ae2678ac7840 100644
+>> --- a/kernel/module/main.c
+>> +++ b/kernel/module/main.c
+>> @@ -1619,12 +1619,13 @@ static int apply_relocations(struct module *mod, const struct load_info *info)
+>>
+>>                 /*
+>>                  * Don't bother with non-allocated sections.
+>> -                * An exception is the percpu section, which has separate allocations
+>> -                * for individual CPUs. We relocate the percpu section in the initial
+>> -                * ELF template and subsequently copy it to the per-CPU destinations.
+>> +                *
+>> +                * Note that .data..percpu has separate allocations for
+>> +                * individual CPUs. We relocate the section in the
+>> +                * initial ELF template and subsequently copy it to the
+>> +                * per-CPU destinations.
+>>                  */
+>> -               if (!(info->sechdrs[infosec].sh_flags & SHF_ALLOC) &&
+>> -                   (!infosec || infosec != info->index.pcpu))
+>> +               if (!(info->sechdrs[infosec].sh_flags & SHF_ALLOC))
+>>                         continue;
+>>
+>>                 if (info->sechdrs[i].sh_flags & SHF_RELA_LIVEPATCH)
+>> @@ -1715,7 +1716,7 @@ static void __layout_sections(struct module *mod, struct load_info *info, bool i
+>>
+>>                         if ((s->sh_flags & masks[m][0]) != masks[m][0]
+>>                             || (s->sh_flags & masks[m][1])
+>> -                           || s->sh_entsize != ~0UL
+>> +                           || s->sh_entsize != ~0UL /* offset or standalone */
+>>                             || is_init != module_init_layout_section(sname))
+>>                                 continue;
+>>
+>> @@ -1745,16 +1746,10 @@ static void __layout_sections(struct module *mod, struct load_info *info, bool i
+>>  /*
+>>   * Lay out the SHF_ALLOC sections in a way not dissimilar to how ld
+>>   * might -- code, read-only data, read-write data, small data.  Tally
+>> - * sizes, and place the offsets into sh_entsize fields: high bit means it
+>> - * belongs in init.
+>> + * sizes, and place the offsets into sh_entsize fields.
+>>   */
+>>  static void layout_sections(struct module *mod, struct load_info *info)
+>>  {
+>> -       unsigned int i;
+>> -
+>> -       for (i = 0; i < info->hdr->e_shnum; i++)
+>> -               info->sechdrs[i].sh_entsize = ~0UL;
+>> -
+>>         pr_debug("Core section allocation order for %s:\n", mod->name);
+>>         __layout_sections(mod, info, false);
+>>
+>> @@ -2822,7 +2817,8 @@ static int move_module(struct module *mod, struct load_info *info)
+>>                 Elf_Shdr *shdr = &info->sechdrs[i];
+>>                 const char *sname;
+>>
+>> -               if (!(shdr->sh_flags & SHF_ALLOC))
+>> +               if (!(shdr->sh_flags & SHF_ALLOC)
+>> +                   || shdr->sh_entsize == SH_ENTSIZE_STANDALONE)
+>>                         continue;
+>>
+>>                 sname = info->secstrings + shdr->sh_name;
+>> @@ -2954,6 +2950,7 @@ core_param(module_blacklist, module_blacklist, charp, 0400);
+>>  static struct module *layout_and_allocate(struct load_info *info, int flags)
+>>  {
+>>         struct module *mod;
+>> +       unsigned int i;
+>>         int err;
+>>
+>>         /* Allow arches to frob section contents and sizes.  */
+>> @@ -2967,8 +2964,13 @@ static struct module *layout_and_allocate(struct load_info *info, int flags)
+>>         if (err < 0)
+>>                 return ERR_PTR(err);
+>>
+>> +       /* Repurpose sh_entsize to track where each section is allocated. */
+>> +       for (i = 0; i < info->hdr->e_shnum; i++)
+>> +               info->sechdrs[i].sh_entsize = ~0UL;
+>> +
+>>         /* We will do a special allocation for per-cpu sections later. */
+>> -       info->sechdrs[info->index.pcpu].sh_flags &= ~(unsigned long)SHF_ALLOC;
+>> +       if (info->index.pcpu)
+>> +               info->sechdrs[info->index.pcpu].sh_entsize = SH_ENTSIZE_STANDALONE;
+>>
+>>         /*
+>>          * Mark relevant sections as SHF_RO_AFTER_INIT so layout_sections() can
+>> diff --git a/kernel/module/sysfs.c b/kernel/module/sysfs.c
+>> index 01c65d608873..15c6baeb39c4 100644
+>> --- a/kernel/module/sysfs.c
+>> +++ b/kernel/module/sysfs.c
+>> @@ -62,6 +62,15 @@ static void free_sect_attrs(struct module_sect_attrs *sect_attrs)
+>>         kfree(sect_attrs);
+>>  }
+>>
+>> +/*
+>> + * .data..percpu has a separate allocation per CPU and no single
+>> + * address to report.
+>> + */
+>> +static bool sect_visible(const struct load_info *info, unsigned int i)
+>> +{
+>> +       return !sect_empty(&info->sechdrs[i]) && i != info->index.pcpu;
+>> +}
+>> +
+>>  static int add_sect_attrs(struct module *mod, const struct load_info *info)
+>>  {
+>>         struct module_sect_attrs *sect_attrs;
+>> @@ -72,7 +81,7 @@ static int add_sect_attrs(struct module *mod, const struct load_info *info)
+>>
+>>         /* Count loaded sections and allocate structures */
+>>         for (i = 0; i < info->hdr->e_shnum; i++)
+>> -               if (!sect_empty(&info->sechdrs[i]))
+>> +               if (sect_visible(info, i))
+>>                         nloaded++;
+>>         sect_attrs = kzalloc_flex(*sect_attrs, attrs, nloaded);
+>>         if (!sect_attrs)
+>> @@ -92,7 +101,7 @@ static int add_sect_attrs(struct module *mod, const struct load_info *info)
+>>         for (i = 0; i < info->hdr->e_shnum; i++) {
+>>                 Elf_Shdr *sec = &info->sechdrs[i];
+>>
+>> -               if (sect_empty(sec))
+>> +               if (!sect_visible(info, i))
+>>                         continue;
+>>                 sysfs_bin_attr_init(sattr);
+>>                 sattr->attr.name =
+>> @@ -159,7 +168,7 @@ static int add_notes_attrs(struct module *mod, const struct load_info *info)
+>>         /* Count notes sections and allocate structures.  */
+>>         notes = 0;
+>>         for (i = 0; i < info->hdr->e_shnum; i++)
+>> -               if (!sect_empty(&info->sechdrs[i]) &&
+>> +               if (sect_visible(info, i) &&
+>>                     info->sechdrs[i].sh_type == SHT_NOTE)
+>>                         ++notes;
+>>
+>> @@ -181,7 +190,7 @@ static int add_notes_attrs(struct module *mod, const struct load_info *info)
+>>
+>>         nattr = &notes_attrs->attrs[0];
+>>         for (loaded = i = 0; i < info->hdr->e_shnum; ++i) {
+>> -               if (sect_empty(&info->sechdrs[i]))
+>> +               if (!sect_visible(info, i))
+>>                         continue;
+>>                 if (info->sechdrs[i].sh_type == SHT_NOTE) {
+>>                         sysfs_bin_attr_init(nattr);
+>> --
+>> 2.25.1
+>>
 
