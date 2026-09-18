@@ -4,80 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF214C982DA
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 12:14:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45060C982DA
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 12:15:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C87A16B0092; Fri, 18 Sep 2026 08:14:23 -0400 (EDT)
+	id 474DE6B008A; Fri, 18 Sep 2026 08:15:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C126A6B0093; Fri, 18 Sep 2026 08:14:23 -0400 (EDT)
+	id 425596B008C; Fri, 18 Sep 2026 08:15:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AFFDF6B009E; Fri, 18 Sep 2026 08:14:23 -0400 (EDT)
+	id 33B436B0093; Fri, 18 Sep 2026 08:15:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8EC066B0092
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 08:14:23 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A71CC1A0636
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 12:14:22 +0000 (UTC)
-X-FDA: 85226775564.04.124A71A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id A3A11180009
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 12:14:20 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VLouqUR6;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 02CBB6B008A
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 08:15:48 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 75B911205BA
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 12:15:48 +0000 (UTC)
+X-FDA: 85226779176.11.0F40189
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id C2A492000F
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 12:15:46 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b0tjc5YK;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789733660;
-	b=J3Bt+49PEjpMXaVvjbI7TO2UiyGmoOT4UYuogocUzlKBV/8w5Xee+DremLi553jZdsomRS
-	j8x+f+Zgtca+Ls1ugw6bLTcrBQnCTuMWTfvEPG4s6fQJN5dFdt78f8KUXK/FV6h2pV5ht1
-	GsDftROSG04uqMWwIm89IzSLC4GKHEo=
+	t=1789733746;
+	b=w0HXOv0afOkKjErU0/8RT71BfTXt7yZ4E8N8kgnbSTXN5Tn1memBqvq0hQvp+0J/NblLXl
+	VP5QVzV45C1WvCF5lBnedLidrYT6G/+515CGCa1rtHnP3zmtTCupdNe93oFnDjd5Dg8DNK
+	aRkUioCrFAWP1grQmbCKx8k47WvCEtg=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VLouqUR6;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b0tjc5YK;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789733660;
+	s=arc-20220608; t=1789733746;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LDkqCMSPvMO2LfbIEM1B2j2kfABaQmmAyskL3eqNU7Q=;
-	b=Vzb3nURQFc3661eNY7WlOB1WlkmucieovMRs7H0H9eni2m2B0/okv5SRL3w6X+dWFbS5WC
-	GAtJLWnHQjD9brP4RcEEwJNC+Qn6fkC2s3H4RFg51TfH2gZIEiid/RlIivGl5pNSWYxt5s
-	c66gqqLj/KywtaRtYlilWCBd4oQQhG8=
+	bh=NrjzlvBlcAthqMoY0nUVtb7DfpEhHoAJ1WT5vLNBdqU=;
+	b=q7CUfRAbg9BX3NeJLkAkHPmZEtURfsntaFkimBQ3jaXrjfDFfYpXkU0BVgYnY/gTb0tQzq
+	ZNz/h1S7Hw0o3qcw930j/9WjS+4bk0Hv54mA8rxIqhrCntPwNu13Yg1ZHeOJdW8Vn3aKvv
+	AtnFRKh0rm6quXf/vVgxJE81i/AFXA0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D4202418B8;
-	Fri, 18 Sep 2026 12:14:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6A891F000FF;
-	Fri, 18 Sep 2026 12:14:14 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5F0D560A82;
+	Fri, 18 Sep 2026 12:15:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BA3B1F000FF;
+	Fri, 18 Sep 2026 12:15:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789733659;
-	bh=LDkqCMSPvMO2LfbIEM1B2j2kfABaQmmAyskL3eqNU7Q=;
+	s=k20260515; t=1789733746;
+	bh=NrjzlvBlcAthqMoY0nUVtb7DfpEhHoAJ1WT5vLNBdqU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=VLouqUR6gfx9icyXJBo4LjZ6iZlDqmiQDr3vxu36bF4NJ/8Iq1dVf2kn2uk0WCnUD
-	 bKyOpjQxAsy1MfR8CyolNrGLaOmfyopVj7OAI3CbX5kRQgqr4YPMWajP+aUMYcBSUZ
-	 YF6hOUSnmwAS5yaB+0h8g5nYBil0pkQq/DINfM+4e+zS0Qnld5RWhN4egQh1vs4l+8
-	 5JMqphBBfNZO/pqKJ00cB9ARIYFw3zw/FNW7A3jPIx9T+Fw5bkCoxTthZCy3jRkWXw
-	 GA4DuLqGLdclOIjytELUxeijcCLwNm+WJsW+JjXkFAhoO4oKVvuYrugPmYBmanyEw9
-	 +M/VcwTG4GlTA==
-Message-ID: <b1ba175c-ceb2-4e00-b233-d51dd8a2f4cb@kernel.org>
-Date: Fri, 18 Sep 2026 14:14:11 +0200
+	b=b0tjc5YKb5z/mOo26YG2o/5X179Uj+KYWyXsu3iTwmy38EFVW2xTdSCsY7VFz25sX
+	 uDnKdJK2P0j0TlQ3ByPsfIIbcoezS/dPVZRNWXmv7Q40EnGOPHtmPtYI3Gqr1sZ3Ma
+	 IwPuxefaqX+K9SJlDlz39mpeJ9sC3Z1PJvdBRxjG1j2lG6eIo8DRUBWB2twm3Uql8K
+	 EmWrKZOPRO4/0hikl3b3vn3ZeOuA1RFeug4pnSZs6wOe9/aP5m5nSLKSAEyqJZhkRc
+	 WHABB+17IQX5TjGX+SWBYc4B6UcJJJmYV7xeBHn8IJx0gvrGHtJOzUp9K03xVGyksr
+	 vX9+IXrQ4tIIA==
+Message-ID: <37e9fc88-4896-482f-bc6b-9023d4419783@kernel.org>
+Date: Fri, 18 Sep 2026 14:15:39 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/memory: reuse the whole exclusive large folio on a
- write fault
-To: Yuan-Hao Hsu <aa9736195201@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, liam@infradead.org,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Barry Song <baohua@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260918064238.868-1-aa9736195201@gmail.com>
+Subject: Re: [PATCH v9 2/2] mm/memory_hotplug: optimize zone contiguous check
+ when changing pfn range
+To: "Liu, Yuan1" <yuan1.liu@intel.com>, Mike Rapoport <rppt@kernel.org>
+Cc: Oscar Salvador <osalvador@suse.de>, Wei Yang <richard.weiyang@gmail.com>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, "Zou, Nanhai"
+ <nanhai.zou@intel.com>, Chen Zhang <zhangchen.kidd@jd.com>,
+ "Zeng, Jason" <jason.zeng@intel.com>, "Chen, Yu C" <yu.c.chen@intel.com>,
+ "Deng, Pan" <pan.deng@intel.com>, "Li, Tianyou" <tianyou.li@intel.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20260914072929.1883794-1-yuan1.liu@intel.com>
+ <20260914072929.1883794-3-yuan1.liu@intel.com> <aqjfyGeQaL4g2EcA@kernel.org>
+ <209de483-a9a5-4d98-bda4-7998e8fdc7da@kernel.org>
+ <aqmVQeETYhbsl79A@kernel.org>
+ <PH7PR11MB69324C2F3079B23F8E20C489A3872@PH7PR11MB6932.namprd11.prod.outlook.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260918064238.868-1-aa9736195201@gmail.com>
+In-Reply-To: <PH7PR11MB69324C2F3079B23F8E20C489A3872@PH7PR11MB6932.namprd11.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: A3A11180009
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C2A492000F
+X-Stat-Signature: nouhnmqeqr4mw9y7tre66gqk5mz349gz
 X-Rspam-User: 
-X-Stat-Signature: bo4dnn7snnru3eadcuki8bu4fgecat6e
-X-HE-Tag: 1789733660-812348
-X-HE-Meta: U2FsdGVkX19AaM4J67g9BJuF0xq4lwgdnFWFikV/3wB4QTDNnHMEU4Ybj06rJvkJ0eKKqRS+dR+eKmw01q1tbCu8CF8TDWTUv6R/j657RveOQB0XcWeJ3DMfOGdUNibngDjqGg6LYzf4qORmqTSwqYXg2Cy316DSxHMe8STigVrTDxPwI+mVZJkh9SZVbTuxAPOnGocdnL7SEnaQepMIEK6vJDR0VSsvqtZEKXIBOX1fjriprhI9Q/KpepKhvpkJYkWzwq3So09Jjn6AsO+BwTn+lIrXDYLZSvh7ocDjdUPDbtGioKqnOwiYixHTbb05f+DQLN/ZP3i8zGys1IfbCtSobZkHe4ARzgkVJTATfcxv7vxcr5Xm5NOrpEnzbfzlZ/yn3A+LQnIEifexmKnzTGoL4MajXU3SOKm74bubfZgtszmJbpkuPiWkTWG2yK6W7Oi1KwSCWOugnRRJn17g/KVeey7r2cBQ6PtfKfEemtdQEQkI9P5gMdj4KPdtRvvJFoRBfNkqC2CB4x509Ew7WN2GGOrWgTCsRurnT3mhUEILYhxk0xhshwiGvvpyo5N0qJU7tWXNIjtCgtQV/cvQViOofDSv1VvN4Y/X5Mxm+y37+rUHtgWbPcbTKZzRL0p03g5n85lAUI/icolUqoWRl9gngKDcPlhSn2KZ9tbcLv8IqMGLPgGkkRWQC1mIvJvCLt5ytr08Yy5pMHA8WffxO+4eHtGrSgF98r+MV3Qkl4HUVQ6AcgukIXli5r8uxs9zHzc3k0Ur/gm8aCwBbM9Py+9mwtVbTeBXpngbmHZEBMyyLT0DHVOahZ1uaAwYHsWCPtwtq7/wSmqq1PPuRx7IyO8stbGau899Zh4b7/8Fw4dzc7p3i+ZWLdrFUFj36wRPJHns+4Ygsv6hSGaLS/EROdUf/s6Pc7TSyE0U0owTGhOIIZIkb6b8IcRusJsvCiEwpinfhYROHTzO2tydpbV
- aQoZR0x5
- 4L4Gz2Rks1OiGzeMxuzJrYu5A9u0T/8k2Areqo/wa0hRe5Zp0Lvo30gZngAPBe2bKcIKDdqQFZwcKqsUxvfksC19bat1SR538xQYfIVFsJcyIrKZpEfDfDEAD8ChXAukbSGzCBbBG9ejy6poq5AYL/9klvyQXO2fk1TLR9ApxQVxkyjDz5gMV+j0O0kNPJ+4bCGrh5fbyB/4RYTUG3LOT5w8drQcDeD4kzEo8D/pIiRehmvYGM/JvXaUSWSJ2YtHdRhWbdQe2vJpNbuQ=
+X-HE-Tag: 1789733746-997654
+X-HE-Meta: U2FsdGVkX18fG8NYrSWgnoHsU3l2wDHzvj27G45z9k1unjXGKyYLg0prHheV6qv/LN5lxSujK6RCQX3jZw7ksjxSI53VCk9frP/+L1H0JxL4GbMhpuZQvvwG06fnUm3zUi5SMWFZ2dvBwCccSU6phXB/0N5kaBl7XoHcrmbqDLa72AM7VMPbJLrxfXkEM6kQY/NIyrTukL0+/WPv+GXOe66jWBcaikBCfE13Qv5PS/Rab6czpbG0cye3JdMMxDlDAkKhWyF4Y1jYFtkr8o1L6yt1EIE3U6cmTKQ8siYeAt9YlW1kaZcEHd2RwV2gHPyRExnkRyChBNrVe4DqETtSYp+9AMPO0EbGAIRYyf8W1SkBKricsJwwinvf3ukM5iVrJt40xTDTw2Htbd3z0VHxUv9mhc6LmYP1/1ZUJ0RNSsV864Mv2TDMdjHOrroKRWS6Ol1BPp1p+4Ds1EoC63mLUeTTzmHttUHdBjjTme0ouYo1T26O5OHRfgWi1N53qAMJy3W38J5A9VTMDgWdi27vr9IeA9a/Gg+V23Jk+iiOFt3qEi5jX97ATkIT0+rfJrOUfdF8lVQvkYa//AJN74znDW1cH5+MVzMVwfNxiLDqgTSB2DyvrdUQJ0RqAeWy9xbIC3MYpVsznyLkjXqbAEtyP1YAiQUkgLO7pH/QA4vTz7TJrYI6D8pQKZ3ICe9rSneMGNa7nt4Fs7VoDVHbVky63pnd9NfLyfxs5ZSsFJ3ZKZNqVrGOThmF+8gEynWFnIFAMidu2oMRYUsfeB9Z4/vpYEXf4K0lcJYvSI8nAG7uHGD43Pue7Hoo34T2sryvXBrupsTX7/AIXB/i/tqcDSYjnizjgFVeKH+vTPbHD7aioiFGbS8KuVjNQbTWM32JV17jxofWhYOohcNwGrm3pjfEmUW1+aCtZouZ8br5/KcFCvi54Ko/4JQ8SF9PWKVDhnzgGRIHZ6iR8G8Xd0Jw50P
+ BPbzekab
+ Pk9Vi/BYQ690mqVEb/1jj1o8HPWaS62Y3yN8IC7/3zIkLb8WrCYkQDdBweNeHCS6lZ7mJfQqJh16hlamxqBECHAtQ9npE/p86wn+37lSm6Tzsqei3NLYXkpwC05ZMRYXYDLJNESBMhnJh5S08gyZcAF5qmsFR2qQnNpFQ1WgavqD1EEzLs5NAQ4BdoNFiOd2Ps8XE+doa0ZdpHaBaxhiwUgi7uJqQ8FxPVoZdDvSho1TF8Izid8WqncHtgI4wZINOA+J6/b1/iDRCe3rzmSo9ZMGWZ5q+NLBC4Z6KnCz8SzPnsIoMqjIk8pUkkbS/CzpA3a0ZvE+YGlVhaQchqxXFzjn9z3dVTrS2+Boger7TZgWLgZFDZFw0N40Q63PRYI7/95Gct6Pk70omh8ytsyKEhAF/7Sek3m7899dm5m5svOhN3oOTj8c+O+CkVgMLI8oQtxT+U3Owxj5lhORutrsxPpKxptWzqrWxr5l3cxd8Yj190I72pIf2V3dfxbJUHwbTb1+ZYycjjb6KLPGNNrn/Ycg5s+lMbcoPfaOaLiOH2ehj8ry1QD6kpge3L7nypQ3242Tk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,140 +146,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/18/26 08:42, Yuan-Hao Hsu wrote:
-> fork() maps the anonymous pages of the parent read-only and clears
-> PageAnonExclusive on them.  Once the child has exec'ed or exited, a
-> write fault of the parent ends up in the reuse path of do_wp_page():
-> wp_can_reuse_anon_folio() finds that all references to the folio come
-> from mappings in this MM, the page is marked exclusive again and its PTE
-> is made writable.
+On 9/18/26 04:08, Liu, Yuan1 wrote:
+>> -----Original Message-----
+>> From: Mike Rapoport <rppt@kernel.org>
+>> Sent: Wednesday, September 16, 2026 2:58 AM
+>> To: David Hildenbrand (Arm) <david@kernel.org>
+>> Cc: Liu, Yuan1 <yuan1.liu@intel.com>; Oscar Salvador <osalvador@suse.de>;
+>> Wei Yang <richard.weiyang@gmail.com>; linux-mm@kvack.org; Zou, Nanhai
+>> <nanhai.zou@intel.com>; Chen Zhang <zhangchen.kidd@jd.com>; Zeng, Jason
+>> <jason.zeng@intel.com>; Chen, Yu C <yu.c.chen@intel.com>; Deng, Pan
+>> <pan.deng@intel.com>; Li, Tianyou <tianyou.li@intel.com>; linux-
+>> kernel@vger.kernel.org
+>> Subject: Re: [PATCH v9 2/2] mm/memory_hotplug: optimize zone contiguous
+>> check when changing pfn range
+>>
+>> On Tue, Sep 15, 2026 at 05:20:07PM +0200, David Hildenbrand (Arm) wrote:
+>> a
+>> pageblock
+>> cost
+>> pfn, int nid)
+>> last
+>> spfn,
+>> section
+>> However, only
+>> online.
+>>>
+>>>
+>>> Maybe extending that a bit we could do
+>>>
+>>> "With CONFIG_SPARSEMEM_VMEMMAP, early sections have a valid memmap for
+>> all PFNs
+>>> and the sections are marked online. However, we might have offline
+>> subsections
+>>> in such early sections, indicated by the subsection map. While we must
+>>> initialize the entire valid memmap, account only the online pages
+>> according to
+>>> the subsection map as online (see pfn_to_online_page())."
+>>
+>> init_unavailable_range() already has large comment on top, adding
+>> something
+>> like that there makes perfect sense to me :)
+>>
+>> How about a bit different version:
+>>
+>>  * The function counts pages that should be added to
+>>  * zone->pages_with_online_memmap.
+>>  * With CONFIG_SPARSEMEM_VMEMMAP there could be offline subsections even
+>> though
+>>  * the entire memory map is valid and all the early sections are online.
+>>  * Count only pages in online subsections (see pfn_to_online_page()).
 > 
-> For a large folio that check is about the folio, and what it finds holds
-> for every page of it.  Still only the page that faulted is marked
-> exclusive and only its PTE becomes writable, so each of the other pages
-> takes a write fault of its own, and each of those takes the large
-> mapcount lock to find out the same thing again: 16 faults for a 64K
-> folio, 512 for a 2M THP that is mapped by PTEs.  The same THP mapped by
-> a PMD is reused by one fault in do_huge_pmd_wp_page(), do_swap_page()
-> maps all PTEs of an exclusive large folio writable at once, and
-> numa_rebuild_large_mapping() upgrades all PTEs of the folio from one
-> hinting fault.
+> Hi David
 > 
-> Commit 1da190f4d0a6 ("mm: Copy-on-Write (COW) reuse support for
-> PTE-mapped THP") left this for later because faulting around might
-> increase the COW latency.  Numbers for that are below.
-> 
-> When a large folio has been found exclusive, walk the part of it that
-> this page table maps inside the VMA.  PTEs that still map it read-only
-> are batched with folio_pte_batch_flags(), their pages are marked
-> exclusive, and where can_change_pte_writable() agrees the batch is made
-> writable with modify_prot_start_ptes()/modify_prot_commit_ptes(), the
-> way mprotect() does it.  That leaves NUMA hinting and uffd-wp PTEs
-> alone, keeps soft-dirty tracking exact, and on arm64 writes a contpte
-> block back as a whole where ptep_set_access_flags() on a single PTE has
-> to unfold it.  Pages that cannot be made writable are marked exclusive
-> all the same, so their own fault skips the folio check.  The PTE that
-> faulted is in one of the batches and is then completed by
-> wp_page_reuse() as before.  Small folios, PMD-mapped THPs, unsharing
-> faults and the copy path are not changed.
-> 
-> x86-64, i7-12700KF, 256 MiB of anonymous memory, fork(), the child
-> exits, then the parent stores to the memory.  Medians of 15 runs, two
-> boots of each kernel, taken alternately:
-> 
->                           v7.3-rc3+           patched
->   one byte per page, a clock_gettime() between the stores
->     write faults
->       4K pages            65,601              65,601
->       64K mTHP            65,601               4,161
->       1M mTHP             65,601                 321
->       2M THP, PTE-mapped  65,601                 193
->       2M THP, PMD-mapped     193                 193
->     time (ms)
->       4K pages            29.7 / 30.1         30.0 / 31.1
->       64K mTHP            29.4 / 29.7          5.5 /  5.6
->       1M mTHP             29.3 / 29.8          3.9 /  3.9
->       2M THP, PTE-mapped  29.9 / 29.2          3.8 /  3.9
->       2M THP, PMD-mapped   2.5 /  2.5          2.5 /  2.6
->   memset() of all of it (ms)
->       4K pages            57.2 / 56.5         56.9 / 57.1
->       64K mTHP            56.5 / 56.3         39.0 / 38.7
->       2M THP, PTE-mapped  58.6 / 56.5         36.8 / 37.7
->       2M THP, PMD-mapped  37.5 / 35.9         35.9 / 36.5
->   8 threads, one byte per page, random order (ms)
->       64K mTHP             6.1 /  6.2          0.9 /  1.0
->       2M THP, PTE-mapped   6.0 /  6.7          0.7 /  0.7
-> 
-> The latency of the one fault that now does the work for the folio,
-> measured as the time of the store that takes it, against 420 ns for a
-> reuse fault today (medians, ns):
-> 
->                           reuse fault   fault that     COW fault that
->                           (patched)     allocated it   copies 4K
->       64K mTHP                   730          4,600          1,500
->       1M mTHP                  5,500         63,000          1,500
->       2M THP, PTE-mapped      10,100        126,000          1,500
-> 
-> That is 14 to 20 ns per PTE.  Builds that differ only by NOPs in front
-> of the new function take either 10,100 or 7,500 ns for the 2M folio,
-> with a period of 32 bytes: it is the loop of modify_prot_commit_ptes()
-> that changes speed with its address.
-> 
-> Capping the walk to the 16 PTEs around the fault instead was measured as
-> well: it takes 5.4 ms where the above takes 3.9 ms on 1M and 2M folios,
-> it is slower than today when only one page per 64K is written (3.1 ms
-> against 1.9 ms, the whole folio takes 1.5 ms), and it is only ahead when
-> no more than one page per 2M is ever written (0.1 ms against 1.3 ms for
-> the 256 MiB).
-> 
-> Redis 7.0.15 with 1.3 M keys of 512 bytes on 64K mTHP, BGSAVE and then
-> 1,000,000 SETs: the faults of redis-server during the SETs go from
-> 262,100 to 18,500, its CPU time from 1.48-1.53 s to 1.25-1.33 s, and
-> redis-benchmark reports 742,000 to 794,000 requests per second instead
-> of 652,000 to 658,000.  With THP off all three stay where they were.
-> 
-> arm64 was only run under QEMU, for the counters and with DEBUG_VM and
-> PAGE_TABLE_CHECK: the faults are the same as above, and with 64K folios
-> the first pass after fork() unfolds every contpte block today (512
-> contpte_convert() calls for 512 blocks, and nothing folds them again)
-> while none is unfolded with this patch.
-> 
-> What does not get faster on x86 are stores to pages that this CPU still
-> has a read-only TLB entry for.  The fault makes the PTEs writable but,
-> like mprotect(), does not flush, so such a page still takes a fault, a
-> spurious one that costs about the same as the reuse fault it replaces.
-> That happens to pages that were read since fork(): reading the 16 pages
-> of every 64K folio before storing to them takes 65,500 faults and 28 ms
-> before and after.  And it happens in a loop that does nothing but store
-> one byte to every page in ascending order, which is what the reuse-byte
-> mode of David's pte-mapped-folio-benchmarks does (120 ms before and
-> after for 1 GiB of 64K folios; 2M folios: 119 ms to 18 ms; the reuse
-> mode, a memset(), goes from 232 ms to 157 ms with 64K folios): while the
-> first store of a folio is faulting, the CPU has already run the next
-> stores speculatively and has filled the TLB with the read-only
-> translations of their pages.  Counting with kprobes, such a run enters
-> handle_mm_fault() 135,687 times and do_wp_page() 8,457 times; with an
-> LFENCE after every store the faults are 4,100 instead of 65,400 and the
-> loop takes 4 ms instead of 29 ms.  The PMD-mapped case, which this patch
-> does not touch, shows the same: 8,800 faults for 128 THPs, 133 with the
-> LFENCE.
-> 
-> With a flush_tlb_local() in the new function, as an experiment, the
-> ascending loop takes 4.1 ms instead of 28 ms on 64K folios, the
-> read-then-store loop 5.3 ms instead of 28 ms and the memset() 21 ms
-> instead of 38 ms, for a fault of 870 instead of 730 ns and 11% more time
-> for the pass with the clock_gettime().  Generic code has no way to ask
-> x86 for a flush that stays on this CPU, so that is left for later.
-> 
-> Assisted-by: LLM sparse
+> Should I prepare and send a new version based on Mike's latest suggested changes?
 
-
-My review backlog is large enough for me to just go through this wall of text.
-
-There were previous discussions on this, in particular around how much we should
-actually try operating around the target PTE.
-
-How did you use the LLM for coming up with this patch + description?
+Yes please. I guess this comment is the final bit before this should be good to go.
 
 -- 
 Cheers,
