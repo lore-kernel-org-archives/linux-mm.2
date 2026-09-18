@@ -4,82 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C07EC982DD
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 20:32:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 720B0C982D7
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 20:37:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9BF766B0093; Fri, 18 Sep 2026 16:32:11 -0400 (EDT)
+	id 44ADA6B0088; Fri, 18 Sep 2026 16:37:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 996FA6B0095; Fri, 18 Sep 2026 16:32:11 -0400 (EDT)
+	id 3D4E16B008A; Fri, 18 Sep 2026 16:37:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 886026B0096; Fri, 18 Sep 2026 16:32:11 -0400 (EDT)
+	id 29C586B008C; Fri, 18 Sep 2026 16:37:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A9226B0093
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 16:32:11 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B533D1C3136
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:32:10 +0000 (UTC)
-X-FDA: 85228030020.30.45CFB93
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EB27D6B0088
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 16:37:36 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7E6B81407A2
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:37:36 +0000 (UTC)
+X-FDA: 85228043712.22.55CD925
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 0CD20A0004
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:32:08 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KBuVz8Zp;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789763529;
-	b=dmBz+6g3vdXApWUY16TJacCtZ3uMvhZ5iOC3D4VaRdIi+dubtJaoVa1sLbdpO9nrhBWxah
-	gRwGhKRL2KngNpzmHUEAMCWKFfc+5CQzc0L24PTXG+72SAQA2vqOXkwhHFflfiOFSAzwjs
-	bpLqFGYOMmBUWuvmEsc0Gh9zTKmGgoo=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KBuVz8Zp;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf24.hostedemail.com (Postfix) with ESMTP id C9D1E180006
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:37:34 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TA8QtEdc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789763529;
+	s=arc-20220608; t=1789763854;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X2Gm2LzEC02MoKL1Mljhg5EEmo7yk0sahCQ3OG9Pwz0=;
-	b=GoLnVSpM2eqDzTb69NtG8hp/RcFX2ekOW/rqXfEna+VJgm2tO+fGzzALWxmn5cDpIpIZf/
-	B7r+AwprVjBLxfxeMVcxpcKSorh06rWfid+pon72kK+ATAXb6sJsY1iwlAE53YRIeYkgGE
-	WKKgljBkHXlJsQqOf4zR6VHUqtlxBpo=
+	bh=3dMJm3ZjQ+ZEzM07+fi70hbZiaOAoeuWuXkc2PtvRng=;
+	b=qk+wk8i3PZ93VM9pfI/bUSGamdg367W70Pt38XQUebJ8H7W0ZHFSt/knhLu+8PE7e6LiwQ
+	4BCyKryHAdoi+ktlv5ono5/W3W6Sq+b2bPIVkQh2Ex6NRJRDHoA2EBWKjidjvuqAnKrRiz
+	tpwDB/wRhbm5r5VcBZpXxgoUCGk/CfQ=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789763854;
+	b=nsH7mBT2xdHijsHkzBdHcd9BJcs09UgGWRMuL4H+uRtkEXwOsrNgyi5IPa1JH2IPaM1xXY
+	LV7wKdKaJjoqEMeMnRJxR4K6kAP/f/3Mk/8A/R7NSzUw+dNDubjx5n17ErfzQe9d8S6Oa7
+	1ya/YNeMz5SGqL3PsFR+hvsgDq7xBr4=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TA8QtEdc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D441C6053B;
-	Fri, 18 Sep 2026 20:32:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DFA41F000FF;
-	Fri, 18 Sep 2026 20:32:04 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3AD8E6053B;
+	Fri, 18 Sep 2026 20:37:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A53321F000FF;
+	Fri, 18 Sep 2026 20:37:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789763527;
-	bh=X2Gm2LzEC02MoKL1Mljhg5EEmo7yk0sahCQ3OG9Pwz0=;
+	s=k20260515; t=1789763853;
+	bh=3dMJm3ZjQ+ZEzM07+fi70hbZiaOAoeuWuXkc2PtvRng=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=KBuVz8ZppMXav6gtxngSrOjWg+cF99Z7MBSk5hZD/eNMNv37m4Oqg7kfD7P5V/ljy
-	 Pzyry1gNHcyH4f8LHNo1gxbE3w7rL/pKRnFLuUPa8kkRF0xUteAO14sQVLMPeUdcLg
-	 LW8Kt3C8cX+5rN/zA1nlc5YjMtRJouLe2p0Tt7OGTgi8K465aQ5ITyz3a12In4F/1s
-	 3q7+w3WpnNtzWgmkVzV1HqZadxWxZ++UjYP203B+CEZxsQqimj6TnIsO4Lp/4mlrxn
-	 BjN2Fbv8Y9OjiW2P3RnDF6PDai56BIsYfIwhIGiUnt/jhV5X6j3gtNKIueVdycQ54W
-	 M5n+aRYMsCsqw==
-Message-ID: <aec6769f-dbd4-4dfb-acd6-63ba93db89f3@kernel.org>
-Date: Fri, 18 Sep 2026 22:32:01 +0200
+	b=TA8QtEdcy2F0tPssdLP6Grp+EXQbWJVgYbobWiS+yfaRhNto37XPC6yydxfJS0ati
+	 YN4fk/NnkmXUKF05nS4ureQ7OrBYLmzmgUgdgTt69/E7ZELG1aXjpUGOXfKOm+Q0oF
+	 ir70RxL94eq4rHj0GVIOTUZBY07gfXR5p2hoGYUz9y5Sq02iXnae9XyhIWp2dfsiPW
+	 nFKd2GW9XpJFGPWvUfTNTkCXp+DAqA5pux1svrvj7hho61/ESPwF/3aNLdtnNp6cNH
+	 5EbQZrfTQV0Duu0JB9hLq+eP5bW5bZk64rYsNJNnRiZZb8Z/DQcH89WMZkJjaqPVLb
+	 xXK2kKb8zfwrA==
+Message-ID: <c0979ad4-9fec-49f1-8442-d90061b79504@kernel.org>
+Date: Fri, 18 Sep 2026 22:37:27 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 1/1] mm/huge_memory: disallow raw PMD mappings of the huge
  zero page
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org,
- ziy@nvidia.com, baolin.wang@linux.alibaba.com, liam@infradead.org,
- nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com,
- baohua@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260917121010.60966-1-lance.yang@linux.dev>
- <aqv5r6Ar0vyKXa_x@thinkstation>
- <8c70259a-94ed-415c-89c1-572145c64670@kernel.org>
- <aqwPHfWhKGty-Q_4@thinkstation>
+To: Lance Yang <lance.yang@linux.dev>, kas@kernel.org
+Cc: akpm@linux-foundation.org, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+ liam@infradead.org, nico.pache@linux.dev, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, usama.arif@linux.dev,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <aqwPHfWhKGty-Q_4@thinkstation>
+ <20260918025214.89109-1-lance.yang@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +123,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aqwPHfWhKGty-Q_4@thinkstation>
+In-Reply-To: <20260918025214.89109-1-lance.yang@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 0CD20A0004
-X-Stat-Signature: g9w3db3ds8d7opynob8z477jy7mp4mdp
-X-HE-Tag: 1789763528-125030
-X-HE-Meta: U2FsdGVkX18g/UblLXrdCXcIAfuatQehABZvNEKB+aFnUU0cbaxOqf4WhtlXFRxrPUXn3vYekphNEGuEcFkkgO+O/Byld5J+yF0c3OBjMTsXiPUnXvVkRB3VAU50hAguDBzPR+wCahZh9LIuLiWVLFHjTZfIJ1N4YXNFc5XKTlYozci1J3iYZy2/E5oGGBzJCdKovbaA/kAgvGeizEBlPaPvOKXD3hWQjG7UzuNitsMHJyuHlqpyhX2/oBIm/7LvunFMT7zOKr7IbMw7hgmxH6m0nLyyCfe0EKxcC8zehUd8GmDwaUcu0R1UBxzt16yPovq17xh+Btor5uHfS6dOQU+FxG9N6SWLAGhWRo2wkRWhdNWNuvMIrDZE1cHU4iEbCCUNUbdP8DTJu8RH/51cSmO4JbljCH1Qb/PNl1oWLJ7kcVs9soRfiJ8hdjbI/AWgc/lPVJqrAPmWQAjXfDdaIoQFIFvY2qvT5fkgqXlQs71YJjRcX2+9+xJnesmYSVxG+/d7pAOkqKdT15qaRCzWRAushO28R0ADESPTIXwuaZmxn2aiGVCaq7WfY6SYjwb8PifDxyZGYeLmTJEsy+jpx45Z5Tcsuopid6gSo9I/fXlZtx8xAZuvZb1QhpiWgIwsU2SLhmScr08qD4422i3qXZkE8tCXNU7Vo1FRXMENNAQag1Yr1xxQbvTgonqBx+5XgexUq9ZAsITuaHK9BDB4hOJ7d3aqIIjOoc4fMB85k0R+csy44fKHYSl6BIje1+9jMb8NS60Kp5tAA7jqCaCKuVSK/WiutaFxcVky37Hk2g5afkrgccVAxOc+Jmexlweberbzsms9fzdhZjHvIU/PwenEv+LjTZKqGx/LnQdtesAKfoffhligVgfBj7ZAznBA8BKl0BuaKAIykZ8bC/KdNCjhLW6PXZIXfg22kibZnV6HCbUPLWPvovjqSbhlxf5rl5iSZlhf//QJNtpHn84
- YloskYcb
- lc7+5mqAId4y1MNpyvf2n/ymMVjnNlu0bxzc1bqknm/1/m5nvqfUvnfW9UF1enXClVZ8DWn0xgIjkezgAH8H4CapWBI9MjIjtWVO9ZTknzS4JLjv1FFR61d93GaIKFZB4qk9KL1fsZJRFRtm/y1Sq++vQX5d4EVTT6EBmOkUqgvXYEhjhn/wp/MsYpI4uSfexBo548tbukfVM7TPl2X3j8APJwkYurqetJp7D9Cg30cTLfUQ4hsEpE7NTFCj8lSEkUNq2nBrE8uHOrYyx1VfmMhCjs8xHXDrHWUkZmTiF8FqT/UmbUlhbEKUb5Q==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: C9D1E180006
+X-Stat-Signature: nexeif6yh4enuxu3roihhj8dxpqn6uji
+X-HE-Tag: 1789763854-252599
+X-HE-Meta: U2FsdGVkX195AS0/gCiDyG29EOw1Wk5nUqI6zR8zWJZV5lhuKkZMNzcHmzp0p2XYt4Yn5SCqQUFZw5qm30Twy468OixeUwO9dtuDzakc5RMlqcz211imUQP6+mJQSqK+NyBU9RVDCGUtUYk4E6538I4JAyQFFt0WC2mNFvC1XVyoYnLMbqxHpBkUpL0+oep7pOxxlr3uX96lsG3iW9jF+jP8atZUYKpZ63z5yLAb+4/vAY9wtP4QbXz0HX9MPStVdpXjMm4+iOPsBXqfCvoNQNsYzUE2UKzhvF2jBke1f7Ww2LXU2yXNYNBH1yDxJlKnUcyO7rpK/T77qvYh8s45U+xOkNL7qeWChTs8RL37C/1xdAva4xfZ8Gm54aWa8HOivPkhoO7Z6z9bl0+Va7fbo8c/N7yKCm8X/OUxYaHA4V9BbgdTiYUOJFkRzaUVz+Fbgk4P3Bx/cIH69txCRsx9ZFC2JIcnCIAWwX9SfMrhQDQx2augHm+YyubsmizATzsbFNSuEHh8jxzj2L+ArMzzOfa3dKlYs1UPpkewu+Jw9jBnTDtOb7MxsZcCz+Bme0UxBtjcQtG6kv+F2hWUHGLy5P98WYDB5SHueKFEWjchtMd8BCLdv+ZSZRzkAqOYSMjmli7q/oXepchRTx+sGwClnoLxhn/+daGS2Y+v3PghId0sKpf8zZU4gFiVsR+qrOjhjXFj4xTCA/1Wp/VEWLvm9RpdiV+ZhZd8BzSrkbD3dJdn+9aHm+mBbj91jL3Y/izlOrBmjMUARY45M5TWTYJsEWLZlaSDcKYpYVXAzzZrrsJp25KPzFYiOl7iJzfleRbh1W8cio6KZ9Us/BolDozvKt/3S6aslxgzsbBIJdYQNcOBvqZzcgYTGtTj4wjKR8eu54WsKJdxORCfBMUJvheXeX3HlxaPac+1gdht7elViwcP0D6Fl0K8ZZKjLMIvYfxTBMuO6chan6qBItRKwLA
+ CM7W5wpb
+ Sk5xzwNunRb3TS91AQv5Cnm5CjAChDB2GXzZJDmhRCXLltMcaNPLgnO9Xze+RxDNUoiA9/8x6bWEyUz5E7eQPbON9T8qrPyz9extcJUWiVNyrh/ZBl4MgYijHTqirGGJNAdF9ClDMThQGrymv+Ao102lBNJI6gdQoOa++ysMGg2NM2H/5uNq7j1Tl7Sp9MhOH6zjUnIE+uf+ui1TkANzDavd1/cb1du9ozPruf0+XyDhR8pOQ+304UumzMhLNG4WJKaqBJ7HUKvj9PHJpnlytg3dcqA5ggADvs3oktWlkPfh/jp9KX2/fqK3d65ci9w3o644TfomP5vlqilQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,24 +141,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/17/26 18:03, Kiryl Shutsemau wrote:
-> On Thu, Sep 17, 2026 at 05:29:48PM +0200, David Hildenbrand (Arm) wrote:
->> On 9/17/26 16:32, Kiryl Shutsemau wrote:
->>>
->>> The patch looks fine, but don't we want to cover the same for non-huge
->>> zero page in vmf_insert_pfn_prot()?
->>
->> Why would the zeropage be a problem in PFNMAP mapping?
+On 9/18/26 04:52, Lance Yang wrote:
 > 
-> Nothing enforces that it is read-only.
+> On Thu, Sep 17, 2026 at 05:03:09PM +0100, Kiryl Shutsemau wrote:
+>> On Thu, Sep 17, 2026 at 05:29:48PM +0200, David Hildenbrand (Arm) wrote:
+>>>
+>>> Why would the zeropage be a problem in PFNMAP mapping?
+>>
+>> Nothing enforces that it is read-only.
+> 
+> No in-tree user inserts the zeropage through vmf_insert_pfn_prot(), so
+> rejecting it there should be fine.
+> 
+> Something like:
+> 
+> ---8<---
+> The huge zeropage is reclaimable, but a raw PFN mapping does not pin it.
+> A PMD mapping of huge_zero_pfn can therefore outlive the folio.
 
-Well, ok, that at least would be easy to check.
+Well, just with any other folio that we PFNMAP, the mapping would have to hold a
+reference. mm_get_huge_zero_folio() can be used for that, or just grabbing a
+folio reference (not so nice, but works; GUP uses that, for example, to keep the
+huge zero folio alive).
 
-There are other reasons why we'd want to disallow it ... similar to the check in
-vm_mixed_ok().
+> 
+> No in-tree user needs either mapping, so reject both with VM_FAULT_SIGBUS
+> rather than risk making either shared zero page writable.
 
-Which reminds me that we should try getting rid of vmf_insert_mixed() at some
-point ... but it's tricky.
+That is the better reason. You could also just say that handling shared
+zeropages correctly is more involved (see vm_mixed_ok()), and as there are no
+users, we can just disallow it instead of trying to fix it.
+
+> 
+> Link: https://lore.kernel.org/linux-mm/f76beaf8-351a-4b22-b362-a945a5e1af6a@kernel.org/
+> Suggested-by: Kiryl Shutsemau <kas@kernel.org>
+> Suggested-by: David Hildenbrand <david@kernel.org>
+> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+> ---
 
 -- 
 Cheers,
