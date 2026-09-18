@@ -4,89 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8A80C982D7
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 21:08:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9603C982D8
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 21:11:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B63156B0088; Fri, 18 Sep 2026 17:08:13 -0400 (EDT)
+	id B691E6B0095; Fri, 18 Sep 2026 17:11:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B3A1C6B008A; Fri, 18 Sep 2026 17:08:13 -0400 (EDT)
+	id B400B6B0096; Fri, 18 Sep 2026 17:11:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A50496B008C; Fri, 18 Sep 2026 17:08:13 -0400 (EDT)
+	id A55CE6B0098; Fri, 18 Sep 2026 17:11:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 74B096B0088
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 17:08:13 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3CC20A07EF
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 21:08:12 +0000 (UTC)
-X-FDA: 85228120824.24.440A6A9
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7AC1B6B0095
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 17:11:15 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3BB911A06EC
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 21:11:14 +0000 (UTC)
+X-FDA: 85228128468.08.BD42100
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 5834840007
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 21:08:10 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="O/3qZu/0";
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 6EE3018000D
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 21:11:12 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NwDa7aHE;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789765690;
-	b=KpC6AOIT5KOr1mMqn6djD4VIuTMHvjdQzxG2YnRtgBVA4n2DjoFBdDAXmKlDfo11QfxKAG
-	Dgj1Qxt4Ef7cwUfoGxztGsNLCoUgxPLV7eEQtUbO+adbexb+p3ml9ZlSq5PcLuvUshIs+W
-	aoApBlx6APjFkilTcyFGSjo7H0eCl7I=
+	t=1789765872;
+	b=PPSdlTD3NxhLeE37mx6DRMRLF/hzEWVitTWFmZ85W8TK1FqXqWG2HZsmwd5pviJ5EhXYLe
+	MhFHp7UItEh/9kQ02iuVFpQ91W7Cbfp25F0kW528IvQMZGjBulo6l2SpzucMPwYw4PVwX4
+	y8QPUoWuVBC29SsRP1eZmRNR/GRXuDE=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="O/3qZu/0";
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NwDa7aHE;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789765690;
+	s=arc-20220608; t=1789765872;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bGY+xfVTy1ZxW1u/Kx3gEVZE7cqsRURvP4ecTB8cxGw=;
-	b=DfS36Y8mJBI3FIg+Z2muZi3rc+qn9U+rFadYB9deIH94v0HGYerx21RVi2m8y8bS1LWarj
-	Gr/BnIQal+aIt2K0q0RxHyFsjKPmwymcegC4JMVWrtGWA3g9qefQXSVPuV6461i9y4iy/k
-	S6MmaLJ8C/yJdCZPLa7U54FLpAlFa54=
+	bh=hl6/Iu3OW2v6yotocgDMrPbkoxPNm6VwsCRwbY41jKU=;
+	b=E6TntEZCnGVAoq0qsWGXZ6AOlqwxz1GvlbQ3DDLBXXu67bwTOZtBtkrMy45CF+ZJ9VW/ze
+	fVahR7POmXHe9LkNGa6AbTUxvgyKFWOxYJfLzOTGm2WOkBAvditoxXoQRkSPTKVCsBQ6eY
+	/366LXLaAIx7CjQlexWPS+Gq6X7UbHE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B37A440611;
-	Fri, 18 Sep 2026 21:08:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 369DD1F000FF;
-	Fri, 18 Sep 2026 21:08:02 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B2A2441882;
+	Fri, 18 Sep 2026 21:11:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C73F1F000FF;
+	Fri, 18 Sep 2026 21:11:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789765688;
-	bh=bGY+xfVTy1ZxW1u/Kx3gEVZE7cqsRURvP4ecTB8cxGw=;
+	s=k20260515; t=1789765871;
+	bh=hl6/Iu3OW2v6yotocgDMrPbkoxPNm6VwsCRwbY41jKU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=O/3qZu/0W4vDewluE067eYPwTRoi7/Sue83LvflUTOyDQMCA+GWsYfKAHyuZxVm5n
-	 gaME5/8jSQpLO7Jszatj6FZ2qECj0iri27vHHeJuznl6+bkKDzCWsmQi31baQIAM8F
-	 zte8pfcvKXnuCiCSY1+RFzur125s+5Nxa62u1xrXz4Z+Win4Ksmnb52pSKkLnVqAfh
-	 tS0U4VlGQyQa7fOcAbaTwRSBWgmZtErD2blwue9IpB8w9FtaxWy9c+jqqSxUTMWLj7
-	 0gCzw7c3hPh653dH0CSRJ4Qwpm02hDAHKD12Qfy9UxCz/tkFn3DEW2ewgWLuaxIGjH
-	 H5NfKly/FDhYA==
-Message-ID: <3515abc6-ffcc-4530-ac22-4219e5c9aca0@kernel.org>
-Date: Fri, 18 Sep 2026 23:07:58 +0200
+	b=NwDa7aHE1bUw2QIdwfDp2ZF6+1ffHivMaDWwlaPj1aCAq3DWhVgeBPt6N1Ka5izas
+	 VH5sWlYxwxKaNWSXHwPF3bqnwuWCh3jtbPxhXbL7Dkd8p8Kf1NITtqFH6bUD53TwgL
+	 iw4WT+wJuhphCWZ22O7MBXfqKUdSX/7tVd5ZnFOJjXpNIS0cNaonNLbqAJwRHLluwT
+	 D+2GvMMZ3j+fzwKXQaoDf4dAj5fDcQO8pnxFhOlLHcypZaYvP8via5OqP0c/sjl58Z
+	 bpl96dxSNPP2aut/+j+80+4QTKLn9era049sycDEUqzbNYs3TEcSfynwoXeTB3h3OY
+	 9jJpmj5un4uYQ==
+Message-ID: <35e42ccc-df8f-4703-b10d-f7c96b263e98@kernel.org>
+Date: Fri, 18 Sep 2026 23:11:01 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 16/17] mm/huge_memory: count only swap cache refs in
- anon folio split
-To: kasong@tencent.com, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
- Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
- Yeoreum Yun <yeoreum.yun@arm.com>, "Kiryl Shutsemau (Meta)"
- <kas@kernel.org>, Shivam Kalra <shivamkalra98@zohomail.in>,
- Kairui Song <ryncsn@gmail.com>
-References: <20260915-swap-thp-cleanup-v5-0-39878b37dfb0@tencent.com>
- <20260915-swap-thp-cleanup-v5-16-39878b37dfb0@tencent.com>
+Subject: Re: [RESEND v7 02/29] arm64: mm: add PMD swap-exclusive helpers
+To: Usama Arif <usama.arif@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, chrisl@kernel.org,
+ kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, linux-mm@kvack.org
+Cc: ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>,
+ willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org,
+ riel@surriel.com, shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org,
+ baohua@kernel.org, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
+ Nico Pache <nico.pache@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
+ ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>,
+ lance.yang@linux.dev, linux-kernel@vger.kernel.org, nphamcs@gmail.com,
+ shikemeng@huaweicloud.com, yosry@kernel.org, qi.zheng@linux.dev,
+ luizcap@redhat.com, kernel-team@meta.com,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
+References: <20260914122950.3283997-1-usama.arif@linux.dev>
+ <20260914122950.3283997-3-usama.arif@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -133,17 +130,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260915-swap-thp-cleanup-v5-16-39878b37dfb0@tencent.com>
+In-Reply-To: <20260914122950.3283997-3-usama.arif@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 6EE3018000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 5834840007
-X-Stat-Signature: db8xxtyrrwu3dkeorf9ou81rb5bfubrd
-X-HE-Tag: 1789765690-755264
-X-HE-Meta: U2FsdGVkX18yRkHDEey3ph1h6eWW/exRAyEe73ZCyMDUewfXUkI7QZ52Wr6rFmm+e5St3lnfE8ia58oVzrCATMdSOwAFTGuA64aEcOD8KqzPYI8mYmy6IM2P/qwWdjAFf5e8AcToY344tm7/qhKuItdhoHQLdUf56UNThNU7jZH+iUEo8F0fjgQDPRz+S+hRZESPYy/WM/XDCnyrORo5EzXF3UKORD2qdRX3731/v4TjbSiXRQUeTE106of1c0C17+hpFgNqdlpeNckMsIhf76iPTe/Q8XcJDSlhE+kfASSa0uuW/uS0dxhgNtyg9QtLpuE28dqAtN0fVJdRQa5lzv9nodefBmf8TaqAwPqxfDFNa0+RtOp67VtpPA+2sEOJ8eNRmDskIlypv+h7AwYXRmUp6AUK2A/IVaESY1v6p5tQyEjEoLW/fZc7yhMBiIR360+O5gWB3UsGvG0H1gAfhpMHQhLxm3fyq073ih2BjcAIKMv91+vy2h5Wlhz2gNRksiufP3qKJ3cPy6UteAIOT7Ds3U9N85MyVFACqExy0kFlqL/JYdpuLvnGlr/kGzJSP6wUW7OO9GZPZCihEwab3wJGg681HpzJTXeZLpkxZ6IMPY4Oo9QawRI8uw+nxVsn1sWsgv4KZG5+mb/yJaUIEcaSDlk9Us5idbvXBpIULES1DIXUII06thLt1niytkXQd2O5S4TrG1G/SZBv6uULQeIkNXC4NnNvpU1kHsgS9NuQcIYZGYt9XBHmEsLVjHJHVtSZ8b/b1PDjj9u/Nli3Zf5Jn57dn5aYDBkrnc98XMAhnUpkw/cWEVnWzZMkv9vIkxCENcWUFw7VZJKvMmyJRD20+/HaapTtcLGyrKuv1h4WwdeOQA0T0ng57SQ1mNPDned73cVsnBdWjgYpb+uiBmUVI3k1Yau+UkjjlgYmNvHKzTCnpSiB5q65wNKWr0DurIf3SKmtRVn7B/F99+v
- 4nyrvGXM
- q5+jlmsah84+KYD4qv7SeyXkpkxR6PdIaRmTaU6E0hvhuQm2wjGhf3qIKCW+/SpnKAeXxCykHzhs8JLHGf0GNx0UHZh/DMHIiigOEJJC1GVdVztNBa1XNCypmqfXg9RklzOGFvZLoc0+6hKZXR20r9VEsrJcppqJ83qoX0sps4IyaO8XG4W3p2Dt2Ml/b29WJ8jrFz+MEVgXqLHMV7mjHcVLSSRsJvfxPhR/iHxN8IR6vheITTBQarciuYaCcHot1l8AJWvdGQEfvjTXs6u8tgJNBMtd2n0IrxrEgfYkHwdCjD+cBMkC+0/IcR7LTcS+cItkkdB04h1Kf+w0=
+X-Stat-Signature: h94xki58z6cxtzdzoq5ahdhrxpgm5ojo
+X-HE-Tag: 1789765872-331736
+X-HE-Meta: U2FsdGVkX195fb+vAWm/vnOfQjPcEAcDgohGl5kUzDaX/ke6aSiMElx2KnjGpk8YWj2yRNUqKEHV8tqwvTvayHp4sny6tYGnYvB/gKWsjjMeuaLMzMSAr2OxyuAaOsuaqv7WYzZipwPfi9j2s1W1XaYDVGX/rxzX0TS/kiSylRjFiApJERU6s9k855N7VwjVFkm3iHjraNsj/9izYYu993TwIr8pQhevq9S+SY303wKOtNNlyxsCsXNP92Yr4hP752cnqFxsf4c2PX8Wpw/fIsrJS82BL5I4RLtVznhdE5YR69yXSkz2SchdPd6IrD0qRCG1Gq6hC3OjSmTtbRY4Y/7AaGa5xP4yuBbhZWa9kE/RgblkskQv/KVXSCPS8vj5S/eAyrS0ezYlVWqa/oywTwIFgkDoZNQYQvhcwSnT2I/YJyGWgXvRz9cvKVZCG8SqzIu8ouf7ruPzUapRak7JChCBEMaUEoXX1+mcyPnH1An0OvLrTbezEiRoB+WEs3Gem4IoMwaYG2w6CNd0wAQJG936ZX+XUr6zp0MAqtGqfjLtG9pNrGKObS3curbvC5D7NLn7OyDuV08o/8TFdgXv6iFPQo/CHWj0rjDRM0rFbglDn/nLucXj80e59A1OK/qgVnzGBZwNRCJ+4OEmKt+N7pvBMhhZm0ALheHNONYYNpNgqwitsOYFCeMctvUHXt0VY3Au1WMP8aIryV230qrUJzrADbLiP6kL9Acujwd0OJGITAHVjPfOyd8pVbU6ZorWdshu1Uf8znUU8iZYvOdu4ytTj2hv2xteFwAdZsIU/vCKMs0XRwlmY2/cpG8EiWUomG90mU3Ah4cVRg3/403q/UicAbFHkf4K1GewKu/uc4RfKr1gJ2g/DhCV+oOJzrDN/tIeGFRuUhoaa9AfOGJoeMh+n9maZzqjB3W1nmGDbOdhGjTAhFMrQuGjG2jla7xySBuBCiwU22Y9VXLLdka
+ dc1nFO5B
+ Zqkf3OJ5XtOwnbdTUC+e38p19Q7saJOSq5cNXXuR/5Y7d7K3gSmKfovCQFf0AVfTCEDzKAQbhv1pvK1iwqzNYh/6v07K8B/CHlGmYqMJ3vCnXS6X7+VhaA+JQ3LeTgmuQW3wGTpFqSD/NYnjvCc1GrHQf/qyus5LcduSHnGhUsfMUP/5RrMpD37n9eBO1C6iWfGlrhonL3HQ1zG6+Om2dqHIbSftlD+4as/jz/kHmuQtA5itj50Y+dV7h5jaS2lfmyQpoNwBRqWmoysRHIJt3/vpOwtbLtLAm6ZTj3hZOFgGH3iYDwrokY73Df7DXNK43GB+Uff2ANQGS/1Kj4jHhRGdkQg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,24 +148,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 9/14/26 14:27, Usama Arif wrote:
+> A later patch keeps a PMD-mapped anonymous THP mapped by a PMD across the
+> swap round-trip, so PG_anon_exclusive now has to survive in a swap PMD and
+> not just in a swap PTE.
+> 
+> arm64 encodes a swap PMD exactly like a swap PTE, so the new helpers wrap
+> the PTE ones and reuse PTE_SWP_EXCLUSIVE.
+> 
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+> ---
+>  arch/arm64/include/asm/pgtable.h | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+> index e89ec5f4787b4..d3f53a601aed3 100644
+> --- a/arch/arm64/include/asm/pgtable.h
+> +++ b/arch/arm64/include/asm/pgtable.h
+> @@ -599,6 +599,12 @@ static inline int pmd_protnone(pmd_t pmd)
+>  #define pmd_swp_clear_uffd(pmd) \
+>  				pte_pmd(pte_swp_clear_uffd(pmd_pte(pmd)))
+>  #endif /* CONFIG_HAVE_ARCH_USERFAULTFD_WP */
+> +#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
+> +#define pmd_swp_exclusive(pmd)	pte_swp_exclusive(pmd_pte(pmd))
+> +#define pmd_swp_mkexclusive(pmd)	pte_pmd(pte_swp_mkexclusive(pmd_pte(pmd)))
+> +#define pmd_swp_clear_exclusive(pmd) \
+> +				pte_pmd(pte_swp_clear_exclusive(pmd_pte(pmd)))
+> +#endif
 
->  
->  	zone_device_private_split_cb(folio, NULL);
-> -	folio_ref_unfreeze(folio, folio_cache_ref_count(folio) + 1);
-> +	folio_ref_unfreeze(folio, folio_swapcache_ref_count(folio) + 1);
->  
->  	if (do_lru)
->  		lruvec_unlock(lruvec);
-> @@ -4139,6 +4139,7 @@ static int __folio_freeze_split_file(struct folio *folio,
->  	struct address_space *mapping = folio->mapping;
->  	XA_STATE(xas, &mapping->i_pages, folio->index);
->  	struct folio *end_folio = folio_next(folio);
-> +	long old_nr_pages = folio_nr_pages(folio);
-
-const ;)
-
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Why do we #ifdef that here, but not the uffd-wp swp PMD helper?
 
 -- 
 Cheers,
