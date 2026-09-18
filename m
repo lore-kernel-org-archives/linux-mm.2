@@ -4,97 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FAFCC982D7
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 20:19:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE994C982DD
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 20:19:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 896F86B0088; Fri, 18 Sep 2026 16:19:19 -0400 (EDT)
+	id ED9316B008C; Fri, 18 Sep 2026 16:19:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 846FC6B008C; Fri, 18 Sep 2026 16:19:19 -0400 (EDT)
+	id E896D6B009F; Fri, 18 Sep 2026 16:19:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 736476B009F; Fri, 18 Sep 2026 16:19:19 -0400 (EDT)
+	id D788F6B00A6; Fri, 18 Sep 2026 16:19:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 513066B0088
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 16:19:19 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DBD2980768
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:19:18 +0000 (UTC)
-X-FDA: 85227997596.26.C77FCE6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 4BE9A80006
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:19:17 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YPlYpnky;
-	spf=pass (imf30.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id B69086B008C
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 16:19:31 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A8AA6A5F0B
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:19:30 +0000 (UTC)
+X-FDA: 85227998100.29.697B12E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 054B118000C
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:19:28 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j9mBKbI2;
+	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789762757;
+	s=arc-20220608; t=1789762769;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sPMFs+N7+9joEThLRn1A4j3xw35F8/P+UFOYT3cS5vs=;
-	b=qsf+m1XYq+HoGCfKr3uugRBKbIZbik20q0dbzPybsBGT8f4C1YsPUARSPmH44i/lxsUGt7
-	U4z584I0OhlyE+W1Zdwn5gzYTyqIvdH2m3O2HjvcXTIWGelNn8j8ehoBqRwCIU+gOp90s0
-	2ueIe/ZJMTTMl9RNjU62FEpfTx1sQTE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789762757;
-	b=RvzeoLll1nTCmC3K5v5iRzNsI+owmZwGF8HUJtu0VlACJhF024ZW/1eX3jy1rVILLIuOF/
-	Nktxeu+EFrXngIfPW4djuCk0nyK1YleYuoZUtf8wCGJ9BM5UM6uRZxWD5rsM7+kf3939bm
-	VXTm+Kbs1WIoTz0RiNplyESQA6qLy3o=
+	bh=1/IMZi7laPDns0FaC9FTXouqX/JlqimdYvbBnru5FUE=;
+	b=14TXNmZXoB/EPE9v8Gn7EOEoQtgjey6mHLlBSDQGW6esgkXQg59mB3ynv+CclllFOasgVw
+	kj1GV+35t4I9YQZmnsF6DMHV9WACfEhcwOAzi96PEEqt52oI1bRYLWncIHpZnMZKUmvgen
+	HecMUXfVD7ysaGJ7SB76u8Tl2djXj3k=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YPlYpnky;
-	spf=pass (imf30.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j9mBKbI2;
+	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789762769;
+	b=e8XShgTcXM5Ssb4ln5rs3vypm8K07FLdI9ot/ZdJo3Hi3r1yXpLzjKCcnk1Vz3DPm4Zwqz
+	TNA0zW02gYofq8d2kbBMJJygC/fkPalZaFXbiv3fF5kpSle+98sFaNOENsqO4tnXgMBl/v
+	vABHdl8PAV8G6H6WotWqL2kudvH4EFk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 808F64125D;
-	Fri, 18 Sep 2026 20:19:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC1D1F000FF;
-	Fri, 18 Sep 2026 20:19:14 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9A070602CC;
+	Fri, 18 Sep 2026 20:19:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4A171F000FF;
+	Fri, 18 Sep 2026 20:19:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789762756;
-	bh=sPMFs+N7+9joEThLRn1A4j3xw35F8/P+UFOYT3cS5vs=;
+	s=k20260515; t=1789762768;
+	bh=1/IMZi7laPDns0FaC9FTXouqX/JlqimdYvbBnru5FUE=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=YPlYpnky7mi7B4nDnFiPWFOktxyeOfZ6KKSL7GtCns3H/qFcDP2ymrRRryPu9vgtG
-	 q3IxdutHh9FQV/SOx9Wfr7nM7nCvaF6c9fG3dRTc5Pwi6HbXkMEUHCpWm2l+XRvbMO
-	 jyeanBPSSs+r9gtihibrV5eci0c2MBoImHb46PnH+WRVi7fbVIbl1nqRcZ4IT6EXdJ
-	 lZg0alLcSFWRV3YTOLv2NZHPojAX5Wlyzk00C/tqasLB3LL6/+D84ZWFbIYsTxj4KJ
-	 4z1cNCOfQScLPAOORjL2DmtXqRtwA2LJtSLXY7mhhQ0A87b9VYfmZ+8i8MSYTSbUfP
-	 5LSVRzzVbIVGw==
+	b=j9mBKbI2ruUGsdiORjKJXRAMUctal6GC2xh6t5MhA9SvK3NDBwBwl8I4JyL/0ye/z
+	 9OEAVgB/L/WqfaE8kynPhemr1MuJO7enoO89rgbb3pvIpr55acD7B8fNsTO4j2F8v3
+	 aHCYiGbWHT2iP5oDnCcZ8P6zn1n48MyjIoJ/NC9haWSbi7xdkST33Hsu+2UaAET1iy
+	 mDp6FW2aVh68L9ahWiFizjOl120e9rfmVU4OHPZYJCCYtV9VEh02AfAZUH/w85mjEU
+	 lpEwUrV5JjxGQYjT2ffoYT8c3LlWBKmPyhYilZqdEO7woOLZ66acluO2S8ENI5WpQt
+	 xsPrTN8jLQ5LA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v9 10/13] PCI: liveupdate: Adopt ARI Forwarding Enable
- on preserved bridges
+Subject: Re: [PATCH v9 11/13] PCI: liveupdate: Freeze preservation status
+ during shutdown
 Reply-To: sashiko-reviews@lists.linux.dev
-To: linux-kernel@vger.kernel.org, "David Matlack" <dmatlack@google.com>, linux-doc@vger.kernel.org, linux-mm@kvack.org
-Cc: "Jason Gunthorpe" <jgg@nvidia.com>, "Leon Romanovsky" <leonro@nvidia.com>, "Vipin
- Sharma" <vipinsh@google.com>, "William Tu" <witu@nvidia.com>, "Saeed
- Mahameed" <saeedm@nvidia.com>, linux-pci@vger.kernel.org, "Mike Rapoport" <rppt@kernel.org>, "Parav
- Pandit" <parav@nvidia.com>, "Pranjal Shrivastava" <praan@google.com>, "Shuah
- Khan" <skhan@linuxfoundation.org>, "Alex Williamson" <alex@shazbot.org>, "Jacob
- Pan" <jacob.pan@linux.microsoft.com>, "Alexander Graf" <graf@amazon.com>, "Adithya
- Jayachandran" <ajayachandra@nvidia.com>, kexec@lists.infradead.org, "Josh
- Hilke" <jrhilke@google.com>, "Lukas Wunner" <lukas@wunner.de>, "Pratyush
- Yadav" <pratyush@kernel.org>, "Randy Dunlap" <rdunlap@infradead.org>, "Bjorn
- Helgaas" <bhelgaas@google.com>, "David Rientjes" <rientjes@google.com>, "Jonathan
- Corbet" <corbet@lwn.net>, "Samiullah Khawaja" <skhawaja@google.com>, "Yi
- Liu" <yi.l.liu@intel.com>, "Chris Li" <chrisl@kernel.org>, "Pasha Tatashin" <pasha.tatashin@soleen.com>
-In-Reply-To: <20260918200640.887030-11-dmatlack@google.com>
+To: linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, "David
+ Matlack" <dmatlack@google.com>
+Cc: "Adithya Jayachandran" <ajayachandra@nvidia.com>, linux-pci@vger.kernel.org, "Jonathan
+ Corbet" <corbet@lwn.net>, "Lukas Wunner" <lukas@wunner.de>, "Parav Pandit" <parav@nvidia.com>, "Shuah
+ Khan" <skhan@linuxfoundation.org>, "Vipin Sharma" <vipinsh@google.com>, "David
+ Rientjes" <rientjes@google.com>, "Jacob Pan" <jacob.pan@linux.microsoft.com>, "Pasha
+ Tatashin" <pasha.tatashin@soleen.com>, "Saeed Mahameed" <saeedm@nvidia.com>, "William
+ Tu" <witu@nvidia.com>, "Pranjal Shrivastava" <praan@google.com>, "Jason
+ Gunthorpe" <jgg@nvidia.com>, "Alexander Graf" <graf@amazon.com>, kexec@lists.infradead.org, "Bjorn
+ Helgaas" <bhelgaas@google.com>, "Alex Williamson" <alex@shazbot.org>, "Josh
+ Hilke" <jrhilke@google.com>, "Randy Dunlap" <rdunlap@infradead.org>, "Chris
+ Li" <chrisl@kernel.org>, "Leon Romanovsky" <leonro@nvidia.com>, "Mike
+ Rapoport" <rppt@kernel.org>, "Pratyush Yadav" <pratyush@kernel.org>, "Samiullah
+ Khawaja" <skhawaja@google.com>, "Yi Liu" <yi.l.liu@intel.com>
+In-Reply-To: <20260918200640.887030-12-dmatlack@google.com>
 References: <20260918200640.887030-1-dmatlack@google.com>
- <20260918200640.887030-11-dmatlack@google.com>
+ <20260918200640.887030-12-dmatlack@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 18 Sep 2026 20:19:14 +0000
-Message-Id: <20260918201914.EFC1D1F000FF@smtp.kernel.org>
-X-Rspamd-Server: rspam04
+Date: Fri, 18 Sep 2026 20:19:26 +0000
+Message-Id: <20260918201926.E4A171F000FF@smtp.kernel.org>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 054B118000C
+X-Stat-Signature: dy9uscszasqrtjie9g4nz8ouetm8hxaw
 X-Rspam-User: 
-X-Stat-Signature: fx54c1yesntc65emr1uwt89kzxe7dwp3
-X-Rspamd-Queue-Id: 4BE9A80006
-X-HE-Tag: 1789762757-892974
-X-HE-Meta: U2FsdGVkX1+WNCrfSbGBCPc+rDlJUJcf+g62tNWwMCgxU08vcSTGzokUTDQGXO3s2jFlF2ur7PfLqEGm4/Xf8L0ATvdeL9UlMZGprfKZM8sAszvq7TMpmi2J/fo7q4ktIQA8msdvpNkMTdO+FGP1gKC0Z7ZxnerrJc9q8370a0rBjPYSRZACjQFDXuI/vJUCKIUszg6CwQdbw/NMOvr68N9PtmYM2AlBaBCQ3aHDKJWkYcyrT10S2jMWgOejsM3kkXATcu16zD0Gzuql+9GWIt4b7klv3svln+cdPKoRUy5pwSE/Wt/sIuHMCWzWBQyvRfXMP9LjQBlJlVxVCGuJw0mT59fWv2bBKuhcyEfKX0uTs/zLf9vzNrZa3pUpojUPjU1nRCwOjfTrFsxvzjFCh809zMeP9FuQPfdvrSpfTR9IamY5B+oudyjAofaEju/dU7jbCNzBG1H9PubXwuDnA26Gyuv+Fk1ch6G01gyu4pr2pOUDxoa0V+2aJ8/4Yj7W0YyfDGXSXOJPzTqMkzCK0jBXeBBcfnhw+NJcEh3FFtKFXAQ91thchaJj8zWaFCxplLjlzqaNMqZVfFmDEcDgu7ccvzFCtu9SLtlKP2Qnjdn7qVUOHWydVpY1JY24ek/R7RPyp61iPqtN92IVluc3Uw3MqhKMe/FvRE++w7nCUr1qusLbLzSXYyy7P6cKS/LUsQaZLF1TpHLS2LbFOcewXD1uMuNFw/NNiLms06Jr9q/5UF8JtNuKOnn6H+mluPL5nfY0MK0okh3K8fGnr9gaEyjX0EJ/q+F5HyXsddhXMggpZ1ELj7FK0aCl09YxlyLT6tju1hp/1+eT7huNTW5ZDAxTraV1X3+cKyXFDq+rQQMlwWc1fVF+ZUdJGQaVlu3e6KJyOR4SXf9GLnUsxuFl7KOhA2Az3cOBZpTEzzLYZxZKvuokMC7yqRRLt9LcFrVA3PaDvhkOshamP4ZffYR
- kJ0Vs4if
- oXmQk7ZqsgwgydyqEBGKhQDCWCqSeFgBuBN+AtbeHf+T7TIYNEO1zC+8M1GZqW7DH3WMiNI9ffyCWKPsBuy4B0Cd6qKtlEqLDIJ0TtN8h+aj1D3Yq/u0hWI0ZbTM7RYzT6QqIGnx5gKjd6DOi0nwQtwoOgotSOyjKaY28+PxgH9HTk/NrmbPWhICIMNZZ0C9RnKEWWXl8PPU1gAZf4efIU/6GM+ZRLKOd/hrY+MAEqz5n2UXN07lRoo743tX8TdcDu7bXpfVYVpAl/ULJwydECoDINIWoDMs+8Arm5NCkWP5SKIkh72Aapjo5vgWYcLnof2egOVa5ViyTxvYU+8VWAuzEhRwuuUkuV4opy2R+pesKtX6qQ07IW+T8Vw2qDB/g1iK3Wkr6PHMPPTaFjNE9LpVQeMecRIoCTB2ipxv+v6aeWd/goToMyfztdy50OcREH47CWS5j48xB45eJXMM2dtg1L3NX1zY7c6OV55KYoAuC50vxmTMjylHdi0b9mpZwt3sGIszNU4DWLSKZZt48/ZyYhIUySzgjEl5wjQkbBJlcxYDRauCWiu2BihQNGjASV/JBpfeOzeJGU4fjIvRiXnQ3HQ==
+X-HE-Tag: 1789762768-38609
+X-HE-Meta: U2FsdGVkX18QRsNzrApdzXpfe6HmNsD56ZGpPXEpjqnfPCWcKlKXdy/LA8SbVSpbT5NwFuLZrzKILp+GhDvMgNPWXbwZczD8MAyiNstTkrL0Oy4heYjuLcVXOCZk4IVPKBgoHMY/UyovpdU22IDydLoeS5aqA5uicHLfk2jmyX9IDS9S8AqO9oozfNc1KaAMnAzqJ2mTBKIDqHt8l7iY8+P60jqwVff2xzNs4qTKpWb+sNOCGJtNZWWL2zFzZPemJYMnJQ77q+m1QzrOQsNt3edElLFS541i9Siikm4/iI4lFav9jml10KNoNnlyWF1YG59Njp4xTQsVt1L5x7xmUEXQsUjndyY07P6mD3ZgPMxsPRBwsVlCiAW4b6VYixr6u9JlZGcxVaS5I8id8Z0HWiDOpc69SHZIodz5N2TmWk4VTYWztfjlo0fNyAZ+7m8HqRxDcJAn4cIrmbGwqbH8DrLXQZdCYE53XQWrbGD9VTzx0+hN+WSKqqLrZCxDQNhAwCJVu4yl4sOEezWTcOuIgZ0ECTVFstF/qe3QKew+lEHT+WWEHVnqgCyJk8BxFwfgefSCw8ZRzlIx2AM0RrVJD/uavk4D0NhfcXgCgdbyr1SgaUHcKE2poLb0/u3HeM2aqTdKTLH0sfLmol7pMZIXwS3bBwa7XtykISkdwiVBPQKNJ5oWrfjxfzidO7T+pCjeOM0O7xzq18rS+xTpZPqPJRAd/2Ryfw8RvdyOfMkz5KhJEdlPXuhf2caeCOk8YkL6vNs17plh5y49KEo6gFHAUILhQOXvf429ke9DCstVEF1N5iog4M4hPu6GeZoy7XZMY8XHbi1MQfQzE0qZHHdsGFE0ghFRzGTXfjvLk5teAbeELz62X0TkBelUSp2xdHztt5e5TV2oZjkSHwvk+lVzFKAo1TwAD/+qzABmNjtC89GAmLFUXoAq5WYUYPK08N2R4/K/N0F1unn3POVM2RO
+ i9l0Js1i
+ 82vuTOx38UFcshswia5hxmddKwI8DuylLA6DEP7r/ZkG2fFPeYOO1KgQkzl+yCICWmmuDsqz34XPoS0rzwgQ2v9zvxg0SkaqrWwJgI2e9BBzg0sOJGvhnLned7ERX4aUQkZqs3tf18FZ61eFK7+ZsRD8bpoFpiTfUbaYvUb6sqNfLz8YHrfF+3+PCv5StyrkEynNuwc8jtWnPIFyd0OgMW7IyukfeAKLlmnBimsiqcVizI76YgToCCBtZw3hgVnnaiS5TCLyD0++R7gukfY5IBdfdXzjWZ3PzWE8Zny7/rE1TkXXGCJTeUiw/OBgHcHxETgu7HkaVkOudUUEI2xAtZvRBXfTypto7m0Nd8ctGbYLeKVv6+cAXBe1HuoaGifnQhf7ioZheXtDTYjCjiD6ICufnNPj8oAL5fCE2FsjO8lM8o7BM3WpEWdSVOWSEq2UPHmr5NU8vw9BbCHw+1RTls5R5wJnSHaj8h2TAghkSK99Gbgr7K6L+xINscfWFcUOEubJD9KsON4/DgBhhakowNcqToZALM5ynZzTzJ29bhHvkxFV6vlpZ8H3UGTtDDtcK8k7SUkXtSUh/A0gaojUtFesRzWXW15r5ThFhjCxE7dbK7pBwyxvaEeul07lWV3NBxPeDm2R9tKPQ4ptbO+XHSwmrsQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,19 +103,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Adopt the ARI Forwarding Enable bit on preserved bridges and update
-> pci_dev->ari_enabled accordingly during a Live Update. This ensures that
-> the preserved devices on the bridge's secondary bus can be identified
-> with the same expanded 8-bit function number after a Live Update.
+> Freeze a device's outgoing preservation status (preserved or not
+> preserved) during shutdown. This enables the PCI core and drivers to
+> safely make decisions based on the device's preservation status during
+> shutdown.
 >=20
-> Reviewed-by: Bjorn Helgaas <bhelgaas@google.com>
+> Note that pci_liveupdate_freeze() is triggered by the PCI core rather
+> than from drivers participating in Live Update so that all devices can
+> have their status frozen (i.e. prevent non-preserved devices from
+> getting preserved late).
+>=20
 > Reviewed-by: Pranjal Shrivastava <praan@google.com>
+> Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
+> Reviewed-by: Bjorn Helgaas <bhelgaas@google.com>
 > Signed-off-by: David Matlack <dmatlack@google.com>
 
 Sashiko has reviewed this patch and found no issues. It looks great!
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260918200640.8870=
-30-1-dmatlack@google.com?part=3D10
+30-1-dmatlack@google.com?part=3D11
 
 
