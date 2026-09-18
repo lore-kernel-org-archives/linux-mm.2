@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 359F4C982D8
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 21:03:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 981A0C982D7
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 21:04:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4F2B16B0098; Fri, 18 Sep 2026 17:03:37 -0400 (EDT)
+	id 938BD6B009B; Fri, 18 Sep 2026 17:04:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4A25D6B009B; Fri, 18 Sep 2026 17:03:37 -0400 (EDT)
+	id 9109D6B009D; Fri, 18 Sep 2026 17:04:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3964C6B0098; Fri, 18 Sep 2026 17:03:37 -0400 (EDT)
+	id 7FEEC6B009E; Fri, 18 Sep 2026 17:04:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 10D1C6B0098
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 17:03:37 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 788F6407F5
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 21:03:36 +0000 (UTC)
-X-FDA: 85228109232.17.7AA81CE
+	by kanga.kvack.org (Postfix) with ESMTP id 4CDD36B009B
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 17:04:30 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DEB8240806
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 21:04:29 +0000 (UTC)
+X-FDA: 85228111458.23.BD2FB56
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id AEB3580002
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 21:03:34 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KQLxbJdk;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf28.hostedemail.com (Postfix) with ESMTP id 20A13C000B
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 21:04:28 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qyeb3hJX;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789765414;
-	b=MXGCUAZGC+nT9HXLiVydnyoIKscVhcAAgWC4SxX3Ppa6RhhSnOnixZXSUxX8M4g3UGEE/7
-	mFJAFAOzu6f1HbxG+dqEL2vy9g+Fyo33FKf2S8CrcyyZOXYPvpTXpCeDQsPj3fPIxQKdHC
-	U8nzTUcCuulQ9z/dbW05e4dogWdLUXI=
+	t=1789765468;
+	b=dNPbjp0nXkHl/JPM+4J+YGCuBnghxR37JxNRS9PxAlaeWqSssN+0kul2BKOuwXS+VdQEVW
+	sMy36oVYQmM0AJa2hEiXSnweuA9Py9T44OmF0JCpDlWKeFQSJtsNM4jxrq2d5+ZRHXOLfA
+	ej9c2IKE34aHomUgN6uTQhzf4MOOYZU=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KQLxbJdk;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qyeb3hJX;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789765414;
+	s=arc-20220608; t=1789765468;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tdHsBxrNLtvJ4/FdhkNZ5zwsyc2gh/05XB3PW7TByTU=;
-	b=5jhcs51cq47NWPcORRHZ4+TvkYe+VWQnqvjlFWF2L95fdCM4s7kvD4IMgCJ7KIj7pRzwB+
-	I6bEX7iiSYr1wNrvuTTF20v/GszDxO3XH2cFwcVrBE54Ncq+1xmTQ9HXdbNsw2b2sq3Foy
-	SPo596xhX6ftc1KD24QD8dBVXkPGYik=
+	bh=xmK0KPLqBJNRqNK0GfYnXw0oy5TGIitYZkOcLtfdbHA=;
+	b=mKjEpUT1gIz4ykCbKF9XeVcIuoa/sEFhsD7vWLZgKM9Tr+UGkfPP2RiQ9cOrIiqeWYxtuf
+	rIgm5kBPxdZWvNjFOj4QYZJCOr0oYkY5TEt+lNmp/4/wK0hnSf3uoeTLxQO/mXnbmCkpyf
+	UXBy+K/nn+bmeRGv1mySL1dxzuCP5B0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DA2F2433DD;
-	Fri, 18 Sep 2026 21:03:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CA2A1F00898;
-	Fri, 18 Sep 2026 21:03:27 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6DAD843B4C;
+	Fri, 18 Sep 2026 21:04:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AC9F1F000FF;
+	Fri, 18 Sep 2026 21:04:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789765413;
-	bh=tdHsBxrNLtvJ4/FdhkNZ5zwsyc2gh/05XB3PW7TByTU=;
+	s=k20260515; t=1789765467;
+	bh=xmK0KPLqBJNRqNK0GfYnXw0oy5TGIitYZkOcLtfdbHA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=KQLxbJdkOsTJvYJI0BJre5tEn9Oto0apusUJUleZ+V810Rg/ogqiV0RZe+tL/myou
-	 5WrrtWljCXr70qAKFnw2aTCM5RojrLlAfvdlse+8t+YKjPoskj9++/OUkn2tdsmo4e
-	 RCU/WjeH3G5+HX4oIh3Znh0GTvYAxOCmKSkztly+4oDNLz7fPAGSMml3gqlaBIEJ85
-	 /+x7CMyur1ROk7ZqUlDWwIZOwnZO6UnGcmywiUXVY4uxYy/rrWH7UwrNvUARnzRPnl
-	 UKA7vQfrOy8/QH5Yf68z1c6xj7fXwdrbHGiqUD+JARCCn6ZpDPKVfRgNhrqGca4J1N
-	 0oeut+71+2VSA==
-Message-ID: <873091d6-52a0-45b0-9dc1-12e9528297e2@kernel.org>
-Date: Fri, 18 Sep 2026 23:03:24 +0200
+	b=Qyeb3hJXGrrBizz+7pv7Iqz+Qdf5taO7C30duKJQGlzhq0MvoZI/Y4XbVI9B6L4CA
+	 7EWqTpGNyugWKhXU+3k5fpciZG/T6adlZxQKs7dhfVbA0UNRGhHTMZ/cpUj4RCV6gV
+	 hWQecF4dZHxMzNPM5oai8xh+YAe/IZVl2LvVsu6ODGsT7se3LpYL1wo/MRWn0yRzJw
+	 9zZQrZZLSUsyBUfVaEe05iZWsK6TCGhDPPPReIlb4tCkN1hhuOvGt3dUsUc7fIMyrE
+	 ps5zjstPreSRG/BM3NcF+4rqNdcNQPtBP6MKEWnW60Dn995KBl97yTlnp5iXQiXmfw
+	 6Q+apIvY+73sg==
+Message-ID: <f7a4484b-24fb-474d-b41f-fa0a9a084a55@kernel.org>
+Date: Fri, 18 Sep 2026 23:04:18 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 15/17] mm/huge_memory: clean up after-split folio
- freeing in __folio_split
+Subject: Re: [PATCH v5 17/17] mm/huge_memory: drop the redundant mapping
+ argument of __split_frozen_folio
 To: kasong@tencent.com, linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
  Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
@@ -86,7 +86,7 @@ Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
  <kas@kernel.org>, Shivam Kalra <shivamkalra98@zohomail.in>,
  Kairui Song <ryncsn@gmail.com>
 References: <20260915-swap-thp-cleanup-v5-0-39878b37dfb0@tencent.com>
- <20260915-swap-thp-cleanup-v5-15-39878b37dfb0@tencent.com>
+ <20260915-swap-thp-cleanup-v5-17-39878b37dfb0@tencent.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -133,17 +133,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260915-swap-thp-cleanup-v5-15-39878b37dfb0@tencent.com>
+In-Reply-To: <20260915-swap-thp-cleanup-v5-17-39878b37dfb0@tencent.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: AEB3580002
-X-Stat-Signature: bjdzan94mocb3dayyjhgzaf7kx3ffaps
-X-HE-Tag: 1789765414-177135
-X-HE-Meta: U2FsdGVkX192OrETCRMLe19tVNyF+GurJJMKJTzfjziT0J3mJsBZ9CSmhGz2tpXkXmFupVolKP4ThfruSveizhCn/fE5wBIWlarTRNiUmtoDSuqJdkOpPtuQobZFqSMvpVFmOir7POMPdik6YVRdONfgNB6Wjl73R+INMPyyCX78wm3fgTxP6k7hHtIjgpq41/Ld0PWs0M0+zQ6DqHu1X8X0J+n9edl2+t2F2zaVe14EWGVknxa2+7sUuFGaVGnsWcJf4NB8m5GRnNFucQ6C/7A9CtVmsnbPrkR8EantsRcMjrEZe13G2v1sCR1/UsACZ+1OepaCD0NHe5fkKfWDaCUhI6pRuueeiJNIbjVUK0DFJoaOnbWBk8Lmq4PAPMNCo915ZMRDz4+N6iz/SUlMsDh6tCFsrx8Rwn1sxXfzl3MIZDXGgiCH4yTlIjm+fVcpvGiCGrXuq+ylP/wtOfPuBix4lUc1lM+EBDib3qzkMNXo0Gfk7L3mPdwzwUbGVAFDfB5DVEEOqclXv+6CTONoQR1ogzMlxcfZlVe/x9j+lnVNOZoYjjcYgQEUm1d8RAhWSgFoC0j1ygitq54IS/+678/ghR0xSZNMly8TzU7r6EoUxC78w3MkYCoz/DS+SnnA2f6hJBlQ6aNgUSoajq9MfxK8439cIEgYl3uMK5TSW92mwT0R3+lv+TkCB5+Rrv9+JiftX/9LmUxDC7jCru5NLS7Nfv4wKQ8vt+YpzK1R/8+IVb88o1/LUWZuNjR+5KmL4UrUtnw8qy3oRmvzMhKvjGyHdzT4cTqG36VTVoBEQjWnOnVwjGokqIg2qbZ+4rYEFoXbPXnxiSSTWviJu2W6VvFgXES8ge5lDC/HJV7dxft/jXJtXOnbwzNl4ANe2W1QBxD7ArWTdnjnNQI1itZ5lnuIQmzH+MGorBAxiyVUfXVZOi6WUq9rwNiZzo+xRUnRK9QXDAU21fXdpG3oL9O
- pARwnYUi
- NXzHGtXFHbb2aq8mEPYDPdxUL+U/3nMOYEz3PZaCqEcNP8QcwTarxtrP89OJ+6isvRcJfCR7YCSd/OCeJG6zepp2eYbRjpAEOra+wpkp3tU+DavMxeau2DfM+BODcx/rrx49jYs2/zktFCnSwQu1HNiKwgV2nsLs5MhtMF5qo5UtHdUbFSdyVh+9ky0At8yq2j6dIrFx/NV5shOla8r9uVZYgcMkr0m6jAnQzwVIub98FI9npGN12jF5mHCShp0G719zCDM6skSxb8iBTpiAzEr+bsp1NgOKZNIWZHPtIqt5ogD5PXxoGfM48NL/++W2mWRSq3fPqIxK2vvSIpBT3xEec4b609mm122rIFcs6D6b22Nx5n7f7wzRIqH/5X1dIyUQcjQ7zJzWbYCE7guTpFzdxMVQubPj05xiUYJyZKoyUX5CXW9krpSDCR5zAZAtDICl0Hdq5Y6QqOZ8=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 20A13C000B
+X-Stat-Signature: tr5ukz1jb4wu4zeu7844qic6ru4wafcx
+X-HE-Tag: 1789765468-182612
+X-HE-Meta: U2FsdGVkX1+ISarNgk6vxz9pxjyslKTw68pcLYTD2JCxb+i2Rd7xi1GWrirTkYpCiFk11Ovrg6QXF9/Jk8jpI0AI6Fo27oKzebYWY148Uzg74DriuzB1iz/VVrrWzGwQ1lgREGu9FJHx8AUyaCbRURB9RAaUVuEfXj5lYCAPr36vjGm5nfhWYwbgCdVJU+iK9h+En43inmDIbUCT7fOKJfPmXYAiJPjMEUwqlXRr5GhjzFzpYQXNPylKFJDNI7fknYFuPG3aTUDEJerpsqyX8jKMH/7aZUPxBLrhwgiK5gEpaUFItOczFJdAJIGtkhSa1/kWyP/c8WwPIBvsPMRFugARotX7XwBjMjiOPCIB0q9grERk8kenFqlFgIZZWlTU4LXJFT7Z4kJF9x5shwpdtlHo/qc9J/I/KepTPOwqhUcPEWGOQhOzVENGputqfXMdsQvlL/CxSByIhH25d7kt0bG8k+A+oPvLzRG6Q1bkTXyp1e6K41BOVaV4l6K1JK5o8Nnf36wzu9h5wf51WAoBmEYMsLX1fWFk6a/m/IGxLZCPPAv1AEfvm6PiP92vx7WTwyQi1IlsvA1JD+GBaOJSZG6IvD0VEpqwXtmPXZAfKkQzvEPwD0J+uD5oLrnUhOUDMtunZWNNnlHhO/zB+ZkgF3BZoX3+M1jRSEVYWN9xjtl5/lE36/yV492gAix8dTCqSMLaxl6G18Ened4kSLVyE7ET2LIUkfMtgxdj/Zk47DHWWCqAzht+11bpl1lB4n2wSNzJHjSHIIl6W9ahxy4CJrVKlAHHVdvc4g4pSjCHpKiJWEEcbFxBtZBMoH2qTU1UmeoWFvfqgyL+1BcHlL3A15E+ymB23pZbAAYeOE2FDXvstceMF7tI6mKMdrolSflk94XD3znvVNswf4g3ecmdoFGjfT4b24cwrCmmkfTfA0m0VH1s2k0tPtNsEsUoX3n9SVypFtj61OXd396W30b
+ SatJmTqi
+ yJU7ySIZAomhWmJP35SewDN+vnY9MUeAFX9SE32e3ezVe8mSKysu0Jwqm3XWN6VqbpZUhGS4jkM4BGlWC/+oqOZR+9aTa//hylP5DnMiN6TCucppa3K51qL4OOLi9BETTpRUwVsh4HoLvlecCUkvPR+k/wzolxPCgESYk47Z8IzLqAkgeD1wlhRtN+SkngUhJHnyTrIPRSgBqPxJhIYoHKEey9ASKv/QlimAPwOu6Z4+I+PQGpnvYlQwCO9nyZByepSOpkrdG7Nd9gM8JII8oXMLrqYoCzLSeAQ4SbiSzBATpx/vmnBX6844J18SghzZvyF7QxMhgQM1ak/EslKHJCuM73OHVpgPPIifP2r/ICdSFsloyjHaAJnxNdx6SD4wivaLyizUO6Rjf1lvfAL8bL5zYbxdPb3UtXxo1FJrWsnJwMcgXmkyqJOd5KQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,16 +154,14 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On 9/14/26 19:14, Kairui Song via B4 Relay wrote:
 > From: Kairui Song <kasong@tencent.com>
 > 
-> Replace free_folio_and_swap_cache() with an explicit folio_free_swap()
-> and folio_put() in the after-split loop.  free_folio_and_swap_cache()
-> must trylock it again and re-check folio_mapped() before freeing the
-> swap cache entries. If the trylock loses a race, the entries are left
-> behind even though the folio reference is dropped.
+> The mapping parameter only served as a non-NULL check to detect
+> whether page cache entries need updating.  The xa_state pointer
+> conveys exactly the same information: the anon split helper passes
+> NULL and the file split helper passes &xas, which is non-NULL iff
+> the folio is in the page cache.
 > 
-> The sub folios are still locked here, so just directly call
-> folio_free_swap() under the lock if it's unmapped, then unlock and
-> drop the reference.  This makes the swap cache freeing deterministic
-> and the reference drop explicit.
+> Use the xas pointer instead and drop the parameter, along with its
+> kerneldoc entry.
 > 
 > Reviewed-by: Zi Yan <ziy@nvidia.com>
 > Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
