@@ -4,91 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DB9AC982D7
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 09:06:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89ACCC982D7
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 09:11:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F5306B0093; Fri, 18 Sep 2026 05:06:22 -0400 (EDT)
+	id 27F666B0092; Fri, 18 Sep 2026 05:11:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A6BF6B0095; Fri, 18 Sep 2026 05:06:22 -0400 (EDT)
+	id 235AE6B0095; Fri, 18 Sep 2026 05:11:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6BC396B0096; Fri, 18 Sep 2026 05:06:22 -0400 (EDT)
+	id 146616B0096; Fri, 18 Sep 2026 05:11:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3EAB16B0093
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 05:06:22 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BE3FD4063D
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 09:06:21 +0000 (UTC)
-X-FDA: 85226301762.14.5C1F69A
-Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
-	by imf01.hostedemail.com (Postfix) with ESMTP id C786C40007
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 09:06:18 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ioNvN02Z;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf01.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789722380;
-	b=z9f/XmfiQur2jzMp53qkfey0RwPNIb3OvVm4oMoaxZ2UEaxJplLR/GehasJ+6j2lcJoswI
-	aaCo39Xy36ixSZKES26Ju8KdVBuVwJFdNhC4vZoeJx+WVBhSh+wPTrdbHlGZMTfv3sH0RH
-	BpOoyGPD4S+JNb6Mf7C6bvk1mgILVDo=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ioNvN02Z;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf01.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E51086B0092
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 05:10:59 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3B62C1C1080
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 09:10:59 +0000 (UTC)
+X-FDA: 85226313438.24.F3627DE
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 7DEDA40008
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 09:10:57 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=bz+TTwjs;
+	spf=pass (imf17.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789722380;
+	s=arc-20220608; t=1789722657;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Xiz4ClEGfoyBjTaUK3UJ93XNcGn3MukFPVK9wlb3W2Y=;
-	b=Qa8K9AbAO2vx6d006KZzQoRwLRnBEGSf4P4ZPeVqC1VZtcSv/JcvUSoA280JJmCOH5z3Na
-	qXbjlFTw71aXp7AGb3fEKmQGfbBWs74M0vd5HhnvBb8U0kp5iFpplM0LVwNFYk7p3sjiD4
-	ZpfXMl1rSBqYPaov1LWaoTEZwUxJC0E=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1789722376; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=Xiz4ClEGfoyBjTaUK3UJ93XNcGn3MukFPVK9wlb3W2Y=;
-	b=ioNvN02ZygKJDwda2sInrmF2a8fmScPeKvMsMIxG/7YP3v0l+rIGVOTxqbY89XiytCWUB+lXZBVjSaU2ZksR0aK4rnfHxWhwlMo+HQ0Om2wQko1OmLPdPniYjRd8IcnGJKTKwv2zmx972H/JcIc+CHFZ8Gz0GjJL42rLCK0y9Qo=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R211e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0XBAoH36_1789722373;
-Received: from 30.74.144.124(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XBAoH36_1789722373 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 18 Sep 2026 17:06:14 +0800
-Message-ID: <0230e861-8364-4302-a607-c34809a4a809@linux.alibaba.com>
-Date: Fri, 18 Sep 2026 17:06:13 +0800
+	bh=LNJi6nGPH8ZTguXoPLoous8uAKQ3uRVi+YG0cOA6Fmw=;
+	b=wVhB35NX1wTqf2DjqWKPHZFIXRuSuyQA0jXBpb4Dx8FdDUmX+xGPMg80ySSL/pgLprIF58
+	nzaazisX35ihxeg6PNI2aRB3ni0D18Y46k4BBR/bxgX/frx4/0/vR09x6bAfTSK9F1UJvn
+	cxcIiWaftIEvL+g7+JsGob991KD+pQ4=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789722657;
+	b=jz3SnYXM11lS5GKWu2tCLu0xjf1beFgvKvx3PbST2KbE0RORCCdkMbR/Wg1EF5+pCTgWPY
+	/kq4K1m286JeNtoCXw/z9YrJ1RTnqngps2ruNVodtxjkrGpBOFHkCLbjD3kTOcvH8TwJeE
+	5NnU3wyZywxpSd1LwQi+5XknV8uyal0=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=bz+TTwjs;
+	spf=pass (imf17.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 241591BF7;
+	Fri, 18 Sep 2026 02:10:53 -0700 (PDT)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 688683F882;
+	Fri, 18 Sep 2026 02:10:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1789722656; bh=0Gs4DhCYwB3KNPu9eHCxhSGFokYsZcGSeJbNemazHxk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bz+TTwjspbB5CaBJQxhzIc+/C1YNfnXZLlT/T5yo6haK6KNwifGYUJynU0DrbRGwX
+	 vf4N1YThDlrhFR4eQCgJt1MZJGlooz1TqPGxlRH2RyPPuc+n8XzbLDH3PMakjlMfTD
+	 AV+DOvFw/Z5Mw10nwAD/y+QnzprCz/BN1XOr+fr0=
+Date: Fri, 18 Sep 2026 10:10:52 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Breno Leitao <leitao@debian.org>
+Cc: Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	workflows@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH 1/3] Documentation: kmemleak: describe the metadata pool,
+ not the early log
+Message-ID: <aq0AHKSkUCSeQMV2@arm.com>
+References: <20260917-b4-kmemleak-doc-v1-0-84fde6d1f749@debian.org>
+ <20260917-b4-kmemleak-doc-v1-1-84fde6d1f749@debian.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 08/12] mm/collapse: separate scanning a PTE table from
- collapsing it
-To: Kiryl Shutsemau <kirill@shutemov.name>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Zi Yan <ziy@nvidia.com>
-Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, kernel-team@meta.com,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
- Jann Horn <jannh@google.com>
-References: <20260916093145.4022188-1-kirill@shutemov.name>
- <20260916093145.4022188-9-kirill@shutemov.name>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260916093145.4022188-9-kirill@shutemov.name>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260917-b4-kmemleak-doc-v1-1-84fde6d1f749@debian.org>
+X-Stat-Signature: 4fb7sguwtaqhdfo74ymy8znus1ff3qd7
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: C786C40007
-X-Stat-Signature: z8ui9yiq8d8y6cc7qmcmgsg3czx33acb
-X-HE-Tag: 1789722378-638529
-X-HE-Meta: U2FsdGVkX1+GFulJ8QaPq3PKGK71ZPjo9DL+5si8AGaco9d8cW0nusTyGkGXHhCulK83YpmwdVfJgJzHwQcwCM0pPe9zurvV9CUVXqtqwT6buKUxUn03j1APz/jO7Y97FAz7WaO12ELYQecWqHPBL0XxOxejYt4wLBXAJNWtismqFk4bEps5mFmhXGvUQdAxvVwBy3/pMT8j5rrR6pmBE9gyWBxdjtRO2AWAsycwFRIEhMJvU2IU+MH99tihQ3BZrnog+ycdsVQ0Jg6Dn2+cNMbamqAFfMKbiwYsJc6OvNgUGbQjx14zQlM/gZAuObxKHNpwfGV+oaniHRODskhgzNP3/8zNYHI+qtAYjaSqQ3Gmzr6n7c/jTnqcF9dfeiVJrs+WWsLvEy7i31BDDxW6grPrtA+KwjhJsYRCrpxUqSGZPYiK4kAADL5d47KXUvva+b5JUHPQq5QLLqzYFubpm5u/DYeFcT9eMO16wo7ludVpSPWIMrChFCOKF/as4fPdTUl03OJ8REhv4Q8DuXpk69YEjccEFievnYSiYrkV1cAInPD2tXci9QGlYYw5pA+fLzkSa10q4noOOXHp1j+yr/BtyJ+yyejaV4ZaGffkeamP4oIGZDELhKywEWsao9Q770aUbkDR5Ci1JtLMNVxjUizlzcnPJK+DdctaLIoUoQ1hEcSfeLSJdBqdJcPfpnJoqHnMFnC3izqonn5/2aC5vsfU+4HfJ1vfSf655Xc340TRHmMOjEer5L+tYXuYYoMayGnNu0c8T5tro3+VOwAvHiXXLX4mdcIaEWXU/NpEATeICm6y52iQbVqkuCglx9CPl83WX/MxJIRHzJDDktI0cK872nUMxj3+eCGT+o4uPWMjuMK6RD8m1r1jl4GvRU7/XMnfT9WaePZ93OvF+cVwzS2KSfzNT44y3uC3/EA9qAVtY5lO7Jh6trMFXsjpN9XHZh7xX11PgBDZga85Dyi
- uTpFJx81
- ccFb1n0X2evRd/9ZiwElZwrjVu9gvDzznFxvkphXls7oPxZ05D1s8WqMP60GgZV3Py/wnQds3j4WVMbA2sFmj5OW78bM0KZFpy33KRefUtfMDaHNxCw4QOKHPNanPky/EbhU1rV8FFJysfTXi4W1Vk74eRdUnhMm3NShZn23eQAXDVOob74Zk6evrcXYz7FbXoLLopJxoFq6RvdcOCY15IeGFxr5D85hK4DYphz9cI+lC6QxGLOlN/rsKnL7qnUZ5dEP4aSTHkXVKpgipy44chmbx+oejmKFYewWN6ZXxUE9D3DR3ZMzM5lATiDtcLhpFq55TnW56Ur7do63AfVlrTdQr8oAHmyQuoA99
+X-Rspamd-Queue-Id: 7DEDA40008
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789722657-98807
+X-HE-Meta: U2FsdGVkX18ZZUXbuoC5KisB8U8kS+PnatwkUtbETcbUa497xP3aMCmhuTcqVa+iWwOwaBjsPyo7RWNEooPzJnOKZGfv6ylJ/NbzYacAt9EK+uU3bq7P/AOfpsfdQon+kl/j9RCiLvXD3763Dm8iqOu31uXbcUQ3BHGAvK6N7JiyYP2+xUa5oUJdUgoWCMIl4NsV/NEzOIKxQIvqFTclYf90VLE3Qg0Ip25BBtgVN58HSpb0+V+7UrYrONiyze3gWHGRb5pDFHmHZ1aqrIAqRdWMCO12XXhJ+FnOm6xXL/Lwzokk9MQpYzbx6MVXES3G6BXgweoMKiXfpD+m0NlNL9itSpJ7pcLCoaqVuLM/b8bE6c3R9WSHsfeQ8YNJoa8JlZlb6aG9IuOpLvP9pjXCqVte9pnButMsE+rtW8iM3ham3s8s+8hpk5kbXWnUhMZ0Ncolckv0FCidudLZVutO8d7oZEbfATmDtorXD4mvMxDsvjOfAl+IHLtpgJznP/hFIuv5hfq0JIkv0LCwerUfeRf3zhQYYPHkQ1teapgXh8FgcA/aPZ1QotrRIeCUvd7CnEYqziQCt8eNSZOw7X8H9aSkyLwGdM9nkisWEgnPrKEyMrf0l0oVpcOLUtlvIPWl5xvE3Ro/3rFyauLy9Jt6FWc3Jfpl+CuWwFmlODTz7DlCJXiuA9rjNTmSRx86nWuBBquilYQao5qXKzt6eWH+NfUeaeH1Q1bBkRgFbHjEqkT3bVCokH2LszK70yGiP1rHxsO1HZipTKxm9WPJUdc37zoYfxXewxvR2DFdzpHn6ZlH5alV+Pms0axBkVv2r8XhJkA1X/tKYs6ciFf2bGGf7RC5g2G6Ok4oH6ZS5meqY42qz5VrnH7KGblAeG3f1vtc+5CVd8NRo6EUq+etl8YHXwuRyH9q/6LF4nbHv3W5j/JRfKXrd5wTlk1UjNqgJIisD+m1qTuQbBy2N+ggnIL
+ zNa26xqv
+ Jl4Z0YAeAPkTQFTlQE9hSfY5+Ij3ilY5syqFdziLljYGyNPdD9eq23Y36FP6zqixCQTb0UDMbc6FchGMLAT46LB3CxYliRBCNgbdpPiPeUmpvUlNx2wYEWm3CNc+lM2HuO0GHUsBhN+/EAo9lXMgtoM7meoIdLBUAKtp3xAhysYYb/16m2gxdKpRUZkKB4FhvYaT173Up2ybOMU5Ki7urEVTxLHB4Uz07uY9zjz4Ghw2E2/kZXUKRx8wvHDLV5tzFVz+AIKdBjXUtudYauieDZ65k9QLEKKKxTm+oKFzdJhlDW0pP2MwzAj23CA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,70 +94,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Sep 17, 2026 at 06:47:35AM -0700, Breno Leitao wrote:
+> commit c5665868183f ("mm: kmemleak: use the memory pool for early
+> allocations") removed the early log buffer in favour of a static pool of
+> kmemleak_object structures, but the documentation still describes the
+> old mechanism.
+> 
+> Fix the documentation by describing what the pool actually is, matching
+> the Kconfig help text.
+> 
+> Fixes: c5665868183f ("mm: kmemleak: use the memory pool for early allocations")
+> Signed-off-by: Breno Leitao <leitao@debian.org>
 
-
-On 9/16/26 5:31 PM, Kiryl Shutsemau wrote:
-> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-> 
-> A collapse is two jobs.  One reads a PTE table under mmap_lock and decides
-> whether the range is worth collapsing.  The other allocates, isolates,
-> copies and flushes, and wants the lock given up first.
-> 
-> collapse_single_pmd() did both, so the boundary between them was somewhere
-> in the middle of a function.
-> 
-> Give each half its own function:
-> 
->    - collapse_scan_pmd() scans one table and only reads.  The anonymous
->      scan that used to carry that name keeps its body as
->      collapse_scan_anon_pmd(), and collapse_scan_pmd() is now the entry
->      that picks the anonymous or the file side.
-> 
->    - collapse_run_pmd() does the collapse the scan asked for, and is
->      handed what the scan returned.  SCAN_SUCCEED means there is
->      something to collapse.  SCAN_PTE_MAPPED_HUGEPAGE means the page
->      cache already holds the PMD folio and only the PTE table is left to
->      retract.  Both are work for the run; anything else is why there is
->      nothing to do.
-> 
-> collapse_single_pmd() is now the two of them with the mmap_lock drop in
-> between, so its callers see what they saw before.
-> 
-> What the scan found and the run needs travels in collapse_control.  For
-> an anonymous table that is the orders and the referenced and swapped-out
-> counts, which mthp_collapse() and collapse_huge_page() now read from
-> there instead of taking as arguments.  For a file it is the file itself
-> and the offset in it.
-> 
-> The file side moves with the anonymous one.  collapse_scan_file() used to
-> run with mmap_lock already given up, and called collapse_file() itself
-> when the page cache looked worth it.  It now runs under the lock like the
-> anonymous scan and only reads; the run does the collapse.  A file
-> collapse works on the page cache and never sees a VMA, so the scan takes
-> the file reference while it still has one and the run gives it back.
-> 
-> That changes what a refused file table costs khugepaged.  Every file
-> table it scanned used to end its pass over that mm, because the lock had
-> been dropped to scan it; now only a table it goes on to collapse does.
-> 
-> Two things on the file side stop being rescanned.  When the page cache
-> already holds the PMD folio, the scan says so and the run goes straight
-> to retracting the PTE table.  A run that refuses dirty pages and may
-> write them back retries collapse_file() alone.  The checks the scan makes
-> ahead of it are ones collapse_file() repeats under the page cache lock.
-> 
-> Tracing changes with it.  mm_khugepaged_scan_pmd and
-> mm_khugepaged_scan_file used to fire after the collapse, so for an
-> accepted table their status field carried what the collapse made of it.
-> They now fire before it and read SCAN_SUCCEED for an accepted table.  What
-> the collapse then made of it is for mm_collapse_huge_page and
-> mm_khugepaged_collapse_file to report.
-> 
-> Assisted-by: LLM
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> ---
-
-LGTM.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
 
