@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AFF1C982DD
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 20:24:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 671F0C982D7
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 20:24:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 718BE6B008A; Fri, 18 Sep 2026 16:24:08 -0400 (EDT)
+	id 593CB6B0088; Fri, 18 Sep 2026 16:24:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F0096B008C; Fri, 18 Sep 2026 16:24:08 -0400 (EDT)
+	id 56B026B00A2; Fri, 18 Sep 2026 16:24:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 62DD56B00A2; Fri, 18 Sep 2026 16:24:08 -0400 (EDT)
+	id 4815E6B00A3; Fri, 18 Sep 2026 16:24:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 41A546B008A
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 16:24:08 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BE9B8807D4
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:24:07 +0000 (UTC)
-X-FDA: 85228009734.10.4B3484B
-Received: from mta0.migadu.com (out-7.mta0.migadu.com [91.218.175.7])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 9C6531C000A
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:24:05 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LKxEZyKC;
-	spf=pass (imf20.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.7 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 269FC6B0088
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 16:24:57 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A25DEC0754
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:24:56 +0000 (UTC)
+X-FDA: 85228011792.25.6F690EF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id E9AD914000A
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:24:54 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fMj3v6Bs;
+	spf=pass (imf26.hostedemail.com: domain of "SRS0=kyR/=HK=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=kyR/=HK=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789763094;
+	b=XeElig0+HvK0eVMZWgiPYKC2hEr+MDX4P0LiNiuhACuY8LEW/XXj9cMYLNI/XusIJo1wH+
+	ByI4A++AYus+hj+gulVFXqDuAJCu0+HjrUmA9cY2Cqu25ffZYZ3DAXvDTomriUKCxe0ws8
+	wgkyqBiUvTkDlZlEGJDzoWV+0tCry9I=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fMj3v6Bs;
+	spf=pass (imf26.hostedemail.com: domain of "SRS0=kyR/=HK=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=kyR/=HK=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789763046;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1789763094;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9wuXubIIGSeWyvFFf022/3pANKLlXHUdxL8eUxbVbPY=;
-	b=TDZjCCNjx2Ind8NGyBVJ8ee/ZvG7U/61l87B9SWqkBpwykZwzxgVCZ01zlGbZ7gFfU6n7X
-	YzfLFlgWbL17W5+ZNp1S40e97HFyPMzGGBbsIgMS0g0UnoV1BtFMiLA8M45TuL0WuOsvbi
-	O8AZ//FzbeYJHsdJ5dqtSGfUT7V8MII=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789763046;
-	b=JdOUq+RBnfsKhJKSdXDO0FtH38xEXkHR5c5aXJyNShFDp8NxiZ90cqbrhDTTGcPv9vhksj
-	OV9ZFHnBEoq0niiHf15LOBANgYQPBBQ75VdVRNKK7idkgvO0VUJJs0W0ZI02K75yhdvfLG
-	6eHXsDYFRxRj981gaezw4YU8y/USYig=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LKxEZyKC;
-	spf=pass (imf20.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.7 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=eT66H6iANzWDoxgeBfogAllHhpEDQptXi80Z7mxNldQ=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789763044; v=1; x=1790367844;
- b=LKxEZyKCj+P+NQJ3YggNKSwHcQ4kkGKVl0EHrOOnZow5edCGHpAfIXqAVI0s3Y7zD4OC+qbj
- 7zEk7CEe0Rh6cFauNgTgXtdJuf5Lt08oib7ms4cTox6MrFv2X96OwcCuWUF9bab/WPgzcH+fvgY
- +Ts9YSSRsRoiTja/6Zg3GKps=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 5e90c63acb495c08;
-	Fri, 18 Sep 2026 20:24:03 +0000
-X-Mizu-Trace-ID: 5e90c63acb495c08
-X-Migadu-Flow: FLOW_OUT
-Date: Fri, 18 Sep 2026 13:24:01 -0700
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Bingfang Guo <bfguo@icloud.com>
-Cc: bingfangguo@tencent.com, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Dave Chinner <david@fromorbit.com>, Qi Zheng <qi.zheng@linux.dev>, Kairui Song <kasong@tencent.com>, 
-	Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, cgroups@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/4] memcg: manipulate memcg private ID references by ID
-Message-ID: <aq2dkhBuFktQYvTB@linux.dev>
-References: <20260918-bingfangguo-memcgid-rework-v1-0-5bbf3220d88f@tencent.com>
- <20260918-bingfangguo-memcgid-rework-v1-3-5bbf3220d88f@tencent.com>
- <aq1_Qhid7-62pHcW@linux.dev>
- <aq2BfYdMr_8JeY_Q@BINGFANGGUO-MC0>
+	bh=babmhG3CX0kOyIk0MhmJt1fcAmod/lU85NqbD6hfzmw=;
+	b=CgC4Qb00S6z7eqt020GfVz9sZCE/OqgHNFFcq/gsbrLdYDuawfiuGUPv24YyhB1voQsG5P
+	NfqPl0oUyoWLu9/VUOnpWmytjnPnIwx7q+IjznstqEzY3KeXOT1y/BJdJ/B5s4ECbJq9Ua
+	B99UegpCPlm+yLWBGqPFQ/txKpxih2k=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5ADCE602CC;
+	Fri, 18 Sep 2026 20:24:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11E6C1F00899;
+	Fri, 18 Sep 2026 20:24:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789763094;
+	bh=babmhG3CX0kOyIk0MhmJt1fcAmod/lU85NqbD6hfzmw=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
+	b=fMj3v6BsyPRHwMQyaYa7dqJhrB0LIIXc9+wVmEH9Nyh2d+rxXqXhrA9mWJFHtX2Oa
+	 fjNE7R2G250Vrg2BLDuh9n981t4ThUduqFdXwONzqEdNRakcl6hy8FFGCMUVGBdLXJ
+	 y8hLr1pFhuPBuZIB4YM06xJZbWQH2XRijwG3BfGMgf/OxSh6l8DJlsbkXAmbkim3bM
+	 W9sUuTDt05G1E54xKZ5LsJqv6+1X3Fl/IT7RiKZ2YhrqHH8817hXLauy9NDMRgIQ2K
+	 KTx4DZx/sn6Hd2AiYHR0Z/j6aWJOMOMY6kS1Kv6QdIplQVA0i1AP9gumdvIBNe+Bzv
+	 SAzDROaU0rcjA==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id C4D29CE09DC; Fri, 18 Sep 2026 13:24:53 -0700 (PDT)
+Date: Fri, 18 Sep 2026 13:24:53 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Breno Leitao <leitao@debian.org>, Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, kernel-team@meta.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mm/shmem: report RCU-tasks quiescent states while
+ undoing a range
+Message-ID: <a67e8b91-ebc2-4d3d-b6ea-d221b297fad0@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <20260918-shmem-tasks-rcu-v1-1-79acf91a2569@debian.org>
+ <20260918123239.8f25b984ca280fcc11ef6e6a@linux-foundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aq2BfYdMr_8JeY_Q@BINGFANGGUO-MC0>
-X-Stat-Signature: auzkmy63xb4ds76kpcrnf6ec8nt6ypq4
+In-Reply-To: <20260918123239.8f25b984ca280fcc11ef6e6a@linux-foundation.org>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: E9AD914000A
+X-Stat-Signature: 5kqep4k7nrffk41rshjmbrza144hw8b3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9C6531C000A
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789763045-640964
-X-HE-Meta: U2FsdGVkX1+Sv/Imjd1kjtMRIjBTXINmU5opx9E850qEgL7t4z5sGVy4Fpf9OtN9LXpWnEGddTWcEwDNojRaXEn83sIf43Lr5nOIOfV5j48GOM8ZNAW35BWHmQRettZi/Lmpy0lvuE5QMOCliwgZcbMwkbQVgO5bQdfUXzMSM0yFKdyCeV/GIf4YCIVGxRup4iaWAdB+xye1eviGNf8OkKiVVj11nEfn+PrX4YBPc/LPCQTOWvOMamAD0k5umAr8WHTY7fU8LQOrvuVu8hW4YO6IY84oZvDC9v8i/0DkBsEpS06RUv35cDPa1h6qROtx62SS4kYn+5gRJVmY4ncL+ojk9YuG+KcCblMkt+bVjPDOSDd8+xbBsKYlwctAxsL3e9/BzCFXl+cQ9Y9ikijkBSRkBHG91/ApSYB4LErbgYxsX7OGTYhJ20/BS4n2KLYnDc8+eHLHK6zZ1Gdi0CnExh3t59BgjKRZOtw7Cy+oNTlPbZNYzHKem3IbC0EGOe+UjplHld6FAqzmevjmCj+k9JwQRzwSpvZrM8JuU2bds/hsj9L/R2Irag33EuUpjriM0N//CRYMeH90AhkRKNmJ0ofRZDYLJnb6t+uZte0ry5F7WhBNO4Ah/gCHmMSUyk44CP3jEhzQ16Z6CV6zcKEG4Pz3gB56m8ZabbCNvHNACSTVR3DDAtEMOQMCW5FG2olFHuL5WaefDfyDjOsJiM/w3eTl4i3Y8Sl9Pqf9mmJeEG15Orj3RNsmcGvIOQNifU8oLnpWXzoFhVQZp6xcVv7sXd17qufL+BldYIwT31gQvtr3q61pqbSBEOUsWjiaLK/3yuk4zkTho/lRlDqmWXlwxir+ojdnXMviPX5Axx7uQ7WUkEdhV9bxVzGEVFnxNvlBFwyM9fB//v+S6nJ8pCtiVrUg2CIJuZ2rFGwhpkqnwt/2ConMHdOtRzHd46sbt5QZxCKwcG2YVykdQhGEtKh
- ZGEp0UlV
- cSb2Kl4J1Y8SQzRWtCKq3XwOByk2Xka1PBoRSFryT+un8deCLh9qX3mCHPm4F5ORqHIcBpQSa9mtV7WwXJZ1gXVER8hq/BbfHojawv9iOPAPThdrXPcVi1Yqlvax6oEdUAH4UOVnQBwq42EfD33c6oMmHJ8wE33d2HM4wlfh8uW3tisoGZ9WL3Ywi+xYB9cpRc9R6VgzihnrCRs8T9TwuG7lEu4y7LImYgegF2x3Ia4N3Egmf7UiOcqMfNeGeJwY3YVRS99ZoMCy6N0dJz5m0vn3ffgENj+oaHYKQC+6JnPjD/Oc=
+X-HE-Tag: 1789763094-376084
+X-HE-Meta: U2FsdGVkX19u+Q72rdTMUWguyxZLJmfJv/cE7tl6AznmVafwJWrZlmRTZg72KDUapkdV5DUrE5N7gkbidRRjo2XdUIx35UlWFSkPmiwbogtKyt/r0vTv0tAJRSGE1HqEMruFdhJYNSvqhyDQhlqGZcsx/K5hNNpywvumMNvL5J8fpouSQVqfLwdk8uBsFAz5pMj7iTaIeyrhJRdjg4lfafT7aONdD4vBIW8ZJp5aDAe/EEiNwgVrY0ydBPdXjDHxhfRqZA0nbiGQ9ADLl/VSuKktprqJ4EWYtsy/mh7dOTkfAn8oHbeVEvlbSK840yF7dMhd3C8ARXIeCnTmTNNVojSz1ZcwDNih9VCeotKdKs0K+zYs3Z+YkdvTsiNq7omycGOq5giVZEdZfzqytbJPe3B24vgrBRKCnNVu4ADkyd8R+GdenC2i85oBwJB+s8JFQP+Mceamgldvm2CwPuN0DsBRjIC/okA8pKwk1dTnro3tSNWPPPnXXfU5ucj7AXzeecbypb4VMMZ5P98qDeLRHmc0tE8a9k0v2I5hTMTgxPWcEoKi6zbrDnBurYnSfd9N2vcXCiM797mUMe9SiRmlvoFnqEgXpkGfNuEZPrjZDPzoiE8n7iRtSEgzucAh5UlRqeeuxuFHpNePpaPE82aJ1XtnkoNVQPCHcOZpiuvO3NDRsJB6VjonORDVW2wEM640yf3+zgDizYpQZLceDLLMCedpmtsZ+vTudBxAPGpOa7K+za1dh9tVscs6uL/fON1TCxJnBpUExPA2C7Ib/ZoPyctr4gb7b5Rvl9q8e4mZLYdxUOh8pa+7bP3lEm7JCOj8OIliFFIY13lde3NHdds7T9API/LlXQZsBHxAriVlikjIowsjKfX9i44AbMhDSolEY+fJcD+JDLh+WwBHiW++pE0wBCYuNWY/4pHoKttp9sd9iJwKQ69NljR9DNsKYikANNyMIRuR/DDGC07bc0P
+ U4uKLgU/
+ XLGELZRPu/XoMu1ZDehVDTtv1POy55Tyz73DUtlXizrhE+pOq8SCx0mIrKw0+/aryNzrNUNXhg6VVUBNDFdsHIhYX+qC0+pJMlhZKvqWYcaNcfJc53ZOAxsEN2A5FhWDeWVL/iyUpUO0MKQwtXFUlcS34Y7st1R8DV248KrV9vdYz0NHktu/k884ICnKT1mww06IfOj+aGEMHwpyhYJPujp2gdo6rP8YhG69IAcuOaj62pPA0jIIfk/5zovG9L5nA3CbcJm/l+WSoB576Rj3KvW0TBDGujxGK15IUptoS0zMb5prx/3ql6co8M3VUHuP9E6Z9OUiK4dDObGX7soIvJ30EwmfU9su0WpAA1pP9qcthbR+wRQIbez8RuKDdf89Bc626UW51pnty0B9nFnayGh7Epn83N2f9c83dIPoNwcYd6BhEJF3fGGaX/lQaiy021D4yFHv8hUwrZoRQRleLNDWPFtGhOM11DFE+yts20uJhlLVr+cs6zmznU0nSVZCfy6otJDAU/H2f6SDd2oOCowPCAq3jNQDl0nuz4WqbHI40rmo3mx43YJEBTH5uhym3sGucP4fvOfqsnGL/nqWnp5AEAjAyO+UXUgpiR7fmCUc0PvGm19qHvAVKZIKpOweWcJNKUPx834gsxkwYpiLvIU53N88uujlzyzn628lZBR6/ultSIpgbHhoCRs3CgONFlSWzMLjaF5/bAumLPVDGWlVEmrruIqbuQE+G
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,119 +97,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Sep 19, 2026 at 02:46:52AM +0800, Bingfang Guo wrote:
-> On Fri, Sep 18, 2026 at 11:14:03AM +0800, Shakeel Butt wrote:
-> > On Fri, Sep 18, 2026 at 05:18:42PM +0800, Bingfang Guo via B4 Relay wrote:
-> > > From: Bingfang Guo <bingfangguo@tencent.com>
-> > > 
-> > > This is a preparatory work for moving memcgid from memcg to objcg.
-> > > 
-> > > Swap entries retain a private ID rather than a memcg pointer. Once
-> > > private ID references are moved to objcgs, the ID can also outlive the
-> > > memcg to which it was originally assigned.  So it's better to make the
-> > > get and put functions accept the ID itself instead of the memcg.
-> > > 
-> > > Rename mem_cgroup_private_id_get_online() to
-> > > mem_cgroup_private_id_get(), and make it return the ID only.  If the
-> > > memcg is already dying, the dying memcg will still be used for charging
-> > > and stats accounting in v2 swap charging path. But they are hierarchical
-> > > and will be reparented after offlining so it doesn't matter.
-> > > 
-> > > Make mem_cgroup_private_id_put() take the ID and resolve the reference
-> > > holder internally. Convert swap uncharge and charge rollback to release
-> > > the reference using that ID.  This introduces an extra xarray lookup for
-> > > now, which will be removed in the final patch.
-> > > 
-> > > Separate the online-state reference release into
-> > > mem_cgroup_private_id_kill(). The offline path already has the memcg
-> > > pointer and can call the underlying put helper directly.
-> > > 
-> > > Signed-off-by: Bingfang Guo <bingfangguo@tencent.com>
-> > > ---
-> > >  mm/memcontrol-v1.c |  7 +++----
-> > >  mm/memcontrol-v1.h |  3 +--
-> > >  mm/memcontrol.c    | 32 +++++++++++++++++++++++---------
-> > >  3 files changed, 27 insertions(+), 15 deletions(-)
-> > > 
-> > > diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
-> > > index ed015fdd95123..b7f2868885071 100644
-> > > --- a/mm/memcontrol-v1.c
-> > > +++ b/mm/memcontrol-v1.c
-> > > @@ -268,7 +268,7 @@ void memcg1_commit_charge(struct folio *folio, struct mem_cgroup *memcg)
-> > >   */
-> > >  void __memcg1_swapout(struct folio *folio, struct swap_cluster_info *ci)
-> > >  {
-> > > -	struct mem_cgroup *memcg, *swap_memcg;
-> > > +	struct mem_cgroup *memcg;
-> > >  	struct obj_cgroup *objcg;
-> > >  	unsigned int nr_entries;
-> > >  	unsigned short private_id;
-> > > @@ -298,9 +298,8 @@ void __memcg1_swapout(struct folio *folio, struct swap_cluster_info *ci)
-> > >  	 * if the ID refers to the root memcg.
-> > >  	 */
-> > >  	nr_entries = folio_nr_pages(folio);
-> > > -	swap_memcg = mem_cgroup_private_id_get_online(memcg, nr_entries);
-> > > -	private_id = mem_cgroup_private_id(swap_memcg);
-> > > -	mod_memcg_state(swap_memcg, MEMCG_SWAP, nr_entries);
-> > > +	private_id = mem_cgroup_private_id_get(memcg, nr_entries);
-> > > +	mod_memcg_state(memcg, MEMCG_SWAP, nr_entries);
-> > >  
-> > >  	__swap_cgroup_set(ci, swp_cluster_offset(folio->swap), nr_entries, private_id);
-> > >  
-> > > diff --git a/mm/memcontrol-v1.h b/mm/memcontrol-v1.h
-> > > index 23be2512702dc..281425273ea97 100644
-> > > --- a/mm/memcontrol-v1.h
-> > > +++ b/mm/memcontrol-v1.h
-> > > @@ -27,8 +27,7 @@ static inline bool mem_cgroup_private_id_is_root(unsigned short id)
-> > >  	return id == mem_cgroup_private_id(root_mem_cgroup);
-> > >  }
-> > >  
-> > > -struct mem_cgroup *mem_cgroup_private_id_get_online(struct mem_cgroup *memcg,
-> > > -						    unsigned int n);
-> > > +unsigned short mem_cgroup_private_id_get(struct mem_cgroup *memcg, unsigned int n);
-> > >  
-> > >  void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
-> > >  				       struct mem_cgroup *parent, int idx);
-> > > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> > > index bfe53e4392f09..ed44b3e7ac938 100644
-> > > --- a/mm/memcontrol.c
-> > > +++ b/mm/memcontrol.c
-> > > @@ -4082,7 +4082,7 @@ static void mem_cgroup_private_id_remove(struct mem_cgroup *memcg)
-> > >  	}
-> > >  }
-> > >  
-> > > -static inline void mem_cgroup_private_id_put(struct mem_cgroup *memcg, unsigned int n)
-> > > +static void __mem_cgroup_private_id_put(struct mem_cgroup *memcg, unsigned int n)
-> > >  {
-> > >  	if (refcount_sub_and_test(n, &memcg->private_id_ref)) {
-> > >  		mem_cgroup_private_id_remove(memcg);
-> > > @@ -4092,7 +4092,22 @@ static inline void mem_cgroup_private_id_put(struct mem_cgroup *memcg, unsigned
-> > >  	}
-> > >  }
-> > >  
-> > > -struct mem_cgroup *mem_cgroup_private_id_get_online(struct mem_cgroup *memcg, unsigned int n)
-> > > +static inline void mem_cgroup_private_id_put(unsigned short id, unsigned int n)
-> > > +{
-> > > +	struct mem_cgroup *memcg;
-> > > +
-> > > +	rcu_read_lock();
+On Fri, Sep 18, 2026 at 12:32:39PM -0700, Andrew Morton wrote:
+> On Fri, 18 Sep 2026 04:24:37 -0700 Breno Leitao <leitao@debian.org> wrote:
+> 
+> > This shows up in the Meta fleet on ftruncate() of large tmpfs files:
 > > 
-> > Use lockdep_assert_in_rcu_read_lock() here instead of taking rcu as both callers
-> > already taking rcu read lock.
+> >   INFO: rcu_tasks detected stalls on tasks:
+> >   00000000752fd185: .. nvcsw: 59455/59455 holdout: 1 idle_cpu: -1/0
+> >   task:rocksdb:bottom  state:R  running task
+> >     __folio_split
+> >     find_get_entry
+> >     find_get_entries
+> >     truncate_inode_partial_folio
+> >     shmem_undo_range
+> >     shmem_setattr
+> >     notify_change
+> >     do_ftruncate
+> >     __x64_sys_ftruncate
+> >     do_syscall_64
 > > 
+> > shmem_undo_range() walks the whole of the requested range in folio_batch
+> > sized steps, twice, and its two cond_resched() calls are the only
+> > reschedule points in that walk.
+> > 
+> > cond_resched() is not an RCU-tasks quiescent state.  Use
+> > cond_resched_tasks_rcu_qs() at both points so the walk reports an
+> > RCU-tasks quiescent state as it proceeds.
 > 
-> Thanks for pointing out this.
-> 
-> Agreed.  Both two callers are already holding the rcu lock so
-> taking the lock here is unnecessary. So I will drop the
-> rcu_read_lock() and use that in the next version!
-> 
-> My concern is that: mem_cgroup_private_id_put() looks like a
-> universal put function, requiring rcu held (which is true today)
-> is not that obvious to the users.  So I think adding a short kdoc
-> comment to make it clear later might be a good idea.
+> We keep hitting this.  Whyohwhy doesn't cond_resched() imply
+> cond_resched_tasks_rcu_qs().
 
-This function is internal to memcg code, so whoever is going to call it better
-know to call it with rcu held because of lockdep assert. No need to have a
-comment.
+*I* don't have an objection to that.  ;-)
+
+> > Fixes: 8315f42295d2 ("rcu: Add call_rcu_tasks()")
+> > Cc: stable@vger.kernel.org
+> 
+> That's 2014.
+> 
+> > --- a/mm/shmem.c
+> > +++ b/mm/shmem.c
+> > @@ -1367,7 +1367,7 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
+> >  		}
+> >  		folio_batch_remove_exceptionals(&fbatch);
+> >  		folio_batch_release(&fbatch);
+> > -		cond_resched();
+> > +		cond_resched_tasks_rcu_qs();
+> 
+> Won't this change remove the cond_resched() function from old kernels
+> which really want it?
+
+The cond_resched_tasks_rcu_qs() macro implies cond_resched():
+
+	#define cond_resched_tasks_rcu_qs() \
+	do { \
+		rcu_tasks_qs(current, false); \
+		cond_resched(); \
+	} while (0)
+
+							Thanx, Paul
 
