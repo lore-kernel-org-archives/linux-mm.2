@@ -4,97 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1BA4C88E75
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 07:03:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBF05C88E75
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 07:04:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B7AEB6B0099; Fri, 18 Sep 2026 03:03:37 -0400 (EDT)
+	id 143A96B009B; Fri, 18 Sep 2026 03:04:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B2BF06B009B; Fri, 18 Sep 2026 03:03:37 -0400 (EDT)
+	id 11B2F6B009D; Fri, 18 Sep 2026 03:04:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A1B416B009D; Fri, 18 Sep 2026 03:03:37 -0400 (EDT)
+	id 0312A6B009E; Fri, 18 Sep 2026 03:04:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 732926B0099
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 03:03:37 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DC216C0572
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 07:03:36 +0000 (UTC)
-X-FDA: 85225992432.30.6BB2393
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 4B1801C000B
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 07:03:34 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C72956B009B
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 03:04:06 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 604E314059A
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 07:04:06 +0000 (UTC)
+X-FDA: 85225993692.27.518518B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 9B5B21C0007
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 07:04:04 +0000 (UTC)
 Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aPqXv2uZ;
-	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789715014;
-	b=MP+FLqDdqZyVQhoSG/tPhAG47DO+DET1+Rd0eU0MvXb8jknZ+uer9YMX70G2A0Zh18zgf/
-	vqSYcai6jMnYcQPnDgN+ED6sCUDFuAzTCHpE5bBy2eNIy1DDf0IG4T2e43I8C57erEpIkr
-	WghZDARKwCObT7kngOtPXA+PbM4y+l0=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aPqXv2uZ;
-	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jWKDEaWg;
+	spf=pass (imf20.hostedemail.com: domain of chleroy@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789715014;
+	s=arc-20220608; t=1789715044;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ep+W+Lzk1KLKOXlBALTloOl7Wm88/geYoc+t7Jo7KS4=;
-	b=JvWupNky++RytfrI6U1XDor8hlOx0MXUs+mTaR6sqbSdk4jfgrXt0vJ3SmyuJy7k/BLabY
-	OiuW+BRWVOBGB9kTOOgFSAZw6r+xDeEe0RpcRS8TUPmSSsX2UvW7rh3jnfxA+lmJkl2OPe
-	beXRs3m/TNEBrTYyNKA8tYzGOVGl6mg=
+	bh=C99qchwVmIf8eGzA2KZRAlNCqTMDn2E/1eNOjto5V1g=;
+	b=1nJQHB/0tfWLA066vmXoxMHQw9epmhrFigbfC1B0JeUngdA4GAwfA/05bFNxMT7jh+RhDG
+	kPIHhEhd7y+/utskp9F9kT6V5Zk9YLhd+qfCLlxbw7T7fGxZxHNBcmkbrBlVkSK0SIhiRQ
+	MoS1mhyHwOEbGUsZbi3Pk15FyXB1nU0=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jWKDEaWg;
+	spf=pass (imf20.hostedemail.com: domain of chleroy@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789715044;
+	b=etLkPmyV7aJUz8Lc70ZJ5elrsPv+B8pZra6QF6TBBnFkr8wu7ErWSV9JmX36kMCDpwMiaZ
+	L9K3aoUVCl8TVn/Hz1EfQcxmehf3TskihoknoqJAU40Uj+Oc7Oo//89FWBiOmdo3n0Hjst
+	U/wa2509bWbIPiDq/aamLtvVGj2JsAQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D0CC160A5A;
-	Fri, 18 Sep 2026 07:03:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4649D1F000FF;
-	Fri, 18 Sep 2026 07:03:25 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D0D1941842;
+	Fri, 18 Sep 2026 07:04:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 136851F000FF;
+	Fri, 18 Sep 2026 07:03:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789715013;
-	bh=Ep+W+Lzk1KLKOXlBALTloOl7Wm88/geYoc+t7Jo7KS4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=aPqXv2uZx1vrO+PGIvxXetVU48iXAfQOmpEtCVU//nGS7ei6IPcEoDCJgz3uBJ/PI
-	 4Ddj/QUegJf2lBmSwpiwGp0foLgSapfWj8m4hF+/C7TOHKXoy5QC/HRyVZE7XtGvDi
-	 oIiMOu5mX7bOS9af9DCTeeRRRfgZJHWVSCoGTm7NkbtqJVjEutnRc8rJ79LAAI6xNM
-	 LI35wyNgzvc0HS0XFS9SL1xqlGnKNh9JkTPxSK1Fbgm6sfte18euCfzErieKv0gAFR
-	 1uDxAjt1ilWU3dgH+v91xGigckxp1MSaaqBJ4RgpW3b9zxO7GZ/pOARkUq7rmhnxBg
-	 2S0VaeUw3vPyw==
-Date: Fri, 18 Sep 2026 10:03:22 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Wandun <chenwandun1@gmail.com>
-Cc: catalin.marinas@arm.com, will@kernel.org, chenhuacai@kernel.org,
-	pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu,
-	tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
-	dave.hansen@linux.intel.com, x86@kernel.org, robh@kernel.org,
-	saravanak@kernel.org, akpm@linux-foundation.org,
-	baoquan.he@linux.dev, pasha.tatashin@soleen.com,
-	pratyush@kernel.org, m.szyprowski@samsung.com, mark.rutland@arm.com,
-	kernel@xen0n.name, alex@ghiti.fr, hpa@zytor.com,
-	ruirui.yang@linux.dev, robin.murphy@arm.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
-	devicetree@vger.kernel.org, kexec@lists.infradead.org,
-	linux-mm@kvack.org, iommu@lists.linux.dev
-Subject: Re: [PATCH v6 00/10] kdump: reduce vmcore size and capture time
-Message-ID: <aqziOmx1yhy0ozkX@kernel.org>
-References: <20260902073116.802752-1-chenwandun1@gmail.com>
- <13cfcd99-e420-478b-8ce8-06674727977d@gmail.com>
+	s=k20260515; t=1789715043;
+	bh=C99qchwVmIf8eGzA2KZRAlNCqTMDn2E/1eNOjto5V1g=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=jWKDEaWgQ8tOV8amlp5t9MgYwzBijBFVifWz9yuQo8X4L5EFh32Flzu4XXAbDfnGm
+	 UDL93p7kB9G3Rd42nYwUtj6uT0m3roRBv2y8vs/mC/hhbavAalLWNzIamZ9CawgJa5
+	 pHnOvDOLIlc6CP9lOwT216XgLvfodA7hkiX+FB/0Ct+bfDmyj/AqncmimtUagrt8Eb
+	 oF0sbTAHHKTDObi0AO6aHDc2FHQ2Fy45mE5vliTDkO5ZU6YC6Yt14abrG5j+Mj0rNr
+	 Yjv8AMXd9/oiS5ceTffHmQV+p3xP+CkZLZuUIpC2CQ619hXKr9pxjr41fijo1ig8F1
+	 DgCMlNLI1L+8Q==
+Message-ID: <24aedc8c-a5c6-418b-a37e-051f0d6d9fa7@kernel.org>
+Date: Fri, 18 Sep 2026 09:03:55 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <13cfcd99-e420-478b-8ce8-06674727977d@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 03/10] mm/vmalloc: use pte_set_huge()/pte_clear_huge()
+ for PTE-level block mappings
+To: Barry Song <baohua@kernel.org>
+Cc: Wen Jiang <jiangwenxiaomi@gmail.com>, akpm@linux-foundation.org,
+ catalin.marinas@arm.com, linux-mm@kvack.org, urezki@gmail.com,
+ will@kernel.org, Xueyuan.chen21@gmail.com, ajd@linux.ibm.com,
+ anshuman.khandual@arm.com, david@kernel.org, dev.jain@arm.com,
+ jiangwen6@xiaomi.com, leo.yan@arm.com, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, rppt@kernel.org,
+ ryan.roberts@arm.com
+References: <20260917052933.188679-1-jiangwenxiaomi@gmail.com>
+ <20260917052933.188679-4-jiangwenxiaomi@gmail.com>
+ <27072d94-13bf-4bea-948a-d8a67976601e@kernel.org>
+ <CAHKocdE_zyUQT459AiTBDzQHk0jh+VpXuSMDdgHjkg-dAkgBNg@mail.gmail.com>
+ <CAGsJ_4yJ-KCHbJ9S2GKXfO51KB8g-y2Q_MikqE9-6VesR-RC9Q@mail.gmail.com>
+ <2462f67c-f7d3-4eb3-a093-6a338ef49f14@kernel.org>
+ <CAGsJ_4zMG6v-ioi8-NhveqowPVAnsHkFCNy_c7+KHDMRW3JH-Q@mail.gmail.com>
+Content-Language: fr-FR
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+In-Reply-To: <CAGsJ_4zMG6v-ioi8-NhveqowPVAnsHkFCNy_c7+KHDMRW3JH-Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 4B1801C000B
-X-Stat-Signature: qg4m86nufx9owjbzwc1d7unh7n4ww4i6
-X-HE-Tag: 1789715014-621905
-X-HE-Meta: U2FsdGVkX19Z0GWG9eVexDayM/bvGY5YsUOaZ3RjKo9jA/9rlLuI7lnLcLK+mdXcrhoHkXDagVFGXMVw9bfN05yv1PnCe8DymX9c+dW3YjF4/YiJ0y6K554adcepVZzVlfycOh9Ilg0CK3fvNsFeml2ZUHVo66Ha28J6VVucoHR6rLPRN7/KIYtmLsIPRFjlxK8Xh1/DhIVw4F2X6xo0iBwkgimAR/FNgN7dHfQ9msgeMD2iVqzkRHim+8tQ9o3xC+WAZtgusMTIrj4zg3hCirEvzxHLsOKJB1A9QVrMWZu/O9VWXAupHu+Xn6sIelPKDlSDQ779eI7dJlrPXGgbCF+4Wy2lmcSvTY0mZ3mkPu8fQLh156UkA2g87fgZlVkGd2ZkFyi+Ph1CcESmEaaqyBbfxiP64h4krjsArxXcwwC+QSMuJev4tDUJ7ASInV49qhlug54a82WIYPydKN/aYjWZsDwXEGkBsfXlnSPuQHIdrLUOlpmCZarXj/yUmgTtazoFxp2dFudyhF5D3CCc3P8naDZXYtz5AnJDNdDUEkd+Qa48qplvXBb/Eb5rpPzyKlAEMNZ9xhzqITIL5Li30WnnOKGI8RV0FJXicTGKGF3cH+Lh8zlKklCSEtuguQwnBQxTC/POVABmwd59/lunkIKtCEcUdzn61Oq230FVcDMJltIC+ywLbqgIk/lNLUB0j0DW4bVniuD2n/RqzeIyxJ/QZuKNxWYD3aDwSF79ExXkjzhuuVqZ71q07ufenZhmDoa4h/j1UFZ8E6r9cK6gyzhtcD2F3auMCqwRjMv7MQmjcuCUx0g8NGXI+wZ/IEtGtIE0QSe+8BExW6JxYJqoWZJDYUPAjohYq7t+l9+NUEbU+XAiST/kHYfOXbo++eEWCaUO4Fw92hqy3rIhYVgy2IMenojje+A1nnWn6uyA2lLj7tQ4vGesI2vhKCyH6RzpZNbB+W49DZ8rxxpTdzl
- JGDhskOz
- bbKFgyW/T2vOrjWm/ZjGavnwWINGv84iNO4oyoYx32K2rNRFSEruJjrIS8g4eulpqx+rUl6PXF1bW9Qh27W4z4QklrBbRRaSszj7zIkW5YAhb1Cl4YxpY5XWRJZuxNFRU4qR9Wl+1KnCSRptBHJxzjcmBVcfqWxRmgOa8zF6LL/80qTqoMu4LwEr8V+Y2XHbLWCvmyfqfSIYMWHCHCQnT3mjdu16XdtN6mzHqtF0E9RcxFy5f6F5SMLntDJ/1VVtPSsWyI1YXPwpyKWrytlw/9LRzVh3VyWcr8dKFn3ajyFksrNUITIqAX4IZXTkZWHYgan1ZuKA2zyJax8sB+yVzkSS4uPPWVdNsACYkS0uANdHJSEw=
+X-Stat-Signature: bn71dobmpd46bbwkbedbyn8sxxyjz4r3
+X-Rspamd-Queue-Id: 9B5B21C0007
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789715044-300510
+X-HE-Meta: U2FsdGVkX18Ks8B7zplbKYxXjvN1UVtrBSrWp2a7M/maldzLgooN2mhJBq1e0FUEW2t/ll+DxciSSA9oHjIhAlm4u/X92brGDFAhCB1EO9nCXJCr92eaMcz8gxu0bVbtG2xtO/d5ZrcXAwl0QHgvhdShF3Cxr0wb59pDTISGL2HTR0D6Wa6gp76yl1E0rQg8utiQorqJhxGaRJAel1Gz05tTy2sR63dSbjdD5teK2ZsTujXPLBEFJZwNsxjUpnlcfkpZGEB+K1ur23UHTtUJjh+/GWjoacbaDDmdYOUzBoDVz8KZPBAUll3oSok+58zE/3s0Zun+eOsoyzDmrH6gD6saNwDQHl/r1x3bfKk/xTsv9jxowNRJI0toMViQJwOkqNat5jJeVHQW37+LjoRg0VZnQlpAgsU2i0tcYEgMp8WkoiZWYGSU0KJSc6/qTVr2G+94tgPDqYfyQKgdpnOgIL2K0c1nrbKE1J/eQR85Nk57D896/h2QhzcdLqourd6BjHX2sgjFnVBjeoW2U5dSSsy7Q/8E9Y60wgsMz///LU93ASRzZTirSWmBuc3kzwQnWSsy12wA+lwYFtTP8sIhTqmc10tEMb4A5l0dh1p2jP1jPSAqVkzloH5wBQNYOW7V8X2r/IxDEe8LK9dUd0G9mbhNq3GsHEgz5qQeIlIHkZo72BWle3VMT54la24Qk/L/Q72PCgwj1fbCLdX/qBH/4neOYNSotUGEAa5Gm+5HqArRSlGRkoO8hblHG4xpqfun1WXgGV6AMtrX6Xt3P+cAPZW8kXr7c3kFeLUBKwCDjEYqBhxFPSv4z9KGFZ2AeppMhgym1N3dOB9daJJqHb8kH65sAfiN9rud9ZfC22s/I3da4vp0QEZ5iYng1xh2/UIFQ3J3CmIyphFEqVUVbACfMtINDdsVmwqpgTcQc4gIrHuneCHpdOk6vmCw0N7m2dewNH4w1ZKnEiqhUZrnB7Y
+ j/jr0Z20
+ 7G+WkmF/DzGahG5n/TGL7WwUsjn0wfuLo6weliMtbCmqZiW3sT0nevtMpgmuMA1GqB5R0nmuDwvsvCcMIou8b//Vf1POgmtg9LwmclPKwWKh572J3ZOvqJG7UPsuIvunWff/yrJRkvrU0TqE7JR87AzjSsEBJASpDMO9niPCXzl4ievtfnW4mkM79d/q/8mbiHzlwQQw/gS5bsKP62AEopvDczcvuJ11QWlbWjXbW17CRLV5W9jnevugheAOqph/cSQgiognwKsN27OioKl9z7Y67FH6yCt+rH/I8x8g/H6dDn5TJbLuPoosib0y6SWkxnLIDyHRC4l7z5eqccC9lVtTnJadKjgByp/Fd1/hrD/eeLl8Vb7H95+ixfclV174DEYJfBcFapSJd27kx8+krpxuSRqRDYqbf5OeBwGutqm6SA4YD2Nyb1eONPhfk8PQVJS6deTdY2ggGWmdxi3kvdSCvEx7NLGGJZVpH+RL4VvIntHuLQZrfVuP8akM/bc/e0r1S88FKoeuo61in6FSYUwYPhxjxYgnHDTlpNBuTQx66+1SgCDKK6qe4X9S+C+y7zzZyts7XAKX5VPKcSWXOzVCTtq2cWwMd+tJ6DP5dF4bY0o0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,148 +106,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
 
-On Tue, Sep 15, 2026 at 09:01:07PM +0800, Wandun wrote:
-> On 9/2/26 15:31, Wandun Chen wrote:
-> > From: Wandun Chen <chenwandun@lixiang.com>
-> > 
-> > On SoCs that carve out large firmware-owned reserved memory (GPU,
-> > camera ISP, ...), kdump currently dumps those carveouts as part of
-> > system RAM even though their contents are firmware state that is not
-> > useful for kernel crash analysis.
-> > 
-> > This series introduces a MEMBLOCK_NODUMP flag in memblock to filter
-> > reserved memory on DT-based architectures (arm64, riscv, loongarch).
-> > Reserved regions default are marked MEMBLOCK_NODUMP so kdump omits them;
-> > reusable CMA regions are different because their pages are handed back
-> > to the buddy allocator and may carry crash-relevant data.
-> > 
-> > ACPI systems already filter reserved memory out of the vmcore through
-> > their existing path; only DT-based systems currently fail to filter these
-> > regions, which is what this series addresses. The flag lives in memblock
-> > itself rather than in a DT-only structure, so the mechanism is generic and
-> > both ACPI and DT systems can benefit from it (suggested by Rob, thanks) [1].
-> > 
-> > Since the reserved memory regions are filtered out, the vmcore is
-> > smaller in size and faster to produce. 
-> > 
-> > The series is based on linux-next and is organized as follows:
-> > 
-> > Patches 1-4: Preparation and bugfixes: fix the missing HugeTLB
-> >              flagname, switch riscv crash_mem to memblock, fold the
-> >              duplicated per-arch memblock walks into the weak
-> >              defaults, and serialize crash header preparation against
-> >              memory hotplug.
-> > Patches 5-9: NODUMP infrastructure: switch crash_core to
-> >              for_each_mem_region(), introduce the MEMBLOCK_NODUMP
-> >              flag, add a dumpable flag to struct reserved_mem, and
-> >              mark /reserved-memory and /memreserve/ entries with
-> > 	     MEMBLOCK_NODUMP flag.
-> > Patch 10:    Exclude MEMBLOCK_NODUMP regions from the vmcore ELF
-> >              header.
-> 
-> Hi,
-> 
-> Gentle ping on the remaining patches of this series.
-> Patches 1, 7, 8 and 9 have been reviewed (thanks Mike and Marek);
-> Still looking for review on patches 2-6 and 10.
 
-I'm waiting for reviews from Baoquan and Dave for crash core patches before
-applying this series.
- 
-> Would appreciate a look when you have a moment, happy to rework
-> anything based on feedback.
+Le 18/09/2026 à 08:14, Barry Song a écrit :
+> On Fri, Sep 18, 2026 at 2:05 PM Christophe Leroy (CS GROUP)
+> <chleroy@kernel.org> wrote:
+>>
+>>
+>>
+>> Le 17/09/2026 à 23:44, Barry Song a écrit :
+>>> On Thu, Sep 17, 2026 at 10:41 PM Wen Jiang <jiangwenxiaomi@gmail.com> wrote:
+> [...]
 > 
-> Best regards,
-> Wanun
+>>>>>>
+>>>>>> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+>>>>>> index cdd68ed3ae1a9..349ced999f959 100644
+>>>>>> --- a/include/linux/pgtable.h
+>>>>>> +++ b/include/linux/pgtable.h
+>>>>>> @@ -2134,6 +2134,35 @@ static inline int pmd_free_pte_page(pmd_t *pmd, unsigned long addr)
+>>>>>>     }
+>>>>>>     #endif      /* CONFIG_HAVE_ARCH_HUGE_VMAP */
+>>>>>>
+>>>>>> +/*
+>>>>>> + * PTE-level block mappings for vmap.
+>>>>>> + *
+>>>>>> + * pte_set_huge() only has to be implemented by architectures whose
+>>>>>> + * arch_vmap_pte_range_map_size() can return a size other than PAGE_SIZE.
+>>>>>> + */
+>>>>>> +#ifndef __HAVE_ARCH_PTE_SET_HUGE
+>>>>>> +static inline void pte_set_huge(pte_t *ptep, unsigned long addr,
+>>>>>> +                             phys_addr_t phys, pgprot_t prot,
+>>>>>> +                             unsigned long size)
+>>>>>> +{
+>>>>>> +     WARN_ON_ONCE(1);
+>>>>>
+>>>>> BUILD_BUG_ON() would be better here.
+>>>>>
+>>>>> It should be possible because fallback arch_vmap_pte_range_map_size()
+>>>>> will constant-fold PAGE_SIZE so pte_set_huge() will never be called.
+>>>>>
+>>>>
+>>>> Agreed. These fallbacks exist only to keep the build working on
+>>>> architectures with PTE-level block mappings and should never actually
+>>>> be reached, so BUILD_BUG_ON() is right. I'll make that change in v9.
+>>>>
+>>>
+>>> I am not quite sure. It won't be called at runtime because
+>>> `vmap size`/`unmap size` return `PAGE_SIZE`, so the code won't
+>>> reach this branch. But it will still be built.
+>>
+>> The fallbacks are defined as:
+>>
+>> #ifndef arch_vmap_pte_range_map_size
+>> static inline unsigned long arch_vmap_pte_range_map_size(unsigned long
+>> addr, unsigned long end,
+>>                                                           u64 pfn, unsigned int max_page_shift)
+>> {
+>>          return PAGE_SIZE;
+>> }
+>> #endif
+>>
+>> #ifndef arch_vmap_pte_range_unmap_size
+>> static inline unsigned long arch_vmap_pte_range_unmap_size(unsigned long
+>> addr,
+>>                                                             pte_t *ptep)
+>> {
+>>          return PAGE_SIZE;
+>> }
+>> #endif
+>>
+>> Therefore in:
+>>
+>>                   size = arch_vmap_pte_range_unmap_size(addr, pte);
+>>                   if (size != PAGE_SIZE) {
+>>
+>> GCC knows 'size' is const and its value is PAGE_SIZE, so it won't emit
+>> the branch at all.
+>>
+>> It is call constant folding, some explanation here:
+>> https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FConstant_folding&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C869dac21f28d45988a3d08df154c225a%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C639253088878897551%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=Dvtz1%2FAHvAbVYO%2BRaHTOizcD%2FclJ9FqTcWXKMhIFVyw%3D&reserved=0
+>>
+>>>
+>>> So, would a `BUILD_BUG_ON()` trigger a build failure here?
+>>
+>> It shouldn't, if it does it is a compiled bug or this is because someone
+>> has redefined arch_vmap_pte_range_map_size() and not pte_set_huge()
+>> which we'd better know at build time rather than at runtime.
 > 
-> > 
-> > In v5, Sashiko found some pre-existing issues related to reserved-memory,
-> > and has no dependency on this series, so these issues have been addressed
-> > in a separate series [2].
-> > 
-> > v5 --> v6:
-> > 1. Serialize crash header preparation against memory hotplug to avoid
-> >    out-of-bounds or use-after-free issues.
-> > 
-> > 2. MEMBLOCK_NODUMP marking is now done after memblock allows resizing,
-> >    avoiding a panic from too few regions before resize is permitted.
-> > 
-> > 3. Reordered the patches, put pre-existing bugfixes earlier in the series.
-> > 
-> > 
-> > v4 --> v5:
-> > 1. Rework the mechanism around a memblock-level MEMBLOCK_NODUMP flag
-> >    (suggested by Rob) instead of the v4 opt-in 'dumpable' flag on
-> >    DT-only struct reserved_mem.
-> > 2. Switch the riscv vmcore elf header preparation to use memblock
-> >    instead of the resource tree, aligning it with arm64 and loongarch,
-> >    so riscv also can exclude reserved memory from vmcore.
-> > 3. Deduplicate the vmcore elf header preparation: arm64, riscv and
-> >    loongarch open-coded the same logic, so fold it into shared
-> >     __weak defaults in crash_core.
-> > 4.  Drop the v4 patch that saved /memreserve/ entries into the
-> >     reserved_mem array; /memreserve/ is now marked MEMBLOCK_NODUMP
-> >     directly.
-> > 
-> > v3 --> v4:
-> > 1. Rebase this series on v7.2-rc1.
-> > 2. Add two cleanup patches (patch 02/03).
-> > 3. Simplify patch 03 to avoid checking whether initial_boot_params is
-> >    NULL multiple times, suggested by Rob.
-> > 
-> > v2 --> v3:
-> > 1. Fix out-of-bounds issue if device tree lacks /reserved-memory node.
-> > 2. Fix UAF issue when alloc_reserved_mem_array() fails.
-> > 3. Add some prepare patches.
-> > 
-> > v1 --> v2:
-> > 1. v1 added an opt-out DT property ('linux,no-dump'). Per Rob's
-> >    feedback [3], v2 drop that property and exclude reserve memory
-> >    by default.
-> > 2. Split some prepared patches from the original patches.
-> > 3. Address coding-style comments on patch 5 from Rob.
-> > 
-> > [1] https://lore.kernel.org/lkml/20260723234126.GA3253409-robh@kernel.org/
-> > [2] https://lore.kernel.org/lkml/20260818092420.2859026-1-chenwandun1@gmail.com/
-> > [3] https://lore.kernel.org/lkml/20260506144542.GA2072596-robh@kernel.org/
-> > 
-> > Meijing Zhao (1):
-> >   mm: memblock: add missing HugeTLB flag name
-> > 
-> > Wandun Chen (9):
-> >   riscv: build crash_mem ranges from memblock instead of resource tree
-> >   crash_core: fold duplicated memblock arch hooks into the weak default
-> >   crash_core: serialize crash header preparation against hotplug
-> >   crash_core: replace for_each_mem_range() with for_each_mem_region()
-> >   memblock: introduce MEMBLOCK_NODUMP flag
-> >   of: reserved_mem: add dumpable flag to opt-in vmcore
-> >   of: reserved_mem: mark /reserved-memory entries with MEMBLOCK_NODUMP
-> >   of: reserved_mem: mark /memreserve/ entries as MEMBLOCK_NODUMP
-> >   crash_core: skip MEMBLOCK_NODUMP regions when building vmcore ELF
-> >     header
-> > 
-> >  arch/arm64/kernel/machine_kexec_file.c     | 29 ------------
-> >  arch/loongarch/kernel/machine_kexec_file.c | 27 ------------
-> >  arch/riscv/Kconfig                         |  2 +-
-> >  arch/riscv/kernel/machine_kexec_file.c     | 33 --------------
-> >  arch/x86/kernel/crash.c                    |  2 +-
-> >  drivers/of/fdt.c                           |  2 +
-> >  drivers/of/of_private.h                    |  2 +
-> >  drivers/of/of_reserved_mem.c               | 48 ++++++++++++++++++++
-> >  include/linux/crash_core.h                 |  2 +
-> >  include/linux/memblock.h                   |  9 ++++
-> >  include/linux/of_reserved_mem.h            |  1 +
-> >  kernel/crash_core.c                        | 51 ++++++++++++++++++++--
-> >  kernel/dma/contiguous.c                    |  1 +
-> >  mm/memblock.c                              | 17 ++++++++
-> >  14 files changed, 131 insertions(+), 95 deletions(-)
-> > 
+> Thanks, Christophe. I was also thinking about compiler optimization. I
+> was just a bit worried that we're touching the common MM code, which
+> affects almost all architectures, so I'm not quite sure whether this is
+> supported by all GCC versions used by those architectures.
 > 
-> 
+> If it is supported by all of them, I agree that `BUILD_BUG_ON()` is a
+> perfect approach.
 
--- 
-Sincerely yours,
-Mike.
+AFAIU this is the assumption made by the kernel, see 
+https://docs.kernel.org/process/coding-style.html#conditional-compilation
+
+This is the same compiler, I see no reason why ability to constant-fold 
+would be dependant on architecture.
+
+Christophe
 
