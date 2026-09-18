@@ -4,151 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8807C982DA
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 13:00:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEBA2C982D8
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 13:01:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 057146B0093; Fri, 18 Sep 2026 09:00:05 -0400 (EDT)
+	id DA1D26B0099; Fri, 18 Sep 2026 09:01:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F23466B0098; Fri, 18 Sep 2026 09:00:04 -0400 (EDT)
+	id D52766B009B; Fri, 18 Sep 2026 09:01:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DEB566B0099; Fri, 18 Sep 2026 09:00:04 -0400 (EDT)
+	id C40976B009D; Fri, 18 Sep 2026 09:01:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B39ED6B0093
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 09:00:04 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3FCF014061C
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 13:00:04 +0000 (UTC)
-X-FDA: 85226890728.09.9251F1D
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 6BEA5A0005
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 13:00:02 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 98D0A6B0099
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 09:01:49 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2C67916067E
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 13:01:49 +0000 (UTC)
+X-FDA: 85226895138.15.22CC7E2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 60694A000A
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 13:01:47 +0000 (UTC)
 Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=doaKhNAy;
-	spf=pass (imf25.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BTFy3VJ1;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789736402;
+	s=arc-20220608; t=1789736507;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tFEJAKtD9mmde2H4PbcVbjy8oluS9JrKkxB0Up7WPqU=;
-	b=469eEvddzxLM0JgOe49/hOCLkBjkPqr6RuTwdoU7wrFpPCy7kAoXHE38GZKNrw1t7M0fXN
-	AhvHBlRUBu2vmfDmnubWFSUWwTUsBd6BxZaK2d3DEu8lSYolizCrTMSRmUTGsXbtYXrQY9
-	MfpJhU5YueOG0lG9yVbgKxLjghDe018=
+	bh=jF0Fqx0D9BN/bx3T4LakfuQqI9yz0xCHFuvGoarFd6Y=;
+	b=6HO5poHZjD+DcFQ6JLEqjPPkYWbXFJFaKuw1AIUbnY9+wh9SxiC782Ypu+cWiaBLT2GiwP
+	cwtA531JI6s7Gc+fEl7s9KcMIdEhFvFIQJxmT6E3ROnaBR0fBtjCbx9SQwadPWbKnRfahB
+	D9SPBuskquZR7yDsODRM2eoG5fVGnjY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789736402;
-	b=C+86pFS4lCZne55dosAL/riHDYkrSpSFY58eSIQdl35zvASMDGnoREYdYDjcpCn28/1r8G
-	6YLNUXFquIR2pUfQUa1j85gCEHIZAMMVesc8srGYxhzm6NJj+aqtW8itknT+DD8kMhstEV
-	GSqXDXsBSUXweNk///nQDTT+FIBWt3Q=
+	t=1789736507;
+	b=VO6ITg2m6vFC+XiV9NhPc7Y5C1xucxOig50yS+sn+3yHLqBOQNiVqeOc4ha7zuyJE0WJHh
+	Xt689TANSNPvISgdXEB3XCscdPGaWZJ+3W10zecrS61kBAFQwtSIo7AL2TK2ygcM+zohtA
+	wBaYm6hSd5CtLtSpyCUFanjTgVUmPoA=
 ARC-Authentication-Results: i=1;
 	imf25.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=doaKhNAy;
-	spf=pass (imf25.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=tFEJAKtD9mmde2H4PbcVbjy8oluS9JrKkxB0Up7WPqU=; b=doaKhNAybvn/PmhBX86Gi+7t3T
-	QH5iPoxVyvmEHWG83eTRJM9o4ZunjctnxQa8j36AFkUmkVOgAR7y9lYyUO+8Ew7Y9LDYUjDX1Rse3
-	NACgdCdDzZb/bAGim+VyCazzwjiCtehdfLhm8bSqggh0UROL0tVLejVQjBijz+QaYJl2uetfHRc5g
-	RXK/frKyTYKFcWRh+9vzWcXg+EdL8OovvX1t0ug37AWhIuF8+67JSnP9Mdp17zAIGwNediac6ShCF
-	k2QDzSzmnlid5Z24SbXD5fKP6vGN6tHG99LV+v1Eeb6mJUW+fXAFJKwV34SNAoZUlnqryynx9XyFq
-	4XtIZ3eA==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1x7YAO-006k2B-2q;
-	Fri, 18 Sep 2026 12:58:13 +0000
-Date: Fri, 18 Sep 2026 05:57:51 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	David Hildenbrand <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
-	Paul Moore <paul@paul-moore.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert <dgilbert@interlog.com>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, "Martin K. Petersen" <mkp@kernel.org>, 
-	Jaya Kumar <jayalk@intworks.biz>, Simona Vetter <simona@ffwll.ch>, Helge Deller <deller@gmx.de>, 
-	Sebastian Reichel <sre@kernel.org>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Arnaldo Carvalho de Melo <acme@kernel.org>, 
-	Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Juri Lelli <juri.lelli@redhat.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Marc Zyngier <maz@kernel.org>, 
-	Oliver Upton <oupton@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, "David S. Miller" <davem@davemloft.net>, 
-	Andreas Larsson <andreas@gaisler.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Youngjun Park <youngjun.park@lge.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
-	Miklos Szeredi <miklos@szeredi.hu>, Xu Xin <xu.xin@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-usb@vger.kernel.org, 
-	linux-rdma@vger.kernel.org, selinux@vger.kernel.org, linux-sound@vger.kernel.org, 
-	bpf@vger.kernel.org, linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org, 
-	linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
-	kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, fuse-devel@lists.linux.dev
-Subject: Re: [PATCH v2 01/40] mm/vma: fix mmap_prepare file handling, remove
- file_doesnt_need_get
-Message-ID: <aq01JFp8hRReyY-O@gmail.com>
-References: <20260914-b4-mmap-prepare-vma-flag-sanify-v2-0-7d9781ed5361@kernel.org>
- <20260914-b4-mmap-prepare-vma-flag-sanify-v2-1-7d9781ed5361@kernel.org>
- <aquz9Z9JrK_H_E0g@kernel.org>
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BTFy3VJ1;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id C4A6D601EF;
+	Fri, 18 Sep 2026 13:01:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 055651F00898;
+	Fri, 18 Sep 2026 13:01:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789736506;
+	bh=jF0Fqx0D9BN/bx3T4LakfuQqI9yz0xCHFuvGoarFd6Y=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=BTFy3VJ1gOB8D4G66EGthBw7gAJP9TwoZSDgcELlqZlHmEi+zVJwgMyp4pu3iTuYF
+	 8jfoGBmhWIQTQo8SbaVKpfLaSIOwZ2tsMbgCfviOH3T9EJ6EMxQyAObWc+T17jNFvv
+	 qFDD0YYyiSPx4Se1fJr3ZqgDv1tIsL21qjlwFzd8LVG0q1Yz7WMNgAIXhbx6TRoCxs
+	 7J+C7fJmnwePAixORyLBtDzwukDqux8gh9CjzD9BZY9Pvt5cADAySTnlDxgPYUwpVn
+	 ig9hj3YxTV0PMZlS2dWv9J9yK7TaaJpNp0YB5oSRvRnXot0WePLXFfCCe1a6J8VG32
+	 bxSsI12AfxV8Q==
+Message-ID: <e2695249-ea36-4a4e-a5ba-22bb5f7299d6@kernel.org>
+Date: Fri, 18 Sep 2026 15:01:34 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aquz9Z9JrK_H_E0g@kernel.org>
-X-Debian-User: leitao
-X-Stat-Signature: japmmwy4wu6dbnyd55djcd9dyq9kdsto
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 4/4] sched/numa: do not let VMA PID activity gate
+ promotion
+To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org,
+ vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
+ vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org,
+ bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
+ kprateek.nayak@amd.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+ nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com,
+ baohua@kernel.org, lance.yang@linux.dev, usama.arif@linux.dev,
+ kas@kernel.org, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
+ rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com,
+ apopple@nvidia.com, jannh@google.com, pfalcato@suse.de, osalvador@suse.de,
+ hannes@cmpxchg.org, raghavendra.kt@amd.com, stable@vger.kernel.org
+References: <20260911001826.2109390-1-gourry@gourry.net>
+ <20260911001826.2109390-5-gourry@gourry.net>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260911001826.2109390-5-gourry@gourry.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 60694A000A
+X-Stat-Signature: 46g6aztmjqjapxchqyhcgfre46c3oefe
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6BEA5A0005
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789736402-975103
-X-HE-Meta: U2FsdGVkX18aeoeK7Pj0oFn6EKR3fE4sNbHhKmHeFQjvez9Bq+9dP4grCCm4gcFl0OmBtbMcVeRXLDesjn5sBXgNdrbfgGFXIq7UIq2PD2h2oi9Pmz2Zh/SUbXIgqhKwgQuZAaVEEPC6LBCRT1kHUMDA4UhTB3cfb8PTGButcWpIz42z/r9ZH6Z/3HZdJm1dr/93pgBkeS3UV5cgxexJM99Qd5TLHcGJzxPVtmn3qWVKVu3TRxNJm6EHTjeQfjqd1dNKRFy99TJBwyQvGgGIBlnm/YUNbIqHBl/SxenBntspiJCPe03j3/tLG9lfkfhS5NU5n+GIgLrqw3ckYPXlBuDzJqZJOf2GXWPFxAEi2uZCwZ3GxZtvZ8s6G/dHn47Te6ezaFgF1d33lf+xNvL3YaUF2TegRKWP2+gTsFIpotqKQF7sd9J3e/cPAStEiT4C8Qo/Xh0Ril7uHTFiTOEHs9k2JYadxsupfxJv33IYIKaD/iOgR8D04L+TBsSHoew+TxPHCX6Iwlv7Q5+n1O/wLArQJz90elxUh3LhOpU+n4cpkeXstQuczZbIN3WFpTdL11orPg3EZ3PeaA2ci2CtL+qyhLhLjgUqMzDqq7uRT3hp/s+WA4P7DUxDEQTIhYFrb1ZkWdX8XDTPt3TlXxo/+pDe0IIOy13AH0ZNkLApRpBj8bP1lzxdrZKzcxABRwkIY+5u107ZWGjmaS8EcvfeeqPbos43cBmqvWxbDznBHNKRdSP+SpJ91wOOW/QxrMZUi0g+lPb2eeeS0+rh2odA1vHzpGRwN7/3eP+bZnVGeYR3sAJylbgyQwt0o1HTrQAOzV3r+3pToGYWmQV5hnuGq3JSIo5GsB/Q/ZBzZQcSrKEuNhbatjICiPJTxYFTXngOVmJNsunEGY0mWSErwlNcCGbTQ6xnDAPSbO45e3HlLvbwNo8I+4wkbq7keRbKER5vO0ndxrPnNgNJWBa4OHY
- z8FTjnKz
- GZv4vqyHNU4bMB7XLeAFwbvekd8VucyivdUo+XlTnhMBZrRWfSwDtSfEq71yMvnF8jVBtaRqwENkdse6ESPqJZTQ23fAOOunhdR7bwAr1OLLAfdLWpfmW+4aQjEnFC/NVvSEF8SMYZvdVoAiEWjtfo7c3zP/2xc2BRjUXs8mkdvnFl7TbuR4aWiT+RSO0FzCE64vjG0e/GzC95c9bB36zlb4z34qmCQTt0n3EFJ+kcazLf7fRroatu9KrhubCZaqwvgv5R5d5O6nVESKGbiTxkjHdUtlDbyqbzGH4I/SA4nmC5RYbX6/xCTMjS8qZXHI522ky2I0J8BTYzHXPaaX9iOq/umrYLby54zZHm4OJ2TYIYDWZ5b2NNqtE5UO2ynL6E7ceh/um77FkX+28HUvyuBb14omuXOwLa5S64tFUo7x0Kc+dgXUkb+X1xy8+0RlJKHNfEUNEWY+CVfctLj4nMPh4tkj0FW48WVDCwZU2XSB4KoKMt7SwHcHHlJCFrqg2MDd32mht11YBdmm0uUn0l5Evl7MBHPFwOoZSUt7W+E7s1feEXDpSXp7dIYxjlNfP0iafYYkQ4NkTbm2wiqoa7G0xsetshRiEiJfeKSctxPlS9xYaeDol7P5ejjbsyoXbXOaD/PvI2TLPA5DFSsxwij/joQJwvqvPnzOOxwtQtGNkLqezX4BNRndjAI8r8KQE1Qh6h6U+SZi/7w2PxsScAJAvhzdNOPc9xnmCUDT/2gbqiO+B3eu6gonnEdUqY9kDJEuoOGuaV9Jq+8qQo+ZazXCGtd8Y7VWV5I0XKZPOCYtFkbchotrgihE3aW3iCax5Q0mJmCpPvoKn89Nr9/HQ6a9rTqPJq/xsIajMafmOOzl/flR/VotjMeiEZeSbjfVNKsyaBNTYb/hALo4X8t0rxx1KHlvfOOoX5KI5XeaqFChsCzAdg0Ccraop4CvRthjn6mPA4aiyK1+dzabNU8AI4P+ax3/e
- 1tGSUOYO
- QEBOcdv3+lmY2Zx6Y7qLacZRQrBghj79Uqapx0c8yUX+0XJPVz1XwsNAe/TIReWe48sqm15Fc35dwbH1DIbgDdq5e01Ib+5YR4uH3JfrTq/oIRMmn3GC8h2+Br/Cwtx7LuGW9hzJJ+wsR8RI8d19QU01QsTA8QH0ltKBcbw2l9eYIkwJ8bEIOy8lbJyXqJud9WWEGDAmtQy3XeMJJDWxkkOKbbgAW3/v7Ijr2WjCsFloJuyDggulAW4NycI2bgfAc4ZH1jsItUFQ8Xlh3B9PsLQcCVMPWlL7gPd02m3jKpDXiWtSnMhFAhqrB5Qf3f/RfDaRue97xU78TL9olGj4NQFnL8rbuYjYWRl+7YRAddxriF+zn1NpWADbDYiZLqgTA2/S7PUPSQwG4dC5cSKJ0bh8JCoF602CFPyp4jgqsIZVUtZTOrrQ9yYQekmiXr/EMPsLFV90ktpBqMFz9MnmX2y/nirG+h7Dh4X9A7Q1rNqaelevgsAym7KxsKtJGnrwplCvNgCjB1RQGyp5pEEhfEMIGfY4g9X0D4gZEiE0jTeNvx/RBJaWvrflbZbAAs0sZeMoamHwebVQtsZcrXV82sM+PTIFMaARbPF7ih5tTBUlmQSX+VcO1fCAY9KDxadNjZ+Eg1uZD/LjgqUPgVqoEEB1xjhefoyUNOlYdK66JBDEZrUUaNC4IfUrYgH4l9Emi2QO5naYHWG/AbUOgJNyoRflmo8ThN0PFl0qKLCIonwUBEQR4FNCQyNhWl4IybmV9zXzSdmDQA22ksPBnR1aOU10nyHbt4jzEpv1k1/l3KaxW4jEXOw716quzGxtGRLf6V4/AKn9s8CEhSshyvfMT1+5u5BlSS0cajdmbNg6NUFkemJasZ3Af6aN0JfsS/DBooVZIy5kZwVbX2eUHcyrfdmbKSqok6P6nbR8hFWcWEtWHC8WXEYz3c2s1j54dUFKkOfiO5jyc0fb64BSCb5dlW74Ng0iQ
- 5fzVVLi2
- rODHYWABGxoHBjPaAvTQ8pjIeM+Jb5C/VogZBy2RZw01kym9ossX34x31XhGdjMaCeL0g2mzyDbuxafvgKhDhxDAe4ateSDO2Y4Y/UOiFVb2FhkH3f0YmcAdT3NNEJQcLn47HzZVwfjXdncumWTr/Q433tqyQRFIOmqrTJugQjFtwy/RfDNLrW9SHrw6YgN0+QpIQQ+u4bTlya7fHLjIrT2UEa/rfYdL0c3IGxgmWRoueAmVKULty2+9OnpaboklTig1PW11qPHTYaQkjw/D3TKjUslijWCk8Y3xlSNI14fwGiMqHYNN/CroCdaPbKFARlYRjmd5Bh/IQQB17ck0ufWmiLT36tXfR8fY63jhhZetYR7bgDjw1M8mgCPnl1pC0JG5N5LK5SsFo1wtp0KRD5+5KOhaFlrDDBD/zcgvAyEVnW+JZuJ+YGXLYwAvDJ0MXfbW2fSzIrx2xGPXYVQuJelc5BQAn8ixk8D102keuBjjBJNDvRuI1hcg/wkDMaTiUVx1vhfEdalhrop/xnghY3n9T9y2ZgrKNbLZJGKE1Lyvt+JLqkwalZQpdyBxjpM5SvHB+Oi+nxkCP2gU613ZbQdkYQTg/yI5TxqIXxSz1tKWAo3M1PNrwimqgxQl2ZDCdcRTPp4U5Hz2aK/l0qhT9mcBAUVIYUP79ZHMYkFtugJD5ElFoS+D/o7QMmv7y3zXYHrFuZutOvUnhQHqFiFS6bDYDBC8g7b55vKUb0UBr6ZiUwzAdZGf4merkbN6OFJRMI7b4dVYOhJk2SUfGZjHeelNJcJIbdHHhkxWULq9f9/XGyQLKd1Fw5x4UpBGoO4IGJ2AOzcoZEYw6QR7gWamZSWy9yukdohjzzQ8WHyGAmpGj1zA/0lDo3YadvZxdc68I6f5drp5VnknLYPSaCz5a1ceBuYeLhKj2MItrtcckergmKuJ9JXLQa63aMjVP3hP/Uu7m5HtpyA6VHbOB4efZU/2OQQev
- Ax+/K9Ad
- KA9bMfmy/R2A3jNIixTNjQDc/jxcOEg5Z6NDX6DqPEwF3/83BeDhKls1pv7zqensYjX+7epsTOn/Xuqv3cvKrug45xALr/f4n026ExxH32HCjeNgA54aFVPoOwsToRiTVel1NMWUULrYdW+8BXtQ5c35Yaf3ptt/w8LcfuUKc7fQ/7rCLoBB1MZRMtUFtqkgnr5nYDi9LhrgwNqwNfd7xDZH1GFcK3iEwQTuSQcxlWbyyf622WmyhsV23zrHfxOn7m5jX3XLdJl+Mo1E+dRatuErHD54zeq2oBQdgSrBQU+KzeyBR/CViLkUw9DcFzPnYWm6Yvfu2Yp3RIeXNotHkbm/3IVJl7Ol0XthBPZDE9uw==
+X-HE-Tag: 1789736507-761100
+X-HE-Meta: U2FsdGVkX1/QCCdl1YrRDVbygqO7naINNdyLUW9d7+jENrtt6NR1wjJYtPC8ZYIa0SvGbbnZKu45KBWsFUy3L8AJL9oBtqDNKaxirmjUHoXSkEXQcS56OLkwwKILwLZQFLMeVOlIitY56e7gKvmf6T7w/6HwRfKTtRqOA7w3D11JuZMDKfzFT4oETEs2hkIrBaVNtCIVQhswd/Il5IfoG07hU6Z2k/kOcgMu3nP8MUHMoZmDpPteAWcyaqeuz+eqPtHT60EPrPqm1oYiq6D2GAiEJMdemyPsfbGp56hoVVtO1UmDrP1ofQ2GeWBdtCqOeYEneWqGEBjJnV1OoWkttSJe9FYC5ji9rRIJ2sHJj5a1CVi0/T2ncyhbe/4Mpi9NW4e1CJdAGVUbyQaiHvcxZ6sGE+L0ZroWdztxPi3Fln+TqCnXgDU7ZAZvRfk5vBTtMKGCCz/+DMznDN7ynhAtWd6PwcAKvQVxuXUa4ciXBx0qyZlsh9MociMvnKY5oN7uKrjPh5FoL7gJpWQQBigv5d4i083FyfsN4niOW6t73YqBwAhiOEcnSr7Owls50uSmTj/4gNhqV9d6rzuyg048nxF3BTZWLYzMV1hgWQRgqe1MsYqTR6c/6DuKi4gEQdilnTPrgiOTz9KsL3yzZIXvCC2PvY82cCvmTMU8ppKGIgvgJa6aJdTY1y6zMXna93tnCHek8cwkslwDjh0/WNMnOSWweM+gXLgJ3eCGRpgisN2vEPDCaD6Lm3BLKTWk/aSJoNdTYzFBtqWA4eyNdASeZ2NYRoOy9Daat9qvFYJpeV10LbRiYhvQES2p+iMKYoxZsz+sUEI85o6onmLxoK7sqQsWa3GAioOWEIwSbHRw4V+aGWxMFCMDLxvUWbiB6DIMuEpGJWmklu5exmpedPwDq5GbxtqptbrPKy0f3tntljGEGLyk8lxEtBEPa7AWs6JQoBkOjIbqKy7FFcovnzL
+ tMCXJ9ye
+ +2frC6Lsab6ZQn/UaAtJwVDOsMrukLz1bd0NrZpkaIJrwYOQNFVjXFd6+QlUfI9ed1/UwFXLYdU9+T9t3HLUmYmAiCvfCslhc9yhoglQQKKFHCpcwPOHd8iZCFxovzOe7GAZmQUlt8d7c9CBjIz+lpXXooqaWAUNqCRAsNtHzvCqt5NiHIcyH8TIKplB3wUUpX/Bka26tq0pWGMGAuXlsFBVXX20MHg0lcQN8E5+6djzILgiTFkinmlYvfoWR7z3hPEl4YlAophmvisnAOOHQJa+fMEswEcGudJ2G15SHZ/SChlHBOtwGsVC3I3guSqOyAazZjZLphCCRLaWJYD1C3weA8rK6SuaBtw/ufwD9fV+72V/rIVwSfcS3i8GOpaMdCbaTCy/tbYNZR5bsZBbJdL5tYM21i8sHXg2G
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,95 +150,167 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 17, 2026 at 12:33:41PM +0300, Mike Rapoport wrote:
-> On Mon, Sep 14, 2026 at 03:57:21PM +0100, Lorenzo Stoakes (ARM) wrote:
-> > The map->file_doesnt_need_get flag is confusing and the existing
-> > implementation has holes.
-> > 
-> > Drivers are permitted to change the owning file of a mapping. If they do
-> > so, they are required to take a reference on that file.
-> > 
-> > The mmap() operation which ultimately invokes __mmap_region() is guaranteed
-> > to drop the refcount for the original file the mapping was made under, but
-> > this is not true for the replaced file.
-> > 
-> > This has been addressed so far by tracking map->file_doesnt_need_get, which
-> > is rather poorly named and unfortunately fails to correctly track whether
-> > or not an additional put were needed in a number of cases.
-> > 
-> > Make life easier by removing this flag, and instead drop the reference for
-> > both mmap_prepare and the deprecated mmap callback in a new function
-> > put_map().
-> > 
-> > Track whether this needs to be done by aligning mmap_state with
-> > vm_area_desc and store the original file in the map->file field, keeping
-> > the updated file in map->vm_file.
-> > 
-> > In order to have the same behaviour for both types of hooks, only drop the
-> > reference __mmap_new_file_vma() itself took in its error path, deferring
-> > the replaced file's reference to put_map().
-> > 
-> > To make this work correctly, map->vm_file has to be updated before any
-> > error handling, so update __mmap_new_file_vma() and call_mmap_prepare() to
-> > set this field first.
-> > 
-> > Also when mmap_prepare() changes the file and is then merged, the reference
-> > count also must be decremented, so update the logic to call put_map() in
-> > this case too.
-> > 
-> > Also update __compat_vma_mmap() to manually perform this step for stacked
-> > file systems using the compatibility layer, and update
-> > compat_set_vma_from_desc() to replace vma_set_file() with a correct
-> > refcount/file update.
-> > 
-> > No in-tree driver is impacted by the incorrect implementation of this
-> > currently (no driver that does this is mergeable for one), so this does not
-> > need to be a fix.
+On 9/11/26 02:18, Gregory Price wrote:
+> From: "Gregory Price (Meta)" <gourry@gourry.net>
 > 
-> But the patch iteslf needs to be fixed :)
+> Commit fc137c0ddab2 ("sched/numa: enhance vma scanning logic")
+> skips VMAs without recent PID activity. Since only NUMA hint faults record
+> that activity, the filter can suppress the fault needed to promote hot
+> slow-tier memory.
 > 
-> It seems to be the change that broke the CI.
+> In tiering mode, scan PID-inactive VMAs using promotion-only scans.
+> Reevaluate this choice whenever the scanner visits a VMA and pass it with
+> each protection walk.
 > 
-> The rest is from LLM, take it with a grain of salt :)
+> Record socket-placement scans in prev_placement_scan_seq. Promotion-only
+> scans still update prev_scan_seq, but no longer postpone the starvation
+> fallback for placement scans.
 > 
-> mm-ci mm-unstable red build - bisect analysis
-> ==============================================
+> On a host with 768 GB of DRAM and 256 GB of CXL memory running two roughly
+> 430 GB database workloads, a large shmem VMA occupied each scan while 2,537
+> other VMAs covering 84 GB were skipped as inactive. A hot 20 GB hash table
+> remained entirely on CXL before this change and was split evenly between
+> DRAM and CXL afterwards.
 > 
-> Bad commit: 2a937a04babf1 "mm/vma: fix mmap_prepare file handling, remove
-> file_doesnt_need_get" - first patch of Lorenzo Stoakes' 40-patch series
-> "mm: make VMA flag semantics explicit, eliminate VM_SPECIAL" (v2).
-> https://lore.kernel.org/all/20260914-b4-mmap-prepare-vma-flag-sanify-v2-0-7d9781ed5361@kernel.org
+> Fixes: fc137c0ddab2 ("sched/numa: enhance vma scanning logic")
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
+> ---
+>  include/linux/mm_types.h |  7 ++++++
+>  kernel/sched/fair.c      | 48 ++++++++++++++++++++++++++--------------
+>  2 files changed, 39 insertions(+), 16 deletions(-)
 > 
-> Symptom: tools/testing/selftests/mm/pfnmap.c triggers
-> "BUG: Bad page map in process pfnmap" during __zap_vma_range()/vm_normal_page(),
-> seen on process exit/munmap. CI's run-mm-selftests.sh greps guest dmesg for
-> BUG|WARNING and fails the job regardless of the test's own exit code.
+> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> index 5413bd10fff2..9f042d6ad465 100644
+> --- a/include/linux/mm_types.h
+> +++ b/include/linux/mm_types.h
+> @@ -803,6 +803,13 @@ struct vma_numab_state {
+>  	 * A VMA is not eligible for scanning if prev_scan_seq == numa_scan_seq
+>  	 */
+>  	int prev_scan_seq;
+> +
+> +	/*
+> +	 * MM scan sequence ID when the VMA was last scanned for placement.
+> +	 * The starvation horizon in vma_is_accessed() counts against this, so
+> +	 * promotion-only scans cannot postpone placement indefinitely.
+> +	 */
+> +	int prev_placement_scan_seq;
+>  };
+>  
+>  #ifdef __HAVE_PFNMAP_TRACKING
+> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+> index e636e8de53f1..6d1da13a2ef5 100644
+> --- a/kernel/sched/fair.c
+> +++ b/kernel/sched/fair.c
+> @@ -4085,6 +4085,10 @@ static void reset_ptenuma_scan(struct task_struct *p)
+>  	p->mm->numa_scan_offset = 0;
+>  }
+>  
+> +/*
+> + * Decide whether this VMA should be sampled for NUMA placement.  In addition
+> + * to recent accesses, periodically allow a scan to avoid starvation.
+> + */
+>  static bool vma_is_accessed(struct mm_struct *mm, struct vm_area_struct *vma)
+>  {
+>  	unsigned long pids;
+> @@ -4101,22 +4105,13 @@ static bool vma_is_accessed(struct mm_struct *mm, struct vm_area_struct *vma)
+>  	if (test_bit(hash_32(current->pid, ilog2(BITS_PER_LONG)), &pids))
+>  		return true;
+>  
+> -	/*
+> -	 * Complete a scan that has already started regardless of PID access, or
+> -	 * some VMAs may never be scanned in multi-threaded applications:
+> -	 */
+> -	if (mm->numa_scan_offset > vma->vm_start) {
+> -		trace_sched_skip_vma_numa(mm, vma, NUMAB_SKIP_IGNORE_PID);
+> -		return true;
+> -	}
+> -
+>  	/*
+>  	 * This vma has not been accessed for a while, and if the number
+>  	 * the threads in the same process is low, which means no other
+>  	 * threads can help scan this vma, force a vma scan.
+>  	 */
+>  	if (READ_ONCE(mm->numa_scan_seq) >
+> -	   (vma->numab_state->prev_scan_seq + get_nr_threads(current)))
+> +	   (vma->numab_state->prev_placement_scan_seq + get_nr_threads(current)))
+>  		return true;
+>  
+>  	return false;
+> @@ -4142,7 +4137,7 @@ static void task_numa_work(struct callback_head *work)
+>  	unsigned int numab_mode = READ_ONCE(sysctl_numa_balancing_mode);
+>  	bool vma_pids_skipped;
+>  	bool vma_pids_forced = false;
+> -	bool promo_only;
+> +	bool accessed, scan_started, promo_only;
+>  
+>  	WARN_ON_ONCE(p != container_of(work, struct task_struct, numa_work));
+>  
+> @@ -4278,6 +4273,7 @@ static void task_numa_work(struct callback_head *work)
+>  			 * first scan:
+>  			 */
+>  			 vma->numab_state->prev_scan_seq = mm->numa_scan_seq - 1;
+> +			 vma->numab_state->prev_placement_scan_seq = mm->numa_scan_seq - 1;
+>  		}
+>  
+>  		/*
+> @@ -4307,17 +4303,30 @@ static void task_numa_work(struct callback_head *work)
+>  		}
+>  
+>  		/*
+> -		 * Do not scan the VMA if task has not accessed it, unless no other
+> -		 * VMA candidate exists.
+> +		 * The PID filter must not gate promotion.  Scan PID-inactive
+> +		 * VMAs in tiering mode using promotion-only scans.
+>  		 */
+> -		if (!vma_pids_forced && !vma_is_accessed(mm, vma)) {
+> +		accessed = vma_is_accessed(mm, vma);
+> +		scan_started = mm->numa_scan_offset > vma->vm_start;
+> +
+> +		if (!vma_pids_forced && !accessed && !scan_started &&
+> +		    !(numab_mode & NUMA_BALANCING_MEMORY_TIERING)) {
+>  			vma_pids_skipped = true;
+>  			trace_sched_skip_vma_numa(mm, vma, NUMAB_SKIP_PID_INACTIVE);
+>  			continue;
+>  		}
+> +		if (!vma_pids_forced && !accessed &&
+> +		    !(numab_mode & NUMA_BALANCING_MEMORY_TIERING) &&
+> +		    scan_started)
+> +			trace_sched_skip_vma_numa(mm, vma, NUMAB_SKIP_IGNORE_PID);
+>  
+> +		/*
+> +		 * In combined mode, only VMAs the task uses need placement
+> +		 * samples. Without tiering, every VMA reaching here does.
+> +		 */
+>  		promo_only = !(numab_mode & NUMA_BALANCING_NORMAL) ||
+> -			     vma_is_ro_file(vma);
+> +			     ((numab_mode & NUMA_BALANCING_MEMORY_TIERING) &&
+> +			      !accessed) || vma_is_ro_file(vma);
+>  
+>  		do {
+>  			start = max(start, vma->vm_start);
+> @@ -4345,8 +4354,15 @@ static void task_numa_work(struct callback_head *work)
+>  			cond_resched();
+>  		} while (end != vma->vm_end);
+>  
+> -		/* VMA scan is complete, do not scan until next sequence. */
+> +		/*
+> +		 * VMA scan is complete, do not scan until next sequence.  A
+> +		 * promotion-only scan reached the end of the VMA but did not
+> +		 * sample placement, so it does not count towards the starvation
+> +		 * horizon in vma_is_accessed().
+> +		 */
+>  		vma->numab_state->prev_scan_seq = mm->numa_scan_seq;
+> +		if (!promo_only)
+> +			vma->numab_state->prev_placement_scan_seq = mm->numa_scan_seq;
 
-I am seeing something similar here and stress-ng can reproduce it:
 
-      WARNING: mm/memory.c:3225 at do_remap_pfn_range+0x9b4/0x9f0, CPU#25: stress-ng-dev/354858
-      Call trace:
-       do_remap_pfn_range+0x9b4/0x9f0 (P)
-       remap_pfn_range_complete+0xac/0xd0
-       mmap_action_complete+0xcc/0x3d8
-       mmap_region+0xb54/0x1978
-       do_mmap+0x588/0xb18
-       vm_mmap_pgoff+0x1e4/0x320
-       ksys_mmap_pgoff+0x2d8/0x510
-       __arm64_sys_mmap+0x100/0x128
+This is all rather ... messy. I mean, just look at that promo_only() computation ...
 
-      BUG: Bad page map in process stress-ng-dev  pte:0160000000000fcf
-      addr:0000ffe8d9080000 vm_flags:00000071 anon_vma:0000000000000000 mapping:ffff0000a0c4ea98 index:0 (file) ffe8d9080 (anon)
-      file:mem fault:0x0 mmap:0x0 mmap_prepare: mmap_mem_prepare read_folio:0x0
-      Call trace:
-       print_bad_page_map+0x63c/0x740
-       vm_normal_page+0x228/0x240
-       __zap_vma_range+0xbe0/0x34a0
-       unmap_vmas+0x240/0x318
-       unmap_region+0x12c/0x238
-       vms_complete_munmap_vmas+0x318/0x958
-       do_vmi_align_munmap+0x254/0x2f8
-       do_vmi_munmap+0xc4/0xf8
-       __vm_munmap+0x174/0x288
-       __arm64_sys_munmap+0x70/0x90
+There must be a cleaner way ;)
+-- 
+Cheers,
+
+David
 
