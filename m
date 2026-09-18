@@ -4,145 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEBA2C982D8
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 13:01:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A507C982DA
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 13:13:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA1D26B0099; Fri, 18 Sep 2026 09:01:49 -0400 (EDT)
+	id 700836B008A; Fri, 18 Sep 2026 09:13:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D52766B009B; Fri, 18 Sep 2026 09:01:49 -0400 (EDT)
+	id 6D7926B008C; Fri, 18 Sep 2026 09:13:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C40976B009D; Fri, 18 Sep 2026 09:01:49 -0400 (EDT)
+	id 615406B0092; Fri, 18 Sep 2026 09:13:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 98D0A6B0099
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 09:01:49 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2C67916067E
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 13:01:49 +0000 (UTC)
-X-FDA: 85226895138.15.22CC7E2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 60694A000A
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 13:01:47 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BTFy3VJ1;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 441106B008A
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 09:13:35 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D7A43A068F
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 13:13:34 +0000 (UTC)
+X-FDA: 85226924748.18.E0678DC
+Received: from mail-pj2-f43.google.com (mail-pj2-f43.google.com [74.125.227.171])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 0BAC31A0002
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 13:13:32 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=dmSn1jec;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of karthiproffesional@gmail.com designates 74.125.227.171 as permitted sender) smtp.mailfrom=karthiproffesional@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789737213;
+	b=jGjTgTdt77mhp5S/UJ9GA+JCavoFJ/YdI+PwCOCOHzJzBOW8sc8785CxVUQMm2tzcjIaPv
+	tHubnU+q6Gk2DaDGlcp2O04T5Qyw5eFcbCWh0r6mqOl2u9w30R8L0rbmJIKpFpT3A+aukZ
+	REoYs3b/N/R0q/F9CAd/o+yaGKvHA8s=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=dmSn1jec;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of karthiproffesional@gmail.com designates 74.125.227.171 as permitted sender) smtp.mailfrom=karthiproffesional@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789736507;
+	s=arc-20220608; t=1789737213;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jF0Fqx0D9BN/bx3T4LakfuQqI9yz0xCHFuvGoarFd6Y=;
-	b=6HO5poHZjD+DcFQ6JLEqjPPkYWbXFJFaKuw1AIUbnY9+wh9SxiC782Ypu+cWiaBLT2GiwP
-	cwtA531JI6s7Gc+fEl7s9KcMIdEhFvFIQJxmT6E3ROnaBR0fBtjCbx9SQwadPWbKnRfahB
-	D9SPBuskquZR7yDsODRM2eoG5fVGnjY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789736507;
-	b=VO6ITg2m6vFC+XiV9NhPc7Y5C1xucxOig50yS+sn+3yHLqBOQNiVqeOc4ha7zuyJE0WJHh
-	Xt689TANSNPvISgdXEB3XCscdPGaWZJ+3W10zecrS61kBAFQwtSIo7AL2TK2ygcM+zohtA
-	wBaYm6hSd5CtLtSpyCUFanjTgVUmPoA=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BTFy3VJ1;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C4A6D601EF;
-	Fri, 18 Sep 2026 13:01:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 055651F00898;
-	Fri, 18 Sep 2026 13:01:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789736506;
-	bh=jF0Fqx0D9BN/bx3T4LakfuQqI9yz0xCHFuvGoarFd6Y=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=BTFy3VJ1gOB8D4G66EGthBw7gAJP9TwoZSDgcELlqZlHmEi+zVJwgMyp4pu3iTuYF
-	 8jfoGBmhWIQTQo8SbaVKpfLaSIOwZ2tsMbgCfviOH3T9EJ6EMxQyAObWc+T17jNFvv
-	 qFDD0YYyiSPx4Se1fJr3ZqgDv1tIsL21qjlwFzd8LVG0q1Yz7WMNgAIXhbx6TRoCxs
-	 7J+C7fJmnwePAixORyLBtDzwukDqux8gh9CjzD9BZY9Pvt5cADAySTnlDxgPYUwpVn
-	 ig9hj3YxTV0PMZlS2dWv9J9yK7TaaJpNp0YB5oSRvRnXot0WePLXFfCCe1a6J8VG32
-	 bxSsI12AfxV8Q==
-Message-ID: <e2695249-ea36-4a4e-a5ba-22bb5f7299d6@kernel.org>
-Date: Fri, 18 Sep 2026 15:01:34 +0200
+	bh=QqKItCu17DpUKMJJO4kJKCuEQNfwXM7mJRhT2VHmkuE=;
+	b=X8mO9H2cWOgcdBbzs7eMd3aJ0Yx2zd2VcSdzGG4brfHFzHVrburTgZu68hwAw8a4vW3cd9
+	Q586aICpHJJonmFP5UgVtZxFcLI71+iHGH3CtZXuJSR3SCcAlQuZUPjGijYSJzEQkK7UfO
+	5EaAhOIQlRTprEEvN4KnJJ3K59rothE=
+Received: by mail-pj2-f43.google.com with SMTP id 98e67ed59e1d1-39b2ad83dc6so636870a91.0
+        for <linux-mm@kvack.org>; Fri, 18 Sep 2026 06:13:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789737212; x=1790342012; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=QqKItCu17DpUKMJJO4kJKCuEQNfwXM7mJRhT2VHmkuE=;
+        b=dmSn1jec/2kKHUGNbJp69wVHTCo9bSS5+PTldn6xTMJ2D9f5fPStMIKxYSifnedd2Y
+         ce1EHTlzZqKe8bQ7GFTx7mYDqiltms5zv4IkJzmtRXYQni4lbWrjjmusuzt+Ds32CGqd
+         wuSK9f8AZ4CEq05EDF4l2GuAw7cB130iU5njczi7CWGj5ScA1crc5ZSMgWuC6B5T9q4C
+         pOWhwTnV81EZL2GEmRsk4Ov+9VZDf6+z7RQnKExFLmRGytoUxR/ce+hlCTDS/kA39tG9
+         1jFF9YeGIiXOEfaLlWEbWkCcZJ3epo+LpGCic9rmPpxE4pV/73KFyWNhV2lzuRdEfKbZ
+         wPTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789737212; x=1790342012;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=QqKItCu17DpUKMJJO4kJKCuEQNfwXM7mJRhT2VHmkuE=;
+        b=cU2mqST279rZ1aWQPf1ixolJ8V/3qH2hkiZNEFOUytdjg47acT2es2+poztT1PmY7+
+         nGQN1Rh6jsAL4QaslSVAsVJIHpRFtbSMCkuMhSf0QT70cqyl08Hsw4wIhO8MVpMaqcf4
+         vCtOiuB/YD0Fp5Pk4opZsnyZcpUd4aSeAchJ9byCZsFfhk7Hggo9Vsdr3sABn4Q1M0D8
+         UJZRAlZHlX+Vy40o70GaUg3EJtehURd6GzQ/4WDpi/aNHaySaTSUipMxvPpVPeAF8sfU
+         cEpxbjEFyEB4mO7+e/4Rg0xxnur0pRGic4srm2EhS14TbWhoa0JblcFrqnLo0A6LPa95
+         34XA==
+X-Forwarded-Encrypted: i=1; AKwUvBx4oVnJJb3DzjSFahAs4En8ZKIaqtxL+5cLc2C2M2bnBTXelW9UJ3Re4y58G/q28nAyuHGyL4G+pg==@kvack.org
+X-Gm-Message-State: AFuF++mJdsLwcWdUVi0zQmbf5ymr1p3lbR6xTzM++zsEIbFn6/FhbwyL
+	lwhnju/nGNYcjZwcTyUhM12BEn5O5TY7fse71qyvJBnZHal11OCotdzz
+X-Gm-Gg: AYBFou0pDB8ZZ5nkRaKenmylFYJPWIDE+nVc6GGv8Cp4RFRqYhRHR5bSyfp7TljnFDs
+	FKKms+LkEjH+TN1wN8J+eED9VlzdAEf42qRCfu5wYsQ+opbET4nfTPEEa3qCR/K8Cq2XUZTe8jX
+	8Kiuw1rTyMjuMYJexMo8Tj0LiJQyY0bSx95AWq2DpgisXQZng1npB3fpzZjevHMyqvX9JM8dbj4
+	8daJciKcxTdaAXh4HpxvuKSVudklL/Waz30ctQWYkNTr653sMYkzquaiBbAUM9THDK/Jp9yq3gG
+	ruAnfhRNmoxhstEldLW7RxV14+ZehUnrkX2qRTbhSemjZGRmYr4O0LOWZMV/DBnJ3jasfkyUHl7
+	lWulXSHEPWfDxenM2h3k1mf3eqqzhWI/LbLVoASHAEwpfWq3pzwJ6lmVvG2ctJBwdo415vs/Vz5
+	2cB8eQGWF+gWikrXsXov6HZkPsklrok4cFTqy5K+IS77WL2SbRvITdEgkdlRjp17YI+baOZOpcB
+	3fcGTxaFRE25EnYQbbUImrDhw64PWbm3t+izVN+ZbhtwANU+XPjW8A+gKBRqcMqc+VpG05NEknQ
+	98GzQbzJAs8MtBzn7HvsPpzFmG8tjaepzWVl6z7ygVlh15TRB9J6AAIB
+X-Received: by 2002:a17:90b:574e:b0:39e:1fb6:9659 with SMTP id 98e67ed59e1d1-39e54f0772fmr6160682a91.22.1789737211777;
+        Fri, 18 Sep 2026 06:13:31 -0700 (PDT)
+Received: from LAPTOP-97G9G880.domain.name ([106.222.202.182])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e5a50cd09sm3259882a91.7.2026.09.18.06.13.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Sep 2026 06:13:31 -0700 (PDT)
+From: Karthikeyan KS <karthiproffesional@gmail.com>
+To: SJ Park <sj@kernel.org>
+Cc: Sang-Heon Jeon <ekffu200098@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Karthikeyan KS <karthiproffesional@gmail.com>
+Subject: [PATCH v2] mm/damon: document that a zero sample_interval is accepted
+Date: Fri, 18 Sep 2026 13:13:01 +0000
+Message-ID: <20260918131301.75879-1-karthiproffesional@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260918023859.13556-1-sj@kernel.org>
+References: <20260918023859.13556-1-sj@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/4] sched/numa: do not let VMA PID activity gate
- promotion
-To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
- akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org,
- vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
- vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org,
- bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
- kprateek.nayak@amd.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
- nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com,
- baohua@kernel.org, lance.yang@linux.dev, usama.arif@linux.dev,
- kas@kernel.org, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
- rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com,
- apopple@nvidia.com, jannh@google.com, pfalcato@suse.de, osalvador@suse.de,
- hannes@cmpxchg.org, raghavendra.kt@amd.com, stable@vger.kernel.org
-References: <20260911001826.2109390-1-gourry@gourry.net>
- <20260911001826.2109390-5-gourry@gourry.net>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260911001826.2109390-5-gourry@gourry.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 60694A000A
-X-Stat-Signature: 46g6aztmjqjapxchqyhcgfre46c3oefe
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1789736507-761100
-X-HE-Meta: U2FsdGVkX1/QCCdl1YrRDVbygqO7naINNdyLUW9d7+jENrtt6NR1wjJYtPC8ZYIa0SvGbbnZKu45KBWsFUy3L8AJL9oBtqDNKaxirmjUHoXSkEXQcS56OLkwwKILwLZQFLMeVOlIitY56e7gKvmf6T7w/6HwRfKTtRqOA7w3D11JuZMDKfzFT4oETEs2hkIrBaVNtCIVQhswd/Il5IfoG07hU6Z2k/kOcgMu3nP8MUHMoZmDpPteAWcyaqeuz+eqPtHT60EPrPqm1oYiq6D2GAiEJMdemyPsfbGp56hoVVtO1UmDrP1ofQ2GeWBdtCqOeYEneWqGEBjJnV1OoWkttSJe9FYC5ji9rRIJ2sHJj5a1CVi0/T2ncyhbe/4Mpi9NW4e1CJdAGVUbyQaiHvcxZ6sGE+L0ZroWdztxPi3Fln+TqCnXgDU7ZAZvRfk5vBTtMKGCCz/+DMznDN7ynhAtWd6PwcAKvQVxuXUa4ciXBx0qyZlsh9MociMvnKY5oN7uKrjPh5FoL7gJpWQQBigv5d4i083FyfsN4niOW6t73YqBwAhiOEcnSr7Owls50uSmTj/4gNhqV9d6rzuyg048nxF3BTZWLYzMV1hgWQRgqe1MsYqTR6c/6DuKi4gEQdilnTPrgiOTz9KsL3yzZIXvCC2PvY82cCvmTMU8ppKGIgvgJa6aJdTY1y6zMXna93tnCHek8cwkslwDjh0/WNMnOSWweM+gXLgJ3eCGRpgisN2vEPDCaD6Lm3BLKTWk/aSJoNdTYzFBtqWA4eyNdASeZ2NYRoOy9Daat9qvFYJpeV10LbRiYhvQES2p+iMKYoxZsz+sUEI85o6onmLxoK7sqQsWa3GAioOWEIwSbHRw4V+aGWxMFCMDLxvUWbiB6DIMuEpGJWmklu5exmpedPwDq5GbxtqptbrPKy0f3tntljGEGLyk8lxEtBEPa7AWs6JQoBkOjIbqKy7FFcovnzL
- tMCXJ9ye
- +2frC6Lsab6ZQn/UaAtJwVDOsMrukLz1bd0NrZpkaIJrwYOQNFVjXFd6+QlUfI9ed1/UwFXLYdU9+T9t3HLUmYmAiCvfCslhc9yhoglQQKKFHCpcwPOHd8iZCFxovzOe7GAZmQUlt8d7c9CBjIz+lpXXooqaWAUNqCRAsNtHzvCqt5NiHIcyH8TIKplB3wUUpX/Bka26tq0pWGMGAuXlsFBVXX20MHg0lcQN8E5+6djzILgiTFkinmlYvfoWR7z3hPEl4YlAophmvisnAOOHQJa+fMEswEcGudJ2G15SHZ/SChlHBOtwGsVC3I3guSqOyAazZjZLphCCRLaWJYD1C3weA8rK6SuaBtw/ufwD9fV+72V/rIVwSfcS3i8GOpaMdCbaTCy/tbYNZR5bsZBbJdL5tYM21i8sHXg2G
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 0BAC31A0002
+X-Stat-Signature: h76uxuqzy1t4jgebkypy89su1g87bd3h
+X-HE-Tag: 1789737212-750271
+X-HE-Meta: U2FsdGVkX18PpnDrdakJROq3w8K7dWgVww6bU5zzopSJKfrnnXGZmcM00R6rymMilaDVVDneb0w7Od4oNvfc72ebt8vt3mbuquygdte58PQvBjvVpTXcam//aszRarFNBZ1uy6HDF7H+a6g6bP+exkYPHfqUD+cWI9qNfleXdhUYS2rhZpnAYT4ndXNNTu/2dkf5GxLX325bG1nWmeez3Nnbny0fzqKzKz06HF5UCZXenpGJ7ZvWDD+CwFLaQm+dLIxkAXknIMrhnKgb8ejJw59jPk8+2dxtjHGp9rifhxSH1RfYPZFnmMau0A8ypnmWN6IuBm5Jyg897XI7utokXnnUB6DpIcHXtR3s6O/ZJyp5r8Y8/xqEzaH3Fh/J1Y7ZIrJJPLMlrNmw6bhWO1x6Gw/5/+L0i1rvA5ni52cW4U6s1LHPLjmDOxyboi0Mdty7ugR0yKvlM58e0VpAhDMtiHDq/NGhEh+sLWeudsP3MNTIxS4aeT/u+8sHqa/IPgZiLlrwryjPR+Ses52udJJ/GiUoBRIp0uc28QKUpbUUZhuAK60m2ZUlAx0pyz/GjxxiPTKUM3zrqJa8nF2KxOTttmECfV2cSRWapqWRGmHPIbD29EhDVMnqT8u6eHozY1i2QfCA3VBVMyPy1ZmNacskI0MfcRm5PpMVHK7TP5RCaqgPe5TH0G31P9uhJX8yeVFwhc5tJlUrMh3xwP6HeJFLb8A96ZlI5mbVZq4I9S+CovAuRguKDa4rbcdfkgdR4XXWYrbk+w58Fe7hdKhSW+3l7DZ5jQwgBp3rn9YkU+T5Mo9HxZ5ypoopl2ShGMUeilhFZaSU3BedUfF3BXe8nOfEVBCp1i9xns0TLP+YeagNReYHnp4tTQB10/+HJukKUq9Ij7ZTZN7xkgXvMK57U1rYvu7YTeGAe2/SFWXl8vyVQHT5MiH2o1GQYFbvm+dNnkcDsCWp42bhEvmQh1wjCBv
+ txlwg5n7
+ YM0mmXhOcdy0boSJ7kbiIqTNCfil6Y2RBZxtwwsyFKe6wVS4bddmrDvkQ3PIZmHAiaz7x3r4nAU5CWMILKHIRO9WBoH6Xhc8IIBBdorRBL8LPJFNBs8Beibc6xCnhvPa1G+uA0pcsJcJPANV19TAtq01LHOajF3yrlJPf/F8G1DeDxY7SCO16U8drTXhnw6LIhEIZIFaYRJDO+9Uk+Sx9J8xMI227l2o1q6J/5OcMYxvkK94OqyYYtBT7MYZehTJas22Nm1/o+0+aA3m6K0MpD/o+wb0yMPl0jB1RnJ+Q2tiNS3+fMYNCk7GG2CUF0msTcGwHDn/UW/TW6aeEt0sFvA+d7KyeSgaOKuk58rnjSpJRAO9iCFCilIYt0FJxy6VVwtetzeZeBmqOFOfvPJdxUGV5x/m0uS53rKYb4uSz+n/FtZy310l/SLqxibNdeUvmhnvj8BRoI91Vlk8D/hhx1Pidl+skGHnNJ/C3+8opA+/6BW6N+5CQMV3tSQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,167 +123,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/11/26 02:18, Gregory Price wrote:
-> From: "Gregory Price (Meta)" <gourry@gourry.net>
-> 
-> Commit fc137c0ddab2 ("sched/numa: enhance vma scanning logic")
-> skips VMAs without recent PID activity. Since only NUMA hint faults record
-> that activity, the filter can suppress the fault needed to promote hot
-> slow-tier memory.
-> 
-> In tiering mode, scan PID-inactive VMAs using promotion-only scans.
-> Reevaluate this choice whenever the scanner visits a VMA and pass it with
-> each protection walk.
-> 
-> Record socket-placement scans in prev_placement_scan_seq. Promotion-only
-> scans still update prev_scan_seq, but no longer postpone the starvation
-> fallback for placement scans.
-> 
-> On a host with 768 GB of DRAM and 256 GB of CXL memory running two roughly
-> 430 GB database workloads, a large shmem VMA occupied each scan while 2,537
-> other VMAs covering 84 GB were skipped as inactive. A hot 20 GB hash table
-> remained entirely on CXL before this change and was split evenly between
-> DRAM and CXL afterwards.
-> 
-> Fixes: fc137c0ddab2 ("sched/numa: enhance vma scanning logic")
-> Cc: stable@vger.kernel.org
-> Assisted-by: LLM
-> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
-> ---
->  include/linux/mm_types.h |  7 ++++++
->  kernel/sched/fair.c      | 48 ++++++++++++++++++++++++++--------------
->  2 files changed, 39 insertions(+), 16 deletions(-)
-> 
-> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-> index 5413bd10fff2..9f042d6ad465 100644
-> --- a/include/linux/mm_types.h
-> +++ b/include/linux/mm_types.h
-> @@ -803,6 +803,13 @@ struct vma_numab_state {
->  	 * A VMA is not eligible for scanning if prev_scan_seq == numa_scan_seq
->  	 */
->  	int prev_scan_seq;
-> +
-> +	/*
-> +	 * MM scan sequence ID when the VMA was last scanned for placement.
-> +	 * The starvation horizon in vma_is_accessed() counts against this, so
-> +	 * promotion-only scans cannot postpone placement indefinitely.
-> +	 */
-> +	int prev_placement_scan_seq;
->  };
->  
->  #ifdef __HAVE_PFNMAP_TRACKING
-> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-> index e636e8de53f1..6d1da13a2ef5 100644
-> --- a/kernel/sched/fair.c
-> +++ b/kernel/sched/fair.c
-> @@ -4085,6 +4085,10 @@ static void reset_ptenuma_scan(struct task_struct *p)
->  	p->mm->numa_scan_offset = 0;
->  }
->  
-> +/*
-> + * Decide whether this VMA should be sampled for NUMA placement.  In addition
-> + * to recent accesses, periodically allow a scan to avoid starvation.
-> + */
->  static bool vma_is_accessed(struct mm_struct *mm, struct vm_area_struct *vma)
->  {
->  	unsigned long pids;
-> @@ -4101,22 +4105,13 @@ static bool vma_is_accessed(struct mm_struct *mm, struct vm_area_struct *vma)
->  	if (test_bit(hash_32(current->pid, ilog2(BITS_PER_LONG)), &pids))
->  		return true;
->  
-> -	/*
-> -	 * Complete a scan that has already started regardless of PID access, or
-> -	 * some VMAs may never be scanned in multi-threaded applications:
-> -	 */
-> -	if (mm->numa_scan_offset > vma->vm_start) {
-> -		trace_sched_skip_vma_numa(mm, vma, NUMAB_SKIP_IGNORE_PID);
-> -		return true;
-> -	}
-> -
->  	/*
->  	 * This vma has not been accessed for a while, and if the number
->  	 * the threads in the same process is low, which means no other
->  	 * threads can help scan this vma, force a vma scan.
->  	 */
->  	if (READ_ONCE(mm->numa_scan_seq) >
-> -	   (vma->numab_state->prev_scan_seq + get_nr_threads(current)))
-> +	   (vma->numab_state->prev_placement_scan_seq + get_nr_threads(current)))
->  		return true;
->  
->  	return false;
-> @@ -4142,7 +4137,7 @@ static void task_numa_work(struct callback_head *work)
->  	unsigned int numab_mode = READ_ONCE(sysctl_numa_balancing_mode);
->  	bool vma_pids_skipped;
->  	bool vma_pids_forced = false;
-> -	bool promo_only;
-> +	bool accessed, scan_started, promo_only;
->  
->  	WARN_ON_ONCE(p != container_of(work, struct task_struct, numa_work));
->  
-> @@ -4278,6 +4273,7 @@ static void task_numa_work(struct callback_head *work)
->  			 * first scan:
->  			 */
->  			 vma->numab_state->prev_scan_seq = mm->numa_scan_seq - 1;
-> +			 vma->numab_state->prev_placement_scan_seq = mm->numa_scan_seq - 1;
->  		}
->  
->  		/*
-> @@ -4307,17 +4303,30 @@ static void task_numa_work(struct callback_head *work)
->  		}
->  
->  		/*
-> -		 * Do not scan the VMA if task has not accessed it, unless no other
-> -		 * VMA candidate exists.
-> +		 * The PID filter must not gate promotion.  Scan PID-inactive
-> +		 * VMAs in tiering mode using promotion-only scans.
->  		 */
-> -		if (!vma_pids_forced && !vma_is_accessed(mm, vma)) {
-> +		accessed = vma_is_accessed(mm, vma);
-> +		scan_started = mm->numa_scan_offset > vma->vm_start;
-> +
-> +		if (!vma_pids_forced && !accessed && !scan_started &&
-> +		    !(numab_mode & NUMA_BALANCING_MEMORY_TIERING)) {
->  			vma_pids_skipped = true;
->  			trace_sched_skip_vma_numa(mm, vma, NUMAB_SKIP_PID_INACTIVE);
->  			continue;
->  		}
-> +		if (!vma_pids_forced && !accessed &&
-> +		    !(numab_mode & NUMA_BALANCING_MEMORY_TIERING) &&
-> +		    scan_started)
-> +			trace_sched_skip_vma_numa(mm, vma, NUMAB_SKIP_IGNORE_PID);
->  
-> +		/*
-> +		 * In combined mode, only VMAs the task uses need placement
-> +		 * samples. Without tiering, every VMA reaching here does.
-> +		 */
->  		promo_only = !(numab_mode & NUMA_BALANCING_NORMAL) ||
-> -			     vma_is_ro_file(vma);
-> +			     ((numab_mode & NUMA_BALANCING_MEMORY_TIERING) &&
-> +			      !accessed) || vma_is_ro_file(vma);
->  
->  		do {
->  			start = max(start, vma->vm_start);
-> @@ -4345,8 +4354,15 @@ static void task_numa_work(struct callback_head *work)
->  			cond_resched();
->  		} while (end != vma->vm_end);
->  
-> -		/* VMA scan is complete, do not scan until next sequence. */
-> +		/*
-> +		 * VMA scan is complete, do not scan until next sequence.  A
-> +		 * promotion-only scan reached the end of the VMA but did not
-> +		 * sample placement, so it does not count towards the starvation
-> +		 * horizon in vma_is_accessed().
-> +		 */
->  		vma->numab_state->prev_scan_seq = mm->numa_scan_seq;
-> +		if (!promo_only)
-> +			vma->numab_state->prev_placement_scan_seq = mm->numa_scan_seq;
+damon_set_attrs() accepts sample_interval == 0.  This was reported as
+a bug in v1 of this patch (rejecting it in damon_set_attrs()).  A
+similar patch was already declined for the same reason: a zero
+interval is intentionally supported [1].
 
+Document the behavior instead of changing it.
 
-This is all rather ... messy. I mean, just look at that promo_only() computation ...
+[1] https://lore.kernel.org/all/20260722094304.3132750-1-dayou5941@163.com/
 
-There must be a cleaner way ;)
+Signed-off-by: Karthikeyan KS <karthiproffesional@gmail.com>
+---
+
+Hi SJ,
+
+> I'd prefer adding a comment saying zero sampling interval is
+> accepted.  I think damon_attr kernel-doc comment is a good place
+> for adding that.
+
+Adding comments instead of code changes.  Let me know if you'd
+rather the wording live somewhere else, or be phrased differently.
+
+Changes from v1:
+- Dropped the damon_set_attrs() rejection and the KUnit cases that
+  tested it.
+- Added a kernel-doc note on struct damon_attrs's @sample_interval
+  instead.
+
+Thanks,
+Karthikeyan KS
+
+ include/linux/damon.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index 0c8b7ddef9ab..1a7ef416ec46 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -787,7 +787,8 @@ struct damon_probe {
+ /**
+  * struct damon_attrs - Monitoring attributes for accuracy/overhead control.
+  *
+- * @sample_interval:		The time between access samplings.
++ * @sample_interval:		The time between access samplings.  Zero is
++ *				accepted.
+  * @aggr_interval:		The time between monitor results aggregations.
+  * @ops_update_interval:	The time between monitoring operations updates.
+  * @intervals_goal:		Intervals auto-tuning goal.
 -- 
-Cheers,
-
-David
+2.34.1
 
