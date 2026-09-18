@@ -4,130 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C136FC982DA
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 13:28:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85F0FC982D8
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 13:33:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D11B56B008C; Fri, 18 Sep 2026 09:28:21 -0400 (EDT)
+	id 6DA396B008A; Fri, 18 Sep 2026 09:33:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CE9D16B009D; Fri, 18 Sep 2026 09:28:21 -0400 (EDT)
+	id 6B22E6B0092; Fri, 18 Sep 2026 09:33:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BFF576B00A2; Fri, 18 Sep 2026 09:28:21 -0400 (EDT)
+	id 5EF546B0093; Fri, 18 Sep 2026 09:33:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9EA086B008C
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 09:28:21 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 218EA1C2CBB
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 13:28:21 +0000 (UTC)
-X-FDA: 85226962002.12.5AEE934
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 4076940008
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 13:28:19 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mF40x6oY;
-	spf=pass (imf17.hostedemail.com: domain of tasos.papagiannnis@gmail.com designates 74.125.225.141 as permitted sender) smtp.mailfrom=tasos.papagiannnis@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3B34C6B008A
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 09:33:42 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id EFFF1A06B0
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 13:33:39 +0000 (UTC)
+X-FDA: 85226975358.21.3A67BA7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 5216AA000C
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 13:33:38 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Nre12zSF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789738099;
+	s=arc-20220608; t=1789738418;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zIvzoRp4EqaaXbBaAXZ0LdKRD2UHE9DJZN9NC6iw0vU=;
-	b=QFBD+i6KC4B5rv+UKk3xMnI/dYACAb7p8WQECT9zslrDz5Ys/2+/Mzwh8l40iqXyoyxuTk
-	QIJ7Zo+uQfF36tgXqwhJpmfVYr3IKYaJZ/pMBgETM2LvCVJeN1qd+7cJ8A1Rj+YahEaFPg
-	QPnE8m80+nHJMf6BS4+QZeMcHoDaKms=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mF40x6oY;
-	spf=pass (imf17.hostedemail.com: domain of tasos.papagiannnis@gmail.com designates 74.125.225.141 as permitted sender) smtp.mailfrom=tasos.papagiannnis@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	bh=GakW/jyw2WKm8P0r1Hyy2EtB+8kZHDDr5ILgeIU3TTo=;
+	b=0petcmqzg5o5hXeEE6kxisJsqistwf4Db7MRAyKHb4Eb0wPNPI9P117sGVvu1/7PG3xUbG
+	CtE99+yvEN1boKt2kUemRqkdh0OLp5Qc8xv+gz6hBZBNonhJIdcyZOY2bYsY3dSyjEOelX
+	l+vn4wA64n0H9W8oPIHZ8r742muxvWw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789738099;
-	b=FhQvG2u4fIINclQYDYplLSiG0QBaWnKHEbxcP4A4koNuhFe64OJocWJU3mj1KIwBiHNQZJ
-	qcJEoP2SFXoo3BzsQU2Nc9up1TUSo3mxVWDYL4irJr777PtKN7a+Bb/1/l+1cg5DlEYQ3X
-	CTfZMbI9d9hCC5ma+OI0gMmLsDOFxq8=
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49b912d3931so5514705e9.3
-        for <linux-mm@kvack.org>; Fri, 18 Sep 2026 06:28:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789738098; x=1790342898; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=zIvzoRp4EqaaXbBaAXZ0LdKRD2UHE9DJZN9NC6iw0vU=;
-        b=mF40x6oYprjWByoMjMAY8JiHY9D/liBql2n422eYsUDQ0qxIFyHoqkICRYuqFDiC1G
-         Z4i/2ppOu+kzy+E/6B9+Adu3I3N2JPJ1tdjWLgJO2HacBcmQCSY90wvJ0ZOm4wvLAuz+
-         HwN414ZF/+XEVNLsRixinNgZS3nA1vJpWc6pywcmEs682JCXMoCKMwwTYRmu63J4JDAF
-         RMDzuhnRmPFhMCmQO2DzLsnYxV+KMW/UWtH6aK2tRGyxPEWsQhKnmdErEjAha0+N/FTM
-         jgzoUP/TpOmIepdi+gvsodzM34M7vxR2kZHS6VLGhT8q94+gX5kHMZBVdGTo6RbazJ88
-         wmMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789738098; x=1790342898;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=zIvzoRp4EqaaXbBaAXZ0LdKRD2UHE9DJZN9NC6iw0vU=;
-        b=VDV05pgnBwjR9+ttoI9pC1viBLqS6AHxOln7tSNBvGges97mLsUANCsYwAnCAVXXCH
-         +NQSUYD+4FYtGSv50P48/EXV+y7h0efKqd7ow7ge9d04N2Udq6Z5zRm/vKjmihnnaLGC
-         iifp4ITA/BK86/CwNqGSbhUerq2IqxFvE6qW3XpsNeokKTF5/erVu3ZK6f67JZFASj6v
-         8sScFgEQZzdCSDVs2YsZ2cJQSO019mni2ZYQ//B898TnJ0ckV9lWJV5MHAfEgcyFTrs1
-         2/6HDgljpO3Efoxo+/3nZ6C/vLJqhJxWZoyiQ7YYbWgpoOdlDpyA6jC+tckjgEu1Ei83
-         myFQ==
-X-Forwarded-Encrypted: i=1; AKwUvByO1+vDlDERAZWgyVgHU/+iSC/zsCNCIrDq/v9GICK/VjvXDfkp2dXDw2Hp+jrx+YZOJ3I0/emUbw==@kvack.org
-X-Gm-Message-State: AFuF++kjmLKJnycAvBq9n0zC88aLl/9O8VvFsD387Pm6eukCxZCypILQ
-	rAyEsV9p8oMJVuTWCeX+iqApWWQWf7eupRmo+ZA0JmHrshGjf6MBpHWZ
-X-Gm-Gg: AYBFou0whIRT8Hwow1Ns7OISNjfmcnZS3Kw2SdYGX7z83v6RaR5B8jFpFuF5Mpt2pbd
-	1LnMYiF4u97QESyF+ew6sFfLnFhW/A2yic/5+COTquz1hhX3qld/vcAKR6qBGOjCKhOc3HA3Aho
-	zj1CKHYwmTbPlqon6Y0Y243e9y0iduotXmHNFR21bkuJr3VMBMFu6PPxnwrXaGaMPmVS3Vw3ONG
-	OuHymgYJm8wCMYpaBPsnVPpfQQWBIIWJn5lveUihfuRz3BbX07S2fTkSYvI57R1QiyapkQnd3uS
-	JfAZC5MhD8rqlqXHWjNxSVb4BM+5WfyeSfgXyVFxZHVhngRCgGShHBxjlJAeRtn4itBlHHaj5jR
-	rM+QnD6f6cqgBZUFSwIr2/nw0+naY6GoFTshyRYi+c9XoHkMIsLwv3uoqeT9qGRQ0+o1X15LC9j
-	HibKvGBrqtXkz1bwfQARywHjgFTzy6iJzB4U7ZZj0RQR3cZLZDfusQSHP8LYA/NkpAJVhd2qtnx
-	37ejxckCa0ep2/Zpg+OpiRtSw==
-X-Received: by 2002:a05:600c:1f8f:b0:49e:8354:26fb with SMTP id 5b1f17b1804b1-49fc574c729mr35408655e9.32.1789738097326;
-        Fri, 18 Sep 2026 06:28:17 -0700 (PDT)
-Received: from dell-desktop ([2a02:587:4b4e:8500:290c:210b:1c76:5710])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fc58a1176sm40807795e9.2.2026.09.18.06.28.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Sep 2026 06:28:16 -0700 (PDT)
-From: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
-To: david@kernel.org
-Cc: akpm@linux-foundation.org,
-	andrii@kernel.org,
-	ast@kernel.org,
-	bpf@vger.kernel.org,
-	brauner@kernel.org,
-	daniel@iogearbox.net,
-	eddyz87@gmail.com,
-	kpsingh@kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	ljs@kernel.org,
-	matt@bobrowski.net,
-	memxor@gmail.com,
-	song@kernel.org,
-	sun.jian.kdev@gmail.com,
-	tasos.papagiannnis@gmail.com,
-	utilityemal77@gmail.com,
-	viro@zeniv.linux.org.uk
-Subject: Re: [PATCH bpf-next v8 1/5] mm: Add copy_remote_mm_str()
-Date: Fri, 18 Sep 2026 16:27:54 +0300
-Message-ID: <20260918132754.43435-1-tasos.papagiannnis@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <0b276f0a-39b7-46ae-b72f-6ba92f65380f@kernel.org>
-References: <0b276f0a-39b7-46ae-b72f-6ba92f65380f@kernel.org>
+	t=1789738418;
+	b=HUR2kio1km8k1e48YUtYIfYLf4HRqH9oIoa4ZjfkDedlhKkmkogtXoHfUBE2+BLrrSTHhq
+	cib8smOlt8Y+ahH2rYRM9tLt69iRJzXT56hU116FHCnt6H5zZi7K7NUtmk0uncNUH41Cub
+	tW/QBlkDIEnjLmYSiwbOCKKgmRgv4F8=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Nre12zSF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id F2A8C6053B;
+	Fri, 18 Sep 2026 13:33:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 050D51F000FF;
+	Fri, 18 Sep 2026 13:33:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789738416;
+	bh=GakW/jyw2WKm8P0r1Hyy2EtB+8kZHDDr5ILgeIU3TTo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Nre12zSFEZj6AxBe4+WVzUlkMcdC+/awKkJWcu+08/s5KVpZ3J0/I19rSO0Dpsafl
+	 ZiXQNy6Ia581usrFlSG/RKreyXMclax++76kj7xJOGL+OfJYei734waXZhxpOwNoAH
+	 XcL50O+4XXiXhghO0jlpVJOBVW6Jh8rEaqqvZQw2WWrBnZeMk205/TG1KIA4Bcwzar
+	 eUFJ8QO/hMtQc5133iFVrO2WmE23d7ApV/YNGhMsCwUFhaz/uqXr6PZAdCpZjDVvma
+	 fNcUc6FRiR/ot/W9YlZubSS6JqSNtohexiwpcavpsKEkicIzYpHUuSUwh++PX1XQ5z
+	 AFmF8wASYPzFQ==
+Date: Fri, 18 Sep 2026 15:33:31 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Oleg Nesterov <oleg@redhat.com>
+Cc: NeilBrown <neil@brown.name>, Chris Mason <mason@kernel.org>, 
+	Jens Axboe <axboe@kernel.dk>, linux-fsdevel@vger.kernel.org, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Ingo Molnar <mingo@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, linux-mm@kvack.org, io-uring@vger.kernel.org
+Subject: Re: user workers as coredumpers [Re: [PATCH 1/6] coredump: don't
+ switch a dumper that has no files] table
+Message-ID: <20260918-gliederung-schematisch-innehalten-7ab359d08bf7@brauner>
+References: <20260915-work-coredump-fixes-v1-1-f354ca41780c@kernel.org>
+ <20260916194837.3732307-1-mason@kernel.org>
+ <20260917-staunen-sparsam-infusion-83238c68d21f@brauner>
+ <178960987412.207413.3957049392884487413@noble.neil.brown.name>
+ <20260917-zahnpasta-aufweichen-flackern-1182320f5c81@brauner>
+ <20260918-tonart-umgeladen-gesponnen-519fca5172bd@brauner>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 4076940008
-X-Stat-Signature: x1kj4k4ggnnm3se8miq35zz5oikt67kb
+In-Reply-To: <20260918-tonart-umgeladen-gesponnen-519fca5172bd@brauner>
 X-Rspam-User: 
-X-HE-Tag: 1789738099-155728
-X-HE-Meta: U2FsdGVkX1/DOH2VwuuiBT7l1YGFK5FAdpXA3aII7lwHb+E6fbMAApMq3sKANLItkwsogDfo6CbAww/dhdXYFShfz6Ucw7jut2nsZu7aiwFBxTwlsjGQ4nkmFtEC07M1OTVMT/8rdH+wmnQE63G/KXO+9VFl8Mzo8xA78X/GLx4dndjp3Oum57u+OY7P2LOIrUBBvb9azMr23PC0Sp52drr+KLuJreLlLwlJnKmQAif2LIaC2sMYK+n64ThuRmbM1T0j3VfT6vrXDf0idZf16gUa8FTs9BcayCErN67S6EvvrrJEL5pbkJwAqPEnoh+wVDJyRH/+QiuN21SH99jCbrP6bMODf8PEkOuSaxjaPyIpopxDpFAo7txVcKJhazt+7bm/8jFGnloRO8DPD9jCvNndTaxFbEl+RgjVfVl03PO7blgXNHTFdNjFYKxLMyFAqsXzgcvP6MQ0tkxbobSNc/acglbYQsgVG6MulIuE6E5dOeloRBZdI0uyQNkb36vYrL1j/wiOaxjkLWTw9yYhs1j9pf6QFGyruAxzwNqEDJphSusY4w6ZAxRHcvWlxW+g5f+ZkS9kpu6HsRxIRt5dVFud+cYbqghudRFE7ARq9hULsZfRTDb/tA+JlOwGf8M9ex+DKwFh1IU2o9ogiUDWZOfjrrHbIyCGnc9jaCNXmGje/6pe+EDH914E6iOlKZkiYwl+bKL6sVAwbdQsdP1zrQ0NOPr8tV/WiDS1WJ0aNrEdFxJasMjWYJRPPc0xj9kg4hhGk/p4KpkVC+46khFwir+xVzY1qCXfM99pcadQWHMDTHfOiP3hZRaphpA76308/0LrSbzEMySV9kHhuTmFhDZjGMps5BRHkvYJqak35GYD5XtB3T+5GOOOCzLruvUMNdaBZNd6Sq2lUmR4bl0MpALYlO4rAf5IZzM2YDaZOPttUeh9mQnC/dMR9ZfLQ90btlkonvYMWWWGpHRqvpR
- /646DDc5
- QP05UevBJzAVZbg5S9Vs+kPruEi34KGSmqbaWSfriJj1pN1L3tcPjzG6/n572cWjozMBrzTtpr3CbpR78PuCjJhGBNAu5cIPZr7SwRSeQV3cGlNH+D1kwIEr5TtkGnEgkeRMlD3xNFgPH0wFWZZ4zceCYSfNsh/ZdwRENi8+U31VfIHttNPKNUu9N+GY3RfTWZkYfbIFVCYFE+hvbRavJIP29jXsMC3FDOzeJX641ng78STeoUFUz8L405iTSKEbVnig7QrhXZO48zlYVTPzGRvt5Dl+AhY+0dphQM4ll0dtRuAI4khB5LOsSShoDtUZLXGAinTWiXRL9A/wlIKuny1djw6gd0m0RnOdHg6BT7XVJLnkOGfcffbSQR7sK4zPfF/wFP+6QfcV6LWCOEQjawrp4Q7XyWftN4tt2+MNrqaDlKwbCZFDr9mzIj0waNCTregJIY/vhtrEO2rS5N61jBplGNTreXcs4gDOj++MumRpEU6JY3qpGtlTp46iN0UB0+f9v3wnHfA9rp5l14HGaBZFBlBP0ohkFNi4mlBbnL0zEJ8usA5VhwBBTtaXupJCUpwdiqeX53qx2vycLImUSSUgGeEQF+cc6vX1ozaFZNIXFPsA=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 5216AA000C
+X-Stat-Signature: knfj6xtf71cq9k5sq7hruwhfsxixeewe
+X-HE-Tag: 1789738418-903694
+X-HE-Meta: U2FsdGVkX1/l/hh0ryANaplFRKxvTqfvwPLBLcrDu/tq+J7EIdfJbM9o1Pc7ZAy9DCL2JHbfoCVyxV9CLkmmQrmn4aR8usFjmkgt4xLnhTFpklx7zCwzK4Lqu/szJSkygqZZrM6BxvV+ezzrroLV3vfER8aopnwuuP+/ecZi0+ycB1gfwobuJ0416795aYtPCTjqmFS8A14rSmq2QvuyGiFq69A6okYA6oNqV4kqn548i1y6ngDNAzxdkvr9Ls6CM3YDED0fOPShWrd1fMpnQeVAODVlTgIgeyIZUsvThsHpXwH5ACx5TMG/hTf0Qr+lhAg6rgv8JUUKNSwlsYK3eihHdUkcmDpzM4+gH8/KzL9snCjBqAVQ2E/vMNcp9ugNEDkasjU40CbWgbQnwM3G3kYyDH3edQlovIVaDztmzcsK0EmuP1f3KPcSUAR2F/z3Ua4Dn8ND28kCdRwe5CuW0fzA0nPU4oI3RPoFodBHb/+Xeu9zDtDY5cmpSYsI44/6EFrJ1UQLpHB2a7XkLqPyg6UUXch2/CyLFcuZp5WLMky2Ats7kqSAuIZEe7XX6D88fy1Suyv26dkCHzge65Cq+bGkNTZhrFP1hi4ThhRcb1GT34UkGCn02Qsa3lwwgZ/XkvASAyEgIdxR+Vw+FtBpSjS57FX74EOlyu5XZdxGiDl+rs+Nnb4SVs/D7PbcaxsoDlDp91z5zd66eQUYKMZoNLG1jTR8rFhey+bbOgPRacz0Z/Fe7ohJzGBuvg65XJnX6qVgGqiKNfJn7jB4GPaIMecROVpf1HgAJX5PCccAEfryuwQOtIKx1GQ2/8jVT7mTGVG6hD4Hh4yZwKumY9T+IAwR8sk7anTAmVLC87sTO7dlCHlp1mRG+4NGEn/wAhk1Aa1nyT+H3nbMDtVmxc/vaL/qw5dMwd8b8d/M5YD7vILw0XNlgAGdUOZ4ldQmzIoq88h+A46W6lNN7BpEmjc
+ YSkGmeVK
+ 1ilsu7WDZa/hEXsCX7/PzjmXIAsKlvv0C1qvgWQWrEU6MGwbvRg2WjNR6r134WgAg2ul8EnNtBdcLnlnuijrhES1esh61GZTL3bXBvSRwzYVTTV1f4kig5LtZOw+Xlq0vNqJqnuzpFPd5O6FNA5Jb5Zr6pj2WITRscvYMI0s9I8S7sSLA47d1LdNy1rQrEyFLpKlwE7hqklNwtekPVKiJcvZ6hneaR1BJdftTKg870XUxozG6chFsRRcQlx8f8JQOnBQkqqr2Y42Jk4nr5D4nOvyaicHmi4S2fzTI8lDu8y+mwF+NRA6eG73IJzh69wboI1Lw2jSLbFl6ml4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,9 +100,155 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Two tabs please. (I thought I commented on that already)
+On Fri, Sep 18, 2026 at 02:28:58PM +0200, Christian Brauner wrote:
+> On Thu, Sep 17, 2026 at 10:49:36AM +0200, Christian Brauner wrote:
+> > On Thu, Sep 17, 2026 at 11:51:14AM +1000, NeilBrown wrote:
+> > > On Thu, 17 Sep 2026, Christian Brauner wrote:
+> > > > > When I reproduced this one, it ended up deadlocking with the fix applied.
+> > > > > 
+> > > > > vhost worker (the dumper)          sibling thread
+> > > > > =========================          ==============
+> > > > > get_signal() -> vfs_coredump()
+> > > > >   coredump_close_files()
+> > > > >     hands sibling a new table ---> switch_files_struct()
+> > > > >     coredump_wait_inactive()         put_files_struct(old table)
+> > > > >       waits for sibling's switch       last close of the vhost fd
+> > > > >                                      vhost_net_release()
+> > > > >                                        __vhost_worker_flush(): waits
+> > > > > 
+> > > > > AI suggests making the vhost thread requeue the signal for someone more
+> > > > > suitable?
+> > > > 
+> > > > Afaict, this is conceptually a generic problem with letting coredump
+> > > > close files for any type of user worker where the worker is the dumper
+> > > > and the sibling thread closes the fd that causes it to be stopped and
+> > > > waits for it to exit. So this needs thinking and we should drop coredump
+> > > > closing files for now.
+> > > > 
+> > > 
+> > > It appears to me that there is already infrastructure in place to handle
+> > > the generic problem.  vhost_task has a "handle_sigkill" function which
+> > > cleans up on sig kill so that siblings won't keep waiting for it.
+> > > get_signal() detects PF_USER_WORKER tasks and lets them complete
+> > > normally rather than aborting them, so that handle_sigkill can be called.
+> > > 
+> > > So the problem is "simply" an ordering problem. vfs_coredump() closes
+> > > files before handle_sigkill can run.
+> > > Maybe handle_sigkill() could be passed to (a version of) get_signal(),
+> > > or maybe get_signal() could indicate to the PF_USER_WORKER caller that
+> > > vfs_coredump() still needs to be run.
+> > 
+> > Oh good, it's worse. This isn't specific to this patchset. This class of
+> > bugs I mentioned is reproducible on current mainline with SQPOLL:
+> > 
+> >   io-wq worker (the dumper)               SQPOLL thread
+> >   =========================               =============
+> >   io_wq_worker()                          io_sq_thread()
+> >     get_signal()                            io_sqd_handle_event()
+> >       vfs_coredump()
+> >         coredump_wait()
+> >           zap_threads()
+> >             zap_process(): SIGKILL ---->      get_signal(): SIGKILL, returns
+> >           wait_for_completion_state(        io_uring_cancel_generic(true, sqd)
+> >             &core_state->startup)             io_uring_clean_tctx()
+> >           waits for every thread to             io_wq_put_and_exit()
+> >           reach coredump_task_exit()              io_wq_exit_workers()
+> >                                                     wait_for_completion(
+> >                                                       &wq->worker_done)
+> >                                                     waits for the worker's
+> >                                                     io_worker_exit(), which
+> >                                                     runs after get_signal()
+> 
+> So I thought a bit about this yesterday and had some brief discussions
+> bout this as well. I think we should kill this whole bug class by
+> ensuring that PF_USER_WORKERs never participate in a coredump. So
+> something like:
+> 
+> diff --git a/kernel/signal.c b/kernel/signal.c
+> index ec30550951ec..e3c271cf1314 100644
+> --- a/kernel/signal.c
+> +++ b/kernel/signal.c
+> @@ -3021,6 +3021,21 @@ bool get_signal(struct ksignal *ksig)
+>  		 */
+>  		current->flags |= PF_SIGNALED;
+>  
+> +		/*
+> +		 * PF_USER_WORKER threads will catch and exit on fatal signals
+> +		 * themselves. They have cleanup that must be performed, so we
+> +		 * cannot call do_exit() on their behalf. Note that ksig won't
+> +		 * be properly initialized, PF_USER_WORKER's shouldn't use it.
+> +		 *
+> +		 * They must not dump core either. The dumper waits for every
+> +		 * other thread in the group to exit, and a sibling's exit path
+> +		 * may in turn wait for this worker's own exit, which only runs
+> +		 * after get_signal() returns: io_sq_thread() ends up in
+> +		 * io_wq_exit_workers() and waits there for its io-wq workers.
+> +		 */
+> +		if (current->flags & PF_USER_WORKER)
+> +			goto out;
+> +
+>  		if (sig_kernel_coredump(signr)) {
+>  			if (print_fatal_signals)
+>  				print_fatal_signal(signr);
+> @@ -3036,15 +3051,6 @@ bool get_signal(struct ksignal *ksig)
+>  			vfs_coredump(&ksig->info);
+>  		}
+>  
+> -		/*
+> -		 * PF_USER_WORKER threads will catch and exit on fatal signals
+> -		 * themselves. They have cleanup that must be performed, so we
+> -		 * cannot call do_exit() on their behalf. Note that ksig won't
+> -		 * be properly initialized, PF_USER_WORKER's shouldn't use it.
+> -		 */
+> -		if (current->flags & PF_USER_WORKER)
+> -			goto out;
+> -
+>  		/*
+>  		 * Death signals, no core dump.
+>  		 */
+> 
+> Afaict the main consequence of this is for a thread-group with a bunch
+> of spawned workers where the thread-group leader exits prematurely
+> before all workers: any worker that takes a coredump signal via ptrace()
+> shenanigans won't create a coredump anymore. I think that's entirely
+> acceptable.
 
-Sorry, I have missed some cases. It shoud be good now in v9 [1].
+So to put some details on it after some research:
 
-[1] https://lore.kernel.org/bpf/20260918131757.42802-1-tasos.papagiannnis@gmail.com/
+io-wq workers die with their owner's exit() and vhost workers with the
+files table. But SQPOLL threads don't necessarily. So if a premature
+thread-group leader exits then an SQPOLL thread can be left. The SQPOLL
+thread pins the fdtable through CLOSE_FILES, the fdtable pins the io
+ring, the rings pins the thread.
+
+So here's how the behavior would change with my proposed patch:
+
+|                case                |                           mainline                           |  PF_USER_WORKERS don't dump             
+|────────────────────────────────────|──────────────────────────────────────────────────────────────|───────────────────────────────
+| leader gone, no signal             | zombie leader + iou-sqp, not reapable, lingers until SIGKILL | same                          
+|────────────────────────────────────|──────────────────────────────────────────────────────────────|───────────────────────────────
+| leader gone, SIGSEGV into iou-sqp  | killed by signal 11, core written                            | exited with status 0, no core 
+|────────────────────────────────────|──────────────────────────────────────────────────────────────|───────────────────────────────
+| leader gone, SIGTERM into iou-sqp  | exited with status 0                                         | exited with status 0          
+|────────────────────────────────────|──────────────────────────────────────────────────────────────|───────────────────────────────
+| leader alive, SIGSEGV into iou-sqp | whole group killed by 11, core written                       | process survives, worker gone 
+|────────────────────────────────────|──────────────────────────────────────────────────────────────|───────────────────────────────
+
+Please note that only ptrace() can be used to inject a coredump signal
+into such SQPOLL threads.
+
+TL;DR: with PF_USER_WORKERS not being eligible from writing coredumps
+any coredump signal sent to them is ignored. They just exit.
+
+The alternative to this is akin to what Neil proposed where the coredump
+signal is retargeted towards a non-PF_USER_WORKER thread.
+
+One should note that PF_USER_WORKERs very much intentionally blog
+everything apart from SIGKILL and SIGSTOP so being able to change their
+signal mask via ptrace() is questionable in the first place.
+
+In fact, the more I think about it I keep thinking we should do both:
+
+(1) PF_USER_WORKERs can't become a dumper
+(2) ptrace() should not be able to alter the signal mask for a PF_USER_WORKER
 
