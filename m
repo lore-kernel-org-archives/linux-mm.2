@@ -4,85 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F2A3C982D8
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 13:22:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C136FC982DA
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 13:28:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 871A66B00A1; Fri, 18 Sep 2026 09:22:08 -0400 (EDT)
+	id D11B56B008C; Fri, 18 Sep 2026 09:28:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8495C6B00A2; Fri, 18 Sep 2026 09:22:08 -0400 (EDT)
+	id CE9D16B009D; Fri, 18 Sep 2026 09:28:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 786DD6B00A3; Fri, 18 Sep 2026 09:22:08 -0400 (EDT)
+	id BFF576B00A2; Fri, 18 Sep 2026 09:28:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 58B156B00A1
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 09:22:08 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A763E406CA
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 13:22:07 +0000 (UTC)
-X-FDA: 85226946294.23.9DD97BE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 04140C000A
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 13:22:05 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aUjS4QLU;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9EA086B008C
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 09:28:21 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 218EA1C2CBB
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 13:28:21 +0000 (UTC)
+X-FDA: 85226962002.12.5AEE934
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 4076940008
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 13:28:19 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=mF40x6oY;
+	spf=pass (imf17.hostedemail.com: domain of tasos.papagiannnis@gmail.com designates 74.125.225.141 as permitted sender) smtp.mailfrom=tasos.papagiannnis@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789737726;
+	s=arc-20220608; t=1789738099;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JXII+Q4kZ59ziwT+f57cW04XNzn9YSEFXSVEdQXYv8E=;
-	b=q9+5N5In627aDq1M6IPqwp3T15NwVZLMrb7iH9bWyaPF2bN2jlaLEXXetB9ByPq+Z6JOke
-	hjSvSL8UBjsGd6aDz6izh9+u7nXg+4B9yYTxZT/qp0VvyHM1ZSDBQ0EIN6Rt6SPbl8Rzbh
-	WNKh/NsjSEKooVSFypGJgIa2HlI+Tbk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789737726;
-	b=l3ZjWuSs6hUBkdGG2GQNiv5qhFNZs9Tlq59t6dDuKlEwXPJYtWQjRC1eUv8/yac7JwRo2M
-	JSmms8Ly7GhAYhRc9o/v7gJWfrQQ0xZ+7mpRpNKWESnQBEpmdO5JeimLqCLoRBxSd7NkG0
-	6kYb/PEa/1X9ZAbNF+8GJPJdjrlFV0A=
+	bh=zIvzoRp4EqaaXbBaAXZ0LdKRD2UHE9DJZN9NC6iw0vU=;
+	b=QFBD+i6KC4B5rv+UKk3xMnI/dYACAb7p8WQECT9zslrDz5Ys/2+/Mzwh8l40iqXyoyxuTk
+	QIJ7Zo+uQfF36tgXqwhJpmfVYr3IKYaJZ/pMBgETM2LvCVJeN1qd+7cJ8A1Rj+YahEaFPg
+	QPnE8m80+nHJMf6BS4+QZeMcHoDaKms=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aUjS4QLU;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 20B3A40417;
-	Fri, 18 Sep 2026 13:22:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 489711F000FF;
-	Fri, 18 Sep 2026 13:22:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789737725;
-	bh=JXII+Q4kZ59ziwT+f57cW04XNzn9YSEFXSVEdQXYv8E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=aUjS4QLU04DUHHmNztLdm95g6DWY7n8ihJMtYkMjWMJ/ZRGha9aL3TXwk2bTkp1wM
-	 zRr5g/TzqAPfdwIYoJdjC3oCCIvW3L1yV8K3Oa929JgHjUtjMsPVoOt8MR03KDQ3fU
-	 mRuhOi1x2NVG0KbnYm11d96z1qPr2j9mo25lKdf7coIXO1V1EBhVlgbwEyl2bu/ePG
-	 LpUq6pyVlF+LGbWu+XFNzCtMvQapYhlJrNA0WMlBmUKKRymo+bWMMVn2WPEAwIpSIF
-	 OyNdZBs+USGUULCcAyQbb+8My0kPtU//nwYIDQCAcMKH5SCBQS1jVYlfjkZVziVik+
-	 hHuZJJ6gvdhNw==
-Date: Fri, 18 Sep 2026 14:22:00 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: Constify arguments in default pxdp_get()
-Message-ID: <aq067wpXbhL1bRqK@gremlin>
-References: <20260918064928.793742-1-anshuman.khandual@arm.com>
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=mF40x6oY;
+	spf=pass (imf17.hostedemail.com: domain of tasos.papagiannnis@gmail.com designates 74.125.225.141 as permitted sender) smtp.mailfrom=tasos.papagiannnis@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789738099;
+	b=FhQvG2u4fIINclQYDYplLSiG0QBaWnKHEbxcP4A4koNuhFe64OJocWJU3mj1KIwBiHNQZJ
+	qcJEoP2SFXoo3BzsQU2Nc9up1TUSo3mxVWDYL4irJr777PtKN7a+Bb/1/l+1cg5DlEYQ3X
+	CTfZMbI9d9hCC5ma+OI0gMmLsDOFxq8=
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49b912d3931so5514705e9.3
+        for <linux-mm@kvack.org>; Fri, 18 Sep 2026 06:28:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789738098; x=1790342898; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=zIvzoRp4EqaaXbBaAXZ0LdKRD2UHE9DJZN9NC6iw0vU=;
+        b=mF40x6oYprjWByoMjMAY8JiHY9D/liBql2n422eYsUDQ0qxIFyHoqkICRYuqFDiC1G
+         Z4i/2ppOu+kzy+E/6B9+Adu3I3N2JPJ1tdjWLgJO2HacBcmQCSY90wvJ0ZOm4wvLAuz+
+         HwN414ZF/+XEVNLsRixinNgZS3nA1vJpWc6pywcmEs682JCXMoCKMwwTYRmu63J4JDAF
+         RMDzuhnRmPFhMCmQO2DzLsnYxV+KMW/UWtH6aK2tRGyxPEWsQhKnmdErEjAha0+N/FTM
+         jgzoUP/TpOmIepdi+gvsodzM34M7vxR2kZHS6VLGhT8q94+gX5kHMZBVdGTo6RbazJ88
+         wmMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789738098; x=1790342898;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=zIvzoRp4EqaaXbBaAXZ0LdKRD2UHE9DJZN9NC6iw0vU=;
+        b=VDV05pgnBwjR9+ttoI9pC1viBLqS6AHxOln7tSNBvGges97mLsUANCsYwAnCAVXXCH
+         +NQSUYD+4FYtGSv50P48/EXV+y7h0efKqd7ow7ge9d04N2Udq6Z5zRm/vKjmihnnaLGC
+         iifp4ITA/BK86/CwNqGSbhUerq2IqxFvE6qW3XpsNeokKTF5/erVu3ZK6f67JZFASj6v
+         8sScFgEQZzdCSDVs2YsZ2cJQSO019mni2ZYQ//B898TnJ0ckV9lWJV5MHAfEgcyFTrs1
+         2/6HDgljpO3Efoxo+/3nZ6C/vLJqhJxWZoyiQ7YYbWgpoOdlDpyA6jC+tckjgEu1Ei83
+         myFQ==
+X-Forwarded-Encrypted: i=1; AKwUvByO1+vDlDERAZWgyVgHU/+iSC/zsCNCIrDq/v9GICK/VjvXDfkp2dXDw2Hp+jrx+YZOJ3I0/emUbw==@kvack.org
+X-Gm-Message-State: AFuF++kjmLKJnycAvBq9n0zC88aLl/9O8VvFsD387Pm6eukCxZCypILQ
+	rAyEsV9p8oMJVuTWCeX+iqApWWQWf7eupRmo+ZA0JmHrshGjf6MBpHWZ
+X-Gm-Gg: AYBFou0whIRT8Hwow1Ns7OISNjfmcnZS3Kw2SdYGX7z83v6RaR5B8jFpFuF5Mpt2pbd
+	1LnMYiF4u97QESyF+ew6sFfLnFhW/A2yic/5+COTquz1hhX3qld/vcAKR6qBGOjCKhOc3HA3Aho
+	zj1CKHYwmTbPlqon6Y0Y243e9y0iduotXmHNFR21bkuJr3VMBMFu6PPxnwrXaGaMPmVS3Vw3ONG
+	OuHymgYJm8wCMYpaBPsnVPpfQQWBIIWJn5lveUihfuRz3BbX07S2fTkSYvI57R1QiyapkQnd3uS
+	JfAZC5MhD8rqlqXHWjNxSVb4BM+5WfyeSfgXyVFxZHVhngRCgGShHBxjlJAeRtn4itBlHHaj5jR
+	rM+QnD6f6cqgBZUFSwIr2/nw0+naY6GoFTshyRYi+c9XoHkMIsLwv3uoqeT9qGRQ0+o1X15LC9j
+	HibKvGBrqtXkz1bwfQARywHjgFTzy6iJzB4U7ZZj0RQR3cZLZDfusQSHP8LYA/NkpAJVhd2qtnx
+	37ejxckCa0ep2/Zpg+OpiRtSw==
+X-Received: by 2002:a05:600c:1f8f:b0:49e:8354:26fb with SMTP id 5b1f17b1804b1-49fc574c729mr35408655e9.32.1789738097326;
+        Fri, 18 Sep 2026 06:28:17 -0700 (PDT)
+Received: from dell-desktop ([2a02:587:4b4e:8500:290c:210b:1c76:5710])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fc58a1176sm40807795e9.2.2026.09.18.06.28.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Sep 2026 06:28:16 -0700 (PDT)
+From: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
+To: david@kernel.org
+Cc: akpm@linux-foundation.org,
+	andrii@kernel.org,
+	ast@kernel.org,
+	bpf@vger.kernel.org,
+	brauner@kernel.org,
+	daniel@iogearbox.net,
+	eddyz87@gmail.com,
+	kpsingh@kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	ljs@kernel.org,
+	matt@bobrowski.net,
+	memxor@gmail.com,
+	song@kernel.org,
+	sun.jian.kdev@gmail.com,
+	tasos.papagiannnis@gmail.com,
+	utilityemal77@gmail.com,
+	viro@zeniv.linux.org.uk
+Subject: Re: [PATCH bpf-next v8 1/5] mm: Add copy_remote_mm_str()
+Date: Fri, 18 Sep 2026 16:27:54 +0300
+Message-ID: <20260918132754.43435-1-tasos.papagiannnis@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <0b276f0a-39b7-46ae-b72f-6ba92f65380f@kernel.org>
+References: <0b276f0a-39b7-46ae-b72f-6ba92f65380f@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260918064928.793742-1-anshuman.khandual@arm.com>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 4076940008
+X-Stat-Signature: x1kj4k4ggnnm3se8miq35zz5oikt67kb
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 04140C000A
-X-Stat-Signature: zsqfr95kf8xz1bgg7p8hg1jahzay6p5j
-X-HE-Tag: 1789737725-300878
-X-HE-Meta: U2FsdGVkX1+FUG5AoTDSeofF4vQaCfZ+SLtsqrKHtOID7+YMVPVHHJrCyuL1E2ckAUtc/Khg50rwuArtrcJzk/G4Jz7PlR/HUCi+ZUIMpXmxAnljU5IQ/trCl+8Ef4AFyqS8q8wgDwgQM3sEob6ZbFU4Gl7h+a0nxadQxqSAFazHXDlsZpara3VmaGigRXKFxg1yHtDWVz0jM6Nz3GPxN2HWc4g27aFctfKwGa2TBgDRQ9P52LJi2QpDAm5wNDp2s9GR5YzJ/46Z4lI00j4NcYMgZm3lMRa2G0KcFDOQD2IAEhc5qImdiHgOwzE2CUVHKPoJj0VePAP5jbiTdcoT9/F+O2tQ244iysMrvynRn7Jqkm5T+Y/vgnxpvypnNR4BKd6ZR84pxcyxCGw+qlZkV9VG1rYpx01i+kd9yn7g2tH3mHpEWdfNERe+WozfweE6dGFmpdH0HOQc/MLg+wnXoSKKlkk6BAz2mHR4qo0Y5Nyhl2PZD17gL8IHFuRg5elKUe0lN6yczbmjMKIugfzUFzKq7NSFw7N62qu9qip6XRqHLiUKLXmwKDj5eUxVcG4MFZCxybmUQOAQs5+qmiZfR3dY1E6XvmLyviqcZPmMIv6QB278Obybvi+yYTXJVkDEQ6o7p4O9z3kjC0VbEoyAO7oX4GDaNF0moqChKUtnZmX2vA4Eld27wqD0kC1JcMmXYPZJkzE4aoBQfak/RnTlAd+9xFu3txdt4P3ea2LCGF4RuxYZo110OZFWJNWPak1V3XN21rnZ39i6AMNl7QwDkw73/rllRKqH1116y9u48NE5j44cXiSs6ZlUmWug1YIFmF2VW+6QbpGWW+Qj12a/P6wMeGmH+R2ImCI0Lzru4uN0UYt5yHpqdJkp2qmv0t9QYATbGEyRjFxtloULhmYBmq5hJJwcruWEeZYN/JAcsSEj1UBTz/3vNyFpLwb16WTzXjowS3IKuhfuoAtGm9M
- OmgsR2sR
- a/o6uGIYCz7oHNgirGw/m/QH9QviUjkPG829AZMRWbT+QJ3C96RB4Sqwx4x4quTB4rsgjIaNhCDrvdwjcMAkEJp3yjl7VIx9Cf+1aKUuZwODTPeffGfPoby7vF0zh73C5pa3otTp++I70AZQWd9rolpEwerL9hRN1Iux5duJOVfzStL8PxB92/nOIDPEbovtl2wCuGyEsC436hDDI8pUhtO9XnT7/LZW8vS+puMYUYprTRSMWpCEoJKyc3BXL7HsiONlSdHrtB8WA2fMCxy/flBoG4UsjFvhcmDIUMNJI7sjOV8peQUeAciEoqLkdC/XAunJllQ1ZGBoUiyk9LFJVIynv8KXoxSJojE/C3KVZYUNhyTpvErQFffhA3Yz8g7sQHbj7AjE08FBBntIzaOAIekpimG9ej6MY8VZ4rt/eHVxRx5XK7P8uzbPIjHGQ5TmkTJAhi2SneJ1tlTMTXnU7IYc+lnz2GT7QAd9S3OKJ/rKqNxHiMO5MVjd1Cg==
+X-HE-Tag: 1789738099-155728
+X-HE-Meta: U2FsdGVkX1/DOH2VwuuiBT7l1YGFK5FAdpXA3aII7lwHb+E6fbMAApMq3sKANLItkwsogDfo6CbAww/dhdXYFShfz6Ucw7jut2nsZu7aiwFBxTwlsjGQ4nkmFtEC07M1OTVMT/8rdH+wmnQE63G/KXO+9VFl8Mzo8xA78X/GLx4dndjp3Oum57u+OY7P2LOIrUBBvb9azMr23PC0Sp52drr+KLuJreLlLwlJnKmQAif2LIaC2sMYK+n64ThuRmbM1T0j3VfT6vrXDf0idZf16gUa8FTs9BcayCErN67S6EvvrrJEL5pbkJwAqPEnoh+wVDJyRH/+QiuN21SH99jCbrP6bMODf8PEkOuSaxjaPyIpopxDpFAo7txVcKJhazt+7bm/8jFGnloRO8DPD9jCvNndTaxFbEl+RgjVfVl03PO7blgXNHTFdNjFYKxLMyFAqsXzgcvP6MQ0tkxbobSNc/acglbYQsgVG6MulIuE6E5dOeloRBZdI0uyQNkb36vYrL1j/wiOaxjkLWTw9yYhs1j9pf6QFGyruAxzwNqEDJphSusY4w6ZAxRHcvWlxW+g5f+ZkS9kpu6HsRxIRt5dVFud+cYbqghudRFE7ARq9hULsZfRTDb/tA+JlOwGf8M9ex+DKwFh1IU2o9ogiUDWZOfjrrHbIyCGnc9jaCNXmGje/6pe+EDH914E6iOlKZkiYwl+bKL6sVAwbdQsdP1zrQ0NOPr8tV/WiDS1WJ0aNrEdFxJasMjWYJRPPc0xj9kg4hhGk/p4KpkVC+46khFwir+xVzY1qCXfM99pcadQWHMDTHfOiP3hZRaphpA76308/0LrSbzEMySV9kHhuTmFhDZjGMps5BRHkvYJqak35GYD5XtB3T+5GOOOCzLruvUMNdaBZNd6Sq2lUmR4bl0MpALYlO4rAf5IZzM2YDaZOPttUeh9mQnC/dMR9ZfLQ90btlkonvYMWWWGpHRqvpR
+ /646DDc5
+ QP05UevBJzAVZbg5S9Vs+kPruEi34KGSmqbaWSfriJj1pN1L3tcPjzG6/n572cWjozMBrzTtpr3CbpR78PuCjJhGBNAu5cIPZr7SwRSeQV3cGlNH+D1kwIEr5TtkGnEgkeRMlD3xNFgPH0wFWZZ4zceCYSfNsh/ZdwRENi8+U31VfIHttNPKNUu9N+GY3RfTWZkYfbIFVCYFE+hvbRavJIP29jXsMC3FDOzeJX641ng78STeoUFUz8L405iTSKEbVnig7QrhXZO48zlYVTPzGRvt5Dl+AhY+0dphQM4ll0dtRuAI4khB5LOsSShoDtUZLXGAinTWiXRL9A/wlIKuny1djw6gd0m0RnOdHg6BT7XVJLnkOGfcffbSQR7sK4zPfF/wFP+6QfcV6LWCOEQjawrp4Q7XyWftN4tt2+MNrqaDlKwbCZFDr9mzIj0waNCTregJIY/vhtrEO2rS5N61jBplGNTreXcs4gDOj++MumRpEU6JY3qpGtlTp46iN0UB0+f9v3wnHfA9rp5l14HGaBZFBlBP0ohkFNi4mlBbnL0zEJ8usA5VhwBBTtaXupJCUpwdiqeX53qx2vycLImUSSUgGeEQF+cc6vX1ozaFZNIXFPsA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,82 +135,9 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 18, 2026 at 12:19:28PM +0530, Anshuman Khandual wrote:
-> Generic MM default pxdp_get() helpers fetch the values contained in pgtable
-> entries via READ_ONCE() without modifying them. Just make their arguments
-> explicitly 'const' for some additional protection.
->
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Lorenzo Stoakes <ljs@kernel.org>
-> Cc: linux-mm@kvack.org
-> Cc: linux-kernel@vger.kernel.org
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> Two tabs please. (I thought I commented on that already)
 
-LGTM so:
+Sorry, I have missed some cases. It shoud be good now in v9 [1].
 
-Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
-> ---
-> This patch applies on v7.2-rc3 and builds on many platforms. Some earlier
-> discussion could be found here. Platorm implementations for these helpers
-> could convert into these "const" format later if required.
->
-> https://lore.kernel.org/all/yjqldpl7il6uqfoqrszaopchqthhlffssprmlqjkljvpkbpwkt@zetb5hyvllsl/
->
->  include/linux/pgtable.h | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
->
-> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> index 2981e386da7b3..f09a91ff5833b 100644
-> --- a/include/linux/pgtable.h
-> +++ b/include/linux/pgtable.h
-> @@ -490,35 +490,35 @@ static inline int pudp_set_access_flags(struct vm_area_struct *vma,
->  #endif
->
->  #ifndef ptep_get
-> -static inline pte_t ptep_get(pte_t *ptep)
-> +static inline pte_t ptep_get(const pte_t *ptep)
->  {
->  	return READ_ONCE(*ptep);
->  }
->  #endif
->
->  #ifndef pmdp_get
-> -static inline pmd_t pmdp_get(pmd_t *pmdp)
-> +static inline pmd_t pmdp_get(const pmd_t *pmdp)
->  {
->  	return READ_ONCE(*pmdp);
->  }
->  #endif
->
->  #ifndef pudp_get
-> -static inline pud_t pudp_get(pud_t *pudp)
-> +static inline pud_t pudp_get(const pud_t *pudp)
->  {
->  	return READ_ONCE(*pudp);
->  }
->  #endif
->
->  #ifndef p4dp_get
-> -static inline p4d_t p4dp_get(p4d_t *p4dp)
-> +static inline p4d_t p4dp_get(const p4d_t *p4dp)
->  {
->  	return READ_ONCE(*p4dp);
->  }
->  #endif
->
->  #ifndef pgdp_get
-> -static inline pgd_t pgdp_get(pgd_t *pgdp)
-> +static inline pgd_t pgdp_get(const pgd_t *pgdp)
->  {
->  	return READ_ONCE(*pgdp);
->  }
-> --
-> 2.43.0
->
-
---
-Cheers, Lorenzo
+[1] https://lore.kernel.org/bpf/20260918131757.42802-1-tasos.papagiannnis@gmail.com/
 
