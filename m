@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 981A0C982D7
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 21:04:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8A80C982D7
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 21:08:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 938BD6B009B; Fri, 18 Sep 2026 17:04:30 -0400 (EDT)
+	id B63156B0088; Fri, 18 Sep 2026 17:08:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9109D6B009D; Fri, 18 Sep 2026 17:04:30 -0400 (EDT)
+	id B3A1C6B008A; Fri, 18 Sep 2026 17:08:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7FEEC6B009E; Fri, 18 Sep 2026 17:04:30 -0400 (EDT)
+	id A50496B008C; Fri, 18 Sep 2026 17:08:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4CDD36B009B
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 17:04:30 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DEB8240806
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 21:04:29 +0000 (UTC)
-X-FDA: 85228111458.23.BD2FB56
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 74B096B0088
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 17:08:13 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3CC20A07EF
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 21:08:12 +0000 (UTC)
+X-FDA: 85228120824.24.440A6A9
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 20A13C000B
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 21:04:28 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qyeb3hJX;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf12.hostedemail.com (Postfix) with ESMTP id 5834840007
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 21:08:10 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="O/3qZu/0";
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789765468;
-	b=dNPbjp0nXkHl/JPM+4J+YGCuBnghxR37JxNRS9PxAlaeWqSssN+0kul2BKOuwXS+VdQEVW
-	sMy36oVYQmM0AJa2hEiXSnweuA9Py9T44OmF0JCpDlWKeFQSJtsNM4jxrq2d5+ZRHXOLfA
-	ej9c2IKE34aHomUgN6uTQhzf4MOOYZU=
+	t=1789765690;
+	b=KpC6AOIT5KOr1mMqn6djD4VIuTMHvjdQzxG2YnRtgBVA4n2DjoFBdDAXmKlDfo11QfxKAG
+	Dgj1Qxt4Ef7cwUfoGxztGsNLCoUgxPLV7eEQtUbO+adbexb+p3ml9ZlSq5PcLuvUshIs+W
+	aoApBlx6APjFkilTcyFGSjo7H0eCl7I=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qyeb3hJX;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="O/3qZu/0";
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789765468;
+	s=arc-20220608; t=1789765690;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xmK0KPLqBJNRqNK0GfYnXw0oy5TGIitYZkOcLtfdbHA=;
-	b=mKjEpUT1gIz4ykCbKF9XeVcIuoa/sEFhsD7vWLZgKM9Tr+UGkfPP2RiQ9cOrIiqeWYxtuf
-	rIgm5kBPxdZWvNjFOj4QYZJCOr0oYkY5TEt+lNmp/4/wK0hnSf3uoeTLxQO/mXnbmCkpyf
-	UXBy+K/nn+bmeRGv1mySL1dxzuCP5B0=
+	bh=bGY+xfVTy1ZxW1u/Kx3gEVZE7cqsRURvP4ecTB8cxGw=;
+	b=DfS36Y8mJBI3FIg+Z2muZi3rc+qn9U+rFadYB9deIH94v0HGYerx21RVi2m8y8bS1LWarj
+	Gr/BnIQal+aIt2K0q0RxHyFsjKPmwymcegC4JMVWrtGWA3g9qefQXSVPuV6461i9y4iy/k
+	S6MmaLJ8C/yJdCZPLa7U54FLpAlFa54=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6DAD843B4C;
-	Fri, 18 Sep 2026 21:04:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AC9F1F000FF;
-	Fri, 18 Sep 2026 21:04:21 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B37A440611;
+	Fri, 18 Sep 2026 21:08:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 369DD1F000FF;
+	Fri, 18 Sep 2026 21:08:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789765467;
-	bh=xmK0KPLqBJNRqNK0GfYnXw0oy5TGIitYZkOcLtfdbHA=;
+	s=k20260515; t=1789765688;
+	bh=bGY+xfVTy1ZxW1u/Kx3gEVZE7cqsRURvP4ecTB8cxGw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Qyeb3hJXGrrBizz+7pv7Iqz+Qdf5taO7C30duKJQGlzhq0MvoZI/Y4XbVI9B6L4CA
-	 7EWqTpGNyugWKhXU+3k5fpciZG/T6adlZxQKs7dhfVbA0UNRGhHTMZ/cpUj4RCV6gV
-	 hWQecF4dZHxMzNPM5oai8xh+YAe/IZVl2LvVsu6ODGsT7se3LpYL1wo/MRWn0yRzJw
-	 9zZQrZZLSUsyBUfVaEe05iZWsK6TCGhDPPPReIlb4tCkN1hhuOvGt3dUsUc7fIMyrE
-	 ps5zjstPreSRG/BM3NcF+4rqNdcNQPtBP6MKEWnW60Dn995KBl97yTlnp5iXQiXmfw
-	 6Q+apIvY+73sg==
-Message-ID: <f7a4484b-24fb-474d-b41f-fa0a9a084a55@kernel.org>
-Date: Fri, 18 Sep 2026 23:04:18 +0200
+	b=O/3qZu/0W4vDewluE067eYPwTRoi7/Sue83LvflUTOyDQMCA+GWsYfKAHyuZxVm5n
+	 gaME5/8jSQpLO7Jszatj6FZ2qECj0iri27vHHeJuznl6+bkKDzCWsmQi31baQIAM8F
+	 zte8pfcvKXnuCiCSY1+RFzur125s+5Nxa62u1xrXz4Z+Win4Ksmnb52pSKkLnVqAfh
+	 tS0U4VlGQyQa7fOcAbaTwRSBWgmZtErD2blwue9IpB8w9FtaxWy9c+jqqSxUTMWLj7
+	 0gCzw7c3hPh653dH0CSRJ4Qwpm02hDAHKD12Qfy9UxCz/tkFn3DEW2ewgWLuaxIGjH
+	 H5NfKly/FDhYA==
+Message-ID: <3515abc6-ffcc-4530-ac22-4219e5c9aca0@kernel.org>
+Date: Fri, 18 Sep 2026 23:07:58 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 17/17] mm/huge_memory: drop the redundant mapping
- argument of __split_frozen_folio
+Subject: Re: [PATCH v5 16/17] mm/huge_memory: count only swap cache refs in
+ anon folio split
 To: kasong@tencent.com, linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
  Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
@@ -86,7 +86,7 @@ Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
  <kas@kernel.org>, Shivam Kalra <shivamkalra98@zohomail.in>,
  Kairui Song <ryncsn@gmail.com>
 References: <20260915-swap-thp-cleanup-v5-0-39878b37dfb0@tencent.com>
- <20260915-swap-thp-cleanup-v5-17-39878b37dfb0@tencent.com>
+ <20260915-swap-thp-cleanup-v5-16-39878b37dfb0@tencent.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -133,17 +133,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260915-swap-thp-cleanup-v5-17-39878b37dfb0@tencent.com>
+In-Reply-To: <20260915-swap-thp-cleanup-v5-16-39878b37dfb0@tencent.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 20A13C000B
-X-Stat-Signature: tr5ukz1jb4wu4zeu7844qic6ru4wafcx
-X-HE-Tag: 1789765468-182612
-X-HE-Meta: U2FsdGVkX1+ISarNgk6vxz9pxjyslKTw68pcLYTD2JCxb+i2Rd7xi1GWrirTkYpCiFk11Ovrg6QXF9/Jk8jpI0AI6Fo27oKzebYWY148Uzg74DriuzB1iz/VVrrWzGwQ1lgREGu9FJHx8AUyaCbRURB9RAaUVuEfXj5lYCAPr36vjGm5nfhWYwbgCdVJU+iK9h+En43inmDIbUCT7fOKJfPmXYAiJPjMEUwqlXRr5GhjzFzpYQXNPylKFJDNI7fknYFuPG3aTUDEJerpsqyX8jKMH/7aZUPxBLrhwgiK5gEpaUFItOczFJdAJIGtkhSa1/kWyP/c8WwPIBvsPMRFugARotX7XwBjMjiOPCIB0q9grERk8kenFqlFgIZZWlTU4LXJFT7Z4kJF9x5shwpdtlHo/qc9J/I/KepTPOwqhUcPEWGOQhOzVENGputqfXMdsQvlL/CxSByIhH25d7kt0bG8k+A+oPvLzRG6Q1bkTXyp1e6K41BOVaV4l6K1JK5o8Nnf36wzu9h5wf51WAoBmEYMsLX1fWFk6a/m/IGxLZCPPAv1AEfvm6PiP92vx7WTwyQi1IlsvA1JD+GBaOJSZG6IvD0VEpqwXtmPXZAfKkQzvEPwD0J+uD5oLrnUhOUDMtunZWNNnlHhO/zB+ZkgF3BZoX3+M1jRSEVYWN9xjtl5/lE36/yV492gAix8dTCqSMLaxl6G18Ened4kSLVyE7ET2LIUkfMtgxdj/Zk47DHWWCqAzht+11bpl1lB4n2wSNzJHjSHIIl6W9ahxy4CJrVKlAHHVdvc4g4pSjCHpKiJWEEcbFxBtZBMoH2qTU1UmeoWFvfqgyL+1BcHlL3A15E+ymB23pZbAAYeOE2FDXvstceMF7tI6mKMdrolSflk94XD3znvVNswf4g3ecmdoFGjfT4b24cwrCmmkfTfA0m0VH1s2k0tPtNsEsUoX3n9SVypFtj61OXd396W30b
- SatJmTqi
- yJU7ySIZAomhWmJP35SewDN+vnY9MUeAFX9SE32e3ezVe8mSKysu0Jwqm3XWN6VqbpZUhGS4jkM4BGlWC/+oqOZR+9aTa//hylP5DnMiN6TCucppa3K51qL4OOLi9BETTpRUwVsh4HoLvlecCUkvPR+k/wzolxPCgESYk47Z8IzLqAkgeD1wlhRtN+SkngUhJHnyTrIPRSgBqPxJhIYoHKEey9ASKv/QlimAPwOu6Z4+I+PQGpnvYlQwCO9nyZByepSOpkrdG7Nd9gM8JII8oXMLrqYoCzLSeAQ4SbiSzBATpx/vmnBX6844J18SghzZvyF7QxMhgQM1ak/EslKHJCuM73OHVpgPPIifP2r/ICdSFsloyjHaAJnxNdx6SD4wivaLyizUO6Rjf1lvfAL8bL5zYbxdPb3UtXxo1FJrWsnJwMcgXmkyqJOd5KQ==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 5834840007
+X-Stat-Signature: db8xxtyrrwu3dkeorf9ou81rb5bfubrd
+X-HE-Tag: 1789765690-755264
+X-HE-Meta: U2FsdGVkX18yRkHDEey3ph1h6eWW/exRAyEe73ZCyMDUewfXUkI7QZ52Wr6rFmm+e5St3lnfE8ia58oVzrCATMdSOwAFTGuA64aEcOD8KqzPYI8mYmy6IM2P/qwWdjAFf5e8AcToY344tm7/qhKuItdhoHQLdUf56UNThNU7jZH+iUEo8F0fjgQDPRz+S+hRZESPYy/WM/XDCnyrORo5EzXF3UKORD2qdRX3731/v4TjbSiXRQUeTE106of1c0C17+hpFgNqdlpeNckMsIhf76iPTe/Q8XcJDSlhE+kfASSa0uuW/uS0dxhgNtyg9QtLpuE28dqAtN0fVJdRQa5lzv9nodefBmf8TaqAwPqxfDFNa0+RtOp67VtpPA+2sEOJ8eNRmDskIlypv+h7AwYXRmUp6AUK2A/IVaESY1v6p5tQyEjEoLW/fZc7yhMBiIR360+O5gWB3UsGvG0H1gAfhpMHQhLxm3fyq073ih2BjcAIKMv91+vy2h5Wlhz2gNRksiufP3qKJ3cPy6UteAIOT7Ds3U9N85MyVFACqExy0kFlqL/JYdpuLvnGlr/kGzJSP6wUW7OO9GZPZCihEwab3wJGg681HpzJTXeZLpkxZ6IMPY4Oo9QawRI8uw+nxVsn1sWsgv4KZG5+mb/yJaUIEcaSDlk9Us5idbvXBpIULES1DIXUII06thLt1niytkXQd2O5S4TrG1G/SZBv6uULQeIkNXC4NnNvpU1kHsgS9NuQcIYZGYt9XBHmEsLVjHJHVtSZ8b/b1PDjj9u/Nli3Zf5Jn57dn5aYDBkrnc98XMAhnUpkw/cWEVnWzZMkv9vIkxCENcWUFw7VZJKvMmyJRD20+/HaapTtcLGyrKuv1h4WwdeOQA0T0ng57SQ1mNPDned73cVsnBdWjgYpb+uiBmUVI3k1Yau+UkjjlgYmNvHKzTCnpSiB5q65wNKWr0DurIf3SKmtRVn7B/F99+v
+ 4nyrvGXM
+ q5+jlmsah84+KYD4qv7SeyXkpkxR6PdIaRmTaU6E0hvhuQm2wjGhf3qIKCW+/SpnKAeXxCykHzhs8JLHGf0GNx0UHZh/DMHIiigOEJJC1GVdVztNBa1XNCypmqfXg9RklzOGFvZLoc0+6hKZXR20r9VEsrJcppqJ83qoX0sps4IyaO8XG4W3p2Dt2Ml/b29WJ8jrFz+MEVgXqLHMV7mjHcVLSSRsJvfxPhR/iHxN8IR6vheITTBQarciuYaCcHot1l8AJWvdGQEfvjTXs6u8tgJNBMtd2n0IrxrEgfYkHwdCjD+cBMkC+0/IcR7LTcS+cItkkdB04h1Kf+w0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,23 +151,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/14/26 19:14, Kairui Song via B4 Relay wrote:
-> From: Kairui Song <kasong@tencent.com>
-> 
-> The mapping parameter only served as a non-NULL check to detect
-> whether page cache entries need updating.  The xa_state pointer
-> conveys exactly the same information: the anon split helper passes
-> NULL and the file split helper passes &xas, which is non-NULL iff
-> the folio is in the page cache.
-> 
-> Use the xas pointer instead and drop the parameter, along with its
-> kerneldoc entry.
-> 
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
-> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
+
+>  
+>  	zone_device_private_split_cb(folio, NULL);
+> -	folio_ref_unfreeze(folio, folio_cache_ref_count(folio) + 1);
+> +	folio_ref_unfreeze(folio, folio_swapcache_ref_count(folio) + 1);
+>  
+>  	if (do_lru)
+>  		lruvec_unlock(lruvec);
+> @@ -4139,6 +4139,7 @@ static int __folio_freeze_split_file(struct folio *folio,
+>  	struct address_space *mapping = folio->mapping;
+>  	XA_STATE(xas, &mapping->i_pages, folio->index);
+>  	struct folio *end_folio = folio_next(folio);
+> +	long old_nr_pages = folio_nr_pages(folio);
+
+const ;)
+
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
