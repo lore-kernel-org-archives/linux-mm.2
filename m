@@ -4,89 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 162DAC982DA
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 10:17:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CB4DC982D9
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 10:18:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 346B36B00A0; Fri, 18 Sep 2026 06:17:02 -0400 (EDT)
+	id 2FABE6B0093; Fri, 18 Sep 2026 06:18:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 31E4C6B00A1; Fri, 18 Sep 2026 06:17:02 -0400 (EDT)
+	id 2D2266B00A2; Fri, 18 Sep 2026 06:18:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 25AFA6B00A2; Fri, 18 Sep 2026 06:17:02 -0400 (EDT)
+	id 1E8C86B00A3; Fri, 18 Sep 2026 06:18:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 01AF16B00A0
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 06:17:01 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0CB87C05C3
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 10:17:01 +0000 (UTC)
-X-FDA: 85226479842.27.0C5BBBA
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F12D16B0093
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 06:18:02 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 932691C2C55
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 10:18:02 +0000 (UTC)
+X-FDA: 85226482404.16.5CB2A0A
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 92FAE20002
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 10:16:58 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20260515 header.b=BMj01Alh;
-	spf=pass (imf13.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789726618;
-	b=cBLHVNmxzIFV1DoZPyHx1iE4+59UBCUEBa5Yl0+pQTTvhYjYaIZw0aohWP150o04v0BHzc
-	in3VMgDbbSu+RE64gura2ldrJ+OXN5wx2LWsuztX5T/Q1JUj+vrm/kjytBfYnmeVKHk04+
-	p3QEsGninz98rA+xdlOPq5pOtW9s/iI=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20260515 header.b=BMj01Alh;
-	spf=pass (imf13.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	by imf23.hostedemail.com (Postfix) with ESMTP id 929EA14000A
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 10:18:00 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OWosGV+K;
+	spf=pass (imf23.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789726618;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1789726680;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ifyrwe6h27+ZjrRKqNws8Hoy5jINQJxAWqPe8NSyJco=;
-	b=Nq1C43h/jMOmq6wlqRrbPEFQIkLxQuX7AbvVRIv9VB675W6qWc+gDKSdwun7gge26nl6dm
-	FLuDgWHeNm4hDF2KnK9SpOZkSZVo9M+LqjBjhyAHJ+Q1t0sDeCvp/eEJwA/Kx5IP4bfUef
-	xZaJdqSXgMRTB0b+B3rRv1XLg6gPA1k=
+	bh=ypCsA238jQaSsrumZecpZnUkEvEZS1oyy492kHC+ewk=;
+	b=FXNrekfu9zHhGpHSct6WmRFg4zX5XrH8Tx2Q7hEeZH4vr/aWk950CjvOM+pPo63d/Maf/z
+	in/LGi6ccgdrmQkwYK2yIo3cfOCGWIy6cp9yHIOQpjlb0i+yXm3Ese5BTCVopxyt/f1Iho
+	XI1+YHwNoAJBg9p/WlkKpxialmUSj/M=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OWosGV+K;
+	spf=pass (imf23.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789726680;
+	b=JU5dJQIXrbCiRR98k80bP8hCkXHCwQzHXqUWX7o95m+poJ2zmRrK8GUPUvzWJjBKWYU+09
+	La/fuxEJ+I0NAtmzZpCJK4zi4wfctvwO8/NpUE5fjqBMT6qTwbzk+58413oyf19om6o9oG
+	wmzi4bakMa9jKyrJfZtxPiPWEtMHS3g=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B9FF843CCC;
-	Fri, 18 Sep 2026 10:16:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 667AE1F00899;
-	Fri, 18 Sep 2026 10:16:54 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BB1A640354;
+	Fri, 18 Sep 2026 10:17:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7473F1F000FF;
+	Fri, 18 Sep 2026 10:17:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789726617;
-	bh=ifyrwe6h27+ZjrRKqNws8Hoy5jINQJxAWqPe8NSyJco=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=BMj01AlhbDDpoLoXxwn9PPhookstPQzvNzHcu3cfhmO/Vm1xskm1uSEn1VcRtOM63
-	 v4FbuEGxl6N6K4hGy9mp3VPfdcYEi9Lt7ZAbiZrOOZJ0H76sH7Yfj41EFFY4kifUUJ
-	 U1nyr9h3Wc6OFP7bzybInQVTbPMdB7n385RxAbDMpf0E0z2qmIOuSmMJLA0mzCgRn0
-	 REbqAaRoOj6TTCGDA3UVM3ORDYou5nsQBAirRmO25yhfVyCRZefWSTyLWDBVZMDXh7
-	 ivKDTJnqkoWlyNwdABc2086K40l/8qfUK9FEg1TIu4WwHLNY/RUoSJ/8Qc7TZFokWg
-	 jmShFPclYOnug==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 06/17] LoongArch: kexec_file: Fix CMA page leaks in
- segment placement retry loops
-Reply-To: sashiko-reviews@lists.linux.dev
-To: maqianga@uniontech.com, mpe@ellerman.id.au, akpm@linux-foundation.org, catalin.marinas@arm.com, dave.hansen@linux.intel.com, graf@amazon.com, vishal.l.verma@intel.com, me@linux.beauty, mclapinski@google.com, hpa@zytor.com, sshegde@linux.ibm.com, yeoreum.yun@arm.com, pratyush@kernel.org, eric.devolder@oracle.com, gshan@redhat.com, bgwin@google.com, guodongtai@kylinos.cn, ruirui.yang@linux.dev, ruanjinjie@huawei.com, kernel@xen0n.name, piliu@redhat.com, driver-core@lists.linux.dev, linux-arm-kernel@lists.infradead.org, mark.rutland@arm.com, lizhengyu3@huawei.com, james.morse@arm.com, chenhuacai@kernel.org, sourabhjain@linux.ibm.com, adityag@linux.ibm.com, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, robh@kernel.org, npiggin@gmail.com, dakr@kernel.org, ritesh.list@gmail.com, takahiro.akashi@linaro.org, thuth@redhat.com, linux-mm@kvack.org, liukexin@kylinos.cn, palmer@rivosinc.com, rppt@kernel.org, x86@kernel.org, coxu@redhat.com, loongarch@lists.linux.dev, bp
- @alien8.
- de, ardb@kernel.org, zhangtianyang@loongson.cn, chleroy@kernel.org, chao.gao@intel.com, linuxppc-dev@lists.ozlabs.org, "Jinjie
- Ruan" <ruanjinjie@huawei.com>, maddy@linux.ibm.com, blum@kernel.org, seanjc@google.com, gregkh@linuxfoundation.org, baoquan.he@linux.dev, pasha.tatashin@soleen.com, rafael@kernel.org, tglx@kernel.org, kas@kernel.org, hbathini@linux.ibm.com, tangyouling@kylinos.cn, jbouron@amazon.com, kees@kernel.org, will@kernel.org, leitao@debian.org, mingo@redhat.com
-Cc: kexec@lists.infradead.org
-In-Reply-To: <20260918100442.3841135-7-ruanjinjie@huawei.com>
-References: <20260918100442.3841135-1-ruanjinjie@huawei.com>
- <20260918100442.3841135-7-ruanjinjie@huawei.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 18 Sep 2026 10:16:54 +0000
-Message-Id: <20260918101654.667AE1F00899@smtp.kernel.org>
+	s=k20260515; t=1789726679;
+	bh=ypCsA238jQaSsrumZecpZnUkEvEZS1oyy492kHC+ewk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=OWosGV+K9hHT5uIR0KMEnKWe6R8Bt3lr3pGRR6eRznBb/Vjza5OWsWHsijP2z4Ncd
+	 rE46fKQ633sPKXhd7V1/RMBh3yqzmqxM64CjlrZZ1RheG7Me0wA9ZKaxnQfi9CY2sN
+	 5Hk5e3o9mvpmo3oRFYGIJgjW5Z5KdCfXPm5cZj+WKqsGYgy4Hz4h6Aoy2O3umN3ki7
+	 IRIFFKD7Cl+RBMKlhlsl9JUynl5uE0KxpiSyKZYZEYOVFneju17dtiW9Qb8++NbwxI
+	 ZfiX6E16jLls+WOBZEAnPyyCGPgQe4F1Ko6raiJdD/SJTy0Q7vuUBTR+kX9/iBoltl
+	 pUJ6JVIyUVyEQ==
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfauth.ams.internal (Postfix) with ESMTP id A903E1980050;
+	Fri, 18 Sep 2026 06:17:48 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Fri, 18 Sep 2026 06:17:55 -0400
+X-ME-Sender: <xms:zA-tank5xMVXkupold9m9PdHtzpFh7-ihnntztTn7Yc6fkdmmeBMIg>
+    <xme:zA-tal0U0sLE2yKUnNwuiJ5GoWr0DHpOjGzqHTOlUgfkizGcSkB8ai9lne9-m07CN
+    T38RI3K_bt0BfQ4KjWc6vn-IbJDTY9JuV2GFrUstvAD3bEVEKLhefGH>
+X-ME-Received: <xmr:zA-tasrtKjAZMMqdmt4O8viPFWAKIZPdJoqKtY-IRSTyj6x4nYj_ajHKnRg>
+X-ME-Proxy-Cause: dmFkZTFOJ04tLraS8Ld6DiNC03fk1U1TPxXokJj5HDUNGVOCuzuERevcrpAkfuxcfgiX8C
+    PQsHD5glq2gHcWyZk3QJbD/+NzFO+t4/s+FrJRSqoqIIL9uunXdzdBOYKFPiOB4rpx65nu
+    G+AIbYPCRMp4607LbXCbnze2tVSWmUT7XBOzlaE2m6cYsXs488RvxnRKmukIxwfeZKeKCf
+    cfZdvKfeq99gzENIngK3Z1slqai4Uhq9Uf2ES5OypkYOMOQEMH+lGml5bFXXrhsoqG83bL
+    Qe0BpFnxcfjw2CAHHyY1EUcwCqOmcMKwSQE3J/yxMJXzBxZaa4lJJgagI6vJq9i3GJjWEs
+    BTjz1z43/a//Tbn3h4wrXht4u5Se3Ogk9iRhBuS85wqjuQWYl/KnVrAdP5i0srvaDsR6MY
+    JxVI0cY3EUxQrjfFHnW2/M9heFSV4mCpgv4J1XKw9CcQ0C+7UEVJiEaoG/9rdYG/5pzB0j
+    a3JRoxUTjd/0fW2Ph9TN8j7zRECA3vRubUjAj6LLlmnS0JiXrKT+12pZfnQayN6d8fgXm2
+    ya/GwkoSI1iYZGGfzo3VHM39NclDpxhhUUpf7C+F3aq6Zsv5JQG20GheFhKNBrTVMm1ndb
+    P/1Vmml24MxTaVNUyUx4wmdIhsnP1SveU59HnTqTxeRX3YUXkfbc15k0CCfA
+X-ME-Proxy: <xmx:zA-tahTONOE_LRuJVOINMxPoiDr0FjcZPaN9FYT2Fh3FvqAODlY0qw>
+    <xmx:zA-talfDq-dL0jw0-6M966q6vDtUyj_wTcUeHOxEowv9ZbqRo6VQQA>
+    <xmx:zA-tajS3Vuk-zgx_kHA2Hn4uNF2A8NDOWO2mTlnUOvdbkDKfWAe4wg>
+    <xmx:zA-tavCLRehoQGfgw1mpG2b6ZVl7Css4TeaI-2UONHw4IARA7xW_nw>
+    <xmx:zA-talrurcJ-XoXojc9qMEEhWNNCeYrCwCJN1zLcf2SumuaISrYydCkR>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 18 Sep 2026 06:17:47 -0400 (EDT)
+Date: Fri, 18 Sep 2026 11:17:46 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ 	Suren Baghdasaryan <surenb@google.com>,
+ "Liam R. Howlett" <liam@infradead.org>,
+ 	Vlastimil Babka <vbabka@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ 	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ 	Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, 	Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ 	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ 	Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>,
+ Xu Xin <xu.xin16@zte.com.cn>, 	Chengming Zhou <chengming.zhou@linux.dev>,
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+ 	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
+ Chris Li <chrisl@kernel.org>, 	Kairui Song <kasong@tencent.com>,
+ Kemeng Shi <shikemeng@huaweicloud.com>, 	Nhat Pham <nphamcs@gmail.com>,
+ Baoquan He <baoquan.he@linux.dev>,
+ 	Youngjun Park <youngjun.park@lge.com>, Peter Xu <peterx@redhat.com>,
+ 	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ 	Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, 	Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, 	Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ 	Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/3] mm/vma: const-ify vma_assert_stabilised() and
+ associated functions
+Message-ID: <aq0Pn6EBVu1jugKB@thinkstation>
+References: <20260917-vma-is-faulted-v3-0-5c22314a72e7@kernel.org>
+ <20260917-vma-is-faulted-v3-1-5c22314a72e7@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260917-vma-is-faulted-v3-1-5c22314a72e7@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 92FAE20002
-X-Stat-Signature: e516chghxbne5pu884c1ig395amnkmh6
-X-HE-Tag: 1789726618-173654
-X-HE-Meta: U2FsdGVkX18vZ1nt0A8hucWCHvwtv79ioC2utWAsTQIMJfcMnR1KTFtwE0y0THxiudMvkdvO2NdTQPkuT/0tzMU9VIcAP/hp2qYPiRUKTRn4Uv7Ld3yOBmowOaGFj0gPGHTNI+A0W/LXHOusIsEh11gX+tQt1SrCqG5xPVO+oN0Yu47bnqTq2s9xOQwKwovFefdVCRWYUfj6ry57MRRC6upc8eADMYHcRNzlVEOtLOq61tOi9ABQ4PursgLdzbHKRqqx4qLBb/TKuceb4lN7vy+avMCzo+Nrb9mEumlexbD7dOZhmwrrGOVCjMPP3ciA1Jxh6cWYrOCDtOfluIii0cjoh1WHVWq090cipFfv8uVppp/FKlmwudiYYk6ZAKTfGHdxAzLWZQOcnex2dXf1JNWH3peFC4SYzJQgEWjc183Rr9gEReMNWk5B1jy/nq+Ax8ETjwIVY4bIH2iLjs6YYaoZ+pu1yk0viYnoqL9nJ3YqedaWnqO4hPhoAUU6mhwCQu4Z0sxXtDfsrj3QUF/oS5FBd+wPBC1iY+bNLfyGe9YlvpANQ3gwit/FAn6E2yqCvQWZWTve8qJJNTBe0v63EO38xO3UTIWTWGR1JswSGa7Jtc5nFML6iej9/ussocfYLeN0xuH+lcOzfBRaBonk/fm8g8VDm4fPUQLeZd5fzKoagTdsMh9Ulq8tHtyslCsxoLEGaIGn10PyI0m7gvYSSsb2T8B3lTumDgPmoPyu11hUot4G85BP5FKvyZyBzYCNe/GqLhEIaMXeXzZ08Twxovq3TIsHk728pZzfnLsZVZMdEhQ8nQGmdq+owIf/ip5PuxK3Sppw8Yk0oGiSTz31uGy0FCHbkoIeL1pKmDoT9iI5etdtwQ+vj7tlo6lykbUlO4wFgJBou091pc6SheMf3cI7u35UNuiji+U4HJxshhE2NH0ogJOiFhBdyKQtk+pzniok1N26PbZLTNFqNwZ
- xIh4eMIs
- +GPyZ8RpmzJQVbR3F7+QRt7vYs3efj2sU3FGwFLSnmMLwju7X8+BeM99MKSyFU3Kryo6lGBmyULFG2YTBPJ6aKM4oyNkWRj6TTtZqysyt+fp8M+boCjgJy/SC2WKluep1tlMM+YZYITiZK2umcvSKRJeLNlfrSldYCGmKJ1fX/ZAcd03kefIWs/Kx2z25I8H6/odRX+PSoS9Auorg1d7d0PiRadtOlPBmsVxgP/U6PtJTaTA0S1UE+vIVf9CfcFNudmo7XoPdk0vfy+q8Rg4of5YRMWeo5vpV8R89IzFXLt1WRyXzgJAGKBL95Jjb2OkjrTTX64/mnaXrX9ocMYwQQWqBagHC2rOaOZMVA1SYNbUFIf+p5Fi45w4DanH03KavemWSjtdCtKAvPOvcJU/cMukSz7YkWDe+6yptn+j6Pf9vHawSwpnq7TbNdVLv+RqwuSenREklDG0Y4SFYN8CCi6lgaMUv5PIVMG6NxukM+aZzeTTZvuXSFMN7cCjUBksKeWeWfsd+fCU6J2omMMmAdnzPRKXeuskX5QT1Gca8ByLAsGPFzmkpBox/+kDYUK35WnWOcs8Pj3WoyrmmrEGJNe6qgPerwQZUF9/yut/pQoelQ1qnswrOcWW/N/mWV2WLNX211SvhoZ152gu3EvNfTjG4Y/jaraOfTvjXpET0va/LDLleLS/D9Z4EIyQIJZWj/cZUs1txQfssUDXxckyiy7xPW9iCA3zJCKe6VvA+6Gu2l6t7ApGO936s7tM2EhkIBsGvx/aIlcY1/zx09sqBFSO5wdCPTXVkpzeII1Z7amFG6DLl+Wn6/HKPCUN1sXg6rPdX
+X-Stat-Signature: 1cegq7n5p8fgppijh4ihzpbuho8cxxbt
+X-Rspamd-Queue-Id: 929EA14000A
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789726680-986015
+X-HE-Meta: U2FsdGVkX18WDHoA2z9n8/4BsyDfDJwA4r4NLFCSNo1GHbAtgbs6/KdwfqQ7eZeKEa3GuvQkL62SsOdLTJmmvCwPPLjvHhnrzLQj7bUHljBTl5EZLksksnWRgdD2v8QOwhoyTXY82Yih0CDt4Mdfo3LD7i27zKUszy8urxr6H3uXZD3K84ic7C9z7FWTGzxfyLSgzhm9VJVv5pek2QCVRmMhKDJug5XLppuUkWYgUXpqwxxYacMS5yq1OWH2B5PW94N8Yo5Y33XOJjFXF+tsCddNwEGUJpsjZV+2abcG1BCkTAu7fLRFFU42Oi7K8H4RVgSbxJRFCrwrCTe+M8+o0MSbpxqSdBd6sqbnPFfQ++Z+gzuMA+WWI0vENXjZC+bcbUeyuyw8s8JbwkTwsHteRSXwsNrwFeNgQ+fWt1E5eoP8vlj1PAQLq3dUYW8F5zsy4xURpU4045UL+0vQta878DE6r4mINe7qdgSDQP8xIPL5EHbelMPkqbReFf3/t3cwouetm/1pH6LxQL6ftD7me7NPDhV8mJVEEXxtRW7fAJDrmHpIwibIddo7PGXt+9mpaNzbw7pT3vs99FaSw0QblbQy7mQYoB/bDFtsMlja8BsKlWjGJJ68Eimxy5Go/aSMcx+wS40i+1behiPomeuDRh9P7Dd43LMTlMDy+I5rIelwXSrRTG1/LhNvu81t9RebYc7IaXDyaxJKkX0kdYU03GiR0fc6TLJzuIqX2kpQKNiZEUjX5j65eRSkJvCeiuKeVYL2rqsCucvI2TZGK8tEEv2XMD2KkgD16u2jHOuSwG5tZuZWixVspcUGm0KdEAgIZuw3hLLtS/NNdxFdYQAUtUOaO+8xjUp09WH4rzH2Pq93AlPnS9VyOxO3GrHfUU8Zh3hXwEQ2KAMOW/3Sr546xParPl+QI3xa3IZRDF7mRLwL/sFzFNUvx9lxSZw58Cyal8i1Bjb1Yc8abGeZLIL
+ bQirk8WL
+ LME+HY49vUIrDI8CtcfDpdaEa5qP2i+hpl/pAIavenG/krzbb8D92tzH7dIogLm+l/GH4+8zCRai2tu+Mj7EmLNu2C7ZudTtRcqvSnrFL6O3s30JoCNsn1bOWzyjIubl+Mfg+0QesOhHce+HVu28q8moF6ryDwxQH/h1yQShi8cgdvaNb8F/Og0IITvXO74Vv5c6+NPbHJ6MT1lGBpqiyBEZCujbJ4tarz6Y4ioCCQgedhywLCywJaWSKQ/3z+wXA5XfIuVU2zJ5vK0r3nIHPHxCoUewEcKTo6yj9r2yceB58HYZ9unL5oyM9zaC71FP5nrdoPbTTyaFfhmw6aYheAjfuwSQ16uM9Pcct3aXA/V2Ypkt81FyOUKtupbCijIZ0DXyiz5uQ2Ywa2jKS+6Lc6r0EVdU7PW0YVqRVIMFsd/L+Hpw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,35 +142,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> During kexec image placement retry loops, any midway failure causes
-> the loader to truncate `image->nr_segments` back to its initial state
-> to purge the failed segments.
->=20
-> However, this truncation introduces a memory leak. The CMA pages
-> allocated via kexec_add_buffer() during the failed attempt are tracked
-> in the `image->segment_cma` array. Because the subsequent cleanup paths
-> only iterate up to the truncated `nr_segments` boundary, these allocated
-> CMA pages outside the new boundary are permanently leaked.
->=20
-> Fix this by explicitly releasing the associated CMA buffers in
-> the failure paths before `image->nr_segments` is reduced.
->=20
-> Cc: Huacai Chen <chenhuacai@kernel.org>
-> Cc: WANG Xuerui <kernel@xen0n.name>
-> Cc: Youling Tang <tangyouling@kylinos.cn>
-> Cc: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> Cc: Sourabh Jain <sourabhjain@linux.ibm.com>
-> Cc: Kees Cook <kees@kernel.org>
-> Cc: stable@vger.kernel.org
-> Link: https://sashiko.dev/#/patchset/20260729031235.2840255-1-ruanjinjie%=
-40huawei.com
-> Fixes: 55d990f0084c ("LoongArch: Add EFI binary support for kexec_file")
-> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+On Thu, Sep 17, 2026 at 08:47:41PM +0100, Lorenzo Stoakes (ARM) wrote:
+> The vma pointers are not modified in any of these functions so make it
+> official by const-ify them.
+> 
+> Propagate this throughout the call stack.
+> 
+> No functional change intended.
+> 
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260918100442.3841=
-135-1-ruanjinjie@huawei.com?part=3D6
-
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
