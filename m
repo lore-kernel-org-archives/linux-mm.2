@@ -4,135 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEF96C982D8
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 18:49:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1762C982DD
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 19:14:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BBFCE6B0098; Fri, 18 Sep 2026 14:49:53 -0400 (EDT)
+	id 75A246B0088; Fri, 18 Sep 2026 15:14:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B97C66B0099; Fri, 18 Sep 2026 14:49:53 -0400 (EDT)
+	id 6E3A46B008A; Fri, 18 Sep 2026 15:14:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AAD446B009B; Fri, 18 Sep 2026 14:49:53 -0400 (EDT)
+	id 5AAF26B008C; Fri, 18 Sep 2026 15:14:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E3B66B0098
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 14:49:53 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 25CCB1C2EE1
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 18:49:53 +0000 (UTC)
-X-FDA: 85227772266.03.8204BF1
-Received: from mail-oi2-f13.google.com (mail-oi2-f13.google.com [74.125.231.205])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 51ABF20002
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 18:49:51 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nyfgJxyU;
-	spf=pass (imf03.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.231.205 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2E92D6B0088
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 15:14:20 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E24A2807C7
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 19:14:17 +0000 (UTC)
+X-FDA: 85227833754.05.F83CC43
+Received: from outbound.ms.icloud.com (ms-2001c-snip4-7.eps.apple.com [57.103.73.158])
+	by imf02.hostedemail.com (Postfix) with ESMTP id DD89180003
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 19:14:15 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=icloud.com header.s=1a1hai header.b=Js38DULw;
+	dmarc=pass (policy=quarantine) header.from=icloud.com;
+	spf=pass (imf02.hostedemail.com: domain of bfguo@icloud.com designates 57.103.73.158 as permitted sender) smtp.mailfrom=bfguo@icloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789757391;
+	s=arc-20220608; t=1789758855;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/Ph6ZaVxaO7CXgv08gaPlk+fBtFgV6Zs+sxg/G7AO88=;
-	b=R8/xyeh+0XUyC53qFRf+BuZl7L0QiITNOUhGw94CxmrNr1YNt/rF4/iyviFirNB6bFByXw
-	zjHBItEV38dVfu7hC63W8GcyEiXa/BRuOzD2WkfqGYJxS4p9jJEIBvoVO14sxEocJ5FP+F
-	J044kphZsSgR8+FIPpUHzkuChGLgm5U=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nyfgJxyU;
-	spf=pass (imf03.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.231.205 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	bh=zWqcj/x6eWYWbBAL8kl/ymZLuNhjh0BA6RJ6N290BcI=;
+	b=Idgecq80bs70auU7ic2GPs5uIMrth7aVYJwMm0Z8A+hNIoFF/m3RSG8v7K6s+8B4htJ/xR
+	47+xeiAVkSt8N8JxtEcJQEuvNxibngGVCDohG73OJUX9F9skO1Liju2WYm6PQsdOlmcMne
+	PtHTQKiu+8bXEqs3rxbq0glORDVFcE0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789757391;
-	b=wpVrXqmco852ySqH956BBfAHUY95F/3ZYn5ae8us1OpSLiojw6Y0fE15giM+9Ea69sEFhA
-	MtJ9DieqfXDF4S5jTrBkXVDq9Rvr+qM01IkcjGFSCtgQYcdwjGMbuvauCtHcaFFRJeJS0+
-	TYFrvDYrGO9jCXQixuvNSl6FUv48kZk=
-Received: by mail-oi2-f13.google.com with SMTP id 5614622812f47-4b37a2ffef2so551128b6e.3
-        for <linux-mm@kvack.org>; Fri, 18 Sep 2026 11:49:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789757390; x=1790362190; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=/Ph6ZaVxaO7CXgv08gaPlk+fBtFgV6Zs+sxg/G7AO88=;
-        b=nyfgJxyUC8MyXZ4iC/tT8unH2v1aq09eYIRz8GRNbZrYkUNrDpOUTZIrr1ZR3IhCUc
-         74vh8tYUMTQ97PGSGd+UsQndI+OGvHVnwDtGbu8u/lLmba0t1AQvB5W0cyn2zrRb+a/2
-         q4y3WzVjN0kh4LJl8KF0HR/sXlGQ/S35WtEEsrNUEoRG8T87q8M+29gF4Hyg5W/qAJlY
-         3v/+7ZSHy3t/8ehVyMSf42ZqpEzHosaA+ba6Q9Ijva/lMfbMzuAXdIhjnYhDEqZaLFp6
-         PCkM8XkrsREe+KJQy39k65+rxydGMCt1lmjOs+82PtYAVb6K0InsJJY3SbyQ6KMtdEts
-         QJPg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789757390; x=1790362190;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=/Ph6ZaVxaO7CXgv08gaPlk+fBtFgV6Zs+sxg/G7AO88=;
-        b=wIHMSmxmfUDlaF/cx4mnAcsFzsandMxM1NhxNMSVk/SALgdsDZtRz55EXiVIj6H2mb
-         G2KogIztobXnmKTNoncHFB1BbkzgxsWw0qneQ9xqgNU+wNnXzmRdbjJ5lvilVlsU/YnY
-         bd10fStASBW7TbXPH1kbc6wFd8NIGFX0+duyFijmGiw0yJX3V1zzbDKMkicLgZ7UiR6m
-         3b4DN3kvDWVVHjZoZrVcfANlsDC4Vv5pG0gIMIZ4Do9OHEfHFncVA4EnbFOWb5XT65kI
-         FOE40myNaDNa9UbqhFyKsuVXgqeUKtnDRkxAyMiGBxScsAl8bJRZuCEZwlBZ/t/Wl2Tl
-         jGIg==
-X-Forwarded-Encrypted: i=1; AKwUvByoSwiQrq2Nv1fbyuCmYdrM/ykV1M81ww913SApx6wAyO3ifGQxKOr1asyf8fejxmcgFz4DdNJr/w==@kvack.org
-X-Gm-Message-State: AFuF++l6Dc6J/Y4EmWpCFUsDht43NYdraC30a+cPEzQLlGvgeuZlqXL0
-	2JJqwrWNaf3hOLFeEjSg4GBuuwBrKWm3ZhgZ/n+cFY7CK+jtpQnCrvNo
-X-Gm-Gg: AYBFou1I3FVEcOFUhc2J2gT8ctZRHFZfmDni+FRchCRY6jJjnmZYaDK808Sm/uc0MJZ
-	pnkrI9xL8KmbT8XGuTSJwrzx9hmBilotWqdHyXpQulSdr8jQEQxg3Lb8TxZatqiTuBR69lvTrL/
-	NlMMMwtQiuP01V8i+mvGSl+G7R9wDyqb5mVASlF+QMLJ6ZaDF8O3PBJl93TVvryuPL37seoVpCA
-	Ov3bDNfwKC7Hp95nMSe3Fe/qT8rMPBxcRa4al5kYiM329dEuiix0Fhhs2EF3FzkVdkzLLmHvWeE
-	bvh8CU/H9SqYrScGocGgXbUgh+hfNEodmAolvtp0uEe9zA/tEUuAtDk/LLeGdQ9z5CWlIAoVLMz
-	5Vlok6PNBuYgHV+DVnGlxl1wX4NJvZVgMv3Fzyxg0ZyFGEoLD7pS15tax/Kwq4ZNh9JmON0VpWA
-	CwJF1yqH+qMou71StHPTBKVDX3QwptzYQWUa7FMHmSnmEc4iQ13h7VdVi77RxKH02dfv/Rr0uiw
-	jAy5HgryZt7DSS3h1GX8xw6TFK49Q==
-X-Received: by 2002:a05:6808:13cd:b0:4c1:83fb:8c7b with SMTP id 5614622812f47-4ccf6f9803amr3772164b6e.12.1789757390210;
-        Fri, 18 Sep 2026 11:49:50 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:17::])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-4cf3f77781csm69823b6e.18.2026.09.18.11.49.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Sep 2026 11:49:49 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: =?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Maarten Lankhorst <dev@lankhorst.se>,
-	Maxime Ripard <mripard@kernel.org>,
-	Natalie Vock <nat@pixelcluster.dev>,
-	Tejun Heo <tj@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v6 0/5] mm/page_counter: move stock from mem_cgroup to page_counter
-Date: Fri, 18 Sep 2026 11:49:45 -0700
-Message-ID: <20260918184947.3681164-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <aqzulM8S63363Tr1@localhost.localdomain>
-References: 
+	t=1789758855;
+	b=IE9/rZSK4QpGywZGaN5WDg3fIn2Mhi4Cr2VnwSdLX/jHFxJJn3ZGVGCRrYyuaLv8Uu0Pgz
+	iLXlOaZKkabwQKfkHBWAVj2VQW5OoVoem5SsWskGSipUd2+F0JpvTBl42g6O5RCPWi1riT
+	YT2noayFpc6HS70jWhNQiqQ8rwuomnQ=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=icloud.com header.s=1a1hai header.b=Js38DULw;
+	dmarc=pass (policy=quarantine) header.from=icloud.com;
+	spf=pass (imf02.hostedemail.com: domain of bfguo@icloud.com designates 57.103.73.158 as permitted sender) smtp.mailfrom=bfguo@icloud.com
+Received: from outbound.ms.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-west-3a-100-percent-2 (Postfix) with ESMTPS id C4116180014C;
+	Fri, 18 Sep 2026 19:14:10 +0000 (UTC)
+X-ICL-RepId: 01a0b5f0-c68c-78d1-94b1-522a552173d3
+X-ICL-Out-Info: HUtFAUMEWwJACUgATUQeDx5WFlZNRAJCTQhOAEMGWQdeCEwCQwZYClBcHA4PUQxHH3kRUAFYHlZeWhdeTVEPDxlaFFwYU0VRH1RYQQ4KWgtQUR1fAgoERwRbF0YDU0VfAxcRUAFYHlZeWhdeTUcfQE1iSQFaGVscQBdKbk1TDw8ZWhRcGFNFUR9UWF4EU1YOEUhKeQlALUc7ai18XwMIbTB7MX0qcSp8N34tfEB6KAJOGQxKHVJWWxNVF0YJ
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1789758854; x=1792350854; bh=zWqcj/x6eWYWbBAL8kl/ymZLuNhjh0BA6RJ6N290BcI=; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=Js38DULwrukcCRSoJMjJBXBKxGgeLw2rwtAxJYs0TLF9Na00R3xPywULitqV1dAH6hG73N0k72FAgaJYgFGsncbGSuI+RvhOpYRwQkXiAVgMMOpHOdQlVOztqBTerafBroDU8kvXsEmNphsptgJ+pzkNyabexOnwe+ZD6e7L4YLz5fgqY/IdYhHXb9/WRAvXdij3RUOxy2/y+rxW4YZI7eKLrKr9d1DWPx6Jov63+R8hxYJlKjDaYrtiWuq8lEcBXxoDywAtPAQmDVWE7TD2R2E67wRd+Vv7bdt6o/X1RDOo0Sh59RxkNOeAeFyJZdoEPdOwH9KEu0ELDRD4CB98yA==
+mail-alias-created-date: 1772519804199
+Received: from BINGFANGGUO-MC0 (unknown [17.156.208.39])
+	by p00-icloudmta-asmtp-us-west-3a-100-percent-2 (Postfix) with ESMTPSA id A4764180017D;
+	Fri, 18 Sep 2026 19:14:04 +0000 (UTC)
+Date: Sat, 19 Sep 2026 03:14:00 +0800
+From: Bingfang Guo <bfguo@icloud.com>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: bingfangguo@tencent.com, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Dave Chinner <david@fromorbit.com>, Qi Zheng <qi.zheng@linux.dev>, Kairui Song <kasong@tencent.com>, 
+	Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, cgroups@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 4/4] memcg: move memcg private ID refcount to objcg
+Message-ID: <aq2JdwFuKSUO24c_@BINGFANGGUO-MC0>
+References: <20260918-bingfangguo-memcgid-rework-v1-0-5bbf3220d88f@tencent.com>
+ <20260918-bingfangguo-memcgid-rework-v1-4-5bbf3220d88f@tencent.com>
+ <aq2AUmRISe3Nmfft@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 51ABF20002
-X-Stat-Signature: z6nx7e6tpz5o8fqmp9bf6gnrxukokit1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aq2AUmRISe3Nmfft@linux.dev>
+X-Proofpoint-GUID: lM56lfooGkGx8VqIDgjmfZIh95NUhIJw
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE4MDI3NyBTYWx0ZWRfXw7vRgnkvLACs
+ zCN9QZxssgzuh/otDe5TsLrV1j+RR+aXz5C/AlQGc+eBg5RVjrPSMWEOK8+Ktae5tgqd4ywDH37
+ W1YHLn5DonaEl1PJUiwPi0qyCXkvDnZBYCS7vPCPlKvGbix4+EL4Jy9tmR/AkkEpRwu71GJj1uJ
+ GySFC9LJT1u4Bd2pSs1l2WE/B7et7oFkkyQBwB9v3kS0GyGtneOtuXFFQPZZFzoF1g0bwnMAaf9
+ vu1v03YJQgLBtqgV1yfI0DjFTFwYIkMfv3lDparQW2tyimjwCquGrccSIgdRocjpmjLCUKAQ7vf
+ cc6ZTS3g8VVJ+HZwtNNYKNSPCZhYsX4kQXnGggh/c1bjHrS58b5VvyUcW2hUaY=
+X-Proofpoint-ORIG-GUID: lM56lfooGkGx8VqIDgjmfZIh95NUhIJw
+X-Authority-Info-Out: v=2.4 cv=fPA0HJae c=1 sm=1 tr=0 ts=6aad8d85
+ cx=c_apl:c_pps:t_out a=kRaGL2Q7qLiahLf3O6OaIA==:117
+ a=kRaGL2Q7qLiahLf3O6OaIA==:17 a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10
+ a=x7bEGLp0ZPQA:10 a=vu5NlEYW-o8A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=GvQkQWPkAAAA:8 a=N-mGDGxclJDxHLb_ER0A:9 a=CjuIK1q_8ugA:10
+X-JNJ: AAAAAAAB9jBc8wj8EuzGQJhAEc7+fSE+eTWbzq4/kImKkp555YMA7pXJyMEHsIEiaBAwrrL+zdncb89SvcQeTok9aX6ho0IGdn+BHJZ1jnZht8gj8eoiOGEkjJbIelVreiusVq8TGn9y4rZfSTg5bzCJ/zbUxDY/ssVTTCdhqho3xGGq0tb0ff1cOyDyPcWk3WdbFGa99CdjxY0XYmSGBn6oMh7C+BxOgXGIah0DhmTy8DYkt2ZKOAfTKG9Ua9VnXs2aH1gcT0qtD9NKMl7Ow8yBfxQWOdz4G4ofFlxJ5v04EkV82npleTwRn0pws8OYxNqDFUNoENuCjnwRTClH5nPHmRwlaCwSX3OGKY6in60vYO/A5bY1ds7z2Y8Zl55Gr6coQ+qaDw/00G6DMvp/Y4/r/GdplsjtHf6Wu93dVBs5ig758oOwgdq4UMnQDuVcvxRvQYfcu5DsEJK9WOxQtqn97pORomY38HCambcTn6xPcr54CnodGRrtCVWfKPZJjS2dJMLUPbqo2JHcB1feHWE34JftOkDsJ7dpZy00tXanoSyjrHl61wUw5OucAJzA65n6xv2/LnMObSP02FmEFXViXx+Owxe2J4B0zugC1Uw8RRcnaunfjIs0udGXt+DjtlUN45Oq3xr3LnO7GjsKxLpctoRnlzI1xf3vqpee2G1MCa+mJApmEhDLscvv1GopeqiTwN5UyIeeAxNDhYVcfXoFaasn/tgtUZrhLhv/bVVUTzmu5e5QG/q1hwGNXtAPPoxY/1NnUKuRJ3sCPgwSyF2Kq0aBpSz+TfXbCBqKBzoagZTxYlI++3iIu4H8MZshwBlydK+aw2/ixHJgJj6aY1neadshe+JaLBzjmELoLC7V8ie8HXo7ZizDNrymDRSgaog4qcgkz+aRnssRTEd4/gsxeHoyrJjTI3Ot6k6WBYXpI7Ieef01WnCiSDxFnvl6RbIwSVA8RT0U5WvQYlKStse
+ wlv2TAXE
+ zOCZHjy9lcQkkQdAzKTFad0qOh39Wr8GtgaAtvcOFupjc7jAI2LzMrd0pMLyIMJCK+3sLoI7hkCuTReukfp9OZl0AMPtjEs9LQvg4kDhc9m3PBI8HLJQASYVv9KCTr3OYbG9ispm4a2t9mXvhLWk3v6FhlwOx/scAXsFu3+AGgKrdprn8VEldZmmbFkCbCJHN1wddOO62TUV7gjKjKtnEhNxEzRnIzw39eP5pAIIKG2ytEl64aNp65RJnSy4fCtLoHes8E/e5gObzX+TxdBU2Z5ynVpyQ7xyCBauoDZpwf+lmO+aSetFqx8emV/YqkZWq10gacwOX386B8M4eyVeZ3r5srv+aVpz8z/+ZzTdcQ2fMsGqI704PjO9fB1IGPtcxGuKYgLeWHTaLX5bSsKrCClS9EOEAwCmX46lHUSZcElhVgEJFioQDPGWd1K3n207FZ/mci6eeYrzWsfD9YA==
 X-Rspam-User: 
-X-HE-Tag: 1789757391-885976
-X-HE-Meta: U2FsdGVkX1/C08ZYFAeM82mRkVzxYSx/ezVKl2otNMrBnu+uHa8AeLLvFEyVIwlinwTsmxMoqp4qR3hjn1rr3TFxrToISgJoIDyVPwqJKrlZy23R/oW/ZdcyO54ryXqHKeHxfSetCPPe/y8Z8d9+RoPHuwvyhs3qwCmJf2Qag6P+I3SuW33Ji6o1U/wdZJdfCqp6bM0TYTu5O8bqkSCwQCwqht8tEI/ruTYjUP5C5TCr/UNdAVr6d67KoRqWkbMmsCsHn4STy3FY0CClgHUxbcRLdrCzkOGjG176nS1Nr8Z6ZTkOTn75SowS39IxKF6x2csjzU4MWMYVs5/xKXCTwc5DQdy0/5Q7lK9FK5s7/ghY55B1k1U9WGHXpgT5rr8Sazg5skX7Q87SQ5VyhMKEe4N1r3nAhoMksnnNtt3Y5a5VTkZ+iz6JWbKPlsMywWREvt8gISS0CzfcPXuigm/2H5+vpbD9upCsfpk9KfWnEP4gcQmMpVdy64SP+ZU3V4Q6WaLGTFtRQ3VIxM+tptCcI5NIjtVx7QMguepOpKR2nGxx34/1mF+woCOby82e68kpIz6pmvvsMlG7Yd6G+6OHmYVkJoWGBkZQfnpuDuJFD46b7BGza5GKktArXi2F3w3qPW3V+7p5s7bTss5lNCo9Jy1WliBiMLWoHoAp2FzP4qjMNetOhBnc5JB8/NZFDj06Tt2Wa7JAk5JkH8fhlRwfEdqWtQQMNiJmuXo4jx5k+oUvflA6fLAEdcD5UW5vJWBwiAJq4a5fsL4ipRfulYbq3QAy/tVVPFP1zdPnwhUGLRwFfIUEOGlc+5nsh/+iZBd/LhCCxmFidYMhez6sAjKDlVyW5dYQeAPNAEWTjz6W3kx0iW2A5k1C9UP98wiqouJk1J8joyqGrZCib4ZnqgRfu42atWGoyyQ39s8T8f+GU1KFs1BaAhavmOtvZIZTRuVxNQwRJqlyP5Rb/Iz9S3b
- 8EfhQeYJ
- eheYMuEu9bEtNyk4J3UshAO9rKuZB2LRTBoLTwQz5q+R/7JHGW8F401r20FmOpWRSNg5ilyJZIbRWDxgFgnzRPSCVelJnmoRZLunvPZMcqvhbL6bRlXRcd7CcPlBc3oPkhrKz6V8sluSLsMhHpLs3c73GJ85XWD4OPeaFNw+OfZpXYJ3AcRVvUd5biTYq3CZHTqiKUX0+Ba2dLXpdwoOImktqfWCotbz0CUfNFBA3npasqaIa+0fwMijJPgMQWZsdwun5dZdyhZx6uBMCbwJG8oiQ1GTzcvPqvMj4Gw/hkkK7RJFmHT+jKSjgfkxdQPZxNYm7PdfA+z8NU9NluWGIusGeM7LqxIZcfw/Z8tQZnY+xQQfhjxRj3BgKRSztFQZIsDdthe6nG+2zr2jEuA18MpI0zmS+Vi6NrHSNUDf+qdogEjbE7eXsko5oXrotQv36ZssS2QecYPpxNaWEXiH8wP8V5xPHF0OJFEOvE3QammP5Oge3NhhojXPzW9zngN95Gsf4xK/qEW1mG/Qq3HZIHi0xof4IAtuZUgKY0wknUQ/6KS+Jg260vL6prfSoaAM/QUUD0fb4Xt7qzLiUT7X6EdpeHRUf0xtMdIdmshIZNqgzaD7rBIimaVKAtfbEAIE/1dRF
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: DD89180003
+X-Stat-Signature: xgrbjppkjgc5m6mr6h59yb6wm7p78zei
+X-HE-Tag: 1789758855-857428
+X-HE-Meta: U2FsdGVkX1+nE5C+AmMbsufSFiPRWCRODuxO1GZymVPo9iMj+6/2DoziNk/DoXGIF7WvTlw8Is8aIFl7qZLO5erJ7X3pSweoXVVEDVDOuSnZffDI7vTP7FnAzFwashZ7pfTx5oyr/fd7D/DGl9j7mL0IA9OVNzx9NEleE8hDTYmQl+vpVbfy2xa7P5XfFy35AK+7UvEcOeB7Wb+j41XD3KUI2Ew630HgTlRXOHx3AMPQf22DNeXNvXeoFrgJHW7OaqmQWspWcNJBTxBnuz2QqMgDrJAbDRHj3Cq+shVJXlWqdK9MpmPULay5DOf/qFlr+Q/sYW+eachRxlbZQl60zKmhjqF8+A1QX2EYwkQ6ekJF5ge2BYKyN1uFTl2BaEWqx+vrhAmQPJOoTqBzfKKlUZxZ8qzawQKs2MSvji8iUX1LI4yeJmj9l4vAbOThEToYTQwZRLvgflJC3vU1rn2eyFRukQC0z4fNAL5nD8kS1Ukhx8Mks+f3r5PUpgp0a0sgEN66DPLPqFEEdFqQPocgUwkpDG2AUXElSpxi/CzFobWVv/gF/KzBIVvKWwb1Jikt4+L0/e9gK4/X+jhzxOzPu6PNjQX8WDl/f4Iz+t6J4J8rw//2CTb8t6ezF0/37ZR0aJAjrOBDxzRvE/gsDDtjsCNhH8C4bBZ/6xV+VDSrCHePv44cZNvWO09ivxkLTfL81nheS0Y66l346i41RjT/uvWt1Oc768WdejbwWx3MQ6xFR/sY2/aMhP/km/Hb3Du9fLfDuF6Vh2vKpx2sx+EUtRX8P+d4K+P6jpCCZKAYmGDrdHoxQgcYWi0neuaaZJJ1DiHPM1J5cR99GFf3KXBohAm/i4okU9RTKxpDPq39NuWuXR9pH/JoqLzrOc31298oaPRRx398PdfqEzufNaUXIOO4BuaJviwrBGZjIFFICD+SV3t1/nQoZLVbBrNXjrFavUzLJMClwRTWo4yUA7+
+ d99GVQv2
+ IIrwcwDFtBUXgCQodXhGqAQQl/CQfAwInkeUp95t+xtlLksDuRvlSFUJ3rIC3brgEkvk8yx5AF7GI15VBOTruV6QJmWGkcMUN9wyECly9zOrhHm0EOp6DrrhG1UR6XNCqUAK6tUyvSdoFXzAtQfM9wuvpYp3nMC51cAk/ffYj/O5L0zb7p5k1KdE9V9oMWTMyUUuBF27UmbOVvGutwDMNlh+Diz0D2Pj8Eoj2QSMeDeFTDaVlqghkMqzf34eQPjBQ7XsZrT9WoChfXYm3V+0IUaPJyBgVss6ieTmezBYcCy/Vf8GOhTplX6Db2L9zDriKw9Chch+fqEQxoLjwk3eTzmHTRAMXiydrap56IZW6zeUykyw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,86 +109,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 18 Sep 2026 09:58:17 +0200 Michal Koutný <mkoutny@suse.com> wrote:
-
-> Hi.
+On Fri, Sep 18, 2026 at 11:19:08AM +0800, Shakeel Butt wrote:
+> On Fri, Sep 18, 2026 at 05:18:43PM +0800, Bingfang Guo via B4 Relay wrote:
+> > From: Bingfang Guo <bingfangguo@tencent.com>
+> > 
+> > diff --git a/mm/workingset.c b/mm/workingset.c
+> > index 8412f4840ae35..7e4fbc5a786d6 100644
+> > --- a/mm/workingset.c
+> > +++ b/mm/workingset.c
+> > @@ -281,6 +281,9 @@ static bool lru_gen_test_recent(void *shadow, struct lruvec **lruvec,
+> >  	unpack_shadow(shadow, &memcg_id, &pgdat, token, workingset);
+> >  
+> >  	memcg = mem_cgroup_from_private_id(memcg_id);
+> > +	if (!memcg)
+> > +		return false;
 > 
-> On Thu, Sep 17, 2026 at 10:57:00AM -0700, Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
-> > 
-> > This is true, but this is already the behavior for vanilla memcg.
-> > In this series I'm hoping to preserve all existing semantics without
-> > changing behaviors, so I can fix this problem in a separate issue.
-> > 
-> > Specifically, in vanilla try_charge_memcg:
-> > 
-> > done_restock:
-> > 	if (batch > nr_pages)
-> > 		refill_stock(memcg, batch - nr_pages);
-> > 
-> > ...
-> > 			current->memcg_nr_pages_over_high += batch;
-> > 
-> > So I've just preserved the exact semantics that we used to have before.
+> You can not return here without initializing *lruvec as it might be used in the
+> caller. Also mem_cgroup_lruvec() can handle null memcg and will substitute with
+> root_mem_cgroup.
 > 
-> Kudos to you for the conservative approach.
 
-Hi Michal, thanks for your kind words : -)
+Oops. Thanks! Nice catch!
 
+I made a mistake here and it managed to work so I didn't notice
+it...
+
+In the previous patch I left here unchanged and used the root.
+But then it struck me that maybe it is more consistent to make
+the classical LRU and MGLRU behave similarly by skipping the
+recency check for both of them.
+
+I'd like to hear about your suggestions:  Whether to simply
+remove the if statement and use the root only for MGLRU? Or to
+use the root and keep the test speculative for both the two?
+
+Thanks
+Bingfang
+
+> > +
+> >  	*lruvec = mem_cgroup_lruvec(memcg, pgdat);
+> >  
+> >  	max_seq = READ_ONCE((*lruvec)->lrugen.max_seq);
+> > @@ -470,7 +473,7 @@ bool workingset_test_recent(void *shadow, bool file, bool *workingset,
+> >  	 * configurations instead.
+> >  	 */
+> >  	eviction_memcg = mem_cgroup_from_private_id(memcgid);
+> > -	if (!mem_cgroup_tryget(eviction_memcg))
+> > +	if (eviction_memcg && !mem_cgroup_tryget(eviction_memcg))
+> >  		eviction_memcg = NULL;
+> >  	rcu_read_unlock();
+> >  
 > > 
-> > The problem isn't that big anyways though, it's a transient inflation
-> > in memcg_over_high and will be wiped on the next high handling run,
-> > and there is no effect on accounting or permanent inflations.
-> 
-> It reminds me [1] where stockage imprecision could even trigger OOM but
-> it was reportedly only visible in LTP.
-
-So I was thinking about this part quite a bit in the older versions of
-this series where I changed the draining from being async to sync.
-
-If I understand the issue you saw in LTP correctly, it's not one of
-actual memory OOMs but that there was stock that the memcg could use,
-just not in the current CPU that was trying to fulfill the charge,
-and also the draining for the remote CPUs did not happen in the time
-that it took to run through 16 retry attempts.
-
-IOW seems to me we are synchronously waiting for asynchronous drains.
-
-To me this did sound a little bit unfortunate since there really is
-memory that the memcg could have used, just cached in the "wrong"
-place (and for some reason that CPU is too busy to do the drain).
-One of the versions that I worked on previously (v4, [2]) used an atomic
-for the stock so that we just always do a synchronous drain via
-cmpxchg and we wouldn't have the problem above.
-
-Obviously there are pros and cons. Synchronous means the reclaim path
-has the ability to reclaim more memory NOW and prevent futile reclaim
-retries, but also it makes each flushing operation more expensive as
-the cmpxchg operation is more expensive than acquiring a local trylock,
-even if it succeeds on the first try. 
-
-In my opinion just doing the synchronous reclamation makes a bit more
-sense to me since it gives a stronger guarantee that we are going to
-get the charges we need to fulfill the charge attempt NOW rather than
-spinning until some remote CPU gets scheduled to perform a local flush.
-
-But this is just personal taste, I haven't really seen too much 
-evidence that we are wasting too much time on the reclaims. So maybe
-asynchronous drains are OK here. I can do some more digging in our
-production data to see if we're ever just waiting for remote drains
-to finish.
-
-Anyways, I still intend on separating out the two efforts so that this
-one is just a simple code move (and make stock more scalable) for
-cgroup v2 users (and I hope not-so-big impact for cgroup v1 users)
-and I can work on removing the 7-slot limit and improving the draining
-as a follow-up work.
-
-> HTH,
-> Michal
-
-Thanks for your thoughts Michal. Have a great day!
-Joshua
-
-> [1] https://lore.kernel.org/all/20250530151858.672391-1-mkoutny@suse.com/
-[2] https://lore.kernel.org/all/20260623180124.868655-2-joshua.hahnjy@gmail.com/
+> > -- 
+> > 2.43.7
+> > 
+> > 
 
