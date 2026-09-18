@@ -4,117 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CB20C982D7
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 20:07:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE55FC982D7
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 20:07:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 28C666B00A5; Fri, 18 Sep 2026 16:07:07 -0400 (EDT)
+	id 552396B00A3; Fri, 18 Sep 2026 16:07:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 263BE6B00A6; Fri, 18 Sep 2026 16:07:07 -0400 (EDT)
+	id 4AD4D6B00A6; Fri, 18 Sep 2026 16:07:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12B436B00A9; Fri, 18 Sep 2026 16:07:07 -0400 (EDT)
+	id 3A2936B00A9; Fri, 18 Sep 2026 16:07:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C356B6B00A5
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EFFBB6B00A3
 	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 16:07:06 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 52C92A07DC
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:07:05 +0000 (UTC)
-X-FDA: 85227966810.07.49E8C82
-Received: from relay.hostedemail.com (unirelay07 [10.200.18.70])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 3A4E1140009
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:07:03 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	arc=pass ("hostedemail.com:s=arc-20220608:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789762023;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NNhCAqWpdqP/8unoyYkwhtURYEVhgOr7+m0jRabjXBA=;
-	b=w6ZPeUJa0T9WQNmqCm+SRvbSiirjB7NpfWrQcWEMuP7Ecq+lWvyu/I2hiC/2PXp8iUOxHo
-	kKiE/TEbz81T5aemaWR2z/2xU0bnWFaGxUMr+WgwFTqa4dLi1f8MaaFz5ypq/p+Fi5nrIO
-	kHXn9DcSv0jk5OWXNIOV5O/05AcloLI=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789762023;
-	b=nvkW/482SRweO+Mu+B4R7ydDU3CBadagtJKFqpm01wdg0z4q+bVSEdhI9D7ZPYlvl28kF+
-	4tqV7f/v6t0szp1UGkfjeEKUtgPOBVLHdP1hm3P33RgEwSB9QlpEttQkV9jQQenu4xQGSH
-	hj+CuMkpACiHqEvZN3om54j31VKqtBk=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	arc=pass ("hostedemail.com:s=arc-20220608:i=1")
-Received: from relay.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CE08C160797
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:07:02 +0000 (UTC)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A02CA1A078C
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:07:02 +0000 (UTC)
-X-FDA: 85227966684.04.7E9FB22
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	by imf11.hostedemail.com (Postfix) with ESMTP id D8FF840005
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:07:00 +0000 (UTC)
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789762020;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NNhCAqWpdqP/8unoyYkwhtURYEVhgOr7+m0jRabjXBA=;
-	b=1wkzQSLRSIdO9XTYzXCzjCNLLlhr46HxdNl3VtRdfS+kxtjqzAOTW+ZgSCnmCoalqiSvcE
-	lj02+ET6sFyUmqcIMpHDz58zHwdqElUX3wHhyFFkcbjuFugcvFuRZKTiZeGYoP9oE5ZnT5
-	dVcz1L6hFSb9B35fgsjPliubMkYMsxw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789762020;
-	b=ZUWM0BIo3VArquopm5i3+Yd8VgWxmPPimIxgu8RRcoEhPKEj4pbfhUebp0VUbws+IGvbpz
-	KAGImTYDrZk/W2C+LsdUVuf6mwlZxDM2XZFlPSPSFjejNbEUvw3gE+kVEZbhjxDsnGuuD6
-	cEy1bKTp1D6vNkNN1/JvRlrjoUvssdk=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=WYt47MEV;
-	spf=pass (imf11.hostedemail.com: domain of 345mtaggKCCoJSGZRGIQMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--dmatlack.bounces.google.com designates 209.85.214.197 as permitted sender) smtp.mailfrom=345mtaggKCCoJSGZRGIQMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--dmatlack.bounces.google.com;
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 86F21407FE
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:07:06 +0000 (UTC)
+X-FDA: 85227966852.28.90BD802
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	by imf15.hostedemail.com (Postfix) with ESMTP id CEC2EA000B
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:07:04 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=a+e40NCK;
+	spf=pass (imf15.hostedemail.com: domain of 355mtaggKCC4NWKdVKMUQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--dmatlack.bounces.google.com designates 209.85.214.198 as permitted sender) smtp.mailfrom=355mtaggKCC4NWKdVKMUQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--dmatlack.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2d6f80c76e6so22595715ad.3
-        for <linux-mm@kvack.org>; Fri, 18 Sep 2026 13:07:00 -0700 (PDT)
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789762024;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=siMAWwJv4yjE1eEtNkD6j1Z4yk/PjEJKUuLYDAAYM4E=;
+	b=G0tnOT9SFG6ijKzJLDoL0PFNt92T7CzYJ+kb9Z/V5zDqKON3kkXqNVGHNalNjL4HkYsHkS
+	XmeSMRvpz988gGwm5iga2yeNAQQ/TWm5RO19spnRCZBpDVauFyg39/7k7u4Y9kSqV8hCXd
+	wvIC5WD9Fc9x7WSY9ajz7grY16teSqY=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789762024;
+	b=AhJdUJBzNjCPXkyszwNoclF1A4vjQmFZZcjzsJn+wWuAVoPTEFZrbCO4As7OD6exhGEQ1W
+	GsSrc+0vohl/sUhUoVdwR9lFSGkPKmf2wKqYoGsotBv3Q1i4NI9fbFUe7meeAak6DYtoLN
+	ZJB1HT4jw+9lzNJ1mH+FyWhXvaqrPd4=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=a+e40NCK;
+	spf=pass (imf15.hostedemail.com: domain of 355mtaggKCC4NWKdVKMUQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--dmatlack.bounces.google.com designates 209.85.214.198 as permitted sender) smtp.mailfrom=355mtaggKCC4NWKdVKMUQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--dmatlack.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2dc92350888so18274145ad.3
+        for <linux-mm@kvack.org>; Fri, 18 Sep 2026 13:07:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789762020; x=1790366820; darn=kvack.org;
+        d=google.com; s=20251104; t=1789762024; x=1790366824; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=NNhCAqWpdqP/8unoyYkwhtURYEVhgOr7+m0jRabjXBA=;
-        b=WYt47MEVUOoB1Qu1mzCqEyTGSbqEKqx4qETAtotBDATO83YD8Tz3aLGLu11qe2yAwA
-         BXcCrhzgmuji1D7JAgP9IpeJea6JpxFPFu5YKi8ggmrsp4l/bmJ6lb4TpUkad+YMcFg/
-         16LhvoM5bRsd6+jjt/k0sZTRTiYJLcJlU8jGPbFJBSgANmIEtIuM5XvHJHJqQ7Ztmnme
-         mpsmKJSk4Cq+51VQ1bkeFdySZ+XaLJNjvOsvHKasHtGMtEjOugmxypPXGnbBw/s/rYZ8
-         kOUTTXGrFE0roh8mp3qOCgmTV+R0MhacI2StVtUqidfJGQU1HauSRh9HF/edFnFV32pa
-         QmLw==
+        bh=siMAWwJv4yjE1eEtNkD6j1Z4yk/PjEJKUuLYDAAYM4E=;
+        b=a+e40NCK6oldiZqrwxedhlPz/3StJifPs0yKZNZ/QlIwqdnYfYkQBrHCN9CiBsBrLm
+         GBPAX0gQM8mV7ZfPoXiattfmQaiQQxinkRt4zjAwDQKJgLOhK8iUQvQKxSTgFvMO8A87
+         H/tmuMBJNDGAZSf+93UKIqU5FsKiyAGLfL+PgXdV1ZeaYTCtaPikOWaQHD5YETASDVSs
+         X6B1Qd82C4v2LS+rkTJLPho4nbPkFFPUwBe/o0uklUQgv1CvTvZhNeUz2Ts1DCG+5X8j
+         UNH6+Q5mYiaL7wiPQ9qRDo+EmKwmMjSF5BeS1yH7B5Zxkz4t18/x1QtTynw+LZCUkC3I
+         i22g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789762020; x=1790366820;
+        d=1e100.net; s=20260707; t=1789762024; x=1790366824;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=NNhCAqWpdqP/8unoyYkwhtURYEVhgOr7+m0jRabjXBA=;
-        b=YHol3KeQ/LijOq7Zw43aSU8O8hRhQm1Hc4IheH9UJMJ9l5SqzuUfA/4vLP2KOFfo5Q
-         cXUAublKN/eOlZ/omcgvwXahWxAMLJPmmCbitNk+vBoK/YGI9p5srnL4MPW7cz28nT8/
-         X3BKXRjn20p6i8DX7hhqKPvY5Yi7AN6ILkTTysR4AQ8LnRY4cxzl4FfmxaTw0I83m6V5
-         Rf0zeKHRAoZhin/H8Ai+9oujQbUb+465UcJ8s3x3wgD/QR25XHMo0ZHg6hDv2qirTv+F
-         t5ha8v3QpFvCODR30UsvU3p+kRoEJ8QYP7QqZcqW6JIjVw0G+AS4cNqMkJsHhCYeH11F
-         YJBg==
-X-Forwarded-Encrypted: i=1; AKwUvBxDco3RXci+OuBdz+LwjPZvcErsp8BZBe9LZ2z7DXNP0aVjrdFUjL+jasafhpAop9YxcBlH1fiD5A==@kvack.org
-X-Gm-Message-State: AFuF++mikfFCSSJrTNkp+WflCdoWGWLIsqOElJmC6ZpiVlFf7w4YmdB/
-	E8JM7t4oFpKzb81ajE0/0v+KBBymFcMP+PvJvGwBEJ3vwHm7iuDT5w8V6nav9RsSKxaD7P1FmyD
-	gLJnO20/Ly41svQ==
-X-Received: from plec5.prod.google.com ([2002:a17:902:f305:b0:2dd:2f59:daa8])
+        bh=siMAWwJv4yjE1eEtNkD6j1Z4yk/PjEJKUuLYDAAYM4E=;
+        b=JaLo7WKTwHROvdwAO9R7eRMZ5nZdEMfoLW2IL3Ztbu8P5zZdlfmga7sdqYebae5XmN
+         /1iA2TWcyQGUjsiBlCy+AFwY+Kz+THpRoBQaCBuRls+5foYu2qodYLWUNhm6l8Y2TKm4
+         Ufr19ge1NfAgkxpjbZyQ14OFIaKHOROf0Zc9KOrRoTzNbwvxANGWigf/PlHXZQH6scgh
+         fQDCh7IqLZ1r+EIG33cqQolqguZdKfmC/R7vmV80nmUB3h+d/meTz4qLH5qGhr/RvTPO
+         vMSQKJWjLWm45HwFZs6lfTHrXlV1FG3BKum4uQqbXThJAq9DkCdBDI0yIgM5ig9gaexI
+         5vwA==
+X-Forwarded-Encrypted: i=1; AKwUvBw8Zdn+7IKZJF6usH8ODAM2baF4kySJY7usxZiYeb8i4PhWKAojGiFtxsicNPjxkSrXSgRVFDaM2w==@kvack.org
+X-Gm-Message-State: AFuF++lqakalMRdDJca+6NuC69Zwcheme37GM+/B1L0liOika+NLyLTO
+	mN3Xg/Yu3l+g36R8M8HgrLmQ7zLWTHazvItqPyU6aU91grCdXELTsbpRDC1fELhFTzIjPX2KMDP
+	0vrzY19+VZNYLXw==
+X-Received: from pgbgf16.prod.google.com ([2002:a05:6a02:2cd0:b0:cc5:1124:470d])
  (user=dmatlack job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:9cf:b0:2dd:c053:e662 with SMTP id d9443c01a7336-2ddc053e6aemr12608265ad.40.1789762019617;
- Fri, 18 Sep 2026 13:06:59 -0700 (PDT)
-Date: Fri, 18 Sep 2026 20:06:33 +0000
+ 2002:a17:902:7209:b0:2dd:c100:a5dd with SMTP id d9443c01a7336-2ddc100a681mr6689305ad.49.1789762023439;
+ Fri, 18 Sep 2026 13:07:03 -0700 (PDT)
+Date: Fri, 18 Sep 2026 20:06:38 +0000
 In-Reply-To: <20260918200640.887030-1-dmatlack@google.com>
 Mime-Version: 1.0
 References: <20260918200640.887030-1-dmatlack@google.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
-Message-ID: <20260918200640.887030-8-dmatlack@google.com>
-Subject: [PATCH v9 07/13] PCI: Refactor matching logic for pci_dev_acs_ops
+Message-ID: <20260918200640.887030-13-dmatlack@google.com>
+Subject: [PATCH v9 12/13] PCI: liveupdate: Do not disable bus mastering on
+ preserved devices during kexec
 From: David Matlack <dmatlack@google.com>
 To: kexec@lists.infradead.org, linux-doc@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org
@@ -130,18 +105,14 @@ Cc: Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.
 	Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>, 
 	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
 Content-Type: text/plain; charset="UTF-8"
-X-HE-Meta: U2FsdGVkX1+dCy0ymo+5n4FVzJHUWkKUCc5qgAxc97nZ2AE/uv/+2c8oJpT4PZXnSU203cFFljTDCJ8ZjjBNpn6ptGtd/N/djdd37dQARCtmjR9/OgyJ+eRx+W3vp195fUsQf8ALeWxMbl2jGkMhLZ+S8p37jd5Wh7/g903ApzhdN7ZPf8bAW1Przl/3EvWBzpQWpkCXRB6tFm46Cm5vCNJSoH5eqQ/z1UsCvz/mD4F0GDJQpBTPr1aaI9TvVdAy1bVuKRpohOsLlPMgE7dMYS1jTtCEkC0Ld9hULcV1mtQZSN7uGfuMnR75y1iMmFAsRQnp7iUOGcPprORZ604US9VRd3D/Nvh0IF0hPKdPYD22PItSYM65js2Qhomqjn4+0lwBUtI67f3UY059+h9gm4RxElN/O2Po+7z27xUYvYuMf2Y21/4XbJfPQXRIU2qb7L2bhe4ObqABudwPYS8FvvsPTHi2p5eeX0oKX3CGKxXdxe7C/Qoz2LFp5mGDZTkz9ARJzpk7uAB1u+OKcVojSfChEDG1GHyI2vFP9w84Fsjm3WqmzSnUt0CXA5B8FZGLJlZbPG9nYB3klZkxBo9oPEmJfjTXcWw3n/gNeGewjadUvNWsHuHytMCEI5dnuykx0+fis0XNZx1L4RZepCmAlcIMVUlLKblVbrxMSQRN6z+/38svpbNYWv7ZdCGQyEY6yQ0mGlcUsR0i3fInWHbRN16ji3W/I/pf8hi9Aio5CoafgHq5J4Nres4jM3a02W7i9pc72dRXKSzV/c4wwbwJwnFUMbcWCiMfe/1GbRwYwNIxV8HAnvMPJOeSanCeA1ALGN9NV50Fg01Pqu1Zg8K+YAJ2fUBkzHe3k8x+FYf2kwYwzjF4CR/tbmSfw7b9EajmIM4AscPr2f67IA5L9gAfOrdLMnkp+fjri0UYNbwadFqZ9G7F/tmThnxZZvMhYghHNnf/q6f9rFHhYpK2N7m
- McybZISW
- xwwgxA91FD9rxNIYt2c0AgW8kANmH5+HWxu3d0yhE7tIo3GjdI/XHMFnCBChNKbVI354x4d8WMyItkujsxuxDP06aZzUEkZUGQvYfTWbMBajQRA8eQsvBUXtnPWvJPKuri1PXXGE+jGrarfjJA3PLk6jr4GzuJzVkgLqXmDZo1rP1K3RJjAkFyGYztSGQRLygjUoM+2qvSzvj8E7UEwlHaThAPjuu3O5mISCWIejv+/ILtwUqOtgpaCxDRuYHiP3X2YZuHtGVXS+qdlc/JOKEy//iujTekvgT8c3N7c9NnBpdWIWhwpgJnVJozZpS1X6kRkUbG+IgPSa2/i2J+QS7pZ/NS4fIBqjrCl1TTvLxdVAtHQO/loVGYVS3brolpHbh8TXnQOUvpQ5MvetoysVowmQPaxHmq+jGn5DpnmXuDY6pVisc0UINReR20QX13O6SDijkc9fkn+EL9H9e3qSAVPZWaowBj1WdQlUhXhmns8pRAQqAAD0tOktXd2alIQH0zSrkGhwtfePMsmKJ5gHoJe6Wfd8qNjafbpU++sOERAbT/ZPCcA86wka/1Yp0x0pATIlDUcPcZNai75ITKyO+eEl6z1jtNwqT20OKDQotjOSiz3tpsmGBgfiXxhCIBdaUWRU2ryd6Qi8774YOH1FgW8G6fjZkT8g48Gxk7hy9Lbf44+UUJ3piMcdOghUfZRnOL4Pb
-X-Rspamd-Queue-Id: 3A4E1140009
-X-Stat-Signature: 4qja6aj6jj7xxu9gy9zcaoxi5emhhmr8
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: CEC2EA000B
+X-Stat-Signature: uw3iwbgjdjm8671fgp44ek1xd9wtjjts
 X-Rspam-User: 
-X-HE-Tag-Orig: 1789762020-389514
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789762023-370522
-X-HE-Meta: U2FsdGVkX18qETK5GSntJ1L7pc48SQBAYnf0XBpTSBUOQtETw/3DGmzLJflEkos9ga37TdbCGjbEfFiDAxuThXjI0lj5R1pQ/rh2o5EzfLUeCu/7sL/3rUysZCZodq+zzAHXbp9rQjXBHPzNGz5jI/PXhQc2rIHXMiO7troYqvijc2YJxgsLrEBuvYyTe5VcXe95oFSUPFyMo8l8/ShrlqonDJgGr0/lVwaAQQrxMT+uZTK7FlCMGSRlPpX1JzkfDE17hreDVFkak3X3jEXvSbDHJPYG1dM0HC6D5oLczeLoYFMnVNCXU3ldjDdyLkmBZsauRyBdVRwQoBUqjnrFASac7JGQv9S9edFvDioO7do70k+W9pflXpFXd0PCLoavxCaKhSdxpFPCpnU88wEOmMnb8vzZIgcft6yYMlnIu0P8Zaae/jFJ+4E5xHLGOdm/mhYA4+bIHDbVV1f/dGFuQ7rH0XXnhh670inmNtp8wTK3G4qoHECALyZTbhguCQDCOC8i5DBV1pM+I42ZKVsbJJrXZpLJs/laEjRvpjCscwr4qeGTvc9WU8hVwJ07njcfuu5TBJN+7kVl+SY+9rsf8+BuCE+Jq18eub0PpACz5ZJ+P3YotOrGiOfCxgPCmhVa5GJBwyUmy0MRFkN7v6Y4mevfdZAbttqXiezfaYB7joxl61POX8wCOcSk+iRI7+WpiPLO0Qf6E/P5YoxI+Y/I5UepOOi594uAYrd0s8AHo/nzpAKsHdXZTYFfdpKjSOECPVxnJud13Wf9oR8I++oFBZJSIdZs9eAWYh6NU4V6q8vGFRhaNEMedu5jXSQjDK9t9K/a4+uiv1vDf7QOciTomKD3dP39pkwAV35t/PEnpDFsppWXp2xeUB2jYMED/lrqLhiLcspVQMyXcSk4564JSuIUM1HalrPPn569G9hzPgcIilEdsutGKAKhu/VLZOTiwBQauB0H0K0DTFDd1de
- scRQyOg8
- 8WyuYRMiZ3KfJNB3u/OyMTtQFaB5LAAu7hwLIK2N9dFTZLhFrRxgK8wsVkTWCqVA5Wo+yZ2O5+7JptBOUDbbs0PfRz512BIDACy/HrquyMFu1ryrRcIBOAjlO0J/mCnYBxfMU+nVLNgl2lDCz/HWNnO+RK0ljAqQ/atxOuoBK2fNylvkwNnXdkX1uO/wsy6GEdHnkTJkdE6g1Fi7/MtNLrCCOqGrd2G1lcyVxuuMhjMjRaJTn9pN76J+cSU+/aDwVWmHHFHMCBM6QY4gmqdIHfptvZHCI5ptvK3hDeR64mg8SNLr5EXmG8hlSd08PAHYlnktSRNtfX/gZW4mC545k+enPEfAKC7D22LbSEJhUo9YhuOBNxPpoI66J5GOzroel3kIM5zeOTVgvDEQ9oG4AlOFvovPw2IdxA+IbG6HAOZfZWeMfPiIitM1Uo1Ev+M5C6ADyRrneDe7NYTIVsMhSwW5PZ9o7oUgpYd7LY6VGmgt+d+8D+O1UaqRvT1ngeoG6i3lu9ElaA4R/78IuM5kKIVcOq21DrMOnmECKGHYxCbmfBzvO7oXjvE7l/GPLB5LQq9mE0rgNPYArBvfucWk+ZSd0RYbNv+JkGYXwPbmzyfb2AGLQkrcU+cbvuOsiqxf+bG+SmpdZWlSA8mZTYsnS/ONNc0tdMGzndV9aXD9YzGu7ZgQ=
+X-HE-Tag: 1789762024-150300
+X-HE-Meta: U2FsdGVkX1/fnP5Zj9qAFi/eepXtg4BiNBeER+pnDRp/muKmXoGjjUMFBklbrw0u/WKwE6FNS7UIRl//MBzTXA7hZHxfJW9/MFBNh84jg8yRmeuDbkWgOIq5FC3d8CoO+aGmjSog+mx5xXpS9UtEA0QJejmYjWTlGtm61cgbYM0wdE/p5W/jsPc1WK2orhvxIQvAFpTo3CajMUr7je84EAoFRR0j0qnaSBgKLpjpFuZOJCdg2N9j/6WWo+M+86p84//dGhEpRIREDBAOV2uRJ+62aDrgH/dS/DieQ0MNdl630m4A2z91rb2tWsaWqQR2Yycy9t62nu19ZqMlYj/l+hhDCOdFS2MJbEjZzFFSfQpF/by5y8nxRCJt/IYFG0yG0rxeYAkkP9EEeizhPFgf9zKEGpzhpFGKB4oWkJIRtD1NnB9SqAjkz1oiAExocgV5hJmUqIsXHd5qRhx55KeRT3ERacdmEZQ6ZcBz5izRC0tfB3LmHPxctj6p0m48qbMFJBhrW6buFAnwJwcE2ZXShXcX42dmyu299X7dzfRhKNUNgi0L7m0uS+ebD84VZFB95Oa/Gn/amQ0nejxYTkmD+b4DX5cNiySwy7fi2xRDfMTB7GCVZIq1NptW8X3cQhOUGFy6z0T72Ljk0dUXRP75rkOnvdcsHYx4TAcCL9z2OEdHdStlxgHu3O+cpkoa9RpYzwMv39dyF41Q9Wd5dL/b96+olDmRhUaXapqfgy9L7FoD/WNgHvwFZBO4cbOfbUCthS/q6+aNZ9lxqjVWUPXr0PwfKqrBKOhQikYepvknlUh9XRSZnHU2RyczkdviSc4HoLovy7eEl9F2kroP3FVbixP82U6bEZE9hi5Fq0ZaGnXs9JudM60hsci4eiwZL7wYEP2UarrOAGUe5esS3bOTINFQqcN/Shrzd0TJe4Rokb6gmseyU1xipoKYa3BpinhrRyUEnVKZ/RW6EfQED52
+ xRnb2CF+
+ CWdU8MTfYUFP3KfPVsiTGFXdNcOEvEJSqCO8EGhqm7AzJpEEGb8yiseTgylHUI6/aSsR4p9UfIM+r2rYdn0QzY7OiOmVSBj8GP/LNLXNiZFiRoTHQE/m/mMMFQJTCmhlVK+JjqweoUMJk3phkfRePZQNRLWc9B/lGl8lrgJCZ9tewIsGBa7eAh7GULph52XQiixKL/2hS+RcovBOMtpzOwzeVT58/yKRSEj66pBQRvk7pKj7R+0+I5E2373ZqhOuRO8S1GyEHBj+Rn3zVO8Sqxib4SMQgkJbqSog6H2khYuAxuGxjwUAt3xge7043044FczX/0x1pRe+Ea1xY4W/Dx811zbgmqYDO80Pi5OB8z5gyE5Eid6KKVciK5ccoJ7JcMKou0b20qIlqys6L30X4uddMSd9aF59YOnK0A5WOXFTF4PlN9YLsH7320bublFWQjktyUKDgm3+DWqjCUaohkTt83F10PO4kEr0+SuhcCoLkZljKb/alt9GlXoKw9NwlcHcHUmmH/H1mn4v9GDUqUQFKetmG/9lBpx637DkPGu8vvP+d3IDaBvfv4QadQDg1zEzp8XowydNhtAwWkSboyy8rejUJIquO1baTt0M7LO4ZSOp0bM+qNOhf+24fNyHysDCf/WuR6rkE6bXruw5jkj6W8Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,137 +120,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Refactor the logic to match devices to pci_dev_acs_ops by factoring out
-the device matching loop into its own routine, pci_dev_acs_ops_get().
-This eliminates duplicate code between pci_dev_specific_enable_acs() and
-pci_dev_specific_disable_acs_redir(), and will also be used in a
-subsequent commit to check if a device requires device-specific
-enable_acs() during a Live Update.
+Do not disable bus mastering on outgoing preserved devices during
+pci_device_shutdown() for kexec.
 
-No functional change intended.
+Preserved devices must be allowed to perform memory transactions during
+a Live Update to ensure continuous operation.  Clearing the bus
+mastering bit would prevent these devices from issuing any memory
+requests while the new kernel boots.
+
+Because bridges upstream of preserved endpoint devices are also
+automatically preserved, this change also avoids clearing bus mastering
+on them. This is critical because clearing bus mastering on an upstream
+bridge prevents the bridge from forwarding memory requests upstream (i.e.
+it would prevent the endpoint device from accessing system RAM and doing
+peer-to-peer transactions with devices not downstream of the bridge).
 
 Reviewed-by: Pranjal Shrivastava <praan@google.com>
 Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
 Reviewed-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: David Matlack <dmatlack@google.com>
 ---
- drivers/pci/quirks.c | 51 ++++++++++++++++++--------------------------
- 1 file changed, 21 insertions(+), 30 deletions(-)
+ drivers/pci/liveupdate.c | 11 +++++++++++
+ drivers/pci/liveupdate.h |  6 ++++++
+ drivers/pci/pci-driver.c |  7 +++++--
+ 3 files changed, 22 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index de9bbccda21f..7aee30734303 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -5377,9 +5377,6 @@ static void pci_quirk_enable_intel_rp_mpc_acs(struct pci_dev *dev)
+diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
+index 496ba74c26ce..51695782ed42 100644
+--- a/drivers/pci/liveupdate.c
++++ b/drivers/pci/liveupdate.c
+@@ -193,6 +193,10 @@
+  *  * The PCI core adopts ARI Forwarding Enable on all bridges with downstream
+  *    preserved devices to ensure that all preserved devices on the bridge's
+  *    secondary bus are addressable after the Live Update.
++ *
++ *  * The PCI core does not disable bus mastering on outgoing preserved devices
++ *    during kexec. This allows preserved devices to issue memory transactions
++ *    throughout the Live Update.
   */
- static int pci_quirk_enable_intel_pch_acs(struct pci_dev *dev)
- {
--	if (!pci_quirk_intel_pch_acs_match(dev))
--		return -ENOTTY;
--
- 	if (pci_quirk_enable_intel_lpc_acs(dev)) {
- 		pci_warn(dev, "Failed to enable Intel PCH ACS quirk\n");
- 		return 0;
-@@ -5399,9 +5396,6 @@ static int pci_quirk_enable_intel_spt_pch_acs(struct pci_dev *dev)
- 	int pos;
- 	u32 cap, ctrl;
  
--	if (!pci_quirk_intel_spt_pch_acs_match(dev))
--		return -ENOTTY;
--
- 	pos = dev->acs_cap;
- 	if (!pos)
- 		return -ENOTTY;
-@@ -5429,9 +5423,6 @@ static int pci_quirk_disable_intel_spt_pch_acs_redir(struct pci_dev *dev)
- 	int pos;
- 	u32 cap, ctrl;
+ #define pr_fmt(fmt) "PCI: liveupdate: " fmt
+@@ -950,6 +954,13 @@ int pci_liveupdate_adopt_ari(struct pci_dev *dev)
+ 	return 0;
+ }
  
--	if (!pci_quirk_intel_spt_pch_acs_match(dev))
--		return -ENOTTY;
--
- 	pos = dev->acs_cap;
- 	if (!pos)
- 		return -ENOTTY;
-@@ -5451,56 +5442,56 @@ static int pci_quirk_disable_intel_spt_pch_acs_redir(struct pci_dev *dev)
- static const struct pci_dev_acs_ops {
- 	u16 vendor;
- 	u16 device;
-+	bool (*match)(struct pci_dev *dev);
- 	int (*enable_acs)(struct pci_dev *dev);
- 	int (*disable_acs_redir)(struct pci_dev *dev);
- } pci_dev_acs_ops[] = {
- 	{ PCI_VENDOR_ID_INTEL, PCI_ANY_ID,
-+	    .match = pci_quirk_intel_pch_acs_match,
- 	    .enable_acs = pci_quirk_enable_intel_pch_acs,
- 	},
- 	{ PCI_VENDOR_ID_INTEL, PCI_ANY_ID,
-+	    .match = pci_quirk_intel_spt_pch_acs_match,
- 	    .enable_acs = pci_quirk_enable_intel_spt_pch_acs,
- 	    .disable_acs_redir = pci_quirk_disable_intel_spt_pch_acs_redir,
- 	},
- };
- 
--int pci_dev_specific_enable_acs(struct pci_dev *dev)
-+static const struct pci_dev_acs_ops *pci_dev_acs_ops_get(struct pci_dev *dev)
- {
- 	const struct pci_dev_acs_ops *p;
--	int i, ret;
-+	int i;
- 
- 	for (i = 0; i < ARRAY_SIZE(pci_dev_acs_ops); i++) {
- 		p = &pci_dev_acs_ops[i];
- 		if ((p->vendor == dev->vendor ||
- 		     p->vendor == (u16)PCI_ANY_ID) &&
- 		    (p->device == dev->device ||
--		     p->device == (u16)PCI_ANY_ID) &&
--		    p->enable_acs) {
--			ret = p->enable_acs(dev);
--			if (ret >= 0)
--				return ret;
-+		     p->device == (u16)PCI_ANY_ID)) {
-+			if (!p->match || p->match(dev))
-+				return p;
- 		}
- 	}
- 
-+	return NULL;
++bool pci_liveupdate_is_outgoing(struct pci_dev *dev)
++{
++	guard(rwsem_read)(&pci_liveupdate.rwsem);
++	pci_WARN_ONCE(dev, !dev->liveupdate.frozen, "Preservation status is unstable!\n");
++	return dev->liveupdate.outgoing;
 +}
 +
-+int pci_dev_specific_enable_acs(struct pci_dev *dev)
-+{
-+	const struct pci_dev_acs_ops *p = pci_dev_acs_ops_get(dev);
-+
-+	if (p && p->enable_acs)
-+		return p->enable_acs(dev);
-+
- 	return -ENOTTY;
- }
- 
- int pci_dev_specific_disable_acs_redir(struct pci_dev *dev)
+ /**
+  * pci_liveupdate_is_incoming() - Check if a device is incoming-preserved
+  * @dev: The PCI device to check
+diff --git a/drivers/pci/liveupdate.h b/drivers/pci/liveupdate.h
+index 5aac19f7bee6..333ddd8f36c5 100644
+--- a/drivers/pci/liveupdate.h
++++ b/drivers/pci/liveupdate.h
+@@ -18,6 +18,7 @@ bool pci_liveupdate_preserve_bus_numbers(void);
+ bool pci_liveupdate_refuse_bus_numbers(struct pci_bus *bus, struct pci_dev *dev);
+ int pci_liveupdate_adopt_acs(struct pci_dev *dev);
+ int pci_liveupdate_adopt_ari(struct pci_dev *dev);
++bool pci_liveupdate_is_outgoing(struct pci_dev *dev);
+ #else
+ static inline void pci_liveupdate_setup_device(struct pci_dev *dev)
  {
--	const struct pci_dev_acs_ops *p;
--	int i, ret;
-+	const struct pci_dev_acs_ops *p = pci_dev_acs_ops_get(dev);
- 
--	for (i = 0; i < ARRAY_SIZE(pci_dev_acs_ops); i++) {
--		p = &pci_dev_acs_ops[i];
--		if ((p->vendor == dev->vendor ||
--		     p->vendor == (u16)PCI_ANY_ID) &&
--		    (p->device == dev->device ||
--		     p->device == (u16)PCI_ANY_ID) &&
--		    p->disable_acs_redir) {
--			ret = p->disable_acs_redir(dev);
--			if (ret >= 0)
--				return ret;
--		}
--	}
-+	if (p && p->disable_acs_redir)
-+		return p->disable_acs_redir(dev);
- 
- 	return -ENOTTY;
+@@ -51,6 +52,11 @@ static inline int pci_liveupdate_adopt_ari(struct pci_dev *dev)
+ {
+ 	return -EINVAL;
  }
++
++static inline bool pci_liveupdate_is_outgoing(struct pci_dev *dev)
++{
++	return false;
++}
+ #endif
+ 
+ #endif /* DRIVERS_PCI_LIVEUPDATE_H */
+diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
+index dff60a03204f..c1ac2ef025e2 100644
+--- a/drivers/pci/pci-driver.c
++++ b/drivers/pci/pci-driver.c
+@@ -569,11 +569,14 @@ static void pci_device_shutdown(struct device *dev)
+ 	/*
+ 	 * If this is a kexec reboot, turn off Bus Master bit on the
+ 	 * device to tell it to not continue to do DMA. Don't touch
+-	 * devices in D3cold or unknown states.
++	 * devices being preserved for Live Update or in D3cold or
++	 * unknown states.
++	 *
+ 	 * If it is not a kexec reboot, firmware will hit the PCI
+ 	 * devices with big hammer and stop their DMA any way.
+ 	 */
+-	if (kexec_in_progress && (pci_dev->current_state <= PCI_D3hot))
++	if (kexec_in_progress && !pci_liveupdate_is_outgoing(pci_dev) &&
++	    pci_dev->current_state <= PCI_D3hot)
+ 		pci_clear_master(pci_dev);
+ }
+ 
 -- 
 2.55.0.1082.g2b9226bbc0-goog
-
 
 
