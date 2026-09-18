@@ -4,98 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE994C982DD
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 20:19:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BA39C982DF
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 20:20:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED9316B008C; Fri, 18 Sep 2026 16:19:31 -0400 (EDT)
+	id 711276B009F; Fri, 18 Sep 2026 16:20:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E896D6B009F; Fri, 18 Sep 2026 16:19:31 -0400 (EDT)
+	id 6C27F6B00A6; Fri, 18 Sep 2026 16:20:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D788F6B00A6; Fri, 18 Sep 2026 16:19:31 -0400 (EDT)
+	id 5B1396B00A7; Fri, 18 Sep 2026 16:20:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B69086B008C
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 16:19:31 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A8AA6A5F0B
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:19:30 +0000 (UTC)
-X-FDA: 85227998100.29.697B12E
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3DBB66B009F
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 16:20:08 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B3D9B1C30DD
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:20:07 +0000 (UTC)
+X-FDA: 85227999654.11.C76BDF9
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 054B118000C
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:19:28 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j9mBKbI2;
-	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	by imf16.hostedemail.com (Postfix) with ESMTP id 24D7118000A
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:20:05 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mjUAFoYZ;
+	spf=pass (imf16.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789762806;
+	b=Mx+JcWOHwDpNjsSUgvrxksnY0ew7WdQ4rGUG0wswUeHTEL3td5H/qd79/BSYZhEf5/q0UV
+	bGStEA+j0d1xALdQtoI0unqSl1w3rWxpIx9qotHXbsDiVCCbKca0Yt1h9q70aURrmC8yFI
+	yJbUxtXy5y9BCvJl97ikmDeffJvw+II=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mjUAFoYZ;
+	spf=pass (imf16.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789762769;
+	s=arc-20220608; t=1789762806;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1/IMZi7laPDns0FaC9FTXouqX/JlqimdYvbBnru5FUE=;
-	b=14TXNmZXoB/EPE9v8Gn7EOEoQtgjey6mHLlBSDQGW6esgkXQg59mB3ynv+CclllFOasgVw
-	kj1GV+35t4I9YQZmnsF6DMHV9WACfEhcwOAzi96PEEqt52oI1bRYLWncIHpZnMZKUmvgen
-	HecMUXfVD7ysaGJ7SB76u8Tl2djXj3k=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j9mBKbI2;
-	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789762769;
-	b=e8XShgTcXM5Ssb4ln5rs3vypm8K07FLdI9ot/ZdJo3Hi3r1yXpLzjKCcnk1Vz3DPm4Zwqz
-	TNA0zW02gYofq8d2kbBMJJygC/fkPalZaFXbiv3fF5kpSle+98sFaNOENsqO4tnXgMBl/v
-	vABHdl8PAV8G6H6WotWqL2kudvH4EFk=
+	bh=Cyl7vQEW3LfLjMkgXBXkK29B6dIUdPn+EyE/qOnRRR0=;
+	b=E4tvdWH1tzlbxmvTT88sf+cAJ8engVdG5+NitKgfcj6JWBwF9Z8rMXZ7FNRLc9V5S0u89C
+	rBYpn8OqErUVSFRaTTbbwqJB2ttCCCZIlQsQhzJ6JpmjxNkObzLkCO9TC0roqC/42EvTk3
+	oWqrXQie/vDda/h7LH9PSx/9JpYCqCc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9A070602CC;
-	Fri, 18 Sep 2026 20:19:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4A171F000FF;
-	Fri, 18 Sep 2026 20:19:26 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id AE1CD602CC;
+	Fri, 18 Sep 2026 20:20:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7AE51F000FF;
+	Fri, 18 Sep 2026 20:20:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789762768;
-	bh=1/IMZi7laPDns0FaC9FTXouqX/JlqimdYvbBnru5FUE=;
+	s=k20260515; t=1789762805;
+	bh=Cyl7vQEW3LfLjMkgXBXkK29B6dIUdPn+EyE/qOnRRR0=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=j9mBKbI2ruUGsdiORjKJXRAMUctal6GC2xh6t5MhA9SvK3NDBwBwl8I4JyL/0ye/z
-	 9OEAVgB/L/WqfaE8kynPhemr1MuJO7enoO89rgbb3pvIpr55acD7B8fNsTO4j2F8v3
-	 aHCYiGbWHT2iP5oDnCcZ8P6zn1n48MyjIoJ/NC9haWSbi7xdkST33Hsu+2UaAET1iy
-	 mDp6FW2aVh68L9ahWiFizjOl120e9rfmVU4OHPZYJCCYtV9VEh02AfAZUH/w85mjEU
-	 lpEwUrV5JjxGQYjT2ffoYT8c3LlWBKmPyhYilZqdEO7woOLZ66acluO2S8ENI5WpQt
-	 xsPrTN8jLQ5LA==
+	b=mjUAFoYZxPnQsQpOb1L4wDNqgVs+S5TR7L4F5G2tKrnkscbfk4QcfcKxREph+VKZo
+	 HU3vZ2CgZGzNL0KHEe0HjGVd/CzNrQI8pyVAy0FTcj2mqPOkLNYCPtrf3ckcj7DhE8
+	 +tqrhYnJcft2QiuKOnJYw3zmVc4Hfu4Bv8z2uZRXufolpGJHLAOMy7wLeOoCyIaywN
+	 0YFL2w4urvGcCgv50l6U6RJbbLEgs44TDrHqe2wuj+SIUebumCXE7QON4KoF2V65y2
+	 ogVEOzaDp5uXgGhOWTsvegM1Tsg/bEtnr51NmkSqpNGRH+UMEc75JUA3+0XnXd3u8h
+	 VBiGcEdnQ9wiQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v9 11/13] PCI: liveupdate: Freeze preservation status
- during shutdown
+Subject: Re: [PATCH v9 03/13] PCI: liveupdate: Track incoming preserved PCI
+ devices
 Reply-To: sashiko-reviews@lists.linux.dev
-To: linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, "David
+To: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, "David
  Matlack" <dmatlack@google.com>
-Cc: "Adithya Jayachandran" <ajayachandra@nvidia.com>, linux-pci@vger.kernel.org, "Jonathan
- Corbet" <corbet@lwn.net>, "Lukas Wunner" <lukas@wunner.de>, "Parav Pandit" <parav@nvidia.com>, "Shuah
- Khan" <skhan@linuxfoundation.org>, "Vipin Sharma" <vipinsh@google.com>, "David
- Rientjes" <rientjes@google.com>, "Jacob Pan" <jacob.pan@linux.microsoft.com>, "Pasha
- Tatashin" <pasha.tatashin@soleen.com>, "Saeed Mahameed" <saeedm@nvidia.com>, "William
- Tu" <witu@nvidia.com>, "Pranjal Shrivastava" <praan@google.com>, "Jason
- Gunthorpe" <jgg@nvidia.com>, "Alexander Graf" <graf@amazon.com>, kexec@lists.infradead.org, "Bjorn
- Helgaas" <bhelgaas@google.com>, "Alex Williamson" <alex@shazbot.org>, "Josh
- Hilke" <jrhilke@google.com>, "Randy Dunlap" <rdunlap@infradead.org>, "Chris
- Li" <chrisl@kernel.org>, "Leon Romanovsky" <leonro@nvidia.com>, "Mike
- Rapoport" <rppt@kernel.org>, "Pratyush Yadav" <pratyush@kernel.org>, "Samiullah
- Khawaja" <skhawaja@google.com>, "Yi Liu" <yi.l.liu@intel.com>
-In-Reply-To: <20260918200640.887030-12-dmatlack@google.com>
+Cc: "Mike Rapoport" <rppt@kernel.org>, "Leon Romanovsky" <leonro@nvidia.com>, "Pratyush
+ Yadav" <pratyush@kernel.org>, "Jonathan Corbet" <corbet@lwn.net>, "Saeed
+ Mahameed" <saeedm@nvidia.com>, "William Tu" <witu@nvidia.com>, "Yi Liu" <yi.l.liu@intel.com>, "Bjorn
+ Helgaas" <bhelgaas@google.com>, "Josh Hilke" <jrhilke@google.com>, "Pranjal
+ Shrivastava" <praan@google.com>, "Jacob Pan" <jacob.pan@linux.microsoft.com>, "Alex
+ Williamson" <alex@shazbot.org>, "Randy Dunlap" <rdunlap@infradead.org>, "Adithya
+ Jayachandran" <ajayachandra@nvidia.com>, "Chris Li" <chrisl@kernel.org>, "Samiullah
+ Khawaja" <skhawaja@google.com>, linux-pci@vger.kernel.org, "Alexander Graf" <graf@amazon.com>, "David
+ Rientjes" <rientjes@google.com>, "Parav Pandit" <parav@nvidia.com>, kexec@lists.infradead.org, "Lukas
+ Wunner" <lukas@wunner.de>, "Pasha Tatashin" <pasha.tatashin@soleen.com>, "Shuah
+ Khan" <skhan@linuxfoundation.org>, "Vipin Sharma" <vipinsh@google.com>, "Jason
+ Gunthorpe" <jgg@nvidia.com>
+In-Reply-To: <20260918200640.887030-4-dmatlack@google.com>
 References: <20260918200640.887030-1-dmatlack@google.com>
- <20260918200640.887030-12-dmatlack@google.com>
+ <20260918200640.887030-4-dmatlack@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 18 Sep 2026 20:19:26 +0000
-Message-Id: <20260918201926.E4A171F000FF@smtp.kernel.org>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 054B118000C
-X-Stat-Signature: dy9uscszasqrtjie9g4nz8ouetm8hxaw
+Date: Fri, 18 Sep 2026 20:20:03 +0000
+Message-Id: <20260918202003.E7AE51F000FF@smtp.kernel.org>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 24D7118000A
+X-Stat-Signature: kd6fzef8at4uzbfei9hgarrcjuawtgcb
 X-Rspam-User: 
-X-HE-Tag: 1789762768-38609
-X-HE-Meta: U2FsdGVkX18QRsNzrApdzXpfe6HmNsD56ZGpPXEpjqnfPCWcKlKXdy/LA8SbVSpbT5NwFuLZrzKILp+GhDvMgNPWXbwZczD8MAyiNstTkrL0Oy4heYjuLcVXOCZk4IVPKBgoHMY/UyovpdU22IDydLoeS5aqA5uicHLfk2jmyX9IDS9S8AqO9oozfNc1KaAMnAzqJ2mTBKIDqHt8l7iY8+P60jqwVff2xzNs4qTKpWb+sNOCGJtNZWWL2zFzZPemJYMnJQ77q+m1QzrOQsNt3edElLFS541i9Siikm4/iI4lFav9jml10KNoNnlyWF1YG59Njp4xTQsVt1L5x7xmUEXQsUjndyY07P6mD3ZgPMxsPRBwsVlCiAW4b6VYixr6u9JlZGcxVaS5I8id8Z0HWiDOpc69SHZIodz5N2TmWk4VTYWztfjlo0fNyAZ+7m8HqRxDcJAn4cIrmbGwqbH8DrLXQZdCYE53XQWrbGD9VTzx0+hN+WSKqqLrZCxDQNhAwCJVu4yl4sOEezWTcOuIgZ0ECTVFstF/qe3QKew+lEHT+WWEHVnqgCyJk8BxFwfgefSCw8ZRzlIx2AM0RrVJD/uavk4D0NhfcXgCgdbyr1SgaUHcKE2poLb0/u3HeM2aqTdKTLH0sfLmol7pMZIXwS3bBwa7XtykISkdwiVBPQKNJ5oWrfjxfzidO7T+pCjeOM0O7xzq18rS+xTpZPqPJRAd/2Ryfw8RvdyOfMkz5KhJEdlPXuhf2caeCOk8YkL6vNs17plh5y49KEo6gFHAUILhQOXvf429ke9DCstVEF1N5iog4M4hPu6GeZoy7XZMY8XHbi1MQfQzE0qZHHdsGFE0ghFRzGTXfjvLk5teAbeELz62X0TkBelUSp2xdHztt5e5TV2oZjkSHwvk+lVzFKAo1TwAD/+qzABmNjtC89GAmLFUXoAq5WYUYPK08N2R4/K/N0F1unn3POVM2RO
- i9l0Js1i
- 82vuTOx38UFcshswia5hxmddKwI8DuylLA6DEP7r/ZkG2fFPeYOO1KgQkzl+yCICWmmuDsqz34XPoS0rzwgQ2v9zvxg0SkaqrWwJgI2e9BBzg0sOJGvhnLned7ERX4aUQkZqs3tf18FZ61eFK7+ZsRD8bpoFpiTfUbaYvUb6sqNfLz8YHrfF+3+PCv5StyrkEynNuwc8jtWnPIFyd0OgMW7IyukfeAKLlmnBimsiqcVizI76YgToCCBtZw3hgVnnaiS5TCLyD0++R7gukfY5IBdfdXzjWZ3PzWE8Zny7/rE1TkXXGCJTeUiw/OBgHcHxETgu7HkaVkOudUUEI2xAtZvRBXfTypto7m0Nd8ctGbYLeKVv6+cAXBe1HuoaGifnQhf7ioZheXtDTYjCjiD6ICufnNPj8oAL5fCE2FsjO8lM8o7BM3WpEWdSVOWSEq2UPHmr5NU8vw9BbCHw+1RTls5R5wJnSHaj8h2TAghkSK99Gbgr7K6L+xINscfWFcUOEubJD9KsON4/DgBhhakowNcqToZALM5ynZzTzJ29bhHvkxFV6vlpZ8H3UGTtDDtcK8k7SUkXtSUh/A0gaojUtFesRzWXW15r5ThFhjCxE7dbK7pBwyxvaEeul07lWV3NBxPeDm2R9tKPQ4ptbO+XHSwmrsQ==
+X-HE-Tag: 1789762805-795981
+X-HE-Meta: U2FsdGVkX1/ZXrxUadoxGSyd++8S2nic6s6Wrn+xSZDNHH1LcjlM/MRjmDpkhtMFoEyygyUiK7ENf4791FIOtQanU71BV3Hh2oRRPOtiLy6KR0343MC1jPtEZW50LDflArNdP4fQX38d9aNjSGvrdiZr38TAOuKV/2GDEIGnNNxOLL68lFmD+umwc6E3OgFX8s7j6OvKXzPCBNe9Sx8IJwVN9TNRgNFAgUOtn1gTQ6fH/kuTHWrfunQchwueooPuQ50sY7uADbh5bwrdrmkE/ALJ2lp6yON83v1+7GnI1Uwb7QJDCDDYOO0vMHc7RCo2v8nJNiD59wBDXmULh33gAAoRSL5htPJzUdSRcO2YAE1SGgibbRkuJuFP/+BcQUQ+TPcDHTIWTNiEIg0VUmf1GQyIeT+tbAWf1nbbG0BQ8a2omfbAP8UdygOz2oE+KSgLoh6S1J9fbtfGYKlvUiuz5JgKjWT9DHtvH8jmSLMTgTdEeMo6Zomf5l60TkVIakYMzcRwg2lHTe5kJHut+B4UtxKf4YaNzbuIcwkGgY6BAy0Shs2aJikmzhugB+06gqrEUTNDAklAco+tQJOxcIHYTUOtKtmFxe6lNPIVL5ctbhakAThPk5lqzPeZ/nqmayk2YUuMC2KM00LzNzaC3VRDYMhzMtaibUckrb36/PucUJRj4RaU9gzuaHtGGkUQa6ELMgwuXiibnjV5zOaLjoPO/tI3LQjznx6zj7zlm197Qw/YFO3fD54d4H9HUM1/bFijas3fQfI0m1kpWfpIhxyzDmPI/T9Rvcg3fAC+8vTfiJYd9knvNuJLwALJOPJ5Rq6Z2Z9UHdAXSopA1YcXAt5rNg1hwueb+wP62EYGlMWehJ11x2UuDUTNQ9DWHWL50I0babo5nMuTFgk36QLcbcULGbOArp6qfiYk1LMRigW6FxLJ1qOjiCFhObnOIkT9BM30C7s2Dzv/ibbFrubLE+u
+ FTUB/JVo
+ Mpw+yqRoFeAV8WlfyLOAuv8SvxFv784/lXLlFwjEuXVLsjjwRRmDwiOUOf4Ejj75QfH9OmUZyGmbTEyk9ZN+UUUiyUrMgN6t+XOrNMBFgAWMWLMfwW/jpVQuwC3tAGFVAye0duFU3MoWu/nWkmwwjkyo/5EM/0wc5H/0kDa0ylc/yog/jMLfGeAMqeUyV/lpSi2z7O3od0paHKMz+kGlErpJg/FnATcdvO4G10JQrdRUI3q68tGwFKxajMh58HOfhRSoeG1lFdkvu1T6mIb98tSTkqFh9xci9VgSE2oY3ecCnmhv397CkqIyhM+/QVANc6p+4uu2gSjcHCsHYQ09+ImXen/bAof3v8UV+rw6xc/60Xb4uvNgcN2otZ8WaVoHVOnhdHOVnjWdE9fUvTdAkTTL+I4bj39lcxOErxNYgUPmJAy2282wNRrA4N4ejQuTiYU/wwV5iq0VXCKENPdk6VkhVqHPZHvtFPBWhGVzQQAOjTl6nxbcCCoF5TbrVj2cGzNhptHgfiX7tDtOp4zc4dKP5dQbB2F8sm1RrUYy/7C89g+cPtX5scaUq0VzfohPFdS2I+Hp7X7CVOviNaWSDkcYLFw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,26 +103,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Freeze a device's outgoing preservation status (preserved or not
-> preserved) during shutdown. This enables the PCI core and drivers to
-> safely make decisions based on the device's preservation status during
-> shutdown.
+> During PCI enumeration, the previous kernel might have passed state about
+> devices that were preserved across kexec. The PCI core needs to fetch
+> this state to identify which devices are "incoming" and require special
+> handling.
 >=20
-> Note that pci_liveupdate_freeze() is triggered by the PCI core rather
-> than from drivers participating in Live Update so that all devices can
-> have their status frozen (i.e. prevent non-preserved devices from
-> getting preserved late).
+> Add pci_liveupdate_setup_device() which is called during device setup
+> to fetch the serialized state (struct pci_ser) from the Live Update
+> Orchestrator. The first time this happens, pci_flb_retrieve() will run
+> and convert the array of pci_dev_ser structs into an xarray so that it
+> can be looked up efficiently.
+>=20
+> If a device is found in the xarray, the PCI core stores a pointer to its
+> state in dev->liveupdate_incoming until pci_liveupdate_finish() is
+> called by the driver. This pointer allows the PCI core and drivers to
+> apply Live Update-specific logic to incoming devices in subsequent
+> [ ... ]
+> as the xarray key.
 >=20
 > Reviewed-by: Pranjal Shrivastava <praan@google.com>
-> Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 > Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
-> Reviewed-by: Bjorn Helgaas <bhelgaas@google.com>
 > Signed-off-by: David Matlack <dmatlack@google.com>
 
 Sashiko has reviewed this patch and found no issues. It looks great!
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260918200640.8870=
-30-1-dmatlack@google.com?part=3D11
+30-1-dmatlack@google.com?part=3D3
 
 
