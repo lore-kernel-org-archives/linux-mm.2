@@ -4,102 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86CE7C982D2
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 00:22:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B7DCC982D0
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 00:22:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B2756B0092; Thu, 17 Sep 2026 20:22:46 -0400 (EDT)
+	id 91F496B0093; Thu, 17 Sep 2026 20:22:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 48BB06B0093; Thu, 17 Sep 2026 20:22:46 -0400 (EDT)
+	id 8F6C86B0095; Thu, 17 Sep 2026 20:22:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A0676B0095; Thu, 17 Sep 2026 20:22:46 -0400 (EDT)
+	id 80BD86B0096; Thu, 17 Sep 2026 20:22:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F17B6B0092
+	by kanga.kvack.org (Postfix) with ESMTP id 5B7716B0093
 	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 20:22:46 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D522CA5D1F
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EB88AA4D3F
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 00:22:45 +0000 (UTC)
+X-FDA: 85224982290.03.DC2705A
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com [209.85.218.69])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 4114AC0008
 	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 00:22:44 +0000 (UTC)
-X-FDA: 85224982248.01.2AA9B2F
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com [209.85.208.69])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 43E8F18000B
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 00:22:43 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=iUg5q8Qr;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf06.hostedemail.com: domain of 3UYSsagkKCGgZGXaTYGNaMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--tarunsahu.bounces.google.com designates 209.85.208.69 as permitted sender) smtp.mailfrom=3UYSsagkKCGgZGXaTYGNaMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--tarunsahu.bounces.google.com
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=iUg5q8Qr;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf06.hostedemail.com: domain of 3UYSsagkKCGgZGXaTYGNaMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--tarunsahu.bounces.google.com designates 209.85.208.69 as permitted sender) smtp.mailfrom=3UYSsagkKCGgZGXaTYGNaMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--tarunsahu.bounces.google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789690963;
-	b=TRWJwQzEsTB7g/vFaYdrsrNmE7a4/GHZfOCnY3NtwjgjPEqkAVQBgodwl+bm7xPDctSlhn
-	tWFeYC+D7lyV58FDbkVd1moD2Te5m9byRJrYHXqv7xvfN9QEhkQHZ/88/LI+DWTHWAJxMH
-	mLnRnNlBK07oIg7pX5Fc1X0iE5jk7Dc=
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=ZQzq9Trx;
+	spf=pass (imf10.hostedemail.com: domain of 3UoSsagkKCGkaHYbUZHObNVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--tarunsahu.bounces.google.com designates 209.85.218.69 as permitted sender) smtp.mailfrom=3UoSsagkKCGkaHYbUZHObNVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--tarunsahu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789690963;
+	s=arc-20220608; t=1789690964;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=yxuYFkClNtObVJTirGhxvNI3z/6AMlB4AtngbQawpYk=;
-	b=KPmKrOq6RWQ4RYLflbY9CQM5uAsHftNEX2790XR91tZx+yp6oOS7kbYtBnLtcpyDkXE2Qt
-	GAb12d7vn91J+pM9M0cFPUNKtI/jY7SVTkn0ff8k5xKFc7B3lrl2Y7SUs+Oldciy9HmPJc
-	BWI0QnAJkOk3ld9kNxBhdz6iyXby/oo=
-Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-6a18e266026so150228a12.3
-        for <linux-mm@kvack.org>; Thu, 17 Sep 2026 17:22:42 -0700 (PDT)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=2457T8NXpe+VYhyIx4NQQZX9J7v7gQmMrsUW0L2lVQ0=;
+	b=bSXdKjKBTUp7NBg3DYBIqz+rjQ/I1B+6gsMYw77aAKX+7C4Jufvl6ZohKrxaF6PtSg2Qa0
+	YPjjN7Y35JdnTMZJHpMhWMuboyCOk4JcqkGbYOoJkBHaltXk8BINheBPnwQrws4RH/JZ4a
+	/Q/jOcOFdvJ5S0BfCswYNfuCsq0laYc=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789690964;
+	b=OMy7ASEHyQ9gL4qqCJwC+WGbZYdSPDvcfLkeFRl2hHQ0/+OPYIovDMz9oYvFuTBmaui/sB
+	6/DWK8Ir+P04KnJsc11QcKhteuG34bXu63lSLA9O3qKMcpSashsMbLy/kyZIY2z0dKJ4pq
+	8YmWLa9M7Soe0X+Bjqu7TLuYRWNvSSQ=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=ZQzq9Trx;
+	spf=pass (imf10.hostedemail.com: domain of 3UoSsagkKCGkaHYbUZHObNVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--tarunsahu.bounces.google.com designates 209.85.218.69 as permitted sender) smtp.mailfrom=3UoSsagkKCGkaHYbUZHObNVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--tarunsahu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c2939e341f7so19599666b.2
+        for <linux-mm@kvack.org>; Thu, 17 Sep 2026 17:22:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789690962; x=1790295762; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=yxuYFkClNtObVJTirGhxvNI3z/6AMlB4AtngbQawpYk=;
-        b=iUg5q8QretHzlCOL6PCuMhJAB/Hp0eRN6cGukq49Rowqyku7mW2taxxD8AlQzCgQng
-         3NlYwLB/alm8zjzEQoCU4A6vJkoih8V5ugn7j4vA8IGPR5qkTLR7sqPzAq7nwwGepdZ8
-         wWlzR+zmqeXMQxAnDvXWiHEuxhVgnEXuSLEFO+m2gvEyNv9EzFSg9N8MJqJwKnMZFAuj
-         hhn0ZxmRQ3746EwJ8txnTduxdBAZ7AJlVXJJyXvNSeENA8wEqiv7u8KYBS5iVtlQIht1
-         JL/14RjfyjvAYN+OhFp50VUzHp8JSyY1f5r80Q44v8JrGZtUogYDjMOZ8OW6b0n5uN64
-         omng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789690962; x=1790295762;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1789690963; x=1790295763; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=yxuYFkClNtObVJTirGhxvNI3z/6AMlB4AtngbQawpYk=;
-        b=ibemsLEvLuDVhVv06bfmHWIlQqz1JSzkPOVTawogGYXfV9lppY6L6hh9tZl4/tjMQ0
-         YKLWl1LS2PR2MfrNrUscd0u74vkjUhMyOmmUbToolfQDBqdvRiCBEob4GbZD8ooKFYCo
-         s3d0/4M/31CYvfRgZQzU8z4rvmmgNcssYS/RM068NLnHwqim0c2YTS5poDr1/6eKJVAD
-         EngEwQITkUlIyafjmymVCdEupakHkWydAi80HRc7pyniAYOFsMpx/1PmBEBWrWVkI95Z
-         prVx24+oI2xOGZurReFUbLNnlIRR3aLj4020ORo+FCLFlxP5Q0GCmCUm2P8O84cudqr/
-         GKyg==
-X-Forwarded-Encrypted: i=1; AKwUvBye98dhVSMeOR4IYrbjFDsTpoUeqVJVvKY1sTTxgPHJvEZlRvGNHgfDHzokGrm3NnIJPDgFBIVoDA==@kvack.org
-X-Gm-Message-State: AFuF++lq5+vssM0g3ST9YQDYo8KI3ziVPjeHlH67zwZJJVXBCH+xS6NU
-	A+6XaHP7QihfUZCnVKiYRbY6TB0B79/D/m3a31FbQsETTlcUIRl4ObUOi5PqziryWM2/dWx1c3r
-	h2KswSw+v2O0mUlqM1w==
-X-Received: from ejsg22.prod.google.com ([2002:a17:906:69d6:b0:c29:ece4:d406])
+        bh=2457T8NXpe+VYhyIx4NQQZX9J7v7gQmMrsUW0L2lVQ0=;
+        b=ZQzq9Trx9WhyGTbl7aCg3mvmkoSgewsauInZhnBzBF9vWWfCiwAn/aVzO3om/ShKMm
+         Alq+Wi/wtu+cQd7IkgAlEh65abHQ2on4JNx57WyL2eBdX+DMypdTRZTnBxMe8M2HfvQd
+         66QrpNGznRfgtOxLSKNQ8EjRfSDuuJ6VzIt7KdwhrXTuqWl0MNXnFDv4srbT8k+YS3/9
+         lT3uPZBXAudTesiKccq98xgKlblI1P9dynHWBjmQA1Y4F3Cn1sE47pqNibjTRY9YR/W6
+         0dRgqT9JiLlsI3a/+/QTfn+iXoQM8aTwJhdwJx68/pVWGg7Jb+PA7K7earzW4HaAoWzh
+         Nbfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789690963; x=1790295763;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=2457T8NXpe+VYhyIx4NQQZX9J7v7gQmMrsUW0L2lVQ0=;
+        b=ggafKdVQqNZwnQWQGy1FMyucKSrmElHp7VwuLYNUPTMpVTzy+pIUNCoEQXYB6iJtAI
+         yI4qCEdqeVWlRRRicIo6mHkCDUIqjDaRZDn9FoFn8cqkgGFXQ2yo8zGepnwOgvW5SvDT
+         GBQAfXeahupXNrqzX8Nq/C2Ut1wVd4GHiVIlFV8vctRgVyiOC+EFTUY7x378gY0KeDcE
+         MvzgQ+xrYZ/i5q32vSwL8iG5zuYW8ajMGxeIC5Y48/6LZFlenyxzrHeQ1PYk6Y2XFdTV
+         r7i8AnY/LW5/VzhZYahFZEhvIdxow8gq45rG5zOmUdvTf7PidSgQ8YD3WupgkazW55nA
+         o2Jw==
+X-Forwarded-Encrypted: i=1; AKwUvBxhxMkjsBClH5y4OWWgAwzHxqsa0cqXWIsFFiBIr5tKlPxNHx69axLRQVORZspI1CWPFKHDt+Ph7w==@kvack.org
+X-Gm-Message-State: AFuF++kxlyeVjydKBlWXESKGcspYqiMuKw40b+Iz7JUEZAEaMMTS8Y7c
+	/eEZdf2t+w+f0JOBdjiHTMuNwwa9Uj26tIfkdDBT3zH0/hbAU0GQ6fGyX2ipjvmcgOP6FE9FXnD
+	y1Fhe+EJVRhx70z0JFg==
+X-Received: from ejcgo34.prod.google.com ([2002:a17:907:da2:b0:c29:de6c:6ff9])
  (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:3f87:b0:c26:19e3:e98e with SMTP id a640c23a62f3a-c2a1582bdfbmr81796266b.46.1789690961563;
- Thu, 17 Sep 2026 17:22:41 -0700 (PDT)
-Date: Fri, 18 Sep 2026 00:22:38 +0000
+ 2002:a17:907:3c96:b0:c26:30fa:7cf2 with SMTP id a640c23a62f3a-c2a157fbe2fmr84040766b.13.1789690962738;
+ Thu, 17 Sep 2026 17:22:42 -0700 (PDT)
+Date: Fri, 18 Sep 2026 00:22:39 +0000
+In-Reply-To: <20260918002239.4024231-1-tarunsahu@google.com>
 Mime-Version: 1.0
+References: <20260918002239.4024231-1-tarunsahu@google.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
-Message-ID: <20260918002239.4024231-1-tarunsahu@google.com>
-Subject: [PATCH v2 1/2] memblock: drop for_each_memblock_type() and open code
- its users
+Message-ID: <20260918002239.4024231-2-tarunsahu@google.com>
+Subject: [PATCH v2 2/2] memblock: use binary search to locate candidate regions
 From: Tarun Sahu <tarunsahu@google.com>
 To: Andrew Morton <akpm@linux-foundation.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
 	dmatlack@google.com, Mike Rapoport <rppt@kernel.org>, kexec@lists.infradead.org
 Cc: linux-kernel@vger.kernel.org, dev.jain@arm.com, 
 	Pratyush Yadav <pratyush@kernel.org>, linux-mm@kvack.org, Tarun Sahu <tarunsahu@google.com>
 Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: bdw7e7dnutko647kxdx94cf4epj965gy
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 43E8F18000B
-X-Stat-Signature: hn3xcg77f8m3k1g7n3kirb5tc9xsq3sr
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789690963-545924
-X-HE-Meta: U2FsdGVkX18bKENEh5u+Je+o2UBwHiwSgfb3LHTV3FXW8boxjY9qleyGRaxPnJ78A4yv7S8d/65370O09LAlcDhPJMjoN3rcXLsRYFlJzx9Rmfe4utXjXBrxucFLnm3gDvLFPtr2feql+KI7C/9BWUbD3bs0PCnwRFf6S6q474wl8WzSCgYbzBXvQcCI5Jwv5kba9BrCG2mWUZmK3+VcVY29hEUEhVusf6/dy4oQY8ZUJ79H/E9x99JqRzS7wXuSSzsl7vpcM+a9HDlySFbW0b4xlj1GkYkPhdgl6w8Y7H52ZlhPLeWdkBJnrLcsb1GBlbSktxApTfJqw8MABJnQzwgrClMR2CfSel0fJrxO1SqDxTLILqpskPteQGyS4fUHbJq9qZt3rtFWi+dGdoruP1OP4pxzldj8uApcbuLDZbJgJbOzXTJabiZeMqEsEJqwVw/Qbay6G1HpSgfECqff/hZN7v/Yc98DRVYor3yKiPImiYXRDpumxo+Rt+TKbJB+TpwO65eP5XuREfa1KY1m37yGMxIG+jrTHgHWAwb8Vp5KBA4Iqz55c7nfqIdn6RAPWoJrTro5spylAS9DlzEweXvTyDkzotVjo6ReVLXaXxTJR8IRvTCVOCy80Qwdl61irCbmKgyLUn7ffcEkl/irzHYuyQrTWYy3Uub6DatDk7uahQoeWfVDes+Pss3IAJCAJNLiqJa6Yl8mJzQxgdhOkg2R6fGQVua/kTV+c0noJmHBFfiMXEukPeoIqKl1jqu1xPXRe/pWFVH0/HoCSTH7rWCrvgWVXi1vzu7JtM1giMw+iB0zYCJKsZHC/AS3kULyy/Mc1QbUYzO6IPjypDYp3/5td6Rjfu7JK6ydpEABLC1YKUIwV/HhWFVA91R70h56HudX3+7Shfk4fHaVid3Ur1YFuPcDNqLouBXc5iTmVi4NhFaxDpS9gH5OB2Ip0uHed1eI8TJArTS5fUPCoXS
- wXKYsUQN
- Mo18Hp1vZq3WxEYeRIhG/tLNGrgvcINFGyZRnjJF65XHAVkkBq4h8gzkN0cl6ZURYmGlMsg+G0twrSwV6sJ/aGanm7BtPe7Z5LbV9MbSEo6y61ocvv2ZgPryfMmlCoZeuSa3fB4k1xhaEErgXQUaSISq0gVB4xULt4oCK3WrjNOvIX+mXK+aLPlJBcVbflQRv94nAMoOcvdwwpBcdSnHPWjCKGI0sI7o29yKZjNwIYalrBtUhgraqRMFesyd4J3L4ETBRVAm1Xw2JRtvh0s0pjCWPI0TLfzuTqEw8QzRFyxDewKmb+yKWDJq0fqzhoDTkFJl2vir3tbp69a6JGEEqiHNeELm83LJgmIQPm/ZIrjyk2EdA1m1U+RTBRo1gJIZf9Tr/TNsbHXMybfs8dM7iNv7K4a/gpe7tqmeZMP6aTf3R2zJI176P9irkgb7sn9AiXzwfimQxrmzqeEjMeG5vjHmB/c+Orbau7X/Ec48dAJhrN1zbHiJ40lh5XyIdA5uOrMkfXZz2IgeHC+ij1HZ0Cl6QU8mi+ir412u/YXRGhmonBoDdsZxZRnxxtPoHZCIZkbSFnwKVLwIVdZI+0WGRt49pEVGVhMAXqekrqa774OouoKYQOW7R/b+mSbacQYNXrq+aF6OquyHoJ8JP9KvTXvHrPw==
+X-Rspamd-Queue-Id: 4114AC0008
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789690964-377488
+X-HE-Meta: U2FsdGVkX18+xyQNI+PKEJZTe98aLw1aW3PcPM6UXE0TpRwgAvnE0TxtbBoQK3MFScJhnbqk2A5zNOwc6VponzXfwI8z2rto2zvh9hnVePqUsYbor9ejR23eSEeQ9uzAW7NhZ8v90BGGNRnBbU0X2I/ewUJAdwwkn4lgG36XoeT5DPp0X3tJCSEhcokA9CZdRuK/sitPDHloMznK8jW98V93Ka7K8w3ylRpYXvEmw4yUbuwsdZI2l/hfpe4ozu6YJUs/yU3/NlO0aTlcCc2qx/ivctQodI9QMNtfEfvO1cSoIcYwd0JXdX1SaapVT4rvxAThEaR2kAntH2GcbnCvth+P3Mj/IVZOKIyekPW59nLk35PFNx9yCvCMFzazNZ8SE5IVRZvn2JKWf86dCgLqoiqzvK0vuNDyVeZDTFDoGhVf7x1XwmBkXrS+S9yG1er0a8Q44pdOLvXx6OF8/VnZV5+OLU2++XEqhH54zs3LfQEq4gOBdq3W7sTK1AIbGg40UZekW9c/scslGuesWLcd8r17NL7436HyMklGzWBRTDg3zWJiqt+9bWTyd2QRaziMycyKfDvB/Jclh+fAWOwEtijKq2zltgmxL85m+EQC43y8zTMmzsSHwrnWzufH2F/9BSnMLDizBqfKRnG8kPkcyy0yozS5nkbJU0X/DAU6CwG0TOldvHySLS+FPLTR8cTvSrBVrLUfy+1evMLhGxB6ZLfpcjkZ6XfbPN++qgyBTpTNxXnds0xzkyn89dMU2m7BZ3yZt3goouzcKafp01Pf7UGCIhrlw9oPAkLLuwM1xD8nMxuQibahJ0NNfdwTk8LTAdPDuB5F45B5um0NTexpTJceWIxnilr6+L3M0rMfhw5GdW79WCuhn/a7H8XPJI5vyZUHUcT2rK1iaHkwPL6I919AYpZyMF+GEEEZYLfHfmxbSaWbBeHVRVz8qu1jr6nSNMPggvTY476oco35v+z
+ D9fc7nRc
+ CS4ubM8yWfZTllVwz5TkvYBA15bYAMkt9rtPzEC4oM5Imsp88RekRD88NTFhy6aQcBgR1KwGf/w2ofZJ6/dlSmZ7YJl6xzqT6a2TVXVk2UPYMwgKTLsjp1IrQSTGVYIryFlW4FqRM8bnrn2NEEfVdckjZVZL/3M2QhjX7Bd96j013vwWgh2g6/EX1HKU79WZMe6R3VmQgvNqsLv2FDKDuvNtfKflw22wpj1NwMkkDa3JXoZQdSVhzFbRxTEQ4W6t4EzBuLQMJiOSSXF1/YKzGpI0ckQb2op0mF6I8Ni9qAw0YWUdXMu9rlBF77SEbd1swGIROwnVBvOXsvLtZ4swhgbowqbW2oQx/U3PIx47euLM7TG+0TsqSPSCIlgdGtLuaBxuf+Qd7fqBDQZKFrQi/Ce3UGo2kqPfD17yh2K8oO4CF46IPf0Jxmnw2f7DgTqrXt08duvUz47HnAJ5gc6Ia3qtiPrptUQxuh3t13u0xhY6YEFw1zFMChSZr6ihp1pG8RJadHexsASrM4YOfSzZW7/k4KzddRUKXGIDZVUm07aFZShhghfr0SZWPSNJKzSTylx5tihtzhs9EiDlW0y9lJSmKza9rl5wXKdR6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,68 +110,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-for_each_memblock_type() always starts the iteration at index 0 and its
-body is a trivial 'for' loop, so it hides very little. It also gets in
-the way of iterating from an arbitrary index, which the next patch
-needs.
+Use binary search (memblock_bsearch_start) in memblock_add_range() and
+memblock_isolate_range() to locate candidate regions instead of linearly
+scanning from index 0.
 
-Remove the macro and open code its three users: memblock_add_range(),
-memblock_isolate_range() and memblock_dump(). While at it, move the
-region pointer into the loop body scope.
+Under heavy memory fragmentation (such as KHO page preservation registering
+hundreds of thousands of disjoint folios), scanning from index 0 on every
+insertion and isolation results in O(N^2) complexity, causing boot-time
+memory retrieval to take several minutes (~268s for 393k pages).
 
-No functional change.
+Using binary search reduces the worst-case complexity to O(N log N)
+(and O(N) for sequential appends), cutting KHO memory retrieval time
+from ~268s to ~50ms.
+
+memblock_search() open codes the same binary search, so reimplement it on
+top of the new helper.
 
 Signed-off-by: Tarun Sahu <tarunsahu@google.com>
 ---
- mm/memblock.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ mm/memblock.c | 53 +++++++++++++++++++++++++++++++++++----------------
+ 1 file changed, 37 insertions(+), 16 deletions(-)
 
 diff --git a/mm/memblock.c b/mm/memblock.c
-index 9ce86349a29f..5aae75d34dec 100644
+index 5aae75d34dec..00a8768de988 100644
 --- a/mm/memblock.c
 +++ b/mm/memblock.c
-@@ -155,11 +155,6 @@ struct memblock_type physmem = {
-  */
- static __refdata struct memblock_type *memblock_memory = &memblock.memory;
+@@ -586,6 +586,33 @@ static void __init_memblock memblock_insert_region(struct memblock_type *type,
+ 	type->total_size += size;
+ }
  
--#define for_each_memblock_type(i, memblock_type, rgn)			\
--	for (i = 0, rgn = &memblock_type->regions[0];			\
--	     i < memblock_type->cnt;					\
--	     i++, rgn = &memblock_type->regions[i])
--
- #define memblock_dbg(fmt, ...)						\
- 	do {								\
- 		if (memblock_debug)					\
-@@ -651,7 +646,8 @@ static int __init_memblock memblock_add_range(struct memblock_type *type,
++/**
++ * memblock_bsearch_start - Find the first region index where rend > base
++ * @type: memblock type to search
++ * @base: base physical address of the candidate range
++ *
++ * Returns the first region index that could potentially overlap @base.
++ */
++static int __init_memblock memblock_bsearch_start(struct memblock_type *type,
++						  phys_addr_t base)
++{
++	int mid, low = 0;
++	int high = type->cnt;
++
++	if (type->cnt && base >= type->regions[type->cnt - 1].base +
++				 type->regions[type->cnt - 1].size)
++		return type->cnt;
++
++	while (low < high) {
++		mid = (low + high) / 2;
++		if (type->regions[mid].base + type->regions[mid].size <= base)
++			low = mid + 1;
++		else
++			high = mid;
++	}
++	return low;
++}
++
+ /**
+  * memblock_add_range - add new memblock region
+  * @type: memblock type to add new region into
+@@ -609,7 +636,7 @@ static int __init_memblock memblock_add_range(struct memblock_type *type,
+ 	bool insert = false;
+ 	phys_addr_t obase = base;
+ 	phys_addr_t end = base + memblock_cap_size(base, &size);
+-	int idx, nr_new, start_rgn = -1, end_rgn;
++	int idx, start_idx, nr_new, start_rgn = -1, end_rgn;
+ 	struct memblock_region *rgn;
+ 
+ 	if (!size)
+@@ -645,8 +672,9 @@ static int __init_memblock memblock_add_range(struct memblock_type *type,
+ 	 */
  	base = obase;
  	nr_new = 0;
++	start_idx = memblock_bsearch_start(type, base);
  
--	for_each_memblock_type(idx, type, rgn) {
-+	for (idx = 0; idx < type->cnt; idx++) {
-+		rgn = &type->regions[idx];
+-	for (idx = 0; idx < type->cnt; idx++) {
++	for (idx = start_idx; idx < type->cnt; idx++) {
+ 		rgn = &type->regions[idx];
  		phys_addr_t rbase = rgn->base;
  		phys_addr_t rend = rbase + rgn->size;
+@@ -810,7 +838,7 @@ static int __init_memblock memblock_isolate_range(struct memblock_type *type,
+ 					int *start_rgn, int *end_rgn)
+ {
+ 	phys_addr_t end = base + memblock_cap_size(base, &size);
+-	int idx;
++	int idx, start_idx;
+ 	struct memblock_region *rgn;
  
-@@ -827,7 +823,8 @@ static int __init_memblock memblock_isolate_range(struct memblock_type *type,
+ 	*start_rgn = *end_rgn = 0;
+@@ -823,7 +851,9 @@ static int __init_memblock memblock_isolate_range(struct memblock_type *type,
  		if (memblock_double_array(type, base, size) < 0)
  			return -ENOMEM;
  
--	for_each_memblock_type(idx, type, rgn) {
-+	for (idx = 0; idx < type->cnt; idx++) {
-+		rgn = &type->regions[idx];
+-	for (idx = 0; idx < type->cnt; idx++) {
++	start_idx = memblock_bsearch_start(type, base);
++
++	for (idx = start_idx; idx < type->cnt; idx++) {
+ 		rgn = &type->regions[idx];
  		phys_addr_t rbase = rgn->base;
  		phys_addr_t rend = rbase + rgn->size;
+@@ -2064,19 +2094,10 @@ void __init memblock_mem_limit_remove_map(phys_addr_t limit)
  
-@@ -2198,7 +2195,8 @@ static void __init_memblock memblock_dump(struct memblock_type *type)
+ static int __init_memblock memblock_search(struct memblock_type *type, phys_addr_t addr)
+ {
+-	unsigned int left = 0, right = type->cnt;
++	int idx = memblock_bsearch_start(type, addr);
  
- 	pr_info(" %s.cnt  = 0x%lx\n", type->name, type->cnt);
+-	do {
+-		unsigned int mid = (right + left) / 2;
+-
+-		if (addr < type->regions[mid].base)
+-			right = mid;
+-		else if (addr >= (type->regions[mid].base +
+-				  type->regions[mid].size))
+-			left = mid + 1;
+-		else
+-			return mid;
+-	} while (left < right);
++	if (idx < type->cnt && addr >= type->regions[idx].base)
++		return idx;
+ 	return -1;
+ }
  
--	for_each_memblock_type(idx, type, rgn) {
-+	for (idx = 0; idx < type->cnt; idx++) {
-+		rgn = &type->regions[idx];
- 		char nid_buf[32] = "";
- 
- 		base = rgn->base;
 -- 
 2.55.0.1082.g2b9226bbc0-goog
 
