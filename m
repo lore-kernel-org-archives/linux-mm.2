@@ -4,155 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF426C982DA
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 12:18:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C16F3C982DC
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 12:24:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E1CAF6B0093; Fri, 18 Sep 2026 08:18:22 -0400 (EDT)
+	id C9A0B6B008A; Fri, 18 Sep 2026 08:24:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DED916B0096; Fri, 18 Sep 2026 08:18:22 -0400 (EDT)
+	id C4B426B008C; Fri, 18 Sep 2026 08:24:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D02D96B0098; Fri, 18 Sep 2026 08:18:22 -0400 (EDT)
+	id B604D6B0092; Fri, 18 Sep 2026 08:24:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9DE506B0093
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 08:18:22 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 155721A0624
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 12:18:22 +0000 (UTC)
-X-FDA: 85226785644.09.DAFFAFD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 5D76720002
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 12:18:20 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nHi3LIql;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 9881E6B008A
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 08:24:15 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D95191A063A
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 12:24:14 +0000 (UTC)
+X-FDA: 85226800428.11.781B07C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 53D791C000A
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 12:24:13 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UzoCNVPQ;
+	spf=pass (imf21.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789733900;
+	s=arc-20220608; t=1789734253;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iraf2G8GnLk55v/tOz9PuW5FKw3tZzsJG7inOso05Qw=;
-	b=LLIBSJhA9MjF1XtdAUGhdBnZYHr1wIk6+xgrDDfdeaztkyPRJmNM7Yv6G7a4K9y8dB/tEC
-	hvJmAAuPrDnfzLCVQUtTpynhRo3RenjhzdC+8+xJGGbgKtK8/56a0yvKRHbSBXWIlA6Lum
-	KzaX+NtaP5rhhbPYJySoz3zPGmgH2Jg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789733900;
-	b=uqU2lXdB5jy+Eh1mjD2FDsl9u2qc6qw63NN5TOGwUrwixogO448L00UDt8aY+/VmluWskX
-	wu7PvTW0yqm5WKpN0+b/YWUXcmV2hmlrOcn94Zx4So/9bWAP++frqzn9fHvNQwldP3Mewb
-	/hDr7IXH551jT0tg8Y2xEn1OcAmO6jk=
+	bh=Q6oMeyEK/1JyGwnyMfukKkQ88mHLG2Cz9KdlVILMP34=;
+	b=gUQTfonbfBZnB86GFF2i0g515CWvj4lChTUjETXi6CDc/XlXFQtyBq9MH1cjnhYeLFdvEb
+	RDRi2YlVxncwxA5Uf9ZBmatTKD4ZYWevHmoS2+YgfFEmq3mpj9VT30p9z3qsPVt6ci1zdl
+	4QWX5uKuw1Wkzi6wiun2ekWZeADxNEY=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nHi3LIql;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UzoCNVPQ;
+	spf=pass (imf21.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789734253;
+	b=ihhfHTuhO/0ubRJBQY3fTEyd2jVlF5537FoUO4AYF97h0n69Xn44faL5OvkxDxc+8nOviQ
+	41ZrUVygLvMc4VikNNud5ShuzCLUAPSmyB1sLW8ISuKYb6hZNGyAFIDXapOfrLslh5WZPb
+	L7M1R4ZMu8982lSrJMSirEsHjSQ+PoQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A88A660A89;
-	Fri, 18 Sep 2026 12:18:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 251121F000FF;
-	Fri, 18 Sep 2026 12:18:06 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6F4674327A;
+	Fri, 18 Sep 2026 12:24:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8EF61F000FF;
+	Fri, 18 Sep 2026 12:24:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789733899;
-	bh=iraf2G8GnLk55v/tOz9PuW5FKw3tZzsJG7inOso05Qw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=nHi3LIqlfCjI2cn+NwQvM+CZ6Xylz1qzVBvMVHU9ino6iJj0S1Gv6y6qT3JyuiqVw
-	 9NwLROYnHXnhBnwRDXtkpuBo0RiuhYfP372H/PrZ5Nmt5H7qMGr4ZvjDP7Dwj0hTX6
-	 t9ukArpPNzDq/p+rmRjeDwz2aikNKZW1dqPzMlSgMIrL0+8GchhWkMtqhxcMBbwlYM
-	 HZJToJz+7PH7D09H/haTWnVS9i0c84gZW++nFFnRWSopuUlryKmKqMgcjwZv21FwQz
-	 Y2Neq90H9WGRd9haugFuPUNOpXZWqNTYrEEcEwM034L57yQl4mqvl9boN1WzzbFTxb
-	 aVrL4ESb4oOWg==
-Message-ID: <caac2cb9-8faa-49bc-ae8a-47c5fd7b7e58@kernel.org>
-Date: Fri, 18 Sep 2026 14:18:03 +0200
+	s=k20260515; t=1789734252;
+	bh=Q6oMeyEK/1JyGwnyMfukKkQ88mHLG2Cz9KdlVILMP34=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=UzoCNVPQCiXKBTYtowh0ZR/LLXxwdtOWPoKneKGSAqYgMe/WyRWSHetaw5EiwvjGR
+	 WeJjNKZGrrIKcTSvmpF9VUP7qcYlgwmR+JOMpRHTLxGy4gvjeGqsqYoW1dqqJtpRsQ
+	 pLRV8irhFy6iyo7XbFIlM0X78irC7zNhMx7hrAcrZuH2mE9R3FGJsGhauhMMXRE0nv
+	 u7NAYalvWl01s1XENCPDT0fZQGWMwcxcPTXDtkYUbnhW0wFCBhfqv7L4OZygWUlzpY
+	 3iXAodlCgCOPfV6hy0tzot8Vh/NWc8PNRMLoj5iJ4JCbVagqL7TOphRI1Soo7q/i9h
+	 l+YtUxsU2NFHA==
+Date: Fri, 18 Sep 2026 14:24:07 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Oleg Nesterov <oleg@redhat.com>
+Cc: Jens Axboe <axboe@kernel.dk>, linux-fsdevel@vger.kernel.org, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, NeilBrown <neil@brown.name>, 
+	Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, linux-mm@kvack.org, 
+	io-uring@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/7] fork: refuse new threads while a coredump or an
+ exec is in progress
+Message-ID: <20260918-irrsinn-pickt-vermummen-d7167c397398@brauner>
+References: <20260917-work-coredump-fixes-v2-0-f3787fcda051@kernel.org>
+ <20260917-work-coredump-fixes-v2-1-f3787fcda051@kernel.org>
+ <aq0VLTyxNatFmLOK@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 7/9] drivers/base/memory: count inherited poisoned
- frames into the block
-To: Breno Leitao <leitao@debian.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
- <nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>,
- kas@kernel.org, kexec@lists.infradead.org, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Brendan Jackman
- <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>, Oscar Salvador <osalvador@suse.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
- hannes@cmpxchg.or, shakeel.butt@linux.dev, linux-efi@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, rmikey@meta.com,
- riel@surriel.com, harry@kernel.org, linux-cxl@vger.kernel.org,
- driver-core@lists.linux.dev, kernel-team@meta.com
-References: <20260915-hwpoison-kho-v5-0-3bc7a57bd503@debian.org>
- <20260915-hwpoison-kho-v5-7-3bc7a57bd503@debian.org>
- <de41b78a-8471-4832-be0c-35d410a4499a@kernel.org>
- <aqpczrtIwSG948iv@gmail.com>
- <b8ad366a-a019-4462-9dce-f687f60ee7f2@kernel.org>
- <aqvHHHuWJ-y4WRJZ@gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <aqvHHHuWJ-y4WRJZ@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <aq0VLTyxNatFmLOK@redhat.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 5D76720002
-X-Stat-Signature: fm4oki77eezj3o8bfofrpogymbkxegkb
-X-HE-Tag: 1789733900-201048
-X-HE-Meta: U2FsdGVkX18jQsvOVicHP7syu7BVkQ5ueokIHLadl1Vh8EXinDzxfsHgtYrDGTNr5OuIY84a2vqE9N4wUiTa+8akBo5U/drWP/lmLcMWmjISQ1arvHikWTu+zUgQRr1OUoo8v4kdIga2HbNz4ZoYtl4HZaww5Py6pZjWATH4Czx4pRUcAiyPk0skvlvoZzqApPHxPbD0G4omuJh1/vlgzC+j2xc9PR3rjB2kJn4j1bYNBbMq7z8gCpGykiRvtro0u5d1CsoeFdrArIIXN4jj1D5BhBXjOwFCJLj6+KOpH+wJalOPfHb2/XGDRz4DiljjzVd+4tmxbmBz+ghTs4RCDE9F4gbth6e6uxyN7KHmOrsNC523qQHXga8Ms7/Fc1JEWWrf/Eg5j7Vh0b5fpAeaJKdvD1zr5LcXrnU/+3AnURKtba4GRHHjWl3tmN+jKSgVVOGZ0pJyoDF+eLYzE4YIAvO1G5lEogj48G0Atvwh8ZaKfQUqR5xkQAYV9w+usfTCRyN2kkuUghy9hiP0F48wy3ZdH2RAjgh9ZHqDcMT649uldlsIFa+bPrV9f64hU1kzGz4uTzHrOA/OY8OXbsnhz2eZEH3oQqhnvKhTcmYv/BfLUxpKsaGVmBgS5QysKEr7+2ZL3vSCGcAA+PWAhxo7Hu0jUYxyDqxreIL/MK0YNxXdlMDSBhpl50caSNzGrQurhubDmu1fZLnQ8PIUYVera6C1P2sSKwyk2po0I7ya2vh2aoLnwZd3Q4Qw1VAghNvyG2A39Mk58L7iOcO54aY/4Q1PqmVtCDVgoL68bqaIjmKKtLTQ5w3/b//YR0Vg+gmBSwYQISJWTgMSvrcnvJzfhG+5iF83lLloXIq/NdJqbrB6ULGZwktpfTbP3KWNVJFft6fr5mbYMf+8RWxm48RTTJK4gyBoEs2rQMuVvPiHzSaaJNYknmsejhZ3Y1iGF+7IOo9nVoa2x+lWnjPHqTi
- gpoQT/fk
- QHwXh/ct8jXiqifpRsmXj9P4VCOOxzZEECVz977UyJiJo/Z3rwM1jHoyXOAwTkn2JMSCxta3yE6FVi++Fzz5KNnuH6uNckMxbp6BLuVmcdwbS47IlowDoYt1dyRcqHze9X/K+bnaW24uEB35d8nTMH632Q9fAl+rWMspysX+aZlQ///9p+oJ1miGvfyy/8ScATU10sxyC/0v29dJPLTpzdGV3UWH4kSyNpzKX4QWYJyoR8/Lp0FATteHVmYQYZ+OBx7Xuw17zskQn5k2SXIL4+E20gB5a5ETkV5xADbremiRLBKj54JmBbjsGtv2k+k6IP7XLsJlm+BUhe0qyUmWUM1zK0Z2B84mz5Hkw3Rff5kyJsLQ=
+X-Stat-Signature: dh4dgtshekqy6asejnikmrohhdikuowr
+X-Rspamd-Queue-Id: 53D791C000A
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789734253-861477
+X-HE-Meta: U2FsdGVkX1++OtiZv/MsYpx+8uNYlDF3mz3mR1Sy3piDREKembD221Z+CN8sjAM+0W2Z0iuhVOgo1QfTumNLx7tfeGBBMYK7lQg0+MD94CGZpfqZBMnStv5PtXb7gec6z0otYrdncQZgyI7LxiXVTLfgicwmcUspgUmU9QCOmggooq9LnmV6zFiPWexUV9s3uzScwmoNgDc5ATUf+YbD7A7hISaXyyyjuSjizKDWrntDTLps7If8oVXbNDhQJvZjqineU9zl7+rFN/7mDDsF54GZO5fXSaeE/tYVE2oz0DOPXOduNlwyGNlEn0iFD1qpZtkYrYWTpBhWrxEnGrnhamrujXA9eqMFSwbAnhNa1ZV9GZ9uaNglrfKUn56OeQ7OOXctjUKkCFgtpBire+jZ5Q0nBTX3Iu093j5AS+UUAyfQWa5BmcG/tHoVBWkL45/B5EDijZ5IH87NeO/8H6BwPXLuqC0r6jokvxbAtPMQQWpBkONAaRI7CbaW0m8QyV+WZGDEP/sWDmuhnALHx0CMWox0hhe7gV6B3kSLzZIJogk+gIFiX+CJ+5dpoprvInNkS6LjP4IbFupfMqMg6wYuYkbMpxor6gYT14ZwdleS2yU4Dy02Jrf8ffJTrD7KysNpItQ4WgnPbpTex4GiT0L541jQM+nLN8iv8Lo+ucEEKYhk9PgtUcdd3MqAArm7Fm3V1OuXj7NJCscym9G3d2RYtkQl2reFfagZQcjvhKvO0WBRjFvqpqhdQJ36O9GTuByOi6erbQQMrzN+M/dg6hlk+r+8SZiTAWhym+vK7ZfrcH++lq2q23gtcHWDFmcGBxsz1R379VxUNahjQYNY0nExKJQRdsOLtURo6nXb5hRS0aoiCrGzwk6evm3UIlGdSTRwRTgC5VwoNgSoRwlUv02DhfZxouNqjkZPRBW5gKdO8T4G1xeWxXkO8PlzVKrx1wCQkZ1yvXKpTO3WAPH1QHO
+ 9N2Ftg+I
+ 2K6ZLoBNpO0uCpGXdWksRITzLm9lYsCtihzaEkP9J2SnvphDo2spDiBDpD2s1Av3E/QC6cwlPZZlSZFiFz4Ga6vkztOg7HV0X07j3aMcXDuydDDprJTyeqYp019+gzKWbP/6V7NLvRGYgDuuFSa/KJ4ZrkMhf/1QzIFMZtmKEqCm9rUfEDbiZOi9I51/5coJVaj2wEWF1X4DTzl1rKQ6gvMRDGIrhRhUI2ZoaobOI4Prx1TB29FdRbNwM2X6N2sQ6EHFWg0Dl23m7NTrb6C7YCp38g5YTEFrzEbyhG5e+iOMj/Ls=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,66 +95,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/17/26 15:01, Breno Leitao wrote:
-> On Wed, Sep 16, 2026 at 04:51:40PM +0200, David Hildenbrand (Arm) wrote:
->> On 9/16/26 11:35, Breno Leitao wrote:
->>>
->>> hmmm, I am not sure I see it that way.
->>>
->>> The loop only runs for a block the bitmap marks. On a machine with nothing
->>> recorded the bitmap is all zeros, the range_contains_poisoned_memory() check
->>> right above it returns false, and the loop never executes.
->>>
->>> What every boot does pay is that check, once per block. The stub installs
->>> the table whether or not anything was ever recorded in it, so this is not a
->>> NULL test: it is two 64-bit divisions by the unit size plus a
->>> find_next_bit() over the single word a 128M block covers at one bit per 2M.
->>>
->>> The real cost (that "for loop above"), comes when you kexec (not on cold
->>> boot -- given the bitmap is empty), and you are trying to init
->>> a memory block that has poisoned pages into it. Which seems the right
->>> trade-off, no?
->>>
->>> That said, can we do better? Yes. The silly win is to let the table say
->>> whether anything was ever recorded in it, something like a
->>> linux_efi_poisoned_memory->empty that the first recorded frame clears,
->>> and return on that before the bitmap is reached at all.
->>>
->>> Is this what you are looking for, or something more drastic?
->>
->> Ah, that magical "range_contains_poisoned_memory" does a bitmap scan?
->>
->> I'm sorry, but that is absolutely confusing.
->>
->> There is no way someone will figure out that range_contains_poisoned_memory()
->> queries some efi specific bitmap that won't even be able to represent any memory
->> outside of it's range.
->>
->> I don't really have time to give a better solution, but starting with the
->> naming, range_contains_poisoned_memory() is just absolutely misleading.
+On Fri, Sep 18, 2026 at 12:40:45PM +0200, Oleg Nesterov wrote:
+> On 09/17, Christian Brauner wrote:
+> >
+> > Say a SQPOLL thread is a member of a thread-group that coredumps.
+> > The coredump code uses zap_process() and sends SIGKILL. The SQPOLL
+> > thread uses io_sqd_handle_event() and calls get_signal(). It removes
+> > SIGKILL from the pending set and returns. The SQPOLL thread breaks out
+> > of the loop and drains its own task work.
+> >
+> > Any pending io_req_task_submit() with REQ_F_FORCE_ASYNC creates a new
+> > worker when no other worker is free. So it ends up calling
+> > create_io_thread() from a thread whose fatal signal is gone.
 > 
-> Fair point, I'll clean up the naming in the next revision.
+> Oh.. Can we fix this in the io_uring/ code somehow? The very fact that
+> copy_process() can be called after get_signal() returns SIGKILL looks
+> very wrong to me. See below.
+
+Yeah, I agree but the io_uring solution I came up with all where a bit
+involved...
+
 > 
-> I'll also add that ->empty field, which should help locate this bit
-> faster and may let us skip the bitmap query entirely on the happy path.
+> > --- a/kernel/fork.c
+> > +++ b/kernel/fork.c
+> > @@ -2491,8 +2491,10 @@ __latent_entropy struct task_struct *copy_process(
+> >  		goto bad_fork_core_free;
+> >  	}
+> >
+> > -	/* Let kill terminate clone/fork in the middle */
+> > -	if (fatal_signal_pending(current)) {
+> > +	/* Let kill or a group exit, exec or coredump abort clone/fork */
+> > +	if (fatal_signal_pending(current) ||
+> > +	    (current->signal->flags & SIGNAL_GROUP_EXIT) ||
+> > +	    current->signal->group_exec_task || current->in_execve) {
 > 
-> Anything else you'd like addressed?
+> Well, the comment doesn't explain why should we care about exec or coredump,
+> if we forget about the problem above fatal_signal_pending() must be true.
 > 
-> Good to know this moved the needle from "David hates this feature" to
-> "David only hates the naming" -- I'll take that as progress.  :-P
+> At least, can we move these additional checks into create_io_thread() ?
+> To not uglify copy_process()...
+> 
+> Hmm... get_signal() sets PF_SIGNALED before it checks PF_USER_WORKER, so
+> perhaps something like below can work?
+> 
+> And perhaps io_should_retry_thread() should check PF_SIGNALED too?
 
-;)
+Hm, I like this idea...
+Let's see.
 
-I think the crucial part is to find a way to cleanly distinguish our source of
-information, and also how the source does only apply to some memory.
-
-Regarding this patch here, I'd assume it's sufficient.
-
-But I do wonder why we are walking pages when we have a bitmap to walk/process
-at hand?
+> 
+> Oleg.
+> 
+> --- x/kernel/fork.c
+> +++ x/kernel/fork.c
+> @@ -2700,6 +2700,9 @@ struct task_struct *create_io_thread(int
+>  		.user_worker	= 1,
+>  	};
+>  
+> +	if (current->flags && PF_SIGNALED)
+> +		return -EINTR;
+> +
+>  	return copy_process(NULL, 0, node, &args);
+>  }
+>  
+> 
 
 -- 
-Cheers,
-
-David
 
