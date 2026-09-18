@@ -4,97 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FAC8C982D2
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 07:21:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91F50C88E75
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 07:30:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D0B86B0098; Fri, 18 Sep 2026 03:21:37 -0400 (EDT)
+	id 45B396B0092; Fri, 18 Sep 2026 03:30:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A8E06B0099; Fri, 18 Sep 2026 03:21:37 -0400 (EDT)
+	id 40BD96B0093; Fri, 18 Sep 2026 03:30:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4971E6B009B; Fri, 18 Sep 2026 03:21:37 -0400 (EDT)
+	id 322036B0095; Fri, 18 Sep 2026 03:30:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 191D76B0098
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 03:21:37 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 37B721C2BF7
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 07:21:36 +0000 (UTC)
-X-FDA: 85226037792.25.7B8A4F0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 87EE4A0009
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 07:21:34 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WeEVSiUS;
-	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789716094;
-	b=pWpSZ+wN88fXOtF6U0lfC53sPSB8EaCM/kgfrK9k9UUQss4gYZnXB4UzsieiDaosePYQWZ
-	kg6eWMcz6LHW2kJdnTg65PgNHd4no01xmpb5GhiJJhHadfcLMzGKDtbcmyuyk3QYWnihQT
-	UnK80VkISzROX+gDRd7tt/RKOFTHAgQ=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WeEVSiUS;
-	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 06FF16B0092
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 03:30:40 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 844E01205D6
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 07:30:40 +0000 (UTC)
+X-FDA: 85226060640.29.E66E1DA
+Received: from mta0.migadu.com (out-107.mta0.migadu.com [91.218.175.107])
+	by imf04.hostedemail.com (Postfix) with ESMTP id E49C140003
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 07:30:36 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ULNtSIa4;
+	spf=pass (imf04.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.107 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789716094;
+	s=arc-20220608; t=1789716638;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xgfnuI9TWr6i2G+cWkoQuVzfkr0TXI4SYd1cnBio1Rw=;
-	b=M2hj+1+161c5UBl7u2V/tq0AWds5LCDgnAeyUujDKyMUryXpPMv/XBXlrw4w/rIRXBvedb
-	BRnzjADkzPcIyA4JaabGNLGqSGAJ3/t4feWVikz+NuGOVi/QvN18S4fhzciTedxLNfehi3
-	A0GRBUzWubYYmBWkEDklk0+EPbds5Nc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B7B0E40581;
-	Fri, 18 Sep 2026 07:21:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CA911F00893;
-	Fri, 18 Sep 2026 07:21:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789716093;
-	bh=xgfnuI9TWr6i2G+cWkoQuVzfkr0TXI4SYd1cnBio1Rw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=WeEVSiUSVGNxGH7poJBl8BMLQzWHt9ePEhZ1af+Vmeklz5WOmx2pZK+2tAuVyDUth
-	 RFzK63DnascmRaIu+z8a9jFjaVW/BdUdInE8B7B2DZuoJfYWJAng2wnwUvXuAlYyYj
-	 FbCLQgbipfTvMZmP2D0LNfQ70XOyyPMw7rlh0/FxtHThXgjAYuX/y7lR/wdCS4XlfQ
-	 vZTmEnhg22/fXwo7hNe/MLsU4tMkAxeTuIHKZPgJthixZaQga9qrLR3dBTl4ckpnKq
-	 xskdp0ifpjBVI4o0AOOLsh1i8fSi4RlD0lvsxBOKv1jIBls5rwu667Q/0SIgeHQXnz
-	 t3cL7hJReH9yg==
-Date: Fri, 18 Sep 2026 10:21:21 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>, linux-arch@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] docs/mm: describe set_memory() and set_direct_map() APIs
-Message-ID: <aqzmcdr7ISpa9r8k@kernel.org>
-References: <20260909-set-memory-docs-v1-1-6065d3f208e4@kernel.org>
- <2817ca55-cf04-4874-bed6-8408606e1a41@arm.com>
+	bh=kM1dRFmDXeAoN/p5ctvzv5ZVRnmxbgQAJ3cL+XZ9LEo=;
+	b=EQnqaVINEikKKzWr41dlO6Y4/P+rQI4S7sPGNzlUMMzlO1Tvb53I+DRIrHDUqY1E27cXpZ
+	7zzvYSR5BrVPmfR2dDUdcLrCUM9l4315Vtzbp0BmC6ktvN1H+QgmvuTD0SONpjfNhPBAAg
+	AWX43pI9+BEP7WQtMaYJEtLMDbPuVls=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789716638;
+	b=3upt9bsNKqtLGQsYMO+P3/cD/9kGq+YYqvAQeahCdZ/l5iwilq2Ic2dO0/rbQjpZB/N/DO
+	aGY76mpXKNHi+U7n7FYaUOyfXeEkLStSOWIpqWymqhX5bmyWdsaM7wmtXwuGDwQBwIEPNy
+	i/71Df1DsHA3yz4WgvcBpc4Zf6KWwx0=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ULNtSIa4;
+	spf=pass (imf04.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.107 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=UhePvlO6Uju4KMSGgi0DFyyW4sOpnmjHBEaUsD91vSc=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789716635; v=1; x=1790321435;
+ b=ULNtSIa4m9Ewij1GnUkqGxU9aXQ2oILTA+9T2u7ixLXmqYR0nKCO44mGqYBlywtYYqe+h75F
+ cwwwES+57lXO+C/ybgQiFLJQ5sAh/z90HQN0U4gkWvyg/gDIwUz7rPyp+n3UnwLXDcICr4PZZUq
+ Gj0ULHhyxmZmM4k7ZqWmX/LQ=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id 37e6b37ee04b46ae;
+	Fri, 18 Sep 2026 07:30:35 +0000
+X-Mizu-Trace-ID: 37e6b37ee04b46ae
+X-Migadu-Flow: FLOW_OUT
+Date: Fri, 18 Sep 2026 15:30:28 +0800
+From: Baoquan He <baoquan.he@linux.dev>
+To: Wandun Chen <chenwandun1@gmail.com>
+Cc: catalin.marinas@arm.com, will@kernel.org, chenhuacai@kernel.org,
+	pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu,
+	tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
+	dave.hansen@linux.intel.com, x86@kernel.org, robh@kernel.org,
+	saravanak@kernel.org, akpm@linux-foundation.org, rppt@kernel.org,
+	pasha.tatashin@soleen.com, pratyush@kernel.org,
+	m.szyprowski@samsung.com, mark.rutland@arm.com, kernel@xen0n.name,
+	alex@ghiti.fr, hpa@zytor.com, ruirui.yang@linux.dev,
+	robin.murphy@arm.com, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
+	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org,
+	kexec@lists.infradead.org, linux-mm@kvack.org,
+	iommu@lists.linux.dev
+Subject: Re: [PATCH v6 03/10] crash_core: fold duplicated memblock arch hooks
+ into the weak default
+Message-ID: <aqzolBceoRchBdbx@fedora>
+References: <20260902073116.802752-1-chenwandun1@gmail.com>
+ <20260902073116.802752-4-chenwandun1@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2817ca55-cf04-4874-bed6-8408606e1a41@arm.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 87EE4A0009
+In-Reply-To: <20260902073116.802752-4-chenwandun1@gmail.com>
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: m1fgn6yxisgfsdhbrduasmamaarq3egk
-X-HE-Tag: 1789716094-566487
-X-HE-Meta: U2FsdGVkX19qqxjMXKtsUVJvGCco+8+BAhwWmfmR76XhD+D8pROqvvOhQeBUoLI6dJx2SyiqF6Qqv4f1BuZ0917rmoxZFbXkdrNA7npIygytzqolP2sZChu4TFPaO3/DKFP3LG84d+hKNs2D38GoSgpmDm3Sydww62TVWCpE/Y+d5s8EBrfIYpP4S6PwoRLgfton4yzg5BIm+b081o0G3rUa0RCtrFcqT5LvlHRkrqrrTaqkGjA7pDF8CZZY/3FGk1e8mSyy4G59qdy1sKUJOKkoT3Bf5QlOJX0D6ihIVFuanxoDVqipUMCzcvNn7BVVQiK0gRZkzGfLZr/OV3R9HErHvGhVCdGonFBveOh/828Uv9ZSkidKOOBs6LQiLGfldCAHTaI7I+myFB2zEnY1N/Y1QpSjGIRXu//yBXfjZAVlq6HGURMEqk4pofr98vgk0UZdJPSiUfeRJ2enxoFPkitFQezcnDlYfjAb/+EWxLcn98d2hR5xWN5bsZ/Unjs1QvknNny3aBjz8GYHHzPenYwVV9HvfQtYfHLQH59ZuyQoK5//9mRp6YElqU9JI2BLlWwoZksMESw9j6gEHTqIi2uHj5Ykwuwt0E+Ht12nU/En43zS8Jtu3lzcsBmx/5+0EVutWu/OIgYKSojRd5GsUMizMuzZWwvzg9THapU9MGGVQOkiOhWT6yWR6JjNypiwDXf8wNw3/yFr5gnPh2UjcXgu6ZGYws2dFZKIZ7to0LTZ/5irowGUllgaFYNdh5ieVLeAlP6xXaN0kFFGWkZUEvxLlNrTv7fAHELhfq6iZoiiM7uzpx1lDmmwELbvQriUMNMqjxOQONhLlZ5ZmoWV4cfYbCiw4QtqIKeKfKBws30eXiBw4v8AhqXmavJqbdNZH6XQF9Jesvq6db0Gmyl+q73KK94mXmpNBdRuR2f24HyDGusZokJ6gbDAWj4gnoW3pl+T3NKHMnjbymvTwQi
- TtHbwSlo
- NAc3DfbYsiQACjJA4fsrfZTzxxdj4UUQ3ocBN4QGA4OlLnq9Ygb/oGRYOY0iMXT1M6/VRZW9+6+P/luzwXfP7NEaU0fDXptb+55ELDPT8sd0MBZ+OWw4d377sXL7RQS/POipqbZr8m7SbG7rTDc1W6vFHH+qNKu/LL0cfmImABPbeylzl4R6Hrp7XT8EE+j7o+WKGlbvm4eGNyOY/CGwOo05VSJASNFux6ppQng6l37VOQgY1DOKI3En5iRvXPJzlG3OhjcK2phQ/rMdQ1FgYKjOAjr417oKEa4mcGQwiicjvpmRmCK6piuYfuX/MroX6fEp1+a5WWPwdYPjD7ufIbTzpXcY9aaY0/5xI
+X-Stat-Signature: qexj8y1by8xyu8snansqxpbrkghywg8j
+X-Rspamd-Queue-Id: E49C140003
+X-HE-Tag: 1789716636-233743
+X-HE-Meta: U2FsdGVkX18wKYnbozdUASk7T9dua+jWgQLHfZr91wRkW2Us6mdW71V1fqW/H9rWC+xd0atxWCOVBPfxQJI2lW01WW1AUzekJYZ5fzlnntpPT3oJChMGUhzkbmuGr2pa36WKdUnrQrMG56jrXvUv1I1q4HI13Eg8GWlVWYuNQBkl0kMZHQOCHez1q84ZlHP/24JOsVSpadciehs+BXeojqIbZJxPShLFnFqBZPneOghFd+4vkbQ1wkoA5BzCwQCXBzPKF45LWgU/i6Dg9yjaonun+9txM398QM4e6w0Ni/NxJqUKQU2rjAddQr02fIHqEcrkGifPcgbRwCOXNU2bchNxpJeL7gFuTyQJBINVHfA9l3klaA1D9as1QUm35QPSGUo2baoB/PyupzPde9io3HH9NT8ISpGjBAaBfdZrsjKJvAg0erahGNLUP1BVx5iDnqZq7ky9taf+NQLFnSYSL2Hkpf40wdF2OEYIGZk5W4yClvLTvOLYbp4UcsKDTKAsP6s/vTb0Q3bNZ0+H3NFTxoAYhLq5vfe8SznGGUUTOCa18LY48IJQPS0rX5GITQGUIDSn7+R7700oDAoimzG1IYUJ2yBFC0Yy1vA1JkUKX/UN86+0v9bjKWwddcRlIVZhIdbzW4KGivfFi5j1XR+2gg5Sd0d1MPv1EyZ+UVn5D8mM9fXlPfBlWuyJ+kxe2Zx4RSPd01PGm4uKa8cPhEK2B1F4N5z2oiR4w55+3kmWc7LV+xY467panclBHPHNI3mXpihVqoFr1vNfaWXqDf5MMP3THuYvCAYXkzfYhiDKDJUnhMCkAZ8MMwFeZ6Lx3rFUv7iZglV+8+qKEX1CeCByMiQbRtUaDBICm6e0MA0BJQEZpzaTG2bSEsCsCva5umO31GyL8IEZEUEsb/R6VmK9daghqafZPMzkrKBYj/2X1RTQb+nDTs0y2VhJYt3Oap17YD1bB0wGrBcMPrSOvLQ
+ w4f8yLmv
+ OwKzI+ngQsBu79OAVWYcQcKEp6qP+ICDy5mtQGeY2xoPimWacZX9/OV4nBeJPh5bJZVGf/MqQIP1K6TyppYzgAE3lqXVIMeNsWrbAi95XStxnIRVMBLIQhiG17SCuRdzKSFpVzw8mpA1tAJ2+gNUyGfQXLGnQqjdQhyb4k7C65aWZmcjke6pUnIDv2yqY4w9WS9/FFVAdynAc6bBKZDhpSJeRScnh4X640cdDVKRVnD9nKBZzH6yEtpJxEgjLqeY8zoUhawrQ+yyfdzep4p5we/nzKMVwWc5iwDPLWI0XbpacHNQ+320XrGx5mrBTBICxTSuUdnNDE/HIVToJbZ2Cp2Vz5Dwcd+i5yjpxIAo9nyHonGnW8byJ2VjGY2aCvmcyuwKj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,217 +101,198 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 17, 2026 at 08:44:17PM +0200, Kevin Brodsky wrote:
-> On 09/09/2026 11:45, Mike Rapoport (Microsoft) wrote:
-> > The set_memory() and set_direct_map() APIs change permissions of existing
-> > kernel mappings, but their semantics are only described by the code, and
-> > that code differs from architecture to architecture.
-> >
-> > Add Documentation/mm/kernel-page-tables.rst that briefly describes what the
-> > kernel page tables consist of, defines the semantics both APIs have in
-> > common, including the parts that are easy to get wrong, and lists the
-> > differences between the architecture implementations.
-> >
-> > Add kernel-doc comments for the generic set_memory() and set_direct_map()
-> > stubs and link them into Documentation/core-api/mm-api.rst.
-> >
-> > Assisted-by: copilot:claude-opus
-> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+On 09/02/26 at 03:31pm, Wandun Chen wrote:
+> From: Wandun Chen <chenwandun@lixiang.com>
 > 
-> Thanks for doing this Mike, I wish there had been such a document when I
-> started using those APIs!
+> arm64, loongarch and riscv open-code the same memblock walk in
+> arch_get_system_nr_ranges() and arch_crash_populate_cmem(). Move it into
+> the __weak defaults in kernel/crash_core.c and delete the arch copies.
 > 
-> Much of that document feels like an excruciating FIXME list... which is
+> No functional change.
 
-It is :)
+In one version, you also tried to remove these functions on x86, I could
+remember it wrong. 
 
-> exactly the state of set_memory/set_direct_map, and better to have it
-> documented than letting every new user stumble upon the same gotchas.
-> 
-> Overall looks good to me, some minor comments below.
-> 
-> > [...]
-> >
-> > +Modifying the kernel page tables
-> > +================================
-> > +
-> > +Except for the vmalloc area, the kernel page tables are mostly static. Still,
-> > +there are cases when the permissions of existing kernel mappings have to be
-> > +updated, for instance when a module is loaded and its text becomes read-only
-> > +and executable, or when a page is temporarily removed from the direct map to
-> > +reduce its exposure.
-> > +
-> > +There are two families of functions for this, both declared in
-> > +`include/linux/set_memory.h`:
-> > +
-> > +* `set_memory_*()` change permissions of an arbitrary kernel mapping. They
-> > +  take a kernel virtual address and the number of pages.
-> > +
-> > +* `set_direct_map_*()` change permissions of the direct map alias of a
-> > +  `struct page`. They take a `struct page` pointer and the number of
-> > +  pages.
-> 
-> "direct map alias of a struct page" is rather confusing, are we talking
-> about the mapping of struct page itself?
+Anyway, this looks good to me.
 
-How about "... permissions of the direct mapping of the page frame
-represented by a struct page"?
- 
-> > +
-> > +Architectures that implement `set_memory()` select `CONFIG_ARCH_HAS_SET_MEMORY`
-> > +
-> > +Architectures that implement `set_direct_map()` select
-> > +`CONFIG_ARCH_HAS_SET_DIRECT_MAP`.
-> > [...]
-> >
-> > +Architecture specific differences
-> > +=================================
-> > +
-> > +The APIs are implemented by seven architectures and, beyond the common
-> > +semantics described above, their behaviour differs in several respects.
-> > +
-> > +Which of the APIs are implemented:
-> > +
-> > +=========  =====================  =========================
-> > +Arch       `ARCH_HAS_SET_MEMORY`  `ARCH_HAS_SET_DIRECT_MAP`
-> > +=========  =====================  =========================
-> > +arm        yes                    no
-> > +arm64      yes                    yes
-> > +loongarch  yes                    yes
-> > +powerpc    yes                    no
-> > +riscv      yes (MMU only)         yes (MMU only)
-> > +s390       yes                    yes
-> > +x86        yes                    yes
-> > +=========  =====================  =========================
-> > +
-> > +Only set_memory_ro(), set_memory_rw(), set_memory_x() and set_memory_nx() are
-> > +available everywhere, and even these are not universal: some architectures do
-> > +not implement any of them for the direct map, and the architectures that may
-> 
-> "do not implement any of them for the direct map" feels ambiguous - I
-> think what we really mean is that they reject direct map addresses, e.g.
-> what arm64 does (only accept addresses to kernel VMAs)?
-
-... some architectures restrict ranges that can be modified. For
-instance arm64 rejects direct map addresses.
- 
-> > +run on hardware without an execute permission bit, like x86 and s390, silently
-> > +skip the update of the executable bit there.
-> > +
-> > +set_memory_rox() has a generic implementation that calls set_memory_ro() and
-> > +set_memory_x() in turn; PowerPC, s390 and x86 override it with a single-pass
-> > +version.
-> > +
-> > +Making a mapping present or not present is spelled differently: set_memory_p()
-> > +and set_memory_np() on x86 and PowerPC, set_memory_valid() on arm64 and arm.
-> 
-> I'm not sure we should even document set_memory_valid(). It doesn't at
-> all behave like the other set_memory_* on amr64 (no check whatsoever, no
-> handling of aliases) and is (fortunately) only used from arch code. I've
-> been meaning to make its name scarier (__set_memory_valid?) for that reason.
-
-Here it's an example of arch-private APIs, so I'd rather keep it. I'll
-extend the intro sentence to make it more clear.
- 
-> > +
-> > +The direct map and the kernel image are normally mapped with the largest
-> > +possible pages, and changing the permissions of a single page inside such a
-> > +mapping requires splitting it, which not every architecture can do.
-> > +
-> > +arm
-> > +---
-> > +
-> > +* Does not implement `set_direct_map()`.
-> > +* Provides set_memory_valid().
-> > +* set_memory_ro(), set_memory_rw(), set_memory_x() and set_memory_nx() accept
-> > +  only vmalloc and module addresses.
-> > +* set_memory_valid() accepts any address.
-> > +* Does not update mapping aliases.
-> > +
-> > +arm64
-> > +-----
-> > +
-> > +* Provides set_memory_valid().
-> > +* Provides the memory encryption helpers, which are effective only when the
-> > +  kernel runs as a confidential guest.
-> > +* set_memory_ro(), set_memory_rw(), set_memory_x() and set_memory_nx() accept
-> > +  only vmalloc and module addresses:
-> > +
-> > +  - the range must fit in the VM area that contains its start
-> > +  - the VM area must have `VM_ALLOC` set and `VM_ALLOW_HUGE_VMAP` clear
-> > +
-> > +* set_memory_valid() accepts any address.
-> > +* The encryption helpers accept only the direct map addresses.
-> 
-> s/the//
-> 
-> > +* Propagates the read-only and the read-write changes to the direct map alias
-> > +  when `rodata=full` is in effect.
-> 
-> That is, set_memory_<perms> propagate those changes.
-
-Ack.
+Acked-by: Baoquan He <baoquan.he@linux.dev>
 
 > 
-> > +* Splits leaf mappings before the update on the hardware that supports it.
-> > +  Without such support an update that covers a leaf entry only partially fails
-> > +  with a WARN()ing and `-EINVAL`.
+> Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
+> Tested-by: Meijing Zhao <zhaomeijing@lixiang.com>
+> ---
+>  arch/arm64/kernel/machine_kexec_file.c     | 29 ----------------------
+>  arch/loongarch/kernel/machine_kexec_file.c | 27 --------------------
+>  arch/riscv/kernel/machine_kexec_file.c     | 26 -------------------
+>  kernel/crash_core.c                        | 25 +++++++++++++++++--
+>  4 files changed, 23 insertions(+), 84 deletions(-)
 > 
-> What does "partially fails" mean?  The splitting may be partial, but no
-> permission change should occur.
-
-Yes, the split may be partial and. I'll make it clearer.
- 
-> > +* The `set_direct_map()` functions return 0 without doing anything when the
-> > +  direct map cannot be modified, see can_set_direct_map().
-> > +* Skips the TLB flush in `set_memory()` when the update only turns an invalid
-> > +  mapping into a valid one.
-> > +* Does not flush TLB in `set_direct_map()`.
-> > +
-> > +LoongArch
-> > +---------
-> > +
-> > +* Accepts only the addresses above the hardware window and silently returns
-> > +  success for the rest, see `Direct map`_.
-> > +* Does not update mapping aliases.
-> > +* Does not split anything: a leaf entry is updated as a whole, which changes
-> > +  the permissions of the entire large mapping.
+> diff --git a/arch/arm64/kernel/machine_kexec_file.c b/arch/arm64/kernel/machine_kexec_file.c
+> index 854d872dfd0f..34d944d3f22f 100644
+> --- a/arch/arm64/kernel/machine_kexec_file.c
+> +++ b/arch/arm64/kernel/machine_kexec_file.c
+> @@ -14,7 +14,6 @@
+>  #include <linux/kernel.h>
+>  #include <linux/kexec.h>
+>  #include <linux/libfdt.h>
+> -#include <linux/memblock.h>
+>  #include <linux/of.h>
+>  #include <linux/of_fdt.h>
+>  #include <linux/slab.h>
+> @@ -39,34 +38,6 @@ int arch_kimage_file_post_load_cleanup(struct kimage *image)
+>  	return kexec_image_post_load_cleanup_default(image);
+>  }
+>  
+> -#ifdef CONFIG_CRASH_DUMP
+> -unsigned int arch_get_system_nr_ranges(void)
+> -{
+> -	unsigned int nr_ranges = 2 + crashk_cma_cnt; /* for exclusion of crashkernel region */
+> -	phys_addr_t start, end;
+> -	u64 i;
+> -
+> -	for_each_mem_range(i, &start, &end)
+> -		nr_ranges++;
+> -
+> -	return nr_ranges;
+> -}
+> -
+> -int arch_crash_populate_cmem(struct crash_mem *cmem)
+> -{
+> -	phys_addr_t start, end;
+> -	u64 i;
+> -
+> -	for_each_mem_range(i, &start, &end) {
+> -		cmem->ranges[cmem->nr_ranges].start = start;
+> -		cmem->ranges[cmem->nr_ranges].end = end - 1;
+> -		cmem->nr_ranges++;
+> -	}
+> -
+> -	return 0;
+> -}
+> -#endif
+> -
+>  /*
+>   * Tries to add the initrd and DTB to the image. If it is not possible to find
+>   * valid locations, this function will undo changes to the image and return non
+> diff --git a/arch/loongarch/kernel/machine_kexec_file.c b/arch/loongarch/kernel/machine_kexec_file.c
+> index 5412aa9f3568..481b8f906a56 100644
+> --- a/arch/loongarch/kernel/machine_kexec_file.c
+> +++ b/arch/loongarch/kernel/machine_kexec_file.c
+> @@ -13,7 +13,6 @@
+>  #include <linux/ioport.h>
+>  #include <linux/kernel.h>
+>  #include <linux/kexec.h>
+> -#include <linux/memblock.h>
+>  #include <linux/slab.h>
+>  #include <linux/string.h>
+>  #include <linux/types.h>
+> @@ -56,32 +55,6 @@ static void cmdline_add_initrd(struct kimage *image, unsigned long *cmdline_tmpl
+>  }
+>  
+>  #ifdef CONFIG_CRASH_DUMP
+> -unsigned int arch_get_system_nr_ranges(void)
+> -{
+> -	int nr_ranges = 2; /* for exclusion of crashkernel region */
+> -	phys_addr_t start, end;
+> -	uint64_t i;
+> -
+> -	for_each_mem_range(i, &start, &end)
+> -		nr_ranges++;
+> -
+> -	return nr_ranges;
+> -}
+> -
+> -int arch_crash_populate_cmem(struct crash_mem *cmem)
+> -{
+> -	phys_addr_t start, end;
+> -	uint64_t i;
+> -
+> -	for_each_mem_range(i, &start, &end) {
+> -		cmem->ranges[cmem->nr_ranges].start = start;
+> -		cmem->ranges[cmem->nr_ranges].end = end - 1;
+> -		cmem->nr_ranges++;
+> -	}
+> -
+> -	return 0;
+> -}
+> -
+>  /*
+>   * Add the "mem=size@start" command line parameter to command line, indicating the
+>   * memory region the new kernel can use to boot into.
+> diff --git a/arch/riscv/kernel/machine_kexec_file.c b/arch/riscv/kernel/machine_kexec_file.c
+> index 808e872f4063..fdc6695e8588 100644
+> --- a/arch/riscv/kernel/machine_kexec_file.c
+> +++ b/arch/riscv/kernel/machine_kexec_file.c
+> @@ -37,32 +37,6 @@ int arch_kimage_file_post_load_cleanup(struct kimage *image)
+>  }
+>  
+>  #ifdef CONFIG_CRASH_DUMP
+> -unsigned int arch_get_system_nr_ranges(void)
+> -{
+> -	unsigned int nr_ranges = 2 + crashk_cma_cnt; /* For exclusion of crashkernel region */
+> -	u64 i;
+> -	phys_addr_t start, end;
+> -
+> -	for_each_mem_range(i, &start, &end)
+> -		nr_ranges++;
+> -
+> -	return nr_ranges;
+> -}
+> -
+> -int arch_crash_populate_cmem(struct crash_mem *cmem)
+> -{
+> -	u64 i;
+> -	phys_addr_t start, end;
+> -
+> -	for_each_mem_range(i, &start, &end) {
+> -		cmem->ranges[cmem->nr_ranges].start = start;
+> -		cmem->ranges[cmem->nr_ranges].end = end - 1;
+> -		cmem->nr_ranges++;
+> -	}
+> -
+> -	return 0;
+> -}
+> -
+>  static char *setup_kdump_cmdline(struct kimage *image, char *cmdline,
+>  				 unsigned long cmdline_len)
+>  {
+> diff --git a/kernel/crash_core.c b/kernel/crash_core.c
+> index 2b36aa9fade0..77285ae3ce60 100644
+> --- a/kernel/crash_core.c
+> +++ b/kernel/crash_core.c
+> @@ -281,8 +281,29 @@ static struct crash_mem *alloc_cmem(unsigned int nr_ranges)
+>  	return cmem;
+>  }
+>  
+> -unsigned int __weak arch_get_system_nr_ranges(void) { return 0; }
+> -int __weak arch_crash_populate_cmem(struct crash_mem *cmem) { return -1; }
+> +unsigned int __weak arch_get_system_nr_ranges(void)
+> +{
+> +	unsigned int nr_ranges = 2 + crashk_cma_cnt; /* crashk_res + crashk_low_res, +CMA splits */
+> +	phys_addr_t start, end;
+> +	u64 i;
+> +
+> +	for_each_mem_range(i, &start, &end)
+> +		nr_ranges++;
+> +	return nr_ranges;
+> +}
+> +
+> +int __weak arch_crash_populate_cmem(struct crash_mem *cmem)
+> +{
+> +	phys_addr_t start, end;
+> +	u64 i;
+> +
+> +	for_each_mem_range(i, &start, &end) {
+> +		cmem->ranges[cmem->nr_ranges].start = start;
+> +		cmem->ranges[cmem->nr_ranges].end = end - 1;
+> +		cmem->nr_ranges++;
+> +	}
+> +	return 0;
+> +}
+>  int __weak arch_crash_exclude_ranges(struct crash_mem *cmem) { return 0; }
+>  
+>  int __weak arch_crash_exclude_mem_range(struct crash_mem **mem,
+> -- 
+> 2.43.0
 > 
-> Ouch!
-
-I liked more their set_direct_map part :)
- 
-> > +* Flushes the TLB in `set_direct_map()`.
-> > +
-> > +x86
-> > +---
-> > +
-> > +* Provides the largest set of operations on top of the common ones:
-> > +
-> > +  - the cache attribute helpers: set_memory_uc(), set_memory_wc(),
-> > +    set_memory_wb()
-> > +  - presence control: set_memory_np() and set_memory_p()
-> > +  - set_memory_4k()
-> > +  - set_memory_global() and set_memory_nonglobal()
-> > +  - the array variants that operate on `struct page` arrays or arrays of
-> > +    virtual addresses
-> > +  - memory encryption: set_memory_encrypted() and set_memory_decrypted()
-> > +
-> > +* The `set_memory()` functions accept any mapped kernel address, including the
-> > +  direct map, and silently succeed for the unmapped holes inside it.
-> > +* Does nothing in set_memory_x() and set_memory_nx() when the CPU has no
-> > +  execute permission bit.
-> > +* Applies the change to the direct map alias and, for the kernel image, to the
-> > +  high kernel mapping. The NX bit is never propagated, so that the direct map
-> > +  stays non-executable.
-> 
-> Same as above, bettermake the subject explicit (set_memory()?).
-
-Ack.
- 
-> - Kevin
-
--- 
-Sincerely yours,
-Mike.
 
