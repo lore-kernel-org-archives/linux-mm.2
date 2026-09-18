@@ -4,88 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DFC5C982D9
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 10:23:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 197B1C982DA
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 10:25:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E6BD6B00A9; Fri, 18 Sep 2026 06:23:16 -0400 (EDT)
+	id 308EF6B009B; Fri, 18 Sep 2026 06:25:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7BE446B00AA; Fri, 18 Sep 2026 06:23:16 -0400 (EDT)
+	id 2B9A26B009E; Fri, 18 Sep 2026 06:25:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6FB4C6B00AB; Fri, 18 Sep 2026 06:23:16 -0400 (EDT)
+	id 1A83A6B009F; Fri, 18 Sep 2026 06:25:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 520BD6B00A9
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 06:23:16 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C2B5180636
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 10:23:15 +0000 (UTC)
-X-FDA: 85226495550.11.0A93A1C
-Received: from mta0.migadu.com (out-10.mta0.migadu.com [91.218.175.10])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 8EF4F100002
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 10:23:13 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=aDfl18Hs;
-	spf=pass (imf05.hostedemail.com: domain of cui.tao@linux.dev designates 91.218.175.10 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E80CB6B009B
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 06:25:33 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 713191A05F7
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 10:25:33 +0000 (UTC)
+X-FDA: 85226501346.17.B242ECB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id D165CC0005
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 10:25:31 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20260515 header.b=bgn07gul;
+	spf=pass (imf28.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789726994;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1789727131;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pPUGnY4z3dE6RKztsxzatOTkV/cZkLl1/W6Oqt9KRzM=;
-	b=V1QTSyIkvE7VRgEveLmVwA8lM/6qW3tqfRfMtYlsad8MgUHuKUkAQ2VptsoNLhvFxmwsKg
-	VmtU+v5c+AklORVqyCLMCMQNwvSdBM8nl1sopPDywr/jIjqH5ycN9yVRbj4eRf5zkreLNt
-	2hkbL+Jt1gwckVU6Ke5VDbU7QshXb/4=
+	bh=XCX7OD0MFSj63jeBdnj32V2m69meKqvW8/7zSh3AOsY=;
+	b=H4Cg1H48CTRSm/xuZZv9Cq005YJtdgAmlqXtAgUlx+nHd9r2LaNRktcPsXiOA3kkqgfEJo
+	Jt+/ZcPKXljchu2nDgJRg+fUc/epcikjjmSYjb5qhMAQzyMyF6d+pn5fXZ7yeTLMZ/ao+h
+	W17REK8j6w4tExFCz1LBRssQZn1WGyM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789726994;
-	b=n3yZioFOqrv1LZFu5glfx9c2UMUS7T7jIuiAaxR+j7RJ+cOsFGkuA1pExrc8fkiJg5X2b/
-	6Dgiy6UgjWn2v1+FmRMIyspCQ5oOYI7uhgXo/lUTTXuZQKt8a71k1ObwE8oOS0xq9QfJvj
-	v4TRfao80CuLri3QqjF4xxhDXgv5vrc=
+	t=1789727131;
+	b=UUDeCCMh+dbbtMRG3PXFAaWKVdocgGYkNi68hIqz8Cwcw8osLLtQvlGUOObxAi4oKpqiF2
+	j38nSK5UxIpNlT+SEsVCCzghJzIFROT6VMa8oVMcynQqqoHe9b0QbUY239AcCf2/jHaU2l
+	oZZHjKrPsTz91wX10Bj90xcrrtYyX7k=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=aDfl18Hs;
-	spf=pass (imf05.hostedemail.com: domain of cui.tao@linux.dev designates 91.218.175.10 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=yrF6fA5tlOM0xGyL9ZU1WnjTazhuz2mrZ9NL1QXtunU=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789726990; v=1; x=1790331790;
- b=aDfl18HsfTBQ93648RB7nEKs5U6qqQTYncRFV75/11TDqHlHrZnEuqRdsr9AzQLDvZwHbxyb
- dY8NK6TrPj4WyM7g+mjo6blcs9TDmH4cmTiKT3DWFrA6R1BnFYEHYxI1eMI41Sil3zGiK/wYeYt
- 9Yn00dMxZUk12PVTqH3UrTaE=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 60349c2ffaecec43;
-	Fri, 18 Sep 2026 10:23:00 +0000
-X-Mizu-Trace-ID: 60349c2ffaecec43
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <ada49654-0456-4b63-9f86-06ea9c97667d@linux.dev>
-Date: Fri, 18 Sep 2026 18:22:57 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: cui.tao@linux.dev, hannes@cmpxchg.org, roman.gushchin@linux.dev,
- muchun.song@linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Tao Cui <cuitao@kylinos.cn>
-Subject: Re: [RFC PATCH 0/3] mm, memcg: isolate deprecated v1 state from
- struct mem_cgroup
-To: Michal Hocko <mhocko@suse.com>, Shakeel Butt <shakeel.butt@linux.dev>
-References: <20260916125737.1095414-1-cui.tao@linux.dev>
- <aqxMk6yaiFHeeAAg@linux.dev> <aq0HNe5s3zvOnM_I@tiehlicka>
-From: Tao Cui <cui.tao@linux.dev>
-In-Reply-To: <aq0HNe5s3zvOnM_I@tiehlicka>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 8EF4F100002
-X-Stat-Signature: 9kmsmghhmde67pkmidch5ix71gtz3gbc
+	imf28.hostedemail.com;
+	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20260515 header.b=bgn07gul;
+	spf=pass (imf28.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0B11B41418;
+	Fri, 18 Sep 2026 10:25:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 170481F000FF;
+	Fri, 18 Sep 2026 10:25:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789727130;
+	bh=XCX7OD0MFSj63jeBdnj32V2m69meKqvW8/7zSh3AOsY=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=bgn07gul2XbQMTEsRc4NB0SooXCoVClfKj7xYlHbS0pB2k+p9hs37drFAnbcjmF6s
+	 4uQTP4i4RTHhMXyDNCKCVqtp09Vt4jf/2sZpt6hXCITDDYmNLKHl/7GEuioB10pBbq
+	 KgC8pFhunF4pZVF52aAyqYLmVje7onyZnDtkoMo7M+n8lrWgnW2qD56PzJwaioLm4S
+	 fHUW0/h/VQS1YQuMks/Kfw+mvY5dmMgMBMzsknhX/LGDPMoVKKagSg7iLX1wTh+7zx
+	 SfTRxREogXbxKWtWO3h7HjVP9J++VI67o4Pb8NZxEUTXLM29u8MBaqpCcwe6O9eeSz
+	 2AjhZSXEB/PNg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v5 14/17] elf: Introduce elf64_phdr_size() helper
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Jinjie Ruan" <ruanjinjie@huawei.com>, lizhengyu3@huawei.com, dave.hansen@linux.intel.com, mark.rutland@arm.com, bgwin@google.com, npiggin@gmail.com, mingo@redhat.com, mclapinski@google.com, thuth@redhat.com, ruirui.yang@linux.dev, sourabhjain@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, catalin.marinas@arm.com, dakr@kernel.org, linux-kernel@vger.kernel.org, vishal.l.verma@intel.com, pasha.tatashin@soleen.com, robh@kernel.org, sshegde@linux.ibm.com, chao.gao@intel.com, rppt@kernel.org, seanjc@google.com, chleroy@kernel.org, liukexin@kylinos.cn, linux-mm@kvack.org, takahiro.akashi@linaro.org, piliu@redhat.com, akpm@linux-foundation.org, pratyush@kernel.org, ruanjinjie@huawei.com, kees@kernel.org, hpa@zytor.com, rafael@kernel.org, ritesh.list@gmail.com, blum@kernel.org, linux-arm-kernel@lists.infradead.org, coxu@redhat.com, maddy@linux.ibm.com, eric.devolder@oracle.com, palmer@rivosinc.com, tglx@kernel.org, adityag@linux.ibm.com, kas@kernel.org, chenhuacai@kernel.org, yeor
+ eum.yun@
+ arm.com, maqianga@uniontech.com, gshan@redhat.com, guodongtai@kylinos.cn, gregkh@linuxfoundation.org, x86@kernel.org, zhangtianyang@loongson.cn, jbouron@amazon.com, bp@alien8.de, tangyouling@kylinos.cn, loongarch@lists.linux.dev, james.morse@arm.com, ardb@kernel.org, mpe@ellerman.id.au, leitao@debian.org, will@kernel.org, baoquan.he@linux.dev, hbathini@linux.ibm.com, me@linux.beauty, graf@amazon.com, linux-fsdevel@vger.kernel.org, kernel@xen0n.name, driver-core@lists.linux.dev
+Cc: kexec@lists.infradead.org
+In-Reply-To: <20260918100442.3841135-15-ruanjinjie@huawei.com>
+References: <20260918100442.3841135-1-ruanjinjie@huawei.com>
+ <20260918100442.3841135-15-ruanjinjie@huawei.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 18 Sep 2026 10:25:26 +0000
+Message-Id: <20260918102527.170481F000FF@smtp.kernel.org>
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1789726993-597703
-X-HE-Meta: U2FsdGVkX1+JMyx6rkxriyyWIpJwhxZer99OCxrREQ7XZZZ9Yh10OzHLe4K+MmMHCb3bc4vfJcimcKn/s5jOgoMelPtux8t4XtrcsGqgAhTOspTKHmotfI5F5H/bqbRYD19qsz1WDU/2wwEmi4WOu7HbRbaFqdiG+EDN2KT9Gc4luZrpebGr7vgEqBKhj+rT+zh+85IlAE/JnBa3jSLP/v2cnakRaR5A4SLe+m3eKcjLPNRyanITO3zz648Xrb1metP/9fgva5iKvmk6tniWK4kfQI1S52WYzdoAbXJwVFBmi4brdddW8WrremRhoG9fdildNLcr064hsZZPPeKHI3OwHJuc1qIlZ4KGf89bzM/olzFYg5ZeRTewAAXk8XghgomfsybXC87KXAmgxwozz6Ax0uXwJfxMCFWZhTwmf/8EpxphvoNqpXZ/P+VtpTrW6YKxlLt3LjrdrhILXLVutueF2aUKWBpKbiDcoH223VwR2gu/+7P+hJdrijfByd1RfOAWMQX7nJuSMj1VeZh2k/Uo1UIiJcxBx00/zW3FQ5AHqVe7XD4E9OlumZyXN2w+/WvPyGOmH9w0TbJGiRUTSjI/cBv/BpQ/wnOLmjcFjV7mFKOIJWg2Dqxq1xew6yk3+PTzcnQteguMi4Xc8spwifSjaUsuZvF7vbr+pqJYldHx5WXbj7CFYFXmWmwdFvVQ/xZdyzAGIfWScYDx7rylr6DSweeKrLYB/49QFsdzhm/aaQaG0TPhYw8inCII6/pGxLQdb8TqQ4JVR/HPYW5ByEX3Q+j1iiMv82fnf/FKFCEUVnVzLYbDxxrO9rDRRCEe7NTmXUcn6bV5LfOst+VD3rVI47CMCzpbD3gmx0DM7tNl9b9P7tOc5UYnDnryo/G3yYqjAiuaRUGVw2wE6xewm/XBSWVEY3gLAMnSnTiF4GyCgjIPef/6d45IWCT3KbDtNuoV7MEgj+5zx1XaF2l
- M4x6nfvZ
- 9ppZY0FSZM8mCKdMeBbQGsyuAU/cSO/jdkoOIA046maSpEMskfE9tZKaF2T9LfG2625CGTXt6aDMIOWUzo0rfeLuuG8Sx3B/BCt1tKdnpE+ABw0xssPHrPng60ioOFf7tLvpocoHLsEDb5zRurkQKb+QBFHhWOL6es9NUtVrGRGyHmDy7G0X3TTo1gd8tIOChlLdDiceNsFVNBW+xCdgf38V8XmeHWHyh4IXHMofuvXr93r4kCyYqFdrROqHRxxoRpcd9zDBF27vTpou0OfWHtoTa4N5sJrQT6/GTczWyE2IGA0D7zMWZkKOx3i0y8ELNqRinXHoVoi9KGYeF3JO3Fl33QhHbnUh3ch+y
+X-Stat-Signature: uy3sg9wospzo3at5c4ykcjzttpr9qmu5
+X-Rspamd-Queue-Id: D165CC0005
+X-HE-Tag: 1789727131-506357
+X-HE-Meta: U2FsdGVkX19p/RujPp9FtfMw889fAwu/KStZMlteerDZpKDhe2J4huLeCBgaXyUU1Lte/uq29xB59bH8PsIAIrCp7PTSTFSXdo37koiZguprR9ETB5dHiaSZcdfPsWrTUwjX9vyP+2x4QHVUnpKUVCxZAcsCcirpLjLp5gdNmgHFJdP2xs/gj27s6SXaI3w6vYRLzCw2KJ9RpnTY0eovTrPbaTVI4CnJahxCgKcifBAjhMmdIN1lsHAWCbsvmjGf+bk6bteJxB1hW4qbYbstbkCGxeIyhwtNdpj2Gh8L05oQxMQOSHv/rnBcbvrKYC5TkpRFszWNKwLmx5ASWbHQh92UhbYjTW+4M1lO+UyWmSLHLRbRtLLs9/yR4FOKHErJqs+Bzkjn6VtuCsMHAQQ65xa7HkIdgrcE56C0YAoRIten5mrIrGBt+KcfSrDShG1Sn3ieJPVVlTRvrVry/vk3DVRnv+Ofm1KAF9fnR6GIWo39LL5oxYKPQg1kSQqVvpmh1iaAt9ahikuvR7Qu+5VbXmr/XlJSocvI3NKJhJl/j6f87RykWiQWZ/CIMzYRLVfqoCswyn4UtNqguMhirhSyoaym9tlMk2PpND6C84hXDB1AQ5US1l1k11QabRnAuOMBek90NJv4TpnMY5bVP4vbhdnxYNX1lYaZzjfzdgrbBlAb3mYBy2wzpFMJ7tS40bp1cXGksepn9IIWYimyg6HV09SUJFp9QU7uD4+Kk/9oB/rk+1L13qIKuBG9wWrtKg8Kkdi2PiLHEoOT7JXXZZmtwiUqAhm/S0p6mW+yRXe550XuvpgciHgOc82db/vvCBC5q+td//HMqdwrJ//QhVN3v4ZdzXmsld8+w2SI2Ur3GIghJNiuTy2jpR9f8fzgoeHbPd0Ovc2+0lbjQeRoY5BwIj2F6v11RmYhArFOar9/ATyQFke0SCHPi8PTY4ZN+Irl8W8jwn9oLUol4XmLOjB
+ O/3abBcl
+ I1WqzQabDK8RGoHSP5okQbX6+eLeRrTrjYHNhXWMVbXKwq9kTFHgWVlvpE7GIG7bDFuV6uPjNkfcHwrp0aMEvrmmdeKtFYyjzdY1mIJwY5QMbnaotNMYjNlYK/86VTrWnYzFUfPJ8IEYmrc5dcaIb9ZPrumoaJ5C2Zovlq3W4NcZ08KPVjYJwyR/Vr24xOz4tADS1yTQ6I5jcYZsFSD4Wh7giT+9Bv49yaDNS9JYfrtcHgjKmrx++BovSAsJhZkjiF5tKWR6tdHMsCOAc/KTjvbglOFfGf+ry17HiCbaJJ6ZVzgzYUWer92FTWADkZqTVaozhjOCrw0nRBNWQ8fODI8l1ERTY/DLUrus2RaGcQ1bzKCx/6oiX7TgR9y/O6UcSD5hdPaWfwJqZb4CvOJiDqtbwYHIIPsNvl3vg/Z5fB/rrtZyId1I2TiY6p4dgcBIllEqup5CZFWA2VcpKWasWrIJmPliy3q47Yrfzyx0dVO435jO9hz0K87he9joFldojwNRMoHHvm2hnAk3Np/btyAdwQcOSssPPXjJBf8PxOtqkFdE7MuFXBUz3XAbSssY9D4CHY3rmZEXBeJ/5IHwY81OgyPSdBfwlOxTq66JKjXKD1w7OmEJTR34zTOE6bdZDCHDfBCNkRz9zcBuyjq+WBYuB+EBdA+jysMAm4LHm5jh+bVnsCpG56GN7kDP6OEwera1mTHYcCGXEGYMZHjcEoLXRmNdrWUzvhlgBnv7gLNpz4X4hIVRbn26fPsU5kQEzinXxZJ8Qrgr8LPft+rNvU3Ji6bBqJ5wyHBOWouxlFeKF8xQE2ivVCo6YH2mlFU6EWjy08gE4EbkQka2BaadbHFeuT1wcPahOFCZD+9DlXQ1UUoE/CDP6h85i0YYq0b2X6W+otmouFqPtLEgWsGc4QZDlPF8QNmjySFPKrW4Sfh1A3+c55OmX1KxEFyyr/4WUBzhAgpeLoLWUZhOc7/Tjgjhktmry
+ mi1Vj8yj
+ O6ZBRwiVe55k/HzA2poYi3B7G+JmiteweLFolsYP6Wwvp+Gwwj9m0FIvY8WFijD63IrZMnibpUrwDdSvNpLpVw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,57 +94,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Shakeel, Michal,
+> Add a common helper to compute the total size of an ELF64 header
+> (Ehdr + program headers) from the number of program headers.
+> Replace open-coded calculations in powerpc, x86, vmcore,
+> and crash_core.
+>=20
+> On ppc64, struct elfhdr maps to elf64_hdr, so the powerpc change
+> is a pure cleanup.
+>=20
+> No functional change intended.
+>=20
+> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Nicholas Piggin <npiggin@gmail.com>
+> Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+> Cc: Thomas Gleixner <tglx@kernel.org>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Borislav Petkov <bp@alien8.de>
+> Cc: Dave Hansen <dave.hansen@linux.intel.com>
+> Cc: "H. Peter Anvin" <hpa@zytor.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Baoquan He <baoquan.he@linux.dev>
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
+> Cc: Pratyush Yadav <pratyush@kernel.org>
+> Cc: Dave Young <ruirui.yang@linux.dev>
+> Cc: Kees Cook <kees@kernel.org>
+> Cc: Sourabh Jain <sourabhjain@linux.ibm.com>
+> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 
-在 2026/9/18 17:41, Michal Hocko 写道:
-> On Thu 17-09-26 13:26:40, Shakeel Butt wrote:
->> On Wed, Sep 16, 2026 at 08:57:34PM +0800, Tao Cui wrote:
->>> From: Tao Cui <cuitao@kylinos.cn>
->>>
->>> The legacy cgroup v1 memory controller has already been moved out of
->>> the shared implementation at the file level (mm/memcontrol-v1.c) and at
->>> the Kconfig level (CONFIG_MEMCG_V1, default n since 6.11).  Its
->>> per-cgroup state, however, still sits as individual members inside
->>> struct mem_cgroup, guarded by #ifdefs.
->>>
->>> This series isolates the deprecated implementation from the shared hot
->>> structure: all v1-only members are grouped into a dedicated
->>> struct mem_cgroup_v1, and every access goes through memcg->v1.X.
->>>
->>> With this in place the v1 implementation is self-contained: its
->>> interface in mm/memcontrol-v1.c, its state in struct mem_cgroup_v1, and
->>> its eventual removal becomes a localized deletion of this struct
->>> together with mm/memcontrol-v1.c, instead of unwinding
->>> ifdef-scattered members across the shared header.
->>
->> Sorry I don't see any benefit of this code churn. The code is already behind
->> config. What exactly this code churn is giving us?
-> 
-> The only arguable upside is that this would make it ever so slightly
-> easier to track v1 specific stuff (once that s@v1@memcg1@ or similar).
-> I am not convinced this is sufficient to justify the churn either.
+Sashiko has reviewed this patch and found no issues. It looks great!
 
-Thanks for taking a look.
-
-You are right that the file and Kconfig layers already isolate the v1
-implementation at build time, and =n builds get nothing from this
-series. The benefit is only for =y builds.
-
-In a =y build today, the deprecated controller's state is still
-embedded directly in struct mem_cgroup and common code accesses it
-directly. This series moves that state behind a single
-struct mem_cgroup_v1, complementing the existing file- and
-Kconfig-level separation at the data structure level. The layout is
-unchanged, so there is no runtime cost.
-
-My intention was to explore whether this could serve as a general
-pattern for isolating the remaining cgroup v1-only state, rather than
-as a standalone memcg cleanup. I should have made that context clearer
-in the cover letter.
-
-If that isn't sufficient to justify the churn, I understand.
-
-Thanks,
-Tao
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260918100442.3841=
+135-1-ruanjinjie@huawei.com?part=3D14
 
 
