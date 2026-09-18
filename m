@@ -4,96 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A569C982D0
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 02:52:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26926C982D0
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 02:56:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 00E3E6B0092; Thu, 17 Sep 2026 22:52:34 -0400 (EDT)
+	id E96666B0093; Thu, 17 Sep 2026 22:56:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F01986B0093; Thu, 17 Sep 2026 22:52:33 -0400 (EDT)
+	id E6D0D6B0095; Thu, 17 Sep 2026 22:56:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E16FD6B0095; Thu, 17 Sep 2026 22:52:33 -0400 (EDT)
+	id DAADA6B0096; Thu, 17 Sep 2026 22:56:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BE3A46B0092
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 22:52:33 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8F2E1A5DB0
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 02:52:31 +0000 (UTC)
-X-FDA: 85225359702.11.2A0ADC9
-Received: from mta0.migadu.com (out-47.mta0.migadu.com [91.218.175.47])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 639A1A0004
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 02:52:29 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=n4xknpOB;
-	spf=pass (imf15.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.47 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789699949;
-	b=xdyDqWp+AV2qbVzdFPJAxROUXSOEYm8DzOMe8L+IKBfhGRC7NyXF8t4rfZacZRlokK66m7
-	CU5LpVV/n5bYhZ1FGUpmwfZpzX+j/ref7CnKzL63PARedAxneECBdLGzyc0Pj92mKv4XDC
-	uYizlDskcOzuK04O8fiFJ8tMpUrBKrw=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=n4xknpOB;
-	spf=pass (imf15.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.47 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BBD816B0093
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 22:56:30 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4938040585
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 02:56:30 +0000 (UTC)
+X-FDA: 85225369740.06.F195A62
+Received: from mta0.migadu.com (out-97.mta0.migadu.com [91.218.175.97])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 09295180003
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 02:56:27 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ghvlcicp;
+	spf=pass (imf16.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.97 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789699949;
+	s=arc-20220608; t=1789700188;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=etLIN0TiB+gPC1ustRQHs66Sp9/28m/d8sKfnKSX7d8=;
-	b=tRjnzaI9VVBJjncJ2kx78DyLnQ5WnGTPx89JlS8AfwCg8QE1UqMNDkYlNT4UlV+cq0Zxxm
-	FMDJLG0Vk/qkqii+kP7SRiyb2tm0fA9okR7EVFYrxfXsTSkgG8bfUCLtiT40Tt1hq+5rme
-	T9y9ipciuxKNmq4jmavLEcgK/0HqfpY=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=qyd4Ov1S1ewbh+ZPypwCtIfRJvaTjd8rOo/4nJeK3og=;
+	b=Prm6j4gD/ZW2K62ERHB0hlAD0lxHBNdLvmo390IAr3zJYlfiqEzCJiuchE82bwgSGCdcF7
+	vpsjxtRmFeszSwdnW/iqJestGsvew6ub1Z8fOT4oGHTxhymaJSfvd10539vhDHp7HhPmmL
+	sUue4Ab4ikaSr2ab1oC+P6gd+/qtP2A=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789700188;
+	b=GMj0OUFrAor1BO/k6Oe22uGzp2rBBGpOnWZ9wN6YHPi/PWZzYlbc1ociCktnDp92tfFUyt
+	3qst/X7FNRqBGiGbsdfW7U/1GQr8joY2xOkqaXcpZOkibdFiB8R0/HJkF/UEGjMT+GJ3LN
+	RpZ4JNC+5eAfaikOalibka7AbdzU9HY=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ghvlcicp;
+	spf=pass (imf16.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.97 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=LskNNPuSB8QoudevYzVr17nYyrlTqFaZBhdrhrFkhzE=;
+DKIM-Signature: a=rsa-sha256; bh=6olkN3MFF993IEc0YK161XKRjhyK4yyClEXXjugfK5U=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789699948; v=1; x=1790304748;
- b=n4xknpOBPPEXMDCffjNgIvAWGb62BDrs4DleaYuZxUEDkNfBWXRIwzKw+466pivTS4bSZQYT
- vsmvnqXeXyFLdAYvHtbZ7YH7rSctHvc+yO6w4qF+8W8tYc18nBIHsyGenWHDptP9JPoA12bbKGg
- 9BY86SGdjL87zt5oDYkamfW4=
+ t=1789700186; v=1; x=1790304986;
+ b=ghvlcicpnL0xK6UZMXLU+bpHh++qH/SG3QP7UX0sOAowfd/zilH1uNGyvCPi+rV8DZkKdkZA
+ y5/wf+xDrwyf74CR0n3DqLWnjfqB69AmrJiykIryNfVuqB6d4xp/nu1V+JfGsnkvHvpG4FZnxZ6
+ gCC6BcNy0/JgouMC3TP+uNsk=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id b61aff39c1dfddae;
-	Fri, 18 Sep 2026 02:52:28 +0000
-X-Mizu-Trace-ID: b61aff39c1dfddae
+Received: by smtp.migadu.com with ESMTPS id 97b504da42608a61;
+	Fri, 18 Sep 2026 02:56:26 +0000
+X-Mizu-Trace-ID: 97b504da42608a61
 X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: kas@kernel.org,
-	david@kernel.org
-Cc: lance.yang@linux.dev,
-	akpm@linux-foundation.org,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	liam@infradead.org,
-	nico.pache@linux.dev,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	usama.arif@linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/1] mm/huge_memory: disallow raw PMD mappings of the huge zero page
-Date: Fri, 18 Sep 2026 10:52:14 +0800
-Message-ID: <20260918025214.89109-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <aqwPHfWhKGty-Q_4@thinkstation>
-References: <aqwPHfWhKGty-Q_4@thinkstation>
+From: Hongfu Li <hongfu.li@linux.dev>
+Subject: [PATCH v2 0/2] mm/hugetlb_cgroup: move the per-node usage along
+ with the folio
+Date: Fri, 18 Sep 2026 10:56:09 +0800
+Message-Id: <20260918-for-hugetlb-charge-v2-0-2b6d8c2bdc36@kylinos.cn>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 639A1A0004
-X-Stat-Signature: kg1ctw346sutwha9f5dnwd5seag39p93
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/22NwQ6CMBAFf4Xs2ZrSIKAn/8NwaMsWVklL2kIkh
+ H+3YLx5nGTemxUCesIAt2wFjzMFcjaBOGWge2k7ZNQmBsFFya/5hRnnWT91GAfFkuGTIbSRray
+ xLQqENBw9Gnofp4/my2FST9Rxf9qNnkJ0fjmqc757v0D5LzDnjLOKG1XxWgks5P21DGRdOGsLz
+ bZtH90sTlnHAAAA
+X-Change-ID: 20260915-for-hugetlb-charge-2cfada8ed44e
+To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+ David Hildenbrand <david@kernel.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, Kees Cook <kees@kernel.org>, 
+ Colin Ian King <colin.i.king@gmail.com>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, 
+ Mina Almasry <almasrymina@google.com>
+Cc: Mike Kravetz <mike.kravetz@oracle.com>, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, hongfu.li@linux.dev, 
+ Hongfu Li <lihongfu@kylinos.cn>, stable@vger.kernel.org
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1789700179; l=1456;
+ i=lihongfu@kylinos.cn; s=20260915; h=from:subject:message-id;
+ bh=6olkN3MFF993IEc0YK161XKRjhyK4yyClEXXjugfK5U=;
+ b=jQlOWteG7im1UP87y0ch6aWT5/7TKFYwrPyD+MFHD+aPffzfHC8yMSAYwnJ4hpniRNVsUb3yO
+ VD73DczGDh5B0oo1EvbsKypHa8PkjLPR7iMjM7nmjT0GMBLjPHoUESB
+X-Developer-Key: i=lihongfu@kylinos.cn; a=ed25519;
+ pk=rUpDSpB3neoNZRlGG6dHlFb3RepiJakcev+ucyqaZzw=
+X-Stat-Signature: fqmgabjb4m3iydwinzn493chauq5kn7k
 X-Rspam-User: 
-X-HE-Tag: 1789699949-452260
-X-HE-Meta: U2FsdGVkX18zf08c1jAxD9Q8lGpkmud7Qh7FPk2i45TZSyG9cO8DxnUzwS/EhzVKJ+C5ssc1xQ20Hk+vMQ3I0zYkb82wvKzKYcFyaGCCYCERa254JOiY4uEtKr0Rryux2s3q2JOQ0g/cvE3lHPTI5L7gJC4+5fIkwcgNPhzmYCiSAM+D5pAF2QW5WFF6BtV/ObQqxkfqjUbkfqpgRaQUmv8wUzRWb5/dkRQSIpekBnNGqHc9IotYqt16c3xjvbqtU0Z9jZpQkFPy7mseH6OEaYWZVCTdMZ4ij1UWQfCQh05/T4t0Hn+X7oTlq2liqZZiAcIdBvAFMNV7lpBNuDOOmmA8dlMBKmTbRVkWc93NyYbqvH7qlQd7L4JM1MHLO42XJzC9RZDJSvlTmSEysPSAWo0VTC+3qAYcfZtZEJneKphkAAu7a7/LHi7UXzYKq502rgp9EuroTGEGjea0YYErzDrboF5xJ1uCZ+ODpXo8Q7BqujsbxUC4YmxTUA08zI0/GDEicLMIfiTZMc0ty5kZBmQ8G9vr8vySuTfAy1WHTGRW9ojW6wIqzq1UrbcBXRWrKXbR0X0wB50lxeF1354Paq/Cgmtvi9lIDGBzVdGgnymLb3GH1CVZH4M/+aUlX14msVPVeDytvsSTPQvyNiaRN7Z9+eJI1vpWG2N7+1JC/6YI4VL+/ovxwJXpPFGnLRIuMBIFVqhmgOxKdjtc+8Bbnx91hs9FX6HWEU6Pgy2PSA/DOWlYdOu70NRjBW/FHXXXhMjepSBefC6ip0gy2rpWpnb0Po0dgwjlO283ksohTQ7X5EvOHsbyMRzJpQ70evrDni2XuePmYXJ9m/T9I4OjXnk85mbTb/r6QbxYxiFBJNdJPJiDojY6JkrdNJboLpv/5WDfDA2eAyGfCx0M4OQt0zQ8L/uiHeFYD3e7NRpYmnd04kbr6abMwJ2VrQk0dqPbGN09tNddsfqAHs4iiHE
- 3blf9qKA
- jT0xYUu1PvMk4AqJbaDqRh3wakSLCzaP/nsi0yInGL7Hu0Kdn+igNTVoPjmnxa2caHQdQawZ/vEaCo2BGn35OxhwX+5Pj767pVva40BTxre9NmJA8XFHwd4jJfCOPcEXSzxP5NmsFV6c0dN50yTJr9fXI+oQpVwPr7oYG1atQ//48eSKbkuboxMSXovzqpt6iS7U+SW1naVTiL77r0t73tZAT6F2zpX79fMqjpinmGX3QKoWVFOz0Go3Fnh5hHHx8Sk0zojM91bNifjWAAb7fNQc04N+zlJQPnYfm1WfXaBUWxXEO2QHfdRgXPw==
+X-Rspamd-Queue-Id: 09295180003
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789700187-133662
+X-HE-Meta: U2FsdGVkX1+8O4+koWIuLrzxoaxND4n2e2krONEmPcYMYYD3YKzgoar058NGWTdzvIwlfyPGN+GQ/YfKaVrTUDcmmYYCsBchbHagJbm+8EsXE8jOmhok1lJaZ8OH2ihol4BpMAbryKNY55AMCkmoGyTAtMK45hgp9VqZphKk/+6xJrE4/004rRyY/H3hllaL1fay4PlCUQ+dKCSXJ32HMSHeNw/+XA7K8wGZMk6+pk7IONTs7TLJnARdWxNsgdz1aeBCEdi4HpQ2InI2co0JDd2tOfmgv+lCTB556RUAir7U7B1fsctPP778ewCpGgEPojY6bl+DgQ9KjcrZ+gj4YYhgKzNIh7OklYhgu1oJNZJkA/0HmpZh1yaD7kPr8HDv4jRsb+RGTVbfMCXdeGPQcr6sYn6Lx/28nrHZc7XNCXxipPjZZ51OPEq8/HbOntN8GYdY2JT4aEzZDdgEPkUJRH1nZseLjKiICbgvff4NuukIp5sadgmvI+gCXkyWoKdcyr2fba0yYJuy7Os6Xpe9KDL62++j0oGwu0ll0U0jvl2C5s2OG+D0VGmjD5tFD9cRWuBDvs0yVsvS+uoRFt1TyGYYH+uQQv13divvaGKNryj0Eg3O+Kt+MzPw+qKnS/Wz/C5naYtZRwoixePjNvI0cLl0Y0wHqs6yzUrk+QlJT1T7ohA1F/CwK0DkAP3Hum0eJCIVz4slOfo4klktCfK0lLGQlcNp/Wb+Z1k0c87nJsEqxbKWG1fscmIKLSEHwm5THIlGR3nKH4GD/8VW4B19XeEXKXITUfBMNrBTwQ7NnZyNAOIZU14kUYxLwvcTcO49Mf0qo1KYctOHa89MWXWyC/+BUl78bQX0M+lWxGIXLs2SYiSR94b0FQqkLlTdEfKXWAIsoAdrz9v69O5nYlUAgwEojhJqpWtIH/T7dJ5gHdlwcRaUw9fVjEHoOA4RvDleWeB6hlPq3QwT76ffyPJ
+ 8NdmcAxt
+ TwRRz2ri4J5My1Uq3PwDBcjxSNQ7YmJqgwxSMyq04aGT4/Tjg0XIe6xTG4pjp6bBkh+g7IG5G0ylFGkwpyXyU3bIHDraKmODj2zhXQj0SKVVM3QJNw61IK6CCGGwIk/uIwgA4ga0+12Ec3SzwO3wWnyl6BTdfBC8coKQBuSfL1VzaPM5ssj3OCvhQD2cjC//9xwwYPl3/piGiPykBseGp/e3ITy+Yc+Ur3O8GnzLOUs5Cwj5pHm+PJE5n7opyGVqE7L4Aa1RzEpDti6b+YMBzXwlBgAwQve/dDjSayW0ca0w1PXw8uJ4rnlrIwDqCAMtmow1V
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,83 +106,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+The per-node usage reported by hugetlb.<size>.numa_stat is accounted
+against folio_nid() in __hugetlb_cgroup_commit_charge() and
+__hugetlb_cgroup_uncharge_folio(), so it is only correct while a folio
+stays charged on the same node and in the same hugetlb_cgroup.
 
-On Thu, Sep 17, 2026 at 05:03:09PM +0100, Kiryl Shutsemau wrote:
->On Thu, Sep 17, 2026 at 05:29:48PM +0200, David Hildenbrand (Arm) wrote:
->> On 9/17/26 16:32, Kiryl Shutsemau wrote:
->> > On Thu, Sep 17, 2026 at 08:10:10PM +0800, Lance Yang wrote:
->> >> vm_mixed_zeropage_allowed() validates zeropage insertion into
->> >> VM_MIXEDMAP VMAs. No in-tree user needs to insert the huge zero page
->> >> through vmf_insert_pfn_pmd().
->> >>
->> >> Return VM_FAULT_SIGBUS if vmf_insert_pfn_pmd() is asked to map it.
->> >>
->> >> Link: https://lore.kernel.org/linux-mm/f76beaf8-351a-4b22-b362-a945a5e1af6a@kernel.org/
->> >> Suggested-by: Kiryl Shutsemau <kas@kernel.org>
->> >> Suggested-by: David Hildenbrand <david@kernel.org>
->> >> Signed-off-by: Lance Yang <lance.yang@linux.dev>
->> > 
->> > The patch looks fine, but don't we want to cover the same for non-huge
->> > zero page in vmf_insert_pfn_prot()?
->> 
->> Why would the zeropage be a problem in PFNMAP mapping?
->
->Nothing enforces that it is read-only.
+Two paths move a folio which stays charged, and neither moves the usage
+with it. hugetlb_cgroup_migrate() only moves the hugetlb_cgroup pointers
+of a folio migrated to another node, and hugetlb_cgroup_move_parent()
+only moves the page_counter charges and the hugetlb_cgroup pointer of
+the folios of a dying cgroup. In both cases the node (or cgroup) which
+was charged keeps a usage which never goes away, while the node
+(or cgroup) which ends up uncharging the folio underflows as soon as
+the folio is freed.
 
-No in-tree user inserts the zeropage through vmf_insert_pfn_prot(), so
-rejecting it there should be fine.
+Patch 1/2 moves the usage along with the folio on cross node migration,
+patch 2/2 does the same for the folios a dying cgroup reparents.
 
-Something like:
-
----8<---
-The huge zeropage is reclaimable, but a raw PFN mapping does not pin it.
-A PMD mapping of huge_zero_pfn can therefore outlive the folio.
-
-No in-tree user needs either mapping, so reject both with VM_FAULT_SIGBUS
-rather than risk making either shared zero page writable.
-
-Link: https://lore.kernel.org/linux-mm/f76beaf8-351a-4b22-b362-a945a5e1af6a@kernel.org/
-Suggested-by: Kiryl Shutsemau <kas@kernel.org>
-Suggested-by: David Hildenbrand <david@kernel.org>
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
 ---
+v2:
+- Drop the unnecessary READ_ONCE() in hugetlb_cgroup_move_usage().
+- Add Acked-by tag.
 
- mm/huge_memory.c | 3 +++
- mm/memory.c      | 3 +++
- 2 files changed, 6 insertions(+)
+---
+Hongfu Li (2):
+      mm/hugetlb_cgroup: move per-node usage on cross node migration
+      mm/hugetlb_cgroup: move per-node usage on cgroup reparenting
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index b49bffe36d22..de34d64aa763 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -1723,6 +1723,9 @@ vm_fault_t vmf_insert_pfn_pmd(struct vm_fault *vmf, unsigned long pfn,
- 						(VM_PFNMAP|VM_MIXEDMAP));
- 	BUG_ON((vma->vm_flags & VM_PFNMAP) && vma_is_cow_mapping(vma));
+ mm/hugetlb_cgroup.c | 33 +++++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
+---
+base-commit: baa8de2f3448d1466a888a805c18d01c998fe052
+change-id: 20260915-for-hugetlb-charge-2cfada8ed44e
 
-+	if (unlikely(is_huge_zero_pfn(pfn)))
-+		return VM_FAULT_SIGBUS;
-+
- 	pfnmap_setup_cachemode_pfn(pfn, &pgprot);
+Best regards,
+--  
+Hongfu Li <lihongfu@kylinos.cn>
 
- 	return insert_pmd(vma, addr, vmf->pmd, fop, pgprot, write);
-diff --git a/mm/memory.c b/mm/memory.c
-index 9e4a70421a6b..5d2d73c69fed 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -2956,6 +2956,9 @@ vm_fault_t vmf_insert_pfn_prot(struct vm_area_struct *vma, unsigned long addr,
- 	BUG_ON((vma->vm_flags & VM_PFNMAP) && vma_is_cow_mapping(vma));
- 	BUG_ON((vma->vm_flags & VM_MIXEDMAP) && pfn_valid(pfn));
-
-+	if (unlikely(is_zero_pfn(pfn)))
-+		return VM_FAULT_SIGBUS;
-+
- 	if (addr < vma->vm_start || addr >= vma->vm_end)
- 		return VM_FAULT_SIGBUS;
-
---
-
-That would keep both zeropages out of writable raw-PFN fault mappings ...
-wdyt?
-
-Cheers, Lance
 
