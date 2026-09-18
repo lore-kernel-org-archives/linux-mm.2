@@ -4,39 +4,39 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E426C982D2
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 08:54:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE82AC982D2
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 08:54:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6FB796B0099; Fri, 18 Sep 2026 04:54:18 -0400 (EDT)
+	id A29E36B009B; Fri, 18 Sep 2026 04:54:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 631166B009E; Fri, 18 Sep 2026 04:54:18 -0400 (EDT)
+	id A00936B0095; Fri, 18 Sep 2026 04:54:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F8336B009D; Fri, 18 Sep 2026 04:54:18 -0400 (EDT)
+	id 6F9AA6B0095; Fri, 18 Sep 2026 04:54:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 184E16B0099
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E7AE6B0095
 	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 04:54:18 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4ACAAA05FB
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 191AF120329
 	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 08:54:17 +0000 (UTC)
-X-FDA: 85226271354.06.1AD0286
+X-FDA: 85226271354.27.3DF3036
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 470EB1C0002
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 08:54:15 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vDON3qJi;
-	spf=pass (imf18.hostedemail.com: domain of devnull+linuszeng.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+linuszeng.tencent.com@kernel.org;
+	by imf23.hostedemail.com (Postfix) with ESMTP id 1F10B14000A
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 08:54:14 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N5heMBhi;
+	spf=pass (imf23.hostedemail.com: domain of devnull+linuszeng.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+linuszeng.tencent.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1789721655;
-	b=YkN5yUJ91LsUbLsIZy/VjSNfy7OPHldaA7yqVM4Gft3oztfQPJbSZr363bqd9A6qMphqfw
-	YCcQ/FMzSelD/kM6flrXEpAoSYsxs1pSqBbWnfTFdoIhGAqZS/kEz1PEcG4XA2H0yOnvd0
-	p7jD7BwRmF23EXwU+15EIlUPCWlzK/8=
+	b=cbBzUznPmE1GpLRLzejqiCJjR83m704LSr/35AUmGrV3OpJpFFsKALTk3qJX3BBPwBgXiQ
+	uKW04VC2vO7NWY52dVT3Cari1R9dH3DpibYKxGC1x8Ctk9zSNwh/wtxmmQaAgFH73KZOws
+	VRQsO+3SJE8QAKL4s0Mb5Z+bFwoFjRA=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vDON3qJi;
-	spf=pass (imf18.hostedemail.com: domain of devnull+linuszeng.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+linuszeng.tencent.com@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N5heMBhi;
+	spf=pass (imf23.hostedemail.com: domain of devnull+linuszeng.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+linuszeng.tencent.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1789721655;
@@ -45,36 +45,36 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qQVQb+Bvh5+bS7UNWL/FOkFWpFYXhmuWz6V5jyXMkOc=;
-	b=wWCjcd7NPG1fKEi0gyug7qgp6QdJBTHdkTVsJGOji0za7U+WEO+ykDNN2jWXIny6nwkfuf
-	Pc3sR3aHCIPPcD5CKhoPr6FOKHkKI7q4rP9ZUJzPbA7n2abpliT/yGJpwRT3tGF8Hy6Nu5
-	nFwfODIUKckVw2GwoUoKyqNVga1YmHE=
+	bh=vesh7QY6cqlCWJ5ZqW9v2t1L8j+x0dcgVZtRjrhKyxs=;
+	b=glWzufrzIMvBvo8PXi2Z9NcJ40bqxwDfmsTUJg/pgiRXKosFqv72goaq3IQCCHELamHHf3
+	W8p/olFBdA0tqgM9sY+yrnBVCKzwkMKuf/p3Jay+8bXHMP+AaaTcQGhCdsWIoDcZU0+gx7
+	fBt8njAKz3r443tJ6/uoOhX/kmcmkBM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 12E23447B5;
+	by sea.source.kernel.org (Postfix) with ESMTP id 0FEB944790;
 	Fri, 18 Sep 2026 08:54:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id AA2CFC4AF0B;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A092FC2BCFA;
 	Fri, 18 Sep 2026 08:54:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1789721653;
-	bh=NbEJlSSw4+ImtAzSd++eA8MkzoReelqf5IGki69YEIk=;
+	bh=/9TCN4nj48er2nF+5svVR6bjZx5z5MT9HxKzhS8mbPg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=vDON3qJinHKNjnqIm0v9lo6KSMRdQs6weIest7QJhPphFl87KpInLgzeoOib/uZ/B
-	 +GUsLvLBMoCNp6KOLzpBdXRUJBI9FZNobm9GT7eYqr+7k16yHg1L2WAyxkVa3dlk1L
-	 TTAMUR4RCFvpvFc7/97v6Jme2QTkHfxtl1KkRmTdLkHnFQde9/yc2yttClD4+FbBDz
-	 diX+fvGNpbJAX4EyHcImj0Lt6AlO+MpY4j+TpRP74yx790GC+bP0uC1E4bjMG4+TiD
-	 bnNgXulNxvDMui4ueYZLJLOrYh/0ezhFil9GYVvsAQi0jqryMy7m7uxODB7OVbQw9Q
-	 JH/4MUdtgfjUQ==
+	b=N5heMBhiUdbRycjA66PMTBjUd0NULsArduaj8elWTzE33EG7piDFAIG+MbpZXUE7C
+	 9MchWNwOnUb29ixyQdfT3izy59RGjld9d2btsoo/Y+9MR/FaQ1BL/DUrlYAcKDUIY+
+	 un7RBXjSSb4beSCa9lXywyg4W/dMrbDB/JdEXz7BWmMowjkNVkKNrYlylOhpVr8lmV
+	 bfIaT6ZcX6xqI31PW5kI4+Yr8F21uQ0c6qlaBGY0BDo83wHhPuDPVx2oOBsALW+Ch3
+	 y2ab+He++k1KQJYad2IFexvES7WJX3+jihVtp9Dhz83sHgM8OHu1wTYO2CevZ7j5S8
+	 M1vNLO+Dou2xg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 93C5FC982DA;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8257AC982D2;
 	Fri, 18 Sep 2026 08:54:13 +0000 (UTC)
 From: Jingxiang Zeng via B4 Relay <devnull+linuszeng.tencent.com@kernel.org>
-Date: Fri, 18 Sep 2026 16:53:44 +0800
-Subject: [PATCH 4/6] mm: memcontrol: give swap and memsw their own page
- counters
+Date: Fri, 18 Sep 2026 16:53:43 +0800
+Subject: [PATCH 3/6] mm: page_counter: drop protection fields from struct
+ page_counter
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260918-descriptive-name-v1-4-dfcfdd91b456@tencent.com>
+Message-Id: <20260918-descriptive-name-v1-3-dfcfdd91b456@tencent.com>
 References: <20260918-descriptive-name-v1-0-dfcfdd91b456@tencent.com>
 In-Reply-To: <20260918-descriptive-name-v1-0-dfcfdd91b456@tencent.com>
 To: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
@@ -95,25 +95,25 @@ Cc: Jingxiang Zeng <jingxiangzeng.cas@gmail.com>, cgroups@vger.kernel.org,
  dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org, 
  Jingxiang Zeng <linuszeng@tencent.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1789721651; l=9416;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1789721651; l=1721;
  i=linuszeng@tencent.com; s=20260909; h=from:subject:message-id;
- bh=3nVozcwT8fvm9kkRHSGOBpv9SiIXCVqsk3cpyNYsL4o=;
- b=T9k2eZse7y/gatzeWXlUZwF/Fn5ZipNDfa7RtRVfizOuLg1R8eN3NEGBgvBiVe98EnIzGGiAj
- jat5Iz4MsxAC2WhrcbCOztMx5JyvInRK1PmzVCHvdfkE+w45u0TfypR
+ bh=GADlg4c7MuNMFrgGvBXbc27o0HpJUKcrZX5lbsFPXjs=;
+ b=1jXeFmMF4d9zQQS9hsdMiN/aPBms3k02q4O+kWhQZ8m+MkzNteDbtTrmxJgIpSWeZDVGUAUdr
+ L4jsYEoTO8mCLqkgVNx9pNECUvDG3RsxJoXyoLpns9C1TmS/Ppv9kUl
 X-Developer-Key: i=linuszeng@tencent.com; a=ed25519;
  pk=6K54xRzYIRWqatrAPy86M4E0MsI92BVJBhXwz5NdC74=
 X-Endpoint-Received: by B4 Relay for linuszeng@tencent.com/20260909 with
  auth_id=1017
 X-Original-From: Jingxiang Zeng <linuszeng@tencent.com>
 Reply-To: linuszeng@tencent.com
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 470EB1C0002
-X-Stat-Signature: 5rci3bqueppo68j4gqtewqdhj1upz1zi
 X-Rspam-User: 
-X-HE-Tag: 1789721655-561552
-X-HE-Meta: U2FsdGVkX1+HvMdbxjJ2gS+JPgDJg7FtcGS9VMaGEz56rnA+LsoDnw47K5lc0d3syXeRLhqfcq2AFO6TEretUj5aJkDG80kZ5DoNAwBek+oErJ6s9eEZV3eVolGKy3N4kPCbfBHmlUsZHdtnVRRzhqG45Mj1qvyn2BsiOySHS9iezhvSkXcxq6Dxbzh4kpkPEDuT4H8kLAqjHjtWodE1xX5MwW90yqMT2q4O2Jfh0MR3KgtAYIZuBB4eU3f5BscmEiuWcfMBTyIfiJPKcQYgighA/ZkKV2yVXwI2AkH4xfFK3u4g/hcGoNOy3oJdN5rNyNAeAuyi1Jzsff8tI5nsvm7KVmW1kz30dOSVeKdbRruFgU3v3eZRvsX9noIyTHnV5E14XKMyJOuHzPOcn1CU4q9zi5JhnfRzoJ86N/QcuYJ4BT0BmZ2zBsGAh/ubhVhJLcIyb2eXl4TBv9H/Hf2EQ564BvUKWPt6uuyHmEqgMfoIM/H1HI0oD40CMpLNhxwwPqvPrYPdCgD52OALGwCvA3e57K7+5dSGTOH+3uVRctaEVa921FCZ7YkL93dM8Zs6oeVq6ilHYbVJ+LQ4D3O49IwdRzPTgQQQ/TAdeWWZL4nnje17dNn/+BvG/NkWSBm00Nk1LmCccLnhg3yvTfVkA1HIXx5fKm87Dlzri/eH0v3uGKk63XirhEERs2yVPVomQK6QlJ65Yn+xyOMnhedx99PxJLGsaBHHbiAX1Dhzeny5TglK2Tkqe2KBc54TKN1IqE3lYYQ36YeeED67kAz/SMapXFoQmvTxa5Jroa3mMVCI//s/lBgrqCV+o3MLR4v0NEvrwznckX2CnF7PSQ1Q0A3uqwL7sY7oK1KOGYd+HgJWaYFr7m0PniGpHJJATmJodsykKTVfdsmN47J3BosaDNPhpxy9dkidP+hTpx2WWmwUoRUkf/xVIyS7ayQG/K9s+nXX6PJW87Rs/32zPcM
- C6csdcPc
- z7o0ETA7QGv61fHNRy1oklc7LD1bQZDpkHQvYhJMWBKGVThupYOH5rJ7UD50NhHQwVZXmMnJFxHKcaJnbxJmEwjNHWiH3kNDoaiPMSBEnNrHPQSZ93MS5ZP4JgjBVuIwSO4CPP46lf3OTFH0fditWcY3FwMJzSxVkTQ/6UfvTvZ+okoCIgP234/BwrP8XbWttouPbQ/wNWUrhvDxVwFPgWD8xI5rZCeAzKJVvUijHMvgMQkx2A9qpqvpqLQqOlGjTM+CJ8LORsMHFO4etGeYrOlHr4tbpKpZtBvjqalCE3n/XESZ8kM/XLbiRxPv3OyruMPf32liLhMCv3fZu1xPPCViIJppG/ppmzK6zYwLGDK5TI0FxgZZWfTovKn5PtRIW6riGTBO5UeqcoGf+ISbHnUelaV+4XOnYEK+f/Ubj3Uyr9LM31IgmqEOlsPlqKBdWI7ZWnAK3AqpVorQ=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 1F10B14000A
+X-Stat-Signature: 46ooruix7myg4ctrq5jooyzose68sr4t
+X-HE-Tag: 1789721654-242084
+X-HE-Meta: U2FsdGVkX198mkmnhTl/WKiiTxfLdxBp0nTcMJKOS9nJ2hrWTCpQedWqcoR0xt+ixkzrq7puc+42vZKcTOKNqES9s/gS3wwj8zLn8wcZwNCVs9XscyroNzmpBxwpBQgNhkD7xE2rTHNh1NavAwzTTLpGwGrVJn5nr+LduS4mbzqUjveAalV8IsM0S6V6U248dsn4K2NoiGNCh+tZWQjysX5e+c3ANP0KbB3TJtSEOdxC5HhDIfIG10GdbdBCaFdIdCqI2EKiH9OEIAfldriUQKty0hegcrNnUrzBsXr8Afv8Z1TX+HmyJIe8MdPMP9UGqtK7hcTaDGSRuil7KAUUnr+4Xq371AK42OZdEcc66aNvd8QVFJfXfl/j1Xayo5R+pV4Lqv2iDbbRNZvWh5O2iKriWcVsK+IZyy8/Zvsj8hDRe/FPUewW7VplfwvMfgvoNvLRCPrGp2pdL4LCHI3NjZdTl/Ob4v9yotjkUrgvcKQj84t1LLpqA8Aau76dcn3wBRxHT3ET2aT+9ZmGisw3RI6y3hr9qCuarWudts0r8aSaFi2xLBrPRM/Zu9mt+RjpnB+Rp6USq3I+X/8znuzen2aWgR4C8ht7SRIqm1PwC8Isl9M0f5P4v2PvHprTph3ZsEWjNaybg9rbFZGs8FaPipBJYFyAidStzGuu5DeiUOYFLx3z1ehhDuHXf2v+ML/5Q7d70M7dywB6D5562WZk7l8S94irCjOVMyLz6TFMzuVQshguK61SP80NJkLxrPV69l9Mgkm1OhpEK5Ir+5IfJX4C5uDpbgTyOFhL/HYhMUSYNU8h7RlKDMPX91KGnyriwWRgmt2G7jOopCFpdlACPE16u6Tjo7paUJkS41XJqasysUCu+MoD+Im4hVD7MGtlzNJXVGtJt80fX2eFBA/qPp8sKjqJ9n1s1IOYrtcAcN8UerOOEEaQQVZfqP6AKfhu7aEuvYkSJGek9ULaata
+ T/90cruJ
+ M+Ognf0wi27nbIWd3RcMn3cfbUsgjyAE1vOc5iTcz3wK1Pb5be9s1oxZxbsII6fRU2gcZQISpUieacF2C+sdtoCl89ZUIT1g7aeguFEvq+pTaKRSkJhm001uVROj6tDYm55bzSfkWB1v3ownKP7jOShFrVKsc6Yh6cF8oBafC490fUKnnWXicT3tJrZn88XyKKcQf+Vz95KGgfi9Ri1RcFAyvOCJN5ZPKVJXB774oA3r3VlGqMRKnmLaOdlVfpqrJtHqWRHrIry/foW7yRPLMEkLu6DnZP0lzPdhYwco+2u+iCQ7sgcIwJSOK8oABUaM+liZ/f/vBdHZ+62ioK7N8pJM9GT7Onw6Mx5l+N8wkUfHzViimgRAESK5C31t5yuwIeLUlkRgL5v8+JWgyypZHjBrFikB1lYq/7cCBOpWEDNqplMbvdYkV5BVwR262z2apyy9J3eQ0xDd0x9awWYqYonb6WPqmcZ9HnhQpF5NNKzN6i9lGCE9jKitwTQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,232 +123,57 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Jingxiang Zeng <linuszeng@tencent.com>
 
-struct mem_cgroup keeps the swap and memsw page counters in a union: v1
-only ever charges memsw, the combined memory+swap counter, and v2 only
-ever charges swap, the standalone swap limit, so the two could share
-storage.
+The protection state now lives in struct page_counter_protection, so
+remove the emin/min_usage/children_min_usage, elow/low_usage/
+children_low_usage, min, low and protection_support fields from struct
+page_counter.
 
-Split them into separate counters and maintain memsw on both
-hierarchies.  do_memsw_account() no longer gates the combined charge in
-try_charge_memcg(), memcg_uncharge(), the force-charge path,
-mem_cgroup_replace_folio() and mem_cgroup_margin(); v2 also hands the
-combined charge over to the swap slot in __mem_cgroup_try_charge_swap()
-and drops it again in __mem_cgroup_uncharge_swap().  The counter is
-initialised for both hierarchies in mem_cgroup_css_alloc() and reset in
-mem_cgroup_css_reset().
+Also drop the now-orphaned _pad2_ padding and its comment: with the
+protection fields gone it no longer separates the read-mostly fields
+from anything, and the structure's cacheline alignment already pads the
+tail out.
 
-memsw.max defaults to PAGE_COUNTER_MAX and v2 has no interface to
-change it yet, so the combined charge cannot fail there and behaviour
-on the default hierarchy is unchanged.  The default hierarchy does pay
-for one extra page_counter operation per charge and uncharge, and
-struct mem_cgroup grows by one page counter (128 bytes on x86_64).
-
-Note that v2 briefly counts a page twice against the combined counter
-while it is being swapped out: the folio keeps its memsw charge until
-it leaves memory, and the swap slot takes one as soon as it is
-allocated.  v1 avoids this by clearing folio->memcg_data under the swap
-cluster lock, which the v2 swapout path does not do.  The skew only
-ever makes the combined limit stricter, never looser.
-
-No functional change on either hierarchy.
+swap/memsw, kmem, tcpmem and hugetlb counters no longer carry this
+unused state: on 64-bit the structure shrinks from three cache lines to
+two, saving one cache line.
 
 Signed-off-by: Jingxiang Zeng <linuszeng@tencent.com>
 ---
- include/linux/memcontrol.h | 12 ++++---
- mm/memcontrol.c            | 78 ++++++++++++++++++++++++++++++----------------
- 2 files changed, 59 insertions(+), 31 deletions(-)
+ include/linux/page_counter.h | 16 ----------------
+ 1 file changed, 16 deletions(-)
 
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index ff69a390a809..bd69caee282c 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -206,10 +206,14 @@ struct mem_cgroup {
- 	 */
- 	struct page_counter_protection memory_prot;
+diff --git a/include/linux/page_counter.h b/include/linux/page_counter.h
+index 5020e62aacb4..27467bf3b8e6 100644
+--- a/include/linux/page_counter.h
++++ b/include/linux/page_counter.h
+@@ -56,27 +56,11 @@ struct page_counter {
  
--	union {
--		struct page_counter swap;	/* v2 only */
--		struct page_counter memsw;	/* v1 only */
--	};
-+	/*
-+	 * Swap accounting.  These used to share storage because v1 only ever
-+	 * used memsw (the combined memory+swap limit) and v2 only ever used
-+	 * swap (a standalone swap limit).  They are separate now so that the
-+	 * combined counter can be maintained on both hierarchies.
-+	 */
-+	struct page_counter swap;	/* Standalone swap limit, v2 only */
-+	struct page_counter memsw;	/* Combined memory+swap, v1 & v2 */
+ 	CACHELINE_PADDING(_pad1_);
  
- 	/* Written on the charge, reclaim and socket paths. */
- 	__cacheline_group_begin_aligned(memcg_write_hot);
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index aaf23e849408..1daa55f2e99d 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -1591,14 +1591,17 @@ static unsigned long mem_cgroup_margin(struct mem_cgroup *memcg)
- 	if (count < limit)
- 		margin = limit - count;
+-	/* effective memory.min and memory.min usage tracking */
+-	unsigned long emin;
+-	atomic_long_t min_usage;
+-	atomic_long_t children_min_usage;
+-
+-	/* effective memory.low and memory.low usage tracking */
+-	unsigned long elow;
+-	atomic_long_t low_usage;
+-	atomic_long_t children_low_usage;
+-
+ 	unsigned long watermark;
+ 	/* Latest cg2 reset watermark */
+ 	unsigned long local_watermark;
  
--	if (do_memsw_account()) {
--		count = page_counter_read(&memcg->memsw);
--		limit = READ_ONCE(memcg->memsw.max);
--		if (count < limit)
--			margin = min(margin, limit - count);
--		else
--			margin = 0;
--	}
-+	/*
-+	 * The combined memory+swap limit applies on both hierarchies and
-+	 * caps what can still be charged.  It defaults to "max", so this
-+	 * only narrows the margin once a combined limit is configured.
-+	 */
-+	count = page_counter_read(&memcg->memsw);
-+	limit = READ_ONCE(memcg->memsw.max);
-+	if (count < limit)
-+		margin = min(margin, limit - count);
-+	else
-+		margin = 0;
- 
- 	return margin;
- }
-@@ -2188,8 +2191,7 @@ static bool consume_stock(struct mem_cgroup *memcg, unsigned int nr_pages)
- static void memcg_uncharge(struct mem_cgroup *memcg, unsigned int nr_pages)
- {
- 	page_counter_uncharge(&memcg->memory, nr_pages);
--	if (do_memsw_account())
--		page_counter_uncharge(&memcg->memsw, nr_pages);
-+	page_counter_uncharge(&memcg->memsw, nr_pages);
- }
- 
- /*
-@@ -2721,12 +2723,19 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
- 		batch = nr_pages;
- 
- 	reclaim_options = MEMCG_RECLAIM_MAY_SWAP;
--	if (!do_memsw_account() ||
--	    page_counter_try_charge(&memcg->memsw, batch, &counter)) {
-+	/*
-+	 * The combined memory+swap counter is charged on both hierarchies.
-+	 * Its limit is only configurable through v1's memsw.limit_in_bytes
-+	 * for now and defaults to "max", so unless the user configures a
-+	 * combined limit this never fails.
-+	 *
-+	 * Swapping does not reduce the combined charge, so when the combined
-+	 * limit is what we hit, reclaim must not count on swap.
-+	 */
-+	if (page_counter_try_charge(&memcg->memsw, batch, &counter)) {
- 		if (page_counter_try_charge(&memcg->memory, batch, &counter))
- 			goto done_restock;
--		if (do_memsw_account())
--			page_counter_uncharge(&memcg->memsw, batch);
-+		page_counter_uncharge(&memcg->memsw, batch);
- 		mem_over_limit = mem_cgroup_from_counter(counter, memory);
- 	} else {
- 		mem_over_limit = mem_cgroup_from_counter(counter, memsw);
-@@ -2836,8 +2845,7 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
- 	 * temporarily by force charging it.
- 	 */
- 	page_counter_charge(&memcg->memory, nr_pages);
--	if (do_memsw_account())
--		page_counter_charge(&memcg->memsw, nr_pages);
-+	page_counter_charge(&memcg->memsw, nr_pages);
- 
- out:
- 	/*
-@@ -4295,12 +4303,14 @@ mem_cgroup_css_alloc(struct cgroup_subsys_state *parent_css)
- 	WRITE_ONCE(memcg->zswap_writeback, true);
- #endif
- 	page_counter_set_high(&memcg->swap, PAGE_COUNTER_MAX);
-+	page_counter_set_high(&memcg->memsw, PAGE_COUNTER_MAX);
- 	if (parent) {
- 		page_counter_init(&memcg->memory, &parent->memory);
- 		if (memcg_on_dfl)
- 			page_counter_init_protection(&memcg->memory, &memcg->memory_prot,
- 						     &parent->memory_prot);
- 		page_counter_init(&memcg->swap, &parent->swap);
-+		page_counter_init(&memcg->memsw, &parent->memsw);
- #ifdef CONFIG_MEMCG_V1
- 		WRITE_ONCE(memcg->swappiness, mem_cgroup_swappiness(parent));
- 		memcg->memory.track_failcnt = !memcg_on_dfl;
-@@ -4317,6 +4327,7 @@ mem_cgroup_css_alloc(struct cgroup_subsys_state *parent_css)
- 		page_counter_init_protection(&memcg->memory, &memcg->memory_prot,
- 					     NULL);
- 		page_counter_init(&memcg->swap, NULL);
-+		page_counter_init(&memcg->memsw, NULL);
- #ifdef CONFIG_MEMCG_V1
- 		page_counter_init(&memcg->kmem, NULL);
- 		page_counter_init(&memcg->tcpmem, NULL);
-@@ -4490,6 +4501,7 @@ static void mem_cgroup_css_reset(struct cgroup_subsys_state *css)
- 
- 	page_counter_set_max(&memcg->memory, PAGE_COUNTER_MAX);
- 	page_counter_set_max(&memcg->swap, PAGE_COUNTER_MAX);
-+	page_counter_set_max(&memcg->memsw, PAGE_COUNTER_MAX);
- 	WRITE_ONCE(memcg->oom_group, false);
- #ifdef CONFIG_ZSWAP
- 	WRITE_ONCE(memcg->zswap_max, PAGE_COUNTER_MAX);
-@@ -4503,6 +4515,7 @@ static void mem_cgroup_css_reset(struct cgroup_subsys_state *css)
- 	page_counter_set_low(&memcg->memory, 0);
- 	page_counter_set_high(&memcg->memory, PAGE_COUNTER_MAX);
- 	page_counter_set_high(&memcg->swap, PAGE_COUNTER_MAX);
-+	page_counter_set_high(&memcg->memsw, PAGE_COUNTER_MAX);
- 	memcg_wb_domain_size_changed(memcg);
- }
- 
-@@ -5608,8 +5621,7 @@ void mem_cgroup_replace_folio(struct folio *old, struct folio *new)
- 	 */
- 	if (!obj_cgroup_is_root(objcg)) {
- 		page_counter_charge(&memcg->memory, nr_pages);
--		if (do_memsw_account())
--			page_counter_charge(&memcg->memsw, nr_pages);
-+		page_counter_charge(&memcg->memsw, nr_pages);
- 	}
- 
- 	commit_charge(new, objcg);
-@@ -5980,12 +5992,24 @@ int __mem_cgroup_try_charge_swap(struct folio *folio)
- 	/* memcg is pined by memcg ID. */
- 	rcu_read_unlock();
- 
--	if (!mem_cgroup_is_root(memcg) &&
--	    !page_counter_try_charge(&memcg->swap, nr_pages, &counter)) {
--		memcg_memory_event(memcg, MEMCG_SWAP_MAX);
--		memcg_memory_event(memcg, MEMCG_SWAP_FAIL);
--		mem_cgroup_private_id_put(memcg, nr_pages);
--		return -ENOMEM;
-+	if (!mem_cgroup_is_root(memcg)) {
-+		if (!page_counter_try_charge(&memcg->swap, nr_pages, &counter)) {
-+			memcg_memory_event(memcg, MEMCG_SWAP_MAX);
-+			memcg_memory_event(memcg, MEMCG_SWAP_FAIL);
-+			mem_cgroup_private_id_put(memcg, nr_pages);
-+			return -ENOMEM;
-+		}
-+		/*
-+		 * Hand the combined memory+swap charge over to the swap slot.
-+		 * The folio still holds a memsw charge and drops it when it
-+		 * leaves memory, so the combined charge stays constant across
-+		 * the swapout; it is briefly counted twice in between, which
-+		 * only ever makes the combined limit stricter.
-+		 *
-+		 * Force-charge here: this is a transfer of an existing charge,
-+		 * not a new allocation, so it must not fail.
-+		 */
-+		page_counter_charge(&memcg->memsw, nr_pages);
- 	}
- 	mod_memcg_state(memcg, MEMCG_SWAP, nr_pages);
- 
-@@ -6010,10 +6034,10 @@ void __mem_cgroup_uncharge_swap(unsigned short id, unsigned int nr_pages)
- 	memcg = mem_cgroup_from_private_id(id);
- 	if (memcg) {
- 		if (!mem_cgroup_is_root(memcg)) {
--			if (do_memsw_account())
--				page_counter_uncharge(&memcg->memsw, nr_pages);
--			else
-+			/* v1 tracks swap only through the combined counter */
-+			if (!do_memsw_account())
- 				page_counter_uncharge(&memcg->swap, nr_pages);
-+			page_counter_uncharge(&memcg->memsw, nr_pages);
- 		}
- 		mod_memcg_state(memcg, MEMCG_SWAP, -nr_pages);
- 		mem_cgroup_private_id_put(memcg, nr_pages);
+-	/* Keep all the read most fields in a separete cacheline. */
+-	CACHELINE_PADDING(_pad2_);
+-
+-	bool protection_support;
+ 	bool track_failcnt;
+-	unsigned long min;
+-	unsigned long low;
+ 	unsigned long high;
+ 	unsigned long max;
+ 	struct page_counter *parent;
 
 -- 
 2.43.7
