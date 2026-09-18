@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CC1CC982D2
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 02:56:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40745C982D2
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 02:56:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 324376B0096; Thu, 17 Sep 2026 22:56:40 -0400 (EDT)
+	id 14FBE6B0099; Thu, 17 Sep 2026 22:56:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2FB7F6B0098; Thu, 17 Sep 2026 22:56:40 -0400 (EDT)
+	id 100996B009B; Thu, 17 Sep 2026 22:56:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 212C86B0099; Thu, 17 Sep 2026 22:56:40 -0400 (EDT)
+	id 03D906B009D; Thu, 17 Sep 2026 22:56:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 00CAB6B0096
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 22:56:39 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 798ACC04D4
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 02:56:39 +0000 (UTC)
-X-FDA: 85225370118.29.2B0DABD
-Received: from mta0.migadu.com (out-106.mta0.migadu.com [91.218.175.106])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 2F6DEC0003
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 02:56:36 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CA5B86B0099
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 22:56:47 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0FE9016055A
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 02:56:47 +0000 (UTC)
+X-FDA: 85225370454.12.822C649
+Received: from mta0.migadu.com (out-113.mta0.migadu.com [91.218.175.113])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 0947FC0002
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 02:56:44 +0000 (UTC)
 Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=OO22uDOx;
-	spf=pass (imf22.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.106 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=RVtnNC4B;
+	spf=pass (imf22.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.113 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789700197;
+	s=arc-20220608; t=1789700205;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1nu/1Qn5aMB6eE8agozr5NGLxQFUYPH9tczqIuVOPWg=;
-	b=aoIWlvxydv/o+NGvhpuHavq/4pqQMLvmvw6FB/lwIm9hWZwSK5KOOo/jG3otZz+LKnWV9t
-	mJgp4ds5l7k53sEm/cI4VJlGLjXXPEgZaxJtUlChr6oqF3e0tDWuL52eNwk55etZsB2Zb+
-	0ZVqIWSm1X0uOH5KfOB6LZQ6/akxZBQ=
+	bh=AvwRaCLRduaPl7ofTHk3iFiEtLJyO8gnaiI+z7ReKBY=;
+	b=0uHKcCTgmh8zzUzG8QJ7B4xJU8VJmtxmLY3kCq8DIGgoamlGMvV36q89xYL7pgp06i4UuH
+	AIxytC+N9G/JrDkub9tWnMJYzMN3Oo77BL1V5//E/jD3iLspHHod31qiO4Haxp5+sqwvcS
+	jbMAF7qB1M0A4+C5pQJ+9ZsgXsXkjCg=
 ARC-Authentication-Results: i=1;
 	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=OO22uDOx;
-	spf=pass (imf22.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.106 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=RVtnNC4B;
+	spf=pass (imf22.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.113 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789700197;
-	b=mC/EdFkjdEo6nUxZwrBTunVk4ViRqjct8V9xZr2Al63NeMHZ/fsjUWMtNwzZl/zklGwQJi
-	AjlQBYfDnmSSxP9G5mogPh6CKrnetrxJqmTrug2ErdZqpeiVGKFcqqmAvTtJiIdh5WAkkg
-	iP7vi9Hu7b2kcNaeJDkQnmsiCArhb5A=
+	t=1789700205;
+	b=qP5AeQD3C3fAfdOShHNPvPJjo4Z67VbUZwOuPWJsBy8DGakxvv83xDyGS6LlEuFQNUT/cZ
+	+JUOF1y9hRD21oJmixJn7QDqKjW9Up4tqV/DhpVQf8MmSHsjMQhoeVfIC9Z9PionCZuPf0
+	NBxVIp18ltsw6Ttpz8w+E6zAAihWwEg=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=9u6epy2ZAg7e55qO1Fon8xryNFbohlp/e75WuCwRfPs=;
+DKIM-Signature: a=rsa-sha256; bh=gMDNPKvkl43rEG07pQr1WtDNrBKGvQm6RDcbilGOvZc=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789700195; v=1; x=1790304995;
- b=OO22uDOxXILEOeYIwRkNS6xATYfJXsM5caSAsWGGGtr5GP/Rp8bZYzpGZs7yzVIn7wHt6lK4
- uNcS5xC2ZU48jsUvVfV9YZgdMFE4qNS3GGm74/9r13mgZ0WiFw9MevCAK/wIZiIvq0gS/cTA0K5
- 3f8nh5/PWoIiU61q2og7mbzs=
+ t=1789700203; v=1; x=1790305003;
+ b=RVtnNC4BK8QGmcO/exyqydAFSTV0YeirNb6Zjy8DVOkPRyRDYF51Et9DT/CT1DoWRv0vOBfC
+ 3j5NVNTKV90jkAl90kIK7SHumrAcgjCA2Kff17jp6v378K1mNF6UZLtD7DJs5F/u2OE41Oq/WPA
+ gTkLOLsJbVmHP1UsH5tHoBDg=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id e182d4fe0f507fa4;
-	Fri, 18 Sep 2026 02:56:35 +0000
-X-Mizu-Trace-ID: e182d4fe0f507fa4
+Received: by smtp.migadu.com with ESMTPS id 7c6d4e5d4c2fa1a8;
+	Fri, 18 Sep 2026 02:56:43 +0000
+X-Mizu-Trace-ID: 7c6d4e5d4c2fa1a8
 X-Migadu-Flow: FLOW_OUT
 From: Hongfu Li <hongfu.li@linux.dev>
-Date: Fri, 18 Sep 2026 10:56:10 +0800
-Subject: [PATCH v2 1/2] mm/hugetlb_cgroup: move per-node usage on cross
- node migration
+Date: Fri, 18 Sep 2026 10:56:11 +0800
+Subject: [PATCH v2 2/2] mm/hugetlb_cgroup: move per-node usage on cgroup
+ reparenting
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260918-for-hugetlb-charge-v2-1-2b6d8c2bdc36@kylinos.cn>
+Message-Id: <20260918-for-hugetlb-charge-v2-2-2b6d8c2bdc36@kylinos.cn>
 References: <20260918-for-hugetlb-charge-v2-0-2b6d8c2bdc36@kylinos.cn>
 In-Reply-To: <20260918-for-hugetlb-charge-v2-0-2b6d8c2bdc36@kylinos.cn>
 To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
@@ -82,21 +82,21 @@ Cc: Mike Kravetz <mike.kravetz@oracle.com>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, hongfu.li@linux.dev, 
  Hongfu Li <lihongfu@kylinos.cn>, stable@vger.kernel.org
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1789700179; l=2631;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1789700179; l=1276;
  i=lihongfu@kylinos.cn; s=20260915; h=from:subject:message-id;
- bh=0UZdbc9Ox8ZjROT1qQ4ifIs6d3OxXlfJxcPA9bn5O0g=;
- b=En8vl3OUqwBj0Vz+EXcDxP2ydhp6W543BGUr7oBnxhYZP63azlfAA49Euwx8FD1ItN5ud6Nrc
- aGbYMXI7QnpB0T9B5Tu2kpkD02NR9nbgeegmbkYHlWTj5lj4ymZUe5z
+ bh=p5jmZoyk44qDQ7+C6YBxS0kRkY10Qpp1sAnAzxNdFPA=;
+ b=/OH25k+LSrmo9fr0WYUNPHD73MaTB/ENpGnDv0ALWpziXS1YtqPaTv68o6yipqVlSRX790FDr
+ 6/Vk99IKXd2BHsD8X1lyrY7kNMYA3qPzOg2e3pqVT/57VMQckpUFdKU
 X-Developer-Key: i=lihongfu@kylinos.cn; a=ed25519;
  pk=rUpDSpB3neoNZRlGG6dHlFb3RepiJakcev+ucyqaZzw=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 0947FC0002
+X-Stat-Signature: 9qy8hi9er9d7o6fxiefmdc6qo4bcug17
 X-Rspam-User: 
-X-Stat-Signature: d5mjbwiuid3ixczewgyizwrpxisfwhgj
-X-Rspamd-Queue-Id: 2F6DEC0003
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789700196-664605
-X-HE-Meta: U2FsdGVkX19RlMvI78hjRTSqXC22Krck5WkJMRl+fQO/0MGdAwDPllp2vKs2m7jDeoQQ8lgwOgF3bJeGFCZECzJhDB8caY9Q/7f2Co/OZzP3C2HYZXdJkTpwsHp2P9cp/ekgTagYCiSHa2QLU6Ro/I5TdG300E5l5Anp1DVa8rwoCJyHd+hGwTWIWDMkfzwBGmw0HjkuZ4YM+Cl3/9OrYnXg1IxocFYg0xSjZpJn1dKzGnpscnGyZNkBK7Ilm6/BUed2P4mWiHsP7HgqvLkXAobNBhScG7nWpWh8G5x3k1UAypJR3nDXm+1bjxNjY7DmF88piAVKqxpu1ry6fJA6o6BbPYQJUgmMsLiqEF5ry0Xrb/DMOJuRJxtgLMWE3AtWurs6gEAAfNYosoq7zIA264HdqeZ88gZDJQv4srO8fQHWnlaWw3aHuvfaNUe6b3HeljguuEoDLFyqX/Yuy/jVJK2uMzhPQOsn5S18y52JlJzyozBu5yFSOk65v+C2MRah4CC0gmMXF1xKG0eLyi2sfkifGQcOWvyNqsNLagGGYvXtVIrgbcySeoGuK0nwbLX0uIHPZVyO/JxO3+SLbkyTYVwDtuT9d4pXNY1DzCJCn9eiTEoME7HmxYukEdxAT7/r7pJGFohgY/XiqUglUVZIixuBtgfc5IlXY1Zm6AbgbhcfKNMDa+qqxn7TirdPiaQWT1t38DSOLUgZ9OfhgZL8DQeiobyHcmHfAu/cV+k2ge/IAW5/K3rb5fthsBKkTmru8KPoiKP34zl+1CMLS+qaSnBtU/kKkXPLUKFiaSbAVDJTxpJ+oODK1VRi0A+vZ1el39G7HlqtYmRKCYsd9xiFzKVT2irul86VqIKiMJJJm4Eg5W1s9XSALJ8NTDz0X1Ym6asgKDc2Z8zHBWnrGs81vyg7glKmONmn9SoRf7mLDr6uipi22G8Z4PIzOuBpajhk4/V9K9BmnI1eIpRShTP
- kWRrol5v
- R0YpUfUHYpcTIfdYgDnaeF0X6YyQLZrCCLJM5Qqa0LthANtE73nscyTHPqpBkbOLsNw/UYziGpOf7UFekvoZ/5seUUnIiUSZcMIAvvQ4MHf/eP3AekjkBXndJY0BU8mInEUpYOCyU9vFauRbwU2/PmQ0ZfcMpIpPJiywMRBsuqTo8m/D+ZS4MOOheufcR+kjHNX1ailNMbYMdU29wswG8YMPUIeDPh6O+phxE4BQDzwkdnemPRQzxXG/e/lhuD3nTn1N+rbWP/xAGiZLiF31KnvcBpXDfrzkYGuJR3v4vuZ2AAZ+yP5u8IJF/xyhMbCQ9H9npvdXw67RTP71V8siwBUgOSHew0VVbNYL0q7UckCEvMu4ROUNKKiCb9XsCJX22a15R
+X-HE-Tag: 1789700204-444231
+X-HE-Meta: U2FsdGVkX19MSOcpOma6w3bvCtDLlDTi4MsULDGpyWkMYNu59rMNkQ6MB9q1Bv1ImHrQRqYEtcfVcCsBi6qaWCvZkySZKOM7I6UVD8WaFvYQ/ngetoOzndtJolb3w18QmCArtFHnmT0EZEyjtDMf/EQlEUnZqOkpw2UjHz76c0hfMOQKdcWkjHMRx8i7jpQTjZ3DUm9yocumSB7HRLnP3//d+pm0LCxIH0Z8LnGn643XfTDUYpj84+pRBPePHA/Wt6vANqnCsQSY3HlLzDuEtvOE+h6oEyOw9P0kCVA2eZ2VGIK9AQxYtCoYi5tZr/jpxO4VxTO0pSY+tfby6AUrsysgSQcyagnAiMmW+J9opg6GRzT5PrwfCfcendAasAuhoKnX8VI68bfLvkq16M6eMn0u/SaC21iugW+1Mfh0OQ/dAqkRWXlzfnPwnsME05bxFO1//G/VkgdSdDrJLr8pLJwZPyzm9IbE8JN3/jUwf/D3IIRJ+de95qI0DAFJ2fvhkLYnO6kamJn/7c8T3k52GjjTwbFMUnZkzLBg6X4twwPUxIfhLIHNGqKxlpgZGQE4WXP4tFO1HvaPm5pwAvSkj1G2/YTc8I9+Ii60JLa4udt9TkTtyYXtzn1oRNEg3KL7qRVCIyyQlGmeAs7emKK2auKZFfZBG9yc1QpDYZ8cza6kMR1kWMk5SxcWoU797ELUFNi0CaXthJKJE750o5G9uBCy7C34knW5wj/Dl0r1PC6shnWEa0L7AdAJSW0CejOF4mHGceq+ICzTDrP289FiROUaPp/8ypz/9Ddo1jZkakUDo0yOkLoK9R9Vpo5Axet48dj2F4VrWjuffDdRYhTEnxnDlRE9kYHWpaOb8tnh4emlYfiiTW0fZgaKLr8LXMrT08cQ7Z956dokmi5Q6rqz6zw9LZPnSrApi9oA3g4udAIYS0MRch0rriBcpXQYmU/PEejqKtox1dohDHpqaFx
+ 4/zN3dj1
+ 4YAkhF3dMLXA1Cn/N5NdnAWe9JWejw2lTOu6duVuVykciKC7ZW4lYVZDYhhK+/cz9voAus4nSHgg2TYPGBvDfqmaUD1Z9OH8UJvGfDkUhDjJeo+uX5+Zt0G2v6zpyJTlgz9YMhVYSoxf5mAUbkY8j6uP+rQVRyj3shYuzGfaq5KEvi46eK11lbL2/j+/sJ+8jnn7A7Vw7oEcIrujCdipLHy4VzttXfBcBmBns3ajhlb1Or7PzA7bocyP2d0T6xnl1V4ck62dmgYOB2ljEB+vMG+dCVBcDVyG4QLoaYyQQ5LUGCR9IB6c+ZOrmLnZA5s9GDxlEP83DeC3URMRI2mC53eh6SQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,76 +106,37 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Hongfu Li <lihongfu@kylinos.cn>
 
-hugetlb.<size>.numa_stat uses folio_nid() to account usage in
-__hugetlb_cgroup_commit_charge() and __hugetlb_cgroup_uncharge_folio().
-hugetlb_cgroup_migrate() only moves hugetlb_cgroup pointers, leaving
-per-node usage behind on the source node during cross-node migration.
+hugetlb_cgroup_css_offline() hands the folios of a dying cgroup over to
+its parent with hugetlb_cgroup_move_parent(), which moves the page_counter
+charges and the hugetlb_cgroup pointer of the folio but not its per-node
+usage.  The parent's hugetlb.<size>.numa_stat is short by that usage while
+they are charged, and underflows once they are freed, exposing incorrect
+per-node usage values to userspace.
 
-When the migrated folio gets uncharged, we subtract usage from the
-destination node counter. This creates stale usage on the source node
-and unsigned long counter underflow on the destination node.
-The hugetlb.<size>.numa_stat interface exposes these incorrect per-node
-usage values to userspace.
-
-Add a hugetlb_cgroup_move_usage() helper which moves the usage from the
-old node to the new node, and call it from hugetlb_cgroup_migrate().
+Move the per-node usage to the parent as well.  The folios keep their node
+here, so only the cgroup which holds the usage changes.
 
 Fixes: f47761999052 ("hugetlb: add hugetlb.*.numa_stat file")
 Cc: stable@vger.kernel.org
 Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
+Acked-by: Muchun Song <muchun.song@linux.dev>
 ---
- mm/hugetlb_cgroup.c | 31 +++++++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+ mm/hugetlb_cgroup.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/mm/hugetlb_cgroup.c b/mm/hugetlb_cgroup.c
-index ecb6e0b7819a..7cf7c18119b4 100644
+index 7cf7c18119b4..3fb41311e4c7 100644
 --- a/mm/hugetlb_cgroup.c
 +++ b/mm/hugetlb_cgroup.c
-@@ -179,6 +179,34 @@ static void hugetlb_cgroup_css_free(struct cgroup_subsys_state *css)
- 	hugetlb_cgroup_free(hugetlb_cgroup_from_css(css));
- }
+@@ -241,6 +241,8 @@ static void hugetlb_cgroup_move_parent(int idx, struct hugetlb_cgroup *h_cg,
+ 	/* Take the pages off the local counter */
+ 	page_counter_cancel(counter, nr_pages);
  
-+static void hugetlb_cgroup_move_usage(struct hugetlb_cgroup *from,
-+				      struct hugetlb_cgroup *to,
-+				      struct folio *from_folio,
-+				      struct folio *to_folio)
-+{
-+	int idx = hstate_index(folio_hstate(from_folio));
-+	unsigned long nr_pages = folio_nr_pages(from_folio);
-+	int from_nid = folio_nid(from_folio);
-+	int to_nid = folio_nid(to_folio);
-+	unsigned long usage;
++	hugetlb_cgroup_move_usage(h_cg, parent, folio, folio);
 +
-+	lockdep_assert_held(&hugetlb_lock);
-+
-+	if (!from || !to)
-+		return;
-+
-+	if (from == to && from_nid == to_nid)
-+		return;
-+
-+	usage = from->nodeinfo[from_nid]->usage[idx];
-+	if (WARN_ON_ONCE(usage < nr_pages))
-+		return;
-+	WRITE_ONCE(from->nodeinfo[from_nid]->usage[idx], usage - nr_pages);
-+
-+	usage = to->nodeinfo[to_nid]->usage[idx];
-+	WRITE_ONCE(to->nodeinfo[to_nid]->usage[idx], usage + nr_pages);
-+}
-+
- /*
-  * Should be called with hugetlb_lock held.
-  * Since we are holding hugetlb_lock, pages cannot get moved from
-@@ -906,6 +934,9 @@ void hugetlb_cgroup_migrate(struct folio *old_folio, struct folio *new_folio)
- 	/* move the h_cg details to new cgroup */
- 	set_hugetlb_cgroup(new_folio, h_cg);
- 	set_hugetlb_cgroup_rsvd(new_folio, h_cg_rsvd);
-+
-+	hugetlb_cgroup_move_usage(h_cg, h_cg, old_folio, new_folio);
-+
- 	list_move(&new_folio->lru, &h->hugepage_activelist);
- 	spin_unlock_irq(&hugetlb_lock);
- }
+ 	set_hugetlb_cgroup(folio, parent);
+ out:
+ 	return;
 
 -- 
 2.54.0
