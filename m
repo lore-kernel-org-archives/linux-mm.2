@@ -4,97 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A02AFC982D7
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 20:13:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 048A4C982D7
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 20:13:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B24346B0098; Fri, 18 Sep 2026 16:13:35 -0400 (EDT)
+	id 1881D6B009D; Fri, 18 Sep 2026 16:13:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AFB3F6B0099; Fri, 18 Sep 2026 16:13:35 -0400 (EDT)
+	id 15F126B009E; Fri, 18 Sep 2026 16:13:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A11C66B009D; Fri, 18 Sep 2026 16:13:35 -0400 (EDT)
+	id 04D8A6B00A2; Fri, 18 Sep 2026 16:13:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 871496B0098
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 16:13:35 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 94E8BA06F4
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:13:34 +0000 (UTC)
-X-FDA: 85227983148.03.F44064A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 00DB61C0002
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:13:32 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mAw5Ulvu;
-	spf=pass (imf21.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DD1E26B009D
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 16:13:46 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6C0F91A0792
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:13:46 +0000 (UTC)
+X-FDA: 85227983652.18.454F6E7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id C1A9414000E
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:13:44 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HyCzK9W1;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789762413;
+	s=arc-20220608; t=1789762424;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IdDvdVBUP9dI0We8t/DLRSXpGyJGcqmjaxTczi9FQIk=;
-	b=zQu5B1v8K0ucY5w9357VY2fkL/gDGLdMrcw3CVwECog7Pzst6tfXPtvxs+nwjlhlL6pSY+
-	sEjR0UnNo5SjSHy4adSzSqHK45SzlBJic2aVBwawE/VEoftpEtnOz2LvE6fwZT/pOx28AS
-	OVnfRLNmmoACe/TY4xbsUFufmp15gXw=
+	bh=4BHzfgU7NlhiaeoyLw4QIVrcWHr6+Q91E2JaLOkHxcc=;
+	b=FXGf61Zty1KiRYTx+BfyF/1iqvAg+FM839W3tgKwdV/jp1k9E4Wu4qko/rEGNy0bjbEWyl
+	B/CnP1AAR33rlz/i2vJLurh6IJzA1aCVveLX1Y/Sb56tXm1cHgV4sz1z/76a0/CHvy+PKs
+	U0Sj+Qz+BD4km5wo8aMA3v55ilOgVM4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789762413;
-	b=xJxhbsi0NnLkOprJywtRi9ppxlQcVqu9bOASju9RM3pR84qBUX18AsBlaT7ilp//S6khVC
-	y+LflKMn0qR0ES1QMJRdsix6asN0zUGrqHKYqzwVBw+zMMg1tdHKRO+qWPpC3BMHey6Tvh
-	u6k3R2aVSoshduUJXssARzdA2qcOUz4=
+	t=1789762424;
+	b=77uWVjwRkRgoSPBFtMNxUnN5Y6w9uKBqhDCvm3ckuN3Wn0IJDVI1nAostxRUG2XCEmvAs6
+	zM/Js8TFBXTRtHTprjvdoMAysXxC+R+RV+pyAR4pw42EDDZnVtA7OlRKKCYw1Xk77VCyAP
+	rK8nK+dkWhmMCUAqD8htIGIT4d4lohg=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mAw5Ulvu;
-	spf=pass (imf21.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HyCzK9W1;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2DFC6404EB;
-	Fri, 18 Sep 2026 20:13:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A56931F00898;
-	Fri, 18 Sep 2026 20:13:30 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 56CF3602CC;
+	Fri, 18 Sep 2026 20:13:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 916F81F000FF;
+	Fri, 18 Sep 2026 20:13:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789762412;
-	bh=IdDvdVBUP9dI0We8t/DLRSXpGyJGcqmjaxTczi9FQIk=;
+	s=k20260515; t=1789762424;
+	bh=4BHzfgU7NlhiaeoyLw4QIVrcWHr6+Q91E2JaLOkHxcc=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=mAw5UlvuSYKxbaxLCoAdn3B+ntHZiwR/3D2Ji+Fn0ZYKJwHYM8ZnlI2lT9lc6eb7A
-	 JjVJDX7cv5qlgm8kMuylieYao30s6Af5TxWMQiJEToD9w/W8doPLT49tEFpV5faalO
-	 e4dd4qJ/t0EnNhNTBjNF7Z7pkYdEurfIwnCwwR1jh/5z1uu5TJiV6qV2CDbJtowFRi
-	 y4OCFgD/LrEhJJBx7yNMbEypfKALMLRBMdGc30aUkMmy+IZSKcFV14ouvIQE6Xn0cM
-	 D5TpUnHhBJeSt1EhOMj9QrfXH2NLa+MBO+9DwxRHNR0liwtuGRHjPBQq/FYnwYAxIh
-	 nxHv56C4VlqWg==
+	b=HyCzK9W1dXl+/YzMV88nR47sMs1YSKPOm7r206nkfEqmpQfxEqtGNi3uGia1CiCBy
+	 58AvHvwaIQ+5VvMMIpang4tGjgDjDjJJHMlILNjF+5dHsU7BoGwhL8u0ThDISYllWa
+	 7jwOzqBUcYKmKJocF1NyOwvZClXirVEzLYh7xCASXkO0Xc7ZYgKO/LgUzZj6HR1apQ
+	 fEFmh0X2YOQQ+ddXCNBoH92KvaJYaS0WTY5IpHpB67cYD40enYMIXjOOGUAXE3Qvr/
+	 zo/uC4l4oyXj/Kr40at8aj+ZgiYbrX4n5HubEsVEjViWcJitj/xiMzVDD9pJJoNy+4
+	 om2D0s+D1QSlg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v9 07/13] PCI: Refactor matching logic for
- pci_dev_acs_ops
+Subject: Re: [PATCH v9 09/13] PCI: liveupdate: Adopt ACS controls in
+ incoming preserved devices
 Reply-To: sashiko-reviews@lists.linux.dev
-To: linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, "David Matlack" <dmatlack@google.com>, linux-mm@kvack.org
-Cc: kexec@lists.infradead.org, "Pasha Tatashin" <pasha.tatashin@soleen.com>, "Jason
- Gunthorpe" <jgg@nvidia.com>, "Jonathan Corbet" <corbet@lwn.net>, "Parav
- Pandit" <parav@nvidia.com>, "Leon Romanovsky" <leonro@nvidia.com>, "Adithya
- Jayachandran" <ajayachandra@nvidia.com>, "Randy Dunlap" <rdunlap@infradead.org>, "Pratyush
- Yadav" <pratyush@kernel.org>, "Alex Williamson" <alex@shazbot.org>, "Mike
- Rapoport" <rppt@kernel.org>, "Pranjal Shrivastava" <praan@google.com>, "Alexander
- Graf" <graf@amazon.com>, "Josh Hilke" <jrhilke@google.com>, "Chris Li" <chrisl@kernel.org>, "David
- Rientjes" <rientjes@google.com>, "Saeed Mahameed" <saeedm@nvidia.com>, "Samiullah
- Khawaja" <skhawaja@google.com>, "Shuah Khan" <skhan@linuxfoundation.org>, "Vipin
- Sharma" <vipinsh@google.com>, "Bjorn Helgaas" <bhelgaas@google.com>, "Lukas
- Wunner" <lukas@wunner.de>, "Jacob Pan" <jacob.pan@linux.microsoft.com>, linux-pci@vger.kernel.org, "William
- Tu" <witu@nvidia.com>, "Yi Liu" <yi.l.liu@intel.com>
-In-Reply-To: <20260918200640.887030-8-dmatlack@google.com>
+To: "David Matlack" <dmatlack@google.com>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Cc: "Pasha Tatashin" <pasha.tatashin@soleen.com>, "Alex Williamson" <alex@shazbot.org>, linux-pci@vger.kernel.org, "Pratyush
+ Yadav" <pratyush@kernel.org>, "Randy Dunlap" <rdunlap@infradead.org>, "Mike
+ Rapoport" <rppt@kernel.org>, "Yi Liu" <yi.l.liu@intel.com>, "Josh Hilke" <jrhilke@google.com>, "Jason
+ Gunthorpe" <jgg@nvidia.com>, "Alexander Graf" <graf@amazon.com>, "Jonathan
+ Corbet" <corbet@lwn.net>, kexec@lists.infradead.org, "Adithya Jayachandran" <ajayachandra@nvidia.com>, "Leon
+ Romanovsky" <leonro@nvidia.com>, "Pranjal Shrivastava" <praan@google.com>, "Chris
+ Li" <chrisl@kernel.org>, "Samiullah Khawaja" <skhawaja@google.com>, "Saeed
+ Mahameed" <saeedm@nvidia.com>, "Vipin Sharma" <vipinsh@google.com>, "Shuah
+ Khan" <skhan@linuxfoundation.org>, "William Tu" <witu@nvidia.com>, "Parav
+ Pandit" <parav@nvidia.com>, "Jacob Pan" <jacob.pan@linux.microsoft.com>, "Lukas
+ Wunner" <lukas@wunner.de>, "Bjorn Helgaas" <bhelgaas@google.com>, "David
+ Rientjes" <rientjes@google.com>
+In-Reply-To: <20260918200640.887030-10-dmatlack@google.com>
 References: <20260918200640.887030-1-dmatlack@google.com>
- <20260918200640.887030-8-dmatlack@google.com>
+ <20260918200640.887030-10-dmatlack@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 18 Sep 2026 20:13:30 +0000
-Message-Id: <20260918201330.A56931F00898@smtp.kernel.org>
-X-Rspamd-Server: rspam04
+Date: Fri, 18 Sep 2026 20:13:42 +0000
+Message-Id: <20260918201342.916F81F000FF@smtp.kernel.org>
 X-Rspam-User: 
-X-Stat-Signature: 4tsxqysxr9tzgzxty4yau5exxsb5ka87
-X-Rspamd-Queue-Id: 00DB61C0002
-X-HE-Tag: 1789762412-782713
-X-HE-Meta: U2FsdGVkX19j0ufBJbqKcLq/Bt9LFtqwUcCGR0MPkymo/i8ak7rS61irOHZz2kDfPRvLwFl/1Q3lnH83qisDYG+KlHzWmJR91E+GPZOnr2/EjApVZue5Njj7wOuntujnJS4G9oW4TWLDlMLsOEh62rZR9E2lP4vbY5pP5dthTC9iHs9hX2SoXVtinthxEkKiObPdXwMdFtB1mtjIuqSoeUTDA+XGyPgxKeXIAIApHp/7egO1KZqKijzh4LoFZdBHmu7l5n8dcdav4ssbIr2TYxNK46zmuuymhuqCfc1wLyPn6pLX4YKpEcYmMN24DLvh1H+dVFO2NxGXV8gju2Xp0SB+rcerhT2S0YKPO4e68NGtgcTwJf8iirr0y7ON0ZkaaPIVzVdTiM/4nRyMTLrQvhpNToGz2CCyzfFYw7MBCMA47KswSSIQWNOp5VrTrl+QX4RHLpkYqQBeszdcMg0a0GO1mCuKZu263GQ7dlR6ph7zAoc+1trPVOL0zUTKhh1xUEMwkfN/SD6Jkvc9Y0vU48eb6oi31Y5ZV6LeN17BZwLsR8OzIJBovM4IVn+gAueCDQKUL5wJEX3hbN9LCkI+qseYdmsFgHj9raZD30eLxe6V2G11mfJ+AWuk7X9K4zUxrfNSDOQGYl9F3veefA4dEiqh6f++PQKkeX39SRCjpzWGD2n4+q6wpWs07Vg6EeM7Fo+2BEougPNmH5Mv+F5AGN0jZegRUJzxBkw6dPONdgUA1WqizjmhBQRH7RBGeFRs5+VlButiaMDCsxXvuSwfii0w+VCBYxiI2E2zxkhF14NSDe+Wfdz7vggF3e188g9g/Kxgfaf5RCiL8O6fIqBLrgfcCFqdTDrp7Id6HicyFQS/sD0oTYTOBEhbxs6dn/d/O3nG62e2lRlNzNFXrewfPjWyG/oCK0BXH/Bm25Pmz9WuB5GbqzAPNhrH22OS2vL08fu8G/Xul+7rzf7MXjE
- 7iUTKblE
- dOjSqoCyHZVGumPkJecyQytz+OTeKUdcwpuaOlvdX8ntSzJuY4DCeIWhuGbPXMMXyHxfeIQpevMC83W2Z4eUPWX8XkLt6Oxg9PeFAGhUvDcwH6KEAjTDlQ8euzFdhdE21jtjSrrfzQ+lKTKEhY6Rc1AGHUQ4vBYgwWQ/i3BgBozwx56k3clJVD/GolheuO1Jd44ndXpkDy2cKoJebRTHvr0kctxIac0YWLHrPgu25Jip33I0ZqpRKLMeW+SxElRfj+0otx1ligjYlw+y1KsA6sxgarAtoB22NtO1nQFb+KrU2LN/tDKmHQV3D9STbL1xqhDkX9Hb8nTfx0Io93Mt+loYNCtjlh+dyicdZ5MdoPKq/Y+ofybMsoocwmlVKmWd3MNZI7bv1jgwnQg+zlDz2r7CPGiCpR/fVKDpKCRx2tZhzbZkYc67DNkHEiO+dHMmyDIh0mglyQIQ6D3MmTz+nn0INmUQgdDVVePtrLaSs6essQXUW0OTpO9/s6OjPdX2Z7R8HII9zs3CZZx3khxea8mA48X4A1QCFTlXvUgZX9/T2Hw8wvfVIyvL5Wr207vgOvzaHMnIoVrHpZRGoJD6EIAX6VEblqviNsWLpwL4GLEWhLv+pSflFvHT+w/cH0W8BFfQlemSzBQEQ529HYWCcF2GmwYV1AJoR8hCH7vqX50n9i5s0CB1br3yQYxiwg7JXv5K8
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: C1A9414000E
+X-Stat-Signature: dk9z6c8uachkgyywo6ngrsoawwikn4wn
+X-HE-Tag: 1789762424-606317
+X-HE-Meta: U2FsdGVkX188bxKL4jF6v+nv5ZBprIa+tGEs3q0qpmrX52T/NWtDZhDPLC/zvR2icNWUK6DMPcRD/WJW40UmkKW6+fFP8xWfmbzxnorOcpqQOW29V5I2X915MXPbm/pdJ9JXznVko+uYSBYrQHdR53O77trlkUrR1DQKx6zvDAKj3F71HuXT8Wfgo2AUP3AhDkWjYtxJ3O1YdV8hVVRrm77PRgJRNh5buGO5vfZoMYsw2TDvAv9wuT8IS+giS0md/eJ166F2DW+XXalrbqYqNRvHlYU6zxjGKSV0j2AiU5yvp1AHNpE5toMWW4+8/EUf1R1dlTnBdq/+eCG3GqG+mTUwbup5cyRdvwQHdECk4UWX0VgsGJhYjUwAdWW2xbEuAHt0pBk6sIFARUw+IULZFZTk+QqWpUzVzB0KzSAj9qVBr2VGupQmYkU5Z05EO2xV+QQXJq6Zj+xeKvCDc0WefHB3lMR5/Pvw11zCCpb4cVbvwy4MnWnUJ/tl8Q/8lpb7u0xayb6OCUxp9GWWlmTxgIqaCui8NkArbYW7KdsmEtpqmGyplJWaXhB1RJWMfsxdV90m23PGvd9ToA8QkvZgHEuGYXPt5LAcMqHwvo+uMjdQc8WJuVWVYd8NNKKYsQmKUJrDlbA9I7yMixqLNrZwszfe4UAn5sZj4xT3NjZN463lYwn4grXeN3iHG+woODfxbLP6+XiOOAubf3M8yrQFWkpHihPxKVRAQdOBEG15sVN0AWAT9jGaEwU9B7CY3JTycIp3DJUuI/diUkRC0Vni+3jkd2oys8kmsQZfdoT7CNY7JbgOSEKQRvC9M4xVKy4ZFS5tyI65byRqbDuDSqTUpK2FA6XyPT5QMkcAhOQWkXXAE+DZ2+dkeOthNEifTbffuTjZMFNDwTl0BnNvlB8+tjRKCKFKTeEjbTN975RS9+3CumPnBngYZYnacUyIa2erqHOPHvSxqz7pcBOhoRW
+ B/wEyGNJ
+ s53En5+TSWrPyTTVqqdM5BD7ma4BTF2waNCgl43dCsi5Hp8pE6RRY2tC2WHQSgrMqSB5mKwYHI1Wt5pj31SY0zfpqK+1m/+Few3F5jFEV3Sqq19/Yh3wJe5X37EQRWqD7xp46LniJjQCDD3q0dpJKXYfeS5R17GS3KKcBT2W/aZ2f0WxJpQ7F0sFCACtOym9yMPrFLMArCr6LOOnbxZCSUR0zYLtdnE1UDmBEOqBTadqzwUBWdCazw6yItjmZyo8TmWKX37O2ZduOF+VEz4HH5kcQ6970A1m9YA4JrFASaZwAS9ggFo5p32qhbWea/3hXns0kQpOptMuOFCHmuUNaKTPgMf5jaQWWARz3gerCZGVh1eXGI9ZckVWgmMVr0t6o9A03aT33DZOXLphzQFdnp5WRvzJaO6MFmaFpeF4rgPji4CRE7FZ9VyyI9MQUC2t4vYGYkEjrAOilHQyWupmwB5r56Bhiu11t2AcJYxrK+eoavyAT6CMKTRzuouD8PmBIoUKLhAgOs2igsayygZwuN9ybnsU45+tS8NsoVm3VW+80Frr9HP7lSsoyk/wNDKcs1wQ81CJY5c/n+Gtt4trTW4g1bQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,24 +102,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Refactor the logic to match devices to pci_dev_acs_ops by factoring out
-> the device matching loop into its own routine, pci_dev_acs_ops_get().
-> This eliminates duplicate code between pci_dev_specific_enable_acs() and
-> pci_dev_specific_disable_acs_redir(), and will also be used in a
-> subsequent commit to check if a device requires device-specific
-> enable_acs() during a Live Update.
+> Adopt Access Control Services (ACS) controls on all incoming preserved
+> devices (endpoints and upstream bridges) during a Live Update.
 >=20
-> No functional change intended.
+> Inheriting ACS flags avoids changing routing rules while memory
+> transactions are in flight from preserved devices. This is also strictly
+> necessary to ensure that IOMMU group assignments do not change during or
+> after Live Update.
 >=20
-> Reviewed-by: Pranjal Shrivastava <praan@google.com>
-> Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> Reviewed-by: Bjorn Helgaas <bhelgaas@google.com>
+> The adopted controls are recorded by the pci_save_state() call in
+> pci_bus_add_device(), which runs before drivers bind, so they are
+> automatically reapplied by pci_restore_state() if the device is reset.
+> If that save buffer could not be allocated there is nowhere to record
+> the adopted controls, and they would be silently lost by the first
+> reset. Program ACS from scratch in that case, which is a better outcome
+> than leaving ACS disabled.
+>=20
+> To simplify ACS inheritance, reject preserving any devices that require
+> quirks to enable ACS as those quirks would also have to take Live Update
+> into account.
+>=20
 > Signed-off-by: David Matlack <dmatlack@google.com>
 
 Sashiko has reviewed this patch and found no issues. It looks great!
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260918200640.8870=
-30-1-dmatlack@google.com?part=3D7
+30-1-dmatlack@google.com?part=3D9
 
 
