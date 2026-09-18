@@ -4,87 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C26A2C982D9
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 10:15:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0B69C982DA
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 10:16:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 95E2B6B0095; Fri, 18 Sep 2026 06:15:28 -0400 (EDT)
+	id AE6336B0099; Fri, 18 Sep 2026 06:16:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9364F6B0096; Fri, 18 Sep 2026 06:15:28 -0400 (EDT)
+	id ABEB16B009B; Fri, 18 Sep 2026 06:16:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 84EE86B0099; Fri, 18 Sep 2026 06:15:28 -0400 (EDT)
+	id 9B0B86B009D; Fri, 18 Sep 2026 06:16:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6558E6B0095
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 06:15:28 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 228F7C05CC
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 10:15:26 +0000 (UTC)
-X-FDA: 85226475852.07.F8E6FAE
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 712E96B0099
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 06:16:15 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 13E07160606
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 10:16:15 +0000 (UTC)
+X-FDA: 85226477910.14.93B573F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 7066D80002
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 10:15:24 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CYMe2VxQ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CYMe2VxQ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	by imf29.hostedemail.com (Postfix) with ESMTP id D166012000E
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 10:16:11 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g4cbWMx9;
+	spf=pass (imf29.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789726524;
-	b=ACJ6d5eBTkLodX+f7p6CHp4OK/xV66aBBX7gZdBOY9c2r6Ti9kpC/RQNKR6zCoqi+oRZZx
-	JpPPFDndKodc0obKypf+Ii4DjJPdwrcNTK5Tmt6YKlRAduiRYpvJFNsN52RkeHkysksLVh
-	efn9P2dgSce50T8CoTJ0ZbFNxDGkSV4=
+	t=1789726571;
+	b=d8sxvLqO7vJ6d8FxEJ8p/ldNRBGJmcUGUoEb5Z1Z4zycrs5wi7A5GeEWH4iNaIbcY9K08s
+	7NVOmKTgkVrkcMI19zDjckUzAKCtl7Tg9s5I2cAvhL4AESUIKEemY0TWHi+Fb4T249CCHd
+	bnY76z60VJaDGg4sbmQJWloCbVSGXBE=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g4cbWMx9;
+	spf=pass (imf29.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789726524;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1789726571;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iiUFRlHhVLGHO4P1JeUzTqnMBZGqjCg6ljFaVKDtmKU=;
-	b=HbYpy05U8hh3gCkSK3l2fEddCdlkpaX6ipUJyG0PE4jCABCxaAVP+WsHab+9g3cyXvtcrl
-	L0xuTw/Lr6SWbbpimoEz2tkIjpUhGRaCJU1twa2n0byPZW9Oc7Xg9KRgvaSMz2U9KgOQ5S
-	eTlpANszx6xqF4HqkGLZt0gX8PYefuQ=
+	bh=j/KT8CaYVgENoBnBehwFNNAA7M86YyAVDRxMUHoxzJc=;
+	b=tDLU2PCzplmxQIVUkexidEeSuSiLhHroNgbTMaua32bK9ssxwF2Td7RMITh/aVzEShgIJ+
+	uClCv/6OxJQXIEl7LYn7aT1bETaJqe1gG8pNnRsyZUDVLEuKe1wdxWarWNjt2eAcS/HHpo
+	Pdhed43rkiKYSKOF0gJDzCXX7BoQgFA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C2E2F41B02;
-	Fri, 18 Sep 2026 10:15:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D48821F000FF;
-	Fri, 18 Sep 2026 10:15:18 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1DD2343CCC;
+	Fri, 18 Sep 2026 10:16:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED75F1F00899;
+	Fri, 18 Sep 2026 10:16:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789726522;
-	bh=iiUFRlHhVLGHO4P1JeUzTqnMBZGqjCg6ljFaVKDtmKU=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=CYMe2VxQKqjM48Qh1JiWT2P3UEJVuCac8ysLzJ+dZag32Ft9bAVcpGOMZ4HScYKSA
-	 LrzLpuhoEMI3GtAYTsLW4jh/gRtnUoW+N9rRyYlYOyTXKJIrjz1QkFNSAmTri9KxtQ
-	 YgAizPYMs6Pk+zAZ7x1uzNN3yUFr4LYNxPNrUJBDLylaSStamwvu6mgyHmTx6JLyky
-	 SPUYmfalqSRbW2mY7QLXGTOAMq7KZrFu0mnGpoTqq6Cjx1Umnw5Hk54MIt5dBLGeyO
-	 rCce++XRc1mltvKKrrut+TtgQ5n+bH85UTxblml2GEicEU8TJBSTEJtZaIOC4yTjcM
-	 xr7wJo3WI5ZMg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 04/17] arm64: kexec_file: Fix CMA page leaks in
- segment placement retry loops
-Reply-To: sashiko-reviews@lists.linux.dev
-To: ruanjinjie@huawei.com, graf@amazon.com, gshan@redhat.com, pasha.tatashin@soleen.com, catalin.marinas@arm.com, tglx@kernel.org, pratyush@kernel.org, ruirui.yang@linux.dev, linux-arm-kernel@lists.infradead.org, bgwin@google.com, palmer@rivosinc.com, mpe@ellerman.id.au, hbathini@linux.ibm.com, hpa@zytor.com, sourabhjain@linux.ibm.com, robh@kernel.org, adityag@linux.ibm.com, zhangtianyang@loongson.cn, linux-fsdevel@vger.kernel.org, akpm@linux-foundation.org, guodongtai@kylinos.cn, linux-kernel@vger.kernel.org, linux-mm@kvack.org, me@linux.beauty, x86@kernel.org, ritesh.list@gmail.com, eric.devolder@oracle.com, "Jinjie
- Ruan" <ruanjinjie@huawei.com>, blum@kernel.org, coxu@redhat.com, rafael@kernel.org, jbouron@amazon.com, rppt@kernel.org, tangyouling@kylinos.cn, maqianga@uniontech.com, sshegde@linux.ibm.com, kernel@xen0n.name, dakr@kernel.org, thuth@redhat.com, seanjc@google.com, npiggin@gmail.com, vishal.l.verma@intel.com, chao.gao@intel.com, liukexin@kylinos.cn, piliu@redhat.com, linuxppc-dev@lists.ozlabs.org, takahiro.akashi@linaro.org, kees@kernel.org, baoquan.he@linux.dev, james.morse@arm.com, yeoreum.yun@arm.com, dave.hansen@linux.intel.com, driver-core@lists.linux.dev, ardb@kernel.org, gregkh@linuxfoundation.org, leitao@debian.org, chenhuacai@kernel.org, kas@kernel.org, loongarch@lists.linux.dev, mclapinski@google.com, bp@alien8.de, lizhengyu3@huawei.com, mingo@redhat.com, will@kernel.org, mark.rutland@arm.com, maddy@linux.ibm.com, chleroy@kernel.org
-Cc: kexec@lists.infradead.org
-In-Reply-To: <20260918100442.3841135-5-ruanjinjie@huawei.com>
-References: <20260918100442.3841135-1-ruanjinjie@huawei.com>
- <20260918100442.3841135-5-ruanjinjie@huawei.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 18 Sep 2026 10:15:18 +0000
-Message-Id: <20260918101518.D48821F000FF@smtp.kernel.org>
+	s=k20260515; t=1789726571;
+	bh=j/KT8CaYVgENoBnBehwFNNAA7M86YyAVDRxMUHoxzJc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=g4cbWMx9ITaRMwD4Iu1jVvbSRZ65VkM0tg+J8eCoN956MJDTnJ0/1ZQUSH9LcwT/A
+	 +CxUwJ966rSJWrD16IlVMX19HMSOI5geKsZLCb2t8A/aAnOXtbWYe4EH97d2UpYLkK
+	 owJ7KvLvllOvV0U7PT8Sh+gzSGxwufszw3euaBqrwaIl4cNjOVOtYPFO5MNNY5FI25
+	 QAL9avs+4qTBSPHHRgXTT6Js0y2of5Mo4wqiShbN0Ubqz8Liz/yMce9TsdjTOgMMT7
+	 QR7aE0oJBx76N6ddp1iyfOEr7+9+7SdqZV55irtHUGSty0tvBZdXivpeVQqHKI1x4x
+	 C7v0LtJZiDR+g==
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 47B4C1980047;
+	Fri, 18 Sep 2026 06:16:06 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Fri, 18 Sep 2026 06:16:08 -0400
+X-ME-Sender: <xms:ZQ-tagGxIKryv0h2kKRf1N5IxcObfzeZQquU4u8pgjJMF2-FXW57hA>
+    <xme:ZQ-tapPCwPqMptl6cL6ZKg5UEsC11N0svDYmC2DIkkqM0QR8YhTqOug8tEpdxkkLu
+    KhJ4alpO-2c6Q6_ZryBuCQBVcOZro0vqjmxnNLh6iZ6GXIPJVbE-wxD>
+X-ME-Received: <xmr:ZQ-tanfxPiOfkESC8Zkp3KfuW4d0rANv9mKp0dzReQjvygyXQMyFc9oweek>
+X-ME-Proxy-Cause: dmFkZTEOZ5mh9pB2mQkbLNd/JVewrfyReYbYsYpHX+sU1E7TAzA2X02sav7XGPmJwjEopb
+    gSm3mcRSvQfrNRQx+gl1o3R5mVBCbrzb+9xfcqyiKQGuFhyGMbALNgGogqO0dXHunRbFXv
+    hBE65m88QBe1DTtGHOoTdVCIfiy7LwWjgqUF1VT+qmajYRigSj9gU7BFtCmwpxBXQFtfqK
+    +tlrMyqw/O/fSMUPgKKYSqT6ge07Wo+3EslpWQuRVDoLAVwNkHI5kjC608Md7H7yxtjaq6
+    IkUSrXO69POCdqg0HYisCpvJlOHIXqjW/gyjGk0JvIwaVgyOJOiq0Eaav1BsIe0j5Cbelr
+    Sd13dADcWzOptfOTmRhSRoxboaDFljwqHs1R5Y8AxuGaz2h8SSIUpsTnw/G0HNY9ngY05t
+    2yFZCeDgWit/VKF9OzuSTH1y7Lb+7MkroNYTFIqhRaVD8N7C/hxhdaqu2cQhc8XyzLhTH7
+    Zn/DyzZZh3wmz62/Tqljx1WmFL5Kxu50uzU8tV2xvQHdtEkGs9IaoMFCkFR/nvox0A4WUh
+    znnqZ/C8yAcPjK7vx3zLis4sazkYBCPUqapifkheiIm0Z8+nVqKK89oh/B3hBtV+cFP9mn
+    MGwGfDnFl31+37BpdLplVB/PHCk/cli1iZzLLkud763iPJpdb2B8a0OzP6dg
+X-ME-Proxy: <xmx:ZQ-tauRwIkLHqj1L467Bw30Hy_TY6Ucyh7C75AthiPARTxQWaqWEgg>
+    <xmx:ZQ-taje-zhreKVT4W86R-AqECG2DKfevDzfEslp9OEMLR3ci5MksFQ>
+    <xmx:ZQ-tamqteojjLfi81zol6s00R9cXq67OWMGgM21BMtLwdu2jl6x8KA>
+    <xmx:ZQ-tasfNETwnaPmzNebKa_4hhBm_p9R7n-pOgKOkf-pBNyS6ykVTxA>
+    <xmx:ZQ-tamkALkLOudePJ9_YHh8dGlhuak0gKwAjGtxByFQDL41RFucFSYLB>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 18 Sep 2026 06:16:05 -0400 (EDT)
+Date: Fri, 18 Sep 2026 11:16:04 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: david@kernel.org, akpm@linux-foundation.org, ziy@nvidia.com, 
+	baolin.wang@linux.alibaba.com, liam@infradead.org, nico.pache@linux.dev, ryan.roberts@arm.com, 
+	dev.jain@arm.com, baohua@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/1] mm/huge_memory: disallow raw PMD mappings of the
+ huge zero page
+Message-ID: <aq0PRa5SM0E8zjCY@thinkstation>
+References: <aqwPHfWhKGty-Q_4@thinkstation>
+ <20260918025214.89109-1-lance.yang@linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260918025214.89109-1-lance.yang@linux.dev>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: D166012000E
+X-Stat-Signature: q6zkcdurxknedf66gjsyqxhr1ybhsgie
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7066D80002
-X-Stat-Signature: k7xy9io8jd9rpyrwwy7w5ay6bkx4d3fi
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789726524-687069
-X-HE-Meta: U2FsdGVkX18FG6YYjZkthbyukYIhBzjNfM/yQ2DLKEruYW7DcZVKi02bU/vb1D48uydEZHzmbJwNNuBnzVOGDdwuCfiNMkESUoVQyAB/gs2hSqfmIZNf/7DdFKFh7S7hgkjIsfj2HSfyWNst+Fb+auMJchssLn5Iu12YeT0TW+ymwoNDDvG2FZZJRUPYMiE/IAu1I8acQ8G/b43+UCwSHkedXD7P8i+ALLn1p6b3coiF9VTvgV0RQtxa8DX7ScAFCiZrWXNS6KZSZmLzOdY9XolOfCylMlJFwC68n22IWmnam3oVfC9a8g+hGj0SV0Hmk78vfcz9ab6qXKBFuVl/uo69GvdNL/MQpbN277eoxoJ2CqD7RPDAOO48oka3EB8U9+Hhk3e6nBMuaEysj8M8zmr0xO7l3Aw63gTS9TT+Jn9MOy21az4thuvX/X7NgsZXxywjeXQMUwkZR+TMHOZ6j+Wz0P9b801OdMYJ0YadaMkFbChP5N8KJ7vltwbJCZoaj7ywWdHOxQldV6BmeB2U8G0irLsouL4LIM3p/+6DJynAVgyJpWNWR1lkoqIpDQQ56tLt99M+XpjOBxELoSU0Vk8oo7AYiq3YVNAXWjqXIJarwQ1k8Z/SErTr7BWrIMZ//xLfeVy2D+JY//dOOlh8vehhmfI+W1v7h/VQ4ns/kK4BJe66LJRB34HNqNI4oJiZeQp4H8K3kfaUPfrSH5UHV/NhaYAwcD7dMTK3PHYFUEqNrOM1KVrZtXSxzBCVwSRLLQX5myVtF40gX2IANcYUxkQnDibb3Lkdu4U34Anceg1KTJOiuFw4nDbdEscKaU8yng99Fq42SXBdl7qUVlf4+x9MbS33tMXueyZ5knDn7LOcg80H+1+UB//0jkEqN2ztLLgtGgB9kKuLfMjS4birRJ37boxkvtkqK/sVY81nn34bJXyCch0aqUVMO/wMhip5enmjTKrwbPx0KQzc4h2
- nIAJ6tGJ
- 8h52LE21aryZcgOj7M4FLleBIhpHxc3RY25K0bwB3u3KTRNaLCmvxMVrvHRUj4N+woW/HFdLJ74OSqP6wm+SWOEYJ8mj8AI57p98/re42XNbcyg6im8yUtCfHkNsiKh8fxljFFjP7D2i0JBW2q+EopX+vS2VXimIYcpuOL4hX8qnWe+UxnKcxXccTexFjL682YbhQd6LnLJhk+zF2SNV6EhI1Q1REfTAus5vUanLHGgS9gsEILpzXMvCbACfJS7l5omYMNKfBBXCLHmYe0GX5HRX7rFRxRFy+/vA2OngCQmds1akHuLIYO107IvWyX39NrmOq1IvFuYHT5taRTBUWuNE4kmUmdKQxwq5EK1BG+4mIC1hExb3EAxq69Ca6aAOrtaypLRPqvDD/R51VWNNhiauN0WkqNn/AeR3sOaQ2K7fIjkNhtJpewelbjHDtlVxjskL8d7IZUiASBcLxXZY8jdP8f5Be4kifn/dNJwOMICUXdJgm4exZd+/xNoHW7bUAs6B/LW5u91oSnREPScyHkI7b2nUI4osp5UDdrAPcxVY83FRuaviDRZNjeX8vcG1JCv+XxmdEbs7SbaO9FtbP46OISNHYBFIQqG5wrwpr1ITvLsb3AcioYEv4q4tVOjfsetSkQs67MsoXgTwepeu+SLxNhYvP+c9UNrBHdVuPv0HwmeP647+PG6JrDNV1ffiJo0BuTshxHXl8/ilNpJwlcFz8LvXt6FSHTkFCacQokYZXG3gyoBsQFrAPPe0BNa5YXKPyw+0ANf+EL2Mqn5e18Dh/Pn7a2lZjQYTGXUaStzCB8YiRWZYgnNugF604WZatb4GA6U63/y27D0aJvQEemadAQwuS2WsEs5GIRQwdfZ1VaqFL7YXaj9RasUVWgSzmaKWhEITUbPz4MIj4JZ53I8JQ6Q==
+X-HE-Tag: 1789726571-661456
+X-HE-Meta: U2FsdGVkX183JOAXtGNVGdjF9QEOKTnXTHs6NQ24EX2OY5uuWlSx5cTGVr+7Myc+Es6cONx+Gqz4vD87IbBckMmv9qntDuxYcl+C1qAE5zzMdQEf0kEb+aw+6ET6ECzF9cYwclgx9IBgz1ovJFovvExGIGztWSZL+GZ6v8Mzv3/Iok9yyTD2ut7F6hPV4kY0slUmt5ZK661V0UWaY+x1jKECpH7feLoZ10ESR8eLLahANy72V3lyZCI7hpb9rhFKIU7JX9fOneoRNqjh5dh/d0J+cm3eyesa9CwDytyJhJTciy8rq7rvNlLyLiweQqRphsfUpAGbz78DMhwg9+Z8c3n1y1Wa+DKs0u//EzWJNIUUNnN5gWCtdIC94KFCxxLjQXbV+bDTOy1umpjdyqIfNC+sVK96rFn6so5x28h9VpgtimNZFdWpMmXuuPMBgGIzyoPy+HE290VKWecU2KTgIkQFyoG7Ag49GbXbTJ0nvpruqG+pSlKwuTljBhUjE4okMJCo2xhWB4+Ll4auobvLqqoXWOm8AG0am2u6FY2XU1bg3QRJad7W+U821o7WIrcuPK0KWaqZoNtKeA83jCzSTpne3wtQRtgWYrezAWJ0SITM6X+vmmA1GmnIEbVFL6ntz6HBi2Fen/GDTLtp7Xe4MjohJr+PnkrDqu3606+Rix2Vaq3EefxMTCGo99BSZtr5Pt5063YFanCWzCeSb+uLR9yWrnylZgxeo8QP7Odz0X9VNACET6lUaGBVy1hEQ5Hu0185Rcb5TGgT/YuLiPWcAhc82ppjIeHRI9WgjwaFElieIPDHQg3lAoWFPGKzaTc9XGVrajbSrrReqZ+rvtRUAohRmbc2dqBOSptVMEbesS4OwmLxDNj+vpqQ9kMP+qhRyeL8IzjRtTWH1LPb7vPjCQZdUIXLG41v4Cdy+aSpVYp+kJieQk8Ies8yCXZoHNoDspv+j3sUgIOEONc8mhx
+ +DmpIlgc
+ Ap+0LK9E/hjHOfXACpH8qqpSeGKN2kfu1uN9U14BDFRKPfE+R2loYIfaUNBVZep/2c6tS+/+ZNDwM1OEv7srl4o7uTGq22Agk6fTr+g+cRV71vn6+wnncSHrAyj5SRotQOU0bQnMhRHXUSgxRAIg9MpIiGohWX4N0717TnWyVgJfqrykzGW2H2T/Zy3aFKhviMjWLlIJInCw/h4Dfp2g3k8B737QaNCMU7nm4WeklemadL19h1z9CnRdOi/rL7Lw2A0JfTP2phZNvF/yc9cWQtMDb2HFX2GK4D7WLZt4pi+YfmIleBOCr6glQioBlc8JUaA88Se+OSwYeVb2aF1EUtS6I9t3TldclSbXV/9TJtMAN0IwSfXZg2v1mBp/sjTgGPk7u
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,34 +121,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> During kexec image placement retry loops, any midway failure causes
-> the loader to truncate `image->nr_segments` back to its initial state
-> to purge the failed segments.
->=20
-> However, this truncation introduces a memory leak. The CMA pages
-> allocated via kexec_add_buffer() during the failed attempt are tracked
-> in the `image->segment_cma` array. Because the subsequent cleanup paths
-> only iterate up to the truncated `nr_segments` boundary, these allocated
-> CMA pages outside the new boundary are permanently leaked.
->=20
-> Fix this by explicitly releasing the associated CMA buffers in
-> the failure paths before `image->nr_segments` is reduced.
->=20
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Breno Leitao <leitao@debian.org>
-> Cc: Pratyush Yadav <pratyush@kernel.org>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Yeoreum Yun <yeoreum.yun@arm.com>
-> Cc: Baoquan He <bhe@redhat.com>
-> Cc: stable@vger.kernel.org
-> Fixes: 07d24902977e4 ("kexec: enable CMA based contiguous allocation")
-> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+On Fri, Sep 18, 2026 at 10:52:14AM +0800, Lance Yang wrote:
+> 
+> On Thu, Sep 17, 2026 at 05:03:09PM +0100, Kiryl Shutsemau wrote:
+> >On Thu, Sep 17, 2026 at 05:29:48PM +0200, David Hildenbrand (Arm) wrote:
+> >> On 9/17/26 16:32, Kiryl Shutsemau wrote:
+> >> > On Thu, Sep 17, 2026 at 08:10:10PM +0800, Lance Yang wrote:
+> >> >> vm_mixed_zeropage_allowed() validates zeropage insertion into
+> >> >> VM_MIXEDMAP VMAs. No in-tree user needs to insert the huge zero page
+> >> >> through vmf_insert_pfn_pmd().
+> >> >>
+> >> >> Return VM_FAULT_SIGBUS if vmf_insert_pfn_pmd() is asked to map it.
+> >> >>
+> >> >> Link: https://lore.kernel.org/linux-mm/f76beaf8-351a-4b22-b362-a945a5e1af6a@kernel.org/
+> >> >> Suggested-by: Kiryl Shutsemau <kas@kernel.org>
+> >> >> Suggested-by: David Hildenbrand <david@kernel.org>
+> >> >> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+> >> > 
+> >> > The patch looks fine, but don't we want to cover the same for non-huge
+> >> > zero page in vmf_insert_pfn_prot()?
+> >> 
+> >> Why would the zeropage be a problem in PFNMAP mapping?
+> >
+> >Nothing enforces that it is read-only.
+> 
+> No in-tree user inserts the zeropage through vmf_insert_pfn_prot(), so
+> rejecting it there should be fine.
+> 
+> Something like:
+> 
+> ---8<---
+> The huge zeropage is reclaimable, but a raw PFN mapping does not pin it.
+> A PMD mapping of huge_zero_pfn can therefore outlive the folio.
+> 
+> No in-tree user needs either mapping, so reject both with VM_FAULT_SIGBUS
+> rather than risk making either shared zero page writable.
+> 
+> Link: https://lore.kernel.org/linux-mm/f76beaf8-351a-4b22-b362-a945a5e1af6a@kernel.org/
+> Suggested-by: Kiryl Shutsemau <kas@kernel.org>
+> Suggested-by: David Hildenbrand <david@kernel.org>
+> Signed-off-by: Lance Yang <lance.yang@linux.dev>
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260918100442.3841=
-135-1-ruanjinjie@huawei.com?part=3D4
-
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
