@@ -4,81 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B97BC982DC
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 12:04:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B033C982DA
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 12:05:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 71D6E6B0095; Fri, 18 Sep 2026 08:04:35 -0400 (EDT)
+	id 460726B0096; Fri, 18 Sep 2026 08:05:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F5636B0096; Fri, 18 Sep 2026 08:04:35 -0400 (EDT)
+	id 410BF6B0098; Fri, 18 Sep 2026 08:05:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E39D6B0098; Fri, 18 Sep 2026 08:04:35 -0400 (EDT)
+	id 326AD6B0099; Fri, 18 Sep 2026 08:05:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 36AF66B0095
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 08:04:35 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C535A14064D
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 12:04:34 +0000 (UTC)
-X-FDA: 85226750868.01.5407E64
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 0050CC0017
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 12:04:32 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HTbPGGwe;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789733073;
-	b=3WyfYYrGKlVM6WnbxJNoBF27odCX8kzkJylYkp2v1jR7XelwWlToQZrjWVHsP2xFWQuNfb
-	MHpXP1sOfUVKlYv6HnFSer2nIGCKvSNsCAHCR5lbcYoGMOcNQQRnvcr/Usvlctv7rxFBb7
-	+RUZS8Vn4Y9pdD+uxpzDuQEzYOrHNIs=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HTbPGGwe;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0E05F6B0096
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 08:05:20 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 987EB40693
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 12:05:19 +0000 (UTC)
+X-FDA: 85226752758.17.44FC468
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id C87AE14000F
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 12:05:17 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=feuOnPyn;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789733073;
+	s=arc-20220608; t=1789733117;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FBog0tEIxtunDlmJCDqYkdnZ6FAZrrX2ZayQiJl9Uzg=;
-	b=IYMAdRBpYI4Fnxz1BTiCB0QgzkXgmWyPWPBAyqEze3TlbtbYlbKJ/DUz4Ww/4eL9zL5IdA
-	lfBK7yE1j9OX+rHE9Xr7hpmXxTYdZSX8YAuGFu7WdXZGEx3RrvPhbfEtmIMv5brap5BIxQ
-	a74ccHEHRpp1Mhe2EzMajcXH/MPcr2g=
+	bh=cSiQ3QMreWpLjgxso1PqR96WBdVagKdVsODyghsTQXE=;
+	b=46U1W56b1Zurhr2upk9iWXAeRdKvxrMs9iROCYd+LPE7PtTIrk8IY+FbuaDMb+Vik3V9cv
+	SyE5yeYuko2RYBk+cTpackzFPtdEkWjIUv04IspEfmIRjw0tXidB0s04hyBKDVjf13Rcqp
+	Li0CrRr/wR4wl6BAUbpXrxgcBPycPeY=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=feuOnPyn;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789733117;
+	b=CcfFrI3yD8Avbb0iEq8VhH39Ar6HJa+d2FWmO405IAilJxBgUHpcMLG5EAUcEHrEih4m0y
+	P5cLKgGYQacojjzO8crXf7ELGYXWAx2Yr2DCqKBrXahxk2qmmK2E8UPtm3CAtbSS7LLYeq
+	qExhfvlFQpfWvDEzUjyvmzr857D+hwg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 38E7360A8F;
-	Fri, 18 Sep 2026 12:04:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 077FC1F00893;
-	Fri, 18 Sep 2026 12:04:25 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2736740A07;
+	Fri, 18 Sep 2026 12:05:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 092AD1F000FF;
+	Fri, 18 Sep 2026 12:05:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789733071;
-	bh=FBog0tEIxtunDlmJCDqYkdnZ6FAZrrX2ZayQiJl9Uzg=;
+	s=k20260515; t=1789733117;
+	bh=cSiQ3QMreWpLjgxso1PqR96WBdVagKdVsODyghsTQXE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=HTbPGGwelMhMsEqlgkhCIeYpAKWYO1pWQSabgJE6oYkB6oCr6m55UmbuXQiqXOvpY
-	 FqjSJ4BY060C/DJEoM1KyyDLyRhcaj08m6pCJDVF6HcYnAvMsgCgcQRtceqsJj+8hx
-	 ABzj4ttpLlFP6zD6t1zperT6GtrKJD31K0VZ6chJIX9pxNnZW/IBksh18FxQIFVlkB
-	 Rn0rAX3CbZQS+ymsFg9IX3ynUPFJVqM+wGooQRbCzGs71nRNBE6H1VELBoQFgy4tfK
-	 g4iPIZMVSP8PenNrOa4rGc311wG1z1suhG4MEcVqTwKzu7eoAM41InyyJMcI8x2shP
-	 /qCuVR3QyOYbA==
-Message-ID: <44d70b77-8ef0-4eb1-9f6a-11c244086761@kernel.org>
-Date: Fri, 18 Sep 2026 14:04:15 +0200
+	b=feuOnPynGATQzBm+y5Y0N8iVZf3OcStsF8Lj1jKsGJsLKUfiFJa6BoCVk/JaYVQyk
+	 OxfyjPWu+TfwGnIs4ArII6v83x/jIgYGSa9659+haoeGP6g1uDAwjoIG055ijR47jv
+	 AxEik0AMjOpisiDDEZf3jK9UlykYZnSbRqhqvS6UIob1bQ/BnBH56dNFsNYvM9v5Qz
+	 u85GnqQwFf7PetGzpkpWyy6BMKwFisHo9GUzMbxkcjxPfdyGWktdFd0L1zTJI9c20n
+	 20knn2MbkptmWjYIVD1/fUc0fgmoKzUkxyS6xrsWAYpUPJ2psc6ULCUqpGyj0sVi3g
+	 BCRycWP02kM5g==
+Message-ID: <9d3355f2-2d3d-4767-9972-ea57ac50ff79@kernel.org>
+Date: Fri, 18 Sep 2026 14:05:02 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH bpf-next v7 1/5] mm: Add copy_remote_mm_str()
-To: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>,
- andrii.nakryiko@gmail.com, ljs@kernel.org
-Cc: akpm@linux-foundation.org, andrii@kernel.org, ast@kernel.org,
- bpf@vger.kernel.org, brauner@kernel.org, daniel@iogearbox.net,
- eddyz87@gmail.com, kpsingh@kernel.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, matt@bobrowski.net,
- memxor@gmail.com, song@kernel.org, sun.jian.kdev@gmail.com,
- utilityemal77@gmail.com, viro@zeniv.linux.org.uk
-References: <CAEf4BzaH=PJh7QUhh7szGL+gCieYLOSbhriFWaZG92xFWDeGig@mail.gmail.com>
- <20260918091359.297923-1-tasos.papagiannnis@gmail.com>
+Subject: Re: [PATCH v3 1/3] mm/vma: const-ify vma_assert_stabilised() and
+ associated functions
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Michal Hocko <mhocko@suse.com>, Xu Xin <xu.xin16@zte.com.cn>,
+ Chengming Zhou <chengming.zhou@linux.dev>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>,
+ Harry Yoo <harry@kernel.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
+ Youngjun Park <youngjun.park@lge.com>, Peter Xu <peterx@redhat.com>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260917-vma-is-faulted-v3-0-5c22314a72e7@kernel.org>
+ <20260917-vma-is-faulted-v3-1-5c22314a72e7@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +142,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260918091359.297923-1-tasos.papagiannnis@gmail.com>
+In-Reply-To: <20260917-vma-is-faulted-v3-1-5c22314a72e7@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 0050CC0017
-X-Stat-Signature: zp3fwhay51kzgitemda9dkqcq8awxqhr
 X-Rspam-User: 
-X-HE-Tag: 1789733072-181151
-X-HE-Meta: U2FsdGVkX19bT9bn7pFymo4guYFBZGYCRHgdxTIhkPePysgsqslNdWwwxLXXvRR307UYrVwLdncxpx2BWKAmjO5wjziaQCSthm2eQqJleXKh40eOiG5Eu7Nvh0PT4bQTththmJYfuL6qIe1JfTCVLyyrrdv3YMcSRc6qLR2YM9gP+Gf/FpyiW8GZWKqAdr+HrXILhllO2plBU6o6xO/QMvh+T/ceBtvphT/uxRoRqoY9X7NurXnd0ulCKlVMvPNYBLMrjjiVQ9TvYMi0hbTdZ75jkgGWKuoLKjAUm8tjITvFm076CCPssA08CI/8FZvkRBY236/VqRus0eOr/OXE7qXKBkxxAxMej4yD6NO3Jzyob/As5UxauqyJZ9xgRXfwJqXVUsd6vGdgX+2eksL/4AfhgFwn8u3Um5BRvwMue7H5vpqpwV+AFsQ4wjhrvqdn2K43Os0GEv7stE4+GUZfRukHp7xBYBhGGlbw4Lt4TzW80EjRBpF3bvZQ2vuldCrB1/B4VB6d8GpOrZoCHUjK6Xz3oRlRoD0ihnjNkXeg7IbQk1EYg3VHRR1TVDEIVWFugV8B0ichpt0ntZZ6cve5i1MGhgUFpWwQKK977vDRuJYW+vAlkJlGK1dPopPCQtGAXN6mlK/RKFsybWInH/KxRsUZUDrJKwHa7+967Al7gJt+dm48z+sucGHXvekqMERYEFb7HzAWOxp3ctK1C7o7ZWbLo8h56er58MoRI6+L3oE4Iog0B96MX//yqANbxrU0I8J+a7LS0ADaCREVj4LBmhZg4J+K5EheOVn/W4oQ2ZVCPLUA3stGAsg5vf8zl9Hdd49LfCZP52FFGwF4X6loGcLFZeEar8WniQx7ZZ2rwfROnoQ7v9cu+G11Wct76CMktlsASZlPgaa4Sh80hXjCceHNkNKNjILYo/JXVEOUbKbVOq19PMUNGr+OA5VohMCxnYq76faenlEieqsKw69
- akGGkW2B
- G40qHPCWr5CT6mXLIqFOoUAxPIE388w+jZF6H5ymcJWrAsZXkGyuWXoSpIiEXK9CSQV6d8LClVgemOq/DZdzZui7mgdwejP44HX0Si2PLm2qXOjSJRQz1KQZKJ5VLy/EHqGFFgOOv4Z2NEJCTlwP3NaUqOQGudgFc+3c9N69YDPLGUwRCmxR9+0pYeg0iciigSjekT5TNykxATi2jtoD/zbFcLPAI64NZ4sBioBJ2YRrPf8USYpZrRrMsdU43netwcFNJQM5vUyGzC8ZAiZQHLoTbekojolV3Kn0lZa2HyQynMX3a1luRYs7rZ9e7HWinVOMY+G9bT8HGTrMIg0o5VgknbkO8Pt5ywDDI74YDVAU6Y1DdSd5zYfC3j/q3opo6iHOP
+X-Stat-Signature: smakh9rzr7orwf7gigr9onm811g9cbuo
+X-Rspamd-Queue-Id: C87AE14000F
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789733117-377830
+X-HE-Meta: U2FsdGVkX1/Rhqk+H74dbvtFOIWb24hioqQIZl/DMxjdO2mCdmCsxnMWyTWH7O/i3CWSXy+qFsX4yRoE/O93xjCdAHFxWvxGXreRIVP0yZWbQSo/MgkPtaDiCSj2TSrro48zcLRmwPpB0KCtn0sJ2uMRNSUkI4p8n2pTDuHWT+B8jBxV3wgK7on6fB9Mz7n5c+I8f1Y1MK+ga6x1DIeZSeAm1kw6ys/xbTYUKhNawf1J+CVLb+ppMaZRAYHW1bAY1sBao1brQm5UqDQ6qnQyc6ZhifBEabDLNWgkA/0IPMFEqic68cmZ+KM87g3VhZ0rnTebLFm6590HGq23GK+uzpwSnEPGs5F1UTkzmqD51Yx+iRGcvprfmEv2iFjHf+I5bwue2gi/UBWYqQpYqaKo+abifRZab7kzsyPYRzoc9wHVG0aoLftIFK4V4NIH1foswPKwiZC4dRJftqNU4OhUMI0eOrH/69Fk7AW3rR0gDh2dBqaKc4P5PrEFxEqD3ZQTCsUt6fLc7Y7zp5qXNw1iCSfkHNVefLvpwZVXBF7jZO7BoUtoeorZR2d+NluyboTQppNcSrD5dfMVwiiPShZkKKBqgTVkqjGv9Hdz+pLQFf2f+GNxB+VWLyJGVSxcUpEerw85YhpU2k2qJI4OWNAWk4/rEAIAPx/0X6aQWANjmvhDfKbFb3Z/Ik4PADeEGFlMA8jTEhwrKgSu9Zq604uWDjjhD7k324JsTx/WXzgZTg0yyV3q13kRa1G+GOEueceNOa7FP+PUNCtSSGU7Xl4l3HwRGdbu35liAsz6555CtzHUCYvUcprkcV0A9iqIwImLmjyGhH4YbemGHuQra0Ox8qOGNfkeG8aFPZBu+249NVn/HdveZ+H4EG0tf15xAcSZm0IA71HISJdaOkyIzr0LXdLuXIkQSMoYnvmauQP/2Z4Z8Fn2T2p9HS1EyuZ417Pqz5BKPnJKNxY8BFf0UJZ
+ RENNfS4b
+ SXnj8rySWPcRqDeqFUNdwTApNQm0Gwt01o5D7MuWpV4hN0Cfxx/Z0zoxEA2X6wg3j7TJLbvpcgw+LA2b9MmLwzuYYz6fjnzgZdCQtehdMWLj25K613Ic0O4Wef5wuBbquiFbcPdDLrcgdEzFvC+MCBzD6dSFuK3IjxLbMiH8p9Zqg2uroiiQ4OpHRVuoR2nYXK95HTkYY0R9ThrPKtOVUxjCmihnTnO4DIKSic2K/z60WrrlQEdnU0vmpPuRhsgMphnTko5HlWDpA5uHjbbeeCLtKCJYAKc7me0ZDWvMaWlQGm+Xz7lEBvVU91LzSC0frsBi35kFCsIXPhu5O+UI1UtTd8uD9hs/w3w5XK3WgGVZ088Mu15FK+BFmTtFlcVmQ8w0cmsc6WskKi1YHbHm93qkW0Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,17 +160,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/18/26 11:13, Anastasios Papagiannis wrote:
->> AI has a point, declarations in mm.h are not guarded by #ifdef
->> CONFIG_BPF_SYSCALL, no? These look generic, I'd remove BPF_SYSCALL
->> guard
+On 9/17/26 21:47, Lorenzo Stoakes (ARM) wrote:
+> The vma pointers are not modified in any of these functions so make it
+> official by const-ify them.
 > 
-> Yes, this sounds reasonable. I have removed the #ifdefs in v8 [1].
+> Propagate this throughout the call stack.
 > 
-> CC David, who proposed removing the #ifdefs from the header file in [2],
-> and Lorenzo, who has already acked the patch.
+> No functional change intended.
+> 
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> ---
 
-No string opinion, fine with me.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
