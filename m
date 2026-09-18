@@ -4,96 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98F93C982D2
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 07:55:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E86EDC88E75
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 07:55:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7218A6B008C; Fri, 18 Sep 2026 03:55:00 -0400 (EDT)
+	id 83F0D6B008A; Fri, 18 Sep 2026 03:55:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D1E06B008A; Fri, 18 Sep 2026 03:55:00 -0400 (EDT)
+	id 80A356B0095; Fri, 18 Sep 2026 03:55:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59A4E6B0093; Fri, 18 Sep 2026 03:55:00 -0400 (EDT)
+	id 684236B0092; Fri, 18 Sep 2026 03:55:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 356346B008A
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 450026B008C
 	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 03:55:00 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A63321205DB
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 07:54:59 +0000 (UTC)
-X-FDA: 85226121918.14.1AA6B7C
-Received: from mta0.migadu.com (out-74.mta0.migadu.com [91.218.175.74])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 95DC640004
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 07:54:57 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=cQTyQpN7;
-	spf=pass (imf12.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.74 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789718097;
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1518FC02D2
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 07:48:29 +0000 (UTC)
+X-FDA: 85226105538.26.1882325
+Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 1704014000A
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 07:48:26 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=gj6JBLCj;
+	spf=pass (imf26.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789717707;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hvrGzctpGGzu8oxKQw3tKpiz4XHwPltvrD9jJxe8Oa4=;
-	b=zlngT9uXIiyA+zL3I582oUB9rEsHf4A+2nVStZOvxWGJyo2WQLh9E55cahvkl5VFWTXnkO
-	56fLUZadEXIEbn8AhW6GUDpZAJEMdZNh2fznRBTjIOVBAFXJc9EfcutQNM6hMROKbC+tyI
-	k8TpsH5G21HncsslsN46jbDbVze/yYM=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=cQTyQpN7;
-	spf=pass (imf12.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.74 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789718097;
-	b=VN6xbVIqxbugy6zxsqFGtyTXUyTlbAfsgrXZQtfBKRBp8IZY1ba9R48F86v+CuW8Dqo4ko
-	x6xVRGpllufhFDVivJwXiFKixb0azrxseHWwzpm0wCJjwv5bIMj+ufGvisy8grG5PgAv3k
-	cNolNbwuU4ATs8HFnz0nu+3fPrgJcYo=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=w1C6Uq5LGLS5v5+hUhhr7wym9SsyY1oKg1mT464GIeo=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789718096; v=1; x=1790322896;
- b=cQTyQpN72GWh0vFSP2OSSt6OoeLakd/ZFjqWUqc1nDBXGR9zWWRQY06J5rh0UbilUNacd91L
- F3G0c+rlbShg36Rvo036m6CEVa69aFhh/lsy8ZZlyrfMz+5viDApJz7MxT8J9PiA6S061DCLYQJ
- YoLnqz8tCr2yoVDATrSIr4e0=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id ea360a8e458d95f5;
-	Fri, 18 Sep 2026 07:54:56 +0000
-X-Mizu-Trace-ID: ea360a8e458d95f5
-X-Migadu-Flow: FLOW_OUT
-Date: Fri, 18 Sep 2026 15:54:48 +0800
-From: Baoquan He <baoquan.he@linux.dev>
-To: Wandun Chen <chenwandun1@gmail.com>
-Cc: catalin.marinas@arm.com, will@kernel.org, chenhuacai@kernel.org,
-	pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu,
-	tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
-	dave.hansen@linux.intel.com, x86@kernel.org, robh@kernel.org,
-	saravanak@kernel.org, akpm@linux-foundation.org, rppt@kernel.org,
-	pasha.tatashin@soleen.com, pratyush@kernel.org,
-	m.szyprowski@samsung.com, mark.rutland@arm.com, kernel@xen0n.name,
-	alex@ghiti.fr, hpa@zytor.com, ruirui.yang@linux.dev,
-	robin.murphy@arm.com, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
-	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org,
-	kexec@lists.infradead.org, linux-mm@kvack.org,
-	iommu@lists.linux.dev
-Subject: Re: [PATCH v6 04/10] crash_core: serialize crash header preparation
- against hotplug
-Message-ID: <aqzuSJKR03zEOCan@fedora>
-References: <20260902073116.802752-1-chenwandun1@gmail.com>
- <20260902073116.802752-5-chenwandun1@gmail.com>
+	bh=MXqdDZMk2n2ZA2FZuhNJE90D+Z4Rs/KppQMaR2DzMcs=;
+	b=1X4s+wz/5O2Bn1xnaqvXROuYpi6g/jo7rIYrvXtKEUx20OauBWFzHfnJxFHjhu22dN1bVe
+	DJsHCPzwwWekROK1D3H2buye7wSRiwXyD1GjxTHPaQRk/w3o4q9+kJzplsefnG3cbWF+M5
+	L8ZVA1KJnimRJR4v/Q1c5RBeEZ5V1a0=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1789717707;
+	b=3dNtEdYi59PJ5zGgb7dLOhNZOIyBzmZ/GJHJfibWjvktj7C+viXJt80N/damOfEUoy+xy0
+	cAp02LCN6pZMx3H3LJ32dqRSkgaqIPMGRJ4/u2P28sP8GPRHkxdAogX74WyQVYVVYVWGZt
+	CnMa9VoWssfZlWXIYE+hRCVPUefNJ5o=
+ARC-Authentication-Results: i=2;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=gj6JBLCj;
+	spf=pass (imf26.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-486e1a044c5so239281f8f.3
+        for <linux-mm@kvack.org>; Fri, 18 Sep 2026 00:48:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789717705; cv=none;
+        d=google.com; s=arc-20260327;
+        b=DgNP/74Y1ur9BTKPxbeKLll3pNv5Bo3hXlu7jFk6bbDLnMZ0Wsnyi6ef8gAZz/sgzL
+         vbvT7qKN2LGX2jqVBJ3O+GdCjDP4X4fTt1E18845YZ7c75NSXsaltEsQj1C5tqZkJdX7
+         4bpzKBvBHV/BlVF+Ca49Y3/2NGBSy1wk3P2xhcl5S+gM93wOy6t6F4+pVqgoej6gSnQ/
+         lA+Vcd8rbdVJOYvr8wCzgmCapUVkAAgqpgKscEkMMSpwTVikWzbIeVCuyyU+bbJBMt5C
+         SgMuaYHtH6oKZu2Ci4HG3rK3T1ztZ9hrczxsDZLy8cUBgmhPhDp0iB13T27hxJOx67FF
+         uikg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=MXqdDZMk2n2ZA2FZuhNJE90D+Z4Rs/KppQMaR2DzMcs=;
+        fh=wXoBtfibThRa1ZoQ2vIH7l8UCeIQVbzaEoBZ6rzJx1I=;
+        b=ZmajeE1XUfX60fYLro7gEI0xEvmhVNAa8hY0q3QEWLqlKolzghGQs9yR38//8GDAaS
+         eOjqfcH0NLjCbBjBEvkH3Qj+XFFvySbLpgNQlMMeP/r9s91etV6CA4CXeCFf/dWpYFYu
+         fXPkooWDia8OKQzOV0n3UM6pGgGoGyoH8fVvKdMhJ/w3IJwMP7JJHbAhthQ/E3Fehi/f
+         xTpRixYffMWbG3KwtxzS1q1O0kH8jmqM9LuCtqiWTS8vxFFZgqEfbDIIB2YWmjG3ounn
+         MiIaMFKeeJinZud/rihCj5dAd5XFCvNihJ5kS9J3TgUR9dO7+C46D5pTEgQAfj8S1isY
+         he/g==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789717705; x=1790322505; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=MXqdDZMk2n2ZA2FZuhNJE90D+Z4Rs/KppQMaR2DzMcs=;
+        b=gj6JBLCjLIr/WROf9mueLltZRp7qg5MLcPUwDK+fvqFfSwIiLFZJe1tPS75O6RF2Nb
+         AqiWKW8G1xRB6ce9ev2NT+zZjyY+5jbtOowOVQEmWurI/5m4CBIaiXuT4TRlOgwRS4qZ
+         Fs+/XbM0YDrczfLQEkYflhEWlRfuZnNx/ULVExMG0NYS0OOUHKZUSvm00OaamNY4FUNm
+         aGdqnyElfW4SpUGEoezjNfhIAUdRLw+RzaTt/9hqG27WNhSj+Lqdkj+Na3O+xbPWVR7+
+         sgkLhT8GDte4avVEguifdi5Z0LcnQJEJD/Yd+ic5ZbgGNeH1t3qS4yU9509U9cMfNbj1
+         YxFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789717705; x=1790322505;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=MXqdDZMk2n2ZA2FZuhNJE90D+Z4Rs/KppQMaR2DzMcs=;
+        b=gg1C3uN4xT6HYmao2Wqa1ngKadKRXQDuTOo6M/viSuXoBU2WU/hQPJ3QUhNPm3zaDO
+         dBLDHIVGAxeH0U8JrTAj3aI3fr2xKjeNaM2SjJ+FRatalShywsQ7ja4OAffbIrAZwAzw
+         GCwtwnW1vVeomIxEy5CgepG2kPmuhNcATlVECcsX8vUVW0MQNAAOaW+pwLGGHE5A0PZD
+         RK/FN813b++ukXWeJp1Tdrt52GStGswcN/ptAPwnImgqoqvw8tpYy5QBW+4Obouyet7n
+         8+H0RBdSF03vQoRuADvO/E1cFX2a1QinxCkcSb1nuiVtKcaecC8MZIwlk4TTxsnM66aB
+         6FHg==
+X-Forwarded-Encrypted: i=1; AKwUvByyj+dnYVvs2B5gJUlznMP9JAHzzEnQNdP5U/QTOQur+aaAlnn7q7tGBEnMh01QXVYuXcCnQCt9fQ==@kvack.org
+X-Gm-Message-State: AFuF++lR8vSgyFWnzlres6yCWUwW0h+FyudFwasGJsoTD6R/waPNYiI0
+	bupK6MvumJIm5dEDYoIrgSd6iFyPY9qNcGC5xe9gBzhBs4OSjgq/cOzwptRwggMuDxTdKPwKevd
+	xTLVP4Ew81md1jdpW03nAmz9LbVWoR1g=
+X-Gm-Gg: AYBFou1oqsYqqlRR8VvGU809/tgXQbNHAXhXV+eWcS5gJl/TnxAYitDWoeX5FTMKSkt
+	nooqRitDn6jMeVdlXvnNdRgmawmpkGnmjQJfgC0pZ9w4AFT3omHuSLF5TlL2MWD89sStRPMorRJ
+	HFn+IwyY/4tGe82IDadIcQQq28qSATS82iqHPXOOa098zKVOCC5bzcAWRBIq/zdG9Hi/9nCvKh/
+	j21SeSLgl1cygV6JGKgczqLokOOUTkALU6Oo5+c0UzsKXyiCEnEobhyoaUYeP48fZn8+QARk/AU
+	QD9HlsIsG8HKDgXyplSPaGQtirpv7kg6Mwlmu/NmVLo0/vbUk4HQCcxlJvuSTH0NX8s=
+X-Received: by 2002:a05:6000:4b13:b0:487:1687:197d with SMTP id
+ ffacd0b85a97d-4871e212458mr1713724f8f.6.1789717705281; Fri, 18 Sep 2026
+ 00:48:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260902073116.802752-5-chenwandun1@gmail.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 95DC640004
-X-Stat-Signature: hyidjwkwbbcftttzj3ey5kytdto56hs1
+References: <20260917052933.188679-1-jiangwenxiaomi@gmail.com>
+ <20260917052933.188679-2-jiangwenxiaomi@gmail.com> <CAGsJ_4xujxpH6OuuUao2=TAjTMKhr77ufW6OoZuk-VB=YPd6fw@mail.gmail.com>
+In-Reply-To: <CAGsJ_4xujxpH6OuuUao2=TAjTMKhr77ufW6OoZuk-VB=YPd6fw@mail.gmail.com>
+From: Wen Jiang <jiangwenxiaomi@gmail.com>
+Date: Fri, 18 Sep 2026 15:48:13 +0800
+X-Gm-Features: AcwNN1U7w_zpIxImLoNROHRiindh6mTvUu1jbd9liF3b4JQySYxKRKgU7ZyE2AY
+Message-ID: <CAHKocdHS-D7Gg_n3razCrp-QT5seT4KWz9r1TSWVVwLFsZmU7Q@mail.gmail.com>
+Subject: Re: [PATCH v8 01/10] arm64/mm: add pte_set_huge() and pte_clear_huge()
+To: Barry Song <baohua@kernel.org>
+Cc: akpm@linux-foundation.org, catalin.marinas@arm.com, linux-mm@kvack.org, 
+	urezki@gmail.com, will@kernel.org, Xueyuan.chen21@gmail.com, 
+	ajd@linux.ibm.com, anshuman.khandual@arm.com, chleroy@kernel.org, 
+	david@kernel.org, dev.jain@arm.com, jiangwen6@xiaomi.com, leo.yan@arm.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, mpe@ellerman.id.au, 
+	npiggin@gmail.com, rppt@kernel.org, ryan.roberts@arm.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 1704014000A
+X-Stat-Signature: qckza5ugn3jd3b4hjagpssgh7ycj57wu
 X-Rspam-User: 
-X-HE-Tag: 1789718097-433341
-X-HE-Meta: U2FsdGVkX1+BQXtXN23l0IPGYpY3i9/BrkI1s8+MQ4Zh8/92KGmg5FmczAXib/gnrNMRuYF1HyZyKu3IgB5QtkXidG2HYiu0G0RZXR35EhabPOyVWajWlJhkeX/3cjBsVQl6TX6zv6ktS9/YNL+Ssm0c9G4576cKDJtJCW0GQnzrwTP030/b3mjBTakQ8s9ycvurr/dn3jNnSRE8E9wKe0m03drOwFbS9wCgCT+z8k8G162rLQ0FrJaNlx4TsD19oxvhRuNID/sj3grDkYLMpczCR12KOhvw7AfWnPexN2+RAUrJVmMCgmytGpgRSBAY9cU9XciSHlsYBukMl4BwKOovDgUS8lPluk3rJGMeZ9MkSmiaSKHSMuf/ULZvNFpKDFugn59Rae9xCSMWC10FUAOkj+q59nFbX6qW9GXTBlBVfplpOndru5+m+QfjClv2yUTG3xZiBAFOvNVuBGwMTLFQ0n7FxBGodGgof1sNf85GuIoMHPR9+GAS1dQi/WcPD9Rs5y70WyWFmHYtJEBeAm9eK4Nq+044zVvQ7D83HQkAB23budgRkNAUSI1YAme5KFpclHuI0KRnfeQJl6POw9B9gQ0n7nbKIqX/cYXPY/qqRf9lpWK7cJAmDD/xGJChsZ7vSTOLcz4V8/l09tA4vcfiW4JPN63wj02ryei521ATuJjrt1Q/M3tqF0dsGpjr3YX8V6XWGl9qfuLHAwtWCcKQBF//chsAxraQhmSZn1C7J0VmzaNfq/2QgdpjB2W8wSTiAGwZ9JW+u/f7memJUI6BqqcH2sEDEHSYwohmUsKQn33BT+YYvg1NobFAebhUppHLd24LdQNxb+yVbjBWbICbtBjBmko8U5soUQcOAZDOTQx7iuPyLxwQ2KjifdmSF6aTNbZPuU2rGN9weZYgwy50mGRPTisEgFV4RGT7gSkOMUZy7h43fAb5ruCZQkoqD4wj3qdfT6j+yFkVi+o
- BrgxozKk
- A0LU9/4IHLalQTGdoH6bpNcQsf+b7hekmxdHOuwHRHYSGU2OG/dncN0wgokf4fuWDYLAz/ib0G/v90MaW+ZF9qQI0gy5NXHUEk5MqNGtII/uxDHRYrObhb0i/p6ZZX36I9w3Np98Qde28jCz7HtvxiiGTfJrRbrW4nnIX3Nirbl5IYDnXRQsb3mSzCVq2wm14DZX6hzCKtEAb6qkGzk2BmfNiMW67ZLN2PBMYhR7xVYtmL2pRe+ssogWHGDAkdOBUmacOftV64SFyVVsT7hxv41+Vi16QUI8vJugsYktjM+MHlKbPVWvBlGQFwYN9yXCRzwpmSmrRirx1yPtxMAyKiF059xjj6oneJWm3rDe6nE2LIJjTv4bW9KAspS3Ori6qV7mXWzAH70/ReRraD3WnHY9hHJZ0pmLNyo0Wmy+qbrxflZFTjxWqX24JFCv58a/H5oXzr960irSV2aoomz/9BSH2xA==
+X-HE-Tag: 1789717706-478032
+X-HE-Meta: U2FsdGVkX19NK8MTsCLCNtO3tbN+UlMJV1W4LQtuh/BMoEUOlwraaZ/Bk+9Ye0F9Fy3qdBLESzE49jmpWwhkUX4GU3ng/d75sGemQG0jfibPuKMdnmyXMNVuOdi3y78HH718kv86IG74yBnavSO2mmt2HfGSrsRW0PcUHpl612AR5insyo61YojnMETR/Oix9Z5ZMeCrlb0VepoLHgSHAHAG5ikexMfEKhOaq+z8r71tMK4grjm3kzc+o0oa3XhgJhq0t5d9YQF1sfMEp7+xMI9hSDBaWOzaJjbrM9DYRoyb3hNpH2mrCPM9KAm9jlCXehhZjP+sitFp0c4s9Bc/+tZAZF+G1e7rCGT9op6y+u7gCR3B9MGtZXbBmkpKrBDRnk2KrdHgUwAfyIAgGVLPCTWhIzioB4K+i/CNbdg7NZdwsWx7RZ7s4Txis2efvtyh8Qlq/ztACy1ayhJKRtN2EamDiUD9zYOqG//mg+uS6rtzneTWUu+WWGkN2l5xEPT7RFgnVQcER9d0QxgRr7U6NCobYjT/y6+cQLG2oYvM4l/7Uop/JZqa2ixTt6ezXIk55ohnXEEV96xjPCBiKflVCuV3UYZ+b0RG+bbZCQIasKI1zm1Lh9Mb309iaNXUCu9QG6PBDjrArqCrc29il/5Wm9wMTLM+Lih9D99+yS0EJmAn6prIwV4xx0btL5Iv3Ntn6LZoF0ulu/TeJyLh51u2S7yCoe8/yxTCQHBJwb/9qADW/sJ+xLJmZcptcflaH+9d0SKm17Yyqu/nwknD/7BUINTsvdplT6Ut5sXmGLSwwI1GAoj/5wd6FVePdckadR0MiHlyxlRAuDi/9S3AoThGopcSFeM7HRKbsEaDJPSnF9263XPrMbcRjcFa3nLeBLJlGaq6y8eTGxG7EyDdVHui6bbvUNIw7RmP5u+5hfJ1762IA7dRhmk0XoPbYU7mpQLSHIlkKPPN+lkdl8q3e+3
+ layignqH
+ jryIo3l5Uhe/leE9y3gqrp5GrwJLqYIAH+q5KJew8rJQJ5KWqyQp3FEyO0Dsxpisn0avJHWWkEN8c9IvGpgmGWnOtnxXjlsevrckfxB6bpEPkeffWoE33Gak0AQtQEXEsHB4S2q3M7Sj8cW/yHFYVkios0fvzf0K0CYITRoTiYRZy5Qmmo00mZrsO07cFp9oAaP5A1iXOhmFpkPLigPgql8Kfzyobn6JrU2UChxeIVNqP/bWyHC5VRfhBreiHWICwKqnZzcPAk3OU8R/Ohp1wXc+hTItZU5hsJj522y2dEgsH49E58D97Tl4kMT+71RFXQ4e6djw4fOGYrVdRBmHx/Czji8tRuif3Qqs+Bm/gSFMaPo+mKrqtBtscXa0zF2lEPZKMhyEahzs29/z6A66mJlq4QraQHYzhdRqJgSRTDyMupyd+TD43snRMk2x0XmFeff/B4WmrBF+1RsVPqw3cgg/+8cy/QJGhT4inbc5O5ygRIr0iXeAiE/vo5fl9VqNL2dE1PmZF3QhwyX+nCEgoVJHi2dQBOxZfK8hvZXJYgOKlQQuhtNMXbHdlVFIAuLOY3UzE3QvZtThUdUN3Y7iM4VVCHA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,109 +145,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09/02/26 at 03:31pm, Wandun Chen wrote:
-> From: Wandun Chen <chenwandun@lixiang.com>
-> 
-> crash_prepare_headers() counts memory ranges before populating the
-> allocated crash_mem array. The weak implementation used by ARM64,
-> RISC-V and LoongArch walks memblock.memory, while x86 performs the same
-> two-pass operation over system RAM resources. Concurrent memory hotplug
-> can change range source between the two walks and make the populate
-> pass overflow cmem->ranges.
-> 
-> Take device_hotplug_lock when preparing crash headers during
-> kexec_file_load(). The x86 memory hotplug path already takes
-> device_hotplug_lock, so call __crash_prepare_headers() directly
-> to avoid recursive locking.
-> 
-> Sashiko reported this issue in [1].
-> 
-> Fixes: 3751e728cef2 ("arm64: kexec_file: add crash dump support")
-> Fixes: 1bcca8620a91 ("LoongArch: Add crash dump support for kexec_file")
-> Fixes: 8acea455fafa ("RISC-V: Support for kexec_file on panic")
-> Fixes: dd5f726076cc ("kexec: support for kexec on panic using new system call")
-> Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
-> Link: https://sashiko.dev/#/message/20260806101002.1F84E1F000E9@smtp.kernel.org [1]
-> ---
->  arch/x86/kernel/crash.c    |  2 +-
->  include/linux/crash_core.h |  2 ++
->  kernel/crash_core.c        | 17 +++++++++++++++--
->  3 files changed, 18 insertions(+), 3 deletions(-)
+On Fri, 18 Sept 2026 at 07:22, Barry Song <baohua@kernel.org> wrote:
+>
+> On Thu, Sep 17, 2026 at 1:29=E2=80=AFPM Wen Jiang <jiangwenxiaomi@gmail.c=
+om> wrote:
+> >
+> > From: Wen Jiang <jiangwen6@xiaomi.com>
+> >
+> > vmap installs PTE-level block mappings (PTE_CONT on arm64) by reusing
+> > set_huge_pte_at() and huge_ptep_get_and_clear(), which are HugeTLB
+> > helpers gated by CONFIG_HUGETLB_PAGE. This makes the feature silently
+> > unavailable on CONFIG_HUGETLB_PAGE=3Dn kernels and couples mm/vmalloc.c=
+ to
+> > HugeTLB internals it does not otherwise need.
+> >
+> > Add pte_set_huge()/pte_clear_huge() to arm64, joining the existing
+> > pmd_set_huge()/pud_set_huge() family in mm/mmu.c. They build on
+> > __set_ptes() and __get_and_clear_full_ptes() directly, so they do not
+> > depend on CONFIG_HUGETLB_PAGE.
+> >
+> > There is no caller yet: mm/vmalloc.c is converted later in this series,
+> > once the generic fallbacks are in place.
+> >
+> > Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
+>
+> I tried to apply the patch to mm-new, but it doesn't apply.
+>
+> % git am raw
+> Applying: arm64/mm: add pte_set_huge() and pte_clear_huge()
+> error: patch failed: arch/arm64/mm/mmu.c:1872
+> error: arch/arm64/mm/mmu.c: patch does not apply
+> Patch failed at 0001 arm64/mm: add pte_set_huge() and pte_clear_huge()
+> hint: Use 'git am --show-current-patch=3Ddiff' to see the failed patch
+> When you have resolved this problem, run "git am --continue".
+> If you prefer to skip this patch, run "git am --skip" instead.
+> To restore the original branch and stop patching, run "git am --abort".
+>
+> % patch -p1 < raw
+> patching file 'arch/arm64/include/asm/pgtable.h'
+> patching file 'arch/arm64/mm/mmu.c'
+> 1 out of 1 hunks failed--saving rejects to 'arch/arm64/mm/mmu.c.rej'
+>
+>
+> [...]
+>
+> > +void pte_set_huge(pte_t *ptep, unsigned long addr, phys_addr_t phys,
+> > +                 pgprot_t prot, unsigned long size)
+> > +{
+> > +       unsigned long pfn =3D __phys_to_pfn(phys);
+> > +       pte_t new_pte =3D pte_mkcont(pfn_pte(pfn, prot));
+>
+> Maybe we can drop the `new_` prefix.
+>
 
-LGTM,
+Will do.
 
-Acked-by: Baoquan He <baoquan.he@linux.dev>
+> > +       unsigned int nr =3D size >> PAGE_SHIFT;
+> > +
+> > +       VM_WARN_ON(!IS_ALIGNED(pfn, CONT_PTES));
+> > +       VM_WARN_ON(!IS_ALIGNED(size, CONT_PTE_SIZE));
+>
+> Do we also need to check that `addr` is aligned?
+>
 
-> 
-> diff --git a/arch/x86/kernel/crash.c b/arch/x86/kernel/crash.c
-> index e681ec9cf1dc..284d78bc3fd0 100644
-> --- a/arch/x86/kernel/crash.c
-> +++ b/arch/x86/kernel/crash.c
-> @@ -465,7 +465,7 @@ void arch_crash_handle_hotplug_event(struct kimage *image, void *arg)
->  	 * Create the new elfcorehdr reflecting the changes to CPU and/or
->  	 * memory resources.
->  	 */
-> -	if (crash_prepare_headers(IS_ENABLED(CONFIG_X86_64), &elfbuf, &elfsz, NULL)) {
-> +	if (__crash_prepare_headers(IS_ENABLED(CONFIG_X86_64), &elfbuf, &elfsz, NULL)) {
->  		pr_err("unable to create new elfcorehdr");
->  		goto out;
->  	}
-> diff --git a/include/linux/crash_core.h b/include/linux/crash_core.h
-> index bc087124cd78..28e7a81cf263 100644
-> --- a/include/linux/crash_core.h
-> +++ b/include/linux/crash_core.h
-> @@ -61,6 +61,8 @@ extern int crash_prepare_elf64_headers(struct crash_mem *mem, int need_kernel_ma
->  				       void **addr, unsigned long *sz);
->  extern int crash_prepare_headers(int need_kernel_map, void **addr,
->  				 unsigned long *sz, unsigned long *nr_mem_ranges);
-> +int __crash_prepare_headers(int need_kernel_map, void **addr, unsigned long *sz,
-> +			    unsigned long *nr_mem_ranges);
->  extern int crash_exclude_core_ranges(struct crash_mem **cmem);
->  
->  struct kimage;
-> diff --git a/kernel/crash_core.c b/kernel/crash_core.c
-> index 77285ae3ce60..3adee1ae120c 100644
-> --- a/kernel/crash_core.c
-> +++ b/kernel/crash_core.c
-> @@ -16,6 +16,7 @@
->  #include <linux/mm.h>
->  #include <linux/cpuhotplug.h>
->  #include <linux/memblock.h>
-> +#include <linux/device.h>
->  #include <linux/kmemleak.h>
->  #include <linux/crash_core.h>
->  #include <linux/reboot.h>
-> @@ -338,8 +339,8 @@ int crash_exclude_core_ranges(struct crash_mem **cmem)
->  	return 0;
->  }
->  
-> -int crash_prepare_headers(int need_kernel_map, void **addr, unsigned long *sz,
-> -			  unsigned long *nr_mem_ranges)
-> +int __crash_prepare_headers(int need_kernel_map, void **addr, unsigned long *sz,
-> +			    unsigned long *nr_mem_ranges)
->  {
->  	unsigned int max_nr_ranges;
->  	struct crash_mem *cmem;
-> @@ -376,6 +377,18 @@ int crash_prepare_headers(int need_kernel_map, void **addr, unsigned long *sz,
->  	return ret;
->  }
->  
-> +int crash_prepare_headers(int need_kernel_map, void **addr, unsigned long *sz,
-> +			  unsigned long *nr_mem_ranges)
-> +{
-> +	int ret;
-> +
-> +	lock_device_hotplug();
-> +	ret = __crash_prepare_headers(need_kernel_map, addr, sz, nr_mem_ranges);
-> +	unlock_device_hotplug();
-> +
-> +	return ret;
-> +}
-> +
->  /**
->   * crash_exclude_mem_range - exclude a mem range for existing ranges
->   * @mem: mem->range contains an array of ranges sorted in ascending order
-> -- 
-> 2.43.0
-> 
+Yes. arch_vmap_pte_range_map_size() already guarantees all three,
+since we are already checking two of them here, we should complete the
+set. I'll add it in v9.
+
+Thanks,
+Wen
 
