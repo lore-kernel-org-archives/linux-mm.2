@@ -4,91 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4655C982D7
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 09:31:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FB9CC982D7
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 09:35:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DF0C76B009B; Fri, 18 Sep 2026 05:31:48 -0400 (EDT)
+	id 9638B6B008A; Fri, 18 Sep 2026 05:35:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC8556B009D; Fri, 18 Sep 2026 05:31:48 -0400 (EDT)
+	id 913DB6B008C; Fri, 18 Sep 2026 05:35:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D05596B009E; Fri, 18 Sep 2026 05:31:48 -0400 (EDT)
+	id 829D26B0098; Fri, 18 Sep 2026 05:35:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AE58E6B009B
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 05:31:48 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8CACE80629
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 09:31:47 +0000 (UTC)
-X-FDA: 85226365854.18.13FEE77
-Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 7B388180004
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 09:31:44 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=HH8Z5fZU;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf16.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+	by kanga.kvack.org (Postfix) with ESMTP id 61A5F6B008A
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 05:35:09 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5F49480638
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 09:35:08 +0000 (UTC)
+X-FDA: 85226374296.20.4E73255
+Received: from mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+	by imf02.hostedemail.com (Postfix) with ESMTP id B464780003
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 09:35:05 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=t7TZ60mt;
+	spf=pass (imf02.hostedemail.com: domain of dongtai.guo@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789723905;
-	b=QxsH1LqObdRLpPKQeG6s+UyB4mOXuNyv+rpjfUVoxK6BLC+MhfPOKMak6xI0KnpxBbYDjW
-	yGC9dfw68+3cPQuwaVk61zMaAf/nN5RpHVeWOGEHjzbTgjEIC01uYjy/013TJJu6O+zvQM
-	YxJH040CBxpUjOaZOfDm+sOMwi6UnCo=
+	t=1789724106;
+	b=ZagyGPV16qS5jj/RYESKkFelN2covye0Vb5ASGbvUyHyeoant5g7QAOs4NhAt6tiB6tgkh
+	HD2zFWd2i2kCFYh70OLtvhFY4/lNp9s4cWge3dOzWbmhUVtXbAVGd4Z2KUD3qJwR3xb0SS
+	I5sndcKGoG081lnX2DvbeviZ8s9Gjnc=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=HH8Z5fZU;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf16.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=t7TZ60mt;
+	spf=pass (imf02.hostedemail.com: domain of dongtai.guo@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789723905;
+	s=arc-20220608; t=1789724106;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nebxqloBPR+qahIcZagugq7FoabEe/MUo9EvuHQcjxY=;
-	b=8Tg1xlKSVVrPny2eT8LOz2PeFJwQ8+eYTBhkECEBaQH3R/YezsiakIeRguZ5SkxIx0g1xu
-	wE9iL4cYTyM6V0ikpZvFCzYpHRs9yfduikRodAQIS8eDVo+CTRUSAf7VGpzmK3nz3bNPwx
-	xgQ+jjY0qxVnlHoCBdtt8sd+taKsfvY=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1789723901; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=nebxqloBPR+qahIcZagugq7FoabEe/MUo9EvuHQcjxY=;
-	b=HH8Z5fZUaOgOdsgJHLxl7+8ckK7rPhPpuCjeMWMgx+smDx6CVl7bBuCoVEJ4V/foE3zhZI4pzQB26iDvOqrLDsp3kx8zGLMorh/x09acWui8sYBVlTD9FP8elQXYCVtXPfx2arTgoWsJkl0bG7CPNHiclU1P9V4je28hdjJq9AY=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0XBAoOVz_1789723897;
-Received: from 30.74.144.124(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XBAoOVz_1789723897 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 18 Sep 2026 17:31:39 +0800
-Message-ID: <31658d2e-6e97-4771-aca3-ddc60484f326@linux.alibaba.com>
-Date: Fri, 18 Sep 2026 17:31:37 +0800
+	bh=mMUmZK0P8YmnJG/+8kD4oWYLxaHcjZK2HJ/Mgo1W5Pw=;
+	b=hc5e8B9G7PGZP8MtBFRSqTjWCRqw13EM0buxd/FgsJ4ThNL1036gNkQaiSTq1YS6bH8Ijr
+	Qdei3u8DAbdvViGamtFkQwRDFeVqviCMTiwosYQIvulgYfg5lczZHycJUL2c8zBY/b5KSV
+	5Gs1CodFbwTfcuEsdXd/Q/is/C4nz9s=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=p/DQJd95U/7tkNehVUiamBQTKyTjZl52MTnDy+aDty8=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789724104; v=1; x=1790328904;
+ b=t7TZ60mtyBpGmXyqF9xUBXtjYq9ZtoFwrn0HSx2Ph+U4/WywNAhaY7HkNO2bIxtCLk/QXpXx
+ ePKIRBMR7usKqfagJlrKT6QvXX4vhQ9JjEXuC8fYvlcP9wnXceW7kStV9BWvI9jpomfSYnSzZ8P
+ /2Era6AfCaa01vvu6sABCWxY=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id c0e6a754c1f50c48;
+	Fri, 18 Sep 2026 09:35:02 +0000
+X-Mizu-Trace-ID: c0e6a754c1f50c48
+X-Migadu-Flow: FLOW_OUT
+From: George Guo <dongtai.guo@linux.dev>
+To: pratyush@kernel.org
+Cc: rppt@kernel.org,
+	pasha.tatashin@soleen.com,
+	sourabhjain@linux.ibm.com,
+	graf@amazon.com,
+	changyuanl@google.com,
+	akpm@linux-foundation.org,
+	chenhuacai@kernel.org,
+	liukexin@kylinos.cn,
+	guodongtai@kylinos.cn,
+	kexec@lists.infradead.org,
+	linux-mm@kvack.org,
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/1] liveupdate: kho: calculate per-node scratch sizes before allocation
+Date: Fri, 18 Sep 2026 17:33:16 +0800
+Message-ID: <20260918093317.12216-1-dongtai.guo@linux.dev>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2vxz1par7amw.fsf@kernel.org>
+References: <2vxz1par7amw.fsf@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 09/12] mm/collapse: open-code collapse_single_pmd() in
- its two callers
-To: Kiryl Shutsemau <kirill@shutemov.name>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Zi Yan <ziy@nvidia.com>
-Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, kernel-team@meta.com,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
- Jann Horn <jannh@google.com>
-References: <20260916093145.4022188-1-kirill@shutemov.name>
- <20260916093145.4022188-10-kirill@shutemov.name>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260916093145.4022188-10-kirill@shutemov.name>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B464780003
+X-Stat-Signature: 6ykn8by9ntq9i81f4z4rhqdbdyex9ora
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 7B388180004
-X-Stat-Signature: xcx7nonpcye8yyaepw7dachbrhdkhewg
-X-HE-Tag: 1789723904-781609
-X-HE-Meta: U2FsdGVkX1/j6eRRRDLB0exMwP+hO5VhrepzIPSTtxL/r1XUwokZjGWBREkM5Vp0RaUUfMxpaFC/ozKjH2wv1qIH+Zxr/mUNyq3b+XPYw4Fmo0UZ51Dw+MRtYr9lgebtjmY+H1PKvPe1i5U+EM2PG/hRkETRSohgq/NJPVOXKRxvOPRWsfom5Hce0+LIpGoqQLwSjvJNha2HxwXpTQKx59AAxZtTXJLnIrl1AMgE4RmFdP9Vxr9e5d+OJo2pJ9OJfruYQKracgoTghMqNF1u9OTb0ls8dOK8qNHkgPWfq9E66Uf7P8NzE2CpkXAaOvtBbwwFITRum885DvmaGPUZI4Jxn0HbrjxlqEX//P5Xo3xUAQNqBuS2jPfFu7Lgjt3kxJjcg4yjP0DOFxGZ98VJT51tYEHKpPxvj/Isqyg0UX5ppvtEmcexofabGYgXY2sykK4piiNmihHt0enYKz9g/7gCxhkBHZyKFROmTEQ1449p99Typ73SreXHYw8VU+QiCpXHvvTcJI79wDu1274KkLdDw5AwINEGkSz8Swz2y0rFfYjOZ066VzaTi/gepX19btz1jD7e/clIYEB81Vm08YzxmedfyqgPJtzoaKl7B1iMuAtmHgQ5lrdkNQ1KfqLbCXHi1izluRr4buYslA3i11j6gErWUiSmqf2F3aLUadagO8V6Qt8nQFmhwbCS8Bb5pugBjmn2QATOTDnA2m2gpxl2lgQWUaVZk9ezcTMmPvA7j5ZQOwED1MiIwm5xcPDCisEN77PoakGXaKzDvs6aRgpGkps7Hqd4X8W0xpB33GEvptEea4TV1Pb4k/IUm+KlIDPmVuE06JXX5rTF9pE+qgwcvYM02qHjGV7C2BVeWe6Mt76sLRy3qB9OMO4TnlyIBQYeH9YQ4ly0uZQ++7RI85+EUYggbgy5XZLdI8hiaA5NCTZZWEOixoZtxFBW6uCk108yEkKSit+4OTt93cQ
- 3MIpCXxd
- V1P9ESBelo3WgqkLTX5LLBTuOgY41k/+A3oidZL0XBhHe6d00BC8OqKqo1C+gn0WADC7r9mTuqcTm/lxQPGtkDzzPCOhEgn8CEcQwmVfneeZwvZ6dsIWn5OZSaEPqlY7zadBwCnfE10p6EF4aSRKKjO+aYlWGfYjV7GgEVJmn0YD6HvybGLFDtUrtocf7zDt8yC9txV0smDOk0sPl2GcU45nXKpVTLtBjX8e+04PHXLVjs2nRggmTQYMhNIodROifFvqNeDKeII7tAJ9eNT8quUSMs4plmFcUuiXGI3+uPPyXDfWKOYVVKaPOv//KOitYrWoQ8sxjOCHTIsPPURfFkFonsynMTw60jEgz1SvshlGpSbFFD6PBbidk2R4CO1aNnPgjnYNRfglHnN0=
+X-HE-Tag: 1789724105-449047
+X-HE-Meta: U2FsdGVkX18jtQPIrLsFZbda3fcmy3lGrwG8mAVBzU35CM3M4ync/Ku3qWmcQfTnJ4uNpCPx/odZZ1O0nxDfHv9cSBmjc88N3WFzx5opNJUU6bhtlNPJ3DLDgbYpIXdIjok9savxMB6GhdqlpX4nRNrmtXhqyXaOF0p+MFBTN77rpg0IDSBmYeitlBPaiAZG4VX1yG+FdfXLbjB2TLNerBqZd98bIrLw74u3DmIvvRz6v7acq5LLgEAvfeKAcT+xIXzosnBbRWfs8dj5kzTpIXo7NlwOp5fcbJGxI4Cwygu0RRR1JLTDhpS2ukWQYBo3sDCIJLwAjjFY/+bNbgA0RN4na64I+qxYb90NIptXF6AEwg+v+F7SkYL6hq+LE/fpLseR3QPm/ONFAxWU68+Wlzm/yqR/n5DI0/AdsxfbfzNJ1/gYUu6MYoDN5vt8m02442m1O7cLUh4YQ7CvSozQgjuHpMHVfhImHAa97AgO/eCO9huI63znFmcHAxWCk9m2cVBVgmzZrwK3bXo3kcyjIAOXXZPYAlPLW6C2lPeEcxR/gc0wxxrDmAP2b9mdx6o9mXP/B11iyZvDN06uzsqB8ao+D0GWGLmtTyHwgPIKvyBhCs8z+LfwPPeyPInlcuxOxnMHiFqpn8tYjuaIx/fmn11l9XEyiXNACrpdBiHU83LNPipnfUKcWj0u6KaMJJFLYg3yLw+FIOf98PQc2RnmGwwZEIM43jXDQh+nIK0FoYo7o9WkazN0sadi0e2aEHYuLqc0Rh3EfO1ousrbbMf9fCKOx7wFWUL0P52pSWRikrDsTbWCfEHZ5+I6a+pzO+3ncZtOG1OJN68N1rBp0sp6xUROnwUjvdSrgYaAxCg7oHVRkyGAlwiLm4BXxPJX3hXQVs4XlknqviqKQ6RCYjA/8wzebYsO84lBC7I8rk2vRp7lUJF+PiAF/lAKB0zIAsIsy63SWkf7tsPNDMDI+hJ
+ /JKyORDZ
+ 9sAkv8a/M61tnpERn0B6gFzPYCQA+Tdzr8qR8FEtGuMEG7s0LekfJEz2PpYI8COAT1Ry2jilceSwQetv7bueAYmfgZzN1jn4wJFr2IJQ83i71KxNJIZygrT+wsek/u5ygZnLfsn4AmwozmCkHtbxC5aLaO73hX3qBipT8Khc29T++C5t+cWx54E64Yugpz/hxf3p0s4KmmaxtneQzSGYyjFRVxzDKEkt115BBhhmg4Q3cXg8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,41 +99,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Sourabh, Pratyush, 
 
+> But in practice, this problem is only on CONFIG_NUMA=n and I don't think
+> in practice KHO or LUO is being used in non-NUMA systems. So while I
+> think it is worth fixing, I think we should also have a test where we
+> enable CONFIG_NUMA.
 
-On 9/16/26 5:31 PM, Kiryl Shutsemau wrote:
-> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-> 
-> collapse_scan_pmd() and collapse_run_pmd() each have a clear locking
-> contract.  The scan is called with mmap_lock held for reading and returns
-> with it still held.  The collapse is called without it.
-> 
-> collapse_single_pmd() kept that boundary inside itself.  It dropped the
-> lock on some paths and not others, and reported which by way of a bool its
-> callers had to carry along and then act on.
-> 
-> Open-code it in the two callers.  Each scans under the lock it already
-> holds and, when the scan found work, gives the lock up before running the
-> collapse.
-> khugepaged's lock_dropped and madvise_collapse()'s mmap_unlocked both go:
-> the code dropping the lock is now the code that wanted to know.
-> 
-> khugepaged's walk carries on to the next table while the scan keeps
-> refusing, and ends once a collapse has taken the lock from under it.
-> madvise_collapse() re-finds its VMA after a collapse, which it did before,
-> and now uses a NULL vma to say that it has to.  It still reports the drop
-> to its own caller, from the line that does it.
-> 
-> The lock is given up and taken again at the same points as before.  No
-> functional change.
-> 
-> Assisted-by: LLM
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> ---
+Confirmed. My vmtest kernel has CONFIG_NUMA unset, and your analysis
+matches the data.
 
-Thanks for removing the ugly 'lock_dropped', and I also did some testing 
-with my shmem mTHP collapse, and no issues found. So,
+I reran the vmtest with Sourabh's debug prints on both configurations:
+same kernel, same QEMU command, and without my this fix patch, so the
+default percentage policy is exercised. The only difference is
+CONFIG_NUMA.
 
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Without CONFIG_NUMA:
+
+  KHO: Before low and global scratch allocations
+  KHO: low size = 330185 KB
+  KHO: global size = 322 MB
+  KHO: Per node 0 = 672 MB
+  KHO: After low and global scratch allocations
+  KHO: low size = 330185 KB
+  KHO: global size = 322 MB
+  KHO: Per node 0 = 672 MB
+  KHO: Failed to reserve nid 0 scratch buffer
+  KHO: Failed to reserve scratch area, disabling kexec handover
+
+With CONFIG_NUMA=y:
+
+  KHO: Before low and global scratch allocations
+  KHO: low size = 330197 KB
+  KHO: global size = 322 MB
+  KHO: Per node 0 = 96 MB
+  KHO: After low and global scratch allocations
+  KHO: low size = 330197 KB
+  KHO: global size = 322 MB
+  KHO: Per node 0 = 96 MB
+  KHO: After per node allocation
+  KHO: low size = 428501 KB
+  KHO: global size = 418 MB
+  KHO: Per node 0 = 288 MB
+
+In the run without CONFIG_NUMA, the reserved-kern sum the sizing sees
+is 330185 KB, which is the 98.45 MiB baseline plus the 224 MiB lowmem
+scratch area: with memblock_get_region_node() hardcoded to return 0,
+the NUMA_NO_NODE lowmem area is counted as node 0's kernel reservation.
+Node 0 therefore requests 200% of (98.45 MiB + 224 MiB), rounded up to
+32 MiB alignment: 672 MiB. That no longer fits next to the other areas
+in the 1 GiB guest, and KHO disables itself.
+
+In the run with CONFIG_NUMA=y, the real node ID excludes the
+NUMA_NO_NODE regions, so node 0 requests 96 MiB. The allocation
+succeeds and is visible in the sums printed afterwards (330197 KB ->
+428501 KB), and the KHO selftest passes end to end ("KHO: found kexec
+handover data", restore succeeds).
+
+Sourabh, this also answers your question. Your PowerPC system runs
+CONFIG_NUMA=y, so the node filter excludes the lowmem and global areas
+and your numbers stay flat. Your experiment and mine are the two halves
+of the same mechanism.
+
+> I think on NUMA systems the problem is the other way round. The
+> calculation for the global scratch also counts per-node allocations.
+
+> So I think the proper fix for scratch sizing is what this patch does
+> and then a fixup for the global scratch calculation as well.
+
+Agreed. For v2 I plan to:
+
+  - Compute all scratch sizes (lowmem, global, per-node) before any
+    scratch area is allocated, per Mike's comment. The sizes are a
+    function of the pre-allocation state, so this seals both feedback
+    directions at once.
+  - State the !CONFIG_NUMA condition in the commit message. The feedback
+    described there is not unconditional, which is what triggered the
+    question.
+  - Add the LLM attribution Mike asked for.
+  - Include the CONFIG_NUMA=y vmtest result as coverage.
+  - Look at the global scratch calculation on NUMA systems as a
+    follow-up.
+
+Thanks,
+George
 
