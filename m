@@ -4,89 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D352C982D8
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 13:35:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B89DCC982DA
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 13:42:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 41F486B0096; Fri, 18 Sep 2026 09:35:24 -0400 (EDT)
+	id A6BC36B008C; Fri, 18 Sep 2026 09:42:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3CF306B0098; Fri, 18 Sep 2026 09:35:24 -0400 (EDT)
+	id A1D576B0098; Fri, 18 Sep 2026 09:42:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C1416B0099; Fri, 18 Sep 2026 09:35:24 -0400 (EDT)
+	id 90BAA6B0099; Fri, 18 Sep 2026 09:42:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C62E6B0096
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 09:35:24 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A04A5140554
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 13:35:23 +0000 (UTC)
-X-FDA: 85226979726.01.9AD936A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 0B9C510000B
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 13:35:21 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NFs+4SzP;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6A39C6B008C
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 09:42:03 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 81BC51C2EAC
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 13:42:02 +0000 (UTC)
+X-FDA: 85226996484.11.F4595BE
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 1E68D4000C
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 13:41:59 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="bX/l51XD";
+	spf=pass (imf01.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789738522;
+	s=arc-20220608; t=1789738920;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cyQRiAE1NzNRzDvuosLUWEsOKuA4c97+gPKm3HyuGhE=;
-	b=7OLUkOAAX3tjMvtx7tmwdCtunJib6gJetHcSW4as9Th+vIfGf1FqC3Qu5P6uTml8UH4BfS
-	4RYjqpugtiOVJyqdM86gNnhy4idA4AkhBLojrGq3KiyVF/bbASFx8FBlcmQThIbvCLeJ4w
-	SGWVjlrZlGWxpWxuCBJWEJgIf9GkP4Y=
+	bh=T1G7pn6seS/SOuHvOw8pJc1Knwr72Zy5SeN7YDV021M=;
+	b=Tyk/6F4pv2RrOKsaAX4DZdNGWoLxtVCuUpNmxqgFCihCi04tv5oPOgkcBDxrj6qLrEknsE
+	GLIRptMaP/Eh8vyIZcpHNrw2EJTk9tbF3tCmvxzARq47VeOY7v/x95YFL77D9rtnyOMuKq
+	t8pTR1HDyM3G4mh3cHAdICazMvVeuys=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NFs+4SzP;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="bX/l51XD";
+	spf=pass (imf01.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789738522;
-	b=w/ekas5xIVJwo26LgyWaTLhfq03kPlPWMZahduzjzF3j5ueHnRrpVWoOtAsXHkKbFtLC0u
-	VigjSMeZLdieB9aR23Be7sz/LNgoqu9hxJcyavELc+7xYicK6X6FOAt+9VDcz7LYKEOL8d
-	FuL9X0whGi+3I79ctnatYdcQVkx05gc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 61CCA43AC4;
-	Fri, 18 Sep 2026 13:35:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11B341F000FF;
-	Fri, 18 Sep 2026 13:35:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789738520;
-	bh=cyQRiAE1NzNRzDvuosLUWEsOKuA4c97+gPKm3HyuGhE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NFs+4SzP3Zxzh27IEibLV4nA2NjPaNTex8Yv8msHbXsxjYb2ro5LCgb044dh6KF5J
-	 fRNsvQ0aBnxw9wxa72hLn2q4D7ZJB+BSIHe9lkLWHLccvNPBURe+ubn8ubCV+ITjov
-	 7uHHiFF8FY+11JgkNAMY7+S9O3hdBLtLU7Y33aLoq30RB/5NRa6jl69Ug+o+D62sCn
-	 3WZaGpcQEvAL3eSs1dHWmBT7a1AotKPKBtB9RsUXjXZgLd0LX1E3HtFEIjMG6njuB9
-	 xldpItAz5jLOalBJjPcIjzyh8I9vcWXBT0fjx/OsfndFOwOFP+D2ocCHiy5EBJOkIM
-	 GsBhwVE10dGaQ==
-From: SJ Park <sj@kernel.org>
-To: Karthikeyan KS <karthiproffesional@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	Sang-Heon Jeon <ekffu200098@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm/damon: document that a zero sample_interval is accepted
-Date: Fri, 18 Sep 2026 06:35:12 -0700
-Message-ID: <20260918133513.26828-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260918131301.75879-1-karthiproffesional@gmail.com>
-References: 
+	t=1789738920;
+	b=mapyj/YoS/55Vc2F0uu0h0KSNfo1gIpITEX2MUVIOi7dR4pyt+ujZ3QEdNgK+SJjH5gvrd
+	lD1b8JR7zBq7vSeCpaUBJGmSxQSnlSa932b96kqe52JjMmNTcC53RyO8lsdCQG1boZj0/+
+	hKsSRgre9ioh4w9CCT7DAT8Oc1NJbSo=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789738919;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=T1G7pn6seS/SOuHvOw8pJc1Knwr72Zy5SeN7YDV021M=;
+	b=bX/l51XDyTJGDG3oQfCJ6gjXjd2uihUTmvaNw/zhDGaxK/cwIEWaMVybcvL5Ib4NMOs3vV
+	FbGcIfzWSJfoGWq27eJKFxg+ye4ghHAjmIjgujWuiX+e1pyIiuYMp3HzXWk+epH0Ds1KaY
+	VwHJlTmeZ2JV3BV2SHNrHBcMY54r1XY=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-179-H0K6Lj2APcaU4-gCZgc4kA-1; Fri,
+ 18 Sep 2026 09:41:50 -0400
+X-MC-Unique: H0K6Lj2APcaU4-gCZgc4kA-1
+X-Mimecast-MFC-AGG-ID: H0K6Lj2APcaU4-gCZgc4kA_1789738909
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D66E819776A8;
+	Fri, 18 Sep 2026 13:41:47 +0000 (UTC)
+Received: from fedora (headnet03.pony-001.prod.iad2.dc.redhat.com [10.2.32.114])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 3B334180034C;
+	Fri, 18 Sep 2026 13:41:44 +0000 (UTC)
+Received: by fedora (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Fri, 18 Sep 2026 15:41:47 +0200 (CEST)
+Date: Fri, 18 Sep 2026 15:41:42 +0200
+From: Oleg Nesterov <oleg@redhat.com>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Jens Axboe <axboe@kernel.dk>, linux-fsdevel@vger.kernel.org,
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+	NeilBrown <neil@brown.name>, Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>, linux-mm@kvack.org,
+	io-uring@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/7] fork: refuse new threads while a coredump or an
+ exec is in progress
+Message-ID: <aq0_lvHDViIpX_Mu@redhat.com>
+References: <20260917-work-coredump-fixes-v2-0-f3787fcda051@kernel.org>
+ <20260917-work-coredump-fixes-v2-1-f3787fcda051@kernel.org>
+ <aq0VLTyxNatFmLOK@redhat.com>
+ <20260918-irrsinn-pickt-vermummen-d7167c397398@brauner>
+ <20260918-disput-maden-parkdeck-2bc22dd90398@brauner>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260918-disput-maden-parkdeck-2bc22dd90398@brauner>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Mimecast-MFC-PROC-ID: jDMIx3zF1KnTPPs2S6ToTEM4NEWYdqUEHxc36-EjZgo_1789738909
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-Rspam-User: 
-X-Stat-Signature: pudfenjuux58tyuuwjzeuionwkqqcwpz
-X-Rspamd-Queue-Id: 0B9C510000B
+X-Stat-Signature: 74qehrqp4usxy6iqasg4w9qht4wdk18b
+X-Rspamd-Queue-Id: 1E68D4000C
 X-Rspamd-Server: rspam07
-X-HE-Tag: 1789738521-632813
-X-HE-Meta: U2FsdGVkX19BgkQvU5X8nSYskKCNqiNsWvv4FwgQOO3POdaoiLKubulfyeJTwdUseBo0aBg/9Hb7rs3/DS0NfSBQkl2LDXtLVz7JkeZ2eeEGRz9LJWduRgGMoL/Dg/ZDwaGrdUA9/6+LoSObmeoVFs/Sq9WiNRcTP2LC8SEgrOG64vLbvrvL/C+iiMSenQlcC3aOyJBcBM2f6b82rLiwUQN9LD8R+UCMUEObHliFDVMWBhEjyo9G+BQwVD5gZBYZMSdmFonj7FHbjshXZNKnJVKslZndAFcgSGoQs97DLXUuKBbIKzfIhpbCJD0W0t62V91M5sraBFfl+mnSSWVIDy/LFCK58JQ4XLLVsLHFRD+SV8Vcn6PNHugLyl9K8n/TXlrplA/PXkHvpMCYSdRRGKTo4TSYMOaRc/v3TE41qslyl11Tlt/KukxmOUY2YxqbKmD4Oc7mFoAIkzMzefY42izSPbuuRhPyUEeFw2/MHm1HRavz67pVMZgyIEkNyqKyo0QeFthxJyaJD9MYHdSaKVqo+DzyRdKZnx7CZKx2HDc/qd02KAFLZ39Cyd14ZLyWXZiC1L//FYncJA7bI8w3eLvQnxuWf2SUaqxhymRQWkHlHCaV/iRYyna70JUjfvGsmzDMPsXptMsxkQMt4DUQKBsEl5BAabGFDeOHCFe7/ma9jTnpEv/z6Uus4Wjv7tYP9tQ6EITPNZkDE5z0niOWqHLuO1skplGDY+bYVTzJPR5kS2vbWUOYx47gZ9M8lJaEMokOsp8adW0A1ZbeR1K5DJHy/Y7C28PRrfuJp1Dy8/ZaHO6Bgc2poyn3r3pFiKmfmj/nuIi5LyTsGqb01MVC3Mz51UGPDG1xrXQZoFIOTqWC9tXJxyOzTkOiQ6AxaJHDlVyAYcunIFstl7UuDoXjPCezm4vEsJ5qnLEA4bc/f0fDU4fX7nbpmKVGv5cJKMRV6turXUPASb9knD3C7/i
- 7p1krkBf
- 9erZhARlKfwG3uNzIlVC8G4HIog55yP0JW+QlBX80N08GLe7t08/b+h417s9QrR7Xj100PBFuFJc5E/866d1RoDqaoV7EgybyJO1GfteCMx2mvu6tHWbLQ7dopbptRWlXeSJ6pZR3BjF+fOG10KRlSNtCxb2J6v+lAGDoKLEtQWHUc/PrgreqbaQGhV3mNJe2DiccxDA/Zg3vHiDEzpPMQCrS6oqSX/lktsz5y8ESasNue2/ddTXc+qmxKNYqxQnDwoawceDAshF72CpjJXp1vMWGveTVOdWuiYwGQqzhHhsSeELdinR/VKlYrrqbboB872AeUOsktAIIRiIWKWfEcFugRSzlZ+v5NuxOg7A099ueKEv/VPje5Qb3+w==
+X-HE-Tag: 1789738919-619631
+X-HE-Meta: U2FsdGVkX1/epUaMw2Wg8B+08jU0lI3cf1B+RNafLEWTHRiXJJZNeIniwnClBpKt1CUpvvDG8uTMa+pfh7fnjU+louwpTinXa9tpZ3uVEaDmM67OQ3TY4EUWrjI26FTPETfZGf76UPTf7s1cPydSSAcL2KipoITHBPBMPv3BK2gRJ9zecM3bNQDplQBDS9jD5UnP0w/I5rVBXeO09kjPbxxISUtMcueN9Xk/hXLT13m2mQ6sac+QKdy6TCDnRDXTXNlCH9rzAiQ+DQt8/MZWsFAhN4R+JMYZru+o8+LLU7pvMwVwztwXF0o8ZhXG0MP12deYkjE4mIkFWRxj+HIRpZQL8XNIF1wFeNEO70LDd0oeEYXbevwm28to0xiHl2UV39rTLmkZlFmIpwvLa4uUi8nWFamIt6iixUbK93jLMSAwVafDj5b7SVun1X1WTx/wB0MoWhJyU8WVGP3qqjAEbP67p28Y5pr6vxAORz4SDKhpXEtl2VVKVGBTRj60w6IDNWjf71Tb8NORD3Q3+DMlrXdBo4UmFZIlZoYkwTrZ3ChIH1c9YFGqxd5Qig9DWx4HL4Uj24XJeJx8Y18CnefE16VKxwqj8U8AbVs5RM5vNhmIxp5ynuurcROIPiOM629kWBJv2ivsp0H8iNTXQciJxmvsyjxauDD+hG/AB+uqiHs1mAUIktgCYtTQDNBJBC1RjalwzNsoI4Tr/UXGQmKQGcxU5lkSn0Or4HjG6jqw8qusJDykNPJj7UajsTxpcaAfH/YqnPQm3iEzWLdmXQqRbDTLQX/oMBiRCv72hLmb76oJVnNF21KbcTb1/RLLT6gt5P9YVxT5M0wnrATxFe1HlDLxsLkloNOTwwdkweoIpYe/HCL3XJguBhv+8NZ8ynA1RuMRXAH2MU5XaFEvV4HtannoAmCzLfhPAAsfHZrMmNR/PEiW36UlHeQPMFlVk8YPz/+iNE4vvwgJT7V88Rd
+ Tzt8Nq6G
+ OYNjzDAHd2G/Ui1iuVWY4Ze/3AK8Z+/5/r5r35l6OyE0i/ondkGp/RlKmFw7cB/ZMNdngCbPdVbuynFZIs1eIy/glECf7zbo22MOws7RPAisOyqimPkYw3pfNRgFm5oJgyOQGnnrZbk3m2tfkRBVTEzLrPWpKO/qjGgSpF0dEgtKjewvyja8wrAD7glIAj6fr87zFXn42PMMSZN8M8HoSiVh/L54Hge3UzUnRiTO8VTGJEx59G6JWhX52IknWbP9tjgfEh9MrFoosm6idWdCQPx/XGpIlXpHy687BGQaEGg876p0jS5QI7ACMUqWR2mR9KG4Lv64EM9HCs6W7mw825e5+BAPW7napp5t1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,63 +113,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Karthikeyan,
+On 09/18, Christian Brauner wrote:
+>
+> I think this works but they also need to check ->in_execve as the
+> exec'ing thread is obviously never signaled:
+>
+> @@ -2709,6 +2707,10 @@ struct task_struct *create_io_thread(int (*fn)(void *), void *arg, int node)
+>                 .user_worker    = 1,
+>         };
+>
+> +       /* A creator past its fatal signal or in execve gets no thread. */
+> +       if ((current->flags & PF_SIGNALED) || current->in_execve)
+> +               return ERR_PTR(-EINTR);
 
+Ah, I forgot to mention...
 
-From the next time, please don't post a new version of a patch as a reply to
-the thread.  Post it as a new thread instead.  Also please add a links to the
-previous revisions in the changelog [1].
+Can we shift io_uring_task_cancel() up, after setting bprm->point_of_no_return
+but before de_thread() ?
 
-On Fri, 18 Sep 2026 13:13:01 +0000 Karthikeyan KS <karthiproffesional@gmail.com> wrote:
+I know nothing about io_uring, not sure this would be enough...
 
-> damon_set_attrs() accepts sample_interval == 0.  This was reported as
-> a bug in v1 of this patch (rejecting it in damon_set_attrs()).  A
-> similar patch was already declined for the same reason: a zero
-> interval is intentionally supported [1].
-> 
-> Document the behavior instead of changing it.
-> 
-> [1] https://lore.kernel.org/all/20260722094304.3132750-1-dayou5941@163.com/
+Oleg.
 
-The patch itself looks good to me.
-
-> 
-> Signed-off-by: Karthikeyan KS <karthiproffesional@gmail.com>
-
-Reviewed-by: SJ Park <sj@kernel.org>
-
-This patch is applied to damon/next [2] tree.  If this patch is not added to
-mm.git in short term (~1 week?), I will ask mm.git maintainer (Andrew Morton)
-to pick this.  So, no action from your side is needed for now.  If it seems I
-also forgot doing that or you cannot wait for my action, please feel free to
-directly ask that to Andrew.
-
-> ---
-> 
-> Hi SJ,
-> 
-> > I'd prefer adding a comment saying zero sampling interval is
-> > accepted.  I think damon_attr kernel-doc comment is a good place
-> > for adding that.
-> 
-> Adding comments instead of code changes.  Let me know if you'd
-> rather the wording live somewhere else, or be phrased differently.
-> 
-> Changes from v1:
-> - Dropped the damon_set_attrs() rejection and the KUnit cases that
->   tested it.
-> - Added a kernel-doc note on struct damon_attrs's @sample_interval
->   instead.
-
-Thank you for accepting my humble suggestion.
-
-[1] https://docs.kernel.org/process/submitting-patches.html#commentary
-[2] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
-
-
-
-Thanks,
-SJ
-
-[...]
 
