@@ -4,150 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B95CC982DA
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 16:21:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44AA8C982DA
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 16:23:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 578A26B008C; Fri, 18 Sep 2026 12:21:45 -0400 (EDT)
+	id 444186B0093; Fri, 18 Sep 2026 12:23:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 529AF6B0093; Fri, 18 Sep 2026 12:21:45 -0400 (EDT)
+	id 41B2F6B0095; Fri, 18 Sep 2026 12:23:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 418796B0095; Fri, 18 Sep 2026 12:21:45 -0400 (EDT)
+	id 30B636B0096; Fri, 18 Sep 2026 12:23:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1FD9C6B008C
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 12:21:45 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C533CA0179
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 16:21:43 +0000 (UTC)
-X-FDA: 85227398886.27.048C4E5
-Received: from mail-qv2-f12.google.com (mail-qv2-f12.google.com [74.125.230.140])
-	by imf15.hostedemail.com (Postfix) with ESMTP id B177BA0006
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 16:21:41 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=QHRSPWuW;
-	spf=pass (imf15.hostedemail.com: domain of ackerleytng@google.com designates 74.125.230.140 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789748501;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 01B876B0093
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 12:23:15 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3C6DCA62CE
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 16:23:15 +0000 (UTC)
+X-FDA: 85227402750.08.582A502
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf09.hostedemail.com (Postfix) with ESMTP id B8D94140005
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 16:23:12 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=U164ZCfS;
+	spf=pass (imf09.hostedemail.com: domain of oberpar@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=oberpar@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789748592;
+	b=r3JudNiWwI0BkUY629LPvIN1nFjrd8FWFxfht68XNAho4Ivw2imfl/PhIJLAIb5eu2qSLQ
+	YkFv71Ta2ZMuVqmVx4vVN6gVX1UyX9nIFE09dVG0zFDagMlf2oxI+D5mpFl2YQXtXAI+N9
+	7rmqqvtJ6Ac4wc/hjN5KW4+9qif7uYs=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=U164ZCfS;
+	spf=pass (imf09.hostedemail.com: domain of oberpar@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=oberpar@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789748592;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k0idDGjqorNV8cxfogOvoluFO0wsP95B4F+1LnnDxZI=;
-	b=eScg4pSLCDdDCH3lTfHye0B8aG0MKuiICtZHsF2pealG7hUslydNZd8RgD8m3W1rj7jUuv
-	nRwJFk1eQJ35pxzlXYU8LOzqqyyMN38kGp2DFRx5CruexoMptJyPR54r0/VaIa1mI2QXn9
-	rjj6/whiEMNUY8ak6TbMoTP+KUkvi2o=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789748501;
-	b=bKIzyKRol7UAQa5ek7xo08lQz8ZeJvOi0J68mGv3WvtB2wNbFpFPwvgqdRkGMGnOc0ZN0b
-	giuMFO5FD0hLv41uPUjEQa3Tt+7XPgnALb9AxO5hpcHP0FMRg1ClrHrQrqaoQPJXDfI5Pk
-	FONSSn5EVB7lV5I4+QtztVq2LcYNFzo=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=QHRSPWuW;
-	spf=pass (imf15.hostedemail.com: domain of ackerleytng@google.com designates 74.125.230.140 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-qv2-f12.google.com with SMTP id 6a1803df08f44-912355b1bf6so3495996d6.1
-        for <linux-mm@kvack.org>; Fri, 18 Sep 2026 09:21:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789748501; cv=none;
-        d=google.com; s=arc-20260327;
-        b=FMLxFdzC0sDB6432x+hvPCldNJyWhLafRPF0l96s9WyDwkFSnTF7tb2QbHQMFLaxTq
-         FgBVroC8crZ+6/jkIMrMBZkT0nelKb0bt7ApIPijLF+Xl27YkuSTU9XASQD2rwi+ruu1
-         BixanlLX+1R5FlPQo0PvFxrFjL9CkxDqM1aBTd/5fFFx6dX8k2Cljp4MogqBVBybf1iw
-         /h4fzaMCf2jfPhqgokxyl44SMfQPBfDD40Ea8s9NhNwliF+Sdc1B2gq4L/g0Fi2CnOwc
-         KobowqBlq/5tTCimF/RHZygqkI/TcY5s7x055NOv6l0ugfX6TxpJqalwDSjhYqlfEYb4
-         6dfA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=k0idDGjqorNV8cxfogOvoluFO0wsP95B4F+1LnnDxZI=;
-        fh=AI4C7LaV2TnezAk61DGdF/c9jm0djNyTds3SVaXipAE=;
-        b=ol3OCz4ZCGJ2PPAAEHISYL+hILcExJ8U2S4nQFX9e032dS4BvYUttkfesM4T3FVci+
-         fuGI6ytvXgjJEX9nsfQFexGlTc1sJxgFP8d448HB+Uq6lDfpYch/QEq4UIXzDf/698/M
-         CeMD4UF2WKUdk+jYrJ2kWSiO9XxdZZ5fg9FwKCo/b2ovKoRs2DwMIGVzuOGyVoRY4cfa
-         t70ryS27L0bxUbDZ4eSFj7eD5ireIePN6O/AzANBZx/rC9/ta1IUuuRhjlO8h7PCXh0g
-         mQqfdcvVaNRtnImS/OR0hl1kyUnbn/pNoqXFpTPRc1WPpbDR64th3ZC0ZWGdsJn5TNTd
-         H2Sg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789748501; x=1790353301; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=k0idDGjqorNV8cxfogOvoluFO0wsP95B4F+1LnnDxZI=;
-        b=QHRSPWuWI7g4Jq48AtFifPJBfuIFQn79N4IGah18Q/A/CkBFEJDjPOHfXOn3EjYeqF
-         9a1Fl+Nhfj8y/B69Ef+RPtLPPRO8JFT3lkS7TFp05aNrg+Jjb80x/lWSOUGl9C1SYL3b
-         5VGRv9beTLchXdq7z+LaiQiXv4cD8Dnt0xTl7CX/nzvvHZujNUgpE3wQVSMk/s+deMXp
-         YCqw4kffPN10IgC949tAbfN9eBjCPcp+bYVkT6CjhLflqH+RSw9f0zIPVzJkLb6kQ0Iz
-         elH5WAbY5RgKxJewAW3h8s96316Dkkuxq8n1P4YUqPa/mq3iZIqgAMJ8fX+jc3grQ8yL
-         Xwvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789748501; x=1790353301;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=k0idDGjqorNV8cxfogOvoluFO0wsP95B4F+1LnnDxZI=;
-        b=gnDVlD2VP3U3CzZUBT6MjEK27xKf3gguV6nxyyTNhxYfBRYW46xJvEXpBhx7JK2JFL
-         ukDHnVwOsDxbobdEcIMCgsh3trXXJQV37sfFNkdR4oJCA6j8Wr9T7XHIl8/v3yHJMKpW
-         OHeRg8crlOJ3m8LOttFDLZnx/U/B+OarfOoICiVcpbjKLNR2YDGck8ANlxQJp0H3KOkT
-         UYnT3ZiJcLZYMnuKd2d5LB0Su/xSvMFq8joy1d1ByV1W9FLExKIzWqr+RLi1WHQnxZw2
-         JFD60inddHj7kwEA3C3mMPLIYYE8zhu+Cssb5GN6DENQuvJ+pdGxzR9ZICUbmB2bdRYP
-         qiwQ==
-X-Forwarded-Encrypted: i=1; AKwUvBx3CUHwiRdft446gCRScXSdQM6tIGi+mktdNmKfAoKDOyow1Yxp6oyg5pwY1w0Y0t9TK5iUps8VPQ==@kvack.org
-X-Gm-Message-State: AFuF++nTGWcubuP4DYYns0y6ZqKl57XMgnvCinS5riovdANJVvIklJQw
-	G8VzW7vH5n4R93ftc2Cej5Bw5p/e1Y04S8kEIF/s+/RqngWHDGWstTqCoIfuc50kI5gxiHirfcb
-	VtbmRzmYUbMt8RhqG2O6526kk/+JTbr428rmSFEd0
-X-Gm-Gg: AYBFou0IJOJ8mWGY9ILsIRsjPw3RIsVSb8W5zwVpX98gu6oSzY/38q77ehNAZxnIP7w
-	Q9+NG0OpotOw/UVF8Xeh7FRkJWRgLTk9Tc2XjHolcewCBHSZJiSgTBrfoi/VpPSFGCooKS+bW48
-	PSlObvIm1nrdXOsqFaxy+sbz7kDsL6N/+j+xSuvWXLVfz03slzs1fvvup6y66D4AW0aEqeOJKcF
-	siDtgFnwwmGXEJh2rRHC5ruZlAhLPt9eP3F2XOL+D9o+gr2nBaKC2PjVOmfvhWlyHW902mNm4c9
-	Va+rLvUsBJJ8X12cTYgyuU4hvfMXpOCHFRJ4cj4M5UWnVYBrKpR+simGkg8QDK35OmYuTs5NRQ0
-	rgxQRFL+qKK7fiE8VxfIA8S+/Y15ANbWA9aZnhP4KLNo=
-X-Received: by 2002:ad4:5421:0:b0:912:3b29:6580 with SMTP id
- 6a1803df08f44-91254e64effmr32593386d6.7.1789748498548; Fri, 18 Sep 2026
- 09:21:38 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 18 Sep 2026 09:21:37 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 18 Sep 2026 09:21:37 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <e4bcc676-34d3-45ed-9eda-51c9a60e977f@arm.com>
-References: <b91dbfae-20f1-4b9f-a25b-4397afae80f9@kernel.org>
- <16ffff40-4ef0-4312-a700-348603f05c0c@kernel.org> <CAEvNRgGW_VHmT82q+bUqHh_5G2Z9sUF1jJOTiVN4Z8_cA9A50g@mail.gmail.com>
- <e4bcc676-34d3-45ed-9eda-51c9a60e977f@arm.com>
+	bh=IrSrPGh89ZBDJ8ImJt+nz22I+rOlaK5hWlIv4GDrkKo=;
+	b=HoVeA/hD5IkP2gWHK/+EMMk+0nJBrTYr0DHMa2a18U8EoLB6M8BwX7NU1zKFmScghSst2t
+	S+I9I3qmtWaS0v79og9/sti00+w8Sw126FwMyc9DpNKsrpvF+fN+EMqoe6PkUBQBTjpzkB
+	k5VBaz/Xe3dWPp7+bj0rGaJKhknvbfM=
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68IDVZm71393547;
+	Fri, 18 Sep 2026 16:23:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=IrSrPG
+	h89ZBDJ8ImJt+nz22I+rOlaK5hWlIv4GDrkKo=; b=U164ZCfSbTri6NhwgGdd3A
+	OoIYNbQwf6mDGk/ZN7w8Ru+s+GGDPi7jYOhlIoGDlMrqjEqWYq92ruppUAa9NUwO
+	CG0fsRs5JefNx1W/Hdsrh4qtjwKMQ8v/5GrtRvuNbpFFKBxE28bvz/3Za8P0bzhq
+	P1gkqz8uUaNTxWXzufHcxsdRQ+0jmi98abs178Z3ffGngut6hFVqyrlR14A+H2e0
+	2XqfAstr4OqhE6z7mksk7I1jcjnV5YAZtWYtu1Bot1F9D+A/n+m1iqsUGJILvbgl
+	+eLk77feKSajb86IdZm2kzBFQmDS5rzm96q8jyIXCe9ZvuDcdA8Oo5BSBCEVSf9g
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gmxf5h770-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 18 Sep 2026 16:23:10 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68IDO2Fh771897;
+	Fri, 18 Sep 2026 16:23:09 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gr5ffg5yc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 18 Sep 2026 16:23:09 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68IGN8YI31982158
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 18 Sep 2026 16:23:08 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5A5B358055;
+	Fri, 18 Sep 2026 16:23:08 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 498C45804B;
+	Fri, 18 Sep 2026 16:23:06 +0000 (GMT)
+Received: from [9.111.192.138] (unknown [9.111.192.138])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 18 Sep 2026 16:23:06 +0000 (GMT)
+Message-ID: <bf57f67e-4a51-407a-b869-b9d78a9875b4@linux.ibm.com>
+Date: Fri, 18 Sep 2026 18:23:00 +0200
 MIME-Version: 1.0
-Date: Fri, 18 Sep 2026 09:21:37 -0700
-X-Gm-Features: AcwNN1VzIl6ghPHchCrZF-oxqNdlGOgQjEVdlVOzWvyHTDDXwsaSi3qVUbQZQCE
-Message-ID: <CAEvNRgFAL6qtSiJpQuga_TxWBr2pK=9LoiON+ZARMp0xFA8rPA@mail.gmail.com>
-Subject: Re: [Invitation] bi-weekly guest_memfd upstream call on 2026-09-17
-To: Suzuki K Poulose <suzuki.poulose@arm.com>, "David Hildenbrand (Arm)" <david@kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	KVM <kvm@vger.kernel.org>
-Cc: amit@infradead.org, aneeshkumar.kizhakeveetil@arm.com, 
-	ashish.kalra@amd.com, dwmw2@infradead.org, eberman@quicinc.com, 
-	fvdl@google.com, gshan@redhat.com, jackmanb@google.com, jackyli@google.com, 
-	jthoughton@google.com, kalyazin@amazon.com, kas@kernel.org, 
-	kevinloughlin@google.com, liruxin@google.com, michael.day@amd.com, 
-	michael.roth@amd.com, mike.rapoport@gmail.com, mvaralar@redhat.com, 
-	pankaj.gupta@amd.com, papaluri@amd.com, patrick.roy@linux.dev, 
-	Peter Xu <peterx@redhat.com>, pheragu@quicinc.com, pkondeti@qti.qualcomm.com, 
-	prty@google.com, psalian@google.com, qinkun@google.com, seanjc@google.com, 
-	shan.gavin@gmail.com, shivankg@amd.com, sidtelang@google.com, 
-	tabba@google.com, tatashin@google.com, vannapurve@google.com, vbabka@suse.com, 
-	wyihan@google.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam04
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 00/13] s390/cio: replace page allocator calls with
+ k[mz]alloc()
+To: Heiko Carstens <hca@linux.ibm.com>,
+        "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Vineeth Vijayan
+ <vneethv@linux.ibm.com>,
+        Vlastimil Babka <vbabka@kernel.org>, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20260916-s390-cio-ready-v3-0-39e4894637d6@kernel.org>
+ <20260916130613.15587F91-hca@linux.ibm.com>
+From: Peter Oberparleiter <oberpar@linux.ibm.com>
+Content-Language: en-US
+In-Reply-To: <20260916130613.15587F91-hca@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: vTyVM8gFf2TLxGe0RjdKNlWme4FkyRm6
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE4MDIyOSBTYWx0ZWRfX12DmjXrEm5MR
+ h/AvVcvlh5F9Jzcx3msRny4416tysM3XT+DK1T4EAg1Tc8kI2m3sAh0MCVEE5m2jJsOzsor/lWm
+ LhlGoZjGMZlGoTfMOpXBVOkV27ORGEo=
+X-Authority-Analysis: v=2.4 cv=cvgOAF4i c=1 sm=1 tr=0 ts=6aad656e cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
+ a=IRwR5hotAdJOlb6Xvy0A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: vTyVM8gFf2TLxGe0RjdKNlWme4FkyRm6
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE4MDIyOSBTYWx0ZWRfX9VrQ2GokdTf/
+ ij01HjXDQRKd9KcreIiqI/fXcgj3CFh8IV3Ywtcj5oFBp9ClR4zc1dWxHF+s+wNUqCODODzn0pz
+ 62Hn7XGiwhK8ouluqvAn2U2Uv3R9hZ4nUA1k/ozSdmbdM3yLAouP2b7TjU+za74QNUP/SDs2kuV
+ +TzM3unuJpH/QCI0WNt9zWl+flvufd6ShlibskDDOwZ/Wgrs7g7sEiVXHUAAMsiGIykrOcfZkZr
+ aJYf1nfQqrxhYuQcle7w8QKFUsrgFS4tU2c6lyp9aiDUNFOues2xArRa4Dh+hp9pRGjSdWg2S+y
+ 3Z97elu/WJo/mNnyWwADDXckyafk1reo63sgpjQ+FSiVjXUxVdlqeiU4eSitu4SDZeNzQe6busz
+ pjpvKbW7ZS+wbhuVrz+xIv9PsUoHOGDu0h9PeCq1L05AK5Bult0pgC74RcUO75w2eNGm7Hyaopl
+ jmnErCQwD70LaaCERwQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-18_04,2026-09-16_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 lowpriorityscore=0 clxscore=1011 priorityscore=1501
+ suspectscore=0 bulkscore=0 impostorscore=0 phishscore=0 spamscore=0
+ adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
+ definitions=main-2609180229
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B8D94140005
+X-Stat-Signature: ze68agy1b8zzrrfnwnzat84gwd5spxkz
 X-Rspam-User: 
-X-Stat-Signature: kqerhf5kpop3k4gbsxbw7h17empo6bq6
-X-Rspamd-Queue-Id: B177BA0006
-X-HE-Tag: 1789748501-423601
-X-HE-Meta: U2FsdGVkX1+vTtAUdMC9hvyNiRoTxBQgnj5jTa+YGtjzuCzTHWyu7NX344CF/0MQ7KRyU+uuOTAGXIoQ8e13799CGqN0lhMlobPqFBiISCvH8h7a20SB7c3om8BIjzxvTQ2zodp9WyAC3cLvpV4h++tzN4ILh8iBTXZoWW1zkeumuKuLD6d4sfLuGW9a62q05ak/nigfo5+3w1HwX/ITUgbNpqR+tMY6qevXGiGzdjsAn9UHWP52ps4ktAz9e4IzdvpHHh/kmtRJAjY6hzXFdHj3QMbDzBp1R6f9Ave7G7ZIHg8jF2kuL28WlsJbiCHochJ16rqWBzM1S7786SYXr0FIHbsLykosAuxzaACAfBeLkS+IHFhxlzS5FQnuxzaQB1lZ4WtGiMPvupM0+uWwPkxhXXuc4xwyLi4Vzr0pDcx5d8gpTxuWXyv1RsoP4zQMHDE7UNIku7TMUtfYUyDcJDjdIr0xJKfmsRfHUa1ltqDmJYYfFHGf8H5EbOGV73ZYauczw43QKrgOrPrayfl7XcvZMqoXe7KUmWivkiOmE6Pdm1cd6FiBBvVs5zpl2V6qjKFZ39meAJi8RO/0GJL1iC8huX3qPiPhbBC0Ada/DwcFTMuauw0B+qXFHijfKW6QQPz6yEGNzn0tSts4JV6RqSmQuNFHd+Rb/4yKbbYrO7Z3UJZFRwx0e+Tg/p/Fx/bjsxh8V1IhFlXHW+IXGZJfKvSvnOEqrIhUcd5XbQsSM2Zs1ADFxHuBUsPxzHXn6bPfK0cRDX0OVjI9/TSiJBdUYyXLpuW4g89dlrUVTr0R8FbdchTiPWAyB7xGhj+zfhV2QLCoS+UsBdMYiNfoCQVjJvBdUgGmCtKk4lRP7ln1NESs1c4k9wH4qC2KHcwmP4U6EF9BNdR5e7sOEqG10gvSkrGcxa5uzWi3HgJKi6ua928KZqebQxDtGdruhJ//5GCKbvahyKk3qSycPNZ76AK
- pnKpC+9J
- 31/eWSGK6MPlyh64vUmy2Gk25bYHqhcHq+/iR0NO+BIiu0E9uvazRC5ob8D14LqrUTfFULsb1tTx6dnpDCDMlniXA+KWqWRUfw5UPEpMTsJCtdeTt36UAYjhAXWnIKPnckpFjUBchRqbREv11Vai072rrNAtRQ5i1BxBU5JwfT5hTZpPSpFvpRm1AfkBLGfSpDnZIGgkm0B1A4eyaSiXrzpS3RVgODJp/r/swSnaf99JCBzgV9Co7mEYS7tv+rUcERaPfl+xpKIkKu/YtjQjD8xLVCTEkXOeWF50hpwi3ZBTKbDLgxD0SOy/OK48azdaP1ZF7vEdIhBrawhhkLoSG4KFKequZK4GAplnL8gE73qVPuB2pawwI7FJhBo8s9b+W4XH5btyQSkRrR1cNDlgaVVlaDoK1LgnLHUAiPjpC3kOEikzBw6H8yJ24RitrpNLgTCdaVAUdqvG1+PLeFycVkZ3nFXKcRYt8VM/ZS5yitKUruJl5HIvy3O6g19zUl4BYEaer1Ob/0ADvU6Y0OqVU/yAX1bkFDmN31s//kTgb8sU3xLOi8/cAindUPQ==
+X-HE-Tag: 1789748592-343320
+X-HE-Meta: U2FsdGVkX1/YQcv+8zyCmuqlASW+1e2BIu87uqu40VBSOFVIBzuO1L5tpAz1f9xxIOyHsCVf9+4Mm6xQKmKHtIvW8jGKY+78vcVPT22f18fZuA/R4XAGlqeBwOeWWQCIZYcO15PehWjQkos7HHMe1ihIawmpWawBjxm4pyokVjMWhPi9O3rS5JVYWcfMgOnZ/PnbtMx/l08j6YcfJ/whowpJKQTcuyKcbyeF8eQhDhnqJC/jfMdlog3pTxUsc3+GEQ84/6hk1NA5ECOKsZ2KPJtP+IoUx9A+YG92hUcz9RsYO81dSQaRC9Lbx/5i78C9bw489dywV8Vo73kP3ELPrLDpJC+3cmHg2YS1upLUYwFohMnRM80qgaX0NfYIzU+oDkCDV+drCxRl8hywUESi5mUyGAxT/mkGjdcbXI41ouhVSOUbdnQtATpJwSkSOfCYHYYSXK82BKBJlHSVM7xCvZgdJVeecmJD5HJ6wBjiXPjeMAa53SePwhxLWZEhy6j8TuQYq/z0VqzIlrZPXP3N/4i1ULzFYmgn9f/AoYELr6DJFcUAbDttAKWKM2lvBnf44uP9BxsWbs2yFpBzoYnma9pYa2sw9qqBXlJx4I4T3khXmAidgA0EOS/IjzPwxsCpJ3bjoCu8YWrzrRpoBZQDcPaYcB+Uv44X0+D0ER3vj/hw7Xzqp0xJTQK4vF38ZweXvPzuvrUSfgWxyYe9cWLBEOqYcTaCLRPt1CoNkDIMwaNIG/Nzo9U9rZKbb3WFM6m2x391xNm+2hIiVUzLmctcljZD0HkZ+OIdiCjumy0iz0jxQPjxbFFF6H2m8DB6pTc4ziEQfsKzJzC+dkVAnjumqXm+f0fh5e4dusE4VUsjdOkM98bwWMsL+E5PMmeWhDirfswruLdftsdP/Mn4GJcjB6AZLKt9ISvGS6R4gID/QHboSeN4T9+qz5+JrAKqSt6//N4fYnBIzFh9H43mtMu
+ GmrrC8E3
+ ZPMSs/VJe7kO4zRxgK2XPioIMRPw9DyOnP3giQ5GLhpQjSelsq1zdTFW4uuDxKhFZXX243v2+4NyS+41mkb/D6Q6mD1rJp2eubnZlP8v5qJIzp632Qt8s38WyxuqsJ/jc22Roz1lVG9qVKbr/c1EvRAFPXJ2VtR0Y6mxw6Zfd3RKSU6KgGg50ea1cEJcLe0fvT+8ulcuw1s9X/OfatnNJg08B5e/iieRehz2dFiLn0b/y1nGKys8seWu6Okdl/b9QV1/Nf6xeAzLELTBz3oIKjMrvrrDWulGSKeERFDRBuyZwskw+Hx54AHvS5dvmXLXtnPeK7vQ5vbqoAyNYhWY6vCU5uA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,115 +152,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Suzuki K Poulose <suzuki.poulose@arm.com> writes:
-
->
-> [...snip...]
->
+On 16.09.2026 15:06, Heiko Carstens wrote:
+> On Wed, Sep 16, 2026 at 03:03:07PM +0300, Mike Rapoport (Microsoft) wrote:
+>> The saga continues :)
 >>
->> RMI_RTT_SET_RIPAS() is actually saying "host permits the conversion from
->> base to top", it's not telling the RMM what to set it to, this is also
->> different from SNP.
->
-> As mentioned above, host knows the requested "RIPAS" from VCPU exit.
-> RMM knows the "RIPAS" from the VCPU object.
->
-> Now: Privates vs Shared is translated to RIPAS_RAM vs RIPAS_EMPTY
-> in the CCA (well, roughly)
->
-> RIPAS_RAM implies, the GPA can be mapped into the private address
-> space of the Realm and it is integrity protected. Host cannot
-> replace the GPA with another content (it can unmap and DESTROY
-> the GPA mapping. But unless the Realm consents to replace the
-> GPA, again via SET_RIPAS request).
->
->
+>> This series covers CIO, QDIO, SCM and IDAL buffer allocations.
+> 
+> ...
+> 
+>> Mike Rapoport (Microsoft) (13):
+>>       s390/chsc: Use kzalloc() for CUBs
+>>       s390/chsc: Use kzalloc() for the SEI work area
+>>       s390/chsc_sch: Use kzalloc() for CHSC requests
+>>       s390/chsc_sch: Use __free(kfree) for synchronous CHSC requests
+>>       s390/cio: Use kzalloc() for CHSC work areas
+>>       s390/cmf: Use kmalloc() for the CMB area
+>>       s390/idals: Use kmalloc() for IDAL data buffers
+>>       s390/qdio_main: Use kzalloc() for the IRQ structure
+>>       s390/qdio_main: Use kzalloc() for the QDR
+>>       s390/qdio_setup: Use kzalloc() for QDIO buffers
+>>       s390/qdio_setup: Use kmalloc() for the storage list
+>>       s390/qdio_setup: Use kmalloc() for the SSQD request
+>>       s390/scm: Use kmalloc() for SCM information
 >>
->> Interestingly RMI_RTT_SET_RIPAS() also errors out if the current
->> shared/private state is different from the one tracked in the vCPU
->> object in the RMM? Did I get that right? I'm looking at the base_align
->
-> Correct.
->
->> Failure condition, where it says ripas_pre != rec.ripas_value.
->
-> Please note that, in such cases, RMM needs a deeper page table level
-> and the error is RMI_ERROR_RTT, indicating to the host that:
-> Look I need a deeper level table to satisfy the request.
->
-> e.g., base = 4K, but walk.level = 2, and ripas_pre="private"
->
-> i.e. the requested base is mapped at L2 as block with "private" ripas.
-> If you want to convert the "base" to shared, it needs L3 table. The host
-> would follow up with RMI_RTT_CREATE and then retry the request.
->
->
->> If two vCPUs race to convert the same range to shared, both vCPUs would
->> have rec.ripas_value = private. The first conversion would be fine, but
->
-> nit: rec.ripas_value = empty (shared)
->
+>>  arch/s390/include/asm/idals.h   |   9 +-
+>>  drivers/s390/cio/chsc.c         |  20 +--
+>>  drivers/s390/cio/chsc_sch.c     | 300 ++++++++++++++--------------------------
+>>  drivers/s390/cio/cmf.c          |  11 +-
+>>  drivers/s390/cio/qdio.h         |   2 +-
+>>  drivers/s390/cio/qdio_main.c    |  23 ++-
+>>  drivers/s390/cio/qdio_setup.c   |  14 +-
+>>  drivers/s390/cio/qdio_thinint.c |   2 +-
+>>  drivers/s390/cio/scm.c          |   7 +-
+>>  9 files changed, 150 insertions(+), 238 deletions(-)
+> 
+> As far as I am concerned:
+> Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+> 
+> Waiting for IO folks before applying. Thanks!
 
-Sorry that was a bad mixture of pseudocode and constants on my part.
+Looks good to me! For the full series:
 
->> the second one woul see ripas_pre = shared but rec.ripas_value = private
->> and would definitely get an error?
->
-> rec.ripas_value == empty (shared) as per the guest request. And the RMM
-> will find the state is already "shared" and would confirm the success
-> back to host.
->
+Reviewed-by: Peter Oberparleiter <oberpar@linux.ibm.com>
 
-Oh yes, my bad.
 
-base_align says (rephrased)
-
-  if (!AddrIsRttLevelAligned(base, walk.level) &&
-      ripas_pre != rec.ripas_value)
-          return RMI_ERROR_RTT
-
-Is the alignment check to do with another vCPU splitting the record in
-the table?
-
-Why compare ripas_pre and rec.ripas_value when the level is not aligned?
-
->
->>
->> And there's no "accept" step in the guest after conversions, which makes
->> it different from TDX and SNP.
->
-> Correct, the guest "permitted" the GPA to be made private with unknown
-> contents anyway. RMM guarantees that the "data" is scrubbed when the
-> GPA is made valid. The advantage with this approach is, once the
-> Guest sets the RIPAS_RAM, the host can lazily donate pages at
-> fault time
->
->>
->> Difficulty in using current gmem hooks that SNP uses:
->>
->> * .gmem_make_shared() called from conversions doesn't have the vCPU
->>    context, finding the right vCPU context is expensive.
->>      * Sean, don't we already iterate vCPUs to find VMSA pages to kick
->>        the right vCPUs?
->
-> We could keep a list of VCPUs with pending set-ripas request for e.g.
-> Or before the vCPU enter, we check the state of the region and
-> do the sync with RMM.
->
->> * .gmem_make_private at fault time is too late
->>      * At the next vCPU enter, the RMM would already read it's state to
->>        report success/failure, and there's no fault in-between for the
->>        .gmem_make_private to happen.
->>
->> At the call Sean suggested mirroring the RMM's tracking in KVM, but that
->> sounds quite arch-specific and it's like doing arch-specific validation
->> within KVM.
->
-> Suzuki
->
->
->>
->> p.s. Fuad, for pKVM you also mentioned that you'll need to check if the
->> guest had requested for conversion first? This might be the same/similar
->> problem.
+-- 
+Peter Oberparleiter
+Linux on IBM Z Development - IBM Germany R&D
 
