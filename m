@@ -4,90 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4784C982D2
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 03:49:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 575FCC88E75
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 03:53:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A15A16B008A; Thu, 17 Sep 2026 23:49:06 -0400 (EDT)
+	id 5427D6B008C; Thu, 17 Sep 2026 23:53:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9EC3B6B008C; Thu, 17 Sep 2026 23:49:06 -0400 (EDT)
+	id 4EC426B0092; Thu, 17 Sep 2026 23:53:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 902E36B0092; Thu, 17 Sep 2026 23:49:06 -0400 (EDT)
+	id 401D36B0093; Thu, 17 Sep 2026 23:53:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 70E146B008A
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 23:49:06 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CB978A056B
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 03:49:05 +0000 (UTC)
-X-FDA: 85225502250.01.937CD73
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1BAD66B008C
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 23:53:40 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4E5F640589
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 03:53:39 +0000 (UTC)
+X-FDA: 85225513758.22.2BE8EF2
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 194FBC0004
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 03:49:03 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Gp+wsNqp;
-	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	by imf04.hostedemail.com (Postfix) with ESMTP id AACA840004
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 03:53:37 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=faMWUe+E;
+	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789703344;
+	s=arc-20220608; t=1789703617;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R4q08ERpIGjLGCf1CNdAlc+T9V2LICMNbsbDVrMf148=;
-	b=qiRQDoTgrh3lSBTyLLckaqgEHgLB/WA7YSf4JoXNdBCn8T3p9BDG+Ax96l17+o7cIaLwmv
-	1ZM+9x0bil7vtNl5RNaqx0nvWOdTeLW1J7N6zKRIDvyjxP84lEHjrlgmcjnfE6D5TQpEgJ
-	208vctt4nIEk9rI+Q/B1ZsrLmrKsZP0=
+	bh=NyjeJYQAoIT6JPqi52GByedAXFRsvGfuaaVIMzoH39U=;
+	b=wg1O1ajWBMNkO2J/00MmzLkbMzAgbo2wsLHTxW9oBjbDTaDSxBd/43JQs1vSb9SKcxR6qe
+	r5c1BuWl/n75iIAkSzldYyOf4KaG9RDci1HFTZmAHpUIpZAkPW37WxXq1v65qTOEtdD5Q9
+	/lUt8jdYhhX2/tjt1TN3sQipXpayAaY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789703344;
-	b=xXZB0vUKiZDSVLZxxHJEV5qVBv9z0I9mizTuNtuQGUg2HQc0gTZ8RH39kI9YQ/QEGigsab
-	UizL3X/f2VCIsC1CEvjvwO1XIpzbRoeu9OL7yKdpXLG+fJ/eDwgpks6hCQsIKtJnEdArfC
-	1ReqWpjsPTSoBCxMo+7fRGYglFg5Z7Y=
+	t=1789703617;
+	b=jmWQyPog1bUBNU1QTvYqcjUNqZM7jdUbNw6+xStNGI0v+QoQ3uVHQEQMIaNLOg0S6BA0Wz
+	f2/dSOlmzV+YcMTR4i9uWJGD+vtkhROb6NNLSDv1P8diAPi0m4Uh4Ugu4v7LkC5uABiC/g
+	q/XqAssyULfJ/vMQtn0nHeqDsddj7WI=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Gp+wsNqp;
-	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=faMWUe+E;
+	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A7B17600AA;
-	Fri, 18 Sep 2026 03:49:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF3D21F000FF;
-	Fri, 18 Sep 2026 03:49:01 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id CDE51600AA;
+	Fri, 18 Sep 2026 03:53:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54D4C1F000FF;
+	Fri, 18 Sep 2026 03:53:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1789703342;
-	bh=R4q08ERpIGjLGCf1CNdAlc+T9V2LICMNbsbDVrMf148=;
+	d=linux-foundation.org; s=korg; t=1789703616;
+	bh=NyjeJYQAoIT6JPqi52GByedAXFRsvGfuaaVIMzoH39U=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Gp+wsNqpXSHoQgyqaAiMkwFieo3u6guFDNRHvmB2pdaa7h4DoXupHH121rpO462Hp
-	 4hT/7JdNNOOsujTnobpCQ061+0AHRj9EiwC7L+WL7b00jqY40azeolORSh7Pqyup35
-	 /+x0IhbEDxQ8WgK9jgR28vSQFDR1GhOIDP+OuOMk=
-Date: Thu, 17 Sep 2026 20:49:01 -0700
+	b=faMWUe+E92wqRxtkbgaWMXRYwf6KR2EqEIoqeW2C5x8Tk7PKPPibffuWfOOMaOnRJ
+	 mpr69blAKOn6oTolFU0h1fttVhImQOrJ+9OHLp6NW6w63EYu7M7joHbQ+8dYkv9PAo
+	 J6YjQQJYozXesL/9g+YQJEr51aieL7Rd2UoPU2X8=
+Date: Thu, 17 Sep 2026 20:53:34 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Hongfu Li <hongfu.li@linux.dev>
-Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>, Kees Cook <kees@kernel.org>, Colin
- Ian King <colin.i.king@gmail.com>, Shakeel Butt <shakeel.butt@linux.dev>,
- Mina Almasry <almasrymina@google.com>, Mike Kravetz
- <mike.kravetz@oracle.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Hongfu Li <lihongfu@kylinos.cn>,
- stable@vger.kernel.org
-Subject: Re: [PATCH v2 0/2] mm/hugetlb_cgroup: move the per-node usage along
- with the folio
-Message-Id: <20260917204901.efd6e6908c85c104467fdeff@linux-foundation.org>
-In-Reply-To: <20260918-for-hugetlb-charge-v2-0-2b6d8c2bdc36@kylinos.cn>
-References: <20260918-for-hugetlb-charge-v2-0-2b6d8c2bdc36@kylinos.cn>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>,
+ Alex Shi <alexs@kernel.org>, David Hildenbrand <david@kernel.org>,
+ Dongliang Mu <dzm91@hust.edu.cn>, Hongxiang Lou <louhongxiang@huawei.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, "Liam R. Howlett"
+ <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, Miaohe Lin
+ <linmiaohe@huawei.com>, Michal Hocko <mhocko@kernel.org>, Mike Rapoport
+ <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>, Nhat Pham
+ <nphamcs@gmail.com>, Oscar Salvador <osalvador@suse.de>, Peter Xu
+ <peterx@redhat.com>, Randy Dunlap <rdunlap@infradead.org>, Roman Gushchin
+ <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, Shuah
+ Khan <skhan@linuxfoundation.org>, Suren Baghdasaryan <surenb@google.com>,
+ Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
+ Wupeng Ma <mawupeng1@huawei.com>, Yanteng Si <si.yanteng@linux.dev>, Naoya
+ Horiguchi <nao.horiguchi@gmail.com>, fvdl@google.com,
+ jthoughton@google.com, rientjes@google.com, vannapurve@google.com,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3 0/4] Fix HugeTLB subpool used_hpages tracking
+Message-Id: <20260917205334.9ac84d529c686983ef420567@linux-foundation.org>
+In-Reply-To: <CAEvNRgExZM4ixMfrF_FMw2CTn6JqRX8s=cy0_-x5ypLxvQQuMQ@mail.gmail.com>
+References: <20260916-hugetlb-subpool-always-track-used-v3-0-38aae9b5ccdd@google.com>
+	<20260916201307.5618114cbac4af52d98aecfa@linux-foundation.org>
+	<CAEvNRgExZM4ixMfrF_FMw2CTn6JqRX8s=cy0_-x5ypLxvQQuMQ@mail.gmail.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: y3si8qefe1sdr3rkec977nktccsjryko
-X-Rspamd-Queue-Id: 194FBC0004
-X-HE-Tag: 1789703343-813967
-X-HE-Meta: U2FsdGVkX1/pSkBJ8m2mUlgOE24d6HwCSznHk7C+lI/XukSxGJlnxxED3w1o+QYcl95JKxzX1AOzTIZaNyN6FtwaWQYL91H80JvTFpKdeRd7fTx1U6A1W8dMtLupFqkHxZZgLVTqbzB+77dGIxzYsDFspDwEYRaDPKxJM8kziyNyI1vRF/S5eSbZoCNZXUSNQoTtjTY1TyJ6JlbnGooFIzuVycGlJpQ2ic7F8ooAiUt29CmHvx9Klj/WwKMnAMwRMIhxmErWgT0QRWXZp0FttZDFXVWVUV+qTMCErFHgSrhqzIqnUUSE2pHeDvKiE2/o21hRhRd1AeUrnEPHsIbiXpCgBgZySicBBWDaptK8CIo/X3gBYs/amc2cOL0MisCb+plJalN5KH3XCfLqv1UPqzpuyLyAUOw9BAcbRTBut5fHA8+QTwn7SS34F8kEfR8Ymht38EoqWu3EvjuMAfHkZBuY1v+QEDFHuzWdkeVvAsLjF3cBJU/FJYx2KEGjsNKRSziYiiHH9qnQJrOsIBeyyZHLWKLZFiBNSWxoKoX3LI3Nnoge75fhpvSvuekgDuGVcFHIivCaGOpHJasuU7vVqbNFcw3sOCg7EmM6vvC11+Gs83DKpoOTk4barCFj8YEflozmsOE/sL6PafjaTgyvnQw0bmL47H8hN2bm1SaSTnzvkAhsVz4/GdA2oHz9bXOuu0cFtuPcRxyVQhsD7U0XWdrzL38v2x9inEnMBekUg8ctYskFoS/jqpltdB4I8CPXybtxFZVid2ZRjnKeMNzGBGVLkfIgK9x4PzJiWcNEEMRbm+S42dd+69+e49gFgiHqos49LJv8yfWixpMEhR1zXtJCaxvTWKGjiMg25Ai0qMzmrrLZTXOW8D9Flhqww05yEi7GbjHiczfCOtQlFc/mt54T6gP2jnuRaiZTGrOw3xaGkGd9nOfUKccTRF/A0RaCM7B3jhii3Wgo9FIuVve
- lz0o4bNs
- yAIS1Nzj/JVvp9dA2yEwSLn/zofeGmd0rNucKQ6iZQdBXiW38fx21N3Ml1V7uC8cZqEqAU9XR4nRtqnzWRcLfisTFUeHwfecryhYkaJ5RLbXtR3oz+XhyEBgAKnlg6oatPSCGZ5FkwsLSYS9UNk26oMl7Vs4l3zKdhykFVCslt2YP+dQ8OfHl5eTfRzZCTWFxw7Uk7rdAvgR8aRDBuguoyq2fBta3IPB2g2WaOah9nAnHY4ZSFTYIcETtPpAzaOMUC5KugErESMwqlNulPhsREOYugLiSMBQjQ+UoBEUpB3lPAit+n9Oh5FxPuQ8VG1vcYrrH7bjOvWJbK8Xjy62VkqNZ1UhdogeaRYW0fa3pXayZ+98fKpXafDxQW0SLe9DzSb0JpUhhzUPvHcc=
+X-Stat-Signature: hm3834abmdbnw4sm8e5cpxouhgzysgn7
+X-Rspamd-Queue-Id: AACA840004
+X-HE-Tag: 1789703617-511356
+X-HE-Meta: U2FsdGVkX1/Lazf3fYd/8OI5m1XDLVYJq5IqvCo/K7LtNjMJcIR1VnU+nSpROydjZIfwecrudc7TPcXWa3i0IMDZQ5SjhJ+Xzyw1OnYt2e16NuZPtQTAzJr0rfGMOGoeBdA1Pn1mvO7vp1sYANCrYlopolZuIPEL3jkkCoHOL4V6NUcouFBFFW7eZ6NdJDfQCQinJ9JrPa0cmnsTfLlaNtk0N610/dRli27+QMAsTtzqDC3D8B8aCs70wXtnXgsmMy/k9wpLQvM+bom/shNZNTDr7HQYSWZ2WMNRlKfMPZS89b/fXU+Wl1DwjbzvKKcGY4FNj7+b9Y5bvUJg/rnWEXAszw2+DacJR0gr7yF7FRc/xxMOwHslQlmJ6IoicdDuyRL9ofh7WhWYmBJ3GhsUuREJ1o0QvpSyGibzg65r9JeNUx2XtlgjX5DJgwNqQi5rmrDqncaFAJf5be/PYTIfAC0iL8tvae1fppYJ//xC8F/yV61bMecMcl5rdigAThg1xP5ZlitsR4sDzKJeZZiYoHPfivGxh9LArlQw/Ny5MmsOJEiS6Ow9XDT0iDLrWCOFZRqCdRCn5Ka1OAz2O3KLn/HMguVGfHmVh54hpPgBJtic4tfrYdnwhsM9DEO+VeBluBJOYPIoItAAfUvBQzQ1VgjVewhSTZPC3eSt9seZm7VF9gSc084wBgDs6Yomu936P6QsCKuVVAX7eaSla64TlhiDdqxhoT/2J6LF0Y1Ml8V6KsA+2NSuMZWOhclxUpZqFbmJviux5++pTEaAagiuW9vU4KbZbr/nSjvNTRl4wgrPEL/iTTuzl+xjTbfh6KHbrPrAke6G3C1FLg4DWoNJm/cAUp0WwsUDrnY9v/d3U4jqyJEaslEJoObB6kGRStv75H+m+77q0i7ZBhn+xsMnqa+RYNvOKcg0oVURUZQFiNcyhLa+JmrDIFOBDd7IQCV2PIS8XZp90SEc/Z28BwK
+ x7MgLqO0
+ RLy8+NtAnOSazv9NJb3Vbebc0CxNxrKoxY0a8IKzRd2dIvmrgLeEnJZdX2vqbAKcB2e4T57Ki1yU+aBlq22rbNMklWK3LJzumfhbW0KWGMVGubQtT641all6tHCJwndzpSFEheAmw/BkrE72nUjyS1je7I0+3UhDoOIYajBvvEUVmfbC84ozpnc2j51TExGYfsGf2YAGLFq6zSCRa5s5tdnLoxWcqPFWsD80ZaCc8xsTcg4srbFxF6Sl75j3FPKd08gQWlpkNoKk2KHt3TC71BHHLWF01mj4wXOHQV1jG7HqPEoh2DSjqVqLfBWP2VPNNy4MwIcObpkbUYkO/s/sYzV0SEZ4QMqu83ihCQjrYOugpkc1qycQEqVcz/Hi3dbGkh4jsEpS9T2/hueXVE3eqVGwj3z5pW1QXwft9cQhepHiBX4+x0Udp1u7IiWxJymGb8nzzhciCuRMNIx+MTjwfkg+l+LM16vETouSwfji3PcTLfUqZYbT5J7PL65uRI8QDWO0Mt/ZaAjDdYE8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,27 +107,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 18 Sep 2026 10:56:09 +0800 Hongfu Li <hongfu.li@linux.dev> wrote:
+On Thu, 17 Sep 2026 20:05:33 -0700 Ackerley Tng <ackerleytng@google.com> wrote:
 
-> The per-node usage reported by hugetlb.<size>.numa_stat is accounted
-> against folio_nid() in __hugetlb_cgroup_commit_charge() and
-> __hugetlb_cgroup_uncharge_folio(), so it is only correct while a folio
-> stays charged on the same node and in the same hugetlb_cgroup.
+> > Ho hum, complicated.  Let's at least slap a Fixes: on [4/4].  My
+> > trillion-dollar sidekick suggests a9e443086489 ("hugetlb: disable
+> > region_add file_region coalescing").
+> >
 > 
-> Two paths move a folio which stays charged, and neither moves the usage
-> with it. hugetlb_cgroup_migrate() only moves the hugetlb_cgroup pointers
-> of a folio migrated to another node, and hugetlb_cgroup_move_parent()
-> only moves the page_counter charges and the hugetlb_cgroup pointer of
-> the folios of a dying cgroup. In both cases the node (or cgroup) which
-> was charged keeps a usage which never goes away, while the node
-> (or cgroup) which ends up uncharging the folio underflows as soon as
-> the folio is freed.
+> Your trillion-dollar sidekick got the right patch but the wrong hash :)
+> 
+> Fixes: 0db9d74ed884 ("hugetlb: disable region_add file_region coalescing")
 
-Thanks.
+Well, I only feed it $100/mo.
 
-> Fixes: f47761999052 ("hugetlb: add hugetlb.*.numa_stat file")
-> Cc: stable@vger.kernel.org
+> I'll also reply to the last patch with the above. If there are no
+> further revisions required, could you please add the above tag in for
+> me?
 
-I'll queue these for the next merge window, with cc:stable.  I don't
-see a hurry to fix a four year old bug.
+Shall try to remember to to that.  Whack me if you see the
+"added-to-mm" email and I forgot.
+
+> > Our other little friend is talking to us:
+> > 	https://sashiko.dev/#/patchset/20260916-hugetlb-subpool-always-track-used-v3-0-38aae9b5ccdd@google.com
+> >
+> > I'd like to queue this up promptly because it fixes things.  But let's
+> > seek additional review input and argue with Sashiko before taking that
+> > step.
+> 
+> I'll copy Sashiko's comments onto this patch series in replies. :)
+
+Great, thanks.
 
