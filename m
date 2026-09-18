@@ -4,138 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42363C982D0
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 01:09:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEC04C982D0
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 01:12:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A77A6B0092; Thu, 17 Sep 2026 21:09:18 -0400 (EDT)
+	id E3F2E6B0093; Thu, 17 Sep 2026 21:12:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 140FC6B0093; Thu, 17 Sep 2026 21:09:18 -0400 (EDT)
+	id DF1206B0095; Thu, 17 Sep 2026 21:12:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 02F296B0095; Thu, 17 Sep 2026 21:09:17 -0400 (EDT)
+	id CE0196B0096; Thu, 17 Sep 2026 21:12:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BE2CA6B0092
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 21:09:17 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id ED0BB16051A
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 01:09:16 +0000 (UTC)
-X-FDA: 85225099512.09.518F7C4
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 11418180002
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 01:09:14 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Tq0qOSPR;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id ABC626B0093
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 21:12:29 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A8E11A053A
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 01:12:27 +0000 (UTC)
+X-FDA: 85225107534.25.94FA20C
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	by imf13.hostedemail.com (Postfix) with ESMTP id B216620004
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 01:12:25 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=SaCOhzLT;
+	spf=pass (imf13.hostedemail.com: domain of surenb@google.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=surenb@google.com;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf24.hostedemail.com: domain of surenb@google.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=surenb@google.com;
 	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Tq0qOSPR;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf24.hostedemail.com: domain of surenb@google.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789693755;
-	b=bFKP/T+EmOXUm24mj1azsmd6bVkdX3IDbr751z9LDY4+eeEZykPZOaBCwO1+kF7vnCaZGl
-	gX4VPKxgOJ1iY8iu/3NUECyPASWikoBgiH4j2V8PIMvJLzunhUupUgPyTdmb6XO6+wXhZR
-	r8TZqnSdY312tLXh5GPU/FhKH9MRbiA=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789693755;
+	s=arc-20220608; t=1789693945;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9OH+vRLumsrAn2s1eXS41G1CuSBMFEgYn9wTdjASFyo=;
-	b=s4Ls/e3ALZfl+Xn/jRZAakIq/cmf4V7fxk2WtJUVWZH1KlHT4gwU661IDesY7uOs7W3M2B
-	Aeh14LylR4VoUjj8x93ReYKoCK91Xd26RdXsbP4Lp7Yt8gvz12NZWoHKnBG9cFLm2ZA2Tc
-	y3gAytQcMiEQZsCpNIzXgrqTPhiV2Hk=
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-52faa58bff5so157761cf.0
-        for <linux-mm@kvack.org>; Thu, 17 Sep 2026 18:09:14 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789693754; cv=none;
+	bh=8CaD0rfqQizy2B+GSoa1ONFRM1MKoZPF6ZVzgGYvBiY=;
+	b=2VNUybelJM45V6kUAEbNrkFLrYuJsv+yfohoAqx//ZEic3eHZIPSfQPdUKtOuRm6QCVDUO
+	/FxGd2EFLK5pxQxVHfn+4n6TfrrqZTgpHdoNks1ZwFFwVPpjizZEinLIvq5BcT8h4PLEFz
+	KBL3KYaBjCcMPOMxdk1N0kGLEHVmOm4=
+ARC-Authentication-Results: i=2;
+	imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=SaCOhzLT;
+	spf=pass (imf13.hostedemail.com: domain of surenb@google.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1789693945;
+	b=EGNQQjOgepINu/OgPFwId7p1PcdTMxbI8ldrKX7VAbpo/DIAjwds9O272emzs2GpDn92oi
+	NxmO/JfdlrIX4oTpzNwdBUUNFhtMjcmbxiA3O+ClmkYiTtJGQOOfGo/1x511WY+mB+7TRn
+	UqD93jYfAeML1hmlI56Hs28F5SBcmEc=
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-53113d72966so106311cf.1
+        for <linux-mm@kvack.org>; Thu, 17 Sep 2026 18:12:25 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789693945; cv=none;
         d=google.com; s=arc-20260327;
-        b=IjKxN8zexEHiH+cMG30gTMZSUPIWXNGTwCWn9T0XUjK43GLeUY9On2aHy969Im6YN4
-         pZC5otzBRyBxyzT5hJRScUr0pEdnDnrvVq3ehKkR3IRgdusDi5xIBNPsOBrSWXYfB3sJ
-         Oov/yqjjgHFhKF9xrPAHvQgWv4xh2vqlEvfZSLpOmYbicTLCO0H0CzmavyQkk1FI0kk5
-         dHIvL9xaka1EyeREu41eFevprPxFOo1oCR1ljlJilp80OW4sBYgKS+n9VPAYtMphpk+z
-         qkRKXb8LJwvMguWykgwA3+W4BFsBVbA8gNM7v2yb4BEIphRMkByBirv1rPL4Gy1MZiQa
-         tLKg==
+        b=L4kwpqpAiQdQYXeKdInk4m8fu6SMeq0oXrk+r0155WL/sYkgMzzK1yfUOqYwyzTKHq
+         rTgPsnfEHqi/w31hARB//Vjnuh7OlvQW5tsAwuF7R9UFQTojTkJIKVBpQ0WgAg5XvANF
+         c63smQGcr6cruhJ3dlHAqhmwk5IamzMLoZFddruNSB4ijReXXVNkD+Kl0xks1fjvg0pb
+         Widyl42pX2X2SpvsQ6Le0wNj2awWdTcPi6VfMzWtpK5vOdzCfObAIeVzjiI6cQXJwHCD
+         Gx27SzYL/rTJmXkuroevD3XQgViRTK9Lo1pju5IZsAA0mE1mKMWp0Oqi6fq8sx4tBSql
+         h2Zw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=9OH+vRLumsrAn2s1eXS41G1CuSBMFEgYn9wTdjASFyo=;
-        fh=2fSgCUdf2lnJh536sHXWwZPIuv6OGRC7I6oXBPz2Ezo=;
-        b=IBPUNGwkqmpFIe6300my4AuEMd1l2kRjEWctHpzIepWFAeCH8HEPaZ8xv0c4YbtvdR
-         /1q6v7YyrVOkGj5bHVGVfqp/93+HGIs0pJmrH8PcTTmROWM806v9YyA2VzIio0NFWmJf
-         TTT5LU6B7imdiQ/NwYMGfw3oZIMZ7V+a/VJ0WU6pwLUXYqFtCoiXV0vbplW32ChJ1E+S
-         IrcmYx30mwpU0zztrSRDZhcdfSEmQuLTdZHdF4mVCr95QrE6QulA9MkVzdaCBgq85RVr
-         5oBUC4N5y5uTAPdQv8N+EvgqLb44yEd4293EyVVTb2NJ68ILn0uj6S4Y5B4Erbib6qiq
-         H24Q==;
+        bh=8CaD0rfqQizy2B+GSoa1ONFRM1MKoZPF6ZVzgGYvBiY=;
+        fh=MjyCIwVVd1lkZp7CjOVUdpjaVm1Aw30NRZbNyZBK/GU=;
+        b=HS8oXSa7eIbxYPzCyHjyVKZJqtvrdBBwUakHH0ppox1Q6X+hkxtjzaZV9lHhHp4M4o
+         dL40e3je9Sef2Czrvi81UvIQkMWmCNpfYhZ3aviNvyj+2XgQBk/FrKGACsze2GaNwOOa
+         Wr+/lqYZTybrdNBUgle66vrmEQLAmV2R+B0O4aAF8zCiLh3jxdoPdzkqvPWZy9m9Jh6s
+         aVou2N5DfnGXMbIeVSSLdpRJHTqcnOMm5oz5etAj4iIG7rMdVneqCJI3IEpfuFS7V1az
+         X7p+liOEpWkpo6Qu1yYSXsm5IgigD6N9KYIxNhC2sixe8xeEy4fGWpHrxBXJePaaTKJd
+         ZWQg==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789693754; x=1790298554; darn=kvack.org;
+        d=google.com; s=20251104; t=1789693945; x=1790298745; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=9OH+vRLumsrAn2s1eXS41G1CuSBMFEgYn9wTdjASFyo=;
-        b=Tq0qOSPRDT0h/bmY+ZiIfOB2EnqfZIFLQPq+EhPz1ZjIrJ6toabUKxqarUg2kc4hqE
-         0y+C2QujHg+L1aYva5Dre99WUS76Z9Wc0DmV9QkOTH535BTmuWwd01oOLOysu9qhRewN
-         mdjL2EVvMtZR5oNmS2uiz0LHKhG8xiO5exPgFjhY+bG5XR7kInUbixhw++HuEzbi8Ti/
-         P3xIApsHNZYO5vbpUewaADwn1h973zQ91py0uIgR8l+oRgYnI6BOX4m0FU8jhMrYQfBc
-         14KGOC5R0yO0zg7FhXSwPeoQsRhDTRyyneUhYPGh7wS7mW/7bkSVAMr62oEW0GLPeKMV
-         +sMA==
+        bh=8CaD0rfqQizy2B+GSoa1ONFRM1MKoZPF6ZVzgGYvBiY=;
+        b=SaCOhzLTiMPmZbY9QAqob/gM/+jLbVgL3ptXSLqro0ZlWxwg5/WQsKBJR5ZoXOCQ9A
+         oNWZ7cgneEpQKcgrcfX9QFKE1TRAVQBO4tyj9PyoUQTw2nQEYodo8kuz6h5ISv29sLEc
+         1knI2OPC9DfL7WeWC/kln7nHDKIKM128s9m/sNCtj7hctIqNwGNon9g+2yeZSK0Me+XB
+         k2JV4tytvPTZ2ezvXJpovVPgggUcLsIP6ppBFKkBKkSGz++DGIfSh72E2nHtyZGpBgy+
+         DY9XIcrnKBBfCmTR8khdNvZC+JR9EqxrvL2Wc4H8MAm5zWR2CxDjfKF3vZynKa9sN4PD
+         xsag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789693754; x=1790298554;
+        d=1e100.net; s=20260707; t=1789693945; x=1790298745;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=9OH+vRLumsrAn2s1eXS41G1CuSBMFEgYn9wTdjASFyo=;
-        b=ht9TfM1JKDoVkBDbJGdS4iI0GXeCJNP2IyfIvfzNs9ncLzHRgCI49N097sww8Kxb+b
-         uUeBK8Oo/WNz+QoKo0HyIj3deRY777B+PqJvBts88SoDsSM15W7Baun2l18Nevyt6KII
-         r80RO6ql9u7QGL1PMvlyHPySZfMboVVRr3hJtt28UoxHlAscPgInLaaWsr5tSgtMEJkb
-         WEhZfDEN3V5y9/Glv3Sj7SBsZQFZCzvDKUocmq2ZXBQDZxbkN3hM/WrVGApPcSAws8Vs
-         WqWP9DHrNcrV/h3OMT4y8weMWkXb7ETg0ZcQrXfnIdhkUNMtoXk0OfTzqSFDwYk+DJoZ
-         HM9A==
-X-Forwarded-Encrypted: i=1; AKwUvByn2zPFhZ2tZbnIsG28LU4ZZyCdlbv1XgzqlMwyzhYyUHKKhDMsq6AyPm6YZdZndc80KMibEsPZVA==@kvack.org
-X-Gm-Message-State: AFuF++k015mQqYxwGBN2XpEfh5O+/1MLSzDnV1RnksNBhzjpvLliKuJW
-	ao9piCcn0HdJiAW2pfze5WlItfRgWW4iBj0E0dk0M6vxmXRLuh3WCoasoNtLDw4weS7vtG7/+bM
-	cWoVxxUQXzknAvYfbYhyn9u/WaqMZ9jZWWdgM9IkZ
-X-Gm-Gg: AYBFou2rAF34mLrsti9hh/lav3w3RW8PMC1ngDsH7mKt7hKebCZcqwKjF1alHXKlB8N
-	FXOat7h4emR8Wt8SFRRQIzpOWR+QFEaPRvO8vhZPBjkixOorjqbxeeZmEQ1NAXRMioydx0dmzdO
-	VxXAmSILPEDMHDoRhjCDiLjpHEzdM0QBRo/Ehur4YoKcQ9ODB2g3iFzDHm594grsvjtYnmFIBL2
-	6ESIRdEqpy1to+hTRbZ/imPYck+ZDJCttQbsZOhcREyswnVyV7woqnFJXlQly7tZpqYwJaG1LXe
-	NXamrffdV92Wdi0SsqwJCd0447mevW5MHFNpa3z5On+G1IqxdNOflA==
-X-Received: by 2002:a05:622a:2d0:b0:51c:ca9:3d17 with SMTP id
- d75a77b69052e-5329d7a87a3mr7686831cf.12.1789693753565; Thu, 17 Sep 2026
- 18:09:13 -0700 (PDT)
+        bh=8CaD0rfqQizy2B+GSoa1ONFRM1MKoZPF6ZVzgGYvBiY=;
+        b=k0k4NKVrR8MdvodFUp11ZSZYci6bzOhzHLHFl4b3Lu6jT1QKOvvVswLW1y33BLxLAz
+         abs5rhuGMAwTxIpLfVT6isSDK9hwX4iqi6l1S1tFuq21S0gh0cK3fNHNp9sf327TruBW
+         GENh09DAYQn16mY/amW4X32qrVtyW7qFts+oLciOoxI2GtVLPcfLeClQMsoAx8Q8Z8Kp
+         qIVA73RUOzmHd/3hX4quXBod2OtSbhWcriSBtdsJuebUMC7szQrK3LvEJckaEZjsQKkT
+         Q9+qpEXtUjEYTjMCro/75rTUHzp6EgNIS57fhWFNnIwppdxH/iPhd1ZgxrtoYvTKXURY
+         VDgA==
+X-Forwarded-Encrypted: i=1; AKwUvBwf5b7N939pqfXKqZNeEf5pJY/YjUZ/ghOrCQIlHrztTGm/jQF4Dhp8PWgnjxz2z73Ajh03pw6Jzw==@kvack.org
+X-Gm-Message-State: AFuF++lcfsyOgOnBGY6BGC0aYmwIxvZkKQ19f1FMFkzeKlPICuewxEsu
+	Vqyd+NkqmrJyrLjUpusHf/95t1NzuVAJk7CTD2hJ9nRMa7opQBN3eB19d8oi0VAlFaqKlbUmI7h
+	4O86jQxQ4F2vvRrmutI3r621yG/dbeXC/NYXey9Sw
+X-Gm-Gg: AYBFou1TlS6phu+EbOqTecfJVmgEYCNvwql1lVz5PKWfAF6wiGeVlLJ32tkwrxvlMb7
+	Iz2mgEcTr+eVn2dxz+Owpr4Qwe885lZstcNZabKLB/GZkeKP0FaAEfupQ4saf8a9mCzYnCpZQfN
+	+GIwbhw6+3xmcvGwIbhCnN/Onx19wbjuJ6oGCGA07wV2MstDt7pdERBAIrqcTLq8vY2Df2xN17V
+	/JgoMuOnl42Zs0WbyqctOA610ESDhebqPo3dH8sRgwIQ8erPFMd3cIr1qGtKXeWmLiM2uYnZ7kw
+	C+aBM5pFtD54Rl0R3KdpmvBDzPSbqfM956/Y1LRLTow1K+y4mWK1pA==
+X-Received: by 2002:a05:622a:649:b0:52f:9ed4:8d74 with SMTP id
+ d75a77b69052e-5329d7ebce3mr7824921cf.14.1789693944193; Thu, 17 Sep 2026
+ 18:12:24 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260915070001.113559-1-hao.ge@linux.dev> <20260915070001.113559-7-hao.ge@linux.dev>
-In-Reply-To: <20260915070001.113559-7-hao.ge@linux.dev>
+References: <20260916075557.121316-1-hao.ge@linux.dev>
+In-Reply-To: <20260916075557.121316-1-hao.ge@linux.dev>
 From: Suren Baghdasaryan <surenb@google.com>
-Date: Thu, 17 Sep 2026 18:09:02 -0700
-X-Gm-Features: AcwNN1WpdwzfsuEi7atSbmPcBeuY9CTLz0TyEvuZKGkV5swWnf0AU7r2YB5LThc
-Message-ID: <CAJuCfpGMQqjHsAvW=XUA1Q3AyaVJKM2bKYVja_fgn0wa1tk7DA@mail.gmail.com>
-Subject: Re: [PATCH v10 6/6] alloc_tag: Defer /proc/allocinfo removal to a workqueue
+Date: Thu, 17 Sep 2026 18:12:12 -0700
+X-Gm-Features: AcwNN1XNY6AqvHO92sUp1uSClBs9D9k4LNE8UFQHN5IMJcofHqzZ4rP2n34CQxs
+Message-ID: <CAJuCfpFSP1oq_ANWqVbhS_3kzdLkK76aGUf6S73_rC++NTL-CQ@mail.gmail.com>
+Subject: Re: [PATCH] mm/alloc_tag: account for reserved tag ids in the kernel
+ tag check
 To: Hao Ge <hao.ge@linux.dev>
-Cc: Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
-	Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
-	Aaron Tomlin <atomlin@atomlin.com>, Kent Overstreet <kent.overstreet@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-modules@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Sashiko <sashiko-bot@kernel.org>, stable@vger.kernel.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: B216620004
+X-Stat-Signature: ha6n5861579xmxfx66z5tsyuttgfaije
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 11418180002
-X-Stat-Signature: 6tokk7aib7k5p499b995w8rjm7zwjdab
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789693754-45828
-X-HE-Meta: U2FsdGVkX18wtAtes3LYF+feJ7CR4cmS+8BYowD2vT8jBB5rJ7bj/00IgZoAgsgBt4pq9sNyY5XmCwHWayz9bbMCKmoZgiia4wIiZAmkbVBNAR8FyBcKA1emQhrvw+4614fr+FnJ8y686Xs8VUb4+EqEDjPILZvW5I1T7RAMGQoHHG+1/KhOa+qKXiONgopbX7ajpDFqfgvTA/Kt0qW8GRPv4ItCvDrW13xft85bE2zYYwpP4NUhX/KOxnhyGEFe7zPgAIjdGj+k88eg6zDHz4nqflX7LI1meFVwz+/0xIS/msWpqZgoolCp6nMpJxCy0jQtGg2+iQaeHV/xTDHkecogJbSWs68dwHrCKDCyGmooR8OiSiEzR/hMpjCJVg17/ixBH917d1MBF3cgP0YNCzc4jT2fJMcxwJPsp+bJQyN15nZY3G9Gh3NEqur6pcXNPm0MLClq7ZCzNs/FIOcwHi160bI7Smgy5UY1aebA/lakc+Jm/s52wrgoNW1PZLSdLxcF9Dm/8zUT9kqItHZJ22zgW+aJhf/144k/aDkghfdi+zYUj3fYWEfIIEMXHIkogMLpaBfhQXZjQM7SZmkqCyQymT29kHw3g5CunlNkrx+KfVJCHdMPP+j0VvbQwNFEdWIv3Ccgg4usj8FmwEw2kQVX1RVPQMLxkHDiPyT7GsdDkce29sYCUw3Ocxfq/7Xy0r3J0E6fWhCazIlLzRaaEq56g5mPj7DAlUQdJjpXnXmY7P/m4RgkzSG+34Y6BXBr+z9/Cr7SJgf9MJ51sJnGQEVCDKZLyrqxs/sFgh5yI3Z6pWfS3/aXcP5xgjggJllqoUCJOpFPvuWUWTQ2YVYhp0ugsyWaV2kBOJDsay5UcqJguzM+WbrPKQqimG3Sz971i5961H476ulX8JBNbqFSPjizEcc0CjQSzwbvbhQNuG3WK3Qbb7PTReFG9oF5Mz3gYAcPBvYDwV7DfTjaqJ5
- lHYLVNW/
- +UcJTCeXS3e1RqXUquRPPrTXODvA5BnD26ffZr8Y5wkQzNcvtIBx3M67FyScsqDapgF/r/bCQ4xibkOYIzkUAv78ne2ybQ3TT27S8oRuFbnz9UceEvP1jL+EH5ptayedAA8qchLDrKcgehLs5gIcMyYDwmz6igZYUq9Akvx1dZdtR39wHzxILKl3s91/Kuqtv0lVs2PYgRy22vH5rgAwLmBKNI9gF0s95Q/9klelRYX2COaiYoguJfhdqXKTsGj11lkQACyIe3y0PXGBaQguUOtTkTmrSmLWi6nU1h8AJtpnRFiCQ0M0ZmHl8EU0UDYMa6ZNKZuQAKwvyDhvFDyKVhOqC/Q==
+X-HE-Tag: 1789693945-523258
+X-HE-Meta: U2FsdGVkX1+tW7Ox0dpsE3AasGD7RiaOtu5xshqHaaqVuIdZAzSyw8wvMVWfXa9PrwOCvvG/5zL4MdmrfdihNjwe2BnbDZbqirA1/7iRJy2fnLUq90+vQwb8/yVI1z7DbmiIhlz8VsS7JWcAkM+bTPW3pxm71pRb8P7mOWI/+WFHmrZetfv7M8rEauU8lOfojrSmOYbkJtiCNIBSAW5lLAHHhxDBcxOTUlnW7pNUbyKlbwlsKlxkvuDdi6+s6PM+3vnWHL8/0jQQixrgHu8dAbYq1Icu028xWRqiuDIRFGLdx/t+o03GywwRd3gzMC/tZLgBlfNf1iaT7/ImvLMKDXO1ezwqt6wOYQ5P1REVOd4k54ZZMesE9qrAG6sG9FR6UM0/RAX5msg0HJPmHpfzbaaFRdsXEMeg/REVhg8nbfFGoPHACKIBSllcJ5kYX5oqtxjeGAlrKXzIzw5oHeBcWuIgfoHS1378oXsqQ/ahF4ldhhwemXAJavY+dwJrmaGL7hOLug6I33A0NsRz+BDSnAba1DAvFul+T5M6Qzq30LZPBlyNANxFqZo4urASfTzeV9zsOeptV+CU8Nh9PCP/ZLhVy0C7Ud0fA4rG484yroiULah/nORW94Kd56w35Cg0gyVIwXu2slMzYZnN257tHpbKZPdAys3oDFxM3EGBSF/vVd7OzHyoPj65vNrXRezY7bp9RAyI2SsoEBWkKJfhqZ9q6EcGZrU9WTybvLypqvJfYIENYIDUaNemyAuWTB9llRWC5o2rYW77/h0f0Q0VcM74k8BBzaZyf/g1+LqmOpMnA2qFxu9TNX6Jc56s4Fj5IRYSW6d62o31ms4HRR6MzXO0Itvi3uBTin4m4BtVqdMLnRqA/LQ3fo+KhlDNvJ1LFZtHA4rzeXZlmP8vRIBSJWtTWQG9Z3SNu7bsLY6IQ8HpQrO/ApH+2n2Hwo0Xx2eV3ZJijMY/UWVqELrwRRP
+ H7wEL8Vb
+ QBEGytrAb7bcmk8LqSoULNULafWMbWzwi96cDEX4Um//byO08H8KTEmZsV/7w5l8AganTlxUUMB8KwsNkYBlBRzRAXM0pvN5EosyxlwrLvfxXKPGhv8ankKAJBhx9tsxofOza8SIvwLqCVcUB+1vhgefyK1DbGJlcxJzQaMK+G1/EbWgV3lx27Cl4cSw3tC1yniGEUzxpP4Bv/j2zfJ1yau62bPnhUwSyneFi7mFg3ZUaeupqi5c08di0WYnINZaS3NFsXVKeQpYv9xc+ogNhOA18cCb52yMsYEeC8solhBdwH4eOpjO0JNmrPl7olFmQl1U1vGE5naqwfZ0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,121 +140,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 14, 2026 at 11:59=E2=80=AFPM Hao Ge <hao.ge@linux.dev> wrote:
+On Wed, Sep 16, 2026 at 12:55=E2=80=AFAM Hao Ge <hao.ge@linux.dev> wrote:
 >
-> shutdown_mem_profiling() calls remove_proc_entry() from
-> reserve_module_tags(), which runs under mod_lock held for write.
-> remove_proc_entry() waits for readers, and a reader takes mod_lock for
-> read in allocinfo_start():
+> The tag ids stored in the page flags include two reserved markers.
+> Id 0 means the page has no tag and id 1 means the tag was cleared,
+> so real tags start at CODETAG_ID_FIRST. The kernel-side check in
+> alloc_tag_sec_init() compared kernel_tags.count alone against the
+> addressable limit, so with the count at or just under the limit
+> the last tag ids wrapped into those markers. Pages allocated
+> through them then look the same as untagged pages on free, nothing
+> is ever subtracted from the real tag and /proc/allocinfo shows
+> that memory as still allocated.
 >
->   CPU0 (insmod)                      CPU1 (read /proc/allocinfo)
->   ----------------                   ----------------------------
->   reserve_module_tags()
->     down_write(&mod_lock)  [held]
->                                      use_pde()            [in_use++]
->                                      allocinfo_start()
->                                        down_read(&mod_lock)  <- blocks
->     shutdown_mem_profiling()
->       remove_proc_entry()
->         wait for in_use =3D=3D 0         <- blocks
+> Add the missing CODETAG_ID_FIRST, same as tags_addressable().
 >
-> Move remove_proc_entry() to a workqueue.
->
-> The file creation is moved to the end of alloc_tag_init() as well.
-> If alloc_tag_init() fails with alloc_tag_cttype still NULL or an
-> error pointer, a concurrent reader of the leftover file would
-> dereference it in allocinfo_start() and panic.
->
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
 > Fixes: 4835f747d3ed ("alloc_tag: support for page allocation tag compress=
 ion")
 > Cc: stable@vger.kernel.org
 > Signed-off-by: Hao Ge <hao.ge@linux.dev>
+
+Nice catch!
+
+Acked-by: Suren Baghdasaryan <surenb@google.com>
+
 > ---
->  mm/alloc_tag.c | 26 +++++++++++++++++---------
->  1 file changed, 17 insertions(+), 9 deletions(-)
+>  mm/alloc_tag.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
 > diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
-> index 1ca0409b492b..cfa0fc84b68f 100644
+> index cfa0fc84b68f..cf100e7a852f 100644
 > --- a/mm/alloc_tag.c
 > +++ b/mm/alloc_tag.c
-> @@ -15,6 +15,7 @@
->  #include <linux/seq_file.h>
->  #include <linux/string_choices.h>
->  #include <linux/vmalloc.h>
-> +#include <linux/workqueue.h>
->  #include <linux/kmemleak.h>
->  #include <uapi/linux/alloc_tag.h>
+> @@ -629,7 +629,7 @@ void __init alloc_tag_sec_init(void)
+>         kernel_tags.count =3D last_codetag - kernel_tags.first_tag;
 >
-> @@ -591,6 +592,13 @@ void pgalloc_tag_swap(struct folio *new, struct foli=
-o *old)
->         put_page_tag_ref(handle_new);
->  }
->
-> +static void remove_allocinfo_file(struct work_struct *work)
-> +{
-> +       remove_proc_entry(ALLOCINFO_FILE_NAME, NULL);
-> +}
-> +
-> +static DECLARE_WORK(remove_allocinfo_work, remove_allocinfo_file);
-> +
->  static void shutdown_mem_profiling(bool remove_file)
->  {
->         if (mem_alloc_profiling_enabled())
-> @@ -600,7 +608,7 @@ static void shutdown_mem_profiling(bool remove_file)
->                 return;
->
->         if (remove_file)
-> -               remove_proc_entry(ALLOCINFO_FILE_NAME, NULL);
-> +               schedule_work(&remove_allocinfo_work);
->         mem_profiling_support =3D false;
->  }
->
-> @@ -1358,16 +1366,10 @@ static int __init alloc_tag_init(void)
->                 return 0;
->         }
->
-> -       if (!proc_create(ALLOCINFO_FILE_NAME, 0400, NULL, &allocinfo_proc=
-_ops)) {
-> -               pr_err("Failed to create %s file\n", ALLOCINFO_FILE_NAME)=
-;
-> -               shutdown_mem_profiling(false);
-> -               return -ENOMEM;
-> -       }
-> -
->         res =3D alloc_mod_tags_mem();
->         if (res) {
->                 pr_err("Failed to reserve address space for module tags, =
-errno =3D %d\n", res);
-> -               shutdown_mem_profiling(true);
-> +               shutdown_mem_profiling(false);
->                 return res;
->         }
->
-> @@ -1375,10 +1377,16 @@ static int __init alloc_tag_init(void)
->         if (IS_ERR(alloc_tag_cttype)) {
->                 pr_err("Allocation tags registration failed, errno =3D %p=
-e\n", alloc_tag_cttype);
->                 free_mod_tags_mem();
-> -               shutdown_mem_profiling(true);
-> +               shutdown_mem_profiling(false);
->                 return PTR_ERR(alloc_tag_cttype);
->         }
->
-> +       if (!proc_create(ALLOCINFO_FILE_NAME, 0400, NULL, &allocinfo_proc=
-_ops)) {
-> +               pr_err("Failed to create %s file\n", ALLOCINFO_FILE_NAME)=
-;
-> +               shutdown_mem_profiling(false);
-
-You need free_mod_tags_mem() here.
-
-> +               return -ENOMEM;
-> +       }
-> +
->         return 0;
->  }
->  module_init(alloc_tag_init);
+>         /* Check if kernel tags fit into page flags */
+> -       if (kernel_tags.count > (1UL << NR_UNUSED_PAGEFLAG_BITS)) {
+> +       if (CODETAG_ID_FIRST + kernel_tags.count > (1UL << NR_UNUSED_PAGE=
+FLAG_BITS)) {
+>                 shutdown_mem_profiling(false); /* allocinfo file does not=
+ exist yet */
+>                 pr_err("%lu allocation tags cannot be references using %d=
+ available page flag bits. Memory allocation profiling is disabled!\n",
+>                         kernel_tags.count, NR_UNUSED_PAGEFLAG_BITS);
 > --
 > 2.25.1
 >
