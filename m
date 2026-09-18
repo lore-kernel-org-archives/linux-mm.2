@@ -4,87 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 314E1C982D9
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 10:19:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E296BC982D9
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 10:21:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 483766B00A5; Fri, 18 Sep 2026 06:19:01 -0400 (EDT)
+	id 08FCB6B0092; Fri, 18 Sep 2026 06:21:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 45A6D6B00A6; Fri, 18 Sep 2026 06:19:01 -0400 (EDT)
+	id 03FE96B0098; Fri, 18 Sep 2026 06:21:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 370486B00A7; Fri, 18 Sep 2026 06:19:01 -0400 (EDT)
+	id EBFD16B00A7; Fri, 18 Sep 2026 06:21:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1633D6B00A5
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 06:19:01 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 290A01A05F0
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 10:19:00 +0000 (UTC)
-X-FDA: 85226484840.02.EC2F31F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 8114F1C0004
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 10:18:58 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Nih+Cgdh;
-	spf=pass (imf18.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CD8DC6B0092
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 06:21:04 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2F6C4A0601
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 10:21:04 +0000 (UTC)
+X-FDA: 85226490048.08.90AC9F3
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 9086D140004
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 10:21:02 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=oOO60XwY;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf09.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789726738;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1789726862;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NK4q4bMTc4NtuqUZq2p2ouZ93CvhS6B9qDA0XHB+AQs=;
-	b=hlIxl2BD4/EBCaQ5pUOW3PPCJ/gpeD5z730D8Lv/IKU+OrfK+/YKs1bxUwg2V2g3S6j7pH
-	NFni8yjzEDqyrlwGIG3ZBSVw1Kqi5PG+VSClBLwWFQ7rLNLj6sl9lGpEflq/74f8vzvNbv
-	jHjfyNyorI2aPLQOMnAGHdpJqpQkRQ4=
+	bh=/ZQNv34Ek5Ax6QYdQ7WcoxvzXPWjuzfsPGdEUkXflEs=;
+	b=RC69DYeom04UfS6H8GbgZJvoSroARQ+Aw43UmppUv9lqxGcyk5PlYZ9nfyZTw7q0ffMo0y
+	O3L6cCsi3Xf5NjP9WbUBe4txp5M3SnFgXyoEQ8u0AtcawHVFWDYo0rA8tOmEpgsVsvCzte
+	3Dyyz5opbCySgvT6dG8v12cDk6jjh8k=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789726738;
-	b=eEceqA2hg9thn9hOAZPQiiINE/g7mXR4+Rw+gvZF07NVbBInqPh1B2Sr/XgLILMIEVBDA/
-	ajb5y3V702wKZM70UgBwtPvWxMU8ClbH7nGC5HiSZq7TIjkuqmscabvMwHmM7r2b/Y/JhR
-	/s5oXIdMq53dG62nqeXlatccxy050lI=
+	t=1789726862;
+	b=gJBvBbURBhazvmAhzB47gaQIpDobq6HHLYQBS+1tHUUSCDl5qoxNPpwVYAa6eklVbfKCOA
+	0Yj0/gVYB9mMg8oUPMN07K7/SugNbsK4g8z7Kf6QXo4G8vhrDLJGidYUi73fIZ0GXguFeS
+	4JpFNc7VwN3wH9jv9YvTLL3EQVz34ME=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Nih+Cgdh;
-	spf=pass (imf18.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 196A860A64;
-	Fri, 18 Sep 2026 10:18:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A10E1F00898;
-	Fri, 18 Sep 2026 10:18:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789726737;
-	bh=NK4q4bMTc4NtuqUZq2p2ouZ93CvhS6B9qDA0XHB+AQs=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Nih+CgdhGnLO8TOeDlPBdKPirdBoHe0i3bMXikC3kG5yEMeDAdT/7gzT4yWuBpvZx
-	 W7cUWDlxizNzUCQLwfXs94uynL6mjAM7ePcKxhgXkPT+1qBU4XiAVkZUxCID7DY2Jb
-	 +goXUKIBVWZDUgSR4iPriXVvwYXN8d8X9H82/VSmmMSLI/OoaAUWelD4FsQaZZammh
-	 eYyGUgPR2fj74PNv1XQ3/oKvNKleNUqhIx12OPwpZiHqNhqR9DXO1fQvv8HQ/XlO0M
-	 vmZ3I07NIFGVT6o1Dcu0cuUd02YdMq7cV0HFTHOA46CJjQwBsUjh8NbSWls+LhVb5U
-	 tjgTt00+qSZbw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 08/17] LoongArch: kexec_file: Fix a modified_cmdline
- leak
-Reply-To: sashiko-reviews@lists.linux.dev
-To: rafael@kernel.org, mingo@redhat.com, leitao@debian.org, graf@amazon.com, ritesh.list@gmail.com, coxu@redhat.com, sshegde@linux.ibm.com, catalin.marinas@arm.com, bp@alien8.de, blum@kernel.org, chao.gao@intel.com, linuxppc-dev@lists.ozlabs.org, chenhuacai@kernel.org, jbouron@amazon.com, eric.devolder@oracle.com, palmer@rivosinc.com, akpm@linux-foundation.org, linux-kernel@vger.kernel.org, hbathini@linux.ibm.com, rppt@kernel.org, james.morse@arm.com, will@kernel.org, maddy@linux.ibm.com, chleroy@kernel.org, dave.hansen@linux.intel.com, sourabhjain@linux.ibm.com, mpe@ellerman.id.au, baoquan.he@linux.dev, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, gshan@redhat.com, gregkh@linuxfoundation.org, lizhengyu3@huawei.com, adityag@linux.ibm.com, tglx@kernel.org, guodongtai@kylinos.cn, "Jinjie
- Ruan" <ruanjinjie@huawei.com>, me@linux.beauty, hpa@zytor.com, x86@kernel.org, piliu@redhat.com, ardb@kernel.org, takahiro.akashi@linaro.org, npiggin@gmail.com, maqianga@uniontech.com, mclapinski@google.com, yeoreum.yun@arm.com, kernel@xen0n.name, vishal.l.verma@intel.com, bgwin@google.com, driver-core@lists.linux.dev, seanjc@google.com, kas@kernel.org, tangyouling@kylinos.cn, pasha.tatashin@soleen.com, zhangtianyang@loongson.cn, ruanjinjie@huawei.com, ruirui.yang@linux.dev, kees@kernel.org, thuth@redhat.com, linux-arm-kernel@lists.infradead.org, liukexin@kylinos.cn, dakr@kernel.org, pratyush@kernel.org, robh@kernel.org, mark.rutland@arm.com, loongarch@lists.linux.dev
-Cc: kexec@lists.infradead.org
-In-Reply-To: <20260918100442.3841135-9-ruanjinjie@huawei.com>
-References: <20260918100442.3841135-1-ruanjinjie@huawei.com>
- <20260918100442.3841135-9-ruanjinjie@huawei.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 18 Sep 2026 10:18:54 +0000
-Message-Id: <20260918101854.7A10E1F00898@smtp.kernel.org>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 8114F1C0004
-X-Stat-Signature: gmu8q7uaxdtked5amup5apd87uwqzjwe
+	imf09.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=oOO60XwY;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf09.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=/ZQNv34Ek5Ax6QYdQ7WcoxvzXPWjuzfsPGdEUkXflEs=; b=oOO60XwY8ERyAwZK1S5h0ToTPQ
+	OWwppHptar6tur502/2Wg9/RCn2+pTXEtbIxFfHSEZlVoELlME73jhYQbNgjqZXZLZlskIwr4BRLo
+	4KhTvT+ONt5E5DYomWH9sCloKyIcNdSH+jcmjU8hT4oxN+3cPP3FToHvfwgCedBhWkNh93FuDuebg
+	LSCa4XpTARiqYS5ebFHkY+qrfq04Jev8uQkMm22bxOdXL6rKAblbLD/pGi5gzHlrNVhf8kjDvSZ2a
+	DiR2HyXULTC0Etm/1SxcycLYuX1tHXwQnnjP8oldLyI2EF+MMok6nX92fsb8cD8KxXPWvDBGHbwPS
+	JquZVzOw==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1x7Vi1-006eOU-1G;
+	Fri, 18 Sep 2026 10:20:45 +0000
+Date: Fri, 18 Sep 2026 03:20:39 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Randy Dunlap <rdunlap@infradead.org>, workflows@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, kernel-team@meta.com
+Subject: Re: [PATCH 3/3] mm: kmemleak: raise min_unref_scans to 3 for verbose
+ auto-scan
+Message-ID: <aq0PcQ-S5i8CWqr1@gmail.com>
+References: <20260917-b4-kmemleak-doc-v1-0-84fde6d1f749@debian.org>
+ <20260917-b4-kmemleak-doc-v1-3-84fde6d1f749@debian.org>
+ <20260917150443.a872ea0fd692503c53b2b773@linux-foundation.org>
+ <aq0ChSUFw2n6lXIQ@arm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aq0ChSUFw2n6lXIQ@arm.com>
+X-Debian-User: leitao
 X-Rspam-User: 
-X-HE-Tag: 1789726738-306856
-X-HE-Meta: U2FsdGVkX1/yyo2jwalRR3Ws9GBUL/+M8rClpWViAs/uNvWzhaGv68STltn5lkLxWXkWqyNaC37uVsLNZ6nlXHXRpd45FQFn/v5leFSjeY9d110dbdzfpWh7LuVQqXUVKpxIEhN8dDEvdQTXSkGKZLEXDe/rNC9x1rBWUZL7NEnHgf3fvoRKQyDmE2Md8DA8lsDXRwkfY4NU4MWsIio8A9E35WJL18uMJ+hzAQ2yrbZQKzQE1UMscZbn+4iGSF5joyg2u+Ot0YgILptYJsKwXy+unuCQiLDPMDxUWhYAjTKjQh+213Yp+md64InWYJEDA6GjwgX6He0sD3EMCa+jcFm4Y8m/2rjLFLMFhxmnlPIKtniwEuFJb/HViONDmh4IitbQIG6xlvdORgI47NkVNrG//ss9WLFXEBkyMxwiG58PFUBT1NtjN1QYkF7IVOMD+Yc9z3YViLlDzHxy7XLj/ta1hRkcHDIf9/iNgtEL5OtBkIPeL88nDY4mJFY9eCsy4v9otKpV2XRDGp5Q438FJgqJyLZvZWJZD7+5B/CKU0tNY07KAefGeWzWsq1JvV0PrKFg87jtfPoj71YVmPkdMSzsdb+VKbzWtSAkMrx2zjuTE9sCDmrpQbzRMsiF5ieKDn+tEL5mgfOVDA+mS1gyhuiIgR7rhAuFwFqBEFXw9yh2YJDeAVC3nLg+ytTDixKkv1/cS/HdBx2q7iNF5znasMfNdwlhQGLRHt5F7t4YtMSz1WB6rPdvKHZYgzonFwR7vpxnp8EraK0GQJSckmr2MezbiHoWqKhqrNJLM98VMfeJnMFq8yvLHHOzLYYjDRGkXJNoHPx/+PbQnBXx4K5Rd1t5DYpITWPBw/avC9sr18DlNUeRgLUFTlHG0R2JdOr+ajUoHJj3ZrOD4dIzHGJ0gxLTtuEuMJ4rmW2twc6EZiBZ3pyJ0uyuAK/H+6x9/yxIK1g0h6EqlCHYacHdDkv
- UUcB9wJf
- NEJi9vEVgYEFNTNS7DkoqilfZZqTm/PXjgg63tAC+VvDEib+M49SH/uYuKZjnFxC7Mplp+icTaWgfZ3X6RsEp/+W1x+OqBoNkAp17bfBUnftaWHQWIDKyRJEDUTAUEzi1bf8ivTNrFMDtJYOhZb/SQRnQTQDllUgnt0S+Mc2kRB1HOVnj2ukxFZTjltyyrlWVGEOcpBoqMNYSqVvn2ct8VQb+Lc7hzLYwexCzjZJk3PNeFRrW/Gpi3xWP0F1HwBRwI5TudQFf2Bku3gzAY+4j5gOJvg3enZEJOVngTNW/7+03D95kPmpJ9kuSMlb3PVN2J6lpAGeXP4CPKWTemO5p9v9NuhTL0ZpciqtPPigKwCcP3TFUg31EsCznh2uPfxIZkJiIBzhHaCEMUoeGItp4zG6ofOOOVGoNcBOfn/k7vvVwvWf6LUfhLmkkGxGpMgNWiXcZlVYlpbLLHab3j64ZFo/0Y2vLSI7/UcFzd4hcIlUBid/xWPUC9X+1gHFg8L7J0xvotlai/gSH2qT4btEdxm7CcBurTZinwrlzfgLmUMVOZKTYurZdIgY2R1Z9IZesJmNimEuWkuFVRZL94R24OepfmRdSr4+SpO4zalvM+z/zQzhP9j5kpKW2GYiRNUMeRrfUJoJyKhi0YPBAH9numdzz48pPhzinntzUcIkZivJLJLYRhUcBfAfCF9A8Rs0bWxp17tabKYBHw+IPX9tg3QNmMoMhQsaL0nxzvElsVp82SLmmMxabPD+iATOhVi6yrWr4WhEP2Fz5qkCY02BTJ4osua/UvLspKBNT
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 9086D140004
+X-Stat-Signature: turx85865z7bn5naw6mgf1qznz8y9nef
+X-HE-Tag: 1789726862-563684
+X-HE-Meta: U2FsdGVkX19PJY1C3d0NaGjkz512X98XbBT166kW7IapZJtj/+UuDWwjWumTtUGFyLRpefdDcmoWV4IKFiziQ8OhOwahdFSwrvVxUOSKWveApcxK9Lb2PDgYzYMS4epdP54JLG7LB5ZP5IsNnUKkDmcJSsTVN7o1Uktsw3FH7LyQicX5A5q6noycebr20TKRLTkgDLQDs5MEindM0KEplfQffPd7sswHRFi/M/LZq2JWaNQQoqI3Eq5FohzsIkRv6Enj8mizhyy0GzsPgYdaMfN1a9UDLlycqwA0vMcAUbPSJJ3XDtf9p2hBgkWtYkHRAg0TGkjxbZWWGeiFnJKS1AM47+PCyx0E+uPMKfGpH5j+zOFdaSFBZ7U0Nh+ihcH4dOZSewTEBaBIQInE/eDAEWnzRZkg3zK8fF0kLzenaiuHV5V1Ba4BfVVA71wfyWmv2o9agXNWgaitO0JS0ZU9f5lvnxEZDjldr06N3q4lN2gokBOGBwFViqjJ89NaW/9YoVGM7r8n55v/nxnAJJ0Yd7g8u4G79oMAZ3o4M6Ltb/U6kxAbUmKTYyTkkpJA7kJME7oIdDvAqZUV2ig/YJ4/nByAdCuOve8luTUBaOh2lIkIaKru2UvfHEGsp+/dPm1FFMBijMbb17Rpbp+0Z+mib+hyXUuWrxaV2oHlt/JUu1TZU+pJicMcK/oT+5hedVdR2/qD1f99vVQBzArgdV8eHjb83E/VMDYS+YJUkeUPyZ/KkLVFqfEcUGL5/MuA4hZbDGewrFDCUqdcuEPEXZGSCkMOuqshPuhxStKPN15hYZqXfZ9bP9TCLuW3wr2i8lilAEL5ZR/RrDNUlgbf0Y/YzmP/5sGZvdS2k5dTBMGn7L9buA4MPTxGwBVcDjQvH0ZSBn96PCTT6YwCRWAjP4HmY21PpxT9gs2ogW3YRXagI2r73dTYSU+IJFK2J0TZkRptMLbpDHN53NQn5XpAeLy
+ OiD9joXT
+ mwDY79t0cHyLDdvwkQx6RHe1xgghiKcy2CK+1qqymg8nd46/SZ0j3atgYLqbSXFo6LfIP1ar6PS4zGfImTPjz7RujDPM+vSu0yIwVfVwsBS8UZP6gejQPsAC8uMAKqVWI9ryPjxo2I1qLjL4h918RGWe/PrXhgx3+fHecqv0De4G0THObRQoHDs5bjAQTdK+Fw+QS2brbLwTQgr2RLKYoPaJ0ffSs5BRDOeI5uzx/jJ2QfK0thjiBCWIK27svg3NUTfPAdlhAKCyGZXyJe71UZDxq2iCdc4iGPYuL4bMHyDvRkB1YM0hFzG+y09kRgUxEPg908jzebsbDaLA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,29 +98,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> load_other_segments() allocates modified_cmdline and stores it in
-> image->arch.cmdline_ptr.  machine_kexec_prepare() then copies it to
-> KEXEC_CMDLINE_ADDR and overwrites the pointer, so the heap buffer is
-> leaked on every successful kexec_file_load().
->=20
-> Free the buffer after the copy.
->=20
-> Cc: Huacai Chen <chenhuacai@kernel.org>
-> Cc: WANG Xuerui <kernel@xen0n.name>
-> Cc: Kexin Liu <liukexin@kylinos.cn>
-> Cc: Youling Tang <tangyouling@kylinos.cn>
-> Cc: Qiang Ma <maqianga@uniontech.com>
-> Cc: Tianyang Zhang <zhangtianyang@loongson.cn>
-> Cc: George Guo <guodongtai@kylinos.cn>
-> Cc: stable@vger.kernel.org
-> Fixes: d162feec6b6e ("LoongArch: Add preparatory infrastructure for kexec=
-_file")
-> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+On Fri, Sep 18, 2026 at 10:21:09AM +0100, Catalin Marinas wrote:
+> On Thu, Sep 17, 2026 at 03:04:43PM -0700, Andrew Morton wrote:
+> > On Thu, 17 Sep 2026 06:47:37 -0700 Breno Leitao <leitao@debian.org> wrote:
+> >
+> > > CONFIG_DEBUG_KMEMLEAK_VERBOSE sends every report to the console, so a
+> > > transient false positive there is broadcast to whatever collects the
+> > > kernel log rather than sitting in the debugfs file until someone looks.
+> > > That asymmetry justifies being more conservative than the general case.
+> > >
+> > > Require one more consecutive unreferenced scan before reporting. The
+> > > only cost is that a genuine leak is reported one scan interval later
+> > > (600s by default); the value stays writable at run time through the
+> > > module parameter.
+> > >
+> > > Kernels without CONFIG_DEBUG_KMEMLEAK_VERBOSE keep reporting on the
+> > > first unreferenced scan.
+> > >
+> > > I've been running constant upstream kernel with
+> > > CONFIG_DEBUG_KMEMLEAK_VERBOSE set, and I am still seeing some rare false
+> > > positive, that goes away with min_unref_scans=3, so, making it the
+> > > default based on my heuristic.
+> >
+> > I'm guessing going from 2 to 3 reduces the false-positive reporting
+> > rate, but they're still possible.
+> >
+> > It all sounds rather rubbery.  Why do these false positives occur,
+> > anyway?  Are we papering over a fundamental problem by filtering out
+> > its user-visible effects?
+>
+> The fundamental problem is that we can't do a stop-machine for the
+> kmemleak scanning. When scanning takes tens of seconds, pointers may
+> move around memory or registers on other CPUs, so kmemleak could miss
+> them. It's all probabilistic, hoping that we won't hit the same object
+> two or three times in a row, 10min apart (for lack of better ideas). We
+> have other heuristics like checksumming but they don't seem to be
+> sufficient when testing on a large scale.
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+In fact, in my investigation there's only a single use case where I
+actually see this false positive, which go away with this new approch.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260918100442.3841=
-135-1-ruanjinjie@huawei.com?part=3D8
-
+And I have a very solidy test setup where linux-next is deployed daily
+and run for 24 hours, until the next kernel replaces it. This is on real
+hardware with some basic workloads, so, in fact the false positive
+(given the design above) is quite low.
 
