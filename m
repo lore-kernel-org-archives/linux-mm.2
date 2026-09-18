@@ -4,139 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6202CC982D0
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 00:53:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1557AC982D2
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 01:05:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 496636B008A; Thu, 17 Sep 2026 20:53:54 -0400 (EDT)
+	id C5D986B008A; Thu, 17 Sep 2026 21:05:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 42FAC6B008C; Thu, 17 Sep 2026 20:53:54 -0400 (EDT)
+	id C0E0B6B008C; Thu, 17 Sep 2026 21:05:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 31EAE6B0092; Thu, 17 Sep 2026 20:53:54 -0400 (EDT)
+	id AFE086B0092; Thu, 17 Sep 2026 21:05:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EF8BC6B008A
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 20:53:53 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 79E52A04EB
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 00:53:53 +0000 (UTC)
-X-FDA: 85225060746.11.2F10C82
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 96C28A0005
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 00:53:51 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Cr+HAKIG;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf25.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789692831;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 80A056B008A
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 21:05:09 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1289640538
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 01:05:09 +0000 (UTC)
+X-FDA: 85225089138.24.857EC39
+Received: from mail-oo2-f40.google.com (mail-oo2-f40.google.com [74.125.231.168])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 18B5C14000E
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 01:05:06 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=bobrowski.net header.s=google header.b=KkbSsoNo;
+	spf=pass (imf26.hostedemail.com: domain of matt@bobrowski.net designates 74.125.231.168 as permitted sender) smtp.mailfrom=matt@bobrowski.net;
+	dmarc=pass (policy=none) header.from=bobrowski.net
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789693507;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pChmIbk5dvBz2x+ATGHEFGjZSAwLQf4D4OxFleYq/PI=;
-	b=Ctc4ub5Q2fUMlBFxuD0DzxUbpGlqeltF5TVXSabbCiKFpB11ksoRRVuD7JrbpQQ1wIMmQv
-	Y+0mlFUv0v4tPn2anY4m/pvQXNF+emNIi4yGY6jmdKdkl8YV6lCv+9vnscbc9a99WAA2tP
-	KtkAg2kAOxXjZ4VgBKR88H8j21zAtOA=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789692831;
-	b=yczxa4AA6dsY8guhtyO6yxWp+J/TI+82bZbiA7RCfG768hnGx4YUhxsxDhMtGQjZ1nsGom
-	X733PdtyTfSrQxyZqHn6Q37MvRvQwRP/2KijSGuSI47j3jqdmiVTJSC8sHptz9Ux9AfbO0
-	D3tA64TokUwD8uxS3XDWS+hXx6BrdRM=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Cr+HAKIG;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf25.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-530f6bcc301so70201cf.0
-        for <linux-mm@kvack.org>; Thu, 17 Sep 2026 17:53:51 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789692831; cv=none;
-        d=google.com; s=arc-20260327;
-        b=b6mifgjPEnZhYoR2B2KUuVTLaN93PrWwlt17qX61qbJ45qkCt3KDRFk2VQRnFfWKYc
-         ygpXuaR27iYeBgoHq6bWJUehPEc13fRTAimq/2WCcwmBMUu6iKW8YNtpEo9GpWSCTUbB
-         r46eu6+RY8cLnZDbJCKr6xHcMJtBAQWM2zbvwbyT/bdgyo1iBUeTaSVDSVg2lELcMjk2
-         1/I/OdoPorXAALr2bl95VXuhOb8Yps3bW0J+aRm+DMcBEIxZ6hCSZ6ILXADH3IXujh/2
-         FQHF5DMS34bQeeeCwaXtcmRNPlDmRD7zFQovPdeB0mXSojQ/zyypW+GK6eH74uV3k1bZ
-         l3tg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=pChmIbk5dvBz2x+ATGHEFGjZSAwLQf4D4OxFleYq/PI=;
-        fh=SgstSbx32hG6Zoc5/NsxhPiXGziw1Kqvyg8mJjLrIxk=;
-        b=O8juYTsDJ+nddcSq/iRnJsKvBGilDsQkqXTuhdNNr44JEbPQtUHUF26DbU/z7Rvntl
-         uUq49JneRcCxcCbcctYhXYOSBygQmWx43thcjhAg77AOCR2K0SUURlRehvbNuaHmrubI
-         oMTFxPleSei2FAbewSL+Cp9hBv4/FLg/kG4ltTB+pwAaxaZZQzXxq985P48wK98rux60
-         NDEp6+MuehloRVm7AirKCK5kMsgiSMLAeFTbBrqVvIFroz2xQUvuy27Xida5QNGVVLcc
-         dCCQKWHtJCjRcrSgSzb+ss4FhdRg8mioDPdpBuH2lCofn73U5+g4U0f7MJQuTQYIFVzm
-         FhKA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=luKWt0kKmWjdQ8jTRpB2Q7txnP5JpBdLjM73GX2ZxbI=;
+	b=2kQu72mAWpJ2OTi58YTgj5IVZ12ninDxO3jVRisovWt+meY0Sg6J7gwtaE5M88zlruWMem
+	iQQyFY30JdnGItWVIRzEIUIm3V8H8/bx1DP8JkSR9wvwl2w4AgwCOtiMOjbzWaKo4xpIBc
+	WFc+PEotyMZu9MB7DO4MZIre1TKXudM=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=bobrowski.net header.s=google header.b=KkbSsoNo;
+	spf=pass (imf26.hostedemail.com: domain of matt@bobrowski.net designates 74.125.231.168 as permitted sender) smtp.mailfrom=matt@bobrowski.net;
+	dmarc=pass (policy=none) header.from=bobrowski.net
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789693507;
+	b=6nB05QuK+VA4ZXTKpAbO5pmx0z09XHQDyvIhBy+Jq+BJIn1YL3IqYR7sj2zW9wNoOyS520
+	yX5KZOWcRbjm6cvOdXziv89ValyeMT2G8KfN7jkHii8htdtnEY6DfxuRya7bWQDKpiLJV2
+	IbVlq4eGcQPQUZH1fsrucdgEhRE3Tn0=
+Received: by mail-oo2-f40.google.com with SMTP id 006d021491bc7-6b1ae6b2010so130600eaf.0
+        for <linux-mm@kvack.org>; Thu, 17 Sep 2026 18:05:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789692831; x=1790297631; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=bobrowski.net; s=google; t=1789693506; x=1790298306; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=pChmIbk5dvBz2x+ATGHEFGjZSAwLQf4D4OxFleYq/PI=;
-        b=Cr+HAKIGcCRXsMD1hN1Gzk0vxsKOtxYOE1Qp+0PIZYJ8Ktfj0UeikqD43ZtSyQoao9
-         sVagOIHxcj6Q1ceea9xe9js64G8CgN7VCeNRTi0/512WBTaFpVSog8dc0k457kQcf+MW
-         pDl5SeGZDzU/4sCelhmkBlVOSHaq1tDzh1F5PeEp6w+hIk7KxWDvH2wwPXLrkHsz7x5O
-         g6yBczFTjUDiY1tpp6jmvo0xjrzyW/scvxP73P+nSQMphixglToZJNzd2UskyRcByPZr
-         Bk6iYyuH10nUxOQ6ySXrD9JDyQlZLct6BaJphfp8uq1iNfj9C8Ac+iqxk0FpT13Axkfz
-         ML4g==
+        bh=luKWt0kKmWjdQ8jTRpB2Q7txnP5JpBdLjM73GX2ZxbI=;
+        b=KkbSsoNoVqQQ5eJeVlno/E6J4C2XZejJ3ELp+sk5AVMRKsVMAVw/24qmLfybdf5WSz
+         NduyyFuFn8sG81ziUQjXB9VkPbDa+CD37Jo/ewvGiZTbLOECgByjdhxxldMaYAx9u5K1
+         7W8ttwmvMcLea3VDpO56pQzns9kys7teuRyEb7hEvIMDSZDdyMht0XLRd7ybtKMvMVpc
+         UtRRt1/S6knpq1t4gVAvROh3VLg4hubgiFOIVM1RMdwNMkzAqqpVNuSlG7+KJ/QCnqrR
+         zz8db7uYaRck4wQDZWr/3V3StyoxlGYmtyxXcdRrN9uh/STPIBSl9DvdxjlApUthgPKM
+         yCiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789692831; x=1790297631;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1789693506; x=1790298306;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=pChmIbk5dvBz2x+ATGHEFGjZSAwLQf4D4OxFleYq/PI=;
-        b=gVMlWFZbOMGlUV6oA/TpEsF/EaXfBgAis5aHfWc5hYU6p2mVJJFyIir3m7CmDf89Fw
-         9XOBM0IZdPwf8MLUbW3XTaWLsHlyxCRv/dH7dRRsdU2LxCqjbtfs8cqF/4qGg3YgY6tt
-         9FvtxhxN2kZq8fnxfBddLWnG63FIY7oQSJoOkawpfukJ1nLqS4h0xpDFSG+CNmhHqDxE
-         4h+mOaDhsU6LJtMrAD0qiLZCXFhbxkDcHAvopjYhdJIKGlndriRDSoV1IALHDTBpcUX7
-         VCRbKvM2XA3NSkFpD9bz9oR/wjcMEmeSH2SOLF4Oi1xgKS8AYKcnz4YnqQP9V+Ek7OMg
-         t6yw==
-X-Forwarded-Encrypted: i=1; AKwUvBwHsvSF4Q3q4+V+N22luKp1gnDRSuYI3QGMvn03Yl9waGX5WOZlrX48auI2Td6VUKlTXLecNYNqbw==@kvack.org
-X-Gm-Message-State: AFuF++nXz3AhQnBVCnaosWKwtDfCxEsc/yNfggYnsFbFMs/CDXwqk26b
-	sH3a6HxeTZD3tygLaNJqpn8gExWw7jxurn0d+pHsLn6rXTNUbTwfmHgrFT5mQF8pSwzrVKKYGz8
-	tU6Qry3n4vXLczgzuvAWfHmBW23aP/jnHiJ/hqKo8
-X-Gm-Gg: AYBFou3BDatXaFDtFpICRG7b9vVwDl67MXR+tROASNzbvMoBpiKXWOxA+uznAurI4+e
-	ryrAXJnTdR+CsQ69t94idrHRXmlkN0jX14+VllPWBdwCuJ/y3TDmUuRmJnwZOLrdDcFvRF670CR
-	bqoVgWefI2HTyHASipT4hr4RqCu1gg3B0Ab6+WPnAKOMEz3M5lC7A8y+3j+7uezyg8bRyOep+O1
-	ZEMggLkaZIc9838qcJL2SsJBghE+uFM82wP9axDkXnsVKkt+8rB6ku9p75J5eiqQ01kfZFH4wwA
-	7ILXNwPPM18s+43Qt0gVjEIPuBmCVtaAzpOIBLE8SyobuI/2UGd04WrbRe0ELxiq
-X-Received: by 2002:a05:622a:649:b0:52f:9ed4:8d74 with SMTP id
- d75a77b69052e-5329d7ebce3mr7543761cf.14.1789692830152; Thu, 17 Sep 2026
- 17:53:50 -0700 (PDT)
+        bh=luKWt0kKmWjdQ8jTRpB2Q7txnP5JpBdLjM73GX2ZxbI=;
+        b=F/a0IR+EvsqDhwh4FnHtSgSrZrucUNTRZmuxqz+Gla2Yd4bAHO5iMgcpsskiA3AtE9
+         2MvRnhFWGvpdwOkapvC/jb71x4yFV47hP2Pl4zLpjqcAMOjMLvLdt7cVl3a7W42ec7Tr
+         Lkj53//kapvA9tRXrlR8N1ffIdApQKnO48bgE4fBCPhbMKt/s1nvHGH/rUGXbg8qnZhV
+         82BVpZyeaVDeUTwOgX8kfh8DOIqSj3pOUeQEZxV9YO13zq1CoU1JHciw4sLImEo46WXN
+         +haY/80o0isSOZ/QuZbu8mefyyPiq+QxRsbu4iuSs/XjlJ6Mcs9tokjnU/TOkazowMAw
+         Hr1g==
+X-Forwarded-Encrypted: i=1; AKwUvBwEhRb4tzrlsqembDGWYZCAXU4qFS9YgGjdB4LdY+b0Itk98KnFUPgGFi0BaklrlZxhTdv18P8dYg==@kvack.org
+X-Gm-Message-State: AFuF++ntV3xcx4qKgC2ZVAfURIjygBlZXGzT7PPdKF9ldhIS90VFsB0a
+	TLcByE0uqvfmIsIVZ+2OPbPAnSkblYNFT0szMnnU9ybfrjxtJ5KPuATYhbYTndRzyqv4
+X-Gm-Gg: AYBFou2xsmhR6R0TtiiHRy97Q9yqZos7Zo5TExMF8jqEYXL4nj/fExtwHgfNPPUsfG1
+	X/rdj7kX0dBL8rpvjMykFkqvMDbIJhDXZtOzOO25SgkULqRtnpn76fSuVGMRNV/ZwifBSBW9utA
+	iyloyuNVpLDgIUYF02FsX1B8JKMUHfqoaVYhEt0dHXMxzdrvXANbylj8c2+HDnGBXf9wbm31tw8
+	vQLgCpiU0dETcnq3PJwPrBz4eUg56E4JS/yPZK1dnHeRm1raDQJUCXbfZ/GsYYwIZE2HQgqfZRq
+	3+I8Q9E4rjaQiBO82lDxyD0ADGcgJX8tbl19Vj7wCD2yvRIvkLkbqGcI5kog/fdo3vAjmkKbqPL
+	fkwxm0jrVUghqQEjX3iMU4EfS/URfkULqPOv3ZCRUoDWdpCCKofUsV7iWvlMKcMn9qHtD3WEpmO
+	sLmWi0ZGWpuOjaPObVP2zmT3gfw/UPMC5GVARPI6Pve68=
+X-Received: by 2002:a05:6820:2019:b0:6bd:5506:aae0 with SMTP id 006d021491bc7-6ca9a748585mr824155eaf.22.1789693505875;
+        Thu, 17 Sep 2026 18:05:05 -0700 (PDT)
+Received: from lima-development ([75.104.94.190])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4870b53dfdasm343751fac.11.2026.09.17.18.04.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Sep 2026 18:05:05 -0700 (PDT)
+Date: Thu, 17 Sep 2026 21:04:37 -0400
+From: Matt Bobrowski <matt@bobrowski.net>
+To: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
+Cc: bpf@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, david@kernel.org,
+	akpm@linux-foundation.org, andrii@kernel.org, ast@kernel.org,
+	brauner@kernel.org, daniel@iogearbox.net, eddyz87@gmail.com,
+	kpsingh@kernel.org, ljs@kernel.org, memxor@gmail.com,
+	song@kernel.org, sun.jian.kdev@gmail.com, utilityemal77@gmail.com,
+	viro@zeniv.linux.org.uk
+Subject: Re: [PATCH bpf-next v7 3/5] bpf: Add user memory access kfuncs for
+ mm_struct
+Message-ID: <aqyOJVeiJrglQ7Up@lima-development>
+References: <20260915080255.48929-1-tasos.papagiannnis@gmail.com>
+ <20260915080255.48929-4-tasos.papagiannnis@gmail.com>
 MIME-Version: 1.0
-References: <20260915070001.113559-1-hao.ge@linux.dev> <20260915070001.113559-6-hao.ge@linux.dev>
-In-Reply-To: <20260915070001.113559-6-hao.ge@linux.dev>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Thu, 17 Sep 2026 17:53:39 -0700
-X-Gm-Features: AcwNN1VY0P1eKa2RzQfSlte4wi4uAKsbNqye2Ulhzad_L0NMHnJfbc2fVWd5zEE
-Message-ID: <CAJuCfpFKGxOy9W+ZY9KasU5YaDVG4kbGsV6AYb2NNRyW4gT0mw@mail.gmail.com>
-Subject: Re: [PATCH v10 5/6] alloc_tag: skip percpu counter allocation when
- profiling is disabled
-To: Hao Ge <hao.ge@linux.dev>
-Cc: Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
-	Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
-	Aaron Tomlin <atomlin@atomlin.com>, Kent Overstreet <kent.overstreet@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-modules@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Sashiko <sashiko-bot@kernel.org>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260915080255.48929-4-tasos.papagiannnis@gmail.com>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 18B5C14000E
+X-Stat-Signature: ki3yazpaujpu3dyatjhcw1mwjcg7jpo8
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 96C28A0005
-X-Stat-Signature: z6ysuz6tsh3zdpxuu8t5aqo8r1nsahdg
-X-HE-Tag: 1789692831-312223
-X-HE-Meta: U2FsdGVkX1+lpgRzLvIFvyUsht0c+0F4yWESCQXdx6E0leJ+Wo/Gzkc/tvDkdzQxfTdzYW7KJVdluKdNN0ffWN1Ecf20iybGd956cUj7Mlh6XGmV6sCocSA+xit5tta5Dl1PPF7KfwilqZE7roREWaa1Rnf+nsVxzT8Z1LOAK9xtge3ENZGBqFQdlpa8gXSIPhuaAqyzQ0nO6Pm8czuMRr/zbkeezeBJdXd1rXzvhutG2yGUx8Z0Bpc9Y8acI3ZZRiYNRi+sTNLXeYHWfXbSRklFftVTBM89jX2qyng2gmiVqjeEOIea7Gx9/kthKZflxlnzJow9dCtN4ri+wbIs0pEkroBqgX4Qo0x7rfiBQ8OsIKsoxjIEj/VlGZbi92rtPlTy792sQcUg8X57K+k6TMkVfWjFwr0IPDQkWeZEQLbpu0oKVvD6oifOSD1wOv9D86pyZDgYImWPjG5T4b9lMJIXFvCB6XoMLDdYtza5H1CtR2QkjBiYHs3LTfdXOswR4a6mQYAphelwgu34aUpI5y201oRYHvzkdUCfuWpEXnydIJLBbRlmQavT+6IKAwImqPkxJ0PUVZHy7gHJP2EzHjqVd3hv4dBSz3dzzU1jFCwbbWs3O7v4WxoQT88kK9yVTxr7uRYIIquqguuDc1WzDvNn3D9CLZ6fw/fvsVr2fJTqGCYNaa2SXsqvuEJRYB0bOTFu+WR2/y+TbHleFWIMh4eT8YIz0Zbf0Q+7HAvLiWEVo88hNXQSZaRXIhzT5X3zy7/YhaKyGWwSMF6vUXO5kPI4IQhCU4KHTgtlRqIAGo4LMWgxDbBfRU74wEvl9ucL3Nkiza5EK7QxnCV8LieOIyT6ucWSBnIZFE6wCuKkg+fH40nVhs/J3+vVup9Gy2QOCqKZE/JRjvXS0gyw1z0j0GZTOTG4FKt1kdYqQSPGg4m7FlmHMWYrI0a+W4ikE1j4JtSVnZ3X1KHayCoQ1ap
- iNbL+JWF
- tF97WiX3RbXhl0PTt+5RWFynqsuvIA1UWEfUHvNNof91O82xs0DPa7nge/Q4D3t5nd9XvBu6EzVkR5AD77CdpNlQXP/cQA5MbNp4MYdPmSuq/weuq0DkByjXr2+ufbEIc59VZZNROPg5FgKK5o7LeVGWkXGQDNWAefQ4ULiYW5IpZ1iiQB2eltuoYZAPTHhWt5DfXI86IRe4SWcBX89VJZgGAQlQOuCVsIXZxLVzp8mq0gwoh+ze4lO1W7CSiaghDTucPrONgiwQPgAXBiFOHt3N/HgHaLgppPH1nyzblIrDMxmVv6cXwzxTCjl9xyhiQQIqNx/cowLflx+k=
+X-HE-Tag: 1789693506-601311
+X-HE-Meta: U2FsdGVkX198UVRROdl1Ueof1UzRRSlsHrQjuPRtu7sjJJ6IOGaneZOLim031wc6xVzvnd8oiwg8FZY6xOXDaIW9uON3N6LxXiOkn9WeyjrjsAhOoXWSHP1MredkqiTMa7rWpQIylL6mei+ecOy7ZO7BWfVtacULOorZBwmk1T7BFEZPWyO6RleiYdp1k34nAVQnbY3hvcwx5spdNPx+KixJsUnN/D/505pRDybYAy/Ag+J9sYQ06U43E80WH7J+k/fpuGoi40D39Jfz0s1aZZ8Z2JF8UsyZiM6Gh687uMSCXQYSOggcDqabNTm5OhpgIALCnn7Da7DVHMFnGlc98KvIFuRAAAJ1J1O2CJ85Vf1Shti+D4wdPVGl51BLgdA94NM70lYNIfxWxgjS9eM931LRXb1RZlxwShXiK4MMg6LvhdK3tUTpWEOU/D1guaOQGv9klUE6ZOFCSXjt2Cr9JRPSFF4svJa2Dk/tbol1tpTKisBr39HQ2RjFuZjnwuyLQB7bOVHcrTwJ6jYfdVrC4S9PIY6yWb2HDaBuN8Njj8tGVRGdsldoJJQ34Vgj74kIJ3Z7HEhwWM35EgTrUSkA1WTbiu5YRee/CEh0XudXG6Mu6FY7XWN5dWtzzOD0OoVkPztcC8N0BUcdap/vr97PKqe9j9lnPFaQE1TGhY72Kmrvw17QUpALA/77eGG5AGW/XYHLsB4lpjLaFEodJrav2GrJfpkimC86FD7VOvIRrA34ZbFpdnYZLUGz1T+OrYxiCbnX7zDt+a/X5fS9QGSiD34eCqmNPHzH9Hx0mvCreDC3DdMu3s/1/VEDw4tq2nhDB7+k3HY1KcaHLLNnI7BH4XqVLBsVgma4PM6In4mwM+UemPPKSIlEq+nf2beX3bkbl2TJGeFRX/tYXRQMAaUeH1nlNQjLYoY2ZvjgVEBRutHyvhuOqoCy1ndA/jY5X/AfrQdDrP6rLDEgQHNPOwJ
+ w3n0XnSk
+ u8buVZzP39csn3pfgXePY5JwhYGdYN5h75RfkZhNoRj+zg5BEm/V5+IfTTtYVelKL3Aqmux/l33ZOnhIhPBWzJ0SHozSQbBUcbSa7+JwnfDehBNTeVbQ0ShBFzWg+eU1upNpztw2tO5ofwW8jFwmLNBCVlvx3TxZtzs8/4Io0fEQ+HoCjW7JdP4vw9p+ktl5gBK84bp3x8wKM8yWGIgKDu4dbqzeHavWPFbUcCCXEMUoDTmWuO5QqDQOxZgDgbRhIw3EVmyJVqP041exir1iU46DtaAgFOWEnc1NIVx7nNCy2c2x9Y34M9WmF/babyqqY8gvg27YzrIfUr6Ihk+jXXu61PCtsIwxV+pKNwqWyREUyF4g2J8OAvCJMBb8Ar+KTBes0Cahj9qkmTfaRra5uHO5XcAbnFfkvHo1I/jNJuflvqTYMtOf2hS1qO3/KhqK1aQpgPqqrnxdOS3Cn3d5WjuaTaKsgom0r0LzPKRlNqxyOjmuSJFAa/3Qo/KqGfAb2ENm+p0qku+2PP/WLW41uce2Naw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,95 +125,226 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 14, 2026 at 11:59=E2=80=AFPM Hao Ge <hao.ge@linux.dev> wrote:
->
-> After shutdown_mem_profiling() clears mem_profiling_support,
-> needs_section_mem() returns false, so later modules have their codetag
-> section placed as regular data and never enter the alloc_tag maple tree.
-> codetag_load_module() still called load_module(), which allocated a percp=
-u
-> counter for every tag; release_module_tags() could not find these modules
-> on unload, so the counters leaked.
->
-> Return -EOPNOTSUPP from load_module() when profiling is off:
-> codetag_module_init() drops the module's cmod, no counters are allocated
-> and the module loads without its tags. codetag_unload_module() now always
-> calls free_section_mem(), since a module whose module_load() returned
-> -EOPNOTSUPP is not in the idr but may still hold a reserved section.
->
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Fixes: 4835f747d3ed ("alloc_tag: support for page allocation tag compress=
-ion")
-> Cc: stable@vger.kernel.org
-> Suggested-by: Suren Baghdasaryan <surenb@google.com>
-> Acked-by: Suren Baghdasaryan <surenb@google.com>
+On Tue, Sep 15, 2026 at 11:02:53AM +0300, Anastasios Papagiannis wrote:
+> On CONFIG_MMU kernels, when security_bprm_check() runs, the argument and
+> environment strings for the exec have been copied into bprm->mm. The new
+> address space is not associated with a task_struct until exec_mmap(), so
+> existing BPF user memory helpers cannot access it.
+> 
+> Add bpf_copy_from_user_mm() and bpf_copy_from_user_mm_str() kfuncs. Both
+> take a struct mm_struct pointer directly, allowing callers to access
+> trusted address spaces that are not associated with a task_struct.
+> 
+> bpf_copy_from_user_mm() has similar semantics to
+> bpf_copy_from_user_task(). bpf_copy_from_user_mm_str() copies one
+> NUL-terminated string and returns its size including the NUL terminator.
+> It accepts BPF_F_PAD_ZEROS to clear unused destination bytes on success.
+> 
+> Refactor the task-based helpers and the new mm-based kfuncs to share
+> static internal implementations. The task-based interfaces validate their
+> arguments before acquiring and holding a reference to the task's mm for
+> the copy. No behavior change is intended for the existing task-based
+> interfaces.
+> 
+> Register both new kfuncs and mark them KF_SLEEPABLE because accessing a
+> remote address space can fault.
 
-Yeah, I guess I didn't think about alternatives...
+Thank you for employing my suggestions. I think this looks much better to me
+now. Feel free to add:
 
-When mem_profiling_support=3Dfalse, why can't load_module() skip
-allocating percpu counters, zero out the whole area between start_tag
-and stop_tag and return 0 as success (mem_profiling_support is not
-enabled, so we acted accordingly)?
-Module will be added into maple tree and later codetag_unload_module()
-will find the module, call release_module_tags() (which is a NOOP
-because tag->counter=3D=3DNULL) and finally call free_section_mem(). This
-seems more natural than special-casing with EOPNOTSUPP. WDYT?
+Reviewed-by: Matt Bobrowski <matt@bobrowski.net> 
 
-> Signed-off-by: Hao Ge <hao.ge@linux.dev>
+> Signed-off-by: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
 > ---
->  lib/codetag.c  | 10 ++++++++--
->  mm/alloc_tag.c |  4 ++++
->  2 files changed, 12 insertions(+), 2 deletions(-)
->
-> diff --git a/lib/codetag.c b/lib/codetag.c
-> index a9cda4c962a3..a0b600720afc 100644
-> --- a/lib/codetag.c
-> +++ b/lib/codetag.c
-> @@ -240,7 +240,9 @@ static int codetag_module_init(struct codetag_type *c=
-ttype, struct module *mod)
->
->         if (err < 0) {
->                 kfree(cmod);
-> -               return err;
-> +               /* -EOPNOTSUPP means we can load the module without its t=
-ag. */
-> +               if (err !=3D -EOPNOTSUPP)
-> +                       return err;
->         }
->
->         return 0;
-> @@ -388,7 +390,11 @@ void codetag_unload_module(struct module *mod)
->                         ++cttype->content_id;
->                 }
->                 up_write(&cttype->mod_lock);
-> -               if (found && cttype->desc.free_section_mem)
-> +               /*
-> +                * A module whose module_load() returned -EOPNOTSUPP is n=
-ot
-> +                * in the idr but may still hold reserved section memory.
-> +                */
-> +               if (cttype->desc.free_section_mem)
->                         cttype->desc.free_section_mem(mod, true);
->         }
->         mutex_unlock(&codetag_lock);
-> diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
-> index 5836803898ad..1ca0409b492b 100644
-> --- a/mm/alloc_tag.c
-> +++ b/mm/alloc_tag.c
-> @@ -988,6 +988,10 @@ static int load_module(struct module *mod, struct co=
-detag *start, struct codetag
->         struct alloc_tag *stop_tag;
->         struct alloc_tag *tag;
->
-> +       /* Profiling disabled: load the module without its tags. */
-> +       if (!mem_profiling_support)
-> +               return -EOPNOTSUPP;
+>  kernel/bpf/helpers.c | 130 +++++++++++++++++++++++++++++++++++++++----
+>  1 file changed, 118 insertions(+), 12 deletions(-)
+> 
+> diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+> index 051b6654e57c..f6b3eee6098a 100644
+> --- a/kernel/bpf/helpers.c
+> +++ b/kernel/bpf/helpers.c
+> @@ -679,9 +679,44 @@ const struct bpf_func_proto bpf_copy_from_user_proto = {
+>  	.arg3_type	= ARG_ANYTHING,
+>  };
+>  
+> +static int __bpf_copy_from_user_mm(void *dst, u32 size,
+> +				   const void __user *user_ptr,
+> +				   struct mm_struct *mm)
+> +{
+> +	int ret;
 > +
->         /* percpu counters for core allocations are already statically al=
-located */
->         if (!mod)
->                 return 0;
-> --
-> 2.25.1
->
+> +	ret = access_remote_vm(mm, (unsigned long)user_ptr, dst, size, 0);
+> +	if (ret == size)
+> +		return 0;
+> +
+> +	memset(dst, 0, size);
+> +	/* Return -EFAULT for partial read */
+> +	return ret < 0 ? ret : -EFAULT;
+> +}
+> +
+> +static int __bpf_copy_from_user_mm_str(void *dst, u32 size,
+> +				       const void __user *user_ptr,
+> +				       struct mm_struct *mm, u64 flags)
+> +{
+> +	int ret;
+> +
+> +	ret = copy_remote_mm_str(mm, (unsigned long)user_ptr, dst, size, 0);
+> +	if (ret < 0) {
+> +		if (flags & BPF_F_PAD_ZEROS)
+> +			memset(dst, 0, size);
+> +		return ret;
+> +	}
+> +
+> +	if (flags & BPF_F_PAD_ZEROS)
+> +		memset(dst + ret, 0, size - ret);
+> +
+> +	return ret + 1;
+> +}
+> +
+>  BPF_CALL_5(bpf_copy_from_user_task, void *, dst, u32, size,
+>  	   const void __user *, user_ptr, struct task_struct *, tsk, u64, flags)
+>  {
+> +	struct mm_struct *mm;
+>  	int ret;
+>  
+>  	/* flags is not used yet */
+> @@ -691,13 +726,16 @@ BPF_CALL_5(bpf_copy_from_user_task, void *, dst, u32, size,
+>  	if (unlikely(!size))
+>  		return 0;
+>  
+> -	ret = access_process_vm(tsk, (unsigned long)user_ptr, dst, size, 0);
+> -	if (ret == size)
+> -		return 0;
+> +	mm = get_task_mm(tsk);
+> +	if (!mm) {
+> +		memset(dst, 0, size);
+> +		return -EFAULT;
+> +	}
+>  
+> -	memset(dst, 0, size);
+> -	/* Return -EFAULT for partial read */
+> -	return ret < 0 ? ret : -EFAULT;
+> +	ret = __bpf_copy_from_user_mm(dst, size, user_ptr, mm);
+> +	mmput(mm);
+> +
+> +	return ret;
+>  }
+>  
+>  const struct bpf_func_proto bpf_copy_from_user_task_proto = {
+> @@ -3659,6 +3697,68 @@ __bpf_kfunc int bpf_copy_from_user_str(void *dst, u32 dst__sz, const void __user
+>  	return ret + 1;
+>  }
+>  
+> +/**
+> + * bpf_copy_from_user_mm() - Copy data from an address space
+> + * @dst:             Destination address, in kernel space
+> + * @dst__sz:         Number of bytes to copy
+> + * @unsafe_ptr__ign: Source address in the address space
+> + * @mm:              Address space to copy from
+> + * @flags:           Reserved for future use; must be zero
+> + *
+> + * Copies data from the user address space associated with @mm. The destination
+> + * is zeroed if an attempted copy cannot be completed in full. Unsupported
+> + * flags return -EINVAL without modifying @dst.
+> + *
+> + * Return: 0 on success, -EINVAL if @flags is non-zero, or -EFAULT if the copy
+> + * fails or is partial.
+> + */
+> +__bpf_kfunc int bpf_copy_from_user_mm(void *dst, u32 dst__sz,
+> +				      const void __user *unsafe_ptr__ign,
+> +				      struct mm_struct *mm, u64 flags)
+> +{
+> +	if (unlikely(flags))
+> +		return -EINVAL;
+> +
+> +	if (unlikely(!dst__sz))
+> +		return 0;
+> +
+> +	return __bpf_copy_from_user_mm(dst, dst__sz, unsafe_ptr__ign, mm);
+> +}
+> +
+> +/**
+> + * bpf_copy_from_user_mm_str() - Copy a string from an address space
+> + * @dst:             Destination address, in kernel space. This buffer must be
+> + *                   at least @dst__sz bytes long
+> + * @dst__sz:         Maximum number of bytes to copy, including the trailing NUL
+> + * @unsafe_ptr__ign: Source address in the address space
+> + * @mm:              Address space to copy from
+> + * @flags:           The only supported flag is BPF_F_PAD_ZEROS
+> + *
+> + * Copies a NUL-terminated string from the user address space associated with
+> + * @mm. If the string is too long, @dst is still NUL-terminated unless @dst__sz
+> + * is zero.
+> + *
+> + * If the flags are valid and BPF_F_PAD_ZEROS is set, the unused portion of
+> + * @dst is cleared on success and all of @dst is cleared on a copy failure.
+> + * Unsupported flags return -EINVAL without modifying @dst.
+> + *
+> + * Return: The number of copied bytes including the NUL terminator on success,
+> + * or a negative error code on failure.
+> + */
+> +__bpf_kfunc int bpf_copy_from_user_mm_str(void *dst, u32 dst__sz,
+> +					  const void __user *unsafe_ptr__ign,
+> +					  struct mm_struct *mm, u64 flags)
+> +{
+> +	if (unlikely(flags & ~BPF_F_PAD_ZEROS))
+> +		return -EINVAL;
+> +
+> +	if (unlikely(dst__sz == 0))
+> +		return 0;
+> +
+> +	return __bpf_copy_from_user_mm_str(dst, dst__sz, unsafe_ptr__ign,
+> +					   mm, flags);
+> +}
+> +
+>  /**
+>   * bpf_copy_from_user_task_str() - Copy a string from an task's address space
+>   * @dst:             Destination address, in kernel space.  This buffer must be
+> @@ -3682,6 +3782,7 @@ __bpf_kfunc int bpf_copy_from_user_task_str(void *dst, u32 dst__sz,
+>  					    const void __user *unsafe_ptr__ign,
+>  					    struct task_struct *tsk, u64 flags)
+>  {
+> +	struct mm_struct *mm;
+>  	int ret;
+>  
+>  	if (unlikely(flags & ~BPF_F_PAD_ZEROS))
+> @@ -3690,17 +3791,20 @@ __bpf_kfunc int bpf_copy_from_user_task_str(void *dst, u32 dst__sz,
+>  	if (unlikely(dst__sz == 0))
+>  		return 0;
+>  
+> -	ret = copy_remote_vm_str(tsk, (unsigned long)unsafe_ptr__ign, dst, dst__sz, 0);
+> -	if (ret < 0) {
+> +	mm = get_task_mm(tsk);
+> +	if (!mm) {
+>  		if (flags & BPF_F_PAD_ZEROS)
+>  			memset(dst, 0, dst__sz);
+> -		return ret;
+> +		else
+> +			*(char *)dst = '\0';
+> +		return -EFAULT;
+>  	}
+>  
+> -	if (flags & BPF_F_PAD_ZEROS)
+> -		memset(dst + ret, 0, dst__sz - ret);
+> +	ret = __bpf_copy_from_user_mm_str(dst, dst__sz, unsafe_ptr__ign,
+> +					  mm, flags);
+> +	mmput(mm);
+>  
+> -	return ret + 1;
+> +	return ret;
+>  }
+>  
+>  /* Keep unsigned long in prototype so that kfunc is usable when emitted to
+> @@ -4925,6 +5029,8 @@ BTF_ID_FLAGS(func, bpf_iter_bits_new, KF_ITER_NEW)
+>  BTF_ID_FLAGS(func, bpf_iter_bits_next, KF_ITER_NEXT | KF_RET_NULL)
+>  BTF_ID_FLAGS(func, bpf_iter_bits_destroy, KF_ITER_DESTROY)
+>  BTF_ID_FLAGS(func, bpf_copy_from_user_str, KF_SLEEPABLE)
+> +BTF_ID_FLAGS(func, bpf_copy_from_user_mm, KF_SLEEPABLE)
+> +BTF_ID_FLAGS(func, bpf_copy_from_user_mm_str, KF_SLEEPABLE)
+>  BTF_ID_FLAGS(func, bpf_copy_from_user_task_str, KF_SLEEPABLE)
+>  BTF_ID_FLAGS(func, bpf_get_kmem_cache)
+>  BTF_ID_FLAGS(func, bpf_iter_kmem_cache_new, KF_ITER_NEW | KF_SLEEPABLE)
+> -- 
+> 2.55.0
+> 
 
