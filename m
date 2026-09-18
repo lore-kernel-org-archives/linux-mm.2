@@ -4,107 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 170D0C982D8
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 15:33:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5A9AC982DA
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 15:33:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A52456B0098; Fri, 18 Sep 2026 11:33:27 -0400 (EDT)
+	id 45DFB6B009B; Fri, 18 Sep 2026 11:33:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A283F6B0099; Fri, 18 Sep 2026 11:33:27 -0400 (EDT)
+	id 40FA16B009D; Fri, 18 Sep 2026 11:33:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 917B36B009B; Fri, 18 Sep 2026 11:33:27 -0400 (EDT)
+	id 261706B009E; Fri, 18 Sep 2026 11:33:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5BAE96B0098
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 11:33:27 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 61AD51C2F94
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 15:33:26 +0000 (UTC)
-X-FDA: 85227277212.06.87F0ABA
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E6D706B009B
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 11:33:30 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 312971403FC
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 15:33:30 +0000 (UTC)
+X-FDA: 85227277380.17.F9B9BF0
 Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	by imf10.hostedemail.com (Postfix) with ESMTP id A36B8C000B
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 15:33:24 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=UdzrL2SE;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf10.hostedemail.com: domain of 3w1mtagYKCIg463qzns00sxq.o0yxuz69-yyw7mow.03s@flex--surenb.bounces.google.com designates 209.85.216.69 as permitted sender) smtp.mailfrom=3w1mtagYKCIg463qzns00sxq.o0yxuz69-yyw7mow.03s@flex--surenb.bounces.google.com
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=UdzrL2SE;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf10.hostedemail.com: domain of 3w1mtagYKCIg463qzns00sxq.o0yxuz69-yyw7mow.03s@flex--surenb.bounces.google.com designates 209.85.216.69 as permitted sender) smtp.mailfrom=3w1mtagYKCIg463qzns00sxq.o0yxuz69-yyw7mow.03s@flex--surenb.bounces.google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789745604;
-	b=DfTqEx3f0bt/TEAXA353XBubnyCZYAvL8Lk4DlZZXNhGuwc8Qj+oTAqr1vDyPw+h84TMK3
-	2Q85c4Ldt5NsaWUfyx5y2+1qT/TnzMvyl4G05LYgp2bbfE3r5Rk7WQ9VvMDc9GPya+BCwm
-	nhMmH7gimDzV5+2k93xVh/rkMJh0cBk=
+	by imf17.hostedemail.com (Postfix) with ESMTP id 6A2394000E
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 15:33:28 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=JibKz6fN;
+	spf=pass (imf17.hostedemail.com: domain of 3x1mtagYKCIw8A7u3rw44w1u.s421y3AD-220Bqs0.47w@flex--surenb.bounces.google.com designates 209.85.216.69 as permitted sender) smtp.mailfrom=3x1mtagYKCIw8A7u3rw44w1u.s421y3AD-220Bqs0.47w@flex--surenb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789745604;
+	s=arc-20220608; t=1789745608;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G76+KNo+7dCD80CEXVYRdrJvlcvMXRNfZh0Z210UNpw=;
-	b=751BNXWT3DyXjIIzAYzopMOiyKvIz5ziln+0zc6DSsGmtnlZXuFpeD0RxRPw+9tzX+3UHK
-	mjF9jjjuCXXbEnA1hKpfsg9MheYI9bV7hKvRkjUwchd9jvDhcCgqIq3rOjTlBYOqem9XTC
-	hVmLd049AXBI92kcecqz2oe+pnF3RRk=
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-38e54b6556aso1297375a91.2
-        for <linux-mm@kvack.org>; Fri, 18 Sep 2026 08:33:24 -0700 (PDT)
+	bh=31y1T2wCgzpuS+JdcRd/GVSVXNd4Xu5+lzNmsg6bK28=;
+	b=rWbjuiNswlnZc6usRDpWDGxzl6FSM4as5TTVnW4gwSCVJBk7G91vD3Wh+cKBL0Tu47rll8
+	/9VribsTlITX8dI+ecmu55jPoEp771d4VC4RbY7h/zZxuw0jR0YngzJZPtbpXonU8QYfaE
+	giEU3tOHWcfSDHu4SSfcX8DvPErXZ9Q=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789745608;
+	b=8qWRMdyMDRrDEpIU9ldcIDAaDz9I/nuPLbi96YRxZKVKP8JhCuzFk3TmxWnYzGPIxVLl//
+	IH8CQJd8hfZWRKJ3ym3P9fpcqmxzQGUYsbSmyoQzaJHLryKU56s4KwTEWAZtGUXLQUbW7/
+	5ttzyZ7ynY0XP2Y9FUyxh1Ku0KOz028=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=JibKz6fN;
+	spf=pass (imf17.hostedemail.com: domain of 3x1mtagYKCIw8A7u3rw44w1u.s421y3AD-220Bqs0.47w@flex--surenb.bounces.google.com designates 209.85.216.69 as permitted sender) smtp.mailfrom=3x1mtagYKCIw8A7u3rw44w1u.s421y3AD-220Bqs0.47w@flex--surenb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-39533bb224cso1804199a91.3
+        for <linux-mm@kvack.org>; Fri, 18 Sep 2026 08:33:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789745603; x=1790350403; darn=kvack.org;
+        d=google.com; s=20251104; t=1789745607; x=1790350407; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=G76+KNo+7dCD80CEXVYRdrJvlcvMXRNfZh0Z210UNpw=;
-        b=UdzrL2SESt+r7wlWnsRN8aY40TKMi/sCp6LMlSKvp/8zhJzGUkL0DmmC1+hnERr7+v
-         qW/J7WWjHB/we7BJUquYI7a8c06HPZT0iOaFEP+eYSFGwzVEknxTw28GtIHx/UNG8bz2
-         Zk5Mo/BiR8m7Ww/DdBpExwiDwc1msEAB0qilejpjMC2Z1I1ko3p/RrvsAz79ZKaGEQdA
-         wTRMbNeP+i4wKTNZJX74f2I1JAZUQhbfoNsOnox93dWtfLp3pwyGxSjukhfoaJ8DAy2A
-         YOBi2EGIXakv3VqWXjulERO0Tx5YFnk7akkEwSnp/7mMxizk2XfLtUNQBi6lfKEqrV5O
-         maTg==
+        bh=31y1T2wCgzpuS+JdcRd/GVSVXNd4Xu5+lzNmsg6bK28=;
+        b=JibKz6fNwhjiYkRTIrLrCz31qNtOPShnSjfAwY5L0nFADq7pszC4oaG7RGl8lfrhd4
+         +JMI//j8LAIYLBIuwZvBPQylgP56EeDcDm7M1R3CDpeLlaD6eZMHMXkSWho/508Yr0XF
+         IeuApanBTtV4FIILTYY/VtZbOzHVYqufVIvB5TFFi9WEjrLl8AhQwobGs/8N16ysbyOx
+         E35Qn350HZ0FRDf8cS3Wl+VYdObRaw8R1SWK25MOW69r3QHDrg9NOnpyh59ZwtETm2IT
+         rKTP7HzJHQXDc0UZSYDvcYb/tGseSy8dYo6oTfRj24I5J3/PSqB3yxR6H0Q4MlWZKY8v
+         MIZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789745603; x=1790350403;
+        d=1e100.net; s=20260707; t=1789745607; x=1790350407;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=G76+KNo+7dCD80CEXVYRdrJvlcvMXRNfZh0Z210UNpw=;
-        b=2G27AqmfcLMU7h61PwcbXnxvzFOl6TO3OodgFiNOE7IeHv/LOBffFlz2RDBx/jjGLF
-         PV/psX12fuF4IOtOcfCtqY040HKQK1BCTOnvWuSqkIyZ/Rl9c5SsPSsZDFgHej5flEhi
-         J6s7zKQzINPRGf7LPO9TYAtmYVNVUsknG4t88kdJcyRarrN/bhlcc8TfqwtDLr4bCMjg
-         xY51/E+glCq93yvzlWVCIiFLKSazPgG39exWeBMYxsF7w3EI8zxAg3DjHHphlWKLnlde
-         E6tWZAronCr7EX9X00Qg4vgjKc18J+/n5AF0b233pUeuZTs/eY1m+3Cq4B0qFjBqZ++L
-         iIfQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzgCI2lVPX4bRPmBtoUNeN03qk+aOZ5J7IYnDYazv+tpyTNLGBhtEuJOAeLquwBYzx22LuN7iFi4g==@kvack.org
-X-Gm-Message-State: AFuF++m6RWgBrusdy34NJCFK0oyR1unTtZ12kcsGxkrjefxp0+NIPnkQ
-	SnxdAhhgY+lhFMPZDVIvmzPnM8AjwFv5ACVhUPxT3LWxPR7tQ8EnndV+eY7fbtNS5pCwE3m+sQ/
-	3d09Qcg==
-X-Received: from dldd2.prod.google.com ([2002:a05:701a:c902:b0:144:d109:6356])
- (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4ac7:b0:39e:6c6a:4b6b
- with SMTP id 98e67ed59e1d1-39e6c6a56acmr25332a91.53.1789745603281; Fri, 18
- Sep 2026 08:33:23 -0700 (PDT)
-Date: Fri, 18 Sep 2026 08:33:12 -0700
+        bh=31y1T2wCgzpuS+JdcRd/GVSVXNd4Xu5+lzNmsg6bK28=;
+        b=mqtW8Nk5pZlTH3THfn9Mxh9pvMkNjHtbTO9SmwhGqCIKynT15ADIq95eOclo32z1GD
+         mRVoHL/85y/uwaW9SYabEd9qIqoGUGdvS9ifU7yNcak/MlNMivLX9HzIqk7VO/7ZtTnS
+         CqVazmNdThzrr7m+R26XF2L5nHFRik2ncWn8cLFUXZnPkOsTDzueLVaUgWD7BZ/gBH0p
+         QKz1y2jFiwOaUf5qA1CcwHYIo/novpxGPWEK++dwSLXAnOmoxB2sZ5lNOoFWu0cwIWQh
+         GoAB3nhkskEnltwYVKJQL72W6JoCbSIsUCEOrtIeyOKmuh3xdJqeBYk7ya2yWgvAJeBH
+         6Tdg==
+X-Forwarded-Encrypted: i=1; AKwUvBwJsf+zGvj3WxuouU3a9hNyfmosfixDwhRPvXRYgsK8Orp2ade+PGM0lphP4aW+9csfi7Ilr4PK9Q==@kvack.org
+X-Gm-Message-State: AFuF++kP+T6FLWMIAmOWjYHrwHRoEbOZM4jUK56AuA83i9zcMdfyS1BP
+	hInJOxcrqa7VgrquzAdRErq1edHkBShFU1GnYnU4bvUuY1cIImpZZCRsoJdn3Q5yEZQeQ4q+E4V
+	FQkuWXQ==
+X-Received: from dlan4-n2.prod.google.com ([2002:a05:7022:eb44:20b0:144:d2ba:3139])
+ (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2ecb:b0:39e:31ec:ba55
+ with SMTP id 98e67ed59e1d1-39e54d36b09mr7394741a91.7.1789745607146; Fri, 18
+ Sep 2026 08:33:27 -0700 (PDT)
+Date: Fri, 18 Sep 2026 08:33:14 -0700
 In-Reply-To: <20260918153318.758387-1-surenb@google.com>
 Mime-Version: 1.0
 References: <20260918153318.758387-1-surenb@google.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
-Message-ID: <20260918153318.758387-2-surenb@google.com>
-Subject: [PATCH v5 1/7] proc/task_mmu: remove unnecessary helpers
+Message-ID: <20260918153318.758387-4-surenb@google.com>
+Subject: [PATCH v5 3/7] proc/task_mmu: clarify shmem mapping walk conditions
+ in smap_gather_stats()
 From: Suren Baghdasaryan <surenb@google.com>
 To: akpm@linux-foundation.org
 Cc: liam@infradead.org, ljs@kernel.org, vbabka@kernel.org, david@kernel.org, 
 	willy@infradead.org, jannh@google.com, paulmck@kernel.org, pfalcato@suse.de, 
 	xueyuan.chen21@gmail.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, surenb@google.com, 
-	Usama Arif <usama.arif@linux.dev>
+	linux-fsdevel@vger.kernel.org, surenb@google.com
 Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: 3mrmpm1fhdancmy4txej3edqdso9fyda
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A36B8C000B
-X-Stat-Signature: x951oyg6t1zx5hmohmwmqrbia54f3xss
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789745604-855378
-X-HE-Meta: U2FsdGVkX19M63NEx9yLma9gWwnKH+8zlnoeTCUfG6yS3QAIiBLlPwX4bOi+ho5hVdhS30dTjAR/2h4UekQyz5piMX2bzJ3ZkjMWfSvrgcoRt1zgqo9cAZVVW7wvsGIJ4erz7T8vwxry3Vyb6L1i7A156BECZ6/3XV4NkXCaz27zH8q0+5HHRhL1XnJ3nNByZyRugL7HZdOHCJOxQWsZpNz4cW8nlV6H3Sv/ChFpeKGdjqbqpMWaa+sNCVCo+Q1wrM8dGTGb3/cAGSKxBN+pKZAY+LrpkuO5ztKC9lCIahsGgUMHbOAxY+ppw5LfBQ/+al3F18N+F/pF7kMAZfFSh6PEHba1vQXAIYP6SK1REaf/IOEEaUvn5JmNyHI2nn+Ra1ospidtLh7oG0DoqHHMBpl5eMI3XA+U5dCYqIN2rj18Mh46e9JHjQNXd+zcoG7vcOqene3E4sdNSffw+sWakPG6AClPdvxII8HNUOo8K3vURejsv1tACVkiStv0sDrhbitljGCNGrbnioZ2gnCv4XV4WTmmog/wLPJaa4/EVb473IMpVGD8+edNfv0smF90uZZ/VuRAvOQe1lNywTy1+ISU/jQEr819BDM08h/2U8eT3rlxbqpe7o6dreP4fsq/hvAR7uYIBBqp+iC2zv3z+gCDeGR1ellw9eG4XQycGac2x+4GpjIOI4Ihbv8MuWfCBIi7m25+/HNVc6SNtNYLIUec9JOSEm2Uh7r/QgH68pbfdCl3I6eJOjCDIv7lo7uRWdjEs61c+ZMgbNKTyTPB8d7mNl9wLS8Tqd8GnPSV0u0F+ATCrhwK7H7TCbzJe5KdA0uew/Zgy8QH1DoZHZrx9iC7E0D0FYF/y1rKYM1qn5ExPJgebKVZZuIkH/YoG1Y3+NYo+YJthUpFDVejdwWwl6Imk7l2TtoMtV3nHUlz7b4P9M7q//u3Xyfd49myMrdKTZam7Ug9oHYk2qCF92M
- 4FqQIg3S
- r+bipiNHJ58Ucg7VFl5AePeh3LII77wIkjs1kG6NWo3UWTVKc7T0tgRW5g/FSCmfTTOVGK/kqyLTaB7U5L7pADxP5CDZiUW74kCufy9AlklJG+woEv8I5QfDmrXwHWno5MrqjEpXFRr5XO7kF5/t8pNdhmNjngLZF/cpGJ4ALTTw2epC3IYOi6w2pEVwuAGaVX/YUaPFl1qBWKgW1O6CYcnhTTHZknoM3Fcjcz+gfO8o4WujdPHU2R4o66YFU98xYe4fIbEDEoct6YC2OKnc42Tm0Zru0hwBUj5pKexd+fkkRrYrgh4G5H9gAqFsg5e817l5IMybknyJbfWYcSwmOBS98dPcAAN/WvPrGXm5Ow5SCyASYcobTcN0mdMr0hTRz5r1PVYJoFYFnzVyBW3vgASYpHPsoiQRDJb+P8A6b85eZpiaz3qoHzD0ZYjOsE+JWu1vOy6XVXHfsak3LWHG2uZ58PguUz/31uBPY4dInuqnagcxWaDjx1SuHk/UDpYScUQrQDzPCx870bT4YU0isjx97+VVDeEaOaZmlabgcaVCeMKxibAPjIdQ9pL4Be/rbKtQ+vIemfwiwbjTjpy8RbqojgzLeH6dVusxCd2h4XWzIh7NracUdPBO58b2Gnf44SijL1EtXVRKlBDZI2MIkyPn91XpBbIHf/ki5+0JIOQTaH4WT+pFhAh4sgItcHco7FyvICPNXk7ZGtAd1wMYgLozDFFnpe33ffmnk+tUjSdsp5hGXaMFWZIq2Ew==
+X-Rspamd-Queue-Id: 6A2394000E
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789745608-549397
+X-HE-Meta: U2FsdGVkX18QZ/uUNwoMAIWGGpVBYWA4cf7HOW9g7fOCAOrwXmnqlx4iTcnT+FwDPD0EHApDzpbx3jZt3FqWVPbk6LuTxnLcDXQKIDEWLeZHO0uvS/jberl3kMZmBUJBRo8nglgrRGT7nrmC3RtBDRoECug1c1aY9rg7h8mxcljqAkLqgwQjyRZCuMfgKAoHyZ7HdDLxSSKjjmt+BM57mUeSw1uPHhpJsiQOBJMHXETsV1JOexWCxWelx0dAlTriOYAlyGIlIod+hw8325JKGttIzFEn1/OnKexNTbKRklp1oNOrufLCyJNEgkiG1ADh86VNNnUxdJOLXR09eHC4f6jQkuys9f3mnP/8iRT4vNryDTv4GfjjBR0V8uyvoZMArmSo2+v/pJl+RpHUH3HEhPY4rBFXbsMktuNgo+8ibW2q3DAroxVyaybOwwWNtNRoNF024ZVmH+1SUqadeHu4NAmmKKiTQTaQ8+t3e7e2nc4NJB+XwfcCCqUmQ7YaPTbcsMNhlo/RFUl5j14vuqu/hFWb4EoK45IRK9NsJstwubQYzDhipv0M7KQBwf/ntCpLcFsv6Y6Uqcb/weDGHyRW8QtjodpKXhHMzAUfFN5Bva+Jo/C5tgY6XestksA2A0FnS0zUnn7DRxr0NIWXxeWB6Jtipm22vlH9nmWX40xh1zNokS3auqB5NUEm0mmAzSoaqjtdkQGdhs6Bl5acvnMeubKuw/ZEkvqWjuEpccLtOFYAijJapvnQVBhzkBwbj9TSJMDnD4KzE8X1Cnk+MveQbufqtTUnQFSTXNHHv/UEQHwPEKvVAOlA2oF4YASSmxHTiavmbwT42f/xh7jQyY1DjcJD4XbTzgjuN9+8ndlweE1h+dcSt48zVV84LQHiqn7KLcYSwFVUeOD7Re2EBR5nENuAa7IxauJ7pETEtBalqa4nz4aqEdRmBDa4coecKEPzncW4Af1+JTz6FB6z6g1
+ 6nweMPvg
+ 1efL2GLkXWq6WyhL0vFqGz6FYYvRvYwCllDtAXprhYAD5dC6qu+nYqPfoMjYXVjNmukvxH1RJnX2p20m6sHxDGg57+nyHDeefLoFS3uS7PPwDwkx2WXDr5iu7NXuuYAZH7W47VjE7ESceEpV42x+9XKWcgBhK7efDMLqjM0laHTw99S41FyAoV+IWWamxLOZ8qjDVzl8xs93b4Ffn/RWJqu/tRdShm+HkVts9h3RrDXWuwEKdYNzx8BLo8wZ38VB1MRGxHfS2svWPGXTXmp/5C7H7QOZlSzlaLxeTGHJe/GMhTX1mdC/q4DYsD1bxtn4BfVxYcdMRX6cRN+6hkX8mqdu61g7eP+VkhuTV1vKFqVziXkt2PoZ7GxvHigjIuLQDGv5l9Edfk9Zwfrj7evvUCoQcZytM+s0Wfeoc/EVpmMJZWw31nQPFnp7v96LKGksyxQfh9sgkMTf3wZwSLGDJPBGpVWzfRJRiuPILT7a8/wxKHaAX0+i3AvYxVxfgzj7L0cZdUHXJ7/hezQ6h98UlbN6FK2JvSv9qOwARes+R5trQnpSE+SmSsRhHcX2YiKKAqcCK2K7zhZObsT+QsyF1WfUbpPM2W7129Wabqc5csPQ1VJVHuj2mZI0Y4ftTexVa1AiQs5MBKfK1fDTn/8jycKa1tgbOSrk+cl7FsokTKcUWVU6iLjjqtmJJIw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,143 +112,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When per-vma locks were behind a config option, a number of helper
-functions were needed to simplify the locking code. Now that these
-locks are universally available, we can do a little cleanup.
-Remove lock_vma_range(), unlock_vma_range(), query_vma_setup(),
-query_vma_teardown() helpers.
+smap_gather_stats() optimizes stats gathering by skipping the walk for
+shmem mappings in certain conditions. Update the comment to clarify
+these conditions and use vma_is_cow_mapping() for CoW identification
+instead of open-coding it.
 
 No functional change intended.
 
+Suggested by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Reviewed-by: Liam R. Howlett (Oracle) <liam@infradead.org>
 Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-Acked-by: Usama Arif <usama.arif@linux.dev>
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- fs/proc/task_mmu.c | 67 ++++++++++++----------------------------------
- 1 file changed, 17 insertions(+), 50 deletions(-)
+ fs/proc/task_mmu.c | 23 +++++++++--------------
+ 1 file changed, 9 insertions(+), 14 deletions(-)
 
 diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index 052e8dc796bc..191a054d7e40 100644
+index 8a72dc0dc945..f1ce15981253 100644
 --- a/fs/proc/task_mmu.c
 +++ b/fs/proc/task_mmu.c
-@@ -160,25 +160,6 @@ static void unlock_ctx_vma(struct proc_maps_locking_ctx *lock_ctx)
+@@ -1274,23 +1274,18 @@ static void smap_gather_stats(struct proc_maps_private *priv,
+ 
+ 	if (vma->vm_file && shmem_mapping(vma->vm_file->f_mapping)) {
+ 		/*
+-		 * For shared or readonly shmem mappings we know that all
+-		 * swapped out pages belong to the shmem object, and we can
+-		 * obtain the swap value much more efficiently. For private
+-		 * writable mappings, we might have COW pages that are
+-		 * not affected by the parent swapped out pages of the shmem
+-		 * object, so we have to distinguish them during the page walk.
+-		 * Unless we know that the shmem object (or the part mapped by
+-		 * our VMA) has no swapped out pages at all.
++		 * CoW mappings might map anon folios that do not belong to
++		 * shmem. Perform a less efficient page table walk in this
++		 * situation, unless we know that the shmem object (or the
++		 * part mapped by our VMA) has no swapped out pages at all.
+ 		 */
+-		unsigned long shmem_swapped = shmem_swap_usage(vma);
++		const unsigned long shmem_swapped = shmem_swap_usage(vma);
++		const bool is_cow = vma_is_cow_mapping(vma);
+ 
+-		if (!start && (!shmem_swapped || (vma->vm_flags & VM_SHARED) ||
+-					!(vma->vm_flags & VM_WRITE))) {
+-			mss->swap += shmem_swapped;
+-		} else {
++		if (start || (shmem_swapped && is_cow))
+ 			ops = get_smaps_shmem_walk_ops(priv);
+-		}
++		else
++			mss->swap += shmem_swapped;
  	}
- }
  
--static inline bool lock_vma_range(struct seq_file *m,
--				  struct proc_maps_locking_ctx *lock_ctx)
--{
--	rcu_read_lock();
--	reset_lock_ctx(lock_ctx);
--
--	return true;
--}
--
--static inline void unlock_vma_range(struct proc_maps_locking_ctx *lock_ctx)
--{
--	if (lock_ctx->mmap_locked) {
--		unlock_ctx_mm(lock_ctx);
--	} else {
--		unlock_ctx_vma(lock_ctx);
--		rcu_read_unlock();
--	}
--}
--
- static struct vm_area_struct *get_next_vma(struct proc_maps_private *priv,
- 					   loff_t last_pos)
- {
-@@ -286,13 +267,8 @@ static void *m_start(struct seq_file *m, loff_t *ppos)
- 		return NULL;
- 	}
- 
--	if (!lock_vma_range(m, lock_ctx)) {
--		mmput(mm);
--		put_task_struct(priv->task);
--		priv->task = NULL;
--		return ERR_PTR(-EINTR);
--	}
--
-+	rcu_read_lock();
-+	reset_lock_ctx(lock_ctx);
- 	/*
- 	 * Reset current position if last_addr was set before
- 	 * and it's not a sentinel.
-@@ -325,7 +301,12 @@ static void m_stop(struct seq_file *m, void *v)
- 		return;
- 
- 	release_task_mempolicy(priv);
--	unlock_vma_range(&priv->lock_ctx);
-+	if (priv->lock_ctx.mmap_locked) {
-+		unlock_ctx_mm(&priv->lock_ctx);
-+	} else {
-+		unlock_ctx_vma(&priv->lock_ctx);
-+		rcu_read_unlock();
-+	}
- 	mmput(mm);
- 	put_task_struct(priv->task);
- 	priv->task = NULL;
-@@ -518,21 +499,6 @@ static int pid_maps_open(struct inode *inode, struct file *file)
- 		PROCMAP_QUERY_VMA_FLAGS				\
- )
- 
--static int query_vma_setup(struct proc_maps_locking_ctx *lock_ctx)
--{
--	reset_lock_ctx(lock_ctx);
--
--	return 0;
--}
--
--static void query_vma_teardown(struct proc_maps_locking_ctx *lock_ctx)
--{
--	if (lock_ctx->mmap_locked)
--		unlock_ctx_mm(lock_ctx);
--	else
--		unlock_ctx_vma(lock_ctx);
--}
--
- static struct vm_area_struct *query_vma_find_by_addr(struct proc_maps_locking_ctx *lock_ctx,
- 						     unsigned long addr)
- {
-@@ -653,12 +619,7 @@ static int do_procmap_query(struct mm_struct *mm, void __user *uarg)
- 	if (!mm || !mmget_not_zero(mm))
- 		return -ESRCH;
- 
--	err = query_vma_setup(&lock_ctx);
--	if (err) {
--		mmput(mm);
--		return err;
--	}
--
-+	reset_lock_ctx(&lock_ctx);
- 	vma = query_matching_vma(&lock_ctx, karg.query_addr, karg.query_flags);
- 	if (IS_ERR(vma)) {
- 		err = PTR_ERR(vma);
-@@ -732,7 +693,10 @@ static int do_procmap_query(struct mm_struct *mm, void __user *uarg)
- 		vm_file = get_file(vma->vm_file);
- 
- 	/* unlock vma or mmap_lock, and put mm_struct before copying data to user */
--	query_vma_teardown(&lock_ctx);
-+	if (lock_ctx.mmap_locked)
-+		unlock_ctx_mm(&lock_ctx);
-+	else
-+		unlock_ctx_vma(&lock_ctx);
- 	mmput(mm);
- 
- 	if (karg.build_id_size) {
-@@ -773,7 +737,10 @@ static int do_procmap_query(struct mm_struct *mm, void __user *uarg)
- 	return 0;
- 
- out:
--	query_vma_teardown(&lock_ctx);
-+	if (lock_ctx.mmap_locked)
-+		unlock_ctx_mm(&lock_ctx);
-+	else
-+		unlock_ctx_vma(&lock_ctx);
- 	mmput(mm);
- out_file:
- 	if (vm_file)
+ 	if (!start)
 -- 
 2.55.0.1082.g2b9226bbc0-goog
 
