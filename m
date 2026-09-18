@@ -4,115 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AF49C982D2
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 03:13:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A4EBC88E75
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 03:14:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DF9086B0098; Thu, 17 Sep 2026 23:13:27 -0400 (EDT)
+	id 84DDA6B0092; Thu, 17 Sep 2026 23:14:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA2B76B0099; Thu, 17 Sep 2026 23:13:27 -0400 (EDT)
+	id 825866B0096; Thu, 17 Sep 2026 23:14:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB96B6B009B; Thu, 17 Sep 2026 23:13:27 -0400 (EDT)
+	id 763126B0099; Thu, 17 Sep 2026 23:14:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9FD986B0098
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 23:13:27 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C8ACAA5E07
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 03:13:26 +0000 (UTC)
-X-FDA: 85225412412.03.FA9A8E7
-Received: from mta0.migadu.com (out-137.mta0.migadu.com [91.218.175.137])
-	by imf15.hostedemail.com (Postfix) with ESMTP id A2360A0002
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 03:13:24 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=OLnHFwLu;
-	spf=pass (imf15.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.137 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 548E06B0092
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 23:14:16 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CFC04120560
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 03:14:15 +0000 (UTC)
+X-FDA: 85225414470.17.45B84CF
+Received: from mta0.migadu.com (out-151.mta0.migadu.com [91.218.175.151])
+	by imf08.hostedemail.com (Postfix) with ESMTP id C98F1160006
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 03:14:13 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Qfn8QFMN;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.151 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789701254;
+	b=QmZ1mI3EQjhYbYjRYt3gicngeTispA4qMoohl9vfFG00+whK9Dr2JVMyPP1662tqripwl8
+	fmvS+p5droljHQncQwXdzpNW8nDjKBHys9BvwOO9Z8BVgBS2giYYbBfkpK8jlC3etvH0Rk
+	x2udzbB0z4KIygpVpGmokCoH1nPjE7I=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Qfn8QFMN;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.151 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789701205;
+	s=arc-20220608; t=1789701254;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4yASsbAmWEq02nXdhFVYJ4UF8/LDCvkp8q6cA/4ikZk=;
-	b=lMyzt8VfWtL+HY5L5w/tZ0gIEnWdKfvU7f4BAMi/NnU+CROVnY0fsevkMxdh59ZVjeiyq6
-	gk+wOq6SD6brk2/AQK1AhCIVmVv0/VSKzWBOHpxdBlhZ4A0B0qxYOeEB17GS1phjunDHaF
-	T4I2QZm1DlHnB9xJYUhZKZ4GFBG9ESc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789701205;
-	b=YirvK5CfJi0rTEDqtenzdMUsyN/Ca4yTgIAxI0JsWmbnNkPRGZKGPUPnMrqXRa9IzkZ93J
-	4lycNEv8dXSIJfbGqZECpUnIyKti1oZDqEe5epc4+KHj+Z+8Xw3rFOv6d3iivRilhH9Ht8
-	vDD3n0aE1RPIun4dOlH90DapE7nD2L4=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=OLnHFwLu;
-	spf=pass (imf15.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.137 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=wqxIYHEwC1oQiq/8yKTfLfJZ5pAHtKGNIYsltrvQ3mM=;
+	b=zIk0PcZVrP4ZfYH3M75dTtlYO/iWZMvTh80Guo27+rXZ27J7m0vjpWpBbR39He/XnjOH+T
+	MbStaQVbO56a+QU3GpHWgBq/UfQ7Tjz9NptZfoyaSvJa1nojk4zaNtdq+l0VEQfuzsOV9b
+	MdgFoAVNE1Pq+Lq8ERubnGXKsw82lo4=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=Rkn/RIiY9BjLJ/8Nz1FlDN7V2RpqMaZCBysWzgkBWaA=;
+DKIM-Signature: a=rsa-sha256; bh=lbhGi4o2SC0IANPATUSt6s9fXNLBC+atgB/IchScY9c=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789701203; v=1; x=1790306003;
- b=OLnHFwLugetQqXu7J6UCm/JMKkjBzNriZGlObH/A7g6gLfogF4p0jKGTEtt52x9aq3ESeFO1
- zH/sQjJkIe6tBswucnba96dj4pFRJaO5ev8Kmi7otbsaSIXaf0OgNWcVkaZIX9rDypqt5BbkPVK
- SxhLWYnCOykiiJI1ocBdzSiA=
+ t=1789701252; v=1; x=1790306052;
+ b=Qfn8QFMNW6NkCtAk4yoEKcVWALgKpPrWGz4Ttx/ojhq+jBDz3f3mw7hPIJp8qCq6qSmlTeQO
+ kOoln+tHJOi2TcJboRPJsqtPBSIFsxkF08QzVQyX4RfoK7Y0M7sKWiQ7u02W7C7lc526MzBILtZ
+ kOtosbBRcJVj60uq68+rFZN0=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 56057d78e329f5f0;
-	Fri, 18 Sep 2026 03:13:23 +0000
-X-Mizu-Trace-ID: 56057d78e329f5f0
+Received: by mta11.migadu.com with ESMTPS id e6758c9efe7eb6d1;
+	Fri, 18 Sep 2026 03:14:12 +0000
+X-Mizu-Trace-ID: e6758c9efe7eb6d1
 X-Migadu-Flow: FLOW_OUT
 Content-Type: text/plain;
 	charset=us-ascii
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.700.51.1.1\))
-Subject: Re: [PATCH v4 05/16] mm/hugetlb: use direct assignment instead of
- folio_change_private()
+Subject: Re: [PATCH v2 1/2] mm/hugetlb_cgroup: move per-node usage on cross
+ node migration
 From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <DLI26G4YSWIO.E52DKMAH6ZSG@nvidia.com>
-Date: Fri, 18 Sep 2026 11:13:05 +0800
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+In-Reply-To: <20260918-for-hugetlb-charge-v2-1-2b6d8c2bdc36@kylinos.cn>
+Date: Fri, 18 Sep 2026 11:13:57 +0800
+Cc: Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>,
- Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>,
- Johannes Weiner <hannes@cmpxchg.org>,
- Qi Zheng <qi.zheng@linux.dev>,
+ Kees Cook <kees@kernel.org>,
+ Colin Ian King <colin.i.king@gmail.com>,
  Shakeel Butt <shakeel.butt@linux.dev>,
- Kairui Song <kasong@tencent.com>,
+ Mina Almasry <almasrymina@google.com>,
+ Mike Kravetz <mike.kravetz@oracle.com>,
  linux-mm@kvack.org,
  linux-kernel@vger.kernel.org,
- Oscar Salvador <osalvador@suse.de>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <A1A14368-7A43-40ED-B2AB-C2EC2C5FFB1D@linux.dev>
-References: <20260913-remove-pg_private-v4-0-848550f7574e@nvidia.com>
- <20260913-remove-pg_private-v4-5-848550f7574e@nvidia.com>
- <CC279633-6F0F-440C-BCDF-1D5362C4CB7B@nvidia.com>
- <c7a5ff0c-126d-4762-8b04-5897da09b8b1@kernel.org>
- <DLI26G4YSWIO.E52DKMAH6ZSG@nvidia.com>
-To: Zi Yan <ziy@nvidia.com>
+ Hongfu Li <lihongfu@kylinos.cn>,
+ stable@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Message-Id: <6BC6926A-38D3-47B3-A676-D89DFF8E212A@linux.dev>
+References: <20260918-for-hugetlb-charge-v2-0-2b6d8c2bdc36@kylinos.cn>
+ <20260918-for-hugetlb-charge-v2-1-2b6d8c2bdc36@kylinos.cn>
+To: Hongfu Li <hongfu.li@linux.dev>
 X-Mailer: Apple Mail (2.3864.700.51.1.1)
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A2360A0002
-X-Stat-Signature: ddhcwopidg5bn1754jkpdwmsm7g7e6sm
 X-Rspam-User: 
-X-HE-Tag: 1789701204-414797
-X-HE-Meta: U2FsdGVkX18z6jD1/vkqcX2b2fCVxtWbmkkoRm5rkaUQjOGGE5VnH/ymoVgpwIAWrHUDHKtbaV8aE4AJNrJwuJTrOCXEYPN3FPDdLb+tldIDnYkoUusTnMd5JwBbBE8tOvQOXMvoDDfP3YvdLb38DgCe4zrCDwbyjFDw/mhI+R8TrHHPq6reQSigraqaz6IgXQ8dWRgjnjIQU+ImxgaC6T2JBn0ZqhnIvJ+Gq3C+wPj+mzxVdatcTnnc/UF9KB1+lz2tJXaxdD0qwx89d6LzagIjirSe1E54iN1TUvPKtH0VDBcmG66KTpoYfcdPVDar56mBhrQb0fcwcjLxt/VMqBg3kQVWiBwizxfUOmZ6T0UDbQkERo4fN4Xi5XBBmry5kljYa24NLvpjJfequtRgOGG4CQ1b1KQuWofeTjASqPLPyzY+QjViNBI/y3KZs297tngap1kP3x43ONRcFQAzuEJDx0LMKkfRmaMQ90DA9I6Q/N8E/0XLc3WqlZcdAHP5XaZVvuPEI6PfjXbsE+5Pn/nhDm864oMVK0hvoK7XP73iBRN4E+nyB9cGIw4YZmMHidLk3kQcT8hUoD+3Cldz1Hi80R2DoxvGsyCQE2YAjCkjvHYQplcmGAO6OBTTFavD3iWxRQkqSj7Xe2T4tSyNdn7Pb2EC6FieJRS/x2PLMEgZlx+k9lw1LfnrINaPygT/Hx8x8JMzfvaS6pNecSm4JYoeVc9z1XtEAZxeQGAfXt3MGBR356Yz2wcxvRTmK9fd8+npsjmkoTpJT01S8B0KluXM9mbd4VUXm1OnsxhYSSuRp/kwmlOzr3ipcDn/Md7WXFzaLMmIIxHidhGG0EBP7ZUds1g/+bDiXJXS+PFwJd/1UjTzvjEH5Cqv97IHFWHnmNH/QJH4kYGGB4chuKhkLiYnR1T+bgdtQU8mDGUvmetdO65HnRDY0pQ1Szxt67QJJpIn/f7J53fKGEPA8lN
- 3WqWZNeL
- JUkaJo/rHubeFh7zr+dztWk0gQlSwzRbD/5MW33H3Gm4ItIUsC2ffqNktgeVtZWSY/su+rRNt0sdzp9LxksaRanxweffVD7SFeix4i0QWWN4Y6Dp9bWqS/0QLoQlhitHEjIJ3dtUCQzrX4j5JrU/qWTpL6867mJqH7LcPZkotx0ngKDmNDK1KJMzMe1SVme2AFYaNa+AoK2n9TNHAKhDuWLvXuxsmbKpC02keG8e4qOhwMjovMHmp2LUh7Ttvbwxi5AxAf4MQ0WSZfWbXoBCeaUUhjayUT956k0hM4viguopnby0aqHba03Xsp0tPnVFki4CLi2lepEeUcYqaN7cDIdKI1NdHmHTWgW9sh7upPV8Fc9xgztaDoqdUsQg4L/HEi16JF2MOlrFOBedBZzrOL18O5iJ0HTZ6Uo4HMH+eg4gPNRNuW6CStfiy0iViuYSlrg/ya9svs+c+i75w9JxCmCvMgW6WVXDHsh4/mpFQQVuE9cadndyDzCTgxd8C7iYP2TLQxtkGJkxbfmJxb0tVHD7VmAvv/5LX97hH
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: C98F1160006
+X-Stat-Signature: 7osu6rcuy8anxbu8b93m3qf7pkks16c8
+X-HE-Tag: 1789701253-281990
+X-HE-Meta: U2FsdGVkX1/vBieWfb+CULk2WLmkcnYxgKOzaPYpYy/xdRMU00ntvsr245WBb7h36VP86/e7tdl4NAwpA5AmUusQBZyT9eVLV/gtblM0h7LwSCa3iznSO9LFFRxYj930ruuQ559BqhMEJgSnwXQPcBejPICpDniFIxD/64oLmhrEJEQ2EIYWI2AQnc6QShAGRRZdaheOqfPBciOnHfvsEwQs4TiuuiQvw5ZVfiTnGURhKF2WBYrYUN88Rbu/umv8lid3b0Lk3OPPf35IiZIsGvgqCql/NH49Mb+f9ylT6L1MGQNRrKCndo8hpW4OlRFhR5lLIBfdbwCEL5OADDGOfHRJsCkcI7iZr4Dkm+hpQVsUIMP3t57noM3TehkKqKIM1CRUTELlgIEgXvAnzIv87Rscmel5xn1JyJ0SzZHFyRhCsrXO8oxzbsm6yC+lw1hZ4JdNOsrCkrKiBb6uw69E9UHoaBDG2gh8Ud49gOlTKpvIt1RO7aVjr/GF4MvZqJ3eiF3iCsy+PZUEqiTLaiJa+OK9W3UKVeNm/IInBoHoxND42xh8fLkjLF8p4P8Xo1bUOLOeNgXLoD8OuCFztRzdnUFskjno4DwFUQf50PXCNuFVcgGeGqqiCbpKNWcmJWXGO/QjC8zfyNaIFu0zd8iJfEbt5gxaLPhox/SaPz8bxkPi/D6cSm+9oVrvhS5BZxUDWdpEJfwrERXiqn75v5eyRAK1ncBzOH8KiKvb/nEbrj5DPzXBGWz104JRp2zZXdeh+tfBOa2Zt/0PMJuBDUKW3ECjbm7zQ2KapYqNh00poRg8Jmkz53i/0aFOnp+dbyOfFIcb+SaSm+dVWUR6MZT6CiTpTZilB+Rq4EHyqPpAvf2cwPcYsOUmJz530p1/ffkMvDfS+78Ur3lXVvDLPVKUTFXt5jJBXxd6DcBGle6ZnpEhUA+GsX0xjn3OQEXMRe4Ey2qQLjVcdBuZzqyEv3V
+ kn4AOIxE
+ TwteyJFeUN/kIb+HAfpRSwrZw0/qlqxeZBZp1OFF2PAwzNbleQoX+VJ7HuPPNbSdXTyP0LzyVJDq7P5DHw5NajORSDWgznh4GfXoPaZ6/ZzJvvBSz/7d505f+SQk1gJ0cneyXaguWbjPUyYGCH0A3eynFPdHFn9sQoEJs1f+r8V8HpLRceG4a0abdsssDGsCoxqS4ZVOqEfg7LUKt/lgVvJhfB3DlvtEf2APa5002URxDqA5G/TKT2J9bdvxxQ63zGP8sYuOuaEtM8ihlXlsoGWfbsSXkfIQvsTD9J4s3ibtQpKeMObZiB8RzNL9zS5wSg4GffIv/F9mIGVY/yKN86JoJtQGd7hrGU0qyXVAaclHW+st6vjWUdlVKrl5SlXTu0nM3rOgik4GtZLNOzTqZnMBZfVt/V1ju+pNL5ue30DFSUQYDMHzhbtTSTlbfwJmYnlfc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,138 +105,30 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-> On Sep 18, 2026, at 09:41, Zi Yan <ziy@nvidia.com> wrote:
->=20
-> On Wed Sep 16, 2026 at 2:12 AM EDT, David Hildenbrand (Arm) wrote:
->> On 9/16/26 03:56, Zi Yan wrote:
->>> On 13 Sep 2026, at 22:24, Zi Yan wrote:
->>>=20
->>>> folio_change_private() should be used along with =
-folio_attach_private() and
->>>> folio_detach_private(), where adding and remove ->private content =
-requires
->>>> folio refcount change. add_hugetlb_folio() simply sets =
-folio->private to
->>>> NULL without refcount manipulation. Change it to direct assignment =
-to avoid
->>>> semantic confusion.
->>>>=20
->>>> It prepares for a future commit that remove PG_private.
->>>>=20
->>>> No functional change intended.
->>>>=20
->>>> Assisted-by: LLM
->>>> To: Muchun Song <muchun.song@linux.dev>
->>>> To: Oscar Salvador <osalvador@suse.de>
->>>> To: Andrew Morton <akpm@linux-foundation.org>
->>>> Cc: David Hildenbrand <david@kernel.org>
->>>> Cc: linux-mm@kvack.org
->>>> Cc: linux-kernel@vger.kernel.org
->>>> Acked-by: Usama Arif <usama.arif@linux.dev>
->>>> Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
->>>> Signed-off-by: Zi Yan <ziy@nvidia.com>
->>>> ---
->>>> mm/hugetlb.c | 7 ++-----
->>>> 1 file changed, 2 insertions(+), 5 deletions(-)
->>>>=20
->>>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
->>>> index d3a0650ff6905..8d551cdaef9db 100644
->>>> --- a/mm/hugetlb.c
->>>> +++ b/mm/hugetlb.c
->>>> @@ -1446,11 +1446,8 @@ void add_hugetlb_folio(struct hstate *h, =
-struct folio *folio,
->>>> }
->>>>=20
->>>> __folio_set_hugetlb(folio);
->>>> - folio_change_private(folio, NULL);
->>>> - /*
->>>> -  * We have to set hugetlb_vmemmap_optimized again as above
->>>> -  * folio_change_private(folio, NULL) cleared it.
->>>> -  */
->>>> + /* Clear all folio->private flags except =
-hugetlb_vmemmap_optimized. */
->>>> + folio->private =3D NULL;
->>>> folio_set_hugetlb_vmemmap_optimized(folio);
->>>>=20
->>>=20
->>> Sashiko[1] said when a CMA hugetlb folio is freed but fails vmemmap =
-restore,
->>> add_hugetlb_folio() clears HPG_cma. It either bypasses
->>> hugetlb_cma_free_frozen_folio() due to the missing HPG_cma flag, or
->>> skips cma_release() and causes a CMA memory leak if it is free =
-directly
->>> to buddy allocator. Sashiko also asked if HPG_temporary should be =
-preserved
->>> as well HPG_cma.
->>>=20
->>> Answer:
->>>=20
->>> Missing HPG_cma is a real issue. It can be fixed by checking
->>> folio_test_hugetlb_cma(folio) at the beginning of =
-add_hugetlb_folio() and
->>> setting HPG_cma after folio->private is assigned to NULL.
->>=20
->>=20
->> Maybe we should just simply only clear flags we actually want to =
-clear ...
->=20
-> And it turns out to be a clean result (see below). add_hugetlb_folio()
-> adds a hugetlb folio back to freelist, so prior operations like
-> remove_hugetlb_folio() should clear hugetlb flags, like HPG_freed,
-> HPG_restore_reserve, HPG_migratible. HPG_temporary is only set in
-> one callsite in free_huge_folio() and is cleared before the folio is
-> passed to add_hugetlb_folio() via update_and_free_hugetlb_folio().
-> HPG_raw_hwp_unreliable probably can stay, since it preserves poison
-> information. The remaining HPG_cma and HPG_vmemmap_optimized are the =
-two
-> we want to preserve.
->=20
-> Muchun, maybe you can chime in about the patch below. It can be a
-> follow-up patch after this series.
->=20
-> Thanks.
->=20
->=20
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 8d551cdaef9db..bc772954e5685 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -1446,9 +1446,6 @@ void add_hugetlb_folio(struct hstate *h, struct =
-folio *folio,
-> }
->=20
-> 	__folio_set_hugetlb(folio);
-> - 	/* Clear all folio->private flags except =
-hugetlb_vmemmap_optimized. */
-> - 	folio->private =3D NULL;
-> - 	folio_set_hugetlb_vmemmap_optimized(folio);
+> On Sep 18, 2026, at 10:56, Hongfu Li <hongfu.li@linux.dev> wrote:
+> 
+> From: Hongfu Li <lihongfu@kylinos.cn>
+> 
+> hugetlb.<size>.numa_stat uses folio_nid() to account usage in
+> __hugetlb_cgroup_commit_charge() and __hugetlb_cgroup_uncharge_folio().
+> hugetlb_cgroup_migrate() only moves hugetlb_cgroup pointers, leaving
+> per-node usage behind on the source node during cross-node migration.
+> 
+> When the migrated folio gets uncharged, we subtract usage from the
+> destination node counter. This creates stale usage on the source node
+> and unsigned long counter underflow on the destination node.
+> The hugetlb.<size>.numa_stat interface exposes these incorrect per-node
+> usage values to userspace.
+> 
+> Add a hugetlb_cgroup_move_usage() helper which moves the usage from the
+> old node to the new node, and call it from hugetlb_cgroup_migrate().
+> 
+> Fixes: f47761999052 ("hugetlb: add hugetlb.*.numa_stat file")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
 
-This looks good to me. Since add_hugetlb_folio() will no longer clear
-folio->private, would it be worth adding a whitelist-based
-VM_WARN_ON_ONCE_FOLIO() here to catch unexpected flags? This would =
-document
-which flags may survive the transition and help detect future callers =
-that
-fail to clear transient state before returning a folio to the pool.
+Acked-by: Muchun Song <muchun.song@linux.dev>
 
 Thanks.
-
->=20
-> 	arch_clear_hugetlb_flags(folio);
-> 	enqueue_hugetlb_folio(h, folio);
-> @@ -1736,6 +1733,7 @@ void free_huge_folio(struct folio *folio)
-> h->resv_huge_pages++;
->=20
-> 	if (folio_test_hugetlb_temporary(folio)) {
-> + 		folio_clear_hugetlb_temporary(folio);
-> 	remove_hugetlb_folio(h, folio, false);
-> 	spin_unlock_irqrestore(&hugetlb_lock, flags);
-> 	update_and_free_hugetlb_folio(h, folio, true);
->=20
->=20
-> --=20
-> Best Regards,
-> Yan, Zi
-
 
 
