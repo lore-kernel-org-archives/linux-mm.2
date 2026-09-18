@@ -4,83 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C005C982DA
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 10:28:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B689C982D9
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 10:31:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD7186B008A; Fri, 18 Sep 2026 06:28:58 -0400 (EDT)
+	id 202266B008C; Fri, 18 Sep 2026 06:31:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A87AB6B008C; Fri, 18 Sep 2026 06:28:58 -0400 (EDT)
+	id 1DA5A6B0098; Fri, 18 Sep 2026 06:31:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 977EA6B0098; Fri, 18 Sep 2026 06:28:58 -0400 (EDT)
+	id 117876B0099; Fri, 18 Sep 2026 06:31:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7BDB56B008A
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 06:28:58 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EEF431A0581
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 10:28:57 +0000 (UTC)
-X-FDA: 85226509914.02.A4A5ED2
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E12B16B008C
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 06:31:23 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4E5A580641
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 10:31:23 +0000 (UTC)
+X-FDA: 85226516046.18.D7D9277
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 5127020002
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 10:28:56 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kVN2iJOx;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+	by imf11.hostedemail.com (Postfix) with ESMTP id A205240008
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 10:31:21 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a4IsE2dE;
+	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789727336;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	s=arc-20220608; t=1789727481;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vaQy4DHOEvSSGCoiivtyuq63dL3zsfByVWaSOQyZ5SY=;
-	b=V61zypRJMytrCEKjD3Q9F1ji+RdXt1HB1hRNM4AOrd5l1binfN9+NUW/Qb5uSds5l0vUg4
-	wc5r4F6yBqzDaMnHZOCnLjGK0vQQnz24QfAAJGuA+Niqs8JkQIISMuN5lEChtWuFiQ4Xz3
-	DS8ArcJV1Xj1WVirdNUqUTGNpiVh/4k=
+	bh=WohlUBKAOnI1ycYrmAz9a4uYAu2BUt+wB1nDP7KO/ug=;
+	b=VtQ25LVjg3AyX+pdt3OTEbuV92DS74xj9L6XHAcnGl3YFExemAyp4tA97Oc3qRhPNtf1/5
+	1xiGyws8eLq+HcLbmEUG+n2fUBhu05+hH4yTasutfVPvg2xXA4/+7HC0loXqPtyxYD45WY
+	qMvp1pk2xwLkGm2AV5GSug0cqEwux6U=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789727336;
-	b=do9myC5rGxn0SE31vKhHeHEG14CJe3GlaPAesxX80UKIPX0J+iL5xXh9gV2ILECXrEk/QG
-	/a5OYF3X2C+yII4RLEVC9pV8+HoftoFRwKGFbChK4RuxldCWyUFTLvzoTwiosI7YlF2k08
-	AK6vVfeLfkEKmxF3Q0Tryao1LPN1qNs=
+	t=1789727481;
+	b=szV2eKggsyNcaBY6ye+e7UE4pLe9JSLGfWLN2mhx77QuGMhCdaPTvGxdX/ov6k5UhshEJc
+	HIu/r/KTVnterM7Mf07WglfJCwEjo9ie+TkUB86RDqjgqwXvT1EZBsl/5f8iR+Ni7g7uY+
+	O9Bhuxml5EkkFIOVCSnPCCRyCuJZFe4=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kVN2iJOx;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a4IsE2dE;
+	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8980F41A25;
-	Fri, 18 Sep 2026 10:28:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D4961F000FF;
-	Fri, 18 Sep 2026 10:28:54 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C568542B79;
+	Fri, 18 Sep 2026 10:31:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 741621F000FF;
+	Fri, 18 Sep 2026 10:31:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789727335;
-	bh=vaQy4DHOEvSSGCoiivtyuq63dL3zsfByVWaSOQyZ5SY=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=kVN2iJOxME0ArWA0m2KaCIhGbR2tof6TagwNQkGM6xUIPfzAqIc2ng14oIs4Kvmha
-	 kBLZRQaS6nuqf1BO+ngRdhok+hp2Z+pB4q5M2utrvXenq2UfTN8uYyvCl3RRsL7QGX
-	 y5EmdBPEBIpP+cyncEvQGw1h9DQy+kKOTuJbTkhf1zn25bP1cJOK6sOpWx5Q7fbWYP
-	 c+uWvewAi3w5WxExbECu3ErP6sGpqbOjyGEBZaWUFFcse1xX7di7MAlXnYmaDi2KRs
-	 VXTFTuy89ARbOnA8XN0st0Ndh80FmeKZHQfyceaPFtqKuLrij7O0uhgscIbgv5kMDc
-	 /C2nJpnLo2a8Q==
-Content-Type: multipart/mixed; boundary="===============5432951590939359719=="
-MIME-Version: 1.0
-Message-Id: <cbc55fa2453eb1d899a7c594f68dd48bac28253e2cc977d828f8143303848158@mail.kernel.org>
-In-Reply-To: <20260918091058.297740-2-tasos.papagiannnis@gmail.com>
-References: <20260918091058.297740-2-tasos.papagiannnis@gmail.com>
-Subject: Re: [PATCH bpf-next v8 1/5] mm: Add copy_remote_mm_str()
-From: bot+bpf-ci@kernel.org
-To: tasos.papagiannnis@gmail.com,bpf@vger.kernel.org
-Cc: linux-fsdevel@vger.kernel.org,linux-kernel@vger.kernel.org,linux-mm@kvack.org,david@kernel.org,akpm@linux-foundation.org,andrii@kernel.org,ast@kernel.org,brauner@kernel.org,daniel@iogearbox.net,eddyz87@gmail.com,kpsingh@kernel.org,ljs@kernel.org,matt@bobrowski.net,memxor@gmail.com,song@kernel.org,sun.jian.kdev@gmail.com,utilityemal77@gmail.com,viro@zeniv.linux.org.uk,tasos.papagiannnis@gmail.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Fri, 18 Sep 2026 10:28:54 +0000 (UTC)
+	s=k20260515; t=1789727480;
+	bh=WohlUBKAOnI1ycYrmAz9a4uYAu2BUt+wB1nDP7KO/ug=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=a4IsE2dENzW5204Qi8D7Aq+qhe6TkI4pWZ4xDgTIhfw9ed/XtIK5tfxl8+yCcICC4
+	 Dymcq8txAd0AjT2q3l8IwlI8B563zHCLB5HMuAOnTzfCQwWuCfkN9buTwRaFNBwk6J
+	 wIlawl87RShg2Qmf/1CfzSShnRYNoMz7czRzo6x2/vHe6XlthNlrzUQIGAB8olUV6V
+	 q4OjPaCfD4y0E/Hg+Tkq/aCRCfI4ubLfdpHPFhkUF9Z5NsCCbEGKRRutdxEoTkrrCa
+	 9xFhLj4ygDBWKboxOoR1+RkSeIIqSN3RTLAchc9X/WWqsc7PKxOpDuDrnt7bmhriSG
+	 McaM840XqhQ4g==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v5 15/17] crash: Introduce crash_extra_elfcorehdr_size()
+ helper
+Reply-To: sashiko-reviews@lists.linux.dev
+To: hpa@zytor.com, robh@kernel.org, leitao@debian.org, linuxppc-dev@lists.ozlabs.org, tglx@kernel.org, rafael@kernel.org, thuth@redhat.com, dakr@kernel.org, driver-core@lists.linux.dev, kas@kernel.org, coxu@redhat.com, linux-fsdevel@vger.kernel.org, ruirui.yang@linux.dev, dave.hansen@linux.intel.com, kees@kernel.org, tangyouling@kylinos.cn, yeoreum.yun@arm.com, linux-mm@kvack.org, rppt@kernel.org, will@kernel.org, eric.devolder@oracle.com, ardb@kernel.org, linux-kernel@vger.kernel.org, chao.gao@intel.com, sshegde@linux.ibm.com, x86@kernel.org, hbathini@linux.ibm.com, liukexin@kylinos.cn, mingo@redhat.com, mclapinski@google.com, bgwin@google.com, james.morse@arm.com, pratyush@kernel.org, pasha.tatashin@soleen.com, loongarch@lists.linux.dev, kernel@xen0n.name, adityag@linux.ibm.com, npiggin@gmail.com, vishal.l.verma@intel.com, akpm@linux-foundation.org, ruanjinjie@huawei.com, lizhengyu3@huawei.com, linux-arm-kernel@lists.infradead.org, "Jinjie
+ Ruan" <ruanjinjie@huawei.com>, blum@kernel.org, takahiro.akashi@linaro.org, palmer@rivosinc.com, gshan@redhat.com, maqianga@uniontech.com, mark.rutland@arm.com, baoquan.he@linux.dev, jbouron@amazon.com, zhangtianyang@loongson.cn, ritesh.list@gmail.com, me@linux.beauty, mpe@ellerman.id.au, chleroy@kernel.org, piliu@redhat.com, catalin.marinas@arm.com, gregkh@linuxfoundation.org, graf@amazon.com, bp@alien8.de, chenhuacai@kernel.org, sourabhjain@linux.ibm.com, seanjc@google.com, guodongtai@kylinos.cn, maddy@linux.ibm.com
+Cc: kexec@lists.infradead.org
+In-Reply-To: <20260918100442.3841135-16-ruanjinjie@huawei.com>
+References: <20260918100442.3841135-1-ruanjinjie@huawei.com>
+ <20260918100442.3841135-16-ruanjinjie@huawei.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 18 Sep 2026 10:31:16 +0000
+Message-Id: <20260918103117.741621F000FF@smtp.kernel.org>
+X-Stat-Signature: 731he3mjbksbjx4ecw516wcepw9uw7i7
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 5127020002
-X-Stat-Signature: nno1a4eqm5iykykkwdbcpejs7tsk4smd
-X-HE-Tag: 1789727336-397811
-X-HE-Meta: U2FsdGVkX1/Sj6e8mNhEVdxOyTBbSV8z4RHtViJbnV2cqoe2aJb4vEWyrhtBLN74hPOhM/gvEAlQr+3zyLnErYc+kLAXK/QwQPT+0XG+yrXfNteWTzxsidm38wKnC9B1uGCNdh6QmD8HlJnOwJnbCZtxE1YQe7TsihleUf+iRkXJ8iw/FRe2e3aIPe/x98s+MzW6FipdeJl/cNdcamcYQnnIhz8iP4BZJFpsnCpZd3mWGu8B1T9afhm69F02JnNhUdBHUxA8b8FpPBe78bWQpFNdON4603Ixr7tmpn0zVcCYyBVLck5+iCslFi0cUk3bxfUVY1SoCIYA8thVHtTdciIcvp3xnFsKvj37N7QJbV2kD7Cq13ANUHj9osRqoSNe6+HvlAcUd0waKzl0pfQ+Z2VjUBILPPHqZC3g9ULGNbPAUxGcwvsvLOAOs7H5o6OUuCs2OGxLPNrlLlGvSPhosWrm+lgNpgvrH9qxf7LI8eP2r/pi2Nt87muBehpTiJ68EDGS/7XM76FUH6CGzYVTeDlaaRX5o2KvOtqWXypHgoLVhCtRnYwRvG5M87CeJL7wBvhS7hUBMx4I0YUDptXpudIy5aQO28lo0dWZ4Rfiruzm2tf0fgA9Y2hcMqtleQDUQ/W3xJOdn1KTbSn4kqGnH8KMmor48QKVI99HvwDovzsnOWSrWaqzDhAEzaW3HNMSVRegoph6jkhIv6wFYw9ec9tSLffnIW70G16WJek73oCB5fnpko28yHilAUszc6IZ7b+mBntdWioOBP64EYVfJdSzY9/WluraluKoTmPI6EBhdJa0m0Y6fagPSDvnn4ePavjJPRuylewX0Czcu/N5DihNzLwuMIIcuTW6GmcgKQSkHSyH4p1BogsbjcyEOaOt/0zolqNz8ehNkvVQftf8tOLDVyYryjmrO+jn4uAF74hWz1Sasfc2V3569DVWHkv/iwVlVWR+SNGpLkzCz6G
- gU5c3tyW
- xs9dSXMy2HSYaET9PzReQ2CmSRFBI9h7GHvHic0kl//i8AW62uoEKFBdStbTBPLVpQ8pHrp6GQurKMEDmQkbXDRvO54bH+Gn0nRwB3APe+Bnbn/rc8vYOxiUuhP7yUGF+fcL0OophxlKoEXdjusWnZi78KjDNVC+soqyMiHphRMNhZ9Q9K135m8fT9r0QNlLg9YzDeisieTBdtCbpoS83XGdxgcuqnkfV94+Iapbt3EwtEiE9xEmuxTUmul+JZMc5TlQ8E6oUW46dxW3g15142udBoVlYE2rm6Ba6Zx4J+HmcSpol80qu3ZOuAxzT/RGeujHsG6TUjzsO9YnRX0yDxJPF/TSrqL5FNkC9QwvpEPfw0l2yiNCTP0FjBwt3BUxzGwmjPjDC8z4/qcYApFB0VZnvZ5WvKZ6id4HeZSIwM2nPzdOOFTF3dvswSqcz7gWnKJbAAFLNR5sDtPT8HEZVgNXtyOaUTzhr9x1t3wuOKVPvuFy6s1aoSu3dBsLjcSSJxHa6xIsOh5ms5Jp8B5Q5VaB8KjMN7lTYmRA3
+X-Rspamd-Queue-Id: A205240008
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789727481-446085
+X-HE-Meta: U2FsdGVkX18qHpIjjdjJ80XWh9h4oTxgyapAL7FA4wAO5LOhejBbCoyKIYAYuPB0h+fb1Os9/8UHc7KCsel3H+iQK9eOEwNFPpa4dLtbdMrAPznAgKCe8MGWygaXptmkx5gHPN5emRbrugtv0ctQJacNPvio+PZ8ZrHrJ/p/neRHrZYx5zsRZ7EppgrnUQqU6pLnbyQTET+Kvwr3UScFSNuUKxPBSZwsqAnVS3NIE9aMbKQXaVsm/J72WbOFqZcvN4QpjTEHaiqiSvOnnE+Nk8jMpK9MT86JzJmQNMJE4rJOwNYUZuNVhmBwzJjLKWft/WmsZ2tLCgZ3fCbYW0viftHWg8+nz2Qd9Lw5stgseIFfnmmFIB7XZPZVyfqiL56oEka+nFLkCiwQYQ6csgHhdQSQJkvvX1DZfdLzOz8VrLyzCM2YUtElz3grtlZBSIcNoSRagywqW6GIBQheK2GHtA9Et4aWmO6hbu9tsmFo18ZqdfJt5SmsHOC4ivWLYlXAU/su42fZfXRy3pkxEjH3KgNO8yDnx48nGgso1R31+NvZd8j7SoiQhoAXmKjo8+2PKaZ6t2iTHQdxEgS3QmLDkTCQzvGDNESWUW85zHlkf2/PSdC8Wlwh0rBYYYr+YFi4YTiKOfyoJMmmL9qw2D8aIMbgEmNPeGODfRE2wbwLzvORYF13q/VrwTmnBjppHfexDdYk6lHWiNsxCVUFqwzQczOe5q7gGDtNr+GJmD6jaSRV4KApP7ONPqdO0jpbfOzcex39oOzYypDLes9yme6qKVrMMPF3bmgNcZM+h0iHaURlkFHH2WRzDziky1XpRnN9BJCoAAopbv1KebDYZOGCzBzV7BbfMfddUmDZEZSLQESSN27H10sh+WJW1Q0WCxpjXzFSuZmax1wlMSDvbmuuHlNVnLHgdDXYPCpV6nWqRCFrFlKCzxdMLafu34ZgNsCp6dE3JnMvTIbFQvLnHko
+ HqIOsW8S
+ BuEpqS48mxvrVrjKgD9pJNox7PgxH/SLpHjziH3+kjDANNHijUHaRH1+0IrX7AB/QJ+jUWuSMIkRcP0mLnJ7MHPSqEmrbaVv/UXd8WJaITobXFWm97FeBzUC1gMMvX4TStY4c/uaNTF8wD4nv91yKf5v6MD9buXzhheYB1t7S1K5sZ47FtjWlQx0SKeDZRNzK3E356HljbbNB0rTdRQ1BKf1zfqXKK1kaIUZx8psg9tCJEAxNJu5932RugTfsRxculbUMyaw72YPH/tnLuDVUyJzi+jXMuFauOd4k6suoJs2zWiANTK4zWmB/DNlk1IBKwcxpbHsYQO062gnZYzIrm0+VkswE+FVtO9PjaVFzgDU8PKGFpepPqh18f7tSyvBVrhSNSzkGvRAIp8nD/hM5n4zDRV1ZZwBR2TIRahTkIGnYZZz/sSUHux9jE+Op2MsP2p4hik/wWDsNRg8dMvTB0+Vmv6xHT6VpSKkmSukGKwsLnG62KJY5EHHUInTjiAaqvsN90xPNPUFwvoNOH9ZB/8GCZoP2ZbJIGUvH20oqWMOlwFej3QdVf9fvJjmwsXkt/WWnEKLFDozAlTQ2nkKfqL0WxQAgKTNyCl7P0zZTJ7CrJtHC1/HGJSCYh7YsIrTZnBGgVDdNb5pAJVb9VT2iV3wRAB4rmMuN71eaB9XmO/xQUY4a5tNHfdiONOita3zs7W4HlrKSDLLNXaMAynNZ7LXNiyWorw4b0vx4gtpegK8UEFx44VQbjGYTTfaCkWi3dl4s6erGH3AWCnLvFUhN0/06My6Oi0LtNp3d7VFJn+MjbbfkmL8QXraoonaZx4U9RowY+bfS5fAxbK4cDvWkUmcIYx2Z3sTmqncs8vDaRzNhPVZc4T05gfiGGE515ZaG0YH6c82xahYHddGaDss39fZ4Qg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,135 +92,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---===============5432951590939359719==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+> Extract the elfcorehdr extra space calculation from powerpc into a
+> generic helper crash_extra_elfcorehdr_size() for use by other
+> architectures like arm64.
+>=20
+> Strengthen the original powerpc check: instead of only checking
+> the loose CONFIG_CRASH_MAX_MEMORY_RANGES, the new helper enforces
+> a strict compile-time BUILD_BUG_ON() to guarantee that the absolute
+> maximum theoretical number of ELF Program Headers will never exceed
+> the ELF physical limit of PN_XNUM. This ensures absolute safety across
+> all architectures with zero runtime overhead.
+>=20
+> The helper also provides a zero-size stub when crash memory hotplug
+> is disabled.
+>=20
+> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Nicholas Piggin <npiggin@gmail.com>
+> Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Baoquan He <baoquan.he@linux.dev>
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
+> Cc: Pratyush Yadav <pratyush@kernel.org>
+> Cc: Dave Young <ruirui.yang@linux.dev>
+> Cc: Sourabh Jain <sourabhjain@linux.ibm.com>
+> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index dd09c438fa23e..63f40e615754d 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
+Sashiko has reviewed this patch and found no issues. It looks great!
 
-[ ... ]
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260918100442.3841=
+135-1-ruanjinjie@huawei.com?part=3D15
 
-> diff --git a/mm/internal.h b/mm/internal.h
-> index 38b1165212c94..557b293813557 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -25,6 +25,9 @@
->  struct folio_batch;
->  struct hstate;
->
-> +int __copy_remote_mm_str(struct mm_struct *mm, unsigned long addr,
-> +			 void *buf, int len, unsigned int gup_flags);
-> +
-
-__copy_remote_mm_str() goes from 'static' to an mm-wide helper, but its
-'len >= 1' precondition is left undocumented and is now enforced in a
-different translation unit from the implementations.
-
-Both implementations begin by writing to the buffer unconditionally,
-before any length check:
-
-mm/memory.c:__copy_remote_mm_str() {
-    void *old_buf = buf;
-    int err = 0;
-
-    if (mmap_read_lock_killable(mm))
-	    return -EINTR;
-
-    *(char *)buf = '\0';
-    ...
-}
-
-mm/nommu.c:__copy_remote_mm_str() {
-    unsigned long addr_end;
-    struct vm_area_struct *vma;
-    int ret = 0;
-
-    if (mmap_read_lock_killable(mm))
-	    return -EINTR;
-
-    *(char *)buf = '\0';
-    ...
-}
-
-Neither ever tests 'len == 0'. The guard lives only in the two wrappers,
-in a third file (mm/util.c), so calling __copy_remote_mm_str() with
-len == 0 writes one byte past the end of a zero-length buffer.
-
-Before the patch this was structurally impossible: __copy_remote_vm_str()
-was 'static' in mm/memory.c and mm/nommu.c and its single caller was the
-copy_remote_vm_str() immediately below it in the same file, so the guard
-and the unguarded write could not drift apart. Now any file in mm/ that
-includes internal.h can call it, and the declaration carries no comment
-about the contract.
-
-Should either the 'len must be >= 1' requirement be documented at the
-mm/internal.h declaration, or should the 'if (unlikely(len == 0))
-return 0;' test be moved into __copy_remote_mm_str() so the guard sits
-with the write it protects?
-
-
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 8b0c2c735d3de..fc6933d7e9d36 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-
-[ ... ]
-
-> diff --git a/mm/nommu.c b/mm/nommu.c
-> index 498e01ee40b05..9a810c35e7e90 100644
-> --- a/mm/nommu.c
-> +++ b/mm/nommu.c
-> @@ -1741,13 +1741,12 @@ int access_process_vm(struct task_struct *tsk, unsigned long addr, void *buf, in
->  }
->  EXPORT_SYMBOL_GPL(access_process_vm);
->
-> -#ifdef CONFIG_BPF_SYSCALL
->  /*
->   * Copy a string from another process's address space as given in mm.
->   * If there is any error return -EFAULT.
->   */
-> -static int __copy_remote_vm_str(struct mm_struct *mm, unsigned long addr,
-> -				void *buf, int len)
-> +int __copy_remote_mm_str(struct mm_struct *mm, unsigned long addr,
-> +			 void *buf, int len, unsigned int gup_flags)
->  {
-
-The NOMMU implementation gains an 'unsigned int gup_flags' parameter that
-it never references, and at the same time the patch deletes the only
-documentation that said so.
-
-The pre-patch NOMMU kernel-doc read:
-
- * @gup_flags:  flags modifying lookup behaviour (unused)
-
-The replacement is a single shared kernel-doc in mm/util.c, compiled for
-both MMU and NOMMU:
-
-mm/util.c:copy_remote_mm_str():
- * @gup_flags:  flags modifying lookup behaviour
-
-mm/util.c:copy_remote_vm_str():
- * @gup_flags:  flags modifying lookup behaviour
-
-The '(unused)' caveat is gone from both blocks.
-
-The full NOMMU body makes no use of the argument - it goes from
-find_vma()/check_add_overflow() to 'ret = strscpy(buf, (char *)addr, len)'
-with no reference to gup_flags.
-
-Should the kernel-doc in mm/util.c note that the flags are ignored on
-!CONFIG_MMU, or should the '(unused)' comment be restored somewhere in
-the NOMMU code itself?
-
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/35330379263
---===============5432951590939359719==--
 
