@@ -4,145 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02A8CC88E75
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 08:37:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDBF1C982D2
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 08:44:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1CD056B008C; Fri, 18 Sep 2026 04:37:50 -0400 (EDT)
+	id C3A9C6B008A; Fri, 18 Sep 2026 04:44:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 17E186B0095; Fri, 18 Sep 2026 04:37:50 -0400 (EDT)
+	id C11836B0092; Fri, 18 Sep 2026 04:44:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0458E6B0096; Fri, 18 Sep 2026 04:37:49 -0400 (EDT)
+	id B27986B0093; Fri, 18 Sep 2026 04:44:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D408F6B008C
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 04:37:49 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D4CB0A5FDD
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 08:37:48 +0000 (UTC)
-X-FDA: 85226229816.10.1FA1C85
-Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
-	by imf22.hostedemail.com (Postfix) with ESMTP id DCF39C0004
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 08:37:46 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=MO1niSdK;
-	spf=pass (imf22.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789720666;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8B6E16B008A
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 04:44:28 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 32D15C03BC
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 08:44:28 +0000 (UTC)
+X-FDA: 85226246616.15.65812F6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 3F60F12000D
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 08:44:26 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WKQpoPYK;
+	spf=pass (imf29.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789721066;
+	b=Zo95TYES42uY7ihQZ83NvvyAQn0+0FFp6mdh1R33AZtB4nw2s/zIM3BPPAjQGghTgwXP2q
+	7oOVTJ3U19DoNNOam8W6JRbmEm+kkmxgkqOIvtsFU36pKS8YJFwBahAAB8/RfjLTAEjvwh
+	54iBQ1Jt1MCHDYYKvvRPSheowxx6DiU=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WKQpoPYK;
+	spf=pass (imf29.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789721066;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m0yQ4rBAEiKMEofLz40Ao8DmOY1a2/mbTmLdfwCpmzU=;
-	b=RY89ogBUDWho99W1xsuMO7go1Ei2pdw0k4UESfQFh2QNWNZhk5Vy5Ze92p46BRwOzRRyL1
-	Nw1MIisVakt1g5JlRD0HT+Af4lu5QTKUNaDc0y5crDWMlE6RdA236tLrEn6MGDLvtYYK2K
-	cUuj3Vwjm+fonz0XyIus/FdzT15ntTU=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789720666;
-	b=jFtGyu9jdew0XhXGVwhrw6TkXUf3dqU9HEOjkrU1abT8uNKTwZf4g4I0v1ohqnsr7P4i7s
-	Yu+8XmdKwNIO2sAT7/l7WyeKxoRU94st8JVR73hV+WtgIsWuhEX3bIq8PC1AezWzmu9ofg
-	onOGZOPfudQFUHRj8+JMSlsKEGcpTBg=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=MO1niSdK;
-	spf=pass (imf22.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-482f6351831so212004f8f.1
-        for <linux-mm@kvack.org>; Fri, 18 Sep 2026 01:37:46 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789720665; cv=none;
-        d=google.com; s=arc-20260327;
-        b=r1OXG5qUeLorVxZApM8LJ0IN4SoLMX69IvR8mbR08AT4+Zr8qQjFQPlFc+iEB8pozl
-         JyhB51O70BSgXtRMF8L/KDJ6wXOuQh6WfFGCzdnc5eqAEb+Y6lrZ06RcdxBvkN7k18No
-         pBKUGRNyMQWXYc/GAZ2X32Vgjfgbq5oDSgnAS4GE+IfP/n6wmuBRKDENVcQgDlEqJoFk
-         leFwHiQwHzhdU49+AAs9V9ggDQL6GjExCLMLHh83MAz96TakMpLoSTnAqfmtfT++8ftn
-         0sZ3E/OXwHdnaze069pBc5PFxuGVHDq4zUkVKYFERL3dr8q9MkQiInlDOpR51SmD2rpW
-         2WAg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=m0yQ4rBAEiKMEofLz40Ao8DmOY1a2/mbTmLdfwCpmzU=;
-        fh=LulHVN05QOIOMREG4amRELKs3RehZB5TWJhR/lu+URQ=;
-        b=g8hzOiWae09uJgoZgDSIVT/VBYnRMD0KZWugEa7gICnFvlZkHnconyLLTHaeNiFL1t
-         YEKhowhz8tvKs+X2hqf5aLMFmNUv9I/E7vfl6AaLdKj2QIpPpetfT9o27DUEi+f8roKa
-         vYdloJupkYEjh2VLeWV0IZ7lg4KNUdrdGkXryiOin2l1B0gmpwvcAwMBoIyegTOku2X6
-         /RWjpITjFV2XvcvlFcPPjWSF/qnd0n+pW59lN4iJQMhMbuUsn1y0ozqVA4cVPLUh0BAd
-         3VN8QPSzJbAfmCCh5Ymv7idEqToevOp14gB/VsO8YMxl0V2n6sQK+QIvf7pw0NzJS2QT
-         7dIw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789720665; x=1790325465; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=m0yQ4rBAEiKMEofLz40Ao8DmOY1a2/mbTmLdfwCpmzU=;
-        b=MO1niSdK1tW6f3iNsJQ2wRUmGuYK/ncWODuvu99yfgKZ4fEjioQhEY8spca0njwsNZ
-         mTB3IQWPyLRWAigaFREavqEPo2ZotHMCkCm894FP+xY8TuBrIQVoZciIuc71Wb/x1NgZ
-         3gxJkfiUToCpE4NeaM8ByiHendy1SDrEv1BCNybjSg83H2/B8/adlDAWJ1ibta2xB+gL
-         8OnlV6sP6QOgJqTcVD6S2NOuY8Hy32FNjor+1SYTtezEiGBCj+6dVaLpgF2ogg6iB315
-         3XcX2oD2qRQYlo9GdcAs8dDv/uAWThM4C07bAN7vU+k1H2QXcULOQjTcSmHLcw8+O82a
-         x4GA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789720665; x=1790325465;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=m0yQ4rBAEiKMEofLz40Ao8DmOY1a2/mbTmLdfwCpmzU=;
-        b=VX401/Aynvb7orhpjwuBmLFj70OfGpr2dZJ1g8MRDBOSZzhNMRKnCKMUAGtOnnfEG9
-         chL2WwynaINORcPE26RpptWlLnoM25VgvpgrjnDRkbW1p3nilEn4bDQQsWt6OYV1rmvS
-         QurC0/lLRylBHicjU8pgNR35TBBXkXWTem6HOhlPlMCCRDyj64yK+LW7XhHbPIn0IAOq
-         rbqLqnWgBmq5ugI/k//22r6M3afj3Jc9D9MEqA/pDxoknT7L0yqV5CuRU+RuF6PnOdxJ
-         E/PXZKQEVCj20OKjI6LhWceffneFnOPGpmN0noTdYijQQ4xup/d2q8t/mpXJgSveVhzA
-         uqJg==
-X-Forwarded-Encrypted: i=1; AKwUvBxLBzv4f54EMlabBoHRZUpuHthmsoVXjbZB8h/KbmAAOw70s594w+0SIikpIyNEego01qu/rxabug==@kvack.org
-X-Gm-Message-State: AFuF++mv7AfkUG2DvP6MlUIkUIjTE4uQ0v35m5dENWRSxiYmRIUSWTBN
-	Wl6N9n2a2oPWOzpJRA4XpNNxWOojllFX7mj6qOuE40ngyHMzHDiRItgmxjcD0wnv1rK3kJuT2Bu
-	gKxl/Z2QyAPiDCtMon6dbOGsZ+dff2E0=
-X-Gm-Gg: AYBFou0rrWYvFZ0JpZtkYwkVw6X8axGS3IwGi+RB97CknaMqb2IyuJMraHdYajoCjY4
-	fB4yC4p+A1dg4ONwrvZiBHBlU/Tes9xN+q6v55zeQsMhHlc/rZSs8lw/RG19CArwmlBWrzdGqvl
-	baXMjoqUpZhpftPGn6BU35QP6XrflKj2XWizEBzJ2rHxTOP8LMDpmchjMdfSrvyXuaj2axn4zJL
-	IPvIzySTCB4f8mhoQf1IbK2cBT7cOvUecMOsEDN9rmeImKGGWTUCX+FLe8+iLYbnxg4dACd3TLl
-	J7AgUvEPj39QGEjv10qu3jPgMSlrBId3J7N0hmjg1TVvdGc3NxgSNLk1
-X-Received: by 2002:a5d:5f4f:0:b0:486:f4ae:72a2 with SMTP id
- ffacd0b85a97d-4871e2131a7mr2297716f8f.1.1789720665326; Fri, 18 Sep 2026
- 01:37:45 -0700 (PDT)
+	bh=yfptLJpLwa1HkLn6r+lnBSBB9zhrI022aUyQ/n+iqZI=;
+	b=qEpihTPXDsuzCrCTFRr4kerLWaJfDK3nWacZN0KjxHvXNgQCgojc65sbe+p1/ksC8xc3ws
+	1oSQTbnXqcYQWeuthl/qmqeyLa6deqTEws4En+gVmMVV7WI8JAlNGGooAu6uNo3xk13xtp
+	w3WJOfe63S5OymVw0Z9s11qXJ+ulyOw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6810943AF0
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 08:44:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CFC81F000FF
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 08:44:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789721065;
+	bh=yfptLJpLwa1HkLn6r+lnBSBB9zhrI022aUyQ/n+iqZI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=WKQpoPYKtLvvrsANllnpazyBLjRD4QmuKuAgFZJ+R23L2z9t4yAN+ACJErx1PPLcp
+	 YtolKadJaCrAtitOs8awaYY/VMbJ8Q6/L36/H0qNStZMmY1edyfG1bkb+dO8M0daCj
+	 25bn53UilLvQYI1zKM5frfrxRWf45TEef5EH/K6kUxnvY0h3OG0YNQ241FqO+AVgh5
+	 /1vNxD6Ah+KlqPlGnrXYjy62/4wfCjSsu3CmlZ2awkanq/i4MdIQk5y6nr/N5thZul
+	 tzkhmvRWaSDcQUfWZGzo2paV/vNvrN2/R03Ja6OCm+ttH82QbijLXDvQ6H9U3Cp01O
+	 nYQuqkIXgMEBw==
+Received: by mail-qk2-f12.google.com with SMTP id af79cd13be357-939109f067fso66925485a.2
+        for <linux-mm@kvack.org>; Fri, 18 Sep 2026 01:44:25 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBydBJVIjQF50MMuq80kP1fZYdFKmQu4LMzi533oU6MmnFVUw5rDdqCnqNf/rEDAf+l+dXDGDgMs8g==@kvack.org
+X-Gm-Message-State: AFuF++k3hNy05B6D95sY7swbvW1mwHIha0D+0GPjEC9nF6oDJRlrt5ou
+	+HXcWr7JqYxgrUaB+Qwm4L091jwOEBbmIHyXyxy1WA0Nr3R5R/O8TejPt4moJzKu39sgH6PEY4B
+	A/h5PlnnEA2d8d9GM54FJ/lbwPNoOrck=
+X-Received: by 2002:a05:620a:280a:b0:936:dbd7:fcb3 with SMTP id
+ af79cd13be357-93bdc6de89amr218538285a.21.1789721064703; Fri, 18 Sep 2026
+ 01:44:24 -0700 (PDT)
 MIME-Version: 1.0
 References: <20260917052933.188679-1-jiangwenxiaomi@gmail.com>
- <20260917052933.188679-4-jiangwenxiaomi@gmail.com> <27072d94-13bf-4bea-948a-d8a67976601e@kernel.org>
- <CAHKocdE_zyUQT459AiTBDzQHk0jh+VpXuSMDdgHjkg-dAkgBNg@mail.gmail.com>
- <CAGsJ_4yJ-KCHbJ9S2GKXfO51KB8g-y2Q_MikqE9-6VesR-RC9Q@mail.gmail.com>
- <2462f67c-f7d3-4eb3-a093-6a338ef49f14@kernel.org> <CAGsJ_4zMG6v-ioi8-NhveqowPVAnsHkFCNy_c7+KHDMRW3JH-Q@mail.gmail.com>
- <24aedc8c-a5c6-418b-a37e-051f0d6d9fa7@kernel.org>
-In-Reply-To: <24aedc8c-a5c6-418b-a37e-051f0d6d9fa7@kernel.org>
-From: Wen Jiang <jiangwenxiaomi@gmail.com>
-Date: Fri, 18 Sep 2026 16:37:34 +0800
-X-Gm-Features: AcwNN1XBh3Wey2x3l7KbPhov9h79lwYf3qMIq1ZNnS7cqxD6HqWXu6Gr_vbTLnA
-Message-ID: <CAHKocdEmb-Hsxu8FCxvzhz3XdzmrPddGo4wv6GqjeHvAYfxVrQ@mail.gmail.com>
-Subject: Re: [PATCH v8 03/10] mm/vmalloc: use pte_set_huge()/pte_clear_huge()
- for PTE-level block mappings
+ <20260917052933.188679-3-jiangwenxiaomi@gmail.com> <58e3b456-7389-4752-8de5-1cc82964c3c7@kernel.org>
+In-Reply-To: <58e3b456-7389-4752-8de5-1cc82964c3c7@kernel.org>
+From: Barry Song <baohua@kernel.org>
+Date: Fri, 18 Sep 2026 16:44:13 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wKG91hd1Y3W4mbdh6B8Kq09JyDjyvXeeCmQj+L6bHm2A@mail.gmail.com>
+X-Gm-Features: AcwNN1U1UKmWK4_bdU3CXRYgsAbkO0CRi4o48diyrNchNw7WdNKVQp3kHhkJ8xY
+Message-ID: <CAGsJ_4wKG91hd1Y3W4mbdh6B8Kq09JyDjyvXeeCmQj+L6bHm2A@mail.gmail.com>
+Subject: Re: [PATCH v8 02/10] powerpc/8xx: add pte_set_huge()
 To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-Cc: Barry Song <baohua@kernel.org>, akpm@linux-foundation.org, catalin.marinas@arm.com, 
-	linux-mm@kvack.org, urezki@gmail.com, will@kernel.org, 
-	Xueyuan.chen21@gmail.com, ajd@linux.ibm.com, anshuman.khandual@arm.com, 
-	david@kernel.org, dev.jain@arm.com, jiangwen6@xiaomi.com, leo.yan@arm.com, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, mpe@ellerman.id.au, 
-	npiggin@gmail.com, rppt@kernel.org, ryan.roberts@arm.com
+Cc: Wen Jiang <jiangwenxiaomi@gmail.com>, akpm@linux-foundation.org, 
+	catalin.marinas@arm.com, linux-mm@kvack.org, urezki@gmail.com, 
+	will@kernel.org, Xueyuan.chen21@gmail.com, ajd@linux.ibm.com, 
+	anshuman.khandual@arm.com, david@kernel.org, dev.jain@arm.com, 
+	jiangwen6@xiaomi.com, leo.yan@arm.com, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, rppt@kernel.org, 
+	ryan.roberts@arm.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: DCF39C0004
-X-Stat-Signature: xqhwgbxskpr13w5t4ku3s65uascqxce7
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 3F60F12000D
+X-Stat-Signature: 3whdwypqj9pggrs6r18jkh1haux4tzzs
 X-Rspam-User: 
-X-HE-Tag: 1789720666-757741
-X-HE-Meta: U2FsdGVkX1/Dy3S4O2xcuFshwYBESPv4m3v4fpJrJDubYK8J8D9XFxdT3lOqEJb/C7VOuZqcibWs4h+rM6KL1DE3S/tH8oLQj+5bAUfOimXNu53iQB6996YvPKYVEpTIgh492ilS019W8ExTjM7Imils25/tpXPSVV+ckALVqKaX8VnhVrM2opBFoEsdQfVwGhjGE3NsrOd32EZ5sYVwyQNgYw2rln1cphP8/KDJPKefJ18cLW9y9bE0a6YiLe+GjqdCcEgVpNhj1I73goGK9NKjAAOLlZmSoou6JA748zKqLJR/a2XiByK94+NnL3gs5WcYr57zjkw+/Jgr0RKBtdnJoYpFIvVvyjx1LlK3XsKh3GxQ7e4KqKQmGXf2n8RtalcnOsXuC8UuNHD1cfF/00dQSb+dJPmcTzTXoHSh2gVbpU/O0avXDM7LviHJSNlocHwzl9uOXqiZbVUe8i3/gtqbVw1HjFaTMFw5LR0caIlmiyOJsuzc8w7zI4GjBESE/7RtKzt7XY8NpTXVA/Rt6voDP6ITxCTuw8Ay3BOlTlvq3WXZtIa6+cZ3S1M5SCW5pOqBZISyFMymp5xDoWYgIAY3C0Yzco/G5z7Hk7CrI3B50vv5wY+FFlYpWd5TVlsqaLnE5JHjT+SrLxzpQ1wwVltfN3CnC7VxP+UOz5vn22i2cTmZuaCnEQtfFG3AdUPJa7jwIVx0WJFhhRWvtrdPsh+WM7kGcGY32QwzRBmQg4DQknYVKkalBRxlTS1qvx7M20UDcF6zOddOH9yI4ktUWDfnQL1t0c5ajrcWUxbfOLL0QLTUHxv5hAJjYDuq2RcX69SywiU5vebqUKiU4Z5g5rtFoyd8jdzOUe8nNsG/vp6nXrsOKzbJy5d1CmSg2WPR3i2tLpzuDsfZBVcM5jDadmrEi/hVHUO5FCuB3otfG6TiixGeQDmHsNU2qZ72ryg/+N/LpV9MwgWXlnEv45T
- AQRmSrIS
- gizlr9OPjmJqnW+LWgdsUtPjTW9yuZZOKX0S9oDUkitOWUMfuYQzP7AtApVq1nBBFi50Qbeksh1TyV7DZnK5ZUaaj+5WgXS2sUJqjPuuoJ4hTGwahOKlwq1BnlyHuod8rlipdH4p1z/oMUv1JLw54+QnhJMihhP7wO/fC19gk5Lvcz8ryW3Z+DibSCKcURFtA3xBBsA57sfICyCbSs+098Y/EiJZMzravpcKkyBFMJZ4J/oS19eRdQkLwiQqafvsELladYPh0W+x0bO4fK7hN/mH1z9nPX/2eHCzx7JkdMPGbGIcwMEZWyjX5Ll+HLXacOLcPFU9NmriF8ENjDTprjb6GYmRL7SibDXFDo9jH7jeROY4+T9S2s68SPw6z3w31orn47EbfAlelyAV3pOteg4wQSc2NPxnih20mFLEQMT0KXO26TAQIPPyQxDzDoCqyiu/k2EWiZfdGZO/tmLLc9KeVWqmhcicvf6SSlY+GZO5rtulrkpDtSPizk0TdUTYB6nS0gHCGsVshbnQRjHzlzsTOP7m6AzZog/WrGq7DavlQgO7DeckuTB0knowyc/NnnsaJaps04yltuP21FdmHcY3pXTpUNPN95AMqW8yYiKrCHAbJDfWQ9xVFa6I5FhdYM1prPd1xCP+8koEW9KlJkLsRl1HHgcQy6Kugizzb46JL32K+MekYeeF4lg==
+X-HE-Tag: 1789721066-540340
+X-HE-Meta: U2FsdGVkX18ISYTDcYoSNCiMsphwqAyUxZkqXNE5nEbqVInGazqWksbA2tCxFubCr7uZvp24rW4Ax7QucuRgg/XHF1RrOOtOvLcWHsbkshiyJ/eEa95x+OYjc7b+Kgov8Uw1oxc5wJe4rPGz5nQmQvD3E2Zs5gp0L2w+fezWrxgCRNdDMHT1AMVKJX5aYnCG+kBliVjVBYnMTtTnXkvIAE0tEi+Qem5NwAQgXLl9WXI1jvVN8qdbtiAq28NzyL3AXB4iX0Wx9oFqTlIxjcl4KnOOd8oiyXc9kMlTFaSpi+Xd5QNWOZOHQltqD2eZWOHM1hz3vhif7BL42fZbVbR9Rg8EpIQgizE8Pv4rXYIbOd6jgczyr2aNs8BQTDRq3KQ7ZcaM/z7pxtrYbOAauSFVG1lJRLs9oqgSAaKPwNg2eGfFc/64FWsdc/gOw4s1dgnKLd/Lppzb1BDmL6vOw0azLkGLDXK02Vv0gu/1UBFavL/DQEGZ6zn0w/SU6ODo0iUq3XLz1U76wjFZ+4QbMK0vKmwqjFxqAXUEFqK/8jP3V/RVkZ62m9etOYk034gYyreAPanB/5yPpycN1QmmW53c2hrbxptJkM/kNZ585YlAP4nrIaEQrpHLaxdvbMQt5H0IcYFsbL4qPh3jhZlfh+RGoEkIi1IaaHfE66AuE4jmL0YnJZrHoaZGd7jq0stHPOpI1T8/VBYdC65YAemedHNBlBI09DquEgG0jufgVmKZtDb2uCnTSOOmStPMr9EVFxRHPlmNnU2G6wz0l3vZ2Sj85z8GI5h5R+asxxB+Vl+c0EETf2s0UZLdy8rtKSgmnRMff1yOp9kuEeJCOFaMkxoTojY+kx+ZFQkUJAx+/QuZyXFPtJigXEFQjTCJPt0jj2EpMl69t5Zw2lLG3MC5E3D6UIVpkQpgV+LZawfVGL9E+7FWOw06NunXZmwJeVK9M1rTm7Z1DhUWdM8daDhEgH/
+ 6mrUWwJj
+ /c/52LPyuS1iyx1eIiCBC3n1eq30OR1ufpN/YbxdPw5zkkj8ERyKSOhdPz+noRleoy7LIBsMY9Hq6b4WUepw648liVNoaih58Ul3rFkEGrhcPqOurxvjfaBKbGdN7sIDrCrY9jnvBA3ndOB1GtutICU5oMlikuZ9FZ8ovmYnJOtelcf0xfplvwAXNBxg0bhtF12ncNtGk3VjMQjsc01BbGCtT5LfyxCoymphiuCWagxuOYGjln++8xJ+FQ+68b25WOdqRbABbjmEXMHlKfjSc3M+ozsdbk5QvVDWs7nX3JnB+Jx5WhUVwQIgsdI6OGAQ+GbVjtPx4uDoBrsojxOaQ6ivsQKGN9+dzy7eBAAGWvrzuaUqbhQzWoxj9xqQ8T7iIrDAtnb27SZaO5aWr/qFZn458hLc4L6uhiG4eHkdOXwlgk/DW+AuAgZ7pkD++nvKybgpp1KKc5UA+THk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,147 +109,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 18 Sept 2026 at 15:04, Christophe Leroy (CS GROUP)
+On Fri, Sep 18, 2026 at 2:14=E2=80=AFPM Christophe Leroy (CS GROUP)
 <chleroy@kernel.org> wrote:
 >
 >
 >
-> Le 18/09/2026 =C3=A0 08:14, Barry Song a =C3=A9crit :
-> > On Fri, Sep 18, 2026 at 2:05=E2=80=AFPM Christophe Leroy (CS GROUP)
-> > <chleroy@kernel.org> wrote:
-> >>
-> >>
-> >>
-> >> Le 17/09/2026 =C3=A0 23:44, Barry Song a =C3=A9crit :
-> >>> On Thu, Sep 17, 2026 at 10:41=E2=80=AFPM Wen Jiang <jiangwenxiaomi@gm=
-ail.com> wrote:
-> > [...]
+> Le 17/09/2026 =C3=A0 07:29, Wen Jiang a =C3=A9crit :
+> > From: Wen Jiang <jiangwen6@xiaomi.com>
 > >
-> >>>>>>
-> >>>>>> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> >>>>>> index cdd68ed3ae1a9..349ced999f959 100644
-> >>>>>> --- a/include/linux/pgtable.h
-> >>>>>> +++ b/include/linux/pgtable.h
-> >>>>>> @@ -2134,6 +2134,35 @@ static inline int pmd_free_pte_page(pmd_t *=
-pmd, unsigned long addr)
-> >>>>>>     }
-> >>>>>>     #endif      /* CONFIG_HAVE_ARCH_HUGE_VMAP */
-> >>>>>>
-> >>>>>> +/*
-> >>>>>> + * PTE-level block mappings for vmap.
-> >>>>>> + *
-> >>>>>> + * pte_set_huge() only has to be implemented by architectures who=
-se
-> >>>>>> + * arch_vmap_pte_range_map_size() can return a size other than PA=
-GE_SIZE.
-> >>>>>> + */
-> >>>>>> +#ifndef __HAVE_ARCH_PTE_SET_HUGE
-> >>>>>> +static inline void pte_set_huge(pte_t *ptep, unsigned long addr,
-> >>>>>> +                             phys_addr_t phys, pgprot_t prot,
-> >>>>>> +                             unsigned long size)
-> >>>>>> +{
-> >>>>>> +     WARN_ON_ONCE(1);
-> >>>>>
-> >>>>> BUILD_BUG_ON() would be better here.
-> >>>>>
-> >>>>> It should be possible because fallback arch_vmap_pte_range_map_size=
-()
-> >>>>> will constant-fold PAGE_SIZE so pte_set_huge() will never be called=
-.
-> >>>>>
-> >>>>
-> >>>> Agreed. These fallbacks exist only to keep the build working on
-> >>>> architectures with PTE-level block mappings and should never actuall=
-y
-> >>>> be reached, so BUILD_BUG_ON() is right. I'll make that change in v9.
-> >>>>
-> >>>
-> >>> I am not quite sure. It won't be called at runtime because
-> >>> `vmap size`/`unmap size` return `PAGE_SIZE`, so the code won't
-> >>> reach this branch. But it will still be built.
-> >>
-> >> The fallbacks are defined as:
-> >>
-> >> #ifndef arch_vmap_pte_range_map_size
-> >> static inline unsigned long arch_vmap_pte_range_map_size(unsigned long
-> >> addr, unsigned long end,
-> >>                                                           u64 pfn, uns=
-igned int max_page_shift)
-> >> {
-> >>          return PAGE_SIZE;
-> >> }
-> >> #endif
-> >>
-> >> #ifndef arch_vmap_pte_range_unmap_size
-> >> static inline unsigned long arch_vmap_pte_range_unmap_size(unsigned lo=
-ng
-> >> addr,
-> >>                                                             pte_t *pte=
-p)
-> >> {
-> >>          return PAGE_SIZE;
-> >> }
-> >> #endif
-> >>
-> >> Therefore in:
-> >>
-> >>                   size =3D arch_vmap_pte_range_unmap_size(addr, pte);
-> >>                   if (size !=3D PAGE_SIZE) {
-> >>
-> >> GCC knows 'size' is const and its value is PAGE_SIZE, so it won't emit
-> >> the branch at all.
-> >>
-> >> It is call constant folding, some explanation here:
-> >> https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fen=
-.wikipedia.org%2Fwiki%2FConstant_folding&data=3D05%7C02%7Cchristophe.leroy%=
-40csgroup.eu%7C869dac21f28d45988a3d08df154c225a%7C8b87af7d86474dc78df45f69a=
-2011bb5%7C0%7C0%7C639253088878897551%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcG=
-kiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D=
-%3D%7C0%7C%7C%7C&sdata=3DDvtz1%2FAHvAbVYO%2BRaHTOizcD%2FclJ9FqTcWXKMhIFVyw%=
-3D&reserved=3D0
-> >>
-> >>>
-> >>> So, would a `BUILD_BUG_ON()` trigger a build failure here?
-> >>
-> >> It shouldn't, if it does it is a compiled bug or this is because someo=
-ne
-> >> has redefined arch_vmap_pte_range_map_size() and not pte_set_huge()
-> >> which we'd better know at build time rather than at runtime.
+> > vmap installs PTE-level block mappings (SZ_16K/SZ_512K on powerpc/8xx)
+> > by reusing set_huge_pte_at(), a HugeTLB helper gated by
+> > CONFIG_HUGETLB_PAGE. This makes the feature silently unavailable on
+> > CONFIG_HUGETLB_PAGE=3Dn kernels and couples mm/vmalloc.c to HugeTLB
+> > internals it does not otherwise need.
 > >
-> > Thanks, Christophe. I was also thinking about compiler optimization. I
-> > was just a bit worried that we're touching the common MM code, which
-> > affects almost all architectures, so I'm not quite sure whether this is
-> > supported by all GCC versions used by those architectures.
+> > Add pte_set_huge() to powerpc/8xx, next to the existing
+> > pmd_clear_huge()/pud_clear_huge() in mm/nohash/8xx.c. It builds the hug=
+e
+> > PTE and writes it into the backing cells directly, without going throug=
+h
+> > set_huge_pte_at(), so it does not depend on CONFIG_HUGETLB_PAGE.
 > >
-> > If it is supported by all of them, I agree that `BUILD_BUG_ON()` is a
-> > perfect approach.
+> > No pte_clear_huge() is needed: 8xx does not implement
+> > arch_vmap_pte_range_unmap_size(), so the vmap unmap path never takes th=
+e
+> > block-mapping branch.
+> >
+> > In practice PPC_8xx selects HUGETLBFS unconditionally, so
+> > CONFIG_HUGETLB_PAGE=3Dn does not occur there today; this is a decouplin=
+g
+> > cleanup rather than a new configuration.
 >
-> AFAIU this is the assumption made by the kernel, see
-> https://docs.kernel.org/process/coding-style.html#conditional-compilation
+> 8xx selects CONFIG_HUGETLB_PAGE because it uses set_huge_pte_at() to map
+> kernel text with large pages. That was added by commit 34536d780683
+> ("powerpc/8xx: Add a function to early map kernel via huge pages")
 >
-> This is the same compiler, I see no reason why ability to constant-fold
-> would be dependant on architecture.
+> But now pte_set_huge() could be used instead in
+> __early_map_kernel_hugepage() and then CONFIG_HUGETLB_PAGE could be remov=
+ed.
+
+Hi Christophe,
+
+Do you mean the code below? If so, it sounds like a good place to
+clean this up for powerpc as a separate cleanup patch.
+
+diff --git a/arch/powerpc/mm/nohash/8xx.c b/arch/powerpc/mm/nohash/8xx.c
+index 2518d2a6bdb4..830cdb391161 100644
+--- a/arch/powerpc/mm/nohash/8xx.c
++++ b/arch/powerpc/mm/nohash/8xx.c
+@@ -87,9 +87,7 @@ static int __ref
+__early_map_kernel_hugepage(unsigned long va, phys_addr_t pa,
+        if (WARN_ON(!ptep))
+                return -ENOMEM;
+
+-       set_huge_pte_at(&init_mm, va, ptep,
+-                       arch_make_huge_pte(pfn_pte(pa >> PAGE_SHIFT,
+prot), shift, 0),
+-                       1UL << shift);
++       pte_set_huge(ptep, va, pa, prot, 1UL << shift);
+
+        return 0;
+ }
+diff --git a/arch/powerpc/platforms/Kconfig.cputype
+b/arch/powerpc/platforms/Kconfig.cputype
+index f0adbf7ecb7f..efba4d960083 100644
+--- a/arch/powerpc/platforms/Kconfig.cputype
++++ b/arch/powerpc/platforms/Kconfig.cputype
+@@ -41,7 +41,6 @@ config PPC_8xx
+        select FSL_SOC
+        select PPC_KUEP
+        select HAVE_ARCH_VMAP_STACK
+-       select HUGETLBFS
+
+ config 44x
+        bool "AMCC 44x, 46x or 47x"
+
 >
-> Christophe
+> >
+> > There is no caller yet: mm/vmalloc.c is converted later in this series,
+> > once the generic fallbacks are in place.
+> >
+> > Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
+>
+> Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
 
-Hi Barry and Christophe,
-
-pgtable.h already does this in a few places, the !THP fallback of
-pmdp_clear_flush_young() is just BUILD_BUG(), and its caller in mm/rmap.c,
-a file that is built unconditionally, is guarded by
-IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) rather than #ifdef. So on every
-THP=3Dn build, on every architecture, that call has to be eliminated by
-the compiler or the build breaks.
-
-I built it with BUILD_BUG() on x86_64, arm64 and powerpc (8xx) to be sure,
-and all three are clean.
-
-It will be BUILD_BUG() rather than BUILD_BUG_ON(1): BUILD_BUG_ON() expects =
-a
-condition the compiler should know is false, while BUILD_BUG() is documente=
-d
-as the way to flag code that is expected to be eliminated at build time.
-
-Thanks,
-Wen
+Best Regards
+Barry
 
