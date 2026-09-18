@@ -4,87 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8F58C982D0
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 00:28:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5EAFC982D0
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 00:38:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C88FB6B008C; Thu, 17 Sep 2026 20:28:49 -0400 (EDT)
+	id 9DDFB6B008C; Thu, 17 Sep 2026 20:38:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C5FBB6B0096; Thu, 17 Sep 2026 20:28:49 -0400 (EDT)
+	id 98E106B0092; Thu, 17 Sep 2026 20:38:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B9CBF6B0098; Thu, 17 Sep 2026 20:28:49 -0400 (EDT)
+	id 8CA286B0095; Thu, 17 Sep 2026 20:38:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9CE9D6B008C
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 20:28:49 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 612816B008C
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 20:38:11 -0400 (EDT)
 Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 356361C28D5
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 00:28:49 +0000 (UTC)
-X-FDA: 85224997578.29.517F7D6
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B8AC71404BF
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 00:38:10 +0000 (UTC)
+X-FDA: 85225021140.29.7F68B0C
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 9F7C31C0003
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 00:28:47 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M47w4V8O;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789691327;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CZyUKeUjL3VbbEuUgq55Wv+PmZoa3E5pWDjbtphAiMU=;
-	b=u8rfsca+qTrVINbd6t/AGZhymB8Xa/k0kVtnAQOVj0obU5bxC+NWoDilCtTI2Ff6kxJ8+Y
-	5DKWaPbuz+QQ8fekw/Qsi7fHUJ1PKjOt3IzX0dyVlKxLWG8zFby5wtlS/rAku25JqkrFRc
-	5cIPgoRTWxQhw1Jda/fYjQ3qTJGvkKQ=
+	by imf05.hostedemail.com (Postfix) with ESMTP id 1A8D1100002
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 00:38:08 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d+bSl1Gv;
+	spf=pass (imf05.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789691327;
-	b=ivZTjv8hx1hzjiRUmBtYeM4Sr13Rn992IAASteU/zfL1c+hfTdJT8opSxhRrRGx9FzVTOd
-	PzkCII9IYYYWKRq2+1mCbHpo3+5RdmNbfvdd3IoyqooC5ZoAoLj2Kg7s8Hf4UKqi6RGvGd
-	mBO4beCARxN7qKOayznhIsBU4ncVOe8=
+	t=1789691889;
+	b=FFYjpojZJanBd2bA9TULZu4dmRycXvp41ohe8f1KpxaOevTWvUoLUtTn4FZipwYkeom+B7
+	WjUEDGv7BiiJm/k0mJ5c5jDJZc6gYEyfd929hf7dCaFJMqbMbLkBTZC4zWH5EwTEe5jUwC
+	ou1MO6SwLwB6WHPJs/q/U37sxQjdHug=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M47w4V8O;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d+bSl1Gv;
+	spf=pass (imf05.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789691889;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Ze9UETo+1hNVH97tpJEWQvJ1yZNxYlSuzO4Oj6uf588=;
+	b=ZRpN5uqgqC0LUh9uhrajQLxoFOqA4oOITxRTqR78JVlfl7NKkRfeqwcwcIKAccgtrkv7ew
+	7HtXBDQDxS5m/Dqt19F9yAQlsBgq8uwVuStYE5Rku5ttPFWln5lV7zvbsOEIXGPsh5IU8w
+	pBTtpst9l9K4M35oWJbEsKFry63C9i0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D657B43751;
-	Fri, 18 Sep 2026 00:28:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F13C1F000FF;
-	Fri, 18 Sep 2026 00:28:46 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 51DFF437B9;
+	Fri, 18 Sep 2026 00:38:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67A161F000FF;
+	Fri, 18 Sep 2026 00:38:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789691326;
-	bh=CZyUKeUjL3VbbEuUgq55Wv+PmZoa3E5pWDjbtphAiMU=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=M47w4V8O1MJwov/K8stC0BWLy8Xd0XiFdkCxmRliNYgCEVr89aeb0ZJ/fJ7oeIJlz
-	 RGDTB5ikI75dsYAMQ8KU077OumjB63isA59L3wlr396rJIhEwyHz+GUYVS/YEu97H+
-	 EZ2JXAkKMa5ejpkR3I/9B5H15Yt776sC/4b/5MqLC/Osa+3GphfLlxJuby2xsuSqOz
-	 SGMAqgkuvalFE+/Dw7OTWGqxoy+fr2JAeGyYQAqLirHOWZSGqZSZk1iehgaQ89IwQB
-	 oExv03YOfmyEfXlE3N0K8DGcmnNiN/lvF3Avcc6AGD1m7K8W0Mm9DYIOoDMrPXj4a8
-	 GWyZrlUiHsUSQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 2/2] memblock: use binary search to locate candidate
- regions
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Tarun Sahu" <tarunsahu@google.com>, "Andrew Morton" <akpm@linux-foundation.org>, dmatlack@google.com, "Pasha
- Tatashin" <pasha.tatashin@soleen.com>, "Mike Rapoport" <rppt@kernel.org>
-Cc: kexec@lists.infradead.org, linux-mm@kvack.org, "Pratyush Yadav" <pratyush@kernel.org>, dev.jain@arm.com, linux-kernel@vger.kernel.org
-In-Reply-To: <20260918002239.4024231-2-tarunsahu@google.com>
+	s=k20260515; t=1789691888;
+	bh=Ze9UETo+1hNVH97tpJEWQvJ1yZNxYlSuzO4Oj6uf588=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=d+bSl1GvJPGpKJYMJztB6DW2nOd5gK/0XiKZ5AIB6VuavdGfd3Prp+D3XBcOpYA2R
+	 iIwVPvgYhgv6yfq2RUHTq4tnZGKxFiz/sxeJePe2MHqQYzaJoFt/VExnajbgcNtN30
+	 sa5IxWpBsDig62Xv2bnappORxL1PDe2qQS/Q7poO1/9geVH64dcJjyP+wYLajXtPGW
+	 BpqwM8jasLiVs4z8X42oTLB+m9XNHKPXhw0LX6S3Rtspl31EcKrWRP7ZRwE6r3GQ1F
+	 JgCdXruZNKoLXeJgzsha6AEnjUkqjx6HxogeUiC1370bKypIA0nJRIYT5WQ0KL2FIB
+	 p85YVOSKrGvqQ==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Tarun Sahu <tarunsahu@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,  Pasha Tatashin
+ <pasha.tatashin@soleen.com>,  dmatlack@google.com,  Mike Rapoport
+ <rppt@kernel.org>,  kexec@lists.infradead.org,
+  linux-kernel@vger.kernel.org,  dev.jain@arm.com,  Pratyush Yadav
+ <pratyush@kernel.org>,  linux-mm@kvack.org
+Subject: Re: [PATCH v2 1/2] memblock: drop for_each_memblock_type() and open
+ code its users
+In-Reply-To: <20260918002239.4024231-1-tarunsahu@google.com> (Tarun Sahu's
+	message of "Fri, 18 Sep 2026 00:22:38 +0000")
 References: <20260918002239.4024231-1-tarunsahu@google.com>
- <20260918002239.4024231-2-tarunsahu@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 18 Sep 2026 00:28:45 +0000
-Message-Id: <20260918002846.3F13C1F000FF@smtp.kernel.org>
+Date: Fri, 18 Sep 2026 02:38:04 +0200
+Message-ID: <2vxzwlsj5r83.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 1A8D1100002
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 9F7C31C0003
-X-Stat-Signature: rizstrhz6jy3w5a7ax51taxwczd4aidg
-X-HE-Tag: 1789691327-52264
-X-HE-Meta: U2FsdGVkX18yYmvQmi3hfWSWCI6WOy27pveHjd1lQ+BQMHS1xc4yArhF8bDxl23anErMhzZ/LIcuk8xkZZ+o1gl8XWHtEvIAf62e+Vj5ZJZMiJrsEeyBtA7/9PzUVh3aBXek8ubJgLeNJo4GBa0CgQNcAlVSYYxJiBz/kEn8/D/WbCeBRUii6g71QYOT6sGvLHjJCA+7yGuPoAAFpMB1bFMeRFWPS0jkfriht7YROJh2vv4LROOIy2+wcu9Pzbl/t2FOwI6EqQ5rmnTGB8BGmBEsHVGQyodZyyjgdJqLBTMa7gbQo8oecpRY0Qwjjf1j8B2vDOXSuOLbyfoHVKzSpplEzSbdjW7gW7r0B88+a/TfCA9QRgEmGGksE6ezjfc1SewJclUhL9dJZLYW5HHpyVayQ7c81jd4KJAs82lVjJjqUSX6DkHGu7oZLSoAO6Myo4eYyhtieTDyQ6QTl8cs99T41DU6cPplObTizlNJPsfrNwKF97N/02cEEORgLAyHtkFGFrG4ZN7k2K7MA8GheLSH+GamqfMITFPyVuQ8j7DIvKR7DOJ6tMuSvsTXwVFc5VU+Tq86TwDIanSoHfmnhIQTo6t9hmLpiNsT+dIZ43Bl3EFOcZWRJvcOvWv6tfMaA90oTa5418otW9IAiXiq9SrSVsiCm494pkNtgfeOGWHeoNCmEZHc9lycvgIpsxfJsYv5OkpS5jtd5oVynsfGZAtUk98tf8CzGghts+9nWu2BA9R7CN/bBD6bzY5Ca/zAoKVXCFDgj0m1B+wIT0b1QfL0vpAZepAvzd8WbAPQksMNb8iNL873B3M2CsX5lTMJ2k/hak/D0gm87QCxArZ6D8ito07TOzxvVAqzfDK/qnV+9mzYYLEDp2SisX6Qr2daqx3UsYBpYenaZ2qvBCDVVVMhyprhh7gVUh2ctjHESDceRv1uaGv3P52AKTf3rSCSLtEicBXoBl5To2Qt8tL
- S7TGvDNc
- eAorK3zCD+yPE7WlDLWW1ibTzfYQOl2oAwESJLCSwIwTLfsb+lnVEDVuji8UUFfAsPYiFHPBbFL2Dr9fnypGh9tedHpZh9G/85n9uer8hEYihzTMAYkFHk8q/K1E4SSW3/CMsn/uTk3yMEd041UoAv7ZiXaCZG/tqR/XaD+Gm44tamNxd125iTeMWkgXGk/210n4ImSQ7X7bGolvcv7kspA9qUBt4Lcbdan0kLng6o+mcO28Mh0v/ikFLN4s3ThOMYTYqB52zHFMmKQX1KaX3lwhgxrYvZOZceLKOoFRtUj9a2aY+O5RnSFGHnn2S4KlH5C6r6XJ+BEque5jezbCfCzUqz4GyvPrBXQNEuwR78AR1Qwza/QqfqImOO4t7aclIVC2O7ODzfr0CgT/KMMNbnGfEs9aaND9uPPIqy5TL/9U+vi1y23zG9vXVM8A9YM4Sdq2DrdycvZ+pgj3TuMJfzGZWMsMWndw1b3Kf4QGrFxnLd4sZEftAihqlabdgJdFvQQ1Frh1TYpU3AU1UE17WYCFexyyA89e0TqqNxnYtRDUYasyqzhzhgt4PyWW+hlUZ/1CdTAzyL69G1juBMGKDy5qIcQ==
+X-Stat-Signature: e6z8dnpnkmbfjwe5pg9s3a47csfsa7g1
+X-HE-Tag: 1789691888-579969
+X-HE-Meta: U2FsdGVkX1+EfkHMt1RTPh22ok1py1tsKyWtHw9UoWx6V0gkCRdiIt8/xA4Kutv9fGkGmAbJvKiDg0s5fopGs67zl4Jx/VNVeYjEHjz91KPG7WXStoKz1kynnWnrWvFM/UDRgk6lOZRFVWkBjd9xXk2xmFbrsUUQc8sHHWqvujtIPtccGjEwbuEiYzp7ix5IiQRAo6C0nhOp+5gRUO1tnRwOQh2NzV+9DFHdN257kNApCczjcotUy0PA7xxfO3Ed+ZFSZZ6mfGY+KmrlIp8Tzj8mTrlFc7ha7Q0JaDu36G8A30b5w+wpsqtkqGixix1TNiwsEd3VkWqwhk1vwrBL+0vKDEbgzNCVgQNUhgLpgaE8w0V0/iBhT49gE7RC5824qo6Q5PK4hu/A5+fzXJb1AdeJlw9Hyf3FLjfseewiyMloDbdox1zytmIGhk48N0lN+6Vzl2p5d7PLTXdJE73jUA7RwyJ8Ct/mCV3VES/9dZor4gJVkrfkU6uqgrqlhvnIlJxnChkigC5AbAuVnzka2HjsFz/ktucoBwgf/qgvxrpPLVG4ZBsNQ8M0S3cIZU1ogSYAYEzvlpYTVZo197QhGpA9MgmrMStTwyp4Q6ctTgwVoC1pOdgmAexM6MFYc2Z4HrxxXGXJbOppWPEbL6YezEhA5cO21TEYwJX/laLDqL8ohnODIqmC0HUk+tjBC722PXquc4BGFor0nw7ziG+MOMfayRO7505wv5LflQoZNDdGQjH7kcF33YqDpYWfx4tQXjlNOA6viIKecNiK6dxGfSKMvf/so04fYsWkPdMbt8QMz4cAtI3707sWX0KCdkTkOmipWQQTQ3RCUlKwal3MPFrRcHYNGgk75WoNmCr/YP2spzIxdcimMDSUhY6cSPRQHz9aCnqPBJo5o6oRxC5ynsxb1BfdoW0302joQ//C6QxYnm9LlYvqdYOEGbpvfkbBiGvh2cJmfaS8hPrOMIW
+ SDpqCIa3
+ Yxgk3kN6vMXJl2hkM4RqjNc74DcNlfA08LzgnMEbZ0+NrRt0otJoGrAzKFWjfTB+pN3pDPkxfbq9se8f6FMY19n2B5FPPHAsFDFQIIayDZ7EKQf6u5afBvK8iZ7QsdzYwShghOs2kNnssJGGn7iJ0r57cNKqvdMSbSo07D/ioQXcPDm/oP7tZn1GOwhswSHuyOUGZVcKgQx1Q51Z0c8xm0NNxDR1tq6QsNxIARraPmPlxymjJECvHZyj+ufmBMON6vNhfImSmOI+ET2Ei6qaIK8vR9Jl7oIe8Zt8JQgYkvfFn0AFSIomH+KbBfg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,29 +95,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Use binary search (memblock_bsearch_start) in memblock_add_range() and
-> memblock_isolate_range() to locate candidate regions instead of linearly
-> scanning from index 0.
->=20
-> Under heavy memory fragmentation (such as KHO page preservation registeri=
-ng
-> hundreds of thousands of disjoint folios), scanning from index 0 on every
-> insertion and isolation results in O(N^2) complexity, causing boot-time
-> memory retrieval to take several minutes (~268s for 393k pages).
->=20
-> Using binary search reduces the worst-case complexity to O(N log N)
-> (and O(N) for sequential appends), cutting KHO memory retrieval time
-> from ~268s to ~50ms.
->=20
-> memblock_search() open codes the same binary search, so reimplement it on
-> top of the new helper.
->=20
+On Fri, Sep 18 2026, Tarun Sahu wrote:
+
+> for_each_memblock_type() always starts the iteration at index 0 and its
+> body is a trivial 'for' loop, so it hides very little. It also gets in
+> the way of iterating from an arbitrary index, which the next patch
+> needs.
+>
+> Remove the macro and open code its three users: memblock_add_range(),
+> memblock_isolate_range() and memblock_dump(). While at it, move the
+> region pointer into the loop body scope.
+>
+> No functional change.
+>
 > Signed-off-by: Tarun Sahu <tarunsahu@google.com>
+> ---
+>  mm/memblock.c | 14 ++++++--------
+>  1 file changed, 6 insertions(+), 8 deletions(-)
+>
+> diff --git a/mm/memblock.c b/mm/memblock.c
+> index 9ce86349a29f..5aae75d34dec 100644
+> --- a/mm/memblock.c
+> +++ b/mm/memblock.c
+> @@ -155,11 +155,6 @@ struct memblock_type physmem = {
+>   */
+>  static __refdata struct memblock_type *memblock_memory = &memblock.memory;
+>  
+> -#define for_each_memblock_type(i, memblock_type, rgn)			\
+> -	for (i = 0, rgn = &memblock_type->regions[0];			\
+> -	     i < memblock_type->cnt;					\
+> -	     i++, rgn = &memblock_type->regions[i])
+> -
+>  #define memblock_dbg(fmt, ...)						\
+>  	do {								\
+>  		if (memblock_debug)					\
+> @@ -651,7 +646,8 @@ static int __init_memblock memblock_add_range(struct memblock_type *type,
+>  	base = obase;
+>  	nr_new = 0;
+>  
+> -	for_each_memblock_type(idx, type, rgn) {
+> +	for (idx = 0; idx < type->cnt; idx++) {
+> +		rgn = &type->regions[idx];
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+Nit: this is really odd to read. You assign rgn and then declare rbase
+and rend. Doesn't checkpatch complain?
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260918002239.4024=
-231-1-tarunsahu@google.com?part=3D2
+Regardless, I reckon it would be a lot nicer to read of you move the
+declaration of rgn into the loop. Same for the others below.
 
+LGTM otherwise, so after fixing this up, feel free to add:
+
+Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+
+>  		phys_addr_t rbase = rgn->base;
+>  		phys_addr_t rend = rbase + rgn->size;
+>  
+> @@ -827,7 +823,8 @@ static int __init_memblock memblock_isolate_range(struct memblock_type *type,
+>  		if (memblock_double_array(type, base, size) < 0)
+>  			return -ENOMEM;
+>  
+> -	for_each_memblock_type(idx, type, rgn) {
+> +	for (idx = 0; idx < type->cnt; idx++) {
+> +		rgn = &type->regions[idx];
+>  		phys_addr_t rbase = rgn->base;
+>  		phys_addr_t rend = rbase + rgn->size;
+>  
+> @@ -2198,7 +2195,8 @@ static void __init_memblock memblock_dump(struct memblock_type *type)
+>  
+>  	pr_info(" %s.cnt  = 0x%lx\n", type->name, type->cnt);
+>  
+> -	for_each_memblock_type(idx, type, rgn) {
+> +	for (idx = 0; idx < type->cnt; idx++) {
+> +		rgn = &type->regions[idx];
+>  		char nid_buf[32] = "";
+>  
+>  		base = rgn->base;
+
+-- 
+Regards,
+Pratyush Yadav
 
