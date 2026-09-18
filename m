@@ -4,76 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26926C982D0
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 02:56:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CC1CC982D2
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 02:56:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E96666B0093; Thu, 17 Sep 2026 22:56:30 -0400 (EDT)
+	id 324376B0096; Thu, 17 Sep 2026 22:56:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E6D0D6B0095; Thu, 17 Sep 2026 22:56:30 -0400 (EDT)
+	id 2FB7F6B0098; Thu, 17 Sep 2026 22:56:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DAADA6B0096; Thu, 17 Sep 2026 22:56:30 -0400 (EDT)
+	id 212C86B0099; Thu, 17 Sep 2026 22:56:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BBD816B0093
-	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 22:56:30 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4938040585
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 02:56:30 +0000 (UTC)
-X-FDA: 85225369740.06.F195A62
-Received: from mta0.migadu.com (out-97.mta0.migadu.com [91.218.175.97])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 09295180003
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 02:56:27 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ghvlcicp;
-	spf=pass (imf16.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.97 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 00CAB6B0096
+	for <linux-mm@kvack.org>; Thu, 17 Sep 2026 22:56:39 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 798ACC04D4
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 02:56:39 +0000 (UTC)
+X-FDA: 85225370118.29.2B0DABD
+Received: from mta0.migadu.com (out-106.mta0.migadu.com [91.218.175.106])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 2F6DEC0003
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 02:56:36 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=OO22uDOx;
+	spf=pass (imf22.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.106 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789700188;
+	s=arc-20220608; t=1789700197;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=qyd4Ov1S1ewbh+ZPypwCtIfRJvaTjd8rOo/4nJeK3og=;
-	b=Prm6j4gD/ZW2K62ERHB0hlAD0lxHBNdLvmo390IAr3zJYlfiqEzCJiuchE82bwgSGCdcF7
-	vpsjxtRmFeszSwdnW/iqJestGsvew6ub1Z8fOT4oGHTxhymaJSfvd10539vhDHp7HhPmmL
-	sUue4Ab4ikaSr2ab1oC+P6gd+/qtP2A=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789700188;
-	b=GMj0OUFrAor1BO/k6Oe22uGzp2rBBGpOnWZ9wN6YHPi/PWZzYlbc1ociCktnDp92tfFUyt
-	3qst/X7FNRqBGiGbsdfW7U/1GQr8joY2xOkqaXcpZOkibdFiB8R0/HJkF/UEGjMT+GJ3LN
-	RpZ4JNC+5eAfaikOalibka7AbdzU9HY=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=1nu/1Qn5aMB6eE8agozr5NGLxQFUYPH9tczqIuVOPWg=;
+	b=aoIWlvxydv/o+NGvhpuHavq/4pqQMLvmvw6FB/lwIm9hWZwSK5KOOo/jG3otZz+LKnWV9t
+	mJgp4ds5l7k53sEm/cI4VJlGLjXXPEgZaxJtUlChr6oqF3e0tDWuL52eNwk55etZsB2Zb+
+	0ZVqIWSm1X0uOH5KfOB6LZQ6/akxZBQ=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ghvlcicp;
-	spf=pass (imf16.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.97 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=OO22uDOx;
+	spf=pass (imf22.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.106 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789700197;
+	b=mC/EdFkjdEo6nUxZwrBTunVk4ViRqjct8V9xZr2Al63NeMHZ/fsjUWMtNwzZl/zklGwQJi
+	AjlQBYfDnmSSxP9G5mogPh6CKrnetrxJqmTrug2ErdZqpeiVGKFcqqmAvTtJiIdh5WAkkg
+	iP7vi9Hu7b2kcNaeJDkQnmsiCArhb5A=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=6olkN3MFF993IEc0YK161XKRjhyK4yyClEXXjugfK5U=;
+DKIM-Signature: a=rsa-sha256; bh=9u6epy2ZAg7e55qO1Fon8xryNFbohlp/e75WuCwRfPs=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789700186; v=1; x=1790304986;
- b=ghvlcicpnL0xK6UZMXLU+bpHh++qH/SG3QP7UX0sOAowfd/zilH1uNGyvCPi+rV8DZkKdkZA
- y5/wf+xDrwyf74CR0n3DqLWnjfqB69AmrJiykIryNfVuqB6d4xp/nu1V+JfGsnkvHvpG4FZnxZ6
- gCC6BcNy0/JgouMC3TP+uNsk=
+ t=1789700195; v=1; x=1790304995;
+ b=OO22uDOxXILEOeYIwRkNS6xATYfJXsM5caSAsWGGGtr5GP/Rp8bZYzpGZs7yzVIn7wHt6lK4
+ uNcS5xC2ZU48jsUvVfV9YZgdMFE4qNS3GGm74/9r13mgZ0WiFw9MevCAK/wIZiIvq0gS/cTA0K5
+ 3f8nh5/PWoIiU61q2og7mbzs=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 97b504da42608a61;
-	Fri, 18 Sep 2026 02:56:26 +0000
-X-Mizu-Trace-ID: 97b504da42608a61
+Received: by smtp.migadu.com with ESMTPS id e182d4fe0f507fa4;
+	Fri, 18 Sep 2026 02:56:35 +0000
+X-Mizu-Trace-ID: e182d4fe0f507fa4
 X-Migadu-Flow: FLOW_OUT
 From: Hongfu Li <hongfu.li@linux.dev>
-Subject: [PATCH v2 0/2] mm/hugetlb_cgroup: move the per-node usage along
- with the folio
-Date: Fri, 18 Sep 2026 10:56:09 +0800
-Message-Id: <20260918-for-hugetlb-charge-v2-0-2b6d8c2bdc36@kylinos.cn>
+Date: Fri, 18 Sep 2026 10:56:10 +0800
+Subject: [PATCH v2 1/2] mm/hugetlb_cgroup: move per-node usage on cross
+ node migration
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/22NwQ6CMBAFf4Xs2ZrSIKAn/8NwaMsWVklL2kIkh
- H+3YLx5nGTemxUCesIAt2wFjzMFcjaBOGWge2k7ZNQmBsFFya/5hRnnWT91GAfFkuGTIbSRray
- xLQqENBw9Gnofp4/my2FST9Rxf9qNnkJ0fjmqc757v0D5LzDnjLOKG1XxWgks5P21DGRdOGsLz
- bZtH90sTlnHAAAA
-X-Change-ID: 20260915-for-hugetlb-charge-2cfada8ed44e
+Message-Id: <20260918-for-hugetlb-charge-v2-1-2b6d8c2bdc36@kylinos.cn>
+References: <20260918-for-hugetlb-charge-v2-0-2b6d8c2bdc36@kylinos.cn>
+In-Reply-To: <20260918-for-hugetlb-charge-v2-0-2b6d8c2bdc36@kylinos.cn>
 To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
  David Hildenbrand <david@kernel.org>, 
  Andrew Morton <akpm@linux-foundation.org>, Kees Cook <kees@kernel.org>, 
@@ -84,21 +82,21 @@ Cc: Mike Kravetz <mike.kravetz@oracle.com>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, hongfu.li@linux.dev, 
  Hongfu Li <lihongfu@kylinos.cn>, stable@vger.kernel.org
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1789700179; l=1456;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1789700179; l=2631;
  i=lihongfu@kylinos.cn; s=20260915; h=from:subject:message-id;
- bh=6olkN3MFF993IEc0YK161XKRjhyK4yyClEXXjugfK5U=;
- b=jQlOWteG7im1UP87y0ch6aWT5/7TKFYwrPyD+MFHD+aPffzfHC8yMSAYwnJ4hpniRNVsUb3yO
- VD73DczGDh5B0oo1EvbsKypHa8PkjLPR7iMjM7nmjT0GMBLjPHoUESB
+ bh=0UZdbc9Ox8ZjROT1qQ4ifIs6d3OxXlfJxcPA9bn5O0g=;
+ b=En8vl3OUqwBj0Vz+EXcDxP2ydhp6W543BGUr7oBnxhYZP63azlfAA49Euwx8FD1ItN5ud6Nrc
+ aGbYMXI7QnpB0T9B5Tu2kpkD02NR9nbgeegmbkYHlWTj5lj4ymZUe5z
 X-Developer-Key: i=lihongfu@kylinos.cn; a=ed25519;
  pk=rUpDSpB3neoNZRlGG6dHlFb3RepiJakcev+ucyqaZzw=
-X-Stat-Signature: fqmgabjb4m3iydwinzn493chauq5kn7k
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 09295180003
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789700187-133662
-X-HE-Meta: U2FsdGVkX1+8O4+koWIuLrzxoaxND4n2e2krONEmPcYMYYD3YKzgoar058NGWTdzvIwlfyPGN+GQ/YfKaVrTUDcmmYYCsBchbHagJbm+8EsXE8jOmhok1lJaZ8OH2ihol4BpMAbryKNY55AMCkmoGyTAtMK45hgp9VqZphKk/+6xJrE4/004rRyY/H3hllaL1fay4PlCUQ+dKCSXJ32HMSHeNw/+XA7K8wGZMk6+pk7IONTs7TLJnARdWxNsgdz1aeBCEdi4HpQ2InI2co0JDd2tOfmgv+lCTB556RUAir7U7B1fsctPP778ewCpGgEPojY6bl+DgQ9KjcrZ+gj4YYhgKzNIh7OklYhgu1oJNZJkA/0HmpZh1yaD7kPr8HDv4jRsb+RGTVbfMCXdeGPQcr6sYn6Lx/28nrHZc7XNCXxipPjZZ51OPEq8/HbOntN8GYdY2JT4aEzZDdgEPkUJRH1nZseLjKiICbgvff4NuukIp5sadgmvI+gCXkyWoKdcyr2fba0yYJuy7Os6Xpe9KDL62++j0oGwu0ll0U0jvl2C5s2OG+D0VGmjD5tFD9cRWuBDvs0yVsvS+uoRFt1TyGYYH+uQQv13divvaGKNryj0Eg3O+Kt+MzPw+qKnS/Wz/C5naYtZRwoixePjNvI0cLl0Y0wHqs6yzUrk+QlJT1T7ohA1F/CwK0DkAP3Hum0eJCIVz4slOfo4klktCfK0lLGQlcNp/Wb+Z1k0c87nJsEqxbKWG1fscmIKLSEHwm5THIlGR3nKH4GD/8VW4B19XeEXKXITUfBMNrBTwQ7NnZyNAOIZU14kUYxLwvcTcO49Mf0qo1KYctOHa89MWXWyC/+BUl78bQX0M+lWxGIXLs2SYiSR94b0FQqkLlTdEfKXWAIsoAdrz9v69O5nYlUAgwEojhJqpWtIH/T7dJ5gHdlwcRaUw9fVjEHoOA4RvDleWeB6hlPq3QwT76ffyPJ
- 8NdmcAxt
- TwRRz2ri4J5My1Uq3PwDBcjxSNQ7YmJqgwxSMyq04aGT4/Tjg0XIe6xTG4pjp6bBkh+g7IG5G0ylFGkwpyXyU3bIHDraKmODj2zhXQj0SKVVM3QJNw61IK6CCGGwIk/uIwgA4ga0+12Ec3SzwO3wWnyl6BTdfBC8coKQBuSfL1VzaPM5ssj3OCvhQD2cjC//9xwwYPl3/piGiPykBseGp/e3ITy+Yc+Ur3O8GnzLOUs5Cwj5pHm+PJE5n7opyGVqE7L4Aa1RzEpDti6b+YMBzXwlBgAwQve/dDjSayW0ca0w1PXw8uJ4rnlrIwDqCAMtmow1V
+X-Stat-Signature: d5mjbwiuid3ixczewgyizwrpxisfwhgj
+X-Rspamd-Queue-Id: 2F6DEC0003
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789700196-664605
+X-HE-Meta: U2FsdGVkX19RlMvI78hjRTSqXC22Krck5WkJMRl+fQO/0MGdAwDPllp2vKs2m7jDeoQQ8lgwOgF3bJeGFCZECzJhDB8caY9Q/7f2Co/OZzP3C2HYZXdJkTpwsHp2P9cp/ekgTagYCiSHa2QLU6Ro/I5TdG300E5l5Anp1DVa8rwoCJyHd+hGwTWIWDMkfzwBGmw0HjkuZ4YM+Cl3/9OrYnXg1IxocFYg0xSjZpJn1dKzGnpscnGyZNkBK7Ilm6/BUed2P4mWiHsP7HgqvLkXAobNBhScG7nWpWh8G5x3k1UAypJR3nDXm+1bjxNjY7DmF88piAVKqxpu1ry6fJA6o6BbPYQJUgmMsLiqEF5ry0Xrb/DMOJuRJxtgLMWE3AtWurs6gEAAfNYosoq7zIA264HdqeZ88gZDJQv4srO8fQHWnlaWw3aHuvfaNUe6b3HeljguuEoDLFyqX/Yuy/jVJK2uMzhPQOsn5S18y52JlJzyozBu5yFSOk65v+C2MRah4CC0gmMXF1xKG0eLyi2sfkifGQcOWvyNqsNLagGGYvXtVIrgbcySeoGuK0nwbLX0uIHPZVyO/JxO3+SLbkyTYVwDtuT9d4pXNY1DzCJCn9eiTEoME7HmxYukEdxAT7/r7pJGFohgY/XiqUglUVZIixuBtgfc5IlXY1Zm6AbgbhcfKNMDa+qqxn7TirdPiaQWT1t38DSOLUgZ9OfhgZL8DQeiobyHcmHfAu/cV+k2ge/IAW5/K3rb5fthsBKkTmru8KPoiKP34zl+1CMLS+qaSnBtU/kKkXPLUKFiaSbAVDJTxpJ+oODK1VRi0A+vZ1el39G7HlqtYmRKCYsd9xiFzKVT2irul86VqIKiMJJJm4Eg5W1s9XSALJ8NTDz0X1Ym6asgKDc2Z8zHBWnrGs81vyg7glKmONmn9SoRf7mLDr6uipi22G8Z4PIzOuBpajhk4/V9K9BmnI1eIpRShTP
+ kWRrol5v
+ R0YpUfUHYpcTIfdYgDnaeF0X6YyQLZrCCLJM5Qqa0LthANtE73nscyTHPqpBkbOLsNw/UYziGpOf7UFekvoZ/5seUUnIiUSZcMIAvvQ4MHf/eP3AekjkBXndJY0BU8mInEUpYOCyU9vFauRbwU2/PmQ0ZfcMpIpPJiywMRBsuqTo8m/D+ZS4MOOheufcR+kjHNX1ailNMbYMdU29wswG8YMPUIeDPh6O+phxE4BQDzwkdnemPRQzxXG/e/lhuD3nTn1N+rbWP/xAGiZLiF31KnvcBpXDfrzkYGuJR3v4vuZ2AAZ+yP5u8IJF/xyhMbCQ9H9npvdXw67RTP71V8siwBUgOSHew0VVbNYL0q7UckCEvMu4ROUNKKiCb9XsCJX22a15R
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,41 +104,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The per-node usage reported by hugetlb.<size>.numa_stat is accounted
-against folio_nid() in __hugetlb_cgroup_commit_charge() and
-__hugetlb_cgroup_uncharge_folio(), so it is only correct while a folio
-stays charged on the same node and in the same hugetlb_cgroup.
+From: Hongfu Li <lihongfu@kylinos.cn>
 
-Two paths move a folio which stays charged, and neither moves the usage
-with it. hugetlb_cgroup_migrate() only moves the hugetlb_cgroup pointers
-of a folio migrated to another node, and hugetlb_cgroup_move_parent()
-only moves the page_counter charges and the hugetlb_cgroup pointer of
-the folios of a dying cgroup. In both cases the node (or cgroup) which
-was charged keeps a usage which never goes away, while the node
-(or cgroup) which ends up uncharging the folio underflows as soon as
-the folio is freed.
+hugetlb.<size>.numa_stat uses folio_nid() to account usage in
+__hugetlb_cgroup_commit_charge() and __hugetlb_cgroup_uncharge_folio().
+hugetlb_cgroup_migrate() only moves hugetlb_cgroup pointers, leaving
+per-node usage behind on the source node during cross-node migration.
 
-Patch 1/2 moves the usage along with the folio on cross node migration,
-patch 2/2 does the same for the folios a dying cgroup reparents.
+When the migrated folio gets uncharged, we subtract usage from the
+destination node counter. This creates stale usage on the source node
+and unsigned long counter underflow on the destination node.
+The hugetlb.<size>.numa_stat interface exposes these incorrect per-node
+usage values to userspace.
 
+Add a hugetlb_cgroup_move_usage() helper which moves the usage from the
+old node to the new node, and call it from hugetlb_cgroup_migrate().
+
+Fixes: f47761999052 ("hugetlb: add hugetlb.*.numa_stat file")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
 ---
-v2:
-- Drop the unnecessary READ_ONCE() in hugetlb_cgroup_move_usage().
-- Add Acked-by tag.
+ mm/hugetlb_cgroup.c | 31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
----
-Hongfu Li (2):
-      mm/hugetlb_cgroup: move per-node usage on cross node migration
-      mm/hugetlb_cgroup: move per-node usage on cgroup reparenting
+diff --git a/mm/hugetlb_cgroup.c b/mm/hugetlb_cgroup.c
+index ecb6e0b7819a..7cf7c18119b4 100644
+--- a/mm/hugetlb_cgroup.c
++++ b/mm/hugetlb_cgroup.c
+@@ -179,6 +179,34 @@ static void hugetlb_cgroup_css_free(struct cgroup_subsys_state *css)
+ 	hugetlb_cgroup_free(hugetlb_cgroup_from_css(css));
+ }
+ 
++static void hugetlb_cgroup_move_usage(struct hugetlb_cgroup *from,
++				      struct hugetlb_cgroup *to,
++				      struct folio *from_folio,
++				      struct folio *to_folio)
++{
++	int idx = hstate_index(folio_hstate(from_folio));
++	unsigned long nr_pages = folio_nr_pages(from_folio);
++	int from_nid = folio_nid(from_folio);
++	int to_nid = folio_nid(to_folio);
++	unsigned long usage;
++
++	lockdep_assert_held(&hugetlb_lock);
++
++	if (!from || !to)
++		return;
++
++	if (from == to && from_nid == to_nid)
++		return;
++
++	usage = from->nodeinfo[from_nid]->usage[idx];
++	if (WARN_ON_ONCE(usage < nr_pages))
++		return;
++	WRITE_ONCE(from->nodeinfo[from_nid]->usage[idx], usage - nr_pages);
++
++	usage = to->nodeinfo[to_nid]->usage[idx];
++	WRITE_ONCE(to->nodeinfo[to_nid]->usage[idx], usage + nr_pages);
++}
++
+ /*
+  * Should be called with hugetlb_lock held.
+  * Since we are holding hugetlb_lock, pages cannot get moved from
+@@ -906,6 +934,9 @@ void hugetlb_cgroup_migrate(struct folio *old_folio, struct folio *new_folio)
+ 	/* move the h_cg details to new cgroup */
+ 	set_hugetlb_cgroup(new_folio, h_cg);
+ 	set_hugetlb_cgroup_rsvd(new_folio, h_cg_rsvd);
++
++	hugetlb_cgroup_move_usage(h_cg, h_cg, old_folio, new_folio);
++
+ 	list_move(&new_folio->lru, &h->hugepage_activelist);
+ 	spin_unlock_irq(&hugetlb_lock);
+ }
 
- mm/hugetlb_cgroup.c | 33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
----
-base-commit: baa8de2f3448d1466a888a805c18d01c998fe052
-change-id: 20260915-for-hugetlb-charge-2cfada8ed44e
-
-Best regards,
---  
-Hongfu Li <lihongfu@kylinos.cn>
+-- 
+2.54.0
 
 
