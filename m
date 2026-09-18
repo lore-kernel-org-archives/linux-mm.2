@@ -4,108 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A7A3C982D8
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 23:29:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4959BC982D8
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 23:48:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D033D6B0088; Fri, 18 Sep 2026 19:29:07 -0400 (EDT)
+	id E63626B0088; Fri, 18 Sep 2026 19:48:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C8CF56B008A; Fri, 18 Sep 2026 19:29:07 -0400 (EDT)
+	id DECA36B008A; Fri, 18 Sep 2026 19:48:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B56266B008C; Fri, 18 Sep 2026 19:29:07 -0400 (EDT)
+	id CB5136B008C; Fri, 18 Sep 2026 19:48:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 919AD6B0088
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 19:29:07 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E7F984011B
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 23:29:06 +0000 (UTC)
-X-FDA: 85228475892.25.71E33BB
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 95DE06B0088
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 19:48:18 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E308680150
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 23:48:15 +0000 (UTC)
+X-FDA: 85228524150.06.3CA830E
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 24BE3180006
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 23:29:05 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ksA2eEmC;
-	spf=pass (imf16.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	by imf19.hostedemail.com (Postfix) with ESMTP id 2106B1A0004
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 23:48:14 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eODMcJmZ;
+	spf=pass (imf19.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789774145;
+	s=arc-20220608; t=1789775294;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=188T93z4qV5uNJh8FeTOQrPGMOwnqFGa0qLgHhQ2j6I=;
-	b=JtuZEZNZxvTkYo1j+an4y7l76P6ylv7e1+0iYJ7yyZmRHm9NfcwPlxawPN1QzdXGIpHPVP
-	XsXGU712Mxbq+a+MjDtYiqOExwO1TX9OeUDxbLWpsJraefwhh4Fu116t/LZ+W2tNh5Sikh
-	147Gq4Bh73nl9Y3j7hyXd9Fdg+xkR5c=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789774145;
-	b=vujeg3N6ENjrcwUyO5dEz4y4smVdAMJzoHqolkTamJL3FcOIX+42emYMY1noz4VAe3mSrj
-	rtAyH/IqlU/srXNMrS5b+IimCG3jYEqBxvkjX8PbjG01HfNE65BpgzsKXbHK/aFh6VbkL+
-	hFWS78d8e0g8ywXL1Q95eqOeFf/UZV4=
+	bh=Nz2zbIFKT6HwXKpev+qm4lwffznJtUuxnKuoUkXJ/68=;
+	b=Uqy6Rk7REomzX7a3jtXMZNGyGno/9afx25Ggml4Ds8HXUMpxfFFi6/mo/mh3vgL5tF+xbV
+	+3jBxx1Ig8a3kCdOscvnTGcttXQSEFkYlqK+dATSEndCq+UrBD6RM9UBJqkRw4N4+c4e5b
+	vEMJQtC6NLAFZCEksdD/6u9MCcAkTi4=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ksA2eEmC;
-	spf=pass (imf16.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eODMcJmZ;
+	spf=pass (imf19.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789775294;
+	b=mVVtCEZ7wuduiuRiNOtMjOuuIyPQSKMSwrxdiOhZdFuN3dZIiT73OEi7lJi1qILpAdjGdz
+	xmI1cn4mGJk7Ug8j0aGr63302BWV1CSFc8W6mLoQuL6oB7Y0Ok6UbAJdT7ZFdBXILJpE1H
+	uv48E3oU+QEf7WpnEPnRaPmbDG7CjPg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 62C1560A62
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 23:29:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15D0B1F008BC
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 23:29:04 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E71DF6053B
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 23:48:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D6901F0089A
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 23:48:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789774144;
-	bh=188T93z4qV5uNJh8FeTOQrPGMOwnqFGa0qLgHhQ2j6I=;
+	s=k20260515; t=1789775292;
+	bh=Nz2zbIFKT6HwXKpev+qm4lwffznJtUuxnKuoUkXJ/68=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=ksA2eEmC1Z8I9QuBoV4PpCqjawt/7RnMRB0K0iTbetkXqabi8N1I7QSNQIMQIG0+7
-	 jBEP6xICM5ASv2y/jKAUrL/wJ8WcA6pbJpeAxLJHIkt6N5keCZxvRTruItp6NkfjC0
-	 AoQ9Cr/TU2XApmAdHMbx94EM0Xk/7sRlyfiiuRm9i5jAcmdG61zVSN8ztauw/v0mt5
-	 /YNYpngulgkqa89d6ASQMpndUyT5s7eWS7sgtnl4t7ztx5o29MgZLkETYb586dPsAW
-	 zV9vvg8o35phs+eS0q+H9Ecrmv8xG1H3MAkbEWKicK8SaTf5riHdwkqPdlM99A90Gv
-	 eKDJbSLd4nVlg==
-Received: by mail-qv2-f12.google.com with SMTP id 6a1803df08f44-910537b51a0so11319446d6.3
-        for <linux-mm@kvack.org>; Fri, 18 Sep 2026 16:29:04 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxsurs9KcHvk6cTe3ByC+8wxc3wJcBrDfdZ9tj4Kd4TJlY7baM8KqJQNJEjy6V6lgp2/VJ6fQZi7w==@kvack.org
-X-Gm-Message-State: AFuF++m6g1IzND2I9BHXc8hdH8tY3rb1LLYhuDd7b2Z5V94gfi/Y4+vo
-	8zZcxWXeha5XZkMrCOe91nlN9uZ6Y7dADpbRRiKM1+8bMchrxokf5/aHovmZLkS3pzZZ1XzYE6+
-	R9Xb6A5Zo7AucRXJ3q5p9WTe1vQL6NUs=
-X-Received: by 2002:a05:620a:2258:10b0:93b:e578:583d with SMTP id
- af79cd13be357-93be5785985mr347910985a.21.1789774143217; Fri, 18 Sep 2026
- 16:29:03 -0700 (PDT)
+	b=eODMcJmZcdrvuA5gqsshc+HMteEj1vEDENmckwu2MMV1F2YrR5ibGNtUZ6dx/TVvA
+	 qJgk/SxBehn91SZDLpVX5d2A3fOc4WqwY6DG0oOwbLzOD2tjyzVvH/XCx299e8Vsyb
+	 8YC+BJliec//cnvKqcZGzFfayspgd45GtEH40TZgjKSAM7W3UUHJRndQQdkiZEgxkV
+	 17GtmyIx7k7uSSrGkWF48LBkDG3czB7AKcX9oTZBSBdvV+KqIKeKEmuFbzOjOTr/pv
+	 Rjtshr/EA22RpdyRVwdRUpdoPtnxPBQGlJ8i7qr6JtCfA6Y16hOvSCorddF+bZxQk6
+	 nyjdMyPOk18HA==
+Received: by mail-qk2-f43.google.com with SMTP id af79cd13be357-93a2a8c29c4so139261185a.3
+        for <linux-mm@kvack.org>; Fri, 18 Sep 2026 16:48:12 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBwIk25XkjBhyHc4Bq4z047ck9BNTi32mR8872ZI2wzhMFecpI83SG6qqQd/J5wuotERiiCcYCZmuA==@kvack.org
+X-Gm-Message-State: AFuF++kayQS1IBOg6iatEEcniLrZpUYSARkfYfX/rpKGgur8oclSUc78
+	rNu1OkIdh5FDyvPMNsmHy4Kd4L4fw7qbeGx8s8L4KU80Y9m2vTf2qKuN1B49ddYeymlF0S1Cgkz
+	RzsG1iuhxCjWqrVUjVLruAHXeBKlScoo=
+X-Received: by 2002:a05:620a:1726:b0:939:8ecf:6025 with SMTP id
+ af79cd13be357-93bdc6c8013mr657417785a.20.1789775292023; Fri, 18 Sep 2026
+ 16:48:12 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260911121341.178028-1-alex@ghiti.fr> <20260911121341.178028-3-alex@ghiti.fr>
-In-Reply-To: <20260911121341.178028-3-alex@ghiti.fr>
+References: <b1ba175c-ceb2-4e00-b233-d51dd8a2f4cb@kernel.org> <20260918182857.571-1-aa9736195201@gmail.com>
+In-Reply-To: <20260918182857.571-1-aa9736195201@gmail.com>
 From: Barry Song <baohua@kernel.org>
-Date: Sat, 19 Sep 2026 07:28:52 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4xPvb+t752-7cgBD+A_rnC0RsBr5xzqLH7WxfMDyUZOgQ@mail.gmail.com>
-X-Gm-Features: AcwNN1V3GmEDwNyGC-51iWFm0sj4MaQx5oLhHhe_bGWgP4pIfVXISsARrLm7dQk
-Message-ID: <CAGsJ_4xPvb+t752-7cgBD+A_rnC0RsBr5xzqLH7WxfMDyUZOgQ@mail.gmail.com>
-Subject: Re: [PATCH v5 2/3] mm: swap: drop dropbehind swap cache folios on
- writeback completion
-To: Alexandre Ghiti <alex@ghiti.fr>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kairui Song <ryncsn@gmail.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Youngjun Park <youngjun.park@lge.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Michal Hocko <mhocko@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, Wei Xu <weixugc@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Kunwu Chan <kunwu.chan@gmail.com>, 
-	Tal Zussman <tz2294@columbia.edu>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org
+Date: Sat, 19 Sep 2026 07:48:00 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wTYLds56=iyra5FKmgnNACN9QKJH-XJ=q62G7fMvd9iA@mail.gmail.com>
+X-Gm-Features: AcwNN1VT6LIguAvtBHIDarKZ10TRnBtsk1i4q3rbcjFBRG5cMHV51umUJdB4BeE
+Message-ID: <CAGsJ_4wTYLds56=iyra5FKmgnNACN9QKJH-XJ=q62G7fMvd9iA@mail.gmail.com>
+Subject: Re: [PATCH] mm/memory: reuse the whole exclusive large folio on a
+ write fault
+To: Yuan-Hao Hsu <aa9736195201@gmail.com>
+Cc: David Hildenbrand <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, liam@infradead.org, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam04
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 2106B1A0004
+X-Stat-Signature: riqt7ym3jjti4789ikispsbks6wyrxhz
 X-Rspam-User: 
-X-Stat-Signature: diziusi5fcssor9est7ez1q3qhct6bqi
-X-Rspamd-Queue-Id: 24BE3180006
-X-HE-Tag: 1789774145-181467
-X-HE-Meta: U2FsdGVkX19ktYS4oWg3W8AyHY6elxS8jzDQk1OpKzhJRK+VIxB2mjR7r3tqewcmz1ZR40wIERQZF9x2FtOZ6o4gO0OQlhTkcgxlyxUW7Y6oEflPcZ061MLw+vnN93Nr44w/Evpys4qtT0MkGKLKndCZQYlnIfYKPMfPmkBahTxqOB10Qde/8Y58ODXFps2pYNuRLTrIzsb/R2X49tA366csgFxN3Ca0Tqc7yhtuTXVz7blFXzoUP6ZEM7GpP5LDmXO3T7qROSD1USOdnaFEyjSldIaowUNrnuCT7d8x0DMPN8C22L6qK1ahGT2sucCoQmVqWSSM0Uu7zFqv0Pa/M1IdRdj74YMvzDKw6REZPQA8v22dvVjCJFqZyiHScnkJ08DL0FKgQ8r7TebvpADj44I/RSmQwTntgO+oW/7dr6+pgx0nB2RLj89tqztfdYFyh1YRIE1AEAPilYVF3Ex5UkrqHAkGTO7a+n5PJ8i1oycNms8lpDh9TYJUWsp4DBrNH/6S+ckn0Jwb8atLhBYWqsQwAacvxbfEf277TlyWzr4otaLdjbdMay8cIwxA8ZwvdpFaCRzff2MVdVcHdFnQxoEYH5tJJI8t7xZxL2322tG+oHXPAwlY3xfA/VbjaM8ReN7trVc2PgevqYv9mkZi2zcq1syasxAlpEiTh/+KdehzLv0PoCar6Q6CGqgFKUE4XdIE3YAXyngYK28uLr6eDOhfZ/jSgkUDq2nHodNXYxcXHMmmmODdU5t02+O6XgqAiKAVe7hbgniPysKosuQJaI4/8vxK2/ce+Enef2o6ag1igW/YpcefozQOyTnQCntQGO6qG4fnW9uJsFT5zTHqhT2wyujYF0ynR2H6YCgVziaBrLif+Z+csvGX1EUho/TneSoaYOOazAqqXJyj+Eh8MKFRzz7dh+NT/fDaLsN25N6nokDS/Y7rwcv5hPl2OKGieV/+fp8ICiNJg/ssPvJ
- HJMfW6Z+
- prBmq0Mzs/rxeq0jbQWC1pUv5vxIewkeDngIeve/Aly3jj97v28a1RNzXMIrpNM4lMhn10U8eXdDWrFugjE+O6DPs7Cua14hGzVn4bibtF6iHMvNDs3buW+wC2fFL49yp6HXE3sVkzx/FwfdLYCp1OLfkftOZPlEw9tCSjIbQ3f0iUBcpvPT5Ut/tHMKQ1g2UsOeChgBe/jop8y9laJGYfbhfglxAl54WxxxxJuRVFvO2dJKKRduEacfPAK3QfJG3WOH6nlJW5pkc5gD9jd4qmWE6Hllx5In9Okv5FazoEvc3iqZBkx+4fouETspTijPKXmc0gbrIYpaXhRImkmiX0zMaY3vgVtZU1iIrXLg2wr5J+RrMKNzt2NZg00/NwOlDY+n/lz99s/eX8oXm32k7EKYY1ZlyMlLGQOu3tDP9uxAVHeCl7pbw32mP3vdEnxXXxuMmBHE3i+NTrbcD/1hejrjUjQ==
+X-HE-Tag: 1789775294-650557
+X-HE-Meta: U2FsdGVkX1/Be/Ur/87Ub3gDLyRlWT8A6a86ByxBpus5+6w6XlkJsYeshLEba+/xuGnIZszH5n1qi5R6H7ifnhsx6lpSv8DIR93L/mDBMx9YWgzwQSjevkSSxmD1QHX5ZXM/mQIwD/Fji/nnY/W0fQVzaCoEls9VR0oArWEsCmecRjZNKwRC25cAbtMWjwdIIW8qS/nd2PMH2LC7Mhy43WENxDdlGiTZ06ILPil3XlE3IOnxLrGizwuXjOew77nh629IydqZLWteRORdwDn/Rs+0R3Kp4PR4q9aWKv4EW4w7yBjMw+3z1C45gg+FW29cEUi4lRJsbHqrqflO4zhR+4j2yyqMbIyv6zyTS6/Xgz1wUPpJiQXl3yVmQKlLL72yX+ayRrh06ynNlOYMBFPHs+UWSCh/Yw6DppI/ny7mjyhsK1pcq17HDLKFNKhQJaxN51qBvIUfQAJvIbYo4uU+RX7NocBgMwheF+FTrPGGYIgGGuBJHfZxE09oRvSRCEIrxSPDxJmMuQujowsYLyi40N/t6iS8eQjLUC2Ophyb4f6lG2hVLbuiSzxdDiBNo6Uom00jABZl1XuICP3g/jAEpUHCmh9v/ax3BokcU1UpJwxW+2yPwDP/OX69tYS/ICtPfhSulZA7CcTjjaPzBvOoy03dXjOE3LwTndqWzu/k4hSFynLAMn/nyzzMi2E+aAKAk48ug5WC8gtnJXlOUXmuGTQwfcTVR5zhaDN1shYONSEaLjG426XPRa37qLXnLhuDotewHiAZAYExwUN9UD89KXhU9hP9FixT7uHXd3UDNhxFkZ8HdiaqMtOpPC1oKUBMoTKkDrvHdE4Nvdwqf4bH2lFdlIutujXWn+xNq+BwQx4cY5cAXY4/v+6Ykn7rAYzyd0OfzG7VCsPvpmDMeTkuE6CeFYZV8nrBL9w5VFDHyCwVc5sYMSkgy0ayQqPnjzWHsE0n08cA/1u+XG4FMCt
+ zGnfWYHp
+ dnlpafUiKhwDgEMxDb3rJA7AR3yqdayiqNwm/7VJDteatuTtzQkSBFW85GzEj5vM49427WUlyAD13gJeSUDm9KjgUA54Z4m6N6xmPu+D7cDqNov4EJqyWrxwihgX4IyJy8+lDbzRVQo3N/hkJRdmI2OqQcRjq6SdZVSRaT6BYLFW7jyvjpKKEtAQpOYXlV59X3LvhFj95tQi0rqc2YavhKlgkvVdqjhJ8+tN4Fv4wsjnJ2nRzHu6nnyPN3aQ8zPbXqy8VRhLh1xwI95F9eugmuEGPE05Mctp7aG7MzjUnJOCP/VMl+2S+VvY6nw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,27 +106,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 11, 2026 at 8:16=E2=80=AFPM Alexandre Ghiti <alex@ghiti.fr> wro=
-te:
+On Sat, Sep 19, 2026 at 2:29=E2=80=AFAM Yuan-Hao Hsu <aa9736195201@gmail.co=
+m> wrote:
 >
-> A PG_dropbehind folio is dropped from its cache once writeback completes
-> rather than left for reclaim to find later; this is implemented for file
-> folios in folio_end_dropbehind(). Extend it to swap cache folios.
+> On Fri, 18 Sep 2026 14:14:11 +0200, David Hildenbrand (Arm) wrote:
 >
-> The drop takes the folio and swap cluster locks and may sleep, so it
-> cannot run in interrupt context. Set BIO_COMPLETE_IN_TASK on the write,
-> as the file dropbehind paths do, and drop the folio directly from
-> folio_end_writeback().
+> > There were previous discussions on this, in particular around how much
+> > we should actually try operating around the target PTE.
 >
-> Suggested-by: Yosry Ahmed <yosry@kernel.org>
-> Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
-> Suggested-by: Nhat Pham <nphamcs@gmail.com>
-> Reviewed-by: Nhat Pham <nphamcs@gmail.com>
-> Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
-> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
-> ---
+> Yes, Barry's RFC from 2024 and your replies to it, where you were fine
+> with contpte granularity and not convinced about anything bigger. That
+> is why the description has the numbers for both: capped to 16 PTEs, the
+> 1M and 2M cases take 5.4 ms instead of 3.9 ms, and the only pattern where
 
-LGTM,
+Hi Yuan-Hao,
 
-Reviewed-by: Barry Song <baohua@kernel.org>
+I'm fine with your follow-up work, but I'd appreciate it if you could
+mention the previous work and include the link in your changelog, along
+with an explanation of how you address David's concerns.
+
+> the cap wins is one store per 2M. If you would rather start with the
+> contpte-sized version, that is a two-line change and I can send that
+> version instead.
+
+I think a major concern is that we may spend too much time scanning
+PTEs to determine whether we can batch them. If we don't support
+CONT-PTE, we may simply scan fewer PTEs; if we do support CONT-PTE, we
+may end up scanning more PTEs. So we need to show that the scanning
+cost is controlled and explain how it is bounded.
+
+>
+> > How did you use the LLM for coming up with this patch + description?
+>
+> I did the initial investigation and made the design decisions myself.
+> Once I had a clear idea of the approach and the overall structure, I used
+> an LLM to help with parts of the implementation and the test
+> programs. I also used it to help with drafting the commit message.
+>
+> Before sending the patch, I went through it line by line and checked the
+> test results and measurements to make sure they matched what the code was
+> actually doing and that there were no obvious issues.
+
+I also personally feel that both the changelog and the code are too
+long to read. Could we somehow split the changes into smaller pieces
+and describe how each of those concerns is addressed at a finer
+granularity?
+
+>
+> Lorenzo, for your bot's question: the reuse decision in
+> wp_can_reuse_anon_folio() is per folio. The patch applies it to the other
+> PTEs of the folio within the same VMA and page table using the mprotect
+> helpers (can_change_pte_writable() and modify_prot_*_ptes()), so
+> soft-dirty, uffd-wp and NUMA hinting PTEs are handled the way mprotect()
+> handles them, and the PTE that faulted is finished by wp_page_reuse() as
+> before.
+>
+> The part I spent most of the time on was the measurements, including the
+> cases where it does not help.
+>
+
+Best Regards
+Barry
 
