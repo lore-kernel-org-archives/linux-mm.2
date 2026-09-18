@@ -4,94 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FB9CC982D7
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 09:35:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25EBEC982DA
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 09:41:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9638B6B008A; Fri, 18 Sep 2026 05:35:09 -0400 (EDT)
+	id 1303E6B008C; Fri, 18 Sep 2026 05:41:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 913DB6B008C; Fri, 18 Sep 2026 05:35:09 -0400 (EDT)
+	id 0E1906B0092; Fri, 18 Sep 2026 05:41:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 829D26B0098; Fri, 18 Sep 2026 05:35:09 -0400 (EDT)
+	id F124F6B0093; Fri, 18 Sep 2026 05:41:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 61A5F6B008A
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 05:35:09 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5F49480638
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 09:35:08 +0000 (UTC)
-X-FDA: 85226374296.20.4E73255
-Received: from mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
-	by imf02.hostedemail.com (Postfix) with ESMTP id B464780003
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 09:35:05 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=t7TZ60mt;
-	spf=pass (imf02.hostedemail.com: domain of dongtai.guo@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789724106;
-	b=ZagyGPV16qS5jj/RYESKkFelN2covye0Vb5ASGbvUyHyeoant5g7QAOs4NhAt6tiB6tgkh
-	HD2zFWd2i2kCFYh70OLtvhFY4/lNp9s4cWge3dOzWbmhUVtXbAVGd4Z2KUD3qJwR3xb0SS
-	I5sndcKGoG081lnX2DvbeviZ8s9Gjnc=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=t7TZ60mt;
-	spf=pass (imf02.hostedemail.com: domain of dongtai.guo@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9BB256B008C
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 05:41:14 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1AD7E1605B1
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 09:41:14 +0000 (UTC)
+X-FDA: 85226389668.14.E1516A2
+Received: from mail-ej2-f21.google.com (mail-ej2-f21.google.com [74.125.228.149])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 0C2151C0007
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 09:41:11 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=Sps41imh;
+	spf=pass (imf18.hostedemail.com: domain of mhocko@suse.com designates 74.125.228.149 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789724106;
+	s=arc-20220608; t=1789724472;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mMUmZK0P8YmnJG/+8kD4oWYLxaHcjZK2HJ/Mgo1W5Pw=;
-	b=hc5e8B9G7PGZP8MtBFRSqTjWCRqw13EM0buxd/FgsJ4ThNL1036gNkQaiSTq1YS6bH8Ijr
-	Qdei3u8DAbdvViGamtFkQwRDFeVqviCMTiwosYQIvulgYfg5lczZHycJUL2c8zBY/b5KSV
-	5Gs1CodFbwTfcuEsdXd/Q/is/C4nz9s=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=p/DQJd95U/7tkNehVUiamBQTKyTjZl52MTnDy+aDty8=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789724104; v=1; x=1790328904;
- b=t7TZ60mtyBpGmXyqF9xUBXtjYq9ZtoFwrn0HSx2Ph+U4/WywNAhaY7HkNO2bIxtCLk/QXpXx
- ePKIRBMR7usKqfagJlrKT6QvXX4vhQ9JjEXuC8fYvlcP9wnXceW7kStV9BWvI9jpomfSYnSzZ8P
- /2Era6AfCaa01vvu6sABCWxY=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id c0e6a754c1f50c48;
-	Fri, 18 Sep 2026 09:35:02 +0000
-X-Mizu-Trace-ID: c0e6a754c1f50c48
-X-Migadu-Flow: FLOW_OUT
-From: George Guo <dongtai.guo@linux.dev>
-To: pratyush@kernel.org
-Cc: rppt@kernel.org,
-	pasha.tatashin@soleen.com,
-	sourabhjain@linux.ibm.com,
-	graf@amazon.com,
-	changyuanl@google.com,
-	akpm@linux-foundation.org,
-	chenhuacai@kernel.org,
-	liukexin@kylinos.cn,
-	guodongtai@kylinos.cn,
-	kexec@lists.infradead.org,
-	linux-mm@kvack.org,
-	loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/1] liveupdate: kho: calculate per-node scratch sizes before allocation
-Date: Fri, 18 Sep 2026 17:33:16 +0800
-Message-ID: <20260918093317.12216-1-dongtai.guo@linux.dev>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2vxz1par7amw.fsf@kernel.org>
-References: <2vxz1par7amw.fsf@kernel.org>
+	bh=Bvlc7PQn5Y10Z6hN+pRJdEeRFAR13rFud0pX61FSVmw=;
+	b=j4RPgtCaYrfwXIcE/yKAvpQOb7KYYOZuvlpHAvyweYvTGfj61mOumTTnSK4Bk5cBy0IKcI
+	B8oEJq/GCIgvCZOsb3LcBoq3nktsDSFMSLUQmbbf396+SMlH/pxzGWvpX/xifKaciOHUER
+	WWZG7EMJEwv5L8jliDBkkxdHHlAYPJA=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789724472;
+	b=W32c7Y5DcU0YLgS12KeBkk5eouOv0JvLOzvDaJHpMIauX6qcRecRIyCgi6F6Y65JR/F1ic
+	PbDi97wC1aB5zlbV41hQndxskvKC8pRWlKGMXTXyTXhu0VCuU24IB7kQJF7puHnnmGXwiP
+	PR7h94qCwiChx+if0vL/NvtPkttBa44=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=Sps41imh;
+	spf=pass (imf18.hostedemail.com: domain of mhocko@suse.com designates 74.125.228.149 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: by mail-ej2-f21.google.com with SMTP id a640c23a62f3a-c2a1f611461so18556666b.1
+        for <linux-mm@kvack.org>; Fri, 18 Sep 2026 02:41:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1789724470; x=1790329270; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Bvlc7PQn5Y10Z6hN+pRJdEeRFAR13rFud0pX61FSVmw=;
+        b=Sps41imh3avBTfKDHwIZ45HJPe6YSWanlOEUBCV0SheGPUTBXQ7RYZrNipd2pmq8tH
+         xFegYk3+k/MYp/S/uVbYNR3lSFPxGtrn8pkkj4WZJMf5IRV7VoYPeHOQ/bMd9F0E53hh
+         wLW11RRiMFryM+oUFJgy3O5HmPGCotncrZwBxkrHukHvMXb+fRTltWGpXSZlam3fq9hh
+         qD2dO/R8iDB5A0dS+HeI997QsFUAmVe86S5L+iWElmETvNcH9+IIH6p/gCnRthlK0p9z
+         qOO8t0jQkFqNH5CHROqndh21SDciwBg667rH18Sr85AvoZUM1HKM8ZSeKUANDEOLlKdK
+         qptQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789724470; x=1790329270;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Bvlc7PQn5Y10Z6hN+pRJdEeRFAR13rFud0pX61FSVmw=;
+        b=QkHAOmbCOgGJHFxziCcdPjf0w1BcWw1uDcwfBs/2GsAn7zOCZ1c0NYOBdxuRFRymk+
+         2FEsl+XbjaPtOee2ccI4PaMQnOxiyEUojEIihZ+jNVrKLREqoUjzg6RGhnLqBw9M7aXC
+         O9hzMHjEG3ThzqTeBQZ1lMnm/3p6yzLq3fBvZXckgNnw3prYX7gqPYsWkwE1Vu4DLhAg
+         m+H9PICy0x9j6nYwlTTIIkvSEy+FpcT1vc3k2qKhlBFWnu781XwLC34Y6k3GGZOSC56q
+         Y8KkuDJgnLX7uQJ3eD5EQAr20DRcgPbgBH0ls+UiF09Yv09yD2K2c/kZMYp2izM7XGe2
+         5TjQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxuu9c3RLPEqQAsSGMzn05+ea9u9kqMsoEw7k8FeLX0Jup5a/PDX0W+lrcwffZB3Da7gLIiNYrQtA==@kvack.org
+X-Gm-Message-State: AFuF++n7sLFRuH6FpXolE1Nea2MI/5aYKsiQKvWDOM3T7qcQuTxyqZf1
+	GZGyvrNB3Q06E7b1YEfCszVGHff1sx+V3LAv6mpcf6pH3842edwAZdIGMPyi2jivHJ4=
+X-Gm-Gg: AYBFou34QorPKf5WmECzBsmFgdrZdw982qOy+RLFUGzpetDce4m3/hU/wO5CcVyFdEo
+	FKSeRBEXf/2IQ+agwOq5c6zaEcz7GBfmcsy6+Rh8W5GXB9ArIZi6B5uuPG9+E64kdS8ohI5pL+f
+	xPzkBfON/RiuR3kUTXD5pG+4c7WWrx82GrVZjinI26n9L66VfJrk3w0ADOzyPTAUoMa5PdAnVeT
+	qVzndmmyHqyCXvFk7gkotpQRmb4weZLNcfDSZT25puwdDomfxog3yO3rgG4PEYfU28P8NUAGgpO
+	2L457pqmZh/c5D+THmR3JKCOzTTnjp0KepspZ2UrlEON15vMBJa5hBAAXwU/s1Bq9Y4dyyPjUdf
+	VWVvwu9AdBadGwp/KwBQ2/vQo01xooXSD46g9ZeZ6sylCOWv0Em2styEUjyUteXQmbUBaJBGwkA
+	YlMPM26EeJM9iMkfk3PC0lLrhJJLsQB+IiLePbCtk6DRf5ISUFqF9VlZReeHk=
+X-Received: by 2002:a17:906:6a13:b0:c29:97e6:284e with SMTP id a640c23a62f3a-c2a165561damr161932166b.13.1789724470414;
+        Fri, 18 Sep 2026 02:41:10 -0700 (PDT)
+Received: from localhost ([2a02:aa7:4656:2314:c23c:9eda:81d:3])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2a1bbc683csm37937066b.58.2026.09.18.02.41.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Sep 2026 02:41:10 -0700 (PDT)
+Date: Fri, 18 Sep 2026 11:41:09 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Tao Cui <cui.tao@linux.dev>, hannes@cmpxchg.org,
+	roman.gushchin@linux.dev, muchun.song@linux.dev,
+	cgroups@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Tao Cui <cuitao@kylinos.cn>
+Subject: Re: [RFC PATCH 0/3] mm, memcg: isolate deprecated v1 state from
+ struct mem_cgroup
+Message-ID: <aq0HNe5s3zvOnM_I@tiehlicka>
+References: <20260916125737.1095414-1-cui.tao@linux.dev>
+ <aqxMk6yaiFHeeAAg@linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: B464780003
-X-Stat-Signature: 6ykn8by9ntq9i81f4z4rhqdbdyex9ora
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aqxMk6yaiFHeeAAg@linux.dev>
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1789724105-449047
-X-HE-Meta: U2FsdGVkX18jtQPIrLsFZbda3fcmy3lGrwG8mAVBzU35CM3M4ync/Ku3qWmcQfTnJ4uNpCPx/odZZ1O0nxDfHv9cSBmjc88N3WFzx5opNJUU6bhtlNPJ3DLDgbYpIXdIjok9savxMB6GhdqlpX4nRNrmtXhqyXaOF0p+MFBTN77rpg0IDSBmYeitlBPaiAZG4VX1yG+FdfXLbjB2TLNerBqZd98bIrLw74u3DmIvvRz6v7acq5LLgEAvfeKAcT+xIXzosnBbRWfs8dj5kzTpIXo7NlwOp5fcbJGxI4Cwygu0RRR1JLTDhpS2ukWQYBo3sDCIJLwAjjFY/+bNbgA0RN4na64I+qxYb90NIptXF6AEwg+v+F7SkYL6hq+LE/fpLseR3QPm/ONFAxWU68+Wlzm/yqR/n5DI0/AdsxfbfzNJ1/gYUu6MYoDN5vt8m02442m1O7cLUh4YQ7CvSozQgjuHpMHVfhImHAa97AgO/eCO9huI63znFmcHAxWCk9m2cVBVgmzZrwK3bXo3kcyjIAOXXZPYAlPLW6C2lPeEcxR/gc0wxxrDmAP2b9mdx6o9mXP/B11iyZvDN06uzsqB8ao+D0GWGLmtTyHwgPIKvyBhCs8z+LfwPPeyPInlcuxOxnMHiFqpn8tYjuaIx/fmn11l9XEyiXNACrpdBiHU83LNPipnfUKcWj0u6KaMJJFLYg3yLw+FIOf98PQc2RnmGwwZEIM43jXDQh+nIK0FoYo7o9WkazN0sadi0e2aEHYuLqc0Rh3EfO1ousrbbMf9fCKOx7wFWUL0P52pSWRikrDsTbWCfEHZ5+I6a+pzO+3ncZtOG1OJN68N1rBp0sp6xUROnwUjvdSrgYaAxCg7oHVRkyGAlwiLm4BXxPJX3hXQVs4XlknqviqKQ6RCYjA/8wzebYsO84lBC7I8rk2vRp7lUJF+PiAF/lAKB0zIAsIsy63SWkf7tsPNDMDI+hJ
- /JKyORDZ
- 9sAkv8a/M61tnpERn0B6gFzPYCQA+Tdzr8qR8FEtGuMEG7s0LekfJEz2PpYI8COAT1Ry2jilceSwQetv7bueAYmfgZzN1jn4wJFr2IJQ83i71KxNJIZygrT+wsek/u5ygZnLfsn4AmwozmCkHtbxC5aLaO73hX3qBipT8Khc29T++C5t+cWx54E64Yugpz/hxf3p0s4KmmaxtneQzSGYyjFRVxzDKEkt115BBhhmg4Q3cXg8=
+X-Stat-Signature: ssbqfs3m51j1upy4b4i7ti1bhy7gfjtp
+X-Rspamd-Queue-Id: 0C2151C0007
+X-HE-Tag: 1789724471-22652
+X-HE-Meta: U2FsdGVkX1+paCwCZP3JLvD6XgPkGHnUbs3YRnZMvkZXqFogYLv8yPCdRcJ950LQbVc7mEeiXGyEGrJSRPWMFDQeu9RblV1JP/ZK34XANrnnQV5xYoPf/l+aUXDSNnHiR9WvydYCUm26tp6KYu9w4I3uNrCSmnvAbSd5tMPMVQnckYigtNEbRMAL/2sbSybVJGZ+npt0khojpXuyyd+aH79Etvu/OEtSWH+AFwsE2MRWZIhdZjJUU5a7f2h+kqZExZ/jyO+dotRNzuFnOre8flWGIknexhjDiEi+n6KmuJnUx9ACu+6k2xkQg1COfBk9wl+OE+hRKLr682isQ2bUXYBgp42Q8oVKr2GYlk7VWuMNGULkgDGVZZ5lRfF7koOEU9Z3tQlEC8TiSrI5R7/hCU3ZNr13uQN3Ew7HDHYlCoyaoxJCYsA/kZ1c9eCxai8awRqgo5yA/YQf4BSYjyr+2/cLpfyrjlCtac8MI/VDcYNoOd0zKEmk6V4S2jzLoFsljGPMXhN0jvELB3oB1JXEZhtFoHvc3723458l7cC83bCICuoxpUoifXMUO5+yxBKCEVNtaiyQEGQeFisakAmLNEImezQWPxU6+aofpLGsdTFfRNd7g7nCEE5x+xZZ0W40GX73GfY4XWd2X/s37JSgRIW6+kvQRoeujiSS7MXLuxP8yTjXnKk8N8BXoGTTrDrexyLHN+BFwkW8ReWFVCk8qD6fkW7jDEyyYAURBPgVDleLhVdyg3MHILNKH9KSVKr3NzFvZJPgWmy7oRoTfqyAespaifVToscUjWBUxFx1Q22dCysOpBZosqfoM36DakWvJvOFG4Mxm1R0BVl1GjO30bvYN+duLDT8fOmczvBDUj/rd/VEaJq+zI/6fQOlitHfSIiubYScbE/nBKPe7RidouWOXaBl3649sU58VLNGVWcjtYpqAN/ScW67bDk1pytgrqiQ+H6AVzpVyUtq+Be
+ RDKCOb5w
+ o7HZC+60gYkI0l1P4Y3BlZlFCn6+WnDqZIGQ6SWwOpApBI/fAQEjLKJBV8yBfKOx2A0C98l7auuySth5uu7DEIM4veY5eYtADpO9szzHYxdWcIF4k19z/ZKnnWzRD0ocCh7E1HaOUraq8QHW3fCPGRKYtkyQFqnaG+mv2gpxFSXls/eVEFohlBVyjcV+hrx5At04rVhd4TTjXGkNKoHJRzyN7F2ECd4pWcfHetygd1s4VTOVXqnmAAmY44pKnl2c8EHGkhJLmON/7KAPkk1Qmz6lBAsE9P7EAUEEXpZRIxm3Ji3YI1Nzk4i9wEVJlpZV5VvXMIE6HXuxjXp22Hh9GJxV5AW41tCcUpLRzqGDS6gCk2PDhjRxTLtLT+lQER+Blr0WmcZMsR2TNAIpEptgxWuOp6Vt5VuYWG5iOOm7xG+rKyBRdwwZjPb0VjQoucOsKVb2F
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,88 +122,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Sourabh, Pratyush, 
+On Thu 17-09-26 13:26:40, Shakeel Butt wrote:
+> On Wed, Sep 16, 2026 at 08:57:34PM +0800, Tao Cui wrote:
+> > From: Tao Cui <cuitao@kylinos.cn>
+> > 
+> > The legacy cgroup v1 memory controller has already been moved out of
+> > the shared implementation at the file level (mm/memcontrol-v1.c) and at
+> > the Kconfig level (CONFIG_MEMCG_V1, default n since 6.11).  Its
+> > per-cgroup state, however, still sits as individual members inside
+> > struct mem_cgroup, guarded by #ifdefs.
+> > 
+> > This series isolates the deprecated implementation from the shared hot
+> > structure: all v1-only members are grouped into a dedicated
+> > struct mem_cgroup_v1, and every access goes through memcg->v1.X.
+> > 
+> > With this in place the v1 implementation is self-contained: its
+> > interface in mm/memcontrol-v1.c, its state in struct mem_cgroup_v1, and
+> > its eventual removal becomes a localized deletion of this struct
+> > together with mm/memcontrol-v1.c, instead of unwinding
+> > ifdef-scattered members across the shared header.
+> 
+> Sorry I don't see any benefit of this code churn. The code is already behind
+> config. What exactly this code churn is giving us?
 
-> But in practice, this problem is only on CONFIG_NUMA=n and I don't think
-> in practice KHO or LUO is being used in non-NUMA systems. So while I
-> think it is worth fixing, I think we should also have a test where we
-> enable CONFIG_NUMA.
-
-Confirmed. My vmtest kernel has CONFIG_NUMA unset, and your analysis
-matches the data.
-
-I reran the vmtest with Sourabh's debug prints on both configurations:
-same kernel, same QEMU command, and without my this fix patch, so the
-default percentage policy is exercised. The only difference is
-CONFIG_NUMA.
-
-Without CONFIG_NUMA:
-
-  KHO: Before low and global scratch allocations
-  KHO: low size = 330185 KB
-  KHO: global size = 322 MB
-  KHO: Per node 0 = 672 MB
-  KHO: After low and global scratch allocations
-  KHO: low size = 330185 KB
-  KHO: global size = 322 MB
-  KHO: Per node 0 = 672 MB
-  KHO: Failed to reserve nid 0 scratch buffer
-  KHO: Failed to reserve scratch area, disabling kexec handover
-
-With CONFIG_NUMA=y:
-
-  KHO: Before low and global scratch allocations
-  KHO: low size = 330197 KB
-  KHO: global size = 322 MB
-  KHO: Per node 0 = 96 MB
-  KHO: After low and global scratch allocations
-  KHO: low size = 330197 KB
-  KHO: global size = 322 MB
-  KHO: Per node 0 = 96 MB
-  KHO: After per node allocation
-  KHO: low size = 428501 KB
-  KHO: global size = 418 MB
-  KHO: Per node 0 = 288 MB
-
-In the run without CONFIG_NUMA, the reserved-kern sum the sizing sees
-is 330185 KB, which is the 98.45 MiB baseline plus the 224 MiB lowmem
-scratch area: with memblock_get_region_node() hardcoded to return 0,
-the NUMA_NO_NODE lowmem area is counted as node 0's kernel reservation.
-Node 0 therefore requests 200% of (98.45 MiB + 224 MiB), rounded up to
-32 MiB alignment: 672 MiB. That no longer fits next to the other areas
-in the 1 GiB guest, and KHO disables itself.
-
-In the run with CONFIG_NUMA=y, the real node ID excludes the
-NUMA_NO_NODE regions, so node 0 requests 96 MiB. The allocation
-succeeds and is visible in the sums printed afterwards (330197 KB ->
-428501 KB), and the KHO selftest passes end to end ("KHO: found kexec
-handover data", restore succeeds).
-
-Sourabh, this also answers your question. Your PowerPC system runs
-CONFIG_NUMA=y, so the node filter excludes the lowmem and global areas
-and your numbers stay flat. Your experiment and mine are the two halves
-of the same mechanism.
-
-> I think on NUMA systems the problem is the other way round. The
-> calculation for the global scratch also counts per-node allocations.
-
-> So I think the proper fix for scratch sizing is what this patch does
-> and then a fixup for the global scratch calculation as well.
-
-Agreed. For v2 I plan to:
-
-  - Compute all scratch sizes (lowmem, global, per-node) before any
-    scratch area is allocated, per Mike's comment. The sizes are a
-    function of the pre-allocation state, so this seals both feedback
-    directions at once.
-  - State the !CONFIG_NUMA condition in the commit message. The feedback
-    described there is not unconditional, which is what triggered the
-    question.
-  - Add the LLM attribution Mike asked for.
-  - Include the CONFIG_NUMA=y vmtest result as coverage.
-  - Look at the global scratch calculation on NUMA systems as a
-    follow-up.
-
-Thanks,
-George
+The only arguable upside is that this would make it ever so slightly
+easier to track v1 specific stuff (once that s@v1@memcg1@ or similar).
+I am not convinced this is sufficient to justify the churn either.
+-- 
+Michal Hocko
+SUSE Labs
 
