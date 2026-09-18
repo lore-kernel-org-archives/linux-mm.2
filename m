@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9603C982D8
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 21:11:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 237D4C982D8
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 21:18:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B691E6B0095; Fri, 18 Sep 2026 17:11:15 -0400 (EDT)
+	id 18B366B0088; Fri, 18 Sep 2026 17:18:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B400B6B0096; Fri, 18 Sep 2026 17:11:15 -0400 (EDT)
+	id 162E16B008A; Fri, 18 Sep 2026 17:18:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A55CE6B0098; Fri, 18 Sep 2026 17:11:15 -0400 (EDT)
+	id 079426B008C; Fri, 18 Sep 2026 17:18:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7AC1B6B0095
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 17:11:15 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3BB911A06EC
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 21:11:14 +0000 (UTC)
-X-FDA: 85228128468.08.BD42100
+	by kanga.kvack.org (Postfix) with ESMTP id C77366B0088
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 17:18:32 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DF7261A078D
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 21:18:31 +0000 (UTC)
+X-FDA: 85228146822.03.DCB59D9
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 6EE3018000D
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 21:11:12 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NwDa7aHE;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf05.hostedemail.com (Postfix) with ESMTP id 180B8100009
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 21:18:29 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oLe9EhHC;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789765872;
-	b=PPSdlTD3NxhLeE37mx6DRMRLF/hzEWVitTWFmZ85W8TK1FqXqWG2HZsmwd5pviJ5EhXYLe
-	MhFHp7UItEh/9kQ02iuVFpQ91W7Cbfp25F0kW528IvQMZGjBulo6l2SpzucMPwYw4PVwX4
-	y8QPUoWuVBC29SsRP1eZmRNR/GRXuDE=
+	t=1789766310;
+	b=b5N4Rr00NXWobZIzcZISUFGLO7/LktfPtvd7uJd9QFALDx9mLQnskNPzk1Ysf/RsRYKPLR
+	fg4T1/T50/BHIONxfP/PPtWY9kZJNYMlAFkO1ECPHjvYXzQuUl8gDH4XWNKm5Fma/7kFVs
+	zFKmIOzH+Gr/4qXTAmAmWUyHASmrbC8=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NwDa7aHE;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oLe9EhHC;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789765872;
+	s=arc-20220608; t=1789766310;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hl6/Iu3OW2v6yotocgDMrPbkoxPNm6VwsCRwbY41jKU=;
-	b=E6TntEZCnGVAoq0qsWGXZ6AOlqwxz1GvlbQ3DDLBXXu67bwTOZtBtkrMy45CF+ZJ9VW/ze
-	fVahR7POmXHe9LkNGa6AbTUxvgyKFWOxYJfLzOTGm2WOkBAvditoxXoQRkSPTKVCsBQ6eY
-	/366LXLaAIx7CjQlexWPS+Gq6X7UbHE=
+	bh=6uV71i9dxmN5La2QHPB3LFaEp9NirZveEU2dy4qv0nc=;
+	b=n0yiEgsSfI4fODDXzjh1SxBPAFF4vmxUWZ0NSpe9I44C1ryyJmVTw9kfObd8R1rTr9u/EK
+	ArWtRpgALHpkVvH6l6586wa0ZxNOFz4QfFDiqQ+lBJJFXTXi6iiI9R3CVgePG/xdXrIOWY
+	LmJXk4DVJtl2xE2S19vEiECdG+KD9QU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B2A2441882;
-	Fri, 18 Sep 2026 21:11:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C73F1F000FF;
-	Fri, 18 Sep 2026 21:11:03 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2ACDB401A4;
+	Fri, 18 Sep 2026 21:18:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7E701F000FF;
+	Fri, 18 Sep 2026 21:18:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789765871;
-	bh=hl6/Iu3OW2v6yotocgDMrPbkoxPNm6VwsCRwbY41jKU=;
+	s=k20260515; t=1789766309;
+	bh=6uV71i9dxmN5La2QHPB3LFaEp9NirZveEU2dy4qv0nc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=NwDa7aHE1bUw2QIdwfDp2ZF6+1ffHivMaDWwlaPj1aCAq3DWhVgeBPt6N1Ka5izas
-	 VH5sWlYxwxKaNWSXHwPF3bqnwuWCh3jtbPxhXbL7Dkd8p8Kf1NITtqFH6bUD53TwgL
-	 iw4WT+wJuhphCWZ22O7MBXfqKUdSX/7tVd5ZnFOJjXpNIS0cNaonNLbqAJwRHLluwT
-	 D+2GvMMZ3j+fzwKXQaoDf4dAj5fDcQO8pnxFhOlLHcypZaYvP8via5OqP0c/sjl58Z
-	 bpl96dxSNPP2aut/+j+80+4QTKLn9era049sycDEUqzbNYs3TEcSfynwoXeTB3h3OY
-	 9jJpmj5un4uYQ==
-Message-ID: <35e42ccc-df8f-4703-b10d-f7c96b263e98@kernel.org>
-Date: Fri, 18 Sep 2026 23:11:01 +0200
+	b=oLe9EhHCMalkQExDUURMOq31tWgH4Qpwd1QfK5RvLXBZUgHhJKledONWFp0LSeYl8
+	 Gwnj0arvPPj6AEpcgvnXY2Kid454NQUl2tsF8B1bpPhTeITUFLW4e2+mRyJfAqPWWM
+	 CoLGKuCLlKbY4cQUL22MXsg3iNRCtY5Pz9GH6s0S7ZTAhdwX1jTO1uhBiaOGm3zUtu
+	 tAjgHoNw4zXw2pP1yV14jEsI2Nj25+EkIlQzTljQUjT8M9FlG5WUbvnmV8X4yJd+jk
+	 UhTgKRrRmx2WIpwFfA1C1oVK1eagi/pgJg35z4gH2gdzJUP9QTRNzTNYcVturylDhH
+	 5AiFxXqkD2JZg==
+Message-ID: <a4205a11-f0c4-49cc-8bdb-b294dc342dc6@kernel.org>
+Date: Fri, 18 Sep 2026 23:18:18 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RESEND v7 02/29] arm64: mm: add PMD swap-exclusive helpers
+Subject: Re: [RESEND v7 03/29] loongarch: mm: add PMD swap-exclusive helpers
 To: Usama Arif <usama.arif@linux.dev>,
  Andrew Morton <akpm@linux-foundation.org>, chrisl@kernel.org,
  kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, linux-mm@kvack.org
@@ -80,10 +80,9 @@ Cc: ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>,
  ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>,
  lance.yang@linux.dev, linux-kernel@vger.kernel.org, nphamcs@gmail.com,
  shikemeng@huaweicloud.com, yosry@kernel.org, qi.zheng@linux.dev,
- luizcap@redhat.com, kernel-team@meta.com,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
+ luizcap@redhat.com, kernel-team@meta.com, Huacai Chen <chenhuacai@kernel.org>
 References: <20260914122950.3283997-1-usama.arif@linux.dev>
- <20260914122950.3283997-3-usama.arif@linux.dev>
+ <20260914122950.3283997-4-usama.arif@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -130,17 +129,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260914122950.3283997-3-usama.arif@linux.dev>
+In-Reply-To: <20260914122950.3283997-4-usama.arif@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 6EE3018000D
 X-Rspam-User: 
-X-Stat-Signature: h94xki58z6cxtzdzoq5ahdhrxpgm5ojo
-X-HE-Tag: 1789765872-331736
-X-HE-Meta: U2FsdGVkX195fb+vAWm/vnOfQjPcEAcDgohGl5kUzDaX/ke6aSiMElx2KnjGpk8YWj2yRNUqKEHV8tqwvTvayHp4sny6tYGnYvB/gKWsjjMeuaLMzMSAr2OxyuAaOsuaqv7WYzZipwPfi9j2s1W1XaYDVGX/rxzX0TS/kiSylRjFiApJERU6s9k855N7VwjVFkm3iHjraNsj/9izYYu993TwIr8pQhevq9S+SY303wKOtNNlyxsCsXNP92Yr4hP752cnqFxsf4c2PX8Wpw/fIsrJS82BL5I4RLtVznhdE5YR69yXSkz2SchdPd6IrD0qRCG1Gq6hC3OjSmTtbRY4Y/7AaGa5xP4yuBbhZWa9kE/RgblkskQv/KVXSCPS8vj5S/eAyrS0ezYlVWqa/oywTwIFgkDoZNQYQvhcwSnT2I/YJyGWgXvRz9cvKVZCG8SqzIu8ouf7ruPzUapRak7JChCBEMaUEoXX1+mcyPnH1An0OvLrTbezEiRoB+WEs3Gem4IoMwaYG2w6CNd0wAQJG936ZX+XUr6zp0MAqtGqfjLtG9pNrGKObS3curbvC5D7NLn7OyDuV08o/8TFdgXv6iFPQo/CHWj0rjDRM0rFbglDn/nLucXj80e59A1OK/qgVnzGBZwNRCJ+4OEmKt+N7pvBMhhZm0ALheHNONYYNpNgqwitsOYFCeMctvUHXt0VY3Au1WMP8aIryV230qrUJzrADbLiP6kL9Acujwd0OJGITAHVjPfOyd8pVbU6ZorWdshu1Uf8znUU8iZYvOdu4ytTj2hv2xteFwAdZsIU/vCKMs0XRwlmY2/cpG8EiWUomG90mU3Ah4cVRg3/403q/UicAbFHkf4K1GewKu/uc4RfKr1gJ2g/DhCV+oOJzrDN/tIeGFRuUhoaa9AfOGJoeMh+n9maZzqjB3W1nmGDbOdhGjTAhFMrQuGjG2jla7xySBuBCiwU22Y9VXLLdka
- dc1nFO5B
- Zqkf3OJ5XtOwnbdTUC+e38p19Q7saJOSq5cNXXuR/5Y7d7K3gSmKfovCQFf0AVfTCEDzKAQbhv1pvK1iwqzNYh/6v07K8B/CHlGmYqMJ3vCnXS6X7+VhaA+JQ3LeTgmuQW3wGTpFqSD/NYnjvCc1GrHQf/qyus5LcduSHnGhUsfMUP/5RrMpD37n9eBO1C6iWfGlrhonL3HQ1zG6+Om2dqHIbSftlD+4as/jz/kHmuQtA5itj50Y+dV7h5jaS2lfmyQpoNwBRqWmoysRHIJt3/vpOwtbLtLAm6ZTj3hZOFgGH3iYDwrokY73Df7DXNK43GB+Uff2ANQGS/1Kj4jHhRGdkQg==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 180B8100009
+X-Stat-Signature: af5sueizu5ardu5hu84ibjw48b5mdka4
+X-HE-Tag: 1789766309-467014
+X-HE-Meta: U2FsdGVkX181cZEghinktnfreAOGqXMW4GpIEpjrD1p5x3FRzPl3IANPvbDwBeZz4I1MLO9CxrOid3Xme51Gnri/W1SjT+UU3VnPkiP3iW2aTxwqKx4tEqlVHFZYDXxsT/MGEghu1MWJZJEFRd525aW85nGHPStkZshDuYjrGHTWejRorHWK1LAuXTKPAzqNlLuTExcxcQsyw/6a/IyEoMJB8uC27bDCu9Mcr1hODLiLeTZ3D4NKaBjlh9a+AeWXkz5pjRId52zq0FOaFqFDRUNAlGYKvXxwW8HAklgzIW7OfPUyAcYaeuXPdlPwkrukixMVhOCL/1r9TPeNF5VPVwuCy3cmTlVWdOJCRh/lW/97KRsukB8JO5XVK4QYRck9w2J4to4RP2eG4yV7F7KpfWORS99PLet0YsTcPd5sXd62vqqX9NtYVIj4S8Rf12t/kf85Cgf5HKuTqV6umZZbFNUgrK1K+OTQl2bxAZSjQ4o+xVCQCW9sWuuop9Ar38uUdABqNygDPzhTFRjVWTj4wP/eU663e/GGM8po1WKmae6NDi8ygZRViJPufiA90aYG9kqOl+mi45MUR2gnEJNSmR1gL30Z27qxZS6gf5jUIFaeGMu/j16xmqQ82UMBHV1apHWE1QB2IjxnmV4EBAALX2pBml3s1UVPhO3yubwER/Z9iiaDcHT0fZ5rud9ziX5npq7uKu84bcZJ+xgR5Wn/fIhJv1+RRn9gSOZyi9doWnjZPGhPbm5qNDkUoMV6TD+ZTwtIKnw+chR4yKGkjkX0VpASa2IMM8fehq1lUbMoqKeyP8ZIGk9FX2+yfSBef0fB/T5AZKIiFnS+3wzzoSCfqfhUIEVJXyF2rY7Ydfbo16yAgastq6+pgxtUfWFiGG9IYlZJEroJL0/lcRLIR1Fnqb6qdF8VIScr/gA/KbBTzppj+eMAkt5sVYKinvMfOf5iEldzpxzqPRdyHJUTkhn
+ fkcqmVCI
+ dux4xuRzV9FxWHUZ4nL8TGHwAflPayNrJlb6DMNW8/8ctn7JJVAve5QqiR2h8HHpzUEHNaLjQQXZs77LHQydOO22dJx6b3DVKGJyFreSI9r7SRfbwG0YJQRM11hs1XIqmX/68q9RvAm68UpAwXxYFOfJ/6lpDVHhc+nlhUevXb+ZcqYgWeIDwjgGsjU9WQlMl9xK8rDPUmcVsvLWA1vqZbPGgy/l8aoSDT7FzxctBeNTF3N4781hEhhC7EqmMJxi7ItpRUNCYHUGktiFPdZpnGFSONpEBYMwMqNIU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,32 +152,15 @@ On 9/14/26 14:27, Usama Arif wrote:
 > swap round-trip, so PG_anon_exclusive now has to survive in a swap PMD and
 > not just in a swap PTE.
 > 
-> arm64 encodes a swap PMD exactly like a swap PTE, so the new helpers wrap
-> the PTE ones and reuse PTE_SWP_EXCLUSIVE.
+> A LoongArch swap PMD is the swap PTE value plus _PAGE_HUGE, and
+> _PAGE_SWP_EXCLUSIVE sits outside both the type and the offset field, so the
+> PMD helpers can use the same bit.
 > 
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will@kernel.org>
+> Cc: Huacai Chen <chenhuacai@kernel.org>
 > Signed-off-by: Usama Arif <usama.arif@linux.dev>
 > ---
->  arch/arm64/include/asm/pgtable.h | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-> index e89ec5f4787b4..d3f53a601aed3 100644
-> --- a/arch/arm64/include/asm/pgtable.h
-> +++ b/arch/arm64/include/asm/pgtable.h
-> @@ -599,6 +599,12 @@ static inline int pmd_protnone(pmd_t pmd)
->  #define pmd_swp_clear_uffd(pmd) \
->  				pte_pmd(pte_swp_clear_uffd(pmd_pte(pmd)))
->  #endif /* CONFIG_HAVE_ARCH_USERFAULTFD_WP */
-> +#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
-> +#define pmd_swp_exclusive(pmd)	pte_swp_exclusive(pmd_pte(pmd))
-> +#define pmd_swp_mkexclusive(pmd)	pte_pmd(pte_swp_mkexclusive(pmd_pte(pmd)))
-> +#define pmd_swp_clear_exclusive(pmd) \
-> +				pte_pmd(pte_swp_clear_exclusive(pmd_pte(pmd)))
-> +#endif
 
-Why do we #ifdef that here, but not the uffd-wp swp PMD helper?
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
