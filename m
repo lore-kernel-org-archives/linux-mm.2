@@ -4,111 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD1E8C982D9
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 10:21:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5E25C982DA
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 10:22:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 01A796B0098; Fri, 18 Sep 2026 06:21:09 -0400 (EDT)
+	id 6D36F6B0099; Fri, 18 Sep 2026 06:22:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F33E66B00A7; Fri, 18 Sep 2026 06:21:08 -0400 (EDT)
+	id 6AABF6B00A7; Fri, 18 Sep 2026 06:22:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E70D46B00A9; Fri, 18 Sep 2026 06:21:08 -0400 (EDT)
+	id 5E8E56B00A9; Fri, 18 Sep 2026 06:22:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CB0F46B0098
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 06:21:08 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3A468A5E38
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 10:21:08 +0000 (UTC)
-X-FDA: 85226490216.12.962F794
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 7926080002
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 10:21:06 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20260515 header.b=VbhnGqJb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789726866;
-	b=jIFh//8ZQSRoLJcwbNvpijXMa9qPz7E9CpxMxe+GMpwbeBtoN3yzKU0vMg4859665PzuGf
-	+M947iNrBFBd3YtAQmGnz3HMp8jdSuwAvzemHtxYvUigXLhCxPzWDgn20FXSF+tQ184Qmk
-	TMk/Vu5ZtQodcPW70xDpjjHc93W3x1U=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20260515 header.b=VbhnGqJb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 41B816B0099
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 06:22:28 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BF8C71405EE
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 10:22:27 +0000 (UTC)
+X-FDA: 85226493534.13.31D3714
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 2DAF018000C
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 10:22:26 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20260515 header.b=oc0rbtes;
+	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789726866;
+	s=arc-20220608; t=1789726946;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ojRb2OtGZV+lNR54MP8W9kUbXEoKZ+Rzr9bvDWAKmSI=;
-	b=oEikrVaVqrNFJ4bknGYzJUkjOl5YIei62nqVQ12s7MriJvseTkgvZ5/r92CDWc1jKQd5Ck
-	SE66HKsuDTP3yauoldf3D9scbHyEKTQbwGC+7Jr6QuRVLrQg88c2V4/dS3azp584mpsyvc
-	16whqv3GEK7UG+BS4ND+VykwghmWUYA=
+	bh=sHYNy5wwK9fmryuUm9WuegCfsJ5nAR1Rndu3nKXnWCM=;
+	b=InNZq1Kc5r362pGaQRAXsAdxOHQnpf5ERPgyGIN1QrdjAplfZy5Vdkq2TtNHUGpWPz8mM+
+	mbx9PyhCJMvTSalHPWO1bgIGvEx3W2A9fzIy1LLE5vtWzNSOkrKLsrWhbBb6oldckxsTzB
+	Uzkg1hcn5Nh4Frn+XwGQ2zm9HDjtgxE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789726946;
+	b=bjwkR+zyWEE+oT5wRk62SDYaWgsURplLuqA2eosnSeTPNntwNGTfDBd6A8+Ef+yN9Lp4H4
+	xXsC+UZ0kVe+vsj31btgWKPEIE8OT6enWDgPRDcaeCbnNPAUo1nXPgHBWqAlzQQM3bjBNk
+	3xEXMlOoQBVoXo1tEQ+I8Z7oFLVYnGk=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20260515 header.b=oc0rbtes;
+	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AB4B043BDD;
-	Fri, 18 Sep 2026 10:21:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 482D31F00893;
-	Fri, 18 Sep 2026 10:21:02 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 91C5960A59;
+	Fri, 18 Sep 2026 10:22:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EA691F000FF;
+	Fri, 18 Sep 2026 10:22:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789726865;
-	bh=ojRb2OtGZV+lNR54MP8W9kUbXEoKZ+Rzr9bvDWAKmSI=;
+	s=k20260515; t=1789726945;
+	bh=sHYNy5wwK9fmryuUm9WuegCfsJ5nAR1Rndu3nKXnWCM=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=VbhnGqJbr+ybtK3Fnwjub4nxRMAkKMpEzatb5UyqR56xMFB6wzCkyGzg4dZWPmT3+
-	 X+snAKFCSsw9hS3uDDtXyaV+a120iBx6doKN2SXy7kWsE6Ghr43NePclsslWz3X5jO
-	 umM+Y1oZRe63NELb54DdiEkz9d+zMmZueH0FDcyiLWVV9cdWUYTG7WaCOZvG2X/7g/
-	 a9oPJYB+Dy64zxGyUYebphSZ5ylo5LJpeevfZI8VBPaG8K99ZpvTAK5Kx+JWQnO/hy
-	 0N1qcxBpGbuzeUsqKEcZ7LzQMrQi37y/VFurlQHxRKvV4Yc12NiNYAuI+ZMxmxdW8s
-	 JCL5q8jJo+Sfg==
+	b=oc0rbtes9P5pCgieiV/VOaF4yxIo3bihzqlKgZzfBIMfnz2VHuU6zRiW4ajSUXtnm
+	 uVE5FocXY1Yhiy4t8pnIJoR3/BnczzB9iCs51LhoCpGiksebj3Qt2pLRsukqoUpYEm
+	 REf0NPHz8XkXAdp50l1exaR1wvGNu10DTsFYjcPy6aKz14s9a4O/je6de4IvC6GLg0
+	 A1DaIKk9DyKxib5oxpK9DguKSuVOC9vs7GO3t+W6NbvNJEh57V+Ns6VoIsyvecixuE
+	 bSGzwYp/Fe+PLbPTDSWWY8CwW7XXF44rEsII/FQ6ZPKK3hgeuSTBltWF4ZWzp1WTW9
+	 X3l1tPtzei24Q==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 07/17] LoongArch: kexec_file: Fix elf_headers memory
- leak in retry loop
+Subject: Re: [PATCH v5 01/17] kexec: Fix CMA segment address translation
+ with non-zero text_offset
 Reply-To: sashiko-reviews@lists.linux.dev
-To: leitao@debian.org, seanjc@google.com, kees@kernel.org,
-	thuth@redhat.com, tglx@kernel.org, loongarch@lists.linux.dev,
-	will@kernel.org, hbathini@linux.ibm.com, rppt@kernel.org,
-	akpm@linux-foundation.org, chao.gao@intel.com, hpa@zytor.com,
-	guodongtai@kylinos.cn, takahiro.akashi@linaro.org,
-	maddy@linux.ibm.com, pratyush@kernel.org,
-	"Jinjie  Ruan" <ruanjinjie@huawei.com>, zhangtianyang@loongson.cn,
-	lizhengyu3@huawei.com, blum@kernel.org, x86@kernel.org,
-	eric.devolder@oracle.com, catalin.marinas@arm.com,
-	ruirui.yang@linux.dev, me@linux.beauty, adityag@linux.ibm.com,
-	ruanjinjie@huawei.com, vishal.l.verma@intel.com,
-	mark.rutland@arm.com, sourabhjain@linux.ibm.com,
-	linux-kernel@vger.kernel.org, rafael@kernel.org,
-	chenhuacai@kernel.org, pasha.tatashin@soleen.com,
-	palmer@rivosinc.com, ritesh.list@gmail.com, kernel@xen0n.name,
-	robh@kernel.org, dakr@kernel.org, james.morse@arm.com,
-	mingo@redhat.com, tangyouling@kylinos.cn, mclapinski@google.com,
-	linuxppc-dev@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
-	jbouron@amazon.com, sshegde@linux.ibm.com, graf@amazon.com,
-	bgwin@google.com, bp@alien8.de, linux-mm@kvack.org,
-	chleroy@kernel.org, piliu@redhat.com, maqianga@uniontech.com,
-	gshan@redhat.com, yeoreum.yun@arm.com, coxu@redhat.com,
-	mpe@ellerman.id.au, dave.hansen@linux.intel.com, npiggin@gmail.com,
-	baoquan.he@linux.dev, kas@ker.kvack.org, nel.org@kvack.org,
-	liukexin@kylinos.cn, ardb@kernel.org, driver-core@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, gregkh@linuxfoundation.org
+To: loongarch@lists.linux.dev, pratyush@kernel.org, kas@kernel.org,
+	"Jinjie  Ruan" <ruanjinjie@huawei.com>, kees@kernel.org,
+	rppt@kernel.org, rafael@kernel.org, linux-mm@kvack.org,
+	kernel@xen0n.name, dakr@kernel.org, maddy@linux.ibm.com,
+	catalin.marinas@arm.com, robh@kernel.org, chleroy@kernel.org,
+	ritesh.list@gmail.com, thuth@redhat.com, ruirui.yang@linux.dev,
+	npiggin@gmail.com, mclapinski@google.com, graf@amazon.com,
+	eric.devolder@oracle.com, vishal.l.verma@intel.com,
+	leitao@debian.org, ardb@kernel.org, x86@kernel.org, bgwin@google.com,
+	driver-core@lists.linux.dev, me@linux.beauty, mpe@ellerman.id.au,
+	chenhuacai@kernel.org, takahiro.akashi@linaro.org,
+	james.morse@arm.com, chao.gao@intel.com, liukexin@kylinos.cn,
+	seanjc@google.com, palmer@rivosinc.com, pasha.tatashin@soleen.com,
+	gshan@redhat.com, hbathini@linux.ibm.com, coxu@redhat.com,
+	will@kernel.org, ruanjinjie@huawei.com, maqianga@uniontech.com,
+	piliu@redhat.com, guodongtai@kylinos.cn, baoquan.he@linux.dev,
+	sourabhjain@linux.ibm.com, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, mark.rutl@kvack.org, and@arm.com,
+	mingo@redhat.com, yeoreum.yun@arm.com, akpm@linux-foundation.org,
+	bp@alien8.de, linuxppc-dev@lists.ozlabs.org, adityag@linux.ibm.com,
+	hpa@zytor.com, zhangtianyang@loongson.cn,
+	dave.hansen@linux.intel.com, lizhengyu3@huawei.com,
+	tangyouling@kylinos.cn, blum@kernel.org, tglx@kernel.org,
+	jbouron@amazon.com, linux-arm-kernel@lists.infradead.org,
+	sshegde@linux.ibm.com, gregkh@linuxfoundation.org
 Cc: kexec@lists.infradead.org
-In-Reply-To: <20260918100442.3841135-8-ruanjinjie@huawei.com>
+In-Reply-To: <20260918100442.3841135-2-ruanjinjie@huawei.com>
 References: <20260918100442.3841135-1-ruanjinjie@huawei.com>
- <20260918100442.3841135-8-ruanjinjie@huawei.com>
+ <20260918100442.3841135-2-ruanjinjie@huawei.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 18 Sep 2026 10:21:01 +0000
-Message-Id: <20260918102102.482D31F00893@smtp.kernel.org>
+Date: Fri, 18 Sep 2026 10:22:21 +0000
+Message-Id: <20260918102222.0EA691F000FF@smtp.kernel.org>
+X-Stat-Signature: q6h354o618so8whw3zw7d4k5fxp4mc6e
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 7926080002
-X-Stat-Signature: wjgkz3p511eb5exaqskuh5gret9p9rxs
-X-HE-Tag: 1789726866-146826
-X-HE-Meta: U2FsdGVkX18c3B2NyqclW6bFMjbMCk5LUlGeXAV9zaJKrxT6y/9f8y7bvtTkPLK41ZyJCJU52gkfjgFKpwZTqhh5MYgw4kA6UsruMcObMtGUSJxe2HqXX5TW4tLS6XdodUrRRFhUGgXnFcy6J93iwiIjgV3FST8iBCelPjF4zv2d0tPdkDcAVdcJRU9mS5H7JQU6Tgft9KZYdEU91o+vCEC6GjjtmM4DT/xYZKXD/QaNWI2EaU3fHoPNPqItHo0L/DTdYZe4rpcXGn2y2NumqflD6dQnDYr4u0jyrrckMGrgnWHVzV0R2vi8aBdPbW5wZCCHi1T1sVJxOJhpTotYsnqdp9lJlW9GkFdz093hcmTTIqt0Q00t3cnZzAlFTtEWjHA3qqwBplAdtj/ggjKF/PltLNcJ1AYCA3ZnbBsppu644XQ1/dSmvShDxMCTtB10A55VvvptvRmyh/bwot8mV8NW7Ag7uOP/dMXs3Ts93tEt2g2I9SiyDd/9rtpzOg6ml+8gYkb/4ebGs/PTEzaNoLwOXwEQ/dJhgg7IW6vJ5aMH6SZSp9Z9ZR1NX4HRiZj3f4fqph96U/EdcpQL/onne7nQZzTvA6JhQWU5N4hMczZSN1a6ZHrr1oOOzXRp+OSfcdYcYtEoA7h3iSfX6cvegC3gW7uSuQFYED598PhbganDlXnLkI0qv9PeJ41PBCzSUnnlq+JRVaZBqmYN5rpVXiaX0qlUTwrXTu4SoEwYS/a3VZUpdxsc7UMB1ytfAGIzrbiNMRyAjMp6JC3r5jCcx48XWQaZk2TSYOnrUZjCW+anTEHGCR+vNbTWdg4DCilg96+5s4cjjGyDvntGtCfNIfAiWOLk3RGiEBaZCRvWeK0jBtVSzSZTIrsLELaMCLdn5TjDxzZqR+wcC91rKIHxPm+ayGetvjDXMRFPo9fuGxaNIgbeKQKQnv+vmai9LKWJ63U0p850A/EYd5lGjA9
- 9BekS2nV
- HfWqdlsC/WPiVETVCAItuUVKlb/JgeOKxk21e0/Y9IAazohu1cHSVBbq2RlpPnvKlUHdM6y0s9hWao5xJ48mXLxAvMe6xWh8W8IaFGLFTaR7Gq2c97r2Wt7qWQNaihNI7wFKQs0S8bNWKNNg58EEAOkrXtGGcmyfY1KhNF5qH/gNk+TCuCouJK1kqlp1VifrbFp1O7Jc/c6jfwYgpSNq4Gp5dPNbFBG05d6PINZ07EyHocXRT7KNQmeiLnU6eoQQJkwyDCgh1L1TWyVPQMV/GjL3i0+RD0aHf83Fh4cItSSXQy2/H5Ak9bz6EhiQxYOLK93N2HJhgzMWF7fEN8V7vugRDcPt1MGKnZdzKa40OULvNCOpXlR4OF1NKZAKXbtjm9He4LPiZH1IAraeahwMGm/DC6iNKVp1jQRUHGKMgCppivX2Vysw3ALfBGdSimLHXH7yhHGesKAAQAnHIgtWJU7rBM8FRFKqE3T7yguF7tOX3AGWuRoFH+35ZqIboAsmiyQpSiTvInHGC/v+EwkOkU3giyfVxN3AxuY2rGxlqOBfJZLVfjItravFNTRKDjR9BBSpFrzPAD+59uHKktTThsrfsEp+RlneHmGmleMhk65xaBvkLk/B2xlvT0nr0AQIXIn4pF858btFzXkkKvWcFrKlNEVmICAPgQI7ts1oQswg2TOANpsukuYCFaZ8TN5gTwsr6RnPlY4L/8OyYOU4DgtehrSfNZT8/KZtmD25KTteVQhGpNPlUYKS1p5PGVCjTQlUGettLn7pEB/XlBxPdPENIfnLtfg7mI71CMk5/MufZrPGcY4fca2FveAv9Zx13Xm5W
+X-Rspamd-Queue-Id: 2DAF018000C
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789726946-955542
+X-HE-Meta: U2FsdGVkX1/tTNx+wcu9pVjJu8qUJ9lQ+yJbumXQPT5XD5h/HPmV/uVuXst/gGp3EsQ+3r5hrsZtM9mjGmyFaW7CK2lxSuh2WWyPtVBh3ww9dYx3NOWUWU/MRSC2ASkqZ4DCHDVzsTH1+9FfMWrgQasJbiMxbqE8z4+xEigHnv32SCZcaCvrrDA9es2W56p4BgmMTDzV9OlWEBfUW2bb9zLqufdfbPIc1QT/hB+jHpcUKyjNEuE+KRXLt2u2MG0cFrZRmCS7cxRzkmDVi+43wfNqwhLOe53E++iCkpTOKOMfJBOG6N8DCfatLF86PNGqX47rojemgsz9ENDfwwg5YK/ts5uZ04VZ36zTssrNRhBInYS/USExAl6G1i6zgaALBuadZqs6Urw38x8T/KMVskRz70pfsb8JPh3+IdwXdgcExYOOtPT2FjIjHBvihx6Mrp+fvR7myDF6Srg2Yj2C2W0nSJGR8N58lOxw81Xonkplyh5zbLIAwhIZuSnBbVH3VvVL/6R01DS1YLi2TK+F/zIXYFeDDTDXzrq1tOgn0DZ8q6SGx1e4+BXijuw4ZMPH2gkeTOGZd/raqjOnomARWlU5JHSk2feuYN6j8tHKnj1Kih6hvO4IeYbZHcuRc7C0Xtli8Z2QF47d/WqKqMmFrPxtUp7u0t/m7fFGZnd/5shffQJ2M8dlqf6yQ95G4J6HF3qiI6efHpBioEkmhfRbq5v3PToh7oL4GQLlAHIZ4aKGJHRlWGsnq4QRg5Qh99v5hJMj64PpHDh8v9ZuJVxImvLek5j3E6mP4o7GAQ5WxaTpyE8xvWqwf8O8j9NIEKy+z2in9III4KTrNygIjjJ9So0Ui+kVz0NDF5hnxxcAitmeDIFbzbcsgvRVeiRorEX2npcLKtZhE2HBUoAJIMHzbIC8gmWfB8mwrqzlIAoL85AZzyS5TG6mowV/wYt2Aus8vvo/DxxWvZH9FsKUnLJ
+ BuP2tQfr
+ E3WIBGN7o2bbC9Yoz/GrThn2q1z1/I08+o8N+MuK+4a3ACgnPzHNRTxm+EeM4Sc38ZPoGsk9u2AsNH3Rvc50gBaVnQhjNXR5KIn7AUPQdA9vDqmQygEmg2MO1oQtzTeFGtUR8vg/53yR+UTrIuI85UrijJT0C6co+o7GGoM8e34/JJCLxOKnTsbHoC4ju95zCob6bZHiz21HJPGINGby0o9+cuKJs6UQ5Frj1B0bhlSUTrCrfHmPVzxc6eV/2gRn+sEFkUa88EfAoJyEDh5mkK4k8X2uU56v83HU2lUCjHrN3dfkzcOa4bAJTx6pSWUYY9YN1Me5323z35Y6zkZZu3RGzq/itOwLxATdodkvtZmEz59s6b3I/gXtgp0rSKZ4LgQVoqwSsriaGtGXXVGOdO6GaHh3ERTZlhnlUm6H+8POXF7Rjj+MWAYBEdW7cf6OGa/wyE2zCflU2+4qv4EafhVtYpPDG/73/+Isoq5hIDGmlOX0NlX71KhcauvPZKXqtJG7EqX/qZQEgTFBk+3WqBKLxdkjpsUokyLnjP/SSCHQ2YLHOsm/NTQIa438Ej7TNnET5dkKzOxxDeXv9De12Q9q3ZhFsN1JVJBR16qGJFAvNenM29Zpo7wkVcMpx/BeidV1tCxBhutI8nZPfc3Asn+BaUMzVbpZw9gPFhxUe3adDbeGF8COE/oRf9H5SM0KUxsHmb3r7jQu8tM7N0LtAzGk+08rXd+FmSOrcU0Tbbb9JEJvyBRJPQIB8mCdQMIYxlFeGIRs62qFzTv0XlNHtSAGv1wI5vfngOTkT3bs8JN4LWI/HUFpQCSKmnyHHQQyx3AunD0vDG2mslZatNM2KGOrRZ0Ox9X9uLTU45B02typ/l6nOqqL+S6nqi6HKOPJr81Q1RV29Y+cgGzhhp8wpZ3Zj0+vk7ZUgvVXh3nFGkwchbhODMPQAPY+6dGM/sY0MSjsLLkXJkomH/YgOt/YiS5XN8Z/y
+ hwrXJOyP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,34 +116,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> If load_other_segments() fails after image->elf_headers is assigned,
-> the memory lifecycle is safely managed by the global kimage object
-> and will be freed in arch_kimage_file_post_load_cleanup().
+> kimage_load_cma_segment() and kimage_map_segment() translate a CMA
+> segment to a kernel virtual address with page_address(cma), ignoring
+> segment->mem. But arm64's image_load() adds text_offset to segment->mem,
+> so the kernel payload is copied to the wrong offset while image->start
+> points past it, and kexec jumps into the middle of the kernel.
+> kimage_map_segment() has the same problem for any CMA segment whose mem
+> was moved.
 >=20
-> However, during a retry loop in efi_kexec_load(), a subsequent iteration
-> will allocate a new buffer and overwrite image->elf_headers. This
-> permanently leaks the stale memory from the previous iteration before
-> the global cleanup can track it.
+> Add kimage_cma_vaddr() to translate a boot physical address inside a CMA
+> segment to its virtual address, and use it in both places.
 >=20
-> Fix this by explicitly freeing the stale `image->elf_headers` buffer
-> before assigning the newly allocated headers.
->=20
-> Cc: Huacai Chen <chenhuacai@kernel.org>
-> Cc: WANG Xuerui <kernel@xen0n.name>
-> Cc: Youling Tang <tangyouling@kylinos.cn>
-> Cc: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Baoquan He <baoquan.he@linux.dev>
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
+> Cc: Pratyush Yadav <pratyush@kernel.org>
+> Cc: Pingfan Liu <piliu@redhat.com>
+> Cc: Justinien Bouron <jbouron@amazon.com>
 > Cc: Sourabh Jain <sourabhjain@linux.ibm.com>
-> Cc: Kees Cook <kees@kernel.org>
 > Cc: stable@vger.kernel.org
-> Link: https://sashiko.dev/#/patchset/20260729031235.2840255-1-ruanjinjie%=
-40huawei.com
-> Fixes: 55d990f0084c ("LoongArch: Add EFI binary support for kexec_file")
+> Fixes: 07d24902977e ("kexec: enable CMA based contiguous allocation")
 > Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 
 Sashiko has reviewed this patch and found no issues. It looks great!
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260918100442.3841=
-135-1-ruanjinjie@huawei.com?part=3D7
+135-1-ruanjinjie@huawei.com?part=3D1
 
 
