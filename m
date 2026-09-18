@@ -4,141 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FAABC982DD
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 20:23:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AFF1C982DD
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 20:24:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 876826B00AA; Fri, 18 Sep 2026 16:23:19 -0400 (EDT)
+	id 718BE6B008A; Fri, 18 Sep 2026 16:24:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 84E586B00AB; Fri, 18 Sep 2026 16:23:19 -0400 (EDT)
+	id 6F0096B008C; Fri, 18 Sep 2026 16:24:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7166C6B00AC; Fri, 18 Sep 2026 16:23:19 -0400 (EDT)
+	id 62DD56B00A2; Fri, 18 Sep 2026 16:24:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 36D296B00AA
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 16:23:19 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8DDD61207E1
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:23:18 +0000 (UTC)
-X-FDA: 85228007676.09.9B8C00F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id D5B0D40004
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:23:16 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KRO8mE4Q;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789762996;
-	b=a8Gk4wwXS25ODc+DtJwfhNygh9F2nqlwHAz8QA0KEtsozKn4Jc6Tknw1lWGCfumr8oA8GX
-	3IZsOm4rQW2F7UglBWqOBz6Vi+TaewMNsvxSaloCI977ktf4PSZJ0gm6rwbASrLqxK4cJz
-	IXC8UhbWXueo5UJkw1aMxjiKdC4ZmZw=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KRO8mE4Q;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 41A546B008A
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 16:24:08 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BE9B8807D4
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:24:07 +0000 (UTC)
+X-FDA: 85228009734.10.4B3484B
+Received: from mta0.migadu.com (out-7.mta0.migadu.com [91.218.175.7])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 9C6531C000A
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:24:05 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LKxEZyKC;
+	spf=pass (imf20.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.7 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789762996;
+	s=arc-20220608; t=1789763046;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jMNQNlEwmiuLJhmuM/5YUT/yMbKaucQuszeHmhLwONQ=;
-	b=8AkjABDYt25pQPRU9j+X/lclqhwJwrO0FM+YF2f4I7kFCUkbXQGoFL0c4mR3+IjLumkAhg
-	Mt7owWNrbuQX2HCAf6AboAAiS5JZwUpbEfCi87hdgI6Q2h8fVPqZdpNfigZPGBvDqvjxl2
-	T7F31RI5Z15+bz8xrIuoLCVbV+ZFnZE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 630C16053B;
-	Fri, 18 Sep 2026 20:23:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9135F1F000FF;
-	Fri, 18 Sep 2026 20:23:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789762996;
-	bh=jMNQNlEwmiuLJhmuM/5YUT/yMbKaucQuszeHmhLwONQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=KRO8mE4QI67Tt6rV1s06qXUHa62HU5/c3vJdk5Kvt4K3j0K5o2TVsxOrGu2Yxmaqo
-	 5SShVgxZl+gxU5lWsrFbEoQXw5DEKoQPvT1fgfTvNC8LnIlEm7Kq766oJFDPBoJTe6
-	 3WKxEYUmchY6Yh9SQ9LP8FDiicFYMo1BTf2qKzvJIzXEj61VtOjSgHEm7pm3vcy2rH
-	 /T52FJcA77bfDgOtl7fJL+kwn1MUi6qmYOp/enaPBcsamt307qP0I9F+Op+o+Tyh+X
-	 nOBD/gsStGGdqZEztyNYLHllBv51Ww8MFz8lHTosZQW1S1UIXX9heNvUTNPSNoueVW
-	 nB+hzx5ZKV/+Q==
-Message-ID: <cfd9c86f-26e3-4914-b148-8202b942e5c6@kernel.org>
-Date: Fri, 18 Sep 2026 22:23:06 +0200
+	bh=9wuXubIIGSeWyvFFf022/3pANKLlXHUdxL8eUxbVbPY=;
+	b=TDZjCCNjx2Ind8NGyBVJ8ee/ZvG7U/61l87B9SWqkBpwykZwzxgVCZ01zlGbZ7gFfU6n7X
+	YzfLFlgWbL17W5+ZNp1S40e97HFyPMzGGBbsIgMS0g0UnoV1BtFMiLA8M45TuL0WuOsvbi
+	O8AZ//FzbeYJHsdJ5dqtSGfUT7V8MII=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789763046;
+	b=JdOUq+RBnfsKhJKSdXDO0FtH38xEXkHR5c5aXJyNShFDp8NxiZ90cqbrhDTTGcPv9vhksj
+	OV9ZFHnBEoq0niiHf15LOBANgYQPBBQ75VdVRNKK7idkgvO0VUJJs0W0ZI02K75yhdvfLG
+	6eHXsDYFRxRj981gaezw4YU8y/USYig=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LKxEZyKC;
+	spf=pass (imf20.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.7 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=eT66H6iANzWDoxgeBfogAllHhpEDQptXi80Z7mxNldQ=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789763044; v=1; x=1790367844;
+ b=LKxEZyKCj+P+NQJ3YggNKSwHcQ4kkGKVl0EHrOOnZow5edCGHpAfIXqAVI0s3Y7zD4OC+qbj
+ 7zEk7CEe0Rh6cFauNgTgXtdJuf5Lt08oib7ms4cTox6MrFv2X96OwcCuWUF9bab/WPgzcH+fvgY
+ +Ts9YSSRsRoiTja/6Zg3GKps=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 5e90c63acb495c08;
+	Fri, 18 Sep 2026 20:24:03 +0000
+X-Mizu-Trace-ID: 5e90c63acb495c08
+X-Migadu-Flow: FLOW_OUT
+Date: Fri, 18 Sep 2026 13:24:01 -0700
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Bingfang Guo <bfguo@icloud.com>
+Cc: bingfangguo@tencent.com, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Dave Chinner <david@fromorbit.com>, Qi Zheng <qi.zheng@linux.dev>, Kairui Song <kasong@tencent.com>, 
+	Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, cgroups@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/4] memcg: manipulate memcg private ID references by ID
+Message-ID: <aq2dkhBuFktQYvTB@linux.dev>
+References: <20260918-bingfangguo-memcgid-rework-v1-0-5bbf3220d88f@tencent.com>
+ <20260918-bingfangguo-memcgid-rework-v1-3-5bbf3220d88f@tencent.com>
+ <aq1_Qhid7-62pHcW@linux.dev>
+ <aq2BfYdMr_8JeY_Q@BINGFANGGUO-MC0>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 00/14] mm: thp: always enable mTHP support
-To: Luiz Capitulino <luizcap@redhat.com>, Usama Arif <usama.arif@linux.dev>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- baolin.wang@linux.alibaba.com, ziy@nvidia.com, lance.yang@linux.dev
-Cc: corbet@lwn.net, tsbogend@alpha.franken.de, maddy@linux.ibm.com,
- mpe@ellerman.id.au, agordeev@linux.ibm.com, gerald.schaefer@linux.ibm.com,
- hca@linux.ibm.com, gor@linux.ibm.com, x86@kernel.org, tglx@kernel.org,
- mingo@redhat.com, bp@alien8.de, hughd@google.com,
- dave.hansen@linux.intel.com, djbw@kernel.org, vishal.l.verma@intel.com,
- dave.jiang@intel.com, akpm@linux-foundation.org, yintirui@huawei.com,
- dev.jain@arm.com
-References: <cover.1789695931.git.luizcap@redhat.com>
- <ad25b99c-d9f6-4e52-819b-81e08eb2a131@linux.dev>
- <970c8f34-3cf4-4c6c-931c-b132e3bc6838@redhat.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <970c8f34-3cf4-4c6c-931c-b132e3bc6838@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aq2BfYdMr_8JeY_Q@BINGFANGGUO-MC0>
+X-Stat-Signature: auzkmy63xb4ds76kpcrnf6ec8nt6ypq4
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: D5B0D40004
-X-Stat-Signature: 4xd4f9f8rb6kfme31bn4knmyusn9qyoh
-X-HE-Tag: 1789762996-503964
-X-HE-Meta: U2FsdGVkX19a3nQpD/z0/YBHhlaSZJIUGf+4ufdc22vDuW4wg5Z9np7PEHvwJw78hHGhMv9Wt0DMYOY2PUt2Bd21GMzHd9uUSN4D/PQen+PZjdmKs08n7PxpmNpRU3lJJrJxaMzSLnSyz79RWwDMk3ABpLuoBPPuF7PK6bw5WUF77wiQ/6aOQtQIps9gy53rqtndrQvzNBLzXo+waRR7vf7ktOZpDDwnqW8O0CezhlhpItNUBCY6pDCmZmgNwx68tYj4Vptn2YD9e7IGpvq2Epi/idk3rabBLwYfKBsoaZQMrS4pDXF+HstomIfNC9Ju4u8fjnc0/CE1xExCg3z4oyisjSkqruZ0pmu8aGUdfZ/iidaboqnQkJAuKicuSiVjJEMK1bnhGFMV5pqusRifRnnlad1OrA/2egdjvb06tD9Am0FE6X6z06i2z/5QFMJBEWMteabbjQ9oPB76ZWJ5BJJE0+2wDSA3wuuVrrIxv8eMC4xmmumAYzjcLGIK5Q7pXcz7aB/037YUXINFYOklxx4Q3UrHXbxs0ch+mMq3DlzurKiISdHe8+xp6kEto6NX0GHXUnG4XtaXqLAOPtduWB+JBgWdg/2gEbC9IZbmx0tz2jVThFvF3Rcs0Arm5R+WrQJcmFWnnIqjkkGU1pihpv1ky+3owddHw9Na88xCT5qvJPguSGYe5woqSsBOxlpwQPVmlWISOGh2z+Lf6SRGm7gRV6OEhas8PKKRVkgkuWyah1Pf0ddjdbv/UJNGjn52g/yNiL3/mO/sPATnWCZgKGDpWUwvFFxDEYlywfTV6lN7jOLqKksA6phZ0Gtr+/80iV0FzsvZE6DhGSjM65t7qA5KdN/vwjml4xWj9YXX0ClkpOtZWrVIwZSqYygmrxZJKf02UnYZ534qvaAw4UKv3Co5jsOW4xyq6ELVjYYtSe9j1iYWob9PpwwoJatEkedTYUl7AHRwHDOs8UWTl7M
- 5+Qh/S1f
- /UuZlA4v+KEr9tBYXjKOlL0BulcL6GqutCGVQwAs+DEDM7ZLgxji5zrVoqoBLrE6ad0ugYfHxVuU1wCnlaDibtRgm/lPqyjDat2V3QpTbaobLbNrE39AyAuH8/hVjdgLFluli+17O94WkjZFCXzL8e4IbucpBgh6tKnemK67/mFUJq6V8sVAIiPhAlBL2N/qRS6p3XsCyLYk8YieKQF5nukpFxnlYhR0BQ5y+/snXeiDWYDPYssJBfZCnMqSkNF+qp9/L
+X-Rspamd-Queue-Id: 9C6531C000A
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789763045-640964
+X-HE-Meta: U2FsdGVkX1+Sv/Imjd1kjtMRIjBTXINmU5opx9E850qEgL7t4z5sGVy4Fpf9OtN9LXpWnEGddTWcEwDNojRaXEn83sIf43Lr5nOIOfV5j48GOM8ZNAW35BWHmQRettZi/Lmpy0lvuE5QMOCliwgZcbMwkbQVgO5bQdfUXzMSM0yFKdyCeV/GIf4YCIVGxRup4iaWAdB+xye1eviGNf8OkKiVVj11nEfn+PrX4YBPc/LPCQTOWvOMamAD0k5umAr8WHTY7fU8LQOrvuVu8hW4YO6IY84oZvDC9v8i/0DkBsEpS06RUv35cDPa1h6qROtx62SS4kYn+5gRJVmY4ncL+ojk9YuG+KcCblMkt+bVjPDOSDd8+xbBsKYlwctAxsL3e9/BzCFXl+cQ9Y9ikijkBSRkBHG91/ApSYB4LErbgYxsX7OGTYhJ20/BS4n2KLYnDc8+eHLHK6zZ1Gdi0CnExh3t59BgjKRZOtw7Cy+oNTlPbZNYzHKem3IbC0EGOe+UjplHld6FAqzmevjmCj+k9JwQRzwSpvZrM8JuU2bds/hsj9L/R2Irag33EuUpjriM0N//CRYMeH90AhkRKNmJ0ofRZDYLJnb6t+uZte0ry5F7WhBNO4Ah/gCHmMSUyk44CP3jEhzQ16Z6CV6zcKEG4Pz3gB56m8ZabbCNvHNACSTVR3DDAtEMOQMCW5FG2olFHuL5WaefDfyDjOsJiM/w3eTl4i3Y8Sl9Pqf9mmJeEG15Orj3RNsmcGvIOQNifU8oLnpWXzoFhVQZp6xcVv7sXd17qufL+BldYIwT31gQvtr3q61pqbSBEOUsWjiaLK/3yuk4zkTho/lRlDqmWXlwxir+ojdnXMviPX5Axx7uQ7WUkEdhV9bxVzGEVFnxNvlBFwyM9fB//v+S6nJ8pCtiVrUg2CIJuZ2rFGwhpkqnwt/2ConMHdOtRzHd46sbt5QZxCKwcG2YVykdQhGEtKh
+ ZGEp0UlV
+ cSb2Kl4J1Y8SQzRWtCKq3XwOByk2Xka1PBoRSFryT+un8deCLh9qX3mCHPm4F5ORqHIcBpQSa9mtV7WwXJZ1gXVER8hq/BbfHojawv9iOPAPThdrXPcVi1Yqlvax6oEdUAH4UOVnQBwq42EfD33c6oMmHJ8wE33d2HM4wlfh8uW3tisoGZ9WL3Ywi+xYB9cpRc9R6VgzihnrCRs8T9TwuG7lEu4y7LImYgegF2x3Ia4N3Egmf7UiOcqMfNeGeJwY3YVRS99ZoMCy6N0dJz5m0vn3ffgENj+oaHYKQC+6JnPjD/Oc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,47 +97,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/18/26 16:01, Luiz Capitulino wrote:
+On Sat, Sep 19, 2026 at 02:46:52AM +0800, Bingfang Guo wrote:
+> On Fri, Sep 18, 2026 at 11:14:03AM +0800, Shakeel Butt wrote:
+> > On Fri, Sep 18, 2026 at 05:18:42PM +0800, Bingfang Guo via B4 Relay wrote:
+> > > From: Bingfang Guo <bingfangguo@tencent.com>
+> > > 
+> > > This is a preparatory work for moving memcgid from memcg to objcg.
+> > > 
+> > > Swap entries retain a private ID rather than a memcg pointer. Once
+> > > private ID references are moved to objcgs, the ID can also outlive the
+> > > memcg to which it was originally assigned.  So it's better to make the
+> > > get and put functions accept the ID itself instead of the memcg.
+> > > 
+> > > Rename mem_cgroup_private_id_get_online() to
+> > > mem_cgroup_private_id_get(), and make it return the ID only.  If the
+> > > memcg is already dying, the dying memcg will still be used for charging
+> > > and stats accounting in v2 swap charging path. But they are hierarchical
+> > > and will be reparented after offlining so it doesn't matter.
+> > > 
+> > > Make mem_cgroup_private_id_put() take the ID and resolve the reference
+> > > holder internally. Convert swap uncharge and charge rollback to release
+> > > the reference using that ID.  This introduces an extra xarray lookup for
+> > > now, which will be removed in the final patch.
+> > > 
+> > > Separate the online-state reference release into
+> > > mem_cgroup_private_id_kill(). The offline path already has the memcg
+> > > pointer and can call the underlying put helper directly.
+> > > 
+> > > Signed-off-by: Bingfang Guo <bingfangguo@tencent.com>
+> > > ---
+> > >  mm/memcontrol-v1.c |  7 +++----
+> > >  mm/memcontrol-v1.h |  3 +--
+> > >  mm/memcontrol.c    | 32 +++++++++++++++++++++++---------
+> > >  3 files changed, 27 insertions(+), 15 deletions(-)
+> > > 
+> > > diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
+> > > index ed015fdd95123..b7f2868885071 100644
+> > > --- a/mm/memcontrol-v1.c
+> > > +++ b/mm/memcontrol-v1.c
+> > > @@ -268,7 +268,7 @@ void memcg1_commit_charge(struct folio *folio, struct mem_cgroup *memcg)
+> > >   */
+> > >  void __memcg1_swapout(struct folio *folio, struct swap_cluster_info *ci)
+> > >  {
+> > > -	struct mem_cgroup *memcg, *swap_memcg;
+> > > +	struct mem_cgroup *memcg;
+> > >  	struct obj_cgroup *objcg;
+> > >  	unsigned int nr_entries;
+> > >  	unsigned short private_id;
+> > > @@ -298,9 +298,8 @@ void __memcg1_swapout(struct folio *folio, struct swap_cluster_info *ci)
+> > >  	 * if the ID refers to the root memcg.
+> > >  	 */
+> > >  	nr_entries = folio_nr_pages(folio);
+> > > -	swap_memcg = mem_cgroup_private_id_get_online(memcg, nr_entries);
+> > > -	private_id = mem_cgroup_private_id(swap_memcg);
+> > > -	mod_memcg_state(swap_memcg, MEMCG_SWAP, nr_entries);
+> > > +	private_id = mem_cgroup_private_id_get(memcg, nr_entries);
+> > > +	mod_memcg_state(memcg, MEMCG_SWAP, nr_entries);
+> > >  
+> > >  	__swap_cgroup_set(ci, swp_cluster_offset(folio->swap), nr_entries, private_id);
+> > >  
+> > > diff --git a/mm/memcontrol-v1.h b/mm/memcontrol-v1.h
+> > > index 23be2512702dc..281425273ea97 100644
+> > > --- a/mm/memcontrol-v1.h
+> > > +++ b/mm/memcontrol-v1.h
+> > > @@ -27,8 +27,7 @@ static inline bool mem_cgroup_private_id_is_root(unsigned short id)
+> > >  	return id == mem_cgroup_private_id(root_mem_cgroup);
+> > >  }
+> > >  
+> > > -struct mem_cgroup *mem_cgroup_private_id_get_online(struct mem_cgroup *memcg,
+> > > -						    unsigned int n);
+> > > +unsigned short mem_cgroup_private_id_get(struct mem_cgroup *memcg, unsigned int n);
+> > >  
+> > >  void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
+> > >  				       struct mem_cgroup *parent, int idx);
+> > > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> > > index bfe53e4392f09..ed44b3e7ac938 100644
+> > > --- a/mm/memcontrol.c
+> > > +++ b/mm/memcontrol.c
+> > > @@ -4082,7 +4082,7 @@ static void mem_cgroup_private_id_remove(struct mem_cgroup *memcg)
+> > >  	}
+> > >  }
+> > >  
+> > > -static inline void mem_cgroup_private_id_put(struct mem_cgroup *memcg, unsigned int n)
+> > > +static void __mem_cgroup_private_id_put(struct mem_cgroup *memcg, unsigned int n)
+> > >  {
+> > >  	if (refcount_sub_and_test(n, &memcg->private_id_ref)) {
+> > >  		mem_cgroup_private_id_remove(memcg);
+> > > @@ -4092,7 +4092,22 @@ static inline void mem_cgroup_private_id_put(struct mem_cgroup *memcg, unsigned
+> > >  	}
+> > >  }
+> > >  
+> > > -struct mem_cgroup *mem_cgroup_private_id_get_online(struct mem_cgroup *memcg, unsigned int n)
+> > > +static inline void mem_cgroup_private_id_put(unsigned short id, unsigned int n)
+> > > +{
+> > > +	struct mem_cgroup *memcg;
+> > > +
+> > > +	rcu_read_lock();
+> > 
+> > Use lockdep_assert_in_rcu_read_lock() here instead of taking rcu as both callers
+> > already taking rcu read lock.
+> > 
 > 
+> Thanks for pointing out this.
 > 
-> On 9/18/26 6:37 AM, Usama Arif wrote:
->>
->>
->> On 18/09/2026 02:45, Luiz Capitulino wrote:
->>> Introduction
->>> ============
->>>
->>> Today, if an architecture implements has_transparent_hugepage() and the CPU
->>> lacks support for PMD-sized pages, the THP code disables all THP, including
->>> mTHP.
->>
->>
->> Hi Luiz,
->>
->> Sorry for asking this so late in the series, but which CPUs lack support for
->> PMD sized pages?
->>
->> Is this series mainly for PowerPC?
+> Agreed.  Both two callers are already holding the rcu lock so
+> taking the lock here is unnecessary. So I will drop the
+> rcu_read_lock() and use that in the next version!
 > 
-> No :)
-> 
-> The architectures that have conditional PMD page support (ie. discovered
-> at run-time via has_transparent_hugepage()) are x86, s390, powerpc and
-> mips.
-> 
-> For x86 for example, even on 64-bit there are cases where the PSE bit
-> may not be present (eg. some errata and by hypervisor CPUID masking).
-> 
-> That being said, the main goal of the series is that
-> has_transparent_hugepage() is overloaded: it has different semantics on
-> those architectures and is used to gate all THP support (which is not
-> the right thing to do for mTHP).
+> My concern is that: mem_cgroup_private_id_put() looks like a
+> universal put function, requiring rcu held (which is true today)
+> is not that obvious to the users.  So I think adding a short kdoc
+> comment to make it clear later might be a good idea.
 
-Yes, and I hope that we can then follow-up with similar PUD support cleanup to
-rework some of that CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD magic.
-
--- 
-Cheers,
-
-David
+This function is internal to memcg code, so whoever is going to call it better
+know to call it with rcu held because of lockdep assert. No need to have a
+comment.
 
