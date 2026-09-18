@@ -4,114 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F8EDC982D7
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 09:20:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A612CC982DA
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 09:20:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F9E26B00B0; Fri, 18 Sep 2026 05:20:16 -0400 (EDT)
+	id 4B3E66B00B2; Fri, 18 Sep 2026 05:20:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 85BA36B00B1; Fri, 18 Sep 2026 05:20:16 -0400 (EDT)
+	id 48BC36B00B3; Fri, 18 Sep 2026 05:20:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 798B86B00B2; Fri, 18 Sep 2026 05:20:16 -0400 (EDT)
+	id 3536F6B00B4; Fri, 18 Sep 2026 05:20:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5BC446B00B0
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 05:20:16 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E03AA1C2CA9
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 189846B00B2
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 05:20:18 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5B0E3405CF
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 09:20:17 +0000 (UTC)
+X-FDA: 85226336874.23.8EB1351
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 8889820005
 	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 09:20:15 +0000 (UTC)
-X-FDA: 85226336790.18.B3429FB
-Received: from va-2-53.ptr.blmpb.com (va-2-53.ptr.blmpb.com [209.127.231.53])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 20F22140004
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 09:20:12 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=fygo-io.20200929.dkim.larksuite.com header.s=s1 header.b=bwBSdZ1I;
-	spf=pass (imf09.hostedemail.com: domain of yukuai@fygo.io designates 209.127.231.53 as permitted sender) smtp.mailfrom=yukuai@fygo.io;
-	dmarc=pass (policy=quarantine) header.from=fygo.io
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ML/vU9wU";
+	spf=pass (imf13.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789723214;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1789723215;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c/HoGHos08YYVCDf+erQy3ROLdbEA8DrOr1npGBRCuw=;
-	b=T3qBBTVLJNGJWaUfsCfTCaJIe5VZIK2rDJIBORp1pgC0yzmk1EvOZ/ba/vNIEfBlIYZJwr
-	LJvRKYm+/5MI1t9LpeOXzdslrn7KqKFQHsyy2MpAwpQpg5ZjRJsl/POAcDwjfHpiFbkUQZ
-	NbO3Kb29iL/xpNjS3F3+xGXiUApEmQU=
+	bh=rp+rJmhTE7Df7VsQPiO1xXybhrFkjWSbdjcw3UfOXPw=;
+	b=X0IhiV4JyB/GjMOJsoo9wIA+PpIVdSjAsK0Do3cN2tZ9ytv/OnQ3RIZBgYq00pjvJ0LIOK
+	skFg5LL1Gb9VS747zSVfKZNAYuleaybz18felJl2YM6kz78Hfh6S9p/wQhn66EoOu0VN63
+	ttLYhkZsjLtXj58qxHnPcoohgcic8LE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789723214;
-	b=CwkiRO4pOdsoq5InXvDVBuEc5Czr9E6gOUxgRJMG/NFECTcEcFO9X9+AyOySKZyKoONNjU
-	hZDtyiCEUvxAM/1MQ0SI8Pww5nylVIkZv1ZZdBgufXiNYx5rL3sfPwhQVvy9g88/eec//w
-	NcTpH5oSwwVoRuG9HCuG7v16haVF9k4=
+	t=1789723215;
+	b=gbl41yz9OvPF5vpnwOMyC73nxBGfEe/Yt6j/926QwUkMK0MsW+BLmO6LcgxWpH00kVWJ5m
+	MKlvOYmmd4FgjD7pSNIevj4e6KmodmNE7YHVffIXcL8/OF9NukWoUguPSGRJbNt1zpLKQS
+	Yz0WedUuTJ2dP7dHiHWcDsFGVmRqwJc=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=fygo-io.20200929.dkim.larksuite.com header.s=s1 header.b=bwBSdZ1I;
-	spf=pass (imf09.hostedemail.com: domain of yukuai@fygo.io designates 209.127.231.53 as permitted sender) smtp.mailfrom=yukuai@fygo.io;
-	dmarc=pass (policy=quarantine) header.from=fygo.io
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=s1; d=fygo-io.20200929.dkim.larksuite.com; t=1789723203;
-  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
- reply-to:content-type:mime-version:in-reply-to:message-id;
- bh=c/HoGHos08YYVCDf+erQy3ROLdbEA8DrOr1npGBRCuw=;
- b=bwBSdZ1IC2vZJtJQ/GMrgZtFKRuuaPwCdBnsVuBZK6OAE/8KLo1qyhHqMMucszqIQ+NkQ2
- HU22scbIi4juP7uDQoN2yJO1G9pAH/o3M11JKl8GQa+S1r5Y8BMJwBwEJhOfbqphjVZxdn
- 4yJH4AnELbXL5Ej/uTa6zIxHk/LQAYt4GP5OAuLG1IzbfNdiAQ/oxgQ4h14NALYiEW2F81
- ZWkWZwb9JqbvgqODZjDQttxI64Lhn4YXAABcOdUvpIV5upKvcA6VJysv/TxG7WPbSXtXFa
- VdB7sBO5K3nkoNbXDSVcHsd3NaAQP4MUtRi2ofcw3DZ/hzlSesbtohAXVw9SsA==
-To: "Christoph Hellwig" <hch@lst.de>, "yu kuai" <yukuai@fygo.io>
-Subject: Re: dm review needed, was: Re: [PATCH v3 2/3] blk-cgroup: store blkcg in bio instead of blkg
-Message-Id: <daf4ba77-4c25-4993-900d-ee1fe713d9b6@fygo.io>
-In-Reply-To: <20260918071634.GA10884@lst.de>
-X-Lms-Return-Path: <lba+26aad0242+e159fd+kvack.org+yukuai@fygo.io>
-Reply-To: yukuai@fygo.io
-Date: Fri, 18 Sep 2026 17:19:53 +0800
-Mime-Version: 1.0
-User-Agent: Mozilla Thunderbird
-X-Original-From: yu kuai <yukuai@fygo.io>
-Content-Transfer-Encoding: quoted-printable
-Cc: "Jens Axboe" <axboe@kernel.dk>, "Josef Bacik" <josef@toxicpanda.com>, 
-	"Tejun Heo" <tj@kernel.org>, "Johannes Weiner" <hannes@cmpxchg.org>, 
-	=?utf-8?q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
-	"Jonathan Corbet" <corbet@lwn.net>, 
-	"Shuah Khan" <skhan@linuxfoundation.org>, 
-	"Randy Dunlap" <rdunlap@infradead.org>, "Coly Li" <colyli@fygo.io>, 
-	"Kent Overstreet" <kent.overstreet@linux.dev>, 
-	"Alasdair Kergon" <agk@redhat.com>, "Mike Snitzer" <snitzer@kernel.org>, 
-	"Mikulas Patocka" <mpatocka@redhat.com>, 
-	"Benjamin Marzinski" <bmarzins@redhat.com>, "Song Liu" <song@kernel.org>, 
-	"Li Nan" <magiclinan@didiglobal.com>, "Xiao Ni" <xiao@kernel.org>, 
-	"Andreas Gruenbacher" <agruenba@redhat.com>, 
-	"Matthew Wilcox" <willy@infradead.org>, "Jan Kara" <jack@suse.cz>, 
-	"Andrew Morton" <akpm@linux-foundation.org>, 
-	"Chris Li" <chrisl@kernel.org>, "Kairui Song" <kasong@tencent.com>, 
-	"Kemeng Shi" <shikemeng@huaweicloud.com>, 
-	"Nhat Pham" <nphamcs@gmail.com>, "Baoquan He" <baoquan.he@linux.dev>, 
-	"Barry Song" <baohua@kernel.org>, 
-	"Youngjun Park" <youngjun.park@lge.com>, 
-	"Nathan Chancellor" <nathan@kernel.org>, 
-	"Nick Desaulniers" <ndesaulniers@google.com>, 
-	"Bill Wendling" <morbo@google.com>, 
-	"Justin Stitt" <justinstitt@google.com>, 
-	"Nilay Shroff" <nilay@linux.ibm.com>, "Tao Cui" <cuitao@kylinos.cn>, 
-	<linux-block@vger.kernel.org>, <cgroups@vger.kernel.org>, 
-	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
-	<linux-bcache@vger.kernel.org>, <dm-devel@lists.linux.dev>, 
-	<linux-raid@vger.kernel.org>, <gfs2@lists.linux.dev>, 
-	<linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>, 
-	<llvm@lists.linux.dev>
-From: "yu kuai" <yukuai@fygo.io>
-References: <20260918041744.1526924-1-yukuai@kernel.org> <20260918041744.1526924-3-yukuai@kernel.org> <20260918071634.GA10884@lst.de>
-Content-Type: text/plain; charset=UTF-8
-Received: from [192.168.1.104] ([39.182.0.142]) by smtp.larksuite.com with ESMTPS; Fri, 18 Sep 2026 09:20:01 +0000
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ML/vU9wU";
+	spf=pass (imf13.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id D4BD8447B4;
+	Fri, 18 Sep 2026 09:20:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02F691F000FF;
+	Fri, 18 Sep 2026 09:20:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789723214;
+	bh=rp+rJmhTE7Df7VsQPiO1xXybhrFkjWSbdjcw3UfOXPw=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=ML/vU9wUTiV7IpxrbkVbrPIZCCpeS5W9MCafzrH4LCoogdtHsIhfCx/8jLLzjz65e
+	 gpiG8/V3KZVETLi/KYkGLg94yjTjgNPJY4LqxVc4RldYsZPHC72JaXcE3yFEAdprK0
+	 aTLp6m49wnCkhn6XWaAUZG2gKK3XcaTQNehkOAzRJnY04Mg2qZD5Ab5aIYwTDszWr8
+	 b/s+RvHPecLLYqF9THIvZuy0Mka+jhB2Ep2DFQjXD8crxDtyoTNAeYb5oJgpeWHI/Z
+	 nrS3jxjehGNm2dBMPqFhSw9I8/Nia46U2gLs683QjkivQmXOm+zOgEiEZ11q9+xMDV
+	 5P4BXDIrfMEfw==
+From: Christian Brauner <brauner@kernel.org>
+Date: Fri, 18 Sep 2026 11:20:00 +0200
+Subject: [PATCH 2/2] binfmt_misc: fix racy checks in bpf set_interp kfuncs
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260918-work-binfmt_misc-fixes-v1-2-647b24bc1c46@kernel.org>
+References: <20260918-work-binfmt_misc-fixes-v1-0-647b24bc1c46@kernel.org>
+In-Reply-To: <20260918-work-binfmt_misc-fixes-v1-0-647b24bc1c46@kernel.org>
+To: Chris Mason <mason@kernel.org>, linux-fsdevel@vger.kernel.org
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
+ "Christian Brauner (Amutable)" <brauner@kernel.org>
+X-Mailer: b4 0.17-dev-db0b7
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5856; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=Hnw5hxTi5fYqyBdtFSZVwFO8KP68FjOAa84bLk+sgF0=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWStZXK7MefV3Irf6m2zfdU2vZjKuFwiQXpHo6pWacSVT
+ 8kzz1rKdZSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEwkcwPD/9Bjil6fOJYoFi7i
+ yZvykt9i04GknBuCl3yXfTBYfHqHJgvD/7CN8T8lLZ4x/1wQ1t/x0cj/ZFF0sX3JAvf0ouo+7rK
+ /nAA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 20F22140004
-X-Stat-Signature: xfftcpjmb73qjnoege4xbz3jph59q4bd
+X-Rspamd-Queue-Id: 8889820005
+X-Stat-Signature: 4f91ngko5cqr47dwatfoj1cfnyje3q14
 X-Rspam-User: 
-X-HE-Tag: 1789723212-493239
-X-HE-Meta: U2FsdGVkX1/hBEMgNy/J1+NiDTPas2F7m2IMiFIfdNkbGTjbL+lLAeobZuZhURUY4nYzzDBK1bdaKUM3lfKT0S+yku8jj6xDNZkmeM9aFy6VFD/bKV8LaQZOYQodTTBklM+fg7sa0l0cx3J/qT4nu2Wg1PL85kM4VAoemgsPruPDHIG6++Po8UPsJEHP3bSklULMyy2gl4HqWJYdFY8wo4mjKIGPz10lPOuWaYjgnCFD4aBMDXUwSXGDNdXvBeq232ehECyVpP7c0Odt8c1taJH1G9g7+jYDC3753EXlteRrN156zatsVckgcGa8r1XEfy5vjWFYscdfLC+agI0Laq1MxM/s/3REyI9T21q0ch6z+4Kszyqv/xo9Y23ETrs4XkKC1UhOD7CJw5Coc95KBEBpMcuHmVZ2z6HwV/dqhLTMpAYE3dG+sNdddeYP6aAGsJsNf/zXzzNr6ALuDrbUdTaDOzCLUwoExuv8NuqiWxpf569Zj4s2knm3O7eN9o/CyxvYGlLH5JNaKXvTq9foMuXk4UPe+sTvFbcriawdm2qbytb4S0U+c2SlEFzoZ9xq/RRABFAymjcLikBYvIdUCEQLrJa9znMiHG+6ohrON79NmZrsiyjU2qZlqlnUIQIEk2WcojQEZk++PzfVgKxX9y6CB1MBjH45b+to6ECEKN9RDw5rOaYIP5St2De2tteCk/I4ZpySbPpXN6J0ThCtRP2Gc3wpqalGYLeKV30OuOM52UDHPgR6JqpM2AOU8B6Qax9aPL/2KUg+5itUgQ90HtrrhUFGse7yE4I4sGs+JGhUZLFno0sco+TyalXfOaqcfP+GKSYzOAIwXrYMiPsTZP7C4vs7DKTcW6Rg+I7pVzpO0lSX8KxsF+9HuUdwDtbn/VOULMwkqh/c0DkG2Ptu8h2fFM5mEzLlwpW0tJ2Id1UXvKEfBnAPoYJHVjywcxg09navOaTvhB1LCoYCsbL
- VsYUwse3
- XrWvZS/47qgFnjfUQsk7WGRDXmeDvghrV188xJWwc/1ARpyxuiZLNVvURsxaxmSwWEVaowecaiRtV9h7dk/3IyjR6YdTjT3XKL4d5wZJVBmYH1AGg0NaN0t5RxuEXs/+zDCytCtLDzIQKoCDCbIoyETFOwCxbeSXvEw+GzmZjc6Z3QNmXteFbVHZ1QX9hrq2bvPGKolRR0h048hjC4+6N7QN44z3O7IkkqiVdqmIg91GhL/m5NYMn52sYnNsHarqd+fwMAyKN24ejbFLIVjg6zOctnypgBrZjYhROM5rjvt8/c+KbOlkrGaVEYgySbsW4+6YodD+AabwAXlR/LyrB8c48PISY4ePlZ6Kd7daf6OoNbjl2eTy7t/fLC5ZIUAhid1WUBTGHyq+VdrhRhzl9hEU35eHZHwqY3ulxrsAw3g4NbOxUlefap9po52rCfIgspM3md4gIaJVwLn1rYyfuXtYY4HblGbX3FSdRcu38cXKRxc2U7mg5BW9ew1JOMY7lkExFUVNSTwwkSXb3W6BfWQC2Ly2Ue+IRb/C5sJkINw1bgos3FQ61WeFuSJqqetTBpSodytCiev6HFVU=
+X-HE-Tag: 1789723215-397052
+X-HE-Meta: U2FsdGVkX1/7ejMssU2lSPz+l4FbOCATE6TVM91r+iO2TyLKBTFDkWjZHi9GnzY237reBSRs6JsIxhDha1YN7nhNbVJTUR1BQRVjs1XBPFXqYLSVH6AzykitjZ7uTcZPvH1gRDaaIja37NdBezkKKw+ld9iPEOMgG1SOIp5cNc9PErc+ieeXoxzAfxq7FwEeqDYzuvpjVaiEjhTJdfuDJCFPvJMgLsiyZVBOiiV7ZLP2/qWxqBQYsef6Lg+PIJfTFNENQa2ym7mQ3wzn/mGUaGCnypNtJeP9jJ/NdU3casZftbLczDlW/a/P8QSVl+dai6BrhxhT9CaWEsOCP80KRtA1+gVBXvo39ATrTKBJiJNerJVBrj8Bxi/KNHJKYGRns7rVHkdFAuBNkDDRmowGH7Q4CoJww1KBPPpy4k2ZfXuTEoXIuVSuHelf4erhxmxBu+KkdNP4JmvJMADQPT5p8YGb7+3HlVpDJr1MCw2f9GXFibKc/THEg4U+psKVkoxoK46r20tUBTCpesgQ9NhJtkHxvR9CCrJSzXbJUZUTOAuUu2Zbj0fjYvmvCeFvbgESb4LqhBhNgEf9mNHuh/uKTEki1ctl11Ri4fj5RKf8QTwAtDgLhUO+q/17A9m1hxDBeloodktFiqNBCNnEY9YMWYyD23DwFMTLMl/kDSg9hGPjrp0jT8dU6H8bmHIC4C5rQ2wXFuExg7yFL6O+8h+uWUaPQoyI3S3bvrDvq9VPTEOgY7hp+0k1CkbTRHw0sN8dZWEDdU6ZpeH1Q2sRF8rGNLI7qYxQPXdOMLIT7DjpRYlQ11k7qXzJlweMosXk4pMsZxjzQCjZzfyb+kLTSU1cfYWxQj4yHqxy+6sKn2Ur34RpMMzqYM6zjAuzqlqDyxBm1+fc6BNIv38OJ3k5UNIxjWBajRcIWxdVqEwfAOwwyY7ENCD//Cwxfvi+dUjpxTuZp+2fmwg9UKmvuvaR6gU
+ O+RX4Lsw
+ SbwbMcYRAN0GkbFCsYuO0imxmk5gILHR4FUtuIVXec6zeGpmBxk27cL1mgsWDq1pjH0d5IZKfQrlTpac6CaDkLpuL+zZB0++ExnINJamg2r1Y7SGAbme4CIBBee3zSNOPMfN0RDM97+DsIf0kZrqOzOlzo80ZbBDINCUoLKd+wkKUa68UIGz9VPmLnj2rfG5IqxqaaSdAMyCQfoIXXV+++QhWdoVp6au0XKw/lD0FjXsNe6dJvJ7X2ftVYGrr3SsyISoifqBaWfMdL13gkZMImWSln9U+IORqXBC/bblLIntxxIksV5ZRkEFy/uMMXFRI61Mt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,60 +101,151 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+From: Chris Mason <mason@kernel.org>
 
-=E5=9C=A8 2026/9/18 15:16, Christoph Hellwig =E5=86=99=E9=81=93:
-> On Fri, Sep 18, 2026 at 12:17:43PM +0800, Yu Kuai wrote:
->>   static inline void dm_bio_record(struct dm_bio_details *bd, struct bio=
- *bio)
->>   {
->>   	bd->bi_bdev =3D bio->bi_bdev;
->> -	bd->bi_flags =3D bio->bi_flags;
->> +	/*
->> +	 * Restoring BIO_BLKG_REF would not recreate its associated reference.
->> +	 */
->> +	bd->bi_flags =3D bio->bi_flags & ~(1U << BIO_BLKG_REF);
-> But do we need to restore the reference?  I have to admit that
-> this surrounding code is very confusing and I would really like
-> to have the dm maintainers look over it.
+bpf_binprm_set_interp() tests path[0] != '/' on the buffer its load
+program passes and then reads the same buffer again to copy it with
+kmemdup_nul(). The buffer can be a BPF map value that another CPU
+rewrites between the two reads. If byte 0 is overwritten in that
+window, the kfunc stages a relative or empty interpreter path. The
+staged path is not checked again, so open_exec() resolves a relative
+path against the working directory of the task doing the exec.
+bpf_binprm_set_interp_arg() has the same pattern for its "!len" test
+and can stage an empty argument, which the interpreter then receives
+as an empty argv entry.
 
-dm_bio_record() will store the bi_flags for current bio, later the flag is =
-restored
-by dm_bio_restore(). For example like dm-raid1 read error path:
+The verifier checks the path and path__sz pair with BPF_READ |
+BPF_WRITE, so a writable array map value is an accepted argument.
+bpf(BPF_MAP_UPDATE_ELEM) on an array map copies the new value over the
+old one in place and takes no lock. Both kfuncs are KF_SLEEPABLE and
+allocate with GFP_KERNEL between the test and the copy, so the task
+can sleep inside the window:
 
-issue path, if blk-throttle is enabled, flag can be set before bio issuing =
-to dm-raid1
+    load program                          bpf(BPF_MAP_UPDATE_ELEM)
+    bpf_binprm_set_interp()
+      strnlen(path, path__sz)
+      path[0] != '/' is false
+      kmemdup_nul(path, len, GFP_KERNEL)
+        allocation may sleep
+                                          array_map_update_elem()
+                                            copy_map_value()
+                                              rewrites byte 0
+        copy reads path again
+      bm_bpf_stage_selection()
 
-mirror_map
-  dm_bio_record
-   bd->bi_flags =3D bio->bi_flags
-   // contain the new flag
+The test in the load program's column proves what byte 0 held only at
+the moment the test ran. The map update takes no lock, so it can store
+to byte 0 right after. kmemdup_nul() then copies the rewritten bytes,
+and bm_bpf_stage_selection() publishes them as bprm->bpf_interp.
 
-bio_endio
-  bio_clear_blkcg
-  // new flag is cleared
-  clone_endio
-   mirror_end_io
-   // if this IO failed and there is another mirror to read
-    dm_bio_restore
-     bio->bi_flags =3D bd->bi_flags
-     // new flag is set without get a blkg reference
+The staged path is not checked again on its way to open_exec():
 
-So I think we don't need to restore the reference, BTW, there is another ap=
-proach to
-avoid such problem in blk-throttle I don't take for now:
+    load_misc_binary()
+      entry_select_interpreter()     returns bprm->bpf_interp unchanged
+      build_interp_argv()
+        copy_string_kernel()         copies it as argv[0]
+      bprm_change_interp()
+        kstrdup()
+      entry_open_interpreter()
+        open_exec()                  unless a bound file is staged or
+                                     the entry is an 'F' entry
 
-For bio entering blk-throttle, we can clear the new flag and blkg reference=
- directly
-after the bio is throttled and before this bio is issuing to disk, because =
-bio will
-not enter blk-throttle in the completion path. And since blk-throttle is th=
-e only rq_qos
-policy that can be enabled for bio-based disk, then dm_bio_record() will ne=
-ver see a
-bio with the new flag set.
+None of these functions tests the first byte, and load_misc_binary()
+hands the pointer to nothing else.
 
---=20
-Thanks,
-Kuai
+In bpf_binprm_set_interp_arg(), strnlen() finds a non-zero len, a NUL
+is then stored to byte 0, and build_interp_argv() later copies the
+empty bprm->bpf_interp_arg with copy_string_kernel().
+
+The handler's own load program has to pass a writable map value, and
+something has to store into it while the kfunc runs. The allocation can
+sleep inside the window, and with a BPF_F_MMAPABLE array the store is a
+plain user space write into the mapped value, so a loop can hit it
+without a single bpf() call.
+
+Check the private copy in both kfuncs, so that the string that gets
+staged is the string that was checked. bpf_binprm_select_interp()
+already looks its name up in a private copy for the same reason. The
+remaining tests work on path__sz, arg__sz or the local len, and the
+copy length is len, so the copy stays inside the extent the verifier
+checked.
+
+Results of bpf_binprm_set_interp() with the check on the copy:
+
+- A NUL stored to byte 0 fails interp[0] != '/' and gets -EINVAL.
+- For len == 0, kmemdup_nul() returns an empty string, so an empty path
+  still gets -EINVAL.
+- A NUL stored further into the string only shortens it to another
+  absolute path, or another non-empty argument, that the program could
+  have passed anyway.
+- A path that both lacks the leading '/' and is PATH_MAX or longer now
+  gets -ENAMETOOLONG instead of -EINVAL.
+- A path that is empty or lacks the leading '/' is now rejected after
+  the copy rather than before it, so such a call makes an allocation
+  and returns -ENOMEM instead of -EINVAL if that allocation fails.
+
+bpf_binprm_set_interp_arg() still rejects an empty argument before
+allocating, so its results are unchanged apart from the raced case
+fixed here.
+
+Both new checks run before the previously staged string is freed or
+replaced. A failing call frees only its own allocation and leaves the
+earlier selection in place, as the -ENOMEM path already does.
+
+Fixes: b4bfe2f6b011 ("binfmt_misc: add binfmt_misc_ops bpf struct_ops")
+Signed-off-by: Chris Mason <mason@kernel.org>
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+---
+ fs/binfmt_misc_bpf.c | 20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
+
+diff --git a/fs/binfmt_misc_bpf.c b/fs/binfmt_misc_bpf.c
+index ce1bc78e8511..a3e26e8a4027 100644
+--- a/fs/binfmt_misc_bpf.c
++++ b/fs/binfmt_misc_bpf.c
+@@ -141,8 +141,6 @@ __bpf_kfunc int bpf_binprm_set_interp(struct linux_binprm *bprm,
+ 	len = strnlen(path, path__sz);
+ 	if (len == path__sz)
+ 		return -EINVAL;
+-	if (path[0] != '/')
+-		return -EINVAL;
+ 	if (len >= PATH_MAX)
+ 		return -ENAMETOOLONG;
+ 
+@@ -150,6 +148,15 @@ __bpf_kfunc int bpf_binprm_set_interp(struct linux_binprm *bprm,
+ 	if (!interp)
+ 		return -ENOMEM;
+ 
++	/*
++	 * The program may pass memory that is written to while this runs,
++	 * so check the private copy and not the buffer it was made from.
++	 */
++	if (interp[0] != '/') {
++		kfree(interp);
++		return -EINVAL;
++	}
++
+ 	bm_bpf_stage_selection(bprm, interp, NULL);
+ 	return 0;
+ }
+@@ -241,6 +248,15 @@ __bpf_kfunc int bpf_binprm_set_interp_arg(struct linux_binprm *bprm,
+ 	if (!val)
+ 		return -ENOMEM;
+ 
++	/*
++	 * The program may pass memory that is written to while this runs,
++	 * so check the private copy and not the buffer it was made from.
++	 */
++	if (!val[0]) {
++		kfree(val);
++		return -EINVAL;
++	}
++
+ 	kfree(bprm->bpf_interp_arg);
+ 	bprm->bpf_interp_arg = val;
+ 	return 0;
+
+-- 
+2.53.0
+
 
