@@ -4,98 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60789C982D8
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 16:04:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A66CC982D8
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 16:04:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5CCCB6B0088; Fri, 18 Sep 2026 12:04:05 -0400 (EDT)
+	id 83DD76B008A; Fri, 18 Sep 2026 12:04:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5566B6B008A; Fri, 18 Sep 2026 12:04:05 -0400 (EDT)
+	id 7C7FD6B008C; Fri, 18 Sep 2026 12:04:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 41E976B008C; Fri, 18 Sep 2026 12:04:05 -0400 (EDT)
+	id 68F1F6B0093; Fri, 18 Sep 2026 12:04:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1BCF56B0088
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 12:04:05 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8D798120716
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 16:04:04 +0000 (UTC)
-X-FDA: 85227354408.22.5A4B83B
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 7F34420002
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 16:04:02 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ursaNtXT;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf31.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789747442;
-	b=Qja6gDbUspme0OGvQeBe1WwY64dLCc70HV8nXXeR15Dyh48FhomxqzZIY/i0ByTntkFZPW
-	rt2hQpeMiVIuFLL4t9cIsXublNxDsd/pNpMR6tBvQJlKXoyvidkHQPZWmAim2fIOAR2dSJ
-	Y73cjSyP5IoAQhdNSili0pES61/aX/M=
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 46A306B008A
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 12:04:08 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 320A31606F1
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 16:04:07 +0000 (UTC)
+X-FDA: 85227354534.08.28BF240
+Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 2C537100004
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 16:04:00 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=hpe.com header.s=pps0720 header.b=IHfsqH0i;
+	dmarc=pass (policy=reject) header.from=hpe.com;
+	spf=pass (imf14.hostedemail.com: domain of kyle.meyer@hpe.com designates 148.163.147.86 as permitted sender) smtp.mailfrom=kyle.meyer@hpe.com
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ursaNtXT;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf31.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
+	imf14.hostedemail.com;
+	dkim=pass header.d=hpe.com header.s=pps0720 header.b=IHfsqH0i;
+	dmarc=pass (policy=reject) header.from=hpe.com;
+	spf=pass (imf14.hostedemail.com: domain of kyle.meyer@hpe.com designates 148.163.147.86 as permitted sender) smtp.mailfrom=kyle.meyer@hpe.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789747445;
+	b=zgRwf+nTiya1pZd2PwsRREJ9Q5xy9OX1qrYeWFUBZHbmXI/FTrGXWNKiPCSn3yFLAzFPkO
+	3wu3c27rIH5V88PpZvRqv3DxuuG1I1+coTwTs4Xrb+yQJrTs0VLEVVhdwq/yPYD5Gt+VXk
+	tqoLvnUVAnC90skDRxMRepD+fd4490U=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789747442;
+	s=arc-20220608; t=1789747445;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PmurH01F0iDVNZT9cHRzqBUzDEgo/whWV+kg/9eQZSo=;
-	b=Tj1NtS6EdAzClTaGn10N5aHoEjQC5j0JIeXRGJnPrqXf1uR4N7RSh4XuefnqE8vhZT2Oz8
-	peWL0KCxuwRSVlxg2zmFGgBe+lUOxmSdAi1eoVNBV7/jEk2NyBu/vbFvOLPFLZYoaiXy8n
-	cll7pV7mXoXaL1Z83kF0/T5NZbTjKWM=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CFE92168F;
-	Fri, 18 Sep 2026 09:03:57 -0700 (PDT)
-Received: from [10.57.83.108] (unknown [10.57.83.108])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 610943F86C;
-	Fri, 18 Sep 2026 09:03:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789747441; bh=3do1fHEhpJFdddOzJMwgsSk4W5z16/aVCPPb79+UaWw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ursaNtXTCcqbQPlZcHlBtigESNoL8DsKRECG9Iqdkj3jgziA1On9agLeueKYJUzMZ
-	 VBJ8HQsbSdEVCjUBsfg35q+YGoQJpkq7G15flXI6Y15UjIywcb2nq3FBSi+KTOFB0D
-	 3OmrnfLX3muvFaMq+V/9S6YL7WX2+/DW0/+tjQys=
-Message-ID: <829523cd-85a4-4f8e-b9f2-f3c1d7ce4fb1@arm.com>
-Date: Fri, 18 Sep 2026 17:03:55 +0100
+	bh=uc4FCppFKvSYMEFUJD+GdMcIgxfJPxqNRU0X+NKpVX8=;
+	b=wDc9UoH99ITPIBTO+74x+Z50UkVrFUnGlSKYfEXua9Y/Z10qcqPNqv/Q3O8rBtD5RXMi7+
+	5hbdROTaA/ZtN5zHdtYYr2VaqTGGvdPRcNOEKX5aCe7KbToEENEdmjBJ0RNX6TUJJNVnaB
+	1IjPItz1bqGPAaEcTF6oextvOTAfYpM=
+Received: from pps.filterd (m0148663.ppops.net [127.0.0.1])
+	by mx0a-002e3701.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68IDNBXQ515911;
+	Fri, 18 Sep 2026 16:03:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pps0720; bh=uc4FCppFKvSYMEFUJD+GdMcIgx
+	fJPxqNRU0X+NKpVX8=; b=IHfsqH0ij+X+9h6dvxnKG+ln+4UgfkXSOrbSG2AMVN
+	3sAGXfDLckP+TodrXje4alDDMWqYZuWX9mY2/kKVIQNp8Lf7gvusxAbtarGjP7e3
+	nE46s84zQGcdMeD0F+i9pODg/yXV0R6XK5FaZbeuQDPNTf4F7gI/v4J/i5UIyInj
+	+zMM88w2fFRPSSTCkHdKcJCP25XMHdWw3GtwcqY9tQqPsMnsteWLS043RECtiu7+
+	9dT3MLQlm6zj3ihi3vAxuPSRHxj+ZTGXkiJZb5qTE6R3CVXbfbH/FM0/0gaYCDKE
+	odEEvTaWp4+bJik5jc7FoNK7I5XHRwE/YruFWbpr+img==
+Received: from p1lg14878.it.hpe.com (p1lg14878.it.hpe.com [16.230.97.204])
+	by mx0a-002e3701.pphosted.com (PPS) with ESMTPS id 4gs4bkbj1q-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 18 Sep 2026 16:03:12 +0000 (GMT)
+Received: from p1lg14886.dc01.its.hpecorp.net (unknown [10.119.18.237])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by p1lg14878.it.hpe.com (Postfix) with ESMTPS id 2BE6DD2E3;
+	Fri, 18 Sep 2026 16:03:10 +0000 (UTC)
+Received: from HPE-5CG20646DK.localdomain (unknown [16.231.227.36])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by p1lg14886.dc01.its.hpecorp.net (Postfix) with ESMTPS id E6C9280AA61;
+	Fri, 18 Sep 2026 16:03:04 +0000 (UTC)
+Date: Fri, 18 Sep 2026 11:03:00 -0500
+From: Kyle Meyer <kyle.meyer@hpe.com>
+To: Michal Hocko <mhocko@suse.com>,
+        "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: akpm@linux-foundation.org, corbet@lwn.net, linmiaohe@huawei.com,
+        shuah@kernel.org, tony.luck@intel.com, jane.chu@oracle.com,
+        jiaqiyan@google.com, Liam.Howlett@oracle.com, bp@alien8.de,
+        hannes@cmpxchg.org, jack@suse.cz, joel.granados@kernel.org,
+        laoar.shao@gmail.com, lorenzo.stoakes@oracle.com,
+        mclapinski@google.com, nao.horiguchi@gmail.com, osalvador@suse.de,
+        rafael.j.wysocki@intel.com, rppt@kernel.org, russ.anderson@hpe.com,
+        shawn.fan@intel.com, surenb@google.com, vbabka@suse.cz,
+        linux-acpi@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-mm@kvack.org
+Subject: Re: [PATCH v3] mm/memory-failure: Support disabling soft offline for
+ HugeTLB pages
+Message-ID: <aq1gtOOUqU1-RJJu@hpe.com>
+References: <aqiIEkrc6aDBOqRg@hpe.com>
+ <aqkCbgHmMGxI_GLG@tiehlicka>
+ <aqmGd0GGUCkbZpkZ@hpe.com>
+ <aqpYxAktjexhaMGc@tiehlicka>
+ <ad36cd54-7319-4bb4-bf8f-9fcc7b009158@kernel.org>
+ <aqqXbwglwYTyTuUG@tiehlicka>
+ <36480c86-fc59-4387-91a4-cad839f502f2@kernel.org>
+ <aqqdlndHq9vHeX8s@tiehlicka>
+ <67b63b36-82c9-45d4-8dd3-1bec2823a123@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/6] arm64: use hw_pte_t for fixmap HW PTEs
-To: Muhammad Usama Anjum <usama.anjum@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>, Ard Biesheuvel <ardb@kernel.org>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- Andrey Ryabinin <ryabinin.a.a@gmail.com>,
- Alexander Potapenko <glider@google.com>,
- Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-efi@vger.kernel.org, kasan-dev@googlegroups.com, linux-mm@kvack.org
-References: <20260914-pte0_arm-v1-0-bb53b663e396@arm.com>
- <20260914-pte0_arm-v1-4-bb53b663e396@arm.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-Content-Language: en-GB
-In-Reply-To: <20260914-pte0_arm-v1-4-bb53b663e396@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <67b63b36-82c9-45d4-8dd3-1bec2823a123@kernel.org>
+X-Proofpoint-GUID: L_WdTr3DFK_IidRpPlCXthNiuHl9BS72
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE4MDIyOSBTYWx0ZWRfX6ClIMWsv6mB4
+ 0IlWT184tZaynkzSZIDoNoAERHmTUSCeSWT2G9DqDmAPWikkEJHU7Z+OCK8WjidX8Tiyh8hpvlw
+ lKCwvXrpUS4ES7gMjdNHX3dLER0LLD4=
+X-Authority-Analysis: v=2.4 cv=EvhHPicA c=1 sm=1 tr=0 ts=6aad60c0 cx=c_pps
+ a=UObrlqRbTUrrdMEdGJ+KZA==:117 a=UObrlqRbTUrrdMEdGJ+KZA==:17
+ a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=gQcMVamqm3wCPoSYhaRC:22 a=6_mrDcixewTG61oOsKN3:22 a=RfWlH6W0a2UdQScw0pgA:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-ORIG-GUID: L_WdTr3DFK_IidRpPlCXthNiuHl9BS72
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE4MDIyOSBTYWx0ZWRfX3Q0UtYojvFKu
+ 3/JDEpX/5OkGU3VRG+md1cX5CgLjCC94TPLncGqJLs73047ibKMKLQPBDZ5i/WqWvhAkdWbnn/W
+ ZVEppZupoRXP1uUhtBcyQnOhEnhotct8Wgu+2kew7fd+WS627izPZKIkFIvXRhUx+JHE6SM0CPj
+ uSdlHm/QaKrlX23yGf2d7hQW6mu/x6TOkwGOOhw3AeYC3NQZPNbEbGdIpR84ISXLxLfqtqGWubo
+ XIeEycNeUpkkOsXfYZbkL4KBKH7y/UH+3D0btomS9BAXq7sYko+BxUHc+ieZdkyIJgApL/W6Ssd
+ 2sug4u2chH3zdAP2QKIZpQLTW7DMqM+Riuo36V3c38q2lhelThRXpensQbEUaM9bUYC6l9pPetd
+ N2/N4mA+n5OydnDCvJjB9m0CSrUFBvwPOti+oQ9RtzHfUCjERQeo1Xddenp9+Z0UqUSXay7BFjM
+ DRiMhlch8smkwEXvt8A==
+X-HPE-SCL: -1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-18_04,2026-09-16_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 adultscore=0 malwarescore=0 spamscore=0 phishscore=0
+ lowpriorityscore=0 impostorscore=0 bulkscore=0 suspectscore=0 clxscore=1011
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609180229
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 7F34420002
-X-Stat-Signature: y76p9q8ar6dnwj48syw5uzsmik3h4xik
-X-HE-Tag: 1789747442-398268
-X-HE-Meta: U2FsdGVkX184RbWD1EmmQDiO1hKh9FEarqdfNTTG8BUg5D9NK9QNE/i5r1Zdwu7kLIP0OqCwWOF0K5FcSAcqEQuBdtt19DsPQRMhIHBAM7g4kaiACJdhU/gZxFMmYc/G3HTOUmccCPeVLGP1W1CB0ulV9ihIADx8G78iafczAxvsMnFFCDPs7co4m21+ypdSNviHR3zwxJM6jTkScjkO+m7SSGoZJOgk37AtF3me5jwhWgvWYk2VQchMzFr6WSsLUdDqCahZiVyVuMzdU9VL55+I9gAg+kbJ87R7QxIL5UzYP3GVeIDqunRrAaXasKezHsnI+9vHwCp4Z8SNZdk1xVxzrIMu8IwT+Bsoj5s2+ES1OYVY/m09Q5Qo+NMWfkWhBUK88GBegoy6AFovensahMo4pSqbfE4TgCz6M3Zg3o1suKpRAlzbSWnQyilZA4lgMeUC770XU/SrF+4AZdMLHEQMgprgAvILnLuCIsLBuYrZAca2EsZCdhPvA2h8R+RzVszv/PiDFlgI0ns4v1qTwggm/dGGaa9pitLwsL+t122ZA/GjIFUpXb0KEqRAA2nacygV4mxcvZKH/AGQ+qBC1SXTkWmRO2g29NdrzPi1LYtPfWSQVKhB7vB4aBZ4ttNY7/SzwpiMm9XPi5Gfnl/fuOsxF7Cyh3USqQ4zL697GCTy4S9PD07NwtHHIWgSz/EV8mwvjvesF0Oc17cqXDblVpIxVvSlW4yrOhr6l76OR6H64X4bIlWxmifpPbPnMn50VNS3Jkc2RnE58n4ol2LsJyErtYF8dD5y4CcNMuIGG91zJbOm7+0SAHDpN0VGZwOiWnpQgYOqX6fC2MrRuBHGmO5hKbJJsGKZ+hYwpo/CaD5uYf4qiyX/HZkkz3cCt1uuMfZ6Vslugui2CTCKwsOJ2UhBDkhPbmKWR0fC8Wj2Um9FQxo3JyrVNPVkm+px/MC09XtjotqZz6iE2KkfyNf
- wGGcK86V
- CyjB7sp7El6dcuImx+00svDZ5piucJcp3qkjEGB275+xrNZzGS/X+5abU6Z+b8BHHlis2iViAJJJYeM8Rmt8Pt6hpSiHQLWJ72PGWJN0kj6LEtIw1sqADNb/ynnp+D65sUkN6Z0KGYn+H4vfUspWOWPKxwsvdWIGpngd6VIlYnHgEzsiBp9Qa+BOIRaP5t27epY2IOJKJXZ+p2Xg1esvtZYkuuNodtu5aBk+tjBl1R8C9NzaW49m6ulJqEciDXuprUpqsSP6y618IQo4rG2yDZ/GbXHOouHdCMFvbZNnrMiobdkpDOw0z/yKgK/qjo4aXY196+zK9adXxuU1mBLFprP52b0s8ldAtrU38QqGR4Mwt76stOmmHD5t7TTyX2g9QLwc93xpc8q8glDayc6y2BYPALZ37apiMpHTW
+X-Rspamd-Queue-Id: 2C537100004
+X-Stat-Signature: 8yidpsew34g468j8h9puyqtsyh9cryao
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789747440-705468
+X-HE-Meta: U2FsdGVkX18Lxbp2x3mEWQikrBNMETEmOo5uoYyzY04IUUl4PPpSqTCQTi53JYkWnwO5USaCvyuvPfMhqgCPpeT6yTgXvPHmFL/A1nD1X3ViHKJ4NsXcmq40UKhV/lmxvLdCx+8qZmkyp5p22GtrNo6oqtG4mlewECAVR7hRPtLXee6sl6ZQZFz8cM/4pifZYpswIv/ECGN9DcXcwAZ+7SWaBTeO4LJSlEXNzUhYJCqf57O3kFB0jMLPPvXo1hmQL1I6irExb6VlP3YR040gXCxofCNG26vSQz03AaKhnEhWE46MW5IVM8PrYNEWn1jM4FrFPgZaZ3QEHK9CHhQBY1eipJ+N0RSksnEDdsnOV0q5RTHSfqi7QS5E70+T5ZWTRzLDzATnFRL8K9bM9zecm4mT0Hd0Fetz0SqhnU+OnjvR8cUmBkKwOD49zy76uUphnQWGyZGf+Gw0PfAl6lMDdmOBvulWtJKbqUVER4kltt/OZA+B9QidumGZfvkvcx3f2i6WWjaxFI27qxyDrnkiZsGvOH3oQYeQTiXhCQdwRxTTW0+jbIrhk7gbjDmstSqB7sxkvdLg3jWl7mJb1MhH5Py6qK5fqvblHvOC1wmRsZ/DryvbXq+VevZlsThjagPhjQrsXoToTF42LgvSJs+JLSkqb6oS30yZz7JuQ+a3RjfDJFYv0K5si7/LCnAxmXtviz+iMsxf8dP5aGfXpxy0/SmnC25UrmQo2IOUdENZmnEBB0ZLYyAagkQlXNrUbqSwQLDkH182DGaBO9vrL2owgRcNimFLGmum0eZQdqVrSQUGUIqS5HXkV2U/v4rKFnEJbc+SJDtc68hl1BrJUVH/ReYMdE9UZN2WeuAaXy5dU5r34/Syko3XTVypz646av7nqhYO0VD9xJBZYbqlBDw8jAc861xCYHEBXwmN+LaJ5C1tqNIzvWoD+RC2bsYXJ6p3HyE77g2xhX7HxDdeDQN
+ E2BC8Doj
+ 4OdnXdxhr42CgdxvGyA6AlcVY6k2TCvMI8JQU3iD+7Ke6qoxpvQ7bbbtpHkwTp4Lxb6KRAMkLwhwB7MUWUV9WJRWOUOY/O9LDNpsQ6qZoBnvEYmcydnIrKvPsnRPae5v8tiAm1gOCGDy5SbIPTlLvkMJjzUSg0rPswZVlQLgXW/za7JUyFkregpy7YUB1yu26zIhv2xzX/aweIx2U+y/cVTlwt55khVXWuwSMgHNpHOSUGVv6hxuXQ7nQa84aAFUdyeA/wUmjv1CHnTs6V03W2d+XQ9v0GhQHaNlQyXIXN8Wtb7qP/LKRQMlujQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,53 +149,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 14/09/2026 14:51, Muhammad Usama Anjum wrote:
-> fixmap_pte() returns a pointer into bm_pte, and early_fixmap_init_pte()
-> installs those arrays as page tables. Their elements are therefore
-> HW PTEs.
+On Wed, Sep 16, 2026 at 04:30:46PM +0200, David Hildenbrand (Arm) wrote:
+> On 9/16/26 15:45, Michal Hocko wrote:
+> > On Wed 16-09-26 15:28:01, David Hildenbrand wrote:
+> >> On 9/16/26 15:19, Michal Hocko wrote:
+> >>>
+> >>> Yes, no dispute on that. But we have HW poisoning for exactly that
+> >>> purpose, no?
+> >>
+> >> Well, that tells you that the page content is effectively gone and should be
+> >> tried to be recovered / migrated away. Unless I am messing up terminology here.
+> > 
+> > Maybe it is me messing up the terminology...
+> > But I guess we have established that whether soft offlining is being
+> > abused or not, excluding hugetlb through a configuration is just a wrong
+> > thing to do.
 > 
-> Change the element type of bm_pte to hw_pte_t so it matches the HW PTE
-> pointers returned and passed to the accessors. This is needed before
-> ARCH_HAS_HW_PTE_T makes HW PTEs and SW PTE values distinct types; the
-> array dimensions and placement are unchanged.
-> 
-> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
-> ---
->  arch/arm64/mm/fixmap.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm64/mm/fixmap.c b/arch/arm64/mm/fixmap.c
-> index 237a9136bc73b..709a97fe327d8 100644
-> --- a/arch/arm64/mm/fixmap.c
-> +++ b/arch/arm64/mm/fixmap.c
-> @@ -31,7 +31,7 @@ static_assert(NR_BM_PMD_TABLES == 1);
->  
->  #define BM_PTE_TABLE_IDX(addr)	__BM_TABLE_IDX(addr, PMD_SHIFT)
->  
-> -static pte_t bm_pte[NR_BM_PTE_TABLES][PTRS_PER_PTE] __bss_pgtbl;
-> +static hw_pte_t bm_pte[NR_BM_PTE_TABLES][PTRS_PER_PTE] __bss_pgtbl;
+> Yes, it's odd that you wouldn't want to evacuate hugetlb but everything else.
 
-I think in my original proposal it was impossible to have a hw_pte value; only a
-hw_pte pointer was possible. Being able to create hw_pte values means that it is
-possible that a hw_pte_t pointer is not actually pointing to an entry in a HW
-pgtable. The main motivation for this is that we want to dereference neighbours
-of a hw pte based on it's pointer and be confident that it is safe. I think this
-removes some of the safety.
+Thanks for the feedback, Michal and David.
 
-Clearly in this instance, bm_pte is still defined such that we have an aligned
-page worth of ptes, so its ok. I'm just concerned about the potential for
-changes that don't follow the rules (and don't get picked up by the compiler) in
-future.
+I'll drop this series.
 
-I guess that's the trade off for having something that looks like a pointer
-instead of an opaque handle.
+It sounds like the consensus is to keep soft offline behavior the same across
+page types.
 
 Thanks,
-Ryan
-
->  static pmd_t bm_pmd[PTRS_PER_PMD] __bss_pgtbl __maybe_unused;
->  static pud_t bm_pud[PTRS_PER_PUD] __bss_pgtbl __maybe_unused;
->  
-> 
-
+Kyle Meyer
 
