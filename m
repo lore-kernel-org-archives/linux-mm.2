@@ -4,110 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BC29C982DC
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 10:18:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 314E1C982D9
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 10:19:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4347D6B00A3; Fri, 18 Sep 2026 06:18:57 -0400 (EDT)
+	id 483766B00A5; Fri, 18 Sep 2026 06:19:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 40CBC6B00A4; Fri, 18 Sep 2026 06:18:57 -0400 (EDT)
+	id 45A6D6B00A6; Fri, 18 Sep 2026 06:19:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 34AE46B00A5; Fri, 18 Sep 2026 06:18:57 -0400 (EDT)
+	id 370486B00A7; Fri, 18 Sep 2026 06:19:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C17A06B00A3
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 06:18:56 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 53FD280639
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 10:18:56 +0000 (UTC)
-X-FDA: 85226484672.08.9B742E2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id B0E7C140008
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 10:18:54 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20260515 header.b=lj1qm4nu;
-	spf=pass (imf09.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1633D6B00A5
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 06:19:01 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 290A01A05F0
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 10:19:00 +0000 (UTC)
+X-FDA: 85226484840.02.EC2F31F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 8114F1C0004
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 10:18:58 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Nih+Cgdh;
+	spf=pass (imf18.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789726734;
+	s=arc-20220608; t=1789726738;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w5fb2OONy/GtAEA2nh09Nc6VmArU5Yo8QzF94WDuj7Q=;
-	b=YCZuBHdPeFlKoQRpRDTqTSzBmY92aCOgKH8+HDhDkh1BBiyPSPM4r8f16dOvkCt6ivIfDT
-	pREMx72qE8FLX7ZKxp8UyD9LymG36paBMQSSbsxNF1pvJA/1Z3htp+XlDwQPVRjcBZ8+4f
-	P2xBnKLqjUbRq1XDgnh6JnFbntbPOaw=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20260515 header.b=lj1qm4nu;
-	spf=pass (imf09.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=NK4q4bMTc4NtuqUZq2p2ouZ93CvhS6B9qDA0XHB+AQs=;
+	b=hlIxl2BD4/EBCaQ5pUOW3PPCJ/gpeD5z730D8Lv/IKU+OrfK+/YKs1bxUwg2V2g3S6j7pH
+	NFni8yjzEDqyrlwGIG3ZBSVw1Kqi5PG+VSClBLwWFQ7rLNLj6sl9lGpEflq/74f8vzvNbv
+	jHjfyNyorI2aPLQOMnAGHdpJqpQkRQ4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789726734;
-	b=Ak29nASi/JhE634Ooei06/N62dzRA2Ij1gjl9FgU7XUrgTOoP6kFWnMM/Rl3tfmx3mX4eR
-	c/3STMvgC+6wTD/RN8RAYN3RBE4X9bJe1NQKwGK4SjU0sSP+JIW/fLLmao7T39UBy18ToM
-	6Dvtmr8COPS/KrRa66JdkIf0OA9yBYk=
+	t=1789726738;
+	b=eEceqA2hg9thn9hOAZPQiiINE/g7mXR4+Rw+gvZF07NVbBInqPh1B2Sr/XgLILMIEVBDA/
+	ajb5y3V702wKZM70UgBwtPvWxMU8ClbH7nGC5HiSZq7TIjkuqmscabvMwHmM7r2b/Y/JhR
+	/s5oXIdMq53dG62nqeXlatccxy050lI=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Nih+Cgdh;
+	spf=pass (imf18.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 02C8C417C9;
+	by tor.source.kernel.org (Postfix) with ESMTP id 196A860A64;
+	Fri, 18 Sep 2026 10:18:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A10E1F00898;
 	Fri, 18 Sep 2026 10:18:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E1441F000FF;
-	Fri, 18 Sep 2026 10:18:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789726733;
-	bh=w5fb2OONy/GtAEA2nh09Nc6VmArU5Yo8QzF94WDuj7Q=;
+	s=k20260515; t=1789726737;
+	bh=NK4q4bMTc4NtuqUZq2p2ouZ93CvhS6B9qDA0XHB+AQs=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=lj1qm4nuzvY02T7ZQm88v8594RzQxLp2GRkXbWgVVtVBvfJ+6goLRgyhIpzhTJXQZ
-	 2pCDF8LvVM9fJ6fKY4+uc/wQedLYCLDrjQbRopgkTtwyv4NIZXDsJsBsWAeToGhILW
-	 qd7/SMXEZaj32E8uUi5oBjPfqyGM9+5tnt3G7yuecWX/qsPGerXYb2JIpM5s946iF7
-	 yX0r6HiqXBjOBn9Vf8OIhbAyKlBkfCZ5xjd2UdjefGRfUDGraENXigs62wTGvXo/Nl
-	 LkzE83NwKAHUJdQRZdZ5u09Z6Rm8qLlOmfxoay4Us/G2o7l2JK4cU7+i/D/m+wP5MR
-	 vk5oADV1Jc8tA==
+	b=Nih+CgdhGnLO8TOeDlPBdKPirdBoHe0i3bMXikC3kG5yEMeDAdT/7gzT4yWuBpvZx
+	 W7cUWDlxizNzUCQLwfXs94uynL6mjAM7ePcKxhgXkPT+1qBU4XiAVkZUxCID7DY2Jb
+	 +goXUKIBVWZDUgSR4iPriXVvwYXN8d8X9H82/VSmmMSLI/OoaAUWelD4FsQaZZammh
+	 eYyGUgPR2fj74PNv1XQ3/oKvNKleNUqhIx12OPwpZiHqNhqR9DXO1fQvv8HQ/XlO0M
+	 vmZ3I07NIFGVT6o1Dcu0cuUd02YdMq7cV0HFTHOA46CJjQwBsUjh8NbSWls+LhVb5U
+	 tjgTt00+qSZbw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 03/17] kexec: Extract kexec_free_segment_cma() from
- kimage_free_cma()
+Subject: Re: [PATCH v5 08/17] LoongArch: kexec_file: Fix a modified_cmdline
+ leak
 Reply-To: sashiko-reviews@lists.linux.dev
-To: x86@kernel.org, me@linux.beauty, vishal.l.verma@intel.com,
-	npiggin@gmail.com, sourabhjain@linux.ibm.com, lizhengyu3@huawei.com,
-	dakr@kernel.org, blum@kernel.org, linux-mm@kvack.org,
-	dave.hansen@linux.intel.com, eric.devolder@oracle.com,
-	adityag@linux.ibm.com, akpm@linux-foundation.org, will@kernel.org,
-	takahiro.akashi@linaro.org, bgwin@google.com,
-	catalin.marinas@arm.com, coxu@redhat.com, zhangtianyang@loongson.cn,
-	driver-core@lists.linux.dev, kernel@xen0n.name, kees@kernel.org,
-	hpa@zytor.com, kas@kernel.org, seanjc@google.com,
-	linux-kernel@vger.kernel.org, mingo@redhat.com,
-	ritesh.list@gmail.com, sshegde@linux.ibm.com, ruirui.yang@linux.dev,
-	jbouron@amazon.com, leitao@debian.org, tglx@kernel.org,
-	chenhuacai@kernel.org, hbathini@linux.ibm.com, james.morse@arm.com,
-	mclapinski@google.com, palmer@rivosinc.com, ruanjinjie@huawei.com,
-	linux-arm-kernel@lists.infradead.org, robh@kernel.org,
-	linux-fsdevel@vger.kernel.org, maqianga@uniontech.com,
-	gshan@redhat.com, chleroy@kernel.org, liuk@kvack.org,
-	exin@kylinos.cn, "Jinjie  Ruan" <ruanjinjie@huawei.com>,
-	mpe@ellerman.id.au, pratyush@kernel.org, ardb@kernel.org,
-	piliu@redhat.com, maddy@linux.ibm.com, yeoreum.yun@arm.com,
-	loongarch@lists.linux.dev, baoquan.he@linux.dev,
-	mark.rutland@arm.com, rppt@kernel.org, linuxppc-dev@lists.ozlabs.org,
-	gregkh@linuxfoundation.org, rafael@kernel.org, chao.gao@intel.com,
-	graf@amazon.com, thuth@redhat.com, guodongtai@kylinos.cn,
-	bp@alien8.de, pasha.tatashin@soleen.com, tangyouling@kylinos.cn
+To: rafael@kernel.org, mingo@redhat.com, leitao@debian.org, graf@amazon.com, ritesh.list@gmail.com, coxu@redhat.com, sshegde@linux.ibm.com, catalin.marinas@arm.com, bp@alien8.de, blum@kernel.org, chao.gao@intel.com, linuxppc-dev@lists.ozlabs.org, chenhuacai@kernel.org, jbouron@amazon.com, eric.devolder@oracle.com, palmer@rivosinc.com, akpm@linux-foundation.org, linux-kernel@vger.kernel.org, hbathini@linux.ibm.com, rppt@kernel.org, james.morse@arm.com, will@kernel.org, maddy@linux.ibm.com, chleroy@kernel.org, dave.hansen@linux.intel.com, sourabhjain@linux.ibm.com, mpe@ellerman.id.au, baoquan.he@linux.dev, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, gshan@redhat.com, gregkh@linuxfoundation.org, lizhengyu3@huawei.com, adityag@linux.ibm.com, tglx@kernel.org, guodongtai@kylinos.cn, "Jinjie
+ Ruan" <ruanjinjie@huawei.com>, me@linux.beauty, hpa@zytor.com, x86@kernel.org, piliu@redhat.com, ardb@kernel.org, takahiro.akashi@linaro.org, npiggin@gmail.com, maqianga@uniontech.com, mclapinski@google.com, yeoreum.yun@arm.com, kernel@xen0n.name, vishal.l.verma@intel.com, bgwin@google.com, driver-core@lists.linux.dev, seanjc@google.com, kas@kernel.org, tangyouling@kylinos.cn, pasha.tatashin@soleen.com, zhangtianyang@loongson.cn, ruanjinjie@huawei.com, ruirui.yang@linux.dev, kees@kernel.org, thuth@redhat.com, linux-arm-kernel@lists.infradead.org, liukexin@kylinos.cn, dakr@kernel.org, pratyush@kernel.org, robh@kernel.org, mark.rutland@arm.com, loongarch@lists.linux.dev
 Cc: kexec@lists.infradead.org
-In-Reply-To: <20260918100442.3841135-4-ruanjinjie@huawei.com>
+In-Reply-To: <20260918100442.3841135-9-ruanjinjie@huawei.com>
 References: <20260918100442.3841135-1-ruanjinjie@huawei.com>
- <20260918100442.3841135-4-ruanjinjie@huawei.com>
+ <20260918100442.3841135-9-ruanjinjie@huawei.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 18 Sep 2026 10:18:49 +0000
-Message-Id: <20260918101850.7E1441F000FF@smtp.kernel.org>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B0E7C140008
-X-Stat-Signature: n6myuf4b76y4ea8bkf4mzjfbgxf5ujje
+Date: Fri, 18 Sep 2026 10:18:54 +0000
+Message-Id: <20260918101854.7A10E1F00898@smtp.kernel.org>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8114F1C0004
+X-Stat-Signature: gmu8q7uaxdtked5amup5apd87uwqzjwe
 X-Rspam-User: 
-X-HE-Tag: 1789726734-487996
-X-HE-Meta: U2FsdGVkX1/09OtVyNHmRL7ob3VaMn5QYHnUlrVcVsx4jeZQrMkbHg2Xni7HH7lNHNpbJPdTtIm6GAevCb0AUV/FFo5MaVgQyJugiaQxc2cBbqJc4Nn7PjX8GchZgpUMCfEW3pRq+aBlo95f/vRhb1Ydl78jv/BtUO1AH98uPWABnWz3k/XmSoBxA0IlBowDWCMLqUSg1662n0pAWjv7N1A/SxUM5+7P48mBr4ont2w/TRooU9EODlA4ENxMHp9wTNtjb5MbglXMGC2VOtzeD+lXUaogO4hTHSpU7ojZzSem6eISvbQIPRgLFEHXt4uucdA1hbyDutibSvyO1yoNIz4Spr2lXQgMBq9Iu3KV2kVdQGKwU8lHsNRSb0J10BZvO5/UfdtBK/5wwCabye8XeX7gqtOd4+XIUFqUSZjKBjLMHx/L8t6UdAtOrNJh3auIhzI1ZaOcJN/EFWuyUrxS+/qEcZZoj1+lgFJUykO7AW+AJ5Sn53faZ2aWkCe8/WX7ZKEWNQx/Z1MuuoorJrdllxgWXjGLEeN0+vhXzyvwv62hF2zFvkkTjkWT5PD7kuwDZRpzg/af14ImI1xdpFg6mIYR6cntgZU0BCtzD4Iosue0OB3ry+lcnUzUKWr4S9pbNSOAVPfKO1lgbUXunMXAGYROu0wbDgZnpooiHVLQHPiDm7dzROeQTWmBaWE7usOnxkoet6Vby8hb6o+HhZLHR3+wy6euXtlAT/vMtorE2aTme6hMAL+U+RAXCthU7GWGnH65cgaj/Z0GkIg90JyuxrA0GfEts1N75VdARvw12WMTltyGGhwsPwzmnqHWa58DEhMRNFarLUGlpQYFwsk/ORsVtQc9gq/QucrL9CdLe7fc6CRVoT8hDhV9zX58Exeqmpn5RK8uwdPstn92uGJGsnCge6tddpSSTk9pOJRK8ArRK29aAC3tjZil0AqkCzwRiWB2j3YrNmzV+JxlJ1R
- jV8h7n3V
- 3GIaHnq3mqiozKopcu6HqrjBLN15WXcUy5gS0ZLBmgc0euPygPnoSkoTpnaoo9oIow517z0AWTgrH4nkj7C0s5NwcmH9313ToDBMWQEt5bSCgXpVgxijHhjLo/FhL/HmfoJIg8CsZGdCAXhH0KbHm4JFcLhXAVUu2m41fmNgwDEfS7AYycJyB5A5FPuZ1xymZlizHbIm9+8AMQwC0i7pAYHeAvAcN5TY5d1/7w+idfK73+hkziqp+x8tEYIG692aS+8VFyUJ2DKifp/5nekfjBO0GvZbqK07W2KSusFTDJ9k/TdIZh/zmEj/261fi2iZU5cFMhsdd1qc+tMIMVoR4lOjgnByi3K/HDsDax406K+H4RyQRRBzd/wdYpj8MT5O4UusxHxfCqJgwNqql1vU4hN1wmyWgItbOWQXnCZB4dCyzZaQWlhdH3pBTRL/ylFeefvZjpFXNHiHoulrVAaYNid1ZqBRhSVhw6kAq0k3zwIhfvqsw6Nv9lo12SX18/2kV2FVrp09tIhB0/UoRqeoYW+tWtIVi8XS+nyDgtKIyNxzxjjYKGR6C+MK2gVbPZCBLoozfimPqA4+4iq2gnv6szuTKOQzu5IYL3L3Pst+e5RkQAdQYq6PO7SRYDTUXnkpxGV7E5E4LCKrjK/JDkyruadsJyQ0dJKWDEX3EQyrN0HrZO0tR8I+vEzJlrAfkm8YCv9sNsb3HcNk80l7m9nBEH/inHttQMlw+6vqk0Idd8gE4BQm20XdOb1R5IKXMpLFGk1KceZ5i7yq2JQ56MBKaXu5YFqfzCwjJVnpPzDV3TSNipS+1uSWtLOFZwLWBfFATlnGopH4o2j3dbgvDwrk2lkk4/rH5ScK+FFVnBmrJT81ZTqvw/Ei3QILZ92e85tpC78yHCDMLJROTeLD+kaKj+4vFjg5g6hNl0JEG
+X-HE-Tag: 1789726738-306856
+X-HE-Meta: U2FsdGVkX1/yyo2jwalRR3Ws9GBUL/+M8rClpWViAs/uNvWzhaGv68STltn5lkLxWXkWqyNaC37uVsLNZ6nlXHXRpd45FQFn/v5leFSjeY9d110dbdzfpWh7LuVQqXUVKpxIEhN8dDEvdQTXSkGKZLEXDe/rNC9x1rBWUZL7NEnHgf3fvoRKQyDmE2Md8DA8lsDXRwkfY4NU4MWsIio8A9E35WJL18uMJ+hzAQ2yrbZQKzQE1UMscZbn+4iGSF5joyg2u+Ot0YgILptYJsKwXy+unuCQiLDPMDxUWhYAjTKjQh+213Yp+md64InWYJEDA6GjwgX6He0sD3EMCa+jcFm4Y8m/2rjLFLMFhxmnlPIKtniwEuFJb/HViONDmh4IitbQIG6xlvdORgI47NkVNrG//ss9WLFXEBkyMxwiG58PFUBT1NtjN1QYkF7IVOMD+Yc9z3YViLlDzHxy7XLj/ta1hRkcHDIf9/iNgtEL5OtBkIPeL88nDY4mJFY9eCsy4v9otKpV2XRDGp5Q438FJgqJyLZvZWJZD7+5B/CKU0tNY07KAefGeWzWsq1JvV0PrKFg87jtfPoj71YVmPkdMSzsdb+VKbzWtSAkMrx2zjuTE9sCDmrpQbzRMsiF5ieKDn+tEL5mgfOVDA+mS1gyhuiIgR7rhAuFwFqBEFXw9yh2YJDeAVC3nLg+ytTDixKkv1/cS/HdBx2q7iNF5znasMfNdwlhQGLRHt5F7t4YtMSz1WB6rPdvKHZYgzonFwR7vpxnp8EraK0GQJSckmr2MezbiHoWqKhqrNJLM98VMfeJnMFq8yvLHHOzLYYjDRGkXJNoHPx/+PbQnBXx4K5Rd1t5DYpITWPBw/avC9sr18DlNUeRgLUFTlHG0R2JdOr+ajUoHJj3ZrOD4dIzHGJ0gxLTtuEuMJ4rmW2twc6EZiBZ3pyJ0uyuAK/H+6x9/yxIK1g0h6EqlCHYacHdDkv
+ UUcB9wJf
+ NEJi9vEVgYEFNTNS7DkoqilfZZqTm/PXjgg63tAC+VvDEib+M49SH/uYuKZjnFxC7Mplp+icTaWgfZ3X6RsEp/+W1x+OqBoNkAp17bfBUnftaWHQWIDKyRJEDUTAUEzi1bf8ivTNrFMDtJYOhZb/SQRnQTQDllUgnt0S+Mc2kRB1HOVnj2ukxFZTjltyyrlWVGEOcpBoqMNYSqVvn2ct8VQb+Lc7hzLYwexCzjZJk3PNeFRrW/Gpi3xWP0F1HwBRwI5TudQFf2Bku3gzAY+4j5gOJvg3enZEJOVngTNW/7+03D95kPmpJ9kuSMlb3PVN2J6lpAGeXP4CPKWTemO5p9v9NuhTL0ZpciqtPPigKwCcP3TFUg31EsCznh2uPfxIZkJiIBzhHaCEMUoeGItp4zG6ofOOOVGoNcBOfn/k7vvVwvWf6LUfhLmkkGxGpMgNWiXcZlVYlpbLLHab3j64ZFo/0Y2vLSI7/UcFzd4hcIlUBid/xWPUC9X+1gHFg8L7J0xvotlai/gSH2qT4btEdxm7CcBurTZinwrlzfgLmUMVOZKTYurZdIgY2R1Z9IZesJmNimEuWkuFVRZL94R24OepfmRdSr4+SpO4zalvM+z/zQzhP9j5kpKW2GYiRNUMeRrfUJoJyKhi0YPBAH9numdzz48pPhzinntzUcIkZivJLJLYRhUcBfAfCF9A8Rs0bWxp17tabKYBHw+IPX9tg3QNmMoMhQsaL0nxzvElsVp82SLmmMxabPD+iATOhVi6yrWr4WhEP2Fz5qkCY02BTJ4osua/UvLspKBNT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,28 +92,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> kimage_free_cma() relies on image->nr_segments to iterate over segments.
-> When an architecture loader (e.g., arm64) truncates nr_segments on a
-> mid-way failure, CMA pages allocated beyond the new boundary become
-> unreachable, causing silent memory leaks.
+> load_other_segments() allocates modified_cmdline and stores it in
+> image->arch.cmdline_ptr.  machine_kexec_prepare() then copies it to
+> KEXEC_CMDLINE_ADDR and overwrites the pointer, so the heap buffer is
+> leaked on every successful kexec_file_load().
 >=20
-> Extract the per-segment freeing logic into the exported helper
-> kexec_free_segment_cma(), so that architecture loaders can release
-> individual segments before nr_segments is truncated. Refactor
-> kimage_free_cma() to loop over the new helper, preserving existing
-> behavior.
+> Free the buffer after the copy.
 >=20
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Baoquan He <baoquan.he@linux.dev>
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
-> Cc: Pratyush Yadav <pratyush@kernel.org>
+> Cc: Huacai Chen <chenhuacai@kernel.org>
+> Cc: WANG Xuerui <kernel@xen0n.name>
+> Cc: Kexin Liu <liukexin@kylinos.cn>
+> Cc: Youling Tang <tangyouling@kylinos.cn>
+> Cc: Qiang Ma <maqianga@uniontech.com>
+> Cc: Tianyang Zhang <zhangtianyang@loongson.cn>
+> Cc: George Guo <guodongtai@kylinos.cn>
+> Cc: stable@vger.kernel.org
+> Fixes: d162feec6b6e ("LoongArch: Add preparatory infrastructure for kexec=
+_file")
 > Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 
 Sashiko has reviewed this patch and found no issues. It looks great!
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260918100442.3841=
-135-1-ruanjinjie@huawei.com?part=3D3
+135-1-ruanjinjie@huawei.com?part=3D8
 
 
