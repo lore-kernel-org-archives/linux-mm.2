@@ -4,30 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80BCBC982DA
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 10:04:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67FD6C982DC
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 10:05:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A34DB6B009E; Fri, 18 Sep 2026 06:04:30 -0400 (EDT)
+	id 68AC46B009F; Fri, 18 Sep 2026 06:04:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9BDE36B009F; Fri, 18 Sep 2026 06:04:30 -0400 (EDT)
+	id 5EDAB6B00A0; Fri, 18 Sep 2026 06:04:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 85EE26B00A0; Fri, 18 Sep 2026 06:04:30 -0400 (EDT)
+	id 4DC906B00A1; Fri, 18 Sep 2026 06:04:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 583406B009E
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 06:04:30 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E8E721405E5
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 10:04:29 +0000 (UTC)
-X-FDA: 85226448258.28.7C82703
-Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
-	by imf17.hostedemail.com (Postfix) with ESMTP id B0A864000F
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 225E36B009F
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 06:04:31 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8FE72A0621
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 10:04:30 +0000 (UTC)
+X-FDA: 85226448300.27.E23A677
+Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 7254C4000D
 	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 10:04:27 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=zvyDPHtM;
-	spf=pass (imf17.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=h20MzYgr;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf04.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=h20MzYgr;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf04.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789725868;
+	b=HTsFJcJoWR3y1WSg5zPwiArUDFop0nHPvPxdYCupZrksusPHfJ+jV8FVuNjB07zwgLs+kx
+	ZmtoMDxWCpXJd9VcpHqCpXpgWA+7YtQ9fpupPet6OT2/12ba9TzypNWdNbOnIJGLfhJcBH
+	xz9js7hAmtXAtY2NCvqQ8V6ZnKw0sEg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1789725868;
 	h=from:from:sender:reply-to:subject:subject:date:date:
@@ -35,37 +45,27 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QWRwGA8IIWGqEmgXFHVo35ysA7ES/LPOJVNWp6AUBps=;
-	b=pPeBdhnTInP5lnCU5ySMef7T4Yh9UxL+0alZYFTHV+L5E/s4U+jwI4GcXQAn3TaZcBgsiw
-	RQsBsua7a3n3XuLHWYN40UQuvm2Hbdb1FN6vyl2l6E88ZIJHVjp5e9e2QAOEAtsYNR2ejT
-	0FsDTXwZAWu2ZC47liIFVeq3g4KBRnw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789725868;
-	b=5vgYWU3Zn/6CVStrWYmxHs/oqtraSMt3lkZaDGmjQPmaLIaeYd2Is9KfcWrpOWJpeh6MbR
-	T9G3Z0qUWpYHPfAOaG5Y38wxtQYAswUD1lDoPbAFKgUQ5/pOdImURh6GkoHVZ72p32vNbv
-	dpkJ/DA7uaLVw6aBkNhrH0VLF9upy1Y=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=zvyDPHtM;
-	spf=pass (imf17.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	bh=20ZJiQbk77XpGyt2zLlFzhTV8L6cgd0AT+Mg72ZNP+o=;
+	b=6F2rKyeWJPPssD4FpKBb5hQR+RGu6mfipd410GjoZnhUtUwVV6LnE7Fz/CFU5w4aJigCl7
+	AAZO/RGtwGfIey9lErFgBaJvGyN6vUphv+v3Qgdm9Dv9urW6eoUBsSlA65B2AoVoq6FiKW
+	UeErailSrSjaYqI1K6DWPksqCAVv5qQ=
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=QWRwGA8IIWGqEmgXFHVo35ysA7ES/LPOJVNWp6AUBps=;
-	b=zvyDPHtMXrIlKFMijCNSGV93POHhDpPEWLDf6NcDHeY4LQlngXcrut7XT/+zJayfwCPKA+CjB
-	rIjWb7CcBTXVBn1eLuOcyP5UPmoRPnG64cslN+lcdwQdBUwDiDN+pGdNJR2HL+wQjqIhN5D0E/5
-	lx7RD09w72DQURnUsPZ6Wmk=
-Received: from mail.maildlp.com (unknown [172.19.162.144])
-	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4hmSbS0pcszpSyG;
-	Fri, 18 Sep 2026 17:52:36 +0800 (CST)
+	bh=20ZJiQbk77XpGyt2zLlFzhTV8L6cgd0AT+Mg72ZNP+o=;
+	b=h20MzYgrtfLEEV4IsF22m8M0aeU+9fIDiLpJWraCVTgEvlTBvhYu0irkyY7dZ8KlR25j3eFDX
+	uDHiuEi34Vyc2FyCL6c39JSfjX+M3Cz00j/vkUz1PTc66H//7kIYPJQEJrTEE3IZKzXvZCqcFXg
+	laCNtc/NvKopW2lnm4CTtD4=
+Received: from mail.maildlp.com (unknown [172.19.162.92])
+	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4hmScJ5pDBzmVWf;
+	Fri, 18 Sep 2026 17:53:20 +0800 (CST)
 Received: from kwepemk200008.china.huawei.com (unknown [7.202.194.74])
-	by mail.maildlp.com (Postfix) with ESMTPS id 36D4240572;
-	Fri, 18 Sep 2026 18:04:25 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id DC0BB40586;
+	Fri, 18 Sep 2026 18:04:20 +0800 (CST)
 Received: from huawei.com (10.90.53.73) by kwepemk200008.china.huawei.com
  (7.202.194.74) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Fri, 18 Sep
- 2026 18:04:23 +0800
+ 2026 18:04:19 +0800
 From: Jinjie Ruan <ruanjinjie@huawei.com>
 To: <catalin.marinas@arm.com>, <will@kernel.org>, <mark.rutland@arm.com>,
 	<chenhuacai@kernel.org>, <kernel@xen0n.name>, <maddy@linux.ibm.com>,
@@ -91,9 +91,9 @@ To: <catalin.marinas@arm.com>, <will@kernel.org>, <mark.rutland@arm.com>,
 	<loongarch@lists.linux.dev>, <linuxppc-dev@lists.ozlabs.org>,
 	<driver-core@lists.linux.dev>, <kexec@lists.infradead.org>,
 	<linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>
-Subject: [PATCH v5 11/17] crash: Normalize the kexec_load elfcorehdr at load time
-Date: Fri, 18 Sep 2026 18:04:36 +0800
-Message-ID: <20260918100442.3841135-12-ruanjinjie@huawei.com>
+Subject: [PATCH v5 08/17] LoongArch: kexec_file: Fix a modified_cmdline leak
+Date: Fri, 18 Sep 2026 18:04:33 +0800
+Message-ID: <20260918100442.3841135-9-ruanjinjie@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260918100442.3841135-1-ruanjinjie@huawei.com>
 References: <20260918100442.3841135-1-ruanjinjie@huawei.com>
@@ -103,14 +103,14 @@ Content-Type: text/plain
 X-Originating-IP: [10.90.53.73]
 X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
  kwepemk200008.china.huawei.com (7.202.194.74)
-X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: an6qm6tzhihks4bkjknmex38oxh8f8zo
-X-Rspamd-Queue-Id: B0A864000F
-X-HE-Tag: 1789725867-52267
-X-HE-Meta: U2FsdGVkX1/LFzPGNHjfZ5rU32iZvbBwlJEdKEEELuid9ic9VMFsd6cx/UTAutezJ6glFeJTxmchN1R6vmY4E+lVC9123GLkgw4kj7Fsr4v9fZ90XHCmdvLm3vjpWo0qeNjacjl7oGh8gHVkGs1Qpw7/01hl9en3rRYqcYOX1L9rmLrXHaXVo6CaqorTO0H7DrCymq76iWs+YQq7XgbLZv8FM+EoG467E0MhoCXuixWIsz9fatJjgiHilvVJ6s7Vq8oCu7rZR0duSf8gR62KdG4mrAVS9YxKFwemWW4P0syri69JxFbhR9njJPW0nKjiw3MkvAv53kKjVryzZvzdbIMQ4SPoEX3ycVyR7xvqUd3n4M8SdzwelQTEAV3BPeYCOZUhq5F4IvsutIyJgFNAEcX6TbQpNDslcSYMFhZHUCWDLwPhkFcBHGV/nGpbP3I7n2GilLxcD6Y4MN6BQrrnMkgzphW9IMbdWpAEzxdmpJ7QAVyzNiwtAHK3Yds5QYoDyUDtS4h4clk20ZDNBRa54i2uCxaEKy2REQWfA6BVasiq8GZaVenIganwdCM6LJAlM7pFG+sQuH0XVpXI9jtEiF9h5d08glVgSsgio2H4IlotNCqsCfN91MTsB8Db1xQ5/1BmkcDG0mp15TxTIz/dlCvMwBVuYn3KbGgovP+G088e6LW/ZgtrgTk2xUijmYPsKi6U4pq99LrgCu0gXFBlulVFzUHpZ6kVLb8s9+oYUduIjg4+1C7dBB6lsDwOT/LHqiRuPNeJQzgXg4dZ2l4BXtMzIH5TAPe44AZ3INYCPEFfE4lQ08ns43ngrWVcVJeDlGiPwtF3ywgz8JkFtC1edNbvV+/UvyAapPHgfr8GryAboRFkebO2cbucdvEodF1VAM+OmKFc10CvHse2ylmytbZWze/FCWT6ZjGqy+BOJCSCeeyQQ4rvgUZJGRoc2sE/YRO6IUDYpY2RHMg88No
- LSv3v+ga
- H84+CPFN3txCpbx+shevn8ELoI2ubHYHy9YZPo9FqAIvV5T1u2qfI4U0Hx0A5RAP0VWm31k62+mGEI1TMyfbHAloZHMQZeQZTjgAYrl6xTzmCgFrY5DRgrT/21QktIR/KHAyh8MiQuSsDpKL5erq1Qhn1z1pori+jh5l/OKxnKHhK8Z7Qas+SPf4K/PtrXxigHx0HnhZ5nCSv+1Hqf/0V4i7s3rtUZT6mI94ZRgp4XtMmywbwudVN7qzZVVYmZTTGpJYSyGmSOm7KrB2daLGzELlZysuFxpBTCgnEYZBmFopQ0G5bK1QOho2UdQE3+YQ/cLdH8oYApunfNtHQ1JTIJHrot54u1CcnNWG+mZXyL/rubDCKpMM8PgecafL7NmkJXsaE4yEauwCB+zJXOTXr8pB2tsEUl+MA31Tr
+X-Rspamd-Queue-Id: 7254C4000D
+X-Stat-Signature: 7kbgtsq93js1m71ieohytppre5aspou8
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789725867-208620
+X-HE-Meta: U2FsdGVkX18XlCQCmAT4gdLA1dvVa2346OK1b22uFYHGy7ws4sY6/K+z9g6q/ZPaPbS3OwuP0wHf3rM2lXr6EUtWaNHLmGeEbpMvgdV+4WLeEjtaTlM9XPMAvchT5HtWfG61sg3IvPD1v6Mez3/1KQHkdc5F0xdGtszuo2ghTDxryTKuHg642zN4+hiSul3yFo8zCfhhmC6lIzCa1Kp/4OOBRWaYY+3S7vEJlCVmz4FNoj60rd/KTqlCSQhqED6l2H2YOWHkvOYQGsyubxcCVJ5TSBLxR1/Q2rU7sIVat1NIWKAxwSYBGMVLAfob8aDPyaSXHYuI6a5yw6MkCDM6m5IXZIy1uKnSbEpOKjXFuz0gYMoaiO6GrgYfxWN4Guy4SaQiBgrjSRph5nv6yLI3tF3fBmEui1ji0EGx5SO99J99ItkefW2OZsJgEdJ6DsoGSLJPjQS5ANG8EY/j6A4bNwIMCh1qceMGji9e5RhprHAoFuypbKDTcZoTWsgaSi/mP5VzZJuDzpUID8c2ClW8am0plGsusEA1oEVuCEsOMFnBKMsR4xM6N7ric4phu1FxUtjWS2X3L0KfjsJkkzIIwhiv7K0hZD0kJZJXQAUnOM1HC2lsUTEMlcXcVDVXuAmosMIJqQi4a8itSYAtxJzUVw/ns/dq9O5s0TLOJKaovrIW+UEXrIzLMUPrzLE7z6KFTk67/FxVJtvUmqgbCKVbVYx/8rQeGCDvFEIvxteHaYrMLJFEj8r0OeZpJb5n5+L0didgGJ7YIE2H6tpTByyZ3NX+t4olMP9kn0Y+kimAP5+3LXmHoHxHM3/b1KPGUCSTb7JRCeOrQ6/8FLlX3yKVYTcSkK+Nx3y2Ge63K4z8pVJMChVAe7X8bNjTxbDjfFH/8rtQ8Dk6kFAo2LvFE7/MYIMZ3dfqUPdOAtUhdnQcc9ACs4gmRC8wm/DN7GndMZ5JG7gUB435Ss742me9aWe
+ ZhicNvF2
+ DmZH/uCeyajCMQtw670hBXG3k0L60eCll7hgzFtol1CKG6oZ290/DI+JMcpt9dBTwr0ND+tLbJ9Euhc7loG4t5phVza+4j9y75y2iMK71h/ipVHr9RG7vXx5sOHB/XL67tcD8o91oFsMcUk6wTY79VMeJ/OatmpkFsYvwoaXA//T85LfvdbCutDzLjrtITEM4Jy1hM6jQOUbPah4T7RlphxaGWK/OQML1yPuHTD3kEgQ7v3p4es5R+iDUjELBJ0yDOp2lBDi/u4NmbILGCinb20rqzeVvld0utiBT9TY20xzzGRJx/Axgyk3gxsvei4luRbTMqoMAnvkyYax3zVHqFZTUOFNpziWCGIrJPpJ+lLKkOLKtyI2teT7UH1SkMOZGt78fzV1Xmecr+6obqPYoAZWgAoue6C4Zga/a1GTtdrKFA/CPMsMA0BfOiXER5XUc56IEe1m5h9rBhLua+3ueJtPDuUJ3Egw2RdTpvbPbPrCoQwjlatw88vhYUA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,168 +118,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-For kexec_load() the kernel does not build the elfcorehdr, so it is only
-rewritten by the first crash hotplug event.  CPU hotplug events do not
-change the elfcorehdr, but they may run without device_hotplug_lock
-(e.g. CPU offlining during suspend), so they cannot perform that rewrite
-without racing with memory hotplug.
+load_other_segments() allocates modified_cmdline and stores it in
+image->arch.cmdline_ptr.  machine_kexec_prepare() then copies it to
+KEXEC_CMDLINE_ADDR and overwrites the pointer, so the heap buffer is
+leaked on every successful kexec_file_load().
 
-Normalize the elfcorehdr once when the crash image is installed, while
-device_hotplug_lock can still be taken safely, and let the hotplug paths
-skip CPU events entirely.
+Free the buffer after the copy.
 
-The elfcorehdr segment is located by scanning the segments for the ELF
-magic.  Factor that scan out into crash_find_elfcorehdr() and reuse it
-from crash_handle_hotplug_event().  Architectures that do not need the
-rewrite (e.g. powerpc) treat KEXEC_CRASH_HP_NONE as a no-op.
-
+Cc: Huacai Chen <chenhuacai@kernel.org>
+Cc: WANG Xuerui <kernel@xen0n.name>
+Cc: Kexin Liu <liukexin@kylinos.cn>
+Cc: Youling Tang <tangyouling@kylinos.cn>
+Cc: Qiang Ma <maqianga@uniontech.com>
+Cc: Tianyang Zhang <zhangtianyang@loongson.cn>
+Cc: George Guo <guodongtai@kylinos.cn>
+Cc: stable@vger.kernel.org
+Fixes: d162feec6b6e ("LoongArch: Add preparatory infrastructure for kexec_file")
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 ---
- arch/powerpc/kexec/crash.c |  1 +
- arch/x86/kernel/crash.c    |  5 ++--
- include/linux/crash_core.h |  1 +
- kernel/crash_core.c        | 58 +++++++++++++++++++++++++++-----------
- kernel/kexec.c             |  4 +++
- 5 files changed, 50 insertions(+), 19 deletions(-)
+ arch/loongarch/kernel/machine_kexec.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/powerpc/kexec/crash.c b/arch/powerpc/kexec/crash.c
-index 775895f31037..8ede33740fc0 100644
---- a/arch/powerpc/kexec/crash.c
-+++ b/arch/powerpc/kexec/crash.c
-@@ -638,6 +638,7 @@ void arch_crash_handle_hotplug_event(struct kimage *image, void *arg)
- 	struct memory_notify *mn;
+diff --git a/arch/loongarch/kernel/machine_kexec.c b/arch/loongarch/kernel/machine_kexec.c
+index 1883cae93bc3..19ccc91b6f2a 100644
+--- a/arch/loongarch/kernel/machine_kexec.c
++++ b/arch/loongarch/kernel/machine_kexec.c
+@@ -14,6 +14,7 @@
+ #include <linux/mm.h>
+ #include <linux/of_fdt.h>
+ #include <linux/reboot.h>
++#include <linux/slab.h>
+ #include <linux/sched.h>
+ #include <linux/sched/task_stack.h>
  
- 	switch (image->hp_action) {
-+	case KEXEC_CRASH_HP_NONE:
- 	case KEXEC_CRASH_HP_REMOVE_CPU:
- 		return;
- 
-diff --git a/arch/x86/kernel/crash.c b/arch/x86/kernel/crash.c
-index 3c9f4fbbe7ff..f34fa8dba028 100644
---- a/arch/x86/kernel/crash.c
-+++ b/arch/x86/kernel/crash.c
-@@ -457,9 +457,8 @@ void arch_crash_handle_hotplug_event(struct kimage *image, void *arg)
- 	 * possible CPUs, there is no need to update the elfcorehdr
- 	 * for additional CPU changes.
- 	 */
--	if ((image->file_mode || image->elfcorehdr_updated) &&
--		((image->hp_action == KEXEC_CRASH_HP_ADD_CPU) ||
--		(image->hp_action == KEXEC_CRASH_HP_REMOVE_CPU)))
-+	if (image->hp_action == KEXEC_CRASH_HP_ADD_CPU ||
-+	    image->hp_action == KEXEC_CRASH_HP_REMOVE_CPU)
- 		return;
- 
- 	/*
-diff --git a/include/linux/crash_core.h b/include/linux/crash_core.h
-index b1c816e98143..a740757dff35 100644
---- a/include/linux/crash_core.h
-+++ b/include/linux/crash_core.h
-@@ -39,6 +39,7 @@ static inline void arch_crash_handle_hotplug_event(struct kimage *image, void *a
- #endif
- 
- int crash_check_hotplug_support(void);
-+void crash_hotplug_prepare_elfcorehdr(struct kimage *image);
- 
- #ifndef arch_crash_hotplug_support
- static inline int arch_crash_hotplug_support(struct kimage *image, unsigned long kexec_flags)
-diff --git a/kernel/crash_core.c b/kernel/crash_core.c
-index 406b68d2adfd..47a4579eb97e 100644
---- a/kernel/crash_core.c
-+++ b/kernel/crash_core.c
-@@ -647,6 +647,28 @@ int crash_check_hotplug_support(void)
- 	return rc;
- }
- 
-+static void crash_find_elfcorehdr(struct kimage *image)
-+{
-+	unsigned char *ptr;
-+	unsigned long mem;
-+	unsigned int n;
-+
-+	if (image->elfcorehdr_index >= 0)
-+		return;
-+
-+	for (n = 0; n < image->nr_segments; n++) {
-+		mem = image->segment[n].mem;
-+		ptr = kmap_local_page(pfn_to_page(mem >> PAGE_SHIFT));
-+		if (!ptr)
-+			continue;
-+
-+		/* The segment containing elfcorehdr */
-+		if (memcmp(ptr, ELFMAG, SELFMAG) == 0)
-+			image->elfcorehdr_index = (int)n;
-+		kunmap_local(ptr);
-+	}
-+}
-+
- /*
-  * To accurately reflect hot un/plug changes of CPU and Memory resources
-  * (including onling and offlining of those resources), the relevant
-@@ -702,22 +724,7 @@ static void crash_handle_hotplug_event(unsigned int hp_action, unsigned int cpu,
- 	 * is allocated. Find the segment containing the elfcorehdr,
- 	 * if not already found.
- 	 */
--	if (image->elfcorehdr_index < 0) {
--		unsigned long mem;
--		unsigned char *ptr;
--		unsigned int n;
--
--		for (n = 0; n < image->nr_segments; n++) {
--			mem = image->segment[n].mem;
--			ptr = kmap_local_page(pfn_to_page(mem >> PAGE_SHIFT));
--			if (ptr) {
--				/* The segment containing elfcorehdr */
--				if (memcmp(ptr, ELFMAG, SELFMAG) == 0)
--					image->elfcorehdr_index = (int)n;
--				kunmap_local(ptr);
--			}
--		}
--	}
-+	crash_find_elfcorehdr(image);
- 
- 	if (image->elfcorehdr_index < 0) {
- 		pr_err("unable to locate elfcorehdr segment");
-@@ -747,6 +754,25 @@ static void crash_handle_hotplug_event(unsigned int hp_action, unsigned int cpu,
- 	crash_hotplug_unlock();
- }
- 
-+void crash_hotplug_prepare_elfcorehdr(struct kimage *image)
-+{
-+	if (!image || !image->hotplug_support || image->file_mode)
-+		return;
-+
-+	crash_find_elfcorehdr(image);
-+	if (image->elfcorehdr_index < 0)
-+		return;
-+
-+	/*
-+	 * kexec_load() images are not normalized at load, so do it here while
-+	 * the lock is still free to take.  hp_action is KEXEC_CRASH_HP_NONE,
-+	 * which the arch handler treats as "just rebuild the elfcorehdr".
-+	 */
-+	lock_device_hotplug();
-+	arch_crash_handle_hotplug_event(image, NULL);
-+	unlock_device_hotplug();
-+}
-+
- static int crash_memhp_notifier(struct notifier_block *nb, unsigned long val, void *arg)
- {
- 	switch (val) {
-diff --git a/kernel/kexec.c b/kernel/kexec.c
-index 90756dc6339b..ea9ba00bc786 100644
---- a/kernel/kexec.c
-+++ b/kernel/kexec.c
-@@ -166,6 +166,10 @@ static int do_kexec_load(unsigned long entry, unsigned long nr_segments,
- 	/* Install the new kernel and uninstall the old */
- 	image = xchg(dest_image, image);
- 
-+#ifdef CONFIG_CRASH_HOTPLUG
-+	if ((flags & KEXEC_ON_CRASH) && kexec_crash_image)
-+		crash_hotplug_prepare_elfcorehdr(kexec_crash_image);
-+#endif
- out:
- #ifdef CONFIG_CRASH_DUMP
- 	if ((flags & KEXEC_ON_CRASH) && kexec_crash_image)
+@@ -56,6 +57,7 @@ int machine_kexec_prepare(struct kimage *kimage)
+ 		 */
+ 		memcpy((void *)KEXEC_CMDLINE_ADDR, (void *)kimage->arch.cmdline_ptr,
+ 					strlen((char *)kimage->arch.cmdline_ptr) + 1);
++		kfree((void *)kimage->arch.cmdline_ptr);
+ 		kimage->arch.cmdline_ptr = (unsigned long)KEXEC_CMDLINE_ADDR;
+ 	} else {
+ 		/* Find the command line */
 -- 
 2.34.1
 
