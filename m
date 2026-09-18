@@ -4,88 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0582C982DA
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 12:53:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A57FDC982DA
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 12:55:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 640B36B0093; Fri, 18 Sep 2026 08:53:56 -0400 (EDT)
+	id B71ED6B0095; Fri, 18 Sep 2026 08:54:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5F0A76B0095; Fri, 18 Sep 2026 08:53:56 -0400 (EDT)
+	id B22B46B0096; Fri, 18 Sep 2026 08:54:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4BB996B0096; Fri, 18 Sep 2026 08:53:56 -0400 (EDT)
+	id 9EBBD6B0098; Fri, 18 Sep 2026 08:54:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 16AF76B0093
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 08:53:56 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7C27BA067A
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 12:53:55 +0000 (UTC)
-X-FDA: 85226875230.12.B4FFC58
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id AB3F220004
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 12:53:53 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B49Uh3Cd;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 7D0546B0095
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 08:54:59 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 19A42A067A
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 12:54:59 +0000 (UTC)
+X-FDA: 85226877918.23.F4BB3F9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 636671A0003
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 12:54:57 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VZQJ928K;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789736097;
+	b=6Rqnu9gmsP1bK1sqPu1++xb7XOndEOM6XATxQZZ/RAipd/hWLpwQluGorMbvKHB6yNPsZi
+	d/0KrvDsJuveDyOfdiSgiKwn3S+P/vaaDdfIc7NL81HWYbZOjehWvFe90AViILSh5ygDE0
+	g1PhKaa7ymnyUFUQxTQFmnqHCOPZmv8=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VZQJ928K;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789736033;
+	s=arc-20220608; t=1789736097;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Dbs08/A+XvCDpL5h4MU5xGiV5LRs9ka5cIBpR6cLUDY=;
-	b=8BpCIbTNCivGu4oqHVk8tjzrJkFvE+U/tRHOtES4G1yvfn/Rc5EqqpsYBm4+NdRqDdH0tB
-	Xf/rzTe+Rr5ZRdmko6ZMzV77Dc89O2eiKiXojpEl0KbJIHyS4pUXt70uQI+em9VaXU4LxI
-	cytn0sT6+vo3G96l3m5bKcUVKp19YEA=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B49Uh3Cd;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789736033;
-	b=dK3ZT0hNH6h263DtmiP7aaLhzil4/qLO9Lgez9yurqYMbG6CqyhQddA0Cp7zTSmMJ3GQx3
-	emhtbAkzIXywQ4N9RAkvC9Jqbw6YgkTusAFoNVp7U3O+SuwRrDzscdzIbzq4NQgLqShWBt
-	GQzlZGpWg4V0wgxco7bgE2DlVNKx/74=
+	bh=r0GY3Oko0Gbyya67DBjVH1KdCICd4o8CJaN93+aNccg=;
+	b=w89SjiWuV9AR81EiaUUXjHnKuZVeA26XIkYcA9z/lQVcurqwuzW3FzwzOYeAwFsB6CNblK
+	IRqH/rnn9X7ynHNqOk26XVK9e6HD+SilAn8TFYcllmu51CHD2rNO73HDv+3NNGNy5PJuHb
+	omEMNHP9nlPcEkFNSJD9xyVQHJY/sTw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A8F97407DA;
-	Fri, 18 Sep 2026 12:53:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 345271F000FF;
-	Fri, 18 Sep 2026 12:53:42 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id DDCDD601EF;
+	Fri, 18 Sep 2026 12:54:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C476D1F000FF;
+	Fri, 18 Sep 2026 12:54:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789736032;
-	bh=Dbs08/A+XvCDpL5h4MU5xGiV5LRs9ka5cIBpR6cLUDY=;
+	s=k20260515; t=1789736096;
+	bh=r0GY3Oko0Gbyya67DBjVH1KdCICd4o8CJaN93+aNccg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=B49Uh3CdTwH2qKAns42Ip8iKqyCjPEdloHz0n+jRSN7+O1sIvy7f3CLHy1SjhOYGk
-	 eIqIv8OJ2wVNUaG32CP6itIinea5R+yzRUbSJd9ls+bzpMbaeQ91FxYMMgZvnf+Zo8
-	 3tGIa/xx+5oU1Wdxd8L66mnSsZ4zInQMcl82yjpWEwXcP73acZ0zglQ9TrZGYbi1kS
-	 4ygVUXXKS2Wg+Rh78bKhCBxgSxfxV6wL987mcKbmiXROVD0u6iiS4KeDreELvMUtvV
-	 Y8bibuk7UOMdfFlZ1OQvWSDSQR/mavrqbec14C9LkZKbwj9UpDzXWzOPgg1fvK9GEC
-	 E1nuX99QFsDkA==
-Message-ID: <41b46756-ed02-439c-ab72-e32a84fc7f17@kernel.org>
-Date: Fri, 18 Sep 2026 14:53:40 +0200
+	b=VZQJ928KoPiRfzqt8AG23Cmz8U28jicRXzuRF8TTlgkZ51YY0MvOnrtb4HBCVE9lg
+	 FMLU9ANEhkqUXnsLk7tfpYXFdukAvjd41OHOTRt9NiPlRl/OaKVN5qT3mpLejX9cmE
+	 b5f2PY32Vjc7SpYpQD/iG6YY3kpQk1OXTRPs5ow7vRATgGqh3QZEvY1u7GtvYbsQN8
+	 Du1wtbDVw/bJ6Cs9GG4IbmNetnSmlfAeFu5JXntvlmyPRzvN6OEwVLh6i+bML7olFL
+	 YeZOjiehgW9qg19m+UL1UF00iWAULIRL85ZS2/hkIbbBa5xEb76gl6P5MlUGDc/Wfs
+	 5U1nSsRvgs1Zw==
+Message-ID: <2c9f5d85-3396-4246-8179-3358a00ad223@kernel.org>
+Date: Fri, 18 Sep 2026 14:54:43 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 2/4] mm: allow shared folios to be promoted to a fast
  tier
-To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
+To: Zi Yan <ziy@nvidia.com>, Gregory Price <gourry@gourry.net>,
+ linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com,
  akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org,
  vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
  mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
  vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org,
  bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
- kprateek.nayak@amd.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
- nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com,
- baohua@kernel.org, lance.yang@linux.dev, usama.arif@linux.dev,
- kas@kernel.org, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
- rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com,
- apopple@nvidia.com, jannh@google.com, pfalcato@suse.de, osalvador@suse.de,
- hannes@cmpxchg.org, raghavendra.kt@amd.com, stable@vger.kernel.org
+ kprateek.nayak@amd.com, baolin.wang@linux.alibaba.com, nico.pache@linux.dev,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ lance.yang@linux.dev, usama.arif@linux.dev, kas@kernel.org,
+ matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+ byungchul@sk.com, ying.huang@linux.alibaba.com, apopple@nvidia.com,
+ jannh@google.com, pfalcato@suse.de, osalvador@suse.de, hannes@cmpxchg.org,
+ raghavendra.kt@amd.com, stable@vger.kernel.org
 References: <20260911001826.2109390-1-gourry@gourry.net>
  <20260911001826.2109390-3-gourry@gourry.net>
+ <DLHS4KFPQ86I.1J4LN3352RI71@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,17 +134,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260911001826.2109390-3-gourry@gourry.net>
+In-Reply-To: <DLHS4KFPQ86I.1J4LN3352RI71@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 636671A0003
 X-Rspam-User: 
-X-Stat-Signature: tjczcoimwe1mfhcux9otkif1a1fjrjyk
-X-Rspamd-Queue-Id: AB3F220004
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789736033-625932
-X-HE-Meta: U2FsdGVkX19g+YVD8hp4RLZdeeiyat7qM6nDgT1HmdBT3OEP4BUn4udoPuN6VyIZdhoY9T7wobHGXKcwbqVwkcTQ6+4u5jWOxSf2Nktk+PvX0OBo0/9olLyWk5HCVtkvlQmhvqwonndGGoXl9TRuTfdoCqRbxM6A1jt7NLDfc0xIsqgsN8n7Z6s8uMtjBV8+C4L2rxOn5dhBQaBO8/+l03gpLfDgfnyAUnluPfsjjna6u3FCQ84MaCIlGc6n+n3pVfzbQXg8yj6YbXM0u+i4dbIE/VTq8Sn0IMZBr9Bv1HSShh7Gh3bSE+KmhiMF6MRbYhEmwYOSTsXQYP+69F02GVrgB+YjTNpNh/ho5H8FYfJ2CIvYbfxSI9zVTuh4KlG6lL4kv5kej41JEq1Xi4dX8s3wpFKr9JjmtbaNbEgmlvUUWz6idCdilOQneyLsXquKMgxIGU5ioPkxSJpm9+NFpalsyZH7/bxl+jjc1KfV1uD/tpfJxg4w4oLhuH3/Sfv+EXfs/mFsHiduoAWeY+kuchCp8oYbHCkCXj76BdvD/WmV5cu7GhEK5pxF3m1NZgrqz/ayjmz+2M6lGNZyOuS2fwfLCod24wD4K9Qfcrg6cg84vXMa1CtVLyBVac0665yFubv2hyBbFY6v2kzhfGukn557eJaibB4fBpVy8fy2se7pFz5M+phh2/xrY3YkpJOG2fm+sLuTN5bhKJdHBiH/+L4/dbAWrfm8qN5aPJ1s+oZS8+TSZ7ezlUNZDvWgdhv+bWdPV634yJUbaremQw3sl6ZqQ2jvHtV3BcXhNOyoSd2FMLccXfJqkK4svIuB9qHZNa5gyFeb1HuB2voMJCjhtXChi+K108D+ev4U5UMb9iD7P9rF8xWLDL22VLWGXv9QlEJ6szkN6tpp8T3W586SDP6KF/G8QyEzi7CJgrADADyzF6BKtWwxytIoVNVVauvT2mS9tob2IAZQf99CDxf
- LptnssW0
- OpDvd3exKpPKY6j2voIrnlz7d8MMRGT42CC1Cfnv13EZmGDtpfKJB31kr79q2llfApZbSZgIxnmF1jxc4Lf/fEZgFju7aDPpcmTi39IKq6y/CJzC/HrvzsasXkwXO+hOb63fKSGYSluilx/5VCKzylZYUwDfNo1LMSpwcZhTtJZUqOMg9YaR2FHeeQSYv/KXjohKoVjkKLQk6pRO1tCvyXM9DkbvSy9am3En+LBW9PgrtunH0oqXlqG1GW4LNdle8/yrqjAWC7Kotxan0N3SYbC8TToWLxWKo5bWAyFmppyU5tES9pger//q+Jmrp73D0L+GHWgtKQ76HQ8Wxdb5/45YCqa37e+A/R4CxK8bpKywajmmiM1YLse1xzxRXUDNahABWaCRhSMNOjNBYn1OCwpa/fESl1eNLXlrCS6JwoRN7x1E=
+X-Stat-Signature: hjr5w5ft7yoje36bytpwon4acsirqbon
+X-HE-Tag: 1789736097-157244
+X-HE-Meta: U2FsdGVkX19mzwgYe4mIt3GuzRqoY9BoZL++4vTEwChFfneMZXJRa6nK6OQFtUzzP8QmdUNxdgqd355ZEr4OAARqKBgNbjoR9ygwyXPcSrIAvMmrzcN3yifVPql63+ugj6p6Wv6komIr4S0k2hzhb2Vn/vVde4gsm+7KebFvEhkt+TQ0nuey5wN3opHYMr760onZCsSJ5B4A2/bgl3fH/CcbM24AdAel0W3PvQUUiSS23QdqLZ13U794YcBf9EWWG3QffQXlF3sZenv+Q6fYdi6YmoleWhoOKyvYeFbQLOnYd9j5KnnBA7SkYJta1jlzInsnI8xGTRDGqfwDc3rcLmoq6xafuIo30lOERISg6fNpuv4T1qcRzwtPDAiP8SnPGKbgzVcxx7hGgRz/VzbG6+Y2EHxQVBwyU4PqFFjJ3gx0SN0nx+s6AU+2lkDhbIrgFPBI6qFc5dkVoqk4dVnkEXRd7GKDhkYHsMT90iSonLQr7wOpWD9q7c6jijfP8Vnd4o5ojDZ1ASB0WKfhfbCw0dvacdXAbQn1g4S18zGwH8q9qI0gwTGBKiVF6/SIq0zavspRhWEmD55RR7EMgLm5D70bZK4p+nuQ4tF54yY+Cf9TtiBwfwLyiGQ4X3EbNbEyutcb7SP9wrRheGXyE3oXGuSTwVdDCt9+4QMMK2z7V6xMweHF41l9uYDy9G/ZMPlw0t34rNZ75u5WxCcboP/x3yFe+tDVI2ODUeqKVpiOmK4GEVnaRDou/Tpb6NUx/ourGzREIc3BMVDGEizECIWJIFrNL/xiFN1lqsBU6snpbG/ibFFKoBttU3BGjDotZZQ7/ukQRZ1uN4nSSYxwyH+W99sLAfeWbl2VlYFFU69HLfB12UX5xG+xDOrguTjbuaMpxlgLmgpMtNl5CoZ1npuAfesjZAgKqxCG7mOLpPPua5S19E6sMJDyv4GC6o1vh/x2wbXNfxI4LAADei770s0
+ QEICkDOO
+ O+Zxz0oh5H6C4fWGb46bMdBX5TElm1g2F3n7HkG4aDQncYQMf5/xC7HZgUquJzlG+BXhUFzKh2agoOcQZDhK7DX2nO7sWMJGIJFwZH+4Tm4Boe3uqeWP0pnGwDOGPxEw2fAeka67uSRFXiKY/uoCHGM7xRNgJceOANAb8BvGWtXIQDruagK1ks3PD8vTnCRNynHOvTo9o8Qy/F++r1rpoI+xfqj6ZBGeEXDtSS2esoj22aeD/a/8+xmQosGSd/DZBddSbXKebDrVqgYrXI9r4KARWU5qd36OIFE0ALgqE2W/V6A3A6BQ3iKXh128w71A0D/UndNzFwEB+BWlx8P15oDAXsuRonKlYysrY+kdgG2kbGobMkL52Wz3P3b+0uNtUdwNvbk1oFz6FqjJnQKThHeZ7y2fTpR+vuRWG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,78 +152,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/11/26 02:18, Gregory Price wrote:
-> From: "Gregory Price (Meta)" <gourry@gourry.net>
+On 9/17/26 19:49, Zi Yan wrote:
+> On Thu Sep 10, 2026 at 8:18 PM EDT, Gregory Price wrote:
+>> From: "Gregory Price (Meta)" <gourry@gourry.net>
+>>
+>> NUMA balancing rejects shared copy-on-write folios and executable
+>> file folios mapped by multiple processes to avoid placement bouncing.
+>> These checks also block promotion from slow memory.
+>>
+>> Allow such folios to participate when moving from a slow tier to a fast
+>> tier. Keep the existing restrictions for ordinary placement.
+>>
+>> Fixes: c574bbe91703 ("NUMA balancing: optimize page placement for memory tiering system")
+>> Cc: stable@vger.kernel.org
+>> Assisted-by: LLM
+>> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
+>> ---
+>>  mm/mempolicy.c | 8 ++++++--
+>>  mm/migrate.c   | 6 ++++--
+>>  2 files changed, 10 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+>> index a082ccfa09ec..19b599bc2dd1 100644
+>> --- a/mm/mempolicy.c
+>> +++ b/mm/mempolicy.c
+>> @@ -863,8 +863,12 @@ bool folio_can_map_prot_numa(struct folio *folio, struct vm_area_struct *vma,
+>>  	if (!folio || folio_is_zone_device(folio) || folio_test_ksm(folio))
+>>  		return false;
+>>  
+>> -	/* Also skip shared copy-on-write folios */
+>> -	if (vma_is_cow_mapping(vma) && folio_maybe_mapped_shared(folio))
+>> +	/*
+>> +	 * Shared copy-on-write folios are poor NUMA placement candidates, but
+>> +	 * a hot folio on a slow tier still needs a hint fault for promotion.
+>> +	 */
+>> +	if (vma_is_cow_mapping(vma) && folio_maybe_mapped_shared(folio) &&
+>> +	    !folio_use_access_time(folio))
+>>  		return false;
+>>  
+>>  	/* Folios are pinned and can't be migrated */
+>> diff --git a/mm/migrate.c b/mm/migrate.c
+>> index a369d0c95c38..afd9c97d2389 100644
+>> --- a/mm/migrate.c
+>> +++ b/mm/migrate.c
+>> @@ -2697,12 +2697,14 @@ int migrate_misplaced_folio_prepare(struct folio *folio,
+>>  		/*
+>>  		 * Do not migrate file folios that are mapped in multiple
+>>  		 * processes with execute permissions as they are probably
+>> -		 * shared libraries.
+>> +		 * shared libraries, unless this is a promotion from a slow tier.
+>>  		 *
+>>  		 * See folio_maybe_mapped_shared() on possible imprecision
+>>  		 * when we cannot easily detect if a folio is shared.
+>>  		 */
+>> -		if ((vma->vm_flags & VM_EXEC) && folio_maybe_mapped_shared(folio))
+>> +		if ((vma->vm_flags & VM_EXEC) &&
+>> +		    folio_maybe_mapped_shared(folio) &&
+>> +		    (!folio_use_access_time(folio) || !node_is_toptier(node)))
+>>  			return -EACCES;
+>>  
+>>  		/*
 > 
-> NUMA balancing rejects shared copy-on-write folios and executable
-> file folios mapped by multiple processes to avoid placement bouncing.
-> These checks also block promotion from slow memory.
+> Should we rename folio_use_access_time() to folio_in_lowtier()?
+> Otherwise the code is really hard to understand. 
 
-Right. How to we know the direction of promotion vs. demotion, though?
+I just stumbled over that myself and I agree.
 
-> 
-> Allow such folios to participate when moving from a slow tier to a fast
-> tier. Keep the existing restrictions for ordinary placement.
-> 
-> Fixes: c574bbe91703 ("NUMA balancing: optimize page placement for memory tiering system")
-> Cc: stable@vger.kernel.org
-> Assisted-by: LLM
-> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
-> ---
->  mm/mempolicy.c | 8 ++++++--
->  mm/migrate.c   | 6 ++++--
->  2 files changed, 10 insertions(+), 4 deletions(-)
-> 
-> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-> index a082ccfa09ec..19b599bc2dd1 100644
-> --- a/mm/mempolicy.c
-> +++ b/mm/mempolicy.c
-> @@ -863,8 +863,12 @@ bool folio_can_map_prot_numa(struct folio *folio, struct vm_area_struct *vma,
->  	if (!folio || folio_is_zone_device(folio) || folio_test_ksm(folio))
->  		return false;
->  
-> -	/* Also skip shared copy-on-write folios */
-> -	if (vma_is_cow_mapping(vma) && folio_maybe_mapped_shared(folio))
-> +	/*
-> +	 * Shared copy-on-write folios are poor NUMA placement candidates, but
-> +	 * a hot folio on a slow tier still needs a hint fault for promotion.
-> +	 */
-> +	if (vma_is_cow_mapping(vma) && folio_maybe_mapped_shared(folio) &&
-> +	    !folio_use_access_time(folio))
+> I admit that I
+> introduced folio_use_access_time() and it was probably because it
+> decides the use of folio_xchg_access_time() in
+> folio_can_map_prot_numa(). But in the other callsites, folio_in_lowtier()
+> makes more sense.
 
-
-While I understand a "!node_is_toptier(node)" to say "this is a slow tier", I am
-clueless about the folio_use_access_time() check.
-
-Confusing.
-
->  		return false;
->  
->  	/* Folios are pinned and can't be migrated */
-> diff --git a/mm/migrate.c b/mm/migrate.c
-> index a369d0c95c38..afd9c97d2389 100644
-> --- a/mm/migrate.c
-> +++ b/mm/migrate.c
-> @@ -2697,12 +2697,14 @@ int migrate_misplaced_folio_prepare(struct folio *folio,
->  		/*
->  		 * Do not migrate file folios that are mapped in multiple
->  		 * processes with execute permissions as they are probably
-> -		 * shared libraries.
-> +		 * shared libraries, unless this is a promotion from a slow tier.
->  		 *
->  		 * See folio_maybe_mapped_shared() on possible imprecision
->  		 * when we cannot easily detect if a folio is shared.
->  		 */
-> -		if ((vma->vm_flags & VM_EXEC) && folio_maybe_mapped_shared(folio))
-> +		if ((vma->vm_flags & VM_EXEC) &&
-> +		    folio_maybe_mapped_shared(folio) &&
-> +		    (!folio_use_access_time(folio) || !node_is_toptier(node)))
->  			return -EACCES;
-
-This screams for a readable helper function.
-
-And my same comment for folio_use_access_time() applies, completely unclear how
-that fits into the picture here.
+We can just have an alias function if it makes the code easier to get.
 
 -- 
 Cheers,
