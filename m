@@ -4,89 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B093DC982D7
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 20:00:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A820C982D7
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 20:02:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A47DC6B0088; Fri, 18 Sep 2026 16:00:44 -0400 (EDT)
+	id AE88D6B008C; Fri, 18 Sep 2026 16:02:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F8CF6B008A; Fri, 18 Sep 2026 16:00:44 -0400 (EDT)
+	id AC1E86B0093; Fri, 18 Sep 2026 16:02:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C1416B008C; Fri, 18 Sep 2026 16:00:44 -0400 (EDT)
+	id 9AF616B0095; Fri, 18 Sep 2026 16:02:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 619DB6B0088
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 16:00:44 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7174DC05E2
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:00:43 +0000 (UTC)
-X-FDA: 85227950766.12.3371F5D
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 606346B008C
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 16:02:42 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id AB46EA07D6
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:02:41 +0000 (UTC)
+X-FDA: 85227955722.14.8069E99
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 8FBF4140003
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:00:41 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jXwXVqX4;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf29.hostedemail.com (Postfix) with ESMTP id CCE59120006
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:02:39 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lHo0ddht;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789761641;
+	s=arc-20220608; t=1789761759;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DqRuy6t8l0KMBsc8eMIIlqtXIJciSthuiHWYk9gxWWQ=;
-	b=xOuCoARrkNitLgBrQ3VwqOij0Sqvdjl7+ooWNqH5u15L+yFM7LbQ8APdhtxCdqJuOz11qM
-	L+W/p4JsKnpoJ7tViOAn5U6QIZaJkb2SaojrmRA2BhYqM1dIqlrB9BiuskXCzzNHXC+0Aw
-	uS9ZFCdzojE3VrIq5I+qV4kPYOU4+lE=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jXwXVqX4;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=DfXpuB3VssjezrYOYh9da35BTjf7OH9UxejBC4uYQV4=;
+	b=oLC/zctxU0yTJluLZKUoVO7j5xHSzm5L2MaykbVxRqDD4CnVWoURovTwxCGDCibRBA+/uB
+	eQYQFNKPSyrHbgw6lWAJHVe1hZUgr5q+buqped1MJo6DQLzABnAk7kYuFqZyVhDGaTTCaB
+	Wj3oRPtc42ysk7aQMY1NVrA2vdty91Y=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789761641;
-	b=am6VpHjjx89jBwlv8nDB6zhOUkzFNBAya9XuXZp8MR8k6YkGKiCUQSoC3/IN5O3MWkOC0D
-	5CFut4IXwGPEjNyK5sO9GvXsszgA8WVOot9t9yYDGVUpyhkzFDoGWi+fYIDVtf8amvKYbT
-	DBVjIk5OkriVBgEwBnax2dlDsN+F3rE=
+	t=1789761759;
+	b=muX7pgLJR9WWTeMXa5hd0joZ9AHdG1cAcQFXEkTbyNeyMiuyp4veBhr+sx5lBWa+8y2/Rn
+	WFteG1iUEOzRsaOAd2zfWbzIq+tAdHoqBCjNQUvqzSanZX2/L6zKOGxi0P+Ho8c/pZmxlJ
+	OaURDY9Y+Z/YGKF46Mez8aYI16fEb7c=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lHo0ddht;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A2A9443894;
-	Fri, 18 Sep 2026 20:00:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 559CB1F000FF;
-	Fri, 18 Sep 2026 20:00:35 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0503A419B2;
+	Fri, 18 Sep 2026 20:02:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FF641F000FF;
+	Fri, 18 Sep 2026 20:02:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789761640;
-	bh=DqRuy6t8l0KMBsc8eMIIlqtXIJciSthuiHWYk9gxWWQ=;
+	s=k20260515; t=1789761758;
+	bh=DfXpuB3VssjezrYOYh9da35BTjf7OH9UxejBC4uYQV4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=jXwXVqX45pm1S5/YzhSxREbtC4KN6fHavNEtSUadv2NX6CDWi/5GQG5+EXoS7kNZL
-	 z96gMCf/3OX5NhSzsj/QiOO1t3h++itVSy1RLabKNoyv/ZtCjcRWT2VZI4qBrQAS59
-	 fIlbYqQnB0l/sDHT8n+jyftddKfjdRLarGpeYbecixZgXsqu+5Dfjwztm+s+Bf6KC1
-	 0KxRZ3DNN8CrfEcasmcNn8MsT0c0IdeinzkdY3X6QejS2OF1o4Ay3Uo7sTNxu6i3fk
-	 7rKhEw91gcHRrTbi0P6RtIWFjs77qURfBKonQtTPvEi2UumT9+aAFJ4AgOZUjxACRc
-	 UGT9wFAH4fr8A==
-Message-ID: <1d1e38d8-cc1a-4a53-80c7-c0ef75a70105@kernel.org>
-Date: Fri, 18 Sep 2026 22:00:31 +0200
+	b=lHo0ddhtSXzPaWFlT4LKEJcI69Y8GtCiWLjac0fLbMkqFRJH9tpoJQwD4EsHWC/t3
+	 LmslvShgiarvJx3xPRx9+xt/q5aybM1srUZ7NBAdevcKzZbWgQn1UvdGiq9L4TGxbT
+	 5CRWqar8VMkouziUOguyZfeV4jqWKBfDMreqyeumJhs2MseiymlKY/IwXfk8365ZfS
+	 vEiU47/lDUt2wM0k/hdLFRy2AHxZuiK996/G4xjlyffcHzKmmjwgY+o4RamtaPfBK6
+	 L5DPTP3MuhOkpYYvzAq64SWXgl31xNAFNkjc8UnJeMSjs4DYCh54VQUzLJxZUiLTgz
+	 ABxTBAAa6+X+Q==
+Message-ID: <14a5d278-9790-4cb2-ae1f-4980cbee1bf9@kernel.org>
+Date: Fri, 18 Sep 2026 22:02:27 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/6] arm64: use hw_pte_t for fixmap HW PTEs
-To: Ryan Roberts <ryan.roberts@arm.com>,
- Muhammad Usama Anjum <usama.anjum@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>, Ard Biesheuvel <ardb@kernel.org>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- Andrey Ryabinin <ryabinin.a.a@gmail.com>,
- Alexander Potapenko <glider@google.com>,
- Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+Subject: Re: [PATCH v5 6/9] mm/memory-failure: efi: answer whether a range is
+ poisoned
+To: Harry Yoo <harry@kernel.org>, Breno Leitao <leitao@debian.org>
+Cc: sashiko-reviews@lists.linux.dev, Andrew Morton
+ <akpm@linux-foundation.org>, hannes@cmpxchg.or,
+ Borislav Petkov <bp@alien8.de>, Danilo Krummrich <dakr@kernel.org>,
+ Brendan Jackman <brendan.jackman@linux.dev>, x86@kernel.org, kas@kernel.org,
+ Suren Baghdasaryan <surenb@google.com>, Zi Yan <ziy@nvidia.com>,
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-efi@vger.kernel.org, kasan-dev@googlegroups.com, linux-mm@kvack.org
-References: <20260914-pte0_arm-v1-0-bb53b663e396@arm.com>
- <20260914-pte0_arm-v1-4-bb53b663e396@arm.com>
- <829523cd-85a4-4f8e-b9f2-f3c1d7ce4fb1@arm.com>
+ Thomas Gleixner <tglx@kernel.org>, Oscar Salvador <osalvador@suse.de>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, shakeel.butt@linux.dev,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+ Miaohe Lin <linmiaohe@huawei.com>, Ard Biesheuvel <ardb@kernel.org>,
+ Michal Hocko <mhocko@suse.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Mike Rapoport <rppt@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ Lorenzo Stoakes <ljs@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Ingo Molnar <mingo@redhat.com>, linux-mm@kvack.org,
+ kexec@lists.infradead.org, linux-cxl@vger.kernel.org,
+ linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, rmikey@meta.com,
+ kernel-team@meta.com, driver-core@lists.linux.dev, riel@surriel.com
+References: <20260915-hwpoison-kho-v5-0-3bc7a57bd503@debian.org>
+ <20260915-hwpoison-kho-v5-6-3bc7a57bd503@debian.org>
+ <20260915134535.C3FC91F00899@smtp.kernel.org>
+ <edafd246-0bd8-4335-9037-77f552968b56@kernel.org>
+ <aq1Xr4b7BXZForCe@gmail.com> <aq1eWgGenthqMNd7@thinkstation>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -133,17 +141,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <829523cd-85a4-4f8e-b9f2-f3c1d7ce4fb1@arm.com>
+In-Reply-To: <aq1eWgGenthqMNd7@thinkstation>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: coarbbs4igjwfinj41map6ff1w9jfdyc
 X-Rspam-User: 
-X-Stat-Signature: nof5midearefzts6of4a7zghy38kczj3
-X-Rspamd-Queue-Id: 8FBF4140003
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789761641-808011
-X-HE-Meta: U2FsdGVkX19ipRBH2+IkycFCoWzxTxjdQfqbFBGG8Yyk9vW6ZkO83fYsLvMuiOnqZGKCdwvfRCs3TfkMsrcVtkN9WGkUtRHKugaUYBJ8i1lqc6x+iYZBIBWNhrrBfo5qi8AJB6y+4jGNoxH5rLOm68jvzIfINnvTqhs8yAGLVuhrHhZjweMlblgNJa9p8PgvL84mw+KIwA3JfeQhgNKSWL/fy/Rjzbk8oeDlct++wbhHL6hxFYQRgvQwLKxb5JtaBbk+N0K5fr5zAi536Q7UUYCGbRCPiKIh7UNEc475DaQB0bkp6Upe6GTVYIYiLf802+gPdi7W/yP+L9E79+sXWhEKryXulD+NQSQQ6+ITU3bOIyzbbdaG3wuWTv8tTb7Cf22AWmfxVi2EzeF2nzvCs6t/X8fPKDOLSnXQEWTjhvUcWylSLukrODE7RRqpRmUvUD8tTP4D9vCtPj8VbxF4I35l9Sq3vLLP4XqaCYjPM5C9z7hOjw9GpYV0S/HUz8uID29lIw+KcdlnTB93gwMOFYv49Lvmw1YV3eoDpuV94FyznuxdD77XFHEHG5XDgZGk8vtQA4Athp5KKbCLtXcSs/dr0tqssl3qqe6Bsj5CtFh0rNt43qmHBQnDdWHevRfI6ACU0CHediNtqMYne1PWiVrz2t1Q0uX94gyhFAICJr7tkK+sghYMOMgbdLVEqpdJAXJapOps7frwUN+8h+TUJQVqFP836p2VIIxc9T3wycTYeMGFe/GK0dCbo7jlgI8Bg8Tpr2/oMPs0afQnTJPwDco59D5DBVk4VyUCbB4CaejddD2DYeh5yzpcG+sv4u/wLesil9FVGHt73GnZO58hrQ5ZqOU90TRhTIoOrT4xbCNXcPYtBE/lq9NhnX3Tq5dFDlNeQZV0oWFfoNl2fUYL9U3LGP+5JcDMBSxSbWYRbrfxBFv7+9W8CgUvTD8KX25MFBVKLFsRcmsAo4A2skY
- 59jl3lw5
- 9fNA5dXGfrNgCz7ix0Pgns4pHrRbVviZSxN3eYyplazEB9Rx88xrJ4nyFJuakmrh1dcxfP0uQL28zG+YVsK6A5Ygb3LpPi2F3gdh5TSRkpEy6Vf1q99778hIYwCosVp43FPsyTOE+PCDPizgWJ61Vmr/BL43gO1ggUIUfRB3C8CwpER2a05c8eLtfrra4l1Px2lG0w7a4PL+XCmMCdbHiLu/2p70sMibsIYKIxx1SHJ/07IURarHjbBr33AlkXEmwGXz1DkIKQNMPWLM6yhn6CvuBJ7DpXEQXwmpc/uVGhR6Vsx1COXV38FUhlc6AivWyHlCysW1++XML4wP85O/u/LhNc+Fbd/oYcF55ioDgcus25Euo2f+aaBs/fn0wRSRCpxfqztu3TXwojWwKMcwSwZ5/4A70YzywGGmeHA+A6VcI8ETpA8blBGOMbA==
+X-Rspamd-Queue-Id: CCE59120006
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789761759-493745
+X-HE-Meta: U2FsdGVkX1/Wto92MJxbQGxgLe3y5J54AhtQu60BbWHnHP/2N/R0VLpuZ8ALE6Tzxir3JHQA5V5dV4QkSCWV5DsEhgurdP+6yC/ZQIko/01vI9x1En5pVBt4JcTPgxrUn677J4YYf7ChfMXsMK9jaZtQ9KGrkkqrrUAGV+X5ixstNss5XkckhH92pYP3ztQnWjJQKfz2OGwExBMEqvBG0RzJRFBUw62P3vvIt/8/yJ7IeOxXJ0Jcp85nR/BJLohEMVGmdqcorBvRU2TqEJqKr+HTrrDN4hYxdUVy4hr5uKfG4QveEOxnAks9M8/CcZ8dtb39Bu6jxJlszSGJ9349C8U88TxGQMl64pcRZu90PWELHR4X1U9z9ma0dwC/FL1rn9S8dtngISZAF9/dxiKDW1FxUpHaT1JCsJ/gf/ntI5fG01hTrIBCKvt+Bahr6fBMBLLQmP0YxSi6nOiRlsTCz8IeQdBt8u5JvFeZHGcPJJNir/8JZDUzcGMt1PGF1uUKuRmhdabEOOg75LYjhrN3RBSBK7g9Tfc/J1aFydOkzaOGB2BRQt/rrcaRQZWN4Eei599asor9A2jzRaVeFTX0WgEAaaC5SKK/h4NwaJm7AzubDC4kI70msLYgm/OSdEIIT1j49fE6T+tWRSxm3I+JQBbpdYZu/5HhYDyqM2L9Dq/qWtxMsGA1Dzy7M/B0bUREvap6eO9t6Yl3mhJFWaYXk3GQZci43Wl0XIedcM8pG34zWYdwJ+TjVr2EyfMFvm10SW5A7P6fh2kEuUJPCVJ+8etWBKITpArJszcnJPDcgMti68tbiOMHVggxBzwNgpk8WTfr8pY/vCoD2XeNRSKQlBQrAH/yAjP3aikP28sxi9mxHBWnCUreBxpEfG11KP8rn13+Rwd5uI0PH7M+o/LCrUh+n/WiYJfqiy31DDsgC1vQ5VGiFFdwPNtiB2Gjy9+QAlGp1F+YD41MLOlMuQR
+ 80EOObHW
+ ASkO6b5IMh4wqc6VbnxQ1Uw38ngYKheGoZg3Azujlo2+BXTa4iqQ0HEerdAyKCnvNpkm8Z8OWer3FiZmcaxZSQb68hvsI+nSM91jlafd/hkVPhbiAfPkV0dMFpRNqmbqZbmk/gEmFydYRk23TJZV6EvdJRtcCpGHxFZSQSN3CaCoTMawXdYXe10K6sLGUvkK/mrOPG6uwwyVv+4bYJpsFpK+2+IGmaleXGqHcV5mM4bHc5WdfC7sybmFguHO4Vb6MZ5AptkzzkWBPKRlWnomAP6e99vT9zyO6/v3nI/kicQRXkU78lEOxIBdZiLy+dFpP+GVHAcO8OIYSnwx3mSw4E73sCw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,44 +159,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/18/26 18:03, Ryan Roberts wrote:
-> On 14/09/2026 14:51, Muhammad Usama Anjum wrote:
->> fixmap_pte() returns a pointer into bm_pte, and early_fixmap_init_pte()
->> installs those arrays as page tables. Their elements are therefore
->> HW PTEs.
+On 9/18/26 17:53, Harry Yoo wrote:
+> On Fri, Sep 18, 2026 at 08:27:40AM -0700, Breno Leitao wrote:
+>> On Wed, Sep 16, 2026 at 08:44:30AM +0200, David Hildenbrand (Arm) wrote:
+>>>
+>>> David has reviewed this mail and it annoyed him.
 >>
->> Change the element type of bm_pte to hw_pte_t so it matches the HW PTE
->> pointers returned and passed to the accessors. This is needed before
->> ARCH_HAS_HW_PTE_T makes HW PTEs and SW PTE values distinct types; the
->> array dimensions and placement are unchanged.
->>
->> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
->> ---
->>  arch/arm64/mm/fixmap.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/arch/arm64/mm/fixmap.c b/arch/arm64/mm/fixmap.c
->> index 237a9136bc73b..709a97fe327d8 100644
->> --- a/arch/arm64/mm/fixmap.c
->> +++ b/arch/arm64/mm/fixmap.c
->> @@ -31,7 +31,7 @@ static_assert(NR_BM_PMD_TABLES == 1);
->>  
->>  #define BM_PTE_TABLE_IDX(addr)	__BM_TABLE_IDX(addr, PMD_SHIFT)
->>  
->> -static pte_t bm_pte[NR_BM_PTE_TABLES][PTRS_PER_PTE] __bss_pgtbl;
->> +static hw_pte_t bm_pte[NR_BM_PTE_TABLES][PTRS_PER_PTE] __bss_pgtbl;
+>> Breno is curious what annoyed David here.
 > 
-> I think in my original proposal it was impossible to have a hw_pte value; only a
-> hw_pte pointer was possible. Being able to create hw_pte values means that it is
-> possible that a hw_pte_t pointer is not actually pointing to an entry in a HW
-> pgtable. The main motivation for this is that we want to dereference neighbours
-> of a hw pte based on it's pointer and be confident that it is safe. I think this
-> removes some of the safety.
+> Harry assumed David was annoyed by Sashiko replying with
+> every 'LGTM' email :-)
 
-If you follow some of the related discussions on the core-mm series, there is a
-path forward to go further into that direction.
+Harry has reviewed David's reply and has understood his intention.
 
-People instantiating a hw_pte_t on the stack are not really a concern right now.
+Harry's mail looks great. Breno's mail looks great. Everything looks great.
+
+Happy days, let's write more emails about how great something looks.
 
 -- 
 Cheers,
