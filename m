@@ -4,116 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA546C982D2
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 07:21:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FAC8C982D2
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 07:21:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 953D86B0093; Fri, 18 Sep 2026 03:21:27 -0400 (EDT)
+	id 5D0B86B0098; Fri, 18 Sep 2026 03:21:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 903266B0095; Fri, 18 Sep 2026 03:21:27 -0400 (EDT)
+	id 5A8E06B0099; Fri, 18 Sep 2026 03:21:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D2216B0098; Fri, 18 Sep 2026 03:21:27 -0400 (EDT)
+	id 4971E6B009B; Fri, 18 Sep 2026 03:21:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 477336B0093
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 03:21:27 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A8E3F405D3
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 07:21:26 +0000 (UTC)
-X-FDA: 85226037372.22.A3697C5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 1E9F040002
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 07:21:24 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NIyTlj5N;
-	spf=pass (imf12.hostedemail.com: domain of joel.granados@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=joel.granados@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 191D76B0098
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 03:21:37 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 37B721C2BF7
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 07:21:36 +0000 (UTC)
+X-FDA: 85226037792.25.7B8A4F0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 87EE4A0009
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 07:21:34 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WeEVSiUS;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789716085;
-	b=MmWXkPaYM2nUq9zxn9OYDoK3IIrQa+eJAfh0XlPJ+XmENR4jXT3R64cGfmUfeXnkHrV3j4
-	GRssh+Vz5jbuwotX80meKL06rbhcwkl1fnCA2qA38m8fX5QOlJbpEJ+Ba6T76S80Aij5Qk
-	Fgiy3ukYUCHEHWvTw+MixDGPQzkHP98=
+	t=1789716094;
+	b=pWpSZ+wN88fXOtF6U0lfC53sPSB8EaCM/kgfrK9k9UUQss4gYZnXB4UzsieiDaosePYQWZ
+	kg6eWMcz6LHW2kJdnTg65PgNHd4no01xmpb5GhiJJhHadfcLMzGKDtbcmyuyk3QYWnihQT
+	UnK80VkISzROX+gDRd7tt/RKOFTHAgQ=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NIyTlj5N;
-	spf=pass (imf12.hostedemail.com: domain of joel.granados@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=joel.granados@kernel.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WeEVSiUS;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789716085;
+	s=arc-20220608; t=1789716094;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=obg8mrHZCzteuKsjo7uKdsL8y41j6SI2KsHB7Htsuzk=;
-	b=IwjDBV6PyhCa38JPxuAcFx5m6N5videm0WrrRi0K1w8jN2cL18qi4g8SM7X1KuiJq5U8CV
-	9lo2SK8FR9j6DxcodtB3JkpCQ3RSHqi2/IrZKbrtv7aRszaQ6pD91qCuv7lD7Qj2R0NeFr
-	FRBv1OFUa5+ce71rEgFd+TtCJ1mXHgQ=
+	bh=xgfnuI9TWr6i2G+cWkoQuVzfkr0TXI4SYd1cnBio1Rw=;
+	b=M2hj+1+161c5UBl7u2V/tq0AWds5LCDgnAeyUujDKyMUryXpPMv/XBXlrw4w/rIRXBvedb
+	BRnzjADkzPcIyA4JaabGNLGqSGAJ3/t4feWVikz+NuGOVi/QvN18S4fhzciTedxLNfehi3
+	A0GRBUzWubYYmBWkEDklk0+EPbds5Nc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A49F56053E;
-	Fri, 18 Sep 2026 07:21:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDEC21F000FF;
-	Fri, 18 Sep 2026 07:21:23 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B7B0E40581;
+	Fri, 18 Sep 2026 07:21:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CA911F00893;
+	Fri, 18 Sep 2026 07:21:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789716084;
-	bh=obg8mrHZCzteuKsjo7uKdsL8y41j6SI2KsHB7Htsuzk=;
+	s=k20260515; t=1789716093;
+	bh=xgfnuI9TWr6i2G+cWkoQuVzfkr0TXI4SYd1cnBio1Rw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=NIyTlj5NJMuaPvyQ0XBnI1g4RrH1i2vsqeU5lgtPy1mcmGtvatA8gdIG2GifZnvBT
-	 8Rsiih3bsJlYTSvo6buCgjlOkIXwIumRxGoV5i3swZs+YbwhwPxVw/NylyqbgWvUFm
-	 2pzeZO4Ic3AtUaTeL/lJWqjQmBDOxnf6O4XctyuNRsyUUdd6ce89XQxHZAw0eHCMG1
-	 vTl+7z+qj2O0FweW32GKRGefz09ejUwtNWjgeiXKAjkwHUABi28uBAC83Zp7Mivq21
-	 VwNzwVrfZ5UdW+Vb+SqPxPixX/bOhscg1YZ5skM5x9iClqTW9d4n+l+ZKEIVSJdtDW
-	 NwZ6DaeJ040oA==
-Date: Fri, 18 Sep 2026 09:21:18 +0200
-From: Joel Granados <joel.granados@kernel.org>
-To: Yury Norov <ynorov@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Jason A. Donenfeld" <Jason@zx2c4.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Matthew Wilcox <willy@infradead.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Waiman Long <longman@redhat.com>, Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
-	Christoph Lameter <cl@gentwo.org>, "Paul E. McKenney" <paulmck@kernel.org>, 
-	Frederic Weisbecker <frederic@kernel.org>, Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, 
-	Joel Fernandes <joelagnelf@nvidia.com>, Josh Triplett <josh@joshtriplett.org>, 
-	Uladzislau Rezki <urezki@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Lai Jiangshan <jiangshanlai@gmail.com>, 
-	Zqiang <qiang.zhang@linux.dev>, Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, 
-	Kees Cook <kees@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, 
-	Thomas Gleixner <tglx@kernel.org>, Juri Lelli <juri.lelli@redhat.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
-	Valentin Schneider <vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, 
-	Mike Rapoport <rppt@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, wireguard@lists.zx2c4.com, 
-	netdev@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	rcu@vger.kernel.org, virtualization@lists.linux.dev, linux-rt-devel@lists.linux.dev, 
-	llvm@lists.linux.dev, Yury Norov <yury.norov@gmail.com>
-Subject: Re: [PATCH 17/17] sysctl: assert static storage for
- DEFINE_CTL_TABLE_POLL()
-Message-ID: <av3s3fgets23siaqxbtyu5gvcekqpq2nmyey6oa6o6amfj6jbi@zomsnfvvxtf4>
-References: <20260915030336.1192299-1-ynorov@nvidia.com>
- <20260915031334.1194975-12-ynorov@nvidia.com>
+	b=WeEVSiUSVGNxGH7poJBl8BMLQzWHt9ePEhZ1af+Vmeklz5WOmx2pZK+2tAuVyDUth
+	 RFzK63DnascmRaIu+z8a9jFjaVW/BdUdInE8B7B2DZuoJfYWJAng2wnwUvXuAlYyYj
+	 FbCLQgbipfTvMZmP2D0LNfQ70XOyyPMw7rlh0/FxtHThXgjAYuX/y7lR/wdCS4XlfQ
+	 vZTmEnhg22/fXwo7hNe/MLsU4tMkAxeTuIHKZPgJthixZaQga9qrLR3dBTl4ckpnKq
+	 xskdp0ifpjBVI4o0AOOLsh1i8fSi4RlD0lvsxBOKv1jIBls5rwu667Q/0SIgeHQXnz
+	 t3cL7hJReH9yg==
+Date: Fri, 18 Sep 2026 10:21:21 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>, linux-arch@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH] docs/mm: describe set_memory() and set_direct_map() APIs
+Message-ID: <aqzmcdr7ISpa9r8k@kernel.org>
+References: <20260909-set-memory-docs-v1-1-6065d3f208e4@kernel.org>
+ <2817ca55-cf04-4874-bed6-8408606e1a41@arm.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ds2q3rrmscwpm7nx"
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20260915031334.1194975-12-ynorov@nvidia.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2817ca55-cf04-4874-bed6-8408606e1a41@arm.com>
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 1E9F040002
+X-Rspamd-Queue-Id: 87EE4A0009
 X-Rspam-User: 
-X-Stat-Signature: ozthh7xwcksqeuudgd3erkot7t5n9erx
-X-HE-Tag: 1789716084-314870
-X-HE-Meta: U2FsdGVkX1/pnTeZ9O+jC5jrjB9vGnEEJIhCwPmjIslr8RJTTp6I7y6RE1svfXEpK/rIjvv/DzODxkzDd3jWcqv0Oziso5BMA1ssu+db7K+nX8bUn0sDjy/Uxs9fWJTAErP6/mbKYJ/BHkI21YDcBc81pSHdz4QJX7KsnRL/OQoX5CDBMhQt1zWv8qlGhy6yMdvbD9EkQ7O6bFWOB73H+yjBnqsrpR3Ql+he0S8VPtZOfvJ7mO4p8sNowlcsgWRr+gX2Npfl8JusoZTUdRGQifEjUja6klRN67hC/GjnEFzLLGfHQnZH86p9359ku+g71Pu6CpAx/ILNVbbxZDYiqLV9B+tKJotuXkLl1cKXe+Y6VuKxRecCE1/+xcfODsPCucuJppLPCas1NVTeaaQQ0Wclu4Aw8+7c8hqAUNDKkDJyiartxkjys94nBHJz9HrCbyAmjoMDkaWTuvnCqv81i6k5F4iPJ75h2rxGj49xVX13CDe6I/uHZ4WzmVTsFwvvad7vgv8yuuCZbpUtrtAupSsymL64zm2kPzshL0pu5yqQtGU5tMNY14dgpeUHyXij1TA+iZCikPfukT+Ood36h4vKAmYfS1NHZiR9N1JSaeyEdPpSreF6OLRDlOPPAcDjaH+1crbgqQ3PUFPruOpJhZbctuFrb/5fpXduIQ5+66pbyq8EFVPzN/pMC59HoN94RTrccSAZFoItQt7/ZbbIaASQDUnEFVzsFUmkSvqCgw0GIELFR6C20578pFZKBnteJK6MgaAGvc/mQThusbsZP68RW3+veUD2wKtLsNOItGMJOi9VzcT9GoCnka/G1xNxz/hZ0eccaLFRdkE60oWgN5QUion0u3LqGD+fBMFPN+4DG1IENWI0sxWp290bWIxzOxBWo3mXExiO/pXzMJ6P6sWW2h4E7+WcXk6QI+ZxH0Pc+/f7K3Su/GUXCM8hxoBKUy6WzSH+UkuOYVnYOH8
- Fc1XVwy6
- QetvxJNe6rwgcoD16lBjkHVib2bkDOV5tKGmQrzk6mzKW9uO9CzHvTvEeXOrxuZO9zaW4+9o+mIXTXNJNSsZzge9AFRwjMXMfUYMPFZBVlXRNHCvboIJfDhOFOCzmy6iSTFP6AcGFsr8fGTXKQOWK5+mCtfLRo7I3EQw86yyCD5is6s8WwL0wijZDyboaqX31TYzOL2/KwnawzGJfdZ/FJ6nl69m8Hnv5aZBZNMtUNK31jLYm5ChqEcWqnd6EQ5gj3Gbuu3OUaND5DZUi2eRfmGPD9u1zXOO1VlrS7F74Z9E1a0PlwQqWQ8VIN+RAm25vjslYnjbTw3zwCyVsthYIRApJz4bKg5izuNo3hbkmjAzgX0T/OfWlhsCAIWgTmazTs4/CGAJcy9nQ8hsFFwhwfZeTW+ek5+ChjluMo2x+BDbp3k0ZWf79UIUGxAs0ICiBqMO5WspeQ0D8BRuBd6iVb+6V5EKu7R/IFIMecOGCf/YOcy9bCiS0hebSCm3slm4+CvMLoT66WShSfIN225L8e7fQM05JoNCrLiQsSAOH4XuBzPjofE1dEIblIw==
+X-Stat-Signature: m1fgn6yxisgfsdhbrduasmamaarq3egk
+X-HE-Tag: 1789716094-566487
+X-HE-Meta: U2FsdGVkX19qqxjMXKtsUVJvGCco+8+BAhwWmfmR76XhD+D8pROqvvOhQeBUoLI6dJx2SyiqF6Qqv4f1BuZ0917rmoxZFbXkdrNA7npIygytzqolP2sZChu4TFPaO3/DKFP3LG84d+hKNs2D38GoSgpmDm3Sydww62TVWCpE/Y+d5s8EBrfIYpP4S6PwoRLgfton4yzg5BIm+b081o0G3rUa0RCtrFcqT5LvlHRkrqrrTaqkGjA7pDF8CZZY/3FGk1e8mSyy4G59qdy1sKUJOKkoT3Bf5QlOJX0D6ihIVFuanxoDVqipUMCzcvNn7BVVQiK0gRZkzGfLZr/OV3R9HErHvGhVCdGonFBveOh/828Uv9ZSkidKOOBs6LQiLGfldCAHTaI7I+myFB2zEnY1N/Y1QpSjGIRXu//yBXfjZAVlq6HGURMEqk4pofr98vgk0UZdJPSiUfeRJ2enxoFPkitFQezcnDlYfjAb/+EWxLcn98d2hR5xWN5bsZ/Unjs1QvknNny3aBjz8GYHHzPenYwVV9HvfQtYfHLQH59ZuyQoK5//9mRp6YElqU9JI2BLlWwoZksMESw9j6gEHTqIi2uHj5Ykwuwt0E+Ht12nU/En43zS8Jtu3lzcsBmx/5+0EVutWu/OIgYKSojRd5GsUMizMuzZWwvzg9THapU9MGGVQOkiOhWT6yWR6JjNypiwDXf8wNw3/yFr5gnPh2UjcXgu6ZGYws2dFZKIZ7to0LTZ/5irowGUllgaFYNdh5ieVLeAlP6xXaN0kFFGWkZUEvxLlNrTv7fAHELhfq6iZoiiM7uzpx1lDmmwELbvQriUMNMqjxOQONhLlZ5ZmoWV4cfYbCiw4QtqIKeKfKBws30eXiBw4v8AhqXmavJqbdNZH6XQF9Jesvq6db0Gmyl+q73KK94mXmpNBdRuR2f24HyDGusZokJ6gbDAWj4gnoW3pl+T3NKHMnjbymvTwQi
+ TtHbwSlo
+ NAc3DfbYsiQACjJA4fsrfZTzxxdj4UUQ3ocBN4QGA4OlLnq9Ygb/oGRYOY0iMXT1M6/VRZW9+6+P/luzwXfP7NEaU0fDXptb+55ELDPT8sd0MBZ+OWw4d377sXL7RQS/POipqbZr8m7SbG7rTDc1W6vFHH+qNKu/LL0cfmImABPbeylzl4R6Hrp7XT8EE+j7o+WKGlbvm4eGNyOY/CGwOo05VSJASNFux6ppQng6l37VOQgY1DOKI3En5iRvXPJzlG3OhjcK2phQ/rMdQ1FgYKjOAjr417oKEa4mcGQwiicjvpmRmCK6piuYfuX/MroX6fEp1+a5WWPwdYPjD7ufIbTzpXcY9aaY0/5xI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,78 +102,217 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Sep 17, 2026 at 08:44:17PM +0200, Kevin Brodsky wrote:
+> On 09/09/2026 11:45, Mike Rapoport (Microsoft) wrote:
+> > The set_memory() and set_direct_map() APIs change permissions of existing
+> > kernel mappings, but their semantics are only described by the code, and
+> > that code differs from architecture to architecture.
+> >
+> > Add Documentation/mm/kernel-page-tables.rst that briefly describes what the
+> > kernel page tables consist of, defines the semantics both APIs have in
+> > common, including the parts that are easy to get wrong, and lists the
+> > differences between the architecture implementations.
+> >
+> > Add kernel-doc comments for the generic set_memory() and set_direct_map()
+> > stubs and link them into Documentation/core-api/mm-api.rst.
+> >
+> > Assisted-by: copilot:claude-opus
+> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> 
+> Thanks for doing this Mike, I wish there had been such a document when I
+> started using those APIs!
+> 
+> Much of that document feels like an excruciating FIXME list... which is
 
---ds2q3rrmscwpm7nx
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+It is :)
 
-On Mon, Sep 14, 2026 at 11:13:32PM -0400, Yury Norov wrote:
-> DEFINE_CTL_TABLE_POLL() statically initializes an embedded wait queue.
-> An automatic local poll object cannot provide the persistent lockdep
-> class key expected by its wait queue lock.
->=20
-> Add ASSERT_STATIC_STORAGE() to reject automatic declarations while
-> preserving file-scope and static local definitions. Leave the underlying
-> initializer available for embedded objects.
->=20
-> Assisted-by: OpenAI Codex
-> Signed-off-by: Yury Norov <ynorov@nvidia.com>
-> ---
->  include/linux/sysctl.h | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->=20
-> diff --git a/include/linux/sysctl.h b/include/linux/sysctl.h
-> index e5d7226ab6f5..be79359346af 100644
-> --- a/include/linux/sysctl.h
-> +++ b/include/linux/sysctl.h
-> @@ -22,6 +22,7 @@
->  #ifndef _LINUX_SYSCTL_H
->  #define _LINUX_SYSCTL_H
-> =20
-> +#include <linux/compiler.h>
->  #include <linux/list.h>
->  #include <linux/rcupdate.h>
->  #include <linux/wait.h>
-> @@ -216,7 +217,8 @@ static inline void *proc_sys_poll_event(struct ctl_ta=
-ble_poll *poll)
->  	.wait =3D __WAIT_QUEUE_HEAD_INITIALIZER(name.wait) }
-> =20
->  #define DEFINE_CTL_TABLE_POLL(name)					\
-> -	struct ctl_table_poll name =3D __CTL_TABLE_POLL_INITIALIZER(name)
-> +	struct ctl_table_poll name =3D __CTL_TABLE_POLL_INITIALIZER(name);	\
-> +	ASSERT_STATIC_STORAGE(name)
-> =20
->  /* A sysctl table is an array of struct ctl_table: */
->  struct ctl_table {
-> --=20
-> 2.53.0
->=20
+> exactly the state of set_memory/set_direct_map, and better to have it
+> documented than letting every new user stumble upon the same gotchas.
+> 
+> Overall looks good to me, some minor comments below.
+> 
+> > [...]
+> >
+> > +Modifying the kernel page tables
+> > +================================
+> > +
+> > +Except for the vmalloc area, the kernel page tables are mostly static. Still,
+> > +there are cases when the permissions of existing kernel mappings have to be
+> > +updated, for instance when a module is loaded and its text becomes read-only
+> > +and executable, or when a page is temporarily removed from the direct map to
+> > +reduce its exposure.
+> > +
+> > +There are two families of functions for this, both declared in
+> > +`include/linux/set_memory.h`:
+> > +
+> > +* `set_memory_*()` change permissions of an arbitrary kernel mapping. They
+> > +  take a kernel virtual address and the number of pages.
+> > +
+> > +* `set_direct_map_*()` change permissions of the direct map alias of a
+> > +  `struct page`. They take a `struct page` pointer and the number of
+> > +  pages.
+> 
+> "direct map alias of a struct page" is rather confusing, are we talking
+> about the mapping of struct page itself?
 
-This looks OK for sysctl and the two users of DEFINE_CTL_TABLE_POLL in
-utsname_sysctl.c (hostname_poll and domainname_poll)
+How about "... permissions of the direct mapping of the page frame
+represented by a struct page"?
+ 
+> > +
+> > +Architectures that implement `set_memory()` select `CONFIG_ARCH_HAS_SET_MEMORY`
+> > +
+> > +Architectures that implement `set_direct_map()` select
+> > +`CONFIG_ARCH_HAS_SET_DIRECT_MAP`.
+> > [...]
+> >
+> > +Architecture specific differences
+> > +=================================
+> > +
+> > +The APIs are implemented by seven architectures and, beyond the common
+> > +semantics described above, their behaviour differs in several respects.
+> > +
+> > +Which of the APIs are implemented:
+> > +
+> > +=========  =====================  =========================
+> > +Arch       `ARCH_HAS_SET_MEMORY`  `ARCH_HAS_SET_DIRECT_MAP`
+> > +=========  =====================  =========================
+> > +arm        yes                    no
+> > +arm64      yes                    yes
+> > +loongarch  yes                    yes
+> > +powerpc    yes                    no
+> > +riscv      yes (MMU only)         yes (MMU only)
+> > +s390       yes                    yes
+> > +x86        yes                    yes
+> > +=========  =====================  =========================
+> > +
+> > +Only set_memory_ro(), set_memory_rw(), set_memory_x() and set_memory_nx() are
+> > +available everywhere, and even these are not universal: some architectures do
+> > +not implement any of them for the direct map, and the architectures that may
+> 
+> "do not implement any of them for the direct map" feels ambiguous - I
+> think what we really mean is that they reject direct map addresses, e.g.
+> what arm64 does (only accept addresses to kernel VMAs)?
 
-Reviewed-by: Joel Granados <joel.granados@kernel.org>
+... some architectures restrict ranges that can be modified. For
+instance arm64 rejects direct map addresses.
+ 
+> > +run on hardware without an execute permission bit, like x86 and s390, silently
+> > +skip the update of the executable bit there.
+> > +
+> > +set_memory_rox() has a generic implementation that calls set_memory_ro() and
+> > +set_memory_x() in turn; PowerPC, s390 and x86 override it with a single-pass
+> > +version.
+> > +
+> > +Making a mapping present or not present is spelled differently: set_memory_p()
+> > +and set_memory_np() on x86 and PowerPC, set_memory_valid() on arm64 and arm.
+> 
+> I'm not sure we should even document set_memory_valid(). It doesn't at
+> all behave like the other set_memory_* on amr64 (no check whatsoever, no
+> handling of aliases) and is (fortunately) only used from arch code. I've
+> been meaning to make its name scarier (__set_memory_valid?) for that reason.
 
-Best
+Here it's an example of arch-private APIs, so I'd rather keep it. I'll
+extend the intro sentence to make it more clear.
+ 
+> > +
+> > +The direct map and the kernel image are normally mapped with the largest
+> > +possible pages, and changing the permissions of a single page inside such a
+> > +mapping requires splitting it, which not every architecture can do.
+> > +
+> > +arm
+> > +---
+> > +
+> > +* Does not implement `set_direct_map()`.
+> > +* Provides set_memory_valid().
+> > +* set_memory_ro(), set_memory_rw(), set_memory_x() and set_memory_nx() accept
+> > +  only vmalloc and module addresses.
+> > +* set_memory_valid() accepts any address.
+> > +* Does not update mapping aliases.
+> > +
+> > +arm64
+> > +-----
+> > +
+> > +* Provides set_memory_valid().
+> > +* Provides the memory encryption helpers, which are effective only when the
+> > +  kernel runs as a confidential guest.
+> > +* set_memory_ro(), set_memory_rw(), set_memory_x() and set_memory_nx() accept
+> > +  only vmalloc and module addresses:
+> > +
+> > +  - the range must fit in the VM area that contains its start
+> > +  - the VM area must have `VM_ALLOC` set and `VM_ALLOW_HUGE_VMAP` clear
+> > +
+> > +* set_memory_valid() accepts any address.
+> > +* The encryption helpers accept only the direct map addresses.
+> 
+> s/the//
+> 
+> > +* Propagates the read-only and the read-write changes to the direct map alias
+> > +  when `rodata=full` is in effect.
+> 
+> That is, set_memory_<perms> propagate those changes.
 
---ds2q3rrmscwpm7nx
-Content-Type: application/pgp-signature; name="signature.asc"
+Ack.
 
------BEGIN PGP SIGNATURE-----
+> 
+> > +* Splits leaf mappings before the update on the hardware that supports it.
+> > +  Without such support an update that covers a leaf entry only partially fails
+> > +  with a WARN()ing and `-EINVAL`.
+> 
+> What does "partially fails" mean?  The splitting may be partial, but no
+> permission change should occur.
 
-iQGzBAABCgAdFiEErkcJVyXmMSXOyyeQupfNUreWQU8FAmqs5mgACgkQupfNUreW
-QU+Slwv/V1va9Xy3ewVVGpZbKof7lX0SuxpAV+wYGoQU9hE6Ofexe2lgpstvBg5q
-R4BplT9ThJvF8d3hzCkPNWmWHuXW19VfnmKKdy7zNHYo8lyVLEyFmOlw+3sZ6czr
-e7JVfspT2rWbf/0oF8GiQvMCV31pFqQty+c4bb5ZV64xBCKqIxBX9DMXYOstdt1z
-hRlSyBTjYabun1LJPo7Nkj/puYlCklMcipRzJNONXZgWt0LFRsCYSZRrAdk2ISeP
-y7e87NG2DiVBd/d58WvPvdwdpmhX4vHSNXdSbeLwTn26F3bg7yaNsXd2sCSVTu/o
-4S0G/bMFUP/e2oNe/wtaO+XBnDhJYPk3DGvYkFf/C8DFyCVi36tjb4SrQv3D0QV9
-PGWE2Hek8KHr3W4oRbZIQm6zMUwg9/fu4speRR5+1xnuBlVsRXtEOQgEr/DkWYHw
-8SYHe3rOXtaFsbMWdItXR1CRib516haep77aGjErq93c3ViZF1JEEMBQdXjqjWmm
-LKs/7uqR
-=5LAv
------END PGP SIGNATURE-----
+Yes, the split may be partial and. I'll make it clearer.
+ 
+> > +* The `set_direct_map()` functions return 0 without doing anything when the
+> > +  direct map cannot be modified, see can_set_direct_map().
+> > +* Skips the TLB flush in `set_memory()` when the update only turns an invalid
+> > +  mapping into a valid one.
+> > +* Does not flush TLB in `set_direct_map()`.
+> > +
+> > +LoongArch
+> > +---------
+> > +
+> > +* Accepts only the addresses above the hardware window and silently returns
+> > +  success for the rest, see `Direct map`_.
+> > +* Does not update mapping aliases.
+> > +* Does not split anything: a leaf entry is updated as a whole, which changes
+> > +  the permissions of the entire large mapping.
+> 
+> Ouch!
 
---ds2q3rrmscwpm7nx--
+I liked more their set_direct_map part :)
+ 
+> > +* Flushes the TLB in `set_direct_map()`.
+> > +
+> > +x86
+> > +---
+> > +
+> > +* Provides the largest set of operations on top of the common ones:
+> > +
+> > +  - the cache attribute helpers: set_memory_uc(), set_memory_wc(),
+> > +    set_memory_wb()
+> > +  - presence control: set_memory_np() and set_memory_p()
+> > +  - set_memory_4k()
+> > +  - set_memory_global() and set_memory_nonglobal()
+> > +  - the array variants that operate on `struct page` arrays or arrays of
+> > +    virtual addresses
+> > +  - memory encryption: set_memory_encrypted() and set_memory_decrypted()
+> > +
+> > +* The `set_memory()` functions accept any mapped kernel address, including the
+> > +  direct map, and silently succeed for the unmapped holes inside it.
+> > +* Does nothing in set_memory_x() and set_memory_nx() when the CPU has no
+> > +  execute permission bit.
+> > +* Applies the change to the direct map alias and, for the kernel image, to the
+> > +  high kernel mapping. The NX bit is never propagated, so that the direct map
+> > +  stays non-executable.
+> 
+> Same as above, bettermake the subject explicit (set_memory()?).
+
+Ack.
+ 
+> - Kevin
+
+-- 
+Sincerely yours,
+Mike.
 
