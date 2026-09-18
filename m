@@ -4,137 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 240E6C982D7
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 18:08:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 780B0C982D7
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 18:14:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3AA4E6B0088; Fri, 18 Sep 2026 14:08:04 -0400 (EDT)
+	id 7AC9F6B0098; Fri, 18 Sep 2026 14:14:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 35A7A6B008A; Fri, 18 Sep 2026 14:08:04 -0400 (EDT)
+	id 74E226B00AA; Fri, 18 Sep 2026 14:14:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 248F96B00AA; Fri, 18 Sep 2026 14:08:04 -0400 (EDT)
+	id 626826B00AB; Fri, 18 Sep 2026 14:14:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 07A766B0088
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 14:08:04 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9109C1A0735
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 18:08:03 +0000 (UTC)
-X-FDA: 85227666846.25.97F9735
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	by imf27.hostedemail.com (Postfix) with ESMTP id AE53540007
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 18:08:01 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nbpvHK4W;
-	spf=pass (imf27.hostedemail.com: domain of nphamcs@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789754881;
-	b=Cdd3KFLo6VFkAnWfNUEl+mU1ZWw3whKUPOQ+or/TV8QVBUSk/M2KY9qlYOsb7Cl80piqIe
-	LaZoYmqunZidPlNfKNNq1yP338QZULVJrvIbtMnlBvr3pgjH+jm0xa3wSKw3VF3Iz7M+Kp
-	etg9UbdtUrtABqjGYwquWWRAmvMsys4=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nbpvHK4W;
-	spf=pass (imf27.hostedemail.com: domain of nphamcs@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789754881;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2D1E06B0098
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 14:14:17 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B41A9807A3
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 18:14:16 +0000 (UTC)
+X-FDA: 85227682512.02.BEACBC9
+Received: from mta0.migadu.com (out-108.mta0.migadu.com [91.218.175.108])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 20FA9120004
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 18:14:11 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=lyPhmtDX;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf29.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.108 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789755255;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yrQsHhy6u3WkbV5pxscEOWCkYhTAD9EPZK+ycsiqyqo=;
-	b=C/mt9iH/mdH/CaSUJm9J01EK+C2lYQP/BhIaWALwajP8TTHCXzUjFfexDak1i6ij1fPs9L
-	c2oE1ZQ6A7SDi3r2IO7UCkbxTQugCxEo9cXDzJnhK5aasjuw/mT84c5sgnlYas4735IERA
-	N6Ei4EMt8JbTvGP/NSYRkxFNN4XuTPM=
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b912d822dso7627815e9.2
-        for <linux-mm@kvack.org>; Fri, 18 Sep 2026 11:08:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789754880; cv=none;
-        d=google.com; s=arc-20260327;
-        b=m2EEUb88gcs/CaQOvKwCMc6f1xHxpJyrDycesUYic8TaW7zfS9Giw5L37mNfpjkjG+
-         kmYz8Pyd5MqQRHRrfEcbmYsUv1oeAGvgeIsB13rzA22a4Cu31xWD/tSBz56mJlyCzIbN
-         7YoMBBlZS8g/2IvMgcBpRCgnqBlNHhesTUuDoYee4Do6L+jAU29F/vmfucLnjDk+7QDy
-         mk1Ll+JNIOB1WZkWuCFiZVgJ4jh115sj3pf3s3l2z5sOIMrBjFEL1GIZR07wW42Levkl
-         CvdxsUw/w6+qlK3RBSVm8KkqQhKvYXpLjK7JgcqeqOG7mo0Q8fyzFFuyBRGLVzYJZ0TP
-         Nktw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=yrQsHhy6u3WkbV5pxscEOWCkYhTAD9EPZK+ycsiqyqo=;
-        fh=Mku5TSMXRT2R+rAT9VVy4aA5vRpquE1HQUuZQk8RgVc=;
-        b=mJoISsSC2wGo5t2e4rPoLg5cZYQiVMYSlogd9SzbV65AQE2j3vmZUpKzUDm6wU+zu9
-         UFBCWbcfiy00xYT9i5nqGpLixhrjx7mT6iIAxyIodWvvn9W/cZXqCwAOdEEViTzoR1m+
-         TuC/ggGwIP/IgwEDlzHCT4oFc8H/gCsvic6lBeqzO9ouWZ2tTabvvK8OUDCEYso+sNui
-         Knge8Hwc667mqkDS333L+1wyF6GcOvCkWnskTfgt6HBorz2OHqc3hLxEy/DdyYYVo6S3
-         cJFvV0pchW/NCcfQEA8sobowkwBcSgS4odG/V5bdpsP8iJITe0IlCDeo7dhL/S8s1vBt
-         YGag==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789754880; x=1790359680; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=yrQsHhy6u3WkbV5pxscEOWCkYhTAD9EPZK+ycsiqyqo=;
-        b=nbpvHK4Wa5czftozqRemBJiTnnXwavujzTujF7r35j0jY0LhkKwz7xgYsjlh8xl2n2
-         06ZDFA6pApH4U/uq/QFXRkIUMgoYuZl7JLxGG01qpkHWlx+GbHAY3vNmJXjRuW4n+52B
-         +PUE43NLJXZmqrX3B32C88Ztw6lWSJC/hQpSHJ2VUe0FUZB3rJJiKb4an7jYjJNLuiXM
-         R5Uck6iaUjwvY6tNOXNbrVozboofKxihraw2ULOG2NytJ9ZkbRolB8zVHUgLneXe+5nX
-         yXCXb3W3rjHkPfpgNILY1P2N9XwCOjMRYZ6j75jM7HBtvJVAN17NfnKqbdhR/aM7wSiD
-         ijJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789754880; x=1790359680;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=yrQsHhy6u3WkbV5pxscEOWCkYhTAD9EPZK+ycsiqyqo=;
-        b=eD9FjEEggDziOoVEf+pRllfL3SGz2GiaGOAMpEYYOOYTQ32BCEkYtldpgb3e5B0kw8
-         3g6hIgu+cfgoMcBLX88CzJi0sfvbdx1yc1/hqLuv8EY/yVr3fks1CmqqEvravnPtMnCu
-         +RWKTZDcv0n3A8paF7ezmIRctPpCM53mWtFAVXeOtRf+YJa840kfKdazV3pWqOHJuBlD
-         A0ATbUvnUpK7qdICWmAZVhnrYiLVO/2rxtLtzZeSbksjDgRddDvJnuCSpqgIINRewehM
-         FoGYysO3fIDd79P3HiFNtmUjwGkaZMbS1o/Q2o2KsOK+Q+0hTTyVfHpkjl0b5QgKzgzC
-         sDyg==
-X-Gm-Message-State: AFuF++kZlW50FtO5NIDm9U8bQKw1SW3GIHA0HqMNoJb/93TlYXy2nL7e
-	LjXxCyi9vIBM73mvnJucNGoBUBRwekA7Q47gFOvzSjanSbfDJGIxCnP6hvCBbJ/qsJlqZMtIP9w
-	NiNlglMAi0jgBnP1ZzDm2yztx7DiCOvw=
-X-Gm-Gg: AYBFou2svMeJask09z0NWw4uI4EoJgejl/iWE8s63IlNZJnOGKqaApiUNuj8IZMIlto
-	1xaU+irAr7VwEQ/jiQE12Xa9tXPhAKeqQzwpgurgjx3mIBx/0vbfRzUc5odhW+JRPQ3x+9W0pKO
-	3Tk42XnBAUDwdvH7lLcJV03mHJZzCwhnpkpwoc6LXMsOhRzssj/s47LHgIECH6Y5pUpYsLEe75F
-	KsMjQTDv4IbuM+6CJJeJ1VBw/vwUFFodldNxSuZo9KfCSIW7Xop1uVpIDL5s9Qg3RMphsO3TiWz
-	ek0AWNSx4pQmTtIWjvWu95bRY/e1Z5vZQpRm95vEHrX6iu5sIV/5je0/S1YLghSQD9nng/ydlT1
-	p/xzNttpi1RM=
-X-Received: by 2002:a05:600c:c8f:b0:49e:6c9b:4e94 with SMTP id
- 5b1f17b1804b1-49fc5743124mr44989645e9.28.1789754879842; Fri, 18 Sep 2026
- 11:07:59 -0700 (PDT)
+	bh=boW6IDDNzO9pEnZVQAmnXDxUH+UPgmW6l22NMMYR6+M=;
+	b=mQEOvEt/MzCB26B45TzHsO9qi6E3DaM689hspxrT2Te5g6kkS4/PECKktuoDeeIUNGboyf
+	W/Lp52oyixKfyR7NioBaSMBD9LbYSBUMZoWXqHJYzWn7n62X5pB9v50yVANkE9vHXjEGxA
+	i01LxuzSybL+tbtbEyY9pv31t/H7wh4=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789755255;
+	b=y55sNxgb1KodVCb7aC3Rrr9irPy4kOgDZiugPD6XIGtGPYJvlibwsOau3hkcPZbLCtiJBQ
+	nA8XVpDicmp1st8auUu1I7u4ez37taknVytNVj3pEMcpF5gli3ujKk3d8SkVFW3UBoP19k
+	7RI36BYDbjcSEFpeTUij/Pbkbze3Fq0=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=lyPhmtDX;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf29.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.108 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=FqlRlZbpY0aC0R6VarAfbvRXZpO3mHZ5xrmMHvOClk0=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789755249; v=1; x=1790360049;
+ b=lyPhmtDXHCj/isT64daxeJUXm+dxFtgqafQb8prfx+GRY6jEmgO2xyIF5X2QFgtMzhN6ggAc
+ +BbuT5ZosduM3OLC2FfyNvBbPzzELOyIJooEYtChJPz07w886CpBkYRMrwXz7HCujRHmpt+b+6+
+ Dze6BDBK6PHvSvvRA6GT00FM=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 49d6f23acb7f0677;
+	Fri, 18 Sep 2026 18:14:08 +0000
+X-Mizu-Trace-ID: 49d6f23acb7f0677
+X-Migadu-Flow: FLOW_OUT
+Date: Fri, 18 Sep 2026 11:14:03 -0700
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: bingfangguo@tencent.com
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, Dave Chinner <david@fromorbit.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Bingfang Guo <bfguo@icloud.com>, cgroups@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/4] memcg: manipulate memcg private ID references by ID
+Message-ID: <aq1_Qhid7-62pHcW@linux.dev>
+References: <20260918-bingfangguo-memcgid-rework-v1-0-5bbf3220d88f@tencent.com>
+ <20260918-bingfangguo-memcgid-rework-v1-3-5bbf3220d88f@tencent.com>
 MIME-Version: 1.0
-References: <20260916101929.149106-1-hebaoquan@kylinos.cn> <CAKEwX=PEEkYiNRaVhCuM4E6mxB9huPKfkDa4m62VMTzedg1oYw@mail.gmail.com>
-In-Reply-To: <CAKEwX=PEEkYiNRaVhCuM4E6mxB9huPKfkDa4m62VMTzedg1oYw@mail.gmail.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Fri, 18 Sep 2026 11:07:48 -0700
-X-Gm-Features: AcwNN1XGRA_fvsrUeEhqxwkqGz--tC36CQoczmeazWAt0rrZHU3NzipYJr2xKaU
-Message-ID: <CAKEwX=N0FGDH=A9-j7uG6Pf3EqyGWkhqbqdpE7jG7owdzmyeLw@mail.gmail.com>
-Subject: Re: [PATCH v3 00/14] mm, swap: extendable swap devices (xswap)
-To: Baoquan He <hebaoquan@kylinos.cn>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org, 
-	kasong@tencent.com, baohua@kernel.org, youngjun.park@lge.com, 
-	hannes@cmpxchg.org, yosry@kernel.org, shikemeng@huaweicloud.com, 
-	chengming.zhou@linux.dev, baoquan.he@linux.dev, david@kernel.org, 
-	linux-kernel@vger.kernel.org, kunwu.chan@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: AE53540007
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260918-bingfangguo-memcgid-rework-v1-3-5bbf3220d88f@tencent.com>
 X-Rspam-User: 
-X-Stat-Signature: zxs95zh4a86uk8hrnjwnmh7ximqpguic
-X-HE-Tag: 1789754881-173087
-X-HE-Meta: U2FsdGVkX18wBzusQrHWCk+bqjARTQON+/lTsNORo33fjnCG+YemmV9eQvy2BUF4UwG7CHohiFYf67qFVAt+lge280auGLGs2z8V8ca3ssgO4eprnFXgRgnB0K+AfLGSD8Vn02NCSKRlnaSgFBAkbU5TBjiqp9QDN4Rgmm2w+stjIlmweOzSDG5+K9ioIPtoexkBbbhfV4lJjpP6vutMT+eNusU1DOhyS8+5rTTASHAGLtAEVIuY4dj7AqU6Cy9DUyrYJBH3X6k9HUJuGDDhxrO/oVc8ovf9v1WUdjaTmAJCjU3arYTiJeSityu9kMwjRWiVPmH9JpE/LsMQY15OiTVNvc1zjIzcct15Q1uFIkeeCQkP3BT9N/joTFJkeeQ3Usxzc0+BTRJ8BN3xwY5HE2kkJJ+ilziZ4SpmGAGi7hBZ1FMM/qdIUfuWwhbsntZ8wCuhZWgsYtnvkm7cwnmaPNO9OJascaHLhpBgNRbaInBQwsQrD1EQxkgzWx9Sv8UcIxd06hJsnAF9Ca7YZ3HBwKlZzkE+wm323f3VX/fK4VOEOrEaxabjoDT23LSU/BA4AeFoocxpT7K/YgJ8Qq2+FpVjyB4z39K9FhxSIdBiMiGuR9SLKMUgXOq2wz/+y0AY+DXOnBZog1eEeQu7AG+tT3Z2e2BaqR9p0wjpRtHxYhSorDiEC+TkQEl/PP4nURzvq0JNtbgTM6HJzZ2nX+zlYJ7JI5e+Y3AMSI7UWcCZG5IsP7UuifJwR1Bu0rzph5oGvcLQ5wvFqZrysPLVl4FXqlunDwMof9bLKHA4nsjbIffccwhcD78gaxhG0lGAa8n1zvX78Vlbdb+AfPOXLp34XMUJXX2eyP2MO1/Md9RAk/XULe0aZUVXnmaqHlipViZOovcCrwiBTyhriPWhKw4W00A+ULDOM5Wyr6mtrg++jZgpZ295R+t6JmIRdYRy3Jg4Pg5aMlO0vB9KuI9pkGY
- UhVH72u/
- JR7EdBcQddBVWCtEoyu1TphMhrDLfLrfWVMTWCTa5TTcicCZ/ck2tJqRQVdkaprkJ7g6h1EVrK1owez/RpGXZ8/X7Q7b9GPdb5a8/0aAokswask081fQ4tk2OYRK1SUmbizdPMwQUASqpxzkMcjy//6HHp87gsp+z68+L4IPAN2IbSrievosUV26DRna7JjvplwUYROtwh1qUBD8x4IJqIOJwKqfl1Ng6ZsS5KWfBsGr78iGAMDRvEf+HJaik5R60kx2bbEJGBFnhu1rZS0vOdCkQ8ejSZCeQ/kD0oHY51/TBTXwV5poc5kjG8gGWyZsRAi/GcKXkJ6wxcK7vn3Lmk5kxdNhP2VoRV7MLVto7cSU99BMiGn0aDRotfYBHtV2NLLfld0ke3fxLntCW7ghYHnIh2Pznb10SmgxFZJ4ITfq18mKkw9znW5127mXoJEEATZTpVP02Aq+U9KEgTiErdMd/OZ+XeNrczWgXm8QVxNyTpQ6J+rZtUpxydc0oFrgssvQDdeW1pTRAeDs=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 20FA9120004
+X-Stat-Signature: m4nkf4p5mwuj5k9a7wdkibz5q8h833rz
+X-HE-Tag: 1789755251-705543
+X-HE-Meta: U2FsdGVkX18BCYSbtdUsk+i3ien5ixWwT8SX1hIixHsPdsyYQhvkLXjOlLEy+fr4eI70m/yFzu4KVyBqM+HtCDY5s8PKrlwrl70sXaYOJxHDo/n2Qo6hgHkPmH7QMpQQHlSDLpWiqy85WRKcsI2wij3pYpGLQ6E5VGg5nxxAgCMLmhx59WofGPrZit3SrGSwfJfw2pqQCpD34jyOskWpAmD7ljDCAFVBgqpuJNTAmDzpBzuJ/Kae/TTNe8EYnMvXeix8TzPPnm6ksH94//XK4WPOV4wd7znSz96dYkJGFfvPjAkLdlJTsgnXhgsaTRPvq5H0OA/jhz9JsyVKwK3llh3koQorfQbo72M+orx8/mc/2xu5ZlIfWqFOND7Z+yjydL0wRN9JQk77gWSvMfffvj2ubkh350gw44qqF0r2qxdcGG+suCq40F8gnPkmjzIkRm6m7lT+njJ7SrGJG6HCOgwzrIYEO8wsxeoc2OvQGjrKMIuIcc3TSO33NLY2jhEkot6gJyLzlyEEZk4k+wotTvwvd5N+E04s7lFOOXBa4u5beeZeykRE5QO5S9pQfviPAxotmTs5ocIyU/jNkTu89riwME24bDZoaS850dyelovgLnLUN/z75PxBJdwHtIXxaV3ptFhlnwKiwlQb72yaQ9ldeUdzQlcLgPNzjYgNIKetQgU95z0mOny+wLobxvd3clR2Tl9mRJyEVIihiQGwjQFZedwDjSwfsLoCUlFHyuNEW0GsjDH5xoGqSUeldKXdMxFbUqMPshzRx9qqK8il4sVkxG+S20UyCYVL1WeVCBGt10AZaAdgiXwZHsQR6WUZ8s7ZqnVNp8G5VaPtQVQVGQXDyEAIDlN5ebdpNbqLtDJLsyIWRqWU0w1ipbdIKfrF7WXiU7HZSTPzSOVa2MaNqsWmVeNmospJ4aOLTmLo95/WxjLVuOWxkY6MJEuIKevKdFowxymwM6ZDNXutTK5
+ awr9h0e4
+ 8pg1ekZwZBuk9c6OVAPA4P8IbqE9qp8mlVHxdKTfhvLG2qiVNysjPnPh2VvtNppj9SbXDZNnFP8jWfSQGTpDUn8yfwoRFo7rSNNkDI5hgx5NPUZM8haqVFfcalkrdEMvu6ph5sR/DZdA8+812xwti78gPbE0SaOHnv5UTwihq0ib257e155KNBpzdDfo+tsZXl9m9YlX8brsWSkrXTjrvoMmrOAeJbsimXfMPXX/YUoWMYGAH07NjHxaBh6841CiRPwN1IJwT171LSPJcba4o6x37F8TtRJtzsJ5fh82i13JYCkE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,35 +95,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 17, 2026 at 5:13=E2=80=AFPM Nhat Pham <nphamcs@gmail.com> wrote=
-:
->
-> On Wed, Sep 16, 2026 at 3:19=E2=80=AFAM Baoquan He <hebaoquan@kylinos.cn>=
- wrote:
->
-> Constraint liberates; liberty constrains.
->
-> So let me flip it on its head. What if we keep the interface I already
-> have, and use your data structure instead? I tried that too [2], and it
-> was significantly easier, because it is just a data structure change,
-> without having to accomodate for the full interface of swap device.
+On Fri, Sep 18, 2026 at 05:18:42PM +0800, Bingfang Guo via B4 Relay wrote:
+> From: Bingfang Guo <bingfangguo@tencent.com>
+> 
+> This is a preparatory work for moving memcgid from memcg to objcg.
+> 
+> Swap entries retain a private ID rather than a memcg pointer. Once
+> private ID references are moved to objcgs, the ID can also outlive the
+> memcg to which it was originally assigned.  So it's better to make the
+> get and put functions accept the ID itself instead of the memcg.
+> 
+> Rename mem_cgroup_private_id_get_online() to
+> mem_cgroup_private_id_get(), and make it return the ID only.  If the
+> memcg is already dying, the dying memcg will still be used for charging
+> and stats accounting in v2 swap charging path. But they are hierarchical
+> and will be reparented after offlining so it doesn't matter.
+> 
+> Make mem_cgroup_private_id_put() take the ID and resolve the reference
+> holder internally. Convert swap uncharge and charge rollback to release
+> the reference using that ID.  This introduces an extra xarray lookup for
+> now, which will be removed in the final patch.
+> 
+> Separate the online-state reference release into
+> mem_cgroup_private_id_kill(). The offline path already has the memcg
+> pointer and can call the underlying put helper directly.
+> 
+> Signed-off-by: Bingfang Guo <bingfangguo@tencent.com>
+> ---
+>  mm/memcontrol-v1.c |  7 +++----
+>  mm/memcontrol-v1.h |  3 +--
+>  mm/memcontrol.c    | 32 +++++++++++++++++++++++---------
+>  3 files changed, 27 insertions(+), 15 deletions(-)
+> 
+> diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
+> index ed015fdd95123..b7f2868885071 100644
+> --- a/mm/memcontrol-v1.c
+> +++ b/mm/memcontrol-v1.c
+> @@ -268,7 +268,7 @@ void memcg1_commit_charge(struct folio *folio, struct mem_cgroup *memcg)
+>   */
+>  void __memcg1_swapout(struct folio *folio, struct swap_cluster_info *ci)
+>  {
+> -	struct mem_cgroup *memcg, *swap_memcg;
+> +	struct mem_cgroup *memcg;
+>  	struct obj_cgroup *objcg;
+>  	unsigned int nr_entries;
+>  	unsigned short private_id;
+> @@ -298,9 +298,8 @@ void __memcg1_swapout(struct folio *folio, struct swap_cluster_info *ci)
+>  	 * if the ID refers to the root memcg.
+>  	 */
+>  	nr_entries = folio_nr_pages(folio);
+> -	swap_memcg = mem_cgroup_private_id_get_online(memcg, nr_entries);
+> -	private_id = mem_cgroup_private_id(swap_memcg);
+> -	mod_memcg_state(swap_memcg, MEMCG_SWAP, nr_entries);
+> +	private_id = mem_cgroup_private_id_get(memcg, nr_entries);
+> +	mod_memcg_state(memcg, MEMCG_SWAP, nr_entries);
+>  
+>  	__swap_cgroup_set(ci, swp_cluster_offset(folio->swap), nr_entries, private_id);
+>  
+> diff --git a/mm/memcontrol-v1.h b/mm/memcontrol-v1.h
+> index 23be2512702dc..281425273ea97 100644
+> --- a/mm/memcontrol-v1.h
+> +++ b/mm/memcontrol-v1.h
+> @@ -27,8 +27,7 @@ static inline bool mem_cgroup_private_id_is_root(unsigned short id)
+>  	return id == mem_cgroup_private_id(root_mem_cgroup);
+>  }
+>  
+> -struct mem_cgroup *mem_cgroup_private_id_get_online(struct mem_cgroup *memcg,
+> -						    unsigned int n);
+> +unsigned short mem_cgroup_private_id_get(struct mem_cgroup *memcg, unsigned int n);
+>  
+>  void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
+>  				       struct mem_cgroup *parent, int idx);
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index bfe53e4392f09..ed44b3e7ac938 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -4082,7 +4082,7 @@ static void mem_cgroup_private_id_remove(struct mem_cgroup *memcg)
+>  	}
+>  }
+>  
+> -static inline void mem_cgroup_private_id_put(struct mem_cgroup *memcg, unsigned int n)
+> +static void __mem_cgroup_private_id_put(struct mem_cgroup *memcg, unsigned int n)
+>  {
+>  	if (refcount_sub_and_test(n, &memcg->private_id_ref)) {
+>  		mem_cgroup_private_id_remove(memcg);
+> @@ -4092,7 +4092,22 @@ static inline void mem_cgroup_private_id_put(struct mem_cgroup *memcg, unsigned
+>  	}
+>  }
+>  
+> -struct mem_cgroup *mem_cgroup_private_id_get_online(struct mem_cgroup *memcg, unsigned int n)
+> +static inline void mem_cgroup_private_id_put(unsigned short id, unsigned int n)
+> +{
+> +	struct mem_cgroup *memcg;
+> +
+> +	rcu_read_lock();
 
-Here's an updated version of this proposal:
+Use lockdep_assert_in_rcu_read_lock() here instead of taking rcu as both callers
+already taking rcu read lock.
 
-https://lore.kernel.org/all/20260918180241.3424851-12-nphamcs@gmail.com/
-
-Per your earlier request, I also:
-
-1. Moved the virtual_table inside struct swap_cluster_info (since the
-virtual table is the only new field now), and deleted the new dynamic
-cluster struct.
-
-2. I skip the shrinking mechanism, but instead I dynamically freed the
-virtual table to minimize metadata overhead of free clusters.
-
-I have not run performance tests yet, but it has survived a couple of
-simple stress test rounds that I threw at it so far.
-
-If you think this is a good proposal, please pick it up and drive it.
-The code is yours :)
 
