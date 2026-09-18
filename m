@@ -4,98 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DD66C982D2
-	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 06:05:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 712B3C982D2
+	for <linux-mm@archiver.kernel.org>; Fri, 18 Sep 2026 06:14:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0888E6B0092; Fri, 18 Sep 2026 02:05:46 -0400 (EDT)
+	id F19996B0092; Fri, 18 Sep 2026 02:14:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 03F086B0093; Fri, 18 Sep 2026 02:05:45 -0400 (EDT)
+	id EBAB46B0093; Fri, 18 Sep 2026 02:14:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E91546B0095; Fri, 18 Sep 2026 02:05:45 -0400 (EDT)
+	id D6AD96B0095; Fri, 18 Sep 2026 02:14:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BA1D16B0092
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 02:05:45 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1DAAF80346
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 06:05:45 +0000 (UTC)
-X-FDA: 85225846650.12.6DD1EEF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 71864140004
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 06:05:43 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HRYJtWuL;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id AFEE36B0092
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 02:14:44 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 47676C054E
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 06:14:44 +0000 (UTC)
+X-FDA: 85225869288.18.12FAE7E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 837A880003
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 06:14:42 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=otP3upcn;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of chleroy@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chleroy@kernel.org
+	spf=pass (imf30.hostedemail.com: domain of chleroy@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chleroy@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789711543;
-	b=Uaoyuk9qjaDV91lHk1NWnoV4D8Yk5edCuI6u0RnhHE7SsgdowYhPcyLh9oNaFx2kAZY7v/
-	vu1ZGSeBDUZLOkAaBOv/j+0qFcTjXe2HBDoNJ10n7p3DoNhfNnjJzmXY1hnuxOaaVv6aEi
-	4X+IMUKWAeURF14kgfhb3JJbYIIVb8k=
+	t=1789712082;
+	b=b0/ap8S9Zgo0mLS0AZBcvP09PVRxpjK5DzQLpbAR9G0Am16Md4VkPo6CMfg8zfbLH2q1nR
+	M56FNufkM5iqE7T3fE9j9EDODlJRI/Wfg2NbOxDoNP388SxL1hwXMmM6q/ctmPbQwZDdJ8
+	jxsV+QraYb5WWjjs7ajPEbnpd+WO60g=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HRYJtWuL;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=otP3upcn;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of chleroy@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chleroy@kernel.org
+	spf=pass (imf30.hostedemail.com: domain of chleroy@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chleroy@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789711543;
+	s=arc-20220608; t=1789712082;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2iSN1j31Sw9qmqTYVp6Ry3mKQfg4lt3sT+FCrOQ8mF4=;
-	b=3+YGqj+srPFp9jCZ7pLEOSSU10xPb8o9oQ1FgoSDRRK2L93cQWx3AyodXEu9a4/9ZE4vJA
-	Lg8fm5QPiSo4pgmmhXX4pZsfwLpWyRXk7mHpgfWFi+V+8z5BWN0C8ocJwPeX2TWU4VP9YZ
-	nhXmOMKvI2QHkmwPkUqK3f7/cdxlZOc=
+	bh=QW/2OE6ihA5SygTL3ENfiEwrR7oH0H/ao5/23GWCpoA=;
+	b=kHGcVrpbgGOZqgz1lmfSk523IMxscl9EkKRImh3B2Ua30qASB1o3DHFuOUAUtIZ0y6ISO0
+	xDib8rqrWDvbUSiKNL8WJqA9P5+3/N7ZxpkBzy7hrB7umH711WcAiZjhAgZ6UJimpfEpYy
+	I7/gwKhEzRcAtaiCk30TxOyJz4YMPQk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B76F8601EF;
-	Fri, 18 Sep 2026 06:05:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DB971F000FF;
-	Fri, 18 Sep 2026 06:05:35 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B07CF41326;
+	Fri, 18 Sep 2026 06:14:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBD641F000FF;
+	Fri, 18 Sep 2026 06:14:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789711542;
-	bh=2iSN1j31Sw9qmqTYVp6Ry3mKQfg4lt3sT+FCrOQ8mF4=;
+	s=k20260515; t=1789712081;
+	bh=QW/2OE6ihA5SygTL3ENfiEwrR7oH0H/ao5/23GWCpoA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=HRYJtWuL74SbBnfcEwdWnfbXL/tQ2LS0eZcRDZCBlNLQXBydIBtYqkiENXlDagnbT
-	 C2yEEFg2K7h5z+2opnb1JHsi/x+l+mdBVTLNqkvv/DpshLB82Svt8wnmGViSmp38iu
-	 RqWJqCe9NjqFd7sIoVai7vkuR1L3g/ELqekIScdjqxdSM+2tF1sE2M5vUb+ybXhH2T
-	 qeHd1/7ezHu35c25/Re5wk4kWvG7SMvYr71yv/QjO7HFaVvMkPqGp28tk2Tjav58QQ
-	 8Q3/O3ocmaqrfak5BYTC5KAwevQhgl+fUqMCEBp14MV+FG3sEjD8+8xfzUSXElZXjR
-	 UltrRtZcQGVSg==
-Message-ID: <2462f67c-f7d3-4eb3-a093-6a338ef49f14@kernel.org>
-Date: Fri, 18 Sep 2026 08:05:32 +0200
+	b=otP3upcnF/PdMiljpfNt/pX7FBoUKThHlCjIOr4ocBN6YGLnvSzlu4n4le8nm2m7D
+	 J/1HVEoYxd8AcLxccybfuBhL80HWwXeUPJvd1Z/eehiCpYux1nFjpGhm6yrNQgu8mk
+	 f+m6E0/s7mYEkF49Oszhalv+9kvFP7F/rqUG+K4Y0rdY8Vvn63HPWeF2zBiTD1/Sx5
+	 mMzOWD/fTEin1uB3zArAhRrJKlWnf5LFsp8Z5vr/I89NtAVxUmdYf4kKIpIxXxbgO1
+	 n0EPKP0fHl/M+i3enV0AeM1z4tLsVDuOGqxUknUuhzdO8FlxTF7Yu8Ro735NFVk6hc
+	 QB6YMAcTcHNIQ==
+Message-ID: <58e3b456-7389-4752-8de5-1cc82964c3c7@kernel.org>
+Date: Fri, 18 Sep 2026 08:14:31 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 03/10] mm/vmalloc: use pte_set_huge()/pte_clear_huge()
- for PTE-level block mappings
-To: Barry Song <baohua@kernel.org>, Wen Jiang <jiangwenxiaomi@gmail.com>
-Cc: akpm@linux-foundation.org, catalin.marinas@arm.com, linux-mm@kvack.org,
- urezki@gmail.com, will@kernel.org, Xueyuan.chen21@gmail.com,
- ajd@linux.ibm.com, anshuman.khandual@arm.com, david@kernel.org,
- dev.jain@arm.com, jiangwen6@xiaomi.com, leo.yan@arm.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, mpe@ellerman.id.au,
- npiggin@gmail.com, rppt@kernel.org, ryan.roberts@arm.com
+Subject: Re: [PATCH v8 02/10] powerpc/8xx: add pte_set_huge()
+To: Wen Jiang <jiangwenxiaomi@gmail.com>, akpm@linux-foundation.org,
+ catalin.marinas@arm.com, linux-mm@kvack.org, urezki@gmail.com,
+ will@kernel.org
+Cc: Xueyuan.chen21@gmail.com, ajd@linux.ibm.com, anshuman.khandual@arm.com,
+ baohua@kernel.org, david@kernel.org, dev.jain@arm.com, jiangwen6@xiaomi.com,
+ leo.yan@arm.com, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, rppt@kernel.org,
+ ryan.roberts@arm.com
 References: <20260917052933.188679-1-jiangwenxiaomi@gmail.com>
- <20260917052933.188679-4-jiangwenxiaomi@gmail.com>
- <27072d94-13bf-4bea-948a-d8a67976601e@kernel.org>
- <CAHKocdE_zyUQT459AiTBDzQHk0jh+VpXuSMDdgHjkg-dAkgBNg@mail.gmail.com>
- <CAGsJ_4yJ-KCHbJ9S2GKXfO51KB8g-y2Q_MikqE9-6VesR-RC9Q@mail.gmail.com>
+ <20260917052933.188679-3-jiangwenxiaomi@gmail.com>
 Content-Language: fr-FR
 From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-In-Reply-To: <CAGsJ_4yJ-KCHbJ9S2GKXfO51KB8g-y2Q_MikqE9-6VesR-RC9Q@mail.gmail.com>
+In-Reply-To: <20260917052933.188679-3-jiangwenxiaomi@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 71864140004
-X-Stat-Signature: mwoh9uaq136ynrhy5rc9b3s1akitupq4
-X-HE-Tag: 1789711543-361142
-X-HE-Meta: U2FsdGVkX1/WlxRmKLX8B2EmBVm7lZu/UVZqYVp5FBqmnwu0WhP6tBeXfyFcp2KJt93PPCwNfVXL94GIbpZfQdWwPpy7OyiNAlfPXkotqV/kbCn3RbacRhEY33JtnWR/Na9+Kh9sq5YxOMWXjasG+OH0rZdVKRkcsfhgpWr5YcwnE/lehJU/rd+RNapINlrzwExn9gikDIzAplcK34ywBc0O0O1FxpCofObfvO1JW0t1Hbh08WBv/dfCgm982CdJXnU5XDSE0MA7cWV3fZRLUoeaCcHpCJR+ogbNEnMTiqW+t8f9afc5vxGXMejMej38I30DANQHMtkKVT3YIOKHEbl8zMelohavk6GmK7+jaCS4z6VhqiOyyL4jbtEfRAM8n07pxqgr7lWpwUyTV954vhvsvyxeQf7977cAM7UP8sXafWJc7mGfvryLJWB/UNEm8hXQohfoK61NTjJfJNrvhs6CL0qfu4d1ecpd3Rp0wEIMIxuUiiiz5jj+KIbCueWQhJl2D40RNeAAzI/AdOsMICFiMTNwdXuVH2tRm25SRg1yKrlqXH0leZzyujk1Ecrh5VsKmtKVFj1MPVzPebQsM4WMHrlC/nobpv4WtSnv0psumf+NzAUy1ht1r4Z/irBYEkISQHTA+/4kQr36hr7XT4SusfVLEGmDD8EYiCDEwEd0Z0j9RLFtu+LyOVZYPccT3a/dpayyXc5okV2WDB3M4GcUEv/+aV5pcVIfChmPgsC5phXq6lvivmNACDLZm4U2JKrkm4sIj1BIv9PWj93hLdq4wt+e2l8+rdVDAQAUf5JBrQSufFTkDAoK6DzQLMQUALKl3dd8kpOgrazm3CDFFC6LoCDK7/JrX69m8/ONyZNaxsM3sr8b4ERa0hyG07qt84kOXuSaYD4rLrk86kCjNAV7B552mbx23DnBeH3/lvJCnoF0vWyHobXgZKmSN/WPDa+uO/3w53jrogTUc59
- aSUYYG0m
- /Kstz9GrYhUmRSUjQeGyLglw9KF95fRp6OLpdPvbX6h6xfrwKcB96zgB3oFaJsvaQSSGuk/bBBQ3FLumQFZKGdWDGdmBsLUN1ulreK7YlyyI5uQroEqOrgwkWt0IZ3CQG4l78fT8cB+qxzVjUtq4XD4xNwpxRuzjoeA00HJZU3L2FA1eSlWKP0AAwfANiNLvclopc0GgRqqw2XBb+uoecEmDTMPD6p52afGv/ZeXHnd8V3U9WLqwg9JMzRgNwDYG5Z/pMqmUaWC1p13kx5goz7Im+1wlUSjZw7/Fxn84E8LsUzVPb97NHDuh00F9sbIsPpw4tI46WXko9Q/D6plKewMWhAVyCOoZLCkY5qy73cksecIPvKr4ZuD4jyj+5SxTKCUVdmFc5IyfnO8Db7zvew+uulG++TGlxTiame9PAorLtd5sr524cn65HAlKNjao4XPpGfHYapkHLTxsNXnwO5MwN8Dgl39eu+VUFHLHW3Zpr2myGDgmL1RydLg==
+X-Rspamd-Queue-Id: 837A880003
+X-Stat-Signature: tgte8endds389epc7i6ckynuhbh35hp6
+X-HE-Tag: 1789712082-913267
+X-HE-Meta: U2FsdGVkX1+chcVE0vwIs3f7bduQgdS72IsoN1IKmOj6BdnYrhKR2kvXqC8PYSz0SBkmBhaOs3GamWDJ8esp5HeYsO8YAXXkohkn7hpHZudETUM94EaakFrKxavJDydX6Zs9nty2K5GIZzzcfoCLku5JhUHBmLO7tbwOBigilBIfUCXEFMXMJRo3nzcDMxLCn2sbx61s69A2kqgQVj3mVCUz8biu9n4V/v2R8rp4i/czZErYTi3zkcBNP39zTG2P7rhnPa2ImLW6P7KH49GmFazEFhY/HEo4AJqrhZ4gOOBAjqXxW6BI5khbzKzqpXRECncxj80oMUFsPUHzfRRaKG4SaKb8pwMQ7MbpN5+6FiW2c4yTtg+/xvYDs9v2NBBeplgGzim2QwUBPUzjLydgjRWyG0x5CI3BD0t0Rvr1ijFjFL/zippk5OpgZpAVVLtez/Spag/5+NIrIrrRl1CyQY8442jKxS+8/wdecysNUZP25f0Vk0vTSqYp5grueb34MnoZp9c+jGdK4u6wDsX8i9QDexDTgCbkxmX1Y+oMgoMxgceb6+SsqexWk8Jk4z/5QC7bUJaReT63GuxN/RMMuAu2lOK+3X/4KUicxB2MQofta3zQe9FC0Z/2JXsCAT86V1SfXeGxLt0ufdA/g4kPlbgMmblyYGKwJRuY8bT+ZgCfQtmX7aAcmqkK5lhfukPE7g9cT1yx4oteX1S2vuajCarn+bNYOagr9p0ZGKOUzoMj7B40hTP5fM6kKBlK6ewe3Gnc31nh5Fmv5OUAVcXbNQxaCSDDK1nSkMXGPZ7lWGZoPEGKGGR5+GbgVerE3PUNm8MN5JOI4rAyLFNWEND2ces2Y2SgD1KvmgkLKQwxmJUVhXaIJ2630SPFk2R28KOQQyQK62Bpj0CPczf3VAgpKVMfv7cWVFeFPh+W9qWZKgppCdL5BULT7N49iFiOc6ZdacL2OxSvHNuw8E/zqvx
+ bPFD9zPi
+ ATkZDtNz8eFm3z1fiDZYklrYlhvHn/P2/tR9pJUPxanBnQhIluK8I6Wm4688B0Ofo2IeFOxwtaHt3OLBPSAQ/Kb5p6qwfYpc6/Z+tr6BSf/fcO/jI81mvho732bb5iyiP5DBP03UtJ7zreRbpUua9jHcmVF9mT+3rfrMKSOIF3DAL5rfRFwSYsfKE7WMpcHP7kBtZ33dhjadsWWm0witsE+CfmfdFzDcOEDAdpJ+e59Y1RjlpN+MiR8agWL3y1Lpkn/vqylsJJiWLPbs1FxSBHGy6Ukwrf/nikX0+X102vTUMY2g0sluKpIujQKHqszc24XohU/eTGQSGBGLZjArLu6722XI2gqFhql+zaEr3ghXSNQbE8PJnx6V2n/Zp7MJgpJSO0P9NqF+pKux95G3hh0SdPtabFJAAAPlhYSrom24oNZpI3+cB+aGOxFtdt/p6Gq4nafb1iPe2q+k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,121 +102,99 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-Le 17/09/2026 à 23:44, Barry Song a écrit :
-> On Thu, Sep 17, 2026 at 10:41 PM Wen Jiang <jiangwenxiaomi@gmail.com> wrote:
->>
->> On Thu, 17 Sept 2026 at 22:00, Christophe Leroy (CS GROUP)
->> <chleroy@kernel.org> wrote:
->>>
->>>
->>>
->>> Le 17/09/2026 à 07:29, Wen Jiang a écrit :
->>>> From: Wen Jiang <jiangwen6@xiaomi.com>
->>>>
->>>> vmap installs PTE-level block mappings by reusing set_huge_pte_at() and
->>>> huge_ptep_get_and_clear() under #ifdef CONFIG_HUGETLB_PAGE. This makes
->>>> the feature silently unavailable on CONFIG_HUGETLB_PAGE=n kernels and
->>>> couples mm/vmalloc.c to HugeTLB internals it does not otherwise need.
->>>>
->>>> Now that arm64 and powerpc/8xx provide pte_set_huge() and
->>>> pte_clear_huge(), add the generic fallbacks next to the existing
->>>> pmd/pud_set_huge() family and convert vmap_pte_range() and
->>>> vunmap_pte_range() to the new helpers. The CONFIG_HUGETLB_PAGE guards
->>>> around the block-mapping paths are dropped, so PTE-level block mappings
->>>> now also work on CONFIG_HUGETLB_PAGE=n kernels, and mm/vmalloc.c no
->>>> longer includes <linux/hugetlb.h>.
->>>>
->>>> The fallbacks exist only to keep the build working on architectures
->>>> without PTE-level block mapping support. They are unreachable there:
->>>> the callers only run when arch_vmap_pte_range_map_size() or
->>>> arch_vmap_pte_range_unmap_size() return a size other than PAGE_SIZE,
->>>> which requires an arch implementation. WARN_ON_ONCE() makes that
->>>> explicit rather than silently doing nothing.
->>>>
->>>> Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
->>>> ---
->>>>    include/linux/pgtable.h | 29 +++++++++++++++++++++++++++++
->>>>    mm/vmalloc.c            | 19 ++++++-------------
->>>>    2 files changed, 35 insertions(+), 13 deletions(-)
->>>>
->>>> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
->>>> index cdd68ed3ae1a9..349ced999f959 100644
->>>> --- a/include/linux/pgtable.h
->>>> +++ b/include/linux/pgtable.h
->>>> @@ -2134,6 +2134,35 @@ static inline int pmd_free_pte_page(pmd_t *pmd, unsigned long addr)
->>>>    }
->>>>    #endif      /* CONFIG_HAVE_ARCH_HUGE_VMAP */
->>>>
->>>> +/*
->>>> + * PTE-level block mappings for vmap.
->>>> + *
->>>> + * pte_set_huge() only has to be implemented by architectures whose
->>>> + * arch_vmap_pte_range_map_size() can return a size other than PAGE_SIZE.
->>>> + */
->>>> +#ifndef __HAVE_ARCH_PTE_SET_HUGE
->>>> +static inline void pte_set_huge(pte_t *ptep, unsigned long addr,
->>>> +                             phys_addr_t phys, pgprot_t prot,
->>>> +                             unsigned long size)
->>>> +{
->>>> +     WARN_ON_ONCE(1);
->>>
->>> BUILD_BUG_ON() would be better here.
->>>
->>> It should be possible because fallback arch_vmap_pte_range_map_size()
->>> will constant-fold PAGE_SIZE so pte_set_huge() will never be called.
->>>
->>
->> Agreed. These fallbacks exist only to keep the build working on
->> architectures with PTE-level block mappings and should never actually
->> be reached, so BUILD_BUG_ON() is right. I'll make that change in v9.
->>
+Le 17/09/2026 à 07:29, Wen Jiang a écrit :
+> From: Wen Jiang <jiangwen6@xiaomi.com>
 > 
-> I am not quite sure. It won't be called at runtime because
-> `vmap size`/`unmap size` return `PAGE_SIZE`, so the code won't
-> reach this branch. But it will still be built.
+> vmap installs PTE-level block mappings (SZ_16K/SZ_512K on powerpc/8xx)
+> by reusing set_huge_pte_at(), a HugeTLB helper gated by
+> CONFIG_HUGETLB_PAGE. This makes the feature silently unavailable on
+> CONFIG_HUGETLB_PAGE=n kernels and couples mm/vmalloc.c to HugeTLB
+> internals it does not otherwise need.
+> 
+> Add pte_set_huge() to powerpc/8xx, next to the existing
+> pmd_clear_huge()/pud_clear_huge() in mm/nohash/8xx.c. It builds the huge
+> PTE and writes it into the backing cells directly, without going through
+> set_huge_pte_at(), so it does not depend on CONFIG_HUGETLB_PAGE.
+> 
+> No pte_clear_huge() is needed: 8xx does not implement
+> arch_vmap_pte_range_unmap_size(), so the vmap unmap path never takes the
+> block-mapping branch.
+> 
+> In practice PPC_8xx selects HUGETLBFS unconditionally, so
+> CONFIG_HUGETLB_PAGE=n does not occur there today; this is a decoupling
+> cleanup rather than a new configuration.
 
-The fallbacks are defined as:
+8xx selects CONFIG_HUGETLB_PAGE because it uses set_huge_pte_at() to map 
+kernel text with large pages. That was added by commit 34536d780683 
+("powerpc/8xx: Add a function to early map kernel via huge pages")
 
-#ifndef arch_vmap_pte_range_map_size
-static inline unsigned long arch_vmap_pte_range_map_size(unsigned long 
-addr, unsigned long end,
-							 u64 pfn, unsigned int max_page_shift)
-{
-	return PAGE_SIZE;
-}
-#endif
-
-#ifndef arch_vmap_pte_range_unmap_size
-static inline unsigned long arch_vmap_pte_range_unmap_size(unsigned long 
-addr,
-							   pte_t *ptep)
-{
-	return PAGE_SIZE;
-}
-#endif
-
-Therefore in:
-
-                 size = arch_vmap_pte_range_unmap_size(addr, pte);
-                 if (size != PAGE_SIZE) {
-
-GCC knows 'size' is const and its value is PAGE_SIZE, so it won't emit 
-the branch at all.
-
-It is call constant folding, some explanation here: 
-https://en.wikipedia.org/wiki/Constant_folding
+But now pte_set_huge() could be used instead in 
+__early_map_kernel_hugepage() and then CONFIG_HUGETLB_PAGE could be removed.
 
 > 
-> So, would a `BUILD_BUG_ON()` trigger a build failure here?
-
-It shouldn't, if it does it is a compiled bug or this is because someone 
-has redefined arch_vmap_pte_range_map_size() and not pte_set_huge() 
-which we'd better know at build time rather than at runtime.
-
-
+> There is no caller yet: mm/vmalloc.c is converted later in this series,
+> once the generic fallbacks are in place.
 > 
-> Best Regards
-> Barry
+> Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
+
+Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+
+> ---
+>   arch/powerpc/include/asm/nohash/32/pte-8xx.h |  4 +++
+>   arch/powerpc/mm/nohash/8xx.c                 | 29 ++++++++++++++++++++
+>   2 files changed, 33 insertions(+)
 > 
+> diff --git a/arch/powerpc/include/asm/nohash/32/pte-8xx.h b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
+> index e2ea8ba9f8cae..1ee3f8f0de974 100644
+> --- a/arch/powerpc/include/asm/nohash/32/pte-8xx.h
+> +++ b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
+> @@ -235,6 +235,10 @@ static inline pte_t ptep_get(pte_t *ptep)
+>   }
+>   #endif /* CONFIG_PPC_16K_PAGES */
+>   
+> +#define __HAVE_ARCH_PTE_SET_HUGE
+> +void pte_set_huge(pte_t *ptep, unsigned long addr, phys_addr_t phys,
+> +		  pgprot_t prot, unsigned long size);
+> +
+>   #endif
+>   
+>   #endif /* __KERNEL__ */
+> diff --git a/arch/powerpc/mm/nohash/8xx.c b/arch/powerpc/mm/nohash/8xx.c
+> index a9d3f4729eada..2518d2a6bdb41 100644
+> --- a/arch/powerpc/mm/nohash/8xx.c
+> +++ b/arch/powerpc/mm/nohash/8xx.c
+> @@ -220,3 +220,32 @@ int pmd_clear_huge(pmd_t *pmd)
+>   {
+>   	 return 0;
+>   }
+> +
+> +/*
+> + * vmap PTE-level block mapping. Sets a present kernel mapping directly,
+> + * so unlike set_huge_pte_at() it needs neither CONFIG_HUGETLB_PAGE nor
+> + * set_pte_filter() (a no-op for non-exec kernel mappings).
+> + */
+> +void pte_set_huge(pte_t *ptep, unsigned long addr, phys_addr_t phys,
+> +		  pgprot_t prot, unsigned long size)
+> +{
+> +	pmd_t *pmdp = pmd_off(&init_mm, addr);
+> +	pte_t pte = pfn_pte(PHYS_PFN(phys), prot);
+> +	pte_basic_t val;
+> +	pte_basic_t *entry = (pte_basic_t *)ptep;
+> +	int num, i;
+> +
+> +	pte = arch_make_huge_pte(pte, ilog2(size), 0);
+> +	val = pte_val(pte);
+> +
+> +	/*
+> +	 * Make sure hardware valid bit is not set. We don't do
+> +	 * tlb flush for this update.
+> +	 */
+> +	VM_WARN_ON(pte_hw_valid(*ptep) && !pte_protnone(*ptep));
+> +
+> +	num = number_of_cells_per_pte(pmdp, val, 1);
+> +
+> +	for (i = 0; i < num; i++, entry++, val += SZ_4K)
+> +		*entry = val;
+> +}
 
 
