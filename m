@@ -4,88 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1105AC982D8
-	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 15:57:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC5C9C982D8
+	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 16:07:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF7C76B008C; Sat, 19 Sep 2026 11:57:26 -0400 (EDT)
+	id A02736B0088; Sat, 19 Sep 2026 12:07:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E5B396B0092; Sat, 19 Sep 2026 11:57:26 -0400 (EDT)
+	id 9B3616B008A; Sat, 19 Sep 2026 12:07:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D255C6B0093; Sat, 19 Sep 2026 11:57:26 -0400 (EDT)
+	id 8CB6F6B008C; Sat, 19 Sep 2026 12:07:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A50476B008C
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 11:57:26 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0D1B2A55A5
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 15:57:26 +0000 (UTC)
-X-FDA: 85230966492.10.26A2E70
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 627AD180004
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 15:57:24 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n1CP6FuF;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 67CF66B0088
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 12:07:37 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9C3701A026D
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 16:07:36 +0000 (UTC)
+X-FDA: 85230992112.05.2E7DC04
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 145B1A000F
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 16:07:34 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bcnzfZV0;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789834055;
+	b=MaXSmwND7GYq2f+xM453WVBoq2jBtHRu3jXb9tSIE0pBg2oLIDOOwNzYoNGJyU8zrWtX7U
+	ytN6KPkLI82H7poDBpkxYRAtTUZ76uFm3SsRCBROm9As99jcFeC6YECHR9E8FrMfsBy2bL
+	rgzg5TDfPxIWVCsbncwrJL914HErqT0=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bcnzfZV0;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789833444;
+	s=arc-20220608; t=1789834055;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2vMQb7udZL3y0xIqeUPoqQ6nfJil4eFetW2PhuHVfyU=;
-	b=KTb1ZRo8Slg7K/RwjSxHom0amRtBEOmme2d3U4/I1wQtF4LwQX6yCA6hZxPdTn72NBJmdK
-	V+iF9lpDjNCcQLBaPjRr3ciWShbx8yrRULMgeRA6zy5ZMYgyuLMVB6sMMxoOOgrkx9VjOK
-	1hO/EXwJmscdqUQrrXS9Jsi33OpLVc4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789833444;
-	b=Kby/3BgbwbubOrY+BDZXOkDh4wGkPlM05sHV11WOXArwESe5koatEeBTcQKki5SKXPGsMp
-	3g1QwOtCrj6BFpFhPbwcG5jqaaFt0JMsrqC/d08Xs7OGoYZe/rkWb6Y7OYCguD1a3fCE2Q
-	yRd9GlVtsD5F0Wpev4p1HI+HdxYM7vM=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n1CP6FuF;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=wQHa39SbYUNszRpbhZJPTtwB+DOrWIjoWgUc5UFfUZA=;
+	b=pCBHFGXfQ1uEq2Gv3EcH/gP3sZDWWk4l3kwVW2qepY6ZnGT3GSJaX89ldTybUfVxpzNz1N
+	aB0JZRVuDYlC8l2WpF2nlVaO4JqS83yMp6Syh28NgIy/zfjkgiEYEKw6QymYKUaaTSsa3q
+	KDtyoIUZhSpDMnKdZl2BgtDp9CkAV9o=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A2AAB400E6;
-	Sat, 19 Sep 2026 15:57:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 513441F000FF;
-	Sat, 19 Sep 2026 15:57:23 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A6B60601E4;
+	Sat, 19 Sep 2026 16:07:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B2641F000FF;
+	Sat, 19 Sep 2026 16:07:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789833443;
-	bh=2vMQb7udZL3y0xIqeUPoqQ6nfJil4eFetW2PhuHVfyU=;
+	s=k20260515; t=1789834053;
+	bh=wQHa39SbYUNszRpbhZJPTtwB+DOrWIjoWgUc5UFfUZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=n1CP6FuF2cU0FlyUyib3oHPT683ZPiPqR9rhrCDfPrg8Deubd+G/PT/8nTq3Lfayv
-	 7kcbNB1Zu8NbnX2vLjqQKzU3FbOo6dfTrClsssGwSNRtSkkK0GlnY80TPzSjjkMrFa
-	 W1TA1ppchwCwcI8Wa52Qd873vEd6nf7rcrIHavL6IACVUZ8qJBDs7BcjbspI7LaL3W
-	 82CWe561q16aaLbPgwpYy83sbtVaN5DFD4NxIPUnU98WUaBwC67mj/FGRHinqV/UF5
-	 TkQijl3pGqjEj1hD296ajuoHzlLh0AAeYRV3NXTAOrY5yiUiIQQV4KP++ILXesX06X
-	 aJI6y97UVboYA==
+	b=bcnzfZV0jfozeaH0PTAEYh1w4FxYSswdPyKtVUe7I5onhLQzYRsjcBsnJ6PfYwrUI
+	 /SQ7eb0aaKAOjJIFvmYp2mXykwN+0PIPFCZG81ZoL8i+ucysh3PFFL4CiaJkOLylcq
+	 5A82Dfm4UtMfPFB4PHb5ucPYcMLmCd4Wb2dUIaeBii9chXlLnWoNyjyL4pKY1GPL9b
+	 UL8HpDBz4Dfa+0IDb2ZYKzw8TLZOz7pOzQDUoYzhhwsnE4cftsgRhvUPXk3n2MC9Fi
+	 lGqb7jVuOrqzH+0AYzeCZF9hfyftMY9YG2a2bgTJQcgGOgGgxbhxga40lLoj4gILKe
+	 ToZak5MabqyRg==
 From: SJ Park <sj@kernel.org>
-To: Zenghui Yu <zenghui.yu@linux.dev>
+To: Liew Rui Yan <aethernet65535@gmail.com>
 Cc: SJ Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 01/10] mm/damon/api: remove NR_DAMOS_FILTER_TYPES
-Date: Sat, 19 Sep 2026 08:57:15 -0700
-Message-ID: <20260919155716.86019-1-sj@kernel.org>
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RESEND PATCH] mm/damon/tests/core-kunit: add test for unconditionally skipping the last region
+Date: Sat, 19 Sep 2026 09:07:25 -0700
+Message-ID: <20260919160725.86256-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <ae900f5b-7f00-4c48-8097-f2f836c09f60@linux.dev>
+In-Reply-To: <20260919080453.628679-1-aethernet65535@gmail.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 145B1A000F
 X-Rspam-User: 
-X-Stat-Signature: ty7doxzwxu45xbmazrjtaxd78816g54h
-X-Rspamd-Queue-Id: 627AD180004
-X-HE-Tag: 1789833444-364777
-X-HE-Meta: U2FsdGVkX1/Xux521p/sFg/uyAA/I5EhMOc0BTFXmIisONM+8EBoKowSTD9eeALNRffOPP6O+/LCLQd44SelLipUTtczs8DDnRLEzme36BaPTn1ihMByXxXC6Uthk9xpOKBDX5wd1CGF9w98YOXfyINk0UqlNEYz3JGRGKHFIhqW6FfSQU3ImoLhyENHf0ZpCR1flDTUf80HMa/xWmDVhgCQra2WZVdDQSFkojmsxNA+h8NkZ1ly8kNNKaOP0rOK/Q/lGTtayAvjGjvZH+YclYqkQfRGm/hghEVmISt4ggygwMGrs9V2c91J62KWt9d3IxSU+zzQVpYf1U7Fab1VKt4E//xZQZ3Pm1Fh9fqTnz2gfeXooZzY33rY0lgTTZIHNCOXQA79ZFJOnCFK1P66hoicehQkQYYjdFqMa5AcVxFijGIUsN3pBMowat62jtsOoMjnytBZCmseS9RYnMUUMcef8IqjVNYe+vKE9Ac5K68C4N9NukAs+CS6A7HqUDRFv8TdWcT9snaZrR4hJj/YbnG0ULXm2leDvCN1ouLEFWQExjL5xxQQvdDq57wyCzoHpUCQeowgwhAwcmxhxTlUPTez5Keoc0SPJHkfg3sTSQovmiaWOyti0bl7H/wPwoM8kIiyi4nB0X0/NpuKm+4l7mJTM4+G5k57a9zasdjYijkl7v03SjIaSbPIp+D0+kYTX1W49wyDGkR0u0jdWxi3sV+jwhf+cE5FHLAPmPDgPUI3WbpdiB5TQ4XUUN194jPkmiCyRcEJRCpcq/uGRiVLkr0uPw4rXJkNd2WlTcYCrYJ7W4QFdMHOwCz2zzYFl5U9GJFdi67PptR+j3y+q94RJjjRAWJt1+Sn9Du7PgGDOiFWQmPR9t6TqZcWRLWEVXl+3qpBSOU+uxHLJsv4AHc16Hskt+owLGC97rpzxo1Hj3aKDdfTTXYwH/7BWjxtyyiJVf447onZj+5iXl46jSR
- Jz7IdJUD
- wuUSdVbF9gYa7cVxnHn5G5Cz8MUek3VlcJaomzOMVyucfp6NNsP+SdGZmoRaIuluaPOs+Mq7M3FkOgKYA4f0rEhvUTorxmIqH5cC0GEw3OYHujHhtb5pUOidPrAiCodu2gZS3sJD8hIUKnYys/F2Wq2nzkVBX3Me9JxU9ay/UKruB22tPC3ZqjNeCCgBXInigqWbGs//7j5bQ9qsWYt065X1wPA0+BlkDPKR3Ue6wpUyjelGxpL60d7KU1R+TpVgZkVCx
+X-Stat-Signature: 81uu1k49kkpcetbp3g1wmxouqcbzmq4g
+X-HE-Tag: 1789834054-47865
+X-HE-Meta: U2FsdGVkX1/u3vtAy8BAWqN/f50ud/8NwrtygLWUwXWMSbnGgBVZhPTq94ipQJJsW5lc9AFQ9s54iCkMi8LpAQAWrglKslMAWnjNJY9rTsp3rCQxvVmQzpH7Hv+9Lc755ZWpfxv8IvwPUr16GLIS4KSvXuZ+tHk6eXGxtDQOoKY9PADIfyW1FHsvp+lfCD7ayxeHwI/XzGAF3bFmpus0s5qzg895960A6t8r9gXjwBSZkYYS8/oMi3Uooc+msNkD8qTHT2V4JbbBDLvMzI++3BDZqDtE53uZ9CxB4rdRPiOy3m80iPCAImVyl0P4z2yjnm7idaFuTHxJIC6UqEWPy4XTxFV+9vzmqkBxupBu09pTy3n6umVvXvGWpD1khWiO0ObgFix92FTC23lm2oGeHnbBQWUizJVYwhPAgm/F0KBcty1w6WiacDTZ5D+YiVukuNwMNwZ3fX+r03HsN0KaOSbsj2rKFEkd/2HEL77Vl2JkPyf3ElRWvLZmsd276bGYgZKyHZUWDzvUJGqy67Q1DPw3mUF0uw4DBqjtNbvXQkBtnVT+PATsYeYmqhBwan5Zp8idcVCn11xX1Y6oAxlp4IFxbStg9eC0E9nDjAOB+gbGZkG2hXHs/p6ZeH5Ziz21PoXE9cb5j8+ARustp+V8QzlFJbSW3KTVpVSvejAVne2RrSN057DV9PEnPX+AEZTSOgkcg8TPuU+PMBqnTQqB1yj9evroF3ceHc0+2RxS+jGDUQPt9XyFVKwGERMk+6fCISmMHW5J2wf2lV4W1rnhHSiQP9NJb020ht/aCYz4YB6qv35+9oX3fiZIjSy/tU31F/qm0tmqehMiKDXnTodjSiGA8szwz/vDbSEYUuawuGpO6Idjmc4Gs6NpwcCaf4t0yA1bCq7B4QURRn2m9+IoI4nTonq73Gi1Yt/iU/6ultgDo1v9Rw4xY7FUwvm8Yhlfm567QthMGpzx25QNTeo
+ eBMTUCHx
+ UffJVSceTuFYtvmYm3B0z9w/AC5TBsB4NHwsCTo59Gv10sOAMvsUMLnSTPNkVokGHFbD1UVOOeK2XCCscsGsVw4CHx9jxG3zCnv14jqNJoYfaqrEJNQz6JohcIwpRrZgrbtRVbiXF3jtGrMGYPqLrW4aWTYw3WKcIlqG6F6vBtHshnKM1SjGdVdJOJmDOl+4XHZkkUbIG9ozC3iEDQaC7mpjy9EW9ErTfgM7U86/D/EZwpa9gkXaraKuE/qGi7CX/pxf40l9IojAx27ADPSAE/c20Iw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,28 +93,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 19 Sep 2026 21:02:30 +0800 Zenghui Yu <zenghui.yu@linux.dev> wrote:
+On Sat, 19 Sep 2026 16:01:58 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
 
-> On 9/17/26 10:21 PM, SJ Park wrote:
-> > Nobody uses NR_DAMOS_FILTER_TYPES.  Remove it.
+> Commit 50585192bc2e ("mm/damon/schemes: skip already charged targets and
+> regions") introduced a minor issue that causes the last region to be
+> skipped before it is processed.
+> 
+> Example:
+> 
+>     1. Target has 2 regions: R1 (0-100 bytes) and R2 (100-200 bytes).
+>     2. Quota is configured to process only 100 bytes per window.
+>     3. Window 1: Processes R1 (0-100).  Quota is full.  charge_{target,
+>        addr}_from is saved at (Target, 100).
+>     4. Window 2: The loop reaches R2.  Because R2 is
+>        damon_last_region(t), the old code unconditionally returns true,
+>        skipping R2 entirely and resetting the charge_{target,addr}_from.
+> 
+>     Result: R2 is permanently skipped even though it has never been
+>     processed.
+> 
+> Add a test to prevent this regression in the future.
+> 
+> Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
+
+Other than a trivial style that I commented below,
+
+Reviewed-by: SJ Park <sj@kernel.org>
+
 [...]
-> Similarly we have more definitions of NR_foo in damon.h:
-> 
->  * @NR_DAMOS_ACTIONS:	Total number of DAMOS actions
->  * @NR_DAMOS_QUOTA_GOAL_METRICS:	Number of DAMOS quota goal metrics.
->  * @NR_DAMOS_WMARK_METRICS:	Total number of DAMOS watermark metrics
->  * @NR_DAMON_OPS:	Number of monitoring operations implementations
-> 
-> and only NR_DAMON_OPS is actually used (I checked mm-new).  If the
-> preference is removing all unused macros, we should probably clean them up
-> as well.
+> +static void damon_test_last_region_quota_reset(struct kunit *test)
+> +{
+[...]
+> +	t = damon_new_target();
+> +	if (!t) {
+> +		kunit_skip(test, "target alloc fail");
+> +	}
 
-Nice findings!  Please feel free to post a patch for cleaning those up if you
-don't mind!
+Let's drop braces for single line, as suggested [1] in coding-style.
+
+[1] https://docs.kernel.org/process/coding-style.html#placing-braces-and-spaces
 
 
 Thanks,
 SJ
-
-[...]
 
