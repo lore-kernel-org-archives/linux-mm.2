@@ -4,190 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEFB2C982D8
-	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 17:19:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6FEFC982D8
+	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 17:53:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ADADC6B0092; Sat, 19 Sep 2026 13:19:21 -0400 (EDT)
+	id CC8DF6B0088; Sat, 19 Sep 2026 13:53:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB2D76B0093; Sat, 19 Sep 2026 13:19:21 -0400 (EDT)
+	id C7A146B008A; Sat, 19 Sep 2026 13:53:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 97AF76B0095; Sat, 19 Sep 2026 13:19:21 -0400 (EDT)
+	id B68F76B008C; Sat, 19 Sep 2026 13:53:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 701166B0092
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 13:19:21 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 103681202D9
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 17:19:20 +0000 (UTC)
-X-FDA: 85231172880.26.083277B
-Received: from YQZPR01CU011.outbound.protection.outlook.com (mail-canadaeastazon11020084.outbound.protection.outlook.com [52.101.191.84])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 002E314000B
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 17:19:16 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=selector1 header.b=ae25sw5B;
-	spf=pass (imf09.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 52.101.191.84 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
-	dmarc=pass (policy=none) header.from=efficios.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789838357;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 913E96B0088
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 13:53:49 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C93C41402E2
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 17:53:48 +0000 (UTC)
+X-FDA: 85231259736.28.75DE638
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 8180840008
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 17:53:46 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=alien8.de header.s=alien8 header.b=UWEyhuG8;
+	spf=pass (imf17.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789840427;
+	b=GSOSCgyJ1y6ijOIrLT1ZqiUmpfdpjdR2qhubtgozjOg8VXDyXv2gXAOZCeTCE9I95s22BJ
+	EWDMrJc3fh+OJlHHA57ZVLJvSF5GC8mHsFYX2pTrVHg3KdLDaoZNm7jnCpsSXG3Muvso52
+	Hm2p7KPhjjkWE9CRf+jDUzxMg/qHdcw=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=alien8.de header.s=alien8 header.b=UWEyhuG8;
+	spf=pass (imf17.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789840427;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tjrvmsN0wobH3LEq7mso18M4GS8VQBp4HE9d3/CC3pg=;
-	b=UjjbYy1kS0GOzad98+rpYS+Qolzqb1tVeJwhlLXe4BeWjaASN0vS7kovAGlnRtXup601/P
-	/kx4XV+nBLRGJMM9o9W3bNDxiONxeDpqHnedJAWuFTjLNnuptOUfx9+044qHDdallue3hd
-	FfY5CeaeduR2tOf0c+NjnVfRIq6wd/g=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789838357;
-	b=mAjhuwsbGpJLceqPQs06VKiWqWcxYj6sXbwOXEaWItfz/tTr8A9ZPFx9h4J/9uKbFPKbJN
-	ejCpIbFosm8K/Yd1nK7/6bpbHeUdwJREjaIPlPV0UrZksqehM6q3KNxy59IC36Yb/qex9h
-	R5kDczA3sdggmp8LwOiZI4M/m6cdwKY=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=selector1 header.b=ae25sw5B;
-	spf=pass (imf09.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 52.101.191.84 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
-	dmarc=pass (policy=none) header.from=efficios.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CmQm4XMbozrGjNOocZ8O79lSpWlfj1npiuAmqFiqO8VxZAUVCZp7UF/GkTP9zfOBJHXUpHW4BS+1zbWo2ScLzFRG5Ke2Lpme096U9OFNpDTV4d5qFueTQSi5pOsAIv6GYvPC5BSTmxzXdaRD6uGgFZDubXEnoA+Xz8jtzOASiRUAjpkZj4n9osYOj970vrpQwdHvM9w7YW+7XwS7VmlYG37ukKyBOIWr8gNlZxzqC8cG2ja2udv5P2CB4lwP03tf8hbZuR3DuTYDfRsvLij8xEZgQ/9PhrDTrEYxI+KQgLI4qNJzpgyqgvLsN/ZCYoEVWsPVgq/7YvBjKwtksDjjzw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tjrvmsN0wobH3LEq7mso18M4GS8VQBp4HE9d3/CC3pg=;
- b=aNITGLu5dcyupqv35coCPZX+yNP+La4+HQU6fnEnePVT95nyl+Jaku5WtE8lZ/7e5JHTJOStf0UD2c1lRODwaciGWb6ATSIBNMYiE6w9q1Im19tEb+EVc4NUCHtqIYvnI/ULFUFpNKUNt9dT8zBcgyTr2eYLVOEp2QB2vTJBqJ145du+FYfaM3p0Uk8Slr45vTN/puaNGcVqSa7ELRjk/E2oYfdn09YimVQpwBtQuL8KS1A6y+M1N0kS0DckLRgwYzMzS1yTvg+MLfPHKQkgaDAzq1bWgivGFhlwIPxEgsxTIHy7+r+DtkPAI9J7MqS8s7/roDsd/mo20pWANWG2vQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=efficios.com; dmarc=pass action=none header.from=efficios.com;
- dkim=pass header.d=efficios.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tjrvmsN0wobH3LEq7mso18M4GS8VQBp4HE9d3/CC3pg=;
- b=ae25sw5BIW1GMlZ0Uo4lyfVhpksJQU3egGpuGMgNsvs4X0thsIb4hkGaphvJd7ICOGXcGhV2rmzGDKbYsACjB0I4ZkQSV+ums1HtjL5oBbnZVkCl63QGJbCKfBPj4/4T1aWkLgMHHUD9ar1Bds73accByjWORsdGZVxeMz4tTqh1bHI6uSJiCYMULYL5C9Gg+lDEkUaMz9Hv3yT5syoKi0mqmrA2jZAYo9UDWv8DDTl1n+3DDBTw7e+VPtFamC50eJW2jvC1cznHwlW61UEeUzDn+goSewuNTqJB2XXLjk2LR3/oDXXucuCzs/Pkx0jw4FtE7enulAOqdGge/N0OiA==
-Received: from YT6PR01MB491026.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:1d0::10) by YQYPR01MB11620.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c01:a7::7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.14; Sat, 19 Sep
- 2026 17:19:13 +0000
-Received: from YT6PR01MB491026.CANPRD01.PROD.OUTLOOK.COM
- ([fe80::6b9e:a901:67c5:7ddc]) by YT6PR01MB491026.CANPRD01.PROD.OUTLOOK.COM
- ([fe80::6b9e:a901:67c5:7ddc%6]) with mapi id 15.21.0428.014; Sat, 19 Sep 2026
- 17:19:12 +0000
-Message-ID: <c0de0530-e919-4cb8-89de-56a20a8a09fc@efficios.com>
-Date: Sat, 19 Sep 2026 13:19:09 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/28] hazptr: Implement Hazard Pointers
-To: Linus Torvalds <torvalds@linux-foundation.org>,
- Bradley Morgan <brads@mainlining.org>
-Cc: "Paul E. McKenney" <paulmck@kernel.org>, rcu@vger.kernel.org,
- linux-kernel@vger.kernel.org, kernel-team@meta.com,
- Boqun Feng <boqun@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- lkmm@lists.linux.dev, Zqiang <qiang.zhang@linux.dev>,
- Wang Lian <lianux.mm@gmail.com>, Kunwu Chan <kunwu.chan@gmail.com>,
- Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Alan Stern <stern@rowland.harvard.edu>, John Stultz <jstultz@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Frederic Weisbecker <frederic@kernel.org>,
- Joel Fernandes <joel@joelfernandes.org>,
- Josh Triplett <josh@joshtriplett.org>, Uladzislau Rezki <urezki@gmail.com>,
- Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang1211@gmail.com>,
- Ingo Molnar <mingo@redhat.com>, Waiman Long <longman@redhat.com>,
- Mark Rutland <mark.rutland@arm.com>, Thomas Gleixner <tglx@linutronix.de>,
- Vlastimil Babka <vbabka@suse.cz>, maged.michael@gmail.com,
- Mateusz Guzik <mjguzik@gmail.com>,
- Jonas Oberhauser <jonas.oberhauser@huaweicloud.com>, linux-mm@kvack.org
-References: <e9669b34-12c2-4cf2-a887-315f581f0789@paulmck-laptop>
- <20260919000056.3132131-1-paulmck@kernel.org>
- <CAHk-=wj9knmxXD01=top1DQ9_aqrN2a3kpWRS5DQv6QLwLOztg@mail.gmail.com>
- <6B1FC39D-6EB0-433A-8E49-E5EFC9379AD7@mainlining.org>
- <CAHk-=wjyniJy-CX1muCrsZp-i-sLGRYeRYEPN7sw9orRZUCwag@mail.gmail.com>
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Content-Language: en-US
-In-Reply-To: <CAHk-=wjyniJy-CX1muCrsZp-i-sLGRYeRYEPN7sw9orRZUCwag@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: YQBPR0101CA0285.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c01:6d::21) To YT6PR01MB491026.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:1d0::10)
+	bh=gxycNRe5Xp8R46Q2iiGa2i7TtEiTDcNhh16gfvNbu7U=;
+	b=xWrQRrzgRcl96sblQrjCRKEQ7bNXtmKSc358Fk+kUn9SuIuArWPVlvPUi4esKmzRxqEUJV
+	OnTvT366dZ4xJQ1n2GuRFCB8xWYjmcBziHBDp694gweVBmaCx1S7uabZ2VXQgugamzrsQt
+	bOKsJ6SMHbJJcJtXKbDPAUgtUaIzwGM=
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id D6C4840E0173;
+	Sat, 19 Sep 2026 17:53:43 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id bBIJx-YJV69X; Sat, 19 Sep 2026 17:53:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1789840413; bh=SXiqwKtdNNUw70nrLfz6bcKBIdshJmQNRlHzGsoGp7E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UWEyhuG87+5c3DEkcI6k9kbCf7oqNuWc7NNVp+B0jdkCEFaq+bUs3xutwcASp62Dm
+	 xBdQHX+gY060/K34myaFqGgQe+2f/z3C6mpkz6uOkpM01sUZzWw/aSPJsD8Z24qiLI
+	 Z7vqWAQbgKb6wHT7E1CBmb4dnbAsxOY2OJ05fCl1kSnIqEcGHIpe6aaV3+jzi6lJhP
+	 cbU8nC6dsoKI2Qyb2fvOVN+oU+2fKN38Alu/a4rPUApwm0ccFCz4IAWeO15OO1aOTE
+	 UYVdJU357+iOqhipNfoJXMn+ETz0RFXxRlNDMIrGWhVRUzduCPwkeRBSyuGTSPMMxu
+	 aOphzimH8sxfRQfHLI5C7d0/rJFlUDBpQW0gR3rqbUZ+nWFkcYaNksQVFRPXsdgNbJ
+	 bKx1DXIoi3wmz5BqmhsveI6MCk1Qq6PZU9spJoDhgwKKEecM9ON5EVsxz1XxPcQowK
+	 LyByULYfxFktJ100cN6FT/nzQSE5HxRuoF/iRJSgndbYT5FdTvPkvQ5vV+RXJXxq4b
+	 SHlmUxnFz34Xj/7YurGtkbj8n8tIL7lvtnMSdOkFVIu6Gl70ewQ/HFNOYSjlaYWWIf
+	 59OINNfItYdX/nmbWo4bsu07fF2iTiY7QrOF1wL4vdDyonaaah6s9CFyEBhbZD91UY
+	 3MKqf3aAd5VBi4CrKQFnm7NM=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::3a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 5DB9140E00B9;
+	Sat, 19 Sep 2026 17:53:20 +0000 (UTC)
+Date: Sat, 19 Sep 2026 10:53:16 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Laurent Wandrebeck <l.wandrebeck@quelquesmots.fr>,
+	Dave Hansen <dave.hansen@intel.com>
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] x86/mm: don't apply va_align to hugetlb mappings on AMD
+ F15h
+Message-ID: <20260919175316.GAaq7MDHnfhdJFPtsM@fat_crate.local>
+References: <20260828135747.724789-1-l.wandrebeck@quelquesmots.fr>
+ <3faecf65-7edb-4cec-be7a-e5266dd3a649@intel.com>
+ <20260829174704.GAapMbGAZMwImcvIN7@fat_crate.local>
+ <0B48BE2C-2E72-4961-91D9-35E215F537A9@quelquesmots.fr>
+ <20260829185120.GBapMqKFM35KtL0Mod@fat_crate.local>
+ <78225f07785ed89e0c3e5def8a8bb1a48e444322.camel@quelquesmots.fr>
+ <20260916200247.GFaqr15333nu5IAfjU@fat_crate.local>
+ <45dc4a4f62e49107de788b4be9a4039e0d772fa1.camel@quelquesmots.fr>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: YT6PR01MB491026:EE_|YQYPR01MB11620:EE_
-X-MS-Office365-Filtering-Correlation-Id: d3aabb90-3e5a-4480-cd33-08df16721fed
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|10070799003|1800799024|7416014|376014|366016|10067099003|56012099006|22082099003|18002099003|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	Ar7qwZ7dAY3u7Ssg/Cn/Ui6flCiKR9EDk0i+cX/lie+5dNejIFMU48sk9eniAX7xHlsqJ4uD45txguHAb8L7l+IVNqP1tDsJt1ZyD6BeLwTIJhvsGXzc9XcJylSnBHHov4tigI78blZK9FckQ+S6xT66XGTj6KSEo+NPwgAB/lPVca3VWr0hHlWKmXF5MI3tReNYcHLTl4o8UPXEFsmspZZ1IitnJR5+MpIyd7WXZYp66thbuqsGGYMiDbCqGj8ZGC4+FmCu46sERFctx+JuC/gXBjj0u7kfrI7K+IKHkRoCSJJf7iqcJvK3aM+s9Xll8rLkrOIV9t5rgqiUPfwA7rHBDyLdIajVyru1S/yk/+i9NzK7xV/3TYJniEo7kDakWMtDybXr3JoUQBaAs7CILvTw+gZojuWvv9t0XxRNF8PJYhaeX0DkApb80c45zkEHsTSujuQimzSDAdUZmhVykYqGQOz5Mc3WSKZ4om2f5Wq67bQJw2MGtkkO4pLQRPg1Bd3oinPHxsQMVWy4XhvZaAu5ToHrjPMN60MiKYzeQ16MdcM//3ucxsalhStrprOe/haxbzYqdakwpx/f8gZdu+znP3WKTsqB+6PcsMKoLFg=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:YT6PR01MB491026.CANPRD01.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(10070799003)(1800799024)(7416014)(376014)(366016)(10067099003)(56012099006)(22082099003)(18002099003)(4143699003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cnlxNUdDSVkySTdLRkozbHpHZjNFZy9zUHozVFFFRnVUTHN1Um1uZDZXZ0Nr?=
- =?utf-8?B?Yk8rOFlpZUVCVjJNMlZqQkIvVk02VDZ5WEtLTlgzU1ZCOEtiZ2hXSXVrQUJs?=
- =?utf-8?B?RlZOOHhlMFRsR1NJdU5DbkQwQjE4c2Z4eWZsUmlwVUZNcmpnK3k1RHBOR0I5?=
- =?utf-8?B?SDQxRjNUeGExdm9HNVJMTlVRNlN2Y1M0MitNdmhHM3Z4ejlRYjRuQUZSQkFU?=
- =?utf-8?B?QUdkMHlPSHg5amJLN2UrZTFFcy9OV29SNWNhUUdya3l0dnNxQjdSQkVIcjJS?=
- =?utf-8?B?Y1F5T0t3QjkxWWFwRjh0WlRpT1VxTHBRQzliWWpSVGZlMXNPc0RJbnpVWllS?=
- =?utf-8?B?d2ZadFJDU1BIV0VmWksrVSs4WEhrOW9mVVRrVjk3V3duZll6WkM4SXE5citl?=
- =?utf-8?B?QytlV3d5bDdGTXYxVG1yN0VxZXl1ckJPTjNZQ3djNUJ6SG5sNzEramZQWU5G?=
- =?utf-8?B?YU83Znh2NHl6ZkFHUUFFNWgxYjlvTVJEOHpUeEhwVzJldzg1Z0pXWHI2MFY5?=
- =?utf-8?B?V2RJWEpoVTdpbnVGS3M4V1VOUzZCR2tacS9GRU9nWXFkcExxYmN3dEhSUjdG?=
- =?utf-8?B?MmprbWRUQ3J4bDU3OFYrZ2ZoSDFCdG56dHUzUzJQT0U5Wm5tUWlGczJ3cmxN?=
- =?utf-8?B?UGZGb0daNjBmMDQzTU5kRTZDVURxMVFoRG80TW0vUlRvbEoyb1dTUXZLVW9M?=
- =?utf-8?B?aXNkd2M5Njg4TTF2TkRjM1Q2ZnoyNVNueU45RnFJQzlldklTRjB1YVErRDYv?=
- =?utf-8?B?cDQrV1pic21JRFNZYmdieU42ZmZVSmFtNkdKSEcvenVOeXRPWjluRkEvRFRI?=
- =?utf-8?B?QTdpR2VBRnpOaGRCSDJuZ0Rxd3Z2NTVnbmplckozcE5hcE5Xc3RuR2RhSW1T?=
- =?utf-8?B?YVlrZHo2dHNOd05FYUZvNVdBWlIrQjQrZkFrMWZuYjlQTGQ0WUNxZmc4REE0?=
- =?utf-8?B?dHAzai9FT3FBM1J6NzFNYnlkQ0xBWWs5VVgvSGlBQ0ZvdXhoalJmVzlHSW9a?=
- =?utf-8?B?U09VTE4za1hQNlREbmFDRGFLb3BVUFU2UHZaQXZySmpqSzh2TnRRTTBoaGtn?=
- =?utf-8?B?SXFvK2dVbmx4NWhiZFlWVGkyZzN3amc3eHpwaWd4WHMwU1BlMndxc2s5Q0Ri?=
- =?utf-8?B?dzRucXpzQldSUHFYTTdsaXBldEhTNmJVeE5Cd2VjN1Roak15N2hIZnY2aWJN?=
- =?utf-8?B?dllGcGZCK3BTRmJIei9KVDlrYkpnZ05lSExzNHIrd0ZIbHV1SVFidzFWcFFI?=
- =?utf-8?B?VXlPY1pjdGRmcHY3YlRaNnVWb0xycTV5MWNKU3JuVm9CaVA3YjBtaHoxNGlS?=
- =?utf-8?B?YVVHclJnTHVjc0hrY2pwRXlLYmVBbzg5ZFVBQ3JEWnpyYkxudjdqaGpWYVdw?=
- =?utf-8?B?L3lMTXc3ZEk3THJVaXM4TWdiZE1leDlGY0VEL29iRVFjMExkWVJwSVo5RTlZ?=
- =?utf-8?B?S3dXaVB3QWR0UllnMU85UGZBRDY2cm15M0VVc0kvQ0pCV2hlNTYyOCsyWGhy?=
- =?utf-8?B?WkdEZVJDOHRRYnp1dlVJRGVxV2dGRDNPNVdrOEw3YUNHb2hVS1ZXaklNdnhx?=
- =?utf-8?B?TmM1WTNQQlNRZE4wTGVxdnBnT3ZRbURpa2pDZFd2RzRWYnFFVFhRczJUWWVw?=
- =?utf-8?B?cXM3MjdJN2d1QzJtZTVYR1ZDUE1NRFBlTWVGNmtsa1FJa2RsSlRIOW9jTm9r?=
- =?utf-8?B?WEZFYkRXM0R4bVhZVzJKbnhvaFlPSE1DZkthc09STC9HcG53QmdoVWsyUjk5?=
- =?utf-8?B?MnNja011bUl5OGd1NDdDc1VTSWtzdDB2Q2NnbUFkR1RNM3RQajlid0RQWFBW?=
- =?utf-8?B?a3hRbzhHN0pwUUwydVUrbndXb2EyVm4wNHFlR2t3Y1FWYjF1RE5GeHRIN0VU?=
- =?utf-8?B?V0NuQmpRNTJ5ZUxYdkJRWWFFTmRmYzZHS1hWUTRwVkxqV1Z4M2NKN21lMlpV?=
- =?utf-8?B?RXl4U2lmM0xNYjFQMHFkT0NUaFVSemxtVVVmWW1ncWFWSFdlVDhsKzJNOWpQ?=
- =?utf-8?B?V3dBWHhiTngyNXZOTFh1SDZiUFF0dTdHUWh5d0NaY0lRTkJqQlA2NElmU3o3?=
- =?utf-8?B?Vm1nbVBPUjFBRUVOakdTTmZ2c1hwbjVVb1hhb3U0QzFHVjhvYkM0Qlp1VEx6?=
- =?utf-8?B?OHpyMldqd0EveERsdlVBK1UwZ0NuUEp6b1lmWXNPTjd4MGlpZFpVQVUwcGNw?=
- =?utf-8?B?dDRPNWdjOG0xZXdMODYyYTZodlZxTDRaZ3M0aUwrTVk2dE5EditrRmkyNEhn?=
- =?utf-8?B?MEZIRDRrK3llbVd2cTdnWDJPUStaRHhJdkkwZEk0VWpvMlBpQVJGSmpjRVJ6?=
- =?utf-8?B?U0xCYUxLZnJWT1BqRWF0VGlmMXNJK1RZMUZ5SzZWQTAxVDc0UG9oRzVQcllp?=
- =?utf-8?Q?AKORDrqgFaGV1/ZnXHrY9hLTYoVTxLdgu76JCm+tlqGkR?=
-X-MS-Exchange-AntiSpam-MessageData-1: gzxVEZj0f4WNZlfQxS2fj8l7nlSIQti7f/w=
-X-OriginatorOrg: efficios.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d3aabb90-3e5a-4480-cd33-08df16721fed
-X-MS-Exchange-CrossTenant-AuthSource: YT6PR01MB491026.CANPRD01.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Sep 2026 17:19:12.8590
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4f278736-4ab6-415c-957e-1f55336bd31e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SjR8/+Xfrm5zgGR2WswMAiLOGALHmBduyyBU7FAEdOg9LLe5zK2GWPI3LQozrju2YiQFzrPHduFRa8YBjER+ZWjIoeAGIAsgLQ7qOmN8J1k=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: YQYPR01MB11620
-X-Stat-Signature: 7k7n9nno94ea5rho17ag9koypaskdsb3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <45dc4a4f62e49107de788b4be9a4039e0d772fa1.camel@quelquesmots.fr>
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 8180840008
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 002E314000B
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789838356-230588
-X-HE-Meta: U2FsdGVkX197BFKKCWBTs3DwybRkHNQPPnJ8UCp/MkJpajEW12OK2B62LC4kIQdCLGeYgnYyKn7O3xJZHAmDVJuwTK7kRyZXAE0mqpkKLKoghW4RHuQCtUg1I42cIqqe0K/WmyWe0wVAKxdzoNOa5cIJwm+P6hNZYDmLXfrVqUJPtWgYoga8GRGDE/FrwLx3TI8uy7XMPpGRY4ZBFHXvD3H3J6ZzS+wvNmqbDtZAAp5nx455q0BusAsX4cc+NRXuOhwEOmqIgv3q4MHp+1DRZ43wPCvnyJVfkhRAjHQRyAnGysnN+gPvHNfHNqAH9UZlPHOUzOkN5/LVztSCSbgsZoXjYU4+pnY2c1W1brvvi1GtL+79kpLvz/isZQsg2vv9R+HVTgrpzYnAT4jZlPCzz/sK8zQUqnCdusRNDCj+r3ZhoEZJ8kwSioVgCkVO6/VhuORcZhhR3/vtRkL571Y12RZmL+yjhaXdxv3ARZZWTlQ9+wXmtdhL1KcHUmRwtA/EBhIMdAb4pkisrH5UC80a5q9+ZthgW13o0k/fyjfsxr5MbMokN+AD9sY5DrrWPcIQglmd1m+xkPp+YM/Spt+f4yt8s/ci1oYkAohVCH7P/ODej6ReYppoAi1fJGC+hnzOHwyXK48n1tsF13TeULqEFFlheiEwbODJGVTA1z4TimaVcfHngkdUl7Z/KrXhSjLofu2vRgyJucutfY6oFnHEdcWGJB4wjgnZtbigPQsB/BF41D1z/gzI3uLQ1uiCOHULELn7Je51NrMjrKemTJpqEBY55f1bmUr/6Gbo9SgzY3PiEbynPVQLCnsLY15PSfJHGtbmyhBTMkuneIa9XweBVJY7V2kiFoofzmFdTyt5hWnkRGO8R7ZjBMxr6sRUOVUXY39HLQ4nFRvqQZLeJZF3+PakQB3/j2vFOQUPvjsWbBs/A7JSBPqRT26yQGOEEeWeGVSQ9UcCOzY9KVCh/CJ
- CHv+jJ4G
- QsU+e0RFLOfhaQSYaBn+45I3umsrD2mkxxc1IuaziS9R/tsPX0ej5sWl6+LQ8+chXwd4tPiJ91qNKDXmhzPFbBxReJeRTE8KfJT65x5AxeMUFn5m8k6j9mlPnLN5vtCubgYbkcXesNCbve1o7VxKDUELcvRucG/C1YQWhALwTMinMVLoVOGbjGY0Td8nKI/3XugHfReCR6pX7UhduQuUn4aXswkSA5CpAxKRifgMo2Yy9NbpprSPhmIwHdUBTd1IbFsIg9J92Q0eEKUSG91MlmiFo8ZktNnmObW769awJr6aP7bkb/0Qj/148ozsowfl+3hkFMRSn/spUhBESLFp201bgCoL3T2dav8ZrFNqJS8KhUle7BuQ6aN9iS4PbY+FKuO+SXDJ+gHNly/k0qYdTpqoJUMADV/YAL7E4r5DxBTZ2BTuBU5QzuTRRKZcsoi0vkez+p+rH9uuLrdpRU/TEgnLkYMHoJznuvKwxvH5juOpLA7apJgEAP/oLc86JV5k0JNNmyOwXJDMzysI3jjBOhjiRnl1TBgx1eRnn2HVDYjkxRk8mtHkSF4X/Wsx+p7I5qTO5
+X-Stat-Signature: asfgmhojjzrkempn3xuhezkpd8awhmpq
+X-HE-Tag: 1789840426-217519
+X-HE-Meta: U2FsdGVkX1/n5mD2PHxLd+p7lghaxhoIaxVzbPARTyJCI7oiqYA8jYQZ1E9Gm8ghtSo5gUCcCQWD4vhQ5niwsf/a3zscs5tByRYhrW/UZUzrGnJ4mWEuXr46mY2K1tUeBo5D2PiwpVCl0s+FcnBlW1x3dSM1SrnKkLmjtzfYEJCyNMoW1PMmGDOpimJQVJ9VMFy+g/5Raoj689OkxnznHt4zFh7xDoZ9Nn0pwTJGLzQ3oM5LwHtLnDiH6kr1kPI+BFXiz7m6P0cuP2O1dkYPBbtBTsj6nwdAd5AJlIn3eKKbXZq5uYvFyym20SlA8x1u8+IhsmSFmW2pgN3a6K0V8XdwG9h7r3F0xQgnZ2UV0qrzsqJNejfZho0U/f8oehf8ofYsXxa6VZixAkWyAPy2rJi7v6Brnh/z0lMJwTDElUz9HQ+4SJrVpGk0Kr/YXyqINMrVt9gJIiwKZIVeH8sefLNsC4xjeEaUVL6MErWY4UOtnLzLWX6R6xezbH6zDGlUwJ5apOYrEdhw6rxNTN9rh8vupvvlss1JDmTRmx0R3L6UW4kVQuDJkPpw0AUdF6HciKgucjxAr/K+q88iOsFpUw0CU3y68ntCBdPNn5qSL0UNy6BI1yBaAqXEwlpUCQABQgkr8ynkp+zSb/jYDSgwAtgbWvUJbs04/WoyXsOtJxmPHcsAMxX3RotAqqnDLeowtXdV2lM9ph443vLSrr1mWMNj/ZM2Jyy4Jm4xMG7fiQFVRR8qeuNBIt//Kw0wKE/R0WdpMuNK2QhiHIcEs+ez0xVFRodDO181l+SXuPtawD3ifKY1tn6GzoF9+dcLH+uPSpVu35OvTXRB4wa/btyLa2silznkJKMk3EZf9hWksySgGl9EixqHogynXPY1Q1Zt6jcIcdhOpOQrUNZT1YRzAmLWCdEM5W5l8fBgpPfF4dq+Rr9q+Th4CGT0oMecM9or6+Q3SmFv9ushniUjPxu
+ aFLMdNqN
+ bOMvC4Y7EeyZmoLoxMaLNs3M/+c+aYhkjCY7EoV7Po0O7M89KrBKtS1uaWD4nfuiLOzx2OErZQ51kD2p3JbLyhoAr9MkqYs1AdXAshy73y9CGxe+XCBL8yiIrloGAHG6uT7wgpaLsmv0Kw9m8ewgXjwVGyHWz6budhw1gB0h/y0cKYzLxCJz4PwWwVLTBWJJxi8d1BxF9BXE3ZKnyboZyIgyOnHxAjJVytvgENY05oJe6qjwJQbnWYEHPGsqeNAebYhMp4TgdyzjZNX9CG889/Ymyd+9G7hB5xXf+fh/H+SUfepI2j/8r1r72OQtRvpbJWr3jgA/EOogC/OgT1CTxutz/ariGNjk86zIfqjiayzSnpoHw/+s4R/t1hcYHDe9HaXQYM0m59F0Iuf/VriAGxZAUaQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -195,34 +117,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-09-19 13:00, Linus Torvalds wrote:
-[...]
-> Now, obviously, the thing that would impress me is something like the
-> dcache. If *that* can be converted, and it shows real improvements on
-> some real benchmark, then I'm sold.
+On Sat, Sep 19, 2026 at 10:47:46AM +0200, Laurent Wandrebeck wrote:
+> Here=E2=80=99s the =C2=AB v2 =C2=BB patch I used instead, on top of 7.3=
+-rc3.
+> Works without problem (several hours uptime).
+> If this looks ok to you,
 
-[ Side-discussion, not related to hazard pointers. ]
+I can't complain about that too much, but let's see what Dave thinks.
 
-Talking about dcache improvements:
+Dave?
+=20
+> diff --git a/arch/x86/kernel/sys_x86_64.c b/arch/x86/kernel/sys_x86_64.=
+c
+> index 776ae6fa7f2d..a54f930e2c9a 100644
+> --- a/arch/x86/kernel/sys_x86_64.c
+> +++ b/arch/x86/kernel/sys_x86_64.c
+> @@ -28,7 +28,7 @@
+>   */
+>  static unsigned long get_align_mask(struct file *filp)
+>  {
+> -       if (filp && is_file_hugepages(filp))
+> +       if (is_file_hugepages(filp))
+>                 return huge_page_mask_align(filp);
+>         /* handle 32- and 64-bit case with a single conditional */
+>         if (va_align.flags < 0 || !(va_align.flags & (2 - mmap_is_ia32(=
+))))
+> @@ -50,9 +50,13 @@ static unsigned long get_align_mask(struct file *fil=
+p)
+>   * value before calling vm_unmapped_area() or ORed directly to the
+>   * address.
+>   */
+> -static unsigned long get_align_bits(void)
+> +static unsigned long get_align_bits(struct file *filp)
+>  {
+> -       return va_align.bits & get_align_mask(NULL);
+> +       /* hugetlb mappings must stay on the huge page boundary. */
+> +       if (is_file_hugepages(filp))
+> +               return 0;
+> +
+> +       return va_align.bits & get_align_mask(filp);
+>  }
+> =20
+>  static int __init control_va_addr_alignment(char *str)
+> @@ -157,7 +161,7 @@ arch_get_unmapped_area(struct file *filp, unsigned =
+long addr, unsigned long len,
+>         }
+>         if (filp) {
+>                 info.align_mask =3D get_align_mask(filp);
+> -               info.align_offset +=3D get_align_bits();
+> +               info.align_offset +=3D get_align_bits(filp);
+>         }
+> =20
+>         return vm_unmapped_area(&info);
+> @@ -222,7 +226,7 @@ arch_get_unmapped_area_topdown(struct file *filp, u=
+nsigned long addr0,
+> =20
+>         if (filp) {
+>                 info.align_mask =3D get_align_mask(filp);
+> -               info.align_offset +=3D get_align_bits();
+> +               info.align_offset +=3D get_align_bits(filp);
+>         }
+>         addr =3D vm_unmapped_area(&info);
+>         if (!(addr & ~PAGE_MASK))
+>=20
+> --=20
+> Laurent Wandrebeck <l.wandrebeck@quelquesmots.fr>
 
-I've been working on scalability of rename, directory move, and
-directory listing, basically killing dcache global locks, seqlocks
-and rwlocks which significantly limit dcache update and read-side
-scalability.
+--=20
+Regards/Gruss,
+    Boris.
 
-Those improvements are based on RCU, not hazard pointers, and on a new
-"RCU pseudo-transaction" concept I've invented earlier this year.
-I'm preparing a paper and I plan to present it at LPC in Prague.
-My benchmark results are on a userspace port of the Linux kernel dentry
-cache at this point, so it's not ready for anything close to upstream at
-this stage.
-
-Cheers,
-
-Mathieu
-
--- 
-Mathieu Desnoyers
-EfficiOS Inc.
-https://www.efficios.com
+https://people.kernel.org/tglx/notes-about-netiquette
 
