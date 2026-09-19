@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DFEA2C982D8
-	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 20:15:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 085E6C982D8
+	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 20:16:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E91076B008A; Sat, 19 Sep 2026 16:15:54 -0400 (EDT)
+	id 25DBF6B008C; Sat, 19 Sep 2026 16:16:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E41A56B008C; Sat, 19 Sep 2026 16:15:54 -0400 (EDT)
+	id 2351A6B0092; Sat, 19 Sep 2026 16:16:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D7E846B0092; Sat, 19 Sep 2026 16:15:54 -0400 (EDT)
+	id 14D1D6B0093; Sat, 19 Sep 2026 16:16:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B87A86B008A
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 16:15:54 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A9A74140311
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 20:15:53 +0000 (UTC)
-X-FDA: 85231617786.19.0DA55B0
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E88576B008C
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 16:16:30 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 579CEA030C
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 20:16:30 +0000 (UTC)
+X-FDA: 85231619340.25.F40B23A
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 0D11D40007
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 20:15:51 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cA6gOk9m;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf30.hostedemail.com (Postfix) with ESMTP id C113480003
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 20:16:28 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SU+VN3tT;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789848952;
+	s=arc-20220608; t=1789848988;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aEklChI0Z6DSnGg1lTHUJ1IxomPedF8yLHgw2QGf2q0=;
-	b=m2NOOuPFmpfAnhM5R7baT7hk9tTWKyMSnQl3htv7jTD7DfEuJ19FP/B0yNgHcvgGc09FpA
-	0hoDks9rdonNj63Rq6eB5VPrW19o2L2Q9m+3UDB/7Rj+1GDXK4qLv7ZkTybSrRwqBWtKJD
-	RgVLtRo0548kWSZAj5MU/x6eIukRPZs=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cA6gOk9m;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=tW8vBAHwxwtxJeHMsSnCySRPT4zVEQwFq00zoQu2nR8=;
+	b=CBrPV+Z+wthgpmiuh0nmKBANhfCN4iOERTs6S3h+zM8tBsU3c2/xsSzk+itJWYbQkHWtyM
+	WJM5nJjn5PneM6csZ2etyQbobANumwCwFLnJYCv0P7bMYJNS25Rbym6D5sA2gWlRuBZ+mm
+	Lz5tZi1q0kxf6yAXTdxAB3VcgT5f1f8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789848952;
-	b=gF1ISOpdkQfyualhjNXNBMASo2HfirOn2/J13Hr3y0ojGc0Nv347tSqWPCcGd9+p6U+tPu
-	mJdQ+EbE7XR1PRyEY1nzeItyoTIf3/iX5Wg7F30CwVefWkHp0vyY07b5tSQSpfbaZFSu7v
-	Ug7bmXhReiJlbQCqbRBaPX9ogpIYarY=
+	t=1789848988;
+	b=hPXriks9gnHycvnktZq0sbklkRq5+hwuelL0A81C+QrdL/G70NjJCvMJHKpnS15EiRkUJx
+	JhdpVkOlxiDxnF+13uDc5B4GZb6/P0Hr72IDgpF3SeK5cEfajUH3JC61Cwf/BPwEEeSYeu
+	TtTr6b1e1HoIAWU+WN0m7/AUQW85dDU=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SU+VN3tT;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4E22E601FB;
-	Sat, 19 Sep 2026 20:15:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFEE01F000FF;
-	Sat, 19 Sep 2026 20:15:50 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0AF1C601FB;
+	Sat, 19 Sep 2026 20:16:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C8481F000FF;
+	Sat, 19 Sep 2026 20:16:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789848951;
-	bh=aEklChI0Z6DSnGg1lTHUJ1IxomPedF8yLHgw2QGf2q0=;
+	s=k20260515; t=1789848987;
+	bh=tW8vBAHwxwtxJeHMsSnCySRPT4zVEQwFq00zoQu2nR8=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=cA6gOk9m0pTCXjAZtd3PmkW4Edy9ftTtAepGerXCf1aYz4gPVhE/h/LFlqsOsqIFC
-	 2pFCsXKcPw/AfBC52QMdG7pihf/rafq3LwEB9hnzAUARQ+XfZwxJ4cUF/kumyhRZVb
-	 p9WGBMndGlVU2lTvUfVLkGYbGqp0/sjjafsKmfcsvM2ajC6U6NCY/NnQofnKgj+a8f
-	 55qTzRRE7eTpyNyP6MwuXLZ6WIRwuyQMCsnWdvwgqGIbVb9LpK9gGM4NxW/cjEUkkW
-	 KPZsF3GQrJtM1MgcMyZ9EkeJi1Fu1U/sIUIZznRUHWD476ONfnieR5z43zoS/M+dl8
-	 9GJKxxJMR3lHg==
+	b=SU+VN3tTeoH7EWi8Cani1Ea2Bbsf5ZakAGoL6b06c817iYymfM1KIYEcJSq0nbued
+	 llEjaLBL1rUh9yNfqvLjRFAT6YRXFqXdW3SZAc2eJaDybRtf/CRuWp09GsFA8u0WOj
+	 MVFljGlRTehNwupUjCb1SNyO6O1laDpcoVsUZ2/LCnSjAYdHCwPfs/O1S0U3h0Tkfc
+	 T6ZEAtW3anFtW8OTKhNhqF1vN9do8oyyNId+f5P+zhXNOHQeWI7F6QbULE5cbEVUFh
+	 iuknLKavjbpf8HTqKM27c996Vrg4ly6S5ZaGD56nWvOBphKuY3zq8iuV0PdRRpgofa
+	 Q23JnRiU6HZhw==
 From: David Hildenbrand <david@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
  David Hildenbrand <david@kernel.org>, 
@@ -71,23 +71,23 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, 
  Peter Xu <peterx@redhat.com>, Kiryl Shutsemau <kas@kernel.org>, 
  linux-mm@kvack.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260901083452.115365-3-sarthak.sharma@arm.com>
-References: <20260901083452.115365-3-sarthak.sharma@arm.com>
-Subject: Re: [PATCH v3 2/2] mm/gup_test: report actual pinned bytes
-Message-Id: <178984895068.1919785.9481531053256508981.b4-ty@b4>
-Date: Sat, 19 Sep 2026 20:15:50 +0000
+In-Reply-To: <20260915102524.125758-1-sarthak.sharma@arm.com>
+References: <20260915102524.125758-1-sarthak.sharma@arm.com>
+Subject: Re: [PATCH v5] mm/gup_test: safely calculate GUP batch size
+Message-Id: <178984898740.1919879.11324251625191252500.b4-ty@b4>
+Date: Sat, 19 Sep 2026 20:16:27 +0000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.16.0
+X-Stat-Signature: hm9euh4pag8k78brnzjyxdj4ij55p5g8
 X-Rspam-User: 
-X-Stat-Signature: fzg3e8tfhrfwh9g8tqpsri8pa4jgiwtn
-X-Rspamd-Queue-Id: 0D11D40007
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789848951-505472
-X-HE-Meta: U2FsdGVkX18pt+jg7bXJZ16t4gYO2SAmnEFFGiIii9D0l8OVEcEr9egULcUaz4k8hLsxKV80mN1rqdoHWhb8W3+TxtMRQQKmbmiTzpksBBKy7xcWrmTWV7kTWg0obOcceChRqUyamf/jXiulPbQHzAqCzl9JxCHznT1r23O37bdgxln2KPd887UVJbBOIGs76SDLtgisrG2yj/oQ4EPXBmt7pFG+K1htOyK9MT2i7uGaf2T2hjpYB7oxHGQcv06rLBtrWkvC/YXycmVBwJYITdqfSx3an8UN4wW/Zebfi5buVJXRe62/Zw2r7DpsF/e/URhmtYJRmn+5+0JbSgmlAR7WxKROQBsCOS5fdfypjonbwRyoEzj3Dr67LI7wc6Tqcr2Rf3FJKHODKRfahBNhKVyv/mI6ezpn4dr6hZ6wJqzDfUzqrdU83RQQ5eZbNcnEYh4lR7J7l2E2lIoXS2soR8YxrH9dLsu7kN9eR9iaILKOFkjD0+Q2G5wG0YL7fGTKNQCmAvtA5ZiwZer6aBP+tJDC4A/WmRJfuyhQa3K999qfRQwnfqxVxSjoTTDlEcfxktua1jl9OjVwO1hYD3ty5EZNt/J0iWP0Vk1P2QIlJ4DKC5bwpVVn40CV+AaCZxierXhfSGXjwIP8J5jVjICohnt0RWwOqyd+GsalifAtyoloTtajoukX1NkJYzgRZugTgU8LXVUu+vXW7zbn5BlswZ2XXbNCDsDY/zdmhLvzl/lh/cHxTQ5sOSFRqR7h/x8JfQnvcV1DPVGznitDhDPOHimRQmTXttrurjNRmim1J/ueEh/WzAynUli1HLCnGqc62UpdTP09H492RFB+3yr0SNAHtDIzQ8AYO7JUNgZZ7RFRHBf8Mcp5wrYxOTsl7O+pWs6yxNAFg3WXnsjOy/lB2WohhNjGl5UsGRUx7pCGvLOt7BooeNpZfNbZu78ck5vuA+qfsTUyQ2T+11Bs7Kl
- 0DGSrVds
- yrK/sghKcb4CbyzLlzQKsfSSumhF5kNObetc5sLoVkB3u3mAchL3jefMVklY5lbhCkDUlBZP2c5r/eL95KlB2QKDifXq+YiJzOUF6gb4TZqmXROgMV/IvVH54W3c5YT2kRAnpXHhoItD2mPUw9dRuNEUP2cn+qRue+5V1RCl0ZMEWKhT9u6woBNZ1twxLCuuup9MPxXjI8vJZvZayBvGYNFN03TSldepdUdTvlR0y6P8Fy9Qg7zMKnTCl6/ljbK3wKhpG2+FOuOb/lz4M4E5KRT/igunF8ItYuUN8
+X-Rspamd-Queue-Id: C113480003
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789848988-840860
+X-HE-Meta: U2FsdGVkX19YRiuK7r2pow6E0+6EiPGBLii3V3LRr683SPJkwGR35x31DL7y1GzhLe0v16xeY4kgO+Zpw1AbYW1t+wHmNix0oMzRHcFLajk6tJ1WVd0mc+QGWfG+EwNSmVUxmaRWq8kQpKT313iY8vDfVzga08M1zEhL3iROD9lp2QSeE9V7uQcK12VNHMvzvlRI23VGVh0IxOWHVB9T+hZcOc3HDsHmC5f7MOgcPxpgQr4M9SkZWG2dMWEsxyfZJj8m0M4yYLGJtnVDnUXN91+NE9y0zwL+cPedTh1WS6MIK4yeurnUa2+PRq4OgIUn3lPnW47GfbdZXykylTAhSw6A2+eFscC2G4qVqnQsmmGXVdii5E509exk148uIF9RDxGVDxQUrnwTLMxGmqOQut618qq5tpYfZoBqVEbY3+bfyRT4tFOwTDg667ugdhpee7PTbIy+dqmrTr+2CVnCYV6lAX8+SXSWjwiuC3/ZLFonbsHLN8eF1CqX1hv9SB6BKISlASBR1y0Lb4MiY85fztApzVV3bCAjKxwd4ZQafRh9Kz0tp5lEOCHVKEPvExsefiVIzT/Vjp+F9WFReMymTPaY7x0Cb4U6BrdKdskscn5W3L2U3WpHn3WCV1lzDBBtnuJ3Ye5NhVKMbRq4Mv60kNWD0O82FkRFusucLpBB5TlZHQwjX+ERc2DsOMu4ky4LC+7LjDsJK+7UQZu1UortuEOtWlTBueHiZMEegddHMWb9oDCr5jZuzjVZGciTQljMIBgdE+e8WPgAyCtuxj3ecUF3Pz/1C2V+OyCqOWGqfR3aWZyafYmBWslUOdrRsSz1YcrAmIBpdg4QfQJwapilIZDxN5WD+dJzvcOsnht+TSK6+pUhpFF/Rkuxwefq7gBOOIGqrhX616TJibrUHpwH2ThohGFid1J72ggoponBLKZ2JeiYrsbr5cpSoPUaxEhGSsmlnZlfjB6a9NRRkF6
+ 4RU+d6OL
+ epjJCwrrkAfl8k/2F/JiDKmIFwlFbzYip/7Fg2grOhagHRsz15oA/Ou4ZhUzRGinv6ffaRLNxFIel18XqI67nItCgodZTFTEfA45BvEG7zhMd3fEMqmKShBQY5p0KgV6AQI0TAGyX+IeMRUkEZXHFZ39k+SHgIYVJOo2qSPbA5az4YIwVSBO14UtnJeVSH28JtTYlYY6DLOyyPjVM7JGkCK/drg6i3H4r/gBWX4dYN2+o1gwmA05a6tswKbpNp8aHr2pvA1T60JyDjqh4Sw6m4qYEDGBMQu2gPlET
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,15 +95,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 01 Sep 2026 14:04:52 +0530, Sarthak Sharma wrote:
-> __gup_test_ioctl() advances addr to the end of the current batch before
-> checking if GUP pinned the entire requested batch. If GUP pins more than
-> 0 pages but less than the requested batch size, addr still advances by
-> the requested batch size.
+On Tue, 15 Sep 2026 15:55:24 +0530, Sarthak Sharma wrote:
+> __gup_test_ioctl() calculates the end of a GUP batch using:
 > 
-> The next iteration detects the partial pinning and breaks out of the loop.
-> Again gup->size is calculated using addr - gup->addr, so it also includes
-> the unpinned pages of the requested batch.
+> next = addr + nr * PAGE_SIZE;
+> 
+> If nr is too large, it can cause next to overflow and wrap around.
+> If it wraps, the next > end check is bypassed and a large value
+> of nr is passed to the GUP call, even though the pages array was
+> allocated according to gup->size. This can lead to out of bounds writes.
 > 
 > [...]
 
@@ -125,8 +125,8 @@ Note that commit hashes shown below are subject to change due to rebase,
 trailer updates or similar. Further, this is not a guarantee that the
 patches will go upstream. If in doubt, please check the listed branch.
 
-[2/2] mm/gup_test: report actual pinned bytes
-      https://git.kernel.org/mm/core/c/65a79b9b
+[1/1] mm/gup_test: safely calculate GUP batch size
+      https://git.kernel.org/mm/core/c/44817a53
 
 -- 
 Cheers,
