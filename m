@@ -4,139 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A768C982CC
-	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 10:11:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32EE9C982D7
+	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 10:14:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C8DA6B0088; Sat, 19 Sep 2026 06:11:10 -0400 (EDT)
+	id 19D366B0093; Sat, 19 Sep 2026 06:13:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A13C6B0093; Sat, 19 Sep 2026 06:11:10 -0400 (EDT)
+	id 14E0E6B0095; Sat, 19 Sep 2026 06:13:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 58EB76B0095; Sat, 19 Sep 2026 06:11:10 -0400 (EDT)
+	id 064956B0096; Sat, 19 Sep 2026 06:13:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D7986B0088
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 06:11:10 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4D195C020E
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 10:11:09 +0000 (UTC)
-X-FDA: 85230093858.20.5DE6575
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 96FDB80006
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 10:11:07 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l+5S651U;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D90156B0093
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 06:13:58 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 48644A020B
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 10:13:58 +0000 (UTC)
+X-FDA: 85230100956.22.A3F3B12
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 6C8FAC0004
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 10:13:56 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="tCV8/ZEq";
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf22.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789812667;
+	s=arc-20220608; t=1789812836;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T6rLf9agDMyARwXvYrMSOSIy5jRBMFJCc5XZwhlIScw=;
-	b=B6xPpN+WCSpq1RCH035DLBjLMctiRbaA3lR1ya0nz/YJhcTK7cGkim+WrgLSrDhLNAIAcq
-	dhfUaoxOeMdlfJ/OjlcTAuiIoAYN8qIaYXbjF7X70ESODIavy3tN9HiBFEqDsyXb0Wspjp
-	l/VTLJ/lK9h/pxREdn2Yl4OAI5LRizQ=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=XJTuK5kALUji+9X0i+iV+iECiWWDSlkrTGs+gBR2/Hk=;
+	b=N0Ztu4MiJ5T2IrQemVLbQOtD21+j4+ZCYVIqzXEEljhfIjLzrvMOwFb0kjCg/1BkAiE6c5
+	S7flgVo6STTuiOZKSVL/BpZcHmh49UtPC7SpC+iU1obpLw15WTn2N18zLI9Q9W8kgA+bsi
+	Y57IfFKT8sO6WR+1mgA9v1nbzhd6+Jk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789812667;
-	b=4x8GI0BbiWC2lCWm4qL3TKmP/pOctje9/+qdgtoGksrF0bBIaig/yZGv6JarfbhTmYvwFC
-	L4bl34SpTOf4oWPwDL2tahnLyNjgaare6RtPxals+yx6yl/QDhaGtXEyfPmW5cMBTkJThq
-	o8fiTq1+osnVuPunKdQCl3WSIq84q+w=
+	t=1789812836;
+	b=s4i7RtKVzp58mUyb+8CLcOigTMLycJ+Vlo77Q4DhjeYNuXCe2B+XwRuAmX2YMaGKikyVwx
+	hqwMvGpODiX4Dw86U3S+xfeelaSDjKPOAKCMu5VecnNkRD4wlOwr23EckKaz0FS0cnpVSN
+	KaFMlMSBUf4c1dSIkQg0sf89Sm1p5x4=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l+5S651U;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4B6E66020C;
-	Sat, 19 Sep 2026 10:11:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E73241F000FF;
-	Sat, 19 Sep 2026 10:11:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789812666;
-	bh=T6rLf9agDMyARwXvYrMSOSIy5jRBMFJCc5XZwhlIScw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=l+5S651UOr8S1vO1bGledRyKS7GVLLbQpEy8lMv6ldvYtkMWP5Ze0XUgkcqYdSyCR
-	 0ya401ohT1jtFdfAvPQjqs7+2oF71svgvlRCBIXRlHNTFcNSfPMtp98fR4uWffdHTY
-	 xDGGk5PyVUHwY2QOzMfqrj/DTJJR9mfmwTS0V1lB+DGEBUgureD9MmCdThXorMwTfC
-	 uRcldTNp9FbPeG+pG/oy+L/gJsuoFJ49auy+m4Kw0hz/VMTxpWTb9holgN+K3bjCDD
-	 fsG3oPLdi4iKvouNiOD4PvbeM1BPduGrcO9rIQgox6vSRBG30hqnXx2XiUqPSk3xVj
-	 ElPtZvU5oLD1Q==
-Message-ID: <0c0c19d0-997a-4c8d-a103-2b3d153f4e32@kernel.org>
-Date: Sat, 19 Sep 2026 12:10:56 +0200
+	imf22.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="tCV8/ZEq";
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf22.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A9120165C;
+	Sat, 19 Sep 2026 03:13:51 -0700 (PDT)
+Received: from localhost (a085714.arm.com [10.164.19.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6C4033F86F;
+	Sat, 19 Sep 2026 03:13:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1789812835; bh=I+CE+sjYRQ9D7SEGybEH6t6fkrM4V9KN8kvDc0ka/6Y=;
+	h=From:To:Cc:Subject:Date:From;
+	b=tCV8/ZEqWEXIyFG1R0G2wD3x5uG5Uogvfzm4XNcsTOBLttYZmAN+ZMu3H9FTuPFzQ
+	 Bj7ymrY6ha+YT98rT0C0HnIyvVreG1WESpy0g4HKGCTQSdkVyCCC6Cmlbdy7SVefvK
+	 sBI+vsfK1ilDwzBaS8gOFcnUx9DI1OJ7fCkGqBmQ=
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: linux-mm@kvack.org
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
+	David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Helge Deller <deller@gmx.de>,
+	loongarch@lists.linux.dev,
+	linux-s390@vger.kernel.org,
+	linux-parisc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/3] arch/mm: Drop similar platform overrides for pxdp_get()
+Date: Sat, 19 Sep 2026 15:43:38 +0530
+Message-ID: <20260919101343.1959572-1-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] mm/memory: reuse the whole exclusive large folio
- on a write fault
-To: Yuan-Hao Hsu <aa9736195201@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, liam@infradead.org,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Barry Song <baohua@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260918064238.868-1-aa9736195201@gmail.com>
- <20260919073134.639-1-aa9736195201@gmail.com>
- <20260919073134.639-3-aa9736195201@gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260919073134.639-3-aa9736195201@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: 7eu9efz3ygq579zqx3soykd1p7wh7ikr
-X-Rspamd-Queue-Id: 96FDB80006
-X-HE-Tag: 1789812667-562777
-X-HE-Meta: U2FsdGVkX18ZosSYNB+C2nPEIqJfSgYRT45h8cahO1qSoKtF6EF/8kwWL6gAR10HCISuaa/+Z68t8fgCfDHFw8IC3JhTyPkZmiQ+kLdTUedkskiFzbH1PawihrI1ND3kdoMgf8ehtw21/C2DItaqqlbivNtOk8xgRvhN7g4A3jBYiXhW7jlYARDOjNoupFx1ZrKc4sf3PuKo4pQXIfCx97EiNiu/D92f7/a2IUGuYU4c97nGQDIaloYRbUB0m48eCtrDtEeIXEWDUmK9LeugwK78R7FfC0XapqBiOErWGuZfCywgvLvNXRXbG6mCzznUcA5rqSywSyqgBJkOrb6QkP8ahSPQ7wH7M0Pf251awIfq2+yUCxHOqwOijoIEgvZb+uIM0FuYTJRmONhTXjx7csZnSpINZT1PSSHTahGwzdwV8nttUjYLQilYoXpnWEFvKHpsUCreFHZO5KyvxDmRwE+50tTefUvEQgd7tdVDGMvF21eGHhxz6Bz2w7Hjvw/RGC5F+6gKfbZ1QFzxfF6d92SENZzxrL6WX3NQYMrTVjpqIXsjLeO8lhrQ1viLlwkdo6jD2oqJYKvhxCvgprpbErSWBU6saY1LPeSgcjJ7umLUv7s0z2DqJhPNZwzLlGfC3HV8OP9iige3RB3nJP1Sjfb4sybkLIEfpWlJvcwz0RfHqtz/VtNXNdFJOtylSY8BGDKaNdBxRQfan9vTYw2mwnBdf5IoAC5Ht/S8a2CZX2bV/t5ZARJf0udImZ+D0gLqwnE8ktzThRQo9gIQEdyfDBuCHlK4ePRRkR+F9nuDPZISZsdvc2FWFyXQwj0L2OvjSDyFo32TXbYBlhxm9QMbxWvvvu/WmHT7vkebi60uIdBGu7XOqMCfuc6YoQ6k7ip2tNYFtnWbPd8KudHj9ZzDRYNqBsf5AT8t0CupPRC1f6O/tiZnpoKUDEMLQvWnkUd5Pn4Y9NQ8qPpHJM1iL/R
- I4LB3P4+
- LhqGYHstxpuXpSsJ2xhedTPODIuzn9befSkgguaVWbW2anWkBnz0Hrm2134CsnIkBACOqgacqwdQpKFIYF+9Mt6jKzJEmPvHcyXhmlPWiXeapNblJzregN/y2oI8ThD8LWrQCl1STPn2m0RiKHlsWETj/jRiVX/OSfjPTNEYOWyXoJ05fVcHkmtIIu2pA82gSgluFFXPXCIIM95TjRhoHEM7pzG7UXNuI61JNz4s8lhUpPnEAB36lUkEuI5kfXISdRlT9
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 6C8FAC0004
+X-Stat-Signature: w7b5jb8yddnq74438ethfzwp8q4xeich
+X-HE-Tag: 1789812836-291867
+X-HE-Meta: U2FsdGVkX1+ukr8TdCW9x52XAsX9GeNbmWPwQ4fb3qtz5Z7BMgdRD9gkFv565wzGFK8R239tzToNcGvPBF9RT1D2oVn3r/TVRtFX9cfdhCa9JMB3S6SsUi6OyijWskp22090FxFPJulTLHMEmq+gYd95IaNQdcLcJ0WeNVfHjaFesh1UebYYp330tuBRkAE/4GryKhR32YDdSSNI2xO/1owTUDoRtL/IToXJ+T1smtmQe/gRgAkY4Rm4rIxaKXcLYWE50isztNllVNk/XdWhVVRnY7p6dHv9afGws4sjun2Bqg7y9PaBrea39bCN7U3tWXFHQioqMc/KveuiH9QKa7dhDiKsiDzwvSxDKxtCRAq+5AZfK/tkT/yl83iS49CNjpsa4Ejr/EYRiENzKiiPknf1sHmJMhKVibyRGd/E1w9+Hvogg2qkT9doHuyRZh9wvj5vOpDE/KpYg1M6u2v2OLeBKuNz3KcnzLA63BmbvPfyE6HOgSnCbwGpXsAjFTWzH6ofLsVXkOFxvLfDrlOtaEt7gbtdUHBUR3H+5lHtNyyDSjf/mLtMBB8zZ4koxXcbGNF88kiLacZLN7K6zoGry0+yMhQA3JXGii4zrALYWYFl85FDunPDVcnAYV3vHIyAGvYULDCY4LHr+6IXjseXz8XRf1lk8rIV6v+I01XSm7PeQ5pJsRNPgPk0Hyu0iC+L/4mm0UTiRthz/L3Z7drHlyWpl5cgDHDKT2izQ++pAsfNlE0fqRtRZzdMa+lMvvq39fi8kcIj5M8o3zsYDfDrnHCi0mEDtJEbwbn1kRo/gC51GJXfK2RmE033Tw+ePF1ud1WUvuDM58bJnoZcPSVTS9D7ajF6slxV9w0q6l/ERuarAA5MXZVEeLT8OJTvJHDrt7CXU35DME/3PWVkA0x3eahRF3asz5SuY78kuoEN7Qwcj/ZVfbkJTXRJ7EVu4jQ33X1U7otvBEYHjJA5WCj
+ 6MqpiF0k
+ QEVhJWRX/p648VnGCFSXhj1rE2QrvEMOQqtdJLMztzUsm2p3oAqWgi+PHS1KrigFpOUg9MjsPl94cTQIzw3RmAeTiis0DHlJNe7/gw4oCD5vPEqLXJinMeXjO5qNgpXLM3L1VXEWk8Ja5r5zxld20kcQ4nF2FwBRARWIbYbDOIkvqVuqNch2R3E+cEay9jdt9muoPMk/IMEJTsqPUzfR/CTWVifAa9sWFJFWj19PpVA+ch0vqqCRDDh/9nD7hz6g4yrQOL1ZRd+Tuzw3AnJYujFiZsSInJNOc2nHkQM+ySUyaxdGSna5VvMrRkOmEZ3o79b4oWb3DoOb2bjZp54mINpMx8Opd7VIPG8o6d5ZxVX2c5W9DlL40fClI+ci3gvggFxrfrmu1kRRnH8ADw8E5Ybo+trRXGFyWllzIWoQxCCp94I24sSgDqS0menvQsP6HrtQOsB5lIkkU7YfeK3bhxV1d7Y9w/J8Re4mZTGAGVA+osKP0IfN19wnYM0WgugmmubuNw9wtpnir85Ehr42X7bmXEHvQjQGgAFtHb6woiPZDVa1RFnlDBV1ALlT6YytKuD77B3NMci/yRlcLQTt10MJyIg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,47 +96,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/19/26 09:31, Yuan-Hao Hsu wrote:
-> With blocks of 16 PTEs a PTE-mapped 2M THP still takes 32 reuse faults
-> and a 1M folio 16.  Lift the bound to the page table: the walk then
-> covers the PTEs that map the folio in this page table, at most
-> PTRS_PER_PTE of them, and one fault does the work for the folio.
-> 
-> Its cost, measured as the time of the store that takes it, against
-> 420 ns for a reuse fault today (x86-64, i7-12700KF, medians, ns):
-> 
->                           reuse fault   fault that     COW fault that
->                           (patched)     allocated it   copies 4K
->       1M mTHP            5,400- 5,700   63,000-68,000          1,500
->       2M THP, PTE-mapped  10,000-10,500         126,000          1,500
-> 
-> That is 14-20 ns per PTE, about 2 ns of it the scan.  Builds that
-> differ only by NOPs in front of the function take either 10,100 or
-> 7,500 ns for the 2M folio, with a period of 32 bytes: the loop of
-> modify_prot_commit_ptes() changes speed with its address.
-> 
-> What it buys, 256 MiB after fork() and the child's exit, medians of 15
-> runs, two boots of each kernel:
-> 
->                                    16 PTEs         whole folio
->   one byte per page, seq
->       1M mTHP                     5.7 /  5.8 ms    4.1 /  4.0 ms
->       2M THP, PTE-mapped          5.7 /  5.8 ms    3.9 /  3.9 ms
->   one byte per page, random order
->       2M THP, PTE-mapped          7.4 /  7.5 ms    4.9 /  5.1 ms
->   memset()
->       2M THP, PTE-mapped         40.2 / 39.4 ms   38.1 / 37.2 ms
->   8 threads, random order
->       2M THP, PTE-mapped          0.9 /  1.0 ms    0.7 /  0.7 ms
->   one store per 64K, 2M folios    3.3 /  3.3 ms    1.5 /  1.6 ms
->   one store per 2M, 2M folios     0.1 /  0.1 ms    1.4 /  1.4 ms
-> 
+There are many platforms with similar pxpd_get() overrides like the generic
+memory default helpers which use READ_ONCE() for reading page table entries
+These overrides could be dropped safely letting their platforms fallback on
+the defaults instead. Although it requires some code movement from platform
+headers to avoid build failures.
 
-Are you measuring the worst-case latency of a single write fault or only the
-average over all writes?
+This series based on v7.2-rc3 after the following patch.
+
+https://lore.kernel.org/linux-mm/20260918064928.793742-1-anshuman.khandual@arm.com/
+
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Cc: Huacai Chen <chenhuacai@kernel.org>
+Cc: WANG Xuerui <kernel@xen0n.name>
+Cc: “James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Helge Deller <deller@gmx.de>
+Cc: linux-mm@kvack.org
+Cc: loongarch@lists.linux.dev
+Cc: linux-s390@vger.kernel.org
+Cc: linux-parisc@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+
+Anshuman Khandual (3):
+  s390/mm: Drop all pxdp_get()
+  loongarch/mm: Drop all pxdp_get()
+  parisc/mm: Drop all pxdp_get()
+
+ arch/loongarch/include/asm/pgtable.h | 20 ++--------------
+ arch/loongarch/mm/init.c             | 19 +++++++++++++++
+ arch/parisc/include/asm/pgtable.h    | 20 +---------------
+ arch/parisc/mm/init.c                | 13 +++++++++++
+ arch/s390/include/asm/pgtable.h      | 35 ++++------------------------
+ 5 files changed, 40 insertions(+), 67 deletions(-)
 
 -- 
-Cheers,
+2.43.0
 
-David
 
