@@ -4,127 +4,190 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0829BC982D7
-	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 17:14:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEFB2C982D8
+	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 17:19:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E078C6B008C; Sat, 19 Sep 2026 13:14:54 -0400 (EDT)
+	id ADADC6B0092; Sat, 19 Sep 2026 13:19:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB7E36B0092; Sat, 19 Sep 2026 13:14:54 -0400 (EDT)
+	id AB2D76B0093; Sat, 19 Sep 2026 13:19:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA6216B0093; Sat, 19 Sep 2026 13:14:54 -0400 (EDT)
+	id 97AF76B0095; Sat, 19 Sep 2026 13:19:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9CAD06B008C
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 13:14:54 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5825E802DD
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 17:14:53 +0000 (UTC)
-X-FDA: 85231161666.06.2FE81A3
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 9F2394000C
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 17:14:51 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=cMuCeZZK;
-	spf=pass (imf01.hostedemail.com: domain of kmehltretter@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789838091;
-	b=Ey6sH5IzHooyV5/MZzBak0shQkfELVuRlATSL/gmJ7BB6uJTgDYgNf5/+DJitUEeHRNhzl
-	dH/I1S/1DrI42sTR570sCRgiTTekJKFaX02LpG1TEhO1U479fNQuncCST/jG5zvxPANEWU
-	0fbSy8Z3hYtXmO/raRe6qFwVFTiMEpc=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=cMuCeZZK;
-	spf=pass (imf01.hostedemail.com: domain of kmehltretter@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789838091;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 701166B0092
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 13:19:21 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 103681202D9
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 17:19:20 +0000 (UTC)
+X-FDA: 85231172880.26.083277B
+Received: from YQZPR01CU011.outbound.protection.outlook.com (mail-canadaeastazon11020084.outbound.protection.outlook.com [52.101.191.84])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 002E314000B
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 17:19:16 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=selector1 header.b=ae25sw5B;
+	spf=pass (imf09.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 52.101.191.84 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
+	dmarc=pass (policy=none) header.from=efficios.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789838357;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=PO9QkOcRvzbwAD+Es+kdxYQwQzMtVSQSyoVPRMtp9qc=;
-	b=eRYIxE26yNgeUn9SH7DhwkzMOu5pNZYPzJEUKq4cIU2LusDt2JTIuPhD/k1edbRAQ/bYQz
-	q+iTEeiwPXFZAvLDAo39ywZ67zkSxMFMEOWOv8rfUwrJ8wVlnvVFPZhmVETVvzfyRV6yAp
-	PE4ORzTeHvVIcqApoWPToacSSGpTNoQ=
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b912d391aso11700255e9.2
-        for <linux-mm@kvack.org>; Sat, 19 Sep 2026 10:14:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789838090; x=1790442890; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=PO9QkOcRvzbwAD+Es+kdxYQwQzMtVSQSyoVPRMtp9qc=;
-        b=cMuCeZZKOVoLGJL0VqdvhTVO5HH8yDAAoOzeawUkXdC7zpO6I/nUV3nts4pHxSfGT9
-         MAfh7NlnHG0IN74lons0flGJCS20RU+aMTq1dEwhTkSjWRIK+ekkiTfDvpUmOhI1NqTp
-         OTiPOfsjJCOIXLsZAqzW3jjdmjjPy/NeOZQ3iV3r8GEh4+evVjWliCfkkD56CwPssLLj
-         e9yFSamCKDnY7WzaRB3g9XjqREvEkf+iShMGsTFooB/5iiOqhAPI1dG+mV0fTK9+xR4/
-         xZY6FEwAdjvR7mvDGQmjBybutjjaRFs183uQZqyTPQrANjJt2sDhU0Jqc3VbtR64q3dE
-         W1uA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789838090; x=1790442890;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=PO9QkOcRvzbwAD+Es+kdxYQwQzMtVSQSyoVPRMtp9qc=;
-        b=wurS46QZqObPwdSRnSQ13EB8yANdg99daFnoUMt54RO6qqEJNYtWEiGbUVCJMqlFnc
-         4BtMWhq6aZ5lgDTzU0pRjPRkbltYqa8juyJ5zYhWFjcBDO0zQno2ocdJaVk8c5hoiWrF
-         SeJXWO4YTtufpdC5ciRi290HMdzPeWOqH/MKT7Vq8Sfwoe3Pz0Moxdpvg2fhDPRpw05T
-         Wev26M0y6pw7HbajdClbRVfnxdKwduIDPf98kZOdPZjDCgOHqfGrPr+734eX0/IBLC39
-         l4TCHFbsBTs3AoGeHyiQdKSYAgo7a77qXZlH9pBlrOvLJ38tbxWlpKlAiny076hUHpb1
-         T6Ag==
-X-Forwarded-Encrypted: i=1; AKwUvByONuiomYJXxuhZBsyjLh7bwad0g0Lbrf8AIzUZkltOsaOwm2O2lThUtuHcNZb7jnTuA1LmvKVayQ==@kvack.org
-X-Gm-Message-State: AFuF++kSsnA9T7KNPwJbU59wmEp5QBk48e2R2wH2G1QwWPNeoIgB3j4p
-	oOOnC7AVbTPHv1KuSaG6yX7VZwZeIkA8AnSCOAi2nI8tSVenWHPrb14t
-X-Gm-Gg: AYBFou26DF0rbS55X3p7Tgau99kijBbZVTIHljwSXoy78u/eZIib2qmtBl95lR4Res8
-	5lR4bP5aCVedJQcd+noQB3/JPOjWzj6DM7Ny2sMlAI5zS/MrQGxuynerwbs/U+SZlERIhS4D1qF
-	t0lfX0Rymh2xL4+9pu+lDmE4TaaAMIZOFTYhlQzvviz5N4Y4JgH+t808OJk8TLQm9WrHNHKWpGy
-	jnZaABnG+WcWM/Fz+LzjnuQyxxP8f9pvxcQolNRkkJmQk1Oyig66LBrWPcTY9AV7Uod6Pg75wfD
-	gauI2Obtr9w0DXj3Ff2Yiz9pKxcgWa1Y45znY9SaOteCtxuvsW+wDNWhVO6T44DF51K9FedfRCO
-	KAqqWl3+Zk/OS45Hu7MNXfpchqbar1mVCsjVb77lsIuPtFW9t5Rk9/UUN6eUIvtdGq9VgAkiEP5
-	Ci1rcZpoIugwtwwWSEihIAq2c6MAqfWFXWZXS/cEs3/UYxpvq2zm/lDy8NxEbbTmTN0eSjHuRjK
-	Q1es7KWgO7knqJC03bKlSUYSlqGc2LxcX7N80fpCeIXCLP/AxmZWOb2fNeeCIfzJZL9TbdMs+Tc
-	q9tOWEwxcA9lyDONl1q8j0ScFyhKIK5zFMeRJ8JeIU9IkYSSsnVJdG/ZS/y5I7NPtHllgL95Llc
-	1MYXBaKVhOjOpAQ0=
-X-Received: by 2002:a05:600c:468c:b0:49f:c331:39e4 with SMTP id 5b1f17b1804b1-49fc5671095mr87272955e9.7.1789838089820;
-        Sat, 19 Sep 2026 10:14:49 -0700 (PDT)
-Received: from MacBook-Pro-von-Karl.localdomain (dynamic-2a02-3100-a017-2b01-05fe-203b-7cd2-a640.310.pool.telefonica.de. [2a02:3100:a017:2b01:5fe:203b:7cd2:a640])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-487244608e7sm8986486f8f.6.2026.09.19.10.14.48
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 19 Sep 2026 10:14:49 -0700 (PDT)
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: Vlastimil Babka <vbabka@kernel.org>,
-	Harry Yoo <harry@kernel.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Alexei Starovoitov <ast@kernel.org>
-Cc: Karl Mehltretter <kmehltretter@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Hao Li <hao.li@linux.dev>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Amery Hung <ameryhung@gmail.com>,
-	Swaraj Gaikwad <swarajgaikwad1925@gmail.com>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	linux-mm@kvack.org,
-	bpf@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH] mm: restrict can_spin_trylock() to preemptible context on PREEMPT_RT
-Date: Sat, 19 Sep 2026 19:14:43 +0200
-Message-Id: <20260919171443.90512-1-kmehltretter@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=tjrvmsN0wobH3LEq7mso18M4GS8VQBp4HE9d3/CC3pg=;
+	b=UjjbYy1kS0GOzad98+rpYS+Qolzqb1tVeJwhlLXe4BeWjaASN0vS7kovAGlnRtXup601/P
+	/kx4XV+nBLRGJMM9o9W3bNDxiONxeDpqHnedJAWuFTjLNnuptOUfx9+044qHDdallue3hd
+	FfY5CeaeduR2tOf0c+NjnVfRIq6wd/g=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1789838357;
+	b=mAjhuwsbGpJLceqPQs06VKiWqWcxYj6sXbwOXEaWItfz/tTr8A9ZPFx9h4J/9uKbFPKbJN
+	ejCpIbFosm8K/Yd1nK7/6bpbHeUdwJREjaIPlPV0UrZksqehM6q3KNxy59IC36Yb/qex9h
+	R5kDczA3sdggmp8LwOiZI4M/m6cdwKY=
+ARC-Authentication-Results: i=2;
+	imf09.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=selector1 header.b=ae25sw5B;
+	spf=pass (imf09.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 52.101.191.84 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
+	dmarc=pass (policy=none) header.from=efficios.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=CmQm4XMbozrGjNOocZ8O79lSpWlfj1npiuAmqFiqO8VxZAUVCZp7UF/GkTP9zfOBJHXUpHW4BS+1zbWo2ScLzFRG5Ke2Lpme096U9OFNpDTV4d5qFueTQSi5pOsAIv6GYvPC5BSTmxzXdaRD6uGgFZDubXEnoA+Xz8jtzOASiRUAjpkZj4n9osYOj970vrpQwdHvM9w7YW+7XwS7VmlYG37ukKyBOIWr8gNlZxzqC8cG2ja2udv5P2CB4lwP03tf8hbZuR3DuTYDfRsvLij8xEZgQ/9PhrDTrEYxI+KQgLI4qNJzpgyqgvLsN/ZCYoEVWsPVgq/7YvBjKwtksDjjzw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tjrvmsN0wobH3LEq7mso18M4GS8VQBp4HE9d3/CC3pg=;
+ b=aNITGLu5dcyupqv35coCPZX+yNP+La4+HQU6fnEnePVT95nyl+Jaku5WtE8lZ/7e5JHTJOStf0UD2c1lRODwaciGWb6ATSIBNMYiE6w9q1Im19tEb+EVc4NUCHtqIYvnI/ULFUFpNKUNt9dT8zBcgyTr2eYLVOEp2QB2vTJBqJ145du+FYfaM3p0Uk8Slr45vTN/puaNGcVqSa7ELRjk/E2oYfdn09YimVQpwBtQuL8KS1A6y+M1N0kS0DckLRgwYzMzS1yTvg+MLfPHKQkgaDAzq1bWgivGFhlwIPxEgsxTIHy7+r+DtkPAI9J7MqS8s7/roDsd/mo20pWANWG2vQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=efficios.com; dmarc=pass action=none header.from=efficios.com;
+ dkim=pass header.d=efficios.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=tjrvmsN0wobH3LEq7mso18M4GS8VQBp4HE9d3/CC3pg=;
+ b=ae25sw5BIW1GMlZ0Uo4lyfVhpksJQU3egGpuGMgNsvs4X0thsIb4hkGaphvJd7ICOGXcGhV2rmzGDKbYsACjB0I4ZkQSV+ums1HtjL5oBbnZVkCl63QGJbCKfBPj4/4T1aWkLgMHHUD9ar1Bds73accByjWORsdGZVxeMz4tTqh1bHI6uSJiCYMULYL5C9Gg+lDEkUaMz9Hv3yT5syoKi0mqmrA2jZAYo9UDWv8DDTl1n+3DDBTw7e+VPtFamC50eJW2jvC1cznHwlW61UEeUzDn+goSewuNTqJB2XXLjk2LR3/oDXXucuCzs/Pkx0jw4FtE7enulAOqdGge/N0OiA==
+Received: from YT6PR01MB491026.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:1d0::10) by YQYPR01MB11620.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c01:a7::7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.14; Sat, 19 Sep
+ 2026 17:19:13 +0000
+Received: from YT6PR01MB491026.CANPRD01.PROD.OUTLOOK.COM
+ ([fe80::6b9e:a901:67c5:7ddc]) by YT6PR01MB491026.CANPRD01.PROD.OUTLOOK.COM
+ ([fe80::6b9e:a901:67c5:7ddc%6]) with mapi id 15.21.0428.014; Sat, 19 Sep 2026
+ 17:19:12 +0000
+Message-ID: <c0de0530-e919-4cb8-89de-56a20a8a09fc@efficios.com>
+Date: Sat, 19 Sep 2026 13:19:09 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 01/28] hazptr: Implement Hazard Pointers
+To: Linus Torvalds <torvalds@linux-foundation.org>,
+ Bradley Morgan <brads@mainlining.org>
+Cc: "Paul E. McKenney" <paulmck@kernel.org>, rcu@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ Boqun Feng <boqun@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ lkmm@lists.linux.dev, Zqiang <qiang.zhang@linux.dev>,
+ Wang Lian <lianux.mm@gmail.com>, Kunwu Chan <kunwu.chan@gmail.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Alan Stern <stern@rowland.harvard.edu>, John Stultz <jstultz@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Frederic Weisbecker <frederic@kernel.org>,
+ Joel Fernandes <joel@joelfernandes.org>,
+ Josh Triplett <josh@joshtriplett.org>, Uladzislau Rezki <urezki@gmail.com>,
+ Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang1211@gmail.com>,
+ Ingo Molnar <mingo@redhat.com>, Waiman Long <longman@redhat.com>,
+ Mark Rutland <mark.rutland@arm.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Vlastimil Babka <vbabka@suse.cz>, maged.michael@gmail.com,
+ Mateusz Guzik <mjguzik@gmail.com>,
+ Jonas Oberhauser <jonas.oberhauser@huaweicloud.com>, linux-mm@kvack.org
+References: <e9669b34-12c2-4cf2-a887-315f581f0789@paulmck-laptop>
+ <20260919000056.3132131-1-paulmck@kernel.org>
+ <CAHk-=wj9knmxXD01=top1DQ9_aqrN2a3kpWRS5DQv6QLwLOztg@mail.gmail.com>
+ <6B1FC39D-6EB0-433A-8E49-E5EFC9379AD7@mainlining.org>
+ <CAHk-=wjyniJy-CX1muCrsZp-i-sLGRYeRYEPN7sw9orRZUCwag@mail.gmail.com>
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Content-Language: en-US
+In-Reply-To: <CAHk-=wjyniJy-CX1muCrsZp-i-sLGRYeRYEPN7sw9orRZUCwag@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: YQBPR0101CA0285.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c01:6d::21) To YT6PR01MB491026.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:1d0::10)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: YT6PR01MB491026:EE_|YQYPR01MB11620:EE_
+X-MS-Office365-Filtering-Correlation-Id: d3aabb90-3e5a-4480-cd33-08df16721fed
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|10070799003|1800799024|7416014|376014|366016|10067099003|56012099006|22082099003|18002099003|4143699003;
+X-Microsoft-Antispam-Message-Info:
+	Ar7qwZ7dAY3u7Ssg/Cn/Ui6flCiKR9EDk0i+cX/lie+5dNejIFMU48sk9eniAX7xHlsqJ4uD45txguHAb8L7l+IVNqP1tDsJt1ZyD6BeLwTIJhvsGXzc9XcJylSnBHHov4tigI78blZK9FckQ+S6xT66XGTj6KSEo+NPwgAB/lPVca3VWr0hHlWKmXF5MI3tReNYcHLTl4o8UPXEFsmspZZ1IitnJR5+MpIyd7WXZYp66thbuqsGGYMiDbCqGj8ZGC4+FmCu46sERFctx+JuC/gXBjj0u7kfrI7K+IKHkRoCSJJf7iqcJvK3aM+s9Xll8rLkrOIV9t5rgqiUPfwA7rHBDyLdIajVyru1S/yk/+i9NzK7xV/3TYJniEo7kDakWMtDybXr3JoUQBaAs7CILvTw+gZojuWvv9t0XxRNF8PJYhaeX0DkApb80c45zkEHsTSujuQimzSDAdUZmhVykYqGQOz5Mc3WSKZ4om2f5Wq67bQJw2MGtkkO4pLQRPg1Bd3oinPHxsQMVWy4XhvZaAu5ToHrjPMN60MiKYzeQ16MdcM//3ucxsalhStrprOe/haxbzYqdakwpx/f8gZdu+znP3WKTsqB+6PcsMKoLFg=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:YT6PR01MB491026.CANPRD01.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(10070799003)(1800799024)(7416014)(376014)(366016)(10067099003)(56012099006)(22082099003)(18002099003)(4143699003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?cnlxNUdDSVkySTdLRkozbHpHZjNFZy9zUHozVFFFRnVUTHN1Um1uZDZXZ0Nr?=
+ =?utf-8?B?Yk8rOFlpZUVCVjJNMlZqQkIvVk02VDZ5WEtLTlgzU1ZCOEtiZ2hXSXVrQUJs?=
+ =?utf-8?B?RlZOOHhlMFRsR1NJdU5DbkQwQjE4c2Z4eWZsUmlwVUZNcmpnK3k1RHBOR0I5?=
+ =?utf-8?B?SDQxRjNUeGExdm9HNVJMTlVRNlN2Y1M0MitNdmhHM3Z4ejlRYjRuQUZSQkFU?=
+ =?utf-8?B?QUdkMHlPSHg5amJLN2UrZTFFcy9OV29SNWNhUUdya3l0dnNxQjdSQkVIcjJS?=
+ =?utf-8?B?Y1F5T0t3QjkxWWFwRjh0WlRpT1VxTHBRQzliWWpSVGZlMXNPc0RJbnpVWllS?=
+ =?utf-8?B?d2ZadFJDU1BIV0VmWksrVSs4WEhrOW9mVVRrVjk3V3duZll6WkM4SXE5citl?=
+ =?utf-8?B?QytlV3d5bDdGTXYxVG1yN0VxZXl1ckJPTjNZQ3djNUJ6SG5sNzEramZQWU5G?=
+ =?utf-8?B?YU83Znh2NHl6ZkFHUUFFNWgxYjlvTVJEOHpUeEhwVzJldzg1Z0pXWHI2MFY5?=
+ =?utf-8?B?V2RJWEpoVTdpbnVGS3M4V1VOUzZCR2tacS9GRU9nWXFkcExxYmN3dEhSUjdG?=
+ =?utf-8?B?MmprbWRUQ3J4bDU3OFYrZ2ZoSDFCdG56dHUzUzJQT0U5Wm5tUWlGczJ3cmxN?=
+ =?utf-8?B?UGZGb0daNjBmMDQzTU5kRTZDVURxMVFoRG80TW0vUlRvbEoyb1dTUXZLVW9M?=
+ =?utf-8?B?aXNkd2M5Njg4TTF2TkRjM1Q2ZnoyNVNueU45RnFJQzlldklTRjB1YVErRDYv?=
+ =?utf-8?B?cDQrV1pic21JRFNZYmdieU42ZmZVSmFtNkdKSEcvenVOeXRPWjluRkEvRFRI?=
+ =?utf-8?B?QTdpR2VBRnpOaGRCSDJuZ0Rxd3Z2NTVnbmplckozcE5hcE5Xc3RuR2RhSW1T?=
+ =?utf-8?B?YVlrZHo2dHNOd05FYUZvNVdBWlIrQjQrZkFrMWZuYjlQTGQ0WUNxZmc4REE0?=
+ =?utf-8?B?dHAzai9FT3FBM1J6NzFNYnlkQ0xBWWs5VVgvSGlBQ0ZvdXhoalJmVzlHSW9a?=
+ =?utf-8?B?U09VTE4za1hQNlREbmFDRGFLb3BVUFU2UHZaQXZySmpqSzh2TnRRTTBoaGtn?=
+ =?utf-8?B?SXFvK2dVbmx4NWhiZFlWVGkyZzN3amc3eHpwaWd4WHMwU1BlMndxc2s5Q0Ri?=
+ =?utf-8?B?dzRucXpzQldSUHFYTTdsaXBldEhTNmJVeE5Cd2VjN1Roak15N2hIZnY2aWJN?=
+ =?utf-8?B?dllGcGZCK3BTRmJIei9KVDlrYkpnZ05lSExzNHIrd0ZIbHV1SVFidzFWcFFI?=
+ =?utf-8?B?VXlPY1pjdGRmcHY3YlRaNnVWb0xycTV5MWNKU3JuVm9CaVA3YjBtaHoxNGlS?=
+ =?utf-8?B?YVVHclJnTHVjc0hrY2pwRXlLYmVBbzg5ZFVBQ3JEWnpyYkxudjdqaGpWYVdw?=
+ =?utf-8?B?L3lMTXc3ZEk3THJVaXM4TWdiZE1leDlGY0VEL29iRVFjMExkWVJwSVo5RTlZ?=
+ =?utf-8?B?S3dXaVB3QWR0UllnMU85UGZBRDY2cm15M0VVc0kvQ0pCV2hlNTYyOCsyWGhy?=
+ =?utf-8?B?WkdEZVJDOHRRYnp1dlVJRGVxV2dGRDNPNVdrOEw3YUNHb2hVS1ZXaklNdnhx?=
+ =?utf-8?B?TmM1WTNQQlNRZE4wTGVxdnBnT3ZRbURpa2pDZFd2RzRWYnFFVFhRczJUWWVw?=
+ =?utf-8?B?cXM3MjdJN2d1QzJtZTVYR1ZDUE1NRFBlTWVGNmtsa1FJa2RsSlRIOW9jTm9r?=
+ =?utf-8?B?WEZFYkRXM0R4bVhZVzJKbnhvaFlPSE1DZkthc09STC9HcG53QmdoVWsyUjk5?=
+ =?utf-8?B?MnNja011bUl5OGd1NDdDc1VTSWtzdDB2Q2NnbUFkR1RNM3RQajlid0RQWFBW?=
+ =?utf-8?B?a3hRbzhHN0pwUUwydVUrbndXb2EyVm4wNHFlR2t3Y1FWYjF1RE5GeHRIN0VU?=
+ =?utf-8?B?V0NuQmpRNTJ5ZUxYdkJRWWFFTmRmYzZHS1hWUTRwVkxqV1Z4M2NKN21lMlpV?=
+ =?utf-8?B?RXl4U2lmM0xNYjFQMHFkT0NUaFVSemxtVVVmWW1ncWFWSFdlVDhsKzJNOWpQ?=
+ =?utf-8?B?V3dBWHhiTngyNXZOTFh1SDZiUFF0dTdHUWh5d0NaY0lRTkJqQlA2NElmU3o3?=
+ =?utf-8?B?Vm1nbVBPUjFBRUVOakdTTmZ2c1hwbjVVb1hhb3U0QzFHVjhvYkM0Qlp1VEx6?=
+ =?utf-8?B?OHpyMldqd0EveERsdlVBK1UwZ0NuUEp6b1lmWXNPTjd4MGlpZFpVQVUwcGNw?=
+ =?utf-8?B?dDRPNWdjOG0xZXdMODYyYTZodlZxTDRaZ3M0aUwrTVk2dE5EditrRmkyNEhn?=
+ =?utf-8?B?MEZIRDRrK3llbVd2cTdnWDJPUStaRHhJdkkwZEk0VWpvMlBpQVJGSmpjRVJ6?=
+ =?utf-8?B?U0xCYUxLZnJWT1BqRWF0VGlmMXNJK1RZMUZ5SzZWQTAxVDc0UG9oRzVQcllp?=
+ =?utf-8?Q?AKORDrqgFaGV1/ZnXHrY9hLTYoVTxLdgu76JCm+tlqGkR?=
+X-MS-Exchange-AntiSpam-MessageData-1: gzxVEZj0f4WNZlfQxS2fj8l7nlSIQti7f/w=
+X-OriginatorOrg: efficios.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d3aabb90-3e5a-4480-cd33-08df16721fed
+X-MS-Exchange-CrossTenant-AuthSource: YT6PR01MB491026.CANPRD01.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Sep 2026 17:19:12.8590
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4f278736-4ab6-415c-957e-1f55336bd31e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: SjR8/+Xfrm5zgGR2WswMAiLOGALHmBduyyBU7FAEdOg9LLe5zK2GWPI3LQozrju2YiQFzrPHduFRa8YBjER+ZWjIoeAGIAsgLQ7qOmN8J1k=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: YQYPR01MB11620
+X-Stat-Signature: 7k7n9nno94ea5rho17ag9koypaskdsb3
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 9F2394000C
-X-Stat-Signature: aetkwdpbg9j4bai6bftz4k6jqmkdoi65
-X-HE-Tag: 1789838091-147377
-X-HE-Meta: U2FsdGVkX1/erXNcig2fZWrSEnk4wnKmEeZbnsElJO8L2lqJUVoHKOSHtxpnKZNq27+7uUQy7jg42pE5s4SY/ftTpKu/5I9jLhYVnhVtbOOZQ2bCmNm7g4rTfioBy2x6IfqZJVgQ9M1dvYL7OcdSBw57CqOW2ebxmkmJ7ay/wFSTZc6S6JxQFqUmMHIY4CepFdl70dqB5vEKqEpayga1ug/1yK26RO0s243SB0XqRQQRF+mylWSOFxcv0VOE4ebkQVrhJeeG2um/4oAhLQ7BamMlrVc4J4s3Kar3Qiz09ipuKpRV+S74t5o2VEfT4mIQhTcI9r238GywOCAS0PirEvJsNciQ70cIjIZ5z663wuXQSnwKGKwi3VgdvT+AUu2ISATguH3KT7Q5y7t3+/Baf6tpoL61QDy3eN5viyZo67A7/X1fJo/bheCX9sCFYlzIZs8NviVjR4qC00H8rP15CbcKMEz0FwdRR2+tEwdbfgyfxM7k5V2iQwwqFMqx35uk+AeW5wwu/5qUTSAWIcFFbM6UVpQK1mNaRflAsU65pefJjvOoTaYgk0+N8WEJ4ovthYBo9IkMJVpCgHfR8THxfH7GhQWzjoY//prOpSbBbFSt+lPaNgrOvsjm7zpse+xP4k6tQCp0Jqye9Wmmk+k4qsjE/+3WcRLSrfT0HRpGkrF0hsH/MK46umSrZGN4GoBbvHC7TWOw2OyFtaLlXyIZxfnpwBFmQBUXJUbJkpMQOMQWE3QGpQfPN5Bn7BGf5EiaUHi0Drnx/ec3UgM7RSuE6NS6hHkl0d94/cd+kUTCxmTrBBNcUE40HhX5l4XVMdfPNGOlo9cUM3CTnr7mjqWUWzYY89nVEsy49qNQfXqlLVFy0Ls+xcSgPPuX4U9ejseLRecRLVx1bA2s4DKnmKohd3XKDzILKtvoGeWHYXPPKZ1/Q1aqUosPsmUOv9qLDTnb7X6moqy1jm9QahM2YT5
- GJr48jsC
- +ug5Mq8M2hXFfYU9lquJGVLmd35bgXglS7WhsofJLC9IqMArTiTt6+DfIU+eDH1HvTIJE7LA59TuOGI7UTl5rUsdkzFnnRssUda+lTu+NPuQPYLUKhe1tUJKK3GHtAXob5KOnY2kM6gYtrbPzwqgEBpDEUeEKepcGEG1n7iaArKnjso7d0qM1tfzWuxzK5OZe3Q+Gfbh6XjEKR8L8jVi029d8D5dLa92WFkhBoxKFDlujuOGPfIXd+nS8bZlvRKSg1dvL5nN7ZUD2lHqFe6cFhlq67wleK3EHZP9edBzULqW0ImV24/d0992IifTDDx3S2eeevBiOlsJdzWkRryA58gzRBX1itreja1UMXg5M/WKYRXM1CC27pf5xAVG5CZubG2/2qiDKy+k+CT0iDhI8uQk8IXKc20+PVfzk75aJh1fyUFTcbx4tXCTatClPbyvnJZbqjqzwRMLNnYjDByhtnoZaig==
+X-Rspamd-Queue-Id: 002E314000B
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789838356-230588
+X-HE-Meta: U2FsdGVkX197BFKKCWBTs3DwybRkHNQPPnJ8UCp/MkJpajEW12OK2B62LC4kIQdCLGeYgnYyKn7O3xJZHAmDVJuwTK7kRyZXAE0mqpkKLKoghW4RHuQCtUg1I42cIqqe0K/WmyWe0wVAKxdzoNOa5cIJwm+P6hNZYDmLXfrVqUJPtWgYoga8GRGDE/FrwLx3TI8uy7XMPpGRY4ZBFHXvD3H3J6ZzS+wvNmqbDtZAAp5nx455q0BusAsX4cc+NRXuOhwEOmqIgv3q4MHp+1DRZ43wPCvnyJVfkhRAjHQRyAnGysnN+gPvHNfHNqAH9UZlPHOUzOkN5/LVztSCSbgsZoXjYU4+pnY2c1W1brvvi1GtL+79kpLvz/isZQsg2vv9R+HVTgrpzYnAT4jZlPCzz/sK8zQUqnCdusRNDCj+r3ZhoEZJ8kwSioVgCkVO6/VhuORcZhhR3/vtRkL571Y12RZmL+yjhaXdxv3ARZZWTlQ9+wXmtdhL1KcHUmRwtA/EBhIMdAb4pkisrH5UC80a5q9+ZthgW13o0k/fyjfsxr5MbMokN+AD9sY5DrrWPcIQglmd1m+xkPp+YM/Spt+f4yt8s/ci1oYkAohVCH7P/ODej6ReYppoAi1fJGC+hnzOHwyXK48n1tsF13TeULqEFFlheiEwbODJGVTA1z4TimaVcfHngkdUl7Z/KrXhSjLofu2vRgyJucutfY6oFnHEdcWGJB4wjgnZtbigPQsB/BF41D1z/gzI3uLQ1uiCOHULELn7Je51NrMjrKemTJpqEBY55f1bmUr/6Gbo9SgzY3PiEbynPVQLCnsLY15PSfJHGtbmyhBTMkuneIa9XweBVJY7V2kiFoofzmFdTyt5hWnkRGO8R7ZjBMxr6sRUOVUXY39HLQ4nFRvqQZLeJZF3+PakQB3/j2vFOQUPvjsWbBs/A7JSBPqRT26yQGOEEeWeGVSQ9UcCOzY9KVCh/CJ
+ CHv+jJ4G
+ QsU+e0RFLOfhaQSYaBn+45I3umsrD2mkxxc1IuaziS9R/tsPX0ej5sWl6+LQ8+chXwd4tPiJ91qNKDXmhzPFbBxReJeRTE8KfJT65x5AxeMUFn5m8k6j9mlPnLN5vtCubgYbkcXesNCbve1o7VxKDUELcvRucG/C1YQWhALwTMinMVLoVOGbjGY0Td8nKI/3XugHfReCR6pX7UhduQuUn4aXswkSA5CpAxKRifgMo2Yy9NbpprSPhmIwHdUBTd1IbFsIg9J92Q0eEKUSG91MlmiFo8ZktNnmObW769awJr6aP7bkb/0Qj/148ozsowfl+3hkFMRSn/spUhBESLFp201bgCoL3T2dav8ZrFNqJS8KhUle7BuQ6aN9iS4PbY+FKuO+SXDJ+gHNly/k0qYdTpqoJUMADV/YAL7E4r5DxBTZ2BTuBU5QzuTRRKZcsoi0vkez+p+rH9uuLrdpRU/TEgnLkYMHoJznuvKwxvH5juOpLA7apJgEAP/oLc86JV5k0JNNmyOwXJDMzysI3jjBOhjiRnl1TBgx1eRnn2HVDYjkxRk8mtHkSF4X/Wsx+p7I5qTO5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,174 +195,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On PREEMPT_RT kmalloc_nolock() deadlocks the machine when the caller
-holds a pi_lock. A BPF program which creates task local storage from
-the sched_waking tracepoint is enough. With it mainline hangs in 10 of
-10 boots on a Raspberry Pi 500+ and in 7 of 28 boots in a 4 CPU x86-64
-QEMU guest. The CPUs spin on raw locks with interrupts disabled and
-there is no output.
+On 2026-09-19 13:00, Linus Torvalds wrote:
+[...]
+> Now, obviously, the thing that would impress me is something like the
+> dcache. If *that* can be converted, and it shows real improvements on
+> some real benchmark, then I'm sold.
 
-sched_waking fires in try_to_wake_up() with p->pi_lock held.
-can_spin_trylock() refuses only NMI and hard interrupt context on
-PREEMPT_RT, so kmalloc_nolock() does spin_trylock_irqsave() on
-n->list_lock, which is a sleeping lock. Two things go wrong:
+[ Side-discussion, not related to hazard pointers. ]
 
- - rt_spin_trylock() takes the rtmutex wait_lock under the pi_lock. A
-   regular kmalloc() on another CPU holds wait_lock and takes a
-   pi_lock in try_to_take_rt_mutex().
+Talking about dcache improvements:
 
- - If the trylock succeeded and a waiter arrived, rt_spin_unlock() has
-   to wake it. That is a try_to_wake_up() inside try_to_wake_up():
+I've been working on scalability of rename, directory move, and
+directory listing, basically killing dcache global locks, seqlocks
+and rwlocks which significantly limit dcache update and read-side
+scalability.
 
-     try_to_wake_up               raw_spin_lock_irqsave(&p->pi_lock)
-     rt_mutex_slowunlock
-     rt_spin_unlock
-     spin_unlock_irqrestore(&n->list_lock)
-     get_from_partial_node
-     ___slab_alloc
-     __kmalloc_nolock_noprof
-     bpf_local_storage_alloc
-     ...
-     bpf_trace_run1
-     try_to_wake_up               sched_waking, a pi_lock is held
+Those improvements are based on RCU, not hazard pointers, and on a new
+"RCU pseudo-transaction" concept I've invented earlier this year.
+I'm preparing a paper and I plan to present it at LPC in Prague.
+My benchmark results are on a userspace port of the Linux kernel dentry
+cache at this point, so it's not ready for anything close to upstream at
+this stage.
 
-   The pi_lock held there belongs to the woken task, not to current.
+Cheers,
 
-Commit 99a3e3a1cfc9 ("slab: fix kmalloc_nolock() context check for
-PREEMPT_RT") closed this for v6.19 with a !preemptible() check.
-v7.0-rc1 relaxed it again, see the Fixes tag.
+Mathieu
 
-Allow preemptible context only, as v6.19 did. A held raw spinlock
-implies !preemptible(), so the locks of the caller do not have to be
-known. With this change both machines pass 10 of 10 boots.
-
-The nolock allocations then fail on PREEMPT_RT from every context with
-preemption or interrupts disabled, also where no scheduler lock is
-held. Creation of BPF local storage from such a context fails, as it
-did in v6.19.
-
-Fixes: 073d5f156292 ("slab: simplify kmalloc_nolock()")
-Assisted-by: LLM
----
-
-Notes:
-    RFC because I do not know if that last paragraph is acceptable for
-    BPF. 073d5f156292 relaxed the check on purpose.
-    
-    Harry wrote that the _nolock() helpers can be called under pi_lock at
-    least in theory, that it was tough to reproduce, and proposed a check
-    of current's pi_lock:
-    https://lore.kernel.org/r/apfwshahN_C6jBSn@nixos
-    https://lore.kernel.org/r/apfyeYF8IE03aazT@nixos
-    That check would not see the pi_lock in the stack above. Sebastian
-    described the wait_lock and pi_lock order here:
-    https://lore.kernel.org/r/20260831143500.x-saxdAs@linutronix.de
-    
-    Same config, program and load for all rows. x86-64 QEMU (TCG), 4 CPUs,
-    PREEMPT_RT, no lockdep, 60 seconds of load per boot:
-    
-      v6.18                                  10 pass,  0 hang
-      parent of f484f4a3e058                 10 pass,  0 hang
-      f484f4a3e058                            0 pass, 10 hang
-      v6.19                                  10 pass,  0 hang
-      parent of 073d5f156292                 10 pass,  0 hang
-      073d5f156292                            0 pass, 10 hang
-      mainline 40288c9206c1 (v7.3-rc3)       21 pass,  7 hang
-      mainline with this change              10 pass,  0 hang
-    
-    f484f4a3e058 ("bpf: Replace bpf memory allocator with kmalloc_nolock()
-    in local storage") made the path reachable.
-    
-    Raspberry Pi 500+, arm64 defconfig plus PREEMPT_RT, same mainline
-    commit: the output stops 1 to 2 seconds after the load starts. 4 of the
-    10 boots were then reset by the hardware watchdog. The other 6 made no
-    more progress but still answered ping.
-    
-    The stacks are from gdb on the hung QEMU guests, I have none from the
-    Pi. gdb does not unwind through the JITed program. The frames below it
-    are from a raw dump of the stacks. In that capture three of four CPUs
-    wait like this for the pi_lock of the same task. The first case looks
-    like this, two CPUs from the BPF program against one regular kmalloc():
-    
-      rt_mutex_slowtrylock           raw_spin_lock(&lock->wait_lock)
-      rt_spin_trylock
-      spin_trylock_irqsave(&n->list_lock)
-      get_from_partial_node
-      ___slab_alloc
-      __kmalloc_nolock_noprof
-    
-      try_to_take_rt_mutex           raw_spin_lock(&task->pi_lock)
-      rtlock_slowlock_locked
-      rtlock_slowlock
-      rt_spin_lock
-      spin_lock(&n->list_lock)
-      get_from_partial_node
-      ___slab_alloc
-    
-    With lockdep and DEBUG_RT_MUTEXES the same program gives "possible
-    circular locking dependency detected" for wait_lock and pi_lock on the
-    first event.
-    
-    The program:
-    
-      struct {
-    	__uint(type, BPF_MAP_TYPE_TASK_STORAGE);
-    	__uint(map_flags, BPF_F_NO_PREALLOC);
-    	__type(key, int);
-    	__type(value, long);
-      } per_task SEC(".maps");
-    
-      SEC("tp_btf/sched_waking")
-      int BPF_PROG(on_waking, struct task_struct *p)
-      {
-    	struct task_struct *cur = bpf_get_current_task_btf();
-    	long *v;
-    
-    	v = bpf_task_storage_get(&per_task, cur, 0,
-    				 BPF_LOCAL_STORAGE_GET_F_CREATE);
-    	if (v)
-    		bpf_task_storage_delete(&per_task, cur);
-    	return 0;
-      }
-    
-    The delete only makes every event allocate again. The load is a few
-    loopback ping floods, tmpfs and block writes, /proc walks and fork/pipe
-    loops, so that list_lock sees contention. The program is more
-    aggressive than a real tool and the load is synthetic.
-    
-    can_spin_trylock() is also used by the page allocator. Its nolock free
-    paths fall back to their deferred lists. I did not test those
-    separately. Kernels before v7.3-rc1 have no can_spin_trylock() and need
-    the check in kmalloc_nolock() instead.
-
- mm/internal.h | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
-
-diff --git a/mm/internal.h b/mm/internal.h
-index 38b1165212c94..29646c4afb419 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -1641,10 +1641,14 @@ static inline bool can_spin_trylock(void)
- 	 * confuse PI logic, so return immediately if called from hard IRQ or
- 	 * NMI.
- 	 *
--	 * Note, irqs_disabled() case is ok. spin_trylock() can be called
--	 * from raw_spin_lock_irqsave region.
-+	 * Task context with a raw spinlock held is not safe either. The
-+	 * caller may hold a pi_lock, like a BPF program on a tracepoint in
-+	 * try_to_wake_up(). rt_spin_trylock() takes the rtmutex wait_lock
-+	 * and can take a pi_lock under it. rt_spin_unlock() wakes a waiter
-+	 * if there is one, which takes a pi_lock again. The locks held by
-+	 * the caller are not known here, so allow preemptible context only.
- 	 */
--	if (IS_ENABLED(CONFIG_PREEMPT_RT) && (in_nmi() || in_hardirq()))
-+	if (IS_ENABLED(CONFIG_PREEMPT_RT) && !preemptible())
- 		return false;
- 
- 	/* On UP, spin_trylock() always succeeds even when it is locked */
-
-base-commit: 40288c9206c17eb66a603262e06a58d300d0f279
 -- 
-2.53.0
-
+Mathieu Desnoyers
+EfficiOS Inc.
+https://www.efficios.com
 
