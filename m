@@ -4,101 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C474C982D8
-	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 00:52:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADFD7C982D8
+	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 00:54:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3DA876B00DF; Fri, 18 Sep 2026 20:52:33 -0400 (EDT)
+	id B592D6B00E0; Fri, 18 Sep 2026 20:54:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 38B816B00E0; Fri, 18 Sep 2026 20:52:33 -0400 (EDT)
+	id B0A2F6B00E2; Fri, 18 Sep 2026 20:54:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 27A5B6B00E1; Fri, 18 Sep 2026 20:52:33 -0400 (EDT)
+	id A1FC16B00E3; Fri, 18 Sep 2026 20:54:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 083666B00DF
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:52:33 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8FE6B12015D
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 00:52:32 +0000 (UTC)
-X-FDA: 85228686144.19.4DADB39
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 035C4120009
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 00:52:30 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="jeUIT/4J";
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B52C6B00E0
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:54:45 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 076CD4015B
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 00:54:45 +0000 (UTC)
+X-FDA: 85228691730.12.05F6180
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 5FF59140006
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 00:54:43 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gbKXm6GM;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789779151;
-	b=C9JyYRr6LL3DEczZOMEuJdB4iaiuIJEJdeu0RWZ8MyP0DMKWYLAwODpKB5Cnwgd1yRCOR3
-	mVGGIjt6Uy7hKk3Mmw36z2JxmioLdrW032VnF/82S9K2CH4l+FSeyD5LNbUlp+IYsLfFaq
-	CVbqOwnL5IUBb1V47powuypvx2zT5nk=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="jeUIT/4J";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789779151;
+	s=arc-20220608; t=1789779283;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yocJRt7INhO2SPE/6i4fgtj/1ihi0f5vXImYQPJs+tc=;
-	b=iTAIlhFldOegBCOqZPVb+P54bCovdlj81BxEyHbiTvEENvOfQpvVn0YiQKZG4fBzEsRuor
-	Dr5fRYSvksZH7fsf8UqpmUX7QpxY/TnHLzjvB0ANB3TUANn+KA3CAhKEnpSVXlGyAiQpWq
-	vcNBv0jZJzI8LKXDz8NQXFNmoZ4P+H8=
+	bh=rj4ybuE76WuF89f1n+gXLecWdMn9NDviS9spf9nLa4M=;
+	b=Ubu1fph9jFRdrNeAe/bNdSX3AiDcIjBco+qmzMb/sludwYSDGdyyU/k0WO0oKMB210Elw+
+	8QG4rbAPHxGlJYOvsWPtP7rJJLkZbYttGNupSRJ/beynERzPkP8huWJIdWbeBVjuWI19Or
+	0TDQcS/OpXb3DnW8O+jXRX8Q8197iyU=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789779283;
+	b=xAz6sto4rOG8NoaJkMc4+P6KL2tLVROowfJmfnSrs4S6PUbiyuQkFlp+w0rApOvxVABoXx
+	HHgxMGrd+ajNsctI/twtfCPti6XyhB4GfMK2Wsx+DYc/+SiMZyYmF9m+ma7z3cRB51+99b
+	5ZvF+48CVAXxOmfjH0KZ/2RILrHH37Q=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gbKXm6GM;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6F2606053B;
-	Sat, 19 Sep 2026 00:52:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 705A61F000FF;
-	Sat, 19 Sep 2026 00:52:29 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9241C43893;
+	Sat, 19 Sep 2026 00:54:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2445B1F000FF;
+	Sat, 19 Sep 2026 00:54:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789779150;
-	bh=yocJRt7INhO2SPE/6i4fgtj/1ihi0f5vXImYQPJs+tc=;
+	s=k20260515; t=1789779282;
+	bh=rj4ybuE76WuF89f1n+gXLecWdMn9NDviS9spf9nLa4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jeUIT/4JFcSEPoeuIbj2DApYpMR02vDomhp/WtVEMSTocITkL5yMMY3aFGcjxezv7
-	 eC6th4RUAaadB/FhlAu8L9oXOgBMSNwQXQ0/7TqS1xhy22JIh1FDVP3vlVkXZNHeva
-	 ppinlv2k0VfgkdY5LZbLyNHTGvnLLNDiQBpoNrJpgZIkveI9W2KFEoL6G3U8mgb9m8
-	 s8konpYazp3rpN7UAMtyHkF19/iFvlGYw3ZVFJQMIJJ8PjEoD/CWm8dFkRjUkmmVOI
-	 PIKA4oVOB1P+NmYaZ/NfOXba/awbP8r2Vu7v1qXa7drQh0qgSpwFAaHOEqS1t1W8Fv
-	 RMzC0mSj67wDg==
+	b=gbKXm6GMPcpzlVpDWfLpRuHsropA3OOvGBk/dC9HOxo9dJIshBc40hoFsxVom6EQh
+	 cX0dSOe7uxseZ1viRL9fHJXKX+sKtLgqSgo/UvXHXQBRLToZ904Hov63N3XncL8oIJ
+	 oTQDxDWDvz0Kad8zgq4+9b7u9b6DfDL662O8adLCMtTSNzUdO64vcu7LvL6gyeiE3g
+	 o2q47THez9vdeDOWen3+xn2E7BGB8qCK+KCB0tDzkJ5oeQhTCAwcTgnXEw3OzEGojz
+	 elp8IABXkmM/W/vfVbnxCxoPZ+I8ckrWKtE4zpBboHALfO6iNJOh7EHKDkp/Xi55Xn
+	 LLQrpdbz3/sJg==
 From: SJ Park <sj@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
+To: Sang-Heon Jeon <ekffu200098@gmail.com>
 Cc: SJ Park <sj@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	cgroups@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Rakie Kim <rakie.kim@sk.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>
-Subject: Re: [PATCH 3/3] MAINTAINERS: make Gregory a co-maintainer of MEMORY MANAGEMENT - NUMA PLACEMENT
-Date: Fri, 18 Sep 2026 17:52:21 -0700
-Message-ID: <20260919005222.87342-1-sj@kernel.org>
+	Muchun Song <muchun.song@linux.dev>
+Subject: Re: [PATCH 1/2] memcg: remove unused page_memcg_check()
+Date: Fri, 18 Sep 2026 17:54:34 -0700
+Message-ID: <20260919005435.87535-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260918-maintainers-mempolicy-v1-3-9a94cac6d135@kernel.org>
+In-Reply-To: <20260918165601.1014666-2-ekffu200098@gmail.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 035C4120009
-X-Stat-Signature: n8c4yx8z5hfo9p7ry7paocdbdcjjdos6
-X-HE-Tag: 1789779150-427487
-X-HE-Meta: U2FsdGVkX1/nqCcWDtQmc+34XBLGGCPCNcLyDbodUCAUe6B6tGHA2+sfsY6qeaCoYPARnYolO29SzSmETZsr0vPOcNvoVzsIVXKLQgdSQJZW0zfY26OZXef5j07ewpVckeriHOVmqlNHdEUC10RxME0GQ4yAonqFUXcp0mEViIu+MjRHsTVSnDndC97o5R17Dv2ZDI/IGNL3rAYRH/Ca9ETtzfIdFa9atge7QTl8yFVU1FhRTHrQRCSNekYBqVwNd5yXsqnPVqMSxtGVJWsx5UUGMnL8eRKQTmQbgI1t1ZhOp1DZcMnb19F6J9Yv5SlR4uyXXOFW85BEIW9zbmtosY025bF+MjzumNcamf8kAikxsys095EuyjAJ+XTGUV1rbME8/nLtVqt0A4GIBdheEMoZbDSI++akfixuKhujvkXnmmZQVfwV0hqdDulqVtRiJe2mPeN/PmKHWE6otiITg2bY3afWmyNpAO5X+C/cwROyocS0H3t6q+p9fFomwVUP2nswy7n3AQ8QzfWc1r+6JDT1W0ehKXltwNt4EuNA1cNFKgACVk6fw47qbvYTgxZ28HTtLarUmf7a7JtmbY/AZul2jfF+5k0QT+k/tSePshiNDy1hh0KsPlSq375I+h5l4j+HqPNyiA8+aFO1SPHN3MCx2C1artbNtwVt2dcEd4JsiQySaxNcL2Pwz/KQQglTU7e/W8zVMJo6mlDxb4ecsCR8zXfZOXGLafkBzmJSkDstmm05zxlDe+J74b62Rah3+9MAXAXszpnRKDA4iJHxsWxjf7Z1/xlYHK1nJTpk56DXaYyIxdOM9+PeLKmDxeq8Y0ksMAZCG/hckvgd0h3bNpdiWH2MxkVHElSgVnHnMjEUbcqimeL1+zTaQanpoOylEo4qKDwjQuwd7lTgFKrTNvNOIfyZjncD38npp1o2jbYVPDe4eQktMryiJKuq0EqHaj8VyBprv+CI99AdMgV
- 7bPc9HL1
- W5dYF+XCcGNbFNwuN2CWalNvVfYmIYS8NBP+osjhn2jFEV68hyvfKJsQMZImG3k/qQ/Pd+sXCwbuC4E8Je1bwSi4Vh9v4v+Uk1uKx/Urw3jBSpf1dGG1X7HImkXopmTAso45ifKBtJcqVCrnRfFblG9WrDmT6Ln2IsZ/aUsuK39A6KpHs/bJLhCSdRUo9Rlgz350sDTldCYW8GoPc4hfW5f0vSef8jvHEam8IA6kO5IPP0TqpM5Ly8vEym71iZ7JLUmiqQReRN1nbS7ppwP1DLCppKbX835LlSJaSahL64O/HN+bAeIQ4YAReAQ==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 5FF59140006
+X-Stat-Signature: e8gdn9newdxk4jfgcdi9ukz4yd5rf7as
+X-HE-Tag: 1789779283-577320
+X-HE-Meta: U2FsdGVkX1/kKJ6m+WAU6JEUBKJ2+7Ks1q03kZp7VLK8NqXtGD2h1UAlHfEOn73+arlmzXlUUSWshnYuL0tL8NMA1b+wBIaHugI3oBlVmT+nacgnbCb/bVVoT2YDyrQZwK3XAO+t9en0gv0qsEqbYID7hXj36ZPOWUQMCnBcTpELtaX5JlAqPcn9yQL/HnkT83W1JsQiews1KbQiSwtTPj/1WHVbpBk3PMrYkLkdhmQI03laHvsW19DnaU1g+82DudwJFvQ8ljLzZwTsQXtOC0SixETfXpD+Q+5+8rvYaSP4LJ/5rV+LD4SAHs75MQdvnS9u0Gne4GYX68Ja4JVRaepKAU4T1BN2Q5izGadjMWc+7zKKujcyWrjPUyfaNIwh5B8QPlaXvBDUuRylrE8TLjXvTKHz+COYaRWoWSIVFRgkZrBWVKKJwCOWsk4lwQcaNDvHUa+2LjJ2i6tBjYOb54JvuFgyiK1ea7KMFMRy2YB60/SJshMIltLfidiB4c4Kfq8MSPZFy9adkN5Y7uENWfQqbpp29D5Sq49UV7/O4IE4usJ+TIwp65cGvIhj0iqAZrLhmbWjEG6j3Ygc7CjHYoniwwlf/vqWArLNnYA5RfsXhrJCQEg+dV7eNw6giQSrTnt6mYKI6qykaS3D6vKW9/OpcQxOEY1nXGrrvy0Pr1dcwVFGTdjqVT7qBx96AEWzSizWT1c0y+AO6/vJ2TKCTftz0zj4mYCqXjfkOncEnAjvVfamayOLT+VxWA6GtS9nEBiXMSbOKyOSmcZeCV7V/dPZT8p2pS3OTIrHVaOa66svHj9XMkppW6v3eCYO/kzRPh2iDGbqf8HNcoE8Yf7bR4uYuEtuihHf1ptvsXoxTN67FTphM3PQb+y6usl4uaMZFoIMHM7Ua6pKBepDuRRcN81zb77Q978x54cXxODYySFTAWyRdbUEwRMMZFgwQtiDpDPjCGANWaL1X8bBL2S
+ 7z5b1i07
+ yAMR9mDvPguh/LXL16Jjw+kALLhC+g2aWYHQqzGzMauQ2X0s9mP3/RDa9NS/moS7OQEJrhmkmu0MrplvK64g1ylGvA+HdycdPrYERak0aJ/HXPJG/vCkl+vY489A9JeJxsy9cmx3zMK5UgfO8oIG2LiPfXj6KAKUUPG6vp23InSXgkzsa7sksg9AiPkJaJKpf6kFB8kVjnGQW+x5srSc8V3Vy0FgB8MeYcYWHxsgyjhMchM5yTyb9vZLjkF96muVGew4v5CfJefJm3UXBDMe7mg3+320k86RfSv/dpnDxcdHEbXVkRCRC9fwnh/ju0932YQFMXVAjc5zC/VQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,18 +97,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 18 Sep 2026 18:34:26 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
+On Sat, 19 Sep 2026 01:55:57 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> wrote:
 
-> Gregory is extremely familiar with NUMA placement handling and volunteer
-> to help co-maintain the numa placement bits. So add him as a
-> co-maintainer.
+> Since commit 90f095b816e2 ("mm/page_owner: use memcg_data snapshot to
+> avoid TOCTOU in print_page_owner_memcg()"), page_memcg_check() has no
+> callers.
+> 
+> So remove it.
+> 
+> No functional change.
 
-Thank you for volunteering and huge congrats, Gregory!
+Nice cleanup!
 
 > 
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
 
-Acked-by: SJ Park <sj@kernel.org>
+Reviewed-by: SJ Park <sj@kernel.org>
 
 
 Thanks,
