@@ -4,116 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44DDBC982D8
-	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 19:02:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B8C7C982D7
+	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 19:09:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 271FF6B0088; Sat, 19 Sep 2026 15:02:45 -0400 (EDT)
+	id 899DD6B008C; Sat, 19 Sep 2026 15:09:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 223B56B008A; Sat, 19 Sep 2026 15:02:45 -0400 (EDT)
+	id 823566B0092; Sat, 19 Sep 2026 15:09:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 13A286B008C; Sat, 19 Sep 2026 15:02:45 -0400 (EDT)
+	id 6EC786B0093; Sat, 19 Sep 2026 15:09:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E048D6B0088
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 15:02:44 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 71A76A5686
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 19:02:44 +0000 (UTC)
-X-FDA: 85231433448.07.6A73D85
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 73B4A20003
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 19:02:42 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SwSsWnoF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 1FB636B008C
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 15:09:49 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 34F92140268
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 19:09:43 +0000 (UTC)
+X-FDA: 85231451046.16.4285FFA
+Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 598381C0005
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 19:09:41 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=sGgWuG7h;
+	spf=pass (imf20.hostedemail.com: domain of aethernet65535@gmail.com designates 74.125.227.141 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789844562;
+	s=arc-20220608; t=1789844981;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Pdt+VykzrSdAH3Ihk6G7KeWETmDZjvYwTDnvxuPWWYc=;
-	b=7dprDDkpNTd5/PWu0I85VWtUSCyako8heP5pWQDfF7ZKlUt79eMiG2yIMy1O2J51AQjSQ7
-	UC6QZB5T2YbWcKwloeUsJMP+3lwZ11/71pzUwiKfioc0xBS0BC3Uw9m3OoT/82F7lWHHfn
-	ZiY8Xty51IkgpCeCIwWZMrpObYyx4T4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789844562;
-	b=yG/MlAFq+f5qenImgwvSuTO6lxbzlrGdCM8Vd77araW/oc5WOryRuzw0Xj2FAax+itXVMs
-	HROzxULRIu6Xy+JlctY75246SzwP177ezTa3uXJJVsVVfE31gNNasySGz/YemrGjp4siVj
-	1QzM8N7imJ5DPev9OYN+xY8kRg0nlP4=
+	bh=T+A8NmYL+ONSVcQNv/Xmt66mRPmqZH9O1MKGhSoPUDE=;
+	b=C+FWr1vmqCiKOR0vB/pjniCmdViYtyMTp0JW+frXuALJItnF2OsHPDi390nmcnTLFa3dj/
+	Ds2T4kSiXYMnpF5BkSuPbJsvHQ0xK9VNNJEEbrRxcsmnkQOMiYqLJWGNhIbq81eno/YbgZ
+	pK3wuvkco8lUxfIhAq5QdaLUoAUFdLA=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SwSsWnoF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 48D5F447F5
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 19:02:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EC601F0089C
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 19:02:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789844561;
-	bh=Pdt+VykzrSdAH3Ihk6G7KeWETmDZjvYwTDnvxuPWWYc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=SwSsWnoFcrQOKgRuytKcpjfsIrzNHOKZ014DWMcXuKQz7Hs959kApuIO1h+WWQ6nz
-	 kPaToMBXOsZGrk7VuOZ5hhviYnA6zzGJTgjF/RB+RhMBDxhGr590P1SzKdOcRsXFkC
-	 5lQESFgXXA58/1TMYaEkg99/Y8CwZOP5Cyff0P0PCXwdqXwO89UdtEKVTQ1v01xF4c
-	 UGgobhkmrzxvipIzSSEKxC1qq7lksO/rcwJ6I4l7UDBYrAYfbAddAS6/+g7BSc5UQp
-	 b2rw/SIdtWqIYmPuRFXODhXLFiW3n3BOhN7QYJYlkz8ByLXnwx/E/5LMzMBzCRaKmO
-	 dFVZhb865hyKg==
-Received: by mail-yx2-f42.google.com with SMTP id 956f58d0204a3-6729ca45e37so451815d50.2
-        for <linux-mm@kvack.org>; Sat, 19 Sep 2026 12:02:41 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBwlJaCuE2PYdzAfCxu/UVf75a+NHbKCDwp07Tct6RpS9HZLZzRV6a+Ib7v5fFwoqQgRJoi4p9+5/g==@kvack.org
-X-Gm-Message-State: AFuF++kJTLqDwEgsBAmDDo3KnnbOtULGkkFiVCwrRmY8ajp4S3HSwLXd
-	L8fL23Jhv/uIEM0TjbSNWnKgu5/gMH3wZCG3i6hWY9pe61mgVMpgD6kKe2jZefIdFfMIUZJ66gY
-	DryHJCBSr5Px2GxOh9cRgaEN86CmC+1G6eYlwa0vlDQ==
-X-Received: by 2002:a05:690e:418c:b0:672:99e0:ebf1 with SMTP id
- 956f58d0204a3-67299e0efe2mr784209d50.137.1789844560242; Sat, 19 Sep 2026
- 12:02:40 -0700 (PDT)
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=sGgWuG7h;
+	spf=pass (imf20.hostedemail.com: domain of aethernet65535@gmail.com designates 74.125.227.141 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789844981;
+	b=8ZT2l9TEh902P+a24VTBpT/YUI71aWInhCUcEb6dii1wr9qcAHdQd4Eg/jLDfOA6vqWIaU
+	vGBYNBttHxupXkd5Nrp0ajGg0Dnwi1h6TVCdY3tJ5eQVygygi5MDfGmyySgYoyKW25HKqw
+	UVxvPS3dZrQOnjxfa7rBX9ivB/bFFGM=
+Received: by mail-pj2-f13.google.com with SMTP id d9443c01a7336-2dd77300825so18339805ad.1
+        for <linux-mm@kvack.org>; Sat, 19 Sep 2026 12:09:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789844980; x=1790449780; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=T+A8NmYL+ONSVcQNv/Xmt66mRPmqZH9O1MKGhSoPUDE=;
+        b=sGgWuG7hc5BMAUWEulTdMiIXRSsJ834zp3FzsRcpylKfbitfIPKfSSWcy53Jja40Xh
+         0zci2FXOy577xVB5JkKNGHE3yvVSEbgufSe9OLYf+P4zCjiebluRo7m7UUMvXszbm+p5
+         0ta3zaqA2d4dTFUF/XBZfL7i7CBfPf2THwwgKUBUCxinrZJB3avQrMIEXnbRgVeoc7+v
+         01kdFulak3rlvfPNqCIgSEKMNZ628OdAK73uqFyLkXCCOfQOWK9/7P+K90dPauMTghYW
+         k7uACdoQsfwtJ10Z7z1BB03ASh0GgMBgIeub8ktDrCtTDyczw20Wm7qC1VrsolA76J2K
+         eM5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789844980; x=1790449780;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=T+A8NmYL+ONSVcQNv/Xmt66mRPmqZH9O1MKGhSoPUDE=;
+        b=Zr56J4cIizrrCPLdatZKeznj1/dSQlhmD3iP6d08wDOAV2a17xgmZ7fs7GnquFEqDq
+         kKnNShLLblAt4plKmTLbRcZr4K1xP6h1ObSiYWIHL/4rPdctNbLP6heg+MKQQKEjwKM9
+         OD5JDlF5M8HhbFyWOnYkVX0wc0jaVWdDtSKjfqs5GfQcQdlbGNgVOsRW21S3NygvBUEK
+         OBkAFMpRwWu83nAWDhPzMjA9568QHDBdWFE7VHrISDlWRHVToZTHMwFcGBhT5qQuzBTx
+         MMfRGUdk5UwcMPTCaBqSepdvIgAHlqrI2DkxKc502cQZtVMyUegZoEqxUoReBpoevhTG
+         eRnA==
+X-Forwarded-Encrypted: i=1; AKwUvBwki2C2UfKWiUxAYe+KIwawK/CYv+e8OYHrTUA/cCTHrXt9garNPazRQUXtouIBPDvJqdjG4GWPEA==@kvack.org
+X-Gm-Message-State: AFuF++mTy563sDCCTYp0aNu3XqmdrpEfJggQ/gslNuE09J4LAeF8p3pC
+	Wl84T4PKQV/V7Xf0FTSO7YYRcBmW5x/muSiqnHNTXptcB9fSfanNr9UJ
+X-Gm-Gg: AYBFou2pQT0vyiVffL15s/ZOevT7e1JgHQrlYzFuj7OUvudROw6OBug/3++Z0g0/4Se
+	E36hZIFMXUgf8Z0dM93D7N1aAOejDvZJT+0q8+9LPeDP+28+XujQI66xCQA2/36lCfV2p9cDsoh
+	6QpPnntD/Pqxehk7Kdc3tLEQ71cQ93I6QIlb01nqJs9vzU4DqhmXfJMtwpmTMgvBjLUEgGoahc7
+	YXtgnz4JcVJMLkIGBzR2zvkZXe9o4FgCLOz3F2xEu/x04kZXmVzbDYD4gnqU5mJ7IvS0XrKSBgJ
+	OqWR8elB89KfJ9jbP6Ww1zVVUHUEQUXpFSCsYe8tvy51gdavBKukOSTJZ48zanbuFx2YuWwC94c
+	e2qlEEJqylhUkO2IWSQ3x17ft1ERXHi6In/Uv3tIGCVDEw0wL0GaqZ9qYeukd8Tqptsz4Dz3Oqw
+	eCMwHmQU+86eoBugN2DLWbHvqkU07dofNekcX6S5TnEU8NjJLvkQrWoCnZahRKOnkwC4cxRF4W5
+	Q==
+X-Received: by 2002:a17:902:e80f:b0:2db:39da:90f2 with SMTP id d9443c01a7336-2ddb1adbee7mr109128495ad.8.1789844980074;
+        Sat, 19 Sep 2026 12:09:40 -0700 (PDT)
+Received: from celestia ([2402:1980:c3f:8e4f:9945:ef6a:453a:80bc])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ddc17888a8sm12378465ad.26.2026.09.19.12.09.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 19 Sep 2026 12:09:39 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: sj@kernel.org
+Cc: aethernet65535@gmail.com,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [RESEND PATCH] mm/damon/tests/core-kunit: add test for unconditionally skipping the last region
+Date: Sun, 20 Sep 2026 03:09:10 +0800
+Message-ID: <20260919190953.86705-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260919160725.86256-1-sj@kernel.org>
+References: <20260919160725.86256-1-sj@kernel.org>
 MIME-Version: 1.0
-References: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
- <aqJXx2vtbKaRLt3x@fedora> <aqLi6cIjD2wJwk0B@cmpxchg.org> <CACePvbUG1ApMzMdEzf-63rpjgGVNsRk21pT72OQGJpM=OtRUew@mail.gmail.com>
- <aq6cVXPLUUwJA7-2@gourry-fedora-PF4VCD3F>
-In-Reply-To: <aq6cVXPLUUwJA7-2@gourry-fedora-PF4VCD3F>
-From: Chris Li <chrisl@kernel.org>
-Date: Sat, 19 Sep 2026 09:02:28 -1000
-X-Gmail-Original-Message-ID: <CACePvbVaPDnva8X-Xmz84r7j5HjTuih-w5phpw7cerK2uPnK6w@mail.gmail.com>
-X-Gm-Features: AcwNN1XjloUiBKubGVavEZ51xBIrMqQYV_VtL3A0tpER26tTv3nQ8ltxbACyHsc
-Message-ID: <CACePvbVaPDnva8X-Xmz84r7j5HjTuih-w5phpw7cerK2uPnK6w@mail.gmail.com>
-Subject: Re: Path forward for Virtualized Swap?
-To: Gregory Price <gourry@gourry.net>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Baoquan He <baoquan.he@linux.dev>, 
-	Nhat Pham <nphamcs@gmail.com>, Kairui Song <kasong@tencent.com>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Yosry Ahmed <yosry@kernel.org>, David Hildenbrand <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Barry Song <baohua@kernel.org>, 
-	YoungJun Park <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	=?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?= <surenb@google.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Rik van Riel <riel@surriel.com>, 
-	Wenchao Hao <haowenchao22@gmail.com>, Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, 
-	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, 
-	Meta kernel team <kernel-team@meta.com>, Linux Memory Management List <linux-mm@kvack.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org, 
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Kairui Song <ryncsn@gmail.com>, Joshua Hahn <joshua.hahnjy@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 598381C0005
+X-Stat-Signature: wmgryah6kzok7yp54m13iwxtnui9w5yq
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 73B4A20003
-X-Stat-Signature: fh93rdh5tpu3d9zap83t6pkgd4x43g7s
-X-HE-Tag: 1789844562-760990
-X-HE-Meta: U2FsdGVkX1/jemCUxeDeJ7Ye/L2UX02B3Y2/7HPXp+97NnG1j2UOJXQsosEkLiumEacwQtFLopH+X8nnYN3Kkov5t/avyjpkfNkHg34Wz/gwDmTrFhLE0AKSr8Zb7K6FxN+twQLwZsCPqHtff949t1Ay0hchilAkMWFaRNb0aG98NzeKjCHb06nIZSPe3EdZkp4cCplFE8+HBM9WMBUOBnzcBcMqXZXJNBrUI+Ygpx9ZxDGKMoUFNfyak4xjJHiUMM95BilS2ZfYUZ0lWYCGMT71pxboxpbTiakqYBxnBYMYnD2t0XOGWszpWwortvjjBWgHcb/55ApI8FiCPxkxdpY0BU4MUPPZAUNssxHdeeaoSWSToxDN4qOCIqLT1AXJi8hBWvUn/mFpojcT2GOMWUKQnEbXY5ChvRe/IJljAftws5zE+vcl1j8UlMVgmrQM6FjCSUWqdk49YpViC4mq6PUwQgOWLiMLfIgPg/3Jwk2e4gEpLqIKPT3ogM/KXNpKpyY81OoxtKK+XQV9u/QKAuj3ogXG8yJELefJEkJHPQwaJan2/6Ylsuao5c4y2Mi/WmAU+8mzSRmRe6W+S0w2q2jgJPFB1vsAQFlVz3Nam29OBeF8pnEsHEhAH0lLasHLeS5a0si2KjL3LIeM9uOJUu+5R/oPbdbOdivfIuZxRmefq288dlKcUlYZs7wywbh1xjbbsVIFOVFkqwGCZAULDErzorhCWE5+ABEvA/rxnUKLjRayWT9Krm85v5nMRizFwI2kOyf1y2wf/zBltcn0+YOhp3f6+MytJxzOGXCRuTuBQz+Rh8O9iksATGClzxyEPPuPd/XYNTOK2VWHoF7XXkqFQOw9+Ra1Yn3NFZRgDzC1EdaxsA4UvITlTHAsGFC5EZVmvNrU8ItwiKYoFI1OJFwOr8d32aiOx4IE8zhi1RCRDx51r8FqY0Oq9ut6zifYI83/epb4I0Whwt6hagt
- 5aNCznXG
- YfjanGqWHwtVWtu77DSMYb0fouFkwsK3+Ks7OGJfL53byE+Phpd3h8wiMGNTABYI4pDu8xmW89snBWgBLQNOhS08edPY4mRHHfMeCnMvkEJjx1HmdAaljrmNKVAIpBcachfnSMrz8MKqtxhO0BhXBj3I5w8pyecNEX6AOvQZlo+rw0iAbN6jSaEH9k1T++4ZpcmvdPc/y8rsii5Qhp1VKcThGGKsTTbPlYOeilujA6rvgFektG+xaBXP/EAKSvHm4luZkg5cqDgWo+LDuG0kbijz3EQI+D3K7yplLQcm5N0tylVIHCE1u9iIdeUVcsSwBK4jacJwPsjJUsXhG00TPxvE0hEEf6N1g12udVzxRFDmyU9r1/5lOCNJ1jKFV+Sfu+u6mXz7SAtEHKJGN2Ohen7IkYpvpXKV+3cxQDnUG8YBpi9oOxJpZorst6mCuignLYrXp7cM9ZBQht1bT2BEWHsvARA==
+X-HE-Tag: 1789844981-874811
+X-HE-Meta: U2FsdGVkX1+2ruD8wK50iUPvQXBGudz7wJ2ku3JM5IuUUce5Hm7njM1Hfobia7x5wxNhNhGNh3YdI4A+5TgKpF1pN2eRG82YqE0dgvCb3bv5yQmvLyvO/z5ue37SUyzmg0kBaE0Nx4rxnpb7jQGYwwkzJyIivVRRfrCzkJkJJxDWvLX04tk8NvITqfXSQ9eFWjkj8RvjmKJRqFm4K8w+OlVkWiSM9k23hQkEWwElgl6x/dgD96YteFMsuaD6g1ncRLzh+4aktFjrYPjz5fsHBOHIaK2ghLqSrL7hbCr6pwU489QEwRxghcM+gnzJMXLT7mKrOwfy1prwf7VcjCvf8sSrubYtumR5ZRUSqh2FE+dQ5u/4Jix5rgO9C5qJmlR/0FfrmgUpklv/vDLzfefoydzRyD18s4UYXu8yN3avYVHfJWLFScDY7thHl1YwMsjsEbX8ZAoTdtbhMwcywbj9rQTG1DGuMLz2Q2sF3Vio8Nrhun6wIfeMc5OdvGLPh3eVYNh/xy2h3VQzrx8rNLqfJ/qn8kqimLTTcSHytOVepJSZlizGccc673wZVF83ME4SZVegdP3HayTajEIaNpm1VTKDka863JHbEwzPthO9tS0Oo85y0w+/7bMs38lVWal3kZWIX6+RaGECpMH0D2EDzZnRYwYiTCbSl8LLAogMeENiRIq7JjFhaWeYDncpbr6hNF7I4Q9nGz1PJ38qCJeea7MQxWaPcQxXcH7EG9plakDNhR9hQ16PSUuIDzk4d2NmAz9KXf3mN+48M4e4f3Ug9kTPUOmQuR4ewC5zRvlNMghSk+VA5limKA4r7hyrgZhD57Kfg+b2EH9DBh7YFfj2vfWupL4mg8hr3YhJOhwkCzwPjzHj6d5x0HwV308Wh6z1w1ZvXw7maNtm1PiFBWyIFfKv2EGJDIlO4ePWjY5MQlLfBkiqtg3K+yaN906Pd1w8ooErTCGa8NI5LoDzgAu
+ LYie0rc3
+ W+o3WQLoZqtNMkYPNlHLEWXu4pP3Eyl60HE8DC5xpjIvThD7U2VfNyYy4sCGwdvSOpiKGo0N6oeD8blppzWdZLKsZgYmALQG1cbcuyXQQTt2CQqBUs6SU7L1QoOaOaIIwYkgBpZgSr3Le7kY/mm4L8aHsYhYBeWT3HWNFGNHecfW8nnsFrqHT1LFagSm4kf0pMoJVXnMeVkB066mRM+RpwCNXbLW1c9OVwbXNxdZpMmb4gw6qFc0OJvBlkt+fzxahA0UBHXGKe7TCMmHdY3u8IhgWlhQ/CkRUhs6j/hkAe3a+r5+QLwY5rSu5puukLLFQUzggIdS8rBnNGkTVvGJyzjp8S03MtCbdbUEbzk3NHwniRRqJVWOx9Lgr4iOnd3LXmqWBqHv0YZEi6yi11gH7sR+XCJ9z+Aqy0n9+e0TBGli7CqgVJaZxthaFwnnwOuokWRTpD/MjFhru/e21JJKYTFNGGA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,95 +121,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Sep 19, 2026 at 6:08=E2=80=AFAM Gregory Price <gourry@gourry.net> w=
-rote:
->
-> On Sat, Sep 19, 2026 at 03:45:03AM -0500, Chris Li wrote:
-> >
-> > I found this new concept of "compression space" very confusing to me.
-> > Can you explain the swap behavior and problem using only normal memory
-> > usage reduction and latency without introducing a new term or new
-> > metrics?
-> >
-> > The normal user doesn't even know what compression space is, let alone
-> > what makes it transparent.
-> >
->
-> Sure they do - it's the amount of memory consumed by compressed data,
-> including the metadata associated with it.
->
-> converting Johannes statement to diagram:
->
-> >> Compression space is not a separate resource. It's page tables,
-> >> backing pages, and swap descriptors. It's just MEMORY.
->
->                           Page Data (PD)
->   [page tables][                uncompressed page                  ]
->
->
->                         Compressed Data (CD)
->   [      recovered space     ][pte][swap meta data][compressed page]
->                               |                                    |
->                               |---------compression space----------|
->
->
->                         Memory Pre-Compression
->  |[  PD  ][  PD  ][  PD  ][  PD  ][  PD  ][  PD  ][  PD  ][  PD  ]|
->
->
->                         Memory Post-Compression
->  |[CD][CD][CD][CD][CD][CD][CD][CD]-------- free space ------------|
->    ^----------------------------^
->          Compression Space
+On Sat, 19 Sep 2026 09:07:25 -0700 SJ Park <sj@kernel.org> wrote:
 
-Thanks for the explanation. So the compression space is just the
-actual data store backing the zswap/xswap/zram.
+> On Sat, 19 Sep 2026 16:01:58 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+> 
+> > Commit 50585192bc2e ("mm/damon/schemes: skip already charged targets and
+> > regions") introduced a minor issue that causes the last region to be
+> > skipped before it is processed.
+> > 
+> > Example:
+> > 
+> >     1. Target has 2 regions: R1 (0-100 bytes) and R2 (100-200 bytes).
+> >     2. Quota is configured to process only 100 bytes per window.
+> >     3. Window 1: Processes R1 (0-100).  Quota is full.  charge_{target,
+> >        addr}_from is saved at (Target, 100).
+> >     4. Window 2: The loop reaches R2.  Because R2 is
+> >        damon_last_region(t), the old code unconditionally returns true,
+> >        skipping R2 entirely and resetting the charge_{target,addr}_from.
+> > 
+> >     Result: R2 is permanently skipped even though it has never been
+> >     processed.
+> > 
+> > Add a test to prevent this regression in the future.
+> > 
+> > Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
+> 
+> Other than a trivial style that I commented below,
+> 
+> Reviewed-by: SJ Park <sj@kernel.org>
+> 
+> [...]
+> > +static void damon_test_last_region_quota_reset(struct kunit *test)
+> > +{
+> [...]
+> > +	t = damon_new_target();
+> > +	if (!t) {
+> > +		kunit_skip(test, "target alloc fail");
+> > +	}
+> 
+> Let's drop braces for single line, as suggested [1] in coding-style.
 
-> It's actually really confusing to represent this space as a traditional
-> swap device - built on the assumption of a pre-defined size limit - when
-> that size limit has already been defined (the memory itself).
+I will change this in next revision.
 
-First of all, the traditional swap counter has a very well-defined
-meaning. It is the size of the memory that, when accessed, requires a
-page fault. A page fault adds significant latency to memory access
-compared to access without one. Whether the memory is backed by SSD or
-compressed RAM, this is an invariant of that definition. If you change
-the behavior by not charging to swap when swapping out to compressed
-memory, it will break our deployment, causing many OMGs. Kairui also
-mentioned that this will break their usage as well.
+By the way, Sashiko reported an issue [1]: min_region_sz is not
+power-of-2.  While this do not cause any real issue in this test,
+non-power-of-2's min_region_sz is not legal.  Should min_region_sz
+initial value set to power-of-2 value (e.g., PAGE_SIZE) in the next
+revision?
 
-Therefore, I must push back on this. Please don't change the swap
-counter charging behavior due to the risk of SLO violations for users.
-This is a user-visible behavior change.
+> 
+> [1] https://docs.kernel.org/process/coding-style.html#placing-braces-and-spaces
+> 
 
-Secondly, I notice that you are reasoning from the memory usage
-aspect. That is a different usage requirement angle than the SLO
-violations. Maybe we need a separate counter to track actual memory
-usage, regardless of compression status.
+[1] https://lore.kernel.org/damon/20260919081239.8A3D91F000FF@smtp.kernel.org
 
-Let's figure out a way to make your usage case work as well, not at
-the cost of breaking existing usage requirements from an SLO violation
-perspective.
-
-> Baking any kind of pre-defined limit *into the infrastructure* (whether f=
-or
-> an optimization or ease of implementation) is what requires users to know
-> what compression space is.
->
-> Even using memory capacity at boot as a limit is wrong - hotplug exists.
-
-This reinforces the point that viewing things through the lens of
-"compression space" is confusing and muddy. That is not my mental
-model. I want to add support for your usage case as well. Please
-clearly specify what user usage you want, what the expected outcome
-is, and why you want that.
-
->
-> > Why does the user need to care about compression space again?
->
-> They shouldn't need to, that's very much the point.
-
-Great, Sounds like I can safely bypass it.
-
-Chris
+Best regards,
+Rui Yan
 
