@@ -4,92 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11EF3C982CC
-	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 06:50:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09B10C982CC
+	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 06:55:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6AFFB6B008C; Sat, 19 Sep 2026 02:50:36 -0400 (EDT)
+	id E81F06B0092; Sat, 19 Sep 2026 02:55:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 639B06B0092; Sat, 19 Sep 2026 02:50:36 -0400 (EDT)
+	id E33DE6B0095; Sat, 19 Sep 2026 02:55:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 501AB6B0093; Sat, 19 Sep 2026 02:50:36 -0400 (EDT)
+	id D24D06B0098; Sat, 19 Sep 2026 02:55:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 26C536B008C
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 02:50:36 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 635CD1A01CB
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 06:50:35 +0000 (UTC)
-X-FDA: 85229588430.25.618610C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 87FDA160004
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 06:50:33 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MIPvq99o;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B257A6B0092
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 02:55:49 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CD93CA01CF
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 06:55:48 +0000 (UTC)
+X-FDA: 85229601576.19.1E17102
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id D1A6714000C
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 06:55:46 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J+AEKnKS;
+	spf=pass (imf26.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789800633;
+	s=arc-20220608; t=1789800947;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Fy0hcrpc8gMaop8QcMQpaxARuL214HEekfRBW/zK9rY=;
-	b=q1fAdY7ESNhWtNMRBRibtS8IBP1+bq1vMbBBht9xulfsmTZtNFPgas+att1WH1VH72GECD
-	x5m5ns/1rxZcUS04RrSC44Sie9KV3P0xS3kmqxN8dySz8nGVe1M5cvGSTUXRMZkIMcu9Ph
-	C8eD+8gzJA12APeCjvb7BZMdrsBQR/Q=
+	bh=lBPJxnWCG6gJlIc6Oea03Hf0PVIwKD0gi2pxmpWV7wg=;
+	b=hSBg082WX7kXjNIKdY5FJwuUVZDk41kVyjesMfyBoHd8R+YzSKhw09Up96pAJc2YZu9TG/
+	pwFPudXMFQZ0jT61JcOR6K95RY5wJk5g/cGJs165GNLdh62LEPbKFQPLz7IK84LxVh0Rfo
+	OogFCGS0ESld3fhkQSt0qugm1d/Jewo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789800633;
-	b=j3xHazDIKsGHlwFMwqDa8xbthmRTTDkOzLyzEsUS6Fy0NjMI7R2m4RKQ+YcPeMq2A2nCOQ
-	Wo54k3UI/FqSsK586r/lKapNcJTvFoPLckdJ+k/CzLMoX4pR/XSBGLC6SSOX7IT+3SPm9S
-	nOWOYuV57eY7nTJjd1YFc7ztyaUQmCs=
+	t=1789800947;
+	b=N4Lg8kSakEYfQW2goE5bQLfiTnQBwoVp67g5mPPeZy97YzaBEs/pmrPVz23wk97D6KtsHu
+	caOToPVNtPEuwDq1NXh6w8locINViFehVvJnqZF4G4pIImUNCo3RlWRsBcBukRs8nvPS9c
+	2/7MdJnBKR9jBOBcdnVnCveTlciC1tw=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MIPvq99o;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J+AEKnKS;
+	spf=pass (imf26.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 643DD60232
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 06:50:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 189F81F0089C
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 06:50:31 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id DD2CA44501
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 06:55:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB3E21F0089F
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 06:55:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789800631;
-	bh=Fy0hcrpc8gMaop8QcMQpaxARuL214HEekfRBW/zK9rY=;
+	s=k20260515; t=1789800945;
+	bh=lBPJxnWCG6gJlIc6Oea03Hf0PVIwKD0gi2pxmpWV7wg=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=MIPvq99olCRTHkZm1a4B8dnyivpeG0vonLr8KVJro7Umjvj9r0UHj8ViaTpLGli81
-	 7F6VI1ERxQQ9TsQUsQ9qCudOMvh8Fk1oS07eNXTxn4buUuVhd8rszx4HuBGEFEnJhB
-	 VjNFJjUT7d9mur+Simr0L5yO/ENwKxrpJTgO7iajCPeSZxc01krhauFJF6BKaOpsTB
-	 TYe8xj1URdMs/kzH3QOQrF5L8Wa4FxwiFNyiDSND5OIAJMAYpGqyZN1rnwdRUf8WWL
-	 66IyqD4hve/foAj8TIbwOXbjECgNfO8jwsJZ/WnjKdwLrLZ2KrnYROiRXvSq5YJ5m4
-	 bMElivfCyeDOA==
-Received: by mail-yx2-f13.google.com with SMTP id 956f58d0204a3-66f7a9afe43so1254708d50.1
-        for <linux-mm@kvack.org>; Fri, 18 Sep 2026 23:50:31 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBzQQfz2+WNIjW1CLsmz0sj24iqLSqpknv2RbhKBmikFBKMG9iQtPoOPvmJVqqX+6YGr2/9vxSIWjg==@kvack.org
-X-Gm-Message-State: AFuF++mCCXn0h89mU5wOSgnW22ukaRSy0qASh818O2AI0HqcMKWzuCyZ
-	EAkOK6rc9SR4tpiWaDkjW8K5yq1YzpnAbE6GTxnqa8fU2ylWN2crR34QvIVbf3RwudtQdqd/RB3
-	jqDkII0FNa1Gfsi+0emsIQVNGT7kyVakT601ZajebJg==
-X-Received: by 2002:a05:690e:80a:20b0:66f:c1bc:c085 with SMTP id
- 956f58d0204a3-6717fdf9ab7mr1037245d50.77.1789800630447; Fri, 18 Sep 2026
- 23:50:30 -0700 (PDT)
+	b=J+AEKnKSs40RtUxFHrdfcp3zT5jxcthRo7FB00CisvBl7fEzlqFqKpcNy2v/Vy4yG
+	 durzYf7lnVwsUJPJmtbX7pD1dwuBem1vFNh8WNoUsw55tcJoME5g+xWrSORan6WcJo
+	 TBlIFozGzJoXeSW+JLipA+IA8JFaGt+hgLoN5WZ0n93RxrIm/Bive5HJ6dLRFkITwb
+	 OVdjmBvSX0xHpCLQOtK17yCz8VHSJtsZf6HdhSTi+H+8eCY5JgzX5IHiF2Jtbh9Ozo
+	 yIcYjDdND+wyMApxwUgCN/PkTKvgMG2qFqmLqmSa9SXFeNORbPO4lpTPiE6UNGDC5o
+	 Iq3628FTA4ItA==
+Received: by mail-yx2-f12.google.com with SMTP id 956f58d0204a3-66f7f72a284so1339748d50.2
+        for <linux-mm@kvack.org>; Fri, 18 Sep 2026 23:55:45 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBwXN2NZ2G/tW5hCOLoRLq25NJNWPxcNQS1pT9EizakTN/dg+vCwa709jIko4N4Lhmly42k7hgreIg==@kvack.org
+X-Gm-Message-State: AFuF++l01L5scP2Ox22O9wMt+0NKDCZ7luBkYrgQCJe3t4yVoPIU/yfL
+	5DE9TSWKyWrIKtnmT11Vb0egiootgZbG3u2W673yBEcxOoRX6VJH5fRubiFYIcEFTloGsOsFPrN
+	dapujcQhd2eyOZGjL36YVWaeivFeMoH3kGUFNzZ4j1g==
+X-Received: by 2002:a05:690e:e82:b0:66c:c644:3938 with SMTP id
+ 956f58d0204a3-6717fc73116mr1567140d50.7.1789800945084; Fri, 18 Sep 2026
+ 23:55:45 -0700 (PDT)
 MIME-Version: 1.0
 References: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
- <5fdb3777-95a2-48f9-bb38-aa4ba3c96a81@kernel.org> <CAKEwX=MuW6q354nB3tyFTM8d3ox7LRaqcSfUxeATR=Sop5mZPw@mail.gmail.com>
- <5ca344de-bc34-4a9b-ab85-f553811a1d9c@kernel.org> <CAKEwX=N05iOC4hmiyTt5OxjAsOfU7_V8xGfmK_RgUyrKtuyUTA@mail.gmail.com>
- <CAMgjq7DJwGCHCAchcfi2Kcu+XHx2YnKXDj53e0t2kpG_GSejkQ@mail.gmail.com> <aqgMCIOFi0dKx_6L@fedora>
-In-Reply-To: <aqgMCIOFi0dKx_6L@fedora>
+ <aqJXx2vtbKaRLt3x@fedora> <aqLZ5TVDAqEbIeMN@linux.dev> <aqP81aqNbwAbs2P0@fedora>
+ <aqQrPLPXHXiuKup0@linux.dev> <aqjcFb6MFNiA6n4V@fedora> <aqjpYHbZ14A8xRtK@fedora>
+In-Reply-To: <aqjpYHbZ14A8xRtK@fedora>
 From: Chris Li <chrisl@kernel.org>
-Date: Sat, 19 Sep 2026 01:50:18 -0500
-X-Gmail-Original-Message-ID: <CACePvbVMFA9N0nQers=sOnSXGbNhtNE0ewq47AJEH5Cr8imQXA@mail.gmail.com>
-X-Gm-Features: AcwNN1UsCayhu6qSBcp0NCeBygOCBz7cKHDcf9ihkAi9fMFOHSellJ6quiD_7YE
-Message-ID: <CACePvbVMFA9N0nQers=sOnSXGbNhtNE0ewq47AJEH5Cr8imQXA@mail.gmail.com>
+Date: Sat, 19 Sep 2026 01:55:33 -0500
+X-Gmail-Original-Message-ID: <CACePvbUwTxcMPVK_1GAz5gPDdh0BV9JZSnKXaUFLqDHBzBmPQg@mail.gmail.com>
+X-Gm-Features: AcwNN1Vd2tjplOjh6PB67R-OyLCbkYjVi_cZf-a78V7vf9J1xJzsesI2sggm-dI
+Message-ID: <CACePvbUwTxcMPVK_1GAz5gPDdh0BV9JZSnKXaUFLqDHBzBmPQg@mail.gmail.com>
 Subject: Re: Path forward for Virtualized Swap?
 To: Baoquan He <baoquan.he@linux.dev>
-Cc: Kairui Song <ryncsn@gmail.com>, "David Hildenbrand (Arm)" <david@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Yosry Ahmed <yosry@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+Cc: Shakeel Butt <shakeel.butt@linux.dev>, Nhat Pham <nphamcs@gmail.com>, 
+	Kairui Song <kasong@tencent.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Yosry Ahmed <yosry@kernel.org>, David Hildenbrand <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
 	Kemeng Shi <shikemeng@huaweicloud.com>, Barry Song <baohua@kernel.org>, 
 	YoungJun Park <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
 	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
@@ -105,17 +104,17 @@ Cc: Kairui Song <ryncsn@gmail.com>, "David Hildenbrand (Arm)" <david@kernel.org>
 	Meta kernel team <kernel-team@meta.com>, Linux Memory Management List <linux-mm@kvack.org>, 
 	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org, 
 	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>
+	Kairui Song <ryncsn@gmail.com>, Joshua Hahn <joshua.hahnjy@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D1A6714000C
+X-Stat-Signature: p4njcqkbd5awb9f3r4zn857onwg9whch
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 87FDA160004
-X-Stat-Signature: ma96ge3irwgpyfhpx47tenhhqqhkngaq
-X-HE-Tag: 1789800633-9398
-X-HE-Meta: U2FsdGVkX1+4kVmEK7qqLu3/pa4aYA/4sLXrQnWoA3plbn6wmmJTWYj7wgcG+hR06FAbvLywEmHMHdK0nbEdVLllblb94XymdXV7FYaAK7hKtRUqlBxibaR5Y3Nq1slnRTYYXFPnPkIkE9GLOd8OkhIW5r5W5hINX787oxvoHDmUw9iugW19ID6MtsH8wBDu4WfioU5/++Un3Fl/n/FKUSRPtfttMFH3PSkZ9fhYm4/SOnfu1vQz9h3hhhwdR3B66y7RxZocosCnk3N1ChpTbkWvCFSovDXJR9C7q2beecl/BY5zkjMZo8op5QfbtPPKTETUFPttIp3qxeT9D5BKG8EaGPP8L/HgCQ0FerKx9cJT+9uUJ10axjV7B8l875033eA90fBsa4TkMpidWYTVnkTQ09mpqLepGcil42SJPjQGgfaWM7ZVpzLJx3f8pg1evH8GY2tzonzv+p0GT2DbEWigzFZliZ/nPNjOfiZhHzVnlpR2LmZCG1+MEau3uL1fJCJUlpfW/rvYZ96nqxnQ1sTlNIS0MrudmB8rf9VUbkx1nr0CEHtJl8FXMxBpZSzJN5XwhX28cbkANmH8tddJk18zzAp/kX6REd2Dgz5EqSq4/KOalZ/6xZkOORyPSddlLBapMQEFjBoxRzz2OSJdcpbakKcZGujUkOaF8ujRnAAYCWEB6eDfBQ5dBVw/7YEhv5lSsBsuMml7YnPU/+PyNpCYXSuYixGyr67s/rk+AUnIiNDeYTRpOwtGJffsyor7bjisNo00US10yR8eYxjA/dpV7LjAxRT7OH/DoeYWFLHZKYrtfkj3T70PK7Hq7ekj74spqpyv70yjGHFHpPJgD+fCxWQXRgl/wmqvEed87j6OWLZJ+eiDPcBNfRrdTlC6ki2NaSAlgHuhjrlhCBueyCf2O9Ycy8qyAbnvPEBgf8LtK7Bh5GBE59wyBOsasEO1XQjSTkvvipeI3iABcF2
- zmkVqAjP
- FGWCliUsn0nwVU1pNynCMgdfKPIVgRYtFgtqZyx6wLXNwaPU7WY+msYGtS332+PkE7EoByvp9H0yiP4Nj8aURZEZgSbUl1b6UGVEYJExRcs2MyJ6LzBYbcAszcYCGFBdFG1ZHotVO9qpbp5an5//GRgc9HOhZn6il1K2EIWXmkFqDvAJBcrG9bzkcwoSetsPRrQueKf1yp6IdjYVeeJAzI9zhfBn402GWLhVrYA7HAEcLP2h27TtCmJ7TCxlf1dZYVjz3fqb2YrpzzeF5EyKBQ6exCm/a4JyIU616p51T2e3RNZAJechXoYDq/Irh6s9VCPUvyun/jLBRksN3v9KqZe7xPTzkC+zD/eyRDxMDRU5HThv6kMm3/zGSxHxwuxA8PNc8gGyB1MAD9ECxPHyGz7MIng==
+X-HE-Tag: 1789800946-947520
+X-HE-Meta: U2FsdGVkX1+5d4NujWQ3cUVyjp00t0H27LG30UtHBrP8BkZUmE/QT8JPBAIMCM81vPL1q9GwzoSSY8Gsi4MtBjIpgYtJ7OhfTKWgRUNrgcxD+qzE8yHxFP0AvZggOZ6Fkz8WuHQ8HwKBIfGaoqP4fOfQdZmuMnkmhEoIkIODwZudujEgY+KWNnBKiotOF7UKKp8se3/HNP8uGqJsWHc4VH/9o5nRN9Ci+kp0Dv1uLBi37X70039BAhujWodU84qI/mYzAa1tQie87fo5zMh+F8JT0VBXdDG1fCKgoybajmuJ0tEdR2sqdB/R9YcTHoOQmxIFSgfA2Tq78ynpC8A5zLRskZBSpC06K5y+3btAHQTojRxBIj14RZNgUMCTxGSFxiwdEIS/UeIDBolmXj35f4fMk1kADGfvdKrBTIQWo87+66tdatuSoehSbshMILHDHky7JH/ubHYyTOqIRtVoJC6wEbrjKmgjynp4ujK7ZwOKxWHHTKHR0JQTjtSxy9Uz6ClA8bCrUuEQh0JKdANLET4lUCuuHmfa2d2wEZrD3KXAx6dJkqHmqaPM7Uej5miutZvu2LeuE/TSW0yx1aE1H+Y/rXXZHFWS/5HN/PWw3I5mKJCeXYZ3m2DSS1jkCfUP7J1aYV4bDOKBtD90mjbdtunt22S6Y1a6J0RJaJF3cuJiiHUzERQ+aCOlKdNI9B6kqfChJxjLoG+Y1VqnvoZUUTj85LmR6COKDZZdhMCBJHxuxRME8trpa5EgWL3ciKs0iG9MW8KtB9eOXGdvD0V0CzzAYGgrSdqqxkyy9lQkEBx0U2xUheLfZpT96aKoxqkePg1W7QSiroNbSzFc7VCkoqWB1I1oeDAszSeWctbBVBwP0acLLyTkXtCMlV8WCB94W1egsUo49jFi9Gizm7Fm8gf27enWNDFKPplCrVGYk3EZ6ji+KRSMXkGXsPpv7s0dlFXthKGc1yuboIzkgAD
+ vM4+6I0Y
+ DBJ79+dnbyLnxGj0CdJZcn7IgpsISThPYfrrOQVuVDI6kDDuQzHcSdsdrr5H9KvLraJ92B52Jwv10hy9dpYmphxjuM7Zg+Yo0QkFLIsMGr/yVO8CKrwng2ekaPeD3k0JMMZXUCYx/npuM72XjwzfURSJWEnviH6kfoNCUZWBfY0w+uPV1vhJaReYLQmtZfEpq/m3ZswK9G4OTJDk+zjroGhEuuSTYmvHWJgyiyvPLGvA7T1LgkZLmYRsE5WgJbVzijknLzOhcB0Wpc2T4jEe/KQkwElZMxXds7cYGjGvDoRWYm0e/FDzbTIc99KEbuBFsS+eq2Cp4iRosEB6ytxz/RLoVUWqigiYhVXRRoTgyOKi9Xj66VEzdi3kcliLgA0UbmD693LSjWQxT2evCECnWmGXbsQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,26 +122,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 14, 2026 at 10:00=E2=80=AFAM Baoquan He <baoquan.he@linux.dev> =
-wrote:
+On Tue, Sep 15, 2026 at 1:45=E2=80=AFAM Baoquan He <baoquan.he@linux.dev> w=
+rote:
 >
+> On 09/15/26 at 01:48pm, Baoquan He wrote:
+> > On 09/11/26 at 09:45am, Shakeel Butt wrote:
+> > > On Fri, Sep 11, 2026 at 09:06:29PM +0800, Baoquan He wrote:
+> > > > On 09/10/26 at 09:39am, Shakeel Butt wrote:
+> > > > > On Thu, Sep 10, 2026 at 03:09:59PM +0800, Baoquan He wrote:
+> > > > > > Hi Nhat,
+> > > > > >
+> > > > > > On 09/04/26 at 02:14pm, Nhat Pham wrote:
+> > > > > > .....snip...
+> > > > >
+> > > > > [...]
+> > > > >
+> > > > > > With VM_SPARSE, xswap's cluster access is exactly the plain-arr=
+ay line the
+> > > > > > rest of swap already uses:
+> > > > > >
+> > > > > >     return &si->cluster_info[offset / SWAPFILE_CLUSTER];
+> > > > > >
+> > > > > > no branch, no RCU discipline, no tear-down state machine, and n=
+o NULL
+> > > > > > return. So VM_SPARSE doesn't add complexity to close a gap; it =
+lets the
+> > > > > > cluster layer stay as simple as it already is, which is precise=
+ly the
+> > > > > > part later work (writeback, rmap lookup, memcg charging, THP) h=
+as to sit
+> > > > > > on.
+> > > > > >
+> > > > > > I'm not going to claim xswap wins on throughput. I measured it:
+> > > > > > on a 64G/64-thread swapout, xswap, vswap and plain swap+zswap a=
+re all
+> > > > > > within ~2-3% of each other, effectively identical.
+> > > > >
+> > > > > So the claim is VM_SPARSE is simpler than xarray based approach. =
+I feel like
+> > > > > we are discussing implementation details before deciding the desi=
+gn and
+> > > > > architecture. So, instead of VM_SPARSE vs xarray, let's discuss a=
+nd decide the
+> > > > > need for dynamic growth. Why we want dynamic growth upfront or ca=
+n it be added
+> > > > > later? Once we decide that then it will be very easy to pick an i=
+mplementation
+> > > > > that would take us there.
+> > > >
+> > > > Hi Shakeel,
+> > > >
+> > > > Thank you for joining the discussion and for taking the time to com=
+ment.
+> > >
+> > > Hi Baoquan,
+> > >
+> > > I am mainly trying to facilitate the discussion but your use of LLM i=
+s causing
+> > > more confusion. LLM use is fine but please at least re-read before se=
+nding that
+> > > the sentences flow and makes sense.
 > >
-> > Is 9AM PDT fixed, or can it be adjusted? 9AM PDT is midnight for the
-> > UTC+8 folks.
+> > Sorry, my bad. I used LLM to find Nhat's words. But I did check it by
+> > myself. I wrote most of them by myself. While at it ath the moment, my
+> > logic could be unclear.
 > >
-> > The time is still fine for me, though, I tend to stay up quite late
-> > anyway ;) so that time works fine on my end if the slot is fixed.
+> > As said, how swap_cluster_info[] is built is the foundation. Whatever
+> > you do, you have to make swap_cluster_info[] ready, then you can do
+> > writeback, rmap lookup, thp support, etc, on top of it.
+> > swap_cluster_info[] is the basement, then you continue building 2nd
+> > floor, 3rd floor, till a high building is done with things added. Nobod=
+y
+> > wants to claim he just need the high building, while no basement.
 > >
-> > Is there a calendar invite or something, please send me one, I'm happy
-> > to do a swap sync discussion there.
+> > Now, the foundation has been built with the lazy vmalloc, it can grow o=
+n
+> > demand. It keeps swap_cluster_info accessing as swap_cluster_info[],
+> > a basic array semantics. And since we our target is to support a very
+> > large swap device with an extendable logical space, grow on demand and
+> > shrink becomes important. Now it is there.
 >
-> Thanks for opening this up for discussion. While the time slot is a
-> little late for me, I am not very sure if I can attend, will see.
+> By the way, with my understanding, only grow is enough for xswap. You
+> can reserve a huge space for it, while in fact you could only really use
+> it within a small space. Then it's fine, grow the swap_cluster_info[] to
 
-No that time slot is too late for Asia developers. I don't think we
-should use that time slot for swap alignment.
+Yes. We should use incremental baby steps to make the merge easier to
+digest. I think grow only is fine.
 
-We should find a time slot more friendly to Asia.
+> the place it ever used, and it mostly will be used again. E.g on a small
+> system with 10G RAM, we set si->max as 2x10=3D20G. In fact it could only
+> reach 2G swap space. That's fine. 2G is the place we need, keep it. The
+> left 18G is untouched and surely no swap_cluster_info[] built for it.
+
+Agree.
+
+> Anyway, Nhat strongly suggested shrink is necessary. I am wondering if
+> there's really use case.
+
+We can always add follow up patches if shrink proves useful; I really doubt=
+ it.
+We don't have to address all issues in one series. I actually advise
+against lump too many patches into one series.
 
 Chris
 
