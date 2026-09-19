@@ -4,88 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC5C9C982D8
-	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 16:07:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 003FFC982D8
+	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 16:08:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A02736B0088; Sat, 19 Sep 2026 12:07:37 -0400 (EDT)
+	id B63BF6B008C; Sat, 19 Sep 2026 12:08:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B3616B008A; Sat, 19 Sep 2026 12:07:37 -0400 (EDT)
+	id B3BC86B0092; Sat, 19 Sep 2026 12:08:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8CB6F6B008C; Sat, 19 Sep 2026 12:07:37 -0400 (EDT)
+	id A531D6B0093; Sat, 19 Sep 2026 12:08:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 67CF66B0088
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 12:07:37 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9C3701A026D
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 16:07:36 +0000 (UTC)
-X-FDA: 85230992112.05.2E7DC04
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 145B1A000F
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 16:07:34 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bcnzfZV0;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789834055;
-	b=MaXSmwND7GYq2f+xM453WVBoq2jBtHRu3jXb9tSIE0pBg2oLIDOOwNzYoNGJyU8zrWtX7U
-	ytN6KPkLI82H7poDBpkxYRAtTUZ76uFm3SsRCBROm9As99jcFeC6YECHR9E8FrMfsBy2bL
-	rgzg5TDfPxIWVCsbncwrJL914HErqT0=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7DAC66B008C
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 12:08:17 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0CB701402BC
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 16:08:17 +0000 (UTC)
+X-FDA: 85230993834.19.F2BCD42
+Received: from mail-qk2-f43.google.com (mail-qk2-f43.google.com [74.125.230.235])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 2B6CC1C0002
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 16:08:15 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=kpGajnlg;
+	dmarc=none;
+	spf=pass (imf18.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.235 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bcnzfZV0;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf18.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=kpGajnlg;
+	dmarc=none;
+	spf=pass (imf18.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.235 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789834095;
+	b=06m7K8fB3FhWtku3XqpHLMoMciivSaVPLdzwOd7FnAb1vIuQQHsZGSZWXvYD50Z9GENqxc
+	6bvmvUfGCRs6djc1ZUcK/GqyV9p2n3Mr2POaiUjDwLFLO26h8lamBNIY3XZDqUlBVRphjK
+	PvV8+Hq2HtFYcCflBohukzi1u6m7Fbs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789834055;
+	s=arc-20220608; t=1789834095;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wQHa39SbYUNszRpbhZJPTtwB+DOrWIjoWgUc5UFfUZA=;
-	b=pCBHFGXfQ1uEq2Gv3EcH/gP3sZDWWk4l3kwVW2qepY6ZnGT3GSJaX89ldTybUfVxpzNz1N
-	aB0JZRVuDYlC8l2WpF2nlVaO4JqS83yMp6Syh28NgIy/zfjkgiEYEKw6QymYKUaaTSsa3q
-	KDtyoIUZhSpDMnKdZl2BgtDp9CkAV9o=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A6B60601E4;
-	Sat, 19 Sep 2026 16:07:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B2641F000FF;
-	Sat, 19 Sep 2026 16:07:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789834053;
-	bh=wQHa39SbYUNszRpbhZJPTtwB+DOrWIjoWgUc5UFfUZA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bcnzfZV0jfozeaH0PTAEYh1w4FxYSswdPyKtVUe7I5onhLQzYRsjcBsnJ6PfYwrUI
-	 /SQ7eb0aaKAOjJIFvmYp2mXykwN+0PIPFCZG81ZoL8i+ucysh3PFFL4CiaJkOLylcq
-	 5A82Dfm4UtMfPFB4PHb5ucPYcMLmCd4Wb2dUIaeBii9chXlLnWoNyjyL4pKY1GPL9b
-	 UL8HpDBz4Dfa+0IDb2ZYKzw8TLZOz7pOzQDUoYzhhwsnE4cftsgRhvUPXk3n2MC9Fi
-	 lGqb7jVuOrqzH+0AYzeCZF9hfyftMY9YG2a2bgTJQcgGOgGgxbhxga40lLoj4gILKe
-	 ToZak5MabqyRg==
-From: SJ Park <sj@kernel.org>
-To: Liew Rui Yan <aethernet65535@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RESEND PATCH] mm/damon/tests/core-kunit: add test for unconditionally skipping the last region
-Date: Sat, 19 Sep 2026 09:07:25 -0700
-Message-ID: <20260919160725.86256-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260919080453.628679-1-aethernet65535@gmail.com>
-References: 
+	bh=v1ENvgPhr2wkBzngQIEflRDSjK2asd8jt545To7DKdg=;
+	b=mdyb5DOq28o0oEa9TG/btcjpsb50D9eR6St5B34uh6tffMRrPDCed6eID/PjvjYg63Dx4O
+	Q00nA9SU1KQts+35kP8caNlqNNq5C2K7lx8HL0bKlWjo8RDCQOxzHLdYGSZFNmdaYTUk9G
+	lDKJIQdMtsehvXONso5njPtT5rAfauY=
+Received: by mail-qk2-f43.google.com with SMTP id af79cd13be357-93910cc46c4so155983785a.2
+        for <linux-mm@kvack.org>; Sat, 19 Sep 2026 09:08:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1789834094; x=1790438894; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=v1ENvgPhr2wkBzngQIEflRDSjK2asd8jt545To7DKdg=;
+        b=kpGajnlgCwcHWP0A12ip9zB88++iZyG4BicknWZAq7HT2fa36vsIeSzZtztjskEzgp
+         fC17Jnlu6DQudDu6hptcJotscxdHzpziFxxAjc/cc35Jg0YtFb9Wq7Jbw41Usgo1AK5r
+         uZIbHW8J6su49U7e9gRQIgXxbAem+S9QiKW43DAEQDV04N8R04Bvd1AZlgEWLIqgRfUz
+         tuHnbxqEiG0Sg5qHcFHrlZo+zqihcTEe8mTmKa2bOlhDZhxfgLghuuxdvZEYuWS6DkDj
+         iDFDDlTZ6ej5eIdr+4H8cgfn79ks6IVgEkjrgvTAY+Nx7ANwY1I6sJtnhNlvyFk7M9/8
+         HBjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789834094; x=1790438894;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=v1ENvgPhr2wkBzngQIEflRDSjK2asd8jt545To7DKdg=;
+        b=pHMYXzX6wA8TICP2Sn1IeZm8PZSBBPm5yoG46uNdbwvo/obngA3n6PzB7o0jzSRfOa
+         VSx6I/cFhwUMkxFUFECpxkhfZCLhFzcgsyfJA046oVoeUaGvjHXTYnXxpjgO1xgyrTU2
+         lH6rGvPa8jK8PR7W4B9KOciHQX+uLmc6GsaneAt+nRQMRr6KeOYSVmmTqunvOBB0JeN9
+         yGq8eV//WtYQVoDT8M7lag4lqrZipiGCZCjyBOI1mRVprrTVOUHbUnob7WIn/trU55EW
+         VuKUQqqQ9Zq2b+TKHlUOvwk6lki5EPGoGlwqPgdk8mZNvMKe6cMik/wmMxpWVGaWDWus
+         GK6g==
+X-Forwarded-Encrypted: i=1; AKwUvByvMtXg6/WPBS6jLgSVdbvtvCK4k8ob0shv6Uvsi9Q4oCP0nJeTurw0pOpSqCDhRiA6o0Oa2D34Mg==@kvack.org
+X-Gm-Message-State: AFuF++n2XFvDJ9KBAUP+oRWDOh+7TVP8SrGy76XCzyM6Vs0+BLDbT/I/
+	3E2AYthjyyEXnEA/STOL/uzQP4fyWae60BPL4fX8fG2EH4Zvsb4qC7ZZgJZep3NSNw0=
+X-Gm-Gg: AYBFou1FqmfpJQZsYyT+KMantMPmmZaB2mHuufOn9CDX2okOCInnztw6F/PIOcNQk90
+	QQABEzAY6v8bGuFDa5fx8gLWj3FDad+NUk/RlzIaTEkZkSnwQ97I1YUsAT6wehrzi8oqXKec+kO
+	tKy6g3ZmLHkCRNtLaoP2IYOoQcK1qkh80DbBTizv+vUHwV7Tv5X2/KgVqj1Y28UqoyEwAsgQhCa
+	b5BVh2U/LmpNcC7f4JXjcR0TL/CsN4Fk7HRF7W6dqMWKUTtZbE1xSgP+zhry5OlNnUCgbkIPhKF
+	nhVBQ3xTOkYsEEt0DwMYoEq+BXuwr44iTdaLk1TeEMRYUwbI0tp4djs9+Ab+T5c9EBQDqYNzwwQ
+	d/2S/Vb6rRfm6Hpk09niF1Nb4UoUunRGg2scq0eSwt+KmmLVFV8GXXXNgGluCHZzxOSTq/4cg+W
+	5VkD6310rjFjubhR9Gfg/zJBBFwiOWg3BB6yWtCWgIvx/kRsAs4fsQfsCnzZAHCHkJ4J/kV1aE6
+	XkarvvLT9BBdp09ln9M0Xztm0cvC8OdbhikrVi3gYBa8Wj+7cRBsNQ=
+X-Received: by 2002:a05:620a:371e:b0:939:10dd:9c01 with SMTP id af79cd13be357-93bf5731121mr233734485a.38.1789834094077;
+        Sat, 19 Sep 2026 09:08:14 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93bedb05a2esm213660485a.33.2026.09.19.09.08.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 19 Sep 2026 09:08:13 -0700 (PDT)
+Date: Sat, 19 Sep 2026 12:08:11 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Chris Li <chrisl@kernel.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, 
+	Baoquan He <baoquan.he@linux.dev>, Nhat Pham <nphamcs@gmail.com>, Kairui Song <kasong@tencent.com>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry@kernel.org>, 
+	David Hildenbrand <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Barry Song <baohua@kernel.org>, 
+	YoungJun Park <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren =?utf-8?B?QmFnaGRhc2FyeWFu77+8?= <surenb@google.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Rik van Riel <riel@surriel.com>, Wenchao Hao <haowenchao22@gmail.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, 
+	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Kunwu Chan <kunwu.chan@linux.dev>, Meta kernel team <kernel-team@meta.com>, 
+	Linux Memory Management List <linux-mm@kvack.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
+	linux-doc@vger.kernel.org, 
+	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Kairui Song <ryncsn@gmail.com>, Joshua Hahn <joshua.hahnjy@gmail.com>
+Subject: Re: Path forward for Virtualized Swap?
+Message-ID: <aq6cVXPLUUwJA7-2@gourry-fedora-PF4VCD3F>
+References: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
+ <aqJXx2vtbKaRLt3x@fedora>
+ <aqLi6cIjD2wJwk0B@cmpxchg.org>
+ <CACePvbUG1ApMzMdEzf-63rpjgGVNsRk21pT72OQGJpM=OtRUew@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 145B1A000F
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CACePvbUG1ApMzMdEzf-63rpjgGVNsRk21pT72OQGJpM=OtRUew@mail.gmail.com>
 X-Rspam-User: 
-X-Stat-Signature: 81uu1k49kkpcetbp3g1wmxouqcbzmq4g
-X-HE-Tag: 1789834054-47865
-X-HE-Meta: U2FsdGVkX1/u3vtAy8BAWqN/f50ud/8NwrtygLWUwXWMSbnGgBVZhPTq94ipQJJsW5lc9AFQ9s54iCkMi8LpAQAWrglKslMAWnjNJY9rTsp3rCQxvVmQzpH7Hv+9Lc755ZWpfxv8IvwPUr16GLIS4KSvXuZ+tHk6eXGxtDQOoKY9PADIfyW1FHsvp+lfCD7ayxeHwI/XzGAF3bFmpus0s5qzg895960A6t8r9gXjwBSZkYYS8/oMi3Uooc+msNkD8qTHT2V4JbbBDLvMzI++3BDZqDtE53uZ9CxB4rdRPiOy3m80iPCAImVyl0P4z2yjnm7idaFuTHxJIC6UqEWPy4XTxFV+9vzmqkBxupBu09pTy3n6umVvXvGWpD1khWiO0ObgFix92FTC23lm2oGeHnbBQWUizJVYwhPAgm/F0KBcty1w6WiacDTZ5D+YiVukuNwMNwZ3fX+r03HsN0KaOSbsj2rKFEkd/2HEL77Vl2JkPyf3ElRWvLZmsd276bGYgZKyHZUWDzvUJGqy67Q1DPw3mUF0uw4DBqjtNbvXQkBtnVT+PATsYeYmqhBwan5Zp8idcVCn11xX1Y6oAxlp4IFxbStg9eC0E9nDjAOB+gbGZkG2hXHs/p6ZeH5Ziz21PoXE9cb5j8+ARustp+V8QzlFJbSW3KTVpVSvejAVne2RrSN057DV9PEnPX+AEZTSOgkcg8TPuU+PMBqnTQqB1yj9evroF3ceHc0+2RxS+jGDUQPt9XyFVKwGERMk+6fCISmMHW5J2wf2lV4W1rnhHSiQP9NJb020ht/aCYz4YB6qv35+9oX3fiZIjSy/tU31F/qm0tmqehMiKDXnTodjSiGA8szwz/vDbSEYUuawuGpO6Idjmc4Gs6NpwcCaf4t0yA1bCq7B4QURRn2m9+IoI4nTonq73Gi1Yt/iU/6ultgDo1v9Rw4xY7FUwvm8Yhlfm567QthMGpzx25QNTeo
- eBMTUCHx
- UffJVSceTuFYtvmYm3B0z9w/AC5TBsB4NHwsCTo59Gv10sOAMvsUMLnSTPNkVokGHFbD1UVOOeK2XCCscsGsVw4CHx9jxG3zCnv14jqNJoYfaqrEJNQz6JohcIwpRrZgrbtRVbiXF3jtGrMGYPqLrW4aWTYw3WKcIlqG6F6vBtHshnKM1SjGdVdJOJmDOl+4XHZkkUbIG9ozC3iEDQaC7mpjy9EW9ErTfgM7U86/D/EZwpa9gkXaraKuE/qGi7CX/pxf40l9IojAx27ADPSAE/c20Iw==
+X-Rspamd-Queue-Id: 2B6CC1C0002
+X-Stat-Signature: tmurtd5z673d8sm66zxnagxe7j3qszup
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789834095-774939
+X-HE-Meta: U2FsdGVkX19K9eUDbitUN7e1oR5ysUxlPN80218io6CvRoXGU550KY7FbjhOr6PAa1YBumyUEtNFnnP570Z23xaQmvlpHhW3rx/zEN7rBoXthtiYcJps0g3kbLfh5yf6zZy9RPJjMLBLaj+QD56L1D0oa3Ug0Um5aJH9ixcsxdlFww5mV5lRrgn6md/zussOFHB1qrQT+xg1636YX/VfyN2R88V7ttImL6Fu+c3XI8BuQbP1DtYdg/fnRRQ44k8Plex6qg9ZSBsc2aqaDXTliVTSoJrns3uokQP8GQDRxuNEpHFQvuApULdBZsqimZjEDFz1NxEKvWP6Kek6eAmEBPKeRXgpKwiyMxJlx8VzPSAX91yEdcKtWOvClswvEZE0iv5eAu34RPLrsQw6B/xwIs6leDbI2zvfIK42tQWkYz1pCpyC4dATJtkzJRihjxVxOB+d8prN/xtfBPSmEM3xxkLGkKhvxH9gqa3/QQO1ga8P82ttRNLEt32LizTmCNNvtQYOCGHsyDEm4BiGHwFx4BiGDobuVQLMehlbGBy4JhoXMeYzcbiMOYausOPtrEJ0HYnv+Dhv4ZC37Mze1fbg6cSo1sVNc9hlgDPFplpFBig581zSJnrxYUF4NfK6Fa71Dso0XVdfDrPeVp/TdyCx93XTSO3f2bc2zdg9GbOcT3w/iA5VXxj9RF6hJAsfve4jt7dpU7rAQbv2b9K3B4y7U9hpsVXU4lwNESQUt0F5CIezb4b0pUzdEJKyqDyJGh39FIEXxkSsTkKjjf9B0Ey7jaRIbcz/5VxRt2YeuVjFaDyFMObzwpXQCWoAdPrWMEZxi2G6PzhY3lAohCH/Mxqp1bUrLocOX1X/d48V0OeZ8ICT4r6CxaCsXKw8EE2UkCZErsvsLdNn6zUETvJkoXE0QX95TQRmvZ4TX9MiRJGkQ7d/JBM0Vsd3OQgZR/wrKcd4Cz+BNO6EChMUtFg1S1e
+ I+q7yJho
+ NcP9JHnK/A01d0Z1p9K7keSg7gytBoow1tefBoaEyt5l5Abr8FxzSsGJIr1EO/fKdhq2iTkUQIg3FnGM4aLeoeAp1rDksbOjUOpi3nlXOKJyca7iZ7KXLbkVlUqoPwsLf3KRyF48hDqnb4f2KctFCejta8FvuX2UaVN4dZTgHlFINY5JHBXULlBaeC8WSis7cwu0vt9/3c5sz4R0q5B2F7K0aTaDPiuL8T7rCdOJMpDJAVijbqQFVldu0pNSTwkMsbZGIAfCWGPz/KvL9tbMCBfF+QLp9V0VwKz19BYRLu8c3+A3sOZERevd/koqSFuqItGiwC/8BqoHu/dKFu/tKuZYnXYRs2g7aaiVVrcas2HeL6NNzlZL7XavRO5ZEMXRuvLa8+33tmboic79IbKIh1iQukhpDaqjev3ng2CY/tnt4OYJGwM+9OoioPZNZ9GpVGCxV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,47 +140,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 19 Sep 2026 16:01:58 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
-
-> Commit 50585192bc2e ("mm/damon/schemes: skip already charged targets and
-> regions") introduced a minor issue that causes the last region to be
-> skipped before it is processed.
+On Sat, Sep 19, 2026 at 03:45:03AM -0500, Chris Li wrote:
 > 
-> Example:
+> I found this new concept of "compression space" very confusing to me.
+> Can you explain the swap behavior and problem using only normal memory
+> usage reduction and latency without introducing a new term or new
+> metrics?
 > 
->     1. Target has 2 regions: R1 (0-100 bytes) and R2 (100-200 bytes).
->     2. Quota is configured to process only 100 bytes per window.
->     3. Window 1: Processes R1 (0-100).  Quota is full.  charge_{target,
->        addr}_from is saved at (Target, 100).
->     4. Window 2: The loop reaches R2.  Because R2 is
->        damon_last_region(t), the old code unconditionally returns true,
->        skipping R2 entirely and resetting the charge_{target,addr}_from.
-> 
->     Result: R2 is permanently skipped even though it has never been
->     processed.
-> 
-> Add a test to prevent this regression in the future.
-> 
-> Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
+> The normal user doesn't even know what compression space is, let alone
+> what makes it transparent.
+>
 
-Other than a trivial style that I commented below,
+Sure they do - it's the amount of memory consumed by compressed data,
+including the metadata associated with it.
 
-Reviewed-by: SJ Park <sj@kernel.org>
+converting Johannes statement to diagram:
 
-[...]
-> +static void damon_test_last_region_quota_reset(struct kunit *test)
-> +{
-[...]
-> +	t = damon_new_target();
-> +	if (!t) {
-> +		kunit_skip(test, "target alloc fail");
-> +	}
+>> Compression space is not a separate resource. It's page tables,
+>> backing pages, and swap descriptors. It's just MEMORY. 
 
-Let's drop braces for single line, as suggested [1] in coding-style.
-
-[1] https://docs.kernel.org/process/coding-style.html#placing-braces-and-spaces
+                          Page Data (PD)
+  [page tables][                uncompressed page                  ]
 
 
-Thanks,
-SJ
+                        Compressed Data (CD)
+  [      recovered space     ][pte][swap meta data][compressed page]
+                              |                                    |
+                              |---------compression space----------|
+
+
+                        Memory Pre-Compression
+ |[  PD  ][  PD  ][  PD  ][  PD  ][  PD  ][  PD  ][  PD  ][  PD  ]|
+
+
+			Memory Post-Compression
+ |[CD][CD][CD][CD][CD][CD][CD][CD]-------- free space ------------|
+   ^----------------------------^
+         Compression Space
+
+
+It's actually really confusing to represent this space as a traditional
+swap device - built on the assumption of a pre-defined size limit - when
+that size limit has already been defined (the memory itself).
+
+Baking any kind of pre-defined limit *into the infrastructure* (whether for
+an optimization or ease of implementation) is what requires users to know
+what compression space is.
+
+Even using memory capacity at boot as a limit is wrong - hotplug exists.
+
+> Why does the user need to care about compression space again?
+
+They shouldn't need to, that's very much the point.
+
+~Gregory
 
