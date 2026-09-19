@@ -4,85 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BC9AC982D7
-	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 10:29:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 751D8C982DA
+	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 10:41:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5BBC66B0092; Sat, 19 Sep 2026 06:29:44 -0400 (EDT)
+	id 63F8F6B0088; Sat, 19 Sep 2026 06:41:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 58AFF6B0093; Sat, 19 Sep 2026 06:29:44 -0400 (EDT)
+	id 5A0F96B008A; Sat, 19 Sep 2026 06:41:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C84B6B0095; Sat, 19 Sep 2026 06:29:44 -0400 (EDT)
+	id 444786B008C; Sat, 19 Sep 2026 06:41:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2ECFC6B0092
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 06:29:44 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 96FA5C0219
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 10:29:43 +0000 (UTC)
-X-FDA: 85230140646.18.2035053
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id CDD81100002
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 10:29:41 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=t3ObyEOH;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (imf14.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 150086B0088
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 06:41:08 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id ED32C16024F
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 10:41:06 +0000 (UTC)
+X-FDA: 85230169332.15.966791D
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 0C8BE180003
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 10:41:04 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=j0yuEmrn;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf06.hostedemail.com: domain of david.laight.linux@gmail.com designates 74.125.225.141 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789813782;
+	s=arc-20220608; t=1789814465;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7VDCeAsJ2GjjHaIiTS2+Aqx9bChExliZfZyuB40wZfc=;
-	b=q8W14/A/cNmb2We7sAWdYcj0ZcrheTkWiyAfzAz74GMVtZUAAGw0GSphpw+YhJDh/nPorS
-	IfmEVv1AB6TNzqnprDWLGo2Aj91CkL0YsfSmVv3ZMrk9B4lkp6YdfwxqySWTxpIrWd4f9c
-	fFxXxCn9P5Ri4y+tH+7AZyeMUkPtJCs=
+	bh=x47tJsyRRuS9WWsrQkleNMY57Cc3HHS/YjAw1Ng37/U=;
+	b=RDhn8b9drlYcWWWkUDKR87zDEImWMVp8wPWbNOYLg1+uKPbSG+aEUXnlcvTlkYysgMCVtt
+	JzyJKWAqIJ6OSox6yLUAYcbsNKHtpIHaCO3FXE6Wa1vQgDIM+AOtdFbQmyDzM3zEFnMoCE
+	mUiGsiy1izgrLCefL+/nUj1nXPgSPHI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789813782;
-	b=hKHBBxOlmT4ZzboEGsk93XUBQX3EViOOELel0Z7mIGdu4ndwx20QmERXVIelh4GryWapeo
-	ww9dS2yoTAzC+M8iqebkvKCB7gL01XtI4v98iyQgc7aeCQQ13jSpCGyb8qnKSWbw7VTGwM
-	ahLmOtBMwp8sgbuRJ8DGjHq/2+2OlDY=
+	t=1789814465;
+	b=BFOMJzk8iAp20FXUK4Kl82rEA580E/Rm6DVg2mwMnjbwgcFKdcXvTq4E7rWBNd9aUePJE/
+	iSk36rOfxM2dhP3SmJtDPrTH6FM9Yax2TdJHT4EJAr8JqIUZQzCaA9JitAykw5Xb+rVP9S
+	Px/CPFl033TEmre0H/2lILDZshMPjoU=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=t3ObyEOH;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (imf14.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2C0176020C;
-	Sat, 19 Sep 2026 10:29:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53C271F000FF;
-	Sat, 19 Sep 2026 10:29:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1789813780;
-	bh=7VDCeAsJ2GjjHaIiTS2+Aqx9bChExliZfZyuB40wZfc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=t3ObyEOH+Q/ZSrDFHgA1orpgeeSp2dFDUB95vkDgkJwrOqZzJ5s+mXBrQ1xGbjk8i
-	 cBQBqbljrVzDFvnYRWIM+eSPjBCzyR9IwPj8KNPitkLoqYlzrF+KSvTbR/Cf2euqsQ
-	 Rp8sW3yoKxGdyWzvBSvN6sSnwTuK0K6dm+AKb2hk=
-Date: Sat, 19 Sep 2026 11:27:44 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: "David Hildenbrand (arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
-	Peter Xu <peterx@redhat.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] mm/gup: honour FOLL_PIN in NOMMU
- __get_user_pages_locked()
-Message-ID: <2026091918-disparity-stifle-958a@gregkh>
-References: <20260919-nommu_gup_pin-v3-1-3660a8851243@kernel.org>
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=j0yuEmrn;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf06.hostedemail.com: domain of david.laight.linux@gmail.com designates 74.125.225.141 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e721b5503so15163495e9.0
+        for <linux-mm@kvack.org>; Sat, 19 Sep 2026 03:41:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789814463; x=1790419263; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=x47tJsyRRuS9WWsrQkleNMY57Cc3HHS/YjAw1Ng37/U=;
+        b=j0yuEmrnDXKdesblvdkOSZc8yKf3xvulUxKIahyL8bWyfQl2HD+e5M5cLdcEOjQ9qQ
+         Ft1r/pzAaMIWLm9ZLvYO8rSg5uGtrCt1/QplrTQUXS8EJx+wUdVptzV1uaWH/3nzgJg9
+         5V4k9n558U7D2uKSxvTEB6QmSdgFtGyIcP9+Smwg0iRdfuHFrb86Uz9p8ihhpRb23758
+         r2h35yUCFwzacrRoORgZHVPEEcc2jGliZHOL4ZaqfL++sEaSboARJvafTixr/TOYZ0XW
+         /cN4lPHQO1g57kAafGAH27SqwW/zOVqPp2avWtfGuJNfbByB4NTXq/SEnukG+pfFb4sY
+         gXzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789814463; x=1790419263;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=x47tJsyRRuS9WWsrQkleNMY57Cc3HHS/YjAw1Ng37/U=;
+        b=HH4yVDcRy4s8O3aVzrUrhhpjSR46X5PvwDnlEF0SSujbn+IzcClEJ2poWfsywoakv2
+         PWINBhEXfOEApJbmfRagmt/c3tZyWzwOJPTl5tEg2qNYtY4yECOG+kCwgtEav2uftRMi
+         V6l4B0XcyOGLLjOS8kIM51JZlcyg93mkEdb8iIugOt1kTpBOtNErezqe8v/UQZMx4OgN
+         AqRISsjFoRB4s/fYP6kYiW5YKOtE/5H5lIlDVK+28QbgHu/CVUnjGKzDUIXkTW7hCQeH
+         U7dICcpwogF9xGWutezczfuWy2W8kthVsTk2AMHbmyf5XTsd4y+vwKdE5AF6QUFHyRSg
+         zHiA==
+X-Forwarded-Encrypted: i=1; AKwUvBw9rJ5+cbbRwG0H/iYuXIubPelroWl4AcOS3a3QMIDM8ypIH0KPlZcqbX58dEEwebTl0lapIoJv9Q==@kvack.org
+X-Gm-Message-State: AFuF++l8QD/MG8TaOGDfKQshKESQy7LCfnzd6adyjik32610affbBPBD
+	Cm8lg2E7GeBc5ZUoxysxpMm9Jb3QI2BORXzauRa0W5kYe4+rpZAppQBy
+X-Gm-Gg: AYBFou21R0ElRMmTcKUrDAHDKdR8GZStNxrD9+3s/Wz0NqwDNre1kzzh3rSl7VXHN2c
+	d/TfP3AU5bJRHQdmxfiY85TLJ+qXsaTuGaQ//LNgubGxUqmjl95A3XMSRbEtGhJo5VY7rrHtsf9
+	xtJzaTK2TMj3O32Ndxuvs76cHMqEGzZJ2Vp7iyLIoe3dey2Y8YliKx97/cwbR/RfwtyUWNJdFnA
+	cMiVYsV7dhzBijjldOE8qcsk5pBBomXmYJET7BcHC/SymDtBka5PbTQNbkP9FMEOygZhfnJzlV3
+	oVhmy03g0NkHa9NKGC7X8qJ8gD8fkP4nIC757RBlfV2wDXORWoT9Ozki159GlKuPi8GsgJsfClG
+	BN8XTNLKQTijgqdUfG7BJb7XPr+mxSvx1hg++99Y8SQg4XhOv8NAsDBPsXbvYRZ3lC8GZhyIOpo
+	JXZCZxZu9c+FEmpGhRlc1rjvy2+q+rQBr+AwNKaOrZj+NWqB22KrbNU3yioVz43NlnL7gGQd44i
+	f/eGOOxTPGsK9mZV2sUi7X+LOZz4VeFOsk=
+X-Received: by 2002:a05:600c:8518:b0:49d:28c4:b304 with SMTP id 5b1f17b1804b1-49fc5741563mr73992215e9.29.1789814463336;
+        Sat, 19 Sep 2026 03:41:03 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fc521f5d9sm32797955e9.2.2026.09.19.03.41.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 19 Sep 2026 03:41:03 -0700 (PDT)
+Date: Sat, 19 Sep 2026 11:41:01 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Karl Mehltretter <kmehltretter@gmail.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Rasmus Villemoes
+ <linux@rasmusvillemoes.dk>, Hao Li <hao.li@linux.dev>, Christoph Lameter
+ <cl@gentwo.org>, David Rientjes <rientjes@google.com>, Roman Gushchin
+ <roman.gushchin@linux.dev>, Catalin Marinas <catalin.marinas@arm.com>, Kees
+ Cook <kees@kernel.org>, "Gustavo A . R . Silva" <gustavoars@kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>, Nathan
+ Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>,
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+ linux-hardening@vger.kernel.org, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ llvm@lists.linux.dev
+Subject: Re: [PATCH v3 1/5] slab: align ZERO_SIZE_PTR to
+ ARCH_KMALLOC_MINALIGN
+Message-ID: <20260919114101.34423251@pumpkin>
+In-Reply-To: <20260903203720.63689-2-kmehltretter@gmail.com>
+References: <20260903203720.63689-1-kmehltretter@gmail.com>
+	<20260903203720.63689-2-kmehltretter@gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260919-nommu_gup_pin-v3-1-3660a8851243@kernel.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: CDD81100002
-X-Stat-Signature: 6zbw18fkyxtna31w3t3oj1nrwh4ay35d
-X-HE-Tag: 1789813781-331322
-X-HE-Meta: U2FsdGVkX1/dhOxhz5dZmnpFFr7Soh7lpHHq6SYbarE0N74apaso02NSRFVSMGbNI1PeWNr40sTjzLxR47/ZYmZgF4IWmepBrbZWTv0tYtFIT5KF7W3zOCitCqzzkcDPuPvBCO+wZ9JCSpKbhMQ1X9RELPFZ+3OsWTv8chcN3JUbiuO+5rs1WWrrWfToom7oQk3FKxkEc+7M+BsfPazDNJNGEvBUOl77jDYmo4jZt79no/tzyVEOoGRebsGRXkQpNdtCqz1VqSfRCy4LZXyoT/EaHTog6vU0S5OJtxUEI5SB1Ba9exhUJynjfsmsub3R2O0dWoQmVtQNCVgAHB3ehq2kjFpgCvZGa9uazEeDKPb/NwY1iAC0GQ5L1CK7BaCRHjTIiaCdk/++RP2haoMpONTIxxWOcnxAXHc5jeg+yrRmKek06JIJer2AHs0kjOh6FhEKM5H8QxRaQ6pe0QbRIp/KJ/c2kgBksU+p5iqMqyAhZN0B8LMRYm+fvT9INL+3f1OKJcFb2YnHTIsjxvI+X0XJDrl/MxpSBuEHlxmr9lsK8d4TJjN2eIxtYwRI7yFhJOrC9P4WNrnhSWbS6SuW6zToqPDd2oYRpn0ow7abOWpGCRoVlCMUjBnCcezs7f4XmWBkK/mnA0D3ruUNxeD2ev4PFWT9jiMEFIOh4OKPr7vO2rgxYu53sHN6LaYuWrQXfcTUaq/ELxpcT9yqU6WCYcl/TxL5KCnYf9ia2Zdo7w2uXbBSBBkD3HTtkOvcI8paOm1k7C66sEo/zMm3lP5PLW2VARpxBu/2Tawpo9wZMJiPCzpjnQRS+Ig6yGLSS8L3O7vYZ7KGRHLutHDD34F9+D9VMrrmU6g5YpyLFZfjyydK9linwVWvDcv4be7wiKAMLWX3yN87QAbxnJW7dONLD2TGfHofT1pRrjQrTP6gvByRuUrQ+uqkqsiHx6dl/ejjzECtR2ui+U9SoNph8f4
- HrIt9MF3
- N/yJ/Sr9bBbpkDhDrrdm2cLs/ISF/wyrDNoXjxzBjNTnxBZyZLDpjXOHfZsx43RGYqqEO4pmufCnd0ZO4HuBLGWV9exO/paQ2SUU8ZAinlMpn2daz1VknfqxfRYdXz5njCS35QAHL4iFc1X0rs+oG7QwAEDis0nQnqA9zoyxHrvmEKM92hK4oyl4cd3pEZ8o0x3Pr6q1jCqiA4Ao/70BSwBgpO5Sef6cnE1Q3H5Hm8BSZSmkjBBjZtLKK6MdJEHhnyi4u55M0652n50IEM6chz3IHRkMiyDc4p3SpTsQ/8a5fB/vNE0GNpy4rBIhxvsp7CYwRs7oHPddyQqZuZmxEqdLlDHGatS/FmW209ZNcWOVZEr+/xK/FzeRmh86NODQcotF/mYDHc+pytBpIUx3dr08X3Euqg/P4xD1DE9Ld7SipSudt15twwcrutdfmKotyXGwiwIWmZhj9OYbGzICNSHE5JdRE18oQW7av6fcrJkTXGUPTX3oLJCU8fhwqC641KEstV4znyyV8CTlX7UD0O1hRiq2u5zBJhjEwE0RnzZMJNiN5pedLdL1ka0OS0YVhxS4AEReGDJA6QjKi1QBmwn6fQDFvoqBFT30NdTToCGAMtq0=
+X-Rspamd-Queue-Id: 0C8BE180003
+X-Stat-Signature: 8mpi6midjbmkbokce61k8k348dhuhsrz
+X-HE-Tag: 1789814464-874490
+X-HE-Meta: U2FsdGVkX18w4zht7Tx6kF+WF1A7xdEa9EbEdq1u0yMe681sXfXT3NE+9I3/nTZnpBOUkpU2W6pOUhmUToSnsOxxAfPNBuiyDmd2p/cdDTJqvL/o16tWCWMRvTUcvPhFE0PRlYuMjaAFiwKgM5DHg4GLC4RRTowf+I9cnzae24yt9C8Tpnvkc81Y56biZJn8fzKrxFzAj+1GQMNPMjjKLbvQhDFBygTzIUbo3/Zlv0slblug2QqmfZUNV/MjlGdk1hSuUiAsH3UrzIPJsDWCdg0NIXEM36vD9wa+3mtfQyjsu8S2Weefg5g+LUc8qZm5mIMaKfRCs7bV9MFqsvULWYEG+eHmBZ8K9MGRueGxdN8/5XCH5vQMRMqzgNQiui6GMybHQ+xvTv4mbYa87TzSqYQB3WcRyECVue3pkTjttVl3n4wWRULTS4LsMyfJYRPM4NIRJbEFUrxhp37bnj5wLllIsTrD8/A+fhfLxXB0cF92ABo3eY1Aezdh7OJoL0mQRrJxc3WSyRTdbOZMPH1Iqxgzk4jfiS1EWmhT3x7enTQRrg0jlGLRJ/N4CuC5cnAgRAhmBfclemCbuIP3kSvXkrXHGRwFO8EGcIbkg9G5V3P3SSoEYEFlSvXwSTaqVgxC9eGtOSqYHfMMuQwTViCYzhIZPd16QMZ3jYVzpz0zc8fxcN9Qx2W1WS121L/pkEeHS9S9jnsBI6g4lHcbU7eJibi0qXgkzcE+BA4aChghLa0ionaVv3f9lDP7j7ZjYBbN5aOp/b29s3L1X7Z5+M098x8EdjA7PKCmvaR1GoJZikuWd98CO2bNCBZRs/sS2ZRn1Gdujw5XWP5SgFaNLLJ2oz9ZF6LnZNeQ+PofTJHWBmG+4eS5N7Jn+CTBYCexpsYut9NHLZ8JWIfUKkq5jlo8QMs+5iNDy+g0X6FgnI25+0FJJRtRs0YiTfyRW/4TYJE802OtemsBHSR35gOTfSD
+ Hg+BdczJ
+ b/7E9Only8DETyGA2xRDlxP0Bp928LsaHX8O0dlLY1AD8dIxbrnned0mnJYr/REzGH1q4f/3Tv7fo8P8SJU5FFhlLWRYkar3qAVOzMuSbuP7NZGARW1kD+PneUG5BxP0i4VYlGvMZOyQoonwDCdrPLZ6fku5XAVzDHSSiuex8vmsS7pccbpfESs8Ez8LxUX1wpfyUGXi0sCF6IR6VAXkMwrmM/jPxxN5f5GfTUsyHnSqHlPdi55XtEB3uQYYS/5XZdly35eJAUEjNARh87C2iwUccAXZWrkXfd6keh0WB+4ZE4r+QzctKpb7OhKV1KnCpPfuSpdBMXZ0do+p/jwynsS5w9p17+K3nDPePE90kTF6hOFIHCJ/igo01HjXmu3+SiZMf80c2b9gO1ssvsHkoz6rs6WzV3D0X89kIbGQlU9xMVAn61/bxKk7blNLoeH55HjdBZDnYw8WCDW9+h+D+BOHO4UszzYP4BE44073Wrf9nwHdhb4mstPR2wXPRqO6IQjdK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,62 +134,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Sep 19, 2026 at 12:04:36PM +0200, David Hildenbrand (arm) wrote:
-> From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+On Thu,  3 Sep 2026 22:37:16 +0200
+Karl Mehltretter <kmehltretter@gmail.com> wrote:
+
+> The kmalloc entry points are annotated with __assume_kmalloc_alignment
+> but return ZERO_SIZE_PTR, currently (void *)16, for zero-size requests.
+> This violates the annotation when ARCH_KMALLOC_MINALIGN exceeds 16.
 > 
-> The !CONFIG_MMU implementation of __get_user_pages_locked() takes a bare
-> get_page() reference for each page regardless of foll_flags:
-> 	if (pages[i])
-> 		get_page(pages[i]);
+> This can mislead compiler optimizations. Clang's UBSAN_ALIGNMENT detects
+> the violation on armv5. GCC and Clang retain the ZERO_OR_NULL_PTR() range
+> check but eliminate an exact ZERO_SIZE_PTR comparison after an annotated
+> allocation.
 > 
-> This is reached from pin_user_pages*() with FOLL_PIN set.
-> unpin_user_page() is shared between MMU and NOMMU configurations and
-> unconditionally calls gup_put_folio(..., FOLL_PIN), which subtracts
-> GUP_PIN_COUNTING_BIAS (1024) from the folio refcount.
+> Define ZERO_SIZE_PTR as the greater of 16 and ARCH_KMALLOC_MINALIGN,
+> retaining the existing value where it is already aligned. Assert that
+> ARCH_KMALLOC_MINALIGN remains below 0x100, the value of LIST_POISON1
+> when POISON_POINTER_DELTA is zero, so the sentinel remains distinct
+> from that poison pointer.
 > 
-> This means that pin adds 1, and then unpin will subtract 1024.
-> 
-> If a user maps a page (refcount 1), registers it 1023 times as an
-> io_uring fixed buffer (1023 pin_user_pages calls -> refcount 1024), then
-> unregisters: the first unpin_user_page subtracts 1024, refcount hits 0,
-> the page is freed and returned to the buddy allocator.  The remaining
-> 1022 unpins write into whatever was reallocated, and the user's VMA
-> still maps the freed page (NOMMU has no MMU to invalidate it).
-> Reallocating the page for an io_uring pbuf_ring then lets userspace
-> corrupt the new owner's data through the stale mapping.
-> 
-> Use try_grab_folio() which adds GUP_PIN_COUNTING_BIAS for FOLL_PIN and 1
-> for FOLL_GET, mirroring the CONFIG_MMU path so pin and unpin are
-> symmetric. Keep supporting the traditional behavior where users specify
-> a pages array but don't set FOLL_GET.
-> 
-> While at it, don't return NULL pointers in the page array,
-> as this is really not expected for GUP users; instead, just fail and return
-> -EFAULT.
-> 
-> [ david: support traditional behavior with no FOLL_GET, extend
->   description ]
-> 
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Jason Gunthorpe <jgg@ziepe.ca>
-> Cc: John Hubbard <jhubbard@nvidia.com>
-> Cc: Peter Xu <peterx@redhat.com>
-> Reported-by: Anthropic
-> Fixes: 3faa52c03f44 ("mm/gup: track FOLL_PIN pages")
-> Assisted-by: gkh_clanker_t1000
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> Fixes: 94a58c360a45 ("slab.h: sprinkle __assume_aligned attributes")
+> Assisted-by: LLM
+> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
 > ---
-> I added a best-guess fixes tag. Given that this has been around for a
-> while ... and it's nommu, I think this is fine just going into the next
-> merge window. In that case, I will pick this up myself. If we want this
-> as a hotfix, Andrew please pick it up.
+>  include/linux/slab.h | 12 +++++++++++-
+>  1 file changed, 11 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/linux/slab.h b/include/linux/slab.h
+> index cda126def67a..563dadc16d82 100644
+> --- a/include/linux/slab.h
+> +++ b/include/linux/slab.h
+> @@ -262,13 +262,16 @@ enum _slab_flag_bits {
+>  
+>  /*
+>   * ZERO_SIZE_PTR will be returned for zero sized kmalloc requests.
+> + * It satisfies the alignment promised by __assume_kmalloc_alignment
+> + * and keeps the historic value 16 where that is already aligned.
+>   *
+>   * Dereferencing ZERO_SIZE_PTR will lead to a distinct access fault.
+>   *
+>   * ZERO_SIZE_PTR can be passed to kfree though in the same way that NULL can.
+>   * Both make kfree a no-op.
+>   */
+> -#define ZERO_SIZE_PTR ((void *)16)
+> +#define ZERO_SIZE_PTR ((void *)(ARCH_KMALLOC_MINALIGN > 16 ? \
+> +				ARCH_KMALLOC_MINALIGN : 16))
 
-Which ever you feel is fine, as it's nommu, obviously not many care
-about it, including me :)
+If ARCH_KMALLOC_MINALIGN is just a constant (I suspect it has to be)
+this would be better as:
+#if ARCH_KMALLOC_MINALIGN > 16
+#define ZERO_SIZE_PTR ((void *)ARCH_KMALLOC_MINALIGN)
+#else
+#define ARCH_KMALLOC_MINALIGN ((void *)16)
+#endif
+to avoid bloat at all the expansions.
 
-thanks,
+David
 
-greg k-h
+>  
+>  #define ZERO_OR_NULL_PTR(x) ((unsigned long)(x) <= \
+>  				(unsigned long)ZERO_SIZE_PTR)
+> @@ -625,6 +628,13 @@ static inline bool kmem_dump_obj(void *object) { return false; }
+>  #define KMALLOC_SHIFT_LOW ilog2(KMALLOC_MIN_SIZE)
+>  #endif
+>  
+> +/*
+> + * Keep ZERO_SIZE_PTR at most 128, i.e. below 0x100: LIST_POISON1 is
+> + * 0x100 when POISON_POINTER_DELTA is 0, and no architecture currently
+> + * has an ARCH_KMALLOC_MINALIGN above 128.
+> + */
+> +static_assert(ARCH_KMALLOC_MINALIGN < 0x100);
+> +
+>  /*
+>   * Setting ARCH_SLAB_MINALIGN in arch headers allows a different alignment.
+>   * Intended for arches that get misalignment faults even for 64 bit integer
+
 
