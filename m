@@ -4,129 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08635C982DA
-	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 11:05:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 070EBC982DA
+	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 11:18:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED3926B0088; Sat, 19 Sep 2026 07:05:04 -0400 (EDT)
+	id 9E5096B0088; Sat, 19 Sep 2026 07:18:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E5D636B008A; Sat, 19 Sep 2026 07:05:04 -0400 (EDT)
+	id 9966C6B008A; Sat, 19 Sep 2026 07:18:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D25646B008C; Sat, 19 Sep 2026 07:05:04 -0400 (EDT)
+	id 8AC496B008C; Sat, 19 Sep 2026 07:18:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AB3F06B0088
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 07:05:04 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2528A140213
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 11:05:02 +0000 (UTC)
-X-FDA: 85230229644.30.4E59DF5
-Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 455901A0002
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 11:05:00 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=D3hcyEas;
-	spf=pass (imf19.hostedemail.com: domain of david.laight.linux@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D5956B0088
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 07:18:54 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D43E640219
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 11:18:53 +0000 (UTC)
+X-FDA: 85230264546.14.2C094EE
+Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 161381C0002
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 11:18:51 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TZpN2HmS;
+	spf=pass (imf18.hostedemail.com: domain of aa9736195201@gmail.com designates 74.125.227.141 as permitted sender) smtp.mailfrom=aa9736195201@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789815900;
-	b=k92ZqgHr9pbhiCAco3UE0WJwcrtBCZgP+X2ywwZP1ZaoFByC2lE6t5ZzajJ8UUSMPw9iYU
-	nDdafN/1kLe91HC7MN+lZFy6HaHQDdGp8gqMr3j+hlgFH5+lpwGKBYmxaKEaOpL0yyP1Oq
-	O4f9qt8zCaDqJsxL21eu/2Dmzqt7tok=
+	t=1789816732;
+	b=vNWywclNqFfAuAbw5MFEdO4y27ADUr0R4N5yLlRFzqXviMTjyeyQgCFKAZVTKaLKMsO/RA
+	dBwCIIqgRhFVkOfBk5Hhz3LhmeyQlHny/Bm5BHCJ956eGK2r8D/lcS2NttbMclOaIZg06K
+	723YyhKMD8HLrpwaqX/JVzrzHqr06e4=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=D3hcyEas;
-	spf=pass (imf19.hostedemail.com: domain of david.laight.linux@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TZpN2HmS;
+	spf=pass (imf18.hostedemail.com: domain of aa9736195201@gmail.com designates 74.125.227.141 as permitted sender) smtp.mailfrom=aa9736195201@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789815900;
+	s=arc-20220608; t=1789816732;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7rwy3osRntuCmj5MLCO/i0SriZXb6Zy0hh2IOAi6LGs=;
-	b=4X5BnQWTGg4wnoK6+N8PYkJr2BA8rpODzt5f8WjWzJwgh4aJSGvpIj3yQhGUXh8ts4nhKd
-	Ldyy+pwSAGhYkeZtITYR7vZL+TWqtEVRSj/cHeW9C/yk7BenTfkgdfy0p6OKxHxxS5VGBS
-	lff3GjWDxFz0/YJnSf2NdL25lQOC2Tg=
-Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-485933b24c3so815874f8f.0
-        for <linux-mm@kvack.org>; Sat, 19 Sep 2026 04:05:00 -0700 (PDT)
+	bh=L39ypsoCsaXODRPsYiAzziW2qCyMrLIBDm6+2y7I9Pw=;
+	b=GMJm0NykcUREfSj+tVgEW4tjYp+40R1UJlAA5DEF1RuWThyUq3Y1eeFd0+Hah8U6CMb+Li
+	7XGLDI/zAcGmSKwHlyLfH104RcNfhL0dg75Opw0hwcCnVjVbC2aj8w058LpGRC7QRYh5Ol
+	M9RvIVpvfI6MhRxztBGc3h0Z9GoOyso=
+Received: by mail-pj2-f13.google.com with SMTP id 98e67ed59e1d1-39b31b4281eso1648544a91.2
+        for <linux-mm@kvack.org>; Sat, 19 Sep 2026 04:18:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789815899; x=1790420699; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=7rwy3osRntuCmj5MLCO/i0SriZXb6Zy0hh2IOAi6LGs=;
-        b=D3hcyEasDcY5+u6A9HmJjZDzaD+cmuyUim2/9dlId8VSMfsvZzYbwgXjG0kV40MiQm
-         ZtYHRIL9Fl79lkXpg8ZcBGTgSXCTwFghZF2DYcXGDWy7zXLejPEI7ezfrTgbmu8//BW5
-         kCzVrP02g3pGMeGYXla0F8oRGk59ccqKAYp35Z2CDyFuPZXPiRL5BTTJ6kYzeEHEB/6D
-         uVc7Ndqye17bR4W70x9trwsRGeYAnlgS8SusgnRQAumxu9FM7MuPnqwSX0widZnIqB2G
-         XS7fUivuAkdU9cCimawJ21OMDMg4TvDVOdWQxP2FgxDk/ULjhlLgon1SNK3Lxsr9Zgda
-         nhQQ==
+        d=gmail.com; s=20251104; t=1789816731; x=1790421531; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=L39ypsoCsaXODRPsYiAzziW2qCyMrLIBDm6+2y7I9Pw=;
+        b=TZpN2HmSSDhlRwR0cX4DuLctR6ZOEVbGEpw8OSkSjOZQGtR4DWT3qKF6ZOUUw/YStS
+         oII7M3JJi7yZxDFvKtKzau1sWxbQ46L+O5kdlcIy7EANcnmqb2LJbYxX63NO6WnH8pYY
+         kEeK3Su86JmJ6iSOUFmuva3bdt3FBX+t3hTKH0guOx/8ghgAD4h/bvkXN69awDqHY04Y
+         ljXwO2XWCg5QtM34pDfrcDxAKEjADZbqkqjTmsxbwsrEsq7a7rGTOYpq00p80o24a5E6
+         lna+AEezkwEgNa0HIpKkG8328D18ETO1PrDkf6onDeKdRoDwdbrg8/T1mFA/UMcZIr4K
+         /PFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789815899; x=1790420699;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7rwy3osRntuCmj5MLCO/i0SriZXb6Zy0hh2IOAi6LGs=;
-        b=WJDoO9nHQ11ydU941eR72FPs2hYUzs9aQ/SWsPYQu5NGOq5yIfjAABShtccmJlHP2b
-         5k/BEb2U3jI0KcjwW955MGrfGkyvKzBIQnNXU1X2gnVaImeG6DluC/X9mWCSIwQrPpSz
-         NjL9tTkPfeVaTm83Mp1Jfq+aOoeNAX48CJsJb2g5Eky6map0+MEqE6z1/d2Q/kMJzpOm
-         JDsGRICJ8+cI35L/w7URLgJ85HFNtTyyq2w7bEaPm1Db6SJO11PTOHURxye3QQUKj+DO
-         vevf664GQ7c6ZIKp4YxHpjx/RNluQZ02kO2hszZd9Mq5xnm+JkSQVVTUZKGYqHJCK2Sl
-         golg==
-X-Forwarded-Encrypted: i=1; AKwUvBwRvbtLUY61YPSn43n7PSRhNLuARKqgt48c7B5hj3QpwJ7WSTuYPT3ubsEhsxzcb/TrIatF5Q6lEQ==@kvack.org
-X-Gm-Message-State: AFuF++nhaxwweCXvu+YOLpnBJ9ByZMPkquzOVJ1NjjLM16+/MkYWah0I
-	P7PneCOPxQAyEDhzdCLA5BpYs6Sj4ldSitI6fpci0/IgAHHlXwNNNwQ9
-X-Gm-Gg: AYBFou1oxQHlhJdY4cktnZStPwc7E6ZNh7u+v8KOO6Ye/vv8QS6ZrWrn0aAnMNjVoJX
-	CGfOEyiZTjxkTIoHNqrVjx46ACyV7rtA8pah6K/PgsDVznVA8p78T8eobtNfWI05ynMTYe7MwCn
-	VNHzqQmqm3yRb7q+jYN1bAPGjXDVsTyslLmXzQSTUdGwxnmWimCI2NX9mprX4BuMVcr0Ux8gyOS
-	XmxZxhuE7CVID3ekTCt6btr5ENUxCnWWuGB3zKpVFSMy2EtDEUdsQsTpU9UeuVMjlYRfl0aEa4Z
-	zCATFlsuVFQLWZExGcz8y/DGwGDdjOw6nGoniYs9SMG7aWRoYzW2cYSHgIfUuFnpI0GfXwMrwPS
-	krssa1+y2nu/jomS23ISIxsxy1Bj80xmVPP7HN/CKS6d98w+jSQ7wye0D2ZmiA6EhASRb7alukV
-	7xA/anfkCL2HFDFkJg4JzP3Kk6x/pD9WLQpEMTWR+W3a22nYtajWPymmBjXZOU3mi3xW3pUVtfH
-	DNblOddHsA4nrQJr3AC2o2EMpGyEh81GkUW
-X-Received: by 2002:a5d:5d02:0:b0:485:8ee5:5ffa with SMTP id ffacd0b85a97d-4871e36b1c7mr7900927f8f.38.1789815898629;
-        Sat, 19 Sep 2026 04:04:58 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48724460767sm6267511f8f.13.2026.09.19.04.04.57
+        d=1e100.net; s=20260707; t=1789816731; x=1790421531;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=L39ypsoCsaXODRPsYiAzziW2qCyMrLIBDm6+2y7I9Pw=;
+        b=OEO2RJC3CNiym1ZRxGstZjHN6NnvIkff8iRGFjNrZgZXZNQAMiDeUw4extjhEULIt7
+         V3hRSJVyUoR1c5/mLFURQia0DCdMiQT9lMeE/CvFod4o2Z3BrV4cwugjo+kGSoKycUA/
+         3ktCz4I83yWE/L7oV7r16i19qtTyDuvUM2i3Te7GpQzXyzGyF+gdnqqSzBmYfpmzD9YH
+         b7oyCISrhFpPoYDcawpjCU940q/ovbjZGTllcGHPHJrvvvot8EHcuI7zPj84anFruzWx
+         kTPFus4KX7glcfk9bUVZRNmUw/DHf0LO5/YU3wfv3FAd3dJ5cyi1Hz9bDeUikh0qDMNE
+         HW/Q==
+X-Forwarded-Encrypted: i=1; AKwUvBxzZPSw96grmuk7ufc2mNcJd0WR8tcPpQelCM1SsUgDZVqC8XxodjXeK+mHNanUyX1hDeMw/8bYAg==@kvack.org
+X-Gm-Message-State: AFuF++nL+xKx9azDgUm0pDdATp6AjWMWG/we7SAeMi9bN6WjMq+ngyoC
+	6aiNqmIhCIi9CpM2LGVBdCx4Pgzhgh2G7Id0Uq1LU/+eb0F05FncgiIC
+X-Gm-Gg: AYBFou2ldrgVhNrMIcEA1y1gAGH/7ZucT72xJ6WRrz0WQjAp7W8NkjKhWGYYlFckSLE
+	1d+KREFxENTNnzd41u5jghxCiM0TTxDmsvNqwapbsyfDUrjRIeXlmr83a8XYxziFswFJmeZcFd2
+	PPrQOnCQ2I0xf7IZPHjpeplYJ70NDjhvBmHZl3nSPSSKke2kzvXEhLqTDpzT1NueALhp+DqYeYy
+	g0JNtcykMjNx0jjQgdX1D2ON7ucA+1AQ5gcMt7mjigU6TP2dqj5GdeNqYgEjItSLLFpFX53Ru9r
+	PlrcCdQto5HvdXX7xz9VZdO6CDIVeq+Y06eJq9Li0EhmOxYSZ0Xc2tNRzz0FVk/cfYOyMeLM66w
+	EShz0Ce0g536Mx11hY24AX0AH1Ps+L6b/6uZ95ZnzF7wqkdvmWoRu1psV5bifcrev0LRVDqC76f
+	6IM8gtvTZ1nER52dMwvYoiLmR2t+ktnzX9rd2qzG4y52LbVCzqoHE3+AsYJt+hQRkQMEPHgmlvw
+	9T/DXsDB269IixN9xiZbbt6T6f5yWTPK7Hz3fkOnUvCcbRbKqkATZLxFkxwVrmJDm6aeFwtMWrK
+	YU3UDGsCZqlV5YrhXBVEq/PoEg==
+X-Received: by 2002:a17:90a:d410:b0:39d:f024:c7e2 with SMTP id 98e67ed59e1d1-39e54cb099bmr9731882a91.4.1789816730922;
+        Sat, 19 Sep 2026 04:18:50 -0700 (PDT)
+Received: from DESKTOP-TJS95SS.tail460ce2.ts.net (36-232-198-121.dynamic-ip.hinet.net. [36.232.198.121])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e6c4bc0d2sm4086100a91.12.2026.09.19.04.18.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Sep 2026 04:04:58 -0700 (PDT)
-Date: Sat, 19 Sep 2026 12:04:56 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Karl Mehltretter <kmehltretter@gmail.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Rasmus Villemoes
- <linux@rasmusvillemoes.dk>, Hao Li <hao.li@linux.dev>, Christoph Lameter
- <cl@gentwo.org>, David Rientjes <rientjes@google.com>, Roman Gushchin
- <roman.gushchin@linux.dev>, Catalin Marinas <catalin.marinas@arm.com>, Kees
- Cook <kees@kernel.org>, "Gustavo A . R . Silva" <gustavoars@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>, Nathan
- Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>,
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- linux-hardening@vger.kernel.org, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- llvm@lists.linux.dev
-Subject: Re: [PATCH v3 3/5] slab: handle ERR_PTR values in kfree and
- hardened usercopy
-Message-ID: <20260919120456.5575e0a4@pumpkin>
-In-Reply-To: <20260903203720.63689-4-kmehltretter@gmail.com>
-References: <20260903203720.63689-1-kmehltretter@gmail.com>
-	<20260903203720.63689-4-kmehltretter@gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+        Sat, 19 Sep 2026 04:18:49 -0700 (PDT)
+From: Yuan-Hao Hsu <aa9736195201@gmail.com>
+To: David Hildenbrand <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	liam@infradead.org,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Barry Song <baohua@kernel.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/2] mm/memory: reuse the whole exclusive large folio on a write fault
+Date: Sat, 19 Sep 2026 19:18:43 +0800
+Message-ID: <20260919111843.656-1-aa9736195201@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <8cbbc303-59a5-49f6-bc14-28fbb58350f0@kernel.org>
+References: <8cbbc303-59a5-49f6-bc14-28fbb58350f0@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 455901A0002
-X-Stat-Signature: beqpepzznguap9i7oezrqro1z43ykxre
+X-Rspamd-Queue-Id: 161381C0002
+X-Stat-Signature: ars9kjte7enrc5cd114ys8pkzq6we6sg
 X-Rspam-User: 
-X-HE-Tag: 1789815900-137484
-X-HE-Meta: U2FsdGVkX18aggrXQEoPrSQhdT1kAD+BJ07sQDZk1PQrkR4893aHGm5yvmlm+wFwrsOgCs1T5Axs97pSXSqzC9sRWq7IlqD0mUQHCkVbA+taKKt0k7sG1HOEI5iCCr65FIlnOLXe2T6N12Mm+UnFGMRyOhRdj24Ttx38dIMvNJNcFipxrLzgHUbyiYGup7SAWyzDfLpBc6Z5lye9csN33+VZwsbGWf9Fgo8iYvxXkaEv3Y3EI698DqXeor2ipdqFym98Lv3u17Y/tQRx/bMSsISjSVD4+01/n3bWl8vyyu2mmi/nS4P33tP61edy7dANetoRXYvTeMEVOqBwXw/roITBfD/vHI3gsYZsmfcrwKvqiFGiDuaxScm0ZmmPBSA0aTrOS+f+ItRvRp8uoek/JWHY4niacfHGENc5y53Lxvqp0E3DeTeFrMDmx99daDwBVxwotvZT/nc+SF5oSp6USi4jIm7MSs6rN8VZ8sWtqpfgGZjtZGbcqSyiMmCc6tSezigTbcDhGn928ZuNjUNwSFJHj36ddLouUxhQjdET1TXIXI54Oe9hyyAeboaMgalE0TeRFaIRUiKc3bsAgXR4Wqrk/AIbtQp16CqhP+TUmpJJlN+wKfvFeGw4bvcnndZJvPF/ZuQX3aAOi2zmcD9vfCKbLK5WKQP1snbJxybvrJZy7Bo08kSBPvWEOLD89VhAjwt6bmd5LVPg8ZQSv2X4sfSxtE5W48EBE+/0eu3QVyjAoB9q0u2OzwmfHilmwtdTkCW1Qt3WFhPDzdrO5yEqb4kXyAIpuAyAgpG/mPxR6GaNOj7VISayUFwQKLy57QLbQDJlANS7ulNh+vuk2eDJXo6b6UOzkrhI1tXGaybc25d5DrCsvZLRc8OhcOp4+RObfa02VHaobBaTslK7KaStfWzOTxbdUxncAijKWpJkerAjlJbOYI+2ASEcUtliJ0nX7dnCrAXMFp7M0u6Fk3g
- Vnxkp5A/
- NYTy7ub2dptanRB/5ahPWzow9VCTwidhLnEKLVBbTNYceCVByhBqbsvPqjPdA4A7p4mFt1DwJ/5mJTYID7x0UYlZJDHuAO1GcjJhLcVQ+284LLPM3yunurcuEahn6Mz0rpBSBzBxBY+4uSX1jWdiwvV7w+VqP9pjWNhK7b2dJJQcR4bKTXLQ9pyDIVtkQChRD/RZSnrWalJnwGBTo8tyYiP2TdUSe2ffmTiZ7985iGsIPZkkYHDfBqnhX90ZEunkNDOsg+67B2XrIJRA5B/7j/OiS2r5yyKiEseVloWUIM14se5vO11iuM8KVQf77oyqmRg+4iG+iVIdXarpzfqHdz3zA1f1plZMAThRK7mA65x8R1DLfcLeFQJCVDQD2HkGSl91cx6tBJ5iZBemEWIMCNrAZhEJZsAUseHtu3VtNn1T6jmyAR9jT6yTMuq0fkqihdFKbIu4qxz3u3aHomJwiMbOahTm9p7pG8tcaFHfzXWfQnIDLV9yisP2Fllbrgxy5cW5xm1LXcnCInfM=
+X-HE-Tag: 1789816731-141310
+X-HE-Meta: U2FsdGVkX18YyGqFUCmvzqc+WmyAhB5LepakDzGPSUeA7zecJptFailvMKAGbEAARx/Wp/bB5MZ3lN1KG1b9f7Dnl27uODFPe+pxI3LUsP3wgF4+gLVdj8gks4cLyP2wr9eC759tDPlSacs14JMuS/sA+nYnIC1fF+AmTYzyUGqvmBO/rGNKUUH+1yTLNCE7xUTL2D6zlBJ6WifxSOgw3AgEeh8pkZ7VvKUo9uFoVU56BK5KNAkfk+4nNFmO0fQxNd7UP8mp+NnoJidiBVBkX+s80fw+14RjNx3bvgg2qz0xTtWUYIiXQs6jRb94qnWkVSrwQlTBwsyeAU2BJIM7BweTExIZI+m8iaFkwWzZaMyL26XaG5KIqj66gtFDLe5t6XGfR0UQ8OMQR+T5sljsxhaUjpdmV31Mj5f18olmz6zSk2z6neJFWkPKwQxoZQYsONytPOXlR8yB1PJ14y637akVv2Wlr1zvB5BlwlnOP/cZgosAeC1xPSWrRDy8CfOILusUJGmtGhX1JQMr0szVYqn59qN3PcwHX3cpWtTtPV71bFlb8xjcM8Ndgpg/TN35R+WjSldrVQk0I2scjYF/nBx25HfOOIlZeCphHrewohQWW94buSrb4tCukOOkBaNiuCGKjcN1nyDYGMJTO56YycHnlPEEGlwrYMULtD246Y4pZHSyaHNkEja5UPBHAAxbJcAOnO0e60Vcnw9EF/bb9/rwFYrtgx80tJdXOiGqbIELHVm+986ycab8maQCHuhiYm66YtrvchQoDjQ7pZHARUfdiDVBieDezzHIDqfxUiY5s09xavilDfqxesXL3HWapV3/3iyxF3PlPK4lx+4ktpPBzqMfUU41sfkJDVSjSBEX5E84Z5D1vgtjWhT8A/0n72az/UrK8UI9v7TMyLe4p/Ah01iX0BugtO5/pxsWMMcjgcXnyFZLzh+JNTjmKJozW96yfbYFyC7FH2EbPIS
+ zDjnT8XA
+ ExSKs7/mR44GYJInUkk1UcPs+BXXFcSwDT/G1S62MWUEwxbH3TJhnwfMbdZkcA9jRGiQ93lvhrH1S0Z3ZdAgNf+4jb5gWHG84+55sASKMX0ym+dflJ9K8O9khsNLchEKgZl8mMjnw/GXFIHcZnS3DjJUl2jS0KDH2Z4scGM9rOEO8P2tlZunU/cXPbutMeyPc2LJHEO9/P996IWSlx/m1QZD/h7vTHWsSYVEBfPwlZ9mpOxE0Ke8vdNjmyE219mNZkpdL0O4E2A+EosrEUjmFhIPoubYjEbe1Y4rN68xaAyU4l9e5ZDCAy6p8nnwiD6RvMevbL6Lwx43NIIyUzryA0Dq8ANpdiGgR/5YgC93yfI4Zt8Op76HOCuiRsvsJJ6uyXWT0iNh8kwwdZfVKF86Pxy/A7UR5s5JzpKCa
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,67 +129,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu,  3 Sep 2026 22:37:18 +0200
-Karl Mehltretter <kmehltretter@gmail.com> wrote:
+On Sat, 19 Sep 2026 12:08:35 +0200, David Hildenbrand (Arm) wrote:
+> Please don't send out a new version
+>
+> * Unless a maintainer asked you to
+> * At least one week passed
 
-> Passing an ERR_PTR to kfree() currently reaches virt_to_page() and may
-> fault. Warn and return instead, leaving the bad caller visible without
-> using the pointer as allocator metadata.
-> 
-> Also reject ERR_PTR values in hardened usercopy. Keep both checks
-> separate from ZERO_OR_NULL_PTR(), whose exact matching is required by
-> krealloc().
-> 
-> Link: https://lore.kernel.org/r/CAG48ez05QVn6_gQ2TBrRa1a_DWQoaSSYubUsu5YMWxx-gqMijQ@mail.gmail.com
-> Link: https://lore.kernel.org/r/202608111716.0FA9DB17@keescook
-> Link: https://github.com/KSPP/linux/issues/93
-> Assisted-by: LLM
-> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
-> ---
->  mm/slub.c     | 3 +++
->  mm/usercopy.c | 3 +++
->  2 files changed, 6 insertions(+)
-> 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index f9b56cb439e7..027b44dd7f07 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -6780,6 +6780,9 @@ void kfree(const void *object)
->  	if (unlikely(ZERO_OR_NULL_PTR(object)))
->  		return;
->  
-> +	if (WARN_ON(IS_ERR(object)))
-> +		return;
-> +
-
-Since kfree isn't usually called with NULL it is likely to be better to
-have a initial single check for all the error cases.
-Something like:
-	if (unlikely((unsigned long)object + MAX_ERRNO <= MAX_ERRNO + ZERO_SIZE_PTR) {
-		WARN_ON(!ZERO_OR_NULL_PTR(object))
-		return;
-	}
-
-Although is would save a lot of code elsewhere if kfree(-errno) were valid.
-
-David
-
->  	page = virt_to_page(object);
->  	slab = page_slab(page);
->  	if (!slab) {
-> diff --git a/mm/usercopy.c b/mm/usercopy.c
-> index 5de7a518b1b1..c8d8703544c6 100644
-> --- a/mm/usercopy.c
-> +++ b/mm/usercopy.c
-> @@ -157,6 +157,9 @@ static inline void check_bogus_address(const unsigned long ptr, unsigned long n,
->  	/* Reject if NULL or ZERO-allocation. */
->  	if (ZERO_OR_NULL_PTR(ptr))
->  		usercopy_abort("null address", NULL, to_user, ptr, n);
-> +
-> +	if (IS_ERR_VALUE(ptr))
-> +		usercopy_abort("ERR_PTR", NULL, to_user, ptr, n);
->  }
->  
->  static inline void check_heap_object(const void *ptr, unsigned long n,
-
+Understood, sorry about that.  I'll sit tight and wait for the review
+of this version.
 
