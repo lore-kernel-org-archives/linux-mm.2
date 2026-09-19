@@ -4,123 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67B6FC982D8
-	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 00:01:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B629FC982D7
+	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 00:25:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6147F6B0088; Fri, 18 Sep 2026 20:01:03 -0400 (EDT)
+	id 99CE26B00A9; Fri, 18 Sep 2026 20:25:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C5B26B008A; Fri, 18 Sep 2026 20:01:03 -0400 (EDT)
+	id 94D866B00AA; Fri, 18 Sep 2026 20:25:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B3F66B008C; Fri, 18 Sep 2026 20:01:03 -0400 (EDT)
+	id 83C2B6B00AB; Fri, 18 Sep 2026 20:25:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 225C16B0088
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:01:03 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 73D99120122
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 00:01:02 +0000 (UTC)
-X-FDA: 85228556364.19.E5C9E50
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id ACD0240003
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 00:01:00 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cJetOldh;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of "SRS0=+MjM=HL=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=+MjM=HL=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org"
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cJetOldh;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of "SRS0=+MjM=HL=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=+MjM=HL=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org"
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789776060;
-	b=Pvezpva+h/Ntoj8bcr5wga6YsVmRKEXgCui/7iqTO1JJoZ/FT7PqPh6bzpgxKxM59fNG2k
-	EXu80v0rHHJbFnkNRjhypUQVoMF5cJ2qB3NgB/RO6YnbnIrapnJSB0AKAg5n+U6hBl8oRP
-	j6cUtH4eNpcAZbgQ4JtiDJF1o/DPiFw=
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 52E166B00A9
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:25:00 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 45FD41C0881
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 00:24:59 +0000 (UTC)
+X-FDA: 85228616718.05.896F14B
+Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 3844480003
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 00:24:57 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="DrjDn/cu";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=oN4KoF0D;
+	spf=pass (imf02.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.144 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789776060;
+	s=arc-20220608; t=1789777497;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KcW62IuiP5/fjZADPCmARJkSL4IGShWShwsbsFmBL7o=;
-	b=yuzUNmkw8+GCNjotefjFsSqcdOrFZ6VBiPu1bqI69ugcelL2YbbiO4rXMICUkvUd7+Cu9Z
-	OtN3XacFccNcekB63u2JXt/wxVPOt4Xkn2+Pm39EIgp/eM1WB+ZQ2K8x4VNZGpNNVdMrvs
-	4xY3LgxQUpVAE7EFOmjW9mV46yQTBu4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D75B560A62;
-	Sat, 19 Sep 2026 00:00:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DF401F00898;
-	Sat, 19 Sep 2026 00:00:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789776059;
-	bh=KcW62IuiP5/fjZADPCmARJkSL4IGShWShwsbsFmBL7o=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cJetOldhwpeK6uBDuQwbrYSPWgOfHLYZzCM0erZAmXO08GLQu2qN/itbejE+vWoKf
-	 1Mv5Zhh8Sgqc4E6oGGw7U8i5iseqjSr8gNXXt6jGFqkUXsqSX/tFCnCpZ8v4AcJwDe
-	 leo2JjuAbvu+iha5w95Njj6yUC0PkSrgq/VwhazhEx9fluI5v0eL3D8vbgqSSF1d/f
-	 HKwKdxC2A2KQcL2xu/hvmCEu5bq34Z2g5SEOYp/R5WMrXLSoKEkjvr46l6HYpshCzU
-	 5UFJymHID+9j8BJ77GdxsdXL/mUTOMKeIJEX7NPJupKJJV+i/yp0rjTCj6AocMd69B
-	 r3VKbG/052Xmg==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id 4A778CE09DC; Fri, 18 Sep 2026 17:00:59 -0700 (PDT)
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: rcu@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: kernel-team@meta.com,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Boqun Feng <boqun@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	lkmm@lists.linux.dev,
-	Zqiang <qiang.zhang@linux.dev>,
-	Wang Lian <lianux.mm@gmail.com>,
-	Kunwu Chan <kunwu.chan@gmail.com>,
-	Bradley Morgan <brads@mainlining.org>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	John Stultz <jstultz@google.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Zqiang <qiang.zhang1211@gmail.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Waiman Long <longman@redhat.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	maged.michael@gmail.com,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Jonas Oberhauser <jonas.oberhauser@huaweicloud.com>,
-	linux-mm@kvack.org
-Subject: [PATCH 01/28] hazptr: Implement Hazard Pointers
-Date: Fri, 18 Sep 2026 17:00:29 -0700
-Message-Id: <20260919000056.3132131-1-paulmck@kernel.org>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <e9669b34-12c2-4cf2-a887-315f581f0789@paulmck-laptop>
-References: <e9669b34-12c2-4cf2-a887-315f581f0789@paulmck-laptop>
+	 in-reply-to:references:dkim-signature;
+	bh=hVgL82cT6ooPhZVDeAfxwPcUntMD6kD+phmR5TdkVoI=;
+	b=7dBC4sDcKCutzMk+HvCfzevwkOgu6LoNUAzXZT0GgBopxv6RHAhQ42HfISm8ddc1hkb30Z
+	2Ymi/m+5lxmuukhpOB0C3jVi8AqLeJ3X5T56NMV84x8LDGhjZ+MfL1ENOg+9ofcLIKYYsW
+	oDCSu7jKJig0UKWB8v9h9+OnBvxMK9E=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="DrjDn/cu";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=oN4KoF0D;
+	spf=pass (imf02.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.144 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789777497;
+	b=t+3u1ZXSPo+r2KSgI1QFeSVYPQSiSnzSbwk69JIdzsz9YK5leiFZeQmdIg17MqjfPF/q14
+	+c6tux2B1wKyYesRwIqBy+QKCh/thAZQx912cPXgM/Dwzg2l8RxwNPBMOWaJo7a3C5vTN1
+	RlbAKUissUEfR///hJfJo4pfsguKPWA=
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfout.phl.internal (Postfix) with ESMTP id 82CF6EC0198;
+	Fri, 18 Sep 2026 20:24:56 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Fri, 18 Sep 2026 20:24:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
+	:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to; s=fm2; t=1789777496; x=1789863896; bh=hVgL82cT6o
+	oPhZVDeAfxwPcUntMD6kD+phmR5TdkVoI=; b=DrjDn/cur1Eu+zXIEzQjeIEJDd
+	w+MlcaIlcQ4ZKgb3lR4QhmJOL3+aQwHrBf3v401AUlc9hdLvngLJzKvVHL5FAQCg
+	omyPWQ/Y5XJ60Dnpab/QdCpKh1thku8j6dUFYKrM6LO2cfsiObPXxgScqVDnwcvT
+	dl8DlbHoFreJtySR95NU7abDVn+FQL1urmfAZKi6C0G9oDbVwuxNtCgSM26Q322K
+	6qkavMC0BtSXheBC4v0s5xgSXL/6VWD7S1oHgBC/icrv9fPsYThM1l5ugU8LBmma
+	w6CXO8BXluUXTwcXKtQSIy4BGkp00xHeIM967T74cdY4XeMD0okQOUM3sX1g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1789777496; x=1789863896; bh=hVgL82cT6ooPhZVDeAfxwPcUntMD6kD+phm
+	R5TdkVoI=; b=oN4KoF0Djk3cNQQsitsJtY+wN59PEoci3oEQa8oWu6z84w1mvcu
+	KVzOtP6TEtkyhxqqJhlagp8KfDW4DKSiWhiE6Z3jBSST02bNpLM4zEgtBaKzZCE6
+	p855awyzo99VoFErOfHH5epsax40B63ykTb7CXrL+qJSj64rfyiKNp28iE1R+IPp
+	Q+UQ60dn5zMbN+fiFS5YpEg9JPapslb/4Slt3hc2biYka+uOaFY/Jipf9Un0LiHd
+	OvdhjjPi+JVG3JRzCrSTYd2+FbGIyN3cPgbtmEEtg88nqzSarh/e5S3BdWCDeJl/
+	WQ2qVznNfUKWfxHQG9/uzMDFZ6igkKf4HRg==
+X-ME-Sender: <xms:V9atauhdN64wGMh6XPheVcLt0GHmtdje0dfRZH8d0uDlYuNvUEMzOA>
+    <xme:V9atanYEFhi5B-wQ5gRCsRihJ71IxYMPp3c4qdjuvfsfgUFnqCMLGmvV67AnGY_9Y
+    xWibhm8K8wxBj5iH7q6VWvtUP_IGTiniSF54z0qRqMIE4YcqtjK>
+X-ME-Received: <xmr:V9ataoRC7qRiYrDh6lYtZCKRS7yNI1GHcrabWadmgKOWI45KHD45eahFhHo>
+X-ME-Proxy-Cause: dmFkZTFBXxxa9mfQlFJJmOXUnFpfpcCYL+TF1M1gd9VL29pJbzMKVsFhe5TjhlPsrJdPXp
+    Izu2iNtQ0f25NpEcmIW8Q0lciacKGUngRU2oln5gr99Cau5GzNh45L/ps4WXrKT+3LcCof
+    onc6tS7bxQVWmnxki/U4GgpGBt/Uf/XMffQsRGbNmfEuwORt12ZNWY7zW1qFuP7VpWYdge
+    sKBBkddISsUZf0VSYzwVngjTfAJhrTlPE7NbYeFLcaw6KfjLwRi22/JSUPcfj+6sSfXkz3
+    2hSRT44SNPTaJZDcRkQzSRVQx7u15eQNLkSPYgkclga/ey1JLSmLY0wvFq7EAonuDYIasY
+    nit6Op3onNIzCnPf+gSNaTuHTkMSmu+3AGMa59i/mholeequdCp7zR2USGhzHPAGour6NT
+    8X4dq8r0S2VWV0ZiZtpk3w0Eh1T/ObJHUxQMblTCGanAtS4KtrUMOuADbOOEVex0xNj/B7
+    aO+eYM6dy89XhmKYjY/3oa+0iFuxeXU8Arw36rrgbDXuVw4sn4LB8N+xN7D4rrgoCWWTap
+    2Z5pTfQ5UkQZjXLJ/FyiOSdVVTl3uI8gqrU5ySPV0Mm5W5xEOOukxyqspXnB/4WEjNeuVI
+    4elaRbOIPEWXM+9xKBFufzjWZU/m59V98gIyeNToblp9S/UtECJhcMUy9otg
+X-ME-Proxy: <xmx:V9atavEbQwTnZH0ZZY-EsQ2AGBxliKrtsl8tUTPKnZTpHPVpDFhF1Q>
+    <xmx:V9atat3UqiXjFxtraFU-qDEv59qTbYQO3jmuXEbQSccUWwtHiogvYg>
+    <xmx:V9ataluPxqqLzDazazQBq_3CakD06uY9QTbqMY-s3O0iRXQNI143Uw>
+    <xmx:V9atasl1LNEXgIVI8OQ5QCcqUvFTNzxZ8p5tqT6Y-k_iC7t2XLNpCA>
+    <xmx:WNataqLjOOrohMhYluqXOxQtbT37d1R9vJq3EWMiyV0ugQaZkB7DtGIx>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 18 Sep 2026 20:24:54 -0400 (EDT)
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	"Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Muhammad Usama Anjum <usama.anjum@arm.com>,
+	Usama Arif <usama.arif@linux.dev>,
+	"Nico Pache (Red Hat)" <nico.pache@linux.dev>,
+	Zi Yan <ziy@nvidia.com>,
+	Barry Song <baohua@kernel.org>,
+	Dev Jain <dev.jain@arm.com>,
+	Hugh Dickins <hughd@google.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	kernel-team@meta.com
+Subject: [PATCH v6 00/19] selftests/mm: improve khugepaged coverage
+Date: Sat, 19 Sep 2026 01:24:30 +0100
+Message-ID: <20260919002451.496763-1-kirill@shutemov.name>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: ACD0240003
-X-Stat-Signature: 4b6wftnyfwezz1yy9onz7zr1g45t7jwk
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789776060-217556
-X-HE-Meta: U2FsdGVkX18l3dQlaQlsKnxJR0Hzsyz917epF3jfRbVJJArRJvUW4GpsANrHv5YMxV47X+jnaSF67qHRXvxGUPRghF6S00T5YI3ppGDMRxaSMvZ8WNgFyVvWU+f0Ac+MQdnJ9HuRF4q5ql+JIebD2QOMmiMbb4Scq3Rk5nTsROvi3C93uR6UaXQ76xEQNqx+di8kMfXs8AXnBoX5z+68r9b4sRLOb0TkpVkqrag4BbWnDA3LPIvWlz8DZzQEJ9uLkZ4CoaBS2QueF/Q+f7DXsv72caeTNoqprZsLOeaE5ui6DsA4RGfNtFrqvCfIbVmazlBILFeyzTSPrPV4Tp67E/BDAHfPiwD8mFlIPqjF5C3ynY9opCjzhDE2eRplxmkpL6qf79g9BjCRQmtnkWchP1cKKpgKR147JY5lI+coduKDhkoNDFgiPEro1ew4bCR6F2PR7H0wA/Ov2a1F1GlcgebiJnQVBI5ncOrf/2kA1xJxbCT7d9oh4KKm9lesqS75llbbZO9fMXtK8tGbqsatAYnncxl4xAVJUlB3VlbrNYQUxL8wIv+ZL1Oj3Aca70G9l4j/nnHBJ7+7CjBfKkB9L93EKcvAhKWi2K9+xwUN+oLBjZv6wyyt6r17pU3v0bakRadRUbUkKuKcK9I3rRSnf/UBL8b9JANKtiiVN7JZv9WNmA1LV0pyDhpXwFCjjADKLy4Baq9/Ob9s8DCcfNHVlkJ9Yp8Q49Kt3Vp+1hzCtPfXQQvVA7hiWl+3865BHZ1BQTTErlwOTnRnO2sIiLgk8O1qEcozi5xA3299ev38nnoQ6Tial7XYppPez54NfgGro5xqDoOTA2IG3Xk5SnJE7BF8obPVsmxmIG+D+cg3wgKfszYD4lNwmpV5BaSxHLs1KCojW8YxK4J1GRF2Hld+4625iY2ALeoI0sa5aChLKADNay9cgbmhuaHVxYjgOzpYkDLu6bMb4dHFbJLpb5X
- rDPJU7Ch
- UFeg1w1YR3GzHE3q/e/Yfq0PgbNyMrB5iYDfL9PDJLoxeadhpzHpMSVQHDIAFjWMiTCVS5axQxSZaMItGNjsT0S5uFuglrDv+BMjL8fKkg+I6LdXX992GSuR8GbJqOEFqlQFl6dBBpEDiJdBMEjSJHAl5enREcqJuKUlmfPSRXpG8m5sZujzzPbwajavK07jXS6qkgtUXBcqQ9OqFUxXNz9+G9Aqj6yoOVnGDfj7P4NUvanCPFrpNwWFK77KK+g/MOeSNY1JZk5qJUyxwAWSAvydzypXMDxkOKrtTnrN+2li7urPNU0b9K8o4UvqkrHijNCvxLF57OjH8HZHdDAGlu0UAT8ecWdD7lRdgZhOOXaFI3CCH7DvI9U5cowJueerP+sD6qeataZBvfVidoXrY5H5K8/rNpdnbjezfPKC9aojRuiU86BACvnMeVKa/t2XuxC2PrEFID+p/TPxGKnv1X1qgfCiw1jqVvZ5loteBr2SV8+f3MtdK3EfEV3O84kjvVl7+9HFdelNxeALodMtxyIgxFsyHodNA9b311peAd4p5Z6hWGczmzqhWqZWMrk+AQesDLVWuveQx8k+3qJrjwB3CRh23BV9awIIa12hgdMZNQ306ydKlk4MoSjqm+tJAR4nyuXGHCwWz/5sEgAorpAewOu/4gCo+JMDNWA9ZD9msMY9uSDRRYTdGr66Qw396TiPyycYBgPIb5suhogfSIpr/GcQhE1SGjz0NBtdAPvshCcgSJKJuxamiN3PgbKnw+lI/MtCP/KtAipE4zjvCHrBZwi71lsc0z/g7FKFpKZwtLpKa42/miGaXUWzS2RNjkdZCNG8wuuA2fCovuhENmo9dJs+sRbwE5vzrj5UJSCswimy1OCZ0FDokEoMB6DygEHkUUxBNw2iTncEjoyMw5yEiaAWOQ6m4CvO6Rx8VL80oq8lU9lqQ0BQidkKXsR2dHkp2jnRHX4yFxRPxKC6bNtJqi/Gv
- SzmlIljM
- Lkw0+T9sug3LxU/OROqvIHjP/1xfdDn2dKdIYHJE+kdM4BGnR2nVRJFqaEMI/s0vxjMCW9FTnmvLHe61il8FBq5eFPdNc8yWtou3YDZi62u2zFp50JUOhNbj0lzhxO2AXqUQFhQAr3mwAhQe4E2eC6MF1yUd45ChdokJhgMkpyRlTzbFKEuBXs5aKxt10nRn2Z5+zK165UowIRWu5IpZxFsV5WvW/jLFX3dvBa3yJJqSC/+iVhNfk0w5zmbgcfHAO/1/Cgt56Ps=
+X-Stat-Signature: 1arc3cw5swxt63khrhoy6mwj5fkh3b7e
+X-Rspamd-Queue-Id: 3844480003
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789777497-364635
+X-HE-Meta: U2FsdGVkX19lYSoHfEtsJDXH7Xn41CS6ZBE+pVga1GNEfYzydKAYc9pSJulT469Mai6RdWvtz/I/XFm0uCtM1pd4fAszC9os3JiW8jaZs/kHkD48w5XlcTvLVHepIp1rGhq9i6cXeZEJscs4bLT6gMDgG81mtwvkmx+Y/eSO0JOLAM5s4T2bJAfi8T6nEihiBgKGlGexIPMXp1z3eZUbBksTSdz56O1i3V9qdmUD3X9+vNs9uBPyEQO/Pnq+wRSmQ/aQTt+S+xeq4X0TKjpzjLqKPJ9n20QkBhapDd9/cHDy3qA7kZvFawN2Vyte4J0x9VIuaIs92kZ4234rpmlf8KVGbRVa5pMWf51XE8e4ZXiQPXUEQ4lywx07EAxSjYHsw1DcSHxrcip6F38zYla0jU64VpdmYMhEBH8BIECFxmI93J86z3qZtZ0/4ZFPriyiJFyEQQXmP/3XSAbdyKsSVouxy2fsQcrtUxALBWgXLx5QnB28iz2wih8Idt5toOWVE0Byhau+8Mx0zOXuZj0cqt6pq2/d2de5k63iZIyhc/J5EHgBfFl6e0CH/y1iDM0JGMmm1lIFJIixy7sy0+SUTdVktYAWus8JZMh1TdjwqUlYik96kU9PYUIqzgYzhdghgZl71c14yHGYEUjMdzzX66Hgtoo8X8aAUC9STa07UQ8Wd2l8Gw/3Zqkqjmy2ec5KGWLirfOGrjcOP6fwBtf7rOrRlrOfrwkZ8hJwe3Req2C2LcFAmcWdvOZXBW22bkXLDhXS5EbSpmB9sZzWAn1uPdW5oE9tADSXmksyO0g3Ss3YzGN+KSfdlwMfKr/aFTssnKBZP1twojjUCkvm8h9icB3wKlZ6a02+YeHQSBYUfj8NSq/lscb7ayw0Kq1SAHDvjZVThingLoguqOZ7s2m8eevsSYgYeHwnvw2UnbuQIcLSTuDvZvUa4BdpdV2Bsta292vrxva0EAjIH5AUVrG
+ Z3DsUHwQ
+ ACoNjhdU+7P1xMLm9VwiTAgar3bWVX3lekMUK5kSiDAK9WwCUWvxNzkz2TjhfvwWzS6mc9UmBbKq5SgN7zhzz/Jsqy8mrNjB+it4DD3OIINPECY9eINBm1ozTDnu65toAeepUBgDzL0nZO7xQeySdgqIfWsPoIUe49rlhgQAY5TDPlwwrSqpPZFIlfaqLH+y4WSrcb9Xc6fFd8TDpncPR0qgthxjicFvzBSsOGt4kxKMZDM7osA/DEu0F8n+8tTP1ivGr38MMovcXUNKqqnww4acB0sRdoIC34AQndmzg44kjZbl1orQOFonZ7fBF/+fp/xY1JY//TtiKNqy0KHJvgpeAtwRShJcdcORZPCiGTRtdg1IuDvfM4XKuDECKQy/F8xW8ODepgNvMv2IDISdvHEqJjyySMAbhkkH/u9xbziY00wTD0GXVjyJCzNcoCKc1S1fx4rYQUdSeF8pA0W6sycjyZhUoUWMWat797ixA4OMmNPskQoRQczgqAZV5wXN5pdqgaOtjoaydSDXMmml+3mGcHw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,580 +148,487 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 
-This API provides existence guarantees of objects through Hazard
-Pointers [1] (hazptr).
+khugepaged collapses to mTHP orders since 7.2, and 7.3 added three
+selftest cases for it: the generic collapse cases run at one order named
+by -c, with the result detected by counting folios of that order.
 
-Its main benefit over RCU is that it allows fast reclaim of
-HP-protected pointers without needing to wait for a grace period.
+That leaves the collapse path largely untested.  The suite does not run
+where a PMD is 512M.  A folio count cannot say where a collapse landed.
+Fixed sleeps cannot tell "not collapsed" from "not scanned yet".  And
+nothing exercises collapse under contention.
 
-This implementation has 4 statically allocated hazard pointer slots per
-cpu for the fast path, and relies on a on-stack backup slot allocated by
-the hazard pointer user as fallback in case no per-cpu slot is
-available.
+Close those gaps in order:
 
-It integrates with the scheduler to migrate per-CPU slots to the backup
-slot on context switch. This ensures that the per-CPU slots won't be
-used by blocked or preempted tasks holding on hazard pointers for a long
-time.
+ - Make the suite run at a 512M PMD: scale the collapse wait with the PMD
+   size, skip what such a PMD cannot serve, make the swapout the swap
+   cases depend on deterministic, and keep khugepaged out of the
+   MADV_COLLAPSE cases.
 
-References:
+ - Detect results per window rather than by count, with folio-order
+   helpers in vm_util that are checked against the kernel before any
+   collapse test trusts them.
 
-[1]: M. M. Michael, "Hazard pointers: safe memory reclamation for
-     lock-free objects," in IEEE Transactions on Parallel and
-     Distributed Systems, vol. 15, no. 6, pp. 491-504, June 2004
+ - Drive khugepaged deterministically: a completion barrier that wakes the
+   daemon and waits for a full pass, and a check that one pass yields one
+   attributed collapse.
 
-Link: https://lpc.events/event/19/contributions/2082/
-Link: https://lore.kernel.org/lkml/j3scdl5iymjlxavomgc6u5ndg3svhab6ga23dr36o4f5mt333w@7xslvq6b6hmv/
-Link: https://lpc.events/event/18/contributions/1731/
-Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: "Paul E. McKenney" <paulmck@kernel.org>
-Cc: Will Deacon <will@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Boqun Feng <boqun@kernel.org>
-Cc: Alan Stern <stern@rowland.harvard.edu>
-Cc: John Stultz <jstultz@google.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Frederic Weisbecker <frederic@kernel.org>
-Cc: Joel Fernandes <joel@joelfernandes.org>
-Cc: Josh Triplett <josh@joshtriplett.org>
-Cc: Uladzislau Rezki <urezki@gmail.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Lai Jiangshan <jiangshanlai@gmail.com>
-Cc: Zqiang <qiang.zhang1211@gmail.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Waiman Long <longman@redhat.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: maged.michael@gmail.com
-Cc: Mateusz Guzik <mjguzik@gmail.com>
-Cc: Jonas Oberhauser <jonas.oberhauser@huaweicloud.com>
-Cc: <rcu@vger.kernel.org>
-Cc: <linux-mm@kvack.org>
-Cc: <lkmm@lists.linux.dev>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
----
- include/linux/hazptr.h | 197 +++++++++++++++++++++++++++++++++
- init/main.c            |   2 +
- kernel/Makefile        |   2 +-
- kernel/hazptr.c        | 242 +++++++++++++++++++++++++++++++++++++++++
- kernel/sched/core.c    |   2 +
- 5 files changed, 444 insertions(+), 1 deletion(-)
- create mode 100644 include/linux/hazptr.h
- create mode 100644 kernel/hazptr.c
+ - Cover collapse at every supported order by default: which window
+   collapses, occupancy at both limits, sources that are already large
+   folios, and a fork-shared source under concurrent writes.
 
-diff --git a/include/linux/hazptr.h b/include/linux/hazptr.h
-new file mode 100644
-index 000000000000..b121f7779cda
---- /dev/null
-+++ b/include/linux/hazptr.h
-@@ -0,0 +1,197 @@
-+// SPDX-License-Identifier: LGPL-2.1-or-later
-+//
-+// SPDX-FileCopyrightText: 2024 Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-+
-+#ifndef _LINUX_HAZPTR_H
-+#define _LINUX_HAZPTR_H
-+
-+/*
-+ * hazptr: Hazard Pointers
-+ *
-+ * This API provides existence guarantees of objects through hazard
-+ * pointers.
-+ *
-+ * Its main benefit over RCU is that it allows fast reclaim of
-+ * HP-protected pointers without needing to wait for a grace period.
-+ *
-+ * References:
-+ *
-+ * [1]: M. M. Michael, "Hazard pointers: safe memory reclamation for
-+ *      lock-free objects," in IEEE Transactions on Parallel and
-+ *      Distributed Systems, vol. 15, no. 6, pp. 491-504, June 2004
-+ */
-+
-+#include <linux/percpu.h>
-+#include <linux/types.h>
-+#include <linux/cleanup.h>
-+#include <linux/sched.h>
-+
-+/* 4 slots (each sizeof(hazptr_slot_item)) fit in a single 64-byte cache line. */
-+#define NR_HAZPTR_PERCPU_SLOTS	4
-+#define HAZPTR_WILDCARD		((void *) 0x1UL)
-+
-+/*
-+ * Hazard pointer slot.
-+ */
-+struct hazptr_slot {
-+	void *addr;
-+};
-+
-+struct hazptr_overflow_list;
-+
-+struct hazptr_backup_slot {
-+	struct hlist_node overflow_node;
-+	struct hazptr_slot slot;
-+	/* Overflow list where the backup slot is added. */
-+	struct hazptr_overflow_list *overflow_list;
-+};
-+
-+struct hazptr_ctx {
-+	struct hazptr_slot *slot;
-+	/* Backup slot in case all per-CPU slots are used. */
-+	struct hazptr_backup_slot backup_slot;
-+	struct hlist_node preempt_node;
-+};
-+
-+struct hazptr_slot_ctx {
-+	struct hazptr_ctx *ctx;
-+};
-+
-+struct hazptr_slot_item {
-+	struct hazptr_slot slot;
-+	struct hazptr_slot_ctx ctx;
-+};
-+
-+struct hazptr_percpu_slots {
-+	struct hazptr_slot_item items[NR_HAZPTR_PERCPU_SLOTS];
-+} ____cacheline_aligned;
-+
-+DECLARE_PER_CPU(struct hazptr_percpu_slots, hazptr_percpu_slots);
-+
-+void *__hazptr_acquire(struct hazptr_ctx *ctx, void * const *addr_p);
-+
-+/*
-+ * hazptr_synchronize: Wait until @addr is released from all slots.
-+ *
-+ * Wait to observe that each slot contains a value that differs from
-+ * @addr before returning.
-+ * Should be called from preemptible context.
-+ */
-+void hazptr_synchronize(void *addr);
-+
-+/*
-+ * hazptr_chain_backup_slot: Chain backup slot into overflow list.
-+ *
-+ * Set backup slot address to @addr, and chain it into the overflow
-+ * list.
-+ */
-+struct hazptr_slot *hazptr_chain_backup_slot(struct hazptr_ctx *ctx);
-+
-+/*
-+ * hazptr_unchain_backup_slot: Unchain backup slot from overflow list.
-+ */
-+void hazptr_unchain_backup_slot(struct hazptr_ctx *ctx);
-+
-+static inline
-+bool hazptr_slot_is_backup(struct hazptr_ctx *ctx, struct hazptr_slot *slot)
-+{
-+	return slot == &ctx->backup_slot.slot;
-+}
-+
-+static inline
-+void hazptr_note_context_switch(void)
-+{
-+	struct hazptr_percpu_slots *percpu_slots = this_cpu_ptr(&hazptr_percpu_slots);
-+	unsigned int idx;
-+
-+	for (idx = 0; idx < NR_HAZPTR_PERCPU_SLOTS; idx++) {
-+		struct hazptr_slot_item *item = &percpu_slots->items[idx];
-+		struct hazptr_slot *slot = &item->slot, *backup_slot;
-+		struct hazptr_ctx *ctx;
-+
-+		if (!slot->addr)
-+			continue;
-+		ctx = item->ctx.ctx;
-+		backup_slot = hazptr_chain_backup_slot(ctx);
-+		/*
-+		 * Move hazard pointer from the per-CPU slot to the
-+		 * backup slot. This requires hazard pointer
-+		 * synchronize to iterate on per-CPU slots with
-+		 * load-acquire before iterating on the overflow list.
-+		 */
-+		WRITE_ONCE(backup_slot->addr, slot->addr);
-+		/*
-+		 * store-release orders store to backup slot addr before
-+		 * store to per-CPU slot addr.
-+		 */
-+		smp_store_release(&slot->addr, NULL);
-+		/* Use the backup slot for context. */
-+		ctx->slot = backup_slot;
-+	}
-+}
-+
-+/*
-+ * hazptr_acquire: Load pointer at address and protect with hazard pointer.
-+ *
-+ * Load @addr_p, and protect the loaded pointer with hazard pointer.
-+ * When using hazptr_acquire from interrupt handlers, the acquired slots
-+ * need to be released before returning from the interrupt handler.
-+ *
-+ * Returns a non-NULL protected address if the loaded pointer is non-NULL.
-+ * Returns NULL if the loaded pointer is NULL.
-+ *
-+ * On success the protected hazptr slot is stored in @ctx->slot.
-+ */
-+static inline
-+void *hazptr_acquire(struct hazptr_ctx *ctx, void * const *addr_p)
-+{
-+	struct hazptr_percpu_slots *percpu_slots;
-+	struct hazptr_slot_item *slot_item;
-+	struct hazptr_slot *slot;
-+	void *addr;
-+
-+	guard(preempt)();
-+	percpu_slots = this_cpu_ptr(&hazptr_percpu_slots);
-+	slot_item = &percpu_slots->items[0];
-+	slot = &slot_item->slot;
-+	if (unlikely(slot->addr))
-+		return __hazptr_acquire(ctx, addr_p);
-+	WRITE_ONCE(slot->addr, HAZPTR_WILDCARD);	/* Store B */
-+
-+	/* Memory ordering: Store B before Load A. */
-+	smp_mb();
-+
-+	/*
-+	 * Load @addr_p after storing wildcard to the hazard pointer slot.
-+	 */
-+	addr = READ_ONCE(*addr_p);	/* Load A */
-+
-+	/*
-+	 * We don't care about ordering of Store C. It will simply
-+	 * replace the wildcard by a more specific address. If addr is
-+	 * NULL, we simply store NULL into the slot.
-+	 */
-+	WRITE_ONCE(slot->addr, addr);	/* Store C */
-+	slot_item->ctx.ctx = ctx;
-+	ctx->slot = slot;
-+	return addr;
-+}
-+
-+/* Release the protected hazard pointer from @slot. */
-+static inline
-+void hazptr_release(struct hazptr_ctx *ctx, void *addr)
-+{
-+	struct hazptr_slot *slot;
-+
-+	if (!addr)
-+		return;
-+	guard(preempt)();
-+	slot = ctx->slot;
-+	smp_store_release(&slot->addr, NULL);
-+	if (unlikely(hazptr_slot_is_backup(ctx, slot)))
-+		hazptr_unchain_backup_slot(ctx);
-+}
-+
-+void hazptr_init(void);
-+
-+#endif /* _LINUX_HAZPTR_H */
-diff --git a/init/main.c b/init/main.c
-index 2613d3f9b3ce..d9d936707c19 100644
---- a/init/main.c
-+++ b/init/main.c
-@@ -108,6 +108,7 @@
- #include <linux/time_namespace.h>
- #include <linux/unaligned.h>
- #include <linux/vdso_datastore.h>
-+#include <linux/hazptr.h>
- #include <net/net_namespace.h>
- 
- #include <asm/io.h>
-@@ -1075,6 +1076,7 @@ void start_kernel(void)
- 	workqueue_init_early();
- 
- 	rcu_init();
-+	hazptr_init();
- 	kvfree_rcu_init();
- 
- 	/* Trace events are available after this */
-diff --git a/kernel/Makefile b/kernel/Makefile
-index 1e1a31673577..8961c8660d0d 100644
---- a/kernel/Makefile
-+++ b/kernel/Makefile
-@@ -7,7 +7,7 @@ obj-y     = fork.o exec_domain.o exec_state.o panic.o \
- 	    cpu.o exit.o softirq.o resource.o \
- 	    sysctl.o capability.o ptrace.o user.o \
- 	    signal.o sys.o umh.o workqueue.o pid.o task_work.o \
--	    extable.o params.o \
-+	    extable.o params.o hazptr.o \
- 	    kthread.o sys_ni.o nsproxy.o nstree.o nscommon.o \
- 	    notifier.o ksysfs.o cred.o reboot.o \
- 	    async.o range.o smpboot.o ucount.o regset.o ksyms_common.o
-diff --git a/kernel/hazptr.c b/kernel/hazptr.c
-new file mode 100644
-index 000000000000..a9d3d68a1525
---- /dev/null
-+++ b/kernel/hazptr.c
-@@ -0,0 +1,242 @@
-+// SPDX-License-Identifier: LGPL-2.1-or-later
-+//
-+// SPDX-FileCopyrightText: 2024 Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-+
-+/*
-+ * hazptr: Hazard Pointers
-+ */
-+
-+#include <linux/hazptr.h>
-+#include <linux/percpu.h>
-+#include <linux/spinlock.h>
-+#include <linux/mutex.h>
-+#include <linux/list.h>
-+#include <linux/export.h>
-+
-+struct hazptr_overflow_list {
-+	raw_spinlock_t lock;		/* Lock protecting overflow list and list generation. */
-+	struct hlist_head head;		/* Overflow list head. */
-+	uint64_t gen;			/* Overflow list generation. */
-+};
-+
-+/*
-+ * Flip between two lists to guarantee list scan forward progress even
-+ * with frequent generation counter increments. The list additions are
-+ * always done on a different list than the one used for scan. The scan
-+ * successively iterates on both lists. Therefore, only list removals
-+ * can cause the iteration to retry, and the number of removals is
-+ * limited to the number of list elements.
-+ */
-+struct hazptr_overflow_list_flip {
-+	struct mutex lock;		/* Mutex protecting add_idx from concurrent updates. */
-+	unsigned int add_idx;		/* Index of current flip-list to add to. */
-+	struct hazptr_overflow_list array[2];
-+};
-+
-+static DEFINE_PER_CPU(struct hazptr_overflow_list_flip, percpu_overflow_list_flip);
-+
-+DEFINE_PER_CPU(struct hazptr_percpu_slots, hazptr_percpu_slots);
-+EXPORT_PER_CPU_SYMBOL_GPL(hazptr_percpu_slots);
-+
-+static
-+struct hazptr_slot *hazptr_get_free_percpu_slot(struct hazptr_ctx *ctx)
-+{
-+	struct hazptr_percpu_slots *percpu_slots = this_cpu_ptr(&hazptr_percpu_slots);
-+	unsigned int idx;
-+
-+	for (idx = 0; idx < NR_HAZPTR_PERCPU_SLOTS; idx++) {
-+		struct hazptr_slot_item *item = &percpu_slots->items[idx];
-+		struct hazptr_slot *slot = &item->slot;
-+
-+		if (!slot->addr) {
-+			item->ctx.ctx = ctx;
-+			return slot;
-+		}
-+	}
-+	/* All slots are in use. */
-+	return NULL;
-+}
-+
-+/*
-+ * Hazard pointer acquire slow path.
-+ * Called with preemption disabled.
-+ */
-+void *__hazptr_acquire(struct hazptr_ctx *ctx, void * const *addr_p)
-+{
-+	struct hazptr_slot *slot = hazptr_get_free_percpu_slot(ctx);
-+	void *addr;
-+
-+	/*
-+	 * If all the per-CPU slots are already in use, fallback
-+	 * to the backup slot.
-+	 */
-+	if (unlikely(!slot))
-+		slot = hazptr_chain_backup_slot(ctx);
-+	WRITE_ONCE(slot->addr, HAZPTR_WILDCARD);	/* Store B */
-+
-+	/* Memory ordering: Store B before Load A. */
-+	smp_mb();
-+
-+	/*
-+	 * Load @addr_p after storing wildcard to the hazard pointer slot.
-+	 */
-+	addr = READ_ONCE(*addr_p);	/* Load A */
-+
-+	/*
-+	 * We don't care about ordering of Store C. It will simply
-+	 * replace the wildcard by a more specific address. If addr is
-+	 * NULL, we simply store NULL into the slot.
-+	 */
-+	WRITE_ONCE(slot->addr, addr);	/* Store C */
-+	ctx->slot = slot;
-+	if (!addr && hazptr_slot_is_backup(ctx, slot))
-+		hazptr_unchain_backup_slot(ctx);
-+	return addr;
-+}
-+EXPORT_SYMBOL_GPL(__hazptr_acquire);
-+
-+/*
-+ * Perform piecewise iteration on overflow list waiting until "addr" is
-+ * not present. Raw spinlock is released and taken between each list
-+ * item and busy loop iteration. The overflow list generation is checked
-+ * each time the lock is taken to validate that the list has not changed
-+ * before resuming iteration or busy wait. If the generation has
-+ * changed, retry the entire list traversal.
-+ */
-+static
-+void hazptr_synchronize_overflow_list(struct hazptr_overflow_list *overflow_list, void *addr)
-+{
-+	struct hazptr_backup_slot *backup_slot;
-+	uint64_t snapshot_gen;
-+	unsigned long flags;
-+
-+	raw_spin_lock_irqsave(&overflow_list->lock, flags);
-+retry:
-+	snapshot_gen = overflow_list->gen;
-+	hlist_for_each_entry(backup_slot, &overflow_list->head, overflow_node) {
-+		/* Busy-wait if node is found. */
-+		for (;;) {
-+			void *load_addr = smp_load_acquire(&backup_slot->slot.addr);	/* Load B */
-+
-+			if (load_addr != addr && load_addr != HAZPTR_WILDCARD)
-+				break;
-+			raw_spin_unlock_irqrestore(&overflow_list->lock, flags);
-+			cpu_relax();
-+			raw_spin_lock_irqsave(&overflow_list->lock, flags);
-+			if (overflow_list->gen != snapshot_gen)
-+				goto retry;
-+		}
-+		raw_spin_unlock_irqrestore(&overflow_list->lock, flags);
-+		/*
-+		 * Release raw spinlock, validate generation after
-+		 * re-acquiring the lock.
-+		 */
-+		raw_spin_lock_irqsave(&overflow_list->lock, flags);
-+		if (overflow_list->gen != snapshot_gen)
-+			goto retry;
-+	}
-+	raw_spin_unlock_irqrestore(&overflow_list->lock, flags);
-+}
-+
-+static
-+void hazptr_synchronize_cpu_slots(int cpu, void *addr)
-+{
-+	struct hazptr_percpu_slots *percpu_slots = per_cpu_ptr(&hazptr_percpu_slots, cpu);
-+	unsigned int idx;
-+
-+	for (idx = 0; idx < NR_HAZPTR_PERCPU_SLOTS; idx++) {
-+		struct hazptr_slot_item *item = &percpu_slots->items[idx];
-+
-+		/* Busy-wait if node is found. */
-+		smp_cond_load_acquire(&item->slot.addr, VAL != addr && VAL != HAZPTR_WILDCARD); /* Load B */
-+	}
-+}
-+
-+/*
-+ * hazptr_synchronize: Wait until @addr is released from all slots.
-+ *
-+ * Wait to observe that each slot contains a value that differs from
-+ * @addr before returning.
-+ * Should be called from preemptible context.
-+ */
-+void hazptr_synchronize(void *addr)
-+{
-+	int cpu;
-+
-+	/*
-+	 * Busy-wait should only be done from preemptible context.
-+	 */
-+	lockdep_assert_preemption_enabled();
-+
-+	/*
-+	 * Store A precedes hazptr_scan(): it unpublishes addr (sets it to
-+	 * NULL or to a different value), and thus hides it from hazard
-+	 * pointer readers.
-+	 */
-+	if (!addr)
-+		return;
-+	/* Memory ordering: Store A before Load B. */
-+	smp_mb();
-+	/* Scan all CPUs slots. */
-+	for_each_possible_cpu(cpu) {
-+		struct hazptr_overflow_list_flip *overflow_list_flip = per_cpu_ptr(&percpu_overflow_list_flip, cpu);
-+		unsigned int scan_idx;
-+
-+		/* Scan CPU slots. */
-+		hazptr_synchronize_cpu_slots(cpu, addr);
-+
-+		/*
-+		 * Scan backup slots in percpu overflow lists.
-+		 * Forward progress is guaranteed by scanning one list
-+		 * while new elements are added into the other list.
-+		 */
-+		guard(mutex)(&overflow_list_flip->lock);
-+		scan_idx = overflow_list_flip->add_idx ^ 1;
-+		hazptr_synchronize_overflow_list(&overflow_list_flip->array[scan_idx], addr);
-+		/* Flip current list. */
-+		WRITE_ONCE(overflow_list_flip->add_idx, scan_idx);
-+		hazptr_synchronize_overflow_list(&overflow_list_flip->array[scan_idx ^ 1], addr);
-+	}
-+}
-+EXPORT_SYMBOL_GPL(hazptr_synchronize);
-+
-+struct hazptr_slot *hazptr_chain_backup_slot(struct hazptr_ctx *ctx)
-+{
-+	struct hazptr_overflow_list_flip *overflow_list_flip = this_cpu_ptr(&percpu_overflow_list_flip);
-+	unsigned int list_idx = READ_ONCE(overflow_list_flip->add_idx);
-+	struct hazptr_overflow_list *overflow_list = &overflow_list_flip->array[list_idx];
-+	struct hazptr_slot *slot = &ctx->backup_slot.slot;
-+
-+	slot->addr = NULL;
-+	guard(raw_spinlock_irqsave)(&overflow_list->lock);
-+	overflow_list->gen++;
-+	hlist_add_head(&ctx->backup_slot.overflow_node, &overflow_list->head);
-+	ctx->backup_slot.overflow_list = overflow_list;
-+	return slot;
-+}
-+EXPORT_SYMBOL_GPL(hazptr_chain_backup_slot);
-+
-+void hazptr_unchain_backup_slot(struct hazptr_ctx *ctx)
-+{
-+	struct hazptr_overflow_list *overflow_list = ctx->backup_slot.overflow_list;
-+
-+	guard(raw_spinlock_irqsave)(&overflow_list->lock);
-+	overflow_list->gen++;
-+	hlist_del(&ctx->backup_slot.overflow_node);
-+}
-+EXPORT_SYMBOL_GPL(hazptr_unchain_backup_slot);
-+
-+void __init hazptr_init(void)
-+{
-+	int cpu;
-+
-+	for_each_possible_cpu(cpu) {
-+		struct hazptr_overflow_list_flip *overflow_list_flip = per_cpu_ptr(&percpu_overflow_list_flip, cpu);
-+
-+		mutex_init(&overflow_list_flip->lock);
-+		for (int i = 0; i < 2; i++) {
-+			raw_spin_lock_init(&overflow_list_flip->array[i].lock);
-+			INIT_HLIST_HEAD(&overflow_list_flip->array[i].head);
-+		}
-+	}
-+}
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index f78275192036..b77152edafd9 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -59,6 +59,7 @@
- #include <linux/profile.h>
- #include <linux/psi.h>
- #include <linux/rcuwait_api.h>
-+#include <linux/hazptr.h>
- #include <linux/rseq.h>
- #include <linux/sched/wake_q.h>
- #include <linux/scs.h>
-@@ -7123,6 +7124,7 @@ static void __sched notrace __schedule(int sched_mode)
- 	local_irq_disable();
- 	rcu_note_context_switch(preempt);
- 	migrate_disable_switch(rq, prev);
-+	hazptr_note_context_switch();
- 
- 	/*
- 	 * Make sure that signal_pending_state()->signal_pending() below
+ - Race collapse against everything that can touch its sources, at both
+   occupancy limits and over whole-table zaps, checked by content and by
+   the kernel's own assertions.
+
+Everything passes on an unmodified kernel.
+
+Changes since v5:
+
+ - Rebased onto mm-new: hugepage_settings lives in tools/lib/mm now, so
+   the new helpers and the three new binaries follow it there.
+ - The MADV_COLLAPSE cases set the per-order controls to "never" rather
+   than "inherit", which "mm: shmem: ignore sysfs configs for shmem
+   forced collapse" (in mm-new) made safe for shmem, and the Fixes tag
+   names the khugepaged commit that started the interference (Baolin
+   Wang).
+ - The "-c at or below -s" check moves from patch 14 to patch 12, where
+   -s first gains that meaning (Baolin Wang).
+ - Patch 08's changelog no longer claims check_huge_anon() reads smaps
+   (Baolin Wang).
+ - The two Sashiko fixups posted against v5 are folded in: the fork race
+   closes its pipe and checks waitpid(), and the race harness keeps its
+   mremap scratch address reserved.
+ - Baolin Wang's Reviewed-by on 01-05, 07, 10 and 14, Tested-by on 14.
+
+Merging is_range_backed_by_order() with the check_huge_*() family stays a
+follow-up, once Yeoreum's rewrite of those on top of pagemap and
+kpageflags has landed.
+
+Tested on mm-new 498ee28e5ec4 with KASAN, lockdep, DEBUG_VM and
+page_table_check, in 16G guests:
+
+  x86-64/4K   khugepaged all:all  104 pass, 11 skip, 0 fail
+  arm64/64K   khugepaged all:all  102 pass,  3 skip, 0 fail
+
+folio_order_check, khugepaged_sync_check and khugepaged_race pass on both.
+
+The skips are structural: tmpfs cannot host some file cases, and mixed
+sources has no order below the smallest.  arm64 never registers the file
+and shmem contexts, having no PMD-order page cache folio.
+
+Range-diff against v5:
+
+ 1:  759b73a5f738 !  1:  14a0a1d44862 selftests/mm: raise the khugepaged test-case cap
+    @@ Commit message
+         Acked-by: Usama Arif <usama.arif@linux.dev>
+         Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+         Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+    +    Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+         Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+     
+      ## tools/testing/selftests/mm/khugepaged.c ##
+ 2:  8160b5446e94 !  2:  2265f32a677c selftests/mm: skip collapse_compound_extreme() where the PMD is too large
+    @@ Commit message
+         Assisted-by: LLM
+         Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+         Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+    +    Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+         Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+         Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+     
+ 3:  c6a21ef8d798 !  3:  f14ae037a749 selftests/mm: scale khugepaged's collapse wait with the PMD size
+    @@ Commit message
+         Assisted-by: LLM
+         Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+         Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+    +    Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+         Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+         Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+     
+ 4:  b039045f38b3 !  4:  cbe5dac4febc selftests/mm: skip khugepaged page cache cases without a PMD folio
+    @@ Commit message
+     
+         Assisted-by: LLM
+         Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+    +    Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+         Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+         Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+     
+    - ## tools/testing/selftests/mm/hugepage_settings.h ##
+    -@@ tools/testing/selftests/mm/hugepage_settings.h: void thp_set_read_ahead_path(char *path);
+    + ## tools/lib/mm/hugepage_settings.h ##
+    +@@ tools/lib/mm/hugepage_settings.h: void thp_set_read_ahead_path(char *path);
+      unsigned long thp_supported_orders(void);
+      unsigned long thp_shmem_supported_orders(void);
+      
+ 5:  0ee82084bd2b !  5:  021a1fcf711a selftests/mm: make the swap cases' swapout reliable
+    @@ Commit message
+     
+         Assisted-by: LLM
+         Reviewed-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+    +    Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+         Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+         Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+     
+ 6:  4e48b431671e !  6:  e80ef0e8acc0 selftests/mm: stop khugepaged during the MADV_COLLAPSE cases
+    @@ Commit message
+         collapses the very range the case is working on, and the case fails on a
+         collapse that was interfered with rather than refused.
+     
+    -    Clear the per-order controls too, setting them to "inherit" rather than
+    -    "never": khugepaged honours the global never and stays out, while
+    -    MADV_COLLAPSE on shmem still finds an order to build.
+    +    Clear the per-order controls too.  MADV_COLLAPSE does not consult them:
+    +    anon never did, and shmem stopped with "mm: shmem: ignore sysfs configs
+    +    for shmem forced collapse".
+     
+    -    Fixes: 9f0704eae8a4 ("selftests/mm/khugepaged: enlighten for multi-size THP")
+    +    Fixes: b7f16963efe7 ("mm/khugepaged: run khugepaged for all orders")
+         Assisted-by: LLM
+         Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+     
+    @@ tools/testing/selftests/mm/khugepaged.c: static bool is_anon(struct mem_ops *ops
+      	ksft_print_msg("%s...", msg);
+      
+     @@ tools/testing/selftests/mm/khugepaged.c: static void __madvise_collapse(const char *msg, char *p, int nr_hpages,
+    - 	/*
+    - 	 * Prevent khugepaged interference and tests that MADV_COLLAPSE
+    - 	 * ignores /sys/kernel/mm/transparent_hugepage/enabled
+    -+	 *
+    -+	 * "inherit" rather than "never" so that MADV_COLLAPSE on shmem still
+    -+	 * finds an order to build.
+      	 */
+      	settings.thp_enabled = THP_NEVER;
+      	settings.shmem_enabled = SHMEM_NEVER;
+     +	for (i = 0; i < NR_ORDERS; i++) {
+    -+		settings.hugepages[i].enabled = THP_INHERIT;
+    -+		settings.shmem_hugepages[i].enabled = SHMEM_INHERIT;
+    ++		settings.hugepages[i].enabled = THP_NEVER;
+    ++		settings.shmem_hugepages[i].enabled = SHMEM_NEVER;
+     +	}
+      	thp_push_settings(&settings);
+      
+ 7:  154a014dc5ad !  7:  e61798d22782 selftests/mm: move is_backed_by_folio() into vm_util
+    @@ Commit message
+         Assisted-by: LLM
+         Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+         Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+    +    Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+         Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+         Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+     
+    @@ tools/testing/selftests/mm/split_huge_page_test.c: const char *kpageflags_proc =
+     -	return (pfn_flags & folio_tail_flags) != folio_tail_flags;
+     -fail:
+     -	ksft_exit_fail_msg("Failed to get folio info\n");
+    --	return false;
+     -}
+     -
+      static int check_after_split_folio_orders(char *vaddr_start, size_t len,
+    @@ tools/testing/selftests/mm/vm_util.c: int pageflags_get(unsigned long pfn, int k
+     +	return (pfn_flags & folio_tail_flags) != folio_tail_flags;
+     +fail:
+     +	ksft_exit_fail_msg("Failed to get folio info\n");
+    -+	return false;
+     +}
+     +
+      /* If `ioctls' non-NULL, the allowed ioctls will be returned into the var */
+ 8:  a23eab162641 !  8:  be5fb9342657 selftests/mm: add folio-order check for address ranges
+    @@ Commit message
+     
+         An mTHP collapse test needs to know that a range is backed by folios of the
+         target order, and that they sit where a collapse would put them.  Nothing
+    -    answers that today: is_backed_by_folio() classifies the folio behind a
+    -    single page, and check_huge_anon() reads smaps AnonHugePages, which only
+    -    accounts PMD mappings.
+    +    answers both: is_backed_by_folio() classifies the folio behind a single
+    +    page, and check_huge_anon() counts the folios of an order in a range
+    +    without saying where they start.
+     
+         Add is_range_backed_by_order().  It requires every folio-sized, folio-
+         aligned part of the range to map one folio of that order, head to tail,
+    @@ Commit message
+     
+      ## tools/testing/selftests/mm/vm_util.c ##
+     @@ tools/testing/selftests/mm/vm_util.c: bool is_backed_by_folio(char *vaddr, int order, int pagemap_fd,
+    - 	return false;
+    + 	ksft_exit_fail_msg("Failed to get folio info\n");
+      }
+      
+     +/**
+ 9:  cd741198f81e !  9:  af0191f5548c selftests/mm: add folio-order detection self-check
+    @@ tools/testing/selftests/mm/Makefile: TEST_GEN_FILES += guard-regions
+      TEST_GEN_FILES += rmap
+      TEST_GEN_FILES += folio_split_race_test
+     +TEST_GEN_FILES += folio_order_check
+    - 
+    - ifneq ($(ARCH),arm64)
+      TEST_GEN_FILES += soft-dirty
+    + 
+    + ifeq ($(ARCH),x86_64)
+     
+      ## tools/testing/selftests/mm/folio_order_check.c (new) ##
+     @@
+    @@ tools/testing/selftests/mm/folio_order_check.c (new)
+     +
+     +#include "kselftest.h"
+     +#include "vm_util.h"
+    -+#include "hugepage_settings.h"
+    ++#include <mm/hugepage_settings.h>
+     +
+     +static int pagemap_fd;
+     +static int kpageflags_fd;
+    @@ tools/testing/selftests/mm/run_vmtests.sh: CATEGORY="pfnmap" run_test ./pfnmap
+     
+      ## tools/testing/selftests/mm/vm_util.h ##
+     @@
+    - #include <linux/fs.h>
+    + #include <mm/hugepage_settings.h>
+      
+      #define BIT_ULL(nr)                   (1ULL << (nr))
+     +#define ALIGN(x, a)                   (((x) + (a) - 1) & ~((a) - 1))
+10:  2099301ff2c1 ! 10:  a105628f6e9b selftests/mm: add khugepaged completion barrier helper
+    @@ Commit message
+         khugepaged knob only when its value changes.
+     
+         Assisted-by: LLM
+    +    Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+         Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+         Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+     
+    - ## tools/testing/selftests/mm/hugepage_settings.c ##
+    -@@ tools/testing/selftests/mm/hugepage_settings.c: void thp_read_settings(struct thp_settings *settings)
+    + ## tools/lib/mm/hugepage_settings.c ##
+    +@@ tools/lib/mm/hugepage_settings.c: void thp_read_settings(struct thp_settings *settings)
+      	}
+      }
+      
+    @@ tools/testing/selftests/mm/hugepage_settings.c: void thp_read_settings(struct th
+      void thp_write_settings(struct thp_settings *settings)
+      {
+      	struct khugepaged_settings *khugepaged = &settings->khugepaged;
+    -@@ tools/testing/selftests/mm/hugepage_settings.c: void thp_write_settings(struct thp_settings *settings)
+    +@@ tools/lib/mm/hugepage_settings.c: void thp_write_settings(struct thp_settings *settings)
+      			shmem_enabled_strings[settings->shmem_enabled]);
+      	thp_write_num("use_zero_page", settings->use_zero_page);
+      
+    @@ tools/testing/selftests/mm/hugepage_settings.c: void thp_write_settings(struct t
+     +	thp_update_num("khugepaged/max_ptes_shared", khugepaged->max_ptes_shared);
+     +	thp_update_num("khugepaged/pages_to_scan", khugepaged->pages_to_scan);
+      
+    - 	if (dev_queue_read_ahead_path[0])
+    - 		write_num(dev_queue_read_ahead_path, settings->read_ahead_kb);
+    -@@ tools/testing/selftests/mm/hugepage_settings.c: void thp_write_settings(struct thp_settings *settings)
+    + 	if (dev_queue_read_ahead_path[0]) {
+    + 		int ret = write_num(dev_queue_read_ahead_path,
+    +@@ tools/lib/mm/hugepage_settings.c: void thp_write_settings(struct thp_settings *settings)
+      	}
+      }
+      
+    @@ tools/testing/selftests/mm/hugepage_settings.c: void thp_write_settings(struct t
+      {
+      	if (!settings_index) {
+     
+    - ## tools/testing/selftests/mm/hugepage_settings.h ##
+    -@@ tools/testing/selftests/mm/hugepage_settings.h: static inline void thp_save_settings(void)
+    + ## tools/lib/mm/hugepage_settings.h ##
+    +@@ tools/lib/mm/hugepage_settings.h: static inline void thp_save_settings(void)
+      	hugepage_save_settings(/* thp = */ true, /* hugetlb = */ false);
+      }
+      
+11:  060448cb8a03 = 11:  27295f7decd1 selftests/mm: add order-parameterized khugepaged collapse cases
+12:  674fbf72a481 ! 12:  60e86026c227 selftests/mm: parameterize the mixed-source collapse case by source order
+    @@ Commit message
+         supported mTHP order below the target.  The other mTHP cases are
+         unaffected: mthp_push_target_order() enables only the target order.
+     
+    +    A -c at or below -s is refused before any case runs: the sources would
+    +    already be the size being asked for.  Without the check the generic cases
+    +    fail on that one by one instead of saying why.
+    +
+         "-s 5 -c 7" on arm64/64K then collapses contpte-mapped sources into a
+         larger mTHP.
+     
+    @@ tools/testing/selftests/mm/khugepaged.c: static void usage(void)
+      	exit(1);
+      }
+      
+    +@@ tools/testing/selftests/mm/khugepaged.c: int main(int argc, char **argv)
+    + 	    !(thp_supported_orders() & (1UL << collapse_order)))
+    + 		ksft_exit_skip("Order %d is not a supported anon THP order\n",
+    + 			       collapse_order);
+    ++	if (mthp_khugepaged_context && collapse_order <= anon_order)
+    ++		ksft_exit_skip("-c %d needs a source order below it, -s says %d\n",
+    ++			       collapse_order, anon_order);
+    + 
+    + 	if (mthp_khugepaged_context) {
+    + 		pagemap_fd = open("/proc/self/pagemap", O_RDONLY);
+13:  d2251908b73f ! 13:  39a895e66cf1 selftests/mm: cover a shared-source collapse write race
+    @@ tools/testing/selftests/mm/khugepaged.c: static void collapse_max_ptes_shared(st
+     +	close(sync[1]);
+     +	if (read(sync[0], &go, 1) != 1)
+     +		ksft_exit_fail_msg("child never reached the collapse\n");
+    ++	close(sync[0]);
+     +
+     +	/*
+     +	 * Unshare one page at a time: a burst would break CoW on the whole
+    @@ tools/testing/selftests/mm/khugepaged.c: static void collapse_max_ptes_shared(st
+     +	 */
+     +	i = 0;
+     +	for (;;) {
+    ++		pid_t ret;
+    ++
+     +		if (i < n)
+     +			ip[i * stride] = i + 0xbeef0000;
+     +		i++;
+     +		usleep(10 * 1000);
+    -+		if (waitpid(child, &wstatus, WNOHANG))
+    ++		ret = waitpid(child, &wstatus, WNOHANG);
+    ++		if (ret == child)
+     +			break;
+    ++		if (ret < 0)
+    ++			ksft_exit_fail_perror("waitpid()");
+     +	}
+     +
+     +	/* Finish whatever the paced sweep did not reach */
+14:  30e316efbd9f ! 14:  8e214f9ef2ea selftests/mm: run every supported collapse order by default
+    @@ Commit message
+         and "all".  Also:
+     
+           - -c still pins one order, and now says what is wrong instead of
+    -        printing the usage text.  An order at or below the -s source order is
+    -        skipped: the sources would already be the size being asked for.
+    +        printing the usage text.
+     
+           - Both orders end up as array indices and shift counts, so -s and -c
+             are range-checked before they get there.
+    @@ Commit message
+         pinned order-4 line.
+     
+         Assisted-by: LLM
+    +    Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+         Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+    +    Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+         Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+     
+      ## tools/testing/selftests/mm/khugepaged.c ##
+    @@ tools/testing/selftests/mm/khugepaged.c: int main(int argc, char **argv)
+     -	    !(thp_supported_orders() & (1UL << collapse_order)))
+     -		ksft_exit_skip("Order %d is not a supported anon THP order\n",
+     -			       collapse_order);
+    +-	if (mthp_khugepaged_context && collapse_order <= anon_order)
+    +-		ksft_exit_skip("-c %d needs a source order below it, -s says %d\n",
+    +-			       collapse_order, anon_order);
+     +	if (mthp_khugepaged_context) {
+     +		unsigned long orders = thp_supported_orders();
+     +
+15:  e891ab107e3a ! 15:  95ae01ec50dd selftests/mm: check that one khugepaged pass collapses one window
+    @@ tools/testing/selftests/mm/Makefile: TEST_GEN_FILES += merge
+      TEST_GEN_FILES += folio_split_race_test
+      TEST_GEN_FILES += folio_order_check
+     +TEST_GEN_FILES += khugepaged_sync_check
+    - 
+    - ifneq ($(ARCH),arm64)
+      TEST_GEN_FILES += soft-dirty
+    + 
+    + ifeq ($(ARCH),x86_64)
+     
+      ## tools/testing/selftests/mm/khugepaged_sync_check.c (new) ##
+     @@
+    @@ tools/testing/selftests/mm/khugepaged_sync_check.c (new)
+     +
+     +#include "kselftest.h"
+     +#include "vm_util.h"
+    -+#include "hugepage_settings.h"
+    ++#include <mm/hugepage_settings.h>
+     +
+     +#define BASE_ADDR ((void *)(1UL << 30))
+     +/* Smallest order khugepaged considers */
+16:  d7f8e59c19f1 ! 16:  343b8684a8bd selftests/mm: add khugepaged race harness
+    @@ tools/testing/selftests/mm/Makefile: TEST_GEN_FILES += rmap
+      TEST_GEN_FILES += folio_order_check
+      TEST_GEN_FILES += khugepaged_sync_check
+     +TEST_GEN_FILES += khugepaged_race
+    - 
+    - ifneq ($(ARCH),arm64)
+      TEST_GEN_FILES += soft-dirty
+    + 
+    + ifeq ($(ARCH),x86_64)
+     
+      ## tools/testing/selftests/mm/khugepaged_race.c (new) ##
+     @@
+    @@ tools/testing/selftests/mm/khugepaged_race.c (new)
+     +
+     +#include "kselftest.h"
+     +#include "vm_util.h"
+    -+#include "hugepage_settings.h"
+    ++#include <mm/hugepage_settings.h>
+     +#include "../../../../mm/gup_test.h"
+     +
+     +#ifndef FOLL_WRITE
+    @@ tools/testing/selftests/mm/khugepaged_race.c (new)
+     +			   MREMAP_MAYMOVE | MREMAP_FIXED, mremap_area);
+     +		if (p == MAP_FAILED)
+     +			ksft_exit_fail_perror("mremap() back");
+    ++		/* The move back unmapped the scratch address: claim it again */
+    ++		if (mmap(mremap_scratch, hpage_pmd_size, PROT_NONE,
+    ++			 MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED_NOREPLACE,
+    ++			 -1, 0) != (void *)mremap_scratch)
+    ++			ksft_exit_fail_perror("mmap() mremap scratch");
+     +		usleep(rand_r(&seed) % 2000);
+     +	}
+     +	return NULL;
+17:  f85220ed8bb4 = 17:  09cfcb6afbc4 selftests/mm: race the collapse of windows with holes
+18:  b3738ea322b7 = 18:  b12f1f2d500c selftests/mm: add memory-pressure threads to the khugepaged race harness
+19:  66f5a400e015 = 19:  ad0be4f7ec43 selftests/mm: zap whole PTE tables in the khugepaged race harness
+
+Kiryl Shutsemau (Meta) (19):
+  selftests/mm: raise the khugepaged test-case cap
+  selftests/mm: skip collapse_compound_extreme() where the PMD is too
+    large
+  selftests/mm: scale khugepaged's collapse wait with the PMD size
+  selftests/mm: skip khugepaged page cache cases without a PMD folio
+  selftests/mm: make the swap cases' swapout reliable
+  selftests/mm: stop khugepaged during the MADV_COLLAPSE cases
+  selftests/mm: move is_backed_by_folio() into vm_util
+  selftests/mm: add folio-order check for address ranges
+  selftests/mm: add folio-order detection self-check
+  selftests/mm: add khugepaged completion barrier helper
+  selftests/mm: add order-parameterized khugepaged collapse cases
+  selftests/mm: parameterize the mixed-source collapse case by source
+    order
+  selftests/mm: cover a shared-source collapse write race
+  selftests/mm: run every supported collapse order by default
+  selftests/mm: check that one khugepaged pass collapses one window
+  selftests/mm: add khugepaged race harness
+  selftests/mm: race the collapse of windows with holes
+  selftests/mm: add memory-pressure threads to the khugepaged race
+    harness
+  selftests/mm: zap whole PTE tables in the khugepaged race harness
+
+ tools/lib/mm/hugepage_settings.c              |  60 +-
+ tools/lib/mm/hugepage_settings.h              |  11 +
+ tools/testing/selftests/mm/Makefile           |   3 +
+ .../testing/selftests/mm/folio_order_check.c  | 122 ++++
+ tools/testing/selftests/mm/hmm-tests.c        |   1 -
+ tools/testing/selftests/mm/khugepaged.c       | 488 +++++++++++++++-
+ tools/testing/selftests/mm/khugepaged_race.c  | 538 ++++++++++++++++++
+ .../selftests/mm/khugepaged_sync_check.c      | 179 ++++++
+ tools/testing/selftests/mm/migration.c        |   1 -
+ tools/testing/selftests/mm/run_vmtests.sh     |   8 +-
+ .../selftests/mm/split_huge_page_test.c       |  61 --
+ tools/testing/selftests/mm/vm_util.c          | 146 +++++
+ tools/testing/selftests/mm/vm_util.h          |  10 +
+ 13 files changed, 1526 insertions(+), 102 deletions(-)
+ create mode 100644 tools/testing/selftests/mm/folio_order_check.c
+ create mode 100644 tools/testing/selftests/mm/khugepaged_race.c
+ create mode 100644 tools/testing/selftests/mm/khugepaged_sync_check.c
+
+
+base-commit: 498ee28e5ec4727f829507c4a1bde3ab1b7704cd
 -- 
-2.40.1
+2.54.0
 
 
