@@ -4,135 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDC0AC982D7
-	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 17:00:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7264C982D7
+	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 17:02:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A1B446B008C; Sat, 19 Sep 2026 13:00:30 -0400 (EDT)
+	id CDE586B0092; Sat, 19 Sep 2026 13:02:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A9E86B0092; Sat, 19 Sep 2026 13:00:30 -0400 (EDT)
+	id C8ED56B0093; Sat, 19 Sep 2026 13:02:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 893AC6B0093; Sat, 19 Sep 2026 13:00:30 -0400 (EDT)
+	id B7E4D6B0095; Sat, 19 Sep 2026 13:02:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 58A436B008C
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 13:00:30 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 815CCC02B1
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 17:00:29 +0000 (UTC)
-X-FDA: 85231125378.13.D74B757
-Received: from mail-ed2-f12.google.com (mail-ed2-f12.google.com [74.125.228.76])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 4C6C2180006
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 17:00:27 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=TYW3oqJU;
-	spf=pass (imf24.hostedemail.com: domain of torvalds@linuxfoundation.org designates 74.125.228.76 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 954986B0092
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 13:02:04 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1898280282
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 17:02:04 +0000 (UTC)
+X-FDA: 85231129368.10.983B08A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 7F05D20009
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 17:02:02 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="E7+8/d5P";
+	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789837322;
+	b=EA/jEU6BDQMMs2yUu7uR+LaCbzF4RhXGAekFW+n87w3tQ5DNXhd9IxmhzRoSs6nT4haTv7
+	/+0KBlXwk+2PhefwubbgzyU+wzMsbUEz2Hd9dW6Y6hIpCNq+TNMlI1zwpjOr1Tw0pQSWom
+	2cx+sS3oiiJw4hhqJ4dnuOO42LSxOdM=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="E7+8/d5P";
+	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789837227;
+	s=arc-20220608; t=1789837322;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R4EVCCJGMVi/Jgl5olIITsEJ4O030sdS93t+4GDKvrY=;
-	b=ngRjFSPA/UBt4/fxppS2MN5F2j9TRR5scXttyGcc18cPYf4JSGyzKar5rnzInUGEnfKEEL
-	xwlzeKA6PFfBFUKCCJlbvKPnVdckxMT9D4HDSTHcJQmS2Nhlsk+/ACAQHUzLQ4bVn0MYgF
-	bfvFibyb7S3TeI24a4X6VRjH3n5kq9E=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789837227;
-	b=K6wq2Yc94HqWwMrJUPDeR0ME5zviA8/Ydlb9S9pJYV6XmCPohkDhTFlR08cyi+OMtL/ffk
-	YJRaoRuFpugKTVcXgb6GV4JkeCyyPEBET27CYkXqCrt8vlLLThfIA6NO2VrwPsWqwPUcCw
-	RkiHLvbPGNDbEgb4BAOukAnrC3hN02o=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=TYW3oqJU;
-	spf=pass (imf24.hostedemail.com: domain of torvalds@linuxfoundation.org designates 74.125.228.76 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=none
-Received: by mail-ed2-f12.google.com with SMTP id 4fb4d7f45d1cf-6a9adea43b6so2246183a12.0
-        for <linux-mm@kvack.org>; Sat, 19 Sep 2026 10:00:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1789837226; x=1790442026; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=R4EVCCJGMVi/Jgl5olIITsEJ4O030sdS93t+4GDKvrY=;
-        b=TYW3oqJUAr9Dj4Qo8QCQewzHBMnoT1ICfBwASe8bjazTLBC/c1N6UAiGsiuxX9Wpv0
-         6MNmV4SuUDJRwApgapPL0kSAIDyAfM9QMf7DAHz8/urGBbPCU4BEVjCp9ROdBZA2b9ww
-         LJLV7Fzh3OY/EEvFSz0pGxL0jRfsPExI/uKKM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789837226; x=1790442026;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=R4EVCCJGMVi/Jgl5olIITsEJ4O030sdS93t+4GDKvrY=;
-        b=DaToi4pXIBBMo8a2nJEcVpmcmmYHEQl7hH79Eau/UDyp3Zq63kK6mNmZEcG4fcb6Vf
-         KWrBrAwGsedxcXd+tTXiDvRUCRDksDL92xHcWd0wja9vhGsngdrO2CmqVsX00+1/OEwQ
-         Ord6bOmqdXNZVKKdo9GKTZZI6CIaMnOscToMmi9rwRe+Nu7ZLMjzqDNGqiUc9/OaVCiu
-         RWAY8OsvFcb6Q1EKohmz1AtRY/1zOW9qNazN3W3ZKh2yjyUOW6jIZ9+eS1WIIjYmbjkI
-         2Y8EUjCguXFsGKmWddE7StonWvqv7a8lvf/sTZEMGipxus5S5JhFGqc+hWj8B3h6FjAu
-         t8zQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwoIRZiUIDKyZSjx1AXQSjJiXmIq9OTHqt67JUx0fSDEvx9DTQdo2zftz2nmJV9sf1der68CJcdtw==@kvack.org
-X-Gm-Message-State: AFuF++lywHiVIq755fMXfk3QT/fWRrl4m6BKk1437W+HeHQGRaBzbrPS
-	SrN+RypHKJ9UfzKd5kKGo5gTx0WsLnqbZPrtT6JppSi5AI1/lOxs5/SASgcqh99QCAjGc5Dr7DX
-	8l8PHKSw=
-X-Gm-Gg: AYBFou2hpfgqUAY98lQsZI+QsMQP922itiMa0c8WnTgFYY99pOZMhdPxNWdUmTJdVer
-	4fuDxVeWULmT/6kAvEJ2Nz7xHySNo57ukLDiLtazzOTAx/pgFOvstIHpVa3pYTzCM9q7x4z61OT
-	fYBoSXFwfzjo8te3IKUzNfXJ1jZBe8rdVeVhHBvpYNZpxdlgW5eupEdU2aeuGX5TfqPeoxXnd5F
-	q8acjnPKDN9yP4we8So2cgBVj121QLMrGoILPMzM9DDL7GpmdboF/68YlHhifw1fhN+WGw1XtzX
-	4NCqgHqGf1HXdfyEc+4y/PxIwyCE6+WO+sHHwnH/FJkAPtV1jBIsIaXLoPQdu+2Q8xGEOCmUcRS
-	/n5B5ygQ01cFCCTN/5NmQVI1Lh1ggSPEnAVmIORU4ZQgS0Eh5KLV84YmQ85OGMtvfE/B2HoBQ8e
-	V6JIc3tLzM7QL476BGbfH1cJ4xQ6oYPo9p1QPDuqQVroSJt9qFkL6D5WOxXHgwrZCQN0GUUCUMJ
-	qhx9tQkzQAgOkP7ZOXWVOVWzoNvfEblcWbw8kfFmil1IM1X2w==
-X-Received: by 2002:a05:6402:4145:b0:6a9:9766:59ad with SMTP id 4fb4d7f45d1cf-6aa548d810emr4910658a12.43.1789837225747;
-        Sat, 19 Sep 2026 10:00:25 -0700 (PDT)
-Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com. [74.125.228.140])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6aa67dbaf0esm1546402a12.15.2026.09.19.10.00.24
-        for <linux-mm@kvack.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 19 Sep 2026 10:00:25 -0700 (PDT)
-Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c254f6c7a58so255588466b.2
-        for <linux-mm@kvack.org>; Sat, 19 Sep 2026 10:00:24 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBwgk1qkU9mV080UBaxX5ZHhgs/MxdniY6Tm3zA4iqHJ0j6QQEkESYw0oK0WdVIlL0s/U+FAP+TyoQ==@kvack.org
-X-Received: by 2002:a17:907:3f17:b0:c26:1649:47ab with SMTP id
- a640c23a62f3a-c2a15b4bca3mr522411266b.33.1789837224119; Sat, 19 Sep 2026
- 10:00:24 -0700 (PDT)
+	bh=yuyxk49VJCC0gfGldxmcbzu2cmMU5n1fpWdo47YM2lg=;
+	b=dqG4D599K/guv9saqfEEqgrRtb/YBx2s3s8csP58uc49kYhnu4OYgLVNTN7dg1RL/JtRgv
+	CObaCET3gzF7AV6uj4czhchqcLJt8RRHhMWiemGlqoRE0RS2Ei7H3iXY6tyIcH1ivwSVI9
+	RKmXczK4zlOzoIvNpVqOdkDDdH6HCTQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id EF023601FB;
+	Sat, 19 Sep 2026 17:02:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C47F1F000FF;
+	Sat, 19 Sep 2026 17:02:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789837321;
+	bh=yuyxk49VJCC0gfGldxmcbzu2cmMU5n1fpWdo47YM2lg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=E7+8/d5P82fP2xzrq+MJOLKng5m/Jh2jBtTdayiM8/U1717rxb8gAdXZwRMhSGA3q
+	 hWDSkZwCVpfLauWzcLeGH+WAFpU21KcXzILtXuBWA9pZ25z5CrIpt8HF7TSe6ynH2k
+	 Lo1hmEBG5qCMmdKOvd5K9080CKiJdPXT+96nnTFDmQXiF5BQX11WlGYLHEvDac+gp5
+	 UcugU0EW5KAGditkMe0HUiCbtn+pPO+jKc0x/rt2AqOjeudVywOOEh509tle86YxbX
+	 caEYL7sxB5OHGZ2gLetVhVY6zBS9N7UdMh03hIwwMUDd08Qhjp10/MlW823YM2C6zt
+	 1eCdELUbfmQYg==
+From: SJ Park <sj@kernel.org>
+To: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 2/2] mm/damon/tests/core-kunit: test the temporal tuner's size quota conversion
+Date: Sat, 19 Sep 2026 10:01:54 -0700
+Message-ID: <20260919170154.86842-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260919071324.1583280-3-donggeunyoo.kernel@gmail.com>
+References: 
 MIME-Version: 1.0
-References: <e9669b34-12c2-4cf2-a887-315f581f0789@paulmck-laptop>
- <20260919000056.3132131-1-paulmck@kernel.org> <CAHk-=wj9knmxXD01=top1DQ9_aqrN2a3kpWRS5DQv6QLwLOztg@mail.gmail.com>
- <6B1FC39D-6EB0-433A-8E49-E5EFC9379AD7@mainlining.org>
-In-Reply-To: <6B1FC39D-6EB0-433A-8E49-E5EFC9379AD7@mainlining.org>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Sat, 19 Sep 2026 10:00:06 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wjyniJy-CX1muCrsZp-i-sLGRYeRYEPN7sw9orRZUCwag@mail.gmail.com>
-X-Gm-Features: AcwNN1WCbh_CXATf-FMT8x_ZS8yd9pmRtrkzEOhM9i8GXxqTrntEHha57Im_sMA
-Message-ID: <CAHk-=wjyniJy-CX1muCrsZp-i-sLGRYeRYEPN7sw9orRZUCwag@mail.gmail.com>
-Subject: Re: [PATCH 01/28] hazptr: Implement Hazard Pointers
-To: Bradley Morgan <brads@mainlining.org>
-Cc: "Paul E. McKenney" <paulmck@kernel.org>, rcu@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	kernel-team@meta.com, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Boqun Feng <boqun@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, lkmm@lists.linux.dev, 
-	Zqiang <qiang.zhang@linux.dev>, Wang Lian <lianux.mm@gmail.com>, 
-	Kunwu Chan <kunwu.chan@gmail.com>, Nicholas Piggin <npiggin@gmail.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Will Deacon <will@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Alan Stern <stern@rowland.harvard.edu>, 
-	John Stultz <jstultz@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Frederic Weisbecker <frederic@kernel.org>, Joel Fernandes <joel@joelfernandes.org>, 
-	Josh Triplett <josh@joshtriplett.org>, Uladzislau Rezki <urezki@gmail.com>, 
-	Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang1211@gmail.com>, 
-	Ingo Molnar <mingo@redhat.com>, Waiman Long <longman@redhat.com>, 
-	Mark Rutland <mark.rutland@arm.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Vlastimil Babka <vbabka@suse.cz>, maged.michael@gmail.com, Mateusz Guzik <mjguzik@gmail.com>, 
-	Jonas Oberhauser <jonas.oberhauser@huaweicloud.com>, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam04
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 7F05D20009
+X-Stat-Signature: p76ezp5hzzy479b919kp3x74jsjkzcpx
 X-Rspam-User: 
-X-Stat-Signature: pbhu1zhsxpgagfaibr1yberuroqba6o4
-X-Rspamd-Queue-Id: 4C6C2180006
-X-HE-Tag: 1789837227-591555
-X-HE-Meta: U2FsdGVkX18Gys4V/C6kEKhlnhDL/A68sD3J0xrpOAZhEAk2XRQi7Y01fzTBPvV7mPt0pnfZa2ZizOivd0LZwSRILVD8/YS3ZTDlFA1HqwaidAWVvUBu7Z/Q1E53qqM1eG9iFX2n9SdxIs7N9qAuYP6AuchuvLutft63n2HtsI1rzA59BN7dxQVWLNKOTtG31QLU6sBhy1LDJBw51l/cYvDi2Q3gSNCIxAjZQnxAQxfoxAHfzPO4udKoEJkT/YRhvAs2pAXVkbPAz4SGk/djRACJ20SHiciP8hRPRRSNV1E0e/y2k/QTacnBJkAFEVmswsQzjlROJzci/6ZBb5unPscCiA0X6q69l6QV3ohJ11UUOxQedKr0jCMMT72yWLQOrP5bVYjxpTgfA+ZiA8a1+EoVrf+Zx/4iIFmTCfr4UrgFhjr2w0thR7CWBHv6vDr1MMcH/6zXx3r3lDQ25BzktSiwIweOUXg+QfJn55P4T9v5ty8M2if2CLvFFO4uYcKnnsHQPLVAhte4HaEfBjkGgdD3T5e3X7PrB0JaSqDiv9I4IrQkUznZUdo+/Ex/NZv8y/LwIwD73UIIv1tQhxYtwJr45C8dxvtkzlzpLj2BtO5zd+4MWx5KYCicQizSXLxD8QQZzkfjNWINZHMGzidLkjHFhWsOTB7p8RbOV7AUaUCYf/TYtbyKHREdJizgyMd774/6HFsxuO/ylCCWwsNUr+6L5oLg36+lexym7I9SHAQ8r/d29/91gTjb+MhHfgiDl6x5QSta82xqJtints0n8GMXybhKyYqCyWijHcrnslahfmod1hDpkuA0jwaLyVNdmdWcQlS7609nDiIoyD+UnWgmWrwaWiiFfjaD11dEXNLZgbdb3XND7N9K/QEAosXKBHQ/nBrbJ3oib1He317dh/x7kk7QvU6Zu47FHuFKYiCR2KQsuwDvfD+zin4FwugFibJJV6BnFAM72MGdCKM
- au6Ttl3l
- L3I0LzWJMNWvIqtrD8TxV+ZIEBfgNTQQtZLMpeYcQ6l/uO5yID3apBs/wmoyeiaiW/rEbTL7e0IwUoCRUKR0dGusfCjHJ1h3TfMITPizD2cKH4cH4IQnhvpzBnvew+NvspeCRxmg5RIgX3cQQ56j3KY5KsNuPa/YoZat1g9On6M1/PDBgt00QKr/0vWSqbLcX4+6qZMyOINa4Fn+agYQqe4d23JqlS3b8ly8mHH64v0qlmNZhGGPMXx9DIVG8l1HsmdgYlI1VCTpn5mQaxW0UBa2fJngkQHHuNnU1u2YfKGOP4wDTWrgIfW+denCBfvd+4Zd6yGNyr93hUSsLyIrKAgjbwiVlQkrRkPCKP2T7VRElXRLdcD92tESmaFuRvWkUO1GH8c7TMsUlYt1FBx0PO+JCtbj0j7qfnDHtwUW0nx4imhdU1aJCfCVN3D39+eIThQGQjgiJE1qNOt48ZtZJbXACbdYrGbfHIAcrK77H20t2+FCexn9scJiiXYOxh+XIH6LZnLlzPDS+4bMcxag6f7LeYQxFKqE0B82rXgIleRlZpoweHy7vSke/6bHq0IVQsWdE0iKzA33vqvIM/VwSOZkYk7MCbS4CTAlM9gtSCgC3BPBm2hr58lLQ9siqCtkgTsBZq5wHA8uFAyk=
+X-HE-Tag: 1789837322-110035
+X-HE-Meta: U2FsdGVkX1+bhM+qVxYvc3FaT38PSVNapVaTEKVGdsg+qM+zqwfrCdEnUS5FlEpmbSkadUlT70HywE7JQP0YmX/3P3VUvUmB1Vv6e8xcf8PmB/kYitwixQ8lpysUaxoMZjzFvLn+/bytsSTorjbmmddSpA4DG26foTP8WNkPCSftipg32Fr8rsrzi5MDuUpfayAntMsl9O9rbpTgaXO3PbU/HnBQewIDr8pSVkHqKhN+dl0F3hsZKBzzNtHyQu0X4P6kq8XRwRtWW1f9U2tvEAXnK02yQGF9sqLKw4AnMY5B7M6eKIfMoSBbEjO9njIPIi5ctaZm0TB2lGHFbeU5CmHSE2yKRbrKfjwv7vjoMr1ko/xX6TcG16bRMDk+ZBgLbSR9bjuAtWSnW4Ggi+BnY9Ws77eUdB20LRUtDQb19ESnLqB/mN1fVW37C1cMmrUMNf7G7AIXFSa2FcUQDA5B9ZAal9INIxUqcc3W8yrAKVhQX/JFqUPnp89R6R8jsZCVvNMwRwiGx6oTzKYNweTsg8iM3rmaI4n3axEaItzqpiUg+69y+S5mgSba4Jqvr69u/TrkyWBPNX2qLeG5TX2Dn1lLhsfYV1zJzqQsEiRMNbSM9igbXwMMEqiJfE92LdLhq/T0wtDse4j2F2bbJwYsquHBHO/Uht2Q/DvedYGlq+jSnmc2lfq1XgrrInRBXNJpzCQ3bEjWanGlAlZtKJLgvNaF2YzJHZnVhoKtHt8jvh/J8D5VKJd5uMR2BJURAfCXId0mAfeFlaAoPMHqLs09Zvob0ZIV71NR5kAV/sikGIJNmqDaOCFMHDo1WNDxirezNPEQjZEfQEromF6wE+1CWmr5EwoqYVqA2OTevpogesag5xZIhO1BFmN2DXYdYI4/qALSb1iYRoqsI0AilW1swNdC+y2vSHDuvt/13LeknNSbU8ist/fxelg4qewoR4VGQBj3Bao4O55jzQJ3TLj
+ QibOTIrf
+ 8Sq26u/755DPYbwzkjKLD4WHp8HUe8hIbZx5OsCGtlhkc1LqwqaDU4Cxd15bPuiOij3t44Kf/62RG05O8WWQ0rBeiJo0xO5kFa4OuvfifJkgKHthgMB4CxlW+TaZY3Z42GwfpsT1E2uDrrF0mwbYd6oWh+Rux0bmJMyfQRCMBuuzTx3bZgixJpyC6BspnSSzyCgb+qmmW/L6Dfgi+uTSdNObjGzevT5s+6IbUTJKZTWnrf7Wt1J2cGLRKc4H1E4k+JI2jmDJw3jNm1YR9Fi6qWC2oVKd/zrkzvjKTCXI+ihwppkcA28L3WXBRYQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,56 +93,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 19 Sept 2026 at 09:35, Bradley Morgan <brads@mainlining.org> wrote:
->
-> I think hazard pointers are good, what test do YOU suggest we do here?
+On Sat, 19 Sep 2026 16:13:24 +0900 Donggeun Yoo <donggeunyoo.kernel@gmail.com> wrote:
 
-I want to see a single real-world example of "look, this speeds this
-real load up by 10%, and the kernel code was actually cleaned up in
-the process because hazard pointers are great".
+> damos_goal_tune_esz_bp_temporal() encodes the size quota in basis points,
+> so the conversion is exact only up to ULONG_MAX / 10000.  Pin the three
+> sizes around that boundary: the largest one that fits, the first one that
+> does not, and ULONG_MAX.
+> 
+> Signed-off-by: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
+> ---
+>  mm/damon/tests/core-kunit.h | 35 +++++++++++++++++++++++++++++++++++
+>  1 file changed, 35 insertions(+)
+> 
+> diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
+> index 5ff0436c5844..4460dce0352c 100644
+> --- a/mm/damon/tests/core-kunit.h
+> +++ b/mm/damon/tests/core-kunit.h
+> @@ -1929,6 +1929,40 @@ static void damon_test_rand(struct kunit *test)
+>  	}
+>  }
+>  
+> +static void damos_test_esz_goal_temporal(struct kunit *test)
+> +{
+> +	unsigned long max_sz = ULONG_MAX / 10000;
+> +	struct damos_quota_goal goal = {
+> +		.metric = DAMOS_QUOTA_USER_INPUT,
+> +		.target_value = 10000,
+> +		.current_value = 0,
+> +	};
 
-Not a microbenchmark that tests just the hazard pointers themselves,
-but a real kernel feature that has been converted to hazard pointers,
-and in the process actually shows improvement.
+Let's use damon_new_scheme() and damos_new_quota_goal() unless it makes code
+too complicated.
 
-The ONLY reason for hazard pointers to ever be merged is if they
-actually buy us something real.
+> +	struct damon_ctx *ctx;
+> +	struct damos s;
+> +
+> +	ctx = damon_new_ctx();
+> +	KUNIT_ASSERT_NOT_NULL(test, ctx);
+> +
+> +	memset(&s, 0, sizeof(s));
 
-So I want to see that 'real" thing.
+> +	INIT_LIST_HEAD(&s.quota.goals);
+> +	list_add(&goal.list, &s.quota.goals);
 
-I want to see how easy/hard it is to actually convert a real current
-user, and I want to see how it actually results in measurable
-improvements in performance.
+Let's use existing helper, damos_add_quota_goal().
 
-Something *core*. Something that everybody uses. Because I'm not in
-the least interested in a new subtle feature that interacts with the
-scheduler and is only used for some random driver or (to pick the only
-example I have ever seen) AppArmor.
+> +	s.quota.goal_tuner = DAMOS_QUOTA_GOAL_TUNER_TEMPORAL;
+> +
+> +	s.quota.sz = max_sz;
 
-Now, obviously, the thing that would impress me is something like the
-dcache. If *that* can be converted, and it shows real improvements on
-some real benchmark, then I'm sold.
+Meaning of 'max_sz' is bit confusing.  Why don't you use 'ULONG_MAX / 10000'
+here?
 
-Now, I don't really expect that kind of major test-case, but I do
-expect *something* meaningful. Not a driver. Not a test module. Real
-code.
+[...]
 
-IOW: "Show me the money".
 
-Because the kernel is *not* some kind of acadmic project. Never has been.
+Other than above, looks good to me.
 
-I simply don't want to merge something that is touted as an
-alterantive to RCU - which we obviously depend on very very heavily -
-without something *major* that actually uses it and shows the
-real-world advantages.
 
-The discussion about hazard pointers in the kernel has been around for
-a few years by now. If there isn't some real core feature that was
-converted to show that, then I think that's already a failure
-indication.
-
-I'm hoping that those patches and numbers already exist, and I just
-haven't seen them.
-
-                  Linus
+Thanks,
+SJ
 
