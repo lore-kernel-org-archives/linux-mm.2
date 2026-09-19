@@ -4,119 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91010C982D8
-	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 05:47:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5824C982CC
+	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 06:18:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 87B496B008C; Sat, 19 Sep 2026 01:47:16 -0400 (EDT)
+	id D4C636B009E; Sat, 19 Sep 2026 02:18:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8047E6B0092; Sat, 19 Sep 2026 01:47:16 -0400 (EDT)
+	id CFD756B00A0; Sat, 19 Sep 2026 02:18:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F65E6B0093; Sat, 19 Sep 2026 01:47:16 -0400 (EDT)
+	id C136D6B00A1; Sat, 19 Sep 2026 02:18:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E8096B008C
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 01:47:16 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A06CFA4285
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 05:47:15 +0000 (UTC)
-X-FDA: 85229428830.28.79D31E3
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	by imf11.hostedemail.com (Postfix) with ESMTP id DCCE840005
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 05:47:13 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WKRfF3u1;
-	spf=pass (imf11.hostedemail.com: domain of kmehltretter@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789796833;
-	b=JxdUCDj2DxMlCOtRaFEcfZ6KXxcNjUMIOyUADmWdxraoMSVin2pmrcShl98DtZ+janwkSo
-	wGUvPvJxKTc7aAfIWQFmed0JAM3vmxsOzmeRJ3ctLUFLgIgSSAW9XR71ep2dkz2WAJx6B5
-	XKPJbiejnYAJf1456e07eL2GHMoOxKU=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WKRfF3u1;
-	spf=pass (imf11.hostedemail.com: domain of kmehltretter@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id A0BE96B009E
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 02:18:22 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B22FF801D6
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 06:18:21 +0000 (UTC)
+X-FDA: 85229507202.25.48F943A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id D4E77140008
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 06:18:19 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WhQhl6ID;
+	spf=pass (imf23.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789796833;
+	s=arc-20220608; t=1789798699;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=COKKaSNh5aTClL3pM4Jpjuvdb7nWPK0iDVawAIP9M/0=;
-	b=my6CZvytDXVO8gr8A6RJ16JlytS+h+SUPO9Ho697OZY/B/9ExdQwHbFF4xglIBVmCn7rfS
-	x0X7pg8BDWcuEB+J0+ZeWDmXX4liqSclLYSOUVXHFMPd1Sl9VQFMhb8x79PUZG7Ai4kCYV
-	Oaa6H5owF1GDdAbkTqYrKjCLHGGa8bc=
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49ccff31419so11797715e9.3
-        for <linux-mm@kvack.org>; Fri, 18 Sep 2026 22:47:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789796833; x=1790401633; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=COKKaSNh5aTClL3pM4Jpjuvdb7nWPK0iDVawAIP9M/0=;
-        b=WKRfF3u1+P9Nd5mRm55daewM9045kqt8UAYjFBVglSDCM5IluuF+fUyZ7W/Nc2dvSK
-         lzYDaWERguk79NtXVxvyiNx5+wUnom9OvdH4bTwVOycYWcj2Q19qi25EvpyNMsqHk/b/
-         DYup7swU3kS5+Tn0SoKPs+bGDfX2gY/rL6ltkOvdAdUX1c1jf5rP5fJaZsNX1XZ8PVxE
-         s30OmOqRA8aqeyPkFOGlXI/pgvXZVjV71qW+YtstH90oPHqNPsBs7XlnAW+UnQLgAJ3h
-         2MPqbqpCtjuwWrxyVb+J3+8NRHMII3SIGMoeU9zu+HuusmL+G+mE5cpmjYd3NKnl7TOU
-         bCCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789796833; x=1790401633;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=COKKaSNh5aTClL3pM4Jpjuvdb7nWPK0iDVawAIP9M/0=;
-        b=DnLIKEznZ6ym1g3umbY74xAdbqFIzeU15VI2m96uTXLDY6OZmcHDQWFrCyIODqEfB5
-         9UMVp6dOTxoNi8pygHwVFfxLRfrJ8KB2UVFeea868slesBdQfLI4ryMkzuPsx/LH1awE
-         43rUil59BYyptQJmCS7ao6nqXREumDQ55PEFsuKHkBoNbc100XfjMja4upq/16+E0YyS
-         A1ETeiNMw/93nCAOmEOhXL7PWZafd9n+Ie/hbB8GVrXi5z18r9nO78LvQDmMNOEPrpMR
-         QWSvhLIutjUTMdPxsFx4/BbBrhU6CKsb5VgJOQd1mXSwdEWsj0fsnqT+Gc7HSN8l3M8b
-         acPA==
-X-Forwarded-Encrypted: i=1; AKwUvBxgTYBBvcgyReVFqraKI4m2k+LR5Rhes+LdfLNzeR4SN79AX2KSlaGJyWt67j7dvjSAc/nFwBIiPw==@kvack.org
-X-Gm-Message-State: AFuF++kzaZNftYTA0v5/bjzeTZ/9+/I8MNNu/i6BGaLtIYveJOdHSXnA
-	EAfB8tw1Kw5J2QjtSLLkVUcS+vV1z0fsfCuTWfjWR1/96xC0Q8z1smpF
-X-Gm-Gg: AYBFou1C4PgRj9LIsr4gYyoScqsgIAU/w/BIeBts9cW8JBKP6RM7BX6Vio69yKpluHI
-	XeiqprRuIoATbAhZtBpUBaxPHAIiVRtZ35SWaRm9tQJHeQLJiZfvrkgTAU1iVkOcjzriz9JE1wQ
-	xlewunfvgFtmVy898i8aYHEzUyPXwAXHREuWO0HsFHcLeUrDQ5infLO+0yHSA/Dmix1NgN+frf/
-	UKOuVIpz5M12aw0EZM6j0I01FNg35GRaXDLHDToBbTUInguq5RodD7mMOV6QyGU0ZclVpqp0CtV
-	66sz3yRtNH4bLDp3o2IgoRzew5FK/Wd59rtTsZpJNLP5LFUiR68fgjd3FsWJ7ZQeYAR/Ovmp7R9
-	Xxa/ADWWi5Safig97ifKPkGb+kZJOgQRZy+MbRvtvNvrgVLAkyIYehJcJqO3QDYAF718LhianFe
-	gtXpdYljgVXje3PTGZbjp1kKUmAX8sSMicrYaykxZmhYCzvd/uMyeWZxRwCQyYSF5zKf+BBq4GF
-	Ad5sbM+uji76fqV0FfakaD6/TqJ3OBL52RU5QSKeTCDkHNQDi7+iOpkjZC66ezZsxdQyGrFaJfx
-	ZmKm1DYiGQ7ts2IjJxNx0cSE8o4fgG0eiT76J2KI50ZB6H65Q84mH8EpEJBtg38CX5k+DZZXp5X
-	oTYrXvELjAUKJs9A8
-X-Received: by 2002:a05:600c:8b61:b0:49e:69ff:c6b1 with SMTP id 5b1f17b1804b1-49fc5749edemr70586425e9.31.1789796832402;
-        Fri, 18 Sep 2026 22:47:12 -0700 (PDT)
-Received: from MacBook-Pro-von-Karl.localdomain (dynamic-2a02-3100-a017-2b01-05fe-203b-7cd2-a640.310.pool.telefonica.de. [2a02:3100:a017:2b01:5fe:203b:7cd2:a640])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fcd068059sm46003715e9.5.2026.09.18.22.47.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Sep 2026 22:47:11 -0700 (PDT)
-Date: Sat, 19 Sep 2026 07:47:11 +0200
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: SJ Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Lian Wang <lianux.mm@gmail.com>, Kunwu Chan <kunwu.chan@gmail.com>, damon@lists.linux.dev, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] mm/damon/tests/core-kunit: test PSI goal rounds
- under the temporal tuner
-Message-ID: <aq4hU5DNjnGELpUT@gmail.com>
-References: <20260915060937.3423-3-kmehltretter@gmail.com>
- <20260916002137.101195-1-sj@kernel.org>
+	bh=MuYukX5INqydoTMDALYUszoXPjgDgYIO774EajtmC10=;
+	b=jWw4QAuF9sDnvccMun3QzDRwLCNBvcIIIWCwcMEjZMZT5Y2RMxC1ywFhhYTdZxSTseUU9f
+	D198uQmMxQ+osp2gvOFcIKsVlUXB0onlTu0W4+/p1CI+GOnmLwzDCxTTCzWgVbXBz5rqVL
+	9Jh87T0HK7U51wp03rhJxBolu/Y7pu8=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WhQhl6ID;
+	spf=pass (imf23.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789798699;
+	b=ZNwiO5L28A9TMylr78VohQ6dtEZLXBto2dBCmUOW/5K8Eb22GqWxgQo7ATGux73AUfeq1c
+	VkS3b2lhTXQk8W8C6odnXBlmiz+CWJhmzZZSpst6+xLSQlnJm+FoLb9hX9YTD1lBZ6m1Bc
+	AMTlcy0P0TdosKdZDdyx6ngSLWyqeto=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4C87C60534
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 06:18:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC0A81F0089F
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 06:18:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789798698;
+	bh=MuYukX5INqydoTMDALYUszoXPjgDgYIO774EajtmC10=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=WhQhl6IDBrdZE5rCZ5I8JzPYQPTtXz0KhEMoVEFaHjSWw1j1eTuG3pFY4ceQydwXs
+	 WHsAl2/Ke4skSl95+T7DCRU0VoQb5zbC31q1cuzLdV0VFccNyeXp9fa+d3owCUPRfB
+	 KoFRg2Iy10GntefKp9jh+zzd9hVQURaB74Uk7C0it1QK7ATtUbe8OhWp+kbzJNpwTX
+	 KKZCSvN0IGaCxEd9qDdJp6wN0NQZXgLCYk53b6Z5q3g0JwIx6bfQzSXs9kpgZPcBW6
+	 qB6wuUlm3+jFpokvyR6ZS6E9XyA0MgFia9RgVNA/B/yOOYFboRiLWwBJpnU1VsWAjQ
+	 y/tF+h5Hsq9Zw==
+Received: by mail-qk2-f43.google.com with SMTP id af79cd13be357-93910cc46c4so126895985a.2
+        for <linux-mm@kvack.org>; Fri, 18 Sep 2026 23:18:18 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxO+cP6x5TgpPVvnm8zUpPFxuYidRtmAn2DopWnHzUHbCK/kTDMkonQjb83221XchdkBKET1Qacwg==@kvack.org
+X-Gm-Message-State: AFuF++neAWuVV8CC3jw19Y6UmIt3h/R0TIaQ0YLD3e/r8FQQcIsVifo3
+	QlVPGhB2WRhYGKG3LkyP+4qW1iCwwpL8zC9u8q0eIGmmXWnGUhN35L/tsazjvay7kj9Da6vQR0g
+	0qK5fSmDfxE8Jwt46VWYv2cAEesf8DGI=
+X-Received: by 2002:a05:620a:3910:b0:93a:c102:1123 with SMTP id
+ af79cd13be357-93bf554adc1mr27973185a.15.1789798698170; Fri, 18 Sep 2026
+ 23:18:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260916002137.101195-1-sj@kernel.org>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: DCCE840005
-X-Stat-Signature: 8sjkeaqmi3z1qrqjm5ape6h5gfrrhq7c
+References: <20260918165642.1014988-1-ekffu200098@gmail.com>
+In-Reply-To: <20260918165642.1014988-1-ekffu200098@gmail.com>
+From: Barry Song <baohua@kernel.org>
+Date: Sat, 19 Sep 2026 14:18:06 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zgZrFXih-+r4-p99rqXS2WLrGK8STkiOQnDANrTP5JXg@mail.gmail.com>
+X-Gm-Features: AcwNN1V_qWtR56zqhRr4dQ7q2dZ6CDwICSFPFUz3g3qe-hpoDFs2u36SIAE_S8Y
+Message-ID: <CAGsJ_4zgZrFXih-+r4-p99rqXS2WLrGK8STkiOQnDANrTP5JXg@mail.gmail.com>
+Subject: Re: [PATCH] mm/swapops: remove unused is_hwpoison_entry()
+To: Sang-Heon Jeon <ekffu200098@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, Nhat Pham <nphamcs@gmail.com>, 
+	Youngjun Park <youngjun.park@lge.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D4E77140008
+X-Stat-Signature: yk5u3rt8ayc3y6euanu8cad1mburjwq9
 X-Rspam-User: 
-X-HE-Tag: 1789796833-350809
-X-HE-Meta: U2FsdGVkX1+joAzePlcnAyM3eP1QXZcn/aqfWHYN7uYrimMevHvT8Ge/aUABbL/CcVEuNJSBBmIp0DMF4s0DKRc6o9AHbVtFMLmMQ5QPRESR++IFZDmvlOYR0ugZ53DG9YVmwGzFesjKa6Mx7XDzEHV20fWpIR7Yi6yN6pfwWg9Ni1IU0EEj3s2SXq/YVidbha1oDupIYDKsg1iOfAumUx84x+Hk+hgUNGcYxyz0CAQq16EcfobRyuTK9v86EKSsmmM11eYcCZkxUboGy7Nbb6lllCIigTaMsmidkAZOKkcahhUwyUGRlgyLlTiazS3E1EPVPYGxMg9AV04PIWuJdsDMzNGPql21PK3tsCqZpI9J/IidqSO9+CUD9aAlP4+K3AoqAQ4+YjnAN2iVuda7f2yXGwRfqOKqOsDC7KdYwi1F1p7LmpzInjJPDw74dgMmysa6w6cRVkL5il/pRtEgPDsq91BldYDD4Aphzu3BG7g0PTDfMi32J0rZccDdA84w6iVNLDbrwWCEye5XWIkx7t5zRk25a4B2bkI607qlM0tzYKJui3KRQwCmmx/HnWZVPuzmhpvJb3mso7kgWPDyFq5tfnktId4KtXF3gZxVtsYwYQQfbAAmKm/t0ibN4vazbJdmuTPrYEYev0uw7ykIvPAS/9LLj6h49QBLK7U2Y+k3dwBLwpzmc+9chqrNh1xCG+OfCCs4btKo8Gw7M4fxDICetaU2mPNsfGJwMkAGOFdwc0W/C9QfBATjpx4YeDyPY8pVLhxrcCG/0pFGlER5rL4cISXipcw3drbM/XJY3/3e+0yrnHzY+t88o/MpDNhhpCGAWIQ6XlOvWsfAtohTSWZ4/MNqVvD1p2al6Z6QYFZczsGCzkkK20+OeBqNOJq/2p5ppJgIw/fsubZ626W3WBqMDTFrIhxu2pb0z3H9O+O0de1ECzJehBBIQCwQrIHDc2LVb5PZQPjUjLcF0wn
- WJNED1zj
- 5Yb1NxUXlbFFUYyc5IXZYIeDMpk9yqxG6QT2GQjGoKwn4ezeEwsQFOD+TdHKA0FwncMSyR5n4lulv3U3Xw7fcNiE1HRYUcW0Xfltcv97SbiZNlU+NKLinbAGIi8HEEzUxC3oqHmaRefZHclGTReZMqC9iPfJsR7fb/gYL9HVMm2l5kZD52VqVyV8lIrPZcBupCQ9R5xfv6Egp2PAW5i7lqh9fXFfPxz7PYab3HPMd/sOK/geDd7qCa80M4LJ5rmVdfPBdWD2frXAs0pGMdMp0xPuhhVKfrAyiAvK0gbTsbTTd5KhMBC8wESSVNVULVMW6ibXQgF2wg2HknDO3NGwkXh13QaJPrguz7WC5fV0p3ezYydMowIxx5/IUugZlNT62HXw/5yhYWflhjgYD7vTgVQkV74LIidvSAYTAB4nKeX7AkTkIqmyx59V5T2V9eKYlyb5iogtOCj+FG/Qv5Ji31bm+pabo4aA/ZHKr2mZk4kKO2FpsyyLSVbSGIUoLE/tOPkgGeRqAcvIq/II58IvclW4NUAzSRjoGxU9RkjMIIOyCNQU=
+X-HE-Tag: 1789798699-214832
+X-HE-Meta: U2FsdGVkX1/hYrecWNiKQSwHPrUEjhlbfzxH2GFNQoSVFM9hDRXxkGbJD7DI3AoRjikD8bGyl3phwKHqqupG0EKfJxKDMyj67FBlUfXD1CIH/+8of2kPtAxQmI+27Q7iHtC9y4nVUf7v6/cTJ27cQ1LyI/dTqadcPWNtCD9UaQRVERH6gMiG0Fifx285aKS9mubX6/WIsmdCzyB2FkJa0M3elDpuOZJqSbRsLKHEtGf4+ABsOzNWMFsZnY9d/RF1EC385n+u0L8touiTEfL01bffdsRXVD7tbliaWPVG/FbaGMSdl/XLfYhPXwg9wOpJEcasqQRkAxzfhmCyTHZR3lCKZGiloJn28MdbPqTi4igYYp4u+iGVcP0nAeNSZDhqMMS3dfknQLhD5UP2+J/7spN7vC4Iub4mHzqij8I75WOHkLqSAnOTyusTcS+cAbgV5Xr7ztg72+FT8ZE4K0+45adMy9osuVZbXxukVwBhZ1qo0B3Uu4H6QT4ITqZRPDlbg4+ZexPGyZTF9NCTLwp1HZ/Zcv/DHSWRjpkC82QfNw4U0JenZjz0ORwQs4Ttl0dIsD/yULJmIES/D2ADXYls10PFv25xpC3oCfV+IA5/of9k0TiPAHLu4HlA9Rh11ufVa6rW4myApKUBBfGy/hWKuf0twDuyRtcd4dZ9K7Ar81d0xW4eE1q5Rdizo6eaLxkS1jwc6vIqrAPbjkqY9mb3D0NO/B/LYB3Ui+EukZKoZRcv2wjHGx4vN82mEwC6n2psqRt8P11hVLHDR41aVhMn9oXM36OFwPh4hHgetPc04k1NoXNj250Y08sOv+usAe07ON0Cr5Ln02eVSN84rVQxXbCEiGwliAPvwbVkjh51GOfz9NWr6KuWDhkLD9TBZ/tRPRNqsJL2PigubGKpxtvViM1lMPaDlg+T5lUooZTNXAtjcN1DaCpyO2dZNF9zSnCwt8bdSVauflOnNs8Te0/
+ RBph5pgJ
+ PGXvNWFrgfx/MF1OkbBP87LmEj7a38AjQjvOX6TXzmAIzukm8TFktOZSeUNKmQb+/BKW0wuXjlnA+iPx79J8qA1J8S0jjtvzw8KbqL2M+7Te+5B8eIYCroRYUEEN7Kn5hvbougt+0kHNyc4GoTWktFd0ZfWGtLycaHNMC3f/EQyF6sZQXRk76lWVsisas5qIvlE+wRHIN6fZJki4214IXSfkNhK9DfDNBk5+2M5XsbxRTe+bhwFLWrLM2dPkVmT4Nq6vcjuSqtBaxId4S88Xj+yf//mhBj/pmE9DMvadskhnMSVcGMiTkHng2EzchJfyI7p/yLQ3+nIrVrowTBTtS2tF9os04mnqNpa9VICybvybTW+cMdtbxoMZ5DA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,24 +105,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 15, 2026 at 05:21:36PM +0100, SJ Park wrote:
-> So, this test depends on the memory pressure level of the testing system?  I
-> concern if that could make the test result not very reliable.  Maybe we could
-> split out the corner case handling logic to explicitly receive the current
-> memory PSI total time.  For example, like what I suggested in the reply to the
-> first patch of this series.  With it, we could build a kunit test for only the
-> target logic, without depending on the test system's status.
-> 
+On Sat, Sep 19, 2026 at 12:56=E2=80=AFAM Sang-Heon Jeon <ekffu200098@gmail.=
+com> wrote:
+>
+> Since commit 93976a20345b ("mm: eliminate further swapops predicates"),
+> is_hwpoison_entry() has no callers.
+>
+> So remove it.
+>
+> No functional change.
+>
+> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+> ---
 
-Yes, the second round reads the real PSI total. I used ULONG_MAX as
-the target to make it unreachable, but I agree that a test which
-does not read system state is better.
+LGTM,
 
-For v2 I can test only the helper from your reply to patch 1,
-with explicit PSI totals. It would cover both tuners, zero and
-non-zero esz for the temporal one, and the last_psi_total value after
-each call as Kunwu asked.
-
-Thanks,
-Karl
+Reviewed-by: Barry Song <baohua@kernel.org>
 
