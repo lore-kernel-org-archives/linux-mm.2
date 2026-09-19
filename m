@@ -4,129 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 751D8C982DA
-	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 10:41:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76DBFC982CC
+	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 10:43:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 63F8F6B0088; Sat, 19 Sep 2026 06:41:08 -0400 (EDT)
+	id 706B96B008A; Sat, 19 Sep 2026 06:43:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A0F96B008A; Sat, 19 Sep 2026 06:41:08 -0400 (EDT)
+	id 68F986B008C; Sat, 19 Sep 2026 06:43:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 444786B008C; Sat, 19 Sep 2026 06:41:08 -0400 (EDT)
+	id 531906B0092; Sat, 19 Sep 2026 06:43:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 150086B0088
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 06:41:08 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id ED32C16024F
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 10:41:06 +0000 (UTC)
-X-FDA: 85230169332.15.966791D
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 0C8BE180003
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 10:41:04 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=j0yuEmrn;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf06.hostedemail.com: domain of david.laight.linux@gmail.com designates 74.125.225.141 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 22E716B008A
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 06:43:22 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9DEC316024E
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 10:43:21 +0000 (UTC)
+X-FDA: 85230175002.24.FB950CA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id D5E1FC0006
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 10:43:19 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="I/862F3v";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789814465;
+	s=arc-20220608; t=1789814600;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x47tJsyRRuS9WWsrQkleNMY57Cc3HHS/YjAw1Ng37/U=;
-	b=RDhn8b9drlYcWWWkUDKR87zDEImWMVp8wPWbNOYLg1+uKPbSG+aEUXnlcvTlkYysgMCVtt
-	JzyJKWAqIJ6OSox6yLUAYcbsNKHtpIHaCO3FXE6Wa1vQgDIM+AOtdFbQmyDzM3zEFnMoCE
-	mUiGsiy1izgrLCefL+/nUj1nXPgSPHI=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=KT548gzEsZJ2AwI46qR49HH+xSF78gZrb1egBej4dpI=;
+	b=fmb7wPGVzoK5gD6Pho6L6tez3Gpo9+L5z7UZLYX4DZczfu9pEnfSRcLzd+dn3NPNwqZ+I6
+	v70XWJQWYdQ4otuXxHfmvTv/Qkng0q7vZcRNfr+cD4pxozvFirDp1JKVIiPocyts8kpv4o
+	ZNmmUKUfVUcm1ArlAUMoG6U9/7cMfkY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789814465;
-	b=BFOMJzk8iAp20FXUK4Kl82rEA580E/Rm6DVg2mwMnjbwgcFKdcXvTq4E7rWBNd9aUePJE/
-	iSk36rOfxM2dhP3SmJtDPrTH6FM9Yax2TdJHT4EJAr8JqIUZQzCaA9JitAykw5Xb+rVP9S
-	Px/CPFl033TEmre0H/2lILDZshMPjoU=
+	t=1789814600;
+	b=6uWhYKS0CQOsWT+5oc1QjEPzUpOJHfTlAOd02a+aGCwgpQrdj+izf+h+sqQ/0BW9IQnaNC
+	DosTk6fTV7dh/B8cMg1v94b1gUjeNRFC9+9PUg5uRBS8xzUGCFTFe4nlUeYPOn1rAmbQCO
+	ZVPyViWV6OQtf5XzKltFlv43RfAOZ2I=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=j0yuEmrn;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf06.hostedemail.com: domain of david.laight.linux@gmail.com designates 74.125.225.141 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e721b5503so15163495e9.0
-        for <linux-mm@kvack.org>; Sat, 19 Sep 2026 03:41:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789814463; x=1790419263; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=x47tJsyRRuS9WWsrQkleNMY57Cc3HHS/YjAw1Ng37/U=;
-        b=j0yuEmrnDXKdesblvdkOSZc8yKf3xvulUxKIahyL8bWyfQl2HD+e5M5cLdcEOjQ9qQ
-         Ft1r/pzAaMIWLm9ZLvYO8rSg5uGtrCt1/QplrTQUXS8EJx+wUdVptzV1uaWH/3nzgJg9
-         5V4k9n558U7D2uKSxvTEB6QmSdgFtGyIcP9+Smwg0iRdfuHFrb86Uz9p8ihhpRb23758
-         r2h35yUCFwzacrRoORgZHVPEEcc2jGliZHOL4ZaqfL++sEaSboARJvafTixr/TOYZ0XW
-         /cN4lPHQO1g57kAafGAH27SqwW/zOVqPp2avWtfGuJNfbByB4NTXq/SEnukG+pfFb4sY
-         gXzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789814463; x=1790419263;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=x47tJsyRRuS9WWsrQkleNMY57Cc3HHS/YjAw1Ng37/U=;
-        b=HH4yVDcRy4s8O3aVzrUrhhpjSR46X5PvwDnlEF0SSujbn+IzcClEJ2poWfsywoakv2
-         PWINBhEXfOEApJbmfRagmt/c3tZyWzwOJPTl5tEg2qNYtY4yECOG+kCwgtEav2uftRMi
-         V6l4B0XcyOGLLjOS8kIM51JZlcyg93mkEdb8iIugOt1kTpBOtNErezqe8v/UQZMx4OgN
-         AqRISsjFoRB4s/fYP6kYiW5YKOtE/5H5lIlDVK+28QbgHu/CVUnjGKzDUIXkTW7hCQeH
-         U7dICcpwogF9xGWutezczfuWy2W8kthVsTk2AMHbmyf5XTsd4y+vwKdE5AF6QUFHyRSg
-         zHiA==
-X-Forwarded-Encrypted: i=1; AKwUvBw9rJ5+cbbRwG0H/iYuXIubPelroWl4AcOS3a3QMIDM8ypIH0KPlZcqbX58dEEwebTl0lapIoJv9Q==@kvack.org
-X-Gm-Message-State: AFuF++l8QD/MG8TaOGDfKQshKESQy7LCfnzd6adyjik32610affbBPBD
-	Cm8lg2E7GeBc5ZUoxysxpMm9Jb3QI2BORXzauRa0W5kYe4+rpZAppQBy
-X-Gm-Gg: AYBFou21R0ElRMmTcKUrDAHDKdR8GZStNxrD9+3s/Wz0NqwDNre1kzzh3rSl7VXHN2c
-	d/TfP3AU5bJRHQdmxfiY85TLJ+qXsaTuGaQ//LNgubGxUqmjl95A3XMSRbEtGhJo5VY7rrHtsf9
-	xtJzaTK2TMj3O32Ndxuvs76cHMqEGzZJ2Vp7iyLIoe3dey2Y8YliKx97/cwbR/RfwtyUWNJdFnA
-	cMiVYsV7dhzBijjldOE8qcsk5pBBomXmYJET7BcHC/SymDtBka5PbTQNbkP9FMEOygZhfnJzlV3
-	oVhmy03g0NkHa9NKGC7X8qJ8gD8fkP4nIC757RBlfV2wDXORWoT9Ozki159GlKuPi8GsgJsfClG
-	BN8XTNLKQTijgqdUfG7BJb7XPr+mxSvx1hg++99Y8SQg4XhOv8NAsDBPsXbvYRZ3lC8GZhyIOpo
-	JXZCZxZu9c+FEmpGhRlc1rjvy2+q+rQBr+AwNKaOrZj+NWqB22KrbNU3yioVz43NlnL7gGQd44i
-	f/eGOOxTPGsK9mZV2sUi7X+LOZz4VeFOsk=
-X-Received: by 2002:a05:600c:8518:b0:49d:28c4:b304 with SMTP id 5b1f17b1804b1-49fc5741563mr73992215e9.29.1789814463336;
-        Sat, 19 Sep 2026 03:41:03 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fc521f5d9sm32797955e9.2.2026.09.19.03.41.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Sep 2026 03:41:03 -0700 (PDT)
-Date: Sat, 19 Sep 2026 11:41:01 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Karl Mehltretter <kmehltretter@gmail.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Rasmus Villemoes
- <linux@rasmusvillemoes.dk>, Hao Li <hao.li@linux.dev>, Christoph Lameter
- <cl@gentwo.org>, David Rientjes <rientjes@google.com>, Roman Gushchin
- <roman.gushchin@linux.dev>, Catalin Marinas <catalin.marinas@arm.com>, Kees
- Cook <kees@kernel.org>, "Gustavo A . R . Silva" <gustavoars@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>, Nathan
- Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>,
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- linux-hardening@vger.kernel.org, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- llvm@lists.linux.dev
-Subject: Re: [PATCH v3 1/5] slab: align ZERO_SIZE_PTR to
- ARCH_KMALLOC_MINALIGN
-Message-ID: <20260919114101.34423251@pumpkin>
-In-Reply-To: <20260903203720.63689-2-kmehltretter@gmail.com>
-References: <20260903203720.63689-1-kmehltretter@gmail.com>
-	<20260903203720.63689-2-kmehltretter@gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="I/862F3v";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id D3D8943F88;
+	Sat, 19 Sep 2026 10:43:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE2941F00893;
+	Sat, 19 Sep 2026 10:43:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789814598;
+	bh=KT548gzEsZJ2AwI46qR49HH+xSF78gZrb1egBej4dpI=;
+	h=From:Date:Subject:To:Cc;
+	b=I/862F3vk1xp2oYuUk6h0xdZopIZdcliesEFqhid7Q1any6YZZ5SGUGI589MCM+Hg
+	 NDd1Vlw32OqaFH4hDR3GxNlFslyzlOn6OESdYwsPE4VFdfb9201NHvVX4LvaEQFUyz
+	 zLMgBX6OjHvdPriErynqbf2wSmmTnd7bLKlrAqG4hP+UcAVSYLPVgvaJAHDyQiXZir
+	 aObf2p8o0awKegTd1I1fdjXW2a/99GW7WLdf5V1lk276oyFwj5SsQVgdXEkl11aXWo
+	 h7F0EI3MATu2cQ+WSfQYhVqu67OU1pbTg8hfHxH0wk8EbpFVbgLnlAt4PH5Z/lJeTs
+	 5lCkdlnK3j5ZQ==
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Date: Sat, 19 Sep 2026 13:43:11 +0300
+Subject: [PATCH v2] docs/mm: describe set_memory() and set_direct_map()
+ APIs
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260919-set-memory-docs-v2-1-a2a4b3657690@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WPy27DIBBFf8ViXVLANsZZ9T+qLHgMMW2AFrDVK
+ vK/B9vZZnlHc4/OvaMMyUFG5+aOEiwuuxhqYG8N0pMMV8DO1IwYYZyMZMQZCvbgY/rHJuqMe0v
+ NyDUXRHJUWz8JrPvbiZ+XI+dZfYEuG2b7UDIDVkkGPW0n72Px797jOeQi1Q2elAS/c9UpB+po6
+ ei9K+fGUCr6asSEFYoPrYKRsNYooYwVg7C8kwOYrkebweRyqbr7xIXusJdrFoop5oT3prWMCOg
+ +viEFuJ1iuqLLuq4PX1cSwTEBAAA=
+X-Change-ID: 20260909-set-memory-docs-5f1d96c680a6
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Jonathan Corbet <corbet@lwn.net>
+Cc: Kevin Brodsky <kevin.brodsky@arm.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, 
+ Randy Dunlap <rdunlap@infradead.org>, 
+ Shuah Khan <skhan@linuxfoundation.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
+ linux-arch@vger.kernel.org, linux-doc@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+X-Mailer: b4 0.16.1-dev
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 0C8BE180003
-X-Stat-Signature: 8mpi6midjbmkbokce61k8k348dhuhsrz
-X-HE-Tag: 1789814464-874490
-X-HE-Meta: U2FsdGVkX18w4zht7Tx6kF+WF1A7xdEa9EbEdq1u0yMe681sXfXT3NE+9I3/nTZnpBOUkpU2W6pOUhmUToSnsOxxAfPNBuiyDmd2p/cdDTJqvL/o16tWCWMRvTUcvPhFE0PRlYuMjaAFiwKgM5DHg4GLC4RRTowf+I9cnzae24yt9C8Tpnvkc81Y56biZJn8fzKrxFzAj+1GQMNPMjjKLbvQhDFBygTzIUbo3/Zlv0slblug2QqmfZUNV/MjlGdk1hSuUiAsH3UrzIPJsDWCdg0NIXEM36vD9wa+3mtfQyjsu8S2Weefg5g+LUc8qZm5mIMaKfRCs7bV9MFqsvULWYEG+eHmBZ8K9MGRueGxdN8/5XCH5vQMRMqzgNQiui6GMybHQ+xvTv4mbYa87TzSqYQB3WcRyECVue3pkTjttVl3n4wWRULTS4LsMyfJYRPM4NIRJbEFUrxhp37bnj5wLllIsTrD8/A+fhfLxXB0cF92ABo3eY1Aezdh7OJoL0mQRrJxc3WSyRTdbOZMPH1Iqxgzk4jfiS1EWmhT3x7enTQRrg0jlGLRJ/N4CuC5cnAgRAhmBfclemCbuIP3kSvXkrXHGRwFO8EGcIbkg9G5V3P3SSoEYEFlSvXwSTaqVgxC9eGtOSqYHfMMuQwTViCYzhIZPd16QMZ3jYVzpz0zc8fxcN9Qx2W1WS121L/pkEeHS9S9jnsBI6g4lHcbU7eJibi0qXgkzcE+BA4aChghLa0ionaVv3f9lDP7j7ZjYBbN5aOp/b29s3L1X7Z5+M098x8EdjA7PKCmvaR1GoJZikuWd98CO2bNCBZRs/sS2ZRn1Gdujw5XWP5SgFaNLLJ2oz9ZF6LnZNeQ+PofTJHWBmG+4eS5N7Jn+CTBYCexpsYut9NHLZ8JWIfUKkq5jlo8QMs+5iNDy+g0X6FgnI25+0FJJRtRs0YiTfyRW/4TYJE802OtemsBHSR35gOTfSD
- Hg+BdczJ
- b/7E9Only8DETyGA2xRDlxP0Bp928LsaHX8O0dlLY1AD8dIxbrnned0mnJYr/REzGH1q4f/3Tv7fo8P8SJU5FFhlLWRYkar3qAVOzMuSbuP7NZGARW1kD+PneUG5BxP0i4VYlGvMZOyQoonwDCdrPLZ6fku5XAVzDHSSiuex8vmsS7pccbpfESs8Ez8LxUX1wpfyUGXi0sCF6IR6VAXkMwrmM/jPxxN5f5GfTUsyHnSqHlPdi55XtEB3uQYYS/5XZdly35eJAUEjNARh87C2iwUccAXZWrkXfd6keh0WB+4ZE4r+QzctKpb7OhKV1KnCpPfuSpdBMXZ0do+p/jwynsS5w9p17+K3nDPePE90kTF6hOFIHCJ/igo01HjXmu3+SiZMf80c2b9gO1ssvsHkoz6rs6WzV3D0X89kIbGQlU9xMVAn61/bxKk7blNLoeH55HjdBZDnYw8WCDW9+h+D+BOHO4UszzYP4BE44073Wrf9nwHdhb4mstPR2wXPRqO6IQjdK
+X-Rspamd-Queue-Id: D5E1FC0006
+X-Stat-Signature: akz7i1cawe3rkcn1dnbkafbq8d4tfmhq
+X-HE-Tag: 1789814599-804375
+X-HE-Meta: U2FsdGVkX18rV1ajL421syAbjr/sTzuWE4SLw2Y+7JX8UXD7R/sKUxkj3hKo3mQw70PhijrOF5Mjm9dPIiUNG/iLza5GUq0Tz1dSYU1EccfM6JGkXHi5VpFb5+PpAdbee0fU+Ey+XZTrX3NMK8FQcZeZh+Mgq6rOGuTkfrIt6r0ABDRiVsh0rIuZ5oslpgKf2FxcW017pm1YB38inRNr4JK8hmSUf8a5kKGyvfQDrg73qzJuWCL0J6Ya88d40kWdiHdpYtX38woPdB1s4UjX+/GamgmP7U0HF3NmhZyBjuwrIY5LUkW2MlLJ2mig2tTKVT4CTxmUneFtcaNToA8YQwCnJV9A0+GAGpykoKcI+E4P3EicZJBNDA87zFGM+71jJqh8E3eciMuvHQ2nJPtt/Q3IYeV0zWdOCI5CJ5ZlIfbsVeaOb1HXW3SAqG0hN/xsv2A5wiNSKIj8hmfVWlUUxmbVo9Ca7AQVIgHGM9tH0gqLdmwt4uQViUe6tL+iBZ9crtzFZk8YJcOX0kD3EEC3Q3N5/s9Jd8VYY5Omvyg9P+/qeW63Ev2G/zIfMW1E7Qsxrvs22q6lN2/xaCPWBV2IR6hmzOT1kqvD8kT2BotgYc+p5nw+UbFKm3dDrqwDuG4Qb9xk/eHa8rDt1/laaH3ezRvt8aPk5svx67ZwOv9ndtWh0RAFFFlG6wo2vN74HMyHIsx7YdMKPHSjzsx8pYiQ68JqglDcrowdXUQwYxYMR5vsr7uaVV61YZHvL5Wrv00CMY4CeYRNfqt4kyrVEda/a0i+MpHR3cHnmzh0fBGzlbhhXM5najP/IbAan4yCM3ZRzuG39RJE4IsBXwg5VCt3IEOG/by4J0DiVFh+oIdTGR956DuIE88JN9lXZxd6BbN5cN2w8enWloBJhYMKYE4A2t4boSItsLKW1YiuP0+zdZ+2L5GvbAojAmldBccXtKscSehsiGS4xjK2/DGh6tM
+ Spct27Sm
+ g8KgX48ElCKg9e0+7d6Zel74eheyMdL+gv7z9cr0KqjzEwZIh9i+iXjatq+btUIlmelvv5oGOAlLlgO/HF57Wg5a0nK2VqQ2lNllGH9yOQ5JVhI78tHU7LXJyU4iv2SaEYAiesNppLdQoUtVuZvqhu9EoXyqUzPztu36vTh1vNdXlc2b0XWi463t73chO4U/zfNF7Crtx/o0q4i6lru3L7CllGo5C4OYsX+Big520OumVqZgSDuTrnHKTtiFeFvpZaXAo6eswnQAq1yN8DJhpGb+Xsxpmqsi6iXuHU1tNtsVvWxbEmul3VCTwrXkot5tuBsoWSnqqcHRv7/K1U1lXLShEkytGVzYe1TIpCdFOHl8JMkxkxZug4+sAgUcpXbW7oiqDC+SavK1X+eKgx5+GuYlj7H7ATNaLO401KKYziuP8clVEJSmsJwgKmA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,78 +103,648 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu,  3 Sep 2026 22:37:16 +0200
-Karl Mehltretter <kmehltretter@gmail.com> wrote:
+The set_memory() and set_direct_map() APIs change permissions of existing
+kernel mappings, but their semantics are only described by the code, and
+that code differs from architecture to architecture.
 
-> The kmalloc entry points are annotated with __assume_kmalloc_alignment
-> but return ZERO_SIZE_PTR, currently (void *)16, for zero-size requests.
-> This violates the annotation when ARCH_KMALLOC_MINALIGN exceeds 16.
-> 
-> This can mislead compiler optimizations. Clang's UBSAN_ALIGNMENT detects
-> the violation on armv5. GCC and Clang retain the ZERO_OR_NULL_PTR() range
-> check but eliminate an exact ZERO_SIZE_PTR comparison after an annotated
-> allocation.
-> 
-> Define ZERO_SIZE_PTR as the greater of 16 and ARCH_KMALLOC_MINALIGN,
-> retaining the existing value where it is already aligned. Assert that
-> ARCH_KMALLOC_MINALIGN remains below 0x100, the value of LIST_POISON1
-> when POISON_POINTER_DELTA is zero, so the sentinel remains distinct
-> from that poison pointer.
-> 
-> Fixes: 94a58c360a45 ("slab.h: sprinkle __assume_aligned attributes")
-> Assisted-by: LLM
-> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
-> ---
->  include/linux/slab.h | 12 +++++++++++-
->  1 file changed, 11 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/linux/slab.h b/include/linux/slab.h
-> index cda126def67a..563dadc16d82 100644
-> --- a/include/linux/slab.h
-> +++ b/include/linux/slab.h
-> @@ -262,13 +262,16 @@ enum _slab_flag_bits {
->  
->  /*
->   * ZERO_SIZE_PTR will be returned for zero sized kmalloc requests.
-> + * It satisfies the alignment promised by __assume_kmalloc_alignment
-> + * and keeps the historic value 16 where that is already aligned.
->   *
->   * Dereferencing ZERO_SIZE_PTR will lead to a distinct access fault.
->   *
->   * ZERO_SIZE_PTR can be passed to kfree though in the same way that NULL can.
->   * Both make kfree a no-op.
->   */
-> -#define ZERO_SIZE_PTR ((void *)16)
-> +#define ZERO_SIZE_PTR ((void *)(ARCH_KMALLOC_MINALIGN > 16 ? \
-> +				ARCH_KMALLOC_MINALIGN : 16))
+Add Documentation/mm/kernel-page-tables.rst that briefly describes what the
+kernel page tables consist of, defines the semantics both APIs have in
+common, including the parts that are easy to get wrong, and lists the
+differences between the architecture implementations.
 
-If ARCH_KMALLOC_MINALIGN is just a constant (I suspect it has to be)
-this would be better as:
-#if ARCH_KMALLOC_MINALIGN > 16
-#define ZERO_SIZE_PTR ((void *)ARCH_KMALLOC_MINALIGN)
-#else
-#define ARCH_KMALLOC_MINALIGN ((void *)16)
-#endif
-to avoid bloat at all the expansions.
+Add kernel-doc comments for the generic set_memory() and set_direct_map()
+stubs and link them into Documentation/core-api/mm-api.rst.
 
-David
+Assisted-by: copilot:claude-opus
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+---
+The semantics of set_memory() and set_direct_map() are currently described
+only by the code, and the code differs from architecture to architecture.
 
->  
->  #define ZERO_OR_NULL_PTR(x) ((unsigned long)(x) <= \
->  				(unsigned long)ZERO_SIZE_PTR)
-> @@ -625,6 +628,13 @@ static inline bool kmem_dump_obj(void *object) { return false; }
->  #define KMALLOC_SHIFT_LOW ilog2(KMALLOC_MIN_SIZE)
->  #endif
->  
-> +/*
-> + * Keep ZERO_SIZE_PTR at most 128, i.e. below 0x100: LIST_POISON1 is
-> + * 0x100 when POISON_POINTER_DELTA is 0, and no architecture currently
-> + * has an ARCH_KMALLOC_MINALIGN above 128.
-> + */
-> +static_assert(ARCH_KMALLOC_MINALIGN < 0x100);
-> +
->  /*
->   * Setting ARCH_SLAB_MINALIGN in arch headers allows a different alignment.
->   * Intended for arches that get misalignment faults even for 64 bit integer
+Document what these APIs actually promise, what they merely hint at, and how
+the architectures disagree.
+
+The discussions that prompted this:
+
+https://lore.kernel.org/all/a98df077-3e97-4eea-8bfe-470bad9ff9e0@kernel.org
+https://lore.kernel.org/all/5026dbec-0b71-4408-a78a-484a4b8e77dd@intel.com
+---
+v2 changes:
+* address Kevin's comments
+
+v1: https://patch.msgid.link/20260909-set-memory-docs-v1-1-6065d3f208e4@kernel.org
+---
+ Documentation/core-api/mm-api.rst       |   9 +
+ Documentation/mm/index.rst              |   1 +
+ Documentation/mm/kernel-page-tables.rst | 410 ++++++++++++++++++++++++++++++++
+ include/linux/set_memory.h              | 110 +++++++++
+ 4 files changed, 530 insertions(+)
+
+diff --git a/Documentation/core-api/mm-api.rst b/Documentation/core-api/mm-api.rst
+index c1d03a5a2a192..e135b61bc87da 100644
+--- a/Documentation/core-api/mm-api.rst
++++ b/Documentation/core-api/mm-api.rst
+@@ -52,6 +52,15 @@ Virtually Contiguous Mappings
+ .. kernel-doc:: mm/vmalloc.c
+    :export:
+ 
++Kernel Page Table Permissions
++=============================
++
++.. kernel-doc:: include/linux/set_memory.h
++   :doc: Kernel page table permissions
++
++.. kernel-doc:: include/linux/set_memory.h
++   :internal:
++
+ File Mapping and Page Cache
+ ===========================
+ 
+diff --git a/Documentation/mm/index.rst b/Documentation/mm/index.rst
+index 13a79f5d092c0..e9ae5cd82163a 100644
+--- a/Documentation/mm/index.rst
++++ b/Documentation/mm/index.rst
+@@ -25,6 +25,7 @@ see the :doc:`admin guide <../admin-guide/mm/index>`.
+ 
+    physical_memory
+    page_tables
++   kernel-page-tables
+    process_addrs
+    bootmem
+    page_allocation
+diff --git a/Documentation/mm/kernel-page-tables.rst b/Documentation/mm/kernel-page-tables.rst
+new file mode 100644
+index 0000000000000..b3148df07fc8b
+--- /dev/null
++++ b/Documentation/mm/kernel-page-tables.rst
+@@ -0,0 +1,410 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++==================
++Kernel Page Tables
++==================
++
++Introduction
++============
++
++The kernel page tables are created early during boot and, unlike the page
++tables of user processes, most of them remain static throughout the system
++lifetime.
++
++Every architecture has a direct map (also called linear map) that maps the
++physical memory at a fixed offset, so that a physical address can be
++translated to a kernel virtual address with simple arithmetic. On most
++architectures the direct map is a part of the kernel page tables, with a few
++exceptions described in the `Direct map`_ section below.
++
++On 32-bit systems with high memory the direct map covers only a part of the
++physical memory, see Documentation/mm/highmem.rst.
++
++The vmalloc area, present on every architecture with an MMU, is used for
++allocations of virtually contiguous memory whose backing pages are not
++necessarily physically contiguous, and for mapping of the device memory. Its
++page tables are created and torn down at runtime, see
++Documentation/mm/vmalloc.rst.
++
++Architectures that use the `SPARSEMEM_VMEMMAP` memory model reserve a range of
++kernel address space for the memory map, so that `struct page` objects appear
++as a virtually contiguous array indexed by the page frame number, see
++Documentation/mm/memory-model.rst.
++
++Besides these, the kernel image may be mapped in a dedicated part of the
++kernel address space rather than accessed through the direct map. In that
++case its mapping is an alias of the direct map of the physical memory the
++image occupies.
++
++The rest of the kernel address space is architecture specific. For instance,
++x86 has a region for the EFI runtime services and s390 has a region for the
++code that has to run in the 31-bit addressing mode.
++
++Direct map
++==========
++
++On most architectures the direct map is an ordinary part of the kernel page
++tables. It is created early during boot with the largest pages the hardware
++and the kernel configuration allow.
++
++Several architectures are different.
++
++MIPS
++----
++
++MIPS does not map the physical memory with page tables at all. Instead, a
++part of the kernel virtual address space is a window into the physical
++address space: the hardware translates the addresses that fall into that
++window by a fixed transformation of the address bits, without walking the
++page tables and without using the TLB. The memory attributes, such as
++cacheability and the privilege level required to access the memory, are a
++property of the window rather than of an individual page.
++
++There are no page table entries describing the direct map, so its properties
++cannot be changed for an individual page. On 32-bit systems the window covers
++only 512 MiB of the physical memory, so everything above that is high memory.
++
++LoongArch
++---------
++
++Like MIPS, LoongArch maps the physical memory with a hardware window. The
++window covers 256 TiB of the physical address space on 64-bit and 512 MiB on
++32-bit systems, and everything above that is high memory.
++
++The window occupies the lower part of the kernel address space. The upper
++part, which includes the vmalloc area, is mapped with kernel page tables.
++
++PowerPC with the hash MMU
++-------------------------
++
++On 64-bit PowerPC systems with the hash MMU the direct map does not exist in
++the Linux page tables. It is installed into the hardware hash page table early
++during boot.
++
++Modifying such mappings requires updating the hash page table directly, and
++the hash MMU code implements this only for the kernel image permissions,
++`debug_pagealloc` and KFENCE.
++
++With the radix MMU the direct map is a part of the ordinary kernel page
++tables.
++
++Modifying the kernel page tables
++================================
++
++Except for the vmalloc area, the kernel page tables are mostly static. Still,
++there are cases when the permissions of existing kernel mappings have to be
++updated, for instance when a module is loaded and its text becomes read-only
++and executable, or when a page is temporarily removed from the direct map to
++reduce its exposure.
++
++There are two families of functions for this, both declared in
++`include/linux/set_memory.h`:
++
++* `set_memory_*()` change permissions of an arbitrary kernel mapping. They
++  take a kernel virtual address and the number of pages.
++
++* `set_direct_map_*()` change permissions of the direct mapping of the page
++  frame represented by a `struct page`. They take a `struct page` pointer and
++  the number of pages.
++
++Architectures that implement `set_memory()` select `CONFIG_ARCH_HAS_SET_MEMORY`
++
++Architectures that implement `set_direct_map()` select
++`CONFIG_ARCH_HAS_SET_DIRECT_MAP`.
++
++Common semantics
++----------------
++
++Ranges
++~~~~~~
++
++The `set_memory()` functions expect a range described by a start address and a
++number of pages. The address must be page aligned and the entire range must be
++covered by page table entries the architecture knows how to update.
++
++The entries may be marked as not present, set_memory_p() and set_memory_valid()
++exist exactly to bring such a mapping back.
++
++When a range does not qualify, an architecture will usually say so by returning
++an error and sometimes by a WARN()ing as well, unless it prefers to keep it to
++itself and return success, see `Architecture specific differences`_.
++
++The `set_direct_map()` functions expect a range described by the first
++`struct page` and a number of pages, and they update the direct map starting
++at that page.
++
++The pages that follow the first one are updated regardless of what they are, so
++the caller has to make sure that the range does not extend beyond the memory it
++owns.
++
++Some architectures cannot split a large mapping, and they reject a range that
++is a part of one, see `Architecture specific differences`_.
++
++Calling `set_memory()` with the number of pages set to zero is a no-op that
++returns success, except on arm64, where doing nothing to the wrong address is
++still an error.
++
++Aliases
++~~~~~~~
++
++A physical page may be mapped several times, for instance in the direct map
++and in the vmalloc area, and the permissions of these mappings may differ.
++
++Whether the direct map alias is updated by a `set_memory()` call, and
++which permission bits make it there, is entirely up to the architecture, and
++there is not much agreement between them, see
++`Architecture specific differences`_.
++
++Relying on that is a gamble; code that needs the direct map alias to change
++should say so with the `set_direct_map()` APIs.
++
++Failures and partial updates
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++Both families of functions return 0 on success and a negative error code on
++failure. The most common failures are `-EINVAL` for a range that cannot be
++handled and `-ENOMEM` when splitting a large mapping fails to allocate a page
++table.
++
++Some of the range checks happen upfront, so their failure leaves the page
++tables unchanged.
++
++**The update is not atomic and there is no rollback.**
++
++The architecture implementations walk the range and update the page tables as
++they go, and they stop at the first entry that cannot be updated. When an error
++is returned, an arbitrary prefix of the range may have been updated already,
++and the same is true for the direct map alias when the architecture updates it.
++
++For example, when a range spans two large mappings and splitting the second
++one fails because there is no memory for a page table, the first one is
++already split and updated by the time the error is returned.
++
++None of the APIs inform the caller where in the range they failed, so reverting
++such a partial update is possible in principle but unreliable in practice.
++
++The caller may try to restore the original permissions over the entire range,
++but that revert goes through the very code that has just failed, which does
++not inspire much confidence.
++
++The callers should therefore be prepared to give up on the memory in question:
++leak it or panic, but never return it to the allocator before the permissions
++are restored and never assume that the requested permissions are in effect.
++Neither option is appealing, but both beat handing out a page whose
++permissions nobody knows.
++
++TLB flushing
++~~~~~~~~~~~~
++
++The `set_memory()` functions flush the TLB for the affected range before
++they return, so that the new permissions are in effect for every CPU.
++
++The `set_direct_map()` functions have `_noflush` in their names because when
++they were first introduced on x86, the intention was that the TLB flushing
++could be optimized by letting the caller handle it.
++
++For example, vfree() batches the TLB flushes for the areas allocated with
++`VM_FLUSH_RESET_PERMS`, folding the flush of the direct map into the flush it
++has to do for the vmalloc mapping anyway.
++
++Some architectures flush the TLB in the `_noflush` functions anyway, so the
++name is best read as a suggestion. It does not make the flush by the caller
++unnecessary, it only makes it more expensive.
++
++A caller that changes the permissions to more restrictive ones must flush the
++TLB itself.
++
++Context
++~~~~~~~
++
++Architectures use different locking mechanisms to synchronize kernel page table
++updates, and both families of functions may sleep, for instance when they
++allocate memory to split a large mapping.
++
++The caller cannot presume it is safe to call these APIs from an atomic context.
++
++The `set_direct_map()` functions must not be called for high memory pages,
++which have no direct map alias to update.
++
++Unimplemented APIs silently succeed
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++When an architecture does not implement these APIs, the generic stubs in
++`include/linux/set_memory.h` return 0, that is, they report success for work
++they have no intention of doing.
++
++The same happens inside several architecture implementations. The arm64
++`set_direct_map()` functions return 0 when can_set_direct_map() is false, and
++the LoongArch `set_memory()` functions return 0 for the addresses in its
++windowed direct mapping, which is not backed by page tables at all.
++
++Returning success without actually updating the page tables is a deliberate
++trade-off that keeps the callers free of `#ifdef`\ s, but they have to realize:
++
++**a return value of 0 does not imply that the permissions were actually
++changed.**
++
++For best-effort hardening that is good enough. When correctness or security
++depends on the permissions, the caller has to make sure the architecture
++really implements what it needs. For instance, secretmem depends on
++`CONFIG_ARCH_HAS_SET_DIRECT_MAP` and calls can_set_direct_map() at runtime.
++
++Architecture specific differences
++=================================
++
++The APIs are implemented by seven architectures and, beyond the common
++semantics described above, their behaviour differs in several respects.
++
++Which of the APIs are implemented:
++
++=========  =====================  =========================
++Arch       `ARCH_HAS_SET_MEMORY`  `ARCH_HAS_SET_DIRECT_MAP`
++=========  =====================  =========================
++arm        yes                    no
++arm64      yes                    yes
++loongarch  yes                    yes
++powerpc    yes                    no
++riscv      yes (MMU only)         yes (MMU only)
++s390       yes                    yes
++x86        yes                    yes
++=========  =====================  =========================
++
++Only set_memory_ro(), set_memory_rw(), set_memory_x() and set_memory_nx() are
++available everywhere, and even these are not universal: some architectures
++restrict the ranges that can be modified, for instance arm64 rejects direct map
++addresses and accepts only addresses in vmalloc space. The architectures that
++may run on hardware without an execute permission bit, like x86 and s390,
++silently skip the update of the executable bit.
++
++set_memory_rox() has a generic implementation that calls set_memory_ro() and
++set_memory_x() in turn; PowerPC, s390 and x86 override it with a single-pass
++version.
++
++Several architectures define additional APIs. Some of those may have identical
++semantics but different names. For example, making a mapping present or not
++present is spelled differently: set_memory_p() and set_memory_np() on x86 and
++PowerPC, set_memory_valid() on arm and arm64.
++
++The direct map and the kernel image are normally mapped with the largest
++possible pages, and changing the permissions of a single page inside such a
++mapping requires splitting it, which not every architecture can do.
++
++arm
++---
++
++* Does not implement `set_direct_map()`.
++* Provides set_memory_valid().
++* set_memory_ro(), set_memory_rw(), set_memory_x() and set_memory_nx() accept
++  only vmalloc and module addresses.
++* set_memory_valid() accepts any address.
++* Does not update mapping aliases.
++
++arm64
++-----
++
++* Provides set_memory_valid().
++* Provides the memory encryption helpers, which are effective only when the
++  kernel runs as a confidential guest.
++* set_memory_ro(), set_memory_rw(), set_memory_x() and set_memory_nx() accept
++  only vmalloc and module addresses:
++
++  - the range must fit in the VM area that contains its start
++  - the VM area must have `VM_ALLOC` set and `VM_ALLOW_HUGE_VMAP` clear
++
++* set_memory_valid() accepts any address.
++* The encryption helpers accept only direct map addresses.
++* The `set_memory()` functions propagate the read-only and the read-write
++  changes to the direct map alias when `rodata=full` is in effect.
++* Splits leaf mappings before the update on the hardware that supports it.
++  The split itself may be partial when it fails midway, but the permissions are
++  left untouched in that case.
++  Without support for splitting large mappings, a range that covers a leaf
++  entry only partially fails with a WARN()ing and `-EINVAL`.
++  If a range spans one or more full leaf entries and a partial leaf entry, the
++  permissions of the full leaf entries are updated before the failure.
++* The `set_direct_map()` functions return 0 without doing anything when the
++  direct map cannot be modified, see can_set_direct_map().
++* Skips the TLB flush in `set_memory()` when the update only turns an invalid
++  mapping into a valid one.
++* Does not flush TLB in `set_direct_map()`.
++
++LoongArch
++---------
++
++* Accepts only the addresses above the hardware window and silently returns
++  success for the rest, see `Direct map`_.
++* Does not update mapping aliases.
++* Does not split anything: a leaf entry is updated as a whole, which changes
++  the permissions of the entire large mapping.
++* Flushes the TLB in `set_direct_map()`.
++
++PowerPC
++-------
++
++* Does not implement `set_direct_map()`.
++* Provides set_memory_np() and set_memory_p().
++* Rejects huge vmalloc mappings.
++* With the hash MMU on 64-bit systems accepts nothing but the vmalloc and the
++  I/O regions.
++* With the radix MMU accepts direct map addresses, but still cannot split a
++  large mapping.
++* Does not update mapping aliases.
++
++riscv
++-----
++
++* Implements both APIs only when the MMU is enabled.
++* Provides set_memory_rw_nx().
++* The `set_memory()` functions accept any mapped kernel address, including the
++  direct map, but a vmalloc range must have the `pages` array of its VM area
++  populated, which rules out vmap() and ioremap() mappings.
++* On 64-bit systems the `set_memory()` functions update the direct map alias of
++  a vmalloc range, including the executable bit.
++* Does not split vmalloc ranges: a leaf entry is updated as a whole, which
++  changes the permissions of the entire large mapping.
++* Splits the direct map on 64-bit systems.
++* Flushes the TLB in `set_direct_map()`.
++
++s390
++----
++
++* Provides set_memory_4k(), set_memory_rwnx() and the
++  `__set_memory_*(start, end)` variants that take a range rather than a page
++  count.
++* The `set_memory()` functions accept any mapped kernel address, including the
++  direct map.
++* Skips the update of the executable bit when the hardware has no support for
++  it.
++* The `set_memory()` functions propagate only the read-only and read-write
++  changes to the direct map alias of a `VM_ALLOC` area, and deliberately not
++  the executable bit.
++* Splits leaf PUD and PMD entries when the range is not aligned to them or when
++  set_memory_4k() is requested.
++* Updates the page table entries with instructions that invalidate the
++  corresponding TLB entries, so no separate flush is needed anywhere.
++
++x86
++---
++
++* Provides the largest set of operations on top of the common ones:
++
++  - the cache attribute helpers: set_memory_uc(), set_memory_wc(),
++    set_memory_wb()
++  - presence control: set_memory_np() and set_memory_p()
++  - set_memory_4k()
++  - set_memory_global() and set_memory_nonglobal()
++  - the array variants that operate on `struct page` arrays or arrays of
++    virtual addresses
++  - memory encryption: set_memory_encrypted() and set_memory_decrypted()
++
++* The `set_memory()` functions accept any mapped kernel address, including the
++  direct map, and silently succeed for the unmapped holes inside it.
++* Does nothing in set_memory_x() and set_memory_nx() when the CPU has no
++  execute permission bit.
++* The `set_memory()` functions apply the change to the direct map alias and,
++  for the kernel image, to the high kernel mapping. The NX bit is never
++  propagated, so that the direct map stays non-executable.
++* Splits large mappings on demand and can collapse them back when the
++  permissions become uniform again.
++* Does not flush the TLB in `set_direct_map()`, but splitting a large
++  mapping flushes it anyway.
+diff --git a/include/linux/set_memory.h b/include/linux/set_memory.h
+index 3fe293cfed8cc..27c32fbabfec9 100644
+--- a/include/linux/set_memory.h
++++ b/include/linux/set_memory.h
+@@ -5,16 +5,92 @@
+ #ifndef _LINUX_SET_MEMORY_H_
+ #define _LINUX_SET_MEMORY_H_
+ 
++/**
++ * DOC: Kernel page table permissions
++ *
++ * The set_memory() and set_direct_map() APIs update permissions of existing
++ * kernel mappings.
++ *
++ * The set_memory() functions operate on a range of kernel virtual addresses,
++ * the set_direct_map() functions operate on the direct map.
++ *
++ * The updates are not atomic: when a call fails, an arbitrary prefix of the
++ * range may have been updated already and there is no automatic rollback.
++ * A caller must restore the required permissions before reusing or freeing
++ * the memory.
++ *
++ * When an architecture does not implement these APIs they succeed without
++ * doing anything, so a return value of 0 does not mean that the permissions
++ * were actually changed.
++ *
++ * Callers that depend on the permissions being applied must ensure that the
++ * architecture supports the required operation for the target addresses. The
++ * Kconfig symbols alone do not guarantee this.
++ *
++ * See Documentation/mm/kernel-page-tables.rst for the details and for the
++ * differences between the architecture implementations.
++ */
++
+ #ifdef CONFIG_ARCH_HAS_SET_MEMORY
+ #include <asm/set_memory.h>
+ #else
++/**
++ * set_memory_ro - make a kernel mapping read-only
++ * @addr: page aligned start of the kernel virtual address range
++ * @numpages: number of pages in the range
++ *
++ * Flushes the TLB for the range.
++ *
++ * Return: 0 on success, negative error code on failure.
++ */
+ static inline int __must_check set_memory_ro(unsigned long addr, int numpages) { return 0; }
++
++/**
++ * set_memory_rw - make a kernel mapping writable
++ * @addr: page aligned start of the kernel virtual address range
++ * @numpages: number of pages in the range
++ *
++ * Flushes the TLB for the range.
++ *
++ * Return: 0 on success, negative error code on failure.
++ */
+ static inline int __must_check set_memory_rw(unsigned long addr, int numpages) { return 0; }
++
++/**
++ * set_memory_x - make a kernel mapping executable
++ * @addr: page aligned start of the kernel virtual address range
++ * @numpages: number of pages in the range
++ *
++ * Flushes the TLB for the range.
++ *
++ * Return: 0 on success, negative error code on failure.
++ */
+ static inline int __must_check set_memory_x(unsigned long addr,  int numpages) { return 0; }
++
++/**
++ * set_memory_nx - make a kernel mapping non-executable
++ * @addr: page aligned start of the kernel virtual address range
++ * @numpages: number of pages in the range
++ *
++ * Flushes the TLB for the range.
++ *
++ * Return: 0 on success, negative error code on failure.
++ */
+ static inline int __must_check set_memory_nx(unsigned long addr, int numpages) { return 0; }
+ #endif
+ 
+ #ifndef set_memory_rox
++/**
++ * set_memory_rox - make a kernel mapping read-only and executable
++ * @addr: page aligned start of the kernel virtual address range
++ * @numpages: number of pages in the range
++ *
++ * A failure may leave the range read-only but not executable.
++ *
++ * Flushes the TLB for the range.
++ *
++ * Return: 0 on success, negative error code on failure.
++ */
+ static inline int set_memory_rox(unsigned long addr, int numpages)
+ {
+ 	int ret = set_memory_ro(addr, numpages);
+@@ -25,11 +101,33 @@ static inline int set_memory_rox(unsigned long addr, int numpages)
+ #endif
+ 
+ #ifndef CONFIG_ARCH_HAS_SET_DIRECT_MAP
++/**
++ * set_direct_map_invalid_noflush - remove pages from the direct map
++ * @page: first page to update
++ * @nr: number of pages to update
++ *
++ * Makes the direct mapping of @nr pages starting at @page not present.
++ * The caller is responsible for any required TLB flushing.
++ *
++ * Return: 0 on success, negative error code on failure.
++ */
+ static inline int set_direct_map_invalid_noflush(struct page *page,
+ 						 unsigned int nr)
+ {
+ 	return 0;
+ }
++
++/**
++ * set_direct_map_default_noflush - restore the direct map of pages
++ * @page: first page to update
++ * @nr: number of pages to update
++ *
++ * Restores the default kernel permissions of the direct mapping of @nr
++ * pages starting at @page.
++ * The caller is responsible for any required TLB flushing.
++ *
++ * Return: 0 on success, negative error code on failure.
++ */
+ static inline int set_direct_map_default_noflush(struct page *page,
+ 						 unsigned int nr)
+ {
+@@ -46,6 +144,18 @@ static inline bool kernel_page_present(struct page *page)
+  * boot time. Let them overrive this query.
+  */
+ #ifndef can_set_direct_map
++/**
++ * can_set_direct_map - check if the direct map can be modified
++ *
++ * Available with CONFIG_ARCH_HAS_SET_DIRECT_MAP. Architectures may override
++ * this to report whether direct map updates are enabled at runtime.
++ * Even though the generic implementation returns true this does not guarantee
++ * that every address can be updated.
++ *
++ * See Documentation/mm/kernel-page-tables.rst for the details
++ *
++ * Return: true unless the architecture reports direct map updates disabled.
++ */
+ static inline bool can_set_direct_map(void)
+ {
+ 	return true;
+
+---
+base-commit: d118502628f8b673be9023db8bdf878f64a7ed45
+change-id: 20260909-set-memory-docs-5f1d96c680a6
+
+--
+Sincerely yours,
+Mike.
 
 
