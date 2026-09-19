@@ -4,89 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA633C982D8
-	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 16:55:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDC0AC982D7
+	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 17:00:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 863D86B0088; Sat, 19 Sep 2026 12:55:22 -0400 (EDT)
+	id A1B446B008C; Sat, 19 Sep 2026 13:00:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 814AB6B008A; Sat, 19 Sep 2026 12:55:22 -0400 (EDT)
+	id 9A9E86B0092; Sat, 19 Sep 2026 13:00:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 706516B008C; Sat, 19 Sep 2026 12:55:22 -0400 (EDT)
+	id 893AC6B0093; Sat, 19 Sep 2026 13:00:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 46B1F6B0088
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 12:55:22 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EB3D0A51D4
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 16:55:19 +0000 (UTC)
-X-FDA: 85231112358.08.C3CCF58
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 5748FA0004
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 16:55:18 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MX2TRb5V;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 58A436B008C
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 13:00:30 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 815CCC02B1
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 17:00:29 +0000 (UTC)
+X-FDA: 85231125378.13.D74B757
+Received: from mail-ed2-f12.google.com (mail-ed2-f12.google.com [74.125.228.76])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 4C6C2180006
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 17:00:27 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=TYW3oqJU;
+	spf=pass (imf24.hostedemail.com: domain of torvalds@linuxfoundation.org designates 74.125.228.76 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789836918;
+	s=arc-20220608; t=1789837227;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XTL+OmPRLFphC0ptL3M6yHVhta+LC8O4dSAbgUBWAxc=;
-	b=Z304E6yL8tG6qbR+C2k64Z8CrG45QV7lkOnuh4xnyKVjeC/cKz7JjLvizvE0WCplGbI29P
-	ltkxEOps7XihDIOukEcf7zo/fpD60IAxAJZiuqP7LvMKZ/vkKDPFbhPgg0o99mxIph4ZTX
-	YL3IsWqniy/uwutil4zhH7bPQRSMpC4=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MX2TRb5V;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=R4EVCCJGMVi/Jgl5olIITsEJ4O030sdS93t+4GDKvrY=;
+	b=ngRjFSPA/UBt4/fxppS2MN5F2j9TRR5scXttyGcc18cPYf4JSGyzKar5rnzInUGEnfKEEL
+	xwlzeKA6PFfBFUKCCJlbvKPnVdckxMT9D4HDSTHcJQmS2Nhlsk+/ACAQHUzLQ4bVn0MYgF
+	bfvFibyb7S3TeI24a4X6VRjH3n5kq9E=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789836918;
-	b=IZ/eQrJUK7hmFIEWoRKRt9GmzoJOhSiq226zgufIyThW1cEWGMtaLz2FhGsYSaB/SCmsCu
-	KbIUIBpLaNL3FmRny5elYdQbXUeel1VxoXY4DrszvsPpUMIdto/FDdVWPHt5jPqtplCx84
-	5jP/RHb/ne6sByTSmw77+Ugc1SpiRUo=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 029C9601FB;
-	Sat, 19 Sep 2026 16:55:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7799E1F000FF;
-	Sat, 19 Sep 2026 16:55:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789836916;
-	bh=XTL+OmPRLFphC0ptL3M6yHVhta+LC8O4dSAbgUBWAxc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MX2TRb5V8MCuV0MdsY0f55GswqhuxVjZrY5ZCRsgUwYSrKjqkxWgiD5qbky7Jgxhi
-	 l3MAzNdb2gHtJGYdZQF5YKUvL/HH79uhGg7cGPfcD43nr1T48CLSrqlrFjZMGHcExI
-	 OI5X4PUc0+4OjGrmzK64ITPH/eWDvALyQIZjWmAvMghY1Wte3VIiHqS1SVX/eLdMyI
-	 hgo/wkxudwZC4KhYUcd4d+yekTHSYoZOIXGu+GexePxKEHWN2Hpcnc+ux8mYfigLL1
-	 NFGCREMqU/83Acmn4qKjMpRpMhEOTEASAYDLiaUgoVgPrg0wQBnntAZlnMrkIxa/ch
-	 Bt++zhanM8jeg==
-From: SJ Park <sj@kernel.org>
-To: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v1 1/2] mm/damon/core: prevent size quota overflow in the temporal goal tuner
-Date: Sat, 19 Sep 2026 09:55:08 -0700
-Message-ID: <20260919165509.86678-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260919071324.1583280-2-donggeunyoo.kernel@gmail.com>
-References: 
+	t=1789837227;
+	b=K6wq2Yc94HqWwMrJUPDeR0ME5zviA8/Ydlb9S9pJYV6XmCPohkDhTFlR08cyi+OMtL/ffk
+	YJRaoRuFpugKTVcXgb6GV4JkeCyyPEBET27CYkXqCrt8vlLLThfIA6NO2VrwPsWqwPUcCw
+	RkiHLvbPGNDbEgb4BAOukAnrC3hN02o=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=TYW3oqJU;
+	spf=pass (imf24.hostedemail.com: domain of torvalds@linuxfoundation.org designates 74.125.228.76 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	dmarc=none
+Received: by mail-ed2-f12.google.com with SMTP id 4fb4d7f45d1cf-6a9adea43b6so2246183a12.0
+        for <linux-mm@kvack.org>; Sat, 19 Sep 2026 10:00:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1789837226; x=1790442026; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=R4EVCCJGMVi/Jgl5olIITsEJ4O030sdS93t+4GDKvrY=;
+        b=TYW3oqJUAr9Dj4Qo8QCQewzHBMnoT1ICfBwASe8bjazTLBC/c1N6UAiGsiuxX9Wpv0
+         6MNmV4SuUDJRwApgapPL0kSAIDyAfM9QMf7DAHz8/urGBbPCU4BEVjCp9ROdBZA2b9ww
+         LJLV7Fzh3OY/EEvFSz0pGxL0jRfsPExI/uKKM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789837226; x=1790442026;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=R4EVCCJGMVi/Jgl5olIITsEJ4O030sdS93t+4GDKvrY=;
+        b=DaToi4pXIBBMo8a2nJEcVpmcmmYHEQl7hH79Eau/UDyp3Zq63kK6mNmZEcG4fcb6Vf
+         KWrBrAwGsedxcXd+tTXiDvRUCRDksDL92xHcWd0wja9vhGsngdrO2CmqVsX00+1/OEwQ
+         Ord6bOmqdXNZVKKdo9GKTZZI6CIaMnOscToMmi9rwRe+Nu7ZLMjzqDNGqiUc9/OaVCiu
+         RWAY8OsvFcb6Q1EKohmz1AtRY/1zOW9qNazN3W3ZKh2yjyUOW6jIZ9+eS1WIIjYmbjkI
+         2Y8EUjCguXFsGKmWddE7StonWvqv7a8lvf/sTZEMGipxus5S5JhFGqc+hWj8B3h6FjAu
+         t8zQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwoIRZiUIDKyZSjx1AXQSjJiXmIq9OTHqt67JUx0fSDEvx9DTQdo2zftz2nmJV9sf1der68CJcdtw==@kvack.org
+X-Gm-Message-State: AFuF++lywHiVIq755fMXfk3QT/fWRrl4m6BKk1437W+HeHQGRaBzbrPS
+	SrN+RypHKJ9UfzKd5kKGo5gTx0WsLnqbZPrtT6JppSi5AI1/lOxs5/SASgcqh99QCAjGc5Dr7DX
+	8l8PHKSw=
+X-Gm-Gg: AYBFou2hpfgqUAY98lQsZI+QsMQP922itiMa0c8WnTgFYY99pOZMhdPxNWdUmTJdVer
+	4fuDxVeWULmT/6kAvEJ2Nz7xHySNo57ukLDiLtazzOTAx/pgFOvstIHpVa3pYTzCM9q7x4z61OT
+	fYBoSXFwfzjo8te3IKUzNfXJ1jZBe8rdVeVhHBvpYNZpxdlgW5eupEdU2aeuGX5TfqPeoxXnd5F
+	q8acjnPKDN9yP4we8So2cgBVj121QLMrGoILPMzM9DDL7GpmdboF/68YlHhifw1fhN+WGw1XtzX
+	4NCqgHqGf1HXdfyEc+4y/PxIwyCE6+WO+sHHwnH/FJkAPtV1jBIsIaXLoPQdu+2Q8xGEOCmUcRS
+	/n5B5ygQ01cFCCTN/5NmQVI1Lh1ggSPEnAVmIORU4ZQgS0Eh5KLV84YmQ85OGMtvfE/B2HoBQ8e
+	V6JIc3tLzM7QL476BGbfH1cJ4xQ6oYPo9p1QPDuqQVroSJt9qFkL6D5WOxXHgwrZCQN0GUUCUMJ
+	qhx9tQkzQAgOkP7ZOXWVOVWzoNvfEblcWbw8kfFmil1IM1X2w==
+X-Received: by 2002:a05:6402:4145:b0:6a9:9766:59ad with SMTP id 4fb4d7f45d1cf-6aa548d810emr4910658a12.43.1789837225747;
+        Sat, 19 Sep 2026 10:00:25 -0700 (PDT)
+Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com. [74.125.228.140])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6aa67dbaf0esm1546402a12.15.2026.09.19.10.00.24
+        for <linux-mm@kvack.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 19 Sep 2026 10:00:25 -0700 (PDT)
+Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c254f6c7a58so255588466b.2
+        for <linux-mm@kvack.org>; Sat, 19 Sep 2026 10:00:24 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBwgk1qkU9mV080UBaxX5ZHhgs/MxdniY6Tm3zA4iqHJ0j6QQEkESYw0oK0WdVIlL0s/U+FAP+TyoQ==@kvack.org
+X-Received: by 2002:a17:907:3f17:b0:c26:1649:47ab with SMTP id
+ a640c23a62f3a-c2a15b4bca3mr522411266b.33.1789837224119; Sat, 19 Sep 2026
+ 10:00:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5748FA0004
-X-Stat-Signature: zng5oc4qq56p7w1m9xm93ktrczy546hw
+References: <e9669b34-12c2-4cf2-a887-315f581f0789@paulmck-laptop>
+ <20260919000056.3132131-1-paulmck@kernel.org> <CAHk-=wj9knmxXD01=top1DQ9_aqrN2a3kpWRS5DQv6QLwLOztg@mail.gmail.com>
+ <6B1FC39D-6EB0-433A-8E49-E5EFC9379AD7@mainlining.org>
+In-Reply-To: <6B1FC39D-6EB0-433A-8E49-E5EFC9379AD7@mainlining.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Sat, 19 Sep 2026 10:00:06 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wjyniJy-CX1muCrsZp-i-sLGRYeRYEPN7sw9orRZUCwag@mail.gmail.com>
+X-Gm-Features: AcwNN1WCbh_CXATf-FMT8x_ZS8yd9pmRtrkzEOhM9i8GXxqTrntEHha57Im_sMA
+Message-ID: <CAHk-=wjyniJy-CX1muCrsZp-i-sLGRYeRYEPN7sw9orRZUCwag@mail.gmail.com>
+Subject: Re: [PATCH 01/28] hazptr: Implement Hazard Pointers
+To: Bradley Morgan <brads@mainlining.org>
+Cc: "Paul E. McKenney" <paulmck@kernel.org>, rcu@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	kernel-team@meta.com, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Boqun Feng <boqun@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, lkmm@lists.linux.dev, 
+	Zqiang <qiang.zhang@linux.dev>, Wang Lian <lianux.mm@gmail.com>, 
+	Kunwu Chan <kunwu.chan@gmail.com>, Nicholas Piggin <npiggin@gmail.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Will Deacon <will@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Alan Stern <stern@rowland.harvard.edu>, 
+	John Stultz <jstultz@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Frederic Weisbecker <frederic@kernel.org>, Joel Fernandes <joel@joelfernandes.org>, 
+	Josh Triplett <josh@joshtriplett.org>, Uladzislau Rezki <urezki@gmail.com>, 
+	Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang1211@gmail.com>, 
+	Ingo Molnar <mingo@redhat.com>, Waiman Long <longman@redhat.com>, 
+	Mark Rutland <mark.rutland@arm.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Vlastimil Babka <vbabka@suse.cz>, maged.michael@gmail.com, Mateusz Guzik <mjguzik@gmail.com>, 
+	Jonas Oberhauser <jonas.oberhauser@huaweicloud.com>, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1789836918-110883
-X-HE-Meta: U2FsdGVkX1+zcQpUBoksUsuDBnp6Gr3/YlpSqq5xVRkdlGfpDMLPpnppIft9cxCdlpmbh1lGxpgAgp18S2/DUF/o5fHwMSTpRC0ZuzcyDL+AUAGJiHcvh8JnXcJYideGN0W405QeaTml5qffDcXGq5xUGo8igK/XXCJ2ONrA+cGtJ+V6cOEBZ1/CTEWlT7vJRjfRSkTe6yX7i0zogbimeNIjIbvyzhqyjnhpEwl9IQQizxwv3EESLcsCUbXQjqBnFnx9lzatNFYFu3G4U6bO93pXc6zFL3MRmeUv5C+bPEWD98c2OU0ztN0029HkOp4wbTFpuDiTIcuP+RjAAsEt6aUFNJm5zBlML6PYSXzpy75dly7ABZrNkdVToSmCMzzA3xeYeKlCwXt6vOkuBugcWjRRI/AukjF5YwWAJ1DCuEALLkoS3vw7WdZ8t+Y9ytfJ60iGZClem9dD9nWJKPGnT0vQjG4avMiNWbcwzBnP3ZJ7J0n+wjT1VJTRH68h8ytt/SkpgO4lohSGtPuP/+cSvb6PmfFnnsYX3R5z2SEaD8ZcNWa9DSDOM4rsI3nfT3GsZrH+UL1S77jiA2i4ZHqZ7SPIySPS4XMUvYTmdLNeMUDy2Q8AiIflwXoP4/UjNTveGa3pHTmSUHapHReeghaYer8NOqImMQOEYXlspDHMd+Ln9aeV/kdiH5HsyS8hIBr0l76Fuoh3bRyWt5Tzi2Q9rQruAoTArbDB8TEhW19yfFdWkImvRKtS1W4h0xD4UEchLaxqhPsRxRZNvC+G1wJFw8sFP6p4X1AW4XhdaK1U9qgklfF+yrl4seLK1kGtuWLktfA32h8BpwCeSrgzx17Ftbh/TcGg57RfRwqRJf1iwvkJb+lqm5A4bDJAmuPW3b0CltiRXnF1d7Wb/I6UtxY+AJJYS3aZVAkZQnb/DrTMt0FBr4/cI+zLaYcLhF1xKv/SQrMQEYqiVsbGqQDBKTZ
- T9GcXmqt
- vLgmejMD7BCsFnLX9YySTWuonZfB1v0PbWEl5N2pMPSPzK3Kd34seuy7U7kN0W1RATiU2P9rCp5ZdU/qmNqC7j2BzA25Dl5haTlv2glR56FD+AhmGjajiY4JsAh9Zeqx4B5vVt1y+1pZwjRVItQC5IOnZI3J6RhyMHrVXP7yqSQdQZEQ105MSV1bArhi1SwJSx1KLYGMtJCQzvcXok9UbuRHuH73pcQVQ77n5jyrXuH0JWp9dU/y6k2DAmOQnDCfpYiHOOBOe6RnoC2zS8NzRGoq6k+WuztPh8QGobtCKfI28gTolmOborFIFYyg8sGOyzJDfNH7OeaJt4pQ=
+X-Stat-Signature: pbhu1zhsxpgagfaibr1yberuroqba6o4
+X-Rspamd-Queue-Id: 4C6C2180006
+X-HE-Tag: 1789837227-591555
+X-HE-Meta: U2FsdGVkX18Gys4V/C6kEKhlnhDL/A68sD3J0xrpOAZhEAk2XRQi7Y01fzTBPvV7mPt0pnfZa2ZizOivd0LZwSRILVD8/YS3ZTDlFA1HqwaidAWVvUBu7Z/Q1E53qqM1eG9iFX2n9SdxIs7N9qAuYP6AuchuvLutft63n2HtsI1rzA59BN7dxQVWLNKOTtG31QLU6sBhy1LDJBw51l/cYvDi2Q3gSNCIxAjZQnxAQxfoxAHfzPO4udKoEJkT/YRhvAs2pAXVkbPAz4SGk/djRACJ20SHiciP8hRPRRSNV1E0e/y2k/QTacnBJkAFEVmswsQzjlROJzci/6ZBb5unPscCiA0X6q69l6QV3ohJ11UUOxQedKr0jCMMT72yWLQOrP5bVYjxpTgfA+ZiA8a1+EoVrf+Zx/4iIFmTCfr4UrgFhjr2w0thR7CWBHv6vDr1MMcH/6zXx3r3lDQ25BzktSiwIweOUXg+QfJn55P4T9v5ty8M2if2CLvFFO4uYcKnnsHQPLVAhte4HaEfBjkGgdD3T5e3X7PrB0JaSqDiv9I4IrQkUznZUdo+/Ex/NZv8y/LwIwD73UIIv1tQhxYtwJr45C8dxvtkzlzpLj2BtO5zd+4MWx5KYCicQizSXLxD8QQZzkfjNWINZHMGzidLkjHFhWsOTB7p8RbOV7AUaUCYf/TYtbyKHREdJizgyMd774/6HFsxuO/ylCCWwsNUr+6L5oLg36+lexym7I9SHAQ8r/d29/91gTjb+MhHfgiDl6x5QSta82xqJtints0n8GMXybhKyYqCyWijHcrnslahfmod1hDpkuA0jwaLyVNdmdWcQlS7609nDiIoyD+UnWgmWrwaWiiFfjaD11dEXNLZgbdb3XND7N9K/QEAosXKBHQ/nBrbJ3oib1He317dh/x7kk7QvU6Zu47FHuFKYiCR2KQsuwDvfD+zin4FwugFibJJV6BnFAM72MGdCKM
+ au6Ttl3l
+ L3I0LzWJMNWvIqtrD8TxV+ZIEBfgNTQQtZLMpeYcQ6l/uO5yID3apBs/wmoyeiaiW/rEbTL7e0IwUoCRUKR0dGusfCjHJ1h3TfMITPizD2cKH4cH4IQnhvpzBnvew+NvspeCRxmg5RIgX3cQQ56j3KY5KsNuPa/YoZat1g9On6M1/PDBgt00QKr/0vWSqbLcX4+6qZMyOINa4Fn+agYQqe4d23JqlS3b8ly8mHH64v0qlmNZhGGPMXx9DIVG8l1HsmdgYlI1VCTpn5mQaxW0UBa2fJngkQHHuNnU1u2YfKGOP4wDTWrgIfW+denCBfvd+4Zd6yGNyr93hUSsLyIrKAgjbwiVlQkrRkPCKP2T7VRElXRLdcD92tESmaFuRvWkUO1GH8c7TMsUlYt1FBx0PO+JCtbj0j7qfnDHtwUW0nx4imhdU1aJCfCVN3D39+eIThQGQjgiJE1qNOt48ZtZJbXACbdYrGbfHIAcrK77H20t2+FCexn9scJiiXYOxh+XIH6LZnLlzPDS+4bMcxag6f7LeYQxFKqE0B82rXgIleRlZpoweHy7vSke/6bHq0IVQsWdE0iKzA33vqvIM/VwSOZkYk7MCbS4CTAlM9gtSCgC3BPBm2hr58lLQ9siqCtkgTsBZq5wHA8uFAyk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,121 +140,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Donggeun,
+On Sat, 19 Sept 2026 at 09:35, Bradley Morgan <brads@mainlining.org> wrote:
+>
+> I think hazard pointers are good, what test do YOU suggest we do here?
 
+I want to see a single real-world example of "look, this speeds this
+real load up by 10%, and the kernel code was actually cleaned up in
+the process because hazard pointers are great".
 
-Thank you for this patch.
+Not a microbenchmark that tests just the hazard pointers themselves,
+but a real kernel feature that has been converted to hazard pointers,
+and in the process actually shows improvement.
 
-On Sat, 19 Sep 2026 16:13:23 +0900 Donggeun Yoo <donggeunyoo.kernel@gmail.com> wrote:
+The ONLY reason for hazard pointers to ever be merged is if they
+actually buy us something real.
 
-> damos_goal_tune_esz_bp_temporal() converts the scheme's size quota into
-> basis points with "quota->esz_bp = quota->sz * 10000", both unsigned long,
-> and damos_set_effective_quota() divides the result back by 10000.
-> quotas/bytes is unbounded; bytes_store() hands it to kstrtoul() as is.
-> 
-> On 32-bit the product wraps for any size quota above ULONG_MAX / 10000,
-> that is 429496 bytes.  Documentation/admin-guide/mm/damon/usage.rst
-> instructs "echo $((1024*1024*1024)) > quotas/bytes", and 1 GiB * 10000 is
-> 2500 * 2^32, so that documented value wraps to exactly zero; 256 MiB and
-> every multiple of it do the same.  quota->esz then becomes zero while the
-> goal is not achieved, the trailing "if (quota->sz && quota->sz < esz)" can
-> only lower esz further, and damos_quota_is_full() is true on the first test
-> of every charge window, so the scheme applies nothing and the goal is never
-> approached.  Other sizes are wrong without being zero: 500000 yields 70503.
+So I want to see that 'real" thing.
 
-For 32-bit machines, we have addr_unit parameter.  I believe use of it could
-effectively solve this kind of issues.  Correct me if I'm wrong.
+I want to see how easy/hard it is to actually convert a real current
+user, and I want to see how it actually results in measurable
+improvements in performance.
 
-There could be cases that addr_unit cannot help, though.  Particularly, if I
-remember correctly, 'addr_unit' works for only paddr.  Also it doesn't fix all
-theoretical corner cases.  Even on 64 bit machines, same problem exists in
-theory.  So I think this change is worthy to have.  But I think it is better to
-mention existence of addr_unit and why it is not the perfect solution in the
-commit message.
+Something *core*. Something that everybody uses. Because I'm not in
+the least interested in a new subtle feature that interacts with the
+scheduler and is only used for some random driver or (to pick the only
+example I have ever seen) AppArmor.
 
-Maybe it is worthy to add the comment on the user documents, too.
+Now, obviously, the thing that would impress me is something like the
+dcache. If *that* can be converted, and it shows real improvements on
+some real benchmark, then I'm sold.
 
-> 
-> Saturate to ULONG_MAX, which is what the same function already writes for a
-> scheme with no size quota.  Widening esz_bp instead would reach the consist
-> tuner, which runs the same field through damon_feed_loop_next_input(),
-> unsigned long in and out; bounding the multiply keeps the change to this
-> branch.  On 32-bit a large size quota then behaves like no size quota
-> rather than like a dead scheme.
-> 
-> Fixes: af738a6a00c1 ("mm/damon/core: introduce DAMOS_QUOTA_GOAL_TUNER_TEMPORAL")
-> Cc: <stable@vger.kernel.org> # 7.1.x
-> Signed-off-by: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
-> ---
-> Measured on i386 under QEMU: one paddr context with a stat scheme, the
-> temporal goal tuner, and one unachieved user_input goal.  Each size is
-> written to quotas/bytes, the kdamond is started, and
-> quotas/effective_bytes is read back after
-> update_schemes_effective_quotas.
-> 
->   quotas/bytes    effective_bytes    effective_bytes
->                   before             after
->   4096            4096               4096
->   429496          429496             429496
->   429497          0                  429496
->   268435456       0                  429496
->   1073741824      0                  429496
->   500000          70503              429496
->   4294967295      429495             429496
->   0               429496             429496
-> 
-> Everything the conversion can hold is unchanged, and 429496 is what the
-> no-size-quota row already produced before the patch.
-> 
-> Patch 2 pins the same boundary at ULONG_MAX / 10000 and so runs on any
-> word size.  Without this patch it fails on x86_64:
-> 
->   # damos_test_esz_goal_temporal: EXPECTATION FAILED at mm/damon/tests/core-kunit.h:1959
->   Expected s.quota.esz == max_sz, but
->       s.quota.esz == 0 (0x0)
->       max_sz == 1844674407370955 (0x68db8bac710cb)
-> 
->  mm/damon/core.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/mm/damon/core.c b/mm/damon/core.c
-> index 2258b72da7a7..5ec476cef4db 100644
-> --- a/mm/damon/core.c
-> +++ b/mm/damon/core.c
-> @@ -3274,10 +3274,10 @@ static void damos_goal_tune_esz_bp_temporal(struct damon_ctx *c,
->  
->  	if (score >= 10000)
->  		quota->esz_bp = 0;
-> -	else if (quota->sz)
-> -		quota->esz_bp = quota->sz * 10000;
-> -	else
-> +	else if (!quota->sz || quota->sz > ULONG_MAX / 10000)
->  		quota->esz_bp = ULONG_MAX;
-> +	else
-> +		quota->esz_bp = quota->sz * 10000;
->  }
+Now, I don't really expect that kind of major test-case, but I do
+expect *something* meaningful. Not a driver. Not a test module. Real
+code.
 
-In my humble opinion, this could be easier to read in below way:
+IOW: "Show me the money".
 
-'''
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -3524,7 +3524,7 @@ static void damos_goal_tune_esz_bp_temporal(struct damon_ctx *c,
+Because the kernel is *not* some kind of acadmic project. Never has been.
 
-        if (score >= 10000)
-                quota->esz_bp = 0;
--       else if (quota->sz)
-+       else if (quota->sz && quota->sz <= ULONG_MAX / 10000)
-                quota->esz_bp = quota->sz * 10000;
-        else
-                quota->esz_bp = ULONG_MAX;
-'''
+I simply don't want to merge something that is touted as an
+alterantive to RCU - which we obviously depend on very very heavily -
+without something *major* that actually uses it and shows the
+real-world advantages.
 
-What do you think?
+The discussion about hazard pointers in the kernel has been around for
+a few years by now. If there isn't some real core feature that was
+converted to show that, then I think that's already a failure
+indication.
 
+I'm hoping that those patches and numbers already exist, and I just
+haven't seen them.
 
-Thanks,
-SJ
-
-[...]
+                  Linus
 
