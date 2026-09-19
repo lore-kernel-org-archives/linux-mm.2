@@ -4,96 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B38EFC982D7
-	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 15:15:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7968CC982D7
+	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 15:53:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A87B66B0093; Sat, 19 Sep 2026 11:15:00 -0400 (EDT)
+	id D917D6B0088; Sat, 19 Sep 2026 11:53:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A38E56B0095; Sat, 19 Sep 2026 11:15:00 -0400 (EDT)
+	id D43306B008A; Sat, 19 Sep 2026 11:53:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9275D6B0096; Sat, 19 Sep 2026 11:15:00 -0400 (EDT)
+	id C31816B008C; Sat, 19 Sep 2026 11:53:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 719596B0093
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 11:15:00 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A813B1C2172
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 15:14:59 +0000 (UTC)
-X-FDA: 85230859518.07.D7964C9
-Received: from mta1.migadu.com (out-98.mta1.migadu.com [95.215.58.98])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 8E285180013
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 15:14:57 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Wx4ObIXb;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf06.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.98 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Wx4ObIXb;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf06.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.98 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D0FC6B0088
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 11:53:53 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0C1BAA02C8
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 15:53:53 +0000 (UTC)
+X-FDA: 85230957546.26.30DF48F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 5E18240006
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 15:53:51 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iTIX4ZY1;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789830897;
-	b=wobLnNEHE53ZLo8IU0kYQQaT1Mds1deg9bbtHS1sDByTrO4COeMOJy4R7BxocR+DzhkLHV
-	7zh9JobB3jC/VRRlD56GdnZhd1cxbqN/frhaAXCvBRo6Vw/o6h0AqUg/p+Y8E1uU7OJkwp
-	cOBN21KPTOZFTnOsWe9Pt0SPrPQDGKs=
+	t=1789833231;
+	b=Uo1Vdesxs5fMlWgWAzw4Dn4T6y7EmFxu/O/gu2BuO2Pas5tfQhwBZL6gZqE4UL6FC/+G7t
+	Hl/tv+rpW+uC1j9mP8oEOykPeBJa88oPsRWje12V7aiHwr3Fpim9/s/ddmr5aoG76iF2VQ
+	chZ5kAlH/zBmBntWkrix7fDzeit2OTM=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iTIX4ZY1;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789830897;
+	s=arc-20220608; t=1789833231;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h0wLhHu/y6IbSnOL43oK+GHp0hEIdZafNZcrfhNhszw=;
-	b=Vif1AN1nGF7ieky8ISG6x5UE7V3KmaoWREOj2EGaq7j1vKHKNLi+DCffp1tQbMg7v3VLsz
-	WWVg5/inYEWuT9Oo9PgL+oDE+iIZ6U8Ibkeve5ZrZeEiSuSJF6WUoI3sulbfgK8Pj+vAkP
-	3Dg7QNCaM7BAadsebUq1v4u4r8U+GAA=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=9b2LPJKwDAP26Jyo5JqSNmJl55dEEIMEug+87i/rHb0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789830895; v=1; x=1790435695;
- b=Wx4ObIXblzEO9Oh36mlY00JUaLE6SvPAavGE0WzQXoBjllMWXsbnQSOZTL6WDmCt9F7ry0Kq
- cWlCHS+O8/CKI6fD1Vtcga4tRDN52LhSm5J5CJ8RX3e1IItyqygobjmQXklgsHKaAmv5PCjWB40
- 00mg6fUbxspm+Mtzmm6zTPew=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 605310dcde608050;
-	Sat, 19 Sep 2026 15:14:55 +0000
-X-Mizu-Trace-ID: 605310dcde608050
-X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: david@kernel.org
-Cc: lance.yang@linux.dev,
-	kas@kernel.org,
-	akpm@linux-foundation.org,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	liam@infradead.org,
-	nico.pache@linux.dev,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	usama.arif@linux.dev,
+	bh=i/uBEdJPm1aQswNq4LdASQ6ufGvoxHbey0sIvh1PP5Y=;
+	b=NC0viv3X1brH2j0tkTjJoQM2QEOUWTjBfX25+G0tueRpSM+yxHPJglfOdqpu3dChpTjVo+
+	d0LozbjV3uaLski6cb/KNWRpG8l5PSZzaKSLcYuZukHcnR2G9HxNudPsN3Bx3riFHmfT4G
+	V8X05KlL+wOVz3KjL/PxqAXXwR3ZZ1Q=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 93A6A43BF5;
+	Sat, 19 Sep 2026 15:53:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 226951F000FF;
+	Sat, 19 Sep 2026 15:53:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789833229;
+	bh=i/uBEdJPm1aQswNq4LdASQ6ufGvoxHbey0sIvh1PP5Y=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=iTIX4ZY1UjG0u1Zijb/Prirq3sF+j0Y0tqKsLQ1PigyMCQNg8c0mDUATHMU/NO4xq
+	 6gGUsAFfRMEv8ttEzoNmOr2oYHgxLKR9ttRGg1U3259Ts8Zf2p8f/dilzHKhN19wx5
+	 ji2RWjLuZC2b07j1knyz5qze7vla3heqSBwT0VuzYQYZHyT1vxdYGwVtPNfrp7Xrc1
+	 f2dQoh6/ZDQvDv8yKGjZP2KIj8ju7DsGK3cVC+ILV3JIVHGTnuf4h3ACIXxI7HRFcS
+	 F5EC4+lp9wKpFGO8ev1jEIZY6jQFaxemzW5IbpGUiu24EjYcUPEl3X3XWAzhME+8d4
+	 0oes1c7tWCfNg==
+From: SJ Park <sj@kernel.org>
+To: Karl Mehltretter <kmehltretter@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lian Wang <lianux.mm@gmail.com>,
+	Kunwu Chan <kunwu.chan@gmail.com>,
+	damon@lists.linux.dev,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/1] mm/huge_memory: disallow raw PMD mappings of the huge zero page
-Date: Sat, 19 Sep 2026 23:14:46 +0800
-Message-ID: <20260919151446.5741-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <c0979ad4-9fec-49f1-8442-d90061b79504@kernel.org>
-References: <c0979ad4-9fec-49f1-8442-d90061b79504@kernel.org>
+Subject: Re: [PATCH 1/2] mm/damon/core: score an unmeasured PSI goal as not achieved for the temporal tuner
+Date: Sat, 19 Sep 2026 08:53:41 -0700
+Message-ID: <20260919155342.85699-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <aq4g5W58PgWLqJ8p@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 5E18240006
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8E285180013
-X-Stat-Signature: 5gk4m86368ystwojaqd6jksdg5m3wxsg
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789830897-397526
-X-HE-Meta: U2FsdGVkX1+a0iAcse+OB5w0SP0mMDQys9U9Kfr6rcocWem6OoUEV58kQyKYKnr/uhp4tvHtIys+LxG2BSHptXXWlm+cCqrTzTExeYVOCZvDZKpa7mFlTc7Yx9akxCPFK+01n8tCI3Sgz8W1dZMOHJqI2m+Iz8T+WVCFk4nvXUlDWz1gL6fFbrMjuQwKHoBk8H6VX9v0WMsrvvnVqlE1MLQCJMUusMMnc5Uf7xiXp6EPk9MkXvBk+grn8YBuCA5j1n+tzcPzxlBNmFGvPeSa+t1rcE1lvB8H5JmegiMx/Q/AvnykhZwc/0ssE4eozKrUm8Dh6URcfsAL0ZUf98Pgsz1d8CdlRGqCmc7o/pph/Z84l/zALxjqk/3cGqfqIAJzXoovtcSKSgU2MD1ojbBOzNQ/hLU9HHHXbPe/KEuz7SZq1zKv34qPDuNVi4uysBqChNeDsUP82WMVrI8G9FiNmsukEdf5ngPwqrZu849X+O0tm1vwKnkyzyjAIhWPQ7tDbQ9zfKbdNl3U49DdLNBppXMxNWcxL+qnxpuX6N8lIE+bMWEo/mDCXqSTiq3/sAswTCURc7aBUNranlqzXSW0NOUYUPIzo0UFfQgozs24/uSDmuTC0ExPmrnqXj5e56iqVAWDaXq4Y62UM62ma+jtDNsEjN0SYQNTsfFCNZ4xqdhxmUkj7DuaLkL/k5B7MJq0vqnwPCRFOodhybYjo823Uan1GX3DNu263OjaiSK5UCXssevuR4eaLym+ncNjoYlnIwRP996D3fNq1fGWKliFWh2bAJucSTBNSkh+gLV12SDK+9Miw2bm7A5PV56fSRqBN6A+iYuZTFDLu24H1ceVYAUNaIFrWK+PdUZ2D3SwmBSWk69qPi1Ku9eR913akxYiDOjTZE0y/d+xYGOlCKGtDWljR1lpsEj3RGvXiceAHJurq+joqyCQrnLPpasUfmEcHx6Ig8uanKGQfgNsUFi
- AePFAP7M
- 8E9Lu2Mdwe0rQDhJ3KNuc3aNOkhSJT0Yq3WqM43pX7DJF9nqX1IrKOTGe81VrH+29pxQCYWVk39rSP4D5fE9HfjQbGFJ983FbRlJY17hJ7xN3hZ49s8KgnBhy/POxPtbJseP0UJc4r39UlVrK22WJJMa1YFiHfKNOVrkXb+GZH47KbbCmoBE/g/Tm6Y/XkLUlCMXg0UHN759ueGk3vOlOk8oRv6JamT8+zTGpsSZsrGs/6Q0mPy+PcPl76Bad+S1AWo1Prdb6r/Uun9Q+doHjtDy6xVGc0o6er7TtlMqhjlQx4Dcd70enDwv6QA==
+X-Stat-Signature: qgkcc8iw9qbiihe33mxo1bfgk3per6cf
+X-HE-Tag: 1789833231-337034
+X-HE-Meta: U2FsdGVkX18zvBy/3xCpu6vpn3/vMih9Ssfxsx62Qe9+5afhrkO+b43SbZCWNBf0EXURJWHYGbppCBfqFnkr6UBPYc6jIFaXAuiZXw56wKbiP7XpGm+r9P2GJFiop+bzbHbFLvso7En8YvCKh1VmlHoEKnth/AWDnS5U3NwiRU2gy2/+BuG4uGcog3WHB5j1WKbktDgUBqozcH7twMM6WUgnxcxtNhJIZc+UukrzVQRa7n4O9URhuL3j/b99um0JzuT/+MZZOyycPfm8eK+nXdxI5GaeqvuHENm2vXfRPCRdaSTs9DwP9r1ollXYrh3cf/61An2g5UZZFzNj66q9dfXKVzGtLZ8URUwE7dzewE6oa7n4GNGF5DRQE0Lv9zqeF0osQx8c/kh0UkitI46pod6Tj/OB003CHasHgMZuzxDlrZ49RzbmPriBADESC0Co1WEhjvc1mebqDp0I2ugree1N0f9G1qmCP7DuzT99T0dFea0am4/ZIgsP1Da7eB1bWj/ho+SEZ2uiK90RrnTgwDsMKV5/D5nTBU//Z7bvgn8aBq0xgtHdV0uhEJXOahXiRDLt7hR5ki+qoZJ0Dmgps0wYddTx87flqhafOoalDXfnwbom8R7pZK2nUMjxT4b1Ub1iD6MFTX2iZQ/NBueuabpQlegAs1gM5TTWYkIV5SQg2lpWGG09hjs+IE9QxxXP+0VDLUjZamn7Zax3B4amdakSxTi4utO4+EsFm6d+8oKtMR22p0URMSN7F5r1NOybt+bzsgzYEpxMRmaGh5P2G929ab11Oe3x4Hno5pHsFxKyUf7GfM24SA9xjXL6bzWw1r6YttL8A/D0aaCnNeotg2F6M3Ki73uJwJIJyfy2U1OMsci5qCbHAGhrZhWR4kp6jdLTK4a7AAT/0t4W+p2eK9/kBGHMndOhude+A3o2v9/PxvhdR0mMO0JUvfZUKGaPm/o/VBXvVCt0VkdVUrA
+ CdP0viem
+ jPCuzijo6dKTMMtq6DYGR4epW9LgMsI2iFFMzs5oRT1jsUPdFzXgI5kKVLqxvU77HiJkDnbajrOwC4ARJxApJQXveZzXH7nJjrwtLRS4titWaUQ2xyNyI8A/E8QXtZ6ch7bhc2fZHLy+/GjupW+A1KXg3d0+flU0V2X9Ck+gN0NDgjZOoeQZvjc0oMvTnf2u0qrDoio1hRkyTa5TxqPn4VzXS2ixOVInSvmjZ5Z3T7lfJbF9JmnSY20xZWOVhh5T37rGgLYXOZWy1PtCY3N2fE5AO8Rj2WzNwmGfRUM8J49kZCKmMZ0Q5O8+JTxthBtV1rMwkKMzcjtCskKBMmfgRsVlX9oJKTX5Xo23nXK/5mKN7/Ug=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,65 +95,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Sat, 19 Sep 2026 07:44:11 +0200 Karl Mehltretter <kmehltretter@gmail.com> wrote:
 
-On Fri, Sep 18, 2026 at 10:37:27PM +0200, David Hildenbrand (Arm) wrote:
->On 9/18/26 04:52, Lance Yang wrote:
->> 
->> On Thu, Sep 17, 2026 at 05:03:09PM +0100, Kiryl Shutsemau wrote:
->>> On Thu, Sep 17, 2026 at 05:29:48PM +0200, David Hildenbrand (Arm) wrote:
->>>>
->>>> Why would the zeropage be a problem in PFNMAP mapping?
->>>
->>> Nothing enforces that it is read-only.
->> 
->> No in-tree user inserts the zeropage through vmf_insert_pfn_prot(), so
->> rejecting it there should be fine.
->> 
->> Something like:
->> 
->> ---8<---
->> The huge zeropage is reclaimable, but a raw PFN mapping does not pin it.
->> A PMD mapping of huge_zero_pfn can therefore outlive the folio.
->
->Well, just with any other folio that we PFNMAP, the mapping would have to hold a
->reference. mm_get_huge_zero_folio() can be used for that, or just grabbing a
->folio reference (not so nice, but works; GUP uses that, for example, to keep the
->huge zero folio alive).
->
->> 
->> No in-tree user needs either mapping, so reject both with VM_FAULT_SIGBUS
->> rather than risk making either shared zero page writable.
->
->That is the better reason. You could also just say that handling shared
->zeropages correctly is more involved (see vm_mixed_ok()), and as there are no
->users, we can just disallow it instead of trying to fix it.
+> On Tue, Sep 15, 2026 at 05:13:11PM +0100, SJ Park wrote:
+> > So I'd still prefer to just making no effect this round.  And my commit was
+> > failed at doing that, because it didn't aware of temporal tuner.  Maybe we
+> > could show whether the goal was achieved or not, using esz and let the tuner
+> > show same achieveness?  What about something like below?
+> > 
+> 
+> Thanks for explaining the two concerns. I am still new to the DAMON
+> code, so I may be missing something, but your suggestion looks good
+> to me and it is simpler than what I had. I have prepared a v2 this
+> way and will wait for your comments before I send it.
 
-Ah I see, thanks! obviously, I hadn't fully understood that ...
+Thank you for accepting my humble suggestion, please feel free to send it when
+you are ready!
 
-How about this instead?
+> 
+> One note on the first concern: as far as I can see last_psi_total is
+> updated in every tuning round, so commits in between would not make
+> the measured time longer than the reset interval. But I am fine with
+> your approach either way.
 
-"
-Handling the huge/shared zeropage correctly in vmf_insert_pfn_pmd()
-and vmf_insert_pfn_prot() is more involved. We would need to check
-whether the VMA allows it and keep the mapping read-only, similar
-to the checks in vm_mixed_ok().
+last_psi_total is updated in every tuning round, as you mentioned.  But the
+tuning round comes if both the scheme apply interval and the quota reset
+interval are passed.  damos_adjust_quota() has the quota reset interval check.
+kdamond_apply_schemes() has the apply interval check before calling
+damos_adjust_quota().
 
-No in-tree user needs that support, so reject these mappings with
-VM_FAULT_SIGBUS rather than complicate the code for now.
-"
+'''
+static void kdamond_apply_schemes(struct damon_ctx *c)
+{
+[...]
+        damon_for_each_scheme(s, c) {
+                if (time_before(c->passed_sample_intervals, s->next_apply_sis))
+                        continue;
+[...]
+                damos_adjust_quota(c, s);
+'''
 
-Thanks, Lance
+'''
+static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
+{
+[...]
+        /* New charge window starts */
+        if (!time_in_range_open(jiffies, quota->charged_from,
+                                quota->charged_from +
+                                msecs_to_jiffies(quota->reset_interval))) {
+[...]
+                damos_set_effective_quota(c, s);
+'''
 
->> 
->> Link: https://lore.kernel.org/linux-mm/f76beaf8-351a-4b22-b362-a945a5e1af6a@kernel.org/
->> Suggested-by: Kiryl Shutsemau <kas@kernel.org>
->> Suggested-by: David Hildenbrand <david@kernel.org>
->> Signed-off-by: Lance Yang <lance.yang@linux.dev>
->> ---
->
->-- 
->Cheers,
->
->David
->
+And the apply interval (or, next_apply_sis) is extended for each commit, in
+damon_set_attrs().  Hence, the problem can still happen.
+
+> 
+> I would also move the last_psi_total update into the new helper, so
+> that the helper is the only place that touches the field and the
+> unit test can check it.
+
+Sounds good!
+
+> 
+> While testing this with damo I found a second problem. A full
+> "damo tune" still gave a zero quota for one window, on the unpatched
+> kernel too. damon_new_scheme() runs damos_quota_init() on the quota
+> of the caller, and since b90408ef1163 damon_commit_ctx() passes the
+> quota of each running scheme to it for the test context. So every
+> full commit zeroes esz, esz_bp and the charge state of the running
+> schemes. Please correct me if I read this wrong. I can send a
+> separate patch for that.
+
+I don't really understand the problem.  Could you please further elaborate?
+
+> 
+> In a quick QEMU test with your suggestion and that change, the quota
+> stays at 1 MiB over "damo tune" and "damo tune --quota_goals_only".
+
+Sounds good.  Looking forward to your next patch!
+
+
+Thanks,
+SJ 
+
+[...]
 
