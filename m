@@ -4,135 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 003FFC982D8
-	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 16:08:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 692CBC982D7
+	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 16:22:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B63BF6B008C; Sat, 19 Sep 2026 12:08:17 -0400 (EDT)
+	id 343496B0088; Sat, 19 Sep 2026 12:22:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B3BC86B0092; Sat, 19 Sep 2026 12:08:17 -0400 (EDT)
+	id 2F3D26B008A; Sat, 19 Sep 2026 12:22:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A531D6B0093; Sat, 19 Sep 2026 12:08:17 -0400 (EDT)
+	id 1E5946B008C; Sat, 19 Sep 2026 12:22:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7DAC66B008C
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 12:08:17 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0CB701402BC
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 16:08:17 +0000 (UTC)
-X-FDA: 85230993834.19.F2BCD42
-Received: from mail-qk2-f43.google.com (mail-qk2-f43.google.com [74.125.230.235])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 2B6CC1C0002
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 16:08:15 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=kpGajnlg;
-	dmarc=none;
-	spf=pass (imf18.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.235 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=kpGajnlg;
-	dmarc=none;
-	spf=pass (imf18.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.235 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789834095;
-	b=06m7K8fB3FhWtku3XqpHLMoMciivSaVPLdzwOd7FnAb1vIuQQHsZGSZWXvYD50Z9GENqxc
-	6bvmvUfGCRs6djc1ZUcK/GqyV9p2n3Mr2POaiUjDwLFLO26h8lamBNIY3XZDqUlBVRphjK
-	PvV8+Hq2HtFYcCflBohukzi1u6m7Fbs=
+	by kanga.kvack.org (Postfix) with ESMTP id E085C6B0088
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 12:22:47 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E122014024F
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 16:22:46 +0000 (UTC)
+X-FDA: 85231030332.16.DA8268D
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 896C7180004
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 16:22:43 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="arcLEb 2";
+	dmarc=pass (policy=quarantine) header.from=surriel.com;
+	spf=pass (imf16.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789834095;
+	s=arc-20220608; t=1789834965;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v1ENvgPhr2wkBzngQIEflRDSjK2asd8jt545To7DKdg=;
-	b=mdyb5DOq28o0oEa9TG/btcjpsb50D9eR6St5B34uh6tffMRrPDCed6eID/PjvjYg63Dx4O
-	Q00nA9SU1KQts+35kP8caNlqNNq5C2K7lx8HL0bKlWjo8RDCQOxzHLdYGSZFNmdaYTUk9G
-	lDKJIQdMtsehvXONso5njPtT5rAfauY=
-Received: by mail-qk2-f43.google.com with SMTP id af79cd13be357-93910cc46c4so155983785a.2
-        for <linux-mm@kvack.org>; Sat, 19 Sep 2026 09:08:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1789834094; x=1790438894; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=v1ENvgPhr2wkBzngQIEflRDSjK2asd8jt545To7DKdg=;
-        b=kpGajnlgCwcHWP0A12ip9zB88++iZyG4BicknWZAq7HT2fa36vsIeSzZtztjskEzgp
-         fC17Jnlu6DQudDu6hptcJotscxdHzpziFxxAjc/cc35Jg0YtFb9Wq7Jbw41Usgo1AK5r
-         uZIbHW8J6su49U7e9gRQIgXxbAem+S9QiKW43DAEQDV04N8R04Bvd1AZlgEWLIqgRfUz
-         tuHnbxqEiG0Sg5qHcFHrlZo+zqihcTEe8mTmKa2bOlhDZhxfgLghuuxdvZEYuWS6DkDj
-         iDFDDlTZ6ej5eIdr+4H8cgfn79ks6IVgEkjrgvTAY+Nx7ANwY1I6sJtnhNlvyFk7M9/8
-         HBjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789834094; x=1790438894;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=v1ENvgPhr2wkBzngQIEflRDSjK2asd8jt545To7DKdg=;
-        b=pHMYXzX6wA8TICP2Sn1IeZm8PZSBBPm5yoG46uNdbwvo/obngA3n6PzB7o0jzSRfOa
-         VSx6I/cFhwUMkxFUFECpxkhfZCLhFzcgsyfJA046oVoeUaGvjHXTYnXxpjgO1xgyrTU2
-         lH6rGvPa8jK8PR7W4B9KOciHQX+uLmc6GsaneAt+nRQMRr6KeOYSVmmTqunvOBB0JeN9
-         yGq8eV//WtYQVoDT8M7lag4lqrZipiGCZCjyBOI1mRVprrTVOUHbUnob7WIn/trU55EW
-         VuKUQqqQ9Zq2b+TKHlUOvwk6lki5EPGoGlwqPgdk8mZNvMKe6cMik/wmMxpWVGaWDWus
-         GK6g==
-X-Forwarded-Encrypted: i=1; AKwUvByvMtXg6/WPBS6jLgSVdbvtvCK4k8ob0shv6Uvsi9Q4oCP0nJeTurw0pOpSqCDhRiA6o0Oa2D34Mg==@kvack.org
-X-Gm-Message-State: AFuF++n2XFvDJ9KBAUP+oRWDOh+7TVP8SrGy76XCzyM6Vs0+BLDbT/I/
-	3E2AYthjyyEXnEA/STOL/uzQP4fyWae60BPL4fX8fG2EH4Zvsb4qC7ZZgJZep3NSNw0=
-X-Gm-Gg: AYBFou1FqmfpJQZsYyT+KMantMPmmZaB2mHuufOn9CDX2okOCInnztw6F/PIOcNQk90
-	QQABEzAY6v8bGuFDa5fx8gLWj3FDad+NUk/RlzIaTEkZkSnwQ97I1YUsAT6wehrzi8oqXKec+kO
-	tKy6g3ZmLHkCRNtLaoP2IYOoQcK1qkh80DbBTizv+vUHwV7Tv5X2/KgVqj1Y28UqoyEwAsgQhCa
-	b5BVh2U/LmpNcC7f4JXjcR0TL/CsN4Fk7HRF7W6dqMWKUTtZbE1xSgP+zhry5OlNnUCgbkIPhKF
-	nhVBQ3xTOkYsEEt0DwMYoEq+BXuwr44iTdaLk1TeEMRYUwbI0tp4djs9+Ab+T5c9EBQDqYNzwwQ
-	d/2S/Vb6rRfm6Hpk09niF1Nb4UoUunRGg2scq0eSwt+KmmLVFV8GXXXNgGluCHZzxOSTq/4cg+W
-	5VkD6310rjFjubhR9Gfg/zJBBFwiOWg3BB6yWtCWgIvx/kRsAs4fsQfsCnzZAHCHkJ4J/kV1aE6
-	XkarvvLT9BBdp09ln9M0Xztm0cvC8OdbhikrVi3gYBa8Wj+7cRBsNQ=
-X-Received: by 2002:a05:620a:371e:b0:939:10dd:9c01 with SMTP id af79cd13be357-93bf5731121mr233734485a.38.1789834094077;
-        Sat, 19 Sep 2026 09:08:14 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93bedb05a2esm213660485a.33.2026.09.19.09.08.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Sep 2026 09:08:13 -0700 (PDT)
-Date: Sat, 19 Sep 2026 12:08:11 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Chris Li <chrisl@kernel.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, 
-	Baoquan He <baoquan.he@linux.dev>, Nhat Pham <nphamcs@gmail.com>, Kairui Song <kasong@tencent.com>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry@kernel.org>, 
-	David Hildenbrand <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Barry Song <baohua@kernel.org>, 
-	YoungJun Park <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren =?utf-8?B?QmFnaGRhc2FyeWFu77+8?= <surenb@google.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Rik van Riel <riel@surriel.com>, Wenchao Hao <haowenchao22@gmail.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, 
-	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Kunwu Chan <kunwu.chan@linux.dev>, Meta kernel team <kernel-team@meta.com>, 
-	Linux Memory Management List <linux-mm@kvack.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
-	linux-doc@vger.kernel.org, 
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Kairui Song <ryncsn@gmail.com>, Joshua Hahn <joshua.hahnjy@gmail.com>
+	bh=Oe3N+uS0QPFJ/FFJyoZURZ9yar/4u8esXnbjRjNR7NI=;
+	b=fRreg2DbLLGmwUvqGIMA+IGML7Zr8RR9AP7Sih8XsiNSrwVaOUix7G5ZK+Cg3aZh6HWE1J
+	51aOY+n536lOK3anCYqN7icQ2iRYXCQWuhOboauYFhuGtjx9oGx1qrhW0ethl1bCJAy3Bh
+	HjBsOuyRgP2doEEbNkqdnjH/KntWHkY=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789834965;
+	b=xmKe/Uo9vs/mWH4co+s6LShylJDvNGiIUPyi58DMHUk5+Rr5gi6yBtoNgz50WQQNO/7vYP
+	9t93F9BWnkqpCu7mVAL0y7DzgqPboReYusjT7dKghJnkmRDIxypdVy9WR1orbreg3I0poB
+	BoJDeq3QQnUF7WZ8q6pw/7MyhqYyf3k=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="arcLEb 2";
+	dmarc=pass (policy=quarantine) header.from=surriel.com;
+	spf=pass (imf16.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID; bh=Oe3N+uS0QPFJ/FFJyoZURZ9yar/4u8esXnbjRjNR7NI=; b=arcLEb
+	2CeUUpzCxBoMZbPq+6APyrTcjBmjWSdDoMptbEDMAUYH5nO3Ps7esFPKfvynXY8q/B2PY1vs7BQFh
+	x6cWtTCbVAMhocYl9K+/oaS22wp7w4Gi3ZxhioGDvwv3mWKOdJ9kNnfBPVTu6qfnQUk4ewadO4GI2
+	XreMzsokA78ZVO32BkujrFWECY/RJLt6Ll9mtePsMqLWpmqiePaYmMSmU4r4GCSERTMEoQaLWZ5Ve
+	zpP6cNBJkB4WEacr4ebnSJFkGFAg8TUEn7NKJ+4vc2LhXMmx42HyGl8kf707O3wY5JBgX/lbmKm11
+	IH/9e0V+V7zPwfcu7/BPIMrCHwbg==;
+Received: from [2601:18c:8100:a0e0:5a47:caff:fe78:8708]
+	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.5)
+	(envelope-from <riel@surriel.com>)
+	id 1x7xjJ-0000000CHJQ-2RY1;
+	Sat, 19 Sep 2026 16:15:57 +0000
+Message-ID: <7ee199ddee81bf8026688def82f78ad9db09be9e.camel@surriel.com>
 Subject: Re: Path forward for Virtualized Swap?
-Message-ID: <aq6cVXPLUUwJA7-2@gourry-fedora-PF4VCD3F>
-References: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
- <aqJXx2vtbKaRLt3x@fedora>
- <aqLi6cIjD2wJwk0B@cmpxchg.org>
- <CACePvbUG1ApMzMdEzf-63rpjgGVNsRk21pT72OQGJpM=OtRUew@mail.gmail.com>
+From: Rik van Riel <riel@surriel.com>
+To: Chris Li <chrisl@kernel.org>, Baoquan He <baoquan.he@linux.dev>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>, Nhat Pham <nphamcs@gmail.com>, 
+ Kairui Song <kasong@tencent.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Michal Hocko <mhocko@kernel.org>,  Roman Gushchin
+ <roman.gushchin@linux.dev>, Yosry Ahmed <yosry@kernel.org>, David
+ Hildenbrand <david@kernel.org>,  Muchun Song <muchun.song@linux.dev>,
+ Kemeng Shi <shikemeng@huaweicloud.com>, Barry Song <baohua@kernel.org>, 
+ YoungJun Park <youngjun.park@lge.com>, Chengming Zhou
+ <chengming.zhou@linux.dev>, "Lorenzo Stoakes (Oracle)"	 <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, "Vlastimil Babka (SUSE)"
+ <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren
+ =?UTF-8?Q?Baghdasaryan=EF=BF=BC?=	 <surenb@google.com>, Qi Zheng
+ <qi.zheng@linux.dev>, Axel Rasmussen	 <axelrasmussen@google.com>, Yuanchu
+ Xie <yuanchu@google.com>, Wei Xu	 <weixugc@google.com>, Gregory Price
+ <gourry@gourry.net>, Wenchao Hao	 <haowenchao22@gmail.com>, Jonathan Corbet
+ <corbet@lwn.net>, Hugh Dickins	 <hughd@google.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Tejun Heo	 <tj@kernel.org>, Michal
+ =?ISO-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>, Shuah Khan
+ <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, Meta kernel
+ team	 <kernel-team@meta.com>, Linux Memory Management List
+ <linux-mm@kvack.org>,  Linux Kernel Mailing List
+ <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org, "open
+ list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)"
+ <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Kairui Song <ryncsn@gmail.com>,  Joshua Hahn <joshua.hahnjy@gmail.com>
+Date: Sat, 19 Sep 2026 12:15:57 -0400
+In-Reply-To: <CACePvbUwTxcMPVK_1GAz5gPDdh0BV9JZSnKXaUFLqDHBzBmPQg@mail.gmail.com>
+References: 
+	<CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
+	 <aqJXx2vtbKaRLt3x@fedora> <aqLZ5TVDAqEbIeMN@linux.dev>
+	 <aqP81aqNbwAbs2P0@fedora> <aqQrPLPXHXiuKup0@linux.dev>
+	 <aqjcFb6MFNiA6n4V@fedora> <aqjpYHbZ14A8xRtK@fedora>
+	 <CACePvbUwTxcMPVK_1GAz5gPDdh0BV9JZSnKXaUFLqDHBzBmPQg@mail.gmail.com>
+Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
+ keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
+ eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
+ Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
+ lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
+ dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
+ mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
+ gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
+ r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
+ WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
+ 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
+ Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
+ +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
+ g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
+ KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
+ fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
+ 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
+ G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
+ okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
+ TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
+ cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
+ omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
+ QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
+ c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CACePvbUG1ApMzMdEzf-63rpjgGVNsRk21pT72OQGJpM=OtRUew@mail.gmail.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2B6CC1C0002
-X-Stat-Signature: tmurtd5z673d8sm66zxnagxe7j3qszup
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789834095-774939
-X-HE-Meta: U2FsdGVkX19K9eUDbitUN7e1oR5ysUxlPN80218io6CvRoXGU550KY7FbjhOr6PAa1YBumyUEtNFnnP570Z23xaQmvlpHhW3rx/zEN7rBoXthtiYcJps0g3kbLfh5yf6zZy9RPJjMLBLaj+QD56L1D0oa3Ug0Um5aJH9ixcsxdlFww5mV5lRrgn6md/zussOFHB1qrQT+xg1636YX/VfyN2R88V7ttImL6Fu+c3XI8BuQbP1DtYdg/fnRRQ44k8Plex6qg9ZSBsc2aqaDXTliVTSoJrns3uokQP8GQDRxuNEpHFQvuApULdBZsqimZjEDFz1NxEKvWP6Kek6eAmEBPKeRXgpKwiyMxJlx8VzPSAX91yEdcKtWOvClswvEZE0iv5eAu34RPLrsQw6B/xwIs6leDbI2zvfIK42tQWkYz1pCpyC4dATJtkzJRihjxVxOB+d8prN/xtfBPSmEM3xxkLGkKhvxH9gqa3/QQO1ga8P82ttRNLEt32LizTmCNNvtQYOCGHsyDEm4BiGHwFx4BiGDobuVQLMehlbGBy4JhoXMeYzcbiMOYausOPtrEJ0HYnv+Dhv4ZC37Mze1fbg6cSo1sVNc9hlgDPFplpFBig581zSJnrxYUF4NfK6Fa71Dso0XVdfDrPeVp/TdyCx93XTSO3f2bc2zdg9GbOcT3w/iA5VXxj9RF6hJAsfve4jt7dpU7rAQbv2b9K3B4y7U9hpsVXU4lwNESQUt0F5CIezb4b0pUzdEJKyqDyJGh39FIEXxkSsTkKjjf9B0Ey7jaRIbcz/5VxRt2YeuVjFaDyFMObzwpXQCWoAdPrWMEZxi2G6PzhY3lAohCH/Mxqp1bUrLocOX1X/d48V0OeZ8ICT4r6CxaCsXKw8EE2UkCZErsvsLdNn6zUETvJkoXE0QX95TQRmvZ4TX9MiRJGkQ7d/JBM0Vsd3OQgZR/wrKcd4Cz+BNO6EChMUtFg1S1e
- I+q7yJho
- NcP9JHnK/A01d0Z1p9K7keSg7gytBoow1tefBoaEyt5l5Abr8FxzSsGJIr1EO/fKdhq2iTkUQIg3FnGM4aLeoeAp1rDksbOjUOpi3nlXOKJyca7iZ7KXLbkVlUqoPwsLf3KRyF48hDqnb4f2KctFCejta8FvuX2UaVN4dZTgHlFINY5JHBXULlBaeC8WSis7cwu0vt9/3c5sz4R0q5B2F7K0aTaDPiuL8T7rCdOJMpDJAVijbqQFVldu0pNSTwkMsbZGIAfCWGPz/KvL9tbMCBfF+QLp9V0VwKz19BYRLu8c3+A3sOZERevd/koqSFuqItGiwC/8BqoHu/dKFu/tKuZYnXYRs2g7aaiVVrcas2HeL6NNzlZL7XavRO5ZEMXRuvLa8+33tmboic79IbKIh1iQukhpDaqjev3ng2CY/tnt4OYJGwM+9OoioPZNZ9GpVGCxV
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 896C7180004
+X-Stat-Signature: hjx13jf6dmh5ktd4zso5f8hxtu6zdobj
+X-HE-Tag: 1789834963-407662
+X-HE-Meta: U2FsdGVkX1+4SXbiyZiZ+DU/h6Wrx5xS9BgYl+7roAt/qWqknAdZsdIAVDitKDyOhRRi/3g/BJSqBeH4NupR+/KrReo+c0u0VTvp1KNgINCIw3+p4yTfl+fjyPRkIRL+EZCiMX5agJ1Md6KKbjEi6sMWR8cjU7EExiTRp65NXjkQbRGTohpgo7bTsNO2bE6juXEGbk5EVUBpu85Hb825VFdpS9gFu8OPPhwdp6M1NfGUuHgeVOcbIVFF91OrjlMMLWNnISEdH4XZMGwf0igYhhTbCiViGVccop7JWiJ7mTkG2tQZzX32nVURnfYwS/q8plHBSwZz7vqdTB+8uG8E2/OvVGxG0dFpeVO53UH/+f7aZcxjCGpDXloXieAt0ocY9BpuEwP/EnMEKucRPXRueLI8/aUODctSOXL6EzL+HJQROEw6tBfLZZuKnBs1PmOMrtckLRbBhcvFadz8YlZBDKjWUBtWF4WDF8EDUyuXhzaEoWjH2RtP9/JMd3YwcU6+GTFmL/62iYMn9otd70QF23hc7xxXqr2QDVyOBTjUnvfktFTg8xWsRwIofwqRLVvuSeGqJ8z2/DH5Bn+6+pNK3CCx27uQiD4G6m9ltVInyfz4lGks84Y+IKvyOOE8rh3UOJxLbMJU3pyoG+Zb6ivjWcmaEKylHbqK97ZPd4pV1HKg3zkcsn/F8xuafSAz4erHv9ds1WKvGDwUvw+lPD6Z1K4LQPS8bGuYJ9OUfUj8WTvotC/gNhEv7K39KOD30wWZkX8wfkA/Z1J/ArKpSJVIGeSG6kXsiNIS5Zv+CF0DmZr5D/4STQlxUNatX03LLqd7nxZSZjuBRZ4zvoHIDpCE7zjVo3W1CspyaQYLmRwxBxRREkEk8IHNmiUfBv3zTEmddz5cHHPbpE9d6AS/diZ3GyBXqwWbEnd4jImxnDnYflUGeBwCi1oJe8CZA2m3zmAvPL8BQNK7qoEnCVMeeKO
+ 6xZ9l/w8
+ 0AXL2FFzyZmb9oBCuZ5eptCTAaUZ0qkduyLythqe2ykzyn0K5blz8yGPVUHuitSQmiJlrAFsMoI6BCpK4cFouqI78i0Wb9HPAvUxP1jA/+UIsJ/12dVkZ17IgyLsfOUg7YAML3PkQjZHWKE3i6iaRre5pruUqcDksugn+4RR01WN8Uhc8qV4u9OhrNCeHxYN1L17xqsKr50S7zqfktYnkmgvtwlRh/uxruLmoRLDVWP+Ulm6QqRMO57G5BPpiZ6kkwEeDp1/hVsqZWYfCUKPsD5RQrnbBwrfCSjaANiPH95TfcDZPqTHErsQhqwe8x+chdLtD87XLCdsh+V5c9ekB6XNV/jBSF1f3lQRMFOpGb8xR9J2GLvNp8MbfGifgulDn/kPhCWPUKwp6hXd5AANfU978Rg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,58 +144,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Sep 19, 2026 at 03:45:03AM -0500, Chris Li wrote:
-> 
-> I found this new concept of "compression space" very confusing to me.
-> Can you explain the swap behavior and problem using only normal memory
-> usage reduction and latency without introducing a new term or new
-> metrics?
-> 
-> The normal user doesn't even know what compression space is, let alone
-> what makes it transparent.
->
+On Sat, 2026-09-19 at 01:55 -0500, Chris Li wrote:
+>=20
+> We don't have to address all issues in one series. I actually advise
+> against lump too many patches into one series.
+>=20
+There are two things here.
 
-Sure they do - it's the amount of memory consumed by compressed data,
-including the metadata associated with it.
+I totally agree that we can merge things piecemeal,
+and not aim for perfection at the start.
 
-converting Johannes statement to diagram:
+However, I believe we do need to take care that
+whatever design we go with is actually able to
+support the end user functionality we want.
 
->> Compression space is not a separate resource. It's page tables,
->> backing pages, and swap descriptors. It's just MEMORY. 
+We have to make sure that the path we pick does
+allow us to very easily add the user visible
+functionality that people need.
 
-                          Page Data (PD)
-  [page tables][                uncompressed page                  ]
+We can always swap out technical details behind
+the scenes later, but user interfaces are supposed
+to be stable.
 
-
-                        Compressed Data (CD)
-  [      recovered space     ][pte][swap meta data][compressed page]
-                              |                                    |
-                              |---------compression space----------|
-
-
-                        Memory Pre-Compression
- |[  PD  ][  PD  ][  PD  ][  PD  ][  PD  ][  PD  ][  PD  ][  PD  ]|
-
-
-			Memory Post-Compression
- |[CD][CD][CD][CD][CD][CD][CD][CD]-------- free space ------------|
-   ^----------------------------^
-         Compression Space
-
-
-It's actually really confusing to represent this space as a traditional
-swap device - built on the assumption of a pre-defined size limit - when
-that size limit has already been defined (the memory itself).
-
-Baking any kind of pre-defined limit *into the infrastructure* (whether for
-an optimization or ease of implementation) is what requires users to know
-what compression space is.
-
-Even using memory capacity at boot as a limit is wrong - hotplug exists.
-
-> Why does the user need to care about compression space again?
-
-They shouldn't need to, that's very much the point.
-
-~Gregory
+--=20
+All Rights Reversed.
 
