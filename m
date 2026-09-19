@@ -4,113 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2D0DC982CC
-	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 08:04:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7953DC982D7
+	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 08:45:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ABDF76B008C; Sat, 19 Sep 2026 04:04:53 -0400 (EDT)
+	id 1956C6B0088; Sat, 19 Sep 2026 04:45:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A6E826B0092; Sat, 19 Sep 2026 04:04:53 -0400 (EDT)
+	id 145E86B008A; Sat, 19 Sep 2026 04:45:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 95C636B0093; Sat, 19 Sep 2026 04:04:53 -0400 (EDT)
+	id 0364A6B008C; Sat, 19 Sep 2026 04:45:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 71A0C6B008C
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 04:04:53 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0944E1C0CA1
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 08:04:53 +0000 (UTC)
-X-FDA: 85229775666.26.D9A1329
-Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 630C91C0003
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 08:04:51 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="mEi/rTAG";
-	spf=pass (imf20.hostedemail.com: domain of aethernet65535@gmail.com designates 74.125.228.12 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id B4CED6B0088
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 04:45:21 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DA0C81C18BA
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 08:45:20 +0000 (UTC)
+X-FDA: 85229877600.30.2D2EDC3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id D72DDA0005
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 08:45:18 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A68R2BYz;
+	spf=pass (imf25.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789805091;
+	s=arc-20220608; t=1789807519;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=M+BRVhkKKFrAm9F4me8SFnldKmWn3El7IJQUQ2no8Zc=;
-	b=QXGkammEvtZZZC5lALUpwpRbKFnWpNbrlN3MwPW0ALlb408tyASFW/6DVr0OAvboL5Hrws
-	PMPTURKp/h3PnkyeabfsKR45fQ9MnxOKN/xNSRBtBEV40txeVv1bjegxZSzCWGzun0AphU
-	RkDSr4jrglxDfhU07ZiTRJbpAe2F0V8=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=nRAOCdD7CM/ufO6rn26d3KJoJhB/ZPshvT6Y3xlQiRE=;
+	b=lo+zW6ItGKCTEXOOoNwWkWe6ioH3ZLyzDjw1RnVtTNvzgII8m1zwsK4kyX1sOgnOH989Wj
+	k9jhfg43EOPpm5zYd3HeaPgwZsO86vo4mcJziBQNFmD+ocKRjJHlPbJFlVmju0DlMm0e58
+	z8pYFlaiwtyCtIUdCtwQ8GajCiDW0KM=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="mEi/rTAG";
-	spf=pass (imf20.hostedemail.com: domain of aethernet65535@gmail.com designates 74.125.228.12 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A68R2BYz;
+	spf=pass (imf25.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789805091;
-	b=K+mpeY7fgeqy4zl77FRukyAeag8XzpLkhc33WpN7bFpsi5bxwN0IA06ycVhvjHPGI6VO5L
-	6H/xVScg6cR8umlysz6wRRceXB7fpEPsDloADFnubMFjIAxaEGj34DZHqA1/1D10zuliNO
-	88NDTYvuLn958DbvKdRWRqXRBL3mzD4=
-Received: by mail-pz2-f12.google.com with SMTP id d2e1a72fcca58-85469d249c6so1351899b3a.1
-        for <linux-mm@kvack.org>; Sat, 19 Sep 2026 01:04:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789805090; x=1790409890; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=M+BRVhkKKFrAm9F4me8SFnldKmWn3El7IJQUQ2no8Zc=;
-        b=mEi/rTAG6NEoGfWlbx3/Pcnbbdw+bGztg8Qa6aS7GBt6O9PgoixJ7meV41Fct38P2E
-         JXsXAVqvGbL8c8q5n8Z9ToStYT10CL+8dBFdZCWxWn5U1UW4V4cmaT8xg6YMuyD3bPya
-         MbNH2lOJa4KEiVNCqVWaYvcmSsN2YIglDjSYXzlAeLaN/4uwml1dWgOpsCK2ajUUny5f
-         YDg4m21Ubj3OqInLK39X9Rar0tVTz34vSzr+jZqyHCoiBADoglnGBMUIuTY4BQp9xdM5
-         n2eGHfHTRjKSEJqQvWzlbJKc5c0b6vParLhYQ4fxmCxomt5cOoQDmMaLEU6hXPwFNiE2
-         ztDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789805090; x=1790409890;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=M+BRVhkKKFrAm9F4me8SFnldKmWn3El7IJQUQ2no8Zc=;
-        b=QTO/pJXh8k70TwzK0np3CTsJh0xNtlkrKLrBh6amuXZmlXvT6g3gl7WWcJQf4NsyeQ
-         vn1GPX9YpGthnCXMtNzW7oomIR3YwsBgEFu1Y9KpTgNw8Iihj8FbS+0us5uWivxgEo49
-         3akJr3z/LuqzcyFSuaUJEQw50dtgstcYeL7fnJRZWe87atsyUQlRLSsbbCFxfbD7T6b0
-         orH3RLizz6/MkOmc1kz6RFex9/LrM8G84chuhjQdvO+j9dsqVaX/GoO8vWANFZldUiOK
-         6c+JFTN2KeQEm+XBwh0L2bsqtgU0P9gdzELeKJML8CJ+q8RUxTLvWknj8Aqa4nF/BaDO
-         DG4g==
-X-Forwarded-Encrypted: i=1; AKwUvBzUB4N+PowasydOruKHmAS3cc0QD5ZVJALwZk0TSd+vd2z75s3c+bi3XUQg3Qi8g6vmQLHQ/f6Yyg==@kvack.org
-X-Gm-Message-State: AFuF++mWYi5KjU/gSUe8fZoZukxZeeXxCtWkzKC6HfbJWKiBBkYCjtPZ
-	0oj5siCHD7jn+b1sORfczLZIOmfTDHgmVVvNRGPq8LuzmHBU+jbBovhJ
-X-Gm-Gg: AYBFou3JS7o59LcorX2xef2LQW/LiZYvaCBnBPbTxftPBZahYZc/qCcYp33lOXE6vb7
-	0Au867FX/t+by3GwuFTOXjxNiUlv3AiIY6wDwjPMTF22Rh5gi9dgRIjNyIHynLBgPrh92MC0EuI
-	PGvOoTzWj/JaLtvSxYYO/+YgfWo542PD5vg9FmYu+G4iBHxo6KC2+afPT/XAB0k+ZdrpweGucUZ
-	Wch9Ua1pY7zQ5nL/zEglvmp2gBFFV2Ga4Izi3uuLcuuJgVs/R0LAJQaOt8FmKTKLKq+SQBZ2JCj
-	BFh+Kstmz1jeS29+hD/8zgXPxT/ZAZk2s9bDFFNYTYKrKftrUFc1ZZPtz7HCOrRb57ULi5j+hKA
-	b1DkCAjcMLxJYUTo1d6ye6Flo31z/5Ez1F8GStjRmVuybIV8OkZFbrTTM1PytWLrpFTHGTRHizq
-	CeFRgSKfFJoVd9ZmuZ8bvs53y40ZKul5mJkRbHPuGWwEMKt8/CbH2+tTPMbxH8fYD5s0Kf679c2
-	BBMlTjT8x0V
-X-Received: by 2002:a05:6a00:4655:b0:852:38ff:b4b6 with SMTP id d2e1a72fcca58-874dd6ff304mr8942695b3a.17.1789805090087;
-        Sat, 19 Sep 2026 01:04:50 -0700 (PDT)
-Received: from celestia ([2402:1980:c3f:8e4f:9945:ef6a:453a:80bc])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-877aa11153dsm782402b3a.51.2026.09.19.01.04.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Sep 2026 01:04:49 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Liew Rui Yan <aethernet65535@gmail.com>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [RESEND PATCH] mm/damon/tests/core-kunit: add test for unconditionally skipping the last region
-Date: Sat, 19 Sep 2026 16:01:58 +0800
-Message-ID: <20260919080453.628679-1-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	t=1789807519;
+	b=LfAj5r8FIVluLdbp5fDZpBP7KJbHb/FHzzwCr6IxkgRS/ZJSPT5b7wYAUUSjMlUamfeNJF
+	tR0ZSw8fhGQznWemIazkDsrSA3hou7VBdR4Otogx+g/c/igCBe+b5iQIv0FbUm+z6w5fwp
+	0J2IpPGHhB+He7alDYWCpM3W3lHUR5c=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9AC82447B1
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 08:45:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F6DD1F008A6
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 08:45:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789807517;
+	bh=nRAOCdD7CM/ufO6rn26d3KJoJhB/ZPshvT6Y3xlQiRE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=A68R2BYzG0ARFfgXWQsIPqx8KcSadlX0CSMhxlpZBDvA3zdKQwi89+I/zDfUqGApE
+	 UcGym7KwXm447C5aB5gErlKaOM1y6qTRHAhmSPRktBgUI8Guf6pow0MSaAhmcgmZ06
+	 RTiEKFbcLHOPndbzqS2blG/v8ZfD7RuWOFHtvRS6DjIFhlCJ4Sx6urjTUnvB/MzTYz
+	 WnkEZkwpX41NJ3nVmJ7D6klvbL9AQvLtnAmBx2+f/fzN4cqWSD27bff5HeSNyR7wD7
+	 d6wlwiqz+HaUWsAHSTI53NKgwO6kuTXGCGKnV4pmH1tYwEU/6Q47R7PIun+iphOrmc
+	 ja2gB2fDRdhXA==
+Received: by mail-yx2-f15.google.com with SMTP id 956f58d0204a3-66e4aae3149so1171086d50.2
+        for <linux-mm@kvack.org>; Sat, 19 Sep 2026 01:45:17 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxQYkc4cTBtZNmzYJXR0m1Z5WphXd1Sh2bGg4pRGXa2KQYKkdCktci+dTnHpQzrp98ITQS27N151g==@kvack.org
+X-Gm-Message-State: AFuF++kVXaueMzR5kvVEGEGlwREWrAM10Ngx/rdp2y7F08zwG6H+ecQz
+	TFT+lPYqJeFsi0y61gkv8y1/x8j3bw10qBNl5PurY31qr7zhZjIiAeCEz8UBGG54LFnUufOcYFo
+	A+XPeOI45f3mmHhU2puMd+FEBcfG568o3k61m1ClmhA==
+X-Received: by 2002:a05:690e:134f:b0:671:70d1:d6cf with SMTP id
+ 956f58d0204a3-6717fdf88camr1241019d50.65.1789807516526; Sat, 19 Sep 2026
+ 01:45:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 630C91C0003
-X-Stat-Signature: amgui3gwwf67bs5qptni7rcp3zq34m1w
+References: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
+ <aqJXx2vtbKaRLt3x@fedora> <aqLi6cIjD2wJwk0B@cmpxchg.org>
+In-Reply-To: <aqLi6cIjD2wJwk0B@cmpxchg.org>
+From: Chris Li <chrisl@kernel.org>
+Date: Sat, 19 Sep 2026 03:45:03 -0500
+X-Gmail-Original-Message-ID: <CACePvbUG1ApMzMdEzf-63rpjgGVNsRk21pT72OQGJpM=OtRUew@mail.gmail.com>
+X-Gm-Features: AcwNN1WSLyMhlFxNJHsYTCCD0ttIzwGTm48gSwEkZRKgP4Dxnf1FT7qjZCZg9Rg
+Message-ID: <CACePvbUG1ApMzMdEzf-63rpjgGVNsRk21pT72OQGJpM=OtRUew@mail.gmail.com>
+Subject: Re: Path forward for Virtualized Swap?
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Baoquan He <baoquan.he@linux.dev>, Nhat Pham <nphamcs@gmail.com>, 
+	Kairui Song <kasong@tencent.com>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Yosry Ahmed <yosry@kernel.org>, David Hildenbrand <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Barry Song <baohua@kernel.org>, 
+	YoungJun Park <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	=?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?= <surenb@google.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Rik van Riel <riel@surriel.com>, 
+	Gregory Price <gourry@gourry.net>, Wenchao Hao <haowenchao22@gmail.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, 
+	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, 
+	Meta kernel team <kernel-team@meta.com>, Linux Memory Management List <linux-mm@kvack.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org, 
+	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Kairui Song <ryncsn@gmail.com>, Joshua Hahn <joshua.hahnjy@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: D72DDA0005
+X-Stat-Signature: kzisii7go3k1p3jq7g9167bmi7mfyr6t
 X-Rspam-User: 
-X-HE-Tag: 1789805091-249876
-X-HE-Meta: U2FsdGVkX1/gUEFYP7Wxlpkx5z3pqNIVr4rlNoQqHe/BubP+CfZWmoqQVE5dL0ajdtz89rXwrxS9yYA/5HSkbUzcnhh9dicIlqjgDIjdsSmwK2BfUFpmEOnQuHak+m4iNJWhoGvzDWX6jvf9HmJoKqSjca9qXB8W8fZ72d54DyfGbOWzXFq7iD3bi7a5yiPmMbyu5PcMGPTVHARYhZ1Wboyq/H54ZJKfpV2mqkyXQ0u38fS7Elm4tIfx0PgBzFbLxeBongZbT/gnqVm/Fo0b32asxTug+pOH8PGUJMfKz8H0GspapBfp8Gq9m78G+MhcALLOe4DroDLSVgZdFliVKhPPihw8HCkkyfDxDyi5B1QMlMP0pEOjg1hjDVeL8xP8u46KbUuOEujreuhTTGFtrFGapAFsbsN5hScpsWqVUUzCS/+0CwrmPbL2wHXitK/bVAkbWoNot0NnEkRgM4V5HwjJGVP7WAAyIqERtFxc2QRVXpKdGSp1elAyp7ldSfu6Fyb0a/IV91mCe5d0GyLWMJQ2TuGNdbVW4UdkTQN1MXOlA6pIlW1dN3nwdXe2KXICh0JgZ1s4mS5kg1EWDW2lERd56IVQDiOiMFWNLvjeIFcl7LbJZN4w67EP0VyX9oPOOtjfSU91kWOQRsHoLFhtWL3LOKrDZCaaZ6IOtxJ6VRlfwN7D/tJ1bH13Xz+yegFYPKr9PLJkmu/w0csGEgDY7aI+zahQaiOKhwEuqM0BqaYx5fRiAdbUlggK0Pu0gm6ym/9pHoGR6jgO+Qxl3wq64WeYPUShOalfclXFl6fd1kx6qNVSS/DB0WdnbrJkCx2b9vZO9vO4Y5OsURqP/38aeOkCDPc9/t9Ure/Z/IKBgnOnGr5W2KijeJ3KxPzFTfJmpaEj0taKibnxaU+u06TPbqr6UjrFZBlQzS7qWVSfyCtxNfCajm+9zL025vzn2rFzUPFbXymOuUVcRKiUebk
- tVv+xDIC
- dkq+ppZhIk6FixM0F0n+llVH1aEmf98HUNpWZ6mZGIH8KP1Uot+Ko4AMPOo7ZHO2G7MHzDnX+jYHKmEow2TyFzrvvtCo2QkJ70fH9/B0MElIDNHI1i7xEfW+ENUJ3RuABSkVeB3dWAFFsH4wECpRxGXd14VQLwb3QFU3DlbU7cIipuuhGjYUGPt/VUFUFJdAoaZpZ5zpYxPPUdolo6kQQkhlasvVvI4OxVwcHZO0JD9ptAAQQtb3+mm+RQ81eYHDhgI3hUu9QsYpj+1oqD/rSQlDYtvSpw8j13qmbnaisXYzb1laRqXlkyADUzWExLxYRPLzJRhqgmSYs8ueACyRrls8ir5Tpcs1sAz4jTNMJZnFCNcJCKgWgjWzfc/XMoLzvME/DGRdkEgFIaNLF1yhIKPV/ijBpQ2Xv4AdfAvKF0OOIqPjzi9hVzKBuwllqvKi+4n7g
+X-HE-Tag: 1789807518-640235
+X-HE-Meta: U2FsdGVkX1+ekxFlNng/Qg8ik+ia3Kku7KqPKcGocHIPoB47FQyXTC4PKvgDfh0VAoioTzICWdqP/CCCeu4H8Xq0a41qYGwoBWf7mlFFJvZGm18aCzo3pehygYsCM5tCtERbvJQWntv0GnPJCVYMuzDw0m0hgafRMSA3xfSQt1TgVoDm9PbBQ5VU9rdt72+6xNOi8zsKDxR9W2AYtOcDNBukt5GTxZIKnKcRWHvlaQFq453KojlkrG9BdGAf9oKJOJYZzn4tJJjz7yp79MWqh4tPNlRsjNeRoukvE/w6aoT2YbJ/r/WtGD1TFmi2lNalVTa/+U0rXE8vEnEZ9sQMa9UFcA2oxkscgBNwxMeBX9ecp9QxwdCegGXVBeg3Xb5Jtu199+STlQapKglOtg//nGH0x2T4CTTkGLq5iqnS0y2toqcJK+zTlSo7CoEAn6oB1p5jL4nNYRreHyXoKefhVdx4C5Rjr+cqiJxQf5SymYttdtM7QSQwfVkDoLC4m64lQt+qU1rLbLCBWKyE9L6Owws65uDXEgMadp8XDY8JFs6GRQ+bdbEMY0ndLGzNzBub7BMYCtPUufxd0Ove/eaIwaw00L3UaqvF3Lv+oDZr+H2Cafrzn/eWxXlV9YjTjjVNKe8Ly05usoJC6c8TwHBaTlzeo/Rr7UPr7VhIov5W0M40syj4GPvW29qhGkMxiXmgdGbbc7f2vGQKtNKocfv2yVzeaccab9sTFQ5G9sWVS0875NF0Zu3zXFo6OxulojsQCrIjWDs5RBDC7u46zoj8mXVr5m3VsE2VA8r8e7I4LknMvRaFRhLtmsUzHwgvHmlKhKBeTdonIHtaPNwHg7l9cjfHzNUGIxDbzk18NQTjDoemF+ID48FL9oq2pA8q7/KaIm/QmBvU4gUtMrOR1sce0Ir/f/wAQLu4shX9KpqL8kCvIg2eK/rMJu802PFwmLp1YP1o2ks06o/H092fIF0
+ JecvRg/v
+ IyiwbZZmuMp9ah/zWCQD893krA+XV+7+QGO68ze1UsG3kFqt84TTO5EiPXlD8ZeTm+LMffyLSDMW826gIZiCrh0GqCM2SHDwyhsNVb9Qazu692kTE8DiaJ9q3yDpKbYDk//lAgItGo7VO3NuDmTTeLidXd/koEPzVhW5YpiOMHY9XTA+WDmM18NOwrXsSfeOyB4ASusD2ahW1mD62UoE/WXzhQCb7GOhoVV3dc+zPGmhaUkSPDThR3hBsiswXLqYcU+8IkGFx/BNK+RK9SB2rwPOVf7ZeteML8ClSBaBRxfxSVGqrv5L1S3Psm1cxmAz0N1LByLnwmC5qGGjbNDhu8wknNimB+lQ4Bmgswrs/FRzOHNcGEh4t/IPC3mAN3JZ60VChlr3DQNoeozkLsb4Bit1gEtwSq6ToSUiFfdLUQGm7ySwE9TbLvpbxWCsCtsjfgrfcJdBgS5YiXAZcmMSYkus63w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,99 +121,244 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit 50585192bc2e ("mm/damon/schemes: skip already charged targets and
-regions") introduced a minor issue that causes the last region to be
-skipped before it is processed.
+On Thu, Sep 10, 2026 at 12:03=E2=80=AFPM Johannes Weiner <hannes@cmpxchg.or=
+g> wrote:
+>
+> [This reply was not LLM-generated.]
 
-Example:
+Why does it matter?
 
-    1. Target has 2 regions: R1 (0-100 bytes) and R2 (100-200 bytes).
-    2. Quota is configured to process only 100 bytes per window.
-    3. Window 1: Processes R1 (0-100).  Quota is full.  charge_{target,
-       addr}_from is saved at (Target, 100).
-    4. Window 2: The loop reaches R2.  Because R2 is
-       damon_last_region(t), the old code unconditionally returns true,
-       skipping R2 entirely and resetting the charge_{target,addr}_from.
+>
+> On Thu, Sep 10, 2026 at 03:09:59PM +0800, Baoquan He wrote:
+> > Hi Nhat,
+> >
+> > On 09/04/26 at 02:14pm, Nhat Pham wrote:
+> > .....snip...
+> > > Now, on xswap. Baoquan's working on a series [15] that covers some of=
+ the
+> > > same ground, and the VM_SPARSE cluster_info idea in it is genuinely g=
+ood.
+> > > I've been reviewing that lineage since July [16] and I'd like whateve=
+r
+> > > lands to end up with the best parts of both. From my perspective the
+> > > differences are:
+> > >
+> > > 1. Userspace knobs. xswap asks the admin for a size (a percent of RAM=
+) plus
+> > >    a per-device limit to tune afterwards. I'm not aware of any use ca=
+se
+> > >    that needs those, and I don't think users have a good way to answe=
+r the
+> > >    question anyway - sizing swap for compressed memory depends on mem=
+ory
+> > >    size, workload, and compression ratio all at once. That's precisel=
+y the
+> > >    provisioning problem vswap exists to remove. The kernel should be =
+as
+> > >    transparent and dynamic as possible here, and not add knobs unless
+> > >    there's a use case for them.
+> > >
+> > > 2. Writeback support. Writeback is core functionality for zswap, not =
+an
+> > >    add-on, and a design needs to account for it from the start. This =
+came
+> > >    up before, in the discussion around Chris' ghost swapfile RFC [17]=
+: for
+> > >    a solution here to be acceptable, it has to work with the primary
+> > >    usecase and support disk writeback. Without it, whatever zswap won=
+'t
+> > >    take (incompressible pages especially) has nowhere to go, and cold
+> > >    compressed data can never leave RAM.
+> > >
+> > > 3. Cgroup charging behavior. vswap/xswap shouldn't be charged against=
+ the
+> > >    swap usage counter. It's fundamentally a different resource from
+> > >    physical swapfile space, and memory.swap.* should read 0 when noth=
+ing is
+> > >    on disk [18]. I made the longer argument for this in [19].
+> > >
+> > > 4. Data structure (xarray vs sparse vmalloc array). Even with xarray,=
+ vswap
+> > >    is already on par with or beating baseline. I like the sparse arra=
+y
+> > >    idea, but why are we landing an optimization before the feature it=
+self,
+> > >    without any A/B data showing the difference matters?
+> >
+> >
+> > Thanks for laying this out, and for the honest push to converge. Let me
+> > be equally direct about the ordering: I think the xswap base should lan=
+d
+> > first, and the things vswap demonstrates -  writeback, rmap lookup, the
+> > charging semantics, later THP -- should be built on top of it. Because
+> > it is the foundation that keeps the swap core simpler, and the first th=
+ing
+> > to merge should be the one that doesn't have to be redone.
+> >
+> > The VM_SPARSE array is not an optimization to bolt on later; it is a
+> > structural choice, and the code reflects it. In vswap, the cluster
+> > metadata lives in a dynamically-allocated xarray.
+> >
+> > struct swap_cluster_info_dynamic {
+> >         struct swap_cluster_info ci;
+> >         unsigned int index;             /* for cluster_index() */
+> >         struct rcu_head rcu;
+> >         atomic_long_t *virtual_table;   /* Backing pointers for vswap s=
+lots */
+> > };
+> >
+> > To support dynamic growth and shrink, vswap stores its cluster metadata
+> > in an xarray, and that forces two things the plain swap_cluster_info[]
+> > array never needed:
+> >
+> > 1. Every cluster has to carry an extra index and an rcu_head =E2=80=94
+> > 24 bytes per cluster =E2=80=94 purely so the xarray can locate it and f=
+ree
+> > it safely.
+> > 2. To keep that bookkeeping from leaking into the normal-swap code, the
+> > cluster had to be wrapped in a container, swap_cluster_info_dynamic,
+> > so the xarray holds a pointer to the wrapper instead of an inline
+> > array element.
+> >
+> > So in vswap, every cluster access in the shared hot path has to answer
+> > "is this a vswap device?" and take a separate branch:
+> >
+> > - swap_is_vswap() is checked in 36 places across page_io.c, swapfile.c,
+> >   zswap.c and swap.h;
+> > - __swap_offset_to_cluster() branches into xa_load() for vswap vs the
+> >   flat array otherwise, and the xarray path can return NULL (a cluster
+> >   can be torn down);
+> > - __swap_cluster_lock() branches into __vswap_cluster_lock(), which
+> >   wraps every access in rcu_read_lock() and a CLUSTER_FLAG_DEAD check,
+> >   plus kfree_rcu()/container_of()/rcu_head plumbing for node lifetime.
 
-    Result: R2 is permanently skipped even though it has never been
-    processed.
+I dislike those code paths in vswap as well.
 
-Add a test to prevent this regression in the future.
+>
+> Well to state the obvious: the reason it does all that is to make the
+> compression space transparent to the user.
 
-Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
----
+I found this new concept of "compression space" very confusing to me.
+Can you explain the swap behavior and problem using only normal memory
+usage reduction and latency without introducing a new term or new
+metrics?
 
-Changes from v1:
-- v1: https://lore.kernel.org/damon/20260831113735.3349-1-aethernet65535@gmail.com
-- Resend since the dependent patch is merged into mm-new, that would
-  help us getting AI review help.
+The normal user doesn't even know what compression space is, let alone
+what makes it transparent.
 
----
- mm/damon/tests/core-kunit.h | 43 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 43 insertions(+)
+>
+> The user can answer a simple boolean question: whether they want
+> compression or not. And it will work on tiny machines, on humongous
 
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index 4a536d41cdb2..90b0fda34fba 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -1632,6 +1632,48 @@ static void damon_test_rand(struct kunit *test)
- 	}
- }
- 
-+static void damon_test_last_region_quota_reset(struct kunit *test)
-+{
-+	struct damos s = {0};
-+	struct damon_target *t;
-+	struct damon_region *r1, *r2;
-+	unsigned long min_region_sz = 10;
-+	bool skipped;
-+
-+	t = damon_new_target();
-+	if (!t) {
-+		kunit_skip(test, "target alloc fail");
-+	}
-+
-+	r1 = damon_new_region(0, 100);
-+	if (!r1) {
-+		damon_free_target(t);
-+		kunit_skip(test, "region 1 alloc fail");
-+	}
-+	damon_add_region(r1, t);
-+
-+	r2 = damon_new_region(100, 200);
-+	if (!r2) {
-+		damon_free_target(t);
-+		kunit_skip(test, "region 2 alloc fail");
-+	}
-+	damon_add_region(r2, t);
-+
-+	s.quota.charge_target_from = t;
-+	s.quota.charge_addr_from = r1->ar.end;
-+
-+	skipped = damos_skip_charged_region(t, r2, &s, min_region_sz);
-+
-+	/* 'r2' is not processed, it should not skip */
-+	KUNIT_EXPECT_EQ(test, skipped, false);
-+
-+	/* 'r2' is last region, it should reset charge_{target,addr}_from */
-+	KUNIT_EXPECT_PTR_EQ(test, s.quota.charge_target_from, NULL);
-+	KUNIT_EXPECT_EQ(test, s.quota.charge_addr_from, 0);
-+
-+	damon_free_target(t);
-+}
-+
- static struct kunit_case damon_test_cases[] = {
- 	KUNIT_CASE(damon_test_target),
- 	KUNIT_CASE(damon_test_regions),
-@@ -1664,6 +1706,7 @@ static struct kunit_case damon_test_cases[] = {
- 	KUNIT_CASE(damon_test_is_last_region),
- 	KUNIT_CASE(damon_test_walk_control_obsolete),
- 	KUNIT_CASE(damon_test_rand),
-+	KUNIT_CASE(damon_test_last_region_quota_reset),
- 	{},
- };
- 
--- 
-2.55.0
+In my mind, swap trades RSS memory reduction for increased latency
+when accessing the swapped-out data.
+Whether the memory reduction is by compression or by writing to a hard
+drive is an implementation detail. It has different characteristics.
 
+When we have "compressed space" for zswap, should we also have "ssd
+space" for data store in ssd and "hdd space" for data stored on HDD?
+They has different IO accessing latencies.
+
+> machines, and everything in between. That's a simple policy question
+> with a clear answer.
+>
+> What you're doing, asking the user for a static size, is much more
+> difficult and has usability issues.
+>
+> You're comparing implementations that don't accomplish the same thing.
+>
+> The problem we're trying to solve is implementing a clean compression
+> space abstraction. I'm arguing that vswap does, and xswap does not.
+
+I feel that you are arguing a conceptual construct you define. Can you
+explain the difference using external measurable metrics? For example
+in this workload, using vswap, the user sees workload latency as X,
+throughput as Y, and memory usage as Z. Using xswap, the user sees a
+different X1, Y1, Z1. Then we can reason why X, Y, Z is better or
+worse than X1, Y1, Z1.
+
+My simpler brain just doesn't see why this new compression space matters.
+
+> While they're both using parts of the swap device code to implement a
+> compression space, xswap actually PRESENTS IT TO THE USER as a swap
+> device, and then makes optimizations BASED ON BAKED IN LIMITATIONS.
+>
+> But a conventional, statically sized swap device is a bad abstraction
+> for the compression space. Here is why:
+>
+> In conventional swap space, one memory page translates to one swap
+> page. Compression space doesn't act this way: a memory page can
+> consume anything between a few bytes to a full page in compression
+> space. It depends on memory contents and compression algorithm. So
+> right off the bat, this is a hard question to answer at the host level
+> which could run all kinds of workloads.
+>
+> In conventional swap space, the resource consumed is a different
+> one. You're offloading memory by consuming disk space. This eats into
+> the space available to the filesystem, which is totally unrelated.
+> Asking the user for this tradeoff is a legitimate policy question.
+>
+> Compression space is not a separate resource. It's page tables,
+> backing pages, and swap descriptors. It's just MEMORY. There isn't a
+> size tradeoff, because moving pages from memory space into compression
+> space DOES NOT CONSUME A NEW RESOURCE. It's still just memory. All you
+> need for containment already exists: rlimits, OOM killer, cgroup
+> memory controls.
+
+Why does the user need to care about compression space again?
+
+> By making this a user-visible virtual swap device, you're sending
+> users down the wrong path. You're asking them to set a new limit on a
+> resource that's already limited by other means. You're framing the
+> question as conventional swap which behaves completely differently.
+
+The user cares how much memory it can save and what performance price
+to pay for it.
+Why does the user need to care about compression space again? We've
+used zswap/ZRAM and other swap mechanisms for a long time without ever
+hearing about "compression space". Why now?
+
+Again what exactly does compression space do that can't be explained
+by external metrics e.g. memory saved and the performance penalty on
+access?
+
+Please help me understand.
+
+Chris
+
+>
+> If you ask them "how much swap space", they WILL reference this to
+> available RAM capacity. Maybe half of ram, maybe twice the RAM.
+>
+> But when compression space is referenced to RAM, it's trivial to fill
+> it up with zeroed pages or easily compressible data LONG BEFORE the
+> process or container would hit any of its MEMORY limits.
+>
+> This creates an artificial resource shortages. It forces a competition
+> where there shouldn't be one. And then you need new controls to manage
+> a competition that doesn't have to exist.
+>
+> Like I said before, including compression space (which is memory) in
+> memory.swap.* (which is for disk space) is not going to be acceptable
+> from the cgroup side. We can talk about that if you want.
+>
+> But asking the user questions they shouldn't have to answer, or
+> already answered elsewhere, is weak interface design. Allowing, let
+> alone encouraging, answers that create a whole new host of
+> organizational issues is outright bad interface design.
+>
+> So if you want to compare implementations, you first have to actually
+> implement the same thing:
+>
+> Stop asking user "how large". Let compression space expand towards
+> existing memory limits, such that it doesn't create an awkward and
+> artificial new resource competition.
+>
+> Then we can compare implementations.
+>
+> If the optimizations still apply under those constraints, great.
+>
+> Until then, there is little point in discussing differences that, by
+> your own admission, have little to no impact on real world performance.
+>
 
