@@ -4,103 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22437C982D7
-	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 00:25:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63FDBC982D7
+	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 00:25:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C0D926B00B2; Fri, 18 Sep 2026 20:25:16 -0400 (EDT)
+	id B231E6B00B4; Fri, 18 Sep 2026 20:25:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B75BD6B00B3; Fri, 18 Sep 2026 20:25:16 -0400 (EDT)
+	id AD4926B00B5; Fri, 18 Sep 2026 20:25:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A85F86B00B4; Fri, 18 Sep 2026 20:25:16 -0400 (EDT)
+	id 99C426B00B6; Fri, 18 Sep 2026 20:25:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 81FE36B00B2
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:25:16 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0D457120153
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A1406B00B4
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:25:17 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A9A66140148
 	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 00:25:16 +0000 (UTC)
-X-FDA: 85228617432.18.0FF83C0
+X-FDA: 85228617432.25.A6EB459
 Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 2BC7620002
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 00:25:13 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="d zcUVM1";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=OAtfrkZO;
-	spf=pass (imf13.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.144 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	by imf29.hostedemail.com (Postfix) with ESMTP id C1C2C120008
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 00:25:14 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="Q wotEtq";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=pd4ebgcr;
+	spf=pass (imf29.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.144 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789777513;
+	s=arc-20220608; t=1789777514;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E20qks4EGRXlLr5iwwk3xar+b94xA/2CHubWgJ4qnkI=;
-	b=jGmrSqhz6JPrNgf4Y9BT6kwdXMdQVFHQDxpCmteFXZqyfcriuMxsNbq+d96AQJSuJ6UDyF
-	DTrJNIdjUiVdug16Sbqj/8tEUC+KFN06cIz95AQjUIclXCLb3XiUbBy/cZ8DG3VuPsUdGU
-	cLECKx5ItnpX3HnbUdqC/jo/Hlm2FkQ=
+	bh=r5nTkTHjVvMlyFTA7E1YaHuqOSpZFDKLhDsNT7zZVk4=;
+	b=bIOohkdTaMq9OrWGWLIdGKNC07y8irCXlvlIrCvsydb7R+ctd5nGg5iyNff/xgSeF/yDAo
+	pjv8zika2RLFOHuOPiPnDeJ54cKF/yyfT+U5I7+pKZLyPv3m9XSTwCS5ewfolfyT2RCeKp
+	YpDU8zJR3fZ6UlxCq0+Y/DMkBakATmg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789777513;
-	b=Rg+Qs7EGeMTjuVoPQXPtIkdn6VEXCwEq0LDkbnk5C48BWEbxYjXqaLdu5jRjIE4TxZaY9w
-	Vs75kwXzr8QrygCtyI9vPZECr4wCzc9GtfbAlVWn5nfFfzaSnps2TrLmKbYRBikdPDFq52
-	POUmaW1tb5fjtzjsr21Wn4kZPlugIuQ=
+	t=1789777514;
+	b=xevoiVV7ZmVK0ui+0z6ybHO1tq9lezLRd+m6Nlw63aDTgDQbsPso17bm4S6FkV3OjBL6YI
+	mOH2VtRr+tbLaLetPfauReSDGGO3EeIl+4gB1ttjnTYarxQJGQ/EmSYSrMVnssqmi4OYde
+	sGKv7XpEm3eEI6j0hd2YTUJ48SmEMSE=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="d zcUVM1";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=OAtfrkZO;
-	spf=pass (imf13.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.144 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	imf29.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="Q wotEtq";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=pd4ebgcr;
+	spf=pass (imf29.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.144 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
 	dmarc=none
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfout.phl.internal (Postfix) with ESMTP id AE46BEC0232;
-	Fri, 18 Sep 2026 20:25:12 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Fri, 18 Sep 2026 20:25:12 -0400
+Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
+	by mailfout.phl.internal (Postfix) with ESMTP id 62F40EC01A0;
+	Fri, 18 Sep 2026 20:25:14 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-09.internal (MEProxy); Fri, 18 Sep 2026 20:25:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
 	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
 	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1789777512; x=
-	1789863912; bh=E20qks4EGRXlLr5iwwk3xar+b94xA/2CHubWgJ4qnkI=; b=d
-	zcUVM1Zub0MueH1wRB6cZbScLWZsIjm0WsCXCmlW65fcbX3MDA1WcsrjsQCHXFas
-	1UXuuGhUBJcBgg68DJy2MHUi68VLZA0fjqHRZ3c1w+akUpK7iYkmIZDU597p2GIC
-	BC7fRP4YbfGG10J0VCMwRp887LsAH/+tBc9F7+loTw2jgRQqxgRKKoHeWS1I9TyI
-	E3p1e/cmaNuoLf3z+parbFJS5LaIVXprQtm2jCgesrPjPsErl/hPkIdLqnSEbvle
-	VFWufWVEqWK+OPl3eBZ0xpZco/4iXBxSvgfFF/TDgvG8wfEKRV+RnDBijYaEq/WH
-	Ge+nPuFx4KJ/8HvFMlxGQ==
+	:reply-to:subject:subject:to:to; s=fm2; t=1789777514; x=
+	1789863914; bh=r5nTkTHjVvMlyFTA7E1YaHuqOSpZFDKLhDsNT7zZVk4=; b=Q
+	wotEtqlZ0AxHw8nD1qvwn+xUskD7FqxxJ5G5WbdDPSvVhIODO1ylw2Of7xnF4gz4
+	FdgWnoGi0829zhFZMehVtg0hlnybpRjfqhgbdg0lHxrLBFcN/Yo0U80gEYvqCGqA
+	pMRILwvlMkB1sbutBq/O9c2fpPiF/mdLnkkdnbCv4HTf+hzx/oIF1qQnPoyHLSl6
+	HkBAfWLk0WpqJFJaoCWOmnVrOXRlf1u56S5Paj2KOTcVQLpqi2Y1kMfFLnJDEl7K
+	JHMKN0G6FXtSZPqFeLdhPHKYqCjOCg8EUv5zzV6WvhGsDK5EzbaM+RpT6OwVPK2R
+	+YALW5APEDFLUlZljiKbQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm1; t=1789777512; x=1789863912; bh=E
-	20qks4EGRXlLr5iwwk3xar+b94xA/2CHubWgJ4qnkI=; b=OAtfrkZOIBPmRkb6u
-	zmmiAT0WXBX0k6glN1ORs9tpqV7JoeCnkmND+oXdLCNcDStC9HJzAjL+PloWSoZe
-	Nx2ffaaVrBCPEXZFYQGwY76Hc707EDcEy8dtDSBLZSjgSGeI1R7HS8EhfIxlDv3c
-	N1+2p3VTSzMsDvIDAZi/KAVOb5SVh3Zu1Zk9dKkhuLHvBXE/fyj8ICvOtFhRuqTM
-	68v5f4S5Lr9A7AhlyTpDYWTJKpiXYTVDj5tI+jHBM4TbBTInsAn6NRjRc4R7DfZv
-	8E7F2SBim/TXwNc+Emt76W65rDU/i0PuhOjowLdku97OAb/wkfpR0bIX5Rfuiko0
-	0TraA==
-X-ME-Sender: <xms:aNatan9vEyO48Uv1o21ycefis0NXHUGZty045SJMiaWhCtGJj4mUOg>
-    <xme:aNatalnrSnsJssMSo2L_-JtnL-FGgjPlZw-_A54HMlrNfzjypFImTsFckRjlECKaM
-    QhylXLN26BMJbx58P6p0t4iweiW0af2nSmAoCmK0bgmiTUWNhY34QXN>
-X-ME-Received: <xmr:aNataqJcwuM-qSAekEkMf-meqJzH84XsXNhdfiwGclo54-b5ISXtG2g3jgM>
-X-ME-Proxy-Cause: dmFkZTFyC+XeKYnZ766rqTYe4SsoatN0doBd7ADemiperjFlmE10ggdkgYpZeWmNOU4aBc
-    lm02WEvCO2QGG+A0SGXMzCjVWjDSVCQ5WJ/xmSMbLZJLqVjt5aEnrGd0hUbHPJ/ejcqjFa
-    xrmYY/YNxh9EpvRrTjNMqslNp6oZ1XKAjj0b9YUD/U+Umt4HJhNRFStrIx7jR3Gf+CAD8k
-    /TwEvtSve0+WgA7utVqBt9LeXDUSIUkf7dn/1M9JWIyORT8Kp2cNKrwYutOzK/Z35sBm5S
-    qWNICJAq9yYROUOkEgx1cQSYtjkPP2DMZwKGXS3JxTiE+xMdBmJUepOSBHs3/DvnVTIMpb
-    L5ESyndOi5bpaoFBmYeOsEvwEeyOHIUd7LfqffZ1zJn/8T6rxqqLc5X+pIl0tLpk/I/6lI
-    /m45Kkjv6LalblttsA9sVVkWfW66qntLgNMH+qJw1GNJLP4FWUOa1W8xhs7TwkJFRw4FTH
-    y+wT+BZuEF+uA2L7okyeFi3weDYxSq6LAiBZLt+3uD+C0GGXGaCMA8qHFifjwmTCNGcw6C
-    7DP3l6YC/8NPz72pHkfr1IAbIxWRIGx+Uc+g2wFMtzscVj8gpIsVDAdGm8YUYEyZiLpZos
-    lrS40yPVOEWU/+6cprb6tzvgBFdWbi8bVY0ROLUzRB+i4cuDKvn1etqkrH7Q
-X-ME-Proxy: <xmx:aNatajpmJMTgKZ4CHQYdYFSW6174vGkOGz-c3suU6woNv6bMwpeuxQ>
-    <xmx:aNatavQB3wThDRTtrzPkXdqc5Q2iD9UAa1uCykADEgW277_8p1A-bg>
-    <xmx:aNatau62lndZQ6Pye9_36gB0DcsEt2Xd44-8uHiDwenJlxls4ZwZ0g>
-    <xmx:aNatavYO5RJ3hL8z5bpTKbp31nNjL33a1yEuWgcXE9Q5OwdtNoKdpA>
-    <xmx:aNataqzVx9XknLhaLnLsW4CHJiUPSYIEwPyLwBOaOR4rzSRSbT1vBb0J>
+	:x-me-sender:x-sasl-enc; s=fm1; t=1789777514; x=1789863914; bh=r
+	5nTkTHjVvMlyFTA7E1YaHuqOSpZFDKLhDsNT7zZVk4=; b=pd4ebgcrEe4MB+KtT
+	StrwrRvM+97GB0qHUIozEgo/p23VongCb5EfL/kL0fPvRti81YsdQPgfj5dDjtvu
+	Qyj03KKp/jSHw9g6CFnCstVbqe0lN1aeifxBARqFna1y7DWqeUnrwmYmDUy7ACas
+	uGKgpc/kuEjF5K52ySRJk9KYbUVVZ1X0JxJ6NlD7uQWahueF8o2+sYvfuJcdTsVc
+	NGfbOD/WC5wcplO3JggmIyinvnuuV2aqVq5PGBOugv8Bs6oYSPwLsz1KLKfTNUlQ
+	1SAcrIguzYS9Rp6mABesd8wPeIgS9xdy32PBD8BIsn2Sk9SkaLGk2kI0jAQZYdl+
+	/3ILg==
+X-ME-Sender: <xms:atatalcZ_JimBUPR7QS3Ey43nuE991V4JgSiq0kNDufC7y76FGrHOg>
+    <xme:atatarmMk9r8zPp7b5TmNMPIbCtPKRGVKfA95KIb38XsGbWMEocWtKIByRkLNtdpQ
+    AZa5old_5V3-wfzvzV10BLCcSJ-BVm5AbJhUUey2QcM5FtXAJC0o5VV8w>
+X-ME-Received: <xmr:atatagt5kfSPPzYlD4AObv1LyweHGU41454ta5pCDWYjAHMKVccBFngbELw>
+X-ME-Proxy-Cause: dmFkZTEzseHgHAxanvosBbYuJPOsY+n0X5UbYs0PPazNY//kQZ3NkUWvwvZaeFG4K6MaM1
+    51QpOH4aelOmHBptEhruNIkMmEsuOQeZbGrvL7mQj2kdmmCNYrJ7V/Gxu8ar4BzJpo5rV7
+    vKP2ia7U0+Vm59vAPsz2JcwivFHP+0OmSoqV+JfA3yKlcOkTPrhdGkX4AgOHLm4XJUt5mM
+    HeqMESXl6ibr/xrgjBd4IZM9oAbU6DWk9Q3+fqdUek4rHv8tNSmXbmq+2iLXuPMZjgN42W
+    gGRNasGU39A5UL6wnmEy31YC46agADHTZYQX6KPmc3+B0CXfmIhRtSns1d+buSvmpYlDBj
+    Riz3LPJ5ewmbfFS034Junho+nA59C2QdPnd8vA078CVbfnIVBuVyeZunIF1BdFpJy+o2iN
+    5vZCICEeIFyBnK4XAtYqzjAbdcsq9wu34gWczIkUsEAsprD6tQ8OD8MOQgcBf0ywWXKXFI
+    27xd1zREAGJOHifR7SJSbs+DiSkzcOQ8yzDWYHidssHN8IjIbQEtXt1mZ5nMsnBoj8dzhf
+    XF1JaGZj3WlcgrIXMSPvCcH52rugKrlwp2TQWMwgehKsP/lB9bPQ7en5g+Lg7wt1jbjF/H
+    R5WQnK3fOt+WAqCb1/7XU80vMXxm1AXpyucuzzd4PMOSSe2FT3Iv3q0CecqA
+X-ME-Proxy: <xmx:atatamydMuYEKzrLksx08-5ML7T2w2IMdUw2kTrccHLACT19KX0XUQ>
+    <xmx:atatajx4XY5GXdiMEN30NNShWbS7oXfb6iUIxKaN1akjbRnfcwq5BQ>
+    <xmx:atatas54Mbvq7njHaHNbgrPcTN6Kx8gHdQ9sr4cU4fcQwsYAV-nCSA>
+    <xmx:atatasAtc8x1j2Bz_b57MDE0Zr0BhgJ4sKBP-tfdysHH2rwumcYbgw>
+    <xmx:atatap2X9xSzIQ6okEXWF0ql2JsLjXgsSXwwqtFBbeXxtp85qJZ2addo>
 Feedback-ID: ie3994620:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 18 Sep 2026 20:25:11 -0400 (EDT)
+ 18 Sep 2026 20:25:13 -0400 (EDT)
 From: Kiryl Shutsemau <kirill@shutemov.name>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	"David Hildenbrand (Arm)" <david@kernel.org>,
@@ -129,22 +129,22 @@ Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
 	Jason Gunthorpe <jgg@ziepe.ca>,
 	Leon Romanovsky <leon@kernel.org>,
 	kernel-team@meta.com
-Subject: [PATCH v6 07/19] selftests/mm: move is_backed_by_folio() into vm_util
-Date: Sat, 19 Sep 2026 01:24:37 +0100
-Message-ID: <20260919002451.496763-8-kirill@shutemov.name>
+Subject: [PATCH v6 08/19] selftests/mm: add folio-order check for address ranges
+Date: Sat, 19 Sep 2026 01:24:38 +0100
+Message-ID: <20260919002451.496763-9-kirill@shutemov.name>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260919002451.496763-1-kirill@shutemov.name>
 References: <20260919002451.496763-1-kirill@shutemov.name>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 2BC7620002
-X-Stat-Signature: kgtjztfb8p9saipydmcu1ihbjbnt4rwd
+X-Rspamd-Queue-Id: C1C2C120008
+X-Stat-Signature: 8yd39he6khqn5aipzig1gpx19in4f6fo
 X-Rspam-User: 
-X-HE-Tag: 1789777512-570216
-X-HE-Meta: U2FsdGVkX19idu0NkPC8bjXZL7skzQuwFawwrITAlKt5rx4ThNy6S78eKE8qowoKLkpHZgIzpUZCdqHOkyagTjTfxqLkosC3jmPHO9xzIlimv0FQV/UGN4T5QyIZg3RgWB1zxlQHl0P9LV1WuyXtggNRLYZyCOtefnwOeIgMawCTxlnfDxMqGX7aFq4CfNYGIN/Y0v8/l4TuvCkgTV5SFxUkC6txraNTI+gpih+AX66FtJXrTzDd2jUOl+c59z5KDHd9TJvmkNfXPjCNGHnuNln9olgslXa6/N+1ahunT6enNx+v40bGu9TW8p+R4h5Oo9TjPe/xQ+bIKx6Ba3sfiUsJPeHvbI+YG5+sZCqGdiy+9co7cb0frG1Vlxa36HCuhAQzlR7r6EdFjycdGstduEsxEO0ffs5OM6+AuJMPkQaOtmZwE9TDcO5uOQN8PZQfaEtcPB451lCwPS/A6Ixp9ITnPbNqfDgL4Xmiv6FcLKtNtFY81dygvA22G3ia52832TXbpHNfLdp409Ju8841COmOUT1Xpe86U6444PnLIOyvTzBTdKr8OivOM+aLzTR+sDdPZmq6dNjdTlbd6qRqngBwRrC68mM179lPTXfYJPkJ3wVdtXwiRBW7D2BIb1cuI5+Z2MNz38zDcjkzKX9nX6Ix2qPR3nfGNoCYLsCRrZTmn98iJP7tfaLMoovfDHDNOE7rP/bZFIUysBDrFXq9vg1UWm+hjPayx2CWTCTaitikhguvbwPTtSCSuUc6s4RXbwF14Prz8kVc1VhandGJqSfWC9PFe82+uWtekJJLyZFHfqGWOjoQMAaWYiSdTuZwEZdYq4ya09MjAsS3ZXUa5Daaq0BabrWZTu70xtObB5zcEqEMqC+1rkQxAiOLD8g1f9UTr2iv0gmDe7x7b9o6on23o4FzbI1nVrzEO/3hoFqVNLCUcsED8UYjv8Y4/t1blax94wMQPbbiQZd3nfI
- +mdFNUPR
- j3ZR/fyJIHhoAX96TVAvO9gVGHhOH/3PxoXvKJpufmdPWVPCZbA188j2rcGfUKM33RIb2Va23MBAGaJNvdMj3TA2kriH0F5W8njCxaiXxieTVu4DBS4lgP38o1MVyUryMUqOw8Bu4Fgcz0zAilsWYf9YhD8new34ARwgpSNRpj0ZH9cxbsjSY03rB2Q4mIlsOyc2uVR2A7jZrnf1Wmzy5ftdExiw6MEPKbHHcNQyHuVtR/XiDm35vSu7LFtJrQTEmKfmX6ZfqPff3BLcd3Ch4V/ObLo+0FsDt97l3zWDC7JVcAjNYQF9lPkiTTmEhQKBU74FSMqLYeygizePn3+e+GWrUeM/XZJ02c6YgitcvX2JoyeOxaebMQgjVPe+TAcRD6b9N1a9kDi8r9bk9bdR2M2PMojd0rcPUlDHbqvWinvxXH1Uc4Nijue6ebgKodrFtMkQRHBi7tUlmd7rW8N6wc8QpPpyYJn0PaFNp6WlMYPWQHE7V1AtlQvvgKFNUizkXYDnoiXHpg0ZGmKF1oxjmmWXnwfEEYCU0cTRYSQEotX1Z9SiUWtf+GtqfEd0Ss9/mfC06saSLVeUxKLs=
+X-HE-Tag: 1789777514-659814
+X-HE-Meta: U2FsdGVkX19qia56tucpVf9CUq+saJQeO7BM3oL2OTFgoxHi6oXrpF5Pdt5OaCbvney0i9qqkxIK1B/vc4hwmy1a+iU3pzXi+ds1IoW0O6JYo+gBaNYNYyVfCyJqBFP/obfZ+/EmhbSS7F/mTw/pxFy/+HuvBtFT5cDfJpu7W1Ic0j8DG4eV9A0wQmKeJiPN+PGHV49xt4O2kGps0MAvJB0bp7APOncAaQ3IEeYePt+OmT4cEqiMVmfUqfQ6GVg0McjM6QXxQPt/jy47gXFgKfqpFjKy6fLwsGcnE7IfvVfJ5Vbx772NLUKKg7mOx/WBFfZ+4HLNp7b1j6N2E6WsPdUM9hUQeaAn44NxfDaZBmNACQ2BMEUhuuVa5GnxtBoJGU/xvkoMtzqnH9Bva5/1Gi4l7nKJwMeaDauqIzepohmILbD7W4hqy78vm/NxC/vvvwQq09JPmvBaKm/3PWEgMFfWpeizAheBnY9z5+5VHpeot/IB4hL6D92FQcRlmxijQ6/TkSyZ7672I4/MHM3TdhZD2dZj/tSWHarNrkvMQm2s/cnrlIbE6ypkUIjTb0RkQV50OeQ4TTugSub/7lwDLt1tgvSL6u2RLSnvR3wqVGDV7coznlkZ/N8bv2pNXsFgwVBLN/Gb21R4paiRKAZqh4Xh8DFyYVJOM09F1x0OLnlD6k02qbxAiaZ6AWs4FlKx2XgDQ24KD208azqp3+0ZHRYDgl9yDKtGeZ//gWjbEqx/2IHc4XptW8OedxCA55Qc5Y2A7iHlWacwuQdf6pFzaT+SDmZxRWT/vC5IW7oKNRTSeeRt8Wbf6GbfKroEaJPgR7RLzBUewmbRIjtPcy+SPLtzKsRRs/caE61ui/iBwmZDrxwDoe7oSkj/7oYIiKsfUUI5Qu8zLwHubUnKHYar2Yzyp0hj+pHORct7FGZpV3YDAicNqy3AHBNT9arxKHRUBndm5Y9H5cVyjKz9z+a
+ RklI1IiB
+ OoeH0Cz1tWLYIxLoDbQBorOSL6heApSah/8RqNQZSP8tLw3uBEQVa61lJc4EQggLbk1rHEuOda1tJgvWkDBUOC5FgiTDSCMpvR9PhTBkkjbJmc7uZuH8CSF0dEq4MWLU7+pm/EGXEWxz5rhf/RL/N4UOqrIJsIsH2+aHifJMLpG8DJ740Eub9m7rTLyLHSyZWjf9dfkMKmfZaroR79slcD/k81xLgbXY+CHe5vb78Vp1OIlsW5lwlt5bkyZrIlNTt3D5P+gcnsv/a1ioNpAQVBSqTaaudkTIWTKV5tO0uKYNe2eCUpVWWrR3rYz2EIAudQ4DYAUCMd9L/3Avcwaz4w07qSSFWNuDNI53P88cHkhOfWngxs7Aps0/lDtWOzFhblzOaOJM4x+CYihoaex2F6mVRY8qTktWd7bP4NE7hrOaXLL486OgPnIvfXoqWufVi7I3mAZ8ucSSIiaRiUetFFr94jl7KC09HYhdFRMGJ3bDXDqiUSUMMi8/C6HU/kn9IseP8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,182 +154,97 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 
-Checking that an address range is backed by a folio of a given order is
-useful to any test that builds or collapses large folios.  mTHP collapse
-coverage in the khugepaged selftest needs exactly that.
+An mTHP collapse test needs to know that a range is backed by folios of the
+target order, and that they sit where a collapse would put them.  Nothing
+answers both: is_backed_by_folio() classifies the folio behind a single
+page, and check_huge_anon() counts the folios of an order in a range
+without saying where they start.
 
-split_huge_page_test.c already has the building block:
-is_backed_by_folio() reads the compound head and tail flags from
-/proc/kpageflags to classify the folio behind a page.
+Add is_range_backed_by_order().  It requires every folio-sized, folio-
+aligned part of the range to map one folio of that order, head to tail,
+with the head at the start of the part.
 
-Move it into vm_util so other tests can use it.  No functional change.
+A part backed by two smaller folios fails, and so does a folio mapped off
+its natural alignment.  The mTHP cases need both to tell a collapsed range
+from the one beside it.
 
 Assisted-by: LLM
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 ---
- .../selftests/mm/split_huge_page_test.c       | 61 -------------------
- tools/testing/selftests/mm/vm_util.c          | 61 +++++++++++++++++++
- tools/testing/selftests/mm/vm_util.h          |  2 +
- 3 files changed, 63 insertions(+), 61 deletions(-)
+ tools/testing/selftests/mm/vm_util.c | 47 ++++++++++++++++++++++++++++
+ tools/testing/selftests/mm/vm_util.h |  2 ++
+ 2 files changed, 49 insertions(+)
 
-diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
-index 68f508c9a355..c5d96a4b1db3 100644
---- a/tools/testing/selftests/mm/split_huge_page_test.c
-+++ b/tools/testing/selftests/mm/split_huge_page_test.c
-@@ -41,67 +41,6 @@ const char *kpageflags_proc = "/proc/kpageflags";
- int pagemap_fd;
- int kpageflags_fd;
- 
--static bool is_backed_by_folio(char *vaddr, int order, int pagemap_fd,
--		int kpageflags_fd)
--{
--	const uint64_t folio_head_flags = KPF_THP | KPF_COMPOUND_HEAD;
--	const uint64_t folio_tail_flags = KPF_THP | KPF_COMPOUND_TAIL;
--	const unsigned long nr_pages = 1UL << order;
--	unsigned long pfn_head;
--	uint64_t pfn_flags;
--	unsigned long pfn;
--	unsigned long i;
--
--	pfn = pagemap_get_pfn(pagemap_fd, vaddr);
--
--	/* non present page */
--	if (pfn == -1UL)
--		return false;
--
--	if (pageflags_get(pfn, kpageflags_fd, &pfn_flags))
--		goto fail;
--
--	/* check for order-0 pages */
--	if (!order) {
--		if (pfn_flags & (folio_head_flags | folio_tail_flags))
--			return false;
--		return true;
--	}
--
--	/* non THP folio */
--	if (!(pfn_flags & KPF_THP))
--		return false;
--
--	pfn_head = pfn & ~(nr_pages - 1);
--
--	if (pageflags_get(pfn_head, kpageflags_fd, &pfn_flags))
--		goto fail;
--
--	/* head PFN has no compound_head flag set */
--	if ((pfn_flags & folio_head_flags) != folio_head_flags)
--		return false;
--
--	/* check all tail PFN flags */
--	for (i = 1; i < nr_pages; i++) {
--		if (pageflags_get(pfn_head + i, kpageflags_fd, &pfn_flags))
--			goto fail;
--		if ((pfn_flags & folio_tail_flags) != folio_tail_flags)
--			return false;
--	}
--
--	/*
--	 * check the PFN after this folio, but if its flags cannot be obtained,
--	 * assume this folio has the expected order
--	 */
--	if (pageflags_get(pfn_head + nr_pages, kpageflags_fd, &pfn_flags))
--		return true;
--
--	/* If we find another tail page, then the folio is larger. */
--	return (pfn_flags & folio_tail_flags) != folio_tail_flags;
--fail:
--	ksft_exit_fail_msg("Failed to get folio info\n");
--}
--
- static int check_after_split_folio_orders(char *vaddr_start, size_t len,
- 		int pagemap_fd, int kpageflags_fd, int orders[], int nr_orders)
- {
 diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
-index 4751db798c3a..cc5dfd1e6c94 100644
+index cc5dfd1e6c94..c8c5cd8ab6c1 100644
 --- a/tools/testing/selftests/mm/vm_util.c
 +++ b/tools/testing/selftests/mm/vm_util.c
-@@ -494,6 +494,67 @@ int pageflags_get(unsigned long pfn, int kpageflags_fd, uint64_t *flags)
- 	return 0;
+@@ -555,6 +555,53 @@ bool is_backed_by_folio(char *vaddr, int order, int pagemap_fd,
+ 	ksft_exit_fail_msg("Failed to get folio info\n");
  }
  
-+bool is_backed_by_folio(char *vaddr, int order, int pagemap_fd,
-+			int kpageflags_fd)
++/**
++ * is_range_backed_by_order() - check that a range is backed by @order folios
++ * @start: start of the range, a multiple of the folio size
++ * @len: length of the range in bytes, a multiple of the folio size
++ * @order: the folio order to check for
++ * @pagemap_fd: open /proc/<pid>/pagemap of the range's owner
++ * @kpageflags_fd: open /proc/kpageflags
++ *
++ * Every folio-sized, folio-aligned part of the range must map one folio of
++ * @order, head to tail, with the head at the start of the part.  A part
++ * backed by several smaller folios fails, and so does a folio mapped off
++ * its natural alignment.
++ *
++ * Returns: true if the whole range is backed that way, false otherwise.
++ */
++bool is_range_backed_by_order(char *start, size_t len, int order,
++			      int pagemap_fd, int kpageflags_fd)
 +{
-+	const uint64_t folio_head_flags = KPF_THP | KPF_COMPOUND_HEAD;
-+	const uint64_t folio_tail_flags = KPF_THP | KPF_COMPOUND_TAIL;
 +	const unsigned long nr_pages = 1UL << order;
-+	unsigned long pfn_head;
-+	uint64_t pfn_flags;
-+	unsigned long pfn;
-+	unsigned long i;
++	const size_t folio_size = nr_pages * psize();
++	char *vaddr;
 +
-+	pfn = pagemap_get_pfn(pagemap_fd, vaddr);
-+
-+	/* non present page */
-+	if (pfn == -1UL)
++	if ((uintptr_t)start % folio_size || len % folio_size)
 +		return false;
 +
-+	if (pageflags_get(pfn, kpageflags_fd, &pfn_flags))
-+		goto fail;
++	for (vaddr = start; vaddr < start + len; vaddr += folio_size) {
++		const unsigned long pfn = pagemap_get_pfn(pagemap_fd, vaddr);
++		unsigned long i;
 +
-+	/* check for order-0 pages */
-+	if (!order) {
-+		if (pfn_flags & (folio_head_flags | folio_tail_flags))
++		/* Not present, or a tail page */
++		if (pfn == -1UL || pfn % nr_pages)
 +			return false;
-+		return true;
-+	}
 +
-+	/* non THP folio */
-+	if (!(pfn_flags & KPF_THP))
-+		return false;
++		for (i = 1; i < nr_pages; i++) {
++			char *page = vaddr + i * psize();
 +
-+	pfn_head = pfn & ~(nr_pages - 1);
++			if (pagemap_get_pfn(pagemap_fd, page) != pfn + i)
++				return false;
++		}
 +
-+	if (pageflags_get(pfn_head, kpageflags_fd, &pfn_flags))
-+		goto fail;
-+
-+	/* head PFN has no compound_head flag set */
-+	if ((pfn_flags & folio_head_flags) != folio_head_flags)
-+		return false;
-+
-+	/* check all tail PFN flags */
-+	for (i = 1; i < nr_pages; i++) {
-+		if (pageflags_get(pfn_head + i, kpageflags_fd, &pfn_flags))
-+			goto fail;
-+		if ((pfn_flags & folio_tail_flags) != folio_tail_flags)
++		if (!is_backed_by_folio(vaddr, order, pagemap_fd, kpageflags_fd))
 +			return false;
 +	}
 +
-+	/*
-+	 * check the PFN after this folio, but if its flags cannot be obtained,
-+	 * assume this folio has the expected order
-+	 */
-+	if (pageflags_get(pfn_head + nr_pages, kpageflags_fd, &pfn_flags))
-+		return true;
-+
-+	/* If we find another tail page, then the folio is larger. */
-+	return (pfn_flags & folio_tail_flags) != folio_tail_flags;
-+fail:
-+	ksft_exit_fail_msg("Failed to get folio info\n");
++	return true;
 +}
 +
  /* If `ioctls' non-NULL, the allowed ioctls will be returned into the var */
  int uffd_register_with_ioctls(int uffd, void *addr, uint64_t len,
  			      bool miss, bool wp, bool minor, uint64_t *ioctls)
 diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
-index 64a86e8a0c41..f12979a70135 100644
+index f12979a70135..0172003c16dc 100644
 --- a/tools/testing/selftests/mm/vm_util.h
 +++ b/tools/testing/selftests/mm/vm_util.h
-@@ -99,6 +99,8 @@ int64_t allocate_transhuge(void *ptr, int pagemap_fd);
- int pageflags_get(unsigned long pfn, int kpageflags_fd, uint64_t *flags);
- int gather_folio_orders(char *vaddr_start, size_t len,
+@@ -101,6 +101,8 @@ int gather_folio_orders(char *vaddr_start, size_t len,
  		int pagemap_fd, int kpageflags_fd, int orders[], int nr_orders);
-+bool is_backed_by_folio(char *vaddr, int order, int pagemap_fd,
-+			int kpageflags_fd);
+ bool is_backed_by_folio(char *vaddr, int order, int pagemap_fd,
+ 			int kpageflags_fd);
++bool is_range_backed_by_order(char *start, size_t len, int order,
++			      int pagemap_fd, int kpageflags_fd);
  
  int uffd_register(int uffd, void *addr, uint64_t len,
  		  bool miss, bool wp, bool minor);
