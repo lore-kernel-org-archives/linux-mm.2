@@ -4,85 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 270A2C982CC
-	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 10:07:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2504BC982D7
+	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 10:08:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BC9596B008A; Sat, 19 Sep 2026 06:07:03 -0400 (EDT)
+	id 2A5A56B0092; Sat, 19 Sep 2026 06:08:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7A796B008C; Sat, 19 Sep 2026 06:07:03 -0400 (EDT)
+	id 2565F6B0093; Sat, 19 Sep 2026 06:08:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A69736B0092; Sat, 19 Sep 2026 06:07:03 -0400 (EDT)
+	id 145DA6B0095; Sat, 19 Sep 2026 06:08:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 73B5B6B008A
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 06:07:03 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 16A361A020B
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 10:07:01 +0000 (UTC)
-X-FDA: 85230083442.05.E993A62
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 36178140006
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 10:06:59 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NGBtwUNg;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E35406B0092
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 06:08:48 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3116BA47AE
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 10:08:48 +0000 (UTC)
+X-FDA: 85230087936.15.E1E7CD0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 78123180002
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 10:08:46 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i2rIvrh0;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789812419;
+	s=arc-20220608; t=1789812526;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wmYQfGFlr0gkUuVaDtz5C4O++lg0LHkym0LC5utx1xQ=;
-	b=A7Bdbyhz0RZa02lG85uhoTHe3zzc7jGuWKDpqSPWDW2SFF46iFx5BOsQ9F2MDSM4w2k7MM
-	CINqDt7AkiW0y5+b56ctjFaP3DDhLubQMTqmx9cr57Tc1KyoPVraDX4/Fq5X44WY8tGzI2
-	DolpwNNApQ/LMwoquHgi7RbpigoYtoA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789812419;
-	b=GCMioX9k2d+eqhNpuW8E+jSgIvJNJ1GO60mtlHwAuzCmZ5/t3KmeAFlm6mgXdXHMYFBSnU
-	S9IUam3ZvbTLvOce36fHbVE8C4XZYuMGxGJAgNeO7WgbhBAuo1xBx3MGJMvhvGlm9w2XWk
-	Hmu8aoVmKRyZhw5Mkoou2INQmY63bVY=
+	bh=UiNALGjswuiBQwEZJ2i4Ir313lV2pkq353ZxgdvCD2o=;
+	b=2WuBgpMM5Pib5GW3NjBNB/O3bsbCnuKxFl6XVu2oYENl5/4qjK4VYU5Gua/bfFRipbkT/1
+	Lf23D15Ez8vxhOhDzhJ0ODPh/Uk4wESHpvhxtSfjr+MoslAVDjSpgjGskBuc4QTsrzZBL+
+	ESC1ZTSyigi9emaLabv8mehY1nUjbf4=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NGBtwUNg;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i2rIvrh0;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789812526;
+	b=lGWB/lgoE4MFH/jbqvgt9nx136lQ8HcnPcX/hjxW+cDC1PuDl2OOMP2ok7C2yOpQbfrAGz
+	4+dr5/pHu2yKpaJqIDwyllUleDDDT7E/BtHCIydAgZEH1Q+w0+nRnJqoNXcMorOKmPS+J7
+	yDcfotbJSGfMmqUitiZ3PISazl5EJRE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 59CE543CD1;
-	Sat, 19 Sep 2026 10:06:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 882FC1F000FF;
-	Sat, 19 Sep 2026 10:06:54 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C96AE6020C;
+	Sat, 19 Sep 2026 10:08:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEAE31F000FF;
+	Sat, 19 Sep 2026 10:08:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789812418;
-	bh=wmYQfGFlr0gkUuVaDtz5C4O++lg0LHkym0LC5utx1xQ=;
+	s=k20260515; t=1789812525;
+	bh=UiNALGjswuiBQwEZJ2i4Ir313lV2pkq353ZxgdvCD2o=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=NGBtwUNgww8qarfWiEsbE16y4T3wnfzKTb/Jg3NsXGsCGZdUq2UeOCROEeZm4TGCs
-	 w8jNxAkkeLbGhzYLdJw7f472pbJZhRYMQc4TVOQY75Bh8AWaQCKdcCcr5N1r05AX+L
-	 s4pzxBvCF2ehQIio3S3bNklJbxLLX50gPwtw+lplUGFPA4dxhHs8wNi4HO6tUei8eO
-	 1tmeiOOoZrvja1PaEbOWQio3lWAg2kd4W+bbiQJ18WqcFA450+V6EhtINSWqj2ySuX
-	 ZQpUggufkJ5HkEfBCdRRL1SXy8AVZYS1Gg7D8svXg7yArAQu1b8GGap3ld8k5aT+mL
-	 eL4ROWHtjqSEQ==
-Message-ID: <d939eacc-8019-4954-b1f5-71d601db96a6@kernel.org>
-Date: Sat, 19 Sep 2026 12:06:50 +0200
+	b=i2rIvrh0XKa1h927iSDM0HE8S2bK1LX9H3CHf4bpEEQol4A0geK4/OvQ71TwVbV4G
+	 FYGYQiPWqZCSMbI7Gap2Edl+MS8H+BFuxVwqiUySMUXt+DwE9hzGL4irirfITqgtIa
+	 ydvaGZcaLC1uecW0qMq6StUTHJv1ia3aDDiUlJlvqj032WL1A+7imSOtJar5QChp9s
+	 fz8ply4tp/bVvoavxUH+Qg2drqMH7mRbaXPLAXtfOOaJ8SvrfqQHpy0p/dA/tuetXN
+	 yQpM3fchJ0Mj65Mgqe8U7acWnyHvedAN04X7ipZzeHjsKMvYz2xOK7UxZCD9kkxgtp
+	 btlD0K+I2z10g==
+Message-ID: <8cbbc303-59a5-49f6-bc14-28fbb58350f0@kernel.org>
+Date: Sat, 19 Sep 2026 12:08:35 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] MAINTAINERS: make Gregory a co-maintainer of MEMORY
- MANAGEMENT - NUMA PLACEMENT
-To: Gregory Price <gourry@gourry.net>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Rakie Kim <rakie.kim@sk.com>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+Subject: Re: [PATCH v2 0/2] mm/memory: reuse the whole exclusive large folio
+ on a write fault
+To: Yuan-Hao Hsu <aa9736195201@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, liam@infradead.org,
  Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
-References: <20260918-maintainers-mempolicy-v1-0-9a94cac6d135@kernel.org>
- <20260918-maintainers-mempolicy-v1-3-9a94cac6d135@kernel.org>
- <aq1pO6KRR2CMov8D@gourry-fedora-PF4VCD3F>
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Barry Song <baohua@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260918064238.868-1-aa9736195201@gmail.com>
+ <20260919073134.639-1-aa9736195201@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -129,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aq1pO6KRR2CMov8D@gourry-fedora-PF4VCD3F>
+In-Reply-To: <20260919073134.639-1-aa9736195201@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 9aer1ii4coy7zbbqfknobbfs5btxx4rz
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 36178140006
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789812419-853330
-X-HE-Meta: U2FsdGVkX19VFBA56bdlyDemIQ69uAd3FDzzHC1jUPjMt037RBMys/fIdclxlngKZtk6DMgKHSAG/Gh1hw528qHLiQHeWxKIgMRm8zur5RaIAShGlJ0fssUbHXc4fpdKvHom/R7Qb59WG39WKFFG5hFuibqDnxkbFbNAweJSklB4lHNWf6DBHqkL7NKRfX4f88zKfnvvwOOyuIA+1eok/NOtOCBIT82nRwmelZHAw5huslZFwM37nCTeHRBerystjGNipho/xdY/9wdFVXrATUMZm2Oc8BCX6KKbFeklB2A4W08Uodl1rF6gkhg5aMVoBiduB+2Ws5JNMtxL2To5FMfHc/9sgA7uHO9oEnivBAPrQB426fD/B/vbcR02RetTe5ipO4jmUYbfMc2nBzZcZwmbauqpEsvW+Y9LtcofsCBkOSLx9HwLtLPl4nOkovrQh4jEc07OQIjozw0JFnEecd/QdtjyOrJ9b+/Gw9bm8PQ25s8fnQHKnMcJq4mXteuOXdfS0AwTazqs9VIKv1ZPmkvWeLYnrFu3+Vub6QkDDeuiXFTioXZebiDxzG/p1dZkAzewrjflNv+e0/EMjdxa5U0Zu7YdxUZ7h+MMj2IZSWx5KiNIz7RsHVabARGI+HWCdG6lC4iOfmvY4Rq2nIolUsfL2kv2tn9c7xt8I6VINKHIUkEcpsAMoDZ9VJ5EitikTi8rpFocHnAr/TPm/o5Bb6gDVXQ7jCXitFn0QwYufGLf1GjEPr2OLbP/GvjTsQzeCoFPPxoS47QDorIeHaQZBVDmpoiDEAfewBlCPyqT88dd17viV6lRcspXMvCqihGGIOuzuXNpKkdUuXU6XyVCcExd8qDkFfWqtMjBw8uXK/74J7yYyjmQojHcvl5+L75qovQonuXs6d+M5DWo3QDWP9IUxm2iTQKqRQi6OTBmwyESxVentWDaAAH/puDUNVA20tyoWBPMbJCpv37kKcA
- SydA6S6k
- vpFXXjWlyE8cy6UzpkQ9b/4F0XpL5n7b64TgOJ3MVn5w8/WUHiaAEaTVkchoCdEoIGlNd7TfzhHV/S5tIosYfDXpQ+rmSI+o1N3p4mjWaxk6IFZpMx3EoaQsT3lrt69N2pB8fxtXk/jx9W14DLbvM0NVlX4IcfZoCDgJ2H3GXptvjffv0hNeJlsF8ewH+hqjZHWY/f3yjUreRqpUNnkE3+G177vwjoCVToLvELE53HKDVkAR4YYDj2oubrqKh7hJxoBaboNluewNIYWf/GFZOHVEGSjHduAddEIo5TcgnoNfa1RXxlXlOx04l9ssCqMkOAGElbJZXlyxdEewsytpMhf2pOq+rnQM9tzlP6LsDU5ffOhCxmH3tfSEqtILmzLoazj2n9JIwlSkJYOGA01+YwjuLeEX4rEahkEJW
+X-Stat-Signature: 6aodgat9q7e1oy1n3b9fxqt13gsdn4yi
+X-Rspamd-Queue-Id: 78123180002
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789812526-409008
+X-HE-Meta: U2FsdGVkX188g36wpEieXgoy3fmxgqVZnWWR8Dy7qCQLkNh923AtpIBClG7ukKOZHRDa5RabucQW+fYySaYFgEsGSlvZvqacEnMgXLcArvZEG1R88+CfxgyKBLBl7SjU76YDyT+zlsEv6nGG4Oe6HlMablYw6RNucDV2kOxQecpkC8Kl3znNjcm0B0A3Hem8+qyaKcH5BcRTBURogoa9emOwt8jZxn4/fQo6I031dH7j7bJMTcnIE3YTltCpOQs8b1O+qENkSOEbT4v3BYxxocfUuX5p7IP2rd3faHXhSkr0QbRNGwidGuc7H1w67X8DgKb/zwPDF8WDy7WxTQIDfdcxeHTn2blqtEtxGLhdK9wfncccedryUmKe5Tx3cLXe4Zsipmi36NYQ3dc36G/us+96aFPyS2HG83fakx6p+eQxadcSWidpQFkNlrjnM2vxpYf3o0TelcY8bwLooCUdzfS4kqcjjyxyzBP1uo35ci9RAiR1W+uJHOIvzSR0pHh3KkAIIX46/uSSjwFplk8iq4bv2VDu5a6NJbUYcB9pqYeJSudxnOVgBs4HPWyr6WPVoguYl0QeRv2z9NzorLOY49PuqzFp9cZm5hU1VZ+2HT33VbYlPPPgJQMrOpHsDe/GyLMNnmOzlVejPE2/J4Xb0puTzeZ0iqEFJbp92A4Cgkeoen0ZKT38BcnGS2JOdLrbAYhuZ7RA5wR6isKF1UANfXyvTKZAdbHCE2vMt9sDlp9M8wo24GXCpBjEJZZqdvCwl0NOohZkUmTl/HRDQXZFhbdPkNddzjqX9RC/HVkcRB5VkD3TwBLKbwwiCHy/59CC7VXhP/LZMbwCnxLiYzDLKoDFipyeyVYtXyXHmCMFgqU3Loi5/MksW8jBbQITXcCInjqmG7oJbuUHBtWuSpHZ6+YThv5190YZiN0CLZGrWbUfIAIqr5lbbUmPhYuGreizNx/id0qcCWLn+E3ZWl9
+ 7qC95D51
+ X5qBZQ/cD1vWlgvVI5rBzWRhOppE5XI1mUb7MVRSMRkPEExTej/9jRZ/HA0qc0SuFVUBIEEJnhkI8w5zcjhQ7t6FVIPxRl+6BRMMjtr1jElmGvwIObtYahhHU6kv0H9DLW+TS70efO1Bjrrb0toNTltKzL7mb+h7DQGnZhJ4pFw2foU3eO+ALcckNzSIr5DzSIRvxiocfmp1wxEs2BirPX50K8UAbOqtS5dOckRs/Jl0awt4WiUWmVZo3y0W9dzy6EIYD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,19 +143,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/18/26 18:41, Gregory Price wrote:
-> On Fri, Sep 18, 2026 at 06:34:26PM +0200, David Hildenbrand (Arm) wrote:
->> Gregory is extremely familiar with NUMA placement handling and volunteer
->> to help co-maintain the numa placement bits. So add him as a
->> co-maintainer.
->>
->> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+On 9/19/26 09:31, Yuan-Hao Hsu wrote:
+> After fork() and the child's exit, the parent's write faults reuse a
+> large anonymous folio one PTE at a time, although
+> wp_can_reuse_anon_folio() has already found the whole folio exclusive.
 > 
-> Acked-by: Gregory Price (Meta) <gourry@gourry.net>
-> 
-> going to take me a second to get used to that.
+> v2, after the comments on v1 [1]:
 
-Don't be scared it only hurts a little ( ... initially ;) )
+Please don't send out a new version
+
+* Unless a maintainer asked you to
+* At least one week passed
 
 -- 
 Cheers,
