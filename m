@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2504BC982D7
-	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 10:08:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A768C982CC
+	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 10:11:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2A5A56B0092; Sat, 19 Sep 2026 06:08:49 -0400 (EDT)
+	id 6C8DA6B0088; Sat, 19 Sep 2026 06:11:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2565F6B0093; Sat, 19 Sep 2026 06:08:49 -0400 (EDT)
+	id 6A13C6B0093; Sat, 19 Sep 2026 06:11:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 145DA6B0095; Sat, 19 Sep 2026 06:08:49 -0400 (EDT)
+	id 58EB76B0095; Sat, 19 Sep 2026 06:11:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E35406B0092
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 06:08:48 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3116BA47AE
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 10:08:48 +0000 (UTC)
-X-FDA: 85230087936.15.E1E7CD0
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2D7986B0088
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 06:11:10 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4D195C020E
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 10:11:09 +0000 (UTC)
+X-FDA: 85230093858.20.5DE6575
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 78123180002
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 10:08:46 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i2rIvrh0;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf30.hostedemail.com (Postfix) with ESMTP id 96FDB80006
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 10:11:07 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l+5S651U;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789812526;
+	s=arc-20220608; t=1789812667;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UiNALGjswuiBQwEZJ2i4Ir313lV2pkq353ZxgdvCD2o=;
-	b=2WuBgpMM5Pib5GW3NjBNB/O3bsbCnuKxFl6XVu2oYENl5/4qjK4VYU5Gua/bfFRipbkT/1
-	Lf23D15Ez8vxhOhDzhJ0ODPh/Uk4wESHpvhxtSfjr+MoslAVDjSpgjGskBuc4QTsrzZBL+
-	ESC1ZTSyigi9emaLabv8mehY1nUjbf4=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i2rIvrh0;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=T6rLf9agDMyARwXvYrMSOSIy5jRBMFJCc5XZwhlIScw=;
+	b=B6xPpN+WCSpq1RCH035DLBjLMctiRbaA3lR1ya0nz/YJhcTK7cGkim+WrgLSrDhLNAIAcq
+	dhfUaoxOeMdlfJ/OjlcTAuiIoAYN8qIaYXbjF7X70ESODIavy3tN9HiBFEqDsyXb0Wspjp
+	l/VTLJ/lK9h/pxREdn2Yl4OAI5LRizQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789812526;
-	b=lGWB/lgoE4MFH/jbqvgt9nx136lQ8HcnPcX/hjxW+cDC1PuDl2OOMP2ok7C2yOpQbfrAGz
-	4+dr5/pHu2yKpaJqIDwyllUleDDDT7E/BtHCIydAgZEH1Q+w0+nRnJqoNXcMorOKmPS+J7
-	yDcfotbJSGfMmqUitiZ3PISazl5EJRE=
+	t=1789812667;
+	b=4x8GI0BbiWC2lCWm4qL3TKmP/pOctje9/+qdgtoGksrF0bBIaig/yZGv6JarfbhTmYvwFC
+	L4bl34SpTOf4oWPwDL2tahnLyNjgaare6RtPxals+yx6yl/QDhaGtXEyfPmW5cMBTkJThq
+	o8fiTq1+osnVuPunKdQCl3WSIq84q+w=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l+5S651U;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C96AE6020C;
-	Sat, 19 Sep 2026 10:08:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEAE31F000FF;
-	Sat, 19 Sep 2026 10:08:41 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4B6E66020C;
+	Sat, 19 Sep 2026 10:11:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E73241F000FF;
+	Sat, 19 Sep 2026 10:11:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789812525;
-	bh=UiNALGjswuiBQwEZJ2i4Ir313lV2pkq353ZxgdvCD2o=;
+	s=k20260515; t=1789812666;
+	bh=T6rLf9agDMyARwXvYrMSOSIy5jRBMFJCc5XZwhlIScw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=i2rIvrh0XKa1h927iSDM0HE8S2bK1LX9H3CHf4bpEEQol4A0geK4/OvQ71TwVbV4G
-	 FYGYQiPWqZCSMbI7Gap2Edl+MS8H+BFuxVwqiUySMUXt+DwE9hzGL4irirfITqgtIa
-	 ydvaGZcaLC1uecW0qMq6StUTHJv1ia3aDDiUlJlvqj032WL1A+7imSOtJar5QChp9s
-	 fz8ply4tp/bVvoavxUH+Qg2drqMH7mRbaXPLAXtfOOaJ8SvrfqQHpy0p/dA/tuetXN
-	 yQpM3fchJ0Mj65Mgqe8U7acWnyHvedAN04X7ipZzeHjsKMvYz2xOK7UxZCD9kkxgtp
-	 btlD0K+I2z10g==
-Message-ID: <8cbbc303-59a5-49f6-bc14-28fbb58350f0@kernel.org>
-Date: Sat, 19 Sep 2026 12:08:35 +0200
+	b=l+5S651UOr8S1vO1bGledRyKS7GVLLbQpEy8lMv6ldvYtkMWP5Ze0XUgkcqYdSyCR
+	 0ya401ohT1jtFdfAvPQjqs7+2oF71svgvlRCBIXRlHNTFcNSfPMtp98fR4uWffdHTY
+	 xDGGk5PyVUHwY2QOzMfqrj/DTJJR9mfmwTS0V1lB+DGEBUgureD9MmCdThXorMwTfC
+	 uRcldTNp9FbPeG+pG/oy+L/gJsuoFJ49auy+m4Kw0hz/VMTxpWTb9holgN+K3bjCDD
+	 fsG3oPLdi4iKvouNiOD4PvbeM1BPduGrcO9rIQgox6vSRBG30hqnXx2XiUqPSk3xVj
+	 ElPtZvU5oLD1Q==
+Message-ID: <0c0c19d0-997a-4c8d-a103-2b3d153f4e32@kernel.org>
+Date: Sat, 19 Sep 2026 12:10:56 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] mm/memory: reuse the whole exclusive large folio
+Subject: Re: [PATCH v2 2/2] mm/memory: reuse the whole exclusive large folio
  on a write fault
 To: Yuan-Hao Hsu <aa9736195201@gmail.com>,
  Andrew Morton <akpm@linux-foundation.org>
@@ -79,6 +79,7 @@ Cc: Lorenzo Stoakes <ljs@kernel.org>, liam@infradead.org,
  Dev Jain <dev.jain@arm.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
 References: <20260918064238.868-1-aa9736195201@gmail.com>
  <20260919073134.639-1-aa9736195201@gmail.com>
+ <20260919073134.639-3-aa9736195201@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260919073134.639-1-aa9736195201@gmail.com>
+In-Reply-To: <20260919073134.639-3-aa9736195201@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: 6aodgat9q7e1oy1n3b9fxqt13gsdn4yi
-X-Rspamd-Queue-Id: 78123180002
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789812526-409008
-X-HE-Meta: U2FsdGVkX188g36wpEieXgoy3fmxgqVZnWWR8Dy7qCQLkNh923AtpIBClG7ukKOZHRDa5RabucQW+fYySaYFgEsGSlvZvqacEnMgXLcArvZEG1R88+CfxgyKBLBl7SjU76YDyT+zlsEv6nGG4Oe6HlMablYw6RNucDV2kOxQecpkC8Kl3znNjcm0B0A3Hem8+qyaKcH5BcRTBURogoa9emOwt8jZxn4/fQo6I031dH7j7bJMTcnIE3YTltCpOQs8b1O+qENkSOEbT4v3BYxxocfUuX5p7IP2rd3faHXhSkr0QbRNGwidGuc7H1w67X8DgKb/zwPDF8WDy7WxTQIDfdcxeHTn2blqtEtxGLhdK9wfncccedryUmKe5Tx3cLXe4Zsipmi36NYQ3dc36G/us+96aFPyS2HG83fakx6p+eQxadcSWidpQFkNlrjnM2vxpYf3o0TelcY8bwLooCUdzfS4kqcjjyxyzBP1uo35ci9RAiR1W+uJHOIvzSR0pHh3KkAIIX46/uSSjwFplk8iq4bv2VDu5a6NJbUYcB9pqYeJSudxnOVgBs4HPWyr6WPVoguYl0QeRv2z9NzorLOY49PuqzFp9cZm5hU1VZ+2HT33VbYlPPPgJQMrOpHsDe/GyLMNnmOzlVejPE2/J4Xb0puTzeZ0iqEFJbp92A4Cgkeoen0ZKT38BcnGS2JOdLrbAYhuZ7RA5wR6isKF1UANfXyvTKZAdbHCE2vMt9sDlp9M8wo24GXCpBjEJZZqdvCwl0NOohZkUmTl/HRDQXZFhbdPkNddzjqX9RC/HVkcRB5VkD3TwBLKbwwiCHy/59CC7VXhP/LZMbwCnxLiYzDLKoDFipyeyVYtXyXHmCMFgqU3Loi5/MksW8jBbQITXcCInjqmG7oJbuUHBtWuSpHZ6+YThv5190YZiN0CLZGrWbUfIAIqr5lbbUmPhYuGreizNx/id0qcCWLn+E3ZWl9
- 7qC95D51
- X5qBZQ/cD1vWlgvVI5rBzWRhOppE5XI1mUb7MVRSMRkPEExTej/9jRZ/HA0qc0SuFVUBIEEJnhkI8w5zcjhQ7t6FVIPxRl+6BRMMjtr1jElmGvwIObtYahhHU6kv0H9DLW+TS70efO1Bjrrb0toNTltKzL7mb+h7DQGnZhJ4pFw2foU3eO+ALcckNzSIr5DzSIRvxiocfmp1wxEs2BirPX50K8UAbOqtS5dOckRs/Jl0awt4WiUWmVZo3y0W9dzy6EIYD
+X-Stat-Signature: 7eu9efz3ygq579zqx3soykd1p7wh7ikr
+X-Rspamd-Queue-Id: 96FDB80006
+X-HE-Tag: 1789812667-562777
+X-HE-Meta: U2FsdGVkX18ZosSYNB+C2nPEIqJfSgYRT45h8cahO1qSoKtF6EF/8kwWL6gAR10HCISuaa/+Z68t8fgCfDHFw8IC3JhTyPkZmiQ+kLdTUedkskiFzbH1PawihrI1ND3kdoMgf8ehtw21/C2DItaqqlbivNtOk8xgRvhN7g4A3jBYiXhW7jlYARDOjNoupFx1ZrKc4sf3PuKo4pQXIfCx97EiNiu/D92f7/a2IUGuYU4c97nGQDIaloYRbUB0m48eCtrDtEeIXEWDUmK9LeugwK78R7FfC0XapqBiOErWGuZfCywgvLvNXRXbG6mCzznUcA5rqSywSyqgBJkOrb6QkP8ahSPQ7wH7M0Pf251awIfq2+yUCxHOqwOijoIEgvZb+uIM0FuYTJRmONhTXjx7csZnSpINZT1PSSHTahGwzdwV8nttUjYLQilYoXpnWEFvKHpsUCreFHZO5KyvxDmRwE+50tTefUvEQgd7tdVDGMvF21eGHhxz6Bz2w7Hjvw/RGC5F+6gKfbZ1QFzxfF6d92SENZzxrL6WX3NQYMrTVjpqIXsjLeO8lhrQ1viLlwkdo6jD2oqJYKvhxCvgprpbErSWBU6saY1LPeSgcjJ7umLUv7s0z2DqJhPNZwzLlGfC3HV8OP9iige3RB3nJP1Sjfb4sybkLIEfpWlJvcwz0RfHqtz/VtNXNdFJOtylSY8BGDKaNdBxRQfan9vTYw2mwnBdf5IoAC5Ht/S8a2CZX2bV/t5ZARJf0udImZ+D0gLqwnE8ktzThRQo9gIQEdyfDBuCHlK4ePRRkR+F9nuDPZISZsdvc2FWFyXQwj0L2OvjSDyFo32TXbYBlhxm9QMbxWvvvu/WmHT7vkebi60uIdBGu7XOqMCfuc6YoQ6k7ip2tNYFtnWbPd8KudHj9ZzDRYNqBsf5AT8t0CupPRC1f6O/tiZnpoKUDEMLQvWnkUd5Pn4Y9NQ8qPpHJM1iL/R
+ I4LB3P4+
+ LhqGYHstxpuXpSsJ2xhedTPODIuzn9befSkgguaVWbW2anWkBnz0Hrm2134CsnIkBACOqgacqwdQpKFIYF+9Mt6jKzJEmPvHcyXhmlPWiXeapNblJzregN/y2oI8ThD8LWrQCl1STPn2m0RiKHlsWETj/jRiVX/OSfjPTNEYOWyXoJ05fVcHkmtIIu2pA82gSgluFFXPXCIIM95TjRhoHEM7pzG7UXNuI61JNz4s8lhUpPnEAB36lUkEuI5kfXISdRlT9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,16 +145,43 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 9/19/26 09:31, Yuan-Hao Hsu wrote:
-> After fork() and the child's exit, the parent's write faults reuse a
-> large anonymous folio one PTE at a time, although
-> wp_can_reuse_anon_folio() has already found the whole folio exclusive.
+> With blocks of 16 PTEs a PTE-mapped 2M THP still takes 32 reuse faults
+> and a 1M folio 16.  Lift the bound to the page table: the walk then
+> covers the PTEs that map the folio in this page table, at most
+> PTRS_PER_PTE of them, and one fault does the work for the folio.
 > 
-> v2, after the comments on v1 [1]:
+> Its cost, measured as the time of the store that takes it, against
+> 420 ns for a reuse fault today (x86-64, i7-12700KF, medians, ns):
+> 
+>                           reuse fault   fault that     COW fault that
+>                           (patched)     allocated it   copies 4K
+>       1M mTHP            5,400- 5,700   63,000-68,000          1,500
+>       2M THP, PTE-mapped  10,000-10,500         126,000          1,500
+> 
+> That is 14-20 ns per PTE, about 2 ns of it the scan.  Builds that
+> differ only by NOPs in front of the function take either 10,100 or
+> 7,500 ns for the 2M folio, with a period of 32 bytes: the loop of
+> modify_prot_commit_ptes() changes speed with its address.
+> 
+> What it buys, 256 MiB after fork() and the child's exit, medians of 15
+> runs, two boots of each kernel:
+> 
+>                                    16 PTEs         whole folio
+>   one byte per page, seq
+>       1M mTHP                     5.7 /  5.8 ms    4.1 /  4.0 ms
+>       2M THP, PTE-mapped          5.7 /  5.8 ms    3.9 /  3.9 ms
+>   one byte per page, random order
+>       2M THP, PTE-mapped          7.4 /  7.5 ms    4.9 /  5.1 ms
+>   memset()
+>       2M THP, PTE-mapped         40.2 / 39.4 ms   38.1 / 37.2 ms
+>   8 threads, random order
+>       2M THP, PTE-mapped          0.9 /  1.0 ms    0.7 /  0.7 ms
+>   one store per 64K, 2M folios    3.3 /  3.3 ms    1.5 /  1.6 ms
+>   one store per 2M, 2M folios     0.1 /  0.1 ms    1.4 /  1.4 ms
+> 
 
-Please don't send out a new version
-
-* Unless a maintainer asked you to
-* At least one week passed
+Are you measuring the worst-case latency of a single write fault or only the
+average over all writes?
 
 -- 
 Cheers,
