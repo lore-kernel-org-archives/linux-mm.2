@@ -4,94 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A51EC982D8
-	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 00:57:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 041E4C982D7
+	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 01:00:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5921D6B008A; Fri, 18 Sep 2026 20:57:51 -0400 (EDT)
+	id E70736B00E7; Fri, 18 Sep 2026 21:00:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 56B4F6B0093; Fri, 18 Sep 2026 20:57:51 -0400 (EDT)
+	id E21C76B00E8; Fri, 18 Sep 2026 21:00:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A96F6B00A1; Fri, 18 Sep 2026 20:57:51 -0400 (EDT)
+	id D10526B00E9; Fri, 18 Sep 2026 21:00:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 293D56B008A
-	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 20:57:51 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B0338160171
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 00:57:50 +0000 (UTC)
-X-FDA: 85228699500.23.C366CA9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 2232F80003
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 00:57:48 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h87AVbGm;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789779469;
-	b=HV8DA9WPxgIfr60V2jcJ8wabxiOKA8CaFxIkTaGotzlO8CGvS8WnX5luwM/pmpSJWCBVbR
-	jVgcDwOEHWDADykimpVJLlIvqEml+aLR6mIGbcgaLVMCRwS3w2Q27hOoQLxGcTiVbqn53k
-	Ljqm4iZwY2igV1dNeVNmh9+8E5IIZAI=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h87AVbGm;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id AC4906B00E7
+	for <linux-mm@kvack.org>; Fri, 18 Sep 2026 21:00:32 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3429812015B
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 01:00:32 +0000 (UTC)
+X-FDA: 85228706304.10.ADAC0C9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 9B267180008
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 01:00:30 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j1WpHsfm;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789779469;
+	s=arc-20220608; t=1789779630;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ou5Coji7GvP7rg1t+gMtICHH8GO2v2T+xA+Md9mjovQ=;
-	b=KoiYfMYTw/0E9pJIdmzQAkurc5LiYh9ffjdmZJr8zgShxPC/xmfFA3rOez2Y7xyGJAYf0H
-	dgLpM6kU1krLcZbDotw7eC4eRyKXZGI3vFEtVhVj/vlVXH3LC1SqOERjP/REAIkstz1MLt
-	g1R3a1G72ahXQwKiBP+syPxxZcHfNLI=
+	bh=9lElQgrUnY9LHTkSAaKVYQoZBcsoW1xlrdh3QP0whJg=;
+	b=6GraiXAKVFylVN1/ke5n0GTB59K0HoxgzMsiUX8XjXTIjPLydrIypsDo+KDErNYoJuc0o8
+	nAaEh6Z2V6iNfeP7kCkIbR2h+SGexJ3FhMf6NuHrDUTATnw+udCRXPZkE+zw5SCbqavfQX
+	BXtwxM3Nzas7zGIb01GO10AXsWnFY/c=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789779630;
+	b=gIy0WOFCe8XOVYmS//sJhXpfKOQ5afvon9G5KTYi9HcM13c70eCscGFcTekeIffut3Epcj
+	WqglkRMdBX/hCGOeRXdp1+GwShDQQcmelbFBdIgPdaTKPgo4N6xe7xQb5p0NF0tcqtgL9O
+	qM6tGXGYFtU09wOfKtfO7hR7yQLbCxU=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j1WpHsfm;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 46A7D41817;
-	Sat, 19 Sep 2026 00:57:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B24841F000FF;
-	Sat, 19 Sep 2026 00:57:47 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 18F746053B;
+	Sat, 19 Sep 2026 01:00:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 896F61F00898;
+	Sat, 19 Sep 2026 01:00:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789779468;
-	bh=Ou5Coji7GvP7rg1t+gMtICHH8GO2v2T+xA+Md9mjovQ=;
+	s=k20260515; t=1789779629;
+	bh=9lElQgrUnY9LHTkSAaKVYQoZBcsoW1xlrdh3QP0whJg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=h87AVbGmoFOfBWO7pFDu1hE8BqkQpNxItv7YaHnYPOp/FWH4Q7teRITPVCo/yVWD8
-	 BAttH12CmgD2YP2nAuFF9KGBc6bhWXhrdSqmUhWfg3QleUcT5I2/S/ENOnx0PODy1D
-	 Pif0hMae4HEOQeNBgNW71ZpPwgAw6kE0q1F1lucjS0Qt4HmNnVSTpLNysob/l/DiBR
-	 9vAoiwv/R0JQQH31kfzcuxzD8jj5Z6ncYg8nG8BXGVJJu2m02PgLzNV9OFxXZpqAs6
-	 L+ikMO8MHaIrcV1RACLbWq+a0darZ4e7fQ7iV/93Zl19cHHDpn9HxRIuJ4bZRbNYPg
-	 f0teyhE9IL/ew==
+	b=j1WpHsfmwAvEKkTHWYEXgqB5++KnNamAQdRHtTAriAohTEtMtu/PdzVC53L5e2n/h
+	 w0Beh48taro9Z+W72rv17Vmio1IhfdJAgoQ0dd5qFl/sJQC/Wj13A9XAN9G3Cy1P0d
+	 lvsMEs1tQdiwSYKbEuzil4s11Z6JQeMvbYDh576S6I/SdizuStVDPny/BaUlbtjH4V
+	 jv9osrZrjlm1mAMt8FMfjBf3FOWVMzTBpMAQhCjOBcQK/5tUVs90NpM3l2SB9mPQ4H
+	 2zNMxIsJp0t780nRIqsD7hiWK+eHOBYf0dxga9vYgRf7RM36gcoouXEZuML5B7GGcV
+	 p78wvKErbOtvQ==
 From: SJ Park <sj@kernel.org>
-To: Sang-Heon Jeon <ekffu200098@gmail.com>
+To: Anshuman Khandual <anshuman.khandual@arm.com>
 Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
-	Nhat Pham <nphamcs@gmail.com>,
-	Youngjun Park <youngjun.park@lge.com>
-Subject: Re: [PATCH] mm/swapops: remove unused is_hwpoison_entry()
-Date: Fri, 18 Sep 2026 17:57:35 -0700
-Message-ID: <20260919005735.87860-1-sj@kernel.org>
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: Constify arguments in default pxdp_get()
+Date: Fri, 18 Sep 2026 18:00:22 -0700
+Message-ID: <20260919010022.88004-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260918165642.1014988-1-ekffu200098@gmail.com>
+In-Reply-To: <20260918064928.793742-1-anshuman.khandual@arm.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 2232F80003
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: 6yjqi4sbck31q7jhtyg9ibpgfgj5r6nu
-X-HE-Tag: 1789779468-839822
-X-HE-Meta: U2FsdGVkX18f6f9HtRhN7rhey4cyfygZL/Yx503Uzw5CcjqgIYn/XKyVk/EnnidYrWyR7rVeLIPc31eOM4jrWCXSJ/WDd0/OGODGUX8UQT6w4cjqNsRcFtAhgI7YKlKltayy01ioXDJFKsllHshJ0PHmDGaJsn5dqcMlOSwZORhc3bi/t3IvsdeFAgdVx1z3a0JHGVKfYr5otJK5W0XFPU9Uq1scVhQLm/RyA/ukU+fbBs0o3E6laGg4OKq9vtu0D1oq4SsO0xUJQ89Cggdg9kgrkQu+V4GrdS7qUfQAczkLCYiFuUpiQnnq3b4D9+Dw4WNjDsbFJS9QEi4kZesF5FAA9Y78cHLR5vkTXgkvS62ECx5iixEgWgzm8YOp+1XLh2ZMwMM/yYYD53thcQLfEfrNzH2DETIF+kQSc+3UC0Vhisu1m8/DRR5ijeivwa+ALOea/8t8Fb7n3tekRC2WBGqy4N7FBRH/jz/1ogF3r7CzGlY4EzI/viLTKswq1t3c8vnIH0wI1yxWBYzy89a+A7uAZq0LTre10xYIilmREgVxLt4qe4GA03X3bkiifFJuyr8lHvT5C3awaY6TD0aH3xSdV2Zno2s1/kryF3AVcW8q6eoL7tjX3oMUg0lj+m9gvUJXsXlvl3NSOkU4exRvV4De8fCdF6s37gX8f1gLovBbR5nObBBDaYGIJZFE5WpZxMZLDV1wvThGejZEP/qIJkqlg3NXhOUznFu5Br0cMVcykKQx1a7VtJVxGHNKuQrpGU5nInX8rE+M+ELNZKVBK8UUcVvEz99lPysKog+zGzJnbGxH/6OOk/SBKbKiH+uJbA26HAnE96wfPoxzdfC52sWr2okGc7LaZQFFIQzlXD9zi6aZJx9u/tI8gNK9QaB+JTfQpNxkWA4RBVQNZ9t/QB6G40CIfSYz2thF/k54O3n/MTO8R+irNbKYp55+5qCe8JNYwakR1+bl9VE12Q1
- ywk/PWe2
- s4Ad7A+7+sCuIrN9ZuKuscEyQCR5H1yCs+UYnqJ5zV+I1cde2PJFQjabLjLD1kHO61lrixalvRMCd5Lp4TVtqLLLjhD8MTyU1DaGsj8+1qAGSCq4nTaEMguJ5LW4KvnKA90mTeYaH7tb/xtAMp1F/yG+rqlK3qihY8I5P/oYRntfF4qvC6I+B7KofY8CrK93FCQfkmA/3wn4gn1wyfPkmwg77PLrzk59A6BnGuyLMwrDXXHVJekPYw+RIaqNISt056ziTKyzW0IflwkyK3h7mkhy44KrGmrREjBXG5ijLpjbacPpAnCjDzVoAiw==
+X-Stat-Signature: nh7bzgftiykw4pkjonb5rbbs3uco1ae1
+X-Rspamd-Queue-Id: 9B267180008
+X-HE-Tag: 1789779630-24054
+X-HE-Meta: U2FsdGVkX18z6vffgk+Vyhc1SI5fjqzu2twHM8QM1pOmT3DTMg+hzxTSWjJZhx++3dVjcCVmw+9c3jfwNXi/VX9e89iqcxTUxu5jvnuOKboO0KIp6I4IbfMrJSdCWhP/cz2etYv75vQS8DHIKPNHIVs2z+SJgCaXrOOqibqXWGdOxz0dxRZDQCRzD36//2sByXZnSQwwVu5Z2RJhv00S/l+Q9Vac+zTIFoAbnFygcxX5jB1ILTjSdOabSb4IZbXRLEG4BGAbrnvTQhwFKykBhjEZuTkTMiKK2bjyxQr82HnjuCbTQOWgJqNGTQ4mmcQTyn3kwLEbe1YSmG63GOiPjR7Mr+TuHyKY45wsUZayxaCOcQK5ixEQpezAvpM+WV183YQBYsTqcBBsuSvs8y3hJ08BgCIh3S46ze0cSuEIzSw/bnqIrKZ7Fd7cuRpqXIms6Wauc2tlC8SxsO3aXWOyh9pF5ysbG6lkzWOuThE5YzwgYaz3Tv8dOQg8J0tqyGWg+tZ9tN3MlHmn3blsNSUr+hVlCJRK+XQrubOuzAgRXNmw5EZJdF30oLKHW+QOnKMIXDDh8Xe6AnQO9hy1393gse5IqZWaY6oPrxZSXIDv1rksNMAM0SuATtuBNk+1q1MOSzxtmJy381Qt5lPW4Jhgmz9kqEhKBvIagr1u61moJvO3gEzmr4GEJNPE1XADMmp/IR8N5dWfYPntnpJZcLfRKB9r+R5s3vhxr778SqnHHhaRt/fprmrSY6DkCwb5L4ri4OB4Y12hCJeXaOK9w9Xga5ustjsC4PlYp/NggYdPhrn0gldb7kEvwKnwILTnG1TnizR5+HU1wMSXzYo4N1a/3Y8/uYf0WvUD2oXnLD/HA4q7wSA1cEgWiO7KRkfagmjKROwjyvaaBlDjPXPjojdttwGCt22Gj79V2sh4ATgtQ7Q0HBvTMQLObMBKha2zu6Hh0pboavLEBuJYNXuIkWK
+ WD5dLTcZ
+ Mqq9ptPeXoLx8ehl+bGO2VpNDALs0g8gayQ08JENXWWU0M47Lbfw6yjJ8N3uDNlgPUDn6lAn7CUuspklBMAHR/QA1dw1CftgrNbc8iMxYBYjwkl6/DBDgulCHrB/pM41m60q5bJwUx9PTFWQtjXq+Q8dCmAmRLqGxul2ET2VUM+KDZtHu/12TcK7qRvSvMxyeqpSEtc6u602BXYWDS0FA72Ww6kdsmMzcQz8hspuzofujsN6YLahoQDnodNk7rcfRJhBVGHkQsZVBtWax9w+aB3To1uIL+JElJEX/SXIc/8F2U2i7YaraYzxsLaX6FMUDH4r4bRkDwAdujRNh64CViewfLgJvKgeHYZZpGmFSYuCeSQ89zV2q6dxkyc6S+z/7kAsHkZ1u3CB8LyC0eIEKlY+eGjq795+i6GpUJSW6K4vsduoLeezG30g1nRpCRpf50xHMdGoRT8+QY8U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,19 +94,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 19 Sep 2026 01:56:40 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> wrote:
+On Fri, 18 Sep 2026 12:19:28 +0530 Anshuman Khandual <anshuman.khandual@arm.com> wrote:
 
-> Since commit 93976a20345b ("mm: eliminate further swapops predicates"),
-> is_hwpoison_entry() has no callers.
-> 
-> So remove it.
-> 
-> No functional change.
+> Generic MM default pxdp_get() helpers fetch the values contained in pgtable
+> entries via READ_ONCE() without modifying them. Just make their arguments
+> explicitly 'const' for some additional protection.
 
-Looks correct cleanup to me.
+Looks good and safe to me.
 
 > 
-> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: David Hildenbrand <david@kernel.org>
+> Cc: Lorenzo Stoakes <ljs@kernel.org>
+> Cc: linux-mm@kvack.org
+> Cc: linux-kernel@vger.kernel.org
+> Suggested-by: David Hildenbrand <david@kernel.org>
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 
 Reviewed-by: SJ Park <sj@kernel.org>
 
