@@ -4,128 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E5DEC982CC
-	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 09:39:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4EAAC982CC
+	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 10:04:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0EAA36B0088; Sat, 19 Sep 2026 05:39:55 -0400 (EDT)
+	id A40CE6B0088; Sat, 19 Sep 2026 06:04:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 075366B008A; Sat, 19 Sep 2026 05:39:55 -0400 (EDT)
+	id A17146B008A; Sat, 19 Sep 2026 06:04:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E7FA66B008C; Sat, 19 Sep 2026 05:39:54 -0400 (EDT)
+	id 905AC6B008C; Sat, 19 Sep 2026 06:04:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BEF936B0088
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 05:39:54 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3EC7A160201
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 09:39:54 +0000 (UTC)
-X-FDA: 85230015108.05.555D17D
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 73509A000A
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 09:39:52 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=jjqtGyX6;
-	spf=pass (imf25.hostedemail.com: domain of kmehltretter@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 665D06B0088
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 06:04:55 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E22931401EC
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 10:04:54 +0000 (UTC)
+X-FDA: 85230078108.11.20DFCFA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 0B69E100005
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 10:04:52 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AB+P+Dbo;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789810792;
+	s=arc-20220608; t=1789812293;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G7D6znmpASqvbzZksdBAJ2aUTbJ7HvmNoE6FBY58urg=;
-	b=AhA/ViLDh+oBd5jycFY0uDK5h6KMWykGBoFuxU5mGIoTPOMLkeXqCUE0NTPM8w0yHmGGdz
-	z0DrKF1qblzmd/WrEpp3PQFI11VIC/rIuaNgqCdLZisPRl8hBNWcMJgyXUmDFscc5MQ/Li
-	khcqV/ZcDklv/TGUtEDBBwlIGACQA7k=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=HUNU8WlYTvz53+Q8M4jOiz4WEBDp0YF3dUQql82MWfI=;
+	b=FGnhhTzb+dL3X2AyeEAJniyay+q8FgjMpOBes/x5clxPGtXT1CsqK0zWPSa6tL+qIuTHKw
+	OXXelvAuOm+LiFEPQVwcVFRNXkNi5kLYFXaduKzruGzs2IqrS63sjZH8VjptyIF23ou4qF
+	YJ8tqxkaTgSvYjBp8xnCdtyqMwATQYM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789810792;
-	b=z2RfqHUknWElSIpUmGxg0CTOPW+vtdGgLXlYAMe2ltfWFvi8DveEB6VOUGv90o4D2OVmfz
-	ckKT1cTeSzJzoQNdLTXyh8KwIjhBac3PWjmUnSxUdCbdCnRh3nt1W8vTZyjJx9HDpwo07B
-	XM+8RfYZ7FnbupxghM/3dNNnO0spQ9g=
+	t=1789812293;
+	b=HcUtyl6SuHOW0eIkV45K24yfHwQDjuQoQStlSr3YjoZjoguDIv3En57OMP3hFQtQGxtiVk
+	V2vuoANqb/gnB2qfO8l8Ak1WF0Hey5tgUztf66O0TD0T9P/EN1RaC+WEUA9GSQmMR9XRJs
+	i3U+S94GLJUR+qkQVzCWQz2kM7oy+0Y=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=jjqtGyX6;
-	spf=pass (imf25.hostedemail.com: domain of kmehltretter@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b912d822dso10716075e9.2
-        for <linux-mm@kvack.org>; Sat, 19 Sep 2026 02:39:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789810791; x=1790415591; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=G7D6znmpASqvbzZksdBAJ2aUTbJ7HvmNoE6FBY58urg=;
-        b=jjqtGyX63cta8l1Ff85Kpl8N+C6uJu6EWBXTC0d5j2fZMxjdqcopWG5jY3U31ur1t6
-         zplmSSC0M/0dzOTlWYSvHmQLrYg44zjAVoJYdBeVTi2bZgnIIqKxx3dD1t3ETcEgaJ13
-         qYmHJXZJDPgZamJKednOLdu4orQPQN2ImAhGmQU51eCycssE3XF+Bqv3Z8HVduFiBy99
-         rady6CM3MOIdEbLhURg95VrcXBoua8l7swQYPeHqN3LqnTLt/hUtfibI3Lx2R8/CrLJ6
-         YLadwdQ/Mh63kR4ht5ytBgNTqkYCLcdrtx5yy51PJ1dTlZDun5fOlRKPEh/Gyr11s8r7
-         8AEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789810791; x=1790415591;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=G7D6znmpASqvbzZksdBAJ2aUTbJ7HvmNoE6FBY58urg=;
-        b=ElLX2TWNauZUGcgltNqMaI6I4mr5Qb+n7paOP1IZrjWh9jDFmSrIsu93QmEQ+qH7v0
-         Cvj/ltFwVzhQmFW5Jdy+ku/zIaejgXvTmDa6MqslT8c2eXBKnLnMFToWCv2gCQuf7SvO
-         12w7XLYH09h49J7C3TwTF5tvGWapiIbV/ySznjw8W6YfoyXCJ3UYrgMLVPuzhn1Q5ugZ
-         dVnhUMcsyFpyv4nH1bN0gjo/3xgP7D0AS0dTXY5LLTuvrM1PV1ZbUxfXTSzEQPLJHItD
-         WpaHRTj0Kk/vB2KIhLcR5jG9y1I9i6syaOZKy7znTr7egFsugwueD7KoUCLvbGZ5Bb8p
-         fJcw==
-X-Forwarded-Encrypted: i=1; AKwUvByDz3A9OKLj2FhMxOzcGNL94H2eHDhrKQzMSGTx3teMhdAr6ErPDXcll9dEJEXbhJbpmlyEVILrBw==@kvack.org
-X-Gm-Message-State: AFuF++npt3CjziuNZ+hacTw0kHPKId83IxSpaHRDxRjvr1wTrJq/gTxT
-	kvEB7b6uAxmDSNG7OapeCMQogX+OHOa10rM7IlluaWiWGhZArdCkj8uQ
-X-Gm-Gg: AYBFou2zi/UOPBwVarsYETocX7y43uqNz6TWshQOvy46/OnEIwGw3YJsz96OQ4byxfu
-	Yc5haZjCh19Hc1MjGsk5jQ02PloXicXWptLILX46717gKnKkCEkM/2x8KYnBABSySYGmu+Bjoqg
-	6Xo+Z3xwC0qQNAv7Yh7N+VFk5ah/ET6Z/CA+cBEhy0HFXtXZ9I4CCTYskYuQdJVDLeYAXBNQm75
-	Agqs+aBgW8Z15a9Ugj4Y/aNdpxHRhetgndlBb24G00Z7VF86Ywm71wr/78sdo08Aos5yKWStmA1
-	BGPFc4pHY5u4lnArHy2/WbudbSHX/3sGsSpThkQro2m4rQJ1n6A+4570fest0JS81T8Gwrtebeq
-	++SqCiLH8XxdFpxDvX0gCcD9Z7ResQHow3YxGj9SEufEpAB3m5gUpsl2PMZs7F+/145GlkBd2et
-	UX33sm5OSQbn6nBB2eMePyo04Xkfl6ZdeyLsYJvwC/rUCCkGNmXboapfX1w1uq3REtfQZIO9ERl
-	7hbdGlWVGYs8OpgFcBnD4mBCMO8szA0b/1NsJWVZW1qTMwCPe9wBVP/ZcIfmf8KuSeGyvxoDIA2
-	QMDrB2vmJGkHZj06WqO9Mz0K6RakbNS8CYE+ICzXCcIEDHM35Bv/xI0bL94gpoqA/hbSZuclWYS
-	l/AwejScJ
-X-Received: by 2002:a05:600d:848f:10b0:49d:827:e5b6 with SMTP id 5b1f17b1804b1-49fc5735351mr48923145e9.20.1789810790822;
-        Sat, 19 Sep 2026 02:39:50 -0700 (PDT)
-Received: from unknown748F3CBA5068 (dynamic-2a02-3100-a017-2b01-05fe-203b-7cd2-a640.310.pool.telefonica.de. [2a02:3100:a017:2b01:5fe:203b:7cd2:a640])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fc6ca43edsm124495965e9.0.2026.09.19.02.39.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Sep 2026 02:39:50 -0700 (PDT)
-Date: Sat, 19 Sep 2026 11:39:47 +0200
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Harry Yoo <harry@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
-	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Kees Cook <kees@kernel.org>, 
-	"Gustavo A . R . Silva" <gustavoars@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
-	linux-hardening@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH v3 3/5] slab: handle ERR_PTR values in kfree and hardened
- usercopy
-Message-ID: <aq5YL3P6tuFy4eTU@gmail.com>
-References: <20260903203720.63689-1-kmehltretter@gmail.com>
- <20260903203720.63689-4-kmehltretter@gmail.com>
- <497a85d3-e062-4930-bcb8-c86a8205e7b2@kernel.org>
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AB+P+Dbo;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7F78F40A70;
+	Sat, 19 Sep 2026 10:04:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 757831F000FF;
+	Sat, 19 Sep 2026 10:04:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789812291;
+	bh=HUNU8WlYTvz53+Q8M4jOiz4WEBDp0YF3dUQql82MWfI=;
+	h=From:Date:Subject:To:Cc;
+	b=AB+P+DbohSA5vF//USDAePxj2u8qkSxK1aZEhzVQsWNxGfugWfltgjTBtIsbaxVlP
+	 pGAR241LXaIPfTlPQcSD8SvBkmmoZpwIL0XOqgFXl8vASk9DIde9yWLwxI2tmAHPIq
+	 N7BZKFGjsv3HXAO6RxH+211b+ggm4zUD1va6ZjnHolKmbNrH/58L31nkQb6+PzER25
+	 yXICDgioK0IULDjdR0YeZ1Z1QqrnH0j/4oJVic5QH8V70s5VStJe4uUju6WkLrdovB
+	 IeJiiqCB3TUQ1QxRXaQy+jiPsee2hHE+fUL09b3k/REM0fN2w7opVer9H2tHSl2twF
+	 znBdj5Lqoxc5w==
+From: "David Hildenbrand (arm)" <david@kernel.org>
+Date: Sat, 19 Sep 2026 12:04:36 +0200
+Subject: [PATCH v3] mm/gup: honour FOLL_PIN in NOMMU
+ __get_user_pages_locked()
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <497a85d3-e062-4930-bcb8-c86a8205e7b2@kernel.org>
-X-Rspamd-Server: rspam04
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260919-nommu_gup_pin-v3-1-3660a8851243@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXM0QpAMBSA4VfRubayKcyrSIs5OMqszaTk3Q2X3
+ 8X/X+DREXqokwscHuRpMxF5moCeOzMhoyEaRCaKTHLJzLauQU3BKkuGDWORS17qilcCYmMdjnR
+ +v6b97UO/oN7fCdz3A/tEjEJxAAAA
+X-Change-ID: 20260919-nommu_gup_pin-df63917c8182
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Peter Xu <peterx@redhat.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ David Hildenbrand <david@kernel.org>, 
+ "David Hildenbrand (Arm)" <david@kernel.org>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3893; i=david@kernel.org;
+ h=from:subject:message-id; bh=jGLrYmctqoehyGtKEy83+Rhs7HUTE97IKGKEz5l+j4M=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLLWxVn62VzpXMdlnF75NadYadca83kGfxZXZF5tTftna
+ vn4oeyLjlIWBjEOBlkxRZag4PsGL1+uq61242OGmcPKBDKEgYtTACYS9I/hf8HB7s0O3TlGX7la
+ Fil+42e6/DOfY0e2Z+SepNqbZ6JXezAytNTf4K+1rljfq9THb2uz0PSdse9u1wcvTxj+l57M8Go
+ qCwA=
+X-Developer-Key: i=david@kernel.org; a=openpgp;
+ fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 0B69E100005
+X-Stat-Signature: 7aodsw375t4cgso39k5cj87drscwph8i
 X-Rspam-User: 
-X-Stat-Signature: 8qg1eq9wmqbfmte3af5ue338stwd4t8r
-X-Rspamd-Queue-Id: 73509A000A
-X-HE-Tag: 1789810792-864703
-X-HE-Meta: U2FsdGVkX19V8HxlKKZhSgO0U1F9m3lNhTjXhCKKigr2BsrNc2M179B0Wq9pQthZqeYFR0z/EEbBLANdCdwcWKiVrqypFuiH6VKP8LSIEOd2bUniNM5ksi7eTfIsG8RlWm+IjFaptjz632x5Lcr/PjKYW3t4SwraWI6wYVuCcK4QQe4KNEjcg7wFv1s5e14tvYW9fDM2pjq8yWylh2cr8ooQ6zYRHhb1Y+NwkTCKC72VC0/EbGQBlawRR/Tbx784NT0LLqqded39kSd8pi/F8d/y1KPjrYvclO5RxsOCPXGdeYPP9/4VeaT6lgSESssiUiOsrSV8uuN4xHjgsvKjA3lGZ0w3exOsXu8e+mw06Vs2l7kNtCOLfMEblJogxxnHQgWze9vVfY5dGHbU+8FfBdk92dplU0sAlhs0j/XfVK93/xOQbe6nCoQFwvayl13LCrSVP1FSKon7k+eMJydqHvT3tw19Hm8VehNyJsMFPEGSfsu5ERp5VED8W43VQlUrcxpZEp+Sk1z9Wmqwl8bWD1YnLCXeLbEVteD5ohMGU3enTG1oWfl6ukF1lXz0ZTIAW4/k5hefwoz4qpU5TUn1tBrqD+ZU21racEiNwFDXuWS0m5AHR/URILra3Vc/GGqoV50pQS8oxLNvBmk8ijDbfghjvQLw9GL+O2NA+RVGRXzN0ZRoSZicGrkTn+VCjpBGpjZ5x3at0M3gj26yGWMZgoNyNoA1rDVBRc0ZdeOF6/8pzS6pbiY51geJRRsczd2Lq0MCWKFPu10y/uOCAccYCjzNG/4wNhrrMZkGpXwHBOob5ftSjxKDWTAIvphZ1rdIS+EP6SznMKqeJIAjIolmILR1/JKDTZitxfal9CmBYmIqfMbmxNn0YgZhE17OUqby5Ug+gkJo7ItATTMQRGgzarjthW1r/RcVbCdQ5ENL4sZAunAPMZnEZuob/5AdqWBKPrlxylou5huNV8mzWKl
- BkmKyX8w
- dsZtfxMbpOnRxqj5SDKxRpFQMuRzhFUUtxB1ezGtAq8Yo7763seRTfh+n7tr6NST9p4dGW4WOLVLeOLJLidnDLS+a8Xtt2v0FdrUYfQSV5fPQHTf0vkBz37eCve8JSIXxFI1ahPb90HX/dV1RUQCNlj83QIJYzyS73Fj1FPDI+JbLka6lejQESZx5v777UdK4zVCqnY4HKqq1I2Lee4Iy+1ElvT/PYErryB8otrFiyqxS0+lLYTxlw+VLghlSCmR3OcPSrFVoZMcueC/nrD2h9/jVGVm1fffl+9fVGZ0kdwdS6W0oW59FLKNVdR26H5/G7+TP5lVgK15x40nedTbEC6FN2mM6e37fJz0ULpfBiBdpgaQwgMdQIzGVtP6tJOT3Jf0vJI9bICMaXF/Sr6ygAruT5TfhkXdSqLK1g5T1pu0d8ZQAjLOKLqb8W6K+U1tgTWAVSloXyMGWziCKZaLJw00xV4guUhTXHbc3LKXFkXGsafzXvgumbkBBF5nTtL79X6cPHVPlaUmS+5+XVR4gFnCDKA==
+X-HE-Tag: 1789812292-798006
+X-HE-Meta: U2FsdGVkX1/xrKp5+FN8cyKMYtCnywntX4ifLGy8lFNbFHlZhLKEbZIK0Bi+S+gT8rDcBed2S5Q1+3Xxnuo5BwyB+euDFFQVU7i+t9afgCCvNz/jzmlcHvBbjCh2nRad7QgSBhluUljNUr16o6PhjC2HNA1aoEZzLVsDKcM21wBYnN6YXWzXMT+BXAK+UmyjyRv8Xvh/4rHwU6ns+KGEnHshp2vEwwnX1MapHiu9MZwXS2pL0k69pSwkKSD9vuEtWD1Wbpwmq35KnhZJdRE7iOyEeOYP3ofnmlBN/HSAiJGk5ieKnbqSpKgqM89G1zMRb5LdIjuymUhSDGMuRlaUN1sP57dUAt0cLxLmdqfbZdX8wxgCY8MN1COLt5QKyB7cPP7yP3AWrq6vXwcgZDDL90+MGGu55RVs768IuW3tWLQctZJvsfeYfvGLMiHE8hSNOEFtiNXsPgob5lWibMzd8LYAanuZF2e+GqpNkVYQzz78xxdVwBMB7haj8/Ss3mRJkIP6OunugL3a4n8iv6BJ1f+MQ4CThxw/8la2lShzIgvTkkCq4thGlkyFipcQZI5HZOQkt0i4dTfP+MHKw1W7vGkGHyQj9pYWb6HPAO84g+ESGTTGv5A4+KAGt4HoCpG0Q7H6GDcTbctAltZW2S1xvhPn+AyDW/logUdpi8li/BW0CL5pT6L8MdSQ6bzPy7g3YHARJ+7X1gUJeQLTd+sRciTQ0RoOk/ASiuy1jVIYSVebCRY3WxmUlPQsTiXsaiqZ08+CqHcsJQe6+a5smffwXR8YVZ3kz/NuuxhBHwZlwO1il27H15qCBXTY1vLoqah3X9pCBcghlJ0PNo+hcjZzH0JZXVmK1fPyCHCnE7wZxdg+kF2j2xunaJ31SA5VfR/65VAsUowq/BA3DY2sfz/rGjSL1KMhAKXkuVIfd+YkXopNk13cHIb4PhwJYmS0qZJ1hC4nWBtKLiaD0ce4l4g
+ R56f+wQt
+ wc1ic+uoFP9L4rBnSt6jYo0E5s/pmsuNFUC9Tids1EAE/RCRVemV3p8jr5UfVo05K5GfmVH+L4VAKDwc7TUNy/UfSIvsOax8Md8YhWo9cbyIu+2365nWLWdBANsgLiqKzE44/vJyXbG1xbWZhn7G+AYM4zRs9vK9i7nbzuXtp+/6nMJXL5POfhuIhyoxgCzrWe1yRn4+jgETvqKohBEwT/TBTJ0MIep7rUzsscggQrmhqaKq0Jcy6PFd1VrQ3xeJ9eqkwNYnlf/UahImOU1r/kzP6XvDPwCwmpRNQ1eg+bGqRCWVbJiLaXHa2s4KhiY6iS1kof/w1r+MFdX5aiGovQp4jpZqkozAPVQ0v5O8y+Qp5Os9KWzCBG0pICTi9isq2tR3nNOqireIQmPraUVmjY30BumKFTjwnSwIMS59jRYXYCDMO9MoabJ/nSR9bpcfhEwY+SiIoH61ktvjCd3oHIow/MMHFIO8UJvxT2wLkrqhvgSmmQ27wmCbvCGK4f6BP9RULZwWjdSDx7a4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,22 +106,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > +	if (WARN_ON(IS_ERR(object)))
-> 
-> Wonder if WARN_ON_ONCE() would be better.
-> Also wonder about the benefits for hardening (as opposed to debugging).
-> Without this check it would fault. Now it warns, but hardened setups often
-> use panic_on_warn anyway, so the result is the same?
-> 
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-Yes, I'll switch to WARN_ON_ONCE().
+The !CONFIG_MMU implementation of __get_user_pages_locked() takes a bare
+get_page() reference for each page regardless of foll_flags:
+	if (pages[i])
+		get_page(pages[i]);
 
-You're right about panic_on_warn. The benefit is a clearer diagnostic
-and, when warnings aren't fatal, returning before virt_to_page().
+This is reached from pin_user_pages*() with FOLL_PIN set.
+unpin_user_page() is shared between MMU and NOMMU configurations and
+unconditionally calls gup_put_folio(..., FOLL_PIN), which subtracts
+GUP_PIN_COUNTING_BIAS (1024) from the folio refcount.
 
-I'll split out the ERR_PTR patches as Harry suggested and recheck the
-KUnit warning-count test with WARN_ON_ONCE().
+This means that pin adds 1, and then unpin will subtract 1024.
 
-Thanks,
-Karl
+If a user maps a page (refcount 1), registers it 1023 times as an
+io_uring fixed buffer (1023 pin_user_pages calls -> refcount 1024), then
+unregisters: the first unpin_user_page subtracts 1024, refcount hits 0,
+the page is freed and returned to the buddy allocator.  The remaining
+1022 unpins write into whatever was reallocated, and the user's VMA
+still maps the freed page (NOMMU has no MMU to invalidate it).
+Reallocating the page for an io_uring pbuf_ring then lets userspace
+corrupt the new owner's data through the stale mapping.
+
+Use try_grab_folio() which adds GUP_PIN_COUNTING_BIAS for FOLL_PIN and 1
+for FOLL_GET, mirroring the CONFIG_MMU path so pin and unpin are
+symmetric. Keep supporting the traditional behavior where users specify
+a pages array but don't set FOLL_GET.
+
+While at it, don't return NULL pointers in the page array,
+as this is really not expected for GUP users; instead, just fail and return
+-EFAULT.
+
+[ david: support traditional behavior with no FOLL_GET, extend
+  description ]
+
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Peter Xu <peterx@redhat.com>
+Reported-by: Anthropic
+Fixes: 3faa52c03f44 ("mm/gup: track FOLL_PIN pages")
+Assisted-by: gkh_clanker_t1000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+I added a best-guess fixes tag. Given that this has been around for a
+while ... and it's nommu, I think this is fine just going into the next
+merge window. In that case, I will pick this up myself. If we want this
+as a hotfix, Andrew please pick it up.
+---
+ mm/gup.c | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
+
+diff --git a/mm/gup.c b/mm/gup.c
+index eb898ea1ee22e..1681bea8eed7e 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -1659,6 +1659,10 @@ static __always_inline long __get_user_pages_locked(struct mm_struct *mm,
+ 	if (!nr_pages)
+ 		return 0;
+ 
++	/* See the MMU variant: support the traditional behavior. */
++	if (pages && !(flags & FOLL_PIN))
++		flags |= FOLL_GET;
++
+ 	/*
+ 	 * The internal caller expects GUP to manage the lock internally and the
+ 	 * lock must be released when this returns.
+@@ -1983,6 +1987,7 @@ static long __get_user_pages_locked(struct mm_struct *mm, unsigned long start,
+ 	struct vm_area_struct *vma;
+ 	bool must_unlock = false;
+ 	vm_flags_t vm_flags;
++	int ret, err = -EFAULT;
+ 	long i;
+ 
+ 	if (!nr_pages)
+@@ -2019,8 +2024,14 @@ static long __get_user_pages_locked(struct mm_struct *mm, unsigned long start,
+ 
+ 		if (pages) {
+ 			pages[i] = virt_to_page((void *)start);
+-			if (pages[i])
+-				get_page(pages[i]);
++			if (!pages[i])
++				break;
++			ret = try_grab_folio(page_folio(pages[i]), 1, foll_flags);
++			if (unlikely(ret)) {
++				pages[i] = NULL;
++				err = ret;
++				break;
++			}
+ 		}
+ 
+ 		start = (start + PAGE_SIZE) & PAGE_MASK;
+@@ -2031,7 +2042,7 @@ static long __get_user_pages_locked(struct mm_struct *mm, unsigned long start,
+ 		*locked = 0;
+ 	}
+ 
+-	return i ? : -EFAULT;
++	return i ? : err;
+ }
+ #endif /* !CONFIG_MMU */
+ 
+
+---
+base-commit: 40288c9206c17eb66a603262e06a58d300d0f279
+change-id: 20260919-nommu_gup_pin-df63917c8182
+
+Best regards,
+--  
+David Hildenbrand (Arm) <david@kernel.org>
+
 
