@@ -4,84 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1F97C982D8
-	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 14:15:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E39FC982DA
+	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 14:15:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9A4B06B0088; Sat, 19 Sep 2026 10:15:37 -0400 (EDT)
+	id 389F46B008C; Sat, 19 Sep 2026 10:15:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 92E716B008A; Sat, 19 Sep 2026 10:15:37 -0400 (EDT)
+	id 361B96B0092; Sat, 19 Sep 2026 10:15:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F6B36B008C; Sat, 19 Sep 2026 10:15:37 -0400 (EDT)
+	id 2504B6B0093; Sat, 19 Sep 2026 10:15:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 532996B0088
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 10:15:37 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 502B6C014D
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 14:15:36 +0000 (UTC)
-X-FDA: 85230709872.03.E65B487
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 0EFCD8000C
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 14:15:33 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Kfiff3v4;
-	spf=pass (imf02.hostedemail.com: domain of chenhuacai@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EC3AE6B008C
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 10:15:42 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1BD7B40285
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 14:15:42 +0000 (UTC)
+X-FDA: 85230710124.26.4E17C52
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 2874B2000C
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 14:15:39 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="IBPv+D/4";
+	spf=pass (imf03.hostedemail.com: domain of chenhuacai@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789827334;
-	b=qLTK1YspsIv7/MIJabxNh63ghOMPnkfTAqlTqcDxS09rtYRJs/GPZndhsncXxDuadrincH
-	VyImUdMhlHoH8hEIpjQ679YQ1qHovm5VI37J/pxOIPTrq8BOf9ym0na6Id3WE3Yb3eZiU2
-	qF05pq/Pqapyy//ajzQ15QYSmvOZXJs=
+	t=1789827340;
+	b=qMRSlLZ/IS84HV1zYiFZHGlhyHYiieMmLoFLUiH+sHwsUiww42Q+64ZOXnOO5KXeBcK0BH
+	S2bYD0FZF0ir25rDhaDUS+xTF1CqDsZKzloQsr/9IXtQzUfTz5il+nqrsZ6icfX5Z7ApF4
+	UYgk+i7q+7jC84WA1Q5jn8GXRtmvSwU=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Kfiff3v4;
-	spf=pass (imf02.hostedemail.com: domain of chenhuacai@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="IBPv+D/4";
+	spf=pass (imf03.hostedemail.com: domain of chenhuacai@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789827334;
+	s=arc-20220608; t=1789827340;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VnxoiB2YsjeyPgBJVLzNUBrWI8MXygpkuUqCzqaQk+A=;
-	b=Iuc2uT8EitgP3hXQ2fhb+KkJewfnskU4lYyYHZVjh3glCx8PBCZU8Rbr1PF3N34ULzuPRn
-	Ved6eyFUulmpB5EMJvgCOpQiLSpv9LfiUuHEI5Fnhg2xn0TeeqssGBDOibM3pQ1/j+AaQ0
-	CCS3SLf61qW/2R1QiLMNsug2uMsZ8L4=
+	bh=oJ/TNEaABlE8fSBuYZubv6hF281KP4m/bl7sa4jtdbY=;
+	b=OToqCT1vFzEStBJjcMnns9GODBVxuzUOO7Rd18v6V17NFNgE8a69qqVouE/hTlx9E7SF9k
+	TnaVWvjf816t27/DArW+Xr4wdx6yuoFZE9wPmKgIYEd15DMSw7EYE/k15b2w7YmHUyrpEY
+	i0Udo+1D37TRIOtzAq3WE/KHcGkwSfY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 030A5602C3
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 14:15:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE7E61F000FF
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 14:15:32 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id EAB52447C7
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 14:15:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6EA81F008A5
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 14:15:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789827332;
-	bh=VnxoiB2YsjeyPgBJVLzNUBrWI8MXygpkuUqCzqaQk+A=;
+	s=k20260515; t=1789827338;
+	bh=oJ/TNEaABlE8fSBuYZubv6hF281KP4m/bl7sa4jtdbY=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Kfiff3v4QxBsewU7RmMwvCGwNG5LsLpXurH/+9MQf6SU1VO9aIStJpmjocctpvXR9
-	 6H4HL5uk/rY2E14tZBYpL79wQm75yZVIQk6DBlR83n3GmkQwxekpQ7GelT7Pxblv+B
-	 i8E0qKT9NxXk8gJjnxwPiNlk0XfiBc+q+zDO+vSINK+shsAF+VWw8rBwaGoSnfGog5
-	 43xARo6itVr3p7Xyqe4TUZ2Nr9OUtzzHeVxMvlHFsFyqQwSZeYLZMeAosiLIIl/uzX
-	 ruG5VCuslIrUMQboRg7N8jHeAYuy4x/WzOBtuKDm20C2jG79ZJLQPWJ1mtg7K42+fF
-	 TU7peTsFz2c0Q==
-Received: by mail-ej2-f43.google.com with SMTP id a640c23a62f3a-c264788fd58so259132866b.1
-        for <linux-mm@kvack.org>; Sat, 19 Sep 2026 07:15:32 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxk8ZRvNi/8+saG/y1P/w297jYeoi7EcnjpUBC6bEXNT96CNbZGX29lbcCizV5+gFWs2NvdPEA8oA==@kvack.org
-X-Gm-Message-State: AFuF++kT/6gDY5NPkp22aman2eAj0r4jaS8j1624H1mYhloSpAi+4rEi
-	xQnFt8dkTOS4yRm8txd6XZEEYvQE0yW4w04ud2RINmurZNuPnBiZLtrGbWFQjyfHl8gL54YuHqX
-	oXdrVvY2oI6DLODT9J4Ompb+HkrUwp4w=
-X-Received: by 2002:a05:6402:46da:b0:6aa:486d:96f8 with SMTP id
- 4fb4d7f45d1cf-6aa5798f026mr3635025a12.38.1789827330842; Sat, 19 Sep 2026
- 07:15:30 -0700 (PDT)
+	b=IBPv+D/4BTtk3dPwt4wmVFDpt0Pz+YAmdKOF4GtjtQz8o2k+4Sb25nmAT4LNxNp37
+	 N1WVrz+/1TBWSYizOebLdtvEtkosdxqF2MGiINme2ogpbrhfK9uWGfi5d2jF+GLf6I
+	 tTXjDCkftsN1UjlXtuqrzg/rgFNrw4sGFNJXY6YIz4dwudMR18mEq4/tlG22znghAK
+	 x51hhMaAkt+rR67/9y5mpZGce/vFl5J0LSmOhgAUa0xf6cVLdt1MLxNLq6KJe+mmqq
+	 h4pPx2htqIStUyNgR85VLBBzP18/UvCBWAGcdlecO63G0bmHZ1IMwA6aMZY4zc4CTV
+	 O2/NLfF7SBO2g==
+Received: by mail-ej2-f24.google.com with SMTP id a640c23a62f3a-c29d33431c8so232193466b.2
+        for <linux-mm@kvack.org>; Sat, 19 Sep 2026 07:15:38 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBw1HHR/BLMXjDmDjJ+ykZ/DLJEcz7FfsgMVMYJhrfT30HN5vZOMPBuuM/0B3sFWNkl89WpzY8gGTg==@kvack.org
+X-Gm-Message-State: AFuF++lQ8KGkUp7UttsShXjGhzGST0tdMPC+ux2iNcQjBI1LZtiYyaDv
+	uz+o1hMH7j5RxYIq/asi+hDkFZYpnEm+YAYGIX3oQl3Dd2M8A1xzb2Ck84juE2axsNT/J+xFZyZ
+	SGzE73Lw1XYFalYGCrnw5GItSaEGntPs=
+X-Received: by 2002:a17:907:8e86:b0:c29:4513:f6fd with SMTP id
+ a640c23a62f3a-c2a157fc1cdmr427461966b.35.1789827337280; Sat, 19 Sep 2026
+ 07:15:37 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260904100852.26006-1-dongtai.guo@linux.dev>
-In-Reply-To: <20260904100852.26006-1-dongtai.guo@linux.dev>
+References: <20260904100852.26006-1-dongtai.guo@linux.dev> <20260904100852.26006-2-dongtai.guo@linux.dev>
+In-Reply-To: <20260904100852.26006-2-dongtai.guo@linux.dev>
 From: Huacai Chen <chenhuacai@kernel.org>
-Date: Sat, 19 Sep 2026 22:15:22 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H7NpgPwQRs0u9gk4uJKZ8-OvJJfNQcaBA8R=LSd6CdS2g@mail.gmail.com>
-X-Gm-Features: AcwNN1XtUrN1RH8CnRKNNkWXHjiR4TDIl36-0BqqerFi6hnTqZG-JdRKU2IGpQg
-Message-ID: <CAAhV-H7NpgPwQRs0u9gk4uJKZ8-OvJJfNQcaBA8R=LSd6CdS2g@mail.gmail.com>
-Subject: Re: [PATCH v5 0/5] LoongArch: add KHO support and selftests
+Date: Sat, 19 Sep 2026 22:15:28 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H5-Xr3NsRn+KW47pah42sgON0g0onQ=ExWDYe8=iMiMFg@mail.gmail.com>
+X-Gm-Features: AcwNN1Wu2ezGxwQSPYeopFPyOTbuuxRXz-YiTV5Ounc_KY47HsAgFsQWeJyn7EM
+Message-ID: <CAAhV-H5-Xr3NsRn+KW47pah42sgON0g0onQ=ExWDYe8=iMiMFg@mail.gmail.com>
+Subject: Re: [PATCH v5 1/5] efi: add a KHO configuration table channel
 To: George Guo <dongtai.guo@linux.dev>
 Cc: rppt@kernel.org, pasha.tatashin@soleen.com, pratyush@kernel.org, 
 	ardb@kernel.org, shuah@kernel.org, ilias.apalodimas@linaro.org, 
@@ -93,13 +93,13 @@ Cc: rppt@kernel.org, pasha.tatashin@soleen.com, pratyush@kernel.org,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 0EFCD8000C
+X-Rspamd-Queue-Id: 2874B2000C
 X-Rspam-User: 
-X-Stat-Signature: 86cgdbsxkti6p6t54prc7ib1tuzn5emh
-X-HE-Tag: 1789827333-564019
-X-HE-Meta: U2FsdGVkX19O49fRjeE4tE2Y4gifWiQ/GoQeHeOniKQsIQDCHTHDuZ1xN6WhgBjNMZOqH1VH2Rdz3n52jdYlRBbt1vLm4xpHdVt9a0rNARqQ3QUgY6FbLLU5o7w6gFGtuYjorN+tyYKHxOAYAEh4PrGbrOmkh1GZWDYmFD5LWL8jkGSzL1w5cnX/MXFT+Bgb1Yf39QuNnTvKk4DriAjO8vkuZpNr8Bn4xHNpi+3PmTzA0zbV+zI1ngmiLaEP1jctu9qLPq6OMNnI4m8DG0skrjwkvkBJM2Xx9tP/21UhQAcxJUj3R4rfXR1jNWbOwPh/8itNjZe63wz2klazR3RPGgE3PDF0Lq9HPhFbHi5jctSkcjS4jOd3pkbj1PZjJSw7/Ucx/oDiy8xdIGUFZ+Pc6HLO4q6lvgMCP7pn9iZaY/YBgR1HvzsebVNHdPt+DA7ZqqhXYPn1KkLUVr6YFOuHGbsxr29givXIPnCGmNF/RQwTo/F761XLZpYVHjGbClCCI4zb2UhWXC0vfX4xGKRIkySwXfm8HJI1CYuuI9qQRHCV37sMyODmL8+e4u+IAHYThMyw9TL35U45hN5z1pZ72PL/tou9LiRXW3vFuKGHZXPO681WFFr/cTPhY8VKgHdvucAUy/foWAN67dXzwrKvhE9+qoTleV+9DucrpyXIN1TKMEb3A7a+UaSW91yypwjnwV/gejFC6qkOkLOOGY/fiVFhkNGTcZOOrMM2a1D5nD0nCvzU0Pohi5wonwPsn5sz12Kn6H+SH6I0RyABm5rv7LrrlI3Jbzl8nTLQzVuVfoR0cYX4r32vjnBEQlELNT4K31/grUNTn3GtrR2D4AZtvybPFIYlQ4EpaUC34Hx36xpHk73WGSiAOoBpWdanBXBOZ1bDrCrld+PmKZMn/Yd84CLMxQ52zs1L3tIM3XP1iURpAv1QekSHce5w8ED0VukbV4TNwJAKN9mVrBAdFy+
- kJnkgjvn
- /AUKV2AGSXESsv4axB/2P1W3VaTT0vipSyiPsVDLlpA9ht9CWA3cVYeNg7LBv0auhHdXMsC9IwzTcmEcEiuhFOgKFnAWijEdl2T/6+2XXv0ko2g41vKhWbU6szhKfFZiai2g3SHRkxeduhMg/6vsx7lSw4tTOeDZP3TEebEbIZ7lKQ3kEyjMDRHPOpUQrqDNiiKUW3LpmHY0qwBF8fRQgBZsMbFjInsWGe7A5omCsEjxapqhycLqJ0hUpD5C2ZKxDzoVjmzqxQo6gdKIo7BUm79yOJtk2FSmz3Mr4rD/lZPnvPbPz2aH4fhPVxw8G2xTcz0ugnPs62FmOxHZcrp49ASf5+4LPu54xGimRpcmKf7YQBMY=
+X-Stat-Signature: etnjkgkffnu19mg36w1ux7tthzu7ib1g
+X-HE-Tag: 1789827339-81111
+X-HE-Meta: U2FsdGVkX18ohXiuII9u4x8AS0tHFF9ObOwN3jz3k3NtqRHLVwaptZsRdQjCNcnIJYnELWbqv5jmYWgv9c/xNveI0khzhp7swkvARMpFRPf/mJLWqjNZit682cf6uaew6qkIl3weWyfzTgEXCbHWwKaM/Z309+txhzygTTQqvCiSX1tROVpCIryQuvfc7A2nqJGkBr4YCnQcHtr9u7n42ySyO3G1Ch1aeUX0+JvX0YMr5Q5hIhUeuE5EQihLslKupRWBmwC+3bkib/TwpbsdaVlWgQ2r3pWMkpk1lU6Ug2K0jWE38gdSEXjZfotTChEr2yMcxXUanjudS2Qh6oTsTQZ21JWrWL3LY2uEB0NyYD5dpxtPOSOR7RToPysFl4mAlEB9oKpWD1wfmxPjZH9FYOH9GmVJPTRMeykfMptKHuw7Fow2jWco7HmzV2v2Xt2+1lzrNch0qmKa23qe2iT1Ob0VvKYwdrgt/TbOUkTrpJiy39sZLAntwA4vhXVhOndstR2klQLqakhV8zaq6kIoNzuMxyjRvGQI1a4crtU1FIWK66trcPFxDFxNN+oacq/sAG08LYjunxvYv72ob6sICNd5/uGAsYLTKSpKDf49eWPHTN6vgqQ6x8ViRrlxT81AKui0i3yFKCK120X/9Lf2xxhqThFRq496zv+ehz1azpjUKuvfdGN5QEgBcRTPpI1LYTdpJ1+KmmZRfnG0ll5EAqHpncMKQgxjzoKrgmtokASMtg25D/wl3FbEtJ8aSyP9PV5i1pVX2kr2briS/dIWH2POx+VkOTIH2OBFjRBVqrNegBZCSVU6CQ+PJtAiTs5Mz1M5VEodXy3+UNyjbJ2r6eDtPwOS8qb6Lk5K31uCUkVLWlwWs5vLSNO715HYJ7HiPhDchTdkjO3DMmctAd6bz84o2rJrRce389As8PYs7PLcMGbMiO1JPuxfasXxGaol8k2UGNzvkLhzQd1iRcl
+ +8PEA7OS
+ qNL6jV2LqEIkJz1pE8ReOPjq7GfEHtvNE8zZoMvSh6N9vQSZzhfwWLURRrePPmcMtzm1pMrMc2WTZmnfoRVpH03/VOlR9WEOhnr34OLHABPWUBu9IQLn07IabInHdj/rjd/aL32x71Il54EhXzwQQ1MjpBsycfaIO58sLsCCsqHvXNo/9GhiE7mghMJLKPP5UU3oxQuybXySgvQ4USJ+afYBDj7b+jl7CnQYhPCg1gkLwhutkLgWFL376OQhLLOR0y7obIekC6cGYImfUiXuqQn0Kg1MG15ZaWq1v1HpkWAQTyfZkgYrH29spxLNg4lPzEn9f
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,183 +112,343 @@ Hi, George,
 On Fri, Sep 4, 2026 at 6:10=E2=80=AFPM George Guo <dongtai.guo@linux.dev> w=
 rote:
 >
-> This series enables Kexec HandOver (KHO) on 64-bit LoongArch and adds
-> LoongArch coverage to the KHO QEMU selftest.  KHO is the remaining
-> architecture gate needed by Live Update (LUO) on LoongArch.
+> From: George Guo <guodongtai@kylinos.cn>
 >
-> The transport is the central problem.  Arm64 and riscv can pass the KHO
-> state FDT and scratch area through properties under /chosen in a boot
-> FDT.  LoongArch boots through EFI without a boot FDT, so that path is not
-> available.
+> Add an architecture-agnostic EFI configuration table channel for kexec
+> handover (KHO): a LINUX_EFI_KEXEC_HANDOVER_GUID table entry pointing at
+> a struct linux_efi_kho_data that carries the KHO state FDT and scratch
+> area addresses from one kernel to the next.
 >
-> EFI KHO channel:
+> This is the channel for architectures that boot through EFI without a
+> device tree (e.g. LoongArch), where the /chosen linux,kho-fdt and
+> linux,kho-scratch properties read by early_init_dt_check_kho() are not
+> available.  Architectures with a boot FDT (arm64, riscv) keep using the
+> FDT path and do not select this.
 >
-> v5 reworks the EFI transport following Pratyush's and Huacai's reviews
-> [1, 2].  Instead of rebuilding the EFI configuration table in
-> LoongArch code and switching st->tables before kexec, the common EFI stub
-> allocates and installs a persistent table under
-> LINUX_EFI_KEXEC_HANDOVER_GUID.  This follows the model used by
-> LINUX_EFI_MEMRESERVE_TABLE_GUID.
+> The design mirrors the LINUX_EFI_MEMRESERVE_TABLE_GUID channel:
 >
-> The common EFI table parser reserves the stub-allocated table, reads it
-> during early boot, and calls kho_populate().  An early initcall keeps the
-> table persistently mapped so it can also be updated on the crash kexec
-> path.  The implementation is architecture-independent; LoongArch only
-> selects EFI_KHO when KEXEC_HANDOVER is enabled.
+>   - The EFI stub allocates and installs the table once at boot
+>     (install_kho_table(), next to install_memreserve_table()), so the
+>     config table entry is inherited across kexec for free.
 >
-> The EFI table is global, but kexec can keep separate normal and crash
-> images and can replace a loaded candidate.  Updating the table while a
-> candidate image is being loaded could therefore leave it pointing at a
-> failed candidate while the previously installed image remains the one
-> that will be executed.  v5 records the KHO data in struct kimage and
-> synchronizes the channel from the image selected for execution.  Images
-> without KHO data, including legacy and crash images, clear the channel so
-> the next kernel boots cold rather than reviving stale state.
+>   - The reader is a common_tables[] entry in
+>     efi_config_parse_tables().  It reserves the stub-allocated table
+>     with memblock_reserve(), the same way the memreserve entries are
+>     reserved there, so the table is neither handed out by the buddy
+>     allocator nor placed on by kexec segments.  It then maps the table
+>     and calls kho_populate().  No arch-specific setup.c hook is
+>     needed.
 >
-> The GUID name is changed to LINUX_EFI_KEXEC_HANDOVER_GUID as suggested by
-> Huacai and Pratyush [3].  Existing x86 KHO support continues to use its
-> setup_data transport.  Besides supporting non-UEFI boot, that entry is
-> consumed by the x86 decompressor before normal EFI table parsing, so KASL=
-R
-> only uses KHO scratch areas and does not overwrite preserved memory.  The
-> new channel is installed by the generic EFI-stub entry path and relies on
-> EFI_GENERIC_STUB, which x86 does not select.  Moving x86 would therefore
-> require installing the table from the x86-specific EFI stub and scanning =
-it
-> in the decompressor, not just selecting EFI_KHO.
+>   - efi_kho_update() rewrites the table contents in place before a
+>     kexec; the config table array is never rebuilt and st->tables is
+>     never switched, unlike the per-arch approach it replaces.  The
+>     table stays persistently mapped from an early_initcall, the same
+>     way the memreserve root is, so the update also works on the crash
+>     kexec path.
 >
-> LoongArch enablement and build fix:
+> Gated behind CONFIG_EFI_KHO, selected by architectures that use this
+> channel.
 >
-> The architecture patch now only enables ARCH_SUPPORTS_KEXEC_HANDOVER and
-> selects the generic EFI channel.  No LoongArch setup reader, kexec writer=
-,
-> or EFI system-table replacement remains.
+> Signed-off-by: George Guo <guodongtai@kylinos.cn>
+> ---
+>  drivers/firmware/efi/Kconfig            | 12 ++++
+>  drivers/firmware/efi/efi.c              | 78 +++++++++++++++++++++++++
+>  drivers/firmware/efi/libstub/efi-stub.c | 25 ++++++++
+>  include/linux/efi.h                     | 36 ++++++++++++
+>  4 files changed, 151 insertions(+)
 >
-> The linux/mm.h build fix is moved from luo_session.c to kho_block.c, wher=
-e
-> the virt_to_phys() and phys_to_virt() calls reside after the liveupdate
-> refactoring.  This addresses Pratyush's review [4].  Adding linux/mm.h to
-> asm/io.h was previously attempted, but creates an include cycle under
-> CONFIG_KFENCE [5].  The fix precedes LoongArch enablement so every
-> intermediate commit builds with CONFIG_KFENCE=3Dy.
+> diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
+> index 29e0729299f5..d6c1372484b4 100644
+> --- a/drivers/firmware/efi/Kconfig
+> +++ b/drivers/firmware/efi/Kconfig
+> @@ -314,6 +314,18 @@ config EFI_SBAT_FILE
 >
-> Selftest:
+>           If unsure, leave blank.
 >
-> The LoongArch vmtest boots vmlinux.efi through EDK2 because the initial
-> EFI stub invocation installs the channel being tested.  QEMU_EFI can
-> override the firmware filename for distributions that install it under a
-> different name or path.
+> +config EFI_KHO
+> +       bool
+> +       depends on EFI_STUB && EFI_GENERIC_STUB && KEXEC_HANDOVER
+> +       help
+> +         Carry the KHO state (the KHO state FDT and the scratch area) fr=
+om
+> +         one kernel to the next across kexec via an EFI configuration ta=
+ble
+> +         entry under LINUX_EFI_KEXEC_HANDOVER_GUID, for architectures th=
+at
+> +         boot through EFI without a device tree (e.g. LoongArch).
+> +
+> +         Architectures with a boot FDT (arm64, riscv) use the /chosen FD=
+T
+> +         path instead and do not select this.
+> +
+>  endmenu
 >
-> CONFIG_ACPI_SPCR_TABLE lets the bare earlycon parameter obtain the UART
-> description from EDK2's SPCR table.  CONFIG_PCI_HOST_GENERIC keeps i8042
-> enabled while ensuring that the QEMU virt machine's PCI I/O space is
-> mapped before the legacy fallback probe, addressing Huacai's concern that
-> the same kernel configuration should remain usable for hosts and guests.
->
-> With EFI runtime reset services available, panic=3D-1 and QEMU's existing
-> -no-reboot option terminate the test normally.  The generic QEMU runner
-> therefore remains unchanged and does not mask failures by forcibly
-> terminating QEMU after a timeout.
->
-> The LoongArch vmtest uses the default KHO scratch-sizing path.  This
-> series is based on the generic fix that calculates per-node scratch sizes
-> before scratch allocation [6].
->
-> The KHO vmtest passes on:
->
->   * LoongArch with KVM using QEMU_EFI.fd from edk2-loongarch64.
->   * x86_64 with KVM, as regression coverage for the generic kexec/KHO
->     changes.
->
-> Patch layout:
->
->   1. Add the generic EFI KHO channel and its ABI.
->   2. Synchronize the channel from the selected image at execution.
->   3. Fix the kho_block.c header dependency exposed by LoongArch/KFENCE.
->   4. Enable KHO on 64-bit LoongArch through the generic EFI channel.
->   5. Add LoongArch to the KHO QEMU selftest.
->
-> Changes since v4:
->
->   * Allocate and install the KHO table from the common EFI stub, followin=
-g
->     the EFI memreserve-table model (Pratyush).
->   * Parse, reserve, map, and update the channel in generic EFI code; remo=
-ve
->     the LoongArch-specific reader, writer, and st->tables replacement
->     (Pratyush, Huacai).
->   * Synchronize the global channel at execution rather than image load;
->     clear it for cold and crash images and use the scratch payload size.
->   * Rename the GUID to LINUX_EFI_KEXEC_HANDOVER_GUID (Huacai, Pratyush).
->   * Move the linux/mm.h include from luo_session.c to the actual caller,
->     kho_block.c, and place the fix before architecture enablement
->     (Pratyush, Huacai).
->   * Boot the vmtest through EDK2, allow QEMU_EFI to override the firmware=
-,
->     and use vmlinux.efi to exercise the EFI stub and channel.
->   * Keep i8042 enabled and select PCI_HOST_GENERIC instead of disabling
->     the host configuration in the selftest (Huacai).
->   * Enable ACPI_SPCR_TABLE and use the SPCR-provided early console.
->   * Exercise the default KHO scratch-sizing path in the LoongArch vmtest;
->     depend on the separately posted generic sizing fix [6].
->   * Drop the generic QEMU timeout now that EFI runtime reset services mak=
-e
->     the LoongArch guest terminate normally.
->   * Rebase onto Linux 7.3-rc1.
->
-> [1] Pratyush Yadav:
->     https://lore.kernel.org/r/2vxzo6f96fmn.fsf@kernel.org/
-> [2] Huacai Chen:
->     https://lore.kernel.org/r/CAAhV-H4PKRNCa4g=3D6TGepP+trtM82JiMoWgVr3O7=
-PqbZYP9uGw@mail.gmail.com/
-> [3] https://lore.kernel.org/r/2vxzse4m54nz.fsf@kernel.org/
-> [4] https://lore.kernel.org/r/2vxzfr0l6fam.fsf@kernel.org/
-> [5] https://lore.kernel.org/r/202605211925.DbDvQ6ii-lkp@intel.com/
-> [6] https://lore.kernel.org/loongarch/20260904025101.9959-1-dongtai.guo@l=
-inux.dev/
->
-> Previous version:
->
-> v4: https://lore.kernel.org/loongarch/20260807103714.33074-1-dongtai.guo@=
-linux.dev/
->
-> George Guo (5):
->   efi: add a KHO configuration table channel
-Add....
+>  config UEFI_CPER
+> diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+> index 0327a39d31fa..6380cfab1493 100644
+> --- a/drivers/firmware/efi/efi.c
+> +++ b/drivers/firmware/efi/efi.c
+> @@ -24,6 +24,7 @@
+>  #include <linux/initrd.h>
+>  #include <linux/io.h>
+>  #include <linux/kexec.h>
+> +#include <linux/kexec_handover.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/random.h>
+>  #include <linux/reboot.h>
+> @@ -62,6 +63,9 @@ unsigned long __ro_after_init efi_rng_seed =3D EFI_INVA=
+LID_TABLE_ADDR;
+>  static unsigned long __initdata mem_reserve =3D EFI_INVALID_TABLE_ADDR;
+>  static unsigned long __initdata rt_prop =3D EFI_INVALID_TABLE_ADDR;
+>  static unsigned long __initdata initrd =3D EFI_INVALID_TABLE_ADDR;
+> +#ifdef CONFIG_EFI_KHO
+> +static unsigned long __ro_after_init efi_kho_table_phys =3D EFI_INVALID_=
+TABLE_ADDR;
+I think it is better to define:
+static unsigned long __initdata efi_kho =3D EFI_INVALID_TABLE_ADDR;
 
->   liveupdate: synchronize EFI KHO channel at execution
-Synchronize.....
-
->   liveupdate: kho_block: include linux/mm.h for virt/phys translation
-Include..... (and I think kho_block can be removed)
-
->   LoongArch: enable kexec handover (KHO)
-Enable.....
-
->   selftests/kho: add LoongArch vmtest support
-Add.....
-
-
-Huacai
+> +#endif
 >
->  arch/loongarch/Kconfig                     |  4 ++
->  drivers/firmware/efi/Kconfig               | 12 ++++
->  drivers/firmware/efi/efi.c                 | 78 ++++++++++++++++++++++
->  drivers/firmware/efi/libstub/efi-stub.c    | 25 +++++++
->  include/linux/efi.h                        | 36 ++++++++++
->  kernel/crash_core.c                        |  7 ++
->  kernel/kexec_core.c                        |  5 ++
->  kernel/kexec_internal.h                    |  3 +
->  kernel/liveupdate/kexec_handover.c         | 33 +++++++++
->  kernel/liveupdate/kho_block.c              |  1 +
->  tools/testing/selftests/kho/loongarch.conf | 11 +++
->  tools/testing/selftests/kho/vmtest.sh      |  3 +-
->  12 files changed, 217 insertions(+), 1 deletion(-)
->  create mode 100644 tools/testing/selftests/kho/loongarch.conf
+>  extern unsigned long primary_display_table;
 >
+> @@ -629,6 +633,9 @@ static const efi_config_table_type_t common_tables[] =
+__initconst =3D {
+>         {EFI_TCG2_FINAL_EVENTS_TABLE_GUID,      &efi.tpm_final_log,     "=
+TPMFinalLog"   },
+>         {EFI_CC_FINAL_EVENTS_TABLE_GUID,        &efi.tpm_final_log,     "=
+CCFinalLog"    },
+>         {LINUX_EFI_MEMRESERVE_TABLE_GUID,       &mem_reserve,           "=
+MEMRESERVE"    },
+> +#ifdef CONFIG_EFI_KHO
+> +       {LINUX_EFI_KEXEC_HANDOVER_GUID,         &efi_kho_table_phys,    "=
+KHO"           },
+> +#endif
+>         {LINUX_EFI_INITRD_MEDIA_GUID,           &initrd,                "=
+INITRD"        },
+>         {EFI_RT_PROPERTIES_TABLE_GUID,          &rt_prop,               "=
+RTPROP"        },
+>  #ifdef CONFIG_OVMF_DEBUG_LOG
+> @@ -806,6 +813,31 @@ int __init efi_config_parse_tables(const efi_config_=
+table_t *config_tables,
+>                 }
+>         }
 >
-> base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
-> prerequisite-patch-id: a2f06addb17cc379b9f98674f087a1642588dc6e
+> +#ifdef CONFIG_EFI_KHO
+> +       if (efi_kho_table_phys !=3D EFI_INVALID_TABLE_ADDR) {
+> +               struct linux_efi_kho_data *kho;
+> +
+> +               /*
+> +                * Reserve the stub-allocated table so it is neither hand=
+ed
+> +                * out by the buddy allocator nor placed on by kexec
+> +                * segments, mirroring the memreserve handling above.  Th=
+is
+> +                * runs on every boot, so it also protects the table in t=
+he
+> +                * next kernel until it reads it.
+> +                */
+> +               memblock_reserve(efi_kho_table_phys, sizeof(*kho));
+> +
+> +               kho =3D early_memremap(efi_kho_table_phys, sizeof(*kho));
+> +               if (kho) {
+> +                       if (kho->fdt_addr)
+> +                               kho_populate((phys_addr_t)kho->fdt_addr,
+> +                                            kho->fdt_size,
+> +                                            (phys_addr_t)kho->scratch_ad=
+dr,
+> +                                            kho->scratch_size);
+Now there is no 80 cols limit, you can just use
+     kho_populate((phys_addr_t)kho->fdt_addr, kho->fdt_size,
+              (phys_addr_t)kho->scratch_addr, kho->scratch_size);
+
+> +                       early_memunmap(kho, sizeof(*kho));
+> +               }
+> +       }
+> +#endif
+> +
+>         if (rt_prop !=3D EFI_INVALID_TABLE_ADDR) {
+>                 efi_rt_properties_table_t *tbl;
+>
+> @@ -1171,6 +1203,52 @@ static int __init efi_memreserve_root_init(void)
+>  }
+>  early_initcall(efi_memreserve_root_init);
+>
+> +#ifdef CONFIG_EFI_KHO
+> +static struct linux_efi_kho_data *efi_kho_table __ro_after_init;
+> +
+> +static int __init efi_kho_table_init(void)
+> +{
+> +       if (efi_kho_table_phys =3D=3D EFI_INVALID_TABLE_ADDR)
+> +               return 0;
+> +
+> +       /*
+> +        * Keep a persistent mapping of the table, the same way
+> +        * efi_memreserve_root_init() keeps the memreserve root mapped:
+> +        * efi_kho_update() is also called on the crash kexec path, where
+> +        * memremap() is no longer an option.
+> +        */
+> +       efi_kho_table =3D memremap(efi_kho_table_phys, sizeof(*efi_kho_ta=
+ble),
+> +                                MEMREMAP_WB);
+The same, just write it in one line.
+
+> +       WARN_ON_ONCE(!efi_kho_table);
+> +
+> +       return 0;
+> +}
+> +early_initcall(efi_kho_table_init);
+> +
+> +/*
+> + * Update the KHO config table in place before a kexec, so the next kern=
+el
+> + * finds the current handover state.  Mirrors efi_mem_reserve_persistent=
+():
+> + * the config table entry was installed once by the EFI stub and is inhe=
+rited
+> + * across kexec, so only the table contents are rewritten here -- the co=
+nfig
+> + * table array is never rebuilt and st->tables is never switched.
+> + */
+> +int efi_kho_update(phys_addr_t fdt_addr, u64 fdt_size,
+> +                  phys_addr_t scratch_addr, u64 scratch_size)
+> +{
+> +       struct linux_efi_kho_data *kho =3D efi_kho_table;
+> +
+> +       if (!kho)
+> +               return -ENODEV;
+> +
+> +       kho->fdt_addr           =3D fdt_addr;
+> +       kho->fdt_size           =3D fdt_size;
+> +       kho->scratch_addr       =3D scratch_addr;
+> +       kho->scratch_size       =3D scratch_size;
+> +
+> +       return 0;
+> +}
+> +#endif
+> +
+>  #ifdef CONFIG_KEXEC
+>  static int update_efi_random_seed(struct notifier_block *nb,
+>                                   unsigned long code, void *unused)
+> diff --git a/drivers/firmware/efi/libstub/efi-stub.c b/drivers/firmware/e=
+fi/libstub/efi-stub.c
+> index 42d6073bcd06..751f46280433 100644
+> --- a/drivers/firmware/efi/libstub/efi-stub.c
+> +++ b/drivers/firmware/efi/libstub/efi-stub.c
+> @@ -100,6 +100,29 @@ static void install_memreserve_table(void)
+>                 efi_err("Failed to install memreserve config table!\n");
+>  }
+>
+> +static void install_kho_table(void)
+> +{
+> +#ifdef CONFIG_EFI_KHO
+> +       struct linux_efi_kho_data *kho;
+> +       efi_guid_t kho_table_guid =3D LINUX_EFI_KEXEC_HANDOVER_GUID;
+> +       efi_status_t status;
+> +
+> +       status =3D efi_bs_call(allocate_pool, EFI_LOADER_DATA, sizeof(*kh=
+o),
+> +                            (void **)&kho);
+The same, just write it in one line.
+
+> +       if (status !=3D EFI_SUCCESS) {
+> +               efi_err("Failed to allocate KHO config table!\n");
+> +               return;
+> +       }
+> +
+> +       *kho =3D (struct linux_efi_kho_data){};
+> +
+> +       status =3D efi_bs_call(install_configuration_table, &kho_table_gu=
+id,
+> +                            kho);
+The same, just write it in one line.
+
+
+> +       if (status !=3D EFI_SUCCESS)
+> +               efi_err("Failed to install KHO config table!\n");
+> +#endif
+> +}
+> +
+>  static u32 get_supported_rt_services(void)
+>  {
+>         const efi_rt_properties_table_t *rt_prop_table;
+> @@ -180,6 +203,8 @@ efi_status_t efi_stub_common(efi_handle_t handle,
+>
+>         install_memreserve_table();
+>
+> +       install_kho_table();
+> +
+>         status =3D efi_boot_kernel(handle, image, image_addr, cmdline_ptr=
+);
+>
+>         free_primary_display(dpy);
+> diff --git a/include/linux/efi.h b/include/linux/efi.h
+> index aa15ff88539b..564b3cbd5ccb 100644
+> --- a/include/linux/efi.h
+> +++ b/include/linux/efi.h
+> @@ -422,6 +422,7 @@ void efi_native_runtime_setup(void);
+>  #define LINUX_EFI_COCO_SECRET_AREA_GUID                EFI_GUID(0xadf956=
+ad, 0xe98c, 0x484c,  0xae, 0x11, 0xb5, 0x1c, 0x7d, 0x33, 0x64, 0x47)
+>  #define LINUX_EFI_BOOT_MEMMAP_GUID             EFI_GUID(0x800f683f, 0xd0=
+8b, 0x423a,  0xa2, 0x93, 0x96, 0x5c, 0x3c, 0x6f, 0xe2, 0xb4)
+>  #define LINUX_EFI_UNACCEPTED_MEM_TABLE_GUID    EFI_GUID(0xd5d1de3c, 0x10=
+5c, 0x44f9,  0x9e, 0xa9, 0xbc, 0xef, 0x98, 0x12, 0x00, 0x31)
+> +#define LINUX_EFI_KEXEC_HANDOVER_GUID          EFI_GUID(0xc941b6c7, 0x7b=
+3f, 0x4af6,  0x9e, 0x50, 0xfc, 0xb3, 0xa8, 0x86, 0x8a, 0x17)
+>
+>  #define RISCV_EFI_BOOT_PROTOCOL_GUID           EFI_GUID(0xccd15fec, 0x6f=
+73, 0x4eec,  0x83, 0x95, 0x3e, 0x69, 0xe4, 0xb9, 0x40, 0xbf)
+>
+> @@ -1273,6 +1274,41 @@ struct linux_efi_memreserve {
+>
+>  void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size);
+>
+> +#ifdef CONFIG_EFI_KHO
+> +/*
+> + * The LINUX_EFI_KEXEC_HANDOVER_GUID config table points to this structu=
+re.
+> + * It carries the kexec handover (KHO) state from the current kernel to =
+the
+> + * next one: the addresses of the KHO state FDT and of the scratch area.
+> + *
+> + * This is the handover channel for architectures that boot through EFI
+> + * without a device tree (e.g. LoongArch), where the /chosen linux,kho-f=
+dt
+> + * and linux,kho-scratch properties read by early_init_dt_check_kho() ar=
+e not
+> + * available.  The EFI stub allocates and installs the table once at boo=
+t;
+> + * the current kernel updates its contents before a kexec, and the next
+> + * kernel reads it back and calls kho_populate().
+> + *
+> + * The layout is an ABI between the two kernels and carries no version
+> + * field: an incompatible change must use a new GUID.  The handover payl=
+oad
+> + * itself is versioned separately by the compatible string of the KHO st=
+ate
+> + * FDT, which kho_populate() checks.
+> + */
+> +struct linux_efi_kho_data {
+> +       u64 fdt_addr;
+> +       u64 fdt_size;
+> +       u64 scratch_addr;
+> +       u64 scratch_size;
+> +} __packed;
+> +
+> +int efi_kho_update(phys_addr_t fdt_addr, u64 fdt_size,
+> +                  phys_addr_t scratch_addr, u64 scratch_size);
+> +#else
+> +static inline int efi_kho_update(phys_addr_t fdt_addr, u64 fdt_size,
+> +                                phys_addr_t scratch_addr, u64 scratch_si=
+ze)
+> +{
+> +       return 0;
+> +}
+> +#endif
+> +
+>  /*
+>   * The LINUX_EFI_MOK_VARIABLE_TABLE_GUID config table can be provided
+>   * to the kernel by an EFI boot loader. The table contains a packed
 > --
 > 2.53.0
+>
 
