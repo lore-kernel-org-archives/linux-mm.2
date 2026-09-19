@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A3BAC982D8
-	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 13:54:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A65F2C982CC
+	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 14:01:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4EA416B008C; Sat, 19 Sep 2026 09:54:21 -0400 (EDT)
+	id 915056B0099; Sat, 19 Sep 2026 10:01:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 49A816B0092; Sat, 19 Sep 2026 09:54:21 -0400 (EDT)
+	id 8C6056B009B; Sat, 19 Sep 2026 10:01:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 362AD6B0095; Sat, 19 Sep 2026 09:54:21 -0400 (EDT)
+	id 7B5756B009D; Sat, 19 Sep 2026 10:01:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 09AF66B008C
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 09:54:21 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8FF9EC027F
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 13:54:20 +0000 (UTC)
-X-FDA: 85230656280.19.663B8E9
-Received: from mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 14CC6140006
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 13:54:16 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZTG3CoCs;
-	spf=pass (imf23.hostedemail.com: domain of kaitao.cheng@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 587A76B0099
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 10:01:23 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B464380281
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 14:01:21 +0000 (UTC)
+X-FDA: 85230673962.04.914183E
+Received: from mta0.migadu.com (out-6.mta0.migadu.com [91.218.175.6])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 92D9C100002
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 14:01:19 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=eIsV+EbB;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf05.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.6 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789826058;
+	s=arc-20220608; t=1789826479;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DqfDG4k5JTeMOBTZkf5CyX5+rM0cvpC9W4QM6kxTSso=;
-	b=HqnJmhLUb2rV+k/SdYJJhb00ZSCtq1iLY82SKq/q08HDZBSn74KVuQXSUhlYVvo6yreLi5
-	ak5BiHkdeQBrz4OLiLs0K819OQDMwJwy8WztzVjBCre7LMmWILnfpi8kOG8eKtDUd3jx5L
-	v/6a2au/GWu867BKXm+XUJY0LsNL11Y=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZTG3CoCs;
-	spf=pass (imf23.hostedemail.com: domain of kaitao.cheng@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=bHxim9R0CqQXtxjguN9DDW8Ut57tysjqxGZKFfVZIaM=;
+	b=XMSiFiuU10fN8bemJgNgD/EKfcYaEmAWTJRmu8kTM+7iUQBDuoVyKqnfeRiWp0hwZka+hY
+	uoa527U6kqnjP6LKohje0MxVo+4FnBY0hWlhzJljpx/o3+N0RLUzGCGLhOapSvxTbculcx
+	cnQl3KMjFvkVaRPmCMcPRYk/JRrr414=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789826058;
-	b=jqXeIRED9fCCthqtLDe2T/Oh7EQzMlg6NKAcJOaL4k/aR+PncrTZn3hwtDN8XMfE8MBwPT
-	uiokOUfZMoXv+2aiuTkE5zOUDuz1knwMyiibCHTkRDveG+2hOsoLX5Ax3b+NJrxKFF3VCC
-	Dg3ehOVX2an7gqAKh1k1nvUg+z6arQA=
+	t=1789826479;
+	b=58rcKxRkhy8FRRKVlF0wTjSmGpNug/1/CciRm1WVvrMt26ffyVjRDfyMPWzW5YltDswPoW
+	eQqzlIiO//lbyYyVf/oTYfDrB51VuF7PaHX6E1dVO7DnWuc0NyMTa16ojszeVQJa1gqm5p
+	ATSH+6qbraZiskgV8HyRSVOD5lMFRKk=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=eIsV+EbB;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf05.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.6 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=NvPx8OfXlBjTydmRGXNV9+CIy/MtUUq+PQTUgas3+4I=;
+DKIM-Signature: a=rsa-sha256; bh=rYDj48Z/2aku9l9SlVwNnxYms0Re8ox444qqDkUqQQg=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789826052; v=1; x=1790430852;
- b=ZTG3CoCsa9r3QMVkwNds/OYUf/TlyIdu8tIG0g/oUNI0b0qb9CyVJ2MG8jL4qRzia+u8bscs
- 7p1IooO8Aqd4Fc0DMJNhdWJPRm5DwcV7OFiahImZjBssyMVnS42EjbZIa5oYsrfRlPZW6VEXUAn
- Pnm4oOr72qMeqZ5SCIxIdO4k=
+ t=1789826476; v=1; x=1790431276;
+ b=eIsV+EbBfLzgzTw8ptsZ7hwCnYC0quMp+ykEoo0LCBgIszEKcmbz5l8n6uuvaMzfNOBjk150
+ RvK9a/Wp4ngrAI4QRnqU+R/bRlI5Wu9z1bP5QQpLd8MpfMj4wMgnE2hPHlfm/xYAwCRb71DN7Vn
+ pzFWj5Z8Fn1g8BxacqeRTjjQ=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 51be81c82004f823;
-	Sat, 19 Sep 2026 13:54:12 +0000
-X-Mizu-Trace-ID: 51be81c82004f823
+Received: by smtp.migadu.com with ESMTPS id 8aee96b0eadcf8c2;
+	Sat, 19 Sep 2026 14:01:16 +0000
+X-Mizu-Trace-ID: 8aee96b0eadcf8c2
 X-Migadu-Flow: FLOW_OUT
-From: Kaitao Cheng <kaitao.cheng@linux.dev>
-To: Mike Rapoport <rppt@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Muchun Song <muchun.song@linux.dev>
-Cc: Priyanshu Kumar <priyanshukumarpu@gmail.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Kaitao Cheng <chengkaitao@kylinos.cn>
-Subject: [PATCH v2 3/3] memblock: Remove unused memblock_alloc_exact_nid_raw()
-Date: Sat, 19 Sep 2026 21:53:27 +0800
-Message-ID: <20260919135327.74089-4-kaitao.cheng@linux.dev>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260919135327.74089-1-kaitao.cheng@linux.dev>
-References: <20260919135327.74089-1-kaitao.cheng@linux.dev>
+Message-ID: <186ee2ba-daf3-4120-a3e3-101cac1ff5a1@linux.dev>
+Date: Sat, 19 Sep 2026 22:01:06 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 14CC6140006
-X-Stat-Signature: j99defg3smp1yt7gczuim9qmufk9p33m
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/6] mm/sparse-vmemmap: drop VMEMMAP_POPULATE_DAX
+To: Muchun Song <songmuchun@bytedance.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>, Mike Rapoport <rppt@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin
+ <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, muchun.song@linux.dev
+References: <20260913083734.86802-1-songmuchun@bytedance.com>
+ <20260913083734.86802-2-songmuchun@bytedance.com>
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <20260913083734.86802-2-songmuchun@bytedance.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1789826056-322299
-X-HE-Meta: U2FsdGVkX1/lriM00hGs+8AGp1bbxZwnm9sQtKR35BHDAPAXndOZv26Y7Es9nt7hVIhKceoH8rp7UkIuKHdqzby3y1PSWSxIDlGGNSFdXVzm69M2IIbPGyOeD7vL2IDB2+XRpZLW7Ssa7jbzgIIFerqNEztYgb3ubxEGyFHjcihYqhCGt+ft4Iaqz+EmUY2KNmDLSHuIFrNaPQWnzcJLXoTktIy/s29FlvEbuUd7+2Y/h1r3PNadsGtJ4RGqZEGb47tDjTN/HY4PT4BosY353TZABCAoHNAMSpLoTuACzjRB7SMOYxlWCuNto3mvrTUab4gzZt/d9i7Tx0bIJT0z1FjD8qlfa4HG4YhkaNmt8/k9kx0LOQ5RuYj9JHmiYae3NW4QX+WLMeb5wjYC1xkACCM45g4rAiZQD1O+aEqnEBOcZPiFjlrZeeDuki2d/g43Y8jbOdoqABI+XXPYqt8qvPWmNx2hCd8+TEDaNCfT1JuFCKN83Zo9Q6bwnQqJwva+yuQB5N/ki64ymCtZJo+MTCODpaBstk3e7hLN6M6LKoV8/RYawsue5b6KArT9xEdbxDJUjRqScuJ8kBwSwG2vLNaRGTFZIXPcZstSaMVeUGUKe1dARLXJR+ZkBy3hatchu16/cVdUil7yeDokUFqLJ7qbGhLxkyaJcdbATXQZqn1BwtkGNzQ9IR8FHWsxT6yEgHn2NIrpaFQMWxynjxAaKFaLbrVMXLiVgbWaQ9Q715cQVNrMCJRWOL+FA4aROmB4feXNAQAKPlnreNpBPBmX0N8V+YOGiSKyHGHCKqs7OO/rECig8BhWuylzzm0Li/CA/WTDo2d/AMKvxRYCtbhFHvmjvuEqm82ZWDr4HIjOYPVjtZarreQW08xXyNbge3cS/BlmKf7Sk0kCTsuDcXwvuRrZsyzQs21KbjAP2gFV9+yroGTXZJvRK5LbXzKlGlNL6MEqBzFkL0pKdoAzTTK
- eopWrOOm
- oLq7y3G39umOEIa26vipkXbL9sykRV4PgxBY5CiIYMZOFo+84gM2/B+cSPgn+LT/z9czEKm7Vd/ghB7De+Az/Qg9quO0kztWX1DE+a0fBYE/7tZPRRsPQU7yiW2yr9O0PFrK+6UdG5oqwd0Wc+wfm+/WmgnYmNcRyhXgNcL0Wms7Q2uGp9E8rAxFvdx3P+6mNIlPHlQJt1MoBndkJrMFsRB8wUs9jvK9PCV7UIW+CJN1XSPjbFo3fO8ofgi+EdtQyZB6blUAY+lPe6lru0saZtRAOYuStHog3fAgRVHljScaeox4=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 92D9C100002
+X-Stat-Signature: stj6tgbhehkkdg1ug6jk9hrawp6k81rf
+X-HE-Tag: 1789826479-432803
+X-HE-Meta: U2FsdGVkX18lQocJt7eScgPbEPD0zDQoMeV6ZIgpYNTd3c608i50iGysZBc+KhHmPcSjHSW029S5MRqgeuLtwIjBOHyU4eZ3kNj9+Jsa/Ck3ByKxNufDnstGlvXKRkMjeTEpe/Bxq91TwNEkFu0a1UFMBY1FRgmdX+g3G0eibRmoHrO9Suu/PhOjQtbDjIoY8qYdL2joRkwPXynWMH5eUn0ABxad5YfZNO6qcoOc/lNkMSA4GJWKFMFqN4aT2dT0yNgyA9erSTNCXIcEv1/6cksniJ8HL06abqYekgf2J4y9O23A9gilXNp0NBwHigHyZW+tJpYlEjhcJ8NQ/4nh2VuDEoBEvjoinSv+OjQeeKW85vf4xemJ367W0IWcg3L4cTGb350Al4V1lb4cucRe76xmoiKrc0PuFqe9VOvxGB4nVVgtGdNJD50QJ2eGFlmvGxwzy56T0xoiP3tYOyM8xs5zmrPsLXCsNZ/NE4DX+fD6RzCy5bIPNDDzfQ3HOkNHdO5JUMVK2FgGV296wP87l6Cyts7hTWMILCK8Y9jklBbxtnM3HPndiuCIIVAxBjAD79cafRTk3D1OaAWfAe0UgFdHVoRx44Oc592JMCNimBgMNpy5ah5nZGYINuEiNVlvsJGdU2q9u6qeJWW9S2uDSzdBq/6GQ3eNvWk6QO9g9313IXBW6G3xOlRZ/JWQAXKuThaNlFfF+URXZ8H7s48VgDHeS6ZDXadix7IPRuW3ZOkdRGV9FKmS1ShbEaEaIokckSIqxAwp3LrBo2pllhshvfqlbffs9prbVgKJNdpZtThF8siJRfZwIewjnNEMezPy2FRTrTUa2N1mmgjHwX7+6yftfwfMpXd3m+znf1OvttGcMrKgJRUFMfLYsBPGeL8Zz2iaa9DRdeb3iXgNxEDxa5w5MIaCk5+3HxUHDPBHr/cpTroQVYl6lXfmHcA4lo349mG2INV8NRXhDp+kHqt
+ Sh8MFkVH
+ s+FvOQYgvz28oLpUCrHVGXk/pwg3QJqe6xWRUmucDWFKacuJYN6YBEnTD9T3eRiITEbt8AsjeeW5AMIFcw93ELPLi9Jweq3+lsyGGrunUdHs0ApNv1yCLGgIpRA26/4SYAe5ZyycZAQeOYXLQyUQaruLkjnSZ7237Tv2WCUJvOtzH1MTv2CBtQ+916FRDJaVvidlnQXPdSBdoHq68IRXGvGl47jdtXXSnKt5DQaL1NB1r8IkPBqRMBtmJb4/jPpfNaRhoh5BNugGd/ruHFnmJLPHQ2x/pBhmpj5ROj4IKT3/5/e2oEKk1ZUl1L3KNRIF4Gsu9Euq38FLBoVATafa2+jjp5eQUvdxMOrva
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,133 +98,180 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Kaitao Cheng <chengkaitao@kylinos.cn>
 
-memmap_alloc() was the only in-kernel caller of
-memblock_alloc_exact_nid_raw(). After removing its unused exact_nid
-argument, the function no longer has any callers.
 
-Remove memblock_alloc_exact_nid_raw() and its declaration. The remaining
-callers of memblock_alloc_internal() always allow allocation to fall back
-to other NUMA nodes, so remove its exact_nid argument and pass false
-directly to memblock_alloc_range_nid().
+On 9/13/26 4:37 PM, Muchun Song wrote:
+> VMEMMAP_POPULATE_DAX currently distinguishes DAX vmemmap population in two
+> places: it keeps allocations on the normal path and takes a reference when
+> a backing page is supplied for reuse.
+> 
+> After Device DAX switched to the common per-zone shared tail page, both
+> conditions can be determined locally. DAX supplies ptpfn for every shared
+> tail mapping and requests an allocation only for compound head mappings,
+> whose PFNs are not optimizable. Therefore, vmemmap_optimizable_pfn() alone
+> selects the correct allocation path.
+> 
+> When ptpfn is supplied, the caller is reusing an existing backing page.
+> Once the slab allocator is available, take a reference for each reused
 
-Suggested-by: Lorenzo Stoakes <ljs@kernel.org>
-Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
----
- include/linux/memblock.h |  3 ---
- mm/memblock.c            | 44 +++++-----------------------------------
- 2 files changed, 5 insertions(+), 42 deletions(-)
+Does the availability of slab mean the buddy allocator is already being
+used? Could there be a window where the buddy allocator is functional
+but slab hasn't become available yet?
 
-diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-index aa845f488327..01a2dea5aa11 100644
---- a/include/linux/memblock.h
-+++ b/include/linux/memblock.h
-@@ -412,9 +412,6 @@ static __always_inline phys_addr_t memblock_phys_alloc(phys_addr_t size,
- 					 MEMBLOCK_ALLOC_ACCESSIBLE);
- }
- 
--void *memblock_alloc_exact_nid_raw(phys_addr_t size, phys_addr_t align,
--				 phys_addr_t min_addr, phys_addr_t max_addr,
--				 int nid);
- void *memblock_alloc_try_nid_raw(phys_addr_t size, phys_addr_t align,
- 				 phys_addr_t min_addr, phys_addr_t max_addr,
- 				 int nid);
-diff --git a/mm/memblock.c b/mm/memblock.c
-index 22d14a637f24..51f816ce0cd9 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -1659,7 +1659,6 @@ phys_addr_t __init memblock_phys_alloc_try_nid(phys_addr_t size, phys_addr_t ali
-  * @min_addr: the lower bound of the memory region to allocate (phys address)
-  * @max_addr: the upper bound of the memory region to allocate (phys address)
-  * @nid: nid of the free area to find, %NUMA_NO_NODE for any node
-- * @exact_nid: control the allocation fall back to other nodes
-  *
-  * Allocates memory block using memblock_alloc_range_nid() and
-  * converts the returned physical address to virtual.
-@@ -1675,7 +1674,7 @@ phys_addr_t __init memblock_phys_alloc_try_nid(phys_addr_t size, phys_addr_t ali
- static void * __init memblock_alloc_internal(
- 				phys_addr_t size, phys_addr_t align,
- 				phys_addr_t min_addr, phys_addr_t max_addr,
--				int nid, bool exact_nid)
-+				int nid)
- {
- 	phys_addr_t alloc;
- 
-@@ -1684,12 +1683,12 @@ static void * __init memblock_alloc_internal(
- 		max_addr = memblock.current_limit;
- 
- 	alloc = memblock_alloc_range_nid(size, align, min_addr, max_addr, nid,
--					exact_nid);
-+					false);
- 
- 	/* retry allocation without lower limit */
- 	if (!alloc && min_addr)
- 		alloc = memblock_alloc_range_nid(size, align, 0, max_addr, nid,
--						exact_nid);
-+						false);
- 
- 	if (!alloc)
- 		return NULL;
-@@ -1697,37 +1696,6 @@ static void * __init memblock_alloc_internal(
- 	return phys_to_virt(alloc);
- }
- 
--/**
-- * memblock_alloc_exact_nid_raw - allocate boot memory block on the exact node
-- * without zeroing memory
-- * @size: size of memory block to be allocated in bytes
-- * @align: alignment of the region and block's size
-- * @min_addr: the lower bound of the memory region from where the allocation
-- *	  is preferred (phys address)
-- * @max_addr: the upper bound of the memory region from where the allocation
-- *	      is preferred (phys address), or %MEMBLOCK_ALLOC_ACCESSIBLE to
-- *	      allocate only from memory limited by memblock.current_limit value
-- * @nid: nid of the free area to find, %NUMA_NO_NODE for any node
-- *
-- * Public function, provides additional debug information (including caller
-- * info), if enabled. Does not zero allocated memory.
-- *
-- * Return:
-- * Virtual address of allocated memory block on success, NULL on failure.
-- */
--void * __init memblock_alloc_exact_nid_raw(
--			phys_addr_t size, phys_addr_t align,
--			phys_addr_t min_addr, phys_addr_t max_addr,
--			int nid)
--{
--	memblock_dbg("%s: %llu bytes align=0x%llx nid=%d from=%pa max_addr=%pa %pS\n",
--		     __func__, (u64)size, (u64)align, nid, &min_addr,
--		     &max_addr, (void *)_RET_IP_);
--
--	return memblock_alloc_internal(size, align, min_addr, max_addr, nid,
--				       true);
--}
--
- /**
-  * memblock_alloc_try_nid_raw - allocate boot memory block without zeroing
-  * memory and without panicking
-@@ -1756,8 +1724,7 @@ void * __init memblock_alloc_try_nid_raw(
- 		     __func__, (u64)size, (u64)align, nid, &min_addr,
- 		     &max_addr, (void *)_RET_IP_);
- 
--	return memblock_alloc_internal(size, align, min_addr, max_addr, nid,
--				       false);
-+	return memblock_alloc_internal(size, align, min_addr, max_addr, nid);
- }
- 
- /**
-@@ -1858,8 +1825,7 @@ void * __init memblock_alloc_try_nid(
- 	memblock_dbg("%s: %llu bytes align=0x%llx nid=%d from=%pa max_addr=%pa %pS\n",
- 		     __func__, (u64)size, (u64)align, nid, &min_addr,
- 		     &max_addr, (void *)_RET_IP_);
--	ptr = memblock_alloc_internal(size, align,
--					   min_addr, max_addr, nid, false);
-+	ptr = memblock_alloc_internal(size, align, min_addr, max_addr, nid);
- 	if (ptr)
- 		memset(ptr, 0, size);
- 
--- 
-2.54.0 (Apple Git-157)
+> mapping to balance the release performed by vmemmap_free(). Early mappings
+> are backed by memblock/reserved memory and do not need page reference
+> accounting.
+> 
+> Remove VMEMMAP_POPULATE_DAX and the flags argument from the vmemmap
+> population helpers.
+> 
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> ---
+>   mm/sparse-vmemmap.c | 36 +++++++++++++-----------------------
+>   1 file changed, 13 insertions(+), 23 deletions(-)
+> 
+> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+> index 96506f594924..878d29a4e862 100644
+> --- a/mm/sparse-vmemmap.c
+> +++ b/mm/sparse-vmemmap.c
+> @@ -32,12 +32,6 @@
+>   #include <asm/dma.h>
+>   #include <asm/tlbflush.h>
+>   
+> -/*
+> - * Flags for vmemmap_populate_range and friends.
+> - */
+> -/* Vmemmap population for ZONE_DEVICE compound pages */
+> -#define VMEMMAP_POPULATE_DAX		0x0001
+> -
+>   #include "internal.h"
+>   #include "mm_init.h"
+>   #include "sparse.h"
+> @@ -208,7 +202,7 @@ struct page __ref *vmemmap_shared_tail_page(unsigned int order, struct zone *zon
+>   }
+>   
+>   static __meminit void *vmemmap_alloc_pte(unsigned long pfn, int node,
+> -		struct vmem_altmap *altmap, unsigned long flags)
+> +		struct vmem_altmap *altmap)
+>   {
+>   	struct zone *zone;
+>   	struct page *page;
+> @@ -218,7 +212,7 @@ static __meminit void *vmemmap_alloc_pte(unsigned long pfn, int node,
+>   	 * Device DAX still relies on vmemmap_populate_compound_pages() for
+>   	 * head/first-tail allocation and tail-page reuse.
+>   	 */
+> -	if (!vmemmap_optimizable_pfn(pfn) || flags & VMEMMAP_POPULATE_DAX)
+> +	if (!vmemmap_optimizable_pfn(pfn))
+>   		return vmemmap_alloc_block_buf(PAGE_SIZE, node, altmap);
+>   
+>   	zone = pfn_to_zone(pfn, node);
+> @@ -230,8 +224,7 @@ static __meminit void *vmemmap_alloc_pte(unsigned long pfn, int node,
+>   }
+>   
+>   static pte_t * __meminit vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, int node,
+> -				       struct vmem_altmap *altmap,
+> -				       unsigned long ptpfn, unsigned long flags)
+> +		struct vmem_altmap *altmap, unsigned long ptpfn)
+>   {
+>   	pte_t *pte = pte_offset_kernel(pmd, addr);
+>   	unsigned long pfn = page_to_pfn((struct page *)addr);
+> @@ -240,7 +233,7 @@ static pte_t * __meminit vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, in
+>   		pte_t entry;
+>   
+>   		if (ptpfn == (unsigned long)-1) {
+> -			void *p = vmemmap_alloc_pte(pfn, node, altmap, flags);
+> +			void *p = vmemmap_alloc_pte(pfn, node, altmap);
+>   
+>   			if (!p)
+>   				return NULL;
+> @@ -255,7 +248,7 @@ static pte_t * __meminit vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, in
+>   			 * and through vmemmap_populate_compound_pages() when
+>   			 * slab is available.
+>   			 */
+> -			if (flags & VMEMMAP_POPULATE_DAX)
+> +			if (slab_is_available())
+>   				get_page(pfn_to_page(ptpfn));
+>   		}
+>   		entry = pfn_pte(ptpfn, PAGE_KERNEL);
+> @@ -318,8 +311,7 @@ static pgd_t * __meminit vmemmap_pgd_populate(unsigned long addr, int node)
+>   
+>   static pte_t * __meminit vmemmap_populate_address(unsigned long addr, int node,
+>   					      struct vmem_altmap *altmap,
+> -					      unsigned long ptpfn,
+> -					      unsigned long flags)
+> +					      unsigned long ptpfn)
+>   {
+>   	pgd_t *pgd;
+>   	p4d_t *p4d;
+> @@ -339,7 +331,7 @@ static pte_t * __meminit vmemmap_populate_address(unsigned long addr, int node,
+>   	pmd = vmemmap_pmd_populate(pud, addr, node);
+>   	if (!pmd)
+>   		return NULL;
+> -	pte = vmemmap_pte_populate(pmd, addr, node, altmap, ptpfn, flags);
+> +	pte = vmemmap_pte_populate(pmd, addr, node, altmap, ptpfn);
+>   	if (!pte)
+>   		return NULL;
+>   	vmemmap_verify(pte, node, addr, addr + PAGE_SIZE);
+> @@ -350,15 +342,14 @@ static pte_t * __meminit vmemmap_populate_address(unsigned long addr, int node,
+>   static int __meminit vmemmap_populate_range(unsigned long start,
+>   					    unsigned long end, int node,
+>   					    struct vmem_altmap *altmap,
+> -					    unsigned long ptpfn,
+> -					    unsigned long flags)
+> +					    unsigned long ptpfn)
+>   {
+>   	unsigned long addr = start;
+>   	pte_t *pte;
+>   
+>   	for (; addr < end; addr += PAGE_SIZE) {
+>   		pte = vmemmap_populate_address(addr, node, altmap,
+> -					       ptpfn, flags);
+> +					       ptpfn);
+>   		if (!pte)
+>   			return -ENOMEM;
+>   	}
+> @@ -369,7 +360,7 @@ static int __meminit vmemmap_populate_range(unsigned long start,
+>   int __meminit vmemmap_populate_basepages(unsigned long start, unsigned long end,
+>   					 int node, struct vmem_altmap *altmap)
+>   {
+> -	return vmemmap_populate_range(start, end, node, altmap, -1, 0);
+> +	return vmemmap_populate_range(start, end, node, altmap, -1);
+>   }
+>   
+>   /*
+> @@ -498,7 +489,6 @@ static int __meminit vmemmap_populate_compound_pages(unsigned long start_pfn,
+>   	unsigned long size, addr;
+>   	pte_t *pte;
+>   	int rc;
+> -	unsigned long flags = VMEMMAP_POPULATE_DAX;
+>   	struct page *page;
+>   	unsigned int order = pfn_to_section_compound_order(start_pfn);
+>   
+> @@ -508,14 +498,14 @@ static int __meminit vmemmap_populate_compound_pages(unsigned long start_pfn,
+>   
+>   	if (reuse_compound_section(start_pfn, pgmap))
+>   		return vmemmap_populate_range(start, end, node, NULL,
+> -					      page_to_pfn(page), flags);
+> +					      page_to_pfn(page));
+>   
+>   	size = min(end - start, (1UL << order) * sizeof(struct page));
+>   	for (addr = start; addr < end; addr += size) {
+>   		unsigned long next, last = addr + size;
+>   
+>   		/* Populate the head page vmemmap page */
+> -		pte = vmemmap_populate_address(addr, node, NULL, -1, flags);
+> +		pte = vmemmap_populate_address(addr, node, NULL, -1);
+>   		if (!pte)
+>   			return -ENOMEM;
+>   
+> @@ -525,7 +515,7 @@ static int __meminit vmemmap_populate_compound_pages(unsigned long start_pfn,
+>   		 */
+>   		next = addr + PAGE_SIZE;
+>   		rc = vmemmap_populate_range(next, last, node, NULL,
+> -					    page_to_pfn(page), flags);
+> +					    page_to_pfn(page));
+>   		if (rc)
+>   			return -ENOMEM;
+>   	}
 
 
