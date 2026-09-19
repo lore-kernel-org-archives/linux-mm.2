@@ -4,90 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A887C982D8
-	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 15:55:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1105AC982D8
+	for <linux-mm@archiver.kernel.org>; Sat, 19 Sep 2026 15:57:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 508D16B008A; Sat, 19 Sep 2026 11:55:18 -0400 (EDT)
+	id EF7C76B008C; Sat, 19 Sep 2026 11:57:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E0EF6B008C; Sat, 19 Sep 2026 11:55:18 -0400 (EDT)
+	id E5B396B0092; Sat, 19 Sep 2026 11:57:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 41E396B0092; Sat, 19 Sep 2026 11:55:18 -0400 (EDT)
+	id D255C6B0093; Sat, 19 Sep 2026 11:57:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 21B406B008A
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 11:55:18 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5205440251
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 15:55:12 +0000 (UTC)
-X-FDA: 85230960864.12.0D9D250
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A50476B008C
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 11:57:26 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0D1B2A55A5
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 15:57:26 +0000 (UTC)
+X-FDA: 85230966492.10.26A2E70
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id B4A3B180006
-	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 15:55:10 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n2ZdRdGc;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789833310;
-	b=wiDdTTbKWE6hypIcuYNbBVnxvrZsNvOyX6JZMEnaPb4YJ5NFUHHY9TwDFy2aABKxlBPNij
-	UwmLbOK4emhWPqfr1Y4CZWXumMG8VQ89mxcGn+xWLcptDkJpu/rUI4zQMFeMpQUfiu9Kbt
-	X0lGKseptt6kkC5rmKYdhLyXha3VB58=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n2ZdRdGc;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf24.hostedemail.com (Postfix) with ESMTP id 627AD180004
+	for <linux-mm@kvack.org>; Sat, 19 Sep 2026 15:57:24 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n1CP6FuF;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789833310;
+	s=arc-20220608; t=1789833444;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=B6BjE5sn0U6E/JVzt5jw8kZLRH2flS2xlqYcSGbx038=;
-	b=wvP59LcEkdsjJdbtHC/520LmgJ4J1fWHry84hIUgZaU+GDHtxTremka5pK9Io0zeYJJvX2
-	aiSZQ7r03WjtzGv4/z7M/Or3vMCT+5h4uHGn7EuMVhU6EuQMx2cTtvNw1K6z2EQ5pZ54Cl
-	wic7g/qghDuw7N5c79zgGu1cFoboMQc=
+	bh=2vMQb7udZL3y0xIqeUPoqQ6nfJil4eFetW2PhuHVfyU=;
+	b=KTb1ZRo8Slg7K/RwjSxHom0amRtBEOmme2d3U4/I1wQtF4LwQX6yCA6hZxPdTn72NBJmdK
+	V+iF9lpDjNCcQLBaPjRr3ciWShbx8yrRULMgeRA6zy5ZMYgyuLMVB6sMMxoOOgrkx9VjOK
+	1hO/EXwJmscdqUQrrXS9Jsi33OpLVc4=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789833444;
+	b=Kby/3BgbwbubOrY+BDZXOkDh4wGkPlM05sHV11WOXArwESe5koatEeBTcQKki5SKXPGsMp
+	3g1QwOtCrj6BFpFhPbwcG5jqaaFt0JMsrqC/d08Xs7OGoYZe/rkWb6Y7OYCguD1a3fCE2Q
+	yRd9GlVtsD5F0Wpev4p1HI+HdxYM7vM=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n1CP6FuF;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 041AF41488;
-	Sat, 19 Sep 2026 15:55:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9137D1F000FF;
-	Sat, 19 Sep 2026 15:55:09 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A2AAB400E6;
+	Sat, 19 Sep 2026 15:57:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 513441F000FF;
+	Sat, 19 Sep 2026 15:57:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789833309;
-	bh=B6BjE5sn0U6E/JVzt5jw8kZLRH2flS2xlqYcSGbx038=;
+	s=k20260515; t=1789833443;
+	bh=2vMQb7udZL3y0xIqeUPoqQ6nfJil4eFetW2PhuHVfyU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=n2ZdRdGcRKiydZel/9OJ+ZO85Vlb9e/IhAgUzsFhvZCWzVleWaLCMfiSS6ow4HtKV
-	 OXWBu38uvJ15HM84fyxkF8+VlnZeoyJZIT1qwHvSspUht3r3V7BEgLoBucl2M2h9Nm
-	 4YSq469HAwpFX64g3ewxY+5yGwCQSME6T4pXSMvuABsRZLYbeY1/RErcTopIO/JImn
-	 nBFs1v6QLUeTjheRZ1D7O+E+2nqcoHwx1MTYNgxNc8xf58zrwjgWEyGN8fWQA/wcAJ
-	 Ur0VSPqGy3gvWK8L0JRoEOFKESzwBeoHKoWgd6NnmodJnXIShjD6Os4Vedojzt3h6b
-	 HWoD0OO+5weUw==
+	b=n1CP6FuF2cU0FlyUyib3oHPT683ZPiPqR9rhrCDfPrg8Deubd+G/PT/8nTq3Lfayv
+	 7kcbNB1Zu8NbnX2vLjqQKzU3FbOo6dfTrClsssGwSNRtSkkK0GlnY80TPzSjjkMrFa
+	 W1TA1ppchwCwcI8Wa52Qd873vEd6nf7rcrIHavL6IACVUZ8qJBDs7BcjbspI7LaL3W
+	 82CWe561q16aaLbPgwpYy83sbtVaN5DFD4NxIPUnU98WUaBwC67mj/FGRHinqV/UF5
+	 TkQijl3pGqjEj1hD296ajuoHzlLh0AAeYRV3NXTAOrY5yiUiIQQV4KP++ILXesX06X
+	 aJI6y97UVboYA==
 From: SJ Park <sj@kernel.org>
-To: Karl Mehltretter <kmehltretter@gmail.com>
+To: Zenghui Yu <zenghui.yu@linux.dev>
 Cc: SJ Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Lian Wang <lianux.mm@gmail.com>,
-	Kunwu Chan <kunwu.chan@gmail.com>,
 	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] mm/damon/tests/core-kunit: test PSI goal rounds under the temporal tuner
-Date: Sat, 19 Sep 2026 08:55:02 -0700
-Message-ID: <20260919155503.85841-1-sj@kernel.org>
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 01/10] mm/damon/api: remove NR_DAMOS_FILTER_TYPES
+Date: Sat, 19 Sep 2026 08:57:15 -0700
+Message-ID: <20260919155716.86019-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <aq4hU5DNjnGELpUT@gmail.com>
+In-Reply-To: <ae900f5b-7f00-4c48-8097-f2f836c09f60@linux.dev>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B4A3B180006
-X-Stat-Signature: q86jfq58bqpq6r55jrocqmiu6raf3zxx
-X-HE-Tag: 1789833310-946750
-X-HE-Meta: U2FsdGVkX1/wpVDLfrVqvu5ZQPKdTgp4Gce/MTZ8BLdaloWwU2hlHE0xUr/Tmmx/7ilbeduDTZq4KeGGezjB5UX7TqkhN/lOkuYEKv7LWdSkd8PWwqgP7luexNjukLGm51PupNrxJ20ji5uvl+yQ4FWab08yuD0cY5O8LH9hlP52h/4zYpiNzMnWusTmZeOEjHNCW7qj1S0dVatr8gUJIL4BxxqOYMoY9MC0V8JM/H9GgfPOAR2fAnUXyUqeAoAIzT3lMlzTTskAbZmaikih+4/DfhXbkn7xC6O+pLn80sBsPfP6WOXIVUM0+pXdjfWtUwXcpI5oAz2859pGTWrWxkN+uWFtCkQXtynpUPVAj6YoOlqD8p6VfNiunLI59W1ZMY2UDeb87HBKfK2qoO1vbUOkTXUWnqWcqb8GeXqObvbSf3usKScnAVrvLy3xkFFqwoBuwoWMzUojnWDlTn7IYEScTdb/s6dj1MwW1p6/1fN4mnZm4EwARL/6jiLPn0vZTn73LHcoGV4f30zB04whlRhItNcW4QXV1VdrcVlKwHIiu69b21qGWfZT4uEIUa99pQqIyyzHz1xMxC2gWpVQ/TW5N7ATrSuEpBeGKsXPtLpL0PUQAkHhJMefApHwg7dJ62ZE48TRRoNoIjuSpXcTqa8G6kur3GmvU1KzLseJNcRBy+Lhk/+BjZs8qc7s6mlSbveZDWmVAFP8m+BtAuueK0093/eZs9BX7ph2c9f3LossAu0W7d3EIXzFZoWLDr1Ccq8MoL31t5P8RZUpQ2dRDsNdwDDdupNyLpjc9Oli6wlWvLT5NznQkNP8sdSAMjCzjD/M/Jlzy3KLMguVjZsMeIMO+nP9e9okBRCx2W3xl4HZnDSrwSmjymUVmrgF2b0Cv3sjSrcYIbM/UoOz7ruov3Oel9c9ksPoBKrn1qA0mp2VFf/01iAiqVvltu4G0SfqF+6oho2WFiLe25DwLO+
- I8G5I6n8
- IoS6ifA1lC9n3Co+jl396aXLWBMKOrzFlHAGGZH11qtZMIAIel++sMYylAzO7KjC5umcp9VQN/cgehS0yNlKEWDHpIrNiJvKDh0EhvD9lY8Uvl3FR96aLOsgjXZExN0nFfGkqzvzaPrZnESUxqSwI6pfMJoA0YuR4A26k70eqaqpUuXo/HM5qZT8Sxt5f2mY95IrW5UvRpvM9vB/l8/talLHNj1x/QNyxwitZCKJViftGo10ZLpuO992qWx6MxDqRCwvP+7Zc1U9CzfEIyIfMHypEvR++jR8YUXzrdRoYAb/HyOH29SKpxKb0KA==
+X-Stat-Signature: ty7doxzwxu45xbmazrjtaxd78816g54h
+X-Rspamd-Queue-Id: 627AD180004
+X-HE-Tag: 1789833444-364777
+X-HE-Meta: U2FsdGVkX1/Xux521p/sFg/uyAA/I5EhMOc0BTFXmIisONM+8EBoKowSTD9eeALNRffOPP6O+/LCLQd44SelLipUTtczs8DDnRLEzme36BaPTn1ihMByXxXC6Uthk9xpOKBDX5wd1CGF9w98YOXfyINk0UqlNEYz3JGRGKHFIhqW6FfSQU3ImoLhyENHf0ZpCR1flDTUf80HMa/xWmDVhgCQra2WZVdDQSFkojmsxNA+h8NkZ1ly8kNNKaOP0rOK/Q/lGTtayAvjGjvZH+YclYqkQfRGm/hghEVmISt4ggygwMGrs9V2c91J62KWt9d3IxSU+zzQVpYf1U7Fab1VKt4E//xZQZ3Pm1Fh9fqTnz2gfeXooZzY33rY0lgTTZIHNCOXQA79ZFJOnCFK1P66hoicehQkQYYjdFqMa5AcVxFijGIUsN3pBMowat62jtsOoMjnytBZCmseS9RYnMUUMcef8IqjVNYe+vKE9Ac5K68C4N9NukAs+CS6A7HqUDRFv8TdWcT9snaZrR4hJj/YbnG0ULXm2leDvCN1ouLEFWQExjL5xxQQvdDq57wyCzoHpUCQeowgwhAwcmxhxTlUPTez5Keoc0SPJHkfg3sTSQovmiaWOyti0bl7H/wPwoM8kIiyi4nB0X0/NpuKm+4l7mJTM4+G5k57a9zasdjYijkl7v03SjIaSbPIp+D0+kYTX1W49wyDGkR0u0jdWxi3sV+jwhf+cE5FHLAPmPDgPUI3WbpdiB5TQ4XUUN194jPkmiCyRcEJRCpcq/uGRiVLkr0uPw4rXJkNd2WlTcYCrYJ7W4QFdMHOwCz2zzYFl5U9GJFdi67PptR+j3y+q94RJjjRAWJt1+Sn9Du7PgGDOiFWQmPR9t6TqZcWRLWEVXl+3qpBSOU+uxHLJsv4AHc16Hskt+owLGC97rpzxo1Hj3aKDdfTTXYwH/7BWjxtyyiJVf447onZj+5iXl46jSR
+ Jz7IdJUD
+ wuUSdVbF9gYa7cVxnHn5G5Cz8MUek3VlcJaomzOMVyucfp6NNsP+SdGZmoRaIuluaPOs+Mq7M3FkOgKYA4f0rEhvUTorxmIqH5cC0GEw3OYHujHhtb5pUOidPrAiCodu2gZS3sJD8hIUKnYys/F2Wq2nzkVBX3Me9JxU9ay/UKruB22tPC3ZqjNeCCgBXInigqWbGs//7j5bQ9qsWYt065X1wPA0+BlkDPKR3Ue6wpUyjelGxpL60d7KU1R+TpVgZkVCx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,27 +93,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 19 Sep 2026 07:47:11 +0200 Karl Mehltretter <kmehltretter@gmail.com> wrote:
+On Sat, 19 Sep 2026 21:02:30 +0800 Zenghui Yu <zenghui.yu@linux.dev> wrote:
 
-> On Tue, Sep 15, 2026 at 05:21:36PM +0100, SJ Park wrote:
-> > So, this test depends on the memory pressure level of the testing system?  I
-> > concern if that could make the test result not very reliable.  Maybe we could
-> > split out the corner case handling logic to explicitly receive the current
-> > memory PSI total time.  For example, like what I suggested in the reply to the
-> > first patch of this series.  With it, we could build a kunit test for only the
-> > target logic, without depending on the test system's status.
-> > 
+> On 9/17/26 10:21 PM, SJ Park wrote:
+> > Nobody uses NR_DAMOS_FILTER_TYPES.  Remove it.
+[...]
+> Similarly we have more definitions of NR_foo in damon.h:
 > 
-> Yes, the second round reads the real PSI total. I used ULONG_MAX as
-> the target to make it unreachable, but I agree that a test which
-> does not read system state is better.
+>  * @NR_DAMOS_ACTIONS:	Total number of DAMOS actions
+>  * @NR_DAMOS_QUOTA_GOAL_METRICS:	Number of DAMOS quota goal metrics.
+>  * @NR_DAMOS_WMARK_METRICS:	Total number of DAMOS watermark metrics
+>  * @NR_DAMON_OPS:	Number of monitoring operations implementations
 > 
-> For v2 I can test only the helper from your reply to patch 1,
-> with explicit PSI totals. It would cover both tuners, zero and
-> non-zero esz for the temporal one, and the last_psi_total value after
-> each call as Kunwu asked.
+> and only NR_DAMON_OPS is actually used (I checked mm-new).  If the
+> preference is removing all unused macros, we should probably clean them up
+> as well.
 
-Sounds good, looking forward to your v2!
+Nice findings!  Please feel free to post a patch for cleaning those up if you
+don't mind!
 
 
 Thanks,
