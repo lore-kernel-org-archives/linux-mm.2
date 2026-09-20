@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4A44C982D0
-	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 09:29:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 249ABC982D0
+	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 09:29:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA05B6B00A1; Sun, 20 Sep 2026 05:29:27 -0400 (EDT)
+	id 0DCAB6B00A4; Sun, 20 Sep 2026 05:29:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A518D6B00A2; Sun, 20 Sep 2026 05:29:27 -0400 (EDT)
+	id 0B4B06B00A5; Sun, 20 Sep 2026 05:29:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 967616B00A4; Sun, 20 Sep 2026 05:29:27 -0400 (EDT)
+	id F33956B00A6; Sun, 20 Sep 2026 05:29:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FB5F6B00A1
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 05:29:27 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DEEBA803C6
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 09:29:24 +0000 (UTC)
-X-FDA: 85233617448.29.9F8CBCD
-Received: from mail-pj2-f5.google.com (mail-pj2-f5.google.com [74.125.227.133])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 1E4ECA0004
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 09:29:22 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=N7PoYT0A;
-	spf=pass (imf15.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.133 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D121C6B00A4
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 05:29:31 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5A6C74039F
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 09:29:31 +0000 (UTC)
+X-FDA: 85233617742.26.249D246
+Received: from mail-pj2-f2.google.com (mail-pj2-f2.google.com [74.125.227.130])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 845E240007
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 09:29:29 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=M7hgrQYD;
+	spf=pass (imf11.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.130 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789896569;
+	b=0qAL84YrbDfzitYEFJv/7+PhA3qZTbI3PGmUw89X/VqSYdr7N8iWN8EJmaDUsPFSWsT58Q
+	L0osN7nn/rv05KeBgvNvJrcKnWZxZ87DbKgJQROreoNp/1fhstWzmIIwh7D/Os2sCmQjxg
+	XkLdP+p9PAwHhmzLHLcvEyQhoer5RL4=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=M7hgrQYD;
+	spf=pass (imf11.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.130 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789896563;
+	s=arc-20220608; t=1789896569;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fqWx8mKAaudoHgwpRkE/5/zADaw3qTiUOzjXR8usL9g=;
-	b=to9LVB/YAty+2+1RbwxX8B8DBAFU4TQyZMTr6JSMiwUx+L3z3HaldNuQBR9OcR3D5AuFHL
-	QwAADngmC8MjInW1HukUboPLLBrQ7LgsG6nqTZg8Uqmlz0tv61qYBwCXwXz+ErZJXRNMiX
-	7FZS/iTcu7/T7hZRh2jvg32dSlVe9Ao=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789896563;
-	b=G+IAR4wb3nzzzox53feSJhtwnkhX2BQGOODCCaF8EU685FCsmWz1C9i1EYaG8PynBnrjvl
-	kDwjmA6n6282XPjRf44w0uSVEXlaQWBVDU1e3cZGZEPqPP6eI5t0JIRFMpIpv3UJyS9ZP1
-	M5RAP0uiOqt9Wj7+IKQw5wfIMBbX9Sk=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=N7PoYT0A;
-	spf=pass (imf15.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.133 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj2-f5.google.com with SMTP id 98e67ed59e1d1-3965683e9e9so1587825a91.1
-        for <linux-mm@kvack.org>; Sun, 20 Sep 2026 02:29:22 -0700 (PDT)
+	bh=SxtCD6SnNu1NDzEpQGETPXmjrPB6bmHGJKpCRbMz92Y=;
+	b=TCRr442mFc/UMOYEPXWe/fPGgF/P0YcFURUJ3APLGfJsdNCHOUg6ABjMyfMo3h46AldwQ9
+	3aYapqykIpn2hi2KHS5n1xLdAtnqXtq6UkrXQzQCqWynLAMThZS3m7ebdHKw7Q/FfTlW3N
+	plupu85mY7S57CoposmXFQ7Kf7xDF/Q=
+Received: by mail-pj2-f2.google.com with SMTP id 98e67ed59e1d1-39b2ad83680so915728a91.1
+        for <linux-mm@kvack.org>; Sun, 20 Sep 2026 02:29:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789896562; x=1790501362; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1789896568; x=1790501368; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=fqWx8mKAaudoHgwpRkE/5/zADaw3qTiUOzjXR8usL9g=;
-        b=N7PoYT0AduafH12EgE9M1jKx83HXJkf14GNCAljrL8/tVVBdMF+0Qy1eIDBPMVmjzY
-         5pPsed+O2wOVlGWR8o1+0KaLFlhRksuGhsuyfop3PcjXGIBxQP8jol7tBA4CgtpDP3ut
-         ABb5qYHTc3HWfHpE0Hm7fVYYlnOgDL3c+RVKSIkJURVZIQTlHl8V82dBpCp2bd+TOy5O
-         JxaWhOzZ4Wj5cByKwHLAOZVvSFAcXOO/MB4Gdy4Pio8iO+F/I84XveY2CB/u12nnp988
-         AwDrE2wjieR4G5DozJdv5TN5WhWTf1cGv9N4b81n1Glv4OAvdmNDFcjROSKG4DGvU81x
-         xlKg==
+        bh=SxtCD6SnNu1NDzEpQGETPXmjrPB6bmHGJKpCRbMz92Y=;
+        b=M7hgrQYD53SEHIrCjiM6QoAx3b6n9coUqKAkYNHu7Mw9gCklyUHlm+pNaq+/jsZWKN
+         xhWV/mpDbprhyghdTL5mwLgiYZmw0tApLMpqiOEVlR4Y+hkpng2bEtoQ677qM1tHAt6n
+         SYnhAR6Q8Hrns/6YkitLoM3nwNKTpLN3/KYWfcbx+v5rdFq2YgixCzmvJw6m2rJhUBVk
+         dmBC4zCrvz715Bn5Xbqr2ID3H5EuaGcMiY8Zap0I+4RC5wQWl3N5pwvE1OQTddsDCc6s
+         KFZZNgCPioxykXq+1A53e3FFAgj04MUJVudiKYzQSOKkaPdzQ3gFL7WtQczz0g/XjVlz
+         e9VA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789896562; x=1790501362;
+        d=1e100.net; s=20260707; t=1789896568; x=1790501368;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=fqWx8mKAaudoHgwpRkE/5/zADaw3qTiUOzjXR8usL9g=;
-        b=aDsjJCPi7I1MvS9SUICdWlhSpfUiTX2PR7y5B1MRouZPZ16kRt/cuRX/zWpMectKXM
-         Q86fUq7B5kdwq9DyoRlmJV62bEyEePhfnMyRwAmIT5RZBDpSdsH/1QODnz5eIP4H+j0V
-         x/mR9H3elMgvSwQWrJboEcGCRiVWuhg3KC1VQ4/VTTAboJtufgHDtp8zJTukOv0onflu
-         QKVjTbb2/79DgPJwCBYW75yWH/PFhaI/wS5y0MJHgqE5I8qkvftdzFlMFWRYq0XBHAQl
-         Ue5n/CRcheYPsmNzhixSDo4Vh19pyyOKOcqmnr6Zx0moJ6IcAJNXsH0+75J0TPiLWRIs
-         n67g==
-X-Forwarded-Encrypted: i=1; AKwUvBwyY0ntXETDvZZqA7efUNG0TekzeLH2NHMKvkHE4HT/dZ4KNjJbfe+sNBNeZL6dt8H+glo5XKn5LA==@kvack.org
-X-Gm-Message-State: AFuF++lcT6m5X+oX5RwUWy+7vLcs0pthkPae7nMa4TKhUyCyh8WRu8Zw
-	ULDesB6gVbBJRHPCTUjURLYZk/9WieZ74CIE/ia0dCGGw/veccmguRnP
-X-Gm-Gg: AYBFou2jR0+eBmNXjWO/HKD5frxj5/xzkWi6qvdnBriQ4N6Z5MuFphwq3HfNYAqwdg6
-	SZ0FZZqFBOBm35lRzZroMeUseKVkPmD7VtzUnYTZlWHCC/BO+AF3lL6iDpNeHZonhqLqKbbm4VD
-	F1WemQv8i5s5/wUYMpKUKUuEksUcuugW3jdlJ2h15J14KElslEYPA9j+9a9AF9SZ0LrspPWmIIp
-	bOh+5LmzrJoCF5aw4/ueyj/2q8JrZPHa5y4WR8bzIfQdzAnTtEln56cYAV5ik8MJu4ZqAbUaPja
-	qpIq8w1GhvAoiQQr0l3vlEvjks/0TrRR26TVhny6IgF/Bdd2FP5GELHaXYxMsta3ABxibe6XeYi
-	oXY4Eja1Ge2KvMdjY5GyYHUbno3XfoyVnj1Jx3ds9rN3DDfEiw3ySXQxYks6sLJVOA8P7xbCETB
-	nhuXlO3oWxhzWBZObw6ygySOuVbxO7MsIAyw8Wj+YPzStOWy+hUlpYlSsocZFbhNkKQIiDq3cIc
-	5RmWR2kkzE=
-X-Received: by 2002:a17:90b:4b85:b0:3a0:42a9:9c73 with SMTP id 98e67ed59e1d1-3a042a99fd2mr465493a91.38.1789896561858;
-        Sun, 20 Sep 2026 02:29:21 -0700 (PDT)
+        bh=SxtCD6SnNu1NDzEpQGETPXmjrPB6bmHGJKpCRbMz92Y=;
+        b=PnOSVyM+uiIxx94c/z71dIqbXwr6l7jK9AsWoWAbM2WmhlfTw7YPTdgeYMaGARiWkD
+         hWKsTvSfM2CwDbNYFfduIb3vViwDFwI6vqbEbBflgg0NK2an3YZ5d7wB6q42AHA5CTmX
+         8bVVXwLOrvm+Sy2/DVQ6MA3LAAHMCSGYqBMRKv71DbDem1JqOf0mc/k6k/0Oes0AJdNd
+         LVNTTp+cCvp3J77MWJPs6PrDuIHHiwMpqoWHAj79u4ysch3nQ1bpbzXKR8Vo5e9ufeby
+         fKJYmE81NbupJLxzF0o8gmskyu/3QtF6vQ6ODsqWtQI2Dwl1pf9P5rl8QWU3khEQdSMj
+         C1mA==
+X-Forwarded-Encrypted: i=1; AKwUvBzHxFgNaeXjTq19BM8lPt9imabS4960maY0TuRata6DNrd6/vON4xqIEB/5+08dFFUn/vQkW/UMuQ==@kvack.org
+X-Gm-Message-State: AFuF++mDKxMrIs9GVPtSkUqHIMlF8Jzq1h20bNj725UB4gMdcRHrPkMn
+	F0HaZUUFxKgYuFsJpQRa4gRBkKlRVuNF9Jl1h3fn5chI1zu6olFu6iO4
+X-Gm-Gg: AYBFou1Hw+Hf3RVBjxt11ziIDRigdqMIh41TcCRcqJ5aFj/+JRKnxxe9dcML723NTGH
+	9rssGLuea3B6mejXtnsl3DC/1R9fdDjhOx9O9dNQZVN65elACfa9qxjfNTha/OU2/9jyFEGbkeZ
+	m3P99axsBwcUHrUPObYi94OwYnVcPFrQS6i3ox84wHBcgdc1ggiLVUhkia1if2mTfwKEEOm/nL6
+	nb2eOpKeWQdRkAp+lGkrFSN87WXcTNC0Gym8ZC7RwrSiG4E48ZXcnzv/kum0rFbbeX9sieOTSqz
+	zNM/r5ZyTcRd8fZP7wxpUWASoiKbQRHwJsv/UdIX6ukJZ1oWPsXt74zz98fA1T/VVHS3yqIJIpa
+	7mst20k5TzpsZIxEtHreOqnV6EItO+uXDthrLho8SiNTz5lQ9heYV6ogIiEMJPIH5n5pbKerqM9
+	/rPLOUllQTlGbxkUM9v92zD1pPCBd8dg8c+//C5ngGqgkcRitb86o5culBpPRoU1ha5bydsvbr8
+	1d9sYNAfSE=
+X-Received: by 2002:a17:90b:5787:b0:398:a145:5d3d with SMTP id 98e67ed59e1d1-39e54ce45c2mr19449286a91.6.1789896568224;
+        Sun, 20 Sep 2026 02:29:28 -0700 (PDT)
 Received: from intel.company.local ([122.11.210.25])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e6c37c64csm8154917a91.10.2026.09.20.02.29.16
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e6c37c64csm8154917a91.10.2026.09.20.02.29.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Sep 2026 02:29:21 -0700 (PDT)
+        Sun, 20 Sep 2026 02:29:27 -0700 (PDT)
 From: Wandun Chen <chenwandun1@gmail.com>
 To: robh@kernel.org,
 	saravanak@kernel.org,
@@ -100,22 +100,22 @@ To: robh@kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
 Cc: akpm@linux-foundation.org
-Subject: [PATCH v3 3/5] of: reserved_mem: skip init for regions whose early reservation failed
-Date: Sun, 20 Sep 2026 17:28:50 +0800
-Message-ID: <20260920092852.614973-4-chenwandun1@gmail.com>
+Subject: [PATCH v3 4/5] of: reserved_mem: reject static regions overlapping no-map memory
+Date: Sun, 20 Sep 2026 17:28:51 +0800
+Message-ID: <20260920092852.614973-5-chenwandun1@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260920092852.614973-1-chenwandun1@gmail.com>
 References: <20260920092852.614973-1-chenwandun1@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 845E240007
 X-Rspam-User: 
-X-Stat-Signature: zgo9nxcjnaazuknrjjdmnxdqn8fa74z7
-X-Rspamd-Queue-Id: 1E4ECA0004
-X-HE-Tag: 1789896562-875853
-X-HE-Meta: U2FsdGVkX18qiVeOctwGFnNf3M3nRH+OT/N+oqz79HIzAXO1Qj0M92XeKs/Be5K3+eEuWZhG6USDZhUMPzA4vcsAzk2sBzWUrdi2fXwv8/t58hTOxtha6Aq8kM4qgS6Y2feeKR8lYw2sUUaELj+bNkz7/6ZWP3dA66sUntvenYJZ26oOIMCNqfd5M9PRzfl+52tAaOszhKpGzriRySJ1hNrMm3d09zyZaDwErdUrr3pa2pAVGjuKJ7MPk48agsbVIp4kHFU50ZIYzRP2ClScKzVZ0UgsvX0MPS7sAJPci+w3ArfAX3FX9vVnlAAifDe6WxAtjSJnWTo/a9n6mkYTPLLI+HEkcb4bRTnDH+ueBnwBe2E2HrprWf6dYxbhH033W2gLqs0gjDI6k7+Un7pchaCz3m9MViYdihu2mJXQrQcmy0e+ucAw4202nQRIgT72leMliIVXBlZgMvSURLE//Zvxxheq6lLtOVP8rcLmWiQ2X7U94W+LPt6B+GaNgVZEnAtarZUAh41hKVf57qbdkRr2xiWxlstXvBLaoAGjUgyvFdP8l5wk4k86OzezeVEZYTzMbJAhC2ZnQi5UX4xjVBPyTkRCR7nh1YovacPUgv+S/KuFYoQ8MsCFQurXd2abgxS5v0L4xJteM242YN0DsO+1AIHFC6XGaPrA/JTssP/tb4vSAoX+ax3uLccDBdiQLekxQiHu6eM7LQseXyejowZyam2WFf+M0k6PGE4x9ZI2J9y0Sp4Xf7UqjF7f3wcEQOHiywl3uBFmeMjnaRPHrkCqwxrwPjiR50O5rD61DdciYNQzmPV39/jyDmUvk+7+OW9ujX/0q/fD17xSws/OxtKGdgxUeX+IQ+XElEVYWJW0d07bjwVPD6pQWrT9kRN1V6uyfBO6TyPA5V+SW1Dlv/rWb0tJaVQSvNWy8BaBN39VMfQPNapC/o+ObxlmhPpqgzTkxjqTVroYjZrc1Zy
- 5hWCaI+P
- e46w+4zAw0NBYzL5m6+ANnVTo9k46Hsv3lYfw+u1HuT2bksxRwRF1d3Y0WqasCsdqauprhZ4JBsd/ReOY/sUx/mQOteDO93HVOZNzEU9OtLF+fWTJHrjttbX8H7dioCB0kFBBZ155aEVW3wQ/s5qsFDZMlAsAjZydCtoNI32HvnIBlgMgT9shD5AZDEQBt/AOdF5HCZ3yjJq0+geWJ+xVu0UTXN11yiPZP7rw6fvJ+1RKGUosXaCvXCTP3TIK0Wdm3fPU6As6ASy+FY4Wfepma6/4gytV66w2cG6cGYlpVkf6O/t+EHox/f2tiHgh++CscbDAT7BLyk6FqEUi/Ih0Xlt5g5pqVPXGrRZXa4g1GwlTZsUp1EIjsElYLQGXsqNjScyDUZQ1J7bf89Zs5aZwi16/dGa9+Bx9FFULhwqqGe8XoQI3DqDV7Jm1RrXt1vC60XoySD4X/V2TzEHFJ6gXxA4DKBZW4qhDU6vceZmO4ryk7T5zSCIKRd7kS/kWhqRG6fhwd84mgwN9Wt0=
+X-Stat-Signature: w69q9az1ue9y414wozuao6qujm3kccgu
+X-HE-Tag: 1789896569-508567
+X-HE-Meta: U2FsdGVkX1+FrFcQtE/c5mRxLJTGfGfGU2ey0E2JCAlGp1B+03xGKTDt9PLOkhbGx6Ki0G22eEbdJOgtll5YJK01dfPuKwXMvxz5A1rc4BPbSR1rVjWuzJZADykhufpG85hgn+Iimfmt0IK66e7kPn7GyvwHyMUHjHTnj9050ZUrKFjlgYXhTi70NAWvyGr2P8WityhpBvszygsa+S+8t05hFB5jEUEHbKwZ/TCKNBjnpK2FZJM1u+ieTJjyRPXR8+dZn4NM9xOW24cEnYGLWZ0uLJVVzvryJoafBH7xyuolTN4JC82lTB3uNC5hrU3kZvD9hlIrKXH3ZEX0NBcz7r26kUIY9zmMWrz52jCMldEtF8BA+1PbaXjElla0KIVnVIfPHILc0A9tQ6bqm9qfs3BugU7jC6CqHqcp6jHQxCKcvsh39g5/q1rHfNwv5i/kwLdAGyN7RjhWJzGmHrPTNlhPthG1oXwi4h/qUg/vbv2BFnZROzvhhlWIs35lZwh1H1FfuDA/Ls3dTKwgt2ZIIN6njtwxLTtxG40jVhZNQd6jObbGlek2oI8oyc2mAHOp+n4+zu94DXkFmpyA3NXtGwD1XOJI46r2BgZDZsiNjmJjg/CL4bkWbwR05WOhFKO2D+xKtKrcRxeuZd5FU0+jho9ENdBSko9B8yzyEe5cwPNu+PM3Py0g/RWMp9DKDuC4QUUVVDlTWi0eOYYCMG0awG8zIKeujx6wLT6GCylE8CHRBembz9t0mJY6e+hkjPvQsbqb5lYglvXFLG1UnlWEelQ7cb6SW6dU705a70UzVZRElBzhD1abWss2AeKo66UmF8ifB+2KWTxRA5B9ZfHotN6WSzAgXAUanz/Z6JjXN2ZbH9LlqDST0FzDltkyjR5qrNosdMT+8z+rT29xrKIoNHeazbxD3/ysW0vRGLIzv9b6vjJ8lMIz3VmA0x1cciIP3Jmx14VQeq3Vq1g6BK2
+ HFtN6Tvn
+ vJ94dL7zkM1sn1A6gKkXTV51xl3AsO6Qob67masscCyR5W5llHOPPR/4n1td3fLMOjQ3u6mtDFCi7B9PplKasSgHjuVKcwvDxSzJdbK3VMGxGUq/EKCt8xkaYcgcI8nXlPq84RYZww5owqBaPAKqvO2e07H8zXADoMqchd1oXPRov+x+NkoRzI3HwR895JqSPFzFAN5OCrqug5lCspGp82kggFzzqUYqOIlYwqLIn3veHWMMMz6S1vCQ70slv1ydEI28MGzAWWjMsks1CZi9KeXWTYM5qLKkvB415BGger2gOfCBOx1JJ1NxAB5McOD5g0Bkqwik4LU5+V6mVA/gIbPl0czf+LOYrODu4DyojnbYnxlDWxaWGoKt58MKl7nOa5fV71jgqNsVhPfCQIXYObgSBEGul94nYjAt8eTM+Y0sDC836QbUR8pSE7HldG/080DCx28t0/tmGEtIxw3CONKyWEz74Hm5UjPe7nf6XB1eOKwGOT6SrofeM0XZIgevxyuOGhxHm81w/2SWrXXUB4W2ntz3R0f2DOVHqG0+WVX0wUviilp/kGA5vKnC58vJx+N8j4xvV30zmYc0nQ1UrEmBQGHTbRlulDoEp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,249 +125,138 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Wandun Chen <chenwandun@lixiang.com>
 
-__reserved_mem_reserve_reg() discards the error from
-early_init_dt_reserve_memory() and returns 0 unconditionally, so the
-caller counts the node in total_reserved_mem_cnt and the late scan
-initializes it without checking whether the early reservation actually
-succeeded. A region whose reservation failed is then handed to a
-device assuming the memory is protected.
+Static no-map reserved-memory regions are marked in memblock.memory rather
+than memblock.reserved. So the reservation overlap check does not reject a
+static region that overlaps existing no-map memory.
 
-Tag each region in memblock with MEMBLOCK_RSRV_RMEM when its early
-reservation succeeds, so the late scan can check whether the node's own
-reservation succeeded and skip those that failed.
+Both regions can then be initialized and hand the same physical memory to
+different reserved-memory drivers. So reject a static no-map region that
+overlaps existing reserved no-map memory, and skip a no-map region in
+the late scan that overlaps one already reserved.
 
-Fixes: 8a6e02d0c00e ("of: reserved_mem: Restructure how the reserved memory regions are processed")
+Sashiko found this issue in [1].
+
+Fixes: 86588296acbf ("fdt: Properly handle "no-map" field in the memory region")
 Suggested-by: Marek Szyprowski <m.szyprowski@samsung.com>
 Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
+Link: https://sashiko.dev/#/message/20260814084718.29C341F000E9%40smtp.kernel.org [1]
 ---
- drivers/of/of_reserved_mem.c | 46 ++++++++++++++++++------
- include/linux/memblock.h     |  6 ++++
- mm/memblock.c                | 69 ++++++++++++++++++++++++++++++++++++
- 3 files changed, 110 insertions(+), 11 deletions(-)
+ drivers/of/of_reserved_mem.c | 23 +++++++++++++++++++++--
+ include/linux/memblock.h     |  1 +
+ mm/memblock.c                | 26 ++++++++++++++++++++++++++
+ 3 files changed, 48 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/of/of_reserved_mem.c b/drivers/of/of_reserved_mem.c
-index 2c64d85cabc6..3a6c6dbfd7b1 100644
+index 3a6c6dbfd7b1..8d2057f2ac12 100644
 --- a/drivers/of/of_reserved_mem.c
 +++ b/drivers/of/of_reserved_mem.c
-@@ -122,6 +122,8 @@ static int fdt_fixup_reserved_mem_node(unsigned long node,
- static int __init early_init_dt_reserve_memory(phys_addr_t base,
- 					       phys_addr_t size, bool nomap)
- {
-+	int ret;
-+
- 	if (nomap) {
- 		/*
- 		 * If the memory is already reserved (by another region), we
-@@ -132,9 +134,16 @@ static int __init early_init_dt_reserve_memory(phys_addr_t base,
- 		    memblock_is_region_reserved(base, size))
+@@ -131,7 +131,8 @@ static int __init early_init_dt_reserve_memory(phys_addr_t base,
+ 		 * if the region isn't memory as it won't be mapped.
+ 		 */
+ 		if (memblock_overlaps_region(&memblock.memory, base, size) &&
+-		    memblock_is_region_reserved(base, size))
++		    (memblock_is_region_reserved(base, size) ||
++		     memblock_overlaps_nomap_region(base, size)))
  			return -EBUSY;
  
--		return memblock_mark_nomap(base, size);
-+		ret = memblock_mark_nomap(base, size);
-+		if (!ret)
-+			memblock_mark_rsrv_rmem(base, size);
-+		return ret;
+ 		ret = memblock_mark_nomap(base, size);
+@@ -266,6 +267,20 @@ static void __init __rmem_check_for_overlap(void)
  	}
--	return memblock_reserve(base, size);
-+
-+	ret = memblock_reserve(base, size);
-+	if (!ret)
-+		memblock_mark_rsrv_rmem(base, size);
-+	return ret;
  }
  
- /*
-@@ -168,14 +177,19 @@ static int __init __reserved_mem_reserve_reg(unsigned long node,
- 	base = b;
- 	size = s;
- 
--	if (size && early_init_dt_reserve_memory(base, size, nomap) == 0) {
--		fdt_fixup_reserved_mem_node(node, base, size);
--		pr_debug("Reserved memory: reserved region for node '%s': base %pa, size %lu MiB\n",
--			 uname, &base, (unsigned long)(size / SZ_1M));
--	} else {
-+	if (!size)
-+		return -EINVAL;
++static bool __init rmem_overlaps_check(phys_addr_t base, phys_addr_t size,
++				       int start)
++{
++	int i;
 +
-+	err = early_init_dt_reserve_memory(base, size, nomap);
-+	if (err) {
- 		pr_err("Reserved memory: failed to reserve memory for node '%s': base %pa, size %lu MiB\n",
- 		       uname, &base, (unsigned long)(size / SZ_1M));
-+		return err;
++	for (i = start; i < reserved_mem_count; i++) {
++		struct reserved_mem *r = &reserved_mem[i];
++
++		if (memblock_addrs_overlap(base, size, r->base, r->size))
++			return true;
++	}
++	return false;
++}
++
+ /**
+  * fdt_scan_reserved_mem_late() - Scan FDT and initialize remaining reserved
+  * memory regions.
+@@ -279,7 +294,7 @@ void __init fdt_scan_reserved_mem_late(void)
+ {
+ 	const void *fdt = initial_boot_params;
+ 	phys_addr_t base, size;
+-	int node, child;
++	int node, child, static_reserved_start;
+ 
+ 	if (!fdt)
+ 		return;
+@@ -299,6 +314,8 @@ void __init fdt_scan_reserved_mem_late(void)
+ 		return;
  	}
-+
-+	fdt_fixup_reserved_mem_node(node, base, size);
-+	pr_debug("Reserved memory: reserved region for node '%s': base %pa, size %lu MiB\n",
-+		 uname, &base, (unsigned long)(size / SZ_1M));
- 	return 0;
- }
  
-@@ -288,6 +302,7 @@ void __init fdt_scan_reserved_mem_late(void)
++	static_reserved_start = reserved_mem_count;
++
  	fdt_for_each_subnode(child, fdt, node) {
  		const __be32 *prop;
  		const char *uname;
-+		bool nomap;
- 		u64 b, s;
- 		int ret;
- 		int len;
-@@ -307,10 +322,15 @@ void __init fdt_scan_reserved_mem_late(void)
- 		base = b;
- 		size = s;
+@@ -326,6 +343,8 @@ void __init fdt_scan_reserved_mem_late(void)
+ 			continue;
  
--		if (size) {
--			uname = fdt_get_name(fdt, child, NULL);
--			fdt_init_reserved_mem_node(child, uname, base, size, false);
--		}
-+		if (!size)
+ 		nomap = of_get_flat_dt_prop(child, "no-map", NULL) != NULL;
++		if (nomap && rmem_overlaps_check(base, size, static_reserved_start))
 +			continue;
-+
-+		nomap = of_get_flat_dt_prop(child, "no-map", NULL) != NULL;
-+		if (!memblock_is_region_rsrv_rmem(base, size, nomap))
-+			continue;
-+
-+		uname = fdt_get_name(fdt, child, NULL);
-+		fdt_init_reserved_mem_node(child, uname, base, size, false);
- 	}
+ 		if (!memblock_is_region_rsrv_rmem(base, size, nomap))
+ 			continue;
  
- 	/* check for overlapping reserved regions */
-@@ -662,8 +682,12 @@ static void __init fdt_init_reserved_mem_node(unsigned long node, const char *un
- 
- 		if (dynamic && nomap)
- 			memblock_clear_nomap(rmem->base, rmem->size);
-+
- 		if (dynamic || !nomap)
- 			memblock_phys_free(rmem->base, rmem->size);
-+
-+		if (!dynamic)
-+			memblock_clear_rsrv_rmem(rmem->base, rmem->size);
- 		return;
- 	} else {
- 		phys_addr_t end = rmem->base + rmem->size - 1;
 diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-index aa845f488327..03613fa0c894 100644
+index 03613fa0c894..34a695542ab1 100644
 --- a/include/linux/memblock.h
 +++ b/include/linux/memblock.h
-@@ -52,6 +52,7 @@ extern unsigned long long max_possible_pfn;
-  * kernel that we know is good to use. It is the only memory that
-  * allocations may happen from in this phase.
-  * @MEMBLOCK_RSRV_HUGETLB: memory is reserved for hugetlb pages
-+ * @MEMBLOCK_RSRV_RMEM: memory reserved by a static /reserved-memory node
-  */
- enum memblock_flags {
- 	MEMBLOCK_NONE		= 0x0,	/* No special request */
-@@ -63,6 +64,7 @@ enum memblock_flags {
- 	MEMBLOCK_RSRV_KERN	= 0x20,	/* memory reserved for kernel use */
- 	MEMBLOCK_KHO_SCRATCH	= 0x40,	/* scratch memory for kexec handover */
- 	MEMBLOCK_RSRV_HUGETLB	= 0x80, /* memory reserved for hugetlb pages */
-+	MEMBLOCK_RSRV_RMEM	= 0x100, /* static /reserved-memory node */
- };
+@@ -504,6 +504,7 @@ bool memblock_is_map_memory(phys_addr_t addr);
+ bool memblock_is_region_memory(phys_addr_t base, phys_addr_t size);
+ bool memblock_is_reserved(phys_addr_t addr);
+ bool memblock_is_region_reserved(phys_addr_t base, phys_addr_t size);
++bool memblock_overlaps_nomap_region(phys_addr_t base, phys_addr_t size);
  
- /**
-@@ -160,6 +162,10 @@ int memblock_reserved_mark_noinit(phys_addr_t base, phys_addr_t size);
- int memblock_reserved_mark_kern(phys_addr_t base, phys_addr_t size);
- int memblock_mark_kho_scratch(phys_addr_t base, phys_addr_t size);
- int memblock_clear_kho_scratch(phys_addr_t base, phys_addr_t size);
-+int memblock_mark_rsrv_rmem(phys_addr_t base, phys_addr_t size);
-+int memblock_clear_rsrv_rmem(phys_addr_t base, phys_addr_t size);
-+bool memblock_is_region_rsrv_rmem(phys_addr_t base, phys_addr_t size,
-+				  bool nomap);
- 
- void memblock_free(void *ptr, size_t size);
+ void memblock_dump_all(void);
  
 diff --git a/mm/memblock.c b/mm/memblock.c
-index ea0de4b5f356..d88e926e2ea5 100644
+index d88e926e2ea5..58c9281e729e 100644
 --- a/mm/memblock.c
 +++ b/mm/memblock.c
-@@ -1204,6 +1204,39 @@ __init int memblock_clear_kho_scratch(phys_addr_t base, phys_addr_t size)
- 				    MEMBLOCK_KHO_SCRATCH);
+@@ -2222,6 +2222,32 @@ bool __init_memblock memblock_is_region_rsrv_rmem(phys_addr_t base,
+ 	return true;
  }
  
 +/**
-+ * memblock_mark_rsrv_rmem - Mark a region reserved by a static /reserved-memory node
-+ * @base: the base phys addr of the region
-+ * @size: the size of the region
++ * memblock_overlaps_nomap_region - check if a region intersects no-map memory
++ * @base: base of region to check
++ * @size: size of region to check
 + *
-+ * Only called for statically placed reserved-memory regions (those defined
-+ * by a "reg" property), so the late scan can later tell such a region apart
-+ * from one reserved by unrelated code.
++ * Check if the region [@base, @base + @size) intersects a memory block
++ * marked %MEMBLOCK_NOMAP.
 + *
-+ * Return: 0 on success, -errno on failure.
++ * Return:
++ * True if they intersect, false if not.
 + */
-+int __init_memblock memblock_mark_rsrv_rmem(phys_addr_t base, phys_addr_t size)
++bool __init_memblock memblock_overlaps_nomap_region(phys_addr_t base,
++						    phys_addr_t size)
 +{
-+	return memblock_setclr_flag(&memblock.memory, base, size, 1,
-+				    MEMBLOCK_RSRV_RMEM);
-+}
++	struct memblock_region *region;
 +
-+/**
-+ * memblock_clear_rsrv_rmem - Clear the static /reserved-memory node tag
-+ * @base: the base phys addr of the region
-+ * @size: the size of the region
-+ *
-+ * Only called for statically placed reserved-memory regions whose late
-+ * initialization failed, to undo the tag set by memblock_mark_rsrv_rmem().
-+ *
-+ * Return: 0 on success, -errno on failure.
-+ */
-+int __init_memblock memblock_clear_rsrv_rmem(phys_addr_t base, phys_addr_t size)
-+{
-+	return memblock_setclr_flag(&memblock.memory, base, size, 0,
-+				    MEMBLOCK_RSRV_RMEM);
-+}
-+
- static bool should_skip_region(struct memblock_type *type,
- 			       struct memblock_region *m,
- 			       int nid, int flags)
-@@ -2154,6 +2187,41 @@ bool __init_memblock memblock_is_region_reserved(phys_addr_t base, phys_addr_t s
- 	return memblock_overlaps_region(&memblock.reserved, base, size);
- }
- 
-+/**
-+ * memblock_is_region_rsrv_rmem - check if a range is tagged by MEMBLOCK_RSRV_RMEM
-+ * @base: the base phys addr of the range
-+ * @size: the size of the range
-+ * @nomap: the expected no-map state of the range
-+ *
-+ * A range with no overlap in memblock.memory lies entirely outside
-+ * declared system memory, where the tag could never be applied, so it is
-+ * treated as reserved. Otherwise, every overlapping region must carry the
-+ * %MEMBLOCK_RSRV_RMEM tag and match @nomap.
-+ *
-+ * Return: true if the range is reserved, false otherwise.
-+ */
-+bool __init_memblock memblock_is_region_rsrv_rmem(phys_addr_t base,
-+						  phys_addr_t size, bool nomap)
-+{
-+	phys_addr_t end = base + memblock_cap_size(base, &size);
-+	unsigned long i;
-+
-+	for (i = 0; i < memblock.memory.cnt; i++) {
-+		struct memblock_region *r = &memblock.memory.regions[i];
-+
-+		if (r->base >= end)
-+			break;
-+		if (!memblock_addrs_overlap(base, size, r->base, r->size))
-+			continue;
-+		if (!(r->flags & MEMBLOCK_RSRV_RMEM))
-+			return false;
-+		if (memblock_is_nomap(r) != nomap)
-+			return false;
++	memblock_cap_size(base, &size);
++	for_each_mem_region(region) {
++		if (memblock_is_nomap(region) &&
++		    memblock_addrs_overlap(base, size, region->base, region->size))
++			return true;
 +	}
 +
-+	return true;
++	return false;
 +}
 +
  void __init_memblock memblock_trim_memory(phys_addr_t align)
  {
  	phys_addr_t start, end, orig_start, orig_end;
-@@ -2880,6 +2948,7 @@ static const char * const flagname[] = {
- 	[ilog2(MEMBLOCK_RSRV_KERN)] = "RSV_KERN",
- 	[ilog2(MEMBLOCK_KHO_SCRATCH)] = "KHO_SCRATCH",
- 	[ilog2(MEMBLOCK_RSRV_HUGETLB)] = "RSV_HUGETLB",
-+	[ilog2(MEMBLOCK_RSRV_RMEM)] = "RSV_RMEM",
- };
- 
- static int memblock_debug_show(struct seq_file *m, void *private)
 -- 
 2.43.0
 
