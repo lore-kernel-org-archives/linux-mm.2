@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94A9BC982DA
-	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 12:25:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56BA3C982DA
+	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 12:26:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AAD266B00A1; Sun, 20 Sep 2026 08:25:39 -0400 (EDT)
+	id 6DE8A6B00A2; Sun, 20 Sep 2026 08:26:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A5DB66B00A2; Sun, 20 Sep 2026 08:25:39 -0400 (EDT)
+	id 68ED36B00A4; Sun, 20 Sep 2026 08:26:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 94C426B00A4; Sun, 20 Sep 2026 08:25:39 -0400 (EDT)
+	id 5A58A6B00A5; Sun, 20 Sep 2026 08:26:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 70C066B00A1
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 08:25:39 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id EACB7160449
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 12:25:38 +0000 (UTC)
-X-FDA: 85234061556.24.D96537D
-Received: from mta1.migadu.com (out-55.mta1.migadu.com [95.215.58.55])
-	by imf29.hostedemail.com (Postfix) with ESMTP id D419C120006
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 12:25:36 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=TceMJkOy;
-	spf=pass (imf29.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.55 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F87E6B00A2
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 08:26:57 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 715A380426
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 12:26:56 +0000 (UTC)
+X-FDA: 85234064832.20.6E3CAC2
+Received: from mta0.migadu.com (out-253.mta0.migadu.com [91.218.175.253])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 63B4840008
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 12:26:54 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JOOvlXwC;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf17.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.253 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789907137;
-	b=FQ6R4F8eGfaFEHXi5GWAX5hyUhKqQysF9p2xH5cyvmAaOi6qMfz9QjebW1N5CiiBb9wXUW
-	XqlJ4AL+sTU5RNYLqxMIXGmVetn0Bx4R2pCyB+0HsGDigqf6YJPl185ZrMx+9RX9ZGCZdc
-	g5yQ0nfRN5V0i82mM7DORSdWx6ofnQ4=
+	t=1789907214;
+	b=LmXw9H9elxQmKXZhgDslLgqesaEK02m4j+yG+BOxfS/ec9tPr9OboI/Wd2UXPRaUeBbXHR
+	F6SslXWSrqblwdKhUm7UN7fF1vUDMOHqYZhmHyTCJ6ucCkOrwGXaBWtdyI2s9t1mpZ1k3L
+	qnXt9wQYrPRH9/lv6CNt/h6wh6hpUKM=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=TceMJkOy;
-	spf=pass (imf29.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.55 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JOOvlXwC;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf17.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.253 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789907137;
+	s=arc-20220608; t=1789907214;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TNvkjiUoqy3g4TIzPj/wRPZI5ntvCp5F3PhGB5tG9jI=;
-	b=8Wh1uui1r6spLJvBr8umVDW3GU09aaIRJlkzskaC3swI5Fusw4KePd4kPWc9PBtdvWRBCd
-	64j+ys/MdqvHMlLGhJGrJJanxxsvQgEh488+t72Vf3F/EVuwP/+7WXwEB6Ow82/QV9UH9T
-	ZVaQiujoPp3CDvl8IrvG1OhHuWmRBFs=
+	bh=3SHrYiXrqoDN9FrxmtWulJL32fKDNnhM5OnISyolSxE=;
+	b=xdRZKgVM9g2VsGY1jnws2ltM8tvlNY/cLpQEvddoI0hoGuMP5kfSNVrdY7oMpKCEyJYy+1
+	hkD5PcXRoaybWm7+tZuFrWm4bAwM1JA+7A2U8YCCA+obBE1hAlee3th5oKoAZS41LGOogl
+	rlHQ0j2+hVFgmi54r5Y5ucF99i05x7M=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=W42kzDiSpz8PxcqIdsrRncQnFltKx9M42mKJrJhvMWg=;
+DKIM-Signature: a=rsa-sha256; bh=3SHrYiXrqoDN9FrxmtWulJL32fKDNnhM5OnISyolSxE=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789907135; v=1; x=1790511935;
- b=TceMJkOyZvjrSs6BJ6e3dUW+JsHj+O6lHyf3xh226lssIfEecUlG6lfGQ18AAJS9WRRed0gf
- f7WUmPQwkt4lSqsFzE7lJmHWnQiJ59gnfPqHzMaNe8Tu2yxhPfNCcedonuL2zmcMzPAWtsG0Int
- zMhG/pDRDG4m17uHHu49585k=
+ t=1789907213; v=1; x=1790512013;
+ b=JOOvlXwCgXh/KNhdk0mhTJMTNMnQGsjkZyQNKdllcagszAknoOc+vSttQTsDIApCJ1plq0CV
+ hBiRAseTFGoPylyPk0qnJBelUWq19A33wh3U8UJvBAqau17FikuKepNI/3CyIpOD8toVnWj4giD
+ kcPkHUuexPOEw4o1XePlyGFQ=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id bea8566f21ed8081;
-	Sun, 20 Sep 2026 12:25:33 +0000
-X-Mizu-Trace-ID: bea8566f21ed8081
+Received: by smtp.migadu.com with ESMTPS id 31352f99dc44c0b4;
+	Sun, 20 Sep 2026 12:26:52 +0000
+X-Mizu-Trace-ID: 31352f99dc44c0b4
 X-Migadu-Flow: FLOW_OUT
 From: Lance Yang <lance.yang@linux.dev>
 To: ljs@kernel.org
@@ -104,25 +104,24 @@ Cc: akpm@linux-foundation.org,
 	ying.huang@linux.alibaba.com,
 	apopple@nvidia.com,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	trintaeoitogc@gmail.com
-Subject: Re: [PATCH v3 2/3] mm: implement and use vma_has_anon_rmap(), silence KCSAN
-Date: Sun, 20 Sep 2026 20:25:28 +0800
-Message-ID: <20260920122528.8344-1-lance.yang@linux.dev>
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 3/3] mm: update comments to refer to anon rmap rather than anon_vma
+Date: Sun, 20 Sep 2026 20:26:42 +0800
+Message-ID: <20260920122642.8387-1-lance.yang@linux.dev>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20260917-vma-is-faulted-v3-2-5c22314a72e7@kernel.org>
-References: <20260917-vma-is-faulted-v3-2-5c22314a72e7@kernel.org>
+In-Reply-To: <20260917-vma-is-faulted-v3-3-5c22314a72e7@kernel.org>
+References: <20260917-vma-is-faulted-v3-3-5c22314a72e7@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: D419C120006
 X-Rspam-User: 
-X-Stat-Signature: wwhin8sg37f8kxbgpjd9aybmk3yofhtn
-X-HE-Tag: 1789907136-264146
-X-HE-Meta: U2FsdGVkX1/QMKTmhknc4Zb9nZYlOkNaXBzDe4h/IGFmfrL2RFgBh1BM8lhZuU6H95zLPtQNV0Q97UbMThT5nSV6sEY6K867blMePlNQz1yJpPz6dFcu7QoHHufGvL+Zo7sNFGEhc1o0DSG4a/pdQkCPhT9CyKNLkZmdESg/OiGf7mu4e2YaFVIdxgq+tfFUY1JnG9QDChqByM/iFoiALMOihRfGgxSqGGTiw6YHTt3kVHea0aNUHr9wK2Rordb+SQEFlvgSvBZ58aKTaIhZvDPfXKMv3K5X75P6LXvtWPbtZGPpjng5Hjp+Gx+s/2uk6/6/LfSFDQvtr5zu8Us7TOUmqiOyChgScY2gr9VAjidKASEA8CnCSRrsy3RNOPI/1uxIJR2djYC/I0Ag6r0Zx03VvOOwqg6x7sSkQVvQCzlO0xfI0AuiYWO0Fg2xzTzm8YFbUgihnynPYP80chIqiNLa4gMztvEMqXbHuFzG5ilqj3G6CdtevrEPLN8ZnxJUjj/sCwJ1/+GNaakmskq0vHbjuO9GbvmAcbCbid+jyCVpIGILaRFwwgsIP4m6C5Q3oaUsZztZZM9WjkwKo3lDqdn0TrpyN4TgiqG/Hxetsga4isoeTyMK1Ek39Cjziw977zlWqI/IeHOzLMfW8z3eGyiuNmMxrWnE4Oz3Ingo1TyHcvZ0Q4lh9MvZiIn89+P9S23HKTwF4B7peP342W3oSvsU9xSowoUZm5c8NGYTB+YiN394yn16mtt/LI94Po3a8j5XWTjLUob85Pu85TcgF2udLq2v6cigle4D8JhPKDFGfCfjLe3kumwo9H92Laa9WuFhr9pb6eRyJrsi9PtJOivp/HQgs5hyhj9zSVG7YC9ad6FhLzgEQUbPT/+LrfQeNl3yVyMTylm/fRoGztKaGbrvP+xvKAL6yjaFHR27svFHF31RbdmOR9PltnRBtCeNse1pSxKOtFaWU7SUaBa
- 0eLhMr/K
- MAcPUIfojfbWBvgvYQvu7JC2tYQDGOT14emsc55SiBSkB6AjY8sdCdF6Hdv89aKyonZP345XgdfiQQCf1ynI0yg6IJn1ANFY0giDi/+KAO7D2bgXhaS1H8PF6JVt+rCw75EWbbei/74tYcLEfBf72ciZfsjDVZNd4FPFz16bi6W3dek52vHDUT6zz7sTLZeYyVrHKpNRhk4gvX8z4U291VdRJ8syfUq7rpKIgCTZuJFbSCvexFTALCzYl4HwY8tqBcM8nImWr2CvdRN/Fx2yzqxGZPOjuhHQrYT5Xhb12vEaHRq7QURGxvPLwQhUIoitlTUVA2UbN+0Vx2XwzBP4LjBi0d1xnsUakQyORVgd4Z6/f1Uwrx0Cqtp+Jw88AbaWGYmX7TQWqP6UGUimD3QO1nRuAIA==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 63B4840008
+X-Stat-Signature: 4s3hpfooshi777n985ku89nyen9hpe1h
+X-HE-Tag: 1789907214-247501
+X-HE-Meta: U2FsdGVkX1+p1o5mDogu9I6a0MG+ajFFKIuxkiDmaKsYd2Wzh6A//xd4VALqjzQaKrEjxMvNMx5BJTvXfSwbJRIt9i8lkH2toXcPwiWiSXJWxxvotYrKWPvqZKZnwSIGr7JMq81WBU2rQn8pVztEuDZ6KwJ92WCVjoC45dnmoUsz+eWyjjqnatkuf5E6aF4s1fnRy4ojCt823jEl4Y1IhKgq72dHftI9jj6ARaq4cTEWl83perpXdHgkfpZWMtd2Z1pYyUwzGNOwjc6USMpkpoAB5YAgqL6RhyWzFhHFaFjkSZm1+JeiQrM2yhFT0xSQWJoF8GZF3Q5qnHyf0WSZ3vbe9uRP6EcZQE3rB9kDF+GzVtgG154yV18+UGnEjYcD/4M5Zxcz8xmjRF8hd1GfOMH5f3/a0a4sUOG3OE9AHV112Q0hanpO0McDpebdKyHAeP0liDE2RdKgFkz7qEGmQJlzQG8/CURQsltIg/CzP/USvwADOVlYQNjh0H+D+Bmy0rxrvLmgc6f3q1d4R/59badv80DMtSROu+CeJXGyRfm2DYtWeK7sH9aYIiTdnu1PCiPufu27Yg/+6ZcsRdmvxGP1PtnOyCLWz7ugxioGrRkAltERY4wgrVxLuyKCDytz6krFV7ekYzR0dxBMJfMTFqJeSdI83yMgBK9cxOIQDXm+EmZbVXmauDXPHhTayfOh40fdS0ZKYnshm+08mR438ejH4kElr11iarVRkTtp9brOjnLmpjSmbx5oy6OCHLdIdV4dpDKmrs1uFsB7AO6bi3lXAtNQgpEokZYw0f4VcZAZQXmxSPoORWIRwsa4tFFXmQckdzoYMv2qOyafXD5JW/mwS9XExmycALjoihFedzs4qbyUIJ19Aa8AFceosydMdwqyrwXUYEMNUi71L//VkPuS3eVpPm/Otd3PzyabKgtzHe+vRK3P9Mwrhg4tJ5Udrnv4s5ldgCc8xv9afCq
+ FTA20nEg
+ rx64yxwNxb88s7pzPKkCd7QHnhyhy2lAjNA1uPKReWVk/eObsoWmx2/TF1vPnPl/vkifttbAUR5NanviypasA+Gz3dhYtsViJfkioHFNZ+oTX8E2XvNmV7POfXG6nOa2ciLXKW/UqS4tlnfevBLJkfzAY1sc9kimWwkTmW6yhi6/Mp+t4Kb9H5IKkb3XZzxAY3uTq7jJIAAReUFnInIv6dqHCLIcIe+fXP/BCUDIDxxjDa3pKcrG0yGBaUWr/VUDZh7FEKsIjao2+lfzV6N0B2taeIASJPQ2KZJna229WTo5QZKcbWdczjhM6AP2nVFF5dmAK7uSbOvCoBB2fxEB0mRVHmmq8tHWQVau23tC8cs8UbpHPKbjOXdTe6zOgRHdVxEOf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,57 +130,22 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-On Thu, Sep 17, 2026 at 08:47:42PM +0100, Lorenzo Stoakes (ARM) wrote:
->Provide a function to abstract the common task of checking whether
->a VMA has an anonymous reverse mapping associated with it.
+On Thu, Sep 17, 2026 at 08:47:43PM +0100, Lorenzo Stoakes (ARM) wrote:
+>Now that vma_has_anon_rmap() abstracts whether a VMA has an anonymous
+>reverse mapping, remove references to anon_vma and instead reference the
+>anon rmap.
 >
->If the VMA is attached, a VMA or mmap lock must be held when calling this
->function.
+>The anon_vma is an implementation detail and should be treated as such.
 >
->For an attached, anonymous, VMA:
+>Do not update mm/rmap.c which implements the anon_vma mechanism as it is
+>reasonable to directly reference it there.
 >
->          Transition          |              VMA/mmap Lock state
-> -----------------------------|-------------------------------------------
->   No anon rmap to anon rmap  | Write lock/read lock + mm->page_table_lock
->   Anon rmap to no anon rmap  | Write lock
+>No functional change intended.
 >
->vma_has_anon_rmap() never provides a false positive (the lock precludes
->it), but if only a read lock is held, a negative result must be re-checked
->with mm->page_table_lock held.
->
->A VMA obtains an anonymous reverse mapping when first faulted or forked
->and it is removed when it is freed.
->
->Detached VMAs cannot be concurrently manipulated as they are removed from
->the maple tree so require no guarantees.
->
->Use data_race() to silence KCSAN about non-existent data races between
->concurrent vma->anon_vma read/write on optimistic fault tests.
->
->Update the core VMA merge/split, rmap, mremap, KSM, fork,
->khugepaged and fault preparation callers which test vma->anon_vma directly
->to use vma_has_anon_rmap() instead.
->
->Finally, update comments that reference anon_vma to reference the anon rmap
->instead.
->
->Since the lockless read in reusable_anon_vma() is doing more than checking
->whether the VMA has anon rmap - it is returning the anon_vma to be used on
->fault - do not alter it.
->
->There is one odd one out - file_backed_vma_is_retractable() - which holds
->neither a VMA nor mmap lock and is stabilised by the file rmap lock only,
->so simply add a comment to explain why it's necessary.
->
->Reported-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
->Closes: https://lore.kernel.org/all/20260829100034.423064-1-trintaeoitogc@gmail.com/
->Closes: https://lore.kernel.org/all/20260909115723.528501-1-trintaeoitogc@gmail.com/
->Reviewed-by: Pedro Falcato <pfalcato@suse.de>
->Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 >Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 >---
 
-Nothing jumped out at me,
+Nice work!
 
 Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
