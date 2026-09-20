@@ -4,86 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21CF9C982E1
-	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 12:35:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 307B1C982DA
+	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 12:38:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2597B6B008A; Sun, 20 Sep 2026 08:35:01 -0400 (EDT)
+	id 482986B0088; Sun, 20 Sep 2026 08:37:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2312B6B008C; Sun, 20 Sep 2026 08:35:01 -0400 (EDT)
+	id 459C56B0093; Sun, 20 Sep 2026 08:37:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1473E6B0093; Sun, 20 Sep 2026 08:35:01 -0400 (EDT)
+	id 36F7B6B0095; Sun, 20 Sep 2026 08:37:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EC1576B008A
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 08:35:00 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B8B4C1403F0
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 12:34:59 +0000 (UTC)
-X-FDA: 85234085118.16.21E9A30
-Received: from mta0.migadu.com (out-52.mta0.migadu.com [91.218.175.52])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 39D7B40008
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 12:34:56 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=XaAV6Fw5;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf11.hostedemail.com: domain of zenghui.yu@linux.dev designates 91.218.175.52 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=XaAV6Fw5;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf11.hostedemail.com: domain of zenghui.yu@linux.dev designates 91.218.175.52 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789907696;
-	b=MwZ2oxO5WayhokdlWxXSvguf3FBAZILStpHnCgXMcoRdKf4hnth3Fya0GHmAasFwTZQcjL
-	p9vx7IXS+71fE9DhzwsnzuoOe+UxV8MJI0JTh2+c5zTzEgOiGvWy6xD4FwjQxmjpBxCcuL
-	2tXj1FtWRRS0ROnoAlf4C/tpR6p0wYk=
+	by kanga.kvack.org (Postfix) with ESMTP id 1EA9F6B0088
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 08:37:59 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A1CABA5DC2
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 12:37:58 +0000 (UTC)
+X-FDA: 85234092636.05.E682448
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 2686D1C0002
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 12:37:56 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Tfu41fTW;
+	spf=pass (imf21.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789907696;
+	s=arc-20220608; t=1789907877;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s0IIS45fbm17SPpy920em8aEcQeb2Dxy8IYiGeQDSOU=;
-	b=TuAoBX/0rENe742CFf4AWRLY2SuQ4FRksmNAe9PieDfO4y57TPHa+Wa9ztff7rseG/dINh
-	gQ4Ei5KGftQwFqnJPgax8k7+DYbiw51k0xNyfFOoWX48CY62One1V4MchPpu7sMrpK8cgT
-	x/4RW8qS1rRZcxTUulA4zp50jxxLqMs=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=sdNk5ihNH2e62rxLPJrJeu8kriaPZjukMTNXWfJ6eB8=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789907693; v=1; x=1790512493;
- b=XaAV6Fw5xRx9xSLTC/tHHGWs5gPs+wRZbCC5dvevsE2mMbPibZQ0GAJkNOfUtBuwkKshuyDa
- G4qbt8+w1B4gNRE4uCDCNhSdInfWaa+c+OW/bSHvpFhpqLo5BeIHL7tm3FR2TEyQlzGbXTX56wv
- ko/MRAde9HZXgU9+jleslAEw=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id cbc0d603ec100e35;
-	Sun, 20 Sep 2026 12:34:53 +0000
-X-Mizu-Trace-ID: cbc0d603ec100e35
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <e0c63f91-4d33-469e-a584-f97fdf8c3cc5@linux.dev>
-Date: Sun, 20 Sep 2026 20:34:48 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/damon/api: remove unused NR_DAMOS_* enumerators
-To: SJ Park <sj@kernel.org>
-Cc: damon@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- akpm@linux-foundation.org
-References: <20260920100029.46849-1-sj@kernel.org>
-Content-Language: en-US
-From: Zenghui Yu <zenghui.yu@linux.dev>
-In-Reply-To: <20260920100029.46849-1-sj@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=8TXSOAoauEDqUAiNkN8UacM8jNoYS5sAyxYgzMe9pLY=;
+	b=2co8shEuzi69uzukS8oHHZJRjD4JhJh8j7RMBnnVCLyXS88jQtJwlcP3C/RfIAWhUuWhwg
+	j1dhLcwC+N5Vz36HEOcuFpF38ndGTlUvJFxnR9u2YHZiKILEAWSVOpCKkJY7m8C3Ks66f1
+	YDp1kv6UiYQlYaPbITt4+XklYS0Wk4o=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Tfu41fTW;
+	spf=pass (imf21.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789907877;
+	b=Qs/3id7JpjzLOGWmaPb7AEw3a7VatjpxkJChf1WUcP780+EdE8hQ7nwVXkzZvmTmyzcHVw
+	Waa8x/sFeP4xrkZeYjIbbTIFqVmTRYfT2zkCwa/OQeKJQAjNJq7GOZzu6y1HJ6dnHXjxOF
+	VV/Ulti5Gv10kTngtsa6OF/YLEpo6KU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 110FF43D13;
+	Sun, 20 Sep 2026 12:37:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE64E1F000FF;
+	Sun, 20 Sep 2026 12:37:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789907875;
+	bh=8TXSOAoauEDqUAiNkN8UacM8jNoYS5sAyxYgzMe9pLY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=Tfu41fTWM3gSmOu+hwWOtrDgVn/zpXFuQKqN4APJo9TJ6fTyPNi3LOPbntxjrJJSG
+	 1bsh/nbFLU6vZMTNc5t0vf12EPKFsVn5AslSlAFmaH+xhFke54Wy5ooF6qf2xK3VPT
+	 sFcKlcldYLJRlSTOvWtI35zrL3DZ/xECZ9uZYb51Ot2YNcZuQiM5aJZF7UEDj5ivHg
+	 bSPgO0lbP0rQUuma110bhuBfcla6JnB4ssj1aETv/y3Y+hZij8loVdqYPyHFLyhrXE
+	 dfxa2riyC4X6MD9eEti4MVRAo9+/pzs4G6i/gwsPLKnfUO45sbrXfg59ay4plIvA5x
+	 L+umh4UtxqPrg==
+Date: Sun, 20 Sep 2026 02:37:54 -1000
+Message-ID: <b40622ed67f77f3ff88d5772e7ea8476@kernel.org>
+From: Tejun Heo <tj@kernel.org>
+To: Julian Sun <sunjunchao@bytedance.com>
+Cc: linux-block@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	axboe@kernel.dk,
+	hannes@cmpxchg.org,
+	mhocko@kernel.org,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	muchun.song@linux.dev,
+	willy@infradead.org,
+	jack@suse.cz,
+	tj@kernel.org,
+	akpm@linux-foundation.org
+Subject: Re: [PATCH v6 1/3] block: introduce bdev_flush_by_dev()
+In-Reply-To: <20260917065759.2643940-2-sunjunchao@bytedance.com>
+References: <20260917065759.2643940-1-sunjunchao@bytedance.com>
+	<20260917065759.2643940-2-sunjunchao@bytedance.com>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 2686D1C0002
+X-Stat-Signature: 1qtdpctnbfmy1u8spnzzs3eu4qcgkuaa
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 39D7B40008
-X-Stat-Signature: xfkqmro8ej46z5nqng4rgrtkmbr1e69o
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789907695-598256
-X-HE-Meta: U2FsdGVkX1/KBKHrWT4AY509LWryhiWQXpGWpc4tgg/aCiCc3lLE5Wnz0sOcmrBvqGT4/sKnwGKaRnIq5t+i1DsfdIq5tMSCz/JoCTJl50ifxY/+sVmqZI5vjXm/QyXotkuIoNraIMzdP6nx4P/19ZToCT6OdRPJu1Jciz7FokWTH/un4eoF3w79j5jGgq98c9o1QlBlX8c34Wm+4PsS0RVonTU/LJUrE12+tJZxO3f0U9lL17xSxyP5uNx7g4RaJZ2MunlvVgur2KTeFAvsuwdfgZjx7Iphtswx3/cQiotVc8Vl1/R2xq8cQwMzTAEZ4CeCaqvra9RA7HhA16sFvRpPzoUN9qCG56bzzaOHoJZFqeSIHnKh/+Yl7d3bVZTsaCSEq5VVLlQVhkqIav6fsiNlGuCKyuOOnQm0rmIgNxmM7fB7eGjUW3+7OgK3Jdr6lZ939nnlgxmXy1liX84/m2N/RHVlgqKWZ0EnPFq1Xy0m4E+4TirE4k3n374aYjmBBA2jLh9YgJuI9QtW6chInyh0ms35nmCTq7ODjBif2Y9guc+tkefGbbVxslxtJ0Z4JPUoCi8fhHJW08LqkyXTgKSkgDpC062igZ+rUUAXD63iueLxPtCWIs68O030FVsVg8turImj8JU67l4GcB7qRS2Tfeb+kLdxSZOPBEpCoMoaJkuVIJxDm0E62OuEZRGnLmscrCNTiFO7LSXwiOBAJP8AfbslfogG6POjyh40+3xkJp+Q7ShE9Z2wUPtukZFv+Ai5lUvFNICncevPp1oIf847Q127bdJx7GgSB6aOLBqCDmTCXLbTo+vHvvHp40DYfO0h4NLgsYRb7n8FPkwsVGdsiYJlY/50/uc/mElyUvBL9Uu+fbMw853ILa/DQXQn0vOshaZiU8or4vELe06Qjr0V+bCOzjLZjVOueudvQO7i4KhqvfME0VEAev1KIymu5s0ozh2TiTTDH0bUcXH
- qFM6QYQK
- ILc2hik4UEJ0GtUf8rMvbCnyDIXvsOpEpezR5bJJ1GZRYUn0zhFaKkLLKG+d31Q7bew+ToXPDycI2aTXOqwvpR4K8HM4QucuTg2fdZMBS/sOaNQegLHdG4FiiLLu719RC5rMLm9t48dOWpXxIYdTwBSr3WnNapGt74WvRKiKmxXX9rwh0n6pQsKe6QvlbOR+BsDIOZBBm+9hiiVcmk/LSb8R89nqb/rJO7TI2LnLlt/U7RnYsZN0qWYgrB3yIhS6gPCtqDszxIMOLnu9/ljQADsK2RpUIZzw4exp5XlDiXF5RoPN7F7HRIkMFAWKeU7Mt3LMe8ejzrs2MrhG6suCVYmWOpagm8sPhHxM+LFY2fhhwAEeiJUTIK6CqWsrKpTPRLb/f
+X-HE-Tag: 1789907876-524930
+X-HE-Meta: U2FsdGVkX18niANHL+h1mfXsHzwzcOLRclY1dTgvtVubJKr0luBWD+ZZdIPyNzta20V+OQerHVcDGsNh3k1lOm98PW5QAr+KsLpohilOOsyZf3OEGVM0Y44uV4y6RbUILZid9SG2i96Spu4VQBGgng0PyvZM93UjH89uvfiSc2TEyxz/OgafXYeMtrBAiA41Si4HKdGyLgcUn1mn+mOryxvtyAU//R7pPW/8UOwmo+q3Uu2UENrKcw32gOC8x8YbHPeJGdZCBPX2VdyTwgYl6uuju3q5IkPJCjMKrziftbTemP2f3sfaFG0fpfHrt+0p17EFASq3UXCq58WASbW97pEZIQiSJhcOMH6xENXDDmZBv366mIo3673IOFZ/EINo42mT8ULhYEde9anJObk88qnDsS92CUG//OLQzyoykBf+pZ8qcSoBLTp602bAnncDr1rqJ0Ke2iDx2z9y1ES8OJV82KBL75hxX+uV0BfX+qsv0c8Xsa166vkhoP2mQ+YwgBPbQWIeE/WBOojiMCPdvPkjzXHnLdvWoMuHfUlRp8vu4JR7i5lBKyxUXvM8eWxfC+iGv0Nz/P46WdUJ71fhMtjwZXdzs+Bu/mbI5TDVNGBq1nIhBqzCgD///MoZaVFt28/2VtHAngsvxmut2G4azMUjnx3wq+tdW8ffGhTUcoTcT+S3rNBWKzPGFI4OxVgwDEf1z87B3B/QzWz7Kic6uZrmlxYH1zQUVDUH4DTWzkzST8ijDjkh8toomfJ1WwXQ/7VAt3KnT3uO1lxYqo+gwMjicV5UaaPK8YUxXBzTT297CUGKTVOOuFVVbqlvd4TSnBW2JUKtHaMIAQeIGtWW22aar26jOol8lq38xVpkfbJdqLdP8e7Uq1JkHEhi1lKfe+fjBmcnQXVfuMA5jp9f3TCG4LTEDgMaDVysfYsAXRg70S+5biwabt1XQbvCJW429j4+WQLyQ2bjPg9IP51
+ oLrzp6xB
+ rAFitGzz4L4BuiKIX/rLdqKx+lTZIVz10xUaFcRguobCPUATNR9Mi4kLXam2VpNgn+3t0sRIXLdJLxkNhNqSpm+QJfLYM7GZmfD1ivkzepW5Lavw9aFRSV9/dy8ZYxHQu0o51ZiCiCIdROo556Du3cvzZYbbg5poyFeL7cBwMn202D5YTQB5W6Jsp1RrSPg2N6VL8cz4Bo3jpVS29DGdgsHb7Jew7ZKJmUQMk04whL36aurHN6APYVTE1W3EyhAL+/9jipMOtRbb55Aw77xmYKtCUdnYZ12EmBiJ+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,34 +100,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/20/26 6:00 PM, SJ Park wrote:
-> On Sun, 20 Sep 2026 09:20:28 +0800 Zenghui Yu <zenghui.yu@linux.dev> wrote:
-> 
-> > From: "Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
-> >
-> > NR_DAMOS_ACTIONS, NR_DAMOS_QUOTA_GOAL_METRICS, and NR_DAMOS_WMARK_METRICS
-> 
-> More than 72 columns.
+Hello, Julian.
 
-I learnt from submitting-patches.rst that
+On Thu, Sep 17, 2026 at 02:57:57PM +0800, Julian Sun wrote:
+> +void bdev_flush_by_dev(dev_t dev)
+> +{
+> +	struct block_device *bdev;
+> +
+> +	bdev = blkdev_get_no_open(dev, false);
+> +	if (!bdev)
+> +		return;
+> +
+> +	/* Prevent the device from closing between the check and writeback. */
+> +	if (mutex_trylock(&bdev->bd_disk->open_mutex)) {
+> +		if (atomic_read(&bdev->bd_openers))
+> +			sync_blockdev_nowait(bdev);
+> +		mutex_unlock(&bdev->bd_disk->open_mutex);
+> +	}
+> +	blkdev_put_no_open(bdev);
+> +}
 
-  - The body of the explanation, line wrapped at 75 columns, which will
-    be copied to the permanent changelog to describe this patch.
+This holds the disk's open_mutex across the whole writepages pass, so every
+throttle-triggered flush blocks opens, closes and partition rescans on the
+disk for as long as submission takes, which can be a while on a congested
+device. bdev_release() syncs before taking the mutex for the same reason.
 
-But I'm also fine with the 72 columns rule for damon patches (or for mm
-patches?).
+I don't think the mutex or the openers check is needed. If the device is
+closed underneath, the last close syncs and truncates the mapping and
+truncate waits for writeback, so a racing no-wait flush either finishes
+first or finds nothing left. Holding just the reference from
+blkdev_get_no_open() should be enough.
 
-> > are not referenced by any code.  Remove them.
-> >
-> > They can be reintroduced if a real user comes up.
-> >
-> > Signed-off-by: Zenghui Yu (Huawei) <zenghui.yu@linux.dev>
-> 
-> Other than the above too trivial thing,
-> 
-> Reviewed-by: SJ Park <sj@kernel.org>
+> +void bdev_flush_by_dev(dev_t dev);
 
-Thanks!
+The neighbors have !CONFIG_BLOCK stubs. The only caller is under
+CGROUP_WRITEBACK so it builds either way, just noting for consistency.
 
-Zenghui
+Thanks.
+
+--
+tejun
 
