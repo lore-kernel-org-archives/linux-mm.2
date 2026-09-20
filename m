@@ -4,90 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7407C982D0
-	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 07:22:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A3ACC982CC
+	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 07:54:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 97D7C6B00AE; Sun, 20 Sep 2026 03:22:48 -0400 (EDT)
+	id 81F756B0088; Sun, 20 Sep 2026 03:54:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 92E546B00AF; Sun, 20 Sep 2026 03:22:48 -0400 (EDT)
+	id 7F6E86B008A; Sun, 20 Sep 2026 03:54:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 81CF16B00B0; Sun, 20 Sep 2026 03:22:48 -0400 (EDT)
+	id 733336B008C; Sun, 20 Sep 2026 03:54:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 620436B00AE
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 03:22:48 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 909A7C03DD
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 07:22:47 +0000 (UTC)
-X-FDA: 85233298374.07.EA5044D
-Received: from mta1.migadu.com (out-236.mta1.migadu.com [95.215.58.236])
-	by imf02.hostedemail.com (Postfix) with ESMTP id BF24D80003
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 07:22:45 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	spf=pass (imf02.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.236 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5153C6B0088
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 03:54:02 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4B05A803E6
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 07:54:00 +0000 (UTC)
+X-FDA: 85233377040.23.2875D29
+Received: from mta1.migadu.com (out-116.mta1.migadu.com [95.215.58.116])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 1CFC3160004
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 07:53:57 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BtFzRmqj;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of zenghui.yu@linux.dev designates 95.215.58.116 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789890838;
+	b=5duS090w1McC3P+753Ha38niMpsQflDcLWiwKsPDd2jDCWwbORLUQk1JJvcmFTH6k99+Af
+	IWY/nDU2aZaEdkmOFOJTjjbQUpSJvMQ9Ech7JZGbTZdKQV/Ud6gwxQfE2XtxxABcZc4ALU
+	NHId3nPaEGyNjX75dciM4XWNzb0EdtQ=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BtFzRmqj;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of zenghui.yu@linux.dev designates 95.215.58.116 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789888965;
+	s=arc-20220608; t=1789890838;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EK2Hus5UDsJuJSh7AQ0PAr8NM4eaFuJoCcXTUNzvFxc=;
-	b=m/+M5qphXURnuY4cUWbREeX8UymA2SkLc68+DnONxoodTs0dweHVcfBZucd0MWU1Utc6Sn
-	i6nAnYUSCOuJc6QONBUOdLY56RBIx66PPtFr1Y3ZM6WMZqlZc8P22R1ykHgryzpRy9OrMn
-	0hxO3IoEMdrcYzLKwqLOYrDDgMWZgoc=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=none;
-	spf=pass (imf02.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.236 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789888965;
-	b=BMTEdFf2fjJeFJrlat93S4hvhC5c02QFfVbFUc/y2GOWlXNeRIyTpAoY65KtdmyQGkE7cu
-	PRXa0dsjMBi+y2U4kJMjoKPJx5UvrCI35S2aNiUImlCyFKoRdNOjDAecA3X8+mn6UbML9l
-	GRIvcRzXMk+W5G/yI8sOiPnoZZybWWQ=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=BBz8EqeoI4WPFMaWg3Saazz9hVBehFhoLWtPiArTO7Q=;
+	b=dfHxBkJ5EXQGUce7ifKvVJP+cQKbyzqqVdnHMaZlZCycVTQeh8F31BzutQfqR+K5RST8gF
+	UDhKR7yZTZ6agcmXoyPI/4FmURIFmhuKX79O/3Ff1nKEeWkIfqooHIY264u9PZfz85EClY
+	D9IrB3CQDMGg6NT09DfLEArUc7/AO10=
 X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=ofWAQlYpdWhjj6U/g7ojcf/VhSZsLy3f4wqaySbylHU=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789890836; v=1; x=1790495636;
+ b=BtFzRmqjOuGi3nY6+LrGvg2D6woor1Wj1x3+8W01p4ezFyEymtOZCNNY08T6yd1CUOLvXmAk
+ toc8uws5Kx1IGL8+1LN1WhmHrZ1LjicSm1yQPYU7IvJeYNh86QzTNV0a/BsLL9i8PNB79q8w2gH
+ 3qjLvvr2QCLeYB49jYH8XQ5o=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 6412035817f6327f;
-	Sun, 20 Sep 2026 07:22:44 +0000
-X-Mizu-Trace-ID: 6412035817f6327f
+Received: by smtp.migadu.com with ESMTPS id 1afdd80ea8a24a3b;
+	Sun, 20 Sep 2026 07:53:56 +0000
+X-Mizu-Trace-ID: 1afdd80ea8a24a3b
 X-Migadu-Flow: FLOW_OUT
-From: Baoquan He <hebaoquan@kylinos.cn>
-To: linux-mm@kvack.org
-Cc: akpm@linux-foundation.org,
-	chrisl@kernel.org,
-	kasong@tencent.com,
-	hannes@cmpxchg.org,
-	nphamcs@gmail.com,
-	baohua@kernel.org,
-	youngjun.park@lge.com,
-	david@kernel.org,
-	kunwu.chan@gmail.com,
-	baoquan.he@linux.dev,
-	gourry@gourry.net,
-	riel@surriel.com,
-	mhocko@kernel.org,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	Baoquan He <hebaoquan@kylinos.cn>
-Subject: [RFC PATCH 17/17] mm, swap: drop a refused xswap backend run directly
-Date: Sun, 20 Sep 2026 15:20:43 +0800
-Message-ID: <20260920072043.430390-18-hebaoquan@kylinos.cn>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260920072043.430390-1-hebaoquan@kylinos.cn>
-References: <20260920072043.430390-1-hebaoquan@kylinos.cn>
+Message-ID: <17ab543b-2067-4ff0-9505-46ad2837ab73@linux.dev>
+Date: Sun, 20 Sep 2026 15:53:46 +0800
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: BF24D80003
-X-Stat-Signature: rgins8ofpdyetzkrrtw6mijphzre8nbj
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/swapops: remove unused is_hwpoison_entry()
+To: Sang-Heon Jeon <ekffu200098@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Baoquan He <baoquan.he@linux.dev>,
+ Barry Song <baohua@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>
+References: <20260918165642.1014988-1-ekffu200098@gmail.com>
+Content-Language: en-US
+From: Zenghui Yu <zenghui.yu@linux.dev>
+In-Reply-To: <20260918165642.1014988-1-ekffu200098@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1789888965-762433
-X-HE-Meta: U2FsdGVkX18NmOycwjWVABcZR1sH5aiPPR3jSqLmKHwWe2ATOOGitsnUfPBDBXY6EG2dF/O6eoVLliJB4ByHT5XGWJbS/b6d7G7LnGCZbMX7spy/aHlHiuiQpnZg/4OnMwiVAwO096taFLXTBkWZj4hOwWvtgDaMO4idxIzmCJC3NRNvyJw4q8i6PQSVLFo6O/3mNkcTri/roX4jOEaD2HV1bReu2het5bJjEDAkXLGe1suA0FvFkiqQkmWwP+GinVkFykMfjXEv5e0P5kIvcdSPEoMFXsFJfV6hfMD4L6CE7doWw22yPK4GX7X+sBDSj1jnN6zR/BTgYVozN/DS+V1FffKZlNPvcvHNPsX+RTe+VrAR+S+okyxITVr1sY7C4L1WhJFG2sZZQ7TmyZHnCPZhroZxWaiUujLEXr67UGXX0CWAWhBcVg8F9E/DVuiKK0A+/UR1oy++rzRH0sIHKHve2Yyd4PHute87jKLoUPB8Ag7R7/5qR6YlRuOeIvQ7GLXFFVqSX90BLS1cCeveUN7zxT0H41Guw0d+BUXbnGd2cRji0e8Ruf98WIDo+fTpU/vmJX1JtOt2hlKKg7bDAEboSK7RbxqE9E5TjYvkG+anMfXygMMB4+huXHsLQdaAxAKQm6EBNOrBJRWJHqmEISzNTZj2OWl6QMrLPVdEyuZf5JV3uoo0NTKz7Wpc8uitJkJlpm+koQsiQdYPwN/Z9AsccxR5NLtlMrn3OErpOQE3anf6vi0Kzv/gvOHVQYXoWXTJTstT0X5WMorBJbOXlLKr/1FWypYpsG1p/UeUhCyvH2Gc636JFZ+EURpt2d9mPiQXGj6MDNnG3mYzQf87eE6EOSVvTVOfQuISn9azSqe+rQklzGaQ46ibo+gNU3v/Y6QgiBpysWB7025iyXsiek6dkvhyRno2NKvCopRe5zRn76IRYZpvVvv4uNDGM4WPevbGNhItxmLsK8toM4h
- OyuFdcy7
- jZ/2T1qYrCr+vl7vuMIqeapsN579z8bjXMFLHhlEVS+pSf5RYL7CI7DRyL8O2ci0sPQ1eRsSWxFzTdpZxf8y9udJtWYPFK6DYPHPDGRj4Up8fjzZIqmnOGIYZrbYXlKOXpfEnglVAblXRBEOLQVrz51RlTEJZE2d2pCio/2IOvnQXR5A/KT7KoFTBLpoWdUNaZixfvq6PooHewZlAymzHrojhSA4+/FeBzeg8w2MsNFXLpDICjn5Q/qYB/n7BsOgCqJfLHNNjKNW30uQ2wU2H4l7EDwhgG+LU1Q8zUKhgnvVOF5E=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 1CFC3160004
+X-Stat-Signature: kshmu94wz8zpn3r89g5owitb7jzeprjj
+X-HE-Tag: 1789890837-263159
+X-HE-Meta: U2FsdGVkX19kNRxaq9aG43uBwRZI4jn40b9/PWpDRLkd17gk7tOjgqVkZUK6E9y3Ob7uGFYH8TB6PhCk0leXRwp0DWpwovce9qsk/XQ62WF7WFckPIpRvfF3++tcrrsokon+T1K6A6ojut9ODq/0SHZ4ncY8t67wM32b5VGAEHZwTzJ+8JiR0NJqicZTXFI0VnTprQ8oEAd0litxLuqEgvERvLXkdB28g0aLmLDV8rcWkKxjLgn/B/me9E0Y47G58jlCXOOVyY53NGeEC8iC1yvFhDtGOQtu/upfo4LsNwyo08Stdcmk+AqJmMwDV4XQA07MFBYjpUJ0eUdyy+/nx4QnjstPhmHpX9lXHK/89SHLBEg42/BvNBUkcyEVLl0XaXZQV4VB/Ule1mLwpwqZm9Kgh118ePgBdN7/KH5cEvnqMIdBcriPQQM/TJFQEqu2jSdQJby9S4rQqgTQNjiX0rWMexohysV+VSplAONGT0lfbAC3GqkvvhUhVgKmIs2dh/T7daUuilcV8kvfJAUHtuXRoNZxG+diutFfy+DSvvEpxU45eFNrwc1lU7kW4kNuWQi7JFuWlsE0Qf08FmUGExBjFcgsG4zlEJnEAV2yHu7lYfdUglWiUgYKGJHLSOiBPZzoCs0XVzzI4QFAMDkszA+Iw9Bg3jZcEMvaFQpWgubdwzw3KFhlLBCA/GFJJrVZkTdXMlWtZiXPVtDQG1duahM4x2M2fOkPBpCejh28dJgdDbZrTtqPVs265HwYCXreZla+ffKgLz4veAI03058gDVFzcHilgYBHAAuchkcQXiVoOTk8yYBiM7skjmL2ap2rtWjxwDgmlOkZLJ+XlUt61Lp2IysZGIVG0B/SNYbdwZV8tiFZ7KVskIQiYxj/VhoG5PkDN2GoibIizs0KjBlfv6PDCzSLz2fpZhxo3zGA9oxACLThrBbJzo6FgSfIGD5GNwaSvE+msFkQhM3Q0A
+ fG1bYz3s
+ yUThZg5DRgWse5Il0cCOkcLQuTyR3s7NJuQrsk3/vB2+FgxlwL27znl50u4R+8Ahecjq9D1Hq0zzsG+mCaOLHYk29uIMFEmztnrLbjBBLYXLv4tWoY9arZ2Oareirp3zj08rRzMfdt3ZO5+BAyndzBQT3NgpJ9miW44+cYr2d0NKz59QQGw5cUoG3BP6ip5mCQT22LXEb8VNETsDfah3aE6OrtOSM7j6fNL/giLAnjgst4mvXxV55+pabGBjz1SUsl+We6A9g0TTF3Bc3Gq8bt30uO0d/J2tnqvsTTOTe3Z7wD2ojsJGMVjSPRlS+0rRaU4nPa163nApdEVHmLB1+NBgCZw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,77 +94,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On a refused charge, xswap_backend_alloc() gave the physical run back
-with __xswap_backend_unlink(), which finds the run through the reverse
-mapping. That mapping is not installed yet at this point, so it
-recognised nothing and freed nothing: every refused charge leaked the
-run and tripped a VM_WARN_ON_ONCE().
+On 9/19/26 12:56 AM, Sang-Heon Jeon wrote:
+> Since commit 93976a20345b ("mm: eliminate further swapops predicates"),
+> is_hwpoison_entry() has no callers.
+> 
+> So remove it.
+> 
+> No functional change.
+> 
+> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+> ---
+>  include/linux/swapops.h | 9 ---------
+>  1 file changed, 9 deletions(-)
 
-Drop the run directly instead; the caller holds it and nothing points
-at it yet.
+Reviewed-by: Zenghui Yu (Huawei) <zenghui.yu@linux.dev>
 
-Seen with a cgroup at memory.swap.max: the backend held 48663 pages
-while memory.swap.current was 0.
-
-Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
----
- mm/swapfile.c | 35 ++++++++++++++++++++++++++++++++++-
- 1 file changed, 34 insertions(+), 1 deletion(-)
-
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 7a67c2ff4e89..2308d99b5e7c 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -3161,6 +3161,39 @@ static void xswap_free_phys_slot(struct swap_info_struct *si,
- 	swap_range_free(si, offset, 1);
- }
- 
-+/*
-+ * Give a run of backend slots back. Nothing points at them yet, so there is
-+ * no reverse mapping to look up and no record to clear.
-+ */
-+static void xswap_drop_phys_slots(swp_entry_t phys, unsigned int nr)
-+{
-+	struct swap_info_struct *psi = swap_type_to_info(swp_type(phys));
-+	unsigned long poff = swp_offset(phys);
-+	struct swap_cluster_info *pci;
-+	unsigned int i;
-+
-+	if (!psi)
-+		return;
-+
-+	pci = swap_cluster_lock(psi, poff);
-+	if (!pci)
-+		return;
-+
-+	VM_WARN_ON(pci->count < nr);
-+	pci->count -= nr;
-+	for (i = 0; i < nr; i++)
-+		__swap_table_set(pci, (poff + i) % SWAPFILE_CLUSTER,
-+				 null_to_swp_tb());
-+
-+	if (!pci->count)
-+		free_cluster(psi, pci);
-+	else
-+		partial_free_cluster(psi, pci);
-+	swap_cluster_unlock(pci);
-+
-+	swap_range_free(psi, poff, nr);
-+}
-+
- /*
-  * An xswap slot being freed may still own a physical slot. Drop it, or the
-  * physical space and its reverse mapping leak. Caller holds the xswap
-@@ -4401,7 +4434,7 @@ swp_entry_t xswap_backend_alloc(swp_entry_t entry, unsigned int order)
- 		swap_cluster_unlock(ci);
- 	}
- 	if (mem_cgroup_swap_charge(memcg, nr)) {
--		__xswap_backend_unlink(entry, phys, order);
-+		xswap_drop_phys_slots(phys, nr);
- 		return (swp_entry_t){};
- 	}
- 
--- 
-2.54.0
-
+Thanks,
+Zenghui
 
