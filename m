@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6991C982DA
-	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 19:37:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06692C982DA
+	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 19:37:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA0E46B009D; Sun, 20 Sep 2026 15:37:40 -0400 (EDT)
+	id C28876B009F; Sun, 20 Sep 2026 15:37:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A51046B009E; Sun, 20 Sep 2026 15:37:40 -0400 (EDT)
+	id BFF496B00A0; Sun, 20 Sep 2026 15:37:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 919F66B009F; Sun, 20 Sep 2026 15:37:40 -0400 (EDT)
+	id AEDDF6B00A1; Sun, 20 Sep 2026 15:37:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5676D6B009D
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 15:37:40 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 78500C04C7
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 19:37:39 +0000 (UTC)
-X-FDA: 85235150238.24.E922449
-Received: from mail-yx2-f29.google.com (mail-yx2-f29.google.com [74.125.224.157])
-	by imf29.hostedemail.com (Postfix) with ESMTP id B563A120002
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 19:37:37 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=T3I6FIii;
-	spf=pass (imf29.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.157 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 771286B009F
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 15:37:45 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id AE10C1204DF
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 19:37:44 +0000 (UTC)
+X-FDA: 85235150448.12.F1EF24E
+Received: from mail-yx2-f13.google.com (mail-yx2-f13.google.com [74.125.224.141])
+	by imf27.hostedemail.com (Postfix) with ESMTP id EC98F40002
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 19:37:42 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=AXb6kiWf;
+	spf=pass (imf27.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.141 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789933062;
+	b=JF0Ikt3zXhKHyQGT6be6R2bw9mI2IVo4wwFaQrcOUSnqKqxYKlSv6CJYZiJ75prmRb//HX
+	8UdnmvOZ4Gp1CfnhYQF+QvCSgAmX1il8QPdMxXrO9I6jduideTfCRqVjB/vn6/8mfvc7sk
+	5DP2tqath9LZFYPFhIvI/oxXWj5JE8A=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=AXb6kiWf;
+	spf=pass (imf27.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.141 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789933057;
+	s=arc-20220608; t=1789933062;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z+0zDYCWnORIsjY8meHJFhyUNQ+KgCcFKzQxoWC/8Bo=;
-	b=C0DwMeTg130HHI/NTRF4Bfw/9ezmOgUmyETqO+oKPyzsDUcGkVpJghSLUYdGkmO+lv4yHa
-	Sv6zF/PCnW62YoStIuU0h1w1kIK+bLhsRy6S6cuznJ33XAEastkXt6W/X1LnvivS0iCNoZ
-	KODA3dDTdHBWQn5rRiNEHSmDe6bL8AU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789933057;
-	b=TdhAYWFdVa1Sbcp9AtC5ariW8O0XSUzokHmxkR27x7tJNmuBP639vQfGVBw/JYPSqgGPRI
-	Z7EQ7PD4KZR7ebmahzNQiqbXEbvS2WohGAPMn7n2UejdbL8UDgBQvz5ivQ5UdP8G1T3heR
-	MCsS5TLPGI/ZlkMWprKgnksPfF1k2j4=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=T3I6FIii;
-	spf=pass (imf29.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.157 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-Received: by mail-yx2-f29.google.com with SMTP id 00721157ae682-85d43da99easo18601737b3.1
-        for <linux-mm@kvack.org>; Sun, 20 Sep 2026 12:37:37 -0700 (PDT)
+	bh=LP9MAkgaZIZB/G//n4eIZm11yhyh4okaQRNwKZew5U0=;
+	b=khVKa83uHtnGo4o5nOq0sOyBW/MAaf2ptcCj4G5Fb/VJLjwNNPj/58it4Pk9F9t5Db4waz
+	V4qb5/zqGCRLrcxSqUU93oMhuLM8x+0ia/SV5Hd/ltXuQNSjBNayaBMB9PwLeXy19oQvzI
+	luRdRuz0KVRaqhwP2IJYjV7wgCd0dzo=
+Received: by mail-yx2-f13.google.com with SMTP id 956f58d0204a3-66e4aac929eso2018947d50.0
+        for <linux-mm@kvack.org>; Sun, 20 Sep 2026 12:37:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1789933057; x=1790537857; darn=kvack.org;
+        d=soleen.com; s=google; t=1789933062; x=1790537862; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=z+0zDYCWnORIsjY8meHJFhyUNQ+KgCcFKzQxoWC/8Bo=;
-        b=T3I6FIii1Lzww/88JoIepYB/KWLuXOpQUJJnp5Gt6Ye9mNYMWvbNwzQlk1KnB1kkaX
-         rEXq64CRyNqRPdQOTYIao8EMy54oUss/bP1w7sVfr1Ag7IQZVxtf1G5NdUtgdrEevkMs
-         6lMew13oVo6havUTQdoe2uQp+oNfZ/EvmuQJsMT3R29ghZA8ysUVbEM4Ck0k5VYLOoSz
-         NgUWAT9IJFRAXOO34H65UlP3WDiPbtzV1HILMN4ApSev0js2madXdJFZ0/6waWhjP+q9
-         QwAGiw8P06VcArFAN8MkXiGS5CBgTAPutQ/bN6io7Kv9d4m4gOoTbb3bakujqZuqpENH
-         Rdww==
+        bh=LP9MAkgaZIZB/G//n4eIZm11yhyh4okaQRNwKZew5U0=;
+        b=AXb6kiWffYHKaTx5nC9p3Wdhvd9omggxv2pY8h9m3Yyq8jSPaNdshWDJcbDwYuL57S
+         xS7twt4DgelJN2LpuFiPuwASkOkkmZuSNXyJHD7VnsSAVSi4MsuhuyMrDu/AvEdAwinQ
+         JOAKcVBABp239H4EmDIIMgSxBcBxkIMBf97a6Jjj3YC6Kik0eY3UCjnM6WBh1h37zUZ4
+         ++LUwOiURsTbk6IzYGZXOtt9uhv1ve8WTWSuqV5GQBXH0yhK40SpoLWffAcIxHHYwuiR
+         M9nVR4id59gCVV11AcGnjwR5EyQNns0XGobugrlYAMFkACdoGzTk1qskBhjn2eIc7id3
+         SBtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789933057; x=1790537857;
+        d=1e100.net; s=20260707; t=1789933062; x=1790537862;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=z+0zDYCWnORIsjY8meHJFhyUNQ+KgCcFKzQxoWC/8Bo=;
-        b=usYm/CDpXAy7B12Mwjqh7Xmx1TgQe3V4ZGWWk1tYMbkiJ72zNi5PMHHIIETS5Yrbac
-         yH1JcuYpumc3sohhHWezYVRdZ/VOkII5gO928GC9aczV+5V32rSR+VnJvu0grkZngajc
-         IHEkIX6tfEIxzCDYhUojV/riXWRELRm9k96lhnohs49ymSRP0tJybHKTSWMCgzcMlCeH
-         42VuFZ8WHtLBks9NyJfilrFCG1aTqLB00fA9SOne2u7mYxuaYZSXIkz+vqaOcnUWI2e4
-         DHfzlhAmzhdJ0WxNXYqXqTH2vSe+oSnnAFkGq07OcUPPsXLOE8r4e/9nFIAwtlEc6IsL
-         HfYw==
-X-Forwarded-Encrypted: i=1; AKwUvBzTssgVontITzyRn4t3seim75ss/eLlEtuYpLGnUW0584wE0h0yilaxnn0eL+gmAHhhZhMsX7myAQ==@kvack.org
-X-Gm-Message-State: AFuF++ku7u18tPMYu1LsvOz6+5QeDcMQALcPV4YWnK4Q+1t6rIg5SWJL
-	LdvgTt+Oahs6tLp/b0aTNNqwPK6RL0v3lPHpb/xB8h4uvU9wtZDy5owSrQ3k+WzZE6g=
-X-Gm-Gg: AYBFou2N2kFCV5P2GsvexrbFKXXPxSKbnbsitAASNUobIydbF1HFn1TnRQhcvsXMzMj
-	JAtXCVacV763do9939JucrsvV3uJfeKj8mRTLeM8BsKaxhU0lux5B5xjw3ULAlDBqcnYgplshGu
-	L36bAGk+XrGO4R6gUd1lDyUrQAqInVZVp/EwSpV0Mwj+jxRrkHtveUT5BSqciqQgAWcBxU1AEaY
-	LCs96H53SXfreEYjqcS9ketuOFMohe/rIv6+1429555HmAHLpFTtAN4uNKbTo4Qe88TuhmR34Up
-	4u6C86Ac5GCzUCX8Ozg6fDXXYgLJH7WPXm629lhoDZMfIf8mYHU8v/L8yRkamQML3UW04JRFnOa
-	eRIN/lf8GVRJSrM4PkcY8+kqN34fhK2Da6AF7bASYoNfyAbqOwldq5FPOAPRenlchSgorroyeJp
-	in5r4OuxouC3HQhf6VFHdpSRmZZmUdopcvMfBbjLN9NetUCBZ6+hPK5YJjb31EFrZoLQ7uWJDy2
-	vZG89x0GTcit6pk9P0Or7Sn5u05m49fS2cjt5ptRUxENTmCCvcRoeKAvKqIpJWqY3oRTslVenid
-	/UCWmtboxX6qG8C20NE=
-X-Received: by 2002:a05:690e:418c:b0:66a:d2cf:1b8e with SMTP id 956f58d0204a3-6717fc7670amr2083970d50.20.1789933056700;
-        Sun, 20 Sep 2026 12:37:36 -0700 (PDT)
+        bh=LP9MAkgaZIZB/G//n4eIZm11yhyh4okaQRNwKZew5U0=;
+        b=Bn+g74Qzx+pX3XSi/kIl8CZbNMHeTYlN+R8buBuCnwKOGr+jWWLzlgoeBxWDAAZODR
+         SZecv/6fQ9mfANnara6MNgUQfM59trech/6ouMxVZMialKXjeJ7zJGKaVJw5tKW3zhWF
+         vQhGxDkg3K/dGaGHuxSN+xnZqpLmK2znfLrxUo38nIyYTchcPVvJjqZXCwRYOPJGOm+P
+         PH577uccJdlFNX3t/7LWz/DOuDJOlM8Hl+xRtuh1/+F7QxRwqnIC7A9PQIy8n1j5PVlk
+         ChyhuU99ex8Gf95gimBgfosxDkzhLnDIRBv2RD8TJ4mRs8hYOd9uU0Q2Xi1uVS9I9f4l
+         ALXA==
+X-Forwarded-Encrypted: i=1; AKwUvByhhU3Ksj4OoLVWqx5qqnBHLv7iWsI041n/i7NEqRVOpafjU1w6z6BbIBNdk/y8IfS0TDasNvJr6g==@kvack.org
+X-Gm-Message-State: AFuF++nXsXpH0KcP4IvneWAkt+pXaWOX5yi+MwnlHDKqiENleToEnnEA
+	hN4tXRPwQC6SUQZAtM4T6zboi/YQ++W9EKdoMjeV7EF6U0coH+ODV2FzBpTMQIyH87k=
+X-Gm-Gg: AYBFou2a8wUxnyV6MfqEcyAhBfNSNZwZzcwEjmQOPjOV4ld8t9Zkbx+PG2Fs22XAMQT
+	7Zftop5R2Ge8QxxwHBq9NawvfVISAs/qYUv38n7hrhnCSmsifwiaWWy/ryTtCpRWJVaktGs1I1d
+	1R0M1TxzQA+8qXC6dddtjG179fHXouIwbb2gOBOtaP1TIZTBQ3wEY5QFppVJR076LdYG1h+I0J2
+	GNzZdM/zU58gziroBOFjIi6tSMaxxLWQOK7opHmnPb5U5k7UAvz/HjF4udcpeEDA0g+ETEOaI2G
+	/fmgQdw5FyBeWPzV20o9QW2x11cJfTXNOSx+wqowU08JqD4fFvAuedHoIj+Sf85w5remKNkOIOs
+	q/o4sM68MePQ4m+UqOypSEEsftpmUfb/SXaVXxsSzbIdFQQtwkNJoZVdAbGwJ6yQdCA9bLk2qcD
+	A2QJ35eAvdfIy0A2YP8dSR7xzVaXtXp9ugubcqYF/SrkAoPf232BBTmV9Jl9zcuBR+7HeAL/WSZ
+	dm02qDl2J7ARHrEXZi5Tglh8/yBqi2Lks41V4coFKD/sQEnLJdvKS2PDeTzWTTD9Uqh0tMnJneU
+	qxDKIICyk5vBoIBK7TkV
+X-Received: by 2002:a05:690e:128f:b0:668:8dc0:bcc3 with SMTP id 956f58d0204a3-6717fadb1fcmr2667214d50.0.1789933061983;
+        Sun, 20 Sep 2026 12:37:41 -0700 (PDT)
 Received: from soleen.c.googlers.com.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67298f64c7esm2656351d50.2.2026.09.20.12.37.33
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-89a489aef57sm18632047b3.43.2026.09.20.12.37.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Sep 2026 12:37:35 -0700 (PDT)
+        Sun, 20 Sep 2026 12:37:41 -0700 (PDT)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: linux-kselftest@vger.kernel.org,
 	legion@kernel.org,
@@ -169,22 +169,22 @@ To: linux-kselftest@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	vladimir.murzin@arm.com,
 	kas@kernel.org
-Subject: [RFC PATCH 07/46] KVM: luo: Support vCPU file preservation across live updates
-Date: Sun, 20 Sep 2026 15:36:11 -0400
-Message-ID: <20260920193650.3373435-8-pasha.tatashin@soleen.com>
+Subject: [RFC PATCH 08/46] KVM: x86: Add x86 vCPU LUO preservation ABI and register helpers
+Date: Sun, 20 Sep 2026 15:36:12 -0400
+Message-ID: <20260920193650.3373435-9-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
 In-Reply-To: <20260920193650.3373435-1-pasha.tatashin@soleen.com>
 References: <20260920193650.3373435-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: EC98F40002
 X-Rspam-User: 
-X-Stat-Signature: bzdtyueczc7bi4ckezw5znmmmhfkpm68
-X-Rspamd-Queue-Id: B563A120002
-X-HE-Tag: 1789933057-749662
-X-HE-Meta: U2FsdGVkX1+ZvOewu2M2e2W4LgiW8V6g6qnWD57nWutl+C03BUYkadOesFd4+c00Gv0ODBIdWS7BxSjaz0g0VWmA2+nwSc90yIYHLaG+ffWNYLi2BAhUDA45MQ6uBe3NySmkac+a/S5vQgNzObEndc0u06Uc/inaEZoUMMVpsVzODrzrqEAbgAHBXCvagSaAiiixGGN1xXRkC7ckO53xtzcLmbDmZjfhX/+/lE2J5nulv9omwnDTOcQxA5T9jC4jHUQDBsPr+EkDcZ+/Bkhsxz3Zjxm3po83dG1yZQL6XU1abIihOR965+YarZEzQiEXg2TDPaiRGekAKXgyFCOVBOFjW2dnbm64AVxiu0fwenaWvhz1bArMjdi0VU5UOfLBoPJDGgLZ3bQ2T/xx7bcpUMBX0YpCoOLOnmJMDFETdJ2Lcbm0DGY9/TniFv9mYYS2pFW96O8br+cE6p+8/tl2NfiTNt/w4lvs1mbobBkBxNdQ6KUVC6eSX/G4x/nGPKpHToBhm3I2xFdVObw+bt9Zag4IrTF+1u3rLaPkb948gjl9eZQ0OG3mo2ebXl4fDONkJiDbFYR9iI/wvG++gZDSEX4zspymDgRrE0YRB3BlXTYWvB177MOZM+SuVWdBX6IsrDHSddXzZe56XFw2Gu35/o6r9Ee/urE8ehkMv3HL7soZmVS1YiNn/JPcTnA0geaw93wWvd3k9JEz7rA5LfxpithhcSiAV9UHMbsOIunnCIHEdqxo3t8APpt2Z64xgE3QuOaRcJaeUWM+xe992KgtjNBM44L9PuS3ntS6EVYZa0q6TerADnsoeyiET8vObCo3TjVADmH6u3DQ+eiw4Gj9b9P2IgqUcfRBBrn2BROmFwT7AEkG5j5MTIVqwHNK5bPM+/jOpAqF0S/jca+AOWGsr2KnmIj2uXZKVX6o47ZqInOc0Ue3IKKlmUsfcOLtUeCTHnAVdfkMIdra9hmjXX+
- FveHSviE
- 0xPCwQTOE37NR8sz0A8l2cCEhdRJn5FPkWsc+fJo9za/8wvB3aY2OamOtJkXvvUlapQssTVXBq8DDxvw4k/T5qrK9L77zWsC5gGKe7cl5K4vooMC3r58TY/T4pgAOldxDml2Owi9blMzVnnelLaxBc9UXmTltqwNMZQXLoyiyULQtReNlUoesEonHkPnF4zcotoayDsd+bViqSoMbs0naz44VaoJnEufAfTb+8JBbSIJqBY4fdx+6T+xbv/SnFemm2e1woHtLshvZOk+HvuP4p7U9DETI7hg+V7653T2mmfMAmGSe/+sYB/0PVYuQI7TZa6NsTFNYyORcDCY=
+X-Stat-Signature: 3kbwnbag3t8wauam3hphfrwm3s1octgd
+X-HE-Tag: 1789933062-422554
+X-HE-Meta: U2FsdGVkX18lr1+gcUr3AbCK9i1ES1ijALY+baZI9+pdxfRE0q0WmfbeTkWxmbRVaqxCJ4+pyZRZMr7vilhF2q9XD6bTQMgrGkMoERwp+H1R4DICyWLpNqFmNdSdV8HsEkuns2zy+Fq8tsqB4EU1hyl8da2u02nfEt/gviqywk1qJbnae5x6vyp2q+6FZ04aluAYAHuT+jH9mZBspveusM5cdme+E8rNvUZfE7mVoYaovtnQTjOAlMTt7tAKlOwz3k3xymnjDSFai3LizuTp5HL+znIBiTZnJiSVtKZ876yYk2c75ZELON6VKDJuhIafWBYPLnZZCYRQz5RBb4EaXyggIqufVePorP+GCuLAwvJEHjDbUG1P+i7d3bJMtiFwVPNX8y7aOTFFNM/vTn4KUT9+TU2wQWkC4xyAT/uL+Cs9+kd5TIrLtzcjujJMqx6JytdTT5RHDMEPfRrTBLa2AWSbMd65CHwSruPZLhFuwuBIyPn6Nad8anATyxZbP3MQ5hxtkAyb1dQDZA1u1Y2jCXMNx/fgXeqjrqHkiKi0EfTyISKZ/0z5b7PqOj0WHBmw3eHp9WqrhLnEQXAV2NliRBpRjCFVNNTSS/EWJwzuBFmX0HVXsmFEalqFifFjJWBK58aAeH17zP5Zob93Byvr0DtaipQfigkqQN/UF+XggEBF9GMAp8hsjw/tl0CsY5RsjxNhLuKVizAGwdly72Gj/7SXl1CnMRcHhlWoZ5vVxFTQrUKFetTsQMxfYkMT9ENhRsFjyisC9RMA8zrodJ2OxxpbBiENgiH1NZy/M3g/rwBEz1ok3mOgaSOZrtB7ijRJc/sgGnBoS8rADj0PYgGnx0BMRuIEcBwtPPZZYTUV5K7o0dAnszDg8sS276Lh7xVFPu+B9+Xa7pDUkk4z+dlyTIkXs0X7AWP62oF4HJKfuHdoAyJN9ltFsgeaHrdf/fBYAQG/8uiuf8glOxguxCy
+ m6TYfvUk
+ 1ZHRPYG1YQuaLtYSB8KUZaBgbUriJZvcBXzFjZAqONU3YXkj0Pfscv/EnsAYYzZcs5hc4XDBk6CvfUOeAWrt/rQRb5tea1Hz2UlevSQiFYLy7dilv7q9tt7E+TRNywobtu7JtR9Q9GD50o6/9Nje4HTCFZYP3hOeUsJRxC8Th5iqfRgfPRpwINoJWpQEI0VnKJ+rGSJfZ7vFl5opih0/zBPcEO1w3GGg7hPfmBfy76ywOcD/CrvmrCMbs1kxyByeXIEkzNOPx+gXbHwZRD+b23/17wDrI/mWxVQCqO1sveBSTTN6RdFSvaFUDTmXq0mTVCrBqc6Y0mXfBg5I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -192,535 +192,274 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Register LUO file handler for KVM vCPU file descriptors to allow
-preserving vCPU state across live updates.
+Add struct kvm_vcpu_arch_ser in include/linux/kho/abi/kvm_x86.h
+and export x86 register and MSR access helpers for LUO state save/restore.
 
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 ---
- include/linux/kho/abi/kvm.h |  25 ++++++
- include/linux/kvm_host.h    |  53 ++++++++++++
- include/uapi/linux/kvm.h    |   1 +
- virt/kvm/Kconfig            |   3 +
- virt/kvm/kvm_luo.c          | 161 +++++++++++++++++++++++++++++++++++-
- virt/kvm/kvm_main.c         |  58 ++++++++++---
- 6 files changed, 286 insertions(+), 15 deletions(-)
+ arch/x86/kvm/cpuid.c            |  4 +-
+ arch/x86/kvm/cpuid.h            |  1 +
+ arch/x86/kvm/msrs.c             | 15 ++++++
+ arch/x86/kvm/msrs.h             |  2 +
+ arch/x86/kvm/regs.c             |  8 ++--
+ arch/x86/kvm/regs.h             |  4 ++
+ arch/x86/kvm/x86.c              |  8 ++--
+ arch/x86/kvm/x86.h              |  4 ++
+ include/linux/kho/abi/kvm_x86.h | 84 +++++++++++++++++++++++++++++++++
+ 9 files changed, 120 insertions(+), 10 deletions(-)
+ create mode 100644 include/linux/kho/abi/kvm_x86.h
 
-diff --git a/include/linux/kho/abi/kvm.h b/include/linux/kho/abi/kvm.h
-index 42074d76e04a..166a0a2f13c8 100644
---- a/include/linux/kho/abi/kvm.h
-+++ b/include/linux/kho/abi/kvm.h
-@@ -39,6 +39,31 @@ struct kvm_luo_ser {
- /* The compatibility string for KVM VM file handler */
- #define KVM_LUO_FH_COMPATIBLE	"kvm_vm_luo_v1"
+diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
+index 851f151efb35..5aba16e0610b 100644
+--- a/arch/x86/kvm/cpuid.c
++++ b/arch/x86/kvm/cpuid.c
+@@ -507,8 +507,8 @@ u64 kvm_vcpu_reserved_gpa_bits_raw(struct kvm_vcpu *vcpu)
+ 	return rsvd_bits(cpuid_maxphyaddr(vcpu), 63);
+ }
  
-+/**
-+ * enum kvm_vcpu_luo_flags - Flags for KVM vCPU LUO preservation
-+ * @KVM_VCPU_LUO_FLAG_CARETAKER: vCPU is preserved with on-core Caretaker execution.
+-static int kvm_set_cpuid(struct kvm_vcpu *vcpu, struct kvm_cpuid_entry2 *e2,
+-                        int nent)
++int kvm_set_cpuid(struct kvm_vcpu *vcpu, struct kvm_cpuid_entry2 *e2,
++		  int nent)
+ {
+ 	u32 vcpu_caps[NR_KVM_CPU_CAPS];
+ 	int r;
+diff --git a/arch/x86/kvm/cpuid.h b/arch/x86/kvm/cpuid.h
+index 8d863f45585d..e5ec112d39cc 100644
+--- a/arch/x86/kvm/cpuid.h
++++ b/arch/x86/kvm/cpuid.h
+@@ -21,6 +21,7 @@ static inline void kvm_finalize_cpu_caps(void)
+ }
+ 
+ void kvm_vcpu_after_set_cpuid(struct kvm_vcpu *vcpu);
++int kvm_set_cpuid(struct kvm_vcpu *vcpu, struct kvm_cpuid_entry2 *e2, int nent);
+ struct kvm_cpuid_entry2 *kvm_find_cpuid_entry2(struct kvm_cpuid_entry2 *entries,
+ 					       int nent, u32 function, u64 index);
+ /*
+diff --git a/arch/x86/kvm/msrs.c b/arch/x86/kvm/msrs.c
+index dd3bb04878ca..ae849e0b7d14 100644
+--- a/arch/x86/kvm/msrs.c
++++ b/arch/x86/kvm/msrs.c
+@@ -339,6 +339,21 @@ static u32 msr_based_features[ARRAY_SIZE(msr_based_features_all_except_vmx) +
+ 			      (KVM_LAST_EMULATED_VMX_MSR - KVM_FIRST_EMULATED_VMX_MSR + 1)];
+ static unsigned int num_msr_based_features;
+ 
++unsigned int kvm_num_msrs_to_save(void)
++{
++	return num_msrs_to_save + num_emulated_msrs;
++}
++
++u32 kvm_get_msr_to_save_index(unsigned int i)
++{
++	if (i < num_msrs_to_save)
++		return msrs_to_save[i];
++	i -= num_msrs_to_save;
++	if (i < num_emulated_msrs)
++		return emulated_msrs[i];
++	return 0;
++}
++
+ int kvm_get_msr_index_list(struct kvm_msr_list __user *user_msr_list)
+ {
+ 	struct kvm_msr_list msr_list;
+diff --git a/arch/x86/kvm/msrs.h b/arch/x86/kvm/msrs.h
+index 7cc182a15b3b..3a5e39041d99 100644
+--- a/arch/x86/kvm/msrs.h
++++ b/arch/x86/kvm/msrs.h
+@@ -65,6 +65,8 @@ int __kvm_emulate_msr_read(struct kvm_vcpu *vcpu, u32 index, u64 *data);
+ int __kvm_emulate_msr_write(struct kvm_vcpu *vcpu, u32 index, u64 data);
+ int kvm_msr_read(struct kvm_vcpu *vcpu, u32 index, u64 *data);
+ int kvm_msr_write(struct kvm_vcpu *vcpu, u32 index, u64 data);
++unsigned int kvm_num_msrs_to_save(void);
++u32 kvm_get_msr_to_save_index(unsigned int i);
+ int kvm_emulate_rdmsr(struct kvm_vcpu *vcpu);
+ int kvm_emulate_rdmsr_imm(struct kvm_vcpu *vcpu, u32 msr, int reg);
+ int kvm_emulate_wrmsr(struct kvm_vcpu *vcpu);
+diff --git a/arch/x86/kvm/regs.c b/arch/x86/kvm/regs.c
+index 8f66438989e4..02f041c355cc 100644
+--- a/arch/x86/kvm/regs.c
++++ b/arch/x86/kvm/regs.c
+@@ -51,7 +51,7 @@ void kvm_set_rflags(struct kvm_vcpu *vcpu, unsigned long rflags)
+ }
+ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_set_rflags);
+ 
+-static void __get_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
++void __get_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
+ {
+ 	if (vcpu->arch.emulate_regs_need_sync_to_vcpu) {
+ 		/*
+@@ -99,7 +99,7 @@ int kvm_arch_vcpu_ioctl_get_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
+ 	return 0;
+ }
+ 
+-static void __set_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
++void __set_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
+ {
+ 	vcpu->arch.emulate_regs_need_sync_from_vcpu = true;
+ 	vcpu->arch.emulate_regs_need_sync_to_vcpu = false;
+@@ -498,7 +498,7 @@ static void __get_sregs_common(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs)
+ 	sregs->apic_base = vcpu->arch.apic_base;
+ }
+ 
+-static void __get_sregs(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs)
++void __get_sregs(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs)
+ {
+ 	__get_sregs_common(vcpu, sregs);
+ 
+@@ -635,7 +635,7 @@ static int __set_sregs_common(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs,
+ 	return 0;
+ }
+ 
+-static int __set_sregs(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs)
++int __set_sregs(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs)
+ {
+ 	int pending_vec, max_bits;
+ 	int mmu_reset_needed = 0;
+diff --git a/arch/x86/kvm/regs.h b/arch/x86/kvm/regs.h
+index 447f0ec3e63e..40947b1be404 100644
+--- a/arch/x86/kvm/regs.h
++++ b/arch/x86/kvm/regs.h
+@@ -517,5 +517,9 @@ int kvm_vcpu_ioctl_x86_get_debugregs(struct kvm_vcpu *vcpu,
+ int kvm_vcpu_ioctl_x86_set_debugregs(struct kvm_vcpu *vcpu,
+ 				     struct kvm_debugregs *dbgregs);
+ 
++void __get_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs);
++void __set_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs);
++void __get_sregs(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs);
++int __set_sregs(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs);
+ 
+ #endif
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 79468ddfe473..69e0d67a309b 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -2959,8 +2959,8 @@ void kvm_handle_exception_payload_quirk(struct kvm_vcpu *vcpu)
+ 		kvm_deliver_exception_payload(vcpu, ex);
+ }
+ 
+-static void kvm_vcpu_ioctl_x86_get_vcpu_events(struct kvm_vcpu *vcpu,
+-					       struct kvm_vcpu_events *events)
++void kvm_vcpu_ioctl_x86_get_vcpu_events(struct kvm_vcpu *vcpu,
++					struct kvm_vcpu_events *events)
+ {
+ 	struct kvm_queued_exception *ex = kvm_get_exception_to_save(vcpu);
+ 
+@@ -3028,8 +3028,8 @@ static void kvm_vcpu_ioctl_x86_get_vcpu_events(struct kvm_vcpu *vcpu,
+ 	}
+ }
+ 
+-static int kvm_vcpu_ioctl_x86_set_vcpu_events(struct kvm_vcpu *vcpu,
+-					      struct kvm_vcpu_events *events)
++int kvm_vcpu_ioctl_x86_set_vcpu_events(struct kvm_vcpu *vcpu,
++				       struct kvm_vcpu_events *events)
+ {
+ 	if (events->flags & ~(KVM_VCPUEVENT_VALID_NMI_PENDING
+ 			      | KVM_VCPUEVENT_VALID_SIPI_VECTOR
+diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
+index 0f5919b092e4..936ee660ccec 100644
+--- a/arch/x86/kvm/x86.h
++++ b/arch/x86/kvm/x86.h
+@@ -492,6 +492,10 @@ int kvm_task_switch(struct kvm_vcpu *vcpu, u16 tss_selector, int idt_index,
+ 		    int reason, bool has_error_code, u32 error_code);
+ 
+ int __kvm_set_xcr(struct kvm_vcpu *vcpu, u32 index, u64 xcr);
++void kvm_vcpu_ioctl_x86_get_vcpu_events(struct kvm_vcpu *vcpu,
++					struct kvm_vcpu_events *events);
++int kvm_vcpu_ioctl_x86_set_vcpu_events(struct kvm_vcpu *vcpu,
++				       struct kvm_vcpu_events *events);
+ int kvm_emulate_xsetbv(struct kvm_vcpu *vcpu);
+ int kvm_emulate_rdpmc(struct kvm_vcpu *vcpu);
+ 
+diff --git a/include/linux/kho/abi/kvm_x86.h b/include/linux/kho/abi/kvm_x86.h
+new file mode 100644
+index 000000000000..316250482db5
+--- /dev/null
++++ b/include/linux/kho/abi/kvm_x86.h
+@@ -0,0 +1,84 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Copyright (c) 2026, Google LLC.
++ * Pasha Tatashin <pasha.tatashin@soleen.com>
 + */
-+enum kvm_vcpu_luo_flags {
-+	KVM_VCPU_LUO_FLAG_CARETAKER = BIT(0),
-+};
++#ifndef _LINUX_KHO_ABI_KVM_X86_H
++#define _LINUX_KHO_ABI_KVM_X86_H
++
++#ifdef CONFIG_X86_64
++
++#include <linux/build_bug.h>
++#include <linux/stddef.h>
++#include <linux/types.h>
++#include <linux/kho/abi/kvm.h>
++#include <uapi/linux/kvm.h>
++#include <uapi/asm/kvm.h>
 +
 +/**
-+ * struct kvm_vcpu_ser - Main serialization structure for a KVM vCPU.
-+ * @vcpu_id:    The ID of the virtual CPU.
-+ * @flags:      Flags for vCPU preservation.
-+ * @vm_token:   Token of the associated KVM VM instance.
-+ * @arch_state: Preservation pointer to vCPU architectural state.
++ * DOC: x86 KVM Live Update ABI
++ *
++ * x86 KVM uses the ABI defined below for preserving architectural VM and vCPU
++ * state across a kexec reboot using LUO.
++ *
++ * The vCPU-level architectural state contains the compact register sets and
++ * CPUID table for each vCPU.
++ *
++ * All sub-structures (struct kvm_regs, struct kvm_sregs, struct kvm_mp_state,
++ * struct kvm_cpuid_entry2) are uAPI contracts.
 + */
-+struct kvm_vcpu_ser {
-+	u32 vcpu_id;
-+	u32 flags;
-+	u64 vm_token;
-+	DECLARE_KHOSER_PTR(arch_state, struct kvm_vcpu_arch_ser *);
++
++/**
++ * struct kvm_vcpu_arch_ser - Preserved x86 architectural vCPU state in RAM.
++ * @regs:          General-purpose registers (uAPI struct kvm_regs).
++ * @sregs:         Segment and control registers (uAPI struct kvm_sregs).
++ * @mp_state:      Multiprocessor state (uAPI struct kvm_mp_state).
++ * @pad:           Padding to maintain 64-bit alignment after mp_state.
++ * @xcrs:          Extended control registers including XCR0 (uAPI struct kvm_xcrs).
++ * @lapic:         In-kernel local APIC register state (uAPI struct kvm_lapic_state).
++ * @pad_xsave:     Padding that aligns @xsave to 64 bytes; see the static_assert
++ *                 below.  Must be zero.
++ * @xsave:         Extended processor state (uAPI struct kvm_xsave).  This is the
++ *                 only copy of the guest FPU state; there is no kvm_fpu twin.
++ * @events:        vCPU exception, interrupt, NMI and SMI events (uAPI struct kvm_vcpu_events).
++ * @debugregs:     Hardware debug registers DR0-DR7 (uAPI struct kvm_debugregs).
++ * @num_msrs:      Number of valid MSR entries in msrs.
++ * @cpuid_nent:    Number of valid CPUID entries immediately following msrs[num_msrs].
++ * @msrs:          Array of preserved architectural and paravirtual MSR entries,
++ *                 followed by @cpuid_nent struct kvm_cpuid_entry2 entries.
++ */
++struct kvm_vcpu_arch_ser {
++	struct kvm_regs regs;
++	struct kvm_sregs sregs;
++	struct kvm_mp_state mp_state;
++	u32 pad;
++	struct kvm_xcrs xcrs;
++	struct kvm_lapic_state lapic;
++	u8 pad_xsave[40];
++	struct kvm_xsave xsave;
++	struct kvm_vcpu_events events;
++	struct kvm_debugregs debugregs;
++	u32 num_msrs;
++	u32 cpuid_nent;
++	struct kvm_msr_entry msrs[];
 +} __packed;
 +
-+/* The compatibility string for KVM vCPU file handler */
-+#define KVM_VCPU_LUO_FH_COMPATIBLE	"kvm_vcpu_luo_v1"
++static_assert(offsetof(struct kvm_vcpu_arch_ser, msrs) % sizeof(u64) == 0,
++	      "msrs must be 64-bit aligned");
 +
- /**
-  * struct guest_memfd_luo_folio_ser - Serialization layout for a single folio in guest_memfd.
-  * @pfn:   Page Frame Number of the folio.
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 1217cd6ec6ab..643b941286c2 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -1094,7 +1094,9 @@ void kvm_get_kvm(struct kvm *kvm);
- bool kvm_get_kvm_safe(struct kvm *kvm);
- void kvm_put_kvm(struct kvm *kvm);
- bool file_is_kvm(struct file *file);
-+bool file_is_kvm_vcpu(struct file *file);
- struct file *kvm_create_vm_file(unsigned long type, const char *fdname);
-+struct file *kvm_create_vcpu_file(struct kvm *kvm, unsigned long id);
- void kvm_put_kvm_no_destroy(struct kvm *kvm);
- void kvm_uevent_notify_vm_create(struct kvm *kvm);
- 
-@@ -2661,4 +2663,55 @@ long kvm_arch_vcpu_pre_fault_memory(struct kvm_vcpu *vcpu,
- 				    struct kvm_pre_fault_memory *range);
- #endif
- 
-+struct kvm_luo_ser;
-+struct kvm_vcpu_ser;
-+
-+#ifdef CONFIG_HAVE_KVM_ARCH_VCPU_PRESERVE
-+int kvm_arch_vm_luo_preserve(struct kvm *kvm, struct kvm_luo_ser *ser);
-+int kvm_arch_vm_luo_retrieve(struct kvm *kvm, struct kvm_luo_ser *ser);
-+void kvm_arch_vm_luo_unpreserve(struct kvm *kvm, struct kvm_luo_ser *ser);
 +/*
-+ * Unlike unpreserve(), finish() runs after the kexec on a VM that was never
-+ * reclaimed, so there is no struct kvm to pass: it may only free what @ser
-+ * points at.
++ * @xsave must be a legal XSAVE destination.  The structure is __packed, so
++ * without @pad_xsave the member lands at offset 1880, which is not even
++ * 16-byte aligned, and the XSAVE/XRSTOR family faults on anything less than
++ * 64.  The allocation itself is fine: kho_alloc_preserve() returns a folio
++ * address, so the base is page aligned.
++ *
++ * If this assert fires, a member above @xsave changed size; adjust
++ * @pad_xsave rather than deleting the assert.
 + */
-+void kvm_arch_vm_luo_finish(struct kvm_luo_ser *ser);
++static_assert(offsetof(struct kvm_vcpu_arch_ser, xsave) % 64 == 0,
++	      "xsave must be 64-byte aligned to be XSAVE-able in place");
 +
-+int kvm_arch_vcpu_luo_preserve(struct kvm_vcpu *vcpu, struct kvm_vcpu_ser *ser);
-+int kvm_arch_vcpu_luo_retrieve(struct kvm_vcpu *vcpu, struct kvm_vcpu_ser *ser);
-+void kvm_arch_vcpu_luo_unpreserve(struct kvm_vcpu_ser *ser);
-+void kvm_arch_vcpu_luo_finish(struct kvm_vcpu_ser *ser);
-+#else
-+static inline int kvm_arch_vm_luo_preserve(struct kvm *kvm,
-+					   struct kvm_luo_ser *ser)
-+{
-+	return 0;
-+}
++#endif /* CONFIG_X86_64 */
 +
-+static inline int kvm_arch_vm_luo_retrieve(struct kvm *kvm,
-+					   struct kvm_luo_ser *ser)
-+{
-+	return 0;
-+}
-+
-+static inline void kvm_arch_vm_luo_unpreserve(struct kvm *kvm,
-+					      struct kvm_luo_ser *ser) {}
-+static inline void kvm_arch_vm_luo_finish(struct kvm_luo_ser *ser) {}
-+
-+static inline int kvm_arch_vcpu_luo_preserve(struct kvm_vcpu *vcpu,
-+					     struct kvm_vcpu_ser *ser)
-+{
-+	return 0;
-+}
-+
-+static inline int kvm_arch_vcpu_luo_retrieve(struct kvm_vcpu *vcpu,
-+					     struct kvm_vcpu_ser *ser)
-+{
-+	return 0;
-+}
-+
-+static inline void kvm_arch_vcpu_luo_unpreserve(struct kvm_vcpu_ser *ser) {}
-+static inline void kvm_arch_vcpu_luo_finish(struct kvm_vcpu_ser *ser) {}
-+#endif
-+
- #endif
-diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-index ac2d77d14963..4b1754050681 100644
---- a/include/uapi/linux/kvm.h
-+++ b/include/uapi/linux/kvm.h
-@@ -999,6 +999,7 @@ struct kvm_enable_cap {
- #define KVM_CAP_S390_HPAGE_2G 249
- #define KVM_CAP_PPC_COMPAT_CAPS 250
- #define KVM_CAP_ARM_PMU_V3_STRICT 251
-+#define KVM_CAP_VCPU_PRESERVE 252
- 
- struct kvm_irq_routing_irqchip {
- 	__u32 irqchip;
-diff --git a/virt/kvm/Kconfig b/virt/kvm/Kconfig
-index c3c0ee253fc7..fcaf57377e73 100644
---- a/virt/kvm/Kconfig
-+++ b/virt/kvm/Kconfig
-@@ -71,6 +71,9 @@ config KVM_GENERIC_DIRTYLOG_READ_PROTECT
- config KVM_GENERIC_PRE_FAULT_MEMORY
-        bool
- 
-+config HAVE_KVM_ARCH_VCPU_PRESERVE
-+       bool
-+
- config KVM_COMPAT
-        def_bool y
-        depends on KVM && COMPAT && !(S390 || ARM64 || RISCV)
-diff --git a/virt/kvm/kvm_luo.c b/virt/kvm/kvm_luo.c
-index b3bd9bebe17a..f7e259bef4b7 100644
---- a/virt/kvm/kvm_luo.c
-+++ b/virt/kvm/kvm_luo.c
-@@ -35,7 +35,6 @@
-  *
-  * The preservation does not cover:
-  *
-- * - vCPUs and vCPU states
-  * - Memspots / Memory slot layout (memslots)
-  * - Interrupt controllers and IRQ routings
-  * - Coalesced MMIO zones
-@@ -46,6 +45,7 @@
- #include <linux/liveupdate.h>
- #include <linux/kvm_host.h>
- #include <linux/pagemap.h>
-+#include <linux/fdtable.h>
- #include <linux/file.h>
- #include <linux/err.h>
- #include <linux/anon_inodes.h>
-@@ -65,6 +65,7 @@ static int kvm_luo_preserve(struct liveupdate_file_op_args *args)
- {
- 	struct kvm *kvm = args->file->private_data;
- 	struct kvm_luo_ser *ser;
-+	int err;
- 
- 	if (kvm->vm_dead || kvm->vm_bugged)
- 		return -EINVAL;
-@@ -80,6 +81,11 @@ static int kvm_luo_preserve(struct liveupdate_file_op_args *args)
- 	 * architecture that does not implement the hook.
- 	 */
- 	ser->type = 0;
-+	err = kvm_arch_vm_luo_preserve(kvm, ser);
-+	if (err) {
-+		kho_unpreserve_free(ser);
-+		return err;
-+	}
- 
- 	args->serialized_data = virt_to_phys(ser);
- 	return 0;
-@@ -111,18 +117,26 @@ static int kvm_luo_retrieve(struct liveupdate_file_op_args *args)
- 
- 	kvm = file->private_data;
- 
-+	err = kvm_arch_vm_luo_retrieve(kvm, ser);
-+	if (err) {
-+		fput(file);
-+		goto err_free_ser;
-+	}
-+
- 	args->file = file;
- 
- 	kvm_uevent_notify_vm_create(kvm);
- 	return 0;
- 
- err_free_ser:
-+	kvm_arch_vm_luo_finish(ser);
- 	kho_restore_free(ser);
- 	return err;
- }
- 
- static void kvm_luo_unpreserve(struct liveupdate_file_op_args *args)
- {
-+	struct kvm *kvm = args->file ? args->file->private_data : NULL;
- 	struct kvm_luo_ser *ser;
- 
- 	/*
-@@ -135,7 +149,7 @@ static void kvm_luo_unpreserve(struct liveupdate_file_op_args *args)
- 		return;
- 
- 	ser = phys_to_virt(args->serialized_data);
--
-+	kvm_arch_vm_luo_unpreserve(kvm, ser);
- 	kho_unpreserve_free(ser);
- }
- 
-@@ -150,7 +164,7 @@ static void kvm_luo_finish(struct liveupdate_file_op_args *args)
- 		return;
- 
- 	ser = phys_to_virt(args->serialized_data);
--
-+	kvm_arch_vm_luo_finish(ser);
- 	kho_restore_free(ser);
- }
- 
-@@ -168,6 +182,139 @@ static struct liveupdate_file_handler kvm_luo_handler = {
- 	.compatible = KVM_LUO_FH_COMPATIBLE,
- };
- 
-+static bool kvm_vcpu_luo_can_preserve(struct liveupdate_file_handler *handler,
-+				      struct file *file)
-+{
-+	return file_is_kvm_vcpu(file);
-+}
-+
-+static int kvm_vcpu_luo_preserve(struct liveupdate_file_op_args *args)
-+{
-+	struct kvm_vcpu *vcpu = args->file->private_data;
-+	struct kvm_vcpu_ser *ser;
-+	struct file *kvm_file;
-+	u64 vm_token;
-+	int err;
-+
-+	kvm_file = get_file_active(&vcpu->kvm->vm_file);
-+	if (!kvm_file)
-+		return -ENOENT;
-+
-+	err = liveupdate_get_token_outgoing(args->session, kvm_file, &vm_token);
-+	fput(kvm_file);
-+	if (err)
-+		return err;
-+
-+	if (mutex_lock_killable(&vcpu->mutex))
-+		return -EINTR;
-+
-+	ser = kho_alloc_preserve(sizeof(*ser));
-+	if (IS_ERR(ser)) {
-+		mutex_unlock(&vcpu->mutex);
-+		return PTR_ERR(ser);
-+	}
-+
-+	ser->vcpu_id = vcpu->vcpu_id;
-+	ser->flags = 0;
-+	ser->vm_token = vm_token;
-+
-+	err = kvm_arch_vcpu_luo_preserve(vcpu, ser);
-+	mutex_unlock(&vcpu->mutex);
-+	if (err) {
-+		kho_unpreserve_free(ser);
-+		return err;
-+	}
-+
-+	args->serialized_data = virt_to_phys(ser);
-+	return 0;
-+}
-+
-+static int kvm_vcpu_luo_retrieve(struct liveupdate_file_op_args *args)
-+{
-+	struct kvm_vcpu_ser *ser;
-+	struct file *vm_file, *file;
-+	struct kvm_vcpu *vcpu;
-+	int err;
-+
-+	if (!args->serialized_data)
-+		return -EINVAL;
-+
-+	ser = phys_to_virt(args->serialized_data);
-+
-+	err = liveupdate_get_file_incoming(args->session, ser->vm_token, &vm_file);
-+	if (err)
-+		goto err_free_ser;
-+
-+	if (!file_is_kvm(vm_file)) {
-+		fput(vm_file);
-+		err = -EINVAL;
-+		goto err_free_ser;
-+	}
-+
-+	file = kvm_create_vcpu_file(vm_file->private_data, ser->vcpu_id);
-+	fput(vm_file);
-+	if (IS_ERR(file)) {
-+		err = PTR_ERR(file);
-+		goto err_free_ser;
-+	}
-+
-+	vcpu = file->private_data;
-+	err = kvm_arch_vcpu_luo_retrieve(vcpu, ser);
-+	if (err) {
-+		fput(file);
-+		goto err_free_ser;
-+	}
-+
-+	args->file = file;
-+	return 0;
-+
-+err_free_ser:
-+	kvm_arch_vcpu_luo_finish(ser);
-+	kho_restore_free(ser);
-+	return err;
-+}
-+
-+static void kvm_vcpu_luo_unpreserve(struct liveupdate_file_op_args *args)
-+{
-+	struct kvm_vcpu_ser *ser;
-+
-+	if (WARN_ON_ONCE(!args->serialized_data))
-+		return;
-+
-+	ser = phys_to_virt(args->serialized_data);
-+	kvm_arch_vcpu_luo_unpreserve(ser);
-+	kho_unpreserve_free(ser);
-+}
-+
-+static void kvm_vcpu_luo_finish(struct liveupdate_file_op_args *args)
-+{
-+	struct kvm_vcpu_ser *ser;
-+
-+	if (args->retrieve_status < 0)
-+		return;
-+
-+	if (!args->serialized_data)
-+		return;
-+
-+	ser = phys_to_virt(args->serialized_data);
-+	kvm_arch_vcpu_luo_finish(ser);
-+	kho_restore_free(ser);
-+}
-+
-+static const struct liveupdate_file_ops kvm_vcpu_luo_file_ops = {
-+	.can_preserve = kvm_vcpu_luo_can_preserve,
-+	.preserve = kvm_vcpu_luo_preserve,
-+	.retrieve = kvm_vcpu_luo_retrieve,
-+	.unpreserve = kvm_vcpu_luo_unpreserve,
-+	.finish = kvm_vcpu_luo_finish,
-+	.owner = THIS_MODULE,
-+};
-+
-+static struct liveupdate_file_handler kvm_vcpu_luo_handler = {
-+	.ops = &kvm_vcpu_luo_file_ops,
-+	.compatible = KVM_VCPU_LUO_FH_COMPATIBLE,
-+};
-+
- int kvm_luo_init(void)
- {
- 	int err = liveupdate_register_file_handler(&kvm_luo_handler);
-@@ -177,11 +324,19 @@ int kvm_luo_init(void)
- 		return err;
- 	}
- 
-+	err = liveupdate_register_file_handler(&kvm_vcpu_luo_handler);
-+	if (err && err != -EOPNOTSUPP) {
-+		pr_err("Could not register kvm_vcpu_luo handler: %pe\n", ERR_PTR(err));
-+		liveupdate_unregister_file_handler(&kvm_luo_handler);
-+		return err;
-+	}
-+
- 	return 0;
- }
- 
- void kvm_luo_exit(void)
- {
-+	liveupdate_unregister_file_handler(&kvm_vcpu_luo_handler);
- 	liveupdate_unregister_file_handler(&kvm_luo_handler);
- }
- 
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 4b03a65a8428..ae91123e1822 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -4121,12 +4121,12 @@ static struct file_operations kvm_vcpu_fops = {
- /*
-  * Allocates an inode for the vcpu.
-  */
--static int create_vcpu_fd(struct kvm_vcpu *vcpu)
-+static struct file *create_vcpu_file(struct kvm_vcpu *vcpu)
- {
- 	char name[8 + 1 + ITOA_MAX_LEN + 1];
- 
- 	snprintf(name, sizeof(name), "kvm-vcpu:%d", vcpu->vcpu_id);
--	return anon_inode_getfd(name, &kvm_vcpu_fops, vcpu, O_RDWR | O_CLOEXEC);
-+	return anon_inode_getfile(name, &kvm_vcpu_fops, vcpu, O_RDWR);
- }
- 
- #ifdef __KVM_HAVE_ARCH_VCPU_DEBUGFS
-@@ -4163,11 +4163,12 @@ static void kvm_create_vcpu_debugfs(struct kvm_vcpu *vcpu)
- /*
-  * Creates some virtual cpus.  Good luck creating more than one.
-  */
--static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, unsigned long id)
-+struct file *kvm_create_vcpu_file(struct kvm *kvm, unsigned long id)
- {
--	int r;
- 	struct kvm_vcpu *vcpu;
-+	struct file *file;
- 	struct page *page;
-+	int r;
- 
- 	/*
- 	 * KVM tracks vCPU IDs as 'int', be kind to userspace and reject
-@@ -4179,23 +4180,23 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, unsigned long id)
- 	 */
- 	BUILD_BUG_ON(KVM_MAX_VCPU_IDS > INT_MAX);
- 	if (id >= KVM_MAX_VCPU_IDS)
--		return -EINVAL;
-+		return ERR_PTR(-EINVAL);
- 
- 	mutex_lock(&kvm->lock);
- 	if (kvm->created_vcpus >= kvm->max_vcpus) {
- 		mutex_unlock(&kvm->lock);
--		return -EINVAL;
-+		return ERR_PTR(-EINVAL);
- 	}
- 
- 	if (test_bit(id, kvm->vcpu_ids)) {
- 		mutex_unlock(&kvm->lock);
--		return -EEXIST;
-+		return ERR_PTR(-EEXIST);
- 	}
- 
- 	r = kvm_arch_vcpu_precreate(kvm, id);
- 	if (r) {
- 		mutex_unlock(&kvm->lock);
--		return r;
-+		return ERR_PTR(r);
- 	}
- 
- 	kvm->created_vcpus++;
-@@ -4259,9 +4260,11 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, unsigned long id)
- 	 */
- 	mutex_lock(&vcpu->mutex);
- 	kvm_get_kvm(kvm);
--	r = create_vcpu_fd(vcpu);
--	if (r < 0)
-+	file = create_vcpu_file(vcpu);
-+	if (IS_ERR(file)) {
-+		r = PTR_ERR(file);
- 		goto kvm_put_xa_erase;
-+	}
- 
- 	/*
- 	 * Pairs with smp_rmb() in kvm_get_vcpu.  Store the vcpu
-@@ -4274,7 +4277,7 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, unsigned long id)
- 	mutex_unlock(&kvm->lock);
- 	kvm_arch_vcpu_postcreate(vcpu);
- 	kvm_create_vcpu_debugfs(vcpu);
--	return r;
-+	return file;
- 
- kvm_put_xa_erase:
- 	mutex_unlock(&vcpu->mutex);
-@@ -4295,7 +4298,30 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, unsigned long id)
- 	kvm->created_vcpus--;
- 	__clear_bit(id, kvm->vcpu_ids);
- 	mutex_unlock(&kvm->lock);
--	return r;
-+	return ERR_PTR(r);
-+}
-+
-+static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, unsigned long id)
-+{
-+	struct file *file;
-+	int fd;
-+
-+	/*
-+	 * Reserve the fd up front: kvm_create_vcpu_file() publishes the vCPU
-+	 * in kvm->vcpu_array, and there is no clean way to unwind that.
-+	 */
-+	fd = get_unused_fd_flags(O_RDWR | O_CLOEXEC);
-+	if (fd < 0)
-+		return fd;
-+
-+	file = kvm_create_vcpu_file(kvm, id);
-+	if (IS_ERR(file)) {
-+		put_unused_fd(fd);
-+		return PTR_ERR(file);
-+	}
-+
-+	fd_install(fd, file);
-+	return fd;
- }
- 
- static int kvm_vcpu_ioctl_set_sigmask(struct kvm_vcpu *vcpu, sigset_t *sigset)
-@@ -4961,6 +4987,8 @@ static int kvm_vm_ioctl_check_extension_generic(struct kvm *kvm, long arg)
- 	case KVM_CAP_GUEST_MEMFD_FLAGS:
- 		return kvm_gmem_get_supported_flags(kvm);
- #endif
-+	case KVM_CAP_VCPU_PRESERVE:
-+		return IS_ENABLED(CONFIG_HAVE_KVM_ARCH_VCPU_PRESERVE);
- 	default:
- 		break;
- 	}
-@@ -5506,6 +5534,12 @@ bool file_is_kvm(struct file *file)
- }
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(file_is_kvm);
- 
-+bool file_is_kvm_vcpu(struct file *file)
-+{
-+	return file && file->f_op == &kvm_vcpu_fops;
-+}
-+EXPORT_SYMBOL_FOR_KVM_INTERNAL(file_is_kvm_vcpu);
-+
- struct file *kvm_create_vm_file(unsigned long type, const char *fdname)
- {
- 	struct kvm *kvm = kvm_create_vm(type, fdname);
++#endif /* _LINUX_KHO_ABI_KVM_X86_H */
 -- 
 2.55.0.1082.g2b9226bbc0-goog
 
