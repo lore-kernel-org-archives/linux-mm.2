@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 639EDC982E6
-	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 19:40:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3EB7C982DA
+	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 19:40:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4645E6B00D0; Sun, 20 Sep 2026 15:40:03 -0400 (EDT)
+	id 96C976B00D2; Sun, 20 Sep 2026 15:40:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 413FC6B00D1; Sun, 20 Sep 2026 15:40:03 -0400 (EDT)
+	id 934906B00D3; Sun, 20 Sep 2026 15:40:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2DBF26B00D2; Sun, 20 Sep 2026 15:40:03 -0400 (EDT)
+	id 80C5D6B00D4; Sun, 20 Sep 2026 15:40:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E1C576B00D0
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 15:40:02 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0AA621204DD
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 19:40:02 +0000 (UTC)
-X-FDA: 85235156244.07.E52B8C4
-Received: from mail-yx2-f42.google.com (mail-yx2-f42.google.com [74.125.224.170])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 4287740002
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 19:40:00 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=OxtA8jHh;
-	spf=pass (imf07.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.170 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 459C26B00D2
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 15:40:08 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7B619A04CE
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 19:40:07 +0000 (UTC)
+X-FDA: 85235156454.05.042E09F
+Received: from mail-yx2-f43.google.com (mail-yx2-f43.google.com [74.125.224.171])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 9E38F80005
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 19:40:05 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=CpNKffh1;
+	spf=pass (imf30.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.171 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789933205;
+	b=LCXk/cBjpMJwFkeKDBap6r/VGsnI2oHB0Bh0ylvKLC0rEL7BIID7fcKnyzNahkE741Ez7B
+	J5HqQQCZBbiKHFaXRgfEmoGbyYXFlgbBj43pG/PPQFbZxeNi3jCSRRjd16I+yHziyogCm9
+	vWx26B2uACwSV0BS6waGCTLytTZrRUQ=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=CpNKffh1;
+	spf=pass (imf30.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.171 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789933200;
+	s=arc-20220608; t=1789933205;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K+2B3zmRro/zDH0n7+YdvazCE3Eaf+b235sNOcPlOno=;
-	b=i0BV3kpY+N/sTLt2+kr9Zr6RCcrOdlkDTy5TiEW9RcadqzAEcW0HI2wXNAQIud0irfrp9C
-	pUgx1/cs3hK2QH9A9brbXKawa94qTqtM4JFSAEwhH1EybJnR38ACA4axcq/F00k5vtZTrF
-	1ItFHnSg9px9bTMOsDBKGsa2LGJQLA8=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=OxtA8jHh;
-	spf=pass (imf07.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.170 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789933200;
-	b=T86h8ZRgy0iMV/R9FtqTmPbNi5NueaS2fL7f098/TE2J09D3+sISpWR3iFc+EFyXVkdj6F
-	WXgfNFejVQTx98eNvurYU/mzMKUPvxONfZ2e22A7Ca66FuTfQO45uJRyB3G2iGRJuijMiY
-	wnm1XL4/u9vgjQOhnGtKFmYZrdeqvZw=
-Received: by mail-yx2-f42.google.com with SMTP id 956f58d0204a3-6729c4030f0so838556d50.2
-        for <linux-mm@kvack.org>; Sun, 20 Sep 2026 12:40:00 -0700 (PDT)
+	bh=+xCjTdloxc6nkdYmhJBIoS65cvexU8uxkyprCbgscSQ=;
+	b=YdldfL64y/k6ERe8xGB33fX/eOLgDJpeZdMuGnjqI4n1KsvD4E9JcX8q9Y5n+GZNbmb+sK
+	c8xlo1Mp3eo13IPHRuTNXyzQMMtRTxJ28HAohhtbRxHh0XpGcN1NAvOl2he2wiPA7wfW9O
+	yMDkv1aROZNXMcMnH8nQF//vCvKRcuA=
+Received: by mail-yx2-f43.google.com with SMTP id 00721157ae682-895eaf31683so18042197b3.0
+        for <linux-mm@kvack.org>; Sun, 20 Sep 2026 12:40:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1789933199; x=1790537999; darn=kvack.org;
+        d=soleen.com; s=google; t=1789933205; x=1790538005; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=K+2B3zmRro/zDH0n7+YdvazCE3Eaf+b235sNOcPlOno=;
-        b=OxtA8jHhhjp7hbASleQ3RUofVBWV4eWzOiOJeS0GIVuIE/N14Yy3pcXzirg3F4fJ8g
-         8tN2mrKkSS8UZphrxNb60JRYMsTwiusjmA8jh8GwUHiTZJcGRUOtKq8/s1tBXtet+N71
-         DbQtsSdyV9Tr0Ey040w2N2bFKTETpGXxMkZEBM+deGi3AFd3P2sKOB6ekTQe62WVrE8L
-         YoYD2BosRn60ZRdnrXTUG4DPF8K6JBmmhPn/7wIigoGxR20/2jh6EHOw4nwG8gS7Obmv
-         /MqxRKqT0Ga/50FuivVU1MoDkWkcIbzBQBWGjOB4rTzHwzvaVZz0GKb0CaXfLNoxcNb3
-         Ah6A==
+        bh=+xCjTdloxc6nkdYmhJBIoS65cvexU8uxkyprCbgscSQ=;
+        b=CpNKffh1kX0j37xYvU/Kg547uvAxUS49Q233sbOMKuEKUIiCrZYbruRiTDYrL/j/YI
+         iuWUp9an4RM0E9Ahfyx+BDr4u5wfSSejv0BBX6ejtxSSEo1bEkLzqF0m6UhUC3qwAvvB
+         upgRnzFgmWbcDVXl4Qk4ok8gDITb8suWUnXoWkqS93bOJunl4ZK286xyl0u5abZdJDNu
+         8HWRi0y/CWa0bc6cv8dpPo79QvM13HBecN2vyS6Md7qpnbWEY3XYi11olc2s1JBu69lK
+         bfO3T8ZTX85msezUyH0NlsPO44OZcM4kRRD+Y5EOwUU2tp8HL5eq9bCB6tgEoeUXMM3T
+         hhkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789933199; x=1790537999;
+        d=1e100.net; s=20260707; t=1789933205; x=1790538005;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=K+2B3zmRro/zDH0n7+YdvazCE3Eaf+b235sNOcPlOno=;
-        b=haT7/93aOt7r94vqSuWT4WI9XjwsGaC60hYCqnO6ZzmgO73PoQvFI6YyU8NXABl9aM
-         P1LkyBvVDWkx6VNGk4smPAiz9t0Jum3vPIC0ebUC+JxmxIHGn22pcS4GePZGaDm6z8yK
-         NrwOaBFFALz7p4/plmjAXKoQ7EttdYkjdSf6eo1lU6pFk3uLHh0St/vwlLzzkZwOYziI
-         facYYtIFnYiXyb8Ze+K7HkmWglh27oKK2L9z1h9zB/p1/P/NoX5lDGXGEQsIArdFs5oV
-         d3XtszAHMaksgNvw7VhXjxbRljersWzXyhwPgMYLVFZiwQt50PRnEbPjIkQpiDJhU7zk
-         UOQA==
-X-Forwarded-Encrypted: i=1; AKwUvBx/WyVEzDArIo24jjKQdomaa6Hsog1EaKNdcePE8Ei/Mmrv1f4U87mIGE05Dew55fzvsr1j86hkKg==@kvack.org
-X-Gm-Message-State: AFuF++nNa00aIdIoIaNHdhkr61DIMS6CPeNNVd1io98yigc3c9J8/nCv
-	aiAIfqctzLCU09xd6lQyjROMhgT5OAQ212n6NI2EK7pQjnHQv6bXfwUT+wh0QswbAcc=
-X-Gm-Gg: AYBFou0zvIeWI4yiCVKUFoPdGgTH4QnRiRo6fE0sZNk+uLVpStnRVgpDGYfRacbE0Z7
-	dRyr+dHtR6r2NPkFSIfae/5u+mLmHyjA2dsboNlXY7O/jPxi+ZNaS7Cc8ilDRYyPsetmMtaQe+w
-	m7O3L/92IEzpRkXtabUQBEzZJ4asI5v+SgrHlUpV1+38hph2/EPaxREOkGqMJoFfQKWUvrEkJ5g
-	WSRre6JCGsZoLMQQcf13jvLoE9dw8DwEKE/VA0xNqhiLWozqam5/Vr2dPo/gveJ045by3EGHcy+
-	phU46TjBIL4LNIbn0CNRRi8aYSn2O9zmvgTvaAKsYIloMF/xaNj5IrxBVqJbpSlg+wqWMCLw1DC
-	cUIJpgCAmV5JolrWWIvuoKMpJlq2xHZOWDDUeF/p9w4KuLxCy2QMJxc1A/eAxSDYZmG4xPUIgJ/
-	FqnuuvTq4YWZLdC2o9aJNFa0P0qD87Joy6sByv6KL1Dn1Ty2bNMcGRduVX1OEqEeliu4h/AQQKr
-	YIncl1A03s37bjKy9B333+Oc1/b6qC3NGpiXsGj6Pmok1MIglmrBenW6NZC8Z7R8sZkmSDB1I+R
-	vjI8RQ5LU2SbnXi8BSw=
-X-Received: by 2002:a05:690e:1408:b0:671:41c1:daaf with SMTP id 956f58d0204a3-6717fc95e09mr2518491d50.6.1789933199337;
-        Sun, 20 Sep 2026 12:39:59 -0700 (PDT)
+        bh=+xCjTdloxc6nkdYmhJBIoS65cvexU8uxkyprCbgscSQ=;
+        b=r3veWxoKfWdg6gggPwW76uzRNaGtU8R3eEc8JR++ZnF8LV6RbTjCRtVM9wTq7aZxoE
+         ZW31ahDNOte0TO/Z2EvO3yDfsMZnuBMGXK4bWBvBJQz04JXFjGT/2hJZ1C0hZqE3H82s
+         qnu7tSTwT/4Lw91jd5iNZc21/0/GnDuytj9F3TFSGxbcZgxtpqKoxBFcIulIEc3O19nI
+         +TBwOLKqNtWyBkiMGaKkVDJnFbz236C9QBYy8E2GIuIFfjCXrz9ONXXufjLiZ4sYgXLU
+         Dtmq370HBieoJ1A5Ny7sf2ocH2cBAfXdq7n+TkUSspM401Y4t7awglims2V0At3g2GBr
+         ihmA==
+X-Forwarded-Encrypted: i=1; AKwUvBx8JAJEDZKcUncCKpdBesQFD++7tG7iiikj8s3YknNFjQ6FKY6f5Vg+6OlInVwGMxRojVmrS5pZmw==@kvack.org
+X-Gm-Message-State: AFuF++nyER1p73ciU17eZ1RE08FGP4ZtcJRqqZFbpINl3RJpWUvnAZIp
+	zqcsjvtzal/RzfILL9EbltrOfJf9MgXWjQXeYcwJnch0Qs0CSgzgZ8KHC0NVoApHJWg=
+X-Gm-Gg: AYBFou2CZaAwcWdeSN6OdLKzzZq2mYJornNXQ45pY5hLGApYf/uUFGrjoqRk9kuWLyL
+	1GWUnIAiF3BGmbATOF0uZPnNIvgM4TAHxsSx6mVaOrPl5RP0BN7Km8EVMJxckGCo3hVq5TIbgzI
+	S0fla5GURz0SV39cDXid389F7+t81MI9TNnV4lUKeOVhZR2jyiFz0M6S6bwEgNqrBo142KXHMfq
+	Y+iS5FMQFl3KiO9SWFJfcg239qnW0TeqDIY8r9Vk+mV9Bav8dKa7yI8/NG/dDSAZsfpQHsmpcbc
+	MQSDXKs/ww10bX1P4Gx1NqOZQKNDajEj7wpAJEJhOez7oKOR6Z1vPl21GiIWSMfSsHmi6bRr7kD
+	8O0bonIh9AEddBJbRu89xjY5qz/tNEYGQZfiNVDUJHUgrOYT7lTcExTJrvAe9Ksxn9LK98vpvPZ
+	5LKzTiP5vVDij2oT/imjiie99YIWYZ094zzsln/ftwtxJJgudzXvV7+zY352rMse2ih7D65sR72
+	0q+aF4XurIZiDJ1l6IuDXutuBJ2JD2Y7+Vvpi6b4zbVjvLqyhEBBt856AvNf0fKjOM2KsZ72e14
+	BheIoL8Y5q9M2fP5mWo=
+X-Received: by 2002:a05:690c:d8b:b0:873:5c6b:a2ff with SMTP id 00721157ae682-89736f266a6mr23324237b3.45.1789933204717;
+        Sun, 20 Sep 2026 12:40:04 -0700 (PDT)
 Received: from soleen.c.googlers.com.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-672990ab5desm2605625d50.8.2026.09.20.12.39.57
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-89a45d8de3fsm18926787b3.8.2026.09.20.12.40.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Sep 2026 12:39:58 -0700 (PDT)
+        Sun, 20 Sep 2026 12:40:04 -0700 (PDT)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: linux-kselftest@vger.kernel.org,
 	legion@kernel.org,
@@ -169,22 +169,22 @@ To: linux-kselftest@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	vladimir.murzin@arm.com,
 	kas@kernel.org
-Subject: [RFC PATCH 31/46] KVM: caretaker: Add generic KHO ABI telemetry and debugfs reporting
-Date: Sun, 20 Sep 2026 15:36:35 -0400
-Message-ID: <20260920193650.3373435-32-pasha.tatashin@soleen.com>
+Subject: [RFC PATCH 32/46] KVM: x86: Add TDP MMU KHO preservation helpers
+Date: Sun, 20 Sep 2026 15:36:36 -0400
+Message-ID: <20260920193650.3373435-33-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
 In-Reply-To: <20260920193650.3373435-1-pasha.tatashin@soleen.com>
 References: <20260920193650.3373435-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: 3y3qe6y4xbtm5jp9kfrm31psint67zph
-X-Rspamd-Queue-Id: 4287740002
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789933200-412324
-X-HE-Meta: U2FsdGVkX1+HxpXRh2sae/gTrvvvqWuZATOeLbx4uppz0yfXha4pX2FcdNDmFKAIL3k1W4HYYa00UxamrxljJDDVB6go1Fu3SdLAcjDUKETqsIRE1rizOebyKZXQ/kvkcWD2/cIdUgKvO4gVJXP/DgVB88l9iAHIcY0AXJgflLVs6orRTcs8W0wu4/nASwiibUqAfQh9F1rQB/5f0uydHwUMBbUketvNPaWXCq4hSq3FPRKO2yu3Dt1caGUTwvTxYVP1UQRQcQhklarJna3QKMIHsIfsvw61iCW6nKMLzn2aolDyR4gtFg8eUYHcd70uNKDX6GfAvN7LNkncM733dnmYFx9fJGvytIo4IAYoQUpC6MyhMbDI4oEJto6YXZy0QGwjVOhGBKUceQQhvpCEf65HDrFt2RfrG8R6RgiN/UIrjd64TaOby+B7lOJhclTwEell3+DZ3gbLzHDr0k2eEa7N+uTH5ZuKWYoahSNhJzt+f/glj8ZlTPZl/oBv8lcbnFkbOp4CgcL4XCW5lm2ijL45IdO4+wHNco+CH8TZtMqeaFSPXpbKGobZVbPtoZzhM6z/6JhXLLTmR7v7iVXA3zVHs6P1Hlj1ct8hOkcVhmzC8OY7w8t3YeL40kIXdzto6wwx7/6mvs9NwnjL8VDfICbBI59qUjU7fvLvfoqWWSTu2FX5gTQWPET12otThGHkv0E5NOlFTJFssMeIYjjrKrSv316i+QNQOqWEisL/3vcS8EIzOL7SoQpgijUMA1O7y0xTDlIs7VN1vPSdhNmRcRxod0kTerZqj6QWvpgGwor9xwCYMx1rFYbqhwc1DJd+nVD0DnRy3vx+KBwsMeL1F7OBGJQSY9qsPglLJCusWDnK88v7pc2LFrnQ9k7/OXP+D+qJOWt23UrUNLCoslXK7sJLI/b6Qniu0BKEp0A/gNEVerkI1Aw+uYkldc115r/G99QC01TzOzH21GBtK4t
- pd/whv6i
- LvKUY38u+oi2lRzNcSCatSjmjLtm7V7QPGz1Un+9xejryHA0C1x+f07oJoTxmlTRPg1m4dnLxdGcADHsDdZ1wMczlKKczD/hf1AuIpE8vdasJslq2D96i8N6sJGaAvAOe7NgZgwm1yWIfnx0r6BhiaslPeeW2LJKVwn8hM8HKVEWk2uQNoeShtSdGApkBHi6yHaKKIKSVddmgXXy6hOas4TGMlshzPliEeSwzG4zkCqAsCyMxWmD6k4SA1MJfXKsf4d+dkmMHoJ5UiKkhv4L0mcjvogV5ugwc2hP49xjgUKx1f8b2FkBOSd0gttKvhITiNRUIaBQQezNqMhI=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9E38F80005
+X-Stat-Signature: 8enz9nrcwmjymbwt5u91u3p4mra9h1o3
+X-HE-Tag: 1789933205-523252
+X-HE-Meta: U2FsdGVkX1+dJxQ0o9lX1T3DSmHHllBw4O1sqpPT7hVzjq6Jv6pSfms91SX6ry2wXLWJgJG48lSTBZBo77NQbrsnIurtpoN93RKSvttIJNEjr03IIYSMaz1BKwodgGxgHy+3YEVKMaMOo123dV3f8jr7RMkG7KA3wFjDxqYIkAPLZmanJy+f5+Yss7Z4o6vNgN2E0t6X8kvGDSEBxL6rqHKsh67MQ2tbpYEBtWEmXPHWhAYP//UrifNbOaEmxhVOUHEj7/C5nilQJrS37eJERJy6Ge0rXSZEDqUEGHVMubZM7enu1TwzJELTiqU3c23nHI766ePeEJ4u/fd16AlY9zJy0sTrM2dmk16rJRvv9xbt38WBXTciKr0cPa8wTaXGCSaatJYonEuXYtdCve2qkbvMI9amTs3AKXvvPfdGtfQ27r3iuQbd6aQCMS8UlyZetFbWMGE++JtE5J8pOxnSMXrduvG/prL5+CLg+kz17H3tMFruIkBQ5psnp/sI22K0WOQ5w/H7G9zSehQbzQf6/DN9mQ3+5Y5w04xMJliVdKolSCkN0f8nLIEYru3PnvXgbjzd6SPSFDtesSx8RUYyQQnyjKOuSHF3Z/IMARnhwnuxJKFZuKiXffQUesisEX08Lmdiu4EHRyZ9USPdCopXHAkORpFvHzV1tlPb+F9dRjHCJyNODcRJ4P/henZKu5hZGcRJRjFdEFpYk8BfsZF4ndmUFZODCmfCQYBD+RbX+lAEcIXB5wveZbkTupFBLOpaW5Cck/chho0eyERlfPqZldKQ+ghY3HV+W3Q30Ic96FVCEVmBE/FQ0AvnCr53AOXvVSESsz4hWxg3e3SoZgO0+IeRb8iDEe4fuxNYSf7L+jj0Zs9oexVW4qBgXi/dtFH8RloE83RpIlSIG/z7oCis9JAxkl21IdfJ3qo8+L32AEjH+Fjd90DTZ/tz6agW8phGFYfxPZcuxOXLrhyFewp
+ 3e8ougKs
+ 7okbE/aCxC29vBykajikKcKcnw10Bu5sJ5mcK1aNxgu0GnSW/oLeYOpNcMM/fqqU8vgP7o/CSSsVWhwHlF5KFTQU2xgxb4rMe/GbxYnCOO+R6QndftLr+WywTuppL/YGcWTrBQhyLbaDCa8fMnikKg/Vn668yZYFTvxeT7SIDUaZrtC1i2h9eNNS4dyJsBoMRgdOBnARaR6yN6SxmMxLu6vyId3uQrf9UrT/3I2Q/2wi/WIVnIGW7H4cqzWaPQFKl6Nv0W4UwzsVJYSIcAi0NR2vLiLlW2LuBSLInX13FXOjkMtejVcEV0icWgONRqcBnGpBPDLwUXYA1sP8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -192,324 +192,231 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When a preserved vCPU executes inside the Caretaker during a host live
-update blackout window, standard kernel tracing and KVM exit counters
-are unavailable because the host kernel is being replaced via kexec. If
-a guest vCPU hits an unhandled exit and parks, or experiences unexpected
-exit patterns during the transition, the incoming kernel has no
-visibility into what occurred while the vCPU was detached.
-
-Add optional cross-kexec Caretaker execution telemetry behind
-CONFIG_KVM_CARETAKER_DEBUG. During detached execution, the Caretaker
-records run counts, exit counts, stall counts, the last exit reason and
-guest PC, and stall diagnostics into a KHO-preserved telemetry buffer
-referenced from struct kvm_caretaker_cb_ser. When the incoming kernel
-reclaims the vCPU, it logs a summary to dmesg and exposes the preserved
-telemetry under /sys/kernel/debug/kvm/<vm>/vcpu<N>/caretaker_telemetry.
+Add arch/x86/kvm/mmu/kho.c to preserve and adopt TDP MMU EPT/NPT
+root page tables across Kexec Handover (KHO) live updates.
 
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 ---
- include/linux/kvm_caretaker.h |  97 +++++++++++++++++++++++++++
- virt/kvm/Kconfig              |  10 +++
- virt/kvm/Makefile.kvm         |   1 +
- virt/kvm/caretaker_debug.c    | 120 ++++++++++++++++++++++++++++++++++
- virt/kvm/kvm_main.c           |   1 +
- 5 files changed, 229 insertions(+)
- create mode 100644 virt/kvm/caretaker_debug.c
+ arch/x86/kvm/mmu.h     |   7 ++
+ arch/x86/kvm/mmu/kho.c | 193 +++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 200 insertions(+)
+ create mode 100644 arch/x86/kvm/mmu/kho.c
 
-diff --git a/include/linux/kvm_caretaker.h b/include/linux/kvm_caretaker.h
-index 0d4bdde7b1c3..f889d17212b0 100644
---- a/include/linux/kvm_caretaker.h
-+++ b/include/linux/kvm_caretaker.h
-@@ -108,11 +108,13 @@ struct kvm_caretaker_ops {
-  * @cb:        Pointer to KHO-preserved Caretaker control block (&struct kvm_caretaker_cb_ser).
-  * @ops:       Architecture operations vector (&struct kvm_caretaker_ops).
-  * @arch_data: Architecture-specific runtime context passed to @ops callbacks.
-+ * @telemetry: Pointer to KHO-preserved telemetry counters, or %NULL.
-  */
- struct kvm_caretaker_vcpu {
- 	struct kvm_caretaker_cb_ser *cb;
- 	const struct kvm_caretaker_ops *ops;
- 	void *arch_data;
-+	struct kvm_caretaker_telemetry_ser *telemetry;
- };
- 
- struct kvm_kho_folios_ser *kvm_kho_folios_alloc(unsigned int max_folios);
-@@ -260,11 +262,106 @@ void kvm_caretaker_vcpu_finish(struct kvm_vcpu *vcpu,
- 			       struct liveupdate_session *session,
- 			       struct kvm_vcpu_ser *ser);
- 
-+#ifdef CONFIG_KVM_CARETAKER_DEBUG
-+void kvm_caretaker_telemetry_init(struct kvm_caretaker_vcpu *cvcpu,
-+				  struct oncore_session *sess);
-+void kvm_caretaker_telemetry_report(struct kvm_vcpu *vcpu,
-+				    struct kvm_caretaker_cb_ser *cb);
-+void kvm_caretaker_telemetry_free(struct kvm_vcpu_ser *ser, bool is_incoming);
-+void kvm_caretaker_create_vcpu_debugfs(struct kvm_vcpu *vcpu,
-+				       struct dentry *debugfs_dentry);
-+
-+/**
-+ * kvm_caretaker_telemetry_run - Record a guest entry in Caretaker telemetry
-+ * @cvcpu: Common Caretaker vCPU descriptor.
-+ */
-+static __always_inline __caretaker_text void
-+kvm_caretaker_telemetry_run(struct kvm_caretaker_vcpu *cvcpu)
-+{
-+	if (cvcpu->telemetry)
-+		cvcpu->telemetry->total_runs++;
-+}
-+
-+/**
-+ * kvm_caretaker_telemetry_exit - Record a decoded VM exit in Caretaker telemetry
-+ * @cvcpu: Common Caretaker vCPU descriptor.
-+ * @exit:  Decoded VM exit descriptor.
-+ */
-+static __always_inline __caretaker_text void
-+kvm_caretaker_telemetry_exit(struct kvm_caretaker_vcpu *cvcpu,
-+			     const struct kvm_caretaker_exit *exit)
-+{
-+	if (cvcpu->telemetry) {
-+		cvcpu->telemetry->total_exits++;
-+		cvcpu->telemetry->last_exit_reason = exit->raw_reason;
-+		cvcpu->telemetry->last_exit_rip = exit->rip;
-+	}
-+}
-+
-+/**
-+ * kvm_caretaker_telemetry_stall - Record an unhandled stall exit in Caretaker telemetry
-+ * @cvcpu:  Common Caretaker vCPU descriptor.
-+ * @reason: Raw hardware exit reason or entry failure code.
-+ * @rip:    Guest instruction pointer at stall (0 if entry failure).
-+ */
-+static __always_inline __caretaker_text void
-+kvm_caretaker_telemetry_stall(struct kvm_caretaker_vcpu *cvcpu,
-+			      u64 reason, u64 rip)
-+{
-+	if (cvcpu->telemetry) {
-+		cvcpu->telemetry->stall_count++;
-+		cvcpu->telemetry->last_exit_reason = reason;
-+		cvcpu->telemetry->stall_exit_reason = reason;
-+		if (rip)
-+			cvcpu->telemetry->stall_exit_rip = rip;
-+	}
-+}
-+
-+/**
-+ * kvm_caretaker_telemetry_flush - Clean Caretaker telemetry counters to PoC
-+ * @cvcpu: Common Caretaker vCPU descriptor.
-+ */
-+static __always_inline __caretaker_text void
-+kvm_caretaker_telemetry_flush(struct kvm_caretaker_vcpu *cvcpu)
-+{
-+	if (cvcpu->telemetry)
-+		cpu_preserved_clean_sz(cvcpu->telemetry,
-+				       sizeof(*cvcpu->telemetry));
-+}
-+#else
-+static inline void kvm_caretaker_telemetry_init(struct kvm_caretaker_vcpu *cvcpu,
-+						struct oncore_session *sess) {}
-+
-+static inline void kvm_caretaker_telemetry_report(struct kvm_vcpu *vcpu,
-+						  struct kvm_caretaker_cb_ser *cb) {}
-+
-+static inline void kvm_caretaker_telemetry_free(struct kvm_vcpu_ser *ser,
-+						bool is_incoming) {}
-+
-+static inline void kvm_caretaker_create_vcpu_debugfs(struct kvm_vcpu *vcpu,
-+						     struct dentry *debugfs_dentry) {}
-+static __always_inline void
-+kvm_caretaker_telemetry_run(struct kvm_caretaker_vcpu *cvcpu) {}
-+static __always_inline void
-+kvm_caretaker_telemetry_exit(struct kvm_caretaker_vcpu *cvcpu,
-+			     const struct kvm_caretaker_exit *exit) {}
-+static __always_inline void
-+kvm_caretaker_telemetry_stall(struct kvm_caretaker_vcpu *cvcpu,
-+			      u64 reason, u64 rip) {}
-+static __always_inline void
-+kvm_caretaker_telemetry_flush(struct kvm_caretaker_vcpu *cvcpu) {}
-+#endif
-+
- #else /* !CONFIG_KVM_CARETAKER */
- 
- #define __caretaker_text
- #define __caretaker_data
- 
-+struct dentry;
-+
-+static inline void kvm_caretaker_create_vcpu_debugfs(struct kvm_vcpu *vcpu,
-+						     struct dentry *debugfs_dentry) {}
-+
- static inline bool kvm_caretaker_is_stopped(const struct kvm_caretaker_cb_ser *cb)
+diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
+index 2ae7f9ed4cf8..f35948f0906c 100644
+--- a/arch/x86/kvm/mmu.h
++++ b/arch/x86/kvm/mmu.h
+@@ -410,4 +410,11 @@ static inline bool kvm_is_gfn_alias(struct kvm *kvm, gfn_t gfn)
  {
- 	return true;
-diff --git a/virt/kvm/Kconfig b/virt/kvm/Kconfig
-index 165e0c85b8aa..bee73dd079c6 100644
---- a/virt/kvm/Kconfig
-+++ b/virt/kvm/Kconfig
-@@ -153,3 +153,13 @@ config KVM_CARETAKER
- 	  without pausing the guest.
- 
- 	  If unsure, say N.
+ 	return gfn & kvm_gfn_direct_bits(kvm);
+ }
 +
-+config KVM_CARETAKER_DEBUG
-+	bool "Caretaker execution telemetry and debug reporting"
-+	depends on KVM_CARETAKER
-+	default n
-+	help
-+	  Enable Caretaker telemetry collection and reporting of VM exits,
-+	  runs, and stall diagnostics via debugfs and dmesg upon vCPU resume
-+	  following a host kexec live update or cancelled live update session.
-+	  If unsure, say N.
-diff --git a/virt/kvm/Makefile.kvm b/virt/kvm/Makefile.kvm
-index ae1fcf9861b7..157d0bf6132d 100644
---- a/virt/kvm/Makefile.kvm
-+++ b/virt/kvm/Makefile.kvm
-@@ -15,6 +15,7 @@ kvm-$(CONFIG_HAVE_KVM_PFNCACHE) += $(KVM)/pfncache.o
- kvm-$(CONFIG_KVM_GUEST_MEMFD) += $(KVM)/guest_memfd.o
- kvm-$(CONFIG_LIVEUPDATE_GUEST_MEMFD) += $(KVM)/guest_memfd_luo.o $(KVM)/kvm_luo.o
- kvm-$(CONFIG_KVM_CARETAKER) += $(KVM)/caretaker.o
-+kvm-$(CONFIG_KVM_CARETAKER_DEBUG) += $(KVM)/caretaker_debug.o
- KASAN_SANITIZE_$(KVM)/caretaker.o := n
- KCSAN_SANITIZE_$(KVM)/caretaker.o := n
- UBSAN_SANITIZE_$(KVM)/caretaker.o := n
-diff --git a/virt/kvm/caretaker_debug.c b/virt/kvm/caretaker_debug.c
++/*
++ * Declared here rather than in asm/kvm_host.h: it is internal to
++ * arch/x86/kvm and has no callers outside it.  Defined in mmu/kho.c.
++ */
++int kvm_mmu_preserve_kho(struct kvm *kvm);
++
+ #endif
+diff --git a/arch/x86/kvm/mmu/kho.c b/arch/x86/kvm/mmu/kho.c
 new file mode 100644
-index 000000000000..8905938bfec3
+index 000000000000..a04600f0c3e0
 --- /dev/null
-+++ b/virt/kvm/caretaker_debug.c
-@@ -0,0 +1,120 @@
-+// SPDX-License-Identifier: GPL-2.0-only
++++ b/arch/x86/kvm/mmu/kho.c
+@@ -0,0 +1,193 @@
++// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (c) 2026, Google LLC.
 + * Pasha Tatashin <pasha.tatashin@soleen.com>
 + *
-+ * KVM Caretaker execution telemetry and debugfs reporting.
++ * KHO preservation of the x86 KVM MMU page tables.
++ *
++ * An orphaned vCPU keeps running its guest out of the shadow/TDP page tables
++ * while the VM is detached, so every page those tables are built from has to
++ * survive the kexec.
 + */
 +
-+#include <linux/cpu_preserve.h>
-+#include <linux/debugfs.h>
-+#include <linux/kernel.h>
 +#include <linux/kexec_handover.h>
-+#include <linux/kho/abi/kvm.h>
-+#include <linux/kvm_caretaker.h>
 +#include <linux/kvm_host.h>
-+#include <linux/oncore.h>
-+#include <linux/seq_file.h>
 +
-+void kvm_caretaker_telemetry_init(struct kvm_caretaker_vcpu *cvcpu,
-+				  struct oncore_session *sess)
++#include "mmu.h"
++#include "mmu_internal.h"
++#include "spte.h"
++#include "tdp_iter.h"
++#include "tdp_mmu.h"
++
++/*
++ * Page-pointer accumulator.
++ *
++ * kho_preserve_pages() cannot be called while holding kvm->mmu_lock: it is a
++ * rwlock_t, so the section is atomic, whereas kho_radix_add_key() below it
++ * calls might_sleep(), takes a mutex and allocates with GFP_KERNEL.  So the
++ * walk runs in two phases -- collect the pages under the lock, preserve them
++ * after dropping it.
++ *
++ * A NULL @pages simply counts, which is how the caller sizes the array.
++ */
++struct kvm_mmu_kho_pages {
++	struct page **pages;
++	unsigned long nr;
++	unsigned long capacity;
++	bool overflow;
++};
++
++static void kvm_mmu_kho_add(struct kvm_mmu_kho_pages *acc, struct page *page)
 +{
-+	struct kvm_caretaker_telemetry_ser *tel;
-+
-+	tel = kho_alloc_preserve(sizeof(*tel));
-+	if (IS_ERR_OR_NULL(tel))
++	if (!acc->pages) {
++		acc->nr++;
 +		return;
-+
-+	memset(tel, 0, sizeof(*tel));
-+	oncore_session_map_buffer(sess, tel, sizeof(*tel));
-+	cpu_preserved_clean_sz(tel, sizeof(*tel));
-+	cvcpu->telemetry = tel;
-+	KHOSER_STORE_PTR(cvcpu->cb->telemetry, tel);
-+}
-+
-+void kvm_caretaker_telemetry_report(struct kvm_vcpu *vcpu,
-+				    struct kvm_caretaker_cb_ser *cb)
-+{
-+	struct kvm_caretaker_telemetry_ser *tel;
-+
-+	if (!vcpu || !cb)
-+		return;
-+
-+	cpu_preserved_inval(cb);
-+	tel = KHOSER_LOAD_PTR(cb->telemetry);
-+	if (!tel)
-+		return;
-+
-+	cpu_preserved_inval(tel);
-+	vcpu->caretaker.last_telemetry = *tel;
-+
-+	pr_info("caretaker: vcpu %d resume: runs=%llu exits=%llu stalls=%llu last_exit=0x%llx (%llu) rip=0x%llx\n",
-+		vcpu->vcpu_id, tel->total_runs, tel->total_exits,
-+		tel->stall_count, tel->last_exit_reason,
-+		tel->last_exit_reason, tel->last_exit_rip);
-+	if (tel->stall_count) {
-+		pr_info("caretaker: vcpu %d stall info: reason=0x%llx (%llu) rip=0x%llx\n",
-+			vcpu->vcpu_id, tel->stall_exit_reason,
-+			tel->stall_exit_reason, tel->stall_exit_rip);
 +	}
-+}
 +
-+void kvm_caretaker_telemetry_free(struct kvm_vcpu_ser *ser, bool is_incoming)
-+{
-+	struct kvm_caretaker_telemetry_ser *tel;
-+	struct kvm_caretaker_cb_ser *cb;
-+
-+	if (!ser || !(ser->flags & KVM_VCPU_LUO_FLAG_CARETAKER))
++	if (acc->nr >= acc->capacity) {
++		acc->overflow = true;
 +		return;
-+
-+	cb = KHOSER_LOAD_PTR(ser->cb);
-+	tel = cb ? KHOSER_LOAD_PTR(cb->telemetry) : NULL;
-+	if (tel) {
-+		cb->telemetry.phys = 0;
-+		if (is_incoming)
-+			kho_restore_free(tel);
-+		else
-+			kho_unpreserve_free(tel);
 +	}
++
++	acc->pages[acc->nr++] = page;
 +}
 +
-+static int caretaker_telemetry_show(struct seq_file *m, void *v)
++static void kvm_tdp_mmu_collect(struct kvm *kvm,
++				struct kvm_mmu_kho_pages *acc)
 +{
-+	struct kvm_vcpu *vcpu = m->private;
-+	const struct kvm_caretaker_telemetry_ser *t =
-+		&vcpu->caretaker.last_telemetry;
-+	struct kvm_caretaker_cb_ser *cb = READ_ONCE(vcpu->caretaker.cb);
++	gfn_t end = kvm_mmu_max_gfn() + 1;
++	struct kvm_mmu_page *root;
++	struct tdp_iter iter;
 +
-+	if (cb) {
-+		struct kvm_caretaker_telemetry_ser *live;
++	lockdep_assert_held_write(&kvm->mmu_lock);
 +
-+		cpu_preserved_inval(cb);
-+		live = KHOSER_LOAD_PTR(cb->telemetry);
-+		if (live) {
-+			cpu_preserved_inval(live);
-+			t = live;
++	rcu_read_lock();
++	list_for_each_entry_rcu(root, &kvm->arch.tdp_mmu_roots, link) {
++		if (root->spt)
++			kvm_mmu_kho_add(acc, virt_to_page(root->spt));
++
++		for_each_tdp_pte(iter, kvm, root, 0, end) {
++			struct page *page;
++
++			if (!is_shadow_present_pte(iter.old_spte) ||
++			    is_last_spte(iter.old_spte, iter.level))
++				continue;
++
++			page = pfn_to_page(spte_to_pfn(iter.old_spte));
++			kvm_mmu_kho_add(acc, page);
 +		}
 +	}
-+
-+	seq_printf(m, "runs: %llu\n", t->total_runs);
-+	seq_printf(m, "exits: %llu\n", t->total_exits);
-+	seq_printf(m, "stalls: %llu\n", t->stall_count);
-+	seq_printf(m, "last_exit_reason: 0x%llx (%llu)\n",
-+		   t->last_exit_reason, t->last_exit_reason);
-+	seq_printf(m, "last_exit_rip: 0x%llx\n", t->last_exit_rip);
-+	seq_printf(m, "stall_exit_reason: 0x%llx (%llu)\n",
-+		   t->stall_exit_reason, t->stall_exit_reason);
-+	seq_printf(m, "stall_exit_rip: 0x%llx\n", t->stall_exit_rip);
-+	return 0;
++	rcu_read_unlock();
 +}
-+DEFINE_SHOW_ATTRIBUTE(caretaker_telemetry);
 +
-+void kvm_caretaker_create_vcpu_debugfs(struct kvm_vcpu *vcpu,
-+				       struct dentry *debugfs_dentry)
++/*
++ * The per-vCPU root page tables are not linked into active_mmu_pages, so they
++ * have to be walked separately.  pae_root, pml4_root and pml5_root are each
++ * NULL unless the corresponding paging mode is in use.
++ */
++static void kvm_mmu_collect_roots(struct kvm_mmu *mmu,
++				  struct kvm_mmu_kho_pages *acc)
 +{
-+	if (!debugfs_dentry)
-+		return;
++	void *const roots[] = { mmu->pae_root, mmu->pml4_root, mmu->pml5_root };
++	int i;
 +
-+	debugfs_create_file("caretaker_telemetry", 0444, debugfs_dentry, vcpu,
-+			    &caretaker_telemetry_fops);
++	for (i = 0; i < ARRAY_SIZE(roots); i++) {
++		if (roots[i])
++			kvm_mmu_kho_add(acc, virt_to_page(roots[i]));
++	}
 +}
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 4f661c5d2ee2..84b4b96d7916 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -4156,6 +4156,7 @@ static void kvm_create_vcpu_debugfs(struct kvm_vcpu *vcpu)
- 	debugfs_create_file("pid", 0444, debugfs_dentry, vcpu,
- 			    &vcpu_get_pid_fops);
- 
-+	kvm_caretaker_create_vcpu_debugfs(vcpu, debugfs_dentry);
- 	kvm_arch_create_vcpu_debugfs(vcpu, debugfs_dentry);
- }
- #endif
++
++/* Collect every page backing this VM's MMU.  Must be called under mmu_lock. */
++static void kvm_mmu_collect_all(struct kvm *kvm,
++				struct kvm_mmu_kho_pages *acc)
++{
++	struct kvm_mmu_page *sp;
++	struct kvm_vcpu *vcpu;
++	unsigned long i;
++
++	lockdep_assert_held_write(&kvm->mmu_lock);
++
++	acc->nr = 0;
++	acc->overflow = false;
++
++	if (tdp_mmu_enabled)
++		kvm_tdp_mmu_collect(kvm, acc);
++
++	list_for_each_entry(sp, &kvm->arch.active_mmu_pages, link) {
++		if (sp->spt)
++			kvm_mmu_kho_add(acc, virt_to_page(sp->spt));
++	}
++
++	kvm_for_each_vcpu(i, vcpu, kvm) {
++		if (vcpu->arch.mmu)
++			kvm_mmu_collect_roots(vcpu->arch.mmu, acc);
++		kvm_mmu_collect_roots(&vcpu->arch.guest_mmu, acc);
++	}
++}
++
++int kvm_mmu_preserve_kho(struct kvm *kvm)
++{
++	struct kvm_mmu_kho_pages acc = {};
++	struct kvm_kho_folios_ser *kp;
++	unsigned long i;
++	int ret = 0;
++	int attempt;
++
++	/*
++	 * Size the array, then fill it.  The guest can fault in new page
++	 * tables between the two passes, so re-check for overflow and retry
++	 * with a larger array; the slack makes repeated growth unlikely.
++	 */
++	for (attempt = 0; attempt < 5; attempt++) {
++		write_lock(&kvm->mmu_lock);
++		kvm_mmu_collect_all(kvm, &acc);
++		write_unlock(&kvm->mmu_lock);
++
++		if (acc.pages && !acc.overflow)
++			break;
++
++		acc.capacity = acc.nr + (acc.nr >> 2) + 16;
++		kvfree(acc.pages);
++		acc.pages = kvmalloc_array(acc.capacity, sizeof(*acc.pages),
++					   GFP_KERNEL);
++		if (!acc.pages)
++			return -ENOMEM;
++	}
++
++	if (acc.overflow) {
++		ret = -EAGAIN;
++		goto out;
++	}
++
++	if (!acc.nr)
++		goto out;
++
++	kp = kvm_kho_folios_alloc(acc.nr);
++	if (IS_ERR(kp)) {
++		ret = PTR_ERR(kp);
++		goto out;
++	}
++
++	for (i = 0; i < acc.nr; i++) {
++		ret = kho_preserve_folio(page_folio(acc.pages[i]));
++		if (ret) {
++			/*
++			 * Undo the partial preservation: leaving pages marked
++			 * would pin them in the incoming kernel forever with
++			 * nothing owning them.
++			 */
++			while (i--)
++				kho_unpreserve_folio(page_folio(acc.pages[i]));
++			kho_unpreserve_free(kp);
++			goto out;
++		}
++		kp->folios_pa[i] = page_to_phys(acc.pages[i]);
++	}
++
++	kp->nr_folios = acc.nr;
++	kvm->kho_folios = kp;
++
++out:
++	kvfree(acc.pages);
++	return ret;
++}
 -- 
 2.55.0.1082.g2b9226bbc0-goog
 
