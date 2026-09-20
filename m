@@ -4,89 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A3ACC982CC
-	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 07:54:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FA92C982D0
+	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 08:00:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 81F756B0088; Sun, 20 Sep 2026 03:54:02 -0400 (EDT)
+	id 172AD6B0088; Sun, 20 Sep 2026 04:00:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F6E86B008A; Sun, 20 Sep 2026 03:54:02 -0400 (EDT)
+	id 123EC6B008A; Sun, 20 Sep 2026 04:00:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 733336B008C; Sun, 20 Sep 2026 03:54:02 -0400 (EDT)
+	id 013916B008C; Sun, 20 Sep 2026 04:00:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5153C6B0088
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 03:54:02 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4B05A803E6
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 07:54:00 +0000 (UTC)
-X-FDA: 85233377040.23.2875D29
-Received: from mta1.migadu.com (out-116.mta1.migadu.com [95.215.58.116])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 1CFC3160004
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 07:53:57 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BtFzRmqj;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf08.hostedemail.com: domain of zenghui.yu@linux.dev designates 95.215.58.116 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C8FC86B0088
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 04:00:55 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C4C16120407
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 08:00:54 +0000 (UTC)
+X-FDA: 85233394428.01.39D1289
+Received: from mail-pj2-f11.google.com (mail-pj2-f11.google.com [74.125.227.139])
+	by imf25.hostedemail.com (Postfix) with ESMTP id CA024A000A
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 08:00:52 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="dtIpJtp/";
+	spf=pass (imf25.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.139 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789890838;
-	b=5duS090w1McC3P+753Ha38niMpsQflDcLWiwKsPDd2jDCWwbORLUQk1JJvcmFTH6k99+Af
-	IWY/nDU2aZaEdkmOFOJTjjbQUpSJvMQ9Ech7JZGbTZdKQV/Ud6gwxQfE2XtxxABcZc4ALU
-	NHId3nPaEGyNjX75dciM4XWNzb0EdtQ=
+	t=1789891252;
+	b=Mk6T5IMvaM2jkeB6QxBdYfWnRIpwA/7QETQpJL8FpCC5J0kwl6zvsMB0uAP+/fobb9bnOc
+	0LhseDm2Npin0Pw0pg9VTy0qvOz47zAJ8UMBPtAZdljX12rg2KuEVcNzD0bQ4sgacFPxXD
+	NyCEeGZMiM9R4SnlDmwGjDHsfNTTMZs=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BtFzRmqj;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf08.hostedemail.com: domain of zenghui.yu@linux.dev designates 95.215.58.116 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="dtIpJtp/";
+	spf=pass (imf25.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.139 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789890838;
+	s=arc-20220608; t=1789891252;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BBz8EqeoI4WPFMaWg3Saazz9hVBehFhoLWtPiArTO7Q=;
-	b=dfHxBkJ5EXQGUce7ifKvVJP+cQKbyzqqVdnHMaZlZCycVTQeh8F31BzutQfqR+K5RST8gF
-	UDhKR7yZTZ6agcmXoyPI/4FmURIFmhuKX79O/3Ff1nKEeWkIfqooHIY264u9PZfz85EClY
-	D9IrB3CQDMGg6NT09DfLEArUc7/AO10=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=ofWAQlYpdWhjj6U/g7ojcf/VhSZsLy3f4wqaySbylHU=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789890836; v=1; x=1790495636;
- b=BtFzRmqjOuGi3nY6+LrGvg2D6woor1Wj1x3+8W01p4ezFyEymtOZCNNY08T6yd1CUOLvXmAk
- toc8uws5Kx1IGL8+1LN1WhmHrZ1LjicSm1yQPYU7IvJeYNh86QzTNV0a/BsLL9i8PNB79q8w2gH
- 3qjLvvr2QCLeYB49jYH8XQ5o=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 1afdd80ea8a24a3b;
-	Sun, 20 Sep 2026 07:53:56 +0000
-X-Mizu-Trace-ID: 1afdd80ea8a24a3b
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <17ab543b-2067-4ff0-9505-46ad2837ab73@linux.dev>
-Date: Sun, 20 Sep 2026 15:53:46 +0800
+	bh=t8CTYyRXY2aAud9otm1AgJf6WMdrU7YgSbJhEbsEEJg=;
+	b=hpcPnqeHXdFMMjqY2f9zLGrLo0ktWt9nx1dvxem6OSpP4Ue2SEVyNTHk+15apUgFVpYCiw
+	zsfLQMMd85hPOnnQ6txy9pkdArIXiFVbmRIQSKbt2lnfe3UlcUN4zQWr3nAbzUGtgXKCVh
+	ZTh4AhiwYlqkesqSOVI0p8vudyBgY/E=
+Received: by mail-pj2-f11.google.com with SMTP id 98e67ed59e1d1-3989fdf58bcso192406a91.0
+        for <linux-mm@kvack.org>; Sun, 20 Sep 2026 01:00:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789891251; x=1790496051; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=t8CTYyRXY2aAud9otm1AgJf6WMdrU7YgSbJhEbsEEJg=;
+        b=dtIpJtp/u4Ar4Z3o7Nc++Uug3beevz9K0qkPFb8iGKT8Ecaqt+/Pn4Mn3g38L/YXGH
+         UVXiygexxYpZLaV/k8tRpYR9mMoMbYKMA//YCG5QjE/VP7mwSjTeHT9Z7Hd6LUAyxQFH
+         qdVp69m0zNmxZkyW6fCJ61C7d8UuYS4UomEF6aJ3TFbMUENU40Ww1INSitv5g7NTG6XD
+         9w/PYQBpbI4JfALdBnE7SrS2KE02Vtb5rIfryCJFohvtb2EKNqIJ7xeVw4a64hrKo4KA
+         5HsrFxcJGjIG7j5DW9wwiU7xwxPgG818Tb9Yw6MK0D35gunIkZJ2PsooBFOhuO4fPodD
+         bWaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789891251; x=1790496051;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=t8CTYyRXY2aAud9otm1AgJf6WMdrU7YgSbJhEbsEEJg=;
+        b=mPTifecfxJws9ZVtGr729SonpHpOvrRgptbS24/JxkjtqG/1ODnTNC0B8xe8pq2KOx
+         nJNReUqMnbGTPpBNH5P04ivVcOjEnoxGsynKiy0Tn55zoBImt12WVaQ2hQ5y0eGuUpvt
+         SCaplkNziP6UzJbfgk+NFxuBLkG/8tr0QUCvEtuLJy1xiUFyq8Kxy4kqtzVP5T2HOl9i
+         2uDgOiw4mkDID5ajQ4InKWDorN8hIM7C/fDiFKF+NpKn39TJPyp9LrAmZdciceAuuc4t
+         f4Crso8wzFzZnr2gYsJExH53Vs9tywoiXYDS/Tuve96/434uXut2qoBxZZJ1Xy1WLZU9
+         P9Lw==
+X-Forwarded-Encrypted: i=1; AKwUvBw4EmtJ0qPgkka12hrrJmG+QEKGyCthEd6Wii/eELKEi+jYuw8jiAn4p99p/Zz/QGbsZnmm8Vo3QQ==@kvack.org
+X-Gm-Message-State: AFuF++lZP9/mSET4SQJod3iIE6NfB48Wf7RulhjlWNWKNv5fABMKZ+Hf
+	HWOSYrbm2djllNZA7UBFr0lyZ3tkyUmpO+Huhqw/YLx5QIiMFyIKtonl
+X-Gm-Gg: AYBFou3+YjrVJwTZzg3LMYRcXjlRO8YA05ydMqlxTkEl+V3034Y2Jk9BuwlUMw23gNp
+	wHipsOkgWzlvDrd5ceRSxroONK3sfIXutjDHiwGZtOqf7yqgkQsxiPf17qcRPSwGMKUMhSqd+O2
+	vL6z2BhrxB2cMqdba5ja65t2XqJeBAFe1iTayuc/jUKeImMOw5LNIZYXVnCdkxrZC1WoYv7AvB8
+	PXGUroe+ZxfjKVl1YoSRAHsn58cscPKBG/agKbXSSdLQPGp7ZsBZIXm2erx7TdHjgyrMWWTCmMq
+	rd+zH/FknuiRkGo8bCVDT1P3h/7AcTiVO9DnwcGzqK8UX1eunqqXG8cEYfinZn/ew+yr5Li4uu/
+	n+sOcHWSV+V68FSXe2uoRuE7xf+U9RYCrFsPp2nVg2GY32ArGXlqdXhQ+GtnJtTBfXt4KrgC1DI
+	7BXONdErYiEUC7cYJnVR47E577IdYrOOfkZQHjRwNBBCgkEjWksU/FuQ4+ZyOP9IhxYLulp/CMY
+	jB5oA==
+X-Received: by 2002:a17:90a:fc4b:b0:3a0:2900:f55e with SMTP id 98e67ed59e1d1-3a02900f85dmr2402815a91.29.1789891251509;
+        Sun, 20 Sep 2026 01:00:51 -0700 (PDT)
+Received: from [10.125.112.20] ([122.11.210.25])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e6cae997csm7876986a91.11.2026.09.20.01.00.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 20 Sep 2026 01:00:49 -0700 (PDT)
+Message-ID: <32b00102-0961-49e3-b780-74d6db182809@gmail.com>
+Date: Sun, 20 Sep 2026 16:00:30 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/swapops: remove unused is_hwpoison_entry()
-To: Sang-Heon Jeon <ekffu200098@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Baoquan He <baoquan.he@linux.dev>,
- Barry Song <baohua@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>
-References: <20260918165642.1014988-1-ekffu200098@gmail.com>
+Subject: Re: [PATCH v6 06/10] memblock: introduce MEMBLOCK_NODUMP flag
+To: Baoquan He <baoquan.he@linux.dev>, Mike Rapoport <rppt@kernel.org>
+Cc: catalin.marinas@arm.com, will@kernel.org, chenhuacai@kernel.org,
+ pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu, tglx@kernel.org,
+ mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+ robh@kernel.org, saravanak@kernel.org, akpm@linux-foundation.org,
+ pasha.tatashin@soleen.com, pratyush@kernel.org, m.szyprowski@samsung.com,
+ mark.rutland@arm.com, kernel@xen0n.name, alex@ghiti.fr, hpa@zytor.com,
+ ruirui.yang@linux.dev, robin.murphy@arm.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
+ devicetree@vger.kernel.org, kexec@lists.infradead.org, linux-mm@kvack.org,
+ iommu@lists.linux.dev
+References: <20260902073116.802752-1-chenwandun1@gmail.com>
+ <20260902073116.802752-7-chenwandun1@gmail.com> <aqzxavL91icLw-Xv@fedora>
+ <aq41nFRPtRWTQ7cK@kernel.org> <aq9UGXeqmCfuPHdD@fedora>
 Content-Language: en-US
-From: Zenghui Yu <zenghui.yu@linux.dev>
-In-Reply-To: <20260918165642.1014988-1-ekffu200098@gmail.com>
+From: Wandun <chenwandun1@gmail.com>
+In-Reply-To: <aq9UGXeqmCfuPHdD@fedora>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: CA024A000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 1CFC3160004
-X-Stat-Signature: kshmu94wz8zpn3r89g5owitb7jzeprjj
-X-HE-Tag: 1789890837-263159
-X-HE-Meta: U2FsdGVkX19kNRxaq9aG43uBwRZI4jn40b9/PWpDRLkd17gk7tOjgqVkZUK6E9y3Ob7uGFYH8TB6PhCk0leXRwp0DWpwovce9qsk/XQ62WF7WFckPIpRvfF3++tcrrsokon+T1K6A6ojut9ODq/0SHZ4ncY8t67wM32b5VGAEHZwTzJ+8JiR0NJqicZTXFI0VnTprQ8oEAd0litxLuqEgvERvLXkdB28g0aLmLDV8rcWkKxjLgn/B/me9E0Y47G58jlCXOOVyY53NGeEC8iC1yvFhDtGOQtu/upfo4LsNwyo08Stdcmk+AqJmMwDV4XQA07MFBYjpUJ0eUdyy+/nx4QnjstPhmHpX9lXHK/89SHLBEg42/BvNBUkcyEVLl0XaXZQV4VB/Ule1mLwpwqZm9Kgh118ePgBdN7/KH5cEvnqMIdBcriPQQM/TJFQEqu2jSdQJby9S4rQqgTQNjiX0rWMexohysV+VSplAONGT0lfbAC3GqkvvhUhVgKmIs2dh/T7daUuilcV8kvfJAUHtuXRoNZxG+diutFfy+DSvvEpxU45eFNrwc1lU7kW4kNuWQi7JFuWlsE0Qf08FmUGExBjFcgsG4zlEJnEAV2yHu7lYfdUglWiUgYKGJHLSOiBPZzoCs0XVzzI4QFAMDkszA+Iw9Bg3jZcEMvaFQpWgubdwzw3KFhlLBCA/GFJJrVZkTdXMlWtZiXPVtDQG1duahM4x2M2fOkPBpCejh28dJgdDbZrTtqPVs265HwYCXreZla+ffKgLz4veAI03058gDVFzcHilgYBHAAuchkcQXiVoOTk8yYBiM7skjmL2ap2rtWjxwDgmlOkZLJ+XlUt61Lp2IysZGIVG0B/SNYbdwZV8tiFZ7KVskIQiYxj/VhoG5PkDN2GoibIizs0KjBlfv6PDCzSLz2fpZhxo3zGA9oxACLThrBbJzo6FgSfIGD5GNwaSvE+msFkQhM3Q0A
- fG1bYz3s
- yUThZg5DRgWse5Il0cCOkcLQuTyR3s7NJuQrsk3/vB2+FgxlwL27znl50u4R+8Ahecjq9D1Hq0zzsG+mCaOLHYk29uIMFEmztnrLbjBBLYXLv4tWoY9arZ2Oareirp3zj08rRzMfdt3ZO5+BAyndzBQT3NgpJ9miW44+cYr2d0NKz59QQGw5cUoG3BP6ip5mCQT22LXEb8VNETsDfah3aE6OrtOSM7j6fNL/giLAnjgst4mvXxV55+pabGBjz1SUsl+We6A9g0TTF3Bc3Gq8bt30uO0d/J2tnqvsTTOTe3Z7wD2ojsJGMVjSPRlS+0rRaU4nPa163nApdEVHmLB1+NBgCZw==
+X-Stat-Signature: bzqa8komawdu9ucqe3e9rhmhgkrcyf55
+X-HE-Tag: 1789891252-838998
+X-HE-Meta: U2FsdGVkX1/m1T4j0919t13TAVip7qP8RYAVSZojD3nUJoUeRaahALyE4qwZpfjL4q1DoJFRtk4V4+huHlzzZRC82MuAxGjJcZGVwenTb6ZFtShFHj7OvgZehnsBBgEReNec0kRgcFPddV0jYNc60f8h+P20stqvYeciNcrBzi519cT3ZtvX/IZf4Sc6r2X2Fk/BhvWLV3LU0WiRoO52knWakkJE7548tgFOG//1ydoE+kYc2qL+rfEoO0QTlud8N2CiK+bYNhgxrNb4FerYlUBzinE8m3VAf7tNoszKlCbDeyCkEuyxsN9/JDLMhYlxG1GhIeQnK0r1WGQeseJxpPXbTR25ddB59yj6LQzWfoTvA3EcMqR7/50vr02lr4GN6vU1BabSnBJiPntYFLaWIyX7fsvzuZnNBw0C/atfLevYKZa/dFtEq7PMgvN/Qdq1zKBW42CxGJr5QGCEn2Mf2ImIC8DWuH3lGf4UTWsRBAtYXutlH+8kMdt0hWUxXAuyrlkzx8gh60Tkj+YKFc+He4Ytm1bFRt537ZUfVtl4u54ZrNJHxeDrEcl9L4kDMf9Z2I0Rx3R0Xxvz+uUvq1DeaDDbCuUgGTeCYM8zrfTQXFFLAlxkSN1AT2zqMwKwVkpTKyEdRl+DccHKPxVMbaHdyGOjBp2a7xZPWAU22OoP3iZujCqrRb6gxLyWgYWBXuEzDSUIuzbQn7idB4wKDrzgr9EOZWIHD6Y5fjkHyvj3uuYVRCf/J7NIHNis0DLkdySKYcWLFHOUXQlN+FFNZ4Xyzevr+e940xRZIbt1Ewu1MbNgQMW9qMozqWs0VmuDO6HlxzpviACs4i03HVbSM8hZXDAoKXSZGq8xt3sdd/DCimb7ca0zYscHbwK0RPlBu/J8q6W/1ATa5qEz8O94fiQk2mrGtxDXxow3miGSnEv7L7KpGSFrsvgJFwjH3eWRFxrR6YLkB71B5UQuRUQCeHF
+ fa0PPIUg
+ MwN6o6OfMX7reqhzjWIiLOY6u7md1t3Tc9w47uga4nKziJIrUCu4lI3An2oP/H3dU4QOVcX6qff0fXGJ8xZE3oxkvx/TKsCBdm/s0NEIEwauVRIaZKjxwhcFstSo7aUA6ZSivAnWsksAwBgp4LMcf2EnDREdIgLlf4Q+7SPPoeTyUczKBt0lIS0kJsDcW3bCac3bxA/YMtqBv7OB3PwXoQueY4KQV9sJ8pxj9w+lHHfEmeJAXbUbIQnTV+StAsuyaptWGjA2MddDDaLoR0lU3LA7RvE2LOmS9WRp8YOnbREXXNxm9GEtHvaZP/1jsqKCqN80tbPpv1hN/rm/fvgZmVzvXt9eEsoFNKTcwR/lbyk9edSyBjmDHko1LRHIUxAufgBNKB6LO08qnOHGFYTUvH1Lhn1hrQcj/Bj+l9AHL+QfDQjJMuAFhIiap73Yymo5/upSGvXaJ+fpLhUtM2t7Dcv9xWwZQ4brAuUc9eUyHNPe92ik=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,21 +134,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/19/26 12:56 AM, Sang-Heon Jeon wrote:
-> Since commit 93976a20345b ("mm: eliminate further swapops predicates"),
-> is_hwpoison_entry() has no callers.
-> 
-> So remove it.
-> 
-> No functional change.
-> 
-> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
-> ---
->  include/linux/swapops.h | 9 ---------
->  1 file changed, 9 deletions(-)
 
-Reviewed-by: Zenghui Yu (Huawei) <zenghui.yu@linux.dev>
 
-Thanks,
-Zenghui
+On 9/20/26 11:33, Baoquan He wrote:
+> On 09/19/26 at 10:11am, Mike Rapoport wrote:
+>> On Fri, Sep 18, 2026 at 04:08:10PM +0800, Baoquan He wrote:
+>>> On 09/02/26 at 03:31pm, Wandun Chen wrote:
+> ...snip... 
+>>>> +/**
+>>>> + * memblock_mark_nodump - Mark a memory region with flag MEMBLOCK_NODUMP.
+>>>> + * @base: the base phys addr of the region
+>>>> + * @size: the size of the region
+>>>> + *
+>>>> + * Mark the region as not to be included in crash dumps.
+>>>> + *
+>>>> + * Return: 0 on success, -errno on failure.
+>>>> + */
+>>>> +int __init_memblock memblock_mark_nodump(phys_addr_t base, phys_addr_t size)
+>>>       ~~~~~~~~~~~~~~^
+>>> Is it impossible to use at runtime even thought it claims to be generic?
+>>
+>> This should only happen at boot.
+>>
+>> Allowing modifications of memblock properties in runtime is a can of worms
+>> I don't want to open.
+> 
+> Thank you. This is why I said this can't be claimed as a generic way to
+> mark memory region as no dump. The generic way I'd like to see is
+> at any time of system we can mark any unwanted memory region as no dump.
+> And it won't impact the behaviour of the current system.
+
+Thanks Mike for the explanation and Baoquan for the suggestion.
+I'll drop the "generic" related description in the next version.
+
+
+Baoquan, by the way, patch 2 is still awaiting review. It rewrites
+the riscv side of the code that patch 3 (which you've acked) then
+folds into the weak defaults, if you could take a look at it too,
+that would be very helpful.
+
+Best regards,
+Wandun
+
+
+> 
+>>  
+>>>> +{
+>>>> +	return memblock_setclr_flag(&memblock.memory, base, size, 1,
+>>>> +				    MEMBLOCK_NODUMP);
+>>>> +}
+>>>> +
+>>>>  static bool should_skip_region(struct memblock_type *type,
+>>>>  			       struct memblock_region *m,
+>>>>  			       int nid, int flags)
+>>>> @@ -2887,6 +2902,7 @@ static const char * const flagname[] = {
+>>>>  	[ilog2(MEMBLOCK_RSRV_KERN)] = "RSV_KERN",
+>>>>  	[ilog2(MEMBLOCK_KHO_SCRATCH)] = "KHO_SCRATCH",
+>>>>  	[ilog2(MEMBLOCK_RSRV_HUGETLB)] = "RSV_HUGETLB",
+>>>> +	[ilog2(MEMBLOCK_NODUMP)] = "NODUMP",
+>>>>  };
+>>>>  
+>>>>  static int memblock_debug_show(struct seq_file *m, void *private)
+>>>> -- 
+>>>> 2.43.0
+>>>>
+>>
+>> -- 
+>> Sincerely yours,
+>> Mike.
+
 
