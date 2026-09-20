@@ -4,113 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73A22C982E1
-	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 12:24:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89D3AC982DA
+	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 12:24:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 357286B008C; Sun, 20 Sep 2026 08:24:21 -0400 (EDT)
+	id 94A526B0092; Sun, 20 Sep 2026 08:24:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E1786B0092; Sun, 20 Sep 2026 08:24:21 -0400 (EDT)
+	id 8FB736B0093; Sun, 20 Sep 2026 08:24:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1ABDB6B0093; Sun, 20 Sep 2026 08:24:21 -0400 (EDT)
+	id 811136B0095; Sun, 20 Sep 2026 08:24:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E7D886B008C
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 08:24:20 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 39427A0414
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 12:24:20 +0000 (UTC)
-X-FDA: 85234058280.17.8E38CFF
-Received: from mail-pj2-f21.google.com (mail-pj2-f21.google.com [74.125.227.149])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 86D3FC0005
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 12:24:18 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="fe/z/gMB";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of donggeunyoo.kernel@gmail.com designates 74.125.227.149 as permitted sender) smtp.mailfrom=donggeunyoo.kernel@gmail.com
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="fe/z/gMB";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of donggeunyoo.kernel@gmail.com designates 74.125.227.149 as permitted sender) smtp.mailfrom=donggeunyoo.kernel@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789907058;
-	b=Mjr/h2ryY6XmUG9zkYUaaTQwrvJENwyU4xcGpL73bDTJkAz/fPoilrGFUmEuyVWjaPhDKz
-	PfHLZI6Gptgl7ytJWluxS6LB/aePZU/Iq8Mh1TkktdJSCEjqdk7mTvwrGE2zNbbeExIhN7
-	Er96+CNxwad0zX1GTS4/8fteMkAcoF0=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4BE4D6B0092
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 08:24:23 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DA96BA5DAC
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 12:24:22 +0000 (UTC)
+X-FDA: 85234058364.01.BF1D334
+Received: from mail-pj2-f43.google.com (mail-pj2-f43.google.com [74.125.227.171])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 2B3A1120005
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 12:24:21 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=MUy8NVUf;
+	spf=pass (imf29.hostedemail.com: domain of donggeunyoo.kernel@gmail.com designates 74.125.227.171 as permitted sender) smtp.mailfrom=donggeunyoo.kernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789907058;
+	s=arc-20220608; t=1789907061;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=Xjgh5OlWwYGa3/r9MOFyxfKxsWIa/znQ2EXAbXuSxlg=;
-	b=6Y12sf0I9j1D4/QEnZYYO6B/BIeH0FZSV7MNW+u27j6h98s/3V4xQBnVAWoFyQp5xl5Kcp
-	QxK+J9kNq+5cfODIR5ZzvMDPeh0vwnu3x55RApnHrcyBNS1zo3lTYdjdke9B9/dS5m6GS6
-	M2/zNDGEpru7z/BEZXHdOpXlsPkRCNk=
-Received: by mail-pj2-f21.google.com with SMTP id d9443c01a7336-2d747f0b25dso23595615ad.2
-        for <linux-mm@kvack.org>; Sun, 20 Sep 2026 05:24:18 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ONHA4wMDILxcRZ+Lg+d1Nlct6hNZeNgcOdxBA0gn77s=;
+	b=ezMCGTEE22Wwwj9dGAvOS1iePqn+DCpmuN4631nS56SSIqpppI3WujgnZS8ZdRGUtaSbe5
+	CxRGz7AK3h5VXx7uQ9ojqR3o7yYQr+ru0XVkaa99GtlM6lDhMYIy9IpvylvOQiEajXM1dH
+	amjmxs6oSxjY3qRrXugX+wGbwedc9M8=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789907061;
+	b=osTBeXXJh1MJ+GkQeQW6PcGm+7A76RUgy25Nypyq7mLtW2TjMgKb6sB8fKvhrDQP4K7b1D
+	HLkD709KaCdTzTB1O4CCmtSMCK7MqcujO9cWpDHMoIgeCMf8shagNLCfuaZN657rp3U19P
+	uVEnUrR2fcMiL2LKoM7J5ja6ojONlVg=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=MUy8NVUf;
+	spf=pass (imf29.hostedemail.com: domain of donggeunyoo.kernel@gmail.com designates 74.125.227.171 as permitted sender) smtp.mailfrom=donggeunyoo.kernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj2-f43.google.com with SMTP id 98e67ed59e1d1-396ccda24a3so1619355a91.0
+        for <linux-mm@kvack.org>; Sun, 20 Sep 2026 05:24:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789907057; x=1790511857; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Xjgh5OlWwYGa3/r9MOFyxfKxsWIa/znQ2EXAbXuSxlg=;
-        b=fe/z/gMBtVfJuke4qzY9MjZEFbv2k2xJfhvfHJ6mKo1v5NnrdY6pORQl2SXht6rC4K
-         gczBek9xZbToB6v3HsehLkk15cfZBCms2JTasG9hXIG9QV02QqXIUp53RHdKdf8Pg6x3
-         mkrLHlODMB+NyM4V2nDwdTiLCNcXciSX+Hk2GmNhsH2EL46chuno3lYuWJMFm/B7P7Xr
-         Qrna9aXzw2AJ+Ni/zDm2HOD+gGY4y03EsbvexA4/h64gNdKO/FyPZmX0lX5aQJicMEi1
-         oTAahH0DI7R2D8D+32sB68tDETGXX7CVa74J+U6SWz2wz0RjifrzQuLTsTXenWDz1Wdg
-         Bpiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789907057; x=1790511857;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1789907060; x=1790511860; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Xjgh5OlWwYGa3/r9MOFyxfKxsWIa/znQ2EXAbXuSxlg=;
-        b=Ny/XbgjwyTSmrBDiOAXns/QoaFaZVxyGQc2dMtZjnLe+8ntWNG4XsSw+Bz18TvXMJq
-         fG295l9xHvZgSEhixzfV2uRPl9KI8D6Wy4nKyQz+g20on+dqUnBklFMMvlhCuSGloje+
-         +656Ev5hZ9U00xG1PqngwxyTKDjYXr1YZJAR0XRjQhI8PIbcmtFePbYbW2/XSpqn0FmI
-         jqAsTkma1Z/f96ti8jfjAA41KoNdGxqGxiNZ2FFgXRe4qi//VIHAwSXEBYtTr4D7ibAz
-         rkMGM8mPWXXv61Tzs4oJIiIpLbwP1ATNN4AcgxtJuC+ZxZoCnpJ/nnbSeTyr2mxY406T
-         Hobg==
-X-Forwarded-Encrypted: i=1; AKwUvBzKdyF7QBemQyVpCEL/uqKQD7i57aAKe7XJ6wjyM3gYasXJ0y121kGu3tueU7dy5QikpUQfVVsbhw==@kvack.org
-X-Gm-Message-State: AFuF++ny9jTHVHYUtgkvYqV8hZcpBp4JpcaWNWevYkJzrrhRpaRGpeLq
-	6ZUKowOgbFlSqlOw++g5h6DmMjMBr2ioTMEEUBv3NDUFNPGaPfG95uo=
-X-Gm-Gg: AYBFou1/k4HK6jrJwgwiEWBql3OHiGBryFXA2b982l+ahopnTQzWTtDwFrMTXZ9PvGO
-	el1oElXZmTuV/0uAzMZKh2PUBMmF+qVQmHZpiz74evZBp2K02M28UV8/oMH9AEp603+g2Wei3KS
-	Wl1tFyBogRi9pzSiJ0IpXxNz6EbK8ZWjkVinkzwoToZGPOVb/YVEpoihVXEfQAX96Js0zBulK8+
-	HZx95CO1eyY2Ogm+uHJnNJYSTXehyP6kfxeqhQjzSSyrEGZDl7lHCCCFwLIllL5JKkygx83dl9Q
-	Hq2esE+Cz3WlzV3G/yUNu4HjWc6cirNjn0maQIC7oo+3X6K8CNEP5BAViqIvbS6LEmItIxWsb5f
-	d4QbByV0rovBfrZyxmzYDefXqHA3l6EwtYCyTdJEo1R6sn6PiW43uqHH8k4b9eQPp3+pBfGGhMD
-	/Ce1l5/WP527tzzxzqBs6qXdjaOxkcLsHQo26ZoKHJoI/MO9PZVxG3Sbyh7tdb3eavFgd8Db+9P
-	IN3D7qPyfpDe3+FfQuE9OOy7oM=
-X-Received: by 2002:a17:90b:5784:b0:39d:f5b1:e365 with SMTP id 98e67ed59e1d1-39e54f35b9cmr12927548a91.25.1789907057067;
-        Sun, 20 Sep 2026 05:24:17 -0700 (PDT)
+        bh=ONHA4wMDILxcRZ+Lg+d1Nlct6hNZeNgcOdxBA0gn77s=;
+        b=MUy8NVUfASuaypo4Qt/qzFtMfidM7IR+9kxmTpCc+hveE2K6Yf8uuu1cwnBf6k6d5D
+         Bl3QfqTKfLYeSjMqJSy7UPHW/Je+s6eLnHKU90cm6Wd/RfiGZ0Cs3+2l5WeqU8VtML6y
+         29FiXTr6/YbNlGD0+TWNaqiijJTuvbKPClnpEsbbu+PdqlMkNButZM9HShaAqSLQBxGF
+         Le7z3SK7cqs6dCqDFO6eRGwNaJUv7CCS+ohXFTkups2samgfNLWKrJcLE4aYaRm9ka/x
+         IT10XiugiRNytDoPClUlu+ZDnBvgPQTmDpZXmtYx9FNuCkQcvJ9C2fiRtmlGV4KeKG92
+         w34w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789907060; x=1790511860;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ONHA4wMDILxcRZ+Lg+d1Nlct6hNZeNgcOdxBA0gn77s=;
+        b=LJBOAMS8buchhTuSgb8KwPypXsWKMt/Konw0IViBll4ujlC8P8fPLQTnvbEQU5n4zs
+         5DDGu7GrYxEhG/PLhk/OlgInLp46QX8VqvO1ZmGPiDUv/ZNfR5dqU13kAzwTCsXTIajm
+         xrndtpWELhNiypKy1WkDpNSlynOwC/2lDJTXMYnEgJmRRVo4M++F+++KqpybTK8Fqg5B
+         Kc+ogEHSCjjNUDqxYB+3XjhlRbZiHQrJKc+u1DIdu4VY3pXSFI3YJiyM96rXMr24wVnI
+         l0ZQriI0X+nRBbrPbqaToj+3EyIIWQvdQGnJ7Cj2fMX1WXsDLEP/1wzbnPRmQvJinf/L
+         zeiQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzM4/DpbkWdikdARtsv4Ki4gWbpm04z5EjYh+r7lwrn7MQZXMp4qRVB+MpE1hrfqis2Fe9roZvRGA==@kvack.org
+X-Gm-Message-State: AFuF++lDVQjb4XqxdKqvvAXAV43zzzU/j3GjOK0F7Nlc2Rcd67O8cCdM
+	jQTDyd5XVrpMhmGEEe3mMd6SBmjGgIYo0fsdGVgt0rDKVDGhz//G4yA=
+X-Gm-Gg: AYBFou3NgGmzCyDSQOV1r8wTXswp6fuwu207Uf6MuHe1pFCvC40mRhTMCtYPsvgF9uI
+	/Yb5ZNnHyQ0p2UyvjN4PJaPoBh+cAWOUi/5Q/b9bgn7sZ2VxBkb1fxB+h8LsRxQiS/nRMZhpx4h
+	ylKJ0CHSk9CYJLOQ9hxuUjOzGUWadgJUwAHLoNyNqEYl+m1NItg+rp3f0rCR1K9bjtSTZQoUx/a
+	G8Mg8spr3h8k1Si7DYNsUiCHxj2Qjn5ICJ6c4pwcVXcLlcmo1MX4knHKIkuZURTo7ghgCbbb6fN
+	+bHcm3Ru3+TJxGCGJgTz369EPrPWBHTTJ57yGDVco7eAoSgXpGaKw9v63jSDjWFF4gg4EgA1DZF
+	Z4Mm03axYWrFTQOOHPc/gug2i+dgCg35RIKKUmNLDh4R/zJRqej2BVR0+HI8obgjRtaOnIF4Nm2
+	zFIVIrvioyJ9O3M822nbtElcfyUHuRkGVgKtADMMIa4wwP1UXqFnYtI6zsw9g5QL218tT/jCd/o
+	JRJjj9/dV1r497dTEEAfuqH1I8=
+X-Received: by 2002:a17:90b:1dc7:b0:39e:6c68:1553 with SMTP id 98e67ed59e1d1-39e6c68331amr8421991a91.27.1789907059964;
+        Sun, 20 Sep 2026 05:24:19 -0700 (PDT)
 Received: from ydg-Zenbook-14-UM3406GA ([2001:2d8:7f00:8c85:e0d6:4b87:c472:c9ae])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e6cae997csm8753943a91.11.2026.09.20.05.24.14
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e6cae997csm8753943a91.11.2026.09.20.05.24.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Sep 2026 05:24:16 -0700 (PDT)
+        Sun, 20 Sep 2026 05:24:19 -0700 (PDT)
 From: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
 To: sj@kernel.org,
 	akpm@linux-foundation.org
 Cc: damon@lists.linux.dev,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	donggeunyoo.kernel@gmail.com
-Subject: [PATCH v3 0/2] mm/damon: fix the temporal goal tuner's size quota conversion
-Date: Sun, 20 Sep 2026 21:24:09 +0900
-Message-ID: <20260920122411.610213-1-donggeunyoo.kernel@gmail.com>
+	donggeunyoo.kernel@gmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH v3 1/2] mm/damon/core: prevent size quota overflow in the temporal goal tuner
+Date: Sun, 20 Sep 2026 21:24:10 +0900
+Message-ID: <20260920122411.610213-2-donggeunyoo.kernel@gmail.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260920122411.610213-1-donggeunyoo.kernel@gmail.com>
+References: <20260920122411.610213-1-donggeunyoo.kernel@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 3kx3jg7rqma9haay67skaksxntwrsd65
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 86D3FC0005
-X-Stat-Signature: ha8rmw3arqt66ce1uwispd63sok94y8u
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789907058-5335
-X-HE-Meta: U2FsdGVkX18NtGKbW+jpBM5xsiUXnLgLtxsFn9CCr0KE/Z/43k15CbM2TQJae1v9AcGIntKXKDj9ODGH8Ey/2lVIGwKlttaF0spzVEoGJ2D/sNBC25Cm1JP8aAOon2PhWoIWMiw1P0Bi9UwJy4C88zYK3mpsODBl9TpEJZK6/tThzOzWL9rpD24QWoy86Mw1z0f2sqfgIJY/7AOZq+NB02/WPETfU/UYLtU5GboX4aC6l73tlNl9811wI8mJpHzWDr+a8jSkO4vUbGCd254vHGfM9MUDNxDsSQ9fvncBogo7ed3dHxE4T+Qn7PuNqZuaxAYpNMJ3TPW1CQW7agxd43DnJMEeruIPzQrif/ac5X5B8XyLwxO4kCrEp+L1pzVA5kVcLEAUqDFPxlbNmJje97Zhygn0SbcSCS8kbXMe4Ia1pVVqlbTkMsrFs9zeU9oMUr/9HiSpeGhNuMhw+aru+LP4KreXOr+Xa7P+VALxzlcd9e/SxY/QyynmyEPbsYin+I3BF7mJvIChIsq22NZAXKTX7DXfk7plCcUVCfDfdhvMeixmE9pgMIjtc+lmWzs4Az0JCGGIImZOQlGOYYDVTXiGpUKvJHTTVOqCX3R+uo62tgtTQyGKRAgcWNeFgWFDDqRU8fD8d3gzI2pZCsKAXFb9f/8gBuqzG0c5XAS0fGhdpfEUATEMgK8rIdLBKI/7/qiJRSYTTbuDDxZwguQaXSzmv2A3kkOpYPS74/7L7bsRj01Dk6OKbh5PEQFOXguBnMpz3Z/9+4F1qXMnxRrmUxkgz7l5yCqz3mFNO8or37LcH3uUKgbN3XpvTOF8rAr4C3NcbckG+FgU9qed0cxwZvsJl+BLpYTDD88KL+i6yz2uj3yPPxkh6LNWAtUKnNVwB+SpakW7U1jtKeYAL1LsZ5XjnOoTD5SJnpdSuzGeBflXWnMFBLDhqUKjqxeEGUPluNGx7mP/gr/MaZ8wlC3
- H0RC7xIq
- bE6crDnVqGVC2sKc255TJyoDitpdFE2nwaNh0MGLpXpDqPF1cFkrZShbWSdKgsNQTfV0o+tWKVCvzh2BudYJ/kEho5mVpYpyeet7FSKFN9Zmv9D9LYfsBR5r4sGKIpl6WiRVbu0Gjw6KEftQc/Sh3RUSks6dSi6jc+wiqieo0avjFhRYUwGzLVyPt1S5qB96e5+X1ep6/iz+wSWEQv9XlddqgQAaPYzyuwIK451D0d1QgA9OlAA80g+MD+PGqNZCxCtHYRPGSmgOw0Z4FrW/HI0AeyuZ5WJIaAX2TAUl5ujusM9hrazLX7j7UeoKDIFPyPr6YP7JSaVDrW01FXYAbhak6Al56GjrS4pMvfUQeBJc+RFLa4DOh+fURUffOZZv5IyMZCa/+mSeVdCfEd0/lq/AUdGuw8MFXMD9S+74/IglDUDhVnUtn/wCoNlEIzrB+Kssoad/BxqDNDCDnijP1M9a7Jy5f4cTjrX3PfImicPNDfYsvIlpwoqw1dpa/bYIxYxvUvbr2PYTWyWk=
+X-Rspamd-Queue-Id: 2B3A1120005
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789907061-465939
+X-HE-Meta: U2FsdGVkX19w+DOkzY62FDTHKNKRg3kz4phLkPy3/Zqdm+YjV/TIizjtDyOJPBicPYWJuU2lFaBcDl6G/6TM2rRLF1Ts9xOqOYona8ImXtd0yabNMiZ/vZSidpn3YNT77LfQLF+lD8p2SiOf/cKEY3h+KUixncirn5XXtKSvH0Gg1gzpUJAtleKR86ZS7AfJSkp+BnVTeZAYwM2kt68i/ZJH1RdOsduDc9tkB6BgVZQDrp9OoUNbpc1otSE3+G+Hd67Tl+yQYtB6bYewwPX0/M4rF6ZzdfDEkpy1/vc5RAYg+Iv/oR+5VDuVwbNBDJqMPl5uNfu8vdeUqiK8jDPKh2lZWzpyFPw9GzCkZNzJnEVj1vYDJAnqI7/q2Cbisr6wLQJcI8Vk6xN2EJOUKAQQONz9Myui/QaQ122ZjyMkhD/qk85t47TxfwA5wkuCTzLSZDPwqNxYuUMr4keqPR+VNJCy0qk7jFsNwMfILqu8u078k1ixpjRmIq4B3xEAPBvNpb1Eygr5cmMUYh68cqk0fK/5VLE3djruYq7BpbbkqvAe7wbEWB3dWG4nvDGu0UEOj5Exvm2gn5PfeoS31e1lQuCaxG2x5d0RJBpJ8OasX0p4o8M7x8DmCUR350OAx0ZG/TLkSk/kvwUxh535ZGaNiz3rDCfEHus4PX6vmBLgmXb+2eSy+bEw/Kw9ZX0tqQzKPKdN890VUZhiju9XUXn2JmmABAxVeSQ/s/eooIbW0q5J7OIUAARUysfyQB/z5rxRVSxuVI9udomLhwS8h7cSpt4XSmOKfxd03hJRXBL1INLRA65VTHuxsh3x0kSY87GcYWl3SWarXdH51AW8xZ7wbS1bmenOqKyuq9uVlFDgvHf3AZv3EhOTBoPJrWR1NJ5b5Druv9IEaxekJHkLMOHGTOzwE1cmgKi/qNcMqfXnA+1UOc743s64Bb8ukTbzdhJaTf2Ugo35mxpISC7h3V3
+ tCjkXBMW
+ BQ1HWMyDbaybzYkNhFlyK0go+hvNXvo9fXvyHIJ4k1C2lTi6835i0bX3BsHjXuOu0SxVuBnquWkKKmFBgfR9szjJpgdud9fbvnn+RKe3cxskbklefi5XKmyBTHLErAWzlz64PrcnrwQLwcb88DO7kp9M1jAsxnCzNrkRqkDYcUpJSDc/YXqgIH8TJ3ml4sa7vHqA6pn5McFG0LCw6+uZrn0gF51OqOuieKXijM8x2TEA4C2wyubqlQC3dVvXXFU9EShdchgyKLq2Or+5JYJQk9c5L57GccDCzRnog8xsZzt6dB/U4KPGhYoVQlY1lVM6F5RKBvthG+SpLhh4E9PlGHKUgYkvyRh817tKCRcuC6oqoOaIx5JmAxcEen5gNxaXIqk+GT8e11UOR3FToX8UMc80XPrTn4Ev1If3ym4keIuf66nftp5TqZJW67g0mboNEjNImXl0yrlO+lHYaLtV+uJIT6ZIE4siLjFrT+g0VGMWMHs0TfErVHUPh/wYVrqpDKq3jaiMzTjv4hJk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,42 +122,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damos_goal_tune_esz_bp_temporal() hands the size quota to
-damos_set_effective_quota() through quota->esz_bp in basis points, and
-the multiply that gets it there is unchecked.  On 32-bit it wraps above
-429496 bytes, and to exactly zero for every multiple of 256 MiB.  A zero
-effective quota makes damos_quota_is_full() true on the first test of
-every charge window, so the scheme applies nothing for as long as the
-goal is unachieved.
+damos_goal_tune_esz_bp_temporal() converts the scheme's size quota
+into basis points with "quota->esz_bp = quota->sz * 10000", both
+unsigned long, and damos_set_effective_quota() divides the result
+back by 10000.  quotas/bytes is unbounded; bytes_store() hands it to
+kstrtoul() as is.
 
-Patch 1 bounds the conversion.  Patch 2 pins the boundary in the core
-kunit suite, where it would fail without patch 1 on any word size.
+On 32-bit the product wraps for any size quota above ULONG_MAX /
+10000, that is 429496 bytes.  It lands on exactly zero when the quota
+is a multiple of 256 MiB, which includes the 1 GiB that
+Documentation/admin-guide/mm/damon/usage.rst uses in its example, and
+a zero effective quota makes damos_quota_is_full() true on the first
+test of every charge window.  The scheme then applies nothing while
+the goal is unachieved.  Other wrapped values are simply wrong, and
+any product below 10000 divides to a zero effective quota too: 429497
+gives 0, 500000 gives 70503.
 
-v2: https://lore.kernel.org/damon/20260920023111.2466265-1-donggeunyoo.kernel@gmail.com/
+Triggering this needs a scheme with a quota goal, the temporal goal
+tuner, and a size quota above ULONG_MAX / 10000 -- 429496 bytes on
+32-bit, 1844674407370955 on 64-bit -- so it is unlikely to be hit on
+a tested setup.  Nothing is corrupted and nothing leaks.  The scheme
+makes no progress for as long as the goal is unachieved, which is
+easy to notice, and writing a smaller size quota restores it.
 
-Changes in v3, all from SJ Park's review; the code is unchanged:
-- patch 1: wrap the changelog at 72 columns, say what the impact is and
-  is not, fold the 64-bit boundary into the trigger conditions rather
-  than arguing it separately, and drop the passage on why widening
-  esz_bp is not the fix
-- patch 2: wrap the changelog at 72 columns; pick up the Reviewed-by
-- drop the documentation patch, which SJ asked to drop
+addr_unit does not cover this.  It only scales the numbers a paddr
+context writes to quotas/bytes, so a large enough scaled value wraps
+just the same, and vaddr and fvaddr contexts take raw byte values.
 
-Rebased onto mm-new 87acb5b914c2; v2's base is no longer in that branch.
+Bound the multiply.  A size quota too large to convert now takes the
+same ULONG_MAX branch as a scheme with no size quota, so the
+effective quota becomes ULONG_MAX / 10000 instead of a wrapped value.
 
-DAMON kunit on x86_64, on the new base: 36 tests, all passing with both
-patches; 35 passing and damos_test_esz_goal_temporal failing with patch
-2 alone.
+Fixes: af738a6a00c1 ("mm/damon/core: introduce DAMOS_QUOTA_GOAL_TUNER_TEMPORAL")
+Cc: <stable@vger.kernel.org> # 7.1.x
+Signed-off-by: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
+---
+Measured on i386 under QEMU: one paddr context with a stat scheme, the
+temporal goal tuner, and one unachieved user_input goal.  Each size is
+written to quotas/bytes and quotas/effective_bytes is read back after
+update_schemes_effective_quotas.
 
-Donggeun Yoo (2):
-  mm/damon/core: prevent size quota overflow in the temporal goal tuner
-  mm/damon/tests/core-kunit: test the temporal tuner's size quota
-    conversion
+  quotas/bytes    effective_bytes    effective_bytes
+                  before             after
+  4096            4096               4096
+  429496          429496             429496
+  429497          0                  429496
+  268435456       0                  429496
+  1073741824      0                  429496
+  500000          70503              429496
+  4294967295      429495             429496
+  0               429496             429496
 
- mm/damon/core.c             |  2 +-
- mm/damon/tests/core-kunit.h | 48 +++++++++++++++++++++++++++++++++++++
- 2 files changed, 49 insertions(+), 1 deletion(-)
+Everything the conversion can hold is unchanged, and 429496 is what the
+no-size-quota row already produced before the patch.
 
+ mm/damon/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 2258b72da7a78..16d4145379a2b 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -3274,7 +3274,7 @@ static void damos_goal_tune_esz_bp_temporal(struct damon_ctx *c,
+ 
+ 	if (score >= 10000)
+ 		quota->esz_bp = 0;
+-	else if (quota->sz)
++	else if (quota->sz && quota->sz <= ULONG_MAX / 10000)
+ 		quota->esz_bp = quota->sz * 10000;
+ 	else
+ 		quota->esz_bp = ULONG_MAX;
 -- 
 2.53.0
 
