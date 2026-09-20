@@ -4,100 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B261C982D8
-	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 14:13:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6770EC982D8
+	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 14:25:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BEBFC6B008C; Sun, 20 Sep 2026 10:13:42 -0400 (EDT)
+	id 2DB6D6B0088; Sun, 20 Sep 2026 10:25:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B9E526B0092; Sun, 20 Sep 2026 10:13:42 -0400 (EDT)
+	id 2B3186B008A; Sun, 20 Sep 2026 10:25:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A8C3C6B0093; Sun, 20 Sep 2026 10:13:42 -0400 (EDT)
+	id 1EF4F6B0093; Sun, 20 Sep 2026 10:25:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7FD876B008C
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 10:13:42 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id EF0BE6B0088
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 10:25:27 -0400 (EDT)
 Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id F08E316048B
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 14:13:41 +0000 (UTC)
-X-FDA: 85234333842.11.68BCB70
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 43C37C0002
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 14:13:40 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nxvZxroO;
-	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 041B31C2890
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 14:25:25 +0000 (UTC)
+X-FDA: 85234363452.11.4E05A13
+Received: from outbound.st.icloud.com (st-2006a-snip4-11.eps.apple.com [57.103.76.181])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 177FC18000C
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 14:25:23 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=icloud.com header.s=1a1hai header.b=QsPb7t1m;
+	spf=pass (imf06.hostedemail.com: domain of zippermonkey@icloud.com designates 57.103.76.181 as permitted sender) smtp.mailfrom=zippermonkey@icloud.com;
+	dmarc=pass (policy=quarantine) header.from=icloud.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789914324;
+	b=lS87wYOFaTW4c2YUnxMoSO77nc2ptBfP45fIrTMz6q/j+8K4P5vdK8lnUsKQtVv0BTpWeA
+	uiMd9L/C/d2Epz/i2wtSPvKv0G/Fus/cf37VmL0d5ytLqehLvB3iShYas0yf7rjORm9BSk
+	bZMLkT7ukflM//Knm7D/FvTKn7I9GQU=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=icloud.com header.s=1a1hai header.b=QsPb7t1m;
+	spf=pass (imf06.hostedemail.com: domain of zippermonkey@icloud.com designates 57.103.76.181 as permitted sender) smtp.mailfrom=zippermonkey@icloud.com;
+	dmarc=pass (policy=quarantine) header.from=icloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789913620;
+	s=arc-20220608; t=1789914324;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xSrOUEQX5cEdTjwoeayswD1PWITxAREjqOm5wmTNA7M=;
-	b=aE31RnDhZVS0gCcl3PaqEC8rYDHaG7r8BxM+EgWxVmF2OF+qUQwVGf06sVzTO7zEbjP/bV
-	nOhMfqjIEd8+eoMIXyvuZv5qnpsCqMOjyZ1P8YD/4rlK7wX1g7uvIlOj06vfhxJU4CS0BI
-	Obwp2Es4NyQuly6COad2HukDqoKWM2o=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nxvZxroO;
-	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789913620;
-	b=aXBU+4mQGf/+UDZ1tvmjin3zLf7IAmoPo+pLIJcmFCEEgysSCLQ0dRLoe4cZ8jvAAa2LG2
-	ZZdOrYE1O2w7bVDFM5lHfQlTNkq8OqjoWoo2YnjW1zx9kd2cfy2N/mfKhPtrM/b/zFvJmf
-	O8ep3PB2CmOkDqbjBtEKARJsDpPtQyY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CB5A3601DB;
-	Sun, 20 Sep 2026 14:13:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D269B1F000FF;
-	Sun, 20 Sep 2026 14:13:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789913619;
-	bh=xSrOUEQX5cEdTjwoeayswD1PWITxAREjqOm5wmTNA7M=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=nxvZxroOyGkQt3BsmWkXQQ4iPfEvmKakF2Otjj/Ox9xSBb43pEpVMox31SBQ7zzum
-	 mcKVc0L3CDb0QcAruI7IS+MsABquxtd8G6hJPEJufUUMsgu69/ebD/uBnwl8OiTz/8
-	 1h2cFLuRySdRSGjaCdVOFdQAP4GNAAZsH57aSr7RTCRXILJJgzUUJ9WP4JZbYznSZ6
-	 blIuihj6jAMYeN9YmjBEc4/ENED/gRqYflUJXVClt/08zDf/e2nwhIPxBwZci7RRh8
-	 75TsGgJhfnf99HugZ77WYn2N1//b98AqHlk/0FazP7KtnzzRHdQR9Z3H6eSsYtgngR
-	 7KLL8wWmzWBCg==
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Sun, 20 Sep 2026 15:13:11 +0100
-Subject: [PATCH 2/2] mm/mremap: fix locked_vm leak by splitting VMA for
- MREMAP_DONTUNMAP
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=/aGXQmdJS7KdJOcSMq/QTimLokk6ifZyP8kn3JnRhoI=;
+	b=S+Bhdlnu/IbKVodQ41IsvthwDDl916gLw6a/cW4jfLAU2YAPAc/aIhcTPQF1JLYWqJEajy
+	hhoB0UJiZ4/2mxxlVNDB1HSGB3zCMJvrsTy8uuymCOCy4VpjMsuQ5Vu0ZWapn4/ALhugNL
+	Ers56EdryZdUT1wDF1rJGsbzUI/b5Ng=
+Received: from outbound.st.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-east-1a-60-percent-7 (Postfix) with ESMTPS id 7012618005BA;
+	Sun, 20 Sep 2026 14:25:20 +0000 (UTC)
+X-ICL-RepId: 01a0bf35-0db6-7e8a-8873-a940380b9cf1
+X-ICL-Out-Info: HUtFAUMEWwJACUgBTUQeDx5WFlZNRAJCTQhKB0MGWQReCEsEQwFbEhVdRUkERxtXAlQXXQZSEnIZWhRcGFNFUR9UWFUJCgJRHFYNV0NUBF9QSxsOXABLWhVVFw4CQh9QH0wWV0NEHxwZWhRcGFNFUR9UWEMZRVZpQQtPHV0ZWxxCZFhXCQoCURxWDVdDVARfUFQRV1ALWQJCD0gKXwdGRB1KG1IDGhlXFlgbRwJFRkRBFEgeCFRbBhQOSVAPAF0DME0dXQ5SBUZeWhdeUxcfSwBcRVoOWwRHFA==
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1789914323; x=1792506323; bh=/aGXQmdJS7KdJOcSMq/QTimLokk6ifZyP8kn3JnRhoI=; h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:x-icloud-hme; b=QsPb7t1mVVpvVrCiLYhVVI01x5NXWpcpXjFBXh+PMhsMrDlu5GPTUeFZaB06NYcNj9DF2XWQNRMQO2QBTZd0/dCLY0J+K3BnSau5ZpnwuyARDDZLcghds4strDGK2tW66+QR5Ii7jPAzLhb8BttfoTHwJiojw97TFMfcDm5cTcZKW5b/88rOCN/UUBiWHF2cgZyf3QZJOnucijFWACmc2I+AXrc2GWQdFnIN5A4E2QgWbJwnT3ClL2V2e9fxobhLzjQ/i1PpHGYNqdtAljgUpFuxfg8dU08eJhbWYgrpI8fVptiv8dtnK9MjP43tTCYQ5yxAJ4eEEinnzZzOVwhnMg==
+Received: from [127.0.0.1] (unknown [17.156.216.30])
+	by p00-icloudmta-asmtp-us-east-1a-60-percent-7 (Postfix) with ESMTPSA id DD063180028A;
+	Sun, 20 Sep 2026 14:25:13 +0000 (UTC)
+From: Zhang Peng <zippermonkey@icloud.com>
+Subject: [PATCH 0/4] mm/vmscan: refactor shrink_folio_list()
+Date: Sun, 20 Sep 2026 22:24:13 +0800
+Message-Id: <20260920-vmscan-refactor-v1-0-ec04d71cb761@tencent.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260920-fix-dontunmap-partial-self-merge-v1-2-6ffb556f8f8b@kernel.org>
-References: <20260920-fix-dontunmap-partial-self-merge-v1-0-6ffb556f8f8b@kernel.org>
-In-Reply-To: <20260920-fix-dontunmap-partial-self-merge-v1-0-6ffb556f8f8b@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAI7sr2oC/yXM0QpAMBTG8VfRubayacKryMXMwVFGOyMl7264/
+ PX1/S9g9IQMdXKBx4OYVhch0wTsZNyIgvpoUJkqskpW4ljYGic8DsaG1QvZ5ah1WZpBK4ivLS5
+ 0fsWm/c17N6MNbwbu+wFYYMt/cwAAAA==
+X-Change-ID: 20260919-vmscan-refactor-1b3e5588af52
 To: Andrew Morton <akpm@linux-foundation.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
- Brian Geffon <bgeffon@google.com>, Minchan Kim <minchan@kernel.org>, 
- Kiryl Shutsemau <kas@kernel.org>
+ Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, 
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+ Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, 
+ Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, stable@vger.kernel.org
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=9174; i=ljs@kernel.org;
- h=from:subject:message-id; bh=yjmLeTXCkk2mbYGvT4Wqq1IUIfo5bp3zlxd9nUSq81E=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLWv+JS/l1vKVYZsvrnI4XsS0/faV54flr875Xv3Wv6P
- F53ikfs7ihlYRDjYpAVU2R5/kV8f5BI2LzOC/5uMHNYmUCGMHBxCsBEUu4w/I/Jyjz03GxiTfVu
- zd7ncx5wCVZFnp9d93/RN5X/pQfEE6cw/K/2mpi8wfufQ2KYSeizogbT1C9uvSXOJQ/uFd1U7PR
- sYwAA
-X-Developer-Key: i=ljs@kernel.org; a=openpgp;
- fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+ Zhang Peng <bruzzhang@tencent.com>
+X-Mailer: b4 0.16.0
+X-Proofpoint-GUID: Pp_TAklIRdDoxsJKa3qFpIShYd1VUFJq
+X-Proofpoint-ORIG-GUID: Pp_TAklIRdDoxsJKa3qFpIShYd1VUFJq
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIwMDIxMCBTYWx0ZWRfX2fDrlNzfFnBo
+ rYEggZHiqtZjYbJRdNLwbEZnth5cQmeVaEGK97/dCWL0/8anKTbrHuit1APojiSe1xi0PUjRLUU
+ upboS6K2JWyW08MajfKgIIA5zr9y6zuW4CRFNwd4aj2X805f4u0vjH1kvNmnhW+4ggNUK1+0pOR
+ 0FyzGWDZjNe2VbsPRHRvmdt93cBDrB/VkMqGpz23XeQSmOCvNzc34zY3PPvCDo0DXdgSIKtcIwf
+ zv2ra1BfoRLXvf2iDxxDR6qGL53twrx3L73a5WVKHCApMZTxPZokmMftJQgIrr05RHH3LZSHTeN
+ qBHv5v3y+0vBpZyTWjbERtS2u54vXNXc8tXwzwVekioCyPJcmZQgsHrL64EaXk=
+X-Authority-Info-Out: v=2.4 cv=RrvI7SmK c=1 sm=1 tr=0 ts=6aafecd1
+ cx=c_apl:c_pps:t_out a=oyWFxbOnq+dmhQrAPgaJYA==:117
+ a=oyWFxbOnq+dmhQrAPgaJYA==:17 a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10
+ a=x7bEGLp0ZPQA:10 a=YE32fvk_ji8A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=GvQkQWPkAAAA:8 a=CCUvzCZDDOCMfV_14LEA:9
+ a=QEXdDO2ut3YA:10 a=J82S1U87d15UFHHUFZS8:22 a=J6hPbylVjWXjVQVODqME:22
+X-JNJ: AAAAAAABwL4AaH1E1ATes9luJBLe3HgtTJASrFZxhazEFDFuM5fhRTEhRSQmH7kBn7XDI+oXuawgFrxIoKc18M2Ws7A1ituRTMlzOKdzURhcXNsWEn6zGaEkLdhHWmnV31J3bCJdF1R3NVDR+zW/CdUiVXfeKP3eUp7I3cw4tSJ78ppobWSPzmsTRjjBxN6fST1W+WP+MSTTV1/GNVcsBKj6GM/D6QjLPeJyDDbHscZxVIiJIf7UdmDB2ghj4HDsCDn4Fizr4cj5p6MeTBT2zjCa4+grA7+MbEvjlYoXOHwIMFAZwU5smB0t/9Shk4WYGDnLudHnShfgB3LR5uU+lH3OZyE7ttwoxt9I7FwuZZwSJrK9ArJbdUw9RiQDVnqCzA+scQYhoEikDM4N7YT1ezTmmlPx6KTXpagThhgeo3ykA5m7haNpcO2wtzLb4DbuWcbTRL1mWSv9y0AHyCuVSEJb5AXrtcjRgv1ozdIEAMQotsBG+Dg/xW7pp2cM18jDiHwbI2AnbTVWwD9yEsbOus4ef/0rf51EQ/2EHb/zCvu4+i/O4DYK79Q5t0DN+s8+qTRsdJf+sUcSX2JgqUuSfccwR20krKlpEldNJO6Y/25V+0NmOhLU3q8dcNbGO3h5uiObDR/N/zQGfOz4jlMJaXNGb1hx2mv6PjaWGNinx0csznUsegS0pHmjs/Vx9yzc4uLlKS9SrQGKnZRKoX8hlQuxKhYFUz0bFexjj1UkD9eT5DUbo7OirhPSrr5cobmW32szfrIcHMPMi+mPCvW9zIYpB0UCswnAG+BVXarqCEKYLCUnMYTUd1NZtGVCh6c5wiQdT8eTx/uthBUfa6H+G1+uOie7PbhqY+PQ1n5Y8Z6R/9R84IhwBUrhqqPWI3W0AIaYyE12lIUdqYypa5V9U4dpm1zG9aFd+Or8gVoMMX/eCVuaXW9yvc3rjzPUDNCWYOcBSr+N6MUOROtBIDuhSre
+ WEpae3qQ
+ 0crRHKZZND0WcvAKGHWmg9yvhBRClf0TPyx0UWvcarx6rKOee7Y9L18gX4Ly6fDux10coQv/go/3m68tmNAqO4eVhYqGSdPqLoW7D1wYxgGE6qmVpFRW0JSLuYJkSeYJalyDbfmwJhfnqJCQtbBAzUOgnI9icWTqzGpRd9X8VHjhN9sQmvSLoC2a1e8uqlhjbPqoctGZlRut/FiLtmfZcSfoIGDB1BovSI2irmgEXkQLR02ojnA0auAjVGCOyGdDnQs4c6zQDq9VdVJX1zM2K9TYZQd/llikR8RP7OW1WRoBK36zHRmm8QL8UBQx/mMwCrVYCUYmwjMtvVeTkCqhgeP01r5+wwrxyL1iA56Ct7SFhgByWOiIUHuZxBJH+cl8BEXyn0wGkEVCwdJOzmcxQkHmLf4Xl6YiCb/PXto0Aesu/7QtJZlJmxvy5rMd515CpZH4HgMZ6b+GdX9OJiYG7gV28mJyeVCM=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 177FC18000C
+X-Stat-Signature: 8r7bk84qjawjxfzg5y7dt1icmggppizy
 X-Rspam-User: 
-X-Stat-Signature: c97z77zd86fm5xxo7p1gy9oauhy9z7tp
-X-Rspamd-Queue-Id: 43C37C0002
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789913620-944123
-X-HE-Meta: U2FsdGVkX18lQ/KvKzk/88rgLTxsHxer+ezlw2w+SjvjJNioiRoSVX8hW+MFNQDLznguSXjNHog+eHHXbQnpQ/AD1d0D99g0Y47qmvBoJ6vhrLgbwwsij3nckOqZWLNMtIfcWqDtIorcoZQOthhHZeoommRbwKPYH4waKqUiX2BcPo/9E/u6GAnEyYnDR8vCyV/+C4xV50mVD3on2sF/zGUklE39Y0jfVhKeTjNF/Cfm2u6c4CNYrKVGd+9+x58q3hYQ8vvogLtJaWOHH9NW7EENlVU9WWwQEEPWVOcoduE8EH0vO3BOQiD0oX6BcWHtE0Nrn0VhBp+iM7D/dhGYoItNoiMM18/5JIMuwUEZg7/YlO2DOt1mLjWSgQPtBeaFlS4W/z7u0TB0KIt8e3Kv6Z+uuUDZjV+g/Oxk/kTUs56yC7w0sMWEwlTfpnkcwKdBdaBTBMftzhik06lOLwTzHW37hwUkbliHASpATkZ8uGF9+Uk0whAJXelnBHFhIiyiSe9pglpe6FbjH9IJTCKiN+z1ZTa+9OcWcUlbe5mOSVxCtzArcw9/M2ImnuFPED1CTi75orZ4nDkr7A8J/HKZ1dG07XI7eWXOzMZQjbHMuLPC0JYgDa1CV+aU/1f6kwQDmijBMuMxrU9WItE4ViDRa4jOHTYKEevKCIcQ0hfVZiqvx12m8IOZ22xXHGAmf3M6tM4vVSZoKGOngsmIma6O1YxThHt8kHRD0LC45ay37Em+2CUW3Jefmz+mpO0oyM+iC5x6LnZaapNLkEKrD+1Vyvoiqjzc3r9aUX7vqCRUE9ASHmvDjtmgYWZg1sAnChPpyC4HpuJB88U7ah4ipqaNvqz86eDwDxN//ro/yo+rxU3jpuEOpKYbB8uZCJCWun5tJ0y1P8G3VEv1YeugSWkHvtX3MwFIwWZo3K4/iA5nrmSIIx5/rspQ+KeTGjj+SNp8WVqNszcl/TXWh166Fcy
- 247ZVctm
- aq6QlCeZf3SkwRCZNTZFazVdY0hMwV5qAqaX5quXcpaZC366BDLIhDZATHLA1/cPlOjiqHdCggMWvIbkV/wzOSSRzCYd+EahTbl6uTCzImPfL3G5k1OjPej/0P2+Reu/2IHlLlMJVSdXn667NxEGMe4UMSv9UXtxC4qvFbBC3/PeMopX7sx/Izg7bZZMK/mebrTjKK9AUbeJpYdTs7/z2oTChjqmHOl+bTXrnpLMv9Z4215rcrfgHIdTwPgneo7reh/KgZZJqRRdYhj6md3002zTAIiinPg4jU+rOeaB0fqFBDb4=
+X-HE-Tag: 1789914323-772192
+X-HE-Meta: U2FsdGVkX1+n0hmTp4HKCpE//iGXJv/BKurM9jqC5Ho7+uTYlax5VkKAqZqKeovkD+dZhnx4+K4eFvnalE85d7PfN0F+V5l1QNvR6xYdO7ADbOqW2uV9uQE7TUbEBp1HskMdAde+8NG+YmCNHmG2GlwzI++iUlgIvvpXC9uPwmWHkpt/NYTyb9QRoOPr80+u5LFAiktvTv5ul0+Smcs5J+2ohLgngHR3CurE14L+jCUzAAWZXWjGl62Fk/PLsGoWk4ouEECeU1fwuPfNXG/euPhgU1bI3DIo8EN8Hpv7VPTWm8VUhRy3YlQGfDBEk3XemtupbY3zdKUdFxuAX8+R76QC+DEE0CSnTek+LGWe7YeIMDrdnfuFgAsjRznLnbj3Uf8tocHI32ZnJHg2cauv6BNwcY1eYLe/WqfqeyHwp/K2SnifU8LdoWb832LwB9ot7MGe186ylefCMf8KoKcKMiYQ20J5CVC1jjn8wvSkx+Gk0D/uFCW4jhvLj2piJ8tp6t+cuafJxgCNtkKKS2vcunc8U+xqhBfan7pYqVcam1AeFX8ZxiohBpHEtVssEIVrjnMcrEUcuCzf1kLsrPCufXTmqfKl7OorHMg4/4raQb+Jmx6S9d/JRofScKGfjPzVeQmVy4m4Sv+lUfab/35+CSk8Nd9Rc10n1uYqBGOXGv9AFcbrqa5SVv+u0IKlajoKQhXrHvrnXPdLLV/K5RN4pTxIqTOT5GVxIvxRJVKEE41g4pKxB4ZgrJHEXJ/BtyyJ4pWumuOd2P4TUT+N21ETK7j8zJw3MPfxi+74+i4N+ux2bzP68pjQYm8IigJoktlbjlpHFSqKreLq699YtlDZ+e3LM5k0dgama+btDTW77o7Fnzanx1PDiFejogZp9r4ezVY0V4n6HRQRzAGGY/3c+tBR+q+v15mguPKro3GhCJuIbTL03puGUG393qHt9zr2aSi3hKuXbXH1ahXGWVu
+ X+YoZR/k
+ otmJfoA53OmiYhGXWzDcr4lxYdpqBel2wG+WCM8ajRklWVaLJzBuOsJIBLFOUfDEW1+Im+NCbqIArijBgfTETAUlds3LdYHO2puODt0sohVXX+111qxAqwLy5bmrofeohfqXPXoe0T6WBPe8DIkUQ3sDTVH3K7KKYWoDyM28zEKQfxh3Y9fukYdcBnqvnByqKEIDH2AeGSEI2MN6bdZtgJONCZ9sOrh7ZJ2c+3ol8RwRU9gwQu5nBEWA1iTKliuXlJdz+oZauE5b7faI7Kwkq2BRUCpE3X7b5PGlu9VAz8DsK9Kec/rktkj8ygXoE/X6FVSoHVityIUeyFG9HkG25lvJzGSz4cEuPwSeoEMc6JRkRIGkNzjd6GI2EhIK7V8gmK8ZDKFMBz31w9qP5ZkUeuosWQYlkR4iduZ3f8BbHnKloDHjss0MLz91KwyGR+wxBOJ9BPgjcEvlTyL6JKA01RpSZKXZKcg9VBGUFeOmg0ITryNED/j3wxucA+UPr6AkIKgEPAXzzLeYEYOINAVkzefV2WKhH9xKY84n7N0JJyOvzBUdqz36syVaR+c28dbTX/hxexvckibXE65yVwXJTWrSgEA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,258 +111,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The MREMAP_DONTUNMAP feature is highly unusual in that it permits mremap()
-operations that keep the original VMA in place.
+shrink_folio_list() has grown into a very long function whose body mixes
+several independent concerns: folio activation, the pageout() dispatch
+state machine, the unmap step, and the final freeing path.  The control
+flow between them is expressed entirely through a chain of goto labels
+(activate_locked, activate_locked_split, keep_locked, keep), which makes
+it hard to see which decision each block actually reaches.
 
-Historically this has led to a lot of bugs where non-obvious interactions
-occur between existing mremap() operations and the original VMA.
+This series extracts four self-contained blocks into helpers, without
+changing behaviour:
 
-Fix another of these - partial copies.
+  Patch 1: the activation block at activate_locked, into
+           folio_activate_locked().
+  Patch 2: the freeing path (buffer release, lazyfree, __remove_mapping,
+           folio_batch drain), into folio_try_reclaim_free().
+  Patch 3: the pageout() dispatch state machine, into
+           folio_try_pageout().
+  Patch 4: the TTU setup and try_to_unmap() block, into
+           folio_try_unmap().
 
-The long-standing mremap() partial VMA logic has the baked-in assumption
-that the originating VMA is unmapped and thus moved.
+Rather than returning a boolean, the extracted helpers return an explicit
+result enum, so the reclaim decisions the caller has to make - activate,
+keep, or reclaimed - stay visible at the call site instead of being
+buried in the helper.  Where a folio may be returned either locked or
+unlocked, the result also records which, so the caller does not have to
+infer the lock state from an invisible internal decision.
 
-However MREMAP_DONTUNMAP defeats this by performing a partial copy
-instead since it keeps the source VMA around.
+This is preparation for batching the dirty TLB flush before pageout,
+which needs to call the pageout path from a second place.  That change
+will be posted separately once this cleanup has landed [1].
 
-An mremap(..., MREMAP_DONTUNMAP) operation disallows resizing of the VMA,
-but the operation can be performed partially:
+No functional change intended.
 
-                           |-----------------|
-                           |                 |
-                           |                 v
-                        <------>          <------>
-                        .new_sz.           new_sz
-                     |--.------.--|       |------|
-                     |  .source.  |       | dest |
-                     |--.------.--|       |------|
-                     <------------>
-                         old_sz
+[1] https://lore.kernel.org/all/CAGsJ_4wrQRGjqavMzWgi2+PrRr1ztf4QRZEb6HKm02OF8nEBUQ@mail.gmail.com/
 
-The page tables in the specified range are moved, but the original VMA is
-kept intact.
-
-This interacts poorly with mlock()'d VMAs, as the VMA_LOCKED_BIT flag is
-cleared for the entire source VMA and set for the entire destination VMA.
-
-This results in an mm->locked_vm leak as the change is therefore not
-accounted correctly.
-
-The clear solution here is to make the portion of the source VMA which is
-mremap()'d distinct from the rest of it, a.k.a. split it.
-
-Therefore resolve this issue by splitting it ahead of the rest of the
-mremap() operation.
-
-In order to make this change re-expose split_vma() in vma.h for
-CONFIG_MMU (nommu doesn't compile mremap.c and uses a static helper
-instead).
-
-A quick search of how MREMAP_DONTUNMAP is used in the wild suggests that
-the partial case is either unused or rarely used, so this should not result
-in unreasonable VMA proliferation.
-
-Since this makes every mremap() MREMAP_DONTUNMAP operation operate across
-an entire, distinct, VMA, also eliminate now-redundant code checking for
-this in dontunmap_complete().
-
-Finally, update the sys_map_count check to account for this case.
-
-Fixes: e346b3813067 ("mm/mremap: add MREMAP_DONTUNMAP to mremap()")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Suggested-by: Kairui Song <kasong@tencent.com>
+Signed-off-by: Zhang Peng <bruzzhang@tencent.com>
 ---
- mm/mremap.c | 81 ++++++++++++++++++++++++++++++++++++++-----------------------
- mm/vma.c    |  2 +-
- mm/vma.h    |  5 ++++
- 3 files changed, 56 insertions(+), 32 deletions(-)
+Zhang Peng (4):
+      mm/vmscan: introduce folio_activate_locked() helper
+      mm/vmscan: extract folio reclaim freeing from shrink_folio_list()
+      mm/vmscan: extract folio pageout from shrink_folio_list()
+      mm/vmscan: extract folio unmap logic into folio_try_unmap()
 
-diff --git a/mm/mremap.c b/mm/mremap.c
-index 73f52c45705c..49dc25d8a34d 100644
---- a/mm/mremap.c
-+++ b/mm/mremap.c
-@@ -1037,6 +1037,7 @@ static void vrm_stat_account(struct vma_remap_struct *vrm,
- }
- 
- static bool __check_map_count_against_split(struct mm_struct *mm,
-+					    bool is_dontunmap,
- 					    bool before_unmaps)
- {
- 	const int sys_map_count = get_sysctl_max_map_count();
-@@ -1088,26 +1089,38 @@ static bool __check_map_count_against_split(struct mm_struct *mm,
- 	 * Therefore we must check to ensure we have headroom of 2 additional
- 	 * VMAs.
- 	 */
--	return map_count + 2 <= sys_map_count;
-+	map_count += 2;
-+
-+	/*
-+	 * If MREMAP_DONTUNMAP is set and a partial operation is performed,
-+	 * the VMA is split ahead of time and the -1 observed above doesn't
-+	 * apply.
-+	 */
-+	if (is_dontunmap)
-+		map_count++;
-+
-+	return map_count <= sys_map_count;
- }
- 
- /* Do we violate the map count limit if we split VMAs when moving the VMA? */
--static bool check_map_count_against_split(void)
-+static bool check_map_count_against_split(struct vma_remap_struct *vrm)
- {
- 	return __check_map_count_against_split(current->mm,
-+					       vrm->flags & MREMAP_DONTUNMAP,
- 					       /*before_unmaps=*/false);
- }
- 
- /* Do we violate the map count limit if we split VMAs prior to early unmaps? */
--static bool check_map_count_against_split_early(void)
-+static bool check_map_count_against_split_early(struct vma_remap_struct *vrm)
- {
- 	return __check_map_count_against_split(current->mm,
-+					       vrm->flags & MREMAP_DONTUNMAP,
- 					       /*before_unmaps=*/true);
- }
- 
- /*
-- * Perform checks before attempting to write a VMA prior to it being
-- * moved.
-+ * Perform checks and preparation before attempting to write a VMA prior to it
-+ * being moved.
-  */
- static unsigned long prep_move_vma(struct vma_remap_struct *vrm)
- {
-@@ -1116,19 +1129,17 @@ static unsigned long prep_move_vma(struct vma_remap_struct *vrm)
- 	unsigned long old_addr = vrm->addr;
- 	unsigned long old_len = vrm->old_len;
- 	vm_flags_t dummy = vma->vm_flags;
-+	const bool split_before = vma->vm_start != old_addr;
-+	const bool split_after = vma->vm_end != old_addr + old_len;
- 
--	/*
--	 * We'd prefer to avoid failure later on in do_munmap: we copy a VMA,
--	 * which may not merge, then (if MREMAP_DONTUNMAP is not set) unmap the
--	 * source, which may split, causing a net increase of 2 mappings.
--	 */
--	if (!check_map_count_against_split())
-+	/* Avoid failure later on. */
-+	if (!check_map_count_against_split(vrm))
- 		return -ENOMEM;
- 
- 	if (vma->vm_ops && vma->vm_ops->may_split) {
--		if (vma->vm_start != old_addr)
-+		if (split_before)
- 			err = vma->vm_ops->may_split(vma, old_addr);
--		if (!err && vma->vm_end != old_addr + old_len)
-+		if (!err && split_after)
- 			err = vma->vm_ops->may_split(vma, old_addr + old_len);
- 		if (err)
- 			return err;
-@@ -1146,6 +1157,21 @@ static unsigned long prep_move_vma(struct vma_remap_struct *vrm)
- 	if (err)
- 		return err;
- 
-+	/*
-+	 * To account mlock()'d pages correctly in the MREMAP_DONTUNMAP
-+	 * case perform any split ahead of time.
-+	 */
-+	if (vrm->flags & MREMAP_DONTUNMAP) {
-+		VMA_ITERATOR(vmi, vma->vm_mm, old_addr);
-+
-+		if (split_before)
-+			err = split_vma(&vmi, vma, old_addr, 1);
-+		if (!err && split_after)
-+			err = split_vma(&vmi, vma, old_addr + old_len, 0);
-+		vrm->vmi_needs_invalidate = true;
-+		return err;
-+	}
-+
- 	return 0;
- }
- 
-@@ -1330,11 +1356,8 @@ static int copy_vma_and_data(struct vma_remap_struct *vrm,
- static void dontunmap_complete(struct vma_remap_struct *vrm,
- 			       struct vm_area_struct *new_vma)
- {
--	unsigned long start = vrm->addr;
--	unsigned long end = vrm->addr + vrm->old_len;
- 	struct vm_area_struct *vma = vrm->vma;
--	unsigned long old_start = vma->vm_start;
--	unsigned long old_end = vma->vm_end;
-+	const pgoff_t pgoff_unfaulted = vma->vm_start >> PAGE_SHIFT;
- 
- 	/* Self-merge is disallowed. */
- 	VM_WARN_ON_ONCE(new_vma == vma);
-@@ -1346,19 +1369,15 @@ static void dontunmap_complete(struct vma_remap_struct *vrm,
- 	 * anon_vma links of the old vma is no longer needed after its page
- 	 * table has been moved.
- 	 */
--	if (start == old_start && end == old_end) {
--		const pgoff_t pgoff_unfaulted = vma->vm_start >> PAGE_SHIFT;
--
--		unlink_anon_vmas(vma);
--		/*
--		 * The VMA is now unfaulted and it is an invariant that
--		 * unfaulted anonymous VMAs have page offset equal to
--		 * vma->vm_start >> PAGE_SHIFT.
--		 */
--		vma_set_anon_pgoff(vma, pgoff_unfaulted);
--		if (vma_is_anonymous(vma) && !vma->vm_file)
--			vma_set_pgoff(vma, pgoff_unfaulted);
--	}
-+	unlink_anon_vmas(vma);
-+	/*
-+	 * The VMA is now unfaulted and it is an invariant that
-+	 * unfaulted anonymous VMAs have page offset equal to
-+	 * vma->vm_start >> PAGE_SHIFT.
-+	 */
-+	vma_set_anon_pgoff(vma, pgoff_unfaulted);
-+	if (vma_is_anonymous(vma) && !vma->vm_file)
-+		vma_set_pgoff(vma, pgoff_unfaulted);
- }
- 
- static unsigned long move_vma(struct vma_remap_struct *vrm)
-@@ -2005,7 +2024,7 @@ static unsigned long do_mremap(struct vma_remap_struct *vrm)
- 		return -EINTR;
- 	vrm->mmap_locked = true;
- 
--	if (!check_map_count_against_split_early()) {
-+	if (!check_map_count_against_split_early(vrm)) {
- 		mmap_write_unlock(mm);
- 		return -ENOMEM;
- 	}
-diff --git a/mm/vma.c b/mm/vma.c
-index 55d4d0939129..92a2fafd66ae 100644
---- a/mm/vma.c
-+++ b/mm/vma.c
-@@ -634,7 +634,7 @@ __split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
-  * Split a vma into two pieces at address 'addr', a new vma is allocated
-  * either for the first part or the tail.
-  */
--static int split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
-+int split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
- 		     unsigned long addr, int new_below)
- {
- 	if (vma->vm_mm->map_count >= get_sysctl_max_map_count())
-diff --git a/mm/vma.h b/mm/vma.h
-index 03ed8afd0c1f..b9b99fa02a86 100644
---- a/mm/vma.h
-+++ b/mm/vma.h
-@@ -555,6 +555,11 @@ int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *brkvma,
- unsigned long unmapped_area(struct vm_unmapped_area_info *info);
- unsigned long unmapped_area_topdown(struct vm_unmapped_area_info *info);
- 
-+#ifdef CONFIG_MMU
-+int split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
-+	      unsigned long addr, int new_below);
-+#endif
-+
- static inline bool vma_wants_manual_pte_write_upgrade(struct vm_area_struct *vma)
- {
- 	/*
+ mm/vmscan.c | 376 +++++++++++++++++++++++++++++++++++-------------------------
+ 1 file changed, 217 insertions(+), 159 deletions(-)
+---
+base-commit: 498ee28e5ec4727f829507c4a1bde3ab1b7704cd
+change-id: 20260919-vmscan-refactor-1b3e5588af52
 
--- 
-2.55.0
+Best regards,
+--  
+bruzzhang <bruzzhang@tencent.com>
 
 
