@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B09EC982D0
-	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 08:46:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE705C982DA
+	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 08:46:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 459D66B0088; Sun, 20 Sep 2026 04:46:29 -0400 (EDT)
+	id 9115C6B008C; Sun, 20 Sep 2026 04:46:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 40A0A6B008A; Sun, 20 Sep 2026 04:46:29 -0400 (EDT)
+	id 89D756B0093; Sun, 20 Sep 2026 04:46:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 320826B008C; Sun, 20 Sep 2026 04:46:29 -0400 (EDT)
+	id 7B3746B0092; Sun, 20 Sep 2026 04:46:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 119986B0088
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 04:46:29 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 03D611403A1
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 08:46:27 +0000 (UTC)
-X-FDA: 85233509256.22.5AB557D
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 7B6C120004
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 08:46:25 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Q3a2QrBI;
-	spf=pass (imf03.hostedemail.com: domain of yuan1.liu@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=yuan1.liu@intel.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A22E6B008A
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 04:46:32 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 899A81C26F2
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 08:46:31 +0000 (UTC)
+X-FDA: 85233509382.08.A9B4008
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 33285C0003
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 08:46:29 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=krfdrHso;
+	spf=pass (imf10.hostedemail.com: domain of yuan1.liu@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=yuan1.liu@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789893986;
-	b=hllmc9YVKVsSSP5C9ro2+O/Fe5CW0rpMzMrSvKq0S1rb+hji83QkQjSS40Xfet6kkCEPWs
-	hRWvyMokjrQDQIaXfqlLrIwByvSjR8TFCk7A6tg1QzugXAa1aQflciLnVyNLsqxIOyEN3j
-	csQZkU3UUN52CHJW6iIreO72nEkrmbg=
+	t=1789893989;
+	b=4Y7hTlOo4Tk0HtjlA6tDeCs7OTqI7IE5ZbjdzTjJR/LEaQBZtK1K2531R+hhFqOo30uacn
+	pmEMqjiWLYogxT6GOKN2xXJTgxrJmR/aEaCGYbI2aaARjrEu+mRum52eQlHK4XTdKTVmNC
+	M+khW3PRJykk5dee5Rhx4DSeLNwEZeM=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Q3a2QrBI;
-	spf=pass (imf03.hostedemail.com: domain of yuan1.liu@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=yuan1.liu@intel.com;
+	imf10.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=krfdrHso;
+	spf=pass (imf10.hostedemail.com: domain of yuan1.liu@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=yuan1.liu@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789893986;
+	s=arc-20220608; t=1789893989;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=oSOMI+G6GH4K81R7AZJpKBgbCbBD9midZkdG8xAIrdY=;
-	b=tnx1weU4jibNj+XB2jNn6BILkQe50NGBKFoR7gbGN7mtO4Cf3ofKziuFJjcl/YzXXmESmQ
-	2CkWliDlSSMCvekqpHd4gOGl5s48MHr6TxSyd8p58b0fhq19Qs/mxXhjt8cz/VOps25KQz
-	tRQ/kpS4gegh/UN51+gmGOuRwE9FCqE=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8f/7efMiC6ft/Zrjv2n+Em6z0opx8zWnbRPBMtnAXTM=;
+	b=nbZmDGvilCCGGDSPZuiX8630cshyjp7GLph1s+VxQzc4zRBB3iaWJG9eDctggwGo9NyKL+
+	UDY9czzH1U/Ks3Ljd9N3UAWs7Vv0OPEL5kymVOUa+h5Q8B2dP/MEYw/bdJba7Zngg32Q9d
+	NcHqYL3MCaaiEKcpPP1wnOWBxc3pKxc=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789893986; x=1821429986;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=z1vDkfqWC/qArC8TAhQtPYX2WZpjm0/+yhw7QmTP6nQ=;
-  b=Q3a2QrBIfZr9wslx3w41mKK5yOHX1G3FYyGzP+hbOMpUwLhDfErnto2p
-   z1NHdM1eI4+905Cl3Wv/vrG5yJ3M3UPhXAFU3C3sSfKOODNqNoP1tiYOB
-   fuxqriQfyfoxPcrvREK11DMYwhj5/O1X70zwJLLmjz9PwdILKmClWfynh
-   x72oJuNyAbqJrDzYt/oskgQPN0m42fM1sUhxcLyTKfedFCH1p4G2vPMCP
-   JH5G9SX7eDxZKATNbI1SL4TiYcQniH9Svv6odOKYhAi7Lj2/pd2zFcrPi
-   or0Huu25ewk3DStXWQvwgmsYSO5txcoR7UCyYZLcNQ3N317B3eJ5AUIct
-   g==;
-X-CSE-ConnectionGUID: ojfq9bfUSiqq0aYMjVu1Sw==
-X-CSE-MsgGUID: gfxjSzr4RASQJV5bdux91Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11910"; a="94225742"
+  t=1789893989; x=1821429989;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=HAcgfKHkNgLlXaIqIJX2qqZ64BIXaJH3XvIA/CZsUSI=;
+  b=krfdrHso335js07b9S0q/BYAaTbRjQVwh4Ob5zBEgexhMGOe/7Jz87k3
+   PKE24yrj8H0uQDBOn6r+uP3AXhaI+3i5VNgCvjVBUxhdH81vzE3cgDoF0
+   iYxEuGaHPWV/K3je9rQcZXkTI1nF2Z/X5UR5dW5UVjF7zEcfl7Fb8u1ta
+   nEFSQpGJiNYOozgLiD4GJ68txyMT4AvYik1/RXxfK+5oJv4lQPrI9Ylv1
+   8jvmwm893DdhIQFUejwSi1eYUwSmHyd9hzg22JVYQZzYtQAXyYnzqOl/N
+   SkZcJezbCu22LpnWU1ugUsbEsCdJ5kU0+FGBdI5dzk6rTqtFF66o1U5+z
+   A==;
+X-CSE-ConnectionGUID: 4fJjBk0bTvWB/eMmMjOyow==
+X-CSE-MsgGUID: e3i5n/wNSRWu8YU9pBcJEA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11910"; a="77968082"
 X-IronPort-AV: E=Sophos;i="6.27,111,1787036400"; 
-   d="scan'208";a="94225742"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Sep 2026 01:46:24 -0700
-X-CSE-ConnectionGUID: RKE+LWp9R1GHdaKoM8lWtw==
-X-CSE-MsgGUID: R9yQhMTuRW+EKBIEOEGViQ==
+   d="scan'208";a="77968082"
+Received: from fmviesa013.fm.intel.com ([10.60.135.153])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Sep 2026 01:46:28 -0700
+X-CSE-ConnectionGUID: IQ8rWYG7SHOHwwNte+lCjQ==
+X-CSE-MsgGUID: 4/rIdET0QGuGZFjtqW9S+Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,111,1787036400"; 
-   d="scan'208";a="280281792"
+   d="scan'208";a="3543410"
 Received: from spr10.sh.intel.com (HELO localhost) ([10.239.23.75])
-  by fmviesa005.fm.intel.com with ESMTP; 20 Sep 2026 01:46:21 -0700
+  by fmviesa013.fm.intel.com with ESMTP; 20 Sep 2026 01:46:25 -0700
 From: Yuan Liu <yuan1.liu@intel.com>
 To: David Hildenbrand <david@kernel.org>,
 	Oscar Salvador <osalvador@suse.de>,
@@ -89,20 +89,22 @@ Cc: linux-mm@kvack.org,
 	Pan Deng <pan.deng@intel.com>,
 	Tianyou Li <tianyou.li@intel.com>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v10 0/2] mm/memory_hotplug: optimize zone contiguous check when changing pfn range
-Date: Sun, 20 Sep 2026 04:49:44 -0400
-Message-ID: <20260920084946.3266279-1-yuan1.liu@intel.com>
+Subject: [PATCH v10 1/2] mm/memory_hotplug: make shrink_zone_span() more robust
+Date: Sun, 20 Sep 2026 04:49:45 -0400
+Message-ID: <20260920084946.3266279-2-yuan1.liu@intel.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260920084946.3266279-1-yuan1.liu@intel.com>
+References: <20260920084946.3266279-1-yuan1.liu@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 7B6C120004
-X-Stat-Signature: 5ibk65fady7fzu8oy5r9h1pj83r69fao
 X-Rspam-User: 
-X-HE-Tag: 1789893985-363259
-X-HE-Meta: U2FsdGVkX18CaYGmoInshoYqNGmjZW1P1gD1zaNiRFBbKgBljSa/JTbY6allY8HThcD/3rXsG1VHQ8q7ulEBA42Nxgpc8l4hKQ6+AVDoWVvcigsEMmeUDecXDIgaFze3WP7l8wkHyUY7YfQTGb6NX/+EKHQZJIDTY29OP2U7BlRg/bdXET0LJPG/XeIXIjw3qt9EkEI+hYF21en6CL8J8YEzJUKXKY2iaGQuo9Q9sPpaj76IZwv34WHKrnfvoFPfaHqS6MaChmrvQM7MijCUPx49Tk+HI7IiTRC8cDe3TW8NslEQg+yKCsrnc7eDdUE8wVuh1pMBJdRk4y5hE1jYjuFKmEhbWnrkpac0DNl06eIH4l0dgt4qHxt/Tt5biBz8xLMzOm9D5xfoRLbzcKuu7pe1QvvdFfIlArr6rEzkuIMxaUrgr4MIZzAVuukdQ/Ke2YJx6S9TllouQRkboNDUMWTpZno167vFaqHMjXbFFvv1ShMO60VfCo8bouCzHIR+xcx2mINgdFvGVHtFgWoql3kMUtr0OIZsc8dpQFPYf3C7M4P5HJLGp3dD01cU42oR0odobXPBAQTtmvK8dJ1LoFoo02VTPd+Lav8BzAr04sPIPzhiAYA1WFHxy/FnBivCBA9cCkvGPgfqN3XuibyHUjnJiNDWbrg77wiGAU0S8r6t8tSz3nyxE7B7xKm2bT5anhqY6fHmTDJ4StbHlxeFXmslowGYvPXQqZ9uFp3/JtcqYdNkA/zuAA6vvxUu4pB8h509YTJU+sKcsZHO/YW2Ot8+c44wlF7cDIvIxnwRhDRijMdzpakjzTDH3vfOXZBoTrLyNUZb3diFbu8IoI1HC2P+DTd2yaMkGtafsGsUlE5c3WYxiUBXVgLWogk7NH5R5QSMAy4xTkJ2BUvZR6yYWbS7is20bIglrAElv8zCHucrYo/nC8mGwqbEvmzQ0EqlY6zeZ8yzqrY7ZAUG0Hy
- hd9iSlJl
- W0dfIrZiWNXaBMLr0g/ll1abEO12eVx6mYng71sSAwBJuqp4NYllH0kwgv0rDIvjN+W+CPZWjxnLin6xGxWIv7szKwEcZeXM53heFHx7uVebBK7evCLZjnmuxqyujbzWoOsbUfHvf+4egkp7ZH7afS7Fre3E42pp0y6G1tJV+Tr8nxu9AGjy+iGt9s5Du3ZOLPl17CAFcZWyV8R6s2hL4/JwaHTPao63h1gO8hrWeTIcylg80czXmWLfE+YyfzY0lhzTrsiG+U2kD6zW2LITl5Drta3sCKhSEIAKgyLR4nJvRxgCBZncqk/xHRimmF+ia1iEyJgbE7u7G0ro=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 33285C0003
+X-Stat-Signature: 84ufj16b7emrizt5rhwjqyk171cqd1sp
+X-HE-Tag: 1789893989-689361
+X-HE-Meta: U2FsdGVkX18dpjxBmk1+HCVoAy0WyDO46pnq2N6yUfMe/pmHF++HjXkqOvFsRaWU8yc/JdoWb8pU+U7WZtqcv6uIOA8UPQ33ti+rjDYBi+SDcBGELEz3ApeZBkDhYZLOmc05P7inKlgK5/b/6NA04rcNXSEEoKGNLjEdtxljq/3CibSBAvS4FmRvu57tpH2nYnXvCfBbJJ24dAyXjnjzCQxNnohpu7D5kA8uI4w6MF26qKFWYvF/jt08xkBt9Q+MzjDZsRZfiukOqJlw20trhkDagRfzN3pBpSpscFoj0eRbzFVepsQkeN0AwFWY4CmMwlzyQ2R4M6qZOgADH3xCd1kDITHNVzLjo1l6SZgr1OL9vhUcyO1CKY6/6At15i2nHRSuCetVK13Aoo9IVCpxKXzVJDBq8Po3s35uOfBrACsKcekLzm6y5CJhT3zO/lZg0mVMNv9H8DyCX3Uzp35p6gUJfzBVBa3e9Prf6sQUx6hpC1BL8IYLmfX1Zl5UIXhlIKn8Sy0yyux9hUo8z4WGmgNYwrgLKjM753r4sGSPlKIUmAX8m3UdgKq6RiSMfdZcWbwwqx3eM5EE31D+b57m0sK+uWATJSKWFfe8+VvworQtoDe5w0kiDXIPl0Wj1U/DI7hnLo5rQZ2XMHLUyUW8+f7YpflAKmB/v/3wE18YmpF5K2z989/+ukoPZjTZZ4alrXXJ/Rbuujw9dKASI7Rj9B0jfq3JBpJXTZ+tvLqWsAE09a4S5CXvpXNnyx/SDtkCsPSUe34uzEdLxFxZwt4OQb63HubAjsKUL6WOZjNQhHthAyFJOUXGdt0+JYB2LrW1IWzw8pkj4XktSfavm6yQT59tU1f7MTGkTi9ct0UdQ91CeKP9lkHcOis2vRhtRYMiK5ppIIg2b91mB+uW003CzxYz6vYr1OLF38RRg93af89xRWLFP9mQ+ZlzWowu/9ZKKF9keHs0h8efoU5YTKT
+ NiWpjLJP
+ 2MinUNY1p5dYzbTzm0CUKujyBmea00ZaqEY71pNL/bEL1WBZ0w+OmxpzMTTgZRapeCRnKD38sj6c0a0dP5r8hxRo8GBkTWNh14EGQsGP04a8xq9wO9y7nu0X7lcjUYU44dLbuAhRVjySEMG8dgS0iLmr1mnOV5KAAJb+yryqonx2h3rFOv6H5Hp+lWd+nKlEwJqmyc0n2VKXziGNBiXio0w3T4wlLHuPPMXvn5fzl8H+v/+QFmc3QI4eI5yt5fqcGc0koxETFVz1AU7rcL5imAuPQtFTLgosjlxiqsJLcVgdz7cV617DeR44maQFQh1Mc6/RTgzYG1hghvaz2AgsssrLiI+MH9/nK4WxK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,121 +112,130 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This series introduces a pages_with_online_memmap member into struct
-zone to avoid pageblock-by-pageblock scans across the entire zone and
-improve memory hotplug performance.
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 
-Approach
-========
-Add a new zone member, pages_with_online_memmap, that tracks the
-number of pages within the zone span that have an online memory map,
-including present pages and memory holes whose memory map has been
-initialized and for which pfn_to_online_page() succeeds.
+Let's make shrink_zone_span() more robust by checking in
+find_smallest_section_pfn() / find_biggest_section_pfn() that the
+start or end PFN of the subsection is within the zone.
 
-For early boot memory, pages_with_online_memmap is calculated in
-memmap_init_zone_range(). PFNs initialized by memmap_init_range() are
-included in pages_with_online_memmap, and hole PFNs for which
-pfn_to_online_page() succeeds are also counted in
-init_unavailable_range(). For hotplugged memory,
-pages_with_online_memmap is updated through adjust_present_page_count(),
-which is called during memory online and offline operations. When
-spanned_pages == pages_with_online_memmap, every PFN in the zone span
-has a valid memmap entry, so pfn_to_page() can be called for any PFN
-within the zone span without an additional pfn_valid() check.
+While at it, clean up the function by factoring the core check out
+into subsection_overlaps_zone().
 
-Note: this counter may temporarily undercount when pages with an
-online memory map exist outside the current zone span. Such pages
-are only created during boot, when initializing the memory map of
-pages that do not fall into any zone span. The undercount itself
-can only happen after boot, during memory hotplug, when growing
-the zone to cover such pages and later shrinking it back, which
-may result in a "too small" value. This is safe: it merely
-prevents detecting a contiguous zone.
+There likely is no need to check the nid first. We require
+SPARSEMEM_VMEMMAP_ENABLE, where pfn_to_page() is cheap, and
+pfn_to_nid() on CONFIG_NUMA would call pfn_to_page() either way.
+So let's just drop that for now.
 
-The contiguity check using pages_with_online_memmap is stricter than
-the old pageblock-by-pageblock scan. The old set_zone_contiguous()
-iterated at pageblock granularity via pageblock_pfn_to_page(), so a
-zone could be marked contiguous even if a subsection-sized hole
-existed within a pageblock. The new check requires
-spanned_pages == pages_with_online_memmap, meaning every PFN in the
-zone span must satisfy pfn_to_online_page().
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Tested-by: Yuan Liu <yuan1.liu@intel.com>
+Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
+---
+ mm/memory_hotplug.c | 59 ++++++++++++++++++---------------------------
+ 1 file changed, 24 insertions(+), 35 deletions(-)
 
-Performance
-===========
-1. For VM hotplug performance data, please refer to Patch 2.
-2. This series also benefits CXL hotplug. Performance results are
-   as follows
-   https://lore.kernel.org/all/20260409023552.GA2807@AE/
-
-Tested cases
-============
-1. Hotplug/unplug correctness with both online_movable and online
-   policies, including partial unplug, middle-block offline gaps, and
-   edge-block span shrink.
-2. Large scale (256G/512G) plug/unplug performance.
-3. Boot-time subsection holes (aligned/unaligned, in-zone and
-   cross-zone) with correct pages_with_online_memmap accounting.
-4. kernelcore=mirror: verified no overcounting.
-
-Patch overview
-==============
-Patch 1 makes shrink_zone_span() more robust when memory/hole boundary
-falls within a subsection. It checks the full subsection range to avoid
-incorrectly shrinking the zone span during memory unplug.
-
-Patch 2 introduces pages_with_online_memmap to replace
-pageblock-by-pageblock scans across the entire zone for zone contiguity
-checks.
-
-v10 changes:
-    1. Rebased onto v7.3-rc3.
-    2. Added Acked-by: Mike Rapoport (Microsoft) on patch 2 and reworded
-       the init_unavailable_range() comment as suggested.
-v9:
-    https://lore.kernel.org/linux-mm/20260914072929.1883794-1-yuan1.liu@intel.com/
-
-v8:
-    https://lore.kernel.org/linux-mm/20260901052950.3284540-1-yuan1.liu@intel.com/
-
-v7:
-    https://lore.kernel.org/linux-mm/20260818085702.3395529-1-yuan1.liu@intel.com/
-
-v6:
-    https://lore.kernel.org/linux-mm/20260723084946.189392-1-yuan1.liu@intel.com/
-
-v5:
-    https://lore.kernel.org/linux-mm/20260520093457.3719960-1-yuan1.liu@intel.com/
-
-v4:
-    https://lore.kernel.org/linux-mm/20260421125508.2317429-1-yuan1.liu@intel.com/
-
-v3:
-    https://lore.kernel.org/linux-mm/20260408031615.1831922-1-yuan1.liu@intel.com/
-
-v2:
-    https://lore.kernel.org/all/20260401070155.1420929-1-yuan1.liu@intel.com/
-
-v1:
-    https://lore.kernel.org/all/20260319095622.1130380-1-yuan1.liu@intel.com/
-
-David Hildenbrand (Arm) (1):
-  mm/memory_hotplug: make shrink_zone_span() more robust
-
-Yuan Liu (1):
-  mm/memory_hotplug: optimize zone contiguous check when changing pfn
-    range
-
- Documentation/mm/physical_memory.rst |  6 +++
- drivers/base/memory.c                |  7 ++-
- include/linux/mmzone.h               | 69 +++++++++++++++++++++++++++
- mm/memory_hotplug.c                  | 71 ++++++++++------------------
- mm/mm_init.c                         | 64 ++++++++++++++-----------
- mm/mm_init.h                         |  6 ---
- mm/page_alloc.h                      |  2 +-
- 7 files changed, 144 insertions(+), 81 deletions(-)
-
-
-base-commit: fd73f4a6659897191fa0d40695fe370925dd3780
+diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+index 226ab9cb078a..9f19876ec3ec 100644
+--- a/mm/memory_hotplug.c
++++ b/mm/memory_hotplug.c
+@@ -425,49 +425,39 @@ int __add_pages(int nid, unsigned long pfn, unsigned long nr_pages,
+ 	return err;
+ }
+ 
+-/* find the smallest valid pfn in the range [start_pfn, end_pfn) */
+-static unsigned long find_smallest_section_pfn(int nid, struct zone *zone,
+-				     unsigned long start_pfn,
+-				     unsigned long end_pfn)
++static bool subsection_overlaps_zone(unsigned long pfn, struct zone *zone)
+ {
+-	for (; start_pfn < end_pfn; start_pfn += PAGES_PER_SUBSECTION) {
+-		if (unlikely(!pfn_to_online_page(start_pfn)))
+-			continue;
++	const unsigned long start_pfn = ALIGN_DOWN(pfn, PAGES_PER_SUBSECTION);
++	const unsigned long end_pfn = start_pfn + PAGES_PER_SUBSECTION - 1;
+ 
+-		if (unlikely(pfn_to_nid(start_pfn) != nid))
+-			continue;
++	/* All pages in a subsection are either online or offline. */
++	if (unlikely(!pfn_to_online_page(start_pfn)))
++		return false;
+ 
+-		if (zone != page_zone(pfn_to_page(start_pfn)))
+-			continue;
++	/* Checking start+end is sufficient. */
++	return zone == page_zone(pfn_to_page(start_pfn)) ||
++	       zone == page_zone(pfn_to_page(end_pfn));
++}
+ 
+-		return start_pfn;
++/* find the smallest valid pfn in the range [start_pfn, end_pfn) */
++static unsigned long find_smallest_section_pfn(struct zone *zone,
++		unsigned long start_pfn, unsigned long end_pfn)
++{
++	for (; start_pfn < end_pfn; start_pfn += PAGES_PER_SUBSECTION) {
++		if (subsection_overlaps_zone(start_pfn, zone))
++			return start_pfn;
+ 	}
+-
+ 	return 0;
+ }
+ 
+ /* find the biggest valid pfn in the range [start_pfn, end_pfn). */
+-static unsigned long find_biggest_section_pfn(int nid, struct zone *zone,
+-				    unsigned long start_pfn,
+-				    unsigned long end_pfn)
++static unsigned long find_biggest_section_pfn(struct zone *zone,
++		unsigned long start_pfn, unsigned long end_pfn)
+ {
+-	unsigned long pfn;
+-
+-	/* pfn is the end pfn of a memory section. */
+-	pfn = end_pfn - 1;
+-	for (; pfn >= start_pfn; pfn -= PAGES_PER_SUBSECTION) {
+-		if (unlikely(!pfn_to_online_page(pfn)))
+-			continue;
+-
+-		if (unlikely(pfn_to_nid(pfn) != nid))
+-			continue;
+-
+-		if (zone != page_zone(pfn_to_page(pfn)))
+-			continue;
+-
+-		return pfn;
++	for (; end_pfn > start_pfn; end_pfn -= PAGES_PER_SUBSECTION) {
++		if (subsection_overlaps_zone(end_pfn - 1, zone))
++			return end_pfn - 1;
+ 	}
+-
+ 	return 0;
+ }
+ 
+@@ -475,7 +465,6 @@ static void shrink_zone_span(struct zone *zone, unsigned long start_pfn,
+ 			     unsigned long end_pfn)
+ {
+ 	unsigned long pfn;
+-	int nid = zone_to_nid(zone);
+ 
+ 	if (zone->zone_start_pfn == start_pfn) {
+ 		/*
+@@ -484,7 +473,7 @@ static void shrink_zone_span(struct zone *zone, unsigned long start_pfn,
+ 		 * In this case, we find second smallest valid mem_section
+ 		 * for shrinking zone.
+ 		 */
+-		pfn = find_smallest_section_pfn(nid, zone, end_pfn,
++		pfn = find_smallest_section_pfn(zone, end_pfn,
+ 						zone_end_pfn(zone));
+ 		if (pfn) {
+ 			zone->spanned_pages = zone_end_pfn(zone) - pfn;
+@@ -500,7 +489,7 @@ static void shrink_zone_span(struct zone *zone, unsigned long start_pfn,
+ 		 * In this case, we find second biggest valid mem_section for
+ 		 * shrinking zone.
+ 		 */
+-		pfn = find_biggest_section_pfn(nid, zone, zone->zone_start_pfn,
++		pfn = find_biggest_section_pfn(zone, zone->zone_start_pfn,
+ 					       start_pfn);
+ 		if (pfn)
+ 			zone->spanned_pages = pfn - zone->zone_start_pfn + 1;
 -- 
 2.47.3
 
