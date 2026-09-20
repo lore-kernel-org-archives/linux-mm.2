@@ -4,110 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C95FC982DA
-	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 15:15:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 928EDC982D8
+	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 15:50:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D6FA26B0088; Sun, 20 Sep 2026 11:15:24 -0400 (EDT)
+	id 2B4A26B0088; Sun, 20 Sep 2026 11:50:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D200B6B008A; Sun, 20 Sep 2026 11:15:24 -0400 (EDT)
+	id 265366B008A; Sun, 20 Sep 2026 11:50:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C0F576B008C; Sun, 20 Sep 2026 11:15:24 -0400 (EDT)
+	id 1548D6B008C; Sun, 20 Sep 2026 11:50:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 993B56B0088
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 11:15:24 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B22BF16049F
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 15:15:23 +0000 (UTC)
-X-FDA: 85234489326.27.8B10EE4
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 648BF1A0008
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 15:15:21 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=htm0S7lQ;
-	spf=pass (imf19.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E23656B0088
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 11:50:10 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C1B3B1403DA
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 15:50:09 +0000 (UTC)
+X-FDA: 85234576938.01.7CA9AF5
+Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com [74.125.228.140])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 262DD180003
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 15:50:08 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=YMDNu3VK;
+	spf=pass (imf06.hostedemail.com: domain of devnexen@gmail.com designates 74.125.228.140 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789917321;
+	s=arc-20220608; t=1789919408;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jPP3HBXD0HVoCCj/kBuPA6/lcgb/IF+n7p3Pg2EkF+g=;
-	b=g7K36MhisZqrbAIIyOtYohJlYKbza6fxB2QpkLb05Tm/fTwwJ/cm88zTQ1UpI26Ei9YSKg
-	g8UVamXVNXAN2n+eQIXH7+nGOdVRPi7XMEGDsemqNSYn/DmEDHd5Deg1X2Nh0RquXUlyQG
-	PPB4UAaOtRKO/ep6ILwDI6e49HjnOhM=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=DY5Gw4WLBwhdsQnGaRXBVUTHKUhqsOU+itnrh/w7afk=;
+	b=AK/uUSAjDlrGbMTDpapb8R89ZQQ6GVXGbBJsuw5h6FXq9SRCg1oOu9mrOY88fiZ1b0GRfp
+	QGbc8tOSwEoWu0ya+dbN5RZgRtGPowBwkCwqV0VP6A/6+hEzkRnfSrsZLFzSaFOOjr5bk4
+	y3sam61vcEQLfc/GRTUa4O9bHORv464=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=htm0S7lQ;
-	spf=pass (imf19.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=YMDNu3VK;
+	spf=pass (imf06.hostedemail.com: domain of devnexen@gmail.com designates 74.125.228.140 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789917321;
-	b=yQa3G2F6il05U+gdPqEkH++fUTfUb3CNboQRUs72jRsgyFe/8xXd4LzfwObvK+t5StZkCg
-	rLrZak21NpqQM2EEGw7nK/j6mU4Zix0GwI0FmOw5mjARqoUPsC9z06mzcNl7iHc1o/gPzS
-	q3Nm5C2lwNLXDEweIoBw8X7UEY7ybO4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789917320;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jPP3HBXD0HVoCCj/kBuPA6/lcgb/IF+n7p3Pg2EkF+g=;
-	b=htm0S7lQxePtjOgHqz8YM9IzTV62G8f9d4w9J3VegL3c7wUIXyejnPwuALpOoJ5oWaP99r
-	avwVryqdOYfMOaVHVBvnV737dJxsFuWulTRbDWWSkzsJ5UfvpdgVuE+x0b66khq6tJptr/
-	DIUZSmZlDwKjH5uh8ctOfVpJtrNH3Nc=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-189-GlfUHkt8N1uLLTONHapGaQ-1; Sun,
- 20 Sep 2026 11:15:17 -0400
-X-MC-Unique: GlfUHkt8N1uLLTONHapGaQ-1
-X-Mimecast-MFC-AGG-ID: GlfUHkt8N1uLLTONHapGaQ_1789917315
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A6C3118009E7;
-	Sun, 20 Sep 2026 15:15:14 +0000 (UTC)
-Received: from fedora (headnet03.pony-001.prod.iad2.dc.redhat.com [10.2.32.114])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 9D0F21956095;
-	Sun, 20 Sep 2026 15:15:10 +0000 (UTC)
-Received: by fedora (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Sun, 20 Sep 2026 17:15:14 +0200 (CEST)
-Date: Sun, 20 Sep 2026 17:15:09 +0200
-From: Oleg Nesterov <oleg@redhat.com>
-To: Christian Brauner <brauner@kernel.org>
-Cc: NeilBrown <neil@brown.name>, Chris Mason <mason@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>, linux-fsdevel@vger.kernel.org,
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
-	Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>, linux-mm@kvack.org,
-	io-uring@vger.kernel.org
-Subject: Re: user workers as coredumpers [Re: [PATCH 1/6] coredump: don't
- switch a dumper that has no files] table
-Message-ID: <aq_4fY6GVtK47Njq@redhat.com>
-References: <20260915-work-coredump-fixes-v1-1-f354ca41780c@kernel.org>
- <20260916194837.3732307-1-mason@kernel.org>
- <20260917-staunen-sparsam-infusion-83238c68d21f@brauner>
- <178960987412.207413.3957049392884487413@noble.neil.brown.name>
- <20260917-zahnpasta-aufweichen-flackern-1182320f5c81@brauner>
- <20260918-tonart-umgeladen-gesponnen-519fca5172bd@brauner>
+	t=1789919408;
+	b=Zy4hPds8HeIk9OQfUxPBYOrGzROPLzAgNh6SeZ/VwBtWkglMWPFyubVlagU94EXDi3eCwR
+	qLjLWL2j5429YMxpAsUtE1CvuN3dkAgYe63cVGUevl+VegbHrKbiAUHZErYoWfxd7uKSpG
+	eFfCOReagLTVDGh1YiiP/qrt+VW/ai8=
+Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c25ef7a3ce9so265075766b.3
+        for <linux-mm@kvack.org>; Sun, 20 Sep 2026 08:50:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789919406; x=1790524206; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=DY5Gw4WLBwhdsQnGaRXBVUTHKUhqsOU+itnrh/w7afk=;
+        b=YMDNu3VKntlbakRL1jGNOJ6u1YxceDYy4hWN+/xdyQVunNHNdi17DMmMGr+KKb3t+X
+         HA6KH+vJQE8Kg4Lpf+6Og28Bh1mkInq1Oat1XcIuSBM2LK7HQaKS3acIFO4l0VYiEDVQ
+         F1YZ9gUW7Dz6VlUvYaJn/gm6s52PjZhWgqV3fR0a/SkGeJbayqWzKLBCIYYXMGMzwXTx
+         K99LjLzJnoCJufTzDY+srfp1hawcCAVozyiNKaYFgVM6OHoMWyHeh01kvW5J5I5hldXi
+         WvPKRfZbkS56HX8ZEhLMdwre+SlYctBKCjunWk3BkpIZnYBlGzzpAndB1s7d7rQyipQm
+         YVCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789919406; x=1790524206;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=DY5Gw4WLBwhdsQnGaRXBVUTHKUhqsOU+itnrh/w7afk=;
+        b=O42M0WgCbFTUavLNMpdIlbPlOZyVEbrvxTKKSiIh/W48DCc70Je9DSuQtwFb4PDoQd
+         5O+qmfbZUaWMOr5GtTyAKD1BsSbI3l+CqKt6HsDyL3lhC++kowQOTm/yIb5jF//MmVeH
+         AOeOlNTPmQyTl6zPHWc14eroyN/tMKUwFe7fEYdBNOuePxDQuMMlkm5BEaGuW+m7A7y7
+         84JNEwvhFftwHFA2W3WJHXjQHjuqSvBULK4kyNJYBZYfuECDU8nNH5e5iKZd9sGZVtDq
+         +cZlWJnHuK/2Ra+TSfgcB2Q1c+O1gPnPFP5eSvUvDUh2LiFX7kWK2ypTudEveumqHAuB
+         kKPA==
+X-Gm-Message-State: AFuF++m2UTJWaDOrDTFqzF1ZteLigoN4+U9zMYC3WY8n2UsCtF7jAgxz
+	BmGFVh4Oij/9FF6ZM43To+IgQhzKSEWiEXZRToI5mYDOFo9yKM1g6RrOWgmXWg==
+X-Gm-Gg: AYBFou3RMJ8TaMDs7HVNVVeGTcgRUoTSkvc4GDcKk4Sr3SS2sJ2LavISXzf6AUc6zs9
+	7ERS4MRymwYn4jZr7CIYt2XG/oXYWrjuJn2Wv25SLwLycz+L8yXgf0qag+YmAZ+kDQHCZIJ4r/S
+	+aFVTmEmUszAKpViy3Y8r0pLVzuK+mJKW9HHcOYVB23rmg4C4SNUT7DsJGyX088H3SPBno+1Xp/
+	N/sTGgiQKtAMRRndwVpEmPa0DGCl29hzE6bZXbJpu0GDUynsy12bw7cJoLEa7Pp3uuQ1PQxUOhv
+	0ARfwmmj4M7j7AloZKLlvY9Cn6mPy5xdIDTpXTMGuL5lWmwXT/dePVopx8Y51HF4hPS5hsUhs9m
+	4AgITTK7/L7XpXU9Fku0uaQUFdXYWLT9bezWUnDRiz4+EDG1NXp4hDv10WK5D1bvvPhrm0wH/Cr
+	wIXB/faxXPPEundKRRRFe1Ii7a+M3FeACjBEvkqUYX+c73W7rsgN7HUzxAMebMhz9+16HjFJRpp
+	igoujcHNR3t3DkzbJXtnyWMvnc43KrYkgb4Y1eQXrcaiReY4zeVV1k9S58=
+X-Received: by 2002:a17:907:9301:b0:c26:2b63:a746 with SMTP id a640c23a62f3a-c2a15cea371mr659191966b.49.1789919406284;
+        Sun, 20 Sep 2026 08:50:06 -0700 (PDT)
+Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2a3590afccsm195356666b.62.2026.09.20.08.50.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 20 Sep 2026 08:50:04 -0700 (PDT)
+From: David Carlier <devnexen@gmail.com>
+To: linux-mm@kvack.org,
+	akpm@linux-foundation.org
+Cc: linux-kernel@vger.kernel.org,
+	syzkaller-bugs@googlegroups.com,
+	kasong@tencent.com,
+	bhe@redhat.com,
+	chrisl@kernel.org,
+	baohua@kernel.org,
+	nphamcs@gmail.com,
+	shikemeng@huaweicloud.com,
+	hughd@google.com,
+	baolin.wang@linux.alibaba.com,
+	David Carlier <devnexen@gmail.com>,
+	syzbot+23b25ba3c6bf971f9c57@syzkaller.appspotmail.com
+Subject: [PATCH] mm/shmem: don't release a swapin-error marker as a swap entry
+Date: Sun, 20 Sep 2026 16:50:02 +0100
+Message-ID: <20260920155002.1030454-1-devnexen@gmail.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-In-Reply-To: <20260918-tonart-umgeladen-gesponnen-519fca5172bd@brauner>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Mimecast-MFC-PROC-ID: BBMLw8KVciAbaFCLtvEkYgMAbwqIrSOrPNQufVncMQI_1789917315
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 648BF1A0008
-X-Stat-Signature: kgyk3ows3fhnsbzxnnosd7hny77bjmh7
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 262DD180003
+X-Stat-Signature: kfjgnp8ym3zaasm4by1fknu1qi5qacgy
 X-Rspam-User: 
-X-HE-Tag: 1789917321-352383
-X-HE-Meta: U2FsdGVkX1+JLXiGC9O4d+AzHmf5rFzSPQll4bIVx53e+o54DJp+idx6ooSdAp4m+ESqYhgMar3tSD9rQumxtwkIyN+MYhYkbUHGUxECvI+q7wj2mNrN91ujGRNJ9sT7izDXK7unzXO8nSeFq1gWPoPTew7Fy1GmYtokjQ1D1w18ziyYgn02sfYkLqEP8cNqmBGGbjjbEFSdFK29uHs9c+63lPyFalTl/3dJtKgT+mbkhpiP5Cjrjoh6XEnJ+H7SjapB7hkh2gycwHKLSPu7qkrFgQWA0xQD/0D91on6cKgOuw8bLRfjfzo/n6R6jFX+ShZEVAm0Q999ytrzpSPc8ohuawcbTAKTvnDQTygJf7gIAU6o5Vz6Fr5ZqWOdNDVEd+TK8iIrCARbhBA5bP9RKeBJd1tDI8vGXSqL+YkqVHgpR2JvGbp+2oeYPwKNPW9mRV/ByXNjEUANDqMqPE3F64Ht0xngvdu7UkOm3wzSmhZL9H41gobvtnI50Qc8lOy5oSbQeUMoJGoh5bhiLxOw77YnjBsvPU9dAbuqt02OsE1OjXAfMT2b22zyd6Tg5Mky8114fQo6yncxXPjIy8Aw6I0+Unav7R3v45PpKuMOUM2S0kAz2zeB1lekkPpiXRR91VtIZnHfU24gta7hyHLF30VA+bFX8vsoXenrEDDikx1aWYZuaa8pMwjns1gGSpBWQsCk08Ydw3NSIDh7caLUvSaPzrLNYXCqGtyASW0TlzdUL4LXgdhypyNlW7rrE2gmmOZmmZnvzq1O/WDCpRoJinN3aqDCcfYPtCuM3KKvitQSn7vgg+5aZAwKhQHt5Xj9kYDaisfCpeNDPpmn6cVhZoox7HrNylpm8XcxC8Rg0Gpzvv+1+vNTFhbUPYlnohVByS2lJPZNjKgM2OFoxWGdFT2dOw3mTDIkQa3kCsRQl8XlZcvtl6JfDodxUKR3pCNxY8TSbWss7Bq81bAwNtw
- Al1jq847
- 0GXwx1X1i1dBfqRyj+090HFUQbZMKCWkwJLy4CH62R2MN1X3dytf5yjzbD+nH7eZwMIyV1viFMDv7HPr8dCQe9dJbqfTZ6piX64cSQ1xeJOpCxkEhBcpkR8zoSYzmkBmlbg5fSJwhHuW4ceQrjp+HdlQC6w5MIgbbGDee+JXkbm9CHf1Dpsqm2stH2eUbPn0AZ2P8GNf8i1FH7i6YXt+BRSaAkdTQH3opHQcfcZ4R4R6b9nRhPAIPVK1uxZO6/Boyc9ZSj/S0W+9i7L+ujbol7OS8bt5xz7UuGuYYqB4e4sOLxU83aJuvpNo7WxsaM2+bpwPfUGAMi9dYDaAkqlSjtR9Yy/qvZlZ1MoOS
+X-HE-Tag: 1789919408-134685
+X-HE-Meta: U2FsdGVkX1/uCXtMU/ibEpXZUtLQHvfnnWxI0oSkVswr7aYkNvN+t4HB0dPo8hplY/IsXT+vHybYjctxH0igph0cw9t6Uh0fFMRl9mqqWoPgZwduc8P7bsvJ0ZkUOw4sQBlQsVgIaqApTcBZztARjrXaKee3hg3iglk/40k6NusuVL8O5CgUhSArBPT8M/qq2wnheHK7o7FsxK/Fo2WN53Nvrlep4dE1CcgpC++dOab/Es8/IWShMyUhGY30bFazshhhqilhi6r/L63hO8OHPlS/SZq1cMFDH+1NCZP9aNm2nyVDqtQkdfwfLus+uTHHLFJzW0IsCpbw81PhEJb7tHpFmKgpI9QdLolM4zeT4ti2ifh690Xg0mjTU5k+ZlkjyHLjsovYSxAikZ9jr1khmP4D23XmUrSJgjeCKLvpLRra/3saAN2oFCpYunT6AqfWdh/+hFVgghPHy1iRdv4mv8i3cJPxsNSH++8YN+gSADp1VTWT2OqaivIjUsdkD9I8e2HNGVf3wiwtz7WaB99TALAQpDhvbqTjjDi9djCMXigaBYLXM2ROM3L9WeRveCMPQStEBSwi/Xk1E6huRYPDnsVi8an5ZLIEL8M6+ywzrFqfy6kTOat6W6COCLEsYMM41VxjR9X/LzE/ggpx4RANp8yRgXnlWR9RUzYv9h2Kek2qeOhnIQcnNo1ssf5l22ZMmk/dCutfBpTeSNZ6gPGfsfNZVv1pyC4URUhVc1eZ3Q0kl9EESoYat2hX6bCYeOLAybYmrsoX7vIQR/BrbDe64LY1D2H1iLaezyWATjsjWBtEfZFsPnINTHs2JUgEMu3+WQTIOn0GrZCxM9iOHSdStQRcQjmF0zBD4Up4kWfBsdENE+nEdVqjmJ2CLHjnM+dH48eKkwZ0loTAIcGZcSJFRCic+WRwfJQurMDEc2RLDQn9JiOJ48JBoqSwt1Mca0vodknTkwK55bzOhuWFiDf
+ q+7rL6tR
+ lgeoa8PWJffU+HFrIALni80Gz30TxBe1K6isOt/V5v0VPfrvciIj1vE0cjiUsFincAJuXOrQD7u8BCnZ/X+/eCfkKYTZDSozYGNZxQCVXu4UcdfRYPypRpWcrcoIY+R9ecppEiJRquB16xi064xwhVNG8BEoNl8pYMO9bQvCOmGEI5SJFYoklEqwY+BbLCj0vOGct9ZLHGVWtSG6Ui5Kn43WyCLLmTK0tcSbfVebJmcwvvrESFzXtSeDk+YaHwf0qLm6/JSXPUnf+T3vOyyjsB1V5OyNxyS84LclHQcFuYD8lvCSz7RNRuHyoSLta8ixkya3HtpO5KHe4f9C83QdHAVdHxMcmltYRiQWgO3yEg8hI+iMJwVQg7tTK33h1bHaCMkMGAA/wkbaUf0AMSLE63H9VSPZT/KCJdsHxUAE5BAjtl8vl/IlNr0BQIKxpIjBGzKnYlG500YY+0orXxCNoODEXvJuVEk0+nuylUzVEuoDugvfrr3B/Muw46Z/uk9zyIokAILZAyFel4wpKcIh6KD80RgmZ2DT2uq6v6wDeQydkl+u4xNiidffT3yxSCXdNPCZXHlSsrBprF0GGoGoK3jn4BXC5u18TDdh6Ifmg8UBZx8nHKaDFRlPH03TQ9tLwD/Xy6eQmVZJRDMyleI007qjT8Nj7hEr1Nqz5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,58 +125,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09/18, Christian Brauner wrote:
->
-> So I thought a bit about this yesterday and had some brief discussions
-> bout this as well. I think we should kill this whole bug class by
-> ensuring that PF_USER_WORKERs never participate in a coredump.
+A failed shmem swapin frees the swap slot and leaves a PTE_MARKER_POISONED
+entry in the page cache. On truncate or eviction shmem_free_swap() passes
+that marker to swap_put_entries_direct(), which warns because it is not a
+swap entry. There is nothing left to release either way.
 
-Agreed,
+Skip the release for non-swap entries, as every other caller already does.
 
-> --- a/kernel/signal.c
-> +++ b/kernel/signal.c
-> @@ -3021,6 +3021,21 @@ bool get_signal(struct ksignal *ksig)
->  		 */
->  		current->flags |= PF_SIGNALED;
->
-> +		/*
-> +		 * PF_USER_WORKER threads will catch and exit on fatal signals
-> +		 * themselves. They have cleanup that must be performed, so we
-> +		 * cannot call do_exit() on their behalf. Note that ksig won't
-> +		 * be properly initialized, PF_USER_WORKER's shouldn't use it.
-> +		 *
-> +		 * They must not dump core either. The dumper waits for every
-> +		 * other thread in the group to exit, and a sibling's exit path
-> +		 * may in turn wait for this worker's own exit, which only runs
-> +		 * after get_signal() returns: io_sq_thread() ends up in
-> +		 * io_wq_exit_workers() and waits there for its io-wq workers.
-> +		 */
-> +		if (current->flags & PF_USER_WORKER)
-> +			goto out;
+Reported-by: syzbot+23b25ba3c6bf971f9c57@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=23b25ba3c6bf971f9c57
+Fixes: ac2d3268284b ("mm/swapfile.c: remove the unneeded checking")
+Signed-off-by: David Carlier <devnexen@gmail.com>
+---
+ mm/shmem.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-This probably makes sense anyway... but see below.
-
-Perhaps it makes sense to change ptrace(PTRACE_SETSIGMASK) to fail if
-child->flags & PF_USER_WORKER ?
-
-Currently get_signal() from PF_USER_WORKER can only return SIGKILL,
-I think we should keep this rule.
-
-
-
-I don't think your change can fix all problems. Suppose we have a main
-thread T and a PF_USER_WORKER sub-thread W.
-
-Some signal, say, SIGHUP has a handler. Debugger unblocks SIGHUP for W.
-
-Now, kill(SIGHUP, T) can choose W as a target, complete_signal() can
-choose any thread if wants_signal(t) is true. W will "drop" this signal,
-its signal handler won't be called.
-
-
-In the longer term it would be nice to rework this logic somehow to not
-rely on ->blocked...
-
-Oleg.
+diff --git a/mm/shmem.c b/mm/shmem.c
+index b572c60f2af8..94f2c59c8cfc 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -1184,6 +1184,7 @@ static long shmem_free_swap(struct address_space *mapping,
+ 			    pgoff_t index, pgoff_t end, void *radswap)
+ {
+ 	XA_STATE(xas, &mapping->i_pages, index);
++	const softleaf_t swp = radix_to_swp_entry(radswap);
+ 	unsigned int nr_pages = 0;
+ 	pgoff_t base;
+ 	void *entry;
+@@ -1200,8 +1201,9 @@ static long shmem_free_swap(struct address_space *mapping,
+ 	}
+ 	xas_unlock_irq(&xas);
+ 
+-	if (nr_pages)
+-		swap_put_entries_direct(radix_to_swp_entry(radswap), nr_pages);
++	/* A swapin-error marker holds no swap slot, so just drop it. */
++	if (nr_pages && softleaf_is_swap(swp))
++		swap_put_entries_direct(swp, nr_pages);
+ 
+ 	return nr_pages;
+ }
+-- 
+2.55.0
 
 
