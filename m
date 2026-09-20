@@ -4,95 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2079BC982E6
-	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 11:12:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CA74C982E6
+	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 11:22:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E946A6B0088; Sun, 20 Sep 2026 07:12:18 -0400 (EDT)
+	id 448A86B0088; Sun, 20 Sep 2026 07:22:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E456F6B008A; Sun, 20 Sep 2026 07:12:18 -0400 (EDT)
+	id 3F9B56B008A; Sun, 20 Sep 2026 07:22:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D33CF6B008C; Sun, 20 Sep 2026 07:12:18 -0400 (EDT)
+	id 2C30A6B008C; Sun, 20 Sep 2026 07:22:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AE11D6B0088
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 07:12:18 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EECE41A0437
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 11:12:17 +0000 (UTC)
-X-FDA: 85233876714.18.2A7438A
-Received: from mta1.migadu.com (out-4.mta1.migadu.com [95.215.58.4])
-	by imf18.hostedemail.com (Postfix) with ESMTP id A17201C0007
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 11:12:15 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vHp+Hvb+;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf18.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.4 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F37386B0088
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 07:22:47 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 801AAA5584
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 11:22:47 +0000 (UTC)
+X-FDA: 85233903174.01.98820E7
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 72BE420005
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 11:22:45 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=qyauvioD;
+	spf=pass (imf31.hostedemail.com: domain of suzuki.poulose@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=suzuki.poulose@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789902736;
+	s=arc-20220608; t=1789903365;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=F+1wZBnUZ7Ppi2dJwlzs+Pd3nJ2dhxwKPuaJcpmOPkM=;
-	b=hijt6HSiD+Lx/Nurdo0NdXUoNZfxQfZ/iOGdBFhGnG/3kfmtCYwYlNSjt7VqxUzuawxk2c
-	De4TyPu1SHRXY+knZpis03PhnOkiW5J5I7LtufffGDIcRaB3Rf7xV/moY/nYiLfpMh73q7
-	7MDcdhXKjeS2UzD02SIWJmBLuVqdSJ0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789902736;
-	b=1sNP4JfN9JDWu7i0XFENTUkyB/gsQPxxz/YVe1PiBgA3dScVpNQeau7NNpfMZFVKYSUo5l
-	mNpBElbJ3kRE2/aAAIJuRgOs98RyUeQKXuRoJWp7J/Rck9mxQYnagivcLS/rIbNbGI3xDP
-	UTE7StrYG5O2YRhaKInPIb7h3oBZmQ4=
+	bh=BKc++u6+iWK5zTGmcrD8EFqK8FbKYSwkL4lJttuSggc=;
+	b=J8e4INTQGW5YuGTra5QnMWGC59AVazWnZHWo8JFsr7GkJLTFdkDAgZBESwcTRO4NtaajMm
+	oPDYAZuabOK6LCtwSNmk4S0+2RCvXi8FrXsZpqaJi2lXelnT5s+GmF/jz5p2QJ2ej1VE4n
+	Z7+E9cKi/tvRgso0PkMrZGJh/HyK+zE=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vHp+Hvb+;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf18.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.4 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=CzJCrm1JG/Bdu/TaUWFhlC0tN1b8yrUeWHq+eUql9jI=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789902733; v=1; x=1790507533;
- b=vHp+Hvb+eEPj0nhoQpet0POTAc8YKQzWU0LTiz3uOnbQfe7FOiwdiyiyA4Z8eDJiG8mfRGDo
- Fdi5oJ2HOodgQqFsGgdTIVDDxYqMpEVdLicZEU5nhx1gnqVnsKXG2m/jrM2sAqDT0mmwTXcTm7B
- KM+7InVuhMUEESAkMgqmEQYA=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 4a53f6ddf8c44ae7;
-	Sun, 20 Sep 2026 11:12:13 +0000
-X-Mizu-Trace-ID: 4a53f6ddf8c44ae7
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <63de7ffe-8410-4e88-9e09-02f2cc386539@linux.dev>
-Date: Sun, 20 Sep 2026 19:12:08 +0800
+	imf31.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=qyauvioD;
+	spf=pass (imf31.hostedemail.com: domain of suzuki.poulose@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=suzuki.poulose@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789903365;
+	b=sfNOZXRIdyiLUBZa6j0unIRLjFjZHSppfkLyqYXBO3Pffa5obUozeklh2htkYKmvxZhWo2
+	Xv/xeCqA5F7h4dqJk0T3NttDKiAMLzsudCphwCeC8LIhkQpb3J5vLgDZR/xAHNQS+oAH4Q
+	VrPn+vLfMm+f6FJ099kqgeac0s8UyqM=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BAE5F1650;
+	Sun, 20 Sep 2026 04:22:40 -0700 (PDT)
+Received: from [10.57.11.6] (unknown [10.57.11.6])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0E7293F59E;
+	Sun, 20 Sep 2026 04:22:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1789903364; bh=TTSAmX1wYFJBw0fvvMopxHoUBy5D4DhhdG2PXyYgxwI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=qyauvioDKvQzThtvSLBGUf00hBG20UnPEJ0clgBhfu9GvSX1Xg/pZH0QLdPzdQrkr
+	 Rn/HeZaQOknJwH5vX2OkJANfmSbhrtNUJOSqrFM1awqd5vGcu96O0475S6SDtKKgrj
+	 ScCxtmZV4s18MEl9M3NnkqviXS/2pMgmVqrptrYo=
+Message-ID: <629e51dc-75ad-4727-b584-293a4081e7c9@arm.com>
+Date: Sun, 20 Sep 2026 12:22:37 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-new] mm: vmscan: put rotation-missed folios at the LRU
- tail
-To: Barry Song <baohua@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Kairui Song <kasong@tencent.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>,
- "open list:MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)" <linux-mm@kvack.org>,
- linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
-References: <20260920043015.3126317-1-ridong.chen@linux.dev>
- <CAGsJ_4xmoGWULDVNGj0LzRFFfxM4VVGg4Bx5Pz5cUfXx9uKrtw@mail.gmail.com>
-From: Ridong Chen <ridong.chen@linux.dev>
-In-Reply-To: <CAGsJ_4xmoGWULDVNGj0LzRFFfxM4VVGg4Bx5Pz5cUfXx9uKrtw@mail.gmail.com>
+Subject: Re: [Invitation] bi-weekly guest_memfd upstream call on 2026-09-17
+To: Ackerley Tng <ackerleytng@google.com>,
+ "David Hildenbrand (Arm)" <david@kernel.org>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM <kvm@vger.kernel.org>
+Cc: amit@infradead.org, aneeshkumar.kizhakeveetil@arm.com,
+ ashish.kalra@amd.com, dwmw2@infradead.org, eberman@quicinc.com,
+ fvdl@google.com, gshan@redhat.com, jackmanb@google.com, jackyli@google.com,
+ jthoughton@google.com, kalyazin@amazon.com, kas@kernel.org,
+ kevinloughlin@google.com, liruxin@google.com, michael.day@amd.com,
+ michael.roth@amd.com, mike.rapoport@gmail.com, mvaralar@redhat.com,
+ pankaj.gupta@amd.com, papaluri@amd.com, patrick.roy@linux.dev,
+ Peter Xu <peterx@redhat.com>, pheragu@quicinc.com,
+ pkondeti@qti.qualcomm.com, prty@google.com, psalian@google.com,
+ qinkun@google.com, seanjc@google.com, shan.gavin@gmail.com,
+ shivankg@amd.com, sidtelang@google.com, tabba@google.com,
+ tatashin@google.com, vannapurve@google.com, vbabka@suse.com,
+ wyihan@google.com
+References: <b91dbfae-20f1-4b9f-a25b-4397afae80f9@kernel.org>
+ <16ffff40-4ef0-4312-a700-348603f05c0c@kernel.org>
+ <CAEvNRgGW_VHmT82q+bUqHh_5G2Z9sUF1jJOTiVN4Z8_cA9A50g@mail.gmail.com>
+ <e4bcc676-34d3-45ed-9eda-51c9a60e977f@arm.com>
+ <CAEvNRgFAL6qtSiJpQuga_TxWBr2pK=9LoiON+ZARMp0xFA8rPA@mail.gmail.com>
+Content-Language: en-GB
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <CAEvNRgFAL6qtSiJpQuga_TxWBr2pK=9LoiON+ZARMp0xFA8rPA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: A17201C0007
-X-Stat-Signature: b7mtdtf5bq8wxmkabg43xm79t1bnqrkq
-X-HE-Tag: 1789902735-936964
-X-HE-Meta: U2FsdGVkX19jYdydBasrYp2+0u6/Oecwb7EkF+M+4LNHeO1W83Uhe4IBUTc0AT/HW1ldG1+ooaGyIloEX6dZXpEAEIbUdbsu42JMb+7/syI6nRnazrrZGTpAiGEO68bw7odYU17J691FYDQ0W2Iq9dDINwEQO4MGZUOcDoIu13vsWJp798IxbfHP+U4GGgZLYHGS+LKoj1sWrIOJCs81mVPBXUyY4qqMQOHvSggrmGn8CE6BfLIYWKnJsf885yewxR1nIOSpQxTEL3sGQu1RItdkoYWCDin/1/OTW6HaVBjRPH4Op5jNnFBZV2SW0ZdwnZ4JUc4Bdhpxwm7aMuP36q+i+LHAiBmT1lPT2ROLTpvx4StMOeKHVhhfsmoeDnyh+SzKp2FxyO5TfR/Rr+LUcbzV7hTrtw4ttwNNcHa/wsQLKDlOz07lQ3WbfRloTzxGJ/fujZewg7GnoyOtso9AybRcDgaX81Ie2QcJ89drkYPP/OlG+5rHivULPCxA7+oPkjYioU6v8M3Yl50luXqkQaeiGpgPM+0mucX/2Sm7ZBF+KgJMLzLYbjw6SpB4KuROHHriYMjJX+TD4J5NK7A6UtXuH9H9fS+IhQw8qkePk5n0sM0paI128gVowbmWG+FSBompdOCRha+AXGRvTSuJu+H57BkiQhhj+4kGcufuul269b9htTu+PIhenlQE9Dqs4diKKLhfeqnVS7trlmPwnGq1PoOTPfPk/rgAD6fyRkN18Q/Fv7eekiDOAwngR2YPUW3YuCogWbRfTz2xFs2q6iWLl6eFttON1tCrUYVwVL69WL+M3rhi8b6GqvjpFrFZvDYWi/TjEWlKx98uISD7iJFjSYcfKIX/6cSzC4nYskH6zCBGP5qC556vb7E+d7m/USBBGR/4bCEcGsHVkYFQeJrqnyrUtdP0ztg475bhHREi2xH6YQmCRB5bV0/ggzPPKDphzuQcs1cwgHuVwqH
- 5GWZiic8
- 1gZ39gCTqTWJ5qGHODsorA5rzMMUdgYwVIUrSY4a595YkpmI5kys7KIkfKGiDC4PQLZbQkxHB4nMt1UOHKGmGxJTuiZUF2Ou4Ov2GbYn6kp1C4nhf70VHr1LDmzLCXjKgJ5IgqQ7ZQ63Rv2txuuNCVrxtKgp3IJv1d5UO+o0EUuGkX2KGb8rgC/cKU3S5Cuy7FDP1amQNRcEOJ8zhlbGfWUxKpnQ1xRE1T+/ljNXt6we5KEc6DTwz2D2ypPcgspv59dsN+OHNn5D9L8cCbhr4oArp4b0veZQPDgB340ADh1Y/RLA/HF3S1baa/gusIg+MlCW3ompOAGOMb+fitKoO+nGht8HO2b5rR3iyn4cT0eIpM4lbPc60Wa6DrmdltSqwKt+3RPRkS7+z/4E=
+X-Stat-Signature: 9oaetqiksy8oanoz3xki8yn9a614ztc8
+X-Rspamd-Queue-Id: 72BE420005
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789903365-331651
+X-HE-Meta: U2FsdGVkX1+lECKkxXcIP6Safv978LYQPZ7a/De/ma4JAKT3CQG//y47IL5UKT6hYR7yfHH+/xwzri9w49HiG96h2QhouzjdslMInkGJHIjizxvfOW5HTMjx4WfSRLpEZ4Ln7ReROveYsu/NVdauqlEWu7QcyTi+6Ix2GVCutuTROniDtPpmxevMYfiVYU+rgcS1NrHZJ4VQDfhgDypScgJAQsdGsqJPh1XdXjJVxBAbjwhzxA7d4bbQ5Z2pWA1Y6M1Ag9udeMhGamdh2STcXWWzPVm9XyZ7iEzDv2vVf78oH0YfxJsxGHsOMUCBzMwarpqRGp+7WyDqEwZxBmLxqQ1aKUQVbVlKfS3cM/g/WHmHIq2YaYHdhptQylhr/helwynKx5JARs1z8vaHmWAl27+QAOwvNCZ1o6mpigiWa2Ie1K4XgJel3u2QxLBZaEfVU8g4ESuBW0RWJRms1Qw8tcIs32wU4qEG5uLERys50uGOOOU6JvicljQMfU0BwkyhCfaE0DJOVSs7weeaApK8+0IBAgEzaOHlhIr3Q4x15MimQSyPdi669UCGEDuBcky32xVaFQprF7tVp8cKFLuDipWx7JKTdvnZ8i24vdurANynXOJKRSEMJ74HZKLRLCk+d6hKDQ+LENWv0wxH06TDK5yP14NDW+IZ8AsmR8SJ1JOKuIS72NsO7MoEV0N67YFtjNPV1Xv9ZW6iQYT8wpZ0o2a8DRxEGnw36WvqNvCuAP6T2+9aFhZ2D2uYs5Gih6MLUN61OQutGjriQMA6ozV0wPkxcyOptfpUfH5ZS611Ild2BLHr7g3LnVQGj8GzJAW8rQwiozy5xO6VqM+KJxtet1RvIjKFaWPLIBt26TvoJ+S7sWzVSmYLYSQXpT061UmxA9XaSmKtqdpwO2waau5V3omd2TlDX+YrYCsrxFuyboM06+XkBmAhKTOfp2dXiDbDMxHTocZRhPEGmVW1SL7
+ MP4tccZ9
+ z3Lrb/phCxYNrJwza8j0JF5JIVYgyZhNjBiewMKGijeiHeFfKIofz5kgNDhwllr0QzPot6PNpN4ENAqUSc/K1w4TAw8JvPRPtI2JO+KP1xWN0GhkpZMzUiLmFkVvtUJC91vy5NtNWmmazfEM2NydYGuCLNiftloV4b6O3iMbh072Tz/u/ZUPuX/JlioGtLXsmvtjhk9yqSwqvDMsntNoaZAPQbpYpcdy8xCDBgxVqJ2WdPMF4jEmHD0DHawCK610KLUF5uOQ5StXQ3Hhahfnn8XbFlhMVdzPOdXP6z/Pc42knCILkiz7SoUQFwCt1BVqV7ivoQkx/4o7RyAPbOqz8d94I7IH7eDoKwCVR8ogP1vAJAnoPyfMCdaS+cC0bpMfEpdZE0Fb5CqNJCkTsmGjQexACqiXuwvuhZ6haxsyIzoNW12jzWPVwk0VPG5cF0fJDtyrYMdzoyyhmMck=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,107 +108,144 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Ackerley,
+
+On 18/09/2026 17:21, Ackerley Tng wrote:
+> Suzuki K Poulose <suzuki.poulose@arm.com> writes:
+> 
+>>
+>> [...snip...]
+>>
+>>>
+>>> RMI_RTT_SET_RIPAS() is actually saying "host permits the conversion from
+>>> base to top", it's not telling the RMM what to set it to, this is also
+>>> different from SNP.
+>>
+>> As mentioned above, host knows the requested "RIPAS" from VCPU exit.
+>> RMM knows the "RIPAS" from the VCPU object.
+>>
+>> Now: Privates vs Shared is translated to RIPAS_RAM vs RIPAS_EMPTY
+>> in the CCA (well, roughly)
+>>
+>> RIPAS_RAM implies, the GPA can be mapped into the private address
+>> space of the Realm and it is integrity protected. Host cannot
+>> replace the GPA with another content (it can unmap and DESTROY
+>> the GPA mapping. But unless the Realm consents to replace the
+>> GPA, again via SET_RIPAS request).
+>>
+>>
+>>>
+>>> Interestingly RMI_RTT_SET_RIPAS() also errors out if the current
+>>> shared/private state is different from the one tracked in the vCPU
+>>> object in the RMM? Did I get that right? I'm looking at the base_align
+>>
+>> Correct.
+>>
+>>> Failure condition, where it says ripas_pre != rec.ripas_value.
+>>
+>> Please note that, in such cases, RMM needs a deeper page table level
+>> and the error is RMI_ERROR_RTT, indicating to the host that:
+>> Look I need a deeper level table to satisfy the request.
+>>
+>> e.g., base = 4K, but walk.level = 2, and ripas_pre="private"
+>>
+>> i.e. the requested base is mapped at L2 as block with "private" ripas.
+>> If you want to convert the "base" to shared, it needs L3 table. The host
+>> would follow up with RMI_RTT_CREATE and then retry the request.
+>>
+>>
+>>> If two vCPUs race to convert the same range to shared, both vCPUs would
+>>> have rec.ripas_value = private. The first conversion would be fine, but
+>>
+>> nit: rec.ripas_value = empty (shared)
+>>
+> 
+> Sorry that was a bad mixture of pseudocode and constants on my part.
+> 
+>>> the second one woul see ripas_pre = shared but rec.ripas_value = private
+>>> and would definitely get an error?
+>>
+>> rec.ripas_value == empty (shared) as per the guest request. And the RMM
+>> will find the state is already "shared" and would confirm the success
+>> back to host.
+>>
+> 
+> Oh yes, my bad.
+> 
+> base_align says (rephrased)
+> 
+>    if (!AddrIsRttLevelAligned(base, walk.level) &&
+>        ripas_pre != rec.ripas_value)
+>            return RMI_ERROR_RTT
+> 
+> Is the alignment check to do with another vCPU splitting the record in
+> the table?
+
+Nope. The Host doesn't keep track of the levels at which the S2 mapping
+is created nor does it track the "RIPAS" of the regions. That check is
+making sure that we don't unnecessarily break down "block" mappings.
+
+e.g., Before boot, the host might set RIPAS for certain regions (e.g.,
+populated contents.) The Guest (firmware) could at boot then convert
+all of the "DRAM" regions to RIPAS_RAM without checking what was
+populated (this is anyway available in the Measurement). Thus a
+conversion request may encounter regions that are already in the
+requested state (RIPAS_RAM in the above case). And thus RMM
+can report SUCCESS if it is already in the state.
+
+Otherwise, we now need to split the block mapping to a deeper level
+to apply the "state" change to a subset of the "block" range. This
+is why we return RMI_ERROR_RTT when the requested RIPAS doesn't
+match the "ripas_pre"
+
+Does that help ? Remember that we don't have the concept of "ACCEPT"
+in CCA.
+
+Cheers
+Suzuki
 
 
-On 9/20/2026 5:21 PM, Barry Song wrote:
-> On Sun, Sep 20, 2026 at 12:30 PM Ridong Chen <ridong.chen@linux.dev> wrote:
->>
->> From: Ridong Chen <chenridong@xiaomi.com>
->>
->> The page reclaim isolates a batch of folios from the tail of an LRU list
->> and works on them one by one.  For a suitable swap-backed folio on an
->> async swap device, it queues the folio for writeback and, after finishing
->> the batch, puts the folio back to the head of the original LRU list.
->>
->> Meanwhile the page writeback flushes the queued folios in its own,
->> independent batches.  For each folio it writes back it calls
->> folio_rotate_reclaimable(), which tries to rotate the folio to the LRU
->> tail.  But folio_rotate_reclaimable() only takes effect once the folio has
->> been put back by reclaim.  If the async swap device is fast enough, the
->> writeback can complete a folio while reclaim is still working on the rest
->> of the batch that contains it.  In that case the folio stays near the head
->> and reclaim will not revisit it before wrapping around, causing a cold/hot
->> inversion: a clean, written-back folio that should be a prime reclaim
->> candidate is kept ahead of hotter folios.
->>
->> commit 359a5e1416ca ("mm: multi-gen LRU: retry folios written back while
->> isolated") addressed this for MGLRU only.  The traditional active/inactive
->> LRU has the same problem, reported at [1].  A reproducer is available at
->> [2].
->>
->> Rather than re-reclaiming those folios (which would drop the swap cache
->> that may still be useful for a future hit [4]), restore the rotation that
->> was missed: when move_folios_to_lru() puts a folio back, add it to the LRU
->> tail if it looks like it missed folio_rotate_reclaimable() (inactive, not
->> mapped, not dirty and not under writeback).  A new do_rotate parameter
->> gates this so it only applies on the reclaim put-back path
->> (shrink_inactive_list()), not on shrink_active_list() where the list order
->> is already deliberate.  This approach was suggested by Barry Song [3].
->>
->> Only the traditional LRU is handled here.  MGLRU already retries such
->> folios via its own clean-list retry pass in evict_folios(), so it is left
->> unchanged.  The same do_rotate scheme could later replace that retry pass
->> to unify both LRUs, which is left for a follow-up.
->>
->> [1] https://lore.kernel.org/linux-kernel/20241010081802.290893-1-chenridong@huaweicloud.com/
->> [2] https://lore.kernel.org/lkml/46037a37-4cf6-448e-a94b-30a4d16e8814@linux.dev/
->> [3] https://lore.kernel.org/lkml/CAGsJ_4zwP3_+EYY5Ug9EJ+yD1UdxsBSGr25u8s1K3u_i7LH3Zg@mail.gmail.com/
->> [4] https://lore.kernel.org/linux-mm/20260911121341.178028-1-alex@ghiti.fr/
->>
->> Suggested-by: Barry Song <baohua@kernel.org>
->> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
->> ---
->>   mm/vmscan.c | 21 +++++++++++++++------
->>   1 file changed, 15 insertions(+), 6 deletions(-)
->>
->> diff --git a/mm/vmscan.c b/mm/vmscan.c
->> index e200ce3eb056..026b844c681f 100644
->> --- a/mm/vmscan.c
->> +++ b/mm/vmscan.c
->> @@ -1971,7 +1971,7 @@ static bool too_many_isolated(struct pglist_data *pgdat, int file,
->>    *
->>    * Note: The caller must not hold any lruvec lock.
->>    */
->> -static unsigned int move_folios_to_lru(struct list_head *list)
->> +static unsigned int move_folios_to_lru(struct list_head *list, bool do_rotate)
->>   {
->>          int nr_pages, nr_moved = 0;
->>          struct lruvec *lruvec = NULL;
->> @@ -2018,7 +2018,16 @@ static unsigned int move_folios_to_lru(struct list_head *list)
->>                          continue;
->>                  }
->>
->> -               lruvec_add_folio(lruvec, folio);
->> +               /*
->> +                * Put folios that may have missed folio_rotate_reclaimable()
->> +                * at the tail to avoid cold/hot inversion.
->> +                */
->> +               if (do_rotate && !folio_test_active(folio) && !folio_mapped(folio) &&
->> +                   !folio_test_dirty(folio) && !folio_test_writeback(folio))
->> +                       lruvec_add_folio_tail(lruvec, folio);
 > 
-> sashiko says:
+> Why compare ripas_pre and rec.ripas_value when the level is not aligned?
 > 
-> "Could this heuristic indiscriminately place un-reclaimable clean folios at
-> the LRU tail, ensuring they are immediately re-scanned in an infinite loop?
-> If shrink_inactive_list() isolates a clean, unmapped file folio with an
-> elevated refcount (such as from a concurrent GUP or speculative lookup),
-> it will fail __remove_mapping() and be placed on ret_folios.
-> Because this pinned folio matches the !active, !mapped, !dirty, and
-> !writeback checks, it is placed at the tail of the inactive LRU. The very
-> next isolate_lru_folios() pull from the tail will immediately isolate this
-> exact same folio again, creating an infinite loop that prevents any other
-> folios from being reclaimed and causes kswapd to spin at 100% CPU."
-> 
-> This seems to be a valid concern. For a clean and unmapped folio, we
-> may still fail in `__remove_mapping()` if it is pinned somewhere. So
-> perhaps we can add a refcount check when fixing the rotation.
-> 
-
-Thanks, I will update.
-
--- 
-Best regards
-Ridong
+>>
+>>>
+>>> And there's no "accept" step in the guest after conversions, which makes
+>>> it different from TDX and SNP.
+>>
+>> Correct, the guest "permitted" the GPA to be made private with unknown
+>> contents anyway. RMM guarantees that the "data" is scrubbed when the
+>> GPA is made valid. The advantage with this approach is, once the
+>> Guest sets the RIPAS_RAM, the host can lazily donate pages at
+>> fault time
+>>
+>>>
+>>> Difficulty in using current gmem hooks that SNP uses:
+>>>
+>>> * .gmem_make_shared() called from conversions doesn't have the vCPU
+>>>     context, finding the right vCPU context is expensive.
+>>>       * Sean, don't we already iterate vCPUs to find VMSA pages to kick
+>>>         the right vCPUs?
+>>
+>> We could keep a list of VCPUs with pending set-ripas request for e.g.
+>> Or before the vCPU enter, we check the state of the region and
+>> do the sync with RMM.
+>>
+>>> * .gmem_make_private at fault time is too late
+>>>       * At the next vCPU enter, the RMM would already read it's state to
+>>>         report success/failure, and there's no fault in-between for the
+>>>         .gmem_make_private to happen.
+>>>
+>>> At the call Sean suggested mirroring the RMM's tracking in KVM, but that
+>>> sounds quite arch-specific and it's like doing arch-specific validation
+>>> within KVM.
+>>
+>> Suzuki
+>>
+>>
+>>>
+>>> p.s. Fuad, for pKVM you also mentioned that you'll need to check if the
+>>> guest had requested for conversion first? This might be the same/similar
+>>> problem.
 
 
