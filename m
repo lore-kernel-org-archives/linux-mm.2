@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF74CC982E1
-	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 13:20:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93160C982E1
+	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 13:25:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BFE346B008C; Sun, 20 Sep 2026 09:20:54 -0400 (EDT)
+	id 59F666B0088; Sun, 20 Sep 2026 09:25:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BAF1E6B0096; Sun, 20 Sep 2026 09:20:54 -0400 (EDT)
+	id 528C76B008A; Sun, 20 Sep 2026 09:25:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC4C96B0098; Sun, 20 Sep 2026 09:20:54 -0400 (EDT)
+	id 3F0F66B0092; Sun, 20 Sep 2026 09:25:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 877E06B008C
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 09:20:54 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 08ED6120460
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 13:20:54 +0000 (UTC)
-X-FDA: 85234200828.09.B5A1B87
-Received: from mta1.migadu.com (out-157.mta1.migadu.com [95.215.58.157])
-	by imf09.hostedemail.com (Postfix) with ESMTP id D6110140005
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 13:20:51 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lAHegx7U;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf09.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.157 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lAHegx7U;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf09.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.157 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 145A06B0088
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 09:25:46 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 085C3C0432
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 13:25:44 +0000 (UTC)
+X-FDA: 85234213008.05.E4E4922
+Received: from mta1.migadu.com (out-36.mta1.migadu.com [95.215.58.36])
+	by imf17.hostedemail.com (Postfix) with ESMTP id DF4D140004
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 13:25:41 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Uro0nBkd;
+	spf=pass (imf17.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.36 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789910452;
-	b=v9TtI5HGJm9GqWEb0m9DsoUikqMedMA//rOedd/7BsQdyEWFp81FV2tBHCvCcA8NVoc0xj
-	mm5YYLzTuyE6K7tHq11zocKvCViKtShGe0P2UbJ8uRsnWUr+IrAFuikRLxeZpkjKT+0loX
-	ebXNG+RWGtuMbJfBbGAql/1/OiqxgXA=
+	t=1789910742;
+	b=gXwXP/nnvTtwzcrdyQUhGmaCGVywJ/sSeGvIdcSDNKJ6jpFDNrnMYnm3LuVVQ1wXtNL4W/
+	IcP/YlgCg8jb/5jYJ5XlMGayAD4TuAzZk2bHyr7eYMCzrGFx2jWekE9IkhJkdTOYCBraJU
+	jVkbFOLRA/K0fqf0nIuNu4Rad5pLysc=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Uro0nBkd;
+	spf=pass (imf17.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.36 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789910452;
+	s=arc-20220608; t=1789910742;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=N8Ta0j6yxQE8E6d6QJNn10RZEWq+rkhSZxxfc8apJyA=;
-	b=d+PcVYWaVho2fP8xGzCaa/A0MY1pEZ6v9JGXWN9qtBsi3HGSee+12446f3FE4nA9+LYuLD
-	UUCH2s9BDm/klbKj58AtkQ3fiabIjCzBIUWB1UxSqauHiARsQsMuZeGHUt7SdR8t0rEfsf
-	YPn+iw/ZgGHhokjqCnVZqhz4RJCcTSI=
+	bh=Y1Xrc3ttFPfr7EMnbRknnznV0NJneGqcF9hcQrywfe8=;
+	b=y5ywoHey4vISroZAn6z6FebhWxvg8fDoyztdF1WuURa+HgXftBhjSeCXuSbLbIWV4z6Kb3
+	0bBUiHBoXk3IrGUcTQtLyZoVQEsyt0NH5xFB1ap+VX4qfaR2uX4nq2V8YsDZDxguD4Vnrm
+	/Vj8+fMXCWP2QTK62nQ48sTE6J2ydxk=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=+qiJEwOkGGHEtLddlrncV+pPVsmFD1CLTG+vezQeo6I=;
+DKIM-Signature: a=rsa-sha256; bh=2FjJE9PDNzwg8wqFlDFAwHfdMqqaHvEgbFuf0Zw7tso=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789910450; v=1; x=1790515250;
- b=lAHegx7ULugygqfGHNO+V7kWVDrQDkExRfzyewMxbgPuIJnTig4GMZyJDD4S5sYdvAgoNnjz
- 9A+pFSgnSN7lMazCd5kb/sIpVCRONCYSM4H2uMjFY3BlyfdCJUg284L8+GDGl8a8sVZVxYVF5XG
- E0atIbOXjtOFpgWrB3WDuKi4=
+ t=1789910740; v=1; x=1790515540;
+ b=Uro0nBkdxPeb8ffcE/EWaEIsEPvz3KkI/ch2VRyY2TXd/YdNlodSIKtLN9Ii3jtl2+6yAZEd
+ YVeUcRZWAt9WN4BfHiftQyZMTBLS2xVamgZoY/3GjsBCo+D+Siutonr2GNzv4KYXDfCgNhSEJ7f
+ AbuSeveXIi5yFtrXlGOWVJzo=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 2fa7e308769992a5;
-	Sun, 20 Sep 2026 13:20:50 +0000
-X-Mizu-Trace-ID: 2fa7e308769992a5
+Received: by smtp.migadu.com with ESMTPS id 6e531f2b7286c07b;
+	Sun, 20 Sep 2026 13:25:39 +0000
+X-Mizu-Trace-ID: 6e531f2b7286c07b
 X-Migadu-Flow: FLOW_OUT
 From: Ridong Chen <ridong.chen@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
@@ -80,20 +80,20 @@ Cc: David Hildenbrand <david@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	Ridong Chen <ridong.chen@linux.dev>,
 	Ridong Chen <chenridong@xiaomi.com>
-Subject: [PATCH] mm: vmscan: put rotation-missed folios at the LRU tail
-Date: Sun, 20 Sep 2026 21:20:30 +0800
-Message-Id: <20260920132030.3368138-1-ridong.chen@linux.dev>
+Subject: [PATCH mm-new v2] mm: vmscan: put rotation-missed folios at the LRU tail
+Date: Sun, 20 Sep 2026 21:25:19 +0800
+Message-Id: <20260920132519.3369946-1-ridong.chen@linux.dev>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D6110140005
-X-Stat-Signature: n76n5udwzhx7z6c378iesbectggz1s4u
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789910451-210604
-X-HE-Meta: U2FsdGVkX1+7FkpyVwA0obTlf8MzXqUlPFfS4ANnXGpmiAfgd+Gv32OyxtF5C1RMEH3bPZF6QHyIPWfCXgE8D40xgmtXb79THMRIVR/ru1yDbIVFXwpESds3G92QTYF0B2l/eiiI79VJbJo/arCRduFNTOYsXJIX940Eo3YL3K+KEJtlAnHiPc6tkggwTB5EO6jcsHDdDy5JSTEBFCGcbHqRZrmvdT+RZ5ZSEnjJ27mO6hjhNlQZtbgiCDwbvE11wihf/9cq/8gF/tE5O+MqyzRBOQzdScDlO+fqTBK4E9DXS5CaPadSac4TiIBqs/1gOGPCv+Gm4c6sTEgWypyJSf5+5sLv5fP+We6sSA3g+J6UUydQLhforKOfGJWqUUafEx+Slwx94qJXMKtVArA3u6w+hl7hIxJV/5IeP0J6I+FEvJWSmIzAN81lXkJzfHZ/2wIXBYEXevuZLSsY4Gc6LgbhS1mcEPjSWhNYL8qUE0KhTHZEcjTNNU7Y7MMOWQnErhHKQaQdqtf0nLSnmJ0JOJtvOCUix9J8wrntGwAaY1XWV1Bg/Nivntulpkm6rU2cDWImFdwv1iiOZAS/ppT47CmFneFF2tkJ4hA9e+N0zNvv6vkknMqKk3HEudrmFP4u4s6p1WJNuc+mIUNFoGOKgMhWdt4EdIUCMPnyRK8Zn3gbOHitHaqjnL9b0RwfTWm+rs7hU1GMTL1RFgbP3ANlotYwUXx93hJlxz74aOHj1cXdNKwaiS+KJ8dXvrQEObDJlyC/JRWN5DIXtitEBPO9SZWb0N140gN98SFOpbho5WkYZ2RM0t5PwgYpZ1kk3qnjmRfFJnsMQDHaCT9sv3GA8ss3D1ulLDLusvrX4eyU9q2wJewggkQsBvyJX86ApBvev1cJBPlONRQ7K5cRJl/Z3P4/U2OveAk9Mix92nqwlajlDODvQ9+kwiz7ohaTtoG86ZKqvtAmWptfFfGirM0
- xQIV9pjV
- 7zViEq9oL58WJd9yGX06zj3DB2HF42X4A+lVFY0UYqBtHwu3rGfNOyFxKtEiv+B/dQq/9TL+OxnrexxqUSVSomLgeHBuszU7l/ncmREuDY5mstLWfdGoDrso0Vyv5c9ES5feICnIyUG/6qzuf6YpcscYLF4sv58yceKuZw9cC5WLC8K+ABGS+rRgUsUkG9Z+82a/BfvQ7RLNx9VTD6I85qaUc/VA1lAtivxygTr9zPM6xXkUY+N0EXdgj0notHOCIr3Hs54XGhOrrIKhStlv0fqXqNPXREQG7RgTbpbuGIMQTDvefdI7i9/dy1CjWgyXnGqLM
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: DF4D140004
+X-Stat-Signature: exax4zz6esqkbnza79585hhwfnxoichw
+X-HE-Tag: 1789910741-151664
+X-HE-Meta: U2FsdGVkX19udy1ae2i85FJ767etDxqzUHpVFZHlLC3El/ERgjYJCdnnQ2aEqbrYyHxSlRWwZl9Akp1BO4twi0qa5cK3Tpn/9Vp4Yq1U39i0x+HTz2PHfRaJsOODZPBw8+XuwkjJ1N15zZqCJc7MY52m/ZDgGy3n2QaShsrYlU2OtsqJfzhgol7+r9i0JahaazomoHhWTMINZvR+VAN9/3Vevu3i+EYSb9u4yIEgPtEcQOzv2kaXbr/5/t79f97DYlEf+Ua8+jU9UPmlV7YeIRn8JJPkpv8Ni4Xl7vI224njaDXoNZCfBfWjo7yV9cm/rK5nwZ4sSsY6lNfnRRvFE6yULBFpBBV+EGNyiUOw44F0zucENmlHChO1pghrVdupYPmvgjXg4LccvynAEAcJpOKjfvtg6SNaKTi8G4ObSHff5Cf1qgYxXtjouqq9JZyk/nKLAaVl9EN5irTywtTuxXtfxedePG+lIFN9JwZjjdYihkDiy8YISv3V/KSOQP8KFVC2CLi43SaslgnYn12TpWPaaez5ZKnHMxzoXrBVNPRnSRje+3vVC+uOf5jmPkrY/dWMbmOghKjGfySHFgc1jYiiKWaqlu88Rm3n/q3LOdQ/6IEE3We0R4k//ZACwDepZ2IV/D0Zq9MB93fhgM3e3Rugbq82CI42hEE38j2uGBgSrJNv2afTXSjkvKiBBvUbrqbGigceySz+l3NGtd1ZDZrwkOxgDQL+QO2al0eS2ZzXHVpZD63KwSzK+puowL5zE4Mtx1lIokhI8hCUcC4riF2vPBlqQJlJZFrawE0RDGA/JDRh+jWImlgRG+m1vgLPVs5gJk5Mom3QbXMlPR3Ex7jpJn1YTWm8h3T9bLcuLLM5P8grYaTtGvCoi2XVH/mpCa2bMdWrDIuKRKZ6YFHTHaGr93zwaI6Si81IXnk6tcimGKYmHExzOV2200UUgKlui3oEjFke61Croc4b+mO
+ QcKmMwXt
+ S18gFSvLF6WHw8IBQrqZ1k0Ii6MZYrnSqvIi/OJ26l9bt9mHlnFQPqQX+oIZZ2l1GUB3IL+EuLdW7x2cW5epGeQIUZ0N1ai+UIgM7T5BBTPWrB6takOcHu2Y+Y45eWMxSZtE2GLkcHhpGdUZ0vtB5hVD4pTpOxr1u2avi0IoGb18nOetWBmQW+4n/lwgKV13Majx1VJ9eVujZq+u0ZTYBbgo3EN74vp9UG9oi5l57IzPPK0id68lnHbwb6iS3V880EmX0N7ZoJY6zHhdRxE74ZsmvI1C1gqceDghpbL3ktRGng2z/gTwT9sWxnVZPe1i7CrMZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -177,7 +177,6 @@ memory.memsw.usage_in_bytes and memory.usage_in_bytes is close to the swap
 Suggested-by: Barry Song <baohua@kernel.org>
 Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
 ---
-
 v1 -> v2:
  - skip referenced folios (FOLIOREF_KEEP) and unexpectedly pinned folios
    when rotating to the LRU tail.
