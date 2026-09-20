@@ -4,109 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A43A3C982D0
-	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 09:59:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64343C982CC
+	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 10:00:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 77A2B6B0088; Sun, 20 Sep 2026 05:59:53 -0400 (EDT)
+	id 7541B6B008C; Sun, 20 Sep 2026 06:00:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 72B4F6B008A; Sun, 20 Sep 2026 05:59:53 -0400 (EDT)
+	id 705036B0092; Sun, 20 Sep 2026 06:00:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 61A776B008C; Sun, 20 Sep 2026 05:59:53 -0400 (EDT)
+	id 61BB36B0093; Sun, 20 Sep 2026 06:00:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 350656B0088
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 05:59:53 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 09948A58ED
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 09:59:51 +0000 (UTC)
-X-FDA: 85233694182.21.EF6C698
-Received: from mta0.migadu.com (out-98.mta0.migadu.com [91.218.175.98])
-	by imf13.hostedemail.com (Postfix) with ESMTP id C1AA120004
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 09:59:48 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gKe5u8bc;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf13.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.98 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 414B16B008C
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 06:00:36 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 88996A5C83
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 10:00:35 +0000 (UTC)
+X-FDA: 85233696030.16.2CDBDD0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id EBB7F2000F
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 10:00:33 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TwfVX3I9;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789898389;
+	s=arc-20220608; t=1789898434;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Fc88VjcCV0XaevewX7yikgL1Gb1gpQ11lQMw7l75aVs=;
-	b=vRF3p9/OLrN/b1Ztv0tqsxmqaup1PePeZm93sAH1CD47PJpt1+Q1OWhyYJEVVnzc4aFUE8
-	wZjQ/2aVpBL9gFtUn7A+P2Fu7imqjpQy/hHV7v+P/Gor6SPkKVttXYdYzdUNTUR5WOWkio
-	5aRk4feEOA2jZbqvtEnBlL6PQhZcx6U=
+	bh=eNOkuOvBgpaeImx4XytamWlsHw1NNr1OL5vpKYxF3rg=;
+	b=yVieroRTMuiv2BnK1gNTAZn3TiAzlmFBKVl61DbAe9FRf6FxtnVH5yEDY0wfE+uFICABxg
+	TNlsmpGMPN8fs2pnpq0Gf/yrXIRLwTqt1twa2nJHpVat1SySnTXBS2TQvRwaO3zsg/9NFw
+	OLFigzNEQkKxgcUHGs3CGFK/14qN+kw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789898389;
-	b=u27zyvk78SKldZgKh2dqJb0GW2B1R/Pwct3wDddMHZxLtMd2UWJxJ8N5qca2b+uVMUo1Y2
-	iFhxMRlFa/iKlyHP8bLkfX5nnXHCbQCLsnbb71zmCQdULTWg0TDIsy/kl6H4tCKryeGZ5+
-	oh/a2iyxt/zrz8V+4+nkgVeKBiayjW4=
+	t=1789898434;
+	b=PChtge0jWeET3UKxLGsndQOngj2rAIw7gl4JKIIKqK0bWGvelBF47VwQh+IQCQo/pFamOt
+	2CkRVrToDFMIVty0iSOSXwRmzFBtuWnM0XluU+yWpZX6YesH1lAjWhgzVaWjAGPPFJ7Vud
+	MwU4z1HboCuv48eVP5fTICH2+G6gJp4=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gKe5u8bc;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf13.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.98 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=i1HleDRhgKWtFLvlkCLckONA588VkME6KNONTyekZJA=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789898387; v=1; x=1790503187;
- b=gKe5u8bcA5blqDZ2W/6YxWa/Q1UaPWfwDTqtz6C66wlLepDdwbLquAIHCYjjeTjX2xVPLdOu
- Xlv6SC60cIIqJBx6gDXISFvmpjiu66GL5jOtFPom8Z4sG+oHS5tuPhLH4VKPNDDLNWxrTsZnkzY
- WFIYeQX2ahDN6yKuWjJuY28Q=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 78e13bd88616e780;
-	Sun, 20 Sep 2026 09:59:46 +0000
-X-Mizu-Trace-ID: 78e13bd88616e780
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.700.51.1.1\))
-Subject: Re: [PATCH] mm: Add CONFIG_SPARSEMEM_CLASSIC
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260920070406.95354-1-kaitao.cheng@linux.dev>
-Date: Sun, 20 Sep 2026 17:59:22 +0800
-Cc: Andy Lutomirski <luto@kernel.org>,
- Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org,
- "H . Peter Anvin" <hpa@zytor.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>,
- Kairui Song <kasong@tencent.com>,
- Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>,
- linux-kernel@vger.kernel.org,
- linux-mm@kvack.org,
- Kaitao Cheng <chengkaitao@kylinos.cn>
-Content-Transfer-Encoding: 7bit
-Message-Id: <85F48B20-68C5-45D7-A8E7-27E601283743@linux.dev>
-References: <20260920070406.95354-1-kaitao.cheng@linux.dev>
-To: Kaitao Cheng <kaitao.cheng@linux.dev>
-X-Mailer: Apple Mail (2.3864.700.51.1.1)
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TwfVX3I9;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2B3D4601FD;
+	Sun, 20 Sep 2026 10:00:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A67AB1F000FF;
+	Sun, 20 Sep 2026 10:00:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789898432;
+	bh=eNOkuOvBgpaeImx4XytamWlsHw1NNr1OL5vpKYxF3rg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=TwfVX3I9FP2+Cj8IDi6JXuS9zcovsK5gEevP9S2LkyW/wd5gFw4QKgVFahXizcQjY
+	 qH4BLljpWsAnohK8aOSwE+js0ywxcy+ai1wUDHEvJMlt+oNdr3FqYp+0ZMw5TPjYbi
+	 AAJsz6+hfTCUiW6DHcDxu2kYQ417eL+TfLrfTTQxp9lOLpFfXomF82B0VIAANbMJNA
+	 P4oOsP03EK2aVn4CpUXsw33vXDjncp1USqz9FrbGWz+39T/IdK508cpC+b+qnF8wJO
+	 FbJfhNBUejmQPS95Z2oRaye0VqUvWyKk+RDojqKBipgw+BuanvfgbiBz4w9rWEryAJ
+	 00B04w9Wg3DQg==
+From: SJ Park <sj@kernel.org>
+To: Zenghui Yu <zenghui.yu@linux.dev>
+Cc: SJ Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org
+Subject: Re: [PATCH] mm/damon/api: remove unused NR_DAMOS_* enumerators
+Date: Sun, 20 Sep 2026 03:00:28 -0700
+Message-ID: <20260920100029.46849-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260920012028.9565-1-zenghui.yu@linux.dev>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: EBB7F2000F
+X-Stat-Signature: yxzcck9uhuarr891bnh8ya8a4zhm5e5z
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: C1AA120004
-X-Stat-Signature: 991hs4hoydbq6b8gdcgw4aiz47cxys9m
-X-HE-Tag: 1789898388-91478
-X-HE-Meta: U2FsdGVkX1+35eWbXuTGwcGPW1un48wlIB7888b5l3+GUWij4XDChpKil2AWvfYjivPWVwX+sYO0tE3A0nZfKJirQR8vDJtfGyUo8Hn5dzSH4+24J4xERnHQOLmVyt8Drc3UzoeRl6Na70RaSb9otYOXO5siEOl4Hlua2f531waNruq3hAoFdtI5etQszBVUdpE3uihw/cN9MQmRWiSeGBHYdlzRqD7+DJZ900ry7+q2wQu/F1AdERrVYmdehB7TiPdzXBtJal54YmhSk7gs0Pu/ln3o5ISwakPi7hKCtMZS5jhyfnSE4kG4a/SzwO4StUTQ7Ryham+p3G6od+lcMcVRASf1673o4TuibZypLq9gx/FJtgiUbmheRqrA2uNiENN41AAYdgMNhPqenBfK0Sibij8r89lzMZ2YBSN7W8PzihXKZLhSxG4RxlMSJwORMrjsKzSP5TGYPIma2bqYnGSDMmoZ44ofAsFHKrY4QNW/g0E/c/bL+XqX5MJGnc8mZYQEGi2lPqEKdg/rie0tXATqSxKpbQjnBS9SSd4UJRxk2Dy5J0nyWPzPIn5GjzKhjyrCk3mpIUd+j26dlTYUvR8OZu2Vk1Q95jOazU6KGKtPgjAAsjIpR9tPL5hPebsXgipLwh87nFoPFU1hfZpUY6g6CiqUViyImYliug9RNb5zGKyQeMZhzthXrFTybo/5xkbWQQ5j5dE5mOX6A7Fq6lFRI0fo30PWmLNb7KxrA/dNHWnpffAWUI/QPb7Tcvh6mWpRn7XwlQ5V78R4Jr8dIDYxt22n/rJGeO34e9RHf82hUl15N4ezeY2tyAwHUOR2yu8m7sLtQ/o0cvtCQ8P6uGVhksk8pTAEscQJvB5xDRsE3he0zzoplkw6LDbDoQmGzlZ8a6WUzjiM70HHG9h5Tnx0pjq4/V7wUq+RBB2HnJD3LhBSkn+UFeiZBpREFh3l6+354Fhn9XhAQjrMVkO
- a7cJjHDf
- pP3ikozCuOBcpeOLUalsuWKwz35Kp2pA6ymLLNqe44ScN6/woX3SpRfntfUIqschyDywX6FQ9OpSCeJGHjCkgliFlZg25wTdkT1fQDfGjWQgAyuHvbFhw2PP7tFTFS3WGGdI84ksg57MwQ82VM+jxs0r6BbHrsAOo5MjXNpJV+98AeHHn26Ex/ojNWUwRQCPUGKe6pJyQ6WSVnQJqirhZ+mw7sdBKHwk/iLkqRHSR1fv5KVCgVgT3YtsrptAoK9Vn6Z9aQQJsg1SchcCYh6MA7jnL7vqKUaQYXZeG+tzF5kjvyUC2K3EOO3ztXQ==
+X-HE-Tag: 1789898433-233893
+X-HE-Meta: U2FsdGVkX18uJRgaxgA3KUDg40r+3k/DGabt4aoWK/GLGCdDi8Bj4qvLvCx4daqG9JJAcH5yRLzEc+TEPBZxMv9sxUFy8y57WfrBvLl0NOr0LJQI9vMlb+4Fx8LeqHoWFfoIRohQkwryjl4eiifn20ZMxWa9jFtZ1fsY6W3heMjpKvBQvenA/BmaG7mHVTmNj0tIrjI0LFuwb27ANNCCZ0MkIhJaCSSUNmZgEADFVO6V3aSfp8bST/ivrs6u6iV4FYdvyefl4CCM0CShHMcoBtcjkzkoFp4IV5NdEusK7st4b0uqHWrFYFfqT8FIDa39jDM0zKoaJ+eQ8rdiZsSsdFX3aT+dII6aGSAtm+iQvdYypiKhl+vpoLetW34mmzlIb+5+3jboiX08vT6O/aWwdqEQue5FqhMYly70iE0o4vqFI54nz74Yh6DO6OZAwbH9Iz/hHILLVhycYU2RQoEn20Jwx3aherMU3jgg9T86LrTKeJoG7UQG4UiH4dCUgqRNz9Sl71A6Q1Ju0jaa4TtCwCTZlc+uRk/H3ZumOPNQBHLTOt/vAkAJVKHHL6xo8La1s49lOsg1U6Gue58D46p9rhr3U4JguZ+LjAr4VyMLUfG64dAV+Ge6Is7dfjHLajWwOGhFuzJhignfXeZ8DpjG6IoXQErO1wbicF7KoQIn38ufSH0QHaAsklv7i2BerMspcVAh6KWSKPq8ekpihWDZ9tNJv8rZCP4hYTl0zo94vhO+st5MmIt8yNbxuFOgO9AJReyvsovwtH7ITHl58xM22F3fkH1s+kkE5Q0Kya4RzNPN5HNC5sRSuw2EIIiCHf/aHiKr0LIH0QF9tiSn6Hho5rgVxCXnUdedFjojupRxG+ov3yfvlfRmoHC99zz3LE6Oe//e9MmCHddEAsYUEaiy0SemMQNRi3rc3ERTezi8NXjrkQRuialtdOeiz5pG1qcJZEFE6lh7zg78IyPRt79
+ 0p48Eeh/
+ sI34P65Vy6D+sl4x7LRAlJNRhfRvTYz6WgKvvSbdwAkquBZXl6ACJSMZ61Y9xoBspVcOh3Gzz7e0cAT832O1455XB+lMcPvRD481wvB20N2Ay1QfOxqyCJvNdt5adaxhwD5C4V3yomAVkKTkqW2aCGQ2sJ0z/RkCog+Ir7zsE2hDk53XgqfT9GVme9TVFWqetHRPZcbGV0DeTs0/0K5YsoFmJuaWfzC6oWtzsXRUmWfOoCyegUTREoz4uU1J6miI0/pBa5NHnvTQs0V+EtGwbTdpphZJAexmnKG/oWCaKZmWdntLYqTjN7P7gNWbxPZtSnZvW8PghhGqW+zbsGRSH8bAjuw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,32 +93,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Sun, 20 Sep 2026 09:20:28 +0800 Zenghui Yu <zenghui.yu@linux.dev> wrote:
+
+> From: "Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
+> 
+> NR_DAMOS_ACTIONS, NR_DAMOS_QUOTA_GOAL_METRICS, and NR_DAMOS_WMARK_METRICS
+
+More than 72 columns.
+
+> are not referenced by any code.  Remove them.
+> 
+> They can be reintroduced if a real user comes up.
+> 
+> Signed-off-by: Zenghui Yu (Huawei) <zenghui.yu@linux.dev>
+
+Other than the above too trivial thing,
+
+Reviewed-by: SJ Park <sj@kernel.org>
+
+This patch is applied to damon/next [1] tree with the fix of the trivial commit
+message length issue.  If this patch is not added to mm.git in short term
+(~1 week?) with the fix, I will ask mm.git maintainer (Andrew Morton) to pick
+this.  So, no action from your side is needed for now.  If it seems I also
+forgot doing that or you cannot wait for my action, please feel free to ping me
+or Andrew.
+
+[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
 
 
-> On Sep 20, 2026, at 15:04, Kaitao Cheng <kaitao.cheng@linux.dev> wrote:
-> 
-> From: Kaitao Cheng <chengkaitao@kylinos.cn>
-> 
-> Several MM paths identify classic sparse memory by testing
-> CONFIG_SPARSEMEM while also testing that CONFIG_SPARSEMEM_VMEMMAP is
-> disabled. Repeating the compound condition obscures the memory model being
-> selected and requires the local SECTION_IN_PAGE_FLAGS alias for the same
-> state.
-> 
-> Add CONFIG_SPARSEMEM_CLASSIC as a hidden derived option and use it at the
-> conditional sites. Remove SECTION_IN_PAGE_FLAGS and test the new option
-> directly.
-> 
-> The x86 32-bit vDSO build starts with the x86_64 configuration and then
-> undefines CONFIG_SPARSEMEM_VMEMMAP to emulate a 32-bit configuration.
-> Kconfig-derived symbols are not recomputed by the C preprocessor, so define
-> CONFIG_SPARSEMEM_CLASSIC there when CONFIG_SPARSEMEM is enabled. This
-> preserves the existing behavior.
-> 
-> Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
+Thanks,
+SJ
 
-Acked-by: Muchun Song <muchun.song@linux.dev>
-
-Thanks.
-
+[...]
 
