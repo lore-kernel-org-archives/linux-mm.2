@@ -4,53 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CA5CC982CC
-	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 07:20:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6078C982D0
+	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 07:21:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F1B06B0088; Sun, 20 Sep 2026 03:20:55 -0400 (EDT)
+	id C15E96B008C; Sun, 20 Sep 2026 03:21:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A2AE6B008A; Sun, 20 Sep 2026 03:20:55 -0400 (EDT)
+	id BEC946B0092; Sun, 20 Sep 2026 03:21:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EFD736B008C; Sun, 20 Sep 2026 03:20:54 -0400 (EDT)
+	id B2A7B6B0093; Sun, 20 Sep 2026 03:21:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C85B16B0088
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 03:20:54 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0AAB4C03E6
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 07:20:54 +0000 (UTC)
-X-FDA: 85233293628.28.302E579
-Received: from mta1.migadu.com (out-59.mta1.migadu.com [95.215.58.59])
-	by imf27.hostedemail.com (Postfix) with ESMTP id A896A40007
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 07:20:51 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	spf=pass (imf27.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.59 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8C2446B008C
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 03:21:02 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 190711203FF
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 07:21:02 +0000 (UTC)
+X-FDA: 85233293964.29.7EB02FC
+Received: from mta1.migadu.com (out-65.mta1.migadu.com [95.215.58.65])
+	by imf14.hostedemail.com (Postfix) with ESMTP id CDEB8100004
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 07:20:59 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	spf=pass (imf14.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.65 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789888860;
+	b=jrANEBznWYoaWby9anDOEQJlIjtgDD82ZgzRrT3lz/oSnx6R5NBXsaOoMjYxu2HywT+zCg
+	we9CvDK441JsR9QuSJjE6UymflbH9t1O0onEEETPkwl7kwYntdNQUg0zr5Hjx/XiKGfdqb
+	lDdEbQFzy4ivuBC3nUTJ/GZ9XmAOhaQ=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=none;
+	spf=pass (imf14.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.65 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789888852;
+	s=arc-20220608; t=1789888860;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=OqjL95nMyuialByOyNXSThRjLAvOedelr3p9CRfNR7U=;
-	b=phbDTMyzCBCDR2WrQdxCpABTiydeZ38SV203yqvNW+hjFeQKDNWd7ns3cHo7BlnHfnttL9
-	DQ5IW7yeOY6no+kbfbRfv3Fol3+GQue1wl9Pkcky7TEpb1WRoAIhDHHCY6W4JASiiTNVOp
-	7C9dcGtCaZ7BMpABTfBgvDUCQhAOJe4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789888852;
-	b=q6ruZkRLpvU/vQyM2dsWxD+kC1s9i87A/RnxJ0j1HI14ZLPp+4+X3WxCbHCIkRek5pRpDK
-	CBE9eeGQZciM1TFUgZl72sTPHsdvdCZrQRlp2qABKEtvj2/zBc14b61KRHSt6Aua2SJcfu
-	OdL49WHYXzeefXWJzmkf+WWxb68P22A=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=none;
-	spf=pass (imf27.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.59 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=none
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SL0P0v23Nbe4r5Ox426eYC69GWNt+uypchKVdVxv26g=;
+	b=YoObzIE451tCVc5RpPFQnacDQXHTxuTRtsOY31w/GOJWK0fM5BkmuqgR7UiX1urmszJayy
+	m83U5cMfz69dYg7+hwziA2yj/x/WJmyBTE/ECqNe+gBm0t89rp6RFhmCBZpuOBbngDSdPO
+	JgcvjGZzAgnhdJRvl036I8AgW8aeQ4Q=
 X-Envelope-To: linux-mm@kvack.org
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 0911e82e2ae6aa55;
-	Sun, 20 Sep 2026 07:20:49 +0000
-X-Mizu-Trace-ID: 0911e82e2ae6aa55
+Received: by mta11.migadu.com with ESMTPS id 56f5ed382b2eea4d;
+	Sun, 20 Sep 2026 07:20:57 +0000
+X-Mizu-Trace-ID: 56f5ed382b2eea4d
 X-Migadu-Flow: FLOW_OUT
 From: Baoquan He <hebaoquan@kylinos.cn>
 To: linux-mm@kvack.org
@@ -70,21 +71,23 @@ Cc: akpm@linux-foundation.org,
 	roman.gushchin@linux.dev,
 	shakeel.butt@linux.dev,
 	Baoquan He <hebaoquan@kylinos.cn>
-Subject: [RFC PATCH 00/17] mm, swap: xswap writeback to a physical backend
-Date: Sun, 20 Sep 2026 15:20:26 +0800
-Message-ID: <20260920072043.430390-1-hebaoquan@kylinos.cn>
+Subject: [RFC PATCH 01/17] mm, swap: prepare the swap IO path for xswap backends
+Date: Sun, 20 Sep 2026 15:20:27 +0800
+Message-ID: <20260920072043.430390-2-hebaoquan@kylinos.cn>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260920072043.430390-1-hebaoquan@kylinos.cn>
+References: <20260920072043.430390-1-hebaoquan@kylinos.cn>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: CDEB8100004
 X-Rspam-User: 
-X-Stat-Signature: ye9kd7mognisrieeyyim8itsimxqfai7
-X-Rspamd-Queue-Id: A896A40007
-X-HE-Tag: 1789888851-186416
-X-HE-Meta: U2FsdGVkX19TyokXiIyLbzO53K8BG9R5XfTZMydrxyN3DQrdh2O/Ekbqu6dpB4HpKP8W6EzHRSrnt/PvdlHnsq/5SLZFs4/NHGUDE78NpoyFWWmM8h9LcgUdD97vT/wmoE7O4AkDeeKnI2XJwbmlt5VVcwheGxW6YQu3jLpM1CoY5L2sxQZqNOVg6A/j4FLRxJTiGtDPR87x+iS4zjicJvMxVry+hVSlN0o4d8nhIJ7xkN4vHNGkDs/KBHEw5poZWiZSR/9QfXN2W1M9I12sX5zvxYHSylEF5aZDG2zyoLz3gKPkE1LpQMM0rrJkxk76dH4z3q3l98k4EhYAt7tpAgGN4xCRC+yxgXUh3eD36HVQT3yO66pJvXvw7OKbSixS1CnVcpnbkbXK/Dqmk8tlQS72aZuXXidJcfopNYH282cvndIYoQHGv9mS/+H/EqJ2u7bgrrNuBR4y7CkRCkBnj2Ji0CSTSegMXpcx28vv98Nf+GP3bHuF1ZaFJ4VJzlPrydqacJCqtmR87yYXrabJuqwS8Ou7aC6Jnn70f8cjaUes1balm3rjjGFVq/ucGkzbcppIJosw49wvrNtmcoWMH/WoysORrChllWwzFcrFkyk1SLj0Nrw8+WPRDJPFfzOPbsg+HbsPqa8Lb0DWA5Q8lQGRkG5+FEMboMOKacWxS70H3Mft49PFp/4RSAGdcujd8IEWNgJV8KOILI0o2p0I4aoxyPSUHlb6CYHZcaIjaMbWhyy9W71SZ2cJFgYhazQaDufSsu5R2cx84Av7bupubIleHVCQCSRls+BpM03QdvzvKkLkk4h5CXS00SGh7Eqmcir9Kaxp23rKHh2WI0GH1Za+4hcyBqtmXCmOEfSb3UTicvxGPs6chRjvXXd04XbellBjaYtMBLC3/Vry2bABTF4aSOt8Z+rI/kwQrQfjrTTdnmJykkwzSkZ4TNMwne+bO0mD/CgqiMDL4HAHp4b
- BPayJsZE
- sgVTSIXtnFIyXpFbK7W2vSukYrWhbKB/DWmqyhc/WP1LnlE0kvMPWVs1HRDTjzu4k/WimqpKkKvY5R7nwlMlPwUjKgNP4RZyu4xK7Zue4A2g0V4h4wIVURjfiPdicvp/u90GTYyipIgvWmZP5nxGaXNtyeuw19xmJwtvmkC2oPflmglc6np0Boy8pCC6nLDOB1hPs3nl3cXJ4lc7DQJIVhHGNtjSKE6B97KfZbcDWYDjukkL3qcwvj5LW6Z5Ri3aJB98KQK5PyFlXcOSUDSzyRZZFfDPFI5+XqR6XQ8Y4i97ON5QCvsUjaYLfW9YClTyMp1Lv
+X-Stat-Signature: dwcfymfq4nfoza3hrrpmtgxw3ktzxj3i
+X-HE-Tag: 1789888859-318889
+X-HE-Meta: U2FsdGVkX18TuTV71lGy4xsA7NkYGt/VS8uuiGYLsIh2LCmJsWdg8A95hefSgkaxV6Nm1tbElJpIAMFDHwCX08X75K+0YT50y2qlXvl4hIRDsCr2idtnIXIjV26MgSUxCzKf27vF32vNaOD3lj+hyXKPRO14n8lSg/K5WpFNyCG5K4+uklTtVKg4nVlKxjcmR28fmrHmmGwHKcVn470LJBslNrs6XKo52mgUJJqEbrqSDm9lzRPVjE9aFibqehrPDGRhrYoFm996GrMwf6vHJG2oHoyYr4H/8InHRQqRSYrPutdKO5y9OoNoixsN7sbUdzHk+Q1afMC0fn+MD4CcbJc4R1taoGIjg9tO/5Xw0G7Z4Mla1yI3UGJZGOeL+LEKoZt6ogawTvysN6G5bpFARoqSbohnbisa5D8Vmf2PgZa3F28tcoawRt4LL41eLs3Q2VUdTtvBgM4Ebh+pP9mxtSz5WrNUJgN8dSd4n/MiSYGwfMgLLuLKyj9XGjh0nqAOzhlrQgzt2eykkp4uazHbQEI5UKtFU2yoI1aJuR6KwNWQB290HD+HOSEdYH0BAlhNT7mR+V51uO+eGnfpb381viiScAxZfZGxk46sqoj3RhhLvWOU/3KHB5cyc/yn8mx1ra30/5sMOmfWOTzG65o2qVj+vzwuy5vhkwCO70qJJSVCv7bJQK5+b5dV2WXM1kmvgK7n4lPCMY1fi975v9BNN4YsFNooEdLyFef/xqs2VRdd06aZa7lTRLo0PNy5VFX+HdmtCkdtpspGiJ3nQZReCB/ayLaAEzjXvKHdSRcMvd9g9tJ9HvJ+p5s2uGGwLhah/oVya9D4teTVkGtwsae7N+lI3K2kThSBeYnRUVvpu9ZDoWoSXwbh5uclrC5fC+oZjltUusdqqWx1rMZxTtDqLokVubplYaOD7RLChYvkQFHKd5F7rt6S844gBQ7aF5bVRntWoUXc7/f9Jp/Pnbj
+ trSaIsLY
+ 0wR9dIWHndcJ9v5cKOi5jgCvkoP5Saxpx8a4UItOMWDdB70Sy3qT+UnK91XrJxjpuxiLI1vTKdGHYtHJTAOcGTCSyo+C4HFGPyPbII2Ma6wOLNe799ZGHH7y/EPOuAV5aMgC54KMeiDj06xns2BIe8Gfn3DJqkZDzvsW0aTEJrRZoarTj/GnzFdCCZz5P8sAEuLHJxr5OhRxMrVcUCZRL8OUc1ls09zYsjdGzqwvPlvhbzaZwgrDQhjQgIh5vjB8eXiSddLciMi+ZTpHwvi/gHcoLAgQ96+Dl1Rbm6vpkNVvxRquAqvdMICv1IlrNVewNE9XQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,184 +95,290 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is the writeback layer for xswap, on top of the base series. Post it
-as RFC for discussion.
+From: Nhat Pham <nphamcs@gmail.com>
 
-The base series keeps every swapped-out page in zswap. So the pool must
-refuse new pages once it's full. This series gives an xswap slot a
-backend to go, and charge it only when it really goes to real disk
-space.
+An xswap folio can be written to a physical device. The folio stays in
+the swap cache of its own xswap entry. The IO goes to a slot on that
+physical device. So folio->swap no longer describes where the IO goes.
 
-Design                                                                                                
-------                                                                                                
-- Backend: when zswap refuses a page, take a slot on the real swap                                    
-  device with the highest priority and write the page there. One IO per                               
-  slot.                                                                                               
-- Ownership: that slot has no swap cache folio, so record its owner in                                
-  the swap table entry. 0b100 in the low bits marks a backend slot, and                               
-  the xswap type/offset go above. The physical side then does not treat                               
-  it as free, and readahead skips it.                                                                 
-- Per-slot record: ci->xs_table[], one unsigned long per slot, allocated                              
-  the first time a cluster takes a backend. Zero means no backend.                                    
-- Read: a written-out slot has no zswap copy, so swap_read_folio()                                    
-  follows the pointer and reads from the backend.                                                     
-- Release: verify the slot still points back to the xswap entry first;                                
-  the record can go stale.                                                                            
-- swapoff: try_to_unuse() used to skip these slots. It now reads them                                 
-  back, marks the folio dirty so reclaim re-stores it in zswap, then                                  
-  drops the backend.                                                                                  
-- Reclaim: an xswap entry's count can reach 0 while its folio is still                                
-  in the swap cache; the physical scanner reclaims the redundant slot                                 
-  through __try_to_reclaim_swap().                                                                    
-- Large folios: a read starts at the first physical slot, so the run is                               
-  reserved whole and must be backed contiguously; otherwise the fault                                 
-  retries at a smaller order. xswap is SWP_SYNCHRONOUS_IO, which also                                 
-  skips readahead.                                                                                    
-- Charging: Record the owner at allocation but do not charge. Take the
-  charge when the entry gets a physical backend slot, and give it back
-  with that slot.memory.swap.current then counts only real on-disk swap
-  usage, and a cgroup with memory.swap.max at 0 can still swap out through
-  zswap.
+The batched swap IO path takes the bio sector from folio->swap. For
+such a folio it resolves the xswap device, not the physical one. An
+xswap device has no bdev and owns no extents, so both the device and
+the sector come out wrong.
 
-Note                                                                                                  
-----                                                                                                  
-The base series is sereis of xswap foundation. This one depends on it.
-So if anyone wants to apply this patchset, the order is base-commit
-as below, then xswap foundation, finally this patchset.
+Carry the entry explicitly instead. __swap_writepage(), swap_add_folio()
+and the swap_ops->can_merge() all take it as parameter. swap_iocb records
+the first entry of each batch. The merge check, the bio sector and the
+completion path all address the IO from it.
 
-[PATCH v3 00/14] mm, swap: extendable swap devices (xswap)
-https://lore.kernel.org/all/20260916101929.149106-1-hebaoquan@kylinos.cn/T/#u
+Signed-off-by: Nhat Pham <nphamcs@gmail.com>
+Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
+---
+ include/linux/swap.h     |  1 +
+ include/linux/swap_ops.h |  9 ++++---
+ mm/page_io.c             | 55 ++++++++++++++++++++--------------------
+ mm/swap.h                |  3 ++-
+ mm/swapfile.c            | 13 ++++++++++
+ mm/zswap.c               |  2 +-
+ 6 files changed, 49 insertions(+), 34 deletions(-)
 
-base-commit: baa8de2f3448d1466a888a805c18d01c998fe052
-
-This partially refers to Nhat's vswap-v4 series. E.g patch 1 is
-consistent with his patch 3, patch 12/13/14/15 are from his patch 8.
-
-And the last 2 patches are fixing bugs when charging patches are added.
-Since the charging of xswap is still under discussion, I dind't merge
-them into commits. Will squash them or take them off once decision is
-made.
-
-Testing
--------
-qemu KVM guest, 8G RAM.    
-   
-A 4G swap disk /dev/vdb is added as the physical backend, and zswap is
-turned off so that every page has to reach a backend slot. Note that it
-need create xswap device firstly then disable zswap, so every page has
-to reach backend slot.
-
-The workload is memhog, as in the base series. Every page is filled with
-a fixed pattern, so the data can be checked after a readback.
-
-  # echo 1 > /sys/module/zswap/parameters/enabled                                                     
-  # echo 100 > /sys/kernel/mm/xswap/create                                                            
-  # mkswap /dev/vdb && swapon -p 0 /dev/vdb                                                           
-  # echo 0 > /sys/module/zswap/parameters/enabled                                                     
-  # mkdir -p /sys/fs/cgroup/xswap_limit                                                               
-  # echo max > /sys/fs/cgroup/xswap_limit/memory.swap.max                                             
-  # MEMHOG_FILL=pattern numactl --cpunodebind=0 --membind=0 ./memhog
-
-1. Swapout to the backend
-
-   Run the workload with 5G of memory in a cgroup capped at 4G:
-
-   # awk 'NR == 1 || $1 ~ /xswap|vdb/' /proc/swaps
-   Filename                Type        Size      Used      Priority
-   xswap0                  xswap       8155132   2392176   100
-   /dev/vdb                partition   4194300   2392176   0
-
-   The two Used values are equal, so the pages reached the backend and
-   the xswap side accounted for them.
-
-2. Pages are read back from the device
-
-   Lifting memory.max and touching the pages again reads them back. The
-   pages-swapped-in counter went up by 265642, so the read did reach the
-   device. 1010 of the folios read back were 1M, each read with one IO:
-
-   # echo max > /sys/fs/cgroup/xswap_limit/memory.max
-   # cat /sys/kernel/mm/transparent_hugepage/hugepages-1024kB/stats/swpin
-   1010
-
-   hugepages-2048kB/stats/swpin stays at 0, because the swapin order is
-   capped below the PMD order.
-
-3. verifies data correctness
-
-   After the readback the data is compared byte for byte against the
-   pattern, one time with zswap on and one time with zswap off, so the
-   pages come from zswap in one time and from the backend in the other
-   time.  All bytes matched.
-
-4. Destroying a device returns its backend slots
-
-   The device was filled, then destroyed with no readback first:
-
-   # awk '$1 == "/dev/vdb" { print $4 }' /proc/swaps
-   3157220
-   # echo 0 > /sys/kernel/mm/xswap/destroy
-   # awk '$1 == "/dev/vdb" { print $4 }' /proc/swaps
-   0
-
-5. verifies the charge is correct
-
-   An xswap entry is charged only when it holds a backend slot, so the
-   two counters have to show the same number of pages:
-
-   # echo $(( $(cat /sys/fs/cgroup/xswap_limit/memory.swap.current) / 4096 ))
-   526852
-   # awk '$1 == "/dev/vdb" { print $4 / 4 }' /proc/swaps
-   526852
-
-   Nothing is charged while the pages stay in zswap: with the pool holding
-   them and the backend untouched, memory.swap.current stays 0.
-
-6. A cgroup with no swap room can still reclaim its anon memory
-
-   With memory.swap.max at 0 and no xswap device, the cgroup ran out of
-   room and the workload was killed. With an xswap device and zswap on,
-   it swapped out through zswap, was charged nothing, and was not killed.
-
-   E.g if memory.swap.max is set at 100M, the cgroup will be killed when
-   the cap was reached.
-
-Baoquan He (12):
-  mm, swap: tag a swap table entry with its owning xswap entry
-  mm, swap: prepare the folio-less allocation path for xswap
-  mm, swap: add a physical backend for xswap slots
-  mm, swap: use the xswap physical backend
-  mm, swap: fall back to disk when zswap refuses an xswap page
-  mm, swap: support swapoff of an xswap physical backend
-  mm, swap: reclaim physical slots backing cache-only xswap entries
-  mm, swap: back a large xswap folio with a contiguous physical run
-  mm, swap: enable THP swapin for xswap entries
-  mm, swap: drop swap_folio_sector()
-  mm, swap: do not retake the cluster lock when uncharging an xswap slot
-  mm, swap: drop a refused xswap backend run directly
-
-Nhat Pham (5):
-  mm, swap: prepare the swap IO path for xswap backends
-  mm, swap: split the swap memcg charge helpers
-  mm, swap: do not charge zswap-backed xswap entries
-  mm, swap: charge an xswap entry when it gets physical backing
-  mm, swap: don't gate xswap on the physical swap free count
-
- .../admin-guide/cgroup-v1/memcg_test.rst      |   2 +-
- include/linux/memcontrol.h                    |   6 +
- include/linux/swap.h                          |  69 +-
- include/linux/swap_ops.h                      |   9 +-
- mm/memcontrol-v1.c                            |  10 +-
- mm/memcontrol.c                               | 147 ++--
- mm/memory.c                                   |   7 +-
- mm/page_io.c                                  |  95 ++-
- mm/swap.h                                     |  35 +-
- mm/swap_state.c                               |  12 +-
- mm/swap_table.h                               |  53 ++
- mm/swapfile.c                                 | 742 ++++++++++++++++--
- mm/zswap.c                                    |  20 +-
- 13 files changed, 1026 insertions(+), 181 deletions(-)
-
+diff --git a/include/linux/swap.h b/include/linux/swap.h
+index 804189b4b4eb..b9a9a02007cf 100644
+--- a/include/linux/swap.h
++++ b/include/linux/swap.h
+@@ -419,6 +419,7 @@ extern bool swap_entry_swapped(struct swap_info_struct *si, swp_entry_t entry);
+ extern int swp_swapcount(swp_entry_t entry);
+ extern struct swap_info_struct *get_swap_device(swp_entry_t entry);
+ sector_t swap_folio_sector(struct folio *folio);
++sector_t swap_entry_sector(swp_entry_t entry);
+ 
+ /*
+  * If there is an existing swap slot reference (swap entry) and the caller
+diff --git a/include/linux/swap_ops.h b/include/linux/swap_ops.h
+index 57ac6c703f68..198c5738c3c7 100644
+--- a/include/linux/swap_ops.h
++++ b/include/linux/swap_ops.h
+@@ -10,6 +10,7 @@ struct swap_iocb {
+ 		struct bio	bio;
+ 	};
+ 	struct bio_vec		bvecs[SWAP_CLUSTER_MAX];
++	swp_entry_t		entry;	/* First entry of the batch */
+ 	int			nr_bvecs;
+ 	int			len;
+ };
+@@ -30,15 +31,15 @@ struct swap_io_ctx {
+ struct swap_ops {
+ 	unsigned int		flags;
+ 
+-	bool (*can_merge)(struct folio *folio, struct folio *prev_folio,
+-			size_t prev_folio_size, int rw);
++	bool (*can_merge)(struct folio *folio, swp_entry_t entry,
++			  struct swap_iocb *sio, int rw);
+ 	void (*submit_write)(struct swap_io_ctx *ctx);
+ 	void (*submit_read)(struct swap_io_ctx *ctx);
+ };
+ 
+ void swap_fs_prepare_rw(struct swap_io_ctx *ctx, int rw, struct iov_iter *iter);
+-bool swap_fs_can_merge(struct folio *folio, struct folio *prev_folio,
+-		size_t prev_folio_size, int rw);
++bool swap_fs_can_merge(struct folio *folio, swp_entry_t entry,
++		       struct swap_iocb *sio, int rw);
+ int swap_fs_activate(struct swap_info_struct *sis, const struct swap_ops *ops);
+ 
+ #endif /* _MM_SWAP_OPS_H */
+diff --git a/mm/page_io.c b/mm/page_io.c
+index d685c2e2429a..2b1387c87e51 100644
+--- a/mm/page_io.c
++++ b/mm/page_io.c
+@@ -257,7 +257,7 @@ int swap_writeout(struct swap_io_ctx *ctx, struct folio *folio)
+ 		return AOP_WRITEPAGE_ACTIVATE;
+ 	}
+ 
+-	__swap_writeout(ctx, folio);
++	__swap_writeout(ctx, folio, folio->swap);
+ 	return 0;
+ out_unlock:
+ 	folio_unlock(folio);
+@@ -328,24 +328,22 @@ int sio_pool_init(void)
+ }
+ 
+ static bool swap_can_merge(struct swap_io_ctx *ctx, struct folio *folio,
+-		int rw)
++		swp_entry_t entry, int rw)
+ {
+-	struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
+-	struct bio_vec *last_bv = &ctx->sio->bvecs[ctx->sio->nr_bvecs - 1];
+-	struct folio *prev_folio = bvec_folio(last_bv);
+-	size_t prev_folio_size = folio_size(prev_folio);
++	struct swap_info_struct *sis = __swap_entry_to_info(entry);
+ 
+ 	if (ctx->sis != sis)
+ 		return false;
+-	return sis->ops->can_merge(folio, prev_folio, prev_folio_size, rw);
++	return sis->ops->can_merge(folio, entry, ctx->sio, rw);
+ }
+ 
+-static void swap_add_folio(struct swap_io_ctx *ctx, struct folio *folio, int rw)
++static void swap_add_folio(struct swap_io_ctx *ctx, struct folio *folio,
++			   swp_entry_t entry, int rw)
+ {
+-	struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
++	struct swap_info_struct *sis = __swap_entry_to_info(entry);
+ 	struct swap_iocb *sio = ctx->sio;
+ 
+-	if (sio && !swap_can_merge(ctx, folio, rw)) {
++	if (sio && !swap_can_merge(ctx, folio, entry, rw)) {
+ 		if (rw == WRITE)
+ 			swap_write_submit(ctx);
+ 		else
+@@ -358,6 +356,7 @@ static void swap_add_folio(struct swap_io_ctx *ctx, struct folio *folio, int rw)
+ 		ctx->sio = sio = mempool_alloc(sio_pool, GFP_NOIO);
+ 		sio->nr_bvecs = 0;
+ 		sio->len = 0;
++		sio->entry = entry;
+ 	}
+ 	bvec_set_folio(&sio->bvecs[sio->nr_bvecs], folio, folio_size(folio), 0);
+ 	sio->len += folio_size(folio);
+@@ -378,7 +377,8 @@ static void swap_add_folio(struct swap_io_ctx *ctx, struct folio *folio, int rw)
+ 	}
+ }
+ 
+-void __swap_writeout(struct swap_io_ctx *ctx, struct folio *folio)
++void __swap_writeout(struct swap_io_ctx *ctx, struct folio *folio,
++		     swp_entry_t entry)
+ {
+ 	VM_BUG_ON_FOLIO(!folio_test_swapcache(folio), folio);
+ 
+@@ -394,7 +394,7 @@ void __swap_writeout(struct swap_io_ctx *ctx, struct folio *folio)
+ 
+ 	folio_start_writeback(folio);
+ 	folio_unlock(folio);
+-	swap_add_folio(ctx, folio, WRITE);
++	swap_add_folio(ctx, folio, entry, WRITE);
+ }
+ 
+ /*
+@@ -503,7 +503,7 @@ void swap_read_folio(struct swap_io_ctx *ctx, struct folio *folio)
+ 
+ 	/* We have to read from slower devices. Increase zswap protection. */
+ 	zswap_folio_swapin(folio);
+-	swap_add_folio(ctx, folio, READ);
++	swap_add_folio(ctx, folio, folio->swap, READ);
+ 
+ finish:
+ 	if (workingset) {
+@@ -535,8 +535,6 @@ static void swap_fs_write_complete(struct kiocb *iocb, long ret)
+ 	bool failed = ret != sio->len;
+ 
+ 	if (failed) {
+-		struct folio *folio = bvec_folio(&sio->bvecs[0]);
+-
+ 		/*
+ 		 * In the case of swap-over-nfs, this can be a temporary failure
+ 		 * if the system has limited memory for allocating transmit
+@@ -544,7 +542,7 @@ static void swap_fs_write_complete(struct kiocb *iocb, long ret)
+ 		 * folio_rotate_reclaimable but rate-limit the messages.
+ 		 */
+ 		pr_err_ratelimited("Write error %ld on dio swapfile (%llu)\n",
+-				   ret, swap_dev_pos(folio->swap));
++				   ret, swap_dev_pos(sio->entry));
+ 	}
+ 
+ 	swap_write_end(sio, failed);
+@@ -616,7 +614,7 @@ static void swap_bdev_submit_write(struct swap_io_ctx *ctx)
+ 	bio_init(bio, ctx->sis->bdev, sio->bvecs, ARRAY_SIZE(sio->bvecs),
+ 			REQ_OP_WRITE | REQ_SWAP);
+ 	bio->bi_iter.bi_size = sio->len;
+-	bio->bi_iter.bi_sector = swap_folio_sector(bio_first_folio_all(bio));
++	bio->bi_iter.bi_sector = swap_entry_sector(sio->entry);
+ 	bio_associate_blkg_from_folio(bio, bio_first_folio_all(bio));
+ 
+ 	if (ctx->sis->flags & SWP_SYNCHRONOUS_IO) {
+@@ -636,7 +634,7 @@ static void swap_bdev_submit_read(struct swap_io_ctx *ctx)
+ 	bio_init(bio, ctx->sis->bdev, sio->bvecs, ARRAY_SIZE(sio->bvecs),
+ 			REQ_OP_READ);
+ 	bio->bi_iter.bi_size = sio->len;
+-	bio->bi_iter.bi_sector = swap_folio_sector(bio_first_folio_all(bio));
++	bio->bi_iter.bi_sector = swap_entry_sector(sio->entry);
+ 
+ 	if (ctx->sis->flags & SWP_SYNCHRONOUS_IO) {
+ 		/*
+@@ -654,13 +652,15 @@ static void swap_bdev_submit_read(struct swap_io_ctx *ctx)
+ 	}
+ }
+ 
+-static bool swap_bdev_can_merge(struct folio *folio, struct folio *prev_folio,
+-		size_t prev_folio_size, int rw)
++static bool swap_bdev_can_merge(struct folio *folio, swp_entry_t entry,
++				struct swap_iocb *sio, int rw)
+ {
+-	if (swap_folio_sector(folio) !=
+-	    swap_folio_sector(prev_folio) + (prev_folio_size >> SECTOR_SHIFT))
++	if (swap_entry_sector(entry) !=
++	    swap_entry_sector(sio->entry) + (sio->len >> SECTOR_SHIFT))
+ 		return false;
+-	if (rw == WRITE && !folio_blkg_can_merge(folio, prev_folio))
++	if (rw == WRITE &&
++	    !folio_blkg_can_merge(folio,
++				  bvec_folio(&sio->bvecs[sio->nr_bvecs - 1])))
+ 		return false;
+ 	return true;
+ }
+@@ -676,7 +676,7 @@ void swap_fs_prepare_rw(struct swap_io_ctx *ctx, int rw, struct iov_iter *iter)
+ 	struct swap_iocb *sio = ctx->sio;
+ 
+ 	init_sync_kiocb(&sio->iocb, ctx->sis->swap_file);
+-	sio->iocb.ki_pos = swap_dev_pos(bvec_folio(&sio->bvecs[0])->swap);
++	sio->iocb.ki_pos = swap_dev_pos(sio->entry);
+ 	if (rw == WRITE)
+ 		sio->iocb.ki_complete = swap_fs_write_complete;
+ 	else
+@@ -687,11 +687,10 @@ void swap_fs_prepare_rw(struct swap_io_ctx *ctx, int rw, struct iov_iter *iter)
+ }
+ EXPORT_SYMBOL_GPL(swap_fs_prepare_rw);
+ 
+-bool swap_fs_can_merge(struct folio *folio, struct folio *prev_folio,
+-		size_t prev_folio_size, int rw)
++bool swap_fs_can_merge(struct folio *folio, swp_entry_t entry,
++		       struct swap_iocb *sio, int rw)
+ {
+-	return swap_dev_pos(folio->swap) ==
+-		swap_dev_pos(prev_folio->swap) + prev_folio_size;
++	return swap_dev_pos(entry) == swap_dev_pos(sio->entry) + sio->len;
+ }
+ EXPORT_SYMBOL_GPL(swap_fs_can_merge);
+ 
+diff --git a/mm/swap.h b/mm/swap.h
+index b3b54c28929a..14b8c6b9d468 100644
+--- a/mm/swap.h
++++ b/mm/swap.h
+@@ -258,7 +258,8 @@ void swap_read_folio(struct swap_io_ctx *ctx, struct folio *folio);
+ void swap_read_submit(struct swap_io_ctx *ctx);
+ void swap_write_submit(struct swap_io_ctx *ctx);
+ int swap_writeout(struct swap_io_ctx *ctx, struct folio *folio);
+-void __swap_writeout(struct swap_io_ctx *ctx, struct folio *folio);
++void __swap_writeout(struct swap_io_ctx *ctx, struct folio *folio,
++		     swp_entry_t entry);
+ 
+ /* linux/mm/swap_state.c */
+ extern struct address_space swap_space __read_mostly;
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index ab64bfc4e0f7..29118082cd7a 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -452,6 +452,19 @@ sector_t swap_folio_sector(struct folio *folio)
+ 	return sector << (PAGE_SHIFT - 9);
+ }
+ 
++sector_t swap_entry_sector(swp_entry_t entry)
++{
++	struct swap_info_struct *sis = __swap_entry_to_info(entry);
++	struct swap_extent *se;
++	sector_t sector;
++	pgoff_t offset;
++
++	offset = swp_offset(entry);
++	se = offset_to_swap_extent(sis, offset);
++	sector = se->start_block + (offset - se->start_page);
++	return sector << (PAGE_SHIFT - 9);
++}
++
+ /*
+  * swap allocation tell device that a cluster of swap can now be discarded,
+  * to allow the swap device to optimize its wear-levelling.
+diff --git a/mm/zswap.c b/mm/zswap.c
+index 96fb993d18cb..b4ffd6fb83eb 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -1073,7 +1073,7 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
+ 	folio_set_reclaim(folio);
+ 
+ 	/* start writeback */
+-	__swap_writeout(&ctx, folio);
++	__swap_writeout(&ctx, folio, folio->swap);
+ 	swap_write_submit(&ctx);
+ 
+ out:
 -- 
 2.54.0
 
