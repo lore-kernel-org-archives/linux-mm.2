@@ -4,88 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97C3DC982D0
-	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 10:41:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CC1CC982D0
+	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 10:49:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8D7746B0093; Sun, 20 Sep 2026 06:41:00 -0400 (EDT)
+	id 2801D6B0088; Sun, 20 Sep 2026 06:49:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 887F36B0095; Sun, 20 Sep 2026 06:41:00 -0400 (EDT)
+	id 231606B008A; Sun, 20 Sep 2026 06:49:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C4D06B0096; Sun, 20 Sep 2026 06:41:00 -0400 (EDT)
+	id 145CA6B0096; Sun, 20 Sep 2026 06:49:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5EA4E6B0093
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 06:41:00 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id EC0ED1403E2
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 10:40:59 +0000 (UTC)
-X-FDA: 85233797838.22.6A680F3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 6C99440002
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 10:40:58 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jl5ily5A;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789900858;
-	b=tMkws5R2nrAAOq/YFdSHdqi154B7u+XLBAawfrwq3Un3ah19L2TrDhRG6H0wARuO6VsWUM
-	aN3ajdPgKxUvnA76kNMyiE1cAUufP1d0zEa1LIJx5K7Qo+rZB1lxA+0dnH2R0xiW+ZVC9W
-	Egno0MIYoovcj5PCDQKTz8RBQk2WNL4=
+	by kanga.kvack.org (Postfix) with ESMTP id EB6036B0088
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 06:49:29 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1B480803B7
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 10:49:29 +0000 (UTC)
+X-FDA: 85233819258.15.CB991E8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 38D40180002
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 10:49:27 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ikcr+qnW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jl5ily5A;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ikcr+qnW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789901367;
+	b=154RDhRVvx3VfMhUYt/vwoJzZlAEJOfgPKo2RoPk50BpgE/VEx+cCNys8jKxN7ma9EvXJI
+	Rin/lh/m9+u58xDiIHkzBXFpe/h4YmR4Z9SKPXAzeq8wMNH4IqeyLpFgKHjP3ivAh3NEE6
+	swSoufXmvDlzSIhKxrDiFvV+GEnOIk8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789900858;
+	s=arc-20220608; t=1789901367;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P0ar35JML3hYV9nkiEE/sXJ/W+HUlMH5GL/lIbPR8zc=;
-	b=74rKenB8aVO3rGQ32Ya/gpYYVyw4iA+GLb1vFlaKMbzWFnpFjZm77j7X2sKHCg9WNxe8+M
-	Qb3gVFbJ3Z2WHmoOuQ3zR0jf3vkbKBeRIUpJ5aPfWdNmdepabrcEYvWTD0UztkAveBCKnP
-	mRSfIDTJH7MGkuYytIj05/87hIvCFMo=
+	bh=JicpyNhz6N3EZ+HXyuGJGE/XahAzl0DJVcQ8CuCuwiM=;
+	b=qJwDs4ytFdtPFMf+jI7+C0Sbt4uVI+Oa+hh8CqRh/4pCoK5KPHzzMv4+pc/xkTOFhTZdjA
+	+3Bg/1VFFPImAjVr4n4HALUu5Dqn20yA9Lns8kMrMFGd+EgKFZCq+gCHY0lSgS/vuOgTDQ
+	RI9lKnQ2t24GpFGYKOnBQFHym617xpQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C1905601FD;
-	Sun, 20 Sep 2026 10:40:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 339241F000FF;
-	Sun, 20 Sep 2026 10:40:56 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5F3C64188A;
+	Sun, 20 Sep 2026 10:49:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CF271F000FF;
+	Sun, 20 Sep 2026 10:49:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789900857;
-	bh=P0ar35JML3hYV9nkiEE/sXJ/W+HUlMH5GL/lIbPR8zc=;
+	s=k20260515; t=1789901366;
+	bh=JicpyNhz6N3EZ+HXyuGJGE/XahAzl0DJVcQ8CuCuwiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jl5ily5Aits8qB1RPjNZHY6eIAr2FKO13WiN7n7BSp55opoujuaUt6nQdZyBQjsgY
-	 our3hlC2LQUi7IHtRYByRJ6uACgKrW1nHX2Fb6ecqfTBYdOQttJv/mzJ0ioSKLbDHr
-	 2evp68xCIuwALXS6zfVxcvhNs87rZEhcip2mvbC+KoERGKU4nLIbaFKNcXqz+0M+UF
-	 l6M4E+U57XAN/2wLC4MkKlfBRihYBRClUnMXHBLGwUKjh4MjRX0vPRmVgUY4+OeFwI
-	 gviArGiBD03hz0AC2pQi4xBOBh1bafQ0KlON4wut3plIh82Miq+nN3sc7moimQ2VI8
-	 wMaU0p0JWvxoQ==
+	b=Ikcr+qnWJfVqd2AgCrOOBMxrPGowMeVA+uVwPoanYFzc0rIQriUS+gZpQ0B+5RyHY
+	 g6qhWeXZkgdllHuM6l1ytBBw/6iIuopCsJgKRfWDeFi4bDbWJQRlMOzfQCGt/Z9IER
+	 psptqDk2r8Ot96aMNzlP2+xVQ7LuSKkgkxCPZ98OpnLM7hUKMoV+zvkct16xXcdzjN
+	 tvB7ZE0zQ0hikbPrZqjnWzVXrqFtnv5zZROTr1kHkiMv5jJfQ7moCOagMO6xw+558l
+	 4GBrOimDySU1V/bzeIEEx9E4NmGlmvCnv8hEiGj5fFDb/zslGvpEKwZRxDhysko1fP
+	 PfsLVlMVkSglA==
 From: SJ Park <sj@kernel.org>
 To: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
 Cc: SJ Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	damon@lists.linux.dev,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] mm/damon/tests/core-kunit: test the temporal tuner's size quota conversion
-Date: Sun, 20 Sep 2026 03:40:53 -0700
-Message-ID: <20260920104054.47877-1-sj@kernel.org>
+	linux-kernel@vger.kernel.org,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	linux-doc@vger.kernel.org
+Subject: Re: [PATCH v2 3/3] Docs/admin-guide/mm/damon/usage: document the temporal tuner's quota limit
+Date: Sun, 20 Sep 2026 03:49:20 -0700
+Message-ID: <20260920104921.48065-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260920023111.2466265-3-donggeunyoo.kernel@gmail.com>
+In-Reply-To: <20260920023111.2466265-4-donggeunyoo.kernel@gmail.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 6C99440002
 X-Rspam-User: 
-X-Stat-Signature: z3pzrixcuy79y7tm4u39kwnz4pxpkkfm
-X-HE-Tag: 1789900858-188309
-X-HE-Meta: U2FsdGVkX1+AULLTTbiBA6WDzqzDjPZWw06RELOtuEEcD4gqmGRXurtab9ody5oNkZ2WwEMELbDtK0ALeQEMRjNLlb1aRmglKZM19gR0r1WgDeE+HxVNg7xzlGfu3krXuXEEnd9QJBDfcp1+xCZh+jfenGmc6ga9cL8r1FAnkYhWkStTZwQUm2h3LMOV8dyBGhoLpyWEpuoTrcGRNVRB+yjNFpBvgnDIICjTvt258DsArjy0A0T4WjzK2HQPLagdfpq9gw12oBGIxr/zMVEFDdi8BKFNx0HhRo8oo7r98pqAqubr9LV3YmWnhW9BpRZG32ASvWe8HXHX5dbfO0FLbKA+fyld9ES4IWOaIOEIxg7JpkOgRenGdptU8cS47qhO3ymjv+PExeTpX1f8lXzv+6mmYRld/4SIuiQ4/wsjjIlx5V9BJfOjvzvJvND1TKX21H0uRb+6Xt5b1a6RCQHvS3GumFy9yQ7RMjSh26oq87paXD++iQ/FZAQQdcePK3VpWrwpsW6fsh3gPcWtmKX7fQbC7ycNHcoCFfc7MiwiMSG0aF37wWeH4F8osJr3u595aybzsOcV8XMBKTMFBlgu0cl2jcpvYQMwATOLtW1gjAnD+Ay+0uu2jJFkn0p8rRf6CSpwfqIMmUxy8mkmVjr1jLNeV2AmXmNE2UymoOhYfYt4Rdz9gDkt5rCotg2sa3EgvhuCYE85/1e/XZW9dUfrwJSnYB7SG++v2yhAkuaZjgC+jIKrCdQPZv3LhV7kEkZlOL0QbqMnue1fHiJt635r477K6rWwFmK7MpjPNvRge+H4jgTuPZ0uVkaRKRF+V9o5uyAfi5ydiSn0Zy6af8YP1LLKIJi7Dc06sgzxBLofa72XhoczgqZHTS2vMAlaUfr8GzaU/FOA7zH2aJ19mgeLtLFUVRdn3Z/Awglf6APak5x9wOZFCw1ykVNvot3LCNirW4fHCd+mLYCGscMyJSQ
- 8bdNnH47
- oS+rIr0MhiBMpDT95/1Xn/98sMK1infcXPk418JIzoloj3W9aix/er6n8rd9RQ2l0rJ2lGDTeRvQTst6Qxl67hmu1iQP+RHs6NRbROBpPWIfR5+oq6EYa90FpASGGHDttRTEh783c5qO/G5h4goaaHEVEMAoqI9weG5wJQDW4eyboFjkXns6TSZt8rx4h9HZl6e+OAgfD/Ofyzs448n4/nbakesIl/N9ZzuO90VBGTViog1gzQWeCecVQMBSmUCS8tgDb/OR+zfir7nmttShe1JdECFT6SVVpFiE6Sg2DrJww6ONzTakAYSI+EG0d80C7j5l0Vbl1NzZz/tg=
+X-Rspamd-Queue-Id: 38D40180002
+X-Stat-Signature: k89j944bsouka3u1ciui1f1k1q4eye6g
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789901367-500171
+X-HE-Meta: U2FsdGVkX19oBd33GY8jQ7si7GEDiHECR8SP1L9Jpf56/dhX2RUQGaTziZHJu3Y6noh+ByYfNULGXZdPXzPMMMZqk6ilyVJ3jLZdQ+aT1pM65cwitHZpUBQE1xtlwSHNBhdHTYqBREy7+kimaqjPTZKuBxo4iIGQkGcamQ3Pc16r3wywE+S/X9gzwKMbpGGQmP3fUMBZT3bpG7l1oyqlVNdHiuL+GHe8OX/8+Wo+E0o79lgiV1xR6JGvqKwEjCe9w3+9jqeQpaYhcFygHHkVM01/iVGl//6qclv55XEWpFuNKJlVBfZqPzM9VN5MvhSdgq8ZNnUuD4BsaDl+EEkv5qAlLnG28Z3cCm8yVWSFDVs932EwlRf40PqUgLVMFxGSTbmzIcq63gvqsGmKvdtzXnW3g0wSaRPkZKh0eYEnf5M9/YgkxbDdzGWBG/D5pZ/+WjiIxQ3X5uyClMFRycMxbFgwA2sOypzVGZqhFq00RFoUESGrLdp4DaITf8wd28oIzPQQmWsdVnpZgmXziiasR1tqHoI7ZCgdgW1d61j6Nq8H1fjGTgvywfKT/JnvPxpmZA+/pKJG0upRBbHObzPO4Q1GA7/SYk2gfbHTtVJ4dAqYi0FIhzgUb660hSFm8Rbn4w6BSeFsQYSCmOOIpt1q4IXkV4885A2nRmjYuQ/fnMbt85uDvbdtIYBSeaBpzPzfd2lXkuZz/jTaPz7fW3clrEJnD5YkSNIdEYDAX5ssLqYDPfeaf1Cxcs/7HcOdAm8pzCzxxUVU8dGhYsnYT/lInAv7qfn1+YwZHMEQioq93NOf/9YRxP5e8CVoX2ELr7bAX1T98YEL2tEgLS7BabtSHY/7k1vu3iZtQ9afRlfxcXL48OXmESuKJ7qLN4MqVJco9GSiuwDaFBa2I8Arg0S0gOCJ458AWZess47iugNF0aQpBVQOa6L+iJq/lKY2mt3sn6Unjkkr+s3oRrp9T0v
+ KzKAGwCg
+ guv9D1+r3e0O67EZ7B0ZBFcRKRG9aRMihY4vYPqJypLOtWd9PxsD1J4O1cHPuSVVFGbn48oDN7HQZgGyRLpUuQJUJDxD+bFmMaDEgyakv8xS1NX3HhbzyiTu9iWaZBhEr5ko3aSgz/60rG8XCKYU4bDI1CSPVBsW6aoQfxSLx47WGUnmmev7VtsEcV+L4sQ8GOwhhvXwIijyXSYDk7M8mKV91nlrdCJcE6t9p0+EQBhud3M3pAieK5ASWSumxcCykjV1mXdURVv1iwkaMBHqLTgwz8o/RMN7aGUsb+oT05u+YtLjh8rtfNnfZ+gdMtcffqBxJYLwviConGbPEbTP08shynQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,21 +104,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 20 Sep 2026 11:31:10 +0900 Donggeun Yoo <donggeunyoo.kernel@gmail.com> wrote:
+On Sun, 20 Sep 2026 11:31:11 +0900 Donggeun Yoo <donggeunyoo.kernel@gmail.com> wrote:
 
-> damos_goal_tune_esz_bp_temporal() encodes the size quota in basis points,
-
-Please wrap commit message lines with 72 columns limit.
-
-> so the conversion is exact only up to ULONG_MAX / 10000.  Pin the three
-> sizes around that boundary: the largest one that fits, the first one that
-> does not, and ULONG_MAX.
+> The temporal goal tuner converts the size quota into basis points in an
+> unsigned long, so a quotas/bytes above ULONG_MAX / 10000 does not fit,
+> and is handled as if no size quota were set.  On 32-bit that is 429496
+> bytes, well below the "echo $((1024*1024*1024)) > quotas/bytes" this
+> document instructs.  addr_unit does not raise the limit, though a larger
+> unit does make it harder to reach.
+> 
+> Note both in the goal_tuner description.
 > 
 > Signed-off-by: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
+> ---
+>  Documentation/admin-guide/mm/damon/usage.rst | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/Documentation/admin-guide/mm/damon/usage.rst b/Documentation/admin-guide/mm/damon/usage.rst
+> index ba47255448564..ea7443b307826 100644
+> --- a/Documentation/admin-guide/mm/damon/usage.rst
+> +++ b/Documentation/admin-guide/mm/damon/usage.rst
+> @@ -455,6 +455,13 @@ the background design of the feature and the name of the selectable algorithms.
+>  Refer to :ref:`goals directory <sysfs_schemes_quota_goals>` for the goals
+>  setup.
+>  
+> +The ``temporal`` algorithm converts the size quota into basis points, so it
+> +cannot represent a ``bytes`` value larger than 429496 on 32-bit kernels, or
+> +1844674407370955 on 64-bit ones.
 
-Other than the above column limit,
+This feels like too much implementation details.
 
-Reviewed-by: SJ Park <sj@kernel.org>
+> Larger values are handled as if no size
+> +quota were set.
+
+I don't get what this means.
+
+> :ref:`addr_unit <damon_design_addr_unit>` does not raise the
+> +limit, but it does make the limit harder to reach: with a larger unit, the
+> +same amount of memory is written to ``bytes`` as a smaller number.
+
+I suggested it might make sense to document this problem, but now I doubt if
+this is really helpful for users.  Given the fact that the issue can happen on
+only untested setups, I now think this documentation change is better not to be
+made.  Correct me if I'm wrong.  If I'm not incorrect, could we drop this
+patch?
 
 
 Thanks,
