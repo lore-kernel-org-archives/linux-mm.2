@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06692C982DA
-	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 19:37:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 487A9C982DA
+	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 19:37:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C28876B009F; Sun, 20 Sep 2026 15:37:45 -0400 (EDT)
+	id 411D06B00A2; Sun, 20 Sep 2026 15:37:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BFF496B00A0; Sun, 20 Sep 2026 15:37:45 -0400 (EDT)
+	id 3E96A6B00A4; Sun, 20 Sep 2026 15:37:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AEDDF6B00A1; Sun, 20 Sep 2026 15:37:45 -0400 (EDT)
+	id 2B0F76B00A5; Sun, 20 Sep 2026 15:37:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 771286B009F
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 15:37:45 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id AE10C1204DF
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 19:37:44 +0000 (UTC)
-X-FDA: 85235150448.12.F1EF24E
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E786B6B00A2
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 15:37:50 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 08BEDA04C1
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 19:37:50 +0000 (UTC)
+X-FDA: 85235150700.30.CE1C21E
 Received: from mail-yx2-f13.google.com (mail-yx2-f13.google.com [74.125.224.141])
-	by imf27.hostedemail.com (Postfix) with ESMTP id EC98F40002
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 19:37:42 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=AXb6kiWf;
-	spf=pass (imf27.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.141 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789933062;
-	b=JF0Ikt3zXhKHyQGT6be6R2bw9mI2IVo4wwFaQrcOUSnqKqxYKlSv6CJYZiJ75prmRb//HX
-	8UdnmvOZ4Gp1CfnhYQF+QvCSgAmX1il8QPdMxXrO9I6jduideTfCRqVjB/vn6/8mfvc7sk
-	5DP2tqath9LZFYPFhIvI/oxXWj5JE8A=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=AXb6kiWf;
-	spf=pass (imf27.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.141 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 4C427180003
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 19:37:48 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=AciG6lYu;
+	spf=pass (imf06.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.141 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789933062;
+	s=arc-20220608; t=1789933068;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LP9MAkgaZIZB/G//n4eIZm11yhyh4okaQRNwKZew5U0=;
-	b=khVKa83uHtnGo4o5nOq0sOyBW/MAaf2ptcCj4G5Fb/VJLjwNNPj/58it4Pk9F9t5Db4waz
-	V4qb5/zqGCRLrcxSqUU93oMhuLM8x+0ia/SV5Hd/ltXuQNSjBNayaBMB9PwLeXy19oQvzI
-	luRdRuz0KVRaqhwP2IJYjV7wgCd0dzo=
-Received: by mail-yx2-f13.google.com with SMTP id 956f58d0204a3-66e4aac929eso2018947d50.0
-        for <linux-mm@kvack.org>; Sun, 20 Sep 2026 12:37:42 -0700 (PDT)
+	bh=/6OOWCWEEAyOAI2czqhsadBOOeWenJ+qCpBEvpM8s14=;
+	b=bUrUbId4pNtU0xxvU6NzOYBtlyrh79J8esGe+MQMe0XIt6ocpSl3r78dCv5Y20d5wf+y35
+	R4DGTWk6ruBJviYs2WAbzbdoHg7TrybkX9MM88Li+1xNUeAVas8TyjEFevJ1BqZlY74MDC
+	a6n3pvUm9tgXB9dnN4M3IPZyfKNNnFk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789933068;
+	b=uVwPaqa+WXoOBinlHX45c8Hu1w6ITHFSEWv+3aX+Asa9URVzJe7lrOo1onNi89NTLTMZAI
+	rAojsGaOmS7gJoia7RMVf0FKzrS13LirAXDQ4OPnwgN17I3hVDRTKbC0RGmg6CseLmrcp8
+	hgvih1LyjxuVxL1P+bcYgVr97I+JIHg=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=AciG6lYu;
+	spf=pass (imf06.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.141 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-yx2-f13.google.com with SMTP id 956f58d0204a3-66e4ab20f4bso2223015d50.0
+        for <linux-mm@kvack.org>; Sun, 20 Sep 2026 12:37:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1789933062; x=1790537862; darn=kvack.org;
+        d=soleen.com; s=google; t=1789933067; x=1790537867; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=LP9MAkgaZIZB/G//n4eIZm11yhyh4okaQRNwKZew5U0=;
-        b=AXb6kiWffYHKaTx5nC9p3Wdhvd9omggxv2pY8h9m3Yyq8jSPaNdshWDJcbDwYuL57S
-         xS7twt4DgelJN2LpuFiPuwASkOkkmZuSNXyJHD7VnsSAVSi4MsuhuyMrDu/AvEdAwinQ
-         JOAKcVBABp239H4EmDIIMgSxBcBxkIMBf97a6Jjj3YC6Kik0eY3UCjnM6WBh1h37zUZ4
-         ++LUwOiURsTbk6IzYGZXOtt9uhv1ve8WTWSuqV5GQBXH0yhK40SpoLWffAcIxHHYwuiR
-         M9nVR4id59gCVV11AcGnjwR5EyQNns0XGobugrlYAMFkACdoGzTk1qskBhjn2eIc7id3
-         SBtA==
+        bh=/6OOWCWEEAyOAI2czqhsadBOOeWenJ+qCpBEvpM8s14=;
+        b=AciG6lYuj0wps01r8CDopiw5qjO0i5whEPiWMpWt1SNRCZBRdrUiRx2uOQMblO1A3O
+         laZv1mncXJzhp4RO+xkAqc9KVLLO6watpz2XwKe2hUNkOOr9loVEhRdKSfAdbLWRFqNU
+         64rcrV51HIY3w7PuxyM6U/i+BZolTbILLuEFYeDLeHgSE4K36hG/hLGIdFxbq+6OtuVo
+         pwf5vKqQ/OROlfwIko9IEmeteVxt62XYlEo1k1houdW36elH0epjVWrOGx4ohw39iuS2
+         hxgTSUMBphN72UM9dJYh04YYKtBAxwRBC0CWnk7R2fdeLwtWJ58WFaHRWjgrET1UY6ab
+         Qo4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789933062; x=1790537862;
+        d=1e100.net; s=20260707; t=1789933067; x=1790537867;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=LP9MAkgaZIZB/G//n4eIZm11yhyh4okaQRNwKZew5U0=;
-        b=Bn+g74Qzx+pX3XSi/kIl8CZbNMHeTYlN+R8buBuCnwKOGr+jWWLzlgoeBxWDAAZODR
-         SZecv/6fQ9mfANnara6MNgUQfM59trech/6ouMxVZMialKXjeJ7zJGKaVJw5tKW3zhWF
-         vQhGxDkg3K/dGaGHuxSN+xnZqpLmK2znfLrxUo38nIyYTchcPVvJjqZXCwRYOPJGOm+P
-         PH577uccJdlFNX3t/7LWz/DOuDJOlM8Hl+xRtuh1/+F7QxRwqnIC7A9PQIy8n1j5PVlk
-         ChyhuU99ex8Gf95gimBgfosxDkzhLnDIRBv2RD8TJ4mRs8hYOd9uU0Q2Xi1uVS9I9f4l
-         ALXA==
-X-Forwarded-Encrypted: i=1; AKwUvByhhU3Ksj4OoLVWqx5qqnBHLv7iWsI041n/i7NEqRVOpafjU1w6z6BbIBNdk/y8IfS0TDasNvJr6g==@kvack.org
-X-Gm-Message-State: AFuF++nXsXpH0KcP4IvneWAkt+pXaWOX5yi+MwnlHDKqiENleToEnnEA
-	hN4tXRPwQC6SUQZAtM4T6zboi/YQ++W9EKdoMjeV7EF6U0coH+ODV2FzBpTMQIyH87k=
-X-Gm-Gg: AYBFou2a8wUxnyV6MfqEcyAhBfNSNZwZzcwEjmQOPjOV4ld8t9Zkbx+PG2Fs22XAMQT
-	7Zftop5R2Ge8QxxwHBq9NawvfVISAs/qYUv38n7hrhnCSmsifwiaWWy/ryTtCpRWJVaktGs1I1d
-	1R0M1TxzQA+8qXC6dddtjG179fHXouIwbb2gOBOtaP1TIZTBQ3wEY5QFppVJR076LdYG1h+I0J2
-	GNzZdM/zU58gziroBOFjIi6tSMaxxLWQOK7opHmnPb5U5k7UAvz/HjF4udcpeEDA0g+ETEOaI2G
-	/fmgQdw5FyBeWPzV20o9QW2x11cJfTXNOSx+wqowU08JqD4fFvAuedHoIj+Sf85w5remKNkOIOs
-	q/o4sM68MePQ4m+UqOypSEEsftpmUfb/SXaVXxsSzbIdFQQtwkNJoZVdAbGwJ6yQdCA9bLk2qcD
-	A2QJ35eAvdfIy0A2YP8dSR7xzVaXtXp9ugubcqYF/SrkAoPf232BBTmV9Jl9zcuBR+7HeAL/WSZ
-	dm02qDl2J7ARHrEXZi5Tglh8/yBqi2Lks41V4coFKD/sQEnLJdvKS2PDeTzWTTD9Uqh0tMnJneU
-	qxDKIICyk5vBoIBK7TkV
-X-Received: by 2002:a05:690e:128f:b0:668:8dc0:bcc3 with SMTP id 956f58d0204a3-6717fadb1fcmr2667214d50.0.1789933061983;
-        Sun, 20 Sep 2026 12:37:41 -0700 (PDT)
+        bh=/6OOWCWEEAyOAI2czqhsadBOOeWenJ+qCpBEvpM8s14=;
+        b=1AA0S1kL5TrT33JPfmwoqm4+xcgPkfho4/bsdVhPKKt/vS/UVwH8uVvSIo46qwwT1D
+         jgq4x+POILQgXAJHoUGbIKigAjIUfnXSx8R5vShBv+NOg2TRJfCncZYpqlUPnYlPu7qB
+         cvErWdrvOR1dyMTixXe8gLBMs2xedIYiFE0YqlJqtam/LDXQMlAkHZOHhpNaM2h6LWXo
+         8RGveLIvZXElbfPeIybeRW+0H0wjSMP3gjZwiD/K83G4w0bxVEHG8M+gAk8k6Phgp5Fx
+         eUrxmgBGRL7OO/SR6Fiba8lQLDWKzvtikH2yw8VI0S06IkxItsqEpz97J7u8BWljz4+z
+         Cwug==
+X-Forwarded-Encrypted: i=1; AKwUvBzcxSKTA1fXgIvzvpzmGEgryMoMP1z9oorXahk/lq28lks7Ma0v3d/5sROqj1XJcDyCWniQAD33ag==@kvack.org
+X-Gm-Message-State: AFuF++l7rXcZb+Wj+TzuVX9Y8U3WHcWyWWVMRiq+Tylym4PPAsvAnauc
+	tmARMQnNh1nHPbfzPPF/gZsLQg8tbE754byzh7NxmVJSv2H0GSmNIWGpb7B/VIfdD8E=
+X-Gm-Gg: AYBFou2zmjwLA0S0l1alf3qrHcD2BGLlopRPFfKNExyuQZly7GP/MnwIt5iwcZdGSOc
+	0Q/1qFgW3DBmwhKoXKbCIRk4MjgYKKd8HcadrZPt4msk73kGj7Io5ORx/S4bKCSUsxsqbLGdCM2
+	9JYPKMplbwI/Y+7fVjsmrRbRRMRfp4x7DSRImYfsp/2h2cWQ6k/RDoyirHaengKjaen88vSyfWZ
+	QxHgUd5VFWnD26zcgNq7GsY2tkqPJ5V4CLmmnTkpX1rEBxBXvkpFUGpyW6gWXr7StuUB2qp2QwR
+	8Ip7/8UlffOdW6CKTxKfulhhumT2b/8AopesYxBf82u2l37ZDiRmT0BUGnDbquHOXVToSi5Fg5r
+	YHQcIywfU4p6NWmobaGZTmPq7uABaJtXCLjTw+/m2mv9pGChnFMpHNJrzWFaIXgmM5cQTg9pVNI
+	pUv60GGPyF4c5UMDw+OVFy+a0URMP98S+oRd6ot8RoKzzvauUFfZHX35NpqJRhSBKpNnONdczCu
+	4OsfU8Dy2SQ7TL6GbzxrXGc8zmpUL6XyB+JnVW/1IwxD1L8bAVbprPCUKvHjSsphsHg5pqSc6lw
+	CYZWWks1+IERFDlQGJg=
+X-Received: by 2002:a05:690e:c47:b0:672:99e0:ebe7 with SMTP id 956f58d0204a3-67299e0f010mr1414888d50.127.1789933067305;
+        Sun, 20 Sep 2026 12:37:47 -0700 (PDT)
 Received: from soleen.c.googlers.com.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-89a489aef57sm18632047b3.43.2026.09.20.12.37.40
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-89a47af7bfbsm18831487b3.33.2026.09.20.12.37.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Sep 2026 12:37:41 -0700 (PDT)
+        Sun, 20 Sep 2026 12:37:46 -0700 (PDT)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: linux-kselftest@vger.kernel.org,
 	legion@kernel.org,
@@ -169,22 +169,22 @@ To: linux-kselftest@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	vladimir.murzin@arm.com,
 	kas@kernel.org
-Subject: [RFC PATCH 08/46] KVM: x86: Add x86 vCPU LUO preservation ABI and register helpers
-Date: Sun, 20 Sep 2026 15:36:12 -0400
-Message-ID: <20260920193650.3373435-9-pasha.tatashin@soleen.com>
+Subject: [RFC PATCH 09/46] KVM: x86: Implement architectural vCPU state preservation via LUO
+Date: Sun, 20 Sep 2026 15:36:13 -0400
+Message-ID: <20260920193650.3373435-10-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
 In-Reply-To: <20260920193650.3373435-1-pasha.tatashin@soleen.com>
 References: <20260920193650.3373435-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: EC98F40002
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: 3kbwnbag3t8wauam3hphfrwm3s1octgd
-X-HE-Tag: 1789933062-422554
-X-HE-Meta: U2FsdGVkX18lr1+gcUr3AbCK9i1ES1ijALY+baZI9+pdxfRE0q0WmfbeTkWxmbRVaqxCJ4+pyZRZMr7vilhF2q9XD6bTQMgrGkMoERwp+H1R4DICyWLpNqFmNdSdV8HsEkuns2zy+Fq8tsqB4EU1hyl8da2u02nfEt/gviqywk1qJbnae5x6vyp2q+6FZ04aluAYAHuT+jH9mZBspveusM5cdme+E8rNvUZfE7mVoYaovtnQTjOAlMTt7tAKlOwz3k3xymnjDSFai3LizuTp5HL+znIBiTZnJiSVtKZ876yYk2c75ZELON6VKDJuhIafWBYPLnZZCYRQz5RBb4EaXyggIqufVePorP+GCuLAwvJEHjDbUG1P+i7d3bJMtiFwVPNX8y7aOTFFNM/vTn4KUT9+TU2wQWkC4xyAT/uL+Cs9+kd5TIrLtzcjujJMqx6JytdTT5RHDMEPfRrTBLa2AWSbMd65CHwSruPZLhFuwuBIyPn6Nad8anATyxZbP3MQ5hxtkAyb1dQDZA1u1Y2jCXMNx/fgXeqjrqHkiKi0EfTyISKZ/0z5b7PqOj0WHBmw3eHp9WqrhLnEQXAV2NliRBpRjCFVNNTSS/EWJwzuBFmX0HVXsmFEalqFifFjJWBK58aAeH17zP5Zob93Byvr0DtaipQfigkqQN/UF+XggEBF9GMAp8hsjw/tl0CsY5RsjxNhLuKVizAGwdly72Gj/7SXl1CnMRcHhlWoZ5vVxFTQrUKFetTsQMxfYkMT9ENhRsFjyisC9RMA8zrodJ2OxxpbBiENgiH1NZy/M3g/rwBEz1ok3mOgaSOZrtB7ijRJc/sgGnBoS8rADj0PYgGnx0BMRuIEcBwtPPZZYTUV5K7o0dAnszDg8sS276Lh7xVFPu+B9+Xa7pDUkk4z+dlyTIkXs0X7AWP62oF4HJKfuHdoAyJN9ltFsgeaHrdf/fBYAQG/8uiuf8glOxguxCy
- m6TYfvUk
- 1ZHRPYG1YQuaLtYSB8KUZaBgbUriJZvcBXzFjZAqONU3YXkj0Pfscv/EnsAYYzZcs5hc4XDBk6CvfUOeAWrt/rQRb5tea1Hz2UlevSQiFYLy7dilv7q9tt7E+TRNywobtu7JtR9Q9GD50o6/9Nje4HTCFZYP3hOeUsJRxC8Th5iqfRgfPRpwINoJWpQEI0VnKJ+rGSJfZ7vFl5opih0/zBPcEO1w3GGg7hPfmBfy76ywOcD/CrvmrCMbs1kxyByeXIEkzNOPx+gXbHwZRD+b23/17wDrI/mWxVQCqO1sveBSTTN6RdFSvaFUDTmXq0mTVCrBqc6Y0mXfBg5I=
+X-Stat-Signature: 7csz4m1ffpr67z5ot6cz8ngsp7uw4h71
+X-Rspamd-Queue-Id: 4C427180003
+X-HE-Tag: 1789933068-248600
+X-HE-Meta: U2FsdGVkX1/NQbIORkJTqyrct7q/haPNSqBluhGJfZF3qAURMsbzkOW5JDKZObozFcKR4ucMhCO+lJ8I7F5zX2Lj/ksl0k2PUJno0hblcTXTntfiNxRoaSR5XjRe0rg22EcnylCRfM9qTXrGmPi3lkQC2bLIYhm0yCq3ewRHOvjatplYBTLruJMl60gzfahbWYV8J/i37pAFCRvRTe/V/4NeMjSGru1k1l9Y5JmOKGyWU7jTSM7nTD8gT4KXJIlICNcpmgAQzjBX3YjczRqg8fx2r/BtQ6fDAsXHodbWT99jU/OVJT14OdFZFTFzVJUsueoLwaJn2FgVyW3wQfiR6mi1dqt66RFqi9Ic8w1J9V3YB54I3Daqo37dmz7T3pKzymSMTAXR/RITEXKGNkjfLtVzt1rJKmi7dJKa3aZjI7W5mZFeO/HA6uDeL+56Y+uodchwrROv6huyokanDtx+yrOJ+v7I4Ilp0cOKshLNua0GJYah63Oal9fscdYyn63ObDarFQSBCnm4siCYWz1ibzGqJXjdpZAs/FDhzc8hkUx87PcnPw96l3caykutHyOblQIsUE7+Ha+rS3faAWXcS9SWsugnOeyU+KSANUVAsPCF/Nog0HIx5ebJYUbuZ1vt6ml2EHQWgX0XUZq93so8dmDoSUGM0y4Tj1MxaO7VVsHnesKOHnlMLVlff96M6PLv5YqXBslebp0gi6iU2Kave7t1NT6k7d5tGygoJAuWFB+iNqw2bde5JC8nLIuHzrcSuJQR4GvnRQzvL/urbu4ZvzIxcXqdkF/cqBYg5ggJ7FxgnoBQoPU5X0RlFUyaGuLxYct665zbZudlLeiloovMOCf2rW3EVfuVPItF9n/yix5gui5zLRPNgtWPWdf18IDEU2ZJ3znGz8vdqhmKkNfFYKaDfVergRXdd9ESDKimFYS9M51DIfJ/C/lSDiNiHA4iLZGBAPNSPjBHV4uPWOd
+ 2xvELTsU
+ 04M8UP4ldVtvWvOXXNdvKKiItygJBBYPJ9F6JJ7AYKWHf+/YItVuGt9877VgCQ8maPYhxkml8w8UaT4KdmHi13TtgUH2dh+S8RmoT51zh1iOTrgIgpb8LWzQ/c+AdUnXbp2HDjb8eqg0ig0Nvj62IxbDcsA4fp33IJDPXaTyN7KFcVWGzp6MyfJURiJQKe5uuLTeGCblqjKUSWB/vVspXkLikLfgHlIcyv69gsJkCt46uuRmIRpBHE9pcZh6xHIyg3+/xLH3DI/gcDnMen4RzHUgWJSScLQXGteCNnfGPnAK9l7moQjfmk4FVPrM5yecCfDOtYkssQyrWYTE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -192,274 +192,385 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add struct kvm_vcpu_arch_ser in include/linux/kho/abi/kvm_x86.h
-and export x86 register and MSR access helpers for LUO state save/restore.
+Implement x86 KVM vCPU state preservation and restoration handlers for
+LUO in arch/x86/kvm/kvm_luo.c.
 
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 ---
- arch/x86/kvm/cpuid.c            |  4 +-
- arch/x86/kvm/cpuid.h            |  1 +
- arch/x86/kvm/msrs.c             | 15 ++++++
- arch/x86/kvm/msrs.h             |  2 +
- arch/x86/kvm/regs.c             |  8 ++--
- arch/x86/kvm/regs.h             |  4 ++
- arch/x86/kvm/x86.c              |  8 ++--
- arch/x86/kvm/x86.h              |  4 ++
- include/linux/kho/abi/kvm_x86.h | 84 +++++++++++++++++++++++++++++++++
- 9 files changed, 120 insertions(+), 10 deletions(-)
- create mode 100644 include/linux/kho/abi/kvm_x86.h
+ arch/x86/kvm/Kconfig   |   1 +
+ arch/x86/kvm/Makefile  |   1 +
+ arch/x86/kvm/kvm_luo.c | 338 +++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 340 insertions(+)
+ create mode 100644 arch/x86/kvm/kvm_luo.c
 
-diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-index 851f151efb35..5aba16e0610b 100644
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -507,8 +507,8 @@ u64 kvm_vcpu_reserved_gpa_bits_raw(struct kvm_vcpu *vcpu)
- 	return rsvd_bits(cpuid_maxphyaddr(vcpu), 63);
- }
+diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
+index 538ed1e80332..bae79fded6ff 100644
+--- a/arch/x86/kvm/Kconfig
++++ b/arch/x86/kvm/Kconfig
+@@ -48,6 +48,7 @@ config KVM_X86
+ 	select KVM_GENERIC_PRE_FAULT_MEMORY
+ 	select KVM_WERROR if WERROR
+ 	select KVM_GUEST_MEMFD if X86_64
++	select HAVE_KVM_ARCH_VCPU_PRESERVE
  
--static int kvm_set_cpuid(struct kvm_vcpu *vcpu, struct kvm_cpuid_entry2 *e2,
--                        int nent)
-+int kvm_set_cpuid(struct kvm_vcpu *vcpu, struct kvm_cpuid_entry2 *e2,
-+		  int nent)
- {
- 	u32 vcpu_caps[NR_KVM_CPU_CAPS];
- 	int r;
-diff --git a/arch/x86/kvm/cpuid.h b/arch/x86/kvm/cpuid.h
-index 8d863f45585d..e5ec112d39cc 100644
---- a/arch/x86/kvm/cpuid.h
-+++ b/arch/x86/kvm/cpuid.h
-@@ -21,6 +21,7 @@ static inline void kvm_finalize_cpu_caps(void)
- }
+ config KVM
+ 	tristate "Kernel-based Virtual Machine (KVM) support"
+diff --git a/arch/x86/kvm/Makefile b/arch/x86/kvm/Makefile
+index 0474604ab8a1..2cf0f1f2a59b 100644
+--- a/arch/x86/kvm/Makefile
++++ b/arch/x86/kvm/Makefile
+@@ -7,6 +7,7 @@ include $(srctree)/virt/kvm/Makefile.kvm
  
- void kvm_vcpu_after_set_cpuid(struct kvm_vcpu *vcpu);
-+int kvm_set_cpuid(struct kvm_vcpu *vcpu, struct kvm_cpuid_entry2 *e2, int nent);
- struct kvm_cpuid_entry2 *kvm_find_cpuid_entry2(struct kvm_cpuid_entry2 *entries,
- 					       int nent, u32 function, u64 index);
- /*
-diff --git a/arch/x86/kvm/msrs.c b/arch/x86/kvm/msrs.c
-index dd3bb04878ca..ae849e0b7d14 100644
---- a/arch/x86/kvm/msrs.c
-+++ b/arch/x86/kvm/msrs.c
-@@ -339,6 +339,21 @@ static u32 msr_based_features[ARRAY_SIZE(msr_based_features_all_except_vmx) +
- 			      (KVM_LAST_EMULATED_VMX_MSR - KVM_FIRST_EMULATED_VMX_MSR + 1)];
- static unsigned int num_msr_based_features;
+ kvm-y			+= x86.o emulate.o irq.o lapic.o cpuid.o msrs.o pmu.o regs.o \
+ 			   mtrr.o debugfs.o mmu/mmu.o mmu/page_track.o mmu/spte.o
++kvm-$(CONFIG_LIVEUPDATE) += kvm_luo.o
  
-+unsigned int kvm_num_msrs_to_save(void)
-+{
-+	return num_msrs_to_save + num_emulated_msrs;
-+}
-+
-+u32 kvm_get_msr_to_save_index(unsigned int i)
-+{
-+	if (i < num_msrs_to_save)
-+		return msrs_to_save[i];
-+	i -= num_msrs_to_save;
-+	if (i < num_emulated_msrs)
-+		return emulated_msrs[i];
-+	return 0;
-+}
-+
- int kvm_get_msr_index_list(struct kvm_msr_list __user *user_msr_list)
- {
- 	struct kvm_msr_list msr_list;
-diff --git a/arch/x86/kvm/msrs.h b/arch/x86/kvm/msrs.h
-index 7cc182a15b3b..3a5e39041d99 100644
---- a/arch/x86/kvm/msrs.h
-+++ b/arch/x86/kvm/msrs.h
-@@ -65,6 +65,8 @@ int __kvm_emulate_msr_read(struct kvm_vcpu *vcpu, u32 index, u64 *data);
- int __kvm_emulate_msr_write(struct kvm_vcpu *vcpu, u32 index, u64 data);
- int kvm_msr_read(struct kvm_vcpu *vcpu, u32 index, u64 *data);
- int kvm_msr_write(struct kvm_vcpu *vcpu, u32 index, u64 data);
-+unsigned int kvm_num_msrs_to_save(void);
-+u32 kvm_get_msr_to_save_index(unsigned int i);
- int kvm_emulate_rdmsr(struct kvm_vcpu *vcpu);
- int kvm_emulate_rdmsr_imm(struct kvm_vcpu *vcpu, u32 msr, int reg);
- int kvm_emulate_wrmsr(struct kvm_vcpu *vcpu);
-diff --git a/arch/x86/kvm/regs.c b/arch/x86/kvm/regs.c
-index 8f66438989e4..02f041c355cc 100644
---- a/arch/x86/kvm/regs.c
-+++ b/arch/x86/kvm/regs.c
-@@ -51,7 +51,7 @@ void kvm_set_rflags(struct kvm_vcpu *vcpu, unsigned long rflags)
- }
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_set_rflags);
- 
--static void __get_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
-+void __get_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
- {
- 	if (vcpu->arch.emulate_regs_need_sync_to_vcpu) {
- 		/*
-@@ -99,7 +99,7 @@ int kvm_arch_vcpu_ioctl_get_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
- 	return 0;
- }
- 
--static void __set_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
-+void __set_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
- {
- 	vcpu->arch.emulate_regs_need_sync_from_vcpu = true;
- 	vcpu->arch.emulate_regs_need_sync_to_vcpu = false;
-@@ -498,7 +498,7 @@ static void __get_sregs_common(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs)
- 	sregs->apic_base = vcpu->arch.apic_base;
- }
- 
--static void __get_sregs(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs)
-+void __get_sregs(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs)
- {
- 	__get_sregs_common(vcpu, sregs);
- 
-@@ -635,7 +635,7 @@ static int __set_sregs_common(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs,
- 	return 0;
- }
- 
--static int __set_sregs(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs)
-+int __set_sregs(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs)
- {
- 	int pending_vec, max_bits;
- 	int mmu_reset_needed = 0;
-diff --git a/arch/x86/kvm/regs.h b/arch/x86/kvm/regs.h
-index 447f0ec3e63e..40947b1be404 100644
---- a/arch/x86/kvm/regs.h
-+++ b/arch/x86/kvm/regs.h
-@@ -517,5 +517,9 @@ int kvm_vcpu_ioctl_x86_get_debugregs(struct kvm_vcpu *vcpu,
- int kvm_vcpu_ioctl_x86_set_debugregs(struct kvm_vcpu *vcpu,
- 				     struct kvm_debugregs *dbgregs);
- 
-+void __get_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs);
-+void __set_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs);
-+void __get_sregs(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs);
-+int __set_sregs(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs);
- 
- #endif
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 79468ddfe473..69e0d67a309b 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -2959,8 +2959,8 @@ void kvm_handle_exception_payload_quirk(struct kvm_vcpu *vcpu)
- 		kvm_deliver_exception_payload(vcpu, ex);
- }
- 
--static void kvm_vcpu_ioctl_x86_get_vcpu_events(struct kvm_vcpu *vcpu,
--					       struct kvm_vcpu_events *events)
-+void kvm_vcpu_ioctl_x86_get_vcpu_events(struct kvm_vcpu *vcpu,
-+					struct kvm_vcpu_events *events)
- {
- 	struct kvm_queued_exception *ex = kvm_get_exception_to_save(vcpu);
- 
-@@ -3028,8 +3028,8 @@ static void kvm_vcpu_ioctl_x86_get_vcpu_events(struct kvm_vcpu *vcpu,
- 	}
- }
- 
--static int kvm_vcpu_ioctl_x86_set_vcpu_events(struct kvm_vcpu *vcpu,
--					      struct kvm_vcpu_events *events)
-+int kvm_vcpu_ioctl_x86_set_vcpu_events(struct kvm_vcpu *vcpu,
-+				       struct kvm_vcpu_events *events)
- {
- 	if (events->flags & ~(KVM_VCPUEVENT_VALID_NMI_PENDING
- 			      | KVM_VCPUEVENT_VALID_SIPI_VECTOR
-diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
-index 0f5919b092e4..936ee660ccec 100644
---- a/arch/x86/kvm/x86.h
-+++ b/arch/x86/kvm/x86.h
-@@ -492,6 +492,10 @@ int kvm_task_switch(struct kvm_vcpu *vcpu, u16 tss_selector, int idt_index,
- 		    int reason, bool has_error_code, u32 error_code);
- 
- int __kvm_set_xcr(struct kvm_vcpu *vcpu, u32 index, u64 xcr);
-+void kvm_vcpu_ioctl_x86_get_vcpu_events(struct kvm_vcpu *vcpu,
-+					struct kvm_vcpu_events *events);
-+int kvm_vcpu_ioctl_x86_set_vcpu_events(struct kvm_vcpu *vcpu,
-+				       struct kvm_vcpu_events *events);
- int kvm_emulate_xsetbv(struct kvm_vcpu *vcpu);
- int kvm_emulate_rdpmc(struct kvm_vcpu *vcpu);
- 
-diff --git a/include/linux/kho/abi/kvm_x86.h b/include/linux/kho/abi/kvm_x86.h
+ kvm-$(CONFIG_X86_64) += mmu/tdp_iter.o mmu/tdp_mmu.o
+ kvm-$(CONFIG_KVM_IOAPIC) += i8259.o i8254.o ioapic.o
+diff --git a/arch/x86/kvm/kvm_luo.c b/arch/x86/kvm/kvm_luo.c
 new file mode 100644
-index 000000000000..316250482db5
+index 000000000000..899b193812bb
 --- /dev/null
-+++ b/include/linux/kho/abi/kvm_x86.h
-@@ -0,0 +1,84 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
++++ b/arch/x86/kvm/kvm_luo.c
+@@ -0,0 +1,338 @@
++// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (c) 2026, Google LLC.
 + * Pasha Tatashin <pasha.tatashin@soleen.com>
-+ */
-+#ifndef _LINUX_KHO_ABI_KVM_X86_H
-+#define _LINUX_KHO_ABI_KVM_X86_H
-+
-+#ifdef CONFIG_X86_64
-+
-+#include <linux/build_bug.h>
-+#include <linux/stddef.h>
-+#include <linux/types.h>
-+#include <linux/kho/abi/kvm.h>
-+#include <uapi/linux/kvm.h>
-+#include <uapi/asm/kvm.h>
-+
-+/**
-+ * DOC: x86 KVM Live Update ABI
 + *
-+ * x86 KVM uses the ABI defined below for preserving architectural VM and vCPU
-+ * state across a kexec reboot using LUO.
-+ *
-+ * The vCPU-level architectural state contains the compact register sets and
-+ * CPUID table for each vCPU.
-+ *
-+ * All sub-structures (struct kvm_regs, struct kvm_sregs, struct kvm_mp_state,
-+ * struct kvm_cpuid_entry2) are uAPI contracts.
++ * x86 KVM LUO architectural preservation and retrieval handlers.
 + */
 +
-+/**
-+ * struct kvm_vcpu_arch_ser - Preserved x86 architectural vCPU state in RAM.
-+ * @regs:          General-purpose registers (uAPI struct kvm_regs).
-+ * @sregs:         Segment and control registers (uAPI struct kvm_sregs).
-+ * @mp_state:      Multiprocessor state (uAPI struct kvm_mp_state).
-+ * @pad:           Padding to maintain 64-bit alignment after mp_state.
-+ * @xcrs:          Extended control registers including XCR0 (uAPI struct kvm_xcrs).
-+ * @lapic:         In-kernel local APIC register state (uAPI struct kvm_lapic_state).
-+ * @pad_xsave:     Padding that aligns @xsave to 64 bytes; see the static_assert
-+ *                 below.  Must be zero.
-+ * @xsave:         Extended processor state (uAPI struct kvm_xsave).  This is the
-+ *                 only copy of the guest FPU state; there is no kvm_fpu twin.
-+ * @events:        vCPU exception, interrupt, NMI and SMI events (uAPI struct kvm_vcpu_events).
-+ * @debugregs:     Hardware debug registers DR0-DR7 (uAPI struct kvm_debugregs).
-+ * @num_msrs:      Number of valid MSR entries in msrs.
-+ * @cpuid_nent:    Number of valid CPUID entries immediately following msrs[num_msrs].
-+ * @msrs:          Array of preserved architectural and paravirtual MSR entries,
-+ *                 followed by @cpuid_nent struct kvm_cpuid_entry2 entries.
-+ */
-+struct kvm_vcpu_arch_ser {
-+	struct kvm_regs regs;
-+	struct kvm_sregs sregs;
-+	struct kvm_mp_state mp_state;
-+	u32 pad;
-+	struct kvm_xcrs xcrs;
-+	struct kvm_lapic_state lapic;
-+	u8 pad_xsave[40];
-+	struct kvm_xsave xsave;
-+	struct kvm_vcpu_events events;
-+	struct kvm_debugregs debugregs;
-+	u32 num_msrs;
-+	u32 cpuid_nent;
-+	struct kvm_msr_entry msrs[];
-+} __packed;
++#include <linux/cpu.h>
++#include <linux/kexec_handover.h>
++#include <linux/kho/abi/kvm_x86.h>
++#include <linux/kvm_host.h>
++#include <linux/mm.h>
++#include <linux/slab.h>
++#include <linux/string.h>
 +
-+static_assert(offsetof(struct kvm_vcpu_arch_ser, msrs) % sizeof(u64) == 0,
-+	      "msrs must be 64-bit aligned");
++#include <asm/fpu/api.h>
++#include <asm/fpu/xcr.h>
++#include <linux/kvm_host.h>
++#include <linux/mem_encrypt.h>
++#include <asm/virt.h>
 +
-+/*
-+ * @xsave must be a legal XSAVE destination.  The structure is __packed, so
-+ * without @pad_xsave the member lands at offset 1880, which is not even
-+ * 16-byte aligned, and the XSAVE/XRSTOR family faults on anything less than
-+ * 64.  The allocation itself is fine: kho_alloc_preserve() returns a folio
-+ * address, so the base is page aligned.
-+ *
-+ * If this assert fires, a member above @xsave changed size; adjust
-+ * @pad_xsave rather than deleting the assert.
-+ */
-+static_assert(offsetof(struct kvm_vcpu_arch_ser, xsave) % 64 == 0,
-+	      "xsave must be 64-byte aligned to be XSAVE-able in place");
++#include "cpuid.h"
++#include "fpu.h"
++#include "lapic.h"
++#include "msrs.h"
++#include "pmu.h"
++#include "regs.h"
++#include "x86.h"
 +
-+#endif /* CONFIG_X86_64 */
++int kvm_arch_vm_luo_preserve(struct kvm *kvm, struct kvm_luo_ser *ser)
++{
++	ser->type = kvm->arch.vm_type;
++	return 0;
++}
++EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_arch_vm_luo_preserve);
 +
-+#endif /* _LINUX_KHO_ABI_KVM_X86_H */
++int kvm_arch_vm_luo_retrieve(struct kvm *kvm, struct kvm_luo_ser *ser)
++{
++	return 0;
++}
++EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_arch_vm_luo_retrieve);
++
++void kvm_arch_vm_luo_unpreserve(struct kvm *kvm, struct kvm_luo_ser *ser)
++{
++}
++EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_arch_vm_luo_unpreserve);
++
++void kvm_arch_vm_luo_finish(struct kvm_luo_ser *ser)
++{
++}
++EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_arch_vm_luo_finish);
++
++int kvm_arch_vcpu_luo_preserve(struct kvm_vcpu *vcpu, struct kvm_vcpu_ser *ser)
++{
++	struct kvm_vcpu_arch_ser *state;
++	bool fpu_loaded = false;
++	unsigned int max_msrs;
++	u32 nent;
++	size_t size;
++	int i;
++
++	/*
++	 * The guest FPU state travels in @xsave, which can only be filled in if
++	 * the host has XSAVE.  There is no second copy to fall back on, so fail
++	 * the preserve rather than silently dropping the guest's FPU registers.
++	 * A confidential guest keeps its FPU state in the VMSA, where KVM can
++	 * neither read nor restore it, so it needs nothing from us.
++	 */
++	if (!boot_cpu_has(X86_FEATURE_XSAVE) &&
++	    !fpstate_is_confidential(&vcpu->arch.guest_fpu))
++		return -EOPNOTSUPP;
++
++	/*
++	 * Nested virtualisation state does not survive the handover.
++	 * arm64 already refuses vcpu_has_nv() outright; do the same here.
++	 */
++	if (is_guest_mode(vcpu))
++		return -EOPNOTSUPP;
++
++	if (kvm_nested_ops.enabled && kvm_nested_ops.get_state) {
++		int nested_size = kvm_nested_ops.get_state(vcpu, NULL, 0);
++
++		if (nested_size < 0)
++			return nested_size;
++		if (nested_size > sizeof(struct kvm_nested_state))
++			return -EOPNOTSUPP;
++	}
++
++	/*
++	 * @xsave is a fixed-size struct kvm_xsave.  A guest whose XSAVE area
++	 * outgrows it -- AMX today -- needs KVM_GET_XSAVE2 and would otherwise
++	 * be truncated silently by fpu_copy_guest_fpstate_to_uabi() below.
++	 * This mirrors the check kvm_arch_vcpu_ioctl() makes for KVM_GET_XSAVE.
++	 */
++	if (vcpu->arch.guest_fpu.uabi_size > sizeof(struct kvm_xsave))
++		return -EOPNOTSUPP;
++
++	max_msrs = kvm_num_msrs_to_save();
++	nent = vcpu->arch.cpuid_entries ? vcpu->arch.cpuid_nent : 0;
++	size = sizeof(*state) + max_msrs * sizeof(struct kvm_msr_entry) +
++	       nent * sizeof(struct kvm_cpuid_entry2);
++	state = kho_alloc_preserve(size);
++	if (IS_ERR(state))
++		return PTR_ERR(state);
++
++	/*
++	 * kvm_arch_vcpu_ioctl_{get,set}_mpstate() take the vCPU themselves, so
++	 * they have to be called outside the vcpu_load() region below:
++	 * vcpu_load() registers a preempt notifier and is not reentrant.
++	 */
++	kvm_arch_vcpu_ioctl_get_mpstate(vcpu, &state->mp_state);
++	state->pad = 0;
++
++	vcpu_load(vcpu);
++
++	__get_regs(vcpu, &state->regs);
++	__get_sregs(vcpu, &state->sregs);
++	state->xcrs.nr_xcrs = 1;
++	state->xcrs.flags = 0;
++	state->xcrs.xcrs[0].xcr = XCR_XFEATURE_ENABLED_MASK;
++	state->xcrs.xcrs[0].value = vcpu->arch.xcr0;
++
++	if (boot_cpu_has(X86_FEATURE_XSAVE) &&
++	    !fpstate_is_confidential(&vcpu->arch.guest_fpu)) {
++		u64 supported_xcr0 = vcpu->arch.guest_supported_xcr0 |
++				     XFEATURE_MASK_FPSSE;
++
++		fpu_copy_guest_fpstate_to_uabi(&vcpu->arch.guest_fpu,
++					       state->xsave.region,
++					       sizeof(state->xsave.region),
++					       supported_xcr0,
++					       vcpu->arch.pkru);
++	}
++
++	kvm_vcpu_ioctl_x86_get_debugregs(vcpu, &state->debugregs);
++
++	/*
++	 * A hardware maskable interrupt can only be queued for injection when
++	 * RFLAGS.IF is set.  If RFLAGS.IF is already clear, the interrupt gate
++	 * delivery has already completed (e.g., under QEMU TCG where
++	 * exit_int_info can remain set across the first instruction of the
++	 * handler), so clear any stale injected flag to avoid delivering the
++	 * same interrupt a second time with RFLAGS.IF == 0 before SWAPGS.
++	 */
++	if (vcpu->arch.interrupt.injected && !vcpu->arch.interrupt.soft &&
++	    !(state->regs.rflags & X86_EFLAGS_IF))
++		vcpu->arch.interrupt.injected = false;
++
++	kvm_vcpu_ioctl_x86_get_vcpu_events(vcpu, &state->events);
++
++	if (lapic_in_kernel(vcpu))
++		kvm_apic_get_state(vcpu, &state->lapic);
++
++	if (!vcpu->arch.guest_fpu.fpstate->in_use) {
++		kvm_load_guest_fpu(vcpu);
++		fpu_loaded = true;
++	}
++
++	state->num_msrs = 0;
++	for (i = 0; i < max_msrs; i++) {
++		u32 msr = kvm_get_msr_to_save_index(i);
++		u64 val = 0;
++
++		if (kvm_msr_read(vcpu, msr, &val) == 0) {
++			state->msrs[state->num_msrs].index = msr;
++			state->msrs[state->num_msrs].reserved = 0;
++			state->msrs[state->num_msrs].data = val;
++			state->num_msrs++;
++		}
++	}
++
++	state->cpuid_nent = nent;
++	if (nent) {
++		struct kvm_cpuid_entry2 *cpuid_dst =
++			(void *)&state->msrs[state->num_msrs];
++
++		memcpy(cpuid_dst, vcpu->arch.cpuid_entries,
++		       nent * sizeof(*cpuid_dst));
++	}
++
++	if (fpu_loaded)
++		kvm_put_guest_fpu(vcpu);
++
++	vcpu_put(vcpu);
++
++	KHOSER_STORE_PTR(ser->arch_state, state);
++	return 0;
++}
++EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_arch_vcpu_luo_preserve);
++
++int kvm_arch_vcpu_luo_retrieve(struct kvm_vcpu *vcpu, struct kvm_vcpu_ser *ser)
++{
++	struct kvm_vcpu_arch_ser *state;
++	bool fpu_loaded = false;
++	int ret, i;
++
++	if (!ser->arch_state.phys)
++		return 0;
++
++	state = KHOSER_LOAD_PTR(ser->arch_state);
++
++	vcpu_load(vcpu);
++
++	if (state->cpuid_nent > 0) {
++		struct kvm_cpuid_entry2 *cpuid_src =
++			(void *)&state->msrs[state->num_msrs];
++		struct kvm_cpuid_entry2 *entries;
++
++		entries = kmemdup(cpuid_src,
++				  state->cpuid_nent * sizeof(*entries),
++				  GFP_KERNEL);
++		if (!entries) {
++			ret = -ENOMEM;
++			goto out;
++		}
++
++		ret = kvm_set_cpuid(vcpu, entries, state->cpuid_nent);
++		if (ret) {
++			kvfree(entries);
++			goto out;
++		}
++	}
++
++	ret = __set_sregs(vcpu, &state->sregs);
++	if (ret)
++		goto out;
++
++	if (boot_cpu_has(X86_FEATURE_XSAVE)) {
++		__kvm_set_xcr(vcpu, state->xcrs.xcrs[0].xcr,
++			      state->xcrs.xcrs[0].value);
++	}
++
++	for (i = 0; i < state->num_msrs; i++) {
++		if (state->msrs[i].index == MSR_IA32_XFD ||
++		    state->msrs[i].index == MSR_IA32_XFD_ERR ||
++		    state->msrs[i].index == MSR_IA32_XSS) {
++			kvm_msr_write(vcpu, state->msrs[i].index, state->msrs[i].data);
++		}
++	}
++
++	if (boot_cpu_has(X86_FEATURE_XSAVE) &&
++	    !fpstate_is_confidential(&vcpu->arch.guest_fpu)) {
++		union fpregs_state *xstate = (union fpregs_state *)state->xsave.region;
++
++		xstate->xsave.header.xfeatures &= ~vcpu->arch.guest_fpu.fpstate->xfd;
++		ret = fpu_copy_uabi_to_guest_fpstate(&vcpu->arch.guest_fpu,
++						     state->xsave.region,
++						     kvm_caps.supported_xcr0,
++						     &vcpu->arch.pkru);
++		if (ret)
++			goto out;
++	}
++
++	ret = kvm_vcpu_ioctl_x86_set_debugregs(vcpu, &state->debugregs);
++	if (ret)
++		goto out;
++
++	if (kvm_nested_ops.enabled)
++		kvm_leave_nested(vcpu);
++
++	if (!(ser->flags & KVM_VCPU_LUO_FLAG_CARETAKER)) {
++		ret = kvm_vcpu_ioctl_x86_set_vcpu_events(vcpu, &state->events);
++		if (ret)
++			goto out;
++	}
++
++	if (lapic_in_kernel(vcpu)) {
++		if (ser->flags & KVM_VCPU_LUO_FLAG_CARETAKER) {
++			struct kvm_lapic_state lapic;
++			int k;
++
++			memcpy(&lapic, &state->lapic, sizeof(lapic));
++			for (k = 0; k < 8; k++) {
++				*(u32 *)(lapic.regs + APIC_ISR + 0x10 * k) = 0;
++				*(u32 *)(lapic.regs + APIC_IRR + 0x10 * k) = 0;
++			}
++			ret = kvm_apic_set_state(vcpu, &lapic);
++		} else {
++			ret = kvm_apic_set_state(vcpu, &state->lapic);
++		}
++		if (ret)
++			goto out;
++	}
++
++	if (!vcpu->arch.guest_fpu.fpstate->in_use) {
++		kvm_load_guest_fpu(vcpu);
++		fpu_loaded = true;
++	}
++
++	for (i = 0; i < state->num_msrs; i++) {
++		if ((ser->flags & KVM_VCPU_LUO_FLAG_CARETAKER) &&
++		    (state->msrs[i].index == MSR_IA32_TSC ||
++		     state->msrs[i].index == MSR_IA32_TSC_ADJUST)) {
++			continue;
++		}
++		kvm_msr_write(vcpu, state->msrs[i].index, state->msrs[i].data);
++	}
++
++	__set_regs(vcpu, &state->regs);
++
++	ret = 0;
++out:
++	if (fpu_loaded)
++		kvm_put_guest_fpu(vcpu);
++	vcpu_put(vcpu);
++
++	/* Takes the vCPU itself; see the comment in the preserve path. */
++	if (!ret)
++		ret = kvm_arch_vcpu_ioctl_set_mpstate(vcpu, &state->mp_state);
++
++	return ret;
++}
++EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_arch_vcpu_luo_retrieve);
++
++void kvm_arch_vcpu_luo_unpreserve(struct kvm_vcpu_ser *ser)
++{
++	if (ser->arch_state.phys) {
++		struct kvm_vcpu_arch_ser *state =
++			phys_to_virt(__sme_clr(ser->arch_state.phys));
++
++		kho_unpreserve_free(state);
++		ser->arch_state.phys = 0;
++	}
++}
++EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_arch_vcpu_luo_unpreserve);
++
++void kvm_arch_vcpu_luo_finish(struct kvm_vcpu_ser *ser)
++{
++	if (ser->arch_state.phys) {
++		struct kvm_vcpu_arch_ser *state =
++			phys_to_virt(__sme_clr(ser->arch_state.phys));
++
++		kho_restore_free(state);
++		ser->arch_state.phys = 0;
++	}
++}
++EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_arch_vcpu_luo_finish);
 -- 
 2.55.0.1082.g2b9226bbc0-goog
 
