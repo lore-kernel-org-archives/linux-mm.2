@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8431BC982DA
-	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 19:37:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8BD5C982DA
+	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 19:37:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C6C66B0093; Sun, 20 Sep 2026 15:37:17 -0400 (EDT)
+	id 7B9E46B0096; Sun, 20 Sep 2026 15:37:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 19E2F6B0095; Sun, 20 Sep 2026 15:37:17 -0400 (EDT)
+	id 7911D6B0098; Sun, 20 Sep 2026 15:37:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 08D106B0096; Sun, 20 Sep 2026 15:37:17 -0400 (EDT)
+	id 6597B6B0099; Sun, 20 Sep 2026 15:37:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CB31C6B0093
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 15:37:16 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DCEE41604F7
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 19:37:15 +0000 (UTC)
-X-FDA: 85235149230.20.D9DBFB4
-Received: from mail-yx2-f13.google.com (mail-yx2-f13.google.com [74.125.224.141])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 1658E180002
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 19:37:13 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=VffYttOi;
-	spf=pass (imf06.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.141 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 23E306B0096
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 15:37:23 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C34CB1C2A4A
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 19:37:21 +0000 (UTC)
+X-FDA: 85235149482.11.200D7D5
+Received: from mail-yx2-f43.google.com (mail-yx2-f43.google.com [74.125.224.171])
+	by imf10.hostedemail.com (Postfix) with ESMTP id F10EEC0008
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 19:37:19 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=hupz0Fws;
+	spf=pass (imf10.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.171 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789933034;
+	s=arc-20220608; t=1789933040;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gjdNKKGx+yhFaJeCA90Rv+NyjnhIa6+HpCMo5c2ikFg=;
-	b=u0lrzY0LYSboJ5c2L6AkdPnGaGHna8yb6h58uDzyrAtzkl+FrA8EQu32+dlVjNKVQ4rYCL
-	keprnBMFbhaPO46a/FeuP7H5ZAora9Mre1G8uu9KHyYUjdBKKwV+kd0B0eJcy1x8U2jyF3
-	AEMQHJVbzR3jPNw+sc8FT3VeeN6sgtM=
+	bh=0WQSV2M4dYwT0nemuMW5I3vbKfQKNkPtdhJ2W+zZzFM=;
+	b=wtuK/iND6UVul+raJVmjZNzKbfAEvk5eb5wz2W2IGJaA+/DM5I20P7lauvvZds5mZH4yNS
+	GPBCwo4rDBSP1QChDs4m+naA4a3sQvrKuAiArYIQNjOeYuLze+KFj+lwU76GLHTrcNAz88
+	DYtE5Qcjfg2PdFFLU/obQeHU7UN1pxI=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=VffYttOi;
-	spf=pass (imf06.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.141 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	imf10.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=hupz0Fws;
+	spf=pass (imf10.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.171 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789933034;
-	b=sgGjfAkpQcrv7OQqYv11ZxOeNv59wJaLC8R4d95oODzJDR/ONysSBRPvX7/xbKAOXlc/ip
-	B41zJyMfYI4d9oSk5g+FErLkec8/7AyTMTIB1h0299R3xSw/+bAaUXZ1krYzR/vQNgW+hw
-	Rfkb09/CwHlOS9ywNtnd78z7CTt70s4=
-Received: by mail-yx2-f13.google.com with SMTP id 00721157ae682-85d43ac8d1dso14783957b3.3
-        for <linux-mm@kvack.org>; Sun, 20 Sep 2026 12:37:13 -0700 (PDT)
+	t=1789933040;
+	b=hlCzSFsdw3tnNbXVi+QjWevdtTGWamvgqBUN5wC6VSpnqhiMKx/mV0duMkd/9+FXFd74Hg
+	mI2Ul3eVjh+gRfSceUPp9g3V2koPMAsdiska1rwRWvqyKdqR7DtdJpWqns8Jya3WgEoEb7
+	w1pCVcxOCaZ5LUpEoqZ6MSujfWnG3Ks=
+Received: by mail-yx2-f43.google.com with SMTP id 00721157ae682-895353e9051so18815467b3.0
+        for <linux-mm@kvack.org>; Sun, 20 Sep 2026 12:37:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1789933033; x=1790537833; darn=kvack.org;
+        d=soleen.com; s=google; t=1789933039; x=1790537839; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=gjdNKKGx+yhFaJeCA90Rv+NyjnhIa6+HpCMo5c2ikFg=;
-        b=VffYttOi0vXu84SHmiRrhNO7xKR0IctHgCAg2SJln8+aW+/LbihixlnKh3p3upkEMv
-         sHWqqOTXVvtP7H/ToWNbtIrwAvcxYAE222gxMWw6YGLdF18R/E+1pnFOUA+qD+gtMwb4
-         zvjfQ0biPGU2UtTdYE/84S2WaZ8SzqBqWLyy9s0DFaomPzLQAcbCwgYrWB39I3bR61BA
-         YLeQBQ+vWT6+nxheNCneW63nw2142N/6HMK0mKMbM4QcCP25Bgva/TN4Dpi+g/N/iBZc
-         e9oH+qHkX51OFTw4+6l2Ta0/VP/v4mSctAwIKmIt9tY8fYUlEHvvnHs8XbmzzkAjDGrY
-         oIgA==
+        bh=0WQSV2M4dYwT0nemuMW5I3vbKfQKNkPtdhJ2W+zZzFM=;
+        b=hupz0FwsLvD6Rwjdv4hv4oghOPZxiwxIGL5ldasZRPlY69tyqk2JSLyJuQYDkFDvI2
+         VpJgRo5AMjMtr4NNryIAha0EchhJx6de3wELu2w5O6CdzupPIxZBrI49ll/IuUtfV1KP
+         7DPnZhzguhTn8vZIpz1PKrUdFpWBPYdTXIh6v+dqwk55VlmAFQ8F0V53pk0EdY00YOIX
+         tLVLd6NzdhGx73ufNsPFrv6oUjXraL8fndpz4h82TfFGg8ooDYub5A0kW1ckHNbZzXZs
+         Vottdh+mNoSG5BTmzVzkuvD/nkyWZaK4ru1XuJZp3yWIbfxGerL0Izl//Ypmfk+bPl90
+         Or1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789933033; x=1790537833;
+        d=1e100.net; s=20260707; t=1789933039; x=1790537839;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=gjdNKKGx+yhFaJeCA90Rv+NyjnhIa6+HpCMo5c2ikFg=;
-        b=iJV4HO+4oUvhbedUQZ8A6DCWhZMxcrtoSB17Dpz1Ne5w+sYSVxjTQKb8WvW0qrsRLh
-         +zXZ24bcNl7+rTLx5/r6+YjKpNblgiiLT+XSqBlnijaaJzGGEz4GdyLXYv6g4eNYnv7w
-         9lFtMKlKqXad032S4DOTlNX3+Yj5q0BEtDUcU/P8HTmzvz03GYYZKANlJnt4zuUfNFCF
-         MN8434P+cn/VUSZMT8rx/doWPOK+4vnq9w/kji7uks473HMpubsGrPMq6e/E49IT2a6r
-         AlzVfwdvHyhCN1jXJQH+nOd/ZFVtZGLTwdytu77Ijien+Ho+XnPo3tCGuwrU06LBNjGA
-         xsEA==
-X-Forwarded-Encrypted: i=1; AKwUvBwsUbp7wzPkM5bcQJtyyE0ihLNcfjigs+dut1EDPBGHojEngfdcQZYVEy6vxx8UsIJnVRT0L4BxZw==@kvack.org
-X-Gm-Message-State: AFuF++n3vmznj69Q4wyYbNyq90mN2eZPLRwRibto02pDHXF5f9tM6dvO
-	7L1Vijdd4VRgfqqMUGsvhNyn1OWUxPqlv2NNa6uxaIHM88n9unozUVBcjd6rHV+wAbQ=
-X-Gm-Gg: AYBFou1NI0TPVhOwNKW8xVvvSOXroCqzc/J6vrI3haIoeJUjTyg0BBs5JqQOBlvCimA
-	bbsqn0XQu4jtNjpm+W7sStRBgG+Bcgg/KC9lzoQYpIA+V7q7P6upMJQNRAmfjf5U0YkSdQlCgm5
-	KIPkqo0Ngl1X3u5lOmlGipAobQAZJvVnk+Ur/ReNN6gXAKozg+W0qpkMvdT05ey67lVWHyiaMUN
-	dyWtTwMJAuWEWqXZeEHirzlCqZCdbjdCAznAsnG2RyWeciZd6fB7k1wWkMj5WWxeGmQc+hMzc4F
-	twnRuW9PwwZ14o+I2ejPD76D3h09QW0Vf5/BnCv9y11YK7wop1ST0G207YNftf+DO5adYHNZFAu
-	raxWLeo3Mp6gwzCevdhtkBfyUFQWDkmYEkWmiG9kkbkhUdB/2ojT7Y0hZLI3rZjoKaCcwQ0/i+m
-	nLMnlcf1+2kI5xeYgGvNLVfUE8LlvWn90VZViY3byaJoTqUSs7PL3g6C7uYIcl+0A2Yi1Utvs7f
-	pxrXEfOBq2TR1P5PUfPa1R0l7b7ycDbm0AsxM5NzqZI+1f3Dvi43WFit/WVRShGpXOhbnuxUJ2W
-	pkKfrw2MNMFfHiJ5gQQ=
-X-Received: by 2002:a05:690c:9988:b0:89b:5551:4305 with SMTP id 00721157ae682-89b5560974dmr13921117b3.17.1789933033098;
-        Sun, 20 Sep 2026 12:37:13 -0700 (PDT)
+        bh=0WQSV2M4dYwT0nemuMW5I3vbKfQKNkPtdhJ2W+zZzFM=;
+        b=kuhB5Iw6ZEk2Df/t60giUAm+1nZTNJ17WOYAdBlYZCwoxTdvqFYaclrvjHkMue4ShM
+         v61p355FnmTNYF0bUz07WNGnMWLvX9DHNG7TlL3JjHcfYHBsq1y/ICjhp/aqPpsv2aEb
+         eJDXjrpyNqkw+jd2ih1iQbZEW/dV+MMihmblr9C6HBVwUqoQsnnGEv1yumLnWwra7w8O
+         c2EEfGKj7GjNnP+OIxX+kY/1X1n+GTX6buNqBSOUd5aWEqtrCZxjRYgGZDTJVvaWGTe7
+         KFeAfmzW2jraBdEk4e3Vy+SpIIYCE3Pk3QRYFD9OpiJh/GMyPqGBtQfvA4TLzYkGbaJd
+         z9Iw==
+X-Forwarded-Encrypted: i=1; AKwUvBymNIkng0S1NLbc4GRcDpBqlfO/AMo74/j8LkOY7TJdBMTcG+cGzQWTw7dKunYv5d1mOncoidyf1Q==@kvack.org
+X-Gm-Message-State: AFuF++mdax0aWEQGARfMIT9UXpGCKuHvc31u9kvGOYfpMceTwM87cOoo
+	i7vYePYPmdON9a+LrV+2LnqszzWnlap4M38GyAvkWuiCK79hf0PLWsQJ+ruZ8VAzT/g=
+X-Gm-Gg: AYBFou0fyQzjTLE7zpXApcDdqLQeJuOpqoU0q9Ti7eknyYxavXSGmlu0UUWYEcREfnj
+	ufmv0InnjSMeM3Fa4+jbJrtjyJPGh5jE6EgJ+Q3lPLSZqTnyiAoT+Hx9SfZfBiq4uI45LVsfhQK
+	2XSbZnHkm3ViGuUCsgRRoZAG9V2fRqLN1L7l3WHY/0Z0qSL+iCTZtCTa1OR/q+l1iEj/Gj3DQfb
+	vhjbcm9OfYoisOWEB6L7uE1uUXyONbR4LDjSBqIyHQPMRJGnEBbXMHJ3UF0Z0OImhEifccfWBbe
+	WZNTCSZw7OjNDfgsrY05uIlK5DHWDHqjuluAtGCbxnRStZJtamERXkpnJgIT3vmhZfsDDPmYLMU
+	lmWDSfFonFPDyg5KygWhnPS3bf52vRdbIhW/T5DcStaGxFG+izJLWHO+klKi/sL9ErMCan4RlCG
+	RSpOCD12W08+aT0Xyc3xEkt56cQxzSrgcD5YOjFtqXHQivXmEdYs0EwKZ0Rz9lrr4y4yyIvQ8az
+	35VI5Gjzv5q+4Y9GQp51gGjzze7Oga0gZYjzmnQgjYDAkYAalG/htqMnSuz+9ssF4Jta5Dvg4wY
+	zmd2W3ZP+iBfXfYbNtk=
+X-Received: by 2002:a05:690c:e1ca:20b0:854:9062:73ae with SMTP id 00721157ae682-89736b3f795mr32929267b3.33.1789933039155;
+        Sun, 20 Sep 2026 12:37:19 -0700 (PDT)
 Received: from soleen.c.googlers.com.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-89a48aab042sm18596427b3.47.2026.09.20.12.37.10
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-89a48d99122sm18294247b3.48.2026.09.20.12.37.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Sep 2026 12:37:12 -0700 (PDT)
+        Sun, 20 Sep 2026 12:37:17 -0700 (PDT)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: linux-kselftest@vger.kernel.org,
 	legion@kernel.org,
@@ -169,22 +169,22 @@ To: linux-kselftest@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	vladimir.murzin@arm.com,
 	kas@kernel.org
-Subject: [RFC PATCH 03/46] KVM: arm64: Split kvm_sys_reg_{get,set}_user from kernel accessors
-Date: Sun, 20 Sep 2026 15:36:07 -0400
-Message-ID: <20260920193650.3373435-4-pasha.tatashin@soleen.com>
+Subject: [RFC PATCH 04/46] x86/mm/ident_map: Add force_pte to support 4K PTE identity mappings
+Date: Sun, 20 Sep 2026 15:36:08 -0400
+Message-ID: <20260920193650.3373435-5-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
 In-Reply-To: <20260920193650.3373435-1-pasha.tatashin@soleen.com>
 References: <20260920193650.3373435-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 1658E180002
-X-Stat-Signature: rz5nxux414hebhbb1cdbhse3rt3frrny
 X-Rspam-User: 
-X-HE-Tag: 1789933033-127622
-X-HE-Meta: U2FsdGVkX1+gcOQXKdDcbChQwMZoZJF12AnLVqucq7snLYIyX0+o2NEMlfeloP6cxyCdDKAwfrUMkKX7S68Ml+gqqUoVWYukzbdmViLP+k/WAH6DxRp/xDJeaR632YW2aChvn2Nl/O0xv341AoeoPltC6OkvUePGImeXuUj5SceJiqJB7BSE1j4XddCy2oyxDA5b6sy3KYnGZ6OnpWBFhYgI6d/Kzr+tjtL+je4Nr1UhgpOVbE/jWRxX+bHTB0bHOT9e70OZr1xV1zhll6IXX8nKaDy9ReB6RLH5LTDSg1qd41sepZOOliYJn/VCiuoGyvN1dfnF/6KIiFsqfa39DsoISCIqH/psVbUcDn9WtmlqsC+RgzPiQ0RzVmOJIuCl0U3bfsgnIwxLCKtsZu6FFFcab1HTxeiaGG4gBd/dph6sElo7Q/In0GNh1AS7ymr4VohD7sR6/DZhgzLoz36Kbti4UczTWQU1nAXvV84OeBFFO6l88qMvq7dd8wdqmg+2sfyEcjyNempRSIgzcST3ATqh+wdI27frwg3QIPJiSWQZQLbX5hyDsgjan1brXj3MIcxEgXvEsi0LcLasRdf5Uw3t1dP6ji7oc6HPS/KN7lUetWRdmYQ1S+soX8fhh0oKeI2u/sSb5nxel02U4CYfUM4HMD8Kw7WgAI2Ioo2RxxOuVq5lu+O3qODQ0pn76VRHI39caOS+6WtAqczbhpk17qIvNCY3KfK0f6eCaVkQRDn2mV/DSbWAwHaROqOQTE9Jvm0/x7C3flgU10LNDNErT9h4oMXvOdYNsVEP0Bj1psj7v4CbCokKeYPauSHbKoOq3PxPAMVnR5WlrIfxKV1NQKS7hnA1qypGx0KrHVsMaaV3cnNVF5FOZ6OQR9LH4kHJIONfxnqHSyBzzBEsymk6EEiR0YFSFk5uzzPao47X7U494dGmkOqQsD9PO/oikSL3TZ1yRygMdvrtGZJMpIO
- ACC9tKbk
- O/RHjKS6Y1BrfV2TbzJ1bfA8SAmCSlMfbRiMg4LCBjUf/0hgbJdIH6U3QQupOJn/ABoP0TXU6OcBudByD9SQO7M0HCALABqMW3pd+7XkWp1xoQIZeIoFHyriDrR3lhsgb/uUME8UI4RcI1HUV/qfTco8NJsNsQAgDR24cryu/cJjCVrzq6lRyx6YtFGQqS47k4L3Gzfb5i5xWq2jV03s7aAHLM+1qmSw9Wq6pnvfUg9RmZlLTouCVyZPc97bMJ/CY9ycdP0jZ8TBmSqw+QpaivXJwHMe0cxrkx5tUwWvnDsF5a5TEAaXwFLXRzPS02ZoEMsivosUvul2O934bVfcqYhhtMEcwiE9hdHUeH17xDGmMttvc12ZF1Mfidw==
+X-Stat-Signature: whuszcjz56nn3zaybexdciktr5oisosz
+X-Rspamd-Queue-Id: F10EEC0008
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789933039-994404
+X-HE-Meta: U2FsdGVkX1/BdhBLI/4F+ZYv3xqdU56FjLQTNve7Xj2j6urNRCsD2VH7THz3eACBoPlLDWh5wBUSvVSKakSrV6+2s3Mx6P2GbXP869pxANTeJa/Rv2eMhjIAEkL5qoQ8fyQkOa40ZEtwyxwFiiTUNOOFOaZusKruw7P20+WNSYC52Z4iUdCry3f9k3swNTJYW/LFRsPPkY9HHxk4Hshv2FSJV0pFRkP6vNd+jkRifyuGWdxAg79BoHVSAwXmHxkituDT9JBAb32j8v+KZojITR8+EUKw8JvZdUAHbTOmO0KsSpeX+J1gkDl2JMWWpg1Sb4W+l3owaeBVU4Lv62P7dvMxBbZkVBEhOAy9kA8mRwo87sUJ15jYli6x9EoH7nl1rsOB4g3cBD7L8LVfj8yz8TRAwlE0CqkiYAJyA2ZYvsDUxc3AbIpmkkJ2zoGb2Tc53Ki7XhE0705wnAIgInyDiZVRkuq6zqW+WJKaY7OuCREK07rG5WOFJhPrEAcN1KErEjCNtCo1te1omjhJ+sQv1qBoDgpIDY8zFMNeocCHhqY8qwaaccgOngH6sCIC3Wr81k3LDQ///Ht29SCrIZ7QON98bywGdtCeku+Rx2Lqtb95DhrWGBqIuj5QyM9yKMkqhVx+2t+AOe4vMMfis0iHGFsVhPbfeE+1CdlJcoeRARe017mGFJ1uPsEjaQRjBFHLM8QTUwdRjCrNL9c9Q1UC82mzOi94QJYrvEwJnC1zDZCYieO1FRGYY/zgYMpa2FWd554rCqlAKpn0QjUkOMZeHjqiApL6eUVVWuUdFtJXzV/coNrahZ6LNEfR3o2bAmovLQ/cOPBZzfFaVBCsSZEEHmKemBc+9fcyiVA0a4v4Pn7S6UIVtNa++1pa1Wd5PunlkaREHCNmzqMdekG8Vz3CQrUmQvTOZ4Gjsh/J0BCW28dY95SZX5lPRRc/4jbWaUXM+EOHD3y45Us7/z4Mq5M
+ mtxDj1hQ
+ WpjVOr5YMYaT0XtxKBEz7F3+u4roRXp8HkZrMKKVJUFPxyJA4SeHCEtE/WwSHNh9RNkbx+K7hpeOczMR1Y9YJGk0l7/yEooBvBRGcyoYwAA0sNCQheVTK69p7qYAJ+x8AqNwkSMfYH191JNfEv96BMWgw0WM+VsonfnP2Tu90V7glMlFTL04+lJJfUCbzjxDaMXszp7gR89/BJ9ZOYD5Om2AT9r77tqkFsNwuIxS4DBvnAziqtjb56x0AKYd2qzrvr3iQZvcxXzAGIdiCumx53aLQhQ8SKNuOuHDJt1hkmOLZIxinoNpSyNegyepHhzPpkHECFcnEj4NtoyOt3x3+wijFNYGDNKo4oiaGpO17cwrtk2EV2zxl5lysmw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -192,293 +192,154 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Factor __kvm_sys_reg_get() and __kvm_sys_reg_set() out of the userspace
-ioctl handlers and introduce struct sys_reg_index_sink so in-kernel
-callers can enumerate, read, and write architectural system registers
-via kvm_arm_get_sys_reg_indices(), kvm_arm_sys_reg_read(), and
-kvm_arm_sys_reg_write().
+Extend kernel_ident_mapping_init() with ident_pte_init() and a force_pte
+flag in struct x86_mapping_info so callers can request 4K PTE leaf
+mappings instead of 2M PMD or 1G PUD leaves.
 
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 ---
- arch/arm64/kvm/sys_regs.c | 199 ++++++++++++++++++++++++++++++--------
- arch/arm64/kvm/sys_regs.h |   4 +
- 2 files changed, 160 insertions(+), 43 deletions(-)
+ arch/x86/include/asm/init.h |  3 +-
+ arch/x86/mm/ident_map.c     | 72 ++++++++++++++++++++++++++++++++-----
+ 2 files changed, 65 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
-index b873ccf1ab14..0049e460e5ad 100644
---- a/arch/arm64/kvm/sys_regs.c
-+++ b/arch/arm64/kvm/sys_regs.c
-@@ -5569,38 +5569,43 @@ static int demux_c15_set(struct kvm_vcpu *vcpu, u64 id, void __user *uaddr)
- 	return demux_c15_set_val(vcpu, id, newval);
+diff --git a/arch/x86/include/asm/init.h b/arch/x86/include/asm/init.h
+index 01ccdd168df0..d9caed494e7d 100644
+--- a/arch/x86/include/asm/init.h
++++ b/arch/x86/include/asm/init.h
+@@ -6,10 +6,11 @@ struct x86_mapping_info {
+ 	void *(*alloc_pgt_page)(void *); /* allocate buf for page table */
+ 	void (*free_pgt_page)(void *, void *); /* free buf for page table */
+ 	void *context;			 /* context for alloc_pgt_page */
+-	unsigned long page_flag;	 /* page flag for PMD or PUD entry */
++	unsigned long page_flag;	 /* page flag for PTE, PMD or PUD entry */
+ 	unsigned long offset;		 /* ident mapping offset */
+ 	bool direct_gbpages;		 /* PUD level 1GB page support */
+ 	unsigned long kernpg_flag;	 /* kernel pagetable flag override */
++	bool force_pte;			 /* force 4K PTE mappings */
+ };
+ 
+ int kernel_ident_mapping_init(struct x86_mapping_info *info, pgd_t *pgd_page,
+diff --git a/arch/x86/mm/ident_map.c b/arch/x86/mm/ident_map.c
+index 5a15bffe6574..83013513ba94 100644
+--- a/arch/x86/mm/ident_map.c
++++ b/arch/x86/mm/ident_map.c
+@@ -77,24 +77,73 @@ void kernel_ident_mapping_free(struct x86_mapping_info *info, pgd_t *pgd)
+ 	info->free_pgt_page(pgd, info->context);
  }
  
--static u64 kvm_one_reg_to_id(const struct kvm_one_reg *reg)
-+static u64 kvm_one_reg_to_id(u64 reg_id)
+-static void ident_pmd_init(struct x86_mapping_info *info, pmd_t *pmd_page,
+-			   unsigned long addr, unsigned long end)
++static int ident_pte_init(struct x86_mapping_info *info, pte_t *pte_page,
++			  unsigned long addr, unsigned long end)
  {
--	switch(reg->id) {
-+	switch (reg_id) {
- 	case KVM_REG_ARM_TIMER_CVAL:
- 		return TO_ARM64_SYS_REG(CNTV_CVAL_EL0);
- 	case KVM_REG_ARM_TIMER_CNT:
- 		return TO_ARM64_SYS_REG(CNTVCT_EL0);
- 	default:
--		return reg->id;
-+		return reg_id;
- 	}
- }
- 
--int kvm_sys_reg_get_user(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg,
--			 const struct sys_reg_desc table[], unsigned int num)
-+static int __kvm_sys_reg_get(struct kvm_vcpu *vcpu, u64 reg_id, u64 *val,
-+			     const struct sys_reg_desc table[], unsigned int num)
- {
--	u64 __user *uaddr = (u64 __user *)(unsigned long)reg->addr;
- 	const struct sys_reg_desc *r;
--	u64 id = kvm_one_reg_to_id(reg);
--	u64 val;
--	int ret;
-+	u64 id = kvm_one_reg_to_id(reg_id);
- 
- 	r = id_to_sys_reg_desc(vcpu, id, table, num);
- 	if (!r || sysreg_hidden(vcpu, r))
- 		return -ENOENT;
- 
--	if (r->get_user) {
--		ret = (r->get_user)(vcpu, r, &val);
--	} else {
--		val = __vcpu_sys_reg(vcpu, r->reg);
--		ret = 0;
--	}
-+	if (r->get_user)
-+		return (r->get_user)(vcpu, r, val);
+-	addr &= PMD_MASK;
+-	for (; addr < end; addr += PMD_SIZE) {
++	addr &= PAGE_MASK;
++	for (; addr < end; addr += PAGE_SIZE) {
++		pte_t *pte = pte_page + pte_index(addr);
 +
-+	*val = __vcpu_sys_reg(vcpu, r->reg);
-+	return 0;
-+}
-+
-+int kvm_sys_reg_get_user(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg,
-+			 const struct sys_reg_desc table[], unsigned int num)
-+{
-+	u64 __user *uaddr = (u64 __user *)(unsigned long)reg->addr;
-+	u64 val;
-+	int ret;
- 
-+	ret = __kvm_sys_reg_get(vcpu, reg->id, &val, table, num);
- 	if (!ret)
- 		ret = put_user(val, uaddr);
- 
-@@ -5618,17 +5623,11 @@ int kvm_arm_sys_reg_get_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg
- 				    sys_reg_descs, ARRAY_SIZE(sys_reg_descs));
- }
- 
--int kvm_sys_reg_set_user(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg,
--			 const struct sys_reg_desc table[], unsigned int num)
-+static int __kvm_sys_reg_set(struct kvm_vcpu *vcpu, u64 reg_id, u64 val,
-+			     const struct sys_reg_desc table[], unsigned int num)
- {
--	u64 __user *uaddr = (u64 __user *)(unsigned long)reg->addr;
- 	const struct sys_reg_desc *r;
--	u64 id = kvm_one_reg_to_id(reg);
--	u64 val;
--	int ret;
--
--	if (get_user(val, uaddr))
--		return -EFAULT;
-+	u64 id = kvm_one_reg_to_id(reg_id);
- 
- 	r = id_to_sys_reg_desc(vcpu, id, table, num);
- 	if (!r || sysreg_hidden(vcpu, r))
-@@ -5637,14 +5636,23 @@ int kvm_sys_reg_set_user(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg,
- 	if (sysreg_user_write_ignore(vcpu, r))
- 		return 0;
- 
--	if (r->set_user) {
--		ret = (r->set_user)(vcpu, r, val);
--	} else {
--		__vcpu_assign_sys_reg(vcpu, r->reg, val);
--		ret = 0;
--	}
-+	if (r->set_user)
-+		return (r->set_user)(vcpu, r, val);
- 
--	return ret;
-+	__vcpu_assign_sys_reg(vcpu, r->reg, val);
-+	return 0;
-+}
-+
-+int kvm_sys_reg_set_user(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg,
-+			 const struct sys_reg_desc table[], unsigned int num)
-+{
-+	u64 __user *uaddr = (u64 __user *)(unsigned long)reg->addr;
-+	u64 val;
-+
-+	if (get_user(val, uaddr))
-+		return -EFAULT;
-+
-+	return __kvm_sys_reg_set(vcpu, reg->id, val, table, num);
- }
- 
- int kvm_arm_sys_reg_set_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg)
-@@ -5688,25 +5696,24 @@ static u64 sys_reg_to_index(const struct sys_reg_desc *reg)
- 		(reg->Op2 << KVM_REG_ARM64_SYSREG_OP2_SHIFT));
- }
- 
--static bool copy_reg_to_user(const struct sys_reg_desc *reg, u64 __user **uind)
-+static u64 reg_to_user_idx(const struct sys_reg_desc *reg)
- {
--	u64 idx;
--
--	if (!*uind)
--		return true;
--
- 	switch (reg_to_encoding(reg)) {
- 	case SYS_CNTV_CVAL_EL0:
--		idx = KVM_REG_ARM_TIMER_CVAL;
--		break;
-+		return KVM_REG_ARM_TIMER_CVAL;
- 	case SYS_CNTVCT_EL0:
--		idx = KVM_REG_ARM_TIMER_CNT;
--		break;
-+		return KVM_REG_ARM_TIMER_CNT;
- 	default:
--		idx = sys_reg_to_index(reg);
-+		return sys_reg_to_index(reg);
- 	}
-+}
- 
--	if (put_user(idx, *uind))
-+static bool copy_reg_to_user(const struct sys_reg_desc *reg, u64 __user **uind)
-+{
-+	if (!*uind)
-+		return true;
-+
-+	if (put_user(reg_to_user_idx(reg), *uind))
- 		return false;
- 
- 	(*uind)++;
-@@ -5986,3 +5993,109 @@ int __init kvm_sys_reg_table_init(void)
- 
- 	return ret;
- }
-+
-+/* The GICv3 CPU interface sysregs, or NULL if the in-kernel GICv3 is unused. */
-+static const struct sys_reg_desc *vcpu_gic_sysreg_table(struct kvm_vcpu *vcpu,
-+							unsigned int *num)
-+{
-+	if (!irqchip_in_kernel(vcpu->kvm) ||
-+	    vcpu->kvm->arch.vgic.vgic_model != KVM_DEV_TYPE_ARM_VGIC_V3)
-+		return NULL;
-+
-+	return vgic_v3_get_sysreg_table(num);
-+}
-+
-+static void collect_table_indices(struct kvm_vcpu *vcpu,
-+				  const struct sys_reg_desc *table,
-+				  unsigned int num, u64 **out, int *count)
-+{
-+	unsigned int i;
-+
-+	for (i = 0; i < num; i++) {
-+		const struct sys_reg_desc *rd = &table[i];
-+
-+		if (!(rd->reg || rd->get_user) || sysreg_hidden(vcpu, rd))
++		if (pte_present(*pte))
 +			continue;
-+		if (*out)
-+			*(*out)++ = reg_to_user_idx(rd);
-+		(*count)++;
-+	}
-+}
 +
-+/*
-+ * Enumerate every system register that kvm_arm_sys_reg_read() can return for
-+ * @vcpu.  This is a superset of KVM_GET_REG_LIST: it also covers the GICv3 CPU
-+ * interface table, which has no uAPI representation.  Pass a NULL @indices to
-+ * query the number of entries the array needs to hold.
-+ */
-+int kvm_arm_get_sys_reg_indices(struct kvm_vcpu *vcpu, u64 *indices)
-+{
-+	const struct sys_reg_desc *gic_regs;
-+	unsigned int sz = 0, i;
-+	int count = 0;
-+
-+	collect_table_indices(vcpu, sys_reg_descs, ARRAY_SIZE(sys_reg_descs),
-+			      &indices, &count);
-+
-+	gic_regs = vcpu_gic_sysreg_table(vcpu, &sz);
-+	if (gic_regs)
-+		collect_table_indices(vcpu, gic_regs, sz, &indices, &count);
-+
-+	for (i = 0; i < CSSELR_MAX; i++) {
-+		if (indices)
-+			*indices++ = KVM_REG_ARM64 | KVM_REG_SIZE_U32 |
-+				     KVM_REG_ARM_DEMUX |
-+				     KVM_REG_ARM_DEMUX_ID_CCSIDR | i;
-+		count++;
++		set_pte(pte, __pte(((addr - info->offset) | info->page_flag) & ~_PAGE_PSE));
 +	}
 +
-+	return count;
++	return 0;
 +}
 +
-+int kvm_arm_sys_reg_read(struct kvm_vcpu *vcpu, u64 reg_id, u64 *val)
++static int ident_pmd_init(struct x86_mapping_info *info, pmd_t *pmd_page,
++			  unsigned long addr, unsigned long end)
 +{
-+	const struct sys_reg_desc *gic_regs;
-+	unsigned int sz = 0;
-+	int ret;
++	unsigned long next;
++	int result;
 +
-+	if ((reg_id & KVM_REG_ARM_COPROC_MASK) == KVM_REG_ARM_DEMUX) {
-+		u32 uval;
-+
-+		ret = demux_c15_get_val(vcpu, reg_id, &uval);
-+		if (!ret)
-+			*val = uval;
-+		return ret;
-+	}
-+
-+	ret = __kvm_sys_reg_get(vcpu, reg_id, val, sys_reg_descs,
-+				ARRAY_SIZE(sys_reg_descs));
-+	if (ret != -ENOENT)
-+		return ret;
-+
-+	gic_regs = vcpu_gic_sysreg_table(vcpu, &sz);
-+	if (!gic_regs)
-+		return ret;
-+
-+	return __kvm_sys_reg_get(vcpu, reg_id, val, gic_regs, sz);
-+}
-+
-+int kvm_arm_sys_reg_write(struct kvm_vcpu *vcpu, u64 reg_id, u64 val)
-+{
-+	const struct sys_reg_desc *gic_regs;
-+	unsigned int sz = 0;
-+	int ret;
-+
-+	if ((reg_id & KVM_REG_ARM_COPROC_MASK) == KVM_REG_ARM_DEMUX)
-+		return demux_c15_set_val(vcpu, reg_id, (u32)val);
-+
-+	ret = __kvm_sys_reg_set(vcpu, reg_id, val, sys_reg_descs,
-+				ARRAY_SIZE(sys_reg_descs));
-+	if (ret != -ENOENT)
-+		return ret;
-+
-+	gic_regs = vcpu_gic_sysreg_table(vcpu, &sz);
-+	if (!gic_regs)
-+		return ret;
-+
-+	return __kvm_sys_reg_set(vcpu, reg_id, val, gic_regs, sz);
-+}
-diff --git a/arch/arm64/kvm/sys_regs.h b/arch/arm64/kvm/sys_regs.h
-index bd56a45abbf9..9837db99909b 100644
---- a/arch/arm64/kvm/sys_regs.h
-+++ b/arch/arm64/kvm/sys_regs.h
-@@ -292,4 +292,8 @@ int kvm_finalize_sys_regs(struct kvm_vcpu *vcpu);
- 					      sys_reg_CRm(SYS_ ## r),	\
- 					      sys_reg_Op2(SYS_ ## r))
++	for (; addr < end; addr = next) {
+ 		pmd_t *pmd = pmd_page + pmd_index(addr);
++		pte_t *pte;
  
-+int kvm_arm_get_sys_reg_indices(struct kvm_vcpu *vcpu, u64 *indices);
-+int kvm_arm_sys_reg_read(struct kvm_vcpu *vcpu, u64 reg_id, u64 *val);
-+int kvm_arm_sys_reg_write(struct kvm_vcpu *vcpu, u64 reg_id, u64 val);
+-		if (pmd_present(*pmd))
++		next = pmd_addr_end(addr, end);
 +
- #endif /* __ARM64_KVM_SYS_REGS_LOCAL_H__ */
++		if (!info->force_pte) {
++			if (pmd_present(*pmd))
++				continue;
++
++			set_pmd(pmd, __pmd(((addr & PMD_MASK) - info->offset) | info->page_flag));
+ 			continue;
++		}
+ 
+-		set_pmd(pmd, __pmd((addr - info->offset) | info->page_flag));
++		/* if this is already a 2MB page, this portion is already mapped */
++		if (pmd_leaf(*pmd))
++			continue;
++
++		if (pmd_present(*pmd)) {
++			pte = pte_offset_kernel(pmd, 0);
++			result = ident_pte_init(info, pte, addr, next);
++			if (result)
++				return result;
++			continue;
++		}
++
++		pte = (pte_t *)info->alloc_pgt_page(info->context);
++		if (!pte)
++			return -ENOMEM;
++
++		result = ident_pte_init(info, pte, addr, next);
++		if (result)
++			return result;
++
++		set_pmd(pmd, __pmd(__pa(pte) | info->kernpg_flag));
+ 	}
++
++	return 0;
+ }
+ 
+ static int ident_pud_init(struct x86_mapping_info *info, pud_t *pud_page,
+ 			  unsigned long addr, unsigned long end)
+ {
+ 	unsigned long next;
++	int result;
+ 
+ 	for (; addr < end; addr = next) {
+ 		pud_t *pud = pud_page + pud_index(addr);
+@@ -108,7 +157,7 @@ static int ident_pud_init(struct x86_mapping_info *info, pud_t *pud_page,
+ 			continue;
+ 
+ 		/* Is using a gbpage allowed? */
+-		use_gbpage = info->direct_gbpages;
++		use_gbpage = info->direct_gbpages && !info->force_pte;
+ 
+ 		/* Don't use gbpage if it maps more than the requested region. */
+ 		/* at the beginning: */
+@@ -129,13 +178,17 @@ static int ident_pud_init(struct x86_mapping_info *info, pud_t *pud_page,
+ 
+ 		if (pud_present(*pud)) {
+ 			pmd = pmd_offset(pud, 0);
+-			ident_pmd_init(info, pmd, addr, next);
++			result = ident_pmd_init(info, pmd, addr, next);
++			if (result)
++				return result;
+ 			continue;
+ 		}
+ 		pmd = (pmd_t *)info->alloc_pgt_page(info->context);
+ 		if (!pmd)
+ 			return -ENOMEM;
+-		ident_pmd_init(info, pmd, addr, next);
++		result = ident_pmd_init(info, pmd, addr, next);
++		if (result)
++			return result;
+ 		set_pud(pud, __pud(__pa(pmd) | info->kernpg_flag));
+ 	}
+ 
+@@ -189,6 +242,7 @@ int kernel_ident_mapping_init(struct x86_mapping_info *info, pgd_t *pgd_page,
+ 
+ 	/* Filter out unsupported __PAGE_KERNEL_* bits: */
+ 	info->kernpg_flag &= __default_kernel_pte_mask;
++	info->page_flag &= __default_kernel_pte_mask;
+ 
+ 	for (; addr < end; addr = next) {
+ 		pgd_t *pgd = pgd_page + pgd_index(addr);
 -- 
 2.55.0.1082.g2b9226bbc0-goog
 
