@@ -4,116 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A6A8C982DA
-	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 12:24:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 815C6C982E1
+	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 12:25:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 37FE96B009D; Sun, 20 Sep 2026 08:24:44 -0400 (EDT)
+	id 750276B009F; Sun, 20 Sep 2026 08:24:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 32FB06B009E; Sun, 20 Sep 2026 08:24:44 -0400 (EDT)
+	id 700826B00A0; Sun, 20 Sep 2026 08:24:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 21F616B009F; Sun, 20 Sep 2026 08:24:44 -0400 (EDT)
+	id 5C91A6B00A1; Sun, 20 Sep 2026 08:24:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id ECF9B6B009D
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 08:24:43 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7834A8042E
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 12:24:43 +0000 (UTC)
-X-FDA: 85234059246.05.6D4C810
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
-	by imf06.hostedemail.com (Postfix) with ESMTP id AAD1C180005
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 12:24:41 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=MzxXbciK;
-	spf=pass (imf06.hostedemail.com: domain of donggeunyoo.kernel@gmail.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=donggeunyoo.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789907081;
-	b=jiWUuIISPeo2g8BRSavZ5XPOWQtoLwnT9B96JD7ncT29LTOr6SFG6tzznQB+aaqkg+lHCi
-	xd0k9h9YXq4CtFIuApry3FN7G192nfC6wza3g4d2BurnRuvjBcOMvzX54YD8cIUhgXS0bl
-	YIURl5c1C3pBeF2rFMDmuEQ+wjABS7M=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=MzxXbciK;
-	spf=pass (imf06.hostedemail.com: domain of donggeunyoo.kernel@gmail.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=donggeunyoo.kernel@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2D5D36B009F
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 08:24:59 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5B265160435
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 12:24:58 +0000 (UTC)
+X-FDA: 85234059876.27.4B6270E
+Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 998071C0004
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 12:24:56 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Vdul9p9W;
+	spf=pass (imf21.hostedemail.com: domain of donggeunyoo.kernel@gmail.com designates 74.125.227.141 as permitted sender) smtp.mailfrom=donggeunyoo.kernel@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789907081;
+	s=arc-20220608; t=1789907096;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=InRkxGfoq1s0w/ybf166NOP+zAmO71hub0jrhGTfC6U=;
-	b=sQdxoUng8V+pVi81ULPUatGQFaAvjSJr6UClHUQeJ39sPw6IAisKkj0SgfEztgOPy72bSV
-	AZ+YlKgwB1FTKkOuZnLK/U+BMOS4zgm1o04dvyiV78VhZkFcfVycm1JAj9vL+nzNlLYKOs
-	/Lgd8QO9zjKbOVFaIFP7oTjtxluHsVU=
-Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-39dacf053eeso1528943a91.2
-        for <linux-mm@kvack.org>; Sun, 20 Sep 2026 05:24:41 -0700 (PDT)
+	bh=bpdMVsVBLYjzWDTXbQjKSYrSvCe+sMnBTBU+TbdKtJ0=;
+	b=Fcgj5mJixu9OpQYZBEvHoKoRRtuPQZb94TEk/9Fm/qquhRvxIkYR9rlcJXhXR1HfT7GXge
+	CBATS5DcgJdpjThFEefZ4cPy9Kp3B6f1KL7NxT2FQgHBtVvZTFHIih0NUfqzBEsc8CSkyq
+	h0XqrSJhEv0E0qjMzJ7oxN55jhK2ecs=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Vdul9p9W;
+	spf=pass (imf21.hostedemail.com: domain of donggeunyoo.kernel@gmail.com designates 74.125.227.141 as permitted sender) smtp.mailfrom=donggeunyoo.kernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789907096;
+	b=eG8a5pXMLvvpUqwgyiSHh3hwib/sLla3wFncGU0tG0BS2Y1lJ5TsQwlodsptv1qc20WoLi
+	fiDxqpowQykZi+DmBxgNL5C9JmayNP6AbxXtAgoemWMRNmXfIQb5XaFLYRSKWvt8kHjjnk
+	dvotUOYKYFkm7TG0mYh4Em+mkqhT/VU=
+Received: by mail-pj2-f13.google.com with SMTP id 98e67ed59e1d1-396cccbba92so1947332a91.0
+        for <linux-mm@kvack.org>; Sun, 20 Sep 2026 05:24:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789907080; x=1790511880; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1789907095; x=1790511895; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=InRkxGfoq1s0w/ybf166NOP+zAmO71hub0jrhGTfC6U=;
-        b=MzxXbciKdUvd2btLbDFFJHhfT8i1LSM4W31JZRzjnZoM1fmEu/ZV5VZPzDC0Btqb8o
-         xXKFD3HnEqUTp0vDNlITn2MwzRgz6jI2i8294tkmmfJhA4/V3uy8YMtMEFnFziQX7FKJ
-         0g6Ip4GVNtnlYmjQ9mox0rFKnzPKOQzNFVj21CDqxE9JWxQubKfqjqeVFulq6BCNajJ8
-         G7GEskxVdMMLpnTd/zdhEPDtqtVVTpugIk/2ZcNPpN1bdrdZ0PwDjf039Lytw7QRm7FZ
-         l/JMHbG7oCEDxLtp+YTHa8lpnm3sqWcSzBG0+bXjzlRCuans0R+KIuVwJSk/tOqh3Vww
-         2LSw==
+        bh=bpdMVsVBLYjzWDTXbQjKSYrSvCe+sMnBTBU+TbdKtJ0=;
+        b=Vdul9p9WIrx0m0Gh/3VrylgoutFxgbRQMacQqmFpNSKHxqjTy5SngzM+//NVhIHehn
+         18rFAbXZXlG50IMkTrY3SR3lP1Y4cYR37dLMY6c0zi3bWmoD8XvkAM7MOpyqqZ2J9V4B
+         NAxe2DRFQzxDYNwVZfeqr+YAwxGt7VBTDg3SxOGMfBJlr70J8dsjDapvfirq1Xwp15jh
+         R89P9ChpO/ps7PBGy7sIuqun+/Q97ok7baQjhGATWM0YEbOMPcGi2QHRVntFP3yrtbN6
+         W94OPQ80i1tTcDbYqt/E3jChBtccghJoYU7ef/ajS7zu4rlAQxdP656LePhjJIh6fhWj
+         RrBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789907080; x=1790511880;
+        d=1e100.net; s=20260707; t=1789907095; x=1790511895;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=InRkxGfoq1s0w/ybf166NOP+zAmO71hub0jrhGTfC6U=;
-        b=hpky3Jeqr2aUx0SwcsCso3+LVaa2eCKeyVvAxt6VJllNXfD3IOaZOf7caah1D/LDE+
-         7RwOsq2VzTbrQndwS82FltWNQy+hMm5l5GNA+jTZb5RVY7tM8081FFf1/N2R2Xht508Q
-         V5minnBRNQdVHUBb9MbekiyQjrlcM4ChI+mGP0XQCwNN/kdf34h05KA1OpJIKHq04SrZ
-         yGthIvZ4zVcCrCE3ld17MHDmQG/1OcRNyGENS9Bcn5kAMZDe08C2YgbarP/ogXpqGgB6
-         xr3JAHYrgqGi4U2gI9jl1AxwrCWfYwcebrMBoQzUylCLbdzxf9D5V6Qs975seEWVz5Qt
-         3qnA==
-X-Forwarded-Encrypted: i=1; AKwUvBxQI+/NLzL701UmZvcZxFXoEH/4O3Qn9B8MfuFfrmLdSTVrzjGvRJA5343NoRiTnv+1335mYgoadg==@kvack.org
-X-Gm-Message-State: AFuF++lDDOL4MHIRsAzBU8PyPHdw8Hte+rSD1SF+LJpcTZc8z6KZQfZC
-	ZS7MJr5N3ZNev+SxRY1QtE+WpZaFyG81a9HCjlq6TXOW8ewG9VlvIvw=
-X-Gm-Gg: AYBFou0vTfOwWAvKV0siaPudNsOtoCf5lIyxc8sx7xOKJxa6lQDtuYOHGn8kbrdxV/R
-	ZeSGAtmJEF/QMa1VFuWoLEtfqCwS7fr/PAO1StEj0byQlnoFRVwyd6Y1C39dDUbxzFeRnxVgBKW
-	a22JP3Jo8nWHbYcFFEK6OMTv6YPxhwY8NA553Z3F5iIc31yKhIKhGvohf4jp7K7cbcfXmMGYJnQ
-	ARarTUtuVXWpP4s8ps5qq50nvLrJWf0WL0aQvibWP2DYtOfAQhihDXmrS6Jra/kcfj1Gb2Se/nD
-	CIhib0xfIv14pttWNoNrANGvtgaKDNBjDIvRyaHQ7ZA/FPO7fqBxCY6Xeg5X80VHnpQ4QifyKxd
-	hCvgCheLvYUwGxFhySuBE9a4GFAD2KPjgvddgH1nOTTRoMtFmgXqLnZN6JV3Ovwr7E3W++ZeZoy
-	zvzgRL7CdV77C2xSkBgwATrG3x6ssmRByYY+0I1kq/vOy04qflELs4+p5EOZW8vXc9hOs2qskna
-	b0UOs3YQVDXp8z1RN9MrNtBPg9Z
-X-Received: by 2002:a17:90b:1e42:b0:3a0:345a:3620 with SMTP id 98e67ed59e1d1-3a0345a48a4mr2499091a91.45.1789907080513;
-        Sun, 20 Sep 2026 05:24:40 -0700 (PDT)
+        bh=bpdMVsVBLYjzWDTXbQjKSYrSvCe+sMnBTBU+TbdKtJ0=;
+        b=hn4daSXdMPeWGSVzFeKIpzXsgj2lyEXNoOVd9bL1OSTq+Fg4TRoAtuW0YcbrzLxHH4
+         plZwTChf365yCAOMfHHFxfGqTmupbmCqfwIFNc/GVjYYVF/DkbdjPwDv+k8TNJ++M0io
+         63GUX5Sb9SrOAwPYfWsHaAVZ1t9dib9Y62RG+QARD2WK8YpUS8eEsQ4d6CzTGRzW64TX
+         FBRcURglnYxNPGStB6yHXDETmcPUCv2qWGWcl45AOlEQV4MNOu6rSEsV+8m5eJixtTLX
+         lOmJVczYxlx56bpLi83lFLzxA1WqjFr7/N/NGbdbky08+DMn81lmiUC9X8LNn+/J3TA9
+         VFqw==
+X-Forwarded-Encrypted: i=1; AKwUvByyjDZ+6fetpHHvP36Id2ERzqqyv8BO0ddILxgZpvtXWP7flQEabDd3J3Bo86b2jEw5xaLIBfX4zA==@kvack.org
+X-Gm-Message-State: AFuF++kVfjDpy4vtYgGEn5RntsQXu9r24X/GhAQTK4jUGiXhuGTbdwND
+	k66QQvfqYjqDA+T5wRT6dQOOUR8tS6j/cBMqaFw1mklBFULwb0hlwSI=
+X-Gm-Gg: AYBFou2mXpHqnHhgrXxWzmiCge4yeCX0a883NsaFzxiEGog1woSaKxiyCN39gXJ6WQB
+	pmIhrk49NQzkk1IqHm7R/kcj0/QfuMq+n8gqZB9VXrX5CRLCwaFxMr9psxI4Z9+gO8ZMLczyswo
+	5z3ZZENHO256pPUb0n23L09HZGyWu1BHnX28QWkWpoch628r2Citf0v4OqZd5qahOXXFBKNZPH6
+	6xy/RjL6+z+o3b7oayOVhuoGjoslnP7TmDqMFE3eCJhXmtp/nEYORFt0XCzZ7FwGhsZxMUk6zhA
+	5jkGmNOiuRmaTvnBzIPbLC9GrJ8m0fwhZBxkMpn3tsVt8cppfAaCxvHBbFLriiu7TFqF5OBGQ/v
+	B1DHuKaLKPwIqQpbdez51mBxHaRFvRi1A7hoRf1iUEYj8p6auVd0M94Q4zTnZetjJiwYjqob8yM
+	BYsgBA0EfhPwhyoYNzoxSOt2aBiNn7xEMbsDNBvaO4Z1pyQRwp/HhQ5Kr8bkObW9xR9MVso+YhR
+	ZzlkrEkUMYKB8HHVoZ6epz+OzM=
+X-Received: by 2002:a17:90a:b82:b0:3a0:42a9:9c82 with SMTP id 98e67ed59e1d1-3a042a9a040mr609569a91.43.1789907095575;
+        Sun, 20 Sep 2026 05:24:55 -0700 (PDT)
 Received: from ydg-Zenbook-14-UM3406GA ([2001:2d8:7f00:8c85:e0d6:4b87:c472:c9ae])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e5647c151sm4972754a91.4.2026.09.20.05.24.38
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e6c3145e5sm9445857a91.5.2026.09.20.05.24.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Sep 2026 05:24:40 -0700 (PDT)
+        Sun, 20 Sep 2026 05:24:54 -0700 (PDT)
 From: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
 To: sj@kernel.org,
 	akpm@linux-foundation.org
 Cc: damon@lists.linux.dev,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	rdunlap@infradead.org,
+	linux-doc@vger.kernel.org,
 	donggeunyoo.kernel@gmail.com
-Subject: Re: [PATCH v2 2/3] mm/damon/tests/core-kunit: test the temporal tuner's size quota conversion
-Date: Sun, 20 Sep 2026 21:24:36 +0900
-Message-ID: <20260920122436.610279-1-donggeunyoo.kernel@gmail.com>
+Subject: Re: [PATCH v2 3/3] Docs/admin-guide/mm/damon/usage: document the temporal tuner's quota limit
+Date: Sun, 20 Sep 2026 21:24:48 +0900
+Message-ID: <20260920122448.610319-1-donggeunyoo.kernel@gmail.com>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260920104054.47877-1-sj@kernel.org>
-References: <20260920023111.2466265-1-donggeunyoo.kernel@gmail.com> <20260920023111.2466265-3-donggeunyoo.kernel@gmail.com> <20260920104054.47877-1-sj@kernel.org>
+In-Reply-To: <20260920104921.48065-1-sj@kernel.org>
+References: <20260920023111.2466265-1-donggeunyoo.kernel@gmail.com> <20260920023111.2466265-4-donggeunyoo.kernel@gmail.com> <20260920104921.48065-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: AAD1C180005
-X-Stat-Signature: dmm9dnr8pfotku6gciuw3rmwmd814np1
 X-Rspam-User: 
-X-HE-Tag: 1789907081-106228
-X-HE-Meta: U2FsdGVkX1+KfyzMDgmy8oC7c8thckkj9uqp12fgCWlGnWUtFJGLaoluLGb5DAinyQVZY7NJyat8nffpItWuk5JuyJaNQklGHW78dbol/F/Ezwc4DGDUegwZCwsRBT15LXXZRILL75/OqgHzrUzwb9V6oyuBpS29XM04g0CyRxnzbpYAIXyv+ifjb42hmptXsNz3TokD8vCvB4O1prrygib/Ez357hCYE5hMxp0WayTAEjVVKF1sW/LXHu6d61erXKh7z8BCBMC9HKWtNPMA3tQJW0RyQ/0Bb5xQEYwdgGyHNBnwvncYzP6sII+F0LIwfGXkGsQsguRsLXUBZTfceNYA95VoRDUokGIW6mSJuWj8//iYWWBNJ3hkoR1iyYBA8ZL0Q84gyGSNQMjvWSIW7NFoXfYpqPoI/bl7E6PWJt+NY5zjFONANjqHSlV/DaAtQ10sLPj0IU67aTg9gdHpI/DmMyeVM25Y7hwP3wZOOhmZWpfPz7ZM8R1x8KLmkAzNu0SZUaWBMXw5iVFCQwkQBY876bRVFfZs0OLU4LeMlIVXQ38BDQtUElRYLiLNsPM2qJymCtx+b83RUKvnkIik5jlWE/YDdaCVngQkaWd3QBLlONcRVoxmnhxZ1Jp6QsLTrBHgKgf7CmnP/KqH4ui4hrWaYNzjA0osJC8YFq136/1H7pB9xPd5w0W+d3IOWZwFf1a7Gj8zKM1/WEW4+PR2Ed7yw2TuEAYvTha8P+i/ziacwcqoQboBud5YVrG4o0ie6/mKy364vKjVlltRO2R41he5GvkD27a10xDvu0DJMNPC3UOceU8FmscYCb9/Db+pLf6mxjm5r4UaCwXknz4VE6ipZpztUNqrCOyL/wbylGHVDC8ViLwPF14FqK3bCV4nbNxjUJtN5rDW65LiQht0wkDugBIyAa1fTEoKwiKcyhxW8BE5C0WEvhozH+u2mQDIKx1ugobJNvFbc966kq7
- HC0cHvvR
- DsvnAMnNOKRwAGhwqemooakuocjSfpIRVIK4NnuRma6ffLB4qT2g+6hzKigNHzcueqdwprgD9YAy6netXUU+GEJJBChyQsTQ/APd0/JSzfX2Cpc9YQkZ7kskkZTVCdJTjMaLpZkhzE2Q9UdmG5fe4JC+BEJWthm4tOEd21ioQCCijl6jEWzzZaAVViIj/DChNZVzMHLcDpVNYZlsysk/rOMI9pf/BX3Lit6jysrTugAAfmvsyN3CPTz9kUJL9j572h3Rh4XVwl7otL+hkieheE9pnj+LjpcTbPDiV7Ez9h60t0WZenXtet5ON6xTeVUsMlGY3t7tLrm9+qhuHuva7kHqzzSm5yRB+eDqFcHuNArN6ftwHQypiKBqFT8xMfFTOMJm1VOESqq7DlOanUrGWWDV28F2loK/Rvso3K/LjdkLhzsseU6skq/9PXwsWGX7MmS//fFiXImbOUL+MJfYGLJPDaVscgkgOJIVdZ77B2cFpON2iD/zWc9aDk4pj45oN4BIJFi81kbtfw6ARErNjd470TQ==
+X-Stat-Signature: theh11t3xagctout9zuoug39rdm7jpc7
+X-Rspamd-Queue-Id: 998071C0004
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789907096-951604
+X-HE-Meta: U2FsdGVkX1+YuhEEorVdcGa+/9mAYfHiuGXL8jv5mokmf/p8DrXI+PSSuSnjnogbFL7rMDulRt41FF8wXKIfvRE+v4K7L9mYJ++V5tWJJYEG4buznP95/J/5ZQ4ZwmbqwHr5FBFa5BxXSu82IXpgYXQF7dx7DNV1qmgHknpxIpFlH/2rzAOCgmdnNyqvLYIYzT9t/icpSuKhtEKQlQnKbFsnOwOOagctSo/RnfRdRChxoqsLQHH+5zqXMWjV3oZbibJuJ+Qie57JnLMhvODgUN14hGOfrPsu0ph4h5N5EldXETY0q3c6jb8PxAiP7QkzBdD5TRRq+RtUcYjMovb5Qn9Ke6Ww3rnWTMt0Kn3GvpwJWPajrNrv25VLrc0xWllDb/Kb8qBI+cOfAsoF1Qcl00DW7vsqj87no+rzhSpR2L5cuELschufuwUAz7F9oIAET6pTCT0mRak5glKL4vlEvnMPXGwJ3y22q3ci6DKAk3EnWqet0C8k2M+Pjpnu+lJDJ9QrM6w6smSQwiRS7a5f14I1JL8japRsvWoP+hheXaoYyeuYVXQfJlMNaBZ48PyNeQvo2JJeORIsOKyv+IrXOr6R8rx9liJIe/0X3ENbH7Qd8fv25whjP3eg5H8CWRgcut0/d8pBr+8k0RdiM2zjGen4WtNAeyommGc8ltDUl9b6KuxHK62CPjzyUtogAasNIQ59ZJvL9irKlfcUhlwh3LI6Su5KZ+LQ14N+YAY0vlo4woTHzdakK3C+DYlyMryzGMf7BbMT3Jcy7QDv50jlQJ6Y9t9F1VH2EcSQ+8W9MNZsrmScB/gpZyB7r5VDWY21v4ot6xQlTWyHSJU1tL8pP/WksSrhzqqW6Fsv1gMDXZkiQXF9YXi8h1Fofj2ch/uF4AeMg5UVVesjYaPUDS2hhgSH1rK8/E+F7ZaZsR//Uixm8/LqKvssb8j2bzGSVZjYutxmvAVDZBiJ+LqsR8X
+ 8EOSgnm8
+ jUL6W1srvHhYvEs03EGFRLa5yZHTApKOYj+0XHGpZkvFW/YkEQupKbGG4A9+IGV5rNVmFzibfsDVCLeE2GhaGMNSlYyHFXK8w4pXox5HgMtsgR1nN51TD5uxzp0B5c6z5cb9S5q9imMEntl4St3fAWg1pGL1dlalpeUsmW3UYG4sV8i9y0ADZX3JK2PkzaLju22U1O8jctDmISA/C8UGgI9srXx5n1Mq3f6j/R79SZw/mNpvsgrGNWpAAU0maLHX5OO1A30uK9nkwHFLwvwHw9NBGUQwUg4JnDbqic+RkrfHLFdb7VBESR0TX+Ru26V9E7APTf3X4fvgUkGZHxgydmZMzoUzKxDUCg0+lqn+M/IqJexurrWj76aKqYvhJDJFeApU8zTFXuUI0aAZ5/XTYpR8eXsrsXbKWaEKXEBSaGeZo64ZgXJFoyrvrh2ody+ZC3XWfXLOjBEiogzac0jmvKHVJgh3MQyw/iNXq0nWe8iIBV51DYzlQfK1tf/2g+m/kNdVJ1j0WFBVcRa/Go3QU8KSIaw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,16 +134,12 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Thank you for the review.
 
-On Sun, 20 Sep 2026 03:40:53 -0700 SJ Park <sj@kernel.org> wrote:
-> Please wrap commit message lines with 72 columns limit.
+On Sun, 20 Sep 2026 03:49:20 -0700 SJ Park <sj@kernel.org> wrote:
+> I now think this documentation change is better not to be made.
+> Correct me if I'm wrong.  If I'm not incorrect, could we drop this
+> patch?
 
-Done in v3.
-
-> Other than the above column limit,
->
-> Reviewed-by: SJ Park <sj@kernel.org>
-
-Thanks, added.  The code is unchanged in v3.
+You are not wrong, and I agree.  Dropped in v3.
 
 Thanks,
 Donggeun
