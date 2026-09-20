@@ -4,67 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D072C982CC
-	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 10:08:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54073C982CC
+	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 10:09:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 518206B0093; Sun, 20 Sep 2026 06:08:10 -0400 (EDT)
+	id 6040B6B0095; Sun, 20 Sep 2026 06:09:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C8DB6B0095; Sun, 20 Sep 2026 06:08:10 -0400 (EDT)
+	id 5DB546B0096; Sun, 20 Sep 2026 06:09:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3DE9E6B0096; Sun, 20 Sep 2026 06:08:10 -0400 (EDT)
+	id 4F2486B0098; Sun, 20 Sep 2026 06:09:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A5756B0093
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 06:08:10 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 91FD21C2364
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 10:08:09 +0000 (UTC)
-X-FDA: 85233715098.20.AFCE447
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 21C306B0095
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 06:09:03 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 67F02A03EA
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 10:09:02 +0000 (UTC)
+X-FDA: 85233717324.10.62F4572
 Received: from cu-ua11p00im-quki07171502.ua.silu.net (cu-ua11p00im-quki07171502.ua.silu.net [123.126.78.69])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 7AF2320007
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 10:08:07 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b=JHkA0eRm;
-	spf=pass (imf31.hostedemail.com: domain of bfguo@icloud.com designates 123.126.78.69 as permitted sender) smtp.mailfrom=bfguo@icloud.com;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 2487140006
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 10:09:00 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=icloud.com header.s=1a1hai header.b=HpRb3uLx;
+	spf=pass (imf04.hostedemail.com: domain of bfguo@icloud.com designates 123.126.78.69 as permitted sender) smtp.mailfrom=bfguo@icloud.com;
+	dmarc=pass (policy=quarantine) header.from=icloud.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789898940;
+	b=EqjUutEphCjZIDb7VXCIBCE36oGIoYECGbNG5efPbocx2auCbidJVfNk3eu7FADQ9HX4Fh
+	QKk+l37dvzaRlCOHqmP7i1aIpvOvBPjv+9itKGQleJqhTINJCV2I6h8SeecsH1KHhg6qlp
+	aY8Z6KDwLafsoKm6M7+5+l75vPuk2Xc=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=icloud.com header.s=1a1hai header.b=HpRb3uLx;
+	spf=pass (imf04.hostedemail.com: domain of bfguo@icloud.com designates 123.126.78.69 as permitted sender) smtp.mailfrom=bfguo@icloud.com;
 	dmarc=pass (policy=quarantine) header.from=icloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789898887;
+	s=arc-20220608; t=1789898940;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E55+tu5KL9AnKSPgSq7nNcHqWE11x7RdNO/VLX6SJ48=;
-	b=pDeG/MRP0T6rg/si5slvauf0QU8zx1s6KHohQWYcVznYLwDyh2+qLNgBx8vWycOpLJSY1P
-	Y805XYYZn16ilV+SAc6uLUMLhOn0wSupZbZsPs4pdd8UXZ80feXWtsPN6sqwWZARdsrFrH
-	jx1awcuMDONfbiRdp4fJ0yEZTZEMQWE=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b=JHkA0eRm;
-	spf=pass (imf31.hostedemail.com: domain of bfguo@icloud.com designates 123.126.78.69 as permitted sender) smtp.mailfrom=bfguo@icloud.com;
-	dmarc=pass (policy=quarantine) header.from=icloud.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789898887;
-	b=t4/mCFnpshhPD+Hcch+HnCJ2knlN+UhkuILspmUWDnXZYyIA0a3r6WPji8VRr8y5N8hkHx
-	3TWlPADSn7ZnCqc7LCaL4KGEXqRPMJjDNEEcvoPV2WQm4QEHhTtxSs621WYQ+S1OQnPfv7
-	IfJAFIRlGThu3Gy7PwvDiUqYgveFzqI=
+	bh=gUNUCXQmhH4kI3t+BNIkGcDm4X/J8a37GO7LRD4XxoA=;
+	b=Gjk5An1fIJe6uBEhciGN6uMwSgvffHBIYIa7CRIUsz9ebBH2GT3PLVZonJp/QVvwu3k9/l
+	O8ld69tai8tND3k2PHDT0qNXbtxVz9EV192TNX6LRzJciCtAG2PtKP60+h996F5vjnhQrK
+	V29uTTbcEbQbz9I01Ps0cRQERFhTC0c=
 Received: from smtpclient.apple (ua11p00im-asmtpcmvip.ua.silu.net [112.19.242.76])
-	by ua11p00im-quki07171502.ua.silu.net (Postfix) with ESMTPSA id 4818B28C00AA;
-	Sun, 20 Sep 2026 10:07:56 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1789898878; x=1792490878; bh=E55+tu5KL9AnKSPgSq7nNcHqWE11x7RdNO/VLX6SJ48=; h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To:x-icloud-hme; b=JHkA0eRmHTEAbrTiOqLc/wgflI1kMXfD5f+z+E6+WiJmG473XO1KKygYZrUGRblQd37Qu0tx1tKGb3sxAxyPROuQL58z82D51Do3UJGPlZSler5+WnuBZ9UdfMeuaiuB4LeFAHp3X701YcatUh/YS5se0zSG5jrB+emKZ69D/4/aEa4BnUVBGIheejrWKgTz7aYKv9330qfE2frmPL9xxT86OCTP2KoqhTTYM65N1NiWnfSZG6U6G+X02HUfAJqB+uV8Ebxw4NPR6zLzkbfWIUCM5IQ8PV7yxJ0w7BW84pCEgufS+q475HoogLVdd1VQKg2PaX4tQSJ4SXyTdwtUaw==
+	by ua11p00im-quki07171502.ua.silu.net (Postfix) with ESMTPSA id 30E2C28C00AC;
+	Sun, 20 Sep 2026 10:08:55 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1789898937; x=1792490937; bh=gUNUCXQmhH4kI3t+BNIkGcDm4X/J8a37GO7LRD4XxoA=; h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To:x-icloud-hme; b=HpRb3uLxViN2U57wiuAbkzodOPIOPvoTLCOHjqQOcaec+Y38e+4ECN5c/00K8gJUutSdjMzEejG1mxtYnhy0veCpIGkoBFJCHjdMci1xXNbDqWIzqqmHpO9jvpViTmE4v3xElVEN9d40s9Xbj9F4Qt12LXLV/OUKw0EaQTMORE2tMcB8yCj8QxaCwpd7C3JghLe1bNT6wc+DK0A4y0jYs6VM8kfe3vtncIq5bnUpHisMDnUnNn+tqFeZmkJQorWA2EhEu7MdTH3htuOJDwS2/1MqXUwiLsvAqdixHdW6vViyZ8zj5lfSZ4gVecc6tfWOmz6ciasGBSisRf32wEPYDQ==
 Content-Type: text/plain;
 	charset=us-ascii
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.300.41.1.7\))
-Subject: Re: [PATCH 3/4] memcg: manipulate memcg private ID references by ID
+Subject: Re: [PATCH 4/4] memcg: move memcg private ID refcount to objcg
 From: Bingfang Guo <bfguo@icloud.com>
-In-Reply-To: <aq2dkhBuFktQYvTB@linux.dev>
-Date: Sun, 20 Sep 2026 18:07:45 +0800
+In-Reply-To: <e4ec1370-27cf-40db-ba4e-b46fe54fa882@linux.dev>
+Date: Sun, 20 Sep 2026 18:08:44 +0800
 Cc: bingfangguo@tencent.com,
+ cgroups@vger.kernel.org,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
  Johannes Weiner <hannes@cmpxchg.org>,
  Michal Hocko <mhocko@kernel.org>,
  Roman Gushchin <roman.gushchin@linux.dev>,
- Muchun Song <muchun.song@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
  Andrew Morton <akpm@linux-foundation.org>,
  Dave Chinner <david@fromorbit.com>,
  Qi Zheng <qi.zheng@linux.dev>,
@@ -74,42 +77,38 @@ Cc: bingfangguo@tencent.com,
  Yuanchu Xie <yuanchu@google.com>,
  Wei Xu <weixugc@google.com>,
  David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>,
- cgroups@vger.kernel.org,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
+ Lorenzo Stoakes <ljs@kernel.org>
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <CA3A67DE-DF83-4B0E-81A2-AEDE93FF5F78@icloud.com>
+Message-Id: <DAF7F09A-A8C1-4D7F-95AD-984C92E9A644@icloud.com>
 References: <20260918-bingfangguo-memcgid-rework-v1-0-5bbf3220d88f@tencent.com>
- <20260918-bingfangguo-memcgid-rework-v1-3-5bbf3220d88f@tencent.com>
- <aq1_Qhid7-62pHcW@linux.dev> <aq2BfYdMr_8JeY_Q@BINGFANGGUO-MC0>
- <aq2dkhBuFktQYvTB@linux.dev>
-To: Shakeel Butt <shakeel.butt@linux.dev>
+ <20260918-bingfangguo-memcgid-rework-v1-4-5bbf3220d88f@tencent.com>
+ <e4ec1370-27cf-40db-ba4e-b46fe54fa882@linux.dev>
+To: Muchun Song <muchun.song@linux.dev>
 X-Mailer: Apple Mail (2.3864.300.41.1.7)
-X-Proofpoint-GUID: 0QbLG567OwrrvR_Np6s0bqe9fIGmmYD0
-X-Proofpoint-ORIG-GUID: 0QbLG567OwrrvR_Np6s0bqe9fIGmmYD0
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE5MDM1MCBTYWx0ZWRfX+m7HBmfAwO1j
- AtWl7t9WlxmlYW9eNvvo6Q1otP//97j1N414CgEtjWHPsyhBgZwytYaIEY7oQI06dhkSBiG7W1H
- 4tCQgrsbQ/VQ8ECVV5qvLdSCOdPSAH15KYezyMtrUjOeiwcgDSCwydqy0cSBySIbziJxyVhZ/6s
- 4X41epvGF5KKjnuBD+78goInNK+0qdx38bJQXLaNYr6TNl3m1LdD+GkFZFqf2nNxsVAvthnW6fR
- ziH3+zFFAK9EKTMqo+tnA2RC0StgxQI0JyIZzsQ6hBSRgFRjSDj0Fl0ZI9hetjMngjbRxXccUv2
- iUHRkLCl6UfAzWeuAfLDAKPme4UukO02ECorql/xw==
+X-Proofpoint-GUID: MR4iIZWIkumUQ3noL8yNVsxKDQM1EfSz
+X-Proofpoint-ORIG-GUID: MR4iIZWIkumUQ3noL8yNVsxKDQM1EfSz
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE5MDM1MCBTYWx0ZWRfXzH90LqzTYXjj
+ kW7VSrDg1+ggGAu2W7bALGKZtyBr5vpNyGZ3RjDHkBE8v2ePYXlwHvRmNR5K9vSKZXa44jILun0
+ 7nlUOdNWcYyEEMe7EyX+a/f4V/wSztqZJUOCgY+XFEwwm9LtdRdwKtbu7Jyf52Lke6kz+ImUGCA
+ ysQSxPI2Fo8y6AmWYAlBgSqkCzDt65MjA7PIrq94ZPF8ZeWKHF28NYcLpfQPJkzYNtTu157l/Xz
+ Foj9U5HoNQ0uocVSkcbx0wf/bNtaSdm3ACgluQqnFPak/U2NcqscH1CU1KtLyM1BA5Z1d52KRxX
+ 5TwS45JcO6d5UEh+pMC3moBziDNMEhcd71FwrqJKA==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-09-19_07,2026-09-16_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=900
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
  lowpriorityscore=0 bulkscore=0 spamscore=0 malwarescore=0
  clxscore=-2147483648 suspectscore=0 mlxscore=0 adultscore=0 phishscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
  definitions=main-2609190350
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 7AF2320007
-X-Stat-Signature: 6kwdo5fk6z18dfq3j6tjrzurno5cgsz8
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 2487140006
 X-Rspam-User: 
-X-HE-Tag: 1789898887-121532
-X-HE-Meta: U2FsdGVkX1+Oyw0oO4rCU7Ui26vpeL6bV3Zfkcu9dDchbfz3IP6Yuz7fSqIw6PRiP24GCp9sG5Q7gi+Vq7EuiqFLdSRVeaF5EDpGd66psg1uKsC1I2MRNBe3jzFLa7Y65554mXHGJeNPskB4xWmqr8nw3TulUViYIpuQPuhoiLKX2Axj1GsBFdJu5rzMwYi3eSZmA+8PYxIehVo2CtDxdgsWoLS3on82uGe5yNHbXvKVuJqtRw63X4WKeO2eAeHxue0Mq9y9GKxBno9Pj0kHI6AuwuNLDc4/Z3464rvmpkHhUvkMNdlqsyiYXQeCd0GfE9an2P2+uyGNxNhkdlAh5I+mfn0L8FXiMeSK+1+A0Is827buOaiQC1N11v3AkCHp7IxY+XaEQTPj+9JoAMbe+9oNLG9tmDXeAJYZzCF+dRaz+od4RUgm7Fae5o0pNNrbNQ3xqGLAts/heHGgL5dR/M1uPDQLuV2Kl0PZ3kr25aAZjk0yCBMni9mBFh5Sxxcvt/5mDwlqTM6/EOKV7S2C5y0Fk8AIovsbV+88cEYU9k8ixjHuSN7Pe2OvojbYTVh3AxdZ2DiaXtjcMB+Lq8hDXGc8UxcEbeTadQ/VojxJo9Q8ik1Mb2uVrraTR/JRh51iV9I9XHAJL7eH98l4nt2GAkrJ3q4PyhPU0yeJPQ0PnqYDuRk4ParFww45bE/pCuKObCLvaG6WWDs+ji66HTudXdfZjKUIvAonrCKqDh1NsevHBEGFM3LYSfSm8WD6hGNWHtlQg3bgwvH40PAYAWbU1fYtqJoqn8UrkY43A375S+YPuqiC8sS2S1BPMTCFad5VpaPcLc/ojR2Ov2L6G+7wkp0Z8njX2NXxnQ0u1NOVi3QbHe+JkBFRLU1+A2FsWenWr5Q3ZjzE41filinJiChNP89Z0fNqI/xydVopD5vbg4lrwYkRW2IYr/RYAUUv0JRU3SkSMFNKIBFg0ArWIgQ
- JQsrqJwW
- JzE8tm+iCngqfnrZBtr0jFN9IhpDOafl+yFJYlrGtm4fvq5pnQb8XkqUDrIpCGdUIxXT6PY1qhVpsHMilHjKDMTOElOla0dzKIxtPzOJEz5oGWunmjtq1A/dyJUcdgK5GtzbMmGrvmTSegz2kwHVsHbEaNeZavozwJQq5Sj4JuffIIAekhHBYOxCNEvlyOj4iI/QzuGphNdGEjft63n8mtfhV/c3LX+Hn5CcNuV4RW4rCb7Kr5SuLDxvTpqI8KA2ac0a1ppOCzR8vxwhcTnRv7YGHuA==
+X-Stat-Signature: 9xak34miqat91yq5nrcx43afx3mqn9gr
+X-HE-Tag: 1789898940-606331
+X-HE-Meta: U2FsdGVkX1/71RrI645fJe0WidqSAEuGjBBKE8a5y+NXUzcInKLJyDzDEB8aSMlXvYVdV4TtLFet09/praBxzu3ifTeEFFdNY3IqC5xw2ZdhBXTsi7U+4l7E8Vz3BTG7rDsOqSfYmZ0/0HI026/CXXy17qW/PogFi28uFfe+VQEkuMKcwBGRsDubaVVp92KyC8ZENXX+ui/umShlQ46sVGkuC8E0/eA+ntlEk7N45RpVBTpZ6XnTV4pvQzrHYf2RQqT5ZOF5T9k6h0F3D7Dt04g2WvIwcQgwbvRw8nSV6SqAEq+GYw1Xtcp4IjwiYkcbev2NecY5YD2+ji7k1o0js5Ub8y5euQukEmeUqnEcJf+eWHG752dcu5GVqm9gK5qa7aDs8ia84Zmn7FOKhYAQW0tSF72/1BsNW02lZ4j9ADBPcz82xpENsaJsRahxdHADz+nc0AT+a0zbXiPGs8M8mx6D2hPrRccyBhBXXl21ehiRJFUgatFnyEM6tfhrnmSUdVnnKsApo0dMtba3Ovb4xIBixmfq2+YnzNHEs/RjKTnKiQ7ICaQpTDC+FKOANniOP+TgMJvlkUOJTgI/Fm0i6RSGKRme9oCBRuHd+lnpj+d6uQ8FAudOdM+s3KtCJJZ662JMmaaOsOZ3pkk5XmFoTHChNBPW/F03A2/OvulwaHX7gkfu/jDJsIv+1E11iMK9RBigkV1pIMM6tOlVuvJ2PkgJqZuacmlIfGLK/1DMp0T1q5/ERU6fUiE4GxCurXGsT/gpTF/g532YAwAlEPceYyj3jL6IGG5/Pnc0aPqs0MtPqbAKRqncGQsW0CWjXq7G6kmNBw4vB2J/mm+ppyv66n08blFW/ZEKZbCETcrH/rX4GbOandv30bmF/fpHnDPd58EuXmZZtqwdIZ8i6BFkuKFMdNQLJV06atuOLS/G7BIK27p5dCFw7K8eMwC5OgXyiT3+PZw6EjMjpuGSsin
+ TEk8EcOR
+ rchgZnXsxaWvV+ux4QusxdJLNSzexp/bevbemyBb1bEU/2xY4LKD2N7NpwJv46nLKhsBrbTB/9FdNyxLDFKOVwGzOXtJW/26zrE03NYZ5ZKDYmu/stdht9WUufKfHVjZHa8zYlhtvCexU2qQo1uQGiDq7XyVT62PkF4W0V5IW/daM6SrktIg80m6WOa8GnOlsvdBpSEjMLOLvg7qtAYjCaLqrOaZTiMEsUNjhk5McJCwFjN08WXYbXjcqjRfB8g366xx9aq63obCKrWREZEX4kJt5ng==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,25 +116,359 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 18, 2026 at 01:24:01PM -0700, Shakeel Butt wrote:
-> On Sat, Sep 19, 2026 at 02:46:52AM +0800, Bingfang Guo wrote:
->> Thanks for pointing out this.
->>=20
->> Agreed.  Both two callers are already holding the rcu lock so
->> taking the lock here is unnecessary. So I will drop the
->> rcu_read_lock() and use that in the next version!
->>=20
->> My concern is that: mem_cgroup_private_id_put() looks like a
->> universal put function, requiring rcu held (which is true today)
->> is not that obvious to the users.  So I think adding a short kdoc
->> comment to make it clear later might be a good idea.
+On Sat, Sep 19, 2026 at 11:32:46AM +0800, Muchun Song wrote:
 >=20
-> This function is internal to memcg code, so whoever is going to call =
-it better
-> know to call it with rcu held because of lockdep assert. No need to =
-have a
-> comment.
+>=20
+> On 2026/9/18 17:18, Bingfang Guo via B4 Relay wrote:
+>> From: Bingfang Guo <bingfangguo@tencent.com>
+>>=20
+>> The memcg private ID is used by objects that can't afford storing a
+>> whole pointer and can outlive memcgs to track the memcg (notably swap
+>> entries). The current design holds a refcount to the css, preventing =
+the
+>> memcg from being freed.
+>>=20
+>> This patch unbinds the lifetime of memcgid from the memcg so it can =
+be
+>> freed.  The idea is to move the refcount of memcgid to one of the
+>> memcg's objcg. The objcg is stored in the global memcgid xarray =
+instead
+>> and used for retrieving the online memcg from it.  So swapped out =
+pages
+>> no longer pin the dying memcg.
+>>=20
+>> After the change, a memcgid can refer to a non present memcg. To =
+handle
+>> this situation, when trying to get the original memcg from the id,
+>> compare the memcgid passed in with that of the memcg, and return NULL =
+to
+>> indicate its death if they differ. NULL checks are added for
+>> list_lru_walk_node(), workingset_test_recent() and =
+lru_gen_test_recent()
+>> to skip dead memcgs.
+>>=20
+>> In the earlier patch, an extra xarray lookup was introduced in swap
+>> uncharging path.  Now that we have the objcg pointer in the function,
+>> the extra overhead can be removed by using it for putting directly.
+>>=20
+>> Signed-off-by: Bingfang Guo <bingfangguo@tencent.com>
+>> ---
+>>  include/linux/memcontrol.h |  9 +++---
+>>  mm/list_lru.c              |  2 +-
+>>  mm/memcontrol.c            | 81 =
+++++++++++++++++++++++++++++++++++------------
+>>  mm/workingset.c            |  5 ++-
+>>  4 files changed, 71 insertions(+), 26 deletions(-)
+>>=20
+>> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+>> index 46bf724cae7af..3fb18191cfbd1 100644
+>> --- a/include/linux/memcontrol.h
+>> +++ b/include/linux/memcontrol.h
+>> @@ -180,6 +180,7 @@ struct obj_cgroup {
+>>  	struct percpu_ref refcnt;
+>>  	struct mem_cgroup *memcg;
+>>  	atomic_t nr_charged_bytes;
+>> +	refcount_t private_id_ref;
+>>  	union {
+>>  		struct list_head list; /* protected by objcg_lock */
+>>  		struct rcu_head rcu;
+>> @@ -225,9 +226,6 @@ struct mem_cgroup {
+>>  	/* vmpressure notifications. Written on every reclaim iteration. =
+*/
+>>  	struct vmpressure vmpressure;
+>> -	/* Written on every swap charge and uncharge. */
+>> -	refcount_t private_id_ref;
+>> -
+>>  #ifdef CONFIG_MEMCG_NMI_SAFETY_REQUIRES_ATOMIC
+>>  	/* MEMCG_KMEM for nmi context */
+>>  	atomic_t		kmem_stat;
+>> @@ -324,8 +322,11 @@ struct mem_cgroup {
+>>  	unsigned long zswap_max;
+>>  #endif
+>> +	/* The objcg holding private memcg ID. */
+>> +	struct obj_cgroup *private_id_objcg;
+>> +
+>>  	/* Private memcg ID. Used to ID objects that outlive the cgroup =
+*/
+>> -	int private_id;
+>> +	unsigned short private_id;
+>>  	int kmemcg_id;
+>> diff --git a/mm/list_lru.c b/mm/list_lru.c
+>> index 8a6dd0a489e12..7edd79113cc56 100644
+>> --- a/mm/list_lru.c
+>> +++ b/mm/list_lru.c
+>> @@ -428,7 +428,7 @@ unsigned long list_lru_walk_node(struct list_lru =
+*lru, int nid,
+>>  		xa_for_each(&lru->xa, index, mlru) {
+>>  			rcu_read_lock();
+>>  			memcg =3D mem_cgroup_from_private_id(index);
+>> -			if (!mem_cgroup_tryget(memcg)) {
+>> +			if (!memcg || !mem_cgroup_tryget(memcg)) {
+>>  				rcu_read_unlock();
+>>  				continue;
+>>  			}
+>> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+>> index ed44b3e7ac938..22deee8312856 100644
+>> --- a/mm/memcontrol.c
+>> +++ b/mm/memcontrol.c
+>> @@ -4074,6 +4074,18 @@ static void =
+memcg_wb_domain_size_changed(struct mem_cgroup *memcg)
+>>  #define MEM_CGROUP_ID_MAX	((1UL << MEM_CGROUP_ID_SHIFT) - 1)
+>>  static DEFINE_XARRAY_ALLOC1(mem_cgroup_private_ids);
+>> +/**
+>> + * obj_cgroup_from_private_id - look up the objcg holding the memcg =
+id.
+>> + * @id: the memcg id to look up
+>> + *
+>> + * Caller must hold rcu_read_lock().
+>=20
+> This comment is really redundant since you already include a lockdep
+> assertion. My advice for writing good comments: when the code is
+> self-explanatory, explain why rather than what.
+>=20
 
-Okay, I'll keep that in mind!
+Get it! I'll remove this.
+
+>> + */
+>> +static inline struct obj_cgroup *obj_cgroup_from_private_id(unsigned =
+short id)
+>> +{
+>> +	lockdep_assert_once(rcu_read_lock_held());
+>> +	return xa_load(&mem_cgroup_private_ids, id);
+>> +}
+>> +
+>>  static void mem_cgroup_private_id_remove(struct mem_cgroup *memcg)
+>>  {
+>>  	if (memcg->private_id > 0) {
+>> @@ -4082,34 +4094,43 @@ static void =
+mem_cgroup_private_id_remove(struct mem_cgroup *memcg)
+>>  	}
+>>  }
+>> -static void __mem_cgroup_private_id_put(struct mem_cgroup *memcg, =
+unsigned int n)
+>> +static void __mem_cgroup_private_id_put(struct obj_cgroup *objcg,
+>> +		unsigned short id, unsigned int n)
+>>  {
+>> -	if (refcount_sub_and_test(n, &memcg->private_id_ref)) {
+>> -		mem_cgroup_private_id_remove(memcg);
+>> +	struct obj_cgroup *objcg_free;
+>> -		/* Memcg ID pins CSS */
+>> -		css_put(&memcg->css);
+>> +	if (refcount_sub_and_test(n, &objcg->private_id_ref)) {
+>> +		objcg_free =3D xa_erase(&mem_cgroup_private_ids, id);
+>> +		VM_WARN_ON(objcg_free !=3D objcg);
+>> +
+>> +		/* Memcg ID pins the objcg */
+>> +		obj_cgroup_put(objcg);
+>>  	}
+>>  }
+>>  static inline void mem_cgroup_private_id_put(unsigned short id, =
+unsigned int n)
+>>  {
+>> -	struct mem_cgroup *memcg;
+>> +	struct obj_cgroup *objcg;
+>>  	rcu_read_lock();
+>> -	memcg =3D mem_cgroup_from_private_id(id);
+>> -	__mem_cgroup_private_id_put(memcg, n);
+>> +	objcg =3D obj_cgroup_from_private_id(id);
+>> +	__mem_cgroup_private_id_put(objcg, id, n);
+>>  	rcu_read_unlock();
+>>  }
+>>  static void mem_cgroup_private_id_kill(struct mem_cgroup *memcg)
+>>  {
+>> -	__mem_cgroup_private_id_put(memcg, 1);
+>> +	__mem_cgroup_private_id_put(memcg->private_id_objcg, =
+memcg->private_id, 1);
+>>  }
+>>  unsigned short mem_cgroup_private_id_get(struct mem_cgroup *memcg, =
+unsigned int n)
+>>  {
+>> -	while (!refcount_add_not_zero(n, &memcg->private_id_ref)) {
+>> +	struct obj_cgroup *objcg;
+>=20
+> Please add a blank line between the variable definition and the =
+assertion.
+>=20
+>> +	lockdep_assert_once(rcu_read_lock_held());
+>> +
+>> +	objcg =3D memcg->private_id_objcg;
+>> +
+>> +	while (!refcount_add_not_zero(n, &objcg->private_id_ref)) {
+>>  		/*
+>>  		 * The root cgroup cannot be destroyed, so it's refcount =
+must
+>>  		 * always be >=3D 1.
+>> @@ -4119,6 +4140,7 @@ unsigned short mem_cgroup_private_id_get(struct =
+mem_cgroup *memcg, unsigned int
+>>  			break;
+>>  		}
+>>  		memcg =3D parent_mem_cgroup(memcg);
+>> +		objcg =3D memcg->private_id_objcg;
+>>  	}
+>>  	return mem_cgroup_private_id(memcg);
+>> @@ -4129,11 +4151,24 @@ unsigned short =
+mem_cgroup_private_id_get(struct mem_cgroup *memcg, unsigned int
+>>   * @id: the memcg id to look up
+>>   *
+>>   * Caller must hold rcu_read_lock().
+>> + *
+>> + * @return: the memcg, or NULL if the memcg referred to is already =
+dead.
+>>   */
+>>  struct mem_cgroup *mem_cgroup_from_private_id(unsigned short id)
+>>  {
+>> +	struct obj_cgroup *objcg;
+>> +	struct mem_cgroup *memcg;
+>=20
+> It would be better to add a blank line here as well.
+>=20
+
+Sure. Same above.
+
+>>  	WARN_ON_ONCE(!rcu_read_lock_held());
+>> -	return xa_load(&mem_cgroup_private_ids, id);
+>> +
+>> +	objcg =3D obj_cgroup_from_private_id(id);
+>> +	if (!objcg)
+>> +		return NULL;
+>> +
+>> +	memcg =3D obj_cgroup_memcg(objcg);
+>> +	if (mem_cgroup_private_id(memcg) !=3D id)
+>> +		return NULL;
+>> +
+>> +	return memcg;
+>>  }
+>>  struct mem_cgroup *mem_cgroup_get_from_id(u64 id)
+>> @@ -4228,18 +4263,21 @@ static struct mem_cgroup =
+*mem_cgroup_alloc(struct mem_cgroup *parent)
+>>  	struct mem_cgroup *memcg;
+>>  	int node, cpu;
+>>  	int __maybe_unused i;
+>> +	unsigned int private_id;
+>=20
+> This could be a separate cleanup patch.
+>=20
+
+Okay.
+
+I think I can send this in a separate patch later for simplicity.
+
+>>  	long error;
+>>  	memcg =3D kmem_cache_zalloc(memcg_cachep, GFP_KERNEL);
+>>  	if (!memcg)
+>>  		return ERR_PTR(-ENOMEM);
+>> -	error =3D xa_alloc(&mem_cgroup_private_ids, &memcg->private_id, =
+NULL,
+>> +	error =3D xa_alloc(&mem_cgroup_private_ids, &private_id, NULL,
+>>  			 XA_LIMIT(1, MEM_CGROUP_ID_MAX), GFP_KERNEL);
+>>  	if (error)
+>>  		goto fail;
+>>  	error =3D -ENOMEM;
+>> +	memcg->private_id =3D private_id;
+>> +
+>>  	memcg->vmstats =3D kzalloc_obj(struct memcg_vmstats, =
+GFP_KERNEL_ACCOUNT);
+>>  	if (!memcg->vmstats)
+>>  		goto fail;
+>> @@ -4380,9 +4418,10 @@ static int mem_cgroup_css_online(struct =
+cgroup_subsys_state *css)
+>>  				   FLUSH_TIME);
+>>  	lru_gen_online_memcg(memcg);
+>> -	/* Online state pins memcg ID, memcg ID pins CSS */
+>> -	refcount_set(&memcg->private_id_ref, 1);
+>> -	css_get(css);
+>> +	/* CSS pins memcg ID, memcg ID pins obj cgroup */
+>> +	memcg->private_id_objcg =3D objcg;
+>> +	refcount_set(&memcg->private_id_objcg->private_id_ref, 1);
+>> +	obj_cgroup_get(memcg->private_id_objcg);
+>>  	/*
+>>  	 * Ensure mem_cgroup_from_private_id() works once we're fully =
+online.
+>> @@ -4394,7 +4433,7 @@ static int mem_cgroup_css_online(struct =
+cgroup_subsys_state *css)
+>>  	 * publish it here at the end of onlining. This matches the
+>>  	 * regular ID destruction during offlining.
+>>  	 */
+>> -	xa_store(&mem_cgroup_private_ids, memcg->private_id, memcg, =
+GFP_KERNEL);
+>> +	xa_store(&mem_cgroup_private_ids, memcg->private_id, =
+memcg->private_id_objcg, GFP_KERNEL);
+>>  	return 0;
+>>  free_objcg:
+>> @@ -5832,8 +5871,6 @@ static void __init memcg_struct_check(void)
+>>  				      memory_events_local);
+>>  	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup, =
+memcg_write_hot,
+>>  				      vmpressure);
+>> -	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup, =
+memcg_write_hot,
+>> -				      private_id_ref);
+>>  #ifdef CONFIG_MEMCG_NMI_SAFETY_REQUIRES_ATOMIC
+>>  	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup, =
+memcg_write_hot,
+>>  				      kmem_stat);
+>> @@ -5878,6 +5915,8 @@ static void __init memcg_struct_check(void)
+>>  	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup, =
+memcg_read_mostly,
+>>  				      zswap_writeback);
+>>  #endif
+>> +	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup, =
+memcg_read_mostly,
+>> +				      private_id_objcg);
+>>  	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup, =
+memcg_read_mostly,
+>>  				      private_id);
+>>  	CACHELINE_ASSERT_GROUP_MEMBER(struct mem_cgroup, =
+memcg_read_mostly,
+>> @@ -6015,10 +6054,12 @@ int __mem_cgroup_try_charge_swap(struct folio =
+*folio)
+>>   */
+>>  void __mem_cgroup_uncharge_swap(unsigned short id, unsigned int =
+nr_pages)
+>>  {
+>> +	struct obj_cgroup *objcg;
+>>  	struct mem_cgroup *memcg;
+>>  	rcu_read_lock();
+>> -	memcg =3D mem_cgroup_from_private_id(id);
+>> +	objcg =3D obj_cgroup_from_private_id(id);
+>> +	memcg =3D obj_cgroup_memcg(objcg);
+>>  	if (memcg) {
+>>  		if (!mem_cgroup_private_id_is_root(id)) {
+>>  			if (do_memsw_account())
+>> @@ -6027,7 +6068,7 @@ void __mem_cgroup_uncharge_swap(unsigned short =
+id, unsigned int nr_pages)
+>>  				page_counter_uncharge(&memcg->swap, =
+nr_pages);
+>>  		}
+>>  		mod_memcg_state(memcg, MEMCG_SWAP, -nr_pages);
+>> -		mem_cgroup_private_id_put(id, nr_pages);
+>> +		__mem_cgroup_private_id_put(objcg, id, nr_pages);
+>>  	}
+>>  	rcu_read_unlock();
+>>  }
+>> diff --git a/mm/workingset.c b/mm/workingset.c
+>> index 8412f4840ae35..7e4fbc5a786d6 100644
+>> --- a/mm/workingset.c
+>> +++ b/mm/workingset.c
+>> @@ -281,6 +281,9 @@ static bool lru_gen_test_recent(void *shadow, =
+struct lruvec **lruvec,
+>>  	unpack_shadow(shadow, &memcg_id, &pgdat, token, workingset);
+>>  	memcg =3D mem_cgroup_from_private_id(memcg_id);
+>> +	if (!memcg)
+>> +		return false;
+>> +
+>>  	*lruvec =3D mem_cgroup_lruvec(memcg, pgdat);
+>>  	max_seq =3D READ_ONCE((*lruvec)->lrugen.max_seq);
+>> @@ -470,7 +473,7 @@ bool workingset_test_recent(void *shadow, bool =
+file, bool *workingset,
+>>  	 * configurations instead.
+>>  	 */
+>>  	eviction_memcg =3D mem_cgroup_from_private_id(memcgid);
+>> -	if (!mem_cgroup_tryget(eviction_memcg))
+>> +	if (eviction_memcg && !mem_cgroup_tryget(eviction_memcg))
+>>  		eviction_memcg =3D NULL;
+>>  	rcu_read_unlock();
+>>=20
+>=20
 
 
