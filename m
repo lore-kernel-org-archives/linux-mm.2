@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF360C982DA
-	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 19:38:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E9D7C982DA
+	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 19:38:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B8DC76B00B6; Sun, 20 Sep 2026 15:38:45 -0400 (EDT)
+	id 5C1CE6B00B8; Sun, 20 Sep 2026 15:38:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B64926B00B7; Sun, 20 Sep 2026 15:38:45 -0400 (EDT)
+	id 598F26B00B9; Sun, 20 Sep 2026 15:38:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A540B6B00B8; Sun, 20 Sep 2026 15:38:45 -0400 (EDT)
+	id 4609B6B00BA; Sun, 20 Sep 2026 15:38:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C4886B00B6
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 15:38:45 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7D3CB404BB
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 19:38:44 +0000 (UTC)
-X-FDA: 85235152968.24.1F439CD
-Received: from mail-yx2-f13.google.com (mail-yx2-f13.google.com [74.125.224.141])
-	by imf06.hostedemail.com (Postfix) with ESMTP id C1BFE180003
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 19:38:42 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=fVn1lOMt;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf06.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.141 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1BFF56B00B8
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 15:38:51 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 544B2A04C5
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 19:38:50 +0000 (UTC)
+X-FDA: 85235153220.27.BDBE350
+Received: from mail-yx2-f43.google.com (mail-yx2-f43.google.com [74.125.224.171])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 98D67C0008
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 19:38:48 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=VjSIX3bJ;
+	spf=pass (imf10.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.171 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789933122;
+	s=arc-20220608; t=1789933128;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=748fu/RuSuWEHxLL4+C7te7l41PPhxbrrdqn5kAp7do=;
-	b=iVGQwCkYNBW5bWvu/EmDYSun7c4esbOHP30Cwi38G/jfEy6E5L0stHhHhXDhG6h8/nlF+T
-	A6Zv4thOT1ZHeVrjIVqxJuqlzvg+Trb8kj+z633wYBcB6u08GtTAkdxKYsEQ5/FBHnAp8C
-	oZ+j5mSjOTaPbzXVlxWAy6UYnW64hNM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789933122;
-	b=fOOH5Vckox6ntUfXyN50Y0C016DBabELBt321+/rOl+mKbtJozDWT+V+59kcg0a9egIzqW
-	AUmCfpeCuW+1iorVAlZVUgaalQItPkOjW/s965enQG8F8yBtcpRHDI8IFlTUK0LOPlzrdM
-	serYsLjLHKccCDDOR4dgwv37+5jC/iw=
+	bh=fQwtMjDkRZvOK0KEqWuda0aT7+Kg50uVl9w6x/heTIA=;
+	b=h82v9ZFdKZn5C4//73cBb5A40wZzIv5EA2h1PrmvoS2h6nCmdnmE+rO7ftuBazIbBfVdxr
+	zdD9GqGgekP9KMnh1IFBS/nz0Ym9vbJtaZP9zlf7zkFLKmqlvA4Ez5+FBejqxCqF5MEiw0
+	zu7JG4wIb4dAJtGu8sL+WJRsZUz3FwM=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=fVn1lOMt;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf06.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.141 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-Received: by mail-yx2-f13.google.com with SMTP id 00721157ae682-85d43ac6072so20937717b3.0
-        for <linux-mm@kvack.org>; Sun, 20 Sep 2026 12:38:42 -0700 (PDT)
+	imf10.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=VjSIX3bJ;
+	spf=pass (imf10.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.171 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789933128;
+	b=sfxNZu/nwhBnEiq4bmZSE0/TgmpvEgNxGs71GAduGiD/JM9rttefzgUSBG7imqGcKvZJgo
+	nQKA+DOKmIB1C/pGdJXcAskDw2m0ycVc2sOONDTmsQTAj5sBXvrxonWJ8DEhAEI55700Tx
+	I2UV1k3PQhUxpdLjwYt+z2XTnY0dQNU=
+Received: by mail-yx2-f43.google.com with SMTP id 00721157ae682-895eaf30817so23274647b3.0
+        for <linux-mm@kvack.org>; Sun, 20 Sep 2026 12:38:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1789933122; x=1790537922; darn=kvack.org;
+        d=soleen.com; s=google; t=1789933128; x=1790537928; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=748fu/RuSuWEHxLL4+C7te7l41PPhxbrrdqn5kAp7do=;
-        b=fVn1lOMtQUPBx4uwZujWukOFyqNAYk1qvAmzk6aEPSioTaHrQ5V6MfzAC65LHp/prH
-         JeDcPC0lJZ2Hn5WddpNyykqXUvX0zvmV9UISQikGb4eb84BH8UosCUmak9WkQ86i1Ldr
-         XkdhAgQj1XxOu0P7G0JbrvJ7UEeUQDCNxzbK+eYr2GvagQVIFTn9J3DrrL8Te28atTLY
-         gzwpy8g2z3StKbvKvK+4pHHrwxofzSl9AoJwjv+igcWoCZpnGz0E/kF/M/7itnmM6fdn
-         Newk1/yQZIDS44OIYdC4d+YPKl0s1QXCbGG9bGaJWyBehmX+kAfazySVyhoOxcyk7h3j
-         ujww==
+        bh=fQwtMjDkRZvOK0KEqWuda0aT7+Kg50uVl9w6x/heTIA=;
+        b=VjSIX3bJlGc8Z8zTANBAoE4+DpSpH04cRwdyoKLCeGNry4uZoBZ8KyI3P78rp2Rzft
+         HEcEzZQT62rgACtRICNCTupngteF1QOtzACp0Xj62DwOGnZRTDVenmcNnGDMzEqVjTub
+         p6TDUyv4vbRXwAyEAfS/T2OrwcyhZbi/E+IkfW4KXnvehLZQr2XrhkZ8+OSjiS79eMrf
+         H3BEqjyrPkKueCa/Ul3iKXWiXj9a6oWhcrrxCHcJzcaOIVE04NeZh6C9TpU5fKA/Uq/k
+         iF6OXMFHIn3tRoml/fnLWcU4BWXKwPXsXpauTiOOv0C4u21k/8yUf/t5MnoAuJ4F0q/P
+         1D1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789933122; x=1790537922;
+        d=1e100.net; s=20260707; t=1789933128; x=1790537928;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=748fu/RuSuWEHxLL4+C7te7l41PPhxbrrdqn5kAp7do=;
-        b=wfbUdv9LAPlHKYFBsVf8NkIypRj9uzahmT27rzZtIJI7BrlNKTZzDdmcB1HWMfeOqT
-         rhYfdgf+9b76g7gwmJ+vByu+UlMAKMxOO1IHcgCSPzRYuZxJ1cwnyjX53iDOS2iEq/+k
-         HTb+lXmg8QxKjczOh6/maL4kdv2lpY5zRpTlKZ9PLY15l6FsVESJ3AdRnd8oXalXZf1A
-         23V2j+1IUpEJ9Z78Iedp4ZqGwiDFzaba8MeRChbtSdgzwxV2kc+m+8iba+kTYsVfg/xj
-         78pNu13DHSZ5AWbA8spJ2SPehqf0vWZeXUBHvtqq8CtQx+88RarVmjS/bHNMcQ/qEV1Z
-         U7Rw==
-X-Forwarded-Encrypted: i=1; AKwUvBzuhuSUmC9G+Zon6ru7mp1MgoIzkRUWdMD5sNEDe6BKuFnMEHQlujCw0uz0sA8YqqiJcIrDb02ZAg==@kvack.org
-X-Gm-Message-State: AFuF++nl/heIyPjydMeycHbXe9sGfAUn4tfQfImJ1XzRntijcR0sExZJ
-	bw9+zP+vWtmPqGREzdCzpJxmGXE611MXby8bkz8eh+W6B50SvepwsubUz0BAGm4X2e4=
-X-Gm-Gg: AYBFou0RbZubHf1j9wtiiSmtlwzgrMvSQSAuBzvAH9eBWifCxJPgoFKKRPVHd6SPwpC
-	gD7HWG4ZMQus2wZ5CP5nc7sbbA8mhPrVP+21Rpv4ddWkPOy5bZfpLeJWUgHk2WyPChJIDHri4gk
-	V1IE98ylL3B0WtmhcTouNqCA9qEaRBkNKFWlJ/PaLZs0RlPmDDy3qSp8QlGpvwMWo+esISANbCM
-	cQG1Rdp06eUrnD2zysu2piUHkt+AMqJDh241sRPt8nSCKY98+ZjSERZAsipeLksz7Q/VLe1e0PK
-	mYYPklqjOfOEFSpp5ihWx6Zn3PTgDX1cm6OMx+dCKFzXSFC4VVhJsGqS7qP32PNEMsdjSiqT3Hm
-	cxNRo4xDbEBSDVt1oy8DGEaj/y4PTyz5vZDdNJO0lVhN+NcWEEOaVByyCDn770990iNhs6uFN/T
-	fkAPR54zKk4YfgcfmcTOzk6AcpUpmmAvmkKKA1x84UxWz9i6JwwD2nSrT7qNJJoif9n8Bs+yqSR
-	6gMhFudmHH/avIRlqr7ro/+p0EQqrjyjWVAt7qH+Na6qQA5jxei6x3LhNR/7BV+x3OO/cj2R7jL
-	xA+EJf68a42qX5b0rZprWdtJWWurNcc=
-X-Received: by 2002:a05:690c:6a0d:b0:857:f33:6f1d with SMTP id 00721157ae682-897311d51a6mr25294217b3.6.1789933121962;
-        Sun, 20 Sep 2026 12:38:41 -0700 (PDT)
+        bh=fQwtMjDkRZvOK0KEqWuda0aT7+Kg50uVl9w6x/heTIA=;
+        b=1YZRCc8A/SxVboZ8gi6tPaCqq25HJrk6yUWpQoRoj4mJMlMHhWoq4tI4QN6XvoeN0W
+         IMqkN1QU/8xz6Lojp8ec/nLfSiPsL4JoUz0lm7as/VVysou+BLd4jMb3kKjGmIFlMwul
+         2i19IA4fEGFnOhTrMHks2Q00xc7crcRjipa7JztzXB2pEtc+b9F7Faa3dzA7pA4kaK9u
+         LxPaHUg+a7lzsrpLemtCXwE4nBWHJpS3BVYknCzw4pn0ykIwEVXBmJ4ObYYnU3Bc5H8t
+         qitOKp5DiPz4Zehl8+8CaqT3zIKsb8jyLZkDQ890lxrosJ0dCIVBbaYKgsDVOF0Tg0WJ
+         884w==
+X-Forwarded-Encrypted: i=1; AKwUvBxkqxM2RQm5nRpC/6gRJLy6mRpbsrdHvvua8UdR+JJpaAjJJG0uGziTIaSNSNG2fVEn9sHUUkEBqQ==@kvack.org
+X-Gm-Message-State: AFuF++nRHjJ3P0TLZeDhRWjtOwK/+RCkvOcGsOCbm0uKGooCbpYkoT/B
+	pbW7EeLHhWAXs8sL61KhF+2rF9fjIaJex/+2VTQCerIjhhDyF+HWomKLdxulI9ll+78=
+X-Gm-Gg: AYBFou3B6pS28o9vQZrcVnx1RQoB3r3OwMoJjkLPQi9ihjyDHXDPJPygCvJTA3Pvs4W
+	983pwvGP7Qd0dm3O+GfWK3VvBqoF3WqfB3tz5xTQjqYFfXkESyaXuj9jA/JaO7UCe3qCehIu2ft
+	GpdjcwbqCOj1YQzlZMu60Y+cD/2p3hFcHHKIawm4Y12/J0/ABzR+xWBv8yDEL98QsR6W58NVwTK
+	AMOwXvMLy/KO+ll6RHQ3rbQ/lDFhkobSHv2Xp64Zg28AU8xQbgq/5u4rZMoQANmkY+olZdJLyJ/
+	GW40EUtlXZEl1744lIyBdD4bWfalcc8AFJ//1F26OuBsgDQprXc3AoN674MuCozYnPBy5bdvUwM
+	+sEzBxAjX5Y4k1IEPmOLwtvuSkh1Cndgo+Pwf6YxE4TX/8LI7tblvdcVuykS/Ggjo1U3UK2Xp2t
+	bpwgXY1UWAa8YblJjUXAtQRiObaNqXZY6bzZC41iSemFC3lCjuFyTZolIEvh/zvjOxFbyZzFRHJ
+	IAb13lION7DAeTSqYSmU4RALYgj/4JYwrFfm94HlRZMpdvmiQCLWZ1kiJNjLovMCO9zD84W87ah
+	KFDUtfCvyk1B3pyUS4s=
+X-Received: by 2002:a05:690c:d8a:b0:882:309e:fcaa with SMTP id 00721157ae682-89733726012mr21472487b3.15.1789933127683;
+        Sun, 20 Sep 2026 12:38:47 -0700 (PDT)
 Received: from soleen.c.googlers.com.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-89a41521d6csm18803647b3.1.2026.09.20.12.38.40
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-89a46c43cecsm19037957b3.22.2026.09.20.12.38.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Sep 2026 12:38:41 -0700 (PDT)
+        Sun, 20 Sep 2026 12:38:46 -0700 (PDT)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: linux-kselftest@vger.kernel.org,
 	legion@kernel.org,
@@ -169,22 +169,22 @@ To: linux-kselftest@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	vladimir.murzin@arm.com,
 	kas@kernel.org
-Subject: [RFC PATCH 18/46] liveupdate: cpu_preserve: Add LUO file handler for preserved physical CPUs
-Date: Sun, 20 Sep 2026 15:36:22 -0400
-Message-ID: <20260920193650.3373435-19-pasha.tatashin@soleen.com>
+Subject: [RFC PATCH 19/46] x86: liveupdate: Add low-level physical CPU preservation assembly
+Date: Sun, 20 Sep 2026 15:36:23 -0400
+Message-ID: <20260920193650.3373435-20-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
 In-Reply-To: <20260920193650.3373435-1-pasha.tatashin@soleen.com>
 References: <20260920193650.3373435-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 98D67C0008
+X-Stat-Signature: toq83i3fhyhsrjkha1p9ka5ffcdpnzqu
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: C1BFE180003
-X-Stat-Signature: kx7eiuwuhjeucx9ome97tjazcrd5qjod
-X-HE-Tag: 1789933122-961505
-X-HE-Meta: U2FsdGVkX1+qv/qY86w+mPqQqei/dRFEZUWj5PM4SSd4MkvXc9HBmQ9zJUxGO2dOBwGFPC8JinPfp1g9StDfONlZq4wHLgjWjZwhC0XCOb8kf/f5kCxsJxGH02MZT0I8Tv8Blt8NdbNlMWamfDC80O+/arataeeqx8+qgll1tGgF86x+IUH5NNPhmyd5jByEhPy+gkZz0VLSBmICAf5haHuEl4thQFmXMRubC8bfnO8PWEUXs65Y4TrBs3jUQBqdnl0jBGz2Yh9VbmiP9bZ3uIgvKXbsOsCr3zSSA5B3AQJiMjEnhkvJ/ZbHOGU+yF+ET9NE6rgXxCQwt3VZVW04x1G1VSiQ4awdJHzEgzrznH5CeHmo+nFFwYuO70hTI6gXxXR5W+QM7u4inuF94ZbLeAJYP2KYFRT+yvZBkDGlnsMT5DVesFA+cZH5aVAsBafSIsAKAKoubKHZO3jb/vGOZpv/F1PP9pCH64Y9ZN2GRD+9JN3hYPAkFVQhpZRUxWGeqv5IsYPE8+6mCxr6hdXB8ZcB8jbPU9UNSl4bpIlOxiZ3+dZWWiwAVHuM6VGfgrphEP81F9lqzB2uNPHWpcP2tKjCOsjSMfxIdsYSlqdz2acc7VoCHTwUWoFq62+ZwbEJr2Il5x47xMESdcL9zmSfy7kTYU6vrlGgCvLScc51hWwhkS//RNfpot5md2KGHQMbmr/Z1j2Gb1GanigliAvofgGq9da1PlkwAdGIfK1EnfzFgO9Gpy2oqZqC9DgJfhvGMR9MrxeDgOH4mPQd1PLqCNwfT0Xsqe1VgRXDa0p+TwqOnQ5153NkznBZh2i3fQRsysioEoax1VaDC9MW5HVWQqjqpD6K2CDWzebKDZ6optZfe2wgpey9sbqjbp7H9j+/GL97XRgq0URg+EYaIC3RdH1nb2LYyPoOWhiOrsNRKYPxWlyWlWa7CJtVz+coU8+qaCDKTSngFmmuJqfYx8w
- FMcP0IKI
- 0puwE09EtL91zpRIuDPRPP6xyhYMjy18r9PdYtiboqYBeFF+nmUMO11syEHI2436L2kaSxLunQiZNraPlHd7VIQN8NbH72a7Z3Osr+qrAzLDkbamrKbkOAKi9h2Lbb+CCXmEYDkJzpR3v9CZBPJ+OZPWVgXMssahxudzxfehsIw4eEB3YcDSp2UzXHfkjPSw5iYKY73kQUe43uBGyWE6BRJHHLTbEUagpcbRRiYjm20/kVbzrmn6Hx9/B64TE0Mx5AV1ajM/I/PazwAmQGU9JHJGUgYVJ82ttmcMywx+VvkiidDqaxGb4HwnmYf/RQn72cpYT9a2vmqggKU0RhtJUqN/DHaPvTjXC6Ybn6RNjMCSW9CUQF8XBglBU5Q==
+X-HE-Tag: 1789933128-782619
+X-HE-Meta: U2FsdGVkX18BLQyZ7SKy6v0Np/PkgBqqugq02T2QQGQvtfugs4e2UHStrycoXYjhaABH+b/cqEh7gQGxatFE5qkD2JwR7ilp7U4+Ilmst1WZ0ClL8cHanwyCd7QIIOAr7am+Ts7a+4r7T5R8A2cZCuLBOBFnh6f0UML1tQpoJJvFcsp6vY2jtRBI31FRrMcZyeI2x/x3Bd59QBbvpWWWQpBYcD5ZlB5ECAOqz1uaPCNdcRz5wlrfY16/hMNBJO+l7C9Njm7QKaUFipLL715EXFnSkE+2ZReLRyLpECsU9GyEAGmazAtzI1oMtgpcUCTX89HO694aOq1by7VvcULKWsk2J6PgOcl5mzsToxldus6H2GcUuaKgRgIqYv4KKc5EuDyjFSnRQoXQad6lhPU6eLt98VOuz0+6jZEk9kcOjBhTVaMQWIsUquxdo+F7QOTUMQMhEGI5pz79iDw5hWPJ4kRV/jEgjouzUl2d4tkTtt+wun9/ShpvB2yzdbid1xt/mn2dKtEAjZKy5Hwk7y6fr12OoXG09XRXWM9ic+oIlCI/bBFe792jBk0fKw0d0qDxJQprk8iRy3V1+La6ah+0HJWeIl9oZb1UPVG+tZPfn/VIXX8fOiW4ynPnxz7c/uoU8wPWHwGetBg9YXVtbxBR+8HcHTIkQ4Sl7zXRq6HE1vUczTzWyZV1BON34M9EgguA9/zYijaoqEvQ5DF3UQk971HLRe4GXLyfBhR6YfV0EvHi5ITGJV5RFskhkhTLQxkbwnWcRGFRjs549d0mSfkJTh2lcBgdZACBHsox8oZS3tqs7prpIj/gA2GwEPEFFLig2lVzTyADOjF7E7b8JW6NCWMx1n+Fmcg5VaixflaMsESSclIX0XgavSBprKmteX+/Q6X/GPFcZLUhQJEP6I13fEMWR7q1fbNrrnv7KdytNzQZK5GKaFdk/+pblfrzYdCzhfgEEJQr/WEKVadray6
+ /LuNv5nd
+ JzmngMTHbJYiZggNzQy30a9NNLH8BPi8TRiXhPaqIkJaZk8rod14ALbELHw4OkhZnlZgKg8WG1jt3zyO1Y7E8EvqoR0hqtsArpfxv9zPnRiVkAhbl82CiePKr8TZmjPH6xI0iZQsUpSbrv2sprxQsDTU2XiR8uuhe0ZD74eLdmVvPQvWIsioqd9uIntMGUkBBQWvWMj/wRm0SXuoPzfdXXr/lOM0DozN82QfFmlvTTyNs3DSWDkh62UecvBSo4IwQWsmFiDBACpQoxsQtSyOCJu8EjkMA9G/Bf9wJD7fau4EoCZbAI/MMrTr94Pc4F6JeCQSdk40Od+C1hLxVVW1dANelZgc4cd2563Xu+EsGlFvCgU8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -192,242 +192,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Implement the LUO file handler (cpu_preserve_handler) and early boot
-incoming CPU adoption for /sys/devices/system/cpu/cpuX/preserve fds.
+Add arch/x86/kernel/preserve_cpu.S stack switch routine, preserved linker
+sections in vmlinux.lds.S, and SMP stop exclusion for preserved cores.
 
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 ---
- kernel/liveupdate/cpu_preserve.c | 189 ++++++++++++++++++++++++++++++-
- 1 file changed, 185 insertions(+), 4 deletions(-)
+ arch/x86/include/asm/cpu_preserve.h | 31 +++++++++++++++
+ arch/x86/kernel/preserve_cpu.S      | 62 +++++++++++++++++++++++++++++
+ arch/x86/kernel/vmlinux.lds.S       |  2 +
+ 3 files changed, 95 insertions(+)
+ create mode 100644 arch/x86/include/asm/cpu_preserve.h
+ create mode 100644 arch/x86/kernel/preserve_cpu.S
 
-diff --git a/kernel/liveupdate/cpu_preserve.c b/kernel/liveupdate/cpu_preserve.c
-index 2f92dfee82b1..9a039ba9e912 100644
---- a/kernel/liveupdate/cpu_preserve.c
-+++ b/kernel/liveupdate/cpu_preserve.c
-@@ -837,8 +837,10 @@ void __cpu_preserved_text cpu_preserved_set_dead(int cpu)
- {
- 	struct cpu_preserved_pcpu_ser *ser = cpu_preserved_get_pcpu_ser(cpu);
- 
--	if (ser)
--		WRITE_ONCE(ser->workload, CPU_PRESERVED_DEAD);
-+	if (ser) {
-+		smp_store_release(&ser->workload, CPU_PRESERVED_DEAD);
-+		cpu_preserved_clean(ser);
-+	}
- }
- EXPORT_SYMBOL_GPL(cpu_preserved_set_dead);
- 
-@@ -1097,8 +1099,6 @@ void __cpu_preserved_text cpu_preserved_park_loop(int cpu)
- 		switch (READ_ONCE(ser->workload)) {
- 		case CPU_PRESERVED_EXITING:
- 		case CPU_PRESERVED_DEAD:
--			WRITE_ONCE(ser->workload, CPU_PRESERVED_DEAD);
--			cpu_preserved_clean(ser);
- 			return;
- 		case CPU_PRESERVED_WORKLOAD:
- 			cpu_preserved_run_workload(ser, pcpu);
-@@ -1131,6 +1131,7 @@ void cpu_preserved_park(int cpu)
- 	} else {
- 		cpu_preserved_park_loop(cpu);
- 		arch_cpu_preserved_park_finish(cpu);
-+		cpu_preserved_set_dead(cpu);
- 	}
- }
- EXPORT_SYMBOL_GPL(cpu_preserved_park);
-@@ -1498,6 +1499,171 @@ static struct liveupdate_flb cpu_preserved_flb = {
- 	.compatible = CPU_PRESERVED_LUO_FLB_COMPATIBLE,
- };
- 
+diff --git a/arch/x86/include/asm/cpu_preserve.h b/arch/x86/include/asm/cpu_preserve.h
+new file mode 100644
+index 000000000000..969903eb70cb
+--- /dev/null
++++ b/arch/x86/include/asm/cpu_preserve.h
+@@ -0,0 +1,31 @@
++/* SPDX-License-Identifier: GPL-2.0 */
 +/*
-+ * LUO File Handler Callbacks for /sys/devices/system/cpu/cpu<N>/preserve
++ * Copyright (c) 2026, Google LLC.
++ * Pasha Tatashin <pasha.tatashin@soleen.com>
 + */
-+static int file_to_cpu(struct file *file, unsigned int *cpup)
-+{
-+	struct dentry *dentry, *parent;
-+	unsigned int cpu;
++#ifndef __ASM_X86_CPU_PRESERVE_H
++#define __ASM_X86_CPU_PRESERVE_H
 +
-+	if (!file || !file->f_path.dentry)
-+		return -EINVAL;
++#include <asm/page_types.h>
 +
-+	if (file_inode(file)->i_sb->s_magic != SYSFS_MAGIC)
-+		return -EINVAL;
++#define ARCH_CPU_PRESERVED_STACK_ORDER	THREAD_SIZE_ORDER
 +
-+	dentry = file->f_path.dentry;
-+	if (strcmp(dentry->d_name.name, "preserve"))
-+		return -EINVAL;
++#ifdef CONFIG_CC_IS_GCC
++#define ARCH_CPU_PRESERVED_TEXT \
++	__attribute__((indirect_branch("keep"), function_return("keep")))
++#else
++#define ARCH_CPU_PRESERVED_TEXT
++#endif
 +
-+	parent = dentry->d_parent;
-+	if (!parent || sscanf(parent->d_name.name, "cpu%u", &cpu) != 1)
-+		return -EINVAL;
++#ifdef CONFIG_LIVEUPDATE_CPU
++void arch_cpu_preserved_load_desc(void);
++bool arch_cpu_preserved_is_active(void);
++void x86_preserved_iret_stub(void);
++void x86_preserved_iret_err_stub(void);
++void x86_preserved_apic_eoi_stub(void);
++#else
++static inline void arch_cpu_preserved_load_desc(void) {}
++static inline bool arch_cpu_preserved_is_active(void) { return false; }
++#endif
 +
-+	if (cpu >= nr_cpu_ids || !cpu_possible(cpu) ||
-+	    !cpu_is_hotpluggable(cpu)) {
-+		return -EINVAL;
-+	}
++#endif /* __ASM_X86_CPU_PRESERVE_H */
+diff --git a/arch/x86/kernel/preserve_cpu.S b/arch/x86/kernel/preserve_cpu.S
+new file mode 100644
+index 000000000000..8acb98d46f90
+--- /dev/null
++++ b/arch/x86/kernel/preserve_cpu.S
+@@ -0,0 +1,62 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Copyright (c) 2026, Google LLC.
++ * Pasha Tatashin <pasha.tatashin@soleen.com>
++ */
++#include <linux/linkage.h>
++#include <asm/nospec-branch.h>
++#include <asm/unwind_hints.h>
 +
-+	*cpup = cpu;
-+	return 0;
-+}
++	.section .text.cpu_preserved, "ax"
 +
-+static bool cpu_preserve_can_preserve(struct liveupdate_file_handler *handler,
-+				      struct file *file)
-+{
-+	unsigned int cpu;
++SYM_CODE_START(x86_preserved_iret_err_stub)
++	UNWIND_HINT_IRET_REGS
++	ENDBR
++	addq	$8, %rsp
++	iretq
++SYM_CODE_END(x86_preserved_iret_err_stub)
 +
-+	return IS_ENABLED(CONFIG_LIVEUPDATE_ONCORE) && file_to_cpu(file, &cpu) == 0;
-+}
++SYM_CODE_START(x86_preserved_iret_stub)
++	UNWIND_HINT_IRET_REGS
++	ENDBR
++	iretq
++SYM_CODE_END(x86_preserved_iret_stub)
 +
-+static int cpu_preserve_preserve(struct liveupdate_file_op_args *args)
-+{
-+	struct cpu_preserved_file_ser *fser;
-+	unsigned int cpu;
-+	int ret;
++SYM_CODE_START(x86_preserved_apic_eoi_stub)
++	UNWIND_HINT_IRET_REGS
++	ENDBR
++	pushq	%rax
++	pushq	%rcx
++	pushq	%rdx
++	/* x2APIC mode: MSR 0x80b (APIC_EOI) = 0 */
++	movl	$0x80b, %ecx
++	xorl	%eax, %eax
++	xorl	%edx, %edx
++	wrmsr
++	popq	%rdx
++	popq	%rcx
++	popq	%rax
++	iretq
++SYM_CODE_END(x86_preserved_apic_eoi_stub)
 +
-+	ret = file_to_cpu(args->file, &cpu);
-+	if (ret)
-+		return ret;
++/*
++ * arch_cpu_preserved_call_on_stack - Switch stack and call function
++ * @cpu: CPU ID (%rdi)
++ * @stack: Target stack top (%rsi)
++ * @fn: Function pointer to invoke (%rdx)
++ */
++SYM_CODE_START(arch_cpu_preserved_call_on_stack)
++	pushq	%rbp
++	movq	%rsp, %rbp
++	pushq	%r12
 +
-+	ret = cpu_preserve(cpu);
-+	if (ret)
-+		return ret;
++	movq	%rsp, %r12	/* save old stack pointer */
++	movq	%rsi, %rsp	/* switch to target stack */
 +
-+	fser = kho_alloc_preserve(sizeof(*fser));
-+	if (IS_ERR(fser)) {
-+		cpu_unpreserve(cpu);
-+		return PTR_ERR(fser);
-+	}
++	call	*%rdx		/* call fn(cpu) */
 +
-+	memset(fser, 0, sizeof(*fser));
-+	fser->cpu = cpu;
-+
-+	scoped_guard(mutex, &cpu_preserved_lock)
-+		fser->stack_pa = cpu_preserved_outgoing.pcpus[cpu].stack_pa;
-+
-+	args->serialized_data = virt_to_phys(fser);
-+	return 0;
-+}
-+
-+static void cpu_preserve_unpreserve(struct liveupdate_file_op_args *args)
-+{
-+	struct cpu_preserved_file_ser *fser;
-+	unsigned int cpu;
-+
-+	if (!args->serialized_data)
-+		return;
-+
-+	fser = phys_to_virt(args->serialized_data);
-+	cpu = fser->cpu;
-+
-+	cpu_unpreserve(cpu);
-+
-+	kho_unpreserve_free(fser);
-+}
-+
-+static void cpu_preserve_restore_incoming_cpu(struct liveupdate_session *session,
-+					      struct cpu_preserved_file_ser *fser)
-+{
-+	unsigned int cpu = fser->cpu;
-+
-+	scoped_guard(mutex, &cpu_preserved_lock) {
-+		cpumask_set_cpu(cpu, &cpu_preserved_incoming.mask);
-+		cpumask_set_cpu(cpu, &cpu_preserved_mask);
-+
-+		if (!cpu_preserved_incoming.pcpus) {
-+			cpu_preserved_incoming.pcpus =
-+				kcalloc(nr_cpu_ids,
-+					sizeof(*cpu_preserved_incoming.pcpus),
-+					GFP_KERNEL);
-+			WRITE_ONCE(cpu_preserved_host_pcpus_va,
-+				   cpu_preserved_incoming.pcpus);
-+			cpu_preserved_clean(&cpu_preserved_host_pcpus_va);
-+		}
-+
-+		if (cpu_preserved_incoming.pcpus)
-+			cpu_preserved_incoming.pcpus[cpu].stack_pa = fser->stack_pa;
-+
-+		cpu_preserved_clean(&cpu_preserved_mask);
-+	}
-+}
-+
-+static int cpu_preserve_retrieve(struct liveupdate_file_op_args *args)
-+{
-+	struct cpu_preserved_file_ser *fser;
-+	struct file *file;
-+	char path[64];
-+
-+	if (!args->serialized_data)
-+		return -EINVAL;
-+
-+	fser = phys_to_virt(args->serialized_data);
-+
-+	snprintf(path, sizeof(path),
-+		 "/sys/devices/system/cpu/cpu%u/preserve", fser->cpu);
-+	file = filp_open(path, O_RDONLY, 0);
-+	if (IS_ERR(file))
-+		return PTR_ERR(file);
-+
-+	args->file = file;
-+	cpu_preserve_restore_incoming_cpu(args->session, fser);
-+	cpu_preserved_detach_workload(fser->cpu);
-+
-+	return 0;
-+}
-+
-+static void cpu_preserve_finish(struct liveupdate_file_op_args *args)
-+{
-+	struct cpu_preserved_file_ser *fser;
-+
-+	if (!args->serialized_data)
-+		return;
-+
-+	fser = phys_to_virt(args->serialized_data);
-+	if (args->retrieve_status <= 0)
-+		cpu_preserve_restore_incoming_cpu(args->session, fser);
-+
-+	cpu_unpreserve(fser->cpu);
-+
-+	kho_restore_free(fser);
-+}
-+
-+static const struct liveupdate_file_ops cpu_preserve_file_ops = {
-+	.can_preserve = cpu_preserve_can_preserve,
-+	.preserve     = cpu_preserve_preserve,
-+	.retrieve     = cpu_preserve_retrieve,
-+	.unpreserve   = cpu_preserve_unpreserve,
-+	.finish       = cpu_preserve_finish,
-+	.owner        = THIS_MODULE,
-+};
-+
-+static struct liveupdate_file_handler cpu_preserve_handler = {
-+	.ops        = &cpu_preserve_file_ops,
-+	.compatible = CPU_PRESERVED_LUO_FH_COMPATIBLE,
-+};
-+
- static int cpu_preserve_reboot_notify(struct notifier_block *nb,
- 				      unsigned long action, void *data)
- {
-@@ -1555,6 +1721,21 @@ static int __init cpu_preserve_early_init(void)
- 	cpu_preserved_incoming.pcpus_ser = NULL;
- 	cpu_preserved_global_ser = NULL;
++	movq	%r12, %rsp	/* restore old stack pointer */
++	popq	%r12
++	leave
++	ret
++SYM_CODE_END(arch_cpu_preserved_call_on_stack)
+diff --git a/arch/x86/kernel/vmlinux.lds.S b/arch/x86/kernel/vmlinux.lds.S
+index 2438b89a4620..9b8b70057bcf 100644
+--- a/arch/x86/kernel/vmlinux.lds.S
++++ b/arch/x86/kernel/vmlinux.lds.S
+@@ -155,6 +155,7 @@ SECTIONS
+ #endif
+ 		ALIGN_ENTRY_TEXT_END
  
-+	err = liveupdate_register_file_handler(&cpu_preserve_handler);
-+	if (err && err != -EOPNOTSUPP) {
-+		pr_err("Could not register cpu_preserve file handler: %pe\n",
-+		       ERR_PTR(err));
-+		return err;
-+	}
-+
-+	err = liveupdate_register_flb(&cpu_preserve_handler,
-+				      &cpu_preserved_flb);
-+	if (err && err != -EOPNOTSUPP) {
-+		pr_err("Could not register cpu_preserved FLB: %pe\n",
-+		       ERR_PTR(err));
-+		return err;
-+	}
-+
- 	/* Retrieve incoming preserved CPUs before secondary CPU bringup */
- 	if (liveupdate_enabled())
- 		liveupdate_flb_get_incoming(&cpu_preserved_flb, &obj);
++		CPU_PRESERVED_TEXT
+ 		TEXT_TEXT
+ 		SCHED_TEXT
+ 		LOCK_TEXT
+@@ -194,6 +195,7 @@ SECTIONS
+ #endif
+ 
+ 		PAGE_ALIGNED_DATA(PAGE_SIZE)
++		CPU_PRESERVED_DATA
+ 
+ 		CACHE_HOT_DATA(L1_CACHE_BYTES)
+ 
 -- 
 2.55.0.1082.g2b9226bbc0-goog
 
