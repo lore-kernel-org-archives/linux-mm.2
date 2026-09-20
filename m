@@ -4,103 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B84FAC982CC
-	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 09:21:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F488C982CC
+	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 09:24:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F6F76B0088; Sun, 20 Sep 2026 05:21:56 -0400 (EDT)
+	id 8736A6B008C; Sun, 20 Sep 2026 05:24:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A8426B008A; Sun, 20 Sep 2026 05:21:56 -0400 (EDT)
+	id 8247B6B0092; Sun, 20 Sep 2026 05:24:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 898BD6B008C; Sun, 20 Sep 2026 05:21:56 -0400 (EDT)
+	id 713656B0093; Sun, 20 Sep 2026 05:24:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 620596B0088
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 05:21:56 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D5DB0140393
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 09:21:55 +0000 (UTC)
-X-FDA: 85233598590.19.A3A0E72
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 078BA80005
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 09:21:53 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O6ypJEi3;
+	by kanga.kvack.org (Postfix) with ESMTP id 4A5346B008C
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 05:24:07 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 74464140394
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 09:24:06 +0000 (UTC)
+X-FDA: 85233604092.10.4E01581
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id D8DF3140004
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 09:24:04 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RjGRP7gw;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	spf=pass (imf23.hostedemail.com: domain of yukuai@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yukuai@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789896114;
+	s=arc-20220608; t=1789896245;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+D7/BT1IHpcDxVkUKhWYFCe5JmCtgbgwd+dQYTaICxM=;
-	b=0zsSU2wtgS051/lT44ge2QcdKPXf8Z+2tbQs/zOqp+6xUzuJCLDYVWWI1AqOnRG5Ohhpl4
-	xFZQ1NaylRszkCFEGqpRauBCg3vFhZMfWNrVh5RDUsooqPkEQTKr6nq2RFGqe88B1txfGB
-	LgJFegb6nTlQHcCLNeD1oL0lztEIr6Q=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=5Zw9rJKZMZuSI+1jUTLBTxzKxPkXx7fMF487IMc+57k=;
+	b=zU6FmXMPw2qa2efVJbs9F0bKwFcSWrFNuW7WaYPxhf9DgbDA7+FGWa2kVg1Uxj3N0dEeHn
+	PJyRpKq3Mcax1w9IgLvfDBXSsgmqJJ/5CBigyIsNlSF8bXbH6Wh0s0lcj5+B7MMocdekTW
+	0/FikNy41uisYtIEbv8pe6/Mcp2ouxw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789896114;
-	b=x4L72F2gg6K2gvnYrYrncSVzB9B0TvTGY+u1ot2II1W88af1t3bq0zBuUxGtB9Yb4Chm6v
-	9mzLVJnTmza+h3MqC045L8T7h3th85lc1XReGRDPDxJnZ/ePEiHSEGhAQWQs48wFZ4Y7nC
-	xWdh59wvpnH3QEzkuR17xftbwUa1rS0=
+	t=1789896245;
+	b=4Cd1W6aNAuHtSALZ/R+jXdplC8M6KR6VwJZdNwUxTyQHJHpdyXc2ALeNrt3QLD7YgFGts3
+	dG9ALi5mikuul4t+O7Ifre+JDmF/GJVIPqkOKqDJ1J5B1Vwj9yaaA3gcoXLrWcRNdZ7CII
+	J5AUvKTLKVompN9cJv1ummGw0qc2xDE=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O6ypJEi3;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RjGRP7gw;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	spf=pass (imf23.hostedemail.com: domain of yukuai@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yukuai@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id AC0E960252
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 09:21:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 628391F00893
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 09:21:52 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id CB4534180C;
+	Sun, 20 Sep 2026 09:24:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AA1B1F000FF;
+	Sun, 20 Sep 2026 09:23:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789896112;
-	bh=+D7/BT1IHpcDxVkUKhWYFCe5JmCtgbgwd+dQYTaICxM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=O6ypJEi3XmekbbWJhkr8fU5bGBhJpZweRrAPld86N9f+lKoQacQFpI6vCntJYqtUH
-	 5WYVN219o7kSTBzJMetqeguRA5BWrydKqxe+JH3IhoLh4nsv97nwyFAUpCNzOKlaCF
-	 O6I1YRYD+ydrxK6LoJq3xG9DTg/U4wDF6l0VWKcIwkgrSqofIfx8iuHqjWOAlx65YX
-	 7F+/Ic/jPzyFsJ9hATZMIqljoOONJvpOf3QD66oamNWbY0cQ3TxHp6XBSjuoCjATnX
-	 TbuyjTtyDl4i8eEjSSF9UfPbLe8NdTpFwmCVNS67/EoDnvjKwoSsZMV4aRrKPYyVKl
-	 o7zrC/krE3tkg==
-Received: by mail-qk2-f12.google.com with SMTP id af79cd13be357-93910c9ff1cso174126285a.3
-        for <linux-mm@kvack.org>; Sun, 20 Sep 2026 02:21:52 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBx2Vnq4UkJdPmrnediVXEeJgwNXLDP4nnrutT4wKD1ruAlbwUyAVts5r9fxAo3X2RrXj0pJ8BAygA==@kvack.org
-X-Gm-Message-State: AFuF++nvmBW0Yhc3QyMRx/J85IO0/KZ4NWHgiWW3haJtFpr4REQPFhNh
-	+a4sY2RGyr8ArHgSygL1eNqLRhMSNwb1Kt0Navk4Jnz1rW3CCrl9j9o3f5qBEE1lkq021zW4mMS
-	GqJXrEk5sW/DYhw7wxe5k5DvJhfwxvZE=
-X-Received: by 2002:a05:620a:8809:b0:93b:d7a3:45de with SMTP id
- af79cd13be357-93bf57e5603mr459482685a.71.1789896111765; Sun, 20 Sep 2026
- 02:21:51 -0700 (PDT)
+	s=k20260515; t=1789896243;
+	bh=5Zw9rJKZMZuSI+1jUTLBTxzKxPkXx7fMF487IMc+57k=;
+	h=From:To:Cc:Subject:Date;
+	b=RjGRP7gw9J6P3KEqUaIB6cDxXJQhT8hzei8Jwh2Nn3InDNpo9Mho80D9CpQxhAVRK
+	 aBhXNLlHPQyd5p8OwuBQl5Iqrm0/6w5/yYfvlQIGUEQtf7jxe/WRjimLserbyQntBH
+	 TpxqEqB6k9BLGNGVl/gqE2RN+JqoOryIYV34aohaGRE/08b5kWBFErEa/nb8/oFK7u
+	 Yxti2M6U7/nf8NyXNH1gxEb0rmt2pFWMxr+9p3Kfc/FFEDxjmiKtBYrOtK4pn2F7Sh
+	 SzXiC4mt2ivvlO4ppZ0xGS/h8g7W7WplY1cCuGW6ztDxmtgwK1t+BJrwUfmJEY/fCA
+	 0h34u9P82y+2A==
+From: Yu Kuai <yukuai@kernel.org>
+To: Jens Axboe <axboe@kernel.dk>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Tejun Heo <tj@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Coly Li <colyli@fygo.io>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Alasdair Kergon <agk@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Benjamin Marzinski <bmarzins@redhat.com>,
+	Song Liu <song@kernel.org>,
+	Li Nan <magiclinan@didiglobal.com>,
+	Xiao Ni <xiao@kernel.org>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>
+Cc: Yu Kuai <yukuai@fygo.io>,
+	Christoph Hellwig <hch@lst.de>,
+	Nilay Shroff <nilay@linux.ibm.com>,
+	Tao Cui <cuitao@kylinos.cn>,
+	linux-block@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-bcache@vger.kernel.org,
+	dm-devel@lists.linux.dev,
+	linux-raid@vger.kernel.org,
+	gfs2@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	llvm@lists.linux.dev
+Subject: [PATCH v4 0/3] blk-cgroup: store blkcg in bio before blkcg_mutex conversion
+Date: Sun, 20 Sep 2026 17:23:48 +0800
+Message-ID: <20260920092351.2434283-1-yukuai@kernel.org>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-References: <20260920043015.3126317-1-ridong.chen@linux.dev>
-In-Reply-To: <20260920043015.3126317-1-ridong.chen@linux.dev>
-From: Barry Song <baohua@kernel.org>
-Date: Sun, 20 Sep 2026 17:21:40 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4xmoGWULDVNGj0LzRFFfxM4VVGg4Bx5Pz5cUfXx9uKrtw@mail.gmail.com>
-X-Gm-Features: AcwNN1UQcUC92XzoRFaVg0eXTQk2xu-g1I5nlJQhu3nsQjCKfTWTt3DeOV-UAFk
-Message-ID: <CAGsJ_4xmoGWULDVNGj0LzRFFfxM4VVGg4Bx5Pz5cUfXx9uKrtw@mail.gmail.com>
-Subject: Re: [PATCH mm-new] mm: vmscan: put rotation-missed folios at the LRU tail
-To: Ridong Chen <ridong.chen@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"open list:MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)" <linux-mm@kvack.org>, linux-kernel@vger.kernel.org, 
-	Ridong Chen <chenridong@xiaomi.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 078BA80005
-X-Stat-Signature: 8m5n6j8ua7jiwida3zs4y66jqu8ocp4g
-X-HE-Tag: 1789896113-274933
-X-HE-Meta: U2FsdGVkX18t14XRcf7gtHMwzYUNfeRmeynVT2wVUezJkPK0lZbTJmViTzqUebJJSBLFrIY3iCO+5qRvChk+N2pSTZVUsy1pwjrJBw14lPFPXw2z6a/gaa3ZM7MHel9Mm4bJ4sYlD58Ssm0yJvILDSR64NB092dA8LEY538os25hrD3WjXQFJq3Q0njZnvHHxQAkaTMw4MT+Y3TPOOFKMuGaFfu0VWkSRqIww8Go7TyHWgEn4GNKouDOnTA5bcnzfaE2HFgP3m0/3ZIYE/O1CHdmBMS7otOdOciMOaEqAAzIvBvBSS2rkh/l/sQQNJ12XbBbUbLIcdl/VzBSEOQDtuo5Hi4S0UoFX4TbnhogqQ51wAWefh1FaazW9caq9XDvay8DOCpsUGfNgJjhqUFDljjRi2ncDBzIa+aNhj8JqJByHRHSbwp0GNboZnAW1isY2kz8k2REGOwfaaUY4TycKX9U77KCgi02Wid9PigRPKkxAGuiR8befH8St2MGMM1MWAlF2+Ojm8g9qPt2Hg31j4lZ9BCsrBvBwCVzi7WcqY5Q/QEuGEKJKS3RB0Mlk2rgzLbTrIhZiB5IL8qSSlXMtZyRurqA8wLksQiRIpmJWzHLuLP4wM5vougEtlM0eSL7AfW2iCjazT/MSEsPkm01lCsF33n1dbFYqYkOCGvxIn9WROABAzzuOoPNlv69KsbvDG/1OVjNHNdT8pDpZyp92O8GQx/Ferh3yzcWy1lZZz28mtw8hCrovImZn6CWQPpYtOINhDPT75g8e4zW6IkCL+GI9xDk0P1TI15Yd2/kKcdW/nahD97+K5Y0uJYvQFOIqa5HvjHvbeqMzvdlh1IeifkM5JNoE75By8pE3hBAUxx/32EL8jf0E1MWNAD/dwm/ZKdu/X7mWuNw3fUmPDZW1tMyZCIHVEqIyiu6nDjeezFad6NrGH5JuSvs2ratp5bzJFfIh4WE7b5heHv/NM1
- nYQuOYJH
- JIXwzHxb2Ei1adzzevYbOA8GFS+sLPoWx3NIZKSsndUWAOn+XZKjx7yZa0CCKe0m/95MZQxjonCS4QC+TaSyH1/van91vMLLZeLrsGjFdKsVAAfFJwY1BqT4r8DAe72eG1wqUfAPaBm/GIPHwDI2GeocNwFsQn09+RmkQePtXpQcf9umTohGSEbTRvYdr97CHoSDaM6tJIJgmk1R1hOUGonZOERgno4lMsAenMGOjWKs3kvHP8OJUYykNOzVVZS229dZQ+Iv6k15nYhViQvbn/MGf29zV4erek5+D7JbVIxAbgmXqyqWvBRVaH+Ha1fHToc3W1ot8yhg4gCbYvG+hEAN8DNaihzzlP8q8EDz5MawNiGD7sZZd2AKu8qcgUkd/WMzg
+X-Rspamd-Queue-Id: D8DF3140004
+X-Stat-Signature: dqxhqjra6r718ac67k6g787ia4p7fwfb
+X-HE-Tag: 1789896244-668893
+X-HE-Meta: U2FsdGVkX1/TXZPB0M9+OHGu68gdnD55iUVXP0x/gF7SwkvBFDxD3C13l/2aHzVVo4pM183ZPnYuzvZjnRrmxbk4vIUfjvspaQDtlqjxnu15zkoxWBLNFyo3gdVTkcVkvJ9D78qnLtNXmGSqbg4oqjH79rmP2WMgZ/QuYHk67HPvVV/J6YN9VUTJoCGSD5kBi6Y0905kByG1ZBSQJKRwoi/cCdJ6SCahkHk0hGY6lbAmfbFZaeqzQ7UhzZbA6Oe6oE8m25ABxAv+Bgq9u9ttAhbBs8yGxSKX/cU63sb6DfhwReVz4z1WMuXeB8Y6QNCtQHPudGD5BXch4a7OcHwYA2U+VgKBZOLb6f6af1cKqkhB7kmsUVidYAuKs9xC7R5xs5DD6pCiay15szxC6FqIDpcep2vDNNFZEdK3Z3w2M9Ql3WTYN/3zPeoek0zhabGeR7v04YTb9TXyd6oPj505h2cwxNr1F+SOYtUTuou0FJjs76sHEtWPsWzceBvLuol8p4S+6Dnj+39zIG8+n8SgdrcH92CMYCU2bRQSOka7O/Fw3JshEQS/teo4g4iN1DB/wIKi9xplcfRcAqKQA1/YYl7TBd0WKpheXkPL9czVhtJYySJrGUtf0k8aU8BfzD24193CbTrOOfmw6eXN153g/QcLOtItYJrP1u1t46lDUkHhhn0xK/ZjR5dfjNjbTEzX+p4HXVBuqc+YI0y1wOcBDs28yEH0pN4/uPk4vi0Vr/e3/aqenyu27MNRxe12ZBv/QpvXXB6x4CAMb1ayVkFfvYuTW8BhEaG6iHcYLQcB+smfxOCj+JAYASiaIY7FO7x6pTNpxtu8JTwXDrrizJJUMQMbhkXpX0ZTRX9g5XsA/qX5uEXW73jShqFhWxgcg+AYhRV754yAG7BQSfUVGwMFzxgPbbJSty3XqAJvXOpD7UcT56yZKTKtaJ4zmIhI7g8ns938nyyOMPjXvCdctS0
+ VAR44Slz
+ jiU39CMrxN08IWIFSb2aWMfPiMu8eaIEjkmCUQVXxT+x+r8bzHsfGdj1wW4mOFZJ5cJA2+ROUKFrWVnjfqQfqhPKxUdGpbMdafPXCftiinE5tPt85tK91ZjlODhJegtDmT0aknnu1Prnv4Zvk2YgLMgWHbX+ZB1/q0XFPd8sbfOteB/vkTr2H0osqxmxRTvLG7FjCsJYMXp9iweLrQMt7TQ90IrDsKB11gbe9eOLiE5csPjtpskyvAjyrGjCWATuV8XH8dp0owmHRBKmkJBDg2GqS0f+XerlqZphG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,116 +132,160 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Sep 20, 2026 at 12:30=E2=80=AFPM Ridong Chen <ridong.chen@linux.dev=
-> wrote:
->
-> From: Ridong Chen <chenridong@xiaomi.com>
->
-> The page reclaim isolates a batch of folios from the tail of an LRU list
-> and works on them one by one.  For a suitable swap-backed folio on an
-> async swap device, it queues the folio for writeback and, after finishing
-> the batch, puts the folio back to the head of the original LRU list.
->
-> Meanwhile the page writeback flushes the queued folios in its own,
-> independent batches.  For each folio it writes back it calls
-> folio_rotate_reclaimable(), which tries to rotate the folio to the LRU
-> tail.  But folio_rotate_reclaimable() only takes effect once the folio ha=
-s
-> been put back by reclaim.  If the async swap device is fast enough, the
-> writeback can complete a folio while reclaim is still working on the rest
-> of the batch that contains it.  In that case the folio stays near the hea=
-d
-> and reclaim will not revisit it before wrapping around, causing a cold/ho=
-t
-> inversion: a clean, written-back folio that should be a prime reclaim
-> candidate is kept ahead of hotter folios.
->
-> commit 359a5e1416ca ("mm: multi-gen LRU: retry folios written back while
-> isolated") addressed this for MGLRU only.  The traditional active/inactiv=
-e
-> LRU has the same problem, reported at [1].  A reproducer is available at
-> [2].
->
-> Rather than re-reclaiming those folios (which would drop the swap cache
-> that may still be useful for a future hit [4]), restore the rotation that
-> was missed: when move_folios_to_lru() puts a folio back, add it to the LR=
-U
-> tail if it looks like it missed folio_rotate_reclaimable() (inactive, not
-> mapped, not dirty and not under writeback).  A new do_rotate parameter
-> gates this so it only applies on the reclaim put-back path
-> (shrink_inactive_list()), not on shrink_active_list() where the list orde=
-r
-> is already deliberate.  This approach was suggested by Barry Song [3].
->
-> Only the traditional LRU is handled here.  MGLRU already retries such
-> folios via its own clean-list retry pass in evict_folios(), so it is left
-> unchanged.  The same do_rotate scheme could later replace that retry pass
-> to unify both LRUs, which is left for a follow-up.
->
-> [1] https://lore.kernel.org/linux-kernel/20241010081802.290893-1-chenrido=
-ng@huaweicloud.com/
-> [2] https://lore.kernel.org/lkml/46037a37-4cf6-448e-a94b-30a4d16e8814@lin=
-ux.dev/
-> [3] https://lore.kernel.org/lkml/CAGsJ_4zwP3_+EYY5Ug9EJ+yD1UdxsBSGr25u8s1=
-K3u_i7LH3Zg@mail.gmail.com/
-> [4] https://lore.kernel.org/linux-mm/20260911121341.178028-1-alex@ghiti.f=
-r/
->
-> Suggested-by: Barry Song <baohua@kernel.org>
-> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
-> ---
->  mm/vmscan.c | 21 +++++++++++++++------
->  1 file changed, 15 insertions(+), 6 deletions(-)
->
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index e200ce3eb056..026b844c681f 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -1971,7 +1971,7 @@ static bool too_many_isolated(struct pglist_data *p=
-gdat, int file,
->   *
->   * Note: The caller must not hold any lruvec lock.
->   */
-> -static unsigned int move_folios_to_lru(struct list_head *list)
-> +static unsigned int move_folios_to_lru(struct list_head *list, bool do_r=
-otate)
->  {
->         int nr_pages, nr_moved =3D 0;
->         struct lruvec *lruvec =3D NULL;
-> @@ -2018,7 +2018,16 @@ static unsigned int move_folios_to_lru(struct list=
-_head *list)
->                         continue;
->                 }
->
-> -               lruvec_add_folio(lruvec, folio);
-> +               /*
-> +                * Put folios that may have missed folio_rotate_reclaimab=
-le()
-> +                * at the tail to avoid cold/hot inversion.
-> +                */
-> +               if (do_rotate && !folio_test_active(folio) && !folio_mapp=
-ed(folio) &&
-> +                   !folio_test_dirty(folio) && !folio_test_writeback(fol=
-io))
-> +                       lruvec_add_folio_tail(lruvec, folio);
+From: Yu Kuai <yukuai@fygo.io>
 
-sashiko says:
+This is v4 of the preparatory series for the blkcg_mutex conversion
+proposed in the related series [1]. That conversion moves queue-local
+blkg topology synchronization from q->queue_lock to q->blkcg_mutex,
+which is awkward while bios directly store queue-local blkg references.
 
-"Could this heuristic indiscriminately place un-reclaimable clean folios at
-the LRU tail, ensuring they are immediately re-scanned in an infinite loop?
-If shrink_inactive_list() isolates a clean, unmapped file folio with an
-elevated refcount (such as from a concurrent GUP or speculative lookup),
-it will fail __remove_mapping() and be placed on ret_folios.
-Because this pinned folio matches the !active, !mapped, !dirty, and
-!writeback checks, it is placed at the tail of the inactive LRU. The very
-next isolate_lru_folios() pull from the tail will immediately isolate this
-exact same folio again, creating an infinite loop that prevents any other
-folios from being reclaimed and causes kswapd to spin at 100% CPU."
+Storing a blkg also ties a bio to one request_queue. A remapped bio must
+drop that reference and recreate the association for the new queue even
+when no blkcg policy needs it. Dying blkgs add another complication:
+they disappear from the per-blkcg lookup tree before all pinned bio
+references drain.
 
-This seems to be a valid concern. For a clean and unmapped folio, we
-may still fail in `__remove_mapping()` if it is pinned somewhere. So
-perhaps we can add a refcount check when fixing the rotation.
+Patch 1 makes request_queue the authoritative lookup owner. A
+queue-owned rhashtable keyed by the blkcg CSS ID keeps dying blkgs
+discoverable until their references drain, while q->blkg_list remains
+available for ordered walks.
 
-Best Regards
-Barry
+Patch 2 stores and pins the queue-independent blkcg CSS in each bio.
+Queue-local blkgs are created lazily by policy users, then pinned until
+the bio changes devices or releases its cgroup state. Completion and
+accounting paths which do not create a blkg remain lookup-only.
+
+Patch 3 moves async bio punt state from blkg to blkcg, so punting alone
+does not instantiate a queue-local blkg.
+
+Changes since v3:
+
+  - In patch 2, have blk_cgroup_bio_start() look up an online blkg under
+    RCU and hold a temporary reference for accounting. 
+  - In patch 2, dm may restore bi_flags without restoring that reference,
+    instead of fix this problem in dm, drop the blkg pin after
+    blk-throttle for bio-based drivers. This is safe because
+    blk-throttle is the only policy and blkg is not longer needed.
+  - Add Nilay Shroff's and Christoph Hellwig's Reviewed-by to patch 3.
+
+Changes since v2:
+
+  - Rebase onto the latest for-7.4/block branch.
+  - In patch 2, release BIO_BLKG_REF after bio accounting and before
+    entering a bio-based driver's ->submit_bio(), instead of filtering
+    the flag in dm_bio_record(). Add Nilay Shroff's Reviewed-by.
+  - In patch 3, replace scoped spinlock guards with explicit
+    spin_lock()/spin_unlock(), drop the redundant teardown check, and
+    rely on zero-initialization for async_bios before publication, as
+    suggested by Nilay Shroff and Christoph Hellwig.
+
+Changes since v1:
+
+  - Rebase onto the latest block-7.3 branch.
+  - In patch 2, require every blkg rhashtable lookup to run inside an
+    explicit RCU read-side critical section. Annotate blkg_lookup_any(),
+    blkg_lookup(), and recursive wrappers with __must_hold_shared(RCU)
+    so Clang thread-safety analysis verifies the contract.
+  - In patch 2, exclude BIO_BLKG_REF from the flags saved by
+    dm_bio_record(), since restoring an ownership bit cannot recreate
+    the associated blkg reference.
+  - In patch 3, use scoped spinlock guards for async_bios and annotate
+    the list with __guarded_by().
+  - Add Nilay Shroff's Reviewed-by to patch 1.
+
+Changes since RFC v3:
+
+  - Drop the RFC prefix.
+  - Add Christoph Hellwig's Reviewed-by to patch 1.
+  - Add Tao Cui's Reviewed-by to patch 2.
+  - In patch 2, relax blkg_lookup_any()/blkg_lookup() to also allow
+    q->queue_lock as an alternative to the RCU read lock.
+
+Changes since RFC v2:
+
+  - Drop the old patch 1 and send it separately as a bugfix for 7.3 and
+    -stable, as suggested by Christoph Hellwig.
+  - Rebase onto the latest for-7.3/block branch.
+  - In the new patch 1, note that the remaining q->blkg_list walkers are
+    cgroupfs/sysfs slow paths and can move to rhashtable iteration after
+    the queue_lock-to-blkcg_mutex conversion.
+  - In the new patch 1, explain the list_empty case in blkg_release(), and
+    add an RCU lockdep assertion plus documentation that blkg_lookup_any()
+    does not acquire a reference.
+
+Changes since RFC v1:
+
+  - Add patch 1 to wait for every old blkg to leave q->blkg_list before a
+    shared request_queue is rebound, instead of treating root_blkg == NULL
+    as completion of asynchronous blkg teardown.
+  - Add patch 2 to replace the per-blkcg radix tree and lookup hint with a
+    request_queue rhashtable keyed by blkcg->css.id, as suggested by
+    Christoph Hellwig. Keep dying pinned blkgs in the hash until
+    blkg_release() so bio-owned references remain discoverable.
+  - Fold the v1 helper-only patch into patch 3, as suggested by Jan Kara
+    and Christoph Hellwig, and make bio_blkcg() naturally return NULL for
+    an unassociated bio.
+  - Rework patch 3 so blkg_lookup_create() acquires the bio-owned
+    reference, falls back to a live parent when creation or tryget fails,
+    and updates bi_blkcg when the returned blkg belongs to an ancestor.
+  - Make bio_blkg_lookup() lookup-only: it returns NULL unless BIO_BLKG_REF
+    is already set. Use bio_blkg() in the BFQ and IOCOST merge paths which
+    may need to create a blkg, while keeping blk_cgroup_bio_start() and
+    completion paths lookup-only.
+  - Move CSS online-reference handling into
+    bio_associate_blkcg_from_css(), including fallback to the root blkcg,
+    so bio_associate_blkcg() does not take a redundant reference.
+  - Keep the v1 async bio punt conversion as patch 4 and document that
+    async_bio_lock protects async_bios.
+
+Previous versions:
+  - v3: https://lore.kernel.org/r/20260918041744.1526924-1-yukuai@kernel.org
+  - v2: https://lore.kernel.org/r/cover.1789237876.git.yukuai@fygo.io
+  - v1: https://lore.kernel.org/r/20260823133045.970199-1-yukuai@kernel.org
+  - RFC v3:
+    https://lore.kernel.org/r/20260818070641.756747-1-yukuai@kernel.org
+  - RFC v2:
+    https://lore.kernel.org/r/20260811064744.1139446-1-yukuai@kernel.org
+  - RFC v1:
+    https://lore.kernel.org/r/20260804065313.2092022-1-yukuai@kernel.org
+
+Related series:
+  [1] RFC v2 blk-cgroup: protect blkgs with blkcg_mutex
+      https://lore.kernel.org/r/20260724123037.3004560-1-yukuai@kernel.org
+
+Yu Kuai (3):
+  blk-cgroup: use a request_queue rhashtable for blkg lookup
+  blk-cgroup: store blkcg in bio instead of blkg
+  blk-cgroup: move async bio punt state to blkcg
+
+ Documentation/admin-guide/cgroup-v2.rst |   2 +-
+ block/bfq-cgroup.c                      |  18 +-
+ block/bfq-iosched.c                     |  19 +-
+ block/bio.c                             |  22 +-
+ block/blk-cgroup-fc-appid.c             |  10 +-
+ block/blk-cgroup-rwstat.h               |   2 +-
+ block/blk-cgroup.c                      | 355 ++++++++++++++----------
+ block/blk-cgroup.h                      |  93 +++++--
+ block/blk-core.c                        |  17 +-
+ block/blk-crypto-fallback.c             |   2 +-
+ block/blk-iocost.c                      |  12 +-
+ block/blk-iolatency.c                   |  11 +-
+ block/blk-ioprio.c                      |   2 +-
+ block/blk-throttle.c                    |   3 +-
+ block/blk-throttle.h                    |   2 +-
+ drivers/md/bcache/request.c             |   2 +-
+ drivers/md/dm.c                         |   2 +-
+ drivers/md/md.c                         |   2 +-
+ fs/gfs2/lops.c                          |   3 +-
+ include/linux/bio.h                     |  26 +-
+ include/linux/blk_types.h               |   9 +-
+ include/linux/blkdev.h                  |   2 +
+ include/linux/writeback.h               |   2 +-
+ mm/page_io.c                            |  12 +-
+ 24 files changed, 396 insertions(+), 234 deletions(-)
+
+
+base-commit: 6aff7d30932eda1aa3e96364e73ec6fbcfbefe1a
+-- 
+2.51.0
 
