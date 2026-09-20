@@ -4,124 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D611AC982E1
-	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 12:20:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73A22C982E1
+	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 12:24:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 91C716B0088; Sun, 20 Sep 2026 08:20:42 -0400 (EDT)
+	id 357286B008C; Sun, 20 Sep 2026 08:24:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8CD116B008A; Sun, 20 Sep 2026 08:20:42 -0400 (EDT)
+	id 2E1786B0092; Sun, 20 Sep 2026 08:24:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7BCEB6B008C; Sun, 20 Sep 2026 08:20:42 -0400 (EDT)
+	id 1ABDB6B0093; Sun, 20 Sep 2026 08:24:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5D2476B0088
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 08:20:42 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7C3EC80431
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 12:20:41 +0000 (UTC)
-X-FDA: 85234049082.12.1DB3D39
-Received: from mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
-	by imf11.hostedemail.com (Postfix) with ESMTP id E0E244000A
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 12:20:37 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=oaUD7Rdy;
-	spf=pass (imf11.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789906839;
-	b=B+E+Ahae6ivm12L2gjIk5znjB48lQlky39XabsTDp/sStLG5VN+sZD45iMqfo5EjT09gOY
-	4qTnwuYvxiMMLiSYhrmiMh6YuT+N6Dagzq2J8Nff5fyBlpevmDXXvkSvPIgEWbg6MXm/w8
-	6SU5BDiMctAjCI+Y+a8cueYaLNOPPkw=
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E7D886B008C
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 08:24:20 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 39427A0414
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 12:24:20 +0000 (UTC)
+X-FDA: 85234058280.17.8E38CFF
+Received: from mail-pj2-f21.google.com (mail-pj2-f21.google.com [74.125.227.149])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 86D3FC0005
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 12:24:18 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="fe/z/gMB";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of donggeunyoo.kernel@gmail.com designates 74.125.227.149 as permitted sender) smtp.mailfrom=donggeunyoo.kernel@gmail.com
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=oaUD7Rdy;
-	spf=pass (imf11.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="fe/z/gMB";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of donggeunyoo.kernel@gmail.com designates 74.125.227.149 as permitted sender) smtp.mailfrom=donggeunyoo.kernel@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789907058;
+	b=Mjr/h2ryY6XmUG9zkYUaaTQwrvJENwyU4xcGpL73bDTJkAz/fPoilrGFUmEuyVWjaPhDKz
+	PfHLZI6Gptgl7ytJWluxS6LB/aePZU/Iq8Mh1TkktdJSCEjqdk7mTvwrGE2zNbbeExIhN7
+	Er96+CNxwad0zX1GTS4/8fteMkAcoF0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789906839;
+	s=arc-20220608; t=1789907058;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mOMKVBKBfUL6Eqo1C/LC7lB1eE674NCOqBy+dNKmAd0=;
-	b=BabEu5pZQdGGyfbkDepayBLoUQnnUa7QDbHV6ixpErf9SYcdYC75cKVQ4jxCiovqcPT2TM
-	dNb36Oy7y5UvGoBhST7dCQmVdYpd3hXsi2ebaXe7LDlq3WF/T5Zc5VPADERNBem814HYHw
-	+C5pOaNV2TMqicND4ncb/j1psK/1VcA=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=mOMKVBKBfUL6Eqo1C/LC7lB1eE674NCOqBy+dNKmAd0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789906834; v=1; x=1790511634;
- b=oaUD7RdyLK32CNLCjj2ZekgwNiO8e8L/LKzBHb0wLwRSaqG80AM9quK0nQHFYR7p7HKRz/zr
- xR91qp6UoNMJG09XRZJJvpYL5JIkYKHmE5x8ozk/m0BRkxS7ltG/iZSQXFTDqfLxksVLQ0dgClh
- BmhEHL/10+9Fjwp5So1vnTuw=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id cca487d333b8b0d5;
-	Sun, 20 Sep 2026 12:20:34 +0000
-X-Mizu-Trace-ID: cca487d333b8b0d5
-X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: ljs@kernel.org
-Cc: akpm@linux-foundation.org,
-	surenb@google.com,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	shakeel.butt@linux.dev,
-	david@kernel.org,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	nico.pache@linux.dev,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	usama.arif@linux.dev,
-	kas@kernel.org,
-	rppt@kernel.org,
-	mhocko@suse.com,
-	xu.xin16@zte.com.cn,
-	chengming.zhou@linux.dev,
-	jannh@google.com,
-	pfalcato@suse.de,
-	riel@surriel.com,
-	harry@kernel.org,
-	chrisl@kernel.org,
-	kasong@tencent.com,
-	shikemeng@huaweicloud.com,
-	nphamcs@gmail.com,
-	baoquan.he@linux.dev,
-	youngjun.park@lge.com,
-	peterx@redhat.com,
-	muchun.song@linux.dev,
-	osalvador@suse.de,
-	matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com,
-	rakie.kim@sk.com,
-	byungchul@sk.com,
-	gourry@gourry.net,
-	ying.huang@linux.alibaba.com,
-	apopple@nvidia.com,
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Xjgh5OlWwYGa3/r9MOFyxfKxsWIa/znQ2EXAbXuSxlg=;
+	b=6Y12sf0I9j1D4/QEnZYYO6B/BIeH0FZSV7MNW+u27j6h98s/3V4xQBnVAWoFyQp5xl5Kcp
+	QxK+J9kNq+5cfODIR5ZzvMDPeh0vwnu3x55RApnHrcyBNS1zo3lTYdjdke9B9/dS5m6GS6
+	M2/zNDGEpru7z/BEZXHdOpXlsPkRCNk=
+Received: by mail-pj2-f21.google.com with SMTP id d9443c01a7336-2d747f0b25dso23595615ad.2
+        for <linux-mm@kvack.org>; Sun, 20 Sep 2026 05:24:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789907057; x=1790511857; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Xjgh5OlWwYGa3/r9MOFyxfKxsWIa/znQ2EXAbXuSxlg=;
+        b=fe/z/gMBtVfJuke4qzY9MjZEFbv2k2xJfhvfHJ6mKo1v5NnrdY6pORQl2SXht6rC4K
+         gczBek9xZbToB6v3HsehLkk15cfZBCms2JTasG9hXIG9QV02QqXIUp53RHdKdf8Pg6x3
+         mkrLHlODMB+NyM4V2nDwdTiLCNcXciSX+Hk2GmNhsH2EL46chuno3lYuWJMFm/B7P7Xr
+         Qrna9aXzw2AJ+Ni/zDm2HOD+gGY4y03EsbvexA4/h64gNdKO/FyPZmX0lX5aQJicMEi1
+         oTAahH0DI7R2D8D+32sB68tDETGXX7CVa74J+U6SWz2wz0RjifrzQuLTsTXenWDz1Wdg
+         Bpiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789907057; x=1790511857;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Xjgh5OlWwYGa3/r9MOFyxfKxsWIa/znQ2EXAbXuSxlg=;
+        b=Ny/XbgjwyTSmrBDiOAXns/QoaFaZVxyGQc2dMtZjnLe+8ntWNG4XsSw+Bz18TvXMJq
+         fG295l9xHvZgSEhixzfV2uRPl9KI8D6Wy4nKyQz+g20on+dqUnBklFMMvlhCuSGloje+
+         +656Ev5hZ9U00xG1PqngwxyTKDjYXr1YZJAR0XRjQhI8PIbcmtFePbYbW2/XSpqn0FmI
+         jqAsTkma1Z/f96ti8jfjAA41KoNdGxqGxiNZ2FFgXRe4qi//VIHAwSXEBYtTr4D7ibAz
+         rkMGM8mPWXXv61Tzs4oJIiIpLbwP1ATNN4AcgxtJuC+ZxZoCnpJ/nnbSeTyr2mxY406T
+         Hobg==
+X-Forwarded-Encrypted: i=1; AKwUvBzKdyF7QBemQyVpCEL/uqKQD7i57aAKe7XJ6wjyM3gYasXJ0y121kGu3tueU7dy5QikpUQfVVsbhw==@kvack.org
+X-Gm-Message-State: AFuF++ny9jTHVHYUtgkvYqV8hZcpBp4JpcaWNWevYkJzrrhRpaRGpeLq
+	6ZUKowOgbFlSqlOw++g5h6DmMjMBr2ioTMEEUBv3NDUFNPGaPfG95uo=
+X-Gm-Gg: AYBFou1/k4HK6jrJwgwiEWBql3OHiGBryFXA2b982l+ahopnTQzWTtDwFrMTXZ9PvGO
+	el1oElXZmTuV/0uAzMZKh2PUBMmF+qVQmHZpiz74evZBp2K02M28UV8/oMH9AEp603+g2Wei3KS
+	Wl1tFyBogRi9pzSiJ0IpXxNz6EbK8ZWjkVinkzwoToZGPOVb/YVEpoihVXEfQAX96Js0zBulK8+
+	HZx95CO1eyY2Ogm+uHJnNJYSTXehyP6kfxeqhQjzSSyrEGZDl7lHCCCFwLIllL5JKkygx83dl9Q
+	Hq2esE+Cz3WlzV3G/yUNu4HjWc6cirNjn0maQIC7oo+3X6K8CNEP5BAViqIvbS6LEmItIxWsb5f
+	d4QbByV0rovBfrZyxmzYDefXqHA3l6EwtYCyTdJEo1R6sn6PiW43uqHH8k4b9eQPp3+pBfGGhMD
+	/Ce1l5/WP527tzzxzqBs6qXdjaOxkcLsHQo26ZoKHJoI/MO9PZVxG3Sbyh7tdb3eavFgd8Db+9P
+	IN3D7qPyfpDe3+FfQuE9OOy7oM=
+X-Received: by 2002:a17:90b:5784:b0:39d:f5b1:e365 with SMTP id 98e67ed59e1d1-39e54f35b9cmr12927548a91.25.1789907057067;
+        Sun, 20 Sep 2026 05:24:17 -0700 (PDT)
+Received: from ydg-Zenbook-14-UM3406GA ([2001:2d8:7f00:8c85:e0d6:4b87:c472:c9ae])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e6cae997csm8753943a91.11.2026.09.20.05.24.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 20 Sep 2026 05:24:16 -0700 (PDT)
+From: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
+To: sj@kernel.org,
+	akpm@linux-foundation.org
+Cc: damon@lists.linux.dev,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/3] mm/vma: const-ify vma_assert_stabilised() and associated functions
-Date: Sun, 20 Sep 2026 20:20:27 +0800
-Message-ID: <20260920122027.8234-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20260917-vma-is-faulted-v3-1-5c22314a72e7@kernel.org>
-References: <20260917-vma-is-faulted-v3-1-5c22314a72e7@kernel.org>
+	linux-kernel@vger.kernel.org,
+	donggeunyoo.kernel@gmail.com
+Subject: [PATCH v3 0/2] mm/damon: fix the temporal goal tuner's size quota conversion
+Date: Sun, 20 Sep 2026 21:24:09 +0900
+Message-ID: <20260920122411.610213-1-donggeunyoo.kernel@gmail.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E0E244000A
-X-Stat-Signature: mxuhzyr5bt8zgaw4ss4xei6p955jyedp
 X-Rspam-User: 
-X-HE-Tag: 1789906837-578078
-X-HE-Meta: U2FsdGVkX1+LK4qclsMsHuASowMVpZwfqAorfIXvLalYop740R0nrbannYikm5gG60mAoMtYzp6p1K0SByJLXpF/dtIe8yaVKpXRtc5pG8UQsHsg5Ns091Q8V8Pma/F3RTugnWHnlJReo9AyGc3I3kkClr6PwBSEbNK3lPvwnytoHcVnb8W+yYm/ezXmjyyJR3bTN2ZDDwD/kuERdj6hBbJsxWNfZ+l5KjuVzi4XzIoSfNrL6QguP8y/rzhA893KGlO5I9ae+puxHrb+ghpGY32vnbTY1Dy5543dN/kUDloahWOMP86sHPvcwSn754UwZvaGhIPaBxLmCVOeJHscoagDflMIxLI69C31u2AMCuddMA4FebpMXU/j2c5SNUAirODc7ZHNdWCiRmnZUzZzZkd0RsAxh1dUNbqYmi+EoWSbNFLEhkT2oRifEKup2O0+7bI/bAHhalGeRMU3JyBAZVD8bWojPMhPDyaPHqtRCZ0hSMNWbtkOrrchutr9h5d/9Hjtxm2GrqFVnTDswVbAegexCfysiQCV/cHpk4PEDX6gv1DZRV+i0m2nBUIf9q/MJx91OUISMT5AHzedJ5bc6P6JBn4ClbI7rbPIaurjEVf9mFfXwlHvSf1Dc6BIEOw+KFpfVSgObXtmOQadbUezlMyXiCiuDWbk6QRovVr9FfenxXmXTAtnIeeTD6SKBeQV9qFlsHywjdfmn0B87pFnrsbEKjjLbo2NCjKn0QOIMmimBDe87ojby6FuOWWK0lYWzKmxXtH0ZM2/NlBL7Uv90LRb5+vbcIiDGUCL1fmPC8OBcPvOZmowq940kZZKF2sQHGe4gUWyVZht3t619BEVaxRLZhZIGnVmusWKqO8q+ksPk5O9oZLtZ60LhffFGXfmU/pm3amJRObDSxmtTjey968r0V2b6/WkapMvFDjEY4bOeKhZU8KOCrO4QNc3zXcYI9kjEnAdUK3jMuM0gPW
- 8eGjVNae
- Rk2gC1toOBtnFmHNeKUp4qUWcodJJaCERZ9eL4lsx+LtL6m4oSL7LRzN54Q3ssRaSSvIT9OeIpEFFrstAA/4sC8VW2uNcONJxk95q5S/Q8fS9gXrkeEE+iutw5vU4a5MyErEScFNfGNJ1INCz/gJszT9J8AgMrnykmOYtrENTa6pMwWBE7IdLbiNcqOz2s879pMoQuakgJ3bmp7KSFCfG5bsIiHq+tgxtMsyWBkoAjcYVviDw2s37HXUtpg9KDyO4CLJxIep9isPDkMOgpC4SioI3yA3QPMRAw11SJjO3yx+vlkw0e1aarBbb3j+euloCookM2K0V3LZ5HqmVpCSE0LdudMglVv22es/CaP7nvBHxIcy3u11XqflnljdAQSeJFCcH
+X-Rspamd-Queue-Id: 86D3FC0005
+X-Stat-Signature: ha8rmw3arqt66ce1uwispd63sok94y8u
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789907058-5335
+X-HE-Meta: U2FsdGVkX18NtGKbW+jpBM5xsiUXnLgLtxsFn9CCr0KE/Z/43k15CbM2TQJae1v9AcGIntKXKDj9ODGH8Ey/2lVIGwKlttaF0spzVEoGJ2D/sNBC25Cm1JP8aAOon2PhWoIWMiw1P0Bi9UwJy4C88zYK3mpsODBl9TpEJZK6/tThzOzWL9rpD24QWoy86Mw1z0f2sqfgIJY/7AOZq+NB02/WPETfU/UYLtU5GboX4aC6l73tlNl9811wI8mJpHzWDr+a8jSkO4vUbGCd254vHGfM9MUDNxDsSQ9fvncBogo7ed3dHxE4T+Qn7PuNqZuaxAYpNMJ3TPW1CQW7agxd43DnJMEeruIPzQrif/ac5X5B8XyLwxO4kCrEp+L1pzVA5kVcLEAUqDFPxlbNmJje97Zhygn0SbcSCS8kbXMe4Ia1pVVqlbTkMsrFs9zeU9oMUr/9HiSpeGhNuMhw+aru+LP4KreXOr+Xa7P+VALxzlcd9e/SxY/QyynmyEPbsYin+I3BF7mJvIChIsq22NZAXKTX7DXfk7plCcUVCfDfdhvMeixmE9pgMIjtc+lmWzs4Az0JCGGIImZOQlGOYYDVTXiGpUKvJHTTVOqCX3R+uo62tgtTQyGKRAgcWNeFgWFDDqRU8fD8d3gzI2pZCsKAXFb9f/8gBuqzG0c5XAS0fGhdpfEUATEMgK8rIdLBKI/7/qiJRSYTTbuDDxZwguQaXSzmv2A3kkOpYPS74/7L7bsRj01Dk6OKbh5PEQFOXguBnMpz3Z/9+4F1qXMnxRrmUxkgz7l5yCqz3mFNO8or37LcH3uUKgbN3XpvTOF8rAr4C3NcbckG+FgU9qed0cxwZvsJl+BLpYTDD88KL+i6yz2uj3yPPxkh6LNWAtUKnNVwB+SpakW7U1jtKeYAL1LsZ5XjnOoTD5SJnpdSuzGeBflXWnMFBLDhqUKjqxeEGUPluNGx7mP/gr/MaZ8wlC3
+ H0RC7xIq
+ bE6crDnVqGVC2sKc255TJyoDitpdFE2nwaNh0MGLpXpDqPF1cFkrZShbWSdKgsNQTfV0o+tWKVCvzh2BudYJ/kEho5mVpYpyeet7FSKFN9Zmv9D9LYfsBR5r4sGKIpl6WiRVbu0Gjw6KEftQc/Sh3RUSks6dSi6jc+wiqieo0avjFhRYUwGzLVyPt1S5qB96e5+X1ep6/iz+wSWEQv9XlddqgQAaPYzyuwIK451D0d1QgA9OlAA80g+MD+PGqNZCxCtHYRPGSmgOw0Z4FrW/HI0AeyuZ5WJIaAX2TAUl5ujusM9hrazLX7j7UeoKDIFPyPr6YP7JSaVDrW01FXYAbhak6Al56GjrS4pMvfUQeBJc+RFLa4DOh+fURUffOZZv5IyMZCa/+mSeVdCfEd0/lq/AUdGuw8MFXMD9S+74/IglDUDhVnUtn/wCoNlEIzrB+Kssoad/BxqDNDCDnijP1M9a7Jy5f4cTjrX3PfImicPNDfYsvIlpwoqw1dpa/bYIxYxvUvbr2PYTWyWk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,19 +118,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+damos_goal_tune_esz_bp_temporal() hands the size quota to
+damos_set_effective_quota() through quota->esz_bp in basis points, and
+the multiply that gets it there is unchecked.  On 32-bit it wraps above
+429496 bytes, and to exactly zero for every multiple of 256 MiB.  A zero
+effective quota makes damos_quota_is_full() true on the first test of
+every charge window, so the scheme applies nothing for as long as the
+goal is unachieved.
 
-On Thu, Sep 17, 2026 at 08:47:41PM +0100, Lorenzo Stoakes (ARM) wrote:
->The vma pointers are not modified in any of these functions so make it
->official by const-ify them.
->
->Propagate this throughout the call stack.
->
->No functional change intended.
->
->Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
->---
+Patch 1 bounds the conversion.  Patch 2 pins the boundary in the core
+kunit suite, where it would fail without patch 1 on any word size.
 
-LGTM!
+v2: https://lore.kernel.org/damon/20260920023111.2466265-1-donggeunyoo.kernel@gmail.com/
 
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Changes in v3, all from SJ Park's review; the code is unchanged:
+- patch 1: wrap the changelog at 72 columns, say what the impact is and
+  is not, fold the 64-bit boundary into the trigger conditions rather
+  than arguing it separately, and drop the passage on why widening
+  esz_bp is not the fix
+- patch 2: wrap the changelog at 72 columns; pick up the Reviewed-by
+- drop the documentation patch, which SJ asked to drop
+
+Rebased onto mm-new 87acb5b914c2; v2's base is no longer in that branch.
+
+DAMON kunit on x86_64, on the new base: 36 tests, all passing with both
+patches; 35 passing and damos_test_esz_goal_temporal failing with patch
+2 alone.
+
+Donggeun Yoo (2):
+  mm/damon/core: prevent size quota overflow in the temporal goal tuner
+  mm/damon/tests/core-kunit: test the temporal tuner's size quota
+    conversion
+
+ mm/damon/core.c             |  2 +-
+ mm/damon/tests/core-kunit.h | 48 +++++++++++++++++++++++++++++++++++++
+ 2 files changed, 49 insertions(+), 1 deletion(-)
+
+-- 
+2.53.0
+
 
