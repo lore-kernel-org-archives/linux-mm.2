@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8BD5C982DA
-	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 19:37:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33EA2C982E6
+	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 19:37:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B9E46B0096; Sun, 20 Sep 2026 15:37:23 -0400 (EDT)
+	id 399F26B0098; Sun, 20 Sep 2026 15:37:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7911D6B0098; Sun, 20 Sep 2026 15:37:23 -0400 (EDT)
+	id 325026B0099; Sun, 20 Sep 2026 15:37:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6597B6B0099; Sun, 20 Sep 2026 15:37:23 -0400 (EDT)
+	id 1ECD96B009B; Sun, 20 Sep 2026 15:37:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 23E306B0096
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 15:37:23 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C34CB1C2A4A
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 19:37:21 +0000 (UTC)
-X-FDA: 85235149482.11.200D7D5
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E4E776B0098
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 15:37:27 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 581E6A5466
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 19:37:27 +0000 (UTC)
+X-FDA: 85235149734.23.61ACE98
 Received: from mail-yx2-f43.google.com (mail-yx2-f43.google.com [74.125.224.171])
-	by imf10.hostedemail.com (Postfix) with ESMTP id F10EEC0008
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 19:37:19 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=hupz0Fws;
-	spf=pass (imf10.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.171 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	by imf01.hostedemail.com (Postfix) with ESMTP id 9A67E40005
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 19:37:25 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b="KMBf/RnU";
+	spf=pass (imf01.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.171 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789933045;
+	b=YSPpgmB4KcEFQV8jSOFRnPc48LKIiITF0dpSqNSULA8VacFhkcRsiJDtIvCOCTEUbtubfF
+	M3wjJ98T5b59NxslIeDj28JfA0wmlEP+1hGXfYwzZWE4p0hP8uDgB8Z/bWofTcidX+pS8x
+	ycK6GS07329nHKzOqiMxiV0BaiOF6nw=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b="KMBf/RnU";
+	spf=pass (imf01.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.171 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789933040;
+	s=arc-20220608; t=1789933045;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0WQSV2M4dYwT0nemuMW5I3vbKfQKNkPtdhJ2W+zZzFM=;
-	b=wtuK/iND6UVul+raJVmjZNzKbfAEvk5eb5wz2W2IGJaA+/DM5I20P7lauvvZds5mZH4yNS
-	GPBCwo4rDBSP1QChDs4m+naA4a3sQvrKuAiArYIQNjOeYuLze+KFj+lwU76GLHTrcNAz88
-	DYtE5Qcjfg2PdFFLU/obQeHU7UN1pxI=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=hupz0Fws;
-	spf=pass (imf10.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.171 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789933040;
-	b=hlCzSFsdw3tnNbXVi+QjWevdtTGWamvgqBUN5wC6VSpnqhiMKx/mV0duMkd/9+FXFd74Hg
-	mI2Ul3eVjh+gRfSceUPp9g3V2koPMAsdiska1rwRWvqyKdqR7DtdJpWqns8Jya3WgEoEb7
-	w1pCVcxOCaZ5LUpEoqZ6MSujfWnG3Ks=
-Received: by mail-yx2-f43.google.com with SMTP id 00721157ae682-895353e9051so18815467b3.0
-        for <linux-mm@kvack.org>; Sun, 20 Sep 2026 12:37:19 -0700 (PDT)
+	bh=i5nAPiFxyuCO/MgJOwL1aiw4E3m2Ng0EpjBlpOl2sok=;
+	b=vb0fW5dQNFlBf71eX9Q2D4FkN0s47t79m58Xcgqp556vSCS1BcPAtDKNEoLFOoFDaCjRBe
+	EjP3rCoP2dXUt+GdqmuJ25lpVnnejDLGfLoaPMpwB4X0GvlwgSbqvoNgDphH1f9oRxbbFy
+	CV0D1yVx7MdL31XeDTASBu/dH/TJEMI=
+Received: by mail-yx2-f43.google.com with SMTP id 00721157ae682-85d43f9b119so18204537b3.2
+        for <linux-mm@kvack.org>; Sun, 20 Sep 2026 12:37:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1789933039; x=1790537839; darn=kvack.org;
+        d=soleen.com; s=google; t=1789933045; x=1790537845; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=0WQSV2M4dYwT0nemuMW5I3vbKfQKNkPtdhJ2W+zZzFM=;
-        b=hupz0FwsLvD6Rwjdv4hv4oghOPZxiwxIGL5ldasZRPlY69tyqk2JSLyJuQYDkFDvI2
-         VpJgRo5AMjMtr4NNryIAha0EchhJx6de3wELu2w5O6CdzupPIxZBrI49ll/IuUtfV1KP
-         7DPnZhzguhTn8vZIpz1PKrUdFpWBPYdTXIh6v+dqwk55VlmAFQ8F0V53pk0EdY00YOIX
-         tLVLd6NzdhGx73ufNsPFrv6oUjXraL8fndpz4h82TfFGg8ooDYub5A0kW1ckHNbZzXZs
-         Vottdh+mNoSG5BTmzVzkuvD/nkyWZaK4ru1XuJZp3yWIbfxGerL0Izl//Ypmfk+bPl90
-         Or1w==
+        bh=i5nAPiFxyuCO/MgJOwL1aiw4E3m2Ng0EpjBlpOl2sok=;
+        b=KMBf/RnUdAMTTzdxHs3A4e82sc3ZSiguk4C1GEOGJuuKOWfjNiux/rrDuye2T81alJ
+         EvyB7yvOyXjKcxzDqBEsMo6QuoQyECdzCzzdD+jLZFtNEJphF1hj1kDeXn2m/Ywdb6Gx
+         00eZ8sRirh3w1L6DRkVRc6+sBoi5HUtKmTAfxDqD1IGMSZCZqIbIniYm8QMexh0fAzu3
+         dbxTl2qD9G6j3hf8yHPMJ0RF8NtBanBPuaaCuSMfX1RkbLu9nfLg7CrAIY20RylkdsTa
+         /KDJO2uQ5s8PNdDhgXJX+dR9OfXvlZO2eIVuLMf1u489VuJOnZd0v+vmS9MZSh3O9s86
+         9uXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789933039; x=1790537839;
+        d=1e100.net; s=20260707; t=1789933045; x=1790537845;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=0WQSV2M4dYwT0nemuMW5I3vbKfQKNkPtdhJ2W+zZzFM=;
-        b=kuhB5Iw6ZEk2Df/t60giUAm+1nZTNJ17WOYAdBlYZCwoxTdvqFYaclrvjHkMue4ShM
-         v61p355FnmTNYF0bUz07WNGnMWLvX9DHNG7TlL3JjHcfYHBsq1y/ICjhp/aqPpsv2aEb
-         eJDXjrpyNqkw+jd2ih1iQbZEW/dV+MMihmblr9C6HBVwUqoQsnnGEv1yumLnWwra7w8O
-         c2EEfGKj7GjNnP+OIxX+kY/1X1n+GTX6buNqBSOUd5aWEqtrCZxjRYgGZDTJVvaWGTe7
-         KFeAfmzW2jraBdEk4e3Vy+SpIIYCE3Pk3QRYFD9OpiJh/GMyPqGBtQfvA4TLzYkGbaJd
-         z9Iw==
-X-Forwarded-Encrypted: i=1; AKwUvBymNIkng0S1NLbc4GRcDpBqlfO/AMo74/j8LkOY7TJdBMTcG+cGzQWTw7dKunYv5d1mOncoidyf1Q==@kvack.org
-X-Gm-Message-State: AFuF++mdax0aWEQGARfMIT9UXpGCKuHvc31u9kvGOYfpMceTwM87cOoo
-	i7vYePYPmdON9a+LrV+2LnqszzWnlap4M38GyAvkWuiCK79hf0PLWsQJ+ruZ8VAzT/g=
-X-Gm-Gg: AYBFou0fyQzjTLE7zpXApcDdqLQeJuOpqoU0q9Ti7eknyYxavXSGmlu0UUWYEcREfnj
-	ufmv0InnjSMeM3Fa4+jbJrtjyJPGh5jE6EgJ+Q3lPLSZqTnyiAoT+Hx9SfZfBiq4uI45LVsfhQK
-	2XSbZnHkm3ViGuUCsgRRoZAG9V2fRqLN1L7l3WHY/0Z0qSL+iCTZtCTa1OR/q+l1iEj/Gj3DQfb
-	vhjbcm9OfYoisOWEB6L7uE1uUXyONbR4LDjSBqIyHQPMRJGnEBbXMHJ3UF0Z0OImhEifccfWBbe
-	WZNTCSZw7OjNDfgsrY05uIlK5DHWDHqjuluAtGCbxnRStZJtamERXkpnJgIT3vmhZfsDDPmYLMU
-	lmWDSfFonFPDyg5KygWhnPS3bf52vRdbIhW/T5DcStaGxFG+izJLWHO+klKi/sL9ErMCan4RlCG
-	RSpOCD12W08+aT0Xyc3xEkt56cQxzSrgcD5YOjFtqXHQivXmEdYs0EwKZ0Rz9lrr4y4yyIvQ8az
-	35VI5Gjzv5q+4Y9GQp51gGjzze7Oga0gZYjzmnQgjYDAkYAalG/htqMnSuz+9ssF4Jta5Dvg4wY
-	zmd2W3ZP+iBfXfYbNtk=
-X-Received: by 2002:a05:690c:e1ca:20b0:854:9062:73ae with SMTP id 00721157ae682-89736b3f795mr32929267b3.33.1789933039155;
-        Sun, 20 Sep 2026 12:37:19 -0700 (PDT)
+        bh=i5nAPiFxyuCO/MgJOwL1aiw4E3m2Ng0EpjBlpOl2sok=;
+        b=kZ1I11LGXOxvQhtYvc804v68YcFELoaiY5cSplVdodc/qoEXf+/6S7IvpRkdoob38p
+         T3qoh1jE4mdk0tZ4OXPw2jzKGwE0oIz39FaSlygHkBt7Zh6fbvLj/FVETb4jKtpeq+v4
+         sLWck/LhXe5Gu0RgswxvrEiyzbouica+fudO0SSk19O+K1c2xdS2G8EefEygBySpcA0B
+         wIhGb9DC6yhlklv3SdcxUt21dEiRn6U52ElvxXWgC0yYrJJUaSeib9S2R9tBqLqLcKcS
+         DjNzj2dD1gYNZR3U9UI9iuewB+x4oPoRUpJEeyY8z9sPLR/5oUlTIvTpfaXu830XTBv0
+         M8/g==
+X-Forwarded-Encrypted: i=1; AKwUvBzbw8nAbrYrnS/KIU2JJGhPEogVMjmYpRopssr8rJcKRa1Rhtji8GCI0OMmIdXDJBbA1J6xbW5FKQ==@kvack.org
+X-Gm-Message-State: AFuF++kAPa1qyi/OJIgPYmc0AMv/CWclQhWqb88qtPsSRW9X1gOecvHu
+	MwVa3/EFwDJhSW5qwEnJovbXxyGgf2UAX0awK28uOZIJBUXfxlyByFATpVMc0lBaBhM=
+X-Gm-Gg: AYBFou1BBgP+NM2CFxXPWOv09367GOISJxttXLxebn+FcJ43g1HSYoZFBWNivTmXwRP
+	kV+JM/haR0rgPhcMVKEJk2sgxhKRsahHQ6fpwtJCo15i+ZpqYEi/7u9RGKCnRb4oc+FtCdEcyTz
+	pr11Zan5aBVBRy237tzPTOSVqUbsoPKxitcrbnLREJrpkZzYC/LrT5BnMV5D1LTjEm6A5w/3tc/
+	Kh8LXrT5OwcUExlDbZC5op3aj+pQGLOPRCUCviymmmu3dNkTBPBzFVJwG3m9CJMTRYB13MSo80I
+	i4Yj1IzcOcu2VNXs+LEUZ9Gh9pZHAsU1vZ0AXqNHHmBV1Zgkqpamg+taOSb5mCOetZ83Ujh1C3I
+	u5YIBwPNoypK9N2ukA0hBDL+MkncOCU89i9IhopddNjQTQjrwpvLlVOrymApbHOkctMNZlMCwdx
+	0dv4ZQAMUUMCqg0MUl9jrUh29/u6hP7O/UVtN3ZwlKNBksCpit5glsIsrPMa8w43Bxe6IL+KQHl
+	Pi2245mzifMMh57dE1xZAIIlmiDKIgK1EWIw68JtyF1fhuUWvMZQRxR2C9nsPrFQ2tDdcFGghGz
+	lX/9dU+MIjJImWhBT8g=
+X-Received: by 2002:a05:690c:e297:20b0:870:f53:4edd with SMTP id 00721157ae682-897305168b0mr18683667b3.7.1789933044691;
+        Sun, 20 Sep 2026 12:37:24 -0700 (PDT)
 Received: from soleen.c.googlers.com.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-89a48d99122sm18294247b3.48.2026.09.20.12.37.16
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-89a48aab042sm18597427b3.47.2026.09.20.12.37.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Sep 2026 12:37:17 -0700 (PDT)
+        Sun, 20 Sep 2026 12:37:24 -0700 (PDT)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: linux-kselftest@vger.kernel.org,
 	legion@kernel.org,
@@ -169,22 +169,22 @@ To: linux-kselftest@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	vladimir.murzin@arm.com,
 	kas@kernel.org
-Subject: [RFC PATCH 04/46] x86/mm/ident_map: Add force_pte to support 4K PTE identity mappings
-Date: Sun, 20 Sep 2026 15:36:08 -0400
-Message-ID: <20260920193650.3373435-5-pasha.tatashin@soleen.com>
+Subject: [RFC PATCH 05/46] arm64: mm: Add trans_pgd_map_range() support
+Date: Sun, 20 Sep 2026 15:36:09 -0400
+Message-ID: <20260920193650.3373435-6-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
 In-Reply-To: <20260920193650.3373435-1-pasha.tatashin@soleen.com>
 References: <20260920193650.3373435-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: whuszcjz56nn3zaybexdciktr5oisosz
-X-Rspamd-Queue-Id: F10EEC0008
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789933039-994404
-X-HE-Meta: U2FsdGVkX1/BdhBLI/4F+ZYv3xqdU56FjLQTNve7Xj2j6urNRCsD2VH7THz3eACBoPlLDWh5wBUSvVSKakSrV6+2s3Mx6P2GbXP869pxANTeJa/Rv2eMhjIAEkL5qoQ8fyQkOa40ZEtwyxwFiiTUNOOFOaZusKruw7P20+WNSYC52Z4iUdCry3f9k3swNTJYW/LFRsPPkY9HHxk4Hshv2FSJV0pFRkP6vNd+jkRifyuGWdxAg79BoHVSAwXmHxkituDT9JBAb32j8v+KZojITR8+EUKw8JvZdUAHbTOmO0KsSpeX+J1gkDl2JMWWpg1Sb4W+l3owaeBVU4Lv62P7dvMxBbZkVBEhOAy9kA8mRwo87sUJ15jYli6x9EoH7nl1rsOB4g3cBD7L8LVfj8yz8TRAwlE0CqkiYAJyA2ZYvsDUxc3AbIpmkkJ2zoGb2Tc53Ki7XhE0705wnAIgInyDiZVRkuq6zqW+WJKaY7OuCREK07rG5WOFJhPrEAcN1KErEjCNtCo1te1omjhJ+sQv1qBoDgpIDY8zFMNeocCHhqY8qwaaccgOngH6sCIC3Wr81k3LDQ///Ht29SCrIZ7QON98bywGdtCeku+Rx2Lqtb95DhrWGBqIuj5QyM9yKMkqhVx+2t+AOe4vMMfis0iHGFsVhPbfeE+1CdlJcoeRARe017mGFJ1uPsEjaQRjBFHLM8QTUwdRjCrNL9c9Q1UC82mzOi94QJYrvEwJnC1zDZCYieO1FRGYY/zgYMpa2FWd554rCqlAKpn0QjUkOMZeHjqiApL6eUVVWuUdFtJXzV/coNrahZ6LNEfR3o2bAmovLQ/cOPBZzfFaVBCsSZEEHmKemBc+9fcyiVA0a4v4Pn7S6UIVtNa++1pa1Wd5PunlkaREHCNmzqMdekG8Vz3CQrUmQvTOZ4Gjsh/J0BCW28dY95SZX5lPRRc/4jbWaUXM+EOHD3y45Us7/z4Mq5M
- mtxDj1hQ
- WpjVOr5YMYaT0XtxKBEz7F3+u4roRXp8HkZrMKKVJUFPxyJA4SeHCEtE/WwSHNh9RNkbx+K7hpeOczMR1Y9YJGk0l7/yEooBvBRGcyoYwAA0sNCQheVTK69p7qYAJ+x8AqNwkSMfYH191JNfEv96BMWgw0WM+VsonfnP2Tu90V7glMlFTL04+lJJfUCbzjxDaMXszp7gR89/BJ9ZOYD5Om2AT9r77tqkFsNwuIxS4DBvnAziqtjb56x0AKYd2qzrvr3iQZvcxXzAGIdiCumx53aLQhQ8SKNuOuHDJt1hkmOLZIxinoNpSyNegyepHhzPpkHECFcnEj4NtoyOt3x3+wijFNYGDNKo4oiaGpO17cwrtk2EV2zxl5lysmw==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9A67E40005
+X-Stat-Signature: 4cshtgb3ygyb9obzn7o3sjkwcpec6dib
+X-HE-Tag: 1789933045-148425
+X-HE-Meta: U2FsdGVkX18nNvmMbhfzcQn8ENP7FKfJeP09ORVXCvuR4Dkq6IQbhG5nP6oeFgzpW6elPQ/drKlBsTf1qFGaU5Nsg3Pm+A9mKOVEiGo8zykM5d340sze060mC30B68bjkNCS0PxwVZ0xOXyoUrMPrYZ2bYG1A7z23prMfDCY4Y+GVO7ygh0o9nglJ1a+Bmz9SYeYWnazI/iLCH23ArzbQuqY7U02qEdhskqNnB9UvbF2vTC9e/3XuSHntDjRTqphKbF3PcyEXmw8AtHXCayIC1TQXI2jqL26dIViYgNwFVbmcyfnSZkfMbTgcnvI3jqxXf08pskDFYjUXuTNwO4S2azx8ogNkGB5+zIKNrq1mNyH8qZZSvc8Oe1kbAlTFYiUvYXOd1/kDQES/7ddMgYVtXQj5Bc1fS4jlLCogUuP6AHkM1lq9dmwf1dpFXf2v6+IB2hVgeKv7ek9yg/6lZbK/FoNAJ+zimnZlY2HvNvlOPF11ZKhWKflgRp+mXPPt/10xh1Dgj+YeFhI9KRHO0mRhDS5s7QRB2fg0CS1Wn3o1JIfxgKiKmgDCY3vuydmhWvMjscZ2mtkjfQ579NmNloRkXCVJ0GjiN0FFxLxGmmCDbStMpd4WczBt6dbuLhSFUqgP6O8VdTX6UgrTBwxeLnJd5e0e0ERwlvIfQ9ESOmi5iX0dvXFj7/nr1FCeii8PPyGkWvv51v5Dbyy8h7ZrC4q2D+EX940DyygX6KketqB51wzNMzCzQMXYWn41MejxrveG++IDfM32cjvH2RTBS9mlHbuhQstFQ1HMRZToEeFbFs0RfVZ5XSfJXZ9q7KW4+6FATxShwGpBtdUXoKxBG5GN4+siMP50qza1//FxCXxmj2dhT3mJqAMyBVvVbJ17dOcMEBPw5qJsyEAQuV7EMkTd4Vw5RMP1ctIgW61eWGelOnk2ZWsF9JG6VYtRFhlSp1AVKBhkubG/Q+MnvSL3gt
+ TGFMZC/r
+ Gy7SyqZzMsaIS42IR5rlLhAnYzCUfoJfuMu4t9szTcaWap1U3m0P8n6X7gT+rE5DtpTl+x017voPBmjWING1z6Tm0J8/8gYmAMx/FGorBKc2jxwmU7ZrtsZzxibDXobmDWStHVfxKuxM8lYwoaRZ0Lj3gU696Qns6gXXg8rD3q7aWH5GdVkOoYNHd6ev735Nd7sQf2xoX51L/A1mQkYhN1vOj1/X6VsQObIn2lORKEspujXpzyIkpXFew59iwtv0vCL8Cne8sqVcnIFlNj9Wa+uhnEfQ0zYGASk7aoNzSkvJ2cGd/WKCkq8/FeRv3jxnJtNbHhzUyPLjtpFCSggg2ZllnwLPZqfb/7y0P0Te1oUP7S4zyaTiFFUy6HQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -192,154 +192,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Extend kernel_ident_mapping_init() with ident_pte_init() and a force_pte
-flag in struct x86_mapping_info so callers can request 4K PTE leaf
-mappings instead of 2M PMD or 1G PUD leaves.
+Introduce trans_pgd_map_range() to allow mapping arbitrary physical
+memory ranges into transitional page tables.
+
+This helper allocates intermediate translation levels (P4D, PUD, PMD,
+and PTE) on demand using the trans_pgd allocator, enabling precise
+virtual-to-physical address mappings in transitional contexts such as
+isolated execution environments.
+
+Add comprehensive kernel documentation detailing the isolated page
+table mappings: Caretaker text/rodata (ROX), writable data (RW),
+stacks (RW), and preserved buffers without cloning the direct map.
 
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 ---
- arch/x86/include/asm/init.h |  3 +-
- arch/x86/mm/ident_map.c     | 72 ++++++++++++++++++++++++++++++++-----
- 2 files changed, 65 insertions(+), 10 deletions(-)
+ arch/arm64/include/asm/trans_pgd.h |  4 ++
+ arch/arm64/mm/trans_pgd.c          | 70 ++++++++++++++++++++++++++++++
+ 2 files changed, 74 insertions(+)
 
-diff --git a/arch/x86/include/asm/init.h b/arch/x86/include/asm/init.h
-index 01ccdd168df0..d9caed494e7d 100644
---- a/arch/x86/include/asm/init.h
-+++ b/arch/x86/include/asm/init.h
-@@ -6,10 +6,11 @@ struct x86_mapping_info {
- 	void *(*alloc_pgt_page)(void *); /* allocate buf for page table */
- 	void (*free_pgt_page)(void *, void *); /* free buf for page table */
- 	void *context;			 /* context for alloc_pgt_page */
--	unsigned long page_flag;	 /* page flag for PMD or PUD entry */
-+	unsigned long page_flag;	 /* page flag for PTE, PMD or PUD entry */
- 	unsigned long offset;		 /* ident mapping offset */
- 	bool direct_gbpages;		 /* PUD level 1GB page support */
- 	unsigned long kernpg_flag;	 /* kernel pagetable flag override */
-+	bool force_pte;			 /* force 4K PTE mappings */
- };
+diff --git a/arch/arm64/include/asm/trans_pgd.h b/arch/arm64/include/asm/trans_pgd.h
+index 033d400a4ea4..1e17ae145b0c 100644
+--- a/arch/arm64/include/asm/trans_pgd.h
++++ b/arch/arm64/include/asm/trans_pgd.h
+@@ -30,6 +30,10 @@ struct trans_pgd_info {
+ int trans_pgd_create_copy(struct trans_pgd_info *info, pgd_t **trans_pgd,
+ 			  unsigned long start, unsigned long end);
  
- int kernel_ident_mapping_init(struct x86_mapping_info *info, pgd_t *pgd_page,
-diff --git a/arch/x86/mm/ident_map.c b/arch/x86/mm/ident_map.c
-index 5a15bffe6574..83013513ba94 100644
---- a/arch/x86/mm/ident_map.c
-+++ b/arch/x86/mm/ident_map.c
-@@ -77,24 +77,73 @@ void kernel_ident_mapping_free(struct x86_mapping_info *info, pgd_t *pgd)
- 	info->free_pgt_page(pgd, info->context);
++int trans_pgd_map_range(struct trans_pgd_info *info, pgd_t *trans_pgd,
++			phys_addr_t pa, unsigned long va, size_t size,
++			pgprot_t prot);
++
+ int trans_pgd_idmap_page(struct trans_pgd_info *info, phys_addr_t *trans_ttbr0,
+ 			 unsigned long *t0sz, void *page);
+ 
+diff --git a/arch/arm64/mm/trans_pgd.c b/arch/arm64/mm/trans_pgd.c
+index cca9706a875c..f0a55d4270cc 100644
+--- a/arch/arm64/mm/trans_pgd.c
++++ b/arch/arm64/mm/trans_pgd.c
+@@ -200,6 +200,76 @@ int trans_pgd_create_copy(struct trans_pgd_info *info, pgd_t **dst_pgdp,
+ 	return rc;
  }
  
--static void ident_pmd_init(struct x86_mapping_info *info, pmd_t *pmd_page,
--			   unsigned long addr, unsigned long end)
-+static int ident_pte_init(struct x86_mapping_info *info, pte_t *pte_page,
-+			  unsigned long addr, unsigned long end)
- {
--	addr &= PMD_MASK;
--	for (; addr < end; addr += PMD_SIZE) {
-+	addr &= PAGE_MASK;
-+	for (; addr < end; addr += PAGE_SIZE) {
-+		pte_t *pte = pte_page + pte_index(addr);
++/**
++ * trans_pgd_map_range - Map a physical address range into a transition page table
++ * @info: Transition page table allocation info containing the page allocator
++ * @trans_pgd: Root transition page table pointer
++ * @pa: Physical address to map
++ * @va: Virtual address to map to
++ * @size: Size of the range to map in bytes (page-aligned)
++ * @prot: Page protection attributes (e.g. PAGE_KERNEL, PAGE_KERNEL_ROX)
++ *
++ * Populates the page table hierarchy (P4D, PUD, PMD, PTE) allocating new
++ * intermediate tables using info->trans_alloc_page() as needed. Used by
++ * liveupdate Caretaker to construct isolated page tables.
++ *
++ * Return: 0 on success, -ENOMEM on allocation failure.
++ */
++int trans_pgd_map_range(struct trans_pgd_info *info, pgd_t *trans_pgd,
++			phys_addr_t pa, unsigned long va, size_t size,
++			pgprot_t prot)
++{
++	unsigned long end = va + size;
++	unsigned long addr = va;
 +
-+		if (pte_present(*pte))
-+			continue;
++	while (addr < end) {
++		pgd_t *pgdp = pgd_offset_pgd(trans_pgd, addr);
++		p4d_t *p4dp;
++		pud_t *pudp;
++		pmd_t *pmdp;
++		pte_t *ptep;
 +
-+		set_pte(pte, __pte(((addr - info->offset) | info->page_flag) & ~_PAGE_PSE));
++		if (pgd_none(READ_ONCE(*pgdp))) {
++			p4dp = trans_alloc(info);
++			if (!p4dp)
++				return -ENOMEM;
++			pgd_populate(&init_mm, pgdp, p4dp);
++		}
++		p4dp = p4d_offset(pgdp, addr);
++
++		if (p4d_none(READ_ONCE(*p4dp))) {
++			pudp = trans_alloc(info);
++			if (!pudp)
++				return -ENOMEM;
++			p4d_populate(&init_mm, p4dp, pudp);
++		}
++		pudp = pud_offset(p4dp, addr);
++
++		if (pud_none(READ_ONCE(*pudp))) {
++			pmdp = trans_alloc(info);
++			if (!pmdp)
++				return -ENOMEM;
++			pud_populate(&init_mm, pudp, pmdp);
++		}
++		pmdp = pmd_offset(pudp, addr);
++
++		if (pmd_none(READ_ONCE(*pmdp))) {
++			ptep = trans_alloc(info);
++			if (!ptep)
++				return -ENOMEM;
++			pmd_populate_kernel(&init_mm, pmdp, ptep);
++		}
++		ptep = pte_offset_kernel(pmdp, addr);
++
++		set_pte(ptep, pfn_pte(PHYS_PFN(pa), prot));
++
++		addr += PAGE_SIZE;
++		pa += PAGE_SIZE;
 +	}
 +
 +	return 0;
 +}
 +
-+static int ident_pmd_init(struct x86_mapping_info *info, pmd_t *pmd_page,
-+			  unsigned long addr, unsigned long end)
-+{
-+	unsigned long next;
-+	int result;
-+
-+	for (; addr < end; addr = next) {
- 		pmd_t *pmd = pmd_page + pmd_index(addr);
-+		pte_t *pte;
- 
--		if (pmd_present(*pmd))
-+		next = pmd_addr_end(addr, end);
-+
-+		if (!info->force_pte) {
-+			if (pmd_present(*pmd))
-+				continue;
-+
-+			set_pmd(pmd, __pmd(((addr & PMD_MASK) - info->offset) | info->page_flag));
- 			continue;
-+		}
- 
--		set_pmd(pmd, __pmd((addr - info->offset) | info->page_flag));
-+		/* if this is already a 2MB page, this portion is already mapped */
-+		if (pmd_leaf(*pmd))
-+			continue;
-+
-+		if (pmd_present(*pmd)) {
-+			pte = pte_offset_kernel(pmd, 0);
-+			result = ident_pte_init(info, pte, addr, next);
-+			if (result)
-+				return result;
-+			continue;
-+		}
-+
-+		pte = (pte_t *)info->alloc_pgt_page(info->context);
-+		if (!pte)
-+			return -ENOMEM;
-+
-+		result = ident_pte_init(info, pte, addr, next);
-+		if (result)
-+			return result;
-+
-+		set_pmd(pmd, __pmd(__pa(pte) | info->kernpg_flag));
- 	}
-+
-+	return 0;
- }
- 
- static int ident_pud_init(struct x86_mapping_info *info, pud_t *pud_page,
- 			  unsigned long addr, unsigned long end)
- {
- 	unsigned long next;
-+	int result;
- 
- 	for (; addr < end; addr = next) {
- 		pud_t *pud = pud_page + pud_index(addr);
-@@ -108,7 +157,7 @@ static int ident_pud_init(struct x86_mapping_info *info, pud_t *pud_page,
- 			continue;
- 
- 		/* Is using a gbpage allowed? */
--		use_gbpage = info->direct_gbpages;
-+		use_gbpage = info->direct_gbpages && !info->force_pte;
- 
- 		/* Don't use gbpage if it maps more than the requested region. */
- 		/* at the beginning: */
-@@ -129,13 +178,17 @@ static int ident_pud_init(struct x86_mapping_info *info, pud_t *pud_page,
- 
- 		if (pud_present(*pud)) {
- 			pmd = pmd_offset(pud, 0);
--			ident_pmd_init(info, pmd, addr, next);
-+			result = ident_pmd_init(info, pmd, addr, next);
-+			if (result)
-+				return result;
- 			continue;
- 		}
- 		pmd = (pmd_t *)info->alloc_pgt_page(info->context);
- 		if (!pmd)
- 			return -ENOMEM;
--		ident_pmd_init(info, pmd, addr, next);
-+		result = ident_pmd_init(info, pmd, addr, next);
-+		if (result)
-+			return result;
- 		set_pud(pud, __pud(__pa(pmd) | info->kernpg_flag));
- 	}
- 
-@@ -189,6 +242,7 @@ int kernel_ident_mapping_init(struct x86_mapping_info *info, pgd_t *pgd_page,
- 
- 	/* Filter out unsupported __PAGE_KERNEL_* bits: */
- 	info->kernpg_flag &= __default_kernel_pte_mask;
-+	info->page_flag &= __default_kernel_pte_mask;
- 
- 	for (; addr < end; addr = next) {
- 		pgd_t *pgd = pgd_page + pgd_index(addr);
+ /*
+  * The page we want to idmap may be outside the range covered by VA_BITS that
+  * can be built using the kernel's p?d_populate() helpers. As a one off, for a
 -- 
 2.55.0.1082.g2b9226bbc0-goog
 
