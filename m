@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62FF6C982D8
-	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 19:40:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D843EC982D8
+	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 19:40:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6AE406B00DA; Sun, 20 Sep 2026 15:40:34 -0400 (EDT)
+	id E01BB6B00DC; Sun, 20 Sep 2026 15:40:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6865C6B00DB; Sun, 20 Sep 2026 15:40:34 -0400 (EDT)
+	id DDA126B00DD; Sun, 20 Sep 2026 15:40:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 54E8A6B00DC; Sun, 20 Sep 2026 15:40:34 -0400 (EDT)
+	id CC8EF6B00DE; Sun, 20 Sep 2026 15:40:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 232C56B00DA
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 15:40:34 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A0FDAA04CE
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 19:40:33 +0000 (UTC)
-X-FDA: 85235157546.25.3A66B95
-Received: from mail-yx2-f13.google.com (mail-yx2-f13.google.com [74.125.224.141])
-	by imf26.hostedemail.com (Postfix) with ESMTP id D8256140007
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 19:40:31 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=FKsT8vko;
-	spf=pass (imf26.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.141 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789933231;
-	b=TBGwRMKhsgfSyqnXtHlY7ziy4aeD4axBXwfcx5Mgx/aplv9TGd5zX9ho/oGIUJ7yje3GAJ
-	fHjZ7IJ395zEUf4R1Ape9M3WYpKDNrqgs42lNT+cudTL7x001u631Ekx/3CUDFBeq+Fu/O
-	PDUho1YtpwPNl8QiVSa9r7meAFzrZQg=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=FKsT8vko;
-	spf=pass (imf26.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.141 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A30496B00DC
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 15:40:40 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0A3ADC04C1
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 19:40:40 +0000 (UTC)
+X-FDA: 85235157840.14.F635286
+Received: from mail-yx2-f12.google.com (mail-yx2-f12.google.com [74.125.224.140])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 4820D80007
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 19:40:38 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=JSrPRlPk;
+	spf=pass (imf02.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.140 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789933231;
+	s=arc-20220608; t=1789933238;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vFPyUqf9Ykwf6q7bGvGlkuyq3L5HApELGYTIBtZIcIQ=;
-	b=1OT3ynPX8nGXPjJWKw25WFgWIDbNG1sH/LECmIX0mhtEB+7by2MU9sVKfnK4hLty4P/dFz
-	nAA8FxmN2VblnyIrKmZGye8fkuAlDbyfh5rVhrRvIe7e84EEYdqddI3JmGl6YKfURAWWGb
-	vVCAJRkvD5TGH1pg5yXYfKj5Fwz6ZDE=
-Received: by mail-yx2-f13.google.com with SMTP id 956f58d0204a3-66e4aae314aso1691983d50.3
-        for <linux-mm@kvack.org>; Sun, 20 Sep 2026 12:40:31 -0700 (PDT)
+	bh=Y5wqvR/8Rgbn3Q8wmCLu7MA68JCRgtXzVIxWF4pI6Mc=;
+	b=4tN3BX85w4Vc97pbf0tpie1uTbui4y2lNFPxaOxfFqk2FibXwUkPpZVYodUTBbDhiKMD0p
+	zoWn1VNS2PMYb+69EQfhGTgjna/SmwamQLhzHz4OtdaIKNwKVEyoBpVuAnpGXrhJZXLxB2
+	zeMFcJLOWuafK6s4K2lcYtsik+i7AL4=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=JSrPRlPk;
+	spf=pass (imf02.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.140 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789933238;
+	b=oU/H6CJrVN5r1BMoVCMrasZWRnKY/XiJrY+YGIS1bqNtg+kuVk5jfv4AKOhHsEvQJK5/Xk
+	Qo2F6Z0wERkyY1NoauxZWezzcbcpzhTrR88TuCiGEYzhe2VHUy4W7CQPY1+kD2ScCwRGRW
+	Iv1P5MLpNp4ILqmoUvKvVfo75pYmOd0=
+Received: by mail-yx2-f12.google.com with SMTP id 956f58d0204a3-66e4ab201ebso1605831d50.3
+        for <linux-mm@kvack.org>; Sun, 20 Sep 2026 12:40:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1789933231; x=1790538031; darn=kvack.org;
+        d=soleen.com; s=google; t=1789933237; x=1790538037; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=vFPyUqf9Ykwf6q7bGvGlkuyq3L5HApELGYTIBtZIcIQ=;
-        b=FKsT8vko2cEzTmGV6l5pouDHaZ+/bRyGpfsrj2RdKaMx9po4r+zQFYNB8sRG8hYpkc
-         8c5u/7sNcS54fjBGZMOewqsXnLDUoBUeUnILoZLjYCHXLasuf0waaLlcgM7NVd6RvbpF
-         E7dCxwqdEmlqaS7dZUGumOXAJHsOF0un+ATthWdDsse/XoO/Q1+/vVI7OvbfTmMJ3R5L
-         MCdnpZE5hzqema431WU919OAJYV22Ju91snRu1zmUi2R2Jr8gpU2S9+eOGGsvrMLzMuR
-         H2SB5UHtp1Xmf8pQVsfDlRiu2TsJTTujzdI4pVDH4pUbeua8pA+dpuNoSsA8ycQRpILf
-         bBYw==
+        bh=Y5wqvR/8Rgbn3Q8wmCLu7MA68JCRgtXzVIxWF4pI6Mc=;
+        b=JSrPRlPkV/vUE8QezM2aZZ7wHx8b3Kkf+sBLOly0hvvLxnufdT2fpC7uhlYcelFPyi
+         u0p6qa4rGP4BY+z7L1wOiGduRY9lv8tJdbgxabibFqHisOw8SSR3W1q3fR4IxkmxZq8T
+         Rtd6Vi8zTCNdVxiTfOYtVuMe453hyub/r7Uzp1tYRc4G0DRqi7bSLvqNaDAZNeFHoBNS
+         w6ZUFAIWkYZRVyDUU34ZzFAyRfSwUJE8DVBhU9T/BJ3aQ++YdKctkGWVNtzQ19PTkoQr
+         RRuVTPPu508c1USZoZVKn3zB5UG6XioKLBRp8+2+ZR2rxTxDm1knEaTSYapkrpw47hIp
+         /slw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789933231; x=1790538031;
+        d=1e100.net; s=20260707; t=1789933237; x=1790538037;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=vFPyUqf9Ykwf6q7bGvGlkuyq3L5HApELGYTIBtZIcIQ=;
-        b=WxOfHpszQrT4oGHwFaQsZCWhNZM4MR+H01EYmQveXsYw8ko8nlzq1NvtvetvVTgx1y
-         4vO5U75uDAH43X2n8TlhFtMYqjcP2Mw3K99fDzTf2zdfJzDJwk/TNnl3fso2AfVYB6Hs
-         mXypZQieA7+VVnEysxUnGkGI/z0DZ7v3esj4+bYsvPVQLoT2+cBufh2FivlvKjgmnoZQ
-         oHKmKOn4CfE3Ev/xRX3wV4Nb2Nxz97n+IWBqhuz9ATROvYZEJHfNETTp2uV2+CJ8PZPL
-         sLr8u1NZBAXBhTrXxif6Sxn00JxDujyCie09JtDKw04uRuesott1HbY9twjvkVH2s9k/
-         iiUw==
-X-Forwarded-Encrypted: i=1; AKwUvBwlXgJS1Vzl9eJBbCrV+xAmmZiXYoSBdgchWgcVuiDvC9MICREHq41QBtOCMRzETFB43oXwPJSugQ==@kvack.org
-X-Gm-Message-State: AFuF++lK/JO6mbyuvM254ffsmGYPboDpsz73R/PglKY01hDqkI/X3ini
-	1PXrOFFWjgY914YY8mhu1dmIPFjq+S0aNdQscYRTwZcGFuCUSCZIk501G+WdC8mNSDU=
-X-Gm-Gg: AYBFou3DbYdHsz2/opSWZR1ulAn6K2o59UbAousU8Xp/fMpUVaMVIZM3davNoyVimO3
-	5Iy49NCtUYYjeOXeDkcY0SlHqdAYNc6NyTqgBgcAk0XVffHS/U5gZG6igdiDnx5u1t4XUwx+Btr
-	bzvYgtjTWcRmcYz8/jpRtXi27oxnTDGws0VYYjqHfZvQAlwbBnUhlmhnHNRglVQh7+2T84vzKaJ
-	7OppvpgnnYUfMcWfzgn5MM7EK3GImpMfu04GlnYNnhccef+ufXrnuNhIBnWnsj0MzQQJXhEeTQX
-	bIOxPp5yYtPdglwaf7OuT9KMqoVO9sd2bRKe+0FZSLgCiDGCNtsb8lCZ6hPwINHb7apY+kFihrC
-	UXh8aBHz6dabpjwIqzLobnHJqz3XPvkPMFbk27PYJ7aqw3sU+ac2QXEBjRARpoq5oi0640Nmb3h
-	upoIRYzV/sWnXFAq+uef/DuHmAXDorHsvZf0T0f2+noeu0oB49hA/mVpea1gILJvNm530yBr6kw
-	W/88CrVoM6ZftMmM9/CfKmGcQjkCRT/9ZPFd9BakXNFU72Ro+WmU+SeYG7F7Zk/x82UWJZOBqMR
-	BHz7uRZcUkgMbr7AEWE=
-X-Received: by 2002:a53:b10a:0:b0:671:4e37:a810 with SMTP id 956f58d0204a3-6717fcb43a2mr1769168d50.5.1789933230812;
-        Sun, 20 Sep 2026 12:40:30 -0700 (PDT)
+        bh=Y5wqvR/8Rgbn3Q8wmCLu7MA68JCRgtXzVIxWF4pI6Mc=;
+        b=bLEexfRsBGF2rIvwIVARoXgbWg1o+t954glxD0Pqv2FBEIEe1rTAZcEmnuvndEmv7w
+         +UTEgkd8Zzh5YwrGoTZwJ/6y2bgvTN2JjJC8bFh2tipLubYgfQFh/VbqcQ/mke8+evsn
+         9wo+P1crpkiaPJZBEnt2AIpcDnHFntrXLfAuO1iDRkce7YlRjupxdT138yRhdqcxSPUQ
+         9rZ4o26Fv0IXaECOmMQUH39H1RGmRdqQJRWxEBAQ87JvYxa29CmlA5ITefKiYXXHozM7
+         yut3jPsegPYdFCwWnV45fiiV8aGa79sX8gjeEYrPGsuFZwzBnt1Zq9RK+mj2sdmIn31A
+         ORDA==
+X-Forwarded-Encrypted: i=1; AKwUvBzQyjcu5wbJ/rZgKn2pj7Mvf2BAkDcX9qrtvCZy6Gdz4UpsgL9bMGh4pHgAgkhjcZ5U40V4BdHxZg==@kvack.org
+X-Gm-Message-State: AFuF++kHy/M2G5etuZrjtuB0X2TiNMyxVma2vyJa7g8KxUnT+JVK5Y+y
+	J6PFTMwEbLG1fg5nt31g5N8eks8VyLC8SL3Ofum0UUsH54L6O/AYwoKlpHI87aDw+tQ=
+X-Gm-Gg: AYBFou1hFIR2hIJXfxDqMEgPX2IAhMBWFxWFUbhbxBL/LbgoeBAOBrw0TgYrTHTK0PZ
+	RpUa5GpvOJe8Ofr0nN0xMPoPpstymGy4Kkscdt0svPnoLlwY7W52pL8koUH6PVe2YoM0WAkSw9D
+	EODmmC12J7mqvGOn1NlKC0kMCsaVGdjl38snGJk183E12YeDmP17dsy6B3JpIs7cSJ7JRH+Efn1
+	h5ddF3q+h3U47P1LSDikdt5ejRG1je8hnpoIFOKhjxlC6slQUEc9mgrAMRCjagYPIztC5g2VXhF
+	HVKHfQEskLfj4xLweLdMYBd6olwXDtWDIRhQNp96YqVgLgVsKzIdn6T6PePAtyNXHwEwzgF+8hu
+	3Wvr7pCgAPbj0O1odsOetwklLceYsY4izTO+Hi2j7GMWYO96xYlexM+jsn84KSL0fk6IMX6od7P
+	moDxq4OaSlAy7n1NI9HVFuDx/UcHmUddxldrexTEG5idMuK5dFxwoHPL1a40JgQHJLCCPE9AZYX
+	c5G436rPYCcF1ybkraaDppIjVB+41hFUDgQF5nc5L8m7O6dWMaORvFrUvPzIV+ACG8iIGRiXYGz
+	UlFwjAv1AHdmB5KZld7L
+X-Received: by 2002:a05:690e:4854:20b0:672:99e1:11f2 with SMTP id 956f58d0204a3-67299e11844mr878861d50.143.1789933237384;
+        Sun, 20 Sep 2026 12:40:37 -0700 (PDT)
 Received: from soleen.c.googlers.com.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67299146eb0sm2609969d50.21.2026.09.20.12.40.28
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-672990aada0sm2671022d50.9.2026.09.20.12.40.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Sep 2026 12:40:29 -0700 (PDT)
+        Sun, 20 Sep 2026 12:40:36 -0700 (PDT)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: linux-kselftest@vger.kernel.org,
 	legion@kernel.org,
@@ -169,22 +169,22 @@ To: linux-kselftest@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	vladimir.murzin@arm.com,
 	kas@kernel.org
-Subject: [RFC PATCH 36/46] KVM: x86: Implement Caretaker run loop and LUO detach/attach lifecycle
-Date: Sun, 20 Sep 2026 15:36:40 -0400
-Message-ID: <20260920193650.3373435-37-pasha.tatashin@soleen.com>
+Subject: [RFC PATCH 37/46] KVM: VMX: Add Caretaker VMX assembly guest entry/exit routine and helpers
+Date: Sun, 20 Sep 2026 15:36:41 -0400
+Message-ID: <20260920193650.3373435-38-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
 In-Reply-To: <20260920193650.3373435-1-pasha.tatashin@soleen.com>
 References: <20260920193650.3373435-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: D8256140007
-X-Stat-Signature: jjoydz8c9ngckdq8nxrw4csj5i4u5o5y
 X-Rspam-User: 
-X-HE-Tag: 1789933231-804101
-X-HE-Meta: U2FsdGVkX1/PO4BNEY9INf1oQYvJP7XdLEfbb5cCfLJZfmiO6HaaIYO89L+5TdzJEZr215VrXnEreSHpeQJObVgiUWNYgI7KYKDzj+wVvm+yScU64zk/fHo+cAjHASxxoqr3xan7zwXvqMZkt9D3G0xRBDHeenAHzI/VGlj4cEXk8eJ/dKKug6i2HJOhuOEdhbQSbJBUc6KT5w7r8Rqpmu8tRjnvVm2xvkXxwnNK8b2qcxqBkLSuwOzAXfR60Ug/uivicgdgA/uHColQCz789cCxydMAvwmFePfkh46ZC6noBXJgPuYYeb1DX9JVSerJWGepLYUX00SyCEAHUWHoak3F1iRJBdD7pfTaTIh5CBnrcZXclzlzQ0WE/e/Xfnax4X881//C0a6GDupmwSTLoJluiff3Ru1JuMyw2UTybEOCHYfeP2deZ9Tl8bKzRZFcNdOSYZZZnG7YYO9AeDRfYln7SAuXMwwLOf80/eZVJUg9N2b8XDegwZJWbV0+iCienOk3DnDnpMFH9m1EmwMURxFYsWpaVQ+TbUGCOXaNtXZu22GUcBuM5f0faSCgzv/WZ41NLcki+MT833sajjF/hQL4mNO5PKLq3XSFN5vQr2wK9bS7VxlSuoui7mdkCjuMxQPlBYOttrCMYkePRkQzEUTLdhBpdTQeL3RhxO3tbmxpV25GQrKO5XPHGx/Cg+RxQgMqRtv7IeSiVoAMCEkJu00Tyfq9l44geQSynNah1fILH4OSaHdv7mrGjgGOXFIwE5fRdW2bt4DAl1OnbWlw5QcKcQEL8txzCCR/uR1DyAd4JL6AksbvwTjFUY6pJyP9YnMEu+LAPHrSekU9+AYUvKGVtDh03Sg+VgBg7xCFDJb9bf61+7ysDrD7aud/cVCwqSF+ZbKpiJiMhsQMeQKNx8ZNKg5I0d2DJIr9G/Zd3ui6//9lrB1jACt5dtOgnFeVaV1HGwQalxgxxBzTUeV
- 1QTMCldv
- /Jg9crjpsfwe0lag9iaP6N8abEjdk87L2xuVEBjE+TZ8gQityE8AJ4I6DoUzsglw59bPSHGXZ49kQSqPwEUVNeapS2bEttmTiWq1JRBTY6Z35m9A0nWTbM01tme0+SLiBJTxNMzqSRaqisK14d6Z/SX1dCVUc9CIq0TAJzYGSvehR6n9RpFfcAZhjsLJg2nxdxWZItHBRlQHhX6vxprQdS/kvQ4FBOwLvtccOK0WqNW0kNV/dYC2gs0opWDZNgE5yerAl/0TboQru3h2tqc/6nQlK0gz3lq2AEgBZ39BnZuACSRbGATrypAX6IC4y9tW7h/yugHonI2CfTRE=
+X-Stat-Signature: gcen7wpixuw8z4cns3g5xrsqrnuuj48h
+X-Rspamd-Queue-Id: 4820D80007
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789933238-291684
+X-HE-Meta: U2FsdGVkX18PvrQEcQAGtmcNS92Dysf56sBfjEgXyLjCG6gDPG/F5XmEhJUZ51uA01nVEKusQqlrjF/nwXgvYOo+BZJ48zXSwwn18/Gz0LDExJ324uKODn1dZ2vXP55JY0jv7tD5oJCjQv88mK7nAh2DAQozeLn/OwuUkRn0BH84Uvixr0OO/nVW6lYfhTxgS+x9s6pGtAt6uz5QhVN7Pc7gdooxeuVUZOiYKDYRJOiIZ450f8742crGICTSZGTONyfnhiGWeF0jH9EgVWeRCXkbJwmqKU7p6o8SlRvQiRRW0G1ZZiXfNIKc3bFuJEc53TBwU80DTkAu81+I3WGfbI1MIrHIvUXig950zE5C33Enh82QHK/tFL1MneQQIhMW29eWfrIGOLnfscXPBOSrmJNO3MeI8JAp2E5WsMeBmm5ZBZbXVhRWXpKZlB4VGh6z7tjkkRWvmFr+GW8KXsEUzH4z8Sj8esR+Pk0ShFNe84bgS4D8jCwR7tGfYTimcl2bA/V68upqE+JZxixKxwZlzGz2ngqg7fi/M1BZ1sJLJensgsBBCJ81hMRpgRvFG3ZgiRXaXyd4XEUEnDA97c813GvDvZg45Yy+Ggz4xb1mbRMySX72r4VYLudurQTThSZLmt276WgYnzN9/ydubs3ZvqsmDm27r0utxnD05vd2iNiLsH/9HegHQM4X8dbEazGHREY9EfGyut6mRGDgEPoTCYp0oUCcA/f2bQOj34y24i5NAZ3zk7wBxfjKfXREnCm2MDm5x+gsx6u3Dr8JCOKrPrXTIxfUd/uy57WZaVOUK5wL5XMU3PcVn9VzdKwzAVwBZimMYalsZMPXSo43whouUZ4/tfzER2CUggHTVF33Hfrhy/qCDCnNgHjIBBOL4gkwx0kxK2jdRDXPoBTIBDZko/Z3pglYq6VQNjdw8HiTW8D7HTFhTVyiyb7U6z6zrSYThf7k+GUNjmZ7WveBrGG
+ LGKxCeeO
+ L0UesBRjTOBf72DTeF35XB3NekdXoH4EIJBhDAa8BAgXfsvWi4nZGIBhGpei/09auZz9CxpBwYHun4aXTLGjkcDb69Gf/tVNeSdyotBc0gGWsgxPRrZi8LhvUN/uXS+3inFkpzMgcBX8QP2VItyqrFqad9Wp5iBW9p1vhyCTWFCSFwCIJgdBchLXzqOgwFVj2HHiLUlpkkoTUyPuTylb07RHLUFHRGbwEQEIyaVi5+RmUpKdxxR75Oyar7sAQrD3WidwQu9PXZ7sElw+VY1jLOP2+9BYsd0zVG0CtGJzm3LwHcRDKnekxiXgVLuGvfpe/3Q3Opu6VBfpXcMg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -192,435 +192,238 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Complete the x86 Caretaker vCPU execution loop, detach-time state
-serialization, and LUO integration in arch/x86/kvm/caretaker.c.
+Add arch/x86/kvm/vmx/caretaker_vmenter.S and caretaker.h for standalone
+Intel VMX VMLAUNCH/VMRESUME world switch on preserved physical cores.
 
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 ---
- arch/x86/kvm/Kconfig     |   1 +
- arch/x86/kvm/Makefile    |   3 +-
- arch/x86/kvm/caretaker.c | 230 ++++++++++++++++++++++++++++++++++++++-
- arch/x86/kvm/caretaker.h |  12 +-
- arch/x86/kvm/kvm_luo.c   |  30 +++++
- 5 files changed, 270 insertions(+), 6 deletions(-)
+ arch/x86/kvm/msrs.c                  |   2 +
+ arch/x86/kvm/vmx/caretaker.h         |  78 +++++++++++++++++++
+ arch/x86/kvm/vmx/caretaker_vmenter.S | 112 +++++++++++++++++++++++++++
+ 3 files changed, 192 insertions(+)
+ create mode 100644 arch/x86/kvm/vmx/caretaker.h
+ create mode 100644 arch/x86/kvm/vmx/caretaker_vmenter.S
 
-diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
-index bae79fded6ff..2d1cb82ac3f1 100644
---- a/arch/x86/kvm/Kconfig
-+++ b/arch/x86/kvm/Kconfig
-@@ -22,6 +22,7 @@ config KVM_X86
- 	select KVM_COMMON
- 	select KVM_ELIDE_TLB_FLUSH_IF_YOUNG
- 	select KVM_MMU_LOCKLESS_AGING
-+	select HAVE_KVM_ARCH_CARETAKER
- 	select HAVE_KVM_IRQCHIP
- 	select HAVE_KVM_PFNCACHE
- 	select HAVE_KVM_DIRTY_RING_TSO
-diff --git a/arch/x86/kvm/Makefile b/arch/x86/kvm/Makefile
-index 2cf0f1f2a59b..11e67c072258 100644
---- a/arch/x86/kvm/Makefile
-+++ b/arch/x86/kvm/Makefile
-@@ -7,7 +7,8 @@ include $(srctree)/virt/kvm/Makefile.kvm
- 
- kvm-y			+= x86.o emulate.o irq.o lapic.o cpuid.o msrs.o pmu.o regs.o \
- 			   mtrr.o debugfs.o mmu/mmu.o mmu/page_track.o mmu/spte.o
--kvm-$(CONFIG_LIVEUPDATE) += kvm_luo.o
-+kvm-$(CONFIG_LIVEUPDATE) += kvm_luo.o mmu/kho.o
-+kvm-$(CONFIG_KVM_CARETAKER) += caretaker.o
- 
- kvm-$(CONFIG_X86_64) += mmu/tdp_iter.o mmu/tdp_mmu.o
- kvm-$(CONFIG_KVM_IOAPIC) += i8259.o i8254.o ioapic.o
-diff --git a/arch/x86/kvm/caretaker.c b/arch/x86/kvm/caretaker.c
-index dd2b2d582b69..c43913e94a9d 100644
---- a/arch/x86/kvm/caretaker.c
-+++ b/arch/x86/kvm/caretaker.c
-@@ -39,6 +39,7 @@
- struct caretaker_x86_host_state {
- 	struct desc_ptr orig_idt;
- 	unsigned long orig_cr2;
-+	unsigned long orig_cr8;
- 	unsigned long orig_fs_base;
- 	unsigned long orig_gs_base;
- 	unsigned long orig_kernel_gs_base;
-@@ -53,6 +54,8 @@ static void kvm_x86_caretaker_init_idt(gate_desc *idt);
- static void kvm_x86_caretaker_init_gdt_tss(struct desc_struct *gdt,
- 					   struct x86_hw_tss *tss,
- 					   unsigned long stack_top);
-+static enum oncore_exit_reason __cpu_preserved_text
-+kvm_x86_caretaker_run_page(struct caretaker_x86_page *cxp, u64 deadline_ticks);
- 
- /*
-  * A preserved page is handed over by physical address.  The SME/SEV C-bit is
-@@ -75,21 +78,129 @@ cxp_from_cb(struct kvm_caretaker_cb_ser *cb)
- 	return container_of(cb, struct caretaker_x86_page, abi.cb);
- }
- 
--static const struct kvm_x86_caretaker_ops *kvm_x86_caretaker_ops __cpu_preserved_data;
-+static const struct kvm_x86_caretaker_ops *kvm_x86_caretaker_host_ops;
-+static const struct kvm_x86_caretaker_runtime_ops *kvm_x86_caretaker_ops __cpu_preserved_data;
- 
- void kvm_x86_caretaker_register_ops(const struct kvm_x86_caretaker_ops *ops)
+diff --git a/arch/x86/kvm/msrs.c b/arch/x86/kvm/msrs.c
+index ae849e0b7d14..536c8d1959dc 100644
+--- a/arch/x86/kvm/msrs.c
++++ b/arch/x86/kvm/msrs.c
+@@ -882,11 +882,13 @@ int kvm_msr_write(struct kvm_vcpu *vcpu, u32 index, u64 data)
  {
--	WRITE_ONCE(kvm_x86_caretaker_ops, ops);
-+	WRITE_ONCE(kvm_x86_caretaker_host_ops, ops);
-+	WRITE_ONCE(kvm_x86_caretaker_ops, ops ? ops->runtime : NULL);
-+	cpu_preserved_clean(&kvm_x86_caretaker_ops);
+ 	return __kvm_set_msr(vcpu, index, data, true);
  }
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_x86_caretaker_register_ops);
++EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_msr_write);
  
- void kvm_x86_caretaker_unregister_ops(const struct kvm_x86_caretaker_ops *ops)
+ int kvm_msr_read(struct kvm_vcpu *vcpu, u32 index, u64 *data)
  {
--	if (kvm_x86_caretaker_ops == ops)
-+	if (kvm_x86_caretaker_host_ops == ops) {
-+		WRITE_ONCE(kvm_x86_caretaker_host_ops, NULL);
- 		WRITE_ONCE(kvm_x86_caretaker_ops, NULL);
-+		cpu_preserved_clean(&kvm_x86_caretaker_ops);
-+	}
+ 	return __kvm_get_msr(vcpu, index, data, true);
  }
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_x86_caretaker_unregister_ops);
++EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_msr_read);
  
-+enum oncore_exit_reason __cpu_preserved_text
-+kvm_arch_vcpu_caretaker_run(void *data, u64 deadline_ticks)
-+{
-+	struct kvm_caretaker_cb_ser *cb = data;
-+
-+	/*
-+	 * @data is always a struct kvm_caretaker_cb_ser:
-+	 * kvm_caretaker_vcpu_post_preserve() installs it with
-+	 * oncore_job_set_data() before activating the job.
-+	 */
-+	if (!cb)
-+		return ONCORE_EXIT_ERROR;
-+
-+	return kvm_x86_caretaker_run_page(cxp_from_cb(cb), deadline_ticks);
-+}
-+
-+static void kvm_arch_vcpu_caretaker_init(struct kvm_vcpu *vcpu)
-+{
-+	if (kvm_x86_caretaker_host_ops && kvm_x86_caretaker_host_ops->init)
-+		kvm_x86_caretaker_host_ops->init(vcpu);
-+}
-+
-+int kvm_arch_vcpu_caretaker_preserve(struct kvm_vcpu *vcpu,
-+				     struct kvm_vcpu_ser *ser,
-+				     struct kvm_vcpu_arch_ser *state, size_t size)
-+{
-+	struct kvm_caretaker_arch_ser *abi;
-+
-+	kvm_arch_vcpu_caretaker_init(vcpu);
-+	if (!vcpu->caretaker.cb)
-+		return -ENOMEM;
-+
-+	ser->cb.phys = virt_to_phys(vcpu->caretaker.cb);
-+	abi = phys_to_virt(ser->cb.phys);
-+	container_of(abi, struct caretaker_x86_page, abi)->arch_state = state;
-+	cpu_preserved_map_buffer(state, size);
-+
-+	return 0;
-+}
-+
-+static void kvm_x86_caretaker_signal_attach(struct kvm_vcpu *vcpu, u64 cb_pa)
-+{
-+	struct kvm_caretaker_arch_ser *abi;
-+	struct kvm_caretaker_cb_ser *cb;
-+	int target_pcpu;
-+	u32 apic_id;
-+
-+	if (!cb_pa)
-+		return;
-+
-+	abi = caretaker_pa_to_va(cb_pa);
-+	cb = &abi->cb;
-+	target_pcpu = cb->pcpu_id;
-+
-+	if (cpu_is_preserved(target_pcpu)) {
-+		apic_id = apic->cpu_present_to_apicid(target_pcpu);
-+		if (apic_id == BAD_APICID)
-+			apic_id = cpuid_to_apicid[target_pcpu];
-+		if (apic_id == BAD_APICID)
-+			apic_id = abi->apic_id ? abi->apic_id : target_pcpu;
-+		if (apic_id != BAD_APICID && apic_id != (u32)-1 && apic_id != 0)
-+			per_cpu(x86_cpu_to_apicid, target_pcpu) = apic_id;
-+	}
-+
-+	kvm_caretaker_wait_for_attach(cb, target_pcpu);
-+	if (vcpu)
-+		vcpu->cpu = -1;
-+}
-+
-+static void kvm_x86_caretaker_attach(struct kvm_vcpu *vcpu, u64 cb_pa)
-+{
-+	const struct kvm_x86_caretaker_ops *ops = kvm_x86_caretaker_host_ops;
-+
-+	if (cb_pa) {
-+		struct kvm_caretaker_arch_ser *abi = caretaker_pa_to_va(cb_pa);
-+
-+		vcpu_load(vcpu);
-+		if (ops && ops->sync_vcpu)
-+			ops->sync_vcpu(vcpu, abi);
-+		vcpu_put(vcpu);
-+	}
-+}
-+
-+void kvm_arch_vcpu_luo_pre_retrieve_caretaker(struct kvm_vcpu *vcpu,
-+					      struct kvm_vcpu_ser *ser)
-+{
-+	if (!ser || !ser->cb.phys || !(ser->flags & KVM_VCPU_LUO_FLAG_CARETAKER))
-+		return;
-+
-+	kvm_x86_caretaker_signal_attach(vcpu, ser->cb.phys);
-+}
-+
-+void kvm_arch_vcpu_luo_attach_caretaker(struct kvm_vcpu *vcpu,
-+					struct kvm_vcpu_ser *ser)
-+{
-+	if (!ser || !ser->cb.phys || !(ser->flags & KVM_VCPU_LUO_FLAG_CARETAKER))
-+		return;
-+
-+	kvm_x86_caretaker_attach(vcpu, ser->cb.phys);
-+	kvm_caretaker_post_attach_vcpu(vcpu);
-+}
-+
- static bool caretaker_x86_has_tsc_deadline __cpu_preserved_data;
- static u32 caretaker_x86_lapic_timer_period __cpu_preserved_data;
- static u32 caretaker_x86_tsc_khz __cpu_preserved_data;
-@@ -289,6 +400,8 @@ kvm_x86_caretaker_save_host_state(struct caretaker_x86_host_state *host,
- 
- 	store_idt(&host->orig_idt);
- 	host->orig_cr2 = native_read_cr2();
-+	asm volatile("mov %%cr8, %0" : "=r" (host->orig_cr8));
-+	asm volatile("mov %0, %%cr8" : : "r" (0UL) : "memory");
- 	/*
- 	 * MSR_FS_BASE is in the guest-writable passthrough set below, so it
- 	 * has to be saved here or a guest WRMSR to it survives the run and
-@@ -334,6 +447,7 @@ kvm_x86_caretaker_restore_host_state(const struct caretaker_x86_host_state *host
- 	 * to be zero leaves the *guest's* value live in the host MSR.
- 	 */
- 	native_write_cr2(host->orig_cr2);
-+	asm volatile("mov %0, %%cr8" : : "r" (host->orig_cr8) : "memory");
- 	native_wrmsrq(MSR_FS_BASE, host->orig_fs_base);
- 	native_wrmsrq(MSR_GS_BASE, host->orig_gs_base);
- 	native_wrmsrq(MSR_KERNEL_GS_BASE, host->orig_kernel_gs_base);
-@@ -853,6 +967,87 @@ kvm_x86_caretaker_handle_exit(void *data, struct kvm_caretaker_exit *exit)
- }
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_x86_caretaker_handle_exit);
- 
-+__caretaker_text static void
-+caretaker_restore_guest_fpu(struct caretaker_x86_page *cxp,
-+			    struct kvm_vcpu_arch_ser *state)
-+{
-+	union fpregs_state *xstate;
-+	u64 rfbm;
-+
-+	if (!cxp || !state || !cxp->save_guest_fpu)
-+		return;
-+
-+	xstate = (union fpregs_state *)state->xsave.region;
-+	rfbm = state->xcrs.xcrs[0].value | XFEATURE_MASK_FPSSE;
-+
-+	if (native_read_cr0() & X86_CR0_TS)
-+		asm volatile("clts" : : : "memory");
-+
-+	asm volatile("1: xrstor64 %[buf]\n\t"
-+		     "2:\n\t"
-+		     _ASM_EXTABLE(1b, 2b)
-+		     :
-+		     : [buf] "m" (*xstate),
-+		       "a" ((u32)rfbm), "d" ((u32)(rfbm >> 32))
-+		     : "memory");
-+}
-+
-+STACK_FRAME_NON_STANDARD(kvm_x86_caretaker_run_page);
-+
-+static enum oncore_exit_reason __cpu_preserved_text
-+kvm_x86_caretaker_run_page(struct caretaker_x86_page *cxp, u64 deadline_ticks)
-+{
-+	const struct kvm_x86_caretaker_runtime_ops *ops = kvm_x86_caretaker_ops;
-+	enum oncore_exit_reason reason = ONCORE_EXIT_QUANTUM_EXPIRED;
-+	struct cpu_preserved_stack_context *sctx;
-+	struct caretaker_x86_host_state host_state;
-+	int pcpu;
-+
-+	if (!cxp || !ops)
-+		return ONCORE_EXIT_ERROR;
-+
-+	sctx = cpu_preserved_get_stack_context();
-+	if (sctx && sctx->cpu >= 0 && sctx->cpu < CONFIG_NR_CPUS)
-+		pcpu = sctx->cpu;
-+	else
-+		pcpu = cxp->abi.cb.pcpu_id;
-+	cxp->abi.cb.pcpu_id = pcpu;
-+
-+	if (cmpxchg(&cxp->abi.cb.state, KVM_CARETAKER_PAUSED,
-+		    KVM_CARETAKER_RUNNING) != KVM_CARETAKER_PAUSED ||
-+	    kvm_caretaker_should_exit(&cxp->vcpu)) {
-+		smp_store_release(&cxp->abi.cb.state, KVM_CARETAKER_STOPPED);
-+		return ONCORE_EXIT_ATTACH_SIGNALED;
-+	}
-+
-+	/* Save host context, switch to Caretaker descriptors and CR3 */
-+	kvm_x86_caretaker_save_host_state(&host_state, cxp);
-+
-+	if (cxp->arch_state)
-+		caretaker_restore_guest_fpu(cxp, cxp->arch_state);
-+
-+	cxp->vcpu.ops = &ops->common;
-+
-+	reason = kvm_caretaker_vcpu_run(&cxp->vcpu, deadline_ticks);
-+
-+	iret_to_self();
-+
-+	if (ops->detach_serialize && cxp->arch_state)
-+		ops->detach_serialize(cxp, cxp->arch_state);
-+
-+	kvm_x86_caretaker_restore_host_state(&host_state, pcpu);
-+
-+	if (reason == ONCORE_EXIT_ATTACH_SIGNALED ||
-+	    kvm_caretaker_should_exit(&cxp->vcpu) ||
-+	    cmpxchg(&cxp->abi.cb.state, KVM_CARETAKER_RUNNING,
-+		    KVM_CARETAKER_PAUSED) != KVM_CARETAKER_RUNNING) {
-+		reason = ONCORE_EXIT_ATTACH_SIGNALED;
-+		smp_store_release(&cxp->abi.cb.state, KVM_CARETAKER_STOPPED);
-+	}
-+
-+	return reason;
-+}
-+
- __caretaker_text void kvm_x86_caretaker_arm_timer(u64 deadline_ticks)
+ int __kvm_emulate_msr_read(struct kvm_vcpu *vcpu, u32 index, u64 *data)
  {
- 	if (!deadline_ticks)
-@@ -903,3 +1098,32 @@ __caretaker_text void kvm_x86_caretaker_disarm_timer(void)
- }
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_x86_caretaker_disarm_timer);
- 
-+void kvm_arch_vcpu_caretaker_unpreserve(struct kvm_vcpu_ser *ser)
-+{
-+	if (ser->cb.phys) {
-+		struct kvm_caretaker_arch_ser *abi = caretaker_pa_to_va(ser->cb.phys);
+diff --git a/arch/x86/kvm/vmx/caretaker.h b/arch/x86/kvm/vmx/caretaker.h
+new file mode 100644
+index 000000000000..d4272e202e73
+--- /dev/null
++++ b/arch/x86/kvm/vmx/caretaker.h
+@@ -0,0 +1,78 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * Copyright (c) 2026, Google LLC.
++ * Pasha Tatashin <pasha.tatashin@soleen.com>
++ */
++#ifndef __VMX_CARETAKER_H
++#define __VMX_CARETAKER_H
 +
-+		kvm_x86_caretaker_unpreserve_pages(abi);
-+		kho_unpreserve_free(abi);
-+		ser->cb.phys = 0;
-+	}
++#define VMCS_VM_INSTRUCTION_ERROR	0x4400
++
++#ifndef __ASSEMBLY__
++#include <linux/types.h>
++#include <linux/kvm_host.h>
++#include <linux/oncore.h>
++#include <asm/vmx.h>
++#endif
++
++#include "../caretaker.h"
++
++#ifndef __ASSEMBLY__
++#include <asm/desc.h>
++#include <linux/processor.h>
++
++/* Length of instructions */
++#define PAUSE_INSN_LEN			2
++#define VMCALL_INSN_LEN			3
++
++/* Exit qualification bitfields for I/O instructions (Intel SDM Vol 3C) */
++#define VMX_IO_SIZE_MASK		0x7
++#define VMX_IO_DIRECTION_BIT		BIT(3)
++#define VMX_IO_PORT_SHIFT		16
++
++/* Default VMX preemption timer shift (counts down every 2^5 TSC ticks) */
++#define VMX_PREEMPTION_TIMER_SHIFT	5
++
++struct caretaker_vmx_page {
++	struct caretaker_x86_page common;
++	/* Guest syscall state not automatically switched by VMCS */
++	u64 star;
++	u64 lstar;
++	u64 fmask;
++	u64 vmxon_pa;
++	u32 timer_shift;
++	u32 ple_supported;
++	u8 vmxon_area[PAGE_SIZE] __aligned(PAGE_SIZE);
++} __aligned(PAGE_SIZE);
++
++static inline unsigned long vmx_vmread(unsigned long field)
++{
++	unsigned long val;
++
++	asm volatile("vmread %1, %0" : "=r" (val) : "r" (field) : "cc");
++	return val;
 +}
 +
-+void kvm_arch_vcpu_caretaker_finish(struct kvm_vcpu_ser *ser)
++static inline void vmx_vmwrite(unsigned long field, unsigned long val)
 +{
-+	if (ser->cb.phys) {
-+		struct kvm_caretaker_arch_ser *abi = caretaker_pa_to_va(ser->cb.phys);
-+		u32 i;
-+
-+		for (i = 0; i < abi->nr_preserved_pages; i++) {
-+			phys_addr_t pa = __sme_clr(abi->preserved_pages_pa[i]);
-+			struct page *page = kho_restore_pages(pa, 1);
-+
-+			if (page)
-+				__free_pages(page, 0);
-+		}
-+		abi->nr_preserved_pages = 0;
-+		kho_restore_free(abi);
-+		ser->cb.phys = 0;
-+	}
++	asm volatile("vmwrite %1, %0" : : "r" (field), "r" (val) : "cc");
 +}
-diff --git a/arch/x86/kvm/caretaker.h b/arch/x86/kvm/caretaker.h
-index 9dd8815d414b..8c0fc336be6b 100644
---- a/arch/x86/kvm/caretaker.h
-+++ b/arch/x86/kvm/caretaker.h
-@@ -217,11 +217,19 @@ void kvm_x86_caretaker_unregister_ops(const struct kvm_x86_caretaker_ops *ops);
- struct kvm_vcpu_ser;
- 
- #ifdef CONFIG_KVM_CARETAKER
--void kvm_arch_vcpu_caretaker_init(struct kvm_vcpu *vcpu);
-+int kvm_arch_vcpu_caretaker_preserve(struct kvm_vcpu *vcpu,
-+				     struct kvm_vcpu_ser *ser,
-+				     struct kvm_vcpu_arch_ser *state, size_t size);
- void kvm_arch_vcpu_caretaker_unpreserve(struct kvm_vcpu_ser *ser);
- void kvm_arch_vcpu_caretaker_finish(struct kvm_vcpu_ser *ser);
- #else
--static inline void kvm_arch_vcpu_caretaker_init(struct kvm_vcpu *vcpu) {}
-+static inline int kvm_arch_vcpu_caretaker_preserve(struct kvm_vcpu *vcpu,
-+						   struct kvm_vcpu_ser *ser,
-+						   struct kvm_vcpu_arch_ser *state,
-+						   size_t size)
-+{
-+	return 0;
-+}
- static inline void kvm_arch_vcpu_caretaker_unpreserve(struct kvm_vcpu_ser *ser) {}
- static inline void kvm_arch_vcpu_caretaker_finish(struct kvm_vcpu_ser *ser) {}
- #endif
-diff --git a/arch/x86/kvm/kvm_luo.c b/arch/x86/kvm/kvm_luo.c
-index 899b193812bb..ff6acf3acb52 100644
---- a/arch/x86/kvm/kvm_luo.c
-+++ b/arch/x86/kvm/kvm_luo.c
-@@ -20,9 +20,11 @@
- #include <linux/mem_encrypt.h>
- #include <asm/virt.h>
- 
++
++#ifdef CONFIG_KVM_CARETAKER
++int vmx_caretaker_enter(void *page);
++void vmx_caretaker_exit_handler(void);
++void vmx_caretaker_register(void);
++void vmx_caretaker_unregister(void);
++void vmx_caretaker_decode_exit(void *page,
++			       struct kvm_caretaker_exit *exit);
++void vmx_caretaker_init_host_vmcs(struct caretaker_vmx_page *cvp);
++void vmx_caretaker_init(struct kvm_vcpu *vcpu);
++#else
++static inline void vmx_caretaker_register(void) {}
++static inline void vmx_caretaker_unregister(void) {}
++static inline void vmx_caretaker_init(struct kvm_vcpu *vcpu) {}
++#endif
++
++#endif /* !__ASSEMBLY__ */
++
++#endif /* __VMX_CARETAKER_H */
+diff --git a/arch/x86/kvm/vmx/caretaker_vmenter.S b/arch/x86/kvm/vmx/caretaker_vmenter.S
+new file mode 100644
+index 000000000000..ff135cba854d
+--- /dev/null
++++ b/arch/x86/kvm/vmx/caretaker_vmenter.S
+@@ -0,0 +1,112 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Copyright (c) 2026, Google LLC.
++ * Pasha Tatashin <pasha.tatashin@soleen.com>
++ */
++#include <linux/linkage.h>
++#include <linux/cfi_types.h>
++#include <linux/objtool.h>
++#include <asm/asm.h>
++#include <asm/bitsperlong.h>
++#include <asm/kvm_vcpu_regs.h>
++#include <asm/nospec-branch.h>
++#include <asm/msr-index.h>
++#include <asm/page_types.h>
 +#include "caretaker.h"
- #include "cpuid.h"
- #include "fpu.h"
- #include "lapic.h"
-+#include "mmu.h"
- #include "msrs.h"
- #include "pmu.h"
- #include "regs.h"
-@@ -30,7 +32,23 @@
- 
- int kvm_arch_vm_luo_preserve(struct kvm *kvm, struct kvm_luo_ser *ser)
- {
-+	int ret;
++#include "../caretaker_asm.h"
 +
- 	ser->type = kvm->arch.vm_type;
++.section .text.cpu_preserved, "ax"
 +
++/**
++ * vmx_caretaker_enter - Low-level transition to VMX guest mode and back
++ * @cvp: Pointer to struct caretaker_vmx_page (%rdi)
++ */
++SYM_TYPED_FUNC_START(vmx_caretaker_enter)
++	ENDBR
++	CARETAKER_PUSH_HOST_REGS
++	movq %rsp, CXP_STACK_ORIG(%rdi)
++
++	/* Switch to private preserved stack */
++	movq CXP_STACK_TOP(%rdi), %rsp
++
++	/* Activate VMCS on this pCPU */
++	vmptrld CXP_VMCS_PA(%rdi)
++
++	/* Restore guest MSR_KERNEL_GS_BASE if valid/canonical */
++	movq CXP_KERNEL_GS_BASE(%rdi), %rax
++	movq %rax, %rdx
++	sarq $56, %rdx
++	incq %rdx
++	cmpq $1, %rdx
++	ja 2f
++	movl $MSR_KERNEL_GS_BASE, %ecx
++	movq CXP_KERNEL_GS_BASE(%rdi), %rax
++	movq %rax, %rdx
++	shrq $32, %rdx
++1:	wrmsr
++2:
++	_ASM_EXTABLE(1b, 2b)
++
++	/* Restore guest GPRs */
++	CARETAKER_RESTORE_GPRS %rdi
++
++	pushq %rdi
++	movq CXP_REG_RDI(%rdi), %rdi
++
++	/* Clear CPU microarchitectural buffers before guest entry */
++	CARETAKER_CLEAR_CPU_BUFFERS
++
++	/* Launch or resume */
++	vmresume
++	vmlaunch
++
++	/* If both fail, record error and return */
++	popq %rdi
++	mov $VMCS_VM_INSTRUCTION_ERROR, %eax
++	vmread %rax, %rax
++	movq %rax, CXP_LAST_EXIT_CODE(%rdi)
++	btsq $31, %rax
++	jmp .Lvmx_ret
++SYM_FUNC_END(vmx_caretaker_enter)
++
++SYM_FUNC_START(vmx_caretaker_exit_handler)
++	ENDBR
 +	/*
-+	 * Shadow/TDP page tables are a VM-wide resource: an orphaned vCPU keeps
-+	 * running the guest out of them while the VM is detached, so they must
-+	 * survive the kexec.  Preserve them once here rather than once per vCPU
-+	 * from the caretaker init hook -- the walk is O(size of the guest's page
-+	 * tables) and holds mmu_lock for write, so repeating it per vCPU is both
-+	 * redundant and a scalability problem on large guests.
++	 * Hardware jumps here on VM-Exit with:
++	 * RSP = HOST_RSP (CXP_STACK_TOP)
++	 * CR3 = HOST_CR3
 +	 */
-+	ret = kvm_mmu_preserve_kho(kvm);
-+	if (ret)
-+		return ret;
++	pushq %rdi
 +
-+	KHOSER_STORE_PTR(ser->kho_folios, kvm->kho_folios);
- 	return 0;
- }
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_arch_vm_luo_preserve);
-@@ -185,6 +203,16 @@ int kvm_arch_vcpu_luo_preserve(struct kvm_vcpu *vcpu, struct kvm_vcpu_ser *ser)
- 	vcpu_put(vcpu);
- 
- 	KHOSER_STORE_PTR(ser->arch_state, state);
++	/* Recompute CVP pointer from RSP: CVP = (RSP & PAGE_MASK) - CXP_STACK_OFFSET */
++	movq %rsp, %rdi
++	andq $PAGE_MASK, %rdi
++	subq $CXP_STACK_OFFSET, %rdi
 +
-+	if (ser->flags & KVM_VCPU_LUO_FLAG_CARETAKER) {
-+		int err = kvm_arch_vcpu_caretaker_preserve(vcpu, ser, state, size);
++	/* Save guest GPRs into CVP */
++	CARETAKER_SAVE_GPRS %rdi
++	popq CXP_REG_RDI(%rdi)
 +
-+		if (err) {
-+			kho_unpreserve_free(state);
-+			return err;
-+		}
-+	}
++	/* Stuff Return Stack Buffer to prevent guest RSB poisoning */
++	CARETAKER_FILL_RETURN_BUFFER %rax
 +
- 	return 0;
- }
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_arch_vcpu_luo_preserve);
-@@ -315,6 +343,7 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_arch_vcpu_luo_retrieve);
- 
- void kvm_arch_vcpu_luo_unpreserve(struct kvm_vcpu_ser *ser)
- {
-+	kvm_arch_vcpu_caretaker_unpreserve(ser);
- 	if (ser->arch_state.phys) {
- 		struct kvm_vcpu_arch_ser *state =
- 			phys_to_virt(__sme_clr(ser->arch_state.phys));
-@@ -327,6 +356,7 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_arch_vcpu_luo_unpreserve);
- 
- void kvm_arch_vcpu_luo_finish(struct kvm_vcpu_ser *ser)
- {
-+	kvm_arch_vcpu_caretaker_finish(ser);
- 	if (ser->arch_state.phys) {
- 		struct kvm_vcpu_arch_ser *state =
- 			phys_to_virt(__sme_clr(ser->arch_state.phys));
++	/* Read guest MSR_KERNEL_GS_BASE */
++	movl $MSR_KERNEL_GS_BASE, %ecx
++	rdmsr
++	shlq $32, %rdx
++	orq %rax, %rdx
++	movq %rdx, CXP_KERNEL_GS_BASE(%rdi)
++
++	xorq %rax, %rax
++	jmp .Lvmx_ret
++
++.Lvmx_ret:
++	/* Restore caller stack */
++	movq CXP_STACK_ORIG(%rdi), %rsp
++
++	/* Restore host callee-saved registers */
++	CARETAKER_POP_HOST_REGS
++	ret
++SYM_FUNC_END(vmx_caretaker_exit_handler)
++STACK_FRAME_NON_STANDARD(vmx_caretaker_enter)
++STACK_FRAME_NON_STANDARD(vmx_caretaker_exit_handler)
 -- 
 2.55.0.1082.g2b9226bbc0-goog
 
