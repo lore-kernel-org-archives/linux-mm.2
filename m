@@ -4,60 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EC5DC982D8
-	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 14:45:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CC16C982E1
+	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 14:47:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A79596B0088; Sun, 20 Sep 2026 10:45:36 -0400 (EDT)
+	id 39DE36B0093; Sun, 20 Sep 2026 10:47:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A2A0D6B0092; Sun, 20 Sep 2026 10:45:36 -0400 (EDT)
+	id 34EA56B0095; Sun, 20 Sep 2026 10:47:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 918F86B0093; Sun, 20 Sep 2026 10:45:36 -0400 (EDT)
+	id 23D7B6B0096; Sun, 20 Sep 2026 10:47:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 640076B0088
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 10:45:36 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0D993A5F03
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 14:45:35 +0000 (UTC)
-X-FDA: 85234414230.09.5A03736
-Received: from outbound.st.icloud.com (st-2002l-snip4-1.eps.apple.com [57.103.78.94])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 1B57C16000E
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 14:45:32 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b=nIPqigKL;
-	spf=pass (imf08.hostedemail.com: domain of zippermonkey@icloud.com designates 57.103.78.94 as permitted sender) smtp.mailfrom=zippermonkey@icloud.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0103F6B0093
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 10:47:08 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8EAD91A049E
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 14:47:08 +0000 (UTC)
+X-FDA: 85234418136.17.B4F584C
+Received: from outbound.pv.icloud.com (pv-2001b-snip4-5.eps.apple.com [57.103.64.78])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 9C02F80003
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 14:47:06 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=icloud.com header.s=1a1hai header.b=B9Z8hwmp;
+	spf=pass (imf30.hostedemail.com: domain of zippermonkey@icloud.com designates 57.103.64.78 as permitted sender) smtp.mailfrom=zippermonkey@icloud.com;
 	dmarc=pass (policy=quarantine) header.from=icloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789915533;
+	s=arc-20220608; t=1789915626;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RxHtGSc7sBrwC1443xmi5wE1JI2HFVWqMFdo7O6u9fY=;
-	b=hCrnSqEHAZWWYoesBqct19juq/jRv7YZn5KbvB6upgOCGpgC8al5igLh7MsOJWdeUQAppx
-	4Cd7D3cztRGY/UpBgbr1AFZlx41so/fMvjSf+K3CE8YcD1k2O/9DjEc/2jMo7rYwmkleuc
-	BatHyFdzg2AD7yjloGhk/l6+bml406g=
+	bh=09jiLbzpb1veArtuXhL84Hxo7NJy/m+yRETm/PTbJXM=;
+	b=Z9BcC5cfbIDMf+RuskW99UcZlOmGm5PGFdqvEraZdgSWOvcoRkKfpjDXcOeaSaQ7OoY4kK
+	ynBH2iT4ypQosbZ3aNGmqK3ym2ypIQZFz/iSXwqyljEfRkt7H9exFghFpr9w7HeRVUpIeu
+	KKGFoHXWZUY+wdXVWzF8iNAYagi7syQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789915533;
-	b=F6r52nttBSOHXPl8u0lCQ03bCqUmPb6Kcma4difrUVS8wCGJ1S3aFLVeknsYRWmig12GbX
-	EqhPKofFiTkCEGJwsQyt8rtcOhGsEnXUhq46l5VMRtHn7thrASWIGUwLijSbBmnWYRNKtJ
-	nL/2X0SkB78HUhyQ9fmWMkJaW9BU9x4=
+	t=1789915626;
+	b=J3etSnrs6gyYtzYi6cGlztoSUYFvB5e+/YHVP+BfKhzWNVnghOdv7B41LlCat5byHme59N
+	iQ+giYJsSnM2d/0mKQXTb5c6b2xV7qLk2eeHdNxUB0DqzFt21ZbYuMAtn63rpnuzHh2jE/
+	66RBuw7wiOrzNvAs3RsRjoCh7exxpqE=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b=nIPqigKL;
-	spf=pass (imf08.hostedemail.com: domain of zippermonkey@icloud.com designates 57.103.78.94 as permitted sender) smtp.mailfrom=zippermonkey@icloud.com;
+	imf30.hostedemail.com;
+	dkim=pass header.d=icloud.com header.s=1a1hai header.b=B9Z8hwmp;
+	spf=pass (imf30.hostedemail.com: domain of zippermonkey@icloud.com designates 57.103.64.78 as permitted sender) smtp.mailfrom=zippermonkey@icloud.com;
 	dmarc=pass (policy=quarantine) header.from=icloud.com
-Received: from outbound.st.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-east-1a-100-percent-3 (Postfix) with ESMTPS id 344C918002BD;
-	Sun, 20 Sep 2026 14:45:26 +0000 (UTC)
-X-ICL-RepId: 01a0bf47-77a6-78de-8eca-d7697cdaaf52
-X-ICL-Out-Info: HUtFAUMEWwJACUgATUQeDx5WFlZNRAJCTQhKB0MGWQReCEsEQwFbEhVdRUkERxtXAlQXXQZSEnIZWhRcGFNFUR9UWFUJCgJRHFYNV0NUBF9QSxsOXwZLWhVVFw4CQh9QH0wWV0NEHxwZWhRcGFNFUR9UWEMZRVZpQQtPHV0ZWxxCZFhXCQoCURxWDVdDVARfUFQRV1ALWQJCD0gKXwdaBkQMSQJDA1kFQw1VAkBNAkIAXApeAlkAVwl5EVABWB5WXloXXlMXH0sAXEVaDlsERxQ=
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1789915532; x=1792507532; bh=RxHtGSc7sBrwC1443xmi5wE1JI2HFVWqMFdo7O6u9fY=; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=nIPqigKLd8cdmGn8MUuIdcq6ENQk44lYiLYkxbsxBSfMskkMwd6/JYTE/gzvojxBAIolIIxysQOXHWJoDukOIDIe6dlltMD7YNIBoMkgZzDGtWy1uH9svoZtYcnkBKio4RVOR+4XCsrSBe6RS0jEGOby3x8MleepGu7EMCunBiugb3ZpPxiCwLePFPceFYADIuptxTloA4n0XN5FoZzJGvt44m/HxZIcSTGM3uvCVkCQe2hjmZ7jixgKoK7RtSMSVTopyPfe5GEQhGMWwFaPnIC+YGy9VZ8N2Dd1q0UqbHflecLrw+ugo8cisvaCUXaZ9wGLmbN54xWoIAzl7nq7+Q==
-Received: from BRUZZHANG-MC1.tencent.com (unknown [17.156.216.30])
-	by p00-icloudmta-asmtp-us-east-1a-100-percent-3 (Postfix) with ESMTPSA id 2028B18002A6;
-	Sun, 20 Sep 2026 14:45:18 +0000 (UTC)
+Received: from outbound.pv.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-west-1a-20-percent-0 (Postfix) with ESMTPS id 7C5BA18001B6;
+	Sun, 20 Sep 2026 14:47:02 +0000 (UTC)
+X-ICL-RepId: 01a0bf48-ec0a-7a7f-a463-1916823a79c0
+X-ICL-Out-Info: HUtFAUMEWwJACUgATUQeDx5WFlZNRAJCTQhKB0MGWQReCEsEQwFbEhVdRUkERxtXAlQXXQZSEnIZWhRcGFNFUR9UWFUJCgJRHFYNV0NUBF9QSxsOXwZLWhVVFw4CQh9QH0wWV0NHHRwZWhRcGFNFUR9UWEMZRVZpQQtPHV0ZWxxCZFhXCQoCURxWDVdDVARfUFQRV1ALWQJCD0gKXwdaBkQPTARDA1gBQwpVAkBNAkIAXApeAlkAVwl5EVABWB5WXloXXlMXH0sAXEVaDlsERxQ=
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1789915625; x=1792507625; bh=09jiLbzpb1veArtuXhL84Hxo7NJy/m+yRETm/PTbJXM=; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=B9Z8hwmp9+SQ7EaHjGu4O3EE4TOO56BGpkmOlXmH8xPLmgxy9uPR2l3S4tbtpkkzle5PetrDmfi1gcFLkcvKx3xTfHXbj9E7GWe6EgbONyuGb/QOKw4N/i8pfNM2GzNui+qEET3o1jAR9ppf+jRVdHs5Cxun+RwFCBFZrG62ZJx2m6EtmcoTG5iEC1vbs3I2lpVAMn1lBJ31V04GdCWjj+7bC7mhcc0s//rLPb7K3joWZjsjkKzI4m1vtaN6PfiPBNAUZC6V3BZUVpL/5rW7AETjcGJs5LUJ5xafiGz2INhwvq6rXDcFH9V5G5+U3P39/5XD9qXAjE1IkpbC6bBwpA==
+Received: from BRUZZHANG-MC1.tencent.com (unknown [17.156.192.29])
+	by p00-icloudmta-asmtp-us-west-1a-20-percent-0 (Postfix) with ESMTPSA id 695811800207;
+	Sun, 20 Sep 2026 14:46:56 +0000 (UTC)
 From: Zhang Peng <zippermonkey@icloud.com>
 To: Barry Song <baohua@kernel.org>
 Cc: Zhang Peng <zippermonkey@icloud.com>,
@@ -80,40 +80,40 @@ Cc: Zhang Peng <zippermonkey@icloud.com>,
 	Zhang Peng <bruzzhang@tencent.com>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 2/5] mm/vmscan: extract folio_free() from shrink_folio_list()
-Date: Sun, 20 Sep 2026 22:45:10 +0800
-Message-ID: <20260920144511.42734-1-zippermonkey@icloud.com>
+Subject: Re: [PATCH v5 3/5] mm/vmscan: extract pageout_one() from shrink_folio_list()
+Date: Sun, 20 Sep 2026 22:46:46 +0800
+Message-ID: <20260920144647.43333-1-zippermonkey@icloud.com>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To:  <CAGsJ_4ykbJKVqEv6uGNKZaQhtV1UxxV-MWt7D1jx6SpdMN+cqA@mail.gmail.com>
-References: <20260720-batch-tlb-flush-v5-0-db943a0d0d6b@icloud.com> <20260720-batch-tlb-flush-v5-2-db943a0d0d6b@icloud.com> <CAGsJ_4ykbJKVqEv6uGNKZaQhtV1UxxV-MWt7D1jx6SpdMN+cqA@mail.gmail.com>
+In-Reply-To:  <CAGsJ_4zOfR3Rn5tk_RcOWUDmREO1JyRwXA15Vr3aeUs=+ybMMA@mail.gmail.com>
+References: <20260720-batch-tlb-flush-v5-0-db943a0d0d6b@icloud.com> <20260720-batch-tlb-flush-v5-3-db943a0d0d6b@icloud.com> <CAGsJ_4zOfR3Rn5tk_RcOWUDmREO1JyRwXA15Vr3aeUs=+ybMMA@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIwMDIxNSBTYWx0ZWRfXy7WlkPKHEr07
- 5Dco4+tckHFjWNgNgzUcG8oMbGRdIVZh9LPBBuK+TmHWiaBtlvc1sQLiHt8TWu1uQKqzK/976ke
- mBstUBiuOhrZU8rCgTTAZQUGA+xEUvDwr0J/r4/vroRqcwE0R8KKCW1hLlYxsviqfoMPSw9HweU
- s2Df9xKYKPd2su0dH8nQJEhVvrYiEhvrYswrs9fzPlcNLFlhfdvauX3ajkD0T4fouz7vRflG9Aw
- XoWMi64z391CjFwOcDNODownEwME5p2JQESlJd2/77T3VAHKMbHErEl0rrgh+/KbsJnIAnVNBq/
- tkFd3z64Aks/PcFQqalesZQD8mZOJBH5gJLYGvK7vwnSqJStIl6W2Hk1uYDYek=
-X-Proofpoint-ORIG-GUID: 0TaXmJjLpvPMCBYN83AUXrikMXBsu2OO
-X-Proofpoint-GUID: 0TaXmJjLpvPMCBYN83AUXrikMXBsu2OO
-X-Authority-Info-Out: v=2.4 cv=M5dA6iws c=1 sm=1 tr=0 ts=6aaff18a
- cx=c_apl:c_pps:t_out a=oyWFxbOnq+dmhQrAPgaJYA==:117
- a=oyWFxbOnq+dmhQrAPgaJYA==:17 a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10
+X-Proofpoint-GUID: fy9rEMDQMrPKHRWHN-6yUqk-6O7WW-7b
+X-Proofpoint-ORIG-GUID: fy9rEMDQMrPKHRWHN-6yUqk-6O7WW-7b
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIwMDIxNSBTYWx0ZWRfX8gI4cbZRMWuI
+ KcCjj6CThf8vLJmvMDeWXV/ybMzoNi96Ux+hL+qNHgUTCKLL1tuYe/jr55yOHUqBYAzGeV1YlAi
+ VW316FN6iHrDMhFSuO44EyXS90cSq1Ck+RWOkaRLL5BCTDHAx0gs1EQsPhXzg0ZhekbUUsv0nEa
+ UWdT592jHkFC2V9nosNzFLaeHPxqTFd7zRg4KtWmPUDjol+ICw9Oc3tbJc/Z8oH36STkA9fCycP
+ 3pPD1xR3vZ5CvdhwSlmHwdCiG3dKc38li0j/hfWjgWfm2kpHQD1ALeV2Eap3LnibDpE/rNqP+T2
+ toJ/6S26n2AyFXK0Mq0UShDf0CFZNPWr2sMPr184Vsrvo3Gbfmn3yy/6elfkM0=
+X-Authority-Info-Out: v=2.4 cv=RrvI7SmK c=1 sm=1 tr=0 ts=6aaff1e8
+ cx=c_apl:c_pps:t_out a=aW9mcIavGNWWFvFFKOxBSA==:117
+ a=aW9mcIavGNWWFvFFKOxBSA==:17 a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10
  a=x7bEGLp0ZPQA:10 a=YE32fvk_ji8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=v3ZZPjhaAAAA:8 a=B3MVPceRnCuek0yWCJMA:9 a=QEXdDO2ut3YA:10
+ a=VwQbUJbxAAAA:8 a=v3ZZPjhaAAAA:8 a=_kJJyzcaNiJmjTfxGhgA:9 a=QEXdDO2ut3YA:10
  a=J82S1U87d15UFHHUFZS8:22 a=kKg27zqgtulLWh45kPDF:22
-X-JNJ: AAAAAAABL0GJCfIt2pPvy3p3Gu6vzsVjH7inZhi/raMfFADJDQvEsKNN33JmyG9TtC4Gt85wnw1JYit9GXcdAhQ7xnIBgVNou5u+cWR4+B3fRTyW6X5VorGKnfklQbvsm+0CJ6DotMAq+LgWPTYWd3vUU7vnRRehhiDNHYGw/1VARjtmy/x8J0TicSY1ei4H+3Y3H6Tr5tlGLEwP0gh0sQZqBrd5OQc+la2SDBJVbMLOPYR3sSVzgX/vyOtNjRUzsqcpFdGNoDHeN6nhyLClX2Ib6Y/gfb4xppVOVGSjoi3feaI9fe23UnJF/4QmfL4gg0kc/HksYznLemupa4Xih+pQ3UI3dmY7YiRLII0j5rO8Ri35YUWJTRXOdcRgaiEUIpGRTvRfO/FQTPJDcn2RWz3pDUjAEKa3AcINE4YvbTACZUKg292m3UV1n6Jt9DosaBJ7ljfSKxLaVq7Mi5Pm6YwV31njEdvdl4BcrIbXRdDb/+mul5QBokZZfhP2ZZiQqgqXK6mzMB0ovS5ShQLaJrBAT5Cvb87nLyPBefW6J3dH3sziM8W2dWmLdf7PwG/yvK1z/fX9ksm7XfWk8uRwbAyUVtsfiGfZLpMCIOrZEOtOMX9zu0m4KiK6fmbM6LhHEg1BjmFmNVmy9IyHHQMoZrAszjU2izA7MlxsfDD7tkYMwzx/T9RwGrYpFzhHevJzqrsgDwIJ6KCe8JYlx+zPXNKl4Wrxn9KJKmXV6RagjYI4NkF53LUgPcQt0hb6bAfuCDjx4RgxrClbnJn6ugymJDwgKKHTNKeBaSFPpq02apLCq5IpNek/yo4NQIVncy/Fny7JruoB2ceq1BOwYTLoBU0/AtXeylEPEzvm+kRqRr6a7ECstUbVJAamp9QdDKPWn6nR+721tj8tAEY2CqEmEWCcFpWBylizxsoorcZe3Ib/gwNJ74DsPdiP1XZUX/oBy5bCHMMEV1eOw/f67ZVX+jX
- YMmmyYNK
- XZuTYTvTqnQoXssdIYoRuyuSVZ587aYzaJLQ5O8Jk1WizzsYppTID8n4lmrirwOREKjLxRUC7w0Tk5jlmoeA3zZuDBQ8eIdXWFNOxDa/E+5gX9TPOzTJfgIA66YmfvcQAaY8m3atZ5OPMBM4X0Pv1ufCS4bLSHw1EBnbnpr93RM0FzStDMCQZ6FtPuu0GQvh8R0KtEfJXIGD5utMojX8vOVSGZpUym0qCKWT6crPqYfEJGUtmTZw1wLh48eqV3r0uYLvYqNkTJ+n1O+TskeKaBdhl/J3LECn0JbREpAi7EIQffgoirLjyfpyplFRkWWKQiNopVxm9a4l2YmIC1eWUlt2vMrravy8WE2vFmvuuo9ZO1xLea73x8QAHZUEmR1HVatworoPXPKniTWxEftFBBxKV2dI08Ope+/UQ06pNq1JdZxwQ53OGJiwjyG8eINyZ1NkAbj27Ad9wUrHC+hy+Muvs7N0jLkrFL+oJ1aBuTNIz82QpIhtghA+1RWLMmqvEO9egrTBc0pICZQiiN1bCTkGxu+M+OOzUXTsc+egU
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 1B57C16000E
-X-Stat-Signature: sn41kz3n3syp17wkqxa8aiq3q79wcmrn
+X-JNJ: AAAAAAAB1nRey5oJZ5F0KLj/9N0cLRbSJoEF39yyVxr75/6La6rO40JosQD394aQDfSDJ3l3H/mMOBI3LcEcOFejkhBB4zmEoHX7h34F5la8K45IEG6slCWkklQn3s2PDsYCWIW7poavcSrlgLg3Qgo56AL7xmyCV1dmh9W4ELAPgNpG7pvKQ3FaZeSvPiyMEaZ39D+9lKRLhbpBgqKvHV0+15SOFVS5Te+QOxHuOwhGiLbUtcsLpIJL8UB+J61U/k1EN+54kIAvmZ+wS0RxAChmpYxRrSphfkYlStZg1vfCvAbyycRP7P0R0UYoe2acnhn66iQprqMOmDoSM4pmW0N4yXWq6pwUbsW9OJf2qcvxVqgpooWj8+5Sjrx/mD0HNbW345EFkeek72TzVBAk9w3WWXrHMq5H4ApY6BghjdJOpJ813aRo9o6gDKMNJ8Qpw4DP6KjmodQuLCoN7SnFbdJLXSbdjl2ldeKjJd+8rdkJMrYYxM4hnXRYlSbco3GqfTIxGy4LCfY3DPo3XEPpnHfNzpq8QQCUfq7sEfJPPZtWjVMfbEEC/DHmGGR+iwTc9zt44ht9IXIYo1RCtrX0WoRTXxdLjWz8cn/uuBix4HL1BMjtoxPjGTs3HwCA9kwj5K4hzym5rtmf27RE0QsyNDvAXNVMcZ69BPoyhHQeCYw+A5qTWzgaxePZa5ZSLyhaCLdPBadPGt6HqHO8R2DzRLyjN4a49VoAyAwQZxbifELRt5Rrk00hkM6yy8ob6JMHlcYKOP3C/RBdOdSXqysvRjDB7mBY97CFhJglm3Sinr+qdh2SUxsEGaH+XYQP++u9jDHCZ5JPw/Y1vdKgAuphOqxjEhR96Y9LAAfsGUjobBGUDuEt7q/qI0rTf9F6utbk9Xu0uSyFdxuEAX9ZdULfT9NU9MryhF1JrFR2zGR8AgX1NJ3DXagRrgs/XVrVxItF+TcIuqPALFX7sKxov3IkLkZ
+ B6bta+vN
+ gmf0hbLDOrb+dcB6NJVQESsPHmhSSvERtls2lwTlqzkJLMy1by4aoxi2RASv4uXNLZ8RrI/BlnMaW8O0bonKhc9UiF+cnez6pPR13TORw+CqIBr6hM62/ig3KzjPLDYkri1KIaUy3jTwC7fp2WpwNdINj2RH69ZBSqQNlMlqKA4RE1KsXjiP/B+DZBkFeeg2EsunPMoW5hFUtjP6u1BcNExnwGHTXmO7B43UXBfH4lfa/zB5dOPZ4P4zq3wPFCPJENg2nPedFQh6IWz0BQqM5uOw5JJdfo7y8dmPFPsEwdbGo17ih/5z25s6hBpX4HxP0yp86S65SG9FwzK4HlY2TsLUZr/dM6Q+KhO3mmTFTIb0iR/MDpuiSPD15qWw9XKbFsxgxFFikXHBEQRkGKC+fp0CoXNjl5PkuhuTuNfWXu7qrL9x1k+1OyJ1Zw7hSgbpHGpbCKMKtC5uRr4Tdd6tCCu4i24GoOypYNci3E/eylVjTAHKsrGpq1BNLkbxqalwwwAJ3ERs/RFukvNgiZlRpjIM=
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1789915532-453878
-X-HE-Meta: U2FsdGVkX1+H//unwHnfMimzV2qR6bA+1uhRLOoiUtWqN3dwvnivz7dj/e4YdXgSd5y77Td3r1w6hCj01NV1BGz2hWUvBIZtuIrCWIaNAFTn/K07emlWS1iIqtDkcuWAIt/sV4tPaLHQ4Bacxf6EBlVcUIpSRx0lZzea8eW9seFcbTRTYv8CD7YOXscj47rg4Wl4lcUh3sDc/5bnMCJBMj49GyrH7tkwIAVywsxJjyZUrMSIwR4U3sdRDTEatq4lrT1y0JAP90+rv5yCKS3tYSlRkb0lW5P9ViuD8r62nXpzY1Ff/K08P3e5RLX4ce8yUcQF3W6uc1ARrZGbFJcQ1rpjB4xKebsToja8lb2M2qkCs0oECzs/BxoraVl5my+VF/Ze7+Kjf0Ws7dFmx+r9euJmRYbbC12Vd15kb9n2XM5QMwMbCPKknfSRdRzjxE8XdOlYUeYzizkDrZ/ZzTfdCzSKlFUcj8vjcyIhlcHk7BT72DPndB60C+pzw+b4WWe4B8M1JdE2wfsVrSiMvqzYN3HTdD1qaASviPsBBm+brMoWQleSSx0RTchQ+E0DdeenHbBP9eC8urjQMFhEmkLhgZ0AVEEiizhto7+j+momGAcvXvrc98e4yNu7GzITLGBtGO8HwOxhpMw+0WbMg8DFojYFpYZ0yJDEQtJfhUwPXlPRoZy1WtUrVNnf+MCem0tQqZVprmwFAcv1PuYoufK6u08ScyfmX11WipEo0rng4ioJ8MG+fRGC+zuQlUGVYMWgaSrAHqbwe9xaQfC7uzPq36DQcBCzniKNZ9p8XnbMTsdnTGtjQ0RbKYuXc/ZGabskZT7lvzWYwXKZ9/h2QML7SYOX+QOrtLMURm7QbXxXMXEn86AxmS0dV0Vrdo+Tv1zffm+CYxuFqSpr/oLzPDtr82I2Mt7ga9EHGIKwfkXHE5kJaYhm/yjPmvUY0xv7TZFABLkfkMYe7PsCKpTVboe
- 6fO7lJpy
- cDL+HK8Ca3ZiEZPs0d7mlecb5dRp4sDMR78No8BIp9BO7l9/FmFjiNde574xUHmjdWW8FJTDTt89tUL199dNSzBSwAeMTh9C4gQXvlsgySK75Ji1tJYhlauZBhhhnMWbkl/kuvKPcMv3PKttMTjparpgVR72vhS81Q+aT0Az+hVOxkpmXKiCumwb3RfH22l/3L5eYmyojGKL2OCp3wtg7kgtYWiIwlq2JyOIVE0y1TLKiG52OoeLaBgqURCJl9Say6NGFmN/gMsmBQdJ+v43FNcEQoxlof2Uf2Q77zN6OuMVV+qa1fFOybAxkqp0YmzNbYWN+ThjyPBMpOIoDOqP3EOoT/biCIHbp4vA61DlgXWDsSQ3bR+l50vB6+Xhwf8cd/GTBt4bINUZ1DwTugFQHn8MreHIkxKaILQkwVOdp3vzheIS1Gsx3fY6M24xImtVKl+NBDLZ0PkSoDAKbG73wttQL4zwXqP/Dd0HaNky4eeHcMD1zdnsEDx7J3PI25Gg+IZeOzzi5o/lQDsgZR+t/VvwCuI+ezFuFlvYTW+9PfRwTZCYTSwcnm6iZUg==
+X-Stat-Signature: 4ostnw5i7zqb7uhfzo7qqpfex8cdh765
+X-Rspamd-Queue-Id: 9C02F80003
+X-HE-Tag: 1789915626-731990
+X-HE-Meta: U2FsdGVkX183w8cfJtJelXVV26ZNDgvN4M5gASA5zqsqDenRJJCGZrZHr8WkIinuiYEvOmraKoAdDAQD55mlIfBDmeldoW8HTCQjfksq8PP98pNpR/CreRl0Mv57T8KcjLKmJkS6DEdsp5ZeKok74A7RaF3aCoHGnIeUMueAF4jPipWPUnXINtVno0UAd8ixz4OxRJ13fdNzyzgM0Zfcd7TXQJtCnohhF0463vC1L1IRBXsz0BiPrHOrKYOhooJQ5VxENVeueNKu5bHYDUA6pqMHj5OfLs5WTvolaie+elK2+3rjHckPjrmNZuxN33OLU7c51CTjkDjWN657RQaIP6aAqBdj+GL7hM2FkZ9QqIlS0SXrZv9Dw9ry6XbcH3L7ChI3yaVHCBGxMT4vlOseKxGIYcG0cITjFg1oMV0n6Bc9/16U4w0F00MZv21wCT39m11A73VbewjmMtc6I7al1UXwOkAnGD9tSojMKU5REs2C8GE6D3gNISveVD44cdZtuuufu4YyGucZJr2uYHuWSrbpOX2TH3I5KOtK5G5DXZjnlJmHfi/iCZFykZAdcf+l/L1UmCw18y0MTfZiIcUvBkRW31o8H3csH8TZSf95kqnKJDQIQBtwDW0r9OwdbYYXQEX1hErVH6NPfOGGGD/cpXiho2tDDlSxFzi3c3Y/MnhfomD1sO+EN8mxHFYhctZ2/HA9l5zPNBlGZAGSvTAcirx4BnT3mlkg+yt2zj5TMH47YE47eYFHxFaDE9KMMEoiNOr5c1dWUXJUTXBOwP3cu0l8nqMvmrITCgQJspg0zEzMjgDmbZDdjCk0uyNDoYWWz273CzkTHkUo/fvC0X2hTloRvuU98VBQ9qweYa6SDTZanTQW7Hnmhn8VI0CH8flgMwoGSc253osUHiJfe4JQOzqvOi9fASgLrRFfPlroP06m1StFN5jet7hJqhtVa4W1GqPV7H2K2Zz0HiBcA+Z
+ wbSKvaI4
+ 1/bYOkm+DMDVCuxvZRaE9Arf7f1sm31k8mp7luTuqZkn8ewXRLaMGyw0JTFsdK/UeplGotGNPLHET8yT93yeBqn8OYtgHKibK5BuBLaZeNO/99Zc5iUkZg9O9XLHRUjq71iuX1fL0qc8VSyPmveO4gg7Itpet9Ij0VyyrTueXXD3yTWPdahgkrKvXqGDyiUUDVNfDMGmF22l62ylVLA0SB6kG/wnzJwFdCau//3l6Wg53Tk/JnXpr24JuNo1yAUszt/0rjty8QUup2azlD4mYDODukVuGIvazthBaW4GdBhs3gO1d4CvUazioNhJl/uGAZQw4GoNA4otOyrMMM/EW8ae5z3DN4AOxJjiHtaJSooBeN/74LzJfAj8yY+vc0yE4IiE97bxZUmloI9IWa7MKSOqq3+Z+OMwV+08pVyeWHoGOzeynzyrWl/PEAFm5IUJFwNyCMNTXvQO0HDd8Stvp+MiYvqMg2ua9fiQJpheNSan3T91KvS2KEU3kBmTRPsvZczZU6yMM97HIxxzaqBPhz97HK4JwHCNZdT5Wq766/zTV1Li+V0kWQaUIpg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,49 +126,56 @@ all four replies concatenated into a single mail, see
 https://lore.kernel.org/all/20260920143816.39827-1-zippermonkey@icloud.com/
 Sorry for the noise.]
 
-On Fri, Aug 14, 2026 at 5:40 AM Barry Song <baohua@kernel.org> wrote:
+On Fri, Aug 14, 2026 at 5:49 AM Barry Song <baohua@kernel.org> wrote:
 >
-> Could we avoid hiding the activate semantics inside
-> folio_try_reclaim_free()? It makes the logic harder to read and
-> can be confusing.
+> Also, this patch looks basically good, just like the previous one.
+> Could we also avoid hiding the activation semantics in the inner
+> function? It would be clearer to make the activation semantics
+> explicit at the outer level, so readers don't have to dig into a
+> deep internal function to realize that a folio may take the
+> activation path.
 >
-> Could we pull this out so that the three possible outcomes are
-> explicit?
->
-> 1. activate
-> 2. keep
-> 3. free
-[...]
-> I mean, this is confusing because an activated folio ends up in the
-> "keep" path. Can we make the activation semantics explicit at the
-> outer level?
+> In LRU, we have two distinct possibilities: activate a folio or just
+> keep it. This is an important semantic distinction in the LRU logic.
+> Hiding the activation decision so deep in an inner function makes
+> that semantic much less obvious.
 
-Agreed, and thanks - the bool return was the root of it. The helper
-now returns exactly the three outcomes you listed, and the caller,
-not the helper, decides what to do with each:
+Done, same treatment as 2/5 - the helper reports the decision and the
+caller acts on it:
 
-	enum folio_reclaim_result {
-		FOLIO_RECLAIM_KEEP,
-		FOLIO_RECLAIM_ACTIVATE,
-		FOLIO_RECLAIM_SUCCESS,
+	enum folio_pageout_result {
+		FOLIO_PAGEOUT_KEEP_LOCKED,
+		FOLIO_PAGEOUT_KEEP_UNLOCKED,
+		FOLIO_PAGEOUT_ACTIVATE,
+		FOLIO_PAGEOUT_FREE,	/* folio is locked, hand it to
+					   folio_try_reclaim_free() */
 	};
 
-	switch (folio_try_reclaim_free(folio, &free_folios, sc,
-				       &nr_reclaimed)) {
-	case FOLIO_RECLAIM_ACTIVATE:
+	switch (folio_try_pageout(folio, sc, &ctx, folio_list)) {
+	case FOLIO_PAGEOUT_ACTIVATE:
 		goto activate_locked;
-	case FOLIO_RECLAIM_KEEP:
+	case FOLIO_PAGEOUT_KEEP_LOCKED:
 		goto keep_locked;
-	case FOLIO_RECLAIM_SUCCESS:
-		continue;
+	case FOLIO_PAGEOUT_KEEP_UNLOCKED:
+		goto keep;
+	case FOLIO_PAGEOUT_FREE:
+		break;	/* folio is locked; try to free it below */
 	}
 
-So there is no longer a folio_activate_locked() call inside the
-helper at all, and an activated folio no longer disappears into the
-"keep" path.
+Two things beyond what you asked for, both because pageout() has more
+outcomes than the freeing path does:
 
-The patch has been respun on that basis and posted in a cleanup-only
-series, see my reply on 5/5.
+ - "keep" is split into KEEP_LOCKED and KEEP_UNLOCKED. pageout() can
+   return with the folio either still locked or already unlocked, and
+   previously the caller had to know which internal branch it came
+   from to pick between the keep_locked and keep labels. Now the
+   result says so.
+
+ - FOLIO_PAGEOUT_FREE keeps the "and now try to free it" step at the
+   outer level too, instead of chaining into folio_try_reclaim_free()
+   from inside folio_try_pageout().
+
+This patch is in the cleanup-only series, see my reply on 5/5.
 
 Thanks
 Zhang Peng
