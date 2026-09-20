@@ -4,104 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8ACFDC982CC
-	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 07:04:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CA5CC982CC
+	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 07:20:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 78EEE6B0088; Sun, 20 Sep 2026 03:04:43 -0400 (EDT)
+	id 0F1B06B0088; Sun, 20 Sep 2026 03:20:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 740396B008A; Sun, 20 Sep 2026 03:04:43 -0400 (EDT)
+	id 0A2AE6B008A; Sun, 20 Sep 2026 03:20:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6555A6B008C; Sun, 20 Sep 2026 03:04:43 -0400 (EDT)
+	id EFD736B008C; Sun, 20 Sep 2026 03:20:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E2CE6B0088
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 03:04:43 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B1DEE403BC
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 07:04:42 +0000 (UTC)
-X-FDA: 85233252804.27.87BB16B
-Received: from mta0.migadu.com (out-94.mta0.migadu.com [91.218.175.94])
-	by imf16.hostedemail.com (Postfix) with ESMTP id A89BA180007
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 07:04:40 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=YcGvSh8Q;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.94 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=YcGvSh8Q;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.94 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789887881;
-	b=SV4+wvtl+sJADoAEol6yNvhP3xLoOuI05GsnUWSaNoHxWjWzc6bsynFsoGfakbHoFi4WpQ
-	wLWxxLEq9O/nD4eLSRhv0502tc6psLGeJxrycA05ZnoPdiC2OJE9tQQWC8xszEJFjW9yKQ
-	vQqwf1FYg7LJroz9B52ywESfe85DtW8=
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C85B16B0088
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 03:20:54 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0AAB4C03E6
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 07:20:54 +0000 (UTC)
+X-FDA: 85233293628.28.302E579
+Received: from mta1.migadu.com (out-59.mta1.migadu.com [95.215.58.59])
+	by imf27.hostedemail.com (Postfix) with ESMTP id A896A40007
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 07:20:51 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	spf=pass (imf27.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.59 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789887881;
+	s=arc-20220608; t=1789888852;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=bM6amltTQhBYPAMN5a79kJyFJcFla3bjsxZnRyljbew=;
-	b=HCTjfNVxhZ1W2YIoTGWktx8IV4STgXlspsL3wVo95HNKt55hpfuXJ833/id+oCqjgeHFXc
-	iXPT/hdeAVN3lbYdFSQjKbWneSZmkskPmF/eWWHlUjKSWN/4LHmFEOh+R1iUrVUIwTCfSz
-	NRqmPS3AbvVb6PUk1/hIUNy2sf3VdLA=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=OqjL95nMyuialByOyNXSThRjLAvOedelr3p9CRfNR7U=;
+	b=phbDTMyzCBCDR2WrQdxCpABTiydeZ38SV203yqvNW+hjFeQKDNWd7ns3cHo7BlnHfnttL9
+	DQ5IW7yeOY6no+kbfbRfv3Fol3+GQue1wl9Pkcky7TEpb1WRoAIhDHHCY6W4JASiiTNVOp
+	7C9dcGtCaZ7BMpABTfBgvDUCQhAOJe4=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789888852;
+	b=q6ruZkRLpvU/vQyM2dsWxD+kC1s9i87A/RnxJ0j1HI14ZLPp+4+X3WxCbHCIkRek5pRpDK
+	CBE9eeGQZciM1TFUgZl72sTPHsdvdCZrQRlp2qABKEtvj2/zBc14b61KRHSt6Aua2SJcfu
+	OdL49WHYXzeefXWJzmkf+WWxb68P22A=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=none;
+	spf=pass (imf27.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.59 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=none
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=jIL5Xm0hBwRJq72+13iYyBKNUWWSaRe7RMggUGRje9U=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789887878; v=1; x=1790492678;
- b=YcGvSh8QsWadQB0J+34j8xfNqv5nMkEJSQzAOxQT6GAzk8K1uktWkjhY03kKaFJz7dxoRUCD
- rQqNQRrnpZVQNk65eQLwAsmc5OlJjgJiMStY9eZRQHOzUS8JblST78ioZGc2cBXaErh3S+Df0LT
- 9ZHr4fF0IRbyMTNgTsWAe5hE=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id cd1bdbb1ac128f27;
-	Sun, 20 Sep 2026 07:04:38 +0000
-X-Mizu-Trace-ID: cd1bdbb1ac128f27
+Received: by mta10.migadu.com with ESMTPS id 0911e82e2ae6aa55;
+	Sun, 20 Sep 2026 07:20:49 +0000
+X-Mizu-Trace-ID: 0911e82e2ae6aa55
 X-Migadu-Flow: FLOW_OUT
-From: Kaitao Cheng <kaitao.cheng@linux.dev>
-To: Andy Lutomirski <luto@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Kairui Song <kasong@tencent.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Muchun Song <muchun.song@linux.dev>
-Cc: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Kaitao Cheng <chengkaitao@kylinos.cn>
-Subject: [PATCH] mm: Add CONFIG_SPARSEMEM_CLASSIC
-Date: Sun, 20 Sep 2026 15:04:06 +0800
-Message-ID: <20260920070406.95354-1-kaitao.cheng@linux.dev>
+From: Baoquan He <hebaoquan@kylinos.cn>
+To: linux-mm@kvack.org
+Cc: akpm@linux-foundation.org,
+	chrisl@kernel.org,
+	kasong@tencent.com,
+	hannes@cmpxchg.org,
+	nphamcs@gmail.com,
+	baohua@kernel.org,
+	youngjun.park@lge.com,
+	david@kernel.org,
+	kunwu.chan@gmail.com,
+	baoquan.he@linux.dev,
+	gourry@gourry.net,
+	riel@surriel.com,
+	mhocko@kernel.org,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	Baoquan He <hebaoquan@kylinos.cn>
+Subject: [RFC PATCH 00/17] mm, swap: xswap writeback to a physical backend
+Date: Sun, 20 Sep 2026 15:20:26 +0800
+Message-ID: <20260920072043.430390-1-hebaoquan@kylinos.cn>
 X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
+Content-type: text/plain
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A89BA180007
-X-Stat-Signature: 4idgnmx6osm17rh8ke8ik3mnbhtwzzr3
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789887880-679261
-X-HE-Meta: U2FsdGVkX19WCsCgTiIaMju/ASGZPMg2QSwC3YF1+M1S2ksQ9WFZUfekjWczbe45SQr+JCoWtITtEo12pXWUBZuTcqTA3tmp79WHCBdg71n5l5wyGHMAv6K3REeImGylvUNUkr7Ex6qYsaOPWOabMLOiTHBDzXBy6mfqU3nuALXkBBNpD1b2pvE54E78kiYWMasbWKJx4L90DvKkOZkbkDrs28SHOHeFm6JyBDy064MH89GQtTwgE/0ydnalzYlgRfkQq1bssPfz3ZORUiZSS/125XiQ2nW/e2pp6EBiEHskknR8u+XKeg0mbCX7JhwSSYCP20Ac20o1qSwQzPaVbeZK2ZExJ+B/FGglK4B0FtUP3gP9ZVyaj2SeBsnhi0L7sI359Cfl1RqhB7D7ME4ut4itqUBy7F7I32iutxIfXmZjPRS/AoLkAdL4Nt+jfmoYfUOyb01f35TjSR7+ofXJFWTUAYtrrdPiZINlhI+eHRr4aZLFxAIQW/esPvLssPCrUMQZUFTJQh9Ub0IKu/P371CtzBL7yT8y7NyQe8gzbzKG1qxME4BUE4pOG+L1lFjY09sptjw2640b6nSl3zwgYGfC8UC3+PBQzi2/xGN3gv/6shr57i83tVu7miUM7D+41Vl0Uz2EJofxfDNt5QxKEtCJBXMjL+XItpGSkN4j/bQzeFfydr7Sq0UDFFIq7WBG2O2Km9E9MzoiXgJAJn9BfhT0NanyrWI5Re9OSiX/9QIIxzn8fu1oBdSGoy6NXL6Vuv4j5lNcejPrLvazTf6h0pFYTRi7zwBCAzNN0Ot+yn2TDhWYKhTTdAhIdteUin6QvxV/QDmBAVpNFG8tpgc2CRF1nvtpYdLyT0G5vf6ZyGgwK7ciNulyEWUEd9khHwk/5XzBN5gedakrTyQvtPz/ytl66T6h/KFnqlT7/Z7QcQwsW04NlqhV0nH6Zx5O+kMIPjvFlvv+fzxbzEzaNk6
- B48s7hGM
- THObDiNenwk65v+GKq/Kg1I96h+o5p5cU3bOD+baOBBZifkgCKSF/WQCnf/628iO3T7/mVbQxte23WJBsxdYJWsbnjtVYpVzwmJfOZABp2rQHGKDV0ukrLa8F3DxKZFq98V3OKP26tHe2y2yx9r2oq+poTlGBJXEmk4u8KVydg8bGWueGUM5ilsJjsr+Hb/5LMWLjrf/peHvp3lmdS6t19KF+lWqxGgIzOzV+yUU4JhjVNs4C/CWPd2UVZRb7YFT+DQVMTfTtM5H7BXubyS1tC3O9XA==
+X-Stat-Signature: ye9kd7mognisrieeyyim8itsimxqfai7
+X-Rspamd-Queue-Id: A896A40007
+X-HE-Tag: 1789888851-186416
+X-HE-Meta: U2FsdGVkX19TyokXiIyLbzO53K8BG9R5XfTZMydrxyN3DQrdh2O/Ekbqu6dpB4HpKP8W6EzHRSrnt/PvdlHnsq/5SLZFs4/NHGUDE78NpoyFWWmM8h9LcgUdD97vT/wmoE7O4AkDeeKnI2XJwbmlt5VVcwheGxW6YQu3jLpM1CoY5L2sxQZqNOVg6A/j4FLRxJTiGtDPR87x+iS4zjicJvMxVry+hVSlN0o4d8nhIJ7xkN4vHNGkDs/KBHEw5poZWiZSR/9QfXN2W1M9I12sX5zvxYHSylEF5aZDG2zyoLz3gKPkE1LpQMM0rrJkxk76dH4z3q3l98k4EhYAt7tpAgGN4xCRC+yxgXUh3eD36HVQT3yO66pJvXvw7OKbSixS1CnVcpnbkbXK/Dqmk8tlQS72aZuXXidJcfopNYH282cvndIYoQHGv9mS/+H/EqJ2u7bgrrNuBR4y7CkRCkBnj2Ji0CSTSegMXpcx28vv98Nf+GP3bHuF1ZaFJ4VJzlPrydqacJCqtmR87yYXrabJuqwS8Ou7aC6Jnn70f8cjaUes1balm3rjjGFVq/ucGkzbcppIJosw49wvrNtmcoWMH/WoysORrChllWwzFcrFkyk1SLj0Nrw8+WPRDJPFfzOPbsg+HbsPqa8Lb0DWA5Q8lQGRkG5+FEMboMOKacWxS70H3Mft49PFp/4RSAGdcujd8IEWNgJV8KOILI0o2p0I4aoxyPSUHlb6CYHZcaIjaMbWhyy9W71SZ2cJFgYhazQaDufSsu5R2cx84Av7bupubIleHVCQCSRls+BpM03QdvzvKkLkk4h5CXS00SGh7Eqmcir9Kaxp23rKHh2WI0GH1Za+4hcyBqtmXCmOEfSb3UTicvxGPs6chRjvXXd04XbellBjaYtMBLC3/Vry2bABTF4aSOt8Z+rI/kwQrQfjrTTdnmJykkwzSkZ4TNMwne+bO0mD/CgqiMDL4HAHp4b
+ BPayJsZE
+ sgVTSIXtnFIyXpFbK7W2vSukYrWhbKB/DWmqyhc/WP1LnlE0kvMPWVs1HRDTjzu4k/WimqpKkKvY5R7nwlMlPwUjKgNP4RZyu4xK7Zue4A2g0V4h4wIVURjfiPdicvp/u90GTYyipIgvWmZP5nxGaXNtyeuw19xmJwtvmkC2oPflmglc6np0Boy8pCC6nLDOB1hPs3nl3cXJ4lc7DQJIVhHGNtjSKE6B97KfZbcDWYDjukkL3qcwvj5LW6Z5Ri3aJB98KQK5PyFlXcOSUDSzyRZZFfDPFI5+XqR6XQ8Y4i97ON5QCvsUjaYLfW9YClTyMp1Lv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,153 +92,185 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Kaitao Cheng <chengkaitao@kylinos.cn>
+This is the writeback layer for xswap, on top of the base series. Post it
+as RFC for discussion.
 
-Several MM paths identify classic sparse memory by testing
-CONFIG_SPARSEMEM while also testing that CONFIG_SPARSEMEM_VMEMMAP is
-disabled. Repeating the compound condition obscures the memory model being
-selected and requires the local SECTION_IN_PAGE_FLAGS alias for the same
-state.
+The base series keeps every swapped-out page in zswap. So the pool must
+refuse new pages once it's full. This series gives an xswap slot a
+backend to go, and charge it only when it really goes to real disk
+space.
 
-Add CONFIG_SPARSEMEM_CLASSIC as a hidden derived option and use it at the
-conditional sites. Remove SECTION_IN_PAGE_FLAGS and test the new option
-directly.
+Design                                                                                                
+------                                                                                                
+- Backend: when zswap refuses a page, take a slot on the real swap                                    
+  device with the highest priority and write the page there. One IO per                               
+  slot.                                                                                               
+- Ownership: that slot has no swap cache folio, so record its owner in                                
+  the swap table entry. 0b100 in the low bits marks a backend slot, and                               
+  the xswap type/offset go above. The physical side then does not treat                               
+  it as free, and readahead skips it.                                                                 
+- Per-slot record: ci->xs_table[], one unsigned long per slot, allocated                              
+  the first time a cluster takes a backend. Zero means no backend.                                    
+- Read: a written-out slot has no zswap copy, so swap_read_folio()                                    
+  follows the pointer and reads from the backend.                                                     
+- Release: verify the slot still points back to the xswap entry first;                                
+  the record can go stale.                                                                            
+- swapoff: try_to_unuse() used to skip these slots. It now reads them                                 
+  back, marks the folio dirty so reclaim re-stores it in zswap, then                                  
+  drops the backend.                                                                                  
+- Reclaim: an xswap entry's count can reach 0 while its folio is still                                
+  in the swap cache; the physical scanner reclaims the redundant slot                                 
+  through __try_to_reclaim_swap().                                                                    
+- Large folios: a read starts at the first physical slot, so the run is                               
+  reserved whole and must be backed contiguously; otherwise the fault                                 
+  retries at a smaller order. xswap is SWP_SYNCHRONOUS_IO, which also                                 
+  skips readahead.                                                                                    
+- Charging: Record the owner at allocation but do not charge. Take the
+  charge when the entry gets a physical backend slot, and give it back
+  with that slot.memory.swap.current then counts only real on-disk swap
+  usage, and a cgroup with memory.swap.max at 0 can still swap out through
+  zswap.
 
-The x86 32-bit vDSO build starts with the x86_64 configuration and then
-undefines CONFIG_SPARSEMEM_VMEMMAP to emulate a 32-bit configuration.
-Kconfig-derived symbols are not recomputed by the C preprocessor, so define
-CONFIG_SPARSEMEM_CLASSIC there when CONFIG_SPARSEMEM is enabled. This
-preserves the existing behavior.
+Note                                                                                                  
+----                                                                                                  
+The base series is sereis of xswap foundation. This one depends on it.
+So if anyone wants to apply this patchset, the order is base-commit
+as below, then xswap foundation, finally this patchset.
 
-Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
----
- arch/x86/entry/vdso/vdso32/fake_32bit_build.h |  3 +++
- include/linux/mm.h                            | 12 ++++--------
- include/linux/mmzone.h                        |  2 +-
- include/linux/page-flags-layout.h             |  2 +-
- mm/Kconfig                                    |  3 +++
- mm/util.c                                     |  2 +-
- 6 files changed, 13 insertions(+), 11 deletions(-)
+[PATCH v3 00/14] mm, swap: extendable swap devices (xswap)
+https://lore.kernel.org/all/20260916101929.149106-1-hebaoquan@kylinos.cn/T/#u
 
-diff --git a/arch/x86/entry/vdso/vdso32/fake_32bit_build.h b/arch/x86/entry/vdso/vdso32/fake_32bit_build.h
-index 72a92cb9b53d..3e07389c4d2b 100644
---- a/arch/x86/entry/vdso/vdso32/fake_32bit_build.h
-+++ b/arch/x86/entry/vdso/vdso32/fake_32bit_build.h
-@@ -20,6 +20,9 @@
- #define CONFIG_PAGE_OFFSET 0
- #define CONFIG_ILLEGAL_POINTER_VALUE 0
- #define CONFIG_NR_CPUS 1
-+#ifdef CONFIG_SPARSEMEM
-+#define CONFIG_SPARSEMEM_CLASSIC 1
-+#endif
- 
- #define BUILD_VDSO32_64
- 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index ae56d6a2c9f9..b786ee73a20f 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -201,7 +201,7 @@ static inline void __mm_zero_struct_page(struct page *page)
- extern unsigned long sysctl_user_reserve_kbytes;
- extern unsigned long sysctl_admin_reserve_kbytes;
- 
--#if defined(CONFIG_SPARSEMEM) && !defined(CONFIG_SPARSEMEM_VMEMMAP)
-+#ifdef CONFIG_SPARSEMEM_CLASSIC
- bool page_range_contiguous(const struct page *page, unsigned long nr_pages);
- #else
- static inline bool page_range_contiguous(const struct page *page,
-@@ -2531,10 +2531,6 @@ static inline bool is_nommu_shared_vma_flags(const vma_flags_t *flags)
- }
- #endif
- 
--#if defined(CONFIG_SPARSEMEM) && !defined(CONFIG_SPARSEMEM_VMEMMAP)
--#define SECTION_IN_PAGE_FLAGS
--#endif
--
- /*
-  * The identification function is mainly used by the buddy allocator for
-  * determining if two pages could be buddies. We are not really identifying
-@@ -2805,7 +2801,7 @@ static inline struct zone *folio_zone(const struct folio *folio)
- 	return &folio_pgdat(folio)->node_zones[folio_zonenum(folio)];
- }
- 
--#ifdef SECTION_IN_PAGE_FLAGS
-+#ifdef CONFIG_SPARSEMEM_CLASSIC
- static inline void set_page_section(struct page *page, unsigned long section)
- {
- 	page->flags.f &= ~(SECTIONS_MASK << SECTIONS_PGSHIFT);
-@@ -2823,7 +2819,7 @@ static inline unsigned long memdesc_section(const memdesc_flags_t *mdf)
- 	ASSERT_EXCLUSIVE_BITS(mdf->f, SECTIONS_MASK << SECTIONS_PGSHIFT);
- 	return (mdf->f >> SECTIONS_PGSHIFT) & SECTIONS_MASK;
- }
--#else /* !SECTION_IN_PAGE_FLAGS */
-+#else /* !CONFIG_SPARSEMEM_CLASSIC */
- static inline void set_page_section_from_pfn(struct page *page,
- 		unsigned long pfn)
- {
-@@ -2833,7 +2829,7 @@ static inline unsigned long memdesc_section(const memdesc_flags_t *mdf)
- {
- 	return 0;
- }
--#endif /* SECTION_IN_PAGE_FLAGS */
-+#endif /* CONFIG_SPARSEMEM_CLASSIC */
- 
- /**
-  * folio_pfn - Return the Page Frame Number of a folio.
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index ebbda6f31139..c83529ad6e35 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -68,7 +68,7 @@
-  * memory sections).
-  */
- #define MAX_FOLIO_ORDER		MAX_PAGE_ORDER
--#elif defined(CONFIG_SPARSEMEM) && !defined(CONFIG_SPARSEMEM_VMEMMAP)
-+#elif defined(CONFIG_SPARSEMEM_CLASSIC)
- /*
-  * Only pages within a single memory section are guaranteed to be
-  * contiguous. By limiting folios to a single memory section, all folio
-diff --git a/include/linux/page-flags-layout.h b/include/linux/page-flags-layout.h
-index 760006b1c480..536003b364a7 100644
---- a/include/linux/page-flags-layout.h
-+++ b/include/linux/page-flags-layout.h
-@@ -49,7 +49,7 @@
-  *      " plus space for last_cpupid: | SECTION | NODE | ZONE | LAST_CPUPID ... | FLAGS |
-  * classic sparse no space for node:  | SECTION |     ZONE    | ... | FLAGS |
-  */
--#if defined(CONFIG_SPARSEMEM) && !defined(CONFIG_SPARSEMEM_VMEMMAP)
-+#ifdef CONFIG_SPARSEMEM_CLASSIC
- #define SECTIONS_WIDTH		SECTIONS_SHIFT
- #else
- #define SECTIONS_WIDTH		0
-diff --git a/mm/Kconfig b/mm/Kconfig
-index 30170a936f1f..c7bbcf086f21 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -461,6 +461,9 @@ config SPARSEMEM_VMEMMAP
- 	  pfn_to_page and page_to_pfn operations.  This is the most
- 	  efficient option when sufficient kernel resources are available.
- 
-+config SPARSEMEM_CLASSIC
-+	def_bool SPARSEMEM && !SPARSEMEM_VMEMMAP
-+
- config VMEMMAP_OPTIMIZATION
- 	bool
- 	depends on SPARSEMEM_VMEMMAP
-diff --git a/mm/util.c b/mm/util.c
-index c5ee52aede1e..6910b47ca415 100644
---- a/mm/util.c
-+++ b/mm/util.c
-@@ -1590,7 +1590,7 @@ unsigned int folio_pte_batch(struct folio *folio, pte_t *ptep, pte_t pte,
- }
- #endif /* CONFIG_MMU */
- 
--#if defined(CONFIG_SPARSEMEM) && !defined(CONFIG_SPARSEMEM_VMEMMAP)
-+#ifdef CONFIG_SPARSEMEM_CLASSIC
- /**
-  * page_range_contiguous - test whether the page range is contiguous
-  * @page: the start of the page range.
+base-commit: baa8de2f3448d1466a888a805c18d01c998fe052
+
+This partially refers to Nhat's vswap-v4 series. E.g patch 1 is
+consistent with his patch 3, patch 12/13/14/15 are from his patch 8.
+
+And the last 2 patches are fixing bugs when charging patches are added.
+Since the charging of xswap is still under discussion, I dind't merge
+them into commits. Will squash them or take them off once decision is
+made.
+
+Testing
+-------
+qemu KVM guest, 8G RAM.    
+   
+A 4G swap disk /dev/vdb is added as the physical backend, and zswap is
+turned off so that every page has to reach a backend slot. Note that it
+need create xswap device firstly then disable zswap, so every page has
+to reach backend slot.
+
+The workload is memhog, as in the base series. Every page is filled with
+a fixed pattern, so the data can be checked after a readback.
+
+  # echo 1 > /sys/module/zswap/parameters/enabled                                                     
+  # echo 100 > /sys/kernel/mm/xswap/create                                                            
+  # mkswap /dev/vdb && swapon -p 0 /dev/vdb                                                           
+  # echo 0 > /sys/module/zswap/parameters/enabled                                                     
+  # mkdir -p /sys/fs/cgroup/xswap_limit                                                               
+  # echo max > /sys/fs/cgroup/xswap_limit/memory.swap.max                                             
+  # MEMHOG_FILL=pattern numactl --cpunodebind=0 --membind=0 ./memhog
+
+1. Swapout to the backend
+
+   Run the workload with 5G of memory in a cgroup capped at 4G:
+
+   # awk 'NR == 1 || $1 ~ /xswap|vdb/' /proc/swaps
+   Filename                Type        Size      Used      Priority
+   xswap0                  xswap       8155132   2392176   100
+   /dev/vdb                partition   4194300   2392176   0
+
+   The two Used values are equal, so the pages reached the backend and
+   the xswap side accounted for them.
+
+2. Pages are read back from the device
+
+   Lifting memory.max and touching the pages again reads them back. The
+   pages-swapped-in counter went up by 265642, so the read did reach the
+   device. 1010 of the folios read back were 1M, each read with one IO:
+
+   # echo max > /sys/fs/cgroup/xswap_limit/memory.max
+   # cat /sys/kernel/mm/transparent_hugepage/hugepages-1024kB/stats/swpin
+   1010
+
+   hugepages-2048kB/stats/swpin stays at 0, because the swapin order is
+   capped below the PMD order.
+
+3. verifies data correctness
+
+   After the readback the data is compared byte for byte against the
+   pattern, one time with zswap on and one time with zswap off, so the
+   pages come from zswap in one time and from the backend in the other
+   time.  All bytes matched.
+
+4. Destroying a device returns its backend slots
+
+   The device was filled, then destroyed with no readback first:
+
+   # awk '$1 == "/dev/vdb" { print $4 }' /proc/swaps
+   3157220
+   # echo 0 > /sys/kernel/mm/xswap/destroy
+   # awk '$1 == "/dev/vdb" { print $4 }' /proc/swaps
+   0
+
+5. verifies the charge is correct
+
+   An xswap entry is charged only when it holds a backend slot, so the
+   two counters have to show the same number of pages:
+
+   # echo $(( $(cat /sys/fs/cgroup/xswap_limit/memory.swap.current) / 4096 ))
+   526852
+   # awk '$1 == "/dev/vdb" { print $4 / 4 }' /proc/swaps
+   526852
+
+   Nothing is charged while the pages stay in zswap: with the pool holding
+   them and the backend untouched, memory.swap.current stays 0.
+
+6. A cgroup with no swap room can still reclaim its anon memory
+
+   With memory.swap.max at 0 and no xswap device, the cgroup ran out of
+   room and the workload was killed. With an xswap device and zswap on,
+   it swapped out through zswap, was charged nothing, and was not killed.
+
+   E.g if memory.swap.max is set at 100M, the cgroup will be killed when
+   the cap was reached.
+
+Baoquan He (12):
+  mm, swap: tag a swap table entry with its owning xswap entry
+  mm, swap: prepare the folio-less allocation path for xswap
+  mm, swap: add a physical backend for xswap slots
+  mm, swap: use the xswap physical backend
+  mm, swap: fall back to disk when zswap refuses an xswap page
+  mm, swap: support swapoff of an xswap physical backend
+  mm, swap: reclaim physical slots backing cache-only xswap entries
+  mm, swap: back a large xswap folio with a contiguous physical run
+  mm, swap: enable THP swapin for xswap entries
+  mm, swap: drop swap_folio_sector()
+  mm, swap: do not retake the cluster lock when uncharging an xswap slot
+  mm, swap: drop a refused xswap backend run directly
+
+Nhat Pham (5):
+  mm, swap: prepare the swap IO path for xswap backends
+  mm, swap: split the swap memcg charge helpers
+  mm, swap: do not charge zswap-backed xswap entries
+  mm, swap: charge an xswap entry when it gets physical backing
+  mm, swap: don't gate xswap on the physical swap free count
+
+ .../admin-guide/cgroup-v1/memcg_test.rst      |   2 +-
+ include/linux/memcontrol.h                    |   6 +
+ include/linux/swap.h                          |  69 +-
+ include/linux/swap_ops.h                      |   9 +-
+ mm/memcontrol-v1.c                            |  10 +-
+ mm/memcontrol.c                               | 147 ++--
+ mm/memory.c                                   |   7 +-
+ mm/page_io.c                                  |  95 ++-
+ mm/swap.h                                     |  35 +-
+ mm/swap_state.c                               |  12 +-
+ mm/swap_table.h                               |  53 ++
+ mm/swapfile.c                                 | 742 ++++++++++++++++--
+ mm/zswap.c                                    |  20 +-
+ 13 files changed, 1026 insertions(+), 181 deletions(-)
+
 -- 
-2.54.0 (Apple Git-157)
+2.54.0
 
 
