@@ -4,94 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2AC8C982DA
-	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 19:39:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66FF4C982DA
+	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 19:39:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1075D6B00C8; Sun, 20 Sep 2026 15:39:38 -0400 (EDT)
+	id 798126B00CA; Sun, 20 Sep 2026 15:39:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B9126B00C9; Sun, 20 Sep 2026 15:39:38 -0400 (EDT)
+	id 76F176B00CB; Sun, 20 Sep 2026 15:39:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E73EB6B00CA; Sun, 20 Sep 2026 15:39:37 -0400 (EDT)
+	id 65E456B00CC; Sun, 20 Sep 2026 15:39:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B908F6B00C8
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 15:39:37 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 512F21604FA
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 19:39:37 +0000 (UTC)
-X-FDA: 85235155194.21.AE30779
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 358116B00CA
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 15:39:44 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BC57D1A04EE
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 19:39:43 +0000 (UTC)
+X-FDA: 85235155446.15.6CD3648
 Received: from mail-yx2-f13.google.com (mail-yx2-f13.google.com [74.125.224.141])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 91B08120009
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 19:39:35 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=jXbH7etl;
-	spf=pass (imf29.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.141 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	by imf20.hostedemail.com (Postfix) with ESMTP id 07AB41C0008
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 19:39:41 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=AAop8ZRs;
+	spf=pass (imf20.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.141 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789933175;
+	s=arc-20220608; t=1789933182;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lFt/o0KNYbZHy97cErlVMXJCCdXfeb4ZyjWQT3y79I4=;
-	b=2Qb+YDVq11d6mtQKAY3O97JNtg8kyDutIKPbh6O9in2VFlo0aMegZ6Koj7M7KY1y589XQX
-	DOMEMtkKB8gTZD/bx+BiPkrpromqudnl1dM/TxwsGCxVR9LUJY1G+n3djEoVmWwneDNTT2
-	Gq9Xy0DgqrzfoU9tDQknd0785ZWSGQw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789933175;
-	b=J5tMGAncf61R05hENNw3S5UHJh4gCAwb4eDJJBJGGiy4XvuxGu6cdOUViN/X40CAbNH8D7
-	qEb6VvE1yYV6bVAmsBQaI934a7S9G41TChlzozcfRQ1sJycHN+3SaLA7yXe6/OcdeRCTuX
-	LIPQ/JqQIJ/ljb/Ez2kqSkuoskiTCQM=
+	bh=66Y5T7Wms+Rut8jGl61fd80OXI19XsyhOKciHeEXim0=;
+	b=gtWfcPE1708OEWRNcEYJMQwA72SdkgAuldWuyrbU9Qyc4+NdcgruRwc/rX3c71nCnyxh7X
+	AYtBTw09QnsOwXN/SUoOVxf8gkSBhVx7xv/5il306zruKkS/CX1x0IaccBfLh/1BB53Mh0
+	aY9WJJmtEgF6USmUXhAgwP8+E8fw4qs=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=jXbH7etl;
-	spf=pass (imf29.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.141 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	imf20.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=AAop8ZRs;
+	spf=pass (imf20.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.141 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
-Received: by mail-yx2-f13.google.com with SMTP id 956f58d0204a3-66e4ab19125so2187982d50.2
-        for <linux-mm@kvack.org>; Sun, 20 Sep 2026 12:39:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789933182;
+	b=XgRCo/dmUw6Qhpyz6okJa5mBm1M6oC0JbyiJvvU7Mph9H0+Alc58PmkOH6S/jGKSmUxkD/
+	lGmPqd/dot6Gx4mVmYqyAaXPG2EoCl0ZTxbXkgT4SizdrpC8nh2w1W52m05Bmln22rpqzp
+	83Hk2btz8wrnepkgQb1DN2u5driUBBA=
+Received: by mail-yx2-f13.google.com with SMTP id 956f58d0204a3-66e4aae314aso1691755d50.3
+        for <linux-mm@kvack.org>; Sun, 20 Sep 2026 12:39:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1789933175; x=1790537975; darn=kvack.org;
+        d=soleen.com; s=google; t=1789933181; x=1790537981; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=lFt/o0KNYbZHy97cErlVMXJCCdXfeb4ZyjWQT3y79I4=;
-        b=jXbH7etlkh2c0MyFDQaf4NiHo1dcDi3efP296X6WHHXXUgBUON1JjpczE6U5FHZzm2
-         P/D+CDpRISqhhvdF9kk2AIe2usynUWyeQNLg1+NQ8xyvOplnVntCF1NArEziXwUUK1se
-         vfOTgXApE9JueCTCOZsC3C1HP2/00vrP4XvPeM+rkrFljnV1DU0u6BwTgTxQPFXVsSUh
-         C3px92siW3NakF02KmZQWnv2r1tUYLtsSWrUeZWG0Tt7tEB7zuZxcXWCUKrH5cYMWz+i
-         809/06QZnAPltkG8DNxrfqj0ffuXCNxDDprENd9HVRp1qcE++d75ZfW+JEzMXIvpk+tR
-         rgaA==
+        bh=66Y5T7Wms+Rut8jGl61fd80OXI19XsyhOKciHeEXim0=;
+        b=AAop8ZRsmgomgbwwanXLYmjiL/iVGSQcgZL96rWj0CPoLDGlYxMPjvcsKsw+0jAmrC
+         IdgrjGO9bHFj7TkKhN7TWIbD4yxG0TZcQ/l4R0ogYxLFaSnwk6OTIYrUeFrMWafNQrdU
+         RgZOVRpKRyCcoj0f15tOMvtof8GrSGKJzhrUb4cuQPOOf/bSKsfy2GAbAPOq1Uf4chAq
+         4QaiEn8PePVZ8j+8n51Hf+VJa1bMLltL//0cJOd7XMEM2b4cvgi+Ado5rNTsh4mgBb/b
+         YTl5Nc5qdnT08Ii/d6kbYl5KS67F+/RNv5v5Pzh/EgWjdxweby2rRi3ZhT3YLP+0g4H7
+         FTUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789933175; x=1790537975;
+        d=1e100.net; s=20260707; t=1789933181; x=1790537981;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=lFt/o0KNYbZHy97cErlVMXJCCdXfeb4ZyjWQT3y79I4=;
-        b=JRjgB87YEbbdJk9oC7X24e/16xThyr1YEy1rqNftlTUnqIxX41Q1jOYy7LLYYuLUif
-         cJ/eTpaWm9jxo3S+gIJVHK+h+QmgRNWDp7wVdYon8E26k2WUk778RlWNV1887i1dJCL7
-         OAcHhbLjrXnGcMoxKt+oaDCiLLV5RmzhG6SeH9zenW82xK7PfwRxo4AJbCerbEofoKVc
-         jdVOYsyi5eDtF0Q/6Qqv2LNjstnOPeux/hqf1Sh4nis6ztx8Rc8Uc/iIAt1VxhwslBkF
-         mGauzc98tPSnyFICtM/GZGgg115EQ3sy6b8JHUDNG6OuVj0p+Vei0D8hcPUVBJX0vC1I
-         kt5w==
-X-Forwarded-Encrypted: i=1; AKwUvBzVTIcZX9fdjOGkS/VQlEXIY4p8HSge6YAyoe6SHQIuxu5HAnqtIN1JEWv6GIlRWmstqIkfuB8/lg==@kvack.org
-X-Gm-Message-State: AFuF++leXvEGUQvAiYcnv6Q/DNCuMwBEGmlcfuZ4OvrV/SKFKEtEMsPY
-	zX6ynZATXZ8LYgwu6tvYsphFSpz9AKB4UICi7Qeo0hk4egU0rbkl+UeJ18kyWzEWu2Y=
-X-Gm-Gg: AYBFou3gtNwcaGQhrgCb3hjbSaCq1cCtxc+fUVJu+gt2to3yMzOIhZ93kDdrkR8evhs
-	Ym4vREU3OTwEU37mMeW3XNMsixpb7QGM51mkTLtx2VBII1amFHMpBEWy+nh5Cxp8jNphJzsjXMG
-	42Dx09cfEpeIrqLYbbTWxAvYw9I16poot3/RMBfgwbcVUnR9FY3sIrHMOgw0SFfiEoXmpFhGJf3
-	okj4YWqemQZu5J9AFKmFTnD41OkIJVZevjGLsKzXzoCxz9QimXWo2HjryeMLU/O19O/3YyXshCL
-	EGHissmKUIKsM6xPP+h7VrwBsKU6p9I0w+SCwoQCM4mRnrNEPsplRsgLZ3RNHwysUYejizqfrb0
-	Dc5a99gayy4VH9jiCZcY8a97cvoDAmnjdJHT6h4ZSqPIjCCymgkMvuvwa6y7kC7fS4q5xOKIo7o
-	AN0EXqvmEClePnKj+BI6Z2fsGANd3NvUEayAvx5hXs7QPy4ZvlitXvl3vdr/5vNJRql6WjZEqQs
-	cZ8R2vuJu+eoEyoo6mB/6gD7lrArfoI+BVN6uujREkV1wUld5FA9j8MHP+2iT8zEsImWnUE30bp
-	j/KqX2amclQzVtNjYzen
-X-Received: by 2002:a05:690e:1902:b0:671:70e4:5180 with SMTP id 956f58d0204a3-6717fdfb83fmr2660413d50.106.1789933174452;
-        Sun, 20 Sep 2026 12:39:34 -0700 (PDT)
+        bh=66Y5T7Wms+Rut8jGl61fd80OXI19XsyhOKciHeEXim0=;
+        b=ZrBi6toZ64FGC0dSPY1ZyTS2tMd3jRM1ovNdG8FLz8GYbBAS6ZdRypgCO7BB+V3nbj
+         0k7q5j1PkYUWkYSXMyVrb0S/2IHyBnX4m79UwTANvWhDy/A2SHUu1I84y8Utvnlg00X1
+         Iurx1D2IAbxwjZ7Qs5FhryCUHd9lx+yWrtFV8CGOAptXJovc3fK7pjho1tJ4VbnX6ps0
+         82TKzIVCa1dT7e1DknPQd5r3y3TRatCr+qvxsQv64Vsjmg2Iu6Yz8mfuMzkiVbZqiefO
+         ainBz7cBV+oNcvSgmaF/xA/ndp13ryvKnoccQR6l1wSuBOIGYRpRKtytlLtP2kcjPeny
+         re7w==
+X-Forwarded-Encrypted: i=1; AKwUvBxbC88QiqmZaLD/eFwH0dJ9SVXTKhk7aund024UVIGPWCqkmom9Bile5WKPRi5osZjk+RNhGTtsFw==@kvack.org
+X-Gm-Message-State: AFuF++mCaGfJdegeJtJV7Sm6SM5i8zfjMDTjC5CPJaMWg0LAEQwc531c
+	myQYaFIadANd32O8E2IMcTmfWKI8cPC7nGaq70AAvvD1wMjYnT5F6++fKDhi5xXrhZRGKyqVvMj
+	hRBFA8rA=
+X-Gm-Gg: AYBFou2Q40mfT6RRScEcltmd18tzGOIAmXxxvvUw7rQlzkFgKlycFuOmCOtmX/Em99H
+	u5zulQzWgJf3WB0ZvuC5J5xMuLFqeL8ntdMl5IkVMznuNpBBMDe/ucpoq5BjuF4iiI3QiWGsib8
+	mzR5du9Vz+jydHrEH6WVUNx4ysaPFAGoHaKIeU3/k9wCHJSFdhQRd5cb+iPFTm/osQdTpwJ/cD5
+	1+HTl978cSuu89Zj56iPLNkQG2rsYxdhJi0L4gWfU20Pg0lM02cX/xFk3f6B24EI3I/FZZnU/mz
+	r7OF3sF0X2WskGYt2rL2L9q3AKXlRAw7dBbh+RNZ/f6aWFZp+qEqQMix6XfqyKpUJgqvYay72IV
+	8ZcuSWo9mRdVgw6WVL0A1YtLtzTz2gp8CdOsWFa/UYaUl45bFMT5Twa3t6r08HD0xhy+WUYmkw8
+	xg2chUCXnhbIhQAi7/TKMrFCPd12c3XNuTVVoyuOn62OgpSXvCoQVfXXKLGEIsih64KEZ9VDCwM
+	d0mgrEqMqFNAUhuJ1Dbe8mUNgz92INeX/oWLM/nBJL2SQfErmK13mI+AGpmz2JSmLXHST49uFTo
+	J4wAqrz0e0z+hGfCBXiWhegSgFp+Rg==
+X-Received: by 2002:a05:690e:dc6:b0:671:70d5:da4 with SMTP id 956f58d0204a3-6717fe6d2dfmr2619153d50.98.1789933181050;
+        Sun, 20 Sep 2026 12:39:41 -0700 (PDT)
 Received: from soleen.c.googlers.com.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6729910a52dsm2551721d50.16.2026.09.20.12.39.32
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6729910a52dsm2551781d50.16.2026.09.20.12.39.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Sep 2026 12:39:34 -0700 (PDT)
+        Sun, 20 Sep 2026 12:39:40 -0700 (PDT)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: linux-kselftest@vger.kernel.org,
 	legion@kernel.org,
@@ -169,22 +170,22 @@ To: linux-kselftest@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	vladimir.murzin@arm.com,
 	kas@kernel.org
-Subject: [RFC PATCH 27/46] oncore: Implement on-core session lifecycle and scheduling loop
-Date: Sun, 20 Sep 2026 15:36:31 -0400
-Message-ID: <20260920193650.3373435-28-pasha.tatashin@soleen.com>
+Subject: [RFC PATCH 28/46] KVM: caretaker: Add Caretaker control block and architecture ops headers
+Date: Sun, 20 Sep 2026 15:36:32 -0400
+Message-ID: <20260920193650.3373435-29-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
 In-Reply-To: <20260920193650.3373435-1-pasha.tatashin@soleen.com>
 References: <20260920193650.3373435-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: hdd3xk4qawuq5wm3skakmzzie8pw9ess
-X-Rspamd-Queue-Id: 91B08120009
-X-HE-Tag: 1789933175-996051
-X-HE-Meta: U2FsdGVkX19V2RnTtlykIXZDd5+AiaUIWf9HjMAN7KEp0E0VSiq3Gqf7fT3tuBDPhDM6UnlAotpTvEpdACtRDaiazwg6tABkqvE+G/gJxxF8sXgJ3LGbpRz+n9lXggEXbwoZcY94L79LgckbVseBsw1d0WrsdmFQIu7mLsN5OfsxfKU2Cr1R/YfCl8JqGKA+XRFTRg1CUe7AEpGDonrVC/psWgwNii8zhHDTgXo8hsn3I7DiTDTzpTyxlM4spIm3ClLitjXKX4WIfscLsUZA/l2EKCuSmOQKfZttjfF7GW0DK8AYNPs9W0McmbjqaoF6mHpqXHJPuZyUoCGd4mehZfn5pst4UPAKIAJGZy3vfmLNL1UrdOFFfsPPXxoHLQaI//KdGeMPhbJvOrhnLCi+6SZfTjXxlOMemsHGoMb6BGS5OTGKWtEU0Kb0vfKG1Wp8Ihm019k3AMbVY8I8gGs74w2pxLQiMcumkoP5yILdnJJ8fZZQA+619eOHhJFX0I4Ds/KxrR+ULQ5rD1YP3Y+Pnoe88rrSL6oUnFq3QGHT42aY029s4/Z4SK2NdcY1X4lRfiwbNHLXPiETzI54JJYgCcLRZKejQuyupM2cczxNjfwAKND+Qf5pqd777HYzliA3y3nktk1fDJfWTkdgrFFQXzdkTdo0e6pxpAqV+9L2rFuOP3oINClFhPGRxsNCDy4/vO8ZrV16bL2IrReT/xFTCUA2Bel5QLIB6hu9oc29904bz63tZXoijQyFQVBCe3cHc4+LhfeJs8aAzVhahZ9TMkcWzxaZET1caPzcWlEozzrUfQMk6CIW4GCQO+5Vj4HKb66sCfgQcDVHyKS2j/rpCUybjNGWC6QJaIOaqlVlCZVl5vKupp6M+FbMdh5K0kAWx+mPIAzX30d8cs+0Sc8IoGV2FhbuO+4gCTe/0CVzHzq9gMvX66dmI7fQS1/oJHl0NiVL1GiLAFd0H45yhdV
- tiZ0hxYo
- ogqxUmr4ptMUzGLgjha4suEhBvU50wSTrAWBj82nr2zm0bIuQ0Ln3DCtfu1M8TlmrR8lMiNGb7r92n39SsIXKTJMostKwavnkjeZooLkTu/V/YQuekvG7cCi6fcIHPe7emAGY1VJZzX3q++KFuX9XCGQ0UYSOGYiQWAHZHih/YBJK6j0j+YUdXofz6oTUqaVRUefqFCbNMq5w80Fv4rbJJ8Fxc0fJLVMN1Pip/iId4sV9sqREfbM+s0yFQXEUOL7IRdZ6Ymepq5yoiujKX/CORymc/ByxQDYFQrUnuPseumLJIesfLYmXzJMc3nihePgZmXqdald8a2uq1UEmyc0i/8eLJRH5o4xacIAF
+X-Stat-Signature: aii3o8qfqt7c677h6wqau81qq3mdc9bm
+X-Rspamd-Queue-Id: 07AB41C0008
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789933181-826153
+X-HE-Meta: U2FsdGVkX18PLDLrGXsowrnLJ8BDisoyjwDsqjjMXklPGh7pO2UBvpv510D55/IxHg1YPdc4qh+7gGmSUnb/OJiS5QMzk96OKYRYVRVz0vVPqGKKPvhaHB1SAVynqAL6G6GirFeRqTxVYV2YVL/YFNOLS0tbY5eR3I9D4S7xYfw3InaXQusmkgHyrxbehVV3hXPn06fqAOwevA9grYD5zv7KxyCSjReELeS+79HcIBPHX94jYyhPH/WWd5T7IYWDmk/OMgymyiH0LSf1u2Umyaj94vVnwdDxI91+fv9twoHvdkyMfspKYbcl7GrEtZcDs4rEuk8iSenTfFGacK3BxIIHIi+/YBCbDiEml3A3vYj795gKzCq5izSUVFGVhhQiF9vmw7AAGQOOdShTNYWO4qC6KdHuP2oXXdaBArixUD3O+QUwLK0mmBUCgKw7xiUFtmY+uBXifvlMDlz8pLDHq+eXMR3w39/vyPz9jrq24T0YCvLEayubdYgo38rgn++Kx6Q2/kq4pseTSxCNAeCREZVgHNhQOINimd+dUqKXHepQFHaYXexPfiti/PnGqs8Kqh4j5xRqF1FZVJ1wbKxasBeAFPhXrE1QhP92pcqy8W6BTyAinyM7CjLLUakxgphpYtZR+awugaZl749wdPHjijToS4J89BC8VkXAk8wkXUb0ZVg+U8I9e0XTSPOhslC/3r41K0nI0N3Wq1AW1y5wLoJel0llnJiMJpCB7SnsUbFEGgkl8CAAUc270SkYkKZuDJrwc6guZH714uWfNUe+iA/HtylhNJQbcBCSWNW3HBjJYk8UqRavPrHYD45h9aJiyH6WMd+4Z3Ly2zgNKBq+oSqR3YfNRCjdOuaPuyrPA3zopzQXMqcTIZEtX1z+GDDjf+wNqH7CadY47RzLDirfZxOt5kzuHEzK20PsMtlznI9pGZbZrADspenyes1zhmk6gfoc/9aqi7IwnmS741K
+ piA5pu1s
+ FrAbCmpB5otW1jxBDEgskdhU02RY1HkCECgOqHq9dBQIL/VCTFw8zgU+Q8hRY/gOdmLEpJAl5RkaINmckjkY3ZSZMc7KX4fEjPeYFGSgA/l0AsCnCD/dUZ1HWMBfjWfBEfTpLLkA4WPyKfFSi86aQWSB4bk3SL9ZjVS7OwGL1GuPrO6dMdI1XMmbjrl2bOBZo10iwPpANfxQQ1dvnffCSP7XConIggXocsoMa4YKaVpYSwxGhr74V8EwEQZcP4bFKP9YqooOlPck8hmNs5PcoEiAwiRsPsD9VxGnHVjsySrFbSQxn3vnyclQ59UgQm2eo117ciUYXfpMJrAs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -192,1090 +193,585 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Implement On-Core session management, job submission and cancellation,
-isolated address space mapping helpers, and the round-robin time-sliced
-scheduling loop for preserved physical CPUs in kernel/liveupdate/oncore.c,
-and include the On-Core kernel-doc documentation in
-Documentation/liveupdate/cpu_preservation.rst.
+Define struct kvm_caretaker_cb, struct kvm_caretaker_ops, and
+KVM_CAP_CARETAKER documentation for OrphanVM on-core execution.
 
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 ---
- Documentation/liveupdate/cpu_preservation.rst |  14 +
- kernel/liveupdate/Makefile                    |  12 +
- kernel/liveupdate/cpu_preserve.c              |  15 +
- kernel/liveupdate/oncore.c                    | 947 ++++++++++++++++++
- 4 files changed, 988 insertions(+)
- create mode 100644 kernel/liveupdate/oncore.c
+ Documentation/virt/kvm/api.rst |  16 ++
+ include/linux/kho/abi/kvm.h    | 112 ++++++++++-
+ include/linux/kvm_caretaker.h  | 341 +++++++++++++++++++++++++++++++++
+ include/linux/kvm_host.h       |  10 +
+ include/uapi/linux/kvm.h       |   1 +
+ 5 files changed, 479 insertions(+), 1 deletion(-)
+ create mode 100644 include/linux/kvm_caretaker.h
 
-diff --git a/Documentation/liveupdate/cpu_preservation.rst b/Documentation/liveupdate/cpu_preservation.rst
-index a7a534188685..605d808e61c8 100644
---- a/Documentation/liveupdate/cpu_preservation.rst
-+++ b/Documentation/liveupdate/cpu_preservation.rst
-@@ -18,6 +18,20 @@ Architecture Backend Interface
+diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+index e0430cc750c9..a5c7a48617c3 100644
+--- a/Documentation/virt/kvm/api.rst
++++ b/Documentation/virt/kvm/api.rst
+@@ -9600,6 +9600,22 @@ take care to differentiate between these cases.
+ The presence of this capability indicates that the nested KVM guest can
+ start in ESA mode.
  
- .. kernel-doc:: include/linux/cpu_preserve.h
- 
-+On-Core Execution and Scheduling Framework
-+==========================================
++8.48 KVM_CAP_CARETAKER
++----------------------
 +
-+.. kernel-doc:: kernel/liveupdate/oncore.c
-+   :doc: On-Core Execution and Scheduling Framework
++:Architectures: x86, arm64
 +
-+On-Core Session & Job API
-+=========================
++This capability, if ``KVM_CHECK_EXTENSION`` returns a non-zero value,
++indicates that the host kernel supports Caretaker on-core guest execution
++across kexec-based host live updates.
 +
-+.. kernel-doc:: include/linux/oncore.h
++When both a vCPU file descriptor and its backing physical CPU's preservation
++file descriptor (``/sys/devices/system/cpu/cpuX/preserve``) are preserved in a
++Live Update Orchestrator (LUO) session, KVM schedules the vCPU to continue
++executing on-core within the preserved Caretaker environment throughout the
++host kexec transition, rather than pausing vCPU execution until the incoming
++kernel re-attaches.
 +
-+.. kernel-doc:: kernel/liveupdate/oncore.c
-+   :identifiers:
+ 9. Known KVM API problems
+ =========================
+ 
+diff --git a/include/linux/kho/abi/kvm.h b/include/linux/kho/abi/kvm.h
+index 166a0a2f13c8..85fafb786747 100644
+--- a/include/linux/kho/abi/kvm.h
++++ b/include/linux/kho/abi/kvm.h
+@@ -30,10 +30,12 @@
+ 
+ /**
+  * struct kvm_luo_ser - Main serialization structure for a KVM VM.
+- * @type:         The type of VM.
++ * @type:       The type of VM.
++ * @kho_folios: Preservation pointer to VM-wide KHO-preserved folios.
+  */
+ struct kvm_luo_ser {
+ 	u64 type;
++	DECLARE_KHOSER_PTR(kho_folios, struct kvm_kho_folios_ser *);
+ } __packed;
+ 
+ /* The compatibility string for KVM VM file handler */
+@@ -47,18 +49,126 @@ enum kvm_vcpu_luo_flags {
+ 	KVM_VCPU_LUO_FLAG_CARETAKER = BIT(0),
+ };
+ 
++/**
++ * enum kvm_caretaker_pcpu - Special Caretaker physical CPU identifiers
++ * @KVM_CARETAKER_INVALID_PCPU: Unassigned physical CPU identifier.
++ */
++enum kvm_caretaker_pcpu {
++	KVM_CARETAKER_INVALID_PCPU = U32_MAX,
++};
 +
- CPU Preservation ABI
- ====================
- 
-diff --git a/kernel/liveupdate/Makefile b/kernel/liveupdate/Makefile
-index 486f7854bb75..ab0d44079fb2 100644
---- a/kernel/liveupdate/Makefile
-+++ b/kernel/liveupdate/Makefile
-@@ -1,6 +1,17 @@
- # SPDX-License-Identifier: GPL-2.0
- 
-+KASAN_SANITIZE_cpu_preserve.o := n
-+KCSAN_SANITIZE_cpu_preserve.o := n
-+UBSAN_SANITIZE_cpu_preserve.o := n
-+KCOV_INSTRUMENT_cpu_preserve.o := n
-+KASAN_SANITIZE_oncore.o := n
-+KCSAN_SANITIZE_oncore.o := n
-+UBSAN_SANITIZE_oncore.o := n
-+KCOV_INSTRUMENT_oncore.o := n
-+CFLAGS_REMOVE_cpu_preserve.o = $(CC_FLAGS_FTRACE)
-+CFLAGS_REMOVE_oncore.o = $(CC_FLAGS_FTRACE)
- CFLAGS_cpu_preserve.o += $(call cc-option,-mbranch-protection=none) -fno-stack-protector $(call cc-option,-ftrivial-auto-var-init=uninitialized) $(call cc-option,-fno-jump-tables)
-+CFLAGS_oncore.o       += $(call cc-option,-mbranch-protection=none) -fno-stack-protector $(call cc-option,-ftrivial-auto-var-init=uninitialized) $(call cc-option,-fno-jump-tables)
- 
- luo-y :=								\
- 		kho_block.o						\
-@@ -14,3 +25,4 @@ obj-$(CONFIG_KEXEC_HANDOVER_DEBUGFS)	+= kexec_handover_debugfs.o
- 
- obj-$(CONFIG_LIVEUPDATE)		+= luo.o
- obj-$(CONFIG_LIVEUPDATE_CPU)		+= cpu_preserve.o
-+obj-$(CONFIG_LIVEUPDATE_ONCORE)		+= oncore.o
-diff --git a/kernel/liveupdate/cpu_preserve.c b/kernel/liveupdate/cpu_preserve.c
-index 9a039ba9e912..430afbca860d 100644
---- a/kernel/liveupdate/cpu_preserve.c
-+++ b/kernel/liveupdate/cpu_preserve.c
-@@ -178,6 +178,7 @@
- #include <linux/liveupdate.h>
- #include <linux/mm.h>
- #include <linux/objtool.h>
-+#include <linux/oncore.h>
- #include <linux/reboot.h>
- 
- #include <asm/sections.h>
-@@ -1552,14 +1553,22 @@ static int cpu_preserve_preserve(struct liveupdate_file_op_args *args)
- 	if (ret)
- 		return ret;
- 
-+	ret = oncore_session_add_cpu(args->session, cpu);
-+	if (ret) {
-+		cpu_unpreserve(cpu);
-+		return ret;
-+	}
++/**
++ * enum kvm_caretaker_state - Caretaker vCPU execution state machine
++ * @KVM_CARETAKER_PAUSED:   Initial state upon preservation and between
++ *                          oncore_sched time-sharing quantums (or when parked
++ *                          after an unhandled VM exit).  Live architectural
++ *                          state is fully serialized in @arch_state.
++ * @KVM_CARETAKER_RUNNING:  Actively executing a time-sharing quantum on the
++ *                          preserved physical CPU.  Hardware registers and
++ *                          VMCS/VMCB/EL2 state are live on silicon; @arch_state
++ *                          in memory is stale until the quantum exits.
++ * @KVM_CARETAKER_STOPPING: Host requested reclaim while in
++ *                          %KVM_CARETAKER_RUNNING and sent a physical IPI kick.
++ *                          Caretaker will exit guest mode, serialize live
++ *                          hardware state into @arch_state, and transition to
++ *                          %KVM_CARETAKER_STOPPED.
++ * @KVM_CARETAKER_STOPPED:  Terminal state.  Caretaker execution has permanently
++ *                          ceased and @arch_state is valid in memory.  Reached
++ *                          either directly via host cmpxchg from
++ *                          %KVM_CARETAKER_PAUSED, or by the preserved CPU from
++ *                          %KVM_CARETAKER_STOPPING after serialization completes.
++ *
++ * State transitions are coordinated locklessly via atomic cmpxchg(&cb->state):
++ *   - Each scheduler quantum on the preserved CPU transitions
++ *     %KVM_CARETAKER_PAUSED -> %KVM_CARETAKER_RUNNING on entry and
++ *     %KVM_CARETAKER_RUNNING -> %KVM_CARETAKER_PAUSED after serializing guest
++ *     state on quantum exit.
++ *   - When host KVM reclaims the vCPU (kvm_caretaker_wait_for_attach()):
++ *     1. If @cb->state is %KVM_CARETAKER_PAUSED, host atomically transitions it
++ *        to %KVM_CARETAKER_STOPPED in 0 ns; if the preserved CPU later attempts
++ *        to start a quantum, its cmpxchg(%KVM_CARETAKER_PAUSED ->
++ *        %KVM_CARETAKER_RUNNING) fails and it immediately exits.
++ *     2. If @cb->state is %KVM_CARETAKER_RUNNING, host atomically transitions
++ *        it to %KVM_CARETAKER_STOPPING, sends an IPI to preempt guest mode, and
++ *        spins until the preserved CPU finishes detach_serialize() and stores
++ *        %KVM_CARETAKER_STOPPED.
++ */
++enum kvm_caretaker_state {
++	KVM_CARETAKER_PAUSED = 0,
++	KVM_CARETAKER_RUNNING = 1,
++	KVM_CARETAKER_STOPPING = 2,
++	KVM_CARETAKER_STOPPED = 3,
++};
 +
- 	fser = kho_alloc_preserve(sizeof(*fser));
- 	if (IS_ERR(fser)) {
- 		cpu_unpreserve(cpu);
-+		oncore_session_remove_cpu(args->session, cpu);
- 		return PTR_ERR(fser);
- 	}
- 
- 	memset(fser, 0, sizeof(*fser));
- 	fser->cpu = cpu;
-+	KHOSER_STORE_PTR(fser->oncore, oncore_session_get_ser(args->session));
- 
- 	scoped_guard(mutex, &cpu_preserved_lock)
- 		fser->stack_pa = cpu_preserved_outgoing.pcpus[cpu].stack_pa;
-@@ -1580,6 +1589,7 @@ static void cpu_preserve_unpreserve(struct liveupdate_file_op_args *args)
- 	cpu = fser->cpu;
- 
- 	cpu_unpreserve(cpu);
-+	oncore_session_remove_cpu(args->session, cpu);
- 
- 	kho_unpreserve_free(fser);
- }
-@@ -1587,8 +1597,12 @@ static void cpu_preserve_unpreserve(struct liveupdate_file_op_args *args)
- static void cpu_preserve_restore_incoming_cpu(struct liveupdate_session *session,
- 					      struct cpu_preserved_file_ser *fser)
- {
-+	struct oncore_session_ser *oncore = KHOSER_LOAD_PTR(fser->oncore);
- 	unsigned int cpu = fser->cpu;
- 
-+	if (oncore)
-+		oncore_session_restore(session, oncore);
++/**
++ * struct kvm_caretaker_telemetry_ser - Serialized Caretaker execution telemetry
++ * @total_runs: Total guest entry attempts across Caretaker quantums.
++ * @total_exits: Total VM exits decoded during Caretaker execution.
++ * @stall_count: Number of times Caretaker exited due to stall or error.
++ * @last_exit_reason: Raw architecture exit reason of most recent VM exit.
++ * @last_exit_rip: Guest instruction pointer at most recent VM exit.
++ * @stall_exit_reason: Raw architecture exit reason or error at stall.
++ * @stall_exit_rip: Guest instruction pointer at stall.
++ */
++struct kvm_caretaker_telemetry_ser {
++	u64 total_runs;
++	u64 total_exits;
++	u64 stall_count;
++	u64 last_exit_reason;
++	u64 last_exit_rip;
++	u64 stall_exit_reason;
++	u64 stall_exit_rip;
++} __packed;
 +
- 	scoped_guard(mutex, &cpu_preserved_lock) {
- 		cpumask_set_cpu(cpu, &cpu_preserved_incoming.mask);
- 		cpumask_set_cpu(cpu, &cpu_preserved_mask);
-@@ -1646,6 +1660,7 @@ static void cpu_preserve_finish(struct liveupdate_file_op_args *args)
- 		cpu_preserve_restore_incoming_cpu(args->session, fser);
++/**
++ * struct kvm_kho_folios_ser - Serialized list of KHO-preserved folios for a VM
++ * @nr_folios: Number of physical folio addresses in @folios_pa.
++ * @folios_pa: Physical addresses of folios preserved via kho_preserve_folio().
++ */
++struct kvm_kho_folios_ser {
++	u64 nr_folios;
++	u64 folios_pa[];
++} __packed;
++
++/**
++ * struct kvm_caretaker_cb_ser - KVM Caretaker Control Block
++ * @state:     Current Caretaker execution state (enum kvm_caretaker_state).
++ * @pcpu_id:   Physical CPU ID where this vCPU runs while in Caretaker.
++ * @vcpu_id:   Guest vCPU identifier.
++ * @reserved:  Must be zero.
++ * @telemetry: Preservation pointer to Caretaker execution telemetry.
++ *
++ * Coordinates vCPU execution state across hypervisor detachment,
++ * live update, and Caretaker CPU preservation.
++ */
++struct kvm_caretaker_cb_ser {
++	u32 state;
++	u32 pcpu_id;
++	u32 vcpu_id;
++	u32 reserved;
++	DECLARE_KHOSER_PTR(telemetry, struct kvm_caretaker_telemetry_ser *);
++} __packed;
++
+ /**
+  * struct kvm_vcpu_ser - Main serialization structure for a KVM vCPU.
+  * @vcpu_id:    The ID of the virtual CPU.
+  * @flags:      Flags for vCPU preservation.
+  * @vm_token:   Token of the associated KVM VM instance.
+  * @arch_state: Preservation pointer to vCPU architectural state.
++ * @cb:         Preservation pointer to Caretaker Control Block.
++ *
++ * Cross-kexec invariant: the incoming kernel may only dereference structures
++ * declared in include/linux/kho/abi/ headers.  When @flags includes
++ * %KVM_VCPU_LUO_FLAG_CARETAKER, the preserved Caretaker text writes live guest
++ * state into @arch_state at detach time before transitioning @cb to
++ * %KVM_CARETAKER_STOPPED; the incoming kernel reads only @cb and @arch_state.
+  */
+ struct kvm_vcpu_ser {
+ 	u32 vcpu_id;
+ 	u32 flags;
+ 	u64 vm_token;
+ 	DECLARE_KHOSER_PTR(arch_state, struct kvm_vcpu_arch_ser *);
++	DECLARE_KHOSER_PTR(cb, struct kvm_caretaker_cb_ser *);
+ } __packed;
  
- 	cpu_unpreserve(fser->cpu);
-+	oncore_session_remove_cpu(args->session, fser->cpu);
- 
- 	kho_restore_free(fser);
- }
-diff --git a/kernel/liveupdate/oncore.c b/kernel/liveupdate/oncore.c
+ /* The compatibility string for KVM vCPU file handler */
+diff --git a/include/linux/kvm_caretaker.h b/include/linux/kvm_caretaker.h
 new file mode 100644
-index 000000000000..196ed0a67563
+index 000000000000..3e89738d7fdf
 --- /dev/null
-+++ b/kernel/liveupdate/oncore.c
-@@ -0,0 +1,947 @@
-+// SPDX-License-Identifier: GPL-2.0-only
++++ b/include/linux/kvm_caretaker.h
+@@ -0,0 +1,341 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
 +/*
 + * Copyright (c) 2026, Google LLC.
 + * Pasha Tatashin <pasha.tatashin@soleen.com>
 + *
-+ * On-Core Session and Scheduler Framework for Live Update
++ * Header for common KVM Caretaker framework across architectures.
 + */
++#ifndef __LINUX_KVM_CARETAKER_H
++#define __LINUX_KVM_CARETAKER_H
++
++#include <linux/types.h>
++#include <linux/kho/abi/kvm.h>
++
++struct kvm_vcpu;
++struct kvm_vcpu_ser;
++struct liveupdate_session;
 +
 +/**
-+ * DOC: On-Core Execution and Scheduling Framework
-+ *
-+ * The On-Core framework enables latency-sensitive workloads to continue
-+ * executing directly on preserved physical CPUs (__cpu_preserved_text /
-+ * __cpu_preserved_data) across a kexec Live Update (CONFIG_LIVEUPDATE_CPU)
-+ * while the outgoing host kernel shuts down and the incoming kernel boots.
-+ *
-+ * Each Live Update session (struct liveupdate_session) can create an
-+ * oncore_session that manages:
-+ *
-+ * 1. Isolated Address Space (struct cpu_preserved_as):
-+ *    Page tables containing only the preserved runtime text/data sections,
-+ *    the session and runqueue metadata, and workload-specific buffers
-+ *    explicitly mapped via oncore_session_map_range() or
-+ *    oncore_session_map_buffer().
-+ *
-+ * 2. Preserved Physical CPU Pool:
-+ *    One or more physical CPUs isolated from Linux scheduling via
-+ *    cpu_preserve and attached to the session via oncore_session_add_cpu().
-+ *    Each preserved CPU switches to the session's isolated page tables and
-+ *    executes oncore_cpu_schedule_loop().
-+ *
-+ * 3. Cooperative Time-Sliced Runqueue (struct oncore_runqueue):
-+ *    A lockless/atomic round-robin FIFO scheduler supporting M jobs across N
-+ *    preserved physical CPUs (including M > N oversubscription).  It provides
-+ *    initial-run starvation avoidance, least-loaded CPU assignment, work
-+ *    stealing, single-job fast-path continuation, and low-power backoff (WFE on
-+ *    arm64, PAUSE on x86) when the queue is idle or a job returns
-+ *    ONCORE_EXIT_STALL.
-+ *
-+ * Integration with KVM Caretaker and Future Kernel Caretaker Workloads
-+ * --------------------------------------------------------------------
-+ * On-Core is workload- and hypervisor-agnostic:
-+ *
-+ * - KVM Caretaker: During LUO prepare/freeze, KVM detaches each vCPU into a
-+ *   self-contained KHO-preserved Caretaker page (caretaker_x86_page on x86,
-+ *   caretaker_arm64_page on arm64), maps the page and guest/virtualization
-+ *   structures into the session's address space, and submits an oncore_job
-+ *   whose callback enters the guest (VMLAUNCH/VMRESUME, VMRUN, or EL2 world
-+ *   switch) until the time-slice deadline (deadline_ticks) expires, the vCPU
-+ *   yields on HLT/WFI (ONCORE_EXIT_YIELD_IDLE), hits an exit requiring the
-+ *   incoming kernel (ONCORE_EXIT_STALL), or observes the incoming kernel's
-+ *   reclaim signal (ONCORE_EXIT_ATTACH_SIGNALED).
-+ *
-+ * - Future Kernel Caretaker Workloads: Any self-contained kernel subsystem
-+ *   compiled into the preserved runtime sections (such as hardware watchdog
-+ *   feeders, health/heartbeat responders, or zero-loss network/storage
-+ *   polling drivers) can submit an oncore_job_fn(void *data, u64 deadline) to
-+ *   share preserved physical cores alongside or independently of KVM vCPUs.
-+ *
-+ * Architecture Requirements
-+ * -------------------------
-+ * To support CONFIG_LIVEUPDATE_ONCORE, an architecture must implement:
-+ *
-+ * - <asm/oncore.h>:
-+ *   - arch_oncore_read_counter(): Read a monotonic hardware counter directly
-+ *     from __cpu_preserved_text without relying on kernel timekeeping
-+ *     (e.g., rdtsc() on x86, __arch_counter_get_cntpct() on arm64).
-+ *   - arch_oncore_counter_freq_hz(): Return the hardware counter frequency in
-+ *     Hz used to convert the time quantum (oncore.quantum_ms) into ticks.
-+ *
-+ * - <asm/cpu_preserve.h> (from CONFIG_LIVEUPDATE_CPU):
-+ *   - arch_cpu_preserved_switch_pgd(): Switch to the session's isolated PGD.
-+ *   - arch_cpu_preserved_park_wait() / arch_cpu_preserved_kick(): Low-power
-+ *     wait instruction and cross-CPU wakeup mechanism.
-+ *
-+ * Public Interfaces (<linux/oncore.h>)
-+ * ------------------------------------
-+ * - Session & CPU Lifecycle:
-+ *   oncore_session_add_cpu(), oncore_session_remove_cpu(),
-+ *   oncore_session_get_ser(), oncore_session_restore().
-+ * - Session Address Space Mapping:
-+ *   oncore_session_map_range(), oncore_session_map_buffer(),
-+ *   oncore_session_get_pgd_pa().
-+ * - Job Submission & Control:
-+ *   oncore_session_submit_job(), oncore_job_set_data(),
-+ *   oncore_job_cpu(), oncore_job_session(),
-+ *   oncore_session_activate_job(), oncore_session_cancel_job().
++ * enum kvm_caretaker_exit_type - Normalized cross-architecture VM exit classification
++ * @KVM_CARETAKER_EXIT_UNKNOWN:       Unclassified exit; treated as unhandled stall.
++ * @KVM_CARETAKER_EXIT_IDLE:          Guest idle instruction (HLT, PAUSE, WFI, WFE).
++ * @KVM_CARETAKER_EXIT_CONSOLE:       Early console port I/O or MMIO access.
++ * @KVM_CARETAKER_EXIT_PREEMPT_TIMER: Hardware quantum preemption timer expired.
++ * @KVM_CARETAKER_EXIT_CROSS_VCPU:    Cross-vCPU notification or IPI (e.g., SGI).
++ * @KVM_CARETAKER_EXIT_INSN_STEP:     Instruction emulated by decode; advance RIP/PC.
++ * @KVM_CARETAKER_EXIT_ARCH:          Architecture-specific exit routed to @handle_arch_exit.
++ * @KVM_CARETAKER_EXIT_UNHANDLED:     Exit requiring full KVM/VMM; stalls the vCPU.
 + */
++enum kvm_caretaker_exit_type {
++	KVM_CARETAKER_EXIT_UNKNOWN = 0,
++	KVM_CARETAKER_EXIT_IDLE,
++	KVM_CARETAKER_EXIT_CONSOLE,
++	KVM_CARETAKER_EXIT_PREEMPT_TIMER,
++	KVM_CARETAKER_EXIT_CROSS_VCPU,
++	KVM_CARETAKER_EXIT_INSN_STEP,
++	KVM_CARETAKER_EXIT_ARCH,
++	KVM_CARETAKER_EXIT_UNHANDLED,
++};
 +
-+#define pr_fmt(fmt) "oncore: " fmt
++/**
++ * struct kvm_caretaker_exit - Normalized cross-architecture VM exit representation
++ * @type:       Normalized exit classification (&enum kvm_caretaker_exit_type).
++ * @rip:        Guest instruction pointer (RIP on x86, PC on arm64) at exit.
++ * @insn_len:   Length in bytes of the trapping instruction.
++ * @raw_reason: Raw hardware exit code (VMX exit reason, SVM exit code, or ESR_EL2).
++ * @mmio_io:    Decoded port I/O or MMIO access parameters.
++ * @msr:        Decoded x86 MSR read/write parameters.
++ * @sgi:        Decoded arm64 GICv3 Software Generated Interrupt parameters.
++ */
++struct kvm_caretaker_exit {
++	enum kvm_caretaker_exit_type type;
++	u64 rip;
++	u32 insn_len;
++	u64 raw_reason;
++	union {
++		struct {
++			u64 addr;
++			u64 val;
++			u64 *val_ptr;
++			u32 size;
++			bool is_write;
++			bool is_mmio;
++		} mmio_io;
++		struct {
++			u32 msr;
++			u64 val;
++			bool is_write;
++		} msr;
++		struct {
++			u32 sgi_id;
++			u64 target_mask;
++		} sgi;
++	};
++};
++
++struct kvm_caretaker_vcpu;
++
++/**
++ * struct kvm_caretaker_ops - Architecture operations vector for Caretaker vCPU execution
++ * @enter_guest:      Perform low-level hardware guest entry (VMLAUNCH/VMRESUME,
++ *                    VMRUN, or EL2 ERET). Returns 0 on guest exit, or non-zero
++ *                    on entry failure.
++ * @decode_exit:      Read hardware exit registers and populate @exit.
++ * @handle_arch_exit: Emulate an architecture-specific exit (@exit). Returns
++ *                    %true if handled (and updates @exit->rip if needed), or
++ *                    %false to stall the vCPU until the incoming kernel attaches.
++ * @advance_rip:      Write updated @next_rip back into hardware guest state.
++ * @arm_timer:        Program hardware preemption timer to fire at @deadline_ticks
++ *                    (or disarm if @deadline_ticks is 0).
++ * @disarm_timer:     Disarm the hardware preemption timer after leaving the loop.
++ * @pre_run:          Optional per-quantum setup hook invoked before guest entry.
++ * @post_run:         Optional per-quantum teardown hook invoked after leaving
++ *                    the guest loop.
++ */
++struct kvm_caretaker_ops {
++	int (*enter_guest)(void *vcpu_data);
++	void (*decode_exit)(void *vcpu_data, struct kvm_caretaker_exit *exit);
++	bool (*handle_arch_exit)(void *vcpu_data, struct kvm_caretaker_exit *exit);
++	void (*advance_rip)(void *vcpu_data, u64 next_rip);
++	void (*arm_timer)(void *vcpu_data, u64 deadline_ticks);
++	void (*disarm_timer)(void *vcpu_data);
++	void (*pre_run)(void *vcpu_data);
++	void (*post_run)(void *vcpu_data);
++};
++
++/**
++ * struct kvm_caretaker_vcpu - Common per-vCPU Caretaker runtime descriptor
++ * @cb:        Pointer to KHO-preserved Caretaker control block (&struct kvm_caretaker_cb_ser).
++ * @ops:       Architecture operations vector (&struct kvm_caretaker_ops).
++ * @arch_data: Architecture-specific runtime context passed to @ops callbacks.
++ */
++struct kvm_caretaker_vcpu {
++	struct kvm_caretaker_cb_ser *cb;
++	const struct kvm_caretaker_ops *ops;
++	void *arch_data;
++};
++
++struct kvm_kho_folios_ser *kvm_kho_folios_alloc(unsigned int max_folios);
++void kvm_kho_folios_unpreserve(struct kvm_kho_folios_ser *folios);
++void kvm_kho_folios_finish(struct kvm_kho_folios_ser *folios);
++
++#ifdef CONFIG_KVM_CARETAKER
 +
 +#include <linux/cpu_preserve.h>
-+#include <linux/cpumask.h>
-+#include <linux/delay.h>
-+#include <linux/init.h>
-+#include <linux/io.h>
-+#include <linux/kexec.h>
-+#include <linux/kexec_handover.h>
-+#include <linux/list.h>
-+#include <linux/liveupdate.h>
-+#include <linux/mm.h>
-+#include <linux/module.h>
-+#include <linux/mutex.h>
 +#include <linux/oncore.h>
-+#include <linux/overflow.h>
-+#include <linux/slab.h>
-+#include <linux/string.h>
-+#include <linux/types.h>
 +
-+#define ONCORE_DEFAULT_QUANTUM_MS	10
-+#define ONCORE_CANCEL_TIMEOUT_US	1000000
-+#define ONCORE_CANCEL_STEP_US		100
++#define __caretaker_text __cpu_preserved_text
++#define __caretaker_data __cpu_preserved_data
 +
-+enum oncore_job_state {
-+	ONCORE_JOB_NEW = 0,
-+	ONCORE_JOB_RUNNABLE,
-+	ONCORE_JOB_RUNNING,
-+	ONCORE_JOB_CANCELING,
-+	ONCORE_JOB_DEAD,
++struct dentry;
++struct oncore_session;
++
++/**
++ * struct kvm_vcpu_caretaker - Host-side Caretaker state embedded in struct kvm_vcpu
++ * @cb:             Pointer to the KHO-preserved Caretaker control block while
++ *                  preserved, or %NULL when executing normally under KVM.
++ * @job:            On-Core scheduler job handle for this vCPU, or %NULL.
++ * @last_telemetry: Snapshot of @cb->telemetry captured upon re-attachment.
++ */
++struct kvm_vcpu_caretaker {
++	struct kvm_caretaker_cb_ser		*cb;
++	struct oncore_job			*job;
++	struct kvm_caretaker_telemetry_ser	last_telemetry;
 +};
 +
-+struct oncore_job {
-+	struct list_head		node;
-+	struct list_head		sess_node;
-+	phys_addr_t			next_job_pa;
-+	struct oncore_session		*session;
-+	enum oncore_job_state		state;
-+	oncore_job_fn			run_fn;
-+	void				*data;
-+	int				assigned_cpu;
-+	int				last_cpu;
-+	u64				total_runs;
-+};
-+
-+struct oncore_sched_config {
-+	u32				quantum_ms;
-+	u64				quantum_ticks;
-+	u64				counter_freq_hz;
-+};
-+
-+struct oncore_runqueue {
-+	atomic_t			lock;
-+	struct list_head		runnable;
-+	unsigned int			nr_runnable;
-+};
-+
-+struct oncore_session {
-+	struct list_head		node;
-+	/* Protects session state and job list */
-+	struct mutex			lock;
-+	struct list_head		jobs;
-+	phys_addr_t			first_job_pa;
-+	struct oncore_runqueue		rq;
-+	struct oncore_sched_config	sched_config;
-+	struct cpu_preserved_as		*as;
-+	struct oncore_session_ser	*ser;
-+	bool				is_incoming;
-+};
-+
-+static struct oncore_sched_config global_oncore_sched_config __cpu_preserved_data;
-+static DEFINE_MUTEX(oncore_sessions_lock);
-+static LIST_HEAD(oncore_sessions);
-+
-+static inline struct cpumask *oncore_session_cpus(struct oncore_session *sess)
-+{
-+	return to_cpumask((unsigned long *)sess->ser->cpus_bitmap);
-+}
-+
-+static inline void oncore_rq_lock(struct oncore_runqueue *rq)
-+{
-+	while (atomic_cmpxchg_acquire(&rq->lock, 0, 1) != 0) {
-+		while (atomic_read(&rq->lock) != 0)
-+			cpu_relax();
-+	}
-+}
-+
-+static inline void oncore_rq_unlock(struct oncore_runqueue *rq)
-+{
-+	atomic_set_release(&rq->lock, 0);
-+}
-+
-+static int __init parse_oncore_quantum(char *arg)
-+{
-+	u32 val;
-+
-+	if (kstrtou32(arg, 0, &val) == 0 && val >= 1 && val <= 1000)
-+		global_oncore_sched_config.quantum_ms = val;
-+	return 0;
-+}
-+early_param("oncore.quantum_ms", parse_oncore_quantum);
-+
-+static void oncore_sched_update_ticks(void)
-+{
-+	u32 ms = global_oncore_sched_config.quantum_ms ? : ONCORE_DEFAULT_QUANTUM_MS;
-+	u64 freq = arch_oncore_counter_freq_hz();
-+
-+	global_oncore_sched_config.counter_freq_hz = freq;
-+	global_oncore_sched_config.quantum_ticks = (freq * ms) / 1000ULL;
-+}
-+
-+static void oncore_runqueue_init(struct oncore_runqueue *rq)
-+{
-+	atomic_set(&rq->lock, 0);
-+	INIT_LIST_HEAD(&rq->runnable);
-+	rq->nr_runnable = 0;
-+}
-+
-+static int oncore_sched_enqueue(struct oncore_runqueue *rq,
-+				struct oncore_job *job)
-+{
-+	int cpu;
-+
-+	oncore_rq_lock(rq);
-+	job->state = ONCORE_JOB_RUNNABLE;
-+	list_add_tail(&job->node, &rq->runnable);
-+	rq->nr_runnable++;
-+	oncore_rq_unlock(rq);
-+
-+	for_each_cpu(cpu, oncore_session_cpus(job->session)) {
-+		if (cpu_is_preserved(cpu))
-+			arch_cpu_preserved_kick(cpu);
-+	}
-+
-+	return 0;
-+}
-+
-+static int oncore_sched_dequeue(struct oncore_runqueue *rq,
-+				struct oncore_job *job)
-+{
-+	oncore_rq_lock(rq);
-+	if (!list_empty(&job->node)) {
-+		list_del_init(&job->node);
-+		rq->nr_runnable--;
-+	}
-+	if (job->state == ONCORE_JOB_RUNNING)
-+		job->state = ONCORE_JOB_CANCELING;
-+	else
-+		job->state = ONCORE_JOB_DEAD;
-+	oncore_rq_unlock(rq);
-+	return 0;
-+}
-+
-+static struct oncore_job *__cpu_preserved_text
-+oncore_sched_pick_next(struct oncore_runqueue *rq, int cpu)
-+{
-+	struct oncore_job *job = NULL, *iter;
-+
-+	if (!rq || READ_ONCE(rq->nr_runnable) == 0)
-+		return NULL;
-+
-+	oncore_rq_lock(rq);
-+
-+	/* 1. Starvation avoidance: if head job has NEVER run, take it immediately */
-+	if (!list_empty(&rq->runnable)) {
-+		iter = list_first_entry(&rq->runnable, struct oncore_job, node);
-+		if (iter->total_runs == 0) {
-+			job = iter;
-+			goto found;
-+		}
-+	}
-+
-+	/* 2. Prefer job affine to this core */
-+	list_for_each_entry(iter, &rq->runnable, node) {
-+		if (iter->assigned_cpu == cpu) {
-+			job = iter;
-+			goto found;
-+		}
-+	}
-+
-+	/* 3. Work-stealing fallback: take oldest job from head of queue */
-+	if (!list_empty(&rq->runnable))
-+		job = list_first_entry(&rq->runnable, struct oncore_job, node);
-+
-+found:
-+	if (job) {
-+		list_del_init(&job->node);
-+		rq->nr_runnable--;
-+	}
-+
-+	oncore_rq_unlock(rq);
-+	return job;
-+}
-+
-+static void __cpu_preserved_text
-+oncore_sched_put_prev(struct oncore_runqueue *rq,
-+		      struct oncore_job *job)
-+{
-+	oncore_rq_lock(rq);
-+	job->state = ONCORE_JOB_RUNNABLE;
-+	list_add_tail(&job->node, &rq->runnable);
-+	rq->nr_runnable++;
-+	oncore_rq_unlock(rq);
-+}
-+
-+static void __cpu_preserved_text
-+oncore_cpu_schedule_loop(int cpu, struct oncore_runqueue *rq,
-+			 struct oncore_sched_config *cfg)
-+{
-+	enum oncore_exit_reason reason;
-+	struct oncore_job *curr = NULL;
-+	u64 deadline;
-+
-+	if (!rq || !cfg)
-+		return;
-+
-+	while (!cpu_preserved_should_exit(cpu)) {
-+		/* 1. Pick the next runnable job from the FIFO queue */
-+		if (!curr) {
-+			curr = oncore_sched_pick_next(rq, cpu);
-+			if (!curr) {
-+				/* No runnable jobs; execute low-power park wait */
-+				arch_cpu_preserved_park_wait();
-+				continue;
-+			}
-+		}
-+
-+		/* 2. Compute quantum deadline */
-+		deadline = arch_oncore_read_counter() + cfg->quantum_ticks;
-+
-+		/* 3. Execute workload on physical silicon */
-+		curr->last_cpu = cpu;
-+		curr->state = ONCORE_JOB_RUNNING;
-+		reason = curr->run_fn(curr->data, deadline);
-+
-+		/* 4. Update telemetry and accounting */
-+		curr->total_runs++;
-+
-+		/*
-+		 * A stalled job cannot make progress until the incoming kernel
-+		 * reclaims it, so re-running it immediately would just repeat
-+		 * the same unhandled exit as fast as the hardware allows.  Back
-+		 * off in the architecture's low-power wait (WFE on arm64, PAUSE
-+		 * on x86) first.  arch_cpu_preserved_kick() wakes it, so the
-+		 * attach signal is still observed promptly by the checks below
-+		 * and at the top of the loop.
-+		 */
-+		if (reason == ONCORE_EXIT_STALL)
-+			arch_cpu_preserved_park_wait();
-+
-+		/* Fast-path: single runnable job continues uninterrupted */
-+		if (READ_ONCE(rq->nr_runnable) == 0 &&
-+		    READ_ONCE(curr->state) == ONCORE_JOB_RUNNING &&
-+		    reason != ONCORE_EXIT_ATTACH_SIGNALED &&
-+		    reason != ONCORE_EXIT_ERROR &&
-+		    !cpu_preserved_should_exit(cpu)) {
-+			continue;
-+		}
-+
-+		/* 5. Handle exit and return job to queue */
-+		oncore_rq_lock(rq);
-+		if (curr->state == ONCORE_JOB_CANCELING ||
-+		    curr->state == ONCORE_JOB_DEAD ||
-+		    reason == ONCORE_EXIT_ATTACH_SIGNALED ||
-+		    reason == ONCORE_EXIT_ERROR) {
-+			WRITE_ONCE(curr->state, ONCORE_JOB_DEAD);
-+			oncore_rq_unlock(rq);
-+			curr = NULL;
-+			continue;
-+		}
-+		oncore_rq_unlock(rq);
-+
-+		oncore_sched_put_prev(rq, curr);
-+		curr = NULL;
-+	}
-+}
-+
-+static void __cpu_preserved_text oncore_sched_cpu_worker(void *data)
-+{
-+	struct cpu_preserved_stack_context *sctx = cpu_preserved_get_stack_context();
-+	struct oncore_session *sess;
-+	int cpu;
-+
-+	if (!sctx)
-+		return;
-+
-+	sess = sctx->workload_context ?
-+		(struct oncore_session *)(uintptr_t)sctx->workload_context :
-+		data;
-+	if (!sess)
-+		return;
-+	cpu = sctx->cpu;
-+
-+	if (sctx->session_pgd_pa)
-+		arch_cpu_preserved_switch_pgd(sctx->session_pgd_pa);
-+
-+	oncore_cpu_schedule_loop(cpu, &sess->rq, &sess->sched_config);
-+}
-+
-+static int __init oncore_sched_init(void)
-+{
-+	if (!arch_oncore_counter_freq_hz()) {
-+		pr_err("Counter frequency is unknown; on-core scheduler disabled\n");
-+		return -ENODEV;
-+	}
-+	if (!global_oncore_sched_config.quantum_ms)
-+		global_oncore_sched_config.quantum_ms = ONCORE_DEFAULT_QUANTUM_MS;
-+	oncore_sched_update_ticks();
-+	pr_info("Round-Robin scheduler initialized (quantum=%u ms, ticks=%llu)\n",
-+		global_oncore_sched_config.quantum_ms,
-+		global_oncore_sched_config.quantum_ticks);
-+	return 0;
-+}
-+early_initcall(oncore_sched_init);
-+
 +/**
-+ * oncore_session_map_range - Map a physical memory range into the session's address space
-+ * @sess: On-Core session (may be %NULL to map into the global preserved address space).
-+ * @pa:   Start physical address of the range.
-+ * @va:   Target virtual address in the isolated page tables.
-+ * @size: Size of the mapping in bytes.
-+ * @prot: Page protection flags.
++ * kvm_caretaker_is_stopped - Check whether a Caretaker control block is stopped
++ * @cb: Caretaker control block (may be %NULL).
 + *
-+ * Maps `[pa, pa + size)` at `@va` in the isolated page tables used by
-+ * preserved CPUs executing workloads in @sess across kexec.
-+ *
-+ * Return: 0 on success, or a negative errno on failure.
++ * Return: %true if @cb is %NULL or in state %KVM_CARETAKER_STOPPED, %false otherwise.
 + */
-+int oncore_session_map_range(struct oncore_session *sess, phys_addr_t pa,
-+			     unsigned long va, size_t size, pgprot_t prot)
++static inline bool kvm_caretaker_is_stopped(const struct kvm_caretaker_cb_ser *cb)
 +{
-+	return cpu_preserved_map_range(pa, va, size, prot);
-+}
-+EXPORT_SYMBOL_GPL(oncore_session_map_range);
-+
-+/**
-+ * oncore_session_map_buffer - Map a direct-map kernel buffer into the session's address space
-+ * @sess: On-Core session.
-+ * @va:   Kernel direct-map virtual address of the buffer (no-op if %NULL).
-+ * @size: Size of the buffer in bytes (no-op if 0).
-+ *
-+ * Convenience helper that resolves `virt_to_phys(@va)` and maps the buffer at
-+ * its existing kernel virtual address `@va` with %PAGE_KERNEL permissions in
-+ * the session's isolated page tables.
-+ *
-+ * Return: 0 on success, or a negative errno on failure.
-+ */
-+int oncore_session_map_buffer(struct oncore_session *sess, void *va,
-+			      size_t size)
-+{
-+	if (!va || !size)
-+		return 0;
-+	return oncore_session_map_range(sess, virt_to_phys(va),
-+					(unsigned long)va, size, PAGE_KERNEL);
-+}
-+EXPORT_SYMBOL_GPL(oncore_session_map_buffer);
-+
-+/**
-+ * oncore_session_get_pgd_pa - Return the root page table physical address of a session
-+ * @sess: On-Core session.
-+ *
-+ * Return: Physical address of the session's isolated PGD, or 0 if @sess or its
-+ *         address space is %NULL.
-+ */
-+phys_addr_t oncore_session_get_pgd_pa(struct oncore_session *sess)
-+{
-+	return (sess && sess->as) ? sess->as->pgd_pa : 0;
-+}
-+EXPORT_SYMBOL_GPL(oncore_session_get_pgd_pa);
-+
-+static struct oncore_session *oncore_find_session_locked(const char *sname)
-+{
-+	struct oncore_session *sess;
-+
-+	if (!sname || !sname[0])
-+		return NULL;
-+
-+	list_for_each_entry(sess, &oncore_sessions, node) {
-+		if (strcmp(sess->ser->session_name, sname) == 0)
-+			return sess;
-+	}
-+
-+	return NULL;
-+}
-+
-+static struct oncore_session *oncore_find_session(struct liveupdate_session *s)
-+{
-+	guard(mutex)(&oncore_sessions_lock);
-+
-+	return oncore_find_session_locked(liveupdate_session_name(s));
-+}
-+
-+static struct oncore_session *oncore_create_session_locked(const char *sname)
-+{
-+	unsigned int nr_ser_words = BITS_TO_U64(nr_cpu_ids);
-+	struct oncore_session *sess;
-+	size_t ser_sz;
-+
-+	ser_sz = struct_size(sess->ser, cpus_bitmap, nr_ser_words);
-+
-+	sess = kho_alloc_preserve(sizeof(*sess));
-+	if (IS_ERR(sess))
-+		return NULL;
-+
-+	memset(sess, 0, sizeof(*sess));
-+	mutex_init(&sess->lock);
-+	INIT_LIST_HEAD(&sess->jobs);
-+	oncore_runqueue_init(&sess->rq);
-+	oncore_sched_update_ticks();
-+	sess->sched_config = global_oncore_sched_config;
-+
-+	sess->as = cpu_preserved_as_create();
-+	if (IS_ERR(sess->as))
-+		sess->as = NULL;
-+
-+	oncore_session_map_range(sess, virt_to_phys(sess),
-+				 (unsigned long)sess, sizeof(*sess),
-+				 PAGE_KERNEL);
-+
-+	sess->ser = kho_alloc_preserve(ser_sz);
-+	if (IS_ERR(sess->ser)) {
-+		cpu_preserved_as_destroy(sess->as);
-+		kho_unpreserve_free(sess);
-+		return NULL;
-+	}
-+
-+	memset(sess->ser, 0, ser_sz);
-+	sess->ser->nr_cpu_words = nr_ser_words;
-+	strscpy(sess->ser->session_name, sname, sizeof(sess->ser->session_name));
-+	sess->ser->sess_pa = virt_to_phys(sess);
-+	KHOSER_STORE_PTR(sess->ser->as, sess->as ? sess->as->ser : NULL);
-+
-+	list_add_tail(&sess->node, &oncore_sessions);
-+	return sess;
-+}
-+
-+static struct oncore_session *oncore_get_or_create_session(struct liveupdate_session *s)
-+{
-+	const char *sname = liveupdate_session_name(s);
-+	struct oncore_session *sess;
-+
-+	if (!sname || !sname[0])
-+		return NULL;
-+
-+	guard(mutex)(&oncore_sessions_lock);
-+
-+	sess = oncore_find_session_locked(sname);
-+	if (sess)
-+		return sess;
-+
-+	return oncore_create_session_locked(sname);
++	return !cb || smp_load_acquire(&cb->state) == KVM_CARETAKER_STOPPED;
 +}
 +
 +/**
-+ * oncore_session_add_cpu - Attach a preserved physical CPU to an On-Core session
-+ * @s:   Live Update session handle.
-+ * @cpu: Logical ID of the preserved physical CPU to add.
++ * kvm_caretaker_pause - Transition a Caretaker control block to PAUSED state
++ * @cb: Caretaker control block.
 + *
-+ * Creates the On-Core session for @s if it does not yet exist, adds @cpu to
-+ * the session's CPU mask, configures @cpu's preserved stack context with the
-+ * session pointer and isolated PGD physical address, and attaches
-+ * oncore_sched_cpu_worker() so @cpu begins servicing the session's runqueue.
-+ *
-+ * Return: 0 on success, or a negative errno on failure.
++ * Publishes %KVM_CARETAKER_PAUSED with release semantics so a preserved CPU
++ * can claim the vCPU for on-core execution.
 + */
-+int oncore_session_add_cpu(struct liveupdate_session *s, int cpu)
++static inline void kvm_caretaker_pause(struct kvm_caretaker_cb_ser *cb)
 +{
-+	struct oncore_session *sess;
-+	int ret = 0;
++	/* Pairs with smp_load_acquire() in caretaker loop */
++	smp_store_release(&cb->state, KVM_CARETAKER_PAUSED);
++}
 +
-+	if (!arch_oncore_counter_freq_hz()) {
-+		pr_err("On-core counter frequency is unknown; refusing to add CPU\n");
-+		return -ENODEV;
-+	}
++/**
++ * kvm_caretaker_stop - Transition a Caretaker control block to STOPPED state
++ * @cb: Caretaker control block.
++ *
++ * Publishes %KVM_CARETAKER_STOPPED with release semantics once the vCPU has
++ * detached from Caretaker execution.
++ */
++static inline void kvm_caretaker_stop(struct kvm_caretaker_cb_ser *cb)
++{
++	/* Pairs with smp_load_acquire() in caretaker loop */
++	smp_store_release(&cb->state, KVM_CARETAKER_STOPPED);
++}
 +
-+	sess = oncore_get_or_create_session(s);
-+	if (!sess || cpu < 0 || cpu >= nr_cpu_ids)
-+		return -EINVAL;
++bool kvm_caretaker_vcpu_is_attached(struct kvm_vcpu *vcpu);
++void kvm_caretaker_init_common_vcpu(struct kvm_caretaker_vcpu *cvcpu,
++				    struct kvm_caretaker_cb_ser *cb,
++				    struct kvm_vcpu *vcpu,
++				    void *runtime_va,
++				    size_t runtime_size,
++				    const struct kvm_caretaker_ops *ops,
++				    void *arch_data);
++bool kvm_caretaker_should_exit(struct kvm_caretaker_vcpu *cvcpu);
++enum oncore_exit_reason
++kvm_caretaker_vcpu_run(struct kvm_caretaker_vcpu *cvcpu, u64 deadline_ticks);
++int kvm_caretaker_wait_for_attach(struct kvm_caretaker_cb_ser *cb, int pcpu);
++void kvm_caretaker_post_attach_vcpu(struct kvm_vcpu *vcpu);
 +
-+	guard(mutex)(&sess->lock);
-+	cpumask_set_cpu(cpu, oncore_session_cpus(sess));
++/**
++ * kvm_arch_vcpu_caretaker_run - Architecture entry point for Caretaker vCPU run
++ * @data:           Pointer to KHO-preserved Caretaker control block
++ *                  (&struct kvm_caretaker_cb_ser) embedded in the architecture
++ *                  runtime page.
++ * @deadline_ticks: Hardware counter deadline (TSC on x86, CNTPCT on arm64) at
++ *                  which the current scheduling quantum expires, or 0 if
++ *                  unbounded.
++ *
++ * Invoked by the On-Core scheduler loop on a preserved physical CPU during the
++ * kexec handover window.  Atomically transitions the vCPU from
++ * %KVM_CARETAKER_PAUSED to %KVM_CARETAKER_RUNNING, switches to Caretaker host
++ * state and isolated page tables, invokes kvm_caretaker_vcpu_run(), and
++ * serializes updated guest registers back to KHO memory upon exit.
++ *
++ * Context: Runs in __cpu_preserved_text with local interrupts disabled.
++ * Return: &enum oncore_exit_reason indicating why the vCPU yielded the core.
++ */
++enum oncore_exit_reason
++kvm_arch_vcpu_caretaker_run(void *data, u64 deadline_ticks);
 +
-+	cpu_preserved_set_workload_context(cpu, sess,
-+					   oncore_session_get_pgd_pa(sess));
++/**
++ * kvm_arch_vcpu_luo_pre_retrieve_caretaker - Signal Caretaker vCPU to stop and serialize
++ * @vcpu: Incoming or cancelled-handover KVM vCPU structure.
++ * @ser:  Serialized KHO vCPU metadata.
++ *
++ * Signals the preserved physical CPU executing this vCPU in Caretaker to exit
++ * guest mode, serialize live guest hardware state into @ser->arch_state, and
++ * transition to %KVM_CARETAKER_STOPPED.  Must run before
++ * kvm_arch_vcpu_luo_retrieve() reads @ser->arch_state.
++ */
++void kvm_arch_vcpu_luo_pre_retrieve_caretaker(struct kvm_vcpu *vcpu,
++					      struct kvm_vcpu_ser *ser);
 +
-+	ret = cpu_preserved_attach_workload(cpu,
-+					    oncore_sched_cpu_worker,
-+					    sess);
-+	if (ret) {
-+		cpu_preserved_set_workload_context(cpu, NULL, 0);
-+		cpumask_clear_cpu(cpu, oncore_session_cpus(sess));
-+		return ret;
-+	}
++/**
++ * kvm_arch_vcpu_luo_attach_caretaker - Complete architecture vCPU attachment after retrieve
++ * @vcpu: Incoming kernel vCPU structure being restored.
++ * @ser:  Serialized KHO vCPU metadata containing the Caretaker control block PA.
++ *
++ * Runs after kvm_arch_vcpu_luo_retrieve() has restored @ser->arch_state into
++ * @vcpu; synchronizes architecture-specific hardware state (VMCS/VMCB/VGIC and
++ * emulated UART/timer state) from the preserved Caretaker page and completes
++ * attachment via kvm_caretaker_post_attach_vcpu().
++ */
++void kvm_arch_vcpu_luo_attach_caretaker(struct kvm_vcpu *vcpu,
++					struct kvm_vcpu_ser *ser);
 +
++int kvm_caretaker_vcpu_pre_preserve(struct kvm_vcpu *vcpu,
++				    struct liveupdate_session *session,
++				    struct kvm_vcpu_ser *ser);
++int kvm_caretaker_vcpu_post_preserve(struct kvm_vcpu *vcpu,
++				     struct liveupdate_session *session,
++				     struct kvm_vcpu_ser *ser,
++				     int arch_err);
++void kvm_caretaker_vcpu_pre_retrieve(struct kvm_vcpu *vcpu,
++				     struct kvm_vcpu_ser *ser);
++void kvm_caretaker_vcpu_retrieve(struct kvm_vcpu *vcpu,
++				 struct kvm_vcpu_ser *ser);
++void kvm_caretaker_vcpu_unpreserve(struct kvm_vcpu *vcpu,
++				   struct liveupdate_session *session,
++				   struct kvm_vcpu_ser *ser);
++void kvm_caretaker_vcpu_finish(struct kvm_vcpu *vcpu,
++			       struct liveupdate_session *session,
++			       struct kvm_vcpu_ser *ser);
++
++#else /* !CONFIG_KVM_CARETAKER */
++
++#define __caretaker_text
++#define __caretaker_data
++
++static inline bool kvm_caretaker_is_stopped(const struct kvm_caretaker_cb_ser *cb)
++{
++	return true;
++}
++
++static inline void kvm_caretaker_pause(struct kvm_caretaker_cb_ser *cb) {}
++
++static inline void kvm_caretaker_stop(struct kvm_caretaker_cb_ser *cb) {}
++
++static inline bool kvm_caretaker_vcpu_is_attached(struct kvm_vcpu *vcpu)
++{
++	return true;
++}
++
++static inline void kvm_caretaker_vm_pre_retrieve(void) {}
++
++static inline int kvm_caretaker_vcpu_pre_preserve(struct kvm_vcpu *vcpu,
++						  struct liveupdate_session *session,
++						  struct kvm_vcpu_ser *ser)
++{
 +	return 0;
 +}
 +
-+static void oncore_sync_jobs_pa(struct oncore_session *sess)
++static inline int kvm_caretaker_vcpu_post_preserve(struct kvm_vcpu *vcpu,
++						   struct liveupdate_session *session,
++						   struct kvm_vcpu_ser *ser,
++						   int arch_err)
 +{
-+	phys_addr_t *tail = &sess->first_job_pa;
-+	struct oncore_job *j;
-+
-+	list_for_each_entry(j, &sess->jobs, sess_node) {
-+		j->next_job_pa = 0;
-+		*tail = virt_to_phys(j);
-+		tail = &j->next_job_pa;
-+	}
-+	*tail = 0;
++	return arch_err;
 +}
 +
-+static void oncore_session_destroy_incoming(struct oncore_session *sess)
++static inline void kvm_caretaker_init_common_vcpu(struct kvm_caretaker_vcpu *cvcpu,
++						  struct kvm_caretaker_cb_ser *cb,
++						 struct kvm_vcpu *vcpu,
++						 void *runtime_va,
++						 size_t runtime_size,
++						 const struct kvm_caretaker_ops *ops,
++						 void *arch_data) {}
++
++static inline bool kvm_caretaker_should_exit(struct kvm_caretaker_vcpu *cvcpu)
 +{
-+	struct oncore_session *old_sess;
-+	struct oncore_job *job;
-+	phys_addr_t job_pa;
-+
-+	if (!sess->ser) {
-+		kfree(sess);
-+		return;
-+	}
-+
-+	if (sess->ser->sess_pa) {
-+		old_sess = phys_to_virt(sess->ser->sess_pa);
-+		job_pa = old_sess->first_job_pa;
-+		while (job_pa) {
-+			job = phys_to_virt(job_pa);
-+			job_pa = job->next_job_pa;
-+			kho_restore_free(job);
-+		}
-+		kho_restore_free(old_sess);
-+	}
-+
-+	kho_restore_free(sess->ser);
-+	kfree(sess);
++	return true;
 +}
 +
-+static void oncore_session_destroy_outgoing(struct oncore_session *sess)
++static inline int kvm_caretaker_wait_for_attach(struct kvm_caretaker_cb_ser *cb, int pcpu,
++						void (*arch_kick)(int pcpu))
 +{
-+	struct oncore_job *job, *tmp;
-+
-+	list_for_each_entry_safe(job, tmp, &sess->jobs, sess_node) {
-+		list_del_init(&job->sess_node);
-+		kho_unpreserve_free(job);
-+	}
-+
-+	if (sess->ser)
-+		kho_unpreserve_free(sess->ser);
-+	kho_unpreserve_free(sess);
-+}
-+
-+static void oncore_session_destroy(struct oncore_session *sess)
-+{
-+	scoped_guard(mutex, &oncore_sessions_lock)
-+		list_del_init(&sess->node);
-+
-+	cpu_preserved_as_destroy(sess->as);
-+
-+	if (sess->is_incoming)
-+		oncore_session_destroy_incoming(sess);
-+	else
-+		oncore_session_destroy_outgoing(sess);
-+}
-+
-+/**
-+ * oncore_session_remove_cpu - Detach a preserved physical CPU from an On-Core session
-+ * @s:   Live Update session handle.
-+ * @cpu: Logical ID of the preserved physical CPU to remove.
-+ *
-+ * Detaches the On-Core scheduler worker from @cpu and clears @cpu from the
-+ * session's CPU mask.  When the last CPU in the session is removed, destroys
-+ * the session's isolated address space and reclaims all KHO-preserved job and
-+ * session structures (via kho_restore_free() in the incoming kernel after
-+ * kexec, or kho_unpreserve_free() in the outgoing kernel on cancellation).
-+ */
-+void oncore_session_remove_cpu(struct liveupdate_session *s, int cpu)
-+{
-+	struct oncore_session *sess = oncore_find_session(s);
-+
-+	if (!sess || cpu < 0 || cpu >= nr_cpu_ids)
-+		return;
-+
-+	scoped_guard(mutex, &sess->lock)
-+		cpumask_clear_cpu(cpu, oncore_session_cpus(sess));
-+
-+	cpu_preserved_detach_workload(cpu);
-+	cpu_preserved_set_workload_context(cpu, NULL, 0);
-+
-+	if (cpumask_empty(oncore_session_cpus(sess)))
-+		oncore_session_destroy(sess);
-+}
-+
-+/**
-+ * oncore_session_get_ser - Retrieve the KHO serialization block for an On-Core session
-+ * @s: Live Update session handle.
-+ *
-+ * Called by the preserved-CPU LUO file handler (cpu_preserve) when serializing
-+ * a preserved CPU file descriptor so it can store a KHO pointer
-+ * (&cpu_preserved_file_ser.oncore) to the session's metadata across kexec.
-+ *
-+ * Return: Pointer to the KHO-preserved &struct oncore_session_ser for @s, or
-+ *         %NULL if @s has no On-Core session.
-+ */
-+struct oncore_session_ser *oncore_session_get_ser(struct liveupdate_session *s)
-+{
-+	struct oncore_session *sess = oncore_find_session(s);
-+
-+	return sess ? sess->ser : NULL;
-+}
-+
-+/**
-+ * oncore_session_restore - Reconstruct an On-Core session in the incoming kernel
-+ * @s:   Incoming Live Update session handle.
-+ * @ser: KHO-preserved session metadata handed over from the outgoing kernel.
-+ *
-+ * Adopts the KHO-preserved session metadata and isolated page tables (@ser->as)
-+ * in the incoming kernel so that subsequent calls to oncore_session_remove_cpu()
-+ * as preserved CPUs reattach to Linux can cleanly release the preserved page
-+ * tables, jobs, and session structures.  Idempotent if @s has already been
-+ * restored.
-+ */
-+void oncore_session_restore(struct liveupdate_session *s,
-+			    struct oncore_session_ser *ser)
-+{
-+	struct cpu_preserved_as_ser *as_ser;
-+	struct oncore_session *sess;
-+	const char *sname;
-+
-+	if (!ser)
-+		return;
-+
-+	sname = liveupdate_session_name(s);
-+	if (!sname || !sname[0])
-+		sname = ser->session_name;
-+
-+	guard(mutex)(&oncore_sessions_lock);
-+
-+	if (oncore_find_session_locked(sname))
-+		return;
-+
-+	sess = kzalloc_obj(*sess, GFP_KERNEL);
-+	if (!sess)
-+		return;
-+
-+	mutex_init(&sess->lock);
-+	INIT_LIST_HEAD(&sess->jobs);
-+	oncore_runqueue_init(&sess->rq);
-+	sess->is_incoming = true;
-+	sess->ser = ser;
-+
-+	as_ser = KHOSER_LOAD_PTR(ser->as);
-+	if (as_ser)
-+		sess->as = cpu_preserved_as_adopt(as_ser);
-+
-+	list_add_tail(&sess->node, &oncore_sessions);
-+}
-+
-+static unsigned int oncore_session_cpu_job_count(struct oncore_session *sess,
-+						 int cpu)
-+{
-+	struct oncore_job *j;
-+	unsigned int count = 0;
-+
-+	list_for_each_entry(j, &sess->jobs, sess_node) {
-+		if (j->assigned_cpu == cpu)
-+			count++;
-+	}
-+
-+	return count;
-+}
-+
-+static int oncore_select_job_cpu(struct oncore_session *sess)
-+{
-+	struct cpumask *cpus = oncore_session_cpus(sess);
-+	unsigned int min_count = UINT_MAX, count;
-+	int cpu, min_cpu = -1;
-+
-+	for_each_cpu(cpu, cpus) {
-+		count = oncore_session_cpu_job_count(sess, cpu);
-+		if (count < min_count) {
-+			min_count = count;
-+			min_cpu = cpu;
-+		}
-+	}
-+
-+	return min_cpu;
-+}
-+
-+/**
-+ * oncore_session_submit_job - Allocate and register a workload job in an On-Core session
-+ * @s:      Live Update session handle.
-+ * @run_fn: Workload callback executed on a preserved physical CPU.
-+ * @data:   Opaque context pointer passed to @run_fn (may be %NULL and set
-+ *          later via oncore_job_set_data() before activation).
-+ *
-+ * Allocates a KHO-preserved &struct oncore_job, maps it into the session's
-+ * isolated address space, assigns it to the least-loaded preserved CPU in the
-+ * session, and links it into @s.  The job is not placed on the runqueue until
-+ * oncore_session_activate_job() is called.
-+ *
-+ * Return: Pointer to the allocated &struct oncore_job on success, %NULL if @s
-+ *         has no preserved CPUs, or an ERR_PTR() on failure.
-+ */
-+struct oncore_job *oncore_session_submit_job(struct liveupdate_session *s,
-+					     oncore_job_fn run_fn,
-+					     void *data)
-+{
-+	struct oncore_session *sess = oncore_find_session(s);
-+	struct oncore_job *job;
-+
-+	if (!run_fn)
-+		return ERR_PTR(-EINVAL);
-+	if (!sess)
-+		return NULL;
-+
-+	guard(mutex)(&sess->lock);
-+	if (cpumask_empty(oncore_session_cpus(sess)))
-+		return NULL;
-+
-+	job = kho_alloc_preserve(sizeof(*job));
-+	if (IS_ERR(job))
-+		return job;
-+
-+	memset(job, 0, sizeof(*job));
-+	oncore_session_map_buffer(sess, job, sizeof(*job));
-+	INIT_LIST_HEAD(&job->node);
-+	INIT_LIST_HEAD(&job->sess_node);
-+	job->session = sess;
-+	job->state = ONCORE_JOB_NEW;
-+	job->run_fn = run_fn;
-+	job->data = data;
-+	job->last_cpu = -1;
-+	job->assigned_cpu = oncore_select_job_cpu(sess);
-+
-+	list_add_tail(&job->sess_node, &sess->jobs);
-+	oncore_sync_jobs_pa(sess);
-+
-+	return job;
-+}
-+EXPORT_SYMBOL_GPL(oncore_session_submit_job);
-+
-+/**
-+ * oncore_session_activate_job - Map a submitted job's data and enqueue it for execution
-+ * @s:   Live Update session handle.
-+ * @job: Job previously returned by oncore_session_submit_job().
-+ *
-+ * Maps the first page of @job->data (if non-%NULL) into the session's isolated
-+ * address space, places @job onto the session's round-robin FIFO runqueue, and
-+ * kicks the assigned preserved physical CPU so it wakes from low-power park
-+ * wait and begins executing @job.
-+ *
-+ * Return: 0 on success, or -EINVAL if @s or @job is invalid.
-+ */
-+int oncore_session_activate_job(struct liveupdate_session *s,
-+				struct oncore_job *job)
-+{
-+	struct oncore_session *sess = oncore_find_session(s);
-+
-+	if (!sess || !job)
-+		return -EINVAL;
-+
-+	guard(mutex)(&sess->lock);
-+	if (job->data)
-+		oncore_session_map_buffer(sess, job->data, PAGE_SIZE);
-+	oncore_sched_enqueue(&sess->rq, job);
-+	if (cpu_is_preserved(job->assigned_cpu))
-+		arch_cpu_preserved_kick(job->assigned_cpu);
-+
 +	return 0;
 +}
-+EXPORT_SYMBOL_GPL(oncore_session_activate_job);
 +
-+/**
-+ * oncore_job_set_data - Set the opaque argument passed to a job's run callback
-+ * @job:  Job to update.
-+ * @data: Pointer handed to @job's run_fn.  May be %NULL.
-+ *
-+ * Callers that cannot determine @data at submission time submit with %NULL and
-+ * call this once the object exists.  It must be called before
-+ * oncore_session_activate_job(), which is what maps @data into the session's
-+ * address space.
-+ */
-+void oncore_job_set_data(struct oncore_job *job, void *data)
-+{
-+	if (job)
-+		job->data = data;
-+}
-+EXPORT_SYMBOL_GPL(oncore_job_set_data);
++static inline void kvm_caretaker_post_attach_vcpu(struct kvm_vcpu *vcpu) {}
 +
-+/**
-+ * oncore_job_cpu - Return the preserved physical CPU assigned to a job
-+ * @job: Job to query.
-+ *
-+ * Return: Logical CPU ID assigned to @job, or -1 if @job is %NULL.
-+ */
-+int oncore_job_cpu(const struct oncore_job *job)
-+{
-+	return job ? job->assigned_cpu : -1;
-+}
-+EXPORT_SYMBOL_GPL(oncore_job_cpu);
++static inline void kvm_arch_vcpu_luo_pre_retrieve_caretaker(struct kvm_vcpu *vcpu,
++							    struct kvm_vcpu_ser *ser) {}
 +
-+/**
-+ * oncore_job_session - Return the On-Core session that owns a job
-+ * @job: Job to query.
-+ *
-+ * Return: Pointer to the owning &struct oncore_session, or %NULL if @job is %NULL.
-+ */
-+struct oncore_session *oncore_job_session(const struct oncore_job *job)
-+{
-+	return job ? job->session : NULL;
-+}
-+EXPORT_SYMBOL_GPL(oncore_job_session);
++static inline void kvm_arch_vcpu_luo_attach_caretaker(struct kvm_vcpu *vcpu,
++						      struct kvm_vcpu_ser *ser) {}
 +
-+/**
-+ * oncore_session_cancel_job - Stop and free a submitted or running On-Core job
-+ * @s:   Live Update session handle.
-+ * @job: Job to cancel.
-+ *
-+ * Removes @job from the session and runqueue.  If @job is currently executing
-+ * on a preserved physical CPU (%ONCORE_JOB_CANCELING), kicks that CPU and
-+ * waits for the current scheduling quantum to finish before unpreserving and
-+ * freeing @job.
-+ *
-+ * Return: 0 on success, or -EINVAL if @s or @job is invalid.
-+ */
-+int oncore_session_cancel_job(struct liveupdate_session *s,
-+			      struct oncore_job *job)
-+{
-+	struct oncore_session *sess = oncore_find_session(s);
-+	int cpu, retries;
++static inline void kvm_caretaker_vcpu_pre_retrieve(struct kvm_vcpu *vcpu,
++						   struct kvm_vcpu_ser *ser) {}
 +
-+	if (!sess || !job)
-+		return -EINVAL;
++static inline void kvm_caretaker_vcpu_retrieve(struct kvm_vcpu *vcpu,
++					       struct kvm_vcpu_ser *ser) {}
 +
-+	guard(mutex)(&sess->lock);
-+	list_del_init(&job->sess_node);
-+	oncore_sync_jobs_pa(sess);
-+	if (job->assigned_cpu >= 0)
-+		job->assigned_cpu = -1;
-+	oncore_sched_dequeue(&sess->rq, job);
++static inline void kvm_caretaker_vcpu_unpreserve(struct kvm_vcpu *vcpu,
++						 struct liveupdate_session *session,
++						 struct kvm_vcpu_ser *ser) {}
 +
-+	if (READ_ONCE(job->state) == ONCORE_JOB_CANCELING) {
-+		cpu = READ_ONCE(job->last_cpu);
-+		retries = 0;
++static inline void kvm_caretaker_vcpu_finish(struct kvm_vcpu *vcpu,
++					     struct liveupdate_session *session,
++					     struct kvm_vcpu_ser *ser) {}
 +
-+		while (READ_ONCE(job->state) == ONCORE_JOB_CANCELING &&
-+		       retries < (ONCORE_CANCEL_TIMEOUT_US / ONCORE_CANCEL_STEP_US)) {
-+			if ((retries % 50) == 0 && cpu >= 0)
-+				arch_cpu_preserved_kick(cpu);
-+			udelay(ONCORE_CANCEL_STEP_US);
-+			retries++;
-+		}
-+	}
++#endif /* CONFIG_KVM_CARETAKER */
 +
-+	kho_unpreserve_free(job);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(oncore_session_cancel_job);
++#endif /* __LINUX_KVM_CARETAKER_H */
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 643b941286c2..aca3c41346fb 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -44,6 +44,7 @@
+ 
+ #include <asm/kvm_host.h>
+ #include <linux/kvm_dirty_ring.h>
++#include <linux/kvm_caretaker.h>
+ 
+ #ifndef KVM_MAX_VCPU_IDS
+ #define KVM_MAX_VCPU_IDS KVM_MAX_VCPUS
+@@ -398,6 +399,9 @@ struct kvm_vcpu {
+ 	 */
+ 	struct kvm_memory_slot *last_used_slot;
+ 	u64 last_used_slot_gen;
++#ifdef CONFIG_KVM_CARETAKER
++	struct kvm_vcpu_caretaker caretaker;
++#endif
+ };
+ 
+ /*
+@@ -887,6 +891,12 @@ struct kvm {
+ 	 * RCU (e.g. via get_file_active() to prevent ABA races).
+ 	 */
+ 	struct file __rcu *vm_file;
++#endif
++#ifdef CONFIG_LIVEUPDATE
++	struct kvm_kho_folios_ser *kho_folios;
++#endif
++#ifdef CONFIG_KVM_CARETAKER
++	void *caretaker_vm;
+ #endif
+ 	char stats_id[KVM_STATS_NAME_SIZE];
+ };
+diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+index 4b1754050681..1042cff30fef 100644
+--- a/include/uapi/linux/kvm.h
++++ b/include/uapi/linux/kvm.h
+@@ -1000,6 +1000,7 @@ struct kvm_enable_cap {
+ #define KVM_CAP_PPC_COMPAT_CAPS 250
+ #define KVM_CAP_ARM_PMU_V3_STRICT 251
+ #define KVM_CAP_VCPU_PRESERVE 252
++#define KVM_CAP_CARETAKER 253
+ 
+ struct kvm_irq_routing_irqchip {
+ 	__u32 irqchip;
 -- 
 2.55.0.1082.g2b9226bbc0-goog
 
