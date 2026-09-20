@@ -4,94 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EAF1C982CC
-	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 06:11:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A96AC982D0
+	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 06:21:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 841846B0088; Sun, 20 Sep 2026 02:11:01 -0400 (EDT)
+	id 523706B008C; Sun, 20 Sep 2026 02:21:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8180B6B008A; Sun, 20 Sep 2026 02:11:01 -0400 (EDT)
+	id 4D4196B0092; Sun, 20 Sep 2026 02:21:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72E0F6B008C; Sun, 20 Sep 2026 02:11:01 -0400 (EDT)
+	id 3EA726B0093; Sun, 20 Sep 2026 02:21:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 41DF36B0088
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 02:11:01 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 208F5C03D2
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 06:10:56 +0000 (UTC)
-X-FDA: 85233117312.14.6740416
-Received: from mta1.migadu.com (out-44.mta1.migadu.com [95.215.58.44])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 1491F1C0002
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 06:10:52 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="i/diRS5+";
-	spf=pass (imf21.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.44 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789884653;
-	b=ctQqK9eLjZ0dokwfdY5xHJolGOUZXcJie2V8mdwrNXD2P0KCAoAx40XwLkwLxV4daSXhQh
-	Qx2/eXx6ocN5gfKY4P4jLFuAjkIbB6FtTjIMSGPCqh3tFbhvKlP8UFdjrGRDqC9BY2EMEC
-	vxdpgMz1DCD1zLlA6izS1AOxkBCVEUM=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="i/diRS5+";
-	spf=pass (imf21.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.44 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789884653;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 179136B008C
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 02:21:54 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8D31B1A03CD
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 06:21:53 +0000 (UTC)
+X-FDA: 85233144906.19.29D8249
+Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 6A10340002
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 06:21:51 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=shopee.com header.s=shopee.com header.b="cn61/mpw";
+	spf=pass (imf12.hostedemail.com: domain of mingyu.he@shopee.com designates 74.125.227.141 as permitted sender) smtp.mailfrom=mingyu.he@shopee.com;
+	dmarc=pass (policy=reject) header.from=shopee.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1789885311;
+	b=y0mQhbzXlRWU6Lb48CVxwuvusSdV7nYd8RnxmNDPoq89qSIXq7uR8rTYXDaDq7CFlnJ+o5
+	79r1kuXPb9KcGfvZCWcT8SQa89l2vYX/QVTPIFuToiNS4VHFMYf1Hn9uj0SWdptbCHFbah
+	VRa9nh4WNv48xG5UmzpsKWQmAMe6kPg=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=shopee.com header.s=shopee.com header.b="cn61/mpw";
+	spf=pass (imf12.hostedemail.com: domain of mingyu.he@shopee.com designates 74.125.227.141 as permitted sender) smtp.mailfrom=mingyu.he@shopee.com;
+	dmarc=pass (policy=reject) header.from=shopee.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789885311;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=chYxN++RWJ6aMZGRW9WQ650UmAGoL9+mnv6L2RNYsUk=;
-	b=61dNV6zWVBRxWfdwWe9qBPGlMvlWzWa6tKhBZTmOb7Y9yIGlVsm1/owI1FyCDrZgPlReSj
-	QPINks3u0JMJF6PCTaMogtSVDzF0sb6sp2fwlxF5cFu6jLh+oOEBDOcoQrPwuLAPH635iT
-	p/C1ta1GqilpNpXTVrtMPXrSTdibtQA=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=XBXICcDKSuY/lMhCIyKc8ruxZp1iN0ZmzDia5GycYgI=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789884651; v=1; x=1790489451;
- b=i/diRS5+SpyBLvfAI2dGtvOfQwq7rIdgK3496V51UaoB9d5LCaVdQAMbDnWllAyaSDcldNoR
- 1POvFB3sU2IW3rJ5GHqBkmvhf1zCpED78HZfRajI826yiAieXkl+rUNpNOrdqzhE+WNc0eBmgqP
- dpKegz0UzQrjg4lV14q8yHbk=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 0e8465e20e73e58e;
-	Sun, 20 Sep 2026 06:10:51 +0000
-X-Mizu-Trace-ID: 0e8465e20e73e58e
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <00212347-d64f-48e8-bbda-a4613fe492ae@linux.dev>
-Date: Sun, 20 Sep 2026 14:10:44 +0800
+	bh=vUj9SN1p4os49KWD5n51HQql/MUfuSyaRMBvM6ntZs0=;
+	b=j3EDOzz2iy0y0hZjQOwHs66nL2xRt5O6gOxXiZuI0/+5ei3sRu1Am5UlfMvgR8pRPS4Ies
+	Iamrc2P5B7FKzM/cI+k9ufxwe+Zi/a8B3ejP7Pfg7nCd1hrJ6LhzsbrpFEJYWxPeS58Hk7
+	IMIndVf0XtHh2oUIEW/zcnhLPQGrelo=
+Received: by mail-pj2-f13.google.com with SMTP id 98e67ed59e1d1-396cccbba92so1830627a91.0
+        for <linux-mm@kvack.org>; Sat, 19 Sep 2026 23:21:51 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789885310; cv=none;
+        d=google.com; s=arc-20260327;
+        b=WVxTEI74Gbc+IPpvJP1tQ18AaHcfiMtGznKmc88L9dQhesVgR8fjRb/YQatrS8l/8F
+         TS/3CrVY7COWQkhNVB4OK6azAYpgvYO9XHAvntDrSoCDcPsC7P3AyRHztxv7xIoPFYmE
+         60gN+RtcXOUBqPjvFYECya0btAFSs2dSlAJ72VCEhxJPB4qA3UNu78GTkWWDDtKip+0B
+         dWTyCld7anPkeRIArx0T1bl+Pud3FbGdxvTwXd0YOddO90G5/8Bm8gNJZjh8DisCFjjG
+         xdsvez2Hk6vuEg3o2oUpMdKKiUoDEUCDgTSHIDkKbR/ZQ+7Ka7ltGUjh6fD82+oIBANg
+         AhPQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=vUj9SN1p4os49KWD5n51HQql/MUfuSyaRMBvM6ntZs0=;
+        fh=wlrZR9b/BEuLL7RmPDjJMGXH07egkIGh+sCcwMjQTIM=;
+        b=myKVB3Lpzpuk3Y5Fb9pvznmVFf/i3f3P4maPxuCIL9xlkGOnKYcjmXtfh2anl87n3Z
+         jJdfCbn7QEkvVCEAaDDNfj1FF4AOHY53VqtKp/E5kOVCnwLxx9CMF7OFbsBnt5hWOhLL
+         FSRUMrEZVe76Sf2prF9aa3ZQVWJuXiEhGfj3GuREH9J2nEecpNLjSJWtn06rMB4buuLv
+         Bz9tcPtJOKue8ZmbN7TC+0E4yptiAYAe+/hJK0HCXEcxIUnrk7zMNSr/00jQ0jD/cgUt
+         2JMei43TAcMsTasYt9KmQj5ZJBca8CfOSUV1FKV5VLVx1fZ3xwY3eZwc3xLTZglzJU6W
+         6tag==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=shopee.com; s=shopee.com; t=1789885310; x=1790490110; darn=kvack.org;
+        h=content-transfer-encoding:content-type:to:subject:message-id:date
+         :from:in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=vUj9SN1p4os49KWD5n51HQql/MUfuSyaRMBvM6ntZs0=;
+        b=cn61/mpwum42cuLg8j901kCV53w2ZnVKkMqBNdcyQswCrAOMB02ciI2sI7PDT/wut5
+         HNFVa3cUNbDPvPDmy8cQuqF4pZNfdTsj5bT35a6nNwM96A22wbW4TfYoHHNkM+cYwyry
+         CXRQJHWebh5ozlgqGry4Y6LbXUnRj0c9NMwYH8MmrFtnOm88yuw1f65sFowbxcZhpOm3
+         hjndlKZGDnhOu4CjvCeBohDZd3NX/sU+bdGbz7Iisn7pRdtCX1GVnh3HNGQ5w5l9Y6/z
+         toFDJINrCvDpU7ADprdSML8wvRQAognlmgdBf0FvqxjyHWmqmLN4mMEnSYfsh5jGBb5l
+         sOjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789885310; x=1790490110;
+        h=content-transfer-encoding:content-type:to:subject:message-id:date
+         :from:in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=vUj9SN1p4os49KWD5n51HQql/MUfuSyaRMBvM6ntZs0=;
+        b=rxV42UY50asFmXEaEfYKhUPQIE/dQRjThlJhkWtF9rBsk1qg2gKYBe53nvKDvM6pti
+         lcLDsOSh4fi8ScEFRBavtjMXGQbEOfK0ND6jS2NkeWlA3IYaLF17wxj58IEYraSprl4O
+         bOcmO0Nh9F1875Fg7Zr2P0GL9tVYttwsiy/2SymJSNwzQOyziiDCF+i8B7Igu/3sAXGa
+         yImvYI+HRoqPGP1cwJDOR9yrdVYtwQ6uM21paqfgq/ibaiRRK7O3Z0h8NA5Rxl5ZzfLo
+         wcwCQhJWW+3BfbvFw1h+wSey9VSiKFGnSlD9FG3VJ/fOjMHcwcJ9N4mJXea+oWyz1wds
+         uTAw==
+X-Forwarded-Encrypted: i=1; AKwUvByTVZovi+8opTIfxNzb3wF0LPLWYGuSPnBi4ArzHphNCrTPWCGqlMuYqSwYwNAN55QYtP8C0p1RZw==@kvack.org
+X-Gm-Message-State: AFuF++mU4T+q5zLqhHfYXmpjXf60eikVyUw1hl0am1r2LHF3m7y42lAU
+	kb2XWiS16cMkyp9ayq8Gjdditg6rhbofcLWF8imzFYF4unCbyK7s372MlQxR1Py/PKP5iH+3jo+
+	ZW9fKStfHq0/iUnfKAeShqWQ8Ccv2oVJlAa+WW5708w==
+X-Gm-Gg: AYBFou2U459pwYN+fdw0o/u04pAy5vhM/c9k2dEuXrS8u1yEhhNK2EnnIynQ4+rle0+
+	/9u9GOHhiiKz/yhC4PNKaKnkXzAy41QbfEKUB4PPPnQD60QMa4DWy33nRZfSB9rMXjw98/9w16N
+	oDOj8Wax16p9fll7smyYpYDXHbLhccvLHwaDxY2G31u1AnF1LKxSt5iaU6LdqpZPOlVrWDE6J/p
+	vA21s4WAODksdq0G8ne1IpSAcikTdHUPpmKZQePA2aO891XIAJh7QvkkALYs/106ljUvnrynVan
+	chcGtyfR0dbyfOFlSlBN0Knkjy3Uwp/ecxYsStSwHNZZsgNnwtvNTLpM
+X-Received: by 2002:a17:90a:d00e:b0:39d:fd82:de0c with SMTP id
+ 98e67ed59e1d1-39e54aeed0emr11395017a91.2.1789885309954; Sat, 19 Sep 2026
+ 23:21:49 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-new] mm: vmscan: put rotation-missed folios at the LRU
- tail
-To: Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>
-Cc: Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>,
- "open list:MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)" <linux-mm@kvack.org>,
- linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
-References: <20260920043015.3126317-1-ridong.chen@linux.dev>
-From: Ridong Chen <ridong.chen@linux.dev>
-In-Reply-To: <20260920043015.3126317-1-ridong.chen@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 1491F1C0002
+References: <20260911032905.63683-1-mingyu.he@shopee.com>
+In-Reply-To: <20260911032905.63683-1-mingyu.he@shopee.com>
+From: Mingyu He <mingyu.he@shopee.com>
+Date: Sun, 20 Sep 2026 14:21:38 +0800
+X-Gm-Features: AcwNN1VtVso6olA7GUMJNC8_eiIpJqx8f6UVT_hoxF0RUJ-CIsHHLisDmFi6utE
+Message-ID: <CAAoBcuQ5xkhhX_dP4eE4GRngs0quOjgNpDD6ccPxG3oRCjMvUg@mail.gmail.com>
+Subject: Re: [PATCH] memcg: keep propagating stats updates to ancestors
+To: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: yx6gs8p5cx9c3xemx6fzhfd11f7suq6j
-X-HE-Tag: 1789884652-989814
-X-HE-Meta: U2FsdGVkX1+Q1WL7DAICF1D/bsj53KaSZVOzcIk6xrtT5SoD97Q9dcXbHr6PrE+ggMIoIf/MH+C1EcvneLnp3r8/geoU+Qfnb+zj1TsKlGlJVLYk4KFx5iTBt8sVaiU5Ls8aP34GuIFjBxnFCY1TocGFtV3iZvWHTQ0E7ok1Q09yDLsx/HG6t8Y5k88sduAJLDP3WQXzDFDlKjVTRDtSI3bubDx6W0rAUxTrWDePfyrBezSHuAupbWxlbzWXaANOeMYV3uJ8fKkVIHEgEkk72ibqQ1+gVUNaHnnsidx7vAB9nEF2Bp3SGDjyFVFPJd+WB5/5G1DNFC+6btYmtP9k4lPuLn7JniMiei2GVpEZGqjxgzQSSP/0erjJijy7sfwQlVvUEME6lN4tmYbfrWs2b1SlRemIrfHBpRrXGtO1fdYDCGsQaN/vgv2eS8j0Hvy07PrYWVFpUhCjGfXk2uMOdPnLs+bK1HY89/1exRqATzJMwhm96PQnGAmumohuhnHs/9uK6qdClApWYTJuL81gXPkZi8wuo+hM2GuR4sxOWa2T1Xr9imNVJFzMCUisXm1kqW6JBGdEVfejTjjH3KZg9olNeuOUlZzB/SfnwqazRoGhf7pREf5YKiOlgVr/C1S2qjr3/xwO4zsNQ/W6vlyWw8GMHRzzovhMgIBosiq/as/JeU+U0YJrEX9s3dqWPv9UrRLWIXbN8qeJteJ7Rs5/DPaQmBIZcjbscyt8i2OlrN6RWAOw51GUfWKBNjcRITGUFxbjxDjKxFQF3ZQY9i5pLf85oxWmR68M+FBE4kOXhXNnfR+FBYtZ1/oPA7tii/zb5qzuGyr/EE/7CgO2ypooCxAjKOFSb6bzBoSJl9wvU6iiKJBjjEEpc3dxUt6F2AciHiF5zcPicNlrAoz/eLff3QHJ6/7Xz8OCxH8Da5ptEMKs5hjESmgo4PgVmEDIBpoyKNu7jMJObOemTVBUAiQ
- 4ziovyt7
- aZLcvLNbEAPhgcSwC/l8ZVd6//TnGqpY24ImLKmi8MFlZyjE0twVjULWIr2YF135wFI9SU19oVqM9mPD1gnz7ycOw93Jbw2Osgd9JZLsMtJh4axjm38T28RLF0XwMSJPs4xm/1vjWvQ7oykr3KOw7IwgadJ9N13vRb0CQE4ovves/MRAK+zWUImCqosmINipDzbo/OXzy5lHfttpNUvYhn4OgRvl9svrH22i5dnwgCi2Etklr5I2tNk1PqAIe3ANGPgAeY1FGtnZmQfcxCnpUdEgBzCuQgOeCw3Vnzx+L7Igokm4Of2kn1RyqV6PazkR4rYtJdpbNSP998xAKxE1dMBokpWJVfQxeIHN3uNwR/Gijp7SJX6qaSCzklQ==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 6A10340002
+X-Stat-Signature: 84ptmfda89xgkjbps1ce7qmd3fg5b9pk
+X-HE-Tag: 1789885311-185826
+X-HE-Meta: U2FsdGVkX18UQJ5EEA64DOFKtsfQIY79tVDUVYyLuhRkjPGH9b+wKYdo8hXy55pN/4WIz18JPJhyEmFQkDtu27uM1Q1Boco2x/B4Jp5YcAmsHeIXBABjppuXue24dTUG0UF8IWVfe0YjogLOuPqQU/+Ja6qqikvbT1yN8ToUZMoeKFYJ7dTghDWZYyX7cJe6c5yrW1VJfFXf35BzRKXBlCXtZ7me5RyBv6bRJHBsE5s/KkW4hICh3x6Agftm4e+ibIk9HRVQfwP704NvKKtx1h6W/29itjf5zXlejOlGL5bYVSoPAj8t+94/2elqB7sJn+sxZD5vG/z0uSXIcnKY99ZV/qXDvYLMX5yMgJccpJ235IhupBnvu80NNI55XNwNHvGVhsuU6s/FeIkqubJaSyyjYFct7ahzZyz2IOhfblTyqVsqww1oGB6hVFnKS9j2kMzUoIjhYutVMGkgePagnCf8lXlHHiRim1lWWQpmMNusvSbCj+rphOI/3F8V0LIuBbywnYdZxP+9LfEZUyhVTgjl0OmHv7mbyJGngh84OCl/fSLclvqsoNG7Tc+EpV7lWxaY6YgIz9BXOFEwhX1b+qeRYDwRbaXZ2dwM6DrcP/4pr2E7LRszG3+mLht3brc0nfKYjlPCfffDO/e/j5LbdykUtqtnjrVi7uZmolD2nVjrHUqEBhULykvp52kAEOW1dAVGUq0n6EDajrDYZ+bRDiVy8c3Mv8nLbTsuwJ7KPv3KYujvD07UmH2MfhHSMSSDKeeh7RnOk8pyJZzPkuEIZb2RD2JAJ1jgRZpcLZjNro0knNPm6uh3liFjDQwsX3GGwhjrmeWutxoJqNK98dLvNKGBZ8a4hYWwA3gMndyvbuE5HV2iP6JpPs8tFi0LR5Pvln8CpDxHY38eYzi3ClJ4g39++r4qrgW3cjyN3Z8KqsR6aeMYrZ4kCChATiUJse/XdQXmos5Y3AN5hnsBH0a
+ tmcDA8z7
+ N4GTLPZBa8wSVrAC9shMSzsKQzfWFpOpzNDwxJin85DEDdPmKZfW2rRcJkxgFYWEHyO4zBw6sRYPSE644O7I1sElzd+4TS31kNaZX2lViz81ET0gNuMnyTXDkzyvKmaCblGP4u0vi1qNxgpqTj1DMWk67ngOIYma62HRNeAxM3SDxZZLJ7djpj1uFazOzX+sLtD6LNzWQhwwgLb1LvEFKvOezpQX+lb+HeAxLw+2Rp+BgL0F++e/E/6hfgM3CR2bGVPJGVCov/1U5qpjj/ZFJPmF8e5XSDiJZRkvziSlGHX8xK+4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,157 +137,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi,
+
+Gentle ping for this patch.
+
+Thanks,
+Runli
 
 
-On 9/20/2026 12:30 PM, Ridong Chen wrote:
-> From: Ridong Chen <chenridong@xiaomi.com>
-> 
-> The page reclaim isolates a batch of folios from the tail of an LRU list
-> and works on them one by one.  For a suitable swap-backed folio on an
-> async swap device, it queues the folio for writeback and, after finishing
-> the batch, puts the folio back to the head of the original LRU list.
-> 
-> Meanwhile the page writeback flushes the queued folios in its own,
-> independent batches.  For each folio it writes back it calls
-> folio_rotate_reclaimable(), which tries to rotate the folio to the LRU
-> tail.  But folio_rotate_reclaimable() only takes effect once the folio has
-> been put back by reclaim.  If the async swap device is fast enough, the
-> writeback can complete a folio while reclaim is still working on the rest
-> of the batch that contains it.  In that case the folio stays near the head
-> and reclaim will not revisit it before wrapping around, causing a cold/hot
-> inversion: a clean, written-back folio that should be a prime reclaim
-> candidate is kept ahead of hotter folios.
-> 
-> commit 359a5e1416ca ("mm: multi-gen LRU: retry folios written back while
-> isolated") addressed this for MGLRU only.  The traditional active/inactive
-> LRU has the same problem, reported at [1].  A reproducer is available at
-> [2].
-> 
-> Rather than re-reclaiming those folios (which would drop the swap cache
-> that may still be useful for a future hit [4]), restore the rotation that
-> was missed: when move_folios_to_lru() puts a folio back, add it to the LRU
-> tail if it looks like it missed folio_rotate_reclaimable() (inactive, not
-> mapped, not dirty and not under writeback).  A new do_rotate parameter
-> gates this so it only applies on the reclaim put-back path
-> (shrink_inactive_list()), not on shrink_active_list() where the list order
-> is already deliberate.  This approach was suggested by Barry Song [3].
-> 
-
-Add test result:
-
-```
-Without patch:
-   cat memory.usage_in_bytes
-   1073700864
-   cat memory.memsw.usage_in_bytes
-   1413124096
-
-   free -h
-                 total        used        free
-   Mem:           1.6Gi       1.2Gi       299Mi
-   Swap:          1.0Gi       678Mi       346Mi
-
-With patch:
-   cat memory.usage_in_bytes
-   1071140864 bytes
-   cat memory.memsw.usage_in_bytes
-   1413423104 bytes
-
-   free -h
-                  total        used        free
-   Mem:           1.6Gi       1.2Gi       322Mi
-   Swap:          1.0Gi       328Mi       695Mi
-
-```
-
-After applying the patch, the difference between
-memory.memsw.usage_in_bytes and memory.usage_in_bytes is close to the
-swap "used" value reported by 'free -h;.
-
-This yields the same result as the 'retry' approach in v9 [1].
-
-[1] https://lore.kernel.org/lkml/20260916123846.1242548-1-ridong.chen@linux.dev/
-
-
-> Only the traditional LRU is handled here.  MGLRU already retries such
-> folios via its own clean-list retry pass in evict_folios(), so it is left
-> unchanged.  The same do_rotate scheme could later replace that retry pass
-> to unify both LRUs, which is left for a follow-up.
-> 
-> [1] https://lore.kernel.org/linux-kernel/20241010081802.290893-1-chenridong@huaweicloud.com/
-> [2] https://lore.kernel.org/lkml/46037a37-4cf6-448e-a94b-30a4d16e8814@linux.dev/
-> [3] https://lore.kernel.org/lkml/CAGsJ_4zwP3_+EYY5Ug9EJ+yD1UdxsBSGr25u8s1K3u_i7LH3Zg@mail.gmail.com/
-> [4] https://lore.kernel.org/linux-mm/20260911121341.178028-1-alex@ghiti.fr/
-> 
-> Suggested-by: Barry Song <baohua@kernel.org>
-> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+On Fri, Sep 11, 2026 at 11:29=E2=80=AFAM Runli <mingyu.he@shopee.com> wrote=
+:
+>
+> memcg_rstat_updated() stops walking the ancestors when a memcg exceeds
+> the flush threshold. A concurrent flush can leave an ancestor below the
+> threshold, so the early exit prevents it from receiving further updates.
+>
+> Consider root and leaf on a 4-CPU system, with a threshold of 256.
+> CPU 0 is flushing another CPU's stats after CPU 1's stats have already
+> been flushed. The counts below are shared stats_updates counters:
+>
+>   CPU 0 (root flush)                CPU 1 (leaf updates)
+>   ------------------               --------------------
+>   clear leaf->stats_updates
+>                                    add 64 to leaf and root
+>   clear root->stats_updates
+>   finish flush
+>                                    leaf =3D 64, root =3D 0
+>                                    4 more batches of 64:
+>                                      leaf =3D 320, root =3D 256
+>                                    next update:
+>                                      leaf > threshold
+>                                      break; root is not updated
+>
+> Root remains at the threshold, which is insufficient to trigger a flush,
+> while further leaf updates keep taking the early exit. The periodic
+> forced flush restores progress, but until then the root's aggregated
+> statistics can fall far behind. For example, page cache grows at rate of
+> 1 GiB/s, a two-second wait can leave the reported usage about 2 GiB below
+> the actual usage.
+>
+> Skip only the flushable node and continue walking its ancestors, so each
+> ancestor can accumulate updates until it exceeds the flush threshold.
+>
+> Fixes: 60cada258dfe ("memcg: optimize memcg_rstat_updated")
+> Signed-off-by: Runli <mingyu.he@shopee.com>
 > ---
->   mm/vmscan.c | 21 +++++++++++++++------
->   1 file changed, 15 insertions(+), 6 deletions(-)
-> 
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index e200ce3eb056..026b844c681f 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -1971,7 +1971,7 @@ static bool too_many_isolated(struct pglist_data *pgdat, int file,
->    *
->    * Note: The caller must not hold any lruvec lock.
->    */
-> -static unsigned int move_folios_to_lru(struct list_head *list)
-> +static unsigned int move_folios_to_lru(struct list_head *list, bool do_rotate)
->   {
->   	int nr_pages, nr_moved = 0;
->   	struct lruvec *lruvec = NULL;
-> @@ -2018,7 +2018,16 @@ static unsigned int move_folios_to_lru(struct list_head *list)
->   			continue;
->   		}
->   
-> -		lruvec_add_folio(lruvec, folio);
-> +		/*
-> +		 * Put folios that may have missed folio_rotate_reclaimable()
-> +		 * at the tail to avoid cold/hot inversion.
-> +		 */
-> +		if (do_rotate && !folio_test_active(folio) && !folio_mapped(folio) &&
-> +		    !folio_test_dirty(folio) && !folio_test_writeback(folio))
-> +			lruvec_add_folio_tail(lruvec, folio);
-> +		else
-> +			lruvec_add_folio(lruvec, folio);
-> +
->   		nr_pages = folio_nr_pages(folio);
->   		nr_moved += nr_pages;
->   		if (folio_test_active(folio))
-> @@ -2135,7 +2144,7 @@ static unsigned long shrink_inactive_list(unsigned long nr_to_scan,
->   	nr_reclaimed = shrink_folio_list(&folio_list, pgdat, sc, &stat, false,
->   					 lruvec_memcg(lruvec));
->   
-> -	move_folios_to_lru(&folio_list);
-> +	move_folios_to_lru(&folio_list, true);
->   
->   	mod_lruvec_state(lruvec, PGDEMOTE_KSWAPD + reclaimer_offset(sc),
->   					stat.nr_demoted);
-> @@ -2246,8 +2255,8 @@ static void shrink_active_list(unsigned long nr_to_scan,
->   	/*
->   	 * Move folios back to the lru list.
->   	 */
-> -	nr_activate = move_folios_to_lru(&l_active);
-> -	nr_deactivate = move_folios_to_lru(&l_inactive);
-> +	nr_activate = move_folios_to_lru(&l_active, false);
-> +	nr_deactivate = move_folios_to_lru(&l_inactive, false);
->   
->   	count_vm_events(PGDEACTIVATE, nr_deactivate);
->   	count_memcg_events(lruvec_memcg(lruvec), PGDEACTIVATE, nr_deactivate);
-> @@ -5115,7 +5124,7 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->   			folio_set_active(folio);
->   	}
->   
-> -	move_folios_to_lru(&list);
-> +	move_folios_to_lru(&list, false);
->   
->   	walk = current->reclaim_state->mm_walk;
->   	if (walk && walk->batched) {
-
--- 
-Best regards
-Ridong
-
+> Testing:
+> Based on commit 893e11787f78, with and without this patch,
+>   using 32 concurrent instances of:
+>   netperf -H 127.0.0.1 -p 12875 -t TCP_STREAM -l 60 \
+>           -T <client_cpu>,<server_cpu> -P 0 -v 0 -f m -- -m 1024
+>
+> Both netperf and netserver ran in the same leaf memcg, directly below
+> root (root -> leaf), with memory bound to NUMA node 0.
+> Each kernel was tested for five 60-second runs after a 10-second warmup.
+>
+> Median aggregate throughput decreased from 107.26 to 105.23 Gbit/s
+> (1.9%) with this change.
+>
+> I think fixing the correctness issue is worth the roughly 2% throughput
+> cost.
+>
+>  mm/memcontrol.c | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
+>
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 1271d390b617..4600d9c9244e 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -729,12 +729,11 @@ static inline void memcg_rstat_updated(struct mem_c=
+group *memcg, long val,
+>         for (; statc_pcpu; statc_pcpu =3D statc->parent_pcpu) {
+>                 statc =3D this_cpu_ptr(statc_pcpu);
+>                 /*
+> -                * If @memcg is already flushable then all its ancestors =
+are
+> -                * flushable as well and also there is no need to increas=
+e
+> -                * stats_updates.
+> +                * A concurrent flush may have reset an ancestor's counte=
+r.
+> +                * Skip this node if flushable, but keep walking the ance=
+stors.
+>                  */
+>                 if (memcg_vmstats_needs_flush(statc->vmstats))
+> -                       break;
+> +                       continue;
+>
+>                 stats_updates =3D this_cpu_add_return(statc_pcpu->stats_u=
+pdates,
+>                                                     abs(val));
+> --
+> 2.43.0
 
