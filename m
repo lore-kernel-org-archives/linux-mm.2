@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0336CC982DA
-	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 19:37:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98A09C982DA
+	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 19:37:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F0C316B008A; Sun, 20 Sep 2026 15:37:06 -0400 (EDT)
+	id 792F06B0092; Sun, 20 Sep 2026 15:37:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE4706B008C; Sun, 20 Sep 2026 15:37:06 -0400 (EDT)
+	id 76A346B0093; Sun, 20 Sep 2026 15:37:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD3106B0092; Sun, 20 Sep 2026 15:37:06 -0400 (EDT)
+	id 5E3A46B0095; Sun, 20 Sep 2026 15:37:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B89446B008A
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 15:37:06 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 22B401404A9
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 19:37:05 +0000 (UTC)
-X-FDA: 85235148810.09.89DE041
-Received: from mail-yx2-f12.google.com (mail-yx2-f12.google.com [74.125.224.140])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 3C586C0008
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 19:37:02 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=WPILWOYR;
-	spf=pass (imf28.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.140 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789933022;
-	b=v9m9XztJmEt6G3QkCmyymklFJEflxsvi+pholST+7hK+SW3vGY1WM5tjE1Vez9xSWsXnIo
-	vrH3vIKqMCwJj1yAl/RfIyvJ5dhzWenApuLzLRyxFkQ5jJlwzyqnNqGNQ7/0CA/5y7LhZB
-	uvTQwCrDHMDkVGrs5LTx4tYNL9k0qJo=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=WPILWOYR;
-	spf=pass (imf28.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.140 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 245806B0092
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 15:37:11 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0172FC04C1
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 19:37:09 +0000 (UTC)
+X-FDA: 85235149020.18.79FDF32
+Received: from mail-yx2-f13.google.com (mail-yx2-f13.google.com [74.125.224.141])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 3B7021C0002
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 19:37:08 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=htW3SkJc;
+	spf=pass (imf20.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.141 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789933022;
+	s=arc-20220608; t=1789933028;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S731x7B1q5+LU0uMImlSdu51MYq8nznsZeZCtyZbDcY=;
-	b=Q+r0qJU1+u+1MfiZS1yS7Qpk+JSFEr8IHdGlx5/5+EiqSX12FGseDLWL81mkaXOmFwB/5z
-	yQXanMfzLhKAvJ18QtV9wxkVsh+bfnktymEFRVVNsRsBrnwreT9WYhCknQTCvucjYj3fAf
-	q1azvNSIkTTvpMJ4gS+rQkp+nLl/5gE=
-Received: by mail-yx2-f12.google.com with SMTP id 956f58d0204a3-66e4aae3147so1564219d50.1
-        for <linux-mm@kvack.org>; Sun, 20 Sep 2026 12:37:01 -0700 (PDT)
+	bh=wVwJQFyVies0sN36ZwALD03xlxJgg7HjR5Oz9PMtlp0=;
+	b=TPN/6Uw3AaT28SROn3X0Gsvka2ykeU5VHaSLUqDoKd75i7WA7m+nkxAvxhb5R5tAD/EsKp
+	7jTdE3YBD/FDz+/yoSepndcsWA4Xk4qlQS63mEtl7/iYPOWhb2JfVl02i0XKrx+5KW/tSK
+	dCLJHOgXYAwlXn4jjcS6YBbgL4ksPc4=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789933028;
+	b=Qv8YBIapEdfm/p9XnAZqVbCYaCq3zBOlTMmJcfjOCu38uXxLOKv2MDLHwMpinsxSZvJThB
+	6lIJMSp22Nq2P4pxkteCy+ZwCr0tFDclaSpUsR0bkfpiHUhWoyDVI+qx+U1Z1uXa47vXZ0
+	2nusvZh31eLo5zD4uvJ3NkZW6CfGMWI=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=htW3SkJc;
+	spf=pass (imf20.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.141 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-yx2-f13.google.com with SMTP id 00721157ae682-85d4ddd179eso17249547b3.3
+        for <linux-mm@kvack.org>; Sun, 20 Sep 2026 12:37:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1789933021; x=1790537821; darn=kvack.org;
+        d=soleen.com; s=google; t=1789933027; x=1790537827; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=S731x7B1q5+LU0uMImlSdu51MYq8nznsZeZCtyZbDcY=;
-        b=WPILWOYRIvpDZ2cpcYgf5psgjZ+lsVOBL99aCzJmzjapndyFr1Ts2Wo0QCUqWmBHq0
-         s4umVMGIIt3MKjm1jyLUDoGEz/kIYSy30irVz0gekzxuZ9LysJHe+C3aDXbkR7QcWo7e
-         0rxYRG8Nndd7l5AkPeSk45ryCOZoBJsHpS47OwUrKRvSS9q/dc+5vNFFlWhPQvTb9Pj5
-         C388kkeC8LqK/qGdMwkt74ucfhmpzYHKu5uaffUfX2E+Ny5yXCMjs1LxC/sEDKKlUqlh
-         s8kIwtNEMvdMAxLJBu983bVZr+YUwjzqo3YdzEIGp9MLVkhFcYfAJR5z6iCHkO4jGgon
-         9eeQ==
+        bh=wVwJQFyVies0sN36ZwALD03xlxJgg7HjR5Oz9PMtlp0=;
+        b=htW3SkJcxC2N3OgXb3QyV4Bt1SWVPxTfm3djUf863aAyXlI2YVE32rVazDV+T67+q0
+         uKAbfgWVCfiG3cJHXsZn0fg5zMcgmRD/2BjqWpGcgsheP0am8AMlu7QOEekbaceAJpTT
+         qmMQCMC9avk2SUgBaOkLwTvtrYEi1+0LMmxk86HD3ht1XMuk6P80zXR79ZnW16hfHPjw
+         JYfS5DLzmMPrFC4XQp09CZKrckMEE9ay4hO4coL6GrsP/fXrtA7bnNL0HIn4c1KpYbb9
+         P4KoJ9Y+kKbY47wpGlumSvASmtWdJEvyA2YBoY69lgQ8bR88+tVuoKsDsIePGsGOIW8m
+         QomQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789933021; x=1790537821;
+        d=1e100.net; s=20260707; t=1789933027; x=1790537827;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=S731x7B1q5+LU0uMImlSdu51MYq8nznsZeZCtyZbDcY=;
-        b=m0FT8aMgBXpE2t1e+McOI467VtwoRFkLGRQy67inJOXDe3ksnpQYGsBFm/A/lW5tCA
-         evwgQbfvMlyqeqWrHHdpXjI1jdePV0gHcyC/Gu9nCIDzFGrS2iuEmb6Eae/WPt15n5cX
-         GizQJwl0O/T62ze5xlFRaztVFFPtNT7v4+8pooRmrPZmsZ/wywC0zKshzu63o4kvOyid
-         /qVPU8yMy6ci01h/SXaXMR8KWyrOVySW3XsTznZ4NhB0YQcijL5d+SF5blqYOQpBXsnO
-         hbmTGRgf+ECcQF5Pg0DNYP0OjhBUUCy/C2eaQOzhGbXClGPEo5ydGw22dB2TAteqLwFM
-         VkTg==
-X-Forwarded-Encrypted: i=1; AKwUvBxfWtarRB6o8lTpgz5TDvGP/yTJlnPkLLgclMQAZr5+GKobWF7IGbWP0AGxYzDEq+azA95EtUYQEQ==@kvack.org
-X-Gm-Message-State: AFuF++mzPNQaN1iftUqNWDvKvUIdTKfHC0eSquPBtVj9idhJ/E6135Rb
-	eF7CjMril6fKo1TpGKtPKUO7+t+ZlTPHAfsH9b1eJjK/12sVtw3UMC6GiSmCrWUKvsU=
-X-Gm-Gg: AYBFou3sH9gOOh4Ak6W1h+b1aAxtwgSpAntR8AKqltIVzOYjWQwS1W/biW3F/O3xpru
-	Y+sg8zJBaWWYGEBfyehNf8u2PWZ13KA+jLf3iSCLfcJTSck18vyn05KN7zNSPJEk8b5FAN6pivM
-	mvaCyT5yiQ/BqtXxtiLeil6+gPJw4TjO6qIH/ajkh2941+cyaPwoht42UnkfOsLoMOMUgUnpTRa
-	GXZB+EB8yPXwYQKcn45omps6y+C9piKUszV5+8lEiKOWXX3jdcXwlYkiZZuYP/FoixPRqv0lRGb
-	df4o4JSIm4/2xBnfgR4BPX/7MqEBsQJVVz0oErFUpgTLCs9ujmxhSMtmdrSYYIzGoJh5xbPOsuj
-	y5G64r221jzvE+Zww37RpSOaXQFtKSqTYB9Swemy32MNdNapKPW89Z9ZsvPfPJ+FHndTIQTU7gC
-	GEBA3GiV6dTc+HybpKKjn4/lCcRQgkR4CBfCfAqhXDLmJbStGIHhGlin1UqiYYwX5hMfojkBCUu
-	0PZIrePBFIkIiCsj0qkz9BUDIlbwwu7T7WDUvE4PXXzQ0DHEBD6MR2G0u2QGkRVL404p0g8HHFa
-	oqwC1PXR1JsWAxRmivw=
-X-Received: by 2002:a05:690e:11c7:b0:672:a2ee:6155 with SMTP id 956f58d0204a3-672a2ee6b7cmr1008959d50.45.1789933021253;
-        Sun, 20 Sep 2026 12:37:01 -0700 (PDT)
+        bh=wVwJQFyVies0sN36ZwALD03xlxJgg7HjR5Oz9PMtlp0=;
+        b=atLGcmV0mxSBIQon2i5SUBI6kRkyG/VhFaqDH+dWzTZDq2ptcuEiqvy44WNowXQih9
+         DgDHB0HMmBg/i+1RnoLq81+4ngee2l2DVaTpqZ4VGvRAENu6JkO3swKAOTVXW22IK/L0
+         7dMRvjpZcXLxSP0WCQT8Lk6RGmKXlw3cnspGzwY9xxN7HXBdXGb+QmWJfDCseFpQ5Weg
+         Kq6xSfpq2YUzz/jw6Z6uOf8tH47TuzhCUSpazgr3VMTC4vxJNcDvR94c6IYKOw35dW7Z
+         CNr4q6KdJDPWyBzC1P1X/1O1I+bYCyTCLX0CBqj4OBIp4Uh1zgYrR/pYDbxUi4Vi2QBH
+         CIhw==
+X-Forwarded-Encrypted: i=1; AKwUvBzVS7viz3qCxhrpzsFZILhQT3Omg1k6xgLMFCiu46GJF65crrejKBzQz9F5JUZTi0l1puNNmQqxrQ==@kvack.org
+X-Gm-Message-State: AFuF++kcnh5JQTpVkU1MYKR5CAQH98ZwHZLpDhgg/R3b9rdMvIFFzZKH
+	/r6tPi7ufIQXSIAILaFD3MnB6x2dMu//1DsK/KF/fskldbmMqkD6knBrzbOzP0pTsKM=
+X-Gm-Gg: AYBFou0ecv5Fn/gHSE7zUBK8+QpZJF51IUyL1iZ+Rhd0Wu1u/CFscMv4Ex/Dk1A97FC
+	y4BzMjrp0s3A8OS8FrmKHUrMh46eNgVioVQWuSGkKyKzFuzAr0cbXuwpYR6xjSqp9+LYluZDOnU
+	6CMln7ghCmftv+alKNfdnuWRRAYUdtEK4x5Uavyhn1vhv1q0DnHOykbLmOzy6yI30abhrSKIjQE
+	BP0jGbijdqAgn+K0mYo6klrF49sj80LoqJFQztv6JHHzoR05B87UsBd18A0WC4E4G5RdyHo9vVB
+	S7D4Gcrh7RiU7HHgYDIbx8zW4j7byjfjcr2MGmr72qklefbNGP/tTmASKz4ud5Fod//BLzY5Zm6
+	rMHENR1PAnSZdsNWvpvJWfoTIpmP2RYHJed6UdcZRNbUUh7fa3bwMGfSnqC9kyEJu3rfrRsxNZd
+	ndiMd9QsZawozp9cmOKdpU4GvX36VD47zGy+zxORD8tNudc48puwYHksAHj930W/0ZLHnKgaT91
+	victjCB/zJH2BM1e1pkVwDjT+gbmzAhMsCvGT+CLJa56/Om1E9zPX/WsO3kn5Nzssg9DZGFIr3f
+	8a21IC3lH9a8nkYXHHU=
+X-Received: by 2002:a05:690c:89:b0:89a:63da:cbe1 with SMTP id 00721157ae682-89a63dacc8fmr20430637b3.39.1789933027324;
+        Sun, 20 Sep 2026 12:37:07 -0700 (PDT)
 Received: from soleen.c.googlers.com.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67299146eb0sm2607555d50.21.2026.09.20.12.36.59
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-89a47139db2sm18450487b3.26.2026.09.20.12.37.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Sep 2026 12:37:00 -0700 (PDT)
+        Sun, 20 Sep 2026 12:37:06 -0700 (PDT)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: linux-kselftest@vger.kernel.org,
 	legion@kernel.org,
@@ -169,22 +169,22 @@ To: linux-kselftest@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	vladimir.murzin@arm.com,
 	kas@kernel.org
-Subject: [RFC PATCH 01/46] KVM: luo: Delegate VM creation type to kvm_arch_vm_luo_preserve
-Date: Sun, 20 Sep 2026 15:36:05 -0400
-Message-ID: <20260920193650.3373435-2-pasha.tatashin@soleen.com>
+Subject: [RFC PATCH 02/46] KVM: arm64: Split demux_c15_{get,set}_val from userspace accessors
+Date: Sun, 20 Sep 2026 15:36:06 -0400
+Message-ID: <20260920193650.3373435-3-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
 In-Reply-To: <20260920193650.3373435-1-pasha.tatashin@soleen.com>
 References: <20260920193650.3373435-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 3C586C0008
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 3B7021C0002
+X-Stat-Signature: xr8zxxxi17sjoc997jqe5x51ejcm7tsh
 X-Rspam-User: 
-X-Stat-Signature: jofggicoz5my4oita3t7r3q1brtm58ab
-X-HE-Tag: 1789933022-849816
-X-HE-Meta: U2FsdGVkX18tN7z+fwWeMZTdOss8Xqshgt5zzZxdOVYaTpEvcOWy07lAuFpgvhskCosyTmTaWtvodsy3CTc1qYZ8xBwEtiPcN8STW6AZmCkd4Ir5DVAc8xtLF1wZldfZVVv24Sqw5x4pAuFXqdUtELVbGz/VEk1ZYlH30XvdJ7BmliWladd//mRNUZ9tFC0/CXM45GEEk7YaIHQ7gkb0Fj9ItzLd3J84yF83YgGT3wISO84beI+GaJkjiZNKavRhX/4F7X/HS9TCjhUHfntCcbokTDnw8W0j8vmfoG7hB0q4sDuE3fw4CHyqxszOMlSWvjAqmgPMiZFUaIMBq/4QAmpOcd4Na7PJt/TlJ94DFhFa+huT0Y/OG5YDbk335aQkvW2lB4s1AIGgaMrwIEGgl9JlpVwBxmRsGcVpWXtz7tZXw9i+op/wZRXMwoje8nPr8Z7sVbwuTH/HyW/ORAMyvvIdLrvAItSYOwCMRB/jNyF5Sqzm3WwUM/i7GrEM938PGy1JteP/glXtRZCp573Ge3T15YsxgKB/MIms5f6vc9cm4WYM1PH24VuBRLbWRkleXi7ogaEkkrnXySlOfd6P/fvHHfRyTFYn2ovayprYphKeT2yphNYYK6ahToD1g73hJyEDtZAXakSyYEGHZb6yuCqmpeqYt4nfSPeN+WftaTRQSQdn05iki2evW5U3X0hJ7v1zqFMBDAQNoX9Eby6+cBu3rT8zkrAS0jytk+ejalfK11W04Co3O3wU9qn6pDxKGRGH1XXCsfRiBgH659Bf3ELK0eoopetZOa/IZB6hajEDQOn4xVxT+3EZj3GAoKjKYCNQ2SwfPjyUtKruL3PwbeRu8UkIZBMGlp4mGKFUl7f8L4gR0bP+JfEmJ89LJSWwGuHz6wKBFlENKkVt58TMqFBFifTOoqfQAoPez/9iC6OyD0dxny2VqaU191PSkVgaoLs4RLWWGaC1FCpiyAV
- wZvv9d8d
- TxmzEJhtO8kYe3ZPfKfdDwl3Qlptcg3QjDF8sjUvEaxlQN6W5EExkQXH46bOQHtFDZes2X0w+7ojHoOE/MmLcR4C0lFekEtOT8wKzXc7gBrN5z/PhGm6eO8zcSeElxP73ganSXNLQOymcOtAEmZlFlbT4GAdobMVR0gF8XC725d3832c8bCF4b2XYNCsV9cYQw9Qgw8qB+nwF+TC/jwfiM3SkOwt0fovpKKzbM143sjzRdv4gGR/SerfktvX7oDGlvhqSYv6gUaN1tEvYt8kIq+tPZywiTMZiW7/ALu+ZGVPxvDKFNylggk61RHnKnraP0C5LPgfDMj4tYNHOGsTbfTu1SBC5BY8bk+0mN1wvqnMv1Y6TxWlokvDFvg==
+X-HE-Tag: 1789933028-647116
+X-HE-Meta: U2FsdGVkX1+ia7qGsXhDhzejZ/fwWx0oV88i9Q9HZ5Sk8M1IzxseMDj22//FiusUlwy2FXqVVG69ei0EcrP/q2uOwr1vVUXQINamY8pFxlhVPgNq23n30tGs3AwKPjGxdIBX69c/u9JCq6XhZ2Bz6v5ErchrGfQRxGDZ7OF9wFjGHaTyNoJL/n+j5DygPSe8TwUf9UXxKaC66+m4tPz/f+w2D3VNe8eNLjget3CJlPeqmHYF+3NiyWRM8qfxHv49ADU1IEv0avjcvBvYO5ZRxCFojPZz60aL3IbhoB0dF78djVv+z+pAsdrHtYVUmZViqVU7pGHWJ6DQIX1uXPAIWF5SsNIZfQbwsa9xDu20VTp6nkC7AtwD0SR0UG9nA/cA+xNTolF55vS+g5cR+HwuiCJbbQErwQHw8c5v5oqITLnr3BnmZgq7MZbt+BCOy7w6JqtIVPY+DqfR2+OFaWwrqDS/yVs4jhWIF84YrOHTzE6h3rTwX+/Npwmb/zT1kbQuzdNxG1EoBz1qzMdtB9SYDMKn97P/bAYDkioKwM60iII91dbefLMgU8Hhj6HWy3gq90+wgVH3cirhFXwzMOd/pAgHcPoqWixgGpU3n524UtyvENnoI+T8+bYKBKCQopgvXijViY9t+Tfnabya+2uTtoqBpPgIjMGaz2fI27/OOPUsVm4isNgS7ZrkdYIzzhoTYEHwpmw5w6y9YRdaFlHAzspfFEwax8e3JlEIi/haWbVf48E3M2W0dcfghPXk97KSMVYbRBOks7v/jC5rUof6nxHMUbXfYjJkZ1BNb1tvZURfF3vKE/UIFT8gc8/2t663IhlL49XhilohiFgWVuMKphaTceswclt2BrGYzJOLs6YzjosmPsrCodeBKIv8LtQUatTch4BIWlFYDn5i+Hvmb9Z8sorGtTqbh+aD374RqA26HFrIkdJ5jkP9Xmb9Twl2PNhe63y1JLXPH+ti5Ld
+ EhuqpyfQ
+ ivNYvYOgVmeWP2jFfxwjyXqI4jzuEEYzkf4njqUAfQTAQuTl3WrGnoGRUk1Ab7SoYMHUFeQ4rhuHgxF5hMOb4mB6Pzx17Hui2TQ1+PaXX1WxTE3HpsLRmIdwAD3o8nean9OPRbn2F1Hq/JEP6C4BI+8tDGpuD/UXkGjYYRr3k3I0s8qoiv5xIMMlOMon/yBMoN1Xgm92Cwnd3UM6aDVH+irWH+KJlp8ewkrNA4u7TtfQhqNwEV7/8fUGnNuTGstCxoGB2g2peyU4mXggv3P6Q4sf2/4tZrvgymF1TlzwgKKaVLhvzuGAubXNq5MZTQfAopu38/oS6Xo1lnReI4DUNu/s44oDDOCVZO6MipHJ4uqmy9W8iodgV3P/pVA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -192,65 +192,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Remove the architecture-specific #ifdef ladder setting ser->type in
-kvm_luo_preserve(). Leaving ser->type zero by default allows
-kvm_arch_vm_luo_preserve() to populate the architecture-defined VM
-creation flags without referencing unexported architecture symbols in
-generic KVM code.
+Factor demux_c15_get_val() and demux_c15_set_val() out of demux_c15_get()
+and demux_c15_set() so kernel callers can read and write demultiplexed
+coprocessor registers without going through userspace pointers.
 
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 ---
- virt/kvm/kvm_luo.c | 22 +++++++---------------
- 1 file changed, 7 insertions(+), 15 deletions(-)
+ arch/arm64/kvm/sys_regs.c | 48 +++++++++++++++++++++++++++------------
+ 1 file changed, 34 insertions(+), 14 deletions(-)
 
-diff --git a/virt/kvm/kvm_luo.c b/virt/kvm/kvm_luo.c
-index 025b53151b6a..b3bd9bebe17a 100644
---- a/virt/kvm/kvm_luo.c
-+++ b/virt/kvm/kvm_luo.c
-@@ -73,16 +73,13 @@ static int kvm_luo_preserve(struct liveupdate_file_op_args *args)
- 	if (IS_ERR(ser))
- 		return PTR_ERR(ser);
+diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
+index 44aae52c473d..b873ccf1ab14 100644
+--- a/arch/arm64/kvm/sys_regs.c
++++ b/arch/arm64/kvm/sys_regs.c
+@@ -5496,10 +5496,9 @@ id_to_sys_reg_desc(struct kvm_vcpu *vcpu, u64 id,
+ 	return r;
+ }
  
--#if defined(CONFIG_X86)
--	ser->type = kvm->arch.vm_type;
--#elif defined(CONFIG_ARM64)
--	ser->type = kvm_phys_shift(&kvm->arch.mmu);
--	if (kvm_vm_is_protected(kvm))
--		ser->type |= KVM_VM_TYPE_ARM_PROTECTED;
--
--#else
-+	/*
-+	 * @type is the argument the new kernel will pass to KVM_CREATE_VM, and
-+	 * only the architecture knows how to spell it.  kvm_arch_vm_luo_preserve()
-+	 * fills it in; leaving it zero here is the right answer for an
-+	 * architecture that does not implement the hook.
-+	 */
- 	ser->type = 0;
--#endif
- 
- 	args->serialized_data = virt_to_phys(ser);
- 	return 0;
-@@ -115,7 +112,6 @@ static int kvm_luo_retrieve(struct liveupdate_file_op_args *args)
- 	kvm = file->private_data;
- 
- 	args->file = file;
--	kho_restore_free(ser);
- 
- 	kvm_uevent_notify_vm_create(kvm);
- 	return 0;
-@@ -147,11 +143,7 @@ static void kvm_luo_finish(struct liveupdate_file_op_args *args)
+-static int demux_c15_get(struct kvm_vcpu *vcpu, u64 id, void __user *uaddr)
++static int demux_c15_get_val(struct kvm_vcpu *vcpu, u64 id, u32 *val)
  {
- 	struct kvm_luo_ser *ser;
+-	u32 val;
+-	u32 __user *uval = uaddr;
++	u32 idx;
  
--	/*
--	 * If retrieve_status is true or set to error, nothing to do here.
--	 * Already cleaned up in kvm_luo_retrieve().
--	 */
--	if (args->retrieve_status)
-+	if (args->retrieve_status < 0)
- 		return;
+ 	/* Fail if we have unknown bits set. */
+ 	if (id & ~(KVM_REG_ARCH_MASK|KVM_REG_SIZE_MASK|KVM_REG_ARM_COPROC_MASK
+@@ -5510,21 +5509,34 @@ static int demux_c15_get(struct kvm_vcpu *vcpu, u64 id, void __user *uaddr)
+ 	case KVM_REG_ARM_DEMUX_ID_CCSIDR:
+ 		if (KVM_REG_SIZE(id) != 4)
+ 			return -ENOENT;
+-		val = (id & KVM_REG_ARM_DEMUX_VAL_MASK)
++		idx = (id & KVM_REG_ARM_DEMUX_VAL_MASK)
+ 			>> KVM_REG_ARM_DEMUX_VAL_SHIFT;
+-		if (val >= CSSELR_MAX)
++		if (idx >= CSSELR_MAX)
+ 			return -ENOENT;
  
- 	if (!args->serialized_data)
+-		return put_user(get_ccsidr(vcpu, val), uval);
++		*val = get_ccsidr(vcpu, idx);
++		return 0;
+ 	default:
+ 		return -ENOENT;
+ 	}
+ }
+ 
+-static int demux_c15_set(struct kvm_vcpu *vcpu, u64 id, void __user *uaddr)
++static int demux_c15_get(struct kvm_vcpu *vcpu, u64 id, void __user *uaddr)
+ {
+-	u32 val, newval;
+ 	u32 __user *uval = uaddr;
++	u32 val;
++	int ret;
++
++	ret = demux_c15_get_val(vcpu, id, &val);
++	if (!ret)
++		ret = put_user(val, uval);
++
++	return ret;
++}
++
++static int demux_c15_set_val(struct kvm_vcpu *vcpu, u64 id, u32 newval)
++{
++	u32 idx;
+ 
+ 	/* Fail if we have unknown bits set. */
+ 	if (id & ~(KVM_REG_ARCH_MASK|KVM_REG_SIZE_MASK|KVM_REG_ARM_COPROC_MASK
+@@ -5535,20 +5547,28 @@ static int demux_c15_set(struct kvm_vcpu *vcpu, u64 id, void __user *uaddr)
+ 	case KVM_REG_ARM_DEMUX_ID_CCSIDR:
+ 		if (KVM_REG_SIZE(id) != 4)
+ 			return -ENOENT;
+-		val = (id & KVM_REG_ARM_DEMUX_VAL_MASK)
++		idx = (id & KVM_REG_ARM_DEMUX_VAL_MASK)
+ 			>> KVM_REG_ARM_DEMUX_VAL_SHIFT;
+-		if (val >= CSSELR_MAX)
++		if (idx >= CSSELR_MAX)
+ 			return -ENOENT;
+ 
+-		if (get_user(newval, uval))
+-			return -EFAULT;
+-
+-		return set_ccsidr(vcpu, val, newval);
++		return set_ccsidr(vcpu, idx, newval);
+ 	default:
+ 		return -ENOENT;
+ 	}
+ }
+ 
++static int demux_c15_set(struct kvm_vcpu *vcpu, u64 id, void __user *uaddr)
++{
++	u32 __user *uval = uaddr;
++	u32 newval;
++
++	if (get_user(newval, uval))
++		return -EFAULT;
++
++	return demux_c15_set_val(vcpu, id, newval);
++}
++
+ static u64 kvm_one_reg_to_id(const struct kvm_one_reg *reg)
+ {
+ 	switch(reg->id) {
 -- 
 2.55.0.1082.g2b9226bbc0-goog
 
