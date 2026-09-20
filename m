@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73670C982DA
-	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 19:37:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7469EC982DA
+	for <linux-mm@archiver.kernel.org>; Sun, 20 Sep 2026 19:38:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 830B86B00A5; Sun, 20 Sep 2026 15:37:58 -0400 (EDT)
+	id 87E906B00A7; Sun, 20 Sep 2026 15:38:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E2506B00A6; Sun, 20 Sep 2026 15:37:58 -0400 (EDT)
+	id 82F9C6B00A9; Sun, 20 Sep 2026 15:38:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A94D6B00A7; Sun, 20 Sep 2026 15:37:58 -0400 (EDT)
+	id 71E266B00AA; Sun, 20 Sep 2026 15:38:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 437266B00A5
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 15:37:58 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D72111204E8
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 19:37:56 +0000 (UTC)
-X-FDA: 85235150952.20.A7B0122
-Received: from mail-yx2-f36.google.com (mail-yx2-f36.google.com [74.125.224.164])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 26D91180004
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 19:37:55 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b="CEtBy9g/";
-	spf=pass (imf16.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.164 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 485106B00A7
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 15:38:04 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E21211C24FA
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 19:38:03 +0000 (UTC)
+X-FDA: 85235151246.01.540F856
+Received: from mail-yx2-f43.google.com (mail-yx2-f43.google.com [74.125.224.171])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 3287B1C0008
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 19:38:02 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b="P1aRB/Qz";
+	spf=pass (imf18.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.171 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789933075;
-	b=QH98+M9q9R7tkvz6YNe8oG9wPWIT3jX/5cYthGhbmpHGhg0KvPkZncXeneKeufAS+cn6gN
-	svkumZ/GhsKCMoCaDlrExvOw18YGbWS+x/anATzOw5e/QV6NXcStGoZQ6NmLTxierFG4lo
-	P333cIqUzFsrkXlZx2bfq6TdK8+cpiw=
+	t=1789933082;
+	b=qZKnBGAShlrGdwZTp+/uL3nssIQ9Q030I/q5eOjhMa8qHf8fVcC558+Gloimf2Bq69yBIe
+	iAunW1yWs4+wexNbg9iEd/RVPuH74ReUfuhyHIhtGKun6RZHHvqS/OwiehKHQIyRyktW61
+	TK7SfG/2HgNN9aOox/0FYTUtJk6oLaA=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b="CEtBy9g/";
-	spf=pass (imf16.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.164 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	imf18.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b="P1aRB/Qz";
+	spf=pass (imf18.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.171 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789933075;
+	s=arc-20220608; t=1789933082;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TISPcN17siKpndLz83tiaGlQU7pN0QJXl7jCDX0Mj3w=;
-	b=yhdeO6VJUNPvHnrkWOX+bniLj4S5sHJO2ToUAqu+FxjXbvcQ8boI6hTu9Ub8N+QQfj4Hx6
-	wQC/j7Gfg2dm+WL8Hw++mkjwd6dirGXWFT/QH8+GMHKh6B7iD0NUbpQ9vcAADH7vO059GZ
-	rfsfrrIRQ6epfl8DKheyOUOD0eWxZlw=
-Received: by mail-yx2-f36.google.com with SMTP id 956f58d0204a3-66e4aaf2ecfso1831366d50.1
-        for <linux-mm@kvack.org>; Sun, 20 Sep 2026 12:37:54 -0700 (PDT)
+	bh=H+SlWroSdaGxZWUb4GAQgkH+PVdX8bfzP0oz7opOlFk=;
+	b=5E0iEz8LxiDQ7Dgy6MDgoI65ZIn2os5t/Nx4hcvT3PRNiqhj2mR1uQ2bcqKQIEc8ch7z7f
+	l3OMYBfhyldqNiAIU8dHZMZnyVnBx15PkJrX5i04xVQrfIl15eTwnA+r2dWVePz3cQ5U5y
+	6r0/ZDeGMk1ZWx44YRiEEFr26Fb1AFk=
+Received: by mail-yx2-f43.google.com with SMTP id 00721157ae682-85d43ac8d1eso16261837b3.2
+        for <linux-mm@kvack.org>; Sun, 20 Sep 2026 12:38:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1789933074; x=1790537874; darn=kvack.org;
+        d=soleen.com; s=google; t=1789933081; x=1790537881; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=TISPcN17siKpndLz83tiaGlQU7pN0QJXl7jCDX0Mj3w=;
-        b=CEtBy9g/Dm6H99dwq4lP6HaCBvsKy0XwuGQN1e0eKW8vNWKoFezBktiPUP+6p+q4/S
-         lqf7duo6OZg4PLEImNAGWYnU4Vczf9EmEJNJWtWf1gqLJBZbdIsBYXikjtrwPgeGrEh0
-         OsQmuZJZg4kgDibDifjJOV4LQuu1OYhBGSNbBNoZRjZge5/lTNtb4SbFcx6bJJt5xwpU
-         Tg42Oab9mZoKOhvfQ7sSnik7ZQ32GA7Kp+Lv6wfaQmmv217o29gNa90T9XyNpXEGFe/I
-         nQ5m86CKOlGppVyW//0WBmeUc40kyNApJ0KE+uFKnogYNcuY2yvTZiBBYfJsSEaSrDLB
-         2zpg==
+        bh=H+SlWroSdaGxZWUb4GAQgkH+PVdX8bfzP0oz7opOlFk=;
+        b=P1aRB/Qz8qJvuuVFWsvrBL2SVIl1cQGHYKbNgMepLNSgMznNrx74L2cnzOw3jSyg5p
+         0mK0EYOJETL2KP8eSz+Y3XN7SPMwu5GqMhppK5lfyGucj4rDjPTjq+HsJx8YPF0foY7t
+         Un+xIh23L5oh49UBT0wh+L2MMM4+kxoh0paM/VHk4yrVd/IIE6pWDq0OHOL/vKez4yhI
+         WLB6U3HFY7GQULcQpVtceia9e2zf+0SR24cgTpneVj+OCoSTb8d0BIOU42bZcH8TlPwz
+         WlwOKAwkju5yHpgEK6PzauB02RxcDyBdJ1gVaqdNLir/B6fCK8yW+oZGIbrwEE7jJQQG
+         cNCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789933074; x=1790537874;
+        d=1e100.net; s=20260707; t=1789933081; x=1790537881;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=TISPcN17siKpndLz83tiaGlQU7pN0QJXl7jCDX0Mj3w=;
-        b=KNHB1X1BX0ZT7z5WYB+qzGF7r5rmFxTSr6aExB+LWZOxoxqMNxoFMvdurYnofJLO9l
-         0iKN0swTMsarczdCaA5RktVBj81YOTjVXn2vwND+UBXHla9bb7LPYc8UfN5WngYPUocv
-         oHd8bkKOpi/h4MDvXBJGZVfVZHIrz7oVkMVyZlRojWx4TKxBpLy6OvbiPi8TYsUSxGrQ
-         xSuPKe9hvmrLqK7lzVFse2O2OLcWmuh8zF/JZTvD/PsJFLv3g2m43G9f+gYYbqOaPfEs
-         WddRmlPQnVgoqCuxTpqLOdJ/w8lhpaJbjk3nJ5umzn6vP3pwsYZcFDhXkTHRivkaC8WT
-         7aYA==
-X-Forwarded-Encrypted: i=1; AKwUvBxibkFDe7c0OUO+mStSWbPTO6qbkIB33jgOQ4XB++jiP84Gc1AsgFcxWAPEsho6MLcoRUHdGt6bKA==@kvack.org
-X-Gm-Message-State: AFuF++lg8GMw3DCcs9n6zTnWQCAqCl4R/yCN1shQviGF48MvP1mA+Di1
-	qcFXI+DD4etQUgeXg8jUyc70PE8A1Hw5Yy96bQQveDOjmPJHzV0MAM657thaZ+GQXYI=
-X-Gm-Gg: AYBFou0bJ24kY0j7NpkpCVZax+xP9nYsIfSuufafMO4b94ShCicOD1Z3gvA0I+guDfQ
-	sob6YjZEElPvaJyXRtswPP3/u16bF0vIcwCZTO/GE1UEr63Q8g3/WhFAq0yLAiml8PLDNuuyhHI
-	Dbj1SZAKak1of9yzRM+OG4VmVGO2Nf25W5eUNRauEo7uk1Z/bSdohI4YzTJo5LlSvTcGJx/V9z6
-	7c7Sg6b3sEJ202dGyN5QzonXCPGJniJnlpXnmtZFH1L9paqnGtcL9tkuZ20ni8O4lyNpC9cJUlh
-	mYWNRKb7bnfgdd4HHpuMvwxmBB8ob4IvaVBe0n4CGoEYj9ZiI5K/PeniGm9jPGQ6KP4LPGWFx7M
-	euecTmvNsdotfTN9eliTggY7GlhE6T4ZWYegHGfw2TXcsz7rvdSEyPhwOE60RCpJ24zGb7Gr90Y
-	3kRy5hBCOwV81qMs59W3MFun4EQWnh+XMZtXBoH/GRMG5sKIlqgDbQ5r4rrxvhliAA8Tr+6URVH
-	QNG+WAPs+KuF/kX3mH6esZMHUjZ605VOGCwq8O2s0ux4a+nPQrmfAZvKSii574Uj09OLPzRtITN
-	HhGC5EgQOJjc6A/Igzs=
-X-Received: by 2002:a05:690e:4505:20b0:671:1490:8e67 with SMTP id 956f58d0204a3-6717fdc19eamr2004447d50.72.1789933074089;
-        Sun, 20 Sep 2026 12:37:54 -0700 (PDT)
+        bh=H+SlWroSdaGxZWUb4GAQgkH+PVdX8bfzP0oz7opOlFk=;
+        b=WrxFAQELIUaWnKx4Vb8G2G2Jjacb1bIU9M99D/LOZU8d6D48HpVhFn1q/02AO5VbVd
+         K2l62WnPd9OH/ecJ5tfyAWhnZ4JBJYETR5ADTLMlIxZam0LSo5KUtLGrbjMZ9+2vS0BU
+         ejrURGeubE3UPR4Sfe6tvptq7+FoXDk5s9JLnsNVrP8Mc2SnqNgy6BUE9N/PLqlFeELl
+         XqHAONo1fvhtjLooj418tXctlGTLFrIKQAe/6eZU+WADgI69kYn+4icMfqEmCnz9BMXb
+         U0gSd+nBH5BdnCjzgq0cVRL8+l6432GnzerexFyNsZQ2s2hmjKzlTr8RhCZaDXZKAjG3
+         ZgtQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxec7zkuX3VJwukOpDvx0FSq24yBhG6iRRXwLqol7JEov1Wt7hmFqATdIBfSQluBYd9sXQVQhHVhg==@kvack.org
+X-Gm-Message-State: AFuF++mubLXxL1ZfTHtsxeWGTTQxhnj0b5y2PK/twRxQ+IzoEDcxXQVc
+	0HqdWrot22bAQRFQQ+u78MAGU39A1/CG7qvBFe1DQqTWj5loK5IJtxZePz7nAPCfKTY=
+X-Gm-Gg: AYBFou08DW2iqdpRNV7enEmAYdZu6LmxRo1al/U/23rGU7dBChTOtQ7vXSZJQFmlbVL
+	qpq/85cALmdzU2Gm4Ee7puOPdfRrOglUO9msMoQrf8fOethlrVcT1UCL9v5ScyTol2wNMShfMCx
+	xf639CyGdGJFkxFhk9sQ9jY/aI4LXdb0abtvu1vcyBrzuJZCiwP99oyN1+r4sEYD0MyjhObNko6
+	0q8+MCCz5/63FxDpEb/hFGrHXqwNXStWBXuoleOxtXuntBNfbwJeGpiUDKmoFPTq/WZ1g+ubo4b
+	406hQc3O0NACzoscyTdNv4KE3RPD99pnBID3tKlbf+kikw0VCdV9Zn+IHQWCMJTi+hqnEgoYi4Z
+	E9c/a9yM1/mKJgc0fExG6fmB99OI0HytxCkK9m8431NDteh2kdhRVrqVqeOk80UUqTG1qGPSI//
+	GEOtFriy/4b7gYPDeWtHuR+Hg4CBvuHN3QeNW2XffHSGim7cjdlrORPOZdlSbC4V0W2d7yuOQ1v
+	6mam9BQjuOXkjeTw2Uy8OexaFw8+ROh5nwvZ/PqRFTNMBrtK4Zs/ZBcOyvXmfofgmlxoEgia3SO
+	WLuwDkxzq1OnYTpOsgE2
+X-Received: by 2002:a05:690c:60c7:b0:873:5c0f:280 with SMTP id 00721157ae682-89735f6df22mr25869157b3.42.1789933081162;
+        Sun, 20 Sep 2026 12:38:01 -0700 (PDT)
 Received: from soleen.c.googlers.com.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6729910a52dsm2550544d50.16.2026.09.20.12.37.50
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-89a46a44699sm18596057b3.19.2026.09.20.12.37.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Sep 2026 12:37:53 -0700 (PDT)
+        Sun, 20 Sep 2026 12:37:59 -0700 (PDT)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: linux-kselftest@vger.kernel.org,
 	legion@kernel.org,
@@ -169,22 +169,22 @@ To: linux-kselftest@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	vladimir.murzin@arm.com,
 	kas@kernel.org
-Subject: [RFC PATCH 10/46] KVM: arm64: Implement architectural vCPU state preservation via LUO
-Date: Sun, 20 Sep 2026 15:36:14 -0400
-Message-ID: <20260920193650.3373435-11-pasha.tatashin@soleen.com>
+Subject: [RFC PATCH 11/46] liveupdate: Define CPU preservation linker sections
+Date: Sun, 20 Sep 2026 15:36:15 -0400
+Message-ID: <20260920193650.3373435-12-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
 In-Reply-To: <20260920193650.3373435-1-pasha.tatashin@soleen.com>
 References: <20260920193650.3373435-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 26D91180004
-X-Stat-Signature: tqib4owqxzw3p1qgcqi7pehb6xmyhm9h
 X-Rspam-User: 
-X-HE-Tag: 1789933074-162868
-X-HE-Meta: U2FsdGVkX1/uoYu/jLiqYxbIuBR5Q47OulMhTf7g8u7w1Ty3t7Fj9FmABw7+5xF5zibqEsVLAIglVVrGutIJuixR1jjm024nvmjZdyGDwMun/1Hs+XBZeXoF8o4hc5T6HMXzuHTGiSmD1R1faLHMZ3ldoRj9aRVyQRj4Xtx5m5kSsD4jNY2djrZdq7noRvGVsexu1T1SCQcR9v368qDwKowkJlyYzzv3mJBb4rSWK/BnwqIWjk9Z3sVjGz8w7sk4QwFkFaxDWKyrWyBiwatuP7xtoVBYEJqgefI8shHr+8BEnHmGjbRbt0MErQ9gSLhsJcYDsfh/lUfzIRSDnCl0uhHZG//uDtNoRXq/ZMyHcx6jywlyHGbjoigvarm53Kt+pA+/Gw5APfa+wuhjw2phicNqC0TgOe/IGmjZL4aLKqrPRk/hoamGfQY+BJlHYjGviBm5ZWtZ/J7X8DtcQm+TcyuH6FHuZ0sIM65PkasC/RkJ7NS//vhP7ElTxGgx1t7ALlXNhLSMc544OkB3dnhlsmHZR2MZJATY3xdKFfTqP609ijh+cqHNRUtldw5HspsU3XLDMb/UUQkn3bXzbSA5YncwaWC4efn1XmD/c0N8HmmkQKR42HVNksmY16y1WFQNTsiW/9zIHbHlSp+E6rWslwCabmyTzBfd2pQXbmYrLybY5QhyS4+aAEorwSJi79L9bBfF5meRKbd8gxa8EjMQX92K9w7FtoIeBE4yLJaKGWc42oKAqOBrBbh2ApC/ieO2KfdgDNbcHsKoZgl7jr5NPdGQoiOet39b/pVhsEFqkSop3nZ0ujl/Iy1r6zCw0aLBeDSO32R+khu6SImIKI76l8el75mQtuAhnBxvdaRhD/gGBFmTnzpbgNkIaKnD5nPc6xd9M6liyGVKr6CK4i/ITMGtRa8Ob7NHEhkM8NukXqPXf0DGf7o98JDAhK2A/Rspcf1yVuAIJZG9wwOt2E/
- 3/W8qESa
- UdktZ9z8hP1W2xJxBkTozae90zYpkeiOpkKccXJrQBhax/knHlaxOwQ8x+EtsvaspURUYQ9WdJkMuOkXp09qXjWDJAgScFpsZCI05BM+//lvBp6XL0ICDgGukpTeqXVtuqrYAZYRM5C8XjQ1HN/7qlwSdGcDKvqqWbewheFA+ZRIwd+yuyIMSROJv+7G5tnvC+yR/c/tlYXhchKmIl84Y3WnAV3gxFrGohXG7uJsq/y9kOpxJLhajs0kO27Kn7j1Tfl5h7fE7G65tDd8glXYYvEkFZHGvqu7gMj/pRq3j4vpxBQJ+d4laCLRHWcOCt9aiyWpBNWes7KBwFP0=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 3287B1C0008
+X-Stat-Signature: heck8zubc8fo551u7gdw4srefkyqupbf
+X-HE-Tag: 1789933082-492292
+X-HE-Meta: U2FsdGVkX1/N22E9HDz0bXGHyTSVuIuUh3pds5kLzpSwlK7OePVxfs9gdeU/rfnB5SLGKgD7LSoLLZFTnFu8iFeGf/58pQBN76M5PUPsC9dn32FkPVtMCydwzue7JSOzC00TmdwNcwOZG8weUrG2OWCVJEJlLioXYqeQmJcU49JZ9dlnF57T1UKeUSQEvRKdz+QZqo8tUq9TeY0dyvvDavfnGmSeCoo2IaZFiv1GJKYX+1KSdqF33lkAuaQJjqAq6mP0J0+IWY67Y55aVESSy5rfdPAVM4Ww2os6o3xjy8KcGiDIT3JLbNpPjwd4OKdaddUiv2RaRT8dUqlvWJEqVUKhvRpnVb+s+h/GETJNNkSFvwQiVvi8tWa2VlV2GhPV9Fmo4Wm9NZnKj3lQF73Na4bKGK9a7HCW5cSFKZ6KFNWHGGbo3uZzHGhz3Iak8hMcpNHdww4+wlAVOyqR1+nWvpKp+rq3Ky/7GEjrnt6jSgPDZG7Kmhr69bqsygrK6m0h4A0RTWjLWo37DUL2RKKzRNODg4OJPI6UVCJhPy5Lkp59EdumWQLKipYnz7ZZgQ0ERGHqgQpYUWS8+XADDbjH5Jm+6HXaAP0qyw4dwEjtHFkZaN8FbA3/5YE3dvkecBV719UOrhO32FayU7rUYcNAPD7My9mrPoLwYrSzyqDutXCvs93/AcZMPFsTNLrEreWHsMe0amWsW7j0WGXX2JO3fEyenfN6KcTGlogDBLkm1703KbzQEm+bh/nLcEmQg6qU7GjIa6dIR9cTbb8JIqjkSjC963EaSVLYnS+5RlZgHjYAIhQQxKVD+Hb5IGxhNlzUhsk3tbY4UoKj0SZ62Nt6wUXWfRLy3Spmlo8hlk8Ae0BDGNpckbOmW2ivhMKpTQOR6puGp1k+U9mLOnY2UFnFjZmwR0+eEYLwu7lVeSg7+SGpm27mn/nMiWgQZ5JiRrvNGyJQ+cmSLwPb1yXEafn
+ 4mW53h1b
+ eGNURo7aeC5ZnHiI1/g2ya2qKWGjpJrl+IQvp2aV8znEKlelXCGDCJybImPK48wO7AkisRoYdqrJH92inx/Isiv6ekE0QMj5IL6NoMvOt3Y+Ts8W3RY4f1dhR9MA0V6R6yIVjRwT/Y5RURdjjsWXh/baPuUSJgDfY+mZZs75T2KJS9wO8v7l18WaO4tU2Z3dduFg1I6IXSpoyelGg+gL82A7fN343S1qsp09gIh9dLV7sMufg9zcfduej3B86TOI4BxfrxHzz9p1yvnq6SvVuDwGnJk5u/OR2N8thjPyls6q8onMzNIs1ecNFug0MjcBkDF562YQnaovlDFQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -192,316 +192,297 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Implement ARM64 architectural vCPU state preservation and retrieval
-handlers over LUO using struct kvm_vcpu_arch_ser in
-include/linux/kho/abi/kvm_arm64.h.
+Define CPU_PRESERVED_TEXT and CPU_PRESERVED_DATA linker macros to place
+code and data required for CPU preservation into dedicated sections
+(.text.cpu_preserved and .data.cpu_preserved).
+
+These sections are preserved across live update transitions and mapped
+executable/read-write as needed.
 
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 ---
- arch/arm64/kvm/Kconfig            |   1 +
- arch/arm64/kvm/Makefile           |   2 +
- arch/arm64/kvm/kvm_luo.c          | 201 ++++++++++++++++++++++++++++++
- include/linux/kho/abi/kvm_arm64.h |  61 +++++++++
- 4 files changed, 265 insertions(+)
- create mode 100644 arch/arm64/kvm/kvm_luo.c
- create mode 100644 include/linux/kho/abi/kvm_arm64.h
+ include/asm-generic/vmlinux.lds.h     | 29 +++++++++++++++++
+ include/linux/cpu_preserve.h          | 47 +++++++++++++++++++++++++++
+ scripts/mod/modpost.c                 | 32 +++++++++++++++---
+ tools/objtool/check.c                 | 35 +++++++++++++++++++-
+ tools/objtool/include/objtool/check.h |  1 +
+ tools/objtool/include/objtool/elf.h   |  2 +-
+ 6 files changed, 140 insertions(+), 6 deletions(-)
+ create mode 100644 include/linux/cpu_preserve.h
 
-diff --git a/arch/arm64/kvm/Kconfig b/arch/arm64/kvm/Kconfig
-index 449154f9a485..fd25b3c0d8ca 100644
---- a/arch/arm64/kvm/Kconfig
-+++ b/arch/arm64/kvm/Kconfig
-@@ -37,6 +37,7 @@ menuconfig KVM
- 	select SCHED_INFO
- 	select GUEST_PERF_EVENTS if PERF_EVENTS
- 	select KVM_GUEST_MEMFD
-+	select HAVE_KVM_ARCH_VCPU_PRESERVE
- 	help
- 	  Support hosting virtualized guest machines.
+diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
+index b2988aa12f66..0dbaac582bcc 100644
+--- a/include/asm-generic/vmlinux.lds.h
++++ b/include/asm-generic/vmlinux.lds.h
+@@ -655,6 +655,34 @@
+ 		*(.static_call.text)					\
+ 		__static_call_text_end = .;
  
-diff --git a/arch/arm64/kvm/Makefile b/arch/arm64/kvm/Makefile
-index 59612d2f277c..d5e888d1bd50 100644
---- a/arch/arm64/kvm/Makefile
-+++ b/arch/arm64/kvm/Makefile
-@@ -47,3 +47,5 @@ $(obj)/hyp_constants.h: $(obj)/hyp-constants.s FORCE
- 
- obj-kvm := $(addprefix $(obj)/, $(kvm-y))
- $(obj-kvm): $(obj)/hyp_constants.h
-+
-+kvm-y += kvm_luo.o
-diff --git a/arch/arm64/kvm/kvm_luo.c b/arch/arm64/kvm/kvm_luo.c
-new file mode 100644
-index 000000000000..59c56836cda8
---- /dev/null
-+++ b/arch/arm64/kvm/kvm_luo.c
-@@ -0,0 +1,201 @@
-+// SPDX-License-Identifier: GPL-2.0-only
 +/*
-+ * Copyright (c) 2026, Google LLC.
-+ * Pasha Tatashin <pasha.tatashin@soleen.com>
-+ *
-+ * ARM64 KVM LUO preservation and retrieval handlers.
++ * Page-aligned text and data sections for preserved CPUs.
++ * This code and data are KHO preserved when CPUs are preserved across
++ * live update.
 + */
++#ifdef CONFIG_LIVEUPDATE_CPU
++#define CPU_PRESERVED_TEXT						\
++		. = ALIGN(PAGE_SIZE);					\
++		__cpu_preserved_text_start = .;				\
++		*(.text.cpu_preserved .text.cpu_preserved.*)		\
++		*(.cpu_preserved.text .cpu_preserved.text.*)		\
++		. = ALIGN(PAGE_SIZE);					\
++		__cpu_preserved_text_end = .;
 +
-+#include <linux/kexec_handover.h>
-+#include <linux/kho/abi/kvm_arm64.h>
-+#include <linux/kvm_host.h>
-+#include <linux/sched.h>
++#define CPU_PRESERVED_DATA						\
++		. = ALIGN(PAGE_SIZE);					\
++		__cpu_preserved_data_start = .;				\
++		*(.data.cpu_preserved .data.cpu_preserved.*)		\
++		*(.cpu_preserved.data .cpu_preserved.data.*)		\
++		*(.rodata.cpu_preserved .rodata.cpu_preserved.*)	\
++		*(.bss..data.cpu_preserved .bss..data.cpu_preserved.*)	\
++		. = ALIGN(PAGE_SIZE);					\
++		__cpu_preserved_data_end = .;
++#else
++#define CPU_PRESERVED_TEXT
++#define CPU_PRESERVED_DATA
++#endif
 +
-+#include <asm/kvm_emulate.h>
-+#include <asm/kvm_mmu.h>
-+
-+#include <kvm/arm_arch_timer.h>
-+#include <kvm/arm_vgic.h>
-+
-+#include "sys_regs.h"
-+#include "vgic/vgic.h"
-+
-+int kvm_arch_vm_luo_preserve(struct kvm *kvm, struct kvm_luo_ser *ser)
-+{
-+	ser->type = kvm_phys_shift(&kvm->arch.mmu);
-+	if (kvm_vm_is_protected(kvm))
-+		ser->type |= KVM_VM_TYPE_ARM_PROTECTED;
-+
-+	return 0;
-+}
-+
-+int kvm_arch_vm_luo_retrieve(struct kvm *kvm, struct kvm_luo_ser *ser)
-+{
-+	return 0;
-+}
-+
-+void kvm_arch_vm_luo_unpreserve(struct kvm *kvm, struct kvm_luo_ser *ser)
-+{
-+}
-+
-+void kvm_arch_vm_luo_finish(struct kvm_luo_ser *ser)
-+{
-+}
-+
-+static void kvm_arm_luo_get_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
-+{
-+	regs->regs = vcpu->arch.ctxt.regs;
-+	regs->sp_el1 = ctxt_sys_reg(&vcpu->arch.ctxt, SP_EL1);
-+	regs->elr_el1 = ctxt_sys_reg(&vcpu->arch.ctxt, ELR_EL1);
-+	regs->spsr[KVM_SPSR_EL1] = ctxt_sys_reg(&vcpu->arch.ctxt, SPSR_EL1);
-+	regs->spsr[KVM_SPSR_ABT] = vcpu->arch.ctxt.spsr_abt;
-+	regs->spsr[KVM_SPSR_UND] = vcpu->arch.ctxt.spsr_und;
-+	regs->spsr[KVM_SPSR_IRQ] = vcpu->arch.ctxt.spsr_irq;
-+	regs->spsr[KVM_SPSR_FIQ] = vcpu->arch.ctxt.spsr_fiq;
-+	regs->fp_regs = vcpu->arch.ctxt.fp_regs;
-+}
-+
-+static void kvm_arm_luo_set_regs(struct kvm_vcpu *vcpu, const struct kvm_regs *regs)
-+{
-+	vcpu->arch.ctxt.regs = regs->regs;
-+	ctxt_sys_reg(&vcpu->arch.ctxt, SP_EL1) = regs->sp_el1;
-+	ctxt_sys_reg(&vcpu->arch.ctxt, ELR_EL1) = regs->elr_el1;
-+	ctxt_sys_reg(&vcpu->arch.ctxt, SPSR_EL1) = regs->spsr[KVM_SPSR_EL1];
-+	vcpu->arch.ctxt.spsr_abt = regs->spsr[KVM_SPSR_ABT];
-+	vcpu->arch.ctxt.spsr_und = regs->spsr[KVM_SPSR_UND];
-+	vcpu->arch.ctxt.spsr_irq = regs->spsr[KVM_SPSR_IRQ];
-+	vcpu->arch.ctxt.spsr_fiq = regs->spsr[KVM_SPSR_FIQ];
-+	vcpu->arch.ctxt.fp_regs = regs->fp_regs;
-+}
-+
-+int kvm_arch_vcpu_luo_preserve(struct kvm_vcpu *vcpu, struct kvm_vcpu_ser *ser)
-+{
-+	struct kvm_vcpu_arch_ser *state;
-+	int num_sysregs;
-+	u64 *indices;
-+	size_t size;
-+	int i;
-+
-+	num_sysregs = kvm_arm_get_sys_reg_indices(vcpu, NULL);
-+	indices = kmalloc_array(num_sysregs, sizeof(u64), GFP_KERNEL);
-+	if (!indices)
-+		return -ENOMEM;
-+	num_sysregs = kvm_arm_get_sys_reg_indices(vcpu, indices);
-+
-+	size = struct_size(state, sysregs, num_sysregs);
-+	state = kho_alloc_preserve(size);
-+	if (IS_ERR(state)) {
-+		kfree(indices);
-+		return PTR_ERR(state);
-+	}
-+
-+	/* Core register state (uAPI struct kvm_regs) */
-+	kvm_arm_luo_get_regs(vcpu, &state->regs);
-+
-+	/* Multiprocessor execution state (uAPI struct kvm_mp_state) */
-+	kvm_arch_vcpu_ioctl_get_mpstate(vcpu, &state->mp_state);
-+	state->pad = 0;
-+
-+	/* Exception / SError injection events (uAPI struct kvm_vcpu_events) */
-+	__kvm_arm_vcpu_get_events(vcpu, &state->events);
-+
-+	/* CPU target and feature configuration (uAPI struct kvm_vcpu_init) */
-+	state->init.target = KVM_ARM_TARGET_GENERIC_V8;
-+	bitmap_to_arr32(state->init.features, vcpu->kvm->arch.vcpu_features,
-+			KVM_VCPU_MAX_FEATURES);
-+
-+	/* System registers (uAPI struct kvm_one_reg array) */
-+	state->num_sysregs = 0;
-+	state->reserved = 0;
-+	for (i = 0; i < num_sysregs; i++) {
-+		u64 val;
-+
-+		if (kvm_arm_sys_reg_read(vcpu, indices[i], &val) == 0) {
-+			state->sysregs[state->num_sysregs].id = indices[i];
-+			state->sysregs[state->num_sysregs].addr = val;
-+			state->num_sysregs++;
-+		}
-+	}
-+	kfree(indices);
-+
-+	KHOSER_STORE_PTR(ser->arch_state, state);
-+	return 0;
-+}
-+
-+int kvm_arch_vcpu_luo_retrieve(struct kvm_vcpu *vcpu, struct kvm_vcpu_ser *ser)
-+{
-+	struct kvm_vcpu_arch_ser *state;
-+	int i;
-+
-+	if (!ser->arch_state.phys)
-+		return 0;
-+
-+	state = KHOSER_LOAD_PTR(ser->arch_state);
-+
-+	/* Restore vCPU features */
-+	bitmap_from_arr32(vcpu->kvm->arch.vcpu_features, state->init.features,
-+			  KVM_VCPU_MAX_FEATURES);
-+	set_bit(KVM_ARCH_FLAG_VCPU_FEATURES_CONFIGURED, &vcpu->kvm->arch.flags);
-+	kvm_reset_vcpu(vcpu);
-+	vcpu_set_flag(vcpu, VCPU_INITIALIZED);
-+
-+	vcpu_reset_hcr(vcpu);
-+
-+	/* Restore core registers */
-+	kvm_arm_luo_set_regs(vcpu, &state->regs);
-+
-+	if (irqchip_in_kernel(vcpu->kvm) &&
-+	    vcpu->kvm->arch.vgic.vgic_model == KVM_DEV_TYPE_ARM_VGIC_V3) {
-+		vgic_v3_reset(vcpu);
-+	}
-+
-+	/* Restore system registers */
-+	for (i = 0; i < state->num_sysregs; i++)
-+		kvm_arm_sys_reg_write(vcpu, state->sysregs[i].id, state->sysregs[i].addr);
-+
-+	/* Restore multiprocessor execution state */
-+	kvm_arch_vcpu_ioctl_set_mpstate(vcpu, &state->mp_state);
-+
-+	/* Restore exception / SError injection events */
-+	__kvm_arm_vcpu_set_events(vcpu, &state->events);
-+
-+	if (irqchip_in_kernel(vcpu->kvm)) {
-+		struct vgic_irq *irq;
-+		unsigned long flags;
-+
-+		vcpu->kvm->arch.vgic.enabled = true;
-+
-+		irq = vgic_get_vcpu_irq(vcpu, timer_irq(vcpu_vtimer(vcpu)));
-+		if (irq) {
-+			raw_spin_lock_irqsave(&irq->irq_lock, flags);
-+			irq->enabled = true;
-+			raw_spin_unlock_irqrestore(&irq->irq_lock, flags);
-+			vgic_put_irq(vcpu->kvm, irq);
-+		}
-+		irq = vgic_get_vcpu_irq(vcpu, timer_irq(vcpu_ptimer(vcpu)));
-+		if (irq) {
-+			raw_spin_lock_irqsave(&irq->irq_lock, flags);
-+			irq->enabled = true;
-+			raw_spin_unlock_irqrestore(&irq->irq_lock, flags);
-+			vgic_put_irq(vcpu->kvm, irq);
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+void kvm_arch_vcpu_luo_unpreserve(struct kvm_vcpu_ser *ser)
-+{
-+	if (ser->arch_state.phys) {
-+		kho_unpreserve_free(phys_to_virt(ser->arch_state.phys));
-+		ser->arch_state.phys = 0;
-+	}
-+}
-+
-+void kvm_arch_vcpu_luo_finish(struct kvm_vcpu_ser *ser)
-+{
-+	if (ser->arch_state.phys) {
-+		kho_restore_free(phys_to_virt(ser->arch_state.phys));
-+		ser->arch_state.phys = 0;
-+	}
-+}
-diff --git a/include/linux/kho/abi/kvm_arm64.h b/include/linux/kho/abi/kvm_arm64.h
+ /* Section used for early init (in .S files) */
+ #define HEAD_TEXT  KEEP(*(.head.text))
+ 
+@@ -1155,6 +1183,7 @@
+ 		INIT_TASK_DATA(inittask)				\
+ 		NOSAVE_DATA						\
+ 		PAGE_ALIGNED_DATA(pagealigned)				\
++		CPU_PRESERVED_DATA					\
+ 		CACHE_HOT_DATA(cacheline)				\
+ 		CACHELINE_ALIGNED_DATA(cacheline)			\
+ 		READ_MOSTLY_DATA(cacheline)				\
+diff --git a/include/linux/cpu_preserve.h b/include/linux/cpu_preserve.h
 new file mode 100644
-index 000000000000..dc121224a177
+index 000000000000..f653838c383d
 --- /dev/null
-+++ b/include/linux/kho/abi/kvm_arm64.h
-@@ -0,0 +1,61 @@
++++ b/include/linux/cpu_preserve.h
+@@ -0,0 +1,47 @@
 +/* SPDX-License-Identifier: GPL-2.0 */
 +/*
 + * Copyright (c) 2026, Google LLC.
 + * Pasha Tatashin <pasha.tatashin@soleen.com>
++ *
++ * Preserved CPU across Live Update
 + */
-+#ifndef _LINUX_KHO_ABI_KVM_ARM64_H
-+#define _LINUX_KHO_ABI_KVM_ARM64_H
++#ifndef _LINUX_CPU_PRESERVE_H
++#define _LINUX_CPU_PRESERVE_H
 +
-+#ifdef CONFIG_ARM64
++#include <linux/compiler.h>
 +
-+#include <linux/build_bug.h>
-+#include <linux/stddef.h>
-+#include <linux/types.h>
-+#include <linux/kho/abi/kvm.h>
-+#include <uapi/linux/kvm.h>
-+#include <uapi/asm/kvm.h>
++#ifdef CONFIG_LIVEUPDATE_CPU
 +
-+/**
-+ * DOC: arm64 KVM vCPU Live Update ABI
++/*
++ * __cpu_preserved_text: Code executed by preserved physical CPUs during live
++ * update kexec handover in orphan mode.
 + *
-+ * arm64 KVM uses the ABI defined below for preserving architectural vCPU state
-+ * across a kexec reboot using LUO.
++ * All code in this section must run without stack protector checks because
++ * per-CPU canary state may be invalid during handover and __stack_chk_fail()
++ * resides in regular .text, which gets overwritten during kexec before the
++ * incoming kernel boots.
 + *
-+ * The state is serialized into a packed structure `struct kvm_vcpu_arch_ser`
-+ * which is handed over to the next kernel via KHO.
-+ *
-+ * The core register structure (struct kvm_regs) is a uAPI contract.
-+ *
-+ * This interface is a contract. Any modification to the structure layout
-+ * constitutes a breaking change. Such changes require incrementing the version
-+ * number in the KVM_VCPU_LUO_FH_COMPATIBLE string.
++ * Architecture-specific requirements (such as disabling external retpolines
++ * and return thunks on x86) are supplied via ARCH_CPU_PRESERVED_TEXT.
 + */
++#ifndef ARCH_CPU_PRESERVED_TEXT
++#define ARCH_CPU_PRESERVED_TEXT
++#endif
 +
-+/**
-+ * struct kvm_vcpu_arch_ser - Preserved arm64 architectural vCPU state in RAM.
-+ * @regs:        Core general-purpose and floating-point registers (uAPI struct kvm_regs).
-+ * @mp_state:    Multiprocessor execution state (uAPI struct kvm_mp_state).
-+ * @pad:         Padding to maintain 64-bit alignment after mp_state.
-+ * @events:      Exception and SError injection state (uAPI struct kvm_vcpu_events).
-+ * @init:        Target CPU and vCPU feature bitmap (uAPI struct kvm_vcpu_init).
-+ * @num_sysregs: Number of serialized system registers in sysregs array.
-+ * @reserved:    Reserved padding for 64-bit alignment.
-+ * @sysregs:     Guest architectural system registers (uAPI struct kvm_one_reg array).
-+ */
-+struct kvm_vcpu_arch_ser {
-+	struct kvm_regs regs;
-+	struct kvm_mp_state mp_state;
-+	u32 pad;
-+	struct kvm_vcpu_events events;
-+	struct kvm_vcpu_init init;
-+	u32 num_sysregs;
-+	u32 reserved;
-+	struct kvm_one_reg sysregs[];
-+} __packed;
++#define __cpu_preserved_text					\
++	__section(".text.cpu_preserved")			\
++	__no_stack_protector					\
++	ARCH_CPU_PRESERVED_TEXT
++#define __cpu_preserved_data	__section(".data.cpu_preserved")
 +
-+static_assert(offsetof(struct kvm_vcpu_arch_ser, sysregs) % sizeof(u64) == 0,
-+	      "sysregs must be 64-bit aligned");
++extern char __cpu_preserved_text_start[], __cpu_preserved_text_end[];
++extern char __cpu_preserved_data_start[], __cpu_preserved_data_end[];
 +
-+#endif /* CONFIG_ARM64 */
++#else /* !CONFIG_LIVEUPDATE_CPU */
 +
-+#endif /* _LINUX_KHO_ABI_KVM_ARM64_H */
++#define __cpu_preserved_text
++#define __cpu_preserved_data
++
++#endif /* CONFIG_LIVEUPDATE_CPU */
++
++#endif /* _LINUX_CPU_PRESERVE_H */
+diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
+index 75374c64b8cc..51631cd2f6c4 100644
+--- a/scripts/mod/modpost.c
++++ b/scripts/mod/modpost.c
+@@ -810,13 +810,27 @@ static void check_section(struct module *mod, struct elf_info *elf,
+ #define ALL_INIT_SECTIONS ".init.*"
+ #define ALL_EXIT_SECTIONS ".exit.*"
+ 
++#define ALL_CPU_PRESERVED_TEXT_SECTIONS \
++	".text.cpu_preserved", ".text.cpu_preserved.*", \
++	".cpu_preserved.text", ".cpu_preserved.text.*"
++
++#define ALL_CPU_PRESERVED_DATA_SECTIONS \
++	".data.cpu_preserved", ".data.cpu_preserved.*", \
++	".cpu_preserved.data", ".cpu_preserved.data.*", \
++	".rodata.cpu_preserved", ".rodata.cpu_preserved.*", \
++	".bss..data.cpu_preserved", ".bss..data.cpu_preserved.*"
++
++#define ALL_CPU_PRESERVED_SECTIONS \
++	ALL_CPU_PRESERVED_TEXT_SECTIONS, ALL_CPU_PRESERVED_DATA_SECTIONS
++
+ #define DATA_SECTIONS ".data", ".data.rel"
+ #define TEXT_SECTIONS ".text", ".text.*", ".sched.text", \
+ 		".kprobes.text", ".cpuidle.text", ".noinstr.text", \
+ 		".ltext", ".ltext.*"
+ #define OTHER_TEXT_SECTIONS ".ref.text", ".head.text", ".spinlock.text", \
+ 		".fixup", ".entry.text", ".exception.text", \
+-		".coldtext", ".softirqentry.text", ".irqentry.text"
++		".coldtext", ".softirqentry.text", ".irqentry.text", \
++		ALL_CPU_PRESERVED_TEXT_SECTIONS
+ 
+ #define ALL_TEXT_SECTIONS  ".init.text", ".exit.text", \
+ 		TEXT_SECTIONS, OTHER_TEXT_SECTIONS
+@@ -827,6 +841,7 @@ enum mismatch {
+ 	ANY_INIT_TO_ANY_EXIT,
+ 	ANY_EXIT_TO_ANY_INIT,
+ 	EXTABLE_TO_NON_TEXT,
++	CPU_PRESERVED_TO_NON_PRESERVED,
+ };
+ 
+ /**
+@@ -843,13 +858,19 @@ enum mismatch {
+  * @mismatch: Type of mismatch.
+  */
+ struct sectioncheck {
+-	const char *fromsec[20];
+-	const char *bad_tosec[20];
+-	const char *good_tosec[20];
++	const char *fromsec[32];
++	const char *bad_tosec[32];
++	const char *good_tosec[32];
+ 	enum mismatch mismatch;
+ };
+ 
+ static const struct sectioncheck sectioncheck[] = {
++/* Do not reference non-preserved code/data from cpu_preserved sections */
++{
++	.fromsec = { ALL_CPU_PRESERVED_SECTIONS, NULL },
++	.good_tosec = { ALL_CPU_PRESERVED_SECTIONS, NULL },
++	.mismatch = CPU_PRESERVED_TO_NON_PRESERVED,
++},
+ /* Do not reference init/exit code/data from
+  * normal code and data
+  */
+@@ -960,6 +981,9 @@ static const struct sectioncheck *section_mismatch(
+ static int secref_whitelist(const char *fromsec, const char *fromsym,
+ 			    const char *tosec, const char *tosym)
+ {
++	if (match(fromsec, PATTERNS(ALL_CPU_PRESERVED_SECTIONS)))
++		return 1;
++
+ 	/* Check for pattern 1 */
+ 	if (match(tosec, PATTERNS(ALL_INIT_DATA_SECTIONS)) &&
+ 	    match(fromsec, PATTERNS(DATA_SECTIONS)) &&
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 464f6c9d9ff0..77389fbfd9ea 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -329,6 +329,8 @@ static void init_insn_state(struct objtool_file *file, struct insn_state *state,
+ 
+ 	if (opts.noinstr && sec)
+ 		state->noinstr = sec->noinstr;
++	if (sec)
++		state->cpu_preserved = sec->cpu_preserved;
+ }
+ 
+ static struct cfi_state *cfi_alloc(void)
+@@ -419,6 +421,14 @@ static int decode_instructions(struct objtool_file *file)
+ 		u8 prev_len = 0;
+ 		u8 idx = 0;
+ 
++		if (!strncmp(sec->name, ".text.cpu_preserved", 19) ||
++		    !strncmp(sec->name, ".cpu_preserved.text", 19) ||
++		    !strncmp(sec->name, ".data.cpu_preserved", 19) ||
++		    !strncmp(sec->name, ".cpu_preserved.data", 19) ||
++		    !strncmp(sec->name, ".rodata.cpu_preserved", 21) ||
++		    !strncmp(sec->name, ".bss..data.cpu_preserved", 24))
++			sec->cpu_preserved = true;
++
+ 		if (!is_text_sec(sec))
+ 			continue;
+ 
+@@ -3511,6 +3521,17 @@ static int validate_call(struct objtool_file *file,
+ 			 struct instruction *insn,
+ 			 struct insn_state *state)
+ {
++	if (state->cpu_preserved) {
++		struct symbol *dest = insn_call_dest(insn);
++
++		if (dest && (dest->sec->idx != SHN_UNDEF || opts.link) &&
++		    !dest->sec->cpu_preserved) {
++			WARN_INSN(insn, "call to %s() leaves .text.cpu_preserved section",
++				  call_dest_name(insn));
++			return 1;
++		}
++	}
++
+ 	if (state->noinstr && state->instr <= 0 &&
+ 	    !noinstr_call_dest(file, insn, insn_call_dest(insn))) {
+ 		WARN_INSN(insn, "call to %s() leaves .noinstr.text section", call_dest_name(insn));
+@@ -4164,7 +4185,13 @@ static int validate_retpoline(struct objtool_file *file)
+ 		if (insn->retpoline_safe)
+ 			continue;
+ 
+-		if (insn->sec->init)
++		/*
++		 * Preserved CPU text (.text.cpu_preserved) executes across
++		 * kexec when the outgoing kernel's retpoline/rethunk targets
++		 * are no longer mapped.
++		 */
++		if (insn->sec->init ||
++		    !strcmp(insn->sec->name, ".text.cpu_preserved"))
+ 			continue;
+ 
+ 		if (insn->type == INSN_RETURN) {
+@@ -4440,6 +4467,12 @@ static int validate_noinstr_sections(struct objtool_file *file)
+ 		warnings += validate_unwind_hints(file, sec);
+ 	}
+ 
++	sec = find_section_by_name(file->elf, ".text.cpu_preserved");
++	if (sec) {
++		warnings += validate_section(file, sec);
++		warnings += validate_unwind_hints(file, sec);
++	}
++
+ 	return warnings;
+ }
+ 
+diff --git a/tools/objtool/include/objtool/check.h b/tools/objtool/include/objtool/check.h
+index 063f5985fecd..18318f2faf11 100644
+--- a/tools/objtool/include/objtool/check.h
++++ b/tools/objtool/include/objtool/check.h
+@@ -16,6 +16,7 @@ struct insn_state {
+ 	bool uaccess;
+ 	bool df;
+ 	bool noinstr;
++	bool cpu_preserved;
+ 	s8 instr;
+ };
+ 
+diff --git a/tools/objtool/include/objtool/elf.h b/tools/objtool/include/objtool/elf.h
+index a82517a76a0f..bac9e5f4921f 100644
+--- a/tools/objtool/include/objtool/elf.h
++++ b/tools/objtool/include/objtool/elf.h
+@@ -58,7 +58,7 @@ struct section {
+ 	Elf_Data *data;
+ 	const char *name;
+ 	int idx;
+-	bool _changed, text, rodata, noinstr, init, truncate;
++	bool _changed, text, rodata, noinstr, init, cpu_preserved, truncate;
+ 	struct reloc *relocs;
+ 	unsigned long nr_alloc_relocs;
+ 	struct section *twin;
 -- 
 2.55.0.1082.g2b9226bbc0-goog
 
