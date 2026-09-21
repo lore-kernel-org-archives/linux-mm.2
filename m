@@ -4,79 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 054EBC982DE
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 09:23:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2C2DC982E1
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 09:23:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 22ABB6B00CF; Mon, 21 Sep 2026 05:23:43 -0400 (EDT)
+	id E862D6B00EF; Mon, 21 Sep 2026 05:23:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 201586B00D1; Mon, 21 Sep 2026 05:23:43 -0400 (EDT)
+	id E5D956B00F0; Mon, 21 Sep 2026 05:23:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 117616B00EF; Mon, 21 Sep 2026 05:23:43 -0400 (EDT)
+	id D4D176B00F1; Mon, 21 Sep 2026 05:23:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EC5596B00CF
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 05:23:42 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 652BD405BD
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:23:42 +0000 (UTC)
-X-FDA: 85237231884.25.27EA98D
-Received: from mta1.migadu.com (out-139.mta1.migadu.com [95.215.58.139])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 6BF7A180003
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:23:40 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="aNL80u/d";
-	spf=pass (imf16.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.139 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BDA4F6B00EF
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 05:23:55 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 332B6A05C7
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:23:55 +0000 (UTC)
+X-FDA: 85237232430.24.41C1C5E
+Received: from mta1.migadu.com (out-165.mta1.migadu.com [95.215.58.165])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 37895140008
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:23:52 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Nd2YedFb;
+	spf=pass (imf09.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.165 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789982620;
+	s=arc-20220608; t=1789982633;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wvY3z05eg/r7MHiheu1WpoDfoB8+y8eGfNNBMxcbFco=;
-	b=X1QOkpmsFdf0AzaKHgYOGF92CqBsmWcZOlVsam946P/fMY7PvUUGsU1xU4uqVdaWh5y1qT
-	L/CZmiU6BypIt3Jt1GoBNvPvNxRBD80ajfIIsMBgo30cvmk+L6XChroGaKjwYGE/wqC2Jk
-	ahUcuouuCNET6yErdliKY6bUo2NPLlE=
+	bh=FcNdv+jeQM0PUB4gEvMOPVpe39vh2JAVMrnB6EhVcfc=;
+	b=MVoz2aBnJWXebMMerfuqPm/LJ6MAwsLTloYBr+CEezjv19DR9fhZ90989XeBymBkuyqVY7
+	ADqaPuxF+HqFETM03r9DxeQrFdq/INGDL3y5/1LqG1QmPG2B2p0710ReBD5cC8DYJmk6Mo
+	N0NzkPB7JQA1Fau81AaStcYq6j0TT/E=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789982620;
-	b=Ts1wbvsOjaaeGmhR/6g+3bGkvjOlg90nkooNrfzxUkYbuZY7A+a5dsToj9y1bld1ak7B3L
-	aVmO8O9F07WNQjbQr9h5VgygtKMXEMJhe56zBnMCcfnk0QQmdBS25lw95370Fs8OVOPFaL
-	/T19jjDBVxyZQed+QzuNunSgzKgPpCo=
+	t=1789982633;
+	b=CtbwHWeDBt7JLgO+x/ALbbqltzhFF8ufPkKsTt0kTA2E6g72J8moNciwsHbKwPIY8JW6qt
+	QZyt77Ngna+OaHKkjTa6Cjoem4Zz/ogqqyWfkWKe0fL/2Ouz5qyseGxVQ3CuVrhoMhSq34
+	vfBgFNYYdRad4HhOM2GhGHLa6vFtTxk=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="aNL80u/d";
-	spf=pass (imf16.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.139 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Nd2YedFb;
+	spf=pass (imf09.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.165 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=7BvEFNtRHP1Kn+ktJB3UzR2F40Rkin63WssI085fxec=;
+DKIM-Signature: a=rsa-sha256; bh=JmZnNdNWu/MHbh4iVosFA0RR44Xc7VFrViTR+zioOBM=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789982619; v=1; x=1790587419;
- b=aNL80u/d2xopWc0w5ukYZmXhzLYGrq0EySqesrxN6WairP9Dxruzh1fnrHZf47uyRdgaSdZ9
- 45AeJg7NBDWk2IXtOdkMEvqovo1HShggNq/Vez0GuMgc+UsWRt4eQzLEfisti2zoqLkrfQUj5eG
- 1XygJB7dl9Z6g7gpP5LCpjLI=
+ t=1789982631; v=1; x=1790587431;
+ b=Nd2YedFbPQlJZwOFSjV7Uav1emqVZ361evkMut/lCudxWrcDlALOhoLCj/G9YtZy8wXGtJmt
+ RklNHbnUJowDBnTNpW+U4G5DdDrXXHXJJFKymF7cG9OY1nL4YNV2guE9JjCa4pv5UGBn1preh2d
+ 7erhcnbj+J4ll2DhHx9lRuG8=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 04c788aff0412b12;
-	Mon, 21 Sep 2026 09:23:38 +0000
-X-Mizu-Trace-ID: 04c788aff0412b12
+Received: by smtp.migadu.com with ESMTPS id 24a1d58a18ab436c;
+	Mon, 21 Sep 2026 09:23:51 +0000
+X-Mizu-Trace-ID: 24a1d58a18ab436c
 X-Migadu-Flow: FLOW_OUT
 From: Ye Liu <ye.liu@linux.dev>
-To: "Paul E. McKenney" <paulmck@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Uladzislau Rezki <urezki@gmail.com>
+To: Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>
 Cc: Ye Liu <liuye@kylinos.cn>,
 	Michal Hocko <mhocko@suse.com>,
 	SJ Park <sj@kernel.org>,
 	Lorenzo Stoakes <ljs@kernel.org>,
 	Oleg Nesterov <oleg@redhat.com>,
 	akpm@linux-foundation.org,
-	peterz@infradead.org,
-	mingo@redhat.com,
+	paulmck@kernel.org,
 	rostedt@goodmis.org,
 	jpoimboe@kernel.org,
 	mic@digikod.net,
@@ -99,8 +95,12 @@ Cc: Ye Liu <liuye@kylinos.cn>,
 	xu.xin16@zte.com.cn,
 	chengming.zhou@linux.dev,
 	will@kernel.org,
-	juri.lelli@redhat.com,
-	vincent.guittot@linaro.org,
+	boqun@kernel.org,
+	frederic@kernel.org,
+	neeraj.upadhyay@kernel.org,
+	joelagnelf@nvidia.com,
+	josh@joshtriplett.org,
+	urezki@gmail.com,
 	tony.luck@intel.com,
 	reinette.chatre@intel.com,
 	x86@kernel.org,
@@ -124,22 +124,22 @@ Cc: Ye Liu <liuye@kylinos.cn>,
 	Dave.Martin@arm.com,
 	james.morse@arm.com,
 	babu.moger@amd.com
-Subject: [PATCH v4 09/15] rcu: convert process/thread iterator to for_each_process_thread_rculock
-Date: Mon, 21 Sep 2026 17:20:55 +0800
-Message-Id: <20260921092101.89285-10-ye.liu@linux.dev>
+Subject: [PATCH v4 10/15] sched: convert process/thread iterators to for_each_*_rculock
+Date: Mon, 21 Sep 2026 17:20:56 +0800
+Message-Id: <20260921092101.89285-11-ye.liu@linux.dev>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260921092101.89285-1-ye.liu@linux.dev>
 References: <20260921092101.89285-1-ye.liu@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: fdh6zonwnwqkggzj6unwnfc75z6ypneu
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6BF7A180003
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789982620-505073
-X-HE-Meta: U2FsdGVkX18nmMIxKBaocf+pLdyCqrh6Sxq7PaKJo6pY/7AFEkeZAVfP2knx8VkNHx29/3UjXZ7c6HAi9KcRFRZTi/waWJpp/vWVeEC6K0BB5SgI6vpNPJBrUbSYEMW4x+/8jW75DkRtJz3nN4IpdxmYCpBHlcXXxR4+vZULktvbTipRuuhiomBiFyoguh+SyKRF/5JCopdzdQSOMF/VwUqStRjUl36CUyuV2nWDdtAOBG1aHeC+HPUwK1ItkYbc6NLa5QS8iwtbLNyRJ+vk6r0RBfqXwyEecboY3zPwIUsgJ+KzpbSyklBV1NckBt8d2gt2UOC4vJhqYsK609Q+S9+cN5BKirYSsx235PlEs+kUGss5kPa4VyKCtr1bHVuekjrXY7K/OQo9b1GBce1KlHQLSDzYXJH05rtUC1d1gn3ZzscmnxFbWbMF+J7a8l3rYU2gQ4YVp8E8UaO+k9noxKuixiUMcQ7daz9IprcPwMWRuysFblSUJW1MPV7mlME8BiAghrJF8bzdnZPLA40/pm5rsvTyCvGaMUb1GFA92WrO4WzRzPKv7oLyZi9F9Fztt8xjB0neIHgBGAS8Ha4YxKrZtJ/hn6IvivaO1465NH07MJ43uP4uO5v6Y7Wxi5zXZUEIOtL+UZcHeFK5ygcq6OKIeQtYR+I/W0x4Y3h5aoAMmPc95czV8v9/jBBQTguvnPPjWq+tw+o3ttusIVMDtBXeXFkYjAgj0mWW+7HbkaVHwJsho/H3L1QSI/u1751VwiZLQtlrzMtYPNPIfnF7DkvcKdAFV0H1gtlEBa4xVCY845+EPfhL43KIJsCuISnNDX02BtbhS4vYRHVVLoRye8+wpBIrPb1+PPS9xUyuOqGzTAorDmcoZZbB2GQbrjKourgI/VuAsJMILzJyI5rvgQhc4wFWJljPewb+Fra+2PP/D/904Z9WP3FnZ6P7K3Tja/vDXARVOxvAtFTdkUn
- dTknC2Qw
- 0U7TMyB3AvcW7jFED4gwdL9MNTMDwi7uszEIy0J2/xkM7Nvqd5vD0ZQ/7Crh996T2q8eo3h1FMD5gpdxr1O1ap1lSw8G7nJAcjUeyW/NFxiRCJx39K80dkpVjRW/za3sDb96/HWnnI6BQ0HLyIcG+oXcGiCGjfNNi4cjpKK0DmLAOLqdQ1ojdSty+ACqJ3lV7+5hqNJqx/MFTzT5CR9mcTe4Hg3pF/9O2Hkp7b+2LZtsg2E2cCY2/q6zdi4+C3hdjDv3KBj9AxhzQVlRgMv92lTPvEOGPL/Memukcuvqi4Qkat62rR3C3x1jTs9lHDQ7qnBCotKgBjH3mITygo+IrvtXdPCXqNcFKF3aqwoJ844rBpL7u4+8TMXGtEJsAq53WWzE2QGtB6DER7sXsdFYhY/8OgG1ihEXZaOp9LZq4hBUFl3oNFzCrIFJV0TkjnY+AKL/DIxdoPhwFNGw=
+X-Stat-Signature: dbcsu15enr8f5446cj79bdtwm63jnq5q
+X-Rspamd-Queue-Id: 37895140008
+X-HE-Tag: 1789982632-891928
+X-HE-Meta: U2FsdGVkX19n2aDWUeMafOoW5odrBd+pU6evHt3/ZyW2/0/PCIZ2BB7ZhaQ9nRNevqLR8GAnHd2mV4Pg33rfhKFR+b1tZYeMqsPz+rgygrrYiKV/5tRbz0Xxhb7Vhw+Kcz21uaZwGKW/U4W1JBdgN6U5gZkJYy1doB64+cxjgOJdTVRBwCZMWhIy3eLX2W2SJyyi6qI8PDzID+AOuVUCvzSzuwnXAC62+FImMCELYX1opzDhKNiESiNW6VSiM8HdxicmqXK/MggdMNQbJeNcgqBxeAfGTOYCQ33mtzWU8MnQxDWv6EKCjEGFNhma2ccU94LtAT0byU6e9skNlgd18WWApZ6HYJVwG/C1i4SoSZYP+WXnFHFBDqpK365stNI1axuyzaNgYg39N8FTNhz5Ydlbo+Aqq37DAlGZwS6i6QeymKQsicA0r1ML3nfj82D6SbC6kO8Mq/oNgwgb6QnVqfd79GEz17nYAesr1QN5OeQPJhwS9hxnPYg7rSo3MUODne8yN3RDZ2cEmexr9T7pikKaEwINdDRgUmT8azfOnk1bhshEattmv6aDL1nOBVpaw5Was4if5vVJ17XmdNtfQ6elfR/vs5I5gQrm/kaE0coAMTj6S3nrxhwP3sjk32wT4ljtvlJ4wpFvJ6SpQmL4bvJNIDVYuUoVmIfjLy5LgMKf4klfqFcyLl/2eNfD9VoQ7+POEg2mzx+ubcX4G+ZyNWMzRoKZiPBqVjzmODYUkVWyvJCOxRbObXVXWdvS+UcFe+5UwUeuTwKKS0N88RxrxEkB39Nvbfw45kQB4nu2D8OHuqTX8N5DxfUjhCxJuYph/p2RsmD7LJaqJBXM0zJt77zOX5gZr++F3C18SQwo7snS0JaI9qHQZi6SmTPbSTEXihquJUDmMWvc1anrx5ZroixTAo9RctaEZ7KK8PgQKcVdvvgPH6FIqxgo7961EwcPPkm62UIOpcUlQdBDh8C
+ NhrckdVI
+ Z9uOdUkmqDwY3xNM9dmy4Al40q3SwXqxPi4t5zazw/GcrMheh5J8Q1o+mwNpBhYDSY6OX17n00LUKeMa0UUiz692Zyyi507LZzvcBJjO1u9gAbS+RRUkHg7vo+OP+HdZG0n8U9gOfME9pJWDXpIMZVjSk1uiBCS6YEzqMcRUH9xgZ6O81dDoOWHZWlAqPffUdrP+qAScYIc3ttBqesTr18LBR7zSzYJ6WE4TIWw01wPvnsIEvxR1YvVIwtx0wfcEaqRXQ1AhrcSfZknMTfdHnsqCU4zifMx5x95wSK2knSkiWa8Dt4IvHKKA7ALqi9GJ4pOw53nSU9Bmtw/S4y78XZJWqUNRhzBjemkSGHlxrbNMFC4PdG8pgiOy1psJafB8g98e3NKlidQV5pM9oTkQQG/CZTUds0066wYKcr3L/S3llbdqlGLxSD9nqX1kdunvxDs97kc5LE2/PJmE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,10 +149,10 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ye Liu <liuye@kylinos.cn>
 
-Replace the manual rcu_read_lock()/rcu_read_unlock() pair combined
-with for_each_process_thread() loop in kernel/rcu/update.c with
-for_each_process_thread_rculock(), which scopes the RCU read lock
-to the loop body via scoped_guard(rcu).
+Replace the manual rcu_read_lock()/rcu_read_unlock() and guard(rcu)
+pairs combined with for_each_process_thread() loops in kernel/sched/
+with for_each_process_thread_rculock(), which scopes the RCU read
+lock to the loop body via scoped_guard(rcu).
 
 No functional change.
 
@@ -162,30 +162,44 @@ Reviewed-by: SJ Park <sj@kernel.org>
 Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 Reviewed-by: Oleg Nesterov <oleg@redhat.com>
 ---
- kernel/rcu/update.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ kernel/sched/core.c  | 3 +--
+ kernel/sched/debug.c | 4 +---
+ 2 files changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/rcu/update.c b/kernel/rcu/update.c
-index 2a778b8ab4ad..d8e0b5896db9 100644
---- a/kernel/rcu/update.c
-+++ b/kernel/rcu/update.c
-@@ -548,15 +548,13 @@ void synchronize_rcu_trivial_preempt(void)
- 	struct task_struct *t;
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 0697ed0f1c3d..fd5bdd2cb798 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -2005,8 +2005,7 @@ static void uclamp_sync_util_min_rt_default(void)
+ 	smp_mb__after_spinlock();
+ 	read_unlock(&tasklist_lock);
  
- 	smp_mb(); // Order prior accesses before grace-period start.
--	rcu_read_lock(); // Protect task list.
--	for_each_process_thread(g, t) {
-+	for_each_process_thread_rculock(g, t) {
- 		if (t == current)
- 			continue;  // Don't deadlock on ourselves!
- 		// Order later rcu_read_lock() on other tasks after QS.
- 		while (smp_load_acquire(&t->rcu_trivial_preempt_nesting))
+-	guard(rcu)();
+-	for_each_process_thread(g, p)
++	for_each_process_thread_rculock(g, p)
+ 		uclamp_update_util_min_rt_default(p);
+ }
+ 
+diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
+index 72236db67983..cdae165b98f7 100644
+--- a/kernel/sched/debug.c
++++ b/kernel/sched/debug.c
+@@ -1029,14 +1029,12 @@ static void print_rq(struct seq_file *m, struct rq *rq, int rq_cpu)
+ #endif
+ 		   "\n");
+ 
+-	rcu_read_lock();
+-	for_each_process_thread(g, p) {
++	for_each_process_thread_rculock(g, p) {
+ 		if (task_cpu(p) != rq_cpu)
  			continue;
+ 
+ 		print_task(m, rq, p);
  	}
 -	rcu_read_unlock();
  }
- EXPORT_SYMBOL_GPL(synchronize_rcu_trivial_preempt);
- #endif // #if IS_ENABLED(CONFIG_TRIVIAL_PREEMPT_RCU)
+ 
+ void print_cfs_rq(struct seq_file *m, int cpu, struct cfs_rq *cfs_rq)
 -- 
 2.25.1
 
