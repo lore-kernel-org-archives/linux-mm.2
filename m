@@ -4,89 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBFD3C982E6
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 15:15:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 824E9C982E6
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 15:16:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D22506B00CD; Mon, 21 Sep 2026 11:15:56 -0400 (EDT)
+	id 950CD6B00CF; Mon, 21 Sep 2026 11:15:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD28A6B00CF; Mon, 21 Sep 2026 11:15:56 -0400 (EDT)
+	id 903456B00D1; Mon, 21 Sep 2026 11:15:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C0FF36B00D1; Mon, 21 Sep 2026 11:15:56 -0400 (EDT)
+	id 83ECF6B00D3; Mon, 21 Sep 2026 11:15:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9D3756B00CD
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 11:15:56 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A7E091A021E
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 15:15:54 +0000 (UTC)
-X-FDA: 85238119428.16.078FDD3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 2191C8000F
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 15:15:52 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iJ5oC3YT;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6A8FE6B00CF
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 11:15:59 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E8FB814014F
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 15:15:57 +0000 (UTC)
+X-FDA: 85238119554.10.DF418D1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 53A9F140006
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 15:15:56 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BWgeKyzF;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790003753;
+	s=arc-20220608; t=1790003756;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=v2TT2RzKq0ySasMECuIA77pplW9JQNZIwLSdAY2y1e4=;
-	b=6zUMFfy/5AbgFUktE5kS7UjQhDgmTRgoZ2NYTG/BA73a4BVby1qdztKkRnloGklApbg8RD
-	abdfjDkWQK8hrzFhPjwXd1WGBsldZBqnYvOAHLrOvjYwmndB44l37hi+n5Tm0miRXnTQV+
-	D1ooTiFUG5FOUkUrgWrC/irSqBmVdnA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790003753;
-	b=j48viV1QnB+5opDdxkOU0ZeV4W6ZZxuFASxN/rdvTiVHzrvbLCs5EJa0M5XbUe4xomF86I
-	htlnsgsMeI2WMwwHGKVUxhI8ENGP/+uxE4JoT7m116C/jVWbUFB/loR0UINJGAmJSJu55E
-	dPPWRGpN+nyTgiS39t9MVuJOIwuLwj0=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=YZi9IVNfJSY7xxoADBVX0u2PfclU5VsMjaW1uA9UFkU=;
+	b=V2VPuzktQd67GrWHFox0B58tQny/+VCbOPVzf8hDfJ5DnVu6bmRW+yrv7k3DTWw0+1mFCr
+	BHKXzSB9CFLLg+Ad6sRS3dzuESaFyiizQWYuEdAu/F7dmyr7VJOnPnz7xKqrJjgAG8M+yX
+	ONzHv0LH7Js8jqS74YCHl23hzHRlFXI=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iJ5oC3YT;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BWgeKyzF;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790003756;
+	b=ZeroOlShr3Odc/yIrtWtZjREDiCrh1WWMNOwhcIHtqXY8wzrvHGtF04teRThFAugAHBVbT
+	7yCHdY5extjSfpB0BNnDFa3D2jabMtmB9n2njdUza9lXZ0CphnC7GW4DADYuAB2OySxap6
+	oS5rjRJ2STVpU4Fl9QAQ7XFbfAM9Uug=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 426A540AE6;
+	by tor.source.kernel.org (Postfix) with ESMTP id E7ABF60142;
+	Mon, 21 Sep 2026 15:15:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A06FB1F00893;
 	Mon, 21 Sep 2026 15:15:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE501F000FF;
-	Mon, 21 Sep 2026 15:15:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790003752;
-	bh=v2TT2RzKq0ySasMECuIA77pplW9JQNZIwLSdAY2y1e4=;
-	h=From:To:Cc:Subject:Date;
-	b=iJ5oC3YT2dCKI0AwnslGMi+n4gVJufBi1ZPcJxeK/Q5reOxklap/Edzae+xY9CkJx
-	 EekHs+4Iops46s7MuiHT2GCd5FyhyXyn/cp6FM7IEc30WVSSZ5VtRtc1RcqLfCfPRn
-	 Eh5hfwPTKbE4vtdqNUIBvl0k/0tEQQzxYzgcuG4HyCR92j0iNCuuxwNbFodY8YFXPm
-	 p72zzcItP45FCvQcZ1sNhW1c62aMfJImyZJaVne2f/EzFWcx2ygGtyP7L/YBSLLf6b
-	 nXiOX7VG5tG20E/3neCVwZX6jAHV3i69/ByzOwQnXWThoS7oaJpJa2xvu3EbxHWFas
-	 5MfDPTp0M0ISQ==
+	s=k20260515; t=1790003754;
+	bh=YZi9IVNfJSY7xxoADBVX0u2PfclU5VsMjaW1uA9UFkU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=BWgeKyzFjdqIj4tW9+UBBQAuV5uAkWPL1DXxt2dlrnleSInIzPDC/OCzQPyJlVlmd
+	 SzIgeTw1WNHB2g/GbOEemtZPaq0J3qNjQEHL3MrmKqchXkpYKNydcyeErIUVd6z3gi
+	 d7/8lVYaf0FPwXRYx9auipAG/RoQfJjtyYS6idYw+Cslo55S9LnJqk8Y+Fdk4Kujj0
+	 cTVGjte27A9Ghxl5UQ58h24uOTUrDjEPyuQrsv1Vg3/UjoNg6gzHEbaF1J1sRfLWqb
+	 SLEktZvY0vMp+P+b125uSntGrzRLnicOrFueh0ReYtxcXIcLww3zLtMIhiudE59eqa
+	 G7BEEAsrvpO5g==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SJ Park <sj@kernel.org>,
+Cc: Liew Rui Yan <aethernet65535@gmail.com>,
 	Adrian Huang <adrianhuang0701@gmail.com>,
 	Karthikeyan KS <karthiproffesional@gmail.com>,
-	Liew Rui Yan <aethernet65535@gmail.com>,
+	SJ Park <sj@kernel.org>,
 	Xuewen Wang <wangxuewen@kylinos.cn>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 0/4] mm/damon: improvements in efficiency, error handling, documents
-Date: Mon, 21 Sep 2026 08:15:42 -0700
-Message-ID: <20260921151547.78472-1-sj@kernel.org>
+Subject: [PATCH 1/4] mm/damon/core: skip quota score setup when the quota is full
+Date: Mon, 21 Sep 2026 08:15:43 -0700
+Message-ID: <20260921151547.78472-2-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260921151547.78472-1-sj@kernel.org>
+References: <20260921151547.78472-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: nnhxium1t6bp8ibnag5k88huspp5fpne
-X-Rspamd-Queue-Id: 2191C8000F
-X-HE-Tag: 1790003752-987670
-X-HE-Meta: U2FsdGVkX19CqEfQDQyXvNO6NaZiaZ0Y0oJl1qZZ73Hip2Jvbclq2HDj1mfpae7H10ToDVsgkh2O78ilTFBk/IA74OuKKw/2wncTghAcazFFXNl3aMalKW70FlwdIJxOWSyMnJKJEllGzhc9NTGDV+3UHboNRnTWDHnUJzWHTu8HIKjE9IjYaNew356FUkUmD/jbM8hINFVtTddARhGMvsJ3UGgFtpxYyMKYxBGH4JcjuADQ4dPYKDWBIRZitvQy1RlbFyyRgwJT+x2CxYDoaz4zsnMq76ubDId1Q7CDh3KFdiP7itle1NEl84cCxBw0jP50Lbja9/YRvwjdWqNydWUGauuV/6uKI3pCKrzjDNFtkgIfDy9PROI8mKjk33x+1O0DnoIePa4HCum0dnUzcV0OmL4I4ugcdToWvB2wrnPTkya+DsfbjV2Ax2OynwccroLD6f3g2r0m7VCJy20pBj+I67rmIjuNcvwP7btNKWDLh35V/oYyK4MjyItQ+ZbfYTc9mU9upk5nRDmiJWRZ4b3TZ3tEgRfefvO70FUw0mjUQ73xmHBqZzNVDGPkrFYneUF2SxuyWZK7k4SyTWbQSIenH1fetCzs4Bywpx7E9RBhaLH9LdQz0nC2VGECWstqc8dCXdCBRsmzWnsiTHaDEfBLj2R/9MlvS8TXzptPqSbSQ1shGd00aHyI2J7Vv0JHjD5rs4YT77MWtHWN5VbA2F9U/KU1cQI5w6rjY7Rh911igqell96Fm0BdpIEWZv4TdefkVWbmTjWTuOJkKEEs20i2pUP8ZOUbCaTQz2kfF9fnshVv/6B1VueX5ft5wU8IovoVvPiV+ZxLB6Zat7ztmlji2GuwGe1jAgrbbk5Z/jgO0vbFyWkJ8SiE0z0fRLR3spvrmXGmCj5OZJi+6/sSSIMTB/PnHuA87zBTkaRnMSwJNobcC0gBl/2PKYgUvWAuesr7sNW2GdTw87tcDy2
- MhUGOAuO
- PZXRJPleG8el0Rp2pqBmn7vNoHmNr5gnLI5lJ3lB50hnR4NvymZ+kY5iEY4NiMheZ0VjzkafcrnlLRQDdc3o7xbTocoNIUJ1+Phay8ePD0I3FCBwEv/LCCnwdZ0XQvcBJCgzeSRvrzU4cRSzAbLo8rVa5/XfrB78O4Po295UuFcW610UXOnZVCQy5L34UGFucqIOO4suGylJ+aX4=
+X-Stat-Signature: botdh46ktoj89boi4c3i58933qqz43r3
+X-Rspamd-Queue-Id: 53A9F140006
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1790003756-906148
+X-HE-Meta: U2FsdGVkX191pr5FjhDgLWF60pOszcfUf/EbOo1krofY765k2IiNIezJOoGs7yZblPTTVHsQ9/p86vOM2R+LSu0M35kSPvMcOuhAhDdDtuEGGQINimJDr6CBALLTzPvzdz/npa2C/4GKMQ1IysFdgap3Q/N2aqRVvBrwB6+3vIvqx7w4XABbWoundx/CzMc4iWIo1yiwfN9524Ps9SyJLLGUoUQ9tZssVU4vtg18w8wFvSGsstvr/SARaGx8eIdHVfKllb/yxF9ztf6P6XLpFXqECuy4P4rDoQQXg6hLvXNLRrJLsTvTodrLWlIW5uD8QtxRVLyn6mTC1TYfmil9YrltltpbuUDINgI476txmJZYJkdp3d/t/Iby0zyuIiM28QmsM9ig0fjYN7V9RHDZbQDopSZk/YI9m/6cAi0zIyR+kVtoBJOsCmZGVTBw0x8ZiFAbTwF67Z60wczJ9yV3c5FnVIyho2rMP5fYTSiV8pHD5iNb1s84nAz7Hlo2nLzwZbXHsAjvaNQrZpHZ2kAiRcSEzIm6PlLJeLb/hDfjOD8xu1LXhqSBJpgp1LR9kmqwBaJg+IzSDO1Y2mTEOyLe8/DRRtHnBm35+9PIwiK5TK3SqcgiB46osOnefc4+RVKXPISnv9eTiDKR8qOc2gxco27cAXuO1LIkI6t4/7K5BVmDf+wYSK1Xy4rvkgvNMOGRkkTXRzdt/sSUc1f/wNvD1c+BEaxQ1YVZS7XzrE+Enp7KIMaqZACDjOfPq1v+MGFE+rdQjNpIgxRvdLoTHZOOFGvyRxgR2L9Py/NjQERZMNNV8ghKOJJoJeVE0b/laVScPaJBAaaVYJUxd+KsmLF46XoBSh6hjgpgqMpNWZ9eeBajxJTtFRfLSmcYJpOKI2KXsD9T+LsnCGhvzpPharpnpvZ/NaXyZyRGHxC2zQx7SVPc9CAiGa09Ty+VvcRJJWQctXJDoqH+js91TCc17bN
+ vp94OBXG
+ wfpZA8SEDMboEVsv1rpJF77jXzsTL7i1NNSZJbNFMw6hjtI5l11ZPE3EoNDrk6cMZMzK7f5oV6InVteod7k7TpTXTOEEAQpC5ElPuVNBnBb37/G3MP2Nvhd9HM40alhDNFF8yn3ZSN/kknIL/7gcfxSN7Q+IfeUL/Wfv39E4IjVoaT5IKjUGTfDUUm7fv0cEWm9pzDQgn6e59puEOvQvKFRh3ZWr8koc8cK85HxTnGUZjU+AL13WXAkDpE8m3+ReZShHS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,36 +96,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Four various improvements.  Patch 1 from Liew Rui Yan skips unnecessary
-quota setup work when relevant.  Patch 2 from Xuewen Wang propagates
-ignored damon_call() error to sysfs users.  Patch 3 from Adrian Huang
-(Lenovo) fixes typos in comments.  Patch 4 from Karthikeyan KS clarifies
-zero sample interval acceptance on kernel-doc comment.
+From: Liew Rui Yan <aethernet65535@gmail.com>
 
+In damos_adjust_quota(), the quota could already be full.
+
+In this situation, damos_adjust_quota() will still calculates
+quota->min_score.  However, this min_score will not be used in this
+window, because in damon_do_apply_schemes(), damos_quota_is_full() will
+always returns true, preventing the scheme from being applied to any
+region.
+
+Therefore, add a short circuit for 'esz < min_region_sz' schemes to
+early return from damos_adjust_quota() before calculating min_score.
+
+Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
+Reviewed-by: SJ Park <sj@kernel.org>
+Signed-off-by: SJ Park <sj@kernel.org>
 ---
-Note: this is a batched reposting of DAMON patches that were
-individually posted and reviewed by the DAMON maintainer.
+Changes from v1
+- v1: https://lore.kernel.org/20260913110407.32558-1-aethernet65535@gmail.com
+- Collect R-b: from SJ.
+- Rebase to the latest mm-new.
 
-Adrian Huang (Lenovo) (1):
-  mm/damon: fix typos in comments
+ mm/damon/core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Karthikeyan KS (1):
-  mm/damon: document that a zero sample_interval is accepted
-
-Liew Rui Yan (1):
-  mm/damon/core: skip quota score setup when the quota is full
-
-Xuewen Wang (1):
-  mm/damon/sysfs: propagate damon_call() error in turn_damon_on
-
- include/linux/damon.h | 3 ++-
- mm/damon/core.c       | 8 +++++---
- mm/damon/lru_sort.c   | 2 +-
- mm/damon/sysfs.c      | 3 ++-
- 4 files changed, 10 insertions(+), 6 deletions(-)
-
-
-base-commit: 05b2dd9725f76b0024d387ed2226d1ab531620ce
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 2258b72da7a7..98c767b9e6ef 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -3368,6 +3368,8 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
+ 			damos_trace_esz(c, s, quota);
+ 	}
+ 
++	if (damos_quota_is_full(quota, c->min_region_sz))
++		return;
+ 	if (!c->ops.get_scheme_score)
+ 		return;
+ 
 -- 
 2.47.3
 
