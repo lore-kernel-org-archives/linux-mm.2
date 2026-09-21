@@ -4,104 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E12ECC982F1
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 07:00:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49F5BC982DE
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 07:01:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 031196B0099; Mon, 21 Sep 2026 03:00:45 -0400 (EDT)
+	id DA34E6B00E5; Mon, 21 Sep 2026 03:01:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F23B86B00E2; Mon, 21 Sep 2026 03:00:44 -0400 (EDT)
+	id D28676B00E6; Mon, 21 Sep 2026 03:01:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E123B6B00E3; Mon, 21 Sep 2026 03:00:44 -0400 (EDT)
+	id BC9786B00E7; Mon, 21 Sep 2026 03:01:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BD36A6B0099
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 03:00:44 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id EAF081604A1
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 07:00:43 +0000 (UTC)
-X-FDA: 85236871566.04.A98E8C3
-Received: from mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	by imf08.hostedemail.com (Postfix) with ESMTP id C9969160011
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 07:00:41 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=I6PFtfnL;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf08.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 9A9E06B00E5
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 03:01:16 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EA2841C2E6E
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 07:01:15 +0000 (UTC)
+X-FDA: 85236872910.06.0A37DDA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 5BEA520004
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 07:01:14 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m0fJ9EKu;
+	spf=pass (imf31.hostedemail.com: domain of patchwork-bot+netdevbpf@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+netdevbpf@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789974042;
+	s=arc-20220608; t=1789974074;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UQVZJ78aP0lkQNEjnZpNMmJch3AXFfyZ7AVo3FFpGzY=;
-	b=bW7YmZxfyOypnfLSPdDeRHw/yWn1gVxWYRYhpUB9Bzw3qgXDTXpS7OBFUNPDluEn8nwNdA
-	zqlgQFoGqtw3uoI88ltZvoNPUjixlsKoNJPdW401F75dJjUOQcx2nmivC8+6U7qC3Vp6CI
-	1sLP2C+67zITuRgHCcE+qwO9pkzQze0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789974042;
-	b=4ow6mbRv1iUDwTV2Ly0cJkJVmwg/LBDnhGBK5ycAf7aSg2iktHhh8LPOE1QKdMSWZYML3a
-	q57RnTylLB4e/2EbJs3pgTUG1Oq9eMcJ1fOzv/umokPhZ+A9gRAePDezgXh9WpJjPr1gHR
-	xK8+vVkWnza7SJaMxUeIbcqPgnE7BrU=
+	bh=i78DpXU6G1P6U4iTP5gmX5SRaeIRgR1YaUqQ+TZuQSU=;
+	b=kFjL5AV2RgajrAnshtCUeEUdYrklYGFe2RYa/hJTRxKaA3r4Ako9hnz6EfnqHsG7oz0Bl/
+	cqnX3Mh3hqdrp1zu4UtxhX0KwhgTJ0cLbqdOdfiK8dHou7wmw7XtzIE3vhKQWtGIamvLkp
+	t1jo3KCWnDv3USoYD06lL9lTTdeVZVM=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=I6PFtfnL;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf08.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=TLZQlQIDzt2OohWOO5wD38jaj3Gdn2F1Ht1VsE34Ej0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789974040; v=1; x=1790578840;
- b=I6PFtfnLwAItmk5ez6jrUL842Fp5IqmdFIy/CLempbTd9dRNLwt0e1m45kgHAwjtXINEYp0O
- Y0Q2roic6ZdTUhReWoIjh7sxlul64e4Ki/jC7lQNY2VSG21brJpeAgfPjvkyCG2+gB6ry4aGB/q
- 6in6CziMVVAW4Eh9y8dfa9Gg=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 6ebfb9316ecf8394;
-	Mon, 21 Sep 2026 07:00:40 +0000
-X-Mizu-Trace-ID: 6ebfb9316ecf8394
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <01cfa2f8-753b-428b-932f-470a46221b4d@linux.dev>
-Date: Mon, 21 Sep 2026 15:00:21 +0800
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m0fJ9EKu;
+	spf=pass (imf31.hostedemail.com: domain of patchwork-bot+netdevbpf@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+netdevbpf@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789974074;
+	b=tWJEzr1Z98BnRXwrs/NQKO5uMFQJRySvZHcrz4GwLhJA3KX59TG7KRqa8u8gXoiL5KofUi
+	B0zfSaQuFFqaES+WsX2xaXDFCfJG9WCVxl/S/u5R7FU3n8mIqtW9a2pbhzGTrP6uCdDI0z
+	l8CTDhGeimYzk62gg5HByJjB5w1uJSE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id EC17B61B71;
+	Mon, 21 Sep 2026 07:01:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D3F01F00893;
+	Mon, 21 Sep 2026 07:01:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789974073;
+	bh=i78DpXU6G1P6U4iTP5gmX5SRaeIRgR1YaUqQ+TZuQSU=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=m0fJ9EKuEOApABqdpECx+B0q8OocMmr/FLt2AthD34JiaM11GD+aTrxDCpHVGyIM4
+	 m6XwioEK/PAGKvQxZcI14MOiFhkJa/vQJ4N8LDA96DoEBeA9jgvE6FySzjWEMrEI7M
+	 0otTHvecRE5IIGSEYybo2kC0ExJKmpE6Adsiu9MLzYwHIOGEq+p3vmn8n1tKoX1ETW
+	 NcmMzdjNfbadpRqunWbRKD/cI+3vd1lWwDrog6jhV16oTLEJ9bcdHwwo3U2BWaj+tm
+	 7ZsgR0rP6gAbD8Xfu9CE72IVjenPXYyBW9taNAFLXAU3j1CuyrKK1bBm9YgMk2MazH
+	 1qvBjGR/Le7sQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 939BC3926266;
+	Mon, 21 Sep 2026 07:00:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 03/17] xen/grant-table: stop setting PG_private on
- pages for grant mapping
-Content-Language: en-US
-To: Zi Yan <ziy@nvidia.com>
-Cc: linux-mm@kvack.org, David Hildenbrand <david@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Alistair Popple <apopple@nvidia.com>, Suren Baghdasaryan
- <surenb@google.com>, Muchun Song <muchun.song@linux.dev>,
- Johannes Weiner <hannes@cmpxchg.org>,
- Andrew Morton <akpm@linux-foundation.org>, Nico Pache
- <nico.pache@linux.dev>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Kairui Song <kasong@tencent.com>,
- linux-kernel@vger.kernel.org, "Matthew Wilcox (Oracle)"
- <willy@infradead.org>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Juergen Gross <jgross@suse.com>,
- Gregory Price <gourry@gourry.net>, Qi Zheng <qi.zheng@linux.dev>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
- xen-devel@lists.xenproject.org, Ying Huang <ying.huang@linux.alibaba.com>,
- Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>
-References: <20260920-remove-pg_private-v5-0-bb68b6a21869@nvidia.com>
- <20260920-remove-pg_private-v5-3-bb68b6a21869@nvidia.com>
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20260920-remove-pg_private-v5-3-bb68b6a21869@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v13] mm/bpf: Add bpf_proactive_reclaim kfunc
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178997400515.2390936.16367635369472910068.git-patchwork-notify@kernel.org>
+Date: Mon, 21 Sep 2026 07:00:05 +0000
+References: <20260921030854.17858-1-hui.zhu@linux.dev>
+In-Reply-To: <20260921030854.17858-1-hui.zhu@linux.dev>
+To: Hui Zhu <hui.zhu@linux.dev>
+Cc: roman.gushchin@linux.dev, inwardvessel@gmail.com, shakeel.butt@linux.dev,
+ akpm@linux-foundation.org, andrii@kernel.org, eddyz87@gmail.com,
+ ihor.solodrai@linux.dev, ast@kernel.org, daniel@iogearbox.net,
+ memxor@gmail.com, martin.lau@linux.dev, song@kernel.org,
+ yonghong.song@linux.dev, jolsa@kernel.org, emil@etsalapatis.com,
+ shuah@kernel.org, david@kernel.org, baohua@kernel.org, geliang@kernel.org,
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, zhuhui@kylinos.cn, jp.kobryn@linux.dev
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 5BEA520004
+X-Stat-Signature: yr73o41e3w1mg6h5mnxpz4gg86hac59c
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: C9969160011
-X-Stat-Signature: 96rex671tfgyhd189sc3urc9b4smqke4
-X-HE-Tag: 1789974041-724526
-X-HE-Meta: U2FsdGVkX1+kxxlgx1UerCS9qtY9qLf4//tnH9ziJpFJg2E2DsjHgAuhlFXVrB0InWrMx3A7cVASAnJS1MtFREu09kTX3iPQ+dRNeb8RYjHN3n8A9V6afiCNtNWaIlQpTUtTndcuEyYmC4vq5zkOXweoR8ZV4JsexWHAMWOoTr+eRkEseHSsm3Kp7hw6gnOuYSlyod2YkIZ2aVIwG7ox4/i1BqotlkbtvuvtN5//0BqYyydutMaM6hhf+QDUtwDWIoAJEv1Qoy/0Q0oYB7m502TK6lzvkP6pGZn0Wy7HrwHLiAZ23Oul5E/KGuj4CmdxJIXouDwMhaKAfFtMiEjl8HT9b1NVEiuBHRXIcaNVPIgLhrcMtggfgk/XBEI8hOrX1xAeyYyNGD33H5H5oVd/xJztB/p50HBgyJS0hNN3nsn2E/I+VvH6rgn+XjBp3qajILc5JW8Fy17n6SZgkmhblNECHN4UFf2XFN+OxEFNK6pfRc3tlaNPobdhPmMQW9ogKnG9qdEF29eiN2Y0MpeJVcx5FUzNkF2qc8rVBaCFaEKrh4SBeYB+I2ue8pet05KUyYsl3ron/LbsBC92CowQhyOPKuU3ADwJyt+HkVFxEe5RLMEx5ygm6D8HvXL3DDUz+gPaubGfURiyDkO1aBq6cfJ5FGlaXWGoMYh5D+OihmdowPjRTZooVF4rZduolV6FypvpCWSNjL5XzWcv08Ot6t7hAqofK0ykstmS1+4vpwFBMQ5/IzGg7KB04mFMOxrX3Lyu9vBI0ZbGd8owdoK+CituUEAxcHevpO3ntSGlWHVyehVU+S4ftE6NAm5It1+r6P3MBNvdvKndOeVMtFkQ04j3R2iLuGLQYlGj3ZdiuIF5cdLGXUjD8K2uCNzz0F2uNrKI76Dv11U50pTNB6LNxAFQZpMVk1bIyS9anJCbyvpLV0iqopJveDqFxnbSjrZZUzn6zhcWD+TKh1mDbuN
- EE42+gW7
- 0DVhCBTafZt5/NFx2apn3E5TRY90FZDRecPzoFoDnQRrUogVNv1iNhnKJ6lo6rA9hHIPpv5gUUBXhYx1kG0whC3ENfhcPRldtol6WKlszoVOF32qnpIHFcgo1hNPQACzAyUhhR0JPY7gTWrrsWHgJhXiL+Dbzx4UTw1X1UTbYlnBmDgyL2S0RYpJ/xzDyf1EVYM6FN2H3wH/9yffEr2AyQT7DTDNlbLDyPfgF5lGop9ft0RCxsqRxFxvaSkvby6tX6SlODRlNbAh0SzYCDhLKtXdDFik3OmT1YtG+cXa1EY8SK4fudjfK0Uzmvh/K8Uny0DBuf+BgQo5EJxEyH1fSS45tqPWV1KaknIlmh7Fnc+yrtzRByF367jPs/Xxu7IgAlyLRR3skAYnegMnRA2gfSRURA5K3xLKeYhnbgwkhENrgKDH6gKNat6IiyPJZq81FqwnrnJn2v6RtH20G/Bq4X5ZnOTIcYz2oX4zXACgfk1S0d57sqbqEn34NDPjmQBuo57KcGOYMygInVDAcEm66gkPIJVFTcsWR1p7D
+X-HE-Tag: 1789974074-754183
+X-HE-Meta: U2FsdGVkX1951NzEmY4tRwsY4NUly25dwKKeTGK2PJacOTnlrV2kbvSJIlA5MxSrSw0/mAhQ2oRfKzKHFd85qxiq/UJp3iAhFvr9OdhOhHEK1w+tJErBVVOK0dJ/x36cjC07eJ0ebnVOZwOuxUq+H0usbvOh839e+mEEdgJC8/eE0ibme5RWeCXbYKLnfC/Gem8h68e0IRAnwWhLadW9Lsjy8iE3bXm1HEGOKWNy3p9HQFP7i/TPOc17EzLBdaRr4Rlezge2Em2CYOF1z+oXHEheN8soIwdtu2HTm+51TVdUCRX6R5bEWfebcSw9JSVM1qauat70918KcKdYaf0ElBVd0+D3pYfE8OlZqDfM/p+/T9OaomnOVW8DiwQa+nF1Z8hjQ1+TUDgps6+CRxDUjvesvwcTrJe40Dc4o1prEMtadBODyaOxrNU4+s1TIG87flG00YrbSYJef44Ypmby9q3P+ZGlk+XlowyBpx/nsAg4NcyGNE3GJv62X14BMDVh7cZb9HMpMKtMEqNmxawQPDDJAIfANryMEJ8YwVfaeH4J/IpXUIKTnmStB5MqfLotLTlL8LKAEoZlfAurYOB2Xe+M4HUoQZ0RoYhp+ePzzqL1YS87nSXN1mqQ9bS22VN09QwEVCx5DzetA6OqwdXXqNhXJFxDSJkd6/U3JlkKUbgele2CTm9AIYmaHeRU8DJPtrvgWQk8kjSneoIHKsCfUpFui40FedYKositc2f1AqhRpZRPUr0W1yHf1LvDsyFiRwjkqX4pWBpW6rrfCXlEy19Ltkx9XX+FDHpInJUyY7Fn2XaUR7KrdAvfjQ8CATb3zo0vNlul6FteHMZBMRN09W+rnq2YWjJwRV9FCpec7kgmx9QkWAf1Y98s2gKryCaio0MWeeRggWP+fmX1wfZgpJw1KN+Cuw13m2h/Ls0OjtbH8vKNmWj2QY372dkaL4cNBg+z/Exyd9ON5kxs9te
+ Zx8T438I
+ z/lN6IK2WoQOZhZOSL3hwpcnZXhKOSt2u3FCWfzxO3FDnxSE5Zr7R3izSCox1gIbwEziIA3WrUBa8cHIkzRcfbr8Y5CLESN8M2YYD+xuVDgajq/JXB64KKuBAvHo7ArfROzIWog6YFqSlvL6dOUZowSOkr4/qf12/Y1bmFru28T9teIGSWRRsERUIS2HHc1ce08pF88BGRdgjvhSbMLTYszbBO2XHF5Hh5zAQW4pX1VtZDvZIZbty0HkT5TNgG2OVRHQQyDdc4d8pfU2fSmLgrxNkpl5DqQWFafvpbJIfuAqWPOnhaEFT5JDo5y6aQOJTeJq5JeMAsynGiU5Md3EeUwonRzn9fH0VaQZoHNfgg1vlyi1BZzQN+lMijnYmSqjWeb05eIIsmjFrNB1ZpdB+rYhlquScIUaT8zXw7ZVU1OdcLHRtM2GMkddYgcfJrUQ+MIeSEIEul7wn/vP+VGES+77noTN408IhRhI8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,30 +101,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hello:
 
+This patch was applied to bpf/bpf-next.git (master)
+by Kumar Kartikeya Dwivedi <memxor@gmail.com>:
 
-On 2026/9/21 10:27, Zi Yan wrote:
-> gnttab_alloc_pages() stores xen_page_foreign in page->private. On 32-bit, a
-> pointer to an allocated xen_page_foreign is stored; on 64-bit,
-> xen_page_foreign is stored inline. Checking page->private != NULL is enough
-> to tell whether a xen_page_foreign needs to be freed on 32-bit and
-> page->private is zeroed unconditionally on 64-bit.
+On Mon, 21 Sep 2026 11:08:54 +0800 you wrote:
+> From: Hui Zhu <zhuhui@kylinos.cn>
 > 
-> It prepares for a future commit that remove PG_private.
+> BPF programs can observe memory pressure on a cgroup, e.g. refault
+> stats via bpf_mem_cgroup_page_state(), but cannot act on it:
+> triggering reclaim requires writing to memory.reclaim, which BPF
+> cannot do.
 > 
-> No functional change intended.
-> 
-> Assisted-by: LLM
-> To: Juergen Gross <jgross@suse.com>
-> To: Stefano Stabellini <sstabellini@kernel.org>
-> Cc: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
-> Cc: xen-devel@lists.xenproject.org
-> Cc: linux-kernel@vger.kernel.org
-> Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> ---
+> [...]
 
-Nothing jumped out at me, feel free to add:
+Here is the summary with links:
+  - [v13] mm/bpf: Add bpf_proactive_reclaim kfunc
+    https://git.kernel.org/bpf/bpf-next/c/48ea1ba704aa
 
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
 
