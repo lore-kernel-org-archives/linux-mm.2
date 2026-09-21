@@ -4,91 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C071C982ED
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 15:16:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7AA2C982E6
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 15:16:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B5926B0099; Mon, 21 Sep 2026 11:16:06 -0400 (EDT)
+	id C38866B00A1; Mon, 21 Sep 2026 11:16:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 88D396B00D9; Mon, 21 Sep 2026 11:16:06 -0400 (EDT)
+	id BE95C6B00A4; Mon, 21 Sep 2026 11:16:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A31A6B00DB; Mon, 21 Sep 2026 11:16:06 -0400 (EDT)
+	id AFFC96B00DF; Mon, 21 Sep 2026 11:16:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 58FCE6B0099
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 11:16:06 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 506691A01E2
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 15:16:05 +0000 (UTC)
-X-FDA: 85238119890.26.FA3F4CA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 915EFC0003
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 15:16:03 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lNF9xyVL;
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 88D726B00A1
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 11:16:34 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 15B7CA01F4
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 15:16:34 +0000 (UTC)
+X-FDA: 85238121108.06.173AE04
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 96A0240006
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 15:16:30 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	spf=pass (imf12.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.195 as permitted sender) smtp.mailfrom=alex@ghiti.fr
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790003790;
+	b=Qa6ISDAw5daNIMkPmr1CXavmyDTLsGcXfp2VaGXkheN/o1d97egjaYW/Bv5bru71Md7Ky9
+	sIV77Yylg3UlZwbqn4FtEBZBnbLXE8jf/s1ftAwF0wxgRpw6DZzzctkMJFJR17hj45ADpX
+	U8s6RnyMWrJw+nocvqaLWS2XIvEWsho=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf12.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.195 as permitted sender) smtp.mailfrom=alex@ghiti.fr
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790003763;
+	s=arc-20220608; t=1790003790;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hOvG/uo1bcbPermo8brtuzKlqeWj0xatwdIh6bjgz5k=;
-	b=1t4AwKs4lQjl3tx648F4on5hEvawjBjwWuIWLdx62TKt3gew2oG4/g8BJaDsXBTl3kfOKh
-	p6HboULicvx9HUzLjY6bWn3ttFEwjlYzpMu1rR35fFRUjP0YJmK07LYI/2X16bzoYuxfXt
-	y/18aF+99nSMaf3KorB5NLga9GVeKo0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790003763;
-	b=gotZCP75JiNzMntyf4eqmgF/o2XAN4L/QgJ82wTiN/kTuiS7ZRfogeTTYncnd+xyD49gmT
-	eS7JZB3ZvsJsMaiEu6Lvi/1QLYInx8c5xSc/uE37i4hlhakbq00XZ4ZdWZgDG/gnZpK7lZ
-	+Ih0EhU2eQWAODD2wILB/Eo2BOjocQI=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lNF9xyVL;
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D7F8842A30;
-	Mon, 21 Sep 2026 15:16:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C537A1F00893;
-	Mon, 21 Sep 2026 15:16:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790003762;
-	bh=hOvG/uo1bcbPermo8brtuzKlqeWj0xatwdIh6bjgz5k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lNF9xyVLj41JefydyGx3JzxqT5j0YaN32U2Of7wQEspNIopu0YEFYUyAkCkfCw8cr
-	 FCtVPu3/wHKKG2DsljiMyt/yZuL+/Fa9aui+A+uBZg+Vc0ti+qEroNjZSkvpNgGKJU
-	 pNsGpvuSAVaY6jQI3hobjXB9oLvLsEGHwMZ6jiRwnfRGbvr5e6UFh59vJP+irwm4ql
-	 5pEk4jcRocgT27DGtPS0DzBuT4nx/PKL6n0cuBn/SgbBl5RdKteVS5VasCmucA3UpD
-	 B3YJoRf5mzIC/TkyG4Hv9YEJP8wXB8hq0DYs2IninuqjATB0FNKhXm9VimeZ42JP0u
-	 xCn1LrwjvY1tA==
-From: SJ Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Karthikeyan KS <karthiproffesional@gmail.com>,
-	Adrian Huang <adrianhuang0701@gmail.com>,
-	Liew Rui Yan <aethernet65535@gmail.com>,
-	SJ Park <sj@kernel.org>,
-	Xuewen Wang <wangxuewen@kylinos.cn>,
-	damon@lists.linux.dev,
+	 in-reply-to:in-reply-to:references:references;
+	bh=s7sui+l8Lk8Sg0RbbNCSGvk5FN7ev3MFPGREbjtEQec=;
+	b=O6kH+WVshMS9QQY9k/GTPn1M8nHLcuC/G8kDdEC0TIAxjvcd1nJIwn+ZoGVe9wt6IV45Nv
+	TsQtYGEaPHhhNkj7nod9ft/+BZaesTAqJ1x4DtOG78hBDuZDvTinCVKMvX8ucXD+bV3keX
+	VHXLMuUYsWxVHW02NhHDS6+jgYdF8v4=
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 68AEC20CF6;
+	Mon, 21 Sep 2026 15:16:22 +0000 (UTC)
+From: Alexandre Ghiti <alex@ghiti.fr>
+To: Johannes Weiner <hannes@cmpxchg.org>,
+	Yosry Ahmed <yosry@kernel.org>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>
+Cc: Kairui Song <ryncsn@gmail.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Wei Xu <weixugc@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Kunwu Chan <kunwu.chan@gmail.com>,
+	Tal Zussman <tz2294@columbia.edu>,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 4/4] mm/damon: document that a zero sample_interval is accepted
-Date: Mon, 21 Sep 2026 08:15:46 -0700
-Message-ID: <20260921151547.78472-5-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260921151547.78472-1-sj@kernel.org>
-References: <20260921151547.78472-1-sj@kernel.org>
+	linux-fsdevel@vger.kernel.org,
+	Alexandre Ghiti <alex@ghiti.fr>
+Subject: [PATCH v6 3/3] mm: zswap: drop cold writeback folios via swap dropbehind
+Date: Mon, 21 Sep 2026 17:13:04 +0200
+Message-ID: <20260921151306.625134-4-alex@ghiti.fr>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260921151306.625134-1-alex@ghiti.fr>
+References: <20260921151306.625134-1-alex@ghiti.fr>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 915EFC0003
-X-Stat-Signature: aum1x458jt5m5xu615djgoutazp7i3nu
+X-GND-Sasl: alex@ghiti.fr
+X-GND-Score: -100
+X-GND-Cause: dmFkZTE0SYM0WXNjdwubovITJrTYXyTSCwr/PlRPkkCz6KhxaAixi/QamYFRTWojpv77hYY7HjUcktzM93E0S7aP74KErDRnXAJ+8qBUZxDaDQ5JnexSaYr1F6K/qzS9RP6Q9NI0CX3RagQv2c/zqGxQWHxXflkOyoED1Sdwit9/i76dx7VxOUiBK8Q/gl4KmGjDzdQItBSNGWeNMb/7oLm/w9+WdgNkyz1o/4STbT4WL3/jko4pyhjinYBBZBp9KOF1J5FSuZ+4olXkmIuTnf3/D2n3GGfFEmJXsZU+tWWpUdrPtJniqkZUNoy4ZSEspEQMmwoGgTXrRtbYeOlg8rcIdNUZWXA9n5/PlSFk5VE9dwj5B2btg/LeyHrb4ABOY49XQIHak0YNNcycGU778Jq/RcxfzfS9/OkijGlqH6xM8TJRPm34TO8QzBEEplujliQBBl4g1MrFlGeuIL/HWzCO+aXF9QWrFXo3wwSNPvN70PwS4JpAAM8WVlDhfhDJMRKJ9RH2d4/ZKSW2PYTT5Yj+vqvmHHgVMLlTov0N1kJn9YynFmvhzKCargpgIRdwwp9rEjQ/9He1XjXC4a4bWw9fxO3R09ZKij8kswkeSR3egkE8ZzzZEU6Fzzhr//lwcRaGtZZAsXf/Q/YSr4s+b8Ncxxi3GEt0Y/7qxKV+jvAvbAw07w
+X-GND-State: clean
 X-Rspam-User: 
-X-HE-Tag: 1790003763-409286
-X-HE-Meta: U2FsdGVkX18o1FQaTXGJ0jd2+PDZbEJMonvru3CcCAqgvqw+9bnhH7aYgd8z8m5ziF3z8m380qG5LzmZC/SsVRUOzzLhvVI+/fZfYpVaJJX/YUyy3cfIIeT7xANhtwtHKssMOY+tX/wwBNUJ5UoZwl15ba6uCrmossadNnCZuCEt89/WfB+81igaPyYp5q45m/Yc7n9pWgvBI7dgGLqfVZIt2lXyo903wX5dx+ZuwzPE0m+JjFXdJv2BniyCTRa2akpghpRs5FRkieFAB/LrhsAibz5Owr9RRPMcYxHTBmc6By7nJCJ8r/8ToLEt+CJqVeZWPE5kMWIGoFq/yuQEgiU6DdWRzQKPDg2tdP5iuoMmTegy/NpeM4pfuTiu5j5Ydj/nYozeE+rXpRCXqWlv1HvAaTBwYe0thMsUwHk9qyWyJGiHolpy1V0sA4lamldlRKQ5y08NnlCDMM0CfMghXue6beY4fBDZgFEDErZBBZWVIC40kmgHwX1r2mEuQD63ClkMx6OgV0Ifdkg195zSjw4a7zU2kz98colkHnswK1e/amRMPGK4VsgwFOTY67opeaa8EM8zGsqLOv8aPMIIffymP8YeEdscJYlGOg29zMJewjaMutiU4cFc1Ku8z3WYdWVmlsvQr3hlj08ZQJL2/IYyzyL5PHerjClOKiul/rr45AMPXZcPXA8yqCnrO5u3nruCfftEpDxXwLvbr/vO1imJvE5+URQW6gJHoDY0PMVj4D8ZSADCQXXsPn1JbVy4jJV6SWJ7vbNH0uhqywh7CVJcaGZHJQqEBnttxNQUQ9WGyuVadVHg4wAjUF2cAiqA3apu6yNNy2taOiiIII/DKojClSUGDoFJXdIdePLDcXex3PSyzFM3+PyWRM3JzK0735LTAPytFlGpCd1kMa1F+dnCDTTZY2aiYAB3WfWJcO5wAL+ogufk4c2agkH/3KhlLMOpUMrbRs5HFrbvOPC
- Ob/YUC2j
- DG4E4DjzFepdVEIpYD/jravhH6yNeCEfzY+x4ChWSqFAnaj8e0z3t7YIK4I8vkd8agfj3BmwrICvd3bshj2bAg+MAfNTllGgxaFHYnArhsmEhAYobpyoEClMpS1Mzu69rbQbJcsOM3Tp+hKng+BltSr/HYh/0Xol+nCZ1VHHQg58n7r2pydMa3ElUckYcvd9hiC7cC7xTnW9M+CI7oU6qYlw7vWelTw3+J8dzqZM82I2yISpKHhmsAQGsggN4nBZLuluBDrxITZkMjsw64QQG483g22l0DKcTZFY/GdOXY7DJU+LAc5IScuLFWKnvA9E71LiBRp8NpT2BVhQ=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 96A0240006
+X-Stat-Signature: 138keihjsw3b6wiybpgsd3moweif7r15
+X-HE-Tag: 1790003790-781361
+X-HE-Meta: U2FsdGVkX1/1IOTv+0gKa/TynqpPt0JU0+Xg/Q30MA7nGp/QYoQ403b7P582XK8vjqxuljsjh/AfPe7dDAoQHu4r20eNDckHWseE8mdfc2qtEEeZfReIYgD0WR0cyoxRe7X4z19/3961VZ4tO8628s+1i4gVHQ77/x3lfNneG/qDfEEqQRWihV7iMN3XHfrgoD6ea7aSubKaogWBpCv52TTR+x5XKPAtmrzs8YwCGcx4Xw6QEamw/jePxtKQJNYYZ2qxhX5mROd6IztqhreC2C5U1GVQCMhfNpPqbC4qwyleIYXiImgUKN67165h01Z/3Aq//wreyBbNACZacFUqfv6IMgit1t7HRH5btSCPDtaqPI/xvJAci3QY/+mZPcGBEXQM5Wy9OY6x/eMR/B5uxzbHb+4opoMfxFKkYbWWDfvyq6HgyTn9AcbpVFWBePGo7Mgs6kVz/L443p2UD9XOVewekj21V/tLrDTyqHsjp+A2PWWhgkJroAYvHo5Zkk31hLgD1M7iGGew9NTat8d9E70iz2kjTLO5t9xe4bRtu94oX+ZEdi4F9zbOs4sOFOvsgeJ4YuSazo6fgKe+/81G4rUoyTgg9WuzH2t9zue+pbWULM5vrWSO7u1ZCRWT+4LtpWMIWOdDuNyuL/OC+V6+La1JCffTiKG09ztbGIBSeA+c+tm0tFGj6c15V7Pc6crdPdgpjJTZtLZVkwwZeafkiuUCVYC35vM/XhYd+MtWrUA2wHxMsIQwoL4v5eIptzUcCmi9azTGpOAjpv2lmyHe+3Ru8nIk3EsB5DyX4rBGW+6bBalJleGWb/xK9tgM3hAKB/GuNRK7/ZUlhMNcGzrLr5ewyyiAa+lASk6TIPIVeTWSCOpKoaYb8JXQ6ks0E3CgEvnnknMx/41QMm6aTIa5/oWFH0KKP2iugJnM+IQGEWhHXnpAl/AfSpzPf1jHQfvh7YRgeaXCMq3cUIReCHG
+ D7o5jTnA
+ 2MbBVzysYKNVuVI24d3r43WG1BPjnukL4wUtnRug+92ZUjL3W7UGKY7pF4D0O1gljCvcHd3FGssIVzrY1fdhHoMqAqfbT+dGUNOdAle//hqTurqL669sbHPonEko1yZ5wBBJ6FMZ4O3DhWISI/QoxQZS6gKnqQxEXkHuj2HHSiJFBqd6/QRb6uzTLYBOVgkUDWDkf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,48 +106,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Karthikeyan KS <karthiproffesional@gmail.com>
+zswap writeback decompresses an entry into a fresh swap cache folio and
+writes it back. The folio is cold by construction, yet it is left on the
+LRU for reclaim to find and free later, wasting a reclaim scan and keeping
+cold memory resident longer than necessary.
 
-damon_set_attrs() accepts sample_interval == 0.  This was reported as a
-bug in v1 of this patch (rejecting it in damon_set_attrs()).  A similar
-patch was already declined for the same reason: a zero interval is
-intentionally supported [1].
+Allocate the folio off the LRU and mark it PG_dropbehind so the swap
+dropbehind path frees it from the swap cache once writeback completes.
 
-Document the behavior instead of changing it.
+__swap_cache_alloc_folio() evaluates a refault on the new folio, and
+workingset_refault() sets PG_active when it looks recent. Until now
+folio_add_lru() consumed that flag and __page_cache_release() cleared it
+once the folio left the LRU. This folio never reaches the LRU, so nothing
+would clear PG_active and the folio would be freed with a
+PAGE_FLAGS_CHECK_AT_FREE flag set, tripping bad_page() under
+CONFIG_DEBUG_VM. Clear it after allocation.
 
-[1] https://lore.kernel.org/all/20260722094304.3132750-1-dayou5941@163.com/
+That is a workaround: the refault should not be evaluated on a writeback
+buffer at all. A fix for that is on the mailing list [1].
 
-Signed-off-by: Karthikeyan KS <karthiproffesional@gmail.com>
-Reviewed-by: SJ Park <sj@kernel.org>
-Signed-off-by: SJ Park <sj@kernel.org>
+Link: https://lore.kernel.org/linux-mm/20260911092012.92399-1-alex@ghiti.fr/ [1]
+Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
+Suggested-by: Nhat Pham <nphamcs@gmail.com>
+Reviewed-by: Nhat Pham <nphamcs@gmail.com>
+Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
+Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
 ---
-Changes from v2
-- v2: https://lore.kernel.org/20260918131301.75879-1-karthiproffesional@gmail.com
-- Collect R-b: from SJ.
-- Rebas to the latest mm-new.
-Changes from v1:
-- Dropped the damon_set_attrs() rejection and the KUnit cases that
-  tested it.
-- Added a kernel-doc note on struct damon_attrs's @sample_interval
-  instead.
+ mm/zswap.c | 33 +++++++++++++++++++++++----------
+ 1 file changed, 23 insertions(+), 10 deletions(-)
 
- include/linux/damon.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index 836353c4ab9a..844b175120f0 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -836,7 +836,8 @@ struct damon_probe {
- /**
-  * struct damon_attrs - Monitoring attributes for accuracy/overhead control.
-  *
-- * @sample_interval:		The time between access samplings.
-+ * @sample_interval:		The time between access samplings.  Zero is
-+ *				accepted.
-  * @aggr_interval:		The time between monitor results aggregations.
-  * @ops_update_interval:	The time between monitoring operations updates.
-  * @intervals_goal:		Intervals auto-tuning goal.
+diff --git a/mm/zswap.c b/mm/zswap.c
+index 0d2efe21f18a..dc8425d6b21e 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -1014,7 +1014,8 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
+ 	 */
+ 	if (IS_ERR(folio))
+ 		return PTR_ERR(folio);
+-	folio_add_lru(folio);
++
++	folio_clear_active(folio);
+ 
+ 	/*
+ 	 * folio is locked, and the swapcache is now secured against
+@@ -1028,12 +1029,12 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
+ 	tree = swap_zswap_tree(swpentry);
+ 	if (entry != xa_load(tree, offset)) {
+ 		ret = -ENOMEM;
+-		goto out;
++		goto err;
+ 	}
+ 
+ 	if (!zswap_decompress(entry, folio)) {
+ 		ret = -EIO;
+-		goto out;
++		goto err;
+ 	}
+ 
+ 	xa_erase(tree, offset);
+@@ -1047,18 +1048,30 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
+ 	/* folio is up to date */
+ 	folio_mark_uptodate(folio);
+ 
+-	/* move it to the tail of the inactive list after end_writeback */
+-	folio_set_reclaim(folio);
++	folio_set_dropbehind(folio);
++
++	/*
++	 * Drop our reference before starting writeback so the swap cache holds
++	 * the only one: the drop in folio_end_writeback() needs that for
++	 * remove_mapping_set_shadow() to succeed, otherwise the folio is
++	 * handed back to reclaim instead.
++	 *
++	 * Nothing can free the folio in the meantime: we hold the folio lock
++	 * until writeback starts, PG_writeback then blocks swap cache removal,
++	 * and folio_end_writeback() takes its own reference before clearing
++	 * PG_writeback and donates it to the drop.
++	 */
++	folio_put(folio);
+ 
+ 	/* start writeback */
+ 	__swap_writepage(&ctx, folio);
+ 	swap_write_submit(&ctx);
+ 
+-out:
+-	if (ret) {
+-		swap_cache_del_folio(folio);
+-		folio_unlock(folio);
+-	}
++	return 0;
++
++err:
++	swap_cache_del_folio(folio);
++	folio_unlock(folio);
+ 	folio_put(folio);
+ 	return ret;
+ }
 -- 
-2.47.3
+2.53.0-Meta
+
 
