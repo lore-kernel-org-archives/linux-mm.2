@@ -4,128 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B625FC982E6
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 14:39:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 967BAC982ED
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 14:47:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 899BE6B009B; Mon, 21 Sep 2026 10:39:49 -0400 (EDT)
+	id A55456B00C9; Mon, 21 Sep 2026 10:47:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 84A746B00CC; Mon, 21 Sep 2026 10:39:49 -0400 (EDT)
+	id A06066B00CB; Mon, 21 Sep 2026 10:47:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 73B1E6B00D1; Mon, 21 Sep 2026 10:39:49 -0400 (EDT)
+	id 8F4D86B00CC; Mon, 21 Sep 2026 10:47:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 47B4B6B009B
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:39:49 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C423F1C1B3D
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 14:39:48 +0000 (UTC)
-X-FDA: 85238028456.10.425C613
-Received: from mail-qk2-f12.google.com (mail-qk2-f12.google.com [74.125.230.204])
-	by imf23.hostedemail.com (Postfix) with ESMTP id D35FB140012
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 14:39:46 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=FimO1JCs;
-	spf=pass (imf23.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.230.204 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5F6176B00C9
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:47:07 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B91CF1401BF
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 14:47:06 +0000 (UTC)
+X-FDA: 85238046852.12.63D3564
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id C6772C0005
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 14:47:04 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XZvbjTYh;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790001587;
+	s=arc-20220608; t=1790002024;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6JeVamdoCa9AA0LbUgrFt2azIreJSKrfNCLuX4lcnQY=;
-	b=opnNKL5FSK4DL8mkbE1TA4TJ7pqrcfyXz+hWykYrndhzjLtQWv+RE/YUwa8OjOLgy67BFz
-	+eWZs5eG0EF8NqOeGmJZ2khgisTJOXpEQ2pnamr2Zc7iOEQqDnpXWa3QMOp3IrLZNavBB6
-	K8DrJRxlrNhd1iTYSQ7pn7akt/sEJiU=
+	bh=kmEsUEvY9vo2zaj1qCqnPiixs7yLoUz5iuxdnJ22dzs=;
+	b=RRwiJ7xIdaV/TAndwPKF23uU5U/FQ+KZrFE2uZKomRXKKbvzyU7LRX9C3xAkSZXJE4QKPb
+	227pJA6iulGTgFzi6pEgd3Zw7bVwvD7TAINTWSJ/EZxDhhLyfR5HZZNgW54nIlICe5SZGD
+	hSMWd++Va+quicZP6vsLLPl8PyvwkKQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790001587;
-	b=gzyOH1KncmVDOpDqIw15G9cHEk23bSg/572W84ZIJ41AseOkf3/H5q7YsHkqhHzA2aznvn
-	rgWsIpDoALxHuilAwGJEGJOisfdFOwXRrZP5Yvf3qpUqer8sXoiIwzXffS/7DEMNMUEnvn
-	ICfGM/G1FeCmUThGK16Q7719fqhyhVY=
+	t=1790002024;
+	b=3nAx2WDy6gZa5miJzA3zEIEgSMjPD7/3OwmIZnLPcau0mbEuCB+JslyOv+XfppbrM7vpvE
+	dqw5MXvhRCxz/bGu4WsNsqaph70TCwYy0rp+y3Maz14rg7uDCXXH7thgpmWv3DbRMEdspC
+	N1RtAmM6WNOSiT4jQzRMTCpHo4cxXUQ=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=FimO1JCs;
-	spf=pass (imf23.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.230.204 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-Received: by mail-qk2-f12.google.com with SMTP id d75a77b69052e-52fb7692a57so38425121cf.1
-        for <linux-mm@kvack.org>; Mon, 21 Sep 2026 07:39:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1790001586; x=1790606386; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=6JeVamdoCa9AA0LbUgrFt2azIreJSKrfNCLuX4lcnQY=;
-        b=FimO1JCskwJXmChT3cfspHWJUZKhUe9LD++/LjGfdLIQHKmbS381XZqIQlQ3+JaN7Z
-         SUzwanrJWq0Yax4mc6W63W30bjwVkXVZkiJIGLdNrC3jly+LrA0G5U2YSgGa8Z6ULzsZ
-         ekIe4XzfLlL3uCWT6Jbr8tTqc/armnLMHRoR4CDb/jbusH0vuN4DS0IAKVmO6kjF0Wvr
-         fz/RZUaFfU5sb+os5PfgZH493bXqCruqJF50vOi+WZVTm5PLPhfYo/z1nFnbg+TIDnSA
-         +odP998eYCqbYXQuhHII7HRaWvARHKTGs9pXnjzg4pR5d7Ww062pKrWxr3jiyAp5ao0E
-         0iJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790001586; x=1790606386;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=6JeVamdoCa9AA0LbUgrFt2azIreJSKrfNCLuX4lcnQY=;
-        b=s0WIJ2sSLX3vGGmXHaIMV3vdhh41MClr8lswZDCzPIeJwMdU+hpxS1ntekLpaIR3Aj
-         E7yxCxMvReuaUnCNPUAa7Z5eUXf2lryGUtUPpxHWc49k7CJGueSVMkG19ytU6diH6Wxw
-         E54Jue0ZgvyCEJa8JJDXUq0K4SQX5B9c/r2dwwtYV6FVV90foYhOHdEMuGJKZysjMHy8
-         yKj+7X00aS0AYPZ5ob+5uBdUYV4wv9kZnRo6z4JGAwqmTKX6Y1sRTG68saOrWMJyQJU/
-         Kdfq4CysPozMv16FzAv3pUox7dq6WrRsxvCEqPCzcKkqy5qhwQMYrEy/Ow+gAI0f4hjM
-         AQ1w==
-X-Forwarded-Encrypted: i=1; AKwUvBzevJqGdU2ytEvFwoFq1jVBSC3W+pul7htZxtBFpRfbeAObU4+Lv991dFqQC+zy/wyYYjXwTpl87Q==@kvack.org
-X-Gm-Message-State: AFuF++km9Q7uM77SdpNyPOivXLUjeb6jVXnC4t0XS2K8mMz688q8YbDk
-	8QZDynvQHdJHudwhx6BC3cnHhPu4DDfgfB25Ux5QcUTL4JPScXeClpheTlC2qQUSb1g=
-X-Gm-Gg: AYBFou10JH8B1+ikSVh0mzuIJ5KWxCZNi6WAXzfFzKnPTYrOfo0Ds+r2Vc2Apryp6IA
-	qODVrakgaMBx1ccu5/ORfDgL6qZdfAFuE+V4AeSyxWKzP7RHe+9TuLbQAuwOWpsYNVWDl8OY0lx
-	h1hOMMEsZ7tBgji1UFbGNd+ZBGM3DSWBXNKjyTb3wJKeK3jL2K5MZ0ldOOuXYvRzIwrC4DQvLeC
-	UxwRJfWqo/anoCR0CqECOtXp4ygeCSD0w4kcL1RIbnwLhhElolun/0utfJuVTzJYxwsPJf3FVAF
-	+SBcOZKj6nNhxlYaherUf8kb5W5AxSqlp4QototW951Oqj64jhaRUz38oHlyjNmJ1/y+O0rC357
-	W+IHCU9AQ4F5aKr/1hKYbeJzUTAaednnMKFXkFFjiSTn1deYvCuTyZuenvzRkdCKG+AMaOb83QW
-	V8pLGvZT83U2g/Q/I8pPJiEFk/PUUfLYq57etMPqPQPJZHoPiwH3aZZ7QkSnXlvRSGu0mi
-X-Received: by 2002:a05:6214:2422:b0:90e:8cae:7fe9 with SMTP id 6a1803df08f44-913fc94a61emr8317866d6.24.1790001585748;
-        Mon, 21 Sep 2026 07:39:45 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91260aa2065sm69381076d6.42.2026.09.21.07.39.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 07:39:45 -0700 (PDT)
-Date: Mon, 21 Sep 2026 10:39:43 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Matt Fleming <matt@readmodwrite.com>,
-	Salvatore Dipietro <dipiets@amazon.it>, akpm@linux-foundation.org,
-	abuehaze@amazon.com, alisaidi@amazon.com, blakgeof@amazon.com,
-	brauner@kernel.org, brendan.jackman@linux.dev, david@redhat.com,
-	dgc@kernel.org, dipietro.salvatore@gmail.com, djwong@kernel.org,
-	hch@infradead.org, hch@lst.de, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-xfs@vger.kernel.org, mhocko@suse.com, ritesh.list@gmail.com,
-	rvvandan@amazon.com, stable@vger.kernel.org, surenb@google.com,
-	willy@infradead.org, ziy@nvidia.com
-Subject: [PATCH 2/2] mm: page_alloc: remove ALLOC_NON_BLOCK from
- ALLOC_RESERVES
-Message-ID: <arFBr22V60BMmVpl@cmpxchg.org>
-References: <20260905174239.99e31515fabe220aa7d8e6fa@linux-foundation.org>
- <20260910114602.926944-1-dipiets@amazon.it>
- <aqQlUr-1h07G8JWM@cmpxchg.org>
- <8d6a8a63-4adc-458a-b548-a47bf5ff8eb7@kernel.org>
- <aqq8pWI0u1IZNWHT@cmpxchg.org>
- <9f415dc7-adad-4161-b20d-7c3173f50ff3@kernel.org>
- <arFBJdYaRx_iJNDA@cmpxchg.org>
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XZvbjTYh;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 26BDD42A9B;
+	Mon, 21 Sep 2026 14:47:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E2091F00893;
+	Mon, 21 Sep 2026 14:46:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790002023;
+	bh=kmEsUEvY9vo2zaj1qCqnPiixs7yLoUz5iuxdnJ22dzs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=XZvbjTYhHMYYLm5eZryPH0+GXR5XNmEMgeQMCPy79tnA6n+P5f4CcDTyQnt4dJkto
+	 r+7dWlUrTZUruCEFkrdYRqfgrryNweCGyoS3uEbYCGDDYF12dPpKVfhxiyX0IKkc32
+	 6sCF1bMHAl3m5tjQsau8dPeZdeT68CkcU+/ulfYl7AuORlXF5fmBX+WJH7wTSYtNKO
+	 FeYi5cxWeXWmzKF/Lmmr8NGPq15bxbtIY/8dmxDI8/s+tuMQ2VJ0MVB3S7slT258mA
+	 7wteppWFHsnd2xoU9oBuTlOirIaGCLhQ3kXhHOPIcAiQyCd0UaP1JsRJ9WwQhVdQiK
+	 HyLMzG10qlNyw==
+Message-ID: <198df371-4599-4e71-814c-b94bddd41254@kernel.org>
+Date: Mon, 21 Sep 2026 16:46:56 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <arFBJdYaRx_iJNDA@cmpxchg.org>
-X-Rspamd-Server: rspam04
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/4] arm64/mm: Convert pgtable READ_ONCE() as pxdp_get()
+To: Anshuman Khandual <anshuman.khandual@arm.com>,
+ linux-arm-kernel@lists.infradead.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Ryan Roberts <ryan.roberts@arm.com>, Mark Rutland <mark.rutland@arm.com>,
+ Lorenzo Stoakes <ljs@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Mike Rapoport <rppt@kernel.org>, Linu Cherian <linu.cherian@arm.com>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20260903060657.2717457-1-anshuman.khandual@arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260903060657.2717457-1-anshuman.khandual@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C6772C0005
+X-Stat-Signature: srtkkjjogyxyeh7nf8awqemxhx7ypz7r
 X-Rspam-User: 
-X-Stat-Signature: 6pebgo3hg6ju4geturyfe73exd8eqy55
-X-Rspamd-Queue-Id: D35FB140012
-X-HE-Tag: 1790001586-308829
-X-HE-Meta: U2FsdGVkX1+ThydM9aWAfDwAwuG78wih0gC3AQBt849qZGL8z97UzBLI03BpJsiTc8ADE5cLXSPdIEJN878RA8oarhUiDfOyb5X+hwd9Esrj1ADOBJYzdtvmnEXTBaIaebSYHOomR8gSESBZ4YMFiN37hBRbsxhJR7qhRlnc7+cmHdC69cAFr721coiB3q4vQ/vCHN2wZ+fig2qeatA1K4leGwszdtErNt1IP6dw9cB3GApMH10r9tGYXVOQTNsxf6YVma5jXak2Ey9R1Jd757THyZ/YMH8IjJVxSfUi57d1xD7ZtqfSQ33T0+tBsS1IBaI1exY63gkWE2sgBP40yxZlWcNY0VuApn3kL715tqpgXpPEbDibcnMnB1J1w4K24Trk1t9eojiK/5TBviQ5qEKj8WSzrhnb1DEsGn0eAllbpuqD2fC1KVX9Njx20YtGlLjiotXduhlZk8jz9RxipfmovHjar43n0/SceKjO57u2b2XGr0sKWxQ70X/V7gqTk96sNfGKSrQwamUoSPF+FBBwvCavjAi5xJAV0UY5LECHFwqRxuug3P1uOXlhG0uAWfSbDJgF37ECqRlara9+Umtgb6EmdUdJIxTjmkX+KaqbmnvjEiuBwZi/1cQUhPyTAA6XzpxpEmJgiU4+Cpb9bA3NZeh6Ui3LwxW4vMJagaeSnnQMwvXwoKA15+ZV4uP+dUUylHmJqENCCCZIsUTSkxebcM22bkObv6JAXwgdrPE4W4Bn/HaWwVXilQfZ0MRMVqoAfbTi61/U1nOspAIeF/QPAR3HPhiZuUmmQUFAhor5P6FoOgx38LTWkfdmRjAgqKXPC4sLFAAxNuE8EMllv2vGXV/enyedi0U06ViiEBysS5N+1gvfOoT2YhcASZTyYYEEwYkyDOMqV7wGuDgdsZuz3sR0drk9m6uDWNbBvwV2s4FmzVSbvSipe64ZOoOpvmEiI/7IfkXHekSykZr
- aw8gpZtD
- eNNQAKPCPEkMguBwj7UI/J5lXHpJ/egECQoWDJkyxvbyY3LrkHcgf5E9X2Oh73tAtiukbLs+hFbfM5qGesQe6L8OYe8kwsrtDs18E7tv0lCCUeiOcpSYpjJFO4dLz6Lk/+kPogtNAlz+rT5OnkYSBJUTw6CanG6vP3uZcTRxi11FUrbQopvlRhfI9HJy32ru6YyJbwphyBv5/w3JCHmB1cChgKUPez5xBBF2VfJYw/llKp021yG0eiqyVehIrsAbAFAdsRGhxrlIly1c+A/G4Nm+aQ7YG1YavnGlQCS1gHijbJkDyvyHnTqSFQY0A8IQrEQRCjry6FehDKnaRF6f5YUrwrOB0mZUoA4BUY+MHlrsluTrIDnbZ97jpb6ckY8jcjckRl0dzxz6kP+zRjM0ODb8ASxFxCEw1Yp8TpXYVdPz80gRmWR9uMwyWSTxkKRxElkYocJm1ElbOwVUBawvZg8VGrEQsP6eiiVKtgOMyRG4UqC4bwXBDcn6itRhVyVXuXauj8DB2rcSqBDujEWA6JH9Jt38BIFM6ZCLOj6+0fAJX2nTGpnytQ50oSDOidjcFu7Bg
+X-HE-Tag: 1790002024-695835
+X-HE-Meta: U2FsdGVkX1+N2m+wR3NzV/x98/mRHN9izVqaiGczR+O1n+ynXKSNgL+O37wMUDz6z7+onPH4UumJhHUvH/S/FyMj2EivC5NkAEMh7pmdHJ3CxuAeawaif+G6cHbqSmpuZ25rf15m+a9hSaTErSbojMWv3pgPbr1jDWdtZEAwCnVBCpsdmzlBsDNT14KueR04+498Y1jNCRdm4n8VC0jDD+glpxMEzyohsIWTKLwczas1LoH+DQOc4ZMXlXc9d/7sPXtDcm07xMcgnJTXW5G6D3HFdWSRDj5ou5v//e9pcrBdMx1uG9v0zk5vA6cpyZXRJzGxaU1b691jEhelg42H1aaOwcpGzHfUH1PkPH+p97Oy6f4YAjN4Oe0yVphIvr5w1lXVC8l7LfPgVk2ATueLVv7JNB9mGpf9TRQUhs70/yn5o7U18WMXBIQsv0VusYV5HdtT0BKpeBv2R8gOY3I2FEGEVpl+gxB2/zIVGRm7Ox8AHs2V9bTqNnzaeIi5WvYBGrVYBJ3joSd6ZUEm432uO0AAHPoclWoygH737YINTVx8WTcV8Can3MgR6yBcfDwZrypUiWYtk+tAiTxwyTUhX7o7rkewCh8IP890lm7xr94Yd5V5t1QrcxYcUhh+PcwGEZTl8JXajxx/3T67ur1+yiuVQomHKhUJrsfNtFCQWiJYzqhRZb2dPPxSk5dNUGPOsGTiI2FLMfRMDVndmLn7AFBKOQ+L0an6WAqG/en813WTNq2GZNQ8KYtoeIMkO7vlC55kFYKKzmSyYBRGoKpmnEQH43COPKI3cZPkvWU1UyXLBWleZFywOKRG5vaz04hRql8SBnqf0ePPiCOTtMpURUrvUowDoDd56sSVc5Hcwred22RhnvPfOQ2v3aCggrmiII/KwUZxFnjJ6ONS55YRHudx2aaFaa1ts7R8FijtHHzvOnDT+epmMSSdWFecgLm/E+475oR9qibzn57eQE3
+ twLQopr/
+ mvvWi5X0ZgkKHzLKvUWqwPg5/kGWmwQGkvoBUx715tbrNshlpX7RUFz+Ib+X2zi0oQ/vOXPd/K/5Ke6CTXClbH8IILmpMt6WPuXeMJ5uJLukaMRW0o1tmFUBhBh8STiGKDE8InIQkli9MUnXbZ6/1TZd57PqL/4nByxhVXkLLlv1E5KT+xgR6aDpacMtI5RZ6OBT5qhHOXvFn4utzFmzozMbg+JZM+kFXsY5TvOcmlu9tF3JEyDcp+1q0mzog6Fu6PoZXnZzrlYEpgX5Iqbeb5W6VYPIQ1nZ6wTJf3i6K6Hg4Qp+6yGBccaZ8C6TLy7f+FcV10ZCEo4Fkt81xWvumcXCdZ7PjqaX+LzRQ5+b+4lP8nldu1zBsH8lpFZR74d5VsUW7LgjHGHCR09cnCXIH1iREC7nIOFNXKxDAv49ZuqF1fAZJTZujRK8leN98ttrcfcJxbBM25inLQyuRd7uweo23Ez8vZ5qXglf5PCf12vp9X92FhlHUx8wxSNbiVnT6J4EwyB1sVpiRwRDaboDSjitcQI9ShBadoO4UEnHfeC8XQpmM/YZRBZTIpksOV53+S35Z
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,81 +141,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-1ebbb21811b7 ("mm/page_alloc: explicitly define how __GFP_HIGH
-non-blocking allocations accesses reserves") stopped handing out
-reserve access for ALLOC_NON_BLOCK on its own: the extra 25% below the
-min watermark is now only granted on top of ALLOC_MIN_RESERVE. But the
-flag was left in ALLOC_RESERVES, which produces something odd:
+On 9/3/26 08:06, Anshuman Khandual wrote:
+> Route READ_ONCE() accesses on pgtable entries via level specific generic MM
+> pxdp_get() helpers which platforms could then override when required. These
+> accessors on arm64, will help in ensuring page table accesses are performed
+> in an atomic manner while reading 128 bit page table entries later. But for
+> now they just default to READ_ONCE(), thus preserving existing behaviour on
+> current D64 translation.
+> 
+> This is similar to generic MM, where all atomic accesses have already been
+> converted from READ_ONCE() into pgtable level specific accessors.
+> 
+> These are preparatory patches for D128 enablement, although standing their
+> own for D64 translation as well. These patches are split from earlier D128
+> V1 series. There are no functional changes here, and besides mm kselftests
+> do not show any regression.
+> 
+> https://lore.kernel.org/linux-mm/20260729122452.3797443-1-anshuman.khandual@arm.com/
+> 
+> This series applies on v3.7-rc1 but after applying the following patches
+> related to pgtable entry print standardization posted earlier.
+> 
+> https://lore.kernel.org/linux-mm/20260831054331.625505-1-anshuman.khandual@arm.com/
+> 
+> https://lore.kernel.org/linux-mm/20260901065454.1906343-1-anshuman.khandual@arm.com/
+> 
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Ryan Roberts <ryan.roberts@arm.com>
+> Cc: Mark Rutland <mark.rutland@arm.com>
+> Cc: Lorenzo Stoakes <ljs@kernel.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: David Hildenbrand <david@kernel.org>
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: Linu Cherian <linu.cherian@arm.com>
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-mm@kvack.org
+> 
+> Anshuman Khandual (4):
+>   arm64/mm: Convert READ_ONCE() as pmdp_get() while accessing PMD
+>   arm64/mm: Convert READ_ONCE() as pudp_get() while accessing PUD
+>   arm64/mm: Convert READ_ONCE() as p4dp_get() while accessing P4D
+>   arm64/mm: Convert READ_ONCE() as pgdp_get() while accessing PGD
+> 
+>  arch/arm64/include/asm/pgtable.h |  6 ++--
+>  arch/arm64/mm/fault.c            |  8 ++---
+>  arch/arm64/mm/fixmap.c           |  6 ++--
+>  arch/arm64/mm/hugetlbpage.c      | 10 +++---
+>  arch/arm64/mm/kasan_init.c       | 18 +++++-----
+>  arch/arm64/mm/mmu.c              | 60 ++++++++++++++++----------------
+>  arch/arm64/mm/pageattr.c         |  8 ++---
+>  arch/arm64/mm/trans_pgd.c        | 14 ++++----
+>  8 files changed, 66 insertions(+), 64 deletions(-)
+Skimmed the changes, purely mechanical changes, so looks good.
 
-With the ALLOC_RESERVES match, __zone_watermark_unusable_free() doesn't
-subtract the free highatomic pages for them. So in the slowpath, they
-get to consume regular blocks below the min watermark by the number of
-free highatomic pages. The highatomic reserve is capped at 1% of the
-zone, which on any decently sized machine is a multiple of the min
-watermark: GFP_NOWAIT can drain regular memory to zero.
+Consider spelling out in the patches "No functional change intended."
 
-The user-visible result is brutal hiccups during bursts of GFP_NOWAIT
-allocations under memory pressure. On a 32G box with an anonymous
-working set, swap, and a filled 290M highatomic reserve, a GFP_NOWAIT
-burst drove regular free memory in the 28G Normal zone (min=60M) to
-28M, 0.8M and 0.6M in three runs. Swapout failed to allocate its swap
-table, reclaim scanned 13M pages to reclaim 200k, page faults stalled
-for tens to hundreds of milliseconds. The machine survives it, but not
-by design: direct reclaimers eventually fail and start unreserving
-highatomic blocks, until the allocation succeeds or the reserve is
-gone and the OOM killer runs. That reserve exists for high-order
-atomic allocations; here it is destroyed to bail out a GFP_NOWAIT
-consumer that was never entitled to the memory.
-
-Remove ALLOC_NON_BLOCK from ALLOC_RESERVES. With that, the GFP_NOWAIT
-burst is stopped short at the min watermark. No direct reclaim, no
-stalls, no failed allocations, and the highatomic reserve stays intact
-for the requests it exists for.
-
-__zone_watermark_ok() is unaffected, since everything it keys on
-ALLOC_NON_BLOCK is already nested under ALLOC_MIN_RESERVE. Update the
-flag comments accordingly: ALLOC_NON_BLOCK just means the caller can't
-block; the reserve math belongs with ALLOC_MIN_RESERVE.
-
-Fixes: 1ebbb21811b7 ("mm/page_alloc: explicitly define how __GFP_HIGH non-blocking allocations accesses reserves")
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
----
- mm/page_alloc.h | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
-
-diff --git a/mm/page_alloc.h b/mm/page_alloc.h
-index ad89f83d1dab..c8af79decbd0 100644
---- a/mm/page_alloc.h
-+++ b/mm/page_alloc.h
-@@ -32,12 +32,11 @@
- #define ALLOC_OOM		ALLOC_NO_WATERMARKS
- #endif
- 
--#define ALLOC_NON_BLOCK		 0x10 /* Caller cannot block. Allow access
--				       * to 25% of the min watermark or
--				       * 62.5% if __GFP_HIGH is set.
--				       */
-+#define ALLOC_NON_BLOCK		 0x10 /* Caller cannot block. */
- #define ALLOC_MIN_RESERVE	 0x20 /* __GFP_HIGH set. Allow access to 50%
--				       * of the min watermark.
-+				       * of the min watermark, or 62.5% if
-+				       * the caller cannot block either
-+				       * (ALLOC_NON_BLOCK).
- 				       */
- #define ALLOC_CPUSET		 0x40 /* check for correct cpuset */
- #define ALLOC_CMA		 0x80 /* allow allocations from CMA areas */
-@@ -58,7 +57,7 @@
- #define ALLOC_NO_CODETAG       0x1000
- 
- /* Flags that allow allocations below the min watermark. */
--#define ALLOC_RESERVES (ALLOC_NON_BLOCK|ALLOC_MIN_RESERVE|ALLOC_HIGHATOMIC|ALLOC_OOM)
-+#define ALLOC_RESERVES (ALLOC_MIN_RESERVE|ALLOC_HIGHATOMIC|ALLOC_OOM)
- 
- /* Flags that mean GFP_ATOMIC */
- #define ALLOC_MASK_ATOMIC (ALLOC_NON_BLOCK|ALLOC_MIN_RESERVE)
 -- 
-2.55.0
+Cheers,
 
+David
 
