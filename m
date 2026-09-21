@@ -4,96 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB6DFC982DE
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 05:48:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC814C982DA
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 05:52:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9BC696B00D9; Mon, 21 Sep 2026 01:48:43 -0400 (EDT)
+	id E09156B00DD; Mon, 21 Sep 2026 01:52:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9948F6B00DD; Mon, 21 Sep 2026 01:48:43 -0400 (EDT)
+	id DE0F76B00DF; Mon, 21 Sep 2026 01:52:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D1836B00DF; Mon, 21 Sep 2026 01:48:43 -0400 (EDT)
+	id CF6F56B00E1; Mon, 21 Sep 2026 01:52:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C54E6B00D9
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 01:48:43 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1CE8AC055B
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 05:48:42 +0000 (UTC)
-X-FDA: 85236690084.09.9A80355
-Received: from mta1.migadu.com (out-148.mta1.migadu.com [95.215.58.148])
-	by imf22.hostedemail.com (Postfix) with ESMTP id E9985C0004
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 05:48:39 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="wsWyZ/it";
-	spf=pass (imf22.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.148 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B29186B00DD
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 01:52:31 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 439364057A
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 05:52:31 +0000 (UTC)
+X-FDA: 85236699702.20.A91B123
+Received: from mta0.migadu.com (out-154.mta0.migadu.com [91.218.175.154])
+	by imf16.hostedemail.com (Postfix) with ESMTP id F3C1C180004
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 05:52:28 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=AGqHNvoB;
+	spf=pass (imf16.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.154 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789969720;
+	s=arc-20220608; t=1789969949;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DfKCxDkGmiGAvVKE3w2w5luUgwycfNwU8vR07vCusUo=;
-	b=cEl00iciX630rMo2Ii6GoN84FnyIncZyKu2W6BzMNDojnTYUUvFi8vpsVYxc/n0LQUdVuj
-	wh9HK+cQuRN2a1eg+cvS44GtHyU6sC7Xt+wbF44SxZYFGkpRpb1mHX3jPNZszkBq1Ov6qH
-	6UUSPnk6bjN2gEBe3rquqksikCsesbU=
+	bh=qIvuPN6/WzgNqJCUjuOUJwBEDkwuxe9xKnTs3tPz+lo=;
+	b=lGbykjsAke/oxNqjUmzol02ByQYl5mXUeitqkcIO3pCKBDHd6vVYKpBZ8bLmZ/3ABZbeYJ
+	EIBXNXVxFM64wZThY/aMfr85H6SZHY6ic/s1yk9KbwlI3CN/YXM3KRJkm0uVE3hCZJn+ND
+	FunLu1HBnNze5fNDUVMq9z6poT5dmRI=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="wsWyZ/it";
-	spf=pass (imf22.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.148 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=AGqHNvoB;
+	spf=pass (imf16.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.154 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789969720;
-	b=gpXBY16SOjW8bfOCX7o7g1hHn7MSxZphvF1GJYRnGmtDJbgmpD0xkfzWq/g3ztq3/KT31d
-	Wc2/j6QGuKMiAfX+s2STIKHspdnUqJyYt/Q7xpLuaRaX90dSgfX708/jIP0ZM8ZxEDNLMa
-	LBsadrAR0rItFQuhecZycJQxRNIUOIs=
+	t=1789969949;
+	b=MPttWRvzdb3vojZRCyj+5+eVB+UlNhCS1SJuyd+qt9CIynAPPT7Wm1Ytni5itsmBMnmuID
+	voY63XvEmAGOqrAU513LGu2hRoTqb0ueWsbiYtIA7Wy59LuF0kguBqsYkjPvHrVp6iWWqY
+	qfzhLA1Qyc8KX+sIIZiaQw78p2XiCPU=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=jhV/vw4+vWN8dqMOnDQNzr0Wd/YKWAZ5SZrLjVrKgJI=;
+DKIM-Signature: a=rsa-sha256; bh=+3OQfzHRoTvBjBd8jB9/THE2C+GAiBoDPdOUT4cBopw=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789969718; v=1; x=1790574518;
- b=wsWyZ/itCi6fu86wCCcJ0RZGEFvh1E6p15NlDx9Adkkv4ElC8H2tSzAL4teGcsjDOD6R85qz
- ElMAx70yL56Y1inpsiwWZHt2hrRRGoQ/lXhLrDGO15qK0CXIIZPbnue43uUKvmPYjDQXRaCwlcP
- 2RBx/KWVKMVfSuslG0ikOMXY=
+ t=1789969947; v=1; x=1790574747;
+ b=AGqHNvoBHNAK5Sgs8bbNFPB9LRfWqahsS8hsc3FUslRi1QNL9CbtcXuiBuAODhnoALewzvTz
+ zAJKHdCmXss9/DvIqB5/J8rDlIqMR5eOYjWyZsTcomxdHzlJCmmDAyvIWSZur3TyrC6BPzAwIHN
+ locxBrK8oD3Q849lc7AWjrUk=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id 417d6ee2dae11de6;
-	Mon, 21 Sep 2026 05:48:38 +0000
-X-Mizu-Trace-ID: 417d6ee2dae11de6
+Received: by mta12.migadu.com with ESMTPS id 3106e5e1082e60f1;
+	Mon, 21 Sep 2026 05:52:26 +0000
+X-Mizu-Trace-ID: 3106e5e1082e60f1
 X-Migadu-Flow: FLOW_OUT
-Date: Mon, 21 Sep 2026 13:48:34 +0800
+Date: Mon, 21 Sep 2026 13:52:24 +0800
 From: Baoquan He <baoquan.he@linux.dev>
-To: Wandun Chen <chenwandun1@gmail.com>
-Cc: catalin.marinas@arm.com, will@kernel.org, chenhuacai@kernel.org,
-	pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu,
-	tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
-	dave.hansen@linux.intel.com, x86@kernel.org, robh@kernel.org,
-	saravanak@kernel.org, akpm@linux-foundation.org, rppt@kernel.org,
-	pasha.tatashin@soleen.com, pratyush@kernel.org,
-	m.szyprowski@samsung.com, mark.rutland@arm.com, kernel@xen0n.name,
-	alex@ghiti.fr, hpa@zytor.com, ruirui.yang@linux.dev,
-	robin.murphy@arm.com, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
-	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org,
-	kexec@lists.infradead.org, linux-mm@kvack.org,
-	iommu@lists.linux.dev
-Subject: Re: [PATCH v6 02/10] riscv: build crash_mem ranges from memblock
- instead of resource tree
-Message-ID: <arDFMqcUr6xkTn-h@fedora>
+To: Wandun <chenwandun1@gmail.com>
+Cc: Mike Rapoport <rppt@kernel.org>, catalin.marinas@arm.com,
+	will@kernel.org, chenhuacai@kernel.org, pjw@kernel.org,
+	palmer@dabbelt.com, aou@eecs.berkeley.edu, tglx@kernel.org,
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	x86@kernel.org, robh@kernel.org, saravanak@kernel.org,
+	akpm@linux-foundation.org, pasha.tatashin@soleen.com,
+	pratyush@kernel.org, m.szyprowski@samsung.com, mark.rutland@arm.com,
+	kernel@xen0n.name, alex@ghiti.fr, hpa@zytor.com,
+	ruirui.yang@linux.dev, robin.murphy@arm.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
+	devicetree@vger.kernel.org, kexec@lists.infradead.org,
+	linux-mm@kvack.org, iommu@lists.linux.dev
+Subject: Re: [PATCH v6 06/10] memblock: introduce MEMBLOCK_NODUMP flag
+Message-ID: <arDGGOhKFueI90tJ@fedora>
 References: <20260902073116.802752-1-chenwandun1@gmail.com>
- <20260902073116.802752-3-chenwandun1@gmail.com>
+ <20260902073116.802752-7-chenwandun1@gmail.com>
+ <aqzxavL91icLw-Xv@fedora>
+ <aq41nFRPtRWTQ7cK@kernel.org>
+ <aq9UGXeqmCfuPHdD@fedora>
+ <32b00102-0961-49e3-b780-74d6db182809@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260902073116.802752-3-chenwandun1@gmail.com>
+In-Reply-To: <32b00102-0961-49e3-b780-74d6db182809@gmail.com>
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: E9985C0004
-X-Stat-Signature: nzzmu7ozfbz5jx5qpobpoomgxscdqaq9
+X-Rspamd-Queue-Id: F3C1C180004
+X-Stat-Signature: auy6kibw68joc8si54tqkjoudkaa97xs
 X-Rspam-User: 
-X-HE-Tag: 1789969719-65040
-X-HE-Meta: U2FsdGVkX1+8EsCGuPFBxh2lo+Bp6lD/H8qvJd9CgjdaexgEAiZsnHOHISC3VaQyYKrmJIVSTu9mdXibyv0NF8R5UWGYTIMSgUolAwvGnfroqMWsjawzepKZY41aGqbyJQwGoDIa+fv/oZj8AIdd46UXyZLPpZytrnPNtDMIjb5EyfCRj9g3w7j/8K42lw3sxe4ggQi+OkssEQpRlCwgvU+POtsnf6wfBCy02gdaAKKnLHTGwrTYVXHaKnDBLbnwA5uV2LAeNPFndzZZld3VOsmbxKHYu+8Id9ZNaIPXIxbfvt8epAiJd7J2zmgQz0wAjXjfzmu/ISJJ7B0P3hbH00AXwjwzAztZryncs4DpAOOSN8+Ky4sT1vjGvxsuLYdcmq7ZAPYe3w2YBHYtMef0H9BsDCbkPeswyDZeo1TSWCrgjERTye8WVer07j172GWdvoQZT8hI3Zm+eATbztpXjJHDrdANorCsTXE62Ogorny7CgftjucPb/gxJYkkeaD8oMigyX1ZhVyE/Dqy0YenJZ/cpRogtqmUoAqQOZRIt8GTW4SpDVa5FpxOnC5P1YZvHbiijJojCq0yn1iLx6ZcEu46g0a5gwb8QkT+Wh/gU7AsgKKU4TRKHfeQlLBJUEyzKo3yono6OrqS/Zv5oQcRfsHpVIsVVqXKk4YtUxCEozn7aJSEg5SepRxPKf7wsMC0WSTKeti0eq85k1XJvATFVUPQnOpI8LWqAgABOfGRiV6WY3iPDEru2pB5FMWvhy6diwIHRsk+vS9m/NGPvJ+ZsHYN8fMPDgW2SJTYI8BSFzPFIFm8NIGDapG2d/mUTqd8/3WWP1ULZyiF1qyrx/BawSJf8i4q9jIWuWWzR5PaMIUH5RlYYYKkUr813T3TfAs0Oz8n9JEXD0VIUCN4e8VKRA13YxkIGQ2i/+dspe7TMHxocyJuSnG5rC9nOkruF45sLcbP9vJjm5jsR732uZo
- y2qx5MDp
- KMR8otzCIXbbxKTqjwruoO1aKWzVD+HvmZYB8cnrpPLw9CZ5IyGSm1UeCISQGGq8l9jKfKtxyNOc82C1JL+zktsXI4B52jxOZERo3gQE5DmlnXM5tYrhWt3S8aDM6Eke4oj3WPRnpoXmLnYYjLRKuDv677PZKE1A5ujxgAjsWPtdIHbx9a5D7Pg39PgV4XC1lNzD5tDBZeZwEVAfh6hYJBRohvK5o2wPk8YlsPPdYqOYEuPkXDXdzpymOBwppzQzfsL0S191DVGMkcYTRB8XCQZM5Wv0AfNlkUAWY/miW02e1r0eYtw45bNM6ngFw8eQX8GCNRH4vOpy2BWVIzjhLt2zAuPLwI75HSlqfxc0if8fnZZ28ugWarlehA+WWz3st6wFUKE+XnWnxR7KZkiMJ0Uj7AbMAj+P/nW9O
+X-HE-Tag: 1789969948-184120
+X-HE-Meta: U2FsdGVkX18LKZCHaUNiqAigdIZoOj80nnL0aAh6jcgzr6RKC8FJxGcMI3ybS2q15Va0PA3yN6iDHpZTsdF38vcTf9lwiDMKLoCEd34VZx+z1jO+UiBgP0gO+1PcHyvUxD18yj1nb5of68aoFL1twEbw4pTdKj3BZzWJMopA/h4VikvhUmxjayCj8zfG4kI0fCnUR+OfMl+C6NguJtXeJMPOsopQzMLqnHqi8M7XoDiTCuP8RuXQK2Iauj7QjenNgWiii8bdzDyfQ8pKSoxKBTuUcO2cxcnBKwAH/X9s77+dJCacn48kafRQUuYwD2GQ2raBjMdkVBOnQ9vvP/q8ZXd1IAiLHfWdLPxQUkNZ/JvOVbL7F2xEOSCP2FZDKVH77/YfJaU6Z+QyeeeEg0SJsEj66cqHhPUt+Vttk2yD2yKwEq8vbNVxX7OCzXuJizQvgE9Q1ZCwDWYzfxQdzeI0746DzQmAhTj1bWVj1hQJl1q3VnSIn/c6NuTaFQ3unl51DBezLnVhxJUHO8DpoUswUjj6ENo5WrLpyYhIZ13+XtwuIzZt+XYPplIaOMarPHdKmQ4skhwsR5DOF3kPOjw3AzrIet891paCSFym+s5/3QfKI7NIKVGwuCRgXBtyHiiP5BHuIl3fyUXbmivLt6uR7iJATIcZaV6Bc5iK3YLfWoP8/8khQwJBkneQ6f0yHbWPLgmUREeNf3fwos4Hjbjl2UMwqeB24eIBBOuU42DNxyrIt6tMOWRgNtJ35cxhCB2Eh51imtFNfIVyNXS1MTQGZpkwtDV45EvRN9YmeNft6G/VnRK6CJwXFrPGWNscLP6n8r1HRauoppYnzTegeI4wOdf9nYfyLXjIY9VtUS43VurZZv+Y9hB+t4kvTXChJTnNVB8hryDDyptjDFwbytdWBuHeYki5dwo6Lf7hjtmS8lB2wlthiJc8r4xqYnpL6Pof5MDyMkKtF5sfERduqCz
+ ZJ/HSO9n
+ ndO9mlhIm/TVuf+iA9S6c1/RDItBWdkImsN4CEDgvi6KqKdPg+rWmFR4Q95qKWuRQGdr1tavJwhQkboFEzd7TiYXAUd7y7SRvbGmtaDUCdh5sf5gn5Fw4av6pGI6yS3+Ae5bkVKse2NlQMhLBYyHy3qFP3Be6Vfx9CY4ISDv52kwjtBo6boo0Ab87kQjhhrPL+WpF/5+493y0N7S34wWcQ8VFB6SVHXOzU22S0swU6CNe1CXCBbBErca+iGc9RFrqqCYBWo8l5vQx3XFfSoQCgqGFmsdQFmfBqXWveZxSv7D9VGz+QnjIujZkrtuG1r2ZB7ZT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,102 +104,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09/02/26 at 03:31pm, Wandun Chen wrote:
-> From: Wandun Chen <chenwandun@lixiang.com>
+On 09/20/26 at 04:00pm, Wandun wrote:
 > 
-> Replace walk_system_ram_res() with for_each_mem_range(). A later patch
-> introduces MEMBLOCK_NODUMP in memblock, the reserved-memory regions
-> marked with MEMBLOCK_NODUMP can be excluded from the vmcore by walking
-> memblock.
 > 
-> for_each_mem_range() iterates memblock.memory, which is freed after
-> init unless ARCH_KEEP_MEMBLOCK is selected. riscv needs ARCH_KEEP_MEMBLOCK
-> to filter reserved memory from the vmcore, so extend its condition
-> (ACPI || KEXEC) with CRASH_DUMP. arm64 and loongarch already select
-> ARCH_KEEP_MEMBLOCK unconditionally.
+> On 9/20/26 11:33, Baoquan He wrote:
+> > On 09/19/26 at 10:11am, Mike Rapoport wrote:
+> >> On Fri, Sep 18, 2026 at 04:08:10PM +0800, Baoquan He wrote:
+> >>> On 09/02/26 at 03:31pm, Wandun Chen wrote:
+> > ...snip... 
+> >>>> +/**
+> >>>> + * memblock_mark_nodump - Mark a memory region with flag MEMBLOCK_NODUMP.
+> >>>> + * @base: the base phys addr of the region
+> >>>> + * @size: the size of the region
+> >>>> + *
+> >>>> + * Mark the region as not to be included in crash dumps.
+> >>>> + *
+> >>>> + * Return: 0 on success, -errno on failure.
+> >>>> + */
+> >>>> +int __init_memblock memblock_mark_nodump(phys_addr_t base, phys_addr_t size)
+> >>>       ~~~~~~~~~~~~~~^
+> >>> Is it impossible to use at runtime even thought it claims to be generic?
+> >>
+> >> This should only happen at boot.
+> >>
+> >> Allowing modifications of memblock properties in runtime is a can of worms
+> >> I don't want to open.
+> > 
+> > Thank you. This is why I said this can't be claimed as a generic way to
+> > mark memory region as no dump. The generic way I'd like to see is
+> > at any time of system we can mark any unwanted memory region as no dump.
+> > And it won't impact the behaviour of the current system.
 > 
-> Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
-> Tested-by: Meijing Zhao <zhaomeijing@lixiang.com>
-> ---
->  arch/riscv/Kconfig                     |  2 +-
->  arch/riscv/kernel/machine_kexec_file.c | 31 ++++++++++----------------
->  2 files changed, 13 insertions(+), 20 deletions(-)
+> Thanks Mike for the explanation and Baoquan for the suggestion.
+> I'll drop the "generic" related description in the next version.
+> 
+> 
+> Baoquan, by the way, patch 2 is still awaiting review. It rewrites
+> the riscv side of the code that patch 3 (which you've acked) then
+> folds into the weak defaults, if you could take a look at it too,
+> that would be very helpful.
 
-This looks good to me, FWIW,
+I checked and looks good, I have added ACK. While RISC-V people can hold
+it anytime if they have concern.
 
-Acked-by: Baoquan He <baoquan.he@linux.dev>
-
-> 
-> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-> index d6c2dbf8455c..1de14a2d5aba 100644
-> --- a/arch/riscv/Kconfig
-> +++ b/arch/riscv/Kconfig
-> @@ -58,7 +58,7 @@ config RISCV
->  	select ARCH_HAS_UBSAN
->  	select ARCH_HAS_VDSO_ARCH_DATA
->  	select ARCH_HAVE_NMI_SAFE_CMPXCHG
-> -	select ARCH_KEEP_MEMBLOCK if ACPI || KEXEC
-> +	select ARCH_KEEP_MEMBLOCK if ACPI || KEXEC || CRASH_DUMP
->  	select ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE	if 64BIT && MMU
->  	select ARCH_OPTIONAL_KERNEL_RWX if ARCH_HAS_STRICT_KERNEL_RWX
->  	select ARCH_OPTIONAL_KERNEL_RWX_DEFAULT
-> diff --git a/arch/riscv/kernel/machine_kexec_file.c b/arch/riscv/kernel/machine_kexec_file.c
-> index 26cd2a8bd0cd..808e872f4063 100644
-> --- a/arch/riscv/kernel/machine_kexec_file.c
-> +++ b/arch/riscv/kernel/machine_kexec_file.c
-> @@ -37,39 +37,32 @@ int arch_kimage_file_post_load_cleanup(struct kimage *image)
->  }
->  
->  #ifdef CONFIG_CRASH_DUMP
-> -static int get_nr_ram_ranges_callback(struct resource *res, void *arg)
-> -{
-> -	unsigned int *nr_ranges = arg;
-> -
-> -	(*nr_ranges)++;
-> -	return 0;
-> -}
-> -
->  unsigned int arch_get_system_nr_ranges(void)
->  {
->  	unsigned int nr_ranges = 2 + crashk_cma_cnt; /* For exclusion of crashkernel region */
-> +	u64 i;
-> +	phys_addr_t start, end;
->  
-> -	walk_system_ram_res(0, -1, &nr_ranges, get_nr_ram_ranges_callback);
-> +	for_each_mem_range(i, &start, &end)
-> +		nr_ranges++;
->  
->  	return nr_ranges;
->  }
->  
-> -static int prepare_elf64_ram_headers_callback(struct resource *res, void *arg)
-> +int arch_crash_populate_cmem(struct crash_mem *cmem)
->  {
-> -	struct crash_mem *cmem = arg;
-> +	u64 i;
-> +	phys_addr_t start, end;
->  
-> -	cmem->ranges[cmem->nr_ranges].start = res->start;
-> -	cmem->ranges[cmem->nr_ranges].end = res->end;
-> -	cmem->nr_ranges++;
-> +	for_each_mem_range(i, &start, &end) {
-> +		cmem->ranges[cmem->nr_ranges].start = start;
-> +		cmem->ranges[cmem->nr_ranges].end = end - 1;
-> +		cmem->nr_ranges++;
-> +	}
->  
->  	return 0;
->  }
->  
-> -int arch_crash_populate_cmem(struct crash_mem *cmem)
-> -{
-> -	return walk_system_ram_res(0, -1, cmem, prepare_elf64_ram_headers_callback);
-> -}
-> -
->  static char *setup_kdump_cmdline(struct kimage *image, char *cmdline,
->  				 unsigned long cmdline_len)
->  {
-> -- 
-> 2.43.0
-> 
 
