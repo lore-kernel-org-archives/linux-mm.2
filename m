@@ -4,115 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2C75C982E6
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 16:09:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4582CC982ED
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 16:12:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BFE136B00C1; Mon, 21 Sep 2026 12:09:04 -0400 (EDT)
+	id 462726B00BF; Mon, 21 Sep 2026 12:12:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B87136B00C2; Mon, 21 Sep 2026 12:09:04 -0400 (EDT)
+	id 4131E6B00C3; Mon, 21 Sep 2026 12:12:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A4F0B6B00C3; Mon, 21 Sep 2026 12:09:04 -0400 (EDT)
+	id 302636B00C5; Mon, 21 Sep 2026 12:12:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D1216B00C1
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 12:09:04 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 11101A5327
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 16:09:04 +0000 (UTC)
-X-FDA: 85238253408.09.1549D61
+	by kanga.kvack.org (Postfix) with ESMTP id 05A8F6B00BF
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 12:12:03 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8893A140228
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 16:12:03 +0000 (UTC)
+X-FDA: 85238260926.05.569EC9A
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 4D0F52000C
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 16:09:02 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I6lco+9i;
-	spf=pass (imf31.hostedemail.com: domain of "SRS0=kZ6u=HN=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=kZ6u=HN=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf05.hostedemail.com (Postfix) with ESMTP id 87A8210000B
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 16:12:01 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RgdVCj8Y;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790006942;
-	b=20dDgnuaYu3glzWXwVn8XS9EH+INH7VKkd5jXYq7hm0GHtHuYd5Pwz08ofb3lYgQ74YRKL
-	x2BPGAUz4/AAlzTwgYNwd8AgoPjAiNsqGb+4JSmaAfVzSx4uZbVm+Af8o8R9ryigIKfOhe
-	0rUAvLUtl9LgWm1WQmHVogpqixSVHmk=
+	t=1790007121;
+	b=Ah8NPHzbpfL9hE31lx8sGxv0/Ujr8aMlFWrvhihCzfwpamsO7GZKqKubhoqtKxhFcSDWKN
+	hwthTzoesdonjNUft/18ffKUC9OB3z5XGkeLAVSYXFYXYO4MmMpxJ8nJykwCBsdmtQklcX
+	2YEJAdR7/wBRa5qCwhmvmrER9J9z32c=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I6lco+9i;
-	spf=pass (imf31.hostedemail.com: domain of "SRS0=kZ6u=HN=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=kZ6u=HN=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RgdVCj8Y;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790006942;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1790007121;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FOTV0PHDPjv7T4ZC0QP6/caxtiiGCzPPnekS36QsNyQ=;
-	b=imJuKzYP8qvvPDID8A5gWor8LPzxlrX2axneODa5ncO7lK4u6mV34irgXW6UFeuxXpUI7a
-	zpJV25/OtCD0cXIuEvoP5FuVgi/2qVCOHA6JRIFp5HTlplYSho9pHDNY0ATpskganMxWGD
-	AxJpbuVVUOhOhGIcgw7dKa2GL8ZU898=
+	bh=Bp3IBrDxSg3j2mpmgJ6jbKGXoqJCAZK/XpOEiySiNrk=;
+	b=TMhwyQFK6Is91gAwSTTZjJU6mA5Izw3anW/1T7W0UpC93Zp3T3LvmJI6Y2zOQXqFeVCr2v
+	ewoBVppsJn0x8WArChrq/ZDPUG8uZ91vy+mgUTBKHy6cOecTx48CrMidx9vzXhFdqXzx3f
+	+kQUb0o5va66SyyBazfTH+YBBClXGC0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 79E8A43C81;
-	Mon, 21 Sep 2026 16:09:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CEF81F000FF;
-	Mon, 21 Sep 2026 16:09:01 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id F07D044501
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 16:11:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D73FE1F000FF
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 16:11:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790006941;
-	bh=FOTV0PHDPjv7T4ZC0QP6/caxtiiGCzPPnekS36QsNyQ=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
-	b=I6lco+9iUwAqO3zjgvumlLA5C/VhfXUwEk6SUo3gSkM4oTj4GvL0t3U4GwpiU+aFj
-	 MuMQAuyChxeRaQp9gYkR2DtCDN4T1OrLkPS/ojp2WE1cPoM0iooDGXYr3uoSn+xBaF
-	 1C4QW+Ll5f789AvK2JwPuRCnzDwI7zwh/Z6gxDafAIWJqj29JrwN5sDfbpFTNBIxuQ
-	 RI0QQS1cRnfDeaKYL1XiMw7v1/N4mZbcxHYmuzsbK6XXOfv/eU0pbJM+zgoumIdeIW
-	 Nle6h3WO6Yslfm1dRJRE7tO9hPI5pG+0mtAOpVKKRdAa4lPpCtQWILF8WzQSn3IXYA
-	 79HqW3QApVSLQ==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id 1541ECE086B; Mon, 21 Sep 2026 09:09:01 -0700 (PDT)
-Date: Mon, 21 Sep 2026 09:09:01 -0700
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: Ye Liu <ye.liu@linux.dev>
-Cc: Frederic Weisbecker <frederic@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Boqun Feng <boqun@kernel.org>, Uladzislau Rezki <urezki@gmail.com>,
-	Ye Liu <liuye@kylinos.cn>, Michal Hocko <mhocko@suse.com>,
-	SJ Park <sj@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>, akpm@linux-foundation.org,
-	peterz@infradead.org, mingo@redhat.com, rostedt@goodmis.org,
-	jpoimboe@kernel.org, mic@digikod.net, tglx@kernel.org,
-	david@kernel.org, linmiaohe@huawei.com, nao.horiguchi@gmail.com,
-	rafael@kernel.org, gnoack3000@gmail.com, gourry@gourry.net,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	linux-pm@vger.kernel.org, rcu@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-security-module@vger.kernel.org, rientjes@google.com,
-	shakeel.butt@linux.dev, xu.xin16@zte.com.cn,
-	chengming.zhou@linux.dev, will@kernel.org, juri.lelli@redhat.com,
-	vincent.guittot@linaro.org, tony.luck@intel.com,
-	reinette.chatre@intel.com, x86@kernel.org, paul@paul-moore.com,
-	jmorris@namei.org, serge@hallyn.com, pavel@kernel.org,
-	lance.yang@linux.dev, mhiramat@kernel.org, pmladek@suse.com,
-	longman@redhat.com, mathieu.desnoyers@efficios.com,
-	jiangshanlai@gmail.com, qiang.zhang@linux.dev,
-	dietmar.eggemann@arm.com, bsegall@google.com, mgorman@suse.de,
-	vschneid@redhat.com, kprateek.nayak@amd.com, mark.rutland@arm.com,
-	Dave.Martin@arm.com, james.morse@arm.com, babu.moger@amd.com
-Subject: Re: [PATCH v4 09/15] rcu: convert process/thread iterator to
- for_each_process_thread_rculock
-Message-ID: <f0c6954c-1e43-4a01-9c9d-11d38edc1e2c@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <20260921092101.89285-1-ye.liu@linux.dev>
- <20260921092101.89285-10-ye.liu@linux.dev>
+	s=k20260515; t=1790007119;
+	bh=Bp3IBrDxSg3j2mpmgJ6jbKGXoqJCAZK/XpOEiySiNrk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=RgdVCj8Y8MEZpnY8Ynmtz5Dy2UDP7d9xzKnUit65T6xk8+YMxnlM7DSiiYU1AOpBR
+	 zvWmmx/kpNPrEVC3+dkPUlbTSKUBrMFc4ZXp95XtAlJPh4JJw1/U/vjJiKx1N5IYmX
+	 zlPLV+yHk5U49q14WR5l0zjfqYYW3OTrPp4bOCWFyv6a7UtVjfKNC70fnTTvYnoCq1
+	 0vbvbfWNLVfS6U4cWKSFf5HBZQKiOxDqOVIvkjcb9Vui3oPDdPCOzkzSdH9s20LCGn
+	 JVgWNC0h3NP3RpXUOHAGfajyXdsgDKXaOL8ztYwgAbjK8lb6758XnPMpoAtLJUp/th
+	 u1ZKVFeYiv9Eg==
+Received: by mail-qv2-f12.google.com with SMTP id 6a1803df08f44-91059280d58so27663686d6.1
+        for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:11:59 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBzxvL43osPQ1F0h+RlSRuwY4Okv90RrNGYPRPFlx/gslEdoSXXIWW5Yh5yaqC3u9WPvsQ2YuLOMjA==@kvack.org
+X-Gm-Message-State: AFuF++mfbOTRXYpqHH5a/fyLjZ1IYMuAw3NoOqqOWN24r0RVjoyEy9vn
+	yju0aer7z+qaIxysqsgIj79ZNhir37fUWVonz9uSD9+puM9VUh7b6H01vI0/NZCGADMQrW7bIg8
+	7cOHwBxxEElDEcUATOAgl+jK17EiW7BBheiWjEtC0vQ==
+X-Received: by 2002:a05:6214:d88:b0:912:517b:7bc7 with SMTP id
+ 6a1803df08f44-913fc9691bamr12933946d6.38.1790007118678; Mon, 21 Sep 2026
+ 09:11:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260921092101.89285-10-ye.liu@linux.dev>
+References: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
+ <aqJXx2vtbKaRLt3x@fedora> <aqLi6cIjD2wJwk0B@cmpxchg.org> <CACePvbUG1ApMzMdEzf-63rpjgGVNsRk21pT72OQGJpM=OtRUew@mail.gmail.com>
+ <aq6cVXPLUUwJA7-2@gourry-fedora-PF4VCD3F> <CACePvbVaPDnva8X-Xmz84r7j5HjTuih-w5phpw7cerK2uPnK6w@mail.gmail.com>
+ <aq8dja2-timYBwyB@gourry-fedora-PF4VCD3F> <CACePvbXudjxQ5vrrY4D1nOXKaFNQUn-tL+p3O0zfxtHXK99ojQ@mail.gmail.com>
+ <arEVDBlfsUYKK004@gourry-fedora-PF4VCD3F>
+In-Reply-To: <arEVDBlfsUYKK004@gourry-fedora-PF4VCD3F>
+From: Chris Li <chrisl@kernel.org>
+Date: Mon, 21 Sep 2026 06:11:46 -1000
+X-Gmail-Original-Message-ID: <CACePvbXG5kjZmRsdd0a4HfbnNa6w5s9b_1OCySbwvY+HuCqOVg@mail.gmail.com>
+X-Gm-Features: AcwNN1XW2qPwRKFrDJtBwtgJeNORhYpDb8TYjJkQ0_71FBj_TGhnmFQwOxcat7E
+Message-ID: <CACePvbXG5kjZmRsdd0a4HfbnNa6w5s9b_1OCySbwvY+HuCqOVg@mail.gmail.com>
+Subject: Re: Path forward for Virtualized Swap?
+To: Gregory Price <gourry@gourry.net>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Baoquan He <baoquan.he@linux.dev>, 
+	Nhat Pham <nphamcs@gmail.com>, Kairui Song <kasong@tencent.com>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Yosry Ahmed <yosry@kernel.org>, David Hildenbrand <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Barry Song <baohua@kernel.org>, 
+	YoungJun Park <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	=?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?= <surenb@google.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Rik van Riel <riel@surriel.com>, 
+	Wenchao Hao <haowenchao22@gmail.com>, Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, 
+	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, 
+	Meta kernel team <kernel-team@meta.com>, Linux Memory Management List <linux-mm@kvack.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org, 
+	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Kairui Song <ryncsn@gmail.com>, Joshua Hahn <joshua.hahnjy@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 4D0F52000C
-X-Stat-Signature: tf5fjeyfgxasuzd1j9yha3u567z6pysh
-X-HE-Tag: 1790006942-252366
-X-HE-Meta: U2FsdGVkX19sVumTp3ryMmMYboHn4AAGKxa0n80mFjUEZlkhNW1Cd/eSxsP3Zy70m9OPZmMgE9Kg0xxsxW3eBSY4CwBl2U+Eh/epv5z7aGRNZ6w7RIYyqiZqt9L4nKtvKPnluiqdg0JaKh/GxUo/Y6Nc8jmuhk5qXZqad7yC+YSTZNbs7CFIpRE9XkCybFDwLM7d6KGoP2gyyFZILWCoTWOuSSUKlaGgvnFa+KRJAs6DOWXC9RaZcQV9mFzjEOhyW8u4pA1djQiQ96C4W2sUINSC88N8OrpznnWJmI/khOJkO/4KcJE/xfxSpKN0ftoqiNBTD+yz+rlpDsNMkKFrp3fgAAej51GX6KpU+iUdvuOhMOy4rXbH+7Qu0Tz8mVvLyFHbkUPjWNiHy+YHfQMn3pUrpEf6ktU9vUAVQAOa0UdouzgqfxNWVPg1zpgBZlkv8EKuLk5T5bt/yS5mNLokFrcPicwYlivU79q+HIne/s26arXh5hj2N3Cj4S6Si2frXQJsS89LUkcs5pQeMZfDfJ7OCF1xz4H1kI6AiTiwWH2512JCYMxJXYjw1yx9BezNdpuiOfi0NUy014MQEvMbS2yuoYlqcHOmaeAxLcKdGOwJA35rsxZo86VzLxH5aRgDcghdzF034VWeNcmJNYx2NfqcClubJzGyzaskUY+i6+G/bErARQmUiqqcBCOh7qmF8N68YPwuCO+HeoOfeDei7xVJs3xovTTgzR3UM6BeCE+kNSoPeIFZ1BLARyCNJ7ki3AF0uAVHgDZ8puiaC88qJ4m5sg78dG640mQfqsx1bDr5sB/Gm8NcoAEQ4UbeHetOCCuenb8rv6wkeVOjPfDgNlrH4T4PXXU7sv3v9XJcnEW0gTaG9yfxge5nrkUStMK34V7Rdj+hZ3LX4UeUX65NmQ/MTtcqIV2PtybBiD6GSL5cJuf+DeAoYw4aAxKHSyxgaHtBHA2Y86q/s2NtuzH
- fva/Teo7
- NfEAbCTww7czJJzg7dHEu9N2ndynWI0y5j1xcVPz0+xJ1CJDWOvmyYjGucaP2oD5u9c2NU+OgWmDevBXUmQ0AJDemdfw5GEwmzfGWDNaFpVmumIVNC7cs2LF+nngno014NzYcGUQKSY8qJ3yguSS9+xsSu48r1wOJTiTFviS1eJL6DnclxDIHDQQmsh/KcQwrwUOaL2IQfVj55rZKosXDfmf2Z48BiAZeKwR0kuVlqT8YKdL48il0cLtVwIVsMyEAgetdm2cFi2V4CTm6Y4KzQd68C1BBbHzo3O2OLF4Uaxr9B22rgxWhoRcYT/UwUdrwvcbXD80HRZVI1DapFOzloKNrkCqH7xLINdUg9H3DOg8Ku+RsaAJNAQ1O1fHC3kAYAiYDwF3q36DAWvf7taxar/k2FR+IDsQfaffc2450gnRD8Yj9mmac8LXYNub+g0LkFO5oKzhh6HWDinbyQYUvE/5AG5JB8zgKwmdp1H1ERoDu729AsNt6O9ucseJJ+9TucQh0l7BJdKxcB/MF1sT8/SSdzZtx2ehcwcoD/e5Rt78AkykWGI+TiL7Xc0zmDfs9EcYCnD5aAJo4Pa7WX+QLLetynkPa7YIaDcamZcj5D2cijPu0SFxMIpTZk+yYSsYRlAjjAdkeA3Uy+aIrBgcZov55J2Y9d4tT7pihiP7bte8pqVvNPXmr4B5dnmazAE4Q/97maq/pSMSXmxiKD+jvKyXACe+BKrscGKR8PhaCrI52XyTmXGYoCzL6mAR4JMf34XwYusDyYkQ0TD7rsOeftYOUHpPvkkDLc/ZjeZL+MveJJF3q2bPvgdhpMvACc5QbO57nrTrKgWgaqVSulGCtAac4beVXs2R77Y8L16lldK5kbyYw8AkrPUtaZA==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 87A8210000B
+X-Stat-Signature: q7aye3xrjddgrichz85wph4r5kbodeyb
+X-HE-Tag: 1790007121-889117
+X-HE-Meta: U2FsdGVkX1/1ByJHlzQgm+Ac/L8GTpTfqFipr8iKL97DTg/KmQmqVM84yNZ7K06fsYTzF2PO3EYWa86qOksTmW1XFQKo+5WNmJbTuDVT639Q3uwUUoP2O3bNGwGifzsd2S/qFeEgW4FtNUNcpULYhuwDHTpJjEnjAg+KfwJuVEwuPir9eprl/m1zueBr0y7hIu8Ms9RdbbmBLi551Ykbyp40VgbqXCtWqyGG9nPBLkLzv2B10boSaGpP84pgnlpCqKw+Gy2x1q2jEF5cSXEhhQmdmJTzLKOGlCgL8lDsqm+8YfHFjxbi3XEoEWn35ZR3s0PPoU0ft5sDHZKae2F9hIQ/npf2qloOc6iW6rSA2yJ+T94gtdFy4KkTVorC+GPuB6A3EjUCWcico5mAY8jLldbQP1DkANONVl39TZceAX6Ydvx7l5Va/xD4T/D0n7KBS5oDO4Or7hjTA97En0ZnI/48lvnq29Ae6Fn3Hxb2PbupqeUwwGg3GM7T1k2YRW6RkDMOr7r6/t5hwn3s4TtFDIMUw5Y3s6D+oup8MWoLeI0G6XnWaGdawc7GQm0lbX99V73jjsNu4g5UVkFRFi3Y2Dp42bJnTRBgLVBSRVA4IZ5/Gv3OFkgiA+lbpk8GeWI37EWYiVWy4oM1ItQ3r53iNUR4m9JJezHj4W8NgA32+lcJZ/uL6f18uhezM3YLz3IYJZqQJxefJC+gGwV2BhUhtioAUzdFA7hwnFWpe7AIIRdODzeKeMmX42M9wwNdhfggrPFOAlK8dKQ2xYOqyj+gnPk9w3tDNadNMTKZIqiX3kxwygp7huLNHo3Ce+h+LgArktOheNVDvFiqUxOK+ESXYQjovoDb9cyj84Ko/1dPwbXKrleO7839FZVLXzV8rIA0XsCBVNcOjZATt2FYknk4OV4W8PAa1dxv9AiyntLAuVd1zSV1U2xzHhd6+0miKBf6vkaWPGiDyDbXIRMd+cq
+ phR4KFxf
+ y8e1PXhShHuONGOz4tomIEI0Yno47MXcK3MiOjAksHrT8cmvCI34QdPe6GEtAGhXzVJTZfKGWk2Z8rLBaTUNSmSTQpVxjRgtcQMGc3eTe0u7FZR/U0LcJhV0BnrJd/DAX+baBqhBrnH+3F62cVl6Lr+bDPnaxYzsQ4qncyYFrOgwr+7bTw4N0cHCaQGtL/FnhoBauHwlpCAZuubCsKB1AvqyoczUSsEm/PxZQc4grz59QFiAf6WPlyxJiYHpIAg2Jx9jeb5zRkDETeaQq1SDYPc1/z43kX5W8lDt309Kzq3QGEqpL8ddqWL9hvW2G/Vx4/p8Hd3wTKvZYmP5ZYYl16lVTdB8CfogD8m1G1oRRSCepvAigUP0I7zAx7SFKJHrSlDXhBRqg6E5kUXdDqVC/nkXOWetj00vbGU/Th7U4nMVTd4T1phMqMXsXO8FKk2uqNevXku+IglWE5sIh8dGo2jRg8g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,50 +123,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 21, 2026 at 05:20:55PM +0800, Ye Liu wrote:
-> From: Ye Liu <liuye@kylinos.cn>
-> 
-> Replace the manual rcu_read_lock()/rcu_read_unlock() pair combined
-> with for_each_process_thread() loop in kernel/rcu/update.c with
-> for_each_process_thread_rculock(), which scopes the RCU read lock
-> to the loop body via scoped_guard(rcu).
-> 
-> No functional change.
-> 
-> Signed-off-by: Ye Liu <liuye@kylinos.cn>
-> Acked-by: Michal Hocko <mhocko@suse.com>
-> Reviewed-by: SJ Park <sj@kernel.org>
-> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> Reviewed-by: Oleg Nesterov <oleg@redhat.com>
+On Mon, Sep 21, 2026 at 2:53=E2=80=AFAM Gregory Price <gourry@gourry.net> w=
+rote:
+>
+> On Sun, Sep 20, 2026 at 11:43:59PM -1000, Chris Li wrote:
+> > On Sat, Sep 19, 2026 at 3:53=E2=80=AFPM Gregory Price <gourry@gourry.ne=
+t> wrote:
+> >
+> > Let's start with the real question: on your fleet what is the max % of
+> > zswap memory compared to total RAM?
+> >
+>
+> You're asking me to predict the future.  Any number I give you today
+> will be wrong 3 seconds from now.
 
-Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+No, I am not asking you to predict the future. I am asking about your
+history. What is your current trend.
 
-> ---
->  kernel/rcu/update.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
-> 
-> diff --git a/kernel/rcu/update.c b/kernel/rcu/update.c
-> index 2a778b8ab4ad..d8e0b5896db9 100644
-> --- a/kernel/rcu/update.c
-> +++ b/kernel/rcu/update.c
-> @@ -548,15 +548,13 @@ void synchronize_rcu_trivial_preempt(void)
->  	struct task_struct *t;
->  
->  	smp_mb(); // Order prior accesses before grace-period start.
-> -	rcu_read_lock(); // Protect task list.
-> -	for_each_process_thread(g, t) {
-> +	for_each_process_thread_rculock(g, t) {
->  		if (t == current)
->  			continue;  // Don't deadlock on ourselves!
->  		// Order later rcu_read_lock() on other tasks after QS.
->  		while (smp_load_acquire(&t->rcu_trivial_preempt_nesting))
->  			continue;
->  	}
-> -	rcu_read_unlock();
->  }
->  EXPORT_SYMBOL_GPL(synchronize_rcu_trivial_preempt);
->  #endif // #if IS_ENABLED(CONFIG_TRIVIAL_PREEMPT_RCU)
-> -- 
-> 2.25.1
-> 
+You can not even provide a single historical or current data point.
+Do you have historical data points to back up the claim of this max(%)
+large swing?
+>
+> You can't know the compressibility of memory until after you compress
+> it, and requiring a user to predict the future by forcing them to limit
+> the total amount of workload compressibility does not scale with the
+> number of workloads of variable compressibility of data.
+
+You likely just need to pull a SQL query on your fleet to get that number.
+
+> That should tell you that your model of reasoning about this issue is
+> ill-suited to address the problem.
+
+That is what I'm suspecting. Nobody in a sane mind would want to zswap
+100% of the RAM and maintain reasonable SLO.
+
+Chris
 
