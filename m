@@ -4,170 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E79C5C982E1
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 09:28:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D67B1C982DE
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 09:32:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C6B516B00D5; Mon, 21 Sep 2026 05:28:01 -0400 (EDT)
+	id C9A3D6B00C7; Mon, 21 Sep 2026 05:32:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C1B316B00D7; Mon, 21 Sep 2026 05:28:01 -0400 (EDT)
+	id C72306B00E1; Mon, 21 Sep 2026 05:32:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A957F6B00DD; Mon, 21 Sep 2026 05:28:01 -0400 (EDT)
+	id B877C6B00E5; Mon, 21 Sep 2026 05:32:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7910D6B00D5
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 05:28:01 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D35ADC056E
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:28:00 +0000 (UTC)
-X-FDA: 85237242720.09.6CABB45
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 61969180002
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:27:58 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=LbpNXzuF;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf16.hostedemail.com: domain of nilay@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=nilay@linux.ibm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 80D236B00C7
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 05:32:29 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 800F01C2F94
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:32:28 +0000 (UTC)
+X-FDA: 85237253976.10.E5AF4AE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id BEB2C80003
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:32:26 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EiR2ktE5;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789982878;
+	s=arc-20220608; t=1789983146;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G1939MElcb2kM01/7HPbHzZLx6pN/KmlSSE/eI9FBUg=;
-	b=ve4+7zd1O+bSztDop0IBQMk3ttY9/zTUmH6rmN/PTyyhDubuQ7Pfu4288IWheMhBSqstyq
-	wMPkNad70kcTPsgyahWA8uK1RR8cz9o8cVk0Tial7ZZusEv3NwkOb7VaVEQKTXWNy+1JeS
-	dBftdk/sK5aKCfI539uXoR5KHOQRL1Y=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789982878;
-	b=vxRlg8uzjJzSxvaUftw7hL3eECX8DIY3AT2gOLYAQoT4Yc6tPGYw01iwbC85aOdF7QS73v
-	7dryZSY159yk96Od27+zPBNa+rdjt6No7z3xSJnViMwadJyksxbj8YpUSMXwKCYP2U7ho0
-	+1XF2kY+sYvIgMPZjb6E4sf78aAm8jM=
+	bh=YYR5qVSNGypuoPk4MWOVXb7SNwRU6tu0qAlYq1SIKq4=;
+	b=AUFpveSjNDBRAF84krjTijPB8QRgOPj/MsZwTQ0mDVf8uf1vSpD5hEO/vqvEqQFiPwJo2v
+	kP7exIWbhbJfjmvwlQ/Tfv1rg3DZWMNf5MXuHkrzTcW0XAWO8vETIwhgogF23hjsMNWu2s
+	SFiz64vADfsVDWdrMT7imiMTOhYhep8=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=LbpNXzuF;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf16.hostedemail.com: domain of nilay@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=nilay@linux.ibm.com
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68L7ZbnX672354;
-	Mon, 21 Sep 2026 09:27:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=G1939M
-	Elcb2kM01/7HPbHzZLx6pN/KmlSSE/eI9FBUg=; b=LbpNXzuFadRu4xefU1BRaQ
-	h06fCzfQKzfgJVO+GdlysRBuw3CYS0h9INHzdvY3mycdGE8B4aCXmajbflhXM83m
-	ptcP7kCNPw7U5yE7EQVhYZbolmvC65PE01R+sPRX1TAwDsp3zu59hoqOFt/AvSFu
-	5pqA8S4gXwqDoq7dFjtx3V6977yRg6lME+gwPDU4gqT+I3OVD5aSSVh7R8w6dn0T
-	kiKHMCbbohscsdNiKn1Zx2pPlBr3PIYgVRxD/D5LlFRG64591dn0jOnilV2QvhBv
-	bToDpdeuPAeQZrnWFVRBLnCUhYPuTDfHfi8SVj+Rm2GBZJhlYSmRWoRw9xze2Cvw
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gske17ksg-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 21 Sep 2026 09:27:30 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68L7HTui924403;
-	Mon, 21 Sep 2026 09:27:29 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gt4qq4sv7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 21 Sep 2026 09:27:29 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68L9RTIS62783920
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 21 Sep 2026 09:27:29 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EAD7558063;
-	Mon, 21 Sep 2026 09:27:28 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2F3D55804B;
-	Mon, 21 Sep 2026 09:27:14 +0000 (GMT)
-Received: from [9.61.138.180] (unknown [9.61.138.180])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 21 Sep 2026 09:27:13 +0000 (GMT)
-Message-ID: <37de70f6-67f8-466f-a267-03584973dd3a@linux.ibm.com>
-Date: Mon, 21 Sep 2026 14:57:12 +0530
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EiR2ktE5;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789983146;
+	b=qETzTWuKDNVTaP8nTRIUPMGXhp0srTcULQsR+0JtrQZjblElXc831E+Mwg0wiqkQJK1tVC
+	Dv37OEKTU1bTV2b7od0rQqx/sISaPhcqlbzP8VhDwl47wYy+8DLB/8uCL/FIjTnN9txiCM
+	CvW2F24vLsMbXkQQNixBe1HeO3YTMgk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 81E24600D1;
+	Mon, 21 Sep 2026 09:32:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E04791F000FF;
+	Mon, 21 Sep 2026 09:32:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789983145;
+	bh=YYR5qVSNGypuoPk4MWOVXb7SNwRU6tu0qAlYq1SIKq4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=EiR2ktE5bWvCWZK2xZovGpxWGGzeb+rPS5X4wbkKw1+lhJsvN+ZhauW30Gmk+VICF
+	 B6WsjoFZiPQlJm6zYFnispjSdhqDgBrA83GqOYc9yPLoKD22vhubSfV+6zO/wd8vWI
+	 K6ymAsrEO0K3o7WtIvhTWCCfxjaC3L3v1df2ifYXlUI8kAtMZgqT65Tb39EwSrmiEJ
+	 XhoNLIW67BTaDDljGDfoArCWVzZkUtAUqWXrXnvVXuHSyIburK7teC1/ioEipBlbR7
+	 1kEp5/WaQQwSk9l1q29y72XL8jMs3WHfAYYJQWYj5+zg0viR/PHATQwjo7HtFjGTN5
+	 8ddCwV2uNcG7g==
+Message-ID: <80925c1f-73c2-45df-ac26-fdcc96ffe764@kernel.org>
+Date: Mon, 21 Sep 2026 11:32:19 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/3] blk-cgroup: store blkcg in bio instead of blkg
-To: Yu Kuai <yukuai@kernel.org>, Jens Axboe <axboe@kernel.dk>,
-        Josef Bacik <josef@toxicpanda.com>, Tejun Heo <tj@kernel.org>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        =?UTF-8?Q?Michal_Koutn=C3=BD?=
- <mkoutny@suse.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Randy Dunlap
- <rdunlap@infradead.org>, Coly Li <colyli@fygo.io>,
-        Kent Overstreet <kent.overstreet@linux.dev>,
-        Alasdair Kergon
- <agk@redhat.com>, Mike Snitzer <snitzer@kernel.org>,
-        Mikulas Patocka <mpatocka@redhat.com>,
-        Benjamin Marzinski <bmarzins@redhat.com>, Song Liu <song@kernel.org>,
-        Li Nan <magiclinan@didiglobal.com>, Xiao Ni <xiao@kernel.org>,
-        Andreas Gruenbacher <agruenba@redhat.com>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>,
-        Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-        Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
-        Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
-        Youngjun Park <youngjun.park@lge.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Bill Wendling
- <morbo@google.com>,
-        Justin Stitt <justinstitt@google.com>
-Cc: Yu Kuai <yukuai@fygo.io>, Christoph Hellwig <hch@lst.de>,
-        Tao Cui <cuitao@kylinos.cn>, linux-block@vger.kernel.org,
-        cgroups@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-bcache@vger.kernel.org,
-        dm-devel@lists.linux.dev, linux-raid@vger.kernel.org,
-        gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-        linux-mm@kvack.org, llvm@lists.linux.dev
-References: <20260920092351.2434283-1-yukuai@kernel.org>
- <20260920092351.2434283-3-yukuai@kernel.org>
+Subject: Re: [PATCH v3] mm/gup: honour FOLL_PIN in NOMMU
+ __get_user_pages_locked()
+To: Lance Yang <lance.yang@linux.dev>
+Cc: akpm@linux-foundation.org, jgg@ziepe.ca, jhubbard@nvidia.com,
+ gregkh@linuxfoundation.org, peterx@redhat.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260919-nommu_gup_pin-v3-1-3660a8851243@kernel.org>
+ <20260921024914.12819-1-lance.yang@linux.dev>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-From: Nilay Shroff <nilay@linux.ibm.com>
-In-Reply-To: <20260920092351.2434283-3-yukuai@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260921024914.12819-1-lance.yang@linux.dev>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: -Xd8a0RVEhrxDFm6gn4h3GOonDYckOi9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIxMDEzMCBTYWx0ZWRfXyA4xNH3cYzqc
- l3LhAHGkDdB9wr6wJVvzkOiW0PLTrY+6N2xnfwVvAXBEgUZUUlnqQoZ9S/t2ec53rKELusYcvWT
- di0gP2G3AgYQrqIZGwv4XAk6ZTbicrvfmdi3M2UDvbThVuKLxf2bVg5EnsFXBr4KXrs6etQpgoD
- euKLu2Q+XaIsRVuhlHm+asbpr7zvK5ks3HxoZmC3tfKIKTo9gLj/L+nXXm8Qa6LpaYS6fCQWKwA
- rPtKbOsDw0UQzNsyd8H9bnPf3SqR3/y1I/PXuxjss5kLLxairvDG61ZUizIHrj9aHnJa9muRUGp
- 7oMtV5GSfddGruww+e3uDCJcaCC0OqzGH5jLo19DzokCNvtkRFr5gRuQY3TQAjpzacqfLjYt61q
- p4U3ri+iYIaoZm7NV0kKr27cQE0po2JDzt0VLOolD+KbjSIIi30aCQOJhnnHY4hngd24Su44C9I
- iTTkkhvJogiX4hApA1A==
-X-Authority-Analysis: v=2.4 cv=O/KsLx9W c=1 sm=1 tr=0 ts=6ab0f883 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
- a=yt32EUx3BFOMUVNgjeUA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIxMDEzMCBTYWx0ZWRfX5rV0t/6BeebN
- XqLIK4QGbSN4xT9UKi23paOxlW7Ykt3xnAjLGUCmr0jYvC/s6nTF8lOI7DuZlUqbCJZ4FsSaWjL
- tAtASM6ortzkp/bMC84v/5e+hKTSbak=
-X-Proofpoint-GUID: STTiMO6o3fOhik_S7E0XjsEtuaK9UoBW
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-21_03,2026-09-16_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 malwarescore=0 phishscore=0 impostorscore=0 suspectscore=0
- bulkscore=0 priorityscore=1501 lowpriorityscore=0 adultscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609210130
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: BEB2C80003
+X-Stat-Signature: fctbxqfnajsmhzt9atpmkfa15akpkfoi
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 61969180002
-X-Stat-Signature: 37ucem8gciman7hkiuyo7tq6k4rme6fu
-X-HE-Tag: 1789982878-629510
-X-HE-Meta: U2FsdGVkX1/m39BG2dgN/1B212cSRCiUA0BRc//cS1b9MZ78HoYzFjlKp7AYi3efdWPatkV2tS6I/2d9FaqltUS3E0KZEU/yt+SUX4GI3twBdSNSq6E+YUz9HhWp297HYlFWPpxrAiavA3iB2hN1U0mLLcBFf4lR02bpxMZ+RkWpz6Qh2cpPX9Q1OO4jxAe9t86DnydSId2zHe5k2evMmkAQzrRc6epJYacWwtB5ZzNJdxV42LxbwP3KJ+ugeOedvjXhacfWU9xjAVitADb2EqRN1fbQsLYsE5SDA8xpGehFVgg3FzyGm5hS/62eaHHWt3l/MpPP51xRJJlb873V+q4GWab9Kqb4hA8C2sxwW0Rn0+ycWupKUrY2SGPoBcIMluUX/5jzRpAe8Zfca10FqfeL/PED9VKy8bA0y7kV9DH1PNkqBTf7kq1M0qtAO1A3V/dM2ACkWEV2Hrqyf5j1R3XiugNay6iizwYhpVcc0BE+o9SXfGXILjsDeYlk3kLyCrgfTtl5gUeiTMel+kEOX5A0BuL5WLTQtnRgNCJDdvL3mSURyiMVnOZWjny7g2u7jWZBDVZIL5b0GsVAIs3QT27nzFX1IvRkHzL2bVDJuwQLjMfS/f/yNInlwvHfi0CwDpNo79theq5xG96nP7/4By2dgjHNf/HVdvDcbmi18X0nGgbzgyMmsVOFFtqk4q4OXJN5mPb4dCg3P/z3D0kIQlQzfeNbGypW8Rz8/QgzMoaowrjTXVHRsoXXN8KnqBOR0R6rQqAEF1dkbTwjyyPN6sWLnDWqNGXpcwRV7RqyccA2pOLq/RUVuAy1uNH0N9/7Eh7BOiqVozdOtivJATYH+ebhhh2eugVxOPVkEM0i4ZEvmxP8AUOZzq+cm+2R8t6hbxj9ox5vVwwfbdpeDPVh04q552B3b/K0cq+orMytTfeqerJ2qDu6PayRf3TqMB60xCP2vc+Q7USdI1xRBZ+
- GkEUz6SP
- lL+1oEFSkgvfuLy5K6woZ3Z4V7wbT8Hl3uGdOA9qb3Wt81DuDPpeZeHkEBuoalbhRTqLf7//YJ0q0XIIy6r96FAvFA6W/zTIjEQT8lUs9B1sPNcFYGq4ww7uB/UwyciKpzm/XxC23MQ+dj1GBhC27NWXr8mvywb39o00gHfg361zYl6GAn1Wbp/iR4RxxNhZFFIQpIyMragZiMK80o0YVr4oWAboCBfoyYJ52q5tQHl7mXYcQ8i2ETm1mV5Nrpqoo4Z/OpkXxpAO+l+eYTL6gwSPZptaJJIu/EpOCvPP9ffs6rtf6E6vYvqqTXFLBgD//OaSPA59Hz3nFtyZRtCCYXc188Q==
+X-HE-Tag: 1789983146-922751
+X-HE-Meta: U2FsdGVkX18Jhrh7ji0lxIrSzlUuqTY9pcO84y54PB37TxRPXoUePv0OFaC8GnXnGWLfrNgMztD0OHxzq3VBNTGkmuSwZHYYgvtvv/Vf2MtPjujjh9xP0KF8T9rlpmBl0DvHEBplR4ElbU8tw0Drz2nlXnlFETmHT0nWAxYUAw6R5aAVwqlTd8shAnd2zTzwpLKBO6KgmCsXopQTcVjCkelZjPvODxzQbN5lKRhhJi0inT1zfLRFI7Xk8J7wGBIx+iZNqI246rk2bWfNut2zxEpL1dl5JrzyOr8bcKF06+9xqg5hKSv8qJ+wtDPrmkLbCp+PU9Yh46xqdT3u7KzMA3CbGVeAbSdMxik4CV/ap+mtWRDcBQzvxQHndnh0MyQjncg9H1GSPZgDE5rOt4RG+qbp+P+e1bljVy64W6yrk2S3hafSliWOUnF2/jb7+WVjJKDB/tM20qsyNqyFfOKwkPpD+hdhjA3WGjpgnZo7wQFjWpVk9TmqmgK7SKGsMkWm4IH9Su23icj1+0srPf2TfhFjqKtdJ5szXbDrbGtUT5l8lUiTriwzqC6YCUhve0bGaO36zTgs0FpK1IqKAiHn+wzDeAMTjWS9LN7gOndR5DM0FKCPsEfUmSraHeb3g30yNByjAPnnDstK9ZjBG+varLwv//pUhLqPiAI9qoFigliG1O1B8CE06650YjpROO4Xi+cwdhQExlZcudSPDsAYiwUQebQ1+0Q23R29sPXf8LqU4JzN54pH93rDXr6Y3hVrRCplumNInbUA715OX2Ob5S006S7Uddsb058tR3/QI952Hc514dI8+wOq3hHpXZvOMUQiFpPt3GK2NQaujkpRGdp3H7uzSMMH2+BuEzfOrc31Y5+Eg93LPqmSH9jkVyJseDucXjiMyiRvuznlrgHOJJPE/AN2+SrLgopPOqt/h39SoiU7W24YbGS2q28TmDA2WuKeKLt+Ikiw6oHdnRp
+ /sd+35qj
+ qT5cXf2oE3K0j+Ia9cpeYQ0nMmHkvui/vCQ0XRX2cj5d3rn7KmmES6VswGh3+plThuds8ZuuZlkM5gD6hU5DHHW3+kZzU+9r4JwADLfXASgZTuznSMhlTMWq1LjBV96MAKeWc/0ZzHvbCl9hos/Rz0D4w7vU7SHZF5ywNvsTkvWKoVJqMry4iD8fTUOisCRv0oqiTtp3F+YYdYAvCvYCRVilYarrT07R5CJg/qjOfGJchQoWEn/d5zisxpo+LKqThee7m0ZE6CwaeiezIG1b5I70+licCC+6qyChfMQHWHrx8AjjcOCvT/HAtN3ZrwoZ0SlljzNoZbqU4BWrCrI8wTsnPj20FcAIhkrTrLgUUngwTnTpZwIMoo8cWoW0Qu6/k42vaANY0i5WM91HEKBxcx0IV/K4m3FRMTHzGrvdXTlxhcRtuw+idVRZb05ODFb2Pcn8KWdpvnioRik4R32BiKo0PKoDAXV53d99DoeYAW+P+qde5mPRjXj4NlNVPqfBINaj8Pn8NMgmHCZMh4lPmNWFqHxAGJOm9J9ePoTY8Z59duDI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -175,45 +140,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/20/26 2:53 PM, Yu Kuai wrote:
-> From: Yu Kuai<yukuai@fygo.io>
+On 9/21/26 04:49, Lance Yang wrote:
 > 
-> A bio currently stores and pins a queue-local blkg. This forces bio
-> association and remap paths to look up or create a blkg even when no
-> blkcg policy will use the bio, and ties the stored state to the current
-> block device.
+> On Sat, Sep 19, 2026 at 12:04:36PM +0200, David Hildenbrand (arm) wrote:
+>> From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>>
+>> The !CONFIG_MMU implementation of __get_user_pages_locked() takes a bare
+>> get_page() reference for each page regardless of foll_flags:
+>> 	if (pages[i])
+>> 		get_page(pages[i]);
+>>
+>> This is reached from pin_user_pages*() with FOLL_PIN set.
+>> unpin_user_page() is shared between MMU and NOMMU configurations and
+>> unconditionally calls gup_put_folio(..., FOLL_PIN), which subtracts
+>> GUP_PIN_COUNTING_BIAS (1024) from the folio refcount.
+>>
+>> This means that pin adds 1, and then unpin will subtract 1024.
+>>
+>> If a user maps a page (refcount 1), registers it 1023 times as an
+>> io_uring fixed buffer (1023 pin_user_pages calls -> refcount 1024), then
+>> unregisters: the first unpin_user_page subtracts 1024, refcount hits 0,
+>> the page is freed and returned to the buddy allocator.  The remaining
+>> 1022 unpins write into whatever was reallocated, and the user's VMA
+>> still maps the freed page (NOMMU has no MMU to invalidate it).
+>> Reallocating the page for an io_uring pbuf_ring then lets userspace
+>> corrupt the new owner's data through the stale mapping.
+>>
+>> Use try_grab_folio() which adds GUP_PIN_COUNTING_BIAS for FOLL_PIN and 1
+>> for FOLL_GET, mirroring the CONFIG_MMU path so pin and unpin are
+>> symmetric. Keep supporting the traditional behavior where users specify
+>> a pages array but don't set FOLL_GET.
+>>
+>> While at it, don't return NULL pointers in the page array,
+>> as this is really not expected for GUP users; instead, just fail and return
+>> -EFAULT.
+>>
+>> [ david: support traditional behavior with no FOLL_GET, extend
+>>  description ]
+>>
+>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>> Cc: David Hildenbrand <david@kernel.org>
+>> Cc: Jason Gunthorpe <jgg@ziepe.ca>
+>> Cc: John Hubbard <jhubbard@nvidia.com>
+>> Cc: Peter Xu <peterx@redhat.com>
+>> Reported-by: Anthropic
+>> Fixes: 3faa52c03f44 ("mm/gup: track FOLL_PIN pages")
+>> Assisted-by: gkh_clanker_t1000
+>> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>> ---
+>> I added a best-guess fixes tag. Given that this has been around for a
+>> while ... and it's nommu, I think this is fine just going into the next
+>> merge window. In that case, I will pick this up myself. If we want this
+>> as a hotfix, Andrew please pick it up.
+>> ---
+>> mm/gup.c | 17 ++++++++++++++---
+>> 1 file changed, 14 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/mm/gup.c b/mm/gup.c
+>> index eb898ea1ee22e..1681bea8eed7e 100644
+>> --- a/mm/gup.c
+>> +++ b/mm/gup.c
+>> @@ -1659,6 +1659,10 @@ static __always_inline long __get_user_pages_locked(struct mm_struct *mm,
+>> 	if (!nr_pages)
+>> 		return 0;
+>>
+>> +	/* See the MMU variant: support the traditional behavior. */
+>> +	if (pages && !(flags & FOLL_PIN))
+>> +		flags |= FOLL_GET;
+>> +
 > 
-> Store and reference the queue-independent blkcg in the bio instead. Add
-> helpers that lazily look up or create the queue-local blkg when a policy
-> needs it, and pin the result until the bio changes devices or releases
-> its cgroup state. Look up and pin existing blkgs under RCU, taking the
-> queue lock only when a blkg may need to be created.
+> Wait ... isn't this the wrong __get_user_pages_locked()? The MMU version
+> already does this a few lines below ...
 > 
-> Keep completion and accounting users lookup-only when they do not create
-> a blkg themselves. In particular, blk_cgroup_bio_start() only accounts a
-> bio when an online blkg already exists. This avoids creating a blkg
-> from the unconditional accounting hook when no policy is enabled.
-> 
-> Protect every rhashtable lookup with an RCU read-side critical section.
-> Annotate the lookup helpers and recursive wrappers with
-> __must_hold_shared(RCU) so Clang can verify that contract.
-> 
-> Before entering a bio-based driver's ->submit_bio(), drop the pinned blkg
-> after blk_cgroup_bio_start() has completed bio accounting. blk-throttle is
-> the only policy supported by bio-based queues, so no queue-local blkg
-> state needs to enter stacking drivers. The queue-independent blkcg
-> association remains attached to the bio.
-> 
-> If blkg creation fails while walking down the hierarchy, use the closest
-> available ancestor and update the bio's blkcg association before
-> recording the blkg reference. This keeps later CSS ID hash lookups
-> matched with the pinned blkg.
-> 
-> Signed-off-by: Yu Kuai<yukuai@fygo.io>
 
-Looks good to me.
+Yes, Sashiko complained as well. Will fix it up and send a v2. Lesson learned:
+don't work on nommu patches on Saturday ;)
 
-Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
+> Shouldn't the NOMMU version get the check instead, using foll_flags?
 
+Yes, I'll fix that up and send a v2.
 
+-- 
+Cheers,
+
+David
 
