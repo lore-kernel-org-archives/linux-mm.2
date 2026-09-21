@@ -4,143 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE97BC982ED
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 16:46:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFBE4C982E6
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 16:47:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C3A56B00B5; Mon, 21 Sep 2026 12:46:21 -0400 (EDT)
+	id 878636B00A6; Mon, 21 Sep 2026 12:47:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 89B206B00B9; Mon, 21 Sep 2026 12:46:21 -0400 (EDT)
+	id 8501E6B00C2; Mon, 21 Sep 2026 12:47:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 789C46B00BD; Mon, 21 Sep 2026 12:46:21 -0400 (EDT)
+	id 765B96B00C3; Mon, 21 Sep 2026 12:47:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E6576B00B5
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 12:46:21 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DD57D16023E
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 16:46:20 +0000 (UTC)
-X-FDA: 85238347320.15.8372D93
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 3C13B40006
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 16:46:19 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="g8vB+D r";
-	spf=pass (imf12.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A4AA6B00A6
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 12:47:58 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D4634C0260
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 16:47:57 +0000 (UTC)
+X-FDA: 85238351394.13.F887B1A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 3FF9480004
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 16:47:56 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z5O5pxmd;
+	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790009179;
+	s=arc-20220608; t=1790009276;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zrXZhXeHCiziPKli3BDOjO0c3/5kNvHCXof2G6qqIq4=;
-	b=7ACXJ9OZV//QVOa7LVA8pee011EovbqQegpNjqUTlFQyC7h0AFBppLfAM4p0ZSaoq3e7EB
-	48BKz+6oHXZX9HjsaWtfs3r2rk9VrEUBw5oygZvZHvDFyTgLTPRN/zqjFqG1GlhoXwAgIR
-	hI5zndQk1NX2bmc2AHjJhsFUbquWECY=
+	bh=IFFR7nvnl5AUCpE0qKICPm8j7Nfxgqq2d2iNzuqP46k=;
+	b=Mr32kWdCaEAfTfqcotRI/1oHepasEeB8JVKynjhr9i4ofgirTahupiJyEWUOQuspfvJxJW
+	M0GbGekBfk5OSrp0fcjErOMa3OQMvGj9zm/b8na2yrCjWjAd9tqeNvs/vyf95/pBs7j4VT
+	O6O/AhcVUDcOlqBkbO2W1ACrJc4cPHU=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="g8vB+D r";
-	spf=pass (imf12.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z5O5pxmd;
+	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790009179;
-	b=cedKI+564/7giHH/gFwyk17/pRNyC5OjCQ7ol3/svWHej/nTT2kQloYJoZ139Fn48zHKlC
-	+Hr18Q9R6xgFLMDm2vUYKc8C8YclE61OwTnhI1D48PrPBW2qv8+08FVSDKZbCbdbtewieE
-	UJ7k9qVqJON5UKb4K5o66CJT+sD0Hws=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID; bh=zrXZhXeHCiziPKli3BDOjO0c3/5kNvHCXof2G6qqIq4=; b=g8vB+D
-	r1ZVtzugVo77DTqAvz/KTqoxoDNgaB2lGTinyee0pOW78RM0msN+6Ov7Ism32bQAJhW59xy2e0di1
-	Gf5fdaShuS2/oTWKyr/3S4sPYfFE5RDTEkjh8pxk50BpxC0IOAPVg6u2i6H4mSNOGzevTVBrRU6Gb
-	nKuoQ2F/l7OuOAIhvAtgUnbtZDKcveAJZH49c81i7iuBSvjem8a3ddr/BwoWqMsnslOdlOwcRCDGI
-	GtpEEvr45PFJ01JV8O+S54y01gbUYXneUrrndblzqElhfiR5qeJSyqSJN3pDmHvGN/QJx/3t5gZJT
-	KeZnB6BktLeoJtqRT7bAEGOYQFUw==;
-Received: from [2601:18c:8100:a0e0:5a47:caff:fe78:8708]
-	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.5)
-	(envelope-from <riel@surriel.com>)
-	id 1x8gzz-0000000D4jK-3vpf;
-	Mon, 21 Sep 2026 16:36:12 +0000
-Message-ID: <785353ef79844e81a8cd97e87b00ef1f785b15e5.camel@surriel.com>
-Subject: Re: Path forward for Virtualized Swap?
-From: Rik van Riel <riel@surriel.com>
-To: Chris Li <chrisl@kernel.org>
-Cc: Gregory Price <gourry@gourry.net>, Johannes Weiner <hannes@cmpxchg.org>,
-  Baoquan He <baoquan.he@linux.dev>, Nhat Pham <nphamcs@gmail.com>, Kairui
- Song <kasong@tencent.com>,  Michal Hocko <mhocko@kernel.org>, Roman
- Gushchin <roman.gushchin@linux.dev>, Shakeel Butt	
- <shakeel.butt@linux.dev>, Yosry Ahmed <yosry@kernel.org>, David Hildenbrand
-	 <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, Kemeng Shi	
- <shikemeng@huaweicloud.com>, Barry Song <baohua@kernel.org>, YoungJun Park	
- <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>,
- "Lorenzo Stoakes (Oracle)"	 <ljs@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike
- Rapoport <rppt@kernel.org>, Suren =?UTF-8?Q?Baghdasaryan=EF=BF=BC?=	
- <surenb@google.com>, Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen	
- <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu	
- <weixugc@google.com>, Wenchao Hao <haowenchao22@gmail.com>, Jonathan Corbet
-	 <corbet@lwn.net>, Hugh Dickins <hughd@google.com>, Baolin Wang	
- <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, Michal
- =?ISO-8859-1?Q?Koutn=FD?=	 <mkoutny@suse.com>, Shuah Khan
- <skhan@linuxfoundation.org>, Kunwu Chan	 <kunwu.chan@linux.dev>, Meta
- kernel team <kernel-team@meta.com>, Linux Memory Management List	
- <linux-mm@kvack.org>, Linux Kernel Mailing List
- <linux-kernel@vger.kernel.org>, 	linux-doc@vger.kernel.org, "open
- list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)"
- <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- Kairui Song <ryncsn@gmail.com>,  Joshua Hahn <joshua.hahnjy@gmail.com>
-Date: Mon, 21 Sep 2026 12:36:08 -0400
-In-Reply-To: <CACePvbXThspPYD8DZkAeiJtYuMV79vGgC1SGhpMwhn4COWOtcg@mail.gmail.com>
+	t=1790009276;
+	b=veUTTp0pB43zunCCm9/AbMETiKie5oiIN88i7gjFymdt3FHbOblLUr8x1g3qqjomtZ5MLs
+	cW0QiIHsBcbKg8i53VxFMTEBwi2dgF3T2f4VE+mncRDUObW2NB2luCjPBZ2f/ONLOTQZO7
+	JKuQfldrlx2VBIhEO+zF2atoLx8TOvs=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id C14DC60008;
+	Mon, 21 Sep 2026 16:47:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06B8C1F000FF;
+	Mon, 21 Sep 2026 16:47:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790009275;
+	bh=IFFR7nvnl5AUCpE0qKICPm8j7Nfxgqq2d2iNzuqP46k=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Z5O5pxmd3FyuLyzHSecvZ835/YaBrb8no5OlfGEsu0n/ePKDTd70M601LXWZoNO8H
+	 5zSwA/7Q76KJkm9DARpVems3R0xUBQffe4Z8HZeRN8Zx7kvLh3LCndFSF/R3fs9tF7
+	 os+IPpKAHjB4R7coXd7+wcImv6YLNuR4CWYfKvz8msRw6FfQuOhvCgIh1ExuFt3yTT
+	 w1MkoZSlQ4LiJ5ZZYPHuYXunn1I/u3y8+EeP4SzPf0dlrmPLfhGHu866yydhW/8aRE
+	 Jl28rFcjJetcZCC8KmheMUVrELyzQdy+3Pg2LuYu0t4z4Gl4lWddIPNG14KQPA5m/v
+	 mBeHm/pYCy0lQ==
+From: SJ Park <sj@kernel.org>
+To: Karl Mehltretter <kmehltretter@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lian Wang <lianux.mm@gmail.com>,
+	Kunwu Chan <kunwu.chan@gmail.com>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/2] mm/damon: preserve temporal quota state for unmeasured PSI goals
+Date: Mon, 21 Sep 2026 09:47:48 -0700
+Message-ID: <20260921164749.82070-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260921020013.33105-1-kmehltretter@gmail.com>
 References: 
-	<CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
-	 <aqJXx2vtbKaRLt3x@fedora> <aqLi6cIjD2wJwk0B@cmpxchg.org>
-	 <CACePvbUG1ApMzMdEzf-63rpjgGVNsRk21pT72OQGJpM=OtRUew@mail.gmail.com>
-	 <aq6cVXPLUUwJA7-2@gourry-fedora-PF4VCD3F>
-	 <CACePvbVaPDnva8X-Xmz84r7j5HjTuih-w5phpw7cerK2uPnK6w@mail.gmail.com>
-	 <aq8dja2-timYBwyB@gourry-fedora-PF4VCD3F>
-	 <CACePvbXudjxQ5vrrY4D1nOXKaFNQUn-tL+p3O0zfxtHXK99ojQ@mail.gmail.com>
-	 <e879ac65cb0940325736df7984c737edf1c6be94.camel@surriel.com>
-	 <CACePvbXThspPYD8DZkAeiJtYuMV79vGgC1SGhpMwhn4COWOtcg@mail.gmail.com>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 3FF9480004
+X-Stat-Signature: c3oxfzxmgdic1pud1e5xdg3d6r13q3jd
 X-Rspam-User: 
-X-Stat-Signature: prnq6qtkfrjjy83sw8m9f3xj79hyg5td
-X-Rspamd-Queue-Id: 3C13B40006
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1790009179-678565
-X-HE-Meta: U2FsdGVkX1/fLW6vHPOkQw+gjGoHICdb1dUBTV38R+Bqowg0dvL0kyxC9MUj56BpCUh+mDe+7DFJphx5Ue0wyzgVNIGwoAS+qB2ktu5WoCNvEylVxFarcveb0mzIrV6x/Spmec0Lf6CcTOW07TEfk2VTR5s2+oJaPHo3jqjMklDeg70KjK9rpOg6cPpEDgaaNea9THvE1sfUrN5zY8pZgaymZPlQZq1GXfSSDIM1whgvhA43O6byxQl5gduoJlGN4x6PzfKx/XhH42riwPqyqONWnAw9W6d0cDlWlpq+6wjYXpF20Mjr5VCTXiYRGIp+9cn/NLkwKJsJJ7rp+c9AlXZKlHlMP6nxPKejl9Q6Qu+zeQLRZumDQlYLE8Wu8M5h8/wxVVOvFD2sRn29uznZJzGzGbS8HoI2YUUpZ+zOY+k9ce/eqZjQ8z23G9LBo9DXRtcpotZammY5L9BAtRWTpC/WVMI8aU3H+OPNoFoitXzfV5lE8fmPHAhbKH7tv8dRt5s0cGGB6u1drixFuUFrzmE2aI69LPz18QK0EhlLOmfLVJDNWMy3fC7+wHmn2pvH9gyTTXKjhUBkmVxyjyT0AIWBAke69o6LCuXsIP3IXleW8ahUf6hwkLFRclKze3wk89opV/6EGH44Rd/LiFFHgMgmDwRCZOO0siPeLn9uYfTe/93X2M1tHtumADv+Rez0fIsCDzNHBN+9UXHwsw6HzU4I3MXwwjiivUVkGgeJd3wGuWScBaOxumPCuJQ0LyNUyse2JlP9ogfs3iMJaPsJhFd9EfEySlBrXahJgJtciQ1FNKmM3xiriNl/Eazt3bn+/V63I9ZtW97Co4c43a9saFSqsR6B3Xb3I0duJDgke8BbtRZLh05MC5MqQqqMu9ecz8YnPrAExsW7oSeTccF0Wk4m+mIdzdG8WGGJjNbAhxSq4x85VkpxRvglgI9d0JR6ehJqprU2h44jWqDkHyw
- Od4sZFF/
- ufffQpvvsNpmo43MwKJBmcTvaUlVaRrrJTE/yVW6OENazjzdufDcQsJFI+0ORrh/cphCzpT0FIW78h7IoPF04omoElNns4N26UIhPdmi+GchWcIhvH1uv39CSX5BuO042IBVZHeGiv0NpXfcsEz8OrYOxSh/p5hMGDb7wbWvkN3ZuHR0fZApvwGVLA/kjmo6CscKc9UmB8d/jY+djT3oQbcLjVhig4neaWZJYb2bSEWihtvIr4vxFb+lqcZ/cwexACbxq76uKjGn/dkDTfykbwHa8CEnfdze7w8lld1gHjwzS7o15nhaVFHJcMLWu1jiVzIYe7AZeD7FXJYZ796v05Kp4lIxeGxvzz+6rJmQHVVjQX7tIStPjhYUeygihtLeN+evRufoNgiQYT6aIJ9lYXtiLhQ==
+X-HE-Tag: 1790009276-527358
+X-HE-Meta: U2FsdGVkX19BAcnq8h4sd7rO9RalhqH8j3AsKLUlrPtHPMyoHA+5lZsk/pjYKj1dPlhTj4KaPeyI9T0CQF683mmgbAlGpqD+lc7E2iv0weNspw0qi6vrujeTupd9nUsmTs+YDyMyDeVe0nYTZkajLfLZ8xZPBzZK9iqthkdfkcy9yu2049bqzVLfHVOKlczgAU1CQbRO//3pZ7lBkOuyfPWnjQ1ektaTLTT+NP1okDr7GNdPU6pvdd4T8VjW9z8CtHON1XVETXitii01X/iHnbyLzRmnakkP4gbmu/BwZyDY+VMQ+xxbhDG9Nltt0R7Uj74ulf2pmaIwsy3pakrHPm/85kFfZdjBFgF4+Gl+JIutjve7IDWhLY5bJqINbVlp3TZPoPB3Ru5zZFfrDlELiTsdPxIup7bhYI1hpp158qDEcchI74Ur3gQYNkEPndtMKiaSj+HyZdz+hj/VCeJC3pJE4pxVfP42dlicZmOamLZtrC4vUKL/91yr0w70Hot69xBu8vL+OazcQQ8Amr501pNMT9T9QtsJmoFL66Q0qCw+d7s3iUYHhFD0gmC3wuRiaXqFzxvGDrScqZfQRSGWO9RhlrMJyCFB44lScSQGPcQmfxma5Co84SpYctHO7jWFe2AIe6mM/DZFz2jP2LFFtW1BgrYLF3vObKUkiHNQj9jt+Arxe1Sox+jOhzCXnTkwygZIAV9PJP2GqUZTqwbvvK1SzLBnwTsLiqV7Y1e4MZibxSZ8ZcHZuNuKZ3Kmz8X4evFOBElyWRN8N+7FFL4d7k5787JRZVupt9hANVGLYtZzBbiCfMkIwON9/kHORWMwDbUq9GwMXUKtDHmQqQCHjThtOKkABo6daW4YVzlmBZV6XfRkgQjn5Vj+SBx2rmgMfli8r1CwPhyHUcLwtAW+S+ZoODZZnpvA33+J73pgBlWbyiHSnEpPgVa0cg3G5XGSFYzlP1+brt4SHaQ4vNc
+ KEPxQRMv
+ cVFD3JHKcYYRrKeiblgkZ1o7xCNsjekEn9t668q2FrGDxkcGyb1iKyuXBEvdJJ7vOBK3372jiWS0G8QHAnYvNbKmZX4yZxPChUAXUNIwycQasbXv4L8AVIYHD7eLGdvzOkVWPySl6v/Dqb4tXWctz6PIkKQ03dtbUityoVO6ggbOUINHJIHWLar1ubSq3+3FdP+AU6g/HZ0BqvdrZGx5FqfqtgHZPn5Lo8beLO2x0WAqxoHRdNEBcg2y/aZWbSDnV1X0qYhB4+vqzdi15bWfxQ4/zU635SfI3lGYbH2GRlvBkwsQ/xL4jZH82Q69t9qnHQiUR1y4aqa6lUJ1sZUvOuqCiprpwOocweOPH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,38 +95,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 2026-09-21 at 06:31 -1000, Chris Li wrote:
->=20
-> Give me some real-world examples of people hitting this kind of
-> limit.
-> e.g. MAX(%)=C2=A0 > 100% and still have a usesable system. I suspect that
-> with 100% zswap usage, the system becomes unusable. Please show me a
-> real world case that proves me wrong.
->=20
+On Mon, 21 Sep 2026 04:00:11 +0200 Karl Mehltretter <kmehltretter@gmail.com> wrote:
 
-Here's my desktop system right now. The amount
-of Zswapped is more than twice AnonPages, and
-the system stays perfectly usable.
+> A PSI quota goal without a previous sample is scored as achieved. This
+> leaves the consist tuner's input unchanged but sets the temporal quota
+> to zero. Preserve the temporal tuner's previous goal-achievement state
+> using its effective quota, as SJ suggested [1], and test the helper with
+> explicit PSI totals.
+> 
+> All 42 DAMON KUnit tests pass on x86-64 and i386. With the original
+> scoring retained in the extracted helper, the new test fails on both.
+> In a live damo test, a goals-only update changes a running 64 KiB quota
+> to zero for an unmeasured round without the fix. With the fix, the
+> effective quota stays at 64 KiB. A full damo tune also needs the separate
+> quota-reset fix [3], so the context update preserves the running quota
+> used for this decision.
+> 
+> DAMON selftests show no new failures (QEMU TCG guest; the wss_estimation
+> test misses its accuracy bounds with and without the fix).
+> 
+> Changes since v1 [2]:
+>  - Use the previous effective quota for the temporal decision, including
+>    when it is zero. Keep resetting last_psi_total for new and updated
+>    goals.
+>  - Move the current-value calculation and last_psi_total update into a
+>    helper. Test both tuners with explicit samples and check
+>    last_psi_total after each call.
+> 
+> The series is based on mm-new as of September 20.
+> 
+> [1] https://lore.kernel.org/damon/20260916001311.101024-1-sj@kernel.org/
+> [2] https://lore.kernel.org/20260915060937.3423-1-kmehltretter@gmail.com/
+> [3] https://lore.kernel.org/20260921003047.12041-1-kmehltretter@gmail.com/
 
-$ grep -E '(Anon|Zswap|GPU|Swap)' /proc/meminfo=20
-SwapCached:       252340 kB
-SwapTotal:      41523604 kB
-SwapFree:        9802088 kB
-Zswap:           8812236 kB
-Zswapped:       24927876 kB
-AnonPages:      11615760 kB
-AnonHugePages:   1402880 kB
-GPUActive:      13112428 kB
-GPUReclaim:        95980 kB
+The patch 1 has wrong Fixes: tag, as I replied to it with two options to path
+forward.  Speculatively assuming your preferrence is option 2 (adding this
+series with fixed 'Fixes:' tag), I applied this series to damon/next [1] tree
+with the suggested Fixes: tag modification.  Let me know if you want the
+options 1 (squash it into the incomplete fix [2] before it is merged into the
+mainline).
 
-This is also an example where I cannot really
-predict how much zswap space I need, because
-that depends on what AI model is loaded,
-which drives the GPUActive number, as well
-as the number of browser tabs.
+Unless you want option 1, and if this series is not added to mm.git in short
+term (~1 week?) with option 1 update, I will ask mm.git maintainer (Andrew
+Morton) to pick this.  So, no action from your side is needed for now unless
+you want option 1.  If it seems I forgot doing that or you cannot wait for my
+action, please feel free to ping me or Andrew.
 
-The system is perfectly responsive.
+[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
+[2] commit b73198a47ffe ("mm/damon/core: handle uninitialized damos_quota_goal->last_psi_total")
 
---=20
-All Rights Reversed.
+
+Thanks,
+SJ
+
+[...]
 
