@@ -4,140 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EF58C982ED
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 12:36:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74C1BC982EE
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 12:38:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A98EA6B00DF; Mon, 21 Sep 2026 08:36:38 -0400 (EDT)
+	id 7B5246B00B9; Mon, 21 Sep 2026 08:38:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A70176B00E1; Mon, 21 Sep 2026 08:36:38 -0400 (EDT)
+	id 766576B00BC; Mon, 21 Sep 2026 08:38:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 911116B00E2; Mon, 21 Sep 2026 08:36:38 -0400 (EDT)
+	id 6543F6B00E3; Mon, 21 Sep 2026 08:38:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E6696B00DF
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 08:36:38 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E6038120153
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 12:36:37 +0000 (UTC)
-X-FDA: 85237718034.11.1C766B6
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf11.hostedemail.com (Postfix) with ESMTP id C778640015
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 12:36:35 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=HKVQrNyW;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=OD9EmZus;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=cHHrtVLq;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=CSecNRpc;
-	spf=pass (imf11.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E7E06B00B9
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 08:38:02 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C7A67160189
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 12:37:59 +0000 (UTC)
+X-FDA: 85237721478.12.7BF2E68
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 98DFB180002
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 12:37:57 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BEej8Nkw;
+	spf=pass (imf06.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789994277;
+	b=a84x48gPNHFG1saKfZ3Gu9rC2dxwJfutzKrMdsGVpdsSDZtmm4wdlqxZmxiHgIh0wzj80G
+	l3FtZjAh3xkX5XAp/C5SX4gqcVdXUHae0KxQcjWAYQqT2s25pkTamOpTta/oydPfxC7cAC
+	4LHY/r3RnTzHMAVJWXdfFzqZBFTZT08=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BEej8Nkw;
+	spf=pass (imf06.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789994195;
+	s=arc-20220608; t=1789994277;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KmKS7vgZjryTeBZ+ib7L48JK7MuFB51dHdQeosw3LQk=;
-	b=jz4Q9MehkPb298xc6X/HhZMGkm4s9gVdOzbJ5y6YNqCXfV8OXPDqtuWpl5GpuQ9VhQevyk
-	BibcKrfU+1xEY+sMQdwWNN0/Felkl2YPfpnmVCfALlKggMhkxgVIQHrKaLnBGPOEJxmvqw
-	bf16ymvgMMzRY1HNyQz0BULXKa1qZBs=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=HKVQrNyW;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=OD9EmZus;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=cHHrtVLq;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=CSecNRpc;
-	spf=pass (imf11.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789994195;
-	b=mDK9jrqweXuBmG09zIgETV6UCi1AEXST2INIorg6KimKOrhmmL4j5K/QtS1aCtGJ3jZwph
-	kDdBJcYtFX0D1M9jDVlvPwGZp5x6oXO9Gbidw92VCeQyGGuSfXBe7vqUU6tLU6RxY9EonX
-	1ayRl6mQ8k2gOS89AaCuFQgO6OmDOYE=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	bh=aklumEa6XguIynReYEX+Y++SQ+69vSThlIRdZDlT/FY=;
+	b=0iOC2Wyt6ZC00IukIBL6iUj8LmcPquUoI/Za4xqTtV0StO8rpULiQi01Ec7//TfpCAr5tq
+	E+abbaUd9QvGKJDVceoQintgjHTsUzUOZixO/vBLm1C5iJd/k3SOrIBeBwBu1x4yd5imIm
+	+2o+2VCGewQFC/3wtBHnrow0bpsPObA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789994277;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aklumEa6XguIynReYEX+Y++SQ+69vSThlIRdZDlT/FY=;
+	b=BEej8NkwYX/ejnvA76VdZa39mciXyfr0CInzXj/itpEDZz6c0wHjtHnznwpRcmYSeRETnz
+	YqkkcuXtlVxCeBEMQcC4JyP6/hZi1YMEofMo0OqvvRYZx8ykPV9qKFSrdhHIxQv7D/rO2L
+	lcLJtPUiK8oD8n30ADbT1ivs2BAzT6Q=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-411-AVyL1piRM16vpWdFLrfcLw-1; Mon,
+ 21 Sep 2026 08:37:54 -0400
+X-MC-Unique: AVyL1piRM16vpWdFLrfcLw-1
+X-Mimecast-MFC-AGG-ID: AVyL1piRM16vpWdFLrfcLw_1789994273
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 31FFA1F79C;
-	Mon, 21 Sep 2026 12:36:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1789994190; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KmKS7vgZjryTeBZ+ib7L48JK7MuFB51dHdQeosw3LQk=;
-	b=HKVQrNyW0PujYUrfNIOmuleTTSxxTpFxmY8ftBGt3h7T4CNzL0bnb2b9+bNQ2BQCGshM/g
-	DWrJX2ipGhw+f0ez89lE3mzVUpaB7hyCm9ZuOxWPTECUleJ7QhsjjgifO3FkqTMqbGt4ag
-	EWZ2nWgYa3up3Ks4A+F/WJgtbQ6W254=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1789994190;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KmKS7vgZjryTeBZ+ib7L48JK7MuFB51dHdQeosw3LQk=;
-	b=OD9EmZusZV0ghtKl3GVXtAhKF796oMJvfJl2KALuwhm9BBdfkyeBngkI5Vv4FLOsZ7rdUo
-	PCkm5OmJ11RWxNCg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1789994186; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KmKS7vgZjryTeBZ+ib7L48JK7MuFB51dHdQeosw3LQk=;
-	b=cHHrtVLqY1veO2gvOxhdj29S6Ykkt5fi4s8Ju8EMh850xgEPdd2gWjLJK16JdNLD+456AA
-	jh/dSaO0BuimasECzYrd13F6zGPTbecPLvjlRQYrPBiOk9ABMPL3uBXhIyLCHK9Qt0kEpP
-	SVXZ/laSHvpa/msD/LWwv5ckuduntW8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1789994186;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KmKS7vgZjryTeBZ+ib7L48JK7MuFB51dHdQeosw3LQk=;
-	b=CSecNRpc0BOLGYO4qK3Xc2+1nIvCVfFI6XHUaAXzALOxJvdC0/MND1spvgcxpwX6afDUfw
-	YCjrJqitCopj0vAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 91FAD13793;
-	Mon, 21 Sep 2026 12:36:25 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id swsyGMkksWrpRwAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Mon, 21 Sep 2026 12:36:25 +0000
-Date: Mon, 21 Sep 2026 13:36:23 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: ayhan =?utf-8?B?YXlkxLFu?= <nsd.project.dev@gmail.com>
-Cc: Jan Kara <jack@suse.cz>, Matthew Wilcox <willy@infradead.org>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [RFC PATCH 0/3] Neural Storage Driver - learning page cache
- prefetcher
-Message-ID: <arEkgM15qewERAOJ@pedro-suse.tail5790ac.ts.net>
-References: <20260725182628.221603-1-nsd.project.dev@gmail.com>
- <CAFLp9PEQQVuDpJPwrNvLN1-u3w3TMwZPUUrf0+rOBrvDjBBf1A@mail.gmail.com>
- <anlByPDZmvEhWeXI@casper.infradead.org>
- <ffcij36vnozf3rginqd2opd2dwqyki7xhtdo4veuty734hhgba@utjav2k263o6>
- <nsd.1787001235.35928@mail.gmail.com>
- <w7vte4itudtkw2yf4vbmuofiumfffmp2y52dpu2bqvqtdgjvpd@5femyiozss3e>
- <CAFLp9PGkVYZcQT5qAx-RKFOF-urZ92m417zpAeF7ZQempbS1HQ@mail.gmail.com>
- <o5ihhfa252cjfspqlag65xhnmehz3a5feyclmlyy4xlrcmceck@njmhyu7oom3d>
- <CAFLp9PF+6KUY7ZAGQZ_X9AN4VYbkdW_aDk1QSth3ZAVVqLTqsQ@mail.gmail.com>
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AC4651956055;
+	Mon, 21 Sep 2026 12:37:52 +0000 (UTC)
+Received: from fedora (headnet03.pony-001.prod.iad2.dc.redhat.com [10.2.32.114])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id A9A5E1956041;
+	Mon, 21 Sep 2026 12:37:48 +0000 (UTC)
+Received: by fedora (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Mon, 21 Sep 2026 14:37:52 +0200 (CEST)
+Date: Mon, 21 Sep 2026 14:37:47 +0200
+From: Oleg Nesterov <oleg@redhat.com>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Jens Axboe <axboe@kernel.dk>, linux-fsdevel@vger.kernel.org,
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+	NeilBrown <neil@brown.name>, Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>, linux-mm@kvack.org,
+	io-uring@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/7] fork: refuse new threads while a coredump or an
+ exec is in progress
+Message-ID: <arElG0TGxxLFn7Ul@redhat.com>
+References: <20260917-work-coredump-fixes-v2-0-f3787fcda051@kernel.org>
+ <20260917-work-coredump-fixes-v2-1-f3787fcda051@kernel.org>
+ <aq0VLTyxNatFmLOK@redhat.com>
+ <20260918-irrsinn-pickt-vermummen-d7167c397398@brauner>
+ <20260918-disput-maden-parkdeck-2bc22dd90398@brauner>
+ <aq0_lvHDViIpX_Mu@redhat.com>
+ <20260918-elstern-potenzieren-marotten-71ebd0744753@brauner>
+ <20260918-oliven-lebst-wohltat-c633868711f1@brauner>
+ <arEHxPFFrRtvUSPJ@redhat.com>
+ <20260921-aufwiegen-festwagen-ozonkonzentration-ffe78eafa8fa@brauner>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <20260921-aufwiegen-festwagen-ozonkonzentration-ffe78eafa8fa@brauner>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: zo-CnPU-7oUB34idAU65altA-KZxbJvzhZfGffWyWpY_1789994273
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAFLp9PF+6KUY7ZAGQZ_X9AN4VYbkdW_aDk1QSth3ZAVVqLTqsQ@mail.gmail.com>
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: C778640015
-X-Stat-Signature: cdfcicxm8ynquwy79mt37oafr9geupwj
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 98DFB180002
+X-Stat-Signature: ghgbjcry1brdontrta7f43i84kqad6gw
 X-Rspam-User: 
-X-HE-Tag: 1789994195-465303
-X-HE-Meta: U2FsdGVkX1/TIyhMo9WsL03MRHRz/WPNdFbS4uwnCMvwV9T4KnQNRg7lOF0Fp0ON8BJjr7LlCT314hEjsSXT6Dc7gAtwBRNe1azYzOtTTzD9Q9fkgU8RAWajOyOQrBWxT12oCo4VGN5SDIW9+MsEOoFFExNfoDd+BjO4s4KcJB+6Jri7nlLnlsKVLdfv606nFht9oBDqWG2iAu+d/lamdrsdRcXnGVl51aRnX8a/g/f1+veBX7Sh6mt5OVAN0r5iPPQZH1d5Ryc715nmCVqln0JewW3ZdMXwLDD8sv12HfdqRhXW8iI6M8axrbXW+LVjkZQ6f+vJ2GQQej0LU1/YlfAlIU4VG8ZHuExeFAGoSNx997tDXLQTEPQmgzTvvGgCLwwYHBNhp8noziyZmoVY+dWjO4Xp7jDhGUhAHlCjXt58GjjIW7/HBJZSVyyXVKNjtgUerHdDcJHPxBV7V+30/I3ftcRZpOG3kLZ13ULEN8AgpMmhh4HTV5v0ijCYACFAaYNfp5+deNrB/dOwM7/BhfRz69ndDswdqwyVLsutiTwPWr0NCyqGx6lrSJFiLEpO693S1rktp6OdKMgq0E6H40uAqWYaryJHmbnPpV2VjA7PB53Fd+zA+tiZ/f+rWSxvGrkyBgeldUwd5fHc4NkI6obnR/wo8Qg1zEL5D0XHsB4YN1TzaNiM5yDUidhKq7LiloP0NpL+LilZ3Tk7+JxF8rvjFBjSRpXAdka+Egyyq5rw3+rkH18nIItv9VVSd3G2BR6ULW9vSEmlixUkO3gPAcuRTHyZqs5Sx2EtJUzoPXVPT3LM2cSHbYLKnUh9YeQmZwAM9QfaK0zoxxDG3U8vOyLWYGPh3EWNUo6FiHzr+0PbkMX56j0kGALiWo+LrxQ5iK8AXsWPVviB523DkdQargKIA5r6xzQ6gHZgf1+ExVkc6y/ZMeg4Vi5Bb6/Pgy3UH3gj5GxUthcKbTQGK2u
- DLbLnS7N
- JHfmjDIBdVpbpe9zxooFPG+uMeG23g+NR4AB35A8t07BR2vq3CChzkWy+dkkaCzoOfWmkOvSCEB4QiaUd58pBUU17b4E8Slm0Ifv5xftkFMTHQNOpd4h+RTjbWGx/ui579qyIfD+Fv7dLwZT9N1Z7OdDRDDyVjBTisPoVfGByD75xb6dCncaZzx5c59D1j3FQV4kvvEK/jOCaafhAfvFvCUuatIFYnjj83PfNVlakvz3icXBzbwuSFtSqO9zOR3l+wONDfM0Q/1jOvzH+8CDy67/G4iyMYTl6EcVqx+cVRQ7TAuCGKlPAIBqCP/wT0t7K8tsNJiKtt5h4AWoRRI9wEl1kgAm1Z7mR8Ugc9qufkKoJrFQ=
+X-HE-Tag: 1789994277-667440
+X-HE-Meta: U2FsdGVkX1+a7yZM+9WKAwDP7UrXbYk8WxetiyzNi1jjpPvGS+FYMV1Sunk9uk6y5c+myW6ExcRveow4Z1Xt7+meMOBqq5XwpR/gKQCmbXOaKUrnfpKU+w7Y8LPk3bDCBscjBvhuo69cJwQnma5qUkfUye7c77LScZfGUEadj9T+SeKjOQ2DjYIJyoPKNd7+Jvcw1BURJHfmguiBO/B9LB022JYzSPyZ49nESausCbHt6ZulBaoz95q3+BhDddKk7fd0FnYPPR2T8Xb0TaGYdhkshzmeEzrHPMjM9dsG2aWRHA8Pa/XpgkU+17zuj0qmjeQEiaIsDew17TGtIEHVJrR2vvQJLaFmwI+8y2C/w2QhuZLFs2CPNmnQ1dPt2mUKsONpxtJjTBd9S+wBNzC2iwdcdrXWF/BZa85bBdCkhD3e46Ewzl5UkUjVogWd7KHKW0001xXg0loRquNCMxnq+bMrlEW1PNtj8BDqNDe4bgsAl3ks2K515OkUaty4OyDvDajmPfaLNDUd8eB4VZNloarshEV/lwo0XYqkWtrar9MMMA/EQczZfLWcjrXcDn17FhDwtltrZuTI1V0b/OqM22epnjxVRA4OaGSJ56YLYfBXV4/ds5nh1XGK+5uICYiAnZKODjP/HzLXNCt56vTFivwKpVbvkCb/gGuoiryXlRp5edcIITPE9lYNdOCuI2I2kjVYNJv/TjgD1MIA/81A+OjcrkJDRPdXWeNGezA3fhQLzpn9BcGm/8/YFVplKY5Sqd4rAT6vs1zX9iyLNt0liAFTyjHPwhfDAjF26xyTbXEjV8+pkGcv0cpg2D65v6GIhiPnHJnLb7iDDOWPEi3NM6oVRXhs9itbkCTrD37XbCqH6gI7BOdHwIVY1MPmLPyidLV51giN3JZWs+SrmDM55da4za6fXAXi8UPYZg7ZXqPFva2t8Ru9Zg4HXc3a6DWpAqdOv6b7cqs8Tl6M1Ky
+ NVfjhhqd
+ jb9HUIf5ogqj40kW/AZCtPs0AcVwzVaFAuI1q7EMytENGPf/1GxiFcBKjEzDUpV5XcWdtT7ULgnKXJIA5+ty0/sHz8IAta+I/yBQpp796URPRUN7x+bpJw95zNy8yu8mTHFduz6CS4eaSomGuvHJPZxt4QjP9CX5o/t8M+rQkhq3d86k65ia+wNmLATxLNgwhKiba2+sivPxjHE/epHAC6+2IEm4ZAdajPpIxaNIAHmivqHic3S2ml3BynzxPTv3a5Y+aRkcIR47V99A7n0/xQaQq+Z14PyR2MwNNVHR2DsWJDIANF4oyu9IZoC1Iu7V4pDCeDrDCHdpE6eM9UfwgpbvTu1/Gv88DcOOI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,86 +118,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Can you please reply with something that isn't copied straight out of an LLM?
-And, ideally, add the Assisted-by: LLM's where necessary.
+On 09/21, Christian Brauner wrote:
+>
+> On Mon, Sep 21, 2026 at 12:32:36PM +0200, Oleg Nesterov wrote:
+> > On 09/18, Christian Brauner wrote:
+> > >
+> > > zap_process() skips every thread that has PF_POSTCOREDUMP set.
+> > > do_exit() sets PF_POSTCOREDUMP in synchronize_group_exit() and calls
+> > > io_uring_files_cancel() right after that.
+> > >
+> > > That runs task work, create_worker_cb() runs and creates a new io-wq
+> > > worker. If a thread started a coredump rgith before that worker gets
+> > > created from a thread with PF_POSTCOREDUMP set which zap_processes()
+> > > doesn't see. So two ways of fixing this:
+> >
+> > Christian, I got lost ;)
+> >
+> > TBH, I don't understand why the new io worker is really bad in this case.
+>
+> zap_processes() only counts threads it sends SIGKILL too. But every
+> thread that later finds ->core_state decrements that count. An io-wq
+> worker created from the exiting thread isn't counted and exits right
+> away because the io-wq exit bit is already set. So it decrements without
+> having been counted.
 
-On Sun, Sep 20, 2026 at 03:39:20PM -0700, ayhan aydın wrote:
-> Hi Honza, hi Willy,
-> 
-> First, my Aug 20 follow-up bounced on the HTML part. My mistake, resending
-> as plain text. Below is that content updated with six more weeks of
-> measurement. Two self corrections first, before any numbers.
-> 
-> What changed since the RFC (same out of tree module):
-> Automated prefetch never exceeds ra_pages now. Overhangs get trimmed
-> or dropped, all counted. The only exception is our own measured
-> willneed ranges up to io_pages. That follows Ming Lei's RFC direction
-> and the MADV_POPULATE precedent. It is toggleable, Mod A means strict cap.
-> 
-> Fault path first, as you asked in Q3. filemap_fault hook observes, then
-> prefetches with depth capped at 2 and bounded by the cap. One more
-> thing on this: the fault path stands down explicitly at 1M windows and
-> up. There is a straight s_bdi->ra_pages check in nsd_process(). The
->   parity we see at 256K and 512K is a different thing. Our code still
->   fires there. The kernel just catches up on its own at those sizes.
-> 
-> A sleeping in atomic bug in our fast path got found through a stack
-> trace and fixed. vfs_fadvise was called from fprobe context. It now
-> goes through a workqueue.
-> 
-> A len==0 fadvise footgun got found through our own counters. Len 0
-> means to end of file, so those sends preloaded whole files. All our
-> earlier big mmap and SQLite speedups traced back to it. Retracted.
-> Sends with len 0 are now dropped and counted.
-> 
-> Narrowed claims after all that. Interleaved A/B, drop_caches before
-> every run, checksums verified, 500+ runs in total:
-> 
->   sparse mmap scan, about 64KB stride, 512MB to 20GB files, 128K window,
->   SSD: ON ~47s vs OFF ~88s median over 30+30 reps, no overlap.
->     The threshold lines up exactly with FAULT_AROUND_ORDER=4 (65536B).
->     Below it the kernel fault around covers the fault by itself.
->     Above it, it does not.
->   same setup at 256K, 512K, 1024K windows: parity, kernel catches up.
->   dense mmap, rand 4K, seq read, SQLite, THP, and HDD sparse mmap:
->   parity everywhere. The early small HDD lean got remeasured with
->   current code and traced to the same len 0 accident, retracted too.
->   No workload regresses. dmesg tracked throughout, no new warnings.
-> 
-> So the scope is sparse mmap scans at default size windows on
-> SSD. That is where the fault path underprovisions while the read path
-> is already saturated. Dense, random, 1M tuned and HDD cases are parity
-> by measurement.
-> Separately, one thing that might be useful here too: p99 tail latency
-> is about 4x worse at 1M than at 128K regardless of NSD state. Another
-> practical reason to keep windows small.
-> 
-> Open questions, updated:
->   Q1, fadvise beyond ra_pages: we stopped doing it silently. Only
->       measured willneed ranges up to io_pages, and that can be turned
->       off. Acceptable shape?
->   Q2, ra_state integration: we prototyped window steering from the
->       module. The kernel keeps our window but wall clock does not move
->       because there is just not enough volume from outside. Real
->       integration needs in kernel changes, so we drafted a minimal one:
->       2 stream slots plus stride state in file_ra_state, every window
->       bounded by ra_pages, read path only. Want me to post it separately
->       for direction feedback before any boot testing?
->   Q3: fault path first as described above, with timely versus correct
->       accounting running underneath.
-> 
-> For Willy: backward patterns get detected near perfectly (strides with
-> negative deltas, counted separately) but they do not move the wall on
-> SATA SSD, so throttled now. Fault path is covered as you asked.
-> PG_readahead replacement stays an in kernel question as above.
-> 
-> Full data and the retraction notes are in the tree. Happy to run any
-> counter matrix you ask for.
-> 
-> Thanks,
-> Ayhan
-> 
+Aaah, I forgot that the new worker can exit too and notice
+signal->core_state != NULL in synchronize_group_exit(). Thanks.
 
--- 
-Pedro
+> > But lets forget about coredump/zap_process. With the change below the
+> > io_uring_files_cancel() paths will no longer be able to create a new
+> > worker, even if coredump is not in progress.
+> >
+> > Is it correct?
+>
+> Yes.
+
+Great. Then I think your change is fine.
+
+Oleg.
+
 
