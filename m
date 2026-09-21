@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A31B2C982E1
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 07:58:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46E43C982DE
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 07:58:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3AC906B00AB; Mon, 21 Sep 2026 03:58:24 -0400 (EDT)
+	id 4B4656B00D9; Mon, 21 Sep 2026 03:58:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 383866B00D9; Mon, 21 Sep 2026 03:58:24 -0400 (EDT)
+	id 427776B00DF; Mon, 21 Sep 2026 03:58:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2999F6B00DD; Mon, 21 Sep 2026 03:58:24 -0400 (EDT)
+	id 335B86B00DF; Mon, 21 Sep 2026 03:58:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 082BF6B00D9
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F3EF46B00AB
 	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 03:58:23 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 422C71205E9
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4E9251A05F8
 	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 07:58:23 +0000 (UTC)
-X-FDA: 85237016886.29.06AB047
+X-FDA: 85237016886.14.7648089
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 8265320005
+	by imf14.hostedemail.com (Postfix) with ESMTP id 851E9100004
 	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 07:58:21 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ouHcHhEn;
-	spf=pass (imf13.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="A/Tbm2wJ";
+	spf=pass (imf14.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1789977501;
@@ -34,35 +34,35 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pXEMn8PYoauzMFPqYoyRVQk4fKHRKQ7Pm/+2eUzLBwM=;
-	b=Emh0Vk+f0gC7FJ6hLnQnjQ6E1LU/+LRrP671/mmTboo0iqLww0h5WR2jkOhVFSzoKA4Abv
-	0haHN4+sziP5ngC2SG+J5kPFHc/WOtYN39caiN7ijuO4n1yhcciVmHxfgRTdv7XDVgdrXv
-	xVcpAl2yV2d564GJmApMG7bV8kqbElU=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ouHcHhEn;
-	spf=pass (imf13.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=L/18n8TfyaFMDLnAYEp51nwGZPC1Y8Qvb7X09zPa7Vc=;
+	b=znRtLpyfx0UCRo6ikMXi0lglHKeho+8YU60UrL5cUjtdqco2cw8/CGg6VmV+Z3FDIGCfdK
+	1TFeROH6Zo3sCcmKyggX3lmlfTGJp626VPB4mRWKSHAkEaxVm12/vg7CwXwvuq1G8Ijpwb
+	Rc7NiyWYrfVei4/2TUM41BMN/34oD5o=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1789977501;
-	b=d3Ignd82tC3co48gXPSocVO+fFW/OOoq1M1ipiin7Q3/9HQuexuXkan9D4c+2H+wxIFEdr
-	Dr9HIFWgrycy64FYMgvJFCHk3PYX2o2qE4Fy5FEwQv/EaotV8GYm6KBruryKq2pNbOr3H/
-	3ZGtW8FnwBhb3DREbOel9yxeVQYWy/k=
+	b=uOPm+njWhgMpH/rfKD5HajFnkIB86cMQb3mw/7ZdJ38JMBeBLvuU54++jZjDUBHc+rnqME
+	rL4A8wH0KLcMgLPFvtr+v09yk5UUsasy7S/n1fIQTcRWSmKpFeiYPhog18ddgvefAYcQtx
+	vg0sqomh1IiBJJ/dusbC23UitEyFydk=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="A/Tbm2wJ";
+	spf=pass (imf14.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BC97343F85;
+	by sea.source.kernel.org (Postfix) with ESMTP id B05CE43E20;
 	Mon, 21 Sep 2026 07:58:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76CCD1F00899;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 745871F00898;
 	Mon, 21 Sep 2026 07:58:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1789977500;
-	bh=pXEMn8PYoauzMFPqYoyRVQk4fKHRKQ7Pm/+2eUzLBwM=;
+	bh=L/18n8TfyaFMDLnAYEp51nwGZPC1Y8Qvb7X09zPa7Vc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ouHcHhEn3pF1QVHo3Sbazx3hPddkjUOD89SP/L9S0cHcaBKN2+A2Rc4sof5g++TcQ
-	 xtgz9khnxu5eYU8LtTPSz1IosPFoOjs+erMVMkRaMkgks9irTWcn9stk6CP7gumuCk
-	 DJMrd6hgPkrecnH+TQc4md2wYTvbjgzAjf/msUVgslIx30KHvAaMgb0nL1T3yxYO+9
-	 rhYDqZVAMMXUB6bvKscdjGIkzXR4ua6fInw4hqN+PihF+6ynX/64IwcuwerJAFXS8W
-	 3B8xV+zqDVo9H+bPTMTAp1EoUJe21NyRn8mrY5coc0C6iWF7Bnn/8P941Pr9nTLZpF
-	 isN880f4ZFbIQ==
+	b=A/Tbm2wJxme0+N0pPuGOo8l68ppGyPNpDhIC88m3xFlT8W2gs2H0UtOcaFX9iXwkS
+	 COcGAExn661bK6PWCy47/Y9KvNRK9Capy8ppPxO3wWFDlJV5njIu70kOH9B8waNcL6
+	 d6b/mpFAr35uy3KaVJDRyPlxeT1kPwDY4TDyg3KiNWt9J1VHjqAzIcp80PjutjKnqS
+	 K3D9lhTABsKYOqMjzwN3SKVtRrBzxlWF96B+TLvD3c4i7oouEgH78A03DroLWGeF2Z
+	 JuJwF8pMShZX1rKiCS5CtTF1YuKEr/PwoCl8dl2GystyIzixncFflxEEHpkeOvvb/l
+	 2GcjE3lK1EDJw==
 From: Kees Cook <kees@kernel.org>
 To: Vlastimil Babka <vbabka@kernel.org>
 Cc: Kees Cook <kees@kernel.org>,
@@ -87,24 +87,24 @@ Cc: Kees Cook <kees@kernel.org>,
 	Willem de Bruijn <willemb@google.com>,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH v4 1/7] mm/slab: Mark the kmem_buckets_create() context as a Context: section
-Date: Mon, 21 Sep 2026 00:58:12 -0700
-Message-Id: <20260921075820.1718334-1-kees@kernel.org>
+Subject: [PATCH v4 3/7] mm/slab: Add kmem_buckets_destroy()
+Date: Mon, 21 Sep 2026 00:58:14 -0700
+Message-Id: <20260921075820.1718334-3-kees@kernel.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260921075811.too.775-kees@kernel.org>
 References: <20260921075811.too.775-kees@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2066; i=kees@kernel.org; h=from:subject; bh=yoNf68AxG5w4U/BVM+cYoBMu5dGzeo9HzcEeFRFwN4A=; b=owGbwMvMwCVmps19z/KJym7G02pJDFkbHs+w2O1WFJVu0y0uMin1v8cLsWNM4fPnBuyPdni3Q 2Jp/+v1HaUsDGJcDLJiiixBdu5xLh5v28Pd5yrCzGFlAhnCwMUpABNJ0GX4H3HjgaPAG2lOySjz D/KnFzll2SyvEQpcP3l65wyFVUsSJBgZ7mxoXb/3/x2WcLHVPIdkHWcafppsOI3vgHNYcW38MU5 /FgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4729; i=kees@kernel.org; h=from:subject; bh=+WGfdR3Y4f4MJOabUzkDEAYVtCQqjvgmchKMVu5bAso=; b=owGbwMvMwCVmps19z/KJym7G02pJDFkbHs9UUVx8Nfu38g2JFUlnXu/wXSKoUZe4uPxUm0ODS qZpdcy7jlIWBjEuBlkxRZYgO/c4F4+37eHucxVh5rAygQxh4OIUgIkkVjD8z+N5yGySI+I2a/8V v7vmn5ezRey+emMBg+2JhF2itXI8uQz/a1aHH9OSFKp4G/eEN0gx01qHScXVznvTV4XDy6Kd8vg 5AA==
 X-Developer-Key: i=kees@kernel.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 9da8bq3ctubf5fggtbwh4pmig3h7khqh
 X-Rspam-User: 
-X-Stat-Signature: irgh8qfkp93wyym4q5endfx6cbtahdnt
-X-Rspamd-Queue-Id: 8265320005
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789977501-830512
-X-HE-Meta: U2FsdGVkX194THwHki+akuptqtKn0KqM8XBhEhCoiJRZ+VN8M6zAWjjJcM5k2m8erZDXDfa/KY+LlmyFGBdPf6xaKyTt1Guc/OmXrLB+Le2lYcVrOoBiF/q7QW2UuNmO51MjvZVoi287/g6UHU+HzCV4p5TcbLKlwfLLjnxgS5E3f1JNy2XclowBIKyz2juP/prJLSAjuIDfKsAAF/1wtbVGzszP44woenAP/e+lvwv3Dbi7Dt+tLakTcJuDi1fDOnrScpDtxAepG/yMTzSq+nMuuklRAv1yMZakc/ZijWzGk/GvTDx4h5+nmdX/IhYMqQ+yrt6SelhtQxSAEVA8L2eyWHzyN3YzTUQu9RiwRQ5Sz0IXgPHtoOGkcPDQBZKX0JpbKxiS08s9saMAzfU6y/YndvpB5Uf4K9+EyRqTcE1UG3xNCm5bhXi6vRL9aZ6V5usQizUzs1fI/FDDJXkPOZOHMzeCUNpE0JxzKfyhPnhHmF2yvpfoSX7he4VDDeorDDDgWsajVUBButesllu2ZgHjnR5mPSDdsj62Vv0kuwslxA3iEZ2cyyvPaprUpMhgNupbT+I8YruRmtmrAM8OvpnQKe5ccAkjLnd6PyIncmhWi7GEcIxn3yaqt5X8+aw5V3GtPDmHjJ2INxE6/La8L5WiGhDW/4o3E36PUYK5P+Hq5bx8Po76sw/lOYy9x/b99hkCIEPPMEFT/HDe7B49q7tHgljzj3h5sa9a5n/0Qm7e4fG3ZC/jsEve5mJws9HC5jtcMvP5y5nar+oqTNr+7PWvQNHavZY218LbBWXFfAXcFAT68OyNn8JJqpGg3DUF5papVSh6pO58PKMZ6OdOO7GA6nVB42oNCHdRutbTZ+/Jw++FToCBvoi1M00M5SuXAC5dvCNjDGn5YNb4qpUPaWbvR4gE6aPR1KBhcN3CUsjAOJv7cRWRVsNfqkbCBrZkpbIR49icul/jqgbXjAa
- XofUU7d2
- YitVqVvXk6TtcV+I6lVTmT4aYOOw3xBDEjdThdUJNPnAUjBZba/LzBYadoWl+LSjKiiC/0kVGa/j3lRlx0E1PLfy2EAKNAgv22pSfD0FSbAOTYEHgeX2TlnfpG9mQoncXCSK1SHQJcNkHDFNEeffu2aAx8AApuwwqHuA0uJQZCSDVyzXDveiKmIsW+w/h+jrze8UbMB8wufIlLIKy8O56Gxau86MTmADQUDUjYuBqoXJEBesPF69dl2+jRJaybbnLYm+9cvHSQ0hl7wMymiuYei3zkq8tGbrZtMY5I1rOWrbETT0aBRJ7g17nsmofRApc3K5AIIREvN5o4SarCZfh5KkoGU25UH8AncUiHMGgTtycrgRS064jcALhaTs40ZbcQnbKI/fIECLF7m2yLlMUQGf1zn2f3ds874dGbXBsXhAYchZlgjW6fvxl+OzHFz021D0IZHGImmrBmF3cm6ZtNfncpHPMsyGBEttLO2/NAv2Yrds=
+X-Rspamd-Queue-Id: 851E9100004
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789977501-92079
+X-HE-Meta: U2FsdGVkX1+YmzsJeNFUSKhG+jfXpVi7+gsIy9zy4A6JcTO6IeBivgmtia+NmfZ5dlKxE7Ps56gMLlMFMcDDRJk/3ZI8B1M+gKg0w1rK+oqApVYnYBJnnBQUvwaVun8ZzBapz3B3JWeFcOY695tZB0IvFO7TUM7HNLlR0ocvvW+pQ1GMBvymgtaNu+pi+Zrnn3xcUHurMWITLydua1G0M85vkiwRe4WPjhGzc4wwlaa2MHJTBMNeQR4m3cLds0rmOfsLegt/lTmmgPZVzVA7yJPVZz40tf5qBUM2VAmEr6ZvG3kwY6xE9DEeuS8w/mFeU9FWuB/NFlCk+6N9dFfs25lEnil9uIZ8VnaQPmiu2NT94KGutJFFdxkoOQkDzsfAYld6O5TjgbXm2+RFwdNdYLW9DuGO2qP80fxxPJen6Pv0ELVKPwdA7zGG5DZRwCBsOpQmdG5ne4zh8vT+7HX+hKFYQweUf1tykqWBXEdSB2f1mBDVhyoFYSHfYkDDa+MBXW19C1d/eK5aH8ariK1+DxahYavnALRqHg8SFoxe1USWsaCxnAc5IR8htk5fUJPpEys89UYzCv4A8gNG9QgqvzrBV8WK9q7WemCCqfgmWNwZphHe4VmVh1f2+tq7xEn+zmZXxh/fxbktEkZRQ867oc1FC/Sei16G41RpVDOGDxAhx3eAdwx/lI2lRUn3532UxVXXf9w4YW0ONvjSbk8mxlaMCQfqmuN6xxeAl0dVtQ43pW7UzTveCpaV/ikC9ZTp/J1wdxLPaqz2KzIM59TpG4GV0prrb60Tq3lbMC6I+1WbnbQ+nLVQ01rUnPDwJ4hk/kGJFPvPgAcfFIeMYogHVD5o3VAICM/zbk49F3fVE1/ZLu2EZxFwQ0vaRcgylzL89nj9wwYn2Huyyl8aeizpd+BNpV+8N2RTh6pjY/ILlt1qpX4vesO/or5Phyz1dYNJEQ2wZHtdMFQFUGuWOO1
+ lWeEm3rV
+ qfAymztfIcxT/OaYqF4ac1HYxZVI9XZXTyClzmFuR5UJiHATkqUi7q5pnCl+5rEtX/k5vSocO+GZuloZa5H5Ss1rw62MyVC1Hy9q8hTezL+3yNczF8RaCqhXknV9lrDKaw8q5lM/NMdNVh/DR3QXfzlY1UNGbZ0McaB87C1k//oOFO5ngmeJLrUp5wcPZknrBI2j/sZhvYceXhnN2YR9R7kGbyga5WSHY1quLDNsJa8IUZ4X4HIVM5ZjcrxYxywz49FnRWSvBhQrmedJDCUEcoFX83x+EX/gpnZQzranktsRuqo0iMfIAOxfkMnco8Vt1v7P7jPnn1Lt9c9BC5hATCo9Qnf6jlD+PSsn3WgoGy1s/AN40qHWcZWhUOMCh2w0Q5ijKTbOhS02XJlpvzruW5cw/R447JjFOa7Bc+/H1MFy7VmqS7eb8/4YsmRaaKDnTfBNkXvuzqUC4JMe0XiTweo+TZgJWVFmAucbo4gEE+xxKENk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,14 +112,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-kmem_buckets_create() had the same sentence about calling context as
-kmem_cache_create(), but lacked the "Context:" prefix, so kernel-doc
-rendered in the body instead of as a "context" section.
+kmem_buckets_create() intentionally had no "destroy" counterpart. Every
+caller has lived in core kernel code and creates its set once at boot,
+so nothing has needed to take one down. However, KUnit tests may be
+built module, so we need it now to support the coming tests.
 
-Give it the missing prefix. Additionally fix the "a interrupt" typo
-__kmem_cache_create_args() had.
+Some caches have size aliases, so the same pointer is stored at more
+then one index, so we have to save it, clear all matching instances, and
+then free the saved cache pointer. (This is what the bitmap was tracking
+before in the "allocation failed" error path.)
 
-Fixes: b32801d1255be ("mm/slab: Introduce kmem_buckets_create() and family")
+When CONFIG_SLAB_BUCKETS=n the whole body compiles away, matching the
+ZERO_SIZE_PTR that kmem_buckets_create() hands back in that configuration.
+
+Link: https://lore.kernel.org/all/20240809073309.2134488-1-kees@kernel.org/
 Assisted-by: LLM
 Signed-off-by: Kees Cook <kees@kernel.org>
 ---
@@ -135,31 +141,104 @@ Cc: Pedro Falcato <pfalcato@suse.de>
 Cc: Kuniyuki Iwashima <kuniyu@google.com>
 Cc: <linux-hardening@vger.kernel.org>
 ---
- mm/slab_common.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/slab.h |  1 +
+ mm/slab_common.c     | 49 +++++++++++++++++++++++++++++++++++++-------
+ 2 files changed, 43 insertions(+), 7 deletions(-)
 
+diff --git a/include/linux/slab.h b/include/linux/slab.h
+index cda126def67a..18a2351f9084 100644
+--- a/include/linux/slab.h
++++ b/include/linux/slab.h
+@@ -893,6 +893,7 @@ void kmem_cache_free(struct kmem_cache *s, void *objp);
+ kmem_buckets *kmem_buckets_create(const char *name, slab_flags_t flags,
+ 				  unsigned int useroffset, unsigned int usersize,
+ 				  void (*ctor)(void *));
++void kmem_buckets_destroy(kmem_buckets *bucket);
+ 
+ /*
+  * Bulk allocation and freeing operations. These are accelerated in an
 diff --git a/mm/slab_common.c b/mm/slab_common.c
-index b19ba1b31484..270408ce5a9d 100644
+index cc58f192f349..eb29cfb2f0a9 100644
 --- a/mm/slab_common.c
 +++ b/mm/slab_common.c
-@@ -311,7 +311,7 @@ __kmem_cache_alias(const char *name, unsigned int size, slab_flags_t flags,
-  * &SLAB_TYPESAFE_BY_RCU - Slab page (not individual objects) freeing delayed
-  * by a grace period - see the full description before using.
-  *
-- * Context: Cannot be called within a interrupt, but can be interrupted.
-+ * Context: Cannot be called within an interrupt, but can be interrupted.
-  *
-  * Return: a pointer to the cache on success, NULL on failure.
-  */
-@@ -422,7 +422,7 @@ static struct kmem_cache *kmem_buckets_cache __ro_after_init;
-  *		to/from userspace.
-  * @ctor: A constructor for the objects, run when new allocations are made.
-  *
-- * Cannot be called within an interrupt, but can be interrupted.
-+ * Context: Cannot be called within an interrupt, but can be interrupted.
-  *
-  * Return: a pointer to the cache on success, NULL on failure. When
-  * CONFIG_SLAB_BUCKETS is not enabled, ZERO_SIZE_PTR is returned, and
+@@ -434,12 +434,9 @@ kmem_buckets *kmem_buckets_create(const char *name, slab_flags_t flags,
+ 				  unsigned int usersize,
+ 				  void (*ctor)(void *))
+ {
+-	unsigned long mask = 0;
+ 	unsigned int idx;
+ 	kmem_buckets *b;
+ 
+-	BUILD_BUG_ON(ARRAY_SIZE(kmalloc_caches[KMALLOC_NORMAL]) > BITS_PER_LONG);
+-
+ 	/*
+ 	 * When the separate buckets API is not built in, just return
+ 	 * a non-NULL value for the kmem_buckets pointer, which will be
+@@ -493,7 +490,6 @@ kmem_buckets *kmem_buckets_create(const char *name, slab_flags_t flags,
+ 			kfree(cache_name);
+ 			if (WARN_ON(!(*b)[aligned_idx]))
+ 				goto fail;
+-			set_bit(aligned_idx, &mask);
+ 		}
+ 		if (idx != aligned_idx)
+ 			(*b)[idx] = (*b)[aligned_idx];
+@@ -502,14 +498,53 @@ kmem_buckets *kmem_buckets_create(const char *name, slab_flags_t flags,
+ 	return b;
+ 
+ fail:
+-	for_each_set_bit(idx, &mask, ARRAY_SIZE(kmalloc_caches[KMALLOC_NORMAL]))
+-		kmem_cache_destroy((*b)[idx]);
+-	kmem_cache_free(kmem_buckets_cache, b);
++	kmem_buckets_destroy(b);
+ 
+ 	return NULL;
+ }
+ EXPORT_SYMBOL(kmem_buckets_create);
+ 
++/**
++ * kmem_buckets_destroy - Destroy a set of caches made by kmem_buckets_create()
++ * @bucket: The set to destroy, which may be NULL.
++ *
++ * Destroys each cache in @bucket and then frees @bucket itself. As for
++ * kmem_cache_destroy(), every object allocated from @bucket must have been
++ * freed beforehand, and @bucket must not be used afterwards.
++ *
++ * Context: Process context. May sleep, as kmem_cache_destroy() takes the
++ *	    slab mutex and can wait on RCU callbacks for each cache.
++ */
++void kmem_buckets_destroy(kmem_buckets *bucket)
++{
++	unsigned int idx, i;
++
++	if (!IS_ENABLED(CONFIG_SLAB_BUCKETS) || ZERO_OR_NULL_PTR(bucket))
++		return;
++
++	for (idx = 0; idx < ARRAY_SIZE(kmalloc_caches[KMALLOC_NORMAL]); idx++) {
++		struct kmem_cache *cache = (*bucket)[idx];
++
++		if (!cache)
++			continue;
++
++		/*
++		 * Sizes below arch_slab_minalign() share one cache, which
++		 * kmem_buckets_create() then stores at each of their indices.
++		 * Drop every reference to it before destroying it, so that no
++		 * later pass reads a pointer to a cache that is already gone.
++		 */
++		for (i = idx; i < ARRAY_SIZE(kmalloc_caches[KMALLOC_NORMAL]); i++)
++			if ((*bucket)[i] == cache)
++				(*bucket)[i] = NULL;
++
++		kmem_cache_destroy(cache);
++	}
++
++	kmem_cache_free(kmem_buckets_cache, bucket);
++}
++EXPORT_SYMBOL(kmem_buckets_destroy);
++
+ /*
+  * For a given kmem_cache, kmem_cache_destroy() should only be called
+  * once or there will be a use-after-free problem. The actual deletion
 -- 
 2.34.1
 
