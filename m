@@ -4,121 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC481C982EE
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 20:26:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D2ABC982F0
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 20:34:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 63AAE6B008A; Mon, 21 Sep 2026 16:26:53 -0400 (EDT)
+	id 77F3C6B0088; Mon, 21 Sep 2026 16:34:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5EBCD6B0092; Mon, 21 Sep 2026 16:26:53 -0400 (EDT)
+	id 7304E6B008A; Mon, 21 Sep 2026 16:34:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B2A76B0093; Mon, 21 Sep 2026 16:26:53 -0400 (EDT)
+	id 61F656B008C; Mon, 21 Sep 2026 16:34:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 22E6B6B008A
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 16:26:53 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9C852120257
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 20:26:52 +0000 (UTC)
-X-FDA: 85238903064.25.E764120
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf20.hostedemail.com (Postfix) with ESMTP id B215B1C0003
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 20:26:50 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ZJQgJ1u3;
-	spf=pass (imf20.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790022411;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 37AA86B0088
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 16:34:01 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BF7D9A02A3
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 20:34:00 +0000 (UTC)
+X-FDA: 85238921040.24.CA092E3
+Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
+	by imf17.hostedemail.com (Postfix) with ESMTP id CFC7340007
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 20:33:58 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=mE0AflkS;
+	spf=pass (imf17.hostedemail.com: domain of joannelkoong@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790022838;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cKlHwbT8ASwRLPex8E1OY2M9CVTtEmrdoC0xdX0PqgM=;
-	b=UelgkdoFNxE1l+GHTRXNzYvqo1NIPibBsAjqbPA5sIwjFYqdCQMqJjB88GoR9JiS0j+nGN
-	Zd2lf8b1pYFLA1iaMB/5eojy4cheFnJlQgA3TFEUauD3ksRlGpopCeqoYV6K4vJP3K+8fW
-	Jhz5bJa4lojirmlQFv0SgRwT0I8QH70=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ZJQgJ1u3;
-	spf=pass (imf20.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790022411;
-	b=tLmn80KmifJpl5u4QwphPU/BJCoAGIKbSYSC4n4jQpPZR2rYPWJxiO/KVTjEhL5FX8snpo
-	PCaq2RtWh+HqgvbMyEV2bQyhRyRf9Urk58P+Fp8/6gQ43DcNjqLqGRRagY+z1Gd30sEE4C
-	7rAfdcdNXK4d7+LWf80IBF0hrjmRBDA=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E89C5176C;
-	Mon, 21 Sep 2026 13:26:45 -0700 (PDT)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 19DCC3F632;
-	Mon, 21 Sep 2026 13:26:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790022409; bh=YR8KjfryI7McmdGWbe5RjCYF03qe877YQVcwQ4evUyE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZJQgJ1u3+XbrE14CRndMnlfvZodRjo8Owgd4VUfyb4ysv/TCeswI4E1slRGuH0ZC5
-	 gEB41b7eQMFvIpiPafng381AyyipSmuL+EUBfZkrewzD7VQyDMaw6gvMc8JJ8U+oLq
-	 2RkB+DvgV9b00Ftlc/0AMEXk2kIo1XjoleH7ftTk=
-Date: Mon, 21 Sep 2026 21:26:40 +0100
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: Randy Dunlap <rdunlap@infradead.org>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Russell King <linux@armlinux.org.uk>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	Tianrui Zhao <zhaotianrui@loongson.cn>,
-	Bibo Mao <maobibo@loongson.cn>, Anup Patel <anup@brainfault.org>,
-	Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jonas Bonn <jonas@southpole.se>,
-	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-	Stafford Horne <shorne@gmail.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
-	linux-openrisc@vger.kernel.org
-Subject: Re: [PATCH 21/21] Documentation: mm: clarify behaviour of
- compile-time folded page tables
-Message-ID: <arGTAMyNaJVjKiuC@e129823.arm.com>
-References: <20260921-dummy_ptxp3-v1-0-cd40cf68242e@arm.com>
- <20260921-dummy_ptxp3-v1-21-cd40cf68242e@arm.com>
- <c0c67459-6b75-4bcd-b068-3752e23afbf6@infradead.org>
+	bh=R8pKhaAmdHE4EQl/ul08KWVls1Kd2eQeZ+aeVuZNGSQ=;
+	b=sD9Hbmb/zRHq+xZDn3vliLQ3El1+wazc4Lhc2QE5HbrVK5NKFVxyoUhHmqONLYm/UTSiqI
+	OvFhJz/+KOgubv+v1meDY2aXcko6iJl6OZnMqza/NJif1Q5wNAHIAhBvim4CH2Eu7s2MUK
+	qynaOwgJQYGg1AdgMevkI7tZcJZHDKM=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=mE0AflkS;
+	spf=pass (imf17.hostedemail.com: domain of joannelkoong@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1790022838;
+	b=ENRErZzAQlzQNOSizaGsIQ6Kv/qQgU8svq4sbbeBOvnlEXe6u/4uA4Z17ld7askImw0a5f
+	uvbKOWJgY3/Ieml/feIc4Dv7vAUiBhCD7LcmPynC+upvkyW498uQr20MQZcCRon2jrCDgC
+	pjQ+ZkCkJxXfQcjClEazjk3i0HJYyOg=
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-482f6351832so1763907f8f.3
+        for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:33:58 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790022837; cv=none;
+        d=google.com; s=arc-20260327;
+        b=eGkIfwy34DDgrIyrjYNjcarr2k/ULG3x5gIKgNuR8Yr028LFmsWCvfoZqolDDopOSj
+         6tdMkjCjy9pU4kTVNrGw8jsj3Mt0iVpnBsZSg73GCCgMNvcl0N6jpTeJSHv7uG1bg9fA
+         kDZRd92StBLNJNHXVhIGQ5L4gNbp5fz4/Iujk/0UUMIwmCNxt/4hOBVplyYOnMkgXEw2
+         54OjU6uv9kgLnpCKCoi5Ji1vTEu0LYV3afmnlyAzTNOFKIB7J2+2cEDGzLQM+HdIz8ER
+         QqNIDx7GLXWDbG8yqFhIiVaN2aw6rEIRzOqKaH86GMjh2rN8hTZugTa+2K4tAk/y9Oz1
+         T+bg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=R8pKhaAmdHE4EQl/ul08KWVls1Kd2eQeZ+aeVuZNGSQ=;
+        fh=7BdYsprLnfehajo3y2x+Y0o3nh7Gdmt2VKaPuJbNOr0=;
+        b=VhBaYFrJntQF7qHFCmbavtaDpvP4KXn0XzAjZ4+bFlwWl6LMetCXoeJG23ViGYTLLe
+         kqxVBpJ2rZj8IteGJZVs9o4i6RghJiVRqmTtaEcyCJDYjiVOgpqp/uWe9q23eKSqopWb
+         rd397V49ctf7RTdlxgHweY/E+ubMcFgYq1S0R/uqj1Qk0RP0N9WdHyPNyKDHsCKxwXLA
+         oXZJScSUwvtZeQWD/OWh8OqyEiRjnbcm9WXHTuwBcjFOnIDjUO33E1y6vFTnPk8Ynhi9
+         6f3mdCh2Ynz62OwpVQHY1An46g4AhoMW85ZTD8mlV3YTsXXijfPb+FyCmoTF60h8Nhew
+         zmZA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790022837; x=1790627637; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=R8pKhaAmdHE4EQl/ul08KWVls1Kd2eQeZ+aeVuZNGSQ=;
+        b=mE0AflkSqUYpeqXZKyIjWDRJmHvLUINCtZFnCEbmLzQ3clbstb+VaVszPfQDGmj4oU
+         CZAElDOepNSkx7AHr6ZzhSKe4uyfrqj9LfbRa/hhjafhIEIGHZcKeQXz/8jekKCLIGAF
+         kppbi+2UDe3opsKN/AAGuvqajaF0VeWkrgXxJMwGvR0q9WKO5mIUBwWnt3l5iF1YPnrq
+         mmJBMDigYoOzP5yAGXybXxXtGxsKK/vafDHEHXU6Q69xIEMPtOTMiiLbmLRh6iXBrk7h
+         Vk3a1KU0L3TXnVNA9VChg0YULMuvmujpdDrfNwlVqeX9+39WQlr3bBnrjZWlXPDx5Jdh
+         4/dQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790022837; x=1790627637;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=R8pKhaAmdHE4EQl/ul08KWVls1Kd2eQeZ+aeVuZNGSQ=;
+        b=EjcPR6QMokZp3Dpt4IMooh606bV8fSFOP7gR86jPsCLB/0vaDP4eRyWnSZe9QVkR32
+         mvVZDUun+nl8AqFQsQaMfVQYapwbDYrQGIZad2JSsq5YykRp+dKxizJHBUknEBNIUrdY
+         dvK6IhVnK05VUdmFVKGDOuuHA7hDRX5F1Fsagnl6Md9reENLTqeWSu9Z1Xt51bc+Vv83
+         qF0q/AlLDhFWb+e+uGiZ6qmr4Epq/WjTZmOWGVSBtdvSV66Je6fnxr/UDRNYfV2+cAye
+         eb2umIYRK448YreKydY5vwAD/qMsQO92e06jmF/AsdiifmHt2Zw/nsKwn+zY+LcWkIqQ
+         HIoA==
+X-Forwarded-Encrypted: i=1; AKwUvBztySZ8IlU97e3P1+Ha+W31fakNmGgjt+dC5lWOgfYD4gpICSN+5FPjkGq8JuBZBwfyyJ2y9w3ymw==@kvack.org
+X-Gm-Message-State: AFuF++lU+8JeA2bGr+28MQu7JoZ9bK4itdl8i1v4ql03oQU80qh4TiHX
+	wkEtESFYSQtyNPen0fmUZ4bEx727oBG1ohBrPvWpXTgYtwxXIgjmSSoTqArrZ1bYHj580Ak/Ehq
+	QmdqmVNvPutvGqugd0KtO70CxdalPzGg=
+X-Gm-Gg: AYBFou1ZWdHFYqasmxYzPpSaEjcMWCTMqK5OERUcunSS3MDZqu9D+iDGgJ2ewiyekj3
+	oTigVn94JTCIwih1G4REMkr0jIObZdhXAAPu7v0tX5HmP4QrpIPX0h4G2ZF0GqzuTX+uEs7VLox
+	kqZfnBevU0ykDIGndRZP3zTZNKXDL9w+mtDCmKOT9gdYt/3K8+exDx9ZiJnYhZWSbO/i/mHSKjY
+	c6GOolI819cEWXlD/enntlaY6QGaP7pgaT8cMLe2BJx+xoFIQuBlD/fhavtLknoxSh1oU6eP9fY
+	hHFO44ApTNjL5mURC+LvFyY3LjJH91dpxS7WbnkXNOVdueovTGS8Z4pOsZGvOo39p2Ezyq0Q/FF
+	dd7Nuu68UbF3eLQcXz1pojLcdGbrj1euEhN7fvfwDqkv3RCI21Uga
+X-Received: by 2002:a05:6000:186b:b0:487:faa:b1e0 with SMTP id
+ ffacd0b85a97d-4871e212ab2mr18043400f8f.12.1790022837143; Mon, 21 Sep 2026
+ 13:33:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c0c67459-6b75-4bcd-b068-3752e23afbf6@infradead.org>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B215B1C0003
-X-Stat-Signature: 4m835oozne5mkewrxkri3n1qzkahu6js
+References: <20260916224437.1164512-1-joannelkoong@gmail.com> <46914256-508a-4737-86b9-a43be7e628a7@kernel.org>
+In-Reply-To: <46914256-508a-4737-86b9-a43be7e628a7@kernel.org>
+From: Joanne Koong <joannelkoong@gmail.com>
+Date: Mon, 21 Sep 2026 13:33:45 -0700
+X-Gm-Features: AcwNN1U0WGniUnRa1OP3Xbqff0XMbrxPtpax-fajL_uQ1U5O2wDkoFOiUP-LrqY
+Message-ID: <CAJnrk1aMitdNO8kDgMF2tAE_1N_sc1JsuhOTqqiWrHxue61bPw@mail.gmail.com>
+Subject: Re: [PATCH v2 0/3] mm: split underused anonymous mTHP folios
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: akpm@linux-foundation.org, ljs@kernel.org, usama.arif@linux.dev, 
+	hannes@cmpxchg.org, baohua@kernel.org, alex@ghiti.fr, ziy@nvidia.com, 
+	baolin.wang@linux.alibaba.com, liam@infradead.org, npache@redhat.com, 
+	ryan.roberts@arm.com, dev.jain@arm.com, lance.yang@linux.dev, 
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
+	willy@infradead.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: CFC7340007
+X-Stat-Signature: 6jnaui4rtgrudenodjauaempmq74dfq1
 X-Rspam-User: 
-X-HE-Tag: 1790022410-763838
-X-HE-Meta: U2FsdGVkX1/sEuLvlL/qd7mUZUwXh+jOsJWzXYptyw9DAQ/p13abld64d2VfzyOX4FDKiFbyFqN9C48Wz5oazxV3AKFAG9rnnQRFlz8ubJ97k9fy9ClGu/m3VdXHu0kbXBgPdhst29WcLEgrEl93nBn/M/RaQc9ycaioIKRHqhO+oSe8KPOVCIJIUDdPQUv3g246aN7zB5v9k2nrydjp9MoQ7H1siero9s3gz/nmmVCPt4ciNf6r5rBG90VtC9KMwS75g22w9X9J16kHq+1TNWZeahtYamLNCFB5Y1c+79gNK9kijqTDNOCG6maxMJug9c7HPRMJ+lGPqpS+m/cQiMk7rHUUURIZPg+1KE8qP7fnA3VQlZodbCwu9rVpHAFADJPKCTo2+J4ShcpkvHF/MPTFS7eqKdxhRlfM4PrxISfpKcL6vSqOoxJgHl/+1JL6ZdV/QUunl1OLLozFJKkUCB/eDsHu43Msoj5cabs8/gEbUVoRaZNIiJZX4ZC7m2I7JYLPuSghjHYjDPFArgct+o8f/5iCYnV5dtXLoMsPC4Cp4Ku804SIJWXlzuiC287GdN8BCg06EpoaWk0Zbr3VdOGbFjI6FtckRs4JX56Z1tYL0ZlesuAezYObBo2m/khBMKGG80sqoMqRJh7/e+S+h6DxJoSyZui52Qhgrivpta8L46DTwdmDJfiydwEoEnxgkVBobHz1Ieq1XGeqrnKi6WgVNiLvgtwxHK7iOoD2GwpTcUYmUDwH+NnUJxQT1vuEo1WGzDJjKqHo2Ze27hJHDi+xZEE8qWYc4BtpwD3ArtB0pJrnagtugS1O10aeV2EYhLX7VT9aWsg9jm44Kt+fXHR2q98EabVfTDSagu5l4ymmQo1WGOBDN3/RNaG/QoZoCJUaZX/ou05kgPQ9870T7Xjao3HIjs5oG4ar4/cIxbL6NS/jP9Kl5V8Qb+SiORjfBNv1p/b9aut8oLhrqKA
- P/rF72Ol
- aBrTTo84fI0NddaW7b2y4i+k5u6dDPucvfSAcMMh3N5pTO6flsv9HKXsMr9jqBEy3L9giDsNHPt6OX7KYs+H04+IQQpOCgtGx9iHHIv+hpw75+RO6RirIZL1mrKRwA1ux4ttu8nSV/VbzieKuLrFroNjHTUnZ1C2rvRBSosWdOY0519s1JOkG8sSj0J+rMrJ5IFRI1hS6cGyjh1o6AoqMgc/fz9Ue6qjq0RMJq2Q+HlB+YxMbV25Z8+ZVuRSwjn9wL/zF
+X-HE-Tag: 1790022838-63843
+X-HE-Meta: U2FsdGVkX1+QifJh3Zla/zEx/m6R68gA75CEJdDLav9N+FwCoWd5ZkBEzthkEuVkv399qOqBOoY0FmX8go07+iImN/YXcVHgIGABYQmdC9yZh9fTJD83TOi53tBFem+6GAc+PKcuyQuZ/PtAYW/BPH3O1oU9ieN2tJ7bEYf3D7iANk63p4TVWka/pa++rUW8kvZZ18rIMFBe5SP+KlxhWxomyJg38V3ROrgpjJSv1Ew6Afv45U32nALErA9YwiHFkVHkDmfYXqTI2bqqIFh1VQXqzBcKcMStC4McLtESNM0zNHmghBo8/Jdr3rH3t3kqchCGK/ivo+UIb8ctLTTSx/ap6TnR6K4kzAz4hModHNZ+ZiHDIIStPI+5kkw8nXtWR4uxRsavyIQwU4iFXol1i28d6QiaR/pAb3V3aHQ0l1OxyQMYUpr8KLStWzefAF2YtE/y7Fb07JPLJSRdo6rz0FgA43PxLQ/KeJeSMLvtIxjHvVUCIQmlT9S7bY+50/sMcE7ZqIVGJm0QxRaPX4YuQe0CIpl8OO9Bsf7sz59jOFwAQgFgC8HDKsfAvU2TlJGlOMfiBtPp/kW1zKedkDksXnBICmx6lPi0nBzGljjZ3SGZSE6Oz5OhpjXwKrYCA7T+6jsWOxatrGvMrNTvyrTRuA1veJYkTDJnVkKYJFBRySzuiairZMfcPrUC6vlPu02T5xtDovHbFETTs3xs7bkPaN6EF3OQcEbHOi2BCmFdHnLQk1agITWD6t/mA7fxN9e0ODy0vZZji49QT929GnCKTguiQ9tnfkQOX+AFX8+IJ4pmnqgB3r4cvoOq3e2h1M+LgVOZi2/LDCQY/y9yvP2IqzZ7PRgsVlB921RDK1q6QyH5eRRvbOGhZ6weN7D/gT9uqll/DcYyk1523vV45b42UnKhG8XxtaczK7HvhWm8VIqw8vv6/jyHN4e0oq8Ab1uFoM9Y7IaaarrGiDiD/m2
+ xwQBYutb
+ BzjzmcR/Fj6U22b4tlktxQaA0tjUFkU0yuv3cLBctvAadFdKnjCzh5Do8UJR997V68Bcf4YI8f6Janf/g3TsqS2v10rFTVBKeK2JnzhwyMm3j27tbU3DeLa76d/XVdyw8IBt8uTUaSk/BdcmYtwUN0sJ11EMwMTsCfI/TdAtM7VNZ7qSYwCc5u08Rl86x84ti2Vea7Lvu0W+1ZnuNKeznqmbmK1NcVjhYplHDNuqyU85OaUbfXXlHSm4CQSiwGJiZ5s+UDlV+uJkuBoHFLjccpULONKRSUlqObyxOTjxnqbhTnGoquBMJNfOPQ4o2qotkUx49oKtwfd1bby+YTPpznH49iYeILOs54HcCDE0bc//+jwz9Dfw2kwEg9tO4UpAq8wODxIKmNcDKjD2z2nf/mQjf/N0ryllfdsdVgEnxoZ7EPVW8iTw0LPV984jv/fTrctXEpoZpgeacfJg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,44 +144,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Randy,
+On Mon, Sep 21, 2026 at 3:23=E2=80=AFAM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+>
+> On 9/17/26 00:44, Joanne Koong wrote:
+> > PMD-sized THPs that are mostly zero-filled are reclaimed under memory
+> > pressure by the deferred split shrinker, but this is not done for mTHP
+> > folios. At Meta we would like to deploy 2M THP=3Dalways on arm64 with 6=
+4k
+> > base pages, as 2M provides the contpte benefits while the PMD size ther=
+e
+> > (512M) is too big to use. However, 2M THP=3Dalways causes memory regres=
+sions
+> > unless the unused portions of those folios can be broken down and
+> > reclaimed.
+> >
+> > v1 did two things. It scaled khugepaged_max_ptes_none down per folio or=
+der and
+> > it queued every anonymous mTHP folio. David objected to the scaling sin=
+ce
+> > collapse had already rejected proportional scaling as either letting th=
+e memory
+> > footprint creep or being confusing to reason about. David and Barry sep=
+arately
+> > objected to the queuing, which adds list_lru lock contention on every a=
+nonymous
+> > fault, and hurts lower-order use cases such as Android's order-2-only
+> > configuration. Johannes suggested keeping khugepaged_max_ptes_none abso=
+lute and
+> > simply not queuing folios that could never exceed it, which addresses b=
+oth.
+> >
+> > Read as an absolute count, khugepaged_max_ptes_none also implies the
+> > smallest folio that takes part in underused splitting. A 2M folio on 64=
+k
+> > base pages is 32 pages, so the knob has to be set below 32 for those to
+> > be queued at all, and any folio with no more pages than the value stays=
+ off
+> > the queue entirely.
+> >
+> > Patch 1 makes thp_underused() folio-size aware. Today it only ever sees
+> > PMD-sized folios, so it assumes HPAGE_PMD_NR pages throughout. Patch 3
+> > breaks that assumption, so patch 1 generalizes it first. No functional
+> > changes are introduced.
+> >
+> > Patch 2 keeps folios that can never be found underused off the deferred
+> > split queue, as suggested by Johannes. This changes/optimizes existing
+> > behavior. With the default khugepaged/max_ptes_none, PMD folios are que=
+ued
+> > today and then dropped again by the first scan without ever having been
+> > splittable. After this patch they are not queued at all.
+>
+> I think we discussed queuing folios once the value changes and you would
+> actually be able to split some. Was there a good reason why that idea was=
+ dropped?
+>
 
-> 
-> 
-> On 9/21/26 3:55 AM, Yeoreum Yun wrote:
-> > From: "David Hildenbrand (Arm)" <david@kernel.org>
-> > 
-> > Compile-time folded page tables are not necessarily easy to understand, and even
-> > people the were once familiar with the concept might need to refresh their memory.
-> > 
-> > Add proper documentation, including a nice diagram, for the current design.
-> > Mention details about dummy functions, including the recently changed pXdp_get()
-> > helpers.
-> > 
-> > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> 
-> Documentation/mm/page_tables.rst:197: WARNING: Bullet list ends without a blank line; unexpected unindent. [docutils]
-> 
-> See below for a fix.
+Hi David,
 
-[...]
+I have a paragraph about this in the commit message of patch 2:
 
-> > +Note that the arrows from PGD to NOP4D represent page-table-walker
-> > +transitions, not pointers stored in the pgd entries.
-> > +
-> > +Using p4d as an example, `nop4d`/`p4d folded` translates to the following:
-> > +
-> > +- p4d is considered folded into pgd; both are operating on the same page
-> > + table.
-> 
->      table.
-> (add one more prefix space to align the indentation)
-> 
+"Please note that the queue has always been best-effort. A folio that was
+queued before khugepaged/max_ptes_none is lowered gets dropped from the
+queue by the first scan that finds it's not underused, so changing the
+sysctl has never retroactively applied to folios that were already
+scanned. Requeueing eligible folios when the sysctl changes will be
+addressed in a separate patch."
 
-Thanks! I'll fix it!
+I will be sending out the change for this as its own separate patch.
 
-[...]
--- 
-Sincerely,
-Yeoreum Yun
+Thanks,
+Joanne
 
