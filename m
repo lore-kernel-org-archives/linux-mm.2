@@ -4,91 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49452C982E6
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 15:16:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E887C982E6
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 15:16:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2736B6B00D1; Mon, 21 Sep 2026 11:16:00 -0400 (EDT)
+	id 7F2406B00D5; Mon, 21 Sep 2026 11:16:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2224C6B00D5; Mon, 21 Sep 2026 11:16:00 -0400 (EDT)
+	id 7C9046B00D7; Mon, 21 Sep 2026 11:16:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0EC0A6B00D5; Mon, 21 Sep 2026 11:16:00 -0400 (EDT)
+	id 7067B6B00D9; Mon, 21 Sep 2026 11:16:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E2FEE6B00D1
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 11:15:59 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 758DE801B5
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 15:15:59 +0000 (UTC)
-X-FDA: 85238119638.26.5EFF50C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id DB527C0014
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 15:15:57 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IQw77VEM;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 523076B00D5
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 11:16:03 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DEF651C1129
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 15:16:02 +0000 (UTC)
+X-FDA: 85238119764.06.BCC77F0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 2E53940007
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 15:16:00 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JXmy9QfE;
+	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790003757;
+	s=arc-20220608; t=1790003761;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Xha6SzRmwzcqbwA6Ea+IAg1MkYKVwpH9imxtGliuizI=;
-	b=LtI7aevrL4VIeFvi7N80P2ytkiCACx97DwibHuRYI5AAf8t8zjSc1oDSM7qBZxMaeGqP3Y
-	AgtTK3v5L0CsbNE6wb3Lxamr0Gheze8kAFxU+fwNaPqxH57yIRh6qwE6nlzafcgJvvPcFW
-	tOoRINGQRac+GgiUWqHox2COU/41Zb0=
+	bh=bKpBenybAt2skpTkLkXIqtzA/nUfxrfvFxG/+NAT6QA=;
+	b=XU5yg/xjmomy325o1+V9YgBZbjCpfEFNPdW1hZoNCvcrWjIZ3iaJs5eUbaUBxjKTu87cWS
+	OR/iZhNswxmtSFLWi57J8DQPqJdTQYxqhAVqrpi/oCi8hks3NxtdsI3hAzzAF3FHljXUUZ
+	5ArF+rwSxVVZ9Av6gFPWkU1Z/xjXmrc=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IQw77VEM;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JXmy9QfE;
+	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790003757;
-	b=Wn+UKYZm9/qgwo1lAyhrYS6FyoYxVq+Vd4JaKxquid91XkJAjTruF/Ml5nWZX8mDiuVahr
-	HAuU2gbTj1+q1jiDifsEPsaRUVVfs4SuLufKlC4eWeR5oJuqFzeEXcZyhtO+/cwEvDKiOO
-	YqPbq66nvUyfe3Wos0oSI29gUNmRqsE=
+	t=1790003761;
+	b=RfCiF8mcHLIuLrhGNKpdnG3XUiAZiAHMf39dk28MsVpQvDCJTvoz96niyiLUezhV49Bv3n
+	39PXtQCyVSN6pEZj/iWFiyU1dF/U6FUnDSd4Hl7tK5wlueRu9Xx7RkHrbe/KCmd9cVZxdM
+	ExZSUznUnPu1OuZ+gI3PPrsdsgi7vJY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6FFDC601F9;
+	by sea.source.kernel.org (Postfix) with ESMTP id 733D243FE4;
+	Mon, 21 Sep 2026 15:16:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C26091F000FF;
 	Mon, 21 Sep 2026 15:15:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B9781F00898;
-	Mon, 21 Sep 2026 15:15:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790003757;
-	bh=Xha6SzRmwzcqbwA6Ea+IAg1MkYKVwpH9imxtGliuizI=;
+	s=k20260515; t=1790003760;
+	bh=bKpBenybAt2skpTkLkXIqtzA/nUfxrfvFxG/+NAT6QA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IQw77VEM7Ou5+88h9368Ql7ab8uQ+ELYghiXetB2nFdIaW20TrqvhSVvDZDnP6weD
-	 EZlwRZVorUuoVbcT6lf8sSnxox/NM/KaANsgNBEGiUSW0absBAa9Q6ORDB3Zu+PZKW
-	 lTQplllX1zVhK/PNK2QEI/+LQLaURhvqRBj4HcAgukS0ggS/ADGkYE8y7OivwNDItJ
-	 WQChuFPbSVxWfXltkHCpsEiukWlPQRdw43GxOg+1/Lr0Gg2GHJHfdV9fBR59BwDtBm
-	 UBvIs+hADqU3Gj38Gkf9XeV356wnbw6bLGfvy3cjTYSCy34K8o596NLeYFZyDJWpl6
-	 2H89KZgPcb/pg==
+	b=JXmy9QfEcwYPI/tNPSUfWcmZK2OvPO0BNfURuaKxF5h9YIMhrUnMM4vFj2sX8VqMN
+	 D9YZ9RJFpym5NVLBBcdn7kAsi+ADbCPpi7uonOTui1DTnYbmy+cqcXjJeimWJk8n4I
+	 Fm4ss6Uq93K1DV+3x4UJCvl5SLQQedtrdxOfjywEiKCmVD40efRhUpdnILEpejlViq
+	 x0Klihsbkoxo2xySgz7mNWR+GGw1ZXba4InQ1N898lk4kVo81w5jX0rilD6VkoU9LZ
+	 00MRa34TAFNihHZJffBuN8dixHOYqHlVPiBiMxHpLbvFZDzCCDTLobN6NDo3W3kxx0
+	 B0wHQkbEKRtyg==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Xuewen Wang <wangxuewen@kylinos.cn>,
-	Adrian Huang <adrianhuang0701@gmail.com>,
+Cc: "Adrian Huang (Lenovo)" <adrianhuang0701@gmail.com>,
 	Karthikeyan KS <karthiproffesional@gmail.com>,
 	Liew Rui Yan <aethernet65535@gmail.com>,
 	SJ Park <sj@kernel.org>,
+	Xuewen Wang <wangxuewen@kylinos.cn>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 2/4] mm/damon/sysfs: propagate damon_call() error in turn_damon_on
-Date: Mon, 21 Sep 2026 08:15:44 -0700
-Message-ID: <20260921151547.78472-3-sj@kernel.org>
+	linux-mm@kvack.org,
+	"Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
+Subject: [PATCH 3/4] mm/damon: fix typos in comments
+Date: Mon, 21 Sep 2026 08:15:45 -0700
+Message-ID: <20260921151547.78472-4-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260921151547.78472-1-sj@kernel.org>
 References: <20260921151547.78472-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: DB527C0014
-X-Stat-Signature: a3hqsib1sybgt1w5x9fjt7nyhjtijegs
+X-Rspamd-Queue-Id: 2E53940007
+X-Stat-Signature: awznkwrwfdj6pwsqptemwrysan7cc7xk
 X-Rspam-User: 
-X-HE-Tag: 1790003757-600997
-X-HE-Meta: U2FsdGVkX1+Zkh43gCZGdKh83srneWCEuMmW+tUsxZGqnkm6/4Z2+LJsszEKS65WtVrg+m/9dSDIxjSG8j18FblGqENrehGLk+aLXUHEjePFwutnoia9NenBlSNuTNbLdtqwT1yj83sbrrFcxn7CHs7Q9TCx4pW+2AcKZdxsk2nMbWOZAqHW7qEHIzWKKfSwVbqPQwor/JvuyoTb7MVbLH0DnaKo0nr9QVwZMkHsSTOOpMz6pVtTvErDta/hPByZCt60dABrw5UNohJhMZtAau227IR0DKLVtXkhQoCSixvMaQtt/LJP7e2sOihXORAEFx6ASBJndZI9J50P/vSw4/L6AZ4r/BPbHomgS0bnwFRFABIR59MNQ8CGM4YeEYOInbY9XgK+Cq8eNxT3bsJgC/RQwNEacc2YQXrB5BmTq+E2Sj+GJG7fciye7E6nq61yvLpvwhVthyx6FzCKhr1TsM5eV3fWR79tFRfmG8nqsglwGnXjxIIanCBZjULNydfIX5tDqQBcwKKUipECsAbUFoXmxLh+3uP49c40Oc99gY8oPXCFYpShN0HFFZk5j7JZHTHqnz+nm/pqXWEcp9Q9xJntDobSUiquPYU5onPG46csBdCWMnWZ6BWpRyvtvBpT0Tf7l5DD266KAjNxQx6tX4mhEes78UppZInpphTsOGjh7yp+eULorfEDm/33sbKmkRRIZzUHFltAhiCFZnjqm7CCkO72SAel7Davmuh6yetApVg6tOtInWzvKjHDKeMPnGsZgBbDftifc9yZCRhP3UFxYMOlVhGCRgw/GB551doFcJ/FMQqtg1x8HYlsph5bYNzequKGdTpac9Uq75if7mBMa9LmiyA2nD9x/4Ec9+2YfbWdI2cT3lAklqTi3V4svdTPPBtvGjLbL7dM74VGuqzZWzk6CZsnO/JQR9Gph0HzIKyIeFXxSVpSiNrEwz1MlM+9xcmbaBW4UU4eOTV
- 4m+aZOB9
- 3bQccV2KLVv+htkTVRJ0Ar1s3w+CJywSKBE5ZakeIXV+FJ/Ihzkur1mSepSC58bJzDi1roB8ui5QkCoY1bAbKQViDtUEjEVp+yhtMimWe3JgKgZPwH5PFVmfbmHUAoLePc7dMBtKpz2wbvSVcF0mUYTKH5AZIYW35OHNGhQHskHLX/+iBDF1TL1Z2nyQkNE6WUS5Nftn4qnTKCirsP5IHrrPqamP35O2gEaERVW8yZ+15xAsAwXsb6/xn/OUpMUOKrk3h/XX6KU16Eu5kqf31ieX+6nbmN+N8VZUinthJs/THDf5TDeNg74zau7CmmRdHKJ90
+X-HE-Tag: 1790003760-635164
+X-HE-Meta: U2FsdGVkX19VGu1bILG3aZhEdu3L3+EXUqZZ1FYjfmoCRCXrxn1tY1VsX4J3kK77HdY63xPzttrdFqN9JBhlfbNS0MszKjNe41PlcoFiEyfhxSJcgz3bwIkf2Fvgntb18lKMeuvcxbmmX9s1wFAvapsSz/lZaEuZY/vysMI0jBnri3uSMVpmSEksF0j3YzCiAi/9yx75NR1BaycsSn2UBkLip3SXPe0vSkbqdlbvDhurHvGZyakAmDYZjoyWArvAHPsRIYBOv6Za1S9Swvyp3nzXpS5RQ9Yb32xcTrYOXcr7M7Th4+CEUkqZ4lkFd90feeMSGUV/2dBZm8PQqNPYfG3QqdNVGaQVhRA8DxI4vlMmeFGHI+n2Vx1VAhoEJKc/AVayq6p07UYWiGP2rId8SWw397ak+ksfKmhHbT1dIB04En36zXjXUitjrhDE67dKDnRI1liacsqpV99uBbS5wPtyOUWsaNsJ03r9834MKh8+XBv42ZIIG05jbtJoRIORZwJGFXzVx9a7Yk0eDXrRh70qvl1k4Yc8vymQaiZ50TgsmkQ8lbMxg3sCLaEjKZyIWNcyLCtCiFy4Hq2m6eY34EWcocD13nH3L29XHIqu49FfCF8jF+w74Fs0/xu+N6dbTAGdkW2d4p7DiuxPPQEPZqaqSs3SdJMntn0Do31p6IqBhzUzHrXRlZjAhMUHrSpTi328jZ5DAegqEPKqWEi09QeMO7BgZ90OTGf1zL0+mMlffJD4nS1IethksIl23rBt1BIXBmOM78+mgpFKT2MAb7IKnLt8ig/3hxqS0WR4xemFLegUvaPVDMwDC9nSc4K4P0V7zWDiMSw5bk+TZkPNiAublioCKRil6MKP8WYrWPof0sy27LTCTbynwaex+SiOBmDvUqTaBIcHq4X8rGl/IKFCJ9V8OAHJPQekdoXqOAYREg5SJ8MCuRWJFV+roLJmS38AjIEoFfC4DcD8xde
+ FT/McfnC
+ j7JYcEtQOuht81IoshabMJyIrq/qPCNSnisRhT8Oyg5M+ktuBnXItvEA4X7KKHRHFMkAFuFpv4Xjc1NYfD1U/3bKDZpXD25y1Kiq0Q8CnJveI/mMyHCiTSCsxPR+3iFtnAYgCQRJ+JpKfsVWrvsuTV64t4a2uygXjmlFEYgUy5fJ2drH/V+FopGdULaPB+kRrIWjnnvTteirAr+zm9XpFrpj5HJl0q4dI8UXzDZNoK1totwLP4Q9wIULYfxOTdWMrTj0z
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,44 +97,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Xuewen Wang <wangxuewen@kylinos.cn>
+From: "Adrian Huang (Lenovo)" <adrianhuang0701@gmail.com>
 
-damon_sysfs_turn_damon_on() ignored the return value of damon_call()
-for the repeat call control registration and always returned the stale
-result of damon_start() (0 at that point). When damon_call() fails,
-e.g., the kdamond is already exiting, the user still gets success from
-the state file write while monitoring is not actually on.
+Correct spelling mistakes. No functional changes.
 
-Save and return the damon_call() result instead. No rollback of
-damon_start() is needed since a failed damon_call() guarantees the
-context is stopped.
-
-Signed-off-by: Xuewen Wang <wangxuewen@kylinos.cn>
+Signed-off-by: Adrian Huang (Lenovo) <adrianhuang0701@gmail.com>
+Reviewed-by: Zenghui Yu (Huawei) <zenghui.yu@linux.dev>
 Reviewed-by: SJ Park <sj@kernel.org>
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
 Changes from v1
-- v1: https://lore.kernel.org/20260915093928.3389096-1-wangxuewen@kylinos.cn
-- Collect R-b: from SJ.
+- v1: https://lore.kernel.org/20260915102746.647-1-adrianhuang0701@gmail.com
+- Collect R-b: from Zenghui and SJ.
 - Rebase to the latest mm-new.
 
- mm/damon/sysfs.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ mm/damon/core.c     | 6 +++---
+ mm/damon/lru_sort.c | 2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index 43519afb9eb7..70a4b64fb8ea 100644
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -2607,7 +2607,8 @@ static int damon_sysfs_turn_damon_on(struct damon_sysfs_kdamond *kdamond)
- 	repeat_call_control->data = kdamond;
- 	repeat_call_control->repeat = true;
- 	repeat_call_control->dealloc_on_cancel = true;
--	if (damon_call(ctx, repeat_call_control))
-+	err = damon_call(ctx, repeat_call_control);
-+	if (err)
- 		kfree(repeat_call_control);
- 	return err;
- }
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 98c767b9e6ef..0aa5d0ea8ebc 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -2486,7 +2486,7 @@ static bool damos_valid_target(struct damon_ctx *c, struct damon_region *r,
+  * This function checks if a given region should be skipped or not for the
+  * reason.  If only the starting part of the region has previously charged,
+  * this function splits the region into two so that the second one covers the
+- * area that not charged in the previous charge widnow, and return true.  The
++ * area that not charged in the previous charge window, and return true.  The
+  * caller can see the second one on the next iteration of the region walk.
+  * Note that this means the caller should use damon_for_each_region() instead
+  * of damon_for_each_region_safe().  If damon_for_each_region_safe() is used,
+@@ -2652,7 +2652,7 @@ static void damos_walk_call_walk(struct damon_ctx *ctx, struct damon_target *t,
+  * This function is called when kdamond finished applying the action of a DAMOS
+  * scheme to all regions that eligible for the given &damos->apply_interval_us.
+  * If every scheme of @ctx including @s now finished walking for at least one
+- * &damos->apply_interval_us, this function makrs the handling of the given
++ * &damos->apply_interval_us, this function marks the handling of the given
+  * DAMOS walk request is done, so that damos_walk() can wake up and return.
+  */
+ static void damos_walk_complete(struct damon_ctx *ctx, struct damos *s)
+@@ -4177,7 +4177,7 @@ static bool damon_find_system_rams_range(unsigned long *start,
+  * This function sets the region of @t as requested by @start and @end.  If the
+  * values of @start and @end are zero, however, this function finds 'System
+  * RAM' resources and sets the region to cover all the resource.  In the latter
+- * case, this function saves the start and the end addresseses of the first and
++ * case, this function saves the start and the end addresses of the first and
+  * the last resources in @start and @end, respectively.
+  *
+  * Return: 0 on success, negative error code otherwise.
+diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
+index ad8e86dd3a93..273efa3c913e 100644
+--- a/mm/damon/lru_sort.c
++++ b/mm/damon/lru_sort.c
+@@ -260,7 +260,7 @@ static int damon_lru_sort_add_filters(struct damos *hot_scheme,
+ 		return -ENOMEM;
+ 	damos_add_filter(hot_scheme, filter);
+ 
+-	/* disabllow de-prioritizing young pages */
++	/* disallow de-prioritizing young pages */
+ 	filter = damos_new_filter(DAMOS_FILTER_TYPE_YOUNG, true, false);
+ 	if (!filter)
+ 		return -ENOMEM;
 -- 
 2.47.3
 
