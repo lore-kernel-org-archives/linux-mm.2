@@ -4,120 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB680C982DA
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 00:18:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D28AC982DA
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 00:30:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7ABAE6B00DD; Sun, 20 Sep 2026 20:18:55 -0400 (EDT)
+	id E79AD6B00B3; Sun, 20 Sep 2026 20:30:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 75C8B6B00DF; Sun, 20 Sep 2026 20:18:55 -0400 (EDT)
+	id E295C6B00D9; Sun, 20 Sep 2026 20:30:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 64D086B00E1; Sun, 20 Sep 2026 20:18:55 -0400 (EDT)
+	id D3EA96B00DB; Sun, 20 Sep 2026 20:30:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 334C06B00DD
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 20:18:55 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9442F160524
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 00:18:54 +0000 (UTC)
-X-FDA: 85235858988.11.74F3A53
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id A6C0520005
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 00:18:52 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aIEj4iaB;
-	spf=pass (imf31.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789949932;
-	b=yLrFOtxzca1SBdJRY1F+trtsS9J37yW/GNBdD7bFxrgSQSg14gerw2mTtCg5eJeMLsR4hb
-	+0x6XYs85oyfsyhb5/hVKBji9A5DTbSFjvyggpbnI6NYrz047Oiw/zNts9ilnmxXDNI7Ul
-	We8k/5w8An1RT7en2PRiLLoND58goiI=
+	by kanga.kvack.org (Postfix) with ESMTP id 9A2126B00B3
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 20:30:54 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D40CD16052A
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 00:30:53 +0000 (UTC)
+X-FDA: 85235889186.09.801D6F5
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 265234000B
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 00:30:52 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="q/FDReCO";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf12.hostedemail.com: domain of kmehltretter@gmail.com designates 74.125.225.141 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aIEj4iaB;
-	spf=pass (imf31.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="q/FDReCO";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf12.hostedemail.com: domain of kmehltretter@gmail.com designates 74.125.225.141 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789950652;
+	b=QVipeqwXS4aC+bQ4rilssjLOaoM0EzhHQjHevMixXgRVc6SX41nqxq+dxSsLoRDp8KwUm7
+	P0esaZySEC9s9CqEnIQix0gODuSGx56+6IEr/hGTDIeioMh8lqHFRhc65PnDVYFnP69PGU
+	LB+sVLrZ2WG3qgm5jNTqoPxAJ7zI5Hs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789949932;
+	s=arc-20220608; t=1789950652;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yQLJwaBM1jNrWhBXChoiLFbCA/v9mJP+hXZ5bDTH3cA=;
-	b=T2e/yg4msWIsfAeiAttTG9nXgZ+vlsnMDJXHW1dLkuuxk6dzLnGJKE2CwnkK3berf6Nhpi
-	0/Zj9ZPwES9HBmO3YeBu9BfDFEBxD0aZJRVgNYkJ5lfa4squJASVb0hFSwRK//LMJaSyAe
-	Cqn9MpRXvz9EZ2E2TG0dVOCkyqYevvE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A9FB2449F5
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 00:18:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66B5C1F00906
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 00:18:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789949931;
-	bh=yQLJwaBM1jNrWhBXChoiLFbCA/v9mJP+hXZ5bDTH3cA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=aIEj4iaBhshktxUJ9NxtHfVL6ULOcPlzBZ+8JZnTwJNm0vxSPb3Tj+kbQCbxteszO
-	 QAnXO6g4HbazET/Ga/0jEGHY9wLEdkEp2XLCw3GjOLtXoEGXsxT86NukCsaUn7g99h
-	 DWgqIj8LdB52MhSQlPEBJXOU4SgzIBGzg0YppLv5Gzo9RN9HlDiBuLIi4xSPRJv5xz
-	 nf9PHnhgqW1fR7L23E/E9OfCSv6kFY/JokoUj7nuOkoe6YVnyLhe6uYdrJm36h6x81
-	 WcH9mHLOp6DpEwMeTAWYCV1RzL0rd7TjVt/se2qLf/3gpxRAaNDat6YlTSk7udgvBX
-	 haoUyoBJIR/vw==
-Received: by mail-yx2-f16.google.com with SMTP id 956f58d0204a3-66e56a1fe83so2010865d50.2
-        for <linux-mm@kvack.org>; Sun, 20 Sep 2026 17:18:51 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBylzsMafPT/Rg54Ow+8dYFVzG8M6IfarISLdwZWGtaph0ocVkD0c+X8TxyZM5E/UanCwX3f24Q/Eg==@kvack.org
-X-Gm-Message-State: AFuF++kVHw6rPLMjnejpBxonjt+H6ERr7Aa8VfG8wWl19ThCx6SOyeOC
-	nJLn0cZHsQKCQ+KOQG6szcjV+acugEJdQ57EAaAFkpIMq49w0GRC4OLcU/BsdKXwfoaXggisROt
-	+6XeUg45g+S4JNqyPyRYf+tBvGe9IALcap8zi4BOP+w==
-X-Received: by 2002:a05:690e:144e:b0:672:b10e:c5e8 with SMTP id
- 956f58d0204a3-672b11e0a0dmr330726d50.28.1789949930653; Sun, 20 Sep 2026
- 17:18:50 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=9gh1EhGas2z2opfanmdNTY/ZLd4Wr396PDY9OySpgHE=;
+	b=HwdBHxyat5nmK02qfKo8htzxb1J5+rV7jCZyzeaoz3XQW4hpP/iPEvXNtzDaHgyZ5sfR0b
+	jodokgGCAzzT7DmPhJjAvrLTuSo+n4F2xDJrVPFZxqloUnWCpdvufeFmT53Gu20Do+/V0s
+	iYgKBaK3XHr0Hfffk5m2HQe/WxAfH2A=
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49d1fb0cf5eso17205195e9.3
+        for <linux-mm@kvack.org>; Sun, 20 Sep 2026 17:30:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789950651; x=1790555451; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=9gh1EhGas2z2opfanmdNTY/ZLd4Wr396PDY9OySpgHE=;
+        b=q/FDReCOcoCeIXzmNV10IEh2Og6itqf3uHXBFNfPyGpcvmWhs4WoitmK/JiiPlMD4l
+         TSG4bIzGD+PbaoE8L+oTVicB9FtG2zqd30jhNlVzQ/uDQo8C9VPoj8pDjJY6WJ7p7VEM
+         4jd14GLHmOvLm7SBskAvVZxXO8XXRyarXtkeQWaXDWxgfKhcaJKewQ2Gc55ak8F32lhw
+         vp6JwtwWv+0AJ7+22zEPObvrkIAF0OTzm61PqjG/hlauF18RdXnocG6ykTtIUlo6UQ/4
+         QELYL5CVHum4DyQnPyDwbeLjjf+WS+qDrVLfCA/h4UuLjEYy7rHcdT3eCT50ktDM5Wb+
+         PFug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789950651; x=1790555451;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=9gh1EhGas2z2opfanmdNTY/ZLd4Wr396PDY9OySpgHE=;
+        b=Cwytc5O29GKyerYx7ALg2B3gRBS9ekjq1y+N9P2oqVg1mC2pb4dzRgmaiLJ4H2DJOB
+         2GRrK4aMLeGc7sZQZrb6yha6eRmsTnRDGpxhnOy/Rek1tMV6n1wGU8aP7XFN1ss2476F
+         XR5pkidrHr6C2HldWHd0ypl9fsizMC5nZc6HQAxSGVaBwp2rQAAMTTh4Bq7UZQGme/bG
+         JWYeJDBk8aHY8L1v/5D8j35wsd3Qz+6d589wbK4ykRNS97vCvPCMbpWWVnNRUCsB5Nfa
+         5NHcjt3213ZOTmLIkqXs9aBhZkEekeCHGmeT6I02Ux4YNjw1vpuwsbMi8YNSlm8sbqa2
+         dlzg==
+X-Forwarded-Encrypted: i=1; AKwUvBwFVQ/3hBYScNy0KEdCESU3yCyTlusoPk9FhK4gHdDfKjdzTsJ2mi/AuKxQYQNLlVS4gPLxYyrMjQ==@kvack.org
+X-Gm-Message-State: AFuF++lLRCMK9pcIdum852yzCecsiHlAdFxdQ/Kh0rhJR+k72DH2b7oD
+	U5utl1u6imKh5+fTyhQMVCEwpnoWjjySbai4jVxwFgfTd6LupSj9kKNo
+X-Gm-Gg: AYBFou3c77OPOgIjg7q94f51PvcwBWIIVVpVOU8EOYZoLEeUegDXvHc2JEOx/8BXfPJ
+	XpwowNBKapN5rDhM3yvYFLX/ctkP+h/aAfpFiYCyINGoiPegqyYsgPE8qbJYTwCyf4lpNyytYwC
+	+L+dfYj0QROihaXR0LaMYWEVdJR380OPpC5XyMuKGiR7M4j7s8VnXQr3MY9aJZLLRcmZcthhDzI
+	Q16+IEIuUmNkVrAbf5Kga5xXbtKjg3YE3kmApz99YK7B/azEelfgUWCV/pMp22tam1G7DQI+Xsq
+	cOfMoDVXSKycwMGkeekXfC9d50Q9B9AvCrb7oiyCTOYmNCO6VlVSt7JduRXlCBiPcMcMC+7WoM4
+	e43CWgq930eQkdNP2OCi6dE+TbfmBrhKUXQzv70GjFVt4vTFL0zia/bByzbfW1QSDB2+7jEN9Lz
+	Z20BEXOanXM+LAn+H7tEuGUugwe2SZ5vomTXXftiNzutkkRKlp9N/RtmRpaKMZ08omM3Dv9EsYh
+	mP9lx5G7rdmXjVCYwogHMEMnlX1usxlHQcBTKz49nU+C9NGGFyyDRjUMWPnvEm1Qy9jCcky8sxV
+	nC7Cz8t93jB4FZICFfTjQhq9QCBhSxyJxrUwCpMNTZIVIvFI0iCerBktYhXn6ktYNA8y9aZJOqC
+	77w==
+X-Received: by 2002:a05:600c:8b8b:b0:49e:663c:c69f with SMTP id 5b1f17b1804b1-49fc56d170dmr118923645e9.15.1789950650423;
+        Sun, 20 Sep 2026 17:30:50 -0700 (PDT)
+Received: from localhost.localdomain (dynamic-2a02-3100-a012-6c01-e0c2-ccc1-7acc-3570.310.pool.telefonica.de. [2a02:3100:a012:6c01:e0c2:ccc1:7acc:3570])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48724583fffsm17515695f8f.23.2026.09.20.17.30.49
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 20 Sep 2026 17:30:49 -0700 (PDT)
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: SJ Park <sj@kernel.org>
+Cc: Karl Mehltretter <kmehltretter@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/2] mm/damon: preserve quota state when constructing schemes
+Date: Mon, 21 Sep 2026 02:30:45 +0200
+Message-Id: <20260921003047.12041-1-kmehltretter@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 MIME-Version: 1.0
-References: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
- <CAMgjq7AHRzBsbmGOx0s=TQFBwcn=DEU1naR443sO6x+pJd6hAg@mail.gmail.com>
- <aqBT_35E-eSoN_zj@cmpxchg.org> <CAKEwX=N4aaq_oD2agTUNrUNXhaYGeQ9vxu+dywFvEFgWFi4uQg@mail.gmail.com>
- <CAMgjq7AfNBUpMamcv29JFzpX=7ApNYVLtPjWT4Sm8cXjSLYL9g@mail.gmail.com>
- <aqU81l1oqGItb-0C@cmpxchg.org> <CACePvbWLHAT5DjC=HidzN10XF5_cnkpxXXDR_yfEJjTY_uDvDQ@mail.gmail.com>
- <e42d8bb0bb13067609e8ff8c858a26ca056368bd.camel@surriel.com>
-In-Reply-To: <e42d8bb0bb13067609e8ff8c858a26ca056368bd.camel@surriel.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Sun, 20 Sep 2026 14:18:37 -1000
-X-Gmail-Original-Message-ID: <CACePvbXDDDHo0rwkR3Ln4==teQugYP2=5y87J+A48Lagk1X_zg@mail.gmail.com>
-X-Gm-Features: AcwNN1V4Qm3_GmZRa8eeaDfHd6BdloTCfV1sTma9X2uAKhaJOLZlQ8rz9IjN_3c
-Message-ID: <CACePvbXDDDHo0rwkR3Ln4==teQugYP2=5y87J+A48Lagk1X_zg@mail.gmail.com>
-Subject: Re: Path forward for Virtualized Swap?
-To: Rik van Riel <riel@surriel.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Kairui Song <ryncsn@gmail.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry@kernel.org>, 
-	David Hildenbrand <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Barry Song <baohua@kernel.org>, YoungJun Park <youngjun.park@lge.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	=?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?= <surenb@google.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Gregory Price <gourry@gourry.net>, Wenchao Hao <haowenchao22@gmail.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, 
-	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, 
-	Meta kernel team <kernel-team@meta.com>, Linux Memory Management List <linux-mm@kvack.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org, 
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A6C0520005
-X-Stat-Signature: aktk5n194jusoutnkhk3ppcq5mffbp96
-X-HE-Tag: 1789949932-473753
-X-HE-Meta: U2FsdGVkX19BhCaC88g0Zu3bHdMHrWgT+KiT/oeWloglbWw83BFwVh0ZfGtygflcZGN/ZSnzoA5PMB7qoz7TwGlbQtA+DwsvWYbh2fM0hOxR9BcTPbwxJj8wdQqqk46gqSPLQzfGW/iWNsP9gBRBHo9LR5hnwgtlApVOR65Wix7ckSsUvJetEz4+4R5ldxumcVcljqju4szzqcohu8omb+2iCXcTqdA8BN1Bg4BLLxNTdBiCdIUTEwWXl9OLnLZGwL5VA7k8deTy+xqtfUCZFi4KqsrAZGg1vfxldDtz/Y4e1TtOkgTBDD8m5YIonpPjBw2JM8v3puNtOSqQVUW1cZh6LTi7GEHon7stnU0qqaWyyit55uVaE/95qnjB1ymOS4f6WVmj76oCWXfTYM7GrU1fLJyQKceMt6sUsUbPXGk3iXmrYsfg3MrkzKFBxILDi/aYndK3kFx5lUpnNx+pw3nL8X9QcTUBFqMn2cPr3YZLNnBYHpul9xkVW9MWDnMWksf7SpUPLVYPyOFb2nf2E25jHPdMhcdF6cEu+QVLXFm5EMag+3bMEhJrBOHAPbYo6hajolqhpgL4mmtIfIPK83O3DaEzfbdS0jQujEVKQbtCZ4ouItJeTkDv3Q/4V8mvrgTo6IubFM9MSFrzRDXoyboF8aumusVvzZ0v9j68Zk0sbM0MOPctdlWCRFyBS7HG2DcPDZo6uYyGJKiKssjLiQG1HfVIZqdklz+FrdeXhTYx5qXsLQc7Rw4eBtrACpWTMpUb3gNotOGUKwruM0bmRjvmH0Z0rO08cKVUbtSjPGX7Xfwm5vfSxeKKg16Sv9TuN2C5C68wj6+1b/ODsI6duREtusAoNp54F4cDqSgsFyC7IAPjxNW1nvz+rYjA04Z6InADLUhUgD7B+vM5hshYE3om9ZyulSLbNChnvoT8HvDhgEkcBMzDyLZ0g4wxoQiDvDtRKHbEh6cDR6ffYAS
- +bqj38Tm
- DjFeZZiHwc1M3mCADF22qlDDFyehh+7zABjdBxC22knf9DTHbtCfePQSJDTpa+oC7MtSBZrfw7yT6ZPFImLUq2UT4NkCH8z4d1+bBCpd5S3zHxqP1760d1pEWg8ablIPUTiuixmJw3+O9r3BANBwJcQ8FAsh7PINLNmZZNqHPj8BtEyoHEEdwVhHomQmrFMWY/bfVvRXcIlLHfqFKXBYIPmIkHwyQibfk24Egc8e1iVG+WWpaW6r7x9Fb37dtO+3vSQi94awz2QEbyOhSW7MBEpDH9TZf1IC22wtdialfs4iYWZWdGdgR8uIe32CEMxaL5XoTEA9UBRvdwy3I4W9BeXcMvlNhx08MC2hfptp58GM3oAmk8ZrJsAlzJjtTXpmLcLCGkd5H75rBX8I/z8VDB3Cay2OwtgfS79zLj5+NNOK/UG9BwnQI3emycodtTCOaGxceomySf5KZlfyD8smZIN2MNg==
+X-Rspamd-Queue-Id: 265234000B
+X-Stat-Signature: kijpsae8kxr3nb8frruwjmpo1xnfipx3
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789950652-243835
+X-HE-Meta: U2FsdGVkX1+hu4DVTE6XHB+lb63/pxwJL3DsaFnWe7+tZkXZm7xe3QJsS9QK4qq6GwzWBsPhN8ruab0TcECfvAkz1Y7ScB3bCELEgoryXbmvQZcLSwa98T2hQQegwuAAE8f5WBPT8u3q2ln+2CY1j/TVDx+Ve8Sb1i/uW8YXjW0r/D6eu/06NpDhPMp89xcaJ+jGPaBD7FZhkEtvoeagWqFqB84CfHpcIxTnFxvQPuDGKR01b4A18Xh+OuyVC7r1rX9sQLmI3+dht8IkmgL7eBIVxNiKLYn/ipLrISJspKCkkKPHkHZI5tOHZ7RcM//qbtp35lrAN5UxzA4qKyaWJzW+3y5UlaHrdpKLS1/YnN6VGBkx1aRdFRpxXHbBfxkFk32gVjRdHGiHLUGu8jB0H2TnRQXYhSmUEdoj6XEBxp90ygBt2MKTBUy37lM6g/bK6zaGXqhhbWd490qlpws0HxaZjVCnPrzeXrpCDhJAX3fzy9qwzHKFCID5vUVvbfB7Rd0+00Rr/8v4rexYb22IiGrLO1T1uHrFDO0+6CbBUHxFYq5oS0lXY8qlTCTasMZP5VJi6YLXDbz8dHIl20dOEKrVBC4Ob1La4olxqqpYyx5JA8B5wALDEr4KTt+zuNHpIzLp6D9slBEe9iWIpJo86uWOVjgFraoqbTyQZDcmGFz0+++DPi5ctujTjcZyO6Gg8FCt0rZ1Djp5jLwoMHkZ7HFeHTKZ0XRTuFsV3V58/n73DJrB/e2EKN86YtVkaqS7xJns2Y6tOJ8VxRPOgxIGZMaHAb5YuW3IgQwvNWo8SYbcMujXHQkYa1lIYDZAONHO10U9GLMoJna2aFi4t+qrNy6wY9wvZ/eSVddT2CNhGwbFCMBYHgXD+QMVz8aCula7cTf2KWut8KV2BdiUFkyX9CWGV41+/mRWtpFxalhWwPH54GE/bO5rd7vP+RCEm0BC7BteICSCMasgPkict4g
+ uoFjW6+E
+ VXY7OAcQtqTQF2CduUrXSLFrDeOf4z7F2p6Mk7IRtEyOQXSwRcYKofYrU8DJZuN/nQG8lmhezZ2D0bM4pJJxe9460Oo6ch47SNejUA3pKvslHKtXNIPcLmb4jiyMyUrlD6VHLmnMMIvU31wLbfWl+zInV2wi327JNnT8ElV/hdaFe8JWr22OnCZlnyX0O5UOQ2WJhAriHFSzUoF/famXicn8mxkkJpXB9UEGGxBbN27KpNryYIkO8avqlXo4iPMGzxsjJhZQYIOhJxyG58OKG4WVVVKtJdA6ZYEMvg/2INvbrgKEyq94esBrRaxJUOzxbTimnignBp3SdNs/oaxLf/bGZNObjCVKKYtMiVKugpVz62OYDbfeTrli20++4fu7dgGGZieAXcQZqiMhz6r1RH6P8BNjjIbzy6Lmi2ctP6Yz6QEAvqD1UP2eTuoBAnBNPXXmP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,30 +120,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Sep 19, 2026 at 3:07=E2=80=AFPM Rik van Riel <riel@surriel.com> wro=
-te:
->
-> >
-> > For our deployment, we only compress about 7-10% of the system memory
-> > before performance starts to suffer. The feedback loop will scale it
-> > back. I am very curious do you have actual work load to swap out 100%
-> > of the RAM.
->
-> One common workload is a web browser with idle tabs.
->
-> Those often compress pretty well, a ratio of 4:1 is
-> not unheard of, which makes it easy to fill up
-> 1/3 of memory with 133% of memory's worth of compressed
-> memory.
+damon_new_scheme() initializes the caller's quota in place before copying
+it. When damon_commit_ctx() clones the running context for validation,
+the quota pointer belongs to a running scheme. Constructing the temporary
+scheme therefore clears the running scheme's quota state, even if the
+proposed update is later rejected with -EINVAL.
 
-You did not answer my question. You are talking about user-space
-processes (browsers). Do you run your browser in the data center, or
-is that a laptop workload?
+Initialize the new scheme's copy instead, and add KUnit tests for the
+constructor and for accepted and rejected context updates.
 
-Anyway, what is the total amount of memory swapped out to zswap
-(before compression), and what is the ratio to the total memory? I
-can't imagine your big server can reach 100% swap out to zswap while
-maintaining a reasonable SLO. So educate me.
+In a live test with damo, a scheme with a plain 64 KiB size quota and a
+60-second reset interval uses its quota, and a full "damo tune" with
+unchanged parameters then lets it try another 64 KiB within the same
+window. With the fix, sz_tried stays at 64 KiB.
 
-Chris
+With only patch 2 applied, the two new tests fail on x86-64 and i386.
+With the fix, all 43 DAMON KUnit tests pass on both, and the DAMON
+selftests show no new failures (QEMU TCG guest; the wss_estimation test
+misses its accuracy bounds with and without the fix).
+
+Karl Mehltretter (2):
+  mm/damon/core: preserve the caller's quota in damon_new_scheme()
+  mm/damon/tests/core-kunit: test preservation of caller quota state
+
+ mm/damon/core.c             |   6 +-
+ mm/damon/tests/core-kunit.h | 107 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 110 insertions(+), 3 deletions(-)
+
+
+base-commit: 185111f116aabf202d12ce440c0f6e9bae073514
+-- 
+2.53.0
+
 
