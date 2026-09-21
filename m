@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 686D2C982DE
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 10:26:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72847C982DE
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 10:29:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 47A576B00D5; Mon, 21 Sep 2026 06:26:33 -0400 (EDT)
+	id 829296B00B9; Mon, 21 Sep 2026 06:28:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 42B186B00E3; Mon, 21 Sep 2026 06:26:33 -0400 (EDT)
+	id 801226B00C5; Mon, 21 Sep 2026 06:28:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 342076B00E4; Mon, 21 Sep 2026 06:26:33 -0400 (EDT)
+	id 6EFBB6B00E2; Mon, 21 Sep 2026 06:28:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 025926B00D5
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 06:26:32 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4EC2CA2A04
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:26:32 +0000 (UTC)
-X-FDA: 85237390224.30.D323386
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 768C810000B
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:26:30 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RaUbCJOk;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4CCBA6B00B9
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 06:28:59 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A6D4112012E
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:28:58 +0000 (UTC)
+X-FDA: 85237396356.05.7322DED
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id EB475A0002
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:28:56 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NHjCcWDp;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789986390;
+	s=arc-20220608; t=1789986536;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nTyZyJijpdRj0X6CZpg9ECIQcR7z9LYrkbviRiCY0G4=;
-	b=P4ZS3mke9IkSeQuEPOSoHuUPKEr0bmP+hXxthM3tzNoFwN0xIlsB4YP2T3kgDTRHPFJW4x
-	a+4csIdsEq5qk8V2OI90rIZnDG0CK+NMXeWksptnqMcgQv/JMyYpRe5ZfKLQAQQUh3afnX
-	5EycluYVOZuE8sOIg6YTLbdxS1DkAto=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789986390;
-	b=t+hjuaF8TCDRkq/HXUsZBrKq5tDs6Z71gFZz6YE+TJo+13DJBtecUtIWaO77o5hFJmyaXW
-	vxiL+297dNMM5909wKBvlWEf6eqxE7uKXd5r4t+icKd8SkyGA9WJDLPxbDi5+/oqyE9e6T
-	+OWRSnGcBKA/QXbDOd5jtf4TncmWhFw=
+	bh=PlSPagAiZTiQz4p1UDMuSA1ZHbZ+Mis1oRiT6ujoT9c=;
+	b=rfzMbH07rNlhNGBZDQ0QXYo4iuXWRk92ky2ct5vS7Q+grOuf4N2m3x5MAIV/oZNpnJ8yNF
+	zq85g9BSxpUxrd8ffoVHDAYHRpT1E5L5/G3qS104wS48OhFqCYvY9kohf+nKhRzzi5Itme
+	7KUtW3aodT+cqZFxk0a4OdvSd5c8BVU=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RaUbCJOk;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NHjCcWDp;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789986536;
+	b=XeJZzC2X68VIwkX4l3oNPrpR+PbSm773FXPpBA+15XjZW3vclSGo9PZ+gK3geZBBFPIy2a
+	nr9d9ma8M8G6IdakkciqiMYBiAY9uNgon92S4GCEn20oMr0WrlJzl3b46NjHdv5nRqZ1u6
+	dwmmr20/f1I8tVK9cnvXkdE01mg5BPc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 77B8E42ACA;
-	Mon, 21 Sep 2026 10:26:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6DE91F000FF;
-	Mon, 21 Sep 2026 10:26:23 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7E518600C8;
+	Mon, 21 Sep 2026 10:28:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 984941F000FF;
+	Mon, 21 Sep 2026 10:28:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789986389;
-	bh=nTyZyJijpdRj0X6CZpg9ECIQcR7z9LYrkbviRiCY0G4=;
+	s=k20260515; t=1789986536;
+	bh=PlSPagAiZTiQz4p1UDMuSA1ZHbZ+Mis1oRiT6ujoT9c=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=RaUbCJOkKLo4tajvGYl2aCqTQCY3jQWxoBsKIHV2ITHnHSBXC2/woloaFdCGmW1Mj
-	 dcqnBR/najbVBm0Qg+R1N7LTD78OeguoK+oRClpNLcd+DIrl2iwnxlSklyjNAgyFw7
-	 gyuQC7+WGA1FINXKOPRe7Z+J+rDNKexGnH/P62NTzygOtx0pF6lSf4Ou+0XADS1yuW
-	 CzTKi2rbMtTAQA7A64cF8mH/lnqIafIc2ZW/90Kuap8DxOePcQ3xYLkNQwwpt2acel
-	 HcpCSO93IhzDUtVvz4c0RiHvmXgVOTXNL8A8fSFTEdugmmj+Q6Zejcq7dDwz70vPJ9
-	 PmNoxsSt8U59g==
-Message-ID: <b51234d8-467b-47c4-9d94-82e589643859@kernel.org>
-Date: Mon, 21 Sep 2026 12:26:20 +0200
+	b=NHjCcWDpZe59HM++m7X4aNR69YVOC1Z+RtPkRp+i94WQaXfwcRi7zXYuU8hc8WbyO
+	 LZFtc+fCpBArY8l/DeUW6tBGsZcCCO5+7DoDMAfG+wYavc47bWqAmedj3vhYc4jewU
+	 Wk3jCMNtdDsvX5FY7E3ki2Ya8NzgHs1KH+ykl0dpROlMayIZx/vWk8RV/D0FApB3BG
+	 0WdC9PCKTwgLuKFMOa4psJWR39shP0te6x673fzoJS/aUQFx0Be4EE3rJmsneIs1bJ
+	 /Er4O0DPZC6odkW+Es/edHvjScV3Yd6S+c6YuWM3OgU8RYYuYTCacj/kqCcWgkFGfm
+	 k2Uww+ro0suEg==
+Message-ID: <244ce64d-b7df-4a76-bcf9-effb0c53073d@kernel.org>
+Date: Mon, 21 Sep 2026 12:28:47 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 1/2] mm/gup_test: Track long-term pins per open file
+Subject: Re: [RFC PATCH 2/2] selftests/mm: Test per-open gup_test pin
+ ownership
 To: Richard Cheng <icheng@nvidia.com>, akpm@linux-foundation.org
 Cc: jgg@ziepe.ca, jhubbard@nvidia.com, peterx@redhat.com, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, ljs@kernel.org, liam@infradead.org,
@@ -76,7 +77,7 @@ Cc: jgg@ziepe.ca, jhubbard@nvidia.com, peterx@redhat.com, linux-mm@kvack.org,
  shuah@kernel.org, linux-kselftest@vger.kernel.org, kobak@nvidia.com,
  kaihengf@nvidia.com, newtonl@nvidia.com, kristinc@nvidia.com
 References: <20260921094243.64698-1-icheng@nvidia.com>
- <20260921094243.64698-2-icheng@nvidia.com>
+ <20260921094243.64698-3-icheng@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260921094243.64698-2-icheng@nvidia.com>
+In-Reply-To: <20260921094243.64698-3-icheng@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: EB475A0002
+X-Stat-Signature: wgferzacastpwu5opmjoikmnhmdhkwzi
 X-Rspam-User: 
-X-Stat-Signature: fwjp991hx4x4hma1rtdmqfd85o8tmiqh
-X-Rspamd-Queue-Id: 768C810000B
-X-HE-Tag: 1789986390-914060
-X-HE-Meta: U2FsdGVkX1+3vudBNQHXoBY2k63zCk4x98LVxMqLTns8u8oi58Wr3dmti6zxf2LtacXCDSkh1k8o7ibXcmNpTrTYrwD+3PTj2xKSS6XfXWZeNDADY/IFtfTKWG5vF3Gl0mcMi4uix0XUGJl69hLL2J8ycuC6HwpU+uzfAibu5ihq+8Uk9r+nO4twXjIgqZ7ZxanxezCQPls1PJnH+XkqncWcIuuuk2zLiSdK8MrFwu9d+m/D/3bjMycHrYwgvXtByRZXWNAFzF8vllTCK8Gwsr0kQ5bP6a8uZ1UduxayTLUcIuYgXhX+J23CWKRFHXeaDO5xXSbENnrRiIKwLUxHEgKpn/fOJg3U3O/Q0nwzJtsHiydNlPNJTcwkaIB9ZDrXoyYQamCLAUiiUImxnNHlECzMwR7ehKmRxhH6FBBX28Ac5LpaHZlgCKRAchapbNVGYjDuXnXmE9ECmNufbmDmc6+6R724SRRbXWRN9oMEy9cW7ZSulryDqd6rAMM95LjglsuT1qva0nkbAZuSNfoxQL+xU0D1I2/XLFRJEs2VGkSr5RtfRiZ5QEu3C3kSGp+/SH/P8nZThzPR9juasRtYcdz/VWPGDF8BQLy/h+F3DtZ9wTe8QShaG10rqasmiasF8LAdDWhuXY8Ez4csUerHIswQoK66XVP1smYkHTjkzEbJhquk54LAcPIeOS7I3RFM5YfrEhs4l87EeokXCP0FkC0kPyaNuIthPoYxmLRkIFTM70JrDBYhn9waocd8zHpnuo58mRSuGJZzTfkwr2G/Z1IVSAc9WsLZrmbWbjgttB73zUbNOfEFENj/wqUhjnw/ke4nm1cIN9Nmp9pvlu5LT2dm97UOFO3WOdUScTz8vLfsug/UAgeefI0AROFu4z2sFJh1xfmEQxy6AW6GhN3PevyOpHQLvAmHWfZcgFapIsa3dBpr6mks/YdSYGNJBM8MamkC4XLjwOnrphgUAUs
- diUfH8W4
- eG+MuxQU1KeI/3qhS7PlpDhkICKo8FGnHcfk+656XOFTGj57giz0/qOiFxl5JJ8QU/0FACREF5ho0WeOGAezTW+b/EtWEX7gr8ukJNYjqhJaW9KWpG4GdxMIscbFBxyOAuISVSU9oNX9Q55Uzb014aD/+gOyZJZtY+uugcl/IcGeHIvC6odyWQGA3hxFMu54gXY+sEsE3yTg5eJS7aJpZuxaxR2tnWxyMdmiAO7Y/238Mv/BJTD3g2eFsaXZ91y9bThYCyUqnrDoZQsX2Ova+LorWOmDsuI+GsRL90QychYppAgJG41bdO9pVYmIMVgQeIT37goHaCZW86lCfpTa5TryLgw6i2ATJNDOY
+X-HE-Tag: 1789986536-919119
+X-HE-Meta: U2FsdGVkX1/sDB1aRqLzbuMwbN9E2oc4/f96OPuwYAIsRt9eoHTFZyN5Q9Et58B6YGIm02Bzk6Rt/5+mZKFUyJ3DXi1sQY58zPItQGhSNfLvoCpC8IhNooNLXJ4J3X2/0Cf6XwuQ+XD9GopL/N9XCh8NyJ38MmBiDere/WQVy2FvCxR86/FkagwI1HqIMEqWLappkNkEVwu3UIOAL4ORXtvD96ED6T8qJXae+Gp0ohgxyuz5YODQZNi3ATJXDqe34MWigR6PtqPlcbl5kpcIBj6+uchW1Z5eUZ9F2XkcRKJ8yxDWVdSB7aw+I054G/WKob+8a4QAqYOIkb9bEoSkukNu0WEgFOMunuex9k5MMEwlnyHutjs1J0kep1Jj6C1W+T8sjXIYa55l71yQ4X8mzH+1f2599M+J/3CJPrTH1ZIxXVJhe9FR3msOXVNdEruNz+w5CCFJyjQDcoOFCvw84l/0lVjsdv6MaEsEnL57hofMbJMnKw/RQT9o0LucFXsdqN4dcrvlbogAl1hoG0C6VcAOHe/S5nVRWEYYCoVniUiacUZfFACBxwCsTBIU2SYznueTLCL6lmeK9gajzsyw00NR9MNPbOxOIjOa624E62H/aqRsYEjPPk+66YnOArA7c12XFdoiZJMRpG5QpHTdBX2+rVd6ji4pjJvX9NgtK+1MuBEBt50mLPFEmtMI56OgHRH0u1DKxp5kfkMHuwbb8P94PAtmQC/8ytksVlz39XZ5ifTlubE2m+7aqtqk5Va9WA+7cBzB5QCd+Ve9KswuKqcXvWEvzT1E+pIFOKFLzr8T8XteO2kyrtb5IncVTl2BX3f6qwy7b8CwjKK6bB02rq9s0ppnFoJ7JdeaIBh1foRdvaoO/Put88shqyOQxpc3J6ElW1cPS/9h6l8I+0n+46kMZ40PbxepyuGrqbdrGo9NbjPg6U8NOJJkC2ZZpnHc0/D65z9LugAhcAAQ4sT
+ nHwRsTvk
+ 9iIA7Qxaud2miPfyzuwW/okIYT3+iabsV7h0QZrAFC0vsoAK6sLDnMvV3bz6cF350zPW998ImWLaO3tnxhaskRpazbiWkD/2AIQ+s8wRiO8ZfnNhjH3WNbIBrN6hkyzSYzeiupEFGJcswA/3mdk7WBRK3cyjGCzWwkzf9VEIPtnYYLOPFVHm9ouFb3X5tB4TUeB4/7TDE5cQnAgK0AiWhZfxAUOsid47T7RkbXsdpemEO+F6ZOYbGY5WvyZPEQSTAAZd6xVA8uXIKwo+qBVLvqGnh2Jq3CGfJcrJ3pAm0R1QofpN2/jBqY3uzTFUg1uqS1B2bJxZqCPh7+mc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,39 +143,35 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 9/21/26 11:42, Richard Cheng wrote:
-> Long-term pin state is currently global, allowing one gup_test file
-> descriptor to block, stop, or release pins owned by another client.
+> Long-term pin state should be isolated between independently opened
+> gup_test file descriptions, while descriptors created with dup() should
+> continue to share the state associated with their struct file.
 > 
-> Allocate the pin state for each open file and store it in
-> file->private_data. Serialize START, READ, and STOP with the per-open
-> mutex, and release only the pages owned by that file.
+> Add tests using 2 independently opened gup_test descriptors. Verify that
+> stopping or closing the second descriptor doesn't disturb the first
+> descriptor's pin, that another START on the same descriptor fails with
+> EINVAL, and that READ fails with EINVAL after STOP.
 > 
-> Descriptors duplicated through dup() or fork() continue sharing state
-> because they reference the same struct file. Keep the ioctl ABI and
-> same-file duplicate START behavior unchanged.
+> Close the descriptor used by the existing test matrix before running the
+> ownership tests. Record whether gup_test was initially available so that
+> a later open failure is reported as a failure instead of being hidden as
+> a skip.
+> 
+> Also exercise the shared-file-description case: start a pin through the
+> original descriptor, verify that START through a duplicate fails with
+> EINVAL, close the original descriptor, and use the duplicate to READ and
+> STOP the pin
 > 
 > Reviewed-by: Koba Ko <kobak@nvidia.com>
 > Signed-off-by: Richard Cheng <icheng@nvidia.com>
+> ---
+>  tools/testing/selftests/mm/gup_longterm.c | 258 +++++++++++++++++++++-
+>  1 file changed, 256 insertions(+), 2 deletions(-)
 
-commit 534b19bbb67717eea2272573bc0ff7ba4ba109c1
-Author: David Hildenbrand (Arm) <david@kernel.org>
-Date:   Mon Aug 10 13:31:14 2026 +0200
+Sorry, we won't be adding tests for gup_test interface functionality. This is a
+testing interface.
 
-    mm/gup_test: keep longterm pin state per file
-
-    The pin longterm test currently stores its data globally, shared among
-    multiple concurrent users of the interface (multiple open file descriptors
-    -> multiple "struct file"'s).  That makes the gup_test interface
-    problematic to use concurrently: two users, such as concurrent selftest
-    runs, can interfere with the same longterm pin state.
-
-    While this has not been observed as a problem so far in practice, let's
-    just handle it cleanly.  There could be a way to trigger selftest failures
-    by e.g., running the cow.c and gup_longerm.c selftests concurrently, but
-    we usually run them sequentially.  Let's add a "Fixes" tag to be safe, but
-    not need to CC stable.
-
-Which is already upstream.
+(I'd be quite surprised if no LLM was inovolved in writing this patch :) )
 
 -- 
 Cheers,
