@@ -4,95 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38957C982ED
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 21:33:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C0D2C982E6
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 21:55:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1FAA96B00A5; Mon, 21 Sep 2026 17:32:50 -0400 (EDT)
+	id 3D2216B00A4; Mon, 21 Sep 2026 17:55:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D2F96B00AB; Mon, 21 Sep 2026 17:32:50 -0400 (EDT)
+	id 3834F6B00A5; Mon, 21 Sep 2026 17:55:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0EB0B6B00AC; Mon, 21 Sep 2026 17:32:50 -0400 (EDT)
+	id 272086B00A6; Mon, 21 Sep 2026 17:55:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D91E66B00A5
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 17:32:49 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2DD54A02F1
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 21:32:49 +0000 (UTC)
-X-FDA: 85239069258.15.1E8DB0C
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 3634D100003
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 21:32:47 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BB7146B00A4
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 17:55:15 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3A022802DB
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 21:55:15 +0000 (UTC)
+X-FDA: 85239125790.07.0B0CF2D
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 7E3E7100002
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 21:55:13 +0000 (UTC)
 Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=TUxn7DaT;
-	spf=pass (imf14.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=UNj1BryT;
+	spf=pass (imf14.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790026367;
+	s=arc-20220608; t=1790027713;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pvz5d1nkszGRqC60BnhQHEmnkgXMWAbP6TdaFQ4ccNw=;
-	b=SqQkCX9097FyJakmZ0wLvzaWfg99NQXAdt875tl3HeJ5EXacGRY3U/+enYJQwt7NirGBz/
-	2aWnVXOWql1JC26XA07fxmyjFSbdYxifJInYjmMe945db17nfXyHgYcMkCoulNJnO6RLHr
-	eydWYRdm61qa/VGfpF7OGkcv65/ipo4=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=18O+tTI1rRDvA6n53KVT0ktfEAZ7emgcAQWAHdf7HXA=;
+	b=jv3/kblNXVZwMufxHjbGiC0fCqzsVRMG2/dImKshPo/QitDtrTPd+TXa+eq8YBUG99sjls
+	c1SDiMiHnll0hbD3k3GQAeuOmeFSd0B4LP3e26gV7ek32G5SlgMKm6BAS465fMur4eizVg
+	xyp7JzzKBuFeVrXQkJKUtpPT5MZ6irs=
 ARC-Authentication-Results: i=1;
 	imf14.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=TUxn7DaT;
-	spf=pass (imf14.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=UNj1BryT;
+	spf=pass (imf14.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790026367;
-	b=KQtmzbjBf2bxqsM1c7nPs9+0TF103O+R1pEgPeGE7BtkkMYU37JHzvpGZTiZComM5Y+Cg4
-	C7Tw7l3JnMy0c2X0oOI69fa3Obmd3OUpU3wcUUcpxc/c1MOAYFvnZBdV+AUae5leokrio2
-	0QCD17yXCApoE+tltnrdP5ztJecVGQE=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=pvz5d1nkszGRqC60BnhQHEmnkgXMWAbP6TdaFQ4ccNw=; b=TUxn7DaTfka06pTTkO0kWqVrYo
-	ZqrIHsV8WlJZZaftmU22W2YS6T8/7qWGstaUpya0CjN88jRKFAmS27x7R1q2vomy5MO44Sk111T6Q
-	naaeXMmuHb3T9nSP1dSdYqn+8e3BEU3SZRukZlO/l2gQLvtWf0m9BTW1SOudXgJYFf+zwxDQN1SKo
-	xE/YgsNg8lFhYDEhc4XRbG72UXEV3j/XH9RZq7m4/2kio2gpRrLUd0F9EDKMlT3TBTDeR9jqWXm4a
-	gg8n7l235hGnOxligthF5wOABST1+kk5h/V1UjfM+9bXW1rcjvLGsUvlHMph9QwCAY3rcECeqZ0zY
-	AUscQK/Q==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x8lcu-00000005bQT-02LM;
-	Mon, 21 Sep 2026 21:32:41 +0000
-Date: Mon, 21 Sep 2026 22:32:39 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Jan Kara <jack@suse.cz>,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <christian@brauner.io>,
-	Jiaqi Yan <jiaqiyan@google.com>,
-	"Gregory Price (Meta)" <gourry@gourry.net>
-Subject: Re: [PATCH v9 08/15] hugetlb: Use the has_hwpoisoned flag
-Message-ID: <arGidwZQrrWVPAoj@casper.infradead.org>
-References: <20260805210557.1118966-1-willy@infradead.org>
- <20260805210557.1118966-9-willy@infradead.org>
- <a51a6236-8881-4479-8f04-39676e0e1f14@kernel.org>
- <an3uN4TAAZ2miXhe@casper.infradead.org>
- <7608c80e-645b-4d07-bba3-ef45ee36fba4@kernel.org>
+	t=1790027713;
+	b=JeNGAEAYrA7pKUvZbIrBjq2lJGxUm6Jg3sD+fzK4agVgg2yK8PWVsqYe5YvlK1susfQ7G2
+	LFGkBDCxxi9fyZbUl/jzQ2f8WwnJp981wRKebRJfHi10e8IOdb7L0fBz+fBROhhp1agqyX
+	03huLWAIQ9Wfi7vxtPtVSigrgn93CgQ=
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-48586861639so178283f8f.0
+        for <linux-mm@kvack.org>; Mon, 21 Sep 2026 14:55:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790027712; x=1790632512; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=18O+tTI1rRDvA6n53KVT0ktfEAZ7emgcAQWAHdf7HXA=;
+        b=UNj1BryTgG1IYkUHayRvz/7wfz9HbBhNoojcBQJYV2/O9PUJelU3AP9swtwyNbfLyS
+         VdKfHYs1jQOYdYlpMiXO/t2Qy86z61Fqiftmd6nqxE1GPN2GvwUxz5wz2XyCdpuLNuZy
+         VDG3nCag1bUR5IDJDwhgmLYM9hsGGT3UEJZoFpsxTp52X8cxWcilBowD8NHiLoeyF6vB
+         49BteiceNPdYeXS9lqQY43pECJrdefwGrB4YobE++HhDgXEMLt7nNBeN0hr5CjTq3Mhj
+         m6TSsFS48MLWfe25q+87Tn3SWmnZH2JfAltPtVSZWyN1b70m35ITTUrcmQp0l39Y8zTN
+         obLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790027712; x=1790632512;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=18O+tTI1rRDvA6n53KVT0ktfEAZ7emgcAQWAHdf7HXA=;
+        b=zEC+bQrEHxQ9KwQOYstw+c+tqCZcIhbgP3QX+4CkOBHLJF44LtC7gtn5FLDQpcn5Bn
+         OMh1VYmwfoBblSCh13vRunPUk/753mmrWq8MTfgoibAY3+HyjvRrJqwOrcSiedXh4SzG
+         dvp+5M6gmxlPzSjH4L2yV/6OmIbkXr2osnrmZyg8lZMPVKwIfGVavnVDVF1mPEIHcgKj
+         5oCJ4epnmPrZLhcpnE3fNxYs93eIciSaIt1wnfnMKT8wYR1d1IWRmx2Rlq3VGea7z2p9
+         S/+6isRZchSdtCJzTzxBe3AFlYB39v+A6013jViOqwhX60IvTxshPQFBdu7FvP/XQ+ec
+         TKRQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzzwSaejq6l8wpjz3i7StEqUqpsMjVDc3QjP9vQU8XThOs0RsFm2Usj3MviduYI5yMRO6uj+MT4+A==@kvack.org
+X-Gm-Message-State: AFuF++k7Fmc5TamFcnQCOT98eVDJaSX+Y+cR5ceUKSdffcoOy2sqCEcP
+	bLDDRrsmFkIQEW90/5xUAj98xRZA/d8wvTURPLZgzt/SLXpGqcHxAdJx
+X-Gm-Gg: AYBFou34cwY6bqhenvuEmVfs/h2TAszgfPIsg2EPJatkKbAEjOznd0kj//rZpTQ8C5h
+	sUbs1KzD2ACPDXcp4/fwXwNeBFTJHUKJe7Zm8/NhheXiQdli+RmNIOKNfAKS0mzKnUTrCcLIavK
+	SHZywXAYZQXcK7tGxDFQHuK3rmZfZZkFVQnF98p3MwkLOTP35jn8IZVcDXOeprhhch/JkHYO6bQ
+	Su7y5RB7+R+3tInviWApXV63UG+TyDiKhlIXsU8EbZqQw4g4D8WO4QI07NjEJrGwRc3i/i3D23g
+	bqGCqH0NpXHEHKT/7/ZDbXSCs3VFAsbW/JTkvPi5zmkAz9MSZXogWAvME/+JCPjKUSJLqsfEFPD
+	3e8Kqlur/5skvq6sewJDH4LgcUPd/mpAZVzaiLaAPIAIRQS3ZkhyNHpfYCCgbjVgSkzHmFXxOMH
+	1lKRJoIxCg2CdJawwqgsFOgs3H4HBGAncIKeQ94MLmeh8btQxksi4qTJs=
+X-Received: by 2002:a05:6000:2309:b0:485:a517:6287 with SMTP id ffacd0b85a97d-48860fd75d6mr1502937f8f.17.1790027711846;
+        Mon, 21 Sep 2026 14:55:11 -0700 (PDT)
+Received: from nobara ([83.231.69.9])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4886228be7fsm442767f8f.37.2026.09.21.14.55.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Sep 2026 14:55:11 -0700 (PDT)
+From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+To: Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
+	syzbot+a3c71b9db9c11c270f59@syzkaller.appspotmail.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH] percpu_counter: annotate lockless read in _limited_add()
+Date: Mon, 21 Sep 2026 23:55:04 +0200
+Message-ID: <20260921215508.141641-1-azpijr@gmail.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7608c80e-645b-4d07-bba3-ef45ee36fba4@kernel.org>
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: u3ufwa1y6jg9u7n9twgpcdkwqdq1jrkb
-X-Rspamd-Queue-Id: 3634D100003
+X-Stat-Signature: bdu64gq4ec5dbjagamnu965r8u1ck1w7
+X-Rspamd-Queue-Id: 7E3E7100002
 X-Rspamd-Server: rspam07
-X-HE-Tag: 1790026367-497749
-X-HE-Meta: U2FsdGVkX19fl23onPnlT0Ggoh3sxA24PCTSb2xzoh2g1N3ODPYSPWmONwa3VghwIDXc6LNXbKPIOEaDk4SCLNin1CDjlEomTBIJSTpavJrXAiCdIJ8NpLKBD85zEP78mT3SxXCtq1QIVl7/eBax8kFT7dQ1yqc54lxaPBiYaWo0gTHCVQHBIGc68f4WaF6kWs9wicta6NTF8eyDpZl0MB9aaLGebnYxiGgv+4urT8/oa74H65PwSX1zapZcnLNXuD6AdwQZXf0vOAUnZx28QTzYXsC1DXqZgJhhpMJvEJiTIo+6ZjrCaJ2397N2/UJo3YZu7BF7jIL4bcNX3WjCUda6izevxsRbqE3QBy8PGy39Xk+wKe+mjhdxgj20IAF9DQA8aYdHJPCO4JLsehPO8qMkJ42NBaxcqmOI8Afyp0MZFG6+vx196akQpEjsRkQegISi4AL1+W0Th/zVUwoJXL5VXsSKe0neAzuspqRKAPAZJMyRt63/0+do9+kw6XaTexHyHXUL/OTvV9h4VpPGvzt+oZj52J21/hdlytvcLihpI9jgJs9g8qreVkavAh8ve5yncPgaL8sRLkwnvqpwvnpk7n2MgwreMUzZQjLRd54tFtIiwXZCZy08ACqU50L+G8XZxmfWbc9PnDOwGiMGMCjT+q5xNeEIYyIhl3YYNDK06TQJ0W5XAKI5cYRzcVJ3NKV14H4nW/77Y42sDshRTQFYeXaO/as7iL8qWAcq0ZK+CPtxrAWPFdfHHNrWVO3SX4sAJ8QZ1duEJD8aWNqoHai5fuIiln66/bWMUzmX04CtcPbRuLjlqqcLwLOCCD7TgQKSqEI+LYz5mt5kSxfAAB53MzLnXFMFx2Fe6Xt0nPoE3OIs7Z5oXK5+TO2xSJdQ211K9wbysAqTQF5pByOWNuRNP8tEnvIHSx/hrrmPgjU878sg0/xMei3NWEL738iUhnTq9U5iitNLYfFsuBd
- uFP/qh/e
- 6vYLAYPoux6GlgBuEwP90Tl6zqVTLClLIVyM7p1Nw39l32ck5b97BgTHpJ9UeKeDJrf/oNtdAQIqFqYBaDSbLuhZLIoDPggR/mb6ldCk3A2zYhk3ztOeO3X18dgjDy5V0xLoRXraa11dzvLG1E+ZgCPCbJJZ/dQWvBBNKMq2yFKGmrf1MX5FVIWpyemDo3XNXdQcKg8t0zgNDemWz4fWC7zJgz6WcbAVm7w7yr0tQZKAoUxKdyvOptuBxb8uexiMqpH3B1wyRQ8pA90c/s1yqhWAf5JyXqTwskXODRSVHScyG7Bkl0QjIwVI0408Abkp9pc6lBYDyHoq4HjJcH2SfisdhFh6cl8uge190cQAsim6vtk91wlDJSdUtRw==
+X-HE-Tag: 1790027713-198008
+X-HE-Meta: U2FsdGVkX19MyyEeMaRfl1bXNX1Ht/1SCNkPAC5V+EUcbnFewqRh4lvL81jsYfdXqOTQfyOUAYoc1PBE8H9m4MKEAvsSlypJf/db5KQ0eHVzMdWe2J99wqn64IhhTInjVETprU/XnIIoA5dOCCxvjdapXhMYhfn1NVpbLWPti5T/+NRNz1RgvrWIhsR+Y6kbTUoYUv6eIcp0jie1V0FTNGnvG1V2Radm4sBgEL4qhVy4zhM//MQmao2PYg82/hA2tZG2M5SDWoqWR/s79n1dDg2HKqWZda9eKubSWxbjaQ6v7dF393qdc78bbOpuUXaNt9Jbc8Lvpb4TYs0su7iiRGQOjYioeSHi8iiB++ydLngNAoXykCMWgtLtBy7XrCNdfNYDnzlXYk3iGuKEOveBm0r7KubOrmySh718OvIYfpr4SqFRnttuTFEh47njNCeG4bk96t4HfvSUol3w/30eQwVLyj74wI9YuKNoFaB6t+xpdfGiU8KN6vtxYUupG+go/RrLt3ghpu72DI+Sq2tCw4hRXQq5/w1Y+HZE7Ew4sNV3SgjGTr+bF5hCjk18mXO6x0eaQnm3w9L3q61vR8677PmIut7z/rhOC1N9Vdvo16FHPRepK6rhsT2hxf7+ABLr8mXWk27OdYrTUWgxkh2Mrl732VdU9RQOrmFseMrY9eVVHLhLxg2pj40yaORFxm+ABqSoGd5JgxyTxVaMGNkthndCTt8OgjseYNfUxwkRIeAiwtzMSna6i4bk8S8pWnI3Seh+l37v55Md3BGpn6Suc0/fS8akG2fOEjodzI/rbydulCu45y5ktTQGL7kU7gzH+PYc+14sefk9d44tv2MqwwtuocBv0rPpLJajCDht268obmMyw/5wTZ/vB8uStZXAWbs2lnuNkIAmtjt3MM4EFsNUOgMfStx51vcHLFgeFAzcT0aBsapLVCrIDbBSxG60l2OwHYUSpWww0KZAjqm
+ 1xSlRgiH
+ NFERhLJjvIGjxPps54VyOd0gZrf3TcIXecK0uafCWhItR+g4RomfMT8c7g9AXpy+5JC2Z/NZPJapNdtn2eChrZ3Vd/npdnjlt426iyNKVzveqXq1RAQnPeZFPBAYqvDtZAm6JrOruH7khl+ndrQA3lvaGi4MU7RStV+HQyuyc9MvLFg29ZV9RhSs6HXpPK3BggjiScOIgIcIBrK0LHvS8iVReH51CePLE0d9CRtQYW91DAAKGXBNagPA/GDNbWyKLjy12KiiZfeW6fsAB0ieuL2g1NeMeInmATxnTaW/tL3V58l54uA1DcG1Op5SPNwZmlEh23lh2SLkDfS97i/2rt4L9dcT7bAAB9gWjjAq8saEXchhJ/gJSMxW0ytxqYP87MqmokmR4FBTz28MkMVaTYylPfW1Y/xVjdSRuVTqAHvGRb6HV3xH7ksLwkJXy8UHrXhxgLe5J6V0+8rR4jsvlNs80ssjgd85/BahVczLZNvistbRK+TK2Oz/OWjtCETlAK13uWJWmqNjLUmRghLqDHjvR7oaWbFLYg2U7GUuWQ5LfPWAt6RcnxhHekugYtYj7JcEK422Vwkvbt0HybElT167HFd4rhQiojxKlFN87J3uhVnMT8mUAwCqJPX6f6o50NWjzvj3L2IpM8EMbBCT6dYd9/Auf4MnOoljvxq92O+lxn0/v6EmMtgr/DMcKBRpoPsoZ3+/q1obSmsE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,117 +121,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 18, 2026 at 03:44:12PM +0200, David Hildenbrand (Arm) wrote:
-> I'm a terrible person and it took me way too long to get back to this :(
-> 
-> > 
-> > You make it sound so easy ;-)
-> 
-> Heh, as long as you hold a folio reference it really is :)
-> 
-> > 
-> > If we don't hold a reference on the folio, then the folio (whether it's
-> > hugetlb or not) can be split.  And then folio_test_hwpoison() can hit
-> > the assertion that it's now a tail page.
-> 
-> Right. I am/was missing the connection to "generic_file_read_iter() in hugetlbfs".
+syzbot reports a data race on fbc->count between the lockless read in
+the fast path of __percpu_counter_limited_add() and the locked update
+in percpu_counter_add_batch(), reached via shmem's used_blocks counter:
+the alloc path reads it through percpu_counter_limited_add() while the
+free path updates it through percpu_counter_sub().
 
-We might be able to split this into two series at this point.  Is that
-worth me spending time on doing?  Originally I was going to use
-is_page_hwpoison() in filemap, then it became obvious that this was
-inefficient when we had a reference to the folio, and so we ended up with
-is_ref_page_hwpoison().
+Annotate the read rather than change the logic: the lockless read is
+deliberate, only the annotation is missing. It is an approximation,
+not a conservative bound. A concurrent flush moves value between
+fbc->count and a per-cpu counter, and other CPUs' locked slow paths add
+to fbc->count too, so a stale low value can let the fast path proceed
+where the slow path would refuse. The error is bounded by the per-cpu
+slack (unknown = batch * num_online_cpus()). This is existing behavior,
+no functional change intended.
 
-> > Before this patch series, we don't always hold the hugetlb lock when
-> > splitting a hugetlb folio that contains hwpoison.  And we don't want
-> > to have to grab the hugetlb lock if we can avoid it -- unprivileged
-> > userspace can hammer these paths hard, and I don't want to see this
-> > lock be contended.
-> 
-> Right. But doesn't at least the pagecache always hold a folio reference when
-> testing for hwpoison?
-> 
-> I mean, there is other code that might need care (PFN walkers like memory
-> offlining), but I was surprised to see pagecache code require a rework of
-> lockless hwpoison checking.
-> 
-> I'm sure I am missing something.
+Read it with data_race(READ_ONCE(fbc->count)): data_race() tells KCSAN
+the race is intended (READ_ONCE() alone still triggers the report,
+because KCSAN reports against watchpoints set up by plain accesses),
+while READ_ONCE() stops the compiler from refetching the value, as in
+percpu_counter_read_positive(). The lock-protected accesses stay plain,
+so future buggy lockless writes are still caught.
 
-It's just how everything evolved.
+Reported-by: syzbot+a3c71b9db9c11c270f59@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=a3c71b9db9c11c270f59
+Signed-off-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+---
+Tested with a KCSAN kernel: defconfig + CONFIG_KCSAN=y, CONFIG_KASAN=n,
+CONFIG_KCSAN_SKIP_WATCH=200, CONFIG_KCSAN_UDELAY_TASK=200, KCSAN left off
+at boot and enabled from init via debugfs; 8 vCPU / 4G QEMU/KVM guest,
+gcc 16.2.1.  Stress: 120 s of concurrent write() and unlink()/ftruncate()
+on one size-limited tmpfs (shmem_inode_acct_blocks vs
+shmem_inode_unacct_blocks), which is the pair from the report.
 
-> > Oh, I'm not happy about it.  But we need an atomic way to determine if
-> > a page belongs to a hugetlb folio with hwpoison detected.  Short of a
-> > complete rearchitecture of how we handle hwpoison, this is the best I've
-> > come up with.
-> 
-> (did I express how much I hate the hwpoison infrastructure and how it's racy
-> left and right? :) )
+	base/mm-new:  38x "BUG: KCSAN: data-race in __percpu_counter_limited_add
+		/ percpu_counter_add_batch", first hit ~0.3 s after the
+		workers started
+	this commit:  0 percpu_counter reports in the same 120 s
+		(other, unrelated KCSAN reports remain: d_make_discardable,
+		osq_lock)
 
-Yes, and you'll have the chance to do it again on Wednesday ;-)
+Object code (defconfig, CONFIG_KCSAN=n): __percpu_counter_limited_add() is
+the same size (0x23b) with the same four fbc->count loads and identical
+branch targets; .text differs only in register allocation and compare
+operand order (45 of 2171 bytes).  No functional change intended.
 
-> >> (what on earth is "huge_poison" is this supposed to be "hugetlb_poison" ? Why
-> >> "poison" and not "hwpoison"? Really odd)
-> > 
-> > We're inconsistent in our naming on both of these things.  It doesn't
-> > help that somebody decided to reuse the term "poison" to mean
-> > "uninitialised struct page".
-> 
-> Right, but let's be consistent with hugetlb and with hwpoison. ;)
+ lib/percpu_counter.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-I'll take another look ...
+diff --git a/lib/percpu_counter.c b/lib/percpu_counter.c
+index 2891f94a11c6..87b261b87b0b 100644
+--- a/lib/percpu_counter.c
++++ b/lib/percpu_counter.c
+@@ -328,6 +328,7 @@ bool __percpu_counter_limited_add(struct percpu_counter *fbc,
+ 				  s64 limit, s64 amount, s32 batch)
+ {
+ 	s64 count;
++	s64 gcount;
+ 	s64 unknown;
+ 	unsigned long flags;
+ 	bool good = false;
+@@ -338,11 +339,16 @@ bool __percpu_counter_limited_add(struct percpu_counter *fbc,
+ 	local_irq_save(flags);
+ 	unknown = batch * num_online_cpus();
+ 	count = __this_cpu_read(*fbc->counters);
++	/*
++	 * Lockless on purpose: gcount may be stale, so this is only an
++	 * approximation, bounded by the per-cpu slack ("unknown").
++	 */
++	gcount = data_race(READ_ONCE(fbc->count));
 
-> >> I'd expect that we actually get rid of folio_test_hwpoison entirely and
-> >> exclusively work on per-page state and has_hwpoison. But IIUC, now it's some
-> >> mixture of folio checks, page checks, folio_has, mixed with some hugetlb oddity.
-> > 
-> > If we could get rid of HVO, we could do it entirely on struct page.
-> 
-> That's what I hope we will achieve at some point.
-
-I'm not sure that's a realistic hope in the next few years.  Even if
-we get struct page down to 8 bytes, that's 2MB of memory per 1GiB allocation
-(assuming 4KiB pages).  Always a tempting target for someone looking for
-memory savings.
-
-I would prefer an out-of-line tree that doesn't rely on a bit in struct
-page.  Maybe a bit in struct folio wuld be fine (which tells you whether
-it's OK to skip the tree search).
-
-> > Or, as above, entirely rearchitecture hwpoison handling to not be based
-> > around pages or folios any more.
-> > 
-> >> I am not quite clear whether the change you propose here is actually required
-> >> for the remainder of this series?
-> >>
-> >> 	[PATCH v9 00/15] Use generic_file_read_iter() in hugetlbfs
-> >>
-> >> IOW, do we really need all this hugetlb hwpoison handling just to accomplish
-> >> that, or could some of that (bigger hwpoison rework) be done separately?
-> > 
-> > Blame Sashiko!  I'm going to ignore it in future, but it's really good
-> > at nerd-sniping "hey all of this is already broken and you could fix it
-> > as part of this series".
-> 
-> Right, and this is only the tip of the iceberg, because the entire hwpoison
-> infrastructure is a complete hacked-on racy piece of ... engineering excellence.
-> 
-> To summarize my question: is it possible to separate for this series the
-> pagecache part (Use generic_file_read_iter() in hugetlbfs) from all the hugetlb
-> hwpoison rework?
-> 
-> OTOH, if it's really not avoidable, please let me know.
-
-I think Sashiko will whine and complain incessantly if we drop the
-race elimination patches off the front.  I can try it, but is it worth
-doing?  Eliminating the races seems like good engineering anyway.
-
-> > try_to_unmap_one() is already 200 lines and contains some tricky code flow.
-> > I'm trying to at least make the problem not-worse.  I think we should
-> > pull out even more code into helpers, but not in this patch series.
-> 
-> Note that this code now was partly reworked such that this helper will soon no
-> longer be required.
-
-Rebasing it on current Linus simplified this a lot.
+ 	/* Skip taking the lock when safe */
+ 	if (abs(count + amount) <= batch &&
+-	    ((amount > 0 && fbc->count + unknown <= limit) ||
+-	     (amount < 0 && fbc->count - unknown >= limit))) {
++	    ((amount > 0 && gcount + unknown <= limit) ||
++	     (amount < 0 && gcount - unknown >= limit))) {
+ 		this_cpu_add(*fbc->counters, amount);
+ 		local_irq_restore(flags);
+ 		return true;
+--
+2.55.0
 
 
