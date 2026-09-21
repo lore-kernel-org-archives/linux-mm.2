@@ -4,110 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06328C982DE
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 10:36:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75911C982DE
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 10:36:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 243906B00DD; Mon, 21 Sep 2026 06:36:30 -0400 (EDT)
+	id 837996B00D3; Mon, 21 Sep 2026 06:36:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1F4566B00E6; Mon, 21 Sep 2026 06:36:30 -0400 (EDT)
+	id 7E8876B00E7; Mon, 21 Sep 2026 06:36:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 10AE06B00E7; Mon, 21 Sep 2026 06:36:30 -0400 (EDT)
+	id 6FEE36B00E8; Mon, 21 Sep 2026 06:36:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E5E206B00DD
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 06:36:29 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2F01840125
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:36:29 +0000 (UTC)
-X-FDA: 85237415298.14.7318DD6
-Received: from mta0.migadu.com (out-100.mta0.migadu.com [91.218.175.100])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 0379F180006
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:36:26 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=SnFIJP5M;
-	spf=pass (imf24.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.100 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3B95A6B00D3
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 06:36:53 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 88D58A1B79
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:36:52 +0000 (UTC)
+X-FDA: 85237416264.07.F02D06E
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf03.hostedemail.com (Postfix) with ESMTP id ABF8C20004
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:36:50 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=FwdWObAE;
+	spf=pass (imf03.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789986987;
-	b=CQz9MsGWmYaf4o5oCEdBeCdncy4FYww/jeq7eMMcvFE5qYGsrK8NfaXMxvr+/9jwHk7cGo
-	lmT3TCj7Ts7UBSBMBcQ0ML/LXJNzjjKbw0U9NJ2/Zw2/GVnSkPmpar7xZCVnOXx8BwYF4J
-	X6ijQAcs2d8W2LIoQPOM+r2NCO2J22M=
+	t=1789987010;
+	b=SOE+HOYHNgQUcHQgz6x+JC0j7tUn8d/hNzXsewO4tP2J8OJpXLSASkJSLaiTLpY9S8wkFp
+	mR4zqJ2utT0XRo/rp+VH0rVRyHt2E2tlkt663RVo2avprbgX/c4TIPz29sZ2eUFv7kSm1D
+	ps94aMCjq5W7eE/DrRRiXjjaLRfOEYw=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=SnFIJP5M;
-	spf=pass (imf24.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.100 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf03.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=FwdWObAE;
+	spf=pass (imf03.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789986987;
+	s=arc-20220608; t=1789987010;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QrYTKyUpu8giQzaUIMx/egOrHZXTn41TZ10JgLirYKg=;
-	b=sLmnhxKL82d8GwJIfZx+cgQydhL4t9wvvXGwVCHcXrckVfcEr38+MSFfGRqoMGg3zW8tG8
-	lHhnHLwhO8ggounjgtluGnLu7/9sna7FLpHa0ZfvmNolFiWBTunaBWbFzJ1DfAD753v3MI
-	E311wuM873w/8EYcByXmL5BNuy0OxzA=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=+tmcq41FscUEr4r2n07BCtdn1qbwdVSJKS+ZPfTMX8U=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789986985; v=1; x=1790591785;
- b=SnFIJP5M5XU2N3+JURQRMWxbDOwGpyD++IS6l974XOzBNZERVX6dd1zuqsA2ZdaFNTrKALQM
- mHWjAynAMzJKDDC3gw1KkZRb3XlQLKomiuYzdTqHUANCo8XZGxR6g0YqgnpUCP8gTzDwJ4ktxBw
- XDznnOqDTKN93cvicaMyURN4=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id ea87f986f0d8cc08;
-	Mon, 21 Sep 2026 10:36:25 +0000
-X-Mizu-Trace-ID: ea87f986f0d8cc08
-X-Migadu-Flow: FLOW_OUT
-From: Usama Arif <usama.arif@linux.dev>
-To: Luiz Capitulino <luizcap@redhat.com>
-Cc: Usama Arif <usama.arif@linux.dev>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	david@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	ziy@nvidia.com,
-	lance.yang@linux.dev,
-	corbet@lwn.net,
-	tsbogend@alpha.franken.de,
-	maddy@linux.ibm.com,
-	mpe@ellerman.id.au,
-	agordeev@linux.ibm.com,
-	gerald.schaefer@linux.ibm.com,
-	hca@linux.ibm.com,
-	gor@linux.ibm.com,
-	x86@kernel.org,
-	tglx@kernel.org,
-	mingo@redhat.com,
-	bp@alien8.de,
-	hughd@google.com,
-	dave.hansen@linux.intel.com,
-	djbw@kernel.org,
-	vishal.l.verma@intel.com,
-	dave.jiang@intel.com,
-	akpm@linux-foundation.org,
-	yintirui@huawei.com,
-	dev.jain@arm.com
-Subject: Re: [PATCH v8 00/14] mm: thp: always enable mTHP support
-Date: Mon, 21 Sep 2026 03:36:18 -0700
-Message-ID: <20260921103620.3431087-1-usama.arif@linux.dev>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <970c8f34-3cf4-4c6c-931c-b132e3bc6838@redhat.com>
-References: 
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=uukzI0BW5Qs7BTwau9CXvWgwQOJaSd8oCPlQDwxrV9c=;
+	b=t+15Ki+pXlr58BbitKGPiU6fBGzjTCgTrOjGoVcy9tqLKFMcVl6AQbXNxAcdTaPzDlVdPZ
+	GP1dcQMVt6T/vmFPdldVAkysfsoiLjq52ey6aURdw2oKs1WfibMAWLz2+PE8XNfGbXCBQu
+	Cm6IrArC/UHrPvFkGn8BQHO67q94RM4=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5835F143D;
+	Mon, 21 Sep 2026 03:36:46 -0700 (PDT)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 50F913F86C;
+	Mon, 21 Sep 2026 03:36:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1789987009; bh=MO+WSWsiYH+d9XMV7jfY1UxupADO1N/mejVI9LUtSvU=;
+	h=From:Subject:Date:To:Cc:From;
+	b=FwdWObAEpdOS1tW41x5E2RIWUMyXVfuXj5IpLAEsjVWngzL6RLO/9JJuNONDIo6Vq
+	 MDGmHOoQk9QPbSd3+NHOivynGblc6tSKLP8AIsdn+oFT678a3drmeGYRJPefViUJlT
+	 IjmWA+v0vJ4etnBpLXTBWUdLEdKoUkhbL3SBU1+k=
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+Subject: [PATCH v4 0/3] kselftest: mm: remove HPAGE_SIZE and HPAGE_SHIFT
+ macro
+Date: Mon, 21 Sep 2026 11:36:37 +0100
+Message-Id: <20260921-fix_hpage_macro-v4-0-cdea4fc6ce3f@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALUIsWoC/2WNwQqDMBBEf0X23JTVqJCe+h9FZIlbk0OMbCS0i
+ P/eVHrr8Q0zb3ZILJ4T3KodhLNPPi4F2ksF1tEys/JTYWiw6dGgUU//Gt1KM4+BrEQ1EfaGGNs
+ OGyirVbhUTuNjKOx82qK8z4Osv+nPVbd/rqwVKmtIY0dYT9rcScLVxgDDcRwfqx/PTawAAAA=
+To: Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, 
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+ Kiryl Shutsemau <kas@kernel.org>, Peter Xu <peterx@redhat.com>, 
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Shuah Khan <shuah@kernel.org>, 
+ Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
+ Sarthak Sharma <sarthak.sharma@arm.com>, Yeoreum Yun <yeoreum.yun@arm.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5439; i=yeoreum.yun@arm.com;
+ h=from:subject:message-id; bh=MO+WSWsiYH+d9XMV7jfY1UxupADO1N/mejVI9LUtSvU=;
+ b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBqsQi8pSMLunjVUZ4Lzs+cfoXnA7TxP+f5fh5Ae
+ 5W4SjL8dlOJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCarEIvAAKCRBt1cPRWsUx
+ M4NZC/461rHv1OET0IwYhpw+HH9X0GcGOqSwPjsoF1PTRH4PBwdWociupssWhbQ8MrQ6TBPvbK+
+ 51mEUuE2FMXk24dykQwY/lG4yTqGEJpVjcEe8hwVztNCGbJfhn/cd59QUzGkm9h49La/wAF+G/k
+ Eaz1951C5pMao1KQn2qDDLH9/GZc/Lcr9iTUvh4qNjQbtaYR/8nUs2RLMJKiKya6gj6UShRL6wk
+ 9PalJK+4re4HyODIe68KxisxYhVf5F1kVLkyzDNZ2irU+3W0dGB3xqslzd0+qFMT/1saC4H4O46
+ jSS3cYl2mD55Yl5iX8zohouJVDGpp577ad/EF/ii7meFOCxzWY9JD954q0txl8gNbGDUMmIJbyD
+ XSHfq/++LDilN1+C/3ByyBpukTeDW0xXIMi0v1hvZFOQB15/rCurCiz3o4gIto/9/zlUG378sZV
+ K6vc2RHv+gfymSubnTrIHV042vLyU3GBPBMUJFenbW3wQJSBpGSsT4QV0ldyupUuqQgi8=
+X-Developer-Key: i=yeoreum.yun@arm.com; a=openpgp;
+ fpr=2D83E092DD0533B85875A49D6DD5C3D15AC53133
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 0379F180006
+X-Rspamd-Queue-Id: ABF8C20004
 X-Rspam-User: 
-X-Stat-Signature: kdh7hndeg6wdhmr3q3z3a4brihu9qsd9
-X-HE-Tag: 1789986986-798904
-X-HE-Meta: U2FsdGVkX1/91yaF3recibmygAEjjVyW/FgQ9AgiPp5I0NI1JBiyJX9rAWRzTsSxak1JW2zi4noZod9AgyV4Up+4zn3G9qHRmOqyCO5sh1d/eDGCjFzO+er2GwI+5SVhrGTW++E9zHHn/jH6A8xWp7E70LyF4UJJjAIeVG4AilDufYM6KP2JU9Y3GJXE7BLk4fa+dfg+yImXFDj/nsXrdSWsx1elL2Ssjwo9bphbjp9WRIBXIh9OfO4X9E9niulpypyWSc4TABwR+e+YI2N4kdW3Pd4G8lkY6WSaDuY1jO5shcybL/juQRsD4WdJV6a0TMaeQVgqjy7VEwqnvfLfBOXA7nO5WapOMRNFNTbY5HuVPmr/o3B16gI/IVfBDQGljvEgkNpxBEGMr7b1jFTqkHHIUpZd4GIp+ZgqRkKX9DMhyXq+WNEUbr5dwZliKj8eQqaNRgFVhJ/Z/EsbQ9FU8+ABJ9Pl8WoORBQZmCDQgEqq0c8aL3+umCziqb2d6i1ROWUS+T3s6a0XvPmKRsN3QG/1SN4JZ1u0kNWynlp7o0x4N17KkCRg4F7TSS2o88XNBnoURMW2Yvrd4He8ay+vtYW70PaffqeNF+Mzhl8LX32+6KCP9yxL6XGh1wnvdiX4PrSxgRYJhi5c/9cYnys+PQH85IbnE3c1xmkBcSFm1zdGFCXwC5gl4RNfHTXchG3gGJmXHBFzuQA96gobYY1doEm8VjfRfeUbbYZu01zSBqvTwF3p6tiBi2DvQ5RC73l/KpAPnaQcIpUrqo6twNV+4I3HGcg4M6IIrggN2T65+wgLmCeqBkAIrfgQptRxP6/5D69UqmVaTDQjwHe9AKZ2OjbJQTaFp9Wwypec9psNC4QfotTmQ2NQfHhP03HiBMRGGgLrmmh3hJ88fDb8XA7Am0vz/3EL673AK/Xjffu1VmicrUy7q7YnRzlX+wA3TghByPX/zzApH7ALUUTa7sV
- rAeFkEND
- vOQAGc2dUNRm6DGxyFyCuoIOyBDv8UKDb/qagmGG3OT2sAnk4uElkCi/T5dkCswfc7kXBdwlmZfkASmNKqkqvk6fmIWV/5SI+qFdVGisHZoTLEx5SHIh3CSGGHMWlpPdnhrbbjvEr7qjJkL86IFZi/I1XLHX/Jt+Sdma9v83fE2XGeLaUrIA+xbLqzjE82mPhyQ/4Y+3V/kV2RPKdBi8MsT27HH8mJbPt98mZd/OwSLkP9MEPrtAWa1yVe4PE8R9r93h6qD/sZexPqpSLdaeZ1TNWPgMlHcVqxhjK
+X-Stat-Signature: 7sq9n13bszdncp8is1ff315kxghq7dos
+X-HE-Tag: 1789987010-360419
+X-HE-Meta: U2FsdGVkX18CoWW3rCRdjBd7iqB49I2RU9ZsoFRD3z0ZF1tIEIWa0hr8LxiHH4P9MrhG+E+wNck9NVzjo/vFA+Pjis1wi/5QAOg6qdtssr6tV2SHLB57uQz3wv9wGFeZL0h4qyk2mGjDRArHKZ+J2/0op+8sVasoNTvRHM1sVHSj3Ouc3hKNF5Ph2XE3OciPGSEtYdEnzUFa0VGo8iV3WD6Jnt538B1dQgH6lni86i++JUyu7xrlPS7jpyfkvtf4Tjyl7yxRKlni8VGTXvqE+bc3lmzDKCDGDQ8kOWECyaNBe/ipZJCN1S9zxBv9jdixiad+jUF9E/arDnB9s1IhH94qQOFYAoB4Ju4so/+txW0NMFBGkf5jl6XzkGLLUDr5xwAC/u7PTTAZgwooykzvTbzvCvZZ7gXOGTyyr09w1S/MoQUD3ctLMfQHvvhiTwPjKKgqSXzCP+fN5T4udw1wnu0JQLw5ndGoCZOusaL7gjbooxiBA3cgrnUJCZKChmKEHCDBI1wavinxePAqQs6IMGjUMIT1Gii1+8L8AEMJQUrhUP8cMHp50MbQ7vDxHr9+DW4MlfFxYekk5dJlLwYUGZ5avYkJgnZJly9C0OUdr1v4B35bWhV8JJcYsXrM/lxeY+13u9ftqByzsKnNYAKRzEkdJ7WWUhyvVftrsQMBDFjkSyUlQJP6/6RkDMujLbs/MxsQSTbkmd09EwTpdxh96IGDBhvDfXpxpzJnCkhk1uhyKri0ukzOnmHDm4YhKbsTDY7ZDBOofP/Qtw9vgWTnSFr27KLw2xkbpXtxLnQ2ogOVZEfBT5Ddk149sZ3NHek6XR17nUIl+86j48hgyJDl1E2Y9wT17MSCCUNU4xNhsEn2OPe8SRQ+9r5TTGNCoXeljALftot85MjjEP58IQAerblgwZYAbuQHQuas2gMvSGyOT2RK0AcL9Lrnx58tBNCtkkwkXWzX0wqZ8/5AnUy
+ 6W169m9s
+ 6eWz55Njm2pvv2MeiEfafOYPwcOo10gb/Q/wjbXObpUv0WMiVfu44fK4/foeXc5c0aWX8VU/55eAvzSoz6tXFrZ44ZABi1kQRas1ucXgPz9DpiSlOW6M2IM8riVd8kS4Ur52cViGdpnSrs/2jSWIhcOfd8/GPIVwfdeFlvWl9Ba1QWCmKTG8xXQ9p1285/waHStLgJUvH1cOvZ7+uqfD012Bol0axI6lEmp2kj4Ost6aavI+Z66WEQ6oYJESrC+qtdjPUnDj1bBLQ7i7BQwM10+K/2iLijFN6EIS9lr+D/lKlP3toc5FcNZJ2hRa2Gc/sC1R1h2N+isKRsP4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,238 +115,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 18 Sep 2026 10:01:35 -0400 Luiz Capitulino <luizcap@redhat.com> wrote:
+HPAGE_SIZE and HPAGE_SHIFT macro is written based on the 4KB PAGE_SIZE.
+When this macro is used in some test, test result would be strange in
+the system where PAGE_SIZE is more then 4KB.
 
-> 
-> 
-> On 9/18/26 6:37 AM, Usama Arif wrote:
-> > 
-> > 
-> > On 18/09/2026 02:45, Luiz Capitulino wrote:
-> >> Introduction
-> >> ============
-> >>
-> >> Today, if an architecture implements has_transparent_hugepage() and the CPU
-> >> lacks support for PMD-sized pages, the THP code disables all THP, including
-> >> mTHP.
-> > 
-> > 
-> > Hi Luiz,
-> > 
-> > Sorry for asking this so late in the series, but which CPUs lack support for
-> > PMD sized pages?
-> > 
-> > Is this series mainly for PowerPC?
-> 
-> No :)
-> 
-> The architectures that have conditional PMD page support (ie. discovered
-> at run-time via has_transparent_hugepage()) are x86, s390, powerpc and
-> mips.
-> 
-> For x86 for example, even on 64-bit there are cases where the PSE bit
-> may not be present (eg. some errata and by hypervisor CPUID masking).
-> 
-> That being said, the main goal of the series is that
-> has_transparent_hugepage() is overloaded: it has different semantics on
-> those architectures and is used to gate all THP support (which is not
-> the right thing to do for mTHP).
+Here is the example with transhuge-stress test with 16KB PAGE_SIZE:
 
-Thanks for clearing that and the patches.
+  transhuge-stress: allocate 61073 transhuge pages, using 122146 MiB virtual memory and 1908 MiB of ram
+    3.292 s/loop, 0.054 ms/page,  37106.002 MiB/s       2566 succeed, 58507 failed, 2566 different pages
+    0.591 s/loop, 0.010 ms/page, 206850.792 MiB/s          0 succeed, 61073 failed,    0 different pages
+    0.527 s/loop, 0.009 ms/page, 231895.107 MiB/s          0 succeed, 61073 failed,    0 different pages
+    3.292 s/loop, 0.054 ms/page,  37106.002 MiB/s       2566 succeed, 58507 failed, 2566 different pages
+    0.591 s/loop, 0.010 ms/page, 206850.792 MiB/s          0 succeed, 61073 failed,    0 different pages
+    0.527 s/loop, 0.009 ms/page, 231895.107 MiB/s          0 succeed, 61073 failed,    0 different pages
+    0.527 s/loop, 0.009 ms/page, 231839.704 MiB/s          0 succeed, 61073 failed,    0 different pages
+    0.528 s/loop, 0.009 ms/page, 231544.782 MiB/s          0 succeed, 61073 failed,    0 different pages
+    0.528 s/loop, 0.009 ms/page, 231462.074 MiB/s          0 succeed, 61073 failed,    0 different pages
+    0.527 s/loop, 0.009 ms/page, 231770.300 MiB/s          0 succeed, 61073 failed,    0 different pages
+    ...
+  ok 1 Completed
 
-They all look good to me, apart from the the comment in the last patch.
+To address this, remove the HPAGE_SIZE and HPAGE_SHIFT macro,
+introduce pmd_pshift() and rename read_pmd_pagesize() to pmd_psize()
+to keep consistency with psize() and pshift().
 
-Feel free to add
+Also, run the KSM_MERGE_TIME_HUGE_PAGES test with a size of 512 MiB,
+which is the least common multiple of the PMD sizes for 4 KiB, 16 KiB,
+and 64 KiB base pages. Since allocate_transhuge() allocates mappings in
+PMD-sized units, the test may fail with the previous size of 100 MiB,
+which is not a multiple of the PMD size when the base page size is
+16 KiB or 64 KiB.
 
-Acked-by: Usama Arif <usama.arif@linux.dev>
+After this patch, output of transhuge-stress:
 
-to all of them apart from last.
+  transhuge-stress: allocate 3817 transhuge pages, using 122146 MiB virtual memory and 119 MiB of ram
+    2.558 s/loop, 0.670 ms/page,  47755.759 MiB/s       2585 succeed, 1232 failed, 2585 different pages
+    2.640 s/loop, 0.692 ms/page,  46268.432 MiB/s       2585 succeed, 1232 failed, 2585 different pages
+    2.635 s/loop, 0.690 ms/page,  46360.298 MiB/s       2585 succeed, 1232 failed, 2585 different pages
+    2.782 s/loop, 0.729 ms/page,  43899.795 MiB/s       2616 succeed, 1201 failed, 2616 different pages
+    2.692 s/loop, 0.705 ms/page,  45380.876 MiB/s       2627 succeed, 1190 failed, 2627 different pages
+    2.612 s/loop, 0.684 ms/page,  46765.812 MiB/s       2628 succeed, 1189 failed, 2628 different pages
+    2.683 s/loop, 0.703 ms/page,  45520.990 MiB/s       2630 succeed, 1187 failed, 2630 different pages
+    2.727 s/loop, 0.714 ms/page,  44789.321 MiB/s       2631 succeed, 1186 failed, 2631 different pages
+    ...
+  ok 1 Completed
 
-One nit: I would put the above goal of clean up at the start of the
-coverletter, instead of starting with adding mTHP support for CPUs
-that lack PMD.
+Additionally, introduce size_to_shift() for future users that need to
+obtain shift of a huge-page which is other than pmd_psize().
 
-Thanks,
-Usama
+Patch History
+=============
+Changes in v4:
+  - make size_to_shift() as inline function.
+  - initialise __pmd_psize and __pmd_pshift with -1ull.
+  - Link to v3: https://lore.kernel.org/r/20260914-fix_hpage_macro-v3-0-c9a305a01d39@arm.com
 
-> 
-> > 
-> > Thanks,
-> > Usama
-> > 
-> >>
-> >> This happens because the has_transparent_hugepage() helper is overloaded:
-> >> its name implies it checks whether THP is enabled, but on some architectures
-> >> it actually checks whether the CPU supports PMD-sized pages. In addition,
-> >> the THP and shmem code have a big switch on has_transparent_hugepage().
-> >>
-> >> This series solves this by decoupling THP availability checking from
-> >> querying CPU support for PMD-sized pages. THP availability can be checked
-> >> with IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE). For querying PMD-sized page
-> >> support, this series introduces a new helper called pgtable_has_pmd_leaves(),
-> >> which is independent of THP, has well defined semantics and can be used
-> >> in fast paths.
-> >>
-> >> Core THP code and shmem can use pgtable_has_pmd_leaves() to determine
-> >> PMD-sized THP support at page fault time (or folio allocation time for
-> >> shmem), leaving THP and shmem always enabled for other THP sizes. For
-> >> architectures and CPUs that do support PMD-sized pages there's no
-> >> intended change in behavior.
-> >>
-> >> We also convert each user of has_transparent_hugepage(), and the related
-> >> helper thp_disabled_by_hw(), to IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)
-> >> and/or pgtable_has_pmd_leaves() according to the call site's check semantics.
-> >> On s390, powerpc, mips and x86 the arch has_transparent_hugepage()
-> >> implementation is moved out of the CONFIG_TRANSPARENT_HUGEPAGE guard and
-> >> renamed to arch_has_pmd_leaves().
-> >>
-> >> Thanks to David Hildenbrand for suggesting this improvement and for
-> >> providing initial guidance (all bugs and misconceptions are mine).
-> >>
-> >> This applies to mm-new 93f615a22169 ("mm/swap, PM: hibernate: atomically
-> >> replace hibernation pin").
-> >>
-> >> Reporting availability of PMD-sized pages to user-space
-> >> =======================================================
-> >>
-> >> Before this series, not having PMD pages available would shut down THP support
-> >> meaning that /sys/kernel/mm/transparent_hugepage would not be available.
-> >> After this series, /sys/kernel/mm/transparent_hugepage and hpage_pmd_size are
-> >> always available but hugepages-<PMD-size>kB is only available if PMD-sized
-> >> pages are supported.
-> >>
-> >> To me this seems logical, as hugepages-<size>kB is only available if <size>
-> >> is supported. If this is correct, then MM kselftests that depend on PMD-sized
-> >> pages will need to be updated to check for it as they fail with this series
-> >> applied when PMD-sized pages are not available.
-> >>
-> >> The alternative is changing hpage_pmd_size: either don't create the file
-> >> when PMD-sized pages are not available or set hpage_pmd_size=0. My concern
-> >> is that this could be considered an ABI breakage as this file was never
-> >> reported to be optional or report a zero value.
-> >>
-> >> Testing
-> >> =======
-> >>
-> >> - Ran MM kselftests on x86_64 and s390
-> >> - Tested all mTHP sizes allocation on x86_64 (with and without PMD-sized
-> >>    pages available)
-> >> - Tested shmem with within_size w/ mTHP on x86_64 (with and without
-> >>    PMD-sized pages available)
-> >> - Performed defconfig build on x86_64, s390, arm64, powerpc, and mips
-> >>
-> >> NOTES:
-> >>    * I'm forcing arch_has_pmd_leaves() off on x86 to simulate not having
-> >>      PMD-sized pages available
-> >>
-> >>    * Running the MM kselftests when PMD pages are not available causes some
-> >>      tests that depend on PMD-sized THP pages to fail as noted earlier
-> >>
-> >> Changelog
-> >> =========
-> >>
-> >> v8
-> >> --
-> >> - Fixed build breakage on MIPS (Lance)
-> >> - Rebased on top of mm-new (fixed conflicts in include/linux/pgtable.h and
-> >>    mm/shmem.c - dropped a Reviewed-by as a result)
-> >>
-> >> v7
-> >> --
-> >> - Applied on top of latest mm-new
-> >> - Improved various changelogs including cover-letter
-> >> - Changed arch_has_pmd_leaves() default implementation to use IS_ENABLED()
-> >>    instead of IS_BUILTIN()
-> >>
-> >> v6
-> >> --
-> >> - Rebased on top of mm-unstable (required a minor conflict resolution)
-> >> - Added more Reviewed-by and Acked-by tags
-> >>
-> >> v5
-> >> --
-> >> - Moved init_arch_has_pmd_leaves() to mm_core_init() (David)
-> >> - Renamed init_arch_has_pmd_leaves() to pgtable_leaf_support_init() (Lance)
-> >> - Added new patch changing shmem_getattr() to set blksize according to
-> >>    highest supported THP order (Baolin)
-> >> - Added new patches to move has_transparent_hugepage() out of
-> >>    CONFIG_TRANSPARENT_HUGEPAGE guards
-> >> - shmem_allowable_huge_orders(): rename variable and only disable
-> >>    PMD_ORDER (David)
-> >> - Added <linux/jmp_label.h> to include/linux/pgtable.h
-> >> - Added new tags and removed Reviewed-by from changed patches
-> >>
-> >> v4
-> >> --
-> >> - Used static key for pgtable_has_pmd_leaves() API (Lance)
-> >> - Moved shmem pgtable_has_pmd_leaves() check to
-> >>    shmem_allowable_huge_orders() (Baolin)
-> >> - Default pgtable_has_pmd_leaves() implementation to
-> >>    IS_ENABLED(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE) (Zi)
-> >> - Dropped patch “mm: thp: x86: cleanup PSE feature bit usage” (Dave)
-> >>
-> >> v3
-> >> --
-> >> - Rebased on top of latest Linus tree
-> >> - Removed i915 patch as driver dropped has_transparent_hugepage() usage
-> >> - Moved init_arch_has_pmd_leaves() call in start_kernel() to avoid conflict
-> >>    with early_param handlers clearing CPU feature flags
-> >> - Fixed build error with CONFIG_MMU=n (kernel test robot)
-> >> - Fixed huge_anon_orders_inherit default setting when !pgtable_has_pmd_leaves() (Baolin)
-> >> - Small commit changelog improvements
-> >>
-> >> v2
-> >> --
-> >> - Added support for always enabling mTHPs for shmem (Baolin)
-> >> - Improved commits changelog & added reviewed-by
-> >>
-> >> v1
-> >> --
-> >> - Call init_arch_has_pmd_leaves() from start_kernel()
-> >> - Keep pgtable_has_pmd_leaves() calls tied to CONFIG_TRANSPARENT_HUGEPAGE (David)
-> >> - Clear PUD_ORDER when clearing PMD_ORDER (David)
-> >> - Small changelog improvements (David)
-> >> - Rebased on top of latest mm-new
-> >>
-> >> Luiz Capitulino (14):
-> >>    docs: tmpfs: remove implementation detail reference
-> >>    mm: shmem: shmem_getattr(): set blksize to highest supported THP order
-> >>    mm: introduce pgtable_has_pmd_leaves()
-> >>    drivers: dax: use pgtable_has_pmd_leaves()
-> >>    drivers: nvdimm: use pgtable_has_pmd_leaves()
-> >>    mm: debug_vm_pgtable: use pgtable_has_pmd_leaves()
-> >>    mm: shmem: allow THP support determination at folio allocation time
-> >>    s390: move has_transparent_hugepage() out of THP guard
-> >>    powerpc: move has_transparent_hugepage() out of THP guard
-> >>    mips: move has_transparent_hugepage() out of THP guard
-> >>    x86: move has_transparent_hugepage() out of THP guard
-> >>    treewide: introduce arch_has_pmd_leaves()
-> >>    mm: replace thp_disabled_by_hw() with pgtable_has_pmd_leaves()
-> >>    mm: thp: always enable mTHP support
-> >>
-> >>   Documentation/filesystems/tmpfs.rst           |  5 ++--
-> >>   arch/mips/include/asm/pgtable.h               |  6 ++--
-> >>   arch/mips/mm/pgtable.c                        | 25 ++++++++++++++++
-> >>   arch/mips/mm/tlb-r4k.c                        | 22 --------------
-> >>   arch/powerpc/include/asm/book3s/64/hash-4k.h  |  2 +-
-> >>   arch/powerpc/include/asm/book3s/64/hash-64k.h |  2 +-
-> >>   arch/powerpc/include/asm/book3s/64/pgtable.h  | 18 ++++++------
-> >>   arch/powerpc/include/asm/book3s/64/radix.h    | 14 ++++-----
-> >>   arch/powerpc/mm/book3s64/hash_pgtable.c       |  8 ++---
-> >>   arch/s390/include/asm/pgtable.h               |  6 ++--
-> >>   arch/x86/include/asm/pgtable.h                | 12 ++++----
-> >>   drivers/dax/dax-private.h                     |  2 +-
-> >>   drivers/nvdimm/pfn_devs.c                     |  6 ++--
-> >>   include/linux/huge_mm.h                       |  7 -----
-> >>   include/linux/pgtable.h                       | 21 ++++++++++++--
-> >>   mm/debug_vm_pgtable.c                         | 20 ++++++-------
-> >>   mm/huge_memory.c                              | 27 ++++++++++++-----
-> >>   mm/memory.c                                   | 11 ++++++-
-> >>   mm/mm_init.c                                  |  1 +
-> >>   mm/shmem.c                                    | 29 ++++++++++++-------
-> >>   20 files changed, 144 insertions(+), 100 deletions(-)
-> >>
-> > 
-> 
-> 
+Change in v3:
+ - rename read_pmd_pagesize() to pmd_psize()
+ - introduce size_to_shift()
+ - Link to v2: https://lore.kernel.org/all/20260907081509.924979-1-yeoreum.yun@arm.com/
+
+Chnage in v2:
+ - rename hpage_* to pmd_page_*
+ - Link to v1: https://lore.kernel.org/all/20260902175611.1241118-1-yeoreum.yun@arm.com/#t
+
+---
+Yeoreum Yun (3):
+      kselftest: mm: rename read_pmd_pagesize() to pmd_psize()
+      kselftest: mm: remove HPAGE_SIZE and HPAGE_SHIFT macro
+      kselftest: mm: introduce size_to_shift() helper
+
+ tools/testing/selftests/mm/cow.c                   |  2 +-
+ tools/testing/selftests/mm/folio_split_race_test.c |  2 +-
+ tools/testing/selftests/mm/guard-regions.c         | 11 +++++-
+ tools/testing/selftests/mm/hmm-tests.c             | 22 +++++------
+ tools/testing/selftests/mm/khugepaged.c            |  2 +-
+ tools/testing/selftests/mm/ksm_tests.c             | 16 +++++---
+ tools/testing/selftests/mm/migration.c             |  4 +-
+ tools/testing/selftests/mm/mkdirty.c               |  2 +-
+ tools/testing/selftests/mm/pagemap_ioctl.c         |  2 +-
+ tools/testing/selftests/mm/prctl_thp_disable.c     |  4 +-
+ tools/testing/selftests/mm/process_madv.c          |  2 +-
+ tools/testing/selftests/mm/run_vmtests.sh          |  4 +-
+ tools/testing/selftests/mm/soft-dirty.c            |  2 +-
+ tools/testing/selftests/mm/split_huge_page_test.c  |  2 +-
+ tools/testing/selftests/mm/transhuge-stress.c      | 25 +++++++-----
+ tools/testing/selftests/mm/uffd-common.c           |  6 +--
+ tools/testing/selftests/mm/uffd-unit-tests.c       |  8 ++--
+ tools/testing/selftests/mm/uffd-wp-mremap.c        |  2 +-
+ tools/testing/selftests/mm/vm_util.c               | 46 +++++++++++++++++-----
+ tools/testing/selftests/mm/vm_util.h               | 23 +++++++----
+ 20 files changed, 120 insertions(+), 67 deletions(-)
+---
+base-commit: 8d61431ed2607386b427752505379536eb634ce8
+change-id: 20260909-fix_hpage_macro-da069ae04502
+
+Best regards,
+-- 
+Sincerely,
+Yeoreum Yun
+
 
