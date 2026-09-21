@@ -4,135 +4,187 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E4ECC982ED
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 20:36:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EA97C982E6
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 21:00:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 364BF6B008A; Mon, 21 Sep 2026 16:36:11 -0400 (EDT)
+	id 122406B0088; Mon, 21 Sep 2026 17:00:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3164A6B008C; Mon, 21 Sep 2026 16:36:11 -0400 (EDT)
+	id 0D4696B008A; Mon, 21 Sep 2026 17:00:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 205F26B0092; Mon, 21 Sep 2026 16:36:11 -0400 (EDT)
+	id EDD836B008C; Mon, 21 Sep 2026 17:00:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E591C6B008A
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 16:36:10 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 61A151402C1
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 20:36:10 +0000 (UTC)
-X-FDA: 85238926500.16.A6FEAAD
-Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 9562840002
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 20:36:08 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=sJUcYrW3;
-	spf=pass (imf07.hostedemail.com: domain of dmatlack@google.com designates 74.125.228.12 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790022968;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=groqaSpL753eNcDTGAY1Cn/tLSUz1r+DZjsuraXcs+A=;
-	b=ZgroqKH7+DLlmT4AS2hjSBa6OarWdcvSEM1sPPJ7hcW0AMiMF8jeXzRbUwmf2i+7SVRiLA
-	7U+i4rdu5H9FRZT4nrFTUJrwCni2b8stq2pvu33hrgD5Q5ZfCUZSYkRlULitxy8xxck27o
-	bWO/sHZUJVuTjLyiFjxt8Bj1YN+Gsnc=
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id AE4EE6B0088
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 17:00:43 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9CAD0C02CB
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 21:00:42 +0000 (UTC)
+X-FDA: 85238988324.29.477A2FC
+Received: from mail-yx2-f43.google.com (mail-yx2-f43.google.com [74.125.224.171])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 931FC140017
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 21:00:40 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b="WN9ZwG/i";
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf26.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.171 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790022968;
-	b=iX8KyfTuftoOjH4LwjkyJPJ/4QTdtDsxaLV0DYU2uKKoChbFkDwVswCOPrzrGiPQ/NGxVV
-	A9JVETTgBzCBV/h8Vdwxy/pZjXOkPFoY9EYsOloGwnwoscjXNnV7zTy0F+tbM+ZENQPgqF
-	QzqU7YXgEtRiC/j3hBKgaYy61wa4VY4=
+	t=1790024440;
+	b=lvDK7tKY2lSF4813ugbFeCa6Lds+WoWM29zTDa3fUcqi3lbj5HJ5zQSsb5qSZzFycU36b3
+	M0pVsVGaTV269pPzBkF4i35uQe7jerJuM1AwKK+Fg1spPZdu3+Os60zeIKWBQtagaLpSEu
+	zINw7Rh1uwaf4V8MJS5kex3AkDQ91ss=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=sJUcYrW3;
-	spf=pass (imf07.hostedemail.com: domain of dmatlack@google.com designates 74.125.228.12 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pz2-f12.google.com with SMTP id d2e1a72fcca58-86212a185dcso3971284b3a.1
-        for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:36:08 -0700 (PDT)
+	imf26.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b="WN9ZwG/i";
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf26.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.171 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790024440;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=k5hDLFKTi0Cs1ZiX/XYeG+c49YMslw+nL6Py3nD0h7s=;
+	b=5pBqIyUp9KdhPhPujwq9bQL+c71aKp1emLBpdU+5f51empiC8mGDcY/XqM5Cgaiotp5zlI
+	FdfAtaaBIkrtTd8CTNwdJ6UUK966EXaviY2T1s79C2bk5ze85zC2PjQndDxyRyno70WXec
+	0tBU/GDIsvesyx0A3Aau1R1siIN5+zk=
+Received: by mail-yx2-f43.google.com with SMTP id 00721157ae682-85d43f9b120so32888167b3.3
+        for <linux-mm@kvack.org>; Mon, 21 Sep 2026 14:00:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790022967; x=1790627767; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=groqaSpL753eNcDTGAY1Cn/tLSUz1r+DZjsuraXcs+A=;
-        b=sJUcYrW3m3xaWWfX7TT8Vo/2OWsp0PVc7L/5k/uMIcxrT8NUXi+rmbMtyW1YTkglNv
-         6qt+fkTBqadRux8YVzOpS7OZteLMS3ZFRi60bqtQkSvMfs7GaEXNvXgp83rQzRVZjG9+
-         m7pcNrJ8aaWVkXqZ563nFpuE8nNA5Tj6DRpWQeQiHQVqunX/yEQLgcrxpWNsGZGqilbs
-         uxZYlFEG4NesSqPqjlJhqEt3eh7q7vTUX86zwzfBDMythUJnilROYnQMlz0ce58N4hQV
-         7lHDbyLPrJLGq9E232J5uHB3sJtALhoh4wWhYW188JVnSfGdgefNOUCtECy40NWBb/ro
-         9/AA==
+        d=soleen.com; s=google; t=1790024439; x=1790629239; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=k5hDLFKTi0Cs1ZiX/XYeG+c49YMslw+nL6Py3nD0h7s=;
+        b=WN9ZwG/ih/Sbwsk7muwaE0ruqxp9bqVRHx8rxIL6fg4/lTUrlFk12qdt1B9fy7UYQq
+         ndJtAAbPCjDzkhdQCoyEN43juq2qIhUAvZSniPDp6N/+W0NDOR5nLG96iHtnVr2nx894
+         O2ZvgHWdeXJ6yfu/00FtDqp2K+7RpsveXwec+FDIPBMh7nMXNsKaHMOodfgkBTK5dksI
+         OJ2QJeedzgBYNuBSdkKq1ZZwFmkioH5kSjqNtGBj/BkbyBKs8j2hPdnWYcSXonYnTFro
+         9Ls+0kWJbUQBTQLe6GBD0hTjPypQLVV4OMJmlI7bJLrOD+NcTNSXk0onQiOTspOJM/ZD
+         gudQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790022967; x=1790627767;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=groqaSpL753eNcDTGAY1Cn/tLSUz1r+DZjsuraXcs+A=;
-        b=QQTaX1jdJAaAwUo+eizks6rnFM2TTbqJfxBlZtReYXPl/HQc4f/cxGLbfrfwQQzolJ
-         eDEfQ7XfIDlBgvcnjCuHoAxqLIwUIgPz1vs4IodZQTzS3q9AXH1iS+uEz4EFwMW4XrX0
-         iDSbP+YgdlppwZ2kP4EEdSSbRo16wFy14m/seB9CpIQME4gnbCWiOpatZ/IcNZeraTds
-         xrGBJ2OtUiV5e0skrmG+2CtSQeQmXz9IZUmDanRmwlDvwkwhPkYZUlprG5zGat/elT2V
-         NdYkYOczCU00x7DDyXIjgXCDTBGyWiYkp29mDLtm8eoeBt+z3S1MhDyxyf7SKVYitqMh
-         VFIA==
-X-Forwarded-Encrypted: i=1; AKwUvBymAAfdbZFkgsyegFBh2q7E10J0fnIHG1deVs6U4ootQM2I9svC2TFI92qn20vLEDAzJNU2euBHXg==@kvack.org
-X-Gm-Message-State: AFuF++mmuOpyc9MLoQS5frQGmTYwPibtYKw6miPY57Qi7Og1mbCB2VGq
-	HA0Qh8hYdkO/buhcUaHHfUZalkiK0afuUBjGVKuZZ/yp0gbJI9EssBPtBaiWxD8zWQ==
-X-Gm-Gg: AYBFou16vs6w/z6NZJwHhZL6HxBD96sPpU8oLBNjj8I3dkmECVgUafMs+PdI8yDkCiT
-	O3CQS5zLyobQkZE45O1MTZk2PEHxsqzWjEOQ05Bj+gtKTy7E8UXj1cAZoYWDKJniShDtllPIwH0
-	B14oKiVfE/1KOs6TiT916mktaeRZ8D/ontWOeeWb4E5wmZ5myjGh/vo1W0cLldpVUAANoA2celt
-	RsgF0eV0j0gTikEpf8helkDeoWsceAh+Rjal+q7AQGktdZvYXNv1FBpPfRGS3UW5GuIRqvLUk0S
-	rMpintR4p6+DhMt82RsGwV/O9OS/MgiPIxV+hmo71MqHUI2ZshtS+c/Cuohk0B3SMRaibkARV+J
-	HK21GZjaete/oWi9hkME/nzjFlZb82Qj/PVsRNAoBCptcYDvRs1A80hRtLBRQ9gv/d8CdnAZjrl
-	sxNYGug2i4i6hviDsXoF7gYU9FHXD+oY8TWXQsvDBYW1V1ggiRbbQ+wJnXDt3REyZ2wM0nuPUyA
-	aDanFCeTfm1q7nM/gkaMS/U8nSUOHhNnxjvjbMF
-X-Received: by 2002:a05:6a00:2e89:b0:874:708d:b63a with SMTP id d2e1a72fcca58-874dea03034mr17531732b3a.27.1790022966708;
-        Mon, 21 Sep 2026 13:36:06 -0700 (PDT)
-Received: from google.com (192.150.203.35.bc.googleusercontent.com. [35.203.150.192])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-87bf5785276sm45140b3a.8.2026.09.21.13.36.05
+        d=1e100.net; s=20260707; t=1790024439; x=1790629239;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=k5hDLFKTi0Cs1ZiX/XYeG+c49YMslw+nL6Py3nD0h7s=;
+        b=E4IuQ8IrPNPeSJimrOfAZ/wwQsmcOIQHXaqz1Ne6Yw79pXv+CAtZDH/s0Lgr6BE+9z
+         65OUIA293ys2InNRwobu5y+ulygGvgYdcBwaK8bVX+k0AMByGWw26aH0K4k4+BNWJuv+
+         uipGwseSbOv/2arxsPU2P2OwgepNmAusdIenFhgxvq0lfTJiHR7QaGrheZGJ+D8plBKT
+         kKeA6SPVvBfns4aoBgYa0pFd+TLMAZBSAIlwDl38zLwrBhc+ekrxNtgBHKVr+tApXGbO
+         2LqTIoiCx416/N1U8mhA4cXY/Ypdlb4d/rNRF/vUsUnNp5qXIjvNEbI8t3w9gLpvd2VJ
+         MpdA==
+X-Forwarded-Encrypted: i=1; AKwUvBy/5EHIvhKa67ibR/SZzhFIlz80NNTJ3I2+nIZW6Ccll2Slggw2CV7InDpXjh5r0/g+jxKfzLWzJg==@kvack.org
+X-Gm-Message-State: AFuF++nKeWmVZHheIb4+ErOte+NLnz4frAIa0CKNv6ga6ZChGYVigAZr
+	cHicuqpaZAChQAafJgISAw0cZAY98CWnuJPYxpOtkPofGoS6OwoRRmz+74Y686FMnMg=
+X-Gm-Gg: AYBFou38rBIGLIf551Kr4Bu3lqsa1i1EvYjWCI6hRlFUXNfbdCqEQwyV+cl1NlhAmsh
+	BH1wfxM8BeYMK+gFvWaIqW4f440Jg5ptLa5mokQL6BldPq3d/iWaKI7jMJCicJtcwvh24x136e7
+	kzm1JCtKB64z3m0F5+xvmU3Uwl70w52aYfvUfxhix81rBdDmpX+H/NVAH3XJ74L0ZpswHdBfut5
+	ptZ+QO0G0mMX9cM3/XX1ZGxOSdtWlTicP/EmukCjHuMu7+1cq+SaSMOKiSIjQhbFfyQ9LOsbFkc
+	fnFfEyPeZMAuX+ivqwRnN/R7IJz2LHrDtBZ7cL4EJy9/cHQbfy453oh0BZtj84ZFrloUBy1DPf9
+	Gw8GI1ol6nv/0UMsFRU2G3cn3tiFx/rw3aiiudnqsbnavxw13F9EdmzwccT4FeQ9XNuJ/LqnNLJ
+	5e+Er8Ra3aiA1NfpXxoMG8J6Kqv/Mhv8qPLiD/q8Zrf1ilumUGlC/cIdqBa+ACYJVA4ZG+zALTn
+	wOeYO9+GhMTvssunz7GZlFs+Vk5OH3yuTknhEUbbqYuW0QNcNrWGswbkRnFhBsbPLwQju9w/o0i
+	0lSeKu8swiYhOXINWEg=
+X-Received: by 2002:a05:690c:f09:b0:873:5ddf:d869 with SMTP id 00721157ae682-8973579a302mr37560587b3.52.1790024439501;
+        Mon, 21 Sep 2026 14:00:39 -0700 (PDT)
+Received: from soleen.c.googlers.com.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8a23c738bdfsm1445297b3.11.2026.09.21.14.00.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 13:36:05 -0700 (PDT)
-Date: Mon, 21 Sep 2026 20:36:01 +0000
-From: David Matlack <dmatlack@google.com>
-To: Alex Williamson <alex@shazbot.org>
-Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-pci@vger.kernel.org,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Alexander Graf <graf@amazon.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
-	Josh Hilke <jrhilke@google.com>,
-	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
-	Yi Liu <yi.l.liu@intel.com>
-Subject: Re: [PATCH v9 08/13] PCI: Save and restore the ACS Control register
-Message-ID: <arGVMaxfwEw_PkXy@google.com>
-References: <20260918200640.887030-1-dmatlack@google.com>
- <20260918200640.887030-9-dmatlack@google.com>
- <20260918191846.2f68b23b@shazbot.org>
+        Mon, 21 Sep 2026 14:00:39 -0700 (PDT)
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: linux-kselftest@vger.kernel.org,
+	legion@kernel.org,
+	kees@kernel.org,
+	will@kernel.org,
+	ruanjinjie@huawei.com,
+	atomlin@atomlin.com,
+	rppt@kernel.org,
+	jani.nikula@intel.com,
+	hamzamahfooz@linux.microsoft.com,
+	joey.gouly@arm.com,
+	tglx@kernel.org,
+	nsc@kernel.org,
+	alexandre.chartre@oracle.com,
+	james.morse@arm.com,
+	dianders@chromium.org,
+	bp@alien8.de,
+	jpoimboe@kernel.org,
+	shuah@kernel.org,
+	catalin.marinas@arm.com,
+	linux-kbuild@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	jaredwhite@microsoft.com,
+	johan@kernel.org,
+	pbonzini@redhat.com,
+	mingo@redhat.com,
+	linux-mm@kvack.org,
+	seanjc@google.com,
+	mark.rutland@arm.com,
+	vdonnefort@google.com,
+	tarunsahu@google.com,
+	gshan@redhat.com,
+	skhan@linuxfoundation.org,
+	linux-doc@vger.kernel.org,
+	xur@google.com,
+	djbw@kernel.org,
+	oupton@kernel.org,
+	nogikh@google.com,
+	sumitg@nvidia.com,
+	linux-kernel@vger.kernel.org,
+	zengheng4@huawei.com,
+	peterz@infradead.org,
+	corbet@lwn.net,
+	suzuki.poulose@arm.com,
+	luto@kernel.org,
+	hpa@zytor.com,
+	zhangpengjie2@huawei.com,
+	x86@kernel.org,
+	yuzenghui@huawei.com,
+	jic23@kernel.org,
+	ardb@kernel.org,
+	pasha.tatashin@soleen.com,
+	petr.pavlu@suse.com,
+	ryan.roberts@arm.com,
+	kexec@lists.infradead.org,
+	pratyush@kernel.org,
+	dave.hansen@linux.intel.com,
+	rdunlap@infradead.org,
+	kvm@vger.kernel.org,
+	fuad.tabba@linux.dev,
+	maz@kernel.org,
+	mbenes@suse.cz,
+	jgross@suse.com,
+	seiden@linux.ibm.com,
+	pierre.gondois@arm.com,
+	song@kernel.org,
+	nathan@kernel.org,
+	pmladek@suse.com,
+	graf@amazon.com,
+	chao.gao@intel.com,
+	zhenglifeng1@huawei.com,
+	arnd@arndb.de,
+	sidnayyar@google.com,
+	linux-arm-kernel@lists.infradead.org,
+	vladimir.murzin@arm.com,
+	kas@kernel.org
+Subject: [RFC PATCH 39/46] KVM: VMX: Integrate Caretaker VMX detach serialization and KVM registration
+Date: Mon, 21 Sep 2026 17:00:27 -0400
+Message-ID: <20260921210034.180424-1-pasha.tatashin@soleen.com>
+X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
+In-Reply-To: <20260920193650.3373435-1-pasha.tatashin@soleen.com>
+References: <20260920193650.3373435-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260918191846.2f68b23b@shazbot.org>
-X-Rspamd-Server: rspam04
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: ps3e1q7gokjdaqc5aam448zhdq3c6s8u
-X-Rspamd-Queue-Id: 9562840002
-X-HE-Tag: 1790022968-639323
-X-HE-Meta: U2FsdGVkX1/oUQNSacBJhmHWFyXhJGcoEa0e9G/Hlh9pYd1gE9v907bnh5cMdVGafmUVOEpfA9AyA+gn/kK6Otw0n/KSTyABnnplRmAYiE/84IwXwVNQH2/0EkF8FuItgR2c5/0dKupLe9n2rKhnXZQPwsYFht1znvl69BbZ0qz2g4c1J5JrejFfjbtsvbPycuw4bg/nyEqzfv4JAM1gvHDzFljSWuclPoxJcF4q2C/rH2vYcbYDAUPYMYxHG3pnoL2a/Ny1CoFVCs7/JG/DQTwCyVKQLKBHKGw8KuPygtEZYpEo0qmdsKzY6O7AqLBMyfuKBOEJRfM9v4p1Fs/sH6kVisuopOPRO0J0KJ1WqT8S67CMVuSziE8sV0a10Eu571D7P0E4KgVHCKwVKVXiXmt1IGigU33HrhPFCeZSJ8t2n61apJ3scSfFlqtiw2AcocWw1YZAwFqmRSM+FgH5Fq05RK/GxT3tuoD28JhwVC+4OYXnOI8svxT1rmTgpTKqTEtTU1MB7f7wGap+AxpNwh/HgEIgj/BHaBm9eiczmlGQnkHunBX4zJYdQZxne7fAPdi3olopMQcflmni0W7zdMY+jVEow6ke+kyOs+CAr9lTIwRwuYJmzV2PM+2Zf5HdgkK5PMD2Nh62gX0hFzeJeieMjU8r26zKk/B+CjMCT/Z6eIQZA9PouTbVFtiG+V0wwFEXcbImZDQXBWGiuZ5tpYctqKemwXZX2au8WUUBZcl06Q2fX46s/GVuM8vSqsdJext/FcOdVVWo5QVfmdBcA1wOF82kLEhyVWr8K/rbpRiNdBDHy9uH31Jv0Bavhtpsm8n1HosH8IKih0SSwUkManJnRj85wzy6ZoQPeailjCdJU54HtXoIVlGSPCoEoai4w9eXzVCQMUGSVD2aNJasdkgmuSofJVXLBv5zqm9XUoDczhokBv+BA+4d/WHqT8ydWCvhkasiCr1ni0txnyJ
- 5p835Jq4
- Ot+QFwkWRqmNLtze3qeoT6+EGYoJtjJuGplS9jPiwHXWy6HGLVflu+ZB9fiNodpqdTSIwLGkui3L+5oh/f2J3FvbStjYaebDo49VNzbCC6NXG7ogKQcBC5RtYx6CcgD92C3MCK0Qe20oZyyebHjkhRCBOkP1GVXDSbQ7Fz95AMBonqwXe2v/tcxhynb9A0N5QYwi75oIgezz8vzX7042YtUfWyjL3QO7C4AgwECXxdPj8jXAbmE1Ewoq1vHS+h9PanOGyidqywWLx03CyTdh531l3wl2L8wFvicwLI0d99PVAl2HD1DFdeD9ucUQwySievd3SGfVs56AMfsRTrA8aZaEW9Ton1/v+UsQJ
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 931FC140017
+X-Stat-Signature: wrc4qta3n6xkbda6q4jtwcskj1pt7sqp
+X-HE-Tag: 1790024440-311334
+X-HE-Meta: U2FsdGVkX18MGcjWsGYTNphJ66rtP8hjE1GXGtRA7KTVFiMcd39rqvVdpwBsg90px8qAgk3QK4/RJhy6DDgftT0NZ0gGiBlEzi7jmX6ewjRSBFOHrcmPkWeyJo6pO+uUu10otl6uAutBZ34RzfJWSytiaWT/p/pKBTzsVaKcNh5DgJGAuwNlmQLoK7DxwRY06sEQckMwQ+Wla9W9oLezBPLlbhYj+BkvnPI5GdQLP/pwwLagbcIIVk+us6F/i+bikRNhFMDh4GKDzgTPHI5uZsGbBTMVoGhAwdpg5TdmFH/DjAyRqm18IeqiGe/NpQEL9IM6yqggvVcte7unE76gc/OSNXZvCFz/tGs58wnfsV0FAx933En1m5HQmMZ6t7P5MlmLNkhyAKn+1p5KPN2uhyFXGjfI4px7ikiloWi5AiC/SVJsL+/0MAV68PicsTHND9AEeLF+3PZzCX+RN0WX5i0Q5usUfWs33FHOEBAcIuVXqWXeDlPNDH0unomPNcWOyVbCF48HyfAefJS2usNmsTpXoAxlyEBKe7FmruiI0AUxhZCxC8XHgICfwG0HTJWUljm77rRCuBUECZcF88cDA+gZlK98ddfItloA5FKqodExxpKM/SpmaItQ7LH7+ziuYSbAu80TaggEh2LDpwhkiZdfRc+Ht2NDUinyU8uQuZZ7jNP8YhD0N5fmWqy9jtbcruNYzG0sexsigZI0CQd6cssba7Y6CtqYNGS9+QqLPuIf/Jish+bzK8o0xrWC6eM+xdQ7o+PsTubAOLFeG2o3oTMWFn3CuS+FmnT49CR7hZ7lO4TAlXIWablOGasfjNsGagJi7fXg4Iu2uAz1rKmp20KWOfqWCyW7JWbwOanp2Fa2ucRfM7Kg67nVz81PtzdLM6iEDCxn7l1MtTmYIr+ajCPVuD3ezgkZD5UHF+6tI7jNIjbSg098fB8EhkcqF9vUMrKnOEMtx326EtE4KJl
+ tt3mQGJh
+ UtFOY6COwfk2vyiyjullcs+f0h/fblu8AchMcA5NfSwfn31LrrXQsIhGiFFcxxvQpZs4OEbGIkOFwevxAYTBAuxNVL7zFBogqUZJdxDg8RZp2RTB1XwLU8uRwmvpR7WQB6NrDYXdR8iKZjkb1eozhtXjTqvuya+E/DoHRaEoQyaNhmpihfybImcnQwGWn4QCpYZcvN3smPzI/WsNAkYgq1ETYrijqfay7vxAc5xvHrSxTGZ5bBBzfgvz5i222uHbcxUNTPeQuA5epd2VIFNfZ6CFgkRUpAMGG6poqp7zI1c7SqTvlVD36DFvKXn9CJwmEHmY+7v2xMvPU87k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,296 +192,412 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-09-18 07:18 PM, Alex Williamson wrote:
-> On Fri, 18 Sep 2026 20:06:34 +0000
-> David Matlack <dmatlack@google.com> wrote:
-> 
-> > Save the ACS Control register in pci_save_state() and write it back
-> > in pci_restore_state(), instead of recomputing the ACS controls from
-> > scratch with pci_enable_acs().
-> > 
-> > This makes ACS symmetric with the rest of a device's saved state. Today
-> > pci_save_state() ignores ACS entirely and pci_restore_state() re-enables
-> > the ACS controls from the kernel's current ACS policy. As a result, a
-> > device can come out of a reset with different ACS controls than it went
-> > in with, e.g. any controls programmed outside of pci_enable_acs() are
-> > silently dropped.
-> 
-> Controls, yes, but if we're restoring controls that might have EC set
-> now, should the Egress Control Vector also be part of the save state?
-> 
-> Currently EC always gets cleared on reset and won't be restored by
-> pci_enable_acs(), so we can lose both EC and the EC vector.  With this,
-> I think we restore EC but still lose the EC vector.  Thanks,
+Complete Intel VMX Caretaker detach-time serialization, vCPU sync,
+and ops registration in arch/x86/kvm/vmx/caretaker.c.
 
-Hi Alex,
-
-The kernel does not enable Egress Control today or program the vector.
-Would this be to cover the case where firmware or userspace enabled it?
-
-Here is an updated patch to save/restore the vector, but I don't have
-any devices that support Egress Control on my normal testing system so I
-haven't been able to really test it yet.
-
-From: David Matlack <dmatlack@google.com>
-Date: Fri, 11 Sep 2026 20:05:04 +0000
-Subject: [PATCH] PCI: Save and restore the ACS Control register and Egress
- Control Vector
-
-Save the ACS Control register and the ACS Egress Control Vector in
-pci_save_state() and write them back in pci_restore_state(), instead of
-recomputing the ACS controls from scratch with pci_enable_acs().
-
-This makes ACS symmetric with the rest of a device's saved state. Today
-pci_save_state() ignores ACS entirely and pci_restore_state() re-enables
-the ACS controls from the kernel's current ACS policy. As a result, a
-device can come out of a reset with different ACS controls than it went
-in with, e.g. any controls programmed outside of pci_enable_acs() are
-silently dropped.
-
-Notably, this prepares the kernel to be able to adopt the ACS controls
-established by a previous kernel across a Live Update rather than
-assigning new ones through pci_enable_acs().
-
-Save and restore the Egress Control Vector as well to keep it in sync
-with the now-properly-restored Egress Control Enable bit in the ACS
-control register. The kernel never enables Egress Controls or programs
-the vector, but the firmware could have and they need to be kept in sync
-to avoid changing how P2P traffic is rounted.
-
-The size of the Egress Control Vector is not known when
-pci_allocate_cap_save_buffers() runs, as the ACS Capability register is
-only read later, in pci_acs_init(). Rather than move the allocation,
-size the save buffer for the largest vector a device can implement,
-which costs at most 32 bytes per ACS-capable device.
-
-pci_enable_acs() runs when a driver binds to a device
-(pci_dma_configure()), i.e. after pci_bus_add_device() has already saved
-the device's state. Refresh the saved ACS state there as well, otherwise
-a subsequent reset would revert ACS back to the configuration left
-behind by firmware.
-
-Devices that rely on device-specific quirks to enable an ACS equivalent
-keep that configuration outside of the ACS Control register, so keep
-configuring ACS from scratch for them. Do the same for devices that have
-no saved ACS state at all.
-
-Assisted-by: Claude:claude-opus-5
-Signed-off-by: David Matlack <dmatlack@google.com>
+Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 ---
- drivers/pci/pci.c             | 117 +++++++++++++++++++++++++++++++++-
- drivers/pci/pci.h             |   5 ++
- drivers/pci/quirks.c          |   7 ++
- include/uapi/linux/pci_regs.h |   1 +
- 4 files changed, 129 insertions(+), 1 deletion(-)
+ arch/x86/kvm/Makefile        |   9 +
+ arch/x86/kvm/vmx/caretaker.c | 322 ++++++++++++++++++++++++++++++++++-
+ arch/x86/kvm/vmx/vmx.c       |   4 +
+ 3 files changed, 333 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index b2879a6be5f8..e1c05866e2ee 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -1021,6 +1021,106 @@ static void pci_std_enable_acs(struct pci_dev *dev, struct pci_acs *caps)
- 		caps->ctrl |= (dev->acs_capabilities & PCI_ACS_TB);
- }
+diff --git a/arch/x86/kvm/Makefile b/arch/x86/kvm/Makefile
+index 11e67c072258..b550a3fd0708 100644
+--- a/arch/x86/kvm/Makefile
++++ b/arch/x86/kvm/Makefile
+@@ -18,6 +18,8 @@ kvm-$(CONFIG_KVM_SMM)	+= smm.o
  
+ kvm-intel-y		+= vmx/vmx.o vmx/vmenter.o vmx/pmu_intel.o vmx/vmcs12.o \
+ 			   vmx/nested.o vmx/posted_intr.o vmx/main.o
++kvm-intel-$(CONFIG_KVM_CARETAKER) += vmx/caretaker.o vmx/caretaker_vmenter.o
++
+ 
+ kvm-intel-$(CONFIG_X86_SGX_KVM)	+= vmx/sgx.o
+ kvm-intel-$(CONFIG_KVM_HYPERV)	+= vmx/hyperv.o vmx/hyperv_evmcs.o
+@@ -44,6 +46,13 @@ $(obj)/svm/vmenter.o: $(obj)/kvm-asm-offsets.h
+ AFLAGS_vmx/vmenter.o    := -iquote $(obj)
+ $(obj)/vmx/vmenter.o: $(obj)/kvm-asm-offsets.h
+ 
++AFLAGS_vmx/caretaker_vmenter.o := -iquote $(obj)
++$(obj)/vmx/caretaker_vmenter.o: $(obj)/kvm-asm-offsets.h
++
++CFLAGS_REMOVE_vmx/caretaker.o = $(CC_FLAGS_FTRACE)
++CFLAGS_vmx/caretaker.o := -fno-stack-protector
++
++
+ $(obj)/kvm-asm-offsets.h: $(obj)/kvm-asm-offsets.s FORCE
+ 	$(call filechk,offsets,__KVM_ASM_OFFSETS_H__)
+ 
+diff --git a/arch/x86/kvm/vmx/caretaker.c b/arch/x86/kvm/vmx/caretaker.c
+index 47b4743650e5..efef1c30c0d1 100644
+--- a/arch/x86/kvm/vmx/caretaker.c
++++ b/arch/x86/kvm/vmx/caretaker.c
+@@ -49,8 +49,8 @@ static int vmx_caretaker_init_page(struct caretaker_vmx_page *cvp,
+ 	u64 basic_msr, misc_msr;
+ 	int ret;
+ 
+-	if (!vmx->vmcs01.vmcs)
+-		return -EINVAL;
++	if (!vmx->vmcs01.vmcs || is_guest_mode(vcpu))
++		return -EOPNOTSUPP;
+ 
+ 	ret = kvm_x86_caretaker_init_common_page(&cvp->common, vcpu, sizeof(*cvp));
+ 	if (ret)
+@@ -336,5 +336,323 @@ vmx_caretaker_init_host_vmcs(struct caretaker_vmx_page *cvp)
+ 		vmx_vmwrite(PLE_WINDOW, 4096);
+ 	}
+ 	vmx_vmwrite(CPU_BASED_VM_EXEC_CONTROL, cpu_ctl);
++
++	/*
++	 * Disable hardware MSR autoload lists while running in Caretaker so
++	 * VM-entry/VM-exit do not dereference unpreserved host vmx->msr_autoload
++	 * memory after kexec.
++	 */
++	vmx_vmwrite(VM_EXIT_MSR_LOAD_COUNT, 0);
++	vmx_vmwrite(VM_EXIT_MSR_STORE_COUNT, 0);
++	vmx_vmwrite(VM_ENTRY_MSR_LOAD_COUNT, 0);
++}
++
 +/*
-+ * Layout of the ACS save buffer. @ecv holds the ACS Egress Control Vector and
-+ * is sized for the largest vector a device can implement.
++ * Guest-visible VMCS fields carried from the VMCS the caretaker ran the vCPU
++ * on to the VMCS the new kernel allocated for it.
++ *
++ * The new kernel does not adopt the old VMCS: it belongs to the previous
++ * kernel's struct loaded_vmcs, whose layout is not part of any handover ABI,
++ * and the VMCS region itself is opaque and implementation defined.  So the
++ * architecturally defined guest state is copied field by field instead.
++ *
++ * GUEST_IA32_EFER is handled separately because it is only written back when
++ * the caretaker actually recorded a value for it.
 + */
-+struct pci_acs_saved_state {
-+	u16 ctrl;
-+	u32 ecv[8];
++static const u16 vmx_caretaker_guest_fields[] = {
++	GUEST_CS_SELECTOR,	GUEST_CS_LIMIT,
++	GUEST_CS_AR_BYTES,	GUEST_CS_BASE,
++	GUEST_SS_SELECTOR,	GUEST_SS_LIMIT,
++	GUEST_SS_AR_BYTES,	GUEST_SS_BASE,
++	GUEST_DS_SELECTOR,	GUEST_DS_LIMIT,
++	GUEST_DS_AR_BYTES,	GUEST_DS_BASE,
++	GUEST_ES_SELECTOR,	GUEST_ES_LIMIT,
++	GUEST_ES_AR_BYTES,	GUEST_ES_BASE,
++	GUEST_FS_SELECTOR,	GUEST_FS_LIMIT,
++	GUEST_FS_AR_BYTES,	GUEST_FS_BASE,
++	GUEST_GS_SELECTOR,	GUEST_GS_LIMIT,
++	GUEST_GS_AR_BYTES,	GUEST_GS_BASE,
++	GUEST_TR_SELECTOR,	GUEST_TR_LIMIT,
++	GUEST_TR_AR_BYTES,	GUEST_TR_BASE,
++	GUEST_LDTR_SELECTOR,	GUEST_LDTR_LIMIT,
++	GUEST_LDTR_AR_BYTES,	GUEST_LDTR_BASE,
++	GUEST_GDTR_LIMIT,	GUEST_GDTR_BASE,
++	GUEST_IDTR_LIMIT,	GUEST_IDTR_BASE,
++	GUEST_INTERRUPTIBILITY_INFO,
++	GUEST_ACTIVITY_STATE,
++	GUEST_IA32_DEBUGCTL,
++	GUEST_SYSENTER_CS,
++	GUEST_SYSENTER_ESP,
++	GUEST_SYSENTER_EIP,
 +};
 +
-+/*
-+ * Return the size in bytes of the ACS Egress Control Vector, or 0 if the
-+ * device does not implement P2P Egress Control.
-+ */
-+static unsigned int pci_acs_ecv_size(struct pci_dev *dev)
++static void
++vmx_caretaker_sync_vcpu(struct kvm_vcpu *vcpu, void *vcpu_data)
 +{
-+	unsigned int bits;
++	struct kvm_caretaker_arch_ser *abi = vcpu_data;
++	struct vcpu_vmx *vmx = to_vmx(vcpu);
++	phys_addr_t cur_vmcs_pa = vmx->loaded_vmcs ? virt_to_phys(vmx->loaded_vmcs->vmcs) : 0;
++	struct vmcs *prev_vmcs;
 +
-+	if (!dev->acs_cap || !(dev->acs_capabilities & PCI_ACS_EC))
-+		return 0;
++	guard(preempt)();
++	prev_vmcs = this_cpu_read(current_vmcs);
 +
-+	/* An Egress Control Vector Size of 0 means 256 bits */
-+	bits = FIELD_GET(PCI_ACS_EGRESS_BITS_MASK, dev->acs_capabilities);
-+	if (!bits)
-+		bits = 256;
++	if (abi->vmcs_pa && cur_vmcs_pa && abi->vmcs_pa != cur_vmcs_pa) {
++		/* 42 * 8 bytes; this runs on the host stack, not a preserved one. */
++		unsigned long val[ARRAY_SIZE(vmx_caretaker_guest_fields)];
++		unsigned long guest_efer;
++		int i;
 +
-+	/* The vector is implemented as a series of DWORD registers */
-+	return round_up(bits, 32) / 8;
-+}
++		asm volatile("vmptrld %0" : : "m" (abi->vmcs_pa) : "memory", "cc");
 +
-+/**
-+ * pci_save_acs_state - save the ACS Control register and Egress Control Vector
-+ * @dev: the PCI device
-+ *
-+ * Record the ACS configuration currently programmed in hardware so that
-+ * pci_restore_acs_state() can reapply it after a reset.
-+ */
-+static void pci_save_acs_state(struct pci_dev *dev)
-+{
-+	struct pci_cap_saved_state *save_state;
-+	struct pci_acs_saved_state *acs;
-+	unsigned int i, dwords;
++		for (i = 0; i < ARRAY_SIZE(vmx_caretaker_guest_fields); i++)
++			val[i] = vmx_vmread(vmx_caretaker_guest_fields[i]);
++		guest_efer = vmx_caretaker_read_efer();
 +
-+	if (!dev->acs_cap)
-+		return;
++		asm volatile("vmclear %0" : : "m" (abi->vmcs_pa) : "memory", "cc");
++		asm volatile("vmptrld %0" : : "m" (cur_vmcs_pa) : "memory", "cc");
 +
-+	save_state = pci_find_saved_ext_cap(dev, PCI_EXT_CAP_ID_ACS);
-+	if (!save_state)
-+		return;
++		for (i = 0; i < ARRAY_SIZE(vmx_caretaker_guest_fields); i++)
++			vmx_vmwrite(vmx_caretaker_guest_fields[i], val[i]);
++		if (guest_efer)
++			vmx_vmwrite(GUEST_IA32_EFER, guest_efer);
 +
-+	acs = (struct pci_acs_saved_state *)save_state->cap.data;
-+
-+	pci_read_config_word(dev, dev->acs_cap + PCI_ACS_CTRL, &acs->ctrl);
-+
-+	dwords = pci_acs_ecv_size(dev) / sizeof(u32);
-+	for (i = 0; i < dwords; i++)
-+		pci_read_config_dword(dev, dev->acs_cap + PCI_ACS_EGRESS_CTL_V +
-+				      i * sizeof(u32), &acs->ecv[i]);
-+}
-+
-+/**
-+ * pci_restore_acs_state - restore the ACS Control register and Egress Control
-+ *			   Vector
-+ * @dev: the PCI device
-+ */
-+static void pci_restore_acs_state(struct pci_dev *dev)
-+{
-+	struct pci_cap_saved_state *save_state = NULL;
-+	struct pci_acs_saved_state *acs;
-+	unsigned int i, dwords;
-+
-+	if (dev->acs_cap && !pci_need_dev_specific_enable_acs(dev))
-+		save_state = pci_find_saved_ext_cap(dev, PCI_EXT_CAP_ID_ACS);
-+
-+	/*
-+	 * Devices that rely on device-specific quirks to enable an ACS
-+	 * equivalent keep that configuration outside of the ACS Control
-+	 * register, so there is nothing useful to restore for them. Configure
-+	 * ACS from scratch instead, which also covers devices that have no
-+	 * saved ACS state at all.
-+	 */
-+	if (!save_state) {
-+		pci_enable_acs(dev);
-+		return;
++		abi->vmcs_pa = cur_vmcs_pa;
++	} else if (cur_vmcs_pa) {
++		asm volatile("vmptrld %0" : : "m" (cur_vmcs_pa) : "memory", "cc");
 +	}
 +
-+	acs = (struct pci_acs_saved_state *)save_state->cap.data;
++	kvm_x86_caretaker_sync_vcpu_common(vcpu);
 +
-+	/*
-+	 * Restore the Egress Control Vector before the ACS Control register.
-+	 * The vector resets to zero, so enabling P2P Egress Control first
-+	 * would briefly apply the reset vector instead of the saved one.
-+	 */
-+	dwords = pci_acs_ecv_size(dev) / sizeof(u32);
-+	for (i = 0; i < dwords; i++)
-+		pci_write_config_dword(dev, dev->acs_cap + PCI_ACS_EGRESS_CTL_V +
-+				       i * sizeof(u32), acs->ecv[i]);
++	if (vmx->loaded_vmcs) {
++		pin_controls_clearbit(vmx, PIN_BASED_VMX_PREEMPTION_TIMER);
++		vmcs_write32(PIN_BASED_VM_EXEC_CONTROL, pin_controls_get(vmx));
++		vmcs_write32(CPU_BASED_VM_EXEC_CONTROL, exec_controls_get(vmx));
++		vmcs_write32(VMX_PREEMPTION_TIMER_VALUE, 0);
++		vmcs_write32(VM_EXIT_MSR_LOAD_COUNT, vmx->msr_autoload.host.nr);
++		vmcs_write32(VM_ENTRY_MSR_LOAD_COUNT, vmx->msr_autoload.guest.nr);
++		memset(&vmx->loaded_vmcs->host_state, 0,
++		       sizeof(struct vmcs_host_state));
++		list_del_init(&vmx->loaded_vmcs->loaded_vmcss_on_cpu_link);
++		vmx->loaded_vmcs->cpu = -1;
++		vmx->loaded_vmcs->launched = 0;
++	}
++	vmx_segment_cache_clear(vmx);
++	vmx->vt.guest_state_loaded = false;
++	vmx->guest_uret_msrs_loaded = false;
 +
-+	pci_write_config_word(dev, dev->acs_cap + PCI_ACS_CTRL, acs->ctrl);
++	vmcs_write32(VM_ENTRY_INTR_INFO_FIELD, 0);
++	vmcs_write32(GUEST_INTERRUPTIBILITY_INFO, 0);
++	vmcs_write32(GUEST_ACTIVITY_STATE, GUEST_ACTIVITY_ACTIVE);
++	vmcs_writel(GUEST_PENDING_DBG_EXCEPTIONS, 0);
++
++	vmcs_writel(GUEST_RIP, kvm_rip_read(vcpu));
++	vmcs_writel(GUEST_RSP, kvm_rsp_read(vcpu));
++	vmcs_writel(GUEST_RFLAGS, kvm_get_rflags(vcpu));
++	vmx_set_cr0(vcpu, vcpu->arch.cr0);
++	vmcs_writel(GUEST_CR3, vcpu->arch.cr3);
++	vmx_set_cr4(vcpu, vcpu->arch.cr4);
++	vmx_set_efer(vcpu, vcpu->arch.efer);
++
++	if (vmx->loaded_vmcs)
++		vmx_set_constant_host_state(vmx);
++
++	if (cur_vmcs_pa)
++		asm volatile("vmclear %0" : : "m" (cur_vmcs_pa) : "memory", "cc");
++
++	if (prev_vmcs && (!vmx->loaded_vmcs || prev_vmcs != vmx->loaded_vmcs->vmcs)) {
++		vmcs_load(prev_vmcs);
++		this_cpu_write(current_vmcs, prev_vmcs);
++	} else {
++		this_cpu_write(current_vmcs, NULL);
++	}
 +}
 +
- /**
-  * pci_enable_acs - enable ACS if hardware support it
-  * @dev: the PCI device
-@@ -1057,6 +1157,15 @@ void pci_enable_acs(struct pci_dev *dev)
- 	__pci_config_acs(dev, &caps, config_acs_param, 0, 0);
- 
- 	pci_write_config_word(dev, pos + PCI_ACS_CTRL, caps.ctrl);
-+
-+	/*
-+	 * pci_enable_acs() runs when a driver binds to the device, i.e. after
-+	 * pci_bus_add_device() has already saved the device's state. Refresh
-+	 * the saved ACS state so that a subsequent reset restores the
-+	 * configuration programmed here rather than the one left behind by
-+	 * firmware.
-+	 */
-+	pci_save_acs_state(dev);
- }
- 
- /**
-@@ -1800,6 +1909,7 @@ int pci_save_state(struct pci_dev *dev)
- 	pci_save_aer_state(dev);
- 	pci_save_ptm_state(dev);
- 	pci_save_tph_state(dev);
-+	pci_save_acs_state(dev);
- 	return pci_save_vc_state(dev);
- }
- EXPORT_SYMBOL(pci_save_state);
-@@ -1877,7 +1987,7 @@ void pci_restore_state(struct pci_dev *dev)
- 	pci_restore_msi_state(dev);
- 
- 	/* Restore ACS and IOV configuration state */
--	pci_enable_acs(dev);
-+	pci_restore_acs_state(dev);
- 	pci_restore_iov_state(dev);
- 
- 	dev->state_saved = false;
-@@ -3532,6 +3642,11 @@ void pci_allocate_cap_save_buffers(struct pci_dev *dev)
- 	if (error)
- 		pci_err(dev, "unable to allocate suspend buffer for LTR\n");
- 
-+	error = pci_add_ext_cap_save_buffer(dev, PCI_EXT_CAP_ID_ACS,
-+					    sizeof(struct pci_acs_saved_state));
-+	if (error)
-+		pci_err(dev, "unable to allocate suspend buffer for ACS\n");
-+
- 	pci_allocate_vc_save_buffers(dev);
- }
- 
-diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-index ba3c3fddddc2..037c1674f164 100644
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -1095,6 +1095,7 @@ void pci_acs_init(struct pci_dev *dev);
- void pci_enable_acs(struct pci_dev *dev);
- #ifdef CONFIG_PCI_QUIRKS
- int pci_dev_specific_acs_enabled(struct pci_dev *dev, u16 acs_flags);
-+bool pci_need_dev_specific_enable_acs(struct pci_dev *dev);
- int pci_dev_specific_enable_acs(struct pci_dev *dev);
- int pci_dev_specific_disable_acs_redir(struct pci_dev *dev);
- void pci_disable_broken_acs_cap(struct pci_dev *pdev);
-@@ -1105,6 +1106,10 @@ static inline int pci_dev_specific_acs_enabled(struct pci_dev *dev,
- {
- 	return -ENOTTY;
- }
-+static inline bool pci_need_dev_specific_enable_acs(struct pci_dev *dev)
++static __cpu_preserved_text void
++vmx_caretaker_detach_serialize(void *page, struct kvm_vcpu_arch_ser *state)
 +{
-+	return false;
++	struct caretaker_vmx_page *cvp = page;
++
++	kvm_x86_caretaker_detach_serialize_common(&cvp->common, state);
++	kvm_x86_caretaker_update_msr(state, MSR_STAR, cvp->star);
++	kvm_x86_caretaker_update_msr(state, MSR_LSTAR, cvp->lstar);
++	kvm_x86_caretaker_update_msr(state, MSR_SYSCALL_MASK, cvp->fmask);
++	kvm_x86_caretaker_update_msr(state, MSR_KERNEL_GS_BASE,
++				     cvp->common.kernel_gs_base);
 +}
- static inline int pci_dev_specific_enable_acs(struct pci_dev *dev)
- {
- 	return -ENOTTY;
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 7aee30734303..e500c202d2ec 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -5476,6 +5476,13 @@ static const struct pci_dev_acs_ops *pci_dev_acs_ops_get(struct pci_dev *dev)
- 	return NULL;
++
++static __cpu_preserved_text void vmx_caretaker_arm_timer(void *page, u64 deadline_ticks)
++{
++	struct caretaker_vmx_page *cvp = page;
++	u32 shift = (cvp && cvp->timer_shift) ? cvp->timer_shift : VMX_PREEMPTION_TIMER_SHIFT;
++	u32 timer_value = 0;
++	u32 pin;
++
++	if (deadline_ticks) {
++		u64 now = arch_oncore_read_counter();
++
++		if (deadline_ticks > now) {
++			u64 remaining = deadline_ticks - now;
++
++			timer_value = (u32)(remaining >> shift);
++			if (timer_value == 0)
++				timer_value = 1;
++		} else {
++			timer_value = 1;
++		}
++	}
++
++	if (timer_value > 0) {
++		vmx_vmwrite(VMX_PREEMPTION_TIMER_VALUE, timer_value);
++		pin = (u32)vmx_vmread(PIN_BASED_VM_EXEC_CONTROL);
++		pin |= PIN_BASED_VMX_PREEMPTION_TIMER;
++		vmx_vmwrite(PIN_BASED_VM_EXEC_CONTROL, pin);
++	} else {
++		vmx_caretaker_disarm_timer(page);
++	}
  }
  
-+bool pci_need_dev_specific_enable_acs(struct pci_dev *dev)
++static __cpu_preserved_text void
++vmx_caretaker_advance_rip(void *page, u64 rip)
 +{
-+	const struct pci_dev_acs_ops *p = pci_dev_acs_ops_get(dev);
++	struct caretaker_vmx_page *cvp = page;
 +
-+	return p && p->enable_acs;
++	cvp->common.last_exit_rip = rip;
++	vmx_vmwrite(GUEST_RIP, rip);
 +}
 +
- int pci_dev_specific_enable_acs(struct pci_dev *dev)
++static __cpu_preserved_text void vmx_caretaker_pre_enter(void *page)
++{
++	struct caretaker_vmx_page *cvp = page;
++
++	/* Ensure VMX is active on this core */
++	if (!(__read_cr4() & X86_CR4_VMXE)) {
++		asm volatile("mov %0, %%cr4" : : "r" (__read_cr4() | X86_CR4_VMXE) : "memory");
++		if (cvp->vmxon_pa) {
++			asm volatile("1: vmxon %[vmxon_pa]\n\t"
++				     "2:\n\t"
++				     _ASM_EXTABLE(1b, 2b)
++				     : : [vmxon_pa] "m" (cvp->vmxon_pa)
++				     : "memory", "cc");
++		}
++	}
++
++	/* Activate VMCS on this pCPU */
++	asm volatile("vmptrld %0" : : "m" (cvp->common.abi.vmcs_pa) : "memory", "cc");
++
++	/* Configure Caretaker host VMCS */
++	vmx_caretaker_init_host_vmcs(cvp);
++
++	if (cvp->common.arch_state)
++		native_write_cr2(cvp->common.arch_state->sregs.cr2);
++
++	native_wrmsrq(MSR_STAR, cvp->star);
++	native_wrmsrq(MSR_LSTAR, cvp->lstar);
++	native_wrmsrq(MSR_SYSCALL_MASK, cvp->fmask);
++}
++
++static __cpu_preserved_text void
++vmx_caretaker_read_seg(struct kvm_segment *var, u16 sel_field,
++		       u16 base_field, u16 limit_field, u16 ar_field)
++{
++	u32 ar = (u32)vmx_vmread(ar_field);
++
++	var->base = vmx_vmread(base_field);
++	var->limit = (u32)vmx_vmread(limit_field);
++	var->selector = (u16)vmx_vmread(sel_field);
++	var->unusable = (ar >> 16) & 1;
++	var->type = ar & 15;
++	var->s = (ar >> 4) & 1;
++	var->dpl = (ar >> 5) & 3;
++	var->present = !var->unusable;
++	var->avl = (ar >> 12) & 1;
++	var->l = (ar >> 13) & 1;
++	var->db = (ar >> 14) & 1;
++	var->g = (ar >> 15) & 1;
++}
++
++static __cpu_preserved_text void vmx_caretaker_post_exit(void *page)
++{
++	struct caretaker_vmx_page *cvp = page;
++	struct kvm_vcpu_arch_ser *state = cvp->common.arch_state;
++	u64 efer;
++
++	cvp->star = native_rdmsrq(MSR_STAR);
++	cvp->lstar = native_rdmsrq(MSR_LSTAR);
++	cvp->fmask = native_rdmsrq(MSR_SYSCALL_MASK);
++
++	cvp->common.cr0 = vmx_caretaker_read_cr0();
++	cvp->common.cr3 = vmx_vmread(GUEST_CR3);
++	cvp->common.cr4 = vmx_caretaker_read_cr4();
++	efer = vmx_caretaker_read_efer();
++	if (efer)
++		cvp->common.efer = efer;
++	cvp->common.last_exit_rip = vmx_vmread(GUEST_RIP);
++	cvp->common.last_exit_rsp = vmx_vmread(GUEST_RSP);
++	cvp->common.last_exit_rflags = vmx_vmread(GUEST_RFLAGS);
++
++	if (state) {
++		state->sregs.cr2 = native_read_cr2();
++		vmx_caretaker_read_seg(&state->sregs.cs, GUEST_CS_SELECTOR,
++				       GUEST_CS_BASE, GUEST_CS_LIMIT, GUEST_CS_AR_BYTES);
++		vmx_caretaker_read_seg(&state->sregs.ds, GUEST_DS_SELECTOR,
++				       GUEST_DS_BASE, GUEST_DS_LIMIT, GUEST_DS_AR_BYTES);
++		vmx_caretaker_read_seg(&state->sregs.es, GUEST_ES_SELECTOR,
++				       GUEST_ES_BASE, GUEST_ES_LIMIT, GUEST_ES_AR_BYTES);
++		vmx_caretaker_read_seg(&state->sregs.fs, GUEST_FS_SELECTOR,
++				       GUEST_FS_BASE, GUEST_FS_LIMIT, GUEST_FS_AR_BYTES);
++		vmx_caretaker_read_seg(&state->sregs.gs, GUEST_GS_SELECTOR,
++				       GUEST_GS_BASE, GUEST_GS_LIMIT, GUEST_GS_AR_BYTES);
++		vmx_caretaker_read_seg(&state->sregs.ss, GUEST_SS_SELECTOR,
++				       GUEST_SS_BASE, GUEST_SS_LIMIT, GUEST_SS_AR_BYTES);
++		vmx_caretaker_read_seg(&state->sregs.tr, GUEST_TR_SELECTOR,
++				       GUEST_TR_BASE, GUEST_TR_LIMIT, GUEST_TR_AR_BYTES);
++		vmx_caretaker_read_seg(&state->sregs.ldt, GUEST_LDTR_SELECTOR,
++				       GUEST_LDTR_BASE, GUEST_LDTR_LIMIT, GUEST_LDTR_AR_BYTES);
++		state->sregs.gdt.base = vmx_vmread(GUEST_GDTR_BASE);
++		state->sregs.gdt.limit = (u16)vmx_vmread(GUEST_GDTR_LIMIT);
++		state->sregs.idt.base = vmx_vmread(GUEST_IDTR_BASE);
++		state->sregs.idt.limit = (u16)vmx_vmread(GUEST_IDTR_LIMIT);
++
++		kvm_x86_caretaker_update_msr(state, MSR_IA32_SYSENTER_CS,
++					     vmx_vmread(GUEST_SYSENTER_CS));
++		kvm_x86_caretaker_update_msr(state, MSR_IA32_SYSENTER_ESP,
++					     vmx_vmread(GUEST_SYSENTER_ESP));
++		kvm_x86_caretaker_update_msr(state, MSR_IA32_SYSENTER_EIP,
++					     vmx_vmread(GUEST_SYSENTER_EIP));
++	}
++
++	/* Flush VMCS cache so host and incoming kernel see latest guest state */
++	asm volatile("vmclear %0" : : "m" (cvp->common.abi.vmcs_pa) : "memory", "cc");
++}
++
++static const struct kvm_x86_caretaker_runtime_ops vmx_caretaker_runtime_ops __cpu_preserved_data = {
++	.detach_serialize = vmx_caretaker_detach_serialize,
++	.common = {
++		.enter_guest = vmx_caretaker_enter,
++		.decode_exit = vmx_caretaker_decode_exit,
++		.handle_arch_exit = kvm_x86_caretaker_handle_exit,
++		.advance_rip = vmx_caretaker_advance_rip,
++		.arm_timer = vmx_caretaker_arm_timer,
++		.disarm_timer = vmx_caretaker_disarm_timer,
++		.pre_run = vmx_caretaker_pre_enter,
++		.post_run = vmx_caretaker_post_exit,
++	},
++};
++
++static const struct kvm_x86_caretaker_ops vmx_caretaker_ops = {
++	.name = "vmx",
++	.init = vmx_caretaker_init,
++	.sync_vcpu = vmx_caretaker_sync_vcpu,
++	.runtime = &vmx_caretaker_runtime_ops,
++};
++
++void vmx_caretaker_register(void)
++{
++	kvm_x86_caretaker_register_ops(&vmx_caretaker_ops);
++}
++
++void vmx_caretaker_unregister(void)
++{
++	kvm_x86_caretaker_unregister_ops(&vmx_caretaker_ops);
++}
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 48b6e69f99bf..817623f7429a 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -54,6 +54,7 @@
+ #include <trace/events/ipi.h>
+ 
+ #include "capabilities.h"
++#include "caretaker.h"
+ #include "common.h"
+ #include "cpuid.h"
+ #include "hyperv.h"
+@@ -8548,6 +8549,7 @@ void vmx_migrate_timers(struct kvm_vcpu *vcpu)
+ 
+ void vmx_hardware_unsetup(void)
  {
- 	const struct pci_dev_acs_ops *p = pci_dev_acs_ops_get(dev);
-diff --git a/include/uapi/linux/pci_regs.h b/include/uapi/linux/pci_regs.h
-index facaa324bd86..66359cb94f0d 100644
---- a/include/uapi/linux/pci_regs.h
-+++ b/include/uapi/linux/pci_regs.h
-@@ -1023,6 +1023,7 @@
- #define  PCI_ACS_UF		0x0010	/* Upstream Forwarding */
- #define  PCI_ACS_EC		0x0020	/* P2P Egress Control */
- #define  PCI_ACS_DT		0x0040	/* Direct Translated P2P */
-+#define  PCI_ACS_EGRESS_BITS_MASK 0xff00 /* Egress Control Vector Size */
- #define PCI_ACS_EGRESS_BITS	0x05	/* ACS Egress Control Vector Size */
- #define PCI_ACS_CTRL		0x06	/* ACS Control Register */
- #define PCI_ACS_EGRESS_CTL_V	0x08	/* ACS Egress Control Vector */
++	vmx_caretaker_unregister();
+ 	kvm_set_posted_intr_wakeup_handler(NULL);
+ 
+ 	if (nested)
+@@ -8855,6 +8857,8 @@ __init int vmx_hardware_setup(void)
+ 
+ 	kvm_caps.inapplicable_quirks &= ~KVM_X86_QUIRK_IGNORE_GUEST_PAT;
+ 
++	vmx_caretaker_register();
++
+ 	return 0;
+ }
+ 
+-- 
+2.55.0.1082.g2b9226bbc0-goog
+
 
