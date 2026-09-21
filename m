@@ -4,96 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77B90C982ED
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 15:47:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EF4FC982E6
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 15:49:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 51F0C6B00A9; Mon, 21 Sep 2026 11:47:45 -0400 (EDT)
+	id 4116C6B0088; Mon, 21 Sep 2026 11:49:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4A9186B00C3; Mon, 21 Sep 2026 11:47:45 -0400 (EDT)
+	id 3C14F6B00B2; Mon, 21 Sep 2026 11:49:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3991B6B00C5; Mon, 21 Sep 2026 11:47:45 -0400 (EDT)
+	id 28BF86B00B5; Mon, 21 Sep 2026 11:49:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B8146B00A9
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 11:47:45 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 91BD1A515A
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 15:47:44 +0000 (UTC)
-X-FDA: 85238199648.11.19E8724
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id CDFFAA000B
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 15:47:42 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iNLZtwqq;
-	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790005662;
-	b=djNCFMG3zdP/ujgf+WaE/JLtIMlOSJIHFQ+YGkyLudJ614po0oHJFpxkz/MzgNVLr006YI
-	+bo7tRMQN3vy2aiDuLA07xXzrC9uN4bRl5Fu2glVKbYq8Hq1KhApeLszij6uCiiDpltXkl
-	tS5ApW1n0ccvn7wzMDvt587EfyKtW8g=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iNLZtwqq;
-	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EB54F6B0088
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 11:49:04 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 891121C15C4
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 15:49:04 +0000 (UTC)
+X-FDA: 85238203008.22.E349C20
+Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
+	by imf10.hostedemail.com (Postfix) with ESMTP id A1BB4C000A
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 15:49:02 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=b8Hh+L0c;
+	spf=pass (imf10.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.205 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790005662;
+	s=arc-20220608; t=1790005742;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xt/v9cPkBOq2fPAKYQmZiznySUYlaobjHi7Tql7AMps=;
-	b=j3al9tuisLbeb7O5WZfcaQtzs9W1f8wjgDwO5F7Ox/Xvs3A9Ea2jT/zqzs7ndSOkrIbIcZ
-	3YU2F9JO7g443ePTxlOx+S3ueNCUgJwirG9p1Jbfp4OYZH1F249i6yoyDoijHLaaHPKib3
-	ATfvHIjAi9/ZgzcTOuI5Lo5GQhdvHo8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 111A24078A;
-	Mon, 21 Sep 2026 15:47:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56BEE1F000FF;
-	Mon, 21 Sep 2026 15:47:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790005661;
-	bh=xt/v9cPkBOq2fPAKYQmZiznySUYlaobjHi7Tql7AMps=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=iNLZtwqqu4XESWw915pxWASPi2s5Je91G5+Mc7sftgwG1U9PiDAboIINWM6oYe8/X
-	 EB2WueoTzy0T7U53fp4NQjWShbXlhgcnuGC6ll5Pf6hKWzkHrx/4u0SpS/VzuGumgo
-	 uzXqzDIgq3Ag5wUfNl06Xfi+VrNStO5ZRXGAXxgWZ9MzCtm7AiI+Oee+vVY1KI6I8k
-	 +4MLvZhyzkIZbDfBc77JiTReV0zWCIA90WO+lh7VNiFzMYfs8C78/O0zHug2cyMAjw
-	 xVmsPoOQ5y24TbkKj5axWSvD45emrO9XpRnd11im7Agj0Sb4AO60D/+kW824l64ZHX
-	 QTCj/kPwe8z6A==
-Date: Mon, 21 Sep 2026 16:47:36 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
-	Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 3/3] kselftest: mm: remove check_huge_shmem()
-Message-ID: <arFRjU2_g0tYVghn@gremlin>
-References: <20260921-fix_split-v7-0-d25ec991159f@arm.com>
- <20260921-fix_split-v7-3-d25ec991159f@arm.com>
+	bh=/s9qiYogYW6WNzZt1dtpYbULGoaZUSl75Lwvowk+5Ug=;
+	b=wTZHMwEKgMC3aeOEwBRLYYqUAf+wjCe7Q/4ygDnwr8/ZeF7gIA0RN6/S3QnCs3/U0EVsJ2
+	91suZIbfAdAzZlsQUO6J4K9ntawQam8Yj3Wnpcyd1GZto1OigOs2Nh/sUmxVyuOitKp8b0
+	81sh+gp/CczmkVDehdvhIfzWltW5NEM=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790005742;
+	b=j6Fi9oywDWBRQSX4887NA2bJ23HlCIY9G46dfP5JSSuivt/oi6lmw8KpZkx1LKOklr5xZs
+	erBhZx6QAucrWLVy5JeBgkqhUCsoQfNVrivI+zwbxjF1PeuZw24QzfsIBqEImyavvtpmQq
+	r9Q/uHYLd5jGt8cKwpYY6tXR+yxRTsA=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=b8Hh+L0c;
+	spf=pass (imf10.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.205 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-qk2-f13.google.com with SMTP id d75a77b69052e-5308fc4b716so18456631cf.1
+        for <linux-mm@kvack.org>; Mon, 21 Sep 2026 08:49:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1790005742; x=1790610542; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=/s9qiYogYW6WNzZt1dtpYbULGoaZUSl75Lwvowk+5Ug=;
+        b=b8Hh+L0cs+X/olqoqBVe+cCDrvxQXVasg1B+c7vbpRkuqbSg6B2wXWOprZ9DZpi7T8
+         h1TKO7P4/AghU7I5EHOA7NcKGbgD2ljnQzKiDk1GczbfEz6WJrcX6mfRl66xKIQNnoDG
+         WwGFDklVR6UG7/bAupq7TUzkDywrMKoOL+CysHjHubzsl+QDBl9MGEn/dmQhv3o57LmZ
+         WmBuNXvuTr656leWJgdBmXogULSfczfxaQa6mruU7V563NalhVarMOFsiysveivNC8lv
+         gWwEKYS7jHeQMN+k4lX2258teOEufPX++l95uexIg60nACOh/eyIxIIRMmfywpIWIqHQ
+         pxlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790005742; x=1790610542;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=/s9qiYogYW6WNzZt1dtpYbULGoaZUSl75Lwvowk+5Ug=;
+        b=GlqlrSJ8/O+niVyydzHI7LwKiUjOSeE66A9LUsIOP/q8ccBPHgSclgAzSpb+0gmgiv
+         fuHeXLHRgK5cZKej4pM+v9XYPx0xCujvrYHsA/V+j9TnRnEOV54XTkWNwn3isSQCwhDy
+         jQhZ4htewxyz16h+VfOgtBJ9zZ20B/hFq6hncyLA0t1yomo/lnFIW9t4DQMWiOmXebr1
+         GKmahllG+ppWv+9AoVM/ABUfdjJdWAWqCkL6C70NzjufXot/CeGSRAIr8T5UjK/rAxTk
+         EfhNs30uHWvkP4J8ur784nQH9okkqyWCbopEkbI4GLWS6vhqwBmvJCUXxkp6HoZrP91o
+         GelQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxZ0+39SWSji0rztP55w5y3fH14YDvmqgPOJgLlg4ilgWj/c7YlEAay75oKuWXU8EoDUPWZ1/ULZw==@kvack.org
+X-Gm-Message-State: AFuF++neZUrKFXiarVsL2tsL1RImbLhIDhvebgH2qJFQb05fiG2VEI31
+	QuCaIJNOgkVkU/ygwLv2BNgnwRMhE2LvBA7WBgAy3tDyF0KWVebQaHWg8n52m3ZzixY=
+X-Gm-Gg: AYBFou3nRHxOmxGYlRMC0eeXg0PeVH6LRfLhIgAGdQyRldouBXlFP7gB2AzViOf8ws3
+	lKGj4EKZ50Qgwl7DVrr39XA7mhrDH1W8eGFo+rKbbmRg5tysNAxzCfC+mKsRfN7SIdFYhnrRWMq
+	RAr8iCpVbJyStncDqprA8Ly0jJxNJeK4PgcaXrr3LG6vUl3iXKuqmK05/FZIZU8PHKKA7JKQCdt
+	Izprtcm3cUB7+ZO7yeIelnyHZMflmmdHg7FGVy/2Xy22dZKkWCY0yY+o4d0Djvxz8/qIrlV6tjt
+	qpYPsB3vE9fndlSs7Fi8vaEcJ+ii0a1oI/+4PdJqaT+VAkJvseO7n1QaJxJ1dzNI9gouIsIByWg
+	WeWJbYGPlzFiYyvI4TiJiz0Aw6+kGQlf/qirxF9fCjZ3nuOWCKutd5ocwt8cVcsr8EPnakNsZHG
+	kear9IB2Qv/R/4lhrR00bpGnqnIi/H8RVFrr79r6Ba4NJKASG9leX4sJBwJghBTh0OifngLHQt9
+	IZqAN8Jbns=
+X-Received: by 2002:ac8:5a8b:0:b0:532:a5f4:df25 with SMTP id d75a77b69052e-532d8e4f628mr13379251cf.57.1790005741711;
+        Mon, 21 Sep 2026 08:49:01 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F ([50.193.156.113])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-532ae512550sm66992481cf.1.2026.09.21.08.48.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Sep 2026 08:49:01 -0700 (PDT)
+Date: Mon, 21 Sep 2026 11:48:57 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Rik van Riel <riel@surriel.com>
+Cc: Kairui Song <ryncsn@gmail.com>, Chris Li <chrisl@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Baoquan He <baoquan.he@linux.dev>, Nhat Pham <nphamcs@gmail.com>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry@kernel.org>, 
+	David Hildenbrand <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Barry Song <baohua@kernel.org>, 
+	YoungJun Park <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren =?utf-8?B?QmFnaGRhc2FyeWFu77+8?= <surenb@google.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Wenchao Hao <haowenchao22@gmail.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Tejun Heo <tj@kernel.org>, Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, 
+	Meta kernel team <kernel-team@meta.com>, Linux Memory Management List <linux-mm@kvack.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org, 
+	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>
+Subject: Re: Path forward for Virtualized Swap?
+Message-ID: <arFP7YNzB1RMUKuc@gourry-fedora-PF4VCD3F>
+References: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
+ <aqJXx2vtbKaRLt3x@fedora>
+ <aqLi6cIjD2wJwk0B@cmpxchg.org>
+ <CACePvbUG1ApMzMdEzf-63rpjgGVNsRk21pT72OQGJpM=OtRUew@mail.gmail.com>
+ <aq6cVXPLUUwJA7-2@gourry-fedora-PF4VCD3F>
+ <CACePvbVaPDnva8X-Xmz84r7j5HjTuih-w5phpw7cerK2uPnK6w@mail.gmail.com>
+ <CAMgjq7CJBHkoZmg9oKNgGA8czL0djyBTCAkPz8ETm-tX=Qci4g@mail.gmail.com>
+ <arEotFqE7ZZoxMHd@gourry-fedora-PF4VCD3F>
+ <f3af5902412b9ff1c1a37211eeeb9c0ffc22f814.camel@surriel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260921-fix_split-v7-3-d25ec991159f@arm.com>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: CDFFAA000B
-X-Stat-Signature: fp91b3mmcixbdz7tf8ho9ampouu6jwpm
+In-Reply-To: <f3af5902412b9ff1c1a37211eeeb9c0ffc22f814.camel@surriel.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A1BB4C000A
+X-Stat-Signature: 6sty7xe5z9dra964nqz74p77mt1zae5f
 X-Rspam-User: 
-X-HE-Tag: 1790005662-513140
-X-HE-Meta: U2FsdGVkX1+Q+uuMzxz7/kGJgCPmSNPmXUGrLmoo5SgiIliJq7nCsLtkMbWAeI0fBZ3K/xKm4JTEbDtW9CNWLBRdrxDxrann14Fvr/0F43oZEZE/ejtgpRbFLYoJXtXJCCdjvaBi1c8LE2dUySeznM28KpIqlYsjjkJJpPkmB961jlKknGS53sX9JqL2a/ZIgBXKM3vvDkDc3OSUCmfOaplGmehWe3aAYSpC3NFnz77d2nzHHvDwPW9N60ZPNMQBoeqS9vlYw6EqVz+GEKhdSho/5cC1KeFPzXnB3pJ9ttK4e5rcpgwp2C9eVNuHbAdyGnCpeFf6/fNz8URI+vwZcmy8ew0HEsOfX03cgHPHO+A9WRTGML6nA7E7JQSEXGWw0gAdUwwjWo1uohM2NE1Ys41PWYV9ebFMn3UFqszZnxZqiXm56uWnRajPlAjzkINdFiDT5cJSjoTx5IgrnviDngF5x3jPjJ3ZCabTb22W9uotEIxLhZzur2VO0h21cVQTKmdjFSLI40I6B7dTeYbJYinXoOKgmybklo4hOqClTSfW/TdY+Z1RxbxjkxL+02LnrwVF5gwcmXpLzTiQxsetoiefYFtIDnEJsowsX9vVS9yayODnB1y9ird4fmwEtXrXtmAaZIvGQvG0mtTUtzYV5Ea0LwJVagTzx8MZ3YcJX6nK4CXAmU5oyJqzA62D9UgzHtqWhrysj4MHpdbfFrSkfKYBSIISXMx82uYp7CD0xbTR+rt0Pu2ieSKID1zrshc7zxUlSxxv1uo/zfU4NmDPVIx48e9N7FbLIL0wE4ODafBEJvLtb2NC/ubGhSs7UaEgW3CTLURAChaTG2FanIl/0XkQnl+NgPV/QVfBnZlXoBMPpLsrYMqRy+iI/HELumIQh0WR6XI7DOMW34Ufd0hApWhByc/BWEVHfVjA46oEcI/wEwNxK+Dw4ljcuQclj8n1n/NxFWAxuFvGqkpTBgc
- Tfo/UfIU
- jzCHoEf7yJSyYpKi4K5c/VYSyg/EfPflo49xDg72YP0pJL6HGlizDznHvz+2UjSuU54w4j28Z9dHQ9ZmZhG6xlmiNO+YxcxoWKkOaLox1r9+lX8kOUUgJqFXEheu/co+UKVXW0gBA4HAsQt4eg9M8Umva2r2ySw3u71knwMx/XPTf12iOBEe5a3bbliyc78FKpYFYqoZoip8KuCHja3YN9t6knPmngXxVJwMMXkEUplAEdRVdK17BBedug9/m9XDnFQB8jTNiok//mw2E+HYhTWXbGYis20dyppodIL0vUdujc4JpUVjyfkiPjs9/n2ToGyVAll9ewWjQem/y4QvgHZe+ftFG32g3tE0wmhTOnTM2ouV4b6XsACQhNdJc+QY6b2sADE7xPKiC68p/rDzg6s2pAjJ8LU3dd+1I
+X-HE-Tag: 1790005742-384843
+X-HE-Meta: U2FsdGVkX1+d+Jxb5drQQsR0g0b3Tu02NohWwjyE0CNmokM4/TfOJUW9W24FQbgolkAICZuwD+PIuanecGAPuG8d4U70mtbfRYBpMTnQBIP9547wqKA7OduL54KWsWRBUGfIlyYdRcc30jI9AHsqjdUJVWn5OFC/4J4TNC6sa26ijQTwA9X7kDkQA5ijjdagrIGfuaPixqtity6bRQQPB0bnJuCwy4DAv4tT0rtGB1tz9YPbHmMFCjclmQb5XUYNnDxDw6s43FuK7PUaY4RuiF9dkhjSnNUWWM0QDC/a3Hqz/u6eNkHLW0RKDpx+ol9u5C+qnm+6jGkkwwQRp7qhoW/5kCV99vrbdKfLPIhs3AM2ujMns0p/OZaTVqSV8nyquLDLtnsu9aJ2mGOf9DxFnHRDdegBPRplqTki6CRFir4yO2c42UPcPU91ItiwcwWU++wcqnGzed2lyRQ1pxvEykrLEg5BUCzgekrIqwgHGZUeMookDdjPVsssCRA8y09pJyLlHZ8BdNh7w7i9CSQTHwy4WrLazv2frxGjFePN9VM/rUs+8Jusde7kN7MoB9heeMpaXnoWaAGSEe4wbKHEIT9gIH1i+c9fLj17q4R6ZkD94PWz550FQrcRrLGT3dmnO7flzJbkiucBPYQauLzYJDwNrOKIhUTUzHEqIW3dm8lsHbRKpS6LtP9Fqoy/mPxDTssz+1E+P6Dsvk0KY/e/tSivXFh2L0tGV9z04rlYVZJuV/0cXK6BRAQqX+RwirFNm5I4V/ARS8nqBb73Czn0MwIPvVCnpggGXAGCGTAOsDp/ZWcrGBhwpCIEtTRu4jWWwyr0EP6X2pP430T8+3STt03Pe+5/7Zez33ubtgI3O7x5Ji1WrfRhghoEBM7IvB6u71R0WEvWMWC3XHrD5wTH5GuKq8in5sqVN7Ff1m3Wy+4DyNEXOSP3FSJgNZ31JfC3pxZY630SWe9XWWC8YJE
+ vc+kHAtt
+ obA12ElMQPxw2wzBkmXLedCnWfo/cw50OoQCHl/zrnYorBbQ3SBiyr+cjPwLKc3xAbdj31/LTajrX35hawQAA0hJekGRcjd4rZOtGLXd7IO2MIJnbHDnAMp+ie/SH5X3W9YlccwmqkrWnuEUvOg919QSNvbF/AkEvLTDU5zzR6rWkxiwpUuDRAP1nlXD8V1xtCjWM6tbYEGAuovkmsJs4tjy1RdThei2GfXGb3uEANB/my8ZGWaJ68mDMvVqGf+FlB+wl6X1S5TQE2Uw0VgS3QhysWgrPhfyLQneiXVw3Wqaj6hbhwmjjevoiG7h/EXsq++xbheGfl5AvtQlP66pXWRbVw/qTlKuo5CXDtKQJQ4lHgOvknLYs3yhz6gJy/ki6ZiHee+AV3PzDKWQFhBNuJEtvpbLGwEsqsqzFNL4pNxPhlYgEl9FiQVosSelQEXMqqq8HDkPU4q9Yi0yNtavMvHWY4g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,197 +146,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 21, 2026 at 11:40:09AM +0100, Yeoreum Yun wrote:
-> check_huge_shmem() was required to distinguish shmem huge pages because
-> /proc/self/smaps reports them using a dedicated â€œShmemPmdMappedâ€ entry,
-> as opposed to â€œFilePmdMappedâ€ for file-backed huge pages.
->
-> Now that /proc/self/smaps is no longer used to detect huge pages and
-> /proc/kpageflags is used instead, it is sufficient to distinguish
-> between file-backed and anonymous pages since the ShmemPmdMapped is also
-> kind of file-backed.
->
-> Therefore, remove check_huge_shmem() and use check_huge_file() instead
-> and cleanup khugepaged's check_huge operation in mem_ops.
->
-> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+On Mon, Sep 21, 2026 at 11:27:53AM -0400, Rik van Riel wrote:
+> On Mon, 2026-09-21 at 09:27 -0400, Gregory Price wrote:
+> > 
+> > In short:
+> > 
+> >   memory.swap   = logical swap       - workload/SLO limit
+> >   memory.pswap  = physical swap      - storage limit
+> >   memory.zswap  = compressed memory  - RAM limit
+> > 
+> > This would preserve the existing memory.swap semantics while allowing
+> > both backing resources to be constrained independently.
+> > 
+> My first thought was "this is confusing", but
+> after a minute I realized that most users will 
+> never set those options to anything other than 
+> "0" or "max", and the few who do only need to
+> touch one of them.
+> 
 
-LGTM so:
+In practice, at most two (zswap + pswap) with swap=max.
 
-Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+There's not much of a reason to set swap to anything other
+than max if you already have zswap and pswap limits.
 
-> ---
->  tools/testing/selftests/mm/folio_split_race_test.c |  2 +-
->  tools/testing/selftests/mm/khugepaged.c            | 38 ++++------------------
->  tools/testing/selftests/mm/uffd-common.c           |  4 +--
->  tools/testing/selftests/mm/vm_util.c               |  5 ---
->  tools/testing/selftests/mm/vm_util.h               |  1 -
->  5 files changed, 9 insertions(+), 41 deletions(-)
->
-> diff --git a/tools/testing/selftests/mm/folio_split_race_test.c b/tools/testing/selftests/mm/folio_split_race_test.c
-> index 1960635a953eb..4c0d3b6a411b8 100644
-> --- a/tools/testing/selftests/mm/folio_split_race_test.c
-> +++ b/tools/testing/selftests/mm/folio_split_race_test.c
-> @@ -182,7 +182,7 @@ static uint64_t run_iteration(void)
->  	for (i = 0; i < TOTAL_PAGES; i++)
->  		fill_page(mmap_base, i);
->
-> -	if (!check_huge_shmem(mmap_base, FILE_SIZE, NR_PMD_PAGE, pmd_pagesize))
-> +	if (!check_huge_file(mmap_base, FILE_SIZE, NR_PMD_PAGE, pmd_pagesize))
->  		ksft_exit_fail_msg("No shmem THP is allocated\n");
->
->  	if (pthread_barrier_init(&ctl.barrier, NULL, NUM_READER_THREADS + 1) != 0)
-> diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
-> index f82673f5f6b47..f448278823678 100644
-> --- a/tools/testing/selftests/mm/khugepaged.c
-> +++ b/tools/testing/selftests/mm/khugepaged.c
-> @@ -53,7 +53,7 @@ struct mem_ops {
->  	void *(*setup_area)(int nr_hpages);
->  	void (*cleanup_area)(void *p, unsigned long size);
->  	void (*fault)(void *p, unsigned long start, unsigned long end);
-> -	bool (*check_huge)(void *addr, size_t len, int nr_hpages, unsigned long hpage_size);
-> +	bool (*check_huge)(void *addr, size_t len, int nr_hpages, uint64_t hpage_size);
->  	const char *name;
->  };
->
-> @@ -314,12 +314,6 @@ static void anon_fault(void *p, unsigned long start, unsigned long end)
->  	fill_memory(p, start, end);
->  }
->
-> -static bool anon_check_huge(void *addr, size_t len, int nr_hpages,
-> -		unsigned long hpage_size)
-> -{
-> -	return check_huge_anon(addr, len, nr_hpages, hpage_size);
-> -}
-> -
->  static void *file_setup_area_common(int nr_hpages, enum file_setup_ops setup)
->  {
->  	const int open_opt = setup == FILE_SETUP_READ_ONLY_FS ? O_RDONLY : O_RDWR;
-> @@ -411,20 +405,6 @@ static void file_fault_write(void *p, unsigned long start, unsigned long end)
->  		ksft_exit_fail_perror("madvise(MADV_POPULATE_WRITE)");
->  }
->
-> -static bool file_check_huge(void *addr, size_t len, int nr_hpages,
-> -		unsigned long hpage_size)
-> -{
-> -	switch (finfo.type) {
-> -	case VMA_FILE:
-> -		return check_huge_file(addr, len, nr_hpages, hpage_size);
-> -	case VMA_SHMEM:
-> -		return check_huge_shmem(addr, len, nr_hpages, hpage_size);
-> -	default:
-> -		ksft_exit_fail_msg("Unknown VMA type\n");
-> -		return false;
-> -	}
-> -}
-> -
->  static void *shmem_setup_area(int nr_hpages)
->  {
->  	void *p;
-> @@ -448,17 +428,11 @@ static void shmem_cleanup_area(void *p, unsigned long size)
->  	close(finfo.fd);
->  }
->
-> -static bool shmem_check_huge(void *addr, size_t len, int nr_hpages,
-> -		unsigned long hpage_size)
-> -{
-> -	return check_huge_shmem(addr, len, nr_hpages, hpage_size);
-> -}
-> -
->  static struct mem_ops __anon_ops = {
->  	.setup_area = &anon_setup_area,
->  	.cleanup_area = &anon_cleanup_area,
->  	.fault = &anon_fault,
-> -	.check_huge = &anon_check_huge,
-> +	.check_huge = &check_huge_anon,
->  	.name = "anon",
->  };
->
-> @@ -466,7 +440,7 @@ static struct mem_ops __read_only_file_ops = {
->  	.setup_area = &file_setup_read_only_area,
->  	.cleanup_area = &file_cleanup_area,
->  	.fault = &file_fault_read,
-> -	.check_huge = &file_check_huge,
-> +	.check_huge = &check_huge_file,
->  	.name = "file",
->  };
->
-> @@ -474,7 +448,7 @@ static struct mem_ops __read_write_file_read_ops = {
->  	.setup_area = &file_setup_read_write_fs_read_area,
->  	.cleanup_area = &file_cleanup_area,
->  	.fault = &file_fault_read_and_flush,
-> -	.check_huge = &file_check_huge,
-> +	.check_huge = &check_huge_file,
->  	.name = "file",
->  };
->
-> @@ -482,7 +456,7 @@ static struct mem_ops __read_write_file_write_ops = {
->  	.setup_area = &file_setup_read_write_fs_write_area,
->  	.cleanup_area = &file_cleanup_area,
->  	.fault = &file_fault_write,
-> -	.check_huge = &file_check_huge,
-> +	.check_huge = &check_huge_file,
->  	.name = "file",
->  };
->
-> @@ -490,7 +464,7 @@ static struct mem_ops __shmem_ops = {
->  	.setup_area = &shmem_setup_area,
->  	.cleanup_area = &shmem_cleanup_area,
->  	.fault = &anon_fault,
-> -	.check_huge = &shmem_check_huge,
-> +	.check_huge = &check_huge_file,
->  	.name = "shmem",
->  };
->
-> diff --git a/tools/testing/selftests/mm/uffd-common.c b/tools/testing/selftests/mm/uffd-common.c
-> index 1fb967ef49854..a76851aced4d0 100644
-> --- a/tools/testing/selftests/mm/uffd-common.c
-> +++ b/tools/testing/selftests/mm/uffd-common.c
-> @@ -196,8 +196,8 @@ static void shmem_check_pmd_mapping(uffd_global_test_opts_t *gopts, void *p, int
->  {
->  	size_t len = expect_nr_hpages * read_pmd_pagesize();
->
-> -	if (!check_huge_shmem(gopts->area_dst_alias, len, expect_nr_hpages,
-> -			      read_pmd_pagesize()))
-> +	if (!check_huge_file(gopts->area_dst_alias, len, expect_nr_hpages,
-> +			     read_pmd_pagesize()))
->  		err("Did not find expected %d number of hugepages",
->  		    expect_nr_hpages);
->  }
-> diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
-> index a7c5caf6925e0..e31e88d5af76d 100644
-> --- a/tools/testing/selftests/mm/vm_util.c
-> +++ b/tools/testing/selftests/mm/vm_util.c
-> @@ -475,11 +475,6 @@ bool check_huge_file(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
->  	return __check_huge(addr, len, nr_hpages, hpage_size, CHECK_HUGE_FILE);
->  }
->
-> -bool check_huge_shmem(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
-> -{
-> -	return __check_huge(addr, len, nr_hpages, hpage_size, CHECK_HUGE_FILE);
-> -}
-> -
->  int64_t allocate_transhuge(void *ptr, int pagemap_fd)
->  {
->  	uint64_t ent[2];
-> diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
-> index 9a49af88702e4..fc9c93235f6fa 100644
-> --- a/tools/testing/selftests/mm/vm_util.h
-> +++ b/tools/testing/selftests/mm/vm_util.h
-> @@ -92,7 +92,6 @@ uint64_t read_pmd_pagesize(void);
->  unsigned long rss_anon(void);
->  bool check_huge_anon(void *addr, size_t len, int nr_hpages, uint64_t hpage_size);
->  bool check_huge_file(void *addr, size_t len, int nr_hpages, uint64_t hpage_size);
-> -bool check_huge_shmem(void *addr, size_t len, int nr_hpages, uint64_t hpage_size);
->  int64_t allocate_transhuge(void *ptr, int pagemap_fd);
->  int pageflags_get(unsigned long pfn, int kpageflags_fd, uint64_t *flags);
->  int gather_folio_orders(char *vaddr_start, size_t len,
->
-> --
-> 2.43.0
->
+But for existing users where they're using it as an SLO
+signal, they could continue getting the existing behavior
+by just using swap.max.
 
---
-Cheers, Lorenzo
+That said:
+
+I'm not convinced this is actually required, because the swap
+counter was never an SLO mechanism - it is a physical swap
+provisioning mechanism.  If it's being used as an SLO mechanism,
+those users have misinterpreted its documented meaning.
+
+memory.min / memory.low already provide you this logical limit
+mechanism - so I would argue the parties that want such a split
+(rather than treating zswap / swap *as* the split) need to prove
+their use case cannot be supported by existing counters.
+
+~Gregory
 
