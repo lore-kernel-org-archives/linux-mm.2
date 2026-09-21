@@ -4,177 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 761B9C982E1
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 11:05:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D74F3C982E1
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 11:20:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 81D6E6B010E; Mon, 21 Sep 2026 07:05:24 -0400 (EDT)
+	id CF35C6B00A4; Mon, 21 Sep 2026 07:20:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7FB396B010F; Mon, 21 Sep 2026 07:05:24 -0400 (EDT)
+	id CCAFB6B00A9; Mon, 21 Sep 2026 07:20:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6BC7F6B0112; Mon, 21 Sep 2026 07:05:24 -0400 (EDT)
+	id BE0A86B00D9; Mon, 21 Sep 2026 07:20:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 465AA6B010E
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 07:05:24 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D1F2380149
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 11:05:23 +0000 (UTC)
-X-FDA: 85237488126.06.FCD66F9
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011049.outbound.protection.outlook.com [52.101.62.49])
-	by imf02.hostedemail.com (Postfix) with ESMTP id D958380007
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 11:05:20 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b="Q/77PTfD";
-	spf=pass (imf02.hostedemail.com: domain of Pankaj.Gupta@amd.com designates 52.101.62.49 as permitted sender) smtp.mailfrom=Pankaj.Gupta@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1789988721;
-	b=4IZ8405TYwkKGjMKPDzC2px9C+WkaF60EniqFgk7yMMg4HW0O1L7sSuGscUumGtHPPuywv
-	BsooNaGE17SGpNM6D2JHtlxELrEB2+lqyb5zPc74QKfNLqTpzfwaLcTMgUj3293gHCB7l7
-	dcdnESaA5uGuw2KAg9ISY47b07NKzbw=
-ARC-Authentication-Results: i=2;
-	imf02.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b="Q/77PTfD";
-	spf=pass (imf02.hostedemail.com: domain of Pankaj.Gupta@amd.com designates 52.101.62.49 as permitted sender) smtp.mailfrom=Pankaj.Gupta@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789988721;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A1A4D6B00A4
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 07:20:17 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 339591A012D
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 11:20:17 +0000 (UTC)
+X-FDA: 85237525674.16.8297144
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 94CC3120002
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 11:20:15 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a4G+eyVJ;
+	spf=pass (imf29.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1789989615;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Zu/eVncv/yvLsWTBEpI36HkuAh9Agzp0WaiR5ddGahQ=;
-	b=YYYZH2imkWpt2hKY8ZBpMzkAvZycrntzBxZMIhh3+GrtzTybZh51L8UtEvD4JVEU2Hkkmv
-	NcXb8Z612RQ8kBXLWBlrWMt9FjjF83R7/jJWjopthn18d1e/gHIKGg5eHKXwS4pRU2dmpl
-	ViNoNSIF4FbpUl4dNQNIcfWTq4gKpDY=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AIMr0ERwAi+Ca1aNYEZw0UoCk2QxhCGUYYh38AiNXr6Ty7v7O9fWqufTl0u7c9ob5DUex5RXqjEC0zLJ8ul6Po75wtOB+V+JREP8X72OwFUhk1N2B5fWpgTrbJj33cjQBvnjPbr7o9Oi9OWyEqsN4+yeMAB4n2L0sJ+/ydxwjDnD0heM4tzJDFiWhsqH1wKZg8ha1H2XIsOoor9Dot5YccSgu0NeXg4w0kyT5jbyrGPBAe2NZfEi6HVwEzIeo4PsdyQjoGcs9k0YIrl6FS7Kauk4JnRkirQtbqJ6j4hTHR/flEeebLmY4leWeblzc8Q2Q4P/C4mcOyt+lf05aa6tPg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Zu/eVncv/yvLsWTBEpI36HkuAh9Agzp0WaiR5ddGahQ=;
- b=tXU3jSi6AoQuaaTUk0ErS62FMfL8LtO7c0rsTcwNOykUl40CsHh+DRmgu44TrzWvBzVIDw+3Z5220cXSfXE1tf+Fx7x2misAWwQO8dQqHrRABjK5tzh+uBBQFMDtl2Cb++Z2DKtEOMBJEe4/Au6KEt4uyGPDXS4W+J7AKxamvdQRuI+LiFEq07mTdHEABZzROKwgT88ahF7W48/FDXWYI1SepksGOf8lEKRgYpu1ei75uowAbkNQTMsVk//OzhXKhK9CJogUH/pvRZ5SVsh62A4cM2P8Vrh0wHSSwe2LZs1jp8S8qJnU7xeZ06TTPdz0ejrSBGrmFxSSU5DT4l38jA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Zu/eVncv/yvLsWTBEpI36HkuAh9Agzp0WaiR5ddGahQ=;
- b=Q/77PTfDbCktygNrpNxaoFyJibL3Y6XiyFt7lt2YJpqW/WE1LKyLPZFup0/1okockGw6KbPOXNIC40rsxVgl5+T4t04GqstpaFlblR7eEiBGiGspSodXGf9BmQr7g05nkXoqz6xt5aGmGzz0UAS18exQ8q+miRU1D2+cpaszyt8=
-Received: from DS0PR12MB7771.namprd12.prod.outlook.com (2603:10b6:8:138::6) by
- SAWPR12MB999165.namprd12.prod.outlook.com (2603:10b6:806:4e1::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.16; Mon, 21 Sep
- 2026 11:05:16 +0000
-Received: from DS0PR12MB7771.namprd12.prod.outlook.com
- ([fe80::9a3e:791f:33b6:3d8c]) by DS0PR12MB7771.namprd12.prod.outlook.com
- ([fe80::9a3e:791f:33b6:3d8c%4]) with mapi id 15.21.0428.015; Mon, 21 Sep 2026
- 11:05:16 +0000
-Message-ID: <d50d001c-f71e-41ac-924b-3de5aac2a89a@amd.com>
-Date: Mon, 21 Sep 2026 13:05:04 +0200
-User-Agent: Mozilla Thunderbird
-From: "Gupta, Pankaj" <pankaj.gupta@amd.com>
-Subject: Re: [PATCH 3/4] mm: add shared read-only vmemmap support for FS-DAX
-To: Muchun Song <muchun.song@linux.dev>
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>, Dan Williams <djbw@kernel.org>,
- David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
- nvdimm@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-cxl@vger.kernel.org,
- Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>,
- Alison Schofield <alison.schofield@intel.com>,
- Mike Rapoport <rppt@kernel.org>, Oscar Salvador <osalvador@suse.de>,
- Ira Weiny <iweiny@kernel.org>, Jan Kara <jack@suse.cz>,
- Matthew Wilcox <willy@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Michal Hocko <mhocko@suse.com>,
- Qi Zheng <qi.zheng@linux.dev>
-References: <20260903122128.12264-1-songmuchun@bytedance.com>
- <20260903122128.12264-4-songmuchun@bytedance.com>
- <4bc1f4de-40ad-46f0-8d37-4c4e0cad0ad6@amd.com>
- <8EA6782C-7A3D-411F-91CD-031AB97CD024@linux.dev>
-Content-Language: en-US
-In-Reply-To: <8EA6782C-7A3D-411F-91CD-031AB97CD024@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA5P287CA0033.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:17a::16) To DS0PR12MB7771.namprd12.prod.outlook.com
- (2603:10b6:8:138::6)
+	bh=2kg/TXvOegdx6UJZ/kLCIs+vBCNA4Z77iTJNVCR7wKs=;
+	b=Janqtm00V4fJLuclPFa4g/9s53LTdKVipLlDfaSLkRU3JKD98yiSgEBRiV4ZGjIcIPhyQh
+	R1CuSFQnLVwAuDaBnDEs6RufO4XpMzIAG5BX0MBnhh5GyPmTz6/Mza8D+n1sR8E7/ig1be
+	/t8Ec2lvMTSGqM6NiB/HX7XZuhudJ+c=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789989615;
+	b=DGFleXR5Q+TJyMOSaBlKL95BLd1FOk8coYCg+var3DtvOT2C8+RGhEdekqupsRN+mnTgJU
+	KyhdXcFLWQe7OEFIthEAeCptWSxNjvzhL/fyDmt5Go/FZPVdI++0x71eYN6lUnRAT5nyHI
+	pmc9z4M96VbHnRDLR7xuW8xlwuUTZkw=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a4G+eyVJ;
+	spf=pass (imf29.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1385E600C8;
+	Mon, 21 Sep 2026 11:20:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E39521F000FF;
+	Mon, 21 Sep 2026 11:20:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789989614;
+	bh=2kg/TXvOegdx6UJZ/kLCIs+vBCNA4Z77iTJNVCR7wKs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=a4G+eyVJTj1TD1yFXh40Wkj0vOwJyfJ2dJgvMdbOqEoy7IPUeeVXA2y4WnmvAAsni
+	 Pq8AH9usOFsni9gXpy/Unnufp1BGPGx7zs6/EO/vakHJibOhWrChcyP3VuzN1TYA1U
+	 CS7zm8uAomtHruXfTx06DLt0EiOdWmWaODscqnC5Eg3JXqBjPXDpK4w7axzRsAsEeh
+	 QT0x7Ze8s1jer8ePBOvkNbfljBK0RLTixj1BljoQrSESB/HEm/FlGU3WIr0snFvqMQ
+	 qkTERjAvODAyy5CSiADhF3/hgIKCmISmQLAAAvhBBGwZyX1rJFEQPoLlapT09UK+Au
+	 BEfcyT/CrGpxg==
+Date: Mon, 21 Sep 2026 13:20:09 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Oleg Nesterov <oleg@redhat.com>
+Cc: NeilBrown <neil@brown.name>, Chris Mason <mason@kernel.org>, 
+	Jens Axboe <axboe@kernel.dk>, linux-fsdevel@vger.kernel.org, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Ingo Molnar <mingo@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, linux-mm@kvack.org, io-uring@vger.kernel.org
+Subject: Re: user workers as coredumpers [Re: [PATCH 1/6] coredump: don't
+ switch a dumper that has no files] table
+Message-ID: <20260921-programm-rentner-faltblatt-ec5ed7719d55@brauner>
+References: <20260915-work-coredump-fixes-v1-1-f354ca41780c@kernel.org>
+ <20260916194837.3732307-1-mason@kernel.org>
+ <20260917-staunen-sparsam-infusion-83238c68d21f@brauner>
+ <178960987412.207413.3957049392884487413@noble.neil.brown.name>
+ <20260917-zahnpasta-aufweichen-flackern-1182320f5c81@brauner>
+ <20260918-tonart-umgeladen-gesponnen-519fca5172bd@brauner>
+ <aq_4fY6GVtK47Njq@redhat.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB7771:EE_|SAWPR12MB999165:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1c3a2f1a-5c82-494e-628e-08df17d03767
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|23010399003|11063799006|56012099006|4143699003|10067099003|6133799003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	EmFY5bu9d8bk5NxGVAWsPbjh6ljZuySVUOMoQ96DXGP5ZCdcU7aY+F8uY0NtHKobOKftpEaE8Uu03/iaZSiDNmXwinrpnPToVDqO1afNqxzO/MnpNLtJooxr0yx9VU6EcBCtHNZwM7RGiJUU8sCnxtvqTrdKytAHPc1J0025PFFmztd4PmdeRdi+FArmYLrdg2dVCSMAXPk5ZaSpnfwAR7RtHZfoH5lNVp9qpI1+bDVz6dUqfK2PEsMhNq7rEkE3FSot6ebeuKQiwOP5N7ZMf0A173C1Z4pk7Rtre3ZqQPNLbTa3HEqZO2/oFVlrkKHrDEo2Q9dVBLXuTuWbbtY2/G6pfg2o/r5VX4NtLNtiSknfaSLnha3SgA40kihmq5UhigL41Yg6tSOuuogZBhZRB49pUJHHxG8XSZzqw6++ZvQQuzBbuAV/hHn8uF9H2oviZFUDm+A/tUW9T4HuMoe6Os9VnvktcHRQR2l5F91185js4lh6dc+1ynslw1IjyheO5CQScCuPoitPb5qRnScXZr6Q4pIRner9RSe9T9MU59Gi2YlXenxIg2wJfa7aR80KNFY7aFVmdSVg1M3MXuw8KQUcXpeJL6O8lB4htTdizYbNKrn9zNGSH9Cn/QjKheVQ1UafciJoWdU6h7rEgTKnjXkikpdQfstgbRUpI/zrLdc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7771.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(23010399003)(11063799006)(56012099006)(4143699003)(10067099003)(6133799003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cGVXa215d2c3bExIQmpuM0JrMXRnUUxVR0RUL2I0NSsvUGtYVys4WUYrYWMy?=
- =?utf-8?B?Y1ZOejhudjRxMHVNd2pVeDEyb01ZaWdkQ3RlWStFSG1LV1lmK0tpbXZZVENl?=
- =?utf-8?B?VExEVFZkZXJTZjA3NzIyZ3BIYUFRbGx5eE1VSVMyQUNwSU5lblJFYTdtZ3Ji?=
- =?utf-8?B?OE1DMFFtVUtRSnhXcjJ6TXB3M1VXck9oYXVjR2RweFcvRElkOUJRMUpHd0FU?=
- =?utf-8?B?YTBWaUFWdDFLUWZRYmhhMVFQL3lVeEZZRHhJUVA4NU55N3VJa1ZnR2lJeGYy?=
- =?utf-8?B?TmdwMDA4SzZYbFd2a0RBYy9HdkJBY0szMzhtUnVCSklyQm1CaDJIWUVRbEk0?=
- =?utf-8?B?NXR0SmpqWGsxRUp1T3RQcFlTV1djbmFCNWgxcXdvRys3azcvQzk3S1VxUHFz?=
- =?utf-8?B?WGpNaHAxVlVYYmdSU29FQlVlYU8ycnE0T0Qxek1yZHdQeGwwM2ZtbFFWd3Mw?=
- =?utf-8?B?b1JPU0tkZlF5Vk5mVC8xajJWandRdkpyTXdINmswYmM5N2EwRkVVRjBLRjNV?=
- =?utf-8?B?RHF1VjhBWkRtSHJHM0VKem1EamlIeFVvNUhZV0ZZbkpaelR2MFM2clQyNmhO?=
- =?utf-8?B?TVVQOG1yWG9Ba2liUERCbFRkVlloMjFYZ1Brc2FtVUlwR3NOU2J3MHp1NEhm?=
- =?utf-8?B?RmtWUDBURjQxQit1bDZJdmlkKzdEV0ZlWnc5aU5EenR1bVVISG1yMkxGVk1H?=
- =?utf-8?B?dnp4cmFYUXZqNkpjUmg0di8rQmRYZUJWQ3hzMG4wRWVBMU1laEF1RDEwZ2Nu?=
- =?utf-8?B?MlRXeUp0blNidmxIUStlUTg5WDJqSHU4dEhMWVFLaVAyUTlBMDFXakk5cmhT?=
- =?utf-8?B?Qkw4S25pRWpYOFRlaVBaaXc1TGFpbGhiRjd2NlRpbnkyK0pnVnc1Z3pNQUtk?=
- =?utf-8?B?anduNUFrS3ZxK29LdEtxY3dYcE8rZ1lDZzI1RUF0S0tONldBcHlXbXkxdVBZ?=
- =?utf-8?B?WGg3cER6a2luRTNkSFA3RllnWlZSTHRxbjdkNnc1NE8rS1hYdUxldG5WRS9k?=
- =?utf-8?B?enBYd0ptOEpNQ3h3bjNMc1BCMjhPaUhsbmduSEJ6TmQ0RFJtd29Ia0ttN09M?=
- =?utf-8?B?RWp1Q1NaejQrRFgwOFlhdDBkUzA5c1hySGVxSjAxYnZ4K21MSGtCZnlTT204?=
- =?utf-8?B?UHRPcUVpTFpNMUo3OElCMXMwRTdBWnZXL2lBSHFhRVpWMWtwbnBxM2JJSDlE?=
- =?utf-8?B?alY0Tko2dVZHbm84dHBtVGdiSVZtTmhiYnU2R2paU1N3RWhiWFh4UjRLOXRI?=
- =?utf-8?B?OHBCaDFuckRhS20wd2IzV3VSRTQwYzY0Y1BSUGl6TEw4TXNFYjZXVjdrUDIv?=
- =?utf-8?B?U3JCWUt3aFFWeFF2TDBweGpGM1E2bW94OUEzL2dvMGZZMTRkMVg1SHN6dVNG?=
- =?utf-8?B?dXMzbzgrSTBmTFIwbUpSZWFscHZScEZpQTBITUk2K3pTZFlZdGRUcVQvTWha?=
- =?utf-8?B?OGJlV1doUTA2QW9rL3dFdHgvT1ZPNEQrRWFRZk9RaUl5bHNJZVNzeGVQVkZR?=
- =?utf-8?B?Vmk0Sit6YW1wVUk2V1RZVERDWDdSaThJZ3NhMVBoc0J3UUdpaVpjckhOU1VV?=
- =?utf-8?B?b2lWTWRLMjZLdVBkS0xpUy9NMkhlcE83TzRBSFUrRjkzNER2YXRyOE1Cb0k1?=
- =?utf-8?B?SG1CVWNvcW93M3RWc3pBVUhoYlM2OUJqUjVnNVRQK0s1YzdSRFdldGJBNTIw?=
- =?utf-8?B?VTR4UmJ0THNwRVp3Sm1hQmFRNDA1SnhjUzNNSzFvWGRybVhCanJScnM1Z2xr?=
- =?utf-8?B?eG4rekZFaHFzQnZrRGszMVYwSFowc0QxbDFPRGRJcTQ0d00xM0o2OEVXZ3du?=
- =?utf-8?B?T002RnFTaWFoVDIvZXlOV2dmSG40aDZUUGFjU2xFVUdOMnlZc1Q4SFNSaS9v?=
- =?utf-8?B?eDhISnMraEhsdllDQWZWeEhiWWEzTGljc21BVEVLQ3RBUW5jWEtWZWZJbk80?=
- =?utf-8?B?QW85R3F1SytVMHFobUNmQTNiWTh0RmdkNCtockt4Mlc3QkNZUE1iL2hDRFFE?=
- =?utf-8?B?VUNLTjAvbE8zV0FIMXFBVndzVGtJcUZRNkhMQTU4emVFZHlSc1ZENWY4VnlO?=
- =?utf-8?B?bU8wTXBjZlc4Z0NCcUpLLy96QUI3NDRBMDhvcEdRRVFjTTQrUmxWbllGUXVR?=
- =?utf-8?B?MWJoN2F1NGRFZHJKRVBsb1N6N2JQa3FwSmhBYTRRWW0rN2x0RDJlR1MyYm1I?=
- =?utf-8?B?V3lkK3JVd3BrRFRMZXhxcGpXWUs4Rjc0VWRjWDFwaDk0ZzhaNVBVaExNTXpz?=
- =?utf-8?B?RUZZVndiVDNGVWQ4dW9iYU1ybEI1aHVqL2ZBQXJPeFo1ZEpRd0ptRzk2bEVt?=
- =?utf-8?B?RzhBYmFLYjZyYkpJWE5jaHhsMTVROUgrY01XSER0L3BiVWtZQ3ZQUT09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1c3a2f1a-5c82-494e-628e-08df17d03767
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7771.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Sep 2026 11:05:16.1433
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 7okIOoS8dnd/nCFNjl5SiCH5j7ZqJ81rNIXUww3XGzy4O2zG5+rSms8GKlM20R9t5nHyO3Ajj8cyHwtivujj/Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SAWPR12MB999165
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <aq_4fY6GVtK47Njq@redhat.com>
+X-Stat-Signature: imt5isbtsjmn4uosic6k1ukmzd7tb85i
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: D958380007
-X-Stat-Signature: kir6nedz1nyg3i565z7m4juj6z6xf9qo
-X-HE-Tag: 1789988720-650981
-X-HE-Meta: U2FsdGVkX1+AnSjKvlENewwIq1niU/CDFWiY7E1YEjrlsL6L8EK1dcv/oC5OBcc+XoIaUM8kbDYkKQmwd+s8Ky7dPwndKaL5x7UKme74WjibTJuGy/ag3/iC0SuuzO4n/MFbCPHqEcWE1NCZgWw/Qj+Yp0EpJN7lvFkmAHrKvrJkVztStA9xeFBnTSvpLShCnRTZmfTCWMEp38RZyWxAbm8YYUKgDLgNMGfUAELIXighOO2MTXqbmMReMnjcLvgWWxN7TzFSYvv3MEA/hp7pW8OHQJvjPkBgE8oAeeNyq/VuaLS5Tyxp0MiMmcij5szxavaCAp+Pa+4vy+GQwuRVpbDBKsHdotwyTUOKC8OpVZaqU1BGYByI7I5vgxOlZsx49cqHkHC0NCLenVwxpRNq01CsOXmqpTC7GFi6bsjZGpMVwInAyxFzFfGHSy0S3bimeQwdN9HnSfYxhk6dLeroZrk0QWRoKIszMJ22mgdCy2MWqOZGtemqQCqF4kRVw+tVmSn8sxIwMnSfWeda4V5Z4VHDTAX50daZZuFS+maNbSEbX/HdKNojkV1trMCb3H4q0BeL6s6+SWqTbkWLoOb1ZaLKdSa+OQROxuHlIa+trvDKIpWnxsrf4TsH0JU5Y7ofSq6wRqnQURtCTBaWjQ3dEhFaZeZB/EPyU/aEfs4l+92IUvER7Ot7xmii1IVXlxxXPnNiu5WzP7mzcirXMLEvDinb5AXaF3Tbvev1tycVpb+V8twqjtJjZPX9fZ6YyKOTdXt56TWJD8lsmR9aeelhad6sFg1l1ixJv1CHIk50VUUt6SHSupf1xi5pNxf94jlnmCxf+tLu5MMAz5L5CHiXV43QojkQUAfQmofayEYmtQsZ2oWfo27KJqVSvlgVQ9/7N7ZGTJv8gPj1NSpbztsr20RVBKgH6F6891HWrEU9QDDWiSc74Uca5121bXg+xtMkJeR/2yYQLhIU6xKsyTp
- me4tszpR
- pspG9vSUH/RvrpTq7iJmSzKNcQcKAFH18RvfCu+l78AKuhvVzxXdvk0P9nklc58FCg0wkhwuMSsGTehzqc61t9q/dOnD3JZ3M1/9YLetfYJn9c5z/uumxElhDNPUgKHKFwTT5CiHxmrYSq1g3+BcDGfSIo8Hg1fWYFOAaPIUx6WC/zVW4X86ykrIWR6/mKcGrGQbGVqI6r253wo6SccuLw+L4HGKcbT1OoRV0bK/G8VptYCD8E5jYjT4VXeIzHpLnLfK1AdFNU+z2SByuGQ/W49/g/GUWuBzPuNu+VyYIPd7iWm/rk2evRqAlBIzVzGop5brhwpXmh2sZS7UaKpt7jDkhDHGFtFGOywYtVZp912YPIvUQx2aalKACmdIb3zB3cqyp8qSAbfcWAk1asF4rVdph1D1OyP42jdKZRhSOaIKSyUwxIBl4JGiRBRLfCb1PMZA3/KVKVHas3Glp4bEFFlC7Ig==
+X-Rspamd-Queue-Id: 94CC3120002
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789989615-603663
+X-HE-Meta: U2FsdGVkX19pLMujJiPYEyy2Ms1dVf32FZQU2cFqJn3jv7RTPFfD9Wdeab6juMkZ3e/nOrKDYrEmesy/2rmgg+B3FY0w9iKzJwGWFU0YytNYt3ir5Ky+xgcMr3Q+kKcsubh/qRdYkl9brMR9nmSPRnKPR5Ha44IRboio/8cZEKJGdXw3j1g2KyyKJkdXiatzaH52WRp9+sXT43a2ZOuRkP/6ZMePbvDnhJG7d9+Spvrd2cLkBiIRiXP/TZfv4uazVs3vQqDvedtT5A3DLqx8Sfj4I4hiYD43lomC92gtaX90MQh7zF3Cub6Vi09jTZ4sPHupY+nj2nHOR8R/jox043YhL5+sDf7dZCE4GVTl+zxJIckImJi7Th/wCSpRQFVca9IQxd5Kns+oV4IeQZ6fRjC5Ok0ynkSbcbGILsf24QhW7UHJp+pRAaGOXyCOSQvxtSAxAdlK2vlD6NNpDV9mRzORbca4m3Ybe3kBvsmox6wZDreeVMe5Gl3XVRSJ+hotm5WzeNT0C9jsVNtfBZD/AsF+rC6gRYuWc6a3TzzJ/oDtcm8i1dMzloPZ3+12s2iycokXX4rkbvn3T9rJgg0SWVq9KUMuiRARzCoS7GnK7exx9Ieg6AIzHxYTLLTJQJfR0De5njlU1Pm6ZC7eA1/4CFlJ4uNOPisU3TkBtVLywcXJRSZL+7YY82ADWCvhJrzNl+9anbI3unCyYuncHlnLwxdEaav6myBJjG71PT35WRRpXLocJz5eW1QmEGOE9GmNOYd+yadHZeEktcdSktX71bYOlozrz8KLGw6ejmkwccmCdgJe+Wa3Pyfpy7q5xHGAtf1M61VXWOKYqpOtz+pENriohb0x+j+k17dOVCqC2AfxCQOFECqoQqMzjh8xNUJ+1WJQmT58xv8TIEEzmXubJxwiCwkFyRlrTr3gn4DbpvHi1YXAJ/Odn2iLdh4P7+dayNoIRB3HJxmBTpG8vsm
+ fAWxNwqq
+ tA+79mSl+zLAwsrm3RZpMYSlsFaptgyweCEeiyYTYayBQTizXiqyuh+bdo1C5UGrKP4I9h/4s+5aFls74nA6mlR2BzwENPbxPK0m/L4/Y+09O9oV5rOC+498Hn73ytJwi2L5wk1XA7btAf95f4lNG77fHYcL1IfmlClbjo2kfLCJ+LXcmt9sG89q6bcHHLz7OQMKFBqtlIUC+buJqZ3RHF9YM7f7IISotaTj77PkPCZxE3jUh3oAS7IpwAMHo+ffdMKHgQQHDMJ9jNHOiy0t/jslBHXZSwWy4SFbpj6CxU/OzzNc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -182,76 +99,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->>> FS-DAX registers persistent-memory ranges as ZONE_DEVICE memory, and the
->>> kernel normally allocates and initializes vmemmap storage for every
->>> advertised PFN up front. Sparse pmem images and workloads that only use the
->>> DAX direct-access path may never need writable per-PFN state for most of
->>> that range, but still pay the memory and initialization cost.
->>>
->>> Add an opt-in dev_pagemap mode that populates FS-DAX vmemmap PTEs from a
->>> shared read-only metadata page. The shared page is initialized with the
->>> common ZONE_DEVICE and dev_pagemap state, so every PFN still has a valid
->>> struct page representation while private metadata allocation is deferred.
->>>
->>> This relies on sizeof(struct page) being a power of two, so each vmemmap
->>> page contains a naturally aligned and repeatable set of struct page slots.
->>> It also requires architecture support for runtime vmemmap remapping,
->>> because shared mappings must be replaced with private writable pages before
->>> a PFN can enter userspace mappings.
->>>
->>> The initial implementation is deliberately limited to a single
->>> memory-block-aligned range. That is not a fundamental requirement, but keeps
->>> the registration and teardown paths simple; support for multiple ranges or
->>> less strict alignment can be added later.
->>>
->>> Provide vmemmap_materialize_page() to replace shared mappings in the
->>> requested metadata range with private writable copies. A later patch will
->>> call it from the FS-DAX fault path.
->>>
->>> No caller enables the mode yet.
->>>
->>> Signed-off-by: Muchun Song<songmuchun@bytedance.com>
->>> ---
->>>   include/linux/memremap.h | 11 ++++++-
->>>   mm/memremap.c            | 38 ++++++++++++++++++++++--
->>>   mm/mm_init.c             | 11 +++++++
->>>   mm/sparse-vmemmap.c      | 64 +++++++++++++++++++++++++++++++++++++---
->>>   4 files changed, 116 insertions(+), 8 deletions(-)
->>>
->>> diff --git a/include/linux/memremap.h b/include/linux/memremap.h
->>> index e3c2ccf872a8..21c9b6aeef67 100644
->>> --- a/include/linux/memremap.h
->>> +++ b/include/linux/memremap.h
->>> @@ -9,6 +9,7 @@
->>>     struct resource;
->>>   struct device;
->>> +struct page;
->>>     /**
->>>    * struct vmem_altmap - pre-allocated storage for vmemmap_populate
->>> @@ -108,7 +109,8 @@ struct dev_pagemap_ops {
->>>    	void (*folio_split)(struct folio *head, struct folio *tail);
->>>   };
->>>   -#define PGMAP_ALTMAP_VALID (1 << 0)
->>> +#define PGMAP_ALTMAP_VALID BIT(0)
->>> +#define PGMAP_VMEMMAP_OPTIMIZATION BIT(1)
->> I liked the overall idea.
->>
->> Minor naming suggestion I have:
->>
->> 'PGMAP_VMEMMAP_OPTIMIZATION' feel too generic to me.
->>
->> Maybe something on the lines to reflect the actual optimization:
->>
->> |PGMAP_SHARED_VMEMMAP or PGMAP_VMEMMAP_ON_DEMAND or some_other_name?|
-> Maybe PGMAP_VMEMMAP_SHARED? It describes the shared vmemmap backing
-> more precisely. I prefer SHARED over ON_DEMAND.
->
-> If you are OK with this, I will keep it for the next version.
+On Sun, Sep 20, 2026 at 05:15:09PM +0200, Oleg Nesterov wrote:
+> On 09/18, Christian Brauner wrote:
+> >
+> > So I thought a bit about this yesterday and had some brief discussions
+> > bout this as well. I think we should kill this whole bug class by
+> > ensuring that PF_USER_WORKERs never participate in a coredump.
+> 
+> Agreed,
+> 
+> > --- a/kernel/signal.c
+> > +++ b/kernel/signal.c
+> > @@ -3021,6 +3021,21 @@ bool get_signal(struct ksignal *ksig)
+> >  		 */
+> >  		current->flags |= PF_SIGNALED;
+> >
+> > +		/*
+> > +		 * PF_USER_WORKER threads will catch and exit on fatal signals
+> > +		 * themselves. They have cleanup that must be performed, so we
+> > +		 * cannot call do_exit() on their behalf. Note that ksig won't
+> > +		 * be properly initialized, PF_USER_WORKER's shouldn't use it.
+> > +		 *
+> > +		 * They must not dump core either. The dumper waits for every
+> > +		 * other thread in the group to exit, and a sibling's exit path
+> > +		 * may in turn wait for this worker's own exit, which only runs
+> > +		 * after get_signal() returns: io_sq_thread() ends up in
+> > +		 * io_wq_exit_workers() and waits there for its io-wq workers.
+> > +		 */
+> > +		if (current->flags & PF_USER_WORKER)
+> > +			goto out;
+> 
+> This probably makes sense anyway... but see below.
+> 
+> Perhaps it makes sense to change ptrace(PTRACE_SETSIGMASK) to fail if
+> child->flags & PF_USER_WORKER ?
 
-Yes, PGMAP_VMEMMAP_SHARED sounds better.
+Yes, see my other mail.
 
-Thanks,
+> Currently get_signal() from PF_USER_WORKER can only return SIGKILL,
+> I think we should keep this rule.
 
-Pankaj
+Yes, agreed.
 
+> I don't think your change can fix all problems. Suppose we have a main
+> thread T and a PF_USER_WORKER sub-thread W.
+> 
+> Some signal, say, SIGHUP has a handler. Debugger unblocks SIGHUP for W.
+> 
+> Now, kill(SIGHUP, T) can choose W as a target, complete_signal() can
+> choose any thread if wants_signal(t) is true. W will "drop" this signal,
+> its signal handler won't be called.
+> 
+> 
+> In the longer term it would be nice to rework this logic somehow to not
+> rely on ->blocked...
+
+Agreed.
 
