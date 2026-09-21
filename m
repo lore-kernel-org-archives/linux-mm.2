@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6AB9C982EE
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 13:17:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09327C982F0
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 13:18:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 939606B009E; Mon, 21 Sep 2026 09:17:58 -0400 (EDT)
+	id ABFE46B00D9; Mon, 21 Sep 2026 09:18:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 874226B00C9; Mon, 21 Sep 2026 09:17:58 -0400 (EDT)
+	id A708D6B00DB; Mon, 21 Sep 2026 09:18:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B1A46B00D7; Mon, 21 Sep 2026 09:17:58 -0400 (EDT)
+	id 9ADA86B00DD; Mon, 21 Sep 2026 09:18:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 54CAD6B009E
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:17:58 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D11B2A0192
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:17:57 +0000 (UTC)
-X-FDA: 85237822194.21.F29ED24
-Received: from mta0.migadu.com (out-204.mta0.migadu.com [91.218.175.204])
-	by imf19.hostedemail.com (Postfix) with ESMTP id DDF131A0004
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:17:55 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="X/SjqYcJ";
-	spf=pass (imf19.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.204 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 720976B00D9
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:18:05 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5ADBE12019E
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:18:04 +0000 (UTC)
+X-FDA: 85237822488.22.93FBFC3
+Received: from mta1.migadu.com (out-62.mta1.migadu.com [95.215.58.62])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 5D11114000A
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:18:02 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=myA1+5KR;
+	spf=pass (imf23.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.62 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789996676;
+	s=arc-20220608; t=1789996682;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u/tIGTo30mKJ21qg/bGL99r2Mo2ceFoUD8zlOI6ZWwg=;
-	b=eF/nAa+l21j/vCO06Jfwv4lZZh4cO7Y0+XupTy+HCyn5Fbxys2otXn004u0yinp4MnwYtY
-	b3E9gknb7DTl+6sHrjAnkFr6mdIGV3h/8h/6WQbGU35vafT5BOrqTIaop82pLuTimlRwpL
-	Tmwszed9ZAmY/tUGSZeB4x3+DtO8lCs=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="X/SjqYcJ";
-	spf=pass (imf19.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.204 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=KlUeNXTqokj2yuZrGgcrCQUAECPD6R71OqQgjTd+Ltg=;
+	b=z7MybK5Hfg1KG08sRB1zkB5FY2y+266VJ4vy7Q5osYf46iLFJ8w0ysDS7iq0Q0U5nkogId
+	lGMvx2DwhJSlYKLLJYq/tPZWN4GfDouvZo9Kob0xCdqYJ8FTGeJuezX7qSlmc9ObaOV0qL
+	PDzzH1oVqpbfaVbp1uO+vXvs8DYOPxA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789996676;
-	b=uYWyVJkcFH4iZl/yFWx2B5V8AW8Ve/dYcb5Pf927K/6W92wvBMZKyu3IRhuVxjGOPF19Og
-	SUMmuhHZYkZcqi3dmh1VpLKQxvuW8o5cqBQuWeY/XDSY9vokuOZ28zl3iKX+Zy+jKvsiNB
-	lC2BwENTeD4i0WTI9xp1XnUBQvperKk=
+	t=1789996682;
+	b=EEuNk7WbnHstoFDVfWxxlPoUO2vx7oJzjdirR0zAr7kiW748rrnnmEO3W3NSrdWDf9pVQD
+	qtnOmdR4LYl+MeZJn0xHivQTkVZ0Yr6roXt1MsueZRAQ4WcSZTT6OgIAIQvgnZXPaZj5t3
+	/XBz7VSVRwDKKNxHH8llCWwJF8f2MMU=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=myA1+5KR;
+	spf=pass (imf23.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.62 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=ueVOpPzYnMeot+dswpS82YrnsBHSSPYd5K+PQjCvvaY=;
+DKIM-Signature: a=rsa-sha256; bh=IN3u//Q3+OpLA8rMnVjE8v9xBIK2AikPADGADNf418I=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789996674; v=1; x=1790601474;
- b=X/SjqYcJokzG5Jzyk6IVWxAXA+B4Xm2zy1fhXRgjy9ZEfXBQNe028meEjtHeHVkI9ZGDZo0U
- vBCYfFcQl7QxHlYUPwMhSmzQ9JxpQNVX7LiAOzX4bRqgCdd6x7u/k1nBG4zy91iUNa8YHVRUDCW
- AjTsvty9tppeRrskQ66c1STU=
+ t=1789996681; v=1; x=1790601481;
+ b=myA1+5KRkTOpFpgN9Q7qgN+XSlBivE/MVPxxYjs+yMiMagjddcNTGevuYj+9z2O5eA4TEJQt
+ X0YPrWdUw+XglWLP4iIDUMuTvTxoEvNYtoUhP968mOD6fsh+JU8gbRzxTXlARXkD5e7AQkcp5M7
+ 5HngVexuaiONVCvxe8lRki60=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id f48b4f0c2c5289ef;
-	Mon, 21 Sep 2026 13:17:54 +0000
-X-Mizu-Trace-ID: f48b4f0c2c5289ef
+Received: by smtp.migadu.com with ESMTPS id 28b20bafde2dc762;
+	Mon, 21 Sep 2026 13:18:00 +0000
+X-Mizu-Trace-ID: 28b20bafde2dc762
 X-Migadu-Flow: FLOW_OUT
 From: Ye Liu <ye.liu@linux.dev>
-Date: Mon, 21 Sep 2026 21:17:22 +0800
-Subject: [PATCH v2 2/3] mm/vmalloc: fix vmalloc_dump_obj cross-zone VA
- lookup
+Date: Mon, 21 Sep 2026 21:17:23 +0800
+Subject: [PATCH v2 3/3] mm/vmalloc: skip vmalloc_dump_obj for non-vmalloc
+ addresses
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260921-vmalloc_dump_obj-v2-2-73fceb3ed1c8@linux.dev>
+Message-Id: <20260921-vmalloc_dump_obj-v2-3-73fceb3ed1c8@linux.dev>
 References: <20260921-vmalloc_dump_obj-v2-0-73fceb3ed1c8@linux.dev>
 In-Reply-To: <20260921-vmalloc_dump_obj-v2-0-73fceb3ed1c8@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -79,14 +79,14 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  linux-riscv@lists.infradead.org, Ye Liu <liuye@kylinos.cn>
 X-Mailer: b4 0.14.3
+X-Stat-Signature: fgokwcybi8k7ub1eywg1hmds3q3gnwmb
 X-Rspam-User: 
-X-Stat-Signature: b7hfq1whesh6zzbghycmfkwfsqxgnmyh
-X-Rspamd-Queue-Id: DDF131A0004
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789996675-28469
-X-HE-Meta: U2FsdGVkX1959+g6e6TTrMEDFNJbvhudptJtRgT75ZtPTLjRuuQaia30T/RETUhlPC70IMI1hQVYxCBTVJ91lN+033n/mmHJiMxYU1lozobx28hE4Z985o4ZYO3nu+6292XIBFf2YuA7MM33a3/Nx3sLpF4FcuCZtBzWoRDPMsDRoeKX2J/sia1arsDb3mQgXc7Qcqsc/A6bfGoXvGZWs0/hqGimvnJMvYLNtVJxqEYUR584rTrpp4LC3wj5jfV9H00w3OlaCHAa5qd2m9WXet3UJjlACzE2ZhszXdP5UH0A7uWeToecIuCD47u7f86yzcUx8dBmBlhFYxJOZO6htZnZdVIBylZPP42GtKslivmaJWp//kk8DMeOtqg5s8iidrF/EE1X/MTS92hXDc7TmUqQwQAhlslOXj1xHsKWCnwTp5q5Cj93mVJN36/g7lxgFex2wZLa/2B8myx0Amq/97kW/HiOpbUVQGkzUK0seWqMIb5v3CbDweQfXqJGEE6rK9KE2MTkDkMoA88Vgu79pszCmHPUo1qWQQc0yKOyX0RB0eJHGzSmFvXle12hO+Y1u4KX0SCZHJJtze1PWyy8va97pcheroRHnwcHzqLs/j/9ZKx98OTxgYNKlYyH+o7BHcmyyAHgBFG0YL+zZ03ET1BpLy4RJfvn2q5PuyoAasuYio6oobXRthT9TmQRCloVcs6QELsBiTVy0igFYGbV0GLPRGYKcqVX0r7WFTMX7D/ePCrKkNfy57RvCdpTa/jU3esFlk2NH9Clij5C/l3XMRs3Y6SxRmVGR9xbaBTBc8gOosqZur5jOCfD7S7/3NeJggAVShpJuWRS4AkWISlOavWYoCunhqFeVuSnpFB9PAFE0mkEOOgXpakfQJwXkcTy6dpFD2OhO7NeeQa4MkFpMhtClynaUZlnNJSsN4BHq19CDZN3LZ0tSPZQPFZ05u7fUMm53F4ZxcVScG2WCF6
- RkgVbqd2
- 1QxB6T0oftmSPd3uJ5G9ZfzV0ONZnX2rgw4pmWjNYAmr/FL24Lt3/LrYBw9xjzksIiN8fZaI0CvKbMIEeMqy5r926H2dXmbtmOhW9F7L+GJa4o9jZ/IeoX4GIPwD36qs0A/QZ4gi9hivdMVSp0AUqNZ9c3EkAw7hqNEXkH3b5t+KlmmFnQJYbVs0hdT9dgRXBhPFvjnRjVrJARGt08udQgO5lgdepZKo3Ldg8KxkEVxfazeUIoPpJ8BUHfcoRSGxmEe4dl1io99oEXc5rjITfTtyPfmyY4GJjqnAz
+X-Rspamd-Queue-Id: 5D11114000A
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789996682-804134
+X-HE-Meta: U2FsdGVkX1+TJiW2O2/t1OZ8b6wpMX/KeOzOb+19WbglHP/Fq2cTTEvCYH1Nug8SXnFCZZQOOvN6uV+UBfOi7nrakJchDHI3qKk0EzU68QOsMV8b/MgSLmUYmXUry4hax7lQXLeqXIDiuuXFX6e15peItPeW2Ld9e3UknhVYg/alVyu8eu1VdASfwwcDSKn1trn2tXF4jT7hVqBjjD0R9jE7Qmct5iC2oHtzr+4DobHPRn0BRub3xiyxUrnh4X2+BSuIDeDpMQpjXuaV3cwywbvqYRSFgto/dEnIbrzLj00Ato4AZRD8nhpIhlQ8YeA3uHJ1/BLb8J9M+M5HjYsWKfF73H2Z/xepNO7ZQmJHAD2s9ZoxfMiWj95PmZ4nWHHTV7bYxU1VvafIChOIX4E9GpN6YcPEGkdJ+7EBYsGo9QkCmBKgiRv1hK9wXty9aH7e2bdJBRRMyQPZZxRxDIs2BEnIRaZw9hTqh/LFSyEYAgaXZlp0YZmYIa5begVMkmbcCOAoSt42pQ5nLFYFoW561GfT6NnClf01CjWGUNrmPa0Clna8tHZvVPQjnnWzL4zHXKUVFymAitFeGvf5HyYqwjx5rHf0C6OSM/bgVtN6N1jiduHaw4E2Zb+7E6CIuZFrlYTDEfHMAHXHgF0pV9PcXkf6siA+CTdg0ih6kIhiYescjM/A+MSNv6605hbEdbpjXYhVYyh2tv+GITvPooC9lPlcwxsjQnzesyYMPK4il3x4wwqAZckgfYfZocSh5rOUkNCFsDdRsK1jiqsT+EpBt2u6pBoT4MiEvnTbNqUfd8Jfds/QW7PgB+pzehTpjT0YlPX9IBOWPxt1gEFfTloMBT0iywJkvhhQ/lvEQ360doFKAbnpImTLssMVDoSSQWbaz+rMS0AFdDdDw1cdE6r1N8P3xfRdE8pk9RMNkXByxPefeM6sGkPZDEgxfdLp3KHybsHBJujl64EUF9IQuhl
+ DWkR3zFs
+ FJHixa8ZGYiPSRnkqKFtUTZa6SmpiUCd5qGLfHIanCtULkELuFhip+Xn2m4Cur94oJxjWZO0IbHOXwbIaINLj9mEuI2+8Ikci40PiXJoI33WLl898Pc2myso5792We17dzQywFJ1xmNCdhd6LkP+mTixoXVKdwMcFWptw8KB7fPu6TAO790WTdSAHpd/X4Z16Ze/36/k1hjv4xuE7cXW6X6iKLeCkLRdq0IlIrQ8FkewkbYzbKmGtVmJuaLPDlMqEWYiUUN07M7drd2F5UWMApyBPi88EEoif+OR2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,62 +96,35 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ye Liu <liuye@kylinos.cn>
 
-vmalloc_dump_obj() searches only one vmap node (addr_to_node(addr)),
-but a vmalloc allocation may span multiple vmap zones.  The VA is
-stored in only one node's rb-tree (addr_to_node(va_start)), so an
-object pointer in a different zone than va_start maps to a different
-node and the search misses.  This affects any allocation larger than
-vmap_zone_size (64 KiB) on multi-CPU systems.
+vmalloc_dump_obj() unconditionally searches all vmap nodes even when
+called with a non-vmalloc address (e.g. a slab or stack pointer from
+mem_dump_obj()).  Add an is_vmalloc_or_module_addr() check at the
+entry to avoid the unnecessary per-node trylock and rb-tree traversal.
 
-Iterate all vmap nodes using for_each_vmap_node, like find_vmap_area()
-does, but with spin_trylock instead of spin_lock as this function can
-be called from atomic dump contexts (OOM, KASAN, RCU).
+Use is_vmalloc_or_module_addr() rather than is_vmalloc_addr() because
+module, BPF, and execmem allocations reside in MODULES_VADDR..MODULES_END
+on x86_64, arm64, and riscv -- outside VMALLOC_START..VMALLOC_END -- but
+are still tracked in the same vmap_nodes rb-tree.
 
 Signed-off-by: Ye Liu <liuye@kylinos.cn>
 ---
- mm/vmalloc.c | 24 ++++++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
+ mm/vmalloc.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index df42d8a6f058..30c610f678dc 100644
+index 30c610f678dc..d8095b558365 100644
 --- a/mm/vmalloc.c
 +++ b/mm/vmalloc.c
-@@ -5278,17 +5278,29 @@ bool vmalloc_dump_obj(void *object)
+@@ -5277,6 +5277,9 @@ bool vmalloc_dump_obj(void *object)
+ 	unsigned long addr;
  	unsigned long nr_pages;
  
- 	addr = PAGE_ALIGN_DOWN((unsigned long) object);
--	vn = addr_to_node(addr);
- 
--	if (!spin_trylock(&vn->busy.lock))
--		return false;
-+	/*
-+	 * A vmalloc allocation may span multiple vmap zones, so the
-+	 * node whose rb-tree holds the VA may differ from the node
-+	 * the address maps to.  Search all nodes.  Use trylock as
-+	 * this function can be called from atomic dump contexts.
-+	 */
-+	va = NULL;
-+	for_each_vmap_node(vn) {
-+		if (!spin_trylock(&vn->busy.lock))
-+			continue;
-+
-+		va = __find_vmap_area(addr, &vn->busy.root);
-+		if (va && va->vm)
-+			break;
- 
--	va = __find_vmap_area(addr, &vn->busy.root);
--	if (!va || !va->vm) {
- 		spin_unlock(&vn->busy.lock);
--		return false;
-+		va = NULL;
- 	}
- 
-+	if (!va)
++	if (!is_vmalloc_or_module_addr(object))
 +		return false;
 +
- 	vm = va->vm;
- 	addr = (unsigned long) vm->addr;
- 	caller = vm->caller;
+ 	addr = PAGE_ALIGN_DOWN((unsigned long) object);
+ 
+ 	/*
 
 -- 
 2.25.1
