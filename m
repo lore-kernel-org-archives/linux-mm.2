@@ -4,101 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BF2CC982E1
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 09:53:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FEDDC982DE
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 09:57:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 19E926B00B5; Mon, 21 Sep 2026 05:53:01 -0400 (EDT)
+	id 8603D6B00C1; Mon, 21 Sep 2026 05:57:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14F646B00D9; Mon, 21 Sep 2026 05:53:01 -0400 (EDT)
+	id 837FC6B00D1; Mon, 21 Sep 2026 05:57:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 044DD6B00B5; Mon, 21 Sep 2026 05:53:00 -0400 (EDT)
+	id 774A36B00DD; Mon, 21 Sep 2026 05:57:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CE9806B00B5
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 05:53:00 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E9F4D805D5
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:52:59 +0000 (UTC)
-X-FDA: 85237305678.08.5C3B535
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 2618C1C0007
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:52:58 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cWCaC8Vv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789984378;
-	b=l26PSv20tvHwNUSZZoKIfVlA4GqUFeayP+nyDwER3fC01xChuktCOPVQTFwzegCdGqegOe
-	JCymIo+w5ztuJr5cZNjG5ZlNHyfYp6KARz2ibtr7b4xivSMiqAZmmclR5+sGdNdD9OGlVK
-	mFU6GJmbEIPiCS+BvV/79TUjAKNyRQY=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cWCaC8Vv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3B8226B00C1
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 05:57:41 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9806FC0570
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:57:40 +0000 (UTC)
+X-FDA: 85237317480.22.EFA5CAB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id CCD51160006
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:57:38 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n4CEEleJ;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789984378;
+	s=arc-20220608; t=1789984658;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1ZJAJ5P0mddCIo4D06r2GVTCGyjmla44d8GKfQEXK0M=;
-	b=OLd9AquY3mQESYpOvZ1zQCeT3BK3T5aTeywoyT+F5Z+U+mPckvCZGdcMDEbPeA3ZZKPwWK
-	DJIStFROVpbD8jhaVmimedOOHtViizr44ERATeU1Qs8CbA/SNx5j3D7WmSZ35g8CKc5QYe
-	DBicQjqU8CrtuCliQfx30s42Nei61y4=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=kegxLK5Xa2bs3Cf0CvHFhVg7I1jBlelgO0k5ZXmd+8U=;
+	b=vpm6NsQtlOGDVfhcoypg5mUy85a6BZ8QgxCrhjQrEJPyKjHbWxtQ2MYxfd7GpbCDOaE5Zb
+	LSiKdtGOGMEQjbgFLu9f1iWXirsxrxaDz4PxdVKzFgSRorVkFHQrKNynro9rtCyDRfnlbs
+	s28GPqehfbMqx+hBnRgWhP5zm7da3y4=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n4CEEleJ;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789984658;
+	b=et+5FNIKc3OH6lHJF7AWAkchfOJFFFNj5lFXGII72IcItfU1R+yykbJA4KAb9haM2U8QOr
+	U5Attnjag8wByBDfHwE/Ctf7gTbGaoWF9h80CQNw8nrr26oXcv8zzHt27imcdji2ZU483a
+	wBfc+J7+1S2OacAWrDaxAIZvs78KBjw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5087D600C8
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:52:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A1801F00899
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:52:57 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 03D8342BA8;
+	Mon, 21 Sep 2026 09:57:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41AD41F000FF;
+	Mon, 21 Sep 2026 09:57:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789984377;
-	bh=1ZJAJ5P0mddCIo4D06r2GVTCGyjmla44d8GKfQEXK0M=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=cWCaC8VvXiRoiSW4+/1cQwZDOfAhynJvLZ0qcWJWJrCyFeCXWWUwJe/SIVoW/9NOu
-	 PLJdo5NvmWWpEEEwhK0yDCRV+3AexiClsXjwWwp7LlDThVQu/kFjec6qn3Rs+oGZwc
-	 GD8KfOa9fu16MhjNVYmLXsvuHu038fidEJUKY0f0b5f7EwxjBSP3x0pfvVI7BtvmKw
-	 in8sYvo62fkbZXkKjcH153ueI9NWwsHXfN0UerKH1fGxG36XuipPRu+3xGhUJrNZDs
-	 PWJ/+pk7SINBaKOAYVH738KigxYSIWIqGId/GmdnwYWPNQ35kmdqKCiVZP1eM1NUen
-	 5cE6Fer4FrZJA==
-Received: by mail-yx2-f13.google.com with SMTP id 956f58d0204a3-66e50968489so2382983d50.0
-        for <linux-mm@kvack.org>; Mon, 21 Sep 2026 02:52:57 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvByIxqUC5vqKVerLozsKZk3oc6BJkd+WscJpB2B3ULn+B2k2uO8lrb5AUDZVrjnMPOc/Xt18xgeo+A==@kvack.org
-X-Gm-Message-State: AFuF++mQL80M3kypfMQogkAxoFFbzY9CUkIH/owEfxXAsRj47vN7XjXE
-	fZ6t4fFlmtrqBNMjVTriO5ZG8laW/DeoU6ru4Gyoo2UYTZahsocws7dpQtpuIf4fxcHymKucQo8
-	7ycDcOp841AcIwLjwggNme49y/rQ9EKWqKeSMLkMUhg==
-X-Received: by 2002:a05:690e:4891:10b0:66f:8255:9f3d with SMTP id
- 956f58d0204a3-6717fc64b35mr2058706d50.7.1789984376426; Mon, 21 Sep 2026
- 02:52:56 -0700 (PDT)
+	s=k20260515; t=1789984657;
+	bh=kegxLK5Xa2bs3Cf0CvHFhVg7I1jBlelgO0k5ZXmd+8U=;
+	h=From:Date:Subject:To:Cc;
+	b=n4CEEleJPatRciYjxloAv3UxR2CitO2bLF+5DnDH+nxZCOKw2fVEo0AfrFefdj3fd
+	 bTfN4tOkVLF4xeEwxx7lDK4WI1v2AbFjBP08Tw5HCs5c/SCBm64G4rFtbt2EnjRkNV
+	 lsaTnWW2XZEEIynEBaLEb08HLEHIP4TBFvCMwLv31l8b+l7kNfz7MONouFI4202ub6
+	 DRdZyKG59NlKsM+LlyDu+HQBWRsBKgLcezct0xX0JNmX3UVaLikOUav39wcU3qCsO+
+	 cRW0+aSlBP+kSdYCuSmI+vQ0bbUBlpHNE2yEKlrWUESq7p+UzIAiZd5oDS32/GECE7
+	 1ohKziwONnMqg==
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Date: Mon, 21 Sep 2026 11:57:29 +0200
+Subject: [PATCH v4] mm/gup: honour FOLL_PIN in NOMMU
+ __get_user_pages_locked()
 MIME-Version: 1.0
-References: <20260916101929.149106-1-hebaoquan@kylinos.cn> <aqrHjfHwyEtRIr5S@cmpxchg.org>
- <aquWKJoP5JLP8Ci7@fedora> <20260917131712.GA1344@cmpxchg.org>
-In-Reply-To: <20260917131712.GA1344@cmpxchg.org>
-From: Chris Li <chrisl@kernel.org>
-Date: Sun, 20 Sep 2026 23:52:45 -1000
-X-Gmail-Original-Message-ID: <CACePvbXQRBnTAivJp7mh-y3PQjjUeO4KxzV8+nnhC5UzMomT0w@mail.gmail.com>
-X-Gm-Features: AcwNN1Ugzg_SiOMhNKJS2VxbB-4KHi8_6oHC3_bGXd1kVTnb30PCv8qTa6VMc_A
-Message-ID: <CACePvbXQRBnTAivJp7mh-y3PQjjUeO4KxzV8+nnhC5UzMomT0w@mail.gmail.com>
-Subject: Re: [PATCH v3 00/14] mm, swap: extendable swap devices (xswap)
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Baoquan He <baoquan.he@linux.dev>, Baoquan He <hebaoquan@kylinos.cn>, linux-mm@kvack.org, 
-	akpm@linux-foundation.org, kasong@tencent.com, nphamcs@gmail.com, 
-	baohua@kernel.org, youngjun.park@lge.com, yosry@kernel.org, 
-	shikemeng@huaweicloud.com, chengming.zhou@linux.dev, david@kernel.org, 
-	linux-kernel@vger.kernel.org, kunwu.chan@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260921-nommu_gup_pin-v4-1-c410041cc479@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAIj/sGoC/yXM0QpAMBSA4VfRubayEeZVJDEHR5m1mZS8u+Hyu
+ /j/CxxaQgdVdIHFgxxtOiCLI1BzpydkNASDSESeSC6Z3tbVt5M3rSHNhjFPJS9UyUsBoTEWRzq
+ /X938dr5fUO3vBO77AQJCSKVxAAAA
+X-Change-ID: 20260919-nommu_gup_pin-df63917c8182
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Peter Xu <peterx@redhat.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ David Hildenbrand <david@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+ "David Hildenbrand (Arm)" <david@kernel.org>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3766; i=david@kernel.org;
+ h=from:subject:message-id; bh=HxMJunxqlMOF1zZ6l1Ua107s6bmir1eB6BnonPlsO6s=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLI2/O+1789v7He6cPbfV1lDve+Sj+Y/PfJV44PfTueEf
+ 8KrGqfIdJSyMIhxMMiKKbIEBd83ePlyXW21Gx8zzBxWJpAhDFycAjCRmV8Z/pl2Nd+bwxx9UGy7
+ pfauB1ISljeTkpsaf21M5hD0uf3E4jbDP7uH4u32DfF9CXYxHIYdbusm2hz/sHl3Zt0erQO3Xy6
+ +ygUA
+X-Developer-Key: i=david@kernel.org; a=openpgp;
+ fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: CCD51160006
+X-Stat-Signature: 7untkxjo1w4rge7mcjntuub5ayw6qwxo
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 2618C1C0007
-X-Stat-Signature: etaz77nbhmug6r59qw98na5ib9ajbuqn
-X-HE-Tag: 1789984378-418477
-X-HE-Meta: U2FsdGVkX1+1Xu8oeWZLNWo9Y2wt7wa11UYzUNQlhZuTxwM8MQYWnF0XpSvSNLC0rpecSSUItf7IPHhd9Luw3qpsxhXFHCnlaxUM9YL1Th9hfJf5Q9BeQ0gz2CZTbD5Cm9QSD7DyPJgqxXZuj2cO0JHwHX7/ltjmjVTV6qb0bmjiX6CEnr5Vbn+l91tg9OJg8/GWbbMv82v1XDQA0b123pOiTkEqdjgHHV5TEZuX6NPSb9knPj0g3iDIijxs8+7JTJ7lHvZi7VJ91aHIuHuFntIWDXuaim7pfXr8FI5uqeS7yyC+IAWG5siKFE4OC7+z9BvzEerD0mDX8mA9+SORiicmc2kxiFWYaLUqxcHUTCyq7WYXwp37NZeWoUjhzKknEom6OfoCHSKW23w/nqvsihevSJ+f38GnORkjJKkvSnOjDCzrNXVsLRtQ8aH5yaSQFGn87lM4MR4T5E42Z+sJU4HfoRfhUtmOuDoo1WkQ0mbJfQW0xYLy6tZDUqKSNm52959cQ4A+q5e6c38NBdoWBGDoP2CHAGwsos0e/rLXRP6ksdCHy40bOsvwlXGpVSQv86HikPmecD4sTzwHz1IXSxCZgkczdY9m5Zfe5A775EcCeCZAxfxN5DpnFvm4Qy/8/Fc27co/uh+74/9VrhzUTAvtsFqu/D7qD8iEf1pUaY8d6Qgg+DbztvgaXDSbki9uxYLihXwAnUgx/jOFSQ6YhOtDy9P+562NaFpCJzj3jbHhqY0II5rBbEJKI+2ER6f9MNinZb2rENsHsxPmiLQJjeKs3xLd6fE1jBFBLf53ptWcZ3YwmAeayvuf4QWwuz7CKKw7q61dSu+QEWMmVtF9lxSGiqmH4pH+nhHTXs888X6qUoIlji3xjUTsxMu2UW1Wq3qYKJoOKpfHZfjFzzbMgwzUHAPWQdDiLSY/+ui0tZuNtb7eK08hAFQ3F/NEjSTaiK5F9s2O/wHz9MbOw3g
- YYm5ksXT
- U6cnDKGAb1NEnSk7JEWNvYDpePsWw6PIM6Hnc9h7C5AbNl4EORrLelpv3fDy1i1Lkx6gAW7PBLfSKcAivoe1z3bylc8vr1AIRrQfSVt/xuCIfL2Mxi62NjrNFqOXOJ0DTlkdfGJk72N59s+z7v5Y0rWxhSxA2GNoL+VHZ14GEMvpiPGFqxlboHKKENH7iYH+SQpSCyo6chmcCtcJhMiJDl5qmbB/Od2b3FrAcZckH8cewU8aM2CNi2nMrKqRAOH2xaioMdDMbWOrYT/8fp3GUT1+jyCxBdb5F579Imyb7gUo6IvjvI8teB0QN3RXQP622i5bwZ+wpuQyBzCIPQlXAQAy8y2AS3petF/lQqQxXaWWdu/wirW1NdHQK7IsrbU0d77KYhnpY67fNpqqAS+ELmmnD4hCEtK9oA4yFx466zC1b5vov4PBAJ/dAeQrp7XLQ4GKiQtdKiyLxljXtqmeWgbSsow==
+X-HE-Tag: 1789984658-430674
+X-HE-Meta: U2FsdGVkX1+UJRuFthTINaxJ7hEq0N6uwZZgfa4R6Y1Rhcl2U6+ZTGXpY4I8MH0XAINtSK9ZpObTMNY3H34mlvelsRzjNNkmaR8Dc8/HnDyt1CRIvV1xHewipX3AXNiRiRRX+fnOpiv0qtrfpcnN3Nlq0YYhh90T9gmlGP060+AB7Nxb9vAJgI6NvmRad5pfJfUDpI3IK5SB1Wz9UZnnONWp2J7D0T9DxPX+xOHrU7v1dUC4OI5r+uioRRvs9HYIueNCDimSWvd1/9u5Np9eryFihq19ciGSjck3T2h5/VPFPbOX0ocDAKxwbVrFN5YI176S0ZnGfwyo5jmBEd1nSbZBEKfV573BlfKg6k/CDpEjnyfoYf+I7epcW1B5LEN9ZckcvXvJM9AmMWad6GvBQ3VSkQjkud5JG3cjV9oJXFoQV8/jVv2+YoTO4WpDJinp5ilQgvTTeM2t408JWiAJJ7X3HUfq2QI+tUEJ/IJpIM7EUrxWIYDHqA/3uwWE0sFqRBbeVwR1O6K7ToIlI8QsWHYGRioicB3yKdI2rGpv3mw5Z97I0J5U43oEciePrrdcHwjseDT8qGiA97Egaw0j6YtMmACwZ4ldZaW0OTCy3sTHgLOXFgUBjE2Uz0hNYm93HHUu4Rh/7SaTd9Rz7ETl94yY1zKr4CS43ZLCPg08qM2yD9lEXQdUbLT76zTdZMXau28jDVWU+RMeQ1LWZRjcLX5uhAdc/U1B2LxhCnlEXjS7nyqqzWn/13AmgqpFpruyYsDFNoGsYPfqRWVi9u5IcfoEeMl98GuG4sJjtfEjuESzLVATa5nJVvVaielopPxK0rII3n39bgb/hwa8XnaFnZCZyvaT3TBAbnOsdmepJV2lrSLjcuDxI64Cn1cS9j9opMhk7nieQYw0Oe4wz0AmVLwh8sOmyWuMIcNwbAmxHdV1C7c4JqSOZvImfLfiCckLzu8vEh8+bFBKYfuYOYp
+ zXBqd3u6
+ SOm0Rmsfddgg/1M2VIluEgYIAA53m7H5MyysOtfM2+B4LgU9rJ0hdd1P1rwfuo9nK+FgND7zqRSLVqpFQHZ2a66q1sSy8c6qOAbybvtnMCqX0zqnOM9TkdR+3R2NHJK34PkgJEUoMdoRv5GoIg6YcvHPJZEYIpTaQ2RaLsKn/OSV3NFtACxinOXtuIDROAAu38h9mHSoJVllQwL32oGjXXfZu3rGKZahZrM+g4133Miq05HA63FVR10dWsWhrimUctvMaYlijtzqWSYENoeHq6BUVjaOwIrMdPGxFrFnc1e4BglGt78vyQ8BFIZZf8aa6GTpYBjMaIgonthOQyHfsaIPP11S+rILPY3lgqpYcV1RvV7i80Txc34duL+dQdDmYJpVMox9LVVlzn4yaJOq+Z8Udx1quN9tE9ttIvaGodFycd31JPiEgdImEVYmUFfl99/2FCqPTe7svN9PvPoiOE0y9oylrKAjbepllVf9acGv5keEHHCR9cS8I5FVbi8nsA50RG+x1wkAx2Ak=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,119 +106,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 17, 2026 at 3:17=E2=80=AFAM Johannes Weiner <hannes@cmpxchg.org=
-> wrote:
->
-> On Thu, Sep 17, 2026 at 03:31:23PM +0800, Baoquan He wrote:
-> > On 09/16/26 at 12:45pm, Johannes Weiner wrote:
-> > > On Wed, Sep 16, 2026 at 06:19:07PM +0800, Baoquan He wrote:
-> > > > xswap is a swap device with no backing storage. Swapped-out pages l=
-ive
-> > > > in zswap. Its cluster_info[] array lives in a VM_SPARSE vmalloc are=
-a,
-> > > > and the area is grown and shrunk on demand as swap usage changes.
-> > > >
-> > > > The problem being solved is the static size of compressed swap. Bot=
-h
-> > > > zram and zswap need the size fixed in advance, and neither gives me=
-mory
-> > > > back when the workload shrinks. The solution should be a device who=
-se
-> > > > size can scale up/down as per usage. xswap does that by mapping the
-> > > > metadata lazily instead of reserving it for the whole range.
-> > > >
-> > > > Design
-> > > > ------
-> > > > - si->cluster_info[] stays a plain array. Access is still
-> > > >   &si->cluster_info[offset / SWAPFILE_CLUSTER]: no per-access branc=
-h, no
-> > > >   RCU discipline, no tear-down state machine, no NULL return.
-> > > > - Only an initial chunk is mapped at creation. The rest of the addr=
-ess
-> > > >   space is reserved, not allocated, so an idle device costs nothing=
-.
-> > > > - Growth is driven by allocation. When no free cluster is left and =
-the
-> > > >   address space has room, the next chunk is mapped and added to the=
- free
-> > > >   list. No userspace involvement.
-> > > > - Shrink is driven by frees. The free tail is scanned, and whole ch=
-unks
-> > > >   are unmapped once the mapped range is at most half in use and sev=
-eral
-> > > >   chunks can go. One chunk is left mapped as slack, so the next
-> > > >   allocation does not map it straight back. A ceiling lowered below=
- the
-> > > >   mapped range skips the half-in-use rule and is enforced at once.
-> > >
-> > > If the swap maintainers prefer the VM_SPARSE route, I'm happy to defe=
-r
-> > > to them on that.
-> > >
-> > > However, from the cgroup and zswap camp, two stipulations that I
-> > > reasoned out in the other thread[1]:
-> >
-> > >
-> > > 1. You must not charge compression space as swap space to the cgroup.
-> >
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-Sorry let me push back on that. That is already existing user-visible
-behavior. Changing that will break our deployment using zswap. I don't
-think we should change that.
+The !CONFIG_MMU implementation of __get_user_pages_locked() takes a bare
+get_page() reference for each page regardless of foll_flags:
+	if (pages[i])
+		get_page(pages[i]);
 
-See more in my reply in the other email thread.
+This is reached from pin_user_pages*() with FOLL_PIN set.
+unpin_user_page() is shared between MMU and NOMMU configurations and
+unconditionally calls gup_put_folio(..., FOLL_PIN), which subtracts
+GUP_PIN_COUNTING_BIAS (1024) from the folio refcount.
 
-https://lore.kernel.org/linux-mm/CACePvbVaPDnva8X-Xmz84r7j5HjTuih-w5phpw7ce=
-rK2uPnK6w@mail.gmail.com/
+This means that pin adds 1, and then unpin will subtract 1024.
 
-Chris
+If a user maps a page (refcount 1), registers it 1023 times as an
+io_uring fixed buffer (1023 pin_user_pages calls -> refcount 1024), then
+unregisters: the first unpin_user_page subtracts 1024, refcount hits 0,
+the page is freed and returned to the buddy allocator.  The remaining
+1022 unpins write into whatever was reallocated, and the user's VMA
+still maps the freed page (NOMMU has no MMU to invalidate it).
+Reallocating the page for an io_uring pbuf_ring then lets userspace
+corrupt the new owner's data through the stale mapping.
 
-> > Hmm, I don't have a stance on this. However, isn't this an issue
-> > zswap/zram have been doing? It feels like an independent issue which
-> > should be done separately?
->
-> If you have 3 containers using compression space, and two of them have
-> writeback enabled to a shared swapfile, the memory.swap.* controls
-> need to work to manage fair access to that swapfile. They do not work
-> if compression space itself is conflated in.
->
-> Right now zswap entries actually consume physical swapfile space, even
-> before writeback. Charging the space is correct. But the whole point
-> is to decouple compression space from physical swap space.
->
-> This is not something that can be done later. It would be a dramatic
-> user-visible change to how the resource is categorized and managed.
->
-> > > 2. You must make the compression space large enough to be outside the
-> > >    range where users can hit space limits before hitting memory limit=
-s.
-> >
-> > We may need a way to define 'large enough' at first.
->
-> I've tried to lay this out in the other thread, and highlighted the
-> usability issues that result from hitting compression space limits
-> prematurely. It's kind of your call whether you want to seriously
-> engage with this or not.
->
-> But ultimately it's your claim that a static size can be made to work,
-> so it's on you to make a convincing case.
->
-> > >    That also means not allowing setups where this is possible.
-> >
-> > And the limit is only an optional knob. If the admin does not set it,
-> > the device grows to the full address space, so there is no space limit
-> > to hit at all. It already behaves the way you want by default. The knob
-> > is only for admins who want a ceiling, they can use it or not. I hope
-> > this would not be a problem for your use case.
->
-> No, I've laid this out already as well.
->
-> This isn't about "my" usecase. It's about designing a coherent
-> interface that works well with a large number of usecases, and other
-> pieces of kernel infrastructure commonly used in conjunction.
->
-> The other proposal in the room needs no such interface. The burden of
-> proof for adding one is on you.
->
-> > > [1] https://lore.kernel.org/linux-mm/aqLi6cIjD2wJwk0B@cmpxchg.org/
+Use try_grab_folio() which adds GUP_PIN_COUNTING_BIAS for FOLL_PIN and 1
+for FOLL_GET, mirroring the CONFIG_MMU path so pin and unpin are
+symmetric. Keep supporting the traditional behavior where users specify
+a pages array but don't set FOLL_GET.
+
+While at it, don't return NULL pointers in the page array,
+as this is really not expected for GUP users; instead, just fail and return
+-EFAULT.
+
+[ david: support traditional behavior with no FOLL_GET, extend
+  description ]
+
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Lance Yang <lance.yang@linux.dev>
+Reported-by: Anthropic
+Fixes: 3faa52c03f44 ("mm/gup: track FOLL_PIN pages")
+Assisted-by: gkh_clanker_t1000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+v3 -> v4:
+* Put FOLL_GET fixup into the NOMMU __get_user_pages_locked()
+
+I'll queue the updated version after some more review.
+---
+ mm/gup.c | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
+
+diff --git a/mm/gup.c b/mm/gup.c
+index eb898ea1ee22e..4e9b5ac2cb62e 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -1983,6 +1983,7 @@ static long __get_user_pages_locked(struct mm_struct *mm, unsigned long start,
+ 	struct vm_area_struct *vma;
+ 	bool must_unlock = false;
+ 	vm_flags_t vm_flags;
++	int ret, err = -EFAULT;
+ 	long i;
+ 
+ 	if (!nr_pages)
+@@ -1999,6 +2000,10 @@ static long __get_user_pages_locked(struct mm_struct *mm, unsigned long start,
+ 		*locked = 1;
+ 	}
+ 
++	/* See the MMU variant: support the traditional behavior. */
++	if (pages && !(foll_flags & FOLL_PIN))
++		foll_flags |= FOLL_GET;
++
+ 	/* calculate required read or write permissions.
+ 	 * If FOLL_FORCE is set, we only require the "MAY" flags.
+ 	 */
+@@ -2019,8 +2024,14 @@ static long __get_user_pages_locked(struct mm_struct *mm, unsigned long start,
+ 
+ 		if (pages) {
+ 			pages[i] = virt_to_page((void *)start);
+-			if (pages[i])
+-				get_page(pages[i]);
++			if (!pages[i])
++				break;
++			ret = try_grab_folio(page_folio(pages[i]), 1, foll_flags);
++			if (unlikely(ret)) {
++				pages[i] = NULL;
++				err = ret;
++				break;
++			}
+ 		}
+ 
+ 		start = (start + PAGE_SIZE) & PAGE_MASK;
+@@ -2031,7 +2042,7 @@ static long __get_user_pages_locked(struct mm_struct *mm, unsigned long start,
+ 		*locked = 0;
+ 	}
+ 
+-	return i ? : -EFAULT;
++	return i ? : err;
+ }
+ #endif /* !CONFIG_MMU */
+ 
+
+---
+
+base-commit: 40288c9206c17eb66a603262e06a58d300d0f279
+
+change-id: 20260919-nommu_gup_pin-df63917c8182
+
+--
+
+Cheers,
+
+David
+
 
