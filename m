@@ -4,106 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CE60C982DE
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 10:40:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CB89C982E1
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 10:49:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE7CC6B00F0; Mon, 21 Sep 2026 06:40:27 -0400 (EDT)
+	id 4A5D26B00AD; Mon, 21 Sep 2026 06:49:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B98796B00F1; Mon, 21 Sep 2026 06:40:27 -0400 (EDT)
+	id 47C466B00AF; Mon, 21 Sep 2026 06:49:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A124D6B00F2; Mon, 21 Sep 2026 06:40:27 -0400 (EDT)
+	id 36B7A6B00E1; Mon, 21 Sep 2026 06:49:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 739CB6B00F0
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 06:40:27 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B608A140123
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:40:26 +0000 (UTC)
-X-FDA: 85237425252.23.BED416E
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 158956B00AD
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 06:49:37 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7B29BC013E
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:49:36 +0000 (UTC)
+X-FDA: 85237448352.24.52F8D83
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf24.hostedemail.com (Postfix) with ESMTP id DA5C9180009
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:40:24 +0000 (UTC)
+	by imf24.hostedemail.com (Postfix) with ESMTP id 603CA180002
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:49:34 +0000 (UTC)
 Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=JmnlIL+m;
-	spf=pass (imf24.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789987225;
-	b=utPR7Ayn8mTX4VSUULHfbDb9CEmtn4P3CAKomeo4NcDtBEVxXTX9pB3o4wv3OsfQ3nXsrm
-	2RiuSvrNKCuP9KMVJCD1JSOYMX16vpCN29JhHbHKRXltaAJSJ9nK7gRqqyc1jCGRNhh3Co
-	YH+dVCiT7e1DuGVp8T9dBvl9c5YM/XA=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=JmnlIL+m;
-	spf=pass (imf24.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=erV4TueH;
+	spf=pass (imf24.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789987225;
+	s=arc-20220608; t=1789987774;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1kSqVU6OsQf/jitxqbngHUzg0nwYWDdefoKN+bcay4I=;
-	b=KiChKpZ3dsX68Bcsg+ONzFwM5J5tHexnkMT35GbNW21sNOOYJ5sB16P2nZJqlxJpqpfU5q
-	PHPll1ZFARLPi7ao5TE27ZGEtqcdGVvfCYI0uLJRAROl4bgM9ctasXRAaZf19Q++TitPX9
-	z4fLag1F/pe35063661nWvNbnUy5xHA=
+	bh=QEWrTZ6OQNeCRFetVug7UdrK+ghkO/zagFf8q9Ojo2U=;
+	b=fK6VgHoM3fg3i9+v2uZN6g6JWgMs3Uw1Cp3xHHJCZoXWFlHsr9Nj/IkAXYTer91JiTnSUK
+	Mu2qxTMdVcuf53AagUh+DFwXJMGh6EsMPnOYM/Q0WfZAoxdmMvbDLE+PoP10+RMQIwfQAx
+	udydRwvsWh2s+BDjkQC3sMfwJ8AfILo=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=erV4TueH;
+	spf=pass (imf24.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789987774;
+	b=JjMhQlncXJ0MeZ8xFeWWlCdG1FFiwlNYEM42VDHtxDWVAV8RSPThzBuWvaLBok1vgzYgUI
+	7T7dy/RSNnM8h4rtYfgGr5LSEneiMvxhBLnWbE6F1NiC7gG0bqPASYoCwQBX4tmJmrGEbY
+	/5TgLEQ1HXPdlhdXduuZ3lRVbiMmbJo=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 924111D13;
-	Mon, 21 Sep 2026 03:40:20 -0700 (PDT)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 18FF53F86C;
-	Mon, 21 Sep 2026 03:40:20 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F32FD1570;
+	Mon, 21 Sep 2026 03:49:29 -0700 (PDT)
+Received: from [10.57.83.12] (unknown [10.57.83.12])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B56643F86C;
+	Mon, 21 Sep 2026 03:49:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789987224; bh=vNyGx9dWLGfndZvGwi3n6mprkCkP24UQCpKsoclyTK0=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=JmnlIL+mnXS1cE2ebOZ6S8vEUxpG5ggfpnFAM7XevhVZpwxPVqdKFcP+w8GH6AAJw
-	 TZNFyXHUd78aAnwv+Je01e3ayo4o7ccX5CGjcPwxpuQTh7T6mykQgmfMqlG5ds+1du
-	 zGp+Bj2tIbGctVVRVflnnIalHca1DR8YgP7dhIGA=
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-Date: Mon, 21 Sep 2026 11:40:09 +0100
-Subject: [PATCH v7 3/3] kselftest: mm: remove check_huge_shmem()
+	t=1789987773; bh=Sh52A48MJo14bixZqGSha3srEquqn/DYNl7bZAm7A1E=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=erV4TueHzMTKU7EV61dmBcEuKYzA1op4hwcZB7VEFgaJWmKI5FE7ugnqJLu5ERObj
+	 Q50JhfvJ6lkvid/bPPod28UwjH6vdEo+d+vjjz43+VycruIntOw4hXFlZ850Oh67Co
+	 N6iKAnN/H18buKKpap1r1rQzAeicQUyvZ1ACH5b4=
+Message-ID: <c1ca2256-2516-4f4d-ba08-a2f584fc812b@arm.com>
+Date: Mon, 21 Sep 2026 11:49:28 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260921-fix_split-v7-3-d25ec991159f@arm.com>
-References: <20260921-fix_split-v7-0-d25ec991159f@arm.com>
-In-Reply-To: <20260921-fix_split-v7-0-d25ec991159f@arm.com>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
- Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
- Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Yeoreum Yun <yeoreum.yun@arm.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7237; i=yeoreum.yun@arm.com;
- h=from:subject:message-id; bh=vNyGx9dWLGfndZvGwi3n6mprkCkP24UQCpKsoclyTK0=;
- b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBqsQmKJ2J7KWDEU19n5jwKF20S9WkGF4nlx76mN
- 03QJZsJXguJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCarEJigAKCRBt1cPRWsUx
- MzovDAC0XHwhw0B7epbkr2rl9Z2mlMCavJWdhf5vb8iwQiM+ePshFqmUKE8OcJbILg3kQRkwQ2n
- rSLo2HIbt2QAxwbDcMMlo9EFz2Z3H7sXFb/sEWhTKJX7//ipnPlfhhy66aNqFTF5dmhQ9ipo0nG
- gOesvqQsiRUYrQtxps33FVcgUSb0p2pwl/UymGwKg2MlRgV8txOKQ9u/Gv1W2h5UrIMrlFUTd8q
- g94fq5fTmqBxT4UYl/bcJbi750YrJSURY/3A9LkhaWmHvjOVFke6VdBTEpMols2BdfzYoHxI17C
- TspGFYVPDOHCB8mXvIDmBV7Qgh34Y/xM+bOEGRKwrwevJgaAkeaV3wMGoCvukV1XWQVs3qZ5OfS
- DE/8w2QrSURlYSGZ0juNW/ikvbo2tTLd88jwEZb6KZB5m58bosJ0RfQvIeZuoUDaxv338zs26d+
- Lkc8dND4Z8rVvJR1xBazj3lMBCh/8UaY4iIzk2xRqsTSW6SwWI5MIFANWtMa099pqf77I=
-X-Developer-Key: i=yeoreum.yun@arm.com; a=openpgp;
- fpr=2D83E092DD0533B85875A49D6DD5C3D15AC53133
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] arm64/mm: Convert READ_ONCE() as pmdp_get() while
+ accessing PMD
+To: Anshuman Khandual <anshuman.khandual@arm.com>,
+ linux-arm-kernel@lists.infradead.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>, Lorenzo Stoakes <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Linu Cherian <linu.cherian@arm.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, Mark Rtland <mark.rtland@arm.com>,
+ linx-arm-kernel@lists.infradead.org, linx-kernel@vger.kernel.org,
+ kasan-dev@googlegrops.com
+References: <20260903060657.2717457-1-anshuman.khandual@arm.com>
+ <20260903060657.2717457-2-anshuman.khandual@arm.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20260903060657.2717457-2-anshuman.khandual@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 603CA180002
+X-Stat-Signature: qs3tny7d9mfamhuescg8rtyia597jr34
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: DA5C9180009
-X-Stat-Signature: s1engaizjpdx7brbwbn4hbfi8os5qb1e
-X-HE-Tag: 1789987224-865827
-X-HE-Meta: U2FsdGVkX1/za45gJ8IfG5sJuVFZNMPGpvTlUQ1U8iMgMmgPxJbHHpMsVVoo16E8bvTT6ZVGTL4Mg3RPit8KhGd4gVdU2k83dE5JaOlzSy6hdApKD7//whalJv43N33cFvN/P0uhjbEIqFBgHMxAn14Yz4CbWf20C1N6PXOI5TG1aELx3nP/RX53+01Gl4q2qck75cdqQy7Ucze0/EceNq0O1S4+M8t8/JyzFOILrV9Z5HX6lmClUOvGPjZXb0AltVj4GEa7vbK8OGynXhSAOneJe5TG/6nRlNy1JCDYUzDxg6SlT4VoPChFM2EO6Co8ttziqTAP6F3rpGp7wTYpRsrFIbSNIzLk9TbzTe0UztZ2p+VH5hFkSQJ+FgKwQATMxzscr8pDiTJ4Dh/3eEWUWRxL8dLEDnFBdLeKnsP11Z+G28MBxxgCrcIZ9fg9rfgQjc3zTE7yhC0d4TO+3Rk1h3xDLprkoBwjqH3AtZj7XLIubB8yA/5W6iOmPKBKOnIdjumO5njyxR42j7tspT4JYW6l1sbDcxySaSAzXRXSGffbIZjT71K10dpEmgZsJzSNQC/FOjGM5ryNdpWOoLM4gG3xrsrRkaP8rE3bJBRwE/7QKoJjPD1YBCqvdzfJ2D91xjAXgtJqfHmb1BeyJ6j2dZAVkjScFGZGE+O3/0Pv9SUC4hoYhwzO5X96Xenu0zL44jYdYp1bsacJoerUFP9jjK2F3BbVHd5HMvLKDs0M207R/6+MnABFW3iHzY/CmFVhrj86DkHYowxnwidAbnPxWSLn6YbzkEqIYR3pd2cf8vhvZ6BOJTZDhkwB8GCM8+wskY/b/nmj6VtuwZO+g7LlP8g1djIHsra+qbAYYF3kDJaN2Npej2KbGJDT6LXgm4Q1h2ZLpjXykWTsKw0evR2C+9qaifJ7Ux+IuM0g47pcSJknC2VFKjKNUam7hGQ9HWJ7IQ1F5CHVNrf80bTPmkc
- lrk29/wU
- Z+gEkuwSHkLfBB3HcDnBKFW6J+m7x9ZEHeA28G/8PDbKO2DNJpRQKBgy5AXKMCoSTXLmzdd5dARMz3JOlppv7UDqta5SZvHRakMSBMXmSWGAFKsdEIOqBDhKxlvYjkEyg+V06qA/kR7dHlPgy0jc9fUDT6r66i1T8zD05cuHiIAn0SQJIEQfGllywkARgwjXIaXCHGpcgr5qjObeoTioLY3XnD9+ruYXMVMtv1LEgm3mLLEjZbQbWoMvDvH96zbVvJqDYpJyyJ/25/uPdAqo/G05YcllCTizk73j9WKQnQEkUDluJ1HlHjgwydXzO7loBfU18waPq50LJEV5YrpDCn1SmamNL89W654S0
+X-HE-Tag: 1789987774-32910
+X-HE-Meta: U2FsdGVkX19LPhKqr1+2NWPlJI7ef+Gc1LllLlQ67VT/YAXgXGVH1e+ThnX33TNfiMvbsqJi2CL4eJa3SJpnaVDmyKUZIf+CTagBCEY3ZZ80mpDro94INwTF0UnXNmLf4OnaY5Q7ruSCBRVs1KfhP4x36xZBCMH73ZTxYc7yY8WQeY8S+vEjNRZOvOoUuQSh1tFOUMqYf2WaZQOlt0ftG/dNOURJF5Dp66/xZuVYIeCH0NUB5GDMv2LFoQ1zOFG6ORTb8QZ3Cr/AOFLPywKFr0D30opW9gR5k4H5sEU3uJlu1BQFaxd+khz3M03P46kpxMPOb3nYl24W8ze+0LPchAWHkB1tPKHyDFKmcM1H27zYeGRiu/ka0UVWRW6hLl1AkdSsAWhgfNockLEBvNujVUyPxqWU4wSdHOTYMJMbFvQ33fwgdXjAOLjOA008cpgdWdinqZO3BLGGTiQetwufLvrTTxuFGLYUxDtOfKHMyLRaIJGDnbgHRskXlOsJnw0x4432xIH7UR/D6wPeX6Ivd5VhItA2Lo4BT7fgOI3TclmIxM4uJU2emn01erutZYzpfLvP2BR647QUqc5C3Y75ih/HXpIO2fbq99s8OeiB8ykho63x2gRe/m1xJEbEadQ6bwtWy26d9o3JnqJIftCYvZ02UiA15Hk4nSRsO089josPUVByEcfw45Xxlz9MUzk0z1YjZ8800z4LewcnlX8b+zzuf7BYZ6A9hwoDwAjEsAj3CfKyeN3kWUaafnjfs3NIDl7tnkVH8kf6StAiT9q3RM17WIIMehVGCmYECY2yUeaAbkBJik/vWylP+LpPW6kqaINBgnYaUr/y36uHbVSi9sEUmBYyU0RGptMEkAnYTbpC7OFErBeo/9lAfxVtVBn+UUIuKy+yrJ7pBu7BRTicZjkAPRx9P+img0pG88dvFWzuKQvOUdfWvp130dn8+NPNfLW5di5ir/qOUTVz4cs
+ HyxxgkKk
+ l3mlVFcemQfUKuYiku+U/RgS/v8UKpoySGVw5DarGFPAgUCZRsUZOwYwtXyMM3OJiy9J56UPoGiJgIgyVXVK6Cc80fqwBkc+rE/epI4cBQJY8w2zKvo+HHuERLOVvNv9XlFuX8rPthcOZUZ0vHcJeGjv4DdT7UbQ5syVTYZsdR4huBOC9xTT/q20/ne58BoaQL6JNvvI6GJNMssqV/DAbcGRrCthoqk9Xjr5NnsnTkuGOQl1CXCnSlLlpEWlr+yEPdBUHujDa/ud1oY7Bn30/g1coXRldYQxn9FHvrTjXc9DCR9LAuuWCCUMoyNgRXiHazmC+vQsuHvCMXXyKQPKdd3wUX+ws7oeEvNfu24xX8X42VOApC/DZ+4bqq8GTJRiGvwXkLyvOsm7VJtaPip+g1veHyX1495GMq25Yvja5TSl5b70a8eRPbRuU1htn54UasNXNsBb6mm0MVvcxFemfxi72hRb04agiqf88cqdI6y6P6y4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,188 +99,279 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-check_huge_shmem() was required to distinguish shmem huge pages because
-/proc/self/smaps reports them using a dedicated “ShmemPmdMapped” entry,
-as opposed to “FilePmdMapped” for file-backed huge pages.
+On 03/09/2026 07:06, Anshuman Khandual wrote:
+> Convert all READ_ONCE() based PMD accesses as pmdp_get() instead which will
+> support both D64 and D128 translation regime going forward. That is because
+> READ_ONCE() would need 128 bit single copy atomic guarantees, while reading
+> 128 bit page table entries which is currently not supported on arm64. Build
+> fails for READ_ONCE() while accessing beyond 64 bits.
+> 
+> Load Pair/Store Pair (ldp/stp) are only single copy atomic if FEAT_LSE1
+> is supported (which is required when FEAT_D128 is supported). Currently 128
+> bit pgtables is a compile time decision - so we could have chosen to extend
+> READ_ONCE()/WRITE_ONCE() to allow 128 bit for this configuration. But then
+> it's a general purpose API and we were concerned that other users might
+> eventually creep in that expect 128 and then fail to compile in the other
+> configs.
+> 
+> But worse, we are considering eventually making D128 a boot time option, at
+> which point we'd have to make READ_ONCE() always allow 128 bit at compile
+> time but then it might silently tear at runtime.
+> 
+> So our preference is to standardize on these existing helpers, which we can
+> override in arm64 to give the 128 bit single copy guarantee when required.
 
-Now that /proc/self/smaps is no longer used to detect huge pages and
-/proc/kpageflags is used instead, it is sufficient to distinguish
-between file-backed and anonymous pages since the ShmemPmdMapped is also
-kind of file-backed.
+Perhaps something like this conveys the justification a bit more clearly?:
 
-Therefore, remove check_huge_shmem() and use check_huge_file() instead
-and cleanup khugepaged's check_huge operation in mem_ops.
+---8<---
+arm64/mm: Use pmdp_get() for PMD accesses
 
-Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
----
- tools/testing/selftests/mm/folio_split_race_test.c |  2 +-
- tools/testing/selftests/mm/khugepaged.c            | 38 ++++------------------
- tools/testing/selftests/mm/uffd-common.c           |  4 +--
- tools/testing/selftests/mm/vm_util.c               |  5 ---
- tools/testing/selftests/mm/vm_util.h               |  1 -
- 5 files changed, 9 insertions(+), 41 deletions(-)
+Replace READ_ONCE() with pmdp_get() for PMD accesses in preparation for
+supporting both D64 and D128 translation table formats.
 
-diff --git a/tools/testing/selftests/mm/folio_split_race_test.c b/tools/testing/selftests/mm/folio_split_race_test.c
-index 1960635a953eb..4c0d3b6a411b8 100644
---- a/tools/testing/selftests/mm/folio_split_race_test.c
-+++ b/tools/testing/selftests/mm/folio_split_race_test.c
-@@ -182,7 +182,7 @@ static uint64_t run_iteration(void)
- 	for (i = 0; i < TOTAL_PAGES; i++)
- 		fill_page(mmap_base, i);
- 
--	if (!check_huge_shmem(mmap_base, FILE_SIZE, NR_PMD_PAGE, pmd_pagesize))
-+	if (!check_huge_file(mmap_base, FILE_SIZE, NR_PMD_PAGE, pmd_pagesize))
- 		ksft_exit_fail_msg("No shmem THP is allocated\n");
- 
- 	if (pthread_barrier_init(&ctl.barrier, NULL, NUM_READER_THREADS + 1) != 0)
-diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
-index f82673f5f6b47..f448278823678 100644
---- a/tools/testing/selftests/mm/khugepaged.c
-+++ b/tools/testing/selftests/mm/khugepaged.c
-@@ -53,7 +53,7 @@ struct mem_ops {
- 	void *(*setup_area)(int nr_hpages);
- 	void (*cleanup_area)(void *p, unsigned long size);
- 	void (*fault)(void *p, unsigned long start, unsigned long end);
--	bool (*check_huge)(void *addr, size_t len, int nr_hpages, unsigned long hpage_size);
-+	bool (*check_huge)(void *addr, size_t len, int nr_hpages, uint64_t hpage_size);
- 	const char *name;
- };
- 
-@@ -314,12 +314,6 @@ static void anon_fault(void *p, unsigned long start, unsigned long end)
- 	fill_memory(p, start, end);
- }
- 
--static bool anon_check_huge(void *addr, size_t len, int nr_hpages,
--		unsigned long hpage_size)
--{
--	return check_huge_anon(addr, len, nr_hpages, hpage_size);
--}
--
- static void *file_setup_area_common(int nr_hpages, enum file_setup_ops setup)
- {
- 	const int open_opt = setup == FILE_SETUP_READ_ONLY_FS ? O_RDONLY : O_RDWR;
-@@ -411,20 +405,6 @@ static void file_fault_write(void *p, unsigned long start, unsigned long end)
- 		ksft_exit_fail_perror("madvise(MADV_POPULATE_WRITE)");
- }
- 
--static bool file_check_huge(void *addr, size_t len, int nr_hpages,
--		unsigned long hpage_size)
--{
--	switch (finfo.type) {
--	case VMA_FILE:
--		return check_huge_file(addr, len, nr_hpages, hpage_size);
--	case VMA_SHMEM:
--		return check_huge_shmem(addr, len, nr_hpages, hpage_size);
--	default:
--		ksft_exit_fail_msg("Unknown VMA type\n");
--		return false;
--	}
--}
--
- static void *shmem_setup_area(int nr_hpages)
- {
- 	void *p;
-@@ -448,17 +428,11 @@ static void shmem_cleanup_area(void *p, unsigned long size)
- 	close(finfo.fd);
- }
- 
--static bool shmem_check_huge(void *addr, size_t len, int nr_hpages,
--		unsigned long hpage_size)
--{
--	return check_huge_shmem(addr, len, nr_hpages, hpage_size);
--}
--
- static struct mem_ops __anon_ops = {
- 	.setup_area = &anon_setup_area,
- 	.cleanup_area = &anon_cleanup_area,
- 	.fault = &anon_fault,
--	.check_huge = &anon_check_huge,
-+	.check_huge = &check_huge_anon,
- 	.name = "anon",
- };
- 
-@@ -466,7 +440,7 @@ static struct mem_ops __read_only_file_ops = {
- 	.setup_area = &file_setup_read_only_area,
- 	.cleanup_area = &file_cleanup_area,
- 	.fault = &file_fault_read,
--	.check_huge = &file_check_huge,
-+	.check_huge = &check_huge_file,
- 	.name = "file",
- };
- 
-@@ -474,7 +448,7 @@ static struct mem_ops __read_write_file_read_ops = {
- 	.setup_area = &file_setup_read_write_fs_read_area,
- 	.cleanup_area = &file_cleanup_area,
- 	.fault = &file_fault_read_and_flush,
--	.check_huge = &file_check_huge,
-+	.check_huge = &check_huge_file,
- 	.name = "file",
- };
- 
-@@ -482,7 +456,7 @@ static struct mem_ops __read_write_file_write_ops = {
- 	.setup_area = &file_setup_read_write_fs_write_area,
- 	.cleanup_area = &file_cleanup_area,
- 	.fault = &file_fault_write,
--	.check_huge = &file_check_huge,
-+	.check_huge = &check_huge_file,
- 	.name = "file",
- };
- 
-@@ -490,7 +464,7 @@ static struct mem_ops __shmem_ops = {
- 	.setup_area = &shmem_setup_area,
- 	.cleanup_area = &shmem_cleanup_area,
- 	.fault = &anon_fault,
--	.check_huge = &shmem_check_huge,
-+	.check_huge = &check_huge_file,
- 	.name = "shmem",
- };
- 
-diff --git a/tools/testing/selftests/mm/uffd-common.c b/tools/testing/selftests/mm/uffd-common.c
-index 1fb967ef49854..a76851aced4d0 100644
---- a/tools/testing/selftests/mm/uffd-common.c
-+++ b/tools/testing/selftests/mm/uffd-common.c
-@@ -196,8 +196,8 @@ static void shmem_check_pmd_mapping(uffd_global_test_opts_t *gopts, void *p, int
- {
- 	size_t len = expect_nr_hpages * read_pmd_pagesize();
- 
--	if (!check_huge_shmem(gopts->area_dst_alias, len, expect_nr_hpages,
--			      read_pmd_pagesize()))
-+	if (!check_huge_file(gopts->area_dst_alias, len, expect_nr_hpages,
-+			     read_pmd_pagesize()))
- 		err("Did not find expected %d number of hugepages",
- 		    expect_nr_hpages);
- }
-diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
-index a7c5caf6925e0..e31e88d5af76d 100644
---- a/tools/testing/selftests/mm/vm_util.c
-+++ b/tools/testing/selftests/mm/vm_util.c
-@@ -475,11 +475,6 @@ bool check_huge_file(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
- 	return __check_huge(addr, len, nr_hpages, hpage_size, CHECK_HUGE_FILE);
- }
- 
--bool check_huge_shmem(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
--{
--	return __check_huge(addr, len, nr_hpages, hpage_size, CHECK_HUGE_FILE);
--}
--
- int64_t allocate_transhuge(void *ptr, int pagemap_fd)
- {
- 	uint64_t ent[2];
-diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
-index 9a49af88702e4..fc9c93235f6fa 100644
---- a/tools/testing/selftests/mm/vm_util.h
-+++ b/tools/testing/selftests/mm/vm_util.h
-@@ -92,7 +92,6 @@ uint64_t read_pmd_pagesize(void);
- unsigned long rss_anon(void);
- bool check_huge_anon(void *addr, size_t len, int nr_hpages, uint64_t hpage_size);
- bool check_huge_file(void *addr, size_t len, int nr_hpages, uint64_t hpage_size);
--bool check_huge_shmem(void *addr, size_t len, int nr_hpages, uint64_t hpage_size);
- int64_t allocate_transhuge(void *ptr, int pagemap_fd);
- int pageflags_get(unsigned long pfn, int kpageflags_fd, uint64_t *flags);
- int gather_folio_orders(char *vaddr_start, size_t len,
+READ_ONCE() cannot currently be used for 128-bit page table entries on arm64
+because it does not provide the required 128-bit single-copy atomicity, causing
+builds to fail for accesses wider than 64 bits.
 
--- 
-2.43.0
+Although LDP/STP provide the required atomicity when FEAT_LSE is available (as
+required by FEAT_D128), extending READ_ONCE() to support 128-bit accesses is
+undesirable. READ_ONCE() is a general-purpose API, so doing so could encourage
+other 128-bit users that would either fail to build in configurations without
+D128 support or, if D128 becomes a runtime option, silently permit tearing on
+systems without the required hardware support.
+
+Instead, standardize PMD accesses on the existing page-table helpers. These can
+be overridden on arm64 to provide 128-bit single-copy atomicity when required.
+---8<---
+
+With that:
+
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+
+
+> 
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Ryan Roberts <ryan.roberts@arm.com>
+> Cc: Mark Rtland <mark.rtland@arm.com>
+> Cc: linx-arm-kernel@lists.infradead.org
+> Cc: linx-kernel@vger.kernel.org
+> Cc: kasan-dev@googlegrops.com
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> ---
+>  arch/arm64/include/asm/pgtable.h |  3 ++-
+>  arch/arm64/mm/fault.c            |  2 +-
+>  arch/arm64/mm/fixmap.c           |  2 +-
+>  arch/arm64/mm/hugetlbpage.c      |  2 +-
+>  arch/arm64/mm/kasan_init.c       |  4 ++--
+>  arch/arm64/mm/mmu.c              | 22 +++++++++++-----------
+>  arch/arm64/mm/pageattr.c         |  2 +-
+>  arch/arm64/mm/trans_pgd.c        |  2 +-
+>  8 files changed, 20 insertions(+), 19 deletions(-)
+> 
+> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+> index 61fbfab3e06e..51f55498d43d 100644
+> --- a/arch/arm64/include/asm/pgtable.h
+> +++ b/arch/arm64/include/asm/pgtable.h
+> @@ -805,7 +805,8 @@ static inline unsigned long pmd_page_vaddr(pmd_t pmd)
+>  }
+>  
+>  /* Find an entry in the third-level page table. */
+> -#define pte_offset_phys(dir,addr)	(pmd_page_paddr(READ_ONCE(*(dir))) + pte_index(addr) * sizeof(pte_t))
+> +#define pte_offset_phys(dir, addr)	(pmd_page_paddr(pmdp_get(dir)) + \
+> +					 pte_index(addr) * sizeof(pte_t))
+>  
+>  #define pte_set_fixmap(addr)		((pte_t *)set_fixmap_offset(FIX_PTE, addr))
+>  #define pte_set_fixmap_offset(pmd, addr)	pte_set_fixmap(pte_offset_phys(pmd, addr))
+> diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+> index c75bab3c2f4b..cb25cb130e83 100644
+> --- a/arch/arm64/mm/fault.c
+> +++ b/arch/arm64/mm/fault.c
+> @@ -188,7 +188,7 @@ static void show_pte(unsigned long addr)
+>  			break;
+>  
+>  		pmdp = pmd_offset(pudp, addr);
+> -		pmd = READ_ONCE(*pmdp);
+> +		pmd = pmdp_get(pmdp);
+>  		ptval_to_str(pmd_str, pmd_val(pmd));
+>  		pr_cont(", pmd=%s", pmd_str);
+>  		if (pmd_none(pmd) || pmd_bad(pmd))
+> diff --git a/arch/arm64/mm/fixmap.c b/arch/arm64/mm/fixmap.c
+> index f66a0016dd02..3cdac8021d4f 100644
+> --- a/arch/arm64/mm/fixmap.c
+> +++ b/arch/arm64/mm/fixmap.c
+> @@ -42,7 +42,7 @@ static inline pte_t *fixmap_pte(unsigned long addr)
+>  
+>  static void __init early_fixmap_init_pte(pmd_t *pmdp, unsigned long addr)
+>  {
+> -	pmd_t pmd = READ_ONCE(*pmdp);
+> +	pmd_t pmd = pmdp_get(pmdp);
+>  	pte_t *ptep;
+>  
+>  	if (pmd_none(pmd)) {
+> diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
+> index 8e799c1fe0aa..cdaa4500faf9 100644
+> --- a/arch/arm64/mm/hugetlbpage.c
+> +++ b/arch/arm64/mm/hugetlbpage.c
+> @@ -304,7 +304,7 @@ pte_t *huge_pte_offset(struct mm_struct *mm,
+>  		addr &= CONT_PMD_MASK;
+>  
+>  	pmdp = pmd_offset(pudp, addr);
+> -	pmd = READ_ONCE(*pmdp);
+> +	pmd = pmdp_get(pmdp);
+>  	if (!(sz == PMD_SIZE || sz == CONT_PMD_SIZE) &&
+>  	    pmd_none(pmd))
+>  		return NULL;
+> diff --git a/arch/arm64/mm/kasan_init.c b/arch/arm64/mm/kasan_init.c
+> index 45fbdce684c8..7ca833c5de5e 100644
+> --- a/arch/arm64/mm/kasan_init.c
+> +++ b/arch/arm64/mm/kasan_init.c
+> @@ -62,7 +62,7 @@ static phys_addr_t __init kasan_alloc_raw_page(int node)
+>  static pte_t *__init kasan_pte_offset(pmd_t *pmdp, unsigned long addr, int node,
+>  				      bool early)
+>  {
+> -	if (pmd_none(READ_ONCE(*pmdp))) {
+> +	if (pmd_none(pmdp_get(pmdp))) {
+>  		phys_addr_t pte_phys = early ?
+>  				__pa_symbol(kasan_early_shadow_pte)
+>  					: kasan_alloc_zeroed_page(node);
+> @@ -138,7 +138,7 @@ static void __init kasan_pmd_populate(pud_t *pudp, unsigned long addr,
+>  	do {
+>  		next = pmd_addr_end(addr, end);
+>  		kasan_pte_populate(pmdp, addr, next, node, early);
+> -	} while (pmdp++, addr = next, addr != end && pmd_none(READ_ONCE(*pmdp)));
+> +	} while (pmdp++, addr = next, addr != end && pmd_none(pmdp_get(pmdp)));
+>  }
+>  
+>  static void __init kasan_pud_populate(p4d_t *p4dp, unsigned long addr,
+> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+> index b5de4095d650..32daaa547d09 100644
+> --- a/arch/arm64/mm/mmu.c
+> +++ b/arch/arm64/mm/mmu.c
+> @@ -200,7 +200,7 @@ static int alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
+>  			       int flags)
+>  {
+>  	unsigned long next;
+> -	pmd_t pmd = READ_ONCE(*pmdp);
+> +	pmd_t pmd = pmdp_get(pmdp);
+>  	pte_t *ptep;
+>  
+>  	BUG_ON(pmd_leaf(pmd));
+> @@ -257,7 +257,7 @@ static int init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
+>  	unsigned long next;
+>  
+>  	do {
+> -		pmd_t old_pmd = READ_ONCE(*pmdp);
+> +		pmd_t old_pmd = pmdp_get(pmdp);
+>  
+>  		next = pmd_addr_end(addr, end);
+>  
+> @@ -272,7 +272,7 @@ static int init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
+>  			 * only allow updates to the permission attributes.
+>  			 */
+>  			BUG_ON(!pgattr_change_is_safe(pmd_val(old_pmd),
+> -						      READ_ONCE(pmd_val(*pmdp))));
+> +						      pmd_val(pmdp_get(pmdp))));
+>  		} else {
+>  			int ret;
+>  
+> @@ -282,7 +282,7 @@ static int init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
+>  				return ret;
+>  
+>  			VM_WARN_ON_ONCE(pmd_val(old_pmd) != 0 &&
+> -					pmd_val(old_pmd) != READ_ONCE(pmd_val(*pmdp)));
+> +					pmd_val(old_pmd) != pmd_val(pmdp_get(pmdp)));
+>  		}
+>  		phys += next - addr;
+>  	} while (pmdp++, addr = next, addr != end);
+> @@ -293,7 +293,7 @@ static int init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
+>  static bool pmd_range_has_valid_noncont(pmd_t *pmdp)
+>  {
+>  	for (int i = 0; i < CONT_PMDS; i++) {
+> -		pte_t pte = pmd_pte(READ_ONCE(pmdp[i]));
+> +		pte_t pte = pmd_pte(pmdp_get(pmdp + i));
+>  
+>  		if (pte_valid(pte) && !pte_cont(pte))
+>  			return true;
+> @@ -1553,7 +1553,7 @@ static void unmap_hotplug_pmd_range(pud_t *pudp, unsigned long addr,
+>  	do {
+>  		next = pmd_addr_end(addr, end);
+>  		pmdp = pmd_offset(pudp, addr);
+> -		pmd = READ_ONCE(*pmdp);
+> +		pmd = pmdp_get(pmdp);
+>  		if (pmd_none(pmd))
+>  			continue;
+>  
+> @@ -1708,7 +1708,7 @@ static void free_empty_pmd_table(pud_t *pudp, unsigned long addr,
+>  	do {
+>  		next = pmd_addr_end(addr, end);
+>  		pmdp = pmd_offset(pudp, addr);
+> -		pmd = READ_ONCE(*pmdp);
+> +		pmd = pmdp_get(pmdp);
+>  		if (pmd_none(pmd))
+>  			continue;
+>  
+> @@ -1729,7 +1729,7 @@ static void free_empty_pmd_table(pud_t *pudp, unsigned long addr,
+>  	 */
+>  	pmdp = pmd_offset(pudp, 0UL);
+>  	for (i = 0; i < PTRS_PER_PMD; i++) {
+> -		if (!pmd_none(READ_ONCE(pmdp[i])))
+> +		if (!pmd_none(pmdp_get(pmdp + i)))
+>  			return;
+>  	}
+>  
+> @@ -1881,7 +1881,7 @@ int pmd_set_huge(pmd_t *pmdp, phys_addr_t phys, pgprot_t prot)
+>  	pmd_t new_pmd = pfn_pmd(__phys_to_pfn(phys), mk_pmd_sect_prot(prot));
+>  
+>  	/* Only allow permission changes for now */
+> -	if (!pgattr_change_is_safe(READ_ONCE(pmd_val(*pmdp)),
+> +	if (!pgattr_change_is_safe(pmd_val(pmdp_get(pmdp)),
+>  				   pmd_val(new_pmd)))
+>  		return 0;
+>  
+> @@ -1906,7 +1906,7 @@ int pud_clear_huge(pud_t *pudp)
+>  
+>  int pmd_clear_huge(pmd_t *pmdp)
+>  {
+> -	if (!pmd_leaf(READ_ONCE(*pmdp)))
+> +	if (!pmd_leaf(pmdp_get(pmdp)))
+>  		return 0;
+>  	pmd_clear(pmdp);
+>  	return 1;
+> @@ -1917,7 +1917,7 @@ int pmd_free_pte_page(pmd_t *pmdp, unsigned long addr)
+>  	pte_t *table;
+>  	pmd_t pmd;
+>  
+> -	pmd = READ_ONCE(*pmdp);
+> +	pmd = pmdp_get(pmdp);
+>  
+>  	if (!pmd_table(pmd)) {
+>  		VM_WARN_ON(1);
+> diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
+> index bbe98ac9ad8c..0ca07bd5ded9 100644
+> --- a/arch/arm64/mm/pageattr.c
+> +++ b/arch/arm64/mm/pageattr.c
+> @@ -414,7 +414,7 @@ bool kernel_page_present(struct page *page)
+>  		return pud_valid(pud);
+>  
+>  	pmdp = pmd_offset(pudp, addr);
+> -	pmd = READ_ONCE(*pmdp);
+> +	pmd = pmdp_get(pmdp);
+>  	if (pmd_none(pmd))
+>  		return false;
+>  	if (pmd_leaf(pmd))
+> diff --git a/arch/arm64/mm/trans_pgd.c b/arch/arm64/mm/trans_pgd.c
+> index cca9706a875c..b27b2d2c20c3 100644
+> --- a/arch/arm64/mm/trans_pgd.c
+> +++ b/arch/arm64/mm/trans_pgd.c
+> @@ -74,7 +74,7 @@ static int copy_pmd(struct trans_pgd_info *info, pud_t *dst_pudp,
+>  
+>  	src_pmdp = pmd_offset(src_pudp, start);
+>  	do {
+> -		pmd_t pmd = READ_ONCE(*src_pmdp);
+> +		pmd_t pmd = pmdp_get(src_pmdp);
+>  
+>  		next = pmd_addr_end(addr, end);
+>  		if (pmd_none(pmd))
 
 
