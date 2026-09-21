@@ -4,101 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C0B9C982E1
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 07:11:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED750C982E1
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 07:24:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 528936B00B3; Mon, 21 Sep 2026 03:11:54 -0400 (EDT)
+	id BAA1E6B00D9; Mon, 21 Sep 2026 03:24:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4FFC96B00B9; Mon, 21 Sep 2026 03:11:54 -0400 (EDT)
+	id B5A5B6B00DB; Mon, 21 Sep 2026 03:24:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4156E6B00CB; Mon, 21 Sep 2026 03:11:54 -0400 (EDT)
+	id A48CE6B00DD; Mon, 21 Sep 2026 03:24:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E51E6B00B3
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 03:11:54 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 951691605D7
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 07:11:53 +0000 (UTC)
-X-FDA: 85236899706.22.3BC0FDC
-Received: from mta0.migadu.com (out-164.mta0.migadu.com [91.218.175.164])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 73ED54000B
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 07:11:51 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BJJyXSzo;
-	spf=pass (imf04.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.164 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7BADC6B00D9
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 03:24:58 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DF8A2140379
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 07:24:57 +0000 (UTC)
+X-FDA: 85236932634.27.6BA7856
+Received: from mta1.migadu.com (out-221.mta1.migadu.com [95.215.58.221])
+	by imf26.hostedemail.com (Postfix) with ESMTP id B1123140002
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 07:24:55 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hHPpvsdQ;
+	spf=pass (imf26.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.221 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789974711;
+	s=arc-20220608; t=1789975496;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sH9a+rvkSCNl4NiTy6ScB3vbDQi2f1N3eMzMm+pJkEA=;
-	b=1z5zeJeHd99qsazalAuJDtQeIMZ/dtOvLb21vae4lgqAbmHPVGW9tp82cE0Yg4elD3Njun
-	SmLos205XyiQHsc7rhluP4ynlPNltsNIK5SUBRYLhVs40wiM1UkJ4rh1icOiq3w2OkfKdI
-	mxPSV1Oajk/jGi61gct77e/WmErbcFo=
+	bh=XYfb6ENu9z05LITXdP+abHeFIFgnzSa/Qk0FF2ckOZM=;
+	b=2TxV3AS+4Zjgun5d1m8GIOMRLQgn9xQmW6P7PcqZJpu5qv2i8uG7CKQ/ykybbwhVYWgOhb
+	BKDj5fyyDO4HjTGFDID8b9wAka/7OlRwqiKHPEuZsJQw0t60dVHfL1zIKtmOyKIEtUZDoG
+	8Rl06mPqPujeczXDsJjJSV5+Gm6aooU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789974711;
-	b=fBHB053aIlbpVwaiXSlntyP3qAkQV3ETYygjLJ++7B21mbVOf7ZgOD5ppnRohgXH06kM1j
-	xLC3OI2dR52TZVSEv6+U+jYIGLyAWC4u5shUlA+wrhar7MqmmNPdXzGTpepxKgwjkta3WZ
-	L7trDCBsVc/xxMhfgBvhOVn+pfSQ5NI=
+	t=1789975496;
+	b=eNZyadWqTzB3FbmRZqypo6auYnRotR764SR6003MqGRKY4/HMSFSxVtHVglZOd/E8cRqyU
+	utRdwdPUraXe+Ej6wovWttqot5cggvORIDulMo/Oi9nYYO+gty6Ibb1qIXt8I5TsPdryNX
+	qexAi1VtEdHIs2G1rdxtVTEPU+dbInk=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BJJyXSzo;
-	spf=pass (imf04.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.164 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hHPpvsdQ;
+	spf=pass (imf26.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.221 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=jUNOmZ0oFx/hBNFyItuSBJqhemn5jF3nsNF7Wwmgjhk=;
+DKIM-Signature: a=rsa-sha256; bh=Q2h6+eU+5UZjnvGnYVU6mhubmYWept3jKn5v+HruplI=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789974710; v=1; x=1790579510;
- b=BJJyXSzotVgiLcZgED4T/dWIm68LgLBKQ3fB+a9l6bKwTB5hgokjUxg5aJJ8/OqRwfE3kHGG
- xJirjP34De9jplyml8EcSDUAHhrPh1ryd8E4VJ/FXj4rJR8anXSDxpG/y2DehY/5ne/Yrrkg7tE
- PEPlV3xu5wbemoWt/fYn2F1c=
+ t=1789975494; v=1; x=1790580294;
+ b=hHPpvsdQocNJjRA1KZ29kuc0sLubTq5vL4gNpUx4YgMo0qS9tRjKWLTbOrz60iQhfhdrVKAf
+ 8rsO9+Sr7ZeSTaQ0G2hqhn12P/tqQsfdJexVGEzppWWBeuSX4xGzMKqU0/ZTvfrB3HFwPC/t8t9
+ bgUUJLjN0TDjFna1Yp/R9Fzs=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 50fa2f7f8ad12771;
-	Mon, 21 Sep 2026 07:11:50 +0000
-X-Mizu-Trace-ID: 50fa2f7f8ad12771
+Received: by smtp.migadu.com with ESMTPS id 4c701f708d715319;
+	Mon, 21 Sep 2026 07:24:54 +0000
+X-Mizu-Trace-ID: 4c701f708d715319
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <397d6fa5-a5a2-40ba-9d0d-d0ddc6bd1c35@linux.dev>
-Date: Mon, 21 Sep 2026 15:11:32 +0800
+Message-ID: <c7871a6d-bc51-43c1-a4a7-ed68a8e5aa23@linux.dev>
+Date: Mon, 21 Sep 2026 15:24:37 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 05/17] mm/hugetlb: use direct assignment instead of
- folio_change_private()
+Subject: Re: [PATCH v5 06/17] f2fs: stop using PG_private
 Content-Language: en-US
 To: Zi Yan <ziy@nvidia.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Johannes Weiner <hannes@cmpxchg.org>, Kairui Song <kasong@tencent.com>,
- Oscar Salvador <osalvador@suse.de>, Muchun Song <muchun.song@linux.dev>,
- Nico Pache <nico.pache@linux.dev>, Michal Hocko <mhocko@suse.com>,
- Lorenzo Stoakes <ljs@kernel.org>, David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Ying Huang <ying.huang@linux.alibaba.com>, Gregory Price
- <gourry@gourry.net>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Shakeel Butt <shakeel.butt@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
- Barry Song <baohua@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Qi Zheng <qi.zheng@linux.dev>, Alistair Popple <apopple@nvidia.com>,
- Dev Jain <dev.jain@arm.com>, Usama Arif <usama.arif@linux.dev>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- "Liam R. Howlett" <liam@infradead.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+ linux-kernel@vger.kernel.org, Nico Pache <nico.pache@linux.dev>,
+ Lorenzo Stoakes <ljs@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Michal Hocko <mhocko@suse.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Barry Song <baohua@kernel.org>, Ying Huang <ying.huang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Gregory Price <gourry@gourry.net>,
+ Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Usama Arif <usama.arif@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>,
+ Ryan Roberts <ryan.roberts@arm.com>, Alistair Popple <apopple@nvidia.com>,
+ Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>,
+ Qi Zheng <qi.zheng@linux.dev>, linux-f2fs-devel@lists.sourceforge.net,
+ Kairui Song <kasong@tencent.com>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Dev Jain <dev.jain@arm.com>, Suren Baghdasaryan <surenb@google.com>,
+ David Hildenbrand <david@kernel.org>
 References: <20260920-remove-pg_private-v5-0-bb68b6a21869@nvidia.com>
- <20260920-remove-pg_private-v5-5-bb68b6a21869@nvidia.com>
+ <20260920-remove-pg_private-v5-6-bb68b6a21869@nvidia.com>
 From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20260920-remove-pg_private-v5-5-bb68b6a21869@nvidia.com>
+In-Reply-To: <20260920-remove-pg_private-v5-6-bb68b6a21869@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B1123140002
+X-Stat-Signature: y9usiy1fswx3kh819gqmpw1qc6qf54yc
 X-Rspam-User: 
-X-Stat-Signature: ajdyq8c97wph57mskmxexgmqcpb5ubie
-X-Rspamd-Queue-Id: 73ED54000B
-X-HE-Tag: 1789974711-91874
-X-HE-Meta: U2FsdGVkX1/K1m10/gzvQG/NWp2F7zA8FD5FEwA684tVO23Px7fhpPuiriLXhEdotSuQESV3YB1Gd8zNWxv55W9+7nBFRuOJ8OkZGsbJIMKRoomYOpUZBmGrl3RPnrKNDRdmsepzURnq5AmxTCVJu/pvlxDRw7W0PUwepy0hpJWIanijpZopmfq6EjiPsyOWx2AOGJJpK4sZ4OhqZw0+/6ioCTz02Ly7passqayrXWWDPQc3z/ZBtTSGEl9DhVtcB4QUk3t/RbM4d7VuB/zSKLSj3916r6+z0Ux54fqMVG8zLdX8o1DTbpZ1Hw7KBgiP8r+gYCjmqFvuNFtseoNqHuKCvV1kzI828xQJyk8qp160lhlbNaaRaNRJCzPdOAyFYx+ngVhHJvAQ8WYbyzblrtH2+EzDzkVZAlXSNAJn36dy5C/3z74GXf1WwT5OPMdXeK3MJJ7LW4sVubZbzlhEMhnJD9aOE4VdGcpmfXYxmttXbEFZrC8mN85qi8f4znoBDJptLCw16FTU1OyZLq//yttTwAT+SrPSXa9cNA5pVdsu5Sm6IjTVxNgPRfzlFge0gLqYHM6+QwbuCaGXp/obR4X85JrVqp3z3u1Ydp5RdncNyz57N5yLvOYxL7LjG13sS7LbRPELWJab6ZUHD1FV65P67/ljxMGuvkDtihsWo2LRYH8BUFFAjCxhqCLy+CgBYEnEl7kzn/O0v3jt1sZeFzgz5sCbEi6XfH/PzcVTkW++DAicEjB//iY/Sr/m2AlX3a/SQaemdERygFCYlSiWvG+bAsbkbvivap4FLf4ceG70b8QBjU5q0opjwg4O1ZgBjFtw3Wp/NR3xbhRewmQOqELVEbNnqUE2FW1ZhViyptZSGlCL3zR2eQQvq7OzBnw96LAEp3bRb+XlWRPyz9VSQ5oBjIgrZp53MxXIickvuoW0XSEqJf9bNSFg3ndPX3Pw9hlPCxILlxpTZ/hynyD
- LM2hjcgT
- wKlAlaQhmSnO8NhmGTKdkyBbaRx3q4XtlQFFAtOFwY++k0gs3TdDa6X2+8AquQW8WAcKVhPabN7NEBaGkDoAdaCW80bwBWd+gpPQupLEBOKO8dwDW6bpSfh1F6kD5gq79hNY9wBaoUKjuerMYnmIKt6ZZXM3bdy9gsipIhT30koyM/jrWoXrGsE37lZvYXSB4KcIA8HKGK+HrZgah17Z3KMGBLOO9nVlGXuJ9r7fML4rtsdGEkZivSPq8Uox1IvSYZLqTr6ty8NJZed8xOfw77Ykvvm0fpNG/2qgCkiLaoESBOHkGEQT6OcBSEaSaM1RFgW/BoBrrl67k01OrppUFulPf3ttuLLmk1UsHwP7ui/tKVJ40DTCmiKR0cTT3qUd8fSehHabHD/R/WuzDWS47bgxhlOTyy6GtBNMWdj1qbRyAjbsegdGF2Y0/8Tr3CaTMXhPlvs8bgo3CIRhXm8h+BK3SWnE7I0Fq3Q/uLfRBFrtX9kGb5E9YRnTc3I7eYt/rvLhXjV6hdJgVxEEIniukPzFQcz+9i8y7K4uCeH7Yo9CB/9g=
+X-HE-Tag: 1789975495-518347
+X-HE-Meta: U2FsdGVkX18EbkTMiZB3hCC9387ov7/SdpqWSgX9ubxxOd9NZId0Shltx5UdeC4tJfP9tP38EgcfnnicBi9S+BBYHJkwwViaycF0fNXem1AcXaekSKNWKsjZ4ylQud8mckb1mKduJnvWechbXtKrQV9uQdo0ajx69kzWZyRRaabARArSNONbkXtYrI+S6gcwGmoh0PiXtqMVqD1QWeBZeikij+0zpeCXMEwR7FJDRKYcMGx3f+CUEUk0c9g/j1NUL7H44SIzNXPvyvOUbwK7qGKkJ6kSCGLk/ptyhPNxBcvrCuxEsVytR7MTfXcX5dn4mf1SDTTdRwxjAaO1qzvl567EfusLWBwtkCzzIzKkC1zOtPGhQY5OWGEIRU2gTXyIIhjxKPK0Q0/2OUFpd+PrT5F3QyRBMdlmPCJzu/Y+4CC5fg7Z+0SCKZ03RzlmGjNOZxCdfrh9AVFTvAlYel7scXEmln/DE6k+JgVeeR/0amtz27GmLd/+fISqHgtVgozLq/DFxaGHRK6YD4HKTuoTtWvtD2Wbb/Ov39jaFHErylbFrAFnskeasa24zSMCHJzCzKNRlRABmxXojWUBLBq3O1ZHij9l4qGIZCsnk5DgrT7K9OGf1sEERX2e1+kRhQE8hcBK3Y3X73MXjLys+rQkJvoAh5NozhFQRdoxb07ByxX8wtu3gJfhZIc3vYXg6EbXF+YQs6phoRAFv6Eq27xaNA2x/2df5pgdru2ASYvs5cQgKmOfSfLg8aFhAAFY3dPbzgMaRt+DTCbxbkmtsikd0gTdqHMEyZ42EJ0uGu49keLlasipruzTI0iQJXHrb56MHyy0Qgff6Juj1JBrBCyzigugUWLTPnsLe8CDC2sVtekL1Dmxzp2x5mfZw/L2lUOgNcNtiM2zwzyLMbulQbUsY4W14BKPKaA+EwKyTsJzz3/fyPqPDWvi5n6qVvt+Iuh32mhsLv9T2SvO6Gxe81z
+ D6p1xalH
+ 5jWK5OUMG0q0nsdqRB/zObZWqLfyd8SasYlwkwAkMA41LXAtrPsdXmIPnKN7RD8SpevV12PPtQHh7oq63vLR0Ri+EeAnsun0Er1FghRxPR7CLFma1bI+/eSy/IbZaECJ5AE2vDJcFXS1lXyaUmAaUoN6Nbtg33Jspxij3YlXJKoIfAR1oOtqT8EIYOVY0sIWjDY6pQevCPQcKojQ+2xxWHE4qOxcR2CPPyaq50XOZ9/JlxoMf0vmKEoJVpxmfA0F9DOTkNO5ZgAKuQg+mU4LRY0+QZhqRFLHIiahyLyXfhrYwBnf+rBM/Qt2Idbn3YtmGp6nzB1GOF3qqy8mEYJIw0p7YM8FtCWvhLqvy3PVJ9yIfk1Nv4HYh802Hhd+BIsrzWFhrTOYsdC+kqE4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,31 +108,31 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 On 2026/9/21 10:28, Zi Yan wrote:
-> folio_change_private() should be used along with folio_attach_private() and
-> folio_detach_private(), where adding and remove ->private content requires
-> folio refcount change. add_hugetlb_folio() simply sets folio->private to
-> NULL without refcount manipulation. Change it to direct assignment to avoid
-> semantic confusion.
+> f2fs sets its PAGE_PRIVATE_* flags in page->private and checking
+> page->private != NULL is equivalent to checking PG_private. Change
+> PagePrivate() to page_private(). Meanwhile, in set_page_private_##name(),
+> page->private is first set to 0/NULL before an PAGE_PRIVATE_* flag is set,
+> but it can cause confusion when PG_private is removed and
+> page->private != NULL is used instead. Change it to initialize
+> page->private to PAGE_PRIVATE_NOT_POINTER instead and retain the original
+> semantics.
 > 
-> It prepares for a future commit that remove PG_private.
+> It prepares for a future commit that removes PG_private.
 > 
 > No functional change intended.
 > 
 > Assisted-by: LLM
-> To: Muchun Song <muchun.song@linux.dev>
-> To: Oscar Salvador <osalvador@suse.de>
-> To: Andrew Morton <akpm@linux-foundation.org>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: linux-mm@kvack.org
+> To: Jaegeuk Kim <jaegeuk@kernel.org>
+> To: Chao Yu <chao@kernel.org>
+> Cc: linux-f2fs-devel@lists.sourceforge.net
 > Cc: linux-kernel@vger.kernel.org
 > Acked-by: Usama Arif <usama.arif@linux.dev>
-> Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
-> Reviewed-by: Muchun Song <muchun.song@linux.dev>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Acked-by: Chao Yu <chao@kernel.org>
+> Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 > Signed-off-by: Zi Yan <ziy@nvidia.com>
 > ---
 
-Nice cleanup! Feel free to add:
+LGTM. Feel free to add:
 
 Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
