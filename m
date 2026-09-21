@@ -4,75 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACDBCC982ED
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 13:17:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 731F4C982EE
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 13:17:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 67A416B00D3; Mon, 21 Sep 2026 09:17:46 -0400 (EDT)
+	id 4CC446B00D5; Mon, 21 Sep 2026 09:17:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6513E6B00D5; Mon, 21 Sep 2026 09:17:46 -0400 (EDT)
+	id 47D0B6B00D7; Mon, 21 Sep 2026 09:17:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 567CC6B00D7; Mon, 21 Sep 2026 09:17:46 -0400 (EDT)
+	id 3B9B36B00D9; Mon, 21 Sep 2026 09:17:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 241596B00D3
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:17:46 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C0FB1A4713
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:17:44 +0000 (UTC)
-X-FDA: 85237821648.11.CA53422
-Received: from mta1.migadu.com (out-53.mta1.migadu.com [95.215.58.53])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 279054000A
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:17:41 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=EWfXz3SF;
-	spf=pass (imf27.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.53 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 106346B00D5
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:17:52 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 790541C09A6
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:17:51 +0000 (UTC)
+X-FDA: 85237821942.14.5679DE1
+Received: from mta0.migadu.com (out-201.mta0.migadu.com [91.218.175.201])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 7EDE31C0006
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:17:49 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=E4vNZoGT;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf20.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.201 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789996662;
+	s=arc-20220608; t=1789996669;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=4BUEJQCz19pxp5PmG/E8ZqIoOezpz1Df48Hvx5Opiy4=;
-	b=WShQmG+bJyK2bGfkLFJmk2+NIDh/QNIAWoeS55Ic9i5tdQztxxARPgvuXcZWrt9JIjWtdY
-	Dzpve4l2akmoRLUTfkDO9yHaJlHIhqmGluY+czLOacxR4MIlDBp+e6xgcVJfIizwZTu3tj
-	+t0VezzoQTpBvmXmmcRpKDoVWcJ+tiE=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=e7J3QTjTF70u7VTLKk+bXscovi5fNJVgb7m1iXC/1ac=;
+	b=pK4gOP0x9CqB6tiZymxmEfLfKXEX3kfd2W7hiT/FE/j3kvZARJT1/2AG1sCtSHRwTPctgh
+	QJDGbMAHCdMZCpP091ok1u3unAbUYfpdZfFBZa251qASnQMIZvvQqJp5BNC4BPt7EULG22
+	F7ieQ+IAQOmbtoAbJytvviOsWwvpufk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789996662;
-	b=VUApLNNB61T+48ZqxyV00sszKwR+o7BWm3rfe5vP3EvJ6wJy396KHQoB6YQCc87lkwFNnJ
-	gtCTtRUB7zB3tchYso6mP8ia1/0zJfULRX1UlBu+WdV4a4obw1oRdNBYekikDtpK+q+Ip3
-	Itbnq0XTSak+LQPeR2Dy/N8Oq6Ide3Y=
+	t=1789996669;
+	b=YiGW66H8/kXYZ4KNY+RYnb/klsR54zffbifKwn3xEaRHsKh9bc9SQrIuFKYzsaA9ird8kZ
+	fyp7VZo4U+D8yWgswGsxCjMmG6ThUyTni9I/GQsuns5/MCv7HFAB8QyoA1ftc80qmE6SuB
+	HYTzGDHroqV486SzWp/khWW+UEco+WY=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=EWfXz3SF;
-	spf=pass (imf27.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.53 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=E4vNZoGT;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf20.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.201 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=XGKeaZZkegvCape3qQBQEln+i9bC30nsXnPlSXlaifg=;
+DKIM-Signature: a=rsa-sha256; bh=TgBqgmk/OGkiRG4oFsrkPk1fFb54WBL3zueWiSKqe7I=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789996660; v=1; x=1790601460;
- b=EWfXz3SFxahkBrxnVvRXGkVXmPA/DSmsYBjLNUX5od6izbSpmcQS8L/z2W+rZxIQclFpAkU+
- 8sxXxkmD+VJrP8fqPP4l33KVqQQgqIczhQZqkg01seg36/eqkgxqQuOi56MqZj+0REpHG/CU/6b
- AuUSZvEdYJGJaCufn2pxtfEI=
+ t=1789996668; v=1; x=1790601468;
+ b=E4vNZoGT1Z9K7ZSq8aTtO8JWLC+bxKugBY5+nu/e0Zu3M/HhYKxssxvflfUQqzbWM2Sqsywx
+ 4uitAdpslgeTvro0v2ET1uPLP9ZOv/xjnkybrDjkoDcwmX9b4o8R8L3iFKziwWVv8bw0FRMvnus
+ Ih7RxqEmgQ1AADo942YiqV48=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id ba4558021e9b6db7;
-	Mon, 21 Sep 2026 13:17:40 +0000
-X-Mizu-Trace-ID: ba4558021e9b6db7
+Received: by smtp.migadu.com with ESMTPS id f052238703df67d5;
+	Mon, 21 Sep 2026 13:17:48 +0000
+X-Mizu-Trace-ID: f052238703df67d5
 X-Migadu-Flow: FLOW_OUT
 From: Ye Liu <ye.liu@linux.dev>
-Subject: [PATCH v2 0/3] mm/vmalloc: fix vmalloc_dump_obj VA lookup
-Date: Mon, 21 Sep 2026 21:17:20 +0800
-Message-Id: <20260921-vmalloc_dump_obj-v2-0-73fceb3ed1c8@linux.dev>
+Date: Mon, 21 Sep 2026 21:17:21 +0800
+Subject: [PATCH v2 1/3] mm/vmalloc: fix vmalloc_dump_obj address alignment
+ for last-page lookups
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAGAusWoC/32OywqDMBREf0XuuikxDT668j+KyNVca4omktRgE
- f+9Uei2ywNzZmYDT06Th3uygaOgvbYmgrgk0A1onsS0igyCi4yXacbChONou0Yt09zY9sVUwUt
- eSJnfshKiNjvq9XpWPurILXpirUPTDUfRz3eE6ogP2r+t+5wHQnpIf7ZCyjjLESUXSgip+mrUZ
- lmvigLU+75/AWLiVEvPAAAA
-X-Change-ID: 20260916-vmalloc_dump_obj-d80908447369
+Message-Id: <20260921-vmalloc_dump_obj-v2-1-73fceb3ed1c8@linux.dev>
+References: <20260921-vmalloc_dump_obj-v2-0-73fceb3ed1c8@linux.dev>
+In-Reply-To: <20260921-vmalloc_dump_obj-v2-0-73fceb3ed1c8@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>, 
  Uladzislau Rezki <urezki@gmail.com>, Paul Walmsley <pjw@kernel.org>, 
  Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
@@ -80,14 +79,14 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  linux-riscv@lists.infradead.org, Ye Liu <liuye@kylinos.cn>
 X-Mailer: b4 0.14.3
-X-Stat-Signature: r63ize9q8ip1g8nwncrrda8pofydwei6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 279054000A
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789996661-584750
-X-HE-Meta: U2FsdGVkX18upxtRugDYI0Jhsu7ntDNw2R/0dXHKEEvWRvhLFwHc0WnUNBxuCkApbr/cgisGgmzjh1Q4xSFRbFUpI96P5+aLlJLNVEmVvqpVqCr+N/NfjkV4AMkxS06RhKCAuRFZoIJyNf49Sek+UgvyO8Z+lzkCMbba3ixxspjrnM+v7N5rKRETy4vaNNI2bz4cK6OvNHHY7MQ8uxRTFQNJ6nN4GQkXjegbmYPtObhjxeGK2EYBMn8BMt0TCTgwclLpDZzGA3ZhgCK9i0TwfOZoBKQhmAyxatnSgzYor0WI86bP1Ds72e2pQLMSC/p+h2GTRB7YQpUSBMWS9y/SIa2Sp0oE8rDAE2wge8PdlvufvSKgr8s5kGoxFCXG32UR5ZVfGDl1O9FfzUSqFBkoH0I7yxlzbhN+MPTM10PA4no+9+AAwJsl3RrDtIsmfWQoI5C5bkc1C4wcK5ZqvZtVlnqH0+1GP3hgEVbq9YGVgXAEvaQx2dN4FVbgCWvCnejJ0Ou/0Q58idjDxumAFzZpX857XQo58d8MKrX2SBM/JYcPBBlyG7olzhXd/P5D1pZXdJYmrkhnEg2KWwa77qemL93yDNH9QlncoTZSZf0DEZPlCnfpV2EtotRqeqT2Ux3fApIOoL1Hwi8zo3sf1M6ZusuUDK3hjlrRN226+E0w2wjjO7XvnlF0gghahC9zV7V0VgdX6sC8QwmTy8wQZ/p9/6P0hzjWySE0yzRWz0Xdl/GStPuZHRLC1TDM/xdJH6AETPf0+tP76O2+825Lc1yp/X3Ep3n/+pwwBhWOpaJ5VX4tqWxUBihDEfrjaXfUEgO313H4vfU/1x4BXwTWf7VUmUlaN0FqoLa1CUHyXXk5ABDdq15dcRVXZf5uN6UT8T3ZvjHC49LubltzT1MGilTaJ8F6OgM/YvihSkw1jHTMSk5kMHNJxvJ+FdyzIsJpRs2Yf4slWaqm0A5J77uzDOr
- YX5MJp6t
- w2PRy0IE3z1O3YZmx4GwcpF4zqZ52F2M6xqr+aOfxUEBho+t2b8BIaP4oTSXYxCJnAaRypXWa70rKpuCjt1Istg6T7kqxMeZYO95pNP3ve5Hbc/mlQ/NytEUIrTnO2wwewAGcZlXp7fwyN8EeeabRQghyGW6G8PbwTM8y8gq9nH7TOvCLGnPR277hYhRq64VI/JNo5SN3VPo8oy5kVgpxYX5FUmEg5odo/3GEnUZECikB/qr4vHMh8BwO41kLhW/l3B2/suyFgQEfbywO3rqr8TCp/76kn0aW+jEqLMB2mf/UIIgiHghZWo3stw==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 7EDE31C0006
+X-Stat-Signature: 8hq3yaufqi1cr79iczxjcmwaj39hbrwa
+X-HE-Tag: 1789996669-212844
+X-HE-Meta: U2FsdGVkX1/gEg+F/4+H3TsaIJuuzE1yrCFgVU28bj2d6uZQwCb3e/Z7HnzvdYY4txIvSdVOLe5X+Tl7YE1h0Q2UqzUvN3MqhjZbNS6QgIkXx9y6MYEJc+TxL8dzuZCpaYPWI9Kj3MxActKdH51Y4R56qTagqCJqTQcAmmVpweqwTDys9t9PIUvZF6CJ/pV+SBPMXXE/4l+0syUhagPz86LHVun+tuHXGvbGlv/uwEpzW8p3OxVHGz+c7s/dOQpa54idIBu8EJRwsEUg9W2EvNOfrGiZEHvcFPs5zfqWwGVQTFj2G6tMgSRSfoeuYKC4orGyBcqUHVABATWUxE7QmTVNOqTqQZsPLqrOoa9vlv25TZXHywlE3hm+6soi2UX7FcW1uhJs7hScK6in8gVox1pR5w4Md7DqHovh98brY+xb6Ig4UbGh7nMkrUgNXDrI1GThpnTR/y9u1K1r+fl/zQj0qukxLHK4JodL2pQJKMH+GokSFD0TMIyU3D3gzPjyQE4PTWLLTHCS8y9M+HH+kSeFx//qMxmWLa5YEa0vl/Eo/aI5/JJsn/5+BwGxTektPni7tCXyaOPT+gJ5wseFtoU0840q3Uyq0nvmJ6lrZ1jr5MyVYiEUFzLJMylxebosOhGt7Z1AkNm4piHihGgg2E7YPNUwxArVfm4RYmCFovYf584AniiprnzCLIZSWw/1Afr6k7Pjhs9RPIIeDuBt7yPtXF+p6hOAaZiZh2QWpBuIPkdkg57ZI3HNUmhV6NjdZPjWgy+bjvwwleRI0yTYsojWqAt+Htl786r3VgCHi07YDeP/tBkOQhKCbV9YQkNOqrCq9GuvJQJd5lVehH3Cjpb1niaJGfUIM4xyvXTxkzQ833oOwM03EKCSchpVR/qAWwgA4KGnHNR1MOZFymw6BEX670yUuBymH429r8xMT2K1v1/K+u7djpTuQ/XYAr6GLqo5c+Qkszp1xOH2R00
+ EMFJZiWE
+ /1wDzHCwivG5E3rp229liHy3F6zueM4/U1Bzj6lZ0rnf+0qX9wC5KRDZV9zumZAuZpmzjoUB4GU3Rcv+cWKp+7ORb4kqyvhLvVxmqSmOhCPSIrrhC0UfLWOS6UrPecpL2jIUEGpwWy4zG2QqmsvcyvzSmOcrk4r0MW7VdkZUQR0sH1Z4xxljzA34+s0c4XePkpl0NxdsgPKvcW/F4gyF1wBTQWURXSutzkfrB1qUqPAiFE3z86EnIplSrLU/zRZzpc0bGB5Xew1xnBepuXRK4Sr//LDscwpu0OtLZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,41 +94,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-vmalloc_dump_obj() has two bugs that cause it to miss vmalloc
-allocations, plus a minor optimization opportunity:
+From: Ye Liu <liuye@kylinos.cn>
 
-  1. PAGE_ALIGN() rounds up, pushing last-page addresses to va_end
-     and outside the VA lookup range.
+vmalloc_dump_obj() uses PAGE_ALIGN() to normalize the input address
+before looking it up in the per-node busy tree.  PAGE_ALIGN() rounds
+up, which can push an address in the last page of a vmalloc allocation
+to va_end -- outside the [va_start, va_end) range that
+__find_vmap_area() searches.  This causes the lookup to miss the VA
+and return false, degrading diagnostic output in OOM dumps and KASAN
+reports to the less informative "vmalloc memory" fallback.
 
-  2. The function searches only one vmap node, but allocations
-     larger than 64 KiB may span multiple vmap zones whose VA
-     is stored in a different node's rb-tree.
+The upward alignment can also change the addr_to_node() mapping when
+the page boundary crosses a vmap zone boundary, causing the search to
+hit the wrong node entirely.
 
-Patch 1 fixes the alignment, patch 2 fixes the cross-zone search,
-patch 3 adds an early is_vmalloc_or_module_addr() check to skip non-vmalloc
-addresses without traversing all nodes.
+Use PAGE_ALIGN_DOWN() instead, which rounds down to the page
+containing the address.  This keeps the address within the VA range
+and preserves the correct node mapping.
 
 Signed-off-by: Ye Liu <liuye@kylinos.cn>
 ---
-Changes in v2:
-- Use is_vmalloc_or_module_addr() instead of is_vmalloc_addr() to
-  avoid filtering module/BPF/execmem addresses. (sashiko-bot)
-- Link to v1: https://lore.kernel.org/r/20260916-vmalloc_dump_obj-v1-0-7aa402d224df@linux.dev
+ mm/vmalloc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
----
-Ye Liu (3):
-      mm/vmalloc: fix vmalloc_dump_obj address alignment for last-page lookups
-      mm/vmalloc: fix vmalloc_dump_obj cross-zone VA lookup
-      mm/vmalloc: skip vmalloc_dump_obj for non-vmalloc addresses
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 859e6d2d57a3..df42d8a6f058 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -5277,7 +5277,7 @@ bool vmalloc_dump_obj(void *object)
+ 	unsigned long addr;
+ 	unsigned long nr_pages;
+ 
+-	addr = PAGE_ALIGN((unsigned long) object);
++	addr = PAGE_ALIGN_DOWN((unsigned long) object);
+ 	vn = addr_to_node(addr);
+ 
+ 	if (!spin_trylock(&vn->busy.lock))
 
- mm/vmalloc.c | 29 ++++++++++++++++++++++-------
- 1 file changed, 22 insertions(+), 7 deletions(-)
----
-base-commit: e6e35979777d646fe3c7c94dca7dd32fb25d45f4
-change-id: 20260916-vmalloc_dump_obj-d80908447369
-
-Best regards,
 -- 
-Ye Liu <ye.liu@linux.dev>
+2.25.1
 
 
