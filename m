@@ -4,121 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEA37C982ED
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 17:05:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9AFAAC982E6
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 17:12:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BCC226B00C2; Mon, 21 Sep 2026 13:05:11 -0400 (EDT)
+	id 76C256B00BA; Mon, 21 Sep 2026 13:12:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BA38B6B00C3; Mon, 21 Sep 2026 13:05:11 -0400 (EDT)
+	id 6F57B6B00BC; Mon, 21 Sep 2026 13:12:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE1EF6B00C5; Mon, 21 Sep 2026 13:05:11 -0400 (EDT)
+	id 5E4E06B00C2; Mon, 21 Sep 2026 13:12:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8EC696B00C2
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:05:11 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 398E7A5666
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 17:05:11 +0000 (UTC)
-X-FDA: 85238394822.24.492AD05
-Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 8361E80012
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 17:05:09 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=N80XRz5N;
-	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.205 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 356336B00BA
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:12:02 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A04A7C0238
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 17:12:01 +0000 (UTC)
+X-FDA: 85238412042.15.E8C3C57
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id E3A3EC000E
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 17:11:59 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OO+iLt0g;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790010309;
+	s=arc-20220608; t=1790010720;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v7LCENNPwU2GeUQBgdonqhl0jI5d3t/m3wn6hI3Pq7k=;
-	b=GO7tTKWcqsblFzlhHEUYtXmX68RYgS2eM9CAL8l5UAiOe5Xkv5Pd69XL3mCSx1wijjjQbe
-	7evYq4utLUYzjrHFofHnguz2uCSnNvb7XHFEMG/K41Ml2PJAaB9NSsJdBGy0c6HGGiquzU
-	gi7IFqB2WNg0c1IWGPUxoGGL1aFR78w=
+	bh=HCJrgKklFG9NrB3rZUwyak2ETc3l1jw/ZyTmlKqr9+E=;
+	b=QdhwoR1OdFQPkp7iolOpKWB1gT195mJF+vkxizYS/OnnBe7t49npmBb1orggp9yrBk+wFr
+	cnm/vxCcKcCp9vIgpWF0xVV/tqgi3n5iTpAnFA0PvAQUNQ9WnHx+qIs2EicEo9stBGgu6j
+	nd52c7rXZFPG+5ZwP8FuMOPLg3ZLKPQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790010309;
-	b=pqgcJVGTLnPiIMnqTDeyynAJuK616yRei4rlyFFdfa5Ztq/IE7iOj3R81++lLtBqjwffg8
-	bZQnqdZar01oFihvei/khsdPwZjKXPGCRON3nKOiiczFILP/ws+5CO635pC0eA9wsAwwZG
-	tB2COMfAHH6zXrZWiO71tbd/0ZUsKZA=
+	t=1790010720;
+	b=ZMgNgenCrJvGw5X/Zjj+MeKiNm6G6C1eNlZg9KWqPBsjWgzr+8uaJ/qVwICuYmxBeyuxQz
+	a0/h2rQsSgPayPkDH68A1+fJOxA0on34rm9YeLXLGWH6vCX1bO6VzeUbDYtCa4jbRpVZij
+	2bpcK/u2R4VTcxlUeFvOtGeOmKZXBUk=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=N80XRz5N;
-	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.205 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qk2-f13.google.com with SMTP id d75a77b69052e-530280b8234so16103291cf.0
-        for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:05:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1790010309; x=1790615109; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=v7LCENNPwU2GeUQBgdonqhl0jI5d3t/m3wn6hI3Pq7k=;
-        b=N80XRz5NtY+dH3OJz/AEGU1zE2yBwGfyMuEYYKxNqroKQ8M+5shp9fgMN0GS1XTlWW
-         CAk+d9zsCcDfyAuOQFBfxkAprp1HnrFE8WZ4Epc1dghLY/JpyLP8vik14uYn/DTnXAod
-         WTSE/EHHOtApX6vBMfHE62N9+MVz/KkEekoiTTTDUdUKy1D86naxiSFWyGqEQpO64Vr2
-         giqTb9J9VCTmpmmOzxRbc88BihOnH7q50KtShgb2sxNK/oNJILo11aU3ea7leMl7A4Ow
-         Lknrc8ztDhgBnk8oif//8uPagXke9q2XxoRcw49VTprmDz2CnTWNjJbuOF/o4HLJ4qJP
-         93LQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790010309; x=1790615109;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=v7LCENNPwU2GeUQBgdonqhl0jI5d3t/m3wn6hI3Pq7k=;
-        b=DeWt2jIjJIeNEHTSkbOcvOzeNl0E8abPlQJuRL7F6PdUqykRzKLWSzgNWvX4tLrn09
-         R7ulj6uVd6uCrJgwuzxrDHQSvYiTiDmDw7Gt/JqMEtVcicqSUc09IX9UfOfgpZ3e15k/
-         UhylH62Kdaw2D1CAyCOJ4IrED1BuqsvDWqYX5GZJc0sLgFid62bB88OjIX+dQd35NB9J
-         0S03/4aUYLBylt7bbIDIoCvU6hNJudiafDNFAGD/mSMZXkoZ3IibKa3Dn/D/yLE+ZAT2
-         NE+IkW55mwSK/6gpZTGBnwAWyOfAOno6YzhJmsCV1RjJ/QqWA6bHcFL2ryJSLhmppZlE
-         kgNg==
-X-Gm-Message-State: AFuF++mhMvnBT24toW2NdLhly0WXiMtAqCQ6DBKmHhj0/nWoxLxGfsky
-	05xekuhIWOl0InwIAm4cFZmOivQzN96MmSWdDEpYHFEkCK30qv+gwud/ttJn8+vJETA=
-X-Gm-Gg: AYBFou1iNnKZ+d7hd1qeIj5W2h5Prn0Oqb0HsvvMhPH9HriZKaClOF/2YRs+krB7VYz
-	q7vLjSHC+ZUQuOH9RAWtznPZcdnXCd3yIB47mgZeEA1LKVtDctMJ2z04gcpxPbq7xjsDvkOsg5P
-	faYsCk3rqBTXiMzmHQuxX6qR9rKPXr5fPC7ONWRrle9QAqSHrQmuQWcwyLBLb9BWdzfi3nSvTBj
-	KEEVkYuOZ+VfbHGfwBMUtL5dVVNy82epKT9JgNm8WsA2XxFBRX3imFKbcGvrM4/AvN1V20gQZK4
-	x0HRrHOdL5m8KbXJjqKU8a49s7egtVnntHhjUfVx3M8VhSa5Axjt+srStneDfPZntObWqMqiMnO
-	A6wY3iwGmhFjhZdD65WfzSUYaONgOCRJa10U1vtl19+DjdBk9yA61+pFMzqE8G9QxIdWMQVW1pL
-	7kvSP2r0PXlryGl864fcvMEbE4GONBXuk3EhX9tNcpr+bVKm/8okDxnhbWWsBhWxGjLMGGPT6uO
-	kXJk8uuUWYu
-X-Received: by 2002:ac8:7d43:0:b0:530:f84c:f02b with SMTP id d75a77b69052e-532db76f02amr3607851cf.1.1790010308696;
-        Mon, 21 Sep 2026 10:05:08 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F ([152.186.177.174])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-532db6b5651sm1983721cf.18.2026.09.21.10.05.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 10:05:08 -0700 (PDT)
-Date: Mon, 21 Sep 2026 13:04:59 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Zi Yan <ziy@nvidia.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
-	akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, liam@infradead.org, 
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
-	brendan.jackman@linux.dev, hannes@cmpxchg.org
-Subject: Re: [PATCH v2 2/2] mm/page_alloc: refactor build_node_zonelist() out
- of build_zonelists()
-Message-ID: <arFjYiMbWf4ihrCu@gourry-fedora-PF4VCD3F>
-References: <20260912030424.2889731-1-gourry@gourry.net>
- <20260912030424.2889731-3-gourry@gourry.net>
- <DLKNHNP6LH59.3MEEBCAJGFEVK@nvidia.com>
- <arCeH_aD5PUM1tNE@gourry-fedora-PF4VCD3F>
- <C7A2977A-CDD8-4EEF-9448-A130411878B6@nvidia.com>
- <arFaiV9iVgxIsZ1g@gourry-fedora-PF4VCD3F>
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OO+iLt0g;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1815741892;
+	Mon, 21 Sep 2026 17:11:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6A5F1F000FF;
+	Mon, 21 Sep 2026 17:11:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790010719;
+	bh=HCJrgKklFG9NrB3rZUwyak2ETc3l1jw/ZyTmlKqr9+E=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=OO+iLt0gz5rbr9yReVQPH32/FH65Pz2riHxgOskyIjRboPZHwWbfYbYkO03a5iQjx
+	 LMx+2J0FwmZIBae1wpttLvBs1lR8H5+uHxlQWPA/Q5jyZCjSN70jvvcXpdY4f0WGg4
+	 vnYmoq09OZTUVkP0FoaShbRGs5d4Oqg9qeg0xdfIhcOoUQfG7/ITxdiX5+Bc9+roq8
+	 Nw51j2FIFD5uf06fJwc2J2NbXUcN+20Y8s9TGmb6UD9vkqLvAAPtCT4jJPYgTS3Hun
+	 o4J0YOS6eHcDyGWWL+4hi5grUgl4CfuxlkMxmAbFuKvtbkk/zuH28ai5I1FBOT5vk4
+	 AOs05+0yvBM0g==
+From: SJ Park <sj@kernel.org>
+To: Karl Mehltretter <kmehltretter@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] mm/damon/core: preserve the caller's quota in damon_new_scheme()
+Date: Mon, 21 Sep 2026 10:11:54 -0700
+Message-ID: <20260921171155.3359-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260921003047.12041-2-kmehltretter@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <arFaiV9iVgxIsZ1g@gourry-fedora-PF4VCD3F>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: ezbki55k8ctfgksxb1aaoix1wtoqmb4y
-X-Rspamd-Queue-Id: 8361E80012
-X-HE-Tag: 1790010309-303996
-X-HE-Meta: U2FsdGVkX1/h2eVoufTal/Jw1VTCVNPt3x+7/rgOz+f78fHjBXsyaqxJXn9HvUJuF+kx92gAnyjZvcB3CW7b6uiIfOSqi9HSvHExCDhyK/33lU1QwsBqog4BMvLmnbs5nBq4ff+N/L1m8EfFYn9RBCxyB5asy4hgZ18BCJ0IaI1LIUXnNmWiiIBi1u4Mg6b4NBuhHG9GhLRnv3Dl7WJfn8agLCUVmEz56eP78zLwjsa+XWJAuRp9RRBsbF7/kr5K6SnHRsVoMyXE0zp6eSkjP5xT71oJ5lpnK2BSUJQiqU1zy6T7UfWT75An56uHpYpvaIAE3R9aKyfgY0UJ/w97csku60B7P5zZui0ANtJFbXCYP/I7AGYz0BNv38Ylf6b9U7QgbVgH5RwVX/JOSVz42QNDGbrkS80BAsnU/TaiTcPqbzXMst/aL45y+FmtIyAzx3WCsSNVQM8ni1y9ntw0x5H5VzvGohO1VGUBuQUuW3yKluZfCEomylqRqSDPAwKXYbuCXdfA6yCau2U9Eglk/QoL0b/DoHVhr1rs+XH5i++ttWkoVUO+iOdUYi4wh4ZVozzBt9l5tAVUcQ4OjGlciPjsMtN4CLiqnoZCTXtNXDCKSstMnOP53AXOg6oN7+Iqyj4kTWnK97mx6RhFFSNHNwslNEtjDGH/vjQLBHkkxO40rQHlSiOODJhtUf5Uq3Toky5olPf6BrIN8ZbJPnXgEqu0u2O+r7g47n8K+8xt1thEjFAKLOmKYbbMIyDMRfuBG2k82bHMpUJjyBS5iTGngXkYCb6TSqxKAMM6M6YY/XIWzEpp2WHE/L8DlBv4JO2ByPN2h+G/GoE4sPKfNHPOvFzf5C9ZLEdKYasPgJd6ufCDiM0i91YFPCkdyrurx5+HD83cgshZOHyXj3njp/c6w7OFPxCZpjNfNAWXdq2oKT8b78vuZhp5NOiq4pZyRibqn6CHpy/UG2ksAp8sNJS
- 6uJBkIYF
- Nf4tT6BvPJL6dOiXvyUAgqfVREXZc4Ci5YHzBxANRyK+0zj3WE7adynW2A+/I1KsvzWkrRYpkEZoTVcqvu9DLXj8h/hlib2KFRtIxl1B5VJ6lxwijX/8k05kZrWi1OCbPaS5aNVyaGB9Y0wReZvo5idCAUGvCiqiwlD4HJkhLH1yOJX8AkpmPTH+0PuJH1EEUssJl0Cq+72qcDUNJldtHP3/jwZb3Uw2FYec2sM68EfFUpkok3/UAJh0HGUEi7KUCE6VCPLvnXQUmmJ841JKTDc7CBVYiVYDgNN8S2C/yVha1GLZY8nE1z988vxozrJkALIZpCfUz9mixVo+6fsXLBhvPOc7nJNgiRPpPSMG0a++qQFTSU79whTFBCZdxwz85ClHePW+URzmM5iMccVg+cLDcDly/J7H/XkLC0xkZuP3VB5L5iV7tbw9a1DHXalxDGT5V
+X-Stat-Signature: zrud67czu3z1zkqmhyt4bdcnki5s3jwz
+X-Rspamd-Queue-Id: E3A3EC000E
+X-HE-Tag: 1790010719-636408
+X-HE-Meta: U2FsdGVkX1/WZTGt4aAS2TliNXRFhpJHl9fdCThArNL3lwNV80Tv2YZf9WnDtnW3aegfREfhw75u8nmabfW/jOtosFdVkpzHNlWcKds96zbuGZUuPFubCzIsaqLDOPv0ovzBShiJ6BSmxCdQ3JD01zUa4ot5+fD865/ACeYEBA58cfAlJCXaV/372QXp7N4CsvFe22IzIoiQ1r1eLkCaVvDS9TnYy7k0xQy3UX3uxwzMTGcXXjyxzqgC/XUlJEC8j/M1vrXeWNOLbIRDmg5uO3PJFnFFHsKJwWgpJKuWgfDAcak1nqWSFZInFrlmtGX5mhgbzOfYsHo5VrUwGSb69btpN+B6pstJIN7FwCBf43z9Pg2F1u/T2KyHBBj08iYcZdpe40M3B4PsM1VlQUHixZ8AcUb8oKx6wh8HjoCPq4IQcIhfq+IRhi1w/6tS7VnA49aVwfEtT7mefT1AqTV1ve1xjXr93504KvNCCSy34cRAwOHuoVIGcA6yv/gwODbbQxhtmJCUP6VyepMWCr+PcYuALcRHNVWlAPR+kFXPb15AzLPHeUqL8kDe/Opsa6GP4/bRWYxF+6QNdOluP8sTYb8Y6wSY1N1S3jFDXR4G0NK2Gr++IZO35lsnC8+xs0L7eyEc3R9uWYhk591ktG5gYVH8cuxOjKjCcPdEhIS6DnT5bNZ9oLWBdmKQBk5M+ca/Pu3c/Y6NKJOq6ZXlyNGylmieVolYgLnhw3HGWWNd+KnMGem3NsECU3tQIKy0Q75IeumR/uLYWh7GGzpfzLRCKM4g+yz5rDkoax7cKYtfO3si/ZIAwzpNtwRb7azejmx5/x6kWgPQ/yEBgN2waZvkZU56nI9+jqlXRPG4Wd2fLZXzf2GVGpDDw9N97PMnf2glkSYB2gQl81+HJA0PmtTNczCFudHd7cqhkDb9DIVGG3hxmtlMKCYTLIChdFV0NnYx7BIC30RkEnOyGV0RlGP
+ iSqGpgum
+ Bgadon5W2ZlpQgsRNgKexNHNK6RW14uaptg2Lo1zCXbctBUPPcJTzKQW4MchzgzeiWC6Fo3mI0WRhfZf0cbve08JKmVnGCYyS1zPK8cY7P1E7pXIW2pZ/dJCo+H2qB5DqYeu5s3pQxJCbDd+/8M90uiXtdZEH0NOYhlXSSwy/cvMJLJ1unW607QM7pmR8IYSlKW82BrDT1RGXu2j04mvuGBkKjCWzF7qJEFmtT4wqhlSSWPDcWc8qv3LONw1oEHVWDEkQ3rgCZEDJf3XN3qc1v31LMuvP4aq2hK+Qwxd5e2tkIZwzut+oy+SOmDvSZuYbghGiHoM1n+UjtsY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,21 +93,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 21, 2026 at 12:38:57PM -0400, Gregory Price wrote:
-> On Mon, Sep 21, 2026 at 12:18:12PM -0400, Zi Yan wrote:
-> NOFALLBACK
->   0  :  [0]
->   1  :  [1]
->   2  :  [2]
+On Mon, 21 Sep 2026 02:30:46 +0200 Karl Mehltretter <kmehltretter@gmail.com> wrote:
 
-NOFALLBACK for a private node should be empty, sorry:
+> damon_new_scheme() calls damos_quota_init() on the caller's quota before
+> copying it to the new scheme. This clears the caller's effective quota,
+> feedback input and charging state as a side effect.
 
-  0  :  [0]
-  1  :  [1]
-  2  :  []
+Apparently the above paragraph assumes it is called under damon_commit_ctx().
+Lack of the context makes this quite confusing.  Could you please rewrite?
 
-if you attempt alloc(private_node, GFP_THISNODE) without selecting the
-private zonelist, your allocation should fail.
+> 
+> damon_commit_ctx() first copies the running context into a temporary
+> context for validating the proposed parameters. When
+> damon_commit_schemes() creates the temporary schemes, it passes the quota
+> of each running scheme to damon_new_scheme(). The quota pointer therefore
+> refers to the running scheme, and damos_quota_init() clears that scheme's
+> state before it is copied to the temporary scheme. Even an update
+> rejected with -EINVAL loses the running quota state.
+> 
+> For a size quota, this discards the bytes already charged and allows the
+> scheme to use a fresh quota before the reset interval has elapsed. For a
+> goal-driven quota, the consist tuner loses its accumulated input and
+> restarts from its minimum input. A time quota loses its throughput
+> estimate and falls back to the initial estimate.
+> 
+> The constructor side effect was introduced by commit 70e0c1d1bf94
+> ("mm/damon/core: factor out 'damos_quota' private fileds initialization").
+> Commit 60bd24f272d0 ("mm/damon/sysfs: test commit input against realistic
+> destination"), merged in v6.19, exposed it when
+> validating sysfs updates against a copy of the running context. Commit
+> b90408ef1163 ("mm/damon/core: safely validate src on damon_commit_ctx()")
+> later moved that validation into the core API.
+> 
+> Sashiko reported the same side effect [1] on the RFC of the core API
+> change.
+> 
+> Copy the quota to the new scheme first, then initialize that copy. Make
+> damos_quota_init() return void, since its return value is no longer needed.
+> 
+> Fixes: 70e0c1d1bf94 ("mm/damon/core: factor out 'damos_quota' private fileds initialization")
+> Cc: <stable@vger.kernel.org> # 6.19.x
 
-But this is more discussion for the private node series.
+The Fixes commit was introduced in 6.1.  So the comment on Cc: stable@ line
+should be fixed.  Also, at the time of the commit, validation purpose running
+ctx committing didn't exist.  So, the issue you are explaining cannot happen on
+the commit.  Or, am I missing something?  If I'm not incorrect, could you
+please find the proper Fixes: commit and fix it?
+
+Also, are you using LLM for Fixes...?  If so, the LLM seems not good at that.
+Your previous patch also made a similar mistake.  Please manually work on
+Fixes: tag or double check LLM's output.
+
+> Link: https://lore.kernel.org/damon/20260702212143.0CB6D1F00A3D@smtp.kernel.org/ [1]
+> Assisted-by: LLM
+> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+> ---
+>  mm/damon/core.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+
+The code change looks correct to me.
+
+
+Thanks,
+SJ
+
+[...]
 
