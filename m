@@ -4,88 +4,173 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9AFAAC982E6
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 17:12:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7655C982E6
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 17:18:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 76C256B00BA; Mon, 21 Sep 2026 13:12:02 -0400 (EDT)
+	id 8FFD46B00B9; Mon, 21 Sep 2026 13:18:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F57B6B00BC; Mon, 21 Sep 2026 13:12:02 -0400 (EDT)
+	id 8D71F6B00C1; Mon, 21 Sep 2026 13:18:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E4E06B00C2; Mon, 21 Sep 2026 13:12:02 -0400 (EDT)
+	id 79F2F6B00C3; Mon, 21 Sep 2026 13:18:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 356336B00BA
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:12:02 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A04A7C0238
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 17:12:01 +0000 (UTC)
-X-FDA: 85238412042.15.E8C3C57
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id E3A3EC000E
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 17:11:59 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OO+iLt0g;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790010720;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B70D6B00B9
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:18:33 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B96BA80262
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 17:18:32 +0000 (UTC)
+X-FDA: 85238428464.29.A5868B5
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013012.outbound.protection.outlook.com [40.93.201.12])
+	by imf03.hostedemail.com (Postfix) with ESMTP id D17372000C
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 17:18:29 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=NiMLrSuI;
+	spf=pass (imf03.hostedemail.com: domain of ziy@nvidia.com designates 40.93.201.12 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790011109;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HCJrgKklFG9NrB3rZUwyak2ETc3l1jw/ZyTmlKqr9+E=;
-	b=QdhwoR1OdFQPkp7iolOpKWB1gT195mJF+vkxizYS/OnnBe7t49npmBb1orggp9yrBk+wFr
-	cnm/vxCcKcCp9vIgpWF0xVV/tqgi3n5iTpAnFA0PvAQUNQ9WnHx+qIs2EicEo9stBGgu6j
-	nd52c7rXZFPG+5ZwP8FuMOPLg3ZLKPQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790010720;
-	b=ZMgNgenCrJvGw5X/Zjj+MeKiNm6G6C1eNlZg9KWqPBsjWgzr+8uaJ/qVwICuYmxBeyuxQz
-	a0/h2rQsSgPayPkDH68A1+fJOxA0on34rm9YeLXLGWH6vCX1bO6VzeUbDYtCa4jbRpVZij
-	2bpcK/u2R4VTcxlUeFvOtGeOmKZXBUk=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OO+iLt0g;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1815741892;
-	Mon, 21 Sep 2026 17:11:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6A5F1F000FF;
-	Mon, 21 Sep 2026 17:11:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790010719;
-	bh=HCJrgKklFG9NrB3rZUwyak2ETc3l1jw/ZyTmlKqr9+E=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OO+iLt0gz5rbr9yReVQPH32/FH65Pz2riHxgOskyIjRboPZHwWbfYbYkO03a5iQjx
-	 LMx+2J0FwmZIBae1wpttLvBs1lR8H5+uHxlQWPA/Q5jyZCjSN70jvvcXpdY4f0WGg4
-	 vnYmoq09OZTUVkP0FoaShbRGs5d4Oqg9qeg0xdfIhcOoUQfG7/ITxdiX5+Bc9+roq8
-	 Nw51j2FIFD5uf06fJwc2J2NbXUcN+20Y8s9TGmb6UD9vkqLvAAPtCT4jJPYgTS3Hun
-	 o4J0YOS6eHcDyGWWL+4hi5grUgl4CfuxlkMxmAbFuKvtbkk/zuH28ai5I1FBOT5vk4
-	 AOs05+0yvBM0g==
-From: SJ Park <sj@kernel.org>
-To: Karl Mehltretter <kmehltretter@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] mm/damon/core: preserve the caller's quota in damon_new_scheme()
-Date: Mon, 21 Sep 2026 10:11:54 -0700
-Message-ID: <20260921171155.3359-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260921003047.12041-2-kmehltretter@gmail.com>
-References: 
-MIME-Version: 1.0
+	bh=K19FL12+fj35r4rbc/LoPUH5Lj8QwKUn+K9RtxcyAfQ=;
+	b=n4st8cN3iuh1mliEmms7tQYSh0phGpLDYLS4c5q71vP7yaCby9kRQk4IihfROH7X8574x1
+	Yao1kqEz5pWQRPuK1s6oAk72QVwG7RpDOUj5F3mU7tq76Tm+3c6VlVXneW8IvRya0uYK0J
+	NXlxSDpyyLD8z5E6CUt4aHxe5G5Q9W8=
+ARC-Authentication-Results: i=2;
+	imf03.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=NiMLrSuI;
+	spf=pass (imf03.hostedemail.com: domain of ziy@nvidia.com designates 40.93.201.12 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1790011109;
+	b=23MmB8IXB+cwCZseR80876glnjzphuNhNp+VstR6cRplJYvg11aoE/+nWI/ay5N5yRVtZQ
+	gxHPuSgg6DVGD8TC+k9wpMFHGKH+ZmVuRPlOj/1FfhgcIMlUerBvUEnCZ0NruKl8RPbrFe
+	NFW3s/Kmc1porcgfQRaoz5t+9rPdZxA=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=iPvzANySFipYLfp41s3/uf3btim9my4pmZtNHiRtk9woPsOjTXD/EIvGjFToUswNTTLWhTVI5P+kyuPuNxpEZ1jqQlluCxLfaY2aTvtgBYAw6t7b27/FSqK0vmos22OzCarMYBZbXNhljTcX8M7NwGqfh3Noyl60g8u9Rn7riNhDz2LLBAQPtJFuH8UW6Z+301J/C6gzNQsMAemZAqX9gzbWEiOZr2Qhwg3/WS8xUoosgdPmNuMuI05t+eVG5/xXpMWaDxexhyX+E5qddfLpYlO7r1Q0Z0VMI6Od1OVZWpUj23x7T8JmCntmTgASTl+9auRR3yXhSc4g15Nq/j5Qfw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=K19FL12+fj35r4rbc/LoPUH5Lj8QwKUn+K9RtxcyAfQ=;
+ b=ccIfGVBggPKGE6f4//tdEM6UsBlBr25KR1if11jQluBWQUZmCEYPZ6WKHafzDygL1KIkwQrd79OkduUJSLi/GbPtOwddJoyrKy0z9h9tvzhTkdZi2J4pqkP3nb/mNL1veyc6bwmUj6VgOGHRJWHSrA18Fon/HBhkVMlUe3S0Ysrpm3Zfix+nOeHLTaztPGz7hbSK4AwqniHNlsCA0oNuPBHX4GLvNDZDUA/ERaIdoFD+ufMeuKoM+/XylXwWCYkKh6KRhHtvAGoJVFDEXoxj06qW3AoBn0gSU0fhjAIxgavVAphAD5I0Ry5zVL6LpjxJ6mNM6lvciHpuVsamOAKzOQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=K19FL12+fj35r4rbc/LoPUH5Lj8QwKUn+K9RtxcyAfQ=;
+ b=NiMLrSuI6YhSE4YcPSipiOObArxkfntYL4MbQit5prCGv2xG5sTrfUOT7Q+L4+E53IrFpasa8H993Mv3cZSpvQzPWlJ29IcqV1Cb67aU76LLxLn4kfxqh70Uj68oENbFi//iJ74mA4zMJmSMki5l+jtyy8gvpxN7woE30q4oDRkS3opkbUl2UBlLKJzw4lH0KAs3/m9Z+Wvx308cAGcM24kgZyfpByOEZCf3trIxVeL43mP99RnQvWPgtPmVjG99LxmCbNh0KvM5ANcawiFiyOTdtdDX8R1sTC2LpzVJvEgHYEf3UUu4D9dm1Vj1UDxYUunPwydDZ4oI+d8XxFJYpg==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by CY8PR12MB7729.namprd12.prod.outlook.com (2603:10b6:930:84::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.16; Mon, 21 Sep
+ 2026 17:18:21 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0428.015; Mon, 21 Sep 2026
+ 17:18:20 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+ liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, brendan.jackman@linux.dev, hannes@cmpxchg.org
+Subject: Re: [PATCH v2 2/2] mm/page_alloc: refactor build_node_zonelist() out
+ of build_zonelists()
+Date: Mon, 21 Sep 2026 13:18:18 -0400
+X-Mailer: MailMate (3.0r7032)
+Message-ID: <9CED0F0C-E5A6-4E69-A6A4-A0361AAC8E30@nvidia.com>
+In-Reply-To: <arFaiV9iVgxIsZ1g@gourry-fedora-PF4VCD3F>
+References: <20260912030424.2889731-1-gourry@gourry.net>
+ <20260912030424.2889731-3-gourry@gourry.net>
+ <DLKNHNP6LH59.3MEEBCAJGFEVK@nvidia.com>
+ <arCeH_aD5PUM1tNE@gourry-fedora-PF4VCD3F>
+ <C7A2977A-CDD8-4EEF-9448-A130411878B6@nvidia.com>
+ <arFaiV9iVgxIsZ1g@gourry-fedora-PF4VCD3F>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
+X-MS-Reactions: disallow
+X-ClientProxiedBy: BN9PR03CA0896.namprd03.prod.outlook.com
+ (2603:10b6:408:13c::31) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|CY8PR12MB7729:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4c9dd6e3-bf6e-4a1b-92b3-08df1804559c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|23010399003|366016|376014|7416014|10067099003|11063799006|5023799004|3023799007|18002099003|22082099003|56012099006|4143699003;
+X-Microsoft-Antispam-Message-Info:
+	nfxMALzAh9QFU2EB3gElcs/AHVyHXqzCcoF8BIbNNckjGlNKTwEqouuw1rMPmWzmtBSX1LOY0v8Y12jAENW62+IRKdJVqK0Ro+zCnWQlJ1saW2O+ShgO1QeuCeSSrgRx5hJT/0TmEYMWs4tMkrgAD9FGd8N/Jdll+iiLF92Samu01H67IqmAZJxCFqwlfMwhWyNzcHSFLpxmcEokfoFPRj6vbMtdj1cU9VVONpLov2h7+a7sWttj7oSuYs+qEdtpr0zm+GoR6YaGmuzhVMOGo7EkkZfLVDsEb+HmC9+qVwicPJunSIgHsJuQyDIH010KzGX1pTioB4A/K7KKFiiXm1Hg+eXToDMcVuwPGHfCe4PvxmHprzgZF+jO2SOu+ExtGr29mcxDiQxqRwAnBVcaTkgDBg7R7cAO7nOf5lGekmwK6app45j3y6J++6vTEYMDjVLni3lTMfbxOcrZGZBDN7UhFQUIQeWb1gI8RpAr3bFE9tH0/tvp9GTYtrDRXVn+oGU7a94AyvGYixeIi8bgYGZe8sskymCRzv0sjgHXxTwWhZ2fjq7zq/TVPM87Ijq23LjIKejKP7lYeQKcEz08L2+sWxr+mNlrtjoS27CQZXc+0i46rKsy8u4GVXQJTr3JXufNA6vZ2iJLoHocP/dStMM3zc6eHWeHfKwwLPi9lLs=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(366016)(376014)(7416014)(10067099003)(11063799006)(5023799004)(3023799007)(18002099003)(22082099003)(56012099006)(4143699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dFZJUFdrRW5jUlhHR3NYNUpPd3cydTZvY2hqRjFCTGdmc0JvdWMrUHlUVzUw?=
+ =?utf-8?B?K0liYmJraHBrckNOOEhTWWhYY0JwWlpZM1BUT2ovWlljcWF6OEp1TUFaaHVk?=
+ =?utf-8?B?TW1vZTJyQXRJNHpxRHZnWkVzUkVOcXA4TmlUemV0SndrZGw2ZlVLNC9uYk9v?=
+ =?utf-8?B?UU40TVdkY3I0Zmk0Qm16dHVJYW5XRjNzWmVTazdXYXluaHI1VXFoR1l5cWNQ?=
+ =?utf-8?B?MHpyWXVKM0gyZTBaRW4vaEJlWnpETXV1bUYrbC9OR2tJR3VuV0hVcnAxNjhG?=
+ =?utf-8?B?OXdJTGlTRDJJZTZESld6K0ovN0xGY2o1cXcyNXdhMDRZZlVFT0UrZ1BMcXpE?=
+ =?utf-8?B?bXFtb3E4bjI5c25HUGdrOU53dTYwNFYxK05zY2FycXU2NlJDUnhxUWtWTkxp?=
+ =?utf-8?B?emFDR2d0NGU0aG5jVGFlUTFvMVE5Vnd3TDM5WUZQU2ZuRThML1E2UEJwZFFN?=
+ =?utf-8?B?aG5iVXBWOHhqM1ROeFVzOGZVaW1Tdm9WdDBXUEpramdwVVVrVkhGVGZvK0Vq?=
+ =?utf-8?B?dCtMNXZrMjV0Z0NteFg0Ly9Ga1NObFQyWkJHVUNicytrNlNxNkNNTEw4bDMx?=
+ =?utf-8?B?Z09JMG0rWS9Pb3RiZnZ6ZWlaKzVVVFVRWFhJMlFtZmZsL0RkcWRHaFI1ZnEx?=
+ =?utf-8?B?L0FPczE2WUdySXpNalE1YUQ2Z2hiWFkvQ09jK0loRmRaYkgyY0dDcWJlRGxE?=
+ =?utf-8?B?MWZQQWN0engxNnpiZEluQXZXSncwck5ZK2JOWnZ6MzRKVFc4YTRwMFh2WFdy?=
+ =?utf-8?B?cCtEdDJDV3hyMVdaRmJFZHROMUoxQkNhZyt1RUwvUTdlWXZCNlp3TDA5K1BH?=
+ =?utf-8?B?cW93aC9QN214ZmwxQllrU2x0d0FuYTNCUTZhcnhmK3FZYnJseXhxUk9zK1hy?=
+ =?utf-8?B?NCttYS9scG9LYk5OZWlReWtxL1NaTXd2TnlTOU5KOWZGQ2R0emVuTVNmSmk3?=
+ =?utf-8?B?Z2o1amgvM083RUZ4U01ycWpGQVhURmJSNXdKWFcrdzRxUTA0SWh6SngzQ3Rk?=
+ =?utf-8?B?Tnd5SGV2a3N0WXZDalpXN3didFAza3ExajkxMGx3NkUrOXEvdXRWV1Q3SEhI?=
+ =?utf-8?B?ZzY5WUlSSytZMTQ3N0F6VUJEY1JJK2IxSHBVdGxTZGwvNzdmUzIzNmx0ZnNN?=
+ =?utf-8?B?bG5YdDMvWmE2ZmhzaU9YUjdyazkvanIwZVpKUkNRcVlZOGlkL2h2bVZZRTd0?=
+ =?utf-8?B?aDVsTXJ2STFGYUtWd0cwNit1ekp6MjVHM3dCQXUxZW14N2pPa1dGSkI4VHc5?=
+ =?utf-8?B?ZnlQMGZkRUZjd3RWVzR3dGdING9aTTJOWG51bjhTVzR5ajlIalNFY1ZkU0tE?=
+ =?utf-8?B?RWFsMHNHSDQ3WnRBa3k3d1lRZlF1RXZwZzMxUzJvSzRsK2RMbjgvbFpTZnFN?=
+ =?utf-8?B?WTIybzRKZUtTdVAvQXFXM1FCRzNTdnNkSjJGUE1jdTUwNE9aeEhvMlRmK0Vi?=
+ =?utf-8?B?dlR4VzdINjNKMXhzbC8wckExYWFLZ0VHcWpSZVg0RkdHcm5qUVprak9NNkZr?=
+ =?utf-8?B?dlByMHcxZnN1aUMwTE45YjlrKzB4SEVtUGVxOG82dEYwTkNsWjZaaTJPbUlH?=
+ =?utf-8?B?VHJmQ3NKanhnT2krVC9RNzV5TDYzYzdNTzVaOVlheG5DYnVGaHFqdkl5azhi?=
+ =?utf-8?B?T21aZHVsRCtHMVlWRi82bzZTemtpWEFLTWNpOUc5emhWRjVPaStQeU1JVVNE?=
+ =?utf-8?B?K1YybDlET2taUmgvRWw4S2VEQUttN0E3S1Q4S1JwWTJhMUxIQnJ6YVBLL3pQ?=
+ =?utf-8?B?RWcweE4xQnM5eTF3dGd4akRuVWNaWVlrU1lJMGRBZzVwWXJ5SWozZjVQZHU1?=
+ =?utf-8?B?R3BIK3RXUlBiWW5TRFkrUUhUL3hNSHhTd0Z2UVBFeXh0NTBIS2ttbzVKSlN2?=
+ =?utf-8?B?K2F4N1JpelBEVGt1YWIrR0J2aG5GTmtpSFcwMkNSUnRSbzJ3MjRNd1F5cm9i?=
+ =?utf-8?B?cGFvYVJ2V1RJMS9pdDdNR3lCY3h3WEZFb1hPOFVNb2QxYXp3ak8vdXhZaUFM?=
+ =?utf-8?B?MlhoQlhoK29nZTJYMVZmMGZFMmprNkt5RmJVZXhMK3dGMmQ1dmN4MHZsV1U0?=
+ =?utf-8?B?K2Y4Y0d0Rm5tNmdFZE5yNzhoc0IrM3dMVkRhYlBGdXVIaWFoV3hOUmxHdlJS?=
+ =?utf-8?B?a3cxek9xUVNaT2M1WFR6RTFZRlZNMHJoeGpFdjNJVTBqYytONzJwMEwvUEpk?=
+ =?utf-8?B?ZE9qOVEzemFQdnZheTNpSWdST0M0MzJSbGdobW1lemZHZGVRSXBwSVJZOGkw?=
+ =?utf-8?B?MHplWllHQ1RPMERUd1IwOXQrbDcybjVNOUQ2aE1mWVVRZ1lMVXVDYjh6bUpz?=
+ =?utf-8?B?bU9UbkhyUWE4TUxDdkhBaDdySmhCdTF1dm54MUR2Z3JVRlpXVnB3UT09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4c9dd6e3-bf6e-4a1b-92b3-08df1804559c
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Sep 2026 17:18:20.6435
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: q2SVxQBEfzEVV1szRmtQiOTcYam7Kb6tasbYpBNhINKWyWSYOD/ohJVTPsw3khId
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7729
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D17372000C
+X-Stat-Signature: f6e3omdasruu96xq943cquo87kgwddg5
 X-Rspam-User: 
-X-Stat-Signature: zrud67czu3z1zkqmhyt4bdcnki5s3jwz
-X-Rspamd-Queue-Id: E3A3EC000E
-X-HE-Tag: 1790010719-636408
-X-HE-Meta: U2FsdGVkX1/WZTGt4aAS2TliNXRFhpJHl9fdCThArNL3lwNV80Tv2YZf9WnDtnW3aegfREfhw75u8nmabfW/jOtosFdVkpzHNlWcKds96zbuGZUuPFubCzIsaqLDOPv0ovzBShiJ6BSmxCdQ3JD01zUa4ot5+fD865/ACeYEBA58cfAlJCXaV/372QXp7N4CsvFe22IzIoiQ1r1eLkCaVvDS9TnYy7k0xQy3UX3uxwzMTGcXXjyxzqgC/XUlJEC8j/M1vrXeWNOLbIRDmg5uO3PJFnFFHsKJwWgpJKuWgfDAcak1nqWSFZInFrlmtGX5mhgbzOfYsHo5VrUwGSb69btpN+B6pstJIN7FwCBf43z9Pg2F1u/T2KyHBBj08iYcZdpe40M3B4PsM1VlQUHixZ8AcUb8oKx6wh8HjoCPq4IQcIhfq+IRhi1w/6tS7VnA49aVwfEtT7mefT1AqTV1ve1xjXr93504KvNCCSy34cRAwOHuoVIGcA6yv/gwODbbQxhtmJCUP6VyepMWCr+PcYuALcRHNVWlAPR+kFXPb15AzLPHeUqL8kDe/Opsa6GP4/bRWYxF+6QNdOluP8sTYb8Y6wSY1N1S3jFDXR4G0NK2Gr++IZO35lsnC8+xs0L7eyEc3R9uWYhk591ktG5gYVH8cuxOjKjCcPdEhIS6DnT5bNZ9oLWBdmKQBk5M+ca/Pu3c/Y6NKJOq6ZXlyNGylmieVolYgLnhw3HGWWNd+KnMGem3NsECU3tQIKy0Q75IeumR/uLYWh7GGzpfzLRCKM4g+yz5rDkoax7cKYtfO3si/ZIAwzpNtwRb7azejmx5/x6kWgPQ/yEBgN2waZvkZU56nI9+jqlXRPG4Wd2fLZXzf2GVGpDDw9N97PMnf2glkSYB2gQl81+HJA0PmtTNczCFudHd7cqhkDb9DIVGG3hxmtlMKCYTLIChdFV0NnYx7BIC30RkEnOyGV0RlGP
- iSqGpgum
- Bgadon5W2ZlpQgsRNgKexNHNK6RW14uaptg2Lo1zCXbctBUPPcJTzKQW4MchzgzeiWC6Fo3mI0WRhfZf0cbve08JKmVnGCYyS1zPK8cY7P1E7pXIW2pZ/dJCo+H2qB5DqYeu5s3pQxJCbDd+/8M90uiXtdZEH0NOYhlXSSwy/cvMJLJ1unW607QM7pmR8IYSlKW82BrDT1RGXu2j04mvuGBkKjCWzF7qJEFmtT4wqhlSSWPDcWc8qv3LONw1oEHVWDEkQ3rgCZEDJf3XN3qc1v31LMuvP4aq2hK+Qwxd5e2tkIZwzut+oy+SOmDvSZuYbghGiHoM1n+UjtsY=
+X-HE-Tag: 1790011109-39141
+X-HE-Meta: U2FsdGVkX19SVkKFDvN/ttkZAdUwwWBCWFUTzEDXTlmLoUSo0gA/1BXqFIBMmhLaKT+RBgWQTVcGhDhsRgP/+VEUqAwhk9yt7lcr7X3rdI2HlQGNe5JJ1Qr+V1oJcCUt+KszmorcVElSelx5vpPWMJh5Tl0W9dGE0NfKqfivXOQt4Zn9837NniwyHUdhE/o7qWbqp/lvfUw7/5F/4EX0b5f/D5UmInyvlZxKEJhWC1SWEjOeFohjLE0IfAusGIIC9HHv78rtvHfd0vLzl8Ge4/VJuwr9pc8YXSa2eIO8xUoK323Afr717jk2VR4CWdBeZ1tfWSSyECvK2e7nW+kwv0tg3A6/dghMG469aMCT0IEVcPhP0fVUAdCl48sbbYxm4MwdT9g0gg1mq/TgDm9AAeO6WfTo90R6bxLyJ2Kai3P9u3OWPqYq94HZIuDaJpglgosP12cW6EytILZgwUd5Z+eDW0sdWviElZ4R73BKQg98KAz8XazFJnIoM92619oR+3louim6IePEpS4g1UdIqSCUNBkUNZVfAr28rBu14iB1EOJrsxiniGWvLIYTb5w1QlqWPKBI0nd1Bny1CNjOwp1r+lig0Gl4wMQ0y7Xm2L/k1/MOwj1gkduSQGkKRGNKSQA1hDKh/nxL3Lqpg+rKc6VkQs+19ecNUfCOburcn0CdYWLXzIiZEeu+0RN2SQfNghtkb/7qD4z4iibUYD5NTbeivU6UPR7AH48mrbvS+OiUdG8APVkC/hbzUBdCGWPOT3n2DaK0OX1YhPhfxa0t7c78ZpuKO7hx2uFkZQ47L8s0ATOz3RkTlzDUSId91W7oGgFBUB1B8oxzr2CgRSzzXB7SBeh4N4/cVv+IcVyFeU8iYrVwCOIclUGnsh+IXitSQSNMlyLq59NUwCzAsRCEPDq6ZjJ4BZu1hNjKHDBGBVRPK/ne1molM3+hmwDFqGCq0yGftqv+iUKYIKBFqQ6
+ QCfSKHy7
+ f9OFDO3+ONQ9jswT0iF6zwmGrRL5CAGzLpzo86/dLXFOA/+SUG4uvnaFNXYYdrYIv6SmFYUZpBv18hNvEwxvhwe2TkPRSfD2fM+LFPTrPiBekgF6YVLga5ELjoHbmcJvXMeBkBy/IL3jUQir5R5MO5fsJucl9EehhwRe88cRaQCLSJgGmsnYCaTzKw5KElnr5l/ZzLM1pjxgO9x6dejfpLd1WlqvM2FWMI1JkIXk5WREvS9XPBM3rS7lV4iF7TwRUScaSaVvXyE1VYrl8C+KV9OgJnaFTHx5oCJQ0Bw30X1GOO6Zckh57yAgOrKQlQZOD+fNZLTcl6cbSD2tz6e9LPfOzutqZBxHxPzoOD6f0mdiCR0AISosfHk4d8RBX5ZgzbVpce9hg5strFXg6clNIDmfqK1scc6wS60t51ObkQqmhNvX5LR2ntdVIsOMN2G33+unKnGcjGXScty6eIYUoCBlqMXvqnmDiy670Y978oUdMPJRufRwDA2ENXQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,69 +178,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 21 Sep 2026 02:30:46 +0200 Karl Mehltretter <kmehltretter@gmail.com> wrote:
+On 21 Sep 2026, at 12:38, Gregory Price wrote:
 
-> damon_new_scheme() calls damos_quota_init() on the caller's quota before
-> copying it to the new scheme. This clears the caller's effective quota,
-> feedback input and charging state as a side effect.
+> On Mon, Sep 21, 2026 at 12:18:12PM -0400, Zi Yan wrote:
+>> On 20 Sep 2026, at 23:29, Gregory Price wrote:
+>>
+>> OK, ZONELIST_PRIVATE and ZONELIST_KTEST are not upstream yet, right?
+>> In theory, the new zlidx can be added when you add new ZONELIST_ types.
+>>
+>> I am OK with adding it now, but you could mention this change in
+>> the commit message to avoid confusion. Something like,
+>> for bulid_node_zonelist(), use ZONELIST_FALLBACK explicitly.
+>>
+> ...
+>>> And add a BUILD_ON_BUG/ASSERT that forces any CONFIG_NUMA to have
+>>> balanced zonelist additions.
+>>
+>> Got it. Thank you for the explanation. Are all combinations of
+>> {ZONELIST_FALLBACK, ZONELIST_PRIVATE, ZONELIST_KTEST} x
+>> {N_MEMORY_GENERAL, N_MEMORY, /* private only */} allowed?
+>
+> Slight inaccuracy on the way zonelists are actually built.
+>
+> Every node has a list in every zonelist.  The contents of each node's
+> list in that zonelist are limited to the candidate nodemask.
 
-Apparently the above paragraph assumes it is called under damon_commit_ctx().
-Lack of the context makes this quite confusing.  Could you please rewrite?
+Got it. It makes sense to me now. Thanks.
 
-> 
-> damon_commit_ctx() first copies the running context into a temporary
-> context for validating the proposed parameters. When
-> damon_commit_schemes() creates the temporary schemes, it passes the quota
-> of each running scheme to damon_new_scheme(). The quota pointer therefore
-> refers to the running scheme, and damos_quota_init() clears that scheme's
-> state before it is copied to the temporary scheme. Even an update
-> rejected with -EINVAL loses the running quota state.
-> 
-> For a size quota, this discards the bytes already charged and allows the
-> scheme to use a fresh quota before the reset interval has elapsed. For a
-> goal-driven quota, the consist tuner loses its accumulated input and
-> restarts from its minimum input. A time quota loses its throughput
-> estimate and falls back to the initial estimate.
-> 
-> The constructor side effect was introduced by commit 70e0c1d1bf94
-> ("mm/damon/core: factor out 'damos_quota' private fileds initialization").
-> Commit 60bd24f272d0 ("mm/damon/sysfs: test commit input against realistic
-> destination"), merged in v6.19, exposed it when
-> validating sysfs updates against a copy of the running context. Commit
-> b90408ef1163 ("mm/damon/core: safely validate src on damon_commit_ctx()")
-> later moved that validation into the core API.
-> 
-> Sashiko reported the same side effect [1] on the RFC of the core API
-> change.
-> 
-> Copy the quota to the new scheme first, then initialize that copy. Make
-> damos_quota_init() return void, since its return value is no longer needed.
-> 
-> Fixes: 70e0c1d1bf94 ("mm/damon/core: factor out 'damos_quota' private fileds initialization")
-> Cc: <stable@vger.kernel.org> # 6.19.x
+>
+> So consider the following nodes:  N0, N1, P2   (N=normal, P=private)
+>
+> With the following candidate mappings:
+>    FALLBACK = N_MEMORY_GENERAL  (_COMMON)  (all normal nodes)
+>    PRIVATE  = N_MEMORY                     (all nodes)
+>    KTEST    = N_MEMORY & !N_MEMORY_GENERAL (only private nodes)
+>
+> FALLBACK
+>   0  :  [0,1]
+>   1  :  [1,0]
+>   2  :  [0,1]  <- private node's fallback list is normal nodes
+>
+> NOFALLBACK
+>   0  :  [0]
+>   1  :  [1]
+>   2  :  [2]
+>
+> PRIVATE          Accessible via ALLOC_PRIVATE_ZONELIST
+>   0  :  [0,1,2]
+>   1  :  [1,0,2]
+>   2  :  [2,0,1]
+>
+> PRIVATE_NOFALLBACK
+>   0  :  [0]
+>   1  :  [1]
+>   2  :  [2]
+>
+> KTEST             Not accessible via any flag, completely isolated
+>   0  :  [2]
+>   1  :  [2]
+>   2  :  [2]
+>
+> KTEST_NOFALLBACK  Not accessible via any flag, completely isolated
+>   0  :  []
+>   1  :  []
+>   2  :  [2]
+>
+> I haven't posted the ktest series yet, but it's how i've made the page
+> allocator ktest-able.  Ktest is empowered to set the fallback list
+> directly rather than requiring a flag - not something any in-tree caller
+> can do - which lets it limit allocations to a private node and makes
+> mutations on the pgdat for that node deterministic from test-to-test.
+>
+> Works on UML too, so testing is very fast. :]
+>
+> Apologies for the added complexity in the explanation, but I figure it's
+> worth spelling out.
 
-The Fixes commit was introduced in 6.1.  So the comment on Cc: stable@ line
-should be fixed.  Also, at the time of the commit, validation purpose running
-ctx committing didn't exist.  So, the issue you are explaining cannot happen on
-the commit.  Or, am I missing something?  If I'm not incorrect, could you
-please find the proper Fixes: commit and fix it?
+Definitely. Great information.
 
-Also, are you using LLM for Fixes...?  If so, the LLM seems not good at that.
-Your previous patch also made a similar mistake.  Please manually work on
-Fixes: tag or double check LLM's output.
+>
+>> Any enforcement if not? This is more related your “private node” series,
+>> instead of this patchset.
+>>
+>
+> These zonelists aren't something we're going to allocate dynamically,
+> the enforcement is encoded in the function (build ZONELIST_X over
+> candidates N_MEMORY_Y).
 
-> Link: https://lore.kernel.org/damon/20260702212143.0CB6D1F00A3D@smtp.kernel.org/ [1]
-> Assisted-by: LLM
-> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
-> ---
->  mm/damon/core.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+ack.
+>
+>>>
+>>> But I don't think it's strictly necessary for any of this, and we're
+>>> just shuffling code from one place to another.  Probably I can just add
+>>> that improvement when we add the next zonelist.  In the meantime - this
+>>> makes it easier to add new zonelists as-is (and just makes the code more
+>>> readable).
+>>
+>> Sure, no rush.
+>>
+>> Feel free to add
+>>
+>> Reviewed-by: Zi Yan <ziy@nvidia.com>
+>>
+>> after you add some text on the added zlidx in the commit message.
+>>
+>
+> ack. hopefully the explanation above helps.
 
-The code change looks correct to me.
+Yep. :)
 
+>
+> I will work that into the commit message in a reduced capacity.
 
-Thanks,
-SJ
+To be clear, I just would like you to mention the addition of
+zlidx to bulid_node_zonelist(). Thanks.
 
-[...]
+Best Regards,
+Yan, Zi
 
