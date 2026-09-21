@@ -4,124 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7412C982EE
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 10:59:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88D26C982E1
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 11:01:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D90526B00A0; Mon, 21 Sep 2026 06:59:10 -0400 (EDT)
+	id 925FC6B00EE; Mon, 21 Sep 2026 07:01:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D66C16B0103; Mon, 21 Sep 2026 06:59:10 -0400 (EDT)
+	id 8FE5F6B0106; Mon, 21 Sep 2026 07:01:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C575C6B0104; Mon, 21 Sep 2026 06:59:10 -0400 (EDT)
+	id 7ECC66B0107; Mon, 21 Sep 2026 07:01:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 954A46B00A0
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 06:59:10 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DE7DC1C0184
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:59:09 +0000 (UTC)
-X-FDA: 85237472418.18.696993F
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 1B52820006
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:59:07 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=OTPGWQ3V;
-	spf=pass (imf13.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 5AAC06B00EE
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 07:01:00 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id F002D1C03B3
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 11:00:59 +0000 (UTC)
+X-FDA: 85237477038.21.C15CF7E
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com [209.85.221.69])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 33C2612001A
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 11:00:58 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=PuoVuDrK;
+	spf=pass (imf29.hostedemail.com: domain of 3Zw6xagoKCKQZHSRRIJSVXKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--vdonnefort.bounces.google.com designates 209.85.221.69 as permitted sender) smtp.mailfrom=3Zw6xagoKCKQZHSRRIJSVXKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--vdonnefort.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789988348;
+	s=arc-20220608; t=1789988458;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p4toMdtYioi8w9HGmKDf8lwn05tg3yomRqh2JzLPKJU=;
-	b=NphZTTF2EUuLlNM84b9mj6v4J5/Kv00mKEaXUWy8XbKnrcJxQV2xz3NefeoYitKHoMhJr5
-	DyEVt60QbFV2llg2b02Yvjb6MVmgVB8hHv6MBgXauqCK5Vz8sIzL7HAnqwgDwxabFnAzTV
-	gVUI86eoNmhIuK4ZtmwliC5ND1xRNU0=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=tq21iXQPKKynEPw3Uhq/hZUwml7pvAbpZ0OeTPKe4Go=;
+	b=OZDt6g9joqFoF/mvtXDQLWdSLfGEyohW31uWjZU1VoARmlimgAxmV4PjtDdNaJe7GX6vvW
+	YjcJggkU0BYCntIa9pFGTmcxIBO8GjSNYIVEb95cMMQpw5C+DairM5Bu54+0nMwSHarswJ
+	ffaYf/GlNdtKMCbRNyGDv9RsGM3Tjwc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789988348;
-	b=G6WzKUubS/EdlDRenYDiuK2umezT6iFB3k0nsYbD8b8muB0WJRv61EPx1zEVbGKEgqVPmC
-	WVhyDEJuNEPrX4wK/xPW/5be12ga4GHN9CdH+byrjqIMh4dGbLq3IPeBs8vdZtqz8rHzMX
-	5I2pVhjWcE814b1hq3mp5jR0/AbAI2k=
+	t=1789988458;
+	b=33F8V9EjJTZUa2xYsJaHGnZtUYO0pj230wJNhtIzccDyvs2ae2+XLQtAtaWYjFnjgFND/3
+	ev0mMtOsqqmyk3isftWqBUwRZ/222b32vBpTumcP8uwYx75t0pxnkt8vIoxyOYgNAkE6Ht
+	Pj2W8/t9tzFecYby7Xqu7dOZK94ScxI=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=OTPGWQ3V;
-	spf=pass (imf13.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D0D821CE0;
-	Mon, 21 Sep 2026 03:59:03 -0700 (PDT)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3E11E3F86C;
-	Mon, 21 Sep 2026 03:59:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789988347; bh=Or+pfL3PXEcPJdOW4W+xPfx8ylyd8tpn0CA0i+cQDx8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=OTPGWQ3V/YIEMLtO7u2Mynqz++o5RPwLMFLlzIT4rgUlbfJz02BoKMgw4RXvRuSNj
-	 deUYqvEpMQchecaubbKtyAiqcrqDJ3rG98HSWlUBFWHIGiqs9ocWbZVbfPkkrmm/D7
-	 ncRtII6dpeDQJvydmvJhhhL2Snuaf1u6HEPcx7TY=
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-Date: Mon, 21 Sep 2026 11:55:43 +0100
-Subject: [PATCH 21/21] Documentation: mm: clarify behaviour of compile-time
- folded page tables
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260921-dummy_ptxp3-v1-21-cd40cf68242e@arm.com>
-References: <20260921-dummy_ptxp3-v1-0-cd40cf68242e@arm.com>
-In-Reply-To: <20260921-dummy_ptxp3-v1-0-cd40cf68242e@arm.com>
-To: Russell King <linux@armlinux.org.uk>, 
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
- Arnd Bergmann <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>, 
- Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
- Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, 
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
- Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
- David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
- Lorenzo Stoakes <ljs@kernel.org>, Tianrui Zhao <zhaotianrui@loongson.cn>, 
- Bibo Mao <maobibo@loongson.cn>, Anup Patel <anup@brainfault.org>, 
- Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
- Alexandre Ghiti <alex@ghiti.fr>, Dave Hansen <dave.hansen@linux.intel.com>, 
- Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
- Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
- "H. Peter Anvin" <hpa@zytor.com>, "Liam R. Howlett" <liam@infradead.org>, 
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Jonas Bonn <jonas@southpole.se>, 
- Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, 
- Stafford Horne <shorne@gmail.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
- linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org, 
- kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
- linux-openrisc@vger.kernel.org
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5249; i=yeoreum.yun@arm.com;
- h=from:subject:message-id; bh=WkUI9iV+4tWIf8gUL0eT1d3WqVW3xHozxqWVF9c3f4k=;
- b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBqsQ1UvQaI/DbnQhSon1cfVb2lmVIAgB8pZa9xc
- x4itcv3wn+JAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCarENVAAKCRBt1cPRWsUx
- M3wVC/9HHxJ8te9GEbS6FYmVPJFsAKbIOicXI24Ln9gqlvTZxuy4kNJc4ab1vnjPxk64m8Rg+x2
- Mge3H0r3HnaL+quWGc5hhXjVijIFzCG8gpQvS3TAos58QC0AOllXSljJJW+I6bPGRHEfZbrplmH
- MSpeBY8ZsvhMVxoa7rzCNDxLL9FQI0Cc3PXqn84Rx9aaobgkmEtYiN7CNHsRZU3ng64fu67dco/
- 9XO55oYTMY5NC0dEQSGNn31KsfpblVBRsW5um+k73FHlpD7vrNWPHSDKjsItM4o3qlBwTsCwCl1
- Z7zy/Eg/ZygXnmH8QOhMc7fglKOXMvcG/maDLM9eOF/8KD3LCcwyTzCpuv5EoxT7vOhxogj2kut
- s/VQGR4ui3uesYjCw/PuXgA7Ampck2ZMBsmMmPI1k93NpLLOG4Y529M4WW6uqqGb5xddwPmnW5l
- apVpiy9rUjEUxGjRGHepEQpg+BUzcWhj6iVaP8sd5tNs9WaHGtTaNtG9oqCr4rfrjLXkY=
-X-Developer-Key: i=yeoreum.yun@arm.com; a=openpgp;
- fpr=2D83E092DD0533B85875A49D6DD5C3D15AC53133
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 1B52820006
-X-Stat-Signature: zd3j5a1xp8arawwftt5xntmadxy4st8t
+	imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=PuoVuDrK;
+	spf=pass (imf29.hostedemail.com: domain of 3Zw6xagoKCKQZHSRRIJSVXKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--vdonnefort.bounces.google.com designates 209.85.221.69 as permitted sender) smtp.mailfrom=3Zw6xagoKCKQZHSRRIJSVXKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--vdonnefort.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-4870a0fe60fso1408305f8f.2
+        for <linux-mm@kvack.org>; Mon, 21 Sep 2026 04:00:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789988457; x=1790593257; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=tq21iXQPKKynEPw3Uhq/hZUwml7pvAbpZ0OeTPKe4Go=;
+        b=PuoVuDrK/LlaQDVg7TO5wJtLYQFxXKNomD1E2QsU54owgEVYid8cAEoFwq+O8YrQk3
+         vyJvlDG4Y830FhBa4/MygjFWfrqhQ4N0Q9tmq6EsiueN090iMkwzVPwuWdyDS6P50mok
+         6l4Gqotvcy6dB15IJSgdholGy6v774qEP6uo+5mUkwDFvK66WJ4aTXBtaHfYR2fpk6tj
+         kXYXK/7IEkFryqV77eLsdt3mDMz0f+iQc+VvEP6oGhb6yyR4DxQj2hL+btsAjyCxfcGd
+         POCFvjJCRA5hkzU0sFWRnu+UKTAtZlDjaPoF29RVvYmwGGaaVnOAyV+cOTINfJ6PpHFf
+         8ptQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789988457; x=1790593257;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=tq21iXQPKKynEPw3Uhq/hZUwml7pvAbpZ0OeTPKe4Go=;
+        b=x25usaSlS8N/keJJ07qTNXhJ0FDMPtGJVo+5JTFpghtDIHQGO5uxeXn/brEr+2SwHl
+         2Jnndj5C8UHHgPCAbOZEh7ZMIXO/v5cc+wrUyGxVkAKDJuZgMY7Q6oWVl/xlGq9AGG8T
+         ofQa28cRyWVEkzKXzrN/ApBPUKSQr3JGNRbHVtUNxbbPrSW0zK2yhDL0ydzOLI6W3Z8O
+         7EpcQsLRg7DibfJLzXBWzhBqhlRtPrc4qHgPhT+1lq8VfmZSHtdC5hGYsaPQclo78yYP
+         yti/64RieHnlJ9xbDA/DFwJoYRIczVG81Wa4vMymHiApRGm+9laL7d1vXTX2o8+AXqYf
+         59LA==
+X-Forwarded-Encrypted: i=1; AKwUvBwqlx3bKTPr8bWxnmgJhqUEnkH1Rj3PcR/r5cb3gdtUyq4okKlF7iZfLwfl7/rhj+mc1ejZnf6dDQ==@kvack.org
+X-Gm-Message-State: AFuF++m8oG3+7CwmvTBzWUE1A8LkvnRm1PTHcmgQWleCta1llsYpdfnA
+	YD+/PaEGpSCWZmHonTH5Qwoop6GYESqX3XWqkF8WZgY2HHVEbYm9d3wHbeYmTzHQpwe+AYgtUVB
+	JN5FDr0WN5JOzI5SkXuHdBg==
+X-Received: from wrbep8.prod.google.com ([2002:a05:6000:42c8:b0:488:5ffc:4b74])
+ (user=vdonnefort job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a5d:6f05:0:b0:487:10b6:1ce2 with SMTP id ffacd0b85a97d-4871e2158d7mr13645670f8f.1.1789988455971;
+ Mon, 21 Sep 2026 04:00:55 -0700 (PDT)
+Date: Mon, 21 Sep 2026 12:00:42 +0100
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
+Message-ID: <20260921110050.3977591-1-vdonnefort@google.com>
+Subject: [PATCH v2 0/8] arm64: Unmap FF-A lent memory from direct map
+From: Vincent Donnefort <vdonnefort@google.com>
+To: catalin.marinas@arm.com, will@kernel.org, rppt@kernel.org, 
+	akpm@linux-foundation.org, sudeep.holla@kernel.org, jenswi@kernel.org, 
+	robh@kernel.org
+Cc: mark.rutland@arm.com, sumit.garg@kernel.org, ardb@kernel.org, 
+	thierry.reding@kernel.org, david@kernel.org, danielmentz@google.com, 
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, 
+	op-tee@lists.trustedfirmware.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Vincent Donnefort <vdonnefort@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1789988347-174721
-X-HE-Meta: U2FsdGVkX1/AtotseQuEMKamGlNVKxBY/4KXDtVNETYFsKOthQc2eHVBFSWrcyWm4rCEMmQGDtR28ALWtvG6Dw7ZB/o6xXL0PPjrxqd0hiMXO0FRiR/2TXIJLakELxJWA2AnjXw5Zdi4UfMUo5D/FHwHyow+gBGYsas+BJ7XoL/sEA96n+cWza3ES0kbjRAAqV+E3SU/HhO523mYer671Ll99A68/eNC3Paaz5AZqUNLnJFVZJazskrKNfXsCxpSJozyeh7O/wbn0YknjwUvfONdZQXyyhf0DebePuYMn2TTI5yxRGhgkSAXQfvwKJ2MhIw9pcJW2s6hhZGPBE4NeAT/g2pRhHLiHFr/buTCoht0AjEJ5xkZSee3ENLYNJuN5lyTzmz2AxjFGLQD3O2tfj9KRh9mO2dAKjMSeC5WzHF6wSa+rmVf8MoagpiQZyRDnFyYRbnrliIaSv2FQGCkVSucYGLObrH2abvp/ZZa2hGgavL3PctfM1qo20NPIKyuGQ9UOtF+BIf5/ikFCCnexoVRYEFI3/lLA2y4y8h03OMnUJTm4q81l9Ruxc/iweAxEQiJ0VW8Fg6r/Vmd+cYzrLUZJvC/nJuSKCXqXY/n+SMt89rN8aClqhcoX1pGCcf05iAA1/VxD4i99gja9WSAO4NGYCszUtitTZpJT6uzduPl3fFn+8DNK3hlasN9uq6ni1xZglpJHHsJJnbQTkAoDOr8tAq0KX5KdbKYnMLDcJpjlIWtzAvg0Bu8xsT+8UHAodNDt1VnLjHf+d66FArZNHFsRT4myQPQpDQkiwOW6y78udYV9hvldJh8hD60k2OEDsPzGpYr25LpGWkEEEyEAFSzOnv9JVfzLGCMWwfw4lZuJzQgfMnaeC4oXZ886iwn8lTFklsOEy+xrF2Q3UZFxStzFOlujowQa/90e6JSRTUWVfr8Jvoja6gRMEdaPqHyWHs5WKBDcdsPycCjQlK
- rwu86ud0
- CT9sSJ8YDDDmVIRvZjDIDKEdnNeMzPH2uuvwsg6kOaqp43aE5vJISr/P0Hl+RsYnE0/uqDOuf5EC6SSylDaqU0N9hIbMEPFvg5EhHDTlxs+JV4k0GiBPKRVw/JY9ML03h0l1pYxTJOjGE6/pZfX9ofBCv7Th21Yca7v3lEim+3wrmVsxBHAB2ap4JhEQb3H/d8bEZk+tAZ98DDLD+ZaHkCEnSEII91PDmB7GyeaKE/LUjl149eNMRAIrCHw==
+X-Stat-Signature: d8a515utzfjfzq8b47r5roqxg5kj3zh7
+X-Rspamd-Queue-Id: 33C2612001A
+X-HE-Tag: 1789988458-549696
+X-HE-Meta: U2FsdGVkX1/A9jEtNBcEFtMnYiXYN4ktl1MXhY0sZG/cJ4oF04762z6oGJaK+hqylAGPW/GviuhkrBpy0Bt4gAuTVexdccmZ6SoD7jKXzcTh4ayhpmRNptW0QkhO7XSHJv133mI77wjb2Mwc/wuc5Vtl6fTWGzCm3adOpmAM8YbPBH5u3oHbPgvhJkiKVfcGyOrBLXytb5ZmB+K3FTVy7rlag5sTTNjeG8Bwfc6zQdRfwXjpqv89fv13FodNM3mwbYHR77LKIfQWVgj8PulMIo3woySb4fnT5Mif+rQ5fSF4BuujQLbvEE8gPZDG7IRJEShBwFCV68mSRKX5q+3vxkioJ050hiI7POcoloey1/aIdQVydfuxNTk/eG0ncaM210J0mxXdcWegtGBcHi7zHB31mt8jVe7ngVL+iPodDTQxxhY4qBHWyJxT2CG/4zmNLQ9hw8M6hCf5p2Ir569DuqE1H9BaTJMIJhsmpMAWQoZC9f8ksg5hWBS4xzioGQTlC3HWDBaibdjLXBAFhagY/QjCF1GygofTaqZIC2xJ4GAHw+3S52ApyXDhRuXMOthUK9ZVKT/Fk3fckL7pD7bX/2OQeayG62eUUPWnNS4VdySHo979E/UhwkJoQjTh/QEk3p0EPYUKLpwUYT2oG/G+2FeXf49869H2fti/6dmBO1ZodGkVI96OPGyiITjRo0m3KqgiDIIBlOocZj0zwjzvFeSZsug2oq6AEL+XPHh4tPZrzK0ZK0yhYCQfoViD4x7C5Y5vNddgMbXw7Lp+x/zMhliMkTuFko8t7HpfBwfKJOqOYq0MbwdnXtz6Q3k4z4SMUyYgCn83lepgZqoaI5Bzt7QwV3c7olxnM2DxsLQTTj4KHt8JJtPzJYs6nP51TJ4EoK1Tyt1TrFq0Jp+s7IHgYmh+dRSUktMrTkU2bfPu7S/Yrhx3XGORtMDF+SDLoMhYNDOu62nBTBroYA8VbLY
+ RhIKARRv
+ tpOAp8kWQfTodQ6hE1ZCO1BAdwwz4uDuKI7zbUuczHUp0g0Taa9nTOs5U+Mg52FZ0EtxavRxKSlF3ghe6GcdtzKmWRpprmaa0ugRW6PDr585gw8z7IJDc07FieRDMkDpfcDwyy5s6ryh5Lg/DxoDMLWZMRwb0jvHIOKU2hjruc/tm0kLz+HAzCe8mv/76g8ArUJNnTS4qkJmWWNhG3wUR7ATiXMNgjyCu7JXwehJwbwkqbyKlpmmqWvsXjGVA7KhbhmlMFpMF3h2n6uoOK+hyAZFr2Ia9oPo8kDq51kWuJM1TIXD9bB0288r+2rQF8BrlUXLam4F3kGwvSO3m6VE01a6EefLZ33uOxYmp/zAlcBo+jlHY6WrIXHMXcx+nHc9JgzD+rglf7noaZS3qMHOJi0mok3puIZR6EQpSX9vmaI3Vr4LPFRoqZFlxWAwpT4W6L5DMpww+GsgM6hZOvW6ZMYKd0mtr6Ky953eURNme39ojgYsNNf7YN7Eh+wWDrk1BGCTnFq4kP0FWh1RZxyXETrs43jdh4p8si19xlDGyNBlz+ydjGFgtXULfe5nEbrfoxbT3CmdQfVMuMDt4u+BkMskdijxbtsKRnujLlQKCJJ+LXRG9KdNEuK7rN91/p0Y4C/TUR1Gqq6yWPoxzSQysnJM07ud1TjfymL/RXYqzNYeJt6NvctW6XMqHMiP9u3z8koBz3kwqFksy1zGTuItkPlk2r2iv8+FFxrj5fwWjpdZdooE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,117 +110,157 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+This series is a follow-up to the discussion that has started here [1].
 
-Compile-time folded page tables are not necessarily easy to understand, and even
-people the were once familiar with the concept might need to refresh their memory.
+When memory is lent to the Secure world via FF-A, CPU speculative
+accesses from NS to the lent pages can still occur as long as it retains
+a cacheable mapping to it.
 
-Add proper documentation, including a nice diagram, for the current design.
-Mention details about dummy functions, including the recently changed pXdp_get()
-helpers.
+Ideally, lent memory would be "no-map" but that would mean giving up
+MiBs of useful memory, so let's try to do better with the help of a CMA
+pool.
 
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
----
- Documentation/mm/page_tables.rst | 84 +++++++++++++++++++++++++++++++++++-----
- 1 file changed, 75 insertions(+), 9 deletions(-)
+On arm64, modifying the direct map at runtime is generally restricted
+because the linear map defaults to block mapping and splitting blocks at
+runtime may trigger fatal page fault, unless the CPU implements BBML3
+or the entire direct map was mapped at page granularity from boot.
+Forcing last-level mappings system-wide incurs a severe penalty we want
+to avoid. Instead, this series introduces targeted last-level mappings
+for designated memory regions, along with the "arm,ffa-lend-pool" CMA
+driver to manage unmapping and remapping on lend/reclaim transitions:
 
-diff --git a/Documentation/mm/page_tables.rst b/Documentation/mm/page_tables.rst
-index 126c876282509..84f2715c7de0a 100644
---- a/Documentation/mm/page_tables.rst
-+++ b/Documentation/mm/page_tables.rst
-@@ -143,15 +143,81 @@ pointers on each level is architecture-defined.::
- Page Table Folding
- ==================
- 
--If the architecture does not use all the page table levels, they can be *folded*
--which means skipped, and all operations performed on page tables will be
--compile-time augmented to just skip a level when accessing the next lower
--level.
--
--Page table handling code that wishes to be architecture-neutral, such as the
--virtual memory manager, will need to be written so that it traverses all of the
--currently five levels. This style should also be preferred for
--architecture-specific code, so as to be robust to future changes.
-+Not all architectures support 5-level page tables; while for some of them
-+the exact number of supported page table levels is known at compile time,
-+others can determine the number of page table levels at runtime based on
-+hardware support and address space sizes.
-+
-+Generic page table walking code always assumes that 5 levels of page table
-+exist. To make page table walking code not have to worry about that,
-+`compile-time folding` and `runtime folding` of page tables are used.
-+Compile-time folding is mostly handled in common code, whereas runtime folding
-+is exclusively handled in architecture code.
-+
-+This description focuses on generic compile-time folded page tables; for
-+architecture-specific variants, some details can vary, however, without
-+affecting common page table walkers.
-+
-+When walking folded page tables, all upper page table levels up to the supported
-+level are skipped in page table walkers: this is achieved by (a) treating
-+entries in upper page table levels as present and pointing at a page table; and
-+(b) having page table walkers cast the entry pointer to the next-level entry
-+instead of dereferencing that table. From the perspective of a page table
-+walker, the entry points at itself.
-+
-+Assuming compile-time folded 4-level page tables, to achieve (a), pgd_present()
-+and pgd_leaf() are hard-coded to indicate a present page table entry that
-+points at a page table, and to achieve (b) p4d_offset() and
-+p4d_offset_lockless() simply cast the page table entry pointer to the next
-+lower level.
-+
-+In the current design, this is further modeled by having the P4D have a
-+single page table entry::
-+
-+        PGD
-+  --> +------+          NOP4D
-+      | ptr0 |-------> +------+           PUD
-+      | ptr1 |-        | ptr0 |-------> +-----+
-+      | ptr2 | \       +------+         | ptr |-------> ...
-+      | ptr3 |  \                       | ptr |
-+        ...      \                        ..
-+                  \        NOP4D
-+                   +----> +------+           PUD
-+                          | ptr1 |-------> +-----+
-+                          +------+         | ptr |-------> ...
-+                                           | ptr |
-+                                             ...
-+
-+Note that the arrows from PGD to NOP4D represent page-table-walker
-+transitions, not pointers stored in the pgd entries.
-+
-+Using p4d as an example, `nop4d`/`p4d folded` translates to the following:
-+
-+- p4d is considered folded into pgd; both are operating on the same page
-+ table.
-+
-+- Most pgd_* helpers are hard-coded dummy functions that ignore the passed
-+  pgd_t values entirely. Exceptions are pgd_val() and low-level helpers
-+  set_pgd() + pgd_page_vaddr(), which effectively translate to set_p4d()/
-+  p4d_pgtable() to keep existing arch code working.
-+
-+  Architectures must provide p4d_* helpers (unless further common
-+  compile-time folding applies).
-+
-+- PTRS_PER_P4D is hard-coded to 1. Architectures must define PTRS_PER_PGD.
-+
-+To avoid reading a value that will never be used but cannot be entirely
-+optimized out, compile-time folded page table code also makes pXdp_get()
-+return a constant dummy value.
-+
-+In common code, this only affects pXd_val() when used for printing page
-+table entries for debugging purposes. As we don't want architecture code
-+that uses set_pXd(), pgd_page_vaddr() or pXd_pgtable() to accidentally
-+operate on dummy values, the compiler will error out if it detects that the
-+helpers are used with dummy values. For a folded level, pXd_page() must not
-+be used and unconditionally triggers a compiler error. Architecture code must
-+instead call the helpers on the proper first page table level: e.g., set_p4d()
-+instead of set_pgd().
- 
- 
- MMU, TLB, and Page Faults
+1. memblock:
+   - Introduce MEMBLOCK_PTEMAP to force PTE mappings only for a specific region.
 
+2. set_memory infrastructure:
+   - Introduce can_set_direct_map_range() to check if a specific address
+     range is mapped with last-level entries and can be modified safely.
+   - Introduce __set_direct_map_*() variants that bypass redundant checks
+     when the caller has already validated the range.
+
+3. "arm,ffa-lend-pool" driver
+   - Introduce the "arm,ffa-lend-pool" CMA reserved-memory driver, which
+     unmaps pages prior to lending (ffa_prepare_lend()) and restores them
+     when reclaimed (ffa_lend_reclaimed()).
+
+4. Optee support
+   - Hook OP-TEE dynamic protected memory pools to "arm,ffa-lend-pool" for
+     both SMC (via DT memory-region phandle) and FF-A (via
+     ffa_lend_pool_attach()) transports.
+
+Testing:
+========
+
+Tested with QEMU v8 using OP-TEE OS (built with CFG_CORE_DYN_PROTMEM=y)
+under both SMC and FF-A transports [2]
+
+static void dump_direct_map(const char *label)
+{
+	printf("\n=== %s ===\n", label);
+	fflush(stdout);
+	system("sed -n '/Linear Mapping start/,/Linear Mapping end/p' /sys/kernel/debug/kernel_page_tables");
+	fflush(stdout);
+}
+
+int main(int argc, char *argv[])
+{
+	int heap_fd;
+	int dmabuf_fd;
+	struct dma_heap_allocation_data data = { 0 };
+	size_t size = 1024 * 1024; /* 1MB */
+
+	if (argc > 1)
+		size = strtoul(argv[1], NULL, 0);
+
+	dump_direct_map("BEFORE ALLOCATION");
+
+	heap_fd = open("/dev/dma_heap/protected,secure-video", O_RDWR);
+	if (heap_fd < 0) {
+		perror("open /dev/dma_heap/protected,secure-video");
+		return 1;
+	}
+
+	printf("\nOpened /dev/dma_heap/protected,secure-video\n");
+	printf("Allocating %zu bytes of protected memory via DMA heap...\n", size);
+
+	data.len = size;
+	data.fd_flags = O_RDWR | O_CLOEXEC;
+	if (ioctl(heap_fd, DMA_HEAP_IOCTL_ALLOC, &data) < 0) {
+		perror("ioctl DMA_HEAP_IOCTL_ALLOC");
+		close(heap_fd);
+		return 1;
+	}
+
+	dmabuf_fd = data.fd;
+	printf("Successfully allocated %zu bytes! dmabuf_fd = %d\n", size, dmabuf_fd);
+
+	dump_direct_map("DURING LEND (EXPECT HOLE IN DIRECT MAP)");
+
+	printf("\nReleasing dmabuf_fd...\n");
+	close(dmabuf_fd);
+	close(heap_fd);
+
+	dump_direct_map("AFTER RECLAIM (RESTORED DIRECT MAP)");
+
+	return 0;
+}
+
+[1] https://lore.kernel.org/all/20260807-tegra-vpr-v4-7-5510d16af89e@nvidia.com/
+[2] https://optee.readthedocs.io/en/latest/building/gits/build.html#qemu-v8
+
+Changelog:
+
+v2:
+  - Rename MEMBLOCK_LLMAP to MEMBLOCK_PTEMAP (Mike)
+  - Warn on conflicting MEMBLOCK_NOMAP and MEMBLOCK_PTEMAP flags (Mike)
+  - Drop DT "ll-map" property and mark MEMBLOCK_PTEMAP from ffa_lend_pool_setup() (Rob, Thierry)
+  - Drop "reusable" and "no-map" property checks from ffa_lend_pool_setup() (Rob)
+  - dt-bindings: Document arm,ffa-lend-pool (Rob)
+  - Rework the Optee support with a separate ffa_lend_pool.c file.
+  - use walk_kernel_page_table_range_lockless() for
+    can_set_direct_map_range() to fix folded page table (Sashiko)
+  - Add missing TLB flush in ffa_prepare_lend()
+  - Disable hibernation
+  - Rebase on linux-next (next-20260918) to use the new set_direct_map*() ranges (Mike)
+
+v1 (https://lore.kernel.org/all/20260902104712.2399797-1-vdonnefort@google.com/)
+
+Vincent Donnefort (8):
+  memblock: Introduce MEMBLOCK_PTEMAP
+  arm64: Introduce can_set_direct_map_range()
+  arm64: Introduce __set_direct_map*()
+  arm64: Add support for MEMBLOCK_PTEMAP
+  firmware: arm_ffa: Introduce ffa-lend-pool
+  optee: Add support for arm,ffa-lend-pool
+  dt-bindings: reserved-memory: Add Arm FF-A lend pool
+  dt-bindings: firmware: optee: Add memory-region property
+
+ .../arm/firmware/linaro,optee-tz.yaml         |   5 +
+ .../reserved-memory/arm,ffa-lend-pool.yaml    |  55 ++++
+ arch/arm64/include/asm/set_memory.h           |   7 +
+ arch/arm64/mm/mmu.c                           |  23 +-
+ arch/arm64/mm/pageattr.c                      |  72 ++++-
+ drivers/firmware/arm_ffa/Kconfig              |   5 +
+ drivers/firmware/arm_ffa/Makefile             |   1 +
+ drivers/firmware/arm_ffa/lend_pool.c          | 261 ++++++++++++++++++
+ drivers/tee/optee/Makefile                    |   1 +
+ drivers/tee/optee/core.c                      |   6 +
+ drivers/tee/optee/ffa_abi.c                   |  13 +-
+ drivers/tee/optee/ffa_lend_pool.c             |  72 +++++
+ drivers/tee/optee/optee_private.h             |   4 +
+ drivers/tee/optee/protmem.c                   |  20 +-
+ drivers/tee/optee/smc_abi.c                   |  21 +-
+ include/linux/arm_ffa.h                       |  23 ++
+ include/linux/memblock.h                      |  18 ++
+ mm/memblock.c                                 |  30 ++
+ 18 files changed, 608 insertions(+), 29 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/reserved-memory/arm,ffa-lend-pool.yaml
+ create mode 100644 drivers/firmware/arm_ffa/lend_pool.c
+ create mode 100644 drivers/tee/optee/ffa_lend_pool.c
+
+
+base-commit: 3f2425f5b5bbbdd991ca9cdfd5502e68d8895998
 -- 
-2.43.0
+2.55.0.1082.g2b9226bbc0-goog
 
 
