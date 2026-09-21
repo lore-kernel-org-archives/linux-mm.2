@@ -4,111 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C7AFC982EE
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 20:00:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C230DC982F0
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 20:00:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 234386B00A1; Mon, 21 Sep 2026 16:00:07 -0400 (EDT)
+	id E1A386B00A2; Mon, 21 Sep 2026 16:00:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1BCC26B00A2; Mon, 21 Sep 2026 16:00:07 -0400 (EDT)
+	id DA40B6B00A4; Mon, 21 Sep 2026 16:00:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0AC176B00A4; Mon, 21 Sep 2026 16:00:07 -0400 (EDT)
+	id C448A6B00A5; Mon, 21 Sep 2026 16:00:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DBB476B00A1
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 16:00:06 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7977A402B7
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 20:00:06 +0000 (UTC)
-X-FDA: 85238835612.12.FFA08C0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id C0677A0006
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 20:00:04 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OSjBem8+;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790020804;
-	b=4kF4mdWq40wANEgds5PzvMKPRz5CHfOS7XRwTd+cA7XfC1Ic9lIjpQcSwrT9tEeqZYHBBQ
-	t9bLmFJIMv9iLAW+i/2PGumVuDsex5Ow7bOISCULSEh/k9+T5mWZdVyj9EhziqDxC59bEQ
-	KmGgD+Fp3BgA1VQ8GAh96gRF8Oyccfs=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OSjBem8+;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 9D16B6B00A2
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 16:00:08 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1F1AC402B4
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 20:00:08 +0000 (UTC)
+X-FDA: 85238835696.30.CCA3D52
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf29.hostedemail.com (Postfix) with ESMTP id CEEBC120009
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 20:00:05 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Kfra9Kou;
+	spf=pass (imf29.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790020804;
+	s=arc-20220608; t=1790020806;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Pji+QYSqpVzdYzmgiKoCCOu4eSAGWJQKP9RUR89ehLg=;
-	b=4JA4wRlKySlIXhGpkneuUC86uVG3FGyd/IwK07lwJHyfXcbImga/Q1RaighZ4S5weNiMsz
-	VhDOVnrcQBvvPBlTHb6fnVvmeQy9aNYPLbOkQSQA5Sw4vnH+kAckqZj+aTnpne4jQ7CCak
-	I100jvRO2truhw/HxGsmoCV0mmJqUxA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 733DE601F1;
-	Mon, 21 Sep 2026 20:00:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCB861F000FF;
-	Mon, 21 Sep 2026 19:59:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790020803;
-	bh=Pji+QYSqpVzdYzmgiKoCCOu4eSAGWJQKP9RUR89ehLg=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=OSjBem8+kNwkxg3Bvo4XRxOymzwX9733IZOf4gdzSAwBDvnhPjONwtPsLSXraRCNR
-	 0s7PpCuNdOSpuu87AcmpoVy4Qg4EhLWp2bKMEJ9QfMc6HeSyalwdDiDde/3j3MjeTg
-	 a7MNs4pRqI4KcPwlb2nSPiH5E9MYyONCxFqDji24j9e01IDiUdnLuNo0RpNLthmZ16
-	 zdnK+h0A0qn09aC/3UZ+HqXs1lUWNhK4cAiumIMY9DtycZzY8kWpCbL9fsWtg6riRm
-	 OT1KR9Mey2IKNe797hS1q+l7MxJ8fVSIgmtrnLdkShDkQNQYRo9hGUjL31NOnB45dN
-	 Awqg81sHr5UHg==
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Mon, 21 Sep 2026 21:58:57 +0200
-Subject: [PATCH v2 05/13] mm/sparse: cleanup sparse_init_one_section()
+	bh=kSjpsnGB6PkMlYt3gFNBn+l9/iXfVXQ9UfiCD3HwhPU=;
+	b=a2Tsx02ToWEcnTq0Eyccxr6MBXpyh7hPV3elwbXKw54AFZhS6XqEocO6Tk2Jj87jjjfMqH
+	MqknES3LTUeDeWCo0fj4N7XLbHlD9NDhkXEpR0Vxd+Cv3UewTAPOeYs2QazXy3aqTKqWL6
+	xxxjM6YHWBii+1Rs5u35QKrxe+bG1pA=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Kfra9Kou;
+	spf=pass (imf29.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790020806;
+	b=jpd+GXgGk7Dvrp+lGRiwTDdp8v5chLluS+avCa0AHix6GPtAQtTYGIuvV/A1IHT4NdyNs5
+	RA+cPWxTOw6bIbj6FGg0nZl2A/kFzlDYraiyGrl46L1klfhdLchu83N84ZkTZBIxGVUCgC
+	87f6+KGJgy/DYFtWtKVjLIglvWCBbZw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790020805;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kSjpsnGB6PkMlYt3gFNBn+l9/iXfVXQ9UfiCD3HwhPU=;
+	b=Kfra9Kou/Tt0xpBjCrGgguZvZY03F1QCz0nURF7x4FohnajY8lSL5OQv6fJ7WG2vO6O0G2
+	+3DDqzGGyDsyoRyuXdWn6aJ0qonJef1NyZsO/DwBGhTC3OZxz0cFa8tsYxBpWy7fbQ/6Of
+	mF2KN2AurXo8fzPVwe+mZI3yWM2YGB0=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-399-3P7zOuZ7Mgejg7s2FjXuEg-1; Mon,
+ 21 Sep 2026 16:00:01 -0400
+X-MC-Unique: 3P7zOuZ7Mgejg7s2FjXuEg-1
+X-Mimecast-MFC-AGG-ID: 3P7zOuZ7Mgejg7s2FjXuEg_1790020796
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 419671933E1D;
+	Mon, 21 Sep 2026 19:59:55 +0000 (UTC)
+Received: from fedora (headnet03.pony-001.prod.iad2.dc.redhat.com [10.2.32.114])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id D76DF1800361;
+	Mon, 21 Sep 2026 19:59:38 +0000 (UTC)
+Received: by fedora (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Mon, 21 Sep 2026 21:59:54 +0200 (CEST)
+Date: Mon, 21 Sep 2026 21:59:37 +0200
+From: Oleg Nesterov <oleg@redhat.com>
+To: Ye Liu <ye.liu@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, Ye Liu <liuye@kylinos.cn>,
+	Michal Hocko <mhocko@suse.com>, SJ Park <sj@kernel.org>,
+	Gregory Price <gourry@gourry.net>, Lorenzo Stoakes <ljs@kernel.org>,
+	peterz@infradead.org, paulmck@kernel.org, mingo@redhat.com,
+	rostedt@goodmis.org, jpoimboe@kernel.org, mic@digikod.net,
+	tglx@kernel.org, linmiaohe@huawei.com, nao.horiguchi@gmail.com,
+	rafael@kernel.org, gnoack3000@gmail.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+	rcu@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-security-module@vger.kernel.org, rientjes@google.com,
+	shakeel.butt@linux.dev, xu.xin16@zte.com.cn,
+	chengming.zhou@linux.dev, will@kernel.org, boqun@kernel.org,
+	frederic@kernel.org, neeraj.upadhyay@kernel.org,
+	joelagnelf@nvidia.com, josh@joshtriplett.org, urezki@gmail.com,
+	juri.lelli@redhat.com, vincent.guittot@linaro.org,
+	tony.luck@intel.com, reinette.chatre@intel.com, x86@kernel.org,
+	paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
+	pavel@kernel.org, lance.yang@linux.dev, mhiramat@kernel.org,
+	pmladek@suse.com, longman@redhat.com,
+	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
+	qiang.zhang@linux.dev, dietmar.eggemann@arm.com, bsegall@google.com,
+	mgorman@suse.de, vschneid@redhat.com, kprateek.nayak@amd.com,
+	mark.rutland@arm.com, Dave.Martin@arm.com, james.morse@arm.com,
+	babu.moger@amd.com
+Subject: Re: [PATCH v4 03/15] mm/ksm: convert process iterator to
+ for_each_process_rculock
+Message-ID: <arGMqePU2L4q33o_@redhat.com>
+References: <20260921092101.89285-1-ye.liu@linux.dev>
+ <20260921092101.89285-4-ye.liu@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260921-b4-sparsemem_cleanups-v2-5-54d81d65e125@kernel.org>
-References: <20260921-b4-sparsemem_cleanups-v2-0-54d81d65e125@kernel.org>
-In-Reply-To: <20260921-b4-sparsemem_cleanups-v2-0-54d81d65e125@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Kairui Song <kasong@tencent.com>, 
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
- Baoquan He <baoquan.he@linux.dev>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Brendan Jackman <brendan.jackman@linux.dev>, 
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
- Jan Kiszka <jan.kiszka@siemens.com>, Kieran Bingham <kbingham@kernel.org>, 
- Oscar Salvador <osalvador@suse.de>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
- linux-cxl@vger.kernel.org, driver-core@lists.linux.dev, 
- linux-fsdevel@vger.kernel.org
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1310; i=david@kernel.org;
- h=from:subject:message-id; bh=4Bu7wqp5LPQ6WPOQiawfPpDIShUPnK46ZronN3GEgM8=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLI29rTesbSdd69Fy4mRefHe5Y16LOYVYoUWf8UFVrAoh
- i2efY+po5SFQYyDQVZMkSUo+L7By5fraqvd+Jhh5rAygQxh4OIUgInM1WD4Kzb5q0i+l4H29A9t
- KSKqG4/5OZccfn/yRuPDKbnKpbfFHjP8M77advOK4RTJGoPddqZNl/Py5gUw+8zYVyA4x/P6tI/
- RPAA=
-X-Developer-Key: i=david@kernel.org; a=openpgp;
- fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
+In-Reply-To: <20260921092101.89285-4-ye.liu@linux.dev>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: X1Z0BNHAplmc9stVtl86XtjOxT_VAskL136KhoCscNM_1790020796
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: CEEBC120009
+X-Stat-Signature: oesp16yq8rigqxh7r9fw8hp7j4wtsuqi
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: C0677A0006
-X-Stat-Signature: y6c4u3gxfbbhhw7tzqdc9zah91ydemdf
-X-HE-Tag: 1790020804-572716
-X-HE-Meta: U2FsdGVkX19ALb4KzXXGGFPXAOSMbck7qkHUmqQ9JvC4KcNaoJcV6Hgwt0JtoiihCM7TRTQFAitl+CSWTGDd5Lquh4B9BvdZ9zwFoth0Uf1Igp821P5V7mzohjjgAaSKrPV+8DKf1333GCrYwYsfb+CF8go3NfWtKJVWWlrKtC9nD6Conx/41v7QiA3O3pM3TFdmfwhtgf0PKt9yFo8BpqxZP5k8oX3J5fPLbrfWhlb0N4g07Zj3tS4gRBnx2beJzmHoRYBhBuk9zH2q2MQz4kGYUkAtA6KxsaHZg7FUcPmxDODOwKnca/tsT/Z17ZoghN4HapxLCK45aKrAQG6iRMfXiZk5tzpOOlZqx2Fn7VIRUSXHeJvP5kkpJhs/pENh/HeL+saV1krlbhDXK1rjnpvnYVoov0D/c/9BAvR1bhS4fEvMZ81sUb16xdGmM59FSrohHVQwJ/kcvyeZTqqzONzyJg5sk0L5m3WA4mHiOhTioq1vaSzAZDBSWlzVJ/G1sahitconBaE0Q5MYW6TPPS/RdlsccrOn1Ges2O55ek4L8jkgX8vYdIV7Fk44wKsZcsf+370v59NNDcmzi39sxZEDqkJI+0kmLU9IpjICRsXcTrn/gxNt+g5py+YP+uwFkJmdbkMLyJPmw0tLDhmzLUeVl246lPwjIL3gE+c8pSIn4ssWCc606aIvO9CTmGKODwL3gIS/K/raJWJBlbvtbSIlgcXzlQZRp2nx9jaNj47VdJ1W8AfIv3nqH9Ow3G6IKP/8Oa42wu3Hcm8AFzyYaqhEWXuNJ+XoCoCfmY/R++qAxT4YMP5uMJmg5n3Xll0xtJ+KZ8CiyqXI7Ma0rGM7DB0Uzz0IjUlDwxVAhuJyjEfZNqRYE/p3DRggTVrQdhP2zqv/N337vMPwrwFcQ4VKlh/h0i59Y1wkcoRv+3uzwCgr4pO7CRnJ19TToUQXMmPKlefyu5wxbv2Kc5w35LP
- rj0mC4R2
- 0BZo1lEHM4Fx8/VswGIVxE12i9CQNTGOQRqeaKGaUp7u5giiUY4+cheK6X5Gk/ymJpvKPWilYZAJ5iGnJASF6IAWaw62sgWyXQIDADMm/feU8SftR31iuG7RvCrbdDJc91XZ+XchY52Lwy5TunDUKr2HVGjJVIyEddPEcZwrhWZsFyCUqcDNuqgHnhj+tgJMMzn/1mDiq8xeRjA8GXJ8PhBgIkP4AlfUfh4Au7Z/bUJlKzpiXC0GQIJl28WABcpZ0qGwSUpnokwdk4X+iJu46zdEvDkQYM1IHL4So
+X-HE-Tag: 1790020805-575346
+X-HE-Meta: U2FsdGVkX1/rgq095JBJJ6oDnX/YvDfxwno8SqCA99+XCDNia9oNQihJ7dmlSgnOMAU8MpGCuSlBWA5uqkD8QbtYJSE+6l9hApNAlimpZ1ZHIUN7ZbgIuEDqiPAZwFbIxVIcKi9NpGBYK0Ie87OjnnnhVX14sRQPm4PskTAB8FKl9XKnI181tcafVVReKU/qc4DlX6PeLVnLrB10PHnsibDoxkpGeMTMgFHjzOXpgtrt7R56Qa5w4sZprVD3SvpFLOFOdLCJ26Q8mEj4STlafAHoiBn0EMgjxTWWhlQKQevFoOxOP7FRu97XRm99DTQY7LHtD3lcydgnvIDXD1F8e6bIhICTRKhbUooG7ahLlQpj+cb++p/jEqFcBNXQOKsZnEOlEG6GSffLuJgWhCzpfcg7Z5x3dUjWwy9gQ6yo3Cf6F3NmzNxlDg453FDYM5ZXqpbCdEotgeBgZgKL7khqSdoB+c1ZZ+uUSwm3uFWBDkWinEq3sjlAYJXzb1AUhxAo0XqOajACZyXEljWa1jswq4vu0PKMTRfnuG/Sh6ReP9jESeyzzqdDhJF4XKYnw36yqiwvV6cdg1jaRobYSiQADtjp7RdBxyW7DLDgygccrvgV45rLfmOjAe4XmPnUbxD4vsYdMS3RR/oZi2I4Ld9l57COee87BJo2ILmU57oufqGopW+iBHzwilKMmoIGjyf1h4FHbv0ZdYMrZIE7qeRjg/ZUG2s/M3dYKvTX9o13cL2PFAhh7yLXYmH9dH/zIjgLFcV+r4eGeMNy5EWdqVzWcy4SvchFs7dqtU/yWxlvFG9Q784tFaWQXDf7cY6hP1UY1+NTCB7sKc1VBmHfD/mIFotVugiCduag2fZZr1bR2ilRKE6D6J0a3APrK/0ohSYouREql/O715jIpIwn49OhZJopYEuxtLZCprI/iR1RLe+E/o9CAcBbK+pwgLa2yBNqUGFqQzpCO3tCGArNS2G
+ cYjgzbmo
+ amGcymrsfw17OvF6csXYaDa4NYERtSmlVnmf93DuITLe7TlKfEj1wHe/eSEN/6tnbw2LkyKeAG31AOv0mIG4Uct58BnEULIisisIgbXnf+/qOQFMVGxUbSndP674ib8l0IGE9aG3uXpPCuabPaR7zMZrmRiRWJRzLvwDh3F7Z+EPN6GUOSIbdi+AA4z2VQjl8RQUOsdIX58jV11rJULVHiecpCwYatauecZW+dA+zxye1qUjXkm/s4DkzEc6F+ysUO1qvM2RmYRSiY6Hs0R5Ioxy2YiPEFgcMctvOnFzk8yXx1JuSjLT3fDcy2Y19gC5TI+Q7XACodShT3TsZVr09SJCy6zBVBfLllAA9PhU02COrnkf91aon+lkQ5K9TCdWK+RgMnMTxoJeAFlrUj/9xYb/ZprymLKj1+7DYQgBWFjpUP6xEI/jWGqw3nxZpELUGdpAtkxxYs/35JATHeOwXbKD5KeCna3wr/jsCHXs9HWbTaDOt4D87IsiN4A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,40 +132,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Let's avoid the "pnum" terminology.
+On 09/21, Ye Liu wrote:
+>
+> --- a/mm/ksm.c
+> +++ b/mm/ksm.c
+> @@ -3280,8 +3280,7 @@ void collect_procs_ksm(const struct folio *folio, const struct page *page,
+>  		struct anon_vma *av = rmap_item->anon_vma;
+>  
+>  		anon_vma_lock_read(av);
+> -		rcu_read_lock();
+> -		for_each_process(tsk) {
+> +		for_each_process_rculock(tsk) {
+>  			struct anon_vma_chain *vmac;
+>  			const unsigned long addr = rmap_item->address & PAGE_MASK;
+>  			const unsigned long index = rmap_item->linear_page_index;
+> @@ -3298,7 +3297,6 @@ void collect_procs_ksm(const struct folio *folio, const struct page *page,
+>  				}
+>  			}
+>  		}
+> -		rcu_read_unlock();
 
-Acked-by: Oscar Salvador <osalvador@suse.de>
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
----
- mm/sparse.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/mm/sparse.h b/mm/sparse.h
-index 530692cdd516f..4ee507c34b98d 100644
---- a/mm/sparse.h
-+++ b/mm/sparse.h
-@@ -20,7 +20,7 @@ void sparse_sections_init(void);
- int sparse_index_init(unsigned long section_nr, int nid);
- 
- static inline void sparse_init_one_section(struct mem_section *ms,
--		unsigned long pnum, struct page *mem_map,
-+		unsigned long section_nr, struct page *mem_map,
- 		struct mem_section_usage *usage, unsigned long flags)
- {
- 	unsigned long coded_mem_map;
-@@ -32,7 +32,7 @@ static inline void sparse_init_one_section(struct mem_section *ms,
- 	 * page_to_pfn() on !CONFIG_SPARSEMEM_VMEMMAP can simply subtract it
- 	 * from the page pointer to obtain the PFN.
- 	 */
--	coded_mem_map = (unsigned long)(mem_map - section_nr_to_pfn(pnum));
-+	coded_mem_map = (unsigned long)(mem_map - section_nr_to_pfn(section_nr));
- 	VM_WARN_ON_ONCE(coded_mem_map & ~SECTION_MAP_MASK);
- 
- 	ms->section_mem_map &= ~SECTION_MAP_MASK;
-
--- 
-2.43.0
+Reviewed-by: Oleg Nesterov <oleg@redhat.com>
 
 
