@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6070C982ED
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 11:01:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28444C982E1
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 11:01:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E8336B00C9; Mon, 21 Sep 2026 07:01:02 -0400 (EDT)
+	id 359F16B0106; Mon, 21 Sep 2026 07:01:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0726C6B0106; Mon, 21 Sep 2026 07:01:01 -0400 (EDT)
+	id 331546B0107; Mon, 21 Sep 2026 07:01:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E7C346B0107; Mon, 21 Sep 2026 07:01:01 -0400 (EDT)
+	id 1848E6B0108; Mon, 21 Sep 2026 07:01:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B13386B00C9
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 07:01:01 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 25545C013D
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 11:01:01 +0000 (UTC)
-X-FDA: 85237477122.05.62AD6B7
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com [209.85.128.71])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 6421440006
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 11:00:59 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=V1ziUrnT;
-	spf=pass (imf01.hostedemail.com: domain of 3aQ6xagoKCKYbJUTTKLUXZMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--vdonnefort.bounces.google.com designates 209.85.128.71 as permitted sender) smtp.mailfrom=3aQ6xagoKCKYbJUTTKLUXZMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--vdonnefort.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789988459;
-	b=61Jh23sgEVa76BMTydSy4XlHqmyXyhMf0TvE8cpWSQ+06hr/9Ak2Mo3+k/HNs/AvdFH47/
-	mpWlUAAI5Hi5bbSfKfF4aMqMvBkMDAlzssa+YJj4V79QsmJf3rsjDTgFAMvjzazWGheL0x
-	RuRdrZ5TW2dyS391IFSHSnRePVz319M=
+	by kanga.kvack.org (Postfix) with ESMTP id C597A6B0106
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 07:01:02 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 475D9C0137
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 11:01:02 +0000 (UTC)
+X-FDA: 85237477164.18.25F7CCC
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com [209.85.208.72])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 79188100004
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 11:01:00 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=gdb8Nl0a;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf14.hostedemail.com: domain of 3ag6xagoKCKccKVUULMVYaNVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--vdonnefort.bounces.google.com designates 209.85.208.72 as permitted sender) smtp.mailfrom=3ag6xagoKCKccKVUULMVYaNVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--vdonnefort.bounces.google.com
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=V1ziUrnT;
-	spf=pass (imf01.hostedemail.com: domain of 3aQ6xagoKCKYbJUTTKLUXZMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--vdonnefort.bounces.google.com designates 209.85.128.71 as permitted sender) smtp.mailfrom=3aQ6xagoKCKYbJUTTKLUXZMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--vdonnefort.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=gdb8Nl0a;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf14.hostedemail.com: domain of 3ag6xagoKCKccKVUULMVYaNVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--vdonnefort.bounces.google.com designates 209.85.208.72 as permitted sender) smtp.mailfrom=3ag6xagoKCKccKVUULMVYaNVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--vdonnefort.bounces.google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789988460;
+	b=CA9F62XGBQ03DGlXfIWNUDdupywSmYBtVowXF1Rhl8hiuImHSDiUeZTIxkO1kmiUO6Uyzp
+	pAmtVuUMHMDUTOEYlQSyDxek8H639xpN3UqFPVFYur+7Fw6GsbRf94QLj7/2I63vTiDxE7
+	Llj+yqIE1lWMPWvfGKQwPZVeK0bq3AU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789988459;
+	s=arc-20220608; t=1789988460;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IM/pFcIIS9AfJIvDjZJlWaiz8Fy5HD+1VXbC/YTcKBU=;
-	b=OuzfnyIgf83SNB3I7QAcSqyegGVHORJognzlQ/dOyIHNzsr19Txx/7GmSbwVcLRzyWZElo
-	b7U5plEVsqSsVWO2NGDZqwdZLQjuN/cf/RzEP6jgqXaa1y006kFOUgaMJleyPz5pWSDQ4O
-	JIZUv86ftmTb1PFG7bEzU0wAuaBCCIc=
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-49e661c6440so15470625e9.3
-        for <linux-mm@kvack.org>; Mon, 21 Sep 2026 04:00:59 -0700 (PDT)
+	bh=U06rcgIn0LVt5Do84ZIYuayP7YCGGpRPbIbmdcyZosY=;
+	b=5yTyt8n45H+njQQR5S/cVI2mktp0WUdvyMU/9ey4ZdOa/e09IGrwbDbmuYla1drGx9iC6C
+	a9VuNc6B+HO1FzEPd4pWN/x3Spsw22mKAelMOv7Ow+wAX16ZmwuLGX01O5d/SITlcV/oHb
+	P5FeLTbQKhuoWrc4dmVMmdYkfpS9QzU=
+Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-6aa82371cb7so1189336a12.0
+        for <linux-mm@kvack.org>; Mon, 21 Sep 2026 04:01:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789988458; x=1790593258; darn=kvack.org;
+        d=google.com; s=20251104; t=1789988459; x=1790593259; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=IM/pFcIIS9AfJIvDjZJlWaiz8Fy5HD+1VXbC/YTcKBU=;
-        b=V1ziUrnT1IikPbHY32d5GxIqI43QaLKT6L2XOckBJIdrVBySE3RrQB3IgMwfpHTMtk
-         eGx4zbDr28xbjFODHTj75owofSe/ai1zsEPR1usqDNPQrnypUO6t4+XubPwY/fSphm61
-         +x1cZ+qzziLjZkToViAVvKN0qqLKmHRC5pT+6sOJysgirHMqt0WKvFkM71UWOQhRQDbV
-         s7PHGlYUQYTrNQ4hGNXdgqk+8kJy4QZczjYH7wvP4Hvl8mGSGhETD0/gs8KNI4H5V2Ep
-         IOpr9of9XB//VFEiq8q8H0CkoWLCZNRq5H1iHBHsf2hG7k7P40E9CwbQMDumd8I/qkES
-         O9Qg==
+        bh=U06rcgIn0LVt5Do84ZIYuayP7YCGGpRPbIbmdcyZosY=;
+        b=gdb8Nl0aAqELmp0v894CNitkQpE5IYhiTo2WSxJaavalwsZpCznu69kidOhziH4vPm
+         tjQCIjROjmAC8PTHG0e4BPYFOOWJDaF6hOvE9e5qZupwe6lbvCmSW9SeVuAdHu1zulzt
+         IOf8sgikpXT7J3Z1FOnvh2R+zI76u6/IumLdiUYBeVI23DMU9XZWG2keFIaaROgjZHxG
+         GwrmB8PT7AKFIfQhh2gV6KwHQdfhWu9AOscggSekBuL7AeeMcA/ssLvu0uHv7agq0KCI
+         /Hleizm1lwybHvRJC4iP4k5PR6a6g4T+KhlPaw0YutVoLrqpWPgIM7zL/sXE/buwDgCL
+         6j+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789988458; x=1790593258;
+        d=1e100.net; s=20260707; t=1789988459; x=1790593259;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=IM/pFcIIS9AfJIvDjZJlWaiz8Fy5HD+1VXbC/YTcKBU=;
-        b=S8wEKW4MdqNMS9tznREG1sQqMAuatx/f7AlOqk5g6PLPXagjzwscIJQ3UNoodCyMeq
-         BGFy786PpJ/ElE+fhkY6EuZNttO71WdeDuq18Qhwbszh++3pQ7dtcJ9usxcFDpb76wyr
-         YWISyN83cGdBTz1aD/dm1lq2kIaoJl6yNu8psEymhXdn4ZSl45IVhuM6zuWaySde0/xq
-         rwVti6Em9StjJ2R83jux2OfgHW5nr3BZuVi1qZsPCNejcn5W+WI9OrSbMvSrAb1H8iD6
-         fuJ0TuQIJU8Q4eczsCwYYMrSQhC6k70a6xvm5E692kZTdJ6rx0aCukfwCwt87O3R7dvG
-         Y5Zw==
-X-Forwarded-Encrypted: i=1; AKwUvBxlwkUUDU3WkMtMexU3E0fvleALYJM7UrQQEA5ixxnYrXxHK3Ey6GwLUfVGbDUXLlMLkEt1VEZaXg==@kvack.org
-X-Gm-Message-State: AFuF++lNJ8gmbfCKW4h/lbKbgiRbsQG0GTVdfQt34Lajo+OPOFYgbh22
-	SBX6Bm9oLXTTS1mylzvafBAIvhK8N7TsSVSWGzK6jVcklYcIM3aVYFtGK+cAtEkUucteHHbNnH6
-	6QWIL2BREyfUhu3wgLSseQw==
-X-Received: from wmcn17-n2.prod.google.com ([2002:a05:600c:c0d1:20b0:49e:8399:b77d])
+        bh=U06rcgIn0LVt5Do84ZIYuayP7YCGGpRPbIbmdcyZosY=;
+        b=azLvYc/SJ0JatlgjqubXEH5gtudgWYWr7Ui4NndfZYZWTJsMTZ2UABRilms3C1aFMg
+         Yzcn6nXNu9yd3ELbJ1r1PTujO87coRh6N2J8V0NujvE4FkxTZZZVvI/HmDq25szw6IfO
+         /TD2wTjx8aHM/UH2AU/boTxQULQNJ5EoQpDU1rBN3ui60wTHcgPDqSDfgv6NWLLiH2OP
+         32my97/3AukAgbNRmPqoh2b5NwYEerTYZCv4HPAh7TZ7Rc9IeOLlQQNHnGPsw/G7bXxT
+         Bn0tithgw674yMAeH8NPYS4mappNBajb2hpZqw4d93xzXCfnojNxb4tKSnNygJ4lPYG3
+         xXGQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzU/aDmjWBTxWrZ5L+F9/A8GNFdIkfwNoBPAfr1qdGWrR9SDsodJ55Bq372cQQOb6eRoFsd08LOqg==@kvack.org
+X-Gm-Message-State: AFuF++l6SxWaJFMcznFg+TlYUBpT2FjO75lojQiIDpq7UG4TC6qooJWr
+	HbUcoN+uJBIRSmuezLxIcFJEgnB7Z6jGyVH1Yk+W4FUSSs5FSruXmnIguvm6FZhQQTYj4Y0a8Gn
+	ToLcUcZdN0/wDtLdtEv/aLA==
+X-Received: from edea12.prod.google.com ([2002:a05:6402:a18c:b0:6a6:1a9:f70f])
  (user=vdonnefort job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3b2a:b0:49e:6861:50f7 with SMTP id 5b1f17b1804b1-49fc5687df8mr141949475e9.5.1789988457579;
- Mon, 21 Sep 2026 04:00:57 -0700 (PDT)
-Date: Mon, 21 Sep 2026 12:00:43 +0100
+ 2002:a05:6402:23d5:b0:6a5:f814:2278 with SMTP id 4fb4d7f45d1cf-6aa577f5a1dmr7324139a12.2.1789988458556;
+ Mon, 21 Sep 2026 04:00:58 -0700 (PDT)
+Date: Mon, 21 Sep 2026 12:00:44 +0100
 In-Reply-To: <20260921110050.3977591-1-vdonnefort@google.com>
 Mime-Version: 1.0
 References: <20260921110050.3977591-1-vdonnefort@google.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
-Message-ID: <20260921110050.3977591-2-vdonnefort@google.com>
-Subject: [PATCH v2 1/8] memblock: Introduce MEMBLOCK_PTEMAP
+Message-ID: <20260921110050.3977591-3-vdonnefort@google.com>
+Subject: [PATCH v2 2/8] arm64: Introduce can_set_direct_map_range()
 From: Vincent Donnefort <vdonnefort@google.com>
 To: catalin.marinas@arm.com, will@kernel.org, rppt@kernel.org, 
 	akpm@linux-foundation.org, sudeep.holla@kernel.org, jenswi@kernel.org, 
@@ -100,13 +100,13 @@ Cc: mark.rutland@arm.com, sumit.garg@kernel.org, ardb@kernel.org,
 	linux-kernel@vger.kernel.org, Vincent Donnefort <vdonnefort@google.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 6421440006
-X-Stat-Signature: n5ecxk3u6srezr3dbfa8mwueu446s73g
-X-HE-Tag: 1789988459-352396
-X-HE-Meta: U2FsdGVkX1/u6+Po0BjeoumZmkt/1U9ZsvpgFge3B6NDM2JN/xwbj2JaYuDqw1rTlWuR0iyKvwop3vH6HzVBjJUzzzcQWofJz399iVX+TUomVnC2TdmxNUeh70W9stVmNU1QsrRJljUbj/+wEAvsLCxaKWdQaF60hsGTYI578Jh7tMh07DB5ATpj8fd2Ihd6faqsTey730+h+PWuZetbKb+biX+5gxoBxK9IuUloG1YNo/a3JynqqVcAbF5ezYeY5LGTZImIYS9pMcV4JUgIl6VqiDm4ce9rMRFU6DQnBvmbpUOCHXjq0lO55jU1nDdmT9O75UfrNgAyl+nI5xs+K4L9YrOI4y65IKHZOWLOht172OHMnuWkl9/RU9ZEGXG0PsITo7vy23uI6iFvucS8UAoy0Rgk9hEFdv+vcZIEbGo6KGWGAn2I1J4M2x9bk6GdZw2aFRhWGtnLjhh7kevz61eYQXZ2Rr3lbc1002k7lJChKWxHpeCUS+p2A2Oi3xtKOrg2fd4uU2P2w0MAjZc4vgsl2WDtGfHWYzY9IP/dEzp0zYqJ2nV4lzZdlf1Z0i+QTgTi82Nj5d2RMtwOJAGgAr1/Fe+oQFciPHE3JNw2aJBlCJ4oc0jPaWVHYrSttOq+nRa32XXuRfQ7TglOpDIOSqE4uQl8zALGQ0gfJIEtkUPrD1lqLylDFenBv7bU36G+7H2KkuAlmhzJJuiuub38+9F3OHVJxw0ZE3lm/uLecHLC4WFTIAkhu7f0x9lzwv4nrNfUcvc/v5Wby3Gi9ZWSzXUeK5PylfyRGw+f6yqZjvlPD3n5lt9R12zzSGY+pL4Ky5i6jEu2Q0BPA3557PEL0r6n8V00P9G96RdfuGf+IwLShbXAxAurgadzSL/03pRK/PdRrcJdNN5q6p6CpGuf3Qtl5EGJtdTtbWWGmy2jsJw7myT3L/fEhMW14Y99ylwkhNnQqAMwoSRT2DSJ+g+
- wLMaQ3F3
- ToU41LvU1N36PV1CcpJl3w/bI1MSbsCCcPN/qb8b+133d/LSWRtRkGbNpjVninFRH4Q5E+0gFVhMFj6O6yH9+2u1h4Klh2M3sesnAlE4JqMJl5x7YFXdw996ooQWElELi5Nf/x07wsMw1xAIVZfD8jyJYtKWwKONSuj7WManHZ4kGTI8akIFoFf/FrOJ4DiMd5Y3J1oxH13EQKwio6hj8OJ0W8p6fi2qVQ72OwmPEXjR7gkw28RREYqXmbmWMBVzayeEtardtZ5++BcH0i/BET8N4wUQtO9BFuMIMHVsvrekic8WGCNkwiWpQUu4sUAznfjQ0L+dLgNok1QzcVS2WNIjAhoHugHIbDY0ijqskuXoOaPkZ3OPzi2+8y8AsNuTrzt1D71UUeQNz0hu2iB4JrVlUFnH39/lBWfknZBq8zecAe0sfgAfHPRUydTgw5vfZP0MwfXny8AudsT+LR8sRZCWbqPa4x93m4GZ37M0jgiyZEOYw/nwWnXj5E+IgZT/nDak3x0X0YIHe2R3sDxjUIGghcwE1pdS27aHpY16PdH+MB7r3hgfOZNbv6c/QvNZ46rzgTyz1PfbEy6routeGLwIctIZQsIydGKJ8aoGLyAF9X9jOju9lBpMc/bxquqlcasQdnLk+f5oD6wFsJvcd0+HIRQ==
+X-Rspamd-Queue-Id: 79188100004
+X-Stat-Signature: 8ydcwdpwidn3c5przo4g3azbb1yacpr9
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789988460-572365
+X-HE-Meta: U2FsdGVkX18659cwQyGOWxz1AIKuFqDBodSTWx91MRmoU3wCC83pQ6PxRpE72LPVO+XTm9hwsgrmot5k1a7JcWpu9zjEjbpFlSujTF6KeYY/T2PmVKdJ22DeIJYcjn3TzVv1+Kxtfd2gIaYufrTTeuKMnxrMn4KxLLGI7bJBglXnyk7OVNEmStHKdJi0N/rIxSE1F/0laA6jN3KpBWoDl2yzNd3iX6lCVbwCq4R2zeCXHKsJAHLROLO0vNwdmD3PirOkh9d2lxZ0ORLTfWX1cHozbv7uRB2//zA7Mm9xhdfa586xfBIEk4a2oLQZLINestaSmUS5eafLKP0cc2p/xWTC2nn1kJ8TX3RXIXDofVjouRH3lcDMG95e7e1NUjK9ws4s5/yJxTsEEBqRCZcjQ34rZxY2fWpAuulvP1miXaonDk1UK1K/WJeQB9VhTcKwRnFusDwEV5fq53exR1MNXEctqBF4X4STYHmIdYesR0YRkXXtATglAs1+SaaWooE+msvqHERAvEW3sxqm/WPRJiIPVByyu6+5y1GI4qPcQS250qlfU1SQ4Z3sMbgNRkQpnP1c0BFkijXI/LO09hADBg7gSmmC1snAHYk9A3mrjSSaoS3aYvUvtGfuK2IdADuqA7EW3pvNGSJWNQUb2nUp1VIWCtYetpwys/QlYuEi2lTOLhUmzQQQUQkcL+09o8yqE9ID/EJp+5AUDiMJ6rO7K45y6tLObEPPwofLwAa9nIrTcgntU3Eqs6OXL61qe+AM5Fb3R0WsnKeJJ3kcAcTbUiKfHDZgsy7Yw0Gxm1fZL8XJ1qN+Oc/j8UQ07dR/CWtPUhysoGMSKf0yNIV1LEGcCo22NVUXoIKZPR0yYxBbWRebzIFPZGr/fjFQIcWGvtJbEHA7CVlbBHc7+f0mtKEaZZIJFuNiPA4qtWs9M5YsqPXARSjf8tQRPM8Qc09Aff4jvIcPe5X6vXPa1NF49Fs
+ Z8e+e/gG
+ 8VaOTN3jD7StfI9lmYb2cG1qHe/1pVSzQ7YFWConY7GIgaR3Oqk4FC8bCGIcfNdKS+A9yhZ8ikX7wv8e9M9TFlhh1DhN2DLZoaICihgEbJkP0MeF2ljfVXDeRIisNWrC8pl+PVzsumSs/9gMEHyxzUW/R0F7S3EMXPvmCnlO4pXAEb4Zt5xEEgnF3XO1C8ep1U27ymNdOL7NmoUaE+ecZt+ea9Mr98HtBnanatQB7dYOaark2GQLOvU5syzFxoo50UBk2ojDC8JeROQo8KoD4KxzftgjsdDnHsthCW02mfonNqdC93VqCMfCo0bIvOwiCIGHVbZ1/zeqBng62kbymZ5d+qsxoeAbEdiS259dfTewMOMWL62TH45JhpdCBkFU0A+nwY5+A5OpKgIbQl0EOlAL7EogF9HZNPzG7UsR7sjr/aVkXFObmS9r0n0RyvhEOsEEAl5Po6ZgyQEqAYs0XMz1w6A35YjwJfgAd3XCuE+gCw+j0vCN/tPtirbF9Lqnhmipkr65o+MTcw1Snnf59sH9WxM4jrcmmpeC9C8ifMOCvExirm7CPXs9UWzerG0qEBt3S9+yfr+oq6kPPYY9aRrQPs4je/ld4Uy8noMVJmJOji12VTS5ioQU7kg0BpAgd8SQnCzHh+OVJUs9ZXfuD6V14gEC9HEIWQQ6D
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,128 +114,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Keeping PTE-level mappings is interesting on some architectures as it
-allows mapping/unmapping pages from the kernel direct map without the
-risk of splitting blocks which, under the break-before-make rule, may
-trigger page-faults the kernel can't handle.
-
-However, mapping the entire direct map at PTE-level is costly. So
-instead, create a new memblock flag MEMBLOCK_PTEMAP to selectively apply
-a PTE-level mapping.
+For systems where can_set_direct_map() is false, it is still possible
+that a subregion of the direct map can be modified if it is mapped at
+the last-level. Add an implementation for can_set_direct_map_range(). It
+falls back to a page table walk to verify the mapping level if
+can_set_direct_map() is false.
 
 Signed-off-by: Vincent Donnefort <vdonnefort@google.com>
 ---
- include/linux/memblock.h | 18 ++++++++++++++++++
- mm/memblock.c            | 30 ++++++++++++++++++++++++++++++
- 2 files changed, 48 insertions(+)
+ arch/arm64/include/asm/set_memory.h |  3 ++
+ arch/arm64/mm/pageattr.c            | 50 +++++++++++++++++++++++++++++
+ 2 files changed, 53 insertions(+)
 
-diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-index aa845f488327..13263055996d 100644
---- a/include/linux/memblock.h
-+++ b/include/linux/memblock.h
-@@ -52,6 +52,7 @@ extern unsigned long long max_possible_pfn;
-  * kernel that we know is good to use. It is the only memory that
-  * allocations may happen from in this phase.
-  * @MEMBLOCK_RSRV_HUGETLB: memory is reserved for hugetlb pages
-+ * @MEMBLOCK_PTEMAP: memory region to be mapped using PTE-level mapping
-  */
- enum memblock_flags {
- 	MEMBLOCK_NONE		= 0x0,	/* No special request */
-@@ -63,6 +64,7 @@ enum memblock_flags {
- 	MEMBLOCK_RSRV_KERN	= 0x20,	/* memory reserved for kernel use */
- 	MEMBLOCK_KHO_SCRATCH	= 0x40,	/* scratch memory for kexec handover */
- 	MEMBLOCK_RSRV_HUGETLB	= 0x80, /* memory reserved for hugetlb pages */
-+	MEMBLOCK_PTEMAP		= 0x100,/* PTE-level mapping */
- };
+diff --git a/arch/arm64/include/asm/set_memory.h b/arch/arm64/include/asm/set_memory.h
+index 0091ba12200e..80bb94a340fd 100644
+--- a/arch/arm64/include/asm/set_memory.h
++++ b/arch/arm64/include/asm/set_memory.h
+@@ -9,6 +9,9 @@
+ bool can_set_direct_map(void);
+ #define can_set_direct_map can_set_direct_map
  
- /**
-@@ -160,6 +162,8 @@ int memblock_reserved_mark_noinit(phys_addr_t base, phys_addr_t size);
- int memblock_reserved_mark_kern(phys_addr_t base, phys_addr_t size);
- int memblock_mark_kho_scratch(phys_addr_t base, phys_addr_t size);
- int memblock_clear_kho_scratch(phys_addr_t base, phys_addr_t size);
-+int memblock_mark_ptemap(phys_addr_t base, phys_addr_t size);
-+int memblock_clear_ptemap(phys_addr_t base, phys_addr_t size);
++bool can_set_direct_map_range(struct page *page, unsigned long numpages);
++#define can_set_direct_map_range can_set_direct_map_range
++
+ int set_memory_valid(unsigned long addr, int numpages, int enable);
  
- void memblock_free(void *ptr, size_t size);
- 
-@@ -285,8 +289,16 @@ static inline bool memblock_is_mirror(struct memblock_region *m)
- 	return m->flags & MEMBLOCK_MIRROR;
+ int set_direct_map_invalid_noflush(struct page *page, unsigned int numpages);
+diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
+index 132938b32eb1..5fcdb292905f 100644
+--- a/arch/arm64/mm/pageattr.c
++++ b/arch/arm64/mm/pageattr.c
+@@ -102,6 +102,56 @@ bool can_set_direct_map(void)
+ 		arm64_kfence_can_set_direct_map() || is_realm_world();
  }
  
-+static inline void memblock_warn_invalid_map_flags(struct memblock_region *m)
++static int can_set_direct_map_pud_entry(pud_t *pud, unsigned long addr,
++					unsigned long next, struct mm_walk *walk)
 +{
-+	enum memblock_flags map_flags = MEMBLOCK_NOMAP | MEMBLOCK_PTEMAP;
++	if (pud_leaf(pudp_get(pud)))
++		return -EINVAL;
 +
-+	WARN_ON_ONCE((m->flags & map_flags) == map_flags);
++	return 0;
 +}
 +
- static inline bool memblock_is_nomap(struct memblock_region *m)
++static int can_set_direct_map_pmd_entry(pmd_t *pmd, unsigned long addr,
++					unsigned long next, struct mm_walk *walk)
++{
++	if (pmd_leaf(pmdp_get(pmd)))
++		return -EINVAL;
++
++	return 0;
++}
++
++static int can_set_direct_map_pte_hole(unsigned long addr, unsigned long next,
++				       int depth, struct mm_walk *walk)
++{
++	return -EINVAL;
++}
++
++static const struct mm_walk_ops can_set_direct_map_ops = {
++	.pud_entry	= can_set_direct_map_pud_entry,
++	.pmd_entry	= can_set_direct_map_pmd_entry,
++	.pte_hole	= can_set_direct_map_pte_hole,
++};
++
++bool can_set_direct_map_range(struct page *page, unsigned long numpages)
++{
++	unsigned long addr = (unsigned long)page_address(page);
++	unsigned long end = addr + numpages * PAGE_SIZE;
++
++	if (can_set_direct_map())
++		return true;
++
++	if (!numpages)
++		return false;
++
++	/*
++	 * If !can_set_direct_map() then no one can split blocks and it is safe
++	 * to walk the page-table lockless.
++	 */
++	return !walk_kernel_page_table_range_lockless(addr, end,
++						      &can_set_direct_map_ops,
++						      NULL, NULL);
++}
++
+ static int update_range_prot(unsigned long start, unsigned long size,
+ 			     pgprot_t set_mask, pgprot_t clear_mask)
  {
-+	memblock_warn_invalid_map_flags(m);
- 	return m->flags & MEMBLOCK_NOMAP;
- }
- 
-@@ -305,6 +317,12 @@ static inline bool memblock_is_kho_scratch(struct memblock_region *m)
- 	return m->flags & MEMBLOCK_KHO_SCRATCH;
- }
- 
-+static inline bool memblock_is_ptemap(struct memblock_region *m)
-+{
-+	memblock_warn_invalid_map_flags(m);
-+	return m->flags & MEMBLOCK_PTEMAP;
-+}
-+
- int memblock_search_pfn_nid(unsigned long pfn, unsigned long *start_pfn,
- 			    unsigned long  *end_pfn);
- void __next_mem_pfn_range(int *idx, int nid, unsigned long *out_start_pfn,
-diff --git a/mm/memblock.c b/mm/memblock.c
-index ea0de4b5f356..8a87d4d2516d 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -1204,6 +1204,35 @@ __init int memblock_clear_kho_scratch(phys_addr_t base, phys_addr_t size)
- 				    MEMBLOCK_KHO_SCRATCH);
- }
- 
-+/**
-+ * memblock_mark_ptemap - Mark a memory region with flag MEMBLOCK_PTEMAP.
-+ * @base: the base phys addr of the region
-+ * @size: the size of the region
-+ *
-+ * If supported by the architecture, such region is mapped using PTE-level
-+ * mappings in the kernel direct map.
-+ *
-+ * Return: 0 on success, -errno on failure.
-+ */
-+int __init_memblock memblock_mark_ptemap(phys_addr_t base, phys_addr_t size)
-+{
-+	return memblock_setclr_flag(&memblock.memory, base, size, 1,
-+				    MEMBLOCK_PTEMAP);
-+}
-+
-+/**
-+ * memblock_clear_ptemap - Clear flag MEMBLOCK_PTEMAP for a specified region.
-+ * @base: the base phys addr of the region
-+ * @size: the size of the region
-+ *
-+ * Return: 0 on success, -errno on failure.
-+ */
-+int __init_memblock memblock_clear_ptemap(phys_addr_t base, phys_addr_t size)
-+{
-+	return memblock_setclr_flag(&memblock.memory, base, size, 0,
-+				    MEMBLOCK_PTEMAP);
-+}
-+
- static bool should_skip_region(struct memblock_type *type,
- 			       struct memblock_region *m,
- 			       int nid, int flags)
-@@ -2880,6 +2909,7 @@ static const char * const flagname[] = {
- 	[ilog2(MEMBLOCK_RSRV_KERN)] = "RSV_KERN",
- 	[ilog2(MEMBLOCK_KHO_SCRATCH)] = "KHO_SCRATCH",
- 	[ilog2(MEMBLOCK_RSRV_HUGETLB)] = "RSV_HUGETLB",
-+	[ilog2(MEMBLOCK_PTEMAP)] = "PTEMAP",
- };
- 
- static int memblock_debug_show(struct seq_file *m, void *private)
 -- 
 2.55.0.1082.g2b9226bbc0-goog
 
