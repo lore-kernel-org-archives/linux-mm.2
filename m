@@ -4,119 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BA7BC982ED
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 18:51:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2AACC982EE
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 18:53:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2EEB46B00B1; Mon, 21 Sep 2026 14:51:32 -0400 (EDT)
+	id C8CF36B00A1; Mon, 21 Sep 2026 14:53:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C57E6B00C1; Mon, 21 Sep 2026 14:51:32 -0400 (EDT)
+	id C3DD26B00C3; Mon, 21 Sep 2026 14:53:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 202FC6B00C2; Mon, 21 Sep 2026 14:51:32 -0400 (EDT)
+	id B54A46B00C5; Mon, 21 Sep 2026 14:53:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F27A46B00B1
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 14:51:31 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id EC39840288
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 18:51:29 +0000 (UTC)
-X-FDA: 85238662698.22.409ECF2
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 2D80440003
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 18:51:28 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=REmmGE23;
-	spf=pass (imf17.hostedemail.com: domain of kmehltretter@gmail.com designates 74.125.225.141 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 814276B00A1
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 14:53:00 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 76D3FA016F
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 18:52:59 +0000 (UTC)
+X-FDA: 85238666478.19.08CCB08
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id A7FC340005
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 18:52:57 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jnq63Tuv;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790016688;
+	s=arc-20220608; t=1790016777;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tE3Tr4gm4tvb6Rbj5+pcpfeQlxZsP6Od7O86P+CMJdo=;
-	b=oUC7zRwuGlBJuiG5wuJcgVmO65b6iR9KCEohlv2TwFOApmTCBTCGwdQJFl7DDQI+2LyZL5
-	MwM7uBkqTI8GLDzyVwA4IlHbYPJWoHia87ZF/qLzbh/hnPyOBnVsYDr92SsYZh8krhnWd/
-	EZvKHYS4JK70sGYR8s22HP2hr0TeBrk=
+	bh=OfpxOT295Cqy5dFG4ckdzBDycmvuVGEuSlnWiQ/SQeg=;
+	b=iXk/Z/X/WQakNfig/gesjLCa2wcgufa6NpWPGHAvtGMSXV3VHbj4V+uJMkVwjzguOaiqkd
+	sxqWyJjufwuUC3r4CsFs5SL2/fUdIUXW6EiY86xiXXs+nwKjxuWvddUyKgQ9f/Kr5iFHXc
+	W0GA9AewxvwLWUdiR0IJEMOgX907N+Q=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790016688;
-	b=MVfCtp5VOxyIIuTdp+Eh0V6V/QJOVwDhgCsDJ1H354ZAZdcuBVXtHZMhUys6pArkcNeGOC
-	jjBe3tCRQ49ytUSeTkpY0y209B4LJbxDfa7OloQZAYxvi6rT94Fva9aTsOqz6Th1fZXY4j
-	dC7V4bf9gAmwzdyYJzpHOadmTfT8awA=
+	t=1790016777;
+	b=J7Pl0rt1IIEjI+FZJzKWozSVzTvgH8qJHApiMeONs3MdmDC4oesXxeOahDXeccIiZ6B452
+	8CV3c685ovTp0BBU4/kT8i6yNIm+aPQPYt+wyRm7hh5eQwRdFBY8rTbCPTFUasr93M9NVD
+	fKvuB9f1tS2xjbftskhQu6e3UIelyS4=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=REmmGE23;
-	spf=pass (imf17.hostedemail.com: domain of kmehltretter@gmail.com designates 74.125.225.141 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e6c0fce17so17444215e9.1
-        for <linux-mm@kvack.org>; Mon, 21 Sep 2026 11:51:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790016687; x=1790621487; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=tE3Tr4gm4tvb6Rbj5+pcpfeQlxZsP6Od7O86P+CMJdo=;
-        b=REmmGE23cxD3X67lrqvtPTdu4vy6OBPqFU2bTd7077I7csIAeW7IOvPBgqKTH2TyI9
-         jp93uZALa2i9DCaF+4GZR/UkfOidvLg5JC/CDg10wAh/iOZy4RqeeGqisSz0RuNicqQS
-         MUWajeko9cavh8cvbfZgNi5RJHsSlIQVXFxZWTmIwe+yfujF6W83QKG39oiSWFmaFcnY
-         PiT9fdn6cKHpj/pzIbkPG3ekl29E8YoimQn/6FYklW3lM/DYK6JEShHQvB70s69/ZkjX
-         6x1U+bY7GcsNOrwbP6/D5c7zrtGv16F/9c1Qt6ZIgelmMZH4DtRgPUSBx9PLdi5QGQ0B
-         NlVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790016687; x=1790621487;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tE3Tr4gm4tvb6Rbj5+pcpfeQlxZsP6Od7O86P+CMJdo=;
-        b=g1Z99cURwUBjdFF+tDXwe6lxW7ED1LmdDw1AUditJygKdUQuzQnlYuCwgBwrVNUCz1
-         k519XqocyFstl1vh4DYdY48EDOrPhOnxjAfb9i+dHMJU1LDKb/ffbrN0C4Xr9iyh9Y0d
-         wGz2N1seAx99brwoOIa4HhCxV+utvkqORi6fldBno3d5/8So9kzBPm0MmtF+w7DfrDhy
-         Z/209Pdt8MytNV+ZtyD0DI06DYZQS/nuzVj2mVX7fnRMhPJ7iANsfVd0Ez8JrRcj5XCI
-         FzgIqRFcfCkfBwZYur9cHfX9jqNXDK/wG+uwq/7ToVVj6DD2UPOWd9f9wXlGhHtMcdi0
-         qCVw==
-X-Forwarded-Encrypted: i=1; AKwUvBx1tkPJq8ojltNwc9sdFGOSJ/p1W6Ls6+jhTuc9X4FVcoNuJUq5hXmJk5qNza+q1zbQKRWUpKefOQ==@kvack.org
-X-Gm-Message-State: AFuF++kx4ACu+D1RHouJWhLcDDdVIKjGx+qPMbkUhMoxjvxxux3L54uf
-	WDmixwyy1BTFBxSfRD/jPlY4W3DLli+RQdH059WTspnvgt2Wnwh1ePfz
-X-Gm-Gg: AYBFou0kxyuHl1zTWVppp1qfA0DH+nT9nGd/WpGXnaxURXGCY7iJ7oxrKcfMBcUVJhR
-	RdX7hjafyu7kc5MuoHL6PpYJqk+umLlblHPfP7YEWCYu3FcFJxTCwcfusCmbgAficHxGT0tSLRe
-	LMDQwayxX7m8G5EuqJ+gNcY6bqfqroao+LholQgARU+2DYBhE6cZ83RD5dwm666jRe4+DWuOhhY
-	8f/MwHVNWgl9bD1tZ37SSQKZxdBoMSUlinjCFO+a18fInQYqhb5c+MQvmIlcZ9oVTM10W1b8C5h
-	M3ownvuXTYz9WVcjQYfZCWUiNkiiiwBWeg1lRIcB/hQtZg/1QcbamxInnR+h6YnfbyLjv6RiizL
-	ok1XRw2fmzSjJCo1kZqBsWEN8fRcRV2wmEYpj71eX9Zwu5ap20LFgMerUY0dnjhD6a4nvgvlbWB
-	bSyn0mwav3xZ3cL2nZUI4SldCTomGjPphQfipbsQR/QKXcxqsAFIKqLbQdPPtAIbKgagjxycmPj
-	DpFOmyHkQ+veiQDzHZ+aCTrQ1VufFs7Rtvm6EjGDjG13VAugTx6zhmPL6iVsX1zf6sRFuH2gE/N
-	HJEmbK2koejK0Fvemnqz7/GK4iGJ64hX2xFUeQI8aYw1t8GN2mAZRAGowUzdE7bsuT7A1fbszy6
-	6SNlRzPyFGLY7e8AVMjsLgZg=
-X-Received: by 2002:a05:600c:310d:b0:49d:15b9:2a2a with SMTP id 5b1f17b1804b1-49fc5721b9dmr177099205e9.10.1790016686303;
-        Mon, 21 Sep 2026 11:51:26 -0700 (PDT)
-Received: from MacBook-Pro-von-Karl.localdomain (dynamic-2a02-3100-a8e9-c501-45ee-6f60-3fc5-4072.310.pool.telefonica.de. [2a02:3100:a8e9:c501:45ee:6f60:3fc5:4072])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fd8b9fc5asm11550875e9.5.2026.09.21.11.51.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 11:51:25 -0700 (PDT)
-Date: Mon, 21 Sep 2026 20:51:24 +0200
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: SJ Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Lian Wang <lianux.mm@gmail.com>, Kunwu Chan <kunwu.chan@gmail.com>, damon@lists.linux.dev, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] mm/damon/core: score an unmeasured PSI goal as not
- achieved for the temporal tuner
-Message-ID: <arF7t_kmisrx0_WF@gmail.com>
-References: <aq4g5W58PgWLqJ8p@gmail.com>
- <20260919155342.85699-1-sj@kernel.org>
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jnq63Tuv;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id CC63D40697;
+	Mon, 21 Sep 2026 18:52:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D1981F000FF;
+	Mon, 21 Sep 2026 18:52:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790016776;
+	bh=OfpxOT295Cqy5dFG4ckdzBDycmvuVGEuSlnWiQ/SQeg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Jnq63TuvJEI9WpDbfOjntptRn/RdFpP+Zjx3XXhcutv4efWciRNs/gDn9y2frz8nf
+	 /YIQN8T3B1Mk8g5fnsB6WYtYjPQs3Cn7fIqkVN0yVN51i84XW8wK3ZrnKR/FHhdf01
+	 /OyI8bEh8LoSfsTFORhVaPNaU9KLKaLbi+NL67LPNJLTeSIHvunJ9k/3fN4gHapstO
+	 0G/YCEHOc4LhJUkU08axdyME58tgh7J2/CY7z93TD9E6MtaRPoFwNF1ErPedXl0Pkb
+	 RYXHnOiPnFnMDbbZmuvQx7jIIzPYK0JUvPN53RLXpxIrjPwpFv/y8GD7uZQ5E49VGo
+	 zJuKbwJH/+kdA==
+Message-ID: <bc3703c3-5798-40a8-88ae-98e1a9ea4bf0@kernel.org>
+Date: Mon, 21 Sep 2026 20:52:47 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260919155342.85699-1-sj@kernel.org>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 2D80440003
-X-Stat-Signature: 674hzgwmco48cfaq3h1s3199rhfmbp6m
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] mm/khugepaged: Never install PMDs in
+ uffd-minor-registered VMAs
+To: James Houghton <jthoughton@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, liam@infradead.org,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Yang Shi <shy828301@gmail.com>, zokeefe@google.com, hughd@google.com,
+ Kiryl Shutsemau <kas@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260910023411.514987-1-jthoughton@google.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260910023411.514987-1-jthoughton@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1790016688-941977
-X-HE-Meta: U2FsdGVkX1/LNo4WXJa+N0oR/dFAApV6m1E7HKgxYDR7AMyveIqpJwnpPPziUV+j5EP1fFSNVpCYMsnJMfCRYwCQhrB7JSTuwSO0ABeFGW00gmdVNnHVYMYdZ1ii9IGMwSq/wDoyad0DDKE6Af03/nAthDasLAgPxqETb8RcQLc6QOX6/AgEkDuRTOguj4Se0Y2SYTH9/Fyaljy4TRxpliGtui/48IA9F0ONcmW+dQ7BrMbzLVzf9slOsGAUJiFIqCx2GMhU9zmE+hNaQeI3mqlC8KyNEeDsSzUHJLkeR0rnOdfocuUFZoACVmzx40aygCBNIyRuGltmDIRbXVJyYzE5rraJ+gwKOJlO7d6mDNoiLLg3WLZY7D+5qBEcQ4s1vuahrr/9bb5/cZ9YLA0WlrIpn8me/TpkjrMFg3TTU0v3o9LZaBX5TTUNCc01vF5Yfdx0vScm/mTABQmp4CJJQvU4Zr2t7fZafsONM2mYQAcwDpyCXJ0J0zUVa+pnVrOka9q8tKJIrsgDFRTPOucNqH87SiDqHvpcJTQZkZHRVJ/iiy0i+fNGa6lGRHTU2Wn85NJC4pXfJeCAB1qaEJTS8tPMVehvK4bkcenR3iqqXYw+IfLZuNwa8YQSDDO5T3h2SbhSYJsbGB9SRgeW8qLx9naOicIdFtiyjdQUFTGI+hPAQdff7wNTihBTp1zRwCo+BKAVbUz5O9xg6eE8I2N0D4Sme3d1y+zjMWfxv4DrB0p96Sj+RyU2IbdWYb8iEZa/Gy4btGEAX5UTIPajaI84uc3z5iaTBHHH4qLJlGSUA0Re+a9/qgY71gI/1D1c66UdFaK/NxBgXNXLNzIGtDOx09HTxsn32FYPa3VO4BMwDyFIEmf7Wgn0G01wDVbHqD21p1P5jLLcr3C2/SHoedrGo9YOXPVr2DqVFcFAxgTCZNKNk2pqlX94RfiXXVDD30XRC6v0zaeY9EgFv6j1smN
- 2LUDFaWF
- iFXRr3PoOaXEYfWTAb4aYZWkyIAoqHEV3keJNxtFlEQywBPCV907+D3u1KQ2ZU1k+qr6+vm7vKv8qs6IcgXYC9jMq4b+GfFIO6gbTDVWFMhjYSsEn8k3zEzXNPpJ3Sp9H9MwXZnqtA57mbiTIXbOKp95NtKIQ0Zn5+8LTn30fQDQjdAxwb+UKpCtwBCdXt5wf5jb9ZbpLVu3puF14HTA7f78KfUlYG2Zhv2Evn8erY5MGbyXUuV7gRfzBS2rAffuI4sH5K/r/MpzoUWtNU+sXJbujK5B9/EFdz8zrcz0qsRcxhOKdMIwmwWl3cN4Ntnbh/lKNwm4GPetZ9v/scaHLkkYQsKHbIRwtOwB5jSBmGiZt5eF+7slBtvVgVesaxLREc8DWOujXp9k3GlqJtLYYENy3sUf6stJvVa3OQkgTTF6Bv/8Jniy93LACNI+p6R3IsqdQVYqVBF9MaHFmBeWXYAZ51eeijzECG3b1nickQw4qKYcurPJ4CV5+8+ZvgJGsGLypQSZrzqapiJi+daI7iuoHZ8FQ+SseUDEd4A5PDpEUI0xNDJ+69UmZYeIgI3qPgoH+99L4lf2ymi+c97PqSRmXYQ==
+X-Stat-Signature: irrz6rtg64forw3poxgf79fyefc1oqym
+X-Rspamd-Queue-Id: A7FC340005
+X-HE-Tag: 1790016777-764494
+X-HE-Meta: U2FsdGVkX1/XX5Pyaaa9nRopfGfLMbWPw4AFnOsci7hGqUmYpsv1ZSYH4wgQ9B9hRe/c0ieHufQW4Cmpv18UKiJaaw8NGv9wWriVekFbSbyuAe9haCGy9hcMuwpSmJPLp+HcySvX4EhBzM0b5aex7ML6dxNypnSdlYoB6Y79w7iEGsgI8F0PjIoASY5jXjDbACvWmyWTX0mg30tz8KWiBrMp6wUQSpAopCT5zNlCZz3tausDadZo13f9m8u5OOH9KrAmxymgokyLv6DjiPlkjWYXYt5yXgJoVLZHnBH7x9JY11dPAysBFbgj3BR3xsdt1NesrmdIlI0I5K2Rh43RiVbQaLQwDk/JSarx7cmP39JacO3S5bkXxYNF3nglo2tC9foVZHU4izocU9sEZbj6TUS6KuYlJ1ZRVFCRTWKeo7iK4LHDVXiqfr5l6T8Mqfb3y+rGKvGe+hbuVVYLYrXmJ81OyB0xiSwK8jdGIoPEopTWQYfvEM+s6L7n7KMX0aykPvjyWozGhsc5K5FUoAKoibpJ5JaD7GlLTZB9ogcd6ZBZXdDntMU18an4+BMPMDJF6PBNLkWkl1Y7fMsR4s/N+v5Hbzabi6y4BCEhgUqCi5IR7A+xCi71BtNkMJDc633anxitl0AoOcdLt+rat/0dajUguHgfUZiTGObIj8mirnBdPA5yjeqDT6eg42bo5/T8+lsBffaEg0KJBIf6g9uEZWi5YCZ7cGQWHAlAT7V1xczFofl1veaUp5pFUJd8bw827tVbpFf4ofo7bxg5nRVsCaq/bEK6y/sa/CD7arh3o6IVuSK0zyXAuBxjoPXOxAsR8/Qe1QRbAnh75wlOuJBCYrzfcIgQrQTLpgE3w5n+6QSxZbRw2XocVa4YpAmp8odzwKm1pemAA5x8INs9tGKtSf1ojjZ8Yb0J0mbts/piA9kSnFXPcJU6TIO/YVoMzj/+IBmaLY+gSjn/jggof4M
+ C7hRHSt4
+ 1xd1azN5gvusq6VWTRatf+jkJSFuC1riY1hGUtNoBhvfPDrp/2u0XPDe8U7qH5eDzla+k24rZig5RSRP1tKKI4GYPqwGmNsnMEmB9I75qK/loq8CTysjBTjqoRdChoYcWv7NksMKAH2wCoxAl7gh8+2vtewwcxHZGTszrmljYTC04Mv3mgb0Kxlxcgnr75imrzFb+QUk/9p5Mm6r8VerJSZx9loIaYiJwqrj0lk+JjCyUrwIwHuL6OYevfhaFV7d688Hz7zx17+9av15GN8vVRm0nUAYA5VBO8Fw4wscma8ueljPdI64qRWM/Eg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,25 +145,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Sep 19, 2026 at 08:53:41AM +0100, SJ Park wrote:
-> And the apply interval (or, next_apply_sis) is extended for each commit, in
-> damon_set_attrs().  Hence, the problem can still happen.
+On 9/10/26 04:34, James Houghton wrote:
+> Userfaultfd minor faults provides userspace with the ability to manually
+> install PTEs with UFFDIO_CONTINUE. Right now, MADV_COLLAPSE can map
+> holes in the VMA when a naturally-aligned THP is present. This is not
+> true for khugepaged collapse: the PTEs will be retracted, but a PMD will
+> not be installed.
+
+You might want to add a breadcrumb here that collapse_file() never returns
+SCAN_PTE_MAPPED_HUGEPAGE for khugepaged.
+
+The whole thing makes me wonder why that khugepaged check is buried so deep down
+in that function. Makes me wonder whether that check can actually get pulled
+further out (maybe Kiryl's patches do that).
+
+try_collapse_pte_mapped_thp(mm, addr, !cc->is_khugepaged);
+
+is rather confusing when we never end up there with khugepaged ...
+
 > 
-
-Thank you for explaining the apply interval. So the PSI measurement
-period can exceed the quota reset interval.
-
-> > full commit zeroes esz, esz_bp and the charge state of the running
-> > schemes. Please correct me if I read this wrong. I can send a
-> > separate patch for that.
+> When MADV_COLLAPSE installs a PMD that mapped holes in the VMA,
+> userspace is likely to expect UFFDIO_CONTINUE to succeed on the
+> should-be holes. UFFDIO_CONTINUE will fail and return EEXIST.
 > 
-> I don't really understand the problem.  Could you please further elaborate?
+> This is not inherently a problem, as MADV_COLLAPSE is an explicit
+> userspace action. But, especially because MADV_COLLAPSE can be invoked
+> by an external process via process_madvise(), a rogue caller could break
+> a userfaultfd-minor resolver thread. If khugepaged is later updated to
+> install PMDs for khugepaged collapsing, that would be a genuine problem.
 > 
+> Userspace cannot generally use MADV_COLLAPSE to resolve userfault minor
+> faults, as MADV_COLLAPSE will only resolve such faults if a
+> naturally-aligned THP is present.
+> 
+> The naturally-aligned THP case is the only case where this quirk exists.
+> Collapsing otherwise requires all PTEs to be present for
+> userfaultfd-registered VMAs (i.e., max none PTEs is 0), which is
+> correct. This check is essentially bypassed for naturally-aligned THPs.
+> 
+> Suggested-by: Lance Yang <lance.yang@linux.dev>
+> Tested-by: Lance Yang <lance.yang@linux.dev>
+> Signed-off-by: James Houghton <jthoughton@google.com>
+> ---
+> v2: https://lore.kernel.org/linux-mm/20260828222640.1638457-1-jthoughton@google.com/
+> Changes since v2:
+>  - Drop cc:stable and update the changelog for the main patch.
+>    khugepaged doesn't actually install PMDs, so it is impossible for the
+>    kernel to silently install mappings that userspace didn't ask for.
+>    Therefore this patch does not need to be backported.
+>  - Update the uffd-unit-tests selftest to account for the new behavior
+>    (new patch). This patched selftest is equivalent to the reproducer I
+>    provided in v1.
+> 
+> v1: https://lore.kernel.org/linux-mm/20260828005004.2870750-1-jthoughton@google.com/
+> ---
+>  mm/khugepaged.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 75639298efc2..e6947fe142ee 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -1894,6 +1894,13 @@ static enum scan_result try_collapse_pte_mapped_thp(struct mm_struct *mm, unsign
+>  	if (userfaultfd_protected(vma))
+>  		return SCAN_PTE_UFFD;
+>  
+> +	/*
+> +	 * Userfaultfd-minor-registered VMAs should not be collapsed, as
+> +	 * userspace is expecting to explicitly install PTEs.
+> +	 */
+> +	if (userfaultfd_minor(vma))
+> +		return SCAN_PTE_UFFD;
 
-I posted this as a separate patch series with KUnit tests:
+Can we just combine the two uffd checks to have less uffd noise? :)
 
-https://lore.kernel.org/r/20260921003047.12041-1-kmehltretter@gmail.com/
+"Don't collapse if we might have UFFD markers or if userspace fills the page
+tables through uffd minor faults".
 
-Thanks,
-Karl
+Overall LGTM
+
+-- 
+Cheers,
+
+David
 
