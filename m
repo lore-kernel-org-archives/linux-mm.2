@@ -4,93 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66724C982DA
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 01:03:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B441EC982DA
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 02:00:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 123026B00D7; Sun, 20 Sep 2026 21:03:38 -0400 (EDT)
+	id 5FD6B6B0095; Sun, 20 Sep 2026 22:00:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0ACBD6B00DF; Sun, 20 Sep 2026 21:03:38 -0400 (EDT)
+	id 5AD3B6B00CB; Sun, 20 Sep 2026 22:00:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB60A6B00E1; Sun, 20 Sep 2026 21:03:37 -0400 (EDT)
+	id 4EA8B6B00D9; Sun, 20 Sep 2026 22:00:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A7126B00D7
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 21:03:37 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 64448A624A
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 01:03:36 +0000 (UTC)
-X-FDA: 85235971632.29.956B45F
-Received: from mail-oo2-f7.google.com (mail-oo2-f7.google.com [74.125.231.135])
-	by imf21.hostedemail.com (Postfix) with ESMTP id C1B721C0006
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 01:03:34 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf21.hostedemail.com: domain of 3ZYKwagkbAIg4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 74.125.231.135 as permitted sender) smtp.mailfrom=3ZYKwagkbAIg4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2CB1E6B0095
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 22:00:24 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A60F712055D
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 02:00:23 +0000 (UTC)
+X-FDA: 85236114726.21.45C0A4F
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+	by imf01.hostedemail.com (Postfix) with ESMTP id EB83440005
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 02:00:21 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ntcW08AW;
+	spf=pass (imf01.hostedemail.com: domain of kmehltretter@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789952614;
+	s=arc-20220608; t=1789956021;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=h/JWRPDnmTzkO48RL49AOEHMRmvJYjnSTPOTUHlxfVU=;
-	b=2cw9Jbz9AA3jEq54MyIq7d/RE7fN+9/NMXSgZvfSpU6sCLTuQ1mcCh1f33MBKFhkcec0ai
-	ZGBoc6O6PheGP2PP3G1mwtq+EVfkPLtGAWgENv0mIt4cp2xZNgjpf5SbjdjABuSGUszIGG
-	hW6V9HOBzhG5RdMGec9tHS0m66h//PE=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Dl3X5lIuCDCuxRfR4V0ReBm9Zl+q43AQqD3mJ2yz/dQ=;
+	b=opN2fh3aEU9mh9HpMJ59K1V/ojwcWHZ/3nyQFIdDdVCRIKWny8wFV1n+CDsJoqoUvcl9su
+	uOYyR4ZANgeX1LdXLncotswDbIYEDCCetvlAnA3Cyo5whDKgg7LOBI2kGMGEP7jGCcQT44
+	+mjzJjLFvvBbhUljzVWDb5//uhAG2Zg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789952614;
-	b=YnRyhCrmLQAxMdH8Aq3LJVDplaNIS8oHR5inHtE2OqYxgptsFcaOygwGwqaZX2x4SBSXM9
-	NhnOXIAOsHOu6/rJw8lxuuicg3w/fn8+ZE3a0IirBP+5j5nIWosTB1snmUpi3NC01EOW8X
-	1K8xnqWckLOrxdohtkGS2/JGEeBQv6Y=
+	t=1789956021;
+	b=xW+tK6tw0ktwtdvkJxRFen0Tj0qat2Q41Kx920dIG4V96FnXB1Kmg9eCrZu62WV6FlgBwE
+	M5Cdw0ggCEwKV2jrRizJiV+RJIH41I84mr3QHcjw4SVCaq0RIlxel+PWoNbu1TOgw3nwM1
+	CIbXlMFIPVt9m2nJkNhH3EeaEsPtdRg=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf21.hostedemail.com: domain of 3ZYKwagkbAIg4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 74.125.231.135 as permitted sender) smtp.mailfrom=3ZYKwagkbAIg4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo2-f7.google.com with SMTP id 006d021491bc7-6b1bebb3ae8so1236577eaf.1
-        for <linux-mm@kvack.org>; Sun, 20 Sep 2026 18:03:34 -0700 (PDT)
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ntcW08AW;
+	spf=pass (imf01.hostedemail.com: domain of kmehltretter@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49e6598dd44so11925655e9.1
+        for <linux-mm@kvack.org>; Sun, 20 Sep 2026 19:00:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789956020; x=1790560820; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Dl3X5lIuCDCuxRfR4V0ReBm9Zl+q43AQqD3mJ2yz/dQ=;
+        b=ntcW08AWH1stCsolHUlQ9sIAefly3/OX6JeuqZIMZwRQJAf4ORqQuxfJ/TZHJkPfLK
+         QUg5Ts/C517qFKWu/SWEvDLYr3aSByDcwzOkIQvfCbDYDPGsyNEOI1OnBo/QoRA/FS7W
+         t+uklcvaZ9uk5r+1sdNJ2rGLNqmQGT0KHph6ImwkEOqlwh7qaOwqepUVAxYZF0j8uZLZ
+         GN0Na8CUP9D28cAHvsd7+ftbIPWcD5tVzYtczGdNVHXduDXbOkIpd19b+8Fg7pyMSAmL
+         g0uN91PLDgeHQM8vdRL4xCpSIjW+3A7IoK+cf8fD1hSbNwiDQW3VW5kY+KGMJtNCVLqu
+         T8Mg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789952613; x=1790557413;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=h/JWRPDnmTzkO48RL49AOEHMRmvJYjnSTPOTUHlxfVU=;
-        b=mF62RPfF0chvVIRzB0RW+r5U0dR0P3Q21USvHUmmysBCrqoiVBaSif/OSoqYiOFyJR
-         CALev+la+FZ5gDOh6OFO0flsn2l1rGvYah/u0yKmw1zNgjH7ihbvrselW35tfHDSsSIM
-         I66PIWfK6y9/yC4l6fkOhLp2Qe770IacHZUZ0GmdBr7r98z/9Hekf/wSMG0f/MkWRmPy
-         GHRgGB6kPQuhhW7HToaXiCFuuc8JwF9WQdpyllKqvqtP9i4p+73GmxM6Fgasfu3fr4Rj
-         jtLXkfP5w+aJHiaZ/6ME50dWVfc52dPtN11asDWDrZOLUspcrKx9RvySt9gaAMQ5t2e5
-         rapg==
-X-Forwarded-Encrypted: i=1; AKwUvBzD7ZaEkiAfCrJ9FtqeUxWXLIubmOsrfqv5kNZbDxY0mFb0Pq4qqa5VsbHdn5/Zm3jIzFFbMh8WgQ==@kvack.org
-X-Gm-Message-State: AFuF++n2+cF3S4nOFfVBLIAyBwfQQFpq4syqjM7OTV6BeAntnuSE1Wkv
-	ezzD2JP07yl+CKNPT4p5hxOhFmGECME2UJjJ2paI7A0FOmQzrcNmhv4JJjE5b9h+uC2rg0sxH7D
-	s4rlIS5YyOntnWJUeLizwuhlQnWwsxSJRcfW6KlplCI2nPm0W7awIxa01Zw8=
+        d=1e100.net; s=20260707; t=1789956020; x=1790560820;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Dl3X5lIuCDCuxRfR4V0ReBm9Zl+q43AQqD3mJ2yz/dQ=;
+        b=RXFkb1oTdkes7p0siNJ6CUWcQCnrNoF4Fek7JxamrdTwxTIu9/gvOZSparowWNwdxY
+         7V9zI3i8XHO1iaTVARKOUP3eWMFy7nG+ZXbqy4HhxDVPpU4G2q9BptCOIkq9khaYyOkW
+         GKhRBLYIMPG732iGizaYDdR53mGjI0CluvDHonQa1bPqElxIVumyLYDEUoxLVtQKnMPd
+         gggLmI3RKF18Yz3cg/muYdG73wVxtSrZ46yE7HTrpd+evkGekz/fOULX0QlGQhU7R7qu
+         lQkJJMEOmZAzwyrFxLOi7dl7SmNFhTAu3dVYR56rcJWwqvUdDxKGn1mA7OTkdR9C0IjE
+         UntQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwnscDQyxrCO9AtbtACiAXTLKP6xNNOYDIvSe8mraEs/xkTvIlZi+whYSMhtMrgA4X2ibg4DD/5vA==@kvack.org
+X-Gm-Message-State: AFuF++mT74UggKobHy/FJi+Y8CdNiczbhALmDMJF0O/J66574/sl7Arv
+	rHZoaMZmTaWEa6i6YED1Bx2oJz0TCVlgVZwz9oHvFMEgZkihAdJSM5lQ
+X-Gm-Gg: AYBFou3En6nRs4yzKC2fM8uiktMieWkjP/mdkKGZT3/XT6kt30+E2O7AFI5XgrrG2xo
+	z4sLxrYvfes1ptHDqJVxU73d6SBwBbfSKoxwuqOEFqHXV66pQQQl+9NIOFniy5uHUCvAitnSm72
+	dMkjmNwObFrsTx5o39MZj57/DzGfmVLDbQ6QaJDJTx3pAf6xcbggXYSl8r0WmBocvx296KVwL4P
+	mbnTyrmHWxuvisUE9Un2QME0rMmJ6Lg/S9X1c4XpvRG7oC3PtJsLvMFLrCQA3OIpoBR/unIfI9D
+	81byqaQGakhv0yXMPsfwoM2mRFUvHQ7aaTEbPWlh5e2+/Yg2fqekBmkgfxi/KXP9mCgITO6G78S
+	TQrFdpwm3Q0I9KtFlpLzxG7gbqMLhCA7wEQL3EB2nt9SzbQj8Rrky+yR9iVEPGv6KozkmGI5KQ9
+	b+h/HKj2naRIsUWVGVemuqH3kaHnliZwkZJJSp344AcejfJ+a4AOM2GEs0zXVu3lxsblTv5ErmJ
+	20xQAcp0KTEX3sS5zuddrol/8pVRotjfrYdCuhQF+AvNurGu1OhwoG3D/Vv/Bs6B6xamiH6NCL5
+	N0w06U4dclhra1GqGh7Ugo1JliJJr/5eRNVLgguZ7eBXCs5+qaO7sek7Y/dh9unFNYrJFMwT7Lo
+	1Bg==
+X-Received: by 2002:a05:600c:4e50:b0:49c:ffde:45ff with SMTP id 5b1f17b1804b1-49fc5728f5amr118239615e9.17.1789956020203;
+        Sun, 20 Sep 2026 19:00:20 -0700 (PDT)
+Received: from localhost.localdomain (dynamic-2a02-3100-a8e9-c501-2c36-515f-49b6-c492.310.pool.telefonica.de. [2a02:3100:a8e9:c501:2c36:515f:49b6:c492])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fcd10273fsm193284995e9.7.2026.09.20.19.00.18
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 20 Sep 2026 19:00:19 -0700 (PDT)
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: SJ Park <sj@kernel.org>
+Cc: Karl Mehltretter <kmehltretter@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lian Wang <lianux.mm@gmail.com>,
+	Kunwu Chan <kunwu.chan@gmail.com>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/2] mm/damon: preserve temporal quota state for unmeasured PSI goals
+Date: Mon, 21 Sep 2026 04:00:11 +0200
+Message-Id: <20260921020013.33105-1-kmehltretter@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:f036:b0:6b1:2f12:6c0c with SMTP id
- 006d021491bc7-6ca9bf4f83amr8557844eaf.34.1789952613686; Sun, 20 Sep 2026
- 18:03:33 -0700 (PDT)
-Date: Sun, 20 Sep 2026 18:03:33 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6ab08265.71f81b7d.15fa6d.001d.GAE@google.com>
-Subject: [syzbot] [mm?] KCSAN: data-race in copy_mm / lru_gen_del_mm (3)
-From: syzbot <syzbot+c6e1b1b32ff2fc3b7d60@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, axelrasmussen@google.com, baohua@kernel.org, 
-	david@kernel.org, hannes@cmpxchg.org, kasong@tencent.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org, 
-	mhocko@kernel.org, qi.zheng@linux.dev, shakeel.butt@linux.dev, 
-	syzkaller-bugs@googlegroups.com, weixugc@google.com, yuanchu@google.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C1B721C0006
-X-Stat-Signature: rg1fscx1n4kewto84uoeikzodjmxcn8h
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1789952614-436313
-X-HE-Meta: U2FsdGVkX1/2mgGnLDnsEVm1MsdTSaHTTc8HzFbBjesenGajByWWbdK9ibq99GO3ASKLtvuOemLx3kPQXqdzq2YIq0cILZz0byVcxsL5Q7PsUMASab4L3nF9LW1uRUgWNKM7r0O90Uox8mvOeoGYF3jnBP5CSh+ceDRe2Gi9pjs25rks7VL+jOh5y99AkGSNBrLz9u8eVpVJhCcrLx/L/KOhmpy8Glr8Mt9vqYuIEvLL3HXeUZz4B8lPVhmLnBIL2um897WRwAQk7k+A506vJRy7HlIDX2Dl36vYgppKp7Zlta9TphPv7wTRzepSgvIqEWVBDYQPlzsToSXrVDjvBalZqJiY99Wm5A+2NA1kTTStO2UpG4JedOg7NTmHAcSDWjJiqBM1Gi/S1gD1+pcOF5BGOoLuQN6loWvawj3Hdh+punSJODetJ2ZSkBmJJKvxt2a/AYfnM/o6yjKbjPmZATTzeTJ9KCDBr6nVz0i6kfwtsT8M/zf9Xu+JbxjUyz5RoIfQt+QpsYQ5h1eNi7LSbmmBWWTNO24SJi7eyf2FkVpIJiMYbk1Rwx8Tzh8MGdL99Fpo+xDFoSztkzvMrGcSa48H8Byv9aCLLqfeF4oE6nRZUMEh1TUba42pJaktgAJ6hfup5OioVCBYuKP0U+NcXNsXAOwTNDzhNIs8l/3VdLtHlnpW41lv75/f6Y2tFJ00Z9Z4oRf/t3shW6J5f04ftuJyVmlcHsQFG+zWK7erV4CpUXZAIkcI57w6kJYqgDzTVo4v5i8VcL7uYeJA/6wSx6tTAq33XujLGZwEyDheQM2MhB2CCQijz9N1yW3Y+WGqHmtV87/tJwUHru4NoPOBAxPKpkp5pykbJxTriLA9i3QulR/m/0/Ku/0JTrddJkCtcMKsXmkbovXEE9+VQdDuTulvfxHGTYCChmOGO20JuDHXospKhi6o6PmZ6hALEVnZ1TK1bbY75ALmUbG3UkD
- TPZA6EAq
- vTzRTbjBOO0JBVkjwvzhLIJZ0ivMWA9LXX9yghuRAQTPIRPFThQr1tGrxMwug/nzvSUaMYMaeSlpX5gI+1lWqiI7TZLGUTNjB20+EH5bO+AH2oJxnRDVI7wv42ghSelvQyurxbt8s6miktqtTGlAiuhYVI7gRu3N95cwljv9dROhGX9IXBo1HBBv+F+glswki39U8Fu+MWaeT5coSxddXiU2eG7YhdujJGhwV9kFFvP0yKa3bVFHhFttGLdrC5RgxAVPkbfZQX+4G3sga8p70wk4hyBWGNolAtyFXbV85rarQGb8soM4bM3vHY7N4dvshqIV4i4s0AS8KWdLlFsFuIHOcOItstsYfnqG9M/s4YqkEdLU5vyHv8J9pU2qMkQ1TltLqa55dYs06gPJ8XFmbcaFRuBNJ2UynE1VSK/WzKjVIzJjehhpbULI8EXRSFIS6Qm5+u6Yn6GtGsff1gAA4hR6uim+LJBG0hP6PPCVvRBLhveJJKlxTpmKN754S97dIaPVbxsP3VLu0TgLgFi8D592bZyTj0JKmqfF6iaMjy6vBeBA6WzQWjwdJUXnJFnlCxhk72my4DdsKU/koWc8uNyGfn8aq4I1P5hB++kqQ10eCDgimwgoat9/Nan15ORPc2uMg3hMCGZyKwWGYSqS359uAHfAfhTLA9e6BwNPlcFZeXu0x3KNICgjRdcEO3UiHy3g/sPrEw4K+PTBpm1VxbHHx20NxXQ1xRrpAyvQChg0w+1D6oSkwRHe86FaVoSn1VmI3NheEnlZuiVr6iI/NhKlUTKtujgNVUm/sBxMzz49lwIKIhO/quPWZ+ViEmlvNFcL04HVRRHfPpnxWnolvHJiQ3Bv1LPyR09io+yqnvkSA5pAqtRvg3ckd+7mVUKjOqBdx4bZYm4GyQZfVQyo/JyxlNlqY/Pak6484Rj5SZEGkBrfdpCf5+rXLdw7OVwA4OaYLhXtQPV5bZpwwAyigp1txyiXc
- 22tMM6cj
- 7BHLFfuW31jKtuJ4oH4pfp5/FWk364zj8RJtX6K3fglMQE6jNcWVZB3GYz0xLu8d/A7HPoQnDaTDy7msBvnUQtSnkUxMMd+xfpLBktGymhoU38dY2AMwIuz3V73vC4AVe6wfx4fJR6n4Yz/hFMd6K+5sfHkrRfX2etKZxmdZy0HKuQWu9dUvHpSHaz7ErXl68yMuGOJeYxOqLqSi7imr7+7G0S4/RTp87/HnjP0nOZEhpp/elxCz+UMBrHo34e3Slq5L2QF2H4PfAIi+5jzhJBaLiZ+WxZcUnMORSOEk0aV1CUG5Bay9sZDK4H/Dt10PF0BBagMT3ItuqvbGv6M+y6iJbz/NA26rMt7dkxCys7FsUwTxylEMVswLnLSyaenoU7H5iUm467NB1JdVuTDEg4MF/IKJiUE0UkNPgNqUBSWXzNZXAd1+THVCHqHsWxJi+GhYQriT3Fw=
+X-Stat-Signature: awhgdyz4368hdbsfjk8h4rcaoy8kic57
+X-Rspamd-Queue-Id: EB83440005
+X-HE-Tag: 1789956021-385241
+X-HE-Meta: U2FsdGVkX1/FtesE1BfiasIoUMMOo5rrzA4bHtplRdoSuAbqA7gCYDhPSPburca47jq7FKvagzVQFugGOy+E0KSF46YrUJLCAmWK9ERRthqQYG83GW2ONsWnsRBmVp7+BW7ASBgjTxC7mQYYlwXQZ5lYVWkR9eWkZ5YE38ZRQNp0zDjpQF1P3t82iFzgKsnTWFuq9vxiprgFcdzdPzj80/lap+yWleyzfIjK8aeCfiu1ItFQYwDwo2wuY22Rgecptfbq3Pf8LneW5UedlkzkpGapDJSjWWA53SzHY26bp7WJA37SGv9IJAH0Ondg44dr6RCZXOKFI4dvBe6xRMJVyNBhhR8IoBDFTnpvGEmt28yNTHc13kL/WP2fDB2VB+30pIB32+ZYB2cB0Bb6OOpGbmw8epZoQ20fkjj/CmOoQQmbedtE6ZR/TJQe0yElrrxAuiRBkEQPpGy2McqvNrzj0jScC+XQcTULcI85NdaK059UoCsh9/8/QcMwbB5Tf53J8IJUE5g99Z2heWGplQiQgHKZDBuUE1Qmn4pFgv8qj4KT8I6IKwXpNUDwjZBKd/z9hQgvFPIn03+8YBgsVYMMgE58Z5C4fseCXhK3Dq+n5uUag0Hx0mofV6GhVcEg4EjLl0cK2xfbZypeodRwF7LmXoWvxbFk7ADdsKopoVp8Lj4BaPJZBx2SMjX1vDyD3oOpj1+PE7LpfNadlP38fHHAyGMIB6lPnqmCjqnkgHqCyj4tj3TJAr85BEr2bLI1yfttsQ98lFzKfbBpfvv6kpkSyGmng5M4tL1F0j1Lf9/DdAt9DgZHnhoj7NQcjFf1toW7k6qc7UpC0hw/ylkmZTEAMHZiOETtUS7HDjzZ7noNr3he6V25j48e42f20kS/z0KBBz5y8XjfDyBeLaIz6o+sTGSS5DaObnFilxQYXWao6s/TLdAe2OtoSxhkyVWzhJ32GLabpqKl3gp+ikroOdC
+ r7yevQ+X
+ Ep32sBM4Vch0XS4yicsuZq0P3mrhnkYF1vGK8ezmxVn6ZEgx2eDIV8oS5RvnEHWExchcGGCJRSGYCUXu0hWU7oxjse3u/CuXtPXtOdrzkG/usp5iivUVBBIpFtC71U2r4YVJsHQlOxrMl8TfSwlQgUZ1lK+1dn5f+yGNIn5AfjUKZxKh3M8gSejnaJoFI/BzMNsBpxTQMVmGnl3kCoFISjAyCVEO8bqt+zsrT01XwKttAGbdKe9culee0fZQ0yclmOTdf5XyGZPIDFi+mL9fi/aRNNA56DFLokbp4BxNudHMy/OKEN1j97k37wHbFPjadoXWlThM1d0KacsJ6dhbAkn2SB2UoVwxvr3MPH4/1dHOnao5CFrelil91jwLga9ffVRWCXVPrzwpxRSOCfzfNwFJkoiyESXU+cox63noo8V3p9uDpDDxi0mak//P01Z8gsnDzr8MZOTiFqzhTrxft31aomjHibKj4J0Kz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,85 +122,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+A PSI quota goal without a previous sample is scored as achieved. This
+leaves the consist tuner's input unchanged but sets the temporal quota
+to zero. Preserve the temporal tuner's previous goal-achievement state
+using its effective quota, as SJ suggested [1], and test the helper with
+explicit PSI totals.
 
-syzbot found the following issue on:
+All 42 DAMON KUnit tests pass on x86-64 and i386. With the original
+scoring retained in the extracted helper, the new test fails on both.
+In a live damo test, a goals-only update changes a running 64 KiB quota
+to zero for an unmeasured round without the fix. With the fix, the
+effective quota stays at 64 KiB. A full damo tune also needs the separate
+quota-reset fix [3], so the context update preserves the running quota
+used for this decision.
 
-HEAD commit:    17e7b8eacf4c Merge tag 'cifs-fixes-7.3-rc4' of https://git..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=11d6c525580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=8372e2cd52628d4f
-dashboard link: https://syzkaller.appspot.com/bug?extid=c6e1b1b32ff2fc3b7d60
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+DAMON selftests show no new failures (QEMU TCG guest; the wss_estimation
+test misses its accuracy bounds with and without the fix).
 
-Unfortunately, I don't have any reproducer for this issue yet.
+Changes since v1 [2]:
+ - Use the previous effective quota for the temporal decision, including
+   when it is zero. Keep resetting last_psi_total for new and updated
+   goals.
+ - Move the current-value calculation and last_psi_total update into a
+   helper. Test both tuners with explicit samples and check
+   last_psi_total after each call.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/60ea54622289/disk-17e7b8ea.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/675e38c8bebf/vmlinux-17e7b8ea.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/1006b8efd827/bzImage-17e7b8ea.xz
+The series is based on mm-new as of September 20.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+c6e1b1b32ff2fc3b7d60@syzkaller.appspotmail.com
+[1] https://lore.kernel.org/damon/20260916001311.101024-1-sj@kernel.org/
+[2] https://lore.kernel.org/20260915060937.3423-1-kmehltretter@gmail.com/
+[3] https://lore.kernel.org/20260921003047.12041-1-kmehltretter@gmail.com/
 
-==================================================================
-BUG: KCSAN: data-race in copy_mm / lru_gen_del_mm
+Karl Mehltretter (2):
+  mm/damon/core: keep the temporal tuner quota over an unmeasured PSI
+    round
+  mm/damon/tests/core-kunit: test PSI goal values with explicit samples
 
-write to 0xffff8881077eb088 of 8 bytes by task 7336 on cpu 0:
- __list_del include/linux/list.h:241 [inline]
- __list_del_entry include/linux/list.h:264 [inline]
- list_del_init include/linux/list.h:333 [inline]
- lru_gen_del_mm+0x299/0x3e0 mm/vmscan.c:2998
- __mmput+0x17a/0x1c0 kernel/fork.c:1203
- mmput+0x40/0x50 kernel/fork.c:1216
- exit_mm+0x113/0x1a0 kernel/exit.c:617
- do_exit+0x438/0x1510 kernel/exit.c:999
- do_group_exit+0x138/0x140 kernel/exit.c:1154
- __do_sys_exit_group kernel/exit.c:1165 [inline]
- __se_sys_exit_group kernel/exit.c:1163 [inline]
- __x64_sys_exit_group+0x1f/0x20 kernel/exit.c:1163
- x64_sys_call+0x254f/0x2550 arch/x86/include/generated/asm/syscalls_64.h:232
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x112/0x360 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-read to 0xffff8881077eaa00 of 1728 bytes by task 7337 on cpu 1:
- dup_mm kernel/fork.c:1537 [inline]
- copy_mm+0xd6/0x340 kernel/fork.c:1595
- copy_process+0x10ad/0x2340 kernel/fork.c:2310
- kernel_clone+0x1c0/0x5f0 kernel/fork.c:2769
- __do_sys_clone kernel/fork.c:2911 [inline]
- __se_sys_clone kernel/fork.c:2895 [inline]
- __x64_sys_clone+0x143/0x180 kernel/fork.c:2895
- x64_sys_call+0x2479/0x2550 arch/x86/include/generated/asm/syscalls_64.h:57
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x112/0x360 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 1 UID: 0 PID: 7337 Comm: dhcpcd-run-hook Not tainted syzkaller #0 PREEMPT(lazy) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
-==================================================================
+ mm/damon/core.c             | 30 ++++++++++++++++++++------
+ mm/damon/tests/core-kunit.h | 43 +++++++++++++++++++++++++++++++++++++
+ 2 files changed, 66 insertions(+), 7 deletions(-)
 
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+base-commit: 185111f116aabf202d12ce440c0f6e9bae073514
+-- 
+2.53.0
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
 
