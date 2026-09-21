@@ -4,99 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC814C982DA
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 05:52:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9466C982ED
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 06:02:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E09156B00DD; Mon, 21 Sep 2026 01:52:31 -0400 (EDT)
+	id 93AE16B00D9; Mon, 21 Sep 2026 02:02:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE0F76B00DF; Mon, 21 Sep 2026 01:52:31 -0400 (EDT)
+	id 911AD6B00DB; Mon, 21 Sep 2026 02:02:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF6F56B00E1; Mon, 21 Sep 2026 01:52:31 -0400 (EDT)
+	id 84E686B00DD; Mon, 21 Sep 2026 02:02:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B29186B00DD
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 01:52:31 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 439364057A
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 05:52:31 +0000 (UTC)
-X-FDA: 85236699702.20.A91B123
-Received: from mta0.migadu.com (out-154.mta0.migadu.com [91.218.175.154])
-	by imf16.hostedemail.com (Postfix) with ESMTP id F3C1C180004
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 05:52:28 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=AGqHNvoB;
-	spf=pass (imf16.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.154 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A9696B00D9
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 02:02:48 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 70D6BA63FF
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 06:02:47 +0000 (UTC)
+X-FDA: 85236725574.10.7FA609C
+Received: from mta0.migadu.com (out-106.mta0.migadu.com [91.218.175.106])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 5CB458000A
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 06:02:45 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=EWhPzXWv;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf02.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.106 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789970565;
+	b=4cCjCYfcSXWcbO2l7UvM+SuvkIBlYrGbZ750mJI1p2Jsu8/HZBENgZfvVAEBHYUzHy/v36
+	XFwx6A6FShWXpStNpLeuRQ7uUZrV5/DrU+QBmlNlDVJy5Ha7bbJYgzP4rM38X5hvV+/L6p
+	7oTnXRB+TGR77/NTcqEIcRmSon23xg8=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=EWhPzXWv;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf02.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.106 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789969949;
+	s=arc-20220608; t=1789970565;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qIvuPN6/WzgNqJCUjuOUJwBEDkwuxe9xKnTs3tPz+lo=;
-	b=lGbykjsAke/oxNqjUmzol02ByQYl5mXUeitqkcIO3pCKBDHd6vVYKpBZ8bLmZ/3ABZbeYJ
-	EIBXNXVxFM64wZThY/aMfr85H6SZHY6ic/s1yk9KbwlI3CN/YXM3KRJkm0uVE3hCZJn+ND
-	FunLu1HBnNze5fNDUVMq9z6poT5dmRI=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=AGqHNvoB;
-	spf=pass (imf16.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.154 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789969949;
-	b=MPttWRvzdb3vojZRCyj+5+eVB+UlNhCS1SJuyd+qt9CIynAPPT7Wm1Ytni5itsmBMnmuID
-	voY63XvEmAGOqrAU513LGu2hRoTqb0ueWsbiYtIA7Wy59LuF0kguBqsYkjPvHrVp6iWWqY
-	qfzhLA1Qyc8KX+sIIZiaQw78p2XiCPU=
+	bh=IKorgmJZ/hNPXKbpIqBxQQxb0y5na8M7PnGaVplvaP0=;
+	b=TQXHSFAsF4VJ5soNXwKCXdQtEBHubRybDecNvnlDqn/rAlYkiL++WkNWATSdc9KQPGFSsM
+	2vSWvg9ZxHl8kjWxIHUq3fgc0XTMDCuKJWJBC10fYEUboFt1gN2UsJwFyA9onpywc1enGJ
+	X4CAk+8dHDQHvy2CQ7cRjK5H9OQprCc=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=+3OQfzHRoTvBjBd8jB9/THE2C+GAiBoDPdOUT4cBopw=;
+DKIM-Signature: a=rsa-sha256; bh=PfaHpE1ReZ1v+qkpOG99rma3BnJ5b9o8YklSIsQbmDI=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789969947; v=1; x=1790574747;
- b=AGqHNvoBHNAK5Sgs8bbNFPB9LRfWqahsS8hsc3FUslRi1QNL9CbtcXuiBuAODhnoALewzvTz
- zAJKHdCmXss9/DvIqB5/J8rDlIqMR5eOYjWyZsTcomxdHzlJCmmDAyvIWSZur3TyrC6BPzAwIHN
- locxBrK8oD3Q849lc7AWjrUk=
+ t=1789970564; v=1; x=1790575364;
+ b=EWhPzXWvUVnLorbPKvbRGme95f8+50nf2qubpgK5CbqYcyKGyE3YFPrmtKn0clGq2EMRImKM
+ HXyIoNFmFrjnHzUJP44fa75CjaajYYxPX7Ep4hsxIV9Bs6cqgA0YVou2eeNgKqBfDhT/tJHPQXl
+ eHEPZxWxLZYNp9tbjr2vKCcE=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 3106e5e1082e60f1;
-	Mon, 21 Sep 2026 05:52:26 +0000
-X-Mizu-Trace-ID: 3106e5e1082e60f1
+Received: by smtp.migadu.com with ESMTPS id 8c663889e002f29c;
+	Mon, 21 Sep 2026 06:02:43 +0000
+X-Mizu-Trace-ID: 8c663889e002f29c
 X-Migadu-Flow: FLOW_OUT
-Date: Mon, 21 Sep 2026 13:52:24 +0800
-From: Baoquan He <baoquan.he@linux.dev>
-To: Wandun <chenwandun1@gmail.com>
-Cc: Mike Rapoport <rppt@kernel.org>, catalin.marinas@arm.com,
-	will@kernel.org, chenhuacai@kernel.org, pjw@kernel.org,
-	palmer@dabbelt.com, aou@eecs.berkeley.edu, tglx@kernel.org,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	x86@kernel.org, robh@kernel.org, saravanak@kernel.org,
-	akpm@linux-foundation.org, pasha.tatashin@soleen.com,
-	pratyush@kernel.org, m.szyprowski@samsung.com, mark.rutland@arm.com,
-	kernel@xen0n.name, alex@ghiti.fr, hpa@zytor.com,
-	ruirui.yang@linux.dev, robin.murphy@arm.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
-	devicetree@vger.kernel.org, kexec@lists.infradead.org,
-	linux-mm@kvack.org, iommu@lists.linux.dev
-Subject: Re: [PATCH v6 06/10] memblock: introduce MEMBLOCK_NODUMP flag
-Message-ID: <arDGGOhKFueI90tJ@fedora>
-References: <20260902073116.802752-1-chenwandun1@gmail.com>
- <20260902073116.802752-7-chenwandun1@gmail.com>
- <aqzxavL91icLw-Xv@fedora>
- <aq41nFRPtRWTQ7cK@kernel.org>
- <aq9UGXeqmCfuPHdD@fedora>
- <32b00102-0961-49e3-b780-74d6db182809@gmail.com>
+Message-ID: <58fee197-7baa-4507-948e-13b58bc3c6fa@linux.dev>
+Date: Mon, 21 Sep 2026 14:02:27 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <32b00102-0961-49e3-b780-74d6db182809@gmail.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: F3C1C180004
-X-Stat-Signature: auy6kibw68joc8si54tqkjoudkaa97xs
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 01/17] mm/zsmalloc: replace PG_private with pointer
+ comparison
+To: Zi Yan <ziy@nvidia.com>
+Cc: linux-mm@kvack.org, Muchun Song <muchun.song@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, David Hildenbrand
+ <david@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
+ Nico Pache <nico.pache@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Alistair Popple <apopple@nvidia.com>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kairui Song <kasong@tencent.com>, linux-kernel@vger.kernel.org,
+ Minchan Kim <minchan@kernel.org>,
+ Sergey Senozhatsky <senozhatsky@chromium.org>,
+ Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Michal Hocko <mhocko@suse.com>
+References: <20260920-remove-pg_private-v5-0-bb68b6a21869@nvidia.com>
+ <20260920-remove-pg_private-v5-1-bb68b6a21869@nvidia.com>
+Content-Language: en-US
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <20260920-remove-pg_private-v5-1-bb68b6a21869@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1789969948-184120
-X-HE-Meta: U2FsdGVkX18LKZCHaUNiqAigdIZoOj80nnL0aAh6jcgzr6RKC8FJxGcMI3ybS2q15Va0PA3yN6iDHpZTsdF38vcTf9lwiDMKLoCEd34VZx+z1jO+UiBgP0gO+1PcHyvUxD18yj1nb5of68aoFL1twEbw4pTdKj3BZzWJMopA/h4VikvhUmxjayCj8zfG4kI0fCnUR+OfMl+C6NguJtXeJMPOsopQzMLqnHqi8M7XoDiTCuP8RuXQK2Iauj7QjenNgWiii8bdzDyfQ8pKSoxKBTuUcO2cxcnBKwAH/X9s77+dJCacn48kafRQUuYwD2GQ2raBjMdkVBOnQ9vvP/q8ZXd1IAiLHfWdLPxQUkNZ/JvOVbL7F2xEOSCP2FZDKVH77/YfJaU6Z+QyeeeEg0SJsEj66cqHhPUt+Vttk2yD2yKwEq8vbNVxX7OCzXuJizQvgE9Q1ZCwDWYzfxQdzeI0746DzQmAhTj1bWVj1hQJl1q3VnSIn/c6NuTaFQ3unl51DBezLnVhxJUHO8DpoUswUjj6ENo5WrLpyYhIZ13+XtwuIzZt+XYPplIaOMarPHdKmQ4skhwsR5DOF3kPOjw3AzrIet891paCSFym+s5/3QfKI7NIKVGwuCRgXBtyHiiP5BHuIl3fyUXbmivLt6uR7iJATIcZaV6Bc5iK3YLfWoP8/8khQwJBkneQ6f0yHbWPLgmUREeNf3fwos4Hjbjl2UMwqeB24eIBBOuU42DNxyrIt6tMOWRgNtJ35cxhCB2Eh51imtFNfIVyNXS1MTQGZpkwtDV45EvRN9YmeNft6G/VnRK6CJwXFrPGWNscLP6n8r1HRauoppYnzTegeI4wOdf9nYfyLXjIY9VtUS43VurZZv+Y9hB+t4kvTXChJTnNVB8hryDDyptjDFwbytdWBuHeYki5dwo6Lf7hjtmS8lB2wlthiJc8r4xqYnpL6Pof5MDyMkKtF5sfERduqCz
- ZJ/HSO9n
- ndO9mlhIm/TVuf+iA9S6c1/RDItBWdkImsN4CEDgvi6KqKdPg+rWmFR4Q95qKWuRQGdr1tavJwhQkboFEzd7TiYXAUd7y7SRvbGmtaDUCdh5sf5gn5Fw4av6pGI6yS3+Ae5bkVKse2NlQMhLBYyHy3qFP3Be6Vfx9CY4ISDv52kwjtBo6boo0Ab87kQjhhrPL+WpF/5+493y0N7S34wWcQ8VFB6SVHXOzU22S0swU6CNe1CXCBbBErca+iGc9RFrqqCYBWo8l5vQx3XFfSoQCgqGFmsdQFmfBqXWveZxSv7D9VGz+QnjIujZkrtuG1r2ZB7ZT
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 5CB458000A
+X-Stat-Signature: cj3g1q196d9wqqg98mjwpzcrbakkdtf7
+X-HE-Tag: 1789970565-703818
+X-HE-Meta: U2FsdGVkX1+Fo7LiUocSQKnCCxqeaigfiOnzKJvOWbZg8H9L/MN76u0iVoIX8iJ3M6M4ZSgWF7xWg8FwOerdts5gZl8U4rjNugKdLvsgtsqgASOpNnKlSrzBpNhx0cSDBiuB8TL7rf9qg6pJM7yTUQirZyGgVis+i+aRLRmw1qx2C5APMImzpNbbzdgskr4YRd1C0R+pBUDT1O3+jXnIKI0bvZM32rFwv/5yXm8I684wVJJG835ewHZiAy/Dw4nZOMdd40PtRLviqiAzLybiRRUVJi6eqL7ssFZe8riuEMnAE9k3vKUduC995AF14wI9v5DDmsLxrOsJMRZroOkUssUojr8lmdXq84kBRxbgZjW/HodRQ5RFSHQVY6KqmE5CefQUYdk+ZrxDCNqTlLf6+k2ZfY8yq5sN8cmiPNxHOYFpDBKaY8xPhFo/4i/Nsja101GANnmVkugYKVOb2aDtBMxdlGvVyV6i4gJQvdFzIdSQeEX1eMcrG714cQXxpf3N1ABT0nemDk7QUZiP06V0F4WQ/UuPRbcueYxlM4PzReJ9LgXsvUIysXZO/CC79tzj9CS+C/oifzQZCRAQ5ERgH81gSRbpaGQgtMgr63+G6uR1EQhR+If8aJSg4E5Ut3n+tPKyxZtD4dIwq2eEpAIHbN02xkq7ANv5wk3rpYffZB2DPrwqyr+48PzVo8yUNkA0FiRLnhQAJA5cyLMPPSP2Lne7dpVjjugUN9wr7L+5GQBqqfT3WpBomiaadDnC3VJo+y6ATsoUDTmnFMdU3QDOGNHfzJ04JFN9xUDsby0jvvaM9zqCAKlBXJdejSf1HFGs1I9Bvu29+SWmbTrLazjnLrFWQZIn/3LruC4R6R8T2B1XZLy8ZMeKM4gS9RZ3L6pfcaLLEs1lNyGytIvTwTYBsM7iALo6AOnbJGbradIRIzVWsH43P6rItLuKHccYaJLGA09P4ZV3CPaVvsdicPv
+ SLI2yqRe
+ pWJ0eSXn2QNmdQ8Q5DjS+yNQthe8uf/tfmtT9vze6YfVbjUQtdKZgezwNkjsGmq7j8V3N0mq06e+DeQVKlCrRaRbLkjkc+jiLJGxGQpvPwbBnmwWV0Hj8X4OC+aOqzac4jvPiiZtY1G05Xd3tq998KeRS1dtcYVGGN6DlBWHzPqyuuDWjEyOvo3Z//nqdTPhX2B5kE/jX4XV6ehKnuZ7jAZxTgUGWnLG/HollbU3+1vdT8zVci/0/fb+xtciSb2sRca1aOPaMiFvN0aTF5UZlZu8CsLD/nxLAqMcVhg6fQEfb/x2JMKY4IOrPe24amKzmMiw7+TgxyIukyyQ4xe0+5uoa5C+LlQfDZDvdiXfnm63vx9F9PYmyzwprNEFTiOvSyBcMK5FdOmhZ+q5FrHGECvmMgTMNLgMm6zDtjXe9YlCKF6NO8pDP9NiOi8WmkKVzRAj48kRphiW4l5UABXoQQmf9LU8JJ0yF8szfsGPWH53CQvh8P+qSczVDc33mUx01EHFogqlJDOsNZlqv1kXrfAqSu3GbN2Nnwi/H09q6Ysc73XtIIIEtcV14pp8EaBmIJkZX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,47 +108,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09/20/26 at 04:00pm, Wandun wrote:
-> 
-> 
-> On 9/20/26 11:33, Baoquan He wrote:
-> > On 09/19/26 at 10:11am, Mike Rapoport wrote:
-> >> On Fri, Sep 18, 2026 at 04:08:10PM +0800, Baoquan He wrote:
-> >>> On 09/02/26 at 03:31pm, Wandun Chen wrote:
-> > ...snip... 
-> >>>> +/**
-> >>>> + * memblock_mark_nodump - Mark a memory region with flag MEMBLOCK_NODUMP.
-> >>>> + * @base: the base phys addr of the region
-> >>>> + * @size: the size of the region
-> >>>> + *
-> >>>> + * Mark the region as not to be included in crash dumps.
-> >>>> + *
-> >>>> + * Return: 0 on success, -errno on failure.
-> >>>> + */
-> >>>> +int __init_memblock memblock_mark_nodump(phys_addr_t base, phys_addr_t size)
-> >>>       ~~~~~~~~~~~~~~^
-> >>> Is it impossible to use at runtime even thought it claims to be generic?
-> >>
-> >> This should only happen at boot.
-> >>
-> >> Allowing modifications of memblock properties in runtime is a can of worms
-> >> I don't want to open.
-> > 
-> > Thank you. This is why I said this can't be claimed as a generic way to
-> > mark memory region as no dump. The generic way I'd like to see is
-> > at any time of system we can mark any unwanted memory region as no dump.
-> > And it won't impact the behaviour of the current system.
-> 
-> Thanks Mike for the explanation and Baoquan for the suggestion.
-> I'll drop the "generic" related description in the next version.
-> 
-> 
-> Baoquan, by the way, patch 2 is still awaiting review. It rewrites
-> the riscv side of the code that patch 3 (which you've acked) then
-> folds into the weak defaults, if you could take a look at it too,
-> that would be very helpful.
 
-I checked and looks good, I have added ACK. While RISC-V people can hold
-it anytime if they have concern.
 
+On 2026/9/21 10:27, Zi Yan wrote:
+> zsmalloc uses PG_private to indicate first zpdesc in a zspage chain. It is
+> equivalent to check zpdesc == zspage->first_zpdesc. Replace
+> is_first_zpdesc() with zpdesc == zspage->first_zpdesc in obj_allocated().
+> 
+> For get_first_zpdesc(), first_zpdesc is from zspage->first_zpdesc, so
+> replace is_first_zpdesc() with first_zpdesc->zspage == zspage, the second
+> requirement of a zspage chain, where all zpdescs point to the same zspage.
+> 
+> is_first_zpdesc(), is only used in VM_BUG_ON_PAGE(), so performance impact
+> should be negligible. While at it, change VM_BUG_ON() to
+> VM_WARN_ON_ONCE_PAGE().
+> 
+> It prepares for a future commit that remove PG_private.
+> 
+> No functional change intended.
+> 
+> Assisted-by: LLM
+> To: Minchan Kim <minchan@kernel.org>
+> To: Sergey Senozhatsky <senozhatsky@chromium.org>
+> To: Andrew Morton <akpm@linux-foundation.org>
+> Cc: linux-mm@kvack.org
+> Cc: linux-kernel@vger.kernel.org
+> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+> Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> ---
+
+Nice work! Feel free to add:
+
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
