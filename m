@@ -4,83 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2496FC982ED
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 20:19:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2613EC982EE
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 20:22:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 197866B008A; Mon, 21 Sep 2026 16:19:43 -0400 (EDT)
+	id F333B6B008C; Mon, 21 Sep 2026 16:22:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1484B6B008C; Mon, 21 Sep 2026 16:19:43 -0400 (EDT)
+	id EBC776B0092; Mon, 21 Sep 2026 16:22:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 086B26B0092; Mon, 21 Sep 2026 16:19:43 -0400 (EDT)
+	id D5D1C6B0093; Mon, 21 Sep 2026 16:22:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E01576B008A
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 16:19:42 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5CC74A40B3
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 20:19:42 +0000 (UTC)
-X-FDA: 85238885004.16.7579214
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id C5D6C14000E
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 20:19:40 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VwOwRcBI;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VwOwRcBI;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790021980;
-	b=Od3sFTqtf/e+RIwKsmex4Q71mClfT204powBSTP3/yJrkW3+hswP0+tlMl9YxICtNMAd5N
-	sh11o7SSUvCQsN0T7rSjQMdmB2B0VACUvfJVgGh4+IurFR3H4hF+kZjkbgFExo7yctB56N
-	/ZvXJ+E9xnR0l0Rqog+71fHsGNAYolw=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790021980;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A846B6B008C
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 16:22:52 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 34BD0402B8
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 20:22:52 +0000 (UTC)
+X-FDA: 85238892984.12.CDE3C21
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 4413B18000C
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 20:22:50 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=v2AyopSc;
+	spf=pass (imf06.hostedemail.com: domain of jannh@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=jannh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790022170;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oKuyFvdDafEvPgKBAQD55KsBuofHiKxwkbpxZQsO20o=;
-	b=VLerCtATW1quiyNXi0p81oDRQVBlK3wBC9f8XwL7qaXS6IKPHqDXPKIlDsvd2ToCwuBw1H
-	QiLkp2DV/hBTWd5jDTZy3Pw4TqEny5VIcRjZiheFd+071NJgtYHhU2pvbDPBAph3hk3ZZ0
-	MmeQbBZup1iY3xFL4/3HXeB9tXIwOd4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4F025601F0;
-	Mon, 21 Sep 2026 20:19:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 898F01F000FF;
-	Mon, 21 Sep 2026 20:19:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790021980;
-	bh=oKuyFvdDafEvPgKBAQD55KsBuofHiKxwkbpxZQsO20o=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=VwOwRcBIq+8Ch8Vcnm8aDMg2Uws7MJBdBMOCi0S9vQbDC0NvXHjvTgRKnXc9e7yqa
-	 UDSjDbDHGIQVDUHJLK6VgPIX2/mK5oLfKSsHw4QS1ICafyFBFiaYVHK20rZMDf1D5c
-	 FJqu9BZ35FT4BpIBxvIZwFcnalRzhbQ5DpEcru3XAwT4lkJL4uKkaSbJRMI46kw4xb
-	 0To4JfqVk+P8t/ngqFdXbnASTDw7tbRw2XdPVoFwIk0HHGNkKj1x7zrVxvLA8QuXI8
-	 3GRWuvO4/sEo94YcjnoRnbbIo78tPxcvxEl1HTi9GGVmmo9rc3p+jqv1NckjvOWX7/
-	 6aY91McPEWuuQ==
-Content-Type: multipart/mixed; boundary="===============0035746704262275047=="
+	bh=ZZjuQxZbTYuwf9RVKp56gufP8tt1Juurh+o7CdzjxoY=;
+	b=0qbVHvJDvx2SRcexfIdKdxDRXHLzWjezrIvYjIWACCeobsKaLo/HcqsY8FFoelBfE7IZyz
+	6g9P5ajVjiDzQ1/FS+1YcJ33/Lz9KLE/DfSLtiCuyvb4E+Sk7FCmWZ42fAis7nFSXd0S3U
+	4Ko0rLMlzATrJxaI7rn7DKUkvfN3mis=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1790022170;
+	b=1qwMEmgkQe74f7pLjdkJYd8ZzIm7Zwri0MfYNQdum6R/zGHWHCb/1jjNox8RSvY3/B7AtA
+	0HzYhZ3S/GfgDAq8ZWuGe8j9oIaMVsA2xNVlkMzQ6Qj+Fx6MMTjTmc4vwKq10dXJHpdMri
+	otbbWdxwDAJUv+DWrOVQbsHZn3hY2GU=
+ARC-Authentication-Results: i=2;
+	imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=v2AyopSc;
+	spf=pass (imf06.hostedemail.com: domain of jannh@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=jannh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2d8facae850so11185ad.0
+        for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:22:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790022169; cv=none;
+        d=google.com; s=arc-20260327;
+        b=IQdUZ6chdWTvDF/k51Yya16S21tciCD1uj2FwAMlFImYUuVz8eemFjn1B13Dfjmqs2
+         XJrlIBrHx8FyetnSiizHZmhEBY7VhCXYaaOPzqsrqRxjRkI86gZFiw7aDeyNAN0areNS
+         fZpEJkdCk6Z9XzgrZlZ4lrSL2tXUN5SdFZHWpaAqpQUWjS3XeCOQQjwKXqnQrCc8Pf/T
+         PqCtTJcf3T21WB6rtvc6emaYAeN0GlgQXMQ5jRafpGXHJKt+fRDXvrwf+1pxQNqfZlkW
+         rYrNKjyF3TX+uaDc0bG5FnkfJZMVKsU/pUk8F1DXBi1scOjl3KdwTuIjThAVROUjkzPz
+         Ggvg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ZZjuQxZbTYuwf9RVKp56gufP8tt1Juurh+o7CdzjxoY=;
+        fh=KG9Ag9EeFoNyuRYOImE9GJbWvPtvakHk7cFSITZ2et4=;
+        b=YMt/g8wxRHy597pruS5orr1lOisnsB1to8N8PT9+sYAs6YSvWJft0RCgBLgtvqLsEH
+         +bqfetUtpsZXSzIWF9sZCOnHhywJLngvspwHQgoKX7poGClU2T7XA6o8bBmKjLtFZQ0k
+         LdxuEUGRQPif1qKUL/jI1NIXgK0B3+0d8dbfH+rGaMgIW0FTJrmVhEu55fUwKPxcYLYI
+         9nKbWYl7cxQeDLNEmGeqyIpLEPltUrCbnZQilIdx2RY/H3L1NXY/O6WfA5xKJ/SB7FRa
+         XXn3T7YHxxZlYiptJULo6U/ei/N/Ql0Id7mdhlsNxyQYFjtQsa9GCMRja7HcdWRcC64Z
+         MXMg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790022169; x=1790626969; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ZZjuQxZbTYuwf9RVKp56gufP8tt1Juurh+o7CdzjxoY=;
+        b=v2AyopSc7Qc6px2Tv06lK6WccP1TGMKMokd7/vFOFtRu4W3WHvTxpOzfquNp3St7TA
+         X0P6Af52hBlajL4pn+PKDEjUfoII6cqd53/56R6sWe2jQkrLXi/0prEpJvC89Jwqs/SV
+         9/NANyU4aYN1PuEu2vhKyt+5Fj5VC89NthNW0Q8nn5XvfnwpGCN7nc0o7rZFVZvIXxX4
+         bY+EC48250f5LvM2Dy6PO24tfL3MYqxY7TEiX8En2QWOaznEl9umRsiUXgJGKs3mQtwC
+         nQ9sgu5qZh4v1Ae99FmFJ9f8HRvbi5pe8UbtOLQN41MxEmkbbJxDsBn9NMsIhQ0W6fp2
+         kRLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790022169; x=1790626969;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ZZjuQxZbTYuwf9RVKp56gufP8tt1Juurh+o7CdzjxoY=;
+        b=cqMPQz/PHP6UU3S2l3n681+dclTUtxCyUij9S64r7zarPTBNJoI/jyMO/1s2HB8Weu
+         GMgqxKGMbydJUciqgGPBEzZYaax3IhWSQZanjTQ0JruKQNmigdbFbxNeQRgxa3azJsR0
+         +7JfWyx9Nucn20MPFKwciZw808uRKPL1wVQT9vgm3M7Drcw83VrkdUrN2Y2lQg6wYav5
+         e2wyrlFGMoypsehGlb4QP4BzT5rZaCD03DE4qUPfG22Yl2KOfWtJ9FyRLCab8oIc+Wn9
+         RE2YiI6pnK0EkQge/76gM/rJlPWIBq6KLh6n6zC98+BR1mBBudmFdJRJHYtXeskFK3HR
+         Oc+g==
+X-Forwarded-Encrypted: i=1; AKwUvBw6ElgPmb9WLh62gssdOYtAzu5W+LxKHWbi3cKKEJJVsJqtkCgkqETjx/h3XyCiKlgmgC2+Hbl53A==@kvack.org
+X-Gm-Message-State: AFuF++kbHDVc7iK2RkAKXsVWctCYBAs2/b+682tPlHycE/BBKK5jmnD0
+	za5W/S9LzkfKm/VMwPSSNgJtP6Tw0W+nqcA/jp4eSB/rACWmyHfG7Sr69h7lfIB7oRCcmkoJLNy
+	4bzhfbAhWnNCFysnoIxfztGIvqiRR+cZb12M6C8hs
+X-Gm-Gg: AYBFou00FfkMLdkkx/AmVjnGWP7QpaBVphYEe/sNxVALxj91iKzEsArulXs2kSqnPRD
+	MsJ8Ww8A2IP4qYDdlXv6GxjYdbZPTu8DTu0t1pMT1+/L7nHNIprDRTIWB184nQ9l19SQqQ9TXU0
+	mNnVeigKz8y1wOZNELQnS98w4+fHa4Zf+XoEJV2pS+KRyY6wfk8uRdcc1nDlUu0KQMThjua2d38
+	22E50Oa1+y9+zB/srw4QZ21hkAAoOfb/DvaESDE0DV+eScpIlUT3dt1L50M7QhpmP98zVRbKMja
+	kUeaLZzFAXFP0FWqe+l8hNCNJ2EO6gxo0GlFDW1k/VobMJtyI4tWnZIw0eN1Pob3rWUNpdaRskp
+	IcM3wNBOC/1UVSIvEnoRfwNvyxHBHF/ShHk1M6rXC
+X-Received: by 2002:a17:902:d98b:b0:2dd:280b:cdfc with SMTP id
+ d9443c01a7336-2df5b83676fmr449455ad.17.1790022168357; Mon, 21 Sep 2026
+ 13:22:48 -0700 (PDT)
 MIME-Version: 1.0
-Message-Id: <76e3a68c2ffd1644b1edc42507d25a1e4717beb9f9d420f04a4036b00e731d67@mail.kernel.org>
-In-Reply-To: <20260921192559.2619635-2-shakeel.butt@linux.dev>
-References: <20260921192559.2619635-2-shakeel.butt@linux.dev>
-Subject: Re: [RFC PATCH 1/4] bpf, cgroup: fix cgroup struct_ops query for a second attach type
-From: bot+bpf-ci@kernel.org
-To: shakeel.butt@linux.dev,akpm@linux-foundation.org,ast@kernel.org
-Cc: hannes@cmpxchg.org,mhocko@kernel.org,roman.gushchin@linux.dev,jp.kobryn@linux.dev,muchun.song@linux.dev,tj@kernel.org,mkoutny@suse.com,ameryhung@gmail.com,daniel@iogearbox.net,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,martin.lau@linux.dev,song@kernel.org,yonghong.song@linux.dev,emil@etsalapatis.com,jolsa@kernel.org,ihor.solodrai@linux.dev,john.fastabend@gmail.com,jiayuan.chen@linux.dev,hui.zhu@linux.dev,donettom@linux.ibm.com,gthelen@google.com,kernel-team@meta.com,linux-mm@kvack.org,bpf@vger.kernel.org,cgroups@vger.kernel.org,linux-kernel@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Mon, 21 Sep 2026 20:19:36 +0000 (UTC)
+References: <20260831-pidfd-get-paths-v2-0-c59ea6a21b72@black-desk.cn>
+ <20260831-tauwetter-werkbank-dramen-b37eb4025283@brauner> <CAC1kPDMK_D4nhyRmBHg6KC7SmmCkH73Xtc5DhXeJbSvf3LcqcQ@mail.gmail.com>
+In-Reply-To: <CAC1kPDMK_D4nhyRmBHg6KC7SmmCkH73Xtc5DhXeJbSvf3LcqcQ@mail.gmail.com>
+From: Jann Horn <jannh@google.com>
+Date: Mon, 21 Sep 2026 22:22:11 +0200
+X-Gm-Features: AcwNN1UtR6M4RsRB1V4M9ZXr6hSPfcvgRf-Sf3BDBnWgXtSIC5rk0Yng7pQuhSw
+Message-ID: <CAG48ez1T5-tUHVK_iHsgUtWa-inVdrZxA3E-ZCW0iENJvasKfg@mail.gmail.com>
+Subject: Re: [PATCH v2 0/3] pidfd: add task path ioctls
+To: Chen Linxuan <me@black-desk.cn>, Christian Brauner <brauner@kernel.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
+	Dietmar Eggemann <dietmar.eggemann@arm.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+	Valentin Schneider <vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, 
+	Kees Cook <kees@kernel.org>, John Johansen <john.johansen@canonical.com>, 
+	Georgia Garcia <georgia.garcia@canonical.com>, Paul Moore <paul@paul-moore.com>, 
+	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, apparmor@lists.ubuntu.com, 
+	linux-security-module@vger.kernel.org, linux-api@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C5D6C14000E
-X-Stat-Signature: gheuuam5np7cjyo6oem1bp3ws3exejta
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790021980-769256
-X-HE-Meta: U2FsdGVkX1/yCS2pk3i2Mhbz0+IYgg0h1H+zh6/Mg09XcsTc3Pf15+KvyRAEd4nMaBpNe5e7hWJIYoKfgkzDW54EyTmtVIi0pEd8jCEmcscFHF0SEWR4MXbxf3fl6ghL8gCkwRCqLzCaNa1NgCL0VXI3WIP6QAFf21fyLK1Oz40pA8nwPp03APnbMW9P576tXYPaJdoi3v3wpk0wRjFu8rVsc3DTsShYukM25jwzG46jIcSXY2ZWBDlgAi9L0Hj/DFt1Ndg8w62/WExC6ZSaoYjp99zJBN8Qp7lKuE+TJXQ+ADNrFD3hD47vpNHI3ymGW8TfAoc2pkScM+6YSGIFNyuGmGzFymAyq1RVqTwCMsa7lR4GKD8QYGkxOgLbKD7yLnFHOAAlLQT44SC0scdHy/upJp7xMUYUAIqdwU0AOWv/raOeAwx6lgrcaXuZj2CflkLgAABhIRwL7MUs/9s8w46GCpl+o0jCG7Zps/s32Z+PDVDf6VXIaNVAOMzuUZEo5gM7HDMh4OwkhsjLk5fa27gJbvisZYKXJPpFfKIW6pSi565RYd0Gl7XRZdhcqD+K9HSGy2O21yLU2xJNspx3Nvn2nOLk7t4Ide/k93dpD4nYpQtnd3PxgmdN19CgrE8HHQsdMacSn/XXgSULf3m66wHaUNIPQBb9F27DGMf/glXRE5b6AtpNUxVhZ/kIdvMYOhdgyRLtRQMqEGp5F/iJ1TPjkNfajGOyhMEhG9EGQus0BSIG5u5scGI1J3qaVJuoBbwyvkg2Exwt6V5dDVG9Ktr5JDqrXh9tEJ3nHcWen6uPPnIa9Q6c+qrfzistro9xtdo0Qy2aV2cM66TljtQfuSQAkFLYhjBOItNds/JUFDd4M44RHbR+zrlRVAgO8cViORopScrk1e62ZsEff06z615k6qRGRZNnPsmteOuOs4oVMfe4Q19VP75z840szS/qk0q0D46eB5jPGzE5w3k
- CegsWBVk
- JHYUPmqOUp4hKwd6jYKUXh+DaViJ0GUySw/FSfmkcj+X+bZ4ofXNTbjsanDDuHZUS3R72E+UmR12fQ1DhicwZqz3SOOtZHeFqFzGPoNN4+bj/Du4bIccr1ySuATJHC5BgKuwCmbe/szMLrn4RIkMVjY+f6sQ0Q3BH6vnPKLooTQPlWvcxCrMYxuSCHgw3KwgLCtLw6jKw8uEFRgucW4uyPCxnu8gYUuLGB9Q1B5Y9uhWgVZ34y0RrCmwuT4sv0Zcn3FOMIZNiz1zVt3X0C8AY5x/tmaXxXFkf7K/7NFQYU/8WCztDLMcNqca6VxSgu1mgQoIz9hhnmmS8Y6a799236VLDOP/I+DJcaiQRvYB8tx8lLGjC9irQFRvJRmPGDzTGFBGwPW3XE9ueCIcI1coA/XIlGAnzk/bT5p/0ogaIpOupMEZCR2lboeGeec4xSWFVwGher6OxG5Bb9B506xDMQgSF9ba7XjBRjxvan2S0y+AgGBpKQMkPvt6Y5RuM0+cUxCwKty+UsvuR9V5WpkleFU8D06gDBXiM3Xh9
+X-Stat-Signature: hp7wtga7kk39rgu5yxcquw3b1npon6ar
+X-Rspamd-Queue-Id: 4413B18000C
+X-HE-Tag: 1790022170-198213
+X-HE-Meta: U2FsdGVkX18Fxk5T9UVSL4Ypkil5mTXMfbGtEGxAsXCSCv5olflGp5I7Qg5p3ZN6i5cpSYbRpcOLb1q2mgiWm7/MJXONib3R6gSHfpsTM61r/tNQDIyXvJHMgJPgA2XEiRlsD5rLnZhvvSozfGzk2+ij4TcnNL5RNIRledoD+45FtW9f0QL+wDCG18xK2aETTI76mGTHGFtNxZNOCdvSQ65MEGZmTOx2/B5gb8v+WJYCTOFkxX9v9gmrmItjHaprJ7kpKYxbCS1Ot4EWqO3m9JAZjhoDKTWOjPeSgJarbmTRE48MHhlmDVUgycXPWDI+IL5e22m7iqjCr7xIc3dg2uGTl/P8keFJzB88OB2agdBxOl/SnfTuMID84wLPH4e3euxwEyAPlXvHo5/9BCSe6m9ZocBoqngYYqlgfAoOZcBBl81Ge8v9ejxMdw1ch5e8vG/xvIe6wtuHs040DNqMQ+RWpmaFYKU4Y7wGWDSNvngLaWQLFRnJ1Rbpf+sQ2a/ZxufWeyroB4GdUF//J/1vcwoYJHyiGQ2F0mwAPc4xyc4L7Es3I59EeWBj3VvobE5sPXJOskqBOshkRbwkqZpGWy5HmCT7hmU18vdhCtt5eEE+jFsvNDgYp+OekAe3KXhWU6Z7LBaN5jx/jMq4uYOQUZGP6cVQMbycMTDYJYSpETMXyuZe9lF5D0uAAKRFktdXCRV0H2sv79cp1DCdGRHs2s04R4IPM9mXnoDOgPxNeQYVuee59kqfddNO7wB/UikJFEwnb6ylzjAAuj9IW5gSHUANDuxNZP9U8/vhw673ywyum0aExyKiPxjkZezEoB9NigYeNE2PIPsnVdkW2LqFKROgB3WuTzHxild5taSFnfH29hROt80elDSSi8ADeDjgm39HlDWlBfTBVXlNQmZvEKMjiv/I01xUCIQwmWpjYs+lzEd5KBVA49i6aHfTg34nzlEugAPUVk53Ys3/N3l
+ tuFi+Lbx
+ eYL378ZgbIZ4DYvTC4qHVbGJEuDjQMNE3aZ6d6HN5yMzCMdMcW0WaEdyZbFhU3jgDe6QYFwFhkIrZh7Ffn71bU5dGL7gYCADFn+wfHoQ/X4Mdhmr3STgZ4jd8AJirjoanTAJio89yEpWhaFoJaRpJIJ4Ms/dXPEOYdmD9p9DDAKPam8x+tptbqsXc52XtMr3j685+/4Ipgvl9IrcoGGW016+Hfn9lJvWACLdNtl13hwAI5pa1JJCGjuCCumAUdw5tht2NvhO1miRJ/u20WY2aXzwo/qvo7SbFpM3odUHsiSLDxcI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,39 +153,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---===============0035746704262275047==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-> bpf, cgroup: fix cgroup struct_ops query for a second attach type
+On Wed, Sep 2, 2026 at 8:47=E2=80=AFAM Chen Linxuan <me@black-desk.cn> wrot=
+e:
+> On Mon, Aug 31, 2026 at 4:49=E2=80=AFPM Christian Brauner <brauner@kernel=
+.org> wrote:
+> > On 2026-08-31 10:59 +0800, Chen Linxuan wrote:
+> > > Obtaining a target task's executable, working directory, or root
+> > > currently requires walking procfs symlinks such as /proc/<pid>/exe,
+> > > /proc/<pid>/cwd, and /proc/<pid>/root.  That makes the operation depe=
+nd
+> > > on procfs being mounted and visible to the caller, even when it alrea=
+dy
+> > > holds a pidfd for the target.
+> > >
+> > > This series adds PIDFD_GET_EXE, PIDFD_GET_CWD, and PIDFD_GET_ROOT. Ea=
+ch
+> > > ioctl takes no argument and returns a close-on-exec O_PATH file
+> > > descriptor referencing the corresponding task path.  The new ioctls u=
+se
+> > > the same ptrace permission check and nonzero-argument rejection as th=
+e
+> > > existing pidfd namespace ioctls.
+> > >
+> > > The target task is sampled while holding its exec_update_lock. This
+> > > keeps the access decision and the task-state read in the same exec
+> > > critical section, preventing a concurrent execve() from changing the
+> > > credentials or target state between the check and the use.
+> > >
+> > > The first patch factors out helpers for acquiring referenced task pat=
+hs
+> > > and reuses them in procfs and AppArmor.  The second patch introduces
+> > > scoped cleanup for privileged pidfd task access and separates namespa=
+ce
+> > > lookup from namespace fd creation.  The final patch uses these pieces=
+ to
+> > > implement the three new ioctls.
+> > >
+> > > Signed-off-by: Chen Linxuan <me@black-desk.cn>
+> > > ---
+> >
+> > I really have difficulties forming an opinion on this. So this sounds
+> > very useful but it has implications.
+> >
+> > Right now, pidfd ioctls are available even in situations where the task
+> > in question would not be accessible via procfs, e.g., when procfs is
+> > mounted with "hidepid" options or similar. So this would expand the
 >
-> Two things in __cgroup_bpf_query() work only because CGROUP_TCP_SOCK_OPS is
-> the only one struct_ops attach type.
+> One point regarding hidepid: for callers that can pass
+> PTRACE_MODE_READ_FSCREDS, hidepid does not provide an additional
+> restriction. With hidepid=3D1 or hidepid=3D2, has_pid_permissions() falls
+> back to ptrace_may_access(..., PTRACE_MODE_READ_FSCREDS), and
+> hidepid=3Dptraceable uses that check directly. In addition, the
+> /proc/<pid>/{exe,cwd,root} links independently perform the same
+> PTRACE_MODE_READ_FSCREDS check in call_proc_get_link(), regardless of
+> the hidepid mode.
 >
-> It calls cgroup_bpf_enabled(atype) with an atype that
-> find_atype_by_struct_ops_id() works out at runtime.  That macro is an asm
-> goto and needs a constant.  Today the compiler can see there is only one
-> value; add a second type and the build breaks with "impossible constraint in
-> 'asm'".  Add cgroup_bpf_enabled_runtime(), which reads the key instead, and
-> use it here.  This is a syscall path, so the cost does not matter.
->
-> And find_atype_by_struct_ops_id() matches on type_id alone.  An attach type
-> whose subsystem is not built keeps type_id 0, so a query for type 0 finds it
-> and returns success with nothing instead of -ENOENT.  Skip such slots.
->
-> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+> So for these specific path lookups, hidepid does not block a caller who
+> would already pass the check used by the proposed pidfd ioctls.
 
-This looks like a bug fix for the struct_ops attach infrastructure.
-Should this include:
+Agreed, I think with regards to hidepid there should be no issue here.
 
-  Fixes: 369d9dcd8fb8 ("bpf: Add infrastructure to support attaching struct_ops to cgroups")
+If I try to come up with scenarios in which this could introduce
+additional danger, the main one I can think of would be: A task T1 is
+running inside a pid namespace and has a unix domain socket connection
+to a task T2 outside the namespace, with both running as the same
+EUID; T1 sets SO_PASSPIDFD on its socket to obtain a pidfd pointing to
+T2 on the next message sent by T2, then T1 uses that to get access to
+the mount namespace of T2.
 
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/35646140734
---===============0035746704262275047==--
+Christian, is there some mechanism that already protects against using
+something like SO_PASSPIDFD to get a pidfd to a process in a parent
+namespace?
+Otherwise, should we add something like a "pid_vnr(pid) !=3D 0" check
+either in these new operations or in SO_PASSPIDFD?
 
