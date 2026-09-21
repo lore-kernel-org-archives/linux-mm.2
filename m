@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF0FDC982ED
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 19:26:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59A40C982ED
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 19:26:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5EBFE6B00C3; Mon, 21 Sep 2026 15:26:26 -0400 (EDT)
+	id 4DA746B00C5; Mon, 21 Sep 2026 15:26:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C48B6B00C5; Mon, 21 Sep 2026 15:26:26 -0400 (EDT)
+	id 4B24C6B00C7; Mon, 21 Sep 2026 15:26:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D87A6B00C7; Mon, 21 Sep 2026 15:26:26 -0400 (EDT)
+	id 353386B00C8; Mon, 21 Sep 2026 15:26:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 220BE6B00C3
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 15:26:26 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AB05D1602B5
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 19:26:25 +0000 (UTC)
-X-FDA: 85238750730.16.BAEDB7F
-Received: from mta1.migadu.com (out-100.mta1.migadu.com [95.215.58.100])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 773631C0009
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 19:26:23 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 07C8E6B00C5
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 15:26:32 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 79FA38028A
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 19:26:31 +0000 (UTC)
+X-FDA: 85238750982.29.FE80441
+Received: from mta0.migadu.com (out-158.mta0.migadu.com [91.218.175.158])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 71B9F1C0008
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 19:26:29 +0000 (UTC)
 Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="wFx/yzM/";
-	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.100 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fd30Z+xm;
+	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.158 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790018789;
+	b=1M4kKHJq/hfuKUIL9VsGe9V9kJt5CaTn8Jb+lacT5aZ6ME+zPTi8VlGkOErGXmZnwp3kvO
+	vDib0mJVDarOqTiovLUrWFgbtL9XFVTAwUvQXltBBAFGZsGd7sSG3486V0Mi5zhztShNs5
+	FdKP6oSp2CiawsUEO0FCuSB/iuFppts=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fd30Z+xm;
+	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.158 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790018783;
+	s=arc-20220608; t=1790018789;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l2m4oRpUkR2vVSm9z+KqoO2GjdHKb41OEmUJERsqeVQ=;
-	b=m1AXiA5s8OkXzwjBCwe43ncvqUOeR9P78z1m6twAq9IxUw1OQo5uskgKqj82Y4Pyx8eovz
-	e/CVAIR1dtYoCx4NrQB25gi7uQU8oR6/Kftqa4iGfgfHKheYyZeWqVBgTOb8id4rw78nD7
-	LXyMT0D4rV5bUZh0sCHaV5CPKDHgX1Q=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="wFx/yzM/";
-	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.100 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790018783;
-	b=aDERnmEqa4Xmz6cFEBD4vjxqaKEOFFwA5Yy6DSArGFK8SJpcyAQTZpsvl7st7+QRY6HpWq
-	FLakwdd5/RhDRFExvP88e++WGcG6VXzqmUnZqOundpJmUzSzsn82S0US/o9qe08ByR4Vfy
-	YXlY6sz/du3caFLSu8Uz6II4YuJG32g=
+	bh=Df2tgBcMW4FGkZyJjJXNvnQseDJZuMiD7okC9D5VUR0=;
+	b=SgEzvGYFUYZaQI7xWYajr1pEXmaUkg4h/SiHg6+PfOkIG1KcdkGL9nBpyoCcGiesME6uCA
+	2LC9xmMXOMGsOppy3SvPRqnMy1SqRvIYTE3t7rbbMgA+lLrWSjpuye0lDRC6tC7vjyooNJ
+	tFQ3dZzJRlUjUHH7VDoTCwzd6GiF6tU=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=Rk6vSHsZulU3ylU3QojCy3TlgitfGn9MgxeNvIoe+1s=;
+DKIM-Signature: a=rsa-sha256; bh=4jN9R36egL4VbLgEQnL5XK49Oe5ZOfWY6kBaMsR1BSA=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790018782; v=1; x=1790623582;
- b=wFx/yzM/t0ddWiHKQ4sYhMKhbWztXPPDtYNJSk9Ge2JyyQsROoisSAFq8JqScjtDlQ/yFrRn
- 46Zevvsy0S9rPQl8Xtb7RMP1pXdMCTGlxuxvR7QoL2e+m3WY4dtE8k4MdewwkgYgmZK4dNprhZv
- vlMLv7xnHzWqyPRliFtx8/r8=
+ t=1790018787; v=1; x=1790623587;
+ b=fd30Z+xmERNSfxlCfvTJoTqWMA5iM2XfUDK4VqaRQut2kOI9t5JsbEkSJuBV0qJOGbu1nsZF
+ ceg5yKYs5LEm5G0maUdWO+xdwJJAG6oGyS9uyt9pArfZTp5gpGI843uYd11JzkHnG7TKAQZOQYk
+ dsDFRQOAwpYXTH4aZsN3nfco=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 9b07036d47c80b85;
-	Mon, 21 Sep 2026 19:26:21 +0000
-X-Mizu-Trace-ID: 9b07036d47c80b85
+Received: by smtp.migadu.com with ESMTPS id 5760c232baafb0d6;
+	Mon, 21 Sep 2026 19:26:27 +0000
+X-Mizu-Trace-ID: 5760c232baafb0d6
 X-Migadu-Flow: FLOW_OUT
 From: Shakeel Butt <shakeel.butt@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
@@ -92,22 +92,22 @@ Cc: Johannes Weiner <hannes@cmpxchg.org>,
 	bpf@vger.kernel.org,
 	cgroups@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 2/4] memcg_ext: add cgroup-attached bpf_memcg_ops
-Date: Mon, 21 Sep 2026 12:25:57 -0700
-Message-ID: <20260921192559.2619635-3-shakeel.butt@linux.dev>
+Subject: [RFC PATCH 3/4] memcg_ext: allow BPF to defer memory.high enforcement
+Date: Mon, 21 Sep 2026 12:25:58 -0700
+Message-ID: <20260921192559.2619635-4-shakeel.butt@linux.dev>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260921192559.2619635-1-shakeel.butt@linux.dev>
 References: <20260921192559.2619635-1-shakeel.butt@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 773631C0009
-X-Stat-Signature: gzxaj94hone5jxd4qqe3tfjmpmsrzhkf
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 71B9F1C0008
 X-Rspam-User: 
-X-HE-Tag: 1790018783-973844
-X-HE-Meta: U2FsdGVkX18Mgpp+0InAt/KaeCb8nr9mZD3B8gWcMA+WqcAVWZiOGI4ZpTDVLPQbRjXyT8dmUcegXyChlBs2Rmo+nOi53m2udoTE5V81UjCw7LkJNGcT65mHnLNrVpKPjdV/rHccZx785JQzr5VwJSTUW2rC0YXRam6k7xP43qXA3fqZItXGd1Ny+fWFrYcxCPtjDZoH3fSnedgnf22AV7IFtdXL0ZTz3HZjnVRNnL1YsQ7U6MDtNBmmzs57XEm91Zrp0Zlpnp+9waJj+ypVo5RXCV1pS/ba+ScT1x9XK9Z264ENM16JYxAdXv3JKLCrSUbRaXjN6QDhq5rhH2iojEKRGYNIn6/9w3GQAyAKF/NPukWcLX0BD51wjJhHBYXAcmCZG2gDrYWSE+FX9Bgm81xEQcq2XF+8Qi8pZR+N+BORKF/lRrD/njseonldRSYR/Cp5SCx6lqwZpCgkUwl2TMxFJjcpVZcTNSR8d1KjzPrNu0ScR0D7ShoVYwrm+tGtnlpQmqcS7oDHZuoxuqyg+JE7VoJu/O9eeTdzUqtmDD/dqBbKBAEW7TKaDyDMZqsMd/OwHFRCbxkuGd8RlSSbWCfve9DSDefCSwRHppN8eYvbHY4hc39nbVSFQBRJEjekPzEzNpfoQxZ631FlA8Vf1mNJR9EhXx+5QynRUl2e6Ch1+whRziR7qN4t9rRkHPA0qcr/veVHeYctqqFvLMqT8X86Y7Pm0A11TYzPKYgbakYQlPy5YtYWkhFcReebIJu2Wi40gUEUS6B706rCgVJAGMKEMxD0YQDMY9bGrc9BrLkqKzmC2NwiMvKBO/41VRWPkbbPqgqMZyZLsRFPb5s3GomHT6A65du+tUXT7bhezvVdI6wbEMoLcl48xTyYvGFvmBlK68+psKh/znoo3nVTzye4RwHSL21GBb1oz6seTGaS9FQXKMWyVKU+xmcrPu97/AawAIMOZ0t/P5zE2WB
- pjv4KwQK
- 0+oEcM+RoTeM0/GNVDNTkKGEjPeG3xwtUv/ZdpQuOYJ6ueJS+oR9iIyWULtn5ZWZL8zSxCLHeYzvzrE0XlGe3Ri/b6HiWFDA7W6mq/quTn5fFG/r+OKsRfiDkL4kfDLU3G/A7suSUVNUnVzm7TqTwQ/uiYA8xQ/RF7lBF6Xc+C02G4vwnAHbap5mMEZFKlFMut97rsFJXG5Zm8Dhi3vI6LvEwMwXS3kMEBSDtVqT57ppIocxwGc97tf5AQdjWUiUqmJ4G//2p+YDdwsyqR8Z4uiRq73JTi6jmBIb2pLmzGDDzmEg4ExheMKpegP5GyZgNv+QA8oV4KZuVs2JYkDFq+8TLlisKpmFgrLn2
+X-Stat-Signature: 58w6k3h5cc6rj99f5n4aiea388oq5h57
+X-HE-Tag: 1790018789-805807
+X-HE-Meta: U2FsdGVkX1/KTcNMb1pdHLna5JF6w6XyJnDZkL78ARe5WsmeFNtWARDNMwC6RtaSkGpAe4qT1QH5RxKPD0zL+D0q23IpW53dbfWJOypc88KQUdBnlN7QtzTGrlLlCS6IG3IoWaMavU3JLCJcJ/X0922Qpb65owLceeqRSJkBFCpXT6R3NSZdd1BmAwzJgNEz+vEuYNLz2THm9sezkTkKpqg4kX0D6xUqzYh58LWVYU5ng4+4SWgTP8cgvZYUSLztNK8FxU+ZArjhM4vwX4dx7ttTqZnGw7X2/7W2AeREhl8LJSxgISo2wyK9pVHSPwJelK0ku7bmpgw1lGtpZ45Ih8xiWM12KN2QSDdercnBFPe8fSS+QsNc+JwTdcCAGAuj6R/S3qq6z24zzqJUx44KH6TYlh785QRTS74QdsBoWWZXYQkkb6EEleageUXvgY9fj9w7zn+wwfWbYR9LCXiVYWwlm8UcZ/3vlYAH+QXPuJmVehVtQCpqSulk+Q1bzp2NhWngCkOXbp2ASsiyesZD1eRiMuN1fSpWINj/QLdXO4ykrGQQ0KUiny20lk3cQ0bXFuaic5r7Puwg8d/e2triusbzNvkBkmv1q1tMHiNT7rlFimGHhjLYHrDcJeVTSduwCQ+M5Y+0IKqGvzQtOk5eNrPhyZobibdcWu/9cQ34vBK82mGeQqdxvZDmH1ZpiUsK3Gyxr9lHc/K/3PtqVKfSqUS131YBfG1yyu3E2xe9Dar8GHuwuW7n0/Z1ix9FHxIq4U0rqtJ3WRum5H5JIN6AvkSpxqrkudqvtZ2F28G8Ofakk3c+3suNXenZbE81/ABE/J4pNeHscDRUwjSbU8+6cKoXqDtmGvX66T7B8WlSDa+mjYMBbUbDSq+iLeCoGywvbqZPLNerOH28EJMVjzG8XQy2OnLmkoF8EbLVC/0iPElovhLfb5PVQZQHzyZiwBSpSAcBkPA+6EbdSdfth/u
+ NsDc5kr3
+ i78tYGLzoeVueAF1s4076ivuKue+kpLZ4/PqNy7E6gKxHVf+5nZU55vkNM5alHMp2bcm2haIXYUZIC6reSWjWB2+GarOR9v7bVb+G7GWqABTFsoIz6b2irXkhHKzwUvM7FcQYnD0p0pi20KaBaKBfnZElCAmF0R93AEKx0+sp6zgW/w2KUPRloGceqqZDHkn0iN0pfGjb9OJEOuNUk2gKa00ISV7+aUrRPKmRGLdgKvCj3e/OxK4IXZlYMgJF1IgKZCnfND2Ai4icnPOjW6e0V0HQ32DcQ+vK+4T9/2fJ2iS6uofuERPY6Vz+syWC/IWmltOfqEofYi18eub5Dc/Ofk/MOxDCaVGiel1lSG/VVXgsoGejTgbwjnJj83SBEwVjJzo6wwTlgEKH86rUZTY0jvUImjICZk5pBKVtBWPzT673zIhkwFcn8r+uhQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,261 +115,325 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add an empty bpf_memcg_ops type for attaching memory policies to
-cgroups.  This is the first patch of memcg_ext, which makes memcg
-enforcement programmable one hook at a time.  Policy hooks will be added
-later.
+Before it returns, try_charge_memcg() calls __mem_cgroup_handle_over_high(),
+which reclaims and can throttle the task.  That happens wherever the charge
+happens, so a task holding a kernel lock can be stuck there, and everything
+waiting on the lock is stuck behind it.
 
-Move the cgroup BPF attach types outside CONFIG_CGROUP_BPF and fix the
-struct_ops registration stub so all supported configurations build.
+Let's add high_policy ops through which a program gets a read-only snapshot
+of the charge and returns a request.  There is one so far:
+BPF_MEMCG_HIGH_DEFER_INLINE skips the inline call.
 
-This does not change behavior yet.
+A charge runs the policies of its cgroup and of every ancestor.
+task_struct::in_bpf_memcg stops a program that allocates from re-entering
+the charge path and the dispatcher with it.
+
+A memcg outlives its cgroup while it has charges, and cgroup_bpf_release()
+frees the arrays when the cgroup goes. Take the reference for the walk.
 
 Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
 ---
- include/linux/bpf-cgroup-defs.h |  22 ++++---
- include/linux/bpf-cgroup.h      |   2 +-
- include/linux/bpf.h             |   2 +-
- include/linux/bpf_memcontrol.h  |  17 +++++
- mm/bpf_memcontrol.c             | 108 +++++++++++++++++++++++++++++++-
- 5 files changed, 140 insertions(+), 11 deletions(-)
- create mode 100644 include/linux/bpf_memcontrol.h
+ MAINTAINERS                    |  1 +
+ include/linux/bpf-cgroup.h     |  3 ++
+ include/linux/bpf_memcontrol.h | 53 +++++++++++++++++++++-
+ include/linux/cgroup.h         |  7 +++
+ include/linux/sched.h          |  4 ++
+ mm/bpf_memcontrol.c            | 82 +++++++++++++++++++++++++++++++++-
+ mm/memcontrol.c                | 31 ++++++++++++-
+ 7 files changed, 176 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/bpf-cgroup-defs.h b/include/linux/bpf-cgroup-defs.h
-index 0147b8bec973..53d2853535c6 100644
---- a/include/linux/bpf-cgroup-defs.h
-+++ b/include/linux/bpf-cgroup-defs.h
-@@ -2,14 +2,6 @@
- #ifndef _BPF_CGROUP_DEFS_H
- #define _BPF_CGROUP_DEFS_H
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 6215fcb07770..0c84beab396f 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -5032,6 +5032,7 @@ L:	bpf@vger.kernel.org
+ L:	linux-mm@kvack.org
+ S:	Maintained
+ F:	mm/bpf_memcontrol.c
++F:	include/linux/bpf_memcontrol.h
  
--#ifdef CONFIG_CGROUP_BPF
--
--#include <linux/list.h>
--#include <linux/percpu-refcount.h>
--#include <linux/workqueue.h>
--
--struct bpf_prog_array;
--
- #ifdef CONFIG_BPF_LSM
- /* Maximum number of concurrently attachable per-cgroup LSM hooks. */
- #define CGROUP_LSM_NUM 10
-@@ -17,6 +9,10 @@ struct bpf_prog_array;
- #define CGROUP_LSM_NUM 0
- #endif
- 
-+/*
-+ * Plain constants, so a subsystem can name its attach type without
-+ * depending on CONFIG_CGROUP_BPF.
-+ */
- enum cgroup_bpf_attach_type {
- 	CGROUP_BPF_ATTACH_TYPE_INVALID = -1,
- 	CGROUP_INET_INGRESS = 0,
-@@ -48,11 +44,21 @@ enum cgroup_bpf_attach_type {
- 	CGROUP_UNIX_GETSOCKNAME,
- 	CGROUP_INET_SOCK_RELEASE,
- 	CGROUP_TCP_SOCK_OPS,
-+	CGROUP_MEMCG_OPS,
- 	CGROUP_LSM_START,
- 	CGROUP_LSM_END = CGROUP_LSM_START + CGROUP_LSM_NUM - 1,
- 	MAX_CGROUP_BPF_ATTACH_TYPE
- };
- 
-+#ifdef CONFIG_CGROUP_BPF
-+
-+#include <linux/list.h>
-+#include <linux/percpu-refcount.h>
-+#include <linux/workqueue.h>
-+
-+struct bpf_prog_array;
-+
-+
- struct cgroup_bpf {
- 	/* array of effective progs in this cgroup */
- 	struct bpf_prog_array __rcu *effective[MAX_CGROUP_BPF_ATTACH_TYPE];
+ BPF [MISC]
+ L:	bpf@vger.kernel.org
 diff --git a/include/linux/bpf-cgroup.h b/include/linux/bpf-cgroup.h
-index 3b2c127d401d..4e8150848bd2 100644
+index 4e8150848bd2..e19cf83e58f3 100644
 --- a/include/linux/bpf-cgroup.h
 +++ b/include/linux/bpf-cgroup.h
-@@ -127,7 +127,7 @@ struct bpf_prog_list {
+@@ -517,6 +517,9 @@ static inline int cgroup_bpf_struct_ops_attach(struct bpf_map *map,
  
- static inline bool cgroup_bpf_is_struct_ops_atype(enum cgroup_bpf_attach_type atype)
- {
--	return atype == CGROUP_TCP_SOCK_OPS;
-+	return atype == CGROUP_TCP_SOCK_OPS || atype == CGROUP_MEMCG_OPS;
- }
- void cgroup_bpf_struct_ops_register(int atype, u32 type_id, void *cfi_stubs, bool mult_trace);
- int cgroup_bpf_struct_ops_attach(struct bpf_map *map, const union bpf_attr *attr);
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index 5033b934ffd9..f8eb102e7fc4 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -2331,7 +2331,7 @@ int bpf_struct_ops_desc_init(struct bpf_struct_ops_desc *st_ops_desc,
- void bpf_map_struct_ops_info_fill(struct bpf_map_info *info, struct bpf_map *map);
- void bpf_struct_ops_desc_release(struct bpf_struct_ops_desc *st_ops_desc);
- #else
--#define register_bpf_struct_ops(st_ops, type) ({ (void *)(st_ops); 0; })
-+#define register_bpf_struct_ops(st_ops, type) ({ (void)(st_ops); 0; })
- static inline bool bpf_try_module_get(const void *data, struct module *owner)
- {
- 	return try_module_get(owner);
+ #define cgroup_bpf_enabled(atype) (0)
+ #define cgroup_bpf_enabled_runtime(atype) (0)
++/* Nothing can be attached, so the walk has nothing to walk. */
++#define bpf_cgroup_struct_ops_foreach(var, item, cgrp, atype)		\
++	for ((void)(cgrp), (item) = NULL, (var) = NULL; 0; )
+ #define BPF_CGROUP_RUN_SA_PROG_LOCK(sk, uaddr, uaddrlen, atype, t_ctx) ({ 0; })
+ #define BPF_CGROUP_RUN_SA_PROG(sk, uaddr, uaddrlen, atype) ({ 0; })
+ #define BPF_CGROUP_PRE_CONNECT_ENABLED(sk) (0)
 diff --git a/include/linux/bpf_memcontrol.h b/include/linux/bpf_memcontrol.h
-new file mode 100644
-index 000000000000..8204d894761e
---- /dev/null
+index 8204d894761e..76ea5d1c3d32 100644
+--- a/include/linux/bpf_memcontrol.h
 +++ b/include/linux/bpf_memcontrol.h
-@@ -0,0 +1,17 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * BPF policy hooks for the memory controller.
-+ *
-+ * A bpf_memcg_ops is attached to a cgroup.  A charge runs the policies of
-+ * that cgroup and of every ancestor, and the kernel combines what they
-+ * return.  BPF only picks between things the kernel already does.
-+ *
-+ * The type has no members yet; they come with the policies that use them.
-+ */
-+#ifndef _LINUX_BPF_MEMCONTROL_H
-+#define _LINUX_BPF_MEMCONTROL_H
+@@ -5,13 +5,62 @@
+  * A bpf_memcg_ops is attached to a cgroup.  A charge runs the policies of
+  * that cgroup and of every ancestor, and the kernel combines what they
+  * return.  BPF only picks between things the kernel already does.
+- *
+- * The type has no members yet; they come with the policies that use them.
+  */
+ #ifndef _LINUX_BPF_MEMCONTROL_H
+ #define _LINUX_BPF_MEMCONTROL_H
+ 
++#include <linux/types.h>
++#include <linux/gfp_types.h>
 +
-+struct bpf_memcg_ops {
++struct mem_cgroup;
++struct task_struct;
++
++/*
++ * What a policy can ask for when a cgroup is over memory.high.  The kernel
++ * ORs them, so one policy cannot undo another.
++ */
++enum bpf_memcg_high_request {
++	BPF_MEMCG_HIGH_NO_OPINION	= 0,
++	/*
++	 * Skip the inline reclaim and throttle.  The debt is kept and paid on
++	 * the way back to userspace, where no kernel locks are held.
++	 */
++	BPF_MEMCG_HIGH_DEFER_INLINE	= 1U << 0,
 +};
 +
-+#endif /* _LINUX_BPF_MEMCONTROL_H */
-diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
-index d8f579c28560..fd6dff150f01 100644
---- a/mm/bpf_memcontrol.c
-+++ b/mm/bpf_memcontrol.c
-@@ -7,6 +7,12 @@
- 
- #include <linux/memcontrol.h>
- #include <linux/bpf.h>
-+#include <linux/bpf-cgroup.h>
-+#include <linux/bpf_memcontrol.h>
-+#include <linux/bpf_verifier.h>
-+#include <linux/btf_ids.h>
-+#include <linux/cgroup.h>
-+#include <linux/sched.h>
- 
- #include "internal.h"
- 
-@@ -235,6 +241,100 @@ static const struct btf_kfunc_id_set bpf_memcontrol_reclaim_kfunc_set = {
- 	.set            = &bpf_memcontrol_reclaim_kfuncs,
++#define BPF_MEMCG_HIGH_VALID_MASK	BPF_MEMCG_HIGH_DEFER_INLINE
++
++/* Read-only snapshot.  Only values the caller already has. */
++struct bpf_memcg_ctx {
++	struct mem_cgroup	*memcg;			/* charged memcg */
++	struct mem_cgroup	*memcg_over_limit;	/* NULL if none found */
++	struct task_struct	*task;			/* current */
++	u64			cgroup_id;
++	u64			over_limit_cgroup_id;	/* 0 if none */
++	u64			nr_pages_over_high;
++	u32			gfp_flags;
++};
++
+ struct bpf_memcg_ops {
++	/**
++	 * high_policy - say where memory.high should be enforced
++	 * @ctx: snapshot of the charge
++	 *
++	 * Return: bits from enum bpf_memcg_high_request, or 0.  Other bits
++	 * are dropped.
++	 */
++	u32 (*high_policy)(const struct bpf_memcg_ctx *ctx);
  };
  
 +/*
-+ * bpf_memcg_ops: memcg policy attached to a cgroup.  A program returns a
-+ * request and the kernel acts on it.  Nothing here reclaims or sleeps.
++ * Run every high_policy on @memcg's cgroup and its ancestors, and return the
++ * combined request for the caller to act on.
++ *
++ * @memcg:	the memcg being charged, never NULL
++ * @over_limit:	first memcg found over memory.high or swap.high, or NULL
++ * @gfp_mask:	the charge's gfp mask
 + */
++u32 bpf_memcg_high_policy(struct mem_cgroup *memcg,
++			  struct mem_cgroup *over_limit, gfp_t gfp_mask);
 +
-+/* CFI stubs.  A slot points at these while its policy is being detached. */
-+static struct bpf_memcg_ops __bpf_memcg_ops = {
-+};
-+
-+static const struct bpf_func_proto *
-+bpf_memcg_get_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog)
-+{
-+	/*
-+	 * The base set is all a policy needs today, and none of it sleeps.
-+	 * Anything added here must be safe from the charge path.
-+	 */
-+	return bpf_base_func_proto(func_id, prog);
-+}
-+
-+static bool bpf_memcg_is_valid_access(int off, int size,
-+				      enum bpf_access_type type,
-+				      const struct bpf_prog *prog,
-+				      struct bpf_insn_access_aux *info)
-+{
-+	/* The context is read-only. */
-+	if (type != BPF_READ)
-+		return false;
-+
-+	return bpf_tracing_btf_ctx_access(off, size, type, prog, info);
-+}
-+
-+static int bpf_memcg_init_member(const struct btf_type *t,
-+				 const struct btf_member *member,
-+				 void *kdata, const void *udata)
-+{
-+	/* Mandatory: the core calls it without a NULL check. */
-+	return 0;
-+}
-+
-+static int bpf_memcg_check_member(const struct btf_type *t,
-+				  const struct btf_member *member,
-+				  const struct bpf_prog *prog)
-+{
-+	/* Members run from the charge path, which cannot sleep. */
-+	if (prog->sleepable)
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+
-+static int bpf_memcg_init(struct btf *btf)
-+{
-+	return 0;
-+}
-+
-+static int bpf_memcg_validate(void *kdata)
-+{
-+	return 0;
-+}
-+
-+static const struct bpf_verifier_ops bpf_memcg_verifier_ops = {
-+	.get_func_proto		= bpf_memcg_get_func_proto,
-+	.is_valid_access	= bpf_memcg_is_valid_access,
-+};
-+
-+static struct bpf_struct_ops bpf_memcg_ops_desc = {
-+	.verifier_ops	= &bpf_memcg_verifier_ops,
-+	.init		= bpf_memcg_init,
-+	.init_member	= bpf_memcg_init_member,
-+	.check_member	= bpf_memcg_check_member,
-+	.validate	= bpf_memcg_validate,
-+	.name		= "bpf_memcg_ops",
-+	.cgroup_atype	= CGROUP_MEMCG_OPS,
-+	.cfi_stubs	= &__bpf_memcg_ops,
-+	.owner		= THIS_MODULE,
-+	/*
-+	 * .reg/.unreg stay NULL: the cgroup layer does attach and detach, and
-+	 * registration fails if a cgroup_atype comes with either.
-+	 *
-+	 * .free_after_mult_rcu_gp stays false while no member sleeps.  A
-+	 * sleepable one would also need a tasks-trace RCU version of
-+	 * bpf_cgroup_struct_ops_foreach().
-+	 */
-+};
-+
-+static int __init bpf_memcg_ops_register(void)
-+{
-+	/*
-+	 * register_bpf_struct_ops() is a no-op without struct_ops support, so
-+	 * this needs no guard of its own.
-+	 */
-+	return register_bpf_struct_ops(&bpf_memcg_ops_desc, bpf_memcg_ops);
-+}
-+
- static int __init bpf_memcontrol_init(void)
- {
- 	int err;
-@@ -248,8 +348,14 @@ static int __init bpf_memcontrol_init(void)
+ #endif /* _LINUX_BPF_MEMCONTROL_H */
+diff --git a/include/linux/cgroup.h b/include/linux/cgroup.h
+index 5dfa915a630e..cf92b6cec819 100644
+--- a/include/linux/cgroup.h
++++ b/include/linux/cgroup.h
+@@ -959,10 +959,17 @@ static inline void cgroup_bpf_put(struct cgroup *cgrp)
+ 	percpu_ref_put(&cgrp->bpf.refcnt);
+ }
  
- 	err = register_btf_kfunc_id_set(BPF_PROG_TYPE_SYSCALL,
- 					&bpf_memcontrol_reclaim_kfunc_set);
--	if (err)
-+	if (err) {
- 		pr_warn("error registering bpf reclaim kfuncs: %d\n", err);
-+		return err;
++/* Fails once the cgroup is gone and its bpf state has been freed. */
++static inline bool cgroup_bpf_tryget_live(struct cgroup *cgrp)
++{
++	return percpu_ref_tryget_live_rcu(&cgrp->bpf.refcnt);
++}
++
+ #else /* CONFIG_CGROUP_BPF */
+ 
+ static inline void cgroup_bpf_get(struct cgroup *cgrp) {}
+ static inline void cgroup_bpf_put(struct cgroup *cgrp) {}
++static inline bool cgroup_bpf_tryget_live(struct cgroup *cgrp) { return false; }
+ 
+ #endif /* CONFIG_CGROUP_BPF */
+ 
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index 8b3d47a325cc..4b20a346aaa8 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -1031,6 +1031,10 @@ struct task_struct {
+ #ifdef CONFIG_MEMCG_V1
+ 	unsigned			in_user_fault:1;
+ #endif
++#ifdef CONFIG_MEMCG
++	/* A bpf_memcg_ops program is running; do not recurse into policy */
++	unsigned			in_bpf_memcg:1;
++#endif
+ #ifdef CONFIG_LRU_GEN
+ 	/* whether the LRU algorithm may apply to this access */
+ 	unsigned			in_lru_fault:1;
+diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
+index fd6dff150f01..cfd0f1d443c9 100644
+--- a/mm/bpf_memcontrol.c
++++ b/mm/bpf_memcontrol.c
+@@ -246,8 +246,17 @@ static const struct btf_kfunc_id_set bpf_memcontrol_reclaim_kfunc_set = {
+  * request and the kernel acts on it.  Nothing here reclaims or sleeps.
+  */
+ 
+-/* CFI stubs.  A slot points at these while its policy is being detached. */
++/*
++ * CFI stubs.  These really run: a slot points at them while its policy is
++ * being detached.  Return 0, the identity for the kernel's OR.
++ */
++static u32 high_policy_stub(const struct bpf_memcg_ctx *ctx)
++{
++	return BPF_MEMCG_HIGH_NO_OPINION;
++}
++
+ static struct bpf_memcg_ops __bpf_memcg_ops = {
++	.high_policy = high_policy_stub,
+ };
+ 
+ static const struct bpf_func_proto *
+@@ -326,6 +335,77 @@ static struct bpf_struct_ops bpf_memcg_ops_desc = {
+ 	 */
+ };
+ 
++static void bpf_memcg_ctx_init(struct bpf_memcg_ctx *ctx,
++			       struct mem_cgroup *memcg,
++			       struct mem_cgroup *over_limit, gfp_t gfp_mask)
++{
++	ctx->memcg = memcg;
++	ctx->memcg_over_limit = over_limit;
++	ctx->task = current;
++	ctx->cgroup_id = cgroup_id(memcg->css.cgroup);
++	ctx->over_limit_cgroup_id = over_limit ?
++		cgroup_id(over_limit->css.cgroup) : 0;
++	ctx->nr_pages_over_high = current->memcg_nr_pages_over_high;
++	ctx->gfp_flags = (__force u32)gfp_mask;
++}
++
++u32 bpf_memcg_high_policy(struct mem_cgroup *memcg,
++			  struct mem_cgroup *over_limit, gfp_t gfp_mask)
++{
++	const struct bpf_prog_array_item *item;
++	const struct bpf_memcg_ops *ops;
++	struct bpf_memcg_ctx ctx;
++	u32 acc = BPF_MEMCG_HIGH_NO_OPINION;
++	struct cgroup *cgrp;
++
++	if (!cgroup_bpf_enabled(CGROUP_MEMCG_OPS))
++		return acc;
++
++	/*
++	 * Only the default hierarchy has a cgroup_bpf, and the static key is
++	 * global, so one policy anywhere turns this on for v1 memcgs too.  A
++	 * v1 memcg still cannot get here, because memory.high and swap.high
++	 * are both v2-only and so it never builds the debt that leads to this
++	 * call.  A hook on a path v1 can reach needs its own cgroup_on_dfl()
++	 * test: a v1 cgroup has no effective array and an uninitialised
++	 * cgrp->bpf.refcnt.
++	 */
++	cgrp = memcg->css.cgroup;
++
++	/*
++	 * A program can allocate and re-enter the charge path.  Skip the
++	 * nested call.  This guards the callbacks only.
++	 */
++	if (current->in_bpf_memcg)
++		return acc;
++	current->in_bpf_memcg = 1;
++
++	rcu_read_lock_dont_migrate();
++
++	/*
++	 * A memcg outlives its cgroup while it has charges, and
++	 * cgroup_bpf_release() frees the arrays when the cgroup goes.
++	 */
++	if (!cgroup_bpf_tryget_live(cgrp))
++		goto out;
++
++	bpf_memcg_ctx_init(&ctx, memcg, over_limit, gfp_mask);
++
++	bpf_cgroup_struct_ops_foreach(ops, item, cgrp, CGROUP_MEMCG_OPS) {
++		if (ops->high_policy)
++			acc |= ops->high_policy(&ctx) &
++			       BPF_MEMCG_HIGH_VALID_MASK;
 +	}
 +
-+	err = bpf_memcg_ops_register();
-+	if (err)
-+		pr_warn("error while registering bpf_memcg_ops: %d", err);
- 
- 	return err;
++	cgroup_bpf_put(cgrp);
++out:
++	rcu_read_unlock_migrate();
++
++	current->in_bpf_memcg = 0;
++
++	return acc;
++}
++
+ static int __init bpf_memcg_ops_register(void)
+ {
+ 	/*
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 1271d390b617..bc283680640b 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -28,6 +28,7 @@
+ #include <linux/cgroup-defs.h>
+ #include <linux/page_counter.h>
+ #include <linux/memcontrol.h>
++#include <linux/bpf_memcontrol.h>
+ #include <linux/cgroup.h>
+ #include <linux/cpuset.h>
+ #include <linux/sched/mm.h>
+@@ -2642,9 +2643,26 @@ void __mem_cgroup_handle_over_high(gfp_t gfp_mask)
+ 	css_put(&memcg->css);
  }
+ 
++/*
++ * Ask the attached bpf_memcg_ops whether to skip the inline memory.high
++ * reclaim and throttle.
++ *
++ * @memcg:	the memcg being charged
++ * @over_limit:	first memcg found over memory.high or swap.high, starting at
++ *		the charged one, or NULL if the walk found none
++ */
++static bool bpf_memcg_high_defer(struct mem_cgroup *memcg,
++				 struct mem_cgroup *over_limit, gfp_t gfp_mask)
++{
++	u32 req = bpf_memcg_high_policy(memcg, over_limit, gfp_mask);
++
++	return req & BPF_MEMCG_HIGH_DEFER_INLINE;
++}
++
+ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+ 			    unsigned int nr_pages)
+ {
++	struct mem_cgroup *leaf_memcg = memcg;
+ 	unsigned int batch = max(MEMCG_CHARGE_BATCH, nr_pages);
+ 	int nr_retries = MAX_RECLAIM_RETRIES;
+ 	struct mem_cgroup *mem_over_limit;
+@@ -2846,8 +2864,17 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+ 	 */
+ 	if (current->memcg_nr_pages_over_high > MEMCG_CHARGE_BATCH &&
+ 	    !(current->flags & PF_MEMALLOC) &&
+-	    gfpflags_allow_blocking(gfp_mask))
+-		__mem_cgroup_handle_over_high(gfp_mask);
++	    gfpflags_allow_blocking(gfp_mask)) {
++		/*
++		 * The loop above left @memcg as the first memcg it found over
++		 * memory.high or swap.high -- possibly the charged one itself
++		 * -- or NULL if it found none.  Note the debt can be left over
++		 * from an earlier charge, so NULL does not mean no pressure.
++		 * The policy wants the memcg we charged.
++		 */
++		if (!bpf_memcg_high_defer(leaf_memcg, memcg, gfp_mask))
++			__mem_cgroup_handle_over_high(gfp_mask);
++	}
+ 	return 0;
+ }
+ 
 -- 
 2.53.0-Meta
 
