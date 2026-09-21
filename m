@@ -4,138 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 351DFC982E1
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 09:05:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 869C3C982DE
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 09:13:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D04616B00A9; Mon, 21 Sep 2026 05:05:44 -0400 (EDT)
+	id 4AF4E6B00D3; Mon, 21 Sep 2026 05:13:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDBAA6B00C7; Mon, 21 Sep 2026 05:05:44 -0400 (EDT)
+	id 486686B00D7; Mon, 21 Sep 2026 05:13:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BCA746B00CF; Mon, 21 Sep 2026 05:05:44 -0400 (EDT)
+	id 39B276B00D9; Mon, 21 Sep 2026 05:13:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 92CF76B00A9
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 05:05:44 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E147C1205A9
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:05:43 +0000 (UTC)
-X-FDA: 85237186566.12.C81D4B8
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 884AF1C0008
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:05:41 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=w3sT7iiC;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=h67AoicV;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=2u63eRNe;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Er2ICYL+;
-	spf=pass (imf18.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 173F56B00D3
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 05:13:06 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 950EAC05BC
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:13:05 +0000 (UTC)
+X-FDA: 85237205130.14.AA7DD34
+Received: from mta1.migadu.com (out-10.mta1.migadu.com [95.215.58.10])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 6ECA61C0003
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:13:03 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=h1CwbFmm;
+	spf=pass (imf20.hostedemail.com: domain of hongfu.li@linux.dev designates 95.215.58.10 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789981541;
+	s=arc-20220608; t=1789981983;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qM3WFeKUFpvCjJ8UIMGd6U0TzUGKAEa9PlIpW6zUaJA=;
-	b=V8juFL0dYz6d8NGLHNvgjSmXY3EH+7UI6udXQgAbk4PXGgg+cvyfQvpVvLjgsa3iR21Xs3
-	R8EpQGQqzDzjm2FOvgCpNkjTBwQ768UH/hJqEa/mztvborbv04SEn+WAxkgrn6MFLboxCt
-	rObbNcCYrFqiJQLk2dtuQjOV7rRFlNM=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=w3sT7iiC;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=h67AoicV;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=2u63eRNe;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Er2ICYL+;
-	spf=pass (imf18.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=V0czgAR2vkVFW/86Mpw3S4F0MdOCajXQILqu8vqAQ/o=;
+	b=SjIbQqnEnKhKr7rEc5XvTPRGiJYawJTmcoVH3EwCXEvatJPI6yWjR3RGP2XZeLpgC4G2R0
+	yBLm5h3Hf28OJSxWyPhRIFsitIJPzPm2/d+NSuRNMMNzse3Ycu1ygz8MKHgdQcYrAohf/o
+	rUIcfqXxPyDiitt7R/cZh9N+MA3fauQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789981542;
-	b=etlxs4c1mPQGAFGtW9a9AFezdJM/XBWdB/8KtxLNWqscJavLQju59OKnlL33HCeQtCeQkt
-	btitKBW+0XuUFuTdtWFDAl/bF1Fk9T6ZyCQoGG5LZhfO+tt/KfnrNuoMJ8e1OGP3vb2pr3
-	wmKcdRgZGYVvrwSEHAMLtjNqqJ7RKr0=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 11E2E21BEB;
-	Mon, 21 Sep 2026 09:05:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1789981536; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qM3WFeKUFpvCjJ8UIMGd6U0TzUGKAEa9PlIpW6zUaJA=;
-	b=w3sT7iiCAazpsuKTVMrFJHv6mMjNCatc59il/499A4jHrA3PPIW+eKsxLzcFS44O3LFvbz
-	MA6g5laDghLb8hboOBExIiD0qpqnm2nFq59ClXXbAmBOPs/G2nMNUwcm9uij3xNhl4X/yr
-	sT0q15Y4qnX0akqIQ5fy2LSDxnqS6cc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1789981536;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qM3WFeKUFpvCjJ8UIMGd6U0TzUGKAEa9PlIpW6zUaJA=;
-	b=h67AoicVyYvGnf/OlXQt8jfuHXBhzkkxk69LRi3LBCeeivUlRSGkR7pEFBJYww3KaIU2w4
-	gIKU2icDXWiuevBw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1789981532; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qM3WFeKUFpvCjJ8UIMGd6U0TzUGKAEa9PlIpW6zUaJA=;
-	b=2u63eRNeWiQn/VmGZAhYh4Tmg57l9C7Sf7ypON88JJI0s9g2LvbXSERb4QDUwYYpYXXSNL
-	3/eBO7bvoM+Y07V9NDETMBLqHTm+JNL3EkPB6jaI9yHw4RSDVEmtM/GuHlmTpUxyrnbdEM
-	AdmsEiBKFwWCmKaoDKi8Qld1OPqoVYI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1789981532;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qM3WFeKUFpvCjJ8UIMGd6U0TzUGKAEa9PlIpW6zUaJA=;
-	b=Er2ICYL+dW3cGUa5xH/JfrS49D9KyhwzeDp9mJKF2x1OnV2ZKye68YV+6aEY2JUcAHXLhG
-	dAcpqEgoe+X1/kDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DC9291368D;
-	Mon, 21 Sep 2026 09:05:31 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id BXzSLVvzsGqsXwAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 21 Sep 2026 09:05:31 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 6E8DFA13D5; Mon, 21 Sep 2026 11:05:31 +0200 (CEST)
-Date: Mon, 21 Sep 2026 11:05:31 +0200
-From: Jan Kara <jack@suse.cz>
-To: Zhang Yi <yi.zhang@huaweicloud.com>
-Cc: Zhang Yi <yizhang089@gmail.com>, Zi Yan <ziy@nvidia.com>, 
-	Jan Kara <jack@suse.cz>, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-ext4@vger.kernel.org, akpm@linux-foundation.org, 
-	david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, 
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, hughd@google.com, 
-	baolin.wang@linux.alibaba.com, willy@infradead.org, bfoster@redhat.com, joannelkoong@gmail.com, 
-	djwong@kernel.org, yi.zhang@huawei.com, yangerkun@huawei.com, 
-	chengzhihao1@huawei.com, wangkefeng.wang@huawei.com, yukuai@fnnas.com
-Subject: Re: [PATCH v3 1/3] mm/truncate: fix data loss when splitting
- straddling large folios fails
-Message-ID: <35me4qswsu2dd3howvfdglh4ge4t5vihkizoutxt2jhiyul6xj@i6kqsnqpvbra>
-References: <20260916092450.654408-1-yi.zhang@huaweicloud.com>
- <20260916092450.654408-2-yi.zhang@huaweicloud.com>
- <xl2rtnntlxoxoozkddgrlkcsgukcngvvcwazm7gb7q5g32yxir@ef5ltcwueboh>
- <DLGXT0ERY79Z.3C5DYVJVX6S9Z@nvidia.com>
- <9d931f5e-cb34-4721-9def-7aeeda48700c@gmail.com>
- <453d0054-4f53-452a-9737-cd37d30a7d44@huaweicloud.com>
+	t=1789981983;
+	b=dVmgJdiNC7KXUolz1vZ/6VQQIZwJqukxehVVk02iUbNhA9r0gOOIFXDLizhcyDADMQeaU1
+	Sg+5OmdBPDkSNFtkh1oyW1LrZHx12+RbXbI9CJybO01X0ZP4bgYQzeeytw+KRWw/QSjSGi
+	Sivq4dEymCtnAFLua09NIC3aSI19TQs=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=h1CwbFmm;
+	spf=pass (imf20.hostedemail.com: domain of hongfu.li@linux.dev designates 95.215.58.10 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=TDH3vD9yd/dcLeLc/jAleyN9Qqat0NKvlnxsmihr/nM=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789981982; v=1; x=1790586782;
+ b=h1CwbFmmpll9Q7aI6HpACAo7/eqEd5FKAV6XZ7oS+IMPr2B/1EcGG7pKtz1QyGViCaFufY02
+ TDARzFETiVuov/zV4x50qJzRSr7l3LTqFwZ1JBDNT2rppo8yFrYztpQpB8xGEOE8N3foPl68cro
+ htpI9UGhPNjKAJZ+0vMngRHc=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 2b44032c6d1bb854;
+	Mon, 21 Sep 2026 09:13:02 +0000
+X-Mizu-Trace-ID: 2b44032c6d1bb854
+X-Migadu-Flow: FLOW_OUT
+From: Hongfu Li <hongfu.li@linux.dev>
+Subject: [PATCH 0/2] mm: fix hugetlb NR_HUGETLB accounting on folio
+ migration
+Date: Mon, 21 Sep 2026 17:12:33 +0800
+Message-Id: <20260921-for-hugetlb_state-v1-0-8a6eec92661f@kylinos.cn>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <453d0054-4f53-452a-9737-cd37d30a7d44@huaweicloud.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 884AF1C0008
-X-Stat-Signature: r3erz7d4zhw6o3pee3kapg5hgjwa8z9d
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQqDMBBG4avIrA04CqntVYqIib86pWjJRBHEu
+ 5u2y2/x3kGKIFB6ZAcFbKKyzAmcZ+Snbh5hpE+msihtcWdrhiWYaR0R367V2EUY2BvXFXt2rqb
+ UfQIG2X/PZ/O3ru4FH78jOs8LfbIOGnUAAAA=
+X-Change-ID: 20260916-for-hugetlb_state-e671831c1bb8
+To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+ David Hildenbrand <david@kernel.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, Michal Hocko <mhocko@suse.com>, 
+ Roman Gushchin <roman.gushchin@linux.dev>, Nhat Pham <nphamcs@gmail.com>, 
+ Chris Down <chris@chrisdown.name>, Johannes Weiner <hannes@cmpxchg.org>, 
+ Michal Hocko <mhocko@kernel.org>
+Cc: hongfu.li@linux.dev, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
+ Hongfu Li <lihongfu@kylinos.cn>, stable@vger.kernel.org
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1789981974; l=2043;
+ i=lihongfu@kylinos.cn; s=20260915; h=from:subject:message-id;
+ bh=TDH3vD9yd/dcLeLc/jAleyN9Qqat0NKvlnxsmihr/nM=;
+ b=5SGaDRkirvqoNfdMgtlmPP3KU7kwjMhLUgb1e9QeRVHp4qxVn0rMhMIy01kpGfZMAOiVKtDaM
+ UQcucSy2UbUDTzf5P+f6znaJUZyoTauMnD0nLr015Eh7OBzV75pTBiG
+X-Developer-Key: i=lihongfu@kylinos.cn; a=ed25519;
+ pk=rUpDSpB3neoNZRlGG6dHlFb3RepiJakcev+ucyqaZzw=
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1789981541-547229
-X-HE-Meta: U2FsdGVkX19i5PZImCv0eS4FqbuaJb4pawOtJbSeOAqScxI/B+GjWZ4ufd+IEZEQcqNAzJlUWlEPfs1DFOcuCtbgP2GB/QaGlWNjS7gaSlbAKwpbogrg+B/swHQaS6qvGGDI7iMSEQjXrJwKyxkHlfn6ybOM5a8OYa8XeV7kMcsZrPFXzaMnCp8I6rE7hYztomNrGVuGK7dZ6xJRM+hMZdtTwRMtTAybxqektw3ZoHvaMB0CChRvAilN+BEVmqR7pB70E9tqsc2sQfFhicfOKjRGPYFzTOm/aATUIqfy2EP2ASzpGLpVaiv5/TX2/mjmTbgB5TRQnsT+J3juEXgbBKXy+cMTN46LVuHVACwuMc1LOEfSbOXvP3SnV+QlXrriKpIWpDzu/R6YCWFZD6WTGCboSbDiSyhmI1dyhwxYqXqdk4fWlpB+Vk6cJCyOvjjTefG9LjghTNrZJ6ejEuyyfZbe6dpCFSoNV2LiJiqcbD2iec+vVGgqWIXu/L2Ok4ofaO7pnin30BSA5VURTNNeQUMUwkDlbA2i/S0UyNRG/XOqcm7M/wJ3lapmDv/37K4MB4An4ys8lncsUqwrTjFcadDVkN72rSuOCD33ES375liw/ttdIbr7R2AY4NvexQunHLjkZjfj4BosJLokVJeU70niPtwSCBJndXn+OKJXnAeWT0SiMYryAm3WIMNiszuV6stiTczTN/HFiRkV8VXPGS9UcRee08ftVkVussv/30Lv0nqVbL3YAnM1s7RSIG+YWlu6m6XHCFiV9dWAIGmhUp/sW+TfCsFPdStAd3QSRCcT/tm+4yFmO3R9AJLNpPFRL5tHpsg0smZWI9sNKYdO1CfWItir9+1P9jOYwdzXdlvoIoi1A1ew9/dmedkCVo56iJSY0yVH4fsF0it9fBvBBodZKi/0heR66eSKAbqF3E0elpgqLq+05/Bb6lm+7NDgxzEubSQ2eX1AFc8HbU1
- u4UJtogN
- NjzA9GvtgeAaabPuTUCgr7IyR02fBvPzyfGlpVnKWASLErh6/yEpOXWJCjfKtPY9ovAdYVHQEb9rM1OypIVB0PUMfxcSQdmCwf+AZK/jbQSUkE5a2o5TUWCwEQs0A+FRLrtaIqlCr+RxIgT3mdvOEaxmKleIsQxCpy+NdiUL4LA+iQ2QqkopHHwVi6exF7HsVUWAfikGV9AJGZssx/8TuQBHmCmhuHPPDS+ff5baKEsRyV/9uw2L35Yovp5oI/UZO2XrC420YHYX0aeIthZ6oljpwphmWxvfOASukw1jagsz5gNrunnKyueM7ciUJLIUwNCe9NYOlMIHXht5xvQn4AWzvEQ==
+X-Stat-Signature: xr7wfaa9i1tp6oa4odouhzmn5abq69rs
+X-Rspamd-Queue-Id: 6ECA61C0003
+X-HE-Tag: 1789981983-575758
+X-HE-Meta: U2FsdGVkX1+vwjtrUv+dVe96h/T2nfAKcMTDTfrDH1fvl7dhheZEmN/hSCnsRHXBizOYZOCSrV+Eket8Do3caJyrnUtX6NKipDoVa41179qEMM5c69KuMJwCdHWd2NHoOvHEdA6ZsGB1FZLYxQct5pV/8Oc//6OB5r/dxwqHsBEERN863UMWT8iHM59D4S/7zJq7njd6hhalt/4IwdG1aIKNknNRE2vDC0Pjj85x+2xhy1Kg6bR02GT2qSBxdckbVTt4MLq9Bhhpq/WX0MlNvstjGWIsqi9p7hEcC8Lx9hpXZnNVIe4+AbJHuBuuQhdRGvy/v4wcVmXHnEh2ts8payzkYmbYNhh4Egp1UYg388y9gAYmiee5D1awtLkniHwBVa0Q06suxPMn+6NJdii/IkacdzULQDDEyHxJxd6wqnv4yVy1NosvfPD0fzE7GxhWHNIusOWYL/s0vlZkeTkXS+7kpw9ozz5LJkXl7jbKkSqU7KrjZSQbNjTjoSEXCqGLjcV7ViU9ztLwjs3mSNDtlclS/KcoUQ1Le2u2rUixv85s+z3pjAszW65YO9qXireeRmKfYNvYQPhOhdfqDKtULB0K1kU1R137hij7rCVY0iBpBnLLdYEsaCIjkPEaeXzlBmDL0aacUd4+l5Dof8Kr4Au9p6gpprmTEF2bdDpw/JZkDqipDqIlQN7YYiJlXl8pjYouwbl44DPeFpVANEhYSoedp8LFMvGAGKiRQFLISb5eKS5K7GOCaIkiYs+AThDH6giMk8uaCjNAEPn0dPYZRwvi2KCfjoebUUmEwnAzObg3HOmYnYyNIRJ55fDhoFJ6d8uyUjgVW+iUAvQd0MJwL0Qb0a8zcbIex33XCe/GJMaAerRoQ1GzOCmkGrogf9Ht6RGmFJJCVN9Cd2jCj6pRuwB8bK28/gGDJsju9vIYGEVC/chSIDNYyABuCbm90ULjUue4VYEGxKhLEZFkH7L
+ mfYOmnaK
+ dYINCbstz4Pn8BDHI/3W6eewOlaH6fto+nh+cXuPXKkQ16KsD/M7nI0MhrTa3ltvqR4uWVnGU9DORAQ9yUwcYv0eXi7DAte43wQMghYfzxOoZjISauYO4wYX5mYlWpbnIPZtzzwCRLfo5Ss0i0zZ/SsNO8xZ04DVajuvbZRyloL7n1d3NhsxbyYhFvzHLJ16WRAdV4zJvWZWeAzixl/CtKhUVb519aIzqMOYY/yvRN0KaxUp/jNVmDPjvM4YZVTc3n7/4BDyn2WShjYmUG0tqceaTnneb5JWRmn9ECSUUbNoL378Du3O5uyXEjwXN/eocd8hs
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,100 +106,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu 17-09-26 20:03:57, Zhang Yi wrote:
-> Sorry, the previous diff format was incorrect, reposting it.
-> 
-> diff --git a/mm/truncate.c b/mm/truncate.c
-> index 23c90f00b530..b5e5bdf5f9ef 100644
-> --- a/mm/truncate.c
-> +++ b/mm/truncate.c
-> @@ -279,51 +279,46 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t lstart,
->  			*pstart = round_up(pos + offset,
->  					   min_nrbytes) >> PAGE_SHIFT;
-> 
-> -		if (offset + length == size) {
-> -			end = aligned_end;
-> +		end = aligned_end;
-> +		if (offset + length == size)
->  			goto out;
-> -		}
-> -
-> -		split_at2 = folio_page(folio,
-> -				PAGE_ALIGN_DOWN(offset + length) / PAGE_SIZE);
-> -		folio2 = page_folio(split_at2);
-> 
->  		/*
-> -		 * folio2 may become stale due to a concurrent split or
-> -		 * freeing, so validate it before and after taking its lock.
-> -		 * If it fails, we can't get an accurate end position and fall
-> -		 * back to folio->index, which may leave sub-folios split off
-> -		 * at the offset edge in the page cache this round.
-> +		 * After the first split at the start edge, the folio at the
-> +		 * end edge may be freed and reused concurrently.
-> +		 * __filemap_get_folio() looks up the straddler at
-> +		 * aligned_end and returns it locked and ref'd with the
-> +		 * mapping validated.
->  		 */
-> -		end = folio->index;
-> -		if (!folio_try_get(folio2))
-> +		folio2 = __filemap_get_folio(folio->mapping, aligned_end,
-> +					     FGP_LOCK | FGP_NOWAIT, 0);
-> +		if (IS_ERR(folio2)) {
-> +			/*
-> +			 * No sub-folio straddles the boundary when aligned_end
-> +			 * is empty so discarding up to it is safe.  Otherwise
-> +			 * the straddler is locked by someone else and we
-> +			 * cannot obtain a reliable end position, so we fall
-> +			 * back to folio->index.  This is safe but may leave
-> +			 * pages split off at the offset edge lingering in the
-> +			 * page cache this round.
-> +			 */
-> +			if (PTR_ERR(folio2) != -ENOENT)
-> +				end = folio->index;
->  			goto out;
-> -
-> -		if (folio2->mapping != folio->mapping ||
-> -		    !folio_test_large(folio2))
-> -			goto out_put;
-> -
-> -		if (!folio_trylock(folio2))
-> -			goto out_put;
-> -
-> -		if (page_folio(split_at2) != folio2) {
-> -			folio_unlock(folio2);
-> -			goto out_put;
-> -		}
-> -		if (!folio_test_large(folio2)) {
-> -			end = aligned_end;
-> -			folio_unlock(folio2);
-> -			goto out_put;
->  		}
-> 
-> -		/* Split failed: back off to the head of the straddler */
-> +		/* Already at the minimum order, nothing to split */
-> +		if (folio_order(folio2) == min_order)
-> +			goto out_put;
-> +
-> +		split_at2 = folio_page(folio2, (aligned_end - folio2->index));
-> +
-> +		/* Split failed, keep the straddler intact */
->  		if (folio_split_or_unmap(folio2, split_at2, min_order))
->  			end = folio2->index;
-> -		else
-> -			end = aligned_end;
-> 
-> -		folio_unlock(folio2);
->  out_put:
-> +		folio_unlock(folio2);
->  		folio_put(folio2);
->  out:
->  		if (pend)
+The hugeTLB counters added by 05d4532b60e3 ("memcg/hugetlb: add hugeTLB
+counters to memcg") are maintained in two per-node places:
+  - the per-node vmstat counter NR_HUGETLB, exposed as nr_hugetlb in
+    /proc/vmstat;
+  - the per-node memcg lruvec stat, exposed via memory.numa_stat.
 
-FWIW this looks much more understandable to me. And since this is a
-preexisting issue I agree this should be a separate patch.
+Both are accounted against the folio's node, and both drift when a
+hugetlb folio is migrated, though in different ways.
 
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+A migration target folio is allocated by alloc_hugetlb_folio_nodemask()
+and inherits the old folio's state without ever being accounted, while
+the old folio is freed right after and its free is accounted. That
+alone loses vmstat accounting: the target node has no matching increment
+for the decrement on the old node, so /proc/vmstat's nr_hugetlb shrinks
+by nr_pages per migration. Patch 1 accounts the folio where it is
+obtained, so the increment pairs with the free in free_huge_folio() on
+the successful as well as the failed migration path. The memfd page
+cache preallocation helper has the same asymmetry and is fixed in the
+same patch.
+
+The per-node lruvec stat breaks differently. mem_cgroup_migrate()
+moves the charge to the new folio and drops the old folio's memcg data,
+so the old folio's free right after migration skips the memcg per-node
+decrement; the count stays attributed to the old node for the rest of
+the charge's life, and the target folio never gets an increment on its
+new node. Patch 2 moves that per-node accounting alongside the charge
+in mem_cgroup_migrate().
+
+---
+Hongfu Li (2):
+      mm/hugetlb: account migration target folio in per-node NR_HUGETLB vmstat
+      mm/memcg: migrate per-node hugetlb lruvec stat together with hugetlb folio
+
+ mm/hugetlb.c    | 35 +++++++++++++++++++++++------------
+ mm/memcontrol.c | 31 +++++++++++++++++++++++++++++++
+ 2 files changed, 54 insertions(+), 12 deletions(-)
+---
+base-commit: b08a65b93426d86e3f354d655d6225397b591877
+change-id: 20260916-for-hugetlb_state-e671831c1bb8
+
+Best regards,
+--  
+Hongfu Li <lihongfu@kylinos.cn>
+
 
