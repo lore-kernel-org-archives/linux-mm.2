@@ -4,79 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91EB2C982DE
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 10:22:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0157DC982E1
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 10:23:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7306C6B00C5; Mon, 21 Sep 2026 06:22:14 -0400 (EDT)
+	id F21C96B00E2; Mon, 21 Sep 2026 06:23:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 708626B00C9; Mon, 21 Sep 2026 06:22:14 -0400 (EDT)
+	id EF9616B00E3; Mon, 21 Sep 2026 06:23:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 61E3D6B00D1; Mon, 21 Sep 2026 06:22:14 -0400 (EDT)
+	id E106F6B00E4; Mon, 21 Sep 2026 06:23:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 32A9B6B00C5
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 06:22:14 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 07400A1D5C
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:22:12 +0000 (UTC)
-X-FDA: 85237379304.01.90C62F5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 36EF6180003
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:22:10 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="iva+R/Zu";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="iva+R/Zu";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789986130;
-	b=CEhNS9eB4MW/OIfLx3W0USOv0PBMX4X+kz9mX+K8b/yIh12fyvb6vVvQxcjVRVdBMZQvuj
-	pZjRpXwhUmCJeUuPZ3RK8MrSPkus7TX5l80bmMgmLmN9tJzYv829xUS+UEgh5Fc/HV0SH+
-	W1ILXc5sD6rE62v/rljkrU+pwEsTbNk=
+	by kanga.kvack.org (Postfix) with ESMTP id AEBED6B00E2
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 06:23:24 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5A35EA1878
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:23:22 +0000 (UTC)
+X-FDA: 85237382244.05.3313BF4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id A44421C0004
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:23:20 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XtCjeKbB;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789986130;
+	s=arc-20220608; t=1789986200;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LWcnRSmN81n+TtIjFirFOAPiB0KPdF4SskaKnrNBemU=;
-	b=q9egmZcLyJbZ7VtwMTyhYFwTo2YFyvpzRQyulcH3r8FTtpnwmOp7YoFS3DjgI4rQqLZHtu
-	uG4mCASMrBId66Y7QKmag1rI3AMgQ32svW/J5+Ff+ZQBYCebelYm+KjgqbfaNJIZwanL6M
-	GNxAD7MlwruWlMStEfNWDOLcFnK4g8g=
+	bh=cuztroE9B009/ngScnA4v/aPOnVqhUZhmfly2op/ylw=;
+	b=ZNqRkf/kEKUP7Tu/nVeHqd18VRISh8yAk+TYgpj4yY0hoQODAuebfw6Nd1PIu5Q9B3t4v7
+	oc/1VXn51afVKDyReIT4jlVxdTx4xsLSKZ3rWFXMy9Cd5wh2yj0HmpHeFSYJYuCeruVZuy
+	WdsSxXoXEjhpxVYi/QmKA3cuiELAhvs=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789986200;
+	b=r2w04gq7BAnvyEhdjsabIvAazn4DvuzMrl5g9LX3CscOn8UHw/EET1okf165S1XaFtXh3M
+	MK4QMBuDmpaMvI8FropBq8+0QIpMOC/5RIGR5O2j9nnP3uwT1iKKQkUvFzfWBo1m6ArdAz
+	c2JQyheMuyd5IQr69lBtXqoy4xB9c9c=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XtCjeKbB;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6BEB642A46;
-	Mon, 21 Sep 2026 10:22:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E7AB1F00893;
-	Mon, 21 Sep 2026 10:22:03 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E40ED600C8;
+	Mon, 21 Sep 2026 10:23:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 258201F000FF;
+	Mon, 21 Sep 2026 10:23:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789986129;
-	bh=LWcnRSmN81n+TtIjFirFOAPiB0KPdF4SskaKnrNBemU=;
+	s=k20260515; t=1789986199;
+	bh=cuztroE9B009/ngScnA4v/aPOnVqhUZhmfly2op/ylw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=iva+R/ZuCZyU82gLI0nCN8tz9gUnpWYVgMWLdSU4nhRi3x92j+Y+gTyAKpLdj3WOb
-	 gkcSQKfgLkV6Rg7AL4zeWhvck5bGRMuADD12WGF1m5lJnr4mnSd6QeMKg9wVCbSqnu
-	 sHYC4p3D+Wigx8tG8PWSZ7txGTjeJQP7TQ0kNe/p1NXPKPfpfVECpASqlzxqnlbyFI
-	 i1arl/yhuLMLVC7iKUZKs3t+HiLY6nI/M7SacKTo3Lm3xHtioBKUG0GhuaPF5RpvIp
-	 yqUIdJWmtkKsbAl5dpESapafjJwL7Pme6s5YQqUv9uVxltTMgNa7ewiXRc0l7gtMwr
-	 z5euTjUeXnlbw==
-Message-ID: <c947601e-3081-49bf-b4b3-8710fdd262d1@kernel.org>
-Date: Mon, 21 Sep 2026 12:22:00 +0200
+	b=XtCjeKbBbwdrOYSNwSZpOoahoJnrEqa82MCYqCKqmKloTIf0sZp4TYx7Gx2rh1ZSt
+	 ma7eDffRa0uxhKbkNhmG3howbtf2YPKu7IcfbYYVfeSqv8wEtqzLggeLV4OJO/a6V8
+	 R0aUALt1x0gLNMc/w3uRLkHuNlkHqHeascMzgatTM/8o1PXtIi2cnhyCCl4G5t9X34
+	 PBvRsCPyRUo3/ydRByO3SK28M4Cll3JrqkQ3WI6H8Hg1+GYRtyDGfqYIVKMXy6Kwcs
+	 goLwr3uzs2HJ2sfMHzpss3xEK/47dBJ4z1OGTYmNFVN3oEFagD+Z6TQacB/nVPrpGZ
+	 qNcFMAh+gqVmw==
+Message-ID: <46914256-508a-4737-86b9-a43be7e628a7@kernel.org>
+Date: Mon, 21 Sep 2026 12:23:11 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 0/3] mm: split underused anonymous mTHP folios
-To: Usama Arif <usama.arif@linux.dev>, Lance Yang <lance.yang@linux.dev>
-Cc: joannelkoong@gmail.com, akpm@linux-foundation.org, ljs@kernel.org,
- hannes@cmpxchg.org, baohua@kernel.org, alex@ghiti.fr, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, liam@infradead.org, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, willy@infradead.org, linux-mm@kvack.org,
- kas@kernel.org
-References: <20260921100852.2236761-1-usama.arif@linux.dev>
+To: Joanne Koong <joannelkoong@gmail.com>, akpm@linux-foundation.org,
+ ljs@kernel.org
+Cc: usama.arif@linux.dev, hannes@cmpxchg.org, baohua@kernel.org,
+ alex@ghiti.fr, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+ liam@infradead.org, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, lance.yang@linux.dev, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, willy@infradead.org, linux-mm@kvack.org
+References: <20260916224437.1164512-1-joannelkoong@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +123,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260921100852.2236761-1-usama.arif@linux.dev>
+In-Reply-To: <20260916224437.1164512-1-joannelkoong@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: yhf7jt5yga9dhbqobirj5ibpwnknofmc
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 36EF6180003
-X-Stat-Signature: sdddfgbis3chsg6aewn347iggzr3qrzt
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789986130-590842
-X-HE-Meta: U2FsdGVkX1/fG0wSqcO4vX/Qzt5SGe2Cbd4PiY4OvQgyT2eiMvICWcfxPsec4TdVoKatRoGujSYWg6ZakKHhPvSyv0lq4PQuBtOP7Sce1+i6TW7/kbn4fRUsLknKtkUN3GWGr/O3rbA1MpKeobtM0ruJKg3BHns7mj+K+C35HuQK9oHhsqtgiulo0/Lbn0DLXu42neENQsqFcVJf03Nts1FXhEDzYI+/NkozFiQkAnyE0Laa0RVcr4NaNfSWYm29OhgwV0hwizIZqVssQZfYFoS2pIH6uWZNxBV5ctaRlZ3yLcIsqQpis9n/Zys/cfF0nnBq+IVmUpBOSHMVfQg8YrJ8ogSwvxYGtYog+phkBRW7b4YwLXIwwHFInvc9XMQ+hO1i907Fg1YDQOFkRfqz7JXwM8Hzy+Moqr/LJsJ+7FAYZM0Dbgil3ulzijhLu4LjWBhG4SbbyEWeVmHLxRMkN58DztmdjTgDBtmv8oWwfyIpR+Cp0cTmdiCbqaOmIvv+CU5ykaeBZVrXvDcsFiHGHs8nE+MPqWg8/5zo2rHguo8X0VucpyKd/Ir8DOfxiS+yYGs7+qkW6pyzJ30OM2HaVXNMF80MwgezG75NJ7spvaJJCUwfxAGo0BsfN7Ypvz62Tc3OEw+4gFKc4dQapnba0WMWQf5nhEp0m7esj3Ql1X95ao4M4qb/HJ0tFdNjqXAsvXCWt+M8YquUy2ZM5cN2yswhUiRD/t/SSQtj9Wj3YjWbW+2l35i96Cjg0iSlvWx8/7hlLFQ5qXvFGWDGLjoQ5aMAPWrTHLJd7KslT5zvrCq3WJ8elnmKv9GdxAwmyEseLRiGc5xOapz1CYFOjwHKN4UdmrAwfa62MAcSQFHER00MmAr7LaFpyjlF9XeFs4K9prTD+KRlBjzz/erButUjHkLD9ysn5pweN0qmwqvCMBJV4tJfxra6c16WnVcxJUfLFhPNGyK27iPXViAwoa9
- l/7eViV0
- z+p9G5rZAkyqq66j8aTq3IXw1G8bvz3ACLgyxjCnr2xgqB7dGxh5jzJzI9/4YPHIGis8FuueA3IizmEAg7jEjiDIUvq3DHEtX9krE5i+Lod8qzqG+nduLKgbxYh7qx99I6KbiZr2D1FDXPrJKD2w4XPx59/uv1+GEYKsI8t/+qotCw9rGZr3tM8Uw8oej71RsSH4VJ3EOQDOlk1UZ3S1OnOBfaRt2JcVivWVFx8eUEIWYukBgMYC0s2FP+xpDQ/RUAtKECwvIS0GBTEE=
+X-Rspamd-Queue-Id: A44421C0004
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1789986200-384314
+X-HE-Meta: U2FsdGVkX18v1mun3n6D3pGUqguVEoq2H/6HAVVcwzDXGdZqcs65nYyOcVQ8sFX0wWY0CH3Y+8qdw3/EbOheWdZINF8urxF7yMArT26q4rSFPPbIIqNuiAOt1Dxyna4gd6bUtWO0NZrA9lLb3BL6QGBvkMfd51U5Z4O5zTyWiYvtIKYKX4SkEnWJ6m1+zmXvBgb4ni9ChjKIS/k5CT/FEpDl3qpQ9qUO6LrUoLALoqDmrs1eEv23J9HRIXePNe5vX26RC6Jbq7mJNoQNp07+XML6cURf4FxpDp6+1QU38mKuwcxbjHoBsrfMa0Lt0oWlogwl/ZLR9Z7cpGfwdeym0/sn3bwPeXWiKotfizINXqfJjt43ms4b6NpaBJu7i3PDhHvvcwGvZRWHsC00w8h0j1Es6TjrWIsZb40fjRPazwopHDrYECgL/RqgWgVzt+fGp2GaUz4EQVCCwMhewJ+gpVhVi5T5iHXn5D1Hpq4yp2OMFdUySuz8O0qimCPoRmVJLbRrlY5XsLFOQ6MbBw91HsIgakmIV3rBhdniuPms07jMzeiTnRs3LAQIQMy2sGmwMTTx2sitZK8IOS8S88aK6vvM6se5tK1Cv2790QfMbLwLJMXKSp7Dp97uJolK64lLo2eO7k39oduZ7zftMf45yVH6lX6F6PbviKQ/e8ms3z8ZnZ1aKndivamm84/6wMAuPu+B6RaKkYr4bMoTDjQqhlDeGZf7dc4u4YgLUxccv6eD81wzIYT30c9sfOZjLMRFd2hcwxPJsu1bz6ChiiZVAfNGZS42VceoeUqkTNXXalozNI65afln11z0UjYqBtOYECajPbvqR3YBL6rK3fOhHIMAC35HCePFLdNpqMumh3920hxnndC8rYv3nX1T2j/aPJBX8GiNl2FJihxXK1EyTPr3qgEIAZC7fSPCVYDVAVxWhGmg1ze/du7+c+/zBzVYdCBX1s0L/n7pSfWOba2
+ f68J5ycx
+ E2JGARPg5rbXAhKIbIxNE9gtKhgc7oMpzLlUd6b5v88KqQaJPR7V+PEbJ8UJwe00jV65C0DzC3rzgwoURhaH3SUo1wge43imkSOfnczfM8/LXRe2doIIxrqpUHcYKAFNmZTCFoGGiOkolLl7ESCIZ1WZ7SQiuYJ/Pmp+Ay+nTs4Lm1bCyEWNiL047Emzb7Sa0kwbQZRC6aCP4KZR4J6dQK6S0ib2a6YGWPI3vf7keBn/OYZ4L+8OcOG+7sAyLTu9xWD0b
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,78 +141,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Kiryl, would your rework allow all values for mTHP collapse or would
-> it stil only allow HPAGE_PMD_NR = 1 and 0?
+On 9/17/26 00:44, Joanne Koong wrote:
+> PMD-sized THPs that are mostly zero-filled are reclaimed under memory
+> pressure by the deferred split shrinker, but this is not done for mTHP
+> folios. At Meta we would like to deploy 2M THP=always on arm64 with 64k
+> base pages, as 2M provides the contpte benefits while the PMD size there
+> (512M) is too big to use. However, 2M THP=always causes memory regressions
+> unless the unused portions of those folios can be broken down and
+> reclaimed.
 > 
->> Would a per-order value make more sense here?
->>
+> v1 did two things. It scaled khugepaged_max_ptes_none down per folio order and
+> it queued every anonymous mTHP folio. David objected to the scaling since
+> collapse had already rejected proportional scaling as either letting the memory
+> footprint creep or being confusing to reason about. David and Barry separately
+> objected to the queuing, which adds list_lru lock contention on every anonymous
+> fault, and hurts lower-order use cases such as Android's order-2-only
+> configuration. Johannes suggested keeping khugepaged_max_ptes_none absolute and
+> simply not queuing folios that could never exceed it, which addresses both.
 > 
-> I feel like per-order might be too many knobs? What about a percentage
-> that might apply to all mTHP orders?
-
-We discussed all that in the past, and concluded that we will have to support
-the existing toggle. I played with using a percentage, but having two toggles
-possibly mean the same thing (and some values not being possible) turned ugly.
-
-So the conclusion for me was: no new toggles.
-
+> Read as an absolute count, khugepaged_max_ptes_none also implies the
+> smallest folio that takes part in underused splitting. A 2M folio on 64k
+> base pages is 32 pages, so the knob has to be set below 32 for those to
+> be queued at all, and any folio with no more pages than the value stays off
+> the queue entirely.
 > 
->> An unset value could preserve the current behavior, while an explicit
->> value could control both mTHP collapse and underused splitting. That
+> Patch 1 makes thp_underused() folio-size aware. Today it only ever sees
+> PMD-sized folios, so it assumes HPAGE_PMD_NR pages throughout. Patch 3
+> breaks that assumption, so patch 1 generalizes it first. No functional
+> changes are introduced.
 > 
-> Ah are you proposing that mTHP collapse can then take all values from 
-> 0 to mTHP number of pages?
-> I think one of the inital version of Nicos patches for mTHP collpase
-> allowed that (hopefully I am not misremembering). Nico, what was the
-> reason for only allowing 0 and max?
+> Patch 2 keeps folios that can never be found underused off the deferred
+> split queue, as suggested by Johannes. This changes/optimizes existing
+> behavior. With the default khugepaged/max_ptes_none, PMD folios are queued
+> today and then dropped again by the first scan without ever having been
+> splittable. After this patch they are not queued at all.
 
-The creep problem was discussed plenty of times. That's when we decided to start
-with 0 and max, and only add support for scaling later, once we actually know
-which use cases would need them.  Without support for deferred shrinker, there
-wasn't really the need to support other values.
-
-Some of it can be had in:
-
-commit 5a9c05d86683db5449b7fefd278c461cffb55234
-Author: Nico Pache <nico.pache@linux.dev>
-Date:   Fri Jun 5 10:14:11 2026 -0600
-
-    mm/khugepaged: generalize __collapse_huge_page_* for mTHP support
-
-    generalize the order of the __collapse_huge_page_* and collapse_max_*
-    functions to support future mTHP collapse.
-
-    The current mechanism for determining collapse with the
-    khugepaged_max_ptes_none value is not designed with mTHP in mind.  This
-    raises a key design issue: if we support user defined max_pte_none values
-    (even those scaled by order), a collapse of a lower order can introduces
-    an feedback loop, or "creep", when max_ptes_none is set to a value greater
-    than HPAGE_PMD_NR / 2.  [1]
-
-    With this configuration, a successful collapse to order N will populate
-    enough pages to satisfy the collapse condition on order N+1 on the next
-    scan.  This leads to unnecessary work and memory churn.
-
-    To fix this issue introduce a helper function that will limit mTHP
-    collapse support to two max_ptes_none values, 0 and HPAGE_PMD_NR - 1.
-    This effectively supports two modes: [2]
-
-    - max_ptes_none=0: never collapses if it encounters an empty PTE or a PTE
-      that maps the shared zeropage. Consequently, no memory bloat.
-    - max_ptes_none=511 (on 4k pagesz): Always collapse to the highest
-      available mTHP order.
-
-    This removes the possibility of "creep", and a warning will be emitted if
-    any non-supported max_ptes_none value is configured with mTHP enabled.
-    Any intermediate value will default mTHP collapse to max_ptes_none=0.
-
-    mTHP collapse will not honor the khugepaged_max_ptes_shared or
-    khugepaged_max_ptes_swap parameters, and will fail if it encounters a
-    shared or swapped entry.
-
-
-Tracing back the discussion on that patch should give you all the details.
-
+I think we discussed queuing folios once the value changes and you would
+actually be able to split some. Was there a good reason why that idea was dropped?
 
 -- 
 Cheers,
