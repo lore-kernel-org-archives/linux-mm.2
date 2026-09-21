@@ -4,127 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3763C982EE
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 19:58:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 221CAC982ED
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 19:59:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA72E6B0092; Mon, 21 Sep 2026 15:58:58 -0400 (EDT)
+	id 147F06B0093; Mon, 21 Sep 2026 15:59:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B58036B0093; Mon, 21 Sep 2026 15:58:58 -0400 (EDT)
+	id 11FDB6B0095; Mon, 21 Sep 2026 15:59:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A46A26B0095; Mon, 21 Sep 2026 15:58:58 -0400 (EDT)
+	id 05CF56B0096; Mon, 21 Sep 2026 15:59:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 885FF6B0092
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 15:58:58 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E4D79C02C8
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 19:58:57 +0000 (UTC)
-X-FDA: 85238832714.05.9FB921D
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf08.hostedemail.com (Postfix) with ESMTP id AF785160004
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 19:58:55 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=hWLqMgmz;
-	spf=pass (imf08.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790020736;
-	b=EoNPJifsE5AdoyiXZGawG674foJ9HLMszOYQl48ClJuxIrvVk33iFGXIjLau9vamhU+RBv
-	VxPbfTs/rLLwNxeMDMrTZqhG/TkLbgMfgU4X4Q/1Oy/CSXWsWRouAmuvKdGgeyRUIElXwJ
-	iRhVRnXkKVHRsg4YB2VRQffgkDQToAk=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=hWLqMgmz;
-	spf=pass (imf08.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D2A996B0093
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 15:59:17 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DD5E01602D6
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 19:59:15 +0000 (UTC)
+X-FDA: 85238833470.16.90DA268
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 09A18A0009
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 19:59:13 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Sl18dBiu;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790020735;
+	s=arc-20220608; t=1790020754;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7PQp78DBLyCecA5Hv0HqsD2IBBaq/qhrBbKSaa4Pw6A=;
-	b=8dXsWb4QIEeAx4TaukmAEtf6VgOb7FOS88JLzGH+O6jqZfv5jYaofrTP7HLGoXvFEkieHJ
-	g9mbAGZHu2lKzWGynOnMZKR4Iyl0kFHIArfgfsxZaCu2By2ndpyfesmeC8kzmkL8OpMfCh
-	hxW4DbCVJqWaMRFY+FUKesdgWq55xBA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790020735;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7PQp78DBLyCecA5Hv0HqsD2IBBaq/qhrBbKSaa4Pw6A=;
-	b=hWLqMgmzE1/DGCZNhrcohIzavF3ktqHxHaPGkmTxd+GZPSLaw0GGx2ow1p5YksiNB2Ab67
-	xNUXcFwpD6ujKiZd7e+GwSk8uDlyFnyaYxW0sLCXLkmKQHfTojRO5LtwYKrFVgKqxxwzY7
-	XgyGVO84fKHUn1WIuqraTYEENgJATbY=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-593-ffI7HLfbO9WJQDXQmxn8XQ-1; Mon,
- 21 Sep 2026 15:58:53 -0400
-X-MC-Unique: ffI7HLfbO9WJQDXQmxn8XQ-1
-X-Mimecast-MFC-AGG-ID: ffI7HLfbO9WJQDXQmxn8XQ_1790020728
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9871C19352EA;
-	Mon, 21 Sep 2026 19:58:45 +0000 (UTC)
-Received: from fedora (headnet03.pony-001.prod.iad2.dc.redhat.com [10.2.32.114])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id B445F180036E;
-	Mon, 21 Sep 2026 19:58:26 +0000 (UTC)
-Received: by fedora (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Mon, 21 Sep 2026 21:58:45 +0200 (CEST)
-Date: Mon, 21 Sep 2026 21:58:25 +0200
-From: Oleg Nesterov <oleg@redhat.com>
-To: Ye Liu <ye.liu@linux.dev>
-Cc: Michal Hocko <mhocko@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ye Liu <liuye@kylinos.cn>, SJ Park <sj@kernel.org>,
-	Gregory Price <gourry@gourry.net>, Lorenzo Stoakes <ljs@kernel.org>,
-	peterz@infradead.org, paulmck@kernel.org, mingo@redhat.com,
-	rostedt@goodmis.org, jpoimboe@kernel.org, mic@digikod.net,
-	tglx@kernel.org, david@kernel.org, linmiaohe@huawei.com,
-	nao.horiguchi@gmail.com, rafael@kernel.org, gnoack3000@gmail.com,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	linux-pm@vger.kernel.org, rcu@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-security-module@vger.kernel.org, rientjes@google.com,
-	shakeel.butt@linux.dev, xu.xin16@zte.com.cn,
-	chengming.zhou@linux.dev, will@kernel.org, boqun@kernel.org,
-	frederic@kernel.org, neeraj.upadhyay@kernel.org,
-	joelagnelf@nvidia.com, josh@joshtriplett.org, urezki@gmail.com,
-	juri.lelli@redhat.com, vincent.guittot@linaro.org,
-	tony.luck@intel.com, reinette.chatre@intel.com, x86@kernel.org,
-	paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
-	pavel@kernel.org, lance.yang@linux.dev, mhiramat@kernel.org,
-	pmladek@suse.com, longman@redhat.com,
-	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
-	qiang.zhang@linux.dev, dietmar.eggemann@arm.com, bsegall@google.com,
-	mgorman@suse.de, vschneid@redhat.com, kprateek.nayak@amd.com,
-	mark.rutland@arm.com, Dave.Martin@arm.com, james.morse@arm.com,
-	babu.moger@amd.com
-Subject: Re: [PATCH v4 02/15] mm/oom_kill: convert process/thread iterators
- to for_each_*_rculock
-Message-ID: <arGMYSL8lEZqhRnW@redhat.com>
-References: <20260921092101.89285-1-ye.liu@linux.dev>
- <20260921092101.89285-3-ye.liu@linux.dev>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=iyANBTrd7/pQCJull/2ya68CuRnYwJGmlUALpFhfxZM=;
+	b=ABZbP9Mjk2bNeaIXamv6Ry5R85BXDIXXYjv0vyGAnlTdnIsKR3Edm2vEWBUpiVfmraC973
+	XCdTpp2e0yeSMOMkjwpYmsOG1dx6eSNBhBKiJnphnHtxDS4FahgGPn0W6JgzACJ3VEoZpY
+	lnzNEb5HYXHWyGyKw1eVsXqMbbgHCgE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790020754;
+	b=lvxG4TCM0QNyP6MNNJrNczxzmOP7nJ6n1T1Kza7+Iz83ZM/LBeeZSwOPSFzEsv1g1oSEOZ
+	6nQwsq+S46txqu/GcWha+0GC/YNI06UN+17bsXeMD7SBllxpkyFwwVvfrkaeEVuDpDcljy
+	1Qywb0oTb3kRox9QolNyNVO4wPp1ov0=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Sl18dBiu;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0DC0F40F81;
+	Mon, 21 Sep 2026 19:59:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 882BE1F000FF;
+	Mon, 21 Sep 2026 19:59:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790020752;
+	bh=iyANBTrd7/pQCJull/2ya68CuRnYwJGmlUALpFhfxZM=;
+	h=From:Subject:Date:To:Cc;
+	b=Sl18dBiuA4/EcO/wURcyJXVuiTjSKzlt0ZDnKrZ5DJGIgt1rmqDll6IZBY1wAtpO7
+	 XTBMmLJIWLjdgi2EL5+yBmWA7R4uaeIldDhBCR9wcrzy3NfqCnrHDTHYXoayI4kJRk
+	 dcSFZ9lgaTQeRv0VSUU30KLeJZfzWqFlOMoNdtIFO1PPltCeAMpi9Cbdu7WJ2qQpwL
+	 MBa+i1zskmQrAOobZZhLzibU5sMolxgcgEepK4ENj1qOiN3zqd7R39uxym0bKelLHg
+	 Rr8djNbHAnLlGg6+6VvWodq8iGgVslYeN/nOaG86PoI1jBU9eRRDD/2ZKmeBPKaCgf
+	 r31F22OT7n6dA==
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: [PATCH v2 00/13] mm/sparse: remove SECTION_MARKED_PRESENT and
+ further cleanups
+Date: Mon, 21 Sep 2026 21:58:52 +0200
+Message-Id: <20260921-b4-sparsemem_cleanups-v2-0-54d81d65e125@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20260921092101.89285-3-ye.liu@linux.dev>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: FEIWrZALs0rK76JUu0f98P2-fEhoDWMcECpiMpCdWPs_1790020728
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: AF785160004
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHyMsWoC/3WNyw6CMBBFf8XM2poWqxRX/ochhpYBqlDIDBAN4
+ d/lsXZ5knvPmYCRPDLcDhMQjp59GxaIjgdwVRZKFD5fGCIZXaVRWlgtuMuIscHm6WrMwtCxMNZ
+ pq2OptDvD8u0IC//ZvI90Zx7sC12/ytZF5blv6buFR7Xu9kYikz+NUQkppDSFM/klTgq8v5EC1
+ qeWSkjnef4B29vNdM0AAAA=
+X-Change-ID: 20260814-b4-sparsemem_cleanups-8bc4b47014c3
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Kairui Song <kasong@tencent.com>, 
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+ Baoquan He <baoquan.he@linux.dev>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Brendan Jackman <brendan.jackman@linux.dev>, 
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+ Jan Kiszka <jan.kiszka@siemens.com>, Kieran Bingham <kbingham@kernel.org>, 
+ Oscar Salvador <osalvador@suse.de>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+ linux-cxl@vger.kernel.org, driver-core@lists.linux.dev, 
+ linux-fsdevel@vger.kernel.org, Seongjun Hong <hsj0512@snu.ac.kr>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3671; i=david@kernel.org;
+ h=from:subject:message-id; bh=Av9neL0LEVkPlIU1KnqHDojloJ3A/Q9yM5MGKwqz6Z0=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLI29jQWPntcY31479w5PF+UeARMPh39VhNd7ON83GDRY
+ 45yNbP9HaUsDGIcDLJiiixBwfcNXr5cV1vtxscMM4eVCWQIAxenAExkfRXDP0XnLbs+1z7pU53L
+ 8axpTfXE2/IfTrxlaA28+VFsh6bqpceMDFs2vRJtqbwXJNS4wl1zMff8iSK7/hzfrJDdtuHSquT
+ EqwwA
+X-Developer-Key: i=david@kernel.org; a=openpgp;
+ fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 09A18A0009
+X-Stat-Signature: 1mb4rkgmg1dxpqfigbk8pdrthe4bicmu
 X-Rspam-User: 
-X-Stat-Signature: e9ywrioyg3emureremafpof5fs8gdeeu
-X-HE-Tag: 1790020735-407673
-X-HE-Meta: U2FsdGVkX19ndOC8dQWdCQK8ZC2e9cx8UISRw5TYZReHz4iL4MC0D853ZFvN8mCW1Nm+22JssItZgj5jESrCG98wJBhDY7A7qPKxUWlBSsqDxpzVUNcaznhkHM55lKNAUnP2IwvKRoGroZ6n+Zuq7S4bidRDgvumKg2EEtZN+6OFWLPF7lDhcCSR6URRM5HgEogtcv25Hzjvf3HnxV3aembAqNHmPUUD9FAWXKs+g6SsboTVyTk8RupcBVHLcSyhS9Xlw8S65vcPv7hknXN7/HO55L4Lc91MV46wQWyjL31Em8F3EMwfBygt3A3qtlwqTZMSrRNNXF4bAYQwHPYgerylpkF0y8qbXeXq23PXPHVSFMa+j6WSnFOSBj+L/uNnxbSve9mgJYT4HlBhU1FEZvKFiNpKdHNWuUHJ3/k9cTLyt7l/tAq7WOeKG2z80MkYxCb7lvY11PQmALRGUB8s9Og6+mQwfqNyrUlaCsStstomjDhDyotlRck85fM+u5gp0kuPLLnRdeW73ESW1QYkvlkv/cunAMfXcM4I1Mv0lKMh6WTCuJPdnmQWomKG8hudsU4PJArVQGT9fh89VefIhnQi/LvwaHM5TGxAjZ0ZK8abixypSrSWqC7Ly1e9u5FT6Kw1LC1tqtRUCsJIaaa3MRMs2k03y5/ng9H+DEbx9Utcw3tCmzvDmvBHTepEvz0Pr0RQxc8X9TSnoyHsm3lCFfIPj+bcaw6wq+nfuN2K4bKAea5Ju6688n4XolFnuabizWqndiFC88xvgk3+FNeiEqheQkE3F4XjIJp9ZFDutCTw2BAYMq9QU4t8EcLrZ7UdjKtOe60KQiNgXSik5AeGXjd12ggrEV7l2FcaE5TMyOpwFlletvqEOyqa4RHnu6ukZT0qgm4d7DEhmKUx7OQvBSwoXNhCUUhmpsx5k6J0XOyhxkDiTSvrVTj3hVN/YYUTk6yryNAkmj+VtY8ulp1
- ZyGzz9E0
- OnYf/YuKSwiV6vBWy8SCx3vicmh+++mwrlxR6WfnUU2Yl3XrZyW8gHJAKvLXzCOAStnpKWM/HhTDBcPGTAkqgxvf28nES9+YgHjb6EBNPkt4jbxMFnVjtMjVA7u90Z2VnhjXd5+tvW4dMp7zd7JkWr0mfeYDh3gsc68NEXqZRiz3+kJiptWRsGMRh2kpeJ6de08Ns54ldKptZ1mX90PXcWfQwKcdMrouf8eeuFFE1y8VWGFQqLpqTxtvBhMSlE4W1D35MJ0l1Cf6MatgpL6JOfcG8V7tJYWLPJky0q3IB08BfTuORBxMvceonGyWVIZ2SpGaXysTN4N2UWZiJBNVez3KqTeq5+WdB75JzVQNkVGQSzO8ON28We7JRVv254YEWKONn9by2wV6MnofoLUQ1uYGaAQbPTSH/+hGSTw5W3NeMeL4ri9GkMws3cj19zIcNzSolrMTVg1LGHlpBTdJCM26z4BIJ99t0oN3PC98u9GtKFeO4EOZKgzPlsassGXjl5VhYV3kr4WdvTtkvmSmnwNoK0Jk4NOtuYbojPbUG5IoHyjYp109mEe6cN3nxsjV93F2Mbca0rrC+NYEMVGVe99koV+tq1JrSy06Midgrb6G8AZdfdPyg3J31CPtvU8p94arR
+X-HE-Tag: 1790020753-145018
+X-HE-Meta: U2FsdGVkX183ikC7nxXOgGyCbD8E7mpfCCqum5U5AC+B6PJ2RKaN69OE+RmWLQXNpNDTpAFxiWfMegHh2ZHyqjcuNrJPtSjqq8zfhJDMwh71Ny6MSJlS64A4S6xvM+nMgqoyauKxK85v4GLdUdxDCpl4OIbOT7dL0UPtq9teY8XEFvXyb/k5ElLtflisQirFHUIvUcXqZ2iELdTkDhgBqux/Ro+faf5SHOjAu2gXRcug+yDwVwAf8dbmOeqCNo56TRo/tvvlGrrrvBe+EnmgTNgVwP4r4fz/Kr6GWpCIH1H77GX1B8RqI5ieWmd6zBkpKWyDHrknIj7CeW8LfG5x0fnNtsfjEI85NpYfH4ga2F+j5NrAfHSCvx9HUdalVNdWLosPZFExWH3kcxpKVU4HFE4eHdqldHTVvbBrUYE8zud53pVQig0N85A8wQEtlvC0P/Oc7ujY4s1B4RrHt65kDmgecLQyljv60gkmzBp7vn/x7EFGqCq6ZIsPaCUaFmsnBpNRmJrp2/UX49ri/LPgb3WnI42WJ176US2gbcHBRQblVegYh1HtQNnLQedh7vgzGF8207LV2PlaDPzjrTTmEx+29BwnLumc/s+KnMk6B8N0OPQEo6GPGB/PIhXQAHQ1PvBE2nBG/N0+SKW8WqAyWyk6Ps9LIV/SirmK7A27+Zqg9YPezCFkAnF9R+zSJzFkNATs9mYqb1XnH1qxjF71FXaa/eFnB431YUuAs6nUU4H6PEmMgMM3KFq22y8N2crU+2Z3tmZO6pKDTLtNScFUF4FBkbipvt4QldbsVqriQJJAEoJ+wFahBKvggQldGbD15tnDeTJXsDJi9qAusXPmcXjN7CC65uqphJEsVevefWG0GvgOCk0tiJ40y9bewqdIGyB7bsom0iJd4nqluck18PU5BwDoFqqKJ0U8Y89QvW10ZdazDZCQWuuTTy/nq7NjrH/RjoDqkgiWntdyhX4
+ WNVnDlp8
+ OcRA6T+F+j4+vHQfTNEe4VnXzttRhZyT/H02cwsHxxIU0+4Ju78kuj408EuQFdfInx8d02Le3AwuSMPB352CStV88i9ikIc2/N5LDYnTFdsSDTSZMQcNEQIb0Ki+9WaJzeGYpw7OPjCBePjftlaO7aabsIkdrZRdwtDiwYPR9S0hOLhLQSNKMb/XBS/SC6fhgrj9g+woAtHGaHcxF3KAhmIicmtOcachMqbQqwa+vDRq5mc7MSbA9g4jHQP9WgYC42vew7i2pVyMr2ooG26BWMK2iQcBg5dnOt8ftWKLeL5APf4h02GlCUUqWJuarRfiDmC0ujImNPXISsktja8s+qVUhLVCHRTKx+Tgql1VIw5VCBYR6fTuAkFnlM2djTp3LcV72ImGItaaJzTcHL8jwovDoTxeJE0IufirM4o3yBlzU+TAX++xwm71KWqE7KVMkoys3zrla3/4th4lmD0GEhAL5v6+LBK8Sa7+FajdjPdF1yS9WEsXzZhJY5KuTaTNBfE0cylcFJfj/6msnceg5vUfpneipxTw52uTIg+DzZ0Tmvd0G1F/rjivQXThE3pZBSzBBRkQW+6zSuaqz/CNLSAqQC7aOiDN8uRznVdhT1fR8Db4ozAio5PRS4s7NSOOI8zbA4oroeLxfv7Q5rvKzMiHP8nIQInPstffGZRE2b8OwYRMU1M1ojeHf/NVaFINQJPR8rFKN5Egaxql5k7M+J48W9Ib+5FDBSlImAuc3qZxvqIR12wWXgcLvc2iF+Uk3CmcVlOWJUqggCGkxMcM36mVODeShNYKs7eIDq6LhNX0p0HVliL4yVRn8uZ5ybBzXmUDMsdsoI+pH132UvBIlUXDw4j31JNC5KITT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,26 +119,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09/21, Ye Liu wrote:
->
-> From: Ye Liu <liuye@kylinos.cn>
->
-> Replace the manual rcu_read_lock()/rcu_read_unlock() pairs wrapping
-> for_each_process()/for_each_thread() loops with for_each_process_rculock()
-> and for_each_thread_rculock(), which scope the RCU read lock to the
-> loop body via scoped_guard(rcu).
->
-> No functional change.
->
-> Signed-off-by: Ye Liu <liuye@kylinos.cn>
-> Acked-by: Michal Hocko <mhocko@suse.com>
-> Reviewed-by: SJ Park <sj@kernel.org>
-> Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
-> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> ---
->  mm/oom_kill.c | 20 +++++---------------
->  1 file changed, 5 insertions(+), 15 deletions(-)
+SECTION_MARKED_PRESENT is really only needed during boot, where we
+can instead just rely on SECTION_IS_EARLY_BIT by setting that flag
+earlier.
 
-Reviewed-by: Oleg Nesterov <oleg@redhat.com>
+Some preparations for doing that conversion and some cleanups in the same
+(sparse) area.
+
+Tested on x86 with and without memory hotplug through virtio-mem.
+
+---
+Changes in v2:
+- Rebased to mm-unstable
+- Add "scripts/gdb: mm.py: remove fallbacks for SECTION_HAS_MEM_MAP and
+  SECTION_IS_EARLY"
+- Improve comment in mmzone.h for __highest_used_section_nr
+- Improve comment in fs/proc/page.c for get_max_dump_pfn()
+- Move __highest_used_section_nr handling directly into
+  __section_mark_present() callers and use max()
+- Make pfn const in sparse_metadata_init_nid()
+- Take care of .clang_format
+- Smaller patch description fixes
+- Link to v1: https://patch.msgid.link/20260909-b4-sparsemem_cleanups-v1-0-008fc8d579fe@kernel.org
+
+To: Andrew Morton <akpm@linux-foundation.org>
+To: David Hildenbrand <david@kernel.org>
+To: Lorenzo Stoakes <ljs@kernel.org>
+To: "Liam R. Howlett" <liam@infradead.org>
+To: Vlastimil Babka <vbabka@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+To: Suren Baghdasaryan <surenb@google.com>
+To: Michal Hocko <mhocko@suse.com>
+To: Kairui Song <kasong@tencent.com>
+To: Qi Zheng <qi.zheng@linux.dev>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+To: Barry Song <baohua@kernel.org>
+To: Axel Rasmussen <axelrasmussen@google.com>
+To: Yuanchu Xie <yuanchu@google.com>
+To: Wei Xu <weixugc@google.com>
+To: Baoquan He <baoquan.he@linux.dev>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+To: Brendan Jackman <brendan.jackman@linux.dev>
+To: Johannes Weiner <hannes@cmpxchg.org>
+To: Zi Yan <ziy@nvidia.com>
+To: Jan Kiszka <jan.kiszka@siemens.com>
+To: Kieran Bingham <kbingham@kernel.org>
+To: Oscar Salvador <osalvador@suse.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org
+Cc: linux-cxl@vger.kernel.org
+Cc: driver-core@lists.linux.dev
+Cc: linux-fsdevel@vger.kernel.org
+
+---
+
+David Hildenbrand (Arm) (13):
+      mm/sparse: move mem_section init to sparse_extreme_init()
+      mm/sparse: refactor sparse_sections_init()
+      mm/sparse: move initialization of section metadata to sparse_metadata_init()
+      mm/sparse: rename and cleanup sparse_init_nid()
+      mm/sparse: cleanup sparse_init_one_section()
+      mm/sparse: rename __highest_present_section_nr to __highest_used_section_nr
+      mm/sparse: remove pfn_in_present_section()
+      mm/sparse: move __highest_used_section_nr handling
+      scripts/gdb: mm.py: remove fallbacks for SECTION_HAS_MEM_MAP and SECTION_IS_EARLY
+      mm/sparse: remove SECTION_MARKED_PRESENT
+      mm/sparse: remove flags parameter from sparse_init_one_section()
+      fs/proc/page: clarify comment in get_max_dump_pfn()
+      mm/memory_hotplug: drop CONFIG_HAVE_ARCH_PFN_VALID handling from pfn_to_online_page()
+
+ .clang-format           |   2 +-
+ drivers/base/memory.c   |   2 +-
+ fs/proc/page.c          |   7 +--
+ include/linux/cache.h   |   1 +
+ include/linux/mmzone.h  |  43 ++++---------
+ mm/compaction.c         |   2 +-
+ mm/memory_hotplug.c     |   9 +--
+ mm/sparse-vmemmap.c     |   4 +-
+ mm/sparse.c             | 160 +++++++++++++++++++++++-------------------------
+ mm/sparse.h             |  19 ++----
+ scripts/gdb/linux/mm.py |   8 +--
+ 11 files changed, 108 insertions(+), 149 deletions(-)
+
+---
+
+base-commit: 8d61431ed2607386b427752505379536eb634ce8
+
+change-id: 20260814-b4-sparsemem_cleanups-8bc4b47014c3
+
+--
+
+Cheers,
+
+David
 
 
