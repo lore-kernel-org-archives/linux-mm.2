@@ -4,101 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4732C982E6
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 23:26:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67761C982FA
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 23:27:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C98066B009E; Mon, 21 Sep 2026 19:26:43 -0400 (EDT)
+	id 719016B00A7; Mon, 21 Sep 2026 19:27:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C6E466B00A1; Mon, 21 Sep 2026 19:26:43 -0400 (EDT)
+	id 6C9EC6B00A9; Mon, 21 Sep 2026 19:27:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BAB926B00A5; Mon, 21 Sep 2026 19:26:43 -0400 (EDT)
+	id 5DFEF6B00AA; Mon, 21 Sep 2026 19:27:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9AEFE6B009E
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 19:26:43 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0BBF6C01C5
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 23:26:43 +0000 (UTC)
-X-FDA: 85239356286.11.6E1D1D3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 73A03C0002
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 23:26:41 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JsfpG4wq;
-	spf=pass (imf10.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790033201;
-	b=noRIkLAAQAlFvVpJRjFPxKeA6VaIp0aCst946MsmXWIURTghi9pie+KvFYOonHh2G3JXjn
-	rFtNkWuM3vWt4PDfHtox4Hna1a/9baWMq78mFj8GLqvH/IeKwV8Yg3WfNhfzEdpdNc0ytO
-	LjN9w/tt2L7KkNMEku+s1uW8So8T2bQ=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JsfpG4wq;
-	spf=pass (imf10.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 387A76B00A7
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 19:27:09 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BC9FCA59AD
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 23:27:08 +0000 (UTC)
+X-FDA: 85239357336.01.521414E
+Received: from mail-wm1-f99.google.com (mail-wm1-f99.google.com [209.85.128.99])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 0AE7B40009
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 23:27:05 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=everpuredata.com header.s=google header.b=ZvwyW7lm;
+	dmarc=pass (policy=reject) header.from=everpuredata.com;
+	spf=pass (imf07.hostedemail.com: domain of tmenninger@everpuredata.com designates 209.85.128.99 as permitted sender) smtp.mailfrom=tmenninger@everpuredata.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790033201;
+	s=arc-20220608; t=1790033226;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hM5mTuDQ4dfNK5Z8XPoMxZFJdoiMu0qCdKMcLrxKa3Y=;
-	b=DVP1Lriw0rKBtCExEDq9ZuXHJXtVMg3uc0I3kinAgnHfGDowfH3BH7cYPzUX9G/mkzbgfA
-	7D69r9mYU6WGlXKfB5BY605SK5vwEnZhd77PoMI9RGB+w/W2P5t2AZKPQ9vf996GCf00nA
-	Fm3lZ8wDRVVHmEXc2zVZWTQD/qesubY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B905460210;
-	Mon, 21 Sep 2026 23:26:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BF721F000FF;
-	Mon, 21 Sep 2026 23:26:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790033200;
-	bh=hM5mTuDQ4dfNK5Z8XPoMxZFJdoiMu0qCdKMcLrxKa3Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=JsfpG4wqpOafQFBopqW3RNxUYW2gAwzPzWoeHVqBzw8tKKe1B0s4t63iQSWnV8EQ1
-	 rSGPeW4M7vzIvlk+heYi85lhmuPaRw4CEYvxRFoMudbkW//0iO+tB/IICwZJPAYJR+
-	 jf6H2CYP/ekh2L58Vi5xfINtZos2WrvrwYrJSBmFAMg8V9w/mUIXUsP6Dxb5kHLenH
-	 ZH5/C25uUC4b793UVhAx4RRACAJzZdJaQQE08kzGuwQ5EgOcWrsH9yKQSPLFppbHHZ
-	 dnO93SqbtdBPl863CAVJvqPS9wsaTfT7c/g0CxDGpB7QRrgYkcgDEiEi60mZ/7mBtZ
-	 S8Oeg4uEOfhaw==
-Date: Mon, 21 Sep 2026 16:26:40 -0700
-From: Kees Cook <kees@kernel.org>
+	bh=va/vFiItRvpug1hTbx6eo1iSM5BSyMyaF3MlvXV7MJM=;
+	b=F4aIfRS9Eqt8QchrV2rRGJVY9kEoqp1WaUtpgdyYOwGM5vry3WP72kXCdT6LZhvkuXjplX
+	L077yNnlGC4vX9tHxZjHOhGrms9a7DnLiWP86QEG22su4DMgJbfYD5qBdVFSufC0Zr6xEm
+	bDXgcitXZ0R+D9QC+8ybksMpf4EW3C4=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790033226;
+	b=EEFbKoiNKvf9T7xs7CA7bXhvVcpr7xNDDgqBdEkrx50779N4zmW5ymgGOUc13AEOrhQl/A
+	HpymBEXbn9zjDJj2U7sxbGFM+gHEhov3bAAPD0yC+r5hQ7AFwb6wKhHssS0lAJakzwghBt
+	Msdx0+OlRNfFcwCTOfX7Cau7eHNhQdk=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=everpuredata.com header.s=google header.b=ZvwyW7lm;
+	dmarc=pass (policy=reject) header.from=everpuredata.com;
+	spf=pass (imf07.hostedemail.com: domain of tmenninger@everpuredata.com designates 209.85.128.99 as permitted sender) smtp.mailfrom=tmenninger@everpuredata.com
+Received: by mail-wm1-f99.google.com with SMTP id 5b1f17b1804b1-49d0b98d6d0so17879695e9.0
+        for <linux-mm@kvack.org>; Mon, 21 Sep 2026 16:27:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=everpuredata.com; s=google; t=1790033224; x=1790638024; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=va/vFiItRvpug1hTbx6eo1iSM5BSyMyaF3MlvXV7MJM=;
+        b=ZvwyW7lmuxgJ1/i9jcSi0eE2ILVZKNeucp4iKVlA2ne8TXV7Ff0SI38F4gxaLEVKyu
+         1ANoGqzjTOdjtv4lZHitB1IEQVddw9aO63vcetuiOlc/Nmxf3tBGObwVSUGXjP7jaAIn
+         IJEa5rhBZDr5d9UcbZwKnOCluUI7hMLkaNqzYQ8CxZIebx1NPJaw5TmIzIgBci+EZBcN
+         CgVp7qmMhITT6b8rqebdg2+/3cH1KyMKga0rkV1AvyKL+y8Dj37Nq8iN2/txWjl8sgCX
+         HNqPZAWYwLIVop5Nv70s3/JQS+hXU9SC/uftXu+nGisDXRuRmz3kTfZ2O2Sx8WH+cj49
+         cGEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790033224; x=1790638024;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=va/vFiItRvpug1hTbx6eo1iSM5BSyMyaF3MlvXV7MJM=;
+        b=hWIvxabTudcgWRy3pHukKQVvatZs5UPrlffawIMhw0CV5LP5m4pyYYZCiyWy4ed2uJ
+         wk+0fztO7rhxc4OdP8qgVFlF3sJrMLG7hBFkCpmOE+voRW2Ygy03+YKo+6atHnGYw84J
+         9vvtLIqi5WBM318aRsNo7tUi0STKllDjHCrLb1alTy2UfqYqG4zKPFKAUN9mAJZKX0F/
+         qwaveRKOQqQ1rHon5jgRlpnzk8PtmtCHEP03/6He8Gfse+Bg43MLfeJDug5LIEXNIeC+
+         1DNVWzWh0SbqVQAynJnFuaRC//WP/e/sjFoGa55Sv2fBvZND98OTj5yz8lo/aX0Q+lUp
+         yc2w==
+X-Forwarded-Encrypted: i=1; AKwUvBz77yazoVSm6WnjbZ+MHpMGgB4IzJvbGO1iBXpf1zwkcoIYThSgQM1NTmPM9tkigq7NzCcZChHzRw==@kvack.org
+X-Gm-Message-State: AFuF++lyXdbgsgOuR2Ec/G85rloyf1XR12yaON57y45mm/nqwmj6LxCa
+	yNn/FZf1lWTQC/4okbehNywQYgqSMzVKEs9IvnWD/NAeKNdljugz21JRqwFJMwIWUUeKb+VaTok
+	JsRMRwK+WWglp72zT08cHK1WPHK/URpsd/25B
+X-Gm-Gg: AYBFou1lQUdk8mAoVIJ+0rSqssdx415EvuY2C+j+Z+6vMS+uBPsaaWtwkzf4xeHO1fH
+	3pR8FtfykUMhPqBFvdtDVt9U4Y9aPscqiIPR/mSAYGvABkGBpXR6/S1E7YrRUpm1I8R46FGXCm/
+	pT4qqs4ssQojO0Yntu1X0MBDckb328JyF8hBVrvpkt4pVUH4ePP9oR6vnojvrCzvbZeHT/nYP30
+	akPi/w8DySPsaaTey/2iFCUnLftWgPtBjAePJaGyWX4sX24kLmJznhp3oQAXoS8Tkfbf0ygbdVW
+	Oa8l6DTlv1H0KSMJP3SuCH0Coro7lv0+sctkZlHpZIELOKq+aQVrU1VYW58k9YL4MpWjpYbonGj
+	lhd+edMfS3LxfT/icqeFqgStAdUiNTjXvIQT2AsI=
+X-Received: by 2002:a05:600c:a085:b0:49d:25b0:cc60 with SMTP id 5b1f17b1804b1-49fc5747f7bmr184458765e9.29.1790033224386;
+        Mon, 21 Sep 2026 16:27:04 -0700 (PDT)
+Received: from c14-smtp-2023.dev.purestorage.com ([208.88.158.129])
+        by smtp-relay.gmail.com with ESMTPS id 5b1f17b1804b1-49fd8a7d9dcsm4178095e9.6.2026.09.21.16.27.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Sep 2026 16:27:04 -0700 (PDT)
+X-Relaying-Domain: everpuredata.com
+Received: from irdv-tmenninger.dev.purestorage.com (irdv-tmenninger.dev.purestorage.com [10.32.149.15])
+	by c14-smtp-2023.dev.purestorage.com (Postfix) with ESMTPS id A366F3417FF;
+	Mon, 21 Sep 2026 16:27:02 -0700 (PDT)
+From: Tim Menninger <tmenninger@everpuredata.com>
 To: Harry Yoo <harry@kernel.org>
 Cc: Vlastimil Babka <vbabka@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	linux-mm@kvack.org,
+	Chuck Lever <cel@kernel.org>,
+	linux-nfs@vger.kernel.org,
+	Jon Curley <jcurley@everpuredata.com>,
+	Eric Badger <ebadger@everpuredata.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+	Hao Li <hao.li@linux.dev>,
+	Christoph Lameter <cl@gentwo.org>,
 	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
-	Pedro Falcato <pfalcato@suse.de>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	linux-hardening@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Willem de Bruijn <willemb@google.com>, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH v4 6/7] mm/slab: Let a bucket set handle __GFP_ACCOUNT
-Message-ID: <202609211625.B1F704163@keescook>
-References: <20260921075811.too.775-kees@kernel.org>
- <20260921075820.1718334-6-kees@kernel.org>
- <arEvspsSl3bLyYgs@thinkstation>
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Ingo Molnar <mingo@redhat.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	James Clark <james.clark@linaro.org>,
+	linux-perf-users@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [SLUB] nfs_page cmpxchg_double_fail and perf lock perturbation on dual-socket NFS/RDMA
+Date: Mon, 21 Sep 2026 23:27:02 +0000
+Message-Id: <20260921232702.486161-1-tmenninger@everpuredata.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <arFNKeseUHBvdRCA@thinkstation>
+References: <arFNKeseUHBvdRCA@thinkstation>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <arEvspsSl3bLyYgs@thinkstation>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 73A03C0002
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: xx1na7zm1p5d56qt3rihpokrtr7b6brp
-X-HE-Tag: 1790033201-325881
-X-HE-Meta: U2FsdGVkX1+8sth/vNtIF9WTbeKC7DnlxQIAsZMRu4087AzPe+hLKkif3FaFYRDwH4s14u60Fa6uRgf3q0m6fTLT5fOg0lIENLkrPWWEvz1rP1LHkxKIINCL8XuuzobJUHBDhLhXDkrt+1SpaDepEfRAZrmPqVWJDalBvWT1uaGS2tbfut99+ElOK4CI0SDv7IaIC50067buTfJSFd23Vu0KbedgnayYhDMDd/bx8Mkh4dB2vYGqRWr381eeDv84zgIldMp84X3+/xVpS0AbLVQJIjwJHO3Ck2FHRodwQi3HKWDfBJwkoA3ke3mXm8GIuWiagAhNBZW8ahEkpf75fMUNtZH0koM8qxX17RwHaWWK+a9Am3RyzEtM0XYhcuuxmST7MxXeW6XRBv0V7MJTpaTBcdNS5iE8zOscRf2tExtDvz07hRt+qFEaWr9ZvUogcfMMfgyeSBj+hJUzrcim+ZSz4AeET+SqEZSMEWtvdpHrqx6mTxpiIhaDtb0NH51ho8G26Ft0xYNs73yRm6TBufNlFJLZwgZALxFZpdZ3xw7e5UfWvvRo5zpuaGQI7x4HEAQO3ks4+xkDn6ySpuYXc/hcbBmOQFjpkppIJFIYpWg6KW9GhFZ/ifcZP9U0DcVsra7q2hP/8wHMH7QA7S7gWBcb2Xo+zVYZq+VlEy5j8k2AP33wp4PggjdFl02jC1vSyOKmRGIRQcD/CITUziieHm2Rg1a1HfpDl1zUhpkGVCzx+pbF3dCNaSyTZjc2ZFAqJB8/QKvoy7G144KstMZn6rL25tsMsVCdpvZwa2ylv2SwiFSFGjCVMIStO+v0Rir/a65PMo2wxXcRR+5uxcJjJhqi5PnuebQF5dL9I5l606Ph02JkZgEvjXeiHtsxFiFlkRx8s0d9uMFfDO0DnRsCaNdU3INRnQRh+3Wv9HNEV/vdPotkIbnyXXs4Veg62CtdlCnTuHzoepO0CteFqhC
- 1xckk7E6
- uoiZpcEF54L1h/t3znx9un0weh7vRAPeJ231mlA9Atn+Hx0RCa/uoLtDp+3TwIKfM2D4tQLka8A0ymnCbQSEvACiJLM9nbuzy6i0X27hmrTTAO0esw/NZoz95WtHCPCn8fAEftydZjMx0FBjQNt5WCtURQSjAPPQpN061cm8tUdE1jRlZduSAElnCanbPAMXcCsZz1/hXfkG5K7nhxV6CzQJudKpvzZynH9OGTmgXtTsOUKqj1SaTMByyt10SIDp9kr231SNh4IffCNwpG8Q+pazvfHS/XHlh+YL5fR7M1Gfmo7o=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 0AE7B40009
+X-Stat-Signature: pp4ykskrgzazbdyppsq5q73yiex9zmbk
+X-HE-Tag: 1790033225-643454
+X-HE-Meta: U2FsdGVkX1+E8lpQ+tuoi73RKt5KMS0ZJQw02VGOkBv+T0K5NBE11gioRF29d35hQjdGd5GzaGnN54crLyRCeHApuPgh5Bk3Cveog2CorghfC8A69ypnKVeXYbaxU2jBX/ZpFrR2DBkVquJWOGTxei3nVU6solTiFc3NJYaylPYJJPGScvvU0BRxWV4qPWFbH78aN6a8AO0ddoZDzb+JtN7tqABy1NtIIamG10zRgpIdyRsRLCNh6Ads1aonMVLCAaJ2OWBmFrSFdKoDhbSt45l4mMq/KKTOloyf+744271m869N+WrN04mqoNRWdnlbO6dWZ+dlcPuD0Sz7aYfluqV9zd+9uno7jfJM99ydNOoiWWBfp3WfMq4hsF7NaCAwbfYS/NTk0l7O/r4B6+Dl20AmTuM9B4JIexJvBpm8BbkcxfRiVEFrdJzGeELj/vnacVuy5tPLv8qKN9NlQlQBbK6BI21vOgmjl2vEOLFleoul6hD14j+ysyA0ZRAsCB7k7idAjBmcnRjoMIBwJT8KItNane5stSszyKRJDnYi3xvwNyq12TAfCY1nWj++RjJCsWS+Nt/VaqmefBLt/Cl7Ky6f+//+BIeSf+BKGAzziVBacuHFMt+1ALy5CornWj6L67jgK0wfBHTQux5JxRdYcveRyoWQNgzXel0ULu2uBqOrlobsEDL1VydTFT/fEer+++nCapFVodOFYeMzuE6ZEmpCUAWQfPJYd42PZzc1Hv3Ni5M6l/E8NRVNHyl9jDwEvFi0WnykJQtW1+3JHBpqXJf9qRBosxh3XFelHd9fjxf8BdL3R8OrNFxSckeHGQqNnwtk7Tsj/P2Fj+hxM2iDiObaZ4mVkLb35UJvgB0yKH0MZg+AdeURHy8IdUkBfszjH8b83hinyMVYbeoxDve5RAPvjeDCFUQOnt/dOiSV1/t+/1xRzlQjNZC3iriNUFPhGao9uCKbPlNMG3LUzZL
+ rOYb5l7e
+ pet0O6FsLL2SmJL+An2iEgvmFoaxeYPHEdpu9xGkYKNCIeUNmRaN5hiYiKJFjyABLpfB5WskYzpDPQQLjrq4O+hQ752z8eLJCc2SR/pD+s7kGfes3d61VLz7fHlNbvLfTs5SUNVBXpMJxj+cheq/foCoTyvrJhlVrlGeJtzbea2fO0hMTvHSjPQnamPv5vq+Gp1sRjMEyNc33yNvtxLmHyk4GErUv7oV3l4egW5MAoaAK3yERUeafp/nsmC0SgjGvBvl9qYyryeJmuTuG8FtskmEcXKkdNC768AGQQ4tGkoySdAKfBLIElVf6OhkCoEOXyvB+fbBCs99kw2aLl8YGhIhxQg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,19 +142,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 21, 2026 at 02:25:57PM +0100, Harry Yoo wrote:
-> On Mon, Sep 21, 2026 at 12:58:17AM -0700, Kees Cook wrote:
-> Didn't take a deeper look at this yet but this is causing an error:
-> 
-> MODPOST Module.symvers
-> ERROR: modpost: lib/tests/slub_kunit.ko: symbol 'mem_cgroup_kmem_disabled' undefined!
+> Did any of that change with slab_nomerge?
 
-Argh, modular build. Of all the things I tested, I didn't actually test
-kunit modular build. :P It's so easy to use kunit.py that I forget it's
-doing a monolithic build under the hood. :P
+No. The large change in the SLUB counters still reproduced with
+slab_nomerge when using perf lock record. For example:
 
-I'll get that fixed.
+                         uninstrumented       perf lock record
+    unpinned/node0
+      free_fastpath          75,366,487          646,378,908
+      free_slowpath          41,594,255          259,704,037
 
--- 
-Kees Cook
+    node0/node0
+      free_fastpath         119,705,541          440,896,371
+      free_slowpath               6,344            6,679,339
+
+    unpinned/balanced
+      free_fastpath          59,404,047          384,715,890
+      free_slowpath          60,602,379          324,936,304
+
+> ... unless perf lock was writing data to an NFS filesystem?
+
+It was not. The perf data file was on the local root filesystem:
+
+    $ df -T linux-mm/
+    Filesystem                        Type
+    /dev/mapper/ubuntu--vg-ubuntu--lv ext4
+
+> You can use the BPF version of perf lock to check lock contention like
+> below. (it only work with 'contention' subcommand.)
+>
+> $ sudo perf lock con -ab sleep 10
+>
+> or
+>
+> $ sudo perf lock con -ab -E 5 sleep 10
+
+I reran the three placement cases using the BPF version, aggregating
+by lock address:
+
+    sudo perf lock con -abl -E 5 -- sleep 10
+
+I ran only perf lock and mpstat concurrently.
+
+The BPF version is substantially less disruptive. Comparing adjacent
+10-second uninstrumented and instrumented windows:
+
+                         uninstrumented       BPF perf lock
+
+    unpinned/node0
+      throughput            45.5 GB/s             43-44 GB/s
+      free_fastpath          76,217,260        118,511,381
+      free_slowpath          39,962,005         22,717,811
+      cmpxchg_double_fail         9,299              9,587
+      system idle               22.74%             10.61%
+
+    node0/node0
+      throughput            46.5 GB/s             46.5 GB/s
+      free_fastpath         119,739,790        148,686,356
+      free_slowpath               5,686              8,791
+      cmpxchg_double_fail         1,483              3,170
+      system idle               83.33%             82.42%
+
+    unpinned/balanced
+      throughput            46.5 GB/s             46.5 GB/s
+      free_fastpath          59,341,738         92,824,030
+      free_slowpath          60,000,396         60,658,896
+      cmpxchg_double_fail         1,742             23,772
+      system idle               68.27%             50.03%
+
+The per-lock-address BPF results are also quite different from the
+perf lock record results:
+
+    unpinned/node0:
+      contended    total wait    avg wait     address
+      8,345,025     12.27 min     88.23 us    ff3ad60e50e85100
+
+    node0/node0:
+      contended    total wait    avg wait     address
+      6,461,976     30.70 sec      4.75 us    ff3ad58ecf36ac80
+
+    unpinned/balanced:
+      contended    total wait    avg wait     address
+      6,592,568      6.50 min     59.18 us    ff3ad60e50e85100
+        143,397    666.98 ms       4.65 us    ff3ad58ecf36ac80
+
+perf identifies these as kmem_cache_node spinlocks.
 
