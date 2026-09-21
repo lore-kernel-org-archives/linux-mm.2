@@ -4,73 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A00EC982ED
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 13:45:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B92BC982E6
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 13:45:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4146C6B00D9; Mon, 21 Sep 2026 09:45:21 -0400 (EDT)
+	id 12E6B6B00DD; Mon, 21 Sep 2026 09:45:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C5766B00DB; Mon, 21 Sep 2026 09:45:21 -0400 (EDT)
+	id 107306B00DF; Mon, 21 Sep 2026 09:45:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2DB4A6B00DD; Mon, 21 Sep 2026 09:45:21 -0400 (EDT)
+	id 01CD06B00E1; Mon, 21 Sep 2026 09:45:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 07E326B00D9
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:45:21 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9071D1601AE
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:45:20 +0000 (UTC)
-X-FDA: 85237891200.29.547F0A7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id C546EC000D
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:45:18 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JrGSwNJU;
-	spf=pass (imf28.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id D613F6B00DD
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:45:24 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7E6091C0F81
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:45:24 +0000 (UTC)
+X-FDA: 85237891368.10.347C1B4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 8F4A5180019
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:45:22 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Nc/OMmgd";
+	spf=pass (imf06.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789998318;
+	s=arc-20220608; t=1789998322;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RMdX6MHSOqe32C0/+/LiVkpOkjZr/CxbphyJOfe1CoY=;
-	b=WqMrcU32yKMcw/aioWxstZa8YVTkekSnR+S4MROpanIiILLr9lfO9dknWIVSIJDBf7kkZ/
-	GH76PREL6lOC+B8qNTkMT5ce1E6M5EHEAt3yEYY4+X0fwyUh9lQRfxp0BC/pJjL/HphKiD
-	A2BoXSETputVA1Z8nfhQ7oxF90jRBAE=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JrGSwNJU;
-	spf=pass (imf28.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=noSJaKaApwlaS+y/XuQ2BeJGsLJq4q/TgrRJwetkGmU=;
+	b=vDnHdFXiiXQKY2oOazTUz+OecLoNXZUWTFlsjshWJs7zI9xjb7qlqs53l66c6DSOpcnhOV
+	F3lJiRa7EFTROMlN7hGCnMtkTFg4d6MEUG217RPTDvlKGKp/AOdif5aBrJYjQ4XS9KScrG
+	4Qo92Hb2MAGyXJtBLUoNHIfrbceuP98=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789998318;
-	b=5vjPlMpDOQnFXZ8R5dUB/c/pxlGfqF4ZtKob8qJzIoGYojdAclOHll8oEjf9IRzDNJM43d
-	6cglDimMHzcDvSm5qCPnAjtjvcj1H9H3CN6Jpu3Si4HVVw82GNZBdn1wIc7TauJaJFIEoV
-	r1zxCwiCCkE0vyWFllrPQ+1YRNc/bFc=
+	t=1789998322;
+	b=mmujFR1CZkedGsDHT15ABCmeFN4tzAU0ALqjFC7n/9FhMeEocTFmnrmJnjbdheeBbtpIBe
+	iVwEtU2xhp6WdorEurqHcwKkVdpQG7fPMWtgt4i2A+FB+Z9g7yOe3Wx2ZvgJ1qCULa/ij1
+	9aGXxrR7iSgtU56mT/2r75oyrLwyT9g=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Nc/OMmgd";
+	spf=pass (imf06.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6642F60AA3;
+	by sea.source.kernel.org (Postfix) with ESMTP id E1A1243A23;
+	Mon, 21 Sep 2026 13:45:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 980F81F0089A;
 	Mon, 21 Sep 2026 13:45:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 160871F00893;
-	Mon, 21 Sep 2026 13:45:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789998318;
-	bh=RMdX6MHSOqe32C0/+/LiVkpOkjZr/CxbphyJOfe1CoY=;
+	s=k20260515; t=1789998321;
+	bh=noSJaKaApwlaS+y/XuQ2BeJGsLJq4q/TgrRJwetkGmU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=JrGSwNJUfaYorWbdHx9MJYNKq8svon8b7c/hDVt/10yuh95LAe8aShc9uuPEgx5p5
-	 j7vdEIjzOHK0bW+sK0/dBaixMeUaddgbjrQpXZlz2Is7yWqAHO++pyYQlu9okcXbm8
-	 jrzRsIny+dLdhgpxXepR0SQVloeRm4AjCx7I23YecZ+5WVVYe9gBuGeSwGtRFNgR9y
-	 3wLaBnDAWb7G+OpuW0dWx2NNX7PZsVhDOypbNt076EjmOc4eBS61cYLUdnAPe4PCI9
-	 VNIjtigIpYAu+ajPw5FWEnU6wmv+YyDREzoVUeiS3873to5mmMb7yxExKs7qPmW5Zs
-	 6utJEIEbkemFA==
+	b=Nc/OMmgden9Sch3xPcq/Wfepqx+lMcRh1nuCXA+s9LMLaVFSV0phw7q8Zj6y7OU4L
+	 2WbojhpIW3mZ0pq2DERzhAdb6SFlujeGUbZGx24FVE9ffsxkrg0fxK/C5JcDQ/OrTx
+	 qMwm3hJKuOUCStf87mu11kfTKwRMpjybHFFWwk5UyOIgG6iQozyegxl+kjMXNOji3X
+	 zF3MVcCgkuiWZb1Uywq3wpuksX+ImSv3wxCGYrFUPG8iIee4CcyS/79j67gIpttSbV
+	 IivPci76szJLZSCEow7zDddBANUG7uNjKY4dIabC/qBHISBY7FgNf2bQfQ1u4VU5Kp
+	 YjGIcYnvhWWlg==
 From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 21 Sep 2026 15:44:52 +0200
-Subject: [PATCH v3 03/17] coredump: parse a snapshot of core_pattern
+Date: Mon, 21 Sep 2026 15:44:53 +0200
+Subject: [PATCH v3 04/17] io-wq: order the exit bit against worker creation
+ task work
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260921-work-coredump-fixes-v3-3-8e4adb1619e6@kernel.org>
+Message-Id: <20260921-work-coredump-fixes-v3-4-8e4adb1619e6@kernel.org>
 References: <20260921-work-coredump-fixes-v3-0-8e4adb1619e6@kernel.org>
 In-Reply-To: <20260921-work-coredump-fixes-v3-0-8e4adb1619e6@kernel.org>
 To: Oleg Nesterov <oleg@redhat.com>, Chris Mason <mason@kernel.org>, 
@@ -79,24 +80,24 @@ Cc: Jens Axboe <axboe@kernel.dk>, Alexander Viro <viro@zeniv.linux.org.uk>,
  Jan Kara <jack@suse.cz>, NeilBrown <neil@brown.name>, 
  Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
  linux-mm@kvack.org, io-uring@vger.kernel.org, 
- "Christian Brauner (Amutable)" <brauner@kernel.org>
+ "Christian Brauner (Amutable)" <brauner@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.17-dev-db0b7
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5307; i=brauner@kernel.org;
- h=from:subject:message-id; bh=Haa/wVyspvaLZ+kfdekU+bfXGoKBsPMcmx94/xgcUP8=;
- b=kA0DAAoWkcYbwGV43KIByyZiAGqxNNyi2QcsZwZptVnS+SHxd0aR6NrZ2bcBRHvqEraPesAch
- oh1BAAWCgAdFiEEQIc0Vx6nDHizMmkokcYbwGV43KIFAmqxNNwACgkQkcYbwGV43KLL2AEAsljD
- MwGHkO+fvYYw7mjQP8R3jVwtHBXUtAZXQoiB3QcBAPscjTkLH3Iv1c2qiGKhZRn/9W+CMgQVSQK
- 8SAQ0GygP
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1786; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=I9adUaO6/vXVSqyRv9Gsx8nEfE1O6rVs+YV8BhcfEiY=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWRtNLkz983aprOS14L4z3Xc9c88/XbC/L3cqw2aPQJTV
+ O06lU+adZSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAExkxz5GhsnTPmz+ZxKvmcjL
+ lLt6XdO+Fx8jH11xVzxzK4F99V49X2uG/+4ZlRoRKXNOWKYs/KASJ/p9ewEL35H5TDt4ngbfydh
+ 3mh8A
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8F4A5180019
+X-Stat-Signature: k4rqzqiuyaca3u94nckefwtatqcxp9za
 X-Rspam-User: 
-X-Stat-Signature: at1hfeuax79n68r686kan79nohf4iujm
-X-Rspamd-Queue-Id: C546EC000D
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789998318-286893
-X-HE-Meta: U2FsdGVkX1/86TigSSoqjpCKvWd5vUWuObUetSLGIGAIZyJVNi2VW9ylM9jtfplTqE6meYGGcEm+9KeV3RhmxYoR5A9KgHXhclSsq1diRUBfhaDT1AZOwSQ4J2SnT0TWRMBypJZc5yyjignuCA3gNON1fsjBmre0qi8yz8blw5NdpRzPB6Cn1/UBgeV1zxS9Uutnfz98Z/Qbx/P1XNE25tCzsPoMOknRutBoAlA3wR3aMXFoCx1k9UbHoIxO7kBujzzdQgLeFQf9LjUwYNp7OqXzWDl/pOZ8VVuSxmTkyFw2TwERB+Ujq6u/aiHnNXeMbf+z5txqGsHMXmU2cbfujmWF1JY7lfNZD8yJXpe1yaHVp2gPdnRNgAu2DHRgKEokXNZ9JRWSCFyzdUhC2Xugtb0pGBGosIaYgNz+7uStIXjD5nkloNcJyBS6XL/ZGeD2XFonXJiVrUnyU502OzRX5UfyhmMwovyxbASYsoBLqIpsq48VNGLya1n2vNSNQsQZ6DgJ6a2PAufrtTnZqSNShyXcCXzhIrk6tCAD+ky4j1qnQ9fgOIviN8iolFAW3LoYPA1PG+JfV6DmwEwFU1jrRLNlD2/1h/MjlWnNc4tsmBAkmS4wE90So5sRHpcqoYqF9YZ6JHJwwaFC1iIURb3IlhCGVSMf2A6mK+5Ir55j/l5O/9KIk2qfKeXHBGYNnp0TU1zHF1V59tHvgSo1j8lb7qkgUEVHTBteeP5jFBMNPfen3vH9mrEEA6lE+UoaWPNaj61KEVRMdi5VJn2ZPVzzmUEGj9ecn9KfTFGOqmoOg9R0jLKXXlcK3zloCbNbA7GUCfWsJIiRkza5sVvg0nLAkdcz0nAO/YPRYZ/VdMBssKlvRfWYtwyLSeRakQPs2g+oO2HH6A9bOfmB4ia1IP26QvTV+32hAn8jAXVCuL4SuJA/oix8gG91Aqn7xaYmspq3UKD/zHHKghOSBPmzZUL
- NCZ94IEP
- grouATbQUdt3ZV+qJDgCNoACUshgxLXHwFtnXBB/A49PsYJ90ze+m+GQBbY33NwzIOx52RhRjRosm/FXBtKs7PBQy3qS/JXohxyui8DB+Cqa8FI4PC+rt1g4QBxA3b63Aj34nJ1J9ArzTp33CRPlz2P0LbHWuV6pZcE6ZX9jxF0V2cPla6W7Hwcw2s1b6xHd+GWDoIdv/kliWy4+ngMktoBsBMxN7S+FbPlDbZz/LiDiha1VXeVUiqQBb6xIOVG5S3YMx9/jIlsu22CSjgRU+92NjDHEjuZMT8NLVt0AHDqS456xawQN8bT61L6CY1qv2aOiz
+X-HE-Tag: 1789998322-785215
+X-HE-Meta: U2FsdGVkX18Z0VnIhaJEag9we/Pxz6eENNEAFwzGeZS3nxR5zp7zuMQWDD9OfKQFkjQVdEYviEx2qaTY4TU4x7yb6mtIinxPHMJwCh18gZ/ve00VbgZUhsjIhEyTc1xgkNAdjlo7e9gDm7meiiZe4Fty40NrxsT3rAq3uhbu8H+3lJLu9hmM067FzH6rKUfxeRz9dC39HkiNfGUwiLAUivg9tHLptjZ/qG7PB+gpAtbS9QedG3mXGiOdCu5ksNHsgx9MhvwErFUJ/YykK3VVuWTH0ZTF13LMwI46qDvOeQ07PQ2HYmAl/ViQA2dhuMwVxDQ72i7v28KBl7OFxdKw9JCj9cZdVIBadO/b2lv4T2H/p4P/T0GNCOlou9SuHopjA9ecaeTzOB9jBlsxd/x3xc6qLVw9n4RUPp3FKVzseHrrfuzTnj4EkSfOqy0kpacH76N5Y5yKyxZTqadqR9Og2xRAzFraj/kNLCfiZNg99YLjjxgFoR6MLsr4oI1xzpu2OPNi5Y9PnE07Y/LtsPYzTTY077hQkYzCufcocBGJ2Qlg6oyKX39JcG4cLFC7p7r5DEyLppNYIagaxdZyUb2+vEdqq79W5wUf0fNxqhRKYBeeFwLjanuwSG7mIwjV3JS8sV2peAZhNJxuvbTWQXLsB9rxrLkRYd2cg1PKCfOf4DFQpBmQ1j3AbJIGh6v1EvDbB2e2lv861dTK4aehMDnAo7xHFZkMu/KDuCq3+jcdmFuQv61q8R0sWkINZV2Cabk0Psd3oM19Qdat0jL/l5qkl87QQChe7Hn15mkdCL6gda1XUypYsIIk6Pfw5ZGJhzpOYcIVPsu/l6WPqSyiZTngPyOOAkKj615fMRaZyYFGGaqrvQpmgSYaZbK0gSecwX45IaVHfEQJlcng5sWlFZIu4JdlbPQAxACwmNQg52XldLHF24tZJPSODxVAB2JrVtPQzNNkc2aXNTMhLcT2+us
+ HlF9fz/6
+ VSSZw3LmkxlbPthUUIOdARjRBBJ3TPMfz4Vt01lbqlU9KxomVBZ1SMT/64wt0UOJQ6MceAsstF9gvLQ0Zu6eJCxtBrbk6pyTqyVq5E4ryBciHXw3fT+Az7MBXAdqX0zfdB2KOBVzGpcNis/HFSfzqnRMmunDVlBPs5fndQauxDWbRmMoZcEGqDR7PkjkJ35uK95XxSi/nJU39IxEuFan/eSPFhXtbMGcvMJ/mFftRb6nVMd5oAVvJxeSHiM9KtGexh8S2ojhwpXz2ngg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,160 +105,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is a long-standing problem that I discussed a while back with Jann.
-I didn't care enough about it to really fix it and it's from the
-before-fore-times.
+io_wq_exit_workers() cancels task work for queued worker creation with
+task_work_cancel_match(). That has a plain load of task->task_works.
 
-coredump_parse() reads core_pattern directly while it can concurrently
-be modified. So it reads the first byte, figures out what mode is
-wanted, then allocates the number buffer and then consumes the rest of
-the core_pattern string.
+io_queue_worker_create() adds the new entry and tests IO_WQ_BIT_EXIT to
+cancel it if the workqueue is already on its way out.
 
-Say the sysctl handler updates the core_pattern array byte by byte
-(idiotic but supported). So that can lead to all kinds of insane mixups.
-Say you could transform the old "|/usr/bin/helper" and the new
-"/tmp/core.%p" into a usermodehelper started as "tmp/core.<pid>".
+That must be ordered. task_work_add() has a full barrier via cmpxchg().
+But io_wq_exit_start() sets the bit with set_bit() which doesn't have
+any memory ordering.
 
-So copy what proc_do_uts_string() does and let the handler run
-proc_dostring() on a copy, validate the copy and make it visible beneath
-a spinlock. Then coredump_parse() can take a snapshot under the same
-spinlock and parse a stable copy.
+So afaict, on weakly ordered architectures the exiting task may load
+task_works before the store of the bit is visible. The other side tests
+the bit before the store is visible as well. So the entry remains queued
+with worker_refs and the exiting task waits on worker_done indefinitely.
 
-From now on, rejected patterns are never visible and we can drop the
-whole rollback logic. It has the same minor defect that utsname has,
-namely that two writers can race on a non-zero offset. Irrelevant imho.
+If the task still has rings then io_uring_del_tctx_node() provides the
+barrier via test_and_set_bit() in io_wq_set_exit_on_idle(). When it
+has closed all rings though that barrier is gone.
 
-Reviewed-by: Oleg Nesterov <oleg@redhat.com>
+Add the barrier after the set_bit().
+
+Fixes: 71a85387546e ("io-wq: check for wq exit after adding new worker task_work")
+Cc: stable@vger.kernel.org
+Reviewed-by: Jens Axboe <axboe@kernel.dk>
+Acked-by: Oleg Nesterov <oleg@redhat.com>
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/coredump.c | 59 +++++++++++++++++++++++++++++++++++++----------------------
- 1 file changed, 37 insertions(+), 22 deletions(-)
+ io_uring/io-wq.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/coredump.c b/fs/coredump.c
-index 40eca2b85b81..d5d76704df81 100644
---- a/fs/coredump.c
-+++ b/fs/coredump.c
-@@ -85,6 +85,8 @@ static int core_uses_pid;
- static unsigned int core_pipe_limit;
- static unsigned int core_sort_vma;
- static char core_pattern[CORENAME_MAX_SIZE] = "core";
-+/* Taken around every copy in and out of core_pattern. */
-+static DEFINE_SPINLOCK(core_pattern_lock);
- static int core_name_size = CORENAME_MAX_SIZE;
- unsigned int core_file_note_size_limit = CORE_FILE_NOTE_SIZE_DEFAULT;
- static atomic_t core_pipe_count = ATOMIC_INIT(0);
-@@ -240,11 +242,16 @@ static bool coredump_parse(struct core_name *cn, struct coredump_params *cprm,
- 			   size_t **argv, int *argc)
+diff --git a/io_uring/io-wq.c b/io_uring/io-wq.c
+index 2ca223e47d41..2a980e86dd94 100644
+--- a/io_uring/io-wq.c
++++ b/io_uring/io-wq.c
+@@ -1324,6 +1324,8 @@ static bool io_task_work_match(struct callback_head *cb, void *data)
+ void io_wq_exit_start(struct io_wq *wq)
  {
- 	const struct cred *cred = current_cred();
--	const char *pat_ptr = core_pattern;
-+	char pattern[CORENAME_MAX_SIZE];
-+	const char *pat_ptr = pattern;
- 	bool was_space = false;
- 	int pid_in_pattern = 0;
- 	int err = 0;
- 
-+	/* The sysctl handler may be publishing a new pattern. */
-+	scoped_guard(spinlock, &core_pattern_lock)
-+		strscpy(pattern, core_pattern);
-+
- 	cprm->mask = COREDUMP_KERNEL;
- 	if (core_pipe_limit)
- 		cprm->mask |= COREDUMP_WAIT;
-@@ -1640,11 +1647,11 @@ void validate_coredump_safety(void)
- 	}
+ 	set_bit(IO_WQ_BIT_EXIT, &wq->state);
++	/* Pairs with task_work_add() in io_queue_worker_create(). */
++	smp_mb__after_atomic();
  }
  
--static inline bool check_coredump_socket(void)
-+static inline bool check_coredump_socket(const char *pattern)
- {
- 	const char *p;
- 
--	if (core_pattern[0] != '@')
-+	if (pattern[0] != '@')
- 		return true;
- 
- 	/*
-@@ -1656,16 +1663,16 @@ static inline bool check_coredump_socket(void)
- 		return false;
- 
- 	/* Must be an absolute path... */
--	if (core_pattern[1] != '/') {
-+	if (pattern[1] != '/') {
- 		/* ... or the socket request protocol... */
--		if (core_pattern[1] != '@')
-+		if (pattern[1] != '@')
- 			return false;
- 		/* ... and if so must be an absolute path. */
--		if (core_pattern[2] != '/')
-+		if (pattern[2] != '/')
- 			return false;
--		p = &core_pattern[2];
-+		p = &pattern[2];
- 	} else {
--		p = &core_pattern[1];
-+		p = &pattern[1];
- 	}
- 
- 	/* The path obviously cannot exceed UNIX_PATH_MAX. */
-@@ -1673,7 +1680,7 @@ static inline bool check_coredump_socket(void)
- 		return false;
- 
- 	/* Must not contain ".." in the path. */
--	if (name_contains_dotdot(core_pattern))
-+	if (name_contains_dotdot(pattern))
- 		return false;
- 
- 	return true;
-@@ -1682,27 +1689,35 @@ static inline bool check_coredump_socket(void)
- static int proc_dostring_coredump(const struct ctl_table *table, int write,
- 		  void *buffer, size_t *lenp, loff_t *ppos)
- {
-+	char pattern[CORENAME_MAX_SIZE];
-+	const struct ctl_table tmp = {
-+		.procname	= table->procname,
-+		.data		= pattern,
-+		.maxlen		= sizeof(pattern),
-+	};
-+	bool changed = false;
- 	int error;
--	ssize_t retval;
--	char old_core_pattern[CORENAME_MAX_SIZE];
--
--	if (!write)
--		return proc_dostring(table, write, buffer, lenp, ppos);
- 
--	retval = strscpy(old_core_pattern, core_pattern, CORENAME_MAX_SIZE);
-+	/* Work on a copy, proc_dostring() appends at *ppos. */
-+	scoped_guard(spinlock, &core_pattern_lock)
-+		strscpy(pattern, core_pattern);
- 
--	error = proc_dostring(table, write, buffer, lenp, ppos);
--	if (error)
-+	error = proc_dostring(&tmp, write, buffer, lenp, ppos);
-+	if (error || !write)
- 		return error;
- 
--	if (!check_coredump_socket()) {
--		strscpy(core_pattern, old_core_pattern, retval + 1);
-+	if (!check_coredump_socket(pattern))
- 		return -EINVAL;
--	}
- 
--	if (strncmp(old_core_pattern, core_pattern, CORENAME_MAX_SIZE))
-+	/* Publish the validated pattern whole. */
-+	scoped_guard(spinlock, &core_pattern_lock) {
-+		changed = strncmp(pattern, core_pattern, CORENAME_MAX_SIZE);
-+		if (changed)
-+			strscpy(core_pattern, pattern);
-+	}
-+	if (changed)
- 		validate_coredump_safety();
--	return error;
-+	return 0;
- }
- 
- static const unsigned int core_file_note_size_min = CORE_FILE_NOTE_SIZE_DEFAULT;
+ static void io_wq_cancel_tw_create(struct io_wq *wq)
 
 -- 
 2.53.0
