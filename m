@@ -4,107 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A26CDC982E6
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 21:27:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38957C982ED
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 21:33:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C77C86B00AA; Mon, 21 Sep 2026 17:27:02 -0400 (EDT)
+	id 1FAA96B00A5; Mon, 21 Sep 2026 17:32:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C024D6B00AB; Mon, 21 Sep 2026 17:27:02 -0400 (EDT)
+	id 1D2F96B00AB; Mon, 21 Sep 2026 17:32:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A7AFA6B00AC; Mon, 21 Sep 2026 17:27:02 -0400 (EDT)
+	id 0EB0B6B00AC; Mon, 21 Sep 2026 17:32:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F00E6B00AA
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 17:27:02 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DA7BA1C2047
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 21:27:01 +0000 (UTC)
-X-FDA: 85239054642.12.8C0BBEA
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 3235E40007
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 21:27:00 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=hN02AVPL;
-	spf=pass (imf12.hostedemail.com: domain of 3IqGxag0KCIclmst3spvml0l4rzzrwp.nzxwty58-xxv6lnv.z2r@flex--abhishekbapat.bounces.google.com designates 209.85.215.199 as permitted sender) smtp.mailfrom=3IqGxag0KCIclmst3spvml0l4rzzrwp.nzxwty58-xxv6lnv.z2r@flex--abhishekbapat.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D91E66B00A5
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 17:32:49 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2DD54A02F1
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 21:32:49 +0000 (UTC)
+X-FDA: 85239069258.15.1E8DB0C
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 3634D100003
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 21:32:47 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=TUxn7DaT;
+	spf=pass (imf14.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790026020;
+	s=arc-20220608; t=1790026367;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4svBVXpzXDnEEaPp2iHW0GefZCmj3wqJ5HrNnYa0oV0=;
-	b=FzOUgiQq1FUevuFlDDtIutdFPLZz2xqRBR1dv9SoZkuR1HcboN9P3ENfX4HV7OBmYloBSS
-	PTsInUxqTHjy7UqtkcahRS5u7l0a4R68APuXr7Egr42ZpEXZtj7v+9k7x0rDvQ3iegGuPz
-	CU94Ub81uH8tMrVst3/uWCFzrD3iWr8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790026020;
-	b=Y43lxiUxaW6wmgKJzwUwYJ3DXm+/HLQpQ4A/8R59TdpcgFH78PmPIuVNTaS4RND4OMuwDg
-	xkQHX999SGQfR2m7EPXMAyHPGIqkK8JGXDHz3vv4eXAoQoPz9c85eZgCz2rAjUfYvNPufU
-	b4TI77MLg44MII/k7Vhjaydqey5NbyE=
+	bh=pvz5d1nkszGRqC60BnhQHEmnkgXMWAbP6TdaFQ4ccNw=;
+	b=SqQkCX9097FyJakmZ0wLvzaWfg99NQXAdt875tl3HeJ5EXacGRY3U/+enYJQwt7NirGBz/
+	2aWnVXOWql1JC26XA07fxmyjFSbdYxifJInYjmMe945db17nfXyHgYcMkCoulNJnO6RLHr
+	eydWYRdm61qa/VGfpF7OGkcv65/ipo4=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=hN02AVPL;
-	spf=pass (imf12.hostedemail.com: domain of 3IqGxag0KCIclmst3spvml0l4rzzrwp.nzxwty58-xxv6lnv.z2r@flex--abhishekbapat.bounces.google.com designates 209.85.215.199 as permitted sender) smtp.mailfrom=3IqGxag0KCIclmst3spvml0l4rzzrwp.nzxwty58-xxv6lnv.z2r@flex--abhishekbapat.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cc1b8088203so2983248a12.3
-        for <linux-mm@kvack.org>; Mon, 21 Sep 2026 14:26:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790026019; x=1790630819; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=4svBVXpzXDnEEaPp2iHW0GefZCmj3wqJ5HrNnYa0oV0=;
-        b=hN02AVPLEqf8VTtLHH1gYj/+Vx+1LGOL8Y476f2BPAiLEIim25ETcVZCKXlYIOyhcN
-         a/mIoj4sslcMwr04x6/MAzGd4guZTxSBgcWJeRo+c/LayPvkKAoVnHDUONgE1m+251CC
-         XWjjP1exTjTmSBTqmGab9PyWTMlO2haNU2kp23/rOVHzMQz9z/6mzwOLMhlQ8VF9jQS8
-         cXVHD/Tp5oREAVOnO5EbBbBBRr5bzT+0Ypl/KwXbfEwQNVwH+zZgcYawZhmTtDyQadZT
-         jhen8ntFW8Oo6akCfHnyfylNH6Xp4XpGZGRv8A1wa1CeBBr93PDsSDy2+oEGBCiuTWxH
-         4l9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790026019; x=1790630819;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=4svBVXpzXDnEEaPp2iHW0GefZCmj3wqJ5HrNnYa0oV0=;
-        b=SSwtT4f6QLKRwVrpUN5o9zSTihgU6VEbJv4A3BqVTUxgyW0L1DdbTZ1RvwLbjZTpjX
-         dmbc1udm4HiILI8IlisZOLv2syWdq2p/uq/EjtQFm3w3Gb8Wt2a7R9AdwJarbIwSsjXZ
-         4eIRpdN6hYY8l5B8J7MhGq0pXWfSpjOhKY+ZiXNkZcCL/qjjJAqC8NP+LJ8Y0vpQdkLI
-         3YP8RsjwklyGtGuGBU9PqrsfG/8wLX02EJ8DvArFAFM0Wovr8QlCRHNFRdiw91IRh2V+
-         ABT5HgAmBAzJX7BdaBr7qk3yeMTgZqmoYh9V6L4jajNwVYWMGErn4VIW1tw6wlNzczAc
-         0NOg==
-X-Forwarded-Encrypted: i=1; AKwUvBzMIFBYOlEnDplPSxzUQTQ1TNG1hpjbrrNOr14Q+pjBC3aDLQWHlnRwWkOLQG4TiMETtIXBa0TAbg==@kvack.org
-X-Gm-Message-State: AFuF++mvjNA8YxXoJcEVdp8AujOeIzrySuZaCLugVL/hRwb27rqg/YzX
-	Sb8PAiPiAjVTpTZWVtHu1i6M8gesSKchIU0RU0PafnCo3e9DSmd1fNO4SfiamXZbRKiEjuMcP0c
-	6DuyJGMIpLoacl9F6MPseaU4+GGoP5n0mQQ==
-X-Received: from dyng28.prod.google.com ([2002:a05:7300:7f1c:b0:339:c3e:449b])
- (user=abhishekbapat job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:1393:b0:3dd:a195:dd61 with SMTP id adf61e73a8af0-3dda195e47amr11865501637.67.1790026018871;
- Mon, 21 Sep 2026 14:26:58 -0700 (PDT)
-Date: Mon, 21 Sep 2026 21:26:41 +0000
-In-Reply-To: <cover.1790025465.git.abhishekbapat@google.com>
-Mime-Version: 1.0
-References: <cover.1790025465.git.abhishekbapat@google.com>
-X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
-Message-ID: <988dddb203416668a10bc9c5e6157a78615d2ed2.1790025465.git.abhishekbapat@google.com>
-Subject: [PATCH 4/4] alloc_tag: add a test for trace state toggle and filtering
-From: Abhishek Bapat <abhishekbapat@google.com>
-To: Suren Baghdasaryan <surenb@google.com>, Hao Ge <hao.ge@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, 
-	Shuah Khan <shuah@kernel.org>, Abhishek Bapat <abhishekbapat@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam04
+	imf14.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=TUxn7DaT;
+	spf=pass (imf14.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790026367;
+	b=KQtmzbjBf2bxqsM1c7nPs9+0TF103O+R1pEgPeGE7BtkkMYU37JHzvpGZTiZComM5Y+Cg4
+	C7Tw7l3JnMy0c2X0oOI69fa3Obmd3OUpU3wcUUcpxc/c1MOAYFvnZBdV+AUae5leokrio2
+	0QCD17yXCApoE+tltnrdP5ztJecVGQE=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=pvz5d1nkszGRqC60BnhQHEmnkgXMWAbP6TdaFQ4ccNw=; b=TUxn7DaTfka06pTTkO0kWqVrYo
+	ZqrIHsV8WlJZZaftmU22W2YS6T8/7qWGstaUpya0CjN88jRKFAmS27x7R1q2vomy5MO44Sk111T6Q
+	naaeXMmuHb3T9nSP1dSdYqn+8e3BEU3SZRukZlO/l2gQLvtWf0m9BTW1SOudXgJYFf+zwxDQN1SKo
+	xE/YgsNg8lFhYDEhc4XRbG72UXEV3j/XH9RZq7m4/2kio2gpRrLUd0F9EDKMlT3TBTDeR9jqWXm4a
+	gg8n7l235hGnOxligthF5wOABST1+kk5h/V1UjfM+9bXW1rcjvLGsUvlHMph9QwCAY3rcECeqZ0zY
+	AUscQK/Q==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1x8lcu-00000005bQT-02LM;
+	Mon, 21 Sep 2026 21:32:41 +0000
+Date: Mon, 21 Sep 2026 22:32:39 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Jan Kara <jack@suse.cz>,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <christian@brauner.io>,
+	Jiaqi Yan <jiaqiyan@google.com>,
+	"Gregory Price (Meta)" <gourry@gourry.net>
+Subject: Re: [PATCH v9 08/15] hugetlb: Use the has_hwpoisoned flag
+Message-ID: <arGidwZQrrWVPAoj@casper.infradead.org>
+References: <20260805210557.1118966-1-willy@infradead.org>
+ <20260805210557.1118966-9-willy@infradead.org>
+ <a51a6236-8881-4479-8f04-39676e0e1f14@kernel.org>
+ <an3uN4TAAZ2miXhe@casper.infradead.org>
+ <7608c80e-645b-4d07-bba3-ef45ee36fba4@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7608c80e-645b-4d07-bba3-ef45ee36fba4@kernel.org>
 X-Rspam-User: 
-X-Stat-Signature: dfuykz5c5f9ieuytszzn5rur6e4bs6oq
-X-Rspamd-Queue-Id: 3235E40007
-X-HE-Tag: 1790026020-573173
-X-HE-Meta: U2FsdGVkX1+9TZxCNAWEqACyrQOc95eQkGgcmSJS78vxOLQiAZ4wQ0bkp7s7tCgdcyEgjJaou5kGG20AwQY4vGh9vwqBTaxR01MM23LZoqTUiIR8j48soNFjHkk/2f1n/0QPbKbWbvM4YYsvOIhG371fXAFJBGLKEUfFTqC5XJeJILK8DnMKBU+xZiW1K1dUvluyh8m1WeOBW8iTfpFm92Mgy1lnImLvzMXVnRyktsE2YbgVxbKd5SuibNcTqreQZcEECxSwpDuSVjpkBQp/3+eW4f0BcIFmuLnzfcvLOilqT657rcTGnG4E3LePJ8zISC+B0fHEj3QHQYITaxUJc/JL5yeSmCekk1shMaC1ttELrq/Otk/vnaFiwE5QSq0oWyu++lxo27dJf7NquwqlTwh7wMcEf18V5N6tW8Szx8V/Mb6qgreYuve8jilIqmjGxR9XSH1DbDRyijqwHtg62ZG6Z3SaU0l4LTKUWQrxgc+xXGA5xb5chkjbZ35HIQ8IZdP9yjvjdk7y3Di0cr6ZfLOakgmLEzwtUolF1raXsDO1jUd7xto5w4mglsr37gVMS1XDO36KyBsuraRP764EnIXcC99ezl/uHa5JG79Q+DtDRvgj+Rr47Qfnpf8hLUF7BCLCQryswJGGgMHRmJ7XHKdBngHQxhm3pD2xFKhMiVk03djNSviHwyjnGPDsXgsS+cS9Wv8G5t8zCnHGC64zyq+BFYktNLwZj4bD5NRZSwRSVq65M0ATtxV3P4IlUC+TNBYAgz2BLFm6ooraWbo5Ar9+e6OVAGfVuqVfVuKrq3KLWXYgg9VIS78zV4SD4e0sVIw3yknafUY2HZ+hhXeVMcypy/cXjkb2uTPHfLNM9KLZvB91r4mHq1/bMIBBf8noGvrYngMePYPiQsHzfbqSVhwWbkr44ZWTTTtK9qiRY240R9nPDuJOla0QoGmcsCQfFjiOfxxUUFwF5hkaiLT
- iIuzbwmh
- JACiOJrSr8q0fXavJ+soJmblnLX1Q9K2VgTHeYvGIq9Vr68Ga/l3NdL/H6avagy0J0iTEtyEe4w7D72rjEssbwB7ZnQ3jx1xqnNivijYVLybq34SOuJfRGyYPpcxJJlazhQ4sS8MZZ7L2lh2hlcLWb/t4wO5LiCvhbRaNZXNQbYNX1Zay+p8P3NpeeV6s5PNsMKRd9mZPo6Tsv2yrm6LDeA2R4vKT3u3OFAn0vQ4+OJKWB9bbeRkfHc5bjpV2nphne1p26pD+7bEFQHqQ3XB/WcEaXTOZMd+KjchLeNrfDFODvSgqf3Ja78U0G5dT4MK9fwo+RRwibZ6y8xUJSpXrqm7/OfjUHBldXVFKW6HKt1weCRYPM0VJjImoQp2YZkoCoyqRVhJ48iDLy+ti22wi33LFekPkE0LjeN2UlYuIdFlxgTgRwTHlu56YVBbjAuZS+fTMpuchrVm4ayTXnYFXn892N8mFGKVqjRzgu5NkrU2Y7BWu9tHcqclJPAFEb3hi/MIf2XpyYGh6uRw5qUhJRcCBhyTmwA5QB25pppUIlE/5TLvIec+T9Glrkkqq2+nf0ksTvdDqo8DsEPEuqOOS3V9Eqc7PyTnwiX/6NFyNowOVC9DLp1DrTYoB04mKkQFaVevlPK92S/3Kex2cRK6ef6zdwjaQ0lpUgE2RWsz0//9zi2jquv1eDCBJ7w==
+X-Stat-Signature: u3ufwa1y6jg9u7n9twgpcdkwqdq1jrkb
+X-Rspamd-Queue-Id: 3634D100003
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1790026367-497749
+X-HE-Meta: U2FsdGVkX19fl23onPnlT0Ggoh3sxA24PCTSb2xzoh2g1N3ODPYSPWmONwa3VghwIDXc6LNXbKPIOEaDk4SCLNin1CDjlEomTBIJSTpavJrXAiCdIJ8NpLKBD85zEP78mT3SxXCtq1QIVl7/eBax8kFT7dQ1yqc54lxaPBiYaWo0gTHCVQHBIGc68f4WaF6kWs9wicta6NTF8eyDpZl0MB9aaLGebnYxiGgv+4urT8/oa74H65PwSX1zapZcnLNXuD6AdwQZXf0vOAUnZx28QTzYXsC1DXqZgJhhpMJvEJiTIo+6ZjrCaJ2397N2/UJo3YZu7BF7jIL4bcNX3WjCUda6izevxsRbqE3QBy8PGy39Xk+wKe+mjhdxgj20IAF9DQA8aYdHJPCO4JLsehPO8qMkJ42NBaxcqmOI8Afyp0MZFG6+vx196akQpEjsRkQegISi4AL1+W0Th/zVUwoJXL5VXsSKe0neAzuspqRKAPAZJMyRt63/0+do9+kw6XaTexHyHXUL/OTvV9h4VpPGvzt+oZj52J21/hdlytvcLihpI9jgJs9g8qreVkavAh8ve5yncPgaL8sRLkwnvqpwvnpk7n2MgwreMUzZQjLRd54tFtIiwXZCZy08ACqU50L+G8XZxmfWbc9PnDOwGiMGMCjT+q5xNeEIYyIhl3YYNDK06TQJ0W5XAKI5cYRzcVJ3NKV14H4nW/77Y42sDshRTQFYeXaO/as7iL8qWAcq0ZK+CPtxrAWPFdfHHNrWVO3SX4sAJ8QZ1duEJD8aWNqoHai5fuIiln66/bWMUzmX04CtcPbRuLjlqqcLwLOCCD7TgQKSqEI+LYz5mt5kSxfAAB53MzLnXFMFx2Fe6Xt0nPoE3OIs7Z5oXK5+TO2xSJdQ211K9wbysAqTQF5pByOWNuRNP8tEnvIHSx/hrrmPgjU878sg0/xMei3NWEL738iUhnTq9U5iitNLYfFsuBd
+ uFP/qh/e
+ 6vYLAYPoux6GlgBuEwP90Tl6zqVTLClLIVyM7p1Nw39l32ck5b97BgTHpJ9UeKeDJrf/oNtdAQIqFqYBaDSbLuhZLIoDPggR/mb6ldCk3A2zYhk3ztOeO3X18dgjDy5V0xLoRXraa11dzvLG1E+ZgCPCbJJZ/dQWvBBNKMq2yFKGmrf1MX5FVIWpyemDo3XNXdQcKg8t0zgNDemWz4fWC7zJgz6WcbAVm7w7yr0tQZKAoUxKdyvOptuBxb8uexiMqpH3B1wyRQ8pA90c/s1yqhWAf5JyXqTwskXODRSVHScyG7Bkl0QjIwVI0408Abkp9pc6lBYDyHoq4HjJcH2SfisdhFh6cl8uge190cQAsim6vtk91wlDJSdUtRw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,182 +100,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Following the introduction of the ALLOCINFO_IOC_TOGGLE_TRACE IOCTL and
-ALLOCINFO_FILTER_MASK_TRACE_ON filters for selective memory allocation
-tracing, update the kselftests to validate this behaviour.
+On Fri, Sep 18, 2026 at 03:44:12PM +0200, David Hildenbrand (Arm) wrote:
+> I'm a terrible person and it took me way too long to get back to this :(
+> 
+> > 
+> > You make it sound so easy ;-)
+> 
+> Heh, as long as you hold a folio reference it really is :)
+> 
+> > 
+> > If we don't hold a reference on the folio, then the folio (whether it's
+> > hugetlb or not) can be split.  And then folio_test_hwpoison() can hit
+> > the assertion that it's now a tail page.
+> 
+> Right. I am/was missing the connection to "generic_file_read_iter() in hugetlbfs".
 
-Introduce `test_tracing_toggle_and_filter`, which validates the
-architecture by:
-1. Dynamically toggling trace execution ON for a designated allocation.
-2. Evaluating that the TRACE_ON filter precisely isolates the active
-   target across the IOCTL API.
-3. Verifying that the targeted allocation correctly reports its
-   `trace_on` metadata state as 1.
-4. Toggling trace execution OFF for the same allocation.
+We might be able to split this into two series at this point.  Is that
+worth me spending time on doing?  Originally I was going to use
+is_page_hwpoison() in filemap, then it became obvious that this was
+inefficient when we had a reference to the folio, and so we ended up with
+is_ref_page_hwpoison().
 
-Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
----
- .../alloc_tag/allocinfo_ioctl_test.c          | 111 +++++++++++++++++-
- 1 file changed, 108 insertions(+), 3 deletions(-)
+> > Before this patch series, we don't always hold the hugetlb lock when
+> > splitting a hugetlb folio that contains hwpoison.  And we don't want
+> > to have to grab the hugetlb lock if we can avoid it -- unprivileged
+> > userspace can hammer these paths hard, and I don't want to see this
+> > lock be contended.
+> 
+> Right. But doesn't at least the pagecache always hold a folio reference when
+> testing for hwpoison?
+> 
+> I mean, there is other code that might need care (PFN walkers like memory
+> offlining), but I was surprised to see pagecache code require a rework of
+> lockless hwpoison checking.
+> 
+> I'm sure I am missing something.
 
-diff --git a/tools/testing/selftests/alloc_tag/allocinfo_ioctl_test.c b/tools/testing/selftests/alloc_tag/allocinfo_ioctl_test.c
-index 74fd64b2370c..3ef7a12fe35b 100644
---- a/tools/testing/selftests/alloc_tag/allocinfo_ioctl_test.c
-+++ b/tools/testing/selftests/alloc_tag/allocinfo_ioctl_test.c
-@@ -48,6 +48,11 @@ static inline int __allocinfo_get_next(int dev_fd, struct allocinfo_tag_data *pa
- 	return ioctl(dev_fd, ALLOCINFO_IOC_GET_NEXT, params);
- }
- 
-+static inline int __allocinfo_toggle_trace(int dev_fd, struct allocinfo_toggle_traces *params)
-+{
-+	return ioctl(dev_fd, ALLOCINFO_IOC_TOGGLE_TRACE, params);
-+}
-+
- static bool match_entry(const struct allocinfo_tag_data *procfs_entry,
- 			const struct allocinfo_tag_data *tag_data,
- 			bool match_bytes, bool match_calls, bool match_lineno,
-@@ -289,6 +294,8 @@ static int run_filter_test(const struct allocinfo_filter *filter)
- 	return ret;
- }
- 
-+static const char *target_test_function = "dup_mm";
-+
- static int test_filename_filter(void)
- {
- 	struct allocinfo_filter filter;
-@@ -304,11 +311,10 @@ static int test_filename_filter(void)
- static int test_function_filter(void)
- {
- 	struct allocinfo_filter filter;
--	const char *target_function = "dup_mm";
- 
- 	memset(&filter, 0, sizeof(filter));
- 	filter.mask |= ALLOCINFO_FILTER_MASK_FUNCTION;
--	strncpy(filter.fields.function, target_function, ALLOCINFO_STR_SIZE);
-+	strncpy(filter.fields.function, target_test_function, ALLOCINFO_STR_SIZE);
- 
- 	return run_filter_test(&filter);
- }
-@@ -514,11 +520,104 @@ static int test_lineno_filter(void)
- 	return ret;
- }
- 
-+static enum ioctl_ret toggle_trace(struct allocinfo_tag *target_tag,
-+				   bool enable)
-+{
-+	int fd;
-+	struct allocinfo_toggle_traces toggle_params;
-+
-+	fd = open(ALLOCINFO_PROC, O_RDONLY);
-+	if (fd < 0) {
-+		ksft_print_msg("Failed to open " ALLOCINFO_PROC ": %s\n", strerror(errno));
-+		return IOCTL_FAILURE;
-+	}
-+
-+	memset(&toggle_params, 0, sizeof(toggle_params));
-+	toggle_params.fields = *target_tag;
-+	toggle_params.enable = enable;
-+
-+	if (__allocinfo_toggle_trace(fd, &toggle_params)) {
-+		close(fd);
-+		return IOCTL_FAILURE;
-+	}
-+
-+	close(fd);
-+	return IOCTL_SUCCESS;
-+}
-+
-+static int test_tracing_toggle_and_filter(void)
-+{
-+	struct allocinfo_filter filter = { 0 };
-+	enum ioctl_ret ioctl_status;
-+	int ret = KSFT_PASS;
-+	bool initial_state, target_state;
-+	struct allocinfo_tag target_tag;
-+	struct allocinfo_tag_data_vec *tags = calloc(1, sizeof(*tags));
-+
-+	if (!tags) {
-+		ksft_print_msg("Memory allocation failed.\n");
-+		return KSFT_FAIL;
-+	}
-+
-+	filter.mask |= ALLOCINFO_FILTER_MASK_FUNCTION;
-+	strncpy(filter.fields.function, target_test_function, ALLOCINFO_STR_SIZE);
-+
-+	ioctl_status = get_filtered_ioctl_entries(tags, &filter, 0);
-+	if (ioctl_status != IOCTL_SUCCESS || tags->count == 0) {
-+		ksft_print_msg("Could not retrieve IOCTL entries for %s\n", target_test_function);
-+		ret = KSFT_SKIP;
-+		goto exit;
-+	}
-+
-+	target_tag = tags->tag[0].tag;
-+	initial_state = tags->tag[0].counter.trace_on;
-+	target_state = !initial_state;
-+
-+	ioctl_status = toggle_trace(&target_tag, target_state);
-+	if (ioctl_status != IOCTL_SUCCESS) {
-+		ksft_print_msg("Failed to toggle tracing\n");
-+		ret = KSFT_FAIL;
-+		goto exit;
-+	}
-+
-+	filter.mask |= ALLOCINFO_FILTER_MASK_TRACE_ON;
-+	filter.tracing = target_state;
-+
-+	ioctl_status = get_filtered_ioctl_entries(tags, &filter, 0);
-+	if (ioctl_status != IOCTL_SUCCESS) {
-+		ksft_print_msg("Error retrieving IOCTL entries with trace filter.\n");
-+		ret = KSFT_FAIL;
-+		goto exit_revert;
-+	}
-+
-+	if (tags->count != 1) {
-+		ksft_print_msg("Expected exactly 1 entry, but got %llu\n", tags->count);
-+		ret = KSFT_FAIL;
-+		goto exit_revert;
-+	}
-+
-+	if (tags->tag[0].counter.trace_on != target_state) {
-+		ksft_print_msg("Entry returned by trace filter does not match target state\n");
-+		ret = KSFT_FAIL;
-+	}
-+
-+exit_revert:
-+	ioctl_status = toggle_trace(&target_tag, initial_state);
-+	if (ioctl_status != IOCTL_SUCCESS) {
-+		ksft_print_msg("Failed to revert tracing to initial state\n");
-+		ret = KSFT_FAIL;
-+	}
-+
-+exit:
-+	free(tags);
-+	return ret;
-+}
-+
- int main(int argc, char *argv[])
- {
- 	int ret;
- 
--	ksft_set_plan(4);
-+	ksft_set_plan(5);
- 
- 	ret = test_filename_filter();
- 	if (ret == KSFT_SKIP)
-@@ -526,6 +625,12 @@ int main(int argc, char *argv[])
- 	else
- 		ksft_test_result(ret == KSFT_PASS, "test_filename_filter\n");
- 
-+	ret = test_tracing_toggle_and_filter();
-+	if (ret == KSFT_SKIP)
-+		ksft_test_result_skip("Skipping test_tracing_toggle_and_filter\n");
-+	else
-+		ksft_test_result(ret == KSFT_PASS, "test_tracing_toggle_and_filter\n");
-+
- 	ret = test_function_filter();
- 	if (ret == KSFT_SKIP)
- 		ksft_test_result_skip("Skipping test_function_filter\n");
--- 
-2.55.0.1082.g2b9226bbc0-goog
+It's just how everything evolved.
+
+> > Oh, I'm not happy about it.  But we need an atomic way to determine if
+> > a page belongs to a hugetlb folio with hwpoison detected.  Short of a
+> > complete rearchitecture of how we handle hwpoison, this is the best I've
+> > come up with.
+> 
+> (did I express how much I hate the hwpoison infrastructure and how it's racy
+> left and right? :) )
+
+Yes, and you'll have the chance to do it again on Wednesday ;-)
+
+> >> (what on earth is "huge_poison" is this supposed to be "hugetlb_poison" ? Why
+> >> "poison" and not "hwpoison"? Really odd)
+> > 
+> > We're inconsistent in our naming on both of these things.  It doesn't
+> > help that somebody decided to reuse the term "poison" to mean
+> > "uninitialised struct page".
+> 
+> Right, but let's be consistent with hugetlb and with hwpoison. ;)
+
+I'll take another look ...
+
+> >> I'd expect that we actually get rid of folio_test_hwpoison entirely and
+> >> exclusively work on per-page state and has_hwpoison. But IIUC, now it's some
+> >> mixture of folio checks, page checks, folio_has, mixed with some hugetlb oddity.
+> > 
+> > If we could get rid of HVO, we could do it entirely on struct page.
+> 
+> That's what I hope we will achieve at some point.
+
+I'm not sure that's a realistic hope in the next few years.  Even if
+we get struct page down to 8 bytes, that's 2MB of memory per 1GiB allocation
+(assuming 4KiB pages).  Always a tempting target for someone looking for
+memory savings.
+
+I would prefer an out-of-line tree that doesn't rely on a bit in struct
+page.  Maybe a bit in struct folio wuld be fine (which tells you whether
+it's OK to skip the tree search).
+
+> > Or, as above, entirely rearchitecture hwpoison handling to not be based
+> > around pages or folios any more.
+> > 
+> >> I am not quite clear whether the change you propose here is actually required
+> >> for the remainder of this series?
+> >>
+> >> 	[PATCH v9 00/15] Use generic_file_read_iter() in hugetlbfs
+> >>
+> >> IOW, do we really need all this hugetlb hwpoison handling just to accomplish
+> >> that, or could some of that (bigger hwpoison rework) be done separately?
+> > 
+> > Blame Sashiko!  I'm going to ignore it in future, but it's really good
+> > at nerd-sniping "hey all of this is already broken and you could fix it
+> > as part of this series".
+> 
+> Right, and this is only the tip of the iceberg, because the entire hwpoison
+> infrastructure is a complete hacked-on racy piece of ... engineering excellence.
+> 
+> To summarize my question: is it possible to separate for this series the
+> pagecache part (Use generic_file_read_iter() in hugetlbfs) from all the hugetlb
+> hwpoison rework?
+> 
+> OTOH, if it's really not avoidable, please let me know.
+
+I think Sashiko will whine and complain incessantly if we drop the
+race elimination patches off the front.  I can try it, but is it worth
+doing?  Eliminating the races seems like good engineering anyway.
+
+> > try_to_unmap_one() is already 200 lines and contains some tricky code flow.
+> > I'm trying to at least make the problem not-worse.  I think we should
+> > pull out even more code into helpers, but not in this patch series.
+> 
+> Note that this code now was partly reworked such that this helper will soon no
+> longer be required.
+
+Rebasing it on current Linus simplified this a lot.
 
 
