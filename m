@@ -4,98 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D97C3C982E1
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 08:29:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0484C982E1
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 08:45:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD3916B0095; Mon, 21 Sep 2026 04:29:33 -0400 (EDT)
+	id D56CA6B00D9; Mon, 21 Sep 2026 04:45:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DAA6D6B00DF; Mon, 21 Sep 2026 04:29:33 -0400 (EDT)
+	id D2DE26B00DB; Mon, 21 Sep 2026 04:45:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE7D26B00E1; Mon, 21 Sep 2026 04:29:33 -0400 (EDT)
+	id BF6756B00DD; Mon, 21 Sep 2026 04:45:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id ACFB06B0095
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 04:29:33 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 421A0140582
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 08:29:33 +0000 (UTC)
-X-FDA: 85237095426.19.0399689
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 824191C0005
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 08:29:31 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=qRXpyMvL;
-	spf=pass (imf20.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789979371;
-	b=5+TsHXoucPnztubZc/Y3YDz4u8pd6lEoKNjHH3pc2uwWgxrxBN37hl+/YHmS/mG1yvnQ1W
-	7HPwFPTCVNISYpazgglZE15R7+zQHgvjiB+DvHLZesk8LigjH+1h/zgPXfJ1XgQOI6O49y
-	zBcybrhgkhrm8jMyeZ0yC8ohe6dMJZk=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=qRXpyMvL;
-	spf=pass (imf20.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 96EA96B00D9
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 04:45:42 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2202680579
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 08:45:42 +0000 (UTC)
+X-FDA: 85237136124.28.B0C35E3
+Received: from mta1.migadu.com (out-142.mta1.migadu.com [95.215.58.142])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 8789A1C0002
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 08:45:37 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cAR916Ed;
+	spf=pass (imf21.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.142 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789979371;
+	s=arc-20220608; t=1789980340;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YqOON1OGtH9eqaUM+IszsMChXNMEIUJ4mlTleQ1FuQ8=;
-	b=n1OrzJTB8nEoywG1ql/h9k/qhK19ZieD+FclF90vfbRwHZp3ZpiTMzMyFUBgAOtNbSC94A
-	qi0QCuICWyT3pC8qJpkjksK/Om3+dSr7FpKwLTD2y128n5X5rfYZpGAJu0NFFw9BrtOKOG
-	l4AoFwzhNdoLchPfsvFWKhG3z5GYPl0=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2EA8E175A;
-	Mon, 21 Sep 2026 01:29:27 -0700 (PDT)
-Received: from [10.57.83.12] (unknown [10.57.83.12])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1ECEC3F86C;
-	Mon, 21 Sep 2026 01:29:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789979370; bh=Ad+6LLybI3uKKc7JJri+UgLlmCgPg2pPlm7qhk4O64g=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=qRXpyMvLHNueHE/qqmGi8wywc91oBqnC1xt/cQExQtagrEoU13hb8I0V89H6Lao7G
-	 3OHXj+U/lHUmAJ/1SxkKWWapIqk0qrE9EAGWElpxtagB8APekzbYKUgqjO/U1aCgBH
-	 42zSHCFhDH+OJ9duPe2mk552i7cOLu0tCTw7I4I0=
-Message-ID: <f790350a-02eb-46b2-b079-fc3db66f2b03@arm.com>
-Date: Mon, 21 Sep 2026 09:29:25 +0100
+	bh=BcFs4Wd4VaC8wyaDxYNPmIuUNckeXL3HDIxn9D7Ssf8=;
+	b=dbJO+lNNfykHvyokPg0ceaA61vZT2bz62WWZjWg3D47p4kEyHVCQcgpMuR+Pr/ysM5eePm
+	7iBuSRin6SnWrkscoKo9o+nv8lLnEq52HUN8loMVV87tBsAgejhbyJyzTxTAhH0WrynRBm
+	MNSO/p7++pv9hR1h1SEmExhHemhK9Yw=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cAR916Ed;
+	spf=pass (imf21.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.142 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789980340;
+	b=Ejzn8qUQ+ayVh0apUXbtFb3XBIsTkLd1TNbZHeiJKlaXFezwLQmn+sKclh2i9h5UZSp7uh
+	MZWv0jMdHjYY+LVW7bZ34HjkOFYZU2cexThWRGGqlsP7ZOph7X9gtQ51VpoeYIq8UdE7it
+	iOzteVo8f7lgD3CvLUyDUMcegkTfAgM=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=uUTNbuu97K8eZK4ytwE6k6w7euavFhJ9/KPf1WBW8ww=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789980336; v=1; x=1790585136;
+ b=cAR916Ed8FlsGOhIBcKW0lTL4428nNIL8hKWZUD9rY6qBFLrQTSVxKdfAm5iX/lJcsgRhZHl
+ eLOCgyMc8M6Hl1hQ0aVqJTPjwrhrsB4Vv5Vy08vGzZLYuersNpJWjMnKb8mAABSVJ/2DQaRXJRH
+ v9LJ9934p3Y2KydUxeAr+ZOc=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 6597ae8b033e4958;
+	Mon, 21 Sep 2026 08:45:22 +0000
+X-Mizu-Trace-ID: 6597ae8b033e4958
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <37d369cc-dac6-43e7-83a8-a5ecdab0d1f3@linux.dev>
+Date: Mon, 21 Sep 2026 16:45:03 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/6] arm64: use hw_pte_t for fixmap HW PTEs
-To: Muhammad Usama Anjum <usama.anjum@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>, Ard Biesheuvel <ardb@kernel.org>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- Andrey Ryabinin <ryabinin.a.a@gmail.com>,
- Alexander Potapenko <glider@google.com>,
- Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>,
+Subject: Re: [PATCH v5 09/17] erofs: use folio_attach/detach_private() instead
+ of direct assignment
+Content-Language: en-US
+To: Zi Yan <ziy@nvidia.com>
+Cc: linux-mm@kvack.org, David Hildenbrand <david@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-efi@vger.kernel.org, kasan-dev@googlegroups.com, linux-mm@kvack.org
-References: <20260914-pte0_arm-v1-0-bb53b663e396@arm.com>
- <20260914-pte0_arm-v1-4-bb53b663e396@arm.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-Content-Language: en-GB
-In-Reply-To: <20260914-pte0_arm-v1-4-bb53b663e396@arm.com>
-Content-Type: text/plain; charset=UTF-8
+ "Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Dev Jain
+ <dev.jain@arm.com>, Ying Huang <ying.huang@linux.alibaba.com>,
+ linux-kernel@vger.kernel.org, Gao Xiang <xiang@kernel.org>,
+ Usama Arif <usama.arif@linux.dev>, Barry Song <baohua@kernel.org>,
+ Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>,
+ Alistair Popple <apopple@nvidia.com>, Nico Pache <nico.pache@linux.dev>,
+ Suren Baghdasaryan <surenb@google.com>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Jeffle Xu <jefflexu@linux.alibaba.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Sandeep Dhavale <dhavale@google.com>,
+ Michal Hocko <mhocko@suse.com>, Gregory Price <gourry@gourry.net>,
+ Hongbo Li <hongbohbli@tencent.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Kairui Song <kasong@tencent.com>, Chunhai Guo <guochunhai@vivo.com>,
+ linux-erofs@lists.ozlabs.org, Qi Zheng <qi.zheng@linux.dev>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Muchun Song <muchun.song@linux.dev>
+References: <20260920-remove-pg_private-v5-0-bb68b6a21869@nvidia.com>
+ <20260920-remove-pg_private-v5-9-bb68b6a21869@nvidia.com>
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <20260920-remove-pg_private-v5-9-bb68b6a21869@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 824191C0005
-X-Stat-Signature: p4fsk58omso41zjcb3uoj3qc48a1ad98
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 8789A1C0002
+X-Stat-Signature: 37gya1g9ejgxpk8u733tzikos8bw7i4c
 X-Rspam-User: 
-X-HE-Tag: 1789979371-644835
-X-HE-Meta: U2FsdGVkX1/dN4VgPRxfskYhoimaGOfGNG22iLbWwUqiXn5JP1Jtg/nMp0u3P4Pf2bt+LDOODCOWD52WkcqeAB6EyqH6uGv5eX0pcoawbtAYXenT4VsAFneUKEnwogCmWxcwU45WK9MvOoEP471wNTgOBj6O7AZYrXwJ+cOrHgSyPT45Lh1uzCja02zpVPFS9hhuWFc5+vMFx8e6E6v72WgAi0oEUawBsUVODdILsbkU7dieAVRrB+j77QjlooNfyrV+gmUDUd9UwOG5XAZEHrW7KNsIY2QJ/TXJBlIG4nZYNhM1yNOn9Ur3t6WRK60rwcrBo5z3Ra+wC6NX7DwicLqO/aOVfs7/Cp0IWpy5e1jb83xUoSJ5bpUxBhpju5lB91OSk2Z6+TLjpDMk+W6DdDPchtmkMlAsd23Bw3uH1HuxL0p5LN7JmOPmapOAMXI7KXx1+LCAY5f5lLyuM6eHVMEmxJE4kpujLqoiPLMGCQ0+8GDjkPK1Uq0K8GRO5KIbD6gJSzeT+Gt6U207Ju3IpgQXGfA83OPyjNtQc3DqnBvzDAyJtKQdtzZmNYTSpRRYyHKA1L0LP1e9qc1IfMfIRKABPa4Wf0ok5WwZEipsjTRB3JQIFHV7paKOuBdakqb63bP9UAzxURy4NnZHPDDKRm1RPdsOcmFQq/RGlgWTGX0mVH6a+sbJOIwUoIAXfXLAVGiTJLSGPwXQt40mGU85+LFVCjEcLZo6PAhudTNVk78Eb9qdp737OMUNWb3Nr8NgJuSEPiJeqQbOMRSQIOMxYhbRJUJ+vW+T3SI9roul0v4dRTlEC1b8jdY0r07N6pW+aSaX8LsiJ250xAPN+Qd+zN4ErCbM826SHyVNW7Ds7c+VSZ4+n8JIwcEWBf+lWDkG3pMj4QD/SvyNrpH83PCxujIX0iVjlQykgY+zZF7w9j6i4WzqdpYyBwZXOdFuhPBsCbzwL55Sgh/eRnWTXx9
- Tulk+uf8
- uWCf5UNgb+Fr9l9F5f9Q7qhi0lMamqH0YLV7pzBbpRp+7VeFeUpDEk/L2cXfFm7QN39PcnllOfKY1bzSYBvicvsRp1xWiJQ6DeNK6cs4VneIit2tI4IA5U4iRTJbd9ngaH5LR/LphjeWfURShOVOZEDr6lf7mt4uqkXNynmTrUmBdGeV+x+UZ73SLB3PEVjWavTAjdpEfg0IWf5nDAUvejZS8iCvDRENwfrJy/F7STZk740+6mj0QBSpNXWqxA8BzMRyRH3SumruitijKgsm5ARlmDBW2Ds/DLGtTgy8DXLxTQctx+MV+w1UUU8q87tLznO6Wb16TvWqiKobaicfdVBY1hBz8MzarVkJ+KNwmLfS/TSqKKuGK6VzduHrZ11z6+h/N3emtJ6B5CKQZc1mtexR/Q4U4WblxnJbW
+X-HE-Tag: 1789980337-746225
+X-HE-Meta: U2FsdGVkX19nrdJcZKbbDGMK4bjctUistoY4vNK3JBw8KGZJGhuFtPLKOeYqxurX4ljlZiNmImsO9yXJWFwuLWn80UxeGuQZRpGgFX3rVUnsnjoI+8ckOy8smWS+XpTsLWhet+W8sYLIE17Cj/f1lzBitblHHNGtiaAZXoW11+wkCMJcOqdY4bmFLmsOGjuF+ZgIuuI5LKDXXMwY2t8PRwZx7fmi+k0HHKI87pWYgQhA/WsiWv3zMwgCom0+0E+pI6w6a7gV67uftX/+c9380d39FyQaDoLEO+1FLEz+AbX+7I34bG66+jwGQ+dqr2wB73hDazJiGzj33dL1QhXU5GD9w3GncO8bUFYU3TMwv7folbQL66cGZ1oYpPFre2B6nYHFcEM9yhgJqm0uG0uFb5mRjdqOGyKui9eZC8RWzLWOsHsTGcWAsLt+yQhq4jbAEwVyvJp+VPt+nn+f7oive3Z1b0uNMj7ZvdGblartFNZdLMPGoK8UjicyYMbilZwdrN5OT1ASwIyuAwCrbsSI7rMR2KFyiYRZX6DpmUATDrTRjHslF3XmD3pMRxcLv1mQVpOQ9oHVqS+fbRVD57tYsRqEOWID8XlAajLklX0ofIVtkCgRewxm7oszoepDNK8qwTn9kntI8vc6+OXJDcVAcxPncGfAFrz1hrCTNvpVZ0hPULlSjH5MXCTte+BiWHStQ29xCgIahzoGNZ8t2wSWMiw6oE3XL7VgVLRsOgySQ/nGd3KSaLuVvGYBpaa80aUrSYwBgIaEdXXBOgGs7B22dwn4Cb2HNg0GQgjC6Q4KG7T3aGIRhs3hMUQYGGzK5yFipJlkhZt0qTvX46P8rWbh12ov5cEHsJgrwVE+rXHpZU0hmv3Z9iMAyg1Yhw8UfRTKHEr8156TloLLilfV5ZBt9KFUHD1e2/atWrl+Zk96la+YXH5aojC244a22GNvNHa7BqtYfHI1jwVIEWqDLGs
+ FNog/pEE
+ G9e+R+jclBpTvTAPT1mQajflEu2hff32zmNeA/pM8e3oDXD05nfMz30ckbVEfQe0uYBkR7Y85BvJgEdmij8XrAYRdH5PWanAAtMyqn7Oit1NSjHq/ku4+O9zQX6WtSwQpx6WDm6LT5IhHgE55LywBHiCxM3q3lebhPqgTnkhmNvMJ1WEaoJff+QtKHwHN6uv23b2G1UB13WuJNuxz9fZma8XAiF2h9xM002Jv5riasvwoN8p+XuVZ1qxKwdZC2D4jkYKkGfRtLVVexIYZAOAw+VNQO2ozvvTYuXrnAu9ngOhC7GRmi9J+Rk3tqRCAkKMaqmp84StrY4XRNyWmvx4WeTpNyiUGr8eWFtgS2VBLIfiiD4PsKqHI8snhenRZIMjY3wum7WZw8D2dwpNN68+CKvpDvDQO1/434rPGvBW6ozDJ8QKTRPfwwzRHTq9fwy151raqju5AD7YRda+9HZrY727OoVN1f3XZt5o259urJ687+BosipC7gOPV51pr9ynp7NQTXENG0GCqbhkA4ARVTh5V/ieeXSpAbHmx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,39 +110,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 14/09/2026 14:51, Muhammad Usama Anjum wrote:
-> fixmap_pte() returns a pointer into bm_pte, and early_fixmap_init_pte()
-> installs those arrays as page tables. Their elements are therefore
-> HW PTEs.
+
+
+On 2026/9/21 10:28, Zi Yan wrote:
+> erofs_onlinefolio_init/split/end() use folio->private without setting
+> PG_private or increasing folio refcount and it works. But after PG_private
+> is replaced by checking folio->private in a future commit, it can break
+> folio_expected_ref_count(), since the folio has private data without
+> elevated refcount. Change them to use folio_attach/detach_private().
+> Folios during this process are locked as they are in the process of
+> readahead, so no parallel migration/folio split can happen.
 > 
-> Change the element type of bm_pte to hw_pte_t so it matches the HW PTE
-> pointers returned and passed to the accessors. This is needed before
-> ARCH_HAS_HW_PTE_T makes HW PTEs and SW PTE values distinct types; the
-> array dimensions and placement are unchanged.
+> Furthermore, because folio->private is used to store in-flight I/O counter
+> and the counter reaches 0 when all I/O completes successfully without error
+> or being dirty, ->private=0 causes folio_detach_private() to not drop the
+> elevated folio refcount. Solve this issue by using bias=1 for the counter,
+> so that ->private stays non NULL throughout every attach-to-detach process.
+> Add a macro EROFS_ONLINEFOLIO_BIAS=1. While at it, fix the comment about
+> ->private bit layout and add EROFS_ONLINEFOLIO_COUNT_MASK.
 > 
-> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+> It prepares for a future commit that removes PG_private.
+> 
+> Assisted-by: LLM
+> To: Gao Xiang <xiang@kernel.org>
+> To: Chao Yu <chao@kernel.org>
+> Cc: Yue Hu <zbestahu@gmail.com>
+> Cc: Jeffle Xu <jefflexu@linux.alibaba.com>
+> Cc: Sandeep Dhavale <dhavale@google.com>
+> Cc: Hongbo Li <hongbohbli@tencent.com>
+> Cc: Chunhai Guo <guochunhai@vivo.com>
+> Cc: linux-erofs@lists.ozlabs.org
+> Cc: linux-kernel@vger.kernel.org
+> Reviewed-by: Gao Xiang <xiang@kernel.org>
+> Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
 > ---
->  arch/arm64/mm/fixmap.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm64/mm/fixmap.c b/arch/arm64/mm/fixmap.c
-> index 237a9136bc73b..709a97fe327d8 100644
-> --- a/arch/arm64/mm/fixmap.c
-> +++ b/arch/arm64/mm/fixmap.c
-> @@ -31,7 +31,7 @@ static_assert(NR_BM_PMD_TABLES == 1);
->  
->  #define BM_PTE_TABLE_IDX(addr)	__BM_TABLE_IDX(addr, PMD_SHIFT)
->  
-> -static pte_t bm_pte[NR_BM_PTE_TABLES][PTRS_PER_PTE] __bss_pgtbl;
-> +static hw_pte_t bm_pte[NR_BM_PTE_TABLES][PTRS_PER_PTE] __bss_pgtbl;
->  static pmd_t bm_pmd[PTRS_PER_PMD] __bss_pgtbl __maybe_unused;
->  static pud_t bm_pud[PTRS_PER_PUD] __bss_pgtbl __maybe_unused;
->  
-> 
 
-Ahh, so my previous comment that I thought this would break the build is wrong
-because you haven't enabled ARCH_HAS_HW_PTE_T at that point.
+LGTM! Feel free to add:
 
-Thanks,
-Ryan
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
