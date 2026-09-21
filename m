@@ -4,103 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CADAAC982F0
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 13:42:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B828C982ED
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 13:45:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A3C36B00CC; Mon, 21 Sep 2026 09:42:28 -0400 (EDT)
+	id 267166B00D1; Mon, 21 Sep 2026 09:45:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8562E6B00CD; Mon, 21 Sep 2026 09:42:28 -0400 (EDT)
+	id 23F1E6B00D3; Mon, 21 Sep 2026 09:45:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 71D5B6B00CF; Mon, 21 Sep 2026 09:42:28 -0400 (EDT)
+	id 12DC96B00D5; Mon, 21 Sep 2026 09:45:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 437616B00CC
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:42:28 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CA8ECA4808
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:42:27 +0000 (UTC)
-X-FDA: 85237883934.04.7B3711D
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 3C784180004
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:42:26 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=aY55STBj;
-	dmarc=pass (policy=none) header.from=debian.org;
-	spf=pass (imf24.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E161A6B00D1
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:45:10 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DAADFC01B7
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:45:09 +0000 (UTC)
+X-FDA: 85237890738.05.E0691AF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 12444C0010
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:45:07 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CTElbC33;
+	spf=pass (imf28.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789998146;
+	s=arc-20220608; t=1789998308;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o50iEUUq9Hico4BGWHaX2sieM5OHx8zB4NrvMh/pa/A=;
-	b=GaLAnrjKyFCqDhaCY3OxVZ2duVoZy4Xlrifv17GUuioJHoZPOPE0kVtfCwFZboUIK1tidJ
-	55M15IhrjCT9cO8jKdq2mmLF8D1t4bp1tG+o8mf1pkuBV0EPK9lD11JHp5qHNrdrX/xvSO
-	Z993JoB+rLjFTV3AvqzozQoJ84+h0uU=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=e4AZu4AlntNt1aYig0/jFDygUFvaCLDRa7pO2XcQvUU=;
+	b=WKL0x/bkbVz6jJH5Sw3CNu5K7hC7zLlGHfB/dDsIqdcJz7PLnxML0JOZAzN1Oya4wUwwJr
+	RVvYjn5dS1n1HLB/3iG9ZPBJ5PFk9yrFwdU7BNP0QA2ez2r0YWXYd8fjW/hyvk1P7Ewls5
+	RN7A6u3QTZ2Mj9kZ8IHGtGyiEJlbFJQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789998146;
-	b=aVyzZ6sqxRRYRfsWrVi2EugLRBd6ak//XemAhkIglZluAFuAMmineEwjBWcJ3m84F5Ht1a
-	H1Ig0jRXT2hxklkOxj9f6ZbxNcvYqE3MDBxsqkIlSDZmKy4ad7S5yJ85R+Q2y5evFE8hRJ
-	LoxgjG7gveTzbO2b7gcJgj09sDEHU2M=
+	t=1789998308;
+	b=d2dUeO+sCUqMkr2rCwdY33IGJ75B2cv//yTxgV7ANKLopXGs/0Z2HzSyxaa4k0mNfOBe9A
+	kbtANgQy4hKcMuLUW2sUxkLeUDYeaRRcgJ83aOKlzfd3zk9ggV5Jzl2Mqb7WTN79mt1cW7
+	VPSqJYBRoep73zUv4aP+U24dQ97RmGo=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=aY55STBj;
-	dmarc=pass (policy=none) header.from=debian.org;
-	spf=pass (imf24.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=o50iEUUq9Hico4BGWHaX2sieM5OHx8zB4NrvMh/pa/A=; b=aY55STBjtzWrl21NLFuecIM9F2
-	jXs+e4PqxodBJcqUkj7CChyA5StfbY9Ye42NLiklat4rxvb5NGZj+KQenVRXFpyd3gwomZAJiMWTa
-	30JZIjLf1zIPOIlxFA94dAD6Zv/Oznlygw6D/P59egCuoyjOqLsMhlNX0g4Sz9thM6Ca1CQC6thDY
-	qR7OSlOY5QEnQ+gQOzFvY0t+AiVC9QzwlWti+PiUTSk2x6MyOWMxqb7wRxThGVrdZwH3wIhoVPM6U
-	1NCQrptYHN1ln22pNHWZBnO03VOZxH02emQU031dZRLEU9C8w3Vm8YG28iXUEuoDdHQayV4kv8/Vp
-	OQtvJMqw==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1x8eH2-002F62-2Q;
-	Mon, 21 Sep 2026 13:41:36 +0000
-Date: Mon, 21 Sep 2026 06:41:27 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Shaikh Kamaluddin <shaikhkamal2012@gmail.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, kas@kernel.org, 
-	kexec@lists.infradead.org, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Brendan Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Oscar Salvador <osalvador@suse.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, hannes@cmpxchg.or, 
-	shakeel.butt@linux.dev, linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, rmikey@meta.com, riel@surriel.com, harry@kernel.org, 
-	linux-cxl@vger.kernel.org, driver-core@lists.linux.dev, kernel-team@meta.com
-Subject: Re: [PATCH v5 8/9] mm/memory-failure: add hwpoison_boot_page() to
- flag an inherited frame
-Message-ID: <arEz7lp9_nRGwHPm@gmail.com>
-References: <20260915-hwpoison-kho-v5-0-3bc7a57bd503@debian.org>
- <20260915-hwpoison-kho-v5-8-3bc7a57bd503@debian.org>
- <aq5jyXzuDAANeCJs@acer-nitro-anv15-41>
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CTElbC33;
+	spf=pass (imf28.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 8BCA16021E;
+	Mon, 21 Sep 2026 13:45:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E05531F000FF;
+	Mon, 21 Sep 2026 13:45:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789998307;
+	bh=e4AZu4AlntNt1aYig0/jFDygUFvaCLDRa7pO2XcQvUU=;
+	h=From:Subject:Date:To:Cc;
+	b=CTElbC33WCvK21eYsu1cvCUz+/OAaKUyDjGunBjoj3Dcxwg2gIpLoNBEYjRs5e1T9
+	 1IIWTK1qe4enooe2DuMaHz8FVVp5y9mOT9febxd9ltEsejyb+9XV+Fu8oA4wFtpAT1
+	 Muk5iJN0JjbzbdQC81KDOtVfLAAuYylKYAV07yerti0WXWcszEKbFdkztbdQstg86M
+	 TVbdoVXwAtkINnL4RohkYYVqQIHk9FGD2t4pJG2uTSw040ORzznD3C04jHQjDGCcKC
+	 T3cMPMvi1ImTtpFtM3ZRmZqslphJuY815B2ZFNNxWFNAectS+lRL2d0G0F4Lb7H6Tb
+	 SXcktS3b+k98A==
+From: Christian Brauner <brauner@kernel.org>
+Subject: [PATCH v3 00/17] coredump & signals: an impossible affair
+Date: Mon, 21 Sep 2026 15:44:49 +0200
+Message-Id: <20260921-work-coredump-fixes-v3-0-8e4adb1619e6@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aq5jyXzuDAANeCJs@acer-nitro-anv15-41>
-X-Debian-User: leitao
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/32Oyw6CMBBFf4V0bUnLw1ZX/odxUcoUKkrJFFBD+
+ HcpxkQT4/LOnHtyJ+IBLXiyjyaCMFpvXbuEdBMRXau2AmrLJZOEJVu24zm9OWyodgjlcO2osXf
+ wFEqzk1oyA0KSpdkhrI+leDy9sh+KM+g+qAJRKA+0QNXqOpyCNH5L47UbBySgtfW9w8e6cORB+
+ X/MyCmjJs0zrTIuJNOHBrCFS+ywImHNmHxKxG9JskqEFEaXiuX8SzLP8xN/7AjmOQEAAA==
+X-Change-ID: 20260915-work-coredump-fixes-edf98c80fe78
+To: Oleg Nesterov <oleg@redhat.com>, Chris Mason <mason@kernel.org>, 
+ linux-fsdevel@vger.kernel.org
+Cc: Jens Axboe <axboe@kernel.dk>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Jan Kara <jack@suse.cz>, NeilBrown <neil@brown.name>, 
+ Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
+ linux-mm@kvack.org, io-uring@vger.kernel.org, 
+ "Christian Brauner (Amutable)" <brauner@kernel.org>, stable@vger.kernel.org
+X-Mailer: b4 0.17-dev-db0b7
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3905; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=5cmOqATVUXTDQgM82raywtxRqKGg+wRZ/gH8Sbkxogk=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWRtNLlTxbd8XWa+Kc+KiT/E91pz+7J8Ov7qyvJXT+94z
+ khOaavV7ShlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZjI/2eMDP+PuL2Sl6qrm/zZ
+ 2OzjVDbmL7/t903i+vJDpf3FncWnLi5iZPjJ3my/wPRveUdkuFHrju/LnFutHVxcCxeamzPGf18
+ +kREA
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 12444C0010
+X-Stat-Signature: c3secfyssc5yc8c4hae7uzejoqcbr7a3
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 3C784180004
-X-Stat-Signature: tnpe7ammtrmnf9hzuqiauin1anj8fyac
-X-HE-Tag: 1789998146-678776
-X-HE-Meta: U2FsdGVkX18Z4c3StJpLW7HNiZtBtvX46dFdhG4M9Oo49ENyYxXUUJsQHtLASvoPSxL4qRNbxKtkfEjTLYnGohldygOGNUfe4ceZUMoK0phoXJeptskCMZqIzko1iGe4WTeVqU5eN89JYZxZHlNJuPPBojJQDkEhjajZEVoAcesoCB632rRVycwdeWxfjtXe/Rjpc6bVYOBr3UoIOJ7/ahZdEuXtimgxgrsmvL2SzY5gSNnRyLZuAIfDT4SGHNCtlawd4yZfW0Jde65kzF0cQibtFbECp33FO/DYPkbu+kYioJ3mntv8gC5VA3RxagMpvMzcFMZL3N0PZIgxOKzKuZN+SloxLGeuTm0HkM+QrKxX7Jp9ljHZEgGZyP0FU+A5Rr+rCm6GKDBFtgNSTLwrMpr21iGIcJiEzqUXxZf6AeW9XqwdTQY/7jdHjcPP7kHasCQLfeL64tBbjm95Yl7rTzn5gnIOkYdH2GrkZ2iJv/IZBWxyyPpRz1mThbAKg7L9m7Z6f0/gso5JpJHBL//fCfhRlaf3bUkBhCb+7zZWLO6ZHgcY9KgPGnCELscMeT/JeX97E6P635RDA/jqP81oYpP7b1SrW4tCDDJ9BdAfB7g7L+mMErDSrBJpI/WSSuwFaqEFhhMJivB2SFuuaPRC+cQkLIvQeUV8M7+gxJgzj6hgg/LEfqgWg4UFlHdlDtenHP2znmgFcQBWxzmq17bxYYnMPXtnSsn7oUMaUG6XnnD0dKz8SavBm9pjRNomfz9xWhUkv6ABY+jVfw4HvbKaZ5ele0jX+/U9SqOjwPSd2f5n1u1uX1lpSO7QCClh7oDTtqANsoY/vXk11eHl5z2OY0UfDlu03NV9/SkZiOgqiploy/IRH7yPEX54wajS3MHzbaJcGNhXbi5sVhrPQ2wjzr8wWiCzI/K9Fsi8z2OTfOa1piz4grToqliclUjr8AYHFWIFQ2CX/Q1f1gtD3AY
- 9IHnYgY7
- ANz80c5NG6llVjXtjF09WcgHc/bOIqXiyfp4lenop5v5i2cTJhLvOOZ0CVeHHr5yPBpDknd9868W/ygpb5U0W7pDNCYdfIr/l1vsoajdHu6WPnNU9qNiotx4xeFBJyjz907KqHiybYgMQ17o7Wxtp1gOMUfBPcQKmhv/bjqkKvZfP5lcQIgwOcExFeQNvYpus/8BO2Wt0gZogOKwXtksAwyTzW6RxeyyXa5T6LPsoHZzWyZnb1QIvbRndlPqkWQbIC9LB4jnylzLqx4F/ZajXwti09hHiwcIcpeRQlUUwp5aeH3nHAB53EAT199W3T7Fu6NoTdXC6u0HOeGeD/eiioDORWOcIT3uSuu7eSeWafhgfs8kcs/nSmMCxVAI5nL0/vYzAQPlWKM4wiNR5KpeafY5C5TdDvy4djoAB
+X-HE-Tag: 1789998307-211007
+X-HE-Meta: U2FsdGVkX19ugtQe2IY95uqfpRs7VrCRrqXPtZ393kCjSmlY/ehbtaddat1QxHmcAIf+ZUW8fnI1B8t2DnG5uiSYi7tW8cpXv2JJU6sa9W1w/K9+zIf+bZ2NwsrQfzf3OnMicq8/AuhLsQg+cpRivo3KrVzI867F1u5ZZxFbDiRfFNHmiUsd+ynzAo9iNuUrfCuxsbF6IJoWGtj/M8qTKpNf/vxlfDhvjXemBusxFU3qu/+tOoNza8QJXwmZwjZ2ovOBQb/0LdM4SYifn+3HWmCBelYTGWJnptmDDIOvzaeFp0lwDKlOXDuEQqFWYYrXw1Q8A6cb4HYseZ9hTo7kcqf4WqiF6ARnAkxpr/hEu5q6PUKB1KIr9RXRrMx4nPq6W/uoAboU90FK0j80l8md+CerehdGbNTRurWxq2rM1mmXVPlWGATpu4WkUidyIVPtYEWgX6Dw0PdCaILF3sdwYf3VHLlfOLiYk9ZQ1a+kt36gj760pxbGZg6e08x3P22d5kZJnqSSEwQTElK8tRhauTwEFOokwNcj4WfbCgtFGiZTQ3umpPnDhIVjPT992+zk9DXxeBuFVUQQH1ilVcl6sIippbQWtNgkK5SAq7bZtOy0bsaarVUU7+uqCygbv2LpJjjrdHQ6flDC+1j8jWPqQIsRc4XAT7uJdm3juv7iZ3vaGgDClenTwW1y+ABAjnxBJ4KqCZbINfAAi+8xi3LGMdRdcUF0/Ne9OGgVj9ZggoCkLrNNRXMjV75l78CHPxCFt2C4dCkqmXCaTT6pMNrzmaqlcdpXWqMycpkgfKgn9MARXOgmXoYOJamE7GJnjyAa6yLSZYEGQsuCBEtcZQ+xDdRNLw1dHDJSxZd8dwH4GjxHMraApeBKuzb799kiVFAmwm3ednO2ppC9MVGxr97izlKxyRqzx+TqavaiYRLXN/LAvYDdEztuYGbSdFed+Ayta4XGoL8ngz5p1SSP444
+ a0tiXKhS
+ qgXexZJVBieR356FEUObAyH0pp1JqtsatxME1KqQM314BBC5ReyuzW4GbJV/ZTjwZii2zABwUjG8WcLdxj4MpE2JeKv1A2ZWWtD/dXlQ8SRwoIR09GP22iaYQdmNzhK5/93jS4ugUYSQj8uj1vL/2te3ucRhgCynnR47/axyf7OWPrpC7P1jgvcnNZJrTuA1ggBJG5IO8N/sFjdBQXdhuIzU5VE8B328XVYfsTcHcoraw1juljQ2v7lPng1w4Ejk6o6qKShrrnnqi+bpfmSlAIeOGSY2XejW52x3P7uHydKjh+d4uwyFr98NW9mkBe2oTzYROBBKY7IEUYPA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,69 +106,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Sep 19, 2026 at 03:58:25PM +0530, Shaikh Kamaluddin wrote:
-> On Tue, Sep 15, 2026 at 05:53:42AM -0700, Breno Leitao wrote:
-> > +
-> > +	/*
-> > +	 * The per memory block half of num_poisoned_pages_inc() has no block to
-> > +	 * find at boot, and divides by zero looking for one. A hotplugged block
-> > +	 * is already there.
-> > +	 */
-> > +	if (context == MEMINIT_HOTPLUG)
-> > +		num_poisoned_pages_inc(pfn);
-> > +	else
-> > +		atomic_long_inc(&num_poisoned_pages);
-> > +}
-> 
-> Hi Breno,
-> 
-> num_poisoned_pages_inc() currently assumes that the supplied PFN can
-> be used for per-memory-block accounting and therefore calls
-> memblk_nr_poison_inc() unconditionally. The early-boot path needs
-> global-only accounting because the memory-block infrastructure is not
-> initialized yet.
-> 
-> Could num_poisoned_pages_inc() treat -1UL as global-only accounting,
-> matching num_poisoned_pages_sub()?
-> 
-> Example as below:
-> 
-> void num_poisoned_pages_inc(unsigned long pfn)
-> {
-> 	atomic_long_inc(&num_poisoned_pages);
-> 
-> 	if (pfn != -1UL)
-> 		memblk_nr_poison_inc(pfn);
-> }
-> 
-> 
-> The caller could then use:
-> 
-> num_poisoned_pages_inc(context == MEMINIT_HOTPLUG ? pfn : -1UL);
-> 
-> This would keep updates to `num_poisoned_pages` encapsulated rather than
-> manipulating the counter directly here, while also making the increment
-> and decrement interfaces consistent.
+Hey,
 
-Good point, and it is a better fit than what I have.
+I asked Chris to look at the coredump code with kres and it found a few
+bugs. I started looking as well and found a few more. Here's a fixes
+series. I also used TLA+ modeling for this.
 
--1UL already means "global only" on the sub side, and it is not just a
-convention on paper: remove_memory_block_devices() calls
-num_poisoned_pages_sub(-1UL, memblk_nr_poison(mem)) when a block goes
-away. Teaching inc() the same thing costs a branch and keeps
-num_poisoned_pages behind the two helpers instead of growing a third
-place that pokes the atomic directly.
+Fixes in here:
 
-I will fold this into v6:
+- UAF in coredump_finish(): a parked thread can be freed before it is
+  woken
+- only SIGKILL and the freezers interrupt a dump now, cgroup v2 included
+- core_pattern is parsed from a snapshot instead of racing the sysctl
+- the io-wq exit bit wasn't ordered against worker creation task work,
+  exit could hang on worker_done
+- shared signals are no longer retargeted to the dumper, that truncated
+  cores
+- a failed fork released its files under scx_fork_rwsem, deadlock
+- a session leader's exit lost the SIGHUP for the foreground job
+- an io-wq worker of an SQPOLL ring as the dumper deadlocks the group,
+  user workers never dump now
+- PTRACE_SETSIGMASK can't unmask a user worker anymore, the only way in
+- exec cancels io_uring before de_thread(), nothing adds a thread after
+  it
+- no io threads from PF_SIGNALED or PF_POSTCOREDUMP creators, they
+  broke threads_remaining
+- descriptor tables are closed highest fd first again, the order the
+  deferred puts had
 
-      void num_poisoned_pages_inc(unsigned long pfn)
-      {
-              atomic_long_inc(&num_poisoned_pages);
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+---
+Changes in v3:
+- Address Oleg's reviews.
+- Add a couple more fixes.
+- Link to v2: https://patch.msgid.link/20260917-work-coredump-fixes-v2-0-f3787fcda051@kernel.org
 
-              if (pfn != -1UL)
-                      memblk_nr_poison_inc(pfn);
-      }
+Changes in v2:
+- Add fixes for retarget_shared_signal().
+- Expand fixes for signal_pending().
+- Link to v1: https://patch.msgid.link/20260915-work-coredump-fixes-v1-0-f354ca41780c@kernel.org
 
-Thanks for the review and suggestion,
---breno
+---
+Christian Brauner (18):
+      Merge patch series "files: make closing files synchronous for close_range(), exec, exit"
+      coredump: hold RCU while releasing parked threads
+      signal: only SIGKILL and the freezers interrupt a coredumping task
+      coredump: parse a snapshot of core_pattern
+      io-wq: order the exit bit against worker creation task work
+      signal: don't retarget shared signals in a dying thread group
+      selftests/coredump: test shared signal retargeting during a dump
+      fork: release the files of a failed fork after sched_cancel_fork()
+      exit: hang up the tty before closing the files
+      ptrace: refuse to change the signal mask of a user worker
+      selftests/coredump: test a user worker as the coredumping thread
+      selftests/coredump: expect PTRACE_SETSIGMASK to be refused on a user worker
+      exec: cancel io_uring requests before de_thread()
+      fork: move the coredump and exec checks into create_io_thread()
+      fork: don't create io threads once PF_POSTCOREDUMP is set
+      fork: use SIG_KERNEL_ONLY_MASK for the user worker signal mask
+      signal: enforce the user worker signal mask in __set_task_blocked()
+      fs: close files from the highest descriptor down
+
+ fs/coredump.c                                      |  73 ++--
+ fs/exec.c                                          |  11 +-
+ fs/file.c                                          |  55 +--
+ include/linux/sched/signal.h                       |  19 +-
+ io_uring/io-wq.c                                   |   2 +
+ kernel/exit.c                                      |   5 +-
+ kernel/fork.c                                      |  20 +-
+ kernel/ptrace.c                                    |   6 +
+ kernel/signal.c                                    |  22 +
+ tools/testing/selftests/coredump/.gitignore        |   2 +
+ tools/testing/selftests/coredump/Makefile          |   6 +-
+ .../selftests/coredump/coredump_signal_test.c      | 238 +++++++++++
+ .../selftests/coredump/coredump_worker_test.c      | 447 +++++++++++++++++++++
+ 13 files changed, 832 insertions(+), 74 deletions(-)
+---
+base-commit: dadceac9d20a1c90269aafd7746f7c0c05879ad3
+change-id: 20260915-work-coredump-fixes-edf98c80fe78
+
 
