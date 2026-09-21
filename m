@@ -4,93 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A7EDC982E1
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 10:05:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2ABAC982DE
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 10:05:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 512B76B0095; Mon, 21 Sep 2026 06:05:02 -0400 (EDT)
+	id EFE346B00B3; Mon, 21 Sep 2026 06:05:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4EA586B00DF; Mon, 21 Sep 2026 06:05:02 -0400 (EDT)
+	id E87D06B00E2; Mon, 21 Sep 2026 06:05:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3FFB76B00E1; Mon, 21 Sep 2026 06:05:02 -0400 (EDT)
+	id D9E0A6B00E3; Mon, 21 Sep 2026 06:05:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1DDDE6B0095
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 06:05:02 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A5172A156C
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:05:01 +0000 (UTC)
-X-FDA: 85237336002.11.3EF4022
-Received: from mta0.migadu.com (out-200.mta0.migadu.com [91.218.175.200])
-	by imf26.hostedemail.com (Postfix) with ESMTP id E5C9614000F
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:04:57 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VviTU8YR;
-	spf=pass (imf26.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.200 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id BD9D36B00B3
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 06:05:14 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C7062A02E3
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:05:12 +0000 (UTC)
+X-FDA: 85237336464.16.1E2CBE7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id CA1FB1A0006
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:05:10 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="cawTD/xB";
+	spf=pass (imf19.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789985110;
+	b=K4QVbXLKJyl1LlD0RtIawdJKdUYwDe/7uVSVV1u9GqXL6pLzbnKhDNe5LEXyhcrXcFH55z
+	0+rTK7X/3s3kPfzuFIJyHa1hIPrJykuJEjluvMUzqiVo/2QtLG78aREuUye51LHDYfBbqz
+	jfWiju8WBe0fFrZ8eanh9itggUvV5l8=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="cawTD/xB";
+	spf=pass (imf19.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789985099;
+	s=arc-20220608; t=1789985110;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=848XtZxmbC+66r3doYpKzH4vwIPqoTKFKUcJhFIukUc=;
-	b=LRj4jghstRQD2wwttjajlWPrzJ5mypC2v/HN+gOq2e81sJqalsH6U1FxbkxNNx2inbU3CJ
-	Ce7ZkxFJmZ1kVgcfc0RGjmt5EfLfomQDlSo4iwK9Oee1ZflnlsLUXlqPqgX0MJnvTEV2PZ
-	Vy2EaJuqUYbM2JzqeAF2T2Ok2iwxIVs=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789985099;
-	b=kSwChdWjeg1bjFgwwZQl0QRqY1lDlM/zoHXHqNcTbcuRzveY4N6ukCcSMXhQ7YH6K41Sfc
-	puoLoRPTjn6bcWxU6jND/BagYrL6tm6XJeuLcoxoqHXY63/551tuRcEfHDOPe4AyeMVlWg
-	XGDVlPKSa4s74rEnc0KHScwAeyCCP/E=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VviTU8YR;
-	spf=pass (imf26.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.200 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=VwHox4/h5VjYSrL3ZI6LKmLCzWabEF1m5mv80BQeC1g=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789985095; v=1; x=1790589895;
- b=VviTU8YR5qClJJFiaflEOuE5lmWnXQHbkv8W8sxtWYPWmgbjps2p23TLuQM+bcMsPrg0uddK
- Tn8Ggj/ORFB2Zl8ukDq5MlZwfnSiOWp2pTUqeQ+swpEp7e2Yfx4lLF5L6aoSNR7OB4sPJrdFMtd
- vQT+m/y78OESoZoWKx/esinQ=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 133da64645af3d12;
-	Mon, 21 Sep 2026 10:04:54 +0000
-X-Mizu-Trace-ID: 133da64645af3d12
-X-Migadu-Flow: FLOW_OUT
-Date: Mon, 21 Sep 2026 18:04:46 +0800
-From: Baoquan He <baoquan.he@linux.dev>
-To: Chris Li <chrisl@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>
-Cc: Baoquan He <hebaoquan@kylinos.cn>, linux-mm@kvack.org,
-	akpm@linux-foundation.org, kasong@tencent.com, nphamcs@gmail.com,
-	baohua@kernel.org, youngjun.park@lge.com, yosry@kernel.org,
-	shikemeng@huaweicloud.com, chengming.zhou@linux.dev,
-	david@kernel.org, linux-kernel@vger.kernel.org,
-	kunwu.chan@gmail.com
-Subject: Re: [PATCH v3 00/14] mm, swap: extendable swap devices (xswap)
-Message-ID: <arEBPsFJvzhQZk9W@fedora>
-References: <20260916101929.149106-1-hebaoquan@kylinos.cn>
- <aqrHjfHwyEtRIr5S@cmpxchg.org>
- <aquWKJoP5JLP8Ci7@fedora>
- <20260917131712.GA1344@cmpxchg.org>
- <CACePvbXQRBnTAivJp7mh-y3PQjjUeO4KxzV8+nnhC5UzMomT0w@mail.gmail.com>
+	bh=ItsNNwAC4qDBxc++9nFU+MdfBqnLWO3YTK9IF8ecdnU=;
+	b=IpDoIhASzy1+VvK4juC6T2JOn4pLBOJfJsT1iwBqsNz0LnmJ0GarqGOn/GeRHxYbGwLHUv
+	Le1sjhFY4Qq54G1zZ5rviDwVg0Ph0Y8ldhPdKYvDhBfop07oxRsfx7G7T872N24Pjeuy1g
+	NC8E7YtG5a+BHzsjVGyu2sYKZNruePQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0D8804194F
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:05:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5E7C1F000FF
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:05:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789985109;
+	bh=ItsNNwAC4qDBxc++9nFU+MdfBqnLWO3YTK9IF8ecdnU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=cawTD/xBgMRny4z8uZGxzSPXt/+aU16nwAyWskz/Bqr0/KjcXKyBfKItIvRjgvUhq
+	 EuLM6J/VXW/9INL625iS/VTyPE+A6xqOxdokoFqUn1jHzbD024ztyjlW3NxyATo411
+	 8l2XNCqyBpaXqiMt6ilhZBOGK19p7nwxPCaO8B/Vl27p4zKSq0oOgAfh4z8e7NMfqk
+	 kCQCB0ycm7a6MYrIlAa+n8HX7Xe8ZueNNbNlkzraIM+iN4FDBiXKLuj78O6kqoSqvO
+	 WvSKsV8LnYcPLGCdJEAgnFDywPTbRh+C1j6U9XN6JmWyazk6EFz2BI6czOt3ITIkN/
+	 NwV33UyRuWz2Q==
+Received: by mail-ua2-f12.google.com with SMTP id a1e0cc1a2514c-98296941f99so1302513241.3
+        for <linux-mm@kvack.org>; Mon, 21 Sep 2026 03:05:09 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxwN0ZWd4XYrg7HVNGHGk6g4yUUP8FhZufrS8jlteGHPZp3YMSKH1xZXewBlfUuHmluDUXPQzlMag==@kvack.org
+X-Gm-Message-State: AFuF++nYLwznW3urnmUAEAOfXnBdy4CP2Stmq3wNpT9X1Bm1wFdUNK98
+	1nkOoZyX/5pb1FPrMVVAMobULcxp07oZWRYCltFM/2xhZFJ4MKoOsa5xDaPqItgPL5hS42ioXG7
+	1OtgLg+OpNakaksOZCPlsUu5IYMayXDw=
+X-Received: by 2002:a05:6102:4189:b0:7a1:f951:6648 with SMTP id
+ ada2fe7eead31-7a55c888c4amr4953994137.15.1789985109343; Mon, 21 Sep 2026
+ 03:05:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACePvbXQRBnTAivJp7mh-y3PQjjUeO4KxzV8+nnhC5UzMomT0w@mail.gmail.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E5C9614000F
-X-Stat-Signature: baoxg6ax9stssfiyqpftnfoieuu53xqs
+References: <20260916224437.1164512-1-joannelkoong@gmail.com> <20260920162014.4479-1-lance.yang@linux.dev>
+In-Reply-To: <20260920162014.4479-1-lance.yang@linux.dev>
+From: Barry Song <baohua@kernel.org>
+Date: Mon, 21 Sep 2026 18:04:57 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zV5PMR4JdNtHsYhUK9MNUMuC5pa7b+Tx800YGJotOyhw@mail.gmail.com>
+X-Gm-Features: AcwNN1WN80W2AMBhuPmQGkvtliIEPiQUjsMcIsyBA-H8xOiD3kaUc0wv43rwWS8
+Message-ID: <CAGsJ_4zV5PMR4JdNtHsYhUK9MNUMuC5pa7b+Tx800YGJotOyhw@mail.gmail.com>
+Subject: Re: [PATCH v2 0/3] mm: split underused anonymous mTHP folios
+To: Lance Yang <lance.yang@linux.dev>
+Cc: joannelkoong@gmail.com, akpm@linux-foundation.org, david@kernel.org, 
+	ljs@kernel.org, usama.arif@linux.dev, hannes@cmpxchg.org, alex@ghiti.fr, 
+	ziy@nvidia.com, baolin.wang@linux.alibaba.com, liam@infradead.org, 
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, vbabka@kernel.org, 
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com, willy@infradead.org, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: CA1FB1A0006
 X-Rspam-User: 
-X-HE-Tag: 1789985097-72991
-X-HE-Meta: U2FsdGVkX1+CpkJE2FjbvWEBuDFpt1YIL6gH84yLBYhmEWcw63uq/2dOVbwIFo5AlIGtoSwPP1meApnT6IiuOVM4iSCxwPlV+WqZCzAIbbwrsdgQOuYwbHzdnSDZnw3byTEsRvJmNC+EhuxfYDVZBdcsgOWF/s1cJnGsTGsoN98BE7ULtYB5AY+n1NFCX9DurpS5oflwOF2MtXL334bahDfiESGjquH/VQMM9eTRbjpm6lyduhuPfsvWZ9Uk9fCsJ+J/YGn9NFwjzcCLXLZjkrhsu+s95EK7mWkCe2VhqezoC/Vd+FA1NixQNjp1ccHJ9ohg097Cn/JK7jW1HKGKxHydDSda9ZqwejViHkkmEGIy/kRUOb0lCxdRjOLZOm/WjBhxOoseXPiRSqFNglskZxT2mWJlg35GmuT7DbscHFnDp4VRQbEhyL2WZ4PcbEUDjiqMuCPqpOLdZ8JIOOGNdBdXB+gwSszRWUGN1hov5DmZimCvCLPepL2WjXugDW2ZcaIhJVqM5XJJF+XM4ApfHhTVBNiFaiYlSYFf7DXocZY7RjplVw9a2KIFXvihlD3Ix3Wx3MfmH+4dmgcXYIPSlIjO2oRVo3TgiNRgzZ1kFvRym3BIlaQ7mtJReXjNkRbe4I7ceTzyWl1F924d/Ri4aXdOHORqlSttd3vVMpIMdaTCXTT2gkeBD7oqGIoI+aRBNmL0kyjDddo+x+iXzy655zcQRSQ0Cb7J0NR4GUlHH1Y0mF4qyRBT38iqO9/3vGh5oTA5uhPMurOkaLcgwtNYX1MG5lsdTMbH49Ko3YJ0o8T+pus8tTxr9Lzew4YumsvT1oBwChQ3A8boO+UySyj6DjTXnVB0bL34K6UWnHLBVvO3/KCUvF1IRBvo1b4/Mh8vxnShh/nT/eqWJ51AWu7V6WfhkC7fxLQ/3dyJ/FMgS/Q5zIbUH+++KCq9n+mb426uyNIoEwivnjedFAe/+U5
- 8lC4oI2C
- GZ9TKfqi3iXCAz7jx/wr4U7sMtO7QmY7al5JJUx5wk/ArT5SgXasCD5YEXqFzAeN2lTlDRvjpSxsj8vkCnRgnYzDJq9q4HZeMYXKmgfvSYVuuxJh7XOIavSs39O9O3N8DjFmk2+IXizI9XuyLDgtVcxel/B1ysRYNSeVOlHUma2a8gThWtwuGrA9aukir/AYUVeChA2afAk3Lny4yCF7nvtFI7tyuyp0ZbfKa6EhkY6Y/EcO7j97JYpR7YEOyaYh0FoeuJK6uN30TeUhs8MNSiJMa5TY3evbhEWeEak+N/2Y/2Z7W28e/Qbpvq7HxnLhksaMZUpn7i4cs5irc30K3Vsfmgq8zCDKsKNSxGPePU001VW6MMVBc7cF0aR0UMU+hI6XBrYZtZhT7SKkAxuQji0fcbapGqiASfnlI7Jr5Xn/s9yP5+HTMTMpibVfR52QRa20CSJOviXjGjFbTGTsYMGt/ZF+5gaE/UN+0
+X-Stat-Signature: owgr58ri5s8ao3x6j7m17eq8d566gb1g
+X-HE-Tag: 1789985110-381474
+X-HE-Meta: U2FsdGVkX18ssaXKr4qF4yHUnCHRadpLs7wrzACUvPbuRBAeejNfiOK5sp9//TMP99Rk1eg/QyVwl+DwR2XVhoMi3umssx+2GzreucokAa6Nb0Rxe/lTmOBH4VIJa9XWwnC8l8CbwG7tYY6si+QP0+AMcTbaAd2/ycGaOZ7RQp7snM2BlXWLQcqyGN/yQtM33fD8YEwT2vwWO5UDGi9Ph8NvWmPOXP3FVG7AVQLZ+0I1z/L2rtNrxla2a2fgqCgzuZobCm2cmkL5hIPvtAbitxmomgLuVA+Lx452tjDY6tOUCdJ7SZ0j55i3VL3ewlvyDHptAdFkaQeY3rMkIg4ke8ixN3HPcc5p/RrRVt7cHwtANWce/x6ORqEKa2RKXejJnEb1EJvNuM8bEzLrbb3axVZySVhUR7OudKKvAmZpf1RYdnWtJiEHaC2eF3w6oZsYFKQEUKGKJneqNO58S3U9SAEPFiwm7ZcnxR96gkfjY2ilYmGXuCmnh+peOAwXMfKdnHnhzrp3IYOZZe1W+a+TtNxhgers20PtGKByrAXdHEYtSGcf3ClnGfn74z1nN26zHtf5Nd7Zc8hcMlZ/zFh1UK/Jfj8zBo6eag93it1PNKeDaKSxEWXgNWJNbabCP1G+mf90qeniT/LIgEkFE+hsyLSBdOWrvygJIxbsUGqdZyQoDWJbVKRFI3ro2FxzlPkJDzzcniyMfNEQfFwx1qpmXA+qKwf2qXUwTwmVIPb0jo3FklIf+focCXBhjUvXCGRzBoii/7c3Pv5ni2bIuDXndjBLWrX5xtP8CD43dcLzHEf2w9cracchxE5zYvU0PbNDMrPxwm9wy/vzCbVdg2QTEyj3tseY+3+9SmrqjKgy9XQn4+CdmhJvY6RLLl4s3Mq63zAlqXpkduZr7Q4Is3ZlSIHyB9iqKIUJFYTibnT2IW+7lYEU+3zAiV+AZieihttuP09/wCWnowCj07TJlqn
+ 81MtcJOO
+ Ne8gvTGTZBgTU4aXEYoDSnW4bCAc4cASS1zBDZpNjfRuLhEMLzlCf+R9IoDyH2HDIIqxisuE/qRDm9jjqPaGjENTUZFcmtMnuY6jG03VoqRoI9p58zmV9vdsqcI+4rUyW8GGcT37OKlIEMNuWwB97qfrwKuCrXKmXkniyyGRMy1il5vt1QFiYRKIUvpy9SrJQYYclov5G0JnbRa4c8Ecft038fz7lOAUeNBMTT1Jrr2T6xlhbYHCvvAuvwZyT/PPvYVNJqGRXvcKzxXUlMrdckXVUUhdXK3DSn2qUllUp+IjOalEnmNfRCV10RQ4T0WTk/MpyE0N5F+YnVvppAb17uOFlTsUhfyQTBWSpxEWWhuPG9raT3fM2J6SgDg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,107 +106,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09/20/26 at 11:52pm, Chris Li wrote:
-> On Thu, Sep 17, 2026 at 3:17 AM Johannes Weiner <hannes@cmpxchg.org> wrote:
+On Mon, Sep 21, 2026 at 12:20=E2=80=AFAM Lance Yang <lance.yang@linux.dev> =
+wrote:
+>
+>
+> On Wed, Sep 16, 2026 at 03:44:34PM -0700, Joanne Koong wrote:
+> >PMD-sized THPs that are mostly zero-filled are reclaimed under memory
+> >pressure by the deferred split shrinker, but this is not done for mTHP
+> >folios. At Meta we would like to deploy 2M THP=3Dalways on arm64 with 64=
+k
+> >base pages, as 2M provides the contpte benefits while the PMD size there
+> >(512M) is too big to use. However, 2M THP=3Dalways causes memory regress=
+ions
+> >unless the unused portions of those folios can be broken down and
+> >reclaimed.
 > >
-> > On Thu, Sep 17, 2026 at 03:31:23PM +0800, Baoquan He wrote:
-> > > On 09/16/26 at 12:45pm, Johannes Weiner wrote:
-> > > > On Wed, Sep 16, 2026 at 06:19:07PM +0800, Baoquan He wrote:
-> > > > > xswap is a swap device with no backing storage. Swapped-out pages live
-> > > > > in zswap. Its cluster_info[] array lives in a VM_SPARSE vmalloc area,
-> > > > > and the area is grown and shrunk on demand as swap usage changes.
-> > > > >
-> > > > > The problem being solved is the static size of compressed swap. Both
-> > > > > zram and zswap need the size fixed in advance, and neither gives memory
-> > > > > back when the workload shrinks. The solution should be a device whose
-> > > > > size can scale up/down as per usage. xswap does that by mapping the
-> > > > > metadata lazily instead of reserving it for the whole range.
-> > > > >
-> > > > > Design
-> > > > > ------
-> > > > > - si->cluster_info[] stays a plain array. Access is still
-> > > > >   &si->cluster_info[offset / SWAPFILE_CLUSTER]: no per-access branch, no
-> > > > >   RCU discipline, no tear-down state machine, no NULL return.
-> > > > > - Only an initial chunk is mapped at creation. The rest of the address
-> > > > >   space is reserved, not allocated, so an idle device costs nothing.
-> > > > > - Growth is driven by allocation. When no free cluster is left and the
-> > > > >   address space has room, the next chunk is mapped and added to the free
-> > > > >   list. No userspace involvement.
-> > > > > - Shrink is driven by frees. The free tail is scanned, and whole chunks
-> > > > >   are unmapped once the mapped range is at most half in use and several
-> > > > >   chunks can go. One chunk is left mapped as slack, so the next
-> > > > >   allocation does not map it straight back. A ceiling lowered below the
-> > > > >   mapped range skips the half-in-use rule and is enforced at once.
-> > > >
-> > > > If the swap maintainers prefer the VM_SPARSE route, I'm happy to defer
-> > > > to them on that.
-> > > >
-> > > > However, from the cgroup and zswap camp, two stipulations that I
-> > > > reasoned out in the other thread[1]:
-> > >
-> > > >
-> > > > 1. You must not charge compression space as swap space to the cgroup.
-> > >
-> 
-> Sorry let me push back on that. That is already existing user-visible
-> behavior. Changing that will break our deployment using zswap. I don't
-> think we should change that.
-> 
-> See more in my reply in the other email thread.
-> 
-> https://lore.kernel.org/linux-mm/CACePvbVaPDnva8X-Xmz84r7j5HjTuih-w5phpw7cerK2uPnK6w@mail.gmail.com/
+> >v1 did two things. It scaled khugepaged_max_ptes_none down per folio ord=
+er and
+> >it queued every anonymous mTHP folio. David objected to the scaling sinc=
+e
+> >collapse had already rejected proportional scaling as either letting the=
+ memory
+> >footprint creep or being confusing to reason about. David and Barry sepa=
+rately
+> >objected to the queuing, which adds list_lru lock contention on every an=
+onymous
+> >fault, and hurts lower-order use cases such as Android's order-2-only
+> >configuration. Johannes suggested keeping khugepaged_max_ptes_none absol=
+ute and
+> >simply not queuing folios that could never exceed it, which addresses bo=
+th.
+> >
+> >Read as an absolute count, khugepaged_max_ptes_none also implies the
+> >smallest folio that takes part in underused splitting. A 2M folio on 64k
+> >base pages is 32 pages, so the knob has to be set below 32 for those to
+> >be queued at all, and any folio with no more pages than the value stays =
+off
+> >the queue entirely.
+>
+> Em ... I'm not sure max_ptes_none should also become the mTHP underused
+> threshold ...
+>
+> Say we're on arm64 with 64K pages and set it to 16. Khugepaged PMD
+> collapse uses 16, while mTHP collapse turns the same value into 0. With
+> this series, an order-5 (2 MiB) mTHP enters the deferred split queue
+> because it has 32 pages, and is considered underused once more than 16
+> pages are zero-filled. So the same knob means 16, 0, and 16 depending on
+> where it is used ... That's a bit odd ... no?
 
-Thank both for valuable input. I am thinking if we can add an counter
-like memory.swap.disk.* or memory.swap.backing.*, then we won't break
-the existing behaviour, and also cover the use case Johannes mentioned
-where different cgroup have different swapout target setting on xswap.
+Lance, I actually had a long discussion with Usama, Joanne, and
+Johannes:
 
-> 
-> > > Hmm, I don't have a stance on this. However, isn't this an issue
-> > > zswap/zram have been doing? It feels like an independent issue which
-> > > should be done separately?
-> >
-> > If you have 3 containers using compression space, and two of them have
-> > writeback enabled to a shared swapfile, the memory.swap.* controls
-> > need to work to manage fair access to that swapfile. They do not work
-> > if compression space itself is conflated in.
-> >
-> > Right now zswap entries actually consume physical swapfile space, even
-> > before writeback. Charging the space is correct. But the whole point
-> > is to decouple compression space from physical swap space.
-> >
-> > This is not something that can be done later. It would be a dramatic
-> > user-visible change to how the resource is categorized and managed.
-> >
-> > > > 2. You must make the compression space large enough to be outside the
-> > > >    range where users can hit space limits before hitting memory limits.
-> > >
-> > > We may need a way to define 'large enough' at first.
-> >
-> > I've tried to lay this out in the other thread, and highlighted the
-> > usability issues that result from hitting compression space limits
-> > prematurely. It's kind of your call whether you want to seriously
-> > engage with this or not.
-> >
-> > But ultimately it's your claim that a static size can be made to work,
-> > so it's on you to make a convincing case.
-> >
-> > > >    That also means not allowing setups where this is possible.
-> > >
-> > > And the limit is only an optional knob. If the admin does not set it,
-> > > the device grows to the full address space, so there is no space limit
-> > > to hit at all. It already behaves the way you want by default. The knob
-> > > is only for admins who want a ceiling, they can use it or not. I hope
-> > > this would not be a problem for your use case.
-> >
-> > No, I've laid this out already as well.
-> >
-> > This isn't about "my" usecase. It's about designing a coherent
-> > interface that works well with a large number of usecases, and other
-> > pieces of kernel infrastructure commonly used in conjunction.
-> >
-> > The other proposal in the room needs no such interface. The burden of
-> > proof for adding one is on you.
-> >
-> > > > [1] https://lore.kernel.org/linux-mm/aqLi6cIjD2wJwk0B@cmpxchg.org/
+https://lore.kernel.org/linux-mm/7bb32d25-2c3e-40ab-904a-ba22fff60cca@linux=
+.dev/
+https://lore.kernel.org/linux-mm/anHxPU17Ui4MTcCb@cmpxchg.org/
+
+I feel this is correct though it is a bit hard to follow.
+
+Best Regards
+Barry
 
