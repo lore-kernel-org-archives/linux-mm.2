@@ -4,98 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7295C982ED
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 17:54:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AA7EC982E6
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 17:58:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8CB1F6B00BF; Mon, 21 Sep 2026 13:54:38 -0400 (EDT)
+	id 37A826B008A; Mon, 21 Sep 2026 13:58:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 854A66B00C1; Mon, 21 Sep 2026 13:54:38 -0400 (EDT)
+	id 351F46B00C1; Mon, 21 Sep 2026 13:58:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 743BB6B00C2; Mon, 21 Sep 2026 13:54:38 -0400 (EDT)
+	id 268F96B00C2; Mon, 21 Sep 2026 13:58:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 46D4D6B00BF
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:54:38 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D518FA4168
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 17:54:37 +0000 (UTC)
-X-FDA: 85238519394.26.FF1F1AF
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F2B0C6B00C1
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:58:04 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7A9C41C0B8C
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 17:58:04 +0000 (UTC)
+X-FDA: 85238528088.10.27BF98F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 37DAC4000A
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 17:54:36 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j0lA4uFj;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf16.hostedemail.com (Postfix) with ESMTP id B769018000B
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 17:58:02 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="R/sDK9og";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="R/sDK9og";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790013482;
+	b=Bvxtn8hGf3lfS3zJkORW1bwjBidVQ3F2clBhy5NGlAh2Ii8EvSUy6FIxZnVJHNwno/MpFC
+	TvbdCO7gbbQW/rMAWjKUB/sWh/OQmlUE8iWk2b0YXiUMecX+BCfRR2sVSCi5mT4yHD+8nE
+	4nt2oHeT0qFE7GF7jiSMoE7q6js6lVY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790013276;
+	s=arc-20220608; t=1790013482;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZauDV3vJKUROsmCoqVdGrpQ07LaYoylUMtCQPyYKr3g=;
-	b=dVnmGu3ms0EVCe7cm3jfLP1dRgMV65knWfNOSlcWSzlBsLwJcm+y9dxlRYJ4hdgQo5xndm
-	g4Oj4M2Ntfu1kI4tFyYsGG68KrEtAanKdNLAK/KSpwkII39lLgPLDRRhKHTA7wiaqi9FvB
-	j+sBuuAQvtX0G6VX92jnyJ8Iz0A58DE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790013276;
-	b=YqDIQro4iLSEAboJJtD0J1jD/AYnRwZM8WAhAylpVXxI3a3BclIeSajfPeJkgIPllcB1fP
-	oyTngvqHfFJ94r1gsVcYs0br/8vdzfCg2wUWmM/9odlx17ZD7L4Mx1a1eDQD8DK0/oYsrl
-	Ubr/szMsAJhcNCcy+374VjXSKNn6EmQ=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j0lA4uFj;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=VrEKRxhpsxO4YB1Z88WoC1VfhzGFQ3EMsTjDujrRO+w=;
+	b=TGiW5a5OCS/NUzE3bxftKD2t9HXzg1+KTnb0cI2gj0LHQdvADOS+tsY6PgYD3XwYDh3ZdC
+	kg3kKZF+fDpCxv6WvQWJtPSY63IN+cNB4JK+3KDmQhPJlVATVmbxhqzy59DQlC31tN4TYo
+	F9R+gFwAwdlckKwsUncpn7p/csfZcsQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 77BD4417F7;
-	Mon, 21 Sep 2026 17:54:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 975B31F000FF;
-	Mon, 21 Sep 2026 17:54:27 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D614D438C9;
+	Mon, 21 Sep 2026 17:58:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 904521F000FF;
+	Mon, 21 Sep 2026 17:58:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790013275;
-	bh=ZauDV3vJKUROsmCoqVdGrpQ07LaYoylUMtCQPyYKr3g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=j0lA4uFjJBcRY6wWftw6EMIqyMIJ3+NR7zrSfOF1Z9f/TpSIZ9Gh4y4jjvxmRONiM
-	 ObFuyLQ3ujm1yOOBV9KrS8elLJVfpjsktABH0b/F1q1DonDxSlGIPFvplEykYNyWru
-	 TlrUJIAlHIsRcMxf5Hseb1ckLHW5wBXYIPyvOsX2gRpDZsTqCte91cFQpVs3/uhjQy
-	 /uSJ4AgrDQbnh845s783rZmk0fA2Mnl9gEqoW27HOmlO9rUd44HaqIaFmOIhFLKK2U
-	 BjNB7hlhY1CcorgDW7hwVfGqMdkjLPpMfT+I78qw5XqoHtqO09h+yru8tFtvcXd+2y
-	 9NHxKZRfAtd9Q==
-Date: Mon, 21 Sep 2026 18:54:25 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Hongru Zhang <zhanghongru06@gmail.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, baohua@kernel.org, surenb@google.com, david@kernel.org, 
-	liam@infradead.org, mhocko@suse.com, rppt@kernel.org, shakeel.butt@linux.dev, 
-	vbabka@kernel.org, willy@infradead.org, zhaonanzhe@xiaomi.com, 
-	linux@armlinux.org.uk, catalin.marinas@arm.com, will@kernel.org, mark.rutland@arm.com, 
-	linux-arm-kernel@lists.infradead.org, chenhuacai@kernel.org, kernel@xen0n.name, 
-	loongarch@lists.linux.dev, maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
-	chleroy@kernel.org, linuxppc-dev@lists.ozlabs.org, pjw@kernel.org, 
-	palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr, 
-	linux-riscv@lists.infradead.org, agordeev@linux.ibm.com, gerald.schaefer@linux.ibm.com, 
-	hca@linux.ibm.com, gor@linux.ibm.com, borntraeger@linux.ibm.com, 
-	svens@linux.ibm.com, linux-s390@vger.kernel.org, dave.hansen@linux.intel.com, 
-	luto@kernel.org, peterz@infradead.org, tglx@kernel.org, mingo@redhat.com, 
-	bp@alien8.de, x86@kernel.org, hpa@zytor.com, 
-	Hongru Zhang <zhanghongru@xiaomi.com>
-Subject: Re: [PATCH v6] mm: retry page faults once under the per-VMA lock
-Message-ID: <arFYRAa-i7CIwmHL@gremlin>
-References: <20260911025613.1220845-1-zhanghongru@xiaomi.com>
+	s=k20260515; t=1790013481;
+	bh=VrEKRxhpsxO4YB1Z88WoC1VfhzGFQ3EMsTjDujrRO+w=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=R/sDK9ogDpGJxJewL8iIUth9DWQnev+2MEzZXFhD0YypTxIon+lddkV/B5MiXsboO
+	 byMrkKP0wfUx7XngMjTu9nAl2JaQK7zF3Phju/+ez58bU954kYLbxc8z3/4Vc0WgzQ
+	 KOftHb5AUK5N9gFffvyEvRM47sRdl27CRx18LUuqQktKtMjB9/XICkbjwojAmHMCx0
+	 IOUpxI7tR5Dak2iI8yZqV+B2DzvoXQOeYv7BXJA3uNEFbHCW1NXGE79SgsXboqYDFB
+	 G+yzrNcbI31AM4MpDGbVDD6WgYVtVj6uG6HlTqlFELJEHb+bHt6BsCAnyTE5hCf2DX
+	 y4CbMiaMOzh0w==
+Message-ID: <b15c63490f9164bf46d68ff3ec5dfc02@kernel.org>
+From: Tejun Heo <tj@kernel.org>
+To: Julian Sun <sunjunchao@bytedance.com>
+Cc: linux-block@vger.kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org, axboe@kernel.dk, hannes@cmpxchg.org,
+ mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+ muchun.song@linux.dev, willy@infradead.org, jack@suse.cz, tj@kernel.org,
+ akpm@linux-foundation.org
+Subject: Re: [PATCH v7 2/3] memcg,writeback: flush foreign bdev mappings
+ separately from owner wbs
+Date: Mon, 21 Sep 2026 07:55:17 -1000
+In-Reply-To: <20260921120658.1627992-3-sunjunchao@bytedance.com>
+References: <20260921120658.1627992-1-sunjunchao@bytedance.com>
+ <20260921120658.1627992-3-sunjunchao@bytedance.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260911025613.1220845-1-zhanghongru@xiaomi.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 37DAC4000A
-X-Stat-Signature: sifujfkfgy67t6tiionpb6ekoe6qhp9h
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1790013276-858165
-X-HE-Meta: U2FsdGVkX1+O7oPgbrglgjnUp2IJ5eWKJXGJPmH3pOmeepgOiD0zgc+kyK9OZwpoUNKd1DEd8W/FuwEY6uzzweqmZrAI4kBOsoqAIrahLGwwi38ujRvbjhBYGPU3ABNyPfMJY3v/sxmqVlOhSdCtwcuV46ovQxsAqTsTxopPFpN3EYfrQ7AqhWI28eo+TAlvvPY8EdiVmZH/Qs0Bb1dEN9YtnUjgRW4m7S7G68ovHvO7nuH2Pf3iqt677hxz4JC8FR4PSg77XgSIZypIBtc6OCDGsOAQiPyySciySi6DgG+f0LmLoEpaPseMQV/rs4v3zPHiys9XgRV7joQWZYgCjerv45qwtWemZA7p1Eh/r5iT7Sa5Yxf+KFmC8S061zn9rAqZA6+n2VBbpB5JijfqlzwQENyMFX3L+0nKzy8W5lEiqsTkptXSsLzLmaC6b5S3q0+4frmCYlgJOjMjcJrHtPikuCFyUR7NM1aI3RQVg/E40zUakB/C5s7kdzs4mWKTHa9olPYF/1ajhsDB4837RIiILGTSBOUFQUXRfi0v0qEBcuz0yKcq6DTnu7sAeWlu8OCLzQK1SeYY51+eapfhX4Zl/a5j782JU1bQxsXH0PG6QaU1AD0q4fapfSGDFe7PYkAWHHc4zDQw3b9ls+nAVnHWpIf0eNpepCYNOg6UgKH71OUFIRnaU7MsKdcfnF0uFtpx1RwgTO1r4F4OB9qJAvMfzc3crhITJ3tI2M45NCuyLQps6zHJvv8NScYZM1UyWHocq1uamM7Ww/LsZVH6g3gavEkrzx0PMD0nhSRR5slb6IZwZdpiWoQA/Vmd9bqA8M65UiaECVRrntrmDQ4yQ0uYSrzqOCi0JpihGHaldTootLVUQ1RT+OqcgnOPDENjl0nWzyY0jqpwKLAY5laS/aZUT+cjdhps15adDWbiWhVaFLz7SKmQhfLrjNEVjc/vJAndM07HT7Yj04/FGwd
- hFJptD6r
- JXcA3xj0cII9doepZFRp62D+SYphRgUC3dsYqivuKz2f9HtkGdyn+ZsmmRRtDov8KE+lGheSfiQn4vrtnVdn7p9yHpo45qbLa95C7VtaF+Ccq781ZQfys3r+LmzEwZfoSGhue6/hrfnGQh3sqUcpxFt5+uJ1ivfEFXWiRmtABO4x7+SEFX7blVu3mH1jLi4zbt0k0hrITEFbe3b6Esn+cBR4TQd6GL0qx+LVtVwuPHw1xF1t08qgwnlqPYXSVGMw9vR6ubZZ0NmfKuQ/nl+te6K6sdfbdm1rZN2AaQDXrQ6V9w5s=
+X-Rspamd-Queue-Id: B769018000B
+X-Stat-Signature: ob9ugmdskj8rfcxjjywymh93xbm7154z
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790013482-324201
+X-HE-Meta: U2FsdGVkX1/Sn3kZ/1FduMvdc6d+hS0ylzoBJmi2B4Uen3VqsiNhV4be5hV+R9SiSorGID44lfls5QgchTbcHzrMewmv9PIPYqef0GUeijjGtQLkHkLT9UCG26zP8yVB+JWo+46Yf0WhtkXciZLaibdM4Fh4BfYfVrhaVxShk9IFXDckf9qYL5YNpWMelKGpadsMevZ9O33nLdNeLWcEdAoEgMuqNpuoJTDvEq43OjTyvG5vWwRLg5xool7zg9AS1VIMzJq5gf8Al8tg+WmmH8pMBYuv9bCE2HPPYf6TChGi5Ctk+9w9TtDJ9jzZ8ngbMo3x7R1zdEYDVLS8BU93I2WNU7aXirUgWY4PdUDhGE/rh3U+kxq+sAO9fZvrRzlAFha+0YN1B3whh06ZvF+FYl6RHX1qcFa8o53XHHXyxpRsRaDWlCNrN4EIL+DQ4SFgSSfYrh+Fdc4pBdcfXCBDM08G9iSg2rvrrhEOGXvkCMvpSAskpVzfJqPn1iCXcE5ABS58oBfpIu2RF5SduLxJYchPZxKwSYnDVo7/Y5pG3pwOX7Fn94cZC3RWPllwkpVB5pZsluvY9ZVC2nfAfxazQOPaybbdsgTliNHjXNdV6BOs9r29yjeMUbmSAATL7vgGV6Q1kSTYkoqvEWpPoz4ONWyrZ/rvOJqu7QrqCZJRzi10zFziaqFyZDCVbjmkt2U67DJKmoDA6FGoOuKcCduFKh4VCDnoCCcZRkUqm2NHi0Lp9dxo19WHRUCSl1uDzOkxND9V2QgSZG/eVJIrUxcEb6MfcFefz0Foz+UhpBCCCwQcu6bNAXcDq9jfL/im3IYqZo+VSBAYqwwPvdHhn6mGo2um17XqE8eSZiwq7RagPmX6EkNqJ7IKIrlBp0LMadd3q+61Z9p/ImwuE8bMKg/XDcJs8b5LAqwY0fuds1UfVgWRkjCOHUq/236WvQMITZl24tFI9sZ41QgL+L4Oqt6
+ cotWcSh4
+ JV9fd0ZEbYfDi+Zw9YHWjLEliYtHMzWfyq1oZ9OU8Okx0Jxrf6cMhMyiQvl1GZnW1vo3ImmZI/9yV0aqzfdYmRkuBEwCd8Zra/rtKbxG5xRBs9+vml+jnoE07nf1RYnloF7LjfPpluxH61E9N/zMMPtvgFQUYDH5s91i8HMDHn5nPyJHu4RRuXB5qfAYGvkTS7/gv01AiOZ+q3z+zx+A0agZXzXUQ+JO+5LK5uqWImhvTc1NHY9VBlv9B3q1Kl/4hJ32H
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,205 +96,126 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-OK I finally got to this...
+Hello, Julian.
 
-I fear we're going to go round in circles on this/have endless revisions of
-the same thing.
+This is an AI review. The series was built here, and the bdev reference
+across a racing last close and disk removal, the slot races, and the
+css_free ordering were traced and look correct. Two behavioral notes and
+some description and comment fixups.
 
-So 2 things the patch needs to answer, more or less right away:
+On Mon, Sep 21, 2026 at 08:06:57PM +0800, Julian Sun wrote:
+> Use fixed per-memcg slots. Tracking is best effort: record only dev_t
 
-1. What are you actually optimising for?
+The slot policy this version adopted, oldest-first replacement, expiry
+after dirty_expire_interval, and re-arming when the mapping is dirtied
+while a flush is in flight, isn't stated anywhere. Can you add a sentence?
 
-2. Where does the hurt happen?
+> If allocation fails, retain the existing foreign-wb path.
 
-Your patch does neither, then goes on to arm wave away all the complexity
-and presents a 'simple' solution that I feel brushes a lot under the rug.
+Andrew found this unclear on v6 and the subject is still implied. Something
+like "If the workqueue can't be allocated at boot, bdev inodes keep using
+the existing foreign-wb path."?
 
-Answer to 1 is 'cold app startup time for a specific set of apps'
-2 is filemap_fault() AFAICT.
+> This primarily affects filesystems that keep metadata in the bdev page
+> cache, such as ext4 and other buffer_head users, rather than the usual
 
-You should definitely be stating this upfront.
+The branch keys on sb_is_blkdev_sb(), so buffered writers of raw block
+devices are covered too whenever the bdev inode's wb belongs to another
+cgroup. Worth a mention.
 
-And I also seem to remember that zygote + multi-threaded apps = fork
-blocking is part of the problem here, which is why there was push-back on
-just holding the VMA lock over I/O.
+> +struct bdev_frn_flush_ctx {
+> +	struct work_struct work;
+> +	dev_t dev;			/* for bdev inode, device hint */
+> +	u64 at;				/* last recorded dirtying time in jiffies */
+> +	atomic_t inflight;
+> +};
 
-Looking through filemap_fault() makes me want to cry and looking through
-the other retry logic in the fault code makes me want to live on an island
-with parakeets and coconuts forgetting any of this even exists...
+It sits next to memcg_cgwb_frn and is memcg's, so maybe memcg_bdev_frn?
+"for bdev inode, device hint" doesn't say what the value is. Following the
+sibling's comments, "dev_t of the foreign bdev inode", and @inflight could
+use one too.
 
-The retry logic is fu.. err.. ndamentally a total mess.
+> + * For non-bdev inodes, when a foreign page - a page whose memcg and
+> + * writeback ownerships don't match - is dirtied,
+> + * mem_cgroup_track_foreign_dirty() records the inode owning bdi_writeback
+> + * on the page owning memcg. When balance_dirty_pages() decides that the
+> + * memcg needs to sleep due to high dirty ratio, it calls
+>   * mem_cgroup_flush_foreign() which queues writeback on the recorded
+>   * foreign bdi_writebacks which haven't expired.  Both the numbers of
+>   * recorded bdi_writebacks and concurrent in-flight foreign writebacks are
+>   * limited to MEMCG_CGWB_FRN_CNT.
 
-Part of the problem is that each time this patch is respinned we lose
-context on what is a complicated istuation.
+The flush sentence and the slot limit apply to both paths now, so the "For
+non-bdev inodes" scoping reads wrong. Maybe keep the original paragraph and
+let the new one state only the difference: separate MEMCG_CGWB_FRN_CNT
+slots keyed by dev_t, flushing only the bdev mapping, same expiry.
 
-VM_FAULT_RETRY can mean a million different things:
+> + * These wb/bdev_inodes records only remember IDs and don't hold any object
+> + * references. As being wrong occasionally doesn't matter, updates and
+> + * accesses to the records are lockless and racy.
 
-1. I dropped the lock and waited for the folio to be unlocked.
+The paragraph above already says the bdev records hold no references, and
+"wb/bdev_inodes records" doesn't parse. "Both kinds of records only
+remember IDs ..." would do.
 
-do_swap_page(), remove_device_exclusive_entry() -> folio_lock_or_retry()
-
-2. I dropped the lock to start I/O it may or may not be ready when you come
-   back.
-
-filemap_fault() after do_sync_mmap_readahead() or page not uptodate
-synchronous read with lock dropped <- what you are optimising for, or
-shmem_falloc_wait() waiting for a hole punch.
-
-The maybe_unlock_mmap_for_io() stuff.
-
-3. I dropped the lock and nothing was waited for, OOM me on retry!
-
-filemap_fault() allocation failure, gotta retry because we dropped the
-lock!
-
-4. I can't do this under the VMA lock, use an mmap lock
-
-vmf_can_call_fault(), any vm_ops without ->map_pages, __vmf_anon_prepare()
-when mmap_read_trylock() lost, also hugetlb_fault() horror shows.
-
-Also device-private swap entries.
-
-5. Userfaultfd! Because of course!
-
-Userspace has to do something.
-
-handle_userfault() after sleeping for uffd handler, retry should succeed.
-
-ctx->released -> yield to releasing thread.
-
-6. Fatal signal
-
-Arch handlers rely on this, so retry also means 'check signals'. Fun.
-
-7. Some driver insanity
-
-It means all things to all people. Used for waiting on stuff like
-
-LLM says:
-
-- TTM at drivers/gpu/drm/ttm/ttm_bo_vm.c:62 and 144, dma_resv contention
-  and GPU idle wait. Consumers in amdgpu, i915, nouveau, radeon and vmwgfx
-  re-derive "was the reservation unlocked" from ret == VM_FAULT_RETRY &&
-  !NOWAIT.
-
-- xe_bo_cpu_fault_fastpath() at drivers/gpu/drm/xe/xe_bo.c:2021, where
-  RETRY is the default return value, including for "runtime PM not active".
-
-- panthor at drivers/gpu/drm/panthor/panthor_gem.c:831 onwards, where
-  dma_resv_trylock() failure is RETRY and the same error is NOPAGE, SIGBUS
-  or RETRY depending on mmap_lock_held.
-
-- sgx_vepc_fault() at arch/x86/kernel/cpu/sgx/virt.c:91, EBUSY from
-  __sgx_vepc_fault().  All of these call mmap_read_unlock() directly rather
-  than release_fault_lock(). They are only safe because none has
-  ->map_pages, so vmf_can_call_fault() bounces them before ->fault
-  runs. The VMA-lock design rests on that proxy.
-
-So yeah. All that. Wow.
-
-8. Nothing!
-
-LLM says:
-
-  - page_mkwrite() returns in fs/exfat/file.c:951 (inode_trylock lost),
-    fs/nfs/file.c:699, fs/netfs/buffered_write.c:576 and
-    fs/orangefs/inode.c:635 onwards, including the combination
-    VM_FAULT_LOCKED | VM_FAULT_RETRY. do_page_mkwrite() at mm/memory.c only
-    passes through ERROR and NOPAGE, and do_shared_fault() and
-    wp_page_shared() then ignore the returned value entirely. The write
-    fault completes as if page_mkwrite had succeeded.
-
-And maybe I'm missing some stuff too.
-
-there's also places where retries are done which don't even involve
-VM_FAULT_RETRY like migration_entry_wait() and pte_same() mismatches and
-do_page_mkwrite() on truncation and some other places.
-
-I think any patch maybe doesn't have to have a massive essay but it DOES
-need to ack that three are a LOT of meanings and it's a TOTAL DISASTER.
-
-Your perf numbers look very artificial - you create situations where you
-KNOW from the code you'll get mmap lock contention, then have a lot of
-threads contend and gosh darn it, well the contention is really high! :)
-
-I mean - I feel like most of your perf numbers amount to 'contend locks
-gets us lock contention' - and are thus useless really?
-
-I think the bit that _matters_ is what you're actually after which is stuff
-like:
-
-> Tencent Video cold app launch time
+> +	if (memcg_bdev_frn_wq && bdev_inode &&
+> +	    sb_is_blkdev_sb(bdev_inode->i_sb)) {
+> +		mem_cgroup_track_foreign_bdev(memcg, bdev_inode->i_rdev);
+> +		return;
+> +	}
 >
-> +-----------+----------+----------+--------+
-> | Statistic |  Vanilla |  Patched | Change |
-> +-----------+----------+----------+--------+
-> |    Mean   | 1,907 ms | 1,840 ms |  -3.5% |
-> +-----------+----------+----------+--------+
-> |  Maximum  | 3,023 ms | 2,851 ms |  -5.7% |
-> +-----------+----------+----------+--------+
+>  	trace_track_foreign_dirty(folio, wb);
 
-Which is not earth-shattering to me.
+With this patch alone, foreign dirtying of a bdev folio no longer hits
+track_foreign_dirty at all and patch 3 adds the call back inside the
+branch. Can you keep the tracepoint firing on the bdev path here so that
+patch 3 only adds the argument? Also, @bdev_inode can't be NULL:
+__folio_mark_dirty() checked folio->mapping under the same lock and
+folio_account_dirtied() already dereferenced mapping->host.
 
-Now, while the patch is _small_ it takes all of the above, all of the
-complexity, all of the bigger questions about how to solve this and
-compresses it down into 'just retry the VMA lock'.
+> +static void bdev_frn_flush_work(struct work_struct *work)
+> +{
+> +	struct bdev_frn_flush_ctx *ctx =
+> +		container_of(work, struct bdev_frn_flush_ctx, work);
+> +
+> +	bdev_flush_by_dev(ctx->dev);
+> +
+> +	atomic_set(&ctx->inflight, 0);
+> +}
 
-(I note that you change the tried logic subtly too which is another thing
-but never mind that).
+The in-flight window is now just the submission of the bdev mapping, and
+mem_cgroup_flush_foreign() runs on every throttle-loop iteration, so a
+memcg that keeps dirtying and throttling requeues the flush back to back.
+A folio the flush redirties, e.g. a buffer locked by a jbd2 checkpoint
+write, re-stamps the slot on its own. The old record stayed in flight for
+the whole owner-wb work. With a journal the write cadence of hot metadata
+is still bounded by the commit interval, but for nojournal ext4 and other
+buffer_head users it's bounded only by the throttle pause, for every
+tenant of the filesystem while any tenant throttles. Not measured. The
+description covers the target size but not the cadence.
 
-I worry that we're not doing the REAL work here and this is just shoving
-stuff under the rug for what look to be mediocre performance improvements
-in a very specific workload and costing a bunch of paths (albeit not common
-ones) pointless VMA lock retries.
+Each pass also goes through wbc_attach_fdatawrite_inode() and
+wbc_detach_inode(), so it votes in the bdev inode's wb-switch detection
+like the owner-wb flush did, at the higher pass rate. Whether the bdev
+inode ends up switching wbs more often is an open question.
 
-And I worry that maybe that actually _adds_ complexity by the back door a
-bit.
+> +		if (memcg_bdev_frn_wq && time_after64(ctx->at, now - intv) &&
+> +		    atomic_cmpxchg(&ctx->inflight, 0, 1) == 0) {
 
-But I worry a LOT more that it's just a HACK (and I know Barry was nice
-about the idea and I appreciate it but I have to be honest).
+Records are only created when the workqueue exists and @at stays 0
+otherwise, so the wq test can't be false with a live record. Fine as
+documentation, but the cover lists it as a fix.
 
-Instead of dealing with any of the above, we just leave the mess in place +
-just retry the operation under VMA because we happen to know, for this ONE
-workload, it works out better.
+> +		INIT_WORK(&ctx->work, bdev_frn_flush_work);
+> +		atomic_set(&ctx->inflight, 0);
 
-And PROBABLY it doesn't add too much overhead to anything else.
+memcg is zero-allocated, so the atomic_set() isn't needed.
 
-SO.
+On patch 1, the kerneldoc's "does not wait for all I/O to complete"
+understates it, the flush waits for nothing.
 
-I've written too much again, let's sum it up.
-
-1. WE HAVE TO DECIDE whether we want to accept the hack because it
-   helps in a known case and probably doesn't harm any other cases.
-
-2. WE HAVE TO FIX THIS DAMN MESS. Even if we take something like this WE
-   HAVE TO FIX IT.
-
-I'm inclined to rip out the whole retry thing altogether one way or another
-but I leave that to Matthew to figure out :)
-
-
-If we decide we DO want the hack, then DEAR LORD can we not have this
-horrible duplication across arches? I seem to remember you agreed to take
-that out ([0]), and maybe it's pending what Matthew wants to do, but is
-there not a way to avoid that?
-
-ALSO. It seem we are subtly changing how the tried flag stuff works and
-that really needs to be considered carefully.
-
-And FINALLY if we DO do that, the patch message MUST be honest about the
-goals MUST state EXACTLY what it's trying to optimise, it MUST clearly
-state that in a comment or whatever where the code is.
-
-It must NOT wave its arms and pretend that it's some general solution for
-fault retries the way it does now. It feels like it's hiding what it's
-really intended for at that just adds yet more confusion to this mess.
-
-I REALLY want to hear from Matthew on all this, I don't think we can move
-ahead without his clear feedback.
+Thanks.
 
 --
-Cheers, Lorenzo
-
-[0]:https://lore.kernel.org/linux-mm/20260709084752.147379-1-zhanghongru@xiaomi.com/
+tejun
 
