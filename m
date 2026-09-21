@@ -4,73 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7D31C982ED
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 13:45:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A78BC982ED
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 13:45:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8D05B6B00E2; Mon, 21 Sep 2026 09:45:39 -0400 (EDT)
+	id 108FB6B00E4; Mon, 21 Sep 2026 09:45:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 881136B00E3; Mon, 21 Sep 2026 09:45:39 -0400 (EDT)
+	id 0B9956B00E5; Mon, 21 Sep 2026 09:45:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 797CD6B00E4; Mon, 21 Sep 2026 09:45:39 -0400 (EDT)
+	id EEA196B00E6; Mon, 21 Sep 2026 09:45:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 49A3A6B00E2
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:45:39 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 25E4B1601A2
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:45:38 +0000 (UTC)
-X-FDA: 85237891956.02.09A0471
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B69476B00E4
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:45:42 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C3876801B7
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:45:41 +0000 (UTC)
+X-FDA: 85237892082.06.F76C537
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 69D47140007
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:45:36 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TpW5IZj4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	by imf02.hostedemail.com (Postfix) with ESMTP id 10AC480008
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:45:39 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jluAyHbw;
+	spf=pass (imf02.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789998340;
+	b=HmEYN6cICO+ZKv5OxKe3BghXoRpsJsFBRmNibnhio6QJ0myeD8qKg+GUUL7idi/aMiR4b1
+	AXSf9efA4evnOO2ikLe9PSd92kqbH8L07adSKYENlhGaOH1KMG3ESvxVyAI0GGk+pR6AQC
+	KOzbVlTDhglBmB/R9DKBDHv7Akv/vMU=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jluAyHbw;
+	spf=pass (imf02.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789998336;
+	s=arc-20220608; t=1789998340;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uDFVbgvJ7xnyyLVrNwCFS2r46etfsHvtzm5ZhTttIBA=;
-	b=bBNM6V3nND5SUHgliqRCrTCQc6X3Zj/OWTIGt2tJrWS1fIC/VnsUBHcVd065Lmun60CyQF
-	YUsi+eCJunA3t8EEhpllYPl8oxBUm5lWBMe+9jV5R3GFPq5o7q1HtR6Au5p8lDQoi4vLKW
-	cD62YXdKQUyrvA9EFFyOzCrkzxWIKqc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789998336;
-	b=Z+A2iqyu8VO6iou5+VkGlqJSxpDwc/H/Wp9ajliKl7ZXRPjrAJRVsKKeHmVLlmWTWWKA4U
-	lIhRJER+7i/vy5wV43+6mMC7lbheqn4/wp3w9Bw177kqCPl3jPwgq0lK/5afyRr+kHLOva
-	WU/DtOCQrj7lVVYg5l/MW2pOzBUx4pQ=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TpW5IZj4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	bh=85CevHKublMmHOSHJkcM1sjBk3a15MmFBWjuAkGzmnQ=;
+	b=esGUNlZIY8GFH/PhnVBiv6nOYxbxim7P4Br7OyL8tcKNNcCuU/iILwAp7lJ1QWgKzBjDaZ
+	umsk03xOIywy59Xbh+3sQzYDU5PpZvRHTSCsrqXf0Pn56N+Cf9FRCX667E/AzcdAIhx4k9
+	uaIYWY9c4Z2ii2+IGNzKS+I/cKhMy0A=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0975E600C8;
+	by tor.source.kernel.org (Postfix) with ESMTP id 9ED4560142;
+	Mon, 21 Sep 2026 13:45:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43E5A1F00898;
 	Mon, 21 Sep 2026 13:45:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E00E71F000FF;
-	Mon, 21 Sep 2026 13:45:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789998335;
-	bh=uDFVbgvJ7xnyyLVrNwCFS2r46etfsHvtzm5ZhTttIBA=;
+	s=k20260515; t=1789998339;
+	bh=85CevHKublMmHOSHJkcM1sjBk3a15MmFBWjuAkGzmnQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=TpW5IZj4rtYbO7lCDv8Q6KmiwLq6HAR/i7W+BErM3FKlJkW9OaOgQ707omWL5/9c4
-	 +a+zAPvP/tEereXm4zwjqCcpCdDjeR2RAKNJwtSGPDSHOgpBeDJk3dZ35ATe5TYLgw
-	 JtCoRGNNo7surhqgOFk6ZKHHjPqUqG6iM03saVORaEWzSuRGzm+f6rntLQpohhO5lk
-	 DZeFDLIQJVmGJ8zboy58GmFMnxLG12Y05OGTDYdkyrf/mVY0ADLwtjhy9geyg0lXJY
-	 lucpjqfBpxI+SB8HAwHkFtaKBFFMIY/zE4PBvgeOyDC19ROAoH/Q5DnDZ9cJLR4GwH
-	 6SDoGwz2MDDSw==
+	b=jluAyHbw2vEqmozixFTqdTe7zlSB6njFRBAJ0ExWMwKyQQrPnuLpAfq1sqHtIkLQv
+	 /vCwG0jwKhX5dWk1usPTY5RW9pPsMgHw/K5WZYgbKog0mB29goPiwAmHbEvRXAhQqj
+	 RMfOhw10tX/dA8m8hj4rPGsV1pIROIrdBpAZb4o6n+Cs+mJPL66eJUmoyaRjUv5QPx
+	 Dpxe2vQvNMW+mVzy2NCrfmhfTaorDsespkd/MKmFbrgmHY90Twh1Fc3WXLh0CkHrrR
+	 uMwGGpE25bIuDTXFfhKq6JyqvdVuUGD9lD4XRX4dKj1FKCbfuqIISCcPqkJKjNIv7/
+	 6H5hC1Tk1CVew==
 From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 21 Sep 2026 15:44:57 +0200
-Subject: [PATCH v3 08/17] exit: hang up the tty before closing the files
+Date: Mon, 21 Sep 2026 15:44:58 +0200
+Subject: [PATCH v3 09/17] ptrace: refuse to change the signal mask of a
+ user worker
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260921-work-coredump-fixes-v3-8-8e4adb1619e6@kernel.org>
+Message-Id: <20260921-work-coredump-fixes-v3-9-8e4adb1619e6@kernel.org>
 References: <20260921-work-coredump-fixes-v3-0-8e4adb1619e6@kernel.org>
 In-Reply-To: <20260921-work-coredump-fixes-v3-0-8e4adb1619e6@kernel.org>
 To: Oleg Nesterov <oleg@redhat.com>, Chris Mason <mason@kernel.org>, 
@@ -79,24 +80,24 @@ Cc: Jens Axboe <axboe@kernel.dk>, Alexander Viro <viro@zeniv.linux.org.uk>,
  Jan Kara <jack@suse.cz>, NeilBrown <neil@brown.name>, 
  Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
  linux-mm@kvack.org, io-uring@vger.kernel.org, 
- "Christian Brauner (Amutable)" <brauner@kernel.org>
+ "Christian Brauner (Amutable)" <brauner@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.17-dev-db0b7
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2967; i=brauner@kernel.org;
- h=from:subject:message-id; bh=7KUzGKGrk7V1HZ7iUNzf5pjBye0tThbmUGx9Q6GKXVc=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWRtNLnz5PgfRi+mGLtds24IJjJ2zdO/ldP6upLXrjXK9
- 4IO30/3jlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgIlU7mNk2Hn/cfH6PMsnjzZu
- Z43iicyXNSx6ocTyvXH6D1mHgF+RCxkZTh66purH4RJ4qev/Df7YfaHL+aJURbjExeQkdJOD1r5
- kBQA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1918; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=8SAsMjkrngSWGdQKZl/aHd6rJ4X+T1wuo4AkDdyJKso=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWRtNLmzsfIlz+eogHshBmkqp7OcPmRILunQf6EqGXw1y
+ /2qO/PzjlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgInUyDL8s1+X5tHrcadbPnPv
+ 4o/nblRe+tdRGHO29Plc/bz/J/+6MzP8M30iLPbjpPCdKJsZOpv87HT7G+4+eLAnId91l7tlTUM
+ OCwA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 69D47140007
-X-Stat-Signature: kzbj9seykhpqk3ps5yqpu5nbxyibnwui
-X-HE-Tag: 1789998336-907879
-X-HE-Meta: U2FsdGVkX18nxUHxcKMlVjtGsoq56Lob7RJgVahAo/F1v1QKWMEB41d+kItENOwBeMrlf/81hIBLpAEmNcB4cANPKj6B7UmpBpOE1qZtdT65xW1goUbfdOBe0XCBPXz4PfU4OBdNE1gArdDzw3zg/YjvWXuNAunwx78vfv+5MkEgurLOuHI4j8HVOZA6ifEkhSvxbkWBdasOKdmhYj1F804X4hizjTVvB4pC9tMi1S4TE2TSuun0fQZTMjQhzTTgOt1j4c6sY8D8E3tVFG8i57klbXlBnr5nDtlgDcDDszHP5hOyXyRXlhoiWYxBZ1tqQflkFt/0TZZfRs31VP3PmBsR8AZIcefBbANo5syyiruI89mXjygfZe7qrSI9Yccogn1T7NaiLtD4wy2P6+fizCXp9wYt0uAntfUhtrg+yj7gAC/fs79Kb57bbrkKi+XiNN1tOy1OMrK2adJB7XJLRmDpjpGFpqNU4g1mmVsQLuoEmRMuq4bYueewq9zxYJ4ytlHqBVnzLmI6w8tBWttQrdl8DFKl89MGAcKbUQ2fYB0pgQLd/2WLHuPYKXaUAzoPlR5VtHsoDIbL4zW//jOJmY7Ciz5umSG50yeZFrt5sI6IHhgArIJ156BTm8oCtkW+CyDw06VzDvDb60EXCHaCNT7zlkNyTuCdgemJRH5jCYPDz0ZadhGM2wov4rUfl0EJEoQKc2RPm831HGTrVEFia2kbwSx8t1FcWtO1Lyx+KAKy+RzbhMmHyNhKA4zwFZXXiRhB/YeVXKJkeRCPXq3Ka0uugPosVsXH1rK5Ueo5xzesWYAnoRyyRGc4APRBOSjz65ymehnrSZC7Y7mqZtZg/cWPaFalmwZP9Vk/4p8FETNbsWnxwd6yX9XLID7Vm2Tvfvg1GZvtIMDaRTtXolXf1OxEZ4fMV9pvYMI9r4cRTd4GSxXWWoxJ+AoNygUaFXTjQahWBUIazkVlQr54n/7
- u1Ydh59a
- M6kpLJ6TpaBx+zkogJIHyfynWVtMYK4LldMYINpXhalfKqPEngXjVhOyNUbEElj6CkYBoFoCArcrsZAslYEGkmir2HddB8ecLzxc3jY2817l6RZ5Sqg3d/LbIIvqo8CUy3Rh+r4TnHLMIKWME3v3/mxATP3h7STIyv2hNhwZ6BmIlTaQspB+h8Bl3mnIK6/K4N29syJi6MYgVkcOwya9gMZCVYlDR6DHTi0RB5sGK2WgEf6dK7jJn1hvHeg==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 10AC480008
+X-Stat-Signature: frunuuqudyhr5n431ihfthz7aeia4n7r
+X-HE-Tag: 1789998339-652589
+X-HE-Meta: U2FsdGVkX1/y4IfjRCTqxQc28UE5FscTw9vw0im+IrO4OcWr2WYRwd2p56GuI5jxqymiTCaIIEz7n7+KH1k4+BVow3dnOPTl26lTcF3xs/qwsvuGaHZrFjT/bn9Qwx+YZSQkM2IfzkwsVD22eqmyFXcfzQ5NwH9NLzKlZZLFrVtXdq/9CWDUx6cRy6fLcglmTMAQ6qvVgtXIB1115P1epU39LKPv9nLbgURdTn+YGaXmbxCdgaGfqNPEn7QyS4m/7IGQpCbgy+9to/V1Sx63Dvd/vBJHHfCXKuIBUivtcxER3Vm/P0KqRAab/YhnbLiCBpcFzIAxhm/trRqtpdbCJvA5tYIku06N2fKL7Cg/v0Qxa17+tvFsi7umP8tZc8c8zr2N5CqabO/Ad2M9EA7ejAT5lidsQ/P1yNWlvn/7B5tCoK7xeR7dU6hmg2y5GNJGH2zlC94GdMl80o845bqDo6ags4JN26UQo7SQzo3+w8bY92lO7/fqSDGkt9p3kS3KacXmTBYTygwDnkIfEK0ITG7IUWf9hww54r7JtVlWMYT3VX/CZzl2raz54a4bUEClHxK5FZHIKMy9gW3NWB7/ZZpkFjTSmNxm3vsgeLY4IUP98woErF15vEI1mbZ5t0D6Tb5CuEBHNDWTnuJ9onPzPP+V/PP+1VirZPO13y3bS3hBQuwuhVTvzkEvJTjdPM5HC+QhkUpcxpUYHXL2eRLwawBREV29ULf6VswjGUck4Q3DRsMtmNvPUUFMT2ycraSB4NW8JxqB6pLGcczlQX67v9X+8kLetVHhfTXpvqaOSbgxaGzph7HfMeRSsu2KLLxWlGjle96REP29y4DM22MRcA6w7jUFeF6CPWtw0LbAVFpicBTkCqO1B62jW8CP4GnPQSfghgtjoZEEUP5mlLd1XY2VU0N+MLrsmIPDUGUg7ppMCEzVviJkKURMyhVXsDu5qEOaYJeg1k7rxDUMvGb
+ eHTOuJcV
+ 6tNmHGXcbG7oWP122Pa5NspifMVxZSTie5r7f+vlhlMlpRouTWvj/+194vtYDzvBn/7Kygt3+N618T+9Z0r1YWFwwaPN8MMj7KZnFyVBmEkb7Lz6mfy/SzLPgmZjYnSXaqXmEqoFuZM+/aUDz/0HL7VWum7mPKDEGS7toKzBEecAtcmS8fKEeDdcnz0ktnp6cMGMu8dciLuLd8vr7Rg1+Q0jNbdnCfw2xhOnhfjDoA+9wIteroxjjS22CzfDV1UmhiaJrOfRMl2TCyc7ubWrKu4FKDg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,73 +105,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-do_exit() closes the task's files in exit_files() and hangs up the
-controlling tty of a session leader in disassociate_ctty(1) after
-that. Since commit d99d38540bf0 ("fs: make close_files() synchronous")
-the final __fput() of every file runs inside exit_files(). So when the
-session leader holds the last open of its tty the tty is released
-before disassociate_ctty() runs. tty_release() clears signal->tty for
-the whole session in session_clear_tty() once the count drops to zero
-and sends no signal doing so. disassociate_ctty(1) then finds neither a
-tty nor a tty_old_pgrp and does nothing. The foreground process group
-loses its SIGHUP:
+A user worker is created with every signal other than SIGKILL and
+SIGSTOP blocked. It never runs user code and that mask is what keeps
+get_signal() from dequeuing anything else for it. complete_signal()
+never picks a thread that blocks the signal, tkill() queues on the
+worker but nothing dequeues it. ptrace_signal() requeues an injected
+signal that the tracee blocks.
 
-    do_exit()
-      exit_files()
-        close_files()
-          tty_release()             tty->count == 0
-            session_clear_tty()     signal->tty = NULL, no signal
-      disassociate_ctty(1)
-        get_current_tty()           NULL
-        signal->tty_old_pgrp        NULL, nothing sent
+PTRACE_SETSIGMASK is the only way to change that mask from the outside.
+A tracer that clears it makes the worker eligible for every signal.
+Whatever the worker then dequeues it can only act on by leaving.
 
-That only affects real ttys. For a pty the master's open keeps the
-slave's count above zero. And it only affects a foreground job that
-holds no descriptor to the tty anymore while its session leader exits.
-Everything else is unchanged. The DTR drop on the last close happens in
-tty_port_shutdown() regardless, stopped jobs get their SIGHUP from
-kill_orphaned_pgrp() and signal->tty is cleared either way.
+Refuse PTRACE_SETSIGMASK for a user worker with -EPERM, the way
+ptrace_attach() refuses a kernel thread. A worker is guaranteed to only
+ever dequeue SIGKILL or SIGSTOP and an injected signal stays pending on
+it, which is what already happens when the mask isn't touched.
 
-Before that commit the final __fput() ran from exit_task_work() which
-comes after disassociate_ctty(). That order isn't old. Until v3.14
-exit_task_work() came right after exit_files() and before v3.6 fput()
-was synchronous, so the tty was always released first. Commit
-c39df5fa37b0 ("exit: call disassociate_ctty() before
-exit_task_namespaces()") moved disassociate_ctty() up to fix a pppd
-crash and in front of exit_task_work() as a side effect. The hangup in
-this case has worked since then and that's eleven years of userspace
-being able to rely on it.
+Taking the request and quietly leaving the mask alone was the other
+option, the way set_current_blocked() keeps SIGKILL and SIGSTOP
+unblocked whatever userspace asks for. But then a tracer gets success
+back with nothing changed and no way to tell that apart from a mask that
+took effect.
 
-Hang the tty up before closing the files. This is the ordinary hangup
-with the file still open: __tty_hangup() swaps in hung_up_tty_fops and
-tty_release() runs from the close afterwards as it does when a modem
-drops the line. disassociate_ctty() stays in front of
-exit_task_namespaces() which the pppd fix needs.
-
-Reported-by: Chris Mason <mason@kernel.org>
+Fixes: e8b33b8cfafc ("Revert "kernel: treat PF_IO_WORKER like PF_KTHREAD for ptrace/signals"")
+Cc: stable@vger.kernel.org
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- kernel/exit.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ kernel/ptrace.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/kernel/exit.c b/kernel/exit.c
-index 55dbea3b242e..9ed5eb03d0e1 100644
---- a/kernel/exit.c
-+++ b/kernel/exit.c
-@@ -1003,10 +1003,11 @@ void __noreturn do_exit(long code)
+diff --git a/kernel/ptrace.c b/kernel/ptrace.c
+index d041645d9d17..4e9822a87aab 100644
+--- a/kernel/ptrace.c
++++ b/kernel/ptrace.c
+@@ -1227,6 +1227,12 @@ int ptrace_request(struct task_struct *child, long request,
+ 	case PTRACE_SETSIGMASK: {
+ 		sigset_t new_set;
  
- 	exit_sem(tsk);
- 	exit_shm(tsk);
--	exit_files(tsk);
--	exit_fs(tsk);
-+	/* Hang the tty up before the last close of it can clear the session. */
- 	if (group_dead)
- 		disassociate_ctty(1);
-+	exit_files(tsk);
-+	exit_fs(tsk);
- 	exit_nsproxy_namespaces(tsk);
- 	exit_task_work(tsk);
- 	exit_thread(tsk);
++		/* A user worker only ever takes SIGKILL and SIGSTOP. */
++		if (child->flags & PF_USER_WORKER) {
++			ret = -EPERM;
++			break;
++		}
++
+ 		if (addr != sizeof(sigset_t)) {
+ 			ret = -EINVAL;
+ 			break;
 
 -- 
 2.53.0
