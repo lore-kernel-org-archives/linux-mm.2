@@ -4,98 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2C32C982EE
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 12:25:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C01D2C982ED
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 12:31:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 753966B008C; Mon, 21 Sep 2026 08:25:58 -0400 (EDT)
+	id 931526B00C1; Mon, 21 Sep 2026 08:31:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 72A396B00A9; Mon, 21 Sep 2026 08:25:58 -0400 (EDT)
+	id 8E1EA6B00D5; Mon, 21 Sep 2026 08:31:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 665B46B00A1; Mon, 21 Sep 2026 08:25:58 -0400 (EDT)
+	id 7D1C16B00D7; Mon, 21 Sep 2026 08:31:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D4726B00D1
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 08:25:58 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BAE59A015F
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 12:25:57 +0000 (UTC)
-X-FDA: 85237691154.08.2F9D059
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 24FB12000E
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 12:25:55 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=macFNaFB;
-	spf=pass (imf03.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4DC9B6B00C1
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 08:31:37 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C57111C0B37
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 12:31:36 +0000 (UTC)
+X-FDA: 85237705392.19.C5E7A84
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 03D79180002
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 12:31:34 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=ibPXFwr2;
+	spf=pass (imf16.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789993556;
+	s=arc-20220608; t=1789993895;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZAdc5FO1i9grgLMSpUoVxK5/k0rBXY6fo8pkrWSvNnI=;
-	b=vrHBus1qB2KOlFbDWQLr31lAUURC0GvRTl+JSZFV7qnqvHiIf+AOVjq0814aO1OS2gvumf
-	pw3TkremD4zB1EdtEybf5coTAkyDFMh4a0PW8axxk9hmXT8fMwksc/ZaWh63kC5E0w0Gk+
-	3Z0wDvWtx2Qhr/wXDbYrUd09di/dm08=
+	bh=RJyhK/H/cx9UDbk1fQ3qzOg9bJhZWQMaDj6VPrkWrC4=;
+	b=tJsVANogmZAbmj+KFJJcbTCnvEvKAz+YIgI6dC0J2qKGnzN68lDgtZ9762fhvuLnWofMkx
+	VypPkN2HhdVh/7/BVKs6MKq/54iYb6J+mhxAbNhLe2fhCOG7J5PGrf/qFC7q9ebdtSv2Y7
+	RYhSP0xGwdnKnvshM1Yipogcng0PjAY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789993556;
-	b=XZwfFOIfovAjZ4vknerdnVTE4prAXrgyzmlloEC7hz0n8nAgJB14R0QprCmkDPFB7/wmzJ
-	DtAxmSGOffKHsNvaS2t88BhUH7/R0ayVEgJdPROhiSUyHDfaEFW1IbFV7pqE306CgN1H0D
-	R3289rYyEVISoVJGIROUZ+tCKLznlBM=
+	t=1789993895;
+	b=FgWALQj9L6GZF3N0/QZPXsxwpwu9IBDfgYwI4YGqVPga8iaYE1RDpDaIMibSsvRxvlTIFv
+	7Ju3NtzHzIrI0QY5/tken3cEqUJKfaKDUq6O8aWjaviJspGgrsYkXBAgX6AeI21YuJgbJN
+	yJjpCJZvqoPwN78lQQe5bdnI8fMArO8=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=macFNaFB;
-	spf=pass (imf03.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D8AFD600C8;
-	Mon, 21 Sep 2026 12:25:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B02D41F000FF;
-	Mon, 21 Sep 2026 12:25:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789993554;
-	bh=ZAdc5FO1i9grgLMSpUoVxK5/k0rBXY6fo8pkrWSvNnI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=macFNaFBbpsX9/6u2Pgy1/4vXZApG1r1E4HHNo2+PQpwfaNoImd3nZ/pijk8QyBh7
-	 5Qmmt/2tsXtkNyT3ZX/mp9eteN28sUEJEmDNjIpyGk1K07An6f6D/26tKJ55duYBhN
-	 zCqlGduHUAwTP0TnBFel3P8TjyNKbEYzYdVUugR6zof6RI8UfXkR+09l4gh1TWYeZb
-	 bZTNUyM/IddcMWZC4p3VW9UPLst/pHTnVL6cLIfgInkXwOMdcs7qshacZbTADsBWpj
-	 gLRs9iKUiEwPUP7jTRaJGzywvo2PXXqZy//mc/0ujyJsRG83pSEHDtBCqwoS9w55Lr
-	 97aZIGomqcakQ==
-Date: Mon, 21 Sep 2026 14:25:46 +0200
-From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Dan Williams <djbw@kernel.org>,
-	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
-	nvdimm@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-cxl@vger.kernel.org,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Mike Rapoport <rppt@kernel.org>, Oscar Salvador <osalvador@suse.de>,
-	Ira Weiny <iweiny@kernel.org>, Jan Kara <jack@suse.cz>,
-	Matthew Wilcox <willy@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>, Michal Hocko <mhocko@suse.com>,
-	Qi Zheng <qi.zheng@linux.dev>, muchun.song@linux.dev
-Subject: Re: [PATCH 1/4] mm: generalize vmemmap remap architecture support
-Message-ID: <arEiSiD4-3c5UkHf@localhost.localdomain>
-References: <20260903122128.12264-1-songmuchun@bytedance.com>
- <20260903122128.12264-2-songmuchun@bytedance.com>
+	imf16.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=ibPXFwr2;
+	spf=pass (imf16.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Content-ID:Content-Description;
+	bh=RJyhK/H/cx9UDbk1fQ3qzOg9bJhZWQMaDj6VPrkWrC4=; b=ibPXFwr2uzqV+04gSCXcVxns3G
+	0N6SGj4ckD/GEGj+9xBvm5gc2lUWYpXaO9EGoQeAmTcgwnwUCfKPFP94fpIcoVjB5HywRUgzUF/hR
+	P/iU7uXfEp0qRmAKS3eAQ6aObaPREGzcQo9tI0SmP6YEnP+iGJXDv7Q1hknLVeR9C6XLs6hfQgBLE
+	+3mx/rYlCOm9+wYr2sw8HXCWia72DJTqwWByVSSY1xcnV/ApUoEcvbM7mhcs7kazjHAaJdOOw8Jp0
+	B//KozZRjdxVbA7qQVKd7fWlnpmim48rsTfkOoF+QAkRMVIRN8wB5pDFCjIJ3qV+bNrrolsTKfBUN
+	MjyV2gsg==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1x8dBE-002CbX-27;
+	Mon, 21 Sep 2026 12:31:32 +0000
+From: Breno Leitao <leitao@debian.org>
+Date: Mon, 21 Sep 2026 05:30:26 -0700
+Subject: [PATCH 1/2] mm: kmemleak: move the struct page scan into a helper
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260903122128.12264-2-songmuchun@bytedance.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260921-b4-kmemleak-page-scan-v1-1-fb97d4801b3a@debian.org>
+References: <20260921-b4-kmemleak-page-scan-v1-0-fb97d4801b3a@debian.org>
+In-Reply-To: <20260921-b4-kmemleak-page-scan-v1-0-fb97d4801b3a@debian.org>
+To: Catalin Marinas <catalin.marinas@arm.com>, 
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ Breno Leitao <leitao@debian.org>, kernel-team@meta.com
+X-Mailer: b4 0.15-dev-47773
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2538; i=leitao@debian.org;
+ h=from:subject:message-id; bh=yc/Zs6xPgQccUGSBvUxKF4tBdDWNVRPWwVRuT71kyJY=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqsSOdoIsG5nmdHaB1wUgSXy9i1JwH500pnNE3N
+ rKnFnTXCkqJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCarEjnQAKCRA1o5Of/Hh3
+ bRmPD/43icZSLUGLZ74SsnNFAMz6NWdw+tbqTD/eGO2VlOk2wSFuDubLQq39MsAJzdVK0/DREfb
+ LPlqtsuWSvFjBEriJP3QiK+lkfkvsFHaFzK0L6sVRBBN78wBHyBqmE5rznQR8Lqf2B7xlKY9Mul
+ HYYi+fdPlKPdsT4A/U2lrniCNziKKwip0EKsnIaJsSSH/7sO4eb9UmDxzXUw1zdYV7ECKjbIlZK
+ gSRaXh/kfXQvUFBTnNqNCgLPwOWHnsbQo+N3BYh2YMeAGC7EdsnFMj+xZ6Rcu+GYz7ABCX7kqnM
+ yEehZDzKAn4WBLgvV0hFG3lGCpzSzcr8WL9LT1PdWyZGBZRXBrOVu8koVsJwkdmi2mCyWShnq8u
+ hHi2LMO6717dMa0FZ9Gg7lYfgpdRowt33o1xgr9fnPko2ob900IojCDijifeCd6BB8To9KLL97J
+ 1oAqFyDjTQy2kjjPvTkyRdHckfWiRqekTnWUa3lwtPFIjLAsbCGQZnZ+YWWiGMdkfrQUBGSYPJX
+ CUNA3HZIQ2lzOaFi3jszMfEbxJMGTM5220SpiVDCvZ4GWFFWZF+Y/DHYFfpUCcwc+/RY8W5PLIF
+ 8luOvbt0/zosAXojGm6bm0G9Ve5nYHnrmaL/z4ececCrm8AcFv09NDofT1MvH8U71UStfiuDHVF
+ NL5ckeoawor7maQ==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 24FB12000E
-X-Stat-Signature: rq86ffogwzhmfn8trfao4hstf6shsbjx
+X-Rspamd-Queue-Id: 03D79180002
+X-Stat-Signature: qmqw3ef87xna1xy3a33i4t1pya4e5919
 X-Rspam-User: 
-X-HE-Tag: 1789993555-458771
-X-HE-Meta: U2FsdGVkX1+sOzv+G7dG6SqYrm3k6SXTS8YjmQ/M9UunRt/c0SOse4M92+f/sAbvmdHBEzceqHU/yfo8Y46VcMxaGyy81WNUYVurovYMPAHCstFxVMZai63qJ7IxX5xmDEKJaYOCgyBOpuUqY1mf1OQliweu22gNnxdlKYKhSA3/8koOsWtjZZOLR/efk87cXD9Q7ceZczw4ZmAgQJZQWmh7xgQAo2gbXhWJDtQ2GNk9ywPw6pJrH8WO7H70XB9Mxc3bCWOj0D5eJaQQQ5C4pDGZUyjmf7C+ERyK8i25LIxpTZzvlhaVP5fHgtRR6uDF370HIOGnMREoy17roVOMvNjsCNeY9KN9qwm82X5lLbWeB9mRI0E/aFaxxiWzbYKHZYDbha6bZnQEOQHuDyjTSNPEsiMO8BVwdpicUjYLc9TaDQ/Wu2XrYulvDkerHDe9SH84sFL3HJewVOLfUNE/9lbmiq9+mzZYXOSdZbRUcufhc+Dr1QV4A/J4jT2G37w+b9OOF8ltP0I1B48NDofZp4fWcTDk9dz3qMZEbh5XmxpgLuke21GAlO29XKlKD7XEzVjbHs4BM2W0cd/IZYtMsGtJ1rtaEC9iriBdgoIBU1vQQTVC4JEuC7tVpw/5GOuU/djx3vmZTUdDkygfy7FUkGvGF/mXvHSJol6P8yGvvk9/vljboARRyzZeIYHZOUMAThpGy2gQ/4991NNQhuZ8K5Z9w8t+5W6F80s2Ji8GJPDdrrEKZO/e6oxJcmNri74XeGMsMVNcP2dMa3jxiCutF43Qm44GYxIV87HuDnaftGH81V9lVOzIpkcwNhNrGCT/PuiE+3SNVyVmFDxgDuEaaAYjjsqEHrqEU03Tfv1U6QMsU6PpH2zicvb0s6jVHivwIx09lqR5p5Waxknl50zCWYGTSJM7CjNAPD3VnjHbaShsUWZ34175rjIeu0UqjmkjVq2SJAjrKQhAs23zEyZ
- dUj5UvQG
- hBBJfl4xGbBhLEqMp9JRwkFW9ulcEejDMz0jqsy9z6LvmtyONZph5UGWbVXpRRQDWW4jlb/b4Xy2ChSMVH7W0/u6kyXRogh/2ikZa23RVXIL2STq5/Mn1OiBZ6ZTQBAJdjwBBCD49pJqoZR5SwQCMdGxr0fW/TMsHou8o71GOTp0Fx129XUOyvpxjEjuoGwEwqQ6D9VQfHUHko4BvcWAvyphRYw9b93KIzGo3Qk/X6WQVTBU=
+X-HE-Tag: 1789993894-98861
+X-HE-Meta: U2FsdGVkX18kWonp81MiwOd63YRTKniNt67Id53imVrQ29Rz2pFXmHc0fHqbmJKcDa+JfnDaRkxoawfXcI/zFCuhuwzw1W9JmR0r0frozFLdm/v9V/SHzjvVuqNbxPqTyEajalA0rPQxNvNa0XlWaeatEpPjqKxC2Z2P/hd2PnrecWfM4DREiM2ev4qr8KoNLWbGAU72KT8a0w+cS+K3rG05ijVAzmvdPsp1Z0FOAYot7BFMhT10n94xljcrURiwq7RimrYASBzgNhowRFmvTshJOBV/wkZ/UNaflJZbiZoA/6kGrBNTwYD1KDCLQ5y1aKSijU2rCef5DkCoiTDSrcY1bJGYhSRAAeEmEvFlkxLXGUlEnFbnufiOVJ5VCidu9cd6TBoRV9R+dyRSW2Bhya5zRTL14uViAWQnZ53wmbzwoDeSOhbYI/0+Bc0VxfJPMCDaV8I49XF9UAg/wpd5YOM60xMVYawZwe1yPxUqQhjrcY8NLdLbGSdB45Y2o+6AbOfFyZxmovLXfyN/yh55hIeuz/b6+fHsuJ0ujgHctqKYghEHn24UIByjwMXJS6/LTz8ddsUGvpAZhRuorfxKoKxtojE3k2yPV79KM52mCqOB1GrLNTMAhZmlWSayToI3dAmhfetgDmF1uMa8V6wC0JlK1m6WsljEcJyeMZeudlB8zzUNGK2u5/JniH45rZxyJU6J5zO8Cv5cDY6CMY/ckkLp06YUdkzO55SCIW+ecmWNr61OZNA1kgy/G11DhGN9dWPeKK0omTf9js86S0BPzVu7uPbIFmNjC0f0NxAi9gXtzUh0kIr7k8UgCObjN/ly+dtggMyPPumC/FCErb5BPsv92JtrzsHABR0lVDUitcYIqbtETBUahiddgLyFJ9Qn/r4fqtaH+/IkZ/NaggVpuTUiVjHaM7A0K1pzAIBkZa2Azm/VeSGDez2WEsY1HkUz96o7gZj8oZ89vWwAx4l
+ Pm8+pAAg
+ iaS10zZaUQL+65I06kJ2P7GsSKoPqAo06NQGb45u31xGLq2ln8x4CiChrGuTJL+KTWx9ZaOegWPex+2OBkLsEeC8AHcKF7crnmF5jViTbGwf+GakTj3uZQfhvIWBgt8jJd2V0uyxpd4YKlIOtc+5wQnDRqKvkCmZ4Pu25zQE4cI/+3ul+day2lD0NtSJIYBzobg42PlYRG44cbKYQWaufHxAklZokST+jVYbhakDPmEE50fiYzR9tK9jksSXWO4tJPynFGT9Q7VqxDUgmMu70LLb1pw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,24 +111,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 03, 2026 at 08:21:24PM +0800, Muchun Song wrote:
-> ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP is named after its first user, but
-> the underlying requirement is not HugeTLB-specific. Generic MM only needs
-> to know whether an architecture can safely remap populated vmemmap PTEs at
-> run time.
-> 
-> Rename the architecture opt-in to ARCH_SUPPORTS_VMEMMAP_REMAP and make
-> HugeTLB vmemmap optimization depend on that generic capability. This also
-> prepares for FS-DAX vmemmap optimization, which relies on the same runtime
-> remap support.
-> 
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+The struct page scanning loop sits inline in __kmemleak_scan(), nested
+three levels deep and sharing the caller's "stop" variable with the
+zone walk around it. Move it into scan_zone_pages(), which scans one
+zone and returns 1 if scanning should stop.
 
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
+No functional change; this only makes room for changing how the pages
+are handed to scan_block().
 
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+ mm/kmemleak.c | 57 ++++++++++++++++++++++++++++++++++-----------------------
+ 1 file changed, 34 insertions(+), 23 deletions(-)
+
+diff --git a/mm/kmemleak.c b/mm/kmemleak.c
+index 8fa409a4f9fb2..4040547a0af84 100644
+--- a/mm/kmemleak.c
++++ b/mm/kmemleak.c
+@@ -1855,6 +1855,39 @@ static void dedup_flush(struct xarray *dedup)
+ 	}
+ }
  
++/*
++ * Scan the struct pages of a zone, skipping memory holes, pages that belong to
++ * another zone and pages that are not in use. Returns 1 if the scan should be
++ * stopped.
++ */
++static int scan_zone_pages(struct zone *zone)
++{
++	unsigned long start_pfn = zone->zone_start_pfn;
++	unsigned long end_pfn = zone_end_pfn(zone);
++	unsigned long pfn;
++
++	for (pfn = start_pfn; pfn < end_pfn; pfn++) {
++		struct page *page = pfn_to_online_page(pfn);
++
++		if (!(pfn & 63))
++			cond_resched_tasks_rcu_qs();
++
++		if (!page)
++			continue;
++
++		/* only scan pages belonging to this zone */
++		if (page_zone(page) != zone)
++			continue;
++		/* only scan if page is in use */
++		if (page_count(page) == 0)
++			continue;
++		if (scan_block(page, page + 1, NULL))
++			return 1;
++	}
++
++	return 0;
++}
++
+ /*
+  * Scan data sections and all the referenced memory blocks allocated via the
+  * kernel's standard allocators. This function must be called with the
+@@ -1928,29 +1961,7 @@ static int __kmemleak_scan(bool full)
+ 	 */
+ 	get_online_mems();
+ 	for_each_populated_zone(zone) {
+-		unsigned long start_pfn = zone->zone_start_pfn;
+-		unsigned long end_pfn = zone_end_pfn(zone);
+-		unsigned long pfn;
+-
+-		for (pfn = start_pfn; pfn < end_pfn; pfn++) {
+-			struct page *page = pfn_to_online_page(pfn);
+-
+-			if (!(pfn & 63))
+-				cond_resched_tasks_rcu_qs();
+-
+-			if (!page)
+-				continue;
+-
+-			/* only scan pages belonging to this zone */
+-			if (page_zone(page) != zone)
+-				continue;
+-			/* only scan if page is in use */
+-			if (page_count(page) == 0)
+-				continue;
+-			stop = scan_block(page, page + 1, NULL);
+-			if (stop)
+-				break;
+-		}
++		stop = scan_zone_pages(zone);
+ 		if (stop)
+ 			break;
+ 	}
 
 -- 
-Oscar Salvador
-SUSE Labs
+2.53.0-Meta
+
 
