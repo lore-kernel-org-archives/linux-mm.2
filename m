@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86E97C982E6
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 14:50:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 543C5C982ED
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 14:50:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 972386B00A6; Mon, 21 Sep 2026 10:50:17 -0400 (EDT)
+	id 63CD66B00A9; Mon, 21 Sep 2026 10:50:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 948CA6B00B1; Mon, 21 Sep 2026 10:50:17 -0400 (EDT)
+	id 6142A6B00C2; Mon, 21 Sep 2026 10:50:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 837936B00BC; Mon, 21 Sep 2026 10:50:17 -0400 (EDT)
+	id 52AD76B00E5; Mon, 21 Sep 2026 10:50:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 608FF6B00A6
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:50:17 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0CCC9A4126
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 14:50:17 +0000 (UTC)
-X-FDA: 85238054874.25.08A924B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 63ADD40009
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 14:50:15 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ik8PkMSE;
-	spf=pass (imf04.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 1F7906B00A9
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:50:27 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 925D61401BC
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 14:50:26 +0000 (UTC)
+X-FDA: 85238055252.27.AB5EA47
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 054AF1A0003
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 14:50:24 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HhhVBHd7;
+	spf=pass (imf19.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790002215;
+	s=arc-20220608; t=1790002225;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aWYdZ91y2ZIXgzfNWppX/K87BNGkPgAm/JMTyJDzEh4=;
-	b=hnAdNEN1ChbOb7fqOguD22faw7IpFlJkZb/fZ8Vy3iev4Dbz5yfo2DbvwPbc/X8g6PhNRR
-	zzN4HET5sPlzNs1mWUoV6Hblj1AipI5tfzCT2wX/8uNIHCqk+dqSh9r1Nt51js+tlIHATH
-	FsP4hg3rEutlUUtnwmkVPwcPxzTCbjc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790002215;
-	b=8kmhTft9TBY+j5oBgibcooOhK5IcCOLvVwFiTjeRBZMBE/i8ZW5OSYTM0wgIxa1VYJNf52
-	k8eIJZLP4JbjKAlEW+U9nqbdxS/1xB8zSvciKjxJuuUzgKphSYIxQzNqSk41piXwYgKOyu
-	e8Qskw897DWqf/tmhs8OBKVPXawVAm0=
+	bh=2XD9KbmPFTDvG/++FINRoeRjfo1Owk1SK7Ef5Ny4pkE=;
+	b=Gntp+fE0dcDJgxdedOkdqQv1adxu0MjUFf5zTPqelsqbG+R08ksIl5fxxDjNfp/kLG5Mvm
+	H7fOt8MJECv3pxC8SL5HYgL4a2qamRjorXc4Zj5FPE+0YlBztTmo00wlRc1D4xjka8u2E8
+	uQISl5eUpGXfexbnwCmMWPdYWWqthPs=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ik8PkMSE;
-	spf=pass (imf04.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HhhVBHd7;
+	spf=pass (imf19.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790002225;
+	b=vdGojv04AVXqRtHYk9HbwVu1zV1+JfgXfBc2rHTDcAkX+FHiSyatef8rsAkRl2a5Aj3pLl
+	DKgAh7GMHlpLd7hDh/YEUX5S1nVLScHpMhjSXgKI6KkbjzIcltvFRVq0+xkhSs4Z35NHn6
+	dOhMUzYgvqw0OTIfV3/MUb2L2rlFHpE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AE08F433F7;
-	Mon, 21 Sep 2026 14:50:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 817AE1F008A1;
-	Mon, 21 Sep 2026 14:50:05 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9619B600C8;
+	Mon, 21 Sep 2026 14:50:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EAD21F00893;
+	Mon, 21 Sep 2026 14:50:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790002214;
-	bh=aWYdZ91y2ZIXgzfNWppX/K87BNGkPgAm/JMTyJDzEh4=;
+	s=k20260515; t=1790002224;
+	bh=2XD9KbmPFTDvG/++FINRoeRjfo1Owk1SK7Ef5Ny4pkE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ik8PkMSEyJLfZFUGTT09e/znzmIj1IQB1TBp51D5k+Yy0ho+aw3/dRdBdIpRmKYnr
-	 ZX0EP5g0NObBCy2Gjw2BuyvDeKhrqS+fY/IdnQoAEEECDsWQ3gk00OnyJEj94hJEsS
-	 jcs/OA949tuP2PX2vfy+us7YkGRG7OZKcMEHoajnenBSSE1rRr5PMTaippawTE2vpC
-	 678DJsoB1qY8zfYxIX4yfz7lpI2H6IGYT22cB5GPSXDOBmyMgKu3O0QYqM4ivx4SfI
-	 Cld32H3UEmro8rXX+UU0djHeoYDylyNw0S8cJfuOsD6TdJzT/bK/IAFSMizS0sB+UB
-	 4AZHXeqwquuiw==
+	b=HhhVBHd70NwE6tFDSR7EWwSk5kUn7dx1kha7j/ncW7XELIYaoWokPSNoeR4Gb7csH
+	 manH/KE1JbmJ0i/7twyR8DQ5XrSNGVGXxOuKAD+RPrR+xXRboXZTQPlJ3QmEqu859i
+	 HZU0YFWzKtkC9U5gYk+hQL+Nk1Q/jBfPYKwtVIz5itpVENE+9110tsSKuHgFvohU87
+	 NP77rfhWL7u4mvtugGaq0ws9V+9f5uQ3MDPuE4Cb8F3CfiH0z1Pbw4bXnIUOU/GE2O
+	 JQkgUxAsfSs1Z5A0oGnQxHSA6wqJm37P5biOyVae7LUBXaPY5G/IlRwsFO2EbC8dFE
+	 osNmzMILFDf9Q==
 From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
 To: linux-coco@lists.linux.dev,
 	kvmarm@lists.linux.dev,
@@ -87,22 +87,22 @@ Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
 	linaro-mm-sig@lists.linaro.org,
 	linux-media@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v7 08/13] dma-direct: Align CoCo shared DMA allocations to the shared granule size
-Date: Mon, 21 Sep 2026 20:18:42 +0530
-Message-ID: <20260921144847.501151-9-aneesh.kumar@kernel.org>
+Subject: [RFC PATCH v7 09/13] swiotlb: Align shared IO TLB pools to the shared granule size
+Date: Mon, 21 Sep 2026 20:18:43 +0530
+Message-ID: <20260921144847.501151-10-aneesh.kumar@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260921144847.501151-1-aneesh.kumar@kernel.org>
 References: <20260921144847.501151-1-aneesh.kumar@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 63ADD40009
-X-Stat-Signature: hfx5rsjwo1ggat989zy3hs36mg7rnqt5
 X-Rspam-User: 
-X-HE-Tag: 1790002215-446999
-X-HE-Meta: U2FsdGVkX19f5bf2WvYHE99EVLw+V8wrdA0q5vVUYQ0ASQJ/bAKNect/QTf4eKHDdjbZrdXOa1eESEzyrwf9ZkDwZpUYVM8oVDXPrg+tpIhe5+1Mxi0fYlqKXlbky4aXXvOTuvFLXwLVp24xGpmivHcxzMIPAnOrEGs/KBSLkvGdX1N3dKWCc5EiLyezHwYBhVOP5EhlhE0ZPY25WhEPZhQxBVFcDQXxJSlw+W+TtP0jVeadQ56dnuAt8FWzTQMSeyfs6ZREbjkOmuyu63BauppNktTDdtH+m0Q3JT1SdJ8liZUxXfxfuSkHhbDzMP79kXu74yVWWAFfaZyvWUwqokYLCSimeVAaq7ZyNzfqkU0lF2L5GpW1HpwGxo+ukoA7HxgVnqW4pthi0bRSuIqtg5iwlp27E8I69AnebPEuChR0jQlyRUblNj2HVbNoR1E5Y0fkqQhnegtECnkunRJvHxZWMm4k9hlarJnFtqBB5k/1EDIGEi36roBuNijeBBdMsibeek1E5gIiuZOZsB2WR3Q/QK1EY388BBLPJwXLBzFNzVAFSg8eS9uZNmtUqTx1tG4gJCXV9smK21uJRvVH0Jz/q94O/wpf2m68mdxTq6QXszDEJzRZhqWpxLxK8lqgn4Ayehr5omormpoL0cMmTQ/MNr05L5jQQIEtoLdDKsaqDxfTl4i7/Rd7a3+kyEwOgUSZ4dexaqaUUtgmReztWRX2H/rOJwfA1uYZfMALrXu2FLUm0Yxs6fjVtqrQysBwfWCE7nhaf1QFrLohcOIzXnB5Jl/kdi2xgHZuDMdK5pWq+LZLrvyaxzdKp5kTsYw8PngBEmhXhBRXcLalCup0/Z9D/ziGY7tpxMPLTa9avPi+O/GfU3mozfnxj5U0AQofMPaf7IFgT0r96mpgzKNedhxZ5FxIByOR4b4evFUnFmvDnsqL8o9PWhqPWsSADIOBq9A+0T3ggjqX1YJAfUZ
- G3h4yYvf
- CrTe2qXD7vFKkzTpZ5TrYv5IcobcoVtZ1IL06RnyeDMB+3X47d85LKfobdojQkdTe8R9/Y09DLIpkAdKbB6WYI+dP4ru1SVR23trD8JdalrgSjZcRlFO8Qd23UsWoCa8qlxjBguBkm4orhssQLuR1/9s4H8+IP+x4xVS3DWiX4pOMwVTUJ2BWfM6Omq2r5DwrJBfzLB5SLCLwPZvaQw6Zu8WymPBkQVUBLmWyWBmsny4mMs0=
+X-Stat-Signature: zzewcq4t75jiubtic6a56ozsb91ftute
+X-Rspamd-Queue-Id: 054AF1A0003
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1790002224-532586
+X-HE-Meta: U2FsdGVkX1/5FN+DpxkvW0VaQIPsoM0cARLkT+q/menu/iX0p1UfqiCi10CyQqVYsnnpWdFHCQ1I9ucZFuQQxB9NjMiBgTMyPf0yGrasO2E9RoZWyitQvmK1rfDTOl3MubtQVFHknLQ5RIZwiuDyHf0AvubIl2gFoO9akmiBXukkYj9v4VbM/shwSEgVlotVsN82d8iBQY2butDQp5EA0fsGqlBk8aJHqJiv7kCARGzpknrEailPUZFoKvD3/0b+aw3tCJ0aEhdS3R1SsoAbMrb7HqEbfIIhiTITN2qDyVUWR5L0EWHdlqzDmRDhT1OV6rCJjCY959t07tAkoNwVYS/H6sw0du+DIdUr3cwv0Qpha5Uvd/tVsijf49obDEUVTH/lUOT3Dm1/3Mne5svIZ6Ta/6LSwfNxpX6tF37x8Y6VIklY4e5KYI9YqexR4QVMc7o7huYeoKy/RONeujDTMT+SPyaioR5oMFuIt6Uz9luXxA7iknMVJh9n3/Oge9vkg5oI02o7GRt+9k2mnG9jvgny5ar0gLHB2Xj56UVOgyOMcOMKgRIWurFN2KL+eg8S78Tzgu3XIewOY+yq8Xr6iSkfeWHloZbpHmN6TJrSWvX09iKBdv4mhdDABolJU/42zz35+te+chK09DtvBxDd147KWciPblCvbvySRpWa8B38TQubn0FPzSpvRbYRxy81FVxOd864+5myOw8t+K/UHnS8Uj3mjAdJCJCnkS3Cmdf3Cor7UX5T3z1vtBLdMfCASiwxhF3OPJyD5dQTXBZ6EuEaqCMDg9m/HN3+xtmvKPwhAXpFOtywv9WP4b1OJa83xasLXYCXGh2S26kpzqhdAMagwA0SINUQg8P0afG8DCB+iwJxQA/EwQOZP4V7GhTCIFWzEALgSi2MH04E+yo0egLLcTJvU9g2lCesHnEWpHMLc8VVvtt9nijEq2vtNZhKxQ+t/1QpHyDCP45LH3o
+ EJKPMiFR
+ xFaqbczXYJn+LzKSyTdEtV6fUB2htb7LysIzm9VsgIjiXigoTtRIxZdTRaO6N69bYQrI8X3OGHTvMjSRMCwghM/OrYKJFYtrfCDiCuCJcHQ1nB28F7szwcq+BtS5OAW30bIpIla/wOrkLeoIJGXLS8jskqG3Zq6G2O6rDSPxJv9Jr4vC91YBT6kU6879a2iG/tXvnO004fLpyNdmY/HJCji8znhyLoGLhEkblaqPgd3Ir3gU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,202 +110,184 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Use the common CoCo shared-memory geometry helpers for allocations
-backed directly by CMA or the page allocator. Round the backing
-allocation to a whole shared granule, pass the required alignment order
-through the DMA contiguous allocator, and transition the complete range
-through the common shared/private helpers.
+Align and size the early memblock pool to the common CoCo shared
+granule. Use the same rounded extent when the pool is transitioned and
+when it is released. Re-zero the extent after a successful
+private-to-shared transition because the architecture operation may
+change memory contents. This deliberately leaves the slot count
+unchanged: any rounded tail belongs to the pool allocation but is not
+advertised as allocatable SWIOTLB space.
 
-Recompute the layout before freeing ordinary direct allocations so the
-transition back to private memory and dma_free_contiguous() cover
-exactly the range acquired by the allocation path. If restoring private
-state fails, retain the existing fail-safe behavior and leak the pages
-rather than returning potentially shared memory to the allocator.
-
-This also applies the same rules to dma_direct_alloc_pages(), covering
-callers which require a struct page result rather than a CPU virtual
-address.
+Replace the default and dynamic pool set_memory calls with the helpers
+so alignment validation and architecture dispatch are kept in one place.
+As before, pages are intentionally leaked if their private state cannot
+be restored safely.
 
 Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
 ---
- kernel/dma/direct.c | 55 +++++++++++++++++++++++++++++++++++----------
- 1 file changed, 43 insertions(+), 12 deletions(-)
+ kernel/dma/swiotlb.c | 42 +++++++++++++++++++++++++-----------------
+ 1 file changed, 25 insertions(+), 17 deletions(-)
 
-diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
-index d968a0c81e73..d293198384c3 100644
---- a/kernel/dma/direct.c
-+++ b/kernel/dma/direct.c
-@@ -11,10 +11,10 @@
- #include <linux/scatterlist.h>
- #include <linux/pfn.h>
- #include <linux/vmalloc.h>
--#include <linux/set_memory.h>
- #include <linux/slab.h>
- #include <linux/pci-p2pdma.h>
+diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
+index ded7016a46a7..9928d75efc2d 100644
+--- a/kernel/dma/swiotlb.c
++++ b/kernel/dma/swiotlb.c
+@@ -22,6 +22,7 @@
+ 
+ #include <linux/cache.h>
  #include <linux/cc_platform.h>
 +#include <linux/cc_shared.h>
+ #include <linux/ctype.h>
+ #include <linux/debugfs.h>
+ #include <linux/dma-direct.h>
+@@ -38,7 +39,6 @@
+ #include <linux/pfn.h>
+ #include <linux/rculist.h>
+ #include <linux/scatterlist.h>
+-#include <linux/set_memory.h>
+ #include <linux/spinlock.h>
+ #include <linux/string.h>
+ #include <linux/swiotlb.h>
+@@ -369,16 +369,18 @@ void __init swiotlb_update_mem_attributes(void)
  
- #include "direct.h"
- 
-@@ -85,7 +85,7 @@ static int dma_set_decrypted(struct device *dev, void *vaddr, size_t size)
- {
- 	int ret;
- 
--	ret = set_memory_decrypted((unsigned long)vaddr, PFN_UP(size));
-+	ret = cc_make_shared(vaddr, size);
- 	if (ret)
- 		pr_warn_ratelimited("leaking DMA memory that can't be decrypted\n");
- 	return ret;
-@@ -95,7 +95,7 @@ static int dma_set_encrypted(struct device *dev, void *vaddr, size_t size)
- {
- 	int ret;
- 
--	ret = set_memory_encrypted((unsigned long)vaddr, PFN_UP(size));
-+	ret = cc_make_private(vaddr, size);
- 	if (ret)
- 		pr_warn_ratelimited("leaking DMA memory that can't be re-encrypted\n");
- 	return ret;
-@@ -115,7 +115,7 @@ static struct page *dma_direct_alloc_swiotlb(struct device *dev, size_t size,
- }
- 
- static struct page *__dma_direct_alloc_pages(struct device *dev, size_t size,
--		gfp_t gfp, bool allow_highmem)
-+		gfp_t gfp, bool allow_highmem, unsigned int align_order)
- {
- 	int node = dev_to_node(dev);
- 	struct page *page;
-@@ -124,7 +124,7 @@ static struct page *__dma_direct_alloc_pages(struct device *dev, size_t size,
- 	WARN_ON_ONCE(!PAGE_ALIGNED(size));
- 
- 	gfp |= dma_direct_optimal_gfp_mask(dev, &phys_limit);
--	page = dma_alloc_contiguous(dev, size, gfp, 0);
-+	page = dma_alloc_contiguous(dev, size, gfp, align_order);
- 	if (page) {
- 		if (dma_coherent_ok(dev, page_to_phys(page), size) &&
- 		    (allow_highmem || !PageHighMem(page)))
-@@ -184,7 +184,7 @@ static void *dma_direct_alloc_no_mapping(struct device *dev, size_t size,
- {
- 	struct page *page;
- 
--	page = __dma_direct_alloc_pages(dev, size, gfp & ~__GFP_ZERO, true);
-+	page = __dma_direct_alloc_pages(dev, size, gfp & ~__GFP_ZERO, true, 0);
- 	if (!page)
- 		return NULL;
- 
-@@ -205,6 +205,8 @@ void *dma_direct_alloc(struct device *dev, size_t size,
- 	bool remap = false, set_uncached = false;
- 	bool mark_mem_decrypt = false;
- 	bool allow_highmem = true;
-+	struct cc_shared_layout layout;
-+	unsigned int align_order = 0;
- 	struct page *page;
- 	void *cpu_addr;
- 
-@@ -285,8 +287,16 @@ void *dma_direct_alloc(struct device *dev, size_t size,
- 		return NULL;
- 	}
- 
-+	if (mark_mem_decrypt) {
-+		if (cc_shared_calc_layout(size, &layout))
-+			return NULL;
-+		size = layout.shared_size;
-+		align_order = get_order(layout.alignment);
-+	}
-+
- 	/* we always manually zero the memory once we are done */
--	page = __dma_direct_alloc_pages(dev, size, gfp & ~__GFP_ZERO, allow_highmem);
-+	page = __dma_direct_alloc_pages(dev, size, gfp & ~__GFP_ZERO,
-+					allow_highmem, align_order);
- 	if (!page)
- 		return NULL;
- 
-@@ -305,7 +315,7 @@ void *dma_direct_alloc(struct device *dev, size_t size,
- 		void *lm_addr;
- 
- 		lm_addr = page_address(page);
--		if (set_memory_decrypted((unsigned long)lm_addr, PFN_UP(size)))
-+		if (dma_set_decrypted(dev, lm_addr, size))
- 			goto out_leak_pages;
- 	}
- 
-@@ -362,6 +372,7 @@ void dma_direct_free(struct device *dev, size_t size,
- 	phys_addr_t phys;
- 	bool mark_mem_encrypted = false;
- 	struct io_tlb_pool *swiotlb_pool;
-+	struct cc_shared_layout layout;
- 	unsigned int page_order = get_order(size);
- 
- 	/*
-@@ -406,6 +417,12 @@ void dma_direct_free(struct device *dev, size_t size,
- 		/* Swiotlb doesn't need a page attribute update on free */
- 		mark_mem_encrypted = false;
- 
-+	if (mark_mem_encrypted) {
-+		if (WARN_ON_ONCE(cc_shared_calc_layout(size, &layout)))
-+			return;
-+		size = layout.shared_size;
-+	}
-+
- 	if (is_vmalloc_addr(cpu_addr)) {
- 		vunmap(cpu_addr);
- 	} else {
-@@ -417,10 +434,8 @@ void dma_direct_free(struct device *dev, size_t size,
- 		void *lm_addr;
- 
- 		lm_addr = phys_to_virt(phys);
--		if (set_memory_encrypted((unsigned long)lm_addr, PFN_UP(size))) {
--			pr_warn_ratelimited("leaking DMA memory that can't be re-encrypted\n");
-+		if (dma_set_encrypted(dev, lm_addr, size))
- 			return;
--		}
- 	}
- 
- 	if (swiotlb_pool)
-@@ -433,6 +448,8 @@ struct page *dma_direct_alloc_pages(struct device *dev, size_t size,
- 		dma_addr_t *dma_handle, enum dma_data_direction dir, gfp_t gfp)
- {
- 	unsigned long attrs = 0;
-+	struct cc_shared_layout layout;
-+	unsigned int align_order = 0;
- 	struct page *page;
- 	void *cpu_addr;
- 
-@@ -452,7 +469,14 @@ struct page *dma_direct_alloc_pages(struct device *dev, size_t size,
- 		goto setup_page;
- 	}
- 
--	page = __dma_direct_alloc_pages(dev, size, gfp, false);
-+	if (attrs & __DMA_ATTR_ALLOC_CC_SHARED) {
-+		if (cc_shared_calc_layout(size, &layout))
-+			return NULL;
-+		size = layout.shared_size;
-+		align_order = get_order(layout.alignment);
-+	}
-+
-+	page = __dma_direct_alloc_pages(dev, size, gfp, false, align_order);
- 	if (!page)
- 		return NULL;
- 
-@@ -476,6 +500,7 @@ void dma_direct_free_pages(struct device *dev, size_t size,
- 	phys_addr_t phys;
- 	void *vaddr = page_address(page);
- 	struct io_tlb_pool *swiotlb_pool;
-+	struct cc_shared_layout layout;
- 	/*
- 	 * if the device had requested for an unencrypted buffer,
- 	 * convert it to encrypted on free
-@@ -492,6 +517,12 @@ void dma_direct_free_pages(struct device *dev, size_t size,
- 	if (swiotlb_pool)
- 		mark_mem_encrypted = false;
- 
-+	if (mark_mem_encrypted) {
-+		if (WARN_ON_ONCE(cc_shared_calc_layout(size, &layout)))
-+			return;
-+		size = layout.shared_size;
-+	}
-+
- 	if (mark_mem_encrypted && dma_set_encrypted(dev, vaddr, size))
+ 	if (!mem->nslabs || mem->late_alloc)
  		return;
+-	bytes = PAGE_ALIGN(mem->nslabs << IO_TLB_SHIFT);
++
++	bytes = ALIGN(mem->nslabs << IO_TLB_SHIFT, cc_shared_granule_size());
+ 
+ 	if (io_tlb_default_mem.cc_shared) {
+ 		int ret;
+ 
+-		ret = set_memory_decrypted((unsigned long)mem->vaddr,
+-					   bytes >> PAGE_SHIFT);
++		ret = cc_make_shared(mem->vaddr, bytes);
+ 		if (ret) {
+ 			pr_warn("Failed to decrypt default memory pool, disabling it\n");
+ 			swiotlb_mark_pool_used(mem);
++		} else {
++			memset(mem->vaddr, 0, bytes);
+ 		}
+ 	}
+ }
+@@ -436,8 +438,8 @@ static void __init *swiotlb_memblock_alloc(unsigned long nslabs,
+ 		unsigned int flags,
+ 		int (*remap)(void *tlb, unsigned long nslabs))
+ {
+-	size_t bytes = PAGE_ALIGN(nslabs << IO_TLB_SHIFT);
+ 	void *tlb;
++	size_t bytes = ALIGN(nslabs << IO_TLB_SHIFT, cc_shared_granule_size());
+ 
+ 	/*
+ 	 * By default allocate the bounce buffer memory from low memory, but
+@@ -445,9 +447,9 @@ static void __init *swiotlb_memblock_alloc(unsigned long nslabs,
+ 	 * memory encryption.
+ 	 */
+ 	if (flags & SWIOTLB_ANY)
+-		tlb = memblock_alloc(bytes, PAGE_SIZE);
++		tlb = memblock_alloc(bytes, cc_shared_granule_size());
+ 	else
+-		tlb = memblock_alloc_low(bytes, PAGE_SIZE);
++		tlb = memblock_alloc_low(bytes, cc_shared_granule_size());
+ 
+ 	if (!tlb) {
+ 		pr_warn("%s: Failed to allocate %zu bytes tlb structure\n",
+@@ -456,7 +458,7 @@ static void __init *swiotlb_memblock_alloc(unsigned long nslabs,
+ 	}
+ 
+ 	if (remap && remap(tlb, nslabs) < 0) {
+-		memblock_free(tlb, PAGE_ALIGN(bytes));
++		memblock_free(tlb, bytes);
+ 		pr_warn("%s: Failed to remap %zu bytes\n", __func__, bytes);
+ 		return NULL;
+ 	}
+@@ -578,7 +580,7 @@ int swiotlb_init_late(size_t size, gfp_t gfp_mask,
+ 		swiotlb_adjust_nareas(num_possible_cpus());
+ 
+ retry:
+-	order = get_order(nslabs << IO_TLB_SHIFT);
++	order = get_order(ALIGN(nslabs << IO_TLB_SHIFT, cc_shared_granule_size()));
+ 	nslabs = SLABS_PER_PAGE << order;
+ 
+ 	while ((SLABS_PER_PAGE << order) > IO_TLB_MIN_SLABS) {
+@@ -587,6 +589,8 @@ int swiotlb_init_late(size_t size, gfp_t gfp_mask,
+ 		if (vstart)
+ 			break;
+ 		order--;
++		if (order < get_order(cc_shared_granule_size()))
++			break;
+ 		nslabs = SLABS_PER_PAGE << order;
+ 		retried = true;
+ 	}
+@@ -626,8 +630,7 @@ int swiotlb_init_late(size_t size, gfp_t gfp_mask,
+ 		goto error_slots;
+ 
+ 	if (io_tlb_default_mem.cc_shared) {
+-		rc = set_memory_decrypted((unsigned long)vstart,
+-					  (nslabs << IO_TLB_SHIFT) >> PAGE_SHIFT);
++		rc = cc_make_shared(vstart, nslabs << IO_TLB_SHIFT);
+ 		if (rc) {
+ 			leak_pages = true;
+ 			goto error_decrypt;
+@@ -667,11 +670,11 @@ void __init swiotlb_exit(void)
+ 
+ 	pr_info("tearing down default memory pool\n");
+ 	tbl_vaddr = (unsigned long)phys_to_virt(mem->start);
+-	tbl_size = PAGE_ALIGN(mem->end - mem->start);
++	tbl_size = ALIGN(mem->end - mem->start, cc_shared_granule_size());
+ 	slots_size = PAGE_ALIGN(array_size(sizeof(*mem->slots), mem->nslabs));
+ 
+ 	if (io_tlb_default_mem.cc_shared) {
+-		if (set_memory_encrypted(tbl_vaddr, tbl_size >> PAGE_SHIFT))
++		if (cc_make_private((void *)tbl_vaddr, tbl_size))
+ 			leak_pages = true;
+ 	}
+ 
+@@ -711,12 +714,15 @@ void __init swiotlb_exit(void)
+ static struct page *alloc_dma_pages(gfp_t gfp, size_t bytes,
+ 		u64 phys_limit, unsigned long attrs)
+ {
+-	unsigned int order = get_order(bytes);
+ 	bool cc_shared = attrs & __DMA_ATTR_ALLOC_CC_SHARED;
++	unsigned int order;
+ 	struct page *page;
+ 	phys_addr_t paddr;
+ 	void *vaddr;
+ 
++	if (cc_shared)
++		bytes = ALIGN(bytes, cc_shared_granule_size());
++	order = get_order(bytes);
+ 	page = alloc_pages(gfp, order);
+ 	if (!page)
+ 		return NULL;
+@@ -728,13 +734,13 @@ static struct page *alloc_dma_pages(gfp_t gfp, size_t bytes,
+ 	}
+ 
+ 	vaddr = phys_to_virt(paddr);
+-	if (cc_shared && set_memory_decrypted((unsigned long)vaddr, PFN_UP(bytes)))
++	if (cc_shared && cc_make_shared(vaddr, bytes))
+ 		goto error;
+ 	return page;
+ 
+ error:
+ 	/* Intentional leak if pages cannot be encrypted again. */
+-	if (cc_shared && !set_memory_encrypted((unsigned long)vaddr, PFN_UP(bytes)))
++	if (cc_shared && !cc_make_private(vaddr, bytes))
+ 		__free_pages(page, order);
+ 	return NULL;
+ }
+@@ -807,9 +813,11 @@ static void swiotlb_free_tlb(void *vaddr, size_t bytes, bool cc_shared)
+ 	    dma_free_from_pool(NULL, vaddr, bytes))
+ 		return;
+ 
++	if (cc_shared)
++		bytes = ALIGN(bytes, cc_shared_granule_size());
+ 	/* Intentional leak if pages cannot be encrypted again. */
+ 	if (!cc_shared ||
+-	    !set_memory_encrypted((unsigned long)vaddr, PFN_UP(bytes)))
++	    !cc_make_private(vaddr, bytes))
+ 		__free_pages(virt_to_page(vaddr), get_order(bytes));
+ }
  
 -- 
 2.43.0
