@@ -4,96 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49F5BC982DE
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 07:01:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 252BAC982DE
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 07:01:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA34E6B00E5; Mon, 21 Sep 2026 03:01:16 -0400 (EDT)
+	id 3DBD36B00B5; Mon, 21 Sep 2026 03:01:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D28676B00E6; Mon, 21 Sep 2026 03:01:16 -0400 (EDT)
+	id 365686B00E5; Mon, 21 Sep 2026 03:01:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC9786B00E7; Mon, 21 Sep 2026 03:01:16 -0400 (EDT)
+	id 254E26B00E6; Mon, 21 Sep 2026 03:01:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A9E06B00E5
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 03:01:16 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EA2841C2E6E
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 07:01:15 +0000 (UTC)
-X-FDA: 85236872910.06.0A37DDA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 5BEA520004
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id EF7176B00B5
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 03:01:14 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 446A4A05A9
 	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 07:01:14 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m0fJ9EKu;
-	spf=pass (imf31.hostedemail.com: domain of patchwork-bot+netdevbpf@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+netdevbpf@kernel.org;
+X-FDA: 85236872868.07.2DA41BA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 6241340007
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 07:01:12 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jgejePT5;
+	spf=pass (imf07.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789974072;
+	b=21LmyKn1S+YczIgmhcgVq4hgkxx0yCFuZr+/LsSUn3bXndxAHhW7C4XPMIzOWagD8FZOL6
+	bbwPtOJyyR8r9tV0H1EgEV+8dkoDCf357asUJ71erJE6/n25s+b6t3OvZ1LZ3wOvbhTJDu
+	gN/Hc3egTxhhouaeKOXMGZ2sRQD/DEc=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jgejePT5;
+	spf=pass (imf07.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789974074;
+	s=arc-20220608; t=1789974072;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i78DpXU6G1P6U4iTP5gmX5SRaeIRgR1YaUqQ+TZuQSU=;
-	b=kFjL5AV2RgajrAnshtCUeEUdYrklYGFe2RYa/hJTRxKaA3r4Ako9hnz6EfnqHsG7oz0Bl/
-	cqnX3Mh3hqdrp1zu4UtxhX0KwhgTJ0cLbqdOdfiK8dHou7wmw7XtzIE3vhKQWtGIamvLkp
-	t1jo3KCWnDv3USoYD06lL9lTTdeVZVM=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m0fJ9EKu;
-	spf=pass (imf31.hostedemail.com: domain of patchwork-bot+netdevbpf@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+netdevbpf@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789974074;
-	b=tWJEzr1Z98BnRXwrs/NQKO5uMFQJRySvZHcrz4GwLhJA3KX59TG7KRqa8u8gXoiL5KofUi
-	B0zfSaQuFFqaES+WsX2xaXDFCfJG9WCVxl/S/u5R7FU3n8mIqtW9a2pbhzGTrP6uCdDI0z
-	l8CTDhGeimYzk62gg5HByJjB5w1uJSE=
+	bh=RCmQuU6gi9OeTPCWb/X0YUvJ4U4go3COykEH9ftpjhg=;
+	b=iGwz/WvzDvJZwbOOf5oxS5JfyyCI6QVVdPiqPeKXCZWwdvfysubwWY7e10NyZwotxI8h0D
+	8sKjqK5wPG4r/SIuRN7SupG9QsfcOB3oPvhFGEeyy8c4IgmLfwasqWQ1uNRM22gbvlg4EH
+	7xKtBDALOXWqlcg5eralBVuDKjJ3DoQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id EC17B61B71;
-	Mon, 21 Sep 2026 07:01:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D3F01F00893;
-	Mon, 21 Sep 2026 07:01:13 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D4C1061B6F
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 07:01:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 624EC1F00899
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 07:01:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789974073;
-	bh=i78DpXU6G1P6U4iTP5gmX5SRaeIRgR1YaUqQ+TZuQSU=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=m0fJ9EKuEOApABqdpECx+B0q8OocMmr/FLt2AthD34JiaM11GD+aTrxDCpHVGyIM4
-	 m6XwioEK/PAGKvQxZcI14MOiFhkJa/vQJ4N8LDA96DoEBeA9jgvE6FySzjWEMrEI7M
-	 0otTHvecRE5IIGSEYybo2kC0ExJKmpE6Adsiu9MLzYwHIOGEq+p3vmn8n1tKoX1ETW
-	 NcmMzdjNfbadpRqunWbRKD/cI+3vd1lWwDrog6jhV16oTLEJ9bcdHwwo3U2BWaj+tm
-	 7ZsgR0rP6gAbD8Xfu9CE72IVjenPXYyBW9taNAFLXAU3j1CuyrKK1bBm9YgMk2MazH
-	 1qvBjGR/Le7sQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 939BC3926266;
-	Mon, 21 Sep 2026 07:00:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1789974071;
+	bh=RCmQuU6gi9OeTPCWb/X0YUvJ4U4go3COykEH9ftpjhg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=jgejePT50hfmk+Ohhiq7ukd0rAyYWB0kk4n9KxexgdjHcYKFm8LRoDism0xMKaH0i
+	 gGuIP/HVE3B/WO+DkUQSpYEjtzKXDJ3fyh/6Gj63mYOw8mM4IW88zfQs9+DQ7IqJl8
+	 FoT75OdzIO/gENOBT3KUm+hABr/5mZ0h8bgcM+Jcnwogh7Wor5OjoBY+13adH49otr
+	 29ZcHFrrPYoU9diw7EXGm8m0qj4s61w2RR23+EH2oupC/S7YYiBY5B9w0jCZ2S5CVu
+	 imSKfVb9ZE5ScJtRBza5AjNDV1m7MtpGBYcaBFeHsa9AEt3DcFUYwiv0xzu53V/O+F
+	 374LOlpI0KTsw==
+Received: by mail-ua2-f12.google.com with SMTP id a1e0cc1a2514c-980b6159d30so473570241.0
+        for <linux-mm@kvack.org>; Mon, 21 Sep 2026 00:01:11 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBwNsXDdQO5l9TDrnU47Ai3jkQG6znCEjxJaNzseenZLZeZAvlzBFT08ATN9RVgCBeJU7fEnkJX5ew==@kvack.org
+X-Gm-Message-State: AFuF++kUDslUSbSjBoGyw/1yTkkZ2/i6JK3HjwKKv8vPbRnZF3IL1KZ5
+	Pehneh4rFTxqDPkpaqSUuYH1tERb/56fgR5w6c0+3e99HfDdoIYeFJehJzEWyEXetGe/g75rHmc
+	YtyycoJ8KCYRHbPb2YA+npyPBUKSqnm4=
+X-Received: by 2002:a05:6102:4bc9:b0:7a1:f7d2:e830 with SMTP id
+ ada2fe7eead31-7a55a92acf9mr3389421137.16.1789974070653; Mon, 21 Sep 2026
+ 00:01:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v13] mm/bpf: Add bpf_proactive_reclaim kfunc
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178997400515.2390936.16367635369472910068.git-patchwork-notify@kernel.org>
-Date: Mon, 21 Sep 2026 07:00:05 +0000
-References: <20260921030854.17858-1-hui.zhu@linux.dev>
-In-Reply-To: <20260921030854.17858-1-hui.zhu@linux.dev>
-To: Hui Zhu <hui.zhu@linux.dev>
-Cc: roman.gushchin@linux.dev, inwardvessel@gmail.com, shakeel.butt@linux.dev,
- akpm@linux-foundation.org, andrii@kernel.org, eddyz87@gmail.com,
- ihor.solodrai@linux.dev, ast@kernel.org, daniel@iogearbox.net,
- memxor@gmail.com, martin.lau@linux.dev, song@kernel.org,
- yonghong.song@linux.dev, jolsa@kernel.org, emil@etsalapatis.com,
- shuah@kernel.org, david@kernel.org, baohua@kernel.org, geliang@kernel.org,
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, zhuhui@kylinos.cn, jp.kobryn@linux.dev
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 5BEA520004
-X-Stat-Signature: yr73o41e3w1mg6h5mnxpz4gg86hac59c
+References: <20260920132519.3369946-1-ridong.chen@linux.dev>
+In-Reply-To: <20260920132519.3369946-1-ridong.chen@linux.dev>
+From: Barry Song <baohua@kernel.org>
+Date: Mon, 21 Sep 2026 15:00:59 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4xVdNE_Afk8m+-_4UkA-K3VxPhdn43afP2RTxn7LgQJPw@mail.gmail.com>
+X-Gm-Features: AcwNN1VwBXim9JNG7w99oiVvXThrctieAEVa5E60frR8NLkAFaCEYJHdccx52lA
+Message-ID: <CAGsJ_4xVdNE_Afk8m+-_4UkA-K3VxPhdn43afP2RTxn7LgQJPw@mail.gmail.com>
+Subject: Re: [PATCH mm-new v2] mm: vmscan: put rotation-missed folios at the
+ LRU tail
+To: Ridong Chen <ridong.chen@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 6241340007
 X-Rspam-User: 
-X-HE-Tag: 1789974074-754183
-X-HE-Meta: U2FsdGVkX1951NzEmY4tRwsY4NUly25dwKKeTGK2PJacOTnlrV2kbvSJIlA5MxSrSw0/mAhQ2oRfKzKHFd85qxiq/UJp3iAhFvr9OdhOhHEK1w+tJErBVVOK0dJ/x36cjC07eJ0ebnVOZwOuxUq+H0usbvOh839e+mEEdgJC8/eE0ibme5RWeCXbYKLnfC/Gem8h68e0IRAnwWhLadW9Lsjy8iE3bXm1HEGOKWNy3p9HQFP7i/TPOc17EzLBdaRr4Rlezge2Em2CYOF1z+oXHEheN8soIwdtu2HTm+51TVdUCRX6R5bEWfebcSw9JSVM1qauat70918KcKdYaf0ElBVd0+D3pYfE8OlZqDfM/p+/T9OaomnOVW8DiwQa+nF1Z8hjQ1+TUDgps6+CRxDUjvesvwcTrJe40Dc4o1prEMtadBODyaOxrNU4+s1TIG87flG00YrbSYJef44Ypmby9q3P+ZGlk+XlowyBpx/nsAg4NcyGNE3GJv62X14BMDVh7cZb9HMpMKtMEqNmxawQPDDJAIfANryMEJ8YwVfaeH4J/IpXUIKTnmStB5MqfLotLTlL8LKAEoZlfAurYOB2Xe+M4HUoQZ0RoYhp+ePzzqL1YS87nSXN1mqQ9bS22VN09QwEVCx5DzetA6OqwdXXqNhXJFxDSJkd6/U3JlkKUbgele2CTm9AIYmaHeRU8DJPtrvgWQk8kjSneoIHKsCfUpFui40FedYKositc2f1AqhRpZRPUr0W1yHf1LvDsyFiRwjkqX4pWBpW6rrfCXlEy19Ltkx9XX+FDHpInJUyY7Fn2XaUR7KrdAvfjQ8CATb3zo0vNlul6FteHMZBMRN09W+rnq2YWjJwRV9FCpec7kgmx9QkWAf1Y98s2gKryCaio0MWeeRggWP+fmX1wfZgpJw1KN+Cuw13m2h/Ls0OjtbH8vKNmWj2QY372dkaL4cNBg+z/Exyd9ON5kxs9te
- Zx8T438I
- z/lN6IK2WoQOZhZOSL3hwpcnZXhKOSt2u3FCWfzxO3FDnxSE5Zr7R3izSCox1gIbwEziIA3WrUBa8cHIkzRcfbr8Y5CLESN8M2YYD+xuVDgajq/JXB64KKuBAvHo7ArfROzIWog6YFqSlvL6dOUZowSOkr4/qf12/Y1bmFru28T9teIGSWRRsERUIS2HHc1ce08pF88BGRdgjvhSbMLTYszbBO2XHF5Hh5zAQW4pX1VtZDvZIZbty0HkT5TNgG2OVRHQQyDdc4d8pfU2fSmLgrxNkpl5DqQWFafvpbJIfuAqWPOnhaEFT5JDo5y6aQOJTeJq5JeMAsynGiU5Md3EeUwonRzn9fH0VaQZoHNfgg1vlyi1BZzQN+lMijnYmSqjWeb05eIIsmjFrNB1ZpdB+rYhlquScIUaT8zXw7ZVU1OdcLHRtM2GMkddYgcfJrUQ+MIeSEIEul7wn/vP+VGES+77noTN408IhRhI8
+X-Stat-Signature: m6fw991oyerg19dfoxtgykjxad35nhmt
+X-HE-Tag: 1789974072-168492
+X-HE-Meta: U2FsdGVkX1+lfv9aV5Hj67cRGc7QK2gUWEpDOfkC5GJiWQbJ/3riTNAxoOsXo55ydKDYkE4QCraEugg1D6V2v+RHQgPkYRms6rUyZ5dYIh1+lKbLAwfWIMHCK6KKxvmX9s+N4UGyhTGroP2IBdFyAz/8zIGj4B9jWT9fN7y681LUUxqRHqd5DkYH0E8AaZZusq0FTWOQ0G9+zMjcYpNlbDVH5js2rUl4yPMMilHq05OxvAFEWLCk93fCLcbz7D/RUeBSMjvy+Yg3MOoojLkC6gNLy2Qxi7aG32pYDsqATLacbIjDJfXZJz2LvUOvEU0cucY1jXMhPpfpWpzw1uPZ2UzETS8TWXcs1KtFlBVvra4U8NeyWcRNrMOLfhksUFhR4WBMTuS/kgYZrSyMgeLKXlFr18KHIOd0Wbov6J5mL0Xoj83ZsweLZ36TfQlpt+Mh5+hGqRdSCzsDE7NbkCxQiIsBq8oflUen0lFPoTHvIE2sfuV05far8wRxXKi2+j0JiP8j/si5fNFWxB3hAahu2yP2mzKKBCyKDEUGBX80Dx/kFBw2HsPDMEPTApNX+OIh/nVB3QR6WQYMHXNkAVYJHCayFyZz8Skk5MsNNOjjh3WPqHfBhE21gIi9rP0MY/tQlApEQrAGrRbXj9zT2YNYAC4PHnLdO65SWZd21QwCHOxmBMSuWGCb6+5HlkBN2Rbl+scnFdH6SD/kV6qZQL6AzxpB3iT2wZIwizBaSxRSndkGA7i7U4Koh5XNY2eQ8EgjUoc0n+VFW0OLnbv8Kc6VCx1NHXhyZUvxFbt208eHnrR7InTPiwUKRZvYRNVYYfw5j+DKFKj/HPWmmlPJfPYtW155yXo00hWEvtRpIqNlw5lU+Y1NCdP6VrntRqYqF6mvNP8CV3+HgQ5hYRf7gX2c0sqZ2y088WqP5P5Brf8EoSx8Q9wGgI0YLlpI5zb5RnhPzXVa8XHT0tozYhIoJMg
+ 72szpw09
+ 9c6pwjmNL+c35awkqgRQHgiWfiY10uaOjApKt9KUj+t9BqmNuE+S2FhfziMKC/2p/gGMF8llhwa3sU0p8nQhD7Sp1l23phUsUCnwQZDGHLS/p0pRDThsBZhs/5XrSuGN2GkntO24sObM8zlpvuUkiMGSOxqmaMpewGz88dI/GBfKtkjeBu6C6o3FLnO6xtU9+vCdPguz3HysMgy0WJOEKrxLEzaVgmduqNAjKXnlPKN+kXEv/4vykJ311PdDuYgYpqIA8k9hx8LeIVDHLtYOWf0IY122YxAMApKxC+b1OFJXlHqdQWXYKt3Kpr2TcdpCsv2lOyS6tWGdJNlwpURT1LePPzkG+gpwT08c5TDzDRX5WQHUzF8XWnYevtvVHjGjE+9gP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,29 +108,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello:
+On Sun, Sep 20, 2026 at 9:25=E2=80=AFPM Ridong Chen <ridong.chen@linux.dev>=
+ wrote:
+>
+> From: Ridong Chen <chenridong@xiaomi.com>
+>
+> The page reclaim isolates a batch of folios from the tail of an LRU list
+> and works on them one by one.  For a suitable swap-backed folio on an
+> async swap device, it queues the folio for writeback and, after finishing
+> the batch, puts the folio back to the head of the original LRU list.
+>
+> Meanwhile the page writeback flushes the queued folios in its own,
+> independent batches.  For each folio it writes back it calls
+> folio_rotate_reclaimable(), which tries to rotate the folio to the LRU
+> tail.  But folio_rotate_reclaimable() only takes effect once the folio ha=
+s
+> been put back by reclaim.  If the async swap device is fast enough, the
+> writeback can complete a folio while reclaim is still working on the rest
+> of the batch that contains it.  In that case the folio stays near the hea=
+d
+> and reclaim will not revisit it before wrapping around, causing a cold/ho=
+t
+> inversion: a clean, written-back folio that should be a prime reclaim
+> candidate is kept ahead of hotter folios.
+>
+> commit 359a5e1416ca ("mm: multi-gen LRU: retry folios written back while
+> isolated") addressed this for MGLRU only.  The traditional active/inactiv=
+e
+> LRU has the same problem, reported at [1].  A reproducer is available at
+> [2].
+>
+> Rather than re-reclaiming those folios (which would drop the swap cache
+> that may still be useful for a future hit [4]), restore the rotation that
+> was missed: when move_folios_to_lru() puts a folio back, add it to the LR=
+U
+> tail if it looks like it missed folio_rotate_reclaimable() (inactive, not
+> mapped, not dirty and not under writeback).  A referenced folio is left a=
+t
+> the head so it still gets a second chance, and a folio with an unexpected
+> reference (e.g. a GUP or speculative pin) is left at the head because it
+> cannot be reclaimed yet anyway.  A new do_rotate parameter gates this so
+> it only applies on the reclaim put-back path (shrink_inactive_list()), no=
+t
+> on shrink_active_list() where the list order is already deliberate.  This
+> approach was suggested by Barry Song [3].
+>
+> Only the traditional LRU is handled here.  MGLRU already retries such
+> folios via its own clean-list retry pass in evict_folios(), so it is left
+> unchanged.  The same do_rotate scheme could later replace that retry pass
+> to unify both LRUs, which is left for a follow-up.
+>
+> Test result with [2]:
+>
+>   Without patch:
+>     cat memory.usage_in_bytes
+>     1073700864
+>     cat memory.memsw.usage_in_bytes
+>     1413124096
+>
+>     free -h
+>                   total        used        free
+>     Mem:           1.6Gi       1.2Gi       299Mi
+>     Swap:          1.0Gi       678Mi       346Mi
+>
+>   With patch:
+>     cat memory.usage_in_bytes
+>     1071140864
+>     cat memory.memsw.usage_in_bytes
+>     1413423104
+>
+>     free -h
+>                   total        used        free
+>     Mem:           1.6Gi       1.2Gi       322Mi
+>     Swap:          1.0Gi       328Mi       695Mi
+>
+> After applying the patch, the difference between
+> memory.memsw.usage_in_bytes and memory.usage_in_bytes is close to the swa=
+p
+> "used" value reported by 'free -h'.
+>
+> [1] https://lore.kernel.org/linux-kernel/20241010081802.290893-1-chenrido=
+ng@huaweicloud.com/
+> [2] https://lore.kernel.org/lkml/46037a37-4cf6-448e-a94b-30a4d16e8814@lin=
+ux.dev/
+> [3] https://lore.kernel.org/lkml/CAGsJ_4zwP3_+EYY5Ug9EJ+yD1UdxsBSGr25u8s1=
+K3u_i7LH3Zg@mail.gmail.com/
+> [4] https://lore.kernel.org/linux-mm/20260911121341.178028-1-alex@ghiti.f=
+r/
+>
+> Suggested-by: Barry Song <baohua@kernel.org>
+> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+> ---
 
-This patch was applied to bpf/bpf-next.git (master)
-by Kumar Kartikeya Dwivedi <memxor@gmail.com>:
+LGTM,
 
-On Mon, 21 Sep 2026 11:08:54 +0800 you wrote:
-> From: Hui Zhu <zhuhui@kylinos.cn>
-> 
-> BPF programs can observe memory pressure on a cgroup, e.g. refault
-> stats via bpf_mem_cgroup_page_state(), but cannot act on it:
-> triggering reclaim requires writing to memory.reclaim, which BPF
-> cannot do.
-> 
-> [...]
-
-Here is the summary with links:
-  - [v13] mm/bpf: Add bpf_proactive_reclaim kfunc
-    https://git.kernel.org/bpf/bpf-next/c/48ea1ba704aa
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Reviewed-by: Barry Song <baohua@kernel.org>
 
