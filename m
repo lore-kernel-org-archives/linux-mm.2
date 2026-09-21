@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B92BC982E6
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 13:45:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8F5BC982EE
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 13:45:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 12E6B6B00DD; Mon, 21 Sep 2026 09:45:25 -0400 (EDT)
+	id D3C4D6B00DF; Mon, 21 Sep 2026 09:45:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 107306B00DF; Mon, 21 Sep 2026 09:45:25 -0400 (EDT)
+	id D14196B00E1; Mon, 21 Sep 2026 09:45:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01CD06B00E1; Mon, 21 Sep 2026 09:45:24 -0400 (EDT)
+	id C2B076B00E2; Mon, 21 Sep 2026 09:45:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D613F6B00DD
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:45:24 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7E6091C0F81
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:45:24 +0000 (UTC)
-X-FDA: 85237891368.10.347C1B4
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9C7136B00DF
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:45:28 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2D6121A01AD
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:45:28 +0000 (UTC)
+X-FDA: 85237891536.30.BDCCB7A
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 8F4A5180019
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:45:22 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Nc/OMmgd";
-	spf=pass (imf06.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 606F312000E
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:45:26 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VXXdeRh3;
+	spf=pass (imf29.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789998322;
+	s=arc-20220608; t=1789998326;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=noSJaKaApwlaS+y/XuQ2BeJGsLJq4q/TgrRJwetkGmU=;
-	b=vDnHdFXiiXQKY2oOazTUz+OecLoNXZUWTFlsjshWJs7zI9xjb7qlqs53l66c6DSOpcnhOV
-	F3lJiRa7EFTROMlN7hGCnMtkTFg4d6MEUG217RPTDvlKGKp/AOdif5aBrJYjQ4XS9KScrG
-	4Qo92Hb2MAGyXJtBLUoNHIfrbceuP98=
+	bh=b32xekZALDJ73u8pNgOkOniEszxsMWAgHksCs7g4tyE=;
+	b=s3DR1R0eXhz5EYO7OaDWHe1Tc95x3hAJWX0cXMKkRX2IXYXDoAD+wCgGTcBaJsDbB8M63o
+	KsYOLOBXjktAliZPlyBTTlcr2OSmRmGVRJxmjgo6vm/Z+zCIBGkE1dKozUC+r1Glyq1SC5
+	XvnLUj236XkExduHJ9WLy5CzkSYi7ZU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789998322;
-	b=mmujFR1CZkedGsDHT15ABCmeFN4tzAU0ALqjFC7n/9FhMeEocTFmnrmJnjbdheeBbtpIBe
-	iVwEtU2xhp6WdorEurqHcwKkVdpQG7fPMWtgt4i2A+FB+Z9g7yOe3Wx2ZvgJ1qCULa/ij1
-	9aGXxrR7iSgtU56mT/2r75oyrLwyT9g=
+	t=1789998326;
+	b=hQAJcHh9RXdS93IhSpvCzUtrt6OZmc0Xx8K7jIr49stQVotbFsVLonfjgklaT3H2UPJeVu
+	T/hvfyx87xj8agUAShkcB8pDDWNAvO7fNTl0LrXHeWma2AXuXSjvnHGoto1w0O7vf1aMcF
+	j1a9Mnfd92FpGpWrHPn0FaSrlhORrrg=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Nc/OMmgd";
-	spf=pass (imf06.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VXXdeRh3;
+	spf=pass (imf29.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E1A1243A23;
-	Mon, 21 Sep 2026 13:45:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 980F81F0089A;
-	Mon, 21 Sep 2026 13:45:18 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A7560404FE;
+	Mon, 21 Sep 2026 13:45:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 575E61F000FF;
+	Mon, 21 Sep 2026 13:45:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789998321;
-	bh=noSJaKaApwlaS+y/XuQ2BeJGsLJq4q/TgrRJwetkGmU=;
+	s=k20260515; t=1789998325;
+	bh=b32xekZALDJ73u8pNgOkOniEszxsMWAgHksCs7g4tyE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Nc/OMmgden9Sch3xPcq/Wfepqx+lMcRh1nuCXA+s9LMLaVFSV0phw7q8Zj6y7OU4L
-	 2WbojhpIW3mZ0pq2DERzhAdb6SFlujeGUbZGx24FVE9ffsxkrg0fxK/C5JcDQ/OrTx
-	 qMwm3hJKuOUCStf87mu11kfTKwRMpjybHFFWwk5UyOIgG6iQozyegxl+kjMXNOji3X
-	 zF3MVcCgkuiWZb1Uywq3wpuksX+ImSv3wxCGYrFUPG8iIee4CcyS/79j67gIpttSbV
-	 IivPci76szJLZSCEow7zDddBANUG7uNjKY4dIabC/qBHISBY7FgNf2bQfQ1u4VU5Kp
-	 YjGIcYnvhWWlg==
+	b=VXXdeRh35T9i1/ADIdWf8z7aG6ksc04+VkB5STDx4Keu3VjrFeVir8HzGTUPSEFoQ
+	 uYpVIZocN+hq6enflkH/uE+gY/AT4JY/eQZj2UobHgbyYaHUB8XEm2eWk16SOkIyjF
+	 5GKp/nv7D2Jmbx/Y60Ra/3EjVm8pvfN0btMXoEmAOS84Tfm/EURd3qrwR1iZsXKQ5n
+	 5fI07y6F3NyfvrpEWEbI5LkJKA0phbqx29KNvxt65faoYPOLP57nnWrNBmAUV3iZQw
+	 iWC6yLOk/1s62qdSCtvpEMUwsUjSc2t+QPKIHEUnYa2Svs3Vm+RJ1f2G3LKcw1+pge
+	 gVswbNbkcIy1A==
 From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 21 Sep 2026 15:44:53 +0200
-Subject: [PATCH v3 04/17] io-wq: order the exit bit against worker creation
- task work
+Date: Mon, 21 Sep 2026 15:44:54 +0200
+Subject: [PATCH v3 05/17] signal: don't retarget shared signals in a dying
+ thread group
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260921-work-coredump-fixes-v3-4-8e4adb1619e6@kernel.org>
+Message-Id: <20260921-work-coredump-fixes-v3-5-8e4adb1619e6@kernel.org>
 References: <20260921-work-coredump-fixes-v3-0-8e4adb1619e6@kernel.org>
 In-Reply-To: <20260921-work-coredump-fixes-v3-0-8e4adb1619e6@kernel.org>
 To: Oleg Nesterov <oleg@redhat.com>, Chris Mason <mason@kernel.org>, 
@@ -82,22 +82,22 @@ Cc: Jens Axboe <axboe@kernel.dk>, Alexander Viro <viro@zeniv.linux.org.uk>,
  linux-mm@kvack.org, io-uring@vger.kernel.org, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.17-dev-db0b7
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1786; i=brauner@kernel.org;
- h=from:subject:message-id; bh=I9adUaO6/vXVSqyRv9Gsx8nEfE1O6rVs+YV8BhcfEiY=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWRtNLkz983aprOS14L4z3Xc9c88/XbC/L3cqw2aPQJTV
- O06lU+adZSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAExkxz5GhsnTPmz+ZxKvmcjL
- lLt6XdO+Fx8jH11xVzxzK4F99V49X2uG/+4ZlRoRKXNOWKYs/KASJ/p9ewEL35H5TDt4ngbfydh
- 3mh8A
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1843; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=NXtk4J120gvy6duSbM7CGMlQIgVMXPYHLccJxo13+TM=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWRtNLlzePcG6a9a3w7tc8ydY3Fyl+UFjmkv3qySODjXP
+ FdkwvXsNR2lLAxiXAyyYoosDu0m4XLLeSo2G2VqwMxhZQIZwsDFKQATiWVjZNi+pjv63mODniep
+ wecDuRav+6uZ9dp1Z6TLAW6hZYHHdj1j+B+tOd0vdlbJ5lZJh9qWhlsKXxiuZsleXvvuzrzv1tc
+ PNnADAA==
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 8F4A5180019
-X-Stat-Signature: k4rqzqiuyaca3u94nckefwtatqcxp9za
+X-Rspamd-Queue-Id: 606F312000E
+X-Stat-Signature: mcc9d1e3gcgxc59f4ra7jbgfrfp6dk68
 X-Rspam-User: 
-X-HE-Tag: 1789998322-785215
-X-HE-Meta: U2FsdGVkX18Z0VnIhaJEag9we/Pxz6eENNEAFwzGeZS3nxR5zp7zuMQWDD9OfKQFkjQVdEYviEx2qaTY4TU4x7yb6mtIinxPHMJwCh18gZ/ve00VbgZUhsjIhEyTc1xgkNAdjlo7e9gDm7meiiZe4Fty40NrxsT3rAq3uhbu8H+3lJLu9hmM067FzH6rKUfxeRz9dC39HkiNfGUwiLAUivg9tHLptjZ/qG7PB+gpAtbS9QedG3mXGiOdCu5ksNHsgx9MhvwErFUJ/YykK3VVuWTH0ZTF13LMwI46qDvOeQ07PQ2HYmAl/ViQA2dhuMwVxDQ72i7v28KBl7OFxdKw9JCj9cZdVIBadO/b2lv4T2H/p4P/T0GNCOlou9SuHopjA9ecaeTzOB9jBlsxd/x3xc6qLVw9n4RUPp3FKVzseHrrfuzTnj4EkSfOqy0kpacH76N5Y5yKyxZTqadqR9Og2xRAzFraj/kNLCfiZNg99YLjjxgFoR6MLsr4oI1xzpu2OPNi5Y9PnE07Y/LtsPYzTTY077hQkYzCufcocBGJ2Qlg6oyKX39JcG4cLFC7p7r5DEyLppNYIagaxdZyUb2+vEdqq79W5wUf0fNxqhRKYBeeFwLjanuwSG7mIwjV3JS8sV2peAZhNJxuvbTWQXLsB9rxrLkRYd2cg1PKCfOf4DFQpBmQ1j3AbJIGh6v1EvDbB2e2lv861dTK4aehMDnAo7xHFZkMu/KDuCq3+jcdmFuQv61q8R0sWkINZV2Cabk0Psd3oM19Qdat0jL/l5qkl87QQChe7Hn15mkdCL6gda1XUypYsIIk6Pfw5ZGJhzpOYcIVPsu/l6WPqSyiZTngPyOOAkKj615fMRaZyYFGGaqrvQpmgSYaZbK0gSecwX45IaVHfEQJlcng5sWlFZIu4JdlbPQAxACwmNQg52XldLHF24tZJPSODxVAB2JrVtPQzNNkc2aXNTMhLcT2+us
- HlF9fz/6
- VSSZw3LmkxlbPthUUIOdARjRBBJ3TPMfz4Vt01lbqlU9KxomVBZ1SMT/64wt0UOJQ6MceAsstF9gvLQ0Zu6eJCxtBrbk6pyTqyVq5E4ryBciHXw3fT+Az7MBXAdqX0zfdB2KOBVzGpcNis/HFSfzqnRMmunDVlBPs5fndQauxDWbRmMoZcEGqDR7PkjkJ35uK95XxSi/nJU39IxEuFan/eSPFhXtbMGcvMJ/mFftRb6nVMd5oAVvJxeSHiM9KtGexh8S2ojhwpXz2ngg=
+X-HE-Tag: 1789998326-117974
+X-HE-Meta: U2FsdGVkX19bd/nJU71lNYAFjn35EELcqp5g+cIyQoFdNjD2OEcPduenwsesLPEcbQDozEB8VT+krQI0bUBv7PpDQOTv6DZWaxqy0w8NueFsbVmv3y+SVweS6FOaLYwUaaCEfdpVqB4QclsYvZ1iG/s+J41HGAxMV4uIyeQb+shP9IAjdTEQsca26tBc9DXYH2lKoQN7Q9fT8tDgdUvob3r57vMvpdQpWOANsNuoKTDZ7tHgco8kI7n133KYLrZhmZSQu0QkhyUW+Kz/vV6IL1Rtkr5JDlL2QWCNHad3YRrouW1rW4QCX+EPDrfcxDRHGVcuC9XCifmMSzZeybJLxAf9/61QuoEqlHQLVSoxjeKbWV+Jx2DwnejdX95OJN2ZdWNfRu0l7E5xPo8ErR/aPnPkrCOwPby0c/E87emQpuA4TAGy1JSlg2J+IZukLpNpVptKBMczk7JMBPEDXQ51Tf/IRzF+OWNIrA4C1L1IepHlHuH11cb3OsMQrR3Ixb6DjsTehgl9rrj4oCiAUGAiNSsRdG/YofVu6DLJptyBCNzkd42uRtt28irAU/xUGyWNZFrlLkuRXruSrpcEk8woDJalCafPGYdl4DTZtd/uBL6i1GdIZqel1Qqt5CDXOyixZ8Ifrjs+iGRFMDqznAJpSQeb4yWugNlE4cjy/LweMHOo5HRdq7fW9DLKpdtEmwxaJbzQ66EnF/hFaxjxC3Cu6bmExpT3Eh2UpvMmFODY3K3qdEa1AiWacSjPO9nIQQNOE6FrLfiVpbIV8LGpWDBRIx99R4IUaincbck1IydKuOjEZzMlOfypb0dy1NXR6r4B4cv6VnsSiPpAwWJZHzNBjZTL5MlRhq7J7d9Z+cJdFLqauBN+LPHsN24MlZ+iTQccnoVJ9R6RNzltsSb+5a1nRMY7cJU/m77PEG8zhseBbypojcrGx7CweDjHO7sgELuMAglcPPZKHYW2ZyJYtGU
+ 3t69vXa3
+ 2qM/aDZ9QOb65iQiLskZoDnTX/HXSuzWsfu9zKLHkMj5+qzZRjNepW1t9bEU2MEu5ES9qSNH4PqKyumnnjkxihaX6NA+C2JCOe2pAjhqJJ3bEOhjyfyCgnm48yj35ITL2EUI5PMK5hVPCVEYabiyDHT+JIWAUAjN9uyt3d8UbLQAxD9OIhpOY0bn0nqLL10Pc6I2nJ/RNGoqvPg5cO3Dbnk3h/TEUovJ77H+A2dEvGIOBTp6cL17OyZ2oHnEhWfdyaBroCSkJsRpkpuA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,49 +105,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-io_wq_exit_workers() cancels task work for queued worker creation with
-task_work_cancel_match(). That has a plain load of task->task_works.
+If the calling thread has blocked a signal then
+retarget_shared_pending() slingshots a shared pending signal to a
+sibling thread. Today it only skips PF_EXITING threads but not a
+coredumping thread.
 
-io_queue_worker_create() adds the new entry and tests IO_WQ_BIT_EXIT to
-cancel it if the workqueue is already on its way out.
+But if SIGNAL_GROUP_EXIT is set no thread in the thread-group can
+dequeue such signals anymore as get_signal() sends SIGKILL to every
+thread and prepare_signal() drops any other signal.
 
-That must be ordered. task_work_add() has a full barrier via cmpxchg().
-But io_wq_exit_start() sets the bit with set_bit() which doesn't have
-any memory ordering.
+exit_signals() also returns early on SIGNAL_GROUP_EXIT. But neither
+sigprocmask() nor the mask restore in sigtimedwait() do.
 
-So afaict, on weakly ordered architectures the exiting task may load
-task_works before the store of the bit is visible. The other side tests
-the bit before the store is visible as well. So the entry remains queued
-with worker_refs and the exiting task waits on worker_done indefinitely.
+Say a thread sleeps in sigtimedwait() and a sibling thread crashes. The
+sleeping thread gets woken by the zap call. It restores its mask on the
+way out and retargets a signal that was queued for the coredumping
+process. That means TIF_SIGPENDING is set on the coredumping task which
+zap_threads() had cleared. So a blocking write sees TIF_SIGPENDING and
+truncates the dump.
 
-If the task still has rings then io_uring_del_tctx_node() provides the
-barrier via test_and_set_bit() in io_wq_set_exit_on_idle(). When it
-has closed all rings though that barrier is gone.
+Stop retargeting signals when SIGNAL_GROUP_EXIT is set and avoid
+needlessly truncating coredumps.
 
-Add the barrier after the set_bit().
-
-Fixes: 71a85387546e ("io-wq: check for wq exit after adding new worker task_work")
+Fixes: e6fa16ab9c1e ("signal: sigprocmask() should do retarget_shared_pending()")
 Cc: stable@vger.kernel.org
-Reviewed-by: Jens Axboe <axboe@kernel.dk>
 Acked-by: Oleg Nesterov <oleg@redhat.com>
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- io_uring/io-wq.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/signal.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/io_uring/io-wq.c b/io_uring/io-wq.c
-index 2ca223e47d41..2a980e86dd94 100644
---- a/io_uring/io-wq.c
-+++ b/io_uring/io-wq.c
-@@ -1324,6 +1324,8 @@ static bool io_task_work_match(struct callback_head *cb, void *data)
- void io_wq_exit_start(struct io_wq *wq)
- {
- 	set_bit(IO_WQ_BIT_EXIT, &wq->state);
-+	/* Pairs with task_work_add() in io_queue_worker_create(). */
-+	smp_mb__after_atomic();
- }
+diff --git a/kernel/signal.c b/kernel/signal.c
+index d8bb1f168055..c3bad983dd37 100644
+--- a/kernel/signal.c
++++ b/kernel/signal.c
+@@ -3117,6 +3117,10 @@ static void retarget_shared_pending(struct task_struct *tsk, sigset_t *which)
+ 	sigset_t retarget;
+ 	struct task_struct *t;
  
- static void io_wq_cancel_tw_create(struct io_wq *wq)
++	/* Nobody dequeues them in a dying group, see get_signal(). */
++	if (tsk->signal->flags & SIGNAL_GROUP_EXIT)
++		return;
++
+ 	sigandsets(&retarget, &tsk->signal->shared_pending.signal, which);
+ 	if (sigisemptyset(&retarget))
+ 		return;
 
 -- 
 2.53.0
