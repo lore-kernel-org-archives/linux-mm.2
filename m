@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 824E9C982E6
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 15:16:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49452C982E6
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 15:16:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 950CD6B00CF; Mon, 21 Sep 2026 11:15:59 -0400 (EDT)
+	id 2736B6B00D1; Mon, 21 Sep 2026 11:16:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 903456B00D1; Mon, 21 Sep 2026 11:15:59 -0400 (EDT)
+	id 2224C6B00D5; Mon, 21 Sep 2026 11:16:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83ECF6B00D3; Mon, 21 Sep 2026 11:15:59 -0400 (EDT)
+	id 0EC0A6B00D5; Mon, 21 Sep 2026 11:16:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A8FE6B00CF
+	by kanga.kvack.org (Postfix) with ESMTP id E2FEE6B00D1
 	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 11:15:59 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E8FB814014F
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 15:15:57 +0000 (UTC)
-X-FDA: 85238119554.10.DF418D1
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 758DE801B5
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 15:15:59 +0000 (UTC)
+X-FDA: 85238119638.26.5EFF50C
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 53A9F140006
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 15:15:56 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BWgeKyzF;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf28.hostedemail.com (Postfix) with ESMTP id DB527C0014
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 15:15:57 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IQw77VEM;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790003756;
+	s=arc-20220608; t=1790003757;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YZi9IVNfJSY7xxoADBVX0u2PfclU5VsMjaW1uA9UFkU=;
-	b=V2VPuzktQd67GrWHFox0B58tQny/+VCbOPVzf8hDfJ5DnVu6bmRW+yrv7k3DTWw0+1mFCr
-	BHKXzSB9CFLLg+Ad6sRS3dzuESaFyiizQWYuEdAu/F7dmyr7VJOnPnz7xKqrJjgAG8M+yX
-	ONzHv0LH7Js8jqS74YCHl23hzHRlFXI=
+	bh=Xha6SzRmwzcqbwA6Ea+IAg1MkYKVwpH9imxtGliuizI=;
+	b=LtI7aevrL4VIeFvi7N80P2ytkiCACx97DwibHuRYI5AAf8t8zjSc1oDSM7qBZxMaeGqP3Y
+	AgtTK3v5L0CsbNE6wb3Lxamr0Gheze8kAFxU+fwNaPqxH57yIRh6qwE6nlzafcgJvvPcFW
+	tOoRINGQRac+GgiUWqHox2COU/41Zb0=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BWgeKyzF;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IQw77VEM;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790003756;
-	b=ZeroOlShr3Odc/yIrtWtZjREDiCrh1WWMNOwhcIHtqXY8wzrvHGtF04teRThFAugAHBVbT
-	7yCHdY5extjSfpB0BNnDFa3D2jabMtmB9n2njdUza9lXZ0CphnC7GW4DADYuAB2OySxap6
-	oS5rjRJ2STVpU4Fl9QAQ7XFbfAM9Uug=
+	t=1790003757;
+	b=Wn+UKYZm9/qgwo1lAyhrYS6FyoYxVq+Vd4JaKxquid91XkJAjTruF/Ml5nWZX8mDiuVahr
+	HAuU2gbTj1+q1jiDifsEPsaRUVVfs4SuLufKlC4eWeR5oJuqFzeEXcZyhtO+/cwEvDKiOO
+	YqPbq66nvUyfe3Wos0oSI29gUNmRqsE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E7ABF60142;
+	by tor.source.kernel.org (Postfix) with ESMTP id 6FFDC601F9;
+	Mon, 21 Sep 2026 15:15:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B9781F00898;
 	Mon, 21 Sep 2026 15:15:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A06FB1F00893;
-	Mon, 21 Sep 2026 15:15:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790003754;
-	bh=YZi9IVNfJSY7xxoADBVX0u2PfclU5VsMjaW1uA9UFkU=;
+	s=k20260515; t=1790003757;
+	bh=Xha6SzRmwzcqbwA6Ea+IAg1MkYKVwpH9imxtGliuizI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BWgeKyzFjdqIj4tW9+UBBQAuV5uAkWPL1DXxt2dlrnleSInIzPDC/OCzQPyJlVlmd
-	 SzIgeTw1WNHB2g/GbOEemtZPaq0J3qNjQEHL3MrmKqchXkpYKNydcyeErIUVd6z3gi
-	 d7/8lVYaf0FPwXRYx9auipAG/RoQfJjtyYS6idYw+Cslo55S9LnJqk8Y+Fdk4Kujj0
-	 cTVGjte27A9Ghxl5UQ58h24uOTUrDjEPyuQrsv1Vg3/UjoNg6gzHEbaF1J1sRfLWqb
-	 SLEktZvY0vMp+P+b125uSntGrzRLnicOrFueh0ReYtxcXIcLww3zLtMIhiudE59eqa
-	 G7BEEAsrvpO5g==
+	b=IQw77VEM7Ou5+88h9368Ql7ab8uQ+ELYghiXetB2nFdIaW20TrqvhSVvDZDnP6weD
+	 EZlwRZVorUuoVbcT6lf8sSnxox/NM/KaANsgNBEGiUSW0absBAa9Q6ORDB3Zu+PZKW
+	 lTQplllX1zVhK/PNK2QEI/+LQLaURhvqRBj4HcAgukS0ggS/ADGkYE8y7OivwNDItJ
+	 WQChuFPbSVxWfXltkHCpsEiukWlPQRdw43GxOg+1/Lr0Gg2GHJHfdV9fBR59BwDtBm
+	 UBvIs+hADqU3Gj38Gkf9XeV356wnbw6bLGfvy3cjTYSCy34K8o596NLeYFZyDJWpl6
+	 2H89KZgPcb/pg==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Liew Rui Yan <aethernet65535@gmail.com>,
+Cc: Xuewen Wang <wangxuewen@kylinos.cn>,
 	Adrian Huang <adrianhuang0701@gmail.com>,
 	Karthikeyan KS <karthiproffesional@gmail.com>,
+	Liew Rui Yan <aethernet65535@gmail.com>,
 	SJ Park <sj@kernel.org>,
-	Xuewen Wang <wangxuewen@kylinos.cn>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 1/4] mm/damon/core: skip quota score setup when the quota is full
-Date: Mon, 21 Sep 2026 08:15:43 -0700
-Message-ID: <20260921151547.78472-2-sj@kernel.org>
+Subject: [PATCH 2/4] mm/damon/sysfs: propagate damon_call() error in turn_damon_on
+Date: Mon, 21 Sep 2026 08:15:44 -0700
+Message-ID: <20260921151547.78472-3-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260921151547.78472-1-sj@kernel.org>
 References: <20260921151547.78472-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: DB527C0014
+X-Stat-Signature: a3hqsib1sybgt1w5x9fjt7nyhjtijegs
 X-Rspam-User: 
-X-Stat-Signature: botdh46ktoj89boi4c3i58933qqz43r3
-X-Rspamd-Queue-Id: 53A9F140006
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1790003756-906148
-X-HE-Meta: U2FsdGVkX191pr5FjhDgLWF60pOszcfUf/EbOo1krofY765k2IiNIezJOoGs7yZblPTTVHsQ9/p86vOM2R+LSu0M35kSPvMcOuhAhDdDtuEGGQINimJDr6CBALLTzPvzdz/npa2C/4GKMQ1IysFdgap3Q/N2aqRVvBrwB6+3vIvqx7w4XABbWoundx/CzMc4iWIo1yiwfN9524Ps9SyJLLGUoUQ9tZssVU4vtg18w8wFvSGsstvr/SARaGx8eIdHVfKllb/yxF9ztf6P6XLpFXqECuy4P4rDoQQXg6hLvXNLRrJLsTvTodrLWlIW5uD8QtxRVLyn6mTC1TYfmil9YrltltpbuUDINgI476txmJZYJkdp3d/t/Iby0zyuIiM28QmsM9ig0fjYN7V9RHDZbQDopSZk/YI9m/6cAi0zIyR+kVtoBJOsCmZGVTBw0x8ZiFAbTwF67Z60wczJ9yV3c5FnVIyho2rMP5fYTSiV8pHD5iNb1s84nAz7Hlo2nLzwZbXHsAjvaNQrZpHZ2kAiRcSEzIm6PlLJeLb/hDfjOD8xu1LXhqSBJpgp1LR9kmqwBaJg+IzSDO1Y2mTEOyLe8/DRRtHnBm35+9PIwiK5TK3SqcgiB46osOnefc4+RVKXPISnv9eTiDKR8qOc2gxco27cAXuO1LIkI6t4/7K5BVmDf+wYSK1Xy4rvkgvNMOGRkkTXRzdt/sSUc1f/wNvD1c+BEaxQ1YVZS7XzrE+Enp7KIMaqZACDjOfPq1v+MGFE+rdQjNpIgxRvdLoTHZOOFGvyRxgR2L9Py/NjQERZMNNV8ghKOJJoJeVE0b/laVScPaJBAaaVYJUxd+KsmLF46XoBSh6hjgpgqMpNWZ9eeBajxJTtFRfLSmcYJpOKI2KXsD9T+LsnCGhvzpPharpnpvZ/NaXyZyRGHxC2zQx7SVPc9CAiGa09Ty+VvcRJJWQctXJDoqH+js91TCc17bN
- vp94OBXG
- wfpZA8SEDMboEVsv1rpJF77jXzsTL7i1NNSZJbNFMw6hjtI5l11ZPE3EoNDrk6cMZMzK7f5oV6InVteod7k7TpTXTOEEAQpC5ElPuVNBnBb37/G3MP2Nvhd9HM40alhDNFF8yn3ZSN/kknIL/7gcfxSN7Q+IfeUL/Wfv39E4IjVoaT5IKjUGTfDUUm7fv0cEWm9pzDQgn6e59puEOvQvKFRh3ZWr8koc8cK85HxTnGUZjU+AL13WXAkDpE8m3+ReZShHS
+X-HE-Tag: 1790003757-600997
+X-HE-Meta: U2FsdGVkX1+Zkh43gCZGdKh83srneWCEuMmW+tUsxZGqnkm6/4Z2+LJsszEKS65WtVrg+m/9dSDIxjSG8j18FblGqENrehGLk+aLXUHEjePFwutnoia9NenBlSNuTNbLdtqwT1yj83sbrrFcxn7CHs7Q9TCx4pW+2AcKZdxsk2nMbWOZAqHW7qEHIzWKKfSwVbqPQwor/JvuyoTb7MVbLH0DnaKo0nr9QVwZMkHsSTOOpMz6pVtTvErDta/hPByZCt60dABrw5UNohJhMZtAau227IR0DKLVtXkhQoCSixvMaQtt/LJP7e2sOihXORAEFx6ASBJndZI9J50P/vSw4/L6AZ4r/BPbHomgS0bnwFRFABIR59MNQ8CGM4YeEYOInbY9XgK+Cq8eNxT3bsJgC/RQwNEacc2YQXrB5BmTq+E2Sj+GJG7fciye7E6nq61yvLpvwhVthyx6FzCKhr1TsM5eV3fWR79tFRfmG8nqsglwGnXjxIIanCBZjULNydfIX5tDqQBcwKKUipECsAbUFoXmxLh+3uP49c40Oc99gY8oPXCFYpShN0HFFZk5j7JZHTHqnz+nm/pqXWEcp9Q9xJntDobSUiquPYU5onPG46csBdCWMnWZ6BWpRyvtvBpT0Tf7l5DD266KAjNxQx6tX4mhEes78UppZInpphTsOGjh7yp+eULorfEDm/33sbKmkRRIZzUHFltAhiCFZnjqm7CCkO72SAel7Davmuh6yetApVg6tOtInWzvKjHDKeMPnGsZgBbDftifc9yZCRhP3UFxYMOlVhGCRgw/GB551doFcJ/FMQqtg1x8HYlsph5bYNzequKGdTpac9Uq75if7mBMa9LmiyA2nD9x/4Ec9+2YfbWdI2cT3lAklqTi3V4svdTPPBtvGjLbL7dM74VGuqzZWzk6CZsnO/JQR9Gph0HzIKyIeFXxSVpSiNrEwz1MlM+9xcmbaBW4UU4eOTV
+ 4m+aZOB9
+ 3bQccV2KLVv+htkTVRJ0Ar1s3w+CJywSKBE5ZakeIXV+FJ/Ihzkur1mSepSC58bJzDi1roB8ui5QkCoY1bAbKQViDtUEjEVp+yhtMimWe3JgKgZPwH5PFVmfbmHUAoLePc7dMBtKpz2wbvSVcF0mUYTKH5AZIYW35OHNGhQHskHLX/+iBDF1TL1Z2nyQkNE6WUS5Nftn4qnTKCirsP5IHrrPqamP35O2gEaERVW8yZ+15xAsAwXsb6/xn/OUpMUOKrk3h/XX6KU16Eu5kqf31ieX+6nbmN+N8VZUinthJs/THDf5TDeNg74zau7CmmRdHKJ90
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,44 +96,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Liew Rui Yan <aethernet65535@gmail.com>
+From: Xuewen Wang <wangxuewen@kylinos.cn>
 
-In damos_adjust_quota(), the quota could already be full.
+damon_sysfs_turn_damon_on() ignored the return value of damon_call()
+for the repeat call control registration and always returned the stale
+result of damon_start() (0 at that point). When damon_call() fails,
+e.g., the kdamond is already exiting, the user still gets success from
+the state file write while monitoring is not actually on.
 
-In this situation, damos_adjust_quota() will still calculates
-quota->min_score.  However, this min_score will not be used in this
-window, because in damon_do_apply_schemes(), damos_quota_is_full() will
-always returns true, preventing the scheme from being applied to any
-region.
+Save and return the damon_call() result instead. No rollback of
+damon_start() is needed since a failed damon_call() guarantees the
+context is stopped.
 
-Therefore, add a short circuit for 'esz < min_region_sz' schemes to
-early return from damos_adjust_quota() before calculating min_score.
-
-Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
+Signed-off-by: Xuewen Wang <wangxuewen@kylinos.cn>
 Reviewed-by: SJ Park <sj@kernel.org>
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
 Changes from v1
-- v1: https://lore.kernel.org/20260913110407.32558-1-aethernet65535@gmail.com
+- v1: https://lore.kernel.org/20260915093928.3389096-1-wangxuewen@kylinos.cn
 - Collect R-b: from SJ.
 - Rebase to the latest mm-new.
 
- mm/damon/core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ mm/damon/sysfs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 2258b72da7a7..98c767b9e6ef 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -3368,6 +3368,8 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
- 			damos_trace_esz(c, s, quota);
- 	}
- 
-+	if (damos_quota_is_full(quota, c->min_region_sz))
-+		return;
- 	if (!c->ops.get_scheme_score)
- 		return;
- 
+diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
+index 43519afb9eb7..70a4b64fb8ea 100644
+--- a/mm/damon/sysfs.c
++++ b/mm/damon/sysfs.c
+@@ -2607,7 +2607,8 @@ static int damon_sysfs_turn_damon_on(struct damon_sysfs_kdamond *kdamond)
+ 	repeat_call_control->data = kdamond;
+ 	repeat_call_control->repeat = true;
+ 	repeat_call_control->dealloc_on_cancel = true;
+-	if (damon_call(ctx, repeat_call_control))
++	err = damon_call(ctx, repeat_call_control);
++	if (err)
+ 		kfree(repeat_call_control);
+ 	return err;
+ }
 -- 
 2.47.3
 
