@@ -4,121 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9BB4C982DA
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 00:53:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66724C982DA
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 01:03:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 924BD6B00B3; Sun, 20 Sep 2026 20:53:36 -0400 (EDT)
+	id 123026B00D7; Sun, 20 Sep 2026 21:03:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 901CD6B00CF; Sun, 20 Sep 2026 20:53:36 -0400 (EDT)
+	id 0ACBD6B00DF; Sun, 20 Sep 2026 21:03:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7EB2E6B00DD; Sun, 20 Sep 2026 20:53:36 -0400 (EDT)
+	id EB60A6B00E1; Sun, 20 Sep 2026 21:03:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 58BC76B00B3
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 20:53:36 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A76B2404E9
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 00:53:35 +0000 (UTC)
-X-FDA: 85235946390.10.4A199E2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id B15681A0002
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 00:53:33 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fUmvNjww;
-	spf=pass (imf19.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9A7126B00D7
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 21:03:37 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 64448A624A
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 01:03:36 +0000 (UTC)
+X-FDA: 85235971632.29.956B45F
+Received: from mail-oo2-f7.google.com (mail-oo2-f7.google.com [74.125.231.135])
+	by imf21.hostedemail.com (Postfix) with ESMTP id C1B721C0006
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 01:03:34 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf21.hostedemail.com: domain of 3ZYKwagkbAIg4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 74.125.231.135 as permitted sender) smtp.mailfrom=3ZYKwagkbAIg4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789952013;
+	s=arc-20220608; t=1789952614;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uT3QSlJyDb/QyaIb6RQq4e3wjco3xR5/xUinc0PHAM8=;
-	b=6XOgSmKU1YpNcYvGVa8ip/GNYwSw1xevcQu+6kbW0vfSWXyQOYawgKX+wJYLcrAccjlMXF
-	q8kvTQfY8Tlg4SRoNfuyFjscOl+1zoER8ykv971jx5Dav+8vU88UsIQe5pvLi1XKBDJ90V
-	kA9rM1wv6lsBH+xFYuI4Iw1uQD7cKGI=
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=h/JWRPDnmTzkO48RL49AOEHMRmvJYjnSTPOTUHlxfVU=;
+	b=2cw9Jbz9AA3jEq54MyIq7d/RE7fN+9/NMXSgZvfSpU6sCLTuQ1mcCh1f33MBKFhkcec0ai
+	ZGBoc6O6PheGP2PP3G1mwtq+EVfkPLtGAWgENv0mIt4cp2xZNgjpf5SbjdjABuSGUszIGG
+	hW6V9HOBzhG5RdMGec9tHS0m66h//PE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789952013;
-	b=iqbiPNAjrlyOGX5zbSkwwavr8YNOcKIwmdodXTcnHzvtBMOtMZ7Oqks1kd/A+jMX0P885f
-	QGLipkeJIBoVbLlexOhEdsQMZajhEfJXNzZVnV2jDY5pEkWz0v8mQ/lE7OoXAqOnd8hLAI
-	CnMAaGohaNW3RxN7prLxU8ORjd3/VpM=
+	t=1789952614;
+	b=YnRyhCrmLQAxMdH8Aq3LJVDplaNIS8oHR5inHtE2OqYxgptsFcaOygwGwqaZX2x4SBSXM9
+	NhnOXIAOsHOu6/rJw8lxuuicg3w/fn8+ZE3a0IirBP+5j5nIWosTB1snmUpi3NC01EOW8X
+	1K8xnqWckLOrxdohtkGS2/JGEeBQv6Y=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fUmvNjww;
-	spf=pass (imf19.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 19F7E449F7
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 00:53:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F30F61F0089F
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 00:53:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789952012;
-	bh=uT3QSlJyDb/QyaIb6RQq4e3wjco3xR5/xUinc0PHAM8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=fUmvNjwwo7Prlb09QFl/qwCJc9GZ61E7TkXlb8KqsM6v11ueO/rugvSrNKOqgl9wb
-	 c0gA4x9DPeE1mvz2vvIoyy7nWOGDBljjy5ncBxydkFD+7kxZkCK510WOPuA8ypZ41R
-	 4mQ/hD62inbiL2R5rZ98ggSezMraCvoroY7e2QmmCYQoJ1aLpETfVaJ3JA+kSt1o1k
-	 lsrJ/4NnF3xCgql0ARnnrJjyN8bFifYiW5K/luUMkh+2rrgoevmcJXoqz5NKZLZTP1
-	 pd50FtZrPLlfE2dDoo2kTvh81y1ZBF1nQF/zOfcmRhcPU5WZ9SOvgBZ1LUEYp1O2E1
-	 ULHCYDGx6ZK7w==
-Received: by mail-yx2-f12.google.com with SMTP id 00721157ae682-8659af7454eso23061197b3.1
-        for <linux-mm@kvack.org>; Sun, 20 Sep 2026 17:53:31 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBwuH9L0CiDg2pzYFuOGZ1qO9vD7kACYxatSsC1teGG4KzaI9Lsd7xqKsgqIVtlyUujUjec+u4VEDQ==@kvack.org
-X-Gm-Message-State: AFuF++mZv0xOUE3Aw9R6Xm+uvn60CblP+2fJVHibUi2lUZNT6mtxUbAf
-	prQomrFlIp7uZ54U2nDmIHioeYuuOG3f32jsU0WsNnlkNH5NZ5KWZK/y60nvjtyYdCqmxQJDQT+
-	KlfSPZ36HJtHWrB00Me59DPr+nKjJIE5CkJx9w9/NPw==
-X-Received: by 2002:a05:690e:813:10b0:671:2228:1137 with SMTP id
- 956f58d0204a3-6717fcd026amr1947180d50.44.1789952010724; Sun, 20 Sep 2026
- 17:53:30 -0700 (PDT)
+	imf21.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf21.hostedemail.com: domain of 3ZYKwagkbAIg4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 74.125.231.135 as permitted sender) smtp.mailfrom=3ZYKwagkbAIg4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo2-f7.google.com with SMTP id 006d021491bc7-6b1bebb3ae8so1236577eaf.1
+        for <linux-mm@kvack.org>; Sun, 20 Sep 2026 18:03:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789952613; x=1790557413;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=h/JWRPDnmTzkO48RL49AOEHMRmvJYjnSTPOTUHlxfVU=;
+        b=mF62RPfF0chvVIRzB0RW+r5U0dR0P3Q21USvHUmmysBCrqoiVBaSif/OSoqYiOFyJR
+         CALev+la+FZ5gDOh6OFO0flsn2l1rGvYah/u0yKmw1zNgjH7ihbvrselW35tfHDSsSIM
+         I66PIWfK6y9/yC4l6fkOhLp2Qe770IacHZUZ0GmdBr7r98z/9Hekf/wSMG0f/MkWRmPy
+         GHRgGB6kPQuhhW7HToaXiCFuuc8JwF9WQdpyllKqvqtP9i4p+73GmxM6Fgasfu3fr4Rj
+         jtLXkfP5w+aJHiaZ/6ME50dWVfc52dPtN11asDWDrZOLUspcrKx9RvySt9gaAMQ5t2e5
+         rapg==
+X-Forwarded-Encrypted: i=1; AKwUvBzD7ZaEkiAfCrJ9FtqeUxWXLIubmOsrfqv5kNZbDxY0mFb0Pq4qqa5VsbHdn5/Zm3jIzFFbMh8WgQ==@kvack.org
+X-Gm-Message-State: AFuF++n2+cF3S4nOFfVBLIAyBwfQQFpq4syqjM7OTV6BeAntnuSE1Wkv
+	ezzD2JP07yl+CKNPT4p5hxOhFmGECME2UJjJ2paI7A0FOmQzrcNmhv4JJjE5b9h+uC2rg0sxH7D
+	s4rlIS5YyOntnWJUeLizwuhlQnWwsxSJRcfW6KlplCI2nPm0W7awIxa01Zw8=
 MIME-Version: 1.0
-References: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
- <CAMgjq7AHRzBsbmGOx0s=TQFBwcn=DEU1naR443sO6x+pJd6hAg@mail.gmail.com>
- <aqBT_35E-eSoN_zj@cmpxchg.org> <CAKEwX=N4aaq_oD2agTUNrUNXhaYGeQ9vxu+dywFvEFgWFi4uQg@mail.gmail.com>
- <CAMgjq7AfNBUpMamcv29JFzpX=7ApNYVLtPjWT4Sm8cXjSLYL9g@mail.gmail.com>
- <aqU81l1oqGItb-0C@cmpxchg.org> <CACePvbWLHAT5DjC=HidzN10XF5_cnkpxXXDR_yfEJjTY_uDvDQ@mail.gmail.com>
- <e42d8bb0bb13067609e8ff8c858a26ca056368bd.camel@surriel.com>
- <CACePvbXDDDHo0rwkR3Ln4==teQugYP2=5y87J+A48Lagk1X_zg@mail.gmail.com> <da13e0e48568da3ccccc304aeb449ababf085e14.camel@surriel.com>
-In-Reply-To: <da13e0e48568da3ccccc304aeb449ababf085e14.camel@surriel.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Sun, 20 Sep 2026 14:53:18 -1000
-X-Gmail-Original-Message-ID: <CACePvbWg3be1KippqraPp6xV0xkrtw0ZAW74tFj8so83+t55dw@mail.gmail.com>
-X-Gm-Features: AcwNN1UZiIocWVlz0qgZ7OJFByEl-O8xTB4E1qJAixnrA0sBJyczejwjOKx08OA
-Message-ID: <CACePvbWg3be1KippqraPp6xV0xkrtw0ZAW74tFj8so83+t55dw@mail.gmail.com>
-Subject: Re: Path forward for Virtualized Swap?
-To: Rik van Riel <riel@surriel.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Kairui Song <ryncsn@gmail.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry@kernel.org>, 
-	David Hildenbrand <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Barry Song <baohua@kernel.org>, YoungJun Park <youngjun.park@lge.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	=?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?= <surenb@google.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Gregory Price <gourry@gourry.net>, Wenchao Hao <haowenchao22@gmail.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, 
-	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, 
-	Meta kernel team <kernel-team@meta.com>, Linux Memory Management List <linux-mm@kvack.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org, 
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>
+X-Received: by 2002:a05:6820:f036:b0:6b1:2f12:6c0c with SMTP id
+ 006d021491bc7-6ca9bf4f83amr8557844eaf.34.1789952613686; Sun, 20 Sep 2026
+ 18:03:33 -0700 (PDT)
+Date: Sun, 20 Sep 2026 18:03:33 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6ab08265.71f81b7d.15fa6d.001d.GAE@google.com>
+Subject: [syzbot] [mm?] KCSAN: data-race in copy_mm / lru_gen_del_mm (3)
+From: syzbot <syzbot+c6e1b1b32ff2fc3b7d60@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, axelrasmussen@google.com, baohua@kernel.org, 
+	david@kernel.org, hannes@cmpxchg.org, kasong@tencent.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org, 
+	mhocko@kernel.org, qi.zheng@linux.dev, shakeel.butt@linux.dev, 
+	syzkaller-bugs@googlegroups.com, weixugc@google.com, yuanchu@google.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: B15681A0002
-X-Stat-Signature: juba1mrs5bym5exunpiehjzehtt74j88
+X-Rspamd-Queue-Id: C1B721C0006
+X-Stat-Signature: rg1fscx1n4kewto84uoeikzodjmxcn8h
 X-Rspam-User: 
-X-HE-Tag: 1789952013-312053
-X-HE-Meta: U2FsdGVkX1/hbF6kH/qLgeIfwrXt67RSPOiPpIOpXUoDdkQUyYcCKY0Irz+5saDLa3NN/kE20pJ36gMfePFvNBAmqiSV78CYI5EpEWZL6K7phlp0sYByC9FeJ9qKC+vZD+anHGJPARKWrYdo5OBOmibFg8krl2BilUpu7JDIAUih0+qr66wNrX02xJYzSr8rSmvw62kHr40os5UhnpO+0DZsWZH6ce4x1I2QfP/QcAWuIWDZwSdlGyZ3pPq1qAvoRWqyuIvPtbJavzxOrw5MCXwuwPa+oqOp6bR8o7lkqbgTBspAz8bJzNZ5x0vMKSTwhTRldHoNmq2QnjA+1nzyqW26lDtAbdprfpFn9k3oxaLvB4kNUfo/lMvca6tPBMD+vUcOfJqcJv5Lg500gYl7P8KQS4pyC5BprmUeDPFcJ986KWMmkyoXo2z5+nhNTiNGlwsG27+wXN6A8tKAWEN92ubNVqxu+J320THiuPHL/UslI2ZQstAbnJNLb9KktNIRUtAqFu/D97dfboHkYZzwV4hQvUGvn6oFOM6E+Apdd8hUtxh2m6Jbn3ftREJZcYuZq7ylfV4/XSehYxjOTy4DBCbKwe4w5DhURPJtjCCEwg5slA9DL3u1aCdZXFkZS0gC0lTZ4/VyhMPLeiwitTch4RF+zgtRIWfFAuVskNSkjzo3mKLOJU0uXfpRWGeNdfL/uYkR5kLo41aCzatmDW6ZYnzyMUUMDw4WT3Z7uA/Egkc86panCNe1ftt7zA09B9ONO8MdJFkBNi5p0SkJlRd1jDnRrTlYCD6NwFDw9c2JnQz6tp1A2Z2C/aRNKmIkmlW/eYA8cy1vibF05S5PWgA3HEZJoQ8temiZ0LGgShLfg4VYvuGIS/MLxXoWSCiNW08wbNmcbmDkcXbH9LW1SFVNxZLz4zvwW8dv6dfwnz+TTbOPc77RhskHc4hxMdEbl4ayAYvRRPulY71ZmrLil4K
- JO93fScr
- 2YLcPRaQunxsNwiUZm4xDePOPezFWh5bCA5hrhpLtuuOxdYjOPj4NamjCwxdvZEJ8nnWoErrhY9qoOFAFzq9wodAvoa3kqi5eBiDt7T7NHDz2l/+oFkcn7hXmv7akdpwcgRvaMZUuxA1YIVKdPJT+eWAmIphh4cdQ17S/tq74FIm9Q1xdkOE81mjbOHqRCDWJG6F4L0SGuOEo68pgYJQhb8UVc8JWiRuGFQGZsJfZmAQkrSducIDFeH5kIOL3rb9ZjIY++PGVDxXcTmyOJXgMsehz0wtuJAkiWo3S33uqRtLn7LHihRDt8r+A5BtlGRxBxqsT7kln1zrID3O04e4cXokCiphCkY1Hi5S2P99tkjLKN5VOtbxgt3M86ldW9izj5G1kJMYIn0vwuZvu368ydvwhQnH/YAqVb3bZtvVKnyf4gdXopg43kkdjvkr20oUdkFOBcQe/TgoNdkW8wcI051UdQg==
+X-HE-Tag: 1789952614-436313
+X-HE-Meta: U2FsdGVkX1/2mgGnLDnsEVm1MsdTSaHTTc8HzFbBjesenGajByWWbdK9ibq99GO3ASKLtvuOemLx3kPQXqdzq2YIq0cILZz0byVcxsL5Q7PsUMASab4L3nF9LW1uRUgWNKM7r0O90Uox8mvOeoGYF3jnBP5CSh+ceDRe2Gi9pjs25rks7VL+jOh5y99AkGSNBrLz9u8eVpVJhCcrLx/L/KOhmpy8Glr8Mt9vqYuIEvLL3HXeUZz4B8lPVhmLnBIL2um897WRwAQk7k+A506vJRy7HlIDX2Dl36vYgppKp7Zlta9TphPv7wTRzepSgvIqEWVBDYQPlzsToSXrVDjvBalZqJiY99Wm5A+2NA1kTTStO2UpG4JedOg7NTmHAcSDWjJiqBM1Gi/S1gD1+pcOF5BGOoLuQN6loWvawj3Hdh+punSJODetJ2ZSkBmJJKvxt2a/AYfnM/o6yjKbjPmZATTzeTJ9KCDBr6nVz0i6kfwtsT8M/zf9Xu+JbxjUyz5RoIfQt+QpsYQ5h1eNi7LSbmmBWWTNO24SJi7eyf2FkVpIJiMYbk1Rwx8Tzh8MGdL99Fpo+xDFoSztkzvMrGcSa48H8Byv9aCLLqfeF4oE6nRZUMEh1TUba42pJaktgAJ6hfup5OioVCBYuKP0U+NcXNsXAOwTNDzhNIs8l/3VdLtHlnpW41lv75/f6Y2tFJ00Z9Z4oRf/t3shW6J5f04ftuJyVmlcHsQFG+zWK7erV4CpUXZAIkcI57w6kJYqgDzTVo4v5i8VcL7uYeJA/6wSx6tTAq33XujLGZwEyDheQM2MhB2CCQijz9N1yW3Y+WGqHmtV87/tJwUHru4NoPOBAxPKpkp5pykbJxTriLA9i3QulR/m/0/Ku/0JTrddJkCtcMKsXmkbovXEE9+VQdDuTulvfxHGTYCChmOGO20JuDHXospKhi6o6PmZ6hALEVnZ1TK1bbY75ALmUbG3UkD
+ TPZA6EAq
+ vTzRTbjBOO0JBVkjwvzhLIJZ0ivMWA9LXX9yghuRAQTPIRPFThQr1tGrxMwug/nzvSUaMYMaeSlpX5gI+1lWqiI7TZLGUTNjB20+EH5bO+AH2oJxnRDVI7wv42ghSelvQyurxbt8s6miktqtTGlAiuhYVI7gRu3N95cwljv9dROhGX9IXBo1HBBv+F+glswki39U8Fu+MWaeT5coSxddXiU2eG7YhdujJGhwV9kFFvP0yKa3bVFHhFttGLdrC5RgxAVPkbfZQX+4G3sga8p70wk4hyBWGNolAtyFXbV85rarQGb8soM4bM3vHY7N4dvshqIV4i4s0AS8KWdLlFsFuIHOcOItstsYfnqG9M/s4YqkEdLU5vyHv8J9pU2qMkQ1TltLqa55dYs06gPJ8XFmbcaFRuBNJ2UynE1VSK/WzKjVIzJjehhpbULI8EXRSFIS6Qm5+u6Yn6GtGsff1gAA4hR6uim+LJBG0hP6PPCVvRBLhveJJKlxTpmKN754S97dIaPVbxsP3VLu0TgLgFi8D592bZyTj0JKmqfF6iaMjy6vBeBA6WzQWjwdJUXnJFnlCxhk72my4DdsKU/koWc8uNyGfn8aq4I1P5hB++kqQ10eCDgimwgoat9/Nan15ORPc2uMg3hMCGZyKwWGYSqS359uAHfAfhTLA9e6BwNPlcFZeXu0x3KNICgjRdcEO3UiHy3g/sPrEw4K+PTBpm1VxbHHx20NxXQ1xRrpAyvQChg0w+1D6oSkwRHe86FaVoSn1VmI3NheEnlZuiVr6iI/NhKlUTKtujgNVUm/sBxMzz49lwIKIhO/quPWZ+ViEmlvNFcL04HVRRHfPpnxWnolvHJiQ3Bv1LPyR09io+yqnvkSA5pAqtRvg3ckd+7mVUKjOqBdx4bZYm4GyQZfVQyo/JyxlNlqY/Pak6484Rj5SZEGkBrfdpCf5+rXLdw7OVwA4OaYLhXtQPV5bZpwwAyigp1txyiXc
+ 22tMM6cj
+ 7BHLFfuW31jKtuJ4oH4pfp5/FWk364zj8RJtX6K3fglMQE6jNcWVZB3GYz0xLu8d/A7HPoQnDaTDy7msBvnUQtSnkUxMMd+xfpLBktGymhoU38dY2AMwIuz3V73vC4AVe6wfx4fJR6n4Yz/hFMd6K+5sfHkrRfX2etKZxmdZy0HKuQWu9dUvHpSHaz7ErXl68yMuGOJeYxOqLqSi7imr7+7G0S4/RTp87/HnjP0nOZEhpp/elxCz+UMBrHo34e3Slq5L2QF2H4PfAIi+5jzhJBaLiZ+WxZcUnMORSOEk0aV1CUG5Bay9sZDK4H/Dt10PF0BBagMT3ItuqvbGv6M+y6iJbz/NA26rMt7dkxCys7FsUwTxylEMVswLnLSyaenoU7H5iUm467NB1JdVuTDEg4MF/IKJiUE0UkNPgNqUBSWXzNZXAd1+THVCHqHsWxJi+GhYQriT3Fw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,52 +98,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Sep 20, 2026 at 2:36=E2=80=AFPM Rik van Riel <riel@surriel.com> wro=
-te:
->
-> On Sun, 2026-09-20 at 14:18 -1000, Chris Li wrote:
-> > On Sat, Sep 19, 2026 at 3:07=E2=80=AFPM Rik van Riel <riel@surriel.com>
-> > wrote:
-> > >
-> > > >
-> > > > For our deployment, we only compress about 7-10% of the system
-> > > > memory
-> > > > before performance starts to suffer. The feedback loop will scale
-> > > > it
-> > > > back. I am very curious do you have actual work load to swap out
-> > > > 100%
-> > > > of the RAM.
-> > >
-> > > One common workload is a web browser with idle tabs.
-> > >
-> > > Those often compress pretty well, a ratio of 4:1 is
-> > > not unheard of, which makes it easy to fill up
-> > > 1/3 of memory with 133% of memory's worth of compressed
-> > > memory.
-> >
-> > You did not answer my question. You are talking about user-space
-> > processes (browsers). Do you run your browser in the data center, or
-> > is that a laptop workload?
->
-> The browser runs on the desktop, but the same
-> kernel runs on both.
+Hello,
 
-Interesting. The desktop is having a GUI or headless?
+syzbot found the following issue on:
 
-> The things we build here cannot be optimized for
-> just one single workload. They have to work
-> everywhere.
+HEAD commit:    17e7b8eacf4c Merge tag 'cifs-fixes-7.3-rc4' of https://git..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=11d6c525580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=8372e2cd52628d4f
+dashboard link: https://syzkaller.appspot.com/bug?extid=c6e1b1b32ff2fc3b7d60
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
 
-Sure, but on your desktop or laptop, what is the max amount of zswap
-swapout compared to system RAM? It is obviously bounded somehow. What
-is the actual number across all your deployments? You don't have to
-give me an exact number; something with one digit of accuracy for the
-maximum is good enough.
+Unfortunately, I don't have any reproducer for this issue yet.
 
-I am wondering why you keep dodging the question? It is just a number.
-Do you not know the actual number, or do you not want to share it for
-some unknown reason? I shared that our deployment commonly uses 7-10%
-for zswap.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/60ea54622289/disk-17e7b8ea.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/675e38c8bebf/vmlinux-17e7b8ea.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/1006b8efd827/bzImage-17e7b8ea.xz
 
-Chris
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+c6e1b1b32ff2fc3b7d60@syzkaller.appspotmail.com
+
+==================================================================
+BUG: KCSAN: data-race in copy_mm / lru_gen_del_mm
+
+write to 0xffff8881077eb088 of 8 bytes by task 7336 on cpu 0:
+ __list_del include/linux/list.h:241 [inline]
+ __list_del_entry include/linux/list.h:264 [inline]
+ list_del_init include/linux/list.h:333 [inline]
+ lru_gen_del_mm+0x299/0x3e0 mm/vmscan.c:2998
+ __mmput+0x17a/0x1c0 kernel/fork.c:1203
+ mmput+0x40/0x50 kernel/fork.c:1216
+ exit_mm+0x113/0x1a0 kernel/exit.c:617
+ do_exit+0x438/0x1510 kernel/exit.c:999
+ do_group_exit+0x138/0x140 kernel/exit.c:1154
+ __do_sys_exit_group kernel/exit.c:1165 [inline]
+ __se_sys_exit_group kernel/exit.c:1163 [inline]
+ __x64_sys_exit_group+0x1f/0x20 kernel/exit.c:1163
+ x64_sys_call+0x254f/0x2550 arch/x86/include/generated/asm/syscalls_64.h:232
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x112/0x360 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+read to 0xffff8881077eaa00 of 1728 bytes by task 7337 on cpu 1:
+ dup_mm kernel/fork.c:1537 [inline]
+ copy_mm+0xd6/0x340 kernel/fork.c:1595
+ copy_process+0x10ad/0x2340 kernel/fork.c:2310
+ kernel_clone+0x1c0/0x5f0 kernel/fork.c:2769
+ __do_sys_clone kernel/fork.c:2911 [inline]
+ __se_sys_clone kernel/fork.c:2895 [inline]
+ __x64_sys_clone+0x143/0x180 kernel/fork.c:2895
+ x64_sys_call+0x2479/0x2550 arch/x86/include/generated/asm/syscalls_64.h:57
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x112/0x360 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 1 UID: 0 PID: 7337 Comm: dhcpcd-run-hook Not tainted syzkaller #0 PREEMPT(lazy) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
+==================================================================
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
