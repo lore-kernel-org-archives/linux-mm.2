@@ -4,79 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0157DC982E1
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 10:23:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 686D2C982DE
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 10:26:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F21C96B00E2; Mon, 21 Sep 2026 06:23:24 -0400 (EDT)
+	id 47A576B00D5; Mon, 21 Sep 2026 06:26:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF9616B00E3; Mon, 21 Sep 2026 06:23:24 -0400 (EDT)
+	id 42B186B00E3; Mon, 21 Sep 2026 06:26:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E106F6B00E4; Mon, 21 Sep 2026 06:23:24 -0400 (EDT)
+	id 342076B00E4; Mon, 21 Sep 2026 06:26:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AEBED6B00E2
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 06:23:24 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5A35EA1878
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:23:22 +0000 (UTC)
-X-FDA: 85237382244.05.3313BF4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id A44421C0004
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:23:20 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XtCjeKbB;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 025926B00D5
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 06:26:32 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4EC2CA2A04
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:26:32 +0000 (UTC)
+X-FDA: 85237390224.30.D323386
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 768C810000B
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:26:30 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RaUbCJOk;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789986200;
+	s=arc-20220608; t=1789986390;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cuztroE9B009/ngScnA4v/aPOnVqhUZhmfly2op/ylw=;
-	b=ZNqRkf/kEKUP7Tu/nVeHqd18VRISh8yAk+TYgpj4yY0hoQODAuebfw6Nd1PIu5Q9B3t4v7
-	oc/1VXn51afVKDyReIT4jlVxdTx4xsLSKZ3rWFXMy9Cd5wh2yj0HmpHeFSYJYuCeruVZuy
-	WdsSxXoXEjhpxVYi/QmKA3cuiELAhvs=
+	bh=nTyZyJijpdRj0X6CZpg9ECIQcR7z9LYrkbviRiCY0G4=;
+	b=P4ZS3mke9IkSeQuEPOSoHuUPKEr0bmP+hXxthM3tzNoFwN0xIlsB4YP2T3kgDTRHPFJW4x
+	a+4csIdsEq5qk8V2OI90rIZnDG0CK+NMXeWksptnqMcgQv/JMyYpRe5ZfKLQAQQUh3afnX
+	5EycluYVOZuE8sOIg6YTLbdxS1DkAto=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789986200;
-	b=r2w04gq7BAnvyEhdjsabIvAazn4DvuzMrl5g9LX3CscOn8UHw/EET1okf165S1XaFtXh3M
-	MK4QMBuDmpaMvI8FropBq8+0QIpMOC/5RIGR5O2j9nnP3uwT1iKKQkUvFzfWBo1m6ArdAz
-	c2JQyheMuyd5IQr69lBtXqoy4xB9c9c=
+	t=1789986390;
+	b=t+hjuaF8TCDRkq/HXUsZBrKq5tDs6Z71gFZz6YE+TJo+13DJBtecUtIWaO77o5hFJmyaXW
+	vxiL+297dNMM5909wKBvlWEf6eqxE7uKXd5r4t+icKd8SkyGA9WJDLPxbDi5+/oqyE9e6T
+	+OWRSnGcBKA/QXbDOd5jtf4TncmWhFw=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XtCjeKbB;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RaUbCJOk;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E40ED600C8;
-	Mon, 21 Sep 2026 10:23:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 258201F000FF;
-	Mon, 21 Sep 2026 10:23:13 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 77B8E42ACA;
+	Mon, 21 Sep 2026 10:26:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6DE91F000FF;
+	Mon, 21 Sep 2026 10:26:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789986199;
-	bh=cuztroE9B009/ngScnA4v/aPOnVqhUZhmfly2op/ylw=;
+	s=k20260515; t=1789986389;
+	bh=nTyZyJijpdRj0X6CZpg9ECIQcR7z9LYrkbviRiCY0G4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=XtCjeKbBbwdrOYSNwSZpOoahoJnrEqa82MCYqCKqmKloTIf0sZp4TYx7Gx2rh1ZSt
-	 ma7eDffRa0uxhKbkNhmG3howbtf2YPKu7IcfbYYVfeSqv8wEtqzLggeLV4OJO/a6V8
-	 R0aUALt1x0gLNMc/w3uRLkHuNlkHqHeascMzgatTM/8o1PXtIi2cnhyCCl4G5t9X34
-	 PBvRsCPyRUo3/ydRByO3SK28M4Cll3JrqkQ3WI6H8Hg1+GYRtyDGfqYIVKMXy6Kwcs
-	 goLwr3uzs2HJ2sfMHzpss3xEK/47dBJ4z1OGTYmNFVN3oEFagD+Z6TQacB/nVPrpGZ
-	 qNcFMAh+gqVmw==
-Message-ID: <46914256-508a-4737-86b9-a43be7e628a7@kernel.org>
-Date: Mon, 21 Sep 2026 12:23:11 +0200
+	b=RaUbCJOkKLo4tajvGYl2aCqTQCY3jQWxoBsKIHV2ITHnHSBXC2/woloaFdCGmW1Mj
+	 dcqnBR/najbVBm0Qg+R1N7LTD78OeguoK+oRClpNLcd+DIrl2iwnxlSklyjNAgyFw7
+	 gyuQC7+WGA1FINXKOPRe7Z+J+rDNKexGnH/P62NTzygOtx0pF6lSf4Ou+0XADS1yuW
+	 CzTKi2rbMtTAQA7A64cF8mH/lnqIafIc2ZW/90Kuap8DxOePcQ3xYLkNQwwpt2acel
+	 HcpCSO93IhzDUtVvz4c0RiHvmXgVOTXNL8A8fSFTEdugmmj+Q6Zejcq7dDwz70vPJ9
+	 PmNoxsSt8U59g==
+Message-ID: <b51234d8-467b-47c4-9d94-82e589643859@kernel.org>
+Date: Mon, 21 Sep 2026 12:26:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3] mm: split underused anonymous mTHP folios
-To: Joanne Koong <joannelkoong@gmail.com>, akpm@linux-foundation.org,
- ljs@kernel.org
-Cc: usama.arif@linux.dev, hannes@cmpxchg.org, baohua@kernel.org,
- alex@ghiti.fr, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
- liam@infradead.org, npache@redhat.com, ryan.roberts@arm.com,
- dev.jain@arm.com, lance.yang@linux.dev, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, willy@infradead.org, linux-mm@kvack.org
-References: <20260916224437.1164512-1-joannelkoong@gmail.com>
+Subject: Re: [RFC PATCH 1/2] mm/gup_test: Track long-term pins per open file
+To: Richard Cheng <icheng@nvidia.com>, akpm@linux-foundation.org
+Cc: jgg@ziepe.ca, jhubbard@nvidia.com, peterx@redhat.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, ljs@kernel.org, liam@infradead.org,
+ vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ shuah@kernel.org, linux-kselftest@vger.kernel.org, kobak@nvidia.com,
+ kaihengf@nvidia.com, newtonl@nvidia.com, kristinc@nvidia.com
+References: <20260921094243.64698-1-icheng@nvidia.com>
+ <20260921094243.64698-2-icheng@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +123,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260916224437.1164512-1-joannelkoong@gmail.com>
+In-Reply-To: <20260921094243.64698-2-icheng@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: yhf7jt5yga9dhbqobirj5ibpwnknofmc
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A44421C0004
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789986200-384314
-X-HE-Meta: U2FsdGVkX18v1mun3n6D3pGUqguVEoq2H/6HAVVcwzDXGdZqcs65nYyOcVQ8sFX0wWY0CH3Y+8qdw3/EbOheWdZINF8urxF7yMArT26q4rSFPPbIIqNuiAOt1Dxyna4gd6bUtWO0NZrA9lLb3BL6QGBvkMfd51U5Z4O5zTyWiYvtIKYKX4SkEnWJ6m1+zmXvBgb4ni9ChjKIS/k5CT/FEpDl3qpQ9qUO6LrUoLALoqDmrs1eEv23J9HRIXePNe5vX26RC6Jbq7mJNoQNp07+XML6cURf4FxpDp6+1QU38mKuwcxbjHoBsrfMa0Lt0oWlogwl/ZLR9Z7cpGfwdeym0/sn3bwPeXWiKotfizINXqfJjt43ms4b6NpaBJu7i3PDhHvvcwGvZRWHsC00w8h0j1Es6TjrWIsZb40fjRPazwopHDrYECgL/RqgWgVzt+fGp2GaUz4EQVCCwMhewJ+gpVhVi5T5iHXn5D1Hpq4yp2OMFdUySuz8O0qimCPoRmVJLbRrlY5XsLFOQ6MbBw91HsIgakmIV3rBhdniuPms07jMzeiTnRs3LAQIQMy2sGmwMTTx2sitZK8IOS8S88aK6vvM6se5tK1Cv2790QfMbLwLJMXKSp7Dp97uJolK64lLo2eO7k39oduZ7zftMf45yVH6lX6F6PbviKQ/e8ms3z8ZnZ1aKndivamm84/6wMAuPu+B6RaKkYr4bMoTDjQqhlDeGZf7dc4u4YgLUxccv6eD81wzIYT30c9sfOZjLMRFd2hcwxPJsu1bz6ChiiZVAfNGZS42VceoeUqkTNXXalozNI65afln11z0UjYqBtOYECajPbvqR3YBL6rK3fOhHIMAC35HCePFLdNpqMumh3920hxnndC8rYv3nX1T2j/aPJBX8GiNl2FJihxXK1EyTPr3qgEIAZC7fSPCVYDVAVxWhGmg1ze/du7+c+/zBzVYdCBX1s0L/n7pSfWOba2
- f68J5ycx
- E2JGARPg5rbXAhKIbIxNE9gtKhgc7oMpzLlUd6b5v88KqQaJPR7V+PEbJ8UJwe00jV65C0DzC3rzgwoURhaH3SUo1wge43imkSOfnczfM8/LXRe2doIIxrqpUHcYKAFNmZTCFoGGiOkolLl7ESCIZ1WZ7SQiuYJ/Pmp+Ay+nTs4Lm1bCyEWNiL047Emzb7Sa0kwbQZRC6aCP4KZR4J6dQK6S0ib2a6YGWPI3vf7keBn/OYZ4L+8OcOG+7sAyLTu9xWD0b
+X-Stat-Signature: fwjp991hx4x4hma1rtdmqfd85o8tmiqh
+X-Rspamd-Queue-Id: 768C810000B
+X-HE-Tag: 1789986390-914060
+X-HE-Meta: U2FsdGVkX1+3vudBNQHXoBY2k63zCk4x98LVxMqLTns8u8oi58Wr3dmti6zxf2LtacXCDSkh1k8o7ibXcmNpTrTYrwD+3PTj2xKSS6XfXWZeNDADY/IFtfTKWG5vF3Gl0mcMi4uix0XUGJl69hLL2J8ycuC6HwpU+uzfAibu5ihq+8Uk9r+nO4twXjIgqZ7ZxanxezCQPls1PJnH+XkqncWcIuuuk2zLiSdK8MrFwu9d+m/D/3bjMycHrYwgvXtByRZXWNAFzF8vllTCK8Gwsr0kQ5bP6a8uZ1UduxayTLUcIuYgXhX+J23CWKRFHXeaDO5xXSbENnrRiIKwLUxHEgKpn/fOJg3U3O/Q0nwzJtsHiydNlPNJTcwkaIB9ZDrXoyYQamCLAUiiUImxnNHlECzMwR7ehKmRxhH6FBBX28Ac5LpaHZlgCKRAchapbNVGYjDuXnXmE9ECmNufbmDmc6+6R724SRRbXWRN9oMEy9cW7ZSulryDqd6rAMM95LjglsuT1qva0nkbAZuSNfoxQL+xU0D1I2/XLFRJEs2VGkSr5RtfRiZ5QEu3C3kSGp+/SH/P8nZThzPR9juasRtYcdz/VWPGDF8BQLy/h+F3DtZ9wTe8QShaG10rqasmiasF8LAdDWhuXY8Ez4csUerHIswQoK66XVP1smYkHTjkzEbJhquk54LAcPIeOS7I3RFM5YfrEhs4l87EeokXCP0FkC0kPyaNuIthPoYxmLRkIFTM70JrDBYhn9waocd8zHpnuo58mRSuGJZzTfkwr2G/Z1IVSAc9WsLZrmbWbjgttB73zUbNOfEFENj/wqUhjnw/ke4nm1cIN9Nmp9pvlu5LT2dm97UOFO3WOdUScTz8vLfsug/UAgeefI0AROFu4z2sFJh1xfmEQxy6AW6GhN3PevyOpHQLvAmHWfZcgFapIsa3dBpr6mks/YdSYGNJBM8MamkC4XLjwOnrphgUAUs
+ diUfH8W4
+ eG+MuxQU1KeI/3qhS7PlpDhkICKo8FGnHcfk+656XOFTGj57giz0/qOiFxl5JJ8QU/0FACREF5ho0WeOGAezTW+b/EtWEX7gr8ukJNYjqhJaW9KWpG4GdxMIscbFBxyOAuISVSU9oNX9Q55Uzb014aD/+gOyZJZtY+uugcl/IcGeHIvC6odyWQGA3hxFMu54gXY+sEsE3yTg5eJS7aJpZuxaxR2tnWxyMdmiAO7Y/238Mv/BJTD3g2eFsaXZ91y9bThYCyUqnrDoZQsX2Ova+LorWOmDsuI+GsRL90QychYppAgJG41bdO9pVYmIMVgQeIT37goHaCZW86lCfpTa5TryLgw6i2ATJNDOY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,43 +141,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/17/26 00:44, Joanne Koong wrote:
-> PMD-sized THPs that are mostly zero-filled are reclaimed under memory
-> pressure by the deferred split shrinker, but this is not done for mTHP
-> folios. At Meta we would like to deploy 2M THP=always on arm64 with 64k
-> base pages, as 2M provides the contpte benefits while the PMD size there
-> (512M) is too big to use. However, 2M THP=always causes memory regressions
-> unless the unused portions of those folios can be broken down and
-> reclaimed.
+On 9/21/26 11:42, Richard Cheng wrote:
+> Long-term pin state is currently global, allowing one gup_test file
+> descriptor to block, stop, or release pins owned by another client.
 > 
-> v1 did two things. It scaled khugepaged_max_ptes_none down per folio order and
-> it queued every anonymous mTHP folio. David objected to the scaling since
-> collapse had already rejected proportional scaling as either letting the memory
-> footprint creep or being confusing to reason about. David and Barry separately
-> objected to the queuing, which adds list_lru lock contention on every anonymous
-> fault, and hurts lower-order use cases such as Android's order-2-only
-> configuration. Johannes suggested keeping khugepaged_max_ptes_none absolute and
-> simply not queuing folios that could never exceed it, which addresses both.
+> Allocate the pin state for each open file and store it in
+> file->private_data. Serialize START, READ, and STOP with the per-open
+> mutex, and release only the pages owned by that file.
 > 
-> Read as an absolute count, khugepaged_max_ptes_none also implies the
-> smallest folio that takes part in underused splitting. A 2M folio on 64k
-> base pages is 32 pages, so the knob has to be set below 32 for those to
-> be queued at all, and any folio with no more pages than the value stays off
-> the queue entirely.
+> Descriptors duplicated through dup() or fork() continue sharing state
+> because they reference the same struct file. Keep the ioctl ABI and
+> same-file duplicate START behavior unchanged.
 > 
-> Patch 1 makes thp_underused() folio-size aware. Today it only ever sees
-> PMD-sized folios, so it assumes HPAGE_PMD_NR pages throughout. Patch 3
-> breaks that assumption, so patch 1 generalizes it first. No functional
-> changes are introduced.
-> 
-> Patch 2 keeps folios that can never be found underused off the deferred
-> split queue, as suggested by Johannes. This changes/optimizes existing
-> behavior. With the default khugepaged/max_ptes_none, PMD folios are queued
-> today and then dropped again by the first scan without ever having been
-> splittable. After this patch they are not queued at all.
+> Reviewed-by: Koba Ko <kobak@nvidia.com>
+> Signed-off-by: Richard Cheng <icheng@nvidia.com>
 
-I think we discussed queuing folios once the value changes and you would
-actually be able to split some. Was there a good reason why that idea was dropped?
+commit 534b19bbb67717eea2272573bc0ff7ba4ba109c1
+Author: David Hildenbrand (Arm) <david@kernel.org>
+Date:   Mon Aug 10 13:31:14 2026 +0200
+
+    mm/gup_test: keep longterm pin state per file
+
+    The pin longterm test currently stores its data globally, shared among
+    multiple concurrent users of the interface (multiple open file descriptors
+    -> multiple "struct file"'s).  That makes the gup_test interface
+    problematic to use concurrently: two users, such as concurrent selftest
+    runs, can interfere with the same longterm pin state.
+
+    While this has not been observed as a problem so far in practice, let's
+    just handle it cleanly.  There could be a way to trigger selftest failures
+    by e.g., running the cow.c and gup_longerm.c selftests concurrently, but
+    we usually run them sequentially.  Let's add a "Fixes" tag to be safe, but
+    not need to CC stable.
+
+Which is already upstream.
 
 -- 
 Cheers,
