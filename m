@@ -4,91 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1653C982E1
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 10:54:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D439C982ED
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 10:55:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B63DA6B00DB; Mon, 21 Sep 2026 06:54:35 -0400 (EDT)
+	id 4884B6B00DF; Mon, 21 Sep 2026 06:55:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AEDEE6B00DF; Mon, 21 Sep 2026 06:54:35 -0400 (EDT)
+	id 4126F6B00E1; Mon, 21 Sep 2026 06:55:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DDEA6B00E1; Mon, 21 Sep 2026 06:54:35 -0400 (EDT)
+	id 3285A6B00E2; Mon, 21 Sep 2026 06:55:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 76FB16B00DB
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 06:54:35 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DE40E120125
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:54:34 +0000 (UTC)
-X-FDA: 85237460868.14.B671847
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 3A41AA0009
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:54:33 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R5ODJA0g;
-	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A0246B00DF
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 06:55:10 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 833B9A2F34
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:55:09 +0000 (UTC)
+X-FDA: 85237462338.22.2912AA0
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 94D101A0006
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:55:07 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=TcrqUl2G;
+	spf=pass (imf19.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789988073;
+	s=arc-20220608; t=1789988107;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Rjti9mDz9Knd7equnQAAic7A7rHFx56gyrCpEIe4Ags=;
-	b=Mn6g/ou0tDZ0fNgKqoLNcKPSvyOsfNRrhn0dv41XGNB/02b0tQKv1zVp/d+p8RcARxBxua
-	CgcIoeGtw/ePptUTw+L3vDmYwpO+el0Ik7kYLtCU7OXv2oDRTfsmLJWdvc7cCjJVw7aY0G
-	X6IULdAzNzhEtCLmEXQv9WOVcjpTc3U=
+	bh=JOIIwBcHwXvhGohwhLmN0ckUZewr1XmsdIkqY7rlIfU=;
+	b=7R8L1AFdco3Vt1HukrA6SAnrvpWfU2qXaGGL7fS7IY+6Q2q2PikD7WWU1Q0WE0DdZpk57k
+	zgyB5yzArPfnYsHNAGz0hjLIk6i/yjfVLZH29/hMUeVbtpbuKu6WqWH8Z06kx9ECe7Yu/A
+	ZP5013Rfw63tBrOF3rMFejrIPmy7s78=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R5ODJA0g;
-	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf19.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=TcrqUl2G;
+	spf=pass (imf19.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789988073;
-	b=xSXSOxB96dSUUVXNtisZ6hbbH/eIRx+14YSNbUBKkBQpitavGBEGwidfR4xYuZ3XAp11xR
-	X6lMPYq5yB68qc/imm2J4Vh+HlFvgHY0u9D5GaMCamELbHcXFYxLWVjW+mU3TCTFKhzBaR
-	3yPSxj9Kh1lQMSjs8YRNCHYtvVrB88s=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6E9D141FEA;
-	Mon, 21 Sep 2026 10:54:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BE461F000FF;
-	Mon, 21 Sep 2026 10:54:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789988072;
-	bh=Rjti9mDz9Knd7equnQAAic7A7rHFx56gyrCpEIe4Ags=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=R5ODJA0gSYeGpPQO16SPXSwTOZ8tih3UjpLvQQDcsnZDQz0jAUM4saHZmFTyuAfHr
-	 vly+FL7XP8n2A54LqdJyLVsIx9WzJuTO0YLEK0YAbcM5AGvGQrTt6BZ/h851aJfqRN
-	 CUKSZGZMDZlJRaG46SDcvG/7ERr48jcVDq8PzSa0WUsDy3OLzpSPGpzp3gVIw9t5Gm
-	 0xtDRYUjSidbnio8BODSultPs4kBweoUhKKW1zhLz5eL+LI80h69YdkdRUaFgmNP27
-	 tmuKmAlLDZv6BPSkkq2obwcJo1SuUOqpSq27Y7QX21+hblbBi1/y66+jlWKqX0E/N4
-	 1Ngql7XGRJ6yA==
-Date: Mon, 21 Sep 2026 13:54:24 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>,
-	Ihor Solodrai <ihor.solodrai@linux.dev>,
-	Ingo Molnar <mingo@redhat.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@kernel.org>, x86@kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3] x86/mm/pat: use pr_warn() for early W^X warnings
-Message-ID: <arEM4HMrY7BC2ykN@kernel.org>
-References: <20260913-fixes-verify-rwx-v3-1-5e1d6a08bd02@kernel.org>
+	t=1789988107;
+	b=OMAWNANljq2eGcrj2BLWfPF2+hdZBNxZ3Uexw3WJ1kyTDZ0ttbFebfVEGlc1Un1IzUqOap
+	AH3rpfq6Ko9jeDMuDl2Ofr66yRGZlgqB09T2Lbj++oQb7Drtd7qD9bjwYXhSFrMDwSvvBI
+	PsaIRq0Ab2EmkbUHvdkRKZLcfEb2+o4=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 23B091570;
+	Mon, 21 Sep 2026 03:55:03 -0700 (PDT)
+Received: from [10.57.83.12] (unknown [10.57.83.12])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B1D1C3F86C;
+	Mon, 21 Sep 2026 03:55:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1789988106; bh=VeIsaNzzDd9f9NeJzVh3EXPEgrmVN3PnEqsJPHZMPRs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=TcrqUl2GOeCmADC+jcCe/JsSC8+pdpNPcZ+lZEqkLwHaF82/grSesMT2K8TGrEkh8
+	 Qc3oT/5ZQjSahcQhuvh7uXmdSxiUefczLAMViYr1PQ+k3g3NIwl+tJWn304rX67Hed
+	 cHuJUz2DRzDomCBX+TgkYOUQ70K+qqdbA41d7D/k=
+Message-ID: <9aed35be-a411-4d9d-805c-03c836e9e56a@arm.com>
+Date: Mon, 21 Sep 2026 11:55:02 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260913-fixes-verify-rwx-v3-1-5e1d6a08bd02@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/4] arm64/mm: Convert pgtable READ_ONCE() as pxdp_get()
+To: Anshuman Khandual <anshuman.khandual@arm.com>,
+ linux-arm-kernel@lists.infradead.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>, Lorenzo Stoakes <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Linu Cherian <linu.cherian@arm.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20260903060657.2717457-1-anshuman.khandual@arm.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20260903060657.2717457-1-anshuman.khandual@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: nss1gzzt4arfpyhrie15f59yqbe1ryxd
-X-Rspamd-Queue-Id: 3A41AA0009
+X-Stat-Signature: 7tuzu4oyipg1y7z5ka8y6hbzjeu64q4e
+X-Rspamd-Queue-Id: 94D101A0006
 X-Rspamd-Server: rspam07
-X-HE-Tag: 1789988073-504757
-X-HE-Meta: U2FsdGVkX1+X4MlXkbBNJp56gvAQ80Xp6vEkoFYuXckMThJ1mbLTnHEM7OJz4NycDsTFWiyGM5ICjFlK0EJIhonVc4Nva09GTzq9awN8ScK8+7mXOzhID75NpM1xksq0hbcUu7jGNCwzEABjwLv4OY/PAEq1GSqppOJ5el9APj7uazvgSiZPU7EV5TlK02ISTN4QPRR3lkHB7wA7TnEhyU6JXXa91DjHNY8kAPsG9qkHrSo+4WfvUswBUhRcLlIpAQiZV3vKJbaieL0h1d3FJ5+11wnzHx/cCpklR2dzMvSDQB5W+tT9W/qKqg5GFWkJAhmnvy/xB7LbdyZUWt3kylWaGl7c+OOiw+PpOszYmOc50PoFkZPLu07dj5Armh3FR7ihqDuOexCP66B7KQi8gTgHO6rfATg1Jkhb8Uatcci1dA5st3/QPHtNGa4QVESKAzBYKSWUQSoecyxKPGCuDC4FGOfhR+rtgSPIkeTsYa+UrEeLbJTUhYyhDOS5wx66Xr/ACUSVC9mqjO5qoAT9BokKmdRa7u5Rp93PdVcXSssktL157NeviaSXzp17T6wEn9UldfCgdlPN5QrcWo4SeNR1mjIdV7mrrCF0Mh+kxTTzMOCSuJ79sWVWG5xIPsjNQ2Dz3DmGkpIFoWdQ5cscha6rHSrJ/9eCwHWH6tIrF6giD4DJvYLRoKzxueebelekhP8MEtezLl02ZfJXFnZh42JP1oRyBlU0ovz4g0jk3INz2nRqzj8YnuP+EQ0LvLnzH9vz7CnpFQU8GyxyevIBqANd3zz0enlGoCXKjEmY5TjNbGLH70iIzoziF0c8CE41ksL1ZqFe0rjmiqJXzpApGMRtupkCk6i4lFJwIb4loykc4H3t8PbKIZLM3g/KetmQC6HSniV4YvkCUHJgtdjQrJjlmxyl51lDBnAzpaLB//au72zIt3obkb7mpEYP1JvnPiu59Gef+3o3pXn7AYD
- ZoFW+H/Q
- dBbzwUiI3kZfTkRksYz6GfyKu7BiOjdVWSo5EM4hX/f8SyFJNJq0gc1pfm8ri2/iJbH8IO+KUw7GFZTqTZ9MYGbumw7PFyUVHmciFNiXl6/JUhmmKaCAxUrqUcp5jasACxzlgbWWlZ6L29aQjVliW5rbbDAW4urSWafFffi1H0UMjAiI2QcQVz6vyPtiexUacNcuDsMx/AXGCaqpIpzze3axtrie+JAx+uynzZN7nDh8cyL0yDCtXgA/Eekqcwtl5jO7RDk+F7RlI23mrpkNEFUo0kBNETr1bk7CMwCextk/pIZ9v4XtDb0Ib1xZjuiH7QhOihYN4GLXQuVTrIscEQ1Pji0DKf+jTFzlgDCYr2p07e9wo62XLfWWVuRLEzECV665gF7Zy7nROYw2ilboOe712YcSfrJcMcQ/0
+X-HE-Tag: 1789988107-390008
+X-HE-Meta: U2FsdGVkX19Boox8FpNoL3skmn+rIJ7lSTodmvedlg3lGLBkJOSoLZggR5ZMlfPwdaP/321wfO2K4AZcGEhK8l67ck82Koq85XClNVeaLQg6T2NRBrR2zuEuKpCrDBnGZEgcwIhcr7g8h/iolo52GdOsZQRfvK4CiWKm4ueLxeKq6FkPn2VTvpoKQ59KfeQLUqwmcPSJ4hnCXWwBpng6cuaEgT4cdMyW6sAjOZbwodH8Se9V4sQZIEOigdcTosFVQ/Ra7AbosDUP3xB0yCOUydOdmFvS/WwYYhUQ0CnU8N2xKtizQnsDdPxhLJKUCqX/iGJm6gP1wgdtwAU73SN4tKt3tn+a4iGCqPI3/tjjFD5uinZNF4e2TIgpCfC9UHZNKSk20yuttBpogxI6AzR8wtfpAVbLg8Ide7C8NVRYnu1fFpdcb0y5MVePmR7esWl3+tDkp8ADlwYCGTmHGCRpay93wale++0EEXw5I7rursVjO1opj5p0uX0RBENOBcVQzlIYvW+6EMVCTEwBrDUjmDfmgON30CqXdJD/j0DsNlwTjVK4OdP0rwfoKSwBgXjojswve6tNMYvrc/Qwfl4Rip4RIpdgR4aMPXNjeRXSd7g34jzAWmYsNK/JgEetSSAoveXCWQp0v3z1OigUjFknmyquGX/eZAYp1Fx9MLqZTHx0uvZSA19wcjZgMsizSmW6gR8U23EyB8EgwK+6QlDy4C2k6euhoda2e7nJhAPsHEOvnn6SyO0BEve/8j8nq1SJ9AK4zPr9o3ZAHVhpZhdbidjPUjZRxqFUlJTddRcX+gnItQTleECg+ePPSEf6VNXYQGMBH3gxJixSNIVffp8G6lSrNQ6qQgKzDPmgipZYjCTQ+82WtsMgFwmxVmdgoLC5giA0WIyn6KNXpn39qwIz8QsRCIG0vi1/H0tUkq4rZg0LH+S5VudObzutp/6UMHx833HmZi8BS4ekzoOipLB
+ msgRRs/f
+ 4GHcWqsVNEL+iTwQLN0z6zMatRHPphPWyRStBSjK+S3KkCVe/oHbnBaw2oi2k2obnc+RppparZwpZ2WNqMbDM+4BtD100ODlmhsW9FzC5uF5F8VY6Q2747mCQmpE9l0An9ygCShZa55ElG2VC8Ji/+6e7sj+XS4zjI4pCcLvTygU+1iqqhhNttymDHtb3p7pS57BB3YP3mGtzE7xv7OBKPTeUkLYIdRsn63yPEn95hAs2xl6treQeGn/UWR0sXq6VLfbZCHEGiOnMTa75aiilT8miVtNbCc3cKrO1QC3XydjxKF3zCRBciEAABZkTjl88evR3W2udVvZG6McwQjRsfT2/L0CUXwLGo89GHP9zOhK4rk6iGJKrQ5Ld9N+7juHmS5NZy+EBKhjUpEsMqhfRp0e/Xe5R1By9lgwtmdhGqBSXcjqh1ZMZ0zmnPTN+b9/GAJIMbGco6NOIok9mW2iYUDCpIA2EJoGXocLSFpHlc4FzPc4h6tuddYSTnHIegqPoxUB+RJsl+mvdRJpvIhc3amnIkA8HGlXbSLgxLqpNFdWhlAL0fZsCHQT5nKncHXShrXHU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,121 +95,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Gentle ping.
+On 03/09/2026 07:06, Anshuman Khandual wrote:
+> Route READ_ONCE() accesses on pgtable entries via level specific generic MM
+> pxdp_get() helpers which platforms could then override when required. These
+> accessors on arm64, will help in ensuring page table accesses are performed
+> in an atomic manner while reading 128 bit page table entries later. But for
+> now they just default to READ_ONCE(), thus preserving existing behaviour on
+> current D64 translation.
+> 
+> This is similar to generic MM, where all atomic accesses have already been
+> converted from READ_ONCE() into pgtable level specific accessors.
+> 
+> These are preparatory patches for D128 enablement, although standing their
+> own for D64 translation as well. These patches are split from earlier D128
+> V1 series. There are no functional changes here, and besides mm kselftests
+> do not show any regression.
+> 
+> https://lore.kernel.org/linux-mm/20260729122452.3797443-1-anshuman.khandual@arm.com/
+> 
+> This series applies on v3.7-rc1 but after applying the following patches
 
-On Sun, Sep 13, 2026 at 10:37:27AM +0300, Mike Rapoport (Microsoft) wrote:
-> Nathan Chancellor reports the following warning:
+I assume you meant v7.3-rc1 here?
+
+> related to pgtable entry print standardization posted earlier.
 > 
->   CPA detected W^X violation: 8000000000000123 -> 0000000000000123 range: 0xffffffffc0400000 - 0xffffffffc0400fff PFN 100e00
->   WARNING: arch/x86/mm/pat/set_memory.c:722 at __change_page_attr_set_clr+0xde7/0x1290, CPU#0: swapper/0/0
->   Modules linked in:
->   CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 7.3.0-rc1-debug-00006-g453e78594434 #1 PREEMPT(full)  2950d432dd3910251071a66f3134fe0875432786
->   Hardware name: ASUS System Product Name/PRIME Z590M-PLUS, BIOS 1801 12/26/2022
->   RIP: 0010:__change_page_attr_set_clr+0xdff/0x1290
->   Code: 80 7c 24 42 00 0f 85 3a 04 00 00 48 8d 3d 19 8d 79 02 49 89 d9 4c 89 e1 4c 89 d2 4c 89 f6 4d 8d 84 24 ff 0f 00 00 4c 89 14 24 <67> 48 0f b9 3a 4c 8b 14 24 48 8b 0d 81 44 bf 01 41 f6 c2 01
->   RSP: 0000:ffffffff87003c60 EFLAGS: 00010246
->   RAX: 0000000000000002 RBX: 0000000000100e00 RCX: ffffffffc0400000
->   RDX: 0000000000000123 RSI: 8000000000000123 RDI: ffffffff872e50c0
->   RBP: 8000000100e00123 R08: ffffffffc0400fff R09: 0000000000100e00
->   R10: 0000000000000123 R11: 0000000000000001 R12: ffffffffc0400000
->   R13: 0000000100e00123 R14: 8000000000000123 R15: ffffffff87003d58
->   FS:  0000000000000000(0000) GS:ffff8ad1777a7000(0000) knlGS:0000000000000000
->   CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->   CR2: ffff8ad0a4201000 CR3: 00000007e3022001 CR4: 0000000000770ef0
->   PKRU: 55555554
->   Call Trace:
->    <TASK>
->    ? _vm_unmap_aliases+0x219/0x280
->    change_page_attr_set_clr+0x161/0x250
->    ? events_sysfs_show+0x5d/0x80
->    set_memory_x+0x39/0x50
->    apply_retpolines+0x656/0x6d0
->    ? events_sysfs_show+0x5d/0x80
->    ? events_sysfs_show+0x6c/0x80
->    ? events_sysfs_show+0x62/0x80
->    alternative_instructions+0x3c/0xd0
->    arch_cpu_finalize_init+0x130/0x190
->    start_kernel+0x97d/0xa10
->    x86_64_start_reservations+0x24/0x30
->    x86_64_start_kernel+0xda/0xe0
->    common_startup_64+0x13e/0x151
->    </TASK>
->   ---[ end trace 0000000000000000 ]---
+> https://lore.kernel.org/linux-mm/20260831054331.625505-1-anshuman.khandual@arm.com/
+
+This applies.
+
 > 
-> The warning appears because commit 038176c21617f ("x86/mm/pat: fix
-> effective RW computation in lookup_address_in_pgd_attr()") fixed the
-> effective RW checked by verify_rwx() and it exposed that pages used for ITS
-> trampolines temporarily have RWX permissions.
+> https://lore.kernel.org/linux-mm/20260901065454.1906343-1-anshuman.khandual@arm.com/
+
+This fails:
+---8<---
+$ b4 shazam 20260901065454.1906343-1-anshuman.khandual@arm.com
+Grabbing thread from
+lore.kernel.org/all/20260901065454.1906343-1-anshuman.khandual@arm.com/t.mbox.gz
+Checking for newer revisions
+Grabbing search results from lore.kernel.org
+  Added from v3: 3 patches
+  Added from v2: 3 patches
+Analyzing 14 messages in the thread
+Looking for additional code-review trailers on lore.kernel.org
+Will use the latest revision: v3
+You can pick other revisions using the -vN flag
+Checking attestation on all messages, may take a moment...
+---
+  ✓ [PATCH v3 1/2] arm64/mm: Move __check_safe_pte_update()
+  ✓ [PATCH v3 2/2] arm64/mm: Standardize printing for pgtable entries
+  ---
+  ✓ Signed: DKIM/arm.com
+---
+Total patches: 2
+---
+Applying: arm64/mm: Move __check_safe_pte_update()
+Applying: arm64/mm: Standardize printing for pgtable entries
+Patch failed at 0002 arm64/mm: Standardize printing for pgtable entries
+When you have resolved this problem, run "git am --continue".
+If you prefer to skip this patch, run "git am --skip" instead.
+To restore the original branch and stop patching, run "git am --abort".
+error: patch failed: arch/arm64/mm/fault.c:160
+error: arch/arm64/mm/fault.c: patch does not apply
+hint: Use 'git am --show-current-patch=diff' to see the failed patch
+---8<---
+
+And as a result I can't apply this series. Any tips?
+
+Thanks,
+Ryan
+
+
 > 
-> The permissions are updated in its_fini_core() after all the ITS
-> trampolines are generated, but since verify_rwx() detects invalid
-> transitions, it warns when its_alloc() makes RW memory executable.
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Ryan Roberts <ryan.roberts@arm.com>
+> Cc: Mark Rutland <mark.rutland@arm.com>
+> Cc: Lorenzo Stoakes <ljs@kernel.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: David Hildenbrand <david@kernel.org>
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: Linu Cherian <linu.cherian@arm.com>
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-mm@kvack.org
 > 
-> At the time of alternatives patching the entire kernel text is mapped
-> RWX, so the warning is bogus anyway.
+> Anshuman Khandual (4):
+>   arm64/mm: Convert READ_ONCE() as pmdp_get() while accessing PMD
+>   arm64/mm: Convert READ_ONCE() as pudp_get() while accessing PUD
+>   arm64/mm: Convert READ_ONCE() as p4dp_get() while accessing P4D
+>   arm64/mm: Convert READ_ONCE() as pgdp_get() while accessing PGD
 > 
-> Since the verification of the entire page table with debug_checkwx() has to
-> be enabled explicitly in the kernel configuration, retain the warning even
-> if it's bogus, but make it scream less loudly: use pr_warn_once() rather
-> than WARN_ONCE().
-> 
-> The warning can be removed once debug_checkwx() becomes unconditional for
-> configurations with CONFIG_STRICT_KERNEL_RWX set.
-> 
-> Reported-by: Nathan Chancellor <nathan@kernel.org>
-> Closes: https://lore.kernel.org/all/20260905044253.GA3816371@ax162
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Tested-by: Nathan Chancellor <nathan@kernel.org>
-> Tested-by: Ihor Solodrai <ihor.solodrai@linux.dev>
-> ---
-> v3 changes:
-> * fix stupid copy-paste error
-> 
-> v2: https://patch.msgid.link/20260911-fixes-verify-rwx-v2-1-e2cde39b6693@kernel.org
-> * Use pr_warn_once() for early violations instad if skipping them entirely
-> 
-> v1: https://lore.kernel.org/all/20260908092730.4002628-1-rppt@kernel.org/
-> ---
->  arch/x86/mm/pat/set_memory.c | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
-> 
-> diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-> index b3060000da8d1..a799f539287e2 100644
-> --- a/arch/x86/mm/pat/set_memory.c
-> +++ b/arch/x86/mm/pat/set_memory.c
-> @@ -697,6 +697,21 @@ static inline pgprot_t verify_rwx(pgprot_t old, pgprot_t new, unsigned long star
->  		return new;
->  
->  	end = start + npg * PAGE_SIZE - 1;
-> +
-> +	/*
-> +	 * If the kernel text is still RWX, gently complain, this could be a
-> +	 * false positive.
-> +	 * Once debug_checkwx() becomes mandatory for CONFIG_STRICT_KERNEL_RWX,
-> +	 * the warning can be removed completely.
-> +	 */
-> +	if (!kernel_set_to_readonly) {
-> +		pr_warn_once("CPA detected W^X violation: %016llx -> %016llx range: 0x%016lx - 0x%016lx PFN %lx\n",
-> +		  (unsigned long long)pgprot_val(old),
-> +		  (unsigned long long)pgprot_val(new),
-> +		  start, end, pfn);
-> +		return new;
-> +	}
-> +
->  	WARN_ONCE(1, "CPA detected W^X violation: %016llx -> %016llx range: 0x%016lx - 0x%016lx PFN %lx\n",
->  		  (unsigned long long)pgprot_val(old),
->  		  (unsigned long long)pgprot_val(new),
-> 
-> ---
-> base-commit: ebaf7c9bbb1e16523d7036e7e1225ad2dfcc6482
-> change-id: 20260910-fixes-verify-rwx-044841b76a38
-> 
-> --
-> Sincerely yours,
-> Mike.
+>  arch/arm64/include/asm/pgtable.h |  6 ++--
+>  arch/arm64/mm/fault.c            |  8 ++---
+>  arch/arm64/mm/fixmap.c           |  6 ++--
+>  arch/arm64/mm/hugetlbpage.c      | 10 +++---
+>  arch/arm64/mm/kasan_init.c       | 18 +++++-----
+>  arch/arm64/mm/mmu.c              | 60 ++++++++++++++++----------------
+>  arch/arm64/mm/pageattr.c         |  8 ++---
+>  arch/arm64/mm/trans_pgd.c        | 14 ++++----
+>  8 files changed, 66 insertions(+), 64 deletions(-)
 > 
 
--- 
-Sincerely yours,
-Mike.
 
