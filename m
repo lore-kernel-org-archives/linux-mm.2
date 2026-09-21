@@ -4,99 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5FA2C982ED
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 22:53:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C28BC982ED
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 23:03:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 612E66B00A4; Mon, 21 Sep 2026 18:53:08 -0400 (EDT)
+	id 392596B00A4; Mon, 21 Sep 2026 19:03:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C3926B00A5; Mon, 21 Sep 2026 18:53:08 -0400 (EDT)
+	id 369996B00A5; Mon, 21 Sep 2026 19:03:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 48B466B00A6; Mon, 21 Sep 2026 18:53:08 -0400 (EDT)
+	id 258F66B00A6; Mon, 21 Sep 2026 19:03:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 17E606B00A4
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 18:53:08 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8A8E11202D3
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 22:53:07 +0000 (UTC)
-X-FDA: 85239271614.22.4BBD380
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id C1E3FA0005
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 22:53:05 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=YzqYCbK6;
-	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D4F756B00A4
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 19:03:56 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 55463C0313
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 23:03:56 +0000 (UTC)
+X-FDA: 85239298872.13.9207324
+Received: from mail-oi2-f12.google.com (mail-oi2-f12.google.com [74.125.231.204])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 5B9CBA000C
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 23:03:54 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=B04qbAeO;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf25.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.231.204 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=B04qbAeO;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf25.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.231.204 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790031834;
+	b=U1XHlw29DjDn7BndSENC+6QHfC30nlwXuHhfHELxCy6gV+lMqHi/b0oyltk3//TJ6WPx28
+	LT4g/6DeYiZrCClsMvYtsaRLn0u9wMHjB3zlXbGeShVEXxY4VybVqSTPLvS5ZLWCbetZer
+	UB554eudWXhDmthJ3vNRgAPPDsti2E0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790031185;
+	s=arc-20220608; t=1790031834;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vr/gx0Gk1vpjpHWM5sT+D++JQRExEkJQGlPWeyGVKCo=;
-	b=cj433KWEH5Ehu5xhlagnQ+csNlSE3JFyiteIsdgO/SwcIOMRzdwJ05S8j50D66wikd6FlI
-	Q2iqXTxTwhFNXU/FL9GijREE2BfS0KsapnUE7GDZ6eG0gd7Zgdl0xebAfQ4Xu1EjWD6nLo
-	aToto9/nNxgA4uS0++Wl36ztvBNtGiw=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=YzqYCbK6;
-	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790031185;
-	b=mfOLnpWtPAvrH5IVY6NkW8TW1STfdTmquGIvaVlrJfMMN/yjB1M5+H3C59/1XfZbc8FOuO
-	QSRn15oYPzIUACvxmi62p5OItV8/F+ioEQNlXnPU9tyyGg4IrwBxqcecEZ40HAWdYvi674
-	kLHc19X34Pl61e5PZnU32K2cilCA/aI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D37D96057A;
-	Mon, 21 Sep 2026 22:53:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A90921F00893;
-	Mon, 21 Sep 2026 22:53:03 +0000 (UTC)
+	bh=OdbPBPyzaOM2wXlSY62pNAL0ZMKs+usFBD9FO5JbEdo=;
+	b=ZQ+tcVsOwmUjN5h42+l/dJ77Tfw1nKri0Xm9qTPI8lmlGCjUmSoHN93ytFq4qEic4uGF+w
+	yo67krrAqy12oP4o4GzAtvIwQI25UzNH9BV7TG2gTp3XDdVeMQRIp2xT4VRfm/fRgC1pEx
+	UP/AtfZHSEKuLxuDG5OGu9oCPL2yh+0=
+Received: by mail-oi2-f12.google.com with SMTP id 46e09a7af769-7fcb425fb68so2049035a34.0
+        for <linux-mm@kvack.org>; Mon, 21 Sep 2026 16:03:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1790031184;
-	bh=vr/gx0Gk1vpjpHWM5sT+D++JQRExEkJQGlPWeyGVKCo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=YzqYCbK6VIEv4Im4C6xgjIzbiK246j5gGNTbeA/gxJmKzhCvtWP2kvF+17L0uRaHe
-	 9vPeZg02uN09f8r+AS+I/MvdRcZkvexqG2w4jVdQpqn3c32VGwxf7ayQ15zilHy7G1
-	 chR39CDncH1ayD3EMiA0ehzS0yV4nyaQlejUFI2o=
-Date: Mon, 21 Sep 2026 15:53:03 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
- <mhocko@suse.com>, Kairui Song <kasong@tencent.com>, Qi Zheng
- <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, Barry Song
- <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie
- <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Baoquan He
- <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Brendan Jackman <brendan.jackman@linux.dev>, Johannes Weiner
- <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Jan Kiszka
- <jan.kiszka@siemens.com>, Kieran Bingham <kbingham@kernel.org>, Oscar
- Salvador <osalvador@suse.de>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-cxl@vger.kernel.org, driver-core@lists.linux.dev,
- linux-fsdevel@vger.kernel.org, Seongjun Hong <hsj0512@snu.ac.kr>
-Subject: Re: [PATCH v2 00/13] mm/sparse: remove SECTION_MARKED_PRESENT and
- further cleanups
-Message-Id: <20260921155303.0ac97f17e4bda6140079dc9c@linux-foundation.org>
-In-Reply-To: <20260921-b4-sparsemem_cleanups-v2-0-54d81d65e125@kernel.org>
-References: <20260921-b4-sparsemem_cleanups-v2-0-54d81d65e125@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C1E3FA0005
-X-Stat-Signature: hjihbo9qdco4fxzsba1j9d5p6q56yycs
+        d=gmail.com; s=20251104; t=1790031833; x=1790636633; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=OdbPBPyzaOM2wXlSY62pNAL0ZMKs+usFBD9FO5JbEdo=;
+        b=B04qbAeOSdwfGN9Bid6mnY4CDO1YIlu+Sz/AW1vEjvttGioCPrKouA/Ji+19CPoudD
+         dP5XT/N/NrGkFyCQktmsG8ALP3lWK2pIGQOrUogRIvmAUWmPRFhjHecFKuN4eKTsLWr8
+         XBYTsTvjjwLtLm5c4JR19dA85Kv2ZU1Bo852/rd858E71VWAsWmWixoq2TVqdHRxyn1v
+         pYMDzBqIGKGLyxmsTa++8ddVSqAe5SBx+VE/+YnG7Of0NYNjo06sqEIrKxv76H80ve5N
+         cl2dk0Ci390hDOMReT3YBTZr8svxM9t9/WCP/Tr1/q+h/RihVZWbTn5dMspYCklTXc82
+         sGpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790031833; x=1790636633;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=OdbPBPyzaOM2wXlSY62pNAL0ZMKs+usFBD9FO5JbEdo=;
+        b=1OcdWTxP2hDgIrPJSuozt9/GNd9bzgzm+p7Od7QC+6wgmnuQg0TnRwss4qoH+eSlk6
+         F4IziEaCqP8wisP/IQmYMH+L254S7fvfG+QlXBshWWaYiSKh5zRs8btWArG+XWD7/6ZW
+         CXvgwNCwzmuwzhir1YxIIGMrAZPnvkIEjwdJQdcw9/QjbWbpEft/MU2DCPverYchM4fR
+         EQKg8RNvXf4l5leLy2QAlmX5yTMNEEABhrd1menTTpt4iDC9T6EszRMNaphfUildyEoI
+         VUFCkw6oHCCBxJACPmFBdXT/wqiB422wY2P+kcQNEKcE8qOFy1SMFIl5qJ36I+rh9Tze
+         RIkw==
+X-Forwarded-Encrypted: i=1; AKwUvBzND5s7UnEsardFoQNcin7yXiMJFFBNl9FnKd7N2omfCPkPgWWjaNT9dzYYAGMC4sVmAfkE8lTXhA==@kvack.org
+X-Gm-Message-State: AFuF++k7KfRHsWhyTkAp3EmQ0/j+ZBZU4BGC14+5IKSqbgFaZ3znwom0
+	MjD4M6sSUeU9aNrEN6pg3rItyjzrRZ0jjnj3RgiAcT4AxHquEezNaT+/
+X-Gm-Gg: AYBFou10iWvnWeoxmZXgXt6vgjZbSmxS0W6V9dMkYhhloCMr3QJRKf/l7wLs4aGRGrP
+	ZF2B5qPYQ+qR5iTTNehnZUAtaFNPtuW8aILIerX5sAl9AezKsf32HKTiNhim2MbI5VtiR7Q5PqU
+	2EFMsouJvPzCs21+rYC5k678X4oKqPy4plbiMca9MrYXbQbld0Q4gWBdK7o2l4qhoxzrFzWjbhy
+	wlVV4zDhg62z2jhetbNWrZnDNe9abOxQ9AG3fEvzjKwbKja8ed7IlD3KUEbEA+qdzOdeDjOo1bq
+	sGxKmprVn2kbQ5vcDUDm0MFq+2bNVjWEnKr+utFOhilvZC7ZzwBmPwNDBUF234zmzObt8yP0R70
+	uK28vuPLzyIdp3DKDGfnjTZcnqlZExhIkIysDIJnnd1cY5DunBTSE6O67gUdEpaDhemGy3Um1Ct
+	aT3cb/PVoGHp7E9KjUz1Nd7osAAB0mG14h2flvIVCjhmNE/ivniatWQ6jslxHJQZXvm5qdR7jYx
+	Zg2K2szf+yteIwdMx08NPVFLzUm
+X-Received: by 2002:a05:6830:610f:b0:806:e047:cd7d with SMTP id 46e09a7af769-80de045b1d3mr12860708a34.7.1790031833370;
+        Mon, 21 Sep 2026 16:03:53 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:f::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-814e648bd3asm184805a34.17.2026.09.21.16.03.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Sep 2026 16:03:52 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Hongfu Li <hongfu.li@linux.dev>
+Cc: Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Michal Hocko <mhocko@suse.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Chris Down <chris@chrisdown.name>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	Hongfu Li <lihongfu@kylinos.cn>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 2/2] mm/memcg: migrate per-node hugetlb lruvec stat together with hugetlb folio
+Date: Mon, 21 Sep 2026 16:03:49 -0700
+Message-ID: <20260921230350.3649114-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260921-for-hugetlb_state-v1-2-8a6eec92661f@kylinos.cn>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1790031185-102997
-X-HE-Meta: U2FsdGVkX18ij/wMghYOaCzptxyeyD+liE1K0g/5XzEyOkRvbpV7K8MaMwgVzYsdoWBMV6qD0IbX7xUYVK0UPaf5nIP9uYCY2vSI1oA+NMMnXQCQhvX7HVxoFXXRvpOrDaVQ7go0Px/zyFzh4NQO9JQyfOfZFjILc7AXbHFsmTiUg+5bOr0N5xIo2jrPKtmeNSLdkkI6bqG5U5OMOfgJulLfpuJUAU8eCMirAiq6o+qEaenwEq7W41ebVZDTUPvuqNZCsshUB9JaytfsOpmUmcjTUvO+exv+r1B4sY1bRPjObus6jaBBfbBunSffbwxS2W379hYsYbl/PfPOJ607E6wqUpPHmHZwcvxrgjG9tWx1AStX3rpib2j3ZUDyo4ax0gt31lE5iv9iUFmJk9k+k8VZh7/n1o/Zm9Zzflx3m+y59rK4cQ1vRSEj/Usy5lGGKFzjtWPkR1vAkEBq2w3xscC32h/pNUapzEub23ZVN5j8EZZq6EQgMVAhKSBBDJ3DRarT2Gf7VeTQ/4CYyKeRQJtGIlgAS4JBAd5N1YOWvYEpC4b/23NFN14hnBRF9zMmQojO9qit/Sroi32j5VHqn26YzO6zy39MwI8mN/CG6bE8Z48jHe9Q3gOsSMu+NYtRYXD0yKTaM3ihWsFtypRACEbPsvlB5kfEaYq3QXQkyq+bJ21gxl2+jw51GDodBlahb9ScDGGl48S3P4Q2+SIWq99jlvey/le4JyBdwgOpPzTSIx28jwlyg7ZRP2LVkVi2zZlbBxZpFulpRhtGxbTPrls4S2oqB/5CNI9co79qKa/pBzqJ92d1oB/OVssZ//8wEivrNI9nv4mJ6baPgkLTQ2hX/Li4QK1GqqjtCt2AbnuxCR0Os5qLbCpmDQPA8yHY/fOeDbl6U6H0nNo/ejtRoUHs1ege/BI226IRUCropqKrb08s6u7ZmwiO/BioRih+UB6rIQwUjeT98HB4W82
- SXFoTDiB
- RXCqGpXhcGnp+gNj0sQZVWYKYbdkSOiC6TjvJRjuwePLbMueAXrksbmeBsvsbn1ABVCsLE742tal+xvmtkSTTCdfnhvl7Kjjz5671u5CBfRAj25NTl+Qvp9wIifsABuHgau+XV08QjVIVtem8wFdB7p9L23vjeCBy21qwTDei7djM+Zpa016dOy4MYimllHzj+h971a+hV5VjXkrgGKP73gwZpjz+1YPqzVn96PUO1wMMOEkOkr72MzdYnnH8s1bqYHP1P2RNlK8EJRYVZXfRnb65M34BB2zBuMiliRjuSUlaeDurNSVeoZ27ujNTqtSTfXei
+X-Rspamd-Queue-Id: 5B9CBA000C
+X-Stat-Signature: 5kfb49jnrtxus3zns9uhppsk7c4fow57
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790031834-144264
+X-HE-Meta: U2FsdGVkX19TwdUn4o5zqMrONSKlIOey7uw1sdhoIQIT4Qug1vvYJVdsf3jkf/Z8ME1xPRmcfPpoN25PUlNw2u6F8EucbdD1CQTFPrWgpKdOVwlhIv5THxqkf0ppc08SHcwcbzsJDLdrQbvbBx9WPRHQWG+WUWjm1npG21XI79N3sP7PAvv/c+/6atFqZfCRj0dJJp/JO/c62F9rooPcrA8B8mh5ceMNRGdZlKLXzAXexLOHRCn5UNdaYlzGVRO6n0at2PI/HRmfrO0LWTJHzkyfiAVJeEr7mquwg+w6Yo+TecmUdcbFgSzNYpL+PhjdFbJ53WNCz9WVznnGlwVhOA3oIf0fC010UpjBRbxHUioIAA+qWVpwr9g+jR5uGVaRvL6b6HWWMns1BCGmTWUGXQlIWrAvrASonco2y3wJY5liEnmjeN+o2GAJWgF9YTT4lVhHhXrlWur3Oiv1a5sCmm4mS55sz4XkK/gLi47AxxSCST6P5354Q10x2oLzBBx+xUuloAU77KTexYVJZfJaJ6Grl0vvxnYf+obi+BCVnqqDRcV4flJdCgktiE2NgPC05rnFsmIKdGQX/fw8CekzOeBTGU9xtKbIZxs6Put9IDtsKb4DAiJdSWAR9D9PeeXf1INrbk3IeTy6noiJrRb+kz4WCfLdX+Q7mopqm2p0BlvF5o6RYxceM4lWv6OLGw7DzLUr+CpdCib8yiNxbG81k88pwdu1cCYVZTQfMNJRueU6s9iKToCNXouH/S6xk6PP0ONcMR4XOOuitR+RuaYOaxHX2YyZKYw6fu1WH8DuNy2uCW7+DzipCWv8FcezJTZyjwVQjiqeEQRz2UQkzImb2hmudF5y7D3jlMzGA6mBNA3dpGFUxS7FYSyzn/4CWldnlW6HFeYHZD2L02VyvQJIR7u2bh38ixnsESBLAI3sNubEA6iQ/ga2a2QMwIuI9cEtYX93iXu5HgbwjkSOEk0
+ 0J15p38r
+ COsgB/mVg87WKg5P8DgNWVN10psKV+I+zzOeKivY3mUlNIEbQSbzyhanL0CNE0FOrjdvR3ML6wp+imk7ZP3i0JSwnnqbBqR+zjyIbb8tXfIvsL4y3DSoSfUU4TdRRQLOd4srky6X38MW9WxEqywcEdb9W/5jJW55HZIJt7CjW+BxYY3vMr47I4EcTEsC1DKsVrDRXLQkz2cyWCC2ZqKgtOBuWOhZ8IejfIKmqfIzWJppiPRou9rX4P6I0wL9AEo/s1bQwUnGW4+kspyvOp7jpxd8DwvK9pkzrqdWDOLYrm2ka4LkbsVQ1rjRU8zB6tbnVgk2djJ8/B14kZ+gEwY8/o4qBQy4Y5NZ9dUnq+mqtffYxo8JmGF6CiM9OJXDFtT8XoFFQ58t3bweU7JURUzwO0EVk6xrapjoIxIEI6/znNH3gGw0cYHfBw+whiav/f1S0zOzS9ym5NVN4Yd6ELHpxVbXoVa+LfhAfkCetHXc9SpGa+WHqdXuIMEvfki3DEWz6wvVo+kc+j6R6O3qvTS+JpE43ug==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,16 +132,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 21 Sep 2026 21:58:52 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
+On Mon, 21 Sep 2026 17:12:35 +0800 Hongfu Li <hongfu.li@linux.dev> wrote:
 
-> SECTION_MARKED_PRESENT is really only needed during boot, where we
-> can instead just rely on SECTION_IS_EARLY_BIT by setting that flag
-> earlier.
+> From: Hongfu Li <lihongfu@kylinos.cn>
 > 
-> Some preparations for doing that conversion and some cleanups in the same
-> (sparse) area.
+> memory.numa_stat exposes per-node hugetlb counters from per-node lruvec
+> stats. These stats are accounted against folio_nid(): incremented on
+> the folio's node when handed to a user, decremented when the folio is
+> returned to the pool.
+> 
+> During hugetlb folio migration, mem_cgroup_migrate() moves the charge
+> to the new folio and drops the memcg data of the old one, so the free
+> of the old folio right after the migration skips the memcg per-node
+> lruvec decrement. The hugetlb count stays attributed to the old node
+> for the rest of the life of the charge, while the target folio gets no
+> increment on the new node; its later free decrements a counter that
+> was never incremented.
+> 
+> Migrate the per-node lruvec accounting alongside migration. Global
+> memcg totals remain balanced because they track resource consumption,
+> not node placement.
 
-Added to mm-new, thanks.
+Hi Hongfu,
 
+This is another great catch, thank you for working on the fix!
+I was able to confirm that the issue exists and was fixed by this patch.
 
+Tested-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+
+> Fixes: 05d4532b60e3 ("memcg/hugetlb: add hugeTLB counters to memcg")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
 
