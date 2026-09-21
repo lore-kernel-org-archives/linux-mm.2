@@ -4,92 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C87EDC982ED
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 15:24:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FB86C982E6
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 15:25:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D33796B00E4; Mon, 21 Sep 2026 11:24:57 -0400 (EDT)
+	id 962656B00E5; Mon, 21 Sep 2026 11:25:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D0BA46B00E5; Mon, 21 Sep 2026 11:24:57 -0400 (EDT)
+	id 9127A6B00E6; Mon, 21 Sep 2026 11:25:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C47066B00E6; Mon, 21 Sep 2026 11:24:57 -0400 (EDT)
+	id 801356B00E7; Mon, 21 Sep 2026 11:25:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A06066B00E4
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 11:24:57 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2A10314014F
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 15:24:57 +0000 (UTC)
-X-FDA: 85238142234.12.F714896
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 983AD100003
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 15:24:55 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LkxD8AWZ;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5DF8E6B00E5
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 11:25:01 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DB13A1201F0
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 15:25:00 +0000 (UTC)
+X-FDA: 85238142360.29.AFA94A0
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 00C391C0002
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 15:24:58 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	spf=pass (imf21.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.198 as permitted sender) smtp.mailfrom=alex@ghiti.fr
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.198 as permitted sender) smtp.mailfrom=alex@ghiti.fr
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790004299;
+	b=jFXLU50eH8wQsWbwsN4QPKc8Dij7mHzX7s5Yrefklqd9c8VNcbKln44wYGvBWMaT/9LJ6e
+	B6RRGgsPa2nnTgHzSsSvTc3Z3q4DzwCI1tY95hUaqXxeH1oAYyYuem/gOkErBfxSa093ee
+	HcYAbKiLemQW2Yp1sGEDxMWpWjEWQUk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790004295;
+	s=arc-20220608; t=1790004299;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZLvkpkC88KAc9pc9JRn5s2cgjSsFH8QP7LkU/PCNgfk=;
-	b=JHVByhH9tadRyUVU5ytUmkctVZd1RigINwcf8/C45ZQ9N7jStJ5t4DnMQhLMF2xCBiM+nB
-	yLZ+2SWI2FU9biLhUHUh4v0TsHVuFQKs3TsTgyQ6q9aFiWKc1+o3ns3E6+8YtMWeIJvv3l
-	E0qUyJjduz3WHFwuUwgjtYzgF0gFUtM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790004295;
-	b=NHA6QAnRYVF9U4AqQrKCaVJmHSf8oLQGbvdue+rCHvZt3KYgok56ZEBHqRtWloM1sCh13/
-	uP6JaGTdvxFBIDiS9K45Bu3uWvrnOBilhaGrkqAfhkCGSEDMVN5KVg/2yzrMk8rFRtd2/Q
-	I1qQNC2OzdeM9yFnkf9blv11tkGuymM=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LkxD8AWZ;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 25037601FB;
-	Mon, 21 Sep 2026 15:24:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79B731F000FF;
-	Mon, 21 Sep 2026 15:24:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790004294;
-	bh=ZLvkpkC88KAc9pc9JRn5s2cgjSsFH8QP7LkU/PCNgfk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LkxD8AWZ5YFBPNXU57iAJXfnShcYu/TRlKkNQ4e+kNk6g9E3QI9iM2eVSjROcIc0r
-	 QJQ7+7r9FfwISjC1PBhu9/8NZBQtxdCmDI8Vt3b8iEYf8pMNEjwtY6h3kveojh5dng
-	 CEevjvcHdVSZwSF/+NiMdKjyxVAHF3DHkFJh2qyWSyDyymbtiA1ux8ULAeeMhK5Qes
-	 LvvlM/4cBBnyH7BhL4yxVGBYsTdZPmUomFlluXxTUWxfyWVyWN8wYOf9V2vBQDLSdJ
-	 9HHGevnwAIuIXUju57TeSmrQqTuSMmhLBRtwJ2J654U0WLj9C9EYIbUpiW+AUCSxz8
-	 PTG8S4Tg2k1aw==
-From: SJ Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Donggeun Yoo <donggeunyoo.kernel@gmail.com>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@davidgow.net>,
-	SJ Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
+	 in-reply-to:references; bh=rBphQakF612ZlN6LtcbgiISZgv9SgThW54EhmxijcrY=;
+	b=SrPqBERiv6pDLzfRRr3F3L9ClkRivwGRf829CSGTOD2TIlASB7x0LY6Ecls/P4l5s1LUDg
+	YfK5BTi/2xzx6wTiOJm6dWOAhdFt1/YaZ2dbn1aMdnaNzsohNTRoWT00cKJW1/W59pJbX1
+	LNIGVZIe3/gH4hQQqbku8MXRDZGCODk=
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 4F7773EDB6;
+	Mon, 21 Sep 2026 15:24:51 +0000 (UTC)
+From: Alexandre Ghiti <alex@ghiti.fr>
+To: akpm@linux-foundation.org
+Cc: willy@infradead.org,
+	jack@suse.cz,
+	liam@infradead.org,
+	ljs@kernel.org,
+	david@kernel.org,
+	vbabka@kernel.org,
+	jannh@google.com,
+	chrisl@kernel.org,
+	kasong@tencent.com,
+	shikemeng@huaweicloud.com,
+	nphamcs@gmail.com,
+	baoquan.he@linux.dev,
+	baohua@kernel.org,
+	youngjun.park@lge.com,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	hannes@cmpxchg.org,
+	mhocko@kernel.org,
+	yosry@kernel.org,
+	chengming.zhou@linux.dev,
+	kunwu.chan@gmail.com,
+	tz2294@columbia.edu,
+	hch@lst.de,
+	linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v2 2/2] mm/damon/tests/core-kunit: test the size charged for a filter-trimmed region
-Date: Mon, 21 Sep 2026 08:24:42 -0700
-Message-ID: <20260921152443.80132-3-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260921152443.80132-1-sj@kernel.org>
-References: <20260921152443.80132-1-sj@kernel.org>
+	Alexandre Ghiti <alex@ghiti.fr>
+Subject: [PATCH] mm: madvise: drop MADV_PAGEOUT folios at swap writeback completion
+Date: Mon, 21 Sep 2026 17:24:33 +0200
+Message-ID: <20260921152449.629486-1-alex@ghiti.fr>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
+X-GND-Sasl: alex@ghiti.fr
+X-GND-State: clean
+X-GND-Score: 0
+X-GND-Cause: dmFkZTGJ0K/8e2Pztp+j2sY+ScsUkCHOW/yXvnc8RSSzpo2y7MSWBAdHH95jj7iY86IG3StSez5iGs7YBgB3H839XNyDnjW9zfMdmBkAKsASsvMhaLCmTi1AoeUnuwtG9zlqupdPYX+HawcgSm+JGIpnjCfGFBjvtLDn71zscY4rO8DWFgKDvVTpDKQQiP2J2hPdRCUiJ/zh1RIu+t22boYe0C6TNAvzTG+LsxJUOKCWUUuD2klfWozBAaYw5r8xQzoa6tJ5bmIDwEq+T5TBqqZjBFfBsK44AgPHHgTvaK8WTi7jgX5q7ZWiGPXUO4tU5ZOxX5+wULeE0Aft9rDHh5fQfgW+MdI6EzMCWnFZ+OE+cx7Iw8H7rDbuPMBm2uneJoPvZqxs3FlpdPORsdUK06Edbu5HTggLWH6kFza+POdqZVRwEgUVGKFVamC61XNbu+tQV8Gtzjr/zPBWXZnb3S1Zw0/qdwiWWoOh/i83Spb4MycZLMmVpzFmOJddpil+2FS0WZPIcsQEMmsAJIJbPs66kaDz6/3IUfu0hoDQq4JZZ2zfW9TR4aCetC9YO1wuc4V5Q+fkauY8VZ0+X46MHqwYuo10VcfHqQuwipvbN9YzyGPqaU8p4M3q61GdlTFewpKjDKO9iKhJHoV01XPBf/iiRKg5EAPZ72ju2kOUdvc/kT9OTw
 X-Rspam-User: 
-X-Stat-Signature: 9frpddd3q131wgq4ouuufhnceh6ctioq
-X-Rspamd-Queue-Id: 983AD100003
-X-HE-Tag: 1790004295-707105
-X-HE-Meta: U2FsdGVkX1+OMlJMt70Bhe8k2DVkdVNwvSwj9l2A3VHBggEVR55Sc4YfR0fFd3aWybAGht7PrTbsU5mnrSB347kSci/qv7C1MbW2wvLAqA8Jj6wSzEGYL153NmCFzP1cdIItmnf30JkzaKrYV7HaK3MT7xnD74/mVP9NIZy3HEzQ4VJ557NaeqepIpWXqTHMNCQymgAlXUbuLVJT9yxFVjkFoj+xY4lRKzz17Y5H2R8PHxna9I4NP4pqiZYbzxHw3Aczg1UAAzzfvcmPPXvdWNtsOeBG/vtYr1s4Y9tuFx0EtDDdFyAxGqVsomNu4CalhMa417AigFewocgpnlNKrCkLzh/3ZjRntNqO/V1Kxjhdr2LKSLsQAX2C3opW+0UZxydwmm4ipDv1nkT+t2emnaYU+YDxu4bZ0YFPGjnu/kKZmz/coPAUchYtbQFH6eamPa2unv5CaURfe8d9fBzVkOjMdiWvZbUrdfNOd6xpOq2uIrcTkwiusqW0ps7/VWejjYViDTRjaS27SQsx1FUPvnhXOX0Fh3bvIr/SLB6k/06I6ERQDdMNgtT1/StuJlejn2IlojRqKxMkFcseahqmsRZFoTmYU6ajDNP7oydMhGKmK7d54Hp6yGJscGZlpqBsmrAYxHpiASb4geS9SERbHP1vSqNofPst9GeagcVugE1uCs+M2v7+H6BgQEalDouQTqoNwG1tTs6F3vveG99hDjQKzLcwZKnY7jWWfuQKrHY3ub0jB+1HFBm8Ybr+VzXRwS3hiAJ0G2bFZAG6FkzDxjNTIso0yEXRAIe18cXsRJmVIUdXGaCDBWmjbQewdn6NSdsd9bpMURv75JM5LtZ1FUW8eF+BB0vHkbBb5rUplOauXXwfup1x6mH1boz3DT5I4UaxwTXbJpP9IhYE8AHP/0jVTqndQMaFd9bcCsozM8NR1is7OsHXEz2eTIxCruM2FR+xVQrWuvtz3qnz5nX
- P0W8mU2q
- IUdlrwG8dDcHPsgoAJDUulwE0pGEh/bUhI1LaxCDvoRD9UNmztnlUtULNdWjXfi9AHHORNYXaepCLCZsyhHnxFU3slfq1cGeDH7P0G9Vc8pZViWLsKheB8BNLT/IAHD6Ezf0xsX1BYEZ9N3ErCkvxeylQXy5H5vpC0NJMEEHZ1/sd7BrbMQkKH/BxwpycDEf/LXBrDskU0ltM/ydm3yaRMrf/8uo8iQI3juRfqv/5YWZCpt4KwmjDGWmx5221YrQWPicbtE6yBBsAxn8gQqfZzMVSE0FWvp1Q2Da2vA8q9b6W9r/MZ81Ix13Q/Kjupmx/GUz01+gsdwpWW6s=
+X-Rspamd-Queue-Id: 00C391C0002
+X-Stat-Signature: gme97ohnruws7ck78j1sph1aemjerdm4
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790004298-388077
+X-HE-Meta: U2FsdGVkX1+VkSjoOPIuoMdE2MhAFwf2nqm695SEfyWzUqx8I0QaI/KS9odwyqmPjskAx7QZ/eMkgpw5bkBWDN7MW67XVBAwhtgg9y8ahQ+4krTOu8ZH47xhBM6DNAzThlGohfwik7e3412uVx8k1g0BqUmOChMcelm4EeojRJ7qs0kMuXJw/Fju3R6mvxl7hkOiPqb0v3GglHshfCV0z0jB0lC2TYIFiuBt0sGR9fafiavCOlk+0YvzBfYJ2mIbiFxfmZFALNMRWl38ejHsth/T6c1qjKcSFsJl9C7S3rnjKhidr9Wxy8o1gaZIw26txJkPrKe9J/zGmreT/OgXc/JpEe/C7sWyiv5KyZfBscEq5ELN1D9qwkN+gdksdVRF3d4FI7HW5Ft3FBeYGUPzZ7ayNoGV07fsu301ciiJv6nHTQoQOterv00YOvnTTr1MwgI6T20yE1cNwjzwvQuPEM0aGj7wlgW1XkrvHkBkKl98ClLa2jRDUa7eLHBXxhoOiEBAzZgp8IYRe5TwzQ8EJE4VHlGpWeFp9nXaEkxFbqtvh9Dq2jLgU0JXJR91o3ZinJ6rfi9KIQ2QdTl8sLUuHnRU7Su2UVAlwnHCFCGVPdJPqOzpHN7JtwJyljjpQj8l/AmnMhARmzYe7LEeSlojSXFHGaGdrwJ5xZfIQ0Jeny4OFmfDfuwHx9Q0/b3gZcsD4Ii2ylMT6DyxOb1UWb/JnwgSC9//6HRXz+M44EajZneKT6C3fp2FpePzAy4dr4MH/OAgSv//muCmNtPpfHhBc3LSXavCqBrxrimPBnywcOTU38eum6jKJWWsfJn3XQlXktw2Jh+HyRpiTHga0/iFZ30dEQ+9NoTy2lwGkflTFzGyfC77EpT6uzJMyQAXWeBJYcgfm8DnyC30rDQ9YGmhtITgTCXovkr2UXbSH+IVkQqMwAoyUVIHGwR6nT+E36I3ZGMEEvprV9UfWd4k7qr
+ fmuJNgyQ
+ dNdzvtWaBCrAxo3lEPSLf3jbFdKkiQzLEo7llsxdLO79qiPtNAPhpqISjEPFlhKsrnOaLUP/Rudt1o5ij1fh9Ed3/E69zLED7zIhmEVO8daPzyl3a9HGs0gtuQEoZvnNRemTcVhAdu8+oAIHlvZXjINfykQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,364 +104,275 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
+On an asynchronous swap device MADV_PAGEOUT only marks the folio
+PG_reclaim and rotates it to the tail of the inactive list once its
+writeback completes, so the memory is not actually freed until a later
+reclaim scan removes the by then clean swap cache folio. Mark those
+folios dropbehind at isolation time instead and let folio_end_writeback()
+drop them from the swap cache as each write lands.
 
-damos_test_filter_out() checks that an address range filter splits a
-region at the filter boundary, and stops there.  Nothing checks what
-damos_apply_scheme() then charges to the quota and reports as tried.
+A dropbehind folio is dropped by whoever completes its writeback, so the
+reference the submitter holds has to be released before the write is
+submitted. As reclaim does before freeing a folio, flush the pending TLB
+batch first.
 
-damos_test_apply_scheme_filtered_sz() covers the two ways such a filter
-trims a region: one that starts before the filter's range, and one that
-starts inside it.
+Note that for dropbehind folios nr_reclaimed is now credited when the
+write is submitted rather than when the folio is actually freed, since the
+reclaimer never sees the folio again.
 
-damos_test_apply_scheme_filter_sz_unchanged() and
-damos_test_apply_scheme_quota_sz() cover the cases whose accounting must
-not change: a region wholly inside a reject range, one wholly inside an
-allow range, two filters trimming in a single call, a filter type that
-never splits, no filter at all, a region the quota trims, and a quota
-remainder too small for one region.
-
-Signed-off-by: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
-Reviewed-by: SJ Park <sj@kernel.org>
-Signed-off-by: SJ Park <sj@kernel.org>
+Suggested-by: Barry Song <baohua@kernel.org>
+Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
 ---
- mm/damon/tests/core-kunit.h | 316 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 316 insertions(+)
+This applies on top of "[PATCH v6 0/3] mm: zswap: free cold writeback folios
+promptly":
 
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index 5ff0436c5844..df84d9cc7d20 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -1706,6 +1706,319 @@ static void damos_test_filter_out(struct kunit *test)
- 	damos_free_filter(f);
+https://lore.kernel.org/linux-mm/20260921151306.625134-1-alex@ghiti.fr/
+
+ mm/filemap.c |  7 +++++++
+ mm/madvise.c | 23 ++++++++++++++++++----
+ mm/page_io.c | 55 ++++++++++++++++++++++++++++++++++++++++++++++++++--
+ mm/swap.h    |  2 ++
+ mm/vmscan.c  | 10 ++++++++++
+ mm/zswap.c   |  9 ++++-----
+ 6 files changed, 95 insertions(+), 11 deletions(-)
+
+diff --git a/mm/filemap.c b/mm/filemap.c
+index e1f1bbe943ce..14fa96fca8b8 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -1630,6 +1630,13 @@ void folio_end_dropbehind(struct folio *folio)
+ 	if (!folio_test_dropbehind(folio))
+ 		return;
+ 
++	/*
++	 * PG_dropbehind could be set on an anonymous folio after
++	 * folio_end_writeback() samples it (for example MADV_PAGEOUT).
++	 */
++	if (folio_test_anon(folio))
++		return;
++
+ 	/*
+ 	 * Hitting !in_task() should not happen off RWF_DONTCACHE writeback,
+ 	 * but can happen if normal writeback just happens to find dirty folios
+diff --git a/mm/madvise.c b/mm/madvise.c
+index eeee82cf2b3f..63164f95720b 100644
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -359,6 +359,17 @@ static inline int madvise_folio_pte_batch(unsigned long addr, unsigned long end,
+ 				     FPB_MERGE_YOUNG_DIRTY);
  }
  
-+static unsigned long damos_test_apply_scheme_stub(struct damon_ctx *c,
-+		struct damon_target *t, struct damon_region *r,
-+		struct damos *s, unsigned long *sz_filter_passed)
++static void madvise_mark_dropbehind(struct folio *folio)
 +{
-+	return 0;
++	/*
++	 * A folio already under writeback is skipped: that writeback is not
++	 * ours to hand over, so reclaim will put the folio back on the LRU
++	 * while its completion could be dropping it at the same time.
++	 */
++	if (folio_test_anon(folio) && !folio_test_writeback(folio))
++		folio_set_dropbehind(folio);
 +}
 +
-+static void damos_test_apply_scheme_filtered_sz(struct kunit *test)
-+{
-+	struct damos_access_pattern pattern = {
-+		.min_sz_region = 0,
-+		.max_sz_region = ULONG_MAX,
-+		.min_nr_accesses = 0,
-+		.max_nr_accesses = UINT_MAX,
-+		.min_age_region = 0,
-+		.max_age_region = UINT_MAX,
-+	};
-+	unsigned long min_sz = DAMON_MIN_REGION_SZ;
-+	struct damos_watermarks wmarks = {};
-+	struct damos_quota quota = {};
-+	struct damon_ctx *c;
-+	struct damon_target *t;
-+	struct damon_region *r;
-+	struct damos_filter *f;
-+	struct damos *s;
+ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
+ 				unsigned long addr, unsigned long end,
+ 				struct mm_walk *walk)
+@@ -439,10 +450,12 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
+ 			folio_set_workingset(folio);
+ 		if (pageout) {
+ 			if (folio_isolate_lru(folio)) {
+-				if (folio_test_unevictable(folio))
++				if (folio_test_unevictable(folio)) {
+ 					folio_putback_lru(folio);
+-				else
++				} else {
++					madvise_mark_dropbehind(folio);
+ 					list_add(&folio->lru, &folio_list);
++				}
+ 			}
+ 		} else
+ 			folio_deactivate(folio);
+@@ -554,10 +567,12 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
+ 			folio_set_workingset(folio);
+ 		if (pageout) {
+ 			if (folio_isolate_lru(folio)) {
+-				if (folio_test_unevictable(folio))
++				if (folio_test_unevictable(folio)) {
+ 					folio_putback_lru(folio);
+-				else
++				} else {
++					madvise_mark_dropbehind(folio);
+ 					list_add(&folio->lru, &folio_list);
++				}
+ 			}
+ 		} else
+ 			folio_deactivate(folio);
+diff --git a/mm/page_io.c b/mm/page_io.c
+index 52eae99de6e3..bf8238768cc9 100644
+--- a/mm/page_io.c
++++ b/mm/page_io.c
+@@ -26,9 +26,12 @@
+ #include <linux/delayacct.h>
+ #include <linux/zswap.h>
+ #include <linux/swap_ops.h>
++#include "internal.h"
+ #include "swap.h"
+ #include "swap_table.h"
+ 
++#include <trace/events/vmscan.h>
 +
-+	c = damon_new_ctx();
-+	if (!c)
-+		kunit_skip(test, "ctx alloc fail");
-+	c->ops.apply_scheme = damos_test_apply_scheme_stub;
-+
-+	s = damon_new_scheme(&pattern, DAMOS_STAT, 0, &quota, &wmarks,
-+			NUMA_NO_NODE);
-+	if (!s) {
-+		damon_destroy_ctx(c);
-+		kunit_skip(test, "scheme alloc fail");
+ int generic_swapfile_activate(struct swap_info_struct *sis,
+ 				struct file *swap_file,
+ 				sector_t *span)
+@@ -248,8 +251,19 @@ int swap_writeout(struct swap_io_ctx *ctx, struct folio *folio)
+ 	}
+ 	rcu_read_unlock();
+ 
++	if (folio_test_dropbehind(folio)) {
++		/*
++		 * pageout() traces and accounts at its tail, which we can't do
++		 * because dropbehind folios may already be freed by then.
++		 */
++		trace_mm_vmscan_write_folio(folio);
++		lruvec_stat_mod_folio(folio, NR_VMSCAN_WRITE,
++				      folio_nr_pages(folio));
++		ret = SWAP_WRITE_DROPBEHIND;
 +	}
-+	damon_add_scheme(c, s);
 +
-+	t = damon_new_target();
-+	if (!t) {
-+		damon_destroy_ctx(c);
-+		kunit_skip(test, "target alloc fail");
-+	}
-+	damon_add_target(c, t);
-+
-+	f = damos_new_filter(DAMOS_FILTER_TYPE_ADDR, true, false);
-+	if (!f) {
-+		damon_destroy_ctx(c);
-+		kunit_skip(test, "filter alloc fail");
-+	}
-+	f->addr_range = (struct damon_addr_range){
-+		.start = 2 * min_sz,
-+		.end = 8 * min_sz
-+	};
-+	damos_add_filter(s, f);
-+	damos_set_filters_default_reject(s);
-+
-+	/* reject filter, region starting before the range */
-+	r = damon_new_region(0, 4 * min_sz);
-+	if (!r) {
-+		damon_destroy_ctx(c);
-+		kunit_skip(test, "region alloc fail");
-+	}
-+	damon_add_region(r, t);
-+
-+	damos_apply_scheme(c, t, r, s);
-+	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 2);
-+	KUNIT_EXPECT_EQ(test, r->ar.end, 2 * min_sz);
-+	KUNIT_EXPECT_EQ(test, s->stat.sz_tried, 2 * min_sz);
-+
-+	if (damon_nr_regions(t) != 2)
-+		goto out;
-+	damon_destroy_region(damon_next_region(r), t);
-+	damon_destroy_region(r, t);
-+	s->stat = (struct damos_stat){};
-+
-+	/* allow filter, region starting inside the range */
-+	f->allow = true;
-+	damos_set_filters_default_reject(s);
-+	r = damon_new_region(2 * min_sz, 10 * min_sz);
-+	if (!r) {
-+		damon_destroy_ctx(c);
-+		kunit_skip(test, "region alloc fail");
-+	}
-+	damon_add_region(r, t);
-+
-+	damos_apply_scheme(c, t, r, s);
-+	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 2);
-+	KUNIT_EXPECT_EQ(test, r->ar.end, 8 * min_sz);
-+	KUNIT_EXPECT_EQ(test, s->stat.sz_tried, 6 * min_sz);
-+
-+out:
-+	damon_destroy_ctx(c);
-+}
-+
-+static void damos_test_apply_scheme_filter_sz_unchanged(struct kunit *test)
-+{
-+	struct damos_access_pattern pattern = {
-+		.min_sz_region = 0,
-+		.max_sz_region = ULONG_MAX,
-+		.min_nr_accesses = 0,
-+		.max_nr_accesses = UINT_MAX,
-+		.min_age_region = 0,
-+		.max_age_region = UINT_MAX,
-+	};
-+	unsigned long min_sz = DAMON_MIN_REGION_SZ;
-+	struct damos_watermarks wmarks = {};
-+	struct damos_quota quota = {};
-+	struct damos_filter *f, *f2;
-+	struct damon_ctx *c;
-+	struct damon_target *t;
-+	struct damon_region *r;
-+	struct damos *s;
-+
-+	c = damon_new_ctx();
-+	if (!c)
-+		kunit_skip(test, "ctx alloc fail");
-+	c->ops.apply_scheme = damos_test_apply_scheme_stub;
-+
-+	s = damon_new_scheme(&pattern, DAMOS_STAT, 0, &quota, &wmarks,
-+			NUMA_NO_NODE);
-+	if (!s) {
-+		damon_destroy_ctx(c);
-+		kunit_skip(test, "scheme alloc fail");
-+	}
-+	damon_add_scheme(c, s);
-+
-+	t = damon_new_target();
-+	if (!t) {
-+		damon_destroy_ctx(c);
-+		kunit_skip(test, "target alloc fail");
-+	}
-+	damon_add_target(c, t);
-+
-+	f = damos_new_filter(DAMOS_FILTER_TYPE_ADDR, true, false);
-+	if (!f) {
-+		damon_destroy_ctx(c);
-+		kunit_skip(test, "filter alloc fail");
-+	}
-+	f->addr_range = (struct damon_addr_range){
-+		.start = 2 * min_sz, .end = 8 * min_sz};
-+	damos_add_filter(s, f);
-+	damos_set_filters_default_reject(s);
-+
-+	/* wholly inside a reject range: not counted at all */
-+	r = damon_new_region(4 * min_sz, 6 * min_sz);
-+	if (!r) {
-+		damon_destroy_ctx(c);
-+		kunit_skip(test, "region alloc fail");
-+	}
-+	damon_add_region(r, t);
-+
-+	damos_apply_scheme(c, t, r, s);
-+	KUNIT_EXPECT_EQ(test, s->stat.nr_tried, 0);
-+	KUNIT_EXPECT_EQ(test, s->stat.sz_tried, 0);
-+	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 1);
-+
-+	/* wholly inside an allow range: counted whole, not split */
-+	f->allow = true;
-+	damos_set_filters_default_reject(s);
-+
-+	damos_apply_scheme(c, t, r, s);
-+	KUNIT_EXPECT_EQ(test, s->stat.sz_tried, 2 * min_sz);
-+	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 1);
-+
-+	/* two filters, each trimming: the size left after both is counted */
-+	damon_destroy_region(r, t);
-+	s->stat = (struct damos_stat){};
-+	f->allow = false;
-+	f->addr_range = (struct damon_addr_range){
-+		.start = 4 * min_sz, .end = 12 * min_sz};
-+	f2 = damos_new_filter(DAMOS_FILTER_TYPE_ADDR, true, false);
-+	if (!f2) {
-+		damon_destroy_ctx(c);
-+		kunit_skip(test, "filter alloc fail");
-+	}
-+	f2->addr_range = (struct damon_addr_range){
-+		.start = 2 * min_sz, .end = 3 * min_sz};
-+	damos_add_filter(s, f2);
-+	damos_set_filters_default_reject(s);
-+
-+	r = damon_new_region(0, 8 * min_sz);
-+	if (!r) {
-+		damon_destroy_ctx(c);
-+		kunit_skip(test, "region alloc fail");
-+	}
-+	damon_add_region(r, t);
-+
-+	damos_apply_scheme(c, t, r, s);
-+	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 3);
-+	KUNIT_EXPECT_EQ(test, r->ar.end, 2 * min_sz);
-+	KUNIT_EXPECT_EQ(test, s->stat.sz_tried, 2 * min_sz);
-+
-+	/* a core filter that never splits: counted whole */
-+	damos_destroy_filter(f2);
-+	damos_destroy_filter(f);
-+	f = damos_new_filter(DAMOS_FILTER_TYPE_TARGET, true, true);
-+	if (!f) {
-+		damon_destroy_ctx(c);
-+		kunit_skip(test, "filter alloc fail");
-+	}
-+	f->target_idx = 0;
-+	damos_add_filter(s, f);
-+	damos_set_filters_default_reject(s);
-+	s->stat = (struct damos_stat){};
-+
-+	damos_apply_scheme(c, t, r, s);
-+	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 3);
-+	KUNIT_EXPECT_EQ(test, r->ar.end, 2 * min_sz);
-+	KUNIT_EXPECT_EQ(test, s->stat.sz_tried, 2 * min_sz);
-+
-+	damon_destroy_ctx(c);
-+}
-+
-+static void damos_test_apply_scheme_quota_sz(struct kunit *test)
-+{
-+	struct damos_access_pattern pattern = {
-+		.min_sz_region = 0,
-+		.max_sz_region = ULONG_MAX,
-+		.min_nr_accesses = 0,
-+		.max_nr_accesses = UINT_MAX,
-+		.min_age_region = 0,
-+		.max_age_region = UINT_MAX,
-+	};
-+	unsigned long min_sz = DAMON_MIN_REGION_SZ;
-+	struct damos_watermarks wmarks = {};
-+	struct damos_quota quota = {};
-+	struct damon_region *r, *next;
-+	struct damon_ctx *c;
-+	struct damon_target *t;
-+	struct damos *s;
-+
-+	c = damon_new_ctx();
-+	if (!c)
-+		kunit_skip(test, "ctx alloc fail");
-+
-+	s = damon_new_scheme(&pattern, DAMOS_STAT, 0, &quota, &wmarks,
-+			NUMA_NO_NODE);
-+	if (!s) {
-+		damon_destroy_ctx(c);
-+		kunit_skip(test, "scheme alloc fail");
-+	}
-+	damon_add_scheme(c, s);
-+	damos_set_filters_default_reject(s);
-+
-+	t = damon_new_target();
-+	if (!t) {
-+		damon_destroy_ctx(c);
-+		kunit_skip(test, "target alloc fail");
-+	}
-+	damon_add_target(c, t);
-+
-+	/* no apply_scheme operation: the whole region is counted */
-+	r = damon_new_region(0, 4 * min_sz);
-+	if (!r) {
-+		damon_destroy_ctx(c);
-+		kunit_skip(test, "region alloc fail");
-+	}
-+	damon_add_region(r, t);
-+
-+	damos_apply_scheme(c, t, r, s);
-+	KUNIT_EXPECT_EQ(test, s->stat.sz_tried, 4 * min_sz);
-+	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 1);
-+
-+	/* no filter and no quota: the whole region is counted */
-+	c->ops.apply_scheme = damos_test_apply_scheme_stub;
-+	s->stat = (struct damos_stat){};
-+
-+	damos_apply_scheme(c, t, r, s);
-+	KUNIT_EXPECT_EQ(test, s->stat.sz_tried, 4 * min_sz);
-+	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 1);
-+
-+	/* the quota trims the region: the trimmed size is counted */
-+	damon_for_each_region_safe(r, next, t)
-+		damon_destroy_region(r, t);
-+	s->stat = (struct damos_stat){};
-+	s->quota.esz = 2 * min_sz;
-+	s->quota.charged_sz = 0;
-+
-+	r = damon_new_region(0, 8 * min_sz);
-+	if (!r) {
-+		damon_destroy_ctx(c);
-+		kunit_skip(test, "region alloc fail");
-+	}
-+	damon_add_region(r, t);
-+
-+	damos_apply_scheme(c, t, r, s);
-+	KUNIT_EXPECT_EQ(test, r->ar.end, 2 * min_sz);
-+	KUNIT_EXPECT_EQ(test, s->stat.sz_tried, 2 * min_sz);
-+
-+	/* quota remainder below one region: tried, but nothing counted */
-+	damon_for_each_region_safe(r, next, t)
-+		damon_destroy_region(r, t);
-+	s->stat = (struct damos_stat){};
-+	s->quota.esz = 1;
-+	s->quota.charged_sz = 0;
-+
-+	r = damon_new_region(0, 4 * min_sz);
-+	if (!r) {
-+		damon_destroy_ctx(c);
-+		kunit_skip(test, "region alloc fail");
-+	}
-+	damon_add_region(r, t);
-+
-+	damos_apply_scheme(c, t, r, s);
-+	KUNIT_EXPECT_EQ(test, s->stat.nr_tried, 1);
-+	KUNIT_EXPECT_EQ(test, s->stat.sz_tried, 0);
-+	KUNIT_EXPECT_EQ(test, r->ar.end, 4 * min_sz);
-+
-+	damon_destroy_ctx(c);
-+}
-+
- static void damon_test_feed_loop_next_input(struct kunit *test)
+ 	__swap_writepage(ctx, folio);
+-	return 0;
++	return ret;
+ out_unlock:
+ 	folio_unlock(folio);
+ 	return ret;
+@@ -692,8 +706,45 @@ EXPORT_SYMBOL_GPL(swap_fs_activate);
+ 
+ void swap_write_submit(struct swap_io_ctx *ctx)
  {
- 	unsigned long last_input = 900000, current_score = 200;
-@@ -1959,6 +2272,9 @@ static struct kunit_case damon_test_cases[] = {
- 	KUNIT_CASE(damon_test_commit_ctx),
- 	KUNIT_CASE(damon_test_valid_probe_params),
- 	KUNIT_CASE(damos_test_filter_out),
-+	KUNIT_CASE(damos_test_apply_scheme_filtered_sz),
-+	KUNIT_CASE(damos_test_apply_scheme_filter_sz_unchanged),
-+	KUNIT_CASE(damos_test_apply_scheme_quota_sz),
- 	KUNIT_CASE(damon_test_feed_loop_next_input),
- 	KUNIT_CASE(damon_test_set_filters_default_reject),
- 	KUNIT_CASE(damon_test_apply_min_nr_regions),
+-	if (!ctx->sio)
++	struct swap_iocb *sio = ctx->sio;
++	bool dropbehind = false;
++	int p;
++
++	if (!sio)
+ 		return;
++
++	for (p = 0; p < sio->nr_bvecs; p++) {
++		if (folio_test_dropbehind(bvec_folio(&sio->bvecs[p]))) {
++			dropbehind = true;
++			break;
++		}
++	}
++
++	if (dropbehind) {
++		/*
++		 * A dropbehind folio is freed by the completion, not by the
++		 * reclaimer, and freeing needs every deferred unmap flushed,
++		 * not just the writable ones try_to_unmap_flush_dirty() covers
++		 * before the IO.  The reclaimer flushes before it frees, but
++		 * that is too late for a batch swap_add_folio() already
++		 * submitted mid-loop.  A no-op once that flush has happened.
++		 */
++		try_to_unmap_flush();
++
++		/*
++		 * Now that the TLB is clean, drop the submitter's reference:
++		 * the swap cache then holds the only ones left, which is what
++		 * __remove_mapping() expects when the completion drops the
++		 * folio.  This has to happen before the write is submitted.
++		 */
++		for (p = 0; p < sio->nr_bvecs; p++) {
++			struct folio *folio = bvec_folio(&sio->bvecs[p]);
++
++			if (folio_test_dropbehind(folio))
++				folio_put(folio);
++		}
++	}
++
+ 	count_vm_events(NRSWPOUT, 1);
+ 	ctx->sis->ops->submit_write(ctx);
+ 	ctx->sio = NULL;
+diff --git a/mm/swap.h b/mm/swap.h
+index 8679cb61268e..81114ad9e44a 100644
+--- a/mm/swap.h
++++ b/mm/swap.h
+@@ -92,6 +92,8 @@ static inline int mem_cgroup_swappiness(struct mem_cgroup *memcg)
+ 	return READ_ONCE(vm_swappiness);
+ }
+ 
++#define SWAP_WRITE_DROPBEHIND	1
++
+ #ifdef CONFIG_SWAP
+ #include <linux/swapops.h> /* for swp_offset */
+ #include <linux/blk_types.h> /* for bio_end_io_t */
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index a02f942418d3..5435fa5111b3 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -613,6 +613,8 @@ typedef enum {
+ 	PAGE_SUCCESS,
+ 	/* folio is clean and locked */
+ 	PAGE_CLEAN,
++	/* folio will be freed after writeback, do not touch */
++	PAGE_DROPBEHIND,
+ } pageout_t;
+ 
+ /*
+@@ -659,6 +661,9 @@ static pageout_t pageout(struct swap_io_ctx *ctx, struct address_space *mapping,
+ 	else
+ 		res = swap_writeout(ctx, folio);
+ 
++	if (res == SWAP_WRITE_DROPBEHIND)
++		return PAGE_DROPBEHIND;
++
+ 	if (res < 0)
+ 		handle_write_error(mapping, folio, res);
+ 	if (res == AOP_WRITEPAGE_ACTIVATE) {
+@@ -1437,6 +1442,9 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+ 					nr_pages = 1;
+ 				}
+ 				goto activate_locked;
++			case PAGE_DROPBEHIND:
++				nr_reclaimed += nr_pages;
++				continue;
+ 			case PAGE_SUCCESS:
+ 				if (nr_pages > 1 && !folio_test_large(folio)) {
+ 					sc->nr_scanned -= (nr_pages - 1);
+@@ -2198,6 +2206,8 @@ static unsigned int reclaim_folio_list(struct list_head *folio_list,
+ 	while (!list_empty(folio_list)) {
+ 		folio = lru_to_folio(folio_list);
+ 		list_del(&folio->lru);
++		if (folio_test_anon(folio))
++			folio_clear_dropbehind(folio);
+ 		folio_putback_lru(folio);
+ 	}
+ 	trace_mm_vmscan_reclaim_pages(pgdat->node_id, sc.nr_scanned, nr_reclaimed, &stat);
+diff --git a/mm/zswap.c b/mm/zswap.c
+index dc8425d6b21e..640936fe7464 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -1051,17 +1051,16 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
+ 	folio_set_dropbehind(folio);
+ 
+ 	/*
+-	 * Drop our reference before starting writeback so the swap cache holds
+-	 * the only one: the drop in folio_end_writeback() needs that for
+-	 * remove_mapping_set_shadow() to succeed, otherwise the folio is
+-	 * handed back to reclaim instead.
++	 * Our reference is donated to swap_write_submit(), which drops it just
++	 * before submitting so the swap cache holds the only one left: the drop
++	 * in folio_end_writeback() needs that for remove_mapping_set_shadow()
++	 * to succeed, otherwise the folio is handed back to reclaim instead.
+ 	 *
+ 	 * Nothing can free the folio in the meantime: we hold the folio lock
+ 	 * until writeback starts, PG_writeback then blocks swap cache removal,
+ 	 * and folio_end_writeback() takes its own reference before clearing
+ 	 * PG_writeback and donates it to the drop.
+ 	 */
+-	folio_put(folio);
+ 
+ 	/* start writeback */
+ 	__swap_writepage(&ctx, folio);
 -- 
-2.47.3
+2.53.0-Meta
+
 
