@@ -4,91 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AA7EC982E6
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 17:58:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFEF2C982E6
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 18:11:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 37A826B008A; Mon, 21 Sep 2026 13:58:05 -0400 (EDT)
+	id 788B16B00C2; Mon, 21 Sep 2026 14:11:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 351F46B00C1; Mon, 21 Sep 2026 13:58:05 -0400 (EDT)
+	id 7604E6B00C3; Mon, 21 Sep 2026 14:11:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 268F96B00C2; Mon, 21 Sep 2026 13:58:05 -0400 (EDT)
+	id 69DEF6B00C5; Mon, 21 Sep 2026 14:11:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F2B0C6B00C1
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:58:04 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7A9C41C0B8C
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 17:58:04 +0000 (UTC)
-X-FDA: 85238528088.10.27BF98F
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 444F16B00C2
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 14:11:00 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C2A4AA027A
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 18:10:59 +0000 (UTC)
+X-FDA: 85238560638.23.3BB2F3A
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id B769018000B
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 17:58:02 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="R/sDK9og";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="R/sDK9og";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790013482;
-	b=Bvxtn8hGf3lfS3zJkORW1bwjBidVQ3F2clBhy5NGlAh2Ii8EvSUy6FIxZnVJHNwno/MpFC
-	TvbdCO7gbbQW/rMAWjKUB/sWh/OQmlUE8iWk2b0YXiUMecX+BCfRR2sVSCi5mT4yHD+8nE
-	4nt2oHeT0qFE7GF7jiSMoE7q6js6lVY=
+	by imf18.hostedemail.com (Postfix) with ESMTP id D26BD1C0006
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 18:10:57 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="MChE/Jnx";
+	spf=pass (imf18.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790013482;
+	s=arc-20220608; t=1790014257;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VrEKRxhpsxO4YB1Z88WoC1VfhzGFQ3EMsTjDujrRO+w=;
-	b=TGiW5a5OCS/NUzE3bxftKD2t9HXzg1+KTnb0cI2gj0LHQdvADOS+tsY6PgYD3XwYDh3ZdC
-	kg3kKZF+fDpCxv6WvQWJtPSY63IN+cNB4JK+3KDmQhPJlVATVmbxhqzy59DQlC31tN4TYo
-	F9R+gFwAwdlckKwsUncpn7p/csfZcsQ=
+	bh=wuTO6WkU+BVPbOKs1CY34gM4QOwUjJ4/vjC8gwb3pGc=;
+	b=e/xg2L+tYnlS5R42YBkrzc5xf/HCN0VvB5gXvNF/EcY6G2p/niMgU0XBlDKn4TrPnsoBsH
+	UMuYTof6QfQbXISBUJ0SjpKBFG0qbKHfHNXwi+vBN7hTKkUQxdMKIlUiQbmhTKCP2FVcWK
+	O5r8Af3viEr+0S4PL3hI0WglSOoksJE=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="MChE/Jnx";
+	spf=pass (imf18.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790014257;
+	b=bC26ujyavpB0gPIRhbU81qNK/zbXbmm6LWuu1yCMi0V5N6ixCE9qp99dhThgpkLZ72e9rP
+	KDebdCv74rC25n0YjoDJxjUX+QwmBd1ui6WurIed8BGVECKUyTnypPBw07BxiEGjrJAky1
+	FZDpoP4RKuiUIyFFCHYAf/TBD6VTsWA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D614D438C9;
-	Mon, 21 Sep 2026 17:58:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 904521F000FF;
-	Mon, 21 Sep 2026 17:58:01 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 11704447E2
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 18:10:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED8231F00899
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 18:10:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790013481;
-	bh=VrEKRxhpsxO4YB1Z88WoC1VfhzGFQ3EMsTjDujrRO+w=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=R/sDK9ogDpGJxJewL8iIUth9DWQnev+2MEzZXFhD0YypTxIon+lddkV/B5MiXsboO
-	 byMrkKP0wfUx7XngMjTu9nAl2JaQK7zF3Phju/+ez58bU954kYLbxc8z3/4Vc0WgzQ
-	 KOftHb5AUK5N9gFffvyEvRM47sRdl27CRx18LUuqQktKtMjB9/XICkbjwojAmHMCx0
-	 IOUpxI7tR5Dak2iI8yZqV+B2DzvoXQOeYv7BXJA3uNEFbHCW1NXGE79SgsXboqYDFB
-	 G+yzrNcbI31AM4MpDGbVDD6WgYVtVj6uG6HlTqlFELJEHb+bHt6BsCAnyTE5hCf2DX
-	 y4CbMiaMOzh0w==
-Message-ID: <b15c63490f9164bf46d68ff3ec5dfc02@kernel.org>
-From: Tejun Heo <tj@kernel.org>
-To: Julian Sun <sunjunchao@bytedance.com>
-Cc: linux-block@vger.kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, axboe@kernel.dk, hannes@cmpxchg.org,
- mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
- muchun.song@linux.dev, willy@infradead.org, jack@suse.cz, tj@kernel.org,
- akpm@linux-foundation.org
-Subject: Re: [PATCH v7 2/3] memcg,writeback: flush foreign bdev mappings
- separately from owner wbs
-Date: Mon, 21 Sep 2026 07:55:17 -1000
-In-Reply-To: <20260921120658.1627992-3-sunjunchao@bytedance.com>
-References: <20260921120658.1627992-1-sunjunchao@bytedance.com>
- <20260921120658.1627992-3-sunjunchao@bytedance.com>
+	s=k20260515; t=1790014257;
+	bh=wuTO6WkU+BVPbOKs1CY34gM4QOwUjJ4/vjC8gwb3pGc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=MChE/JnxobCbG9JoZ+GkmIXjHA4YnhuT8P2bFG6NLvzH+rlgWKR4v5lUxFSSI1eyw
+	 KIKZ1V+6HQoTkcnA51udmDXFM5pgv2Zet4mAoayqBbm/4/OgJjLQ0Lo5gIgr065/pl
+	 JeDnNRxlkioqRmA3+ilDrwGYYfv59THw2QbzI/QSWZtxTUvgwF9rSdJeCO/FembWIz
+	 nkGf80ayMvDQjrCqt0fSoXVGNKjQuVGDLbe+iDT4NC7uQwuihjgoxwxTYlrt62q0A6
+	 o+iD7nfrHAMWHswGWyAibl3fhsDvGMGurAh7HYaOQaTpS4m5b3YrB7xZe6l7BsJxvY
+	 Kka5XUl5HLOLQ==
+Received: by mail-yx1-f46.google.com with SMTP id 956f58d0204a3-672beabd8a8so139470d50.1
+        for <linux-mm@kvack.org>; Mon, 21 Sep 2026 11:10:56 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxofIKkv4uq5Rbag5+sg8s3o011RQ7a3aaB5D9SixETZk3Qud42K3bWiz2g15MXw3x2qlcVL7pnFg==@kvack.org
+X-Gm-Message-State: AFuF++ldjl6mNH8EvQiDXGiVLz+tJW28k2F601i7Co64+SEuI0/xPkZT
+	Fgt1YGdUILZVD/u6yol5xbsHQyze2/gEfD++K009c449MGzll+wpulTbiA/cbJpR0Tm5pgtQOtT
+	YxjxWMJj8hzksLLTZqNf8op4DD4rZMwEoC21SbmPZKA==
+X-Received: by 2002:a53:acc3:0:20b0:66f:c1bc:4054 with SMTP id
+ 956f58d0204a3-672c2ace221mr196906d50.28.1790014255888; Mon, 21 Sep 2026
+ 11:10:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+References: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
+ <aqJXx2vtbKaRLt3x@fedora> <aqLi6cIjD2wJwk0B@cmpxchg.org> <CACePvbUG1ApMzMdEzf-63rpjgGVNsRk21pT72OQGJpM=OtRUew@mail.gmail.com>
+ <aq6cVXPLUUwJA7-2@gourry-fedora-PF4VCD3F> <CACePvbVaPDnva8X-Xmz84r7j5HjTuih-w5phpw7cerK2uPnK6w@mail.gmail.com>
+ <aq8dja2-timYBwyB@gourry-fedora-PF4VCD3F> <CACePvbXudjxQ5vrrY4D1nOXKaFNQUn-tL+p3O0zfxtHXK99ojQ@mail.gmail.com>
+ <e879ac65cb0940325736df7984c737edf1c6be94.camel@surriel.com>
+ <CACePvbXThspPYD8DZkAeiJtYuMV79vGgC1SGhpMwhn4COWOtcg@mail.gmail.com> <785353ef79844e81a8cd97e87b00ef1f785b15e5.camel@surriel.com>
+In-Reply-To: <785353ef79844e81a8cd97e87b00ef1f785b15e5.camel@surriel.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Mon, 21 Sep 2026 08:10:44 -1000
+X-Gmail-Original-Message-ID: <CACePvbXZ4i-DsmbQdNtBQb79y59uwZC9J8qHD2wTWpcYaet3LQ@mail.gmail.com>
+X-Gm-Features: AcwNN1Woo8T3qId4JZp_7iimts7F23BOwDAY_HBZQCCsQ8GnkQO5p6KKJ1Z6pBw
+Message-ID: <CACePvbXZ4i-DsmbQdNtBQb79y59uwZC9J8qHD2wTWpcYaet3LQ@mail.gmail.com>
+Subject: Re: Path forward for Virtualized Swap?
+To: Rik van Riel <riel@surriel.com>
+Cc: Gregory Price <gourry@gourry.net>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Baoquan He <baoquan.he@linux.dev>, Nhat Pham <nphamcs@gmail.com>, 
+	Kairui Song <kasong@tencent.com>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Yosry Ahmed <yosry@kernel.org>, David Hildenbrand <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Barry Song <baohua@kernel.org>, 
+	YoungJun Park <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	=?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?= <surenb@google.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Wenchao Hao <haowenchao22@gmail.com>, Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, 
+	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, 
+	Meta kernel team <kernel-team@meta.com>, Linux Memory Management List <linux-mm@kvack.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org, 
+	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Kairui Song <ryncsn@gmail.com>, Joshua Hahn <joshua.hahnjy@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: D26BD1C0006
+X-Stat-Signature: hea7q65hxsqp3sk7y15k7rczn591e61q
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B769018000B
-X-Stat-Signature: ob9ugmdskj8rfcxjjywymh93xbm7154z
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790013482-324201
-X-HE-Meta: U2FsdGVkX1/Sn3kZ/1FduMvdc6d+hS0ylzoBJmi2B4Uen3VqsiNhV4be5hV+R9SiSorGID44lfls5QgchTbcHzrMewmv9PIPYqef0GUeijjGtQLkHkLT9UCG26zP8yVB+JWo+46Yf0WhtkXciZLaibdM4Fh4BfYfVrhaVxShk9IFXDckf9qYL5YNpWMelKGpadsMevZ9O33nLdNeLWcEdAoEgMuqNpuoJTDvEq43OjTyvG5vWwRLg5xool7zg9AS1VIMzJq5gf8Al8tg+WmmH8pMBYuv9bCE2HPPYf6TChGi5Ctk+9w9TtDJ9jzZ8ngbMo3x7R1zdEYDVLS8BU93I2WNU7aXirUgWY4PdUDhGE/rh3U+kxq+sAO9fZvrRzlAFha+0YN1B3whh06ZvF+FYl6RHX1qcFa8o53XHHXyxpRsRaDWlCNrN4EIL+DQ4SFgSSfYrh+Fdc4pBdcfXCBDM08G9iSg2rvrrhEOGXvkCMvpSAskpVzfJqPn1iCXcE5ABS58oBfpIu2RF5SduLxJYchPZxKwSYnDVo7/Y5pG3pwOX7Fn94cZC3RWPllwkpVB5pZsluvY9ZVC2nfAfxazQOPaybbdsgTliNHjXNdV6BOs9r29yjeMUbmSAATL7vgGV6Q1kSTYkoqvEWpPoz4ONWyrZ/rvOJqu7QrqCZJRzi10zFziaqFyZDCVbjmkt2U67DJKmoDA6FGoOuKcCduFKh4VCDnoCCcZRkUqm2NHi0Lp9dxo19WHRUCSl1uDzOkxND9V2QgSZG/eVJIrUxcEb6MfcFefz0Foz+UhpBCCCwQcu6bNAXcDq9jfL/im3IYqZo+VSBAYqwwPvdHhn6mGo2um17XqE8eSZiwq7RagPmX6EkNqJ7IKIrlBp0LMadd3q+61Z9p/ImwuE8bMKg/XDcJs8b5LAqwY0fuds1UfVgWRkjCOHUq/236WvQMITZl24tFI9sZ41QgL+L4Oqt6
- cotWcSh4
- JV9fd0ZEbYfDi+Zw9YHWjLEliYtHMzWfyq1oZ9OU8Okx0Jxrf6cMhMyiQvl1GZnW1vo3ImmZI/9yV0aqzfdYmRkuBEwCd8Zra/rtKbxG5xRBs9+vml+jnoE07nf1RYnloF7LjfPpluxH61E9N/zMMPtvgFQUYDH5s91i8HMDHn5nPyJHu4RRuXB5qfAYGvkTS7/gv01AiOZ+q3z+zx+A0agZXzXUQ+JO+5LK5uqWImhvTc1NHY9VBlv9B3q1Kl/4hJ32H
+X-HE-Tag: 1790014257-550415
+X-HE-Meta: U2FsdGVkX18iW1a6sxexNfCYYBUqcOKkUhtTshS2t1Jmd3qwljyMyi190xgLkFAmH9Fb0T1A5ufsuXUXzp6Kesh7FBSUSyccxNyiIGWog/TnOFHcl3o0dLLGXD4x5qXEBSd1eYO+iaJ7y2d8PY/y1W3WgK5IDsVyk4+ANfYPaBDwHjSmpglaeP3ZBpIhSZ0SW66ZX8C5A0vsRcTOsfe60oQRaCsqVVWkd6KDGbDCVKF5VxN1+PqR6F5+0hWpTu928Orf67ijzTEnsOjKDCmPdeZVV3OfdThO7Aw1Iucf7wHNExPTog4YWYNVBPhc04bNDrvlzbsP83Ixx2diM3hvvBUOhS/z7HVji8gEeMHD7lH5ypHyONctR16ir9xpqV2pcS1ro4SmrjkaUfGPY+3NWe3s/wDoTqDsXrshVFiLtEmmEaFz9oMJZobJVAsp+NlbUlnyqwEOSvILOB1Ve3bQPiFjgBcCYhbQ3HmPYEC4x55fnbpq4DCP0L3qIed+FA2/RsFMWoR70ggaO3McaMZ3sTplVGcJ338UpKcHv6pr9J0qY3e1SGjsq4j1Lh2SyHNVD99UJd8CJ1J7iNZ8Djo8bFg9/PNlaY0A2VN2ynDy3g+4+wyl1l0ZkNipFNONAXbvs9W/j2NxTbpMMwbW3s02vab3n+ZWXlomCO8nr91rKE1xgX0mZULvxrDBbl5VyEcPyw/Lo1oYvDZVSdXdKSdyn1cA+IC1FwMC4+2e4AlbfhZauc3t/y4Kkk/NubKH2Ke7E6ua8TXwzTc9aMWXSgHYY2j3IQUJkyiQ+oPuiVM1VkBwsLdlpVDWMKvFtHw60zFxW+W5Q0HWcjegBct3SaR97knPkubc2nS0LAB1Qi9veofdGTZQaedGEHCKUnrM7r4OKnt9RqftUVjylyDfYF5i0zDtjij5R5LMxBeYt9jzY6UjHlntx2EeMFkYylofd/MAXX5On4WtoTwyCHEpEcc
+ jOlkWyRu
+ aoK45Sn7tDkVLC1fFrIoHyOfGCZ/qd2UxZmrHceHNqF60RyzeQmTlYc16fLa+CStq4iSSAfUH5ASw9L4r3DqeiWqPyXLS/mcPet8+lwVRapZCUVtfk5Ghibuyq/nc9G845b0iu7+nXTEpkrZbpsuf9+Z9cijQl96qUQh9Kl8sjXSyeuQ6qVwdJSe59t1oCvmpsrF5CVYAx3Tx3+VFay/RdY+Y6qAxprfdE0ZzvYs3iyfUf9sw3Owh/JZMdKQNVoZYA6Fbix+LrYPOPRemF0avn0Ej7DSAb8mB6ZvyCLP+GS/XEc3SYgKHOodOUViSU9ftl78UJXyiNounnd/HJtygyb+LpV2Pjoxa55cwkOXMWve/hUghZH37HVhyc02DUFeE+YugUw4jJMjPWYX7p+cR2TFAaBZpjQzxTgAUz+8Gb/W9gXRJNxn5l1TTPaor6xAF8naUGfIVkV9h6eoixM7zbvKz3Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,126 +125,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello, Julian.
-
-This is an AI review. The series was built here, and the bdev reference
-across a racing last close and disk removal, the slot races, and the
-css_free ordering were traced and look correct. Two behavioral notes and
-some description and comment fixups.
-
-On Mon, Sep 21, 2026 at 08:06:57PM +0800, Julian Sun wrote:
-> Use fixed per-memcg slots. Tracking is best effort: record only dev_t
-
-The slot policy this version adopted, oldest-first replacement, expiry
-after dirty_expire_interval, and re-arming when the mapping is dirtied
-while a flush is in flight, isn't stated anywhere. Can you add a sentence?
-
-> If allocation fails, retain the existing foreign-wb path.
-
-Andrew found this unclear on v6 and the subject is still implied. Something
-like "If the workqueue can't be allocated at boot, bdev inodes keep using
-the existing foreign-wb path."?
-
-> This primarily affects filesystems that keep metadata in the bdev page
-> cache, such as ext4 and other buffer_head users, rather than the usual
-
-The branch keys on sb_is_blkdev_sb(), so buffered writers of raw block
-devices are covered too whenever the bdev inode's wb belongs to another
-cgroup. Worth a mention.
-
-> +struct bdev_frn_flush_ctx {
-> +	struct work_struct work;
-> +	dev_t dev;			/* for bdev inode, device hint */
-> +	u64 at;				/* last recorded dirtying time in jiffies */
-> +	atomic_t inflight;
-> +};
-
-It sits next to memcg_cgwb_frn and is memcg's, so maybe memcg_bdev_frn?
-"for bdev inode, device hint" doesn't say what the value is. Following the
-sibling's comments, "dev_t of the foreign bdev inode", and @inflight could
-use one too.
-
-> + * For non-bdev inodes, when a foreign page - a page whose memcg and
-> + * writeback ownerships don't match - is dirtied,
-> + * mem_cgroup_track_foreign_dirty() records the inode owning bdi_writeback
-> + * on the page owning memcg. When balance_dirty_pages() decides that the
-> + * memcg needs to sleep due to high dirty ratio, it calls
->   * mem_cgroup_flush_foreign() which queues writeback on the recorded
->   * foreign bdi_writebacks which haven't expired.  Both the numbers of
->   * recorded bdi_writebacks and concurrent in-flight foreign writebacks are
->   * limited to MEMCG_CGWB_FRN_CNT.
-
-The flush sentence and the slot limit apply to both paths now, so the "For
-non-bdev inodes" scoping reads wrong. Maybe keep the original paragraph and
-let the new one state only the difference: separate MEMCG_CGWB_FRN_CNT
-slots keyed by dev_t, flushing only the bdev mapping, same expiry.
-
-> + * These wb/bdev_inodes records only remember IDs and don't hold any object
-> + * references. As being wrong occasionally doesn't matter, updates and
-> + * accesses to the records are lockless and racy.
-
-The paragraph above already says the bdev records hold no references, and
-"wb/bdev_inodes records" doesn't parse. "Both kinds of records only
-remember IDs ..." would do.
-
-> +	if (memcg_bdev_frn_wq && bdev_inode &&
-> +	    sb_is_blkdev_sb(bdev_inode->i_sb)) {
-> +		mem_cgroup_track_foreign_bdev(memcg, bdev_inode->i_rdev);
-> +		return;
-> +	}
+On Mon, Sep 21, 2026 at 6:40=E2=80=AFAM Rik van Riel <riel@surriel.com> wro=
+te:
 >
->  	trace_track_foreign_dirty(folio, wb);
+> On Mon, 2026-09-21 at 06:31 -1000, Chris Li wrote:
+> >
+> > Give me some real-world examples of people hitting this kind of
+> > limit.
+> > e.g. MAX(%)  > 100% and still have a usesable system. I suspect that
+> > with 100% zswap usage, the system becomes unusable. Please show me a
+> > real world case that proves me wrong.
+> >
+>
+> Here's my desktop system right now. The amount
+> of Zswapped is more than twice AnonPages, and
+> the system stays perfectly usable.
+>
+> $ grep -E '(Anon|Zswap|GPU|Swap)' /proc/meminfo
+> SwapCached:       252340 kB
+> SwapTotal:      41523604 kB
+> SwapFree:        9802088 kB
+> Zswap:           8812236 kB
+> Zswapped:       24927876 kB
+> AnonPages:      11615760 kB
+> AnonHugePages:   1402880 kB
+> GPUActive:      13112428 kB
+> GPUReclaim:        95980 kB
+>
+> This is also an example where I cannot really
+> predict how much zswap space I need, because
+> that depends on what AI model is loaded,
+> which drives the GPUActive number, as well
+> as the number of browser tabs.
+>
+> The system is perfectly responsive.
 
-With this patch alone, foreign dirtying of a bdev folio no longer hits
-track_foreign_dirty at all and patch 3 adds the call back inside the
-branch. Can you keep the tracepoint firing on the bdev path here so that
-patch 3 only adds the argument? Also, @bdev_inode can't be NULL:
-__folio_mark_dirty() checked folio->mapping under the same lock and
-folio_account_dirtied() already dereferenced mapping->host.
+Great, that is getting somewhere. We are talking about actual usage. I
+really appreciate that.
 
-> +static void bdev_frn_flush_work(struct work_struct *work)
-> +{
-> +	struct bdev_frn_flush_ctx *ctx =
-> +		container_of(work, struct bdev_frn_flush_ctx, work);
-> +
-> +	bdev_flush_by_dev(ctx->dev);
-> +
-> +	atomic_set(&ctx->inflight, 0);
-> +}
+May I ask what the total amount of memory (RAM) in your system is?
 
-The in-flight window is now just the submission of the bdev mapping, and
-mem_cgroup_flush_foreign() runs on every throttle-loop iteration, so a
-memcg that keeps dirtying and throttling requeues the flush back to back.
-A folio the flush redirties, e.g. a buffer locked by a jbd2 checkpoint
-write, re-stamps the slot on its own. The old record stayed in flight for
-the whole owner-wb work. With a journal the write cadence of hot metadata
-is still bounded by the commit interval, but for nojournal ext4 and other
-buffer_head users it's bounded only by the throttle pause, for every
-tenant of the filesystem while any tenant throttles. Not measured. The
-description covers the target size but not the cadence.
+I am not asking zswap compare to ANA memory. I want to get the % of
+the total RAM.
+I assume your desktop has more than 8G of RAM, right?
 
-Each pass also goes through wbc_attach_fdatawrite_inode() and
-wbc_detach_inode(), so it votes in the bdev inode's wb-switch detection
-like the owner-wb flush did, at the higher pass rate. Whether the bdev
-inode ends up switching wbs more often is an open question.
+Chris
 
-> +		if (memcg_bdev_frn_wq && time_after64(ctx->at, now - intv) &&
-> +		    atomic_cmpxchg(&ctx->inflight, 0, 1) == 0) {
-
-Records are only created when the workqueue exists and @at stays 0
-otherwise, so the wq test can't be false with a live record. Fine as
-documentation, but the cover lists it as a fix.
-
-> +		INIT_WORK(&ctx->work, bdev_frn_flush_work);
-> +		atomic_set(&ctx->inflight, 0);
-
-memcg is zero-allocated, so the atomic_set() isn't needed.
-
-On patch 1, the kerneldoc's "does not wait for all I/O to complete"
-understates it, the flush waits for nothing.
-
-Thanks.
-
---
-tejun
+>
+> --
+> All Rights Reversed.
 
